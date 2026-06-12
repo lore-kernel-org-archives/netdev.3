@@ -1,123 +1,280 @@
-Received: from shrimp.cherry.relay.mailchannels.net (shrimp.cherry.relay.mailchannels.net [23.83.223.164])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3AB1DF748;
-	Fri, 12 Jun 2026 10:00:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.83.223.164
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781258433; cv=none; b=YIcR+kl5TDiC+tPcshvtJngbdh0VR8UideshT9Jy6UPyDdMWbGyuq2X5BI4Kmy+T6J4pQFxw4bpIi+xnB5Ch6ASga8EOfpJvEh6NkxNuA6DJD2cm5Ce6kIHPox0J7nLIDNEyxJVfChQPKhFKvObaWIHvv19EZYlpnUnFfoCD5EM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781258433; c=relaxed/simple;
-	bh=tF/vP+WYOK9P9urz3A6JtTcCTWb+qjzpMiSJxzo9+S8=;
-	h=Message-ID:MIME-Version:Subject:To:References:From:In-Reply-To:
-	 Content-Type:Date; b=C2AtCgL4YsrQ2t1yBKWETMkE+cQqn2kscPAF11H3+maDpo32w/qn3JuglQvwMpHnaB8eWnXXxv94fjYn7H/38L8ccVS9/UuSrsYAFUMqgJP2gQIlKzwJCo3I5pdS41eCLUrtN2OVPNcBthBjhCfRMdeEhlffutMTWeSzMdnoeGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arinc9.com; spf=pass smtp.mailfrom=arinc9.com; dkim=pass (2048-bit key) header.d=arinc9.com header.i=@arinc9.com header.b=ZeBrpYI6; arc=none smtp.client-ip=23.83.223.164
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arinc9.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arinc9.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071421DF748
+	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 10:01:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781258486; cv=fail; b=HeDIoyNXYdSAoLL2qAQo9d2tJi4zzDLclYD0SfdBGECFSW/VFPymWdx7/Z0jdsHGwIUlOO3YG11bfhVv9tpnO1P0YHiiB8RalCEpiTo+vYELNirIKV7cQFhNBT5R0Vo5atSv1iO/GUUoN+K6HxlHvHcaTQEZuGEwplW2PtzRUVw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781258486; c=relaxed/simple;
+	bh=+Km2mclHezGcvej9xOkPOHFcRkucSIgEAMmK5YzbwZU=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=XY0SXXEw0446kdl+/GfA3WDhhMsX7Zl7HSmfAusIL3mKIbbTFZB5AESSlWV8XbbVFAxNT3lysc0HPwY/PA2209vANeWehJ/7qGWTHPqXfuYUbg1rBYsm6soeSLIHoy930cRSYzZN0R7EFG0+ag8mnCqtzHT7bl64Q8calGw7/Uk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XVuPreGT; arc=fail smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arinc9.com header.i=@arinc9.com header.b="ZeBrpYI6"
-X-Sender-Id: hostingeremail|x-authuser|chester.a.unal@arinc9.com
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id 19D7C7219BE;
-	Fri, 12 Jun 2026 07:36:42 +0000 (UTC)
-Received: from fr-int-smtpout19.hostinger.io (100-116-180-119.trex-nlb.outbound.svc.cluster.local [100.116.180.119])
-	(Authenticated sender: hostingeremail)
-	by relay.mailchannels.net (Postfix) with ESMTPA id 3CAC8721857;
-	Fri, 12 Jun 2026 07:36:39 +0000 (UTC)
-X-Sender-Id: hostingeremail|x-authuser|chester.a.unal@arinc9.com
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: hostingeremail|x-authuser|chester.a.unal@arinc9.com
-X-MailChannels-Auth-Id: hostingeremail
-X-Arithmetic-Fearful: 63c5ece7276c157b_1781249802002_3456694983
-X-MC-Loop-Signature: 1781249802002:29651468
-X-MC-Ingress-Time: 1781249802001
-Received: from fr-int-smtpout19.hostinger.io (fr-int-smtpout19.hostinger.io
- [148.222.54.35])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.116.180.119 (trex/7.1.5);
-	Fri, 12 Jun 2026 07:36:42 +0000
-Received: from [10.10.10.3] (unknown [46.1.111.82])
-	(Authenticated sender: chester.a.unal@arinc9.com)
-	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4gcBCl1z9Fz1y7P;
-	Fri, 12 Jun 2026 07:36:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arinc9.com;
-	s=hostingermail-a; t=1781249797;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WXtlwR+cKWGeAXn3H+Lf5Yv1kL7XUbUsrMYC6J2rcVc=;
-	b=ZeBrpYI6Dd/19gzwezL9s6dEWcEwXVPhMzaTBGzKwS8TIWcBSU3yoD7QKoZ3yBGWR+nrqg
-	eInFGcClna9n7prMx+FJ6b33Zm5w33wIlPL5Od2HPMHlfENdEtHhdA9Iub80OstE3yDSBX
-	UutJgFHpeovEWcFS5UQ4mqnuK9jPNPSPpEdvjU5Y+GVvL6WBRS/MGcW4H9eZ9dP/3zlI7J
-	Yt5+qrOfHH9GMLKCfCTXqVR5Zxn2FthdUHqQhQhB3CsF26zCWxvHk4CCa7ir13RtDoYNFY
-	lYAx1OuXCkt0u9l6a8Njq5H1YKm9zyPNNEijODSUqkXgsjGtusNAsoRm8S+awA==
-Message-ID: <02ad5de0-ea6a-4267-8686-72e3f98fce4e@arinc9.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XVuPreGT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781258484; x=1812794484;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=+Km2mclHezGcvej9xOkPOHFcRkucSIgEAMmK5YzbwZU=;
+  b=XVuPreGT2EbriVXjeJXCbljIyiCICdLLPo7wZDM17bHuaedZJAyKof1x
+   rcunPRLCHsv3MEDvKzE7kP7Kw8+YQnWz/kZ4b96n6SAgqmHeZqo/fNfjs
+   g6BXL7Y0UOJ4c4u42n2dz8Nlsy/Uuul2/kMd9K/WghdcCG11CGi58td+9
+   hdFV+vjvnZ6Sy7cxgHLVDr24xvkV4k80+MA/ZkX1E3t4xqI7AAI8woFlS
+   gFAQk0m7CoDU/Bu13LMTAQFmsbYCXTfUMeheEfwYzf6asOuxC/kQ/r9jG
+   e5hYLzKKIPiyC+4sk226xoP1WcJWWK1O1muyq0T6yKQTqL4lTFUObdslc
+   A==;
+X-CSE-ConnectionGUID: tYICtOp4QPqR/WOdQIiqQg==
+X-CSE-MsgGUID: eCNrqRHdSFG1DlIUJopKOQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="81931145"
+X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; 
+   d="scan'208";a="81931145"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2026 03:01:23 -0700
+X-CSE-ConnectionGUID: N3+TSYvlQ/iaQFEUDx2wKg==
+X-CSE-MsgGUID: z3sg5KSKTHOzrjK2ObVzXw==
+X-ExtLoop1: 1
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2026 03:01:22 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Fri, 12 Jun 2026 03:01:22 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Fri, 12 Jun 2026 03:01:22 -0700
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.17) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Fri, 12 Jun 2026 03:01:17 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GY20Db1K88dMaeHjVbKBFIkqbenvcc1gSICZ4/xuW2D6QaShY99NeyLZh42431Ggh6yvjjZ8ClFY77KZsh/lnd5DycEIlZ6+AphM1YGi2yiRbXe3B3OtEVSG53dFM559LLBIXEddnceTAmvsnTBLFggFLR7liYAK96sbf05D3oQQDLyI2+7ed1lz6BC6NokcYVdDrEjh39LKiEDMBbbc9Iw5w9fXqk8KFts1nGd4Lc8IlfXToK5ywgrxbfeMZUbLMDRedWRLvDZl09GOE/pJCC48SkpFwB1xVPn2D12/I/bfJvfz4G6OE+giLvJYBgd25GVFuhK9b4Vka4MPt03n6g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lWAzBuXPFXvk93arknjMdM276lHIXGAa0XSLjspyazw=;
+ b=mIEnyFB6DBSsX6m5jXiHWjH7mcmLcovUKkebuSoHTXsQnmGF2hVSDUKoGAWBRcDQfwr5b1H/KjwEeoH61tHe1roY/4iFl4ZTF2cAzPy4//AxWczFOexj5+USYIRwYbQ/6uaHdtSugwnBHNUvjGCTBrHmYYAgdpj5RWCzc3Vk6N29Zr5pKA2vc9Uq41xlbUlkcc65PpO+zdwPxEHH2hLP92oN31XwQOz7p7mW34YYX+FFSvEEqK/BHhe/AcHbWfMXoXymhI8VaLNEqrjjQ01pz1ZzE84HjWCyiE0Ns956UubVq7/ZgYcO/p5sO2sO2mMYuM2Di3rdqdGegtK2L9ElDQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH0PR11MB5902.namprd11.prod.outlook.com (2603:10b6:510:14d::19)
+ by DM4PR11MB6144.namprd11.prod.outlook.com (2603:10b6:8:af::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.14; Fri, 12 Jun
+ 2026 10:01:13 +0000
+Received: from PH0PR11MB5902.namprd11.prod.outlook.com
+ ([fe80::f95a:602a:34d3:5d37]) by PH0PR11MB5902.namprd11.prod.outlook.com
+ ([fe80::f95a:602a:34d3:5d37%5]) with mapi id 15.21.0113.013; Fri, 12 Jun 2026
+ 10:01:12 +0000
+From: "Jagielski, Jedrzej" <jedrzej.jagielski@intel.com>
+To: Chenguang Zhao <zhaochenguang@kylinos.cn>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+CC: Simon Horman <horms@kernel.org>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>
+Subject: RE: [net] net/sched: fix partial tx_queue_len change rollback
+Thread-Topic: [net] net/sched: fix partial tx_queue_len change rollback
+Thread-Index: AQHc+klneSUPRXcCQ0Wby2Bn5CJUTbY6sCGg
+Date: Fri, 12 Jun 2026 10:01:11 +0000
+Message-ID: <PH0PR11MB590250068C3C8C0699716E4BF0182@PH0PR11MB5902.namprd11.prod.outlook.com>
+References: <20260612085438.834763-1-zhaochenguang@kylinos.cn>
+In-Reply-To: <20260612085438.834763-1-zhaochenguang@kylinos.cn>
+Accept-Language: pl-PL, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH0PR11MB5902:EE_|DM4PR11MB6144:EE_
+x-ms-office365-filtering-correlation-id: 52fdf9b9-f521-4424-c90e-08dec8698879
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|366016|23010399003|38070700021|11063799006|18002099003|22082099003|56012099006;
+x-microsoft-antispam-message-info: Fp3G42SZ2PqB2/e3U1gg5u6ejTIuRsxhdwDq9JoHh5/sVdBLXZiiuKZd0QDzkzfMusXkWLkAAxeKJpomd18ThS5wP7fz5N908v54q3rBtc+wWu7oCAIsEZy5jr2V9CHZoKqP3FFgSvAk7xJ0vCRD3kURPyHakL4NXUwfB5qf3UivEF3GKsb2Io4gWXNi9aRMaPXFZ/TGvrW65TBDc/iuIhTMlyFfjxNPv5TCzqK3eWedM/hljlnefW6UmnK6nRXPfZ4dEiksTPsSf36eTJgvFyb0hLjUAZZnegCfIuwfpGwzngPlYmb/vQdBEBmAhIPL2Z5pE5a/Q20T3SxffQ2URLwkesWYywAAzeyZXC8HDUoAQ/Z6OacJe4GpTfdHA5SnWL786BCAtk9FDLIoapRyDnWlNME8vRH22EgqsRS8roovJum31CxuVavQGmnAtzaO+a/Pb6qxFcQGKTKgXtjPcfo5fxGklYUbOHJgk6alEZB20jRgHIZN1/11NwKTM9encNhl5ioGSYlmImuD4Pg5ZrSKUKrorwVignSlosKcFxCwPr3XO8VKnGDvgO0DvU4oxzNkihQ5YnLAUE6nyFAc9uf3Tu8r5cttjr5CggPM2bKz6xAQmiYfMN+AiAmOBb0wQzUnxjJbUEJLOQPzHHr9g6JuoCYPjYmjkUGACh3E8o8MtcPQMEEsQyiFVFJDjxxgYiiWswKfnaI3U3rgR0i5waUdLjONs6rC8jBNl7hrzpHOze24joZH2cKTgknmDP27
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB5902.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(23010399003)(38070700021)(11063799006)(18002099003)(22082099003)(56012099006);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?NEB9a/KBa0kmQWZkF8jY/wZzK08W8dHteQu5EYvdDgwXsyXBsw/WnbgE0l0I?=
+ =?us-ascii?Q?7Am7CIEUjNvPeegytpmtHO7edAnIhRDZPcrmwpl6k/Qq+dQ38LdECNCG+kgR?=
+ =?us-ascii?Q?+hOpqcc6oviND7YUVmIy0yPkxtmMx/br67676GhMznebvgb3DfvAf/MjlG5e?=
+ =?us-ascii?Q?0gSnk/m4BEETO1r7rmlHdfOjwu26f84wbvUKrShlm4Z5Rcf5v5x3gI2HU6Tn?=
+ =?us-ascii?Q?UEOloB1aaOop9cEgEZkJBWNseg9JfOc+LVvic1J9Xpcq1OY2ytY/rdG/Nr16?=
+ =?us-ascii?Q?PLCvB/sCsRLFqXrslf8cKohy0X0opLJx+6RfwsZAetZVnVOhWbTCTLbHHD5L?=
+ =?us-ascii?Q?SeY0irnYzgLeHQ3A3+HmOFyFS/BlghDlGxc5g4j/L1QGexLeUWLQF8pKDZ84?=
+ =?us-ascii?Q?yrCmYEFgLVodvD04qkTQ+XW8ANbMWLMwz2r8VhTbKQcJxyopNiStR6VedZsU?=
+ =?us-ascii?Q?WLbLQbEt0b7Jx14/CyMkg3MapH0nuIQIQFZcVzfpQaytx5hYlWRx0xJB1zrH?=
+ =?us-ascii?Q?thVxRaR7IVA/h5kGfOz2+hg46w4HoFf1ZUSPVfd4vjn1IF6aVgkLYAJcVUbo?=
+ =?us-ascii?Q?kKwYyLbEXlY7+24cM8lda/Dw1Nhr7rLfW15TqzqARshB4yfqTG0mPvYDMeNT?=
+ =?us-ascii?Q?KgD7NIjYLnTec2amPE5av57oO4GECuj3L1YgLK38cNp2G2L/V4p3v8ByMCKm?=
+ =?us-ascii?Q?LUTC+PIRGnDHzgDOKomZ4Lg8Dy1vNowl+QUlxkMGqPL9amyY/IFrMp8ccpTJ?=
+ =?us-ascii?Q?r/1xYVMkOetZ5DmWZOosaOlAZrZGaikZ918gpx8KF+h/tM9u4KuVH1Pd0d48?=
+ =?us-ascii?Q?0+HjSTk2hqW0mT/Snw9m0505pklmNrA2/yXxrs43NRVP4ZKv8AZ7Tbf7sZgZ?=
+ =?us-ascii?Q?OBJLPXeoSSTOeOM1e3aNdf5m3QBkiu18Gc2GAaRVEC2UDSTCq0lph/Gm0WsL?=
+ =?us-ascii?Q?c1Nq9kivGDhdcbAKBPEBqvsLgi6OEJf3JpCdZVGsk02l2xOT3+obAGHN+VPE?=
+ =?us-ascii?Q?6CW38dm4M/r9cTD8KULMpIUztnF6JH42lGADW2y92wdSYbzZFSA4kwp8A8HG?=
+ =?us-ascii?Q?n2/OFMkH+jnDu1sIwHqBcKKule4zFGj+N1Wk0ZYBYyzo1ejdGFd1ETe+hJi3?=
+ =?us-ascii?Q?wUrocuvIBYMCCv0a5GdXRllLyeqsdPO+YfXFtIJomzu8/4eR3kfbbpovtmco?=
+ =?us-ascii?Q?7u07b/Iyoo3YeE2PRpZkHVT0hMDtTl+dWS1sasvKGk+Hy5NKl+Sh1SP4NV3S?=
+ =?us-ascii?Q?OFdoB+LWSCG2mx6S4/8n3ik7M1TreR3671/cmq1OVzrM4PWwg0dO3VbZVwlM?=
+ =?us-ascii?Q?W99G0btjenIsplS3VyuCZTN/7I05yHAS93Lw0bXQPJUStnKyRKFXg7DMWKJC?=
+ =?us-ascii?Q?58lS8g4GArqCnfIsGt2p5HasBgFtuno2Q/Pup3+G5q6XQJJgNbvBLDW5Dto8?=
+ =?us-ascii?Q?fJeemi40ro8x2O4tKoZM/qPAls0N4f83FJUaQo+Pn/K70x5gZ2XLvGX2VsXy?=
+ =?us-ascii?Q?cH68lZ7aVETbaqsRnA4q/1Vk0ikInCcV9jvtB2AtnWhSilRMCSLCZ2JHJ/Wk?=
+ =?us-ascii?Q?iooYgV0633PPD7uwMZB+J8yEBtLVVja6Gaz7Oor3Khn9EkJED30DiILlSYwh?=
+ =?us-ascii?Q?eog/u+NRKTEA5J3MivvpnP5+JSGyZxe0BwkYn44nii3cIf4IH3aw3z6WFJkm?=
+ =?us-ascii?Q?favWUtScqwc9Vc4Uyur1/3sDKapUItaHUwxeT9MklH7Gc9uJFp7vK29rLh/P?=
+ =?us-ascii?Q?UwfmUhp02w=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 8/8] net: dsa: mt7530: implement
- port_change_conduit op
-To: Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
- Vladimir Oltean <olteanv@gmail.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org
-References: <cover.1781119435.git.daniel@makrotopia.org>
- <91ae0f87a6ca2cce3d072dba548545e02347bf13.1781119435.git.daniel@makrotopia.org>
-Content-Language: en-GB
-From: "Chester A. Unal" <chester.a.unal@arinc9.com>
-In-Reply-To: <91ae0f87a6ca2cce3d072dba548545e02347bf13.1781119435.git.daniel@makrotopia.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Date: Fri, 12 Jun 2026 07:36:35 +0000 (UTC)
-X-CM-Analysis: v=2.4 cv=Gq4Q+V1C c=1 sm=1 tr=0 ts=6a2bb705 a=EYFf6tZZuEx+mizzmxfcTQ==:117 a=EYFf6tZZuEx+mizzmxfcTQ==:17 a=IkcTkHD0fZMA:10 a=VT4XjZGOAAAA:8 a=GvHEsTVZAAAA:8 a=FvUSNmnTzPuJ0QD-RBkA:9 a=QEXdDO2ut3YA:10 a=6CpsfURP9XNmmWg3j1mJ:22 a=aajZ2D0djhd3YR65f-bR:22
-X-CM-Envelope: MS4xfPf9YvhCURV0HNIRHewhsgeJ9lEsWOVHOYoe2NIE2lxkmBW207FzjH+NqiB3byQJ0bAloPoh1NCmG2PgAFdt/QN7hkNG2SGyAMV4XomqSKlxpCttMUy5 s+QzPUrh17I0tW90nKrdo+RS3RYeD862Ks9jmvbyoaOY/jWi8O8vrClb6WmkCVwf1j9fnM2H1XmeyqkDfAG/6iAAON8+3kZAADIG92oUX9eOrEMe5AhBOp6f fOE1xNV66pSaBNW6YjWW9aFU9Bry5FQqphNAL2qC0aQz6DpUHP2AhI66bTwRSyQFTK1m+QJBCDCKZeNdzddGf8rQiFGiyomFmTKmTeSTMdqI9eKMvR9T2G+i 2Mu/cLS28ncEvQDD3vD5K3BS33LCxkOIPqw/XLG4d6mwXRZYtg9ibcZxDgXRuDkGSFtkwJ7h6FiPPRh78EXqnQFg74I+FJ53x30cX9m818PhBvRthI9W/Fyj urnwTraN9Cex6mcdm/Z4LjaJZgE4slbLiKBKFeqpJdcgQOrYK8taV2bqkOyBLNJh50N/iUSbucRzQmNv4XjdeFkRPh4uEVB/g46MCHu6c//OIis5e5indrdj dO1vybENR3J0C4iyL7jcmsyDD7d8kF8ajC9cUWQAXcAwUmFCPrdEa2+hOr+4GDKMGcRzXSb/X8bvu1BVjZpCXXio
-X-AuthUser: chester.a.unal@arinc9.com
+X-Exchange-RoutingPolicyChecked: Y+Lo7mNpeT1mC/5+AhoOl+OBaZKryyvUh8yuy8TrNsYJmYeUzM4GUoYol6JAIXIyfC2dY86yHF1vfvpxLR++m172uYlKr4JGwRlZPSKHXt+xEPbBRlgViEwcEeX1kLKR6FdTZiziMTkpwbaSU1SkUvyp5J/y8yJFwQ9KgW2d6UbLIPGvW12O4EGajI96xrD6JfCGsz9b/Q2WVp/jLwNau42tyFuo4TH8FhwzAk2lYn2ByeEcHGSSF7+WE/QZyxahqwL8p7SIcR+VGH5fl+APPpo7kXGMY8I2RWF/SqyU0sEgeEPD5SmBNos9zwBWzsNHSrPV4LUpBrFynQcV96tpZQ==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5902.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 52fdf9b9-f521-4424-c90e-08dec8698879
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Jun 2026 10:01:11.8814
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 0YCiyKYlROyfDyrHj2alFECXVNuM17+KzBJvX7TygF8RmacvBb9Z4raqvjscgwsnX9GAXil8xgQ83YijS3RV/MkwxHbUpGqw2KQa8hxj2Wg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6144
+X-OriginatorOrg: intel.com
 
-On 10/06/2026 20:56, Daniel Golle wrote:
-> Allow changing the CPU port affinity of user ports at runtime via
-> the IFLA_DSA_CONDUIT netlink attribute. This updates the port matrix
-> to forward to the new CPU port instead of the old one.
-> 
-> Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+From: Chenguang Zhao <zhaochenguang@kylinos.cn>=20
+Sent: Friday, June 12, 2026 10:55 AM
 
-Fabulous!
+>When dev_qdisc_change_tx_queue_len() fails partway through updating
+>per-tx-queue qdiscs, previously updated queues were left at the new
+>size while netif_change_tx_queue_len() only restored dev->tx_queue_len.
+>
+>Pass the original queue length and roll back successfully updated
+>queues on failure.
+>
+>Fixes: 48bfd55e7e41 ("net_sched: plug in qdisc ops change_tx_queue_len")
+>Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
+>---
+> include/net/sch_generic.h |  2 +-
+> net/core/dev.c            |  2 +-
+> net/sched/sch_generic.c   | 26 +++++++++++++++++++-------
+> 3 files changed, 21 insertions(+), 9 deletions(-)
+>
+>diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
+>index 11159a50d6a1..fa5cae1b1e84 100644
+>--- a/include/net/sch_generic.h
+>+++ b/include/net/sch_generic.h
+>@@ -704,7 +704,7 @@ void qdisc_class_hash_remove(struct Qdisc_class_hash *=
+,
+> void qdisc_class_hash_grow(struct Qdisc *, struct Qdisc_class_hash *);
+> void qdisc_class_hash_destroy(struct Qdisc_class_hash *);
+>=20
+>-int dev_qdisc_change_tx_queue_len(struct net_device *dev);
+>+int dev_qdisc_change_tx_queue_len(struct net_device *dev, unsigned int or=
+ig_len);
+> void dev_qdisc_change_real_num_tx(struct net_device *dev,
+> 				  unsigned int new_real_tx);
+> void dev_init_scheduler(struct net_device *dev);
+>diff --git a/net/core/dev.c b/net/core/dev.c
+>index 0c6c270d9f7d..bff2760a301a 100644
+>--- a/net/core/dev.c
+>+++ b/net/core/dev.c
+>@@ -9934,7 +9934,7 @@ int netif_change_tx_queue_len(struct net_device *dev=
+, unsigned long new_len)
+> 		res =3D notifier_to_errno(res);
+> 		if (res)
+> 			goto err_rollback;
+>-		res =3D dev_qdisc_change_tx_queue_len(dev);
+>+		res =3D dev_qdisc_change_tx_queue_len(dev, orig_len);
+> 		if (res)
+> 			goto err_rollback;
+> 	}
+>diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
+>index a93321db8fd7..d4c62e1f2a75 100644
+>--- a/net/sched/sch_generic.c
+>+++ b/net/sched/sch_generic.c
+>@@ -1400,13 +1400,14 @@ void dev_deactivate(struct net_device *dev, bool r=
+eset_needed)
+> EXPORT_SYMBOL(dev_deactivate);
+>=20
+> static int qdisc_change_tx_queue_len(struct net_device *dev,
+>-				     struct netdev_queue *dev_queue)
+>+				     struct netdev_queue *dev_queue,
+>+				     unsigned int len)
+> {
+> 	struct Qdisc *qdisc =3D rtnl_dereference(dev_queue->qdisc_sleeping);
+> 	const struct Qdisc_ops *ops =3D qdisc->ops;
+>=20
+> 	if (ops->change_tx_queue_len)
+>-		return ops->change_tx_queue_len(qdisc, dev->tx_queue_len);
+>+		return ops->change_tx_queue_len(qdisc, len);
+> 	return 0;
+> }
+>=20
+>@@ -1443,9 +1444,10 @@ void mq_change_real_num_tx(struct Qdisc *sch, unsig=
+ned int new_real_tx)
+> }
+> EXPORT_SYMBOL(mq_change_real_num_tx);
+>=20
+>-int dev_qdisc_change_tx_queue_len(struct net_device *dev)
+>+int dev_qdisc_change_tx_queue_len(struct net_device *dev, unsigned int or=
+ig_len)
+> {
+> 	bool up =3D dev->flags & IFF_UP;
+>+	unsigned int new_len =3D dev->tx_queue_len;
 
-Acked-by: Chester A. Unal <chester.a.unal@arinc9.com>
+Hi Chenguang,
 
-> ---
->   drivers/net/dsa/mt7530.c | 29 +++++++++++++++++++++++++++++
->   1 file changed, 29 insertions(+)
-> 
-> diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-> index c96420c291d5..2f3e734b9f53 100644
-> --- a/drivers/net/dsa/mt7530.c
-> +++ b/drivers/net/dsa/mt7530.c
-> @@ -3206,6 +3206,34 @@ static int mt753x_set_mac_eee(struct dsa_switch *ds, int port,
->   	return 0;
->   }
->   
-> +static int
-> +mt753x_port_change_conduit(struct dsa_switch *ds, int port,
-> +			   struct net_device *conduit,
-> +			   struct netlink_ext_ack *extack)
-> +{
-> +	struct dsa_port *new_cpu_dp = conduit->dsa_ptr;
-> +	struct dsa_port *dp = dsa_to_port(ds, port);
-> +	struct mt7530_priv *priv = ds->priv;
-> +
-> +	if (priv->id != ID_MT7531)
-> +		return -EOPNOTSUPP;
+RCT is violated here
 
-Why do we limit this to MT7531 only?
+> 	unsigned int i;
+> 	int ret =3D 0;
+>=20
+>@@ -1453,11 +1455,21 @@ int dev_qdisc_change_tx_queue_len(struct net_devic=
+e *dev)
+> 		dev_deactivate(dev, false);
+>=20
+> 	for (i =3D 0; i < dev->num_tx_queues; i++) {
+>-		ret =3D qdisc_change_tx_queue_len(dev, &dev->_tx[i]);
+>-
+>-		/* TODO: revert changes on a partial failure */
+>+		ret =3D qdisc_change_tx_queue_len(dev, &dev->_tx[i], new_len);
+> 		if (ret)
+>-			break;
+>+			goto rollback;
+>+	}
+>+
+>+	if (up)
+>+		dev_activate(dev);
 
-Chester A.
+please add newline here
+
+>+	return 0;
+>+
+>+rollback:
+>+	while (i-- > 0) {
+>+		int err =3D qdisc_change_tx_queue_len(dev, &dev->_tx[i], orig_len);
+
+please don't init at declaration when the retval is checked immediately aft=
+er,
+separate them
+
+>+
+>+		if (err)
+>+			netdev_warn(dev, "failed to revert tx_queue_len on queue %u\n", i);
+> 	}
+>=20
+> 	if (up)
+>--=20
+>2.25.1
+
+
