@@ -1,160 +1,78 @@
-Received: from mail-yw1-f196.google.com (mail-yw1-f196.google.com [209.85.128.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3257306776
-	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 01:09:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.196
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781226578; cv=pass; b=q+7dDGH5nx1HBjgPgilZo3s2oj/idilKi7kkB3cEAVcUgk+kgRu8iLec92Qg/wfrvYT3/C910J4voUZ7Y66Ui7cbNu1iIwr3LGySy4WaGQdjZq71oUJ7LixSBgzvJTuYeS2Ld9yaPZE1GYKgoaKrrwbXGmqZ4JXrSLc5KSRyOco=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781226578; c=relaxed/simple;
-	bh=9gi2TnyLTtIq3LPG+G/+Ly7DV11ab410M+WEj0lWYhQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=G0BbNmAJVqmuXWbsNvodIUC3im02eB+0XvhI40iY6nXu/0fmGL5bMeyisgPBBgodHKtcq7ZPOKS1DLYB3aSR2o30kKNFNiYqQulyUa21BGFr6GLkIq0KPy3VSyxmBzPrYvwQTb2zhu/Q/0myTqd8IMlIuETDgg36KnZ2y89ndWg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HoMITiJO; arc=pass smtp.client-ip=209.85.128.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6776267B89;
+	Fri, 12 Jun 2026 01:12:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781226726; cv=none; b=bOqjA2Re/Zajyf9GR+8o2X3SvxoBiepxa0kNR9dqZA3qIdJ7PpXBtUpyUfYABtvjgYHZ4uP+2pFWgmZEeKmSusQe+/nqaxObmjy3h2eFJ7VZ2myjQobv+NYxWEzQlRjr+xREUBSAafywQQSCYqsB35amxg+gqcdxXZs+NOjq11k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781226726; c=relaxed/simple;
+	bh=0s4x7I06JjDpHHL/AdHXiZ4kzNM1jephCdY2qRIIitc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Qhu6MpBRZVoiYbM0tLBiVIlK4zteT1UYFjW3Hrh6ISD36bV7CLmpAZA+yuGWkHqwOB27OEkAx5+RiDvGEzRXczHCJJl2BIfIJAX0QuZt6aRa1qOa+KyRB6IS+lPU9yLmRqFV+VZDwrMd2qhcRz1WS3KIuo+pprHi1GWi8AVsUqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=XsOzRLD1; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HoMITiJO"
-Received: by mail-yw1-f196.google.com with SMTP id 00721157ae682-7dbcb505578so4644187b3.3
-        for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 18:09:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781226576; cv=none;
-        d=google.com; s=arc-20240605;
-        b=hIHTLnYA7nLYJf/1U7Jzh5wtI5DN+qsh/TpjSsfSsDBARPFHJEoPu3FYc1Zoz6nEch
-         mbtbCzjcX3E6+/P4N0mNUPfseX1oH9SgOopIHajaPW3TCFs9hjTQP9+2mKt3HGuNmy97
-         tlaXMR2Fu11/1Q0Yos1v52Bl6idEpJ3AcrNrPJCNMrwr1N7JAvX2GHbVD43bX5GpZYre
-         0HKVXptS7ZRhZHD2RTdPACmoxBAyQAj7cXETMS8gzHCrk54/FynsZad894otby/37ZQw
-         IYoBnujalM1u23uOZAN4f6dTCOuKvoZQbZaV48Jj8KsgavdXLKU8gJWjs6WRxrYbcC5w
-         XSTQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=2bgbKh1ieMb+0wJeVI6j8Crjj/CHbtDXar3nNWZb+WA=;
-        fh=OTTqDeHoS9W+mK8qiaGOjMAWXVTV8tZ/KDGAlLgU3fM=;
-        b=elifMZ4txVZF8er4b/VgGwj5nT392zigTdIQ3xbrHO+hCISmwpYP6Zf71TbcqssTLj
-         HSa6zjC0GG/q8aUW32MQTwzG/hFlN9M+x58apzFnUNdZtFag2zvJHyuxcI4Wa62ErGDC
-         MD18TLD9SWCyPFXP6IuAc3c95xRceITynnBV9TTIWrRnsEAbASEIqHUHJiDsa/WzLgFY
-         KGpVaXTP/SD3DrgDc5vgH3+BiI73hQa/2t26i6qMTlTQRhqNm5xmZNLJgrv6sZ4ZrFor
-         loETQf4NcIFWNKolJefPmgPG+ADiAfk2JHLhIS+RIAfrOKppTo12rvT1SIUtog2QEGy0
-         VDQw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781226576; x=1781831376; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2bgbKh1ieMb+0wJeVI6j8Crjj/CHbtDXar3nNWZb+WA=;
-        b=HoMITiJOeAjZWLDIRpHf4JkHIMjvzp213v8BBhbfEyog5/dTD3TwNqE9rzn5op+cih
-         jMr0LjEOPB11k7ZzAlYjZZgUEHuZMjuhTEV0+TWX/eX3a4lBHWGiqf7XIFi1THBX4m5i
-         O2R0U5lStbEXFBKp5JCV8Lm/MMASI7qAr5H4ey/Je6B9xEvjxCXjRSD/dm+BwRZ6VTUH
-         wMjJtXFkxD0YXO0wfBqmm7BGMMvGePNll5/d/mfozzMTJanE9LQzBGXFCjRaQ0rGNyEv
-         9SaPH+p+A80MF92owNPppm05ngz3CBHwKC/fyJHeZgV0AkKt+hDQWkX7I+6ocTxipkoV
-         kprg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781226576; x=1781831376;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=2bgbKh1ieMb+0wJeVI6j8Crjj/CHbtDXar3nNWZb+WA=;
-        b=lSnTy9d25QyzQ1QgYtJf0Z7zldi6UIXGoe1QpW2aJJN32Fqzg3F3IBhEmamaYkS8b5
-         3KY32OPrCGBt1Gu7q62o03r6ao2vTy+CX0sXwzWM14dsPegvH9M8Ht3r+muCP63cdgxr
-         yJXKmorJfrJSkrnzcbveL4bmRMkFHK82QQDwWNoqhe/4ULnxiTfChsdjsz6HdTTIrVLk
-         c34RfU2UzLmtxsWzp0qRbNvSGb+/JVqkkU3PmrzmHKq50OTnuEVnISusfG/gKmm+uzMj
-         8sKmm8/KhZvpQ90WmHKNSOEyKUOYwU10MZQP5El5iC6brruWsrhnXsV3Vj10oUX9IOd+
-         q+iA==
-X-Forwarded-Encrypted: i=1; AFNElJ9gjwW+WHvwHQor92p4Jjry04ONsy0yzvbIi68kTOmggWXQHZAZAtckk8ujwRynZEgzfUTHfSo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxPYbmps4XSqkBlQDXIqnz4Yklcz+pOYzPSPFqLPaKRsKGBW0A9
-	DTAjWZdOkzQRhAExoGTB1be1BB3UVHKTioPEFt27LU9bJsRTnUGc9vIgp7zxtXMY66DnbIveRJ8
-	UwxJH5SyiP4i0hcsaGR5TimOwf77mUCk=
-X-Gm-Gg: Acq92OFHy8DXXJEP3dZt+XgIccCZSjN40S5IC0W/VerwmeSzDF3llSUa/e1ZduzFMuI
-	p9g2HhUybNcG+YK0YKejcJN1oxVGqPMdbTYRVq+CeLjq+BfELwIptYOe5nmn5VaNhCYe39UevlM
-	fvqPqgm3HXjdn7OW8+ZVdpWNrfo2N2zc+5dcKfw0uEGdtzvkibrnk67eXdDscH6KXIdOBJ2lU8o
-	dM/a5i3+R0qysqWBwU0XOy3Dh1Sc/jFlyAyUr96cJrq7pPhEvuVDTYophcV8JNuXpbCp6oUPxMQ
-	PaHfmJnFCQ==
-X-Received: by 2002:a05:690c:63c2:b0:7dc:7ccb:33a1 with SMTP id
- 00721157ae682-7f7b862ebbbmr7194657b3.23.1781226576049; Thu, 11 Jun 2026
- 18:09:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="XsOzRLD1"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BCAE411722C;
+	Fri, 12 Jun 2026 03:05:25 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1781226329;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=p7aILJyBYzvssioO/gJwVHbLCM0FoSbqpMKyKJJ9KK0=;
+	b=XsOzRLD11Nw+clXacI4w774mqlkmkGkNXOMdT5jvC2In+rWsLUUiIsfptLbrMljM02vFbq
+	GpAUsL1X0lVWcwMgTjJj3+oZm6//G6QGBnD28q+zhFvwRkQ5g2zdajuJZZ7MIhLAdKjCT2
+	e1xSjXI1b/hRofsV7bLYrg38t14l03jukpQ5kzsUNekbJ9axC+BoO8dKEmL8PjtLabvSgG
+	RSutQds9PzFbqF19I9XCuEbCtVGe7tKoBKbqB6Ep6ezVajwMO3Poy2ybokQCpZY54543dE
+	aZzbTa9DliLlgsGDQh2yQ3NCo/vIcgU3e4zKyhMcXYB625I8h3d5mCrkbIIhvw==
+Message-ID: <8d9fc953-0c59-4811-8273-016ba98089a3@nabladev.com>
+Date: Fri, 12 Jun 2026 03:05:23 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260611071242.2485058-1-dongml2@chinatelecom.cn> <aisBEUmSJa1vkFYo@boxer>
-In-Reply-To: <aisBEUmSJa1vkFYo@boxer>
-From: Menglong Dong <menglong8.dong@gmail.com>
-Date: Fri, 12 Jun 2026 09:09:39 +0800
-X-Gm-Features: AVVi8Cem7Z_iAE0cAcLpfhNtsEYe4ISMI5m8TQRa6PlH_Zbru4XArHRge9Hviwk
-Message-ID: <CADxym3Y_2NPr0ktHxdgh6NKd4xnoq8TrMYG=QRMdhm9g2Q1zwQ@mail.gmail.com>
-Subject: Re: [PATCH net-next 0/3] xsk: support tx napi busy_poll
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Cc: jasowang@redhat.com, mst@redhat.com, xuanzhuo@linux.alibaba.com, 
-	eperezma@redhat.com, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	magnus.karlsson@intel.com, sdf@fomichev.me, horms@kernel.org, ast@kernel.org, 
-	daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com, 
-	bjorn@kernel.org, kerneljasonxing@gmail.com, netdev@vger.kernel.org, 
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	bpf@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v10 0/3] ksz87xx: add support for low-loss cable
+ equalizer errata
+To: Fidelio Lawson <lawson.fidelio@gmail.com>,
+ Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com,
+ Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Marek Vasut <marex@denx.de>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ Simon Horman <horms@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, Tristram Ha <Tristram.Ha@microchip.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Nicolai Buchwitz <nb@tipi-net.de>, Fidelio Lawson <fidelio.lawson@exotec.com>
+References: <20260609-ksz87xx_errata_low_loss_connections-v10-0-9ba4418cf3db@exotec.com>
+Content-Language: en-US
+From: Marek Vasut <marex@nabladev.com>
+In-Reply-To: <20260609-ksz87xx_errata_low_loss_connections-v10-0-9ba4418cf3db@exotec.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, Jun 12, 2026 at 2:40=E2=80=AFAM Maciej Fijalkowski
-<maciej.fijalkowski@intel.com> wrote:
->
-> On Thu, Jun 11, 2026 at 03:12:39PM +0800, menglong8.dong@gmail.com wrote:
-> > From: Menglong Dong <dongml2@chinatelecom.cn>
-> >
-> > For now, we use sk_busy_loop() in __xsk_sendmsg() to send the data in t=
-x
-> > ring. The sk_busy_loop() will poll on the target NAPI. However, for the
-> > nic driver that support the tx napi, such as virtio-net, it can't sched=
-ule
-> > the tx NAPI, but only the rx NAPI. If we enable the busy_poll for xsk a=
-nd
-> > use virtio-net, we can't send data, as the rx NAPI in virtio-net doesn'=
-t
-> > handle the packet sending.
->
-> Am I reading this right that you decided to break busy-poll support for
-> zero-copy drivers that happen to handle transmit side from Rx NAPI contex=
-t
-> in favor of supporting virtio-net?
+On 6/9/26 6:19 PM, Fidelio Lawson wrote:
 
-Oh, nop. This series only has an impact for virtio-net. For the other
-driver, the logic doesn't change.
+Hello Fidelio,
 
-I added a "tx_napi" field to struct nap_struct. For now, only virtio-net
-will initialize it, as only virtio-net has the "tx napi".
+> This patch implements the KSZ87xx short cable erratum
+> described in Microchip document DS80000687C for KSZ87xx switches
+> and the following support article:
+> 
+> Link: https://support.microchip.com/s/article/Solution-for-Using-CAT-5E-or-CAT-6-Short-Cable-with-a-Link-Issue-for-the-KSZ8795-Family
 
-In __napi_busy_loop(), we will use the napi->tx_napi, if it is not NULL
-and we are in the tx code path(sk_tx_busy_loop), instead of napi.
+Have you also submitted the ethtool integration already ?
+Is there a link to a patch for ethtool to operate these PHY tunables ?
 
-Thanks!
-Menglong Dong
+Thank you for your help !
 
->
-> >
-> > Fix this by introduce the sk_tx_busy_loop(), which will poll on the tx
-> > NAPI if available. To get the tx NAPI from the napi_id, we add the
-> > "tx_napi" field to napi_struct, which is ugly :/
-> >
-> > Another choice is to call virtnet_xsk_xmit() in virtnet_poll() too. But
-> > this a little contradict the design of tx NAPI.
-> >
-> > Menglong Dong (3):
-> >   net: busy-poll: introduce sk_tx_busy_loop()
-> >   virtio_net: initialize napi.tx_napi in virtnet_alloc_queues()
-> >   xsk: replace sk_busy_loop with sk_tx_busy_loop in __xsk_sendmsg()
-> >
-> >  drivers/net/virtio_net.c  |  1 +
-> >  include/linux/netdevice.h |  1 +
-> >  include/net/busy_poll.h   | 41 ++++++++++++++++++++++++++++++++++++---
-> >  net/core/dev.c            | 23 +++++-----------------
-> >  net/xdp/xsk.c             |  2 +-
-> >  5 files changed, 46 insertions(+), 22 deletions(-)
-> >
-> > --
-> > 2.54.0
-> >
+-- 
+Best regards,
+Marek Vasut
