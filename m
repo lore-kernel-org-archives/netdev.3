@@ -1,252 +1,344 @@
-Received: from mail-oi1-f205.google.com (mail-oi1-f205.google.com [209.85.167.205])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C884352F85
-	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 20:43:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.205
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781297005; cv=none; b=d7buwf+5X9kCrwZ1a36paR4VnvEC6rld+SN7ZnjVTTEk84PNML8am7tu7VKhDFq9XadA1zQcCl9UYe1KKthydNGqJNu0bReRuLs81BD6MTIS1oO7QXQtgahCPyEnQgdg3qw1Bcvqe3AV5WQj3agvTeOj7N1OjRVXkrv0OiDNo7A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781297005; c=relaxed/simple;
-	bh=Mk/TzSPcB23FaFQpom3znsABAWm2xiLiQ9gVMCM3YcU=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=NROWX7xa5BkhJbWXEoEOU/R+sCOo1SeTXdztWBP0F6TXRjGJ0s0SSIKND9mpJk5hTKXk9N6a6AbsRVtCLMmR4zf6jIu6hO+kqT71d05MzndnOTO9hYjJLh6AM4I/G1TLEaIIhpLBu6ULJWDfEIWabSY6AyMKuTBQZbDPPGPQolA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f205.google.com with SMTP id 5614622812f47-48679a595e2so1878984b6e.3
-        for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 13:43:23 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2DA1331EAB
+	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 20:48:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.181
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781297330; cv=pass; b=e073kEzXFS/vF4IAgnDcLTJCjJfOg8yfYePMCzTcuKnnPgTNYEp3DYXZv666jx/lr0MVpKx6xsu7UGr3dWeMSa0aYK7zFY0aMDqgNIvpC2zNB/+qirbgGKRwo1wU0VFPosPc3at7qiARFJ3dUZmHmwp5P8t67bI+YpB3cy7UvFg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781297330; c=relaxed/simple;
+	bh=/Fphz4AEg7VLjRCOZxlhmLxXkJAlQQIuOqqXUfYvmhI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Wabhf6gtTwBCs52WGIY9Hjg+Hc1dwsjDp649J0554rpF4zqZTAIDdmUxSbM+Ixy38tHgFIghqyeRu30IojnaWt6Qc3iF59tPiWCkfEKHomvZ4c4wZD7moo5xCP0kZsSB3H/vSHbi1PcTH/VQVIDiz8BmDxvgRW6pcETVkmJKQgI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rz4O4uXk; arc=pass smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rz4O4uXk"
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-842273a2c4dso1009835b3a.3
+        for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 13:48:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781297327; cv=none;
+        d=google.com; s=arc-20240605;
+        b=b5O4+0JOfyP1UrURYgA4qBrDeTnG2t2g1GwQcRjjSJAHqsk5LIP8JUzJJnTyN3h0Gl
+         cFzq8V6f9lNkz4XaSjfztVsBVzpvh9vMP6aCc6Hf7C3XLCzPfSu5PQPKCfMUVI3RzPTl
+         2zE5ttAJO01IjcWrSWx6XVgbA7Rrbl/OLAo5/TuYVwd21HArN5Lo+JRJVFt6lQ2MpaEd
+         r5TJBRQzboE1WZLlt7VcrUidNQRR/mRo8QjfbP2T2GyWBH6bkl+DPUvyTwjQUREYm1x5
+         iL15qH31EbYnGymsD1cdn/8pdHqM/ecikCf/zvyAI3luj15LJBPZlCIuD0z1KMNFEeQF
+         OIHQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=c8b+p6IKKfS6Vat52avOATunY8iF7eAXvlismBPMZXo=;
+        fh=64w4Cm65Oku8tiA/A6vBrY6EXrgvRqOIY54/EI5UbYU=;
+        b=TYFU/Ubem6Imdu++e5zzuVTaKczJbbvb6M+9KsOz90ntcN8JtGkCzGWjiWTpw+XROP
+         wAVT52FnPcrSLvzB7dDPNmjROT4T/9K6pcU40bEQmV/Z1eX4lJ1b2L1iwxWvHLVcyOGi
+         4Auv+4YiypGuY06o/Ij1E/cjHv4xuxM0a2L5DglASGKz0m+jcRvHiH+/oOqhOegOQPdU
+         BtaDae8mR5HVVZDCkagNBAchMFK50N/b8IPKJE8TI9oVPEOdnDzdYVh38ZqyXQF3sRw8
+         gE5St6maDa3G8OSNTBmDksYIrVCaP4rKMup2ZLZnOqPDxj1KNYrMAiQKU5cLGbs8kFdS
+         Vjpg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781297327; x=1781902127; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=c8b+p6IKKfS6Vat52avOATunY8iF7eAXvlismBPMZXo=;
+        b=Rz4O4uXkUS4KQ+emsU9w10n54DK1FbhKyEug7x8FUEwq9YX80TyLM3Y1paWUBB5vDE
+         YXQcdQShvg5lTU+BR+IzkYTBajUTLyor2RrDATfsaoMSFtgtuGKXAQRyLeLLoZ+tNBPj
+         83/oOoUHChVzIA4lFR1zVgS+lDIiLO5TPORPwf5UgXWo7RmfiQcpuZDvmyuREH1R8OJq
+         PbAqmxF/L1VR+4TN6k11QYGsZ9yvcNRUbO6v1WJwNze+o2sUsV6imgUVsTeNdKP6zO9H
+         l0S5KZqriKwxhL3d6t9yyRJ6v7gFSDjGlkz/IqkwPGyvwB3da4ooD+mApB3tpR2lgdqr
+         PWAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781297002; x=1781901802;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+CvRzUaL2bhKQwd3Bgdddk2TEKH/mLaPQFUWxCE4Kbs=;
-        b=bzuZ1hTYTO9SReck3jjxDTRwrSfG5ZrucO5Y74nXksAOYCoULX7vORqXlybj3i//qm
-         msfYoUa9L0AamUBrYuBOJoMTA0W0t7dpc/THKDO7JQ8J26T5u9WUPasaI3XB1g4GYfPo
-         Z5dPkOd7EgLZJ24mTW+r5aGhyK+EBqu2lrcmlBo2cEMAN+e0m/VBRhqz4ZvVoEBEh5Zq
-         qX6YVhDjhgCdt3UiEfRkHCrL3yZSB8scsN8zq4D9gh1n4XGaV05DyNgD5fN4C/XJVwx0
-         TPcJdRIWETeeDePUea7988NDCu6H7heJX78yiXcLLiUWQeuz5KRufDvInHBwhCDLQE7f
-         5ljA==
-X-Forwarded-Encrypted: i=1; AFNElJ980D49o4rc193pNoBlkYZSSMSdUzzM5rG09zsrXvqj2Y+5Hr1uYZhfefmnNmspbfx9pJ7Uw2c=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw19jfOm0u+/GsXFHEB2eExAj0a4P9DScvdUboMOzUtJ1JSYxtT
-	pPdlJud7HmoN4iEbySxnVK0BnQQcTdN2dXICjbw5vABrxgRHquyFnVxhH3A91+tm8qUW5VYEoV3
-	NJzigEzM051jkUXVtUt5eao5OtnSMppfai2v7wN5W6/YRG4M5Pqjw41vDlSM=
+        d=1e100.net; s=20251104; t=1781297327; x=1781902127;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=c8b+p6IKKfS6Vat52avOATunY8iF7eAXvlismBPMZXo=;
+        b=Eqp+emx98hF7tj7EtvtGukhm1yeMS0OsPESsjIR12Hl5rkLM9o9p+Fwf+FzJfYqRFb
+         vmjl1dhLRnPrWrYSYs5Y6ZZDQcxQc9Dr+Jhz6l6f4kpTup4EiSLkNKohcgCWBys+BEss
+         P4qCi+fhST2E4MW+cavP9KNsSB+bTuX8hni/k5cIhU174SeOLkGVPfISwunx0bePWiml
+         jNBC2ikQw+HfGM0XCn/YjZT8nMg0+AyadyJ48zU1JBASLbi2IKx9nsdoPnTbOysc028T
+         i0XWClhfFU4pJ8WfHO9M/dBUlsfPsd3jutqC2Yg+yUsiMXYSo5jNEudJ8oMnK+vRKUFA
+         qg2w==
+X-Gm-Message-State: AOJu0Yzduv2dX+b88gIrd6RrFSTIHurb2bacFifc5KtdYG4lAj6YzcDK
+	/hYDnQN1whyU0MG70SEt2cpX//nNrOc3JZT1cj1cH/9exaHU9gA6WdifBtdr++RxVcikh3RvR5H
+	I1S/CijBA6C0/OYJct1GNE7QUZIZa1bw=
+X-Gm-Gg: Acq92OEKdqEKQoIXMcCh3ju/bQdnQZG2PoLl1pONUtTn6VaiZNxdbF7HCA70tvFfWzh
+	BGXFGAdGYl8dLvqJ3yqjXz0dkbtEu5TGQ6jFoKY7uurw8nT56vOvxV5fHhkoYn2HFlEPvzVsMzs
+	SjcEmZ3ctHx5RKEEhvQd5/n40XCK4xuBl98FgIyFo6qJZdWkx/T3Cq3I+M86kiK1ENZZA5HRnL+
+	36IkPnkSsMzoZOZNV2L3ESMjhKbZK7eHlWFnHbEEbeHT88k53UMwxxjBSmlZKdqkg/Sm2Jngx5P
+	UslYaL3hGu3PUfc+fff0Ku4Y9U8pz0hX+BapZwQV8uSuFrv+Hd0jrkXf3+pFhwQy8xywzqHrOvt
+	zyzMWZw==
+X-Received: by 2002:a05:6a00:2351:b0:841:69e4:f21b with SMTP id
+ d2e1a72fcca58-8434ce6b56dmr5081219b3a.39.1781297326992; Fri, 12 Jun 2026
+ 13:48:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:4fc9:b0:467:1da9:2b0f with SMTP id
- 5614622812f47-4872f5eca26mr2902287b6e.34.1781297002501; Fri, 12 Jun 2026
- 13:43:22 -0700 (PDT)
-Date: Fri, 12 Jun 2026 13:43:22 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a2c6f6a.be3f099c.2836ae.0004.GAE@google.com>
-Subject: [syzbot] [mm?] KASAN: invalid-free in rcu_free_sheaf
-From: syzbot <syzbot+60332fd095f8bb2946ad@syzkaller.appspotmail.com>
-To: linux-kernel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org, 
-	peterz@infradead.org, syzkaller-bugs@googlegroups.com, tglx@kernel.org
+References: <0b03854cabaac243a0cdf42375c66cd033750bd0.1780855297.git.lucien.xin@gmail.com>
+ <20260611082008.138377-1-pabeni@redhat.com>
+In-Reply-To: <20260611082008.138377-1-pabeni@redhat.com>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Fri, 12 Jun 2026 16:48:34 -0400
+X-Gm-Features: AVVi8CfE7HTOI2SzE8B2TbKR1nN28BzQl7R5aNYkEsfQb-6dW-l_TEr2rNPdIw4
+Message-ID: <CADvbK_eHGSu3Epj-oGudVmjWwas-goF2rFGb-J-vYOvW+L9Npw@mail.gmail.com>
+Subject: Re: [PATCH net-next v13 15/15] quic: add packet parser base
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, quic@lists.linux.dev, davem@davemloft.net, 
+	kuba@kernel.org, edumazet@google.com, horms@kernel.org, metze@samba.org, 
+	mbuhl@openbsd.org, tfanelli@redhat.com, hepengtao@xiaomi.com, 
+	dreibh@simula.no, linux-cifs@vger.kernel.org, smfrench@gmail.com, 
+	linkinjeon@kernel.org, tom@talpey.com, kernel-tls-handshake@lists.linux.dev, 
+	chuck.lever@oracle.com, jlayton@kernel.org, steved@redhat.com, hare@suse.de, 
+	aahringo@redhat.com, dhowells@redhat.com, matttbe@kernel.org, 
+	mail@johnericson.me, xiyou.wangcong@gmail.com, alibuda@linux.alibaba.com, 
+	jbaron@akamai.com, illiliti@protonmail.com, sd@queasysnail.net, 
+	marcelo.leitner@gmail.com, daniel@haxx.se, andrew.gospodarek@broadcom.com, 
+	mef@scarletmail.rutgers.edu, paul@jakma.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
+On Thu, Jun 11, 2026 at 4:20=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wro=
+te:
+>
+> From: AI Reviewer <ai@example.com>
+>
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> Full review at: https://netdev-ai.bots.linux.dev/sashiko/
+> ---
+> quic: add packet parser base
+>
+> This patch adds the QUIC packet RX parser, including ALPN extraction
+> from the Client Initial to demux to the right listener, an ICMP-driven
+> PMTU update path, and a per-net backlog/work for deferred parsing.
+>
+> > diff --git a/net/quic/packet.c b/net/quic/packet.c
+> > index ba5204aceda6..430fc06d0012 100644
+> > --- a/net/quic/packet.c
+> > +++ b/net/quic/packet.c
+>
+> [ ... ]
+>
+> > +static int quic_packet_get_alpn(struct quic_data *alpn, u8 *p, u32 len=
+)
+> > +{
+> > +     int err =3D -EINVAL, found =3D 0, exts =3D 0;
+> > +     u64 length, type;
+> > +
+>
+> [ ... ]
+>
+> > +     while (len >=3D 4) { /* Scan extensions for ALPN (TLS_EXT_alpn). =
+*/
+> > +             if (!quic_get_int(&p, &len, &type, 2))
+> > +                     break;
+> > +             if (!quic_get_int(&p, &len, &length, 2))
+> > +                     break;
+> > +             if (len < (u32)length) /* Incomplete TLS extensions. */
+> > +                     return 0;
+>
+> [Medium]
+> Should this branch be treated as a parse failure rather than a success?
+>
 
-syzbot found the following issue on:
+The rest of the TLS extensions could be in the CRYPTO frame of
+the next initial packet.
 
-HEAD commit:    0ce346bf2f68 Merge branch 'net-shaper-follow-ups-to-recent..
-git tree:       net-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=15a50986580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=2c40e3284434c6f1
-dashboard link: https://syzkaller.appspot.com/bug?extid=60332fd095f8bb2946ad
-compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+Returning error will cause packets to be dropped in the callers.
 
-Unfortunately, I don't have any reproducer for this issue yet.
+> The other length-bound checks in this same function return err (-EINVAL)
+> when a declared length exceeds the remaining buffer, but this one returns
+> 0 without populating alpn.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/fcb2184c91a0/disk-0ce346bf.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/44a7baa2dfdd/vmlinux-0ce346bf.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/8ef85b3aefe3/bzImage-0ce346bf.xz
+The splitted TLS CLIENT_HELLO messages are very rare.
+The ones I saw from some QUIC implementations are splitted from these
+TLS EXT points. I will improve it when seeing more different split points.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+60332fd095f8bb2946ad@syzkaller.appspotmail.com
+> The callers initialise alpn as
+>
+>         struct quic_data alpns =3D {};
+>
+> and quic_listen_sock_lookup() then takes the no-ALPN branch:
+>
+>     if (!alpns->len) { /* No ALPNs or parse failed */
+>         sk_nulls_for_each_rcu(tmp, node, &head->head) {
+>             ...
+>             if (... && (!alpns->data || !quic_alpn(tmp)->len)) {
+>
+> Because alpns->data is still NULL, the match collapses to true and any
+> listener bound to the address/port will match, including ones that
+> registered a specific ALPN list. Can a peer reach an ALPN-restricted
+> listener by sending a Client Initial with one extension whose declared
+> length is larger than what is left in the ClientHello?
+>
+> Would returning err here (or always assigning alpn->data before
+> returning) match the comment in quic_listen_sock_lookup() that
+> distinguishes "TLS parsing succeeded but no ALPN was found" from "parse
+> failed"?
+>
+ALPN demux is a feature trying its best to dispatch the first initial
+to the right process. If it goes to the "incorrect" because the peer
+doesn't provide proper ALPNs, the userspace handshake will reject it.
 
-==================================================================
-BUG: KASAN: double-free in rcu_free_sheaf+0x31/0x200 mm/slub.c:5850
-Free of addr ffff888026c2d380 by task ksoftirqd/0/15
+It's kind of the peer responsibility if it wants to get processed in the
+right process, send with the right ALPNs then.
 
-CPU: 0 UID: 0 PID: 15 Comm: ksoftirqd/0 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/09/2026
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- print_address_description+0x55/0x1e0 mm/kasan/report.c:378
- print_report+0x58/0x70 mm/kasan/report.c:482
- kasan_report_invalid_free+0xea/0x110 mm/kasan/report.c:557
- check_slab_allocation mm/kasan/common.c:-1 [inline]
- __kasan_slab_pre_free+0x104/0x120 mm/kasan/common.c:261
- kasan_slab_pre_free include/linux/kasan.h:199 [inline]
- slab_free_hook mm/slub.c:2634 [inline]
- __rcu_free_sheaf_prepare+0x10a/0x2a0 mm/slub.c:2940
- rcu_free_sheaf+0x31/0x200 mm/slub.c:5850
- rcu_do_batch kernel/rcu/tree.c:2617 [inline]
- rcu_core+0x7cd/0x1070 kernel/rcu/tree.c:2869
- handle_softirqs+0x22a/0x840 kernel/softirq.c:622
- run_ksoftirqd+0x36/0x60 kernel/softirq.c:1076
- smpboot_thread_fn+0x541/0xa50 kernel/smpboot.c:160
- kthread+0x389/0x470 kernel/kthread.c:436
- ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
+> > +             if (type =3D=3D TLS_EXT_alpn) { /* Found ALPN extension. =
+*/
+> > +                     if (length > QUIC_ALPN_MAX_LEN)
+> > +                             return err;
+> > +                     len =3D length;
+> > +                     found =3D 1;
+> > +                     break;
+> > +             }
+> > +             /* Skip non-ALPN extensions. */
+> > +             p +=3D length;
+> > +             len -=3D length;
+> > +             if (exts++ >=3D TLS_MAX_EXTENSIONS)
+> > +                     return err;
+>
+> [Low]
+> Is the post-increment intended here? With TLS_MAX_EXTENSIONS =3D=3D 128, =
+the
+> check (exts++ >=3D 128) first becomes true when exts has already reached
+> 129, so 129 extensions are consumed before bail-out even though the
+> constant name suggests a cap of 128. Would
+>
+>         if (++exts > TLS_MAX_EXTENSIONS)
+>                 return err;
+>
+> (or moving the check to the loop top) better reflect the intended limit?
+>
 
-Allocated by task 5613:
- kasan_save_stack mm/kasan/common.c:57 [inline]
- kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
- poison_kmalloc_redzone mm/kasan/common.c:398 [inline]
- __kasan_kmalloc+0x93/0xb0 mm/kasan/common.c:415
- kasan_kmalloc include/linux/kasan.h:263 [inline]
- __kmalloc_cache_noprof+0x31c/0x660 mm/slub.c:5420
- kmalloc_noprof include/linux/slab.h:950 [inline]
- kzalloc_noprof include/linux/slab.h:1188 [inline]
- hwsim_update_pib+0x88/0x450 drivers/net/ieee802154/mac802154_hwsim.c:101
- hwsim_set_promiscuous_mode+0x196/0x2e0 drivers/net/ieee802154/mac802154_hwsim.c:323
- drv_set_promiscuous_mode+0x159/0x2e0 net/mac802154/driver-ops.h:127
- drv_start net/mac802154/driver-ops.h:195 [inline]
- mac802154_slave_open net/mac802154/iface.c:196 [inline]
- mac802154_wpan_open+0x19b3/0x2a70 net/mac802154/iface.c:295
- __dev_open+0x44d/0x830 net/core/dev.c:1702
- __dev_change_flags+0x2fa/0x7e0 net/core/dev.c:9752
- netif_change_flags+0x88/0x1a0 net/core/dev.c:9815
- do_setlink+0xfa5/0x45a0 net/core/rtnetlink.c:3207
- rtnl_changelink net/core/rtnetlink.c:3841 [inline]
- __rtnl_newlink net/core/rtnetlink.c:4014 [inline]
- rtnl_newlink+0x15ad/0x1bb0 net/core/rtnetlink.c:4151
- rtnetlink_rcv_msg+0x7d5/0xbe0 net/core/rtnetlink.c:7068
- netlink_rcv_skb+0x232/0x4b0 net/netlink/af_netlink.c:2556
- netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
- netlink_unicast+0x75c/0x8e0 net/netlink/af_netlink.c:1345
- netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
- sock_sendmsg_nosec net/socket.c:787 [inline]
- __sock_sendmsg net/socket.c:802 [inline]
- __sys_sendto+0x672/0x710 net/socket.c:2265
- __do_sys_sendto net/socket.c:2272 [inline]
- __se_sys_sendto net/socket.c:2268 [inline]
- __x64_sys_sendto+0xde/0x100 net/socket.c:2268
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+will change to ++exts.
 
-Freed by task 15:
- kasan_save_stack mm/kasan/common.c:57 [inline]
- kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
- kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:584
- poison_slab_object mm/kasan/common.c:253 [inline]
- __kasan_slab_free+0x5c/0x80 mm/kasan/common.c:285
- kasan_slab_free include/linux/kasan.h:235 [inline]
- slab_free_hook mm/slub.c:2689 [inline]
- __rcu_free_sheaf_prepare+0x12d/0x2a0 mm/slub.c:2940
- rcu_free_sheaf+0x31/0x200 mm/slub.c:5850
- rcu_do_batch kernel/rcu/tree.c:2617 [inline]
- rcu_core+0x7cd/0x1070 kernel/rcu/tree.c:2869
- handle_softirqs+0x22a/0x840 kernel/softirq.c:622
- run_ksoftirqd+0x36/0x60 kernel/softirq.c:1076
- smpboot_thread_fn+0x541/0xa50 kernel/smpboot.c:160
- kthread+0x389/0x470 kernel/kthread.c:436
- ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+> > +     }
+>
+> [ ... ]
+>
+> > +static int quic_packet_parse_alpn(struct sk_buff *skb, struct quic_dat=
+a *alpn)
+>
+> [ ... ]
+>
+> > diff --git a/net/quic/socket.c b/net/quic/socket.c
+> > index 8f348d7c678b..19b164baf55d 100644
+> > --- a/net/quic/socket.c
+> > +++ b/net/quic/socket.c
+>
+> [ ... ]
+>
+> > +struct sock *quic_sock_lookup(struct sk_buff *skb, union quic_addr *sa=
+,
+> > +                           union quic_addr *da, struct sock *usk,
+> > +                           struct quic_conn_id *dcid)
+> > +{
+>
+> [ ... ]
+>
+> > +     rcu_read_lock();
+> > +begin:
+> > +     sk_nulls_for_each_rcu(tmp, node, &head->head) {
+> > +             if (net !=3D sock_net(tmp))
+> > +                     continue;
+> > +             paths =3D quic_paths(tmp);
+> > +             odcid =3D quic_path_orig_dcid(paths);
+> > +             if (quic_cmp_sk_addr(tmp, quic_path_saddr(paths, 0), sa) =
+&&
+> > +                 quic_cmp_sk_addr(tmp, quic_path_daddr(paths, 0), da) =
+&&
+> > +                 quic_path_usock(paths, 0) =3D=3D usk &&
+> > +                 (!dcid || !quic_conn_id_cmp(odcid, dcid))) {
+> > +                     sk =3D tmp;
+> > +                     break;
+> > +             }
+> > +     }
+>
+> [High]
+> Is the sk memory itself RCU-protected here? sk_nulls_for_each_rcu()
+> dereferences fields of tmp (sock_net(tmp), quic_paths(tmp),
+> quic_path_saddr(...), etc.) before any reference is taken. That is only
+> safe when the sk allocation is freed via RCU.
+>
+> quic_init_sock() does not call sock_set_flag(sk, SOCK_RCU_FREE), and
+> neither quic_prot nor quicv6_prot sets slab_flags to SLAB_TYPESAFE_BY_RCU=
+,
+> so sk_destruct() (and quic_sock_destruct()) runs synchronously on the
+> last sock_put(). Can a parallel close on tmp free the sock between
+> sk_nulls_for_each_rcu() exposing it and the field dereferences above?
+>
+> The same shape appears in quic_listen_sock_lookup() further down, where
+> quic_alpn(tmp)->len is read inside the RCU walk before
+> refcount_inc_not_zero().
+>
 
-The buggy address belongs to the object at ffff888026c2d380
- which belongs to the cache kmalloc-64 of size 64
-The buggy address is located 0 bytes inside of
- 64-byte region [ffff888026c2d380, ffff888026c2d3c0)
+SOCK_RCU_FREE will be set in the patchset-2 via quic_hash().
 
-The buggy address belongs to the physical page:
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffff888026c2d780 pfn:0x26c2d
-flags: 0xfff00000000200(workingset|node=0|zone=1|lastcpupid=0x7ff)
-page_type: f5(slab)
-raw: 00fff00000000200 ffff88813fe1a8c0 ffffea0000d74490 ffffea0001fcda50
-raw: ffff888026c2d780 0000000800200010 00000000f5000000 0000000000000000
-page dumped because: kasan: bad access detected
-page_owner tracks the page as allocated
-page last allocated via order 0, migratetype Unmovable, gfp_mask 0xd2cc0(GFP_KERNEL|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 137, tgid 137 (kworker/u8:5), ts 5542876120, free_ts 5542851482
- set_page_owner include/linux/page_owner.h:32 [inline]
- post_alloc_hook+0x22d/0x280 mm/page_alloc.c:1853
- prep_new_page mm/page_alloc.c:1861 [inline]
- get_page_from_freelist+0x2593/0x2610 mm/page_alloc.c:3941
- __alloc_frozen_pages_noprof+0x18d/0x380 mm/page_alloc.c:5221
- alloc_slab_page mm/slub.c:3278 [inline]
- allocate_slab+0x77/0x660 mm/slub.c:3467
- new_slab mm/slub.c:3525 [inline]
- refill_objects+0x339/0x3d0 mm/slub.c:7272
- refill_sheaf mm/slub.c:2816 [inline]
- __pcs_replace_empty_main+0x321/0x720 mm/slub.c:4652
- alloc_from_pcs mm/slub.c:4750 [inline]
- slab_alloc_node mm/slub.c:4884 [inline]
- __do_kmalloc_node mm/slub.c:5295 [inline]
- __kmalloc_node_noprof+0x577/0x7c0 mm/slub.c:5302
- kmalloc_node_noprof include/linux/slab.h:1081 [inline]
- __vmalloc_area_node mm/vmalloc.c:3857 [inline]
- __vmalloc_node_range_noprof+0x5ef/0x1750 mm/vmalloc.c:4064
- __vmalloc_node_noprof+0xc2/0x100 mm/vmalloc.c:4124
- alloc_thread_stack_node kernel/fork.c:357 [inline]
- dup_task_struct+0x298/0x840 kernel/fork.c:926
- copy_process+0x89b/0x4440 kernel/fork.c:2090
- kernel_clone+0x2d7/0x940 kernel/fork.c:2722
- user_mode_thread+0x110/0x180 kernel/fork.c:2798
- call_usermodehelper_exec_work+0x5c/0x230 kernel/umh.c:171
- process_one_work kernel/workqueue.c:3314 [inline]
- process_scheduled_works+0xb5d/0x1860 kernel/workqueue.c:3397
- worker_thread+0xa53/0xfc0 kernel/workqueue.c:3478
-page last free pid 137 tgid 137 stack trace:
- reset_page_owner include/linux/page_owner.h:25 [inline]
- __free_pages_prepare mm/page_alloc.c:1397 [inline]
- __free_frozen_pages+0xc1c/0xd30 mm/page_alloc.c:2938
- __kasan_populate_vmalloc_do mm/kasan/shadow.c:393 [inline]
- __kasan_populate_vmalloc+0x1b2/0x1d0 mm/kasan/shadow.c:424
- kasan_populate_vmalloc include/linux/kasan.h:580 [inline]
- alloc_vmap_area+0xd47/0x1480 mm/vmalloc.c:2123
- __get_vm_area_node+0x1f8/0x300 mm/vmalloc.c:3226
- __vmalloc_node_range_noprof+0x36a/0x1750 mm/vmalloc.c:4024
- __vmalloc_node_noprof+0xc2/0x100 mm/vmalloc.c:4124
- alloc_thread_stack_node kernel/fork.c:357 [inline]
- dup_task_struct+0x298/0x840 kernel/fork.c:926
- copy_process+0x89b/0x4440 kernel/fork.c:2090
- kernel_clone+0x2d7/0x940 kernel/fork.c:2722
- user_mode_thread+0x110/0x180 kernel/fork.c:2798
- call_usermodehelper_exec_work+0x5c/0x230 kernel/umh.c:171
- process_one_work kernel/workqueue.c:3314 [inline]
- process_scheduled_works+0xb5d/0x1860 kernel/workqueue.c:3397
- worker_thread+0xa53/0xfc0 kernel/workqueue.c:3478
- kthread+0x389/0x470 kernel/kthread.c:436
- ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+> > +     if (sk && unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
+> > +             sk =3D NULL;
+> > +     rcu_read_unlock();
+> > +     return sk;
+> > +}
+>
+> [ ... ]
+>
+> > +struct sock *quic_listen_sock_lookup(struct sk_buff *skb, union quic_a=
+ddr *sa,
+> > +                                  union quic_addr *da,
+> > +                                  struct quic_data *alpns)
+> > +{
+>
+> [ ... ]
+>
+> > +     rcu_read_lock();
+> > +     if (!alpns->len) { /* No ALPNs or parse failed */
+> > +             sk_nulls_for_each_rcu(tmp, node, &head->head) {
+>
+> [ ... ]
+>
+> > +                     a =3D quic_path_saddr(quic_paths(tmp), 0);
+> > +                     if (net =3D=3D sock_net(tmp) &&
+> > +                         quic_cmp_sk_addr(tmp, a, sa) &&
+> > +                         quic_path_usock(quic_paths(tmp), 0) =3D=3D sk=
+b->sk &&
+> > +                         (!alpns->data || !quic_alpn(tmp)->len)) {
+>
+> [ ... ]
+>
+> > @@ -48,6 +196,9 @@ static void quic_sock_destruct(struct sock *sk)
+> >       for (i =3D 0; i < QUIC_CRYPTO_MAX; i++)
+> >               quic_crypto_free(quic_crypto(sk, i));
+> >
+> > +     /* Deferred ALPN free for RCU readers in quic_listen_sock_lookup(=
+). */
+> > +     quic_data_free(quic_alpn(sk));
+> > +
+>
+> Without SOCK_RCU_FREE or SLAB_TYPESAFE_BY_RCU on quic_prot/quicv6_prot,
+> does moving the alpn free into the destruct callback actually defer it
+> past an RCU grace period? quic_sock_destruct() is invoked from
+> sk_destruct() on the final sock_put() and is not itself an RCU callback,
+> so the comment's "Deferred ALPN free for RCU readers" assumption seems to
+> rely on a guarantee that is not configured on this protocol. Should this
+> patch also set sock_set_flag(sk, SOCK_RCU_FREE) in quic_init_sock(), or
+> alternatively take refcount_inc_not_zero() in the lookup helpers before
+> touching any fields of tmp?
+>
 
-Memory state around the buggy address:
- ffff888026c2d280: fa fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
- ffff888026c2d300: fa fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
->ffff888026c2d380: fa fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
-                   ^
- ffff888026c2d400: fa fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
- ffff888026c2d480: fa fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
-==================================================================
+SOCK_RCU_FREE will be set in the patchset-2 via quic_hash().
 
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+> >       quic_sk_destruct(sk);
+> >  }
+> >
+>
+> [ ... ]
+> --
+> This is an AI-generated review.
+>
