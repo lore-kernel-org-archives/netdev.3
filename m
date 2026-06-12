@@ -1,111 +1,91 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A05FB23EA83
-	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 10:54:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB1B35AC0C;
+	Fri, 12 Jun 2026 10:56:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781261645; cv=none; b=AQVN5NBOAx3JuOjFwRDFULO8kbZg8wcBF28QTHiFJcH0mETbJrw3SKtb1zqggE6fYC83ynUxtdX/TLp0xNumJw6Dx2MdN7ZaWzpnwh0vBEksIe+LOaJXPP1L6mxGLElBAvhCXskvFfh5iWelzxYwyXv+24V9dQC/agoftM78YgQ=
+	t=1781261819; cv=none; b=b+UTUHAriNkub3Es6Q3Y1SFXf/k+jyUgMzTq2QxnL/Wf+MVuVw5kKiV+ChK1gWf6zrd1VPm6iL65MhSaf6jldfzgsYbyB4mnAYZssOowEkYw7V++mRATLs35h8fhu3MXl5J5I67EWR0/V0bUWUKm1xI6kRl66tl1TxcCT2zkhhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781261645; c=relaxed/simple;
-	bh=6iqgc/JGxfvkEZYNLqNHNs57KIjHNiooSiG5PIW+s2M=;
-	h=Message-ID:From:Date:Subject:MIME-Version:Content-Type:To:Cc; b=nc4Wecq2V9fLkH9AvHG0TwoIJttxghTuX9mr6e3TKUzRqQOtbfJv1K9ljuuklE6bCiEoT5nXUTsL31ICKfC03kItxZwa6c9gLf8wkwjKFBBYmNC/YiB37F4nuqDixWdRrIW+prLrWdyl1FML7/GhZn5MSow40k/hV8EB8f9b/H8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z1I0dIju; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781261819; c=relaxed/simple;
+	bh=lgRpJT7S8WmTDGq1fZnq37M3DL7O5UxnbIGZNBDEkU4=;
+	h=From:To:Cc:Subject:Mime-Version:Content-Type:Date:Message-ID:
+	 References:In-Reply-To; b=WHHgS6CWl8BjTl1pgQtHodiIjD7ppoVzE5LPLwZZTIpz2Q5LvX52LcSdJcEUmMqulUSFfLAQs0O65TcAhv/LdcFNwcOjXqkDMxjQMPKnQLoUgFgEylvz58sBfWf0LUbrjJhb1GpEkNvhU3XNGbhAUhVBkbgbHL1p7FbsRl0jj1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=O+KXPeqp; arc=none smtp.client-ip=54.254.200.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z1I0dIju"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2c40397e3caso5691075ad.2
-        for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 03:54:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781261644; x=1781866444; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:subject:date:from
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=vWBjerCcdQYX1kqAzoQ1GBFmI7LAy21K3qYQTp/XVXQ=;
-        b=Z1I0dIjuTozPgFKVCSgyqw53G0m7uA7XyZvkE8LGHUPaN7/CYKpZRs4m2fztoZCIMu
-         31KljYsv+cVDyKGqPemAkmrwzPI4OteNfAPZs9kzK/eKKuQ4Lno8dfKGGE03ewNOaBfJ
-         kHHY1mVTA7JKqJRrzLtIGpdOfjLRzm8ydE8hf42RGR0eK4Wjl8htNno38Dd2Jd0gHi28
-         3wvlsfrV3ipCQPHpxa5BMuwXe03rllqu8JlKSkem78aeaE09Zo+uJZ1DTBt8STEo7nM5
-         A4XbHC1Lc3zsl+zwjtKIRoNlmBx+ERFPJDAP4PRqYW2/hArQJY5Nq2pu8twFUDTChZbm
-         DLjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781261644; x=1781866444;
-        h=cc:to:content-transfer-encoding:mime-version:subject:date:from
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vWBjerCcdQYX1kqAzoQ1GBFmI7LAy21K3qYQTp/XVXQ=;
-        b=lS+jCVZDKxRb/Uwy2eh8uQsMKJekaqD0HOHSur7g/H5bU42TEApilyyxdeYWbg2CSa
-         HIlZoO1O1qhBcYfScFaYFK6o67chqJ7BAgLVgUIA5bqtAqDwowoIF/K0NwsPUvO5rY09
-         /sL5+UA44VoyVhzUJXMi5fnXdRmo+n10XZbQPekoRGGFmjWfqmVwi/DGHc+vLL5DxAxL
-         I6dAOJyMxpoppbPjCYOFHAMXV2AbEREPqQqBekc+ztcbi3rXGck37VYUqTvK/FKB47do
-         7pVlNf/ctm37qvR0s7v2+UlwM+uKVIovvpqxMb2XsQNTlX2CGVKFIi+duQzKmQ4TCiGj
-         b9uA==
-X-Gm-Message-State: AOJu0Yz5nRTWfQfXAlQelQ172yPxqvzWl16SL+kRzg/Zxn2ZYlWsqHlL
-	2Qyqlr6cx0jpSPakLR8hMG3wtYmYQ/7ZZNl01N+IOw4lOaTnMaGniIGELxzVLeZ18bg=
-X-Gm-Gg: Acq92OF2EMIwE0Q/Up34zLg6elkye904SNUHD23pJzz2e+etDSyXxH+50758VuPIzKN
-	asiao+ug+FUmQm0JdBjl0Hm42r9yUDIax4hS/ejmifhr+mgeVsTnry8hjNE7PM34C/bTd8Mb6SG
-	vo5DOreoBcNZdlycwSk+QSHLzVEnL5wlu/gcrxVycti0ZO52aN0ELno81DnJEp5uKvga9Tt74Eg
-	86FbehAqCel9/m9dZJGS6MUALo5YtDM+CbOmxVjnj5tpxwUYT+oQ0mk0KMBW5u+J6PUeGzYh2vO
-	l/t6Pbm/MtQ6lkvk4f+2rCeRMzikKM8YtQLLFCilnS6+FyKPCD8PSSbnJgIsdt2M4KFPVw7HwQD
-	/mU3+dpIu6j9mdhrMmyW/fSNS9Ne0XzCoz3Lvq0ur8vkW+E99N/H6KoRHYew/YdGd24OvyI6ZGv
-	yAfX7SmijkAzxCTSMdSTUPJPDxOJk=
-X-Received: by 2002:a17:903:1aad:b0:2c0:dd75:e834 with SMTP id d9443c01a7336-2c41050af58mr30846105ad.5.1781261643919;
-        Fri, 12 Jun 2026 03:54:03 -0700 (PDT)
-Received: from [127.0.1.1] ([47.253.114.73])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c432c8ce89sm17909875ad.57.2026.06.12.03.53.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Jun 2026 03:54:03 -0700 (PDT)
-Message-ID: <6a2be54b.ef98c1b2.3c3224.2ed8@mx.google.com>
-From: "Wayen.Yan" <win847@gmail.com>
-Date: Fri, 12 Jun 2026 07:09:56 +0800
-Subject: [PATCH v2] net: airoha: Fix debugfs new-tuple display for IPv4 ROUTE
- entries
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="O+KXPeqp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1781261775;
+	bh=lgRpJT7S8WmTDGq1fZnq37M3DL7O5UxnbIGZNBDEkU4=;
+	h=From:To:Subject:Mime-Version:Date:Message-ID;
+	b=O+KXPeqpc8B4jWMQwuQDFofWd7MN57Oq3IAJSm5eNXF2XCb2WgDWWeeXnhK89NH2l
+	 30R7E7MCoega4WInKNuId91kzFxzGZVYleLYqKsfRAmOCfZ5P+2wtUAX2Gx93F7pnJ
+	 0VGGhpow7LdUIUs7Bg/zS1IejhSDam7u6rv+ucJQ=
+EX-QQ-RecipientCnt: 8
+X-QQ-GoodBg: 1
+X-QQ-SSF: 00400000000000F0
+X-QQ-FEAT: D4aqtcRDiqSYScHvcdjMLM1Y+xZqzQ9cC+I23XEKuwU=
+X-QQ-BUSINESS-ORIGIN: 2
+X-QQ-Originating-IP: xB3OrlVPi3vnBQV+X5q7KXRPtbwe7uii3qUetF8LePw=
+X-QQ-STYLE: 
+X-QQ-mid: lv3gz7b-6t1781261745ta704af38
+From: "=?utf-8?B?V2VudGFvIEd1YW4=?=" <guanwentao@uniontech.com>
+To: "=?utf-8?B?SmFnaWVsc2tpLCBKZWRyemVq?=" <jedrzej.jagielski@intel.com>, "=?utf-8?B?bG9yZW56b0BrZXJuZWwub3Jn?=" <lorenzo@kernel.org>
+Cc: "=?utf-8?B?bmJkQG5iZC5uYW1l?=" <nbd@nbd.name>, "=?utf-8?B?c3VqdWFuLmNoZW5AbWVkaWF0ZWsuY29t?=" <sujuan.chen@mediatek.com>, "=?utf-8?B?bmV0ZGV2?=" <netdev@vger.kernel.org>, "=?utf-8?B?bGludXgta2VybmVs?=" <linux-kernel@vger.kernel.org>, "=?utf-8?B?6IGC6K+a?=" <niecheng1@uniontech.com>, "=?utf-8?B?5Y2g5L+K?=" <zhanjun@uniontech.com>
+Subject: Re:RE: [PATCH net] net: ethernet: mtk_wed: debugfs: correct index in wed_amsdu_show()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-To: netdev@vger.kernel.org
-Cc: lorenzo@kernel.org, horms@kernel.org, pabeni@redhat.com, kuba@kernel.org, edumazet@google.com, andrew+netdev@lunn.ch, angelogioacchino.delregno@collabora.com, matthias.bgg@gmail.com, linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
+Date: Fri, 12 Jun 2026 18:55:45 +0800
+X-Priority: 3
+Message-ID: <tencent_22AD5BAB1653961B4FF88203@qq.com>
+X-QQ-MIME: TCMime 1.0 by Tencent
+X-Mailer: QQMail 2.x
+X-QQ-Mailer: QQMail 2.x
+References: <20260612064501.203058-1-guanwentao@uniontech.com>
+	<PH0PR11MB5902816638ABEF8EAC1C1D48F0182@PH0PR11MB5902.namprd11.prod.outlook.com>
+In-Reply-To: <PH0PR11MB5902816638ABEF8EAC1C1D48F0182@PH0PR11MB5902.namprd11.prod.outlook.com>
+X-QQ-ReplyHash: 3852605563
+X-BIZMAIL-ID: 13455078298466844166
+X-Address-Ticket:version=;type=;ticket_id=;id_list=;display_name=;session_id=;
+X-QQ-SENDSIZE: 520
+Received: from qq.com (unknown [127.0.0.1])
+	by smtp.qq.com (ESMTP) with SMTP
+	id ; Fri, 12 Jun 2026 18:55:46 +0800 (CST)
+Feedback-ID: lv:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
+X-QQ-XMAILINFO: NFXvChbjhpWZ6QUOdYbhGePKZpx//jZ8AdgDUdxvSF+DgXgTmxJVfdbQ
+	XVIg3n68O4TyOQsSeND8WFpyVC1eoE+JavIPDlMZLbkzu+AqwPmMM0xWMwpSnYXokLK60ln
+	patdgpsrg1CpWvb4TpJc8mcrZ0Pn18b5ReiJ07VzUvQoymn7Vn5jsF1VeElvtKFSryuqDsG
+	5cYrYfVkFEWk3uSCE3TEPLhfZOKq/aJS8LsDQ/9OQKhrk/+EEK3naikglQo7wQRBMDX9qEN
+	sPrtRkl/umwgbHMKz/yVhDIyjtpmbj0CXjSucchqz01XDMOpSeA95bzFsojbaeQAZbtNHEv
+	Ik6PqFckcL3pcgGqF91ERJRuoa5fFMAfVIHYhZHPSonWzHZnJO+Aju4DZj7+nJC8ajYNa9y
+	NforkUeDISx8d3fWU7Z5YZLCckZu+L5c39L/EBz/GHr319a2ZSHhfWl0bI2kxDb9d1FQC6o
+	mAUrUfSSlq9aqN3ZI7Zk/uv8qdtDtktpkTnEU3rxIwSf+23xP5OKR+o+qkkNVTwe7cMRBH0
+	eBTKMKxwvH/vgOCYE+U5kiOKjccFVjJo1RKwuZ/dSEdS4r/66K074+AxR22F79x+oUbme1B
+	RnPSNQxZXA6E22KuBw7UPHeGQdSFoFuVxmnfEyyPX2ZWr22zOW7Xhf/1ogTH6spQ8JyjbnR
+	Or325JWPn3YcgGihjUXWIv/KzqDiknSJtEj+hBoEyp06njGUTvgQfinGnYBLm7zaahbcizJ
+	hsaJtPforvPE0CQbvHdl9greerBwCC6BCMZONTBeQkn4A4fN9nPn661kLT9rVwA5uWqcYpR
+	onUP6BrEaZ2+EHN6TnghrLVYwNbpO/9Ra8bjp9uvqCjHpf+A/GAzpShqT9X5fwHNSkDDF62
+	eZr/hJhiByPTYRVbLZkz0isSayCuhepfqjPGyY0u4y6Oo4nbuytsULJJB6bXaq4HSZsLzy/
+	E0lUdz9UEYPG7bipSH/dWUYc0KhmzQM4miY1g7XZZsEvD9aliFOMDNrdLC5QGTPoMjOKFOx
+	ik169+ild1j0wX3FQPRX0N947JStE8uplqT4WuYxZY2gRp7atJL9cJJ2h+38Ob2EYvmPjvo
+	6TjFcETog/iZwERr4mwuUpFbcMDqqwEng==
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+X-QQ-RECHKSPAM: 0
 
-In airoha_ppe_debugfs_foe_show(), the second switch statement falls
-through from PPE_PKT_TYPE_IPV4_HNAPT/DSLITE to PPE_PKT_TYPE_IPV4_ROUTE,
-accessing hwe->ipv4.new_tuple for all three types. However, IPv4 ROUTE
-(3-tuple) entries do not contain a valid new_tuple — this field is only
-meaningful for NATted flows (HNAPT/DSLITE). For ROUTE entries, the
-memory at the new_tuple offset holds routing information, not NAT data,
-so displaying "new=" produces garbage output.
-
-Display new_tuple only for HNAPT and DSLITE, and let IPV4_ROUTE fall
-through to the default case.
-
-Fixes: 3fe15c640f38 ("net: airoha: Introduce PPE debugfs support")
-Link: https://lore.kernel.org/netdev/6a2b40ea.4dd82583.3a5c46.e5a2@mx.google.com/
-Signed-off-by: Wayen.Yan <win847@gmail.com>
-- Drop redundant PPE_PKT_TYPE_IPV4_ROUTE case, let it fall to default
-Changes in v2:
-
----
- drivers/net/ethernet/airoha/airoha_ppe_debugfs.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/airoha/airoha_ppe_debugfs.c b/drivers/net/ethernet/airoha/airoha_ppe_debugfs.c
-index 0112c41..e46a985 100644
---- a/drivers/net/ethernet/airoha/airoha_ppe_debugfs.c
-+++ b/drivers/net/ethernet/airoha/airoha_ppe_debugfs.c
-@@ -121,8 +121,6 @@ static int airoha_ppe_debugfs_foe_show(struct seq_file *m, void *private,
- 		case PPE_PKT_TYPE_IPV4_DSLITE:
- 			src_port = &hwe->ipv4.new_tuple.src_port;
- 			dest_port = &hwe->ipv4.new_tuple.dest_port;
--			fallthrough;
--		case PPE_PKT_TYPE_IPV4_ROUTE:
- 			src_addr = &hwe->ipv4.new_tuple.src_ip;
- 			dest_addr = &hwe->ipv4.new_tuple.dest_ip;
- 			seq_puts(m, " new=");
--- 
-2.51.0
-
+SGVsbG8sDQoNClRoYW5rcyBmb3IgeW91ciByZXZpZXcuDQo+IEZyb206IFdlbnRhbyBHdWFu
+IDxndWFud2VudGFvQHVuaW9udGVjaC5jb20+DQo+IFNlbnQ6IEZyaWRheSwgSnVuZSAxMiwg
+MjAyNiA4OjQ1IEFNDQo+IA0KPiA+V0VEX01PTl9BTVNEVV9FTkdfQ05UIHBvaW50IHRvIGRp
+ZmZlcmVudCBlbnRyeSBieSAnYmFzZStuKm9mZmVjdCcgbW9kZSwNCj4gPmNvcnJlY3QgdGhl
+IHdlZCBhbXNkdSBlbnRyeSBudW1iZXIgaW4gd2VkX2Ftc2R1X3Nob3coKS4NCj4gDQo+IG9m
+ZnNldD8NClllcywgbXkgZmF1bHQsIGl0IGlzIGEgdHlwby4NCg0KQlJzDQpXZW50YW8gR3Vh
+bg==
 
