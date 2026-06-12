@@ -1,54 +1,54 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C3F267B89
-	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 00:18:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3DA1A6808
+	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 00:18:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781223489; cv=none; b=UV7FzqZeIPm/F28M7Ekg7G/P0yxPPiJrIwkS0hizFNR6S4+y7mH/y2JSXWVKhPf0W0ninn5Y/MEBWiHxFuKILdZqR/NhiQvozMLPsB6p6wERFadlzSR1iIJ+gKy9uGzAWc49mPtOEczbZwlglaWSYcxGPy0j5qsgVe3rnXwi4XE=
+	t=1781223491; cv=none; b=rem1fP46HtANr4fC74iYY+VBXHUwDV2dLaMXksHVJKoFSsyNUNuMlOXgSwgOYSyAg6SDQyZ/FKbVofwt5xNlLkRHbu0z/KwxzDUouRHHGA17moOyg0EdtNEAqsqwAD1vz/uULD80pfV27r6JPjvJCJ7RB2GnRPlivsqXuO2EiAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781223489; c=relaxed/simple;
-	bh=Xz9ugSwa5YYvOkL9xuL4i1virtPc584E70TW0j5vRds=;
+	s=arc-20240116; t=1781223491; c=relaxed/simple;
+	bh=ZslaLYxQHa+GtTpwzcyP8As5CSPlzvA8zBd+BqBNwmA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=hKvBImvX6v99iE6ADE8oQw/hbxw6wXq0OtAYQj7SGax6w40APt4PYUQYCZDld+xfwMkX6tUEqJ7hu82OwbntyWInstsAgYh+68J4s6NRzRbp8BIrz4qa6zbYtvCcRbSs3U6+g3bKkDpJ9PRj600gVrarsw0FLyvOmccHalu0meg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pP7F9e3k; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=NzoYAkxlP3NFtiSzILvc7uPafCH/4lGII6CMPn/XMtKDWb5q+9UfaR95i3BmdksLAzbxZZVh2aE+R5+ddSXz/SMWYIl3TDewR67v1cubp6vB4lHJP6oPHYvBLLACR9+2oouPCq6TDPPyL1C1tY5RLcgW0bEbXvh+NO2ffWXSVCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IpXqNNaH; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pP7F9e3k"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36bbcd40642so339558a91.0
-        for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 17:18:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IpXqNNaH"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-84240b58211so291715b3a.1
+        for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 17:18:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781223487; x=1781828287; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1781223490; x=1781828290; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yAcnRlHHRnFVlL90bCS1oK0Jvgsedr7+AkI7b5EfYXQ=;
-        b=pP7F9e3kBsZ1F7eZqk4JNpN8ed+Be1bFJpzz6tzEG7RWnkDKRdsuNqYM75ghr8o6t4
-         ZMNPxFaXIvmS/sP7rg+S2guTAjcEsSQbFXkAjY8nPij0OyNeRUYA65nZhCR3zptUS/43
-         u0w8/f+hgq077G8f4ttmHlbvcjxF/RKJpIWV12efkU+4G60aYYSPyWX1IMuHZFJje4Am
-         X0DA9cV5fWfRRt+lGPDAJbDYMzeyhQw4FJHMCGfqjkitMM7BgYNjMmW6t9mLRNRePT0C
-         hrmATO3qZ1PGFI75mU92T+BBXA78/0Z0/rHUvcARycZJ6+bYzWACgzTomSiR6UpmaPsB
-         HJ4w==
+        bh=OgM6K4qg54GyuG6WtlnLYNp1auITGq1UJ9Qa6hTjpGQ=;
+        b=IpXqNNaHcGvYxiy3OH6gsXRudK5EM9T65x1QYCON07c2FhOlShXMDb8Kw0zhs8lx6Q
+         VU7sODK0dSqb97fehNyYM6zoiIJNO+WEpWnpSKDWlBg6a47MqFmnNpx19O2TYokhRT/o
+         3CCtzxk1aVmpddOIMH2N1ezpHT+CVkRGA9/RVxJLL3Xfd+FDhipnDDp05XAKQsZ0OBxq
+         17MzbmjJP3IqaALAw1YhiR0WG/CcfxQ6DzfNX4X6PetJkisZ99ox81Boec45CQzR785H
+         8S1WNjENPyOHRmLj5qSyhWNVXPvZ0Us0IjtzQDc0R/2Mv5diDJmmRKTSlh8lioxb7B9B
+         tBhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781223487; x=1781828287;
+        d=1e100.net; s=20251104; t=1781223490; x=1781828290;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yAcnRlHHRnFVlL90bCS1oK0Jvgsedr7+AkI7b5EfYXQ=;
-        b=cInHAeMTe74GnpIycit76+cS4/xuPRcc3liagWHzWAezpY+4jUAYP6W5Hcj7gOfhl1
-         EVi6sxxamZBte5o5FYpf2U+10pyLUbWIuIVRVIU/ZxqerskYmqAGpBiG/iNEJoagFRsM
-         FYPGo/O4cWDGDZK2VZGZWT01AQF54N/MqzWIQi11vUu7XxcaghwxqIH1gf4dRuS0zhT/
-         QtKlgLYImyHumJWSh6mGVaUiPVtMESbUTwmPo9FOT2JTF1gq0x93KHazGKZVuxXh3m2R
-         uyL+ALLwnJbAcnNDTSgbXuwIYUrC1J7TjQyWKHvf8/UcnkJJPrAsNP7gnmh9R8eLo7m3
-         773w==
-X-Forwarded-Encrypted: i=1; AFNElJ9T3I/AnppAkTrTMSZDcdVGZF/p1ZUP4fOwDY2MDvOesG0KHbumjppGUlOdvlgkviKvFQDDJCc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw19yF8mF0bMT4yb2VUQm6AzYfNc9etRhwUBkAghg8ag5sLMY72
-	bAkDX6/UnCVkZT7/77vC1f2WKVO+DiEayhZvdabXSHpgVrvWQY7UWPZUgUs/9YvQCYeqrGU4OzK
-	C3soGXA==
-X-Received: from pgkd4.prod.google.com ([2002:a63:f244:0:b0:c85:8227:a92d])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3a05:b0:368:ed92:6f6
- with SMTP id 98e67ed59e1d1-37a01845f4amr636586a91.1.1781223486549; Thu, 11
- Jun 2026 17:18:06 -0700 (PDT)
-Date: Fri, 12 Jun 2026 00:17:32 +0000
+        bh=OgM6K4qg54GyuG6WtlnLYNp1auITGq1UJ9Qa6hTjpGQ=;
+        b=Z+EBQUDj6vIftPHWGz57mtDniFNB2iTREwC4JydGSmqgzN7b17nLIqg1rPUUhISHP3
+         Df5cb9T8wI6/V83+K6KiZfZ3aqdLVOhl9NkhhKqf3w428rht87kcgYpjv+tCft8lFVKj
+         BFRViRl4dRuumKVPdDpkFuuByFlSoFgRNaSb7I+cnLfVzU9XU/Do4l9yUQWfpyYXsP0u
+         ZtRK8EvIHQRnC7taeYTlYhqh7VU4PMSst9++n3fVm91VDJgmqlajNBKUPsrz3limOQwF
+         RVbvMKw5cPSaWKAeHjazJN2EY9x8aUyoQybh5fVcmF4a64DgbDYjH953AtSMJD69d4er
+         jNoQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9TyDCSPBfx8MKSEEAsJGNqOzOuuSKkjQuKujU/8+GvNshMEsp6wH5OFhQSxf7v6TzfDT5Pqyg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/ghq5vXFXsbxwupaMXjIoI1xtAqrn6b+jwDjR8h5HStNdGFGC
+	ty47VGBZEUY9e/BMSdvqZPyPdPKXgcgSb/4NFmwWW/x2DBvpSq7nPgSPIgjnzkQDseGIY8GuGW5
+	Fhd8rAQ==
+X-Received: from pfbfj40.prod.google.com ([2002:a05:6a00:3a28:b0:842:3d2d:1e84])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1d0a:b0:842:57e8:1bdc
+ with SMTP id d2e1a72fcca58-8434cd43ab3mr366513b3a.18.1781223489497; Thu, 11
+ Jun 2026 17:18:09 -0700 (PDT)
+Date: Fri, 12 Jun 2026 00:17:34 +0000
 In-Reply-To: <20260612001803.23341-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -58,9 +58,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260612001803.23341-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
-Message-ID: <20260612001803.23341-2-kuniyu@google.com>
-Subject: [PATCH v1 bpf-next/net 1/5] ethtool: Introduce ETHTOOL_MSG_TSINFO_SET
- for virtual interfaces.
+Message-ID: <20260612001803.23341-4-kuniyu@google.com>
+Subject: [PATCH v1 bpf-next/net 3/5] bpf: Add bpf_skb_set_hwtstamp().
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
 	Martin KaFai Lau <martin.lau@linux.dev>, Stanislav Fomichev <sdf@fomichev.me>, 
@@ -74,515 +73,168 @@ Cc: Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>,
 	Kuniyuki Iwashima <kuni1840@gmail.com>, bpf@vger.kernel.org, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Before enabling SO_TIMESTAMPING, applications typically try to
-enable hardware timestamping on network interfaces via SIOCSHWTSTAMP
-(or ETHTOOL_MSG_TSCONFIG_SET).
+We have some hosts where packets come from special hardware
+and are provided directly to userspace, bypassing the kernel
+networking stack.
 
-The timestamping capability on an interface can be checked via
-ETHTOOL_MSG_TSINFO_GET:
+When standard socket applications are run on these hosts,
+a userspace proxy is required to mediate traffic between the
+hardware and the applications.
 
-  # ethtool -T eth0
-  Time stamping parameters for eth0:
-  Capabilities:
-  	hardware-transmit
-  	software-transmit
-  	hardware-receive
-  	software-receive
-  	software-system-clock
-  	hardware-raw-clock
-  PTP Hardware Clock: none
-  Hardware Transmit Timestamp Modes:
-  	off
-  	on
-  Hardware Receive Filter Modes:
-  	none
-  	all
+            +---------+                 +----------------------+
+            |  proxy  |                 |  socket application  |
+            +---------+                 +----------------------+
+              ^     ^                               ^
+  userspace   |     |                               |
+  -----------| |-----------------------------------------------
+             | |    |    +---------------------+    | skb
+             | |    `--->|  virtual interface  |<---'
+  kernel     | |   skb   +---------------------+
+  -----------| |-----------------------------------------------
+              |
+              v
+       +------------+
+       |  hardware  |
+       +------------+
 
-These operations rely on the driver implementing two callbacks,
-dev->netdev_ops->ndo_hwtstamp_{get,set}().
+However, even though the hardware fully supports timestamping,
+the HW timestamps are not directly accessible to the socket
+applications because the skb is consumed/injected by the proxy.
 
-However, among all virtual network interfaces, only bond and
-macvlan currently implement them.
+For RX flow, let's add a kfunc to update skb_hwtstamps(skb)->hwtstamp
+at tc/ingress.
 
-As a result, most virtual interfaces cannot advertise the
-capabilities of their underlying devices:
+With this kfunc, the proxy can carry the RX hardware timestamp
+via encapsulated packets (e.g. in GENEVE option) and BPF prog
+can extract it into skb_hwtstamps(skb)->hwtstamp at tc/ingress
+of the virtual interface above.
 
-  # ip link add ipvl0 link eth0 type ipvlan mode l2 bridge
-  # ethtool -T ipvl0
-  Time stamping parameters for ipvl0:
-  Capabilities:
-  	software-receive
-  	software-system-clock
-  PTP Hardware Clock: none
-  Hardware Transmit Timestamp Modes: none
-  Hardware Receive Filter Modes: none
+            +---------+                 +----------------------+
+            |  proxy  |                 |  socket application  |
+            +---------+                 +----------------------+
+              ^     | encap packets                 ^ recv payload
+  userspace   |     |  w/ RX hwtstamp               |  w/ RX hwtstamp
+  -----------| |-----------------------------------------------
+             | |    |    +---------------------+    | skb
+             | |    `--->|       geneve0       |----'
+  kernel     | |   skb   +---------------------+
+             | |             |             ^
+             | |             v             |
+             | |          +------------------+  extract RX hwtstamp
+             | |          |  BPF@tc/ingress  |   and set it to skb
+             | |          +------------------+
+  -----------| |-----------------------------------------------
+              |
+              |
+       +------------+
+       |  hardware  |
+       +------------+
 
-While these callbacks could be implemented in each virtual
-interface, this approach is limited to those directly linked
-to a physical device.
+This allows transparently proxying RX hardware timestamps to
+the socket applications via SCM_TIMESTAMPING.
 
-Not all virtual interfaces are tied to real hardware; for
-instance, packets from UDP tunnel devices eventually pass
-through physical devices and can be hardware-timestamped there.
-
-Let's allow configuring the hardware timestamping capability on
-virtual interfaces via ETHTOOL_MSG_TSINFO_SET.
-
-Note that SOF_TIMESTAMPING_RX_SOFTWARE and SOF_TIMESTAMPING_SOFTWARE
-are automatically added since __ethtool_get_ts_info() and
-ethnl_tsinfo_end_dump() report them for all devices.
-
-By configuring this capability, ioctl(SIOCSHWTSTAMP) (hwstamp_ctl
-below) can enable TX/RX hardware timestamping successfully:
-
-  # ./tools/net/ynl/pyynl/cli.py \
-      --spec Documentation/netlink/specs/ethtool.yaml \
-      --do tsinfo-set \
-      --json '{"header": {"dev-index": 6},
-               "timestamping": {"nomask": true, "bits": {
-                   "bit": [{"name": "hardware-transmit"},
-                           {"name": "software-transmit"},
-                           {"name": "hardware-receive"}]
-               }},
-               "tx-types": {"nomask": true, "bits": {
-                   "bit": [{"name": "off"}, {"name": "on"}]
-               }},
-               "rx-filters": {"nomask": true, "bits": {
-                   "bit" : [{"name": "none"}, {"name": "all"}]
-               }}}'
-
-  # ethtool -T ipvl0
-  Time stamping parameters for ipvl0:
-  Capabilities:
-  	hardware-transmit
-  	software-transmit
-  	hardware-receive
-  	software-receive
-  	software-system-clock
-  PTP Hardware Clock: none
-  Hardware Transmit Timestamp Modes:
-  	off
-  	on
-  Hardware Receive Filter Modes:
-  	none
-  	all
-
-  # hwstamp_ctl -i ipvl0 -t 1 -r 1
-  current settings:
-  tx_type 0
-  rx_filter 0
-  new settings:
-  tx_type 1
-  rx_filter 1
+Note that bpf_skb_set_hwtstamp() calls skb_header_unclone() and
+bpf_compute_data_pointers(), so it is marked as a packet-changing
+kfunc.
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
- Documentation/netlink/specs/ethtool.yaml      |  13 ++
- include/linux/netdevice.h                     |  11 ++
- .../uapi/linux/ethtool_netlink_generated.h    |   1 +
- net/core/dev_ioctl.c                          |  31 ++++-
- net/ethtool/common.c                          |   4 +
- net/ethtool/netlink.c                         |   8 ++
- net/ethtool/netlink.h                         |   1 +
- net/ethtool/tsconfig.c                        |   7 +-
- net/ethtool/tsinfo.c                          | 123 +++++++++++++++++-
- 9 files changed, 188 insertions(+), 11 deletions(-)
+ include/linux/skbuff.h |  5 +++++
+ kernel/bpf/verifier.c  |  9 ++++++++-
+ net/core/filter.c      | 23 +++++++++++++++++++++++
+ 3 files changed, 36 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/netlink/specs/ethtool.yaml b/Documentation/netlink/specs/ethtool.yaml
-index 5dd4d1b5d94b..2dace12c8b4d 100644
---- a/Documentation/netlink/specs/ethtool.yaml
-+++ b/Documentation/netlink/specs/ethtool.yaml
-@@ -2859,6 +2859,19 @@ operations:
-             - worst-channel
-             - link
-       dump: *mse-get-op
-+    -
-+      name: tsinfo-set
-+      doc: Set tsinfo params.
-+
-+      attribute-set: tsinfo
-+
-+      do: &tsinfo-set-op
-+        request:
-+          attributes:
-+            - header
-+            - timestamping
-+            - tx-types
-+            - rx-filters
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index 115db8c44db2..b4ac1180f5a8 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -4701,6 +4701,11 @@ static inline bool skb_defer_rx_timestamp(struct sk_buff *skb)
  
- mcast-groups:
-   list:
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 74507c006490..2693161d4168 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -2087,6 +2087,7 @@ enum netdev_reg_state {
-  *				offload capabilities of the device
-  *	@udp_tunnel_nic:	UDP tunnel offload state
-  *	@ethtool:	ethtool related state
-+ *	@tsinfo:	HW timestamping capability for virtual devices
-  *	@xdp_state:		stores info on attached XDP BPF programs
+ #endif /* !CONFIG_NETWORK_PHY_TIMESTAMPING */
+ 
++struct bpf_hwtstamp {
++	ktime_t hwtstamp;
++	u64 reserved;
++} __packed;
++
+ /**
+  * skb_complete_tx_timestamp() - deliver cloned skb with tx timestamps
   *
-  *	@nested_level:	Used as a parameter of spin_lock_nested() of
-@@ -2509,6 +2510,16 @@ struct net_device {
- 	 */
- 	struct netdev_config	*cfg_pending;
- 	struct ethtool_netdev_state *ethtool;
-+	struct {
-+		struct {
-+			u32	tx_type;
-+			u32	rx_filter;
-+		} cfg;
-+		u32		so_timestamping;
-+		u32		tx_types;
-+		u32		rx_filters;
-+		bool		enabled;
-+	} tsinfo;
- 
- 	/* protected by rtnl_lock */
- 	struct bpf_xdp_entity	xdp_state[__MAX_XDP_MODE];
-diff --git a/include/uapi/linux/ethtool_netlink_generated.h b/include/uapi/linux/ethtool_netlink_generated.h
-index 8134baf7860f..5aaa3bf9a073 100644
---- a/include/uapi/linux/ethtool_netlink_generated.h
-+++ b/include/uapi/linux/ethtool_netlink_generated.h
-@@ -893,6 +893,7 @@ enum {
- 	ETHTOOL_MSG_RSS_CREATE_ACT,
- 	ETHTOOL_MSG_RSS_DELETE_ACT,
- 	ETHTOOL_MSG_MSE_GET,
-+	ETHTOOL_MSG_TSINFO_SET,
- 
- 	__ETHTOOL_MSG_USER_CNT,
- 	ETHTOOL_MSG_USER_MAX = (__ETHTOOL_MSG_USER_CNT - 1)
-diff --git a/net/core/dev_ioctl.c b/net/core/dev_ioctl.c
-index f3979b276090..3ecc57fd75c9 100644
---- a/net/core/dev_ioctl.c
-+++ b/net/core/dev_ioctl.c
-@@ -260,6 +260,15 @@ int dev_get_hwtstamp_phylib(struct net_device *dev,
- {
- 	struct hwtstamp_provider *hwprov;
- 
-+	if (!dev->netdev_ops->ndo_hwtstamp_get) {
-+		if (!dev->tsinfo.enabled)
-+			return -EOPNOTSUPP;
-+
-+		cfg->rx_filter = dev->tsinfo.cfg.rx_filter;
-+		cfg->tx_type = dev->tsinfo.cfg.tx_type;
-+		return 0;
-+	}
-+
- 	hwprov = rtnl_dereference(dev->hwprov);
- 	if (hwprov) {
- 		cfg->qualifier = hwprov->desc.qualifier;
-@@ -286,7 +295,7 @@ static int dev_get_hwtstamp(struct net_device *dev, struct ifreq *ifr)
- 	struct hwtstamp_config cfg;
- 	int err;
- 
--	if (!ops->ndo_hwtstamp_get)
-+	if (!ops->ndo_hwtstamp_get && !dev->tsinfo.enabled)
- 		return -EOPNOTSUPP;
- 
- 	if (!netif_device_present(dev))
-@@ -337,6 +346,20 @@ int dev_set_hwtstamp_phylib(struct net_device *dev,
- 	bool phy_ts;
- 	int err;
- 
-+	if (!ops->ndo_hwtstamp_set) {
-+		if (!dev->tsinfo.enabled ||
-+		    !(dev->tsinfo.tx_types & BIT(cfg->tx_type)) ||
-+		    !(dev->tsinfo.rx_filters & BIT(cfg->rx_filter)))
-+			return -EOPNOTSUPP;
-+
-+		if (cfg->flags)
-+			return -EINVAL;
-+
-+		dev->tsinfo.cfg.tx_type = cfg->tx_type;
-+		dev->tsinfo.cfg.rx_filter = cfg->rx_filter;
-+		return 0;
-+	}
-+
- 	hwprov = rtnl_dereference(dev->hwprov);
- 	if (hwprov) {
- 		if (hwprov->source == HWTSTAMP_SOURCE_PHYLIB &&
-@@ -413,7 +436,7 @@ static int dev_set_hwtstamp(struct net_device *dev, struct ifreq *ifr)
- 		return err;
- 	}
- 
--	if (!ops->ndo_hwtstamp_set)
-+	if (!ops->ndo_hwtstamp_set && !dev->tsinfo.enabled)
- 		return -EOPNOTSUPP;
- 
- 	if (!netif_device_present(dev))
-@@ -447,7 +470,7 @@ int generic_hwtstamp_get_lower(struct net_device *dev,
- 	if (!netif_device_present(dev))
- 		return -ENODEV;
- 
--	if (!ops->ndo_hwtstamp_get)
-+	if (!ops->ndo_hwtstamp_get && !dev->tsinfo.enabled)
- 		return -EOPNOTSUPP;
- 
- 	netdev_lock_ops(dev);
-@@ -468,7 +491,7 @@ int generic_hwtstamp_set_lower(struct net_device *dev,
- 	if (!netif_device_present(dev))
- 		return -ENODEV;
- 
--	if (!ops->ndo_hwtstamp_set)
-+	if (!ops->ndo_hwtstamp_set && !dev->tsinfo.enabled)
- 		return -EOPNOTSUPP;
- 
- 	netdev_lock_ops(dev);
-diff --git a/net/ethtool/common.c b/net/ethtool/common.c
-index 84ec88dee05c..bb0c02d92a9b 100644
---- a/net/ethtool/common.c
-+++ b/net/ethtool/common.c
-@@ -1090,6 +1090,10 @@ int __ethtool_get_ts_info(struct net_device *dev,
- 			err = ops->get_ts_info(dev, info);
- 			if (!err && info->phc_index >= 0)
- 				info->phc_source = HWTSTAMP_SOURCE_NETDEV;
-+		} else if (dev->tsinfo.enabled) {
-+			info->so_timestamping = dev->tsinfo.so_timestamping;
-+			info->tx_types = dev->tsinfo.tx_types;
-+			info->rx_filters = dev->tsinfo.rx_filters;
- 		}
- 
- 		info->so_timestamping |= SOF_TIMESTAMPING_RX_SOFTWARE |
-diff --git a/net/ethtool/netlink.c b/net/ethtool/netlink.c
-index 25e22c48060a..07d1a010b1cc 100644
---- a/net/ethtool/netlink.c
-+++ b/net/ethtool/netlink.c
-@@ -422,6 +422,7 @@ ethnl_default_requests[__ETHTOOL_MSG_USER_CNT] = {
- 	[ETHTOOL_MSG_TSCONFIG_SET]	= &ethnl_tsconfig_request_ops,
- 	[ETHTOOL_MSG_PHY_GET]		= &ethnl_phy_request_ops,
- 	[ETHTOOL_MSG_MSE_GET]		= &ethnl_mse_request_ops,
-+	[ETHTOOL_MSG_TSINFO_SET]	= &ethnl_tsinfo_request_ops,
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 7fb88e1cd7c4..6b23577d001a 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -11191,6 +11191,7 @@ enum special_kfunc_type {
+ 	KF_bpf_session_is_return,
+ 	KF_bpf_stream_vprintk,
+ 	KF_bpf_stream_print_stack,
++	KF_bpf_skb_set_hwtstamp,
  };
  
- static struct ethnl_dump_ctx *ethnl_dump_context(struct netlink_callback *cb)
-@@ -1548,6 +1549,13 @@ static const struct genl_ops ethtool_genl_ops[] = {
- 		.policy = ethnl_mse_get_policy,
- 		.maxattr = ARRAY_SIZE(ethnl_mse_get_policy) - 1,
- 	},
-+	{
-+		.cmd	= ETHTOOL_MSG_TSINFO_SET,
-+		.flags	= GENL_UNS_ADMIN_PERM,
-+		.doit	= ethnl_default_set_doit,
-+		.policy = ethnl_tsinfo_set_policy,
-+		.maxattr = ARRAY_SIZE(ethnl_tsinfo_set_policy) - 1,
-+	},
- };
+ BTF_ID_LIST(special_kfunc_list)
+@@ -11283,6 +11284,11 @@ BTF_ID_UNUSED
+ #endif
+ BTF_ID(func, bpf_stream_vprintk)
+ BTF_ID(func, bpf_stream_print_stack)
++#ifdef CONFIG_NET
++BTF_ID(func, bpf_skb_set_hwtstamp)
++#else
++BTF_ID_UNUSED
++#endif
  
- static const struct genl_multicast_group ethtool_nl_mcgrps[] = {
-diff --git a/net/ethtool/netlink.h b/net/ethtool/netlink.h
-index 674c9c19529b..7c2a350f8ba4 100644
---- a/net/ethtool/netlink.h
-+++ b/net/ethtool/netlink.h
-@@ -502,6 +502,7 @@ extern const struct nla_policy ethnl_phy_get_policy[ETHTOOL_A_PHY_HEADER + 1];
- extern const struct nla_policy ethnl_tsconfig_get_policy[ETHTOOL_A_TSCONFIG_HEADER + 1];
- extern const struct nla_policy ethnl_tsconfig_set_policy[ETHTOOL_A_TSCONFIG_MAX + 1];
- extern const struct nla_policy ethnl_mse_get_policy[ETHTOOL_A_MSE_HEADER + 1];
-+extern const struct nla_policy ethnl_tsinfo_set_policy[ETHTOOL_A_TSINFO_MAX + 1];
- 
- int ethnl_set_features(struct sk_buff *skb, struct genl_info *info);
- int ethnl_act_cable_test(struct sk_buff *skb, struct genl_info *info);
-diff --git a/net/ethtool/tsconfig.c b/net/ethtool/tsconfig.c
-index 664c3fe49b5b..9f387339fc8e 100644
---- a/net/ethtool/tsconfig.c
-+++ b/net/ethtool/tsconfig.c
-@@ -41,7 +41,7 @@ static int tsconfig_prepare_data(const struct ethnl_req_info *req_base,
- 	struct kernel_hwtstamp_config cfg = {};
- 	int ret;
- 
--	if (!dev->netdev_ops->ndo_hwtstamp_get)
-+	if (!dev->netdev_ops->ndo_hwtstamp_get && !dev->tsinfo.enabled)
- 		return -EOPNOTSUPP;
- 
- 	ret = ethnl_ops_begin(dev);
-@@ -61,7 +61,7 @@ static int tsconfig_prepare_data(const struct ethnl_req_info *req_base,
- 	if (hwprov) {
- 		data->hwprov_desc.index = hwprov->desc.index;
- 		data->hwprov_desc.qualifier = hwprov->desc.qualifier;
--	} else {
-+	} else if (!dev->tsinfo.enabled) {
- 		struct kernel_ethtool_ts_info ts_info = {};
- 
- 		ts_info.phc_index = -1;
-@@ -252,7 +252,8 @@ static int ethnl_set_tsconfig_validate(struct ethnl_req_info *req_base,
+ static bool is_bpf_obj_new_kfunc(u32 func_id)
  {
- 	const struct net_device_ops *ops = req_base->dev->netdev_ops;
+@@ -11364,7 +11370,8 @@ static bool is_kfunc_bpf_preempt_enable(struct bpf_kfunc_call_arg_meta *meta)
  
--	if (!ops->ndo_hwtstamp_set || !ops->ndo_hwtstamp_get)
-+	if ((!ops->ndo_hwtstamp_set || !ops->ndo_hwtstamp_get) &&
-+	    !READ_ONCE(req_base->dev->tsinfo.enabled))
- 		return -EOPNOTSUPP;
- 
- 	return 1;
-diff --git a/net/ethtool/tsinfo.c b/net/ethtool/tsinfo.c
-index 14bf01e3b55c..c9078aa4a897 100644
---- a/net/ethtool/tsinfo.c
-+++ b/net/ethtool/tsinfo.c
-@@ -38,6 +38,14 @@ const struct nla_policy ethnl_tsinfo_get_policy[ETHTOOL_A_TSINFO_MAX + 1] = {
- 		NLA_POLICY_NESTED(ethnl_ts_hwtst_prov_policy),
- };
- 
-+const struct nla_policy ethnl_tsinfo_set_policy[ETHTOOL_A_TSINFO_MAX + 1] = {
-+	[ETHTOOL_A_TSINFO_HEADER]		=
-+		NLA_POLICY_NESTED(ethnl_header_policy_stats),
-+	[ETHTOOL_A_TSINFO_TIMESTAMPING]		= { .type = NLA_NESTED },
-+	[ETHTOOL_A_TSINFO_TX_TYPES]		= { .type = NLA_NESTED },
-+	[ETHTOOL_A_TSINFO_RX_FILTERS]		= { .type = NLA_NESTED },
-+};
-+
- int ts_parse_hwtst_provider(const struct nlattr *nest,
- 			    struct hwtstamp_provider_desc *hwprov_desc,
- 			    struct netlink_ext_ack *extack,
-@@ -390,15 +398,17 @@ static int ethnl_tsinfo_dump_one_netdev(struct sk_buff *skb,
+ bool bpf_is_kfunc_pkt_changing(struct bpf_kfunc_call_arg_meta *meta)
  {
- 	struct ethnl_tsinfo_dump_ctx *ctx = (void *)cb->ctx;
- 	const struct ethtool_ops *ops = dev->ethtool_ops;
-+	struct kernel_ethtool_ts_info *ts_info;
- 	struct tsinfo_reply_data *reply_data;
- 	struct tsinfo_req_info *req_info;
- 	void *ehdr = NULL;
- 	int ret = 0;
+-	return meta->func_id == special_kfunc_list[KF_bpf_xdp_pull_data];
++	return meta->func_id == special_kfunc_list[KF_bpf_xdp_pull_data] ||
++	       meta->func_id == special_kfunc_list[KF_bpf_skb_set_hwtstamp];
+ }
  
--	if (!ops->get_ts_info)
-+	if (!ops->get_ts_info && !dev->tsinfo.enabled)
- 		return -EOPNOTSUPP;
- 
- 	reply_data = ctx->reply_data;
-+	ts_info = &reply_data->ts_info;
- 	req_info = ctx->req_info;
- 	for (; ctx->pos_phcqualifier < HWTSTAMP_PROVIDER_QUALIFIER_CNT;
- 	     ctx->pos_phcqualifier++) {
-@@ -411,9 +421,16 @@ static int ethnl_tsinfo_dump_one_netdev(struct sk_buff *skb,
- 			return PTR_ERR(ehdr);
- 
- 		reply_data->ts_info.phc_qualifier = ctx->pos_phcqualifier;
--		ret = ops->get_ts_info(dev, &reply_data->ts_info);
--		if (ret < 0)
--			goto err;
-+
-+		if (dev->tsinfo.enabled) {
-+			ts_info->so_timestamping |= dev->tsinfo.so_timestamping;
-+			ts_info->tx_types |= dev->tsinfo.tx_types;
-+			ts_info->rx_filters |= dev->tsinfo.rx_filters;
-+		} else {
-+			ret = ops->get_ts_info(dev, ts_info);
-+			if (ret < 0)
-+				goto err;
-+		}
- 
- 		if (reply_data->ts_info.phc_index >= 0)
- 			reply_data->ts_info.phc_source = HWTSTAMP_SOURCE_NETDEV;
-@@ -563,6 +580,101 @@ int ethnl_tsinfo_done(struct netlink_callback *cb)
+ static enum kfunc_ptr_arg_type
+diff --git a/net/core/filter.c b/net/core/filter.c
+index acdc66aa4f27..ab7adef9c015 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -12372,6 +12372,28 @@ __bpf_kfunc int bpf_sock_ops_enable_tx_tstamp(struct bpf_sock_ops_kern *skops,
  	return 0;
  }
  
-+static int ethnl_tsinfo_set_validate(struct ethnl_req_info *req_base,
-+				     struct genl_info *info)
++__bpf_kfunc int bpf_skb_set_hwtstamp(struct __sk_buff *s,
++				     struct bpf_hwtstamp *attrs, int attrs__sz)
 +{
-+	const struct net_device *dev = req_base->dev;
++	struct sk_buff *skb = (struct sk_buff *)s;
 +
-+	if (!dev->rtnl_link_ops ||
-+	    dev->ethtool_ops->get_ts_info ||
-+	    dev->netdev_ops->ndo_hwtstamp_set ||
-+	    dev->netdev_ops->ndo_hwtstamp_get)
-+		return -EOPNOTSUPP;
++	if (attrs__sz != sizeof(*attrs) || attrs->reserved)
++		return -EINVAL;
 +
-+	return 1;
-+}
++	if (!skb_at_tc_ingress(skb))
++		return -EINVAL;
 +
-+static int ethnl_tsinfo_set(struct ethnl_req_info *req_base,
-+			    struct genl_info *info)
-+{
-+	struct net_device *dev = req_base->dev;
-+	struct kernel_ethtool_ts_info ts_info;
-+	struct nlattr **tb = info->attrs;
-+	bool config_mod = false;
-+	int ret;
++	if (skb_header_unclone(skb, GFP_ATOMIC))
++		return -ENOMEM;
 +
-+	ts_info.so_timestamping = dev->tsinfo.so_timestamping;
-+	ts_info.tx_types = dev->tsinfo.tx_types;
-+	ts_info.rx_filters = dev->tsinfo.rx_filters;
++	skb_clear_tstamp(skb);
++	skb_hwtstamps(skb)->hwtstamp = attrs->hwtstamp;
 +
-+	if (tb[ETHTOOL_A_TSINFO_TIMESTAMPING]) {
-+		ret = ethnl_update_bitset32(&ts_info.so_timestamping,
-+					    __SOF_TIMESTAMPING_CNT,
-+					    tb[ETHTOOL_A_TSINFO_TIMESTAMPING],
-+					    sof_timestamping_names, info->extack,
-+					    &config_mod);
-+		if (ret < 0)
-+			return ret;
-+	}
++	bpf_compute_data_pointers(skb);
 +
-+	if (tb[ETHTOOL_A_TSINFO_TX_TYPES]) {
-+		ret = ethnl_update_bitset32(&ts_info.tx_types,
-+					    __HWTSTAMP_TX_CNT,
-+					    tb[ETHTOOL_A_TSINFO_TX_TYPES],
-+					    ts_tx_type_names, info->extack,
-+					    &config_mod);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
-+	if (tb[ETHTOOL_A_TSINFO_RX_FILTERS]) {
-+		ret = ethnl_update_bitset32(&ts_info.rx_filters,
-+					    __HWTSTAMP_FILTER_CNT,
-+					    tb[ETHTOOL_A_TSINFO_RX_FILTERS],
-+					    ts_rx_filter_names, info->extack,
-+					    &config_mod);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
-+	if (!config_mod)
-+		goto out;
-+
-+	if (!ts_info.so_timestamping &&
-+	    !ts_info.tx_types && !ts_info.rx_filters) {
-+		WRITE_ONCE(dev->tsinfo.enabled, false);
-+		memset(&dev->tsinfo, 0, offsetof(typeof(dev->tsinfo), enabled));
-+		goto out;
-+	}
-+
-+	/* __ethtool_get_ts_info() and ethnl_tsinfo_end_dump()
-+	 * unconditionally report these flags.
-+	 */
-+	ts_info.so_timestamping |= SOF_TIMESTAMPING_RX_SOFTWARE |
-+				   SOF_TIMESTAMPING_SOFTWARE;
-+
-+	/* Fallback to HWTSTAMP_TX_OFF / HWTSTAMP_FILTER_NONE
-+	 * if the current mode is not supported.
-+	 */
-+	if (!(ts_info.tx_types & BIT(dev->tsinfo.cfg.tx_type))) {
-+		ts_info.tx_types |= BIT(HWTSTAMP_TX_OFF);
-+		dev->tsinfo.cfg.tx_type = HWTSTAMP_TX_OFF;
-+	}
-+	if (!(ts_info.rx_filters & BIT(dev->tsinfo.cfg.rx_filter))) {
-+		ts_info.rx_filters |= BIT(HWTSTAMP_FILTER_NONE);
-+		dev->tsinfo.cfg.rx_filter = HWTSTAMP_FILTER_NONE;
-+	}
-+
-+	dev->tsinfo.so_timestamping = ts_info.so_timestamping;
-+	dev->tsinfo.tx_types = ts_info.tx_types;
-+	dev->tsinfo.rx_filters = ts_info.rx_filters;
-+
-+	WRITE_ONCE(dev->tsinfo.enabled, true);
-+out:
-+	/* no notification. */
 +	return 0;
 +}
 +
- const struct ethnl_request_ops ethnl_tsinfo_request_ops = {
- 	.request_cmd		= ETHTOOL_MSG_TSINFO_GET,
- 	.reply_cmd		= ETHTOOL_MSG_TSINFO_GET_REPLY,
-@@ -574,4 +686,7 @@ const struct ethnl_request_ops ethnl_tsinfo_request_ops = {
- 	.prepare_data		= tsinfo_prepare_data,
- 	.reply_size		= tsinfo_reply_size,
- 	.fill_reply		= tsinfo_fill_reply,
-+
-+	.set_validate		= ethnl_tsinfo_set_validate,
-+	.set			= ethnl_tsinfo_set,
- };
+ /**
+  * bpf_xdp_pull_data() - Pull in non-linear xdp data.
+  * @x: &xdp_md associated with the XDP buffer
+@@ -12500,6 +12522,7 @@ BTF_KFUNCS_END(bpf_kfunc_check_set_sock_addr)
+ 
+ BTF_KFUNCS_START(bpf_kfunc_check_set_sched_cls)
+ BTF_ID_FLAGS(func, bpf_sk_assign_tcp_reqsk)
++BTF_ID_FLAGS(func, bpf_skb_set_hwtstamp)
+ BTF_KFUNCS_END(bpf_kfunc_check_set_sched_cls)
+ 
+ BTF_KFUNCS_START(bpf_kfunc_check_set_sock_ops)
 -- 
 2.54.0.1136.gdb2ca164c4-goog
 
