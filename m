@@ -1,114 +1,107 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A735370AD6
-	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 10:46:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F3C2D7DC6;
+	Fri, 12 Jun 2026 10:46:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781261181; cv=none; b=g/2W8ZxZ+bu+9KmfgyKuqFdJ8qj6MSwL0uqxpyMvLwU+LA98+sA8ESofZVpMUFxPxrnqGv7iJ+MBWS0tGzxvR17HlbRpp2823A86Fyn8VOW9KlVFYoDm2wSc84jK0f0lHup/VU+stX+6o8IIq9Xw29wKTJfm5MXOzoWV4en7fE0=
+	t=1781261179; cv=none; b=GF/IwwKkM5mter7L0LwGukNlc2XwEquFEl2GPekK2ZbU/Ej3Fo8zfZLmWMoB2nrePiN9vipcgMWfFnLvjrW11GLifeisd0gKk6mZkrIB28Htiy2baoAbvwBgLHaMU2kkr7mtEF+pRuFkBGYlUspKsAZo8prt1sITEDRxTFBVijE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781261181; c=relaxed/simple;
-	bh=u65Bn7mUeRrJUx2bbJXKRRbhepBmR/uX4W2GEmfYjVo=;
+	s=arc-20240116; t=1781261179; c=relaxed/simple;
+	bh=+sILituN4KG82vNPJYjOPPX6BS6Qew5yOJXh51BZ52M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jV98Jq0PvhV/Dyg6U2B1guExw/1XkEpAEJ57uDNflPYeqqn1jmYPwKfhJ2VUQ98OYbL2NywVo0YP8M4D9kUx/n5cHK+TqVA4fIWb8+pwDZ/Q5Wjvde447L77moT2MyYBLp96DoQK2r8WT+HsQAIwMaRjzACa4Kx9hZEHAAH53yM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Wxw91WqI; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=mZ54Iw65; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=K8226wNUw7TgaP9o/vclujvR/lOBEr1an6SCVGO4urbv9zp/x3y3zn7eevNTPLIcNdqg/Jy33gQSndGu67nJJ5rJ0c5GE9TfN3xxVZM5OgUMK9go1Q6U5nKf+SSqSny4gg8VIyvpxoWabq3v+CCbXYPSskzhJIfZgkyEKjBxp/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=No2gSJry; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Z23LG65q; arc=none smtp.client-ip=103.168.172.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Wxw91WqI";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="mZ54Iw65"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781261179;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LD/2C2qsDL0yxbIAux5qj+n5CJ7v1MBG4itfMov5pQk=;
-	b=Wxw91WqIfXBYSKhWDHEWWjaOEjOzVjXfrJdn1UpG4F3Um5xyWwcNPqd+jyqWWIPrgHEvgA
-	IzbWUZ1Jlus3Amzi8Gsc91dlDIIUKcjdnXPy5NEFDWizX8W1GkvuxBnWl8KlqzlznBiUIL
-	qIOTt8xMSlYT6ZNDxvQnsHpWxkm2dBY=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-685-6HE_O9HsNQqc9za3Ml94Dw-1; Fri, 12 Jun 2026 06:46:17 -0400
-X-MC-Unique: 6HE_O9HsNQqc9za3Ml94Dw-1
-X-Mimecast-MFC-AGG-ID: 6HE_O9HsNQqc9za3Ml94Dw_1781261177
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-490b9cd54f3so5223035e9.2
-        for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 03:46:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1781261176; x=1781865976; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LD/2C2qsDL0yxbIAux5qj+n5CJ7v1MBG4itfMov5pQk=;
-        b=mZ54Iw65Mcw3jFQy9G8JzfSNGn1m0xC/KbmOUMo8acQ+ZNRlRi72cDi97Ey9r5onKb
-         kaO0ltn3P9dUMlDqr5ZbmRI/08M9dZ01qUc5GRp+uh3x6CPf9Rpgc6J9ExhYdeoav5UU
-         G9jcoKrWagfzYXUVYzW/Ux4kx+urjUvBAk1LutOXLN3UP/H+g+DKz/UY7rHrSHQKR3BE
-         eLnD418Dvhok1nJlsima2Tdr4OegucU8kDLM4WCKzyp1iMK0U9TodCJzvmqTWSQZlz48
-         SoeHixNUDv5ZNGaKaNYBBuCTWdvPV7GfNvbgxou33Xa3CFuCufobv6GLEd9oTvLGp58X
-         yMjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781261176; x=1781865976;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LD/2C2qsDL0yxbIAux5qj+n5CJ7v1MBG4itfMov5pQk=;
-        b=gyt0i47vdeMXtAfLKUU6Ktv79ldrE5xKoyG6hJac13PPzGR7V6vJSDO09I7PuxW/NA
-         0g47xIW7kkbFfT+UiGp1MNo+UUha6vuj54lpE22lxxwm+w2AU2erDYLvz0e6Da+xjJ2E
-         6zTR7Gr/woeWYiFcGr1yr1VMKLA4pbvx1l700jmmbEWBilLVGXTLvuhwFXyq3iTaItvI
-         qL2eDbgvrhKH3UXURDun6Kd3Uj1XA3hKTehtr9yvISrMab/WaJknVGurmWeoWgQAwucQ
-         LM6olSRZ1JvIUeZpbm+Ek77pTHR+DmKy1Mrv37smtP245wr0fPups7D5/rpHIlO+Oaad
-         l6vQ==
-X-Gm-Message-State: AOJu0YwbBKy5g/LnnsxuRm0ejLmR8akDZ8ow4jfNg4qfbGcvZoKi3eUa
-	K10g8xKxru4ZO1M/1r7k5jE5TQestbiTaK6Tz7FReVohLvyNJmq13O87xq/9HBNpegraCT6DtNG
-	v6bG/SnAMcn324N6CbTMfUKMI22k5W30CbdURiTGNuB1b1KkyyR8fkRKJ1Q==
-X-Gm-Gg: Acq92OExj5chyUJoIHf1GJGKENGRWyThcSJoGoNbW4dOYsUSFw8uZZTk7ufj4a5i4ZH
-	s0Y9msUR9G6SN0v5wBHBSCPLxw1O3+My+UlYtOSlXRMGG+ufj+JHYrMKftE7huPeY+FRpFOs5hu
-	Goh8p0lfkcFaRshVILcNIUD53F/3OqWXQrHgqnR6rIefrKCFW9H47yeiQgFFdJyOn26V0J1e0hW
-	KjCd/Sj6PiaCn4y9mNwIX7SYX2QiSuMqsY+s89nuvITB5mXQmku3hchLgbQMrEWP9dn1OmvkW/c
-	HKVTJi3qOA6HxHe6owWLFnn229LslfymMx4VQmADUXNikH0PMtdDeJ9cUJIX/8EQfgdgbsxtlZk
-	IluDcdDbcl6wUAnTboK6WJRHioMkAGMqP8lIZyG6xanH5QRw2YHy1rnr0LbwT8Mh7v1cRw9I=
-X-Received: by 2002:a05:600c:3586:b0:490:c024:2ec8 with SMTP id 5b1f17b1804b1-490ec339ec0mr34621975e9.0.1781261176651;
-        Fri, 12 Jun 2026 03:46:16 -0700 (PDT)
-X-Received: by 2002:a05:600c:3586:b0:490:c024:2ec8 with SMTP id 5b1f17b1804b1-490ec339ec0mr34621395e9.0.1781261176179;
-        Fri, 12 Jun 2026 03:46:16 -0700 (PDT)
-Received: from sgarzare-redhat (host-82-53-135-12.retail.telecomitalia.it. [82.53.135.12])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490ea7c8f49sm63830435e9.6.2026.06.12.03.46.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Jun 2026 03:46:15 -0700 (PDT)
-Date: Fri, 12 Jun 2026 12:46:13 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Raf Dickson <rafdog35@gmail.com>
-Cc: netdev@vger.kernel.org, virtualization@lists.linux.dev, 
-	pabeni@redhat.com, stefanha@redhat.com, bryan-bt.tan@broadcom.com, 
-	vishnu.dasa@broadcom.com, bcm-kernel-feedback-list@broadcom.com, bobbyeshleman@gmail.com, 
-	leonardi@redhat.com, horms@kernel.org, edumazet@google.com, kuba@kernel.org
-Subject: Re: [PATCH net-next v3 3/4] vsock: fold sk_acceptq_added() into
- vsock_enqueue_accept()
-Message-ID: <aivjZya3rcXZa9n9@sgarzare-redhat>
-References: <20260612045216.105796-1-rafdog35@gmail.com>
- <20260612045216.105796-4-rafdog35@gmail.com>
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="No2gSJry";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Z23LG65q"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfout.phl.internal (Postfix) with ESMTP id 31E2FEC0119;
+	Fri, 12 Jun 2026 06:46:15 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Fri, 12 Jun 2026 06:46:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1781261175; x=
+	1781347575; bh=c7KQeGUqHX958aPT1jVdCDA0II0KEOujcrQ0cCHR8xE=; b=N
+	o2gSJry5dq1qayTFRlLvQALYiB8ujYssMgZ3R6SZHrhXqwKURKMtJhexnjxdpRhp
+	2aYhlF3sPX6lUhgJTOUC3qkoPmH2mmthLCOd0j//K1A0DonE227M1TbBWhEw4RbU
+	QGmO3a9yMRR3siV7PUh/XcWeXsEBEfFKTReMg5ySVmRk44i2hrzroxY32jalqWuC
+	nRNUY2zcgDTNl5Ewq0Fp5SrM886kPtEbvM7hSfmAjGEe2OCpdzbDphW7E0Jc+Fl5
+	oUNwh27srbUWW36FOLe02mXbGCN7y9HcATSx8/fi76g0Py38vRd8ulOhnkMsjpiy
+	A5YbDLKEnubDI5FrWm2nA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1781261175; x=1781347575; bh=c7KQeGUqHX958aPT1jVdCDA0II0KEOujcrQ
+	0cCHR8xE=; b=Z23LG65quTUdmnsUqta4q1ZeabWUczpUEpVKCrEYfFY/uOCos7/
+	QRsIRFfnaI84p56awHsoVFEgGT8+bzKA3qfueuwl0FGuLnco9padEd7gdCLIylvM
+	LbCWStaZ50yJEN0pDnwHO6JjrYWkjeHsl5xw4YIaIKC1F5NqPdJW+38rl8DF1W43
+	8U4aOwzB4N1ShhOjUzm8c8rcqNnKJXuCxcXOdgvzJyxgM8J5pTYDcacviR5pVz+F
+	y6+7gg8kS1r1aH/MvhZQ3LsxN5HhG2v3yXTAEZ4bO5MrdDzmaXP+FWL13AvySlvg
+	vqDAp24G7UlPwDbkQsZbrRdXwyWUWD5xUmw==
+X-ME-Sender: <xms:duMravlqSeT8YTuIXvBGBINfbGcwG31OyGodJ69gbqXJ8Kb_5qPpkw>
+    <xme:duMraigEZT4PlRsoAiadddr3pr5ehvQt6FKWGXR1VFwrUHqzGxjQk6AWhgg-G1ROp
+    DqJPZnVr7r3WE1rd5gXmVcrim9PBUBMywJFn_zIH93kT_yMvMl8wjgY>
+X-ME-Received: <xmr:duMrahQ7FzoMJqpWNCKLEgzVCT2l4nZGE1B9rhHY5gcE1YSFE2n5EUuLXE51lE6tASlb_86fFgmWBVFwa3aszLc>
+X-ME-Proxy-Cause: dmFkZTGju7ZVUaDs3BUuCyZVhqHejPxvERccukbFBq77MdOy8+3OshSwJ9GSDuvf+YE/Xb
+    CDSNf70pmGSlfSqjOQjjZ9G1xQWMudeOXEOwZlfvB17r/fHWiV1tfnxxXuheUf7P8QzzYQ
+    xvlup3CVxbsPJ3KHPcBoWYok1DCUyCH+7TNTrPx0uIvUrlsLDNLLx1e8eJMPuIdmgVdIP0
+    BP6F5HTcovJ5PruKYWGRLhrI35ZgaVzdQueuqnnN+2xg+Z+z9KZ/gUba4D/BSE+9KSkUtF
+    x2YIeo8+GCNFwUzSosK8+PXm2XnZ1AILGSVQygnoxu6+OdXXIZfjzleO9rIfg8bLsWflO8
+    y0/d4SyZryNKx6ewoIxmnEKqQjcgsE4QZRGLmxOU+Zqh/QWTKhEV5AY5LIq+Bfy+Z08Em2
+    jkSwLXcYqVbRxwhg1Bbgxj03VpP5wkZgYeEwCui/1ffYfJql9LZZ/tM7oyd1Z0dVwiy8Es
+    //Tucoh7oYfpDs9AN3pzr9n6u8L7GO4H8Kzc67Q9wF82G/NqbbWv4QtMCS9D8GTqNELDqL
+    ISOMr/Jdi2nY/bKyJnrvyPX2+ztMDA7ckOcLwVxQp/2dX9nS2I87H85X8i55bV47FDeF3R
+    FTVYWIKoEwM4ro05MLQX3Kll5WN338D4y3NZ1WshWgP/xD8lcApfuugtJ/dQ
+X-ME-Proxy: <xmx:duMrajZjtmCxBhx68bYdxBd84aSqUMSGEwVlJk2Ru_cyDNclVyGLoA>
+    <xmx:duMrauSUd0sVqE9yaURiVJUozq94VJlL8hvtOOelSWmPFc5FY1oADw>
+    <xmx:duMrai9Yqluz5Pn8OXhygsV9v2BjaTrYXGReB5NZhzAy5KqjSweb_A>
+    <xmx:duMraugwR93BzZ1FfewL4lmn1iahF4HD1TpgJ6qY0WL6QanPOOGzwQ>
+    <xmx:d-MraiMyT94ueAG8eNZXbOG_nKpkOeR9UB8T8UCU0B8c8InaKkwDdMJZ>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 12 Jun 2026 06:46:13 -0400 (EDT)
+Date: Fri, 12 Jun 2026 12:46:11 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: WenTao Liang <vulab@iscas.ac.cn>
+Cc: john.fastabend@gmail.com, kuba@kernel.org, davem@davemloft.net,
+	edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] tls: fix encrypt_pending refcount leak on -EBUSY error
+ path
+Message-ID: <aivjc6MMhZIk1sNa@krikkit>
+References: <20260612020133.11427-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260612045216.105796-4-rafdog35@gmail.com>
+In-Reply-To: <20260612020133.11427-1-vulab@iscas.ac.cn>
 
-On Fri, Jun 12, 2026 at 04:52:15AM +0000, Raf Dickson wrote:
->virtio and hyperv call sk_acceptq_added() immediately before
->vsock_enqueue_accept(). Move the call into vsock_enqueue_accept()
->itself so callers cannot forget it and the accounting is consistent.
->
->Suggested-by: Paolo Abeni <pabeni@redhat.com>
->Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
->Signed-off-by: Raf Dickson <rafdog35@gmail.com>
->---
-> net/vmw_vsock/af_vsock.c                | 1 +
-> net/vmw_vsock/hyperv_transport.c        | 1 -
-> net/vmw_vsock/virtio_transport_common.c | 1 -
-> 3 files changed, 1 insertion(+), 2 deletions(-)
+2026-06-12, 10:01:33 +0800, WenTao Liang wrote:
+> In tls_do_encryption(), when crypto_aead_encrypt() returns -EBUSY,
+> tls_encrypt_async_wait() drains pending completions and restores
+> encrypt_pending to 1, expecting the caller to issue the final
+> decrement. However, if tls_encrypt_async_wait() returns an error
+> (rc != -EINPROGRESS), the function returns early at the error
+> cleanup block without decrementing encrypt_pending.
+> 
+> Since the -EBUSY path never submitted the request to the crypto
+> engine, tls_encrypt_done() callback will not fire for this request,
+> and the synchronous cleanup path (atomic_dec at line 599) is also
+> skipped. This leaves encrypt_pending permanently elevated by 1.
 
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+No. Please fix whatever scanner/LLM you're using to generate those.
 
+-- 
+Sabrina
