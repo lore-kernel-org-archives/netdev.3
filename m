@@ -1,194 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55A4D367B99;
-	Fri, 12 Jun 2026 17:50:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC7536CE10
+	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 17:57:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781286626; cv=none; b=sUllLBh8WN4WSQC+VBJi5+rC1Use1QL9E/O5UWDTrQzoeWmtflxV+vRW12ZpQY9Ht2vYaohaONrOQzICyp55HbxKHBxRExg0iWChA7lmiPZX6lS81rn3nBgniNQ6OqrfdXXJdfXYNIykdtyNxghQmyCfZzyRluMV9yDuH2pWYvU=
+	t=1781287078; cv=none; b=h0GjFjnJI90BVFCYjBOcGAoShuxavt8GSunJbSgo08lUUAlsJtKCjz7ZXA6P9eXBHFojMqZqmcQyA+2ogxf9hYVeqadEVfNmUNmNh7EY9h1yLU8x/4RuJX/MSrCaOe6uaMtrxPNZuo+UdF8LMNVNB/ysF+dYde7Mz/Aizw6KULY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781286626; c=relaxed/simple;
-	bh=GftbwVGxN5+3396T6O7JKnU2Qpkol1nyIS4+zmauKdY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=WNYQmGDMVeOiU+MkNyTzV2k49VQCv24Kjj6QDK0vrJLIDhQ85/GKqOdI3lyTOOg6sOVyAvX+L1SR6QW5Cd3fV/aQqF4/dNle33UzZ+RltUpV1savqSVDHKGaNeJUqkS1LulwccHVhTl80X5hfk1ll1+l4/X3u+NmyIU8cUdMWFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nr2ZHuY/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1781287078; c=relaxed/simple;
+	bh=zRWoQXCtMOBWBsutRSnFWCREpC3BqoSSxc5qXc+RcdU=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oGoBGjDMVamzJirA0btGDnX0vhc8wEpSok/mKfpAbhdwxZ/F/MeoecT7NIMv9pbk5GDm2ze8Hgb5h6louExbW26RYOjrBB/LBsecGS634xo1MM1TLBgBxvp8w991vH5qLg3LLZxBDa7W6J5gWslpXBxFc88z47NS51Wy73TBLv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=az5AtMOC; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nr2ZHuY/"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D6638C2BCB4;
-	Fri, 12 Jun 2026 17:50:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1781286625;
-	bh=GftbwVGxN5+3396T6O7JKnU2Qpkol1nyIS4+zmauKdY=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=nr2ZHuY/jnnZ460Vlle1PjjEnlezr9QwQItXfhs6g2EHcUPivlpZsArAgSyD/UmlW
-	 ScxXIGPA2ENscg6GgNDL94+Xdfeq2lTbuabHdF4Tw7cHrknz5KRs6RoU4RGTsheaGI
-	 E1OqRL1OCUS2ZqSrt9JqsHmVS+xnBVUC9ra5NuNFitXLDewggJVyCl0kdaRGxdDapE
-	 37cPmnS+eJGe86gcW95aa7hZXIMUkBD4o4As5PYayZ8G0vG6oe7m+J7iDX+zt7ZJWN
-	 MyoXu3AVHLWyhURrpgf12zcj6drni/8OSYVjlJ2hcbZ0eb5rBNcunU8Ypw01SSK2C7
-	 rlqXgBtYmUCsA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BC9DACD98CF;
-	Fri, 12 Jun 2026 17:50:25 +0000 (UTC)
-From: Bryam Vargas via B4 Relay <devnull+hexlabsecurity.proton.me@kernel.org>
-Date: Fri, 12 Jun 2026 12:50:25 -0500
-Subject: [PATCH v3] nfc: nci: add data_len bound checks to activation
- parameter extractors
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="az5AtMOC"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=5rmaei73r5ff7fednab3j47elq.protonmail; t=1781287066; x=1781546266;
+	bh=uqoNIEdJd9o31lWk+Soo4RDv+i0iKH20B2Ql9d/JqAE=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=az5AtMOCGmIx2/Yuy/rpSL6WYDfkTPnpW3n1LTMnrbodtazamwXPM4F/hpkPES+wS
+	 q+n2IS8QjexDgOrl/Byyr7h+DUCaAT86oo26nFBIZ0wAKor2KZIuUK0LUfALccukoe
+	 Z98B9yjH8cIiWxiknkP0Qs6W19TmDdXsg3JPtPdTNmgFvpLCdbq48zn1LBhspgecuD
+	 R77Lx4OfdcM1dOmi8+mkhVi9WDeAZg39M7RiuUcRnG3vkaD4m1tNqtoceV/K+Fmxet
+	 09Cuv0ItWUUWS3dSswJ+ASvsuVKhE2vkUIasx1O0j/37I7E4jmVLXZWJwiFHJVREEb
+	 EzPaQXrAlweDw==
+Date: Fri, 12 Jun 2026 17:57:42 +0000
+To: Simon Horman <horms@kernel.org>, David Heidelberg <david@ixit.cz>
+From: Bryam Vargas <hexlabsecurity@proton.me>
+Cc: oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] nfc: nci: add data_len bound checks to activation parameter extractors
+Message-ID: <20260612175739.11466-1-hexlabsecurity@proton.me>
+In-Reply-To: <20260612131813.674622-3-horms@kernel.org>
+References: <20260610064104.143042-1-hexlabsecurity@proton.me> <20260612131813.674622-3-horms@kernel.org>
+Feedback-ID: 199661219:user:proton
+X-Pm-Message-ID: 56fae6bbf76c1489fe07d621a3edf42cceb13acd
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260612-b4-disp-6d52d8b0-v3-1-e26221f8826d@proton.me>
-X-B4-Tracking: v=1; b=H4sIAOBGLGoC/x3MMQqAMAxA0auUzAbaqEW8iji0JmoWLS2IIN7d4
- viG/x8oklUKjOaBLJcWPY+KtjGw7OHYBJWrgSx56x1h7JC1JPTcEw/RYhC3kluYhxChZinLqve
- /nOb3/QAIYJgCYgAAAA==
-To: David Heidelberg <david@ixit.cz>
-Cc: linux-kernel@vger.kernel.org, Simon Horman <horms@kernel.org>, 
- netdev@vger.kernel.org, oe-linux-nfc@lists.linux.dev
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781286625; l=5384;
- i=hexlabsecurity@proton.me; s=proton; h=from:subject:message-id;
- bh=BcPYukihDqR5SWpAuWPZtnkwUMfhZZ+Ci4OmUYp2RgA=;
- b=+4IkML7bYD0JoljnnfBm+g3tLOVsiqR6FAHmkAHGeKfMdG6+r2tj7NHIPRfAfn3+su2jrcGp1
- 9tVou56eCqECJ0cziuxps8epVu+qVU0ti+yRCxnBfcSjXdBP7j32gMJ
-X-Developer-Key: i=hexlabsecurity@proton.me; a=ed25519;
- pk=dmppBMZNLLoPzxHi9l8tZDzEZUunPbgsYqIZYXeUrL0=
-X-Endpoint-Received: by B4 Relay for hexlabsecurity@proton.me/proton with
- auth_id=814
-X-Original-From: Bryam Vargas <hexlabsecurity@proton.me>
-Reply-To: hexlabsecurity@proton.me
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Bryam Vargas <hexlabsecurity@proton.me>
+Thanks for the review. v3 is posted as a new top-level thread:
+https://lore.kernel.org/all/20260612-b4-disp-6d52d8b0-v3-1-ae1f21cdd8ab@pro=
+ton.me/
+Point-by-point below.
 
-nci_extract_activation_params_iso_dep() and
-nci_extract_activation_params_nfc_dep() read an inner length byte from
-the NCI RF_INTF_ACTIVATED_NTF payload and use it to memcpy() into fixed
-kernel buffers, but neither function receives the caller-validated
-activation_params_len.  A crafted NCI notification with
-activation_params_len=1 and an inner length byte of up to 20 (NFC-A) or
-50 (NFC-B) causes memcpy() to read that many bytes past the one valid
-byte in the activation params region -- a slab out-of-bounds read of
-kernel memory adjacent to the NCI skb.
+> [Severity: Medium] Is the correct error type being returned here?
+> [...] -EINVAL [...] nci_to_errno() will truncate it [...] -ENOSYS [...]
+> Should a valid NCI status code [...] be used instead?
 
-The sibling nci_extract_rf_params_*() family was given equivalent
-protection by commit 571dcbeb8e63 ("net: nfc: nci: Fix parameter
-validation for packet data"), but the two activation parameter
-extractors were not updated at that time.
+Correct. These extractors return into the int 'err' in
+nci_rf_intf_activated_ntf_packet(), which is handed to nci_req_complete()
+and later run through nci_to_errno(). nci_to_errno() takes a __u8, so the
+-EINVAL is truncated (to 234) at that argument and falls through to the
+default case as -ENOSYS. The contract here is an NCI_STATUS_* code: 'err'
+is initialized to NCI_STATUS_OK and the functions' own default cases
+already return NCI_STATUS_RF_PROTOCOL_ERROR.
 
-Add a data_len parameter to both functions, guard against an empty
-region before consuming the inner length byte, decrement the remaining
-count after consuming it, and clamp the copy length to what is actually
-available.  Update both call sites to pass ntf.activation_params_len,
-which is already validated against the skb at ntf.c:801.
+v3 returns NCI_STATUS_RF_PROTOCOL_ERROR from the new short-region guards,
+which matches the sibling default cases and maps to -EPROTO via
+nci_to_errno(). NCI_STATUS_INVALID_PARAM is equally valid (also -EPROTO) --
+I went with RF_PROTOCOL_ERROR for consistency with the surrounding code;
+glad to switch if you prefer INVALID_PARAM. v3 is otherwise identical to v2
+and is posted as a new top-level thread.
 
-Fixes: e8c0dacd9836 ("NFC: Update names and structs to NCI spec 1.0 d18")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
----
- net/nfc/nci/ntf.c | 26 ++++++++++++++++++++++----
- 1 file changed, 22 insertions(+), 4 deletions(-)
+> [Severity: Critical] [...] atr_res_len [...] integer underflow [...]
+> up to 47 uninitialized stack bytes into ndev->remote_gb [...] broadcast
+> to userspace?
 
-diff --git a/net/nfc/nci/ntf.c b/net/nfc/nci/ntf.c
-index c96512bb8653..8bc3adbc5b6b 100644
---- a/net/nfc/nci/ntf.c
-+++ b/net/nfc/nci/ntf.c
-@@ -525,15 +525,19 @@ static int nci_rf_discover_ntf_packet(struct nci_dev *ndev,
- 
- static int nci_extract_activation_params_iso_dep(struct nci_dev *ndev,
- 						 struct nci_rf_intf_activated_ntf *ntf,
--						 const __u8 *data)
-+						 const __u8 *data, __u8 data_len)
- {
- 	struct activation_params_nfca_poll_iso_dep *nfca_poll;
- 	struct activation_params_nfcb_poll_iso_dep *nfcb_poll;
- 
- 	switch (ntf->activation_rf_tech_and_mode) {
- 	case NCI_NFC_A_PASSIVE_POLL_MODE:
-+		if (data_len < 1)
-+			return NCI_STATUS_RF_PROTOCOL_ERROR;
- 		nfca_poll = &ntf->activation_params.nfca_poll_iso_dep;
- 		nfca_poll->rats_res_len = min_t(__u8, *data++, NFC_ATS_MAXSIZE);
-+		data_len--;
-+		nfca_poll->rats_res_len = min_t(__u8, nfca_poll->rats_res_len, data_len);
- 		pr_debug("rats_res_len %d\n", nfca_poll->rats_res_len);
- 		if (nfca_poll->rats_res_len > 0) {
- 			memcpy(nfca_poll->rats_res,
-@@ -542,8 +546,12 @@ static int nci_extract_activation_params_iso_dep(struct nci_dev *ndev,
- 		break;
- 
- 	case NCI_NFC_B_PASSIVE_POLL_MODE:
-+		if (data_len < 1)
-+			return NCI_STATUS_RF_PROTOCOL_ERROR;
- 		nfcb_poll = &ntf->activation_params.nfcb_poll_iso_dep;
- 		nfcb_poll->attrib_res_len = min_t(__u8, *data++, 50);
-+		data_len--;
-+		nfcb_poll->attrib_res_len = min_t(__u8, nfcb_poll->attrib_res_len, data_len);
- 		pr_debug("attrib_res_len %d\n", nfcb_poll->attrib_res_len);
- 		if (nfcb_poll->attrib_res_len > 0) {
- 			memcpy(nfcb_poll->attrib_res,
-@@ -562,7 +570,7 @@ static int nci_extract_activation_params_iso_dep(struct nci_dev *ndev,
- 
- static int nci_extract_activation_params_nfc_dep(struct nci_dev *ndev,
- 						 struct nci_rf_intf_activated_ntf *ntf,
--						 const __u8 *data)
-+						 const __u8 *data, __u8 data_len)
- {
- 	struct activation_params_poll_nfc_dep *poll;
- 	struct activation_params_listen_nfc_dep *listen;
-@@ -570,9 +578,13 @@ static int nci_extract_activation_params_nfc_dep(struct nci_dev *ndev,
- 	switch (ntf->activation_rf_tech_and_mode) {
- 	case NCI_NFC_A_PASSIVE_POLL_MODE:
- 	case NCI_NFC_F_PASSIVE_POLL_MODE:
-+		if (data_len < 1)
-+			return NCI_STATUS_RF_PROTOCOL_ERROR;
- 		poll = &ntf->activation_params.poll_nfc_dep;
- 		poll->atr_res_len = min_t(__u8, *data++,
- 					  NFC_ATR_RES_MAXSIZE - 2);
-+		data_len--;
-+		poll->atr_res_len = min_t(__u8, poll->atr_res_len, data_len);
- 		pr_debug("atr_res_len %d\n", poll->atr_res_len);
- 		if (poll->atr_res_len > 0)
- 			memcpy(poll->atr_res, data, poll->atr_res_len);
-@@ -580,9 +592,13 @@ static int nci_extract_activation_params_nfc_dep(struct nci_dev *ndev,
- 
- 	case NCI_NFC_A_PASSIVE_LISTEN_MODE:
- 	case NCI_NFC_F_PASSIVE_LISTEN_MODE:
-+		if (data_len < 1)
-+			return NCI_STATUS_RF_PROTOCOL_ERROR;
- 		listen = &ntf->activation_params.listen_nfc_dep;
- 		listen->atr_req_len = min_t(__u8, *data++,
- 					    NFC_ATR_REQ_MAXSIZE - 2);
-+		data_len--;
-+		listen->atr_req_len = min_t(__u8, listen->atr_req_len, data_len);
- 		pr_debug("atr_req_len %d\n", listen->atr_req_len);
- 		if (listen->atr_req_len > 0)
- 			memcpy(listen->atr_req, data, listen->atr_req_len);
-@@ -806,12 +822,14 @@ static int nci_rf_intf_activated_ntf_packet(struct nci_dev *ndev,
- 		switch (ntf.rf_interface) {
- 		case NCI_RF_INTERFACE_ISO_DEP:
- 			err = nci_extract_activation_params_iso_dep(ndev,
--								    &ntf, data);
-+								    &ntf, data,
-+								    ntf.activation_params_len);
- 			break;
- 
- 		case NCI_RF_INTERFACE_NFC_DEP:
- 			err = nci_extract_activation_params_nfc_dep(ndev,
--								    &ntf, data);
-+								    &ntf, data,
-+								    ntf.activation_params_len);
- 			break;
- 
- 		case NCI_RF_INTERFACE_FRAME:
+The uninitialized-stack read is real: in nci_store_general_bytes_nfc_dep()
+an atr_res_len below NFC_ATR_RES_GT_OFFSET makes min_t() clamp to
+NFC_ATR_RES_GB_MAXSIZE and memcpy() copies stale bytes of the on-stack
+atr_res[] into ndev->remote_gb. I could not, however, confirm the
+"broadcast to userspace" part: remote_gb has no netlink attribute (there is
+no NFC_ATTR_TARGET_GENERAL_BYTES), and its only path out is LLCP, which is
+gated by the 3-byte llcp_magic memcmp on those same uninitialized bytes --
+so a deterministic leak of the 47 bytes isn't reachable that way. It's
+still a genuine uninitialized read worth closing; see below.
 
----
-base-commit: 8e65320d91cdc3b241d4b94855c88459b91abf66
-change-id: 20260612-b4-disp-6d52d8b0-ae1f21cdd8ab
+> [Severity: High] [...] sel_res [...] uninitialized [...] nci_add_new_prot=
+ocol()
+> [...] nfc_genl_send_target() [...] sent out unconditionally [...]
 
-Best regards,
--- 
-Bryam Vargas <hexlabsecurity@proton.me>
+Confirmed, and this one does reach userspace: with sel_res_len =3D=3D 0,
+nci_extract_rf_params_nfca_passive_poll() leaves sel_res unwritten in the
+on-stack ntf, nci_add_new_protocol() copies it unconditionally, and
+nfc_genl_send_target() puts it into NFC_ATTR_TARGET_SEL_RES on
+NFC_CMD_GET_TARGET -- a one-byte stack disclosure (the discover-NTF path
+reaches it without the err=3D=3DNCI_STATUS_OK gate).
 
+Both pre-existing issues are closed by zero-initializing the on-stack
+notification structs:
+
+    struct nci_rf_discover_ntf ntf =3D {};        /* nci_rf_discover_ntf_pa=
+cket */
+    struct nci_rf_intf_activated_ntf ntf =3D {};  /* nci_rf_intf_activated_=
+ntf_packet */
+
+I'll send that as a separate patch rather than fold it into this one, since
+it's an independent change in different functions.
 
