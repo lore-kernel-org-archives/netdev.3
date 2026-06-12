@@ -1,54 +1,54 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 947652C032E
-	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 00:18:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E19A2797AC
+	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 00:18:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781223492; cv=none; b=dLiTMlZH8rbO9hQd08fLsp5tWFLH3S2a8kkBHOYjP+rZLZP3GqcZl55ukLwvZvVHAvb65+/k2zi7VAvt5y0k4tiBqPwYZkfUuPaz6sfytHejrK73AZKCNDmgUrJ5ZDWIZ8PNIRNkWLM+S3A+M8GsPy1A+SP6QszEVkG+eNGDv2U=
+	t=1781223493; cv=none; b=rajZkpHICJKSLQsL6XTzROfMwZIVeqDT1ZfH2QD1x5IcXXibPDZRDictR5Z3+OJxVLqnfTAgEu0RQ1K6VT7GWaGxeo6K6HO6qTZNay5Obz4H12XMkgqgdrWxg1qIqRqKtYNcoZoWKovnFYlad5a7fiQbbRd8KpY/EQ+j9ExEreY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781223492; c=relaxed/simple;
-	bh=LiD75WaDj/nNjJkDcjE9w7295/2dOZf6vbD32NlQZI8=;
+	s=arc-20240116; t=1781223493; c=relaxed/simple;
+	bh=PRBrAbH+2sELnj0GaR41favKk1Iia+OXUnZB27YUaCc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Kh9UUWo7pbtStPf4tTtaWs+CWQ3jZqSV+2dbIdnPvqrdAvCzbzwnAEeAuZujUZaToW080g5GScl6Em/L/DUnh27/12D5DahBGylDsc1GvegA2wfEmtBMW1lEnLSf+fBaowpvp9yy9Ai92nUt81j0gv2rajArKyW4GBRZz16YKNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EjOg5Smw; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=dMzwdCCsRDljQzgSaQngdH1KoZ69S5Xhs75uedjD4lrkzHVlj/gDzwFnLZdbulQu30mODnowbj8cEx87YWW2wLM8p0Y4yzwi2ZIfC5R9Tz2WyCs9cNjT7HM8iuO450A5kXxEN3nK/vRmG3Yx06J5T5g+FVdgFECfT8yyj+szORo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OaAp+fDZ; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EjOg5Smw"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c8582b167f7so192775a12.0
-        for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 17:18:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OaAp+fDZ"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36bbcd40642so339625a91.0
+        for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 17:18:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781223489; x=1781828289; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1781223491; x=1781828291; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yUo9GSEHGqFt/lJLpzmBjgRQi1upn5qNvml1cjFSyZ0=;
-        b=EjOg5SmwXGlma9LSuW0WsqxNb4NPj2F1BL80dI2GDXBxJQ+dsBrZGwHvEzZAcWLTM/
-         Jg2SsUa1HDSYXDeampATtnd8+49wUPNQk7Zcse4qMbMAxI9AgREG1BqGATJhbAX2rM7R
-         eWg9aJNMJmoI/REkWSEx383KV/gZpcD9zk2YrOd/FTw0ZbJP952G6bOChHExD2CS7Csl
-         VV3A/CKgnV28X5YT3nbk3vlVvXl0qkbnwPDNhv6Qh9Kz30og0U6UERZWbXVf9+rWjYl1
-         ZIEvJflw3m74iPuy7qxHv4/Z0xOUBl62HnLnOx4Pl5Jfv+bQVxP5rXkQX+TLOh1ONT78
-         +kgQ==
+        bh=URKaWsEr5XjLfQl6rXr6400DzK0ZCPWUnQncbp0qbkE=;
+        b=OaAp+fDZ7X2axXF6uo55adwRJWyf1UEX4cehM4slmJE7WK8P2I1of9KRyNOs+SE5US
+         yLr3tq4F+7JCIPrY33mnGRh4do9csL6FIuR49T6Nu3A1xAT0hMcE0bWI/m6IVOd6rUvL
+         kHg+6zmsv6V89jEA27ZV5+XGeK3QVy+Top4rvUkB2uCtF2MLtOquj1eW2uAktIHfiC4n
+         /DpvEygrwq91kX4ct7QGffkA8944eogjHblK7SND1C7aJP0kgJhz/SH5VVS6x0LKBN+e
+         hZpFI4C5571MnTPC8loQflGCudJnrCyoBrsBjSFSHoElnMiHoqpeU8VqkD75wJg58O+N
+         C78A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781223489; x=1781828289;
+        d=1e100.net; s=20251104; t=1781223491; x=1781828291;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yUo9GSEHGqFt/lJLpzmBjgRQi1upn5qNvml1cjFSyZ0=;
-        b=S4VShnBOcwxAZ32e7ORbqtmP6cH4syH7Tw3Tf29fp9crcFAbHkRWNWdmlhCu7JrCBr
-         Yu2M/RfiOsi1Z2D7FT4tngQet0aU79YTnblKQ/SaFWlM+E8BvN9GgMXZG3vXGJmtO1Ls
-         gxSB4KdgH6T/1+rQcqZ+xToQkBsHWAbsgdBRokpKtnCmZlSd56GeIwk7hn+/2vxTicaA
-         +JxtW3kVeceSyM7TqMN17SMnZ5c2rYvdSvI7/ijdkgitB4+VtkLrAcYfQa2JIO9/OYAs
-         SNaRU1mwyJiHp27jDE4QM/m9cUEVSNEYR92n7ncvmtVMvFutGLzVpJMNRI6unj6VmiJt
-         o19A==
-X-Forwarded-Encrypted: i=1; AFNElJ9/ZTpHzWEekGxgO7jcUKTJrsljllts4WdsjirkhYyAIGygd4yKzxCEojQ7mZ0P+eoFof626hI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyzhehiKSGqfwxy4oqqWyPMwDsYMx5HHvk0BuNdCI+bkcRmv2Ft
-	rNn3Vgc0yi8uKACyxgq9mV+Fb3HBgn0wlrLFRuL3zMvBAtJVYH0CdQupGuM+PhysgHvZO32RPL3
-	C80wPkQ==
-X-Received: from pgbct10.prod.google.com ([2002:a05:6a02:210a:b0:c76:651e:6d72])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6300:210f:b0:3b3:1a00:1f4a
- with SMTP id adf61e73a8af0-3b7840857c4mr629804637.43.1781223488593; Thu, 11
- Jun 2026 17:18:08 -0700 (PDT)
-Date: Fri, 12 Jun 2026 00:17:33 +0000
+        bh=URKaWsEr5XjLfQl6rXr6400DzK0ZCPWUnQncbp0qbkE=;
+        b=n8sXyr0IA7/Uur3VQPxTuQ+piHqxLWJsUzv37laz+69V3uc3h0UmeH+giWoTLgiMe8
+         Js3hmrgqAB3bT4CRBA75SRb5OQ/qNtASVpN0v0YQyAdpV82sMk6SAnm9GVCgZqDxpTm9
+         TbuEVAm9pm92h4gvGtS6cC3P7WoX168dNTI2Ai351o3Oq763xY5O0m4CPAV8lCcA7lpd
+         Sdeqj+RxgeiLkJNSjFrIlv2gkqwtBmqlFEIY1qGNEsMqH4Tyal8DI43Dw7NWJ7XnE6D+
+         JzZZ3NbqmXPaKOfwyhPRMhIhAk2FZLkUipon2ZKl53LUhL1kUjtS8X8C6IEImrAlmUJZ
+         bArg==
+X-Forwarded-Encrypted: i=1; AFNElJ+95XT7zdqrspNCqFygxCIKvdoFnEoV1JwnybdJdsDcqcR2tq6sLShcBZq48PgV4/GTj/TH8uA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0OvkSIDWoOpt8FS/UrgKc8ChDb1Cp158KORnvwQV/uJAXdsQU
+	m3cGFkwTT3cYZaoX/E5SHUVyRL8ohtjFsmd5HeEiGynI2vxc0U83MGbbr3F87iNLh0xbO80ouT3
+	tiOBQ2Q==
+X-Received: from plbkt16.prod.google.com ([2002:a17:903:890:b0:2bf:2609:e7bc])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3851:b0:369:971:4888
+ with SMTP id 98e67ed59e1d1-37a032e642bmr641716a91.15.1781223490418; Thu, 11
+ Jun 2026 17:18:10 -0700 (PDT)
+Date: Fri, 12 Jun 2026 00:17:35 +0000
 In-Reply-To: <20260612001803.23341-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -58,8 +58,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260612001803.23341-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
-Message-ID: <20260612001803.23341-3-kuniyu@google.com>
-Subject: [PATCH v1 bpf-next/net 2/5] bpf: Rename bpf_kfunc_set_tcp_reqsk to bpf_kfunc_set_sched_cls.
+Message-ID: <20260612001803.23341-5-kuniyu@google.com>
+Subject: [PATCH v1 bpf-next/net 4/5] bpf: Add kfunc to proxy TX HW Timestamp.
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
 	Martin KaFai Lau <martin.lau@linux.dev>, Stanislav Fomichev <sdf@fomichev.me>, 
@@ -73,55 +73,347 @@ Cc: Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>,
 	Kuniyuki Iwashima <kuni1840@gmail.com>, bpf@vger.kernel.org, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Currently bpf_kfunc_set_tcp_reqsk is registered for
-BPF_PROG_TYPE_SCHED_CLS.
+In the setup mentioned in the previous patch, it is impossible
+for socket applications to get TX hardware timestamps via
+SCM_TIMESTAMPING.
 
-We will add more kfuncs there, but the name is too specific.
+To proxy TX hardware timestamp, let's add two kfuncs:
 
-Let's rename it to bpf_kfunc_set_sched_cls.
+  * bpf_skb_scrub_tx_tstamp()    : scrub skb_shinfo(skb)->tx_flags
+  * bpf_skb_complete_tx_tstamp() : enqueue skb to sk->sk_error_queue
+
+The key idea is to regenerate an skb that contains all the
+information required for the TX timestamp, identical to the
+original skb.
+
+Here is how it works:
+
+When the socket application sends a packet, BPF prog at tc/egress
+checks skb_shinfo()->tx_flags.  If it has SKBTX_HW_TSTAMP_NOBPF,
+BPF prog scrub the value by bpf_skb_scrub_tx_tstamp() and inserts
+a GENEVE option to signal that the packet wants TX HW timestamp.
+
+The proxy decapsulates and forwards the packet to the hardware,
+and if it has GENEVE option, the proxy keeps the original packet
+until TX completion.
+
+            +---------+                 +----------------------+
+            |  proxy  |                 |  socket application  |
+            +---------+                 +----------------------+
+              |     ^ decap packet and              |
+  userspace   |     |  keep it till TX cmpl         |
+  -----------| |-----------------------------------------------
+             | |    |    +---------------------+    | skb
+             | |    `----|       geneve0       |<---'
+  kernel     | |   skb   +---------------------+
+             | |             ^             |
+             | |             |             v
+             | |          +------------------+  check skb_shinfo()->tx_flags
+             | |          |  BPF@tc/egress   |    and insert a GENEVE option
+             | |          +------------------+
+  -----------| |-----------------------------------------------
+              |
+              v
+       +------------+
+       |  hardware  |
+       +------------+
+
+Once the proxy gets TX hwtstamp, encapsulate the original packet
+with TX hwtstamp embedded in GENEVE option, and sends it to the
+GENEVE device.
+
+At tc@ingress, BPF extracts the TX hwtstamp and sets it to skb.
+Then, it looks up the sender socket, assigns it to skb->sk,
+calls bpf_skb_complete_tx_tstamp(), and returns TCX_ERRQUEUE to
+put the skb to skb->sk->sk_error_queue.
+
+            +---------+                 +----------------------+
+            |  proxy  |                 |  socket application  |
+            +---------+                 +----------------------+
+              ^     | encap packet                  ^ get TX hwtstamp by
+  userspace   |     |  w/ TX hwtstamp               |  recvmsg(MSG_ERRQUEUE)
+  -----------| |-----------------------------------------------
+             | |    |    +---------------------+    | skb
+             | |    `--->|       geneve0       |    |
+  kernel     | |   skb   +---------------------+    |
+             | |             |              ________'
+             | |             v             |    extract TX hwtstamp to skb
+             | |          +------------------+   and look up the sender sk
+             | |          |  BPF@tc/ingress  |   and enqueue skb to its
+             | |          +------------------+    sk->sk_error_queue
+  -----------| |-----------------------------------------------
+              |
+              | TX completion w/ TX hwtstamp
+       +------------+
+       |  hardware  |
+       +------------+
+
+This provides transparent TX HW timestamp support, and the socket
+application can finally receive it via recvmsg(MSG_ERRQUEUE).
+
+Note that struct bpf_tx_tstamp_cmpl needs network_offset and
+payload_offset so that
+
+  1. ip_cmsg_recv() and ipv6_recv_error() can correctly parse
+     the IPv4/IPv6 header for some control messages
+
+  2. applications can receive the original payload
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
- net/core/filter.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ include/linux/filter.h       |  2 ++
+ include/linux/skbuff.h       |  8 +++++
+ include/net/tcx.h            |  1 +
+ include/uapi/linux/bpf.h     |  1 +
+ include/uapi/linux/pkt_cls.h |  3 +-
+ kernel/bpf/verifier.c        |  6 +++-
+ net/core/dev.c               | 39 ++++++++++++++++++++++++
+ net/core/filter.c            | 58 ++++++++++++++++++++++++++++++++++++
+ 8 files changed, 116 insertions(+), 2 deletions(-)
 
+diff --git a/include/linux/filter.h b/include/linux/filter.h
+index 88a241aac36a..59097bfd8522 100644
+--- a/include/linux/filter.h
++++ b/include/linux/filter.h
+@@ -770,6 +770,7 @@ struct bpf_nh_params {
+ #define BPF_RI_F_CPU_MAP_INIT	BIT(2)
+ #define BPF_RI_F_DEV_MAP_INIT	BIT(3)
+ #define BPF_RI_F_XSK_MAP_INIT	BIT(4)
++#define BPF_RI_F_TX_TS_CMPL	BIT(5)
+ 
+ struct bpf_redirect_info {
+ 	u64 tgt_index;
+@@ -780,6 +781,7 @@ struct bpf_redirect_info {
+ 	enum bpf_map_type map_type;
+ 	struct bpf_nh_params nh;
+ 	u32 kern_flags;
++	struct bpf_tx_tstamp_cmpl txtscmpl;
+ };
+ 
+ struct bpf_net_context {
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index b4ac1180f5a8..bd9343288928 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -4706,6 +4706,14 @@ struct bpf_hwtstamp {
+ 	u64 reserved;
+ } __packed;
+ 
++struct bpf_tx_tstamp_cmpl {
++	u32 tskey;
++	__be16 protocol;
++	u16 network_offset;
++	u16 payload_offset;
++	u16 reserved;
++} __packed;
++
+ /**
+  * skb_complete_tx_timestamp() - deliver cloned skb with tx timestamps
+  *
+diff --git a/include/net/tcx.h b/include/net/tcx.h
+index 23a61af13547..052e751d907e 100644
+--- a/include/net/tcx.h
++++ b/include/net/tcx.h
+@@ -151,6 +151,7 @@ static inline enum tcx_action_base tcx_action_code(struct sk_buff *skb,
+ 		fallthrough;
+ 	case TCX_DROP:
+ 	case TCX_REDIRECT:
++	case TCX_ERRQUEUE:
+ 		return code;
+ 	case TCX_NEXT:
+ 	default:
+diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
+index 552bc5d9afbd..60950aa583aa 100644
+--- a/include/uapi/linux/bpf.h
++++ b/include/uapi/linux/bpf.h
+@@ -6532,6 +6532,7 @@ enum tcx_action_base {
+ 	TCX_PASS	= 0,
+ 	TCX_DROP	= 2,
+ 	TCX_REDIRECT	= 7,
++	TCX_ERRQUEUE	= 9,
+ };
+ 
+ struct bpf_xdp_sock {
+diff --git a/include/uapi/linux/pkt_cls.h b/include/uapi/linux/pkt_cls.h
+index 28d94b11d1aa..337f1bdbabb6 100644
+--- a/include/uapi/linux/pkt_cls.h
++++ b/include/uapi/linux/pkt_cls.h
+@@ -76,7 +76,8 @@ enum {
+ 				   * the skb and act like everything
+ 				   * is alright.
+ 				   */
+-#define TC_ACT_VALUE_MAX	TC_ACT_TRAP
++#define TC_ACT_ERRQUEUE		9
++#define TC_ACT_VALUE_MAX	TC_ACT_ERRQUEUE
+ 
+ /* There is a special kind of actions called "extended actions",
+  * which need a value parameter. These have a local opcode located in
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 6b23577d001a..5451a19847ec 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -11192,6 +11192,7 @@ enum special_kfunc_type {
+ 	KF_bpf_stream_vprintk,
+ 	KF_bpf_stream_print_stack,
+ 	KF_bpf_skb_set_hwtstamp,
++	KF_bpf_skb_scrub_tx_tstamp,
+ };
+ 
+ BTF_ID_LIST(special_kfunc_list)
+@@ -11286,8 +11287,10 @@ BTF_ID(func, bpf_stream_vprintk)
+ BTF_ID(func, bpf_stream_print_stack)
+ #ifdef CONFIG_NET
+ BTF_ID(func, bpf_skb_set_hwtstamp)
++BTF_ID(func, bpf_skb_scrub_tx_tstamp)
+ #else
+ BTF_ID_UNUSED
++BTF_ID_UNUSED
+ #endif
+ 
+ static bool is_bpf_obj_new_kfunc(u32 func_id)
+@@ -11371,7 +11374,8 @@ static bool is_kfunc_bpf_preempt_enable(struct bpf_kfunc_call_arg_meta *meta)
+ bool bpf_is_kfunc_pkt_changing(struct bpf_kfunc_call_arg_meta *meta)
+ {
+ 	return meta->func_id == special_kfunc_list[KF_bpf_xdp_pull_data] ||
+-	       meta->func_id == special_kfunc_list[KF_bpf_skb_set_hwtstamp];
++	       meta->func_id == special_kfunc_list[KF_bpf_skb_set_hwtstamp] ||
++	       meta->func_id == special_kfunc_list[KF_bpf_skb_scrub_tx_tstamp];
+ }
+ 
+ static enum kfunc_ptr_arg_type
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 1ecd5691992e..6f39e613cbbd 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -4457,6 +4457,41 @@ tcx_run(const struct bpf_mprog_entry *entry, struct sk_buff *skb,
+ 	return tcx_action_code(skb, ret);
+ }
+ 
++static int skb_do_completion(struct sk_buff *skb)
++{
++	enum skb_drop_reason drop_reason = SKB_DROP_REASON_TC_INGRESS;
++	struct bpf_redirect_info *ri = bpf_net_ctx_get_ri();
++	struct bpf_tx_tstamp_cmpl *txtscmpl;
++
++	if (!(ri->kern_flags & BPF_RI_F_TX_TS_CMPL))
++		goto drop;
++
++	if (skb_header_unclone(skb, GFP_ATOMIC))
++		goto drop;
++
++	__skb_push(skb, skb->mac_len);
++
++	txtscmpl = &ri->txtscmpl;
++
++	drop_reason = pskb_may_pull_reason(skb, txtscmpl->payload_offset);
++	if (drop_reason)
++		goto drop;
++
++	skb->protocol = txtscmpl->protocol;
++	skb_set_network_header(skb, txtscmpl->network_offset);
++	__skb_pull(skb, txtscmpl->payload_offset);
++
++	skb_shinfo(skb)->tskey = txtscmpl->tskey;
++	skb_shinfo(skb)->tx_flags = SKBTX_HW_TSTAMP_NOBPF;
++	__skb_tstamp_tx(skb, NULL, skb_hwtstamps(skb), skb->sk, SCM_TSTAMP_SND);
++
++	consume_skb(skb);
++	return NET_RX_SUCCESS;
++drop:
++	kfree_skb_reason(skb, drop_reason);
++	return NET_RX_DROP;
++}
++
+ static __always_inline struct sk_buff *
+ sch_handle_ingress(struct sk_buff *skb, struct packet_type **pt_prev, int *ret,
+ 		   struct net_device *orig_dev, bool *another)
+@@ -4505,6 +4540,10 @@ sch_handle_ingress(struct sk_buff *skb, struct packet_type **pt_prev, int *ret,
+ 		*ret = NET_RX_DROP;
+ 		bpf_net_ctx_clear(bpf_net_ctx);
+ 		return NULL;
++	case TC_ACT_ERRQUEUE:
++		*ret = skb_do_completion(skb);
++		bpf_net_ctx_clear(bpf_net_ctx);
++		return NULL;
+ 	/* used by tc_run */
+ 	case TC_ACT_STOLEN:
+ 	case TC_ACT_QUEUED:
 diff --git a/net/core/filter.c b/net/core/filter.c
-index 80439767e0ee..acdc66aa4f27 100644
+index ab7adef9c015..0bb8122f9f2e 100644
 --- a/net/core/filter.c
 +++ b/net/core/filter.c
-@@ -12498,9 +12498,9 @@ BTF_KFUNCS_START(bpf_kfunc_check_set_sock_addr)
- BTF_ID_FLAGS(func, bpf_sock_addr_set_sun_path)
- BTF_KFUNCS_END(bpf_kfunc_check_set_sock_addr)
+@@ -12394,6 +12394,62 @@ __bpf_kfunc int bpf_skb_set_hwtstamp(struct __sk_buff *s,
+ 	return 0;
+ }
  
--BTF_KFUNCS_START(bpf_kfunc_check_set_tcp_reqsk)
-+BTF_KFUNCS_START(bpf_kfunc_check_set_sched_cls)
++__bpf_kfunc int bpf_skb_scrub_tx_tstamp(struct __sk_buff *s)
++{
++	struct sk_buff *skb = (struct sk_buff *)s;
++
++	if (skb_at_tc_ingress(skb))
++		return -EINVAL;
++
++	if (skb_header_unclone(skb, GFP_ATOMIC))
++		return -ENOMEM;
++
++	skb_shinfo(skb)->tx_flags = 0;
++
++	bpf_compute_data_pointers(skb);
++
++	return 0;
++}
++
++__bpf_kfunc int bpf_skb_complete_tx_tstamp(struct __sk_buff *s,
++					   struct bpf_tx_tstamp_cmpl *attrs,
++					   int attrs__sz)
++{
++	struct sk_buff *skb = (struct sk_buff *)s;
++	struct bpf_redirect_info *ri;
++	struct sock *sk = skb->sk;
++	s32 delta;
++
++	if (attrs__sz != sizeof(*attrs) || attrs->reserved)
++		return -EINVAL;
++
++	if (!sk || !sk_fullsock(sk))
++		return -EINVAL;
++
++	if (attrs->payload_offset > skb->len)
++		return -EINVAL;
++
++	delta = attrs->payload_offset - attrs->network_offset;
++	switch (attrs->protocol) {
++	case htons(ETH_P_IP):
++		if (delta < (s32)sizeof(struct iphdr) || !sk_is_inet(sk))
++			return -EINVAL;
++		break;
++	case htons(ETH_P_IPV6):
++		if (delta < (s32)sizeof(struct ipv6hdr) || sk->sk_family != AF_INET6)
++			return -EINVAL;
++		break;
++	default:
++		return -EAFNOSUPPORT;
++	}
++
++	ri = bpf_net_ctx_get_ri();
++	ri->kern_flags |= BPF_RI_F_TX_TS_CMPL;
++	ri->txtscmpl = *attrs;
++
++	return 0;
++}
++
+ /**
+  * bpf_xdp_pull_data() - Pull in non-linear xdp data.
+  * @x: &xdp_md associated with the XDP buffer
+@@ -12523,6 +12579,8 @@ BTF_KFUNCS_END(bpf_kfunc_check_set_sock_addr)
+ BTF_KFUNCS_START(bpf_kfunc_check_set_sched_cls)
  BTF_ID_FLAGS(func, bpf_sk_assign_tcp_reqsk)
--BTF_KFUNCS_END(bpf_kfunc_check_set_tcp_reqsk)
-+BTF_KFUNCS_END(bpf_kfunc_check_set_sched_cls)
+ BTF_ID_FLAGS(func, bpf_skb_set_hwtstamp)
++BTF_ID_FLAGS(func, bpf_skb_scrub_tx_tstamp)
++BTF_ID_FLAGS(func, bpf_skb_complete_tx_tstamp)
+ BTF_KFUNCS_END(bpf_kfunc_check_set_sched_cls)
  
  BTF_KFUNCS_START(bpf_kfunc_check_set_sock_ops)
- BTF_ID_FLAGS(func, bpf_sock_ops_enable_tx_tstamp)
-@@ -12526,9 +12526,9 @@ static const struct btf_kfunc_id_set bpf_kfunc_set_sock_addr = {
- 	.set = &bpf_kfunc_check_set_sock_addr,
- };
- 
--static const struct btf_kfunc_id_set bpf_kfunc_set_tcp_reqsk = {
-+static const struct btf_kfunc_id_set bpf_kfunc_set_sched_cls = {
- 	.owner = THIS_MODULE,
--	.set = &bpf_kfunc_check_set_tcp_reqsk,
-+	.set = &bpf_kfunc_check_set_sched_cls,
- };
- 
- static const struct btf_kfunc_id_set bpf_kfunc_set_sock_ops = {
-@@ -12556,7 +12556,7 @@ static int __init bpf_kfunc_init(void)
- 	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_XDP, &bpf_kfunc_set_xdp);
- 	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_CGROUP_SOCK_ADDR,
- 					       &bpf_kfunc_set_sock_addr);
--	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_SCHED_CLS, &bpf_kfunc_set_tcp_reqsk);
-+	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_SCHED_CLS, &bpf_kfunc_set_sched_cls);
- 	return ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_SOCK_OPS, &bpf_kfunc_set_sock_ops);
- }
- late_initcall(bpf_kfunc_init);
 -- 
 2.54.0.1136.gdb2ca164c4-goog
 
