@@ -1,109 +1,68 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57510340283
-	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 19:50:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 467A43ADBAD;
+	Fri, 12 Jun 2026 20:01:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781293820; cv=none; b=XDvgo7ZjBQMy6OV7GjEiNd2ZSHN2Adrfhh+Q4Dp51QatHvrv0U+bwIQOiBcdiU2sLyfWv1f7NJokB2gWiuqx8vr2dxIP2l/lidIs/4q9q4YsFRwy0ninjoVWgU/Ij0vKyoyR+FdzsXgs9wRj+JdMvoAlgbCwKSoMvDSipcj+l+I=
+	t=1781294472; cv=none; b=THfJTVxlExHVZwcBJ9oBHsJGV2qNb7uYpuHaPuXnyDxa8CXJo9ixAcuAN+H7eLJCNA31an7IAhJGq1k6oUNKWw9awV7ONO+LOCVJPDqCmXUIhkAx87nADrZcczlT+MffAY5HwsosPhqmwgemrmxaU08iFg6efcdmZ+/jHqVaF0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781293820; c=relaxed/simple;
-	bh=gX5y+wqAP96q+Fv7j8iUel+Mkqn2h3ystDL7w/XRTwM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=LRuicLa4Fk86k5Dme5lTX3deg1NsQWQqNFWVkR1wbTmNo3jvUypkiXgF7NGeozPdClsW/N2AfvwMnlBqxkxs25gMFsFOItMDGtXhXHVehAfYjLQEQQPcntO1Rc2uI8slgiI2KvsJjMg2sJ0X/FUGLYQsEU7b2FnmsRhvErpWNug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ta3AeayL; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1781294472; c=relaxed/simple;
+	bh=agMd+urAvIyKRjQYU+TIhH8AHBmKyGvaoohLJsoxiyU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ju2Nku0QOPONDfklUqGYSzaH7bwXRpqLeE/Ox/jSqx990BQc49o6bGflvb/2VqpoY1cMOPgP+/+ZtSyBd30uAoBR1n1G50MqIcYDT+wyCNQlrzgBKxXgXGgbQuuyfbf+HA5jsC4D0qerQL3l0jWaCft2xutDX9sUUvllO+9DtXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H14Rv8QI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ta3AeayL"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-490ae3bcf4cso6180035e9.3
-        for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 12:50:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781293818; x=1781898618; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yJtaeor/RMdRA8pDnzGdMSIMMP892NMMkV6Jr1/bAH8=;
-        b=ta3AeayL5FR/ttBmcZBINLkdp+y//oHpmtd5Vwgi8QJxcE8ZMuFDqluHPvXBygtl3/
-         mpgx26166EHs3WUyXUReIXBzqQ7f264lV+opppnt/oVcJLZBydgClhfuw6ufphaQIhaG
-         12uBHY8yhO/40lpPbblPgP1xOCY8jKAX9MxmRVf6eXz+W2hAvyuakysHWrgdB5l5M3xK
-         qKDsafO0UJIECWUvai9iE4quidiNL1PNcENTKyOq1X9VVD5t44+KOyTDdudGyQMKNwol
-         wizsY0LhzRIOvQPUKpeR2611oLsUy2K4cYP7n/9d50m5+puWeMCH+aSPGkd+oLNeNX3y
-         HEmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781293818; x=1781898618;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yJtaeor/RMdRA8pDnzGdMSIMMP892NMMkV6Jr1/bAH8=;
-        b=B/TnCZdpXgaRzJD90cNTrTy5dXDdd7iB9dh3QB/oqo8HhOowVtV8O609bOXpE+j1Ml
-         VTVkChQ5tpYQCHsKbX/GMIatiiKEoTwzIWCvqTnNbbru1JBWzFvDNj2Cc0F/fDduh9qw
-         YXzdu/vrVQfyBpbKhJIJo7U9f4Vls/5ZPOSMgpCYysucfyXM+co8qLlwMEPF5ZqPyCv6
-         64QtpgvAyQwK7vRzs5aWzrx6RtmNjSw6O6qdaQSX/ixkDeIK5YdeUDyGnM6/CnmJTvD8
-         Qrv1nv6Vb4qPmgb1wZgjq4sZpeP5jBJB2L58P5TocEgeGROy+PnQsPtLGyTC0NJNKXVM
-         cNvQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+oaHjAUIpeiUFqVbfe+Ew6oXEked+t7ezYzoVV4hkRbODJB9xFVhCjHyVgn30z9nWdAoEqWJI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzKq5qGEdkUvrYR0yNQmmLrAgHRuLIHiiTxjwo02NXK4aN+q6cs
-	4vU73tw7G6sJcsCHqCeVbhke5tx2z84P9rjEwOeZvKcgWqMvsrxPY7tW2f6UBrRTXoED9lti1T9
-	6cSERBueKbsKh6qJ3Ng==
-X-Received: from wmsk6-n2.prod.google.com ([2002:a05:600d:8486:20b0:490:3fd8:77de])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1790:b0:48a:8b02:ae91 with SMTP id 5b1f17b1804b1-49220092ec4mr6888375e9.11.1781293817496;
- Fri, 12 Jun 2026 12:50:17 -0700 (PDT)
-Date: Fri, 12 Jun 2026 19:50:16 +0000
-In-Reply-To: <2da031dd-4442-45b7-9515-72ffc60e8d8c@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H14Rv8QI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E76031F000E9;
+	Fri, 12 Jun 2026 20:01:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781294469;
+	bh=6cNLNgKkcl8y9XOjsHZbmwTHwlAMKwujnNeJuX5MyOM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=H14Rv8QIWLqMP5DKAKGLXtlhlq3IhYgWWJ6DqMIRiuBuURhTpCog/S9xltrF1bRv7
+	 l4Kec9HrjhQHQpafmFP65nTJnZgD5g0fkkxmPgXvxLRp7Oon4CobbdefGMepHu/DWr
+	 WuO/0iRij4UTgHdWeZhIeWh+Oi4T6+zINU8JzBc74X8nfSyNVPH34nS1ZNkHM7rPOA
+	 gAAFEW14575TMb5lZWOXngy2vHBwGa1OSvR3OYGYY7w1Vq8JCobMte7yuCvOi9KzYg
+	 EJOeDpKKT+scHphKNlQc8ZQs+xroSlIvgPAlvze0zsyNeP8i6SLw7HVfaWWbVPd78W
+	 /DKIR6ILAjPuA==
+Date: Fri, 12 Jun 2026 21:01:02 +0100
+From: Simon Horman <horms@kernel.org>
+To: Parvathi Pudi <parvathi@couthit.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, danishanwar@ti.com,
+	rogerq@kernel.org, pmohan@couthit.com, afd@ti.com,
+	basharath@couthit.com, arnd@arndb.de, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	pratheesh@ti.com, j-rameshbabu@ti.com, vigneshr@ti.com,
+	praneeth@ti.com, srk@ti.com, rogerq@ti.com, m-malladi@ti.com,
+	krishna@couthit.com, mohan@couthit.com
+Subject: Re: [PATCH net-next 0/3] Introduce HSR/PRP HW offload support for
+ PRU-ICSSM Ethernet driver
+Message-ID: <20260612200102.GN671640@horms.kernel.org>
+References: <20260611123636.376577-1-parvathi@couthit.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260610230409.A44D29FA@davehans-spike.ostc.intel.com>
- <20260610230413.D68967BC@davehans-spike.ostc.intel.com> <aipphZ5iCnbXVNSR@google.com>
- <CAJuCfpHmem_g7mEoic7O56LVSLkbftgWYgzexPWy7VSwp7_SiA@mail.gmail.com>
- <131c6a49-9177-418b-a653-8f13942fb8d3@kernel.org> <876077cc-db6a-4517-9d81-cdfbb43e599e@intel.com>
- <CAJuCfpFh60wULMkFc7hzxWNg+qmZ2R_HMw_QZe5CNcDRFuoN6A@mail.gmail.com>
- <e9e196ff-7428-43bd-8e06-dc2cf0628c9e@intel.com> <CAJuCfpFo_avdhpOviX7EsPqLgDJ3DfeGpth+yu1-ahfawqaSzw@mail.gmail.com>
- <2da031dd-4442-45b7-9515-72ffc60e8d8c@intel.com>
-Message-ID: <aixi-DxMuc0MiGeO@google.com>
-Subject: Re: [PATCH v2 2/5] binder: Make shrinker rely solely on per-VMA lock
-From: Alice Ryhl <aliceryhl@google.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Suren Baghdasaryan <surenb@google.com>, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, 
-	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Carlos Llamas <cmllamas@google.com>, 
-	Christian Brauner <christian@brauner.io>, David Ahern <dsahern@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-mm@kvack.org, 
-	Lorenzo Stoakes <ljs@kernel.org>, netdev@vger.kernel.org, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Todd Kjos <tkjos@android.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260611123636.376577-1-parvathi@couthit.com>
 
-On Fri, Jun 12, 2026 at 11:47:59AM -0700, Dave Hansen wrote:
-> On 6/12/26 10:44, Suren Baghdasaryan wrote:
-> >> It's not impossible, but I do think it is irrelevant. Or at least that
-> >> the *VMA* is irrelevant in this case. binder_alloc_is_mapped()==false
-> >> means that the binder VMA is gone. It's not in the maple tree, and it's
-> >> not coming back. If a VMA is found, it's an impostor.
-> > Right, but before your change we were bailing out early. With your
-> > change we would be generating the traces and freeing the page. I think
-> > that's a functional change. Was that your intention?
+On Thu, Jun 11, 2026 at 06:03:25PM +0530, Parvathi Pudi wrote:
+> Hi,
 > 
-> Yeah, it was intentional.
-> 
-> I think the existing behavior is buggy. It also complicates the goal of
-> removing the mmap lock fallback. I've broken that behavior change out
-> into a separate patch. (attached here)
+> This series introduces HSR and PRP protocol HW offload support for
+> ICSSM-Prueth driver.  HW offload support for HSR/PRP is implemented using
+> dedicated HSR/PRP firmware running on 2 PRU cores(PRU-ICSS) as a "DAN"
+> available in AM57xx, AM437x and AM335x.
 
-I think you can just:
+Hi Parvathi,
 
-1. do a lock_vma_under_rcu().
-2. if it fails, check binder_alloc_is_mapped().
-3. if still mapped, return LRU_SKIP, otherwise behave like a failed
-   vma_lookup() does today under the mmap read lock.
+There is AI-generated review of this patch-set available on
+https://sashiko.dev
 
-Or you can even skip steps 2 and 3 and treat failed lock_vma_under_rcu()
-as LRU_SKIP because processes that unmap their Binder vma without
-immediately closing the fd (freeing all the pages) does not really exist
-in practice.
-
-Alice
+I would appreciate it if you could look over that with a view
+to addressing any issues that directly affect this patch-set.
