@@ -1,99 +1,133 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF14369203;
-	Fri, 12 Jun 2026 09:40:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED10366051
+	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 09:45:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781257206; cv=none; b=aPZCeoj8AUvc8ICrJIDrKQ5AURuz7LhNMb7G9dT9egYjF4SJoMUm/eCjq1A6i0CwHuN8bkYgusdsRkaHfaa7m0jlCQ1eC+7gL10f3OUhtoGOi2CJlf9tYQccVdvuKDbI4q8Cc5N0P4BHCGe2b2/EX6FNRwiFGXFjO/jM4l+LerE=
+	t=1781257525; cv=none; b=PixAIDCqrSd5YsGGKw71yMZRy3bE7ZYfHS4+wcuQ9pkHF2eTzRlkmBXPbBOJtW7ANOovdNOHfPUnAv5K0R4eDrSdbfZ5n9JvaZl7Ed33G0o4FsHSbbm6obhisrGSNMJZZ2mb+q56Kg6yPbDZWr+T+y+BO8+KD1xYkvL0LLCTrjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781257206; c=relaxed/simple;
-	bh=fzysB5pIN803RVK9B30v9upfAqk/t4VVzBng+aQlha4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=US6mFU5kGwak0EZNbueUnMdQxoERRbknlwz3uN8ml71vR5Z42hcYMB+QX+z+LrJPBkyoYT6fCSmVbItI+3LgeRVkLt6hm9jFVTu50aX5vL+vk766nGPcp2byOK2tAvLLkKEUEgJzAoFkGxvl9tQo67AlyyA10YNy5+vJ+4vC9TY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UuKgjlnz; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781257525; c=relaxed/simple;
+	bh=VTSxjxhmvNI4LbXuNGTgOAix0RfJAtVADEzWKz5jJZc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=BxhUM2mRQC7EDnXsx6iEnF1jOezvGghFgZ92KaFhiZ0DKEojj6rLTU9Q8Cq245YR/nV+KiOdffpVK8G0rTlN6zpsHOgurtRKdL4Xv28mRC+ElGwnHuOWX72GKpdzkWreoj3cBJYcKG+qmh+xRiS2ZNfba8876QIQHMgmvEyX8kE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=N3HmtAk3; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UuKgjlnz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBCEA1F000E9;
-	Fri, 12 Jun 2026 09:40:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781257203;
-	bh=tnMdDldcFeu/oupQsEw5Jczw9eoM5xDyd7gMImQs7bY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=UuKgjlnz+unKpHXpQOILgpgXWbg+OtHmGSGxl8fvSNUtio6jkEv0G8iAsi3Np85Z0
-	 DyQQjNL22O8p8STi1GP2f2Jpc4nyxUX6JPnHnnQYL4PnA/EV8G5FI0uF3X3h+aiSv3
-	 JtIrgErNWYjPvfZBmsE3mpkqd3Puq81P8UHL3PZPOUrY/YfxkJunWgwTzjzWyw0sn3
-	 wZtOlkm+OoaIzzvo5f1Va/StG9hLlmDpskE3+c2yo+OE6SQ6dAgLm+ZPWXcvWzFa7t
-	 4e2q5FITZp7QBavQDaTrWvQvmiL+6gwYLh/VCSWbbQHnj9sWmAVMZtwno/r+WoAIyJ
-	 gKgjmtgi++6/A==
-Message-ID: <7be62ade-2598-4c63-8b42-393323a1cc0e@kernel.org>
-Date: Fri, 12 Jun 2026 11:39:58 +0200
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="N3HmtAk3"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id C63504E42E5A;
+	Fri, 12 Jun 2026 09:45:21 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 901FE60012;
+	Fri, 12 Jun 2026 09:45:21 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1E170106C8567;
+	Fri, 12 Jun 2026 11:45:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1781257520; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=pAP1NcwYrXBK5Nx3wa/X8hgk6oZXZVKocwwn82WV4NA=;
+	b=N3HmtAk35VsP1qgGAXQ1tHQqUkfLGYVvab9kzm6RjePDLDHVWsR+DE0xdfJ+P+QeAGdJHN
+	ONqTwA50Fo3O5vGfbO3TA/mxy4eEqokbwcDTF+bWoXcsDXs8GNOemORaydA0cNY8zbtpoc
+	6fazjWEcphMfwdq/KPYrvqSQ0lZTR3FO+UA+yJZfMSx19foIoEKI0ygjYzOpZJSfiurDTr
+	Kr9GYnlaWFtNx+Grr6pxCNGetbXPdaEPJx5y3rfhZijw+4kGHygU+vLl08ALjhwfJNHGRX
+	g0kb5TR0/LGkb1h6AS7rwKKX2vrDBmBmySVZh0AM2qKKPMOKGMkTlRuk8OjXcw==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v6 4/5] net: sched: add timeout count to NETDEV
- WATCHDOG message
-To: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
-Cc: Jakub Kicinski <kuba@kernel.org>,
- =?UTF-8?Q?Jonas_K=C3=B6ppeler?= <j.koeppeler@tu-berlin.de>,
- Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org
-References: <20260527135418.1166665-1-hawk@kernel.org>
- <20260527135418.1166665-5-hawk@kernel.org>
- <3f73e314-756e-494e-a1aa-0bc39c14f41b@redhat.com>
-Content-Language: en-US
-From: Jesper Dangaard Brouer <hawk@kernel.org>
-In-Reply-To: <3f73e314-756e-494e-a1aa-0bc39c14f41b@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 12 Jun 2026 11:45:14 +0200
+Message-Id: <DJ6Z39C906LE.1F3XKDDM41UJ8@bootlin.com>
+Subject: Re: [PATCH] net: macb: add TX stall timeout callback to recover
+ from lost TSTART write
+Cc: "Lukasz Raczylo" <lukasz@raczylo.com>, "Steffen Jaeckel"
+ <sjaeckel@suse.de>
+To: "Andrea della Porta" <andrea.porta@suse.com>, <netdev@vger.kernel.org>,
+ "Nicolas Ferre" <nicolas.ferre@microchip.com>, "Claudiu Beznea"
+ <claudiu.beznea@tuxon.dev>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "David S
+ . Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>,
+ "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
+ <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+ <linux-rpi-kernel@lists.infradead.org>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <771b8faeaee1fce4a84a5ba2661d60b35a65a6d5.1781253818.git.andrea.porta@suse.com>
+In-Reply-To: <771b8faeaee1fce4a84a5ba2661d60b35a65a6d5.1781253818.git.andrea.porta@suse.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
+Hello Andrea,
 
+On Fri Jun 12, 2026 at 11:01 AM CEST, Andrea della Porta wrote:
+> From: Lukasz Raczylo <lukasz@raczylo.com>
+>
+> The MACB found in the Raspberry Pi RP1 suffers from sporadic stalls on
+> the TX queue.
+> While the exact root cause is not yet fully understood, it is likely
+> related to a hardware issue where a TSTART write to the NCR register
+> is missed, preventing the transmission from being kicked off.
+>
+> Implement a timeout callback to handle TX queue stalls, triggering the
+> existing restart mechanism to recover.
+>
+> Link: https://lore.kernel.org/all/20260514215459.36109-1-lukasz@raczylo.c=
+om/
+> Fixes: dc110d1b23564 ("net: cadence: macb: Add support for Raspberry Pi R=
+P1 ethernet controller")
+> Signed-off-by: Lukasz Raczylo <lukasz@raczylo.com>
+> Co-developed-by: Steffen Jaeckel <sjaeckel@suse.de>
+> Signed-off-by: Steffen Jaeckel <sjaeckel@suse.de>
+> Co-developed-by: Andrea della Porta <andrea.porta@suse.com>
+> Signed-off-by: Andrea della Porta <andrea.porta@suse.com>
+> ---
+>  drivers/net/ethernet/cadence/macb_main.c | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+>
+> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ether=
+net/cadence/macb_main.c
+> index a12aa21244e83..615da65d5d68d 100644
+> --- a/drivers/net/ethernet/cadence/macb_main.c
+> +++ b/drivers/net/ethernet/cadence/macb_main.c
+> @@ -4522,6 +4522,16 @@ static int macb_setup_tc(struct net_device *dev, e=
+num tc_setup_type type,
+>  	}
+>  }
+> =20
+> +static void macb_tx_timeout(struct net_device *dev, unsigned int q)
+> +{
+> +	struct macb *bp =3D netdev_priv(dev);
+> +
+> +	if (net_ratelimit())
+> +		netdev_err(dev, "TX stall detected, re-kicking TSTART\n");
 
-On 04/06/2026 10.30, Paolo Abeni wrote:
-> On 5/27/26 3:54 PM, hawk@kernel.org wrote:
->> diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
->> index 237ee1cd0136..2aebab985c00 100644
->> --- a/net/sched/sch_generic.c
->> +++ b/net/sched/sch_generic.c
->> @@ -533,13 +533,12 @@ static void dev_watchdog(struct timer_list *t)
->>   		    netif_running(dev) &&
->>   		    netif_carrier_ok(dev)) {
->>   			unsigned int timedout_ms = 0;
->> +			struct netdev_queue *txq;
->>   			unsigned int i;
->>   			unsigned long trans_start;
->>   			unsigned long oldest_start = jiffies;
->>   
->>   			for (i = 0; i < dev->num_tx_queues; i++) {
->> -				struct netdev_queue *txq;
->> -
->>   				txq = netdev_get_tx_queue(dev, i);
->>   				if (!netif_xmit_stopped(txq))
->>   					continue;
->> @@ -561,9 +560,10 @@ static void dev_watchdog(struct timer_list *t)
->>   
->>   			if (unlikely(timedout_ms)) {
->>   				trace_net_dev_xmit_timeout(dev, i);
->> -				netdev_crit(dev, "NETDEV WATCHDOG: CPU: %d: transmit queue %u timed out %u ms\n",
->> +				netdev_crit(dev, "NETDEV WATCHDOG: CPU: %d: transmit queue %u timed out %u ms (n:%ld)\n",
->>   					    raw_smp_processor_id(),
->> -					    i, timedout_ms);
->> +					    i, timedout_ms,
->> +					    atomic_long_read(&txq->trans_timeout));
-> 
-> It looks like txq could be uninitialized here if num_tx_queues is 0. I'm
-> unsure if some weird/buggy device driver could actually hit that case,
-> but grep '->num_tx_queues = 0;' has more than 0 hits in the current tree
-> and I would err on the safe side.
+Is this standard? It looks odd.
 
-Addressed in [V7], by reading out trans_timeout value when it is
-accessed/incremented anyhow.  Thus, avoiding the need to deref txq.
+> +	dev->stats.tx_errors++;
 
-[V7] https://lore.kernel.org/all/20260612083530.1650245-5-hawk@kernel.org/
+I am surprised by this. `tx_errors` would ideally be one per packet that
+didn't get sent. Here we increment it once per queue that stalled.
 
---Jesper
+I have a series to address stats issue (and use netdev_stat_ops API).
+It is a follow-up to this:
+https://lore.kernel.org/netdev/20260428-macb-drop-tx-v2-0-647f5199d8df@boot=
+lin.com/
+
+Also this is per-device shared data and we access it without
+synchronisation.
+
+Let's drop this increment.
+
+> +	macb_tx_restart(&bp->queues[q]);
+> +}
+
+Regards,
+
+--
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
