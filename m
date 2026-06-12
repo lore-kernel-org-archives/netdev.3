@@ -1,107 +1,158 @@
-Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F3C2D7DC6;
-	Fri, 12 Jun 2026 10:46:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE44926CE2D
+	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 10:48:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781261179; cv=none; b=GF/IwwKkM5mter7L0LwGukNlc2XwEquFEl2GPekK2ZbU/Ej3Fo8zfZLmWMoB2nrePiN9vipcgMWfFnLvjrW11GLifeisd0gKk6mZkrIB28Htiy2baoAbvwBgLHaMU2kkr7mtEF+pRuFkBGYlUspKsAZo8prt1sITEDRxTFBVijE=
+	t=1781261306; cv=none; b=m+279uMeAFh4PGdBx0tu+edKMsmnqQChbsqva+Gy8luvpmP7FASsm6iIh8ZA3aDcPb0TCtmldNK0D91Z6InqoKMmmXZt/W1l8NzQ+Aodb5IGtZ1qlbqQoVIfabb4gWseZm5hMC+MrJl2780fLNpHzKYN907xU3ioAXGN1Xmdo2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781261179; c=relaxed/simple;
-	bh=+sILituN4KG82vNPJYjOPPX6BS6Qew5yOJXh51BZ52M=;
+	s=arc-20240116; t=1781261306; c=relaxed/simple;
+	bh=nIUd4dRQc7lninJ4PQurm9K8z6iyF8PSKyxa+RhCCws=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K8226wNUw7TgaP9o/vclujvR/lOBEr1an6SCVGO4urbv9zp/x3y3zn7eevNTPLIcNdqg/Jy33gQSndGu67nJJ5rJ0c5GE9TfN3xxVZM5OgUMK9go1Q6U5nKf+SSqSny4gg8VIyvpxoWabq3v+CCbXYPSskzhJIfZgkyEKjBxp/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=No2gSJry; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Z23LG65q; arc=none smtp.client-ip=103.168.172.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=iGB5jeZNVgZZ3a3KG7tGY8ImtkHqERILGsUFX58Io8Z+KsNLsW9+VJNkNw4gTZoLQvf04LugXb+5IXQ2rAz8+KQh24j8uOnJEwVqCnsQutOOXSxHIJPbOKla9tHA0DOolnCEQRbARflqHBezbuNcI2sYt9wbn1NzlLH+qPx5Nq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bqho1Wgg; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Jp1/zmKZ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="No2gSJry";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Z23LG65q"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.phl.internal (Postfix) with ESMTP id 31E2FEC0119;
-	Fri, 12 Jun 2026 06:46:15 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Fri, 12 Jun 2026 06:46:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1781261175; x=
-	1781347575; bh=c7KQeGUqHX958aPT1jVdCDA0II0KEOujcrQ0cCHR8xE=; b=N
-	o2gSJry5dq1qayTFRlLvQALYiB8ujYssMgZ3R6SZHrhXqwKURKMtJhexnjxdpRhp
-	2aYhlF3sPX6lUhgJTOUC3qkoPmH2mmthLCOd0j//K1A0DonE227M1TbBWhEw4RbU
-	QGmO3a9yMRR3siV7PUh/XcWeXsEBEfFKTReMg5ySVmRk44i2hrzroxY32jalqWuC
-	nRNUY2zcgDTNl5Ewq0Fp5SrM886kPtEbvM7hSfmAjGEe2OCpdzbDphW7E0Jc+Fl5
-	oUNwh27srbUWW36FOLe02mXbGCN7y9HcATSx8/fi76g0Py38vRd8ulOhnkMsjpiy
-	A5YbDLKEnubDI5FrWm2nA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1781261175; x=1781347575; bh=c7KQeGUqHX958aPT1jVdCDA0II0KEOujcrQ
-	0cCHR8xE=; b=Z23LG65quTUdmnsUqta4q1ZeabWUczpUEpVKCrEYfFY/uOCos7/
-	QRsIRFfnaI84p56awHsoVFEgGT8+bzKA3qfueuwl0FGuLnco9padEd7gdCLIylvM
-	LbCWStaZ50yJEN0pDnwHO6JjrYWkjeHsl5xw4YIaIKC1F5NqPdJW+38rl8DF1W43
-	8U4aOwzB4N1ShhOjUzm8c8rcqNnKJXuCxcXOdgvzJyxgM8J5pTYDcacviR5pVz+F
-	y6+7gg8kS1r1aH/MvhZQ3LsxN5HhG2v3yXTAEZ4bO5MrdDzmaXP+FWL13AvySlvg
-	vqDAp24G7UlPwDbkQsZbrRdXwyWUWD5xUmw==
-X-ME-Sender: <xms:duMravlqSeT8YTuIXvBGBINfbGcwG31OyGodJ69gbqXJ8Kb_5qPpkw>
-    <xme:duMraigEZT4PlRsoAiadddr3pr5ehvQt6FKWGXR1VFwrUHqzGxjQk6AWhgg-G1ROp
-    DqJPZnVr7r3WE1rd5gXmVcrim9PBUBMywJFn_zIH93kT_yMvMl8wjgY>
-X-ME-Received: <xmr:duMrahQ7FzoMJqpWNCKLEgzVCT2l4nZGE1B9rhHY5gcE1YSFE2n5EUuLXE51lE6tASlb_86fFgmWBVFwa3aszLc>
-X-ME-Proxy-Cause: dmFkZTGju7ZVUaDs3BUuCyZVhqHejPxvERccukbFBq77MdOy8+3OshSwJ9GSDuvf+YE/Xb
-    CDSNf70pmGSlfSqjOQjjZ9G1xQWMudeOXEOwZlfvB17r/fHWiV1tfnxxXuheUf7P8QzzYQ
-    xvlup3CVxbsPJ3KHPcBoWYok1DCUyCH+7TNTrPx0uIvUrlsLDNLLx1e8eJMPuIdmgVdIP0
-    BP6F5HTcovJ5PruKYWGRLhrI35ZgaVzdQueuqnnN+2xg+Z+z9KZ/gUba4D/BSE+9KSkUtF
-    x2YIeo8+GCNFwUzSosK8+PXm2XnZ1AILGSVQygnoxu6+OdXXIZfjzleO9rIfg8bLsWflO8
-    y0/d4SyZryNKx6ewoIxmnEKqQjcgsE4QZRGLmxOU+Zqh/QWTKhEV5AY5LIq+Bfy+Z08Em2
-    jkSwLXcYqVbRxwhg1Bbgxj03VpP5wkZgYeEwCui/1ffYfJql9LZZ/tM7oyd1Z0dVwiy8Es
-    //Tucoh7oYfpDs9AN3pzr9n6u8L7GO4H8Kzc67Q9wF82G/NqbbWv4QtMCS9D8GTqNELDqL
-    ISOMr/Jdi2nY/bKyJnrvyPX2+ztMDA7ckOcLwVxQp/2dX9nS2I87H85X8i55bV47FDeF3R
-    FTVYWIKoEwM4ro05MLQX3Kll5WN338D4y3NZ1WshWgP/xD8lcApfuugtJ/dQ
-X-ME-Proxy: <xmx:duMrajZjtmCxBhx68bYdxBd84aSqUMSGEwVlJk2Ru_cyDNclVyGLoA>
-    <xmx:duMrauSUd0sVqE9yaURiVJUozq94VJlL8hvtOOelSWmPFc5FY1oADw>
-    <xmx:duMrai9Yqluz5Pn8OXhygsV9v2BjaTrYXGReB5NZhzAy5KqjSweb_A>
-    <xmx:duMraugwR93BzZ1FfewL4lmn1iahF4HD1TpgJ6qY0WL6QanPOOGzwQ>
-    <xmx:d-MraiMyT94ueAG8eNZXbOG_nKpkOeR9UB8T8UCU0B8c8InaKkwDdMJZ>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 12 Jun 2026 06:46:13 -0400 (EDT)
-Date: Fri, 12 Jun 2026 12:46:11 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: WenTao Liang <vulab@iscas.ac.cn>
-Cc: john.fastabend@gmail.com, kuba@kernel.org, davem@davemloft.net,
-	edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] tls: fix encrypt_pending refcount leak on -EBUSY error
- path
-Message-ID: <aivjc6MMhZIk1sNa@krikkit>
-References: <20260612020133.11427-1-vulab@iscas.ac.cn>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bqho1Wgg";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Jp1/zmKZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781261302;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pcVW7gr962xWbfB7rW7cz9KI0TlCsoEItlTo5USlTpY=;
+	b=bqho1WggcJ/LqkzbzDIgarelTYW5avPKvNBF98mNw9uEf0UqBVke8XMhlPiFpRfddSTnz+
+	5pp5Ol3DEGfvNHhP602ybOicrc5m3ecylbw3LnXSQqO6wtdMV8qjeOOsg/d6BP/hPjAGAV
+	Q7uTU7P9ecLQjAQ7i7jVDc2DDp80KfE=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-54-bRA_LrJzMu2u2BgTF1Y36g-1; Fri, 12 Jun 2026 06:48:21 -0400
+X-MC-Unique: bRA_LrJzMu2u2BgTF1Y36g-1
+X-Mimecast-MFC-AGG-ID: bRA_LrJzMu2u2BgTF1Y36g_1781261300
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-490a060eb84so6835595e9.0
+        for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 03:48:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1781261300; x=1781866100; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=pcVW7gr962xWbfB7rW7cz9KI0TlCsoEItlTo5USlTpY=;
+        b=Jp1/zmKZY/qwLH6+Bgny2B16arSvUD9kZGP1Fex1Swu04Xam9qW6wwWN9226nhZ04z
+         apHZ15qBF0zm0nvO1XeNcDQdAul9MIdMn7AzJBkzpY5wuMLg2brOL9r4/hy5NBj/6KxM
+         SkZ+b6ebBPMsElV2aH2R7YpHcOUCyHH8b8K2QhgL1buZAUqGlHzd8mApdGIeDceaNHHQ
+         hJKX9Hkvld3xbzs1Y/ijKwEUc46CLkJsDmWTsi6ptoCj3f2WCjK+m+HFT1m7ArxtjpcJ
+         nHpDoH36o0K+Rkq7S62ADd6hJVl+gy6u7WqL0NcgZX81juPijEk3eTjvxNht2pzWXA60
+         Fr2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781261300; x=1781866100;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pcVW7gr962xWbfB7rW7cz9KI0TlCsoEItlTo5USlTpY=;
+        b=Fu84fulDRnkQwUcXgkOIhFhKN3+I126QwODcmuKIKVDQ0yF16ebwfREc2wIGV65ODi
+         M5JL18X+yLfbNOfKY6lT82r4ng7wq2ey1OVicr+kqH362nMuFdVU52FAxp7HB5Qj/qoe
+         kht7Ovy92eLc3wff5y2srTsMXii5iL8WWfPr87bE/NoC1mYT0ygVDZ69yimB+A6ZMtIe
+         NSMofMybo0RsDinIPUSmUTfm6DJvpaJLcA7Zl8gxRS6/wGVN1UXq4oHVC1JIKKvy3q56
+         qZCQifQpYQQoVJR93aGDG0BaxSDeV0Falb2dF1nVr36bYPN9P6CKjDWO23UXSQDWMi77
+         wMww==
+X-Gm-Message-State: AOJu0Yy4YWvyWeOdF44W4t/hElKeTPhmu81vggVo7YPu+gJgLAHRon40
+	7SI7rIkPNMECtCfnFsxIHTLjtQoXH7hHya6Oe0wwa2wv6wcFaTbH9DB6Dvfp3nzAP4Y+lIjKIV5
+	aPammS/LPzq+YSSoXnB+qDPgYprqQm7IphPmod6o+hYYNl2CqdN1ijpCRPw==
+X-Gm-Gg: Acq92OFe89sTC8kRGHXHu060jm5oZwWCHoQ5yr0wMpytQkuIL5FH6BdI7+Tcb8KZop4
+	1QX4rgOw5yH8X1cmfK/fHzu2Polm73Uqj0Kr5lIZxPYTVWj9IcUWl1I71jTzoaWUt8MObdE3IT6
+	yGANK+QSyGSzdZhCeaQ2muh8gBmyxOqbOvKRJqrZ90WZ/kp/ZkIQ4W5j2eNSbPB/GfnafKasJ5q
+	fH8qb7araAQB4I6pbrk8jDyn1DyEPotn2JFhQr9WNdK1sTn1jIkLkdpdqLY108CryaX6qgtGsvf
+	O+PVFHU0S5CscamZZQxEjfc85FRuGmXAZDMKieZGPtqAtbzL2gV5nLTyzRPsSPaOStJpaPKU6Ai
+	+X9g09eOx273e8Qrgg0xAwSf2JZtFZ4houFiEbYOj4bfyABhvXcwt/ZQldXWPKtqfCL1xBTo=
+X-Received: by 2002:a05:600c:4685:b0:490:e190:3b50 with SMTP id 5b1f17b1804b1-490ec4d4f7cmr30973025e9.9.1781261300412;
+        Fri, 12 Jun 2026 03:48:20 -0700 (PDT)
+X-Received: by 2002:a05:600c:4685:b0:490:e190:3b50 with SMTP id 5b1f17b1804b1-490ec4d4f7cmr30972435e9.9.1781261299894;
+        Fri, 12 Jun 2026 03:48:19 -0700 (PDT)
+Received: from sgarzare-redhat (host-82-53-135-12.retail.telecomitalia.it. [82.53.135.12])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490e2d046d5sm137445175e9.13.2026.06.12.03.48.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Jun 2026 03:48:19 -0700 (PDT)
+Date: Fri, 12 Jun 2026 12:48:14 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Raf Dickson <rafdog35@gmail.com>
+Cc: netdev@vger.kernel.org, virtualization@lists.linux.dev, 
+	pabeni@redhat.com, stefanha@redhat.com, bryan-bt.tan@broadcom.com, 
+	vishnu.dasa@broadcom.com, bcm-kernel-feedback-list@broadcom.com, bobbyeshleman@gmail.com, 
+	leonardi@redhat.com, horms@kernel.org, edumazet@google.com, kuba@kernel.org
+Subject: Re: [PATCH net-next v3 4/4] vsock: fold sk_acceptq_removed() into
+ vsock_remove_pending()
+Message-ID: <aivjf4TZU4Q_s20y@sgarzare-redhat>
+References: <20260612045216.105796-1-rafdog35@gmail.com>
+ <20260612045216.105796-5-rafdog35@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20260612020133.11427-1-vulab@iscas.ac.cn>
+In-Reply-To: <20260612045216.105796-5-rafdog35@gmail.com>
 
-2026-06-12, 10:01:33 +0800, WenTao Liang wrote:
-> In tls_do_encryption(), when crypto_aead_encrypt() returns -EBUSY,
-> tls_encrypt_async_wait() drains pending completions and restores
-> encrypt_pending to 1, expecting the caller to issue the final
-> decrement. However, if tls_encrypt_async_wait() returns an error
-> (rc != -EINPROGRESS), the function returns early at the error
-> cleanup block without decrementing encrypt_pending.
-> 
-> Since the -EBUSY path never submitted the request to the crypto
-> engine, tls_encrypt_done() callback will not fire for this request,
-> and the synchronous cleanup path (atomic_dec at line 599) is also
-> skipped. This leaves encrypt_pending permanently elevated by 1.
+On Fri, Jun 12, 2026 at 04:52:16AM +0000, Raf Dickson wrote:
+>Callers of vsock_remove_pending() must also call sk_acceptq_removed()
+>to keep sk_ack_backlog consistent. Move the call into
+>vsock_remove_pending() itself to make it automatic and prevent future
+>callers from forgetting it.
+>
+>Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+>Signed-off-by: Raf Dickson <rafdog35@gmail.com>
+>---
+> net/vmw_vsock/af_vsock.c       | 2 +-
+> net/vmw_vsock/vmci_transport.c | 4 +---
+> 2 files changed, 2 insertions(+), 4 deletions(-)
+>
+>diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+>index 24916dd4e9..4a7d6d247a 100644
+>--- a/net/vmw_vsock/af_vsock.c
+>+++ b/net/vmw_vsock/af_vsock.c
+>@@ -494,6 +494,7 @@ void vsock_remove_pending(struct sock *listener, struct sock *pending)
+> 	list_del_init(&vpending->pending_links);
+> 	sock_put(listener);
+> 	sock_put(pending);
+>+	sk_acceptq_removed(listener);
+> }
+> EXPORT_SYMBOL_GPL(vsock_remove_pending);
+>
+>@@ -773,7 +774,6 @@ static void vsock_pending_work(struct work_struct *work)
+> 	if (vsock_is_pending(sk)) {
+> 		vsock_remove_pending(listener, sk);
+>
+     ^^
+There is an extra blank line that we can now remove here.
 
-No. Please fix whatever scanner/LLM you're using to generate those.
+BTW, the code LGTM:
 
--- 
-Sabrina
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+
+>-		sk_acceptq_removed(listener);
+> 	} else if (!vsk->rejected) {
+> 		/* We are not on the pending list and accept() did not reject
+> 		 * us, so we must have been accepted by our user process.  We
+>diff --git a/net/vmw_vsock/vmci_transport.c b/net/vmw_vsock/vmci_transport.c
+>index c2db016cca..3e6445f4e1 100644
+>--- a/net/vmw_vsock/vmci_transport.c
+>+++ b/net/vmw_vsock/vmci_transport.c
+>@@ -980,10 +980,8 @@ static int vmci_transport_recv_listen(struct sock *sk,
+> 			err = -EINVAL;
+> 		}
+>
+>-		if (err < 0) {
+>+		if (err < 0)
+> 			vsock_remove_pending(sk, pending);
+>-			sk_acceptq_removed(sk);
+>-		}
+>
+> 		release_sock(pending);
+> 		vmci_transport_release_pending(pending);
+>-- 
+>2.54.0
+>
+
