@@ -1,78 +1,146 @@
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6776267B89;
-	Fri, 12 Jun 2026 01:12:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA4A82AE78
+	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 01:15:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781226726; cv=none; b=bOqjA2Re/Zajyf9GR+8o2X3SvxoBiepxa0kNR9dqZA3qIdJ7PpXBtUpyUfYABtvjgYHZ4uP+2pFWgmZEeKmSusQe+/nqaxObmjy3h2eFJ7VZ2myjQobv+NYxWEzQlRjr+xREUBSAafywQQSCYqsB35amxg+gqcdxXZs+NOjq11k=
+	t=1781226922; cv=none; b=KSPs6A8vUTUm4MFn7ac6PdiT52rCe2D29QmKMspS/agFBE4IFgIJFCaOUwwUAtBLobaLc/qMnwWXgLdID05jgxgsuUxKgID2U+p/FR1Jl1ppls7g22+5VbXyMUsqzVpMBW8iqGaKCRZioRryZ0223HoXEqAQ/jcSJJdFY7I3flY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781226726; c=relaxed/simple;
-	bh=0s4x7I06JjDpHHL/AdHXiZ4kzNM1jephCdY2qRIIitc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Qhu6MpBRZVoiYbM0tLBiVIlK4zteT1UYFjW3Hrh6ISD36bV7CLmpAZA+yuGWkHqwOB27OEkAx5+RiDvGEzRXczHCJJl2BIfIJAX0QuZt6aRa1qOa+KyRB6IS+lPU9yLmRqFV+VZDwrMd2qhcRz1WS3KIuo+pprHi1GWi8AVsUqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=XsOzRLD1; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	s=arc-20240116; t=1781226922; c=relaxed/simple;
+	bh=V5Ji/NbotjurvNaHKkaocD+v8CNqcnqv7GAUeTEbeKg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lwv808ZDIbcUUVP8PMxKh4VvPmzzz7LIqfizS8sG9Y4q2iyE1CXgjR/n3JWqv1FXHMBXY04sEWmdLjK0BjcYzTQ0TUirPXAMinA1ZVIdcsux3fvDZTKho+kEw7NXNALgMA0Nz4zGWQnSoRZ/ErSf5LuIUupwP7OaCAQGi+60tLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S20/LuN8; arc=none smtp.client-ip=74.125.82.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="XsOzRLD1"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BCAE411722C;
-	Fri, 12 Jun 2026 03:05:25 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1781226329;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=p7aILJyBYzvssioO/gJwVHbLCM0FoSbqpMKyKJJ9KK0=;
-	b=XsOzRLD11Nw+clXacI4w774mqlkmkGkNXOMdT5jvC2In+rWsLUUiIsfptLbrMljM02vFbq
-	GpAUsL1X0lVWcwMgTjJj3+oZm6//G6QGBnD28q+zhFvwRkQ5g2zdajuJZZ7MIhLAdKjCT2
-	e1xSjXI1b/hRofsV7bLYrg38t14l03jukpQ5kzsUNekbJ9axC+BoO8dKEmL8PjtLabvSgG
-	RSutQds9PzFbqF19I9XCuEbCtVGe7tKoBKbqB6Ep6ezVajwMO3Poy2ybokQCpZY54543dE
-	aZzbTa9DliLlgsGDQh2yQ3NCo/vIcgU3e4zKyhMcXYB625I8h3d5mCrkbIIhvw==
-Message-ID: <8d9fc953-0c59-4811-8273-016ba98089a3@nabladev.com>
-Date: Fri, 12 Jun 2026 03:05:23 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S20/LuN8"
+Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-13832028e9fso413943c88.1
+        for <netdev@vger.kernel.org>; Thu, 11 Jun 2026 18:15:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781226920; x=1781831720; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Lq4yPWnUXbIU2vFF9P4WExiS18HxKoN6rV5qe+S+suM=;
+        b=S20/LuN8PPgMvvnqfxT7/IK+q/Cga3NYPnU8pbVahqvR+zZpKnpilHMKvvHoGR6E0C
+         gCt+xyEOJc6mDX4BivJlq3slLuSCfYpTVkTaRC+l4rcOwdpBTl8Q9wW+Mmkeqbb5R0G2
+         7r22pXT6gag65obcK/9G9GHX5uzkXLiaN0Hn7rNAugs/HCpw/sLq+kpqeDyPKmI683Ph
+         Kwu3SONNpLPuFa+LZw8MmAtypuDX7LArdTlS6PXEBQ2/UXxaU75PUCsJnu43JvokPOzf
+         91GMioutnhXO2mbuhZnY2vZ2ttk93L3iuPLNj3ui1Z2/R04e+j8LMHfZB7XGOoX6w2Wc
+         i1gQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781226920; x=1781831720;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Lq4yPWnUXbIU2vFF9P4WExiS18HxKoN6rV5qe+S+suM=;
+        b=DbcJRqcVHdry7z93RkPTYjfNgRcg5bCnZSgQMmaZTlcxUxZo3J82jCuxN8qUjCDKLe
+         x9U5c5RnpQ9DHcNRlMrwLQspf1jrVqxNwYxvhC4SK650eMQ1nlFRWJytdQnGMvBA+t9f
+         uBoJEzL7VzTuTyDopPbBix7nZnkRCa/3j4GU3+6tSi2sinn3K1ZepgTOgiitkuLcGEF7
+         xvk2aGvhXjp1TtLIxC5yhhXm+fuUQi7fwZpFOD8K5j4Jt6mAU3wyAg9ewvNTIK8HW9AZ
+         aLLw5ePgjxdnwvnf4jwXj9v6gAyQN+VHNsJ389tUY7MafuoVKUe3rzifqmfA/zoEKYG4
+         EENw==
+X-Gm-Message-State: AOJu0Yw3+zIlwB7bBiHfuOKWlAvXsYwxTthxT1Rqxn7PMQ6f2IiL+zQs
+	2ROry+9eGVOozSObFn2fTnoUyNGpAUo6T48wjT1gZ5nF9Z08hSR0SW5B4WDgbA==
+X-Gm-Gg: Acq92OHqlqhhCBRyrBYE4Asj3299jQanEvm6Tk4Gpzp+VClKdD21AROjvTi11bqLOT0
+	QS+xTrdDDKrBhY73gaG09lQxw0MICsOOdL0L0qYZOu8wh7/O16/e12ZuGk0KQnNAwoL5BVjDfVd
+	u/27cH1QwiAd7HL7jX33aUOwNS9Q26WNbPtZGpJR3mI5dnRxJzP8ZUDQIv+rIHMNryK7rUbRo89
+	RjTYwWdlglTnfrnveTzYzPaHVmBy+4qkg9A6NF926EJABeGm09q9YiGy9u7S98JoiH7gDpSsnzv
+	qcEq9IjGartvcaK4t4D0H1P4uZJ+TYoau+atL4b6p06vBjD7YbZlmEcD7zC0Qd9s5ilmixpRYEk
+	ZX6ONv0G8VEHO1o+9b8CJKeTsojjzlHAHbJRnHUSVOZozkM6GWDTkA/wJusjk5CMs4WFKYJhMTU
+	Kf/5Wzf/utDecVhYLLDGsK3pgiioR67CXo/Pm6SfQEKeUHkoZEmF/RkhQ7kOkUW5Zg8g==
+X-Received: by 2002:a05:7022:41a1:b0:136:5c88:d928 with SMTP id a92af1059eb24-1384bb74299mr276844c88.19.1781226919626;
+        Thu, 11 Jun 2026 18:15:19 -0700 (PDT)
+Received: from pop-os.scu.edu ([129.210.115.107])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1384b975e55sm596257c88.13.2026.06.11.18.15.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Jun 2026 18:15:19 -0700 (PDT)
+From: Cong Wang <xiyou.wangcong@gmail.com>
+To: netdev@vger.kernel.org
+Cc: bpf@vger.kernel.org,
+	John Fastabend <john.fastabend@gmail.com>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	hemanthmalla@gmail.com,
+	zijianzhang@bytedance.com,
+	Cong Wang <xiyou.wangcong@gmail.com>
+Subject: [RFC PATCH bpf-next 0/5] tcp: opportunistic loopback splice for BPF-paired sockets
+Date: Thu, 11 Jun 2026 18:14:47 -0700
+Message-ID: <20260612011452.134466-1-xiyou.wangcong@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v10 0/3] ksz87xx: add support for low-loss cable
- equalizer errata
-To: Fidelio Lawson <lawson.fidelio@gmail.com>,
- Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com,
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Marek Vasut <marex@denx.de>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Simon Horman <horms@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>,
- Russell King <linux@armlinux.org.uk>, Tristram Ha <Tristram.Ha@microchip.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Nicolai Buchwitz <nb@tipi-net.de>, Fidelio Lawson <fidelio.lawson@exotec.com>
-References: <20260609-ksz87xx_errata_low_loss_connections-v10-0-9ba4418cf3db@exotec.com>
-Content-Language: en-US
-From: Marek Vasut <marex@nabladev.com>
-In-Reply-To: <20260609-ksz87xx_errata_low_loss_connections-v10-0-9ba4418cf3db@exotec.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-On 6/9/26 6:19 PM, Fidelio Lawson wrote:
+This series adds an opportunistic "loopback splice" fast path for two
+locally-connected TCP sockets that a sock_ops BPF program pairs at
+handshake completion. Once paired, sendmsg copies the user payload into
+a per-direction in-kernel byte ring and recvmsg drains it on the other
+side; both copies happen in their own task's mm, so the fast path incurs
+no skb construction, no softirq, and no TCP protocol-state processing.
 
-Hello Fidelio,
+The underlying TCP connection stays fully real: sequence numbers are
+frozen at post-handshake values, so FIN/RST/keepalive keep flowing
+through the normal paths and the pair tears down via a regular close.
+Pairing is opt-in per flow and fallback is per-message - handshake-style
+traffic takes the TCP path, the bulk phase takes the ring, on the same
+socket. Nothing leaves the host and applications need no changes: no new
+address family, no LD_PRELOAD, no source modification.
 
-> This patch implements the KSZ87xx short cable erratum
-> described in Microchip document DS80000687C for KSZ87xx switches
-> and the following support article:
-> 
-> Link: https://support.microchip.com/s/article/Solution-for-Using-CAT-5E-or-CAT-6-Short-Cable-with-a-Link-Issue-for-the-KSZ8795-Family
+The target use cases are co-located endpoints that speak plain TCP:
+ - regular TCP loopback (127.0.0.1) between processes on the same host;
+ - container sidecar deployments - e.g. a service-mesh sidecar proxy and
+   its application in the same pod, talking over loopback or a veth pair -
+   where the per-skb veth+bridge cost is exactly what the ring sidesteps.
 
-Have you also submitted the ethtool integration already ?
-Is there a link to a patch for ethtool to operate these PHY tunables ?
+Highlights (TCP_RR, 1 KB request/response, netperf, pinned CPUs,
+baseline TCP vs splice; full tables across message sizes and TCP_STREAM
+in patches 1 and 2):
 
-Thank you for your help !
+  loopback (127.0.0.1):
+    without busy-poll:   105.8k -> 235.1k tps  (2.2x)
+    with busy-poll 50us: 106.1k -> 713.0k tps  (6.7x)
 
+  container (netns + veth + bridge):
+    without busy-poll:    99.9k -> 233.9k tps  (2.3x)
+    with busy-poll 50us: 100.4k -> 704.9k tps  (7.0x)
+
+Synchronous-RPC (TCP_RR) at a 1 KB message wins ~2.2x without busy
+polling and ~6.7x with it (the win grows toward smaller messages and
+narrows toward 64 KB), because the ring removes the per-cycle kernel TCP
+receive-path cost and the receiver can spin on the ring directly -
+loopback delivers via the per-CPU backlog and exposes no pollable
+napi_id, so the generic sk_busy_loop() is a no-op there. Bulk streaming
+is roughly neutral on bare-metal loopback but wins decisively (up to
+~6x) container-to-container, where per-skb veth+bridge cost dominates
+the path the ring sidesteps.
+
+---
+Cong Wang (5):
+  tcp_bpf: add bpf_sock_splice_pair kfunc for opportunistic loopback
+    splice
+  tcp_bpf: busy-poll the splice ring before parking the receiver
+  selftests/bpf: add tcp_splice basic round-trip test
+  bpf: allow SO_BUSY_POLL in bpf_setsockopt()
+  selftests/bpf: set SO_BUSY_POLL from the tcp_splice sockops prog
+
+ include/linux/skmsg.h                         |   9 +
+ include/net/tcp.h                             |   8 +
+ net/core/filter.c                             |   1 +
+ net/core/skmsg.c                              |   3 +
+ net/ipv4/tcp_bpf.c                            | 847 +++++++++++++++++-
+ .../selftests/bpf/prog_tests/tcp_splice.c     | 206 +++++
+ .../selftests/bpf/progs/test_tcp_splice.c     | 125 +++
+ 7 files changed, 1198 insertions(+), 1 deletion(-)
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/tcp_splice.c
+ create mode 100644 tools/testing/selftests/bpf/progs/test_tcp_splice.c
+
+
+base-commit: 30dee2c176e7954f63d1fa3e52d172f30beb9bfb
 -- 
-Best regards,
-Marek Vasut
+2.43.0
+
