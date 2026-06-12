@@ -1,134 +1,396 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F45837F724
-	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 23:40:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97EB9331ED6
+	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 23:42:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781307615; cv=none; b=sA/irN8pSKeDplomEsZ/ngmDe3JJRNCX90NUSVi5a9JDETWfKncsV6EDBm7tiUbT/rE56rNoFICMkRS6ShKldSjJ4SevxKaN5GfXgpqKo9dOfO0T+5MSxYGUhUq3wGgfRAT8lzC6Y3Ygrr4meoXcJY09FFiN40unJ7S7zG7I9rI=
+	t=1781307748; cv=none; b=NrZ21v9hjpQH0TZ/FHsPaFI3gbN/Tigx1fqGevQoS+/PDi3t/IfO8tn9BgYuY6z53nvd5XfC2plGnLNK+VbbMmrSDbUKGETNxsX6XTU7ZkEA4tN9pOFqevAs61/U45CCy1ahjRB8ts9DooM3/BqtAQqHNEyRVLr+9s+JZ5NyFvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781307615; c=relaxed/simple;
-	bh=VyZ6rviatQkrnXQMZQAWLzXp57+Aqqzm+jnwekLdyhQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VA+vWhq1gOt4zQgNVzatEyen+DCIF1PrjmTArTHXgmyaUnQFFql1xFTSuIOr/aE2DJtkgjoDZJ0PoSHyhTnJjRZwTfANs64M8HSc+V/SVciw0JOpSoUIxKym1uH2tO/u4Bb5Hbf5FryKWSs2dXoAFEzFvTHz81rzRmbmx8tabeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HHb/sVbB; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781307748; c=relaxed/simple;
+	bh=cDUlViZuxonHAJNzM3eXbegrCzHDToe3+7LFxRlcAj4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qJoMWfiNFTmgx4BavcwIgfbujJpQaeYKu9/qHW1B1VKUjWnZoX52jgrOHWC9JMCpXlFOzdiO2SL81VxEoHmpLmdGlckRCsFR94l83sMV7jq/SbqvAPmfJai+hNsCzl0OJ6rulgG+luXm/QtTDXUySL+gt8ufBfFBofUWOlk339c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Uup6nIjJ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=0BVver7x; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Uup6nIjJ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=0BVver7x; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HHb/sVbB"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-45ef56d9b67so1177331f8f.2
-        for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 16:40:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781307612; x=1781912412; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=itutEd4Qu44FMzbLnFizHmsxJzU6Ec6tZ5tEy1Gru2Q=;
-        b=HHb/sVbBbk0rBXAOrKi23F7GidjXUZBQE6Rf4VJ9yT1KnZR4C+N4bfrVuruH0EMK1D
-         wv4FyyE3IUjEQV89116zfPDof9TNXiiNKETysVi8jEvSUywlV8t2IFZQ3D7XYza1fKo3
-         iPz2apQYJ5rJXwLOrIhmiUyi/0X0ks88PQy+fgyJHHX3SJD7XN1QQuAffjjiDi4s8j+y
-         y0NlP8YsYmwAxfMi5In9h9bUyu3nOsou3i9p7vQUy95ZykeUcy/0okP2fS2r44ki90ic
-         QEccLEN3TtH1VOMY9VfSbNEkZbFdeX74OD9xGVvd+iZ0ChSwhpM/gk9oTxbU5zHkf6EI
-         P64w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781307612; x=1781912412;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=itutEd4Qu44FMzbLnFizHmsxJzU6Ec6tZ5tEy1Gru2Q=;
-        b=Qh98P5cIJGGPuJzkwUiHApWlvTaemcvMg4EkTW3MkFb7zcXZBONXnuRopqCVD+MDmc
-         AOL/1jxcDcY6ow1JKikPqQFptAEYJlm4R2ZD56fjxfxb3VsxiEYrlDZxJEP2E6T9RY+R
-         ysLyTeSMWcwUI1U1EJgBa/8RFqT2CMTs2TZx2QLlEHkcwqZIRKADokHteOE6j1tiox5V
-         7jHt5oRpaIz9X5Dem1oveLwA8zPuTay/1dccgCaTjqyj3Bj1DCkNJWLyKWFbOyh6e0D6
-         ZF2WsB3K7gNkvinYglbZVjYQruKUKG/hqOWBilyhdk1Oy+xhOvhMQP6yDwSfAzpffoDB
-         uqCg==
-X-Forwarded-Encrypted: i=1; AFNElJ8RbE+anb0rrcoovb1TrdmBL/1vo2yWCYOi3Lrb8FhCVf1i60eOeOiVh3AHNS2qIFt3mqMI6Vg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzhn1YYawPSmHINzVt2LYdSufjMEXiUwDZeZbt8XtKRqj+JLd3y
-	lfvIJO7fhiuO4B1NqhkH4Y+F2DClSzRlf3gVFiL/xh4PgV/P9q9v6x/E
-X-Gm-Gg: Acq92OGvN/PxUXpxhCsWmNkIhrPUrjFigwYQKdUz+tClG3PLWOAnyyCTi8a40l2maIg
-	yqSpTNn8T8EHbTNHvhUOL+YNVOY3wOv62J5OEE7UpTPTXWMJH9Wk6OMc84Wr0tBn2y7ataPcfSE
-	TAVTiBgsTP/X0yQ+v4k8AgF0htP8wXuTVRlVF0g7T8Fx0pMqnCyWzrv3vz6X4KxwIojenzxYoAn
-	cY2rUqEToJLQdvOhZMXybZ9RtmvvxyC6/IswxAnw7QkeYj/ymub5G1Pd/68N+bDNJ9x5OgO1ugF
-	ZB44ZrewEy11J0lDCRoOFYDdaD3yOdGl14YGLUPogt8FipctuNRNcFcSLEy6ws7F8OKJxQENJUp
-	eUx8vJtKttHd0lQen1ro89LyLsOnN9FWjx8MwfP6l1p0cTuisd8WwXQRLhYrhYTtvz9glE7M+Tj
-	mZXZDiAb1fVDpzQOb+mTS5ehWVnxrevrz+Vn9pJORrB480ewsqrRR6VQzX/Jj7JvnGmAbTKExmh
-	Oqa10A1bEVit2dncs8sPlrR
-X-Received: by 2002:a05:6000:1868:b0:460:3210:4349 with SMTP id ffacd0b85a97d-4607ec0bfccmr1622878f8f.42.1781307612253;
-        Fri, 12 Jun 2026 16:40:12 -0700 (PDT)
-Received: from gandalf.schnuecks.de (p200300c14f38df00921b0efffe889e28.dip0.t-ipconnect.de. [2003:c1:4f38:df00:921b:eff:fe88:9e28])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f26392esm10142770f8f.3.2026.06.12.16.40.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Jun 2026 16:40:11 -0700 (PDT)
-Received: by gandalf.schnuecks.de (Postfix, from userid 500)
-	id 474C931BAADC; Sat, 13 Jun 2026 01:40:11 +0200 (CEST)
-Date: Sat, 13 Jun 2026 01:40:11 +0200
-From: Simon Baatz <gmbnomis@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Simon Baatz via B4 Relay <devnull+gmbnomis.gmail.com@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] tcp: tighten the FIN exception in tcp_sequence()
-Message-ID: <aiyY24QTFcqQVW25@gandalf.schnuecks.de>
-References: <20260610-tcp_fin_more_restrictive-v1-1-eefc30d7ddd8@gmail.com>
- <20260612154355.37bb426d@kernel.org>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Uup6nIjJ";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="0BVver7x";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Uup6nIjJ";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="0BVver7x"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id ACC886B6D6;
+	Fri, 12 Jun 2026 23:27:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1781306837; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=5qjk0jhlw2KtFZOKa7aDB356HfXjLs82+/RxCg4t72I=;
+	b=Uup6nIjJtfEm4MjtVrdXZJEOcxAKJPw0xQVYsMaa3dFbdE0vDrANGtYifJQWR8xkqNiqe5
+	VzgQ5nOb6V7FKi94aHi8O7xMQ497ueerPrEvzf7APEyyP+ShWsBM5AyeR3+i7i2NZfooGA
+	FctOfCRiW+GDh8KoN9shhLdttamKP2E=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1781306837;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=5qjk0jhlw2KtFZOKa7aDB356HfXjLs82+/RxCg4t72I=;
+	b=0BVver7xqjlx7lGknBoS0y4fJwGVixxcbo7VSslIlFH88Z7+zjtkTMoNwHkqQMCggxXvZr
+	TqIZns30SCpCVNAg==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1781306837; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=5qjk0jhlw2KtFZOKa7aDB356HfXjLs82+/RxCg4t72I=;
+	b=Uup6nIjJtfEm4MjtVrdXZJEOcxAKJPw0xQVYsMaa3dFbdE0vDrANGtYifJQWR8xkqNiqe5
+	VzgQ5nOb6V7FKi94aHi8O7xMQ497ueerPrEvzf7APEyyP+ShWsBM5AyeR3+i7i2NZfooGA
+	FctOfCRiW+GDh8KoN9shhLdttamKP2E=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1781306837;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=5qjk0jhlw2KtFZOKa7aDB356HfXjLs82+/RxCg4t72I=;
+	b=0BVver7xqjlx7lGknBoS0y4fJwGVixxcbo7VSslIlFH88Z7+zjtkTMoNwHkqQMCggxXvZr
+	TqIZns30SCpCVNAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1DAB2779A9;
+	Fri, 12 Jun 2026 23:27:17 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id z4U2BNWVLGrpHAAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Fri, 12 Jun 2026 23:27:17 +0000
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+To: netdev@vger.kernel.org
+Cc: dsahern@kernel.org,
+	stephen@networkplumber.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	Fernando Fernandez Mancera <fmancera@suse.de>
+Subject: [PATCH iproute2-next] ipaddress: add support for showing IPv4 devconf attributes
+Date: Sat, 13 Jun 2026 01:27:03 +0200
+Message-ID: <20260612232703.31150-1-fmancera@suse.de>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260612154355.37bb426d@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spam-Score: -2.80
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-0.989];
+	MIME_GOOD(-0.10)[text/plain];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_ALL(0.00)[]
+X-Spam-Level: 
 
-Hi Jakub,
+This patch introduces support for showing IPv4 devconf attributes on
+detailed output of an interface e.g "ip -d link show dev enp1s0".
 
-On Fri, Jun 12, 2026 at 03:43:55PM -0700, Jakub Kicinski wrote:
-> On Wed, 10 Jun 2026 00:09:24 +0200 Simon Baatz via B4 Relay wrote:
-> > From: Simon Baatz <gmbnomis@gmail.com>
-> > 
-> > Commit 1e3bb184e941 ("tcp: re-enable acceptance of FIN packets when
-> > RWIN is 0") added a special case in tcp_sequence() to mirror the FIN
-> > exception in tcp_data_queue(), which accepts bare in-order FINs even
-> > when the advertised window is zero. That behavior is not
-> > RFC-compliant, but was introduced in commit 2bd99aef1b19 ("tcp: accept
-> > bare FIN packets under memory pressure") to break tight FIN/ACK loops
-> > caused by broken clients.
-> > 
-> > However, the condition added by commit 1e3bb184e941 ("tcp: re-enable
-> > acceptance of FIN packets when RWIN is 0") is broader than required
-> > and allows other non-compliant packets as well.
-> > 
-> > Tighten the tcp_sequence() FIN exception to only allow packets where
-> > the packet is a bare in-order FIN and only the FIN flag extends beyond
-> > tcp_max_receive_window(). In particular, this exception is only
-> > reachable if tcp_max_receive_window() is zero. Otherwise the packet is
-> > already accepted by the normal sequence check.
-> > 
-> > The existing packetdrill test tcp_rcv_zero_wnd_fin.pkt exercises this
-> > behavior already and does not need to be changed.
-> > 
-> > Signed-off-by: Simon Baatz <gmbnomis@gmail.com>
-> 
-> This is odd. You are sending this patch which shares a lot of
-> similarities with Eric's patch:
-> https://lore.kernel.org/all/20260608151452.706822-1-edumazet@google.com/
-> 
-> Why are you submitting your own patch instead of discussing it further
-> with Eric and letting him send v2?
+Additionally, this refactors 'print_af_spec()' to sequentially process
+both AF_INET and AF_INET6 attributes rather than returning early if
+AF_INET6 is missing.
 
-That's what I understood from Eric's reply to my comments.  He asked
-for an alternative, so I sent this as a concrete sugggestion.
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+---
+Note/question: Is this too verbose? Maybe we should introduce a new
+option to query this on itself? I do not think this will scale up when
+adding IPv6.. although for IPv6 we can limit it to "-6" usage only.
+---
+ ip/ipaddress.c | 241 +++++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 201 insertions(+), 40 deletions(-)
 
-Sorry if that was not the right way to proceed.  I'm happy to
-continue the discussion in Eric's thread instead and treat this as
-part of that discussion.
-
-> 
-> Eric, how would you like to proceed?
-
+diff --git a/ip/ipaddress.c b/ip/ipaddress.c
+index 6017bc83..ab5cb0ae 100644
+--- a/ip/ipaddress.c
++++ b/ip/ipaddress.c
+@@ -23,6 +23,7 @@
+ #include <linux/netdevice.h>
+ #include <linux/if_arp.h>
+ #include <linux/if_infiniband.h>
++#include <linux/ip.h>
+ #include <linux/sockios.h>
+ #include <linux/net_namespace.h>
+ 
+@@ -294,53 +295,213 @@ static void print_linktype(FILE *fp, struct rtattr *tb)
+ 	close_json_object();
+ }
+ 
++static void print_inet(FILE *fp, struct rtattr *inet_attr)
++{
++	struct rtattr *tb[IFLA_INET_MAX + 1];
++
++	parse_rtattr_nested(tb, IFLA_INET_MAX, inet_attr);
++
++	if (tb[IFLA_INET_CONF]) {
++		int *conf = RTA_DATA(tb[IFLA_INET_CONF]);
++		int max_elements = RTA_PAYLOAD(tb[IFLA_INET_CONF]) / sizeof(int);
++
++		if (max_elements >= IPV4_DEVCONF_FORWARDING)
++			print_string(PRINT_ANY, "forwarding", "forwarding %s ",
++				     conf[IPV4_DEVCONF_FORWARDING - 1] ? "on" : "off");
++
++		if (max_elements >= IPV4_DEVCONF_MC_FORWARDING)
++			print_string(PRINT_ANY, "mc_forwarding", "mc_forwarding %s ",
++				     conf[IPV4_DEVCONF_MC_FORWARDING - 1] ? "on" : "off");
++
++		if (max_elements >= IPV4_DEVCONF_PROXY_ARP)
++			print_string(PRINT_ANY, "proxy_arp", "proxy_arp %s ",
++				     conf[IPV4_DEVCONF_PROXY_ARP - 1] ? "on" : "off");
++
++		if (max_elements >= IPV4_DEVCONF_ACCEPT_REDIRECTS)
++			print_string(PRINT_ANY, "accept_redirects",
++				     "accept_redirects %s ",
++				     conf[IPV4_DEVCONF_ACCEPT_REDIRECTS - 1] ? "on" : "off");
++
++		if (max_elements >= IPV4_DEVCONF_SECURE_REDIRECTS)
++			print_string(PRINT_ANY, "secure_redirects",
++				     "secure_redirects %s ",
++				     conf[IPV4_DEVCONF_SECURE_REDIRECTS - 1] ? "on" : "off");
++
++		if (max_elements >= IPV4_DEVCONF_SEND_REDIRECTS)
++			print_string(PRINT_ANY, "send_redirects", "send_redirects %s ",
++				     conf[IPV4_DEVCONF_SEND_REDIRECTS - 1] ? "on" : "off");
++
++		if (max_elements >= IPV4_DEVCONF_SHARED_MEDIA)
++			print_string(PRINT_ANY, "shared_media", "shared_media %s ",
++				     conf[IPV4_DEVCONF_SHARED_MEDIA - 1] ? "on" : "off");
++
++		if (max_elements >= IPV4_DEVCONF_RP_FILTER)
++			print_int(PRINT_ANY, "rp_filter", "rp_filter %d ",
++				  conf[IPV4_DEVCONF_RP_FILTER - 1]);
++
++		if (max_elements >= IPV4_DEVCONF_ACCEPT_SOURCE_ROUTE)
++			print_string(PRINT_ANY, "accept_source_route",
++				     "accept_source_route %s ",
++				     conf[IPV4_DEVCONF_ACCEPT_SOURCE_ROUTE - 1] ? "on" : "off");
++
++		if (max_elements >= IPV4_DEVCONF_BOOTP_RELAY)
++			print_string(PRINT_ANY, "bootp_relay", "bootp_relay %s ",
++				     conf[IPV4_DEVCONF_BOOTP_RELAY - 1] ? "on" : "off");
++
++		if (max_elements >= IPV4_DEVCONF_LOG_MARTIANS)
++			print_string(PRINT_ANY, "log_martians", "log_martians %s ",
++				     conf[IPV4_DEVCONF_LOG_MARTIANS - 1] ? "on" : "off");
++
++		if (max_elements >= IPV4_DEVCONF_TAG)
++			print_int(PRINT_ANY, "tag", "tag %d ",
++				  conf[IPV4_DEVCONF_TAG - 1]);
++
++		if (max_elements >= IPV4_DEVCONF_ARPFILTER)
++			print_string(PRINT_ANY, "arpfilter", "arpfilter %s ",
++				     conf[IPV4_DEVCONF_ARPFILTER - 1] ? "on" : "off");
++
++		if (max_elements >= IPV4_DEVCONF_MEDIUM_ID)
++			print_int(PRINT_ANY, "medium_id", "medium_id %d ",
++				  conf[IPV4_DEVCONF_MEDIUM_ID - 1]);
++
++		if (max_elements >= IPV4_DEVCONF_NOXFRM)
++			print_string(PRINT_ANY, "noxfrm", "noxfrm %s ",
++				     conf[IPV4_DEVCONF_NOXFRM - 1] ? "on" : "off");
++
++		if (max_elements >= IPV4_DEVCONF_NOPOLICY)
++			print_string(PRINT_ANY, "nopolicy", "nopolicy %s ",
++				     conf[IPV4_DEVCONF_NOPOLICY - 1] ? "on" : "off");
++
++		if (max_elements >= IPV4_DEVCONF_FORCE_IGMP_VERSION)
++			print_int(PRINT_ANY, "force_igmp_version", "force_igmp_version %d ",
++				  conf[IPV4_DEVCONF_FORCE_IGMP_VERSION - 1]);
++
++		if (max_elements >= IPV4_DEVCONF_ARP_ANNOUNCE)
++			print_int(PRINT_ANY, "arp_announce", "arp_announce %d ",
++				  conf[IPV4_DEVCONF_ARP_ANNOUNCE - 1]);
++
++		if (max_elements >= IPV4_DEVCONF_ARP_IGNORE)
++			print_int(PRINT_ANY, "arp_ignore", "arp_ignore %d ",
++				  conf[IPV4_DEVCONF_ARP_IGNORE - 1]);
++
++		if (max_elements >= IPV4_DEVCONF_PROMOTE_SECONDARIES)
++			print_string(PRINT_ANY, "promote_secondaries",
++				     "promote_secondaries %s ",
++				     conf[IPV4_DEVCONF_PROMOTE_SECONDARIES - 1] ? "on" : "off");
++
++		if (max_elements >= IPV4_DEVCONF_ARP_ACCEPT)
++			print_int(PRINT_ANY, "arp_accept", "arp_accept %d ",
++				  conf[IPV4_DEVCONF_ARP_ACCEPT - 1]);
++
++		if (max_elements >= IPV4_DEVCONF_ARP_NOTIFY)
++			print_string(PRINT_ANY, "arp_notify", "arp_notify %s ",
++				     conf[IPV4_DEVCONF_ARP_NOTIFY - 1] ? "on" : "off");
++
++		if (max_elements >= IPV4_DEVCONF_ACCEPT_LOCAL)
++			print_string(PRINT_ANY, "accept_local", "accept_local %s ",
++				     conf[IPV4_DEVCONF_ACCEPT_LOCAL - 1] ? "on" : "off");
++
++		if (max_elements >= IPV4_DEVCONF_SRC_VMARK)
++			print_string(PRINT_ANY, "src_vmark", " src_vmark %s",
++				     conf[IPV4_DEVCONF_SRC_VMARK - 1] ? "on" : "off");
++
++		if (max_elements >= IPV4_DEVCONF_PROXY_ARP_PVLAN)
++			print_string(PRINT_ANY, "proxy_arp_pvlan", "proxy_arp_pvlan %s ",
++				     conf[IPV4_DEVCONF_PROXY_ARP_PVLAN - 1] ? "on" : "off");
++
++		if (max_elements >= IPV4_DEVCONF_ROUTE_LOCALNET)
++			print_string(PRINT_ANY, "route_localnet", "route_localnet %s ",
++				     conf[IPV4_DEVCONF_ROUTE_LOCALNET - 1] ? "on" : "off");
++
++		if (max_elements >= IPV4_DEVCONF_BC_FORWARDING)
++			print_string(PRINT_ANY, "bc_forwarding", "bc_forwarding %s ",
++				     conf[IPV4_DEVCONF_BC_FORWARDING - 1] ? "on" : "off");
++
++		if (max_elements >= IPV4_DEVCONF_IGMPV2_UNSOLICITED_REPORT_INTERVAL)
++			print_int(PRINT_ANY, "igmpv2_unsolicited_report_interval",
++				  "igmpv2_unsolicited_report_interval %d ",
++				  conf[IPV4_DEVCONF_IGMPV2_UNSOLICITED_REPORT_INTERVAL - 1]);
++
++		if (max_elements >= IPV4_DEVCONF_IGMPV3_UNSOLICITED_REPORT_INTERVAL)
++			print_int(PRINT_ANY, "igmpv3_unsolicited_report_interval",
++				  "igmpv3_unsolicited_report_interval %d ",
++				  conf[IPV4_DEVCONF_IGMPV3_UNSOLICITED_REPORT_INTERVAL - 1]);
++
++		if (max_elements >= IPV4_DEVCONF_IGNORE_ROUTES_WITH_LINKDOWN)
++			print_string(PRINT_ANY, "ignore_routes_with_linkdown",
++				     "ignore_routes_with_linkdown %s ",
++				     conf[IPV4_DEVCONF_IGNORE_ROUTES_WITH_LINKDOWN - 1] ?
++				     "on" : "off");
++
++		if (max_elements >= IPV4_DEVCONF_DROP_UNICAST_IN_L2_MULTICAST)
++			print_string(PRINT_ANY, "drop_unicast_in_l2_multicast",
++				     "drop_unicast_in_l2_multicast %s ",
++				     conf[IPV4_DEVCONF_DROP_UNICAST_IN_L2_MULTICAST - 1] ?
++				     "on" : "off");
++
++		if (max_elements >= IPV4_DEVCONF_DROP_GRATUITOUS_ARP)
++			print_string(PRINT_ANY, "drop_gratuitous_arp",
++				     "drop_gratuitous_arp %s ",
++				     conf[IPV4_DEVCONF_DROP_GRATUITOUS_ARP - 1] ? "on" : "off");
++
++		if (max_elements >= IPV4_DEVCONF_ARP_EVICT_NOCARRIER)
++			print_string(PRINT_ANY, "arp_evict_nocarrier",
++				     "arp_evict_nocarrier %s ",
++				     conf[IPV4_DEVCONF_ARP_EVICT_NOCARRIER - 1] ? "on" : "off");
++	}
++}
++
+ static void print_af_spec(FILE *fp, struct rtattr *af_spec_attr)
+ {
+-	struct rtattr *inet6_attr;
+ 	struct rtattr *tb[IFLA_INET6_MAX + 1];
++	struct rtattr *inet6_attr;
++	struct rtattr *inet_attr;
+ 
+-	inet6_attr = parse_rtattr_one_nested(AF_INET6, af_spec_attr);
+-	if (!inet6_attr)
+-		return;
++	inet_attr = parse_rtattr_one_nested(AF_INET, af_spec_attr);
++	if (inet_attr)
++		print_inet(fp, inet_attr);
+ 
+-	parse_rtattr_nested(tb, IFLA_INET6_MAX, inet6_attr);
++	inet6_attr = parse_rtattr_one_nested(AF_INET6, af_spec_attr);
++	if (inet6_attr) {
++		parse_rtattr_nested(tb, IFLA_INET6_MAX, inet6_attr);
+ 
+-	if (tb[IFLA_INET6_ADDR_GEN_MODE]) {
+-		__u8 mode = rta_getattr_u8(tb[IFLA_INET6_ADDR_GEN_MODE]);
+-		SPRINT_BUF(b1);
++		if (tb[IFLA_INET6_ADDR_GEN_MODE]) {
++			__u8 mode = rta_getattr_u8(tb[IFLA_INET6_ADDR_GEN_MODE]);
+ 
+-		switch (mode) {
+-		case IN6_ADDR_GEN_MODE_EUI64:
+-			print_string(PRINT_ANY,
+-				     "inet6_addr_gen_mode",
+-				     "addrgenmode %s ",
+-				     "eui64");
+-			break;
+-		case IN6_ADDR_GEN_MODE_NONE:
+-			print_string(PRINT_ANY,
+-				     "inet6_addr_gen_mode",
+-				     "addrgenmode %s ",
+-				     "none");
+-			break;
+-		case IN6_ADDR_GEN_MODE_STABLE_PRIVACY:
+-			print_string(PRINT_ANY,
+-				     "inet6_addr_gen_mode",
+-				     "addrgenmode %s ",
+-				     "stable_secret");
+-			break;
+-		case IN6_ADDR_GEN_MODE_RANDOM:
+-			print_string(PRINT_ANY,
+-				     "inet6_addr_gen_mode",
+-				     "addrgenmode %s ",
+-				     "random");
+-			break;
+-		default:
+-			snprintf(b1, sizeof(b1), "%#.2hhx", mode);
+-			print_string(PRINT_ANY,
+-				     "inet6_addr_gen_mode",
+-				     "addrgenmode %s ",
+-				     b1);
+-			break;
++			SPRINT_BUF(b1);
++			switch (mode) {
++			case IN6_ADDR_GEN_MODE_EUI64:
++				print_string(PRINT_ANY,
++					     "inet6_addr_gen_mode",
++					     "addrgenmode %s ",
++					     "eui64");
++				break;
++			case IN6_ADDR_GEN_MODE_NONE:
++				print_string(PRINT_ANY,
++					     "inet6_addr_gen_mode",
++					     "addrgenmode %s ",
++					     "none");
++				break;
++			case IN6_ADDR_GEN_MODE_STABLE_PRIVACY:
++				print_string(PRINT_ANY,
++					     "inet6_addr_gen_mode",
++					     "addrgenmode %s ",
++					     "stable_secret");
++				break;
++			case IN6_ADDR_GEN_MODE_RANDOM:
++				print_string(PRINT_ANY,
++					     "inet6_addr_gen_mode",
++					     " addrgenmode %s ",
++					     "random");
++				break;
++			default:
++				snprintf(b1, sizeof(b1), "%#.2hhx", mode);
++				print_string(PRINT_ANY,
++					     "inet6_addr_gen_mode",
++					     "addrgenmode %s ",
++					     b1);
++				break;
++			}
+ 		}
+ 	}
+ }
 -- 
-Simon Baatz <gmbnomis@gmail.com>
+2.54.0
+
