@@ -1,77 +1,68 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6B41219FC;
-	Fri, 12 Jun 2026 00:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70DF61E5724;
+	Fri, 12 Jun 2026 00:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781223014; cv=none; b=dKIHI8ersZiAiW0xV1IrsEJGHlR/8XoD6CSXDX4LaESykmQzYeKxGXMCaFIL5Zk+djnsRJl6FuFTN1H8lf9V+nxxGx1NBJtgK57DEu4FoG4Hadv6aaMRqnfMel0QULJs4gH8A2cC1f86xN6g0yueB6C6ZsSstrwUVwpDvxxtN9A=
+	t=1781223361; cv=none; b=NzpZD4rnNgZNJkwJt3gfGPX/UT4COX78itvU5+8RyRDNBSN88A1niY0CSY4jNCCbvmZY8V9/DgBt15ELy1h5CQWJWOn9jjQtQiMsGAAFOikuzoWpeafruAGwG4paWbLNQF00dngZ1cB7BjaQgjQkGOXTom3DQ1HqExGJLv5ISko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781223014; c=relaxed/simple;
-	bh=7Mdb8ig3ulyAdSZ/I7o6f86lqNToxFgCbho9Ms1gYxU=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=TbC2Wmt/AReaVINq0lKy6n/lwao2W5PvyQigm6F15GWNgizB/fJbLaCt2afkWPD67+heO7i6nllI0Xt4HigOOf7Ui2rHmpl9Id7mfKjQeYhoCqlqUBvM+G3WtsGaL7q39l31anT2stuRhgLRCqmFyp3eh5mNwoq663EI/o2uM/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IPVZ9CR0; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781223361; c=relaxed/simple;
+	bh=trPl9E/NPOcIiL9fnNtUJ6Qojjjrc0W8ccKb6LqsizI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ifu+TUbHt6If5+rK/tglNLHsWCCu9fn7FpJEVcj6MkhhsrMBh27RHbacbhDwCcUp9Z6JJIBgm66yEh/JMjLCVHUNhJU7HejZu+alIsROLRh9EXhqCWWpGe6j7tYKiF7SxsehR+iRRWPObDL8763356Y2qd1g7yBw285gJ1ZA5pU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TU4WZbZh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IPVZ9CR0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B29C81F000E9;
-	Fri, 12 Jun 2026 00:10:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TU4WZbZh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC6BC1F000E9;
+	Fri, 12 Jun 2026 00:15:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781223013;
-	bh=XrUMbaDc8/HfNLNGRKx2Sy7mZ/WrNEmmBFzCmLexcW0=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=IPVZ9CR0W8/8S5OWNKFBKeUEPohLPa11r4J7lLDxpbIctJOD82+24UPsUHPcM9loI
-	 biWH110x2jnzWZHyzTsdbmP8m2t01Lwjyd2qCRudkit9Vz7NEv77tdPgimVfy0/EW7
-	 ENiXrI6GRlV64bxPgScmxDsjv5s9i5K06klZ6caSoPScvD9NG6N3NH0aRoms9vHQ+k
-	 FmsCCii2uUdUHURiQ3wWBKw8Upk+471C3RHmSkXy/TDJkhLoIWAkLrNsbMfNGwZ8Ay
-	 pP92qrJRkXL3657CTbWE9TXqneB1Nw4RGnqcLt8r61iV99RW3RJx8S5VLjq6lJqmlZ
-	 bwkYNntlOfUnA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198413930FB4;
-	Fri, 12 Jun 2026 00:10:12 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1781223360;
+	bh=knIMGB9uT3vqgP2ooIIsZTSTNdIsZh95XjgznEq18uk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=TU4WZbZhjKH5pttXmE+QJ1fkcv2E53JkUtMgctLXcR1vayDfw8Vt2HaIXXGpwyNZv
+	 oeS+gR98y0txB1vAPRNcOqw1LsKMjZyVTIOJsKiQLn4SgmVXU0ec92WgE4Fa2+xgWg
+	 ogBwDxaaBSmwSJBZ9A0pMs/P90FgBbohygF65qkhnk7wChZctHxo+h1tdpNMG19Tta
+	 Po6FB1BNyYHmDX8v5+KbctQsEn7g/hCDeiJu8gVsm6Ep/8V6LgOswpDtfWNgZsgnoU
+	 YpBZdLuZKWTlgKXmI+VbAAhHbjcVbMdHsSqSTIWwHA4C4mR6OP2zY9dGmPoPn7dPwM
+	 1YaLl9oEu+itQ==
+Date: Thu, 11 Jun 2026 17:15:59 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: davem@davemloft.net, linux-bluetooth@vger.kernel.org,
+ netdev@vger.kernel.org
+Subject: Re: [GIT PULL] bluetooth 2026-06-10
+Message-ID: <20260611171559.5219cce9@kernel.org>
+In-Reply-To: <20260610180050.419401-1-luiz.dentz@gmail.com>
+References: <20260610180050.419401-1-luiz.dentz@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [pull-request] NFC updates for net-next 2026-06-11
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178122301064.415137.4307378428317682270.git-patchwork-notify@kernel.org>
-Date: Fri, 12 Jun 2026 00:10:10 +0000
-References: <1aed7555-3d24-413c-b284-bc85fdd33055@ixit.cz>
-In-Reply-To: <1aed7555-3d24-413c-b284-bc85fdd33055@ixit.cz>
-To: David Heidelberg <david@ixit.cz>
-Cc: kuba@kernel.org, pabeni@redhat.com, davem@davemloft.net,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- oe-linux-nfc@lists.linux.dev
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This pull request was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Thu, 11 Jun 2026 20:44:34 +0200 you wrote:
-> The following changes since commit 518d8d0199538a4d6d5e51064044ece71e0c42e7:
+On Wed, 10 Jun 2026 14:00:50 -0400 Luiz Augusto von Dentz wrote:
+> bluetooth pull request for net:
 > 
->    net: sched: avoid printing uninitialized link speed (2026-06-11 15:44:55 +0200)
-> 
-> are available in the Git repository at:
-> 
->    https://codeberg.org/linux-nfc/linux.git tags/nfc-net-next-20260611
-> 
-> [...]
+>  - hci_core: Fix UAF in hci_unregister_dev()
+>  - hci_event: fix simultaneous discovery stuck in FINDING
+>  - hci: validate codec capability element length
+>  - eir: Fix stack OOB write when prepending the Flags AD
+>  - L2CAP: Fix UAF in channel timeout by holding conn ref
+>  - btusb: fix use-after-free on registration failure
+>  - btusb: fix use-after-free on marvell probe failure
+>  - btusb: fix wakeup source leak on probe failure
+>  - btusb: fix wakeup irq devres lifetime
+>  - btmtk: fix URB leak in alloc_mtk_intr_urb error path
+>  - vhci: validate devcoredump state before side effects
 
-Here is the summary with links:
-  - [pull-request] NFC updates for net-next 2026-06-11
-    https://git.kernel.org/netdev/net-next/c/5a031965451c
+Missed the PR :( Sorry about that :(
+*iif* you're still rebasing the tree - could you mend the fixes tag?
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Commit: 13d7c52acbb8 ("Bluetooth: L2CAP: Fix UAF in channel timeout by holding conn ref")
+	Fixes tag: Fixes: 75780ca4c6a8 ("Bluetooth: L2CAP: use chan timer to close channels in cleanup_listen()")
+	Has these problem(s):
+		- Target SHA1 does not exist
