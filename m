@@ -1,113 +1,99 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79BC2345731
-	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 09:38:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF14369203;
+	Fri, 12 Jun 2026 09:40:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781257085; cv=none; b=KyoGpg4nnVfL8eOBt4avCiILBq6MhdVcMY6E7J6E3gFNImiAj9NN4hl2skvZyiM+FjJ0dJ8HRt4NH+5C3U9gzq6ILf+ytXUX7bFdazlUBwi94TSSrmXcQ3vkNuzq75qOXf9gccmLacwoKp3FWr3+CIVZkR/F4P/Ef50l6UYswsw=
+	t=1781257206; cv=none; b=aPZCeoj8AUvc8ICrJIDrKQ5AURuz7LhNMb7G9dT9egYjF4SJoMUm/eCjq1A6i0CwHuN8bkYgusdsRkaHfaa7m0jlCQ1eC+7gL10f3OUhtoGOi2CJlf9tYQccVdvuKDbI4q8Cc5N0P4BHCGe2b2/EX6FNRwiFGXFjO/jM4l+LerE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781257085; c=relaxed/simple;
-	bh=jcYu28Tlw7oEARjKeA29kcjH5C6H9evj+8Bc0QC96ZE=;
-	h=Message-ID:From:Date:Subject:To:Cc; b=cDmPFgQdY/AdQd//p5fSdUVJ0mai60992tr51TfwYzeHl2A2jMqEsw/+nOT3m0icCX+XMqZntFAJFsZp7Qnm6xUblsbxVTSrjEqA6kM6GnT+6KpJmJmQuIMsHxWr9bDEEV9rtWpkm0+gq+Wedfu8bynXMsm+L+oh2q7dt9du/L8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ew1GvMeP; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781257206; c=relaxed/simple;
+	bh=fzysB5pIN803RVK9B30v9upfAqk/t4VVzBng+aQlha4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=US6mFU5kGwak0EZNbueUnMdQxoERRbknlwz3uN8ml71vR5Z42hcYMB+QX+z+LrJPBkyoYT6fCSmVbItI+3LgeRVkLt6hm9jFVTu50aX5vL+vk766nGPcp2byOK2tAvLLkKEUEgJzAoFkGxvl9tQo67AlyyA10YNy5+vJ+4vC9TY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UuKgjlnz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ew1GvMeP"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-842848fd613so770200b3a.3
-        for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 02:38:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781257082; x=1781861882; darn=vger.kernel.org;
-        h=cc:to:subject:date:from:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mXbZalzcxo6/TsrxZQxu5oks4UtJk6D2CPv/MBaaCkM=;
-        b=ew1GvMePpZTP1cxHZYyFjdQ5YDGkAqQ/1M3OIbs+aMFF9UaPASOVRtev6X+prwijyZ
-         HTYXRzCBqomcgSmCEedF6QfcJN4UQ7tGIUivEBVACXtCyu4YZclyOG4M7Nd6ydfa6NFw
-         VeYVF8nzjSlMzBJcry5Aae8WgRCSS6+a8Uo8S0nu0Zfj9UsbsVSLcoLhsPkzDVselpph
-         rbA6Z9qbP3Gd4f9nuBs3s6CRzohLx81zozxCRAbDQ053oXywi/GE34ikFFNLnWhz59dc
-         tBXd3bv1l158Ip+9IZpYs+ADCBEM4R/92E6fScf8H6f8mwUlU5oB9ThKxMC7GcnIDmyC
-         s90A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781257082; x=1781861882;
-        h=cc:to:subject:date:from:message-id:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=mXbZalzcxo6/TsrxZQxu5oks4UtJk6D2CPv/MBaaCkM=;
-        b=P4r/DD9sz1Gc9NwbKa9VatcBNNJI2WLAE9vStJ8H7f2MRPLPcCR1S8AGAiOkjvvqtB
-         g7JPDXnlkB123p9+/bs99iwAjYlx8OZXfvB8nuOnpHDzhFqG7WWoiE36BvP8kyeli2By
-         xe323bdaFeE6f03zUCZwU2gUNBTqq2TqQY/uwsXOv9YC60YJcHHsNQCCjTBBEdjnWG6u
-         AP+Fm/gY0l7ERn2Jn/umbJVlxIaMDvPNe1fs9Hf/rHfzxCdyfWnhwULmmhUoIOQDoL5o
-         t+ItdvXY/j4vRag7fVpHW7Q4UWINZJKPi/s+MiLwg0H5QTXO1P83Fc/28CKuZ0Vjg+nQ
-         S9gQ==
-X-Gm-Message-State: AOJu0Yy1rrSm6tiY9FBjSub45tUW9gTKxjH2td+N+bIHGJCqKIrGFbzM
-	WfGEHt9SmQCG+ewCcHz7r2nuIh3931EUMP8n9+tFj20b3PCnhV/gOvb7hPzrDudw
-X-Gm-Gg: Acq92OGDODgFV+paCW4DF8oRf/AwdN+2MbTdQjaCNuyX9yLSkP6OVOSWH+CNmRl7v2w
-	gq1/nArSb6VsnKUC3uVFQJgL+89g3RIrOQlUAbWOfGoNIQG5wL01XdsdSCj/9cVECjpqY2uju/W
-	f5FZXOckjzSvr4GAg6wCTIoKLOoRjIc+1C2NUDVLTtBbXKDuD8O+1SNp02uKAuavOR/kyk/ntAr
-	0KKqnMjl3TopubfJKqHK260iCpSKWZLWgSCRQ0+/xJoPqhgyQLZAv8XG8SuF74P0bMSldV3Lhb0
-	3NoyLk5rxWHZsABoRyi8s6Ll6iphkcWTKpUHynl4k3Xs3Yaj1J0QtjTcoi3uPznSbxgiKA5sZOn
-	tkE8Gz20L/t8/nELvAwZcSKwZayhmzFHiMIXKINKCZLXijNIcc0t1Cs7+nu+QdyptStzDyyHDy4
-	RODHpdNfiPxVtc/bBN
-X-Received: by 2002:a05:6a00:12cd:b0:842:3801:47f with SMTP id d2e1a72fcca58-8434cec2dc3mr2271540b3a.17.1781257082521;
-        Fri, 12 Jun 2026 02:38:02 -0700 (PDT)
-Received: from [127.0.1.1] ([47.253.114.73])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434b04b6bbsm1724054b3a.56.2026.06.12.02.38.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Jun 2026 02:38:02 -0700 (PDT)
-Message-ID: <6a2bd37a.4034e349.1b41bb.1caf@mx.google.com>
-From: "Wayen.Yan" <win847@gmail.com>
-Date: Fri, 12 Jun 2026 17:37:00 +0800
-Subject: [PATCH v2] net: airoha: Fix error handling in
- airoha_ppe_flush_sram_entries()
-To: netdev@vger.kernel.org
-Cc: lorenzo@kernel.org, linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UuKgjlnz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBCEA1F000E9;
+	Fri, 12 Jun 2026 09:40:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781257203;
+	bh=tnMdDldcFeu/oupQsEw5Jczw9eoM5xDyd7gMImQs7bY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=UuKgjlnz+unKpHXpQOILgpgXWbg+OtHmGSGxl8fvSNUtio6jkEv0G8iAsi3Np85Z0
+	 DyQQjNL22O8p8STi1GP2f2Jpc4nyxUX6JPnHnnQYL4PnA/EV8G5FI0uF3X3h+aiSv3
+	 JtIrgErNWYjPvfZBmsE3mpkqd3Puq81P8UHL3PZPOUrY/YfxkJunWgwTzjzWyw0sn3
+	 wZtOlkm+OoaIzzvo5f1Va/StG9hLlmDpskE3+c2yo+OE6SQ6dAgLm+ZPWXcvWzFa7t
+	 4e2q5FITZp7QBavQDaTrWvQvmiL+6gwYLh/VCSWbbQHnj9sWmAVMZtwno/r+WoAIyJ
+	 gKgjmtgi++6/A==
+Message-ID: <7be62ade-2598-4c63-8b42-393323a1cc0e@kernel.org>
+Date: Fri, 12 Jun 2026 11:39:58 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-
-In airoha_ppe_flush_sram_entries(), the outer "err" variable was never
-updated when the inner loop variable shadowed it, causing the function
-to always return 0 even when airoha_ppe_foe_commit_sram_entry() fails.
-
-Drop the outer "err" variable and return directly on error, propagating
-the error code from airoha_ppe_foe_commit_sram_entry() correctly.
-
-Fixes: 620d7b91aadb ("net: airoha: ppe: Flush PPE SRAM table during PPE setup")
-Link: https://lore.kernel.org/netdev/6a2b40e4.4dd82583.3a5c46.e52f@mx.google.com/
-Signed-off-by: Wayen.Yan <win847@gmail.com>
----
- drivers/net/ethernet/airoha/airoha_ppe.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ethernet/airoha/airoha_ppe.c
-index 5c9dff6..a124f15 100644
---- a/drivers/net/ethernet/airoha/airoha_ppe.c
-+++ b/drivers/net/ethernet/airoha/airoha_ppe.c
-@@ -1330,7 +1330,7 @@ static int airoha_ppe_flush_sram_entries(struct airoha_ppe *ppe)
- {
- 	u32 sram_num_entries = airoha_ppe_get_total_sram_num_entries(ppe);
- 	struct airoha_foe_entry *hwe = ppe->foe;
--	int i, err = 0;
-+	int i;
- 
- 	for (i = 0; i < sram_num_entries; i++) {
- 		int err;
-@@ -1338,10 +1338,10 @@ static int airoha_ppe_flush_sram_entries(struct airoha_ppe *ppe)
- 		memset(&hwe[i], 0, sizeof(*hwe));
- 		err = airoha_ppe_foe_commit_sram_entry(ppe, i);
- 		if (err)
--			break;
-+			return err;
- 	}
- 
--	return err;
-+	return 0;
- }
- 
- static struct airoha_npu *airoha_ppe_npu_get(struct airoha_eth *eth)
--- 
-2.51.0
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v6 4/5] net: sched: add timeout count to NETDEV
+ WATCHDOG message
+To: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
+Cc: Jakub Kicinski <kuba@kernel.org>,
+ =?UTF-8?Q?Jonas_K=C3=B6ppeler?= <j.koeppeler@tu-berlin.de>,
+ Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org
+References: <20260527135418.1166665-1-hawk@kernel.org>
+ <20260527135418.1166665-5-hawk@kernel.org>
+ <3f73e314-756e-494e-a1aa-0bc39c14f41b@redhat.com>
+Content-Language: en-US
+From: Jesper Dangaard Brouer <hawk@kernel.org>
+In-Reply-To: <3f73e314-756e-494e-a1aa-0bc39c14f41b@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
 
+
+On 04/06/2026 10.30, Paolo Abeni wrote:
+> On 5/27/26 3:54 PM, hawk@kernel.org wrote:
+>> diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
+>> index 237ee1cd0136..2aebab985c00 100644
+>> --- a/net/sched/sch_generic.c
+>> +++ b/net/sched/sch_generic.c
+>> @@ -533,13 +533,12 @@ static void dev_watchdog(struct timer_list *t)
+>>   		    netif_running(dev) &&
+>>   		    netif_carrier_ok(dev)) {
+>>   			unsigned int timedout_ms = 0;
+>> +			struct netdev_queue *txq;
+>>   			unsigned int i;
+>>   			unsigned long trans_start;
+>>   			unsigned long oldest_start = jiffies;
+>>   
+>>   			for (i = 0; i < dev->num_tx_queues; i++) {
+>> -				struct netdev_queue *txq;
+>> -
+>>   				txq = netdev_get_tx_queue(dev, i);
+>>   				if (!netif_xmit_stopped(txq))
+>>   					continue;
+>> @@ -561,9 +560,10 @@ static void dev_watchdog(struct timer_list *t)
+>>   
+>>   			if (unlikely(timedout_ms)) {
+>>   				trace_net_dev_xmit_timeout(dev, i);
+>> -				netdev_crit(dev, "NETDEV WATCHDOG: CPU: %d: transmit queue %u timed out %u ms\n",
+>> +				netdev_crit(dev, "NETDEV WATCHDOG: CPU: %d: transmit queue %u timed out %u ms (n:%ld)\n",
+>>   					    raw_smp_processor_id(),
+>> -					    i, timedout_ms);
+>> +					    i, timedout_ms,
+>> +					    atomic_long_read(&txq->trans_timeout));
+> 
+> It looks like txq could be uninitialized here if num_tx_queues is 0. I'm
+> unsure if some weird/buggy device driver could actually hit that case,
+> but grep '->num_tx_queues = 0;' has more than 0 hits in the current tree
+> and I would err on the safe side.
+
+Addressed in [V7], by reading out trans_timeout value when it is
+accessed/incremented anyhow.  Thus, avoiding the need to deref txq.
+
+[V7] https://lore.kernel.org/all/20260612083530.1650245-5-hawk@kernel.org/
+
+--Jesper
