@@ -1,57 +1,57 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5CA3E314A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9EC63E3145
 	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 07:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781250496; cv=none; b=kp80od+Nul63PTXphKtyLm71vrH3SWvWIjniva5+XaCZLVZavW5iChMhPLQlGpf1lyG06YZhu7SQXaLMjdbyKnLNqRkVj/tGOVCGqs+REXewjRNJdbu1cTJd31a8uzLVaBXhEjfYM2WvxZMwSbEkdbMjKsHyaC4nR+AsvAqurf0=
+	t=1781250496; cv=none; b=ctXQIR2Th0AltrmFNiGHxjRQdBBXh3TIaAsPSAdKgA4fk0uoy5/OvJDEKZ68dLjaTTRfD61ObhQRLN78/wuRinFvrjGJvpOdF2t2XKNOvPuN7P2aF8g4H/1fSCm8C25dVJ4AUgxO8IwGgw7W1o3M+k8f3NHpXbR9pBMTw7Dsuw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1781250496; c=relaxed/simple;
-	bh=/gXPqd/s1bzhjhwv+5IQ7wW9ivav7ji8AWWXnSlzOpQ=;
+	bh=zedCNH7cPFEJooxUv5psEH8gmdZgRI6Pq5Hi7SYiJVg=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=twnd4VVYnnENgTNOUbQptKC1zEQrmlLUfnL1+v/SEcaHXGnakWjDJAWKohHeyWKf8nclYEOxYJO0dDRK2IzupK3Jsr9Af6wFt0Oi2hfQhAJV3Bv1SKUPEDcif69G4Hqr+DY7ZySLaaIurqflSM8nTcPUA40OfqrKg7uSyCZIs1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=sK/Xd/Jv; arc=none smtp.client-ip=62.96.220.36
+	 MIME-Version:Content-Type; b=cIg9KFKplfO3KBa8Hh/s+yryKBWIAS6qHJr8l/3MqEf2Zx+jgEwj2sjw4LGfSuSWdoD4pRAwEk7doq/oYuApJgxKxyyowGTcUsKTAI64TMfbgzcpvM4mhorlO1NsrLsUaY+sPMd8Th+s7l5KnL/uChwrGCWP1Qa4ONw5yIgDX7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=n8hGEnvY; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="sK/Xd/Jv"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="n8hGEnvY"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id D90392082B;
-	Fri, 12 Jun 2026 09:48:12 +0200 (CEST)
+	by mx1.secunet.com (Postfix) with ESMTP id 97D14207B3;
+	Fri, 12 Jun 2026 09:48:13 +0200 (CEST)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id Ne94xhY8wcEh; Fri, 12 Jun 2026 09:48:12 +0200 (CEST)
+ with ESMTP id iY5-2Bo8k5dj; Fri, 12 Jun 2026 09:48:13 +0200 (CEST)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 2EA7920764;
-	Fri, 12 Jun 2026 09:48:12 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 2EA7920764
+	by mx1.secunet.com (Postfix) with ESMTPS id 0E92D20764;
+	Fri, 12 Jun 2026 09:48:13 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 0E92D20764
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1781250492;
-	bh=jWqvIViQABg+KWgtm+fuzeZsQMfaE/swPTrt4zGTsJw=;
+	s=202301; t=1781250493;
+	bh=EFxIurL7HDAo39RHEsK+XHuo4B40E8XnHfdLl3kBODU=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=sK/Xd/JvVzaE0rb6QwqCrkmbKBXQl4Pt9gTp6t3rgYysFXZPf/7SmgDcfSIJg+mRL
-	 QfMmVQMaP5tFWdB19aoH4A8bPMe3LGw6NHDO/OKSEr0SAKyxvg0oZFCEUwXNUicIIf
-	 /kueVIORnqBQ5Avzvurr8DyU2ZE0d4SSfnoW6OTps5xtj6qrlS5Yii5LUTVxSjIjcy
-	 YD7B/he9uJhhIX6jlpTBoAENIlmM3hBmTZm8ehb0+14o9MoziIjApdRJhm3uyxUG/n
-	 d3+Bukvd38L2+qrFL8PqEQI0b2tgOIBFCF8bnoUrDqxH5Ay61w5Oz0LUoPYS6SjYPo
-	 iHsizOfJ89cyw==
+	b=n8hGEnvYsp1b5yOw05iTgivc8WI+wMT+v9aaoXxpvPWREIKvJ8eYjOXZ0ayebwhfc
+	 aiSmnPxBSvy9NeyOXUWKQTTyi4Av+b52P5yYIgSBM+o/7d+x3QzPAkUelUsgMkhgus
+	 ITERqhddv/RSRAi1UQ8XIUvjamUrrWUR/KMeb97PY2D0ZSGXSHIK1owoYs0Q+9fSpr
+	 oLEVc6mt7XKbj6dLG5BVlZiL6VJQHdETDW9N585rmGQQoklrG1bsCQJKhM00kemLkT
+	 lH+WdWEARD+q+D6rCIbKxkgGKCQAIcwpsqu+D9HVqRz59z+WZm5yjXgfLwh4M1ZAug
+	 xK2P4P5xgGIRQ==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Fri, 12 Jun
- 2026 09:48:11 +0200
-Received: (nullmailer pid 1768284 invoked by uid 1000);
+ 2026 09:48:12 +0200
+Received: (nullmailer pid 1768269 invoked by uid 1000);
 	Fri, 12 Jun 2026 07:47:57 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 07/18] xfrm: rename reqid in xfrm_migrate
-Date: Fri, 12 Jun 2026 09:46:23 +0200
-Message-ID: <20260612074725.1760473-8-steffen.klassert@secunet.com>
+Subject: [PATCH 02/18] xfrm: Reject excessive values for XFRMA_TFCPAD
+Date: Fri, 12 Jun 2026 09:46:18 +0200
+Message-ID: <20260612074725.1760473-3-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260612074725.1760473-1-steffen.klassert@secunet.com>
 References: <20260612074725.1760473-1-steffen.klassert@secunet.com>
@@ -63,136 +63,40 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
+X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-01.secunet.de
  (10.32.0.171)
 
-From: Antony Antony <antony.antony@secunet.com>
+From: David Ahern <dahern@nvidia.com>
 
-In preparation for a later patch in this series s/reqid/old_reqid/.
-No functional change.
+tfcpad is a u32, but that full range is excessive for padding.
+Limit it to max IP length (64k).
 
-Signed-off-by: Antony Antony <antony.antony@secunet.com>
+Signed-off-by: David Ahern <dahern@nvidia.com>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 ---
- include/net/xfrm.h     |  2 +-
- net/key/af_key.c       | 10 +++++-----
- net/xfrm/xfrm_policy.c |  4 ++--
- net/xfrm/xfrm_state.c  |  6 +++---
- net/xfrm/xfrm_user.c   |  4 ++--
- 5 files changed, 13 insertions(+), 13 deletions(-)
+ net/xfrm/xfrm_user.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/xfrm.h b/include/net/xfrm.h
-index 0c035955d87d..368b1dc22e5c 100644
---- a/include/net/xfrm.h
-+++ b/include/net/xfrm.h
-@@ -685,7 +685,7 @@ struct xfrm_migrate {
- 	u8			proto;
- 	u8			mode;
- 	u16			reserved;
--	u32			reqid;
-+	u32			old_reqid;
- 	u16			old_family;
- 	u16			new_family;
- };
-diff --git a/net/key/af_key.c b/net/key/af_key.c
-index 842bf5786e3f..1f0201d97b4f 100644
---- a/net/key/af_key.c
-+++ b/net/key/af_key.c
-@@ -2554,7 +2554,7 @@ static int ipsecrequests_to_migrate(struct sadb_x_ipsecrequest *rq1, int len,
- 	if ((mode = pfkey_mode_to_xfrm(rq1->sadb_x_ipsecrequest_mode)) < 0)
- 		return -EINVAL;
- 	m->mode = mode;
--	m->reqid = rq1->sadb_x_ipsecrequest_reqid;
-+	m->old_reqid = rq1->sadb_x_ipsecrequest_reqid;
- 
- 	return ((int)(rq1->sadb_x_ipsecrequest_len +
- 		      rq2->sadb_x_ipsecrequest_len));
-@@ -3655,15 +3655,15 @@ static int pfkey_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
- 		if (mode < 0)
- 			goto err;
- 		if (set_ipsecrequest(skb, mp->proto, mode,
--				     (mp->reqid ?  IPSEC_LEVEL_UNIQUE : IPSEC_LEVEL_REQUIRE),
--				     mp->reqid, mp->old_family,
-+				     (mp->old_reqid ? IPSEC_LEVEL_UNIQUE : IPSEC_LEVEL_REQUIRE),
-+				     mp->old_reqid, mp->old_family,
- 				     &mp->old_saddr, &mp->old_daddr) < 0)
- 			goto err;
- 
- 		/* new ipsecrequest */
- 		if (set_ipsecrequest(skb, mp->proto, mode,
--				     (mp->reqid ? IPSEC_LEVEL_UNIQUE : IPSEC_LEVEL_REQUIRE),
--				     mp->reqid, mp->new_family,
-+				     (mp->old_reqid ? IPSEC_LEVEL_UNIQUE : IPSEC_LEVEL_REQUIRE),
-+				     mp->old_reqid, mp->new_family,
- 				     &mp->new_saddr, &mp->new_daddr) < 0)
- 			goto err;
- 	}
-diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-index c944327ce66c..fd505adf080e 100644
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -4538,7 +4538,7 @@ static int migrate_tmpl_match(const struct xfrm_migrate *m, const struct xfrm_tm
- 	int match = 0;
- 
- 	if (t->mode == m->mode && t->id.proto == m->proto &&
--	    (m->reqid == 0 || t->reqid == m->reqid)) {
-+	    (m->old_reqid == 0 || t->reqid == m->old_reqid)) {
- 		switch (t->mode) {
- 		case XFRM_MODE_TUNNEL:
- 		case XFRM_MODE_BEET:
-@@ -4632,7 +4632,7 @@ static int xfrm_migrate_check(const struct xfrm_migrate *m, int num_migrate,
- 				    sizeof(m[i].old_saddr)) &&
- 			    m[i].proto == m[j].proto &&
- 			    m[i].mode == m[j].mode &&
--			    m[i].reqid == m[j].reqid &&
-+			    m[i].old_reqid == m[j].old_reqid &&
- 			    m[i].old_family == m[j].old_family) {
- 				NL_SET_ERR_MSG(extack, "Entries in the MIGRATE attribute's list must be unique");
- 				return -EINVAL;
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index b9de931d84c1..5424f2becbaf 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -2081,14 +2081,14 @@ struct xfrm_state *xfrm_migrate_state_find(struct xfrm_migrate *m, struct net *n
- 
- 	spin_lock_bh(&net->xfrm.xfrm_state_lock);
- 
--	if (m->reqid) {
-+	if (m->old_reqid) {
- 		h = xfrm_dst_hash(net, &m->old_daddr, &m->old_saddr,
--				  m->reqid, m->old_family);
-+				  m->old_reqid, m->old_family);
- 		hlist_for_each_entry(x, xfrm_state_deref_prot(net->xfrm.state_bydst, net) + h, bydst) {
- 			if (x->props.mode != m->mode ||
- 			    x->id.proto != m->proto)
- 				continue;
--			if (m->reqid && x->props.reqid != m->reqid)
-+			if (m->old_reqid && x->props.reqid != m->old_reqid)
- 				continue;
- 			if (if_id != 0 && x->if_id != if_id)
- 				continue;
 diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index e87f33aaa99c..ce65e872cbac 100644
+index ae144d1e4a65..e87f33aaa99c 100644
 --- a/net/xfrm/xfrm_user.c
 +++ b/net/xfrm/xfrm_user.c
-@@ -3110,7 +3110,7 @@ static int copy_from_user_migrate(struct xfrm_migrate *ma,
+@@ -937,8 +937,14 @@ static struct xfrm_state *xfrm_state_construct(struct net *net,
+ 				   attrs[XFRMA_ALG_COMP], extack)))
+ 		goto error;
  
- 		ma->proto = um->proto;
- 		ma->mode = um->mode;
--		ma->reqid = um->reqid;
-+		ma->old_reqid = um->reqid;
+-	if (attrs[XFRMA_TFCPAD])
++	if (attrs[XFRMA_TFCPAD]) {
+ 		x->tfcpad = nla_get_u32(attrs[XFRMA_TFCPAD]);
++		if (x->tfcpad > IP_MAX_MTU) {
++			NL_SET_ERR_MSG(extack, "Excessive TFC padding");
++			err = -EINVAL;
++			goto error;
++		}
++	}
  
- 		ma->old_family = um->old_family;
- 		ma->new_family = um->new_family;
-@@ -3193,7 +3193,7 @@ static int copy_to_user_migrate(const struct xfrm_migrate *m, struct sk_buff *sk
- 	memset(&um, 0, sizeof(um));
- 	um.proto = m->proto;
- 	um.mode = m->mode;
--	um.reqid = m->reqid;
-+	um.reqid = m->old_reqid;
- 	um.old_family = m->old_family;
- 	memcpy(&um.old_daddr, &m->old_daddr, sizeof(um.old_daddr));
- 	memcpy(&um.old_saddr, &m->old_saddr, sizeof(um.old_saddr));
+ 	xfrm_mark_get(attrs, &x->mark);
+ 
 -- 
 2.43.0
 
