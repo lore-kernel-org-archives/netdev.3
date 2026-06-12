@@ -1,133 +1,119 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED10366051
-	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 09:45:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568B8366051
+	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 09:48:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781257525; cv=none; b=PixAIDCqrSd5YsGGKw71yMZRy3bE7ZYfHS4+wcuQ9pkHF2eTzRlkmBXPbBOJtW7ANOovdNOHfPUnAv5K0R4eDrSdbfZ5n9JvaZl7Ed33G0o4FsHSbbm6obhisrGSNMJZZ2mb+q56Kg6yPbDZWr+T+y+BO8+KD1xYkvL0LLCTrjc=
+	t=1781257699; cv=none; b=GCuig/qk5SIchDEKZiziCqz/5Ph+AGQ6YizrbZp3mI/vjUo4LUDjomGvNqwNi8kK/xGEte1uOZXPXgy60BtE0UHSXhhx3N5PBlM9S03YRZHJK2ues9kPUEsxpLPt1BOt90+aXoFxCw/XxCuLvlN2nd6zxEhqlmCzO7raarL36sA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781257525; c=relaxed/simple;
-	bh=VTSxjxhmvNI4LbXuNGTgOAix0RfJAtVADEzWKz5jJZc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=BxhUM2mRQC7EDnXsx6iEnF1jOezvGghFgZ92KaFhiZ0DKEojj6rLTU9Q8Cq245YR/nV+KiOdffpVK8G0rTlN6zpsHOgurtRKdL4Xv28mRC+ElGwnHuOWX72GKpdzkWreoj3cBJYcKG+qmh+xRiS2ZNfba8876QIQHMgmvEyX8kE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=N3HmtAk3; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1781257699; c=relaxed/simple;
+	bh=cAaCF69c04jCqVYjuqqPNjyeU8jG1ajAK8czCYYeKWc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bHgAB1i/Q1Yc2a7CI0j7uRhQyOfEmri3h75NDulUwKq2ioU9/5GHBjgS3veaDuQUboI4gYc4Z+OPgZtphKsMYMW5iYDP9tiFWrvpqadkjX1sotin8YyO8gRHbYY2JfgaJp7TtEWoOcgBk3sDJOC6X2/ngBnHSV0fm6sxhbbXGaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IDoZx6CM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="N3HmtAk3"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id C63504E42E5A;
-	Fri, 12 Jun 2026 09:45:21 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 901FE60012;
-	Fri, 12 Jun 2026 09:45:21 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1E170106C8567;
-	Fri, 12 Jun 2026 11:45:14 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1781257520; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=pAP1NcwYrXBK5Nx3wa/X8hgk6oZXZVKocwwn82WV4NA=;
-	b=N3HmtAk35VsP1qgGAXQ1tHQqUkfLGYVvab9kzm6RjePDLDHVWsR+DE0xdfJ+P+QeAGdJHN
-	ONqTwA50Fo3O5vGfbO3TA/mxy4eEqokbwcDTF+bWoXcsDXs8GNOemORaydA0cNY8zbtpoc
-	6fazjWEcphMfwdq/KPYrvqSQ0lZTR3FO+UA+yJZfMSx19foIoEKI0ygjYzOpZJSfiurDTr
-	Kr9GYnlaWFtNx+Grr6pxCNGetbXPdaEPJx5y3rfhZijw+4kGHygU+vLl08ALjhwfJNHGRX
-	g0kb5TR0/LGkb1h6AS7rwKKX2vrDBmBmySVZh0AM2qKKPMOKGMkTlRuk8OjXcw==
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IDoZx6CM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67D6D1F000E9;
+	Fri, 12 Jun 2026 09:48:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781257697;
+	bh=6fXUbxNQMef3KW0BeIYSPmJZG+Y5jb6njF1/ZJj+fSc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=IDoZx6CMkmJysz3zmuz6DeQEus1tZDstIBNG9RO8Q3WKHebeBPofSrSQmBf9d1oEp
+	 T5qTOQB01dlfZTo0IISNrO3VbH8eShKKjm1wAbcEErVKPhNhVNG/hN8LjLGhYa/WQW
+	 5H7DdYGam4rlbYlnJrKN0T9NIiOLCRP/FtdjdTFWkG8/nWCF4bxLuxHFRiqH+Q2iT5
+	 yHC616RGbmlh8V+DcboLU4CWAeyZITU7+kUbRPzmPC/pICG+ffobi8fTQuPtDsziJF
+	 MT3fU4d0DnUEsyN0hq2y9nCb5HuxHNTPmRd0RrTMOXRfsOe+088qWr5i8Bj9OFd0MS
+	 gzs2HQcNF1Pug==
+Date: Fri, 12 Jun 2026 11:48:15 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: "Wayen.Yan" <win847@gmail.com>
+Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH v2] net: airoha: Fix error handling in
+ airoha_ppe_flush_sram_entries()
+Message-ID: <aivV3wr7zHQcENtI@lore-desk>
+References: <6a2bd37a.4034e349.1b41bb.1caf@mx.google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="EoeaF+jQtSFUc+T+"
+Content-Disposition: inline
+In-Reply-To: <6a2bd37a.4034e349.1b41bb.1caf@mx.google.com>
+
+
+--EoeaF+jQtSFUc+T+
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 12 Jun 2026 11:45:14 +0200
-Message-Id: <DJ6Z39C906LE.1F3XKDDM41UJ8@bootlin.com>
-Subject: Re: [PATCH] net: macb: add TX stall timeout callback to recover
- from lost TSTART write
-Cc: "Lukasz Raczylo" <lukasz@raczylo.com>, "Steffen Jaeckel"
- <sjaeckel@suse.de>
-To: "Andrea della Porta" <andrea.porta@suse.com>, <netdev@vger.kernel.org>,
- "Nicolas Ferre" <nicolas.ferre@microchip.com>, "Claudiu Beznea"
- <claudiu.beznea@tuxon.dev>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "David S
- . Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>,
- "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
- <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
- <linux-rpi-kernel@lists.infradead.org>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <771b8faeaee1fce4a84a5ba2661d60b35a65a6d5.1781253818.git.andrea.porta@suse.com>
-In-Reply-To: <771b8faeaee1fce4a84a5ba2661d60b35a65a6d5.1781253818.git.andrea.porta@suse.com>
-X-Last-TLS-Session-Version: TLSv1.3
 
-Hello Andrea,
+> In airoha_ppe_flush_sram_entries(), the outer "err" variable was never
+> updated when the inner loop variable shadowed it, causing the function
+> to always return 0 even when airoha_ppe_foe_commit_sram_entry() fails.
+>=20
+> Drop the outer "err" variable and return directly on error, propagating
+> the error code from airoha_ppe_foe_commit_sram_entry() correctly.
+>=20
+> Fixes: 620d7b91aadb ("net: airoha: ppe: Flush PPE SRAM table during PPE s=
+etup")
+> Link: https://lore.kernel.org/netdev/6a2b40e4.4dd82583.3a5c46.e52f@mx.goo=
+gle.com/
+> Signed-off-by: Wayen.Yan <win847@gmail.com>
 
-On Fri Jun 12, 2026 at 11:01 AM CEST, Andrea della Porta wrote:
-> From: Lukasz Raczylo <lukasz@raczylo.com>
->
-> The MACB found in the Raspberry Pi RP1 suffers from sporadic stalls on
-> the TX queue.
-> While the exact root cause is not yet fully understood, it is likely
-> related to a hardware issue where a TSTART write to the NCR register
-> is missed, preventing the transmission from being kicked off.
->
-> Implement a timeout callback to handle TX queue stalls, triggering the
-> existing restart mechanism to recover.
->
-> Link: https://lore.kernel.org/all/20260514215459.36109-1-lukasz@raczylo.c=
-om/
-> Fixes: dc110d1b23564 ("net: cadence: macb: Add support for Raspberry Pi R=
-P1 ethernet controller")
-> Signed-off-by: Lukasz Raczylo <lukasz@raczylo.com>
-> Co-developed-by: Steffen Jaeckel <sjaeckel@suse.de>
-> Signed-off-by: Steffen Jaeckel <sjaeckel@suse.de>
-> Co-developed-by: Andrea della Porta <andrea.porta@suse.com>
-> Signed-off-by: Andrea della Porta <andrea.porta@suse.com>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+
 > ---
->  drivers/net/ethernet/cadence/macb_main.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
->
-> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ether=
-net/cadence/macb_main.c
-> index a12aa21244e83..615da65d5d68d 100644
-> --- a/drivers/net/ethernet/cadence/macb_main.c
-> +++ b/drivers/net/ethernet/cadence/macb_main.c
-> @@ -4522,6 +4522,16 @@ static int macb_setup_tc(struct net_device *dev, e=
-num tc_setup_type type,
+>  drivers/net/ethernet/airoha/airoha_ppe.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ether=
+net/airoha/airoha_ppe.c
+> index 5c9dff6..a124f15 100644
+> --- a/drivers/net/ethernet/airoha/airoha_ppe.c
+> +++ b/drivers/net/ethernet/airoha/airoha_ppe.c
+> @@ -1330,7 +1330,7 @@ static int airoha_ppe_flush_sram_entries(struct air=
+oha_ppe *ppe)
+>  {
+>  	u32 sram_num_entries =3D airoha_ppe_get_total_sram_num_entries(ppe);
+>  	struct airoha_foe_entry *hwe =3D ppe->foe;
+> -	int i, err =3D 0;
+> +	int i;
+> =20
+>  	for (i =3D 0; i < sram_num_entries; i++) {
+>  		int err;
+> @@ -1338,10 +1338,10 @@ static int airoha_ppe_flush_sram_entries(struct a=
+iroha_ppe *ppe)
+>  		memset(&hwe[i], 0, sizeof(*hwe));
+>  		err =3D airoha_ppe_foe_commit_sram_entry(ppe, i);
+>  		if (err)
+> -			break;
+> +			return err;
 >  	}
+> =20
+> -	return err;
+> +	return 0;
 >  }
 > =20
-> +static void macb_tx_timeout(struct net_device *dev, unsigned int q)
-> +{
-> +	struct macb *bp =3D netdev_priv(dev);
-> +
-> +	if (net_ratelimit())
-> +		netdev_err(dev, "TX stall detected, re-kicking TSTART\n");
+>  static struct airoha_npu *airoha_ppe_npu_get(struct airoha_eth *eth)
+> --=20
+> 2.51.0
+>=20
+>=20
 
-Is this standard? It looks odd.
+--EoeaF+jQtSFUc+T+
+Content-Type: application/pgp-signature; name=signature.asc
 
-> +	dev->stats.tx_errors++;
+-----BEGIN PGP SIGNATURE-----
 
-I am surprised by this. `tx_errors` would ideally be one per packet that
-didn't get sent. Here we increment it once per queue that stalled.
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaivV3wAKCRA6cBh0uS2t
+rG1XAQCCuKkYI+tIMsjd+zKovSrzkgniTy4bU0wXXl1QiLXSFQD/SnwATkCTQzfe
+Aa6qlJSWjvbDGHvmlP81Dcujo8NQZQs=
+=7Aip
+-----END PGP SIGNATURE-----
 
-I have a series to address stats issue (and use netdev_stat_ops API).
-It is a follow-up to this:
-https://lore.kernel.org/netdev/20260428-macb-drop-tx-v2-0-647f5199d8df@boot=
-lin.com/
-
-Also this is per-device shared data and we access it without
-synchronisation.
-
-Let's drop this increment.
-
-> +	macb_tx_restart(&bp->queues[q]);
-> +}
-
-Regards,
-
---
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+--EoeaF+jQtSFUc+T+--
