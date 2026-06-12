@@ -1,64 +1,82 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DADB3233920;
-	Fri, 12 Jun 2026 23:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70A5301719;
+	Fri, 12 Jun 2026 23:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781308126; cv=none; b=sifiiiN6b4B1tbz4y0Vt0J+FGupLco0J1zdoadociUB1KVPax+sE2OiVT221revCdzs6GWfZRWkA/Cbn/dGkZLx7H/3Gs9hfU/AHaDY8fmYhiN1aaK/aZIIYecp52+XuYZ1FmrVLIXxShvfZIEYIepeCujyucal4on3huPRU7To=
+	t=1781308213; cv=none; b=I9vxGarW0i7NcWj1Cc9D13k/gJ6m8gT9z8KGsMJpO2985qTv1LjTedNkZtolocJAua3NmbEnua0BFBf3Sloxwwa16cLuPFNMwDIKHEdxU41mlRYxY2B/k+w6GzV82P+57/J1ein0T2p0EGeSpZ3//ZNZPRuoTULfl2LpvIXK16I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781308126; c=relaxed/simple;
-	bh=jfg4PkbWjeFfksq0loUd/x+t0Yzdj6Ba/Yuoor+uKm0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kba+8mg0iadPHuyBhpGyHDYrluVIBZAGZOM3RF8xwNFhTPN2a6N9BrtcWIUkmYqU/FuGQzlR6BMJen0LL1tiyOXvW827qAd7jlfN+HT+7qbLkbR2qhKy1H7a/3xJGyAmQMY6uIed7N2E/mBMNfxWN2teDPwmG0OFjUzbiYWy18k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FfIAcWvA; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781308213; c=relaxed/simple;
+	bh=cT2bba7hA669/5rneFxXHLEA7soszRhZlQftku+F7Kk=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=dBEoO4TYJTI41YcczKkstuJ1WJucjUIeusezEMfJGe05qebggP0IAzdOyB4ml2vyYk3Mp6vG7fP5X7YnbHWjOaseDqxAS4Ul8MNxq83kL0NkdLyyL5VwS+1EkDkRhK1LQK9W8zAj1UodNdDTtOfdT0vikicy6r+d7MBi4dd25gA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cI+MbVzs; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FfIAcWvA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA83D1F000E9;
-	Fri, 12 Jun 2026 23:48:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cI+MbVzs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DB661F000E9;
+	Fri, 12 Jun 2026 23:50:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781308125;
-	bh=8yoUjmsgvioaKiWi9pA9SXBu3LhphwrTuMsejO5mvYo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=FfIAcWvA0WiOiXGgbpPhe1qHwiV+dPXOI6/urAsDW2rwoGq7E7k1XoQ5kVr/2ySig
-	 mXR84OZGQYEUnbyVuDgSB/qFKqNymOxHC61M8HnBlNIz4mkKB3gymJQ60d+UF4ziHb
-	 gtiSnrCn3/69sZaDDNyfbqDSM6rk+Ed8bguoNRwpm0MPTHw0WvuYHL6vpKRgOtoQCh
-	 eid6hb+Is2U51b9wkCDfc8MLoxYy+J2FpZBZ/REIIvejlty50YQ+UobjekXzo63kIf
-	 Rk0x1C2+fN8pPdUb7IRuis3K3K4WmlFPLlas4FomgW7agrtpGOUHFD+NGmHCngIVQF
-	 MTHewTBP/Yx2Q==
-Date: Fri, 12 Jun 2026 16:48:43 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: netdev@vger.kernel.org, Marc Dionne <marc.dionne@auristor.com>, "David
- S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- linux-afs@lists.infradead.org, linux-kernel@vger.kernel.org, Li Daming
- <d4n.for.sec@gmail.com>, Ren Wei <n05ec@lzu.edu.cn>, Jeffrey Altman
- <jaltman@auristor.com>, stable@kernel.org
-Subject: Re: [PATCH net 4/5] afs: Fix netns teardown to cancel the
- preallocation charger
-Message-ID: <20260612164843.20452d5a@kernel.org>
-In-Reply-To: <20260609140911.838677-5-dhowells@redhat.com>
-References: <20260609140911.838677-1-dhowells@redhat.com>
-	<20260609140911.838677-5-dhowells@redhat.com>
+	s=k20260515; t=1781308212;
+	bh=GeQiU5lJzSA7sxR6Y50Gt+TLkWrbSjN8RcoHFYutCa8=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=cI+MbVzsBaNNXfByyg2QRsQnbujnzz9NMfhls1P/65NSOAb0fPadiZ4gXfrUp76Qr
+	 ts23HZILuU3tUSiumZoQR9RKUIttjKp4mYnwYJapsd1a2OMWXITyIXvvnSjbt0O0UU
+	 fvR0uOiwwFG2qqhizFRjQQTHJDbtBtn6mcRH+QzCdRlVjKoEKvSCJFYoce+ds0DM9j
+	 hUV2Qjt+yAGOI20w8vLmyLl59agjhWwaOAXfycUwoi06hVkkddGaDVRa7XOLmpKyjt
+	 WuUEuaYPRRMdAQMkbFhlFIp0wXqYlJmq9FIeouCbTcqOnvrHDsjaobPkf4ocTUz4QH
+	 XAQ6ZibkT9axg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1980739E9602;
+	Fri, 12 Jun 2026 23:50:10 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2 net] virtio_net: do not allow tunnel csum offload for
+ non
+ GSO packets
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178130820864.1294761.17379581600716494206.git-patchwork-notify@kernel.org>
+Date: Fri, 12 Jun 2026 23:50:08 +0000
+References: 
+ <6c3b6c47fb05c100f384630dc48f3975cf37b67a.1781195144.git.pabeni@redhat.com>
+In-Reply-To: 
+ <6c3b6c47fb05c100f384630dc48f3975cf37b67a.1781195144.git.pabeni@redhat.com>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, mst@redhat.com, jasowang@redhat.com,
+ xuanzhuo@linux.alibaba.com, eperezma@redhat.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ virtualization@lists.linux.dev, g.goller@proxmox.com, f.ebner@proxmox.com
 
-On Tue,  9 Jun 2026 15:09:08 +0100 David Howells wrote:
-> Fix the teardown of an afs network namespace to make sure it cancels the
-> work item that keeps the preallocated rxrpc call/conn/peer queue charged
-> before incoming calls are disabled (i.e. listen 0).
-> 
-> Also, if net->live is false because the afs netns is being deleted, make
-> afs_charge_preallocation() skip charging and make afs_rx_new_call() avoid
-> requeuing the charger.
-> 
-> (This was found by AI review).
+Hello:
 
-Both Sashikos think this patch is still racy FWIW but not a blocker IMO
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Thu, 11 Jun 2026 18:36:48 +0200 you wrote:
+> Fiona reports broken connectivity for virtio net setup using UDP tunnel
+> inside the guest and NIC with not UDP tunnel TSO support in the host.
+> 
+> Currently the virtio_net driver exposes csum offload for UDP-tunneled,
+> TCP non GSO packets. Such packet reach the host as CSUM_PARTIAL ones
+> with the 'encapsulation' flag cleared, as the virtio specification do
+> not support this specific kind of offload.
+> 
+> [...]
+
+Here is the summary with links:
+  - [v2,net] virtio_net: do not allow tunnel csum offload for non GSO packets
+    https://git.kernel.org/netdev/net/c/86c51f0f2313
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
