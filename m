@@ -1,90 +1,120 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E8E37A498;
-	Fri, 12 Jun 2026 10:30:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D0B83403F8
+	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 10:31:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781260206; cv=none; b=CY9Izw579mHVVIEBkP53HpAxXzBvoTIqzTJgSNoJsYo7RXUpY3DM0Lx9wWOvJYsqNOQ0gd/+Ccr7powdwJxMyop7CAhqMDyorHJUqlZKOvKbHljcgCkb4mzDePxzHmWIrSFaQMTTDsgyuvvEsoXH6XvT/MHbBNwegFHAG/0xzNM=
+	t=1781260298; cv=none; b=VNMZFn0E32PblB1fA7vFP6hqd58vI3IXWNBpjPmYps6v6FrvUEJl/X3zJnxEn9OIkqAYWGcFjLj9KPY97GsiLZhrHGULcvU33TbKM9YwEjvO4m3Uogkeh1faLPIBzOjRf/bkdpAdH0sfkJOi02AbjrlpSGc8kv5jFrj3hxqTycc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781260206; c=relaxed/simple;
-	bh=oNWNxabB5hgyepv/nXrP1Motmluk3pvzLgN4LIjRzMc=;
+	s=arc-20240116; t=1781260298; c=relaxed/simple;
+	bh=nY+5f8bqio/TqyjHxkOdEcU4bVhaVnSoSddZXPMEZyo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PNrWGhVM5KKJHjjZCyxO6BTNgvW872zL0eYFzr6OgJBzB5mDLPjtsYYl+ScsqmIy4RdA99Zd8QFNkukrCOWs38sKItrD8vmJ6Gn+U1QnQmyU9A9DqPa0WacQZcvqjml8lHhA1AJpaGTHpxIWHV+nwiIjaWvgiYnsLhZZcGDJl30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
-	 (Exim 4.99)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1wXz92-0000000030H-3xgm;
-	Fri, 12 Jun 2026 10:29:49 +0000
-Date: Fri, 12 Jun 2026 11:29:45 +0100
-From: Daniel Golle <daniel@makrotopia.org>
-To: "Chester A. Unal" <chester.a.unal@arinc9.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	 Content-Type:Content-Disposition:In-Reply-To; b=e1ecFVtccsEX9rwVbWEz9OsgoX4lLGnZPLy79QOKwnF7gJCZvZZFC4onDhFVMvgIUS1He6MiuOxpvANP3aNwy8pgvg/sVM9McjDvyT8Phblp/3xI0dOPQvIsiLERHpvNT2FFuhthraqgdl7KIMK6tmDuVE+jknzfWPgKz1v8XKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QOrewn1z; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QOrewn1z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAE151F000E9;
+	Fri, 12 Jun 2026 10:31:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781260297;
+	bh=8PuWke7FFlMDn+jfQevh0c+wzNk+yNVgTyF73m6eCa4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=QOrewn1zgoDVbtWoTJ7H9V3/Lft++X7cdFhtz1ZRHA3NtABIizDv0nVo2aFNiaFkQ
+	 RxfCnxatoga9EG+Xwv2bph9r8rdaopdltlRSumcbX28ttWLmoe6vX1VOLRAuzjqXkK
+	 9oes5eJtJybHPf3Fqdvn6hT+SLCIPX3QfpATq8HTkMmcI/XmrrrMWUkFbBOGVfC0TZ
+	 woW5oHygaqQEMmF98R61yx9h1xoEhB11SJ/AvLx/GazUziXT0cHaOg6Y0VhBd6tTOl
+	 R92r47GEpdfk4gIisreHyVdBXKcPxdhZz8ZckDiGuF2VsCHI9Glhg4+VVA97qMiZem
+	 vt1o6rtekyCeA==
+Date: Fri, 12 Jun 2026 12:31:35 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: "Wayen.Yan" <win847@gmail.com>
+Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH net-next 8/8] net: dsa: mt7530: implement
- port_change_conduit op
-Message-ID: <aivfmaWBpTw6LwFp@makrotopia.org>
-References: <cover.1781119435.git.daniel@makrotopia.org>
- <91ae0f87a6ca2cce3d072dba548545e02347bf13.1781119435.git.daniel@makrotopia.org>
- <02ad5de0-ea6a-4267-8686-72e3f98fce4e@arinc9.com>
+Subject: Re: [PATCH] net: airoha: Fix debugfs new-tuple display for IPv4
+ ROUTE entries
+Message-ID: <aivgB2sduxGr8Do8@lore-desk>
+References: <6a2b40ea.4dd82583.3a5c46.e5a2@mx.google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="YhA8AKR1m+LaXGv3"
 Content-Disposition: inline
-In-Reply-To: <02ad5de0-ea6a-4267-8686-72e3f98fce4e@arinc9.com>
+In-Reply-To: <6a2b40ea.4dd82583.3a5c46.e5a2@mx.google.com>
 
-On Fri, Jun 12, 2026 at 07:36:35AM +0000, Chester A. Unal wrote:
-> On 10/06/2026 20:56, Daniel Golle wrote:
-> > Allow changing the CPU port affinity of user ports at runtime via
-> > the IFLA_DSA_CONDUIT netlink attribute. This updates the port matrix
-> > to forward to the new CPU port instead of the old one.
-> > 
-> > Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-> 
-> Fabulous!
-> 
-> Acked-by: Chester A. Unal <chester.a.unal@arinc9.com>
-> 
-> > ---
-> >   drivers/net/dsa/mt7530.c | 29 +++++++++++++++++++++++++++++
-> >   1 file changed, 29 insertions(+)
-> > 
-> > diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-> > index c96420c291d5..2f3e734b9f53 100644
-> > --- a/drivers/net/dsa/mt7530.c
-> > +++ b/drivers/net/dsa/mt7530.c
-> > @@ -3206,6 +3206,34 @@ static int mt753x_set_mac_eee(struct dsa_switch *ds, int port,
-> >   	return 0;
-> >   }
-> > +static int
-> > +mt753x_port_change_conduit(struct dsa_switch *ds, int port,
-> > +			   struct net_device *conduit,
-> > +			   struct netlink_ext_ack *extack)
-> > +{
-> > +	struct dsa_port *new_cpu_dp = conduit->dsa_ptr;
-> > +	struct dsa_port *dp = dsa_to_port(ds, port);
-> > +	struct mt7530_priv *priv = ds->priv;
-> > +
-> > +	if (priv->id != ID_MT7531)
-> > +		return -EOPNOTSUPP;
-> 
-> Why do we limit this to MT7531 only?
 
-I could test it only on MT7531 (BPi R64), and that's also where it
-makes most sense imho: On MT7530 we got PHY muxing, on the MMIO
-switches we physically got only a single CPU port.
+--YhA8AKR1m+LaXGv3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+> In airoha_ppe_debugfs_foe_show(), the second switch statement falls
+> through from PPE_PKT_TYPE_IPV4_HNAPT/DSLITE to PPE_PKT_TYPE_IPV4_ROUTE,
+> accessing hwe->ipv4.new_tuple for all three types. However, IPv4 ROUTE
+> (3-tuple) entries do not contain a valid new_tuple =E2=80=94 this field i=
+s only
+> meaningful for NATted flows (HNAPT/DSLITE). For ROUTE entries, the
+> memory at the new_tuple offset holds routing information, not NAT data,
+> so displaying "new=3D" produces garbage output.
+>=20
+> Split the fallthrough: display new_tuple only for HNAPT and DSLITE, and
+> add an explicit empty case for IPV4_ROUTE.
+>=20
+> Fixes: 3fe15c640f38 ("net: airoha: Introduce PPE debugfs support")
+> Signed-off-by: Wayen.Yan <win847@gmail.com>
+> ---
+>  drivers/net/ethernet/airoha/airoha_ppe_debugfs.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/net/ethernet/airoha/airoha_ppe_debugfs.c b/drivers/n=
+et/ethernet/airoha/airoha_ppe_debugfs.c
+> index 0112c41..f9c12e7 100644
+> --- a/drivers/net/ethernet/airoha/airoha_ppe_debugfs.c
+> +++ b/drivers/net/ethernet/airoha/airoha_ppe_debugfs.c
+> @@ -121,8 +121,6 @@ static int airoha_ppe_debugfs_foe_show(struct seq_fil=
+e *m, void *private,
+>  		case PPE_PKT_TYPE_IPV4_DSLITE:
+>  			src_port =3D &hwe->ipv4.new_tuple.src_port;
+>  			dest_port =3D &hwe->ipv4.new_tuple.dest_port;
+> -			fallthrough;
+> -		case PPE_PKT_TYPE_IPV4_ROUTE:
+>  			src_addr =3D &hwe->ipv4.new_tuple.src_ip;
+>  			dest_addr =3D &hwe->ipv4.new_tuple.dest_ip;
+>  			seq_puts(m, " new=3D");
+> @@ -130,6 +128,8 @@ static int airoha_ppe_debugfs_foe_show(struct seq_fil=
+e *m, void *private,
+>  						       src_port, dest_port,
+>  						       ipv6);
+>  			break;
+> +		case PPE_PKT_TYPE_IPV4_ROUTE:
+
+I guess you can just drop PPE_PKT_TYPE_IPV4_ROUTE and use the default case.
+Fixing it:
+
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+
+> +			break;
+>  		default:
+>  			break;
+>  		}
+> --=20
+> 2.51.0
+>=20
+>=20
+
+--YhA8AKR1m+LaXGv3
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaivgBwAKCRA6cBh0uS2t
+rB8kAP9zFXxSniNRzojUZXHiJIIs6KwY7rp9mtncD+EW2WI5kgD+PmP/VkboWbVF
+DEH8AVCe7Ogjr8qgZ7CbFTyNNK7ceAo=
+=b1qZ
+-----END PGP SIGNATURE-----
+
+--YhA8AKR1m+LaXGv3--
