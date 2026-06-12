@@ -1,146 +1,264 @@
-Received: from CHN02-SH0-obe.outbound.protection.partner.outlook.cn (mail-sh0chn02on2113.outbound.protection.partner.outlook.cn [139.219.146.113])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA83D3812F2;
-	Fri, 12 Jun 2026 12:27:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.146.113
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781267272; cv=fail; b=G33YImyk9t1xAG5dyILHUpcepy8YxbZGMWOphUWT/Qqvm3QMULjN3tzyczaROkAT+orpmWb/4Vn3PDh0zXvb47LU57XKx5lg4UEaLkIiKPPvIdVpIYBiGT/PHXzMMDq0owu45d0uHkj73ovFNlkHbRovAGoiezxhZtyB7yMNNvM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781267272; c=relaxed/simple;
-	bh=cLLv2nKX37ex11u/TH7G1Wgqs7JHBp7LLdigUAKTFv0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=er4GCXag72zh0CGwkGlL2BE1YBxAPtfYa/QkVYub+5vEbXurr4A/RqSKbuBbC03JtMzXWvi2ZknPSJj91PR1FK4ALFjPMxmu8NjxHNJnYrkxW7A1zstSEZ09eB0O5SwbQdXR90b9miSTDWdwTGWIWhN0OD+nrklB6XFo3PBKb70=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.146.113
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RPh8yS5jIWjyJeUulcOcyA0CxH4G9HEN7jH2OlsJcbd6Id2jzwxLg8DqdFzhjsKy81h8IrepNTd2rMIH/Km7eJHM3Jvf7cSVglU4JHq3VphycYZy1hwywQQKtK34VDJRODNnLYJHEcCHcqGXtTugAvSDBvRZW7kJZpqvUx0r6/47XaQMpqFUFn79ovJ5+uCYaKklZptAVObhD5ENYom3FOjfXhBo0Ztpo4mVe8Vu1/fFiQJnDnDI81EphFL1dKVanwLqhMKVz2mFha5zvc4E+JgknBspUcea1UpdZ0bhVyXeIdce6q+0Uhu1XMsAEA0iijlQF0dV2Q2AV0L6ooBymA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cLLv2nKX37ex11u/TH7G1Wgqs7JHBp7LLdigUAKTFv0=;
- b=Cor3OwvXYWR1Y15cqnZhngIYgqzUZ1nswMWnYWjA054ifyAO7WSMXJ5aY6H80iT2De+S22prPHEy/gDlSm7XX4rORKBV+b9A0WBjKndaA6ZRiQ7OzJ7mgpLPkcg24CTfSOHhHH8FTSm0ZuNlJJoXsuLdvG4zM7ZKwqO5lVx3QTr2NpZzdLQtPaF9Xte9/hLm+uciGekymplxaUABPFLkNFpb95PoH/ggipEcUT9BNMcbPvRba4AEdlKYqw8kN2tZvp4WUlhMFTYlwnY+sArh0DvWHe0cyBwrs0nXjX8/Zb8uLoCtIJXL7kdJvvzEt0l6yxse+lC8z40pgKN/oY4Piw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=starfivetech.com; dmarc=pass action=none
- header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
-Received: from SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c311:25::15) by SHXPR01MB0768.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c311:24::11) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.18; Fri, 12 Jun
- 2026 10:54:33 +0000
-Received: from SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
- ([fe80::9b99:12dc:a115:b90f]) by
- SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn ([fe80::9b99:12dc:a115:b90f%3])
- with mapi id 15.21.0092.017; Fri, 12 Jun 2026 10:54:33 +0000
-From: Minda Chen <minda.chen@starfivetech.com>
-To: Andrew Lunn <andrew@lunn.ch>
-CC: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Jose Abreu
-	<joabreu@synopsys.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Russell
- King <linux@armlinux.org.uk>, Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Rob Herring
-	<robh+dt@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
-	<conor@kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-stm32@st-md-mailman.stormreply.com"
-	<linux-stm32@st-md-mailman.stormreply.com>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>
-Subject:
- =?gb2312?B?u9i4tDogW25ldC1uZXh0IHYxIDEvNl0gZHQtYmluZGluZ3M6IG5ldDogZHdt?=
- =?gb2312?Q?ac:_Add_snps,use-ncsi_property?=
-Thread-Topic: [net-next v1 1/6] dt-bindings: net: dwmac: Add snps,use-ncsi
- property
-Thread-Index: AQHc+Kos0bB42CjcQkupyH6AE8NcHLY3ccQAgANQGfA=
-Date: Fri, 12 Jun 2026 10:54:33 +0000
-Message-ID:
- <SHXPR01MB0863ADA1F99C2F6A82EA08F9E6182@SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn>
-References: <20260610072420.64699-1-minda.chen@starfivetech.com>
- <20260610072420.64699-2-minda.chen@starfivetech.com>
- <a542aee0-cc4a-4bed-85fa-1ec6fdfe87d9@lunn.ch>
-In-Reply-To: <a542aee0-cc4a-4bed-85fa-1ec6fdfe87d9@lunn.ch>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=starfivetech.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SHXPR01MB0863:EE_|SHXPR01MB0768:EE_
-x-ms-office365-filtering-correlation-id: 977dcd9b-7b61-4a48-7a5b-08dec870fcdf
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|7416014|376014|366016|23010399003|38070700021|22082099003|18002099003|56012099006|4143699003;
-x-microsoft-antispam-message-info:
- YXsgWOt/oxoDxxAAk0JLwF0+t2+HH2WU0rDb+QrLFOjjon18z+PrRnr8VywhvIR9CliB2mQ8I83I0PA86b+FDrRcfJ/M/2lFSZoLU+DPAZQtbqV6lVNYURmpHKdkxbzhhvtUoY/J0ySJU5QP42H2U7XIuHLTfXtap0w5hF8KKF0Wm1n19PWIYqDtW5JBs+0QganP84evh8vkkzLvRPz03+cpUnwHtrzZlB+UiRNDPfeu8spFM9bmqS15mfsuvrItXXdHjojTf7cOTugY6C+nHnxlji5jANbYVqEQ4oBZkvbZMQSMTAvRM/aDfaVegtR8tJHjOW6B2pFK8GyP3a29Jk2NMFMRYgPAnJ35ORv82vyucC/+qHf3P38zxhpNasSC/hP4jeiG6OFBIXrWW/2GYupwt8zAu9pm537ebkDR2RH+XjZSwWRO1jig9R/WNR/LcjQ7OP9jaYB8Ohvrn97WhPWP5Ug9iFUMM8QmlrPnIGJLaEh1p+f/ngMY/LJIUBmxR2j/OVIUTbM9yiFJZqPbjpIx82VqKdBY1RmI6JcSehlKv9A1y8Eo8RWoCDQ5lNBA
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:zh-cn;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(23010399003)(38070700021)(22082099003)(18002099003)(56012099006)(4143699003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?gb2312?B?VFhkYS9NUEdEOFE2WjRacEt1cElpcWVzYnBnMlZ4S05QYkhkZW5tU1JzTDhu?=
- =?gb2312?B?eTA0YVUwZ1VKeWZaZFhUZkhjV05GdW8wQk15QS9JaVdyb0EwSmpzUE1malZP?=
- =?gb2312?B?NCt1NXdzMkI0ZkVQZzF0TVFYUkdDcytLOWxjNjl1emZaYUtFaVBITHQ4dnhC?=
- =?gb2312?B?b2lxbDlBaHg2dUdmYjU1b2JtV09ncXJhaGlOUS9MOVBwL1ZkTlFHSWsrdk9l?=
- =?gb2312?B?VGZRSjhEbmVSY20zamswdFhvS1M3RUIyeEt1dkVrQWxEKzJKcWNUY0hwS2Vy?=
- =?gb2312?B?VVpzUEo4Q1pXTUxxdVhpSFpNUWpwckdFN2MzSExlZWtDaXBYSzRYN2toZS9t?=
- =?gb2312?B?SUU1V0JITzIvK1lNQ3lPUlZGbkpOaWRJeFZ3MVFTRXY5V3ZsWVF4TldqbGNI?=
- =?gb2312?B?eW1DdVgrazkvNlVpd0hna0NZbXhuVFpXOEZ1b2JLclhkTjd4K3h0elNxcjE4?=
- =?gb2312?B?cU0xTlJJQkg1VXFZWkRGS3dUSm1Lc2JXTXBMSmppZW5acThGMWdHU1VXeDh4?=
- =?gb2312?B?TFo0YWZQaWxrSzZrQXJtc0dTRUpqVGEzSXZlMFFpdmtncVpkRVQ5NmRha1pL?=
- =?gb2312?B?eWZNa1M2dzBneG96RUh4eHgxYlRPeVJkVlVlN2ZQdmR6NFZYOUJZMTJTWXZz?=
- =?gb2312?B?K0MySTZkLy9SSGtLSEppaXJnU2R2dit5VnhUeTFVYTgwMjhiS2sxQ0FxMUhq?=
- =?gb2312?B?aUVUSW15UDhjT1RJeGtMMDFmSC9PRmxRaloxMGR4cU9LWWdLcEJQNlJFakJs?=
- =?gb2312?B?eGlIL1Y4VjBoSkcwQVpNbm9lRVNhb2NjQkIvQ1lnTDlKWlhndkVGRE5ZWDhG?=
- =?gb2312?B?SUdkbFN4ZHdXU29pWVFVV0syTVEyUllFSmNHZjRoYytZT0dNdkhOczZVYXhw?=
- =?gb2312?B?RFFSUkVGWmFObFRwMHhiSGNTYlhFTTJnMTh4a0VOd01md1A2OHhXZWpnYVFN?=
- =?gb2312?B?eFIrR2NPT3MyMXNIMlpDOU1FYjNMN0tLdlVsQ3gzTm4xalVKZ25zeFFHMUti?=
- =?gb2312?B?K3B4Ni83WVdMTUtRSFlvVXlpMm5EQXBheEtoWFZxMHpKQlpvTzR5Y2JCMXds?=
- =?gb2312?B?VFBhaEVnZjhnSGYxQ2Qwd0NRZ2JIU0xsTityNG0rWFRhb0VHZWxwKzlvcEp5?=
- =?gb2312?B?WlNjazFmNFNjYTYyczhwSmtZd1NVeS8rUXZXckRHOHNKWEIxSU41Y25yZ3Jt?=
- =?gb2312?B?aERSa2kwTUUydzFsNWkvNnVHeGc2bzFJT2ZtaTZYSVdyNlBlK1pjQ21XcWtI?=
- =?gb2312?B?STRaSXl5WTVMd2lEZ2U1MnBvNEVDTFB3b2ZSV2pwNGVYOWdlWkpBczEyOXBS?=
- =?gb2312?B?VTBMSi9Kd3dQWDk0WmhQUHpLZ3hiOVNEWGxZa3IwYWhnR3plYWtFbjJEU09W?=
- =?gb2312?B?Q2VpeWQ2K2FOVS8xaG5ONlM1V1Z1dFJjbk1wUGFiQzZPSGJsVFhvNFR2dVM1?=
- =?gb2312?B?NmtscHJpRUNoRU8zbnVXbkhibjY1NW13c1JVYk1uTk13RWNCWUQzcFU1cnQ5?=
- =?gb2312?B?TkpRdnVJdGJvWnNJblp4bTc0UGpkaUhHNnFrbzFRbUJSZTdlazRXSGltbURh?=
- =?gb2312?B?blg1bS9PTVEzdit4UGRlRzlBZ2I0c0I5TXVOR1lFMlY1cWVmMDdmSHJkR09V?=
- =?gb2312?B?RVFQZHVqMUVHNnhOL1JSUytaL0F2K1pMdTJuRHhYaHpHU2g5Y01xQXptRU0r?=
- =?gb2312?B?czRaNnpRcHVjWVFBaHgxaUhKZjVsbUZmanp1RytDa3lYcCtRYnEyTU1DaHJU?=
- =?gb2312?B?ekFMb1RIK2RETEpQbUhXRnhydGxuNzFacHVPUHlHajRTdmczNnl5bkVzMHl4?=
- =?gb2312?B?MVNZMUJnYmY3cGhFcTAvc1ljOFhZMHBjS1ZXQUp1Q3paUnJJTzZHNkxsWldL?=
- =?gb2312?B?MVVUOFhDSHg0cTBxYTJLeExLU1NoUTRtdk1EWEpyUjErTzJidm5hMmxneFJt?=
- =?gb2312?B?MEZHQUFwYXlhZU9Mcnl4NlJKdzJBRUpRdkJ4OE8rYnBHU0I5bktKSktEZFZD?=
- =?gb2312?B?MW8vekRuYldDMW9GbXV6dE00M2RPTVdvV0s4QUVadDV3Q3FLM010N0hjRG44?=
- =?gb2312?B?N29DMXl5Z2JPWGRNUUpRcGlkcWpheUk4UzMzY0NSZVBSV0VrZ1Z1UlZUNW4y?=
- =?gb2312?B?T1lETmhHeElZK3NZZzdhb3lnUFR0SEpTN0hEc3JOVElOOEZGYklRRFl6MWpn?=
- =?gb2312?B?Y2dTOHF0MFd3ZHhxVlZVS3FMS1ovNEtzK2dramIzSjhwdVVZSFBmR00yRFdy?=
- =?gb2312?B?MHpTd0VNbENTdWg2MWZGdFFHdjFWMFgvMlh4bUNTb2FPS0dNZXhyZFpsSHVO?=
- =?gb2312?B?bGtzeGg3RnlBV0REa1U1K2tLUHlISEYwV3F4SXNCMG9obEdpcFovUT09?=
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46EB115B971
+	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 12:33:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781267587; cv=none; b=rYgBer1SPKYLRQl+64w1lD9s4c/Si/KzR7J9UHH/+2gHXH33pt1LBIU6V842rOYWHlF47Pm/6ZxCVlAy1vQm4MIADP2VkMy6MLK+fnptmepwPReh/ZOOd3GDjBSMoFP+KxH/BeYUPzDfq4uHXuH5kZL/lbVOJAIS4mQoCK8+W6g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781267587; c=relaxed/simple;
+	bh=neqF3ZJ0RM58yRx8EhB87dBgrW1cPu5BIRNKi5z4ylk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Lt1pJrLdM2qWkKUIg44OPB1gXsyG10GM/IxnaXAnmdMO3jaY6oBCytlIMwupZuhfrEUh8KnuK64km4LatC0xmbu6sHQm/elR9yFeiGaaSlUQI3fULcZDg3xoSm7gWwXlTxfryvHRwYHQZaefolVwSAJW/z9xsDeooeFHmfeG0zI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RW90IJz6; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=DXzM8ZDP; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RW90IJz6";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="DXzM8ZDP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781267583;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2sitiNtJI2vvGtaVwoQZDdJSQ/FtwXIAN0T9g+Ogu2g=;
+	b=RW90IJz60LbXPKPgXydDNFvYuufj0HiTsIBooSueAmuuiQoGvdFSAoVsg/l3Oiczlg65E+
+	Xv/Ax5H3krgjKasXY2ugWK+oEcHhPoOkgFZmuUGyCcIOO21VGRGgWzYs8W3/+kWD/cdJuc
+	qg84LpPCkkMe/hqDK8Eff0XcqoEyZN4=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-127-9bk_-ZqKM9uPC2nG0WI2JA-1; Fri, 12 Jun 2026 08:33:02 -0400
+X-MC-Unique: 9bk_-ZqKM9uPC2nG0WI2JA-1
+X-Mimecast-MFC-AGG-ID: 9bk_-ZqKM9uPC2nG0WI2JA_1781267581
+Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-691ac5b31cbso806948a12.0
+        for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 05:33:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1781267581; x=1781872381; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2sitiNtJI2vvGtaVwoQZDdJSQ/FtwXIAN0T9g+Ogu2g=;
+        b=DXzM8ZDPSD+lufhUrO5jfWonNy3ynZnZDzCuGUGWad5WAw5kMSDEQDaoGjf3+Z2dn/
+         ToW9V/bd2uT4RnD/rmPTMXDvlL2phhTYCyYgtvf9rsRA6+QvQTz12nVQD8hIdk5LMvhK
+         XGZuujUF0xXkkBQTZ+XUQ+/woERt6cn4UvhKt1c4YxTA5yVrv9OGO4EEvM3oKV3t9lM0
+         YIpnbYz25SglYKxbFwChZLfD/QLmyxLWlGwosW5P5EmHi/yWiopu0mOP9BtfYwi6BjAM
+         dODEgb2x7SH0ccu157iNCpbka7Nab+zmw/C3uwdm4WOwf9G24PNgR5o2rQZgMGtF87BL
+         S0lA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781267581; x=1781872381;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=2sitiNtJI2vvGtaVwoQZDdJSQ/FtwXIAN0T9g+Ogu2g=;
+        b=VJtAyDpJ36vAAomAxMO0X9nPI5RlaVfSK5sJteCtgy+wCsnKEw62t2TjeXqan4Wojd
+         QeKfr4jHTxCPaQlm/ikBOwH+WkcY7Gzw8u2CLK32EA81nMs5oJemo3CsDlDaYh0ccKcP
+         9liZNspQKuWHMjM3eXc9VXu6ivtfVVFsW8U0wdOZJGiJIU82l8wWgG6bUeBn2UH5EUah
+         Pr1CrXVzjOeplnbGHgZ/IeGh4KNUTIlqWA4C9bYJ2je2UxrQrZ1GHCOC0z2mgrJUVATF
+         1T5ebN6b4VazL6uU4ZPAemf1e6TdQgDmZ/HsnCoUYUZxSMSNGBpY/DTF4/9rxFVXDE7/
+         yamQ==
+X-Gm-Message-State: AOJu0YwoviGwjoxac2pl5Qeu24Ck1QWy+lpyBVzdMoA5v7jJaL82I57D
+	VzjFv4hMApfpkdEFQGKj+y09HgiPl2Ifjows092B34qHnt8zwgcRTFHNJuWG5+RgMqZdsuUruP/
+	JU3yq8qWOCejGDRntF9SjXFe5eim3mo25kk0BDY5FF/yKmMkRvvR/AOrDZA==
+X-Gm-Gg: Acq92OG0PZzuzMIWJYzrG+aoh1Z9jBqcPlbwq28saJy+YF7z527qdS5SXxj97EX9w5+
+	JaTgIC4QSmMJXhaDv70Wlo8o9rjNGxGtjjvVNbQxh9KALxPGkIIlh+v/nkQFo+Pz2tonkVUaZq1
+	H3ZG//Cu8croNwrSwpZki/mJbh0LaJqo93VuZTByUJXSq5OejK3D44vxpj6jW/Rh8pYDIkb3YpM
+	zC2GdSUtSyXD8yP8iY9V+ewKW9RtOkYQyG07mVG6R1Hn+kmiKCYUidrtv/iPZyOS5xle1dsUzD/
+	beZs8/cqL7Q5Pkj7q0Eo1/rWtyrQd9Rt0G/WHuz4IPi+wzo+TGx/XbpDhzPoY+7xukpwru/YUMP
+	N2pxw1Dgz+EdxBLKqysbG1eFblEarOMbV2dj82XxuvYN+f0k6c8hggpIBLVDzPz2KO3GTP8k=
+X-Received: by 2002:a05:6402:5203:b0:68f:cc95:8c11 with SMTP id 4fb4d7f45d1cf-69378a5ecf3mr1241826a12.28.1781267580674;
+        Fri, 12 Jun 2026 05:33:00 -0700 (PDT)
+X-Received: by 2002:a05:6402:5203:b0:68f:cc95:8c11 with SMTP id 4fb4d7f45d1cf-69378a5ecf3mr1241809a12.28.1781267580205;
+        Fri, 12 Jun 2026 05:33:00 -0700 (PDT)
+Received: from [10.44.49.141] (5920ab7b.static.cust.trined.nl. [89.32.171.123])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6937938a0acsm637062a12.19.2026.06.12.05.32.57
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 12 Jun 2026 05:32:58 -0700 (PDT)
+From: Eelco Chaudron <echaudro@redhat.com>
+To: Adrian Moreno <amorenoz@redhat.com>
+Cc: netdev@vger.kernel.org, aconole@redhat.com, pabeni@redhat.com,
+ Ilya Maximets <i.maximets@ovn.org>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Simon Horman <horms@kernel.org>,
+ "open list:OPENVSWITCH" <dev@openvswitch.org>,
+ open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next v4 1/4] net: openvswitch: make flow_table an rcu
+ pointer
+Date: Fri, 12 Jun 2026 14:32:54 +0200
+X-Mailer: MailMate (2.0r6292)
+Message-ID: <747F3742-1EEC-47FA-AE5A-FDA6C469C42F@redhat.com>
+In-Reply-To: <20260611045817.1302665-2-amorenoz@redhat.com>
+References: <20260611045817.1302665-1-amorenoz@redhat.com>
+ <20260611045817.1302665-2-amorenoz@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
-X-MS-Exchange-CrossTenant-Network-Message-Id: 977dcd9b-7b61-4a48-7a5b-08dec870fcdf
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Jun 2026 10:54:33.7432
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ILSTqZP9EwVTxQUvHL3mAZuBA74XGZdKeF+LiWDt9w2YLE/sEY4pXY3VLfoOtg1yQnvpgPuq1Zps7Eu0kWwothYS2BGjLT1hv4QUxaFcD6o=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SHXPR01MB0768
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-DQoNCj4gDQo+IE9uIFdlZCwgSnVuIDEwLCAyMDI2IGF0IDAzOjI0OjE1UE0gKzA4MDAsIE1pbmRh
-IENoZW4gd3JvdGU6DQo+ID4gQWRkIHNucHMsdXNlLW5jc2kgZHRzIGJpbmRpbmdzIHByb3BlcnR5
-IGZvciBTeW5vcHN5cyBkZXNpZ253YXJlDQo+IA0KPiBJcyB0aGVyZSBhbnl0aGluZyBTTlBTIHNw
-ZWNpZmljIGluIGhvdyBOQ1NJIGlzIGltcGxlbWVudGVkPyBTaG91bGQgdGhpcyBiZSBhDQo+IGdl
-bmVyaWMgb3B0aW9uIHdoaWNoIGFueSBFdGhlcm5ldCBpbnRlcmZhY2UgY2FuIHVzZT8NCj4gDQo+
-ICAgICAgQW5kcmV3DQoNCkkgd2lsbCByZW1vdmUgdGhpcy4gTkNTSSBhY3R1YWxseSBub3QgZ2Vu
-ZXJpYyBmdW5jdGlvbi4gTm93IGp1c3QgZmFyYWRheSBmdGdtYWMxMDAgc3VwcG9ydCB0aGlzLg0K
+On 11 Jun 2026, at 6:58, Adrian Moreno wrote:
+
+> This patch turns "flow_table" from being embedded into "datapath" to
+> being an rcu protected pointer. No functional change intended.
+>
+> Signed-off-by: Adrian Moreno <amorenoz@redhat.com>
+
+Hi Adrian,
+
+Thanks for the series. I need some time to take a look, as this is
+the first time I reviewed this series. I'll probably reply to the
+other patches early next week.
+
+Some small comments below.
+
+Cheers,
+Eelco
+
+[...]
+
+> diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
+
+[...]
+
+> @@ -752,12 +759,16 @@ static struct genl_family dp_packet_genl_family _=
+_ro_after_init =3D {
+>  static void get_dp_stats(const struct datapath *dp, struct ovs_dp_stat=
+s *stats,
+>  			 struct ovs_dp_megaflow_stats *mega_stats)
+>  {
+> +	struct flow_table *table =3D ovsl_dereference(dp->table);
+>  	int i;
+>
+>  	memset(mega_stats, 0, sizeof(*mega_stats));
+> +	memset(stats, 0, sizeof(*stats));
+>
+> -	stats->n_flows =3D ovs_flow_tbl_count(&dp->table);
+> -	mega_stats->n_masks =3D ovs_flow_tbl_num_masks(&dp->table);
+> +	if (table) {
+> +		stats->n_flows =3D ovs_flow_tbl_count(table);
+> +		mega_stats->n_masks =3D ovs_flow_tbl_num_masks(table);
+> +	}
+
+The memset above seems like an overkill, why not do this:
+
+    if (table) {
+		stats->n_flows =3D ovs_flow_tbl_count(table);
+		mega_stats->n_masks =3D ovs_flow_tbl_num_masks(table);
+	} else {
+		stats->n_flows =3D 0;
+	}
+
+>
+>  	stats->n_hit =3D stats->n_missed =3D stats->n_lost =3D 0;
+
+[...]
+
+> @@ -1598,8 +1639,13 @@ static int ovs_dp_cmd_fill_info(struct datapath =
+*dp, struct sk_buff *skb,
+>  	struct ovs_dp_stats dp_stats;
+>  	struct ovs_dp_megaflow_stats dp_megaflow_stats;
+>  	struct dp_nlsk_pids *pids =3D ovsl_dereference(dp->upcall_portids);
+> +	struct flow_table *table;
+>  	int err, pids_len;
+>
+> +	table =3D ovsl_dereference(dp->table);
+> +	if (!table)
+> +		return -ENODEV;
+
+ovs_dp_cmd_fill_info() can now return -ENODEV when table is
+NULL, but every caller immediately follows with:
+
+	BUG_ON(err < 0);
+
+so this would panic the kernel. I guess you fix this in the 3rd patch,
+but just mentioning this as patch 1 is unsafe to apply in isolation.
+
+>  	ovs_header =3D genlmsg_put(skb, portid, seq, &dp_datapath_genl_family=
+,
+>  				 flags, cmd);
+>  	if (!ovs_header)
+
+[...]
+
+> @@ -1917,7 +1972,7 @@ static int ovs_dp_cmd_new(struct sk_buff *skb, st=
+ruct genl_info *info)
+>  /* Called with ovs_mutex. */
+>  static void __dp_destroy(struct datapath *dp)
+>  {
+> -	struct flow_table *table =3D &dp->table;
+> +	struct flow_table *table =3D ovsl_dereference(dp->table);
+>  	int i;
+>
+>  	if (dp->user_features & OVS_DP_F_TC_RECIRC_SHARING)
+> @@ -1948,6 +2003,7 @@ static void __dp_destroy(struct datapath *dp)
+>
+>  	/* RCU destroy the ports, meters and flow tables. */
+>  	call_rcu(&dp->rcu, destroy_dp_rcu);
+
+In theory the table pointer cannot be NULL here, but would
+it make sense to add a WARN_ON(!table) to catch any future
+mistakes?
+
+> +	call_rcu(&table->rcu, ovs_flow_tbl_destroy_rcu);
+>  }
+>
+
+[...]
+
+> diff --git a/net/openvswitch/flow_table.c b/net/openvswitch/flow_table.=
+c
+> index 67d5b8c0fe79..3b7518e3394d 100644
+> --- a/net/openvswitch/flow_table.c
+> +++ b/net/openvswitch/flow_table.c
+> @@ -406,15 +406,19 @@ int ovs_flow_tbl_masks_cache_resize(struct flow_t=
+able *table, u32 size)
+>  	return 0;
+>  }
+>
+> -int ovs_flow_tbl_init(struct flow_table *table)
+> +struct flow_table *ovs_flow_tbl_alloc(void)
+>  {
+>  	struct table_instance *ti, *ufid_ti;
+> +	struct flow_table *table;
+>  	struct mask_cache *mc;
+>  	struct mask_array *ma;
+>
+> +	table =3D kzalloc_obj(*table, GFP_KERNEL);
+> +	if (!table)
+> +		return ERR_PTR(-ENOMEM);
+
+Add an extra blank line?
+
+>  	mc =3D tbl_mask_cache_alloc(MC_DEFAULT_HASH_ENTRIES);
+>  	if (!mc)
+> -		return -ENOMEM;
+> +		goto free_table;
+>
+>  	ma =3D tbl_mask_array_alloc(MASK_ARRAY_SIZE_MIN);
+>  	if (!ma)
+> @@ -435,7 +439,7 @@ int ovs_flow_tbl_init(struct flow_table *table)
+>  	table->last_rehash =3D jiffies;
+>  	table->count =3D 0;
+>  	table->ufid_count =3D 0;
+> -	return 0;
+> +	return table;
+>
+>  free_ti:
+>  	__table_instance_destroy(ti);
+> @@ -443,7 +447,9 @@ int ovs_flow_tbl_init(struct flow_table *table)
+>  	__mask_array_destroy(ma);
+>  free_mask_cache:
+>  	__mask_cache_destroy(mc);
+> -	return -ENOMEM;
+> +free_table:
+> +	kfree(table);
+> +	return ERR_PTR(-ENOMEM);
+>  }
+
+[...]
+
