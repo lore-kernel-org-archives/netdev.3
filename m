@@ -1,32 +1,32 @@
 Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C2437754B;
-	Fri, 12 Jun 2026 21:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51F0375ABE;
+	Fri, 12 Jun 2026 21:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781298008; cv=none; b=jYg46Yo+t7C0murBATPIlHu7YS8XuYyCwBdfqXl3UE+U7/lmXo3uG8onjRahmxXC8O8hKR9rPN3Uu3o9yeOh+gFuAJ5PsMIKucKTrR4ATSv4ytvaBsC1zgB+Vq3ySm+Riq+UUAm62C9zlb0E0NkmIa8xtFRpdm/fFoS0CWwkQ2U=
+	t=1781298008; cv=none; b=atjfj/G7LwaByqJysKJlej89l+jbH6fbG94qmVpafRcFCw5gnC4Zy3cjN2orbzsTl2jBiCmaTcczUq9dC9rRftjH2i8iC6EDITPhVHrx9oEr7PK/yYvh2eF6GbTTPz1pn8AAehiah3/u1Yje423N3RWwQehUYZS9XbB2G9qRkvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1781298008; c=relaxed/simple;
-	bh=MnTlWXnA9OYO+S+1hQYbFnesde3b0uOWEzzavhIGK9g=;
+	bh=KdHRTSDxsxSxKMGly9FdQAnP5B/pxArlmfPuJWSp5ro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mRiDGTFtfL44bJSflq3rAqOM+Lxy7E7rKgRnPkUxpXHWRHcbGAo2hWWLcU/S38G4xzz823O4sppA2ShiAFjelDTuEQDr8AS03525R8ZfEMBBNGlBT9IDQ75zyYlpf5/dLQIdWLr161/h/9mBUZ9xcclNltDt+WzC3qaQVQnHui4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=labxXYwW; arc=none smtp.client-ip=194.13.80.246
+	 MIME-Version; b=lZ+XkHsIkQXOJLc8xENMAadrcpqGA2IpnnuO5cBeqFUVjv6J/Z0twp1xtl7KJKS+drZPRULzIZhqfNOHgYvmzJVROmbaK9lOxLXREeo2Nyzlqtf9WUaZ8I7zfItSsMEBZypEKaSaf3S8Ys2goBikUfKCRvgONYOx24XWy+aDjkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=0tzVjt0c; arc=none smtp.client-ip=194.13.80.246
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="labxXYwW"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 75287A4F82;
-	Fri, 12 Jun 2026 23:00:03 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="0tzVjt0c"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F27BAA4F62;
+	Fri, 12 Jun 2026 23:00:01 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1781298003; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1781298002; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=8rgv1C1KYhvNmP9EhM2vaA6On3DtJ3+S9NABs+9QcAw=;
-	b=labxXYwWpClV0ZsjpfV2pZGB2j9GrgyemghJq3wU+aR/sgOY9kprwb1VUrWX3X6vwVSgGm
-	BQsHlW4U7m6waP1gbHgDMhVVHjmSCrpk0VBNsKI4H9+9Jb+g4Iu5W8nb4S2glmM76Q3vG8
-	eKs+Og1RZrWU8OTMuUp0Yvi7UrfFBaqE0dWsMy6btPD/qOpK/J24TQXuuzsCpR2/r4tSoV
-	Kfna4dvxWudcZGvI7mnojDgacl8yZZN781IQt8w+6/gwE5DCf5/ZYGEdMV7LZJDTIZ7v+P
-	6ZSX3g4J0Dr07/WdXfarIKKIN0niwktEU0KqaWVxmiYTvaWCCy7Vn9KpL+2yeA==
+	bh=QsLxA9Nj3hnIcCion65GXLKmwk+sracnvV53FIRar9A=;
+	b=0tzVjt0cRH71qmClu2Hcc5521f6FhvSdqjvB2cTpIUnNwJL3wN/Jhe7HbBKYPbh8kJvc6y
+	Ri+WJZrZBsp+Yu2jvbfHoNa9WiOzeERd2j2vidkOYXf0jjhjKkLbIC5qhuaBiy9AsAEWcE
+	O8tH1E15K7WEPfGYAKwQmi9lPODWrW453m2cGMPgKv2XVcggIotUH8UhN/i2NUiY8Q3GYB
+	r8o+W52Cv7tkl1Qdca8eKsEBQlVpQ5aw7quPy0TitZGbeUFwT+e17Cr39T+Mm7kIpPksLp
+	odt2sHt1WqwBu4NRpYO52C6Un/e8TihHzhxkhTnuTENL8Jabbn7GfWk6S8DM2g==
 From: Nicolai Buchwitz <nb@tipi-net.de>
 To: Doug Berger <opendmb@gmail.com>,
 	Florian Fainelli <florian.fainelli@broadcom.com>,
@@ -41,9 +41,9 @@ Cc: Justin Chen <justin.chen@broadcom.com>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Nicolai Buchwitz <nb@tipi-net.de>
-Subject: [PATCH net-next 3/3] net: bcmgenet: allocate a single-queue netdev
-Date: Fri, 12 Jun 2026 22:59:15 +0200
-Message-ID: <20260612205915.3156127-4-nb@tipi-net.de>
+Subject: [PATCH net-next 1/3] net: bcmgenet: collapse TX priority queues to a single queue
+Date: Fri, 12 Jun 2026 22:59:13 +0200
+Message-ID: <20260612205915.3156127-2-nb@tipi-net.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260612205915.3156127-1-nb@tipi-net.de>
 References: <20260612205915.3156127-1-nb@tipi-net.de>
@@ -56,34 +56,68 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-The driver only uses TX ring 0 and RX ring 0, so allocating a netdev
-with GENET_MAX_MQ_CNT + 1 = 5 TX and 5 RX slots leaves four of each
-unused. Switch to alloc_etherdev() which allocates exactly one queue
-of each kind.
+The strict-priority TX queues can starve under multi-queue load and
+trip NETDEV_WATCHDOG. Justin's earlier series [1] worked around the
+symptom but kept the design.
 
-No functional change: netif_set_real_num_{tx,rx}_queues() already
-clamps the visible queue count to 1.
+The multi-queue design was originally used for STB use cases that are
+no longer needed, as confirmed by Justin. v1 hw_params already
+exercises a single-queue path. Point v2-v4 at the same configuration:
+ring 0 takes the full BD pool, every per-ring loop collapses to one
+iteration, and netif_set_real_num_tx_queues drops to 1 via the
+existing tx_queues + 1 arithmetic.
+
+Tested on Raspberry Pi CM4 (BCM2711). The baseline kernel trips
+NETDEV_WATCHDOG within seconds under iperf3 UDP saturation
+(-u -b0 -P16 -t60). After the change the same test completes
+without a watchdog, and a single-stream 60 s UDP run sustains
+956 Mbit/s with 0/4952890 datagrams lost. Single-stream TCP
+throughput is unchanged at 943 Mbit/s.
+
+[1] https://lore.kernel.org/netdev/20260406175756.134567-1-justin.chen@broadcom.com/
 
 Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
 ---
- drivers/net/ethernet/broadcom/genet/bcmgenet.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index 25f339eb304f..001bd445b110 100644
+index ca403581357d..c892734b4cd0 100644
 --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
 +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -3915,9 +3915,7 @@ static int bcmgenet_probe(struct platform_device *pdev)
- 	unsigned int i;
- 	int err = -EIO;
+@@ -3751,8 +3751,8 @@ static const struct bcmgenet_hw_params bcmgenet_hw_params_v1 = {
+ };
  
--	/* Up to GENET_MAX_MQ_CNT + 1 TX queues and RX queues */
--	dev = alloc_etherdev_mqs(sizeof(*priv), GENET_MAX_MQ_CNT + 1,
--				 GENET_MAX_MQ_CNT + 1);
-+	dev = alloc_etherdev(sizeof(*priv));
- 	if (!dev) {
- 		dev_err(&pdev->dev, "can't allocate net device\n");
- 		return -ENOMEM;
+ static const struct bcmgenet_hw_params bcmgenet_hw_params_v2 = {
+-	.tx_queues = 4,
+-	.tx_bds_per_q = 32,
++	.tx_queues = 0,
++	.tx_bds_per_q = 0,
+ 	.rx_queues = 0,
+ 	.rx_bds_per_q = 0,
+ 	.bp_in_en_shift = 16,
+@@ -3769,8 +3769,8 @@ static const struct bcmgenet_hw_params bcmgenet_hw_params_v2 = {
+ };
+ 
+ static const struct bcmgenet_hw_params bcmgenet_hw_params_v3 = {
+-	.tx_queues = 4,
+-	.tx_bds_per_q = 32,
++	.tx_queues = 0,
++	.tx_bds_per_q = 0,
+ 	.rx_queues = 0,
+ 	.rx_bds_per_q = 0,
+ 	.bp_in_en_shift = 17,
+@@ -3787,8 +3787,8 @@ static const struct bcmgenet_hw_params bcmgenet_hw_params_v3 = {
+ };
+ 
+ static const struct bcmgenet_hw_params bcmgenet_hw_params_v4 = {
+-	.tx_queues = 4,
+-	.tx_bds_per_q = 32,
++	.tx_queues = 0,
++	.tx_bds_per_q = 0,
+ 	.rx_queues = 0,
+ 	.rx_bds_per_q = 0,
+ 	.bp_in_en_shift = 17,
 -- 
 2.53.0
 
