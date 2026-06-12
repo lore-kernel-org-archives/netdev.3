@@ -1,35 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B3E37475C
-	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 14:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE6A37475C
+	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 14:23:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781274181; cv=none; b=o9kyiHG/C1Kn1mhGRrZBCH2HigGG3wkMZW5POoNvjsRGfvLZLvshXZbPlEgd+J8gfRGd6/jy2stJ/5XCXyItVV0LpjKCnUvHRVqxbh4UzJvZcKWzZpRHnW0gaUegf112YToIrl2lpTmLdjEc/EZ2yGAhYsqL7c7YT4aTmbm9Uvk=
+	t=1781274184; cv=none; b=J0wXTtFy18jS/km1IOSomCmKvqbIhgah3bbc0ansrLZh4yjE4YMSJSysdbfhuKvY/pOwS5CpvxX6O0OWAXMuTb3UPjKms32w3954ovZfNfQQ+exXTfpSVYypveRJabc9nLMWB9wZ5qczy0hCDqQicm+mLqv4zzsGIyTDodFbdMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781274181; c=relaxed/simple;
-	bh=+5Vm+5xN3nA8kqvACP8r30OjPg7hZ7ldhOwR/1ITh8U=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=sMFP0H3mBJzKzrr8fbvKMs5MqEWlUUMdHiod3goSkYBgnb2J9hfT13ceZKPwX4qStYUzsose1Zt+m5GtjuQ9Bbbhm2mslYco/o0yNhnUWbloD6tIF0SmO2jL0U8R5ppqWVTL+KM6p91CPwE/S5ZLraEXfSLMSB68mgMNaYVXeFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cJFUF0f3; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781274184; c=relaxed/simple;
+	bh=XS2Iu8bAmOY/7nGc0btT0t6HaHDprWJphlY95g9jrCw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=oo1rITVtrh/cFPhTbf3x1EIo8YPj/XLRWFjY2V/um1DiHve14Nuk+6vrV33Qme3GkZM/jf1OSLpPdQJaEocmLvNpbbUmzRExBaqf1UKyM3HfJa169ROKYs1WG26G/Pf6ozDtbQrskr6QiUFpned56wTjNQjLripDS7/IklKJ+DA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CaiVZOeo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cJFUF0f3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CFD21F00A3A;
-	Fri, 12 Jun 2026 14:22:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CaiVZOeo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E89C1F00A3D;
+	Fri, 12 Jun 2026 14:23:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781274180;
-	bh=ta51XgAIGVGdvHj6EHtz/ar29/xwILx0XBnGPHWF4/4=;
-	h=From:Subject:Date:To:Cc;
-	b=cJFUF0f3tqhSJ5r8D4P+7ae5TNLHwNIl43VnoU8HHSOlxz6PjBiw8r5kBCpFdYm3t
-	 Wl8E9Hr/hXdBA3/kNTgF37nZ8WPrtBYx6od0ugLfCkEzNQ6//lk9ExL1aNRCMtElpm
-	 UOW+vZYulB+D9TsuNThEQAu4OgSG6egTXDzd4TotXN1n9wmWZu2j9jUig1+pKq/Y4w
-	 gQXgPavd3RiBJ6hnMb1TO7yx66MjXFk6C1NqFVYmkuu3+S8u136WAJ0xSjsUlqAxMR
-	 90uwnGq7gZW/Sln8FCOoZr7dq1GJ89DU7RnW+9bxpL2wYu8/FhiJ8+K5EIkeKcTM22
-	 zKMBdt8Zr2D2w==
+	s=k20260515; t=1781274182;
+	bh=P8i8tOgTrcarxt/5goqC+TJ+bZplNbE2uU+AMTyqrek=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=CaiVZOeoNrbrFqo1IspazQ+ErvQK9m+/3N1VZbQ1jnG20s4NK2Kwr/pVam2mSuDZL
+	 e1fkaIqWjlNjXonkELuAEwDCHI/HmKKPguee4QnDs33Sx7FEK9rSl0cTlrEkmj0U3p
+	 ZB0FYO+e453arICZ4Lmbrh2rKpgmJuV4WXAosoTGIxUqrS0sYNz+tqcqgP9aoAmkVt
+	 vxVfdqLsOowPDRf7dQE7Xd/qmIdW2wZR+swtHrGTHmMV1NCWxIv7Jrt3YrrYQV1lSM
+	 qxX4WxG+/lLGrty0ZtHworeq1qe789vkvRBkvW6cCAOM5FHxIntaEj4kWdwIrbEE6A
+	 +CtBXgteVX+Nw==
 From: Linus Walleij <linusw@kernel.org>
-Subject: [PATCH net-next 0/4] net: dsa: realtek: rtl8366rb: Use generic
- RTL83xx code
-Date: Fri, 12 Jun 2026 16:22:49 +0200
-Message-Id: <20260612-rtl8366rb-improvements-v1-0-9232286fc20c@kernel.org>
+Date: Fri, 12 Jun 2026 16:22:50 +0200
+Subject: [PATCH net-next 1/4] net: dsa: realtek: rtl8366rb: Switch to
+ generic port_bridge* handlers
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -38,10 +38,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMwQ6CMBAFf4Xs2Sa0aiP+ivEg9KFrZCHblZAQ/
- t2qx8lkZqUMZWQ6VyspZs48SgG/q6h73OQOx6kwhTrEOnrv1F6nfYzaOh4mHWcMEMsuxaYP/nA
- MvklU4knR8/IbX0hgTrAYXf8mv9snOvt+ads+JC3XXoQAAAA=
-X-Change-ID: 20260611-rtl8366rb-improvements-d69f2145219d
+Message-Id: <20260612-rtl8366rb-improvements-v1-1-9232286fc20c@kernel.org>
+References: <20260612-rtl8366rb-improvements-v1-0-9232286fc20c@kernel.org>
+In-Reply-To: <20260612-rtl8366rb-improvements-v1-0-9232286fc20c@kernel.org>
 To: Luiz Angelo Daros de Luca <luizluca@gmail.com>, 
  =?utf-8?q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>, 
  Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
@@ -50,40 +49,169 @@ To: Luiz Angelo Daros de Luca <luizluca@gmail.com>,
 Cc: netdev@vger.kernel.org, Linus Walleij <linusw@kernel.org>
 X-Mailer: b4 0.15.2
 
-As a follow-up to Luiz's and Alvin's series improvining the
-generic handling of the Realtek DSA switches, this small
-series brings the RTL8366RB closer to the way things are done
-in the RTL8365MB driver.
+The RTL8366RB is using its own sub-standard port isolation code.
 
-This patch series switches over to using the generic helpers
-for:
-
-- Bridge joining and leaving (isolation)
-- STP handling
-- Learning enable/disable
-
-It would be appreciated if this doesn't lead to AI-automated
-request to fix the entire universe (hi Sashiko, I'm looking
-at you but I bet you will do you compulsive C3P0-style review
-anyway) since I'm just moving code around so some helper
-functions come before their new users. The code itself is
-pretty straight-forward.
+Implement the required isolation helpers, use these directly in
+the port setup callback, and switch over to the standard port
+isolation code.
 
 Signed-off-by: Linus Walleij <linusw@kernel.org>
 ---
-Linus Walleij (4):
-      net: dsa: realtek: rtl8366rb: Switch to generic port_bridge* handlers
-      net: dsa: realtek: rtl8366rb: Use DSA port iterators
-      net: dsa: realtek: rtl8366rb: Disable STP learning on all ports in setup
-      net: dsa: realtek: rtl8366rb: Switch to generic learning enablement
+ drivers/net/dsa/realtek/rtl8366rb.c | 108 ++++++++++++------------------------
+ 1 file changed, 36 insertions(+), 72 deletions(-)
 
- drivers/net/dsa/realtek/rtl8366rb.c | 268 ++++++++++++++++++------------------
- 1 file changed, 131 insertions(+), 137 deletions(-)
----
-base-commit: dad4d4b92a9b9f0edb8c66deda049da1b62f6089
-change-id: 20260611-rtl8366rb-improvements-d69f2145219d
+diff --git a/drivers/net/dsa/realtek/rtl8366rb.c b/drivers/net/dsa/realtek/rtl8366rb.c
+index 103039fe3086..8b57ef3bf03a 100644
+--- a/drivers/net/dsa/realtek/rtl8366rb.c
++++ b/drivers/net/dsa/realtek/rtl8366rb.c
+@@ -791,6 +791,35 @@ static int rtl8366rb_setup_all_leds_off(struct realtek_priv *priv)
+ 	return ret;
+ }
+ 
++static int rtl8366rb_port_set_isolation(struct realtek_priv *priv, int port,
++					u32 mask)
++{
++	/* Bit 0 enables isolation so set this if we enable isolation
++	 * any of the ports an clear it if we disable on all of them.
++	 */
++	if (mask)
++		mask = RTL8366RB_PORT_ISO_PORTS(mask) | RTL8366RB_PORT_ISO_EN;
++
++	return regmap_write(priv->map, RTL8366RB_PORT_ISO(port),
++			    mask);
++}
++
++static int rtl8366rb_port_add_isolation(struct realtek_priv *priv, int port,
++					u32 mask)
++{
++	/* We assume isolation bit is on */
++	return regmap_update_bits(priv->map, RTL8366RB_PORT_ISO(port),
++				  RTL8366RB_PORT_ISO_PORTS(mask),
++				  RTL8366RB_PORT_ISO_PORTS(mask));
++}
++
++static int rtl8366rb_port_remove_isolation(struct realtek_priv *priv, int port,
++					   u32 mask)
++{
++	return regmap_update_bits(priv->map, RTL8366RB_PORT_ISO(port),
++				  RTL8366RB_PORT_ISO_PORTS(mask), 0);
++}
++
+ static int rtl8366rb_setup(struct dsa_switch *ds)
+ {
+ 	struct realtek_priv *priv = ds->priv;
+@@ -868,16 +897,13 @@ static int rtl8366rb_setup(struct dsa_switch *ds)
+ 
+ 	/* Isolate all user ports so they can only send packets to itself and the CPU port */
+ 	for (i = 0; i < RTL8366RB_PORT_NUM_CPU; i++) {
+-		ret = regmap_write(priv->map, RTL8366RB_PORT_ISO(i),
+-				   RTL8366RB_PORT_ISO_PORTS(BIT(RTL8366RB_PORT_NUM_CPU)) |
+-				   RTL8366RB_PORT_ISO_EN);
++		ret = rtl8366rb_port_set_isolation(priv, i, BIT(RTL8366RB_PORT_NUM_CPU));
+ 		if (ret)
+ 			return ret;
+ 	}
+ 	/* CPU port can send packets to all ports */
+-	ret = regmap_write(priv->map, RTL8366RB_PORT_ISO(RTL8366RB_PORT_NUM_CPU),
+-			   RTL8366RB_PORT_ISO_PORTS(dsa_user_ports(ds)) |
+-			   RTL8366RB_PORT_ISO_EN);
++	ret = rtl8366rb_port_set_isolation(priv, RTL8366RB_PORT_NUM_CPU,
++					   dsa_user_ports(ds));
+ 	if (ret)
+ 		return ret;
+ 
+@@ -1184,70 +1210,6 @@ rtl8366rb_port_disable(struct dsa_switch *ds, int port)
+ 		return;
+ }
+ 
+-static int
+-rtl8366rb_port_bridge_join(struct dsa_switch *ds, int port,
+-			   struct dsa_bridge bridge,
+-			   bool *tx_fwd_offload,
+-			   struct netlink_ext_ack *extack)
+-{
+-	struct realtek_priv *priv = ds->priv;
+-	unsigned int port_bitmap = 0;
+-	int ret, i;
+-
+-	/* Loop over all other ports than the current one */
+-	for (i = 0; i < RTL8366RB_PORT_NUM_CPU; i++) {
+-		/* Current port handled last */
+-		if (i == port)
+-			continue;
+-		/* Not on this bridge */
+-		if (!dsa_port_offloads_bridge(dsa_to_port(ds, i), &bridge))
+-			continue;
+-		/* Join this port to each other port on the bridge */
+-		ret = regmap_update_bits(priv->map, RTL8366RB_PORT_ISO(i),
+-					 RTL8366RB_PORT_ISO_PORTS(BIT(port)),
+-					 RTL8366RB_PORT_ISO_PORTS(BIT(port)));
+-		if (ret)
+-			dev_err(priv->dev, "failed to join port %d\n", port);
+-
+-		port_bitmap |= BIT(i);
+-	}
+-
+-	/* Set the bits for the ports we can access */
+-	return regmap_update_bits(priv->map, RTL8366RB_PORT_ISO(port),
+-				  RTL8366RB_PORT_ISO_PORTS(port_bitmap),
+-				  RTL8366RB_PORT_ISO_PORTS(port_bitmap));
+-}
+-
+-static void
+-rtl8366rb_port_bridge_leave(struct dsa_switch *ds, int port,
+-			    struct dsa_bridge bridge)
+-{
+-	struct realtek_priv *priv = ds->priv;
+-	unsigned int port_bitmap = 0;
+-	int ret, i;
+-
+-	/* Loop over all other ports than this one */
+-	for (i = 0; i < RTL8366RB_PORT_NUM_CPU; i++) {
+-		/* Current port handled last */
+-		if (i == port)
+-			continue;
+-		/* Not on this bridge */
+-		if (!dsa_port_offloads_bridge(dsa_to_port(ds, i), &bridge))
+-			continue;
+-		/* Remove this port from any other port on the bridge */
+-		ret = regmap_update_bits(priv->map, RTL8366RB_PORT_ISO(i),
+-					 RTL8366RB_PORT_ISO_PORTS(BIT(port)), 0);
+-		if (ret)
+-			dev_err(priv->dev, "failed to leave port %d\n", port);
+-
+-		port_bitmap |= BIT(i);
+-	}
+-
+-	/* Clear the bits for the ports we can not access, leave ourselves */
+-	regmap_update_bits(priv->map, RTL8366RB_PORT_ISO(port),
+-			   RTL8366RB_PORT_ISO_PORTS(port_bitmap), 0);
+-}
+-
+ /**
+  * rtl8366rb_drop_untagged() - make the switch drop untagged and C-tagged frames
+  * @priv: SMI state container
+@@ -1801,8 +1763,8 @@ static const struct dsa_switch_ops rtl8366rb_switch_ops = {
+ 	.get_strings = rtl8366_get_strings,
+ 	.get_ethtool_stats = rtl8366_get_ethtool_stats,
+ 	.get_sset_count = rtl8366_get_sset_count,
+-	.port_bridge_join = rtl8366rb_port_bridge_join,
+-	.port_bridge_leave = rtl8366rb_port_bridge_leave,
++	.port_bridge_join = rtl83xx_port_bridge_join,
++	.port_bridge_leave = rtl83xx_port_bridge_leave,
+ 	.port_vlan_filtering = rtl8366rb_vlan_filtering,
+ 	.port_vlan_add = rtl8366_vlan_add,
+ 	.port_vlan_del = rtl8366_vlan_del,
+@@ -1830,6 +1792,8 @@ static const struct realtek_ops rtl8366rb_ops = {
+ 	.is_vlan_valid	= rtl8366rb_is_vlan_valid,
+ 	.enable_vlan	= rtl8366rb_enable_vlan,
+ 	.enable_vlan4k	= rtl8366rb_enable_vlan4k,
++	.port_add_isolation = rtl8366rb_port_add_isolation,
++	.port_remove_isolation = rtl8366rb_port_remove_isolation,
+ 	.phy_read	= rtl8366rb_phy_read,
+ 	.phy_write	= rtl8366rb_phy_write,
+ };
 
-Best regards,
---  
-Linus Walleij <linusw@kernel.org>
+-- 
+2.54.0
 
