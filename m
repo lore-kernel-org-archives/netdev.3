@@ -1,129 +1,180 @@
-Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com [209.85.221.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0806C313E24
-	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 09:52:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464A635B653
+	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 10:00:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781257977; cv=none; b=Ay50PgB2Tbgw93VtR3IBlU4rnpMfGi0RHKal6ajIG3LK2WiMUVY7vZGbXGkKRZpjZCVzEQJR+RkGcL9TcedI/hUgo4Un25it29Vsep5EKCsZLHugB+nrRPT6Ss1VoUbpGY/Svg67Y3t25izDGm3GZlsQRfZa4NsZuCvw5Lwp5RM=
+	t=1781258420; cv=none; b=ZzQ4sInzjwbvFK82hQb9/IJZbUweqOJReEUzk4z/FG6qRjF8pKHeI2akkLCOc7nZ3xzJ/JH7dEtc4/HzofelzgfV1whEIq07wOr5rjHvT3JqBLzvIwSzkGrpHaOn+hE/t11uea8Arfq9+jOGTJImzeYHBDeFt708UFDMcLRwKk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781257977; c=relaxed/simple;
-	bh=TsdwKdc9yokgTj1o1KWL7wDregVHwkh9wLKY74tlLjY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LLg3ommgH5UO0mypLDSsVzrS0jyUYtbemu26XGCLPr/BlfuSOg+aAxiAICtP5i8u1J9uEXER3OC/dL1hFUJgxJGg3D7+TLFqZm9CxyF+PAXxk9GG6Hyu3dmuHKIdn4gwMEMOgFEFHdxXHzdG3tYWvGxR3CiMm5rs0Wij7Gj7YuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f182.google.com with SMTP id 71dfb90a1353d-59d07df448bso489421e0c.0
-        for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 02:52:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781257975; x=1781862775;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=6ekw+Oevfx6i4xq0d1g4dLAXWaWK/4ZFI+zNuRgMbC8=;
-        b=PTSUaKvKZGHkcx0F5qlN1mlrBkg5VFFdRbv9PLGvdeLYkjdbx2JT4DnXyWuNK9uvPm
-         E95MK1S03cpSCgeWO80A0Ct9wp1dYjJFZF1D+NY3AZAbebjcu0g1RI6gBuvoulZ+9CMf
-         9AkMU7OYh07XIk8FYrw7LfJxlJaIvDkPFwQSsnwBTsDy7l8upDr+Q4MD8VkSwo5Nj8q1
-         WKAr0ZC6pND31gLJaha8FA7ZQQjw1uk+MryDzROMoAaUcIOi3Ckdj2zkGeatO3I/ttWA
-         o2HT2pMGlTDOu2aO1sd6pxWMkQFrtpM/vGiK3kvB0JAAm/F6Uz77dQ0cnSAT/0n4suF6
-         UChw==
-X-Forwarded-Encrypted: i=1; AFNElJ8DIPluQq0SFw49T+KvX6NVsmG3dz/CaOG3XZUX07WSVLDXvOi8qmpak83nHBKyWL3hP18elbc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQMCq/1gmRSteGmI3G6wf4Eq7gT8KA5/r2nNdqtqj7/20Gv4mE
-	jpCxP43/HeWbpZjVaLjCjSJWnKB3Co/R8oGFaGLyfHyoFN7Z1/7Etv8FU+H+Jy+R
-X-Gm-Gg: Acq92OFHooPKZHILZaGnSvvNtf7VEc/cGjgODjepZLhN4t1xVJYTq+AJkbZ6pG+zLpo
-	8IUx4kihm8kXUsTYrkGStQIwrTR5HY+ajGO1KMW6wgF2BIkVY6jHCG2uzXwcLroH3QFR9PCNthX
-	199GJ/a2c60gcgsuKn5ocMxD9gnAa5BZV5IR9aBKbBz7ZtuBiIJ7Lv9StPuYVttw9wtSfLC8bSC
-	lYXVGYSWF3onNHBufTfhNJmfGal0wvpsga53FAj2yauH0VQLpVJLI3X6bx1VcoaMjF+WUJfrW3A
-	vo73daOeCoWHmxNSXMOiFWeycfe6JcgRTqPLFNK+c611iDe+wBfXU7r+82BqGViOAJAImSJYpV+
-	qMlO7QYaSpUs2sLPS1hoDltsI85nRgTzUUPdIE877uQ4RL449ekQ/ni4n/G1ayhaup6gtfG8hX+
-	PPSTUBjMwsE0Yr2r6ReeY1l8iAP4V7OecKac89O7+d40HkBLKLlQyrJGXO8l27
-X-Received: by 2002:a05:6122:d09:b0:5a3:da51:daa3 with SMTP id 71dfb90a1353d-5bb6bfe6582mr854693e0c.1.1781257974867;
-        Fri, 12 Jun 2026 02:52:54 -0700 (PDT)
-Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com. [209.85.217.46])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5bb68fc4d73sm2001769e0c.4.2026.06.12.02.52.54
-        for <netdev@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Jun 2026 02:52:54 -0700 (PDT)
-Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-6cfb0a137c9so437681137.1
-        for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 02:52:54 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+KflUpBaTsOfzd2jnv8z8Umx9y/qmA231E1FLooYo3fXU4TKIGwdH+A/rEbw34NjPlWgjBUb0=@vger.kernel.org
-X-Received: by 2002:a05:6102:1527:b0:6ef:db57:d472 with SMTP id
- ada2fe7eead31-71e88fce218mr844922137.27.1781257480541; Fri, 12 Jun 2026
- 02:44:40 -0700 (PDT)
+	s=arc-20240116; t=1781258420; c=relaxed/simple;
+	bh=EO7Y+uBvKEMyetf5lCrZsS7Fq+fRpr1UF+ErthLdbKI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WLAyy4iTiVN4Ap3+J8QgID3TW4jz49bKnN9/JqNStg6+70g1sbjrqyAlEvu+ntijfsoZrAOgMeLg5zehkWRIE6OPvy/popB46AEL3NwXCCSdWgo8fo+ChNhbhfsqrcleiu82fRmHDGBo0FN3bV/YRB/OI4QRl3qVbLTKLTp4Ans=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P/i2GS1i; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P/i2GS1i"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83CAD1F000E9;
+	Fri, 12 Jun 2026 10:00:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781258418;
+	bh=vRrg3KPRA4GzTnNy1FMzkDqJH1Weaqbx4NhX70ndGcs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=P/i2GS1iwimkFOnRWUVEwF/SEk6lazc+UxbspPcxRGOf3pZCcDCRS6shJSVni8+Is
+	 L2S9mQ2Du+mSSm01P282aKM3ZWNFlmDYAwoNBz6rlwhyim92kWPpvt8AZK5UYbfoQ1
+	 oJFbebygqtIgcz8H7KN0h/qhp6kjzdZUh0RvkdK3aSdrMl1Wn5rZz9jbOjOKd9djfl
+	 +Xkx7kie7uL4AL9PnDYvAnsCqIvQLCQhH8YOZ+bFZxfRJ/wjW5um404gSyqdCiCR0A
+	 FsNXayQrL+BXV+I1PHqpPOxnS5SufdSpIpd1EfST+cu+yPWri8VZVsx+LYlEK+ZC5r
+	 F5YJu0v6X65Nw==
+From: Simon Horman <horms@kernel.org>
+To: anthony.l.nguyen@intel.com
+Cc: Simon Horman <horms@kernel.org>,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	andrew+netdev@lunn.ch,
+	netdev@vger.kernel.org,
+	ade@amicon.ru,
+	dima.ruinskiy@intel.com,
+	jacob.e.keller@intel.com,
+	dish@amicon.ru,
+	avigailx.dahan@intel.com
+Subject: Re: [PATCH net-next 06/15] igb: Retrieve Tx timestamp from BH workqueue
+Date: Fri, 12 Jun 2026 10:57:44 +0100
+Message-ID: <20260612095742.662653-3-horms@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260609213559.178657-7-anthony.l.nguyen@intel.com>
+References: <20260609213559.178657-7-anthony.l.nguyen@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260612092851.2141782-1-niklas.soderlund+renesas@ragnatech.se> <20260612092851.2141782-4-niklas.soderlund+renesas@ragnatech.se>
-In-Reply-To: <20260612092851.2141782-4-niklas.soderlund+renesas@ragnatech.se>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Fri, 12 Jun 2026 11:44:29 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdXq59znV1uatwVyszTh5PjR96Ay3DTe=TzP9VxgKm5W_g@mail.gmail.com>
-X-Gm-Features: AVVi8CeFKC4WGhTZS8WnXOfTTINM5eUjUYYQa4NqNv0sVR6at_JjsT2cJ1T43Ag
-Message-ID: <CAMuHMdXq59znV1uatwVyszTh5PjR96Ay3DTe=TzP9VxgKm5W_g@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 3/3] arm64: dts: renesas: r8a779g0: Add gPTP node
-To: =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Magnus Damm <magnus.damm@gmail.com>, Richard Cochran <richardcochran@gmail.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "DavidS. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Niklas,
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://sashiko.dev
+---
+igb: Retrieve Tx timestamp from BH workqueue
 
-On Fri, 12 Jun 2026 at 11:29, Niklas S=C3=B6derlund
-<niklas.soderlund+renesas@ragnatech.se> wrote:
-> The gPTP module is shared between the RAVB and RTSN Ethernet devices on
-> the SoC.
->
-> Signed-off-by: Niklas S=C3=B6derlund <niklas.soderlund+renesas@ragnatech.=
-se>
-> ---
-> * Changes since v1
-> - Rename node ptp.
+Retrieve Tx timestamp from system BH instead of regular system workqueue.
 
-Thanks for the update!
+The current implementation uses schedule_work() which is executed by the
+system work queue and kworkers to retrieve Tx timestamps. This increases
+latency and can lead to timeouts in case of heavy system load. i210 is
+often used in industrial systems, where timestamp timeouts can be fatal.
 
-> --- a/arch/arm64/boot/dts/renesas/r8a779g0.dtsi
-> +++ b/arch/arm64/boot/dts/renesas/r8a779g0.dtsi
-> @@ -603,6 +603,15 @@ tsn0: ethernet@e6460000 {
->                         status =3D "disabled";
->                 };
->
-> +               gptp: ptp@e6449000 {
+Simon says:
 
-Please preserve sort order (by unit-address).
+I think that first issue below, flagged as pre-existing, can be considered
+in the context of possible follow-up.
 
-> +                       compatible =3D "renesas,r8a779g0-gptp", "renesas,=
-rcar-gen4-gptp";
-> +                       reg =3D <0 0xe6449000 0 0x500>;
-> +                       clocks =3D <&cpg CPG_MOD 2723>;
-> +                       power-domains =3D <&sysc R8A779G0_PD_ALWAYS_ON>;
-> +                       resets =3D <&cpg 2723>;
-> +                       status =3D "disabled";
-> +               };
-> +
->                 i2c0: i2c@e6500000 {
->                         compatible =3D "renesas,i2c-r8a779g0",
->                                      "renesas,rcar-gen4-i2c";
+However, the issues flagged below that, regarding scheduling work
+and possible softirq storms, do seem to be something that warrants
+investigation in the context of this patch-set.
 
-Gr{oetje,eeting}s,
+> diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
+> index 49d46670695f3..17eff90af9e3d 100644
+> --- a/drivers/net/ethernet/intel/igb/igb_main.c
+> +++ b/drivers/net/ethernet/intel/igb/igb_main.c
+> @@ -6571,7 +6571,7 @@ netdev_tx_t igb_xmit_frame_ring(struct sk_buff *skb,
 
-                        Geert
+[Severity: High]
+This is a pre-existing issue, but does this function modify the shared SKB
+data area without verifying exclusive ownership?
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+In igb_xmit_frame_ring(), just before the work is queued:
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+	if (adapter->tstamp_config.tx_type == HWTSTAMP_TX_ON &&
+	    !test_and_set_bit_lock(__IGB_PTP_TX_IN_PROGRESS,
+				   &adapter->state)) {
+		skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
+
+If the SKB is cloned (e.g. via tc mirred or packet sniffers), won't modifying
+the shared shinfo region create a data race with other network paths?
+
+[Severity: High]
+This is a pre-existing issue, but can the error path sleep in atomic context?
+
+igb_xmit_frame_ring() runs in atomic context as the ndo_start_xmit callback,
+but the cleanup path calls a blocking function:
+
+cleanup_tx_tstamp:
+	if (unlikely(tx_flags & IGB_TX_FLAGS_TSTAMP)) {
+		...
+		if (adapter->hw.mac.type == e1000_82576)
+			cancel_work_sync(&adapter->ptp_tx_work);
+
+Could this trigger scheduling while atomic warnings or potential deadlocks?
+
+>  			adapter->ptp_tx_skb = skb_get(skb);
+>  			adapter->ptp_tx_start = jiffies;
+>  			if (adapter->hw.mac.type == e1000_82576)
+> -				schedule_work(&adapter->ptp_tx_work);
+> +				queue_work(system_bh_wq, &adapter->ptp_tx_work);
+
+[Severity: High]
+Does this change introduce a softirq polling storm for e1000_82576 MACs?
+
+For this specific MAC type, the work is scheduled immediately upon packet
+transmission. When queueing to system_bh_wq instead of a regular workqueue,
+the polling loop in igb_ptp_tx_work() will now run in softirq context.
+
+>  		} else {
+>  			adapter->tx_hwtstamp_skipped++;
+>  		}
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/intel/igb/igb_ptp.c b/drivers/net/ethernet/intel/igb/igb_ptp.c
+> index bd85d02ecadd8..7b44f9090631a 100644
+> --- a/drivers/net/ethernet/intel/igb/igb_ptp.c
+> +++ b/drivers/net/ethernet/intel/igb/igb_ptp.c
+> @@ -832,7 +832,7 @@ static void igb_ptp_tx_work(struct work_struct *work)
+>  		igb_ptp_tx_hwtstamp(adapter);
+>  	else
+>  		/* reschedule to check later */
+> -		schedule_work(&adapter->ptp_tx_work);
+> +		queue_work(system_bh_wq, &adapter->ptp_tx_work);
+
+[Severity: High]
+If the hardware timestamp is not yet valid, won't this work item
+unconditionally reschedule itself to system_bh_wq without delay? 
+
+Because the work requeues itself immediately, this could create a tight
+polling loop in softirq context, maximizing the CPU's softirq time limit
+and degrading network processing and overall system latency.
+
+[Severity: High]
+This is a pre-existing issue, but is there a use-after-free race condition
+between igb_ptp_tx_work() and the watchdog task igb_ptp_tx_hang()?
+
+Both functions independently check if the timeout has elapsed using
+adapter->ptp_tx_start. If igb_ptp_tx_work() detects a timeout, it frees the
+SKB and clears the state bit, allowing a new PTP packet to be queued:
+
+	if (time_is_before_jiffies(adapter->ptp_tx_start +
+				   IGB_PTP_TX_TIMEOUT)) {
+		dev_kfree_skb_any(adapter->ptp_tx_skb);
+		...
+		clear_bit_unlock(__IGB_PTP_TX_IN_PROGRESS, &adapter->state);
+
+If igb_ptp_tx_hang() concurrently evaluates the timeout as true based on the
+old ptp_tx_start but is preempted, could it resume and mistakenly cancel
+the work for the newly queued packet?
+
+igb_ptp_tx_hang() {
+	bool timeout = time_is_before_jiffies(adapter->ptp_tx_start +
+					      IGB_PTP_TX_TIMEOUT);
+	...
+	if (timeout) {
+		cancel_work_sync(&adapter->ptp_tx_work);
+		dev_kfree_skb_any(adapter->ptp_tx_skb);
+
+Would this cause a use-after-free by freeing the new SKB and corrupting the
+driver's PTP state?
+
+>  }
