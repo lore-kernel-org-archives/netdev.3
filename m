@@ -1,75 +1,189 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D90B403B16
-	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 17:09:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0BBE405859
+	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 17:09:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781284145; cv=none; b=Jb41xDTdzRAjJavxBwg9zouku2SsDxDcI3DSihvD1Eco2+ZD4+H37D1Yu3r6p3KrnOb89WhYzj/JZ9o/94ItxDlIONbifQn+ejoBjW2z8W4mURwVCoqJegRQmVMI+hOLqwa8xSoVHoxdCrUBkMTjwT+KqaTX4pUoHOnp/JH7WLA=
+	t=1781284184; cv=none; b=odIninQBcuKefLHwzTvjV9QYbEkwMjumIajVfqfD5Ec0rUl3YYIlhDuQAIx2bjEOCsp6IN3CrXDOg5hVcTtSNq2FCN7kYqIZUJXtkvyQxpG3umosD5wn+UDN3cqsGg5gYtFr5y5cnU8SVmWazi34eC71A5zGBFi3pyH8iE9sGxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781284145; c=relaxed/simple;
-	bh=m13FKH8QLbpEQyWJDYDcEI2m1m7u61lt3xKVuTPNHh4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Khvj5BXIGCXRHfp+KHdWHd2DxLxC9OCJPEFGvPpyYSvAmy0iXsnMDLgb0mB/W3fkwb0elF7w+cOBEE8kbaXP6h3Mqie3fFUdHZx8DX9IraFaDq9SPMgVFnbk+SiSzGzZ3cEqUXckw3uGjZFwBuYhgMrh02cG8A8EuIc/zqTyTmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SxqB5cRL; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781284184; c=relaxed/simple;
+	bh=9kB0UfTeSCkMBRmWGNDNFjdMSkwixJI8BzEiqxz9eEw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Fb2q347Efjv/dui//1ttq3dSwMURA+UPhOdk2oyAU2099vBDJ8P+dxPOy0PP15nH0VxlKGYeJEHslI+Ejcb3zA9Kcp12czoBy7qVljcimGoblFUWN9O8zdfVST2EAXkJFVy+1zWn1IA02DRdbXfvfeYwfru9BB5CPzonhx9lsVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=O7bKAAUb; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=cvhngrHr; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=O7bKAAUb; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=cvhngrHr; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SxqB5cRL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA65B1F000E9;
-	Fri, 12 Jun 2026 17:09:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781284143;
-	bh=mXHehhzB4/pCnHpMmxg30pmzTBOAo5i3f5cizkPGk2k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=SxqB5cRLYHsqodxhM9r7MVPqGGUkg8EdMYMdy0jHQD4jV+AghgDrxcTTdSVwQ224r
-	 tMS4MA/AWJGsoCyBKQzKMmbFCphPn5fjtKCtDltoxEvHkiYhUQRmLJD5ytS1RdPGM3
-	 pir0p7p4yJNBq4navfhhaVRBzN/albmg9vUDMwSo+E++g9pnetCjyhZDTcdUlXrlSl
-	 tUjV0Z8p126g/HpkqZGVd0ZOvnQqtwykxsuWt31xqJXqLmYAFuInOVKsIbF/GCOuu8
-	 ry1cSeQlscHRaaI08xZcK3vTJymSJpNmAhc4pB+GtepcZyjstIqDLeIPeQldU+tIxb
-	 Gls0cCBKkryzQ==
-Date: Fri, 12 Jun 2026 18:08:59 +0100
-From: Simon Horman <horms@kernel.org>
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
-	Christian Marangi <ansuelsmth@gmail.com>
-Subject: Re: [PATCH net-next] net: airoha: better handle MIBs for GDM ports
- with multiple devs attached
-Message-ID: <20260612170859.GJ671640@horms.kernel.org>
-References: <20260611-airoha-eth-multi-serdes-stats-v1-1-42442ae42064@kernel.org>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="O7bKAAUb";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="cvhngrHr";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="O7bKAAUb";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="cvhngrHr"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id B34984BB5;
+	Fri, 12 Jun 2026 16:44:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1781282670; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VHqaOsvEfvnQhg0gJC43oq0VxUxfZokOBLkTg1vCgbs=;
+	b=O7bKAAUbjE2z4+egvHZ0PEf4EGote2/UFmRjbwCsnAy0mjsCpfwjl3QZNL6LowcLGV71OD
+	1auMsMLycCU1HMBzlqJa6L0vHfNB+75Z1h34ikJsg1e1hVN/NQuSzNG4G8CipcH57iuMaZ
+	q0ZdwAOFWbopR/ias/vXpKXN0uQYq1k=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1781282670;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VHqaOsvEfvnQhg0gJC43oq0VxUxfZokOBLkTg1vCgbs=;
+	b=cvhngrHrvBPrU1HLbUkrQ02naf+wR4muWkL8wfor3ZuDIBxnN+sI3PGwuxEzkUUmes6ScZ
+	9LuPAwzXuvQe/dBQ==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=O7bKAAUb;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=cvhngrHr
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1781282670; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VHqaOsvEfvnQhg0gJC43oq0VxUxfZokOBLkTg1vCgbs=;
+	b=O7bKAAUbjE2z4+egvHZ0PEf4EGote2/UFmRjbwCsnAy0mjsCpfwjl3QZNL6LowcLGV71OD
+	1auMsMLycCU1HMBzlqJa6L0vHfNB+75Z1h34ikJsg1e1hVN/NQuSzNG4G8CipcH57iuMaZ
+	q0ZdwAOFWbopR/ias/vXpKXN0uQYq1k=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1781282670;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VHqaOsvEfvnQhg0gJC43oq0VxUxfZokOBLkTg1vCgbs=;
+	b=cvhngrHrvBPrU1HLbUkrQ02naf+wR4muWkL8wfor3ZuDIBxnN+sI3PGwuxEzkUUmes6ScZ
+	9LuPAwzXuvQe/dBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9B33A779A7;
+	Fri, 12 Jun 2026 16:44:30 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id GAoxJW43LGp5IwAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Fri, 12 Jun 2026 16:44:30 +0000
+Message-ID: <71af4535-96bf-422b-9177-8aa7e9666c80@suse.de>
+Date: Fri, 12 Jun 2026 18:44:26 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260611-airoha-eth-multi-serdes-stats-v1-1-42442ae42064@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3 net-next v6] ipv4: handle devconf post-set actions on
+ netlink updates
+To: Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, pabeni@redhat.com, kuba@kernel.org,
+ edumazet@google.com, dsahern@kernel.org, idosch@nvidia.com,
+ davem@davemloft.net
+References: <20260609204520.4670-2-fmancera@suse.de>
+ <20260612123820.673243-1-horms@kernel.org>
+Content-Language: en-US
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+In-Reply-To: <20260612123820.673243-1-horms@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Flag: NO
+X-Rspamd-Action: no action
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:dkim,sashiko.dev:url,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: B34984BB5
+X-Spam-Score: -4.51
 
-On Thu, Jun 11, 2026 at 12:43:00PM +0200, Lorenzo Bianconi wrote:
-> In the context of a GDM port that can have multiple net_devices attached
-> (GDM3 and GDM4), the HW counters (MIBs) are global for the GDM port.
-> This cause duplicated stats reported to the kernel for the related
-> net_device.
-> The SoC supports a split MIB feature where each counter is tracked based
-> on the relevant HW channel (NBQ) to account for this scenario and
-> provide a way to select the related counter on accessing the MIB
-> registers.
-> Enable this feature for GDM3 and GDM4 and configure the relevant HW
-> channel before updating the HW stats to report correct HW counter to the
-> kernel for the related interface.
-> Move the stats struct from port to dev since HW counter are now specific
-> to the network device instead of the GDM port. Refactor
-> airoha_update_hw_stats() to take airoha_eth and airoha_gdm_port
-> parameters since the function operates on the entire port.
+On 6/12/26 2:38 PM, Simon Horman wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> Full review at: https://sashiko.dev
+> ---
+> ipv4: handle devconf post-set actions on netlink updates
 > 
-> Co-developed-by: Christian Marangi <ansuelsmth@gmail.com>
-> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> This commit ensures that IPv4 device configuration parameters updated
+> via netlink trigger the same post-modification actions as sysctl updates.
+> It addresses the inconsistency by calling devinet_conf_post_set() inside
+> inet_set_link_af() and deferring cache flushing.
+> 
+>> diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
+>> index 8300516fb38f4..a35b72662e431 100644
+>> --- a/net/ipv4/devinet.c
+>> +++ b/net/ipv4/devinet.c
+>> @@ -2161,6 +2161,20 @@ static bool devinet_conf_post_set(struct net *net, struct ipv4_devconf *cnf,
+> [ ... ]
+>> +	case IPV4_DEVCONF_FORWARDING:
+>> +		if (new == 1) {
+>> +			/* it is safe to use container_of() because forwarding case
+>> +			 * is only used by the netlink path
+>> +			 */
+>> +			struct in_device *idev = container_of(cnf, struct in_device, cnf);
+>> +
+>> +			netif_disable_lro(idev->dev);
+> 
+> [Severity: High]
+> Does calling netif_disable_lro() directly here without acquiring the
+> netdev_lock_ops mutex cause lockdep assertion failures?
+> 
+> Since inet_set_link_af() runs only under rtnl_lock() and does not acquire
+> the device ops lock, this direct invocation appears to bypass the locking
+> requirements for netif_disable_lro(), which modifies dev->wanted_features
+> and invokes netdev_update_features(dev).
+> 
+> On drivers that opt-in to netdev_lock_ops, does this create a concurrent
+> data race on the device features mask? Should this use dev_disable_lro()
+> instead, which correctly acquires and releases netdev_lock_ops(dev) around
+> the netif_disable_lro() call?
+> 
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+The device operations lock is held when handling IFLA_AF_SPEC at
+net/core/rtnetlink.c. Calling netif_disable_lro() is the right thing to
+do IMHO. Keep on mind that FORWARDING case here is only triggered by
+netlink path and not sysctl.
+
+AI keeps complaining about this but it isn't right AFAICS.
+
+Thanks,
+Fernando.
+
+>> +		}
+>> +
+>> +		inet_netconf_notify_devconf(net, RTM_NEWNETCONF,
+>> +					    NETCONFA_FORWARDING,
+>> +					    ifindex, cnf);
+>> +		return true;
+> 
 
