@@ -1,214 +1,171 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E01B37CD45
-	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 12:36:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF55384CC8
+	for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 12:37:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781267768; cv=none; b=GN+j3pku6Tzfv9gjK/51H1TYudwOjE5JpW3eZj0ZqSTbuxH7hF78jNUjX8R5qqlDbpOjOL6Y32JDcCoOxJzjVP6ZuycscASasZLYwsxy20v4GwSdrfQxjTAk7hmzcdRDtksZCAo877Ed/wPOqm/wEn2TZDLhw5ur3fHCjgkNvFc=
+	t=1781267849; cv=none; b=V5civJEo/eyWQcY7puVTZP0p2I68rmAHxFEp1JB0bYh1zvoUdP53wae916IObyvfGM4sZ/+66FAFMYXxbDiRvUKTvxqG5SDdEB/vIHAIthbetsuspE4RrYJJrrf7dB61PYGCWntRQW3LPuZVj6VWgqHdnk0vJjp/Ac5Y5uwnzxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781267768; c=relaxed/simple;
-	bh=aGU2KaeNbjoMi9bbOYkVaOy/KRLHDhqpCo8qvpK791E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mYjmjOr6UjU6SIe4PZff5yaFA/0BJdlixBjkyHKuX0YPz/6BBzu1q+tJ2RtW0ALoYDBhN+fsVdCv/SsOfC5uWnbSMhFQuv4VSm7RqKiPUIhT3edN4fLs7LEW/PUqFIhur13eZHXvCZHpxrAYbPi+80CyB+j7izGT9sjc5YdyEbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QmGHwHLt; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781267849; c=relaxed/simple;
+	bh=9BiD/pNZG1w1cpdsMn9s0h2RHLqN9zijEXESHAV0+I4=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uqza2vWK5iTjZtW91IafrYCT18g+e+ehAAY+Uhn3CCLsEYPL7g66GeRjcruDjrxLHr9M5vbug56KnnmgwQqkGr2kp0cWpNsSiyakAIOY3klrzKvvO+g0B37tAy6RTESoMJapvvVPsCYf+7cYUB2XaYWXWh/hnnY6WLj4Jc4FJAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=S7J2Cpmx; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QmGHwHLt"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2bf1f074a12so9405095ad.0
-        for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 05:36:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="S7J2Cpmx"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-490b211ee6aso6396225e9.3
+        for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 05:37:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781267766; x=1781872566; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9fxzmybkp5GeYR6ZlxIQWX4Jsc2twsYOIn8s9KXjfbM=;
-        b=QmGHwHLtn0I+hke1iEE9hTWnxHhU8xe7ubdv6PTY0tfhdRmkHlqiRBc4T615WvUJc7
-         bTQeaitWjwuH68KEXuKpsO5vIJmg6J/0/3OZM+aYDhQ3Ry90m7z15u21zxVoUYB3QipK
-         hOhpzXZ4buoMCG7Bkbt2jp5JQoPZHgZGMBTCfz0vMGiTaJ6FyoJ4TKaAwtV1RGjnDEAJ
-         AYVscizV0hZYaW7614aGh+IXC3rY3Q7huAxi0lEoRptpO0WPQG2N+BBaNu0iqZvDcrMI
-         OQnXtUyLfrGOC+t9Cr+q1htUF3X4YrHW3c+DKGkvMdEVNkHvS33pEPQ38wmj/AURB1V6
-         xDzg==
+        d=suse.com; s=google; t=1781267846; x=1781872646; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:date:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=MrjsT2w1j1qo9MwDPHviku0Dqn2a94LfN9cpJdJZDKs=;
+        b=S7J2CpmxTelu6/D2S8mmF8NeGQzA/C9UYx9OVPvAbNwwlcjcKhNjpSxn8DMJI8cuMG
+         0sZ2cTdzxEGQDClGFUUIJBdP/2o/cyNeDl+kBIE7AS8LGq5nz61PRB7eVGrG1FYsSqjV
+         jTh77xSN+Fdukmf17oLQE0vCgh/8QFRqH21N8i2XPRd5N5uonwR+RX3QMQU1FQ7qWw52
+         Zty/Ql7HfswoSxDFrQgAZt9Vtyiu/IqIvaaF9ocAg1dqw4+egIK8M8jxFClzEOQ/pafE
+         nxuHqx5zT9mBMy/WJOTH2manPEi0QR1FEibC/RSUxOxuz9oakePYx+yjsGhm818Zg/Dl
+         Jpbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781267766; x=1781872566;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9fxzmybkp5GeYR6ZlxIQWX4Jsc2twsYOIn8s9KXjfbM=;
-        b=K4KlIypIT9c6j/GOotlC3nv9EuulUzR/lAiY5OG11s3+iBP3u8sn0nUJnlYep1vcYw
-         4JHKGDVFz7yAZnYtOhK2k8VP0/+WLJN8M+qw/AFfjMIbKTYxk43de2ZvPGhDby8L6IYT
-         mu7Skgnvjj8l7Sd/5mjkZmdg4ZO/LguICbfCR+CCuciuthkDBVg60kxbEtazfIhS+itf
-         piMc+qqBjp/ru2WwrbibfuLQGj4C+3WFVauvvzUbCvtKPzku/IRRc4IvtwyhWvWKo4Bp
-         7E9qooY6zCNjitJVtc2sLvUcEseXPoovd7HLh/u7l9CKOUw3qA/NaHGVf7mp9WSkzJol
-         7+Yw==
-X-Forwarded-Encrypted: i=1; AFNElJ+hC51HMZWoALmnGGVtlNG0Al059Ry5l7FdrsfMf7hc++gi2d1+QvQSd/LvTtdv6OOJhf2ajp0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YziA+/Jv4fNr9x5yly+gn2EjoAdGFLuyBD7azCshhtdB+p5VoIb
-	pVgYW5M9Chb3FFi3GJai/LOCX3Ew+snDi3a1wKNODnkMU3MI7ykAHqB/
-X-Gm-Gg: Acq92OFsDD2ZTUIx0tG9xUFbgE9SW5ygwJBEMHxAnHOptrA6OR+A7NkYbX8wgekJ0Tu
-	kBkz4UdAyC7NajGapPrVXEKZCb5SivEmvetCTzPBGTCLzdKG/fdSe/RGlN42g8YevpVWBh++XHh
-	QYRIr/h6IO94BbsGfgTIvqrnWgc/DGtgt/RSE11rBkoCzvRi1kL23t47h0XBZm645PBhH/Ukrie
-	P7OctpkW65sr4hEKV7sFe+oKYXILdv5SWSLfppmWz43Y7RUn3OPjnYsoTPIZ4vGdNxIqha5Spbg
-	HKlocUiNykPKjWtGMaY1v/JkqyQg5gnJyMWoHWYSRTCm2JnSa+hH6nwO+vGn+pg8EPGvzDGDEV5
-	1sip7uAijd3i64m62cQ12yaT1MFZFbpn3iMO/jwjGcaXVO3BDIdMdtC+1ayrWPSq/VijLcWoizS
-	VVbCGx4ujGXg9S0lGFSnNpz0dZIJAZZwsgvk2X2LbcXBuGgCuevxkA2bdngQzGgw==
-X-Received: by 2002:a17:903:22cc:b0:2ba:4e84:966 with SMTP id d9443c01a7336-2c4134ebeb4mr32201005ad.36.1781267766547;
-        Fri, 12 Jun 2026 05:36:06 -0700 (PDT)
-Received: from cps-manycore-1.. ([147.46.174.222])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c42f7c5535sm22161045ad.18.2026.06.12.05.36.03
+        d=1e100.net; s=20251104; t=1781267846; x=1781872646;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MrjsT2w1j1qo9MwDPHviku0Dqn2a94LfN9cpJdJZDKs=;
+        b=FTR5WjwSJzIJ2xY5DkH8pNAO/U0z9w+AlSG2I1MOCwn6g7+nZ9zz+ivSFQZF4bELuC
+         wsli3ZtZjfQLrX9SngL5GApVI8i/gcmyVplrmyCW6tubQbMiEenqlsZGpYzKJfaqj0PF
+         lgTN/Yf/xfq2WAvj/7WPH3V7dNAqwow7LJoaWSNZl5AAwB9p0CuioabejWGJMzE8EcLS
+         DJpsx8/VrxbJPy4+VuXmsMraryaBXJq4Ra/R9S78gZMCM7JeNtebTiA3vnFgTIoJcP1p
+         9EKib8vg/kfCpUhgjgQRSzitihM15QwPREsaxoEi256e5LcVl161MvzCgDGLbyrdJ3FH
+         9ZMA==
+X-Forwarded-Encrypted: i=1; AFNElJ/AVwcSiK1N4jF8zUoqSAYZxhLVrfgUBXNU2m208mjtSz7NNbfE7Kyl/yhyXcC0OyQdY/yQWts=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIlRteKLZa3izw3KPAq6BDivYEmm8PGqqOJvVgmmjiAt8r6sWv
+	bY6ScJTT6eB8D1Fgab0a3WMJjcknkkxf4roTZdnIi6dm3rhBBli1jpK7zWe8CuhLt7s=
+X-Gm-Gg: Acq92OHWrd7DVr548zwco40Liy80pj79dkjBRfIjdZAoyVdXBP8TMSIOUHeV4pohQSy
+	GQz9ez2jc8qZ4bKSDCoaM3oWKgPHVJC9qYi/EtBvXnruB/yvyY+VgmTrgNZeCGSqt6v4j9b1de/
+	so72U98ZdMH5VjAOabpcm7RQrBqSLE1eS3KH94fZaynZdQP9de/g5vrPGtJPiOZ8GNLVY4pifZ9
+	CmS0Niw3ZR08S2Z0YNk3YIn7CFAEr4DezR63rzVvgQARMeg+azN4GoIDPHqD/1dWBoH0i0U1gc8
+	7Zpox9473HiMJQF8i6oahe36SqHhhihNriKEvD8IaDJHikyR4hBl8omGqvnLy1rTuVtT+AqbX3S
+	TCaZl4kAXi4q/RD/uenwaLWJI7aFcArmfmv9htz2V9dKEIbeVotm+ovipYR3QyGKE7JpvWeMWCw
+	J1j8OthmIx78AqigVBoXCc
+X-Received: by 2002:a05:600c:5296:b0:492:1e7f:d426 with SMTP id 5b1f17b1804b1-4921e7fd54bmr110925e9.2.1781267846081;
+        Fri, 12 Jun 2026 05:37:26 -0700 (PDT)
+Received: from localhost ([195.94.146.6])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490ea843d63sm64794375e9.12.2026.06.12.05.37.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Jun 2026 05:36:06 -0700 (PDT)
-From: Sechang Lim <rhkrqnwk98@gmail.com>
-To: John Fastabend <john.fastabend@gmail.com>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
+        Fri, 12 Jun 2026 05:37:25 -0700 (PDT)
+From: Andrea della Porta <andrea.porta@suse.com>
+X-Google-Original-From: Andrea della Porta <aporta@suse.de>
+Date: Fri, 12 Jun 2026 14:40:47 +0200
+To: =?iso-8859-1?Q?Th=E9o?= Lebrun <theo.lebrun@bootlin.com>
+Cc: Andrea della Porta <andrea.porta@suse.com>, netdev@vger.kernel.org,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	Bobby Eshleman <bobbyeshleman@gmail.com>,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH bpf v2] bpf, sockmap: fix use-after-free when the stream parser resizes the skb
-Date: Fri, 12 Jun 2026 12:35:51 +0000
-Message-ID: <20260612123553.2724240-1-rhkrqnwk98@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-rpi-kernel@lists.infradead.org,
+	Lukasz Raczylo <lukasz@raczylo.com>,
+	Steffen Jaeckel <sjaeckel@suse.de>
+Subject: Re: [PATCH] net: macb: add TX stall timeout callback to recover from
+ lost TSTART write
+Message-ID: <aiv-T7thh8wj2d7n@apocalypse>
+References: <771b8faeaee1fce4a84a5ba2661d60b35a65a6d5.1781253818.git.andrea.porta@suse.com>
+ <DJ6Z39C906LE.1F3XKDDM41UJ8@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <DJ6Z39C906LE.1F3XKDDM41UJ8@bootlin.com>
 
-sk_psock_strp_parse() runs the BPF_PROG_TYPE_SK_SKB stream-parser program
-to find the length of the next message. strparser assembles a message out
-of several received skbs by chaining them onto the head's frag_list and
-recording where to append the next one in strp->skb_nextp:
+Hi Theo,
 
-	*strp->skb_nextp = skb;
-	strp->skb_nextp = &skb->next;
+On 11:45 Fri 12 Jun     , Théo Lebrun wrote:
+> Hello Andrea,
+> 
+> On Fri Jun 12, 2026 at 11:01 AM CEST, Andrea della Porta wrote:
+> > From: Lukasz Raczylo <lukasz@raczylo.com>
+> >
+> > The MACB found in the Raspberry Pi RP1 suffers from sporadic stalls on
+> > the TX queue.
+> > While the exact root cause is not yet fully understood, it is likely
+> > related to a hardware issue where a TSTART write to the NCR register
+> > is missed, preventing the transmission from being kicked off.
+> >
+> > Implement a timeout callback to handle TX queue stalls, triggering the
+> > existing restart mechanism to recover.
+> >
+> > Link: https://lore.kernel.org/all/20260514215459.36109-1-lukasz@raczylo.com/
+> > Fixes: dc110d1b23564 ("net: cadence: macb: Add support for Raspberry Pi RP1 ethernet controller")
+> > Signed-off-by: Lukasz Raczylo <lukasz@raczylo.com>
+> > Co-developed-by: Steffen Jaeckel <sjaeckel@suse.de>
+> > Signed-off-by: Steffen Jaeckel <sjaeckel@suse.de>
+> > Co-developed-by: Andrea della Porta <andrea.porta@suse.com>
+> > Signed-off-by: Andrea della Porta <andrea.porta@suse.com>
+> > ---
+> >  drivers/net/ethernet/cadence/macb_main.c | 11 +++++++++++
+> >  1 file changed, 11 insertions(+)
+> >
+> > diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+> > index a12aa21244e83..615da65d5d68d 100644
+> > --- a/drivers/net/ethernet/cadence/macb_main.c
+> > +++ b/drivers/net/ethernet/cadence/macb_main.c
+> > @@ -4522,6 +4522,16 @@ static int macb_setup_tc(struct net_device *dev, enum tc_setup_type type,
+> >  	}
+> >  }
+> >  
+> > +static void macb_tx_timeout(struct net_device *dev, unsigned int q)
+> > +{
+> > +	struct macb *bp = netdev_priv(dev);
+> > +
+> > +	if (net_ratelimit())
+> > +		netdev_err(dev, "TX stall detected, re-kicking TSTART\n");
+> 
+> Is this standard? It looks odd.
 
-and then calls the parser on the head:
+I've found it used in other drivers, it's the closest I had found that
+limit the rate for net related output. As Nicolai suggested, on timeout
+a message is already printed by the core, so I will drop those two lines.
 
-	len = (*strp->cb.parse_msg)(strp, head);
+> 
+> > +	dev->stats.tx_errors++;
+> 
+> I am surprised by this. `tx_errors` would ideally be one per packet that
+> didn't get sent. Here we increment it once per queue that stalled.
+> 
+> I have a series to address stats issue (and use netdev_stat_ops API).
+> It is a follow-up to this:
+> https://lore.kernel.org/netdev/20260428-macb-drop-tx-v2-0-647f5199d8df@bootlin.com/
+> 
+> Also this is per-device shared data and we access it without
+> synchronisation.
+> 
+> Let's drop this increment.
 
-The parser is only meant to inspect the skb, but the program may call
-bpf_skb_change_tail() -- or the sibling bpf_skb_pull_data(),
-bpf_skb_change_head(), bpf_skb_adjust_room(), all allowed for SK_SKB.
-Once the head carries a frag_list these go
+Agreed.
 
-	... -> skb_ensure_writable -> pskb_may_pull -> __pskb_pull_tail
+Thanks,
+Andrea
 
-and __pskb_pull_tail() frees the frag_list skbs that strparser still
-tracks through skb_nextp:
-
-	while ((list = skb_shinfo(skb)->frag_list) != insp) {
-		skb_shinfo(skb)->frag_list = list->next;
-		consume_skb(list);
-	}
-
-strp->skb_nextp now points into a freed sk_buff. The next segment of
-the same message arrives in __strp_recv(), which links it with
-*strp->skb_nextp = skb, an 8-byte write into the freed skb. The free
-and the write happen in different __strp_recv() calls, so the message
-has to span at least three segments before it triggers.
-
-  BUG: KASAN: slab-use-after-free in __strp_recv+0x447/0xda0
-  Write of size 8 at addr ffff88810db86140 by task repro/349
-
-  Call Trace:
-   <IRQ>
-   __strp_recv+0x447/0xda0
-   __tcp_read_sock+0x13d/0x590
-   tcp_bpf_strp_read_sock+0x195/0x320
-   strp_data_ready+0x267/0x340
-   sk_psock_strp_data_ready+0x1ce/0x350
-   tcp_data_queue+0x1364/0x2fd0
-   tcp_rcv_established+0xe07/0x1640
-   [...]
-
-  Allocated by task 349:
-   skb_clone+0x17b/0x210
-   __strp_recv+0x2c3/0xda0
-   __tcp_read_sock+0x13d/0x590
-   [...]
-
-  Freed by task 349:
-   kmem_cache_free+0x150/0x570
-   __pskb_pull_tail+0x57b/0xc20
-   skb_ensure_writable+0x236/0x260
-   __bpf_skb_change_tail+0x1d4/0x590
-   sk_skb_change_tail+0x2a/0x40
-   bpf_prog_1b285dcd6c41373e+0x27/0x30
-   bpf_prog_run_pin_on_cpu+0xf3/0x260
-   sk_psock_strp_parse+0x118/0x1e0
-   __strp_recv+0x4f6/0xda0
-   [...]
-
-The same resize also leaves the head's length inconsistent with its
-frags, so a later __pskb_pull_tail() can instead hit the
-BUG_ON(skb_copy_bits(...)) in net/core/skbuff.c.
-
-Run the parser on a private clone of the head when the message spans more
-than one skb and the program can modify the packet
-(prog->aux->changes_pkt_data), so a resizing helper can only touch the
-clone and strparser's head and skb_nextp stay valid. Single-skb messages
-have no frag_list and read-only parsers cannot resize, so both are still
-parsed in place. If the clone cannot be allocated, return 0 so the caller
-retries on the next read rather than failing the parser.
-
-Fixes: 8a31db561566 ("bpf: add access to sock fields and pkt data from sk_skb programs")
-Signed-off-by: Sechang Lim <rhkrqnwk98@gmail.com>
----
-v2:
- - clone only when prog->aux->changes_pkt_data (Bobby Eshleman)
- - return 0 on clone failure instead of -ENOMEM (Bobby Eshleman)
- - free the clone with consume_skb() instead of kfree_skb()
- - drop the unrelated guard(rcu)() change (Bobby Eshleman)
-
-v1:
- - https://lore.kernel.org/all/20260609112316.3685738-1-rhkrqnwk98@gmail.com/
-
- net/core/skmsg.c | 26 +++++++++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
-
-diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-index e1850caf1a71..97e5bc5f38c3 100644
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -1149,9 +1149,29 @@ static int sk_psock_strp_parse(struct strparser *strp, struct sk_buff *skb)
- 	rcu_read_lock();
- 	prog = READ_ONCE(psock->progs.stream_parser);
- 	if (likely(prog)) {
--		skb->sk = psock->sk;
--		ret = bpf_prog_run_pin_on_cpu(prog, skb);
--		skb->sk = NULL;
-+		struct sk_buff *parse_skb = skb;
-+
-+		/*
-+		 * strparser chains the message skbs through skb->frag_list and
-+		 * keeps a pointer into that list in strp->skb_nextp.  The parser
-+		 * program may call bpf_skb_change_tail() and friends, which go
-+		 * through __pskb_pull_tail() and free the frag_list skbs that
-+		 * strparser still tracks.  Run the program on a clone when the head
-+		 * has a frag_list and the program can modify the packet, so it
-+		 * cannot drop frags strparser owns.
-+		 */
-+		if (skb_has_frag_list(skb) && prog->aux->changes_pkt_data) {
-+			parse_skb = skb_clone(skb, GFP_ATOMIC);
-+			if (!parse_skb) {
-+				rcu_read_unlock();
-+				return 0;
-+			}
-+		}
-+		parse_skb->sk = psock->sk;
-+		ret = bpf_prog_run_pin_on_cpu(prog, parse_skb);
-+		parse_skb->sk = NULL;
-+		if (parse_skb != skb)
-+			consume_skb(parse_skb);
- 	}
- 	rcu_read_unlock();
- 	return ret;
--- 
-2.43.0
-
+> 
+> > +	macb_tx_restart(&bp->queues[q]);
+> > +}
+> 
+> Regards,
+> 
+> --
+> Théo Lebrun, Bootlin
+> Embedded Linux and Kernel engineering
+> https://bootlin.com
+> 
