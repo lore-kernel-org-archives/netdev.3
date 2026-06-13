@@ -1,102 +1,81 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7D015ECCC
-	for <netdev@vger.kernel.org>; Sat, 13 Jun 2026 09:53:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E75CA3BFE24
+	for <netdev@vger.kernel.org>; Sat, 13 Jun 2026 10:00:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781344392; cv=none; b=Bz/eTGIZ1Co7eVRE2hTI+QdURgK4w0b+QlDONUthTnnh4YFhRViB2XNJG5hrQwp8MXZApFv45wHlN+hBv9g+GL1Pf5DAqUqSuyxHa6AM85/l2SCEQxKJH8XiP613Er9N2BORSA33IcAeIVrw6WE4/3C3q34K2jLlGbMtbBAgnCY=
+	t=1781344814; cv=none; b=iPPcStc0MPOWjbDU/faSSiGikiqHzDeQkdacUtVzOlc6dxS3V0oa6UlzN5jQEIW+/rEtDwEGGaePro/ax0yqpcqidGjMKviIIhHObzNVYVZTdeuFALYGzA+L9H9OSY2/n36XTauSc6mR/TpMn/PDF3FnO25N+ZQ51Jk+gRgA9WU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781344392; c=relaxed/simple;
-	bh=nsa/xqFgCfQ6As/U7LFHNU109oPvAMtkmMVTthWUFv8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=g+L5wHb5R+VZ9/bUotJ6xFI976uiP0jedN6HFLkHakf5T5FKCqs9FpOEvkI6y5PNwAYvYFANAbqg6kVmQqWTGlMRFB8X96x3e/XTz8L2Rx07Dk8zPQaM6NN/YMTcHJtbUzGDfNQ60CIoRcc5NXX4CkyoF3EG1PWgDS8ovB45LsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YlTjjlMc; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781344814; c=relaxed/simple;
+	bh=zE/aq7QcykEMgoRCjAtuYUTXkPyMiTJYt2hC+zx7ZRQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=IjX9FTrhwqTHLW0gv00K0e7oktnXYEbIvaMD2iEZbPvXSYlZXZ7q6RE++X8Y245NjjDMRnqKQlfH3qpuA68qIEldOxFY1FC7Ixi+tPhEPlj61D/3dIQU3VsTNtLDimpRS5moSxkiz7YvTYANWQsEjPFL1uk98p8zFqHqsOf8T4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SMiOXSmN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YlTjjlMc"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-490b12270b3so10851625e9.1
-        for <netdev@vger.kernel.org>; Sat, 13 Jun 2026 02:53:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781344390; x=1781949190; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=LDr7uB+HqKTFCCswWELw3SFqptqHrXh1cl865xzwKVM=;
-        b=YlTjjlMcLnEJF4QjvoLAtM/+lSg9o8/EwVOb+33HTMUvQCS08DweroCh83jGelnvyA
-         7Wlxlil2YZxqDxtLo+fu4wWzZbqyuvyOoKJ2gdoR1KM1buXumw1UGZanrAXDRyfAlqUa
-         xZsPsGB2YNzhZ5TIp4nQ8GOGZrjq3VJ84RAQWb6aKpK+OrC2GwXveYHnCXPV4Sqe/9AC
-         Zx0Qc+W+/hWUMXedm6rhQlgclsNIEVhIChVozUQHRfkUggerhfOGEHUbdTWa/isOgbXn
-         CAsAd3Jzgxud9WMFzpDN0LFUFIYKNLPMcZ3MKqq3gnAg5uOcgUCvoAHybemL+MOiR7x1
-         jW3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781344390; x=1781949190;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LDr7uB+HqKTFCCswWELw3SFqptqHrXh1cl865xzwKVM=;
-        b=iUHVLYc38pvmJ0ktfzoiqzLP7yaVf/b5fRbDjPpNi6D+3AHYY6HYT8EVGQzYoWZk2e
-         77PO7L8YsKMiibHKwHyLpr0ivh/7Eu8AnQ3BYR3CFveog+XSlgFXVl5IPEQS9L1jAbU7
-         q401JdQM3HwnNt924dE4mwQfhQpvJLiWnC1bIEOV9h0ljOXHL4QqlZaTA8rcyeA+kdV7
-         a8jhajToSzGrTjueKjcSt5CPNV6ITq0+mTyX4cwqOH9UMI5Dglr5a/+k7LaMKQwrn4WY
-         t9FlFLmQLGiQC8nUOv3hHb+5VeF5xPbrKJNK739J7XzC6NzfM1prgOwXffUAR0I/IePp
-         1hNA==
-X-Forwarded-Encrypted: i=1; AFNElJ/39P7immHw7haHtAEjryiBrRjaFpQVkpKncEdT9uoGSPO/n2WI9NCDPB+HGfy7ByjAdfN+C1o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzfWDS5FZtOQji/yQUOSOLgBpOwWf/fTwsPAclldsgQhBm+v5fo
-	xrtkup+2ZnP4bSjZP/XxPngYe135LmxN4A3nDhf05tXT5CVQCMbvDd3U
-X-Gm-Gg: Acq92OG0hp2mjtZcx76g6E64zS4c+jtZrU/YJejdH2C3HpMrcuSlyexB0gqBW6mRZbx
-	1VhNxHXzGpBUvilS9EXB8e+59BihNOJHCM0tC+qscstKk0pP1R5Hg+FHYZJi8MnffnQuKqdP9xL
-	72mISFvT/xpXNIh/MZX/bkkgxGO+P0ZpJYTNKyrnLgUZyr/npKUwAy2D+e1m+bpI9J/uTeCcvAM
-	pKzRcpeNvp+xnfKN5UGMGf3Tvfrll971sb9CWDwLd2IWOnrc7azhivVTAWRMqjiAnP+7EJgZDwj
-	cZw1xC37nAKw1XUkcyw125trKcoj6ymbFfm3H44vmVuR1S2qu4N8eUB4JyI+3ebVFO8kUe74XjA
-	kXY5FLhtDFs/GeBURLwGeSr8AIRuwJrvoKK06N0jLe+QORy99rww4tb6A6vYjisOVaDyBRdG7CB
-	t26BBCo8PYv+Bi3qgnn3mBsMzKsmKHCM08a3QO8EIsRYB37C3RgD7Wv7R6YGXd1lVb69xFMY/LY
-	JEfpYuHZmv889tSL+bBjaD0M4Oz+Y0wzgvmb1z8K9IQb0TlRWvs/bxSoo+dvhE+BPECt3JAZFBm
-	vg==
-X-Received: by 2002:a05:600c:a210:b0:490:e60b:5fcd with SMTP id 5b1f17b1804b1-490ec521002mr49829595e9.32.1781344389840;
-        Sat, 13 Jun 2026 02:53:09 -0700 (PDT)
-Received: from ?IPV6:2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c? ([2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4922035b4absm64807955e9.11.2026.06.13.02.53.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 13 Jun 2026 02:53:09 -0700 (PDT)
-Message-ID: <d0401fab-61c5-43e7-93ae-d4757433eb7a@gmail.com>
-Date: Sat, 13 Jun 2026 10:53:02 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SMiOXSmN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C1011F000E9;
+	Sat, 13 Jun 2026 10:00:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781344812;
+	bh=SI5mubNkp/ybE6yGHi0ZhrS7nRigP1sL2S4f5rK4jrI=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=SMiOXSmNHPOWH5xTGZg24u70lcgm2jsLW4NnMmTZDz+8CgfogI1NE6BTpCK8Yef4G
+	 txOX5X2kKSqmuFsyhqeKT5VyvsPfBrEj1QV69ihtsGhochdlrUgAXZfQZpjooyznC1
+	 5X0FOs/2CIt+u5ZVqJN8tTbPkF/ImbEZ4LIaJYxW3H5MQuJ3vFq2bY9wLXSz3sPsOR
+	 GX4h+EKy+dxNJ69LWRwE0UgxDugIPMldjnLZKUYQSI/vFVkh3rhNe/OPlgYXzJE5u7
+	 DM7mCc6fI3XgNWaOerWVYeZ2z2N9EmoorH6+62hbPC9eggNqQPkA3EaeY+9Gg/JRum
+	 x6bJc7babJtrg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0A5E39EFA6D;
+	Sat, 13 Jun 2026 10:00:09 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 1/2] netdev: expose io_uring rx_page_order
- order via netlink
-To: Dragos Tatulea <dtatulea@nvidia.com>,
- Donald Hunter <donald.hunter@gmail.com>, Jakub Kicinski <kuba@kernel.org>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Andrew Lunn <andrew+netdev@lunn.ch>, Jens Axboe <axboe@kernel.dk>
-Cc: Yael Chemla <ychemla@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- io-uring@vger.kernel.org
-References: <20260612211709.1456966-2-dtatulea@nvidia.com>
- <20260612211709.1456966-3-dtatulea@nvidia.com>
-Content-Language: en-US
-From: Pavel Begunkov <asml.silence@gmail.com>
-In-Reply-To: <20260612211709.1456966-3-dtatulea@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 0/3][pull request] Intel Wired LAN Driver Updates
+ 2026-06-09 (idpf, ixgbe, igc)
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178134480863.1443328.11582222064261049456.git-patchwork-notify@kernel.org>
+Date: Sat, 13 Jun 2026 10:00:08 +0000
+References: <20260609172458.4046222-1-anthony.l.nguyen@intel.com>
+In-Reply-To: <20260609172458.4046222-1-anthony.l.nguyen@intel.com>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org
 
-On 6/12/26 22:17, Dragos Tatulea wrote:
-> This adds observability for the io_uring zcrx rx-buf-len configuration.
+Hello:
 
-It might be nicer to look it up in the queue, e.g. rxq->mp_params,
-and make it a queue attribute instead of zcrx specific one. In either
-case, no objections.
+This series was applied to netdev/net.git (main)
+by Tony Nguyen <anthony.l.nguyen@intel.com>:
 
-Acked-by: Pavel Begunkov <asml.silence@gmail.com>
+On Tue,  9 Jun 2026 10:24:53 -0700 you wrote:
+> Przemyslaw adds needed padding to idpf PTP structures to match firmware
+> expectations.
+> 
+> Larysa bypasses XPS configuration on XDP queues for ixgbe.
+> 
+> Khai Wen corrects offset into packet buffer when handling for frame
+> preemption on igc.
+> 
+> [...]
 
+Here is the summary with links:
+  - [net,1/3] idpf: add padding to PTP virtchnl structures
+    https://git.kernel.org/netdev/net/c/d1e8f9fd6b98
+  - [net,2/3] ixgbe: do not configure xps for XDP queues
+    https://git.kernel.org/netdev/net/c/7bd4355272de
+  - [net,3/3] igc: skip RX timestamp header for frame preemption verification
+    https://git.kernel.org/netdev/net/c/38b7a274cf84
+
+You are awesome, thank you!
 -- 
-Pavel Begunkov
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
