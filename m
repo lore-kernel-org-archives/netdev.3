@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8CF266B46
-	for <netdev@vger.kernel.org>; Sat, 13 Jun 2026 01:00:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F5425B0A3;
+	Sat, 13 Jun 2026 01:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781312433; cv=none; b=UF89kSZSr/CHoteT2cptDN01nJ+/me+05QtKgo75c3YoZBryhqTIrUnALAJ7hfE0f9Os9x4om2bAMO64W7c7sqbIJXjiA7r6rwbUXPL6M5i0Cdo9E4z0gQU8RScZ3ZOu5cNB/sZ2qwF0EXOqs/KVW+uv18URE4t7EJr0isvHlxo=
+	t=1781312434; cv=none; b=m4/1xlt75Pt0ibtzUC20YAiFQBSzghCuHAd8cm7WwjC79CAJENhhqti2wisyn58VOmcvnAWbnGKHWGh/r/6Ag1nfkorIHCerrN0Hzk1e0W64/VBmimnI9m5238vTg5disz1QAA50SkrapH3SfDf3qDXYLk+VttVS1pt/+w33IQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781312433; c=relaxed/simple;
-	bh=7yLtn/sHt+SRrikGiRqCkR9L97ZRwqdmB4AJdsmaPyk=;
+	s=arc-20240116; t=1781312434; c=relaxed/simple;
+	bh=WfYUEOPeK03EHpwPebn+MgtHwxpMs96r3pSiOwUJEUM=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=NqspiA112dIaZ4LhcXA9cCM6huHtasWr/gYpno/VUkIxBFsO2GK9Qvw2NqCwvnlHtvg1SdWpLBizxcuTxS5mGDNXtvQ87Uex06lpNJN7ZU3jsc7Et+lfMuUCQEJT2kKpRS9jX6KQdU0AJBcHUWQZDUVxIDLH3eUBEHTiMDc5dBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Euke2X+S; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=IbIzIroSliFZ0/LaakMRtnY7W3nze0tnO/DYbYckabeX1fZQaq8HFI6dTRR9tCBuV62X4JiferSHJQ+9f9xtUMe+RDWPpOaB81BKyVS02VMCjT+JVfvhoYJqx9cHu3PiZnEKw9NROrOGS0HU/WSoRmTU/x/ONEx5lmswCbPfeu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TYere+vC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Euke2X+S"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4647E1F000E9;
-	Sat, 13 Jun 2026 01:00:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TYere+vC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C80251F00A3A;
+	Sat, 13 Jun 2026 01:00:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781312431;
-	bh=vDC3gdx1kG07b3DzyK33N8EzugMHq7voHog/GHFVPmQ=;
+	s=k20260515; t=1781312432;
+	bh=Wn0Opc5jXMGzRmeoKDOhDr/j7UkqCcoDWwPQbDZbwhg=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Euke2X+S8lVL1Zj8C73eOPQVTRpC4LIC7JeBp4/LLIX1H0Yd9lgBGKV4TDsYP/2LO
-	 mc7vuU3/m/cApRv9QpoxGJcMeBR7bv+ggBz1lTO/XeC7NQ//lPg1SewERUKYTsdXn1
-	 5JiDvLxD7rKKu7cdppbUXKs4UiaMaCCRjPlBlkJQAkiHkqtI61CeTV0tQ56p2O1kpf
-	 RPY0HifWbc04wV6swI17lPNmGN4DlvATcmgd5cEuRwXItImhxGErwypF1k6GISItbH
-	 DqFuxiEDUK+4TAUlUSHKn0njcHYFtFRwkqFS51wMpExKjMutF6GiQmybXm3T2SfilU
-	 TRkzac15vU0Cw==
+	b=TYere+vCg8GJynjh6ppeadGFRHg/TY3ukISithtp82fMR0fYjQgzZ5vuHpNbbwwXa
+	 XZ4yZlaT1KUhLZkC2uHb7APx7LsBpso643TpchRdawMwbHUuPKgt5MnSCOyXsAcDKG
+	 VbEhkDXm8SBzF2uteC2zk1cwdHbwz6xeM9xB8pZmivuT1TFXkZB3MkO8PTefUZ67Om
+	 p2kr0BojPEdBHDdhFlisbOuIvRODl9Ih5soKM6QHXNgaqCeI51bjBJIRFD6pjKaMgO
+	 9dLd/MWvZ7WyklILKDniP+dkARNBXXX4xJesXVKPwAt+gmZPMKurpxx9KiqWS5K4dO
+	 TO/FjquHlWBzQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19C4F39E9607;
-	Sat, 13 Jun 2026 01:00:29 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 939A739E9607;
+	Sat, 13 Jun 2026 01:00:30 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,37 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] ptp: ocp: add shutdown callback
+Subject: Re: [PATCH net-next v2] docs: networking: add guidance on what to
+ push
+ via extack
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178131242763.1315131.2792194546022295371.git-patchwork-notify@kernel.org>
-Date: Sat, 13 Jun 2026 01:00:27 +0000
-References: <20260611190333.787132-1-vadim.fedorenko@linux.dev>
-In-Reply-To: <20260611190333.787132-1-vadim.fedorenko@linux.dev>
-To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Cc: richardcochran@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- pabeni@redhat.com, kuba@kernel.org, netdev@vger.kernel.org
+ <178131242913.1315131.12921841859302513787.git-patchwork-notify@kernel.org>
+Date: Sat, 13 Jun 2026 01:00:29 +0000
+References: <20260611172149.1877704-1-kuba@kernel.org>
+In-Reply-To: <20260611172149.1877704-1-kuba@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, joe@dama.to,
+ corbet@lwn.net, skhan@linuxfoundation.org, linux-doc@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 11 Jun 2026 19:03:33 +0000 you wrote:
-> The shutdown callback was never implemented for this driver, but it's
-> needed because .remove() callback is never called during kexec/reboot
-> process. That leaves HW with some interrupts enabled and may cause
-> spurious interrupt while booting into a new kernel during with kexec.
-> If it happens that I2C interrupt fires during kexec, the whole I2C bus
-> is disabled leaving TimeCard with no devlink communication. The same
-> happens if timestampers were enabled, leaving the card without
-> timestamper interrupts until full reboot cycle.
+On Thu, 11 Jun 2026 10:21:49 -0700 you wrote:
+> Every now and then someone tries to duplicated extack
+> messages to dmesg. Document our guidance against this.
+> Also indicate that system level faults should continue
+> to go to system logs. The high level thinking is to try
+> to distinguish between what's important to the user vs
+> system admin.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next] ptp: ocp: add shutdown callback
-    https://git.kernel.org/netdev/net-next/c/f6f955cbf9d4
+  - [net-next,v2] docs: networking: add guidance on what to push via extack
+    https://git.kernel.org/netdev/net-next/c/96fbe161e402
 
 You are awesome, thank you!
 -- 
