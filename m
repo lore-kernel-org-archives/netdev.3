@@ -1,128 +1,128 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDDF81DDC1B;
-	Sat, 13 Jun 2026 01:11:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781313114; cv=none; b=AE9uIx/fDNN645WC+pgnwbYLsGtIcS743RQw0spIG0wED/2mKWMuJRJ2YFdzYjUAAD+/3FYBjNxhSPw4gfICGYKKfqYY3aDiXruAjxCxAjYaZWRzo9yO+SJ7p90hbS6nFk7i07d2N9hydnPV/7Qt5lf4SAcDt5az9BBOJyDlSxc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781313114; c=relaxed/simple;
-	bh=1Te8BP1iWT8QcjludWx5mT0shlRl2rRcP0tM7hxSFfA=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bpGvTmmzWZYDzpQ0ObKjyxcJvGXdaKID0zhjNsIDH+nQH/QEuvHf89HJUbNgZXb4bfJvNUkfbEy8au1RBR06GyuXCESS5CMjcPJByrDefXbGl+4MpIhgkJ31RQfNFxDOMvOUdEnwWpD1ztxK/4uSekuCLwG0aBJwHaWQ6W8LHPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
-	 (Exim 4.99)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1wYCuZ-000000007ND-3RCH;
-	Sat, 13 Jun 2026 01:11:47 +0000
-Date: Sat, 13 Jun 2026 02:11:45 +0100
-From: Daniel Golle <daniel@makrotopia.org>
-To: "Chester A. Unal" <chester.a.unal@arinc9.com>,
-	Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH net-next v2 8/8] net: dsa: mt7530: implement
- port_change_conduit op
-Message-ID: <8dd8cfe32bc8e38b92c49e30a6255090fb0998fb.1781312667.git.daniel@makrotopia.org>
-References: <cover.1781312667.git.daniel@makrotopia.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A402378D93
+	for <netdev@vger.kernel.org>; Sat, 13 Jun 2026 01:17:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781313439; cv=pass; b=MBJkUMpiLLzP4NM5g7iMU6Xjdk1tngf6sEbTNq2iXzQFGQv3L4f4wVWemdFAiotw57H/Ecf1rq/53dYw8MB6k+irhcfEGtjr9iDI8M0Z+HCChHT3pHO4QNFN0cBkHy48HJdmd3pZX5CMtpDS6FSJ5ZG+nWkwFHHIOOeAiXVOxrc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781313439; c=relaxed/simple;
+	bh=Wvflkcn3jB5/doJiVnfIbcerKvWTcSlWg3fdngog73o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nNabzotMwbqq8HhL9CZt+XY1rvf1O7dEuGKJ5SRwFD+dj19jwYGAaUFdl4vXswkp8j3Yjj6cYtbEF8aBELaWE0SzsVgSVDXrOmPBzOH+3q1t6GSCPNdwl0HfDbiqcLnBXarRJ8We0AYKUscYSri5rpt6Qkhk6rXVdTLG6kCvZic=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=K4kSgTxo; arc=pass smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="K4kSgTxo"
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-bef8b97655eso431507866b.0
+        for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 18:17:07 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781313426; cv=none;
+        d=google.com; s=arc-20240605;
+        b=OQag1BaVmqsJ+WVh8WWN666iTNI5SMTw7VRiDGNUUkcTZAg/YQWzfjSzce+XdsjCXW
+         3jsx1ZouRiuEe5RvTZUN59dtiQNgdDuw45zjTGtXPlAGIX+WZcAQg9jUVYkiX8zzGGoC
+         CtHwuMfPzt/elejHM2GFmU37KsrADIBy7F7Rkfn2q+3ngaYOv+fJItKCbtQy1fg7HZl1
+         poSm5mq/A1UzIbqxkII/Q3krQ2p9wYZxQhkniaVDW0cZJncWDo8pqEsSM25D2sZ7YLHJ
+         6HpW16q+9JUL6JKT2goD25PMkAfGothtNYu83wiuq5M0otNDPuVnnOk8kwoePxceOMYc
+         BasQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Wvflkcn3jB5/doJiVnfIbcerKvWTcSlWg3fdngog73o=;
+        fh=ztL+ZT+AjbyjsmIrH1VIX7lNxtf+vp2Q/3321EQDXkA=;
+        b=hFnBQYLcf3SEWx7bMMDtJHtGhKglbzLksEtR83yXIpxGe6gUanVxfpyEwMiMLV3cZS
+         cM5qdcn7+6vVtr+PSRXydkeuL/M+5F+Ex4pB9zGKbhnsxOWBqzW2ZbSLC+SAXW2sJ8gQ
+         BKr6W2dv9PskDhrJrpPkrAIbgfbivdkjQZ5hxmirCPj+fjxB+Xc6vdUJ711vAHaIsZi0
+         3Q+A6Hu6r9iK+jkTLoyhfEUdl7XA31pfktVFCfTxxh0ML2NW7AqJ01eKryES3taJYB2d
+         yqYDDmKEz4onAXwind8no3gB/GjzjesjcTbS2tgf2gJDh+B7lohBoXEAbeysaIZ21sIJ
+         Fwxw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781313426; x=1781918226; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Wvflkcn3jB5/doJiVnfIbcerKvWTcSlWg3fdngog73o=;
+        b=K4kSgTxoQTwzqm9LBvj+LHhMb6hi15qvjThRRy5F4scP2Neq3jIgfGAp6oYIv9nJIc
+         x345tVX2X5achsijMDhc2+J8QTOdtpXS5hZNPpn2hJL2FwXNIiWoQwXXAr+bFT9Y+OqG
+         SCGFLYi0CQb1Q/ipHjXnjd0bR2N6KeY29rP28EPep0jiuoZ05xuZSDyaInTVTCxS2PEx
+         P8b4MZlZnsRwI/n+B1sQn0Z3G4u2F1Is5YA/kvQtIZfBBozYORnQqCS0zqkJRw8ioFKa
+         T4ZVQPGv534w0p0SDeWBTQrTppv88WeHTK8aQpXSEfASPz2bYiVoyKk/Zu0fNjCEU0j5
+         F44w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781313426; x=1781918226;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Wvflkcn3jB5/doJiVnfIbcerKvWTcSlWg3fdngog73o=;
+        b=g5Yto1pDaDHhx/Qg2DqWqeIyWMHlUg8hxh38N6m5d0bN6497FYVPDHJaiDtyP2KO/Q
+         wuwb0R6lTptdxxLRqzDhCzNtdSdK0TPQKpzvki5Tdav66v6n27nB5ENZFfsulxOmtS+A
+         Zz3FUPP9elJb/ar3UrCjiOBS7GuGGn0QV/ViMX8bBxE+A8y8LiVrYgI2T+3PDyeHaXhE
+         dqZqMWwReGAViEHT4WBAdH+EdwJG+4/qCWQ2p6tDKFiPovOb11as08FxJ5J39xbUGJVN
+         9ZT43gjgjxn3nKFtYeT2FIjdJu3O2ZJ3xaGXtnj/K7rN/tgwg13GpdZXc39JTcgSLRlQ
+         1Buw==
+X-Forwarded-Encrypted: i=1; AFNElJ8WVXqbbTSKMO9777gCy0q/VIBdspPMqDiCOWZW8qGAmuqF6wrT2oePYstIGkqJUSbzcROz3pc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUVCqdIv/BPW4Cq4n9dwHTTE2iC0L2fILyIXdmmL4HRInEfku9
+	Q4uj1xpWpqXma3c3Jrco7XXGDg3OOgq6858UQp/j8RAH0HBZP79E1TXFacbYbcEf21GaTVRH+fL
+	YGJDRgp9dDi3RGZZK1YI8xWC0PiJD69OA/3jHi90A
+X-Gm-Gg: Acq92OGLeUdkNZj0wqJCncIqItsqEoX1CtA3hsS4OGCv/wDyjJQFoiLS+tBq92Pnh8Z
+	yOCDVIljVm8z1Cialk90j2LqUfc27sVX9tXOqA9/IC/K9zjKq53sIJKzVnb0VrewWh1HkUEnM1N
+	fBTE+w9ksTkxWLFJTwCINBSzxYYDhRviTMub69scs+KEVtjEeZRG6EZz2XMw0anwArtMlLI46rP
+	EPZNkO9etw9CeN4xcvTzyK4wsDoUuCGpI1hpSIMzWawqm2QieCXzZON68SQfSJPaM0xtp3d23X/
+	uJ+gzkKgdM3RaAQYYxV4U0e4nbweEAbaUi9QAFvhDXi/CKTzR9RKt5MZdhiPojoq/UioxvtvJNs
+	f6Q7uyNYLQ7YtzSY/DxIxC4CF2vM9ktc2eFQ0YYAI6I2AxIB1OZIk
+X-Received: by 2002:a17:907:2d0b:b0:bec:1632:eceb with SMTP id
+ a640c23a62f3a-bfde4c0137amr235351066b.19.1781313425712; Fri, 12 Jun 2026
+ 18:17:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1781312667.git.daniel@makrotopia.org>
+References: <20260612162517.83394-1-edumazet@google.com>
+In-Reply-To: <20260612162517.83394-1-edumazet@google.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Fri, 12 Jun 2026 18:16:48 -0700
+X-Gm-Features: AVVi8CfhxtMbFbcaEpiZWZ3Asqw4nOx85NBsDw1etOFnaSRZqrdm6oqJ-1oyNj0
+Message-ID: <CAAVpQUAFVqQYo2pETE0qfRP+y-ohUeng9hTBJRKu8eA_pFrV_Q@mail.gmail.com>
+Subject: Re: [PATCH net] tcp: ipv6: clamp default adverting MSS to avoid
+ GSO_BY_FRAGS (0xFFFF)
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+	David Ahern <dsahern@kernel.org>, Neal Cardwell <ncardwell@google.com>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com, syzbot+ebdb22d461c904fc3cb2@syzkaller.appspotmail.com, 
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, Xin Long <lucien.xin@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Allow changing the CPU port affinity of user ports at runtime via the
-IFLA_DSA_CONDUIT netlink attribute. This updates the port matrix to
-forward to the new CPU port instead of the old one.
+On Fri, Jun 12, 2026 at 9:25=E2=80=AFAM Eric Dumazet <edumazet@google.com> =
+wrote:
+>
+> When MTU is large, ip6_default_advmss() can return IPV6_MAXPLEN (65535).
+> This is interpreted by TCP as mss_clamp, allowing the MSS to reach 65535.
+>
+> However, 0xFFFF is also used as a magic value GSO_BY_FRAGS in the kernel.
+> If a TCP packet with gso_size=3D0xFFFF is passed to skb_segment(), it wil=
+l
+> be mistakenly treated as GSO_BY_FRAGS, leading to a NULL pointer
+> dereference because local TCP packets do not use frag_list.
+>
+> Fix this by returning min(IPV6_MAXPLEN, GSO_BY_FRAGS - 1) (65534) from
+> ip6_default_advmss() when MTU is large.
+>
+> Also update the stale comment in ip6_default_advmss() which suggested
+> that IPV6_MAXPLEN is returned to mean "any MSS".
+>
+> Fixes: 3953c46c3ac7 ("sk_buff: allow segmenting based on frag sizes")
+> Reported-by: syzbot+ebdb22d461c904fc3cb2@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/netdev/6a2c3193.8812e0fc.3c3fa4.0001.GAE@=
+google.com/T/#u
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
 
-Limit the operation to MT7531. There, trapped link-local frames follow
-the per-port affinity, as the MT7531_CPU_PMAP destination mask is
-further restricted by the port matrix. A conduit change is hence fully
-honoured by the hardware, for regular traffic as well as for trapped
-frames.
+Interesting !
 
-The MT7530 switch, including the variant embedded in the MT7621 SoC,
-instead traps frames to the single CPU port set in the CPU_PORT field
-of the MFC register, regardless of the affinity of the inbound user
-port. With user ports affine to different CPU ports there is no
-correct value for that field, so per-port CPU affinity cannot be fully
-implemented for trapped frames. Routing a WAN port via the second SoC
-GMAC is conventionally covered by the PHY muxing feature on these
-switches, which bypasses the switch fabric and does not involve a CPU
-port at all.
-
-The switches on the MT7988, EN7581 and AN7583 SoCs only have a
-single CPU port, leaving no other conduit to change to.
-
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
----
-v2: extend commit message
-
- drivers/net/dsa/mt7530.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
-
-diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-index c96420c291d5..2f3e734b9f53 100644
---- a/drivers/net/dsa/mt7530.c
-+++ b/drivers/net/dsa/mt7530.c
-@@ -3206,6 +3206,34 @@ static int mt753x_set_mac_eee(struct dsa_switch *ds, int port,
- 	return 0;
- }
- 
-+static int
-+mt753x_port_change_conduit(struct dsa_switch *ds, int port,
-+			   struct net_device *conduit,
-+			   struct netlink_ext_ack *extack)
-+{
-+	struct dsa_port *new_cpu_dp = conduit->dsa_ptr;
-+	struct dsa_port *dp = dsa_to_port(ds, port);
-+	struct mt7530_priv *priv = ds->priv;
-+
-+	if (priv->id != ID_MT7531)
-+		return -EOPNOTSUPP;
-+
-+	mutex_lock(&priv->reg_mutex);
-+
-+	/* dp->cpu_dp still points to the old CPU port */
-+	priv->ports[port].pm &= ~PCR_MATRIX(BIT(dp->cpu_dp->index));
-+	priv->ports[port].pm |= PCR_MATRIX(BIT(new_cpu_dp->index));
-+	if (priv->ports[port].enable)
-+		regmap_update_bits(priv->regmap, MT7530_PCR_P(port),
-+				   PCR_MATRIX_MASK, priv->ports[port].pm);
-+
-+	mutex_unlock(&priv->reg_mutex);
-+
-+	mt7530_port_fast_age(ds, port);
-+
-+	return 0;
-+}
-+
- static void
- mt753x_conduit_state_change(struct dsa_switch *ds,
- 			    const struct net_device *conduit,
-@@ -3317,6 +3345,7 @@ static const struct dsa_switch_ops mt7530_switch_ops = {
- 	.setup			= mt753x_setup,
- 	.teardown		= mt753x_teardown,
- 	.preferred_default_local_cpu_port = mt753x_preferred_default_local_cpu_port,
-+	.port_change_conduit	= mt753x_port_change_conduit,
- 	.get_strings		= mt7530_get_strings,
- 	.get_ethtool_stats	= mt7530_get_ethtool_stats,
- 	.get_sset_count		= mt7530_get_sset_count,
--- 
-2.54.0
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
