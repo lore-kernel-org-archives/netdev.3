@@ -1,54 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f196.google.com (mail-dy1-f196.google.com [74.125.82.196])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D39219301
-	for <netdev@vger.kernel.org>; Sat, 13 Jun 2026 22:57:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF9A8175A87
+	for <netdev@vger.kernel.org>; Sat, 13 Jun 2026 22:59:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781391441; cv=none; b=D8Mh/x8g/78vNnug2NOThbh6Omkiza6zJJhs1XVIyr3+UmGxuS+IHxj7uN92NM7II8swkjlbzdoU8ClLn2pi9oC0LkuLRjy3/1kSR5ImN0rKJ2Tu5KO6pQkkbejXqZdUvuGU2EAgRKk/QFofFTJQIF79HUzB4SEtubZZCBLpD70=
+	t=1781391550; cv=none; b=U8dlBQsB5C+VmzV2xOorLCTRWYYQKfWzoW41pPUViB86ZjQvrvLRh1c5mJzCGO+SOCVq3pWXpUhzy1EOmFKkxOvD/ymYDoqpA/PS/38/1XbXPm3wyfgwJt0SQBSPoN04ujTrzTYXjd+LeCgmFJbThxQdOm+F2AsGtYOLfJeDplk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781391441; c=relaxed/simple;
-	bh=ZFrvxwQnZ6pSdcHqsFJGQ60DddBRaBnujElRx5LYB4g=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Nbeu2MHPRAXzWWmKxTHu4x6Sp2kpBOxTSpJUNGJCBLCfhYSeDpUM6vW9X1k/xqRenkrBURC8FfdeDQQs+9AVOJN0u9uqm+OLnEflr25kQM28CPgqfijytQPzNDf17PWcWSUJTG3RYAv5+u/8VMQCFUidERze0Md8doBgtCNBPos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=grd/T65A; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781391550; c=relaxed/simple;
+	bh=mTS41X7I7ffG+ZNIGyvPp2wrgUZodJJY5+mtQIGxK1o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AGnT/bUAfTsuhz26WvSOVR5VBKb2Xvbz3e06bk5fHHzU0Yra7RLlWhzhXMn4vlDxz0ZC6ev2uh4bWQV1kFsSD6e6TZj3b3ixUNJbFLSgv9OHp/nJbfGomkKWLHaHPVLtHpZrExdiHwaMbKg8uDQEDtzmBcyEBEgd6x0SA6RBb7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LKy+om/c; arc=none smtp.client-ip=74.125.82.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="grd/T65A"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C5671F000E9;
-	Sat, 13 Jun 2026 22:57:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781391439;
-	bh=k24wh30JTuty/CwE/HxdRXkLcDa5Rfp2ggyOA5fwtKM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=grd/T65A6KZl28AaqchhcyOjS9J4+UOgi9XRqbbjPHSfkF9aKJBpGdJgyVbDu1fXh
-	 4IMM4NlYZs+acgxBt3eFNnJye/BZF+XNDVdGRglKkyx4kdXwe3daZb7XW8RfBEMeMu
-	 5dsHHr4f/BMlytmxli7sVgXUJAjsuG1iYpAYqZwr11vN0zszhcwAfNpQWyEDOHEiKZ
-	 3fsamc1o2Q6xJLy1sQvPDJoEbUdXlMt3o5qKjNRLWXAwde48TxWm29ePMq0f7vgSdh
-	 OB+b2tjVR5a5Dq9hIvTQ1WbhsM4jkp4g2E6vn3qDqXrbXKZLzEoe/M0sdz7Ge4lF10
-	 Xsd7O+Otcoz8g==
-Date: Sat, 13 Jun 2026 15:57:18 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Daniel Borkmann <daniel@iogearbox.net>
-Cc: razor@blackwall.org, bobbyeshleman@meta.com, dw@davidwei.uk,
- netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v2 0/4] Extend netkit io_uring ZC selftests
-Message-ID: <20260613155718.16bf3964@kernel.org>
-In-Reply-To: <20260611082527.741674-1-daniel@iogearbox.net>
-References: <20260611082527.741674-1-daniel@iogearbox.net>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LKy+om/c"
+Received: by mail-dy1-f196.google.com with SMTP id 5a478bee46e88-3042a388168so1745185eec.1
+        for <netdev@vger.kernel.org>; Sat, 13 Jun 2026 15:59:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781391548; x=1781996348; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZFBr+sp7uL5h9HCXS5j7a1sFp3i7DPsb3E18CPW1FYA=;
+        b=LKy+om/caBUpfSxGEHFKa4B8TbEvA4eoe6DwzY45gbQ5gTOdn9A2Z2XZ56ljEo4Hjv
+         z6T4b94t1J0PKX4v0UvfJHEQ6qClTCh1tXqKOI2kgYVeAXr4JX+3wydcAw7bon4IWBu9
+         TYAvK7RG4T5vZ1b+44vk6MticCZrqvg2qqj+Xwoj2B7KcZDp6Y6abbAG1pT1BbseFMwx
+         Ky1ZLCaA/gxX6hDEF/SVFQf/hzSudQw7lFZ0UqQS+obauxD+HcG2ypgEnTxzFf0oE6EF
+         5oVGVDr6e5GnREcDzjpeAgJT6KRgdGvwJpCsKRiRdyNOvDnyuJRKJPW2wteis+8sBOdp
+         2IqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781391548; x=1781996348;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZFBr+sp7uL5h9HCXS5j7a1sFp3i7DPsb3E18CPW1FYA=;
+        b=EcRYwWPGCyAjV+50vyQa4RXN1/uelP83MV7E8YWhnQVATUX19T+z9gK1QS5LN32wgm
+         HK1IwUD2QmqHYDCY1JVrwpLEid0AracvIV+y5nxkzS0zXlbWqKV+LggLhyz0IqQcT6RC
+         hT3+xrQPo4fwHTbIEkTMfNConIbauywkfkPMOvKVcQcXcW/dDsLuOr2bawb96lSGGZNR
+         oTUwwqc6dte4VyyJnaxkybQjJxiNQX/WI98URFFodli8mGH/VkjkZJOsChS1hl1jOkIZ
+         JBny3k7YiK5ndhdFwuMA3ojrmnu3kpzM9/CMFKfK8WkfoujdoEW6HNzYoaa0kBoENq4y
+         pEIA==
+X-Forwarded-Encrypted: i=1; AFNElJ8uujhaFWWNOKx8eLz9ziKRvvsABoKxwAY848xl1g+sa3zWM7OPdHD/uVqWycNjDxiF7f2WDuY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz12HER/Ni+Wtz5GTpBe4+zmpIo4QM9Kr1Y7wzYpBWM6Jzk6P7M
+	h0xwzsjTo7DStqdyM70lt/U+fW2hCJ6GNTCfy1y7R8Jnvbp9manDsfym
+X-Gm-Gg: Acq92OEWc/cFmxt5SKyRl8aE0mruL2gZkD3w/DJqWpxcinHhhzavIo9DmNE3Ovj34wD
+	4Hh0hg43GE/I9obxq7SwrsukyiWZgUvR+ddVTZcI7dowTKDa6QTONT5PTmSsWvq5J+oHc3NIbFN
+	8YS8QtLUgBVZh5OeRCEC/TNZMNBACBBOQn2AFKkZpx5YlsRot+I27x6P/hpAqQx3VrLnGCG4w92
+	T/GW1ydcKbmPSAZuPeEWqNQmLdbkJPv3NsuwyACTDPluV0geDnpc/AbtvMD0eNe5oWh6eUlg7Qa
+	l/J7zbuGSTi0ZZkoAYwBhGiLw88UEI5gW2/lXr19IcKt/hn/rH/HY+5PZVxtojn+c9oBoCptfDB
+	SD9Gttqg4MA0n2Pz7BYgiYz5mTyIboSuDIXvIe5Hn5MxMoeIL7gg4Om7JDlmTTPxPkQihmmrzrm
+	W65STRmqzYiNgBhfvN1f3BcW3fHGN2rEpA962hoThda9FxSPl43fEaflhkUJl3X24qw+X+Pmwa9
+	9KN22zhu1Uvnu1IPWe25tYeMlMVU+JfO0fECKI99Guetp40aLAPYihET6+9HFL2bFYD/h+BcZzR
+	L+5Bkv/piU8flZIuWQ==
+X-Received: by 2002:a05:7300:8ba3:b0:307:3a74:749a with SMTP id 5a478bee46e88-30820cf480cmr4424971eec.16.1781391547690;
+        Sat, 13 Jun 2026 15:59:07 -0700 (PDT)
+Received: from ethan-latitude5420.. (host-127-24.cafrjco.fresno.ca.us.clients.pavlovmedia.net. [68.180.127.24])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3081e5cea89sm9955573eec.8.2026.06.13.15.59.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 13 Jun 2026 15:59:07 -0700 (PDT)
+From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+To: "GitAuthor: Ethan Nelson-Moore" <enelsonmoore@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Cc: Saeed Mahameed <saeedm@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH] net/mlx5: HWS: correct CONFIG_MLX5_HW_STEERING macro name in comment
+Date: Sat, 13 Jun 2026 15:59:00 -0700
+Message-ID: <20260613225904.140791-1-enelsonmoore@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Thu, 11 Jun 2026 10:25:23 +0200 Daniel Borkmann wrote:
-> Small follow-up to the HW net selftests, in particular to add a
-> selftest showing that also large rx_buf_len for io_uring ZC is
-> supported with netkit queue leasing.
+A comment in
+drivers/net/ethernet/mellanox/mlx5/core/steering/hws/fs_hws.h
+incorrectly refers to CONFIG_MLX5_HWS_STEERING instead of
+CONFIG_MLX5_HW_STEERING. Correct it.
 
-needs a rebase vs the PSP series that landed yesterday
+Discovered while searching for CONFIG_* symbols referenced in code but
+not defined in any Kconfig file.
+
+Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+---
+ drivers/net/ethernet/mellanox/mlx5/core/steering/hws/fs_hws.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/fs_hws.h b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/fs_hws.h
+index b92d55b2d147..20cdacd8f12e 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/fs_hws.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/fs_hws.h
+@@ -116,5 +116,5 @@ static inline const struct mlx5_flow_cmds *mlx5_fs_cmd_get_hws_cmds(void)
+ 	return NULL;
+ }
+ 
+-#endif /* CONFIG_MLX5_HWS_STEERING */
++#endif /* CONFIG_MLX5_HW_STEERING */
+ #endif
 -- 
-pw-bot: cr
+2.43.0
+
