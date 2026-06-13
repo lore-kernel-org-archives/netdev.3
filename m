@@ -1,66 +1,65 @@
 Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09CF1C01
-	for <netdev@vger.kernel.org>; Sat, 13 Jun 2026 00:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538031A9FB7
+	for <netdev@vger.kernel.org>; Sat, 13 Jun 2026 00:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781309438; cv=none; b=qCLL4w2lBGdG2gQ9I81oE7xsbkIUftGgqknNsn0RdHRIBh6HgIl9L55B86iV/68g2C1AlT8swRg+foOon6P23UYHsP038dA8Xtzi8tyTnmnCwHSUTCgy91QUye7aBUtXzP3iSO7Br5h+bjc3Q/0Urcf6n5hFn4WkYV5MHFQxWh8=
+	t=1781309893; cv=none; b=rJI62bvIaDnBPhO3TZdOk/mKufbLB8CTT02Da/dC9Vcaa6gZQjyxQIdsMxXUfkQG0LYRPPxzqwfBSaMctIpPXUbQ2PQQIFnPyGzZ+vIzwwpdikqrlfAvRVABuLFSd6dRmDxWAxsVDLtfJ4AxUj2pU8OOquSUzpziNgf5FgQbhKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781309438; c=relaxed/simple;
-	bh=bNMsgYGyF4Tc6YjEZ9ElAv1ahEqg8OKorBlOU3Fmhfs=;
+	s=arc-20240116; t=1781309893; c=relaxed/simple;
+	bh=fO5bIS7T32qmhvQPtoFme1D+CA70Mblzls9B5czEnB4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Nj4su/B4IwNX4RjAfy7GdIOO3sUbDDV++8M6fcQsRf41zDFb9u7eSANvCiqv8sJ9fdv5OGdSlPXOq9BHp37qvpCxruvSSO9JYoJ9TE0sBHlH77pmGfWAeEOF2cXBYpSOulyoCWBmNzq8NOMG0P7OfSZQWgPweh9yGscxdzie1TM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=neJDuHKN; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=BH+Uv7gXrTTLVeS4u8ufNxAYYpLxMPeW2ThS4uFULIP7HFmXaoKoriNuV3So53wcNzIRgpcYYuw+MAxGHcGzDJASmtY5TXYhNZ5OHOpvIFw8aEr3BV8UL/7NeY4A6GslED8ZQbRn6C0sohdK8pHenLAK26CRkvhpahqDDvS053c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HUMA3xMg; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="neJDuHKN"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2bfdd99f6b7so25054545ad.0
-        for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 17:10:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HUMA3xMg"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2c0c32f4b1bso14947015ad.2
+        for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 17:18:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781309436; x=1781914236; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1781309892; x=1781914692; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kyks4UFOUwCvj/2wr5bJ0bF+lU7UlWavCSZG1GuENqE=;
-        b=neJDuHKNODfH4YLs8X5yESc74jXRcypOMa4MlCO0H3J0GADKfHQVrWxGqXrRx+nsKt
-         2mjhbayTupb/EYmvEQzgVD8HzGEnUIfK4w4IlelsqUm5uuagIbpi5R8Cx54MIv1Zjqi+
-         gh1LooHxi+sd7smSQSZbOWA8JzA/auc5k/eTucyFKO2XQv+lOVWOdCjaDe6Aw9Z9tZwr
-         EpElC3P3VWDdzJAeEhFln5+++w/dYNwKFYoQ97Dgxx23elc30PKD8i9+r6w+OHRIPAv6
-         1kLkksUi+LfqYt7mLfVLNF6R/APHhw+rcZAxsGyG2NR77XbzgScbytsXJNVglAah5dqs
-         ADew==
+        bh=9+VMYc+z8VkDSiefkxwsG30lb919a3RxfPEsLaGriGM=;
+        b=HUMA3xMgkumL6cNTwk5zanGzQRdzJRFNCtoKC+Lvi9ASztgpD97SXm3HPlqeDLI/Ro
+         7fhtQWno8kMTG29nHFypfEeCSK2/01CEEV9rqkL8xqmO/vfr2b5v71d3qH2HmRJOzGdR
+         qkumvnvpVZ19aVVMQ1MtMY8gENOKfi20Nxik5QQd3MqzfbCbwbHAT99nx6nQKJgdTcVO
+         B4SZUTBJ/2Y2LaumaMtb1Y7OVn1C0YDr3RMiCCiJ/feOz6rsdZ5vm+myjFIRYQZacNv6
+         ocvtPMR39ewo6IqX4BzyxFGrFXxGU5P0vqGsMF5U0sDBU4VpFckpm825EB+hB8rA2g7g
+         Atbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781309436; x=1781914236;
+        d=1e100.net; s=20251104; t=1781309892; x=1781914692;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kyks4UFOUwCvj/2wr5bJ0bF+lU7UlWavCSZG1GuENqE=;
-        b=RMmhKg3x4k0oyEQ0KzcAhFVBJDusn6LOMs2TBOE6gfNrqwk91c1lDTfh9IUSom7U+t
-         oDmZVFMwbisdsDs5HylW6Ep0qfSqVQso+6C3ky6zJvlf0AHcAiM7C8whyQ6OksLyrUR3
-         gj4j3h5hm3BuCjqOsvwlWcLiYJTyLz294PHeNTjGMR7sYjrNetzC1Ao8JbgS4MTOovnZ
-         pE08f7ZQ6Rmp7gTF6bB6RIhSOSdPocLsc2lr8s0fqVGljZ1kDX0vk/1KWnOQRzfVYdO3
-         fFmI4X6VGdcp9FlX/pT8M/EN3zZmSmcchHQcz0Gx1BWP9VieCpvQEmEwtPk2GKkJTFXN
-         l+OA==
-X-Forwarded-Encrypted: i=1; AFNElJ9Qw9Z6P9+4wi9MiFDjpoYtKRuzB+kpMko6ujdyFsfTrCQ2AL51pvd/oO9opFJ1BL35pcecsj8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxy0igzegeJ4+J1i55xv8v5RV4Du+8bSHZIuigLob6qWocy+6A8
-	O/22PZ0bUrJV+N2b7cKbuQAY7T2YuLSXVj9rWC770LMeeQ2Tqrk+dPoKhhsZeZNifqKJSAfvaAZ
-	6evZpQg==
-X-Received: from plpn16.prod.google.com ([2002:a17:902:9690:b0:2bc:bb0f:91a1])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:4587:b0:2bf:2e93:c624
- with SMTP id d9443c01a7336-2c41284101amr59144935ad.27.1781309435945; Fri, 12
- Jun 2026 17:10:35 -0700 (PDT)
-Date: Sat, 13 Jun 2026 00:09:38 +0000
-In-Reply-To: <20260612130919.299124-2-jiayuan.chen@linux.dev>
+        bh=9+VMYc+z8VkDSiefkxwsG30lb919a3RxfPEsLaGriGM=;
+        b=CUmDF1HTtne3uukcsff1NKriaG5BPii7o5qfQH3Xj+lZ3f5rEqrQtkzWEGT1mvEI3T
+         GpAGw986tkgLVfubq0yqqskGUE3RRW7jCNB+m0qiXW7dyNd2DUSaPSdxyxWj5DNBQL6H
+         y3eVbLbHTZmFPjZVYdNcM4ohxCj4CpFFtuLlToBcAsbBjj9KggPO5Yw4PrdEQ74kimNI
+         HgZa1T0+frECTWTP3dvFXW/38H+lqclceGTXuVdat3n3cM3fsGJFZjkgs3FBhwu0OWVS
+         TpElUWO5AT2f2cqbhngoOYhGfMDokUuveP+PpbEOaMBkrvpNvB/TMb1mu3k2xf5jusvN
+         u8Rg==
+X-Forwarded-Encrypted: i=1; AFNElJ/xEsOl7p/WMXrBL9FgQIo1NcLC0LnTYMLO5FM+ij1nO48y01/4iA5nYhR0GGmKqGOyZgmSEq8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUqt+LPFp6AP+rzYEScCysagTcBPzjzTlnqmPiuR0V/bGRSDK5
+	hrrurUreEunHvW60sjyOm15aK9tv7WolThI33mr5lBKDiiruSCbMtu4uLhRYqTi7a6yiPM/ESnW
+	PEJjnjw==
+X-Received: from plhz24.prod.google.com ([2002:a17:902:d9d8:b0:2be:bf91:ff92])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2351:b0:2c0:c3ac:4af3
+ with SMTP id d9443c01a7336-2c66416ac4amr20227845ad.15.1781309891366; Fri, 12
+ Jun 2026 17:18:11 -0700 (PDT)
+Date: Sat, 13 Jun 2026 00:17:31 +0000
+In-Reply-To: <20260612130919.299124-3-jiayuan.chen@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260612130919.299124-2-jiayuan.chen@linux.dev>
+References: <20260612130919.299124-3-jiayuan.chen@linux.dev>
 X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
-Message-ID: <20260613001033.1323846-1-kuniyu@google.com>
-Subject: Re: [PATCH bpf-next v3 1/7] bpf, sockmap: reject overflowing copy +
- len in bpf_msg_push_data()
+Message-ID: <20260613001809.1329995-1-kuniyu@google.com>
+Subject: Re: [PATCH bpf-next v3 2/7] bpf, sockmap: Fix wrong rsge offset in bpf_msg_push_data()
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: jiayuan.chen@linux.dev
 Cc: andrii@kernel.org, ast@kernel.org, bestswngs@gmail.com, 
@@ -70,77 +69,38 @@ Cc: andrii@kernel.org, ast@kernel.org, bestswngs@gmail.com,
 	ihor.solodrai@linux.dev, jakub@cloudflare.com, john.fastabend@gmail.com, 
 	jolsa@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org, 
 	linux-kselftest@vger.kernel.org, martin.lau@linux.dev, memxor@gmail.com, 
-	mmmxny@gmail.com, netdev@vger.kernel.org, pabeni@redhat.com, 
-	rhkrqnwk98@gmail.com, sdf@fomichev.me, shuah@kernel.org, song@kernel.org, 
-	xmei5@asu.edu, yonghong.song@linux.dev, Kuniyuki Iwashima <kuniyu@google.com>
+	netdev@vger.kernel.org, pabeni@redhat.com, rhkrqnwk98@gmail.com, 
+	sdf@fomichev.me, shuah@kernel.org, song@kernel.org, xmei5@asu.edu, 
+	yonghong.song@linux.dev, Kuniyuki Iwashima <kuniyu@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
 From: Jiayuan Chen <jiayuan.chen@linux.dev>
-Date: Fri, 12 Jun 2026 21:07:45 +0800
+Date: Fri, 12 Jun 2026 21:07:46 +0800
 > From: Weiming Shi <bestswngs@gmail.com>
 > 
-> When the scatterlist ring is full or nearly full, bpf_msg_push_data()
-> enters a copy fallback path and computes copy + len for the page
-> allocation size. Since len comes from BPF with arg3_type = ARG_ANYTHING
-> and both are u32, a crafted len can wrap the sum to a small value,
-> causing an undersized allocation followed by an out-of-bounds memcpy.
+> When bpf_msg_push_data() splits a scatterlist element into head and
+> tail, the tail's page offset is advanced by `start` (absolute message
+> byte offset) instead of `start - offset` (byte position within the
+> element). This makes rsge.offset overshoot by `offset` bytes, pointing
+> to the wrong location within the page or beyond its boundary. Consumers
+> of the corrupted entry either silently read wrong data or trigger an
+> out-of-bounds access.
 > 
->  BUG: unable to handle page fault for address: ffffed104089a402
->  Oops: Oops: 0000 [#1] SMP KASAN NOPTI
+>  BUG: KASAN: slab-use-after-free in bpf_msg_pull_data (net/core/filter.c:2728)
+>  Read of size 32752 at addr ffff8881042f0010 by task poc/130
 >  Call Trace:
 >   __asan_memcpy (mm/kasan/shadow.c:105)
->   bpf_msg_push_data (net/core/filter.c:2852 net/core/filter.c:2788)
->   bpf_prog_9ed8b5711920a7d7+0x2e/0x36
+>   bpf_msg_pull_data (net/core/filter.c:2728)
+>   bpf_prog_run_pin_on_cpu (include/linux/bpf.h:1402)
 >   sk_psock_msg_verdict (net/core/skmsg.c:934)
->   tcp_bpf_sendmsg (net/ipv4/tcp_bpf.c:421 net/ipv4/tcp_bpf.c:584)
->   __sys_sendto (net/socket.c:2206)
->   do_syscall_64 (arch/x86/entry/syscall_64.c:94)
->   entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+>   tcp_bpf_send_verdict (net/ipv4/tcp_bpf.c:421)
+>   sock_sendmsg_nosec (net/socket.c:727)
 > 
-> Add an overflow check before the allocation.
-> 
-> Link: https://lore.kernel.org/all/20260424155913.A19FDC19425@smtp.kernel.org
 > Fixes: 6fff607e2f14 ("bpf: sk_msg program helper bpf_msg_push_data")
-> Tested-by: Xiang Mei <xmei5@asu.edu>
-> Tested-by: Xinyu Ma <mmmxny@gmail.com>
+> Reported-by: Xiang Mei <xmei5@asu.edu>
 > Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 > Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
 > Signed-off-by: Weiming Shi <bestswngs@gmail.com>
 > Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-> ---
-> To sashiko:
-> 
-> Regarding bpf_msg_push_data() reading "copy = msg->sg.data[i].length" with
-> i == msg->sg.end (appending at the very end of a full/near-full ring):
-> 
-> This is pre-existing code, not touched by this series, and reproducing it needs
-> a narrow combination -- a pure append at the end so the loop exits with
-> i == msg->sg.end, a full/near-full ring, plus a prior push/pop history that
-> leaves a stale length in the otherwise-unused end slot. A freshly built ring
-> zeroes that slot, so copy stays 0. We don't consider it practically reproducible.
-> 
-> Even then it's already covered: the overflow check in patch 1 ("copy + len <
-> copy") rejects the dangerous case, and __GFP_ZERO in patch 3 prevents any data
-> exposure. Not worth fixing here.
-> ---
->  net/core/filter.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/net/core/filter.c b/net/core/filter.c
-> index 9590877b0714f..3c8f1cedb217f 100644
-> --- a/net/core/filter.c
-> +++ b/net/core/filter.c
-> @@ -2829,6 +2829,9 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
->  	if (!space || (space == 1 && start != offset))
->  		copy = msg->sg.data[i].length;
->  
-> +	if (unlikely(copy + len < copy))
-> +		return -EINVAL;
-
-Who wants to push E2BIG "metadata or option" ? :(
-https://docs.ebpf.io/linux/helper-function/bpf_msg_push_data/
-
-I feel this is the same class of "bug" we discussed recently,
-but given the change is just small validation,
 
 Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
