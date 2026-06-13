@@ -1,62 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F4D2EA73D;
-	Sat, 13 Jun 2026 16:23:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C92032652AF
+	for <netdev@vger.kernel.org>; Sat, 13 Jun 2026 16:25:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781367808; cv=none; b=Ho0z3neQx+tdRE+eU9xcD1hNzVg61+2SfgAfHlg3OOdelUX9ItpkTSUaV4WtXUCgyjBHF1pm1jLflabvn028GKkZ0lIoykyDIju2Bxl1by5d8HGmUSjXRO1JyXEZgS2zRqSZTPobzSlCOT2o0vmeP8RUTJRCzdzTBC0N1Pk4/MU=
+	t=1781367919; cv=none; b=bsenas+AliW5SNMU1qRholgbY4cOFD19OO8QcCk/Y1BbC69ohz78GHGLQMwYrYw6vuCmDyjgdQvqhqnkoNCA+YMTFf85RxnQJvlVs851TRAVPVsYeFErtPp1MzYftIyzhr913JetxgBCNMSwkIN2wNaU9P7zIkjWpzZa0IAYJkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781367808; c=relaxed/simple;
-	bh=ByqZdMR/5WyvyL12Y4HS3kvzcraQ4HFRtEgf2pzJt1w=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ASOtUC/YFseJQZfeVJWGpP0eGpMyCw1iPqYk81Uew4dAzb1IYaNpfyWFSdiHsr62JWQerT2iAkR4shV2Jn8EBGTqML9jP8AX8JwSnWgqIcyXvGeqR0y4flf74IEnLZXnURpfvFMNCGC7+R8PkaUBT2IcW4o8eXYO2vrdyPSRkQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dnxKrZ1P; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781367919; c=relaxed/simple;
+	bh=Eal2czQ95OzT7W6wIkz0a5NNDrThTK5VqMCa1pr5ZC4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=cBSN6KlFz4zy/+ParTogTVRsKu3YdIlEvLkn/9AbFOAIakoCwAeulZMRCR0Npd0zUylzzoHCY7k4n8/mK3HL91SW55tPMWdAhc9qgYVrs7mT3NCHfIOtdwua73vSt90rPPgo+/MMzeLT+e8R/kiNDRm9o4yRfojW/q8to+ggXVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=v65xRIoT; arc=none smtp.client-ip=91.218.175.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dnxKrZ1P"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7A4E1F000E9;
-	Sat, 13 Jun 2026 16:23:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781367807;
-	bh=8L2EOix+XLbzjEmmLbO6ehfNIZrFhGz9IlY3mcLL6LA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=dnxKrZ1P5q5UZ6zt5Nvs/4TCGcP8yHWWFLK/j/5h7545D9gB6mtxCw5co8LC0ga7+
-	 +/KFloOiAtSbeH7ymKQ6dsRxn18rZeu36LZ0/jUU5YzX7y7zqV68sXpuSg7KpQGZbD
-	 04+9hxv1TuQ9Y6Y5czK1MyF2TjS2lhT0MhBW8sVuabNTJKgaciUIFgCXxELnFrF1yT
-	 6y7z6BUKPVTu4q90wSAr0d++vp2x9gBpRiaIX9/Kk9lQXYaLsj5K83b1fyjDOicF+G
-	 tq1LnJgSa7QpMKTKh5Rti4y0mikJ/aAj3ySHNCOq01Utvzx75zxV1O1NHwF0hDBhJe
-	 +0yoqD3hmPN5g==
-Date: Sat, 13 Jun 2026 09:23:21 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Laika Price <laikabcprice@gmail.com>
-Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net v2 0/2] ip_tunnel: fix PMTU ICMP reply routing
-Message-ID: <20260613092321.402921e7@kernel.org>
-In-Reply-To: <CAL=tPgjhj0+8voK40ZPdsKyQ0Pn4vwnSg-JVqRK3qRSXLLB4Kw@mail.gmail.com>
-References: <20260613-master-v2-0-061b70fd45dd@gmail.com>
-	<CAL=tPgjhj0+8voK40ZPdsKyQ0Pn4vwnSg-JVqRK3qRSXLLB4Kw@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="v65xRIoT"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781367914;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=B8tNNOKX9vfVW0agW6GrP6/656hRhnEOUOOBtzzI4Vk=;
+	b=v65xRIoTDffq84H+qFuzsYjKkb5yJ2o2dSOm5M9Nzop343f3yvyHeL7X1rUSy4i841CgNa
+	fqodtywTbu4Ibxv6bXrsWrdA5X1sSWodtrMrf2DUdzd/ptqSPkYDUN1vYfI2GsVReOfjYz
+	HYTk9I/BG3rXCqchxpqB4g30VFM3kII=
+From: Leon Hwang <leon.hwang@linux.dev>
+To: bpf@vger.kernel.org
+Cc: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Leon Hwang <leon.hwang@linux.dev>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	kernel-patches-bot@fb.com,
+	Feng Zhou <zhoufeng.zf@bytedance.com>
+Subject: [PATCH bpf-next v4 1/2] bpf: Fix bpf_get/setsockopt to tos for ipv4-mapped ipv6 socket
+Date: Sun, 14 Jun 2026 00:24:42 +0800
+Message-ID: <20260613162443.60515-2-leon.hwang@linux.dev>
+In-Reply-To: <20260613162443.60515-1-leon.hwang@linux.dev>
+References: <20260613162443.60515-1-leon.hwang@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Sat, 13 Jun 2026 16:38:27 +0100 Laika Price wrote:
-> Disregard v2 of this series.
-> 
-> Apologies, I'm new to kernel development as did not realise that I should
-> squash commits that would cause the kernel to not build / fail tests. I am
-> sending in a v3 with these squashed.
-> 
-> Sorry for the noise.
+When TCP over IPv4 via INET6 API, bpf_get/setsockopt with ipv4 will
+fail, because sk->sk_family is AF_INET6. With ipv6 will success, not
+take effect, because inet_csk(sk)->icsk_af_ops is ipv6_mapped and
+use ip_queue_xmit, inet_sk(sk)->tos.
 
-I'm not sure what build failure you're talking about.
-Please observe the 24h cooldown between submitting new versions 
-of a patch.
+To relax this restriction, allow getting/setting tos for those possible
+ipv4-mapped ipv6 sockets.
+
+Fixes: ee7f1e1302f5 ("bpf: Change bpf_setsockopt(SOL_IP) to reuse do_ip_setsockopt()")
+Signed-off-by: Feng Zhou <zhoufeng.zf@bytedance.com>
+Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
+---
+ net/core/filter.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 9590877b0714..57b00c6cc8cc 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -5544,11 +5544,24 @@ static int sol_tcp_sockopt(struct sock *sk, int optname,
+ 				 KERNEL_SOCKPTR(optval), *optlen);
+ }
+ 
++static bool sk_allows_sol_ip_sockopt(struct sock *sk)
++{
++	switch (sk->sk_family) {
++	case AF_INET:
++		return true;
++	case AF_INET6:
++		/* Allow getting/setting sockopt for possible ipv4-mapped ipv6 socket. */
++		return sk->sk_type != SOCK_RAW && !ipv6_only_sock(sk);
++	default:
++		return false;
++	}
++}
++
+ static int sol_ip_sockopt(struct sock *sk, int optname,
+ 			  char *optval, int *optlen,
+ 			  bool getopt)
+ {
+-	if (sk->sk_family != AF_INET)
++	if (!sk_allows_sol_ip_sockopt(sk))
+ 		return -EINVAL;
+ 
+ 	switch (optname) {
+-- 
+2.54.0
+
