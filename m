@@ -1,86 +1,169 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 439493537FB;
-	Sat, 13 Jun 2026 07:20:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C687B84039
+	for <netdev@vger.kernel.org>; Sat, 13 Jun 2026 07:24:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781335223; cv=none; b=tllJIR26N2L5baLhpjLF3WW5o8zO+LuO/fyDJ3vUkY3P9saN0LHFX3SIx336yHa6nZuJoiho39YfOZwnMTr1reh7oOKPUJ/POBm9x8bx7uOEUP/DB1c6bmIujd87otB1IXGVF24/EAdakjZzjyhwgz8uBLFMrNL1+TcQG3fGH9E=
+	t=1781335492; cv=none; b=Dxxx4XDoTbJBxuX39isQ/pHkl7/dBZNy10kBGPM34rpgkpFXTEggjn7MBvpk9+xhTiYQo4aJcKcUA1eEePHZxo6yvrgKcxx11fz+hjh91AxioLyYw0Q1LvfHrJdS/SDO7RmHOan+/re+MEkcvVL1GqJxDLMQ4aOv8C6frhqiDfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781335223; c=relaxed/simple;
-	bh=000EMMK7WLb3OkYXRa/zDtdHVW8z+EQTEhVnpyjicq4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=akXk6XP4R/lCsOXNxqSaO1gFD7iNmt+LM5n453HVVM+VcqM1Rv7mPK5V9CTPvr8H2qM256LHntfpKUJlNiTMe+bmCQWC0IBz7P+4sWaX19NvRGXpFSsxqXeKFLxKlnREIiwmLEHEy86uvoncdaY53oGzCG1CXM1PkWDKV6JXf+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FLpxwiUK; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781335492; c=relaxed/simple;
+	bh=QWp2dUhBuaMQ3R+EWT4864ChcX9S8coMOypBNk9GlkI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WkrIDOcAI8MrjLCx2Y4Fjyl13P+OsfK9wB0WncLOZ129NgLq3gYgGRoW/20BRtbDb3MhaYaNab1EsktgKtRGd57+vKVMStzmhMRXB3kmTiMyH9zN9ANfVGsQLeJfHWm4GlrbSvPDUwoXAoiIPgzamGsm6J/fU+6CImAFqFdAulQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CJYje5qq; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=cFw3Cafn; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FLpxwiUK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC4D41F000E9;
-	Sat, 13 Jun 2026 07:20:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781335222;
-	bh=mLUE4ceu8NuY6XaMIMUV6+2WUrhjPHcDpzVZyXgXFV8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=FLpxwiUKk/oYLyU3rqIc1Llmd5Yhu+Jz36wOA1E7he8vtkbdm+KjUynPQ4d4ByXAx
-	 kEArUQK5H2wGUalhz638zcpGuLCwcYkf11XHxooa+AK0LT0xad3u7u8b67UkX7lVO+
-	 jaI5kmgIqjXBshv0+LIb2G5ywupXEsrYMftMAU90ZcQ07GyJzWTfe33A0intcorq/t
-	 P600GQZobNSwGsj5Tcex/MFcBYmNWsUEUz/wIj37kIgsaLB1rmcF6GVEAQu1mmpZEL
-	 B9ztjTnn40pvnokW8kBViRtagsnysoZSaT7JxRRJ2O8CIcHQUC2ywrGdO75NIF9wsl
-	 Cqaff6j80cewQ==
-Date: Sat, 13 Jun 2026 08:20:16 +0100
-From: Simon Horman <horms@kernel.org>
-To: Runyu Xiao <runyu.xiao@seu.edu.cn>
-Cc: netdev@vger.kernel.org, sgoutham@marvell.com, gakula@marvell.com,
-	sbhatta@marvell.com, hkelam@marvell.com, bbhushan2@marvell.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, amakarov@marvell.com,
-	tduszynski@marvell.com, linux-kernel@vger.kernel.org,
-	jianhao.xu@seu.edu.cn
-Subject: Re: [PATCH net 0/2] octeontx2: quiesce stale mailbox IRQ state
- before request_irq()
-Message-ID: <20260613072016.GA712698@horms.kernel.org>
-References: <20260611160014.3202224-1-runyu.xiao@seu.edu.cn>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CJYje5qq";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="cFw3Cafn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781335489;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8bYQFKiJorSd2L8GlFyWe7Glm246Aic2GK4MBG3QZzg=;
+	b=CJYje5qqB7xy9QzR3QAIcbTSCGEaw0aHxWhUvuPskrBFoX4MmLza9G6GKCG90E6/cPS42a
+	vGPy8lsYaWb2vBazbncioBUeS4NR/r7d/CECaghMWlwjNqQRGAY7d3XVd4CiL96Jm6JHc8
+	yYewOxGwDmSKkkqRoEfUsXv2KH0UKZw=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-688-AWt2JWroOMOxwGj4tf1QAA-1; Sat, 13 Jun 2026 03:24:48 -0400
+X-MC-Unique: AWt2JWroOMOxwGj4tf1QAA-1
+X-Mimecast-MFC-AGG-ID: AWt2JWroOMOxwGj4tf1QAA_1781335488
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-8ccf9080db4so24564556d6.2
+        for <netdev@vger.kernel.org>; Sat, 13 Jun 2026 00:24:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1781335488; x=1781940288; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8bYQFKiJorSd2L8GlFyWe7Glm246Aic2GK4MBG3QZzg=;
+        b=cFw3CafnG6dsxBkUNGgVb/PHhIyITHyADeu+v/P2A9lkLBKko3VTePIPUGFckGjsmF
+         GcSQ023xA8V9Tw2acwNDarb+rKoRGrOFKMX31i2mCOq/ZuPZUhIJZILv2zuQKOKgviex
+         UBqYmHXUCVL5fz2rGX2dfxf8xmguMzSHJFbnfsDkF6qb7Lp1hGAqpVrnb8fhfKYGeZMn
+         kceZVBNMD+MuPZA/dR4Pe9KUR+Mc+URaem8UsZwkXGTFNMbtlxNktSTSkevyc4H6A+2m
+         ykJ0A2GiYuesaAqCoJG6Vm5RHzUJCYm5/sDxc+LGiK+3KfEJ7gWWAD7grPQT+9GLcgpr
+         Qt7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781335488; x=1781940288;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8bYQFKiJorSd2L8GlFyWe7Glm246Aic2GK4MBG3QZzg=;
+        b=TpYWGgvP/XCMIF5VsHY4+hkZhrwvBUqAa4fcQPiFt6UX7MZ08XJio6hQfOxp6+LJ5q
+         9FaQaSPf2k1BgP+KvTDu9LM+6zegZUBuCELW1PxKZoxOMM+83qSqJGKVGKcoLq8aLYud
+         dcafkJCVSBRraHtx/n8LYwKZiPvYGSAI73NxT7bVbsyvA9EKttD2dCRwSlww6HNtjCoC
+         VbGuyVFl0kvrqF1DtIiGW0H9nh+ZQ/zLmOtdjCcDuWl4k0VkeOznF7H7xofcwMosnpHt
+         brlPOnvcMSGZo9aRFrKktQjjvwclHCvIHpgqIjjGNmK4MLo/9iCqgghxqyI8MGH6YuvI
+         O2KQ==
+X-Gm-Message-State: AOJu0YyExhRAmYcT2G+z+3EwXoLiRWzu6owFYyFRYp9Mdqzn/pUltbaX
+	il4bgmb4nVf0H/0R4+ILC+q8/dWdtX7x3jD9Tgxy/mtFbmQ/ccMScaiHN2TZQ/Mo2KDfCVvKOPJ
+	o5nLZIFoYLitjPfw0ZnsTHVOZ8cZPMhigZJxL64/v+/epCFLBchNN+VpWbg==
+X-Gm-Gg: Acq92OF4hgaJVFMQIyJeq/9zl3k6LikPTBMNq4DfW+rBGnFiYGjOZSK73cBtuiB26pn
+	sOc/Mo2nsrMuv2D78xAP/6YZJp99c+kE8fb/GzH8ibiLM2q9vNcLVejNSBgsfTfMf74LOxMeDTq
+	yCKWUnwvV2OyXEmw/0UCBO1ROxs2+qw/kASy2VSQMaI+bG4Dk6fvh77TzlGhLbF6meGFYhU6awn
+	IK68r1q7nWDBcIneqd6d6Ype7pGLYJpEMxQL4qrOPKCF643710+kUSnSfYBj9dO4HBgYz3IAxC9
+	75Yep14pQcjWYEeDQEHl/pePMW4VwIU9BF24MurJb8+WvceCzLjKH5c65fflY7w6O526YHfXJ7O
+	nxRnLk35kg+7pvaLvusjBiMVKle+8xzEYzfxRwaAnw9I5HGXjATHkj7E=
+X-Received: by 2002:a05:6214:2a87:b0:8ca:165c:1a3c with SMTP id 6a1803df08f44-8d32c4ec56fmr96850686d6.10.1781335487777;
+        Sat, 13 Jun 2026 00:24:47 -0700 (PDT)
+X-Received: by 2002:a05:6214:2a87:b0:8ca:165c:1a3c with SMTP id 6a1803df08f44-8d32c4ec56fmr96850496d6.10.1781335487287;
+        Sat, 13 Jun 2026 00:24:47 -0700 (PDT)
+Received: from [192.168.88.32] ([150.228.25.72])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8d304577d69sm44134626d6.29.2026.06.13.00.24.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 13 Jun 2026 00:24:46 -0700 (PDT)
+Message-ID: <232383a4-d035-4a36-8edd-f78206ae191b@redhat.com>
+Date: Sat, 13 Jun 2026 09:24:44 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260611160014.3202224-1-runyu.xiao@seu.edu.cn>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3 2/2] net: lan743x: add support for RMII
+ interface
+To: Simon Horman <horms@kernel.org>, thangaraj.s@microchip.com
+Cc: netdev@vger.kernel.org, bryan.whitehead@microchip.com,
+ UNGLinuxDriver@microchip.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, linux-kernel@vger.kernel.org
+References: <20260608100435.11214-3-thangaraj.s@microchip.com>
+ <20260610162603.470355-2-horms@kernel.org>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20260610162603.470355-2-horms@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jun 12, 2026 at 12:00:12AM +0800, Runyu Xiao wrote:
-> Both OTX2 mailbox registration paths currently install their IRQ
-> handlers before clearing stale local mailbox interrupt state, even
-> though the code comments already say that the clear is needed first to
-> avoid spurious interrupts.
+On 6/10/26 6:26 PM, Simon Horman wrote:
+> From: 'Simon Horman' <horms@kernel.org>
 > 
-> This issue was found by our static analysis tool and manually audited on
-> Linux v6.18.21. Directed QEMU no-device validation further showed that
-> the real PF and VF mailbox handlers are already reachable in that
-> pre-clear window and can touch the same mailbox and workqueue carrier
-> before local quiesce has completed.
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> Full review at: https://sashiko.dev
+> ---
+> net: lan743x: add support for RMII interface
 > 
-> This series keeps the change minimal:
+> This commit adds RMII interface support to the lan743x driver, wiring
+> up phy_interface selection, phylink supported_interfaces and MAC
+> capabilities, and enabling the RMII front-end via a new RMII_CTL
+> register write in lan743x_hardware_init().
 > 
-> - clear stale mailbox interrupt state before request_irq()
-> - keep interrupt enabling after the handler is installed
+>> diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
+>> index 0798f3f1f435..ad3f833c8d86 100644
+>> --- a/drivers/net/ethernet/microchip/lan743x_main.c
+>> +++ b/drivers/net/ethernet/microchip/lan743x_main.c
 > 
-> That closes the early-IRQ window without introducing a new
-> enable-before-handler window.
+> [ ... ]
 > 
-> Patch 1 fixes the PF mailbox registration path.
-> Patch 2 fixes the VF mailbox registration path.
+>> @@ -3562,6 +3574,11 @@ static int lan743x_hardware_init(struct lan743x_adapter *adapter,
+>>  			sgmii_ctl |= SGMII_CTL_SGMII_POWER_DN_;
+>>  		}
+>>  		lan743x_csr_write(adapter, SGMII_CTL, sgmii_ctl);
+>> +		if (adapter->is_rmii_en) {
+>> +			rmii_ctl = lan743x_csr_read(adapter, RMII_CTL);
+>> +			rmii_ctl |= RMII_CTL_RMII_ENABLE_;
+>> +			lan743x_csr_write(adapter, RMII_CTL, rmii_ctl);
+>> +		}
 > 
-> Build-tested by compiling otx2_pf.o and otx2_vf.o.
+> [Medium]
+> Should the RMII_CTL programming mirror the symmetric pattern used for
+> SGMII_CTL just above it?
 > 
-> No OTX2 hardware was available for end-to-end runtime testing.
+> The SGMII block sets or clears the enable/power-down bits in both
+> directions:
 > 
-> Runyu Xiao (2):
->   octeontx2-pf: clear stale mailbox IRQ state before request_irq()
->   octeontx2-vf: clear stale mailbox IRQ state before request_irq()
+> 	sgmii_ctl = lan743x_csr_read(adapter, SGMII_CTL);
+> 	if (adapter->is_sgmii_en) {
+> 		sgmii_ctl |= SGMII_CTL_SGMII_ENABLE_;
+> 		sgmii_ctl &= ~SGMII_CTL_SGMII_POWER_DN_;
+> 	} else {
+> 		sgmii_ctl &= ~SGMII_CTL_SGMII_ENABLE_;
+> 		sgmii_ctl |= SGMII_CTL_SGMII_POWER_DN_;
+> 	}
+> 	lan743x_csr_write(adapter, SGMII_CTL, sgmii_ctl);
+> 
+> The new RMII block only sets RMII_CTL_RMII_ENABLE_ when is_rmii_en is
+> true and never clears it on the other paths.
+> 
+> If RMII_CTL_RMII_ENABLE_ is left set by a previous agent (for example,
+> a prior driver instance with a different strap, board firmware, or
+> state preserved across a warm reset where the driver itself sets
+> HW_CFG_RST_PROTECT_ during PM suspend, and pci11x1x_strap_get_status()
+> already accounts for cfg_load/HW_CFG_RST_PROTECT_), can the RMII
+> front-end remain enabled while the driver is configured for RGMII or
+> SGMII?
+> 
+> Would adding an explicit clear in the !is_rmii_en path, mirroring the
+> SGMII handling, give the register a known state on every probe?
 
-For the series:
+I think this one is worth addressing, as it's reported by both sashikos
+and could break functionality in hard-to-debug scenarios.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+/P
 
