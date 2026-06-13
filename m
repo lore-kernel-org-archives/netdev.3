@@ -1,77 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 366AD261B9C
-	for <netdev@vger.kernel.org>; Sat, 13 Jun 2026 01:00:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB91E14B977;
+	Sat, 13 Jun 2026 01:00:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781312419; cv=none; b=glv+mB5rGz2NuSJCm0BXMPPkaMKxeD1RjTYx8vMC1YLZGHHeZ/7s//l1NGykieaNrDLL8nkk3J0WCa39aRbK9CezjnbdHCjq9qAY9NoJNVJWhQ8HriLpeQOqaaYk64rq0/hcQkruZIa7Ed6R54BdXd4jzhJnp+dmgOuDDcL16ZU=
+	t=1781312429; cv=none; b=ANn7oa2MnbpF8OOC4zJbFsEPpnG5hiwgTmRkR2KEXN0NnLEzZG75uVwwi708P5uEMybbm6EWGcpgUJQg+Nvad6kLWLYqu0dSucn3TtIdTO2RooP5MZCgLagqSShiiTylJbbrEAlXM4XKIzyK4fgmyzr9odi8vn8up1oM6JmEoSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781312419; c=relaxed/simple;
-	bh=PWFkGI7L/8YFu9O4HYe+/oj4NlM1gDhja+ZAlGMz+jc=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=gASn7Z9xxPBfkGgt0OUFkC/UaCSePBrTQGyzCODZHrLv6ntWYVZaY1awBTpcagjZZz4iCB7rZd3P74FZdo5YB2JLh7uPizOqoHQlQHTEb1WzPJUFIRhbMMEAjMUI/lHX3D/ModP3LLNCcxgiSy4KcZBOehEfsyDIl4ReJ7ES34g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DX5UeNZJ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781312429; c=relaxed/simple;
+	bh=xqvLGOrD9aa91Zl769RqlD9sMMWqwEf0J95RruWMGUw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=EwR08kD0nQjhOWW3XlI8eH8l773O3cPdF7jWXgZHZHCa5jlT3e4W0FTD8rmw2+2ePQLeONQG4N5S83/ZNQuX87poZnmJOZqaLX5zqx67cJEMSQcHh7HacyE2oZH6/pRepy0m6+12tV5LLddBov9gzeATt4i7pieY3f5KLzROVhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pEhmQbvP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DX5UeNZJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF33A1F00A3A;
-	Sat, 13 Jun 2026 01:00:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781312417;
-	bh=Zp5+HYnmzAY3tecF9x+rV8jHXOZQyFIfnYkXXcKefps=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=DX5UeNZJgYaBt57lyZUy1EK3OUJwCEawJTO3ggGaq3rk+K2hoOsi5sRQUsPLzVBr9
-	 EJDqDzL5fnyDDOyPkhJmAAs8rgcwOqcAoGfOoBlO+9zk/fvCFq5k/szeC0oe9AbK+w
-	 +xayE6sFwjb+o6qwJyTbQrbmxJUw7I96fdTQyEtylmDdvWoj35UZqtzvnq262yhcXK
-	 IhWmW/hooFM/lyMhJbayXl41/eEoNKkWFx4J/w8hpZRvSG3c5FHkGBRg85OqFhuqvq
-	 k+r8vc5k267G5kamB78S7XfCCQcJrp1JR5yFE7+osDElWFCQdtHYPsWSso1ZKaJ6/4
-	 HBYjMPiofrCxA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 939AB39E9607;
-	Sat, 13 Jun 2026 01:00:15 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pEhmQbvP"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 49368C2BCC7;
+	Sat, 13 Jun 2026 01:00:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1781312429;
+	bh=xqvLGOrD9aa91Zl769RqlD9sMMWqwEf0J95RruWMGUw=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=pEhmQbvPyM8Hs77KWQwrAZWlcn3Q/RsboB4o/jROnYTPQgamJFF51Xb2rKTPTrgti
+	 fnl0yNGW/z83aUPF5o8L7SefhN3E3wh2ang4rkPox3ZVsaqRBXxo1IqCaAOKtGtoPU
+	 khB9ajuT9N5FbO+UpHKYVjWfrI97fHeRdLKgNyV5KNEr+Pk/ZgCpysSTcWvwbuPdFb
+	 /HL79qre6slhstg3UohA3d09gU171zn0zUxGmbeIE4HKkCB0n7yReGBEyetKkJrxaj
+	 +nxruJuzyZI7++9lEcXcd0ahH9lvbqW5AEdEDgzVry0X+7/jD5gDnIQPsyUnsHjs64
+	 71OeIbZYCoIOQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3E005CD98CF;
+	Sat, 13 Jun 2026 01:00:29 +0000 (UTC)
+From: Laika Price via B4 Relay <devnull+laikabcprice.gmail.com@kernel.org>
+Date: Sat, 13 Jun 2026 02:00:25 +0100
+Subject: [PATCH net] ip_tunnel: drop stale dst from generated PMTU ICMP
+ replies
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: ethernet: mtk_wed: fix loading WO firmware for
- MT7986
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178131241413.1315131.4770836958517180576.git-patchwork-notify@kernel.org>
-Date: Sat, 13 Jun 2026 01:00:14 +0000
-References: <20260611150051.586-1-hujy652@gmail.com>
-In-Reply-To: <20260611150051.586-1-hujy652@gmail.com>
-To: Zhi-Jun You <hujy652@gmail.com>
-Cc: lorenzo@kernel.org, nbd@nbd.name, netdev@vger.kernel.org,
- linux-mediatek@lists.infradead.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260613-master-v1-1-df796e8e2d74@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMSwqAMAxF0a1IxhbaCoG6FXFQa9QIfmhUBHHvV
+ h0euO9dIBSZBMrsgkgHCy9zgskzCIOfe1LcJoPVFjWaQk1eNorKW+cMYuM0OkjxGqnj8zuq6t+
+ yNyOF7V3DfT9ck/v8agAAAA==
+X-Change-ID: 20260613-master-a299166b9069
+To: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Laika Price <laikabcprice@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781312428; l=1673;
+ i=laikabcprice@gmail.com; s=20260613; h=from:subject:message-id;
+ bh=4DMd2b5yZeVwzvEhHqEHfg7CMqL/k52EB0m/TG6YOcw=;
+ b=7amHt50uZ9UfatSs/+QnfsSKjejy7opjoU4KHdTOWwB+mXs1hRLzpmfmh5Q2+zIIoYNh6hLTo
+ ejmz52W9TGyDwAdSZL0H09znmI/GeGLqCZfB8Zwhm9AoOKe/48S9uQH
+X-Developer-Key: i=laikabcprice@gmail.com; a=ed25519;
+ pk=mFSMw2odvyxt1H4QHAdwZVuwHduNzUMDKbWFOcwhDCg=
+X-Endpoint-Received: by B4 Relay for laikabcprice@gmail.com/20260613 with
+ auth_id=819
+X-Original-From: Laika Price <laikabcprice@gmail.com>
+Reply-To: laikabcprice@gmail.com
 
-Hello:
+From: Laika Price <laikabcprice@gmail.com>
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+iptunnel_pmtud_build_icmp(...) and iptunnel_pmtud_build_icmpv6(...) take
+in an sk_buff, modify it to create a PMTU ICMP error reply, and return it.
+As part of these modifications, the source/destination ethernet and IP
+addresses are swapped around which makes the sk_buff's current dst invalid.
 
-On Thu, 11 Jun 2026 23:00:51 +0800 you wrote:
-> MT7986 requires a different mask for second WO firmware.
-> Without this, WO would timeout after loading FW.
-> 
-> The correct mask was removed when adding WED for MT7988.
-> Add it back and add a WED version check to fix it.
-> 
-> This can be reproduced with a MT7986 + MT7916 board.
-> 
-> [...]
+If the stale dst is left, the packet can skip input routing and be
+forwarded using the original output device. This was observed when sending
+packets to a VXLAN over a WireGuard tunnel - the ICMP reply was generated
+but it was sent over the VXLAN instead of to the WireGuard tunnel.
 
-Here is the summary with links:
-  - net: ethernet: mtk_wed: fix loading WO firmware for MT7986
-    https://git.kernel.org/netdev/net/c/9192a18f6de2
+Drop the stale dst after building the PMTU reply so that the packet is
+routed using its new headers when it is reinjected.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Signed-off-by: Laika Price <laikabcprice@gmail.com>
+---
+ net/ipv4/ip_tunnel_core.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/net/ipv4/ip_tunnel_core.c b/net/ipv4/ip_tunnel_core.c
+index d3c677e9b..949150e43 100644
+--- a/net/ipv4/ip_tunnel_core.c
++++ b/net/ipv4/ip_tunnel_core.c
+@@ -267,6 +267,7 @@ static int iptunnel_pmtud_build_icmp(struct sk_buff *skb, int mtu)
+ 
+ 	eth_header(skb, skb->dev, ntohs(eh.h_proto), eh.h_source, eh.h_dest, 0);
+ 	skb_reset_mac_header(skb);
++	skb_dst_drop(skb);
+ 
+ 	return skb->len;
+ }
+@@ -370,6 +371,7 @@ static int iptunnel_pmtud_build_icmpv6(struct sk_buff *skb, int mtu)
+ 
+ 	eth_header(skb, skb->dev, ntohs(eh.h_proto), eh.h_source, eh.h_dest, 0);
+ 	skb_reset_mac_header(skb);
++	skb_dst_drop(skb);
+ 
+ 	return skb->len;
+ }
+
+---
+base-commit: 2a2974b5145cdf2f4db134be1a2157e9ca4a1cf0
+change-id: 20260613-master-a299166b9069
+
+Best regards,
+--  
+Laika Price <laikabcprice@gmail.com>
 
 
