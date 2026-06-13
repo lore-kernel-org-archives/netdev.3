@@ -1,47 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B5A2C3768;
-	Sat, 13 Jun 2026 17:25:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E77321EEE6;
+	Sat, 13 Jun 2026 17:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781371556; cv=none; b=Xw304U/AEv/OKSLOUUkl2zABlZqnwMvm7/slUKXw71AMbhp0ORk6nAAD/7QEoa7+I4Xrrenm12OetfzYZqiEjFlOPt2ayiBLl5GoFDzz8LUl3dxlMKBHP0h/LLwhkjBmOTvauZYCM1k6dv9d7bBobBV+SwW5lsiEr65df85jS9k=
+	t=1781372235; cv=none; b=P4xDP/a0wlDmuzOnWl8iP/VeuWUvtBhUTK5uxfz1GNdM1G+246URXtNlfkmI0VHWZwLvp7caotlDzVToNj8FQ1AQ6BHg2epiF9rgof5nsE2Q++vNO1nVIZMgvlRSK5yilvyQYpNqB0G566C23T6ZNZhZlLCKF2jp3hMXbQZGpvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781371556; c=relaxed/simple;
-	bh=XQt8n1j62y4Z33sOEEHpLj2LyMhlFYqQz2yKhwdHTxE=;
+	s=arc-20240116; t=1781372235; c=relaxed/simple;
+	bh=4FYhViFgpnWRJ3vbbVswfyM+VVJPJoayuFpiGNMXd0U=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bm6zL4gpbi7yAescsh+na0OhTwSLi2J+tCQG5a9NBVUjnbr0zR/PNhgI0A9OFH4dXHJDIipV6w5mAwga/AMaqYVygf9vA964s284eWXPhtYUFllVqLZK13bvTgMq4MOhLmOJRu67d3Buci/k7WGZRSheu+qrf3gumAQDsbJVv9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M+lmQSVS; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=r9FzSHwMli5hMWSYbae+iUZbSDzpgD6r9Stzn1atJ+YkXv19Y+5YXu78Q0wVrerRIC7yHBgj0f2oJg9pI8SuQKTbQYLYnxlx3dMpvcjiAArR7NI8OYAbTHVSSP0O9FVs2LIP8WTCORWdJF9qbynV9eNRnEvdSsKMoh/2e2Y04hI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PUzSIUGg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M+lmQSVS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D61EF1F000E9;
-	Sat, 13 Jun 2026 17:25:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PUzSIUGg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B19A1F000E9;
+	Sat, 13 Jun 2026 17:37:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781371555;
-	bh=XQt8n1j62y4Z33sOEEHpLj2LyMhlFYqQz2yKhwdHTxE=;
+	s=k20260515; t=1781372234;
+	bh=hWcLMAgLghTx7ZPTXhrSM+sTX6PyGogJrrFs8ZkyBak=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=M+lmQSVSP5qBsE4r0JwtuP00ps8iY6kFWwQnKCoYfE+tXicK6gwVqXw6tYfgHI8Uj
-	 SOwbJxyybi8KdRTeMWT44alCU0z/pfRBrYJx6RDp6pS6zNs0u+Ne/sseIw+KiP9oGs
-	 hY5N9XWXOHAxAE36TdKhjyFDSUw7Lo8mhtxG5rot0bMP8QxAC/HqsNyOmY93FKEtl5
-	 e8/bPcQelAJHaTGOLumVF78EhSGd46DRmUFw0Lnr11a/+QwnzAXn2SzPsChFREgW5m
-	 GOzxXKHSAnqWa2nRhIoyCPNwF9zRYm/Hu4fCLrScqHE2Z0cATfNKhF46Rzj0nqV9k4
-	 yp27bqABvZdHA==
-Date: Sat, 13 Jun 2026 10:25:49 -0700
+	b=PUzSIUGghU1qixEAKIvn19ap5OHfde0Zq73cCD0JJeB+snXP7r0pHwS7hJZDYHbYC
+	 nLa3s5VnukX7LMVuTAyzsnTSzKJMofvqcloHbeJ5NGmoESXuuiXwcgv5SqPTqAH7Xh
+	 vYWoD53r2yzhKNgpZHXdQk102Og+WEEwNvdjqH+36Zh+HRvbPPayI9iOVw1nub5AJF
+	 yfG1iub1HCf/wZ9AzGnvq7eV4zh7evxkNi7XBMeyPSU0fwabDLzyBX2hwfLbBfYbcy
+	 Jc0eFLuQ06roXKcuLuAqpU6txEB1MYF7ynr4BwfjLussz5kcwirYvhvnAV8s95rsbE
+	 JBAYNlG7+m/VQ==
+Date: Sat, 13 Jun 2026 10:37:13 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Sun Jian <sun.jian.kdev@gmail.com>
-Cc: bpf@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
- martin.lau@linux.dev, davem@davemloft.net, hawk@kernel.org,
- john.fastabend@gmail.com, sdf@fomichev.me, shuah@kernel.org,
- jiayuan.chen@linux.dev, toke@redhat.com, menglong.dong@linux.dev,
- emil@etsalapatis.com
-Subject: Re: [PATCH bpf v5 1/2] bpf: Run generic devmap egress prog on
- private skb
-Message-ID: <20260613102549.0061a875@kernel.org>
-In-Reply-To: <20260612114032.244616-2-sun.jian.kdev@gmail.com>
-References: <20260612114032.244616-1-sun.jian.kdev@gmail.com>
-	<20260612114032.244616-2-sun.jian.kdev@gmail.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: Raf Dickson <rafdog35@gmail.com>, netdev@vger.kernel.org,
+ virtualization@lists.linux.dev, pabeni@redhat.com, stefanha@redhat.com,
+ bryan-bt.tan@broadcom.com, vishnu.dasa@broadcom.com,
+ bcm-kernel-feedback-list@broadcom.com, leonardi@redhat.com,
+ horms@kernel.org, edumazet@google.com
+Subject: Re: [PATCH net-next v2] vsock/vmci: use sk_acceptq_is_full() helper
+Message-ID: <20260613103713.6e3e27d0@kernel.org>
+In-Reply-To: <aivKma8mRjTXV0BM@sgarzare-redhat>
+References: <20260612045842.122207-1-rafdog35@gmail.com>
+	<aivKma8mRjTXV0BM@sgarzare-redhat>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,7 +48,10 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 12 Jun 2026 19:40:31 +0800 Sun Jian wrote:
-> Suggested-by: Jakub Kicinski <kuba@kernel.org>
+On Fri, 12 Jun 2026 11:03:24 +0200 Stefano Garzarella wrote:
+> nit: title should be updated since now this is not just vmci
+> (e.g. vsock: use sk_acceptq_is_full() helper in all transports)
+> 
+> Not sure if it can be fixed while applying by netdev maintainers.
 
-I did not suggest this
+Updated and applied, thanks!
