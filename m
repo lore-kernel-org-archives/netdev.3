@@ -1,119 +1,110 @@
-Received: from server.couthit.com (server.couthit.com [162.240.164.96])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1AEA367B77;
-	Tue, 16 Jun 2026 12:40:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C4F360EEA
+	for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 12:42:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781613625; cv=none; b=iprS59ywrqF6w7sEGbvNriLL3JzLXaeMj2TdHWLVpoUmrVpG7MyqtOGBr7hcyxo1jL3Z8ljAbrqfN7gelSev9sIiFH8Pg5TBo+jR4fItajmuWqZMduJPynoxmKkkdRM4VSj2bYY07BKgpkSKGqTKZq6dO7AUUqf4MahQCVspex4=
+	t=1781613744; cv=none; b=TMXMCBZV5ZqyX9m1bJsbcU80a6ZBOUzuWOBAERX7/yLWr8YPmqqKXVovVIsBCF7Tn6HlJXrbafRa7oLAucpx7DK0peGGrvxVYIUexw3ncsfBgXiXxadlTP+cae4A1ikjDhoZKoVIoniYVVFOstOtbA1bObWHW18ezvtAyvvgQNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781613625; c=relaxed/simple;
-	bh=4XeKWq60UBV2qmrPOY9bwFztkwl7zBGTvEprmRc+0Wo=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=eK8FzyXxkN3zbVmvjUq/UZsfiJTDNfjT5KavVwxTSP82qIq2Xjq2fU7blBiaUO0e9AvOFC723cwuxDfURrUYf+0Ui+IKLfuVVgcmPU7eoTBhlorpi7xrmby+7HUVk5leXMbNk1NFB0dipHz8Ndd/vvgyrLglmlLuzm5DkIXLoM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=J/0ZxW7L; arc=none smtp.client-ip=162.240.164.96
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
+	s=arc-20240116; t=1781613744; c=relaxed/simple;
+	bh=hH0oRwMftoRPG/+KR7O9epoqDsjpP0ySNJo81UC5ZNA=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=cdshqnhpZgndhuWSCKS9DMvsw3Ia+x2dEKWTFxH4eGCbE1bdQFWZYkbJO702lS7d5hOAJEMt0eVaDs5DS3ok81KjBS2P379AcWuC9mvlH+InFGnyqfmO5PHR5C+9+bxwco5bR9+QNe27VgQtXEM5+EYVB8AVQj+QASPg8fBdHYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M7uyUq+C; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="J/0ZxW7L"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
-	; s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:
-	References:In-Reply-To:Message-ID:Cc:To:From:Date:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=bvkZ8DMLt8TicAIiC7x/wSALOp0M65czhxs+ZBfdPY4=; b=J/0ZxW7Ly02wggASZ1/Xbr5nox
-	8y5LtBgN4Sq6q0qPBvmgIBDTn1QLslLD60FUFhspSQuXFoVS9UDhHoeFUUE8Ezwj/hf3Cay5Oeznu
-	f+xEwKl+CZenKqe/M9SxGJTqdk4ipMVnKYOYHdkZu2K2TDvMKyZb5kB64bX+KvGEbp/qMSWWAaTWf
-	Rzj7pVl4gj6C/HOWGKqY15GPqkJfI3a2SVOqK+vsN3tIo67nuBK4LpRWYTiCc1pskWAPMDyFrafPd
-	mGmSXOh2yypq7B5g23STrRwrdwbL6beVsaGzSMaZW0d1Htji2IFHrE9tAI6erpxfhd1pFa85nMMDk
-	fT1Ypu9Q==;
-Received: from [115.246.246.98] (port=40588 helo=zimbra.couthit.local)
-	by server.couthit.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.4)
-	(envelope-from <parvathi@couthit.com>)
-	id 1wZT5Y-0000000At4u-11Yd;
-	Tue, 16 Jun 2026 08:40:20 -0400
-Received: from localhost (localhost [127.0.0.1])
-	by zimbra.couthit.local (Postfix) with ESMTP id 6435E19A7FA4;
-	Tue, 16 Jun 2026 18:10:13 +0530 (IST)
-Received: from zimbra.couthit.local ([127.0.0.1])
- by localhost (zimbra.couthit.local [127.0.0.1]) (amavis, port 10032)
- with ESMTP id feLN8dZta5RF; Tue, 16 Jun 2026 18:10:10 +0530 (IST)
-Received: from localhost (localhost [127.0.0.1])
-	by zimbra.couthit.local (Postfix) with ESMTP id C412419A7F9B;
-	Tue, 16 Jun 2026 18:10:10 +0530 (IST)
-X-Virus-Scanned: amavis at couthit.local
-Received: from zimbra.couthit.local ([127.0.0.1])
- by localhost (zimbra.couthit.local [127.0.0.1]) (amavis, port 10026)
- with ESMTP id 47KudGkixjvB; Tue, 16 Jun 2026 18:10:10 +0530 (IST)
-Received: from zimbra.couthit.local (zimbra.couthit.local [10.10.10.103])
-	by zimbra.couthit.local (Postfix) with ESMTP id 9FF6319A7FA4;
-	Tue, 16 Jun 2026 18:10:10 +0530 (IST)
-Date: Tue, 16 Jun 2026 18:10:10 +0530 (IST)
-From: Parvathi Pudi <parvathi@couthit.com>
-To: Simon Horman <horms@kernel.org>
-Cc: Parvathi Pudi <parvathi@couthit.com>, andrew+netdev <andrew+netdev@lunn.ch>, 
-	davem <davem@davemloft.net>, edumazet <edumazet@google.com>, 
-	kuba <kuba@kernel.org>, pabeni <pabeni@redhat.com>, 
-	danishanwar <danishanwar@ti.com>, rogerq <rogerq@kernel.org>, 
-	pmohan <pmohan@couthit.com>, afd <afd@ti.com>, 
-	basharath <basharath@couthit.com>, arnd <arnd@arndb.de>, 
-	linux-kernel <linux-kernel@vger.kernel.org>, 
-	netdev <netdev@vger.kernel.org>, 
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
-	pratheesh <pratheesh@ti.com>, j-rameshbabu <j-rameshbabu@ti.com>, 
-	Vignesh Raghavendra <vigneshr@ti.com>, praneeth <praneeth@ti.com>, 
-	srk <srk@ti.com>, rogerq <rogerq@ti.com>, 
-	m-malladi <m-malladi@ti.com>, krishna <krishna@couthit.com>, 
-	mohan <mohan@couthit.com>
-Message-ID: <1748606529.1400457.1781613610625.JavaMail.zimbra@couthit.local>
-In-Reply-To: <20260612200102.GN671640@horms.kernel.org>
-References: <20260611123636.376577-1-parvathi@couthit.com> <20260612200102.GN671640@horms.kernel.org>
-Subject: Re: [PATCH net-next 0/3] Introduce HSR/PRP HW offload support for
- PRU-ICSSM Ethernet driver
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M7uyUq+C"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2bf2247e38eso40939945ad.3
+        for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 05:42:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781613742; x=1782218542; darn=vger.kernel.org;
+        h=mime-version:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=6uM0ObpaAPGFXgDRAB4wX+6R8VKBvIYPs4Db/iskdHQ=;
+        b=M7uyUq+CriAUmO+EipGnPNO7Au3Z+lBVb/BNZ//QztzHN3dsutEraIYIZPSnIWLShp
+         fc5TswMzEOaIl4EoLLs5UtGcEh1sELCMUJXzy0ZTvmI+rj9mpw/WPlgk/SQKYWVPzjVT
+         nwl0tCBBLcGv1f6VPzyQRgzwHWCLHBnI1tUMCD/WPHme4AssZWNNGCentj2co7cY+Xd9
+         JO/sK5qY2rSJmnzeejB1rFfCwuoa/ppiKwxyl9MQ4oTX9ov5ciMDrU3KmCn6gUtLV3Tb
+         p3f1hi53apNdKdm2pBujiAretawJuExUC456fDOLm2pZ2xYyXCIkWKTPDFfthu8RAzu8
+         zJnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781613742; x=1782218542;
+        h=mime-version:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6uM0ObpaAPGFXgDRAB4wX+6R8VKBvIYPs4Db/iskdHQ=;
+        b=rTN5xymkvrZPFU0Ps8xHglSeUO5+9LiEbX3M7Yjh+DcJQIJZSiPBfzoyUrgiUxexY6
+         hoSKg00CuXrjRKF6PsMTmILDOdLSwjI3ziXBJwNP0XYnBi9pz9PAPw+X5KmHagL1J0bM
+         Vcu+Z074204eEIS32bUn3p2LnVCfSaZWVBG0U+xbO6uHZKVXcB1d3vicpSkk2kwp5ngQ
+         wSqyqXgwAgDVBAWw8uVH7NYJLXVJWMIWa+mZhUE3ldDwvLepuYjNTJ41LbjgxTzIrUO1
+         zvlVxm8PEh9WUV3fNr2QgPuPNYLNyIO/XusLlxNhB4o4hJN8ku1ttJuXhF8gLyBpJ+tg
+         56aA==
+X-Gm-Message-State: AOJu0YyOE6iX9G2EeoYVOBt/y6/h6eJzcBtuOUZUAzbDc7TD7tB8ejZ/
+	WnpmSzIMagX/oEoLnl6HgVC9NveZDPnQefFYqJ5rAhdCcuNcPY8kuw0pWQRyCOwwUcAsnQ==
+X-Gm-Gg: Acq92OEWKSHxZcGwIRUlDwZ7XxugYABrADbEBdaFjpFxgLueUrHva+tmrp2H9HUcF6s
+	LsoBk/97jpxVbb8impUNUT0B67iDglk6BvrEZTCHEO3WOxEXF1GjLGt5TxOFwH3kqudMHmhH5dh
+	nPPzp7SkSQ6WvdFJD+cBkQuY0epL+nPVzdBp3ErTjKySSoljaCWorXLtrzQHbmmPXiURpsYq4ei
+	KECBo1Ua15a/NqAKXOGIgqhRJemPNvqe7tR0o+/lz67/UO9hwp2bG0Jwm9JvTUesUdUj2Ujo9FP
+	Q55tawS4kpfWk23nwzBT2q7KgdSYgncdbIFp/OapuHIRJjN1OabFnKPYwmwoXOvWykkBC48Y0hc
+	AQHepfblm2+GfjBAsMWf+zw4xGiupHiQl1LFS82lcx0aIzPLddLrGQB1p/5hNZT9gs7t2KfXPiK
+	pN12pdCDD5ZNjsnZDa
+X-Received: by 2002:a17:902:c944:b0:2c6:9448:363a with SMTP id d9443c01a7336-2c69a1731b3mr37365455ad.20.1781613742538;
+        Tue, 16 Jun 2026 05:42:22 -0700 (PDT)
+Received: from [127.0.1.1] ([47.253.114.73])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c42fbb50e5sm135274665ad.35.2026.06.16.05.42.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Jun 2026 05:42:22 -0700 (PDT)
+From: Wayen Yan <win847@gmail.com>
+To: netdev@vger.kernel.org
+Cc: lorenzo@kernel.org, horms@kernel.org, pabeni@redhat.com, kuba@kernel.org, edumazet@google.com, andrew+netdev@lunn.ch, angelogioacchino.delregno@collabora.com, matthias.bgg@gmail.com, linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
+Subject: [PATCH net v3] net: airoha: Fix skb->priority underflow in airoha_dev_select_queue()
+Date: Sun, 14 Jun 2026 07:30:54 +0800
+Message-ID: <178161373805.2167512.2544164327472822616@gmail.com>
+Content-Type: text/plain; charset=utf-8
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: Zimbra 9.0.0_ZEXTRAS_20240927 (ZimbraWebClient - GC148 (Mac)/9.0.0_ZEXTRAS_20240927)
-Thread-Topic: Introduce HSR/PRP HW offload support for PRU-ICSSM Ethernet driver
-Thread-Index: iqq9OEROOlbAtE0K3nChzbBATFVm3g==
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.couthit.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - couthit.com
-X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: smtp@couthit.com
-X-Authenticated-Sender: server.couthit.com: smtp@couthit.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
 
-Hi,
+In airoha_dev_select_queue(), the expression:
 
-> On Thu, Jun 11, 2026 at 06:03:25PM +0530, Parvathi Pudi wrote:
->> Hi,
->> 
->> This series introduces HSR and PRP protocol HW offload support for
->> ICSSM-Prueth driver.  HW offload support for HSR/PRP is implemented using
->> dedicated HSR/PRP firmware running on 2 PRU cores(PRU-ICSS) as a "DAN"
->> available in AM57xx, AM437x and AM335x.
-> 
-> Hi Parvathi,
-> 
-> There is AI-generated review of this patch-set available on
-> https://sashiko.dev
-> 
-> I would appreciate it if you could look over that with a view
-> to addressing any issues that directly affect this patch-set.
+  queue = (skb->priority - 1) % AIROHA_NUM_QOS_QUEUES;
 
-Sure. We will review the sashiko feedback for this patch series and
-address any findings that are directly relevant in the next version.
+implicitly converts to unsigned arithmetic: when skb->priority is 0
+(the default for unclassified traffic), (0u - 1u) wraps to UINT_MAX,
+and UINT_MAX % 8 = 7, routing default best-effort packets to the
+highest-priority QoS queue. This causes QoS inversion where the
+majority of traffic on a PON gateway starves actual high-priority
+flows (VoIP, gaming, etc.).
 
-Thanks and Regards,
-Parvathi.
+Fix by guarding the subtraction: when priority is 0, map to queue 0
+(lowest priority), otherwise apply the original (priority - 1) % 8
+mapping.
+
+Fixes: 2b288b81560b ("net: airoha: Introduce ndo_select_queue callback")
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Reviewed-by: Joe Damato <joe@dama.to>
+Signed-off-by: Wayen Yan <win847@gmail.com>
+---
+ drivers/net/ethernet/airoha/airoha_eth.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index 31cdb11cd7..d476ef83c3 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -1933,7 +1933,7 @@ static u16 airoha_dev_select_queue(struct net_device *dev, struct sk_buff *skb,
+ 	 */
+ 	channel = netdev_uses_dsa(dev) ? skb_get_queue_mapping(skb) : port->id;
+ 	channel = channel % AIROHA_NUM_QOS_CHANNELS;
+-	queue = (skb->priority - 1) % AIROHA_NUM_QOS_QUEUES; /* QoS queue */
++	queue = skb->priority ? (skb->priority - 1) % AIROHA_NUM_QOS_QUEUES : 0;
+ 	queue = channel * AIROHA_NUM_QOS_QUEUES + queue;
+ 
+ 	return queue < dev->num_tx_queues ? queue : 0;
+-- 
+2.51.0
+
+
