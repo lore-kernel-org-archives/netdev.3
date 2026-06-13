@@ -1,48 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767BA26F29C;
-	Sat, 13 Jun 2026 18:21:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 974BE2C3768;
+	Sat, 13 Jun 2026 18:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781374876; cv=none; b=SSR3PzuVhN+dsYXWc47KS4IypVlS5Q1mj7IG/q8SFRL9tjlVjsWFQSuZZ8qR2FzB/uCFiCqE9cWz4cgcrkKikx0UIE7HGnD7arP1ccDDm/OauFnjK7DqWZfTiDydpRNjbkx3WGYhmX4YqKdrt12HRaXkNMumRFpF+jdwosdS0NM=
+	t=1781375383; cv=none; b=WrzhEI2AUabgJkFA2lSL9QCcMQs5RXodMIAzJbjAgYVxB0VvG62d2vdgrF0iQMGRYR1/QF5jHaxIUvbek9wdTDVanKC/xLfpwVWs3AlC8/Sf+3CosZ6vW6kPrRGAc+S5znUtQLp8ntp+2AWbj5Xg+L8BCaWoo8rv8nwhDZFY38U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781374876; c=relaxed/simple;
-	bh=qCwndZHyXA6xUFuzUo1gjzi7k2UxYupYS00ajtitHeI=;
+	s=arc-20240116; t=1781375383; c=relaxed/simple;
+	bh=odhDIPcmbzSFuqoxnLoIctZ7h3NQAX+GnBVpYDbr8i8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N9WgOrF7v3HihvgWmJjA7TCPZWkBaqENRVn79M6tSZrcQtP5Y3j0f1Vq0G5lwtFgqZ+VSx5t0Mfen/zROrBlVs2QpsbkjXULNylpByxEJTOGC0YGrrd4cDk3Z2o4ULgNsENyscArVkiaNHx31CCB2IxRCDFdjXQlovQpHpU6IeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C/0Y3q6z; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=BEwp0hf5ga+7wz3Gk4UGnGCO8DwaqzY8b2M35qoMZIhKKf+Brze0QsGEKTM118dSQNAUGkAtvZRKykAlO3RCJ7Hdloe/k4IZdke3i3SRUKfNdOBmqwskjNizjXzZ8BCxuqiCKHdNugaxZhnw886PUb9sL3X39T5iOKbm3Fi9AtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tu862N2v; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C/0Y3q6z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B9811F000E9;
-	Sat, 13 Jun 2026 18:21:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tu862N2v"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C13E01F000E9;
+	Sat, 13 Jun 2026 18:29:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781374875;
-	bh=blcmY51mUhrNozT7HIFdG8GhMoBehBU1E2kCKeAJ478=;
+	s=k20260515; t=1781375382;
+	bh=gF727nZWftSXwKewt3391E5lZl87wD+IcPkpef8dLKo=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=C/0Y3q6zoX8+6dr7X6HlsOEXaGuN2o37Svsp5c6BPqYPmEKFYDs9bY8jLHaowmYVd
-	 U5eWvCrGBgTzFjPADHSE7v/Glbzz1uMzIUvym6u+tE8pfmMydrj58yAkhJFLgaPBNU
-	 OLFCsCnLd5OTCuzeF3XquFmZn5nU0cSo1iQbftzwMU4I9fbfyk6+eP+BStg6t16+aa
-	 CQeetiMjwcj2zXtA8D+0lrWh3oWLHz1qYYugT5Kd6kcG6SXT9d0PEW6g6ymEpfuJZE
-	 qe6yy1u6VG/NcwtUTpVv1tKcxyhBqoBcD8jWvwm+r5ud4TRP0nfc3AbF36TT0s7ecG
-	 1uPDS8iIxXsnw==
-Date: Sat, 13 Jun 2026 11:21:13 -0700
+	b=Tu862N2vey18lzZiVIY/QTNjsaZBal0RR7RihTnqySWxoBrIMd1TjUVkkUDUZwDat
+	 ZU3fZZExDDkv/AbRRxlGUrkbjZgbF4sNfOnc/SjM+/kXM4S3rN7Jl2mzclMSQCW3fy
+	 RrnvTs+gPHbXqlznjLp4srmnWmrdphsSg5TjCXU6PL/FWYO7BN6tnt7HfQeHv9nhjg
+	 Jt8S+ivOUZiLUTzamQocQ1dyemo2dpLKW92K7OUkallGqUg5M2yVWnlUFfIcIOdJGb
+	 TFsGoGjNknkpFTeK7DEwKrNGuU4YVylQQWrc1iiRSG8SqOFD3GAENhN7arY4WwRljl
+	 0c+O1/WJJ3+gA==
+Date: Sat, 13 Jun 2026 11:29:40 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: menglong8.dong@gmail.com
-Cc: jasowang@redhat.com, mst@redhat.com, xuanzhuo@linux.alibaba.com,
- eperezma@redhat.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, magnus.karlsson@intel.com,
- maciej.fijalkowski@intel.com, sdf@fomichev.me, horms@kernel.org,
- ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
- john.fastabend@gmail.com, bjorn@kernel.org, kerneljasonxing@gmail.com,
- netdev@vger.kernel.org, virtualization@lists.linux.dev,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH net-next 1/3] net: busy-poll: introduce
- sk_tx_busy_loop()
-Message-ID: <20260613112113.55d9313f@kernel.org>
-In-Reply-To: <20260611071242.2485058-2-dongml2@chinatelecom.cn>
-References: <20260611071242.2485058-1-dongml2@chinatelecom.cn>
-	<20260611071242.2485058-2-dongml2@chinatelecom.cn>
+To: Robert Marko <robert.marko@sartura.hr>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, Steen.Hegelund@microchip.com,
+ daniel.machon@microchip.com, UNGLinuxDriver@microchip.com,
+ sdf.kernel@gmail.com, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ luka.perkov@sartura.hr
+Subject: Re: [PATCH net-next] net: sparx5: change ndo_set_rx_mode_async
+ return type to int
+Message-ID: <20260613112940.05bba5ff@kernel.org>
+In-Reply-To: <20260611101151.426050-1-robert.marko@sartura.hr>
+References: <20260611101151.426050-1-robert.marko@sartura.hr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,20 +49,18 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 11 Jun 2026 15:12:40 +0800 menglong8.dong@gmail.com wrote:
-> For now, we use sk_busy_loop() for both rx and tx path. The sk_busy_loop()
-> will call napi_busy_loop() for the specified napi_id. However, some
-> nic drivers have tx napi, such as virtio-net. In this case, sk_busy_loop()
-> doesn't work, as it can only schedule the NAPI for the rx queue.
+On Thu, 11 Jun 2026 12:11:13 +0200 Robert Marko wrote:
+> Commit ("net: add retry mechanism to ndo_set_rx_mode_async") changed the
+> ndo_set_rx_mode_async return type to int, however it did not update the
+> SparX-5 driver.
 > 
-> Therefore, introduce sk_tx_busy_loop() for the nic drivers that support tx
-> napi, which will schedule the tx napi if available.
+> So, simply update the sparx5_set_rx_mode return type to int, propagate
+> return from __hw_addr_sync_dev or simply return 0.
+> 
+> Fixes: d90b85c23b3d ("net: add retry mechanism to ndo_set_rx_mode_async")
 
-First, I thought the only difference with Tx NAPI is that it can't be
-busy polled. So if you want to poll an instance don't register it as 
-a Tx one instead of adding all this "tx polling" stuff in the core?
-
-Second, can this problem happen for any other NIC or is it purely 
-an artifact of virtio's delayed Tx completion handling?
-
-Third, this series does not apply.
+This commit does not exist, as I said in:
+https://lore.kernel.org/all/20260507091012.7eeb17f5@kernel.org/
+the first two patches of that series were _not_ applied.
+-- 
+pw-bot: reject
