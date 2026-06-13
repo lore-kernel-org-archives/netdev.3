@@ -1,85 +1,81 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43D7A1917F0
-	for <netdev@vger.kernel.org>; Sat, 13 Jun 2026 08:42:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6371917F0
+	for <netdev@vger.kernel.org>; Sat, 13 Jun 2026 08:42:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781340122; cv=none; b=NGsM6XBkHi83DfJmWvuwj59HS4jNSGr02199YBZEvucaVIZBIhcouTpJWO45w1bez+YCfi9OZhjXpNcNyOMeGMvAnbGIINUbfaPzfgUvGxzziTLolgB2Z8xwDWufeirPrdS7yiN2q8AJnHatgc2Ad8jFbakzGt/q5B4FmJpAxcY=
+	t=1781340138; cv=none; b=bG5osy3L1LDDT3juvO02pMCPuTm7oiwIqSJcjnLTqqYTaRZbJXcq7O5pdORqo7zEHSQ4i4P8+A3RpjU4lZLZtdCMx5rY8neAnEOtlukfvLQ7HSUKV3a06EwgeYjehOxDYbh9aFO8IP0wQR1ChrSluRmZzCkoZsCL4W6j40fqEDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781340122; c=relaxed/simple;
-	bh=IaywYboz+fU/JPKklrGFTfyvFjd1tpc8+yXTZw7fh2M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NbN5Rn3J+gXTDFAAIzT/sMFAS3P+yveUJ7AX7czgLBFXCV5/Z4/wzlvOyCzip8/IR79WeSSwY85n5N2Sgc9n9BARShaqD1odoNVPsBUSdxkg0a8dQp7M5Lmm3O7p/vToxPttG6t1Yswfvc3Q813b6FGva8hv+VP6O6eEDAIva4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ita42ngD; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=FDnv1mUS; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1781340138; c=relaxed/simple;
+	bh=l148B8ymh2jEpLOTMYYPWCFFOeEaoFoMLelOgcfyQiE=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=BmkQbpGaURqhekLq5hwXKWVlmCvSkGznBNs/K41VFcDOLlQyO2ruUh+Iy65nMPKIjRbkMpiR0wTlbeVboNkkovAxq/JpwEDmjl/uZewb0FTg04j61ML7KwouDCXB0fFOr9f0gRkfGHPzzx5HqDwXBfgnJjwdrcxOm+NWMgfLICI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=w49o1S1s; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=GAV/2ueq; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=nwr6VNsK; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=PlF4kSnX; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ita42ngD";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="FDnv1mUS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781340119;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="w49o1S1s";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="GAV/2ueq";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="nwr6VNsK";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="PlF4kSnX"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id E395D45CD;
+	Sat, 13 Jun 2026 07:22:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1781335372; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8uJWP9tqMCHTtoSkkYE0M+RWI1R32XPw5b0Ycy+j2b8=;
-	b=ita42ngDDabhD3UqUk8rgrIEbkUT84cyLrt+0IDkRwPxwlm5n6j4ugt8PaClJAHilmbxNE
-	+xtnBuO98x5xRkHbjaS8D1s5+Ke8DriPTZWT6kb+qztsU8aEhMjC3qGwX7SHfVxc7wHsJk
-	aLCgDXtBp0NDxeKpQQqZvmNraRnl4jM=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-329-uLzd0uDaOv2bEWYqipUoXg-1; Sat, 13 Jun 2026 04:41:57 -0400
-X-MC-Unique: uLzd0uDaOv2bEWYqipUoXg-1
-X-Mimecast-MFC-AGG-ID: uLzd0uDaOv2bEWYqipUoXg_1781340117
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-8ccf62978bfso41128626d6.1
-        for <netdev@vger.kernel.org>; Sat, 13 Jun 2026 01:41:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1781340117; x=1781944917; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8uJWP9tqMCHTtoSkkYE0M+RWI1R32XPw5b0Ycy+j2b8=;
-        b=FDnv1mUSUxntJSIH0LFoCseFFFewp2hlRQj+pUshQhnxBmh+SzZwPW3Sx94u6jjaKd
-         b8ZbOSh3zuxcDjuUNb08iW1nHLAzL6xbUuJiX2gOh6geLiC8Hhy68AkGw+29WwU1xKsj
-         dt30oSVmVO/c6FwAL1Ca30MjYYb1rSbrUoHr7+kJUvWoiJsHxSKzhYiKAvesIwu6bukg
-         NPWqmbkY+Kx0Q7Ke7BDJEfAcoPaRsMGGnIvx0a7E1d+Hrgskj060YjNN8kYwTdv6ex3s
-         IYVImq1+WQxrdu1bDZRtD9eAhIi/thAJQB6bAfSL9PnYnlXqobKudMlYZiDD0dpu0l2Q
-         xW4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781340117; x=1781944917;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8uJWP9tqMCHTtoSkkYE0M+RWI1R32XPw5b0Ycy+j2b8=;
-        b=LYqmGf4CL9k0xi/Bd8ynw/iKztwilbSMJymKxxIbzF2t/R6NhG9S3imLrt+QhOK/3G
-         fVrwyeG1yBOq+8dp996zgh+Fox6hBSvIwJrEWr9Vv8y2Tl1n+fZFe5oSXANkanoHCbl5
-         Bbj6AS/iddRGxxRDe8zcvK4jRZIYC2F70/xzAYzAJJlvNMSsg0Wh4oPWqGna6vIVB32r
-         hyR5shHZmrlofJ2PUrEUL6IuRNe2RXrmYZwmWJxeRAyOObOTsSrI6P1A5H75JgT0rY1x
-         dyCfRH0+D+EJbFrYMah06FBromdSjXgAvmXwK13CC2kgRzpXszFTtyVbWMZLPsGyc7GJ
-         SJPw==
-X-Forwarded-Encrypted: i=1; AFNElJ9mWUMhvB1VcxeWqPybpzEit2QJ9PPTpcg7AF7aCA24LS+N0V+aT2gUQOXaUnYGv9v4GH8HRSc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+lr2g8R4gN7B6V+mJq5+3Tl0Kd56SlFW1Y9yLwlIzPa39ZS78
-	SVFeuOxjCbzip4RpXpJNlNbPnn+jot6q2tIOCoGVvqmcxXeoBrmM3tZ4KzR3CtQ5T7P+AN8D9nN
-	wvRGut0MlrIk1MzZW4oWYnYd0yOb8d+Hri2O0W73JytC7qHfTWQukhVwBFg==
-X-Gm-Gg: Acq92OG+jU0BxQ/nsf4HBJnCo/YlbgaIVU5reCyRJ4g4DRkfWlYuiLkIfOx6iCIjITw
-	nmsnpbc2Xef1ZnGH5b+WpSUSPJXAHHGhA4EPdHiUYNvwOjFcRLfFG9cnl8ZlaOsLSO5Uc8gG+kf
-	Rtu7Gu/iVq3Dmr4tFdz8nLa4aedf4iaf+WcVgDBa6PUL7SkCJ3ROJp6szbf1n7PcLnTPEk0aXVS
-	pnBRqjZdPtdSk5eQrqt3r5eI7M+N5VgB5x6kInfokPSZwXTeejvFUU6ABN3W8HPVs0ENkQZHUhK
-	e/TLEQajk/TsMTtbx5IEkbfCaOUGmcGcXFaaA8HZzdAtLG2Rp6ON7539F2a2WTfVqfVxaChU4h5
-	gSvrhEYK7HL775jowZOW0BjHCUhR/8+GtL15+8JhZn45G6DbhQy63Kw4=
-X-Received: by 2002:a05:622a:1102:b0:516:e086:89a with SMTP id d75a77b69052e-517fe4ddbddmr84850751cf.26.1781340117258;
-        Sat, 13 Jun 2026 01:41:57 -0700 (PDT)
-X-Received: by 2002:a05:622a:1102:b0:516:e086:89a with SMTP id d75a77b69052e-517fe4ddbddmr84850531cf.26.1781340116835;
-        Sat, 13 Jun 2026 01:41:56 -0700 (PDT)
-Received: from [192.168.88.32] ([150.228.25.72])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-517fb841970sm44912311cf.30.2026.06.13.01.41.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 13 Jun 2026 01:41:56 -0700 (PDT)
-Message-ID: <9b78ed2c-f664-4c56-9626-63ee73c6177e@redhat.com>
-Date: Sat, 13 Jun 2026 10:41:53 +0200
+	bh=9IkfbDhn0pjBCCB22Ih2w/7S0T26MvC4emyQ/T6QagY=;
+	b=w49o1S1sIAjemfp14TN3vFl30G8dTt7Ps/WSc0tBxSZVHaOGbmTIyJuvF9iP1H3QLBFsjL
+	DRrthDg1Uw3yzdz3jMD6/pWPJIPU9ieS61kkU9pCSOsUhUgFdBf/cEBG5By+QD3iSDZnpY
+	/O51B4tWd3lxcbeH3mO9d8+ChbLfa0s=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1781335372;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9IkfbDhn0pjBCCB22Ih2w/7S0T26MvC4emyQ/T6QagY=;
+	b=GAV/2ueq3727c01hCiB4gehXB6Ld0DwFeXJtOG+6OHAF4LU0ZCvk+YESC+EiPv129wtajZ
+	0Dk+oN6g+kqpzkCg==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nwr6VNsK;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=PlF4kSnX
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1781335371; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9IkfbDhn0pjBCCB22Ih2w/7S0T26MvC4emyQ/T6QagY=;
+	b=nwr6VNsK6mOYxCNbMCTmEovV4/DuU4qLhA58cmpMIejW63qq7NvnE0p/99QzvwWdXMgDrf
+	UA/Dxc99XpPJpiudh74vM6i3yZ0cpVs3DHHyqnWobw8I96fRaolbcj4sJsEOO+MGgFqgRD
+	66K1DoImiyLGJsXJcWqHsAsWIKvvAe8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1781335371;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9IkfbDhn0pjBCCB22Ih2w/7S0T26MvC4emyQ/T6QagY=;
+	b=PlF4kSnX5NRZkuQ7gmHPD4zhE5rJKMtrliny2TxfPhaIumdjvPo57ttRe7pYHrcTl7pt0V
+	4OtX5bxXRldsE2Aw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9CF5B779A7;
+	Sat, 13 Jun 2026 07:22:50 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id rb4BJEoFLWpRWwAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Sat, 13 Jun 2026 07:22:50 +0000
+Message-ID: <3e4a425e-0f58-48dc-a2bc-88fd6eb4a302@suse.de>
+Date: Sat, 13 Jun 2026 09:22:38 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -87,62 +83,267 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net: dsa: sja1105: fix refcount leak in
- sja1105_setup_tc_taprio()
-To: Wentao Liang <vulab@iscas.ac.cn>, olteanv@gmail.com, andrew@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260609074002.204113-1-vulab@iscas.ac.cn>
+Subject: Re: [PATCH iproute2-next] ipaddress: add support for showing IPv4
+ devconf attributes
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+To: Stephen Hemminger <stephen@networkplumber.org>
+Cc: netdev@vger.kernel.org, dsahern@kernel.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org
+References: <20260612231722.30579-1-fmancera@suse.de>
+ <20260612192936.61c23f85@phoenix.local>
+ <bdccf9bf-994d-445c-8167-4bcd8cd77e6e@suse.de>
 Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260609074002.204113-1-vulab@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <bdccf9bf-994d-445c-8167-4bcd8cd77e6e@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Rspamd-Action: no action
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TO_DN_SOME(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	MID_RHS_MATCH_FROM(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:email,suse.de:dkim,suse.de:mid];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: E395D45CD
+X-Spam-Score: -4.51
 
-On 6/9/26 9:40 AM, Wentao Liang wrote:
-> In sja1105_setup_tc_taprio(), taprio_offload_get() acquires a
-> reference on the new offload and stores it in
-> tas_data->offload[port]. If sja1105_init_scheduling() or
-> sja1105_static_config_reload() later fails, the function returns
-> without releasing the reference via taprio_offload_free(). The
-> stored pointer is thus leaked, as the driver will not clean it up
-> unless a subsequent TAPRIO_CMD_DESTROY is received, which may
-> never happen.
+On 6/13/26 8:41 AM, Fernando Fernandez Mancera wrote:
+> On 6/13/26 4:29 AM, Stephen Hemminger wrote:
+>> On Sat, 13 Jun 2026 01:17:22 +0200
+>> Fernando Fernandez Mancera <fmancera@suse.de> wrote:
+>>
+>>> tatic void print_inet(FILE *fp, struct rtattr *inet_attr)
+>>> +{
+>>> +    struct rtattr *tb[IFLA_INET_MAX + 1];
+>>> +
+>>> +    parse_rtattr_nested(tb, IFLA_INET_MAX, inet_attr);
+>>> +
+>>> +    if (tb[IFLA_INET_CONF] && show_details) {
+>>> +        int *conf = RTA_DATA(tb[IFLA_INET_CONF]);
+>>> +        int max_elements = RTA_PAYLOAD(tb[IFLA_INET_CONF]) / 
+>>> sizeof(int);
+>>> +
+>>> +        if (max_elements >= IPV4_DEVCONF_FORWARDING)
+>>> +            print_string(PRINT_ANY, "forwarding", "forwarding %s ",
+>>> +                     conf[IPV4_DEVCONF_FORWARDING - 1] ? "on" : "off");
+>>> +
+>>> +        if (max_elements >= IPV4_DEVCONF_MC_FORWARDING)
+>>> +            print_string(PRINT_ANY, "mc_forwarding", "mc_forwarding 
+>>> %s ",
+>>> +                     conf[IPV4_DEVCONF_MC_FORWARDING - 1] ? "on" : 
+>>> "off");
+>>> +
+>>> +        if (max_elements >= IPV4_DEVCONF_PROXY_ARP)
+>>> +            print_string(PRINT_ANY, "proxy_arp", "proxy_arp %s ",
+>>> +                     conf[IPV4_DEVCONF_PROXY_ARP - 1] ? "on" : "off");
+>>> +
+>>> +        if (max_elements >= IPV4_DEVCONF_ACCEPT_REDIRECTS)
+>>> +            print_string(PRINT_ANY, "accept_redirects",
+>>> +                     "accept_redirects %s ",
+>>> +                     conf[IPV4_DEVCONF_ACCEPT_REDIRECTS - 1] ? 
+>>> "on" : "off");
+>>> +
+>>> +        if (max_elements >= IPV4_DEVCONF_SECURE_REDIRECTS)
+>>> +            print_string(PRINT_ANY, "secure_redirects",
+>>> +                     "secure_redirects %s ",
+>>> +                     conf[IPV4_DEVCONF_SECURE_REDIRECTS - 1] ? 
+>>> "on" : "off");
+>>> +
+>>> +        if (max_elements >= IPV4_DEVCONF_SEND_REDIRECTS)
+>>> +            print_string(PRINT_ANY, "send_redirects", 
+>>> "send_redirects %s ",
+>>> +                     conf[IPV4_DEVCONF_SEND_REDIRECTS - 1] ? "on" : 
+>>> "off");
+>>> +
+>>> +        if (max_elements >= IPV4_DEVCONF_SHARED_MEDIA)
+>>> +            print_string(PRINT_ANY, "shared_media", "shared_media %s ",
+>>> +                     conf[IPV4_DEVCONF_SHARED_MEDIA - 1] ? "on" : 
+>>> "off");
+>>> +
+>>> +        if (max_elements >= IPV4_DEVCONF_RP_FILTER)
+>>> +            print_int(PRINT_ANY, "rp_filter", "rp_filter %d ",
+>>> +                  conf[IPV4_DEVCONF_RP_FILTER - 1]);
+>>> +
+>>> +        if (max_elements >= IPV4_DEVCONF_ACCEPT_SOURCE_ROUTE)
+>>> +            print_string(PRINT_ANY, "accept_source_route",
+>>> +                     "accept_source_route %s ",
+>>> +                     conf[IPV4_DEVCONF_ACCEPT_SOURCE_ROUTE - 1] ? 
+>>> "on" : "off");
+>>> +
+>>> +        if (max_elements >= IPV4_DEVCONF_BOOTP_RELAY)
+>>> +            print_string(PRINT_ANY, "bootp_relay", "bootp_relay %s ",
+>>> +                     conf[IPV4_DEVCONF_BOOTP_RELAY - 1] ? "on" : 
+>>> "off");
+>>> +
+>>> +        if (max_elements >= IPV4_DEVCONF_LOG_MARTIANS)
+>>> +            print_string(PRINT_ANY, "log_martians", "log_martians %s ",
+>>> +                     conf[IPV4_DEVCONF_LOG_MARTIANS - 1] ? "on" : 
+>>> "off");
+>>> +
+>>> +        if (max_elements >= IPV4_DEVCONF_TAG)
+>>> +            print_int(PRINT_ANY, "tag", "tag %d ",
+>>> +                  conf[IPV4_DEVCONF_TAG - 1]);
+>>> +
+>>> +        if (max_elements >= IPV4_DEVCONF_ARPFILTER)
+>>> +            print_string(PRINT_ANY, "arpfilter", "arpfilter %s ",
+>>> +                     conf[IPV4_DEVCONF_ARPFILTER - 1] ? "on" : "off");
+>>> +
+>>> +        if (max_elements >= IPV4_DEVCONF_MEDIUM_ID)
+>>> +            print_int(PRINT_ANY, "medium_id", "medium_id %d ",
+>>> +                  conf[IPV4_DEVCONF_MEDIUM_ID - 1]);
+>>> +
+>>> +        if (max_elements >= IPV4_DEVCONF_NOXFRM)
+>>> +            print_string(PRINT_ANY, "noxfrm", "noxfrm %s ",
+>>> +                     conf[IPV4_DEVCONF_NOXFRM - 1] ? "on" : "off");
+>>> +
+>>> +        if (max_elements >= IPV4_DEVCONF_NOPOLICY)
+>>> +            print_string(PRINT_ANY, "nopolicy", "nopolicy %s ",
+>>> +                     conf[IPV4_DEVCONF_NOPOLICY - 1] ? "on" : "off");
+>>> +
+>>> +        if (max_elements >= IPV4_DEVCONF_FORCE_IGMP_VERSION)
+>>> +            print_int(PRINT_ANY, "force_igmp_version", 
+>>> "force_igmp_version %d ",
+>>> +                  conf[IPV4_DEVCONF_FORCE_IGMP_VERSION - 1]);
+>>> +
+>>> +        if (max_elements >= IPV4_DEVCONF_ARP_ANNOUNCE)
+>>> +            print_int(PRINT_ANY, "arp_announce", "arp_announce %d ",
+>>> +                  conf[IPV4_DEVCONF_ARP_ANNOUNCE - 1]);
+>>> +
+>>> +        if (max_elements >= IPV4_DEVCONF_ARP_IGNORE)
+>>> +            print_int(PRINT_ANY, "arp_ignore", "arp_ignore %d ",
+>>> +                  conf[IPV4_DEVCONF_ARP_IGNORE - 1]);
+>>> +
+>>> +        if (max_elements >= IPV4_DEVCONF_PROMOTE_SECONDARIES)
+>>> +            print_string(PRINT_ANY, "promote_secondaries",
+>>> +                     "promote_secondaries %s ",
+>>> +                     conf[IPV4_DEVCONF_PROMOTE_SECONDARIES - 1] ? 
+>>> "on" : "off");
+>>> +
+>>> +        if (max_elements >= IPV4_DEVCONF_ARP_ACCEPT)
+>>> +            print_int(PRINT_ANY, "arp_accept", "arp_accept %d ",
+>>> +                  conf[IPV4_DEVCONF_ARP_ACCEPT - 1]);
+>>> +
+>>> +        if (max_elements >= IPV4_DEVCONF_ARP_NOTIFY)
+>>> +            print_string(PRINT_ANY, "arp_notify", "arp_notify %s ",
+>>> +                     conf[IPV4_DEVCONF_ARP_NOTIFY - 1] ? "on" : "off");
+>>> +
+>>> +        if (max_elements >= IPV4_DEVCONF_ACCEPT_LOCAL)
+>>> +            print_string(PRINT_ANY, "accept_local", "accept_local %s ",
+>>> +                     conf[IPV4_DEVCONF_ACCEPT_LOCAL - 1] ? "on" : 
+>>> "off");
+>>> +
+>>> +        if (max_elements >= IPV4_DEVCONF_SRC_VMARK)
+>>> +            print_string(PRINT_ANY, "src_vmark", " src_vmark %s",
+>>> +                     conf[IPV4_DEVCONF_SRC_VMARK - 1] ? "on" : "off");
+>>> +
+>>> +        if (max_elements >= IPV4_DEVCONF_PROXY_ARP_PVLAN)
+>>> +            print_string(PRINT_ANY, "proxy_arp_pvlan", 
+>>> "proxy_arp_pvlan %s ",
+>>> +                     conf[IPV4_DEVCONF_PROXY_ARP_PVLAN - 1] ? "on" : 
+>>> "off");
+>>> +
+>>> +        if (max_elements >= IPV4_DEVCONF_ROUTE_LOCALNET)
+>>> +            print_string(PRINT_ANY, "route_localnet", 
+>>> "route_localnet %s ",
+>>> +                     conf[IPV4_DEVCONF_ROUTE_LOCALNET - 1] ? "on" : 
+>>> "off");
+>>> +
+>>> +        if (max_elements >= IPV4_DEVCONF_BC_FORWARDING)
+>>> +            print_string(PRINT_ANY, "bc_forwarding", "bc_forwarding 
+>>> %s ",
+>>> +                     conf[IPV4_DEVCONF_BC_FORWARDING - 1] ? "on" : 
+>>> "off");
+>>> +
+>>> +        if (max_elements >= 
+>>> IPV4_DEVCONF_IGMPV2_UNSOLICITED_REPORT_INTERVAL)
+>>> +            print_int(PRINT_ANY, "igmpv2_unsolicited_report_interval",
+>>> +                  "igmpv2_unsolicited_report_interval %d ",
+>>> +                  
+>>> conf[IPV4_DEVCONF_IGMPV2_UNSOLICITED_REPORT_INTERVAL - 1]);
+>>> +
+>>> +        if (max_elements >= 
+>>> IPV4_DEVCONF_IGMPV3_UNSOLICITED_REPORT_INTERVAL)
+>>> +            print_int(PRINT_ANY, "igmpv3_unsolicited_report_interval",
+>>> +                  "igmpv3_unsolicited_report_interval %d ",
+>>> +                  
+>>> conf[IPV4_DEVCONF_IGMPV3_UNSOLICITED_REPORT_INTERVAL - 1]);
+>>> +
+>>> +        if (max_elements >= IPV4_DEVCONF_IGNORE_ROUTES_WITH_LINKDOWN)
+>>> +            print_string(PRINT_ANY, "ignore_routes_with_linkdown",
+>>> +                     "ignore_routes_with_linkdown %s ",
+>>> +                     conf[IPV4_DEVCONF_IGNORE_ROUTES_WITH_LINKDOWN - 
+>>> 1] ?
+>>> +                     "on" : "off");
+>>> +
+>>> +        if (max_elements >= IPV4_DEVCONF_DROP_UNICAST_IN_L2_MULTICAST)
+>>> +            print_string(PRINT_ANY, "drop_unicast_in_l2_multicast",
+>>> +                     "drop_unicast_in_l2_multicast %s ",
+>>> +                     conf[IPV4_DEVCONF_DROP_UNICAST_IN_L2_MULTICAST 
+>>> - 1] ?
+>>> +                     "on" : "off");
+>>> +
+>>> +        if (max_elements >= IPV4_DEVCONF_DROP_GRATUITOUS_ARP)
+>>> +            print_string(PRINT_ANY, "drop_gratuitous_arp",
+>>> +                     "drop_gratuitous_arp %s ",
+>>> +                     conf[IPV4_DEVCONF_DROP_GRATUITOUS_ARP - 1] ? 
+>>> "on" : "off");
+>>> +
+>>> +        if (max_elements >= IPV4_DEVCONF_ARP_EVICT_NOCARRIER)
+>>> +            print_string(PRINT_ANY, "arp_evict_nocarrier",
+>>> +                     "arp_evict_nocarrier %s ",
+>>> +                     conf[IPV4_DEVCONF_ARP_EVICT_NOCARRIER - 1] ? 
+>>> "on" : "off");
+>>> +    }
+>>> +}
+>>> +
+>> There are three different ways to display a flag value in JSON used in 
+>> iproute2.
+>> This one is my least favorite.
+>>
+>> The three ways are:
+>>     - print_bool
+>>     - print_null (only if on)
+>>     - print_string
+>>
+>> I would use the print_null pattern but print_bool would also be ok.
+>>
 > 
-> Fix the leak by calling taprio_offload_free() and resetting
-> tas_data->offload[port] to NULL on both error paths.
+> Thanks for the suggestion Stephen, I would pick print_bool in this case.
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: 317ab5b86c8e ("net: dsa: sja1105: Configure the Time-Aware Scheduler via tc-taprio offload")
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-> ---
->  drivers/net/dsa/sja1105/sja1105_tas.c | 12 ++++++++++--
->  1 file changed, 10 insertions(+), 2 deletions(-)
+> If one of the options evolves to supporting something else we could 
+> easily adapt it without breaking compatibility if we use print_bool. If 
+> we use print_null I don't think we could do that.
 > 
-> diff --git a/drivers/net/dsa/sja1105/sja1105_tas.c b/drivers/net/dsa/sja1105/sja1105_tas.c
-> index e47967b12d5d..96cb5aa04910 100644
-> --- a/drivers/net/dsa/sja1105/sja1105_tas.c
-> +++ b/drivers/net/dsa/sja1105/sja1105_tas.c
-> @@ -575,10 +575,18 @@ int sja1105_setup_tc_taprio(struct dsa_switch *ds, int port,
->  	tas_data->offload[port] = taprio_offload_get(admin);
->  
->  	rc = sja1105_init_scheduling(priv);
-> -	if (rc < 0)
-> +	if (rc < 0) {
-> +		taprio_offload_free(tas_data->offload[port]);
-> +		tas_data->offload[port] = NULL;
->  		return rc;
-> +	}
->  
-> -	return sja1105_static_config_reload(priv, SJA1105_SCHEDULING);
-> +	rc = sja1105_static_config_reload(priv, SJA1105_SCHEDULING);
-> +	if (rc < 0) {
-> +		taprio_offload_free(tas_data->offload[port]);
-> +		tas_data->offload[port] = NULL;
 
-I think the config-cleanup issues mentioned by sashiko here should be
-addressed.
+Hm. I am actually not so sure about this..
 
-/P
+the current print_string approach matches the setter and also the 
+netconf side. While print_bool would be easier to parse for JSON, it 
+looks not so good for command line output.
 
+print_null presents a different problem, users would need to make sure 
+their parsing is working with an iproute2 version that support these new 
+attributes.
+
+So I am not so sure what is the best option here.
