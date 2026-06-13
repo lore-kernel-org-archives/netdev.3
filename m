@@ -1,35 +1,33 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out198-6.us.a.mail.aliyun.com (out198-6.us.a.mail.aliyun.com [47.90.198.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77AEA3AD52E;
-	Sat, 13 Jun 2026 09:00:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F1EC34A78E;
+	Sat, 13 Jun 2026 09:03:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781341211; cv=none; b=Ulm1FIyNboEfC7Z6r7l5OnVGx6jTnSEzl2Rg1fNPM2DxiRkBvLsq0F5hNn9u6RsTVA2GUo6bxjotIlrbARkCFwL24/ybWafkiZfDbVdKKj+lLYvSvfgVxJJKRwKuOsZks76Bow+V5s9Rm79oNk/Q1HKYwHqKNupreZtuGmO7PrU=
+	t=1781341418; cv=none; b=mflq/gb+powO1j6p2e8ukQ31qC9MaATHmWxBvbdw9WzR1x6MTG5V5sqH9CyXtrUAWMYvU6P+XFzX8scX3Pnu3AX4ThGpbyWQ1eQSEDXMx8W6LzBsmi98+UIhzJ/9yW2hSN0nj38kh3X3ro3svty2J9B5bUcHAete5uauQPCceU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781341211; c=relaxed/simple;
-	bh=TjaYOgF3wr8ZhOE+5WZgHdlDnkPKF41xWLjlfnvrJEI=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=R3zSK2x7yZT9tye5WPTIwLP0njll63gHBxNHXAcF0gXKonAwT/YYC+8GvARV5u9t5Ze+oTcyW/RGokoMAAruxJnQhGwFkoryP2WNjW8BGt28qq8S0mGNsDxpHWFsoWKDmUo5lJn1SGR/4vldJ7HiMF19Z+N+MbR/NrMtXjypDiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S6kd7MIJ; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S6kd7MIJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B01F41F000E9;
-	Sat, 13 Jun 2026 09:00:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781341208;
-	bh=f3EVXaidWBUDBukOfSvwu19nYqgtoWvs1fRjIR5kA3I=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=S6kd7MIJmG8gTopL6j0WlEFnHWaWCJCNPN+wbc1IYxBuhIlB2Zs202F7h8EbTjeAP
-	 VuWHP95nn4d3cWJpvHKf2K1xLNnUw5APnSbTm3Is43Om/fXuF9hy3Es05VhCbuInKk
-	 BvYe2Mz/dl58dByFiQz/5ULNqwP3ytWmI7IjHRHRi7zFjEgu93A9siIfmahGlYx+YU
-	 786TPi65oxSLkW6M2Tiw5LXSlzd401RvfvGreY76yuAGKq5RXAHHuvjt+uHbioRteS
-	 NTl2p3pYXXz81rIsUcOlrkNUgz/fF+IPbhAQF6Rn634t/1Y/5pkzuAzJWLefAvwbql
-	 A1RNN51wBPEdQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568DB39EDE30;
-	Sat, 13 Jun 2026 09:00:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1781341418; c=relaxed/simple;
+	bh=+1DA1L0d0ZQaUEn6MpFfOibUMXgSZQsBcriR6mki+vQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=eP8wNUtBgAYDqKIWMz6sDFIJwvBzvEZSRAV6Cn/A6kfuMBnqz4WEoW+KyVMUo50SK10jWIt80Q6GwrXk/rZi4H9tCW+9re0BohdaXDjI0Dp95mF9Q4jE0g0LRXRew0FlllfSfhLaaMhGKCsDx+6OhItCx218BVso5PgxWiFMngc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=edatec.cn; spf=pass smtp.mailfrom=edatec.cn; arc=none smtp.client-ip=47.90.198.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=edatec.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=edatec.cn
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.4962601|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.176659-0.00160023-0.82174;FP=7628090403777439464|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037006180;MF=zjzhao@edatec.cn;NM=1;PH=DS;RN=6;RT=6;SR=0;TI=SMTPD_---.hxCTUHx_1781341318;
+Received: from lists.debian.org(mailfrom:zjzhao@edatec.cn fp:SMTPD_---.hxCTUHx_1781341318 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Sat, 13 Jun 2026 17:03:12 +0800
+From: zjzhao@edatec.cn
+To: hayeswang@realtek.com
+Cc: andrew+netdev@lunn.ch,
+	linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	zjzhao-eda <zjzhao@edatec.cn>
+Subject: [PATCH] r8152: add vendor/device ID for CoreChips SR9900
+Date: Sat, 13 Jun 2026 17:01:54 +0800
+Message-Id: <20260613090154.1975753-1-zjzhao@edatec.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,41 +35,34 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 net] octeontx2-af: npc: Fix size of entry2cntr_map
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178134120489.1430056.8164436490843173619.git-patchwork-notify@kernel.org>
-Date: Sat, 13 Jun 2026 09:00:04 +0000
-References: <20260610022344.969774-1-rkannoth@marvell.com>
-In-Reply-To: <20260610022344.969774-1-rkannoth@marvell.com>
-To: Ratheesh Kannoth <rkannoth@marvell.com>
-Cc: kuba@kernel.org, linux-kernel@vger.kernel.org, naveenm@marvell.com,
- netdev@vger.kernel.org, sbhatta@marvell.com, sgoutham@marvell.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com
 
-Hello:
+From: zjzhao-eda <zjzhao@edatec.cn>
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+The CoreChips SR9900 (0x0fe6:0x9900) is a USB 2.0 10/100
+Ethernet adapter. Testing shows it works correctly with the
+r8152 driver, reaching wire speed (94 Mbps) with zero packet
+loss on both TCP and UDP.
 
-On Wed, 10 Jun 2026 07:53:44 +0530 you wrote:
-> KASAN prints below splat. This is caused by allocating counter for
-> reserved mcam entry for cpt 2nd pass entry. But mcam->entry2cntr_map
-> is not allocated for reserved entries.
-> 
-> BUG: KASAN: slab-out-of-bounds in npc_map_mcam_entry_and_cntr+0xb0/0x1a0
-> Write of size 2 at addr ffff0001033e7ffe by task kworker/0:1/14
-> 
-> [...]
+Tested on Raspberry Pi, including hotplug and extended data
+transfer.
 
-Here is the summary with links:
-  - [v2,net] octeontx2-af: npc: Fix size of entry2cntr_map
-    https://git.kernel.org/netdev/net/c/f9cd6fabe0e7
+Signed-off-by: zjzhao-eda <zjzhao@edatec.cn>
+---
+ drivers/net/usb/r8152.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-You are awesome, thank you!
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index d61074178279..ea1733e3619c 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -10062,6 +10062,7 @@ static const struct usb_device_id rtl8152_table[] = {
+ 	{ USB_DEVICE(VENDOR_ID_DELL,    0xb097) },
+ 	{ USB_DEVICE(VENDOR_ID_ASUS,    0x1976) },
+ 	{ USB_DEVICE(VENDOR_ID_TRENDNET, 0xe02b) },
++	{ USB_DEVICE(0x0fe6, 0x9900) },
+ 	{}
+ };
+ 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.34.1
 
