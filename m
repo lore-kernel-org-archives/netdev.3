@@ -1,89 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C3B3A7597
-	for <netdev@vger.kernel.org>; Sat, 13 Jun 2026 22:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34EDD342509;
+	Sat, 13 Jun 2026 22:13:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781388622; cv=none; b=He5HUqef78pSKFH9iDaFNigD8hLpYd+XlD/rmJPdZRGlrwvcH14gYnHZ1Ve40C596tvBN5yVgdl9OQ6YEnjZPQ7c/K7vgORgQzegDY1hrBqCnXxr0uqacD3GUgACr7ir4PBxayMrMc+lJ+iXprp/CuW43P/73nmDvxdadlzq9Co=
+	t=1781388816; cv=none; b=bxDy7UW1DNyAtMVqj8UJBDIb59xxTIIAtW8ZtGP1WMvKq435dn0cgLIDFDCN3z9CtB/FJoXf1YA5DNd+t7vAdRNs+aYefFatfe4D0X3i5obr0qrlAqLUx9GatCE+i2cDIbMQptwlcsdJpMrTHZVFEmwDjmWtxSFxpOOWnL5usm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781388622; c=relaxed/simple;
-	bh=JYTLYbckKB71U8e8hv4tAVTmjxcZw7H+MPEg2elJRKQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=WcsooArx804ZwJ6lIpXJaaWsdUz1FPAMa1NhD+/rfYwHVVtrNpMHO/KqsIPNQ6tjvkGK4dDfRd+CH4Ew5li8VtS23GW4dFth1HOrrHMBAk8Z+P566FtKCNbBKiZmnqNkS/eT366NRg8KcOO9gUM3Co73xne8KPd0IiBPnXMNva8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gs/4FErn; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781388816; c=relaxed/simple;
+	bh=Y8Lezj3lvMaLQ6PwBDR8Aq+/aErLJ9Bsl4xd0v03sp0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kg6LmaFr7qU5PBW1Tbn0YScnxMpZF5qc2yN6J4Eg8/gUe74vwdK0g5ivhgbzyNlg6vuRpliflxEx3T7uf6xEpcVFaS4Rq/a5MmyLhFeJbz/xb2khko1G8Xnc+/XoVIqZ7liGrgAWFMdHT0n18piXOb3NT6zgvtlPV63ZnqwgxsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hPrd/UVs; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gs/4FErn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B2691F000E9;
-	Sat, 13 Jun 2026 22:10:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hPrd/UVs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 415A51F000E9;
+	Sat, 13 Jun 2026 22:13:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781388621;
-	bh=bgVCS3SJJ5arXhx+G4WvikFQP68N1RBTeC3H3wIslN0=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Gs/4FErnreRzpuL01AFQH+ius9Cn6faAtRLuD5AfErK+ML800f00Cvm+NHbop7sM9
-	 oS0X0cxpy223L8PXekBf8vjlxPQrqoeT8zZYzDU6XPgroFfoMNSi1pXSRxDoj245bJ
-	 lLqkEfAFtHr823v13TYFwB5Wa4qDm28iLfbxOPvLdI9mNN3nA5VCWRPKgCBb6hV2Pj
-	 WmiD/t+oJqAHWPgGEj7wNGxj1PY1NDKY7rEkQw65vTrgoWRfWmiAhJE1xzTI43wKAq
-	 paO9WOFuwvDX11xFNx7e/vhI4ByJ2KKbqs8z0fXenBiJ6QkPKlH7y4f6cLGlj7V7v4
-	 ZmXVmXhq8BLtQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09D83A54A32;
-	Sat, 13 Jun 2026 22:10:18 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1781388815;
+	bh=Y8Lezj3lvMaLQ6PwBDR8Aq+/aErLJ9Bsl4xd0v03sp0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=hPrd/UVsix22kJGWdCA1MGaKCp1oGwPzQh2Dy+5aWn1lcRzAHwn7FL1/RCA3gF+bf
+	 ICaEJoeVERVdGIU3t5h6l3er1eCtDo6ITLUpz6zpY6SYSXBEASsOedD0xxHPsxdaHd
+	 OLtEEN8fdd6JyW4UH9b4iJf6dH4jMnJJW60HLMXKJbpu7LBbnpoEBNbWsia2V6HQIR
+	 pE/gUiMgxo3bVYsdSd7Fm0YHEHnKi/FWpa4sNxbPqpNd5ru/C6t2ZHOj9ODtkcQsqx
+	 12bKOXo+4C+yRA+rgxjgC5/q+wT5FDH6TEzXmDup1Z8JNn+VqBmi1gSnewNoeC28GP
+	 mmDH1QL7sQawA==
+Date: Sat, 13 Jun 2026 15:13:33 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Runyu Xiao <runyu.xiao@seu.edu.cn>
+Cc: netdev@vger.kernel.org, sgoutham@marvell.com, gakula@marvell.com,
+ sbhatta@marvell.com, hkelam@marvell.com, bbhushan2@marvell.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, amakarov@marvell.com, tduszynski@marvell.com,
+ linux-kernel@vger.kernel.org, jianhao.xu@seu.edu.cn, Ratheesh Kannoth
+ <rkannoth@marvell.com>
+Subject: Re: [PATCH net 0/2] octeontx2: quiesce stale mailbox IRQ state
+ before request_irq()
+Message-ID: <20260613151333.09de141a@kernel.org>
+In-Reply-To: <20260611160014.3202224-1-runyu.xiao@seu.edu.cn>
+References: <20260611160014.3202224-1-runyu.xiao@seu.edu.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: airoha: better handle MIBs for GDM ports
- with multiple devs attached
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178138861738.1607522.1344030829934869681.git-patchwork-notify@kernel.org>
-Date: Sat, 13 Jun 2026 22:10:17 +0000
-References: 
- <20260611-airoha-eth-multi-serdes-stats-v1-1-42442ae42064@kernel.org>
-In-Reply-To: 
- <20260611-airoha-eth-multi-serdes-stats-v1-1-42442ae42064@kernel.org>
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
- ansuelsmth@gmail.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Fri, 12 Jun 2026 00:00:12 +0800 Runyu Xiao wrote:
+> Both OTX2 mailbox registration paths currently install their IRQ
+> handlers before clearing stale local mailbox interrupt state, even
+> though the code comments already say that the clear is needed first to
+> avoid spurious interrupts.
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Thu, 11 Jun 2026 12:43:00 +0200 you wrote:
-> In the context of a GDM port that can have multiple net_devices attached
-> (GDM3 and GDM4), the HW counters (MIBs) are global for the GDM port.
-> This cause duplicated stats reported to the kernel for the related
-> net_device.
-> The SoC supports a split MIB feature where each counter is tracked based
-> on the relevant HW channel (NBQ) to account for this scenario and
-> provide a way to select the related counter on accessing the MIB
-> registers.
-> Enable this feature for GDM3 and GDM4 and configure the relevant HW
-> channel before updating the HW stats to report correct HW counter to the
-> kernel for the related interface.
-> Move the stats struct from port to dev since HW counter are now specific
-> to the network device instead of the GDM port. Refactor
-> airoha_update_hw_stats() to take airoha_eth and airoha_gdm_port
-> parameters since the function operates on the entire port.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next] net: airoha: better handle MIBs for GDM ports with multiple devs attached
-    https://git.kernel.org/netdev/net-next/c/8f4695fb67b2
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+cc Ratheesh
