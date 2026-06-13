@@ -1,68 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D433859DE;
-	Sat, 13 Jun 2026 21:57:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D296D2E8B6B;
+	Sat, 13 Jun 2026 22:00:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781387868; cv=none; b=RIyBDNhCCU9EafcpMDK8ASsXJLrmsVSI6jeT1m5lwNUb2MyG+a7n4kaZwK8j02VqTV6DMeGnKc5Mtt6XTkFlmOA5zzWI4wItHM6ZFNr3+n9OWM+LDaaHD7U9Idcw+yg1b3WQDdgsUidn6CUW84CDtUNZw9BttYZY1h2LWLB0PQg=
+	t=1781388010; cv=none; b=Kg0xt6UixEp6OwpaGSZ98j8Cj50gpMrbnCFo+GY4uEL+lC1I4ywve/m0r2Ink426eMvDHK7lLncPN97Ez3+z+0tYmbxnId1PRM7Poq0m3HOhfwEyPFRxver2/lq8VImdwLzaxiUjaaTolrYgS9foXtt0MnRhZAppTUwQhvNEJjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781387868; c=relaxed/simple;
-	bh=6NQ2s0f/MOg3LP4SOx5Sg5CMSqdXSNQtJ7rh0ggzxr8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YgsKAVu86bWvG1MJXbMwjc9amJ82mqd1npLp8A+QE7+ZCYLAFx4EwTdBk9vJowDvL4NiRNSZ+S7ikWx23UhLkbdplHRUWSBGoYf591LvjvwJOLTWb9DTIkcZ3tlXokRsykovACcgkwkWgYc9kb4JcRIR58a5hkpwE8vIHrfC/bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fTwZKeFv; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781388010; c=relaxed/simple;
+	bh=HeQJf1e09DUYIL+aw4gIXqbiPbXa4Dw65OO0fSuGEFE=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=UCwz9Q/K0EcBZcR9gNIztaidGY/l7YgX3TsUEm7B/PUJhCOR01O0+hypWA3ys0vfa3X7mq/CO26EoLE3hTaveiJEBvhmseqRB0v3I1b+Iy8EBqEJKQrbSJkC4WDOUKNJunUB4PEE8ET1HC8GvQZYvrqk/FfJhCsfluuS/SzJ0i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T12u3i/4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fTwZKeFv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DFE91F00A3A;
-	Sat, 13 Jun 2026 21:57:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T12u3i/4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 778AB1F000E9;
+	Sat, 13 Jun 2026 22:00:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781387866;
-	bh=X7e2OPAFhMbwhdtXfMUgF9EH5ALpvDIAwiduKVL6wfo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=fTwZKeFvDUxPQnLiSJVYyon5k4ZkAkZEQOEAmoVguxzYGnyKGuPQUsv/QkBWKm0tU
-	 0+C0kjOd4nkeKJ4iFWOWtSlAlmqJGIudZev8X8w8/jvoj26XcW/RU03e532G6ulLaN
-	 VdDJ29oFZ8XFXBMZZ8lJpAd3xliC685Hv/uBvVPO4eEq9WIKVvFv3LtAnirCvo8vVp
-	 1V4qnDY70G+lgpX/0qAkm+U+HmN68TPcE9j+3K+JuIgONAviaF8pkmZaqtXM6Jg9Y5
-	 JeRnXNWIa8FclvmuzPBUjfifhegO9jAqsLjPVQNxkFOQlmT3/sOhwg/CQDVWJMbgDg
-	 Ul+mW0H9V1JzQ==
-Date: Sat, 13 Jun 2026 14:57:45 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Nicolai Buchwitz <nb@tipi-net.de>
-Cc: Doug Berger <opendmb@gmail.com>, Florian Fainelli
- <florian.fainelli@broadcom.com>, bcm-kernel-feedback-list@broadcom.com,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Justin Chen <justin.chen@broadcom.com>, Ovidiu Panait
- <ovidiu.panait.rb@renesas.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 0/3] net: bcmgenet: collapse TX priority queues
-Message-ID: <20260613145745.36c5403e@kernel.org>
-In-Reply-To: <20260612205915.3156127-1-nb@tipi-net.de>
-References: <20260612205915.3156127-1-nb@tipi-net.de>
+	s=k20260515; t=1781388009;
+	bh=rA68kJZhnNjblo7d9Bf6fL30BN3xpW9wSzpe0KiOV/U=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=T12u3i/4Og2nC6ggYzV7P9PtjYGcL4Gcnedicr5r9N03OPWB2Jxg4mEtBO+wnUGoY
+	 MF7U4FWFindWxMyf09cTRORXd9Jpsm0jeq6pg4EaQU7/G5KMoijXqoDtzNBeU4goV2
+	 SY7AeIdyidFGuDNDt2rR4JF9pZA7HHfkdiLZDXQRBc9eMXTa77XfnfBBsIRjq481D5
+	 DcL0Sr/yQ/PGiMTG5cuHa1w0/pNDpsHhvv65Uq5dxC/xnrrJUqw3oYSgFdJcT+fZy1
+	 58wrYHn4B+xKTW+qffbw1Q0NV2ArRgZkiVl6VQ/qI0eeLiyVY10fvubj5r72JmRNge
+	 LVMEJ1qvvetRQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id CC2363A54A32;
+	Sat, 13 Jun 2026 22:00:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net: bcmgenet: Use weighted round-robin TX DMA
+ arbitration
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178138800539.1605072.16594394661463915072.git-patchwork-notify@kernel.org>
+Date: Sat, 13 Jun 2026 22:00:05 +0000
+References: <20260610085238.56300-1-ovidiu.panait.rb@renesas.com>
+In-Reply-To: <20260610085238.56300-1-ovidiu.panait.rb@renesas.com>
+To: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+Cc: opendmb@gmail.com, florian.fainelli@broadcom.com,
+ bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-On Fri, 12 Jun 2026 22:59:12 +0200 Nicolai Buchwitz wrote:
-> Tested on Raspberry Pi CM4 (BCM2711):
->   - Ovidiu's reproducer (iperf3 -u -b0 -P16 -t60) no longer trips
->     NETDEV_WATCHDOG.
->   - UDP sustains 956 Mbit/s line rate over 60 s with 0 datagrams
->     lost (0/4952890).
->   - Single-stream TCP throughput unchanged at 943 Mbit/s.
+Hello:
 
-Of course it has no impact on a single TCP stream test, since TCP
-stream can only use one queue. If anything it should help.
-The testing here is not very convincing. At least install a realistic
-qdisc (fq/fq_codel/cake) and run multi-stream test with multiple cores?
-What's the CPU idle delta in such a test?
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-The reason for this change is not coming thru from the submission.
-Ovidiu's patch makes much more intuitive sense. I'll apply that,
-please rebase.
+On Wed, 10 Jun 2026 08:52:38 +0000 you wrote:
+> Under heavy network traffic, we observed sporadic TX queue timeouts on the
+> Raspberry Pi 4. The timeouts can be reproduced by stress testing the TX
+> path with multiple concurrent iperf UDP streams:
+> 
+>     iperf3 -c <ip> -u -b0 -P16 -t60
+>     NETDEV WATCHDOG: CPU: 0: transmit queue 0 timed out 2044 ms
+>     NETDEV WATCHDOG: CPU: 3: transmit queue 0 timed out 2004 ms
+> 
+> [...]
+
+Here is the summary with links:
+  - [net] net: bcmgenet: Use weighted round-robin TX DMA arbitration
+    https://git.kernel.org/netdev/net/c/fd615abd5311
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
