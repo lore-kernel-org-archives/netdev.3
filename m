@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D803A6B77;
-	Sat, 13 Jun 2026 22:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7AD63A48ED;
+	Sat, 13 Jun 2026 22:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781388613; cv=none; b=P6h9pQIFFQGZFzkzoGVLVf8uzWkumvblEDP6PStCHH2OwM4pRv9uG3o3rvwFFGQvCNSXS73UrYUHr/P6Vy7cRFU4Nbp8No1SWEV7+fFxQWcKuRJTzyvDhxdf/1ix1AhuCq/2AB4sjuwuNjLFg85uAVVoKWb4MU7SA+U8FKP5kFY=
+	t=1781388619; cv=none; b=afHfPCZ/ZZ+eMaEtsarQhOEJiTy+R+H3uLuiVzbCEY0FTDhbhK47c1SP5kZBfsakWGlzmZlrp41Url2dZrwTGb56UNojDZo8HMOERvQEeRXSKopkro1qbS2TBVOndhE4dWb3L6xPpboeYn6yhlXbb7zBJ8OwAMswOAU//gb9zY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781388613; c=relaxed/simple;
-	bh=qllnoP1ZEdDLJhsz2nA7rqtk/LdKtle/nr6qTDVT/Bw=;
+	s=arc-20240116; t=1781388619; c=relaxed/simple;
+	bh=E85k4s2TtfZJ8uSMubSORRlHeaWBtvuUkDF9LZe/R8U=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=lmmFpkbOHlkAFAkPGPQKkykEE+MT9ttNJnD5LmERYWI+GofEsF1C46XqYX+2zClq9d4XTSQmn0HILNLl3P4VA2sRJyXPmWoscAYts54V5JCHDr5WmOyt7DLp7Voxg2+O+hQ2tdKg6Ywlb8tbxH11TDENGKaylBPp20r5SXdcahw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DKxz/xqm; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=kwB2xFtJs8/ICsVzFk4vUSUyy7DSGRDUai798n3nF7bBXl0qWsqWh5C71wOjqHsxwPXtHx2NsNf3WsaIxBWrYrGPh5CtcrMRj5Lgf/RlLt8Nt3xTh5vm8+WgdeFdsS0dzoSOHljrSSKhPXKI2w/nwegcIIJKqwx9Iw+Dh5J/3m4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V5SQahEE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DKxz/xqm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ED091F000E9;
-	Sat, 13 Jun 2026 22:10:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V5SQahEE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DCE81F000E9;
+	Sat, 13 Jun 2026 22:10:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781388612;
-	bh=hbrn9gotVmDDFoxWO2TedVmUacu02FnXsSonAm4K1C8=;
+	s=k20260515; t=1781388618;
+	bh=LM9Ad9DH5AVeOwfb75LlD+HrRg8ZLl14zucjpK7Ngh4=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=DKxz/xqmY0fi+hiNrpWt55h8DBwnNSNZhbliKcfEdH6YiHUuUWdAnbdFeARuZufgJ
-	 M4TYxEIkY6z39493/m/7AKXIQ7hb42dgPoygwbo55ppazCtWmMI9kDAEzflT0cqoKm
-	 ho8JRkhDfdkC3Ob6VIGm6+SEKmfJPIlMS6S8GmPmowuutCD9zYYo2XCuPOv+Uj30mN
-	 t3JXk9vdDNfU7fi9ydo1yrzOu3OE3VBkvZB9subx6Q/UIQEffOrryatFybP/lHfMcL
-	 KWWTRSLiJ3DDv9uH+yLaC3APMyJdm/y+sWocoB7ujO9Cso2LIx+CWuiAEbqzbATdN3
-	 z4S1les4eCvbg==
+	b=V5SQahEE7SpaRFg33BrGsZmK4ZhW7Vqp9SgPj+QXANrnwZThuEBIrtv45/2GeaGaN
+	 KpqhYzFq38oQrrdRMuvCcFQcTWjHWGmBg8V+0kkWyCgeV/5/MAhuzLNioyUMqwVU5B
+	 7+j+SwXbxTCkVlAoVOrwQeJL+tOwOzN7q3Dbgt3H021rR9SOZX4Ql40peKewV7YWWy
+	 t5arrjS5YxcIaFWTIVMOXJc7ttQn9F7Y3CcFSwl2U9h5zTqgu6hsEHPPRm7X10lX+V
+	 nWComYdNpHWCPRQQeVU/j/xobqsRmE4GQXj+Y3lEqDQGa6ywNnCm+tiy+sTfYRILNs
+	 DKNp2/490w2xQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 938B83A54A32;
-	Sat, 13 Jun 2026 22:10:09 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0A463A54A32;
+	Sat, 13 Jun 2026 22:10:15 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,37 +37,42 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] octeontx2-af: fix NPC mailbox codes in mbox.h
+Subject: Re: [PATCH v3 net-next 1/1] dt-bindings: net: dsa: Convert
+ lan9303.txt to
+ yaml format
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178138860813.1607522.9390359001132329665.git-patchwork-notify@kernel.org>
-Date: Sat, 13 Jun 2026 22:10:08 +0000
-References: <20260611083330.1652181-1-rkannoth@marvell.com>
-In-Reply-To: <20260611083330.1652181-1-rkannoth@marvell.com>
-To: Ratheesh Kannoth <rkannoth@marvell.com>
-Cc: kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- sumang@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, sgoutham@marvell.com
+ <178138861438.1607522.16348781028982190801.git-patchwork-notify@kernel.org>
+Date: Sat, 13 Jun 2026 22:10:14 +0000
+References: <20260610150533.515914-1-Frank.Li@oss.nxp.com>
+In-Reply-To: <20260610150533.515914-1-Frank.Li@oss.nxp.com>
+To: Frank Li <Frank.Li@oss.nxp.com>
+Cc: andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, horms@kernel.org, corbet@lwn.net,
+ skhan@linuxfoundation.org, Frank.Li@nxp.com, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, imx@lists.linux.dev
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 11 Jun 2026 14:03:30 +0530 you wrote:
-> Several NPC mailbox command IDs in the 0x601x range were assigned out of
-> order. Renumber and reorder the M() definitions so each opcode matches
-> the stable contract expected by userspace tools and applications.
+On Wed, 10 Jun 2026 11:05:30 -0400 you wrote:
+> From: Frank Li <Frank.Li@nxp.com>
 > 
-> Fixes: 4e527f1e5c15 ("octeontx2-af: npc: cn20k: Add new mailboxes for CN20K silicon")
-> Cc: Suman Ghosh <sumang@marvell.com>
-> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+> Convert lan9303.txt to yaml format to fix below CHECK_DTBS warnings:
+> arch/arm/boot/dts/nxp/imx/imx53-kp-hsc.dtb: /soc/bus@50000000/i2c@53fec000/switch@a: failed to match any schema with compatible: ['smsc,lan9303-i2c']
+> 
+> Additional changes:
+>   - rename switch-phy to switch in example.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] octeontx2-af: fix NPC mailbox codes in mbox.h
-    https://git.kernel.org/netdev/net/c/925551c944a1
+  - [v3,net-next,1/1] dt-bindings: net: dsa: Convert lan9303.txt to yaml format
+    https://git.kernel.org/netdev/net-next/c/b693b51e0829
 
 You are awesome, thank you!
 -- 
