@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A512530DED5;
-	Sat, 13 Jun 2026 22:06:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A3893A5E93;
+	Sat, 13 Jun 2026 22:06:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781388385; cv=none; b=jXBtWT3U5GUN+LxXAfeL4AGVEfigCWbFYr4ntbQUI5MmWh8mZNu0h35KqUIT/jX3IDr+Lz+Xi9TVLzePVJulY997Dk3WE+ghBvA6BdtW0c7F/9/YfYKmG7skK0S5U7wEvVSUBxcEMdExn+001Q/yqLJomjfroDOWmos0WEv5KFU=
+	t=1781388387; cv=none; b=AqxyjonRJkXRAX8FiddxfgLUl32KZhkcQvcA+5GblEo8PqifyuV0J3M39T72avD7poVbSWH16AjCpms5Td+NVkLTjjCfvH07gjFuTGE8pK5tw0I7TXkO9Xz3kvx+4R5tb4TBnJtMwYCOXFhhW2GeIiXGOrgY42bUpxidnGAgbX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781388385; c=relaxed/simple;
-	bh=PCNDdsSVQHbMLDu3lz7T7P8HQFgotV8ZQEH5MmQ7yJ8=;
+	s=arc-20240116; t=1781388387; c=relaxed/simple;
+	bh=gbCMQM+2EJqlPRYv+UN/BoDTUoHBpLbF0fQbJ4OLHFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kgzSqThf2sFeDqFhhK0Th0OPpCPOKVBSGAOSCo0aMsDWd7H3K2mJBrdrj17p9BOvXVqPmM95Yy8QBPrPF9xlAQarvEYLJD9nutYtuRkROto5ESBUeLoHA/dDAlH3iN6rCyH5ZvI8e93J7X3GssoHEVbYL+gBa4t7s1i3gBXIo8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lCEwJT03; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=pcMZvm4OhH9G6uD1T3kPnrk2am/+9xQyTyt2RHYS7nkdd0g5X82nEK5QUE5393LQbD9Br+Ns2wjR3WyizDEmJfm/uMAGyr3gK1aPqeHuYqvQrbe4++2+Q3iMoPrFCdGbAEZZz/lPb/Xmc6lqIHIr7AViFgaWW85UKUseGJB01js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fuq9kHYY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lCEwJT03"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88D7D1F000E9;
-	Sat, 13 Jun 2026 22:06:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fuq9kHYY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E5381F00A3A;
+	Sat, 13 Jun 2026 22:06:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781388384;
-	bh=vJCP4ee1nVCNSlrAHSKDwDvkWwGFkqbesfqZaxh9rjM=;
+	s=k20260515; t=1781388385;
+	bh=gFpzhflmxkJ0n9PiuwQpTF7It8qCwit+HO/6VW23vsU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lCEwJT03Ek/OJbxvH836CqPod0VedGy9/Cj97nbJRJwZ3Deo99huB7tQm774Up3c4
-	 6+MHTBhGXinkdRNIfUWsBuco4E6j1Icryb6BFUiFvefr9MSSvswZNEd9g4K5bLSUj9
-	 tGP05TQh74xKh1rduK9bNrpupfbrC9KG5O8PFkfadircKOvcUxlXfVCZlxcoRwNBN3
-	 n4xs91fTDTnmVfafQQTQF7mBvd/wczZPxRuekYWeGpdNQSXmaB9zSCTzZ5ZIaTzdbn
-	 +O4fJCc3CcoZuY6Rvaru+6kxIsMnavZNs5GeWTdnqCvBEY28ZHF5++9jzFBM1mwAe1
-	 O61fO894TWdvg==
+	b=Fuq9kHYYWBf5jP5hFzRR7Rt7FIQ5kDiyeWQNkYKvadTkwEgz22sfC7Vn66UCevd7o
+	 oFU9nfhiqSJe4juw02h5EqJKcVO0qaciRT6DxSweko4cHg+3NDmk++UkTfDOoXIk1A
+	 748KsASZ6KH5K6ycgVqwANycVNHVusW5LgEIuFcmDyKUTHTsi+YPQrJkhryFXEkoN+
+	 W80R4VtivqnW8pK7OLgx1Rz56BQ/7OgBAEqxYPT+4aP9clo1h2Tpb5gZgfC74ot0b2
+	 xyr0UgUpw/o6HgNnkJqB8/sDrSam9XqCi6Z845kHuOZeVDJO3mKSjP7+q35GADagGn
+	 O0ApIBob5OnNw==
 From: Jakub Kicinski <kuba@kernel.org>
 To: javen_xu@realsil.com.cn
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -39,12 +39,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	horms@kernel.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 2/6] r8169: create a virtual interrupt for linkchg
-Date: Sat, 13 Jun 2026 15:06:22 -0700
-Message-ID: <20260613220622.220157-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next v2 3/6] r8169: add support for phylink
+Date: Sat, 13 Jun 2026 15:06:24 -0700
+Message-ID: <20260613220624.220186-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260611094345.880-3-javen_xu@realsil.com.cn>
-References: <20260611094345.880-3-javen_xu@realsil.com.cn>
+In-Reply-To: <20260611094345.880-4-javen_xu@realsil.com.cn>
+References: <20260611094345.880-4-javen_xu@realsil.com.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,77 +56,143 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-r8169: create a virtual interrupt for linkchg
+r8169: add support for phylink
 
-This commit creates a virtual interrupt domain in r8169_mdio_register() so
-the MAC link change interrupt can be dispatched into phylib via
-generic_handle_domain_irq() instead of calling phy_mac_interrupt() on
-tp->phydev directly.
+This commit transfers the r8169 driver from the phylib framework to
+phylink, in order to support fiber-mode cards whose link status/speed
+cannot be read from standard PHY registers.
 
 > diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-> index c60710f9bd21..560f987437b6 100644
+> index 560f987437b6..615bd4107359 100644
 > --- a/drivers/net/ethernet/realtek/r8169_main.c
 > +++ b/drivers/net/ethernet/realtek/r8169_main.c
 
 [ ... ]
 
-> @@ -5458,6 +5488,21 @@ static int r8169_mdio_register(struct rtl8169_private *tp)
->  		new_bus->write_c45 = r8169_mdio_write_reg_c45;
->  	}
->
-> +	tp->phy_irq_domain = irq_domain_add_linear(NULL, 1,
-> +						   &rtl_phy_irq_domain_ops, tp);
-> +	if (!tp->phy_irq_domain)
-> +		return -ENOMEM;
-> +
-> +	ret = devm_add_action_or_reset(&pdev->dev, rtl_phy_irq_cleanup, tp);
-> +	if (ret)
-> +		return ret;
-> +
-> +	virq = irq_create_mapping(tp->phy_irq_domain, 0);
-> +	if (!virq)
-> +		ret = -EINVAL;
-> +
-> +	new_bus->irq[0] = virq;
-> +
->  	ret = devm_mdiobus_register(&pdev->dev, new_bus);
->  	if (ret)
->  		return ret;
+> @@ -2661,13 +2672,10 @@ static void rtl_jumbo_config(struct rtl8169_private *tp)
+>  		pcie_set_readrq(tp->pci_dev, readrq);
+>  
+>  	/* Chip doesn't support pause in jumbo mode */
+> -	if (jumbo) {
+> -		linkmode_clear_bit(ETHTOOL_LINK_MODE_Pause_BIT,
+> -				   tp->phydev->advertising);
+> -		linkmode_clear_bit(ETHTOOL_LINK_MODE_Asym_Pause_BIT,
+> -				   tp->phydev->advertising);
+> -		phy_start_aneg(tp->phydev);
+> -	}
+> +	if (jumbo)
+> +		tp->phylink_config.mac_capabilities &= ~(MAC_SYM_PAUSE | MAC_ASYM_PAUSE);
+> +	else
+> +		tp->phylink_config.mac_capabilities |= (MAC_SYM_PAUSE | MAC_ASYM_PAUSE);
+>  }
 
 [High]
-Should the failure of irq_create_mapping() actually abort registration
-here?
+Does this still enforce the "Chip doesn't support pause in jumbo mode"
+constraint that the comment describes?
 
-	virq = irq_create_mapping(tp->phy_irq_domain, 0);
-	if (!virq)
-		ret = -EINVAL;
+Looking at phylink_create() in drivers/net/phy/phylink.c, pl->supported is
+initialized once via linkmode_fill() + phylink_validate() and is not
+re-derived from config->mac_capabilities afterwards. Pause negotiation is
+driven by pl->link_config.pause and the PHY's advertising bits, neither of
+which is updated when rtl_jumbo_config() toggles mac_capabilities.
 
-	new_bus->irq[0] = virq;
+In rtl8169_change_mtu() the phylink_stop()/phylink_start() cycle re-runs
+phylink_mac_initial_config() against the cached pl->link_config, so
+Pause/Asym_Pause remain advertised after MTU is raised above ETH_DATA_LEN.
 
-	ret = devm_mdiobus_register(&pdev->dev, new_bus);
-	if (ret)
-		return ret;
+Compared to the old code which actively cleared Pause/Asym_Pause from
+tp->phydev->advertising and called phy_start_aneg() to force renegotiation,
+should this branch instead be updating something that is actually consumed
+on the next link-up, so that PAUSE is no longer advertised in jumbo mode?
 
-When irq_create_mapping() returns 0, ret is set to -EINVAL but the
-function continues on. The next assignment to ret from
-devm_mdiobus_register() overwrites that -EINVAL, so the mapping failure
-is silently dropped.
+[ ... ]
 
-A couple of follow-on consequences seem possible:
+> @@ -5010,7 +4995,7 @@ static void rtl8169_down(struct rtl8169_private *tp)
+>  	/* Clear all task flags */
+>  	bitmap_zero(tp->wk.flags, RTL_FLAG_MAX);
+>  
+> -	phy_stop(tp->phydev);
+> +	phylink_stop(tp->phylink);
 
-The mdiobus is registered with new_bus->irq[0] == 0. phy_interrupt_is_valid()
-only special-cases PHY_POLL (-1) and PHY_MAC_INTERRUPT (-2), so 0 looks
-like a normal IRQ number and phylib will try to request_threaded_irq(0,
-...) when the PHY starts.
+[Medium]
+Is the phylink conversion complete here?
 
-In rtl8169_interrupt(), generic_handle_domain_irq(tp->phy_irq_domain, 0)
-will be called against a domain with no hwirq 0 mapping, so LinkChg
-events would not reach the PHY state machine.
+After this commit the PHY is owned by phylink (connected via
+phylink_connect_phy() / phylink_disconnect_phy()), but
+net_device_ops.ndo_eth_ioctl still points at phy_do_ioctl_running, so
+SIOCGMIIREG / SIOCSMIIREG / SIOCGMIIPHY continue to go directly to the PHY
+and bypass phylink.
 
-Would something like this be more appropriate?
+phylink exports phylink_mii_ioctl() for exactly this case.  Mixing direct
+phydev ioctl access with phylink-managed link state can let phylink's
+cached state (pl->link_config, pl->phy_state) drift out of sync with the
+actual PHY register state.
 
-	virq = irq_create_mapping(tp->phy_irq_domain, 0);
-	if (!virq)
-		return -EINVAL;
+Should ndo_eth_ioctl be switched to phylink_mii_ioctl() as part of this
+conversion?
 
-	new_bus->irq[0] = virq;
+[ ... ]
+
+> @@ -5644,6 +5621,132 @@ static bool rtl_aspm_is_safe(struct rtl8169_private *tp)
+>  	return false;
+>  }
+>  
+[ ... ]
+> +static int rtl_init_phylink(struct rtl8169_private *tp)
+> +{
+> +	struct phylink *pl;
+> +	phy_interface_t phy_mode;
+> +
+> +	tp->phylink_config.dev = &tp->dev->dev;
+> +	tp->phylink_config.type = PHYLINK_NETDEV;
+> +	tp->phylink_config.mac_managed_pm = true;
+> +	tp->phylink_config.lpi_capabilities = rtl8169_get_lpi_caps(tp);
+> +	tp->phylink_config.mac_capabilities |= MAC_ASYM_PAUSE | MAC_SYM_PAUSE;
+> +
+> +	if (tp->sfp_mode) {
+> +		phy_mode = PHY_INTERFACE_MODE_INTERNAL;
+> +		tp->phylink_config.mac_capabilities |= MAC_10000FD;
+> +	} else {
+> +		tp->phylink_config.mac_capabilities |= MAC_10 | MAC_100;
+> +		phy_mode = PHY_INTERFACE_MODE_INTERNAL;
+> +
+> +		if (tp->mac_version == RTL_GIGA_MAC_VER_80)
+> +			tp->phylink_config.mac_capabilities |= MAC_1000FD | MAC_2500FD |
+> +							       MAC_5000FD | MAC_10000FD;
+> +		else if (tp->mac_version == RTL_GIGA_MAC_VER_70)
+> +			tp->phylink_config.mac_capabilities |= MAC_1000FD |
+> +							       MAC_2500FD | MAC_5000FD;
+> +		else if (tp->mac_version >= RTL_GIGA_MAC_VER_61)
+> +			tp->phylink_config.mac_capabilities |= MAC_1000FD | MAC_2500FD;
+> +		else
+> +			if (tp->supports_gmii)
+> +				tp->phylink_config.mac_capabilities |= MAC_1000FD;
+> +	}
+> +
+> +	__set_bit(phy_mode, tp->phylink_config.supported_interfaces);
+> +	pl = phylink_create(&tp->phylink_config, tp_to_dev(tp)->fwnode,
+> +			    phy_mode, &rtl_phylink_mac_ops);
+
+[Medium]
+Is PHY_INTERFACE_MODE_INTERNAL the intended interface mode here?
+
+Both the sfp_mode branch and the copper branch set phy_mode to
+PHY_INTERFACE_MODE_INTERNAL, which makes the if/else look like a
+copy-paste.  The previous r8169_phy_connect() picked
+PHY_INTERFACE_MODE_GMII when supports_gmii was set and
+PHY_INTERFACE_MODE_MII otherwise:
+
+	phy_mode = tp->supports_gmii ? PHY_INTERFACE_MODE_GMII :
+		   PHY_INTERFACE_MODE_MII;
+
+PHY_INTERFACE_MODE_INTERNAL is conventionally used for PHYs integrated on
+the same die as the MAC, whereas r8169's MAC-to-PHY link is logically
+GMII/MII.
+
+Phylink also derives interface-allowed link capabilities through
+phy_caps_from_interface() in phylink_get_capabilities(), so the chosen
+interface mode shapes which speeds and duplex modes are validated, and may
+affect PHY-side EEE/clock-stop handling and rate matching.
+
+Could the commit message explain why INTERNAL was selected for both arms,
+or should the copper branch keep the GMII/MII selection?
