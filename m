@@ -1,89 +1,82 @@
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+Received: from us.padl.com (us.padl.com [216.154.215.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E1435F165;
-	Sat, 13 Jun 2026 03:36:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 999E93630AD;
+	Sat, 13 Jun 2026 03:37:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.154.215.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781321796; cv=none; b=Qp4aMGLlDCijriqdr1QN4Jt7HKcK989eegaV3nHCobaTXgfrpqG2S6jPCA47KNO9hhswfiWYBW3M3gA5XKOsVhjuqMmAasJ+MwN0tmCa8/Guyv9vTk5EaRVCORvOUQeU4chmhIxUEt64B9S7RkZbBcLlSVtGzM3RcL0G8oaIvFI=
+	t=1781321857; cv=none; b=EahNrpzunOf4QhityEtYBEaYAlasI0Y4XPxmhpWqqpnQonobG6xqHNPAZ7uwf6gbkpid2GH1iVKLo3NdQV5uw7vmXgUsmr2B9rRzvIevz29QXrvHPXRu9HlCBBS9fZWsUoG4HYku38aserdUpCsUw8AVQtwi1WlVaiQC5E9DPtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781321796; c=relaxed/simple;
-	bh=oo+0RQJjhlLx73prbLq6DOmEH9KoV+ZoJXs4E58FHf8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IA/fQ5PhzQJmM5umYkr6r6YMW6Ul6fm0JbmPVsSoVVm5qFc1MznSYEbv62vxtN2dolWXmKnWlMFolFJRbRkOp7cbGCcK6J1+GfMCQMZEbBjFhh+zYgmo297Uu5XN+VmFc8PFqBzbDjqoHwoXoMKICD4/EPduRVx0gZ6YlrjroYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=cmSnLINF; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	s=arc-20240116; t=1781321857; c=relaxed/simple;
+	bh=Qz5j3NYVF0nrsmWvtdLPQIxAXyH2cm4x7IGMZTXf4FU=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=B5nQ1Z8rBH+jSn262owbUGIGKa+dGueYlPY8GAmravVb5+ccN/5qejmwdZmuUbn+1bmBVcqm+EweF3S1sAXWQbLx7lI+boxz+qObkYCM887I/HdTdoKxeAUgEg/izAiizWBKS4veM+JGTsTaeVjM6qD60SsdLJkbHQD1yWjQMQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=sLpoyB3B; arc=none smtp.client-ip=216.154.215.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=padl.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="cmSnLINF"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B870C117BB7;
-	Sat, 13 Jun 2026 05:36:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1781321786;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=P4y3pFdoByRVoa/7VLWFzqOp/83nweLfw2Zx94zu7cc=;
-	b=cmSnLINFrjTDKOKOoIlr7wUJHNU7DsfQrm6bXVlHkmDkDgCODVCf0BSfe08G8veNZTWC7Z
-	twygP1jqFzEum6vyayix7kSwCW+lye0m8+rox9w/eIrpgox86s/CD1yKwxvNpl17+8voCI
-	cRBKtPXBkRVRii1pzpC+m5Il6JdSNOwnkOwwporNKAypuWgd55prFUHf87PtEiBiHM61Iy
-	bADqJ5TsAZE2KV2rlxYtpJh2vTsDFRQfi6r4l5JaJD6wCowzDcII+LkEioD2P1TB0d0LD9
-	H7pRmLeGKKXUO/pKvcxpH4QS/1Z0/eoG0q40nvla6VcpAt/JseUBAX373LrwQA==
-Message-ID: <6544b8ff-3172-4572-ad9b-6e63fa1d6571@nabladev.com>
-Date: Fri, 12 Jun 2026 15:55:42 +0200
+	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="sLpoyB3B"
+Received: from smtpclient.apple (119-18-22-158.771216.mel.static.aussiebb.net [119.18.22.158])
+	by us.padl.com (Postfix) with ESMTPSA id 348F5600B3;
+	Fri, 12 Jun 2026 23:37:24 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=padl.com; s=default;
+	t=1781321847; bh=Qz5j3NYVF0nrsmWvtdLPQIxAXyH2cm4x7IGMZTXf4FU=;
+	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
+	b=sLpoyB3BhbWi7Byp4FtewSSxO4+l9Kl8jkRn9gJpo9IRN2juwVIfqhmn7PqQmkjdX
+	 iruBp/Yp4S5jvPG1XaUXRrAkargZCQ2LX4SaSiRIq3zABUBrO7Vw0JBM/ch0pCoT4B
+	 OLlW3yAlDLA1jRCA8+Gd7uNrR/d9C4Lo6GpxHjW4paci/hyp3Tbx6rvPFot7NtdIuZ
+	 TANzBsJwujKhRQK6ZjvtI9sqUMvwAFjqK4LTXktGpjxZkKHmFpxkKdU5ewSGfg144H
+	 Pm0YQ/4z6PE/nbbS6WSjlydLnJg3yyl8qZAPyZOOStO5EM349zyQT8fxIZIdKAcG6O
+	 GP/9Cqpy7uZCw==
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v10 0/3] ksz87xx: add support for low-loss cable
- equalizer errata
-To: Fidelio LAWSON <lawson.fidelio@gmail.com>,
- Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com,
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Marek Vasut <marex@denx.de>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Simon Horman <horms@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>,
- Russell King <linux@armlinux.org.uk>, Tristram Ha <Tristram.Ha@microchip.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Nicolai Buchwitz <nb@tipi-net.de>, Fidelio Lawson <fidelio.lawson@exotec.com>
-References: <20260609-ksz87xx_errata_low_loss_connections-v10-0-9ba4418cf3db@exotec.com>
- <8d9fc953-0c59-4811-8273-016ba98089a3@nabladev.com>
- <7bce6163-675e-4c80-8d08-1f7a63c8f65e@gmail.com>
-Content-Language: en-US
-From: Marek Vasut <marex@nabladev.com>
-In-Reply-To: <7bce6163-675e-4c80-8d08-1f7a63c8f65e@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.4\))
+Subject: Re: [PATCH net-next v7 2/2] net: dsa: mv88e6xxx: add support for
+ credit based shaper
+From: Luke Howard <lukeh@padl.com>
+In-Reply-To: <20260612153656.4c5b8c62@kernel.org>
+Date: Sat, 13 Jun 2026 13:37:08 +1000
+Cc: Cedric Jehasse via B4 Relay <devnull+cedric.jehasse.luminex.be@kernel.org>,
+ cedric.jehasse@luminex.be,
+ Andrew Lunn <andrew@lunn.ch>,
+ Vladimir Oltean <olteanv@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>,
+ Russell King <linux@armlinux.org.uk>,
+ netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ =?utf-8?Q?Marek_Beh=C3=BAn?= <kabel@kernel.org>,
+ Cedric Jehasse <cedric.jehasse@gmail.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <9E7B1B5A-ACE1-4488-A600-96FAD88D070E@padl.com>
+References: <20260609-net-next-mv88e6xxx-cbs-v7-0-7d5d732df545@luminex.be>
+ <20260609-net-next-mv88e6xxx-cbs-v7-2-7d5d732df545@luminex.be>
+ <20260612153656.4c5b8c62@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+X-Mailer: Apple Mail (2.3826.700.81.1.4)
 
-On 6/12/26 11:12 AM, Fidelio LAWSON wrote:
+> Are DSA ports multi-queue? I would have expected a DSA driver to
+> offload PRIO not MQPRIO.
 
-Hello Fidelio,
+(Noting that the example did not offload the MQPRIO Qdisc =E2=80=93)
 
->>> This patch implements the KSZ87xx short cable erratum
->>> described in Microchip document DS80000687C for KSZ87xx switches
->>> and the following support article:
->>>
->>> Link: https://support.microchip.com/s/article/Solution-for-Using- 
->>> CAT-5E-or-CAT-6-Short-Cable-with-a-Link-Issue-for-the-KSZ8795-Family
->>
->> Have you also submitted the ethtool integration already ?
->> Is there a link to a patch for ethtool to operate these PHY tunables ?
->>
->> Thank you for your help !
->>
-> Hello Marek,
-> 
-> Here's my submission for the ethtool integration: https:// 
-> patch.msgid.link/20260612-add-ksz87xx-tunables-support- 
-> v1-1-0e97a91b78c8@exotec.com
+Some Marvell switches do have multiple TX queues, but a flexible mapping =
+from PCP/DSCP values is configurable only on ingress. Cedric has a =
+separate patch to do this via DCB APP for PCP. These mappings are global =
+on the 6352 family and per-port on the 6390.
 
-Likewise, thank you.
+On egress, one can use the switch chips=E2=80=99 AVB support, but this =
+limits the number of TCs to three (corresponding to SR class A, B, and =
+=E2=80=98legacy=E2=80=99 traffic). I have a submitted MQPRIO offload =
+patch that does this. This matches how MQPRIO and CBS are used on end =
+station NICs, but is not flexible enough to support an arbitrary number =
+of TCs. Because of this, offloading PRIO may be cleaner.
 
--- 
-Best regards,
-Marek Vasut
+Luke=
