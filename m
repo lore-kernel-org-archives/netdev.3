@@ -1,169 +1,103 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941D0125AA
-	for <netdev@vger.kernel.org>; Sat, 13 Jun 2026 00:00:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7233D6FC3
+	for <netdev@vger.kernel.org>; Sat, 13 Jun 2026 00:10:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781308841; cv=none; b=dWdnLKMZOR52kw28R4cA5vvRzYa2zd155u63Omo/cR4Ma8tdUm06daAqdnvHOKpNBQus7NSFX2/ZqdWqNEJYw7OLJ6iJKYo57C7u+ur3qgAm0mvw/IJ3RSfq+CG6q/OguG9oKYFvMgaB4RDn+vMy0Ft1L/Np4omMjQrulp3JO98=
+	t=1781309416; cv=none; b=HbwxpD8PerNlC5cQNE+PpO3Bsh+/2uViCO97VHVAQ5MXMGsaDBKBZ3atC+l+Sh/dqGl+rNxEVFG1Gh5CgFUImdW0Va00B3ya1KoggL0Ljz1hSCzKyo1simhAycCVcm7QInvbZlCA+/46qThk+97mE14xrT7YUihaTAIqQZw00DA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781308841; c=relaxed/simple;
-	bh=J0WzJpD/x+q+vxJv2njAkDDF3911Tp1Td3ILzRFuhFw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gHr9kPyG0H3NSE7GDLwB8U+4LN5zeD6BACiv4XeTi9JdZDSCETQj5Zxt+uoW8+uaN7UXFe8y8BUFuYgWI1dwKUeA5UrESFjDucRNImdxh+I6nDfyeS7HLrR6bTJB0LOIoC5QWnfGJrZyd9EvFYvCu8PcykbRxTUzB3MkMYvVtpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=QTsa7Z4i; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
+	s=arc-20240116; t=1781309416; c=relaxed/simple;
+	bh=2xA7UwrmgSAiT4AAGXdHKe3DLcEVpuJqqL8PXChttXs=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=GbiU5yAwUMn1y/4cNL7Mg0lwnzQHB+rbYfYhq/Bij9PMNRYDsswh8XcKp8sbh8+nQ9spVtWRvCwjcVU1b39RM2evLpB0G3DdJRd2FXmiTOgMPSnnVBxB918vR5PqRZCUqQZppgpQsbcAEYNN/bFqzFKRwgPql2hI0zrg/u85Aiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tavip.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=K2QTy7U0; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tavip.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="QTsa7Z4i"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-84275887a3fso1852020b3a.1
-        for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 17:00:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="K2QTy7U0"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36b808bedfaso2070106a91.1
+        for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 17:10:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=asu.edu; s=google; t=1781308839; x=1781913639; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=W4w1/sjBs167L+wbRQHAYtjy5PaFRFJl/qC08ynozT8=;
-        b=QTsa7Z4iNJ67/wuvxzBkiGd3+K0hWlIRPlr2Y7GlkyxvC7n6BOeYlF/adlDDMKnmKL
-         b2uLAnwHyp5EjA2fIaSoDW7c1N0xNflE1plrDcBpz1L5r6TpdkwLEdP3iCi8rVphmtZZ
-         h3xIPpX197I1GqcHjR0BUOoEpJ0ljysMbF7pYRrO2K0gIZ/vHb3o/d9bkeLs6esG10T7
-         QCHqQvhvBHGz/7sf2v+clSprxEra7XHsLvDguytMZTltpWsZdcdaRX9DsjzbBTTebJvx
-         l78YubcVFAt+cGoMLW/NEH2Vg6Rddh7xE/SOmZSulIsBLLOoYPicSKiUEKybYaQJh79v
-         xvcg==
+        d=google.com; s=20251104; t=1781309415; x=1781914215; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ZDW2+QBWaKIKD14o7O9QPMJy941RQm/F5fPpz4Pl5f4=;
+        b=K2QTy7U0UNtGpShyhPW/DSl2Jnr2jPUsBYNE3lDTQRn4/cBKqmOYEzQ64jETguc81n
+         LpgQPveIxPH1fPc5dLI3Hdur5dMoh94qmh0yff23cPFuBFCatjuIo+tNRYUjLVVCliih
+         Gy6gphYzUYL+cGrhX25sNJ7O9ieJxsgJVjb97w8mSgzy2dNhsFwoc+cFdy97Z0SeajJK
+         cxarM4btSww0TenEoJBh64ikccRefL1c/xj8lZSqiDvXqaqexCyfBqaiO+Wxk5pYypDv
+         JKPpbC4ckNoRO5VBnsHYjiQNkVN/jNPFK4S01mjDQuCSCBWa+U/Q6CHuXcSWuCt0W55G
+         nWww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781308839; x=1781913639;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=W4w1/sjBs167L+wbRQHAYtjy5PaFRFJl/qC08ynozT8=;
-        b=NhYcLhwKJrnfrr2hNoF9ZfWtWgq2q+5oAaaAHs5P6QbVRBWIEesm8JqIUuXz65AJoe
-         f31OvZKr6ZkAmB4EJ2QX3wEaErSC/5I25GTwWdlAtEUU0VQsBLlPcUvKI0BuTNjzkU7S
-         inD8nj70b6uJfXf8VRjHV3VnAWjml7e5kBaCV+WYrFsH0YehmGOY2QgZTwWF8TvEFwMI
-         xm0uzmaJyDvg2XmLmH7ltH+avglXiypgFKu3wwnRfL9e9pn8j01Bjz6YGp3TLE/fPXtf
-         /Ew+eahymPpALttjOIsJttFZ3exHB3ujimHLn6ib8C1+zxfqcjWoTDUkBl1kAics5s2w
-         VyUw==
-X-Gm-Message-State: AOJu0Yz8Hn772s8CKttxeV59T89MKit02RTVHlXT/ozHfU8vaVHMpc7Q
-	LGh8PH1C2MQz2iibvNkyhlzWh2fPgYTPX8JA1/LsZZWNo6Rf5VMMCxJOB+TVzdZ5oA==
-X-Gm-Gg: Acq92OHlC3biBkWZV1YPOZRAHPdgoimOOw7i+gkLENFcdVrRvSQsdnrsZQQ11aIOepA
-	pL0zeLfHuKDuvemndpV6I5Nq7d7F+pt1cBMNRpSxeTqR78Rih8jjqujMYi5b4R7rnW4fmPVDfhl
-	ElSm/2+s0ZYunk8eUBX98q9gRiziWNW/2CXOLK+hpyzeR+ZiPUyab7CJ9tjBq9yBS6Vi3Q12Ea/
-	eHqYPyFpGkar8DljqtQLfyU9jfxJ5PWNrd7UcW23aQt1BY2NUV3MAfhun8XM6oA4gxs4zK+vocw
-	jWUwqkV14E65x3FvU3t1df7CTXdowgylRqRAb4o5yLDDdR4CtJ99ecP4Bmd+p+TOSr7tbE4rQSY
-	+pXgp+JqaDvJMdtOeJK2fElKkDECTQodFzDB08LeKdCh4/X24E4u3aj35qQQNlEEjY9N3Tmdt1s
-	xie7Tmug==
-X-Received: by 2002:a05:6a00:3a08:b0:837:735b:826f with SMTP id d2e1a72fcca58-843497ca6d9mr4673044b3a.32.1781308838671;
-        Fri, 12 Jun 2026 17:00:38 -0700 (PDT)
-Received: from p1 ([2607:fb90:ec99:429b:a889:f485:dd02:b10c])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434b0226acsm3392301b3a.48.2026.06.12.17.00.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Jun 2026 17:00:38 -0700 (PDT)
-Date: Fri, 12 Jun 2026 17:00:35 -0700
-From: Xiang Mei <xmei5@asu.edu>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, 
-	Eric Dumazet <edumazet@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S . Miller" <davem@davemloft.net>, Weiming Shi <bestswngs@gmail.com>, 
-	Kyle Zeng <kylebot@openai.com>
-Subject: Re: [PATCH net v2 2/2] geneve: validate inner network offset in
- geneve_gro_complete()
-Message-ID: <2dgmazkbys3g3wjkxfh62tgg5ru2pchhegoavf33zzh4d7lhpb@pdqyz2dcypbj>
-References: <20260609041334.2506153-1-xmei5@asu.edu>
- <20260609041334.2506153-2-xmei5@asu.edu>
- <fcc21647-d7ac-4b9b-ac61-42fec517cb99@redhat.com>
+        d=1e100.net; s=20251104; t=1781309415; x=1781914215;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZDW2+QBWaKIKD14o7O9QPMJy941RQm/F5fPpz4Pl5f4=;
+        b=UUjzWn7kVV7t7BIM4SLjn6hVV2WqSvorg/0JbOUZfWfm27bcEYFcnJ7qNphFU+d/n/
+         iyAN86LI1azNvOmQNy5bdp2cKhJVZ+W+AGGbefz6xuT1a9yZhynKxjGDKBp/cwk3g7Ts
+         MqpevMoWYRLnwVXlFJyD4ldPxlQji6Kh78narvruTLFktDM4AwxZbZFPfXyo6+JScyd9
+         fGDp8uvd7DCSLEQIN+8K5PZ3KU6rQaxjyC66eWSntOVicKzo0PhZnSDes1r7CtTcBnwn
+         R3zmCKm2hXwcpMMAz5YyD8e+fbBivzyd77irhdzrif5W7/tGkwUVbx1UJqvmkGwyybU9
+         jpiQ==
+X-Gm-Message-State: AOJu0YzaiajhQESkyST+j/nAPraZqwSuEnAgzjDjJWH4FjBriDWH0Tja
+	Te5il/c9fDUO4/Z7tHeLf5hfeoHTL0S+Xct1lpCDunuNjUMFLkP3oe2ePF5/fZCrrUnqzg7Sm5m
+	61eU9XqtrgXLS87U4pAaGS3x/zpPDOkQxzZP3ab4ZtzXAk6ZBdkQFLMHx7E1gY8Df8pGpzLIo49
+	q3Q/MSq2J/thegKrUJI2tBAcbOGUF4vcw=
+X-Received: from pjbco19.prod.google.com ([2002:a17:90a:fe93:b0:36b:7407:9b73])
+ (user=tavip job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:580c:b0:35b:8d89:719b
+ with SMTP id 98e67ed59e1d1-37c2bc6f158mr1545724a91.1.1781309414535; Fri, 12
+ Jun 2026 17:10:14 -0700 (PDT)
+Date: Sat, 13 Jun 2026 00:09:51 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fcc21647-d7ac-4b9b-ac61-42fec517cb99@redhat.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
+Message-ID: <20260613000953.467473-1-tavip@google.com>
+Subject: [PATCH net v2 0/2] vsock/virtio: fix msg_iter desync on transmission failure
+From: Octavian Purdila <tavip@google.com>
+To: netdev@vger.kernel.org
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, 
+	Arseniy Krasnov <avkrasnov@salutedevices.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, 
+	"=?UTF-8?q?Eugenio=20P=C3=A9rez?=" <eperezma@redhat.com>, Jakub Kicinski <kuba@kernel.org>, Jason Wang <jasowang@redhat.com>, 
+	kvm@vger.kernel.org, linux-block@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Stefan Hajnoczi <stefanha@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>, 
+	virtualization@lists.linux.dev, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+	Octavian Purdila <tavip@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Jun 11, 2026 at 12:47:52PM +0200, Paolo Abeni wrote:
-> On 6/9/26 6:13 AM, Xiang Mei wrote:
-> > Even with both paths gated on gs->gro_hint, geneve_gro_complete()
-> > re-derives the inner dispatch type and length from the packet and the
-> > current gs->gro_hint, independently of geneve_gro_receive(). The two can
-> > disagree if gs->gro_hint flips under a concurrent geneve_quiesce()/
-> > geneve_unquiesce() (sk_user_data is NULL across a synchronize_net()), or if
-> > the re-read option bytes differ from the ones receive parsed.
-> > 
-> > geneve_gro_receive() already records the inner network header position in
-> > NAPI_GRO_CB()->inner_network_offset. Have geneve_gro_complete() check the
-> > offset it is about to dispatch at against that value, adding ETH_HLEN in
-> > the ETH_P_TEB case where eth_gro_complete() steps over the inner MAC
-> > header, and bail out on mismatch instead of trusting the re-derivation.
-> > 
-> > Fixes: fd0dd796576e ("geneve: use GRO hint option in the RX path")
-> > Assisted-by: Claude:claude-opus-4-8
-> > Tested-by: Weiming Shi <bestswngs@gmail.com>
-> > Signed-off-by: Xiang Mei <xmei5@asu.edu>
-> > ---
-> > v2: Add patch for race condition found by Sashiko
-> > 
-> >  drivers/net/geneve.c | 13 +++++++++++++
-> >  1 file changed, 13 insertions(+)
-> > 
-> > diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
-> > index d0dc5d6c46df..028740e97740 100644
-> > --- a/drivers/net/geneve.c
-> > +++ b/drivers/net/geneve.c
-> > @@ -956,6 +956,19 @@ static int geneve_gro_complete(struct sock *sk, struct sk_buff *skb,
-> >  	type = gh->proto_type;
-> >  	geneve_sk_gro_hint_off(sk, gh, &type, &gh_len);
-> >  
-> > +	/* Bail out if our inner network offset disagrees with gro_receive().
-> > +	 * ETH_P_TEB adds ETH_HLEN for the inner MAC header.
-> > +	 */
-> > +	if (skb->encapsulation) {
-> 
-> I think the disagreement could happen even in the opposite direction,
-> i.e. gro_receives does not see hints available, but gro_complete does.
-> 
-> > +		unsigned int inner_nh = nhoff + gh_len;
-> > +
-> > +		if (type == htons(ETH_P_TEB))
-> > +			inner_nh += ETH_HLEN;
-> 
-> This does not work in when the innermost headers carry a vlan tag.
+This series fixes a msg_iter desync issue in the virtio vsock transport
+that can lead to warnings and eventual -ENOMEM under specific failure
+scenarios (e.g. partial GUP failure during MSG_ZEROCOPY transmission).
 
-Yes, you're right. the check is wrong.
+To fix this, we need to restore the msg_iter state on transmission failure.
+However, since virtio vsock transport can be built as a module, we first
+need to export iov_iter_restore.
 
+Patch 1 exports iov_iter_restore.
+Patch 2 implements the msg_iter restoration in virtio vsock.
 
-inner_network_offset is the inner L3 offset recorded by gro_receive. For a
-tagged inner frame eth_gro_receive hands off to vlan_gro_receive, which
-pulls the VLAN tag before the inner ip*_gro_receive records it, so it ends
-up at nhoff + gh_len + ETH_HLEN + n*VLAN_HLEN. We only add ETH_HLEN, so
-'!=' drops a valid frame.
+Changes in v2:
+- Use iov_iter_savestate()/iov_iter_restore() (Stefano)
+- Use a single restore point (Stefano)
+- Reverse xmas tree (Stefano)
+- Added comments in the code (Stefano)
 
-Do you think a lower bound works?
+v1: https://lore.kernel.org/all/20260609004809.1285028-1-tavip@google.com/
 
-For example:
+Octavian Purdila (2):
+  iov_iter: export iov_iter_restore
+  vsock/virtio: restore msg_iter on transmission failure
 
-	if (skb->encapsulation) {
-		unsigned int inner_nh = nhoff + gh_len;
+ lib/iov_iter.c                          |  1 +
+ net/vmw_vsock/virtio_transport_common.c | 13 +++++++++++++
+ 2 files changed, 14 insertions(+)
 
-		if (type == htons(ETH_P_TEB))
-			inner_nh += ETH_HLEN;
+-- 
+2.54.0.1136.gdb2ca164c4-goog
 
-		if (unlikely(inner_nh > NAPI_GRO_CB(skb)->inner_network_offset))
-			return -EINVAL;
-	}
-
-A VLAN tag only pushes inner_network_offset later, so a valid packet has
-inner_nh <= inner_network_offset and passes. The opposite direction you
-mentioned (receive does not see the hint, complete does) inflates gh_len
-in complete, so inner_nh goes past inner_network_offset and is rejected.
-
-The only case this does not reject is the reverse (receive uses the hint,
-complete does not), where inner_nh lands before inner_network_offset.
-That is in bounds and only reachable across a concurrent
-geneve_changelink() quiesce/unquiesce, so not attacker reachable. If you
-want that too, we need to record the offset gro_receive used in
-napi_gro_cb and compare by '=='.
-
-Xiang
-
-> 
-> /P
-> 
