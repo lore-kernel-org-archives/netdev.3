@@ -1,107 +1,132 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C5D1D5CFE
-	for <netdev@vger.kernel.org>; Sat, 13 Jun 2026 00:27:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59F9E1F3BA4
+	for <netdev@vger.kernel.org>; Sat, 13 Jun 2026 00:29:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781310432; cv=none; b=Reeec9MYyqn7CtRu0qs2jS9Rvvlk1PHp9N1mk+Vk11Pq0nNa7bCK79zkjDIAjlHRxbsW/JDAMv/RgUa/xR5i3he7rBGlPD/N/ZzfPmjholj9k36z0/9Bn1eXGWKKK8Ofm5AqyvxAhYUfNPbVptLC72sxg5XO0HabNIU71iuyYbI=
+	t=1781310549; cv=none; b=hClQ3Dq6Cuq9PsGaBbPOu1OeAdatGsNWDpZeNm5lYzwI4VvICpWQM5e3bgsBprtyqZ9Obd6GTyCrwKw9l/m0ruXgxlvDuojDwqNYZXLjwuPThKtaWQiMNsy9HQuqZX0gh7zXWX/HngzRC5mOylkjt48l4btJLcJSNsXE3k60KI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781310432; c=relaxed/simple;
-	bh=ky7NlLqsBt6fB9bGL3H9bCyfLVKnOE5dGAWmja+F5Gw=;
-	h=Message-ID:From:Date:Subject:To:Cc; b=u0x29kIII6RNQjTRaxQdeNVuqCDJKxi+r9SXZWPU9WKPFJNlY71DNzwj9dC7bA+eMYPrWmzSQc0SxP3V6D/zGrNBpdBoy5J8DQZRvSwNA5D7ZlttwZ6pyd5Xl2HBHr7S8Vko8K1e9YUZH7gafB2kR4wu/pkYzgr4xZJHD8mOrPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fGeD9RdR; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781310549; c=relaxed/simple;
+	bh=QgXc4ODljJhWTTpaw445TVamF/nyBWaAo/I/wBG/rxw=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=YP/jBQ5WnaI7loB4BCVNW7WYEorAx1EOyOdkltQRHFgVusmisQc1lvbN3cB5c4h8kliJ7gS77j5zy6jSadJkZK7sRqdi+IKgOlJnH1zcx2m6FD+0n7k6OZgroDCw9hluIOlUg5DedcNymUW1xdj10nYUPvyBeeugXQNg/5SmrHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GgfahnZQ; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fGeD9RdR"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-36baeec21dcso1103709a91.3
-        for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 17:27:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GgfahnZQ"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2c2a4babe45so8803705ad.2
+        for <netdev@vger.kernel.org>; Fri, 12 Jun 2026 17:29:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781310430; x=1781915230; darn=vger.kernel.org;
-        h=cc:to:subject:date:from:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CAEQuq4z5dW0AnrothciojC8/CjIG+BXfxwJ5kTAGpw=;
-        b=fGeD9RdRgo+nuFRN6RBW6HFEOQI0hFRD0La3sJTZbKkDb0Ijc5PVgVjId34njfSsN2
-         hHqt/DhKGNuLVzUv6lW6UIYXK7ywVu6q3iqgtrkBLaLpOdHk7HLXLY/pE54C6gPj1RBp
-         KKdjy4S4lBS1yZWRnQvUsaet73cly8jX0M9UfMtbM8mx/u7F2fKeP4C+oa71zgnWIWjC
-         wcEzmJqfRNx29C1r7Wp7FYImhhBrrHpsBY67r5bijV3GxD6SbvgCGoO0imgi++G/PN51
-         Lyd0XY5GsITFqcUGtqkPUQEGfA02UHPObg5hfweRk8uhmmVdWgepHTBbJ8k915BiZKCB
-         919w==
+        d=google.com; s=20251104; t=1781310548; x=1781915348; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=OUh6D4rBcGOJpXdbW9cjRObx5ZfnYBi6zdUUzwINyao=;
+        b=GgfahnZQrDLbK9ff4h7onSM3J8k8edLC0IeZsMQ3zTs5hIgSLN33JCo0G5hnVRPAxI
+         yI6hhCsAOFWhLQWph7JAtLchoGGadyXAigHE6ktPTnaaqz8MVKNp/aG6tf1y+k8IcXrr
+         aVdCYn4H4xGMV+EZd2tvnjosIPW1I5pmMSaf9agrPjKTjKP/dnP6SnDDLq2Z1sKGQ8hQ
+         WyZQNb9VXzm77534zFmH77B/P82tH0F6YK+qkI4wRqKBaVD9kojNaaQ5egLJNuPJ75er
+         d3YTaM+NZWQ31AfMvFWD7pIXbxOyxGno0gtrHkdDRBdNn+GLUl4WBy4lGk2jmcBsQwaa
+         Y8nA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781310430; x=1781915230;
-        h=cc:to:subject:date:from:message-id:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=CAEQuq4z5dW0AnrothciojC8/CjIG+BXfxwJ5kTAGpw=;
-        b=QDG4D9STe/pLUqEe8BK8sSXfDWALnB04A+Wja/DphoD0wmxwnlU8nCYuzzspLh/MNl
-         MQOpYa54NIsaf0891NbPfHAeOGnS/RYhlmPlVGpwX7Y21WYvqd09tZEwYXdTEUXfTx3k
-         Ue3HgbDWxjrlgy7pi/tIF1QupqEU1iOc0k2cTMqBt+LNGpNsuykyd2uz/+wTB5Bsdzxj
-         W7liBudT98Efws5c8phazjOVO3s0Vigd/2aTJqvN2++r1KaFJ6rllz6Bn8erplqG8MLV
-         5NY4PTzpX09ANF++eCmMhxNtumR3CMOQNVtihYe7XKMkQRx72peEVsbw3YYWuVbW1kWN
-         v+vg==
-X-Gm-Message-State: AOJu0YxCNyaHSNGRG20n5UBRtxBZso6vdYG7Pw35qjTtIoB6BMXgvtD1
-	CmRXQj7BS7y/QYLacnxSsedT4rqp0rhZB1O0feihmuBPBNYGHYt0JgFChF5owi7nuPY=
-X-Gm-Gg: Acq92OHyE+G+fEqnGrPwPZFhdkk3PZx6wgcbdqNjT9oYq1BmX8N3QgeB7dfvQJaJxUt
-	fpkzXArFqQiK3QW+Jb4FRFbfH6R9PaToujk+yCLA1tuXyJT2kVhR9ce9b5JzNsEGPNamjpRHqru
-	AwNde16UR0sKAVFsvp7emy05DL5jMthIIY98bSmVeFoFUYCbD21rXIalbOyAtBP6kEYMl3P4yVD
-	R9gZHxQnUaW6lO/l9Zdb4Kn/WUIvsMWTAtMg6sevbU0bBUX64x5YZF3ylT24lyibPnoLoPZi2V1
-	+pj97Igbi8IcFdKRqG3eTuq2FX2q104zoO2RMam2NVxjpAZKpj4igbGkgfynpigdq5Gdx/cwsa5
-	RkMkzaZs/FEx585l4jFkJobOcjSFBIN7ZvE+3wZVGyHHSSbRbxVoczFveBwGkeZoArY5cpYIONL
-	tj+Qk4MbPBzD4N3B5GVyjoAfRLf6M=
-X-Received: by 2002:a17:90b:1b04:b0:366:3517:1aa2 with SMTP id 98e67ed59e1d1-379ff644660mr5554949a91.0.1781310430554;
-        Fri, 12 Jun 2026 17:27:10 -0700 (PDT)
-Received: from [127.0.1.1] ([47.253.114.73])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37a1eba8ea7sm3441412a91.1.2026.06.12.17.27.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Jun 2026 17:27:10 -0700 (PDT)
-Message-ID: <6a2ca3de.ad59c0a6.147df9.2ac1@mx.google.com>
-From: "Wayen.Yan" <win847@gmail.com>
-Date: Sat, 13 Jun 2026 08:23:12 +0800
-Subject: [PATCH] net: airoha: Fix always-true condition in PPE1 queue
- reservation loop
-To: netdev@vger.kernel.org
-Cc: lorenzo@kernel.org, horms@kernel.org, pabeni@redhat.com, kuba@kernel.org, edumazet@google.com, andrew+netdev@lunn.ch, angelogioacchino.delregno@collabora.com, matthias.bgg@gmail.com, linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
+        d=1e100.net; s=20251104; t=1781310548; x=1781915348;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OUh6D4rBcGOJpXdbW9cjRObx5ZfnYBi6zdUUzwINyao=;
+        b=C2pnlfeDc/WjUtHwE6cIYuZsAE/3JY04TLJ5EPS5MpijUVnYbC0u7Q10R9ZgrfMroI
+         GjQPSfkA3k/H+H/gvLCAjgHIFBU/kY3ZdCmarP6xPBfq6PHz7rRpulLAg7W2PI/89hs3
+         +OHkjTjazdrJL+bZ6gEKf76mTSHXADu81s0kLjdxxNyNzfvIFR8OnixYO6TsZNpDuCUo
+         ZbVNG+XD0s2tQ6SAe5zYgv9bReYK0B9SLpO4w70XKugVOjkx1E4W2xLLM7SXx4iyIwQg
+         SnWzrNvpc1Ar325vMo7q8msTH7DgOC4KcyRw76S0hCVO8RZsgKFdOoYNzjyCd51esez7
+         nixw==
+X-Forwarded-Encrypted: i=1; AFNElJ/aQmcCJLdXP8dK/srXDDMYdxFAizPdCJTMDuGmTSFvZZe8k5+Do9BezlgBJo2kqCrT4z4rRFo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxhG2QTC6fJWDwNstNLs5zg79BAUdQnjW8L1c2K7hwFxgoRFKDl
+	rxFWUDL4e0PLaUULPIyu0LV8ENfQPuUXw6iWGBrKDHcj35ki9tqUJrYpFV74BNH0edYBuwST5d6
+	3gC1xWw==
+X-Received: from plbjx9.prod.google.com ([2002:a17:903:1389:b0:2bd:9bd8:749b])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:cec7:b0:2c1:f29a:b554
+ with SMTP id d9443c01a7336-2c664271df6mr18671095ad.21.1781310547424; Fri, 12
+ Jun 2026 17:29:07 -0700 (PDT)
+Date: Sat, 13 Jun 2026 00:28:38 +0000
+In-Reply-To: <20260612130919.299124-4-jiayuan.chen@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <20260612130919.299124-4-jiayuan.chen@linux.dev>
+X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
+Message-ID: <20260613002906.1336958-1-kuniyu@google.com>
+Subject: Re: [PATCH bpf-next v3 3/7] bpf, sockmap: zero-initialize pages
+ allocated in bpf_msg_push_data
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: jiayuan.chen@linux.dev
+Cc: andrii@kernel.org, ast@kernel.org, bestswngs@gmail.com, 
+	bpf@vger.kernel.org, cong.wang@bytedance.com, daniel@iogearbox.net, 
+	davem@davemloft.net, eddyz87@gmail.com, edumazet@google.com, 
+	emil@etsalapatis.com, hawk@kernel.org, horms@kernel.org, 
+	ihor.solodrai@linux.dev, jakub@cloudflare.com, john.fastabend@gmail.com, 
+	jolsa@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, martin.lau@linux.dev, memxor@gmail.com, 
+	mmmxny@gmail.com, netdev@vger.kernel.org, pabeni@redhat.com, 
+	rhkrqnwk98@gmail.com, sdf@fomichev.me, shuah@kernel.org, song@kernel.org, 
+	xmei5@asu.edu, yonghong.song@linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-In airoha_fe_pse_ports_init(), the inner condition for PPE1 queue
-reservation is identical to the for-loop bound, making it always true
-and the else branch dead code:
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+Date: Fri, 12 Jun 2026 21:07:47 +0800
+> From: Weiming Shi <bestswngs@gmail.com>
+> 
+> bpf_msg_push_data() allocates pages via alloc_pages() without
+> __GFP_ZERO. In the non-copy path, the entire page of uninitialized
+> heap content is added directly to the sk_msg scatterlist, which is
+> then transmitted over TCP to userspace via tcp_bpf_push(). In the
+> copy path, a gap of len bytes between the front and back memcpy
+> regions is similarly left uninitialized.
+> 
+> This leads to a kernel heap information leak: stale page content
+> including kernel pointers from the direct-map and vmemmap regions
+> is transmitted to userspace, which can be used to defeat KASLR.
+> 
+> Add __GFP_ZERO to the alloc_pages() call to ensure the allocated
+> page is always zeroed before it enters the scatterlist.
+> 
+> Link: https://lore.kernel.org/all/20260424155913.A19FDC19425@smtp.kernel.org
+> Fixes: 6fff607e2f14 ("bpf: sk_msg program helper bpf_msg_push_data")
+> Tested-by: Xiang Mei <xmei5@asu.edu>
+> Tested-by: Xinyu Ma <mmmxny@gmail.com>
+> Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+> Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+> Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+> ---
+>  net/core/filter.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/net/core/filter.c b/net/core/filter.c
+> index 3e555f276ba80..6e345ca65ca14 100644
+> --- a/net/core/filter.c
+> +++ b/net/core/filter.c
+> @@ -2832,7 +2832,7 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
+>  	if (unlikely(copy + len < copy))
+>  		return -EINVAL;
+>  
+> -	page = alloc_pages(__GFP_NOWARN | GFP_ATOMIC | __GFP_COMP,
+> +	page = alloc_pages(__GFP_NOWARN | GFP_ATOMIC | __GFP_COMP | __GFP_ZERO,
 
-  for (q = 0; q < pse_port_num_queues[FE_PSE_PORT_PPE1]; q++) {
-      if (q < pse_port_num_queues[FE_PSE_PORT_PPE1])  /* always true */
-          set RSV_PAGES;
-      else
-          set 0;  /* unreachable */
-  }
+This is a red flag.
 
-The intended behavior is to reserve pages only for the first half of
-the queues, matching the PPE2 implementation on line 334 which
-correctly uses the /2 divisor. Fix the PPE1 condition accordingly.
-
-Fixes: 23020f049327 ("net: airoha: Introduce ethernet support for EN7581 SoC")
-Signed-off-by: Wayen.Yan <win847@gmail.com>
----
- drivers/net/ethernet/airoha/airoha_eth.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index 31cdb11..999f517 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -311,7 +311,7 @@ static void airoha_fe_pse_ports_init(struct airoha_eth *eth)
- 					 PSE_QUEUE_RSV_PAGES);
- 	/* PPE1 */
- 	for (q = 0; q < pse_port_num_queues[FE_PSE_PORT_PPE1]; q++) {
--		if (q < pse_port_num_queues[FE_PSE_PORT_PPE1])
-+		if (q < pse_port_num_queues[FE_PSE_PORT_PPE1] / 2)
- 			airoha_fe_set_pse_oq_rsv(eth, FE_PSE_PORT_PPE1, q,
- 						 PSE_QUEUE_RSV_PAGES);
- 		else
--- 
-2.51.0
+We have a bunch of KMSAN reports due to raw/packet sockets,
+which requires CAP_NET_ADMIN, and leave them unfixed although
+some people attempted to "fix" them by adding __GFP_ZERO to
+__alloc_skb().
 
 
+
+>  			   get_order(copy + len));
+>  	if (unlikely(!page))
+>  		return -ENOMEM;
+> -- 
+> 2.43.0
