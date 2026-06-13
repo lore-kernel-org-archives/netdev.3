@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D3034B1A3
-	for <netdev@vger.kernel.org>; Sat, 13 Jun 2026 20:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A9DB3921D0
+	for <netdev@vger.kernel.org>; Sat, 13 Jun 2026 20:10:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781381444; cv=none; b=rXqe7aKA+1VRa9GsgdVnNqnehor0AEnnIBRJsiAwOs97fKq+C3SF1K2LrsW+2D65jkWpP2z/KTK7MgnYlEhSSfYAmAMwhdwA9EvqY90O4x02tM5OkVFnMRAmfeRim9F6L8WO+6dLsf2aVvMP5Va+cSJZsCgfcY/tnEGc+qXBaIg=
+	t=1781381445; cv=none; b=Eme3Y18eYp+97knz045gjMV/w2zTGa2IFkioKDZG4Qw/E4fiHlgtZgTcPFmO7OpGcDB7Fk1l8yq4iFp3eZoj7TBbXzrNMG66s7CP4wGf7yNGzfCn74SmJjEbgslnxg1Dl5ZfZwuPg/E9w8RmCoUw+r6SQfQftQJbGuvVY3qum9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781381444; c=relaxed/simple;
-	bh=PDEWNmhQWCvGdMCu7E6cEINtfqKVBANG6PfpYYhSj40=;
+	s=arc-20240116; t=1781381445; c=relaxed/simple;
+	bh=vagjNGdyl9oInZTCnF6670xCfjcQJLjN2tge5WycSOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IHC5rTkFh9m7pKnNkvUL2qLKSeUdYhFNmewvGU7ZnNx3IHgstX2gbbwoQ22uotTQPw4VAZXZkgkUF2e8q2sxAv00px0/6dVI/3HDriRDgZ6pWbs1OeTX0Fb6z84iq8uKWILV5QHoY2C4y3ubxksbWCQ7N5sEwSf2UfV438P7M30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HHmmuftg; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=rPiGwSGQpl6sMYQDYjtmL3h+4XU9IOCn/EhyrtaKbi5LgihXUF4R8QZGWa4wrTX4sOXJqj82APsgiyPupmC3hHSliAB956q5YAi69y+VlroILfnXfNbC82ek7XinSexJWK4PojlqcTU7gAocC4bSPwr4h5hsXvci4G582E3sh5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C4CkPV/8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HHmmuftg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 112331F00A3A;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C4CkPV/8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B43061F00A3E;
 	Sat, 13 Jun 2026 20:10:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781381443;
-	bh=4i1sj49Uq/9paJvXs5fVbG9vgxXdAKmcH+RVsk+ldfI=;
+	s=k20260515; t=1781381444;
+	bh=JWSoMeIzBgrAKi8MVH4TkcJoLoP6HwP9YPHAZ+d3OCA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HHmmuftgzia7nHa+F0E1rkxVCc+2RK3oUJev+N8PRkvXY03xgvwHeR0wqfA+jy651
-	 m3gNjUXhYr2bOmET0TqwRaAMaL6F5a6NsLCqINt2RjT0ylN7f/uPwTIiImiEDZxo7y
-	 6LaMOjbyK/v7pROUMzQeIp1XJkjw53qXx/RuKWTK+hbcJrt2Bq0FN8my1dWmRNJom9
-	 3Eb77fMGJL5KCAWU01O3YNMTzbwtfD/xdoKXRCz2jSXtmBNQio+xXng19WAJAAXzIu
-	 TlFTTgiBynQdwfI5b4Lr9by372DM45xgZcX1DUl8rih8kN++68gj1sMex0k+kY/6qT
-	 YPIxW1HlHx8Mw==
+	b=C4CkPV/8b3PjNhHZWNgfEeDLJjRgagKhOUJPKxAiWRC+elBa6M9Jz9aIuGv8DpbH1
+	 ny5LLTYUKbrcXW9Whz8ra56+UYuHS7wq9vD9oSu9C00ja7EWZjGJirK1xsAphZGAPa
+	 Pg8kRmtmndhEa34Jd+/LdlZLCcC0R3q+sA88m/VnBPLKrhoz5t7YcGnZ/2Sqfb/0ht
+	 sxjBu39Kd/Cw3bl/ghiQ5AFi3ohVlh5TQrFlDdvQeUKAV0iaInyyRea36FzcCjXNPf
+	 VkU8L3jn5EXLfGdw8GeCT21/HckHKmDpZueGiGuHgA6p6AsCk6niFx07+fmm9AyEot
+	 /3NHr8Pqt/VOQ==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -38,9 +38,9 @@ Cc: netdev@vger.kernel.org,
 	linux-atm-general@lists.sourceforge.net,
 	dwmw2@infradead.org,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next 2/9] atm: remove the unused send_oam / push_oam callbacks
-Date: Sat, 13 Jun 2026 13:10:25 -0700
-Message-ID: <20260613201032.77274-3-kuba@kernel.org>
+Subject: [PATCH net-next 3/9] atm: remove dead SONET PHY ioctls
+Date: Sat, 13 Jun 2026 13:10:26 -0700
+Message-ID: <20260613201032.77274-4-kuba@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260613201032.77274-1-kuba@kernel.org>
 References: <20260613201032.77274-1-kuba@kernel.org>
@@ -52,101 +52,77 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The atmdev_ops::send_oam device operation and the atm_vcc::push_oam
-callback were the kernel's interface for raw F4/F5 OAM cell exchange.
-Nothing assigns them a non-NULL value and nothing ever invokes them:
-the core only ever initialises push_oam to NULL (in vcc_create() and the
-AAL init helpers) and the Solos driver only lists send_oam = NULL for
-documentation. The drivers that actually drove OAM through these hooks
-were removed along with the legacy ATM adapters.
+The SONET_* ioctls are SONET/SDH PHY controls that atm_dev_ioctl() and
+the compat path only ever forwarded to the driver's ->ioctl() handler.
+The PHY drivers that implemented them (the S/UNI library and the framers
+on the removed PCI/SBUS adapters) are gone, and neither surviving driver
+services them: solos-pci has no ->ioctl, and usbatm handles only
+ATM_QUERYLOOP. They now uniformly return an error regardless.
 
-Drop both callbacks and the NULL initialisers.
+Drop the SONET compat passthrough and the SONET cases in atm_dev_ioctl(),
+along with the now-unused linux/sonet.h includes. The SONET_* uAPI
+definitions are untouched.
 
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- include/linux/atmdev.h  | 8 --------
- drivers/atm/solos-pci.c | 1 -
- net/atm/common.c        | 1 -
- net/atm/raw.c           | 2 --
- 4 files changed, 12 deletions(-)
+ net/atm/ioctl.c     | 13 -------------
+ net/atm/resources.c |  5 -----
+ 2 files changed, 18 deletions(-)
 
-diff --git a/include/linux/atmdev.h b/include/linux/atmdev.h
-index 82a32526df64..71c5bf6950e3 100644
---- a/include/linux/atmdev.h
-+++ b/include/linux/atmdev.h
-@@ -104,7 +104,6 @@ struct atm_vcc {
- 	void (*release_cb)(struct atm_vcc *vcc); /* release_sock callback */
- 	void (*push)(struct atm_vcc *vcc,struct sk_buff *skb);
- 	void (*pop)(struct atm_vcc *vcc,struct sk_buff *skb); /* optional */
--	int (*push_oam)(struct atm_vcc *vcc,void *cell);
- 	int (*send)(struct atm_vcc *vcc,struct sk_buff *skb);
- 	void		*dev_data;	/* per-device data */
- 	void		*proto_data;	/* per-protocol data */
-@@ -170,12 +169,6 @@ struct atm_dev {
- 	struct list_head dev_list;	/* linkage */
- };
+diff --git a/net/atm/ioctl.c b/net/atm/ioctl.c
+index 0f3f9ad8301f..4f2d185bf2f0 100644
+--- a/net/atm/ioctl.c
++++ b/net/atm/ioctl.c
+@@ -13,7 +13,6 @@
+ #include <linux/atmdev.h>
+ #include <linux/atmarp.h>	/* manifest constants */
+ #include <linux/capability.h>
+-#include <linux/sonet.h>	/* for ioctls */
+ #include <linux/atmsvc.h>
+ #include <linux/mutex.h>
+ #include <asm/ioctls.h>
+@@ -290,18 +289,6 @@ static int do_atm_ioctl(struct socket *sock, unsigned int cmd32,
+ 	int i;
+ 	unsigned int cmd = 0;
  
-- 
--/* OF: send_Oam Flags */
+-	switch (cmd32) {
+-	case SONET_GETSTAT:
+-	case SONET_GETSTATZ:
+-	case SONET_GETDIAG:
+-	case SONET_SETDIAG:
+-	case SONET_CLRDIAG:
+-	case SONET_SETFRAMING:
+-	case SONET_GETFRAMING:
+-	case SONET_GETFRSENSE:
+-		return do_atmif_sioc(sock, cmd32, arg);
+-	}
 -
--#define ATM_OF_IMMED  1		/* Attempt immediate delivery */
--#define ATM_OF_INRATE 2		/* Attempt in-rate delivery */
--
- struct atmdev_ops { /* only send is required */
- 	void (*dev_close)(struct atm_dev *dev);
- 	int (*open)(struct atm_vcc *vcc);
-@@ -188,7 +181,6 @@ struct atmdev_ops { /* only send is required */
- 	int (*pre_send)(struct atm_vcc *vcc, struct sk_buff *skb);
- 	int (*send)(struct atm_vcc *vcc,struct sk_buff *skb);
- 	int (*send_bh)(struct atm_vcc *vcc, struct sk_buff *skb);
--	int (*send_oam)(struct atm_vcc *vcc,void *cell,int flags);
- 	void (*phy_put)(struct atm_dev *dev,unsigned char value,
- 	    unsigned long addr);
- 	unsigned char (*phy_get)(struct atm_dev *dev,unsigned long addr);
-diff --git a/drivers/atm/solos-pci.c b/drivers/atm/solos-pci.c
-index bcb1353877e4..4ad170a858ee 100644
---- a/drivers/atm/solos-pci.c
-+++ b/drivers/atm/solos-pci.c
-@@ -1180,7 +1180,6 @@ static const struct atmdev_ops fpga_ops = {
- 	.close =	pclose,
- 	.ioctl =	NULL,
- 	.send =		psend,
--	.send_oam =	NULL,
- 	.phy_put =	NULL,
- 	.phy_get =	NULL,
- 	.change_qos =	NULL,
-diff --git a/net/atm/common.c b/net/atm/common.c
-index 913f7e32ce41..c6e87fc9bbfc 100644
---- a/net/atm/common.c
-+++ b/net/atm/common.c
-@@ -163,7 +163,6 @@ int vcc_create(struct net *net, struct socket *sock, int protocol, int family, i
- 	vcc->push = NULL;
- 	vcc->pop = NULL;
- 	vcc->owner = NULL;
--	vcc->push_oam = NULL;
- 	vcc->release_cb = NULL;
- 	vcc->vpi = vcc->vci = 0; /* no VCI/VPI yet */
- 	vcc->atm_options = vcc->aal_options = 0;
-diff --git a/net/atm/raw.c b/net/atm/raw.c
-index 0d36aeb3671b..1d6ac7b0c4e5 100644
---- a/net/atm/raw.c
-+++ b/net/atm/raw.c
-@@ -63,7 +63,6 @@ int atm_init_aal0(struct atm_vcc *vcc)
- {
- 	vcc->push = atm_push_raw;
- 	vcc->pop = atm_pop_raw;
--	vcc->push_oam = NULL;
- 	vcc->send = atm_send_aal0;
- 	return 0;
- }
-@@ -72,7 +71,6 @@ int atm_init_aal5(struct atm_vcc *vcc)
- {
- 	vcc->push = atm_push_raw;
- 	vcc->pop = atm_pop_raw;
--	vcc->push_oam = NULL;
- 	if (vcc->dev->ops->send_bh)
- 		vcc->send = vcc->dev->ops->send_bh;
- 	else
+ 	for (i = 0; i < NR_ATM_IOCTL; i++) {
+ 		if (cmd32 == atm_ioctl_map[i].cmd32) {
+ 			cmd = atm_ioctl_map[i].cmd;
+diff --git a/net/atm/resources.c b/net/atm/resources.c
+index 939452a610c0..7aac25e917b4 100644
+--- a/net/atm/resources.c
++++ b/net/atm/resources.c
+@@ -13,7 +13,6 @@
+ #include <linux/ctype.h>
+ #include <linux/string.h>
+ #include <linux/atmdev.h>
+-#include <linux/sonet.h>
+ #include <linux/kernel.h> /* for barrier */
+ #include <linux/module.h>
+ #include <linux/bitops.h>
+@@ -361,10 +360,6 @@ int atm_dev_ioctl(unsigned int cmd, void __user *buf, int __user *sioc_len,
+ 		}
+ 		fallthrough;
+ 	case ATM_SETCIRANGE:
+-	case SONET_GETSTATZ:
+-	case SONET_SETDIAG:
+-	case SONET_CLRDIAG:
+-	case SONET_SETFRAMING:
+ 		if (!capable(CAP_NET_ADMIN)) {
+ 			error = -EPERM;
+ 			goto done;
 -- 
 2.54.0
 
