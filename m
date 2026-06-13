@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AB0D235358
-	for <netdev@vger.kernel.org>; Sat, 13 Jun 2026 01:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8CF266B46
+	for <netdev@vger.kernel.org>; Sat, 13 Jun 2026 01:00:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781312431; cv=none; b=lLAwmgn1xwMHc2fvU7HUW1glkbHIbhArwUShR39AERoXv+Xl95XyifkcCiIinxJpROTZh7ySLDeu2yijifosGZPhwUvGoeZcxiy5GyrjYnlFUr6rPhgJLPhQC8uli/JWMSD72pNy5/+Xzt0jRxugKhe/CIYRsc5xEdVqSuIK49A=
+	t=1781312433; cv=none; b=UF89kSZSr/CHoteT2cptDN01nJ+/me+05QtKgo75c3YoZBryhqTIrUnALAJ7hfE0f9Os9x4om2bAMO64W7c7sqbIJXjiA7r6rwbUXPL6M5i0Cdo9E4z0gQU8RScZ3ZOu5cNB/sZ2qwF0EXOqs/KVW+uv18URE4t7EJr0isvHlxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781312431; c=relaxed/simple;
-	bh=VS9gNT48kkCZn83FIUmr6ptx+dAIDUC/fBgMULP5P4c=;
+	s=arc-20240116; t=1781312433; c=relaxed/simple;
+	bh=7yLtn/sHt+SRrikGiRqCkR9L97ZRwqdmB4AJdsmaPyk=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ckHwscD8hNAJN8/2XLC/x6TY2/ueIGJKUwNd2YcyODdZ6MZv/UyHw017j7ahy8zVlgMoF1usAk3bjnXAinEKu3Bb53V8F/W3a4BTmOcMOWWnW5ChfIhd15XlBqziZOSzvDDqnLzJ8DuKj1xrEDzBt9HjR+hxpZQyr3RR4lR6vdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GW+e6JFD; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=NqspiA112dIaZ4LhcXA9cCM6huHtasWr/gYpno/VUkIxBFsO2GK9Qvw2NqCwvnlHtvg1SdWpLBizxcuTxS5mGDNXtvQ87Uex06lpNJN7ZU3jsc7Et+lfMuUCQEJT2kKpRS9jX6KQdU0AJBcHUWQZDUVxIDLH3eUBEHTiMDc5dBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Euke2X+S; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GW+e6JFD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF9C71F000E9;
-	Sat, 13 Jun 2026 01:00:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Euke2X+S"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4647E1F000E9;
+	Sat, 13 Jun 2026 01:00:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781312429;
-	bh=XX0ymFozsWtkXJ6F0GcscFBPe5VJmQoAGErXK/cl6Ow=;
+	s=k20260515; t=1781312431;
+	bh=vDC3gdx1kG07b3DzyK33N8EzugMHq7voHog/GHFVPmQ=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=GW+e6JFD3njoxkxL1dY/ZT49krH9limp2s4eeJeOBEazgY6CqgDq9PCpdWJC6fEe6
-	 fGMvyq0rkGgVlOhMyBZw6FWJI0kzF54oMzxPqXFPY+lRRFwKnHmX5hgD00eiCID22m
-	 zzofDfqVZ8fxUTtQ6S8iDYL9nSF9Trr+5pdKQBdpAgQcMt7SY+lRjiivfgyriuwt8z
-	 99TIYTLg5uJAFJnyOIOtv9JGJlXuCUVeCpoLxuUEWCbRTYyaNUs4EflcE1wMrt6C/D
-	 SqUgIZGzilodkZ/sB8Az1NyV1E7R1T34NWV39p3L2zbAhiSwAdIV9zse7pwJDzRSkj
-	 bCp8fLCwJm+Ew==
+	b=Euke2X+S8lVL1Zj8C73eOPQVTRpC4LIC7JeBp4/LLIX1H0Yd9lgBGKV4TDsYP/2LO
+	 mc7vuU3/m/cApRv9QpoxGJcMeBR7bv+ggBz1lTO/XeC7NQ//lPg1SewERUKYTsdXn1
+	 5JiDvLxD7rKKu7cdppbUXKs4UiaMaCCRjPlBlkJQAkiHkqtI61CeTV0tQ56p2O1kpf
+	 RPY0HifWbc04wV6swI17lPNmGN4DlvATcmgd5cEuRwXItImhxGErwypF1k6GISItbH
+	 DqFuxiEDUK+4TAUlUSHKn0njcHYFtFRwkqFS51wMpExKjMutF6GiQmybXm3T2SfilU
+	 TRkzac15vU0Cw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9398339E9607;
-	Sat, 13 Jun 2026 01:00:27 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19C4F39E9607;
+	Sat, 13 Jun 2026 01:00:29 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,42 +37,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v3 0/3] ipv6: Honor oif when choosing nexthop for
- locally generated traffic
+Subject: Re: [PATCH net-next] ptp: ocp: add shutdown callback
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178131242613.1315131.18235073740348361443.git-patchwork-notify@kernel.org>
-Date: Sat, 13 Jun 2026 01:00:26 +0000
-References: <20260611154605.992528-1-idosch@nvidia.com>
-In-Reply-To: <20260611154605.992528-1-idosch@nvidia.com>
-To: Ido Schimmel <idosch@nvidia.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- pabeni@redhat.com, edumazet@google.com, dsahern@kernel.org, horms@kernel.org,
- willemb@google.com
+ <178131242763.1315131.2792194546022295371.git-patchwork-notify@kernel.org>
+Date: Sat, 13 Jun 2026 01:00:27 +0000
+References: <20260611190333.787132-1-vadim.fedorenko@linux.dev>
+In-Reply-To: <20260611190333.787132-1-vadim.fedorenko@linux.dev>
+To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Cc: richardcochran@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ pabeni@redhat.com, kuba@kernel.org, netdev@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 11 Jun 2026 18:46:02 +0300 you wrote:
-> Patch #1 is a preparation patch following the comment from Sashiko on
-> v2. See details in the commit message.
-> 
-> Patch #2 aligns IPv6 with IPv4 and changes IPv6 route lookup to prefer a
-> nexthop whose nexthop device matches the specified oif.
-> 
-> Patch #3 adds a selftest.
+On Thu, 11 Jun 2026 19:03:33 +0000 you wrote:
+> The shutdown callback was never implemented for this driver, but it's
+> needed because .remove() callback is never called during kexec/reboot
+> process. That leaves HW with some interrupts enabled and may cause
+> spurious interrupt while booting into a new kernel during with kexec.
+> If it happens that I2C interrupt fires during kexec, the whole I2C bus
+> is disabled leaving TimeCard with no devlink communication. The same
+> happens if timestampers were enabled, leaving the card without
+> timestamper interrupts until full reboot cycle.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v3,1/3] ipv6: Select best matching nexthop object in fib6_table_lookup()
-    https://git.kernel.org/netdev/net-next/c/484bb9d164df
-  - [net-next,v3,2/3] ipv6: Honor oif when choosing nexthop for locally generated traffic
-    https://git.kernel.org/netdev/net-next/c/d25e7e9d8a6c
-  - [net-next,v3,3/3] selftests: fib_tests: Add test cases for route lookup with oif
-    https://git.kernel.org/netdev/net-next/c/707c1f866c68
+  - [net-next] ptp: ocp: add shutdown callback
+    https://git.kernel.org/netdev/net-next/c/f6f955cbf9d4
 
 You are awesome, thank you!
 -- 
