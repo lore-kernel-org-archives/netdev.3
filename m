@@ -1,114 +1,54 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8252032D;
-	Sat, 13 Jun 2026 22:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D39219301
+	for <netdev@vger.kernel.org>; Sat, 13 Jun 2026 22:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781390874; cv=none; b=AAqZ79UF672hkLkFqH5JCkhdioLgVR/IkiWXB+JFJziE6jPD3mIkKpX5zhAWJgAXQA/a1dGhXWZsCiNYIrgoqLucAhXE6eKjXxkIUu9FixiHIvpwWHUIRWXAMxD/+AQ4pmto9UjZpjsuyzTQq6XM4Wyzy2kM9wi5htbifUfhjxY=
+	t=1781391441; cv=none; b=D8Mh/x8g/78vNnug2NOThbh6Omkiza6zJJhs1XVIyr3+UmGxuS+IHxj7uN92NM7II8swkjlbzdoU8ClLn2pi9oC0LkuLRjy3/1kSR5ImN0rKJ2Tu5KO6pQkkbejXqZdUvuGU2EAgRKk/QFofFTJQIF79HUzB4SEtubZZCBLpD70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781390874; c=relaxed/simple;
-	bh=+jkWcWAyt1Gmd921batUW8VyPvIYZBTgCqPv0MLSDOA=;
+	s=arc-20240116; t=1781391441; c=relaxed/simple;
+	bh=ZFrvxwQnZ6pSdcHqsFJGQ60DddBRaBnujElRx5LYB4g=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lr5at+Ny+PrWcpg43vMyTjhEFW7pY+sqevIAMEFswLhsfa5Hbd10LkeDAyX0VeV6X3kHtfYBI6iuJgX+Ane85+466QG0sJZuBZGxMd+n7bPlX0qMbgKMj+/7fj8eqk0zDcjrXjbZaUH7TXffrkQMYthxcbIWyOENDl1I8ISapeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M7zpgD+/; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=Nbeu2MHPRAXzWWmKxTHu4x6Sp2kpBOxTSpJUNGJCBLCfhYSeDpUM6vW9X1k/xqRenkrBURC8FfdeDQQs+9AVOJN0u9uqm+OLnEflr25kQM28CPgqfijytQPzNDf17PWcWSUJTG3RYAv5+u/8VMQCFUidERze0Md8doBgtCNBPos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=grd/T65A; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M7zpgD+/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 677FF1F000E9;
-	Sat, 13 Jun 2026 22:47:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="grd/T65A"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C5671F000E9;
+	Sat, 13 Jun 2026 22:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781390872;
-	bh=/VshbjM8bBu/lS5huDW4edOlGHJQX64Vdzk3casHMn0=;
+	s=k20260515; t=1781391439;
+	bh=k24wh30JTuty/CwE/HxdRXkLcDa5Rfp2ggyOA5fwtKM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=M7zpgD+/JjCsTRa2fubb3P4y2mGOaynWJi//uhYazy4YIVhkRQHhEo39Y542n8ca0
-	 w9rWmc4cwyKWFBOaEAZj8PrGXmWwsoyRIE8KFbBRsCq2m4WnePTm9Qka8mmEHvo8cT
-	 ty8MeqyukiM7tV/PQCfRr49qgnZaRlq2pCdHghOGBxTwvF4iHND/30zOyBvau/B6c6
-	 RRxUMbHMFRKdHEKELaihW9XzaeofRO2V5JS4Jmd3a6TfDu+rfngoU4sxi3NxTJM4Cd
-	 tMJ8cKFLsZjeZSuVyITBOQDCd7Fv0uSHd8WrTupjSS20T+VThmdg77tkb0xLerF8Uj
-	 glKk9yzm3dyqQ==
-Date: Sat, 13 Jun 2026 15:47:50 -0700
+	b=grd/T65A6KZl28AaqchhcyOjS9J4+UOgi9XRqbbjPHSfkF9aKJBpGdJgyVbDu1fXh
+	 4IMM4NlYZs+acgxBt3eFNnJye/BZF+XNDVdGRglKkyx4kdXwe3daZb7XW8RfBEMeMu
+	 5dsHHr4f/BMlytmxli7sVgXUJAjsuG1iYpAYqZwr11vN0zszhcwAfNpQWyEDOHEiKZ
+	 3fsamc1o2Q6xJLy1sQvPDJoEbUdXlMt3o5qKjNRLWXAwde48TxWm29ePMq0f7vgSdh
+	 OB+b2tjVR5a5Dq9hIvTQ1WbhsM4jkp4g2E6vn3qDqXrbXKZLzEoe/M0sdz7Ge4lF10
+	 Xsd7O+Otcoz8g==
+Date: Sat, 13 Jun 2026 15:57:18 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
- <daniel@iogearbox.net>, Martin KaFai Lau <martin.lau@linux.dev>, Stanislav
- Fomichev <sdf@fomichev.me>, Andrii Nakryiko <andrii@kernel.org>, John
- Fastabend <john.fastabend@gmail.com>, Kumar Kartikeya Dwivedi
- <memxor@gmail.com>, Eduard Zingerman <eddyz87@gmail.com>, Song Liu
- <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa
- <jolsa@kernel.org>, Andrew Lunn <andrew@lunn.ch>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Willem de Bruijn
- <willemb@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>,
- bpf@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v2 bpf-next/net 0/5] bpf: Support RX/TX HW timestamp
- proxy.
-Message-ID: <20260613154750.0a2355a4@kernel.org>
-In-Reply-To: <CAAVpQUBP_21b5MB8MS-wFwg9BUdcgMoNxi8s479YQHH9g5ahCw@mail.gmail.com>
-References: <20260613010039.1362312-1-kuniyu@google.com>
-	<20260613102041.55e3b50e@kernel.org>
-	<CAAVpQUBP_21b5MB8MS-wFwg9BUdcgMoNxi8s479YQHH9g5ahCw@mail.gmail.com>
+To: Daniel Borkmann <daniel@iogearbox.net>
+Cc: razor@blackwall.org, bobbyeshleman@meta.com, dw@davidwei.uk,
+ netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v2 0/4] Extend netkit io_uring ZC selftests
+Message-ID: <20260613155718.16bf3964@kernel.org>
+In-Reply-To: <20260611082527.741674-1-daniel@iogearbox.net>
+References: <20260611082527.741674-1-daniel@iogearbox.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sat, 13 Jun 2026 14:43:46 -0700 Kuniyuki Iwashima wrote:
-> On Sat, Jun 13, 2026 at 10:20=E2=80=AFAM Jakub Kicinski <kuba@kernel.org>=
- wrote:
-> > On Sat, 13 Jun 2026 00:59:57 +0000 Kuniyuki Iwashima wrote: =20
-> > > When standard socket applications are run on these hosts,
-> > > a userspace proxy is required to mediate traffic between the
-> > > hardware and the applications.
-> > >
-> > >             +---------+                 +----------------------+
-> > >             |  proxy  |                 |  socket application  |
-> > >             +---------+                 +----------------------+
-> > >               ^     ^                               ^
-> > >   userspace   |     |                               |
-> > >   -----------| |-----------------------------------------------
-> > >              | |    |    +---------------------+    | skb
-> > >              | |    `--->|  virtual interface  |<---'
-> > >   kernel     | |   skb   +---------------------+
-> > >   -----------| |-----------------------------------------------
-> > >               |
-> > >               v
-> > >        +------------+
-> > >        |  hardware  |
-> > >        +------------+ =20
-> >
-> > The first patch looks kinda nonsensical but then I saw this diagram.
-> > Looks like you're vibe coding an integration that makes it easier to
-> > treat netdev as a slow path for a user networking stack.
-> > Please tell me if I'm missing anything otherwise add my nack if you
-> > repost. =20
->=20
-> Hmm, what would be a better way to tell users that HW TS is
-> available on tunnel devices ?
->=20
-> Other options were 1) add attribute to tie the tunnel to a physical
-> device and use its ndo_hwtstamp_set/get, or 2) add bpf retval
-> hook in the path like update_socket_protocol().
+On Thu, 11 Jun 2026 10:25:23 +0200 Daniel Borkmann wrote:
+> Small follow-up to the HW net selftests, in particular to add a
+> selftest showing that also large rx_buf_len for io_uring ZC is
+> supported with netkit queue leasing.
 
-Can you explain the use case for HW timestamps on tunnels?
-I see you have some diagrams in patches 3 and 4 but the motivation
-isn't really explained, and we have 250 patches in the queue still.
-Not much time to play detective right now :/
-
-> Or do you think applications should handle ENOTSUP by ioctl
-> as soft error and always set SOF_TIMESTAMPING_XXX_HARDWARE
-> since the underlying physical device may support it ?
-
-And explain the deployment model and API semantics you have in mind.
-
-> Anyway, I'm happy to drop patch 1 for now and explore options.
-
-Not patch 1, all of it. I get the feeling y'all are sitting on a pile
-of Swift related code that needs to be made upstreamable. Odd series
-like this make me think it's never going to happen.
-
-> (Believe it or not, I haven't let AI write code because I don't
->  want AI to take over the most fun part.)
+needs a rebase vs the PSP series that landed yesterday
+-- 
+pw-bot: cr
