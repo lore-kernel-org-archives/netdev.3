@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5857B37A4BA;
-	Sat, 13 Jun 2026 00:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E709AD24
+	for <netdev@vger.kernel.org>; Sat, 13 Jun 2026 00:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781308817; cv=none; b=mEuSZyrV23lPS84iZ8uAn0eON95hp3Pn+Pb3Y8vWgzHLaIHqXuWKPLEmoUJf2Y7XxYxbJ+JMwR/MArTxCwzXaS8YYevtbNffSk3nr3pKeupOBMDABCbeajMnL1tCEjU5QctQPImx/5F+0yyPMTWWQf5BI4LhqNR/XpRMJgZM8W0=
+	t=1781308824; cv=none; b=JLD6980u2JyH2kLsNzyEWY/32fhKpzz5lGd2dDk/ivOX42phvJ6gDZUcIvyfDkfssuONaieQSnqfZKftsfmuSpkjPvhed7TJSYsnIkmZwsNCT/WNWiXSAZYfG6dT+2AiqHou5dlCdiGXuQtalvtFa9hmf395BFTW3L3do3l4ySA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781308817; c=relaxed/simple;
-	bh=uyKZNfV+FrzC5S34lvsTujIR2Q8wqllWcjddceNEE+Y=;
+	s=arc-20240116; t=1781308824; c=relaxed/simple;
+	bh=pAbKAP/ca37DsM05SLHhwqp5LgoV87Ua3r0Lm8/21YU=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=mELRCACfuzE3rOdvNGiU+KYHtOPoYGTDM0Nf0Z5tm2lzEoDyg34tX3pWgBCQnxWwpZ4wAyasUIC5QXV2zIJ5CEii5Cp38dVs9pzGSaR0IjC/cUnUg4cygKcvXSLnxJvMccrEQbCTGrfHTcSX4z3fes3rGVWniGscPyR0xiRBXCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lzrDMYwO; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=E3zscGV+EgM6C8s2hWG9/pH53pgUkzXXkZ6mht+YwAghETclmeFZNheUVAKt77sXcTgNFscGWpbRwhn/xq6I7/ocv2ESkANDT0PDRgq3xQQfC9RXwOTJWytEPAJbZPn/7hZGsUwqdejwITnHo0jAzGxSNrz/BZZLEGWa8YqiZms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VHBS9vVP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lzrDMYwO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02BDD1F00A3D;
-	Sat, 13 Jun 2026 00:00:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VHBS9vVP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03DA91F000E9;
+	Sat, 13 Jun 2026 00:00:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781308816;
-	bh=Nt1+ajjDEnNN42gTfFZL55aPCz/54VtL02JEDvkr8cc=;
+	s=k20260515; t=1781308823;
+	bh=5ipQ/0rqX8qisOPGqgfsHe084NKL9wUTaaPjES2+AcQ=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=lzrDMYwOeYEI9Nyex34CKB1qA0oaFH8CzITvm4zVF1w2bYbSucUVGCKzoIB8TosXB
-	 7NgOFv+vbPtpMWhVng3GKM+IjostIbZG94AG15cLi4Kygmo9PeNiKesPhbk0wcAZgH
-	 OtgL46D5g/FCou1ZTY+fjl75pDe/cCkzpciCWpuMdGOZQ296NPYOqA7lFWY20tR+f4
-	 ZGErBWNqCC6JUSYrVHgz22//mGwPpv7RYczWHjUaph6ING8zl6xMYZ561qRkadzG6G
-	 /TBIJbnS9tM+rHM+IGzEtoOhSvjqFJyKMWBrshD7jXqtxLaXrLmODj8YOxx79kaD7G
-	 PgbXbpUPMKkng==
+	b=VHBS9vVPYJKs1zuBgegtuKkj6PGi4rchcluCi2vk1mrpit2N+lkhPWikjGxXLnWRN
+	 6ys+C17R/cZ9GOE8oBf86B0GExbSOSDy7BW686uBUrHJC3CmlfZmQtU6uJvDJYXf8N
+	 CH5dS+mclPLMCRrBvJRJzvyfGc1lVgIHf+IoNE26OkGg3EDz0Ulna3+YDfov/CO/23
+	 2HZ6kPwApKe8N5ru6fGFFRnqKq2NYYVKF7k7x4mxHLCjxj6vuU0NrOLboyWBnSe1VD
+	 uDUEcOZ09e86kO/MBvvyllXEuFfYmev3qt/V7lZdgvdJ6uvXSW/AWkxr8ZzyY4An7b
+	 K4gs32mBtS9vA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0AE439E9605;
-	Sat, 13 Jun 2026 00:00:13 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09C139E9605;
+	Sat, 13 Jun 2026 00:00:20 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,46 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/5] rxrpc: Miscellaneous fixes
+Subject: Re: [PATCH net-next v2 0/2] net: remove tls_toe
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178130881264.1297459.951918209446333634.git-patchwork-notify@kernel.org>
-Date: Sat, 13 Jun 2026 00:00:12 +0000
-References: <20260609140911.838677-1-dhowells@redhat.com>
-In-Reply-To: <20260609140911.838677-1-dhowells@redhat.com>
-To: David Howells <dhowells@redhat.com>
-Cc: netdev@vger.kernel.org, marc.dionne@auristor.com, kuba@kernel.org,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- horms@kernel.org, linux-afs@lists.infradead.org, linux-kernel@vger.kernel.org
+ <178130881937.1297459.5702308942363851080.git-patchwork-notify@kernel.org>
+Date: Sat, 13 Jun 2026 00:00:19 +0000
+References: <cover.1781165969.git.sd@queasysnail.net>
+In-Reply-To: <cover.1781165969.git.sd@queasysnail.net>
+To: Sabrina Dubroca <sd@queasysnail.net>
+Cc: netdev@vger.kernel.org, ayush.sawal@chelsio.com, john.fastabend@gmail.com,
+ kuba@kernel.org, davem@davemloft.net, andrew+netdev@lunn.ch,
+ edumazet@google.com, pabeni@redhat.com, horms@kernel.org
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue,  9 Jun 2026 15:09:04 +0100 you wrote:
-> Here are some miscellaneous AF_RXRPC fixes:
+On Thu, 11 Jun 2026 12:21:32 +0200 you wrote:
+> This series removes the tls_toe feature, its single user (chtls), and
+> cleans up the EXPORT_SYMBOL()s that no other module requires.
 > 
->  (1) Make sure rxrpc_verify_data() allocates a buffer, even if the DATA packet
->      being looked at is zero length to avoid potential NULL-pointer
->      exceptions.
+> Driver changes only compile-tested.
 > 
->  (2) Don't move an OOB message (e.g. an RxGK CHALLENGE) off the receive queue
->      onto the pending queue in recvmsg() if MSG_PEEK is specified.
+> v2:
+>  - fix small issues in the docs clean up
+>  - also remove NETIF_F_HW_TLS_RECORD (Sashiko)
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,1/5] rxrpc: rxrpc_verify_data ensure rx_dec_buffer alloc
-    https://git.kernel.org/netdev/net/c/16c8ae9735c5
-  - [net,2/5] rxrpc: Don't move a peeked OOB message onto the pending queue
-    https://git.kernel.org/netdev/net/c/5801cff7d5d7
-  - [net,3/5] rxrpc: Fix UAF in rxgk_issue_challenge()
-    https://git.kernel.org/netdev/net/c/107a4cb0d47e
-  - [net,4/5] afs: Fix netns teardown to cancel the preallocation charger
-    https://git.kernel.org/netdev/net/c/47694fbc9d24
-  - [net,5/5] rxrpc: serialize kernel accept preallocation with socket teardown
-    https://git.kernel.org/netdev/net/c/dc175389b18c
+  - [net-next,v2,1/2] tls: remove tls_toe and the related driver
+    https://git.kernel.org/netdev/net-next/c/cdae65fc43f2
+  - [net-next,v2,2/2] net: remove some unused EXPORT_SYMBOL()s
+    https://git.kernel.org/netdev/net-next/c/f51a442dc15a
 
 You are awesome, thank you!
 -- 
