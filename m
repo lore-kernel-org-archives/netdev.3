@@ -1,349 +1,77 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6371917F0
-	for <netdev@vger.kernel.org>; Sat, 13 Jun 2026 08:42:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77AEA3AD52E;
+	Sat, 13 Jun 2026 09:00:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781340138; cv=none; b=bG5osy3L1LDDT3juvO02pMCPuTm7oiwIqSJcjnLTqqYTaRZbJXcq7O5pdORqo7zEHSQ4i4P8+A3RpjU4lZLZtdCMx5rY8neAnEOtlukfvLQ7HSUKV3a06EwgeYjehOxDYbh9aFO8IP0wQR1ChrSluRmZzCkoZsCL4W6j40fqEDo=
+	t=1781341211; cv=none; b=Ulm1FIyNboEfC7Z6r7l5OnVGx6jTnSEzl2Rg1fNPM2DxiRkBvLsq0F5hNn9u6RsTVA2GUo6bxjotIlrbARkCFwL24/ybWafkiZfDbVdKKj+lLYvSvfgVxJJKRwKuOsZks76Bow+V5s9Rm79oNk/Q1HKYwHqKNupreZtuGmO7PrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781340138; c=relaxed/simple;
-	bh=l148B8ymh2jEpLOTMYYPWCFFOeEaoFoMLelOgcfyQiE=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=BmkQbpGaURqhekLq5hwXKWVlmCvSkGznBNs/K41VFcDOLlQyO2ruUh+Iy65nMPKIjRbkMpiR0wTlbeVboNkkovAxq/JpwEDmjl/uZewb0FTg04j61ML7KwouDCXB0fFOr9f0gRkfGHPzzx5HqDwXBfgnJjwdrcxOm+NWMgfLICI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=w49o1S1s; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=GAV/2ueq; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=nwr6VNsK; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=PlF4kSnX; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1781341211; c=relaxed/simple;
+	bh=TjaYOgF3wr8ZhOE+5WZgHdlDnkPKF41xWLjlfnvrJEI=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=R3zSK2x7yZT9tye5WPTIwLP0njll63gHBxNHXAcF0gXKonAwT/YYC+8GvARV5u9t5Ze+oTcyW/RGokoMAAruxJnQhGwFkoryP2WNjW8BGt28qq8S0mGNsDxpHWFsoWKDmUo5lJn1SGR/4vldJ7HiMF19Z+N+MbR/NrMtXjypDiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S6kd7MIJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="w49o1S1s";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="GAV/2ueq";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="nwr6VNsK";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="PlF4kSnX"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id E395D45CD;
-	Sat, 13 Jun 2026 07:22:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1781335372; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9IkfbDhn0pjBCCB22Ih2w/7S0T26MvC4emyQ/T6QagY=;
-	b=w49o1S1sIAjemfp14TN3vFl30G8dTt7Ps/WSc0tBxSZVHaOGbmTIyJuvF9iP1H3QLBFsjL
-	DRrthDg1Uw3yzdz3jMD6/pWPJIPU9ieS61kkU9pCSOsUhUgFdBf/cEBG5By+QD3iSDZnpY
-	/O51B4tWd3lxcbeH3mO9d8+ChbLfa0s=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1781335372;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9IkfbDhn0pjBCCB22Ih2w/7S0T26MvC4emyQ/T6QagY=;
-	b=GAV/2ueq3727c01hCiB4gehXB6Ld0DwFeXJtOG+6OHAF4LU0ZCvk+YESC+EiPv129wtajZ
-	0Dk+oN6g+kqpzkCg==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nwr6VNsK;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=PlF4kSnX
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1781335371; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9IkfbDhn0pjBCCB22Ih2w/7S0T26MvC4emyQ/T6QagY=;
-	b=nwr6VNsK6mOYxCNbMCTmEovV4/DuU4qLhA58cmpMIejW63qq7NvnE0p/99QzvwWdXMgDrf
-	UA/Dxc99XpPJpiudh74vM6i3yZ0cpVs3DHHyqnWobw8I96fRaolbcj4sJsEOO+MGgFqgRD
-	66K1DoImiyLGJsXJcWqHsAsWIKvvAe8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1781335371;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9IkfbDhn0pjBCCB22Ih2w/7S0T26MvC4emyQ/T6QagY=;
-	b=PlF4kSnX5NRZkuQ7gmHPD4zhE5rJKMtrliny2TxfPhaIumdjvPo57ttRe7pYHrcTl7pt0V
-	4OtX5bxXRldsE2Aw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9CF5B779A7;
-	Sat, 13 Jun 2026 07:22:50 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id rb4BJEoFLWpRWwAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Sat, 13 Jun 2026 07:22:50 +0000
-Message-ID: <3e4a425e-0f58-48dc-a2bc-88fd6eb4a302@suse.de>
-Date: Sat, 13 Jun 2026 09:22:38 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S6kd7MIJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B01F41F000E9;
+	Sat, 13 Jun 2026 09:00:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781341208;
+	bh=f3EVXaidWBUDBukOfSvwu19nYqgtoWvs1fRjIR5kA3I=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=S6kd7MIJmG8gTopL6j0WlEFnHWaWCJCNPN+wbc1IYxBuhIlB2Zs202F7h8EbTjeAP
+	 VuWHP95nn4d3cWJpvHKf2K1xLNnUw5APnSbTm3Is43Om/fXuF9hy3Es05VhCbuInKk
+	 BvYe2Mz/dl58dByFiQz/5ULNqwP3ytWmI7IjHRHRi7zFjEgu93A9siIfmahGlYx+YU
+	 786TPi65oxSLkW6M2Tiw5LXSlzd401RvfvGreY76yuAGKq5RXAHHuvjt+uHbioRteS
+	 NTl2p3pYXXz81rIsUcOlrkNUgz/fF+IPbhAQF6Rn634t/1Y/5pkzuAzJWLefAvwbql
+	 A1RNN51wBPEdQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568DB39EDE30;
+	Sat, 13 Jun 2026 09:00:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iproute2-next] ipaddress: add support for showing IPv4
- devconf attributes
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-To: Stephen Hemminger <stephen@networkplumber.org>
-Cc: netdev@vger.kernel.org, dsahern@kernel.org, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org
-References: <20260612231722.30579-1-fmancera@suse.de>
- <20260612192936.61c23f85@phoenix.local>
- <bdccf9bf-994d-445c-8167-4bcd8cd77e6e@suse.de>
-Content-Language: en-US
-In-Reply-To: <bdccf9bf-994d-445c-8167-4bcd8cd77e6e@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Rspamd-Action: no action
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TO_DN_SOME(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	MID_RHS_MATCH_FROM(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:email,suse.de:dkim,suse.de:mid];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: E395D45CD
-X-Spam-Score: -4.51
+Subject: Re: [PATCH v2 net] octeontx2-af: npc: Fix size of entry2cntr_map
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178134120489.1430056.8164436490843173619.git-patchwork-notify@kernel.org>
+Date: Sat, 13 Jun 2026 09:00:04 +0000
+References: <20260610022344.969774-1-rkannoth@marvell.com>
+In-Reply-To: <20260610022344.969774-1-rkannoth@marvell.com>
+To: Ratheesh Kannoth <rkannoth@marvell.com>
+Cc: kuba@kernel.org, linux-kernel@vger.kernel.org, naveenm@marvell.com,
+ netdev@vger.kernel.org, sbhatta@marvell.com, sgoutham@marvell.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com
 
-On 6/13/26 8:41 AM, Fernando Fernandez Mancera wrote:
-> On 6/13/26 4:29 AM, Stephen Hemminger wrote:
->> On Sat, 13 Jun 2026 01:17:22 +0200
->> Fernando Fernandez Mancera <fmancera@suse.de> wrote:
->>
->>> tatic void print_inet(FILE *fp, struct rtattr *inet_attr)
->>> +{
->>> +    struct rtattr *tb[IFLA_INET_MAX + 1];
->>> +
->>> +    parse_rtattr_nested(tb, IFLA_INET_MAX, inet_attr);
->>> +
->>> +    if (tb[IFLA_INET_CONF] && show_details) {
->>> +        int *conf = RTA_DATA(tb[IFLA_INET_CONF]);
->>> +        int max_elements = RTA_PAYLOAD(tb[IFLA_INET_CONF]) / 
->>> sizeof(int);
->>> +
->>> +        if (max_elements >= IPV4_DEVCONF_FORWARDING)
->>> +            print_string(PRINT_ANY, "forwarding", "forwarding %s ",
->>> +                     conf[IPV4_DEVCONF_FORWARDING - 1] ? "on" : "off");
->>> +
->>> +        if (max_elements >= IPV4_DEVCONF_MC_FORWARDING)
->>> +            print_string(PRINT_ANY, "mc_forwarding", "mc_forwarding 
->>> %s ",
->>> +                     conf[IPV4_DEVCONF_MC_FORWARDING - 1] ? "on" : 
->>> "off");
->>> +
->>> +        if (max_elements >= IPV4_DEVCONF_PROXY_ARP)
->>> +            print_string(PRINT_ANY, "proxy_arp", "proxy_arp %s ",
->>> +                     conf[IPV4_DEVCONF_PROXY_ARP - 1] ? "on" : "off");
->>> +
->>> +        if (max_elements >= IPV4_DEVCONF_ACCEPT_REDIRECTS)
->>> +            print_string(PRINT_ANY, "accept_redirects",
->>> +                     "accept_redirects %s ",
->>> +                     conf[IPV4_DEVCONF_ACCEPT_REDIRECTS - 1] ? 
->>> "on" : "off");
->>> +
->>> +        if (max_elements >= IPV4_DEVCONF_SECURE_REDIRECTS)
->>> +            print_string(PRINT_ANY, "secure_redirects",
->>> +                     "secure_redirects %s ",
->>> +                     conf[IPV4_DEVCONF_SECURE_REDIRECTS - 1] ? 
->>> "on" : "off");
->>> +
->>> +        if (max_elements >= IPV4_DEVCONF_SEND_REDIRECTS)
->>> +            print_string(PRINT_ANY, "send_redirects", 
->>> "send_redirects %s ",
->>> +                     conf[IPV4_DEVCONF_SEND_REDIRECTS - 1] ? "on" : 
->>> "off");
->>> +
->>> +        if (max_elements >= IPV4_DEVCONF_SHARED_MEDIA)
->>> +            print_string(PRINT_ANY, "shared_media", "shared_media %s ",
->>> +                     conf[IPV4_DEVCONF_SHARED_MEDIA - 1] ? "on" : 
->>> "off");
->>> +
->>> +        if (max_elements >= IPV4_DEVCONF_RP_FILTER)
->>> +            print_int(PRINT_ANY, "rp_filter", "rp_filter %d ",
->>> +                  conf[IPV4_DEVCONF_RP_FILTER - 1]);
->>> +
->>> +        if (max_elements >= IPV4_DEVCONF_ACCEPT_SOURCE_ROUTE)
->>> +            print_string(PRINT_ANY, "accept_source_route",
->>> +                     "accept_source_route %s ",
->>> +                     conf[IPV4_DEVCONF_ACCEPT_SOURCE_ROUTE - 1] ? 
->>> "on" : "off");
->>> +
->>> +        if (max_elements >= IPV4_DEVCONF_BOOTP_RELAY)
->>> +            print_string(PRINT_ANY, "bootp_relay", "bootp_relay %s ",
->>> +                     conf[IPV4_DEVCONF_BOOTP_RELAY - 1] ? "on" : 
->>> "off");
->>> +
->>> +        if (max_elements >= IPV4_DEVCONF_LOG_MARTIANS)
->>> +            print_string(PRINT_ANY, "log_martians", "log_martians %s ",
->>> +                     conf[IPV4_DEVCONF_LOG_MARTIANS - 1] ? "on" : 
->>> "off");
->>> +
->>> +        if (max_elements >= IPV4_DEVCONF_TAG)
->>> +            print_int(PRINT_ANY, "tag", "tag %d ",
->>> +                  conf[IPV4_DEVCONF_TAG - 1]);
->>> +
->>> +        if (max_elements >= IPV4_DEVCONF_ARPFILTER)
->>> +            print_string(PRINT_ANY, "arpfilter", "arpfilter %s ",
->>> +                     conf[IPV4_DEVCONF_ARPFILTER - 1] ? "on" : "off");
->>> +
->>> +        if (max_elements >= IPV4_DEVCONF_MEDIUM_ID)
->>> +            print_int(PRINT_ANY, "medium_id", "medium_id %d ",
->>> +                  conf[IPV4_DEVCONF_MEDIUM_ID - 1]);
->>> +
->>> +        if (max_elements >= IPV4_DEVCONF_NOXFRM)
->>> +            print_string(PRINT_ANY, "noxfrm", "noxfrm %s ",
->>> +                     conf[IPV4_DEVCONF_NOXFRM - 1] ? "on" : "off");
->>> +
->>> +        if (max_elements >= IPV4_DEVCONF_NOPOLICY)
->>> +            print_string(PRINT_ANY, "nopolicy", "nopolicy %s ",
->>> +                     conf[IPV4_DEVCONF_NOPOLICY - 1] ? "on" : "off");
->>> +
->>> +        if (max_elements >= IPV4_DEVCONF_FORCE_IGMP_VERSION)
->>> +            print_int(PRINT_ANY, "force_igmp_version", 
->>> "force_igmp_version %d ",
->>> +                  conf[IPV4_DEVCONF_FORCE_IGMP_VERSION - 1]);
->>> +
->>> +        if (max_elements >= IPV4_DEVCONF_ARP_ANNOUNCE)
->>> +            print_int(PRINT_ANY, "arp_announce", "arp_announce %d ",
->>> +                  conf[IPV4_DEVCONF_ARP_ANNOUNCE - 1]);
->>> +
->>> +        if (max_elements >= IPV4_DEVCONF_ARP_IGNORE)
->>> +            print_int(PRINT_ANY, "arp_ignore", "arp_ignore %d ",
->>> +                  conf[IPV4_DEVCONF_ARP_IGNORE - 1]);
->>> +
->>> +        if (max_elements >= IPV4_DEVCONF_PROMOTE_SECONDARIES)
->>> +            print_string(PRINT_ANY, "promote_secondaries",
->>> +                     "promote_secondaries %s ",
->>> +                     conf[IPV4_DEVCONF_PROMOTE_SECONDARIES - 1] ? 
->>> "on" : "off");
->>> +
->>> +        if (max_elements >= IPV4_DEVCONF_ARP_ACCEPT)
->>> +            print_int(PRINT_ANY, "arp_accept", "arp_accept %d ",
->>> +                  conf[IPV4_DEVCONF_ARP_ACCEPT - 1]);
->>> +
->>> +        if (max_elements >= IPV4_DEVCONF_ARP_NOTIFY)
->>> +            print_string(PRINT_ANY, "arp_notify", "arp_notify %s ",
->>> +                     conf[IPV4_DEVCONF_ARP_NOTIFY - 1] ? "on" : "off");
->>> +
->>> +        if (max_elements >= IPV4_DEVCONF_ACCEPT_LOCAL)
->>> +            print_string(PRINT_ANY, "accept_local", "accept_local %s ",
->>> +                     conf[IPV4_DEVCONF_ACCEPT_LOCAL - 1] ? "on" : 
->>> "off");
->>> +
->>> +        if (max_elements >= IPV4_DEVCONF_SRC_VMARK)
->>> +            print_string(PRINT_ANY, "src_vmark", " src_vmark %s",
->>> +                     conf[IPV4_DEVCONF_SRC_VMARK - 1] ? "on" : "off");
->>> +
->>> +        if (max_elements >= IPV4_DEVCONF_PROXY_ARP_PVLAN)
->>> +            print_string(PRINT_ANY, "proxy_arp_pvlan", 
->>> "proxy_arp_pvlan %s ",
->>> +                     conf[IPV4_DEVCONF_PROXY_ARP_PVLAN - 1] ? "on" : 
->>> "off");
->>> +
->>> +        if (max_elements >= IPV4_DEVCONF_ROUTE_LOCALNET)
->>> +            print_string(PRINT_ANY, "route_localnet", 
->>> "route_localnet %s ",
->>> +                     conf[IPV4_DEVCONF_ROUTE_LOCALNET - 1] ? "on" : 
->>> "off");
->>> +
->>> +        if (max_elements >= IPV4_DEVCONF_BC_FORWARDING)
->>> +            print_string(PRINT_ANY, "bc_forwarding", "bc_forwarding 
->>> %s ",
->>> +                     conf[IPV4_DEVCONF_BC_FORWARDING - 1] ? "on" : 
->>> "off");
->>> +
->>> +        if (max_elements >= 
->>> IPV4_DEVCONF_IGMPV2_UNSOLICITED_REPORT_INTERVAL)
->>> +            print_int(PRINT_ANY, "igmpv2_unsolicited_report_interval",
->>> +                  "igmpv2_unsolicited_report_interval %d ",
->>> +                  
->>> conf[IPV4_DEVCONF_IGMPV2_UNSOLICITED_REPORT_INTERVAL - 1]);
->>> +
->>> +        if (max_elements >= 
->>> IPV4_DEVCONF_IGMPV3_UNSOLICITED_REPORT_INTERVAL)
->>> +            print_int(PRINT_ANY, "igmpv3_unsolicited_report_interval",
->>> +                  "igmpv3_unsolicited_report_interval %d ",
->>> +                  
->>> conf[IPV4_DEVCONF_IGMPV3_UNSOLICITED_REPORT_INTERVAL - 1]);
->>> +
->>> +        if (max_elements >= IPV4_DEVCONF_IGNORE_ROUTES_WITH_LINKDOWN)
->>> +            print_string(PRINT_ANY, "ignore_routes_with_linkdown",
->>> +                     "ignore_routes_with_linkdown %s ",
->>> +                     conf[IPV4_DEVCONF_IGNORE_ROUTES_WITH_LINKDOWN - 
->>> 1] ?
->>> +                     "on" : "off");
->>> +
->>> +        if (max_elements >= IPV4_DEVCONF_DROP_UNICAST_IN_L2_MULTICAST)
->>> +            print_string(PRINT_ANY, "drop_unicast_in_l2_multicast",
->>> +                     "drop_unicast_in_l2_multicast %s ",
->>> +                     conf[IPV4_DEVCONF_DROP_UNICAST_IN_L2_MULTICAST 
->>> - 1] ?
->>> +                     "on" : "off");
->>> +
->>> +        if (max_elements >= IPV4_DEVCONF_DROP_GRATUITOUS_ARP)
->>> +            print_string(PRINT_ANY, "drop_gratuitous_arp",
->>> +                     "drop_gratuitous_arp %s ",
->>> +                     conf[IPV4_DEVCONF_DROP_GRATUITOUS_ARP - 1] ? 
->>> "on" : "off");
->>> +
->>> +        if (max_elements >= IPV4_DEVCONF_ARP_EVICT_NOCARRIER)
->>> +            print_string(PRINT_ANY, "arp_evict_nocarrier",
->>> +                     "arp_evict_nocarrier %s ",
->>> +                     conf[IPV4_DEVCONF_ARP_EVICT_NOCARRIER - 1] ? 
->>> "on" : "off");
->>> +    }
->>> +}
->>> +
->> There are three different ways to display a flag value in JSON used in 
->> iproute2.
->> This one is my least favorite.
->>
->> The three ways are:
->>     - print_bool
->>     - print_null (only if on)
->>     - print_string
->>
->> I would use the print_null pattern but print_bool would also be ok.
->>
+Hello:
+
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Wed, 10 Jun 2026 07:53:44 +0530 you wrote:
+> KASAN prints below splat. This is caused by allocating counter for
+> reserved mcam entry for cpt 2nd pass entry. But mcam->entry2cntr_map
+> is not allocated for reserved entries.
 > 
-> Thanks for the suggestion Stephen, I would pick print_bool in this case.
+> BUG: KASAN: slab-out-of-bounds in npc_map_mcam_entry_and_cntr+0xb0/0x1a0
+> Write of size 2 at addr ffff0001033e7ffe by task kworker/0:1/14
 > 
-> If one of the options evolves to supporting something else we could 
-> easily adapt it without breaking compatibility if we use print_bool. If 
-> we use print_null I don't think we could do that.
-> 
+> [...]
 
-Hm. I am actually not so sure about this..
+Here is the summary with links:
+  - [v2,net] octeontx2-af: npc: Fix size of entry2cntr_map
+    https://git.kernel.org/netdev/net/c/f9cd6fabe0e7
 
-the current print_string approach matches the setter and also the 
-netconf side. While print_bool would be easier to parse for JSON, it 
-looks not so good for command line output.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-print_null presents a different problem, users would need to make sure 
-their parsing is working with an iproute2 version that support these new 
-attributes.
 
-So I am not so sure what is the best option here.
