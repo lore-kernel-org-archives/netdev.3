@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 289B23A7F61
-	for <netdev@vger.kernel.org>; Sat, 13 Jun 2026 23:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E924B3AA1A1
+	for <netdev@vger.kernel.org>; Sat, 13 Jun 2026 23:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781391612; cv=none; b=ab8I6S/jX5n6F9XxECfbrx8NhX2YQsDWqo5cjkPFBcCdFomJ6YXqHs7B1yQmpDlCcaIju4TjcXDyvVvsU7l1LUhL3VLUCUuDJCohi7d1WWnBj04pXjuhIdr2MU8oTKQ99K4y7XqrsSJqVJaSZZc1+GUIceMbUwaol3KrpEje2Gs=
+	t=1781391614; cv=none; b=ERTmnmagzoPxUk4Y2Fqte9Bhs/EfYYZBydUFVQZttdA0Bt5bLV7cdFtCOjhr5LNEdwxcjvNjZ0eYjU/Qbgr2OK948NruYPxQPUmvIHjpIizLYjgUUFqDA/XAABOvSry0WYsFJXObpbEx30yZYG1IR36JcmVyNpYt6mf8f+AbEow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781391612; c=relaxed/simple;
-	bh=vN6Lra52DSdkOd/V3iRXgsHWUMdOe9u40A6KbsxV+IU=;
+	s=arc-20240116; t=1781391614; c=relaxed/simple;
+	bh=1funcmtdqQkZPKZLwq4VrBQMVroqqT+hCe+kzS+tGa0=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Zo8/EEj3kTvUzvFY/GKrj1+pI0LtJsJKBQlC172WFRsZ/jWskrY7kR+xAUyFt+WYpfqqeOud/P1mViFVEXiKtEWrcsVSZ8SLasvVnfqS64Lh9R2/lE4nLcYH6kHx8UOvsJlm+wTI/XmwTE00q5fLwqPYhFesD7tQ93l1bcPbf8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f5wl2PhV; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=itmgwiCqvfPDT+KXFf4iqrHL4JqmS2MNeVj7gfzrrk2NfYirLQYwyU+9R7ZWnhJcNiDRBwhYflC7HHw3ZyQhvqAxt1v5ZQoLikI7Zw49LTLMutENiD+03MasXVLxg98gzzdNgkKICNAjZ6Nu9vQLO9QfEvJcgkynygYq91Ph7Qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nLDiCic8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f5wl2PhV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BCE51F000E9;
-	Sat, 13 Jun 2026 23:00:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nLDiCic8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 828A91F00A3A;
+	Sat, 13 Jun 2026 23:00:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781391611;
-	bh=P8WasD/vQDuJyqo+FqFAI74xFhoNUNnfAZPGSwZVYz4=;
+	s=k20260515; t=1781391612;
+	bh=OL0xJg9TGrHcjEJfmk3cEN8r9HyvxoLtpxe2HvO86kA=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=f5wl2PhVE+t5FIGOYZcIed7M/JTvwEGVMDs5i8fGdfle8E/VvnBXFqpZwL9iC5QYy
-	 LjtKcUWzZ8bumn3BtDnA0icJwIfgjxfxf5wjKJ4HgvBusG78xfctu+6VDXHpf9Jncy
-	 AfSugPVbsC1ue0DLWgc4KgtvGChggITXQGJtUdNwwvD6rHh2F9DiTr9o3MlyXsddqe
-	 +45jo2IKFkKjYian9v48u9T4fu2JqS9mK3cVTB7bwXV4cP7CK9X8fg8RYChdYpIRMg
-	 kowTV98iskwMS/aNqHmFsK5b2R0Pjzx/3hSd0yYgd2lVcLtiml2IFpd+nwSrQas7Q4
-	 x75d60fEaAl1w==
+	b=nLDiCic8tXhbtDHtLCwUYQiIve22BfmTErq50vy3chAmEm9dP/uwQT6gcNLWEd5YI
+	 veLro4/RlOLvBP4hnkQtj8F5siX4sXi71vW0h1L7Z3xTPsWdT5hYM0wEL4sNV+SlsQ
+	 wmrYKGsPdSVO6vutfzncLNK+UPmDdYAtsgzJcnfqpeNZYng0GnIJKYzkAUbwI6g+Ko
+	 GIIs6jlcaRSTPjQNT6KZLrL8WbgflorWzjMCRAKT5YELdT1IuC8j7nT3AhDWif+Mfr
+	 TIUhAfvV5fSMtHakzxadwd3pMttoy80RCCx+xFMfGWGqwlj99hz9P9OQDV8XxVaPZv
+	 JNKOpPmHTccJQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56AE23A54A32;
-	Sat, 13 Jun 2026 23:00:08 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09283A54A32;
+	Sat, 13 Jun 2026 23:00:09 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: airoha: Fix register index for Tx-fwd counter
- configuration
+Subject: Re: [PATCH v2] net: airoha: Fix debugfs new-tuple display for IPv4
+ ROUTE
+ entries
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178139160689.1619194.9003446949920537731.git-patchwork-notify@kernel.org>
-Date: Sat, 13 Jun 2026 23:00:06 +0000
-References: <6a2b40e7.4dd82583.3a5c46.e566@mx.google.com>
-In-Reply-To: <6a2b40e7.4dd82583.3a5c46.e566@mx.google.com>
+ <178139160838.1619194.4028591531296512566.git-patchwork-notify@kernel.org>
+Date: Sat, 13 Jun 2026 23:00:08 +0000
+References: <6a2be54b.ef98c1b2.3c3224.2ed8@mx.google.com>
+In-Reply-To: <6a2be54b.ef98c1b2.3c3224.2ed8@mx.google.com>
 To: Wayen.Yan <win847@gmail.com>
-Cc: netdev@vger.kernel.org, lorenzo@kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
+Cc: netdev@vger.kernel.org, lorenzo@kernel.org, horms@kernel.org,
+ pabeni@redhat.com, kuba@kernel.org, edumazet@google.com,
+ andrew+netdev@lunn.ch, angelogioacchino.delregno@collabora.com,
+ matthias.bgg@gmail.com, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 12 Jun 2026 07:09:13 +0800 you wrote:
-> In airoha_qdma_init_qos_stats(), the Tx-fwd counter configuration
-> register uses the same index (i << 1) as the Tx-cpu counter, which
-> overwrites the Tx-cpu configuration. The Tx-fwd counter value register
-> correctly uses (i << 1) + 1, so the configuration register should use
-> the same index.
-> 
-> Fix the REG_CNTR_CFG index from (i << 1) to ((i << 1) + 1) so that
-> the Tx-fwd counter is properly configured instead of clobbering the
-> Tx-cpu counter config.
+On Fri, 12 Jun 2026 07:09:56 +0800 you wrote:
+> In airoha_ppe_debugfs_foe_show(), the second switch statement falls
+> through from PPE_PKT_TYPE_IPV4_HNAPT/DSLITE to PPE_PKT_TYPE_IPV4_ROUTE,
+> accessing hwe->ipv4.new_tuple for all three types. However, IPv4 ROUTE
+> (3-tuple) entries do not contain a valid new_tuple — this field is only
+> meaningful for NATted flows (HNAPT/DSLITE). For ROUTE entries, the
+> memory at the new_tuple offset holds routing information, not NAT data,
+> so displaying "new=" produces garbage output.
 > 
 > [...]
 
 Here is the summary with links:
-  - net: airoha: Fix register index for Tx-fwd counter configuration
-    https://git.kernel.org/netdev/net/c/1402ecccf563
+  - [v2] net: airoha: Fix debugfs new-tuple display for IPv4 ROUTE entries
+    https://git.kernel.org/netdev/net/c/1c3a77471afb
 
 You are awesome, thank you!
 -- 
