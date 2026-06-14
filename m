@@ -1,47 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5358579CD;
-	Sun, 14 Jun 2026 00:45:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 977A58460
+	for <netdev@vger.kernel.org>; Sun, 14 Jun 2026 00:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781397935; cv=none; b=QqPIhESkVfn56Y9hjPr/Wac3hJt2ZiDSccFCAxA2/p/GE5go5bRJeB8fMbAvAIsMsNON9HIWUW8IkouKWnKbRQvEc/fnR+JgB71KMa/O286wvhRuTFZ+pC5Nds7CgfwSTa1+jtdwp5N/WlH9j5fVZcpChnHlnc5yQKWqWqhzCOk=
+	t=1781398212; cv=none; b=Hme5Rq6CCWYSR2154auOE2Fnn97SquEPWMI97rixOtkGH1UYdOAXIu4hp79tziZgoxqTHoteckQIlSSoBYF7HP6wREpv2pn9sGTiFPWEuLCJxh6nNiwy1q5AUJ+HIHsc+PfvD26vp2Vg5XCFRankOLUanEXcgbM5pjisFan7hHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781397935; c=relaxed/simple;
-	bh=boMDR9bjcDPU5LuFb6qMWs0TEKNGsZ0Q47rf+QtHsUU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QJmWAF8wCRdQZ5dU3j27BnunQ8O+wgKvyZqx3WutQcr+rtMb6LTIOLnkWsnkvRA9HrVRtpqWwGUQPOgeXlJIm9DRFULXqBwUGNzDmLGNSMHeL7XEdl0p10BqHMBEJeG86utdoSxWfePiiGnRlxgrWHVoJUmWv6lWEztT4aOVo0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZPJMkIwU; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781398212; c=relaxed/simple;
+	bh=l1RCpKzB1KpzWFvK7HoY2MJcQhpEjDL4Tv8TLaYsVPw=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=ivGA43u5OxdbVe+/16bpnF8EAL7OznI6n5ZvzQCjianwphIaZpg8u0GZfbnDEJ8lLFQ8FzEw/56+yTDfaCEJMjK/yHO6mdmBeuzIgu8HTuKwk73nssIMMIN6bn4TnuB1oSwg5MAHkEKdxRospg8gftQOda1c9+2SfKsl2ZWqyYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CxwbBiEC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZPJMkIwU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C8601F000E9;
-	Sun, 14 Jun 2026 00:45:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CxwbBiEC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12C5E1F000E9;
+	Sun, 14 Jun 2026 00:50:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781397933;
-	bh=q82UhnH2/37BeKpgQc37emUrKfiMBuo2xB8o8TlUGN4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZPJMkIwU9KO4R/Rk2Q/Wuu8jssf1EAZPICzXov+y2MIzXDYnNGvt/9REFHCXgU6nr
-	 3ycb8sssP+ALwv5cNX6L7hqncfO5uTD0Oy3ccArb6h5I1y1NrRIxhuq48hMyzgG0Mp
-	 GAhqwiXZSDbOUnvVAYUUnTPZB91qp0B2GSVVLl1pVzBapv8kPKy3GjZ0DrX+LoBT19
-	 scz5LgVswo1vjYSxNvREyx4UwZpmdcLyNACcE9eRlzKxIFiQQIpcJsHdl2svN3wKDO
-	 L4fwq/Lx3QLy299vJS3tx8KCQFOizPRyL6qiIUFPAG2ydTw69gXq8/JSO6ODeyoUas
-	 5JeDgfKVfey5w==
-From: Jakub Kicinski <kuba@kernel.org>
-To: mmyangfl@gmail.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	andrew@lunn.ch,
-	olteanv@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net: dsa: yt921x: Add limited ACL flow statistics support
-Date: Sat, 13 Jun 2026 17:45:30 -0700
-Message-ID: <20260614004530.402503-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260610202508.845328-1-mmyangfl@gmail.com>
-References: <20260610202508.845328-1-mmyangfl@gmail.com>
+	s=k20260515; t=1781398211;
+	bh=lHA7+4OoR+zVlpJfxavU8nFPDfwyqQ4ScEcKWTbDI60=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=CxwbBiECXDcS4kLu7In/e9YV7ED8wcx3aMrVLdXvBWcDH49MGd6UimpRLPJEoJz7f
+	 wAQzW9+ArXssobnluSYrtx3GUMycfi3p+uR6OfC/SAYX60sMZOf+0Ed6it8jmE0vDn
+	 khF/Q2j1FkphXcBgitgKmQvSgdK254Lp8rj9i/f3Hf6RdsJ9hbVaj9DoC5Kl/wvM8s
+	 mkHDOLyj4xX0ONuQlqmQu+6l/EDHQvdldWG9rXDJ/auYMpLWmMbWup6+KdaoXK/r8G
+	 kHbZ7mG54pkcMLXFFsayu20daZepkToid6oR5765c/rBu/+E6UEiE8QWaNagzRgFPL
+	 Wr9st+OZrloGA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568753A54A32;
+	Sun, 14 Jun 2026 00:50:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,243 +37,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 1/2] net: ife: require ETH_HLEN to be pullable in
+ ife_decode()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178139820714.1641091.2899241191922395715.git-patchwork-notify@kernel.org>
+Date: Sun, 14 Jun 2026 00:50:07 +0000
+References: <20260610183814.1648888-2-n05ec@lzu.edu.cn>
+In-Reply-To: <20260610183814.1648888-2-n05ec@lzu.edu.cn>
+To: Ren Wei <n05ec@lzu.edu.cn>
+Cc: netdev@vger.kernel.org, yotam.gi@gmail.com, jhs@mojatatu.com,
+ davem@davemloft.net, xiyou.wangcong@gmail.com, kuba@kernel.org,
+ victor@mojatatu.com, yuantan098@gmail.com, bird@lzu.edu.cn, edragain@163.com
 
-This is an AI-generated review of your patch. The human sending this
-email says "I thought this is a false positive and the register is
-Clear-on-Read but you seem to be writing 0 to it when allocating."
----
-net: dsa: yt921x: Add limited ACL flow statistics support
+Hello:
 
-This commit adds .cls_flower_stats() support to the yt921x DSA driver,
-backed by a pool of 64 hardware flow counters configured in byte mode.
-A counter is allocated at rule-install time and read on demand via
-yt921x_acl_stat().
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-> diff --git a/drivers/net/dsa/yt921x.c b/drivers/net/dsa/yt921x.c
-> index 159b16606f6c..7919afcb8136 100644
-> --- a/drivers/net/dsa/yt921x.c
-> +++ b/drivers/net/dsa/yt921x.c
-> @@ -373,6 +373,11 @@ yt921x_regs_clear_bits(struct yt921x_priv *priv, u32 reg, const u32 *masks,
->  	return yt921x_regs_write(priv, reg, vs, num_regs);
->  }
->  
-> +static int yt921x_reg64_read(struct yt921x_priv *priv, u32 reg, u32 *vals)
-> +{
-> +	return yt921x_regs_read(priv, reg, vals, 2);
-> +}
-> +
+On Thu, 11 Jun 2026 02:37:43 +0800 you wrote:
+> From: Yong Wang <edragain@163.com>
+> 
+> ife decode may return after making only the outer IFE header and
+> metadata pullable. The caller then passes the decapsulated packet to
+> eth_type_trans(), which expects the inner Ethernet header to be
+> accessible from the linear data area.
+> 
+> [...]
 
-[Low]
-yt921x_reg64_read() reads the 64-bit FLOWSTATn_STAT register as two
-independent 32-bit transactions, one for each word, and combines them
-in yt921x_acl_stat() with:
+Here is the summary with links:
+  - [1/2] net: ife: require ETH_HLEN to be pullable in ife_decode()
+    https://git.kernel.org/netdev/net/c/9406f6012b73
+  - [2/2] selftests/tc-testing: Verify IFE can handle truncated inner Ethernet header
+    https://git.kernel.org/netdev/net/c/a4004aa0debf
 
-	*statp = ((u64)vals[1] << 32) | vals[0];
-
-The hardware counter is live and can increment between the two reads.
-If the low word wraps from ~0xffffffff to a small value while the high
-word increments between the two transactions, the recombined value
-becomes (new_high << 32) | old_low, producing a spurious ~4 GiB jump.
-
-Does the chip provide a latch/snapshot register, or a documented
-read-low/high/low retry protocol, that should be used here instead of
-two independent reads?
-
->  static int
->  yt921x_reg64_write(struct yt921x_priv *priv, u32 reg, const u32 *vals)
->  {
-> @@ -2224,6 +2229,40 @@ yt921x_acl_reserve(struct yt921x_priv *priv, unsigned int entscnt,
->  	return UINT_MAX;
->  }
->  
-> +static int
-> +yt921x_acl_stat(struct yt921x_priv *priv, enum tc_setup_type type,
-> +		unsigned long tag, u64 *statp)
-> +{
-> +	const struct yt921x_acl_rule *aclrule;
-> +	const struct yt921x_acl_blk *aclblk;
-> +	unsigned int statid;
-> +	unsigned int binid;
-> +	unsigned int blkid;
-> +	unsigned int entid;
-> +	u32 vals[2];
-> +	int res;
-> +
-> +	entid = yt921x_acl_find(priv, type, tag);
-> +	if (entid == UINT_MAX)
-> +		return -ENOENT;
-> +
-> +	blkid = entid / YT921X_ACL_ENT_PER_BLK;
-> +	binid = entid % YT921X_ACL_ENT_PER_BLK;
-> +	aclblk = priv->acl_blks[blkid];
-> +	aclrule = aclblk->rules[binid];
-> +
-> +	if (!(aclrule->action[0] & YT921X_ACL_ACTa_FLOWSTAT_EN))
-> +		return -EOPNOTSUPP;
-> +
-> +	statid = FIELD_GET(YT921X_ACL_ACTa_FLOWSTAT_ID_M, aclrule->action[0]);
-> +	res = yt921x_reg64_read(priv, YT921X_FLOWSTATn_STAT(statid), vals);
-> +	if (res)
-> +		return res;
-> +
-> +	*statp = ((u64)vals[1] << 32) | vals[0];
-> +	return 0;
-> +}
-> +
-
-[High]
-The absolute hardware counter is written directly into cls->stats.bytes,
-and the flow_offload framework treats this value as a per-poll delta.
-Following the call chain tcf_exts_hw_stats_update() ->
-tcf_action_stats_update() -> a->ops->stats_update() -> _bstats_update(),
-the framework performs:
-
-	u64_stats_add(&bstats->bytes, bytes);
-
-So if the hardware counter currently shows X bytes, every subsequent
-poll of an idle counter adds another X to the kernel running total. After
-N polls of an unchanged counter the user-visible "tc -s flower" value
-will read N*X instead of X.
-
-Two existing drivers handle this correctly:
-
-  - drivers/net/dsa/sja1105/sja1105_vl.c:sja1105_vl_stats() caches a
-    "last reported" value and reports (current - last).
-  - drivers/net/ethernet/mscc/ocelot_vcap.c:ocelot_vcap_filter_stats_update()
-    clears the hardware counter after each read.
-
-Should yt921x_acl_stat() do something similar, either by tracking the
-previously reported value per-rule, or by clearing FLOWSTATn_STAT after
-the read?
-
-[Medium]
-cls->stats.pkts and cls->stats.lastused are never populated. The
-hardware is hardwired to byte mode (YT921X_FLOWSTAT_CTRL_TYPE_FLOW with
-PKT_MODE cleared), so no packet count is available, but the driver still
-sets:
-
-	cls->stats.used_hw_stats = FLOW_ACTION_HW_STATS_IMMEDIATE;
-	cls->stats.used_hw_stats_valid = true;
-
-Combined with the additive _bstats_update() semantics above, "tc -s
-flower" will always show 0 packets even under traffic. Similarly
-flow_stats->lastused stays 0, and any rule-aging logic that consults
-lastused (it is updated via max_t(u64, ...)) will see the rule as never
-used. For comparison, sja1105_vl_stats() passes
-(jiffies - rule->vl.stats.lastused) as a delta.
-
-Should the commit message and/or used_hw_stats_valid acknowledge that
-pkts and lastused are not being reported?
-
->  static int
->  yt921x_acl_commit(struct yt921x_priv *priv, unsigned int entid, u8 entsmask)
->  {
-> @@ -2336,6 +2375,10 @@ yt921x_acl_del(struct yt921x_priv *priv, enum tc_setup_type type,
->  		clear_bit(FIELD_GET(YT921X_ACL_ACTa_METER_ID_M,
->  				    aclrule->action[0]),
->  			  priv->meters_map);
-> +	if (aclrule->action[0] & YT921X_ACL_ACTa_FLOWSTAT_EN)
-> +		clear_bit(FIELD_GET(YT921X_ACL_ACTa_FLOWSTAT_ID_M,
-> +				    aclrule->action[0]),
-> +			  priv->flowstats_map);
-
-[Low]
-On rule delete the priv->flowstats_map bit is cleared, but
-YT921X_FLOWSTATn_CTRL(statid) is not written to clear FLOWSTAT_CTRL_EN.
-The counter remains physically enabled with TYPE_FLOW until something
-else reprograms it.
-
-Today this is benign because acl_commit() zeros the action register so
-no rule references the counter, and reuse rewrites CTRL. However, the
-header file enumerates other types (TYPE_CPU_CODE, TYPE_DROP_CODE,
-TYPE_PORT) for the same slot pool. If a future caller picks one of
-these types without first disabling the slot, could it observe stale
-counts from the previous flow user?
-
->  	priv->acl_masks[blkid] &= ~aclrule->mask;
->  	kvfree(aclrule);
->  	if (!priv->acl_masks[blkid]) {
-> @@ -2355,11 +2398,13 @@ yt921x_acl_add(struct yt921x_priv *priv,
->  	struct yt921x_acl_blk *aclblk;
->  	bool use_trap = false;
->  	unsigned int meterid;
-> +	unsigned int statid;
->  	unsigned long mask;
->  	unsigned int binid;
->  	unsigned int blkid;
->  	unsigned int entid;
->  	unsigned int o;
-> +	u32 ctrl;
->  	int res;
->  
->  	/* Allocate resources */
-> @@ -2386,6 +2431,22 @@ yt921x_acl_add(struct yt921x_priv *priv,
->  		}
->  	}
->  
-> +	statid = find_first_zero_bit(priv->flowstats_map, YT921X_FLOWSTAT_NUM);
-> +	if (statid < YT921X_FLOWSTAT_NUM) {
-> +		u32 zeros[2] = {};
-> +
-> +		ctrl = YT921X_FLOWSTAT_CTRL_EN | YT921X_FLOWSTAT_CTRL_TYPE_FLOW;
-> +		res = yt921x_reg_write(priv, YT921X_FLOWSTATn_CTRL(statid),
-> +				       ctrl);
-> +		if (res)
-> +			return res;
-> +
-> +		res = yt921x_reg64_write(priv, YT921X_FLOWSTATn_STAT(statid),
-> +					 zeros);
-> +		if (res)
-> +			return res;
-> +	}
-> +
-
-[Medium]
-This block runs unconditionally for every ACL rule, regardless of
-whether the user requested statistics. When all 64 counters are in use
-(statid >= YT921X_FLOWSTAT_NUM), the rule is still installed but
-silently without stats; the user only learns by querying and getting
--EOPNOTSUPP from yt921x_acl_stat().
-
-There is no NL_SET_ERR_MSG_MOD() at install time and no kernel log
-message. The same function explicitly emits
-
-	NL_SET_ERR_MSG_MOD(extack, "No more meters available");
-
-for the meter pool right above this hunk.
-
-Should the flow-stat path either be gated on whether the rule actually
-needs stats (so unrelated rules do not consume counters), or surface a
-diagnostic via extack when the pool is exhausted? Otherwise an old set
-of un-queried rules can starve newer rules that do need stats.
-
-[Low]
-After the YT921X_FLOWSTATn_CTRL write succeeds, the bare "return res;"
-on a failing YT921X_FLOWSTATn_STAT write leaves the counter enabled in
-hardware while priv->flowstats_map remains clear. Likewise, if any
-later step (kvmemdup, yt921x_acl_commit) fails, the err: label does not
-unwind the CTRL write or the meter configuration done in the prior
-hunk.
-
-The same asymmetric rollback pre-exists for meters and is implicitly
-healed by the next allocation reprogramming the slot, but the new
-flow-stat path's bare returns bypass the err: label entirely. Should
-this teardown path be made symmetric?
-
->  	/* Prepare acl block ctrlblk */
->  	blkid = entid / YT921X_ACL_ENT_PER_BLK;
->  	binid = entid % YT921X_ACL_ENT_PER_BLK;
-> @@ -2426,6 +2487,9 @@ yt921x_acl_add(struct yt921x_priv *priv,
->  		aclrule->action[0] |= YT921X_ACL_ACTa_METER_ID(meterid);
->  	else
->  		aclrule->action[0] &= ~YT921X_ACL_ACTa_METER_EN;
-> +	if (statid < YT921X_FLOWSTAT_NUM)
-> +		aclrule->action[0] |= YT921X_ACL_ACTa_FLOWSTAT_EN |
-> +				      YT921X_ACL_ACTa_FLOWSTAT_ID(statid);
->  
->  	/* Write rules */
->  	aclblk->rules[binid] = aclrule;
-
-[ ... ]
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
