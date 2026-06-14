@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81B63CBE9A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C033CB8E5;
 	Sun, 14 Jun 2026 17:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781456465; cv=none; b=gZN8x5FqIwwpmDJ1hetRsc5iMU3KY5gBZOsFnvM4LEVaR25IpBwPqgoZbIp1egFAvM4vrkl0kuiW5DmXSaBAmCYB34C9kCY47yZMYheDvl2f+SzuX6gHOKhBWg61bLA/9X6vkbV76XOMHbCzEwdi+s8PqN/YUXf6cjx0A53lCHo=
+	t=1781456465; cv=none; b=CwNOcMxMghCcZoQ6A2zUkQp3rcDYsSZNBn7Qz5OVnqQZphIzPy4CbbeVfI+29847SCbikM2RCjcwrx6ywXSi7m3HNJlWWf4Rgkt+/Khju0UuXo+ImDM72dhz+A2flDx/Gj7Xdkrq3ESUwIr0UlSqV2+GDKEcmKBmQiqrQwTDK04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1781456465; c=relaxed/simple;
-	bh=YusrKnCK9bePlrsBvtcH1987EOJ9L6lNd/0+oJD1vXg=;
+	bh=5AKoe4D23g4jI/s7FfzCJBOwHciGwjfrxvg9PrbaBFs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=AEX+dZcdpyB/mozEnPVVzGAi4J1IvEpFm6rOSz/Nlc2h6neGpCuLr090TaR5yGVYT9N8gr3QSEN9GauWh7rZ1C5x2RErrdDOAAN67a4q9sFO2T0+Svi324ZB6DQRSgAohAN6q6ROHE4tYRusDLvLJjSV4ALEGp20khdsnovnssM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZwTmlefa; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=tqO3rTc0uB0n+YhoJ3KUCpnu+jUZTcNGoYGhbLrQ1GM32xs1aXQWHt/EeWN9UPPKa+cOEr0AZ18X85sRGMMyp41LFhum0lA6UADF5am7KgGun4bUslX36qLeMHkr+98ROGxOenqXjts7UG+TcwkHCHwudrUum14qOsLA7LYDGDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qkoy9m5e; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZwTmlefa"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id AD87AC2BCB0;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qkoy9m5e"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 86970C4AF0F;
 	Sun, 14 Jun 2026 17:01:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1781456465;
-	bh=YusrKnCK9bePlrsBvtcH1987EOJ9L6lNd/0+oJD1vXg=;
+	bh=5AKoe4D23g4jI/s7FfzCJBOwHciGwjfrxvg9PrbaBFs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=ZwTmlefa62q8gKbfh/M6WbG7qyukDjPgq9TFeBzcGu3YnB5rmAMzGR2QSsG3WSF9f
-	 avu8EqBidN7oM74+QyehNqx9rsLykebS7lBiYdPuEtGd0KtrOHGrfFeKM0mJm6eHWE
-	 81bm5u+4WvmY7jkG4kverrzoJe+RcZX/rQPKgWarB9eTPLlvGXbv3G4QaVkxvpAt/W
-	 u/7byapRvkHD7xSZexoWTkQS8JRAZ4M+b08oWZlbbLFej4ItNFs5fgG7/3plpwY311
-	 FUwNK3lJkjziHg7QbBP/Z/emrsRcxLQcBeYlM3p8x2eKzuuBxeae2/7xsJ4VmNY7R8
-	 9oBpTWieUSwAg==
+	b=Qkoy9m5eYT0RCRREoDUR+k0ZhK+MzYGrwfH+2DBZDK9vkfHD5eCirVRvu6208ns6z
+	 adnXg0NdX3YaFuVES07F9H+CYVAiL6Ptqr67a2mCsB6egZrpQJ2KG3I4Ou+RzQXo4e
+	 pCmRyPZhtsX7GucUUcHP/dt6XGcxGH4oBJM7lPn9wmwQMMkvgmAyp9HEXSIp/NHqN7
+	 49xE7kSC9hxT+XwkiyY3ZoBax7YxORsQehI20Mh9mKirQUBbrSi1orki8QvDVjJ4IU
+	 A/+wTZnNq94ZTLwIeV0pj9jsl5IIiCz8T2wGfF3+GQB3lzLxRKj/vErE5k/g+AqRjy
+	 D9ShiYA9XMFNQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A59B7CD98D2;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7DD8CCD98C5;
 	Sun, 14 Jun 2026 17:01:05 +0000 (UTC)
 From: Selvamani Rajagopal via B4 Relay <devnull+Selvamani.Rajagopal.onsemi.com@kernel.org>
-Date: Sun, 14 Jun 2026 10:00:25 -0700
-Subject: [PATCH net-next v5 09/15] net: phy: ncn26000: Support for onsemi's
- S2500 internal phy
+Date: Sun, 14 Jun 2026 10:00:23 -0700
+Subject: [PATCH net-next v5 07/15] net: ethernet: oa_tc6: Support for
+ vendor specific MMS
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260614-s2500-mac-phy-support-v5-9-89874b72f725@onsemi.com>
+Message-Id: <20260614-s2500-mac-phy-support-v5-7-89874b72f725@onsemi.com>
 References: <20260614-s2500-mac-phy-support-v5-0-89874b72f725@onsemi.com>
 In-Reply-To: <20260614-s2500-mac-phy-support-v5-0-89874b72f725@onsemi.com>
 To: Andrew Lunn <andrew@lunn.ch>, 
@@ -62,11 +62,11 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  Jerry Ray <jerry.ray@microchip.com>, 
  Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781456463; l=4552;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781456463; l=3411;
  i=Selvamani.Rajagopal@onsemi.com; s=20260531; h=from:subject:message-id;
- bh=wTjf/3/2VpFegcBhYbRbmOxdqLThkSIA90NS7cwYteM=;
- b=M61tF1ixN1vx7M7q9ye/xZwjnkLEIf3IBsKGU6IVqSe0RTlwgidtqkKRtQVeX4PMt7CeG+LME
- kwzo/BVx9RLCM0x3n03pFpU/4yAwcQzJLevhunonhzkKWJscbLEmCK5
+ bh=+fzQuf82LX31PX0K2sXhsNLmt2YRUK6CWtb80ha2Vwc=;
+ b=J7KNkTGadtmxb1lXHNGoAyc2cXZ1kTA6ADa2Yha0jckd4MYeW/JTwGaI4XVabOuFNvHtsPKga
+ s5oNvuE3Y7YDy9i0YIyBrbdBEul935iWOFpl27+SqPC6QWQJGivvGoC
 X-Developer-Key: i=Selvamani.Rajagopal@onsemi.com; a=ed25519;
  pk=5QRdM0HS/LGWWcUZZ9hVfZ+qbPQGZCumcTXOiN7Fyug=
 X-Endpoint-Received: by B4 Relay for
@@ -76,139 +76,107 @@ Reply-To: Selvamani.Rajagopal@onsemi.com
 
 From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 
-Adding support for internal PHY of the integrated
-media access controller S2500. PLCA tx opportunity timer's
-default value is correct in this device, compared to
-NCN26000.
+OPEN Alliance 10BASE-T1x Serial Interface specification, table 6
+allows vendors to use any memory map select (MMS) value between
+10 and 15. This new API interface enables vendor to map one of
+thes MMS values to MDIO_MMD_VEND1.
 
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 
 ---
 changes in v5
-  - No change
+  - no change
 changes in v4
   - no change
 changes in v3
-   added new PHY support separate patch
-   changed model comparison to use phy_id_compare_model
+  - no change
 changes in v2
-   Removed bug fixes. Retained only S2500 specific changes
-changes in v1
-   Added support for an internal PHY of onsemi's MAC-PHY S2500
+  - Moved the handling of vendor specific MMS mapping to separate patch
+  - new patch
 ---
- MAINTAINERS                |  3 ++-
- drivers/net/phy/ncn26000.c | 38 +++++++++++++++++++++++++++++++++-----
- 2 files changed, 35 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/oa_tc6/oa_tc6.c | 21 ++++++++++++++++++---
+ include/linux/oa_tc6.h               |  1 +
+ 2 files changed, 19 insertions(+), 3 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 03adc7697dce..54dc01628081 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -19971,7 +19971,8 @@ S:	Maintained
- F:	arch/mips/boot/dts/ralink/omega2p.dts
+diff --git a/drivers/net/ethernet/oa_tc6/oa_tc6.c b/drivers/net/ethernet/oa_tc6/oa_tc6.c
+index 9410cecfdc2a..fab7cb84df71 100644
+--- a/drivers/net/ethernet/oa_tc6/oa_tc6.c
++++ b/drivers/net/ethernet/oa_tc6/oa_tc6.c
+@@ -202,6 +202,18 @@ int oa_tc6_ioctl(struct oa_tc6 *tc6, struct ifreq *rq, int cmd)
+ }
+ EXPORT_SYMBOL_GPL(oa_tc6_ioctl);
  
- ONSEMI ETHERNET PHY DRIVERS
--M:	Piergiorgio Beruto <piergiorgio.beruto@gmail.com>
-+M:	Piergiorgio Beruto <pier.beruto@onsemi.com>
-+M:	Selva Rajagopal <selvamani.rajagopal@onsemi.com>
- L:	netdev@vger.kernel.org
- S:	Supported
- W:	http://www.onsemi.com
-diff --git a/drivers/net/phy/ncn26000.c b/drivers/net/phy/ncn26000.c
-index cabdd83c614f..2c8601c3f94a 100644
---- a/drivers/net/phy/ncn26000.c
-+++ b/drivers/net/phy/ncn26000.c
-@@ -2,7 +2,7 @@
- /*
-  *  Driver for the onsemi 10BASE-T1S NCN26000 PHYs family.
-  *
-- * Copyright 2022 onsemi
-+ * Copyright 2026 onsemi
-  */
- #include <linux/kernel.h>
- #include <linux/bitfield.h>
-@@ -14,6 +14,7 @@
- 
- #include "mdio-open-alliance.h"
- 
-+#define PHY_ID_S2500			0x180FF411
- #define PHY_ID_NCN26000			0x180FF5A1
- 
- #define NCN26000_REG_IRQ_CTL            16
-@@ -37,13 +38,18 @@
- 
- static int ncn26000_config_init(struct phy_device *phydev)
- {
-+	int ret = 0;
++/**
++ * oa_tc6_set_vend1_mms - Add vendor specific MDIO_MMD to OA TC6 MMS
++ * mapper value.
++ * @tc6: oa_tc6 struct.
++ * @mms: vendor defined MMS value for VEND1 mdio device.
++ */
++void oa_tc6_set_vend1_mms(struct oa_tc6 *tc6, int mms)
++{
++	tc6->vend1_mms = mms;
++}
++EXPORT_SYMBOL_GPL(oa_tc6_set_vend1_mms);
 +
- 	/* HW bug workaround: the default value of the PLCA TO_TIMER should be
- 	 * 32, where the current version of NCN26000 reports 24. This will be
- 	 * fixed in future PHY versions. For the time being, we force the
- 	 * correct default here.
- 	 */
--	return phy_write_mmd(phydev, MDIO_MMD_VEND2, MDIO_OATC14_PLCA_TOTMR,
--			     TO_TMR_DEFAULT);
-+	if (phy_id_compare_model(phydev->drv->phy_id, PHY_ID_NCN26000))
-+		ret = phy_write_mmd(phydev, MDIO_MMD_VEND2,
-+				    MDIO_OATC14_PLCA_TOTMR,
-+				    TO_TMR_DEFAULT);
-+	return ret;
- }
- 
- static int ncn26000_config_aneg(struct phy_device *phydev)
-@@ -117,8 +123,8 @@ static irqreturn_t ncn26000_handle_interrupt(struct phy_device *phydev)
- 
- static int ncn26000_config_intr(struct phy_device *phydev)
+ static __be32 oa_tc6_prepare_ctrl_header(u32 addr, u8 length,
+ 					 enum oa_tc6_register_op reg_op)
  {
--	int ret;
- 	u16 irqe;
-+	int ret;
- 
- 	if (phydev->interrupts == PHY_INTERRUPT_ENABLED) {
- 		// acknowledge IRQs
-@@ -141,6 +147,26 @@ static int ncn26000_config_intr(struct phy_device *phydev)
+@@ -455,7 +467,7 @@ static int oa_tc6_mdiobus_write(struct mii_bus *bus, int addr, int regnum,
+ 				     val);
  }
  
- static struct phy_driver ncn26000_driver[] = {
-+	{
-+		PHY_ID_MATCH_MODEL(PHY_ID_S2500),
-+		.name                  = "S2500",
-+		.features              = PHY_BASIC_T1S_P2MP_FEATURES,
-+		.config_init           = ncn26000_config_init,
-+		.config_intr           = ncn26000_config_intr,
-+		.config_aneg           = ncn26000_config_aneg,
-+		.read_status           = ncn26000_read_status,
-+		.handle_interrupt      = ncn26000_handle_interrupt,
-+		.set_plca_cfg          = genphy_c45_plca_set_cfg,
-+		.get_plca_cfg          = genphy_c45_plca_get_cfg,
-+		.get_plca_status       = genphy_c45_plca_get_status,
-+		.soft_reset            = genphy_soft_reset,
-+		.get_sqi               = genphy_c45_oatc14_get_sqi,
-+		.get_sqi_max           = genphy_c45_oatc14_get_sqi_max,
-+		.read_mmd              = genphy_phy_read_mmd,
-+		.write_mmd             = genphy_phy_write_mmd,
-+		.cable_test_get_status = genphy_c45_oatc14_cable_test_get_status,
-+		.cable_test_start      = genphy_c45_oatc14_cable_test_start,
-+	},
- 	{
- 		PHY_ID_MATCH_MODEL(PHY_ID_NCN26000),
- 		.name			= "NCN26000",
-@@ -161,11 +187,13 @@ module_phy_driver(ncn26000_driver);
+-static int oa_tc6_get_phy_c45_mms(int devnum)
++static int oa_tc6_get_phy_c45_mms(struct oa_tc6 *tc6, int devnum)
+ {
+ 	switch (devnum) {
+ 	case MDIO_MMD_PCS:
+@@ -468,6 +480,8 @@ static int oa_tc6_get_phy_c45_mms(int devnum)
+ 		return OA_TC6_PHY_C45_AUTO_NEG_MMS5;
+ 	case MDIO_MMD_POWER_UNIT:
+ 		return OA_TC6_PHY_C45_POWER_UNIT_MMS6;
++	case MDIO_MMD_VEND1:
++		return tc6->vend1_mms;
+ 	default:
+ 		return -EOPNOTSUPP;
+ 	}
+@@ -480,7 +494,7 @@ static int oa_tc6_mdiobus_read_c45(struct mii_bus *bus, int addr, int devnum,
+ 	u32 regval;
+ 	int ret;
  
- static const struct mdio_device_id __maybe_unused ncn26000_tbl[] = {
- 	{ PHY_ID_MATCH_MODEL(PHY_ID_NCN26000) },
-+	{ PHY_ID_MATCH_MODEL(PHY_ID_S2500) },
- 	{ }
- };
+-	ret = oa_tc6_get_phy_c45_mms(devnum);
++	ret = oa_tc6_get_phy_c45_mms(tc6, devnum);
+ 	if (ret < 0)
+ 		return ret;
  
- MODULE_DEVICE_TABLE(mdio, ncn26000_tbl);
+@@ -497,7 +511,7 @@ static int oa_tc6_mdiobus_write_c45(struct mii_bus *bus, int addr, int devnum,
+ 	struct oa_tc6 *tc6 = bus->priv;
+ 	int ret;
  
--MODULE_AUTHOR("Piergiorgio Beruto");
-+MODULE_AUTHOR("Piergiorgio Beruto <pier.beruto@onsemi.com>");
-+MODULE_AUTHOR("Selva Rajagopal <selvamani.rajagopal@onsemi.com>");
- MODULE_DESCRIPTION("onsemi 10BASE-T1S PHY driver");
- MODULE_LICENSE("Dual BSD/GPL");
+-	ret = oa_tc6_get_phy_c45_mms(devnum);
++	ret = oa_tc6_get_phy_c45_mms(tc6, devnum);
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -1281,6 +1295,7 @@ struct oa_tc6 *oa_tc6_init(struct spi_device *spi, struct net_device *netdev)
+ 	SET_NETDEV_DEV(netdev, &spi->dev);
+ 	mutex_init(&tc6->spi_ctrl_lock);
+ 	spin_lock_init(&tc6->tx_skb_lock);
++	tc6->vend1_mms = -EOPNOTSUPP;
+ 	tc6->tx_ts_idx = OA_TC6_TTSCA_REG_ID;
+ 	INIT_LIST_HEAD(&tc6->tx_ts_skb_q);
+ 
+diff --git a/include/linux/oa_tc6.h b/include/linux/oa_tc6.h
+index 4047c22a366a..a89151267713 100644
+--- a/include/linux/oa_tc6.h
++++ b/include/linux/oa_tc6.h
+@@ -47,5 +47,6 @@ void oa_tc6_get_ts_stats(struct oa_tc6 *tc6,
+ 			 struct ethtool_ts_stats *ts_stats);
+ int oa_tc6_hwtstamp_set(struct oa_tc6 *tc6,
+ 			struct kernel_hwtstamp_config *cfg);
++void oa_tc6_set_vend1_mms(struct oa_tc6 *tc6, int mms);
+ void oa_tc6_ptp_unregister(struct oa_tc6 *tc6);
+ #endif /* _LINUX_OA_TC6_H */
 
 -- 
 2.43.0
