@@ -1,129 +1,80 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101C42F90C5;
-	Sun, 14 Jun 2026 08:23:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A2D395ADF;
+	Sun, 14 Jun 2026 08:30:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781425411; cv=none; b=Ltud+oBrC5OnoDXY2xmeBxa7cIotb6xVbtBh6BW7qQPq1UP/4PIQZsPiWwbyqjzRWUN0DiiyzwUpivu+LzU8QeRl6GirHQ4f/OOzXIVAk/lT06OYAmVBxRAoiJPzj5NyT6+eTXOgt4iu2fLT+hvQKfUIQLMdHrcps/Yi5ndcCdY=
+	t=1781425817; cv=none; b=OsQRtLtm0NuVJgHboeOij4RfvMM1NN4uTGxjX6wH7ICart+Bnd9pEbfWcb+WLnBmzIo7/rlCKiR3NlLdfgab8u4bKFy1fdwYkFhU9ZEoiWNV1ZjE/K81tiYQXuQII70Q2O+o8K4sjtmdbGYJ3zsN58Kvb84DIZzJy/O9P7MnHBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781425411; c=relaxed/simple;
-	bh=PAjVurddjqVXeQuWOvVMD5hsHg8qW5JVWuh3lEpyVDg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=nCnGUDJsfhFjZzBZ2jgWCQ3CGQ8tQA7nOlcepPgO/Z+UVrC2O61D/zOhSziT5Y9bvzMxH5h3x9lVfAjwBgQVDuDA5kWOKbR7f2ikiBkw4dET2ew2wR4DbBn5bBdhjbXJFIbF2aOr55/FYiDjL21vgnIJqIWguuDqPK9Ya5bkxKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=goCOGx/f; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1781425817; c=relaxed/simple;
+	bh=DDh1tSSFF9Oq3/BXw+iRri0q+haQ8yCLbV6/wOfXlf8=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Jv7Wt2SZ0MG0kbtXo1LeMaxqTLhksYwBgJBJjI5uGUPkEnbDMdGPTItlep2X2jXjHLhFsDVqCEEvuzc9ocfjQSJt8ixiuBcn7Vww+wnRxr5DxHcBTRg2wdtr+92gd8RrmhVEEsrItfN7WHrH5wGIFrjbN0y5/3jvOOdyOWEbLnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aIcSpm4/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="goCOGx/f"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id C8742C4AF10;
-	Sun, 14 Jun 2026 08:23:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1781425410;
-	bh=PAjVurddjqVXeQuWOvVMD5hsHg8qW5JVWuh3lEpyVDg=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=goCOGx/fMlcen7y2ufWoGQgSWjTl2U7Y+nluNqKXNkLcUO3lu9R1Iu8JfvpShuZmn
-	 7/PaCYMxRsOGyFGITQ/IegKj8cggGsN8ogv7hQxm3KtwPy1jZMdnQMVBLoe/qajUP1
-	 TnFuOhPGi1oTjg0m9h/H7YcxqmUJN9+/+lXhni1ZqL38Qi3H8jTj159OQKJG0+Z1Zn
-	 g0WgTDFtiwH/kXdueT4O6iY7Sk57+eYGV76gSBs7qP/YGsqIqI1CZwK+X9+HOk7LB8
-	 P1hMMwqQyK3zPWM5gYdOLll9eJ6CtlIp4BbCL5lyWUpw9FA0ArQj67hxbjmcwsgkGY
-	 ajZuhHlUJwvYg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BC4E9CD98D8;
-	Sun, 14 Jun 2026 08:23:30 +0000 (UTC)
-From: Bryam Vargas via B4 Relay <devnull+hexlabsecurity.proton.me@kernel.org>
-Date: Sun, 14 Jun 2026 03:23:31 -0500
-Subject: [PATCH v3 2/3] net/smc: bound the receive length to the RMB in
- smc_rx_recvmsg()
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aIcSpm4/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B69FF1F000E9;
+	Sun, 14 Jun 2026 08:30:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781425815;
+	bh=KMGB2wtC4zxl8cCTED2HYAxFst6WblhGP6lozRxr7Dg=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=aIcSpm4/ewrbI6jYGdBXehraHHe7PiI5eHq14/xJaRP6yZuQPF4JSNxQwJ6/8psWc
+	 TajR4E1B0zVgqMuBxU7v1iqQB5YjasOC+Nmw54vlwatjyEBMwOr2i0xuNt3gDyBo7C
+	 v6KXL0TsKIg/I/Ubo+MKOJCq13J4sQtxPc7vCC7Amgxx0xeG7JFBQD8Dx9lRpaDGvA
+	 4wxXc8Sg5O6JiORVjStgyeGhgZvhzYgwO4VDu4yp9w/ySOjDqIIipB3qt/pdtLbDrR
+	 lWZk6zNmjyJ47w6q7ZNmQEdO27gw77H6T1vKxj8nO0D5SkcYb/IH9QJLAB4uoEsCK/
+	 aGM7XA5yNnMMg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09683A54A36;
+	Sun, 14 Jun 2026 08:30:12 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260614-b4-disp-edd64be9-v3-2-551fa514257e@proton.me>
-References: <20260614-b4-disp-edd64be9-v3-0-551fa514257e@proton.me>
-In-Reply-To: <20260614-b4-disp-edd64be9-v3-0-551fa514257e@proton.me>
-To: Wenjia Zhang <wenjia@linux.ibm.com>, 
- Dust Li <dust.li@linux.alibaba.com>, "D. Wythe" <alibuda@linux.alibaba.com>, 
- Sidraya Jayagond <sidraya@linux.ibm.com>
-Cc: Eric Dumazet <edumazet@google.com>, 
- "David S. Miller" <davem@davemloft.net>, 
- Mahanta Jambigi <mjambigi@linux.ibm.com>, Wen Gu <guwen@linux.alibaba.com>, 
- Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
- Ursula Braun <ubraun@linux.ibm.com>, Stefan Raspl <raspl@linux.ibm.com>, 
- linux-s390@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
- linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, 
- Jakub Kicinski <kuba@kernel.org>, Tony Lu <tonylu@linux.alibaba.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781425409; l=2584;
- i=hexlabsecurity@proton.me; s=proton; h=from:subject:message-id;
- bh=Y/3QqJVlrCKltO0Cz8rMmwTKlkY3BnW+tSsL2yrTGTg=;
- b=GL4RXe2Aexldd9WYN3tIcnVonPl/3AH6Rwtwx/IAFov+okzHX1u4sH6uvMbQEBdupWnDeCaFG
- Qm+sfIAVaCABCQilKVxVdP+Ex/1Q3Y/MLGptSxJ5YFxJx6ht84IOzdF
-X-Developer-Key: i=hexlabsecurity@proton.me; a=ed25519;
- pk=dmppBMZNLLoPzxHi9l8tZDzEZUunPbgsYqIZYXeUrL0=
-X-Endpoint-Received: by B4 Relay for hexlabsecurity@proton.me/proton with
- auth_id=814
-X-Original-From: Bryam Vargas <hexlabsecurity@proton.me>
-Reply-To: hexlabsecurity@proton.me
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] kcm: use WRITE_ONCE() when changing lower socket
+ callbacks
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178142581139.1725970.11900596432572188440.git-patchwork-notify@kernel.org>
+Date: Sun, 14 Jun 2026 08:30:11 +0000
+References: <20260611053543.2429462-1-runyu.xiao@seu.edu.cn>
+In-Reply-To: <20260611053543.2429462-1-runyu.xiao@seu.edu.cn>
+To: Runyu Xiao <runyu.xiao@seu.edu.cn>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, netdev@vger.kernel.org, horms@kernel.org,
+ linux-kernel@vger.kernel.org, jianhao.xu@seu.edu.cn
 
-From: Bryam Vargas <hexlabsecurity@proton.me>
+Hello:
 
-conn->bytes_to_rcv is accumulated in the receive tasklet from the peer's
-producer cursor:
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-	diff_prod = smc_curs_diff(rmb_desc->len, &prod_old, &prod_new);
-	atomic_add(diff_prod, &conn->bytes_to_rcv);
+On Thu, 11 Jun 2026 13:35:43 +0800 you wrote:
+> kcm_attach() replaces a live lower TCP socket's sk_data_ready and
+> sk_write_space callbacks with KCM handlers, and kcm_unattach() restores
+> them later. Those callback-pointer updates are still plain stores even
+> though the same fields can be read and invoked concurrently on other
+> CPUs.
+> 
+> If another CPU observes an older callback snapshot after the live field
+> has already been restored, callback execution can run with a mismatched
+> target and sk_user_data state, leading to stale or misdirected wakeups.
+> 
+> [...]
 
-smc_curs_diff()'s differing-wrap branch returns (size - old.count) +
-new.count, which exceeds rmb_desc->len for a forged producer cursor and
-accumulates across CDC messages, so bytes_to_rcv can grow past the RMB
-(and across many messages can overflow the signed counter negative).
-smc_rx_recvmsg() reads it as the number of readable bytes and performs a
-wrap-around copy whose second chunk (copylen - first_chunk, read from
-ring offset 0) is never re-bounded to rmb_desc->len, reading past the
-RMB into adjacent kernel memory and disclosing it to the peer.
+Here is the summary with links:
+  - [net] kcm: use WRITE_ONCE() when changing lower socket callbacks
+    https://git.kernel.org/netdev/net/c/47186409c092
 
-Bound the readable count to rmb_desc->len where it is consumed, treating
-a negative (sign-overflowed) value as out of range too, so the copy
-length can never exceed the ring.  This enforces the documented
-0 <= bytes_to_rcv <= rmb_desc->len invariant at the consumer, where it
-is race-free against the producer update that runs in the receive
-tasklet.
-
-Fixes: 952310ccf2d8 ("smc: receive data from RMBE")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
----
- net/smc/smc_rx.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/net/smc/smc_rx.c b/net/smc/smc_rx.c
-index c1d9b923938d..f461cf10b085 100644
---- a/net/smc/smc_rx.c
-+++ b/net/smc/smc_rx.c
-@@ -442,6 +442,18 @@ int smc_rx_recvmsg(struct smc_sock *smc, struct msghdr *msg,
- 		/* initialize variables for 1st iteration of subsequent loop */
- 		/* could be just 1 byte, even after waiting on data above */
- 		readable = smc_rx_data_available(conn, peeked_bytes);
-+		/* bytes_to_rcv is accumulated from the peer's wire-controlled
-+		 * producer cursor; a forged cursor can drive it past the RMB,
-+		 * or overflow the signed accumulator to a negative value across
-+		 * many CDC messages (which a plain "> len" check would miss
-+		 * before the size_t cast below turns it huge).  Bound it to the
-+		 * RMB in either case so the wrap-around copy cannot run past
-+		 * rmb_desc->len.  This enforces the documented
-+		 * 0 <= bytes_to_rcv <= rmb_desc->len invariant at the consumer,
-+		 * race-free against the producer update in the receive tasklet.
-+		 */
-+		if (readable < 0 || readable > conn->rmb_desc->len)
-+			readable = conn->rmb_desc->len;
- 		splbytes = atomic_read(&conn->splice_pending);
- 		if (!readable || (msg && splbytes)) {
- 			if (splbytes)
-
+You are awesome, thank you!
 -- 
-2.43.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
