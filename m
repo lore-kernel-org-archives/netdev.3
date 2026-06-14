@@ -1,142 +1,134 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A383264CB
-	for <netdev@vger.kernel.org>; Sun, 14 Jun 2026 12:51:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06FE92F25F4
+	for <netdev@vger.kernel.org>; Sun, 14 Jun 2026 13:07:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781441463; cv=none; b=cqx1zWQ2LJyfA8GREbTVHe/dcWut7iAXEVwUVzj26YOX40chRhkIL9boP8J+IjT+tLRkpLJ3kDb+9bHMJ6oitTq7u7K5AHo7PUJ+hvQXbcndbOrfuI/YQWCPDjxRtsGIKhKTy44UsyZOMYgOMEEShU+T1Vae7PbaBStQP3CCtDY=
+	t=1781442451; cv=none; b=ZWseFN2a+y9BEsZzmMay74d+zHBiWdx83JY303NK/iItHM33CbaaPWuoOf/LCJNKNbqjx2Ghs/eqZmiBmdSfOdtvIiME0Ccjr7yi7Gm/eYGwzVyRb1Usk0couOyJ8uUrwc/QFdNqsE29iHi8nGjaVm+shLbaZBLy+YCvY+53wK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781441463; c=relaxed/simple;
-	bh=cJmFCJ92IYSoSzax7fOGA70pUpe8oKCRnIUNCAzpux4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=q+eT54jAl4j/esu1cCX1RJFyQhk3xwSEGRn9h5ZZE1az4KfHhhtBKeUp5tNyRMLHVlBMcIOmEMcRwnHlALRyjXZfznv7MesbX8Ir/IHt1nBaK1CWZuUeHxEeJj8R7lUSHEuS9jUY6AaaclqIeEZHe2r8tI96HEJ5Ft1AGWrC64A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dGZVK2fg; arc=none smtp.client-ip=209.85.214.182
+	s=arc-20240116; t=1781442451; c=relaxed/simple;
+	bh=SuilZbGlVZJOlat7J9MD/fOJwXfgtdW+5rL59Mett0g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Vkn3vMRp1NKNZD/Um1TbZkduO+g0q4UMdqbzU+5tBF7XMHQ/y2Vyg7CxFzfIqFnn/aWqtzup7d52O3EPFinX/6P9aYU+xAxCzm4acAGCIAkqJlUhqQNVB2DqyPk2qQOjq99NecO4nKJq0p9Q5J11C1+mGRYaY8O/Xb5oKs7Rmpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SRq9tpH1; arc=none smtp.client-ip=209.85.219.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dGZVK2fg"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2c0c3543590so16611195ad.2
-        for <netdev@vger.kernel.org>; Sun, 14 Jun 2026 05:51:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SRq9tpH1"
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-8ccdef9f3d4so29068726d6.2
+        for <netdev@vger.kernel.org>; Sun, 14 Jun 2026 06:07:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781441462; x=1782046262; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MtT+TuK8jetIMA+MPsNEijp3ifUb+mwfZ0dCpHYIdO0=;
-        b=dGZVK2fgHVUd967jC5QhH6007RmlsczXs6joJD0W4+r0MRJTNya0V9P5j5s+RTj7tK
-         lyoKBg0OEnx+O37GU4KxkLB13/TJ71IpzK/tP12WawFCWxS89H/jnSp3NQ0mQzoVi15l
-         x9KwTSVbfKNx+qR2gPAb/54FTIwlE2E4Mi7ntj0nbgXK+JLIXMHoPwiAYuqVixDwwFA3
-         mbUi/3c1ymSTyZyWoX6p6zVYfqtpR6hiQmODsXICI50tFDKZ/N5ilLEACg5kZZTjZiu2
-         polpY3wn+XDQ7qHHjnHefK+4wsEJ4BZ0lPBbW7RrpH7vMLW2YcqTa91ofFnpEeCd3DiM
-         cyyQ==
+        d=gmail.com; s=20251104; t=1781442449; x=1782047249; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZbG/GGGyFndF/9JwUnN3ANh2Jf2/Fs6WVVXGFaUozYY=;
+        b=SRq9tpH1hzQGGj3HZ7QNN4clizj8IxdKxwTMKleKLIK1MJT3hd2hYNMdXrYhXoJu5f
+         5JDsA/ohexG+RD4SYQbO98TPc3jhhHrlt/qdTFZmnxyHZZeuSe2Oxf9OFhHeN0VV+4ml
+         zTuu3FF967968bNrhlXUHLfu4FyG4rPOq1L0/jPiYtnsIxfkNwX12/RNLbKap6qUSZUY
+         5s3/bglicpeiY0MHeYHBwWFdLpcTCMfqDHsrBrrAfVlilHP64KH5uwEGgZiNaTs63ELT
+         vs0EgESJauBuA13lsq/n/PU/pblXF4/drP4LQ6JGutx6zO4a7FzKaOoTt852+Jq3DXlj
+         G1vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781441462; x=1782046262;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=MtT+TuK8jetIMA+MPsNEijp3ifUb+mwfZ0dCpHYIdO0=;
-        b=Nt50S1ajHL0PLUlOZeT31dvMujOc9z0GjWa+qIhPx38iKPDef5L72UruFGQQpJfx36
-         VH3X2zYJ2Kak2gZqBoH6SlNr0LyHIaime8bAAnY/IW4/wjaDhICrkQFyVlJ984R3Hy29
-         zJ1SBYaQCnXWXmcMnVUwiBSu5GrcVVc32hXwM7v3HoqoPRlBHuEhJqGKyitnoiwS7g5q
-         2bqBOaOI0KEEQMJ/uZN+vihYpfH4O0eHTPaxr2HnxQpSJRecLeyOkidqhinie4o1FDUb
-         rBlhNm1g+brYrJ6yswJjcmA5QRvBsb1ajbtHTPNRSeCCqEM0hXqkIJBeN+s2zBDsaFN1
-         bIWg==
-X-Gm-Message-State: AOJu0Yw0G773x+Q1TPLo0xv8E66+Dfwr3GfcvxS8KZxXN73rUQQZz9Os
-	7tNm8UgKL/rHNmp1E1ezypbr6CvuU+Ix6IVQwlxmgvetHHqaQa9+c0U09bBN1BGfFfgdiw==
-X-Gm-Gg: Acq92OEybwCk/dElg+SoIANMH5/KkAD+rbT7RQN0Fr/oUMAF5pMqsef+3rSR3vPZ/pp
-	ao25OZ791PQqqbrhVCMHSE26S0nIsOXHw8gg6xuUMruRdtgO3N8wfenN4nidKmXW5Nd36kF32L2
-	cCbt+x+7yuXrXkR7mRJpaz03cyTK4SGpBX9iyVgmtUt7Ez9F0+LTTrWBQ5cAqKMMHy7uq6o0sHh
-	Z7c1gmblWUDXIq6Sej/ET4KqhPLPrBKq4wrT91Aq5oNO928fQbu0N+00241B4eicrUPSfM65Mgr
-	2ZGIEpz18rJ9s8oTsAlcn2K1o+o3GlO2Ay8y0DTF6P90VQ9nbYu9MexhoYQvcXfMA6FzidPmc3t
-	QqnOZVhf3Fp80xYeVZupBsA9iBlhMffHeswMs4+atFbs6Gy3sAGIRhv9jtKHd7w1QoQJZ8273LV
-	T96Hzx3ipsOZ43FJZNe+MaKBrR8p5a+tBo68NjZVC83ikXQXWkKw==
-X-Received: by 2002:a17:903:8c4:b0:2c2:5446:30eb with SMTP id d9443c01a7336-2c411b7e5a4mr108765355ad.11.1781441462014;
-        Sun, 14 Jun 2026 05:51:02 -0700 (PDT)
-Received: from Inspiron-14-5420.. ([2402:e280:21c6:671:90b2:9957:66e9:8cb4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c4327ac79fsm66426825ad.45.2026.06.14.05.50.55
+        d=1e100.net; s=20251104; t=1781442449; x=1782047249;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZbG/GGGyFndF/9JwUnN3ANh2Jf2/Fs6WVVXGFaUozYY=;
+        b=Gs6lSGTveiYxzVRkXg5q6jRZL3TgBfF9PH37BzTRFGmgUAK8dUG3YWrmGV4z9gH+aT
+         ckTOXUlimTq4HVt6xCZGzDk8x6rmWp+s0Bpc1EbEV9wgf3ik3DPGdWsD4ZlUvMRhRFZB
+         i11Knl09CCrVn/D1HIt4wNaFmql9kFjKh2WGjPu4L7/OlUROCkBvuY8ywrn9gzsBV3Gs
+         8RX+kzv35VEL6L6pHHiSXyDCwAjxYxxCQHQZLarB29CdWpMK+/g9RtNRvKDCHAHCQi+D
+         kPZsUyo3ECCtfcom1qLCbZEzH/sGSW4WditwwqJCievd12njbYf02jvkFBAshGtE/e+v
+         q1EQ==
+X-Forwarded-Encrypted: i=1; AFNElJ964hHhX8IiK6Su+D3WMe3z2vasufTU92CMZ4wTbCoTiTzpGRrkrIZyqcMDc72ec9enEFlVIpo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLUzkqgJTxvxFbw+l0PZybWapgQd+0BOy+Fb5wfT0gwvdLbOGq
+	NB3EI8DB9Dc7POTuLaSlEvRXMn6J0P/iSQ4J5wOYxXlJRi6LKj8dN9K9
+X-Gm-Gg: Acq92OEkkcy5cSV9G757vx9AfGSwcskNke+ZhOYl5Cw1ui3E5z1OPb7mbMTzKV5mw3V
+	ANl7wZkqBhlMI7iEo1RV9AHz6B6ZX11e+ObZ0eUmoE9NpOEG2I76f8Dg30U/a/WR3f4qDLJ0KEN
+	ioelTbsN15ddLYQB4KpuylCqNdLSV09pUcoXiNIjg1GwqQCLJ4voEbGKkGE+ABAXIS8Hcu5pibY
+	qTNbaakyyP8akBbdH1HkEmFe61+BsC6JhtwlpILZph7jvxk+iGg1AB7/t5oDsjH0ncgpBq8bK4/
+	jgcje7BinSpr5TDJOcyJoH0MKOJt5VGwbgM1VfmLCOvi1pGwJFWevWNNslSlI9p/FU9UG7/EZ5U
+	YSuiOPGQ3IG4duoKZJErO3FIQUPnrOHee19LzMqH2IXXQ1SgC5NmG1Bc8cL9XcP4PLLOGyKqmc6
+	pm0u49a3ubctTJB2mgZL+Brk2P2Cz+SYnS0mELfJyXNOf/PzVC+JNM1VaaC1yBKnQwNt07BtLCi
+	bYMB8yLgsbSnCap2I/9bcbcHyDATq500sZTEXKHSNI=
+X-Received: by 2002:a05:6214:2e43:b0:8cc:f0e0:f90b with SMTP id 6a1803df08f44-8d45087b9a9mr125364426d6.40.1781442448883;
+        Sun, 14 Jun 2026 06:07:28 -0700 (PDT)
+Received: from server0.tail6e7dd.ts.net (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8d30570c305sm77413366d6.48.2026.06.14.06.07.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Jun 2026 05:51:01 -0700 (PDT)
-From: "Hemendra M. Naik" <hemendranaik@gmail.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	jiri@resnulli.us,
-	jhs@mojatatu.com,
-	shuah@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	vishy0777@gmail.com,
-	tahiliani@nitk.edu.in,
-	"Hemendra M. Naik" <hemendranaik@gmail.com>
-Subject: [PATCH net-next v2 2/2] selftests: tc-testing: add fq_pie per-flow class stats test
-Date: Sun, 14 Jun 2026 18:20:00 +0530
-Message-Id: <20260614125000.6058-3-hemendranaik@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260614125000.6058-1-hemendranaik@gmail.com>
-References: <20260614125000.6058-1-hemendranaik@gmail.com>
+        Sun, 14 Jun 2026 06:07:28 -0700 (PDT)
+From: Michael Bommarito <michael.bommarito@gmail.com>
+To: Allison Henderson <achender@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>
+Cc: Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	rds-devel@oss.oracle.com,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] net: rds: check cmsg_len before reading rds_rdma_args in size pass
+Date: Sun, 14 Jun 2026 09:07:25 -0400
+Message-ID: <20260614130725.2520842-1-michael.bommarito@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-Add a tc-testing entry (id: 83c0) to verify the fq_pie class ops
-wired up in the previous patch do not crash and integrate cleanly
-with the tc class show path.
+For RDS_CMSG_RDMA_ARGS, rds_rm_size() calls rds_rdma_extra_size() after
+only CMSG_OK(), without checking that cmsg_len covers struct
+rds_rdma_args. rds_rdma_extra_size() reads args->local_vec_addr and
+args->nr_local, so a short control message reads past the copied control
+buffer. The value bounds an allocation count, so this is an
+out-of-bounds read in the kernel, not a leak to user space, and an
+unprivileged AF_RDS socket can trigger it with one short cmsg.
 
-The test creates an fq_pie root qdisc on a dummy interface and runs
-'tc -s class show'.
+The two later RDS_RDMA passes (rds_cmsg_rdma_args() and the rdma-bytes
+loop in rds_sendmsg()) already reject cmsg_len < CMSG_LEN(sizeof(struct
+rds_rdma_args)); only this size pass does not. Reject it the same way.
 
-Signed-off-by: Hemendra M. Naik <hemendranaik@gmail.com>
-Signed-off-by: Vishal Kamath <vishy0777@gmail.com>
-Signed-off-by: Mohit P. Tahiliani <tahiliani@nitk.edu.in>
+Reproduced under KASAN on QEMU via a KUnit driving the real
+rds_rm_size(); the out-of-bounds read is gone after this change.
+
+Fixes: ff87e97a9d70 ("RDS: make m_rdma_op a member of rds_message")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
 ---
-Changelog:
- v2: No changes from v1.
+A short RDS_CMSG_RDMA_ARGS placed at a page boundary makes
+rds_rdma_extra_size() read the args fields past the allocation:
 
- v1: https://lore.kernel.org/netdev/20260531125314.22492-3-hemendranaik@gmail.com/
----
- .../tc-testing/tc-tests/qdiscs/fq_pie.json    | 22 +++++++++++++++++++
- 1 file changed, 22 insertions(+)
+  BUG: KASAN: slab-out-of-bounds in rds_rdma_extra_size
 
-diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/fq_pie.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/fq_pie.json
-index 229fe1bf4a90..88139f429430 100644
---- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/fq_pie.json
-+++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/fq_pie.json
-@@ -40,5 +40,27 @@
-         "matchPattern": "qdisc fq_pie 1: root refcnt [0-9]+ limit 1p",
-         "matchCount": "1",
-         "teardown": ["$TC qdisc del dev $DEV1 handle 1: root"]
-+    },
-+    {
-+        "id": "83c0",
-+        "name": "FQ-PIE class stats accessible via tc class show",
-+        "category": [
-+            "qdisc",
-+            "fq_pie"
-+        ],
-+        "plugins": {
-+            "requires": "nsPlugin"
-+        },
-+        "setup": [
-+            "$TC qdisc add dev $DUMMY handle 1: root fq_pie"
-+        ],
-+        "cmdUnderTest": "$TC -s class show dev $DUMMY",
-+        "expExitCode": "0",
-+        "verifyCmd": "$TC -s class show dev $DUMMY",
-+        "matchPattern": "class fq_pie",
-+        "matchCount": "0",
-+        "teardown": [
-+            "$TC qdisc del dev $DUMMY handle 1: root"
-+        ]
-     }
- ]
+an 8-byte read. On stock it faults; patched it returns -EINVAL with no
+report. Controls (well-formed args; a short cmsg with args still in
+bounds) drive the same pass cleanly on both trees.
+
+No in-tree selftest exercises rds_rm_size(); I can send the KUnit suite
+as a separate net-next patch if wanted, kept out so the fix is not held.
+
+ net/rds/send.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/net/rds/send.c b/net/rds/send.c
+index d8b14ff9d366b..6ca3192b1d8af 100644
+--- a/net/rds/send.c
++++ b/net/rds/send.c
+@@ -967,6 +967,8 @@ static int rds_rm_size(struct msghdr *msg, int num_sgs,
+
+ 		switch (cmsg->cmsg_type) {
+ 		case RDS_CMSG_RDMA_ARGS:
++			if (cmsg->cmsg_len < CMSG_LEN(sizeof(struct rds_rdma_args)))
++				return -EINVAL;
+ 			if (vct->indx >= vct->len) {
+ 				vct->len += vct->incr;
+ 				tmp_iov =
+
+base-commit: 5200f5f493f79f14bbdc349e402a40dfb32f23c8
 -- 
-2.34.1
-
+2.53.0
