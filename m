@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1014B2F3C0E;
-	Sun, 14 Jun 2026 08:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E8AA3009F2;
+	Sun, 14 Jun 2026 08:23:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781425411; cv=none; b=bYEbm48pBKWSZBkqNww5f7qfIn0Mr1OCTnHHg8H+Z83pLq1Etg2oN0zFZi+b/azxBNuMgW/FU+4YvoJbZmb9HCT9zzQkgDs5qmc9xt7dYjkgFsuRM7BEMUG3kopG6bLCTPSUmAnkZKnUe8R+d0mFUZSpiWQfTuetfYs0fb3obN4=
+	t=1781425411; cv=none; b=eiJqYVoPV5fjVDS9Gold2Mcx7jqDs+kwofUHju/BmBhVHUAqScifiufXJg4mUjFqydQPpJ9levKdAOgCdibPDsWOVc+iERR6l4PX4I34xOYCNzf6BHauKtUbioEUnDs8952Mga7kXrhepVs4m91LVTbWj2fy6vEAoucTzE1kZtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1781425411; c=relaxed/simple;
-	bh=ymNAAb8fzK+dW/h8VM7c41dvOOZKJqXiAFCQzJ22aas=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=MecC3bd3m5P7hVTAk2K2KE8XWVCfjq3c+Z5DyWhKXEEJlq92RUQRCUi78mWvisO7ir/TJ1i5RRuhnN2zJ0zQFXQb2lzssKPfbgL8/X2srVOU8YleJG/l2ZRy+7IHpTl9xLqswu0mh5XO/zlX0B0bnwg0CB1esNZJ2rKuy9viEtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P0QJXngM; arc=none smtp.client-ip=10.30.226.201
+	bh=B+dlIsg1kysJEgDY3LnyTyifSwe6gmLPvME+hAiBa50=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=KIUKaxTRo9uS9DfnEXZFSId7Oi7y/u9iDwq198nGH+8PLWIjIeoJxaIpZOaxL7IS6xemQATD+yQut4jqfk+AzNHJqKuWoRVKTa8bgrC2XV5Bz3NydeokxxTH8ljpbUFN8TFIXIstd0sl1LsFwNwxr93uhn0UErJJgVYKjaNduug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jRyPJJMR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P0QJXngM"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A86A5C2BCB0;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jRyPJJMR"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id DB21EC4AF11;
 	Sun, 14 Jun 2026 08:23:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1781425410;
-	bh=ymNAAb8fzK+dW/h8VM7c41dvOOZKJqXiAFCQzJ22aas=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=P0QJXngMYQ4QC318FsT08z3Lvg1prBaG+QbjIxmE3Opn3F+AmYCLRXh87MBemS51a
-	 gfG0amxTtnL/UyEwHmQinWnLzPHeyUAr4PKpVokGiyorFjCwqUcDFFbStnyTTEuttf
-	 ZTmXGO1h7JREt7ikogHX+qESTPnn5vlB94I5BXIZlwNlfeHrSDpu1Fh2DhZa1a+KL4
-	 3ipZVopZnRrdAjNtvBhJK1rOfZbK+zImDv32PwgvPmZCL2lUzqK6cCOfBp5270ivxC
-	 s2uuBX+EV0ctpVZbvlXcAARsrWxPjx+CWRAT7gymdVXBFt0QNtsXyB1FMqbfVdE5iW
-	 8HlEW0RaOPLlQ==
+	bh=B+dlIsg1kysJEgDY3LnyTyifSwe6gmLPvME+hAiBa50=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=jRyPJJMRh2HnwHVNugOzLwDeQffSnjB7uYqlDdjYk+U7hFQFympf9PcRaLBoPfzTB
+	 ddFRVeNP+69YpP0j22OE4GMSKQ0CV/sOVhCSYYjTGgFHU5ISDm93rayQUlpR0qV6hJ
+	 zEhZ486UdfoOwPuj/oYd2aI54iHmAYJHwn8vk47PDtXDVriT8D0Pp/YiND6NRQnJUz
+	 9vFVyKVzEN9FFexG5yBRjBdormUqQf3B2U80ksc5pnZuj4J8jZKHvzUXSa+c6Afs+p
+	 /b8D/1gYRFlbrgbNRyMz5GE/JnV81UeEggC/wYMDSRZHfesvyg8stvd/by7A4rdAbo
+	 oU4UwhVkcVdew==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8E1A1CD98C7;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CA0C6CD98D6;
 	Sun, 14 Jun 2026 08:23:30 +0000 (UTC)
 From: Bryam Vargas via B4 Relay <devnull+hexlabsecurity.proton.me@kernel.org>
-Subject: [PATCH v3 0/3] net/smc: bound wire-controlled CDC cursors against
- the local buffers
-Date: Sun, 14 Jun 2026 03:23:29 -0500
-Message-Id: <20260614-b4-disp-edd64be9-v3-0-551fa514257e@proton.me>
+Date: Sun, 14 Jun 2026 03:23:32 -0500
+Subject: [PATCH v3 3/3] net/smc: bound the send length to the send buffer
+ in smc_tx_sendmsg()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,9 +41,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAFlLmoC/x3MMQqAMAxA0atIZgNVQ6VeRRxsk2oWLS2IIN7d4
- viG/x8oklUKTM0DWS4teh4VQ9tA2NdjE1Suht701tiO0BOyloTCbMmLQ28chWjHyMJQs5Ql6v0
- v5+V9P7Q4T6BiAAAA
+Message-Id: <20260614-b4-disp-edd64be9-v3-3-551fa514257e@proton.me>
+References: <20260614-b4-disp-edd64be9-v3-0-551fa514257e@proton.me>
+In-Reply-To: <20260614-b4-disp-edd64be9-v3-0-551fa514257e@proton.me>
 To: Wenjia Zhang <wenjia@linux.ibm.com>, 
  Dust Li <dust.li@linux.alibaba.com>, "D. Wythe" <alibuda@linux.alibaba.com>, 
  Sidraya Jayagond <sidraya@linux.ibm.com>
@@ -56,11 +56,11 @@ Cc: Eric Dumazet <edumazet@google.com>,
  linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, 
  Jakub Kicinski <kuba@kernel.org>, Tony Lu <tonylu@linux.alibaba.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781425409; l=4054;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781425409; l=2754;
  i=hexlabsecurity@proton.me; s=proton; h=from:subject:message-id;
- bh=ymNAAb8fzK+dW/h8VM7c41dvOOZKJqXiAFCQzJ22aas=;
- b=Sq1Lt5oYCPGfJBXndHAyJ84bHQFVqUmZc4kNdNiv2j7PBvgSdnK6+FMQVRwNzDEwCHhhzBVWZ
- lZL+LURD10YBte0BxPEjfo70u5mBR+hMrbuFSownL/tflclglcFeOqA
+ bh=4S35QpGjFI4Nol8jEunjm9yblHJ/ApOBlLnW/qpjsWU=;
+ b=vwFLjibbCYXZPOBwsd2IHPubLmw+2WKN4GI/oz8r7HApaeyQqzparJCEYXby2jhTaf9CytpYQ
+ rJx8harvq6wC02iIhBc4p0unRq1vFURj+feqTJEG/a3OHtb8mocCe+7
 X-Developer-Key: i=hexlabsecurity@proton.me; a=ed25519;
  pk=dmppBMZNLLoPzxHi9l8tZDzEZUunPbgsYqIZYXeUrL0=
 X-Endpoint-Received: by B4 Relay for hexlabsecurity@proton.me/proton with
@@ -68,78 +68,64 @@ X-Endpoint-Received: by B4 Relay for hexlabsecurity@proton.me/proton with
 X-Original-From: Bryam Vargas <hexlabsecurity@proton.me>
 Reply-To: hexlabsecurity@proton.me
 
-A peer's CDC producer/consumer cursors are copied from the wire and used,
-without an upper bound against the local buffers, as (a) a raw index into the
-RMB on the urgent path, (b) the receive length in smc_rx_recvmsg(), and (c) the
-send length in smc_tx_sendmsg() on the SMC-D DMB-merge path.  A malicious or
-buggy peer can forge a cursor so each of these runs past the relevant buffer:
-an out-of-bounds read of adjacent kernel memory (disclosed to the peer) on the
-receive/urgent side, and an out-of-bounds write of attacker-influenced length
-and content on the send side.
+From: Bryam Vargas <hexlabsecurity@proton.me>
 
-This series bounds each wire-controlled value at its point of use against the
-local buffer, enforcing invariants the code already documents
-("0 <= bytes_to_rcv <= rmb_desc->len", "0 <= sndbuf_space <= sndbuf_desc->len").
-Conforming peers always keep these values in range, so the bounds are no-ops in
-normal operation.
+On the SMC-D DMB-merge (nocopy) path, smc_cdc_msg_recv_action() advances
+conn->sndbuf_space from the peer's consumer cursor:
 
-  1/3 bounds the producer cursor count to rmb_desc->len at the SMC-R/SMC-D
-      conversion boundary (the urgent-path raw index).  The bound is applied to
-      the producer cursor only -- the consumer cursor indexes the peer's RMB and
-      is bounded by peer_rmbe_size, so clamping it to our rmb_desc->len would
-      under-credit peer_rmbe_space and stall transmit to a peer with a larger
-      RMB.
-  2/3 bounds the readable count in smc_rx_recvmsg() so the wrap-around copy
-      cannot read past the RMB.
-  3/3 bounds the write space in smc_tx_sendmsg() so the wrap-around copy cannot
-      write past the send buffer.
+	diff_tx = smc_curs_diff(sndbuf_desc->len, &tx_curs_fin,
+				&local_rx_ctrl.cons);
+	atomic_add(diff_tx, &conn->sndbuf_space);
 
-This supersedes two separately-posted patches and folds them into one series
-together with the producer-cursor fix, after review feedback that they share a
-root cause:
-  - net/smc: bound peer producer cursor and bytes_to_rcv on SMC-D CDC receive
-    https://lore.kernel.org/netdev/20260610084803.186516-1-hexlabsecurity@proton.me/
-  - net/smc: bound sndbuf_space on the SMC-D DMB-merge receive path
-    https://lore.kernel.org/netdev/20260610090928.192177-1-hexlabsecurity@proton.me/
+The consumer cursor is wire-controlled and unvalidated, and
+smc_curs_diff()'s differing-wrap branch can return more than
+sndbuf_desc->len, so a forged cursor drives sndbuf_space past the send
+buffer (and across many CDC messages can overflow the signed counter
+negative).  smc_tx_sendmsg() reads it as the available write space and
+performs a wrap-around copy whose second chunk (copylen - first_chunk,
+written at ring offset 0) is never re-bounded to sndbuf_desc->len,
+writing user data past the send buffer -- a heap out-of-bounds write of
+attacker-influenced length and content.
 
-Changes since those postings (addressing the review):
-  - The receive/send bounds were previously applied in the CDC receive tasklet,
-    after the atomic_add().  As the review noted, that read-then-set is not
-    atomic, and a recvmsg()/sendmsg() on another CPU can observe the inflated
-    value in the window between the atomic_add() and the clamp: recvmsg() runs
-    under lock_sock(), which leaves the slock free, so it is not serialized
-    against the bh_lock_sock() CDC tasklet.  The bound now lives at the consumer,
-    where the value is used to size the copy, which is race-free.
-  - The bounds now also reject a negative value (if (x < 0 || x > len)): across
-    many forged CDC messages the signed accumulator can wrap negative, which a
-    plain "> len" check misses and min_t(size_t, ...) then turns into a huge
-    length.
-  - The SMC-R producer-cursor bound is applied only to the producer cursor at
-    the call site, not in the shared smc_cdc_cursor_to_host() helper, so the
-    consumer cursor (bounded by peer_rmbe_size) is no longer truncated.
+Bound the write space to sndbuf_desc->len where it is consumed, treating
+a negative (sign-overflowed) value as out of range too, so the copy
+length can never exceed the ring.  This enforces the documented
+0 <= sndbuf_space <= sndbuf_desc->len invariant at the producer,
+race-free against the CDC tasklet that advances sndbuf_space.
 
-Verified with an in-kernel KASAN A/B matrix on x86-64 (SMC-D loopback,
-CONFIG_SMC_LO; no special hardware): each sink produces a slab-out-of-bounds
-read/write for a forged cursor and is clean with the patch, and both the
-cross-CPU race and the negative-accumulator case are reproduced and closed.
-Logs available on request.
-
+Fixes: cc0ab806fc52 ("net/smc: adapt cursor update when sndbuf and peer DMB are merged")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
 ---
-Bryam Vargas (3):
-      net/smc: bound the wire-controlled producer cursor to the RMB
-      net/smc: bound the receive length to the RMB in smc_rx_recvmsg()
-      net/smc: bound the send length to the send buffer in smc_tx_sendmsg()
+ net/smc/smc_tx.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
- net/smc/smc_cdc.h | 27 ++++++++++++++++++++++++---
- net/smc/smc_rx.c  | 12 ++++++++++++
- net/smc/smc_tx.c  | 13 +++++++++++++
- 3 files changed, 49 insertions(+), 3 deletions(-)
----
-base-commit: 8e65320d91cdc3b241d4b94855c88459b91abf66
-change-id: 20260614-b4-disp-edd64be9-b094cf67fded
+diff --git a/net/smc/smc_tx.c b/net/smc/smc_tx.c
+index 3144b4b1fe29..5916f02060fb 100644
+--- a/net/smc/smc_tx.c
++++ b/net/smc/smc_tx.c
+@@ -233,6 +233,19 @@ int smc_tx_sendmsg(struct smc_sock *smc, struct msghdr *msg, size_t len)
+ 		/* initialize variables for 1st iteration of subsequent loop */
+ 		/* could be just 1 byte, even after smc_tx_wait above */
+ 		writespace = atomic_read(&conn->sndbuf_space);
++		/* sndbuf_space is advanced from the peer's wire-controlled
++		 * consumer cursor on the SMC-D DMB-merge path; a forged cursor
++		 * can inflate it past the send buffer, or overflow the signed
++		 * accumulator to a negative value across many CDC messages
++		 * (which a plain "> len" check would miss before the size_t
++		 * cast below turns it huge).  Bound it to the send buffer in
++		 * either case so the wrap-around write cannot run past
++		 * sndbuf_desc->len.  This enforces the documented
++		 * 0 <= sndbuf_space <= sndbuf_desc->len invariant at the
++		 * producer, race-free against the CDC tasklet.
++		 */
++		if (writespace < 0 || writespace > conn->sndbuf_desc->len)
++			writespace = conn->sndbuf_desc->len;
+ 		/* not more than what user space asked for */
+ 		copylen = min_t(size_t, send_remaining, writespace);
+ 		/* determine start of sndbuf */
 
-Best regards,
 -- 
-Bryam Vargas <hexlabsecurity@proton.me>
+2.43.0
 
 
