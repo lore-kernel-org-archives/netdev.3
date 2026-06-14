@@ -1,83 +1,106 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACEAB27456;
-	Sun, 14 Jun 2026 18:39:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6822D2DAFCB
+	for <netdev@vger.kernel.org>; Sun, 14 Jun 2026 19:12:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781462365; cv=none; b=oj9SQMfUaEVPT+6mcKRM/5iUueDIPuiyEE9z7Zt0aupG9yf+jrSjWWGPk7DnGlfqI8UPqbELcUFt2so0MdwolTlGCIgqAqyZlocXWJ42v8b5K35GGQDdKeAQCko5fThsVKVvF5Zo9oARdKtiI3y+X4eBjehCFp2bcOd5i1cOXOw=
+	t=1781464330; cv=none; b=UMq+miYYiE7ZyM+PFVSwziYJ3LBw0psW1YnRreIIBu9KINn32+dH1bqBpZKTX0MbaFpsDyWmFJtG5zW6fvZrNey2kL3rY5cfe/RiEZxpyZr6oXIDxsHWsYhHsotq0zl1eyo9O85ZwzP+tqsSRCNDk/EPnyi8L+/DRQv4SByjobE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781462365; c=relaxed/simple;
-	bh=XWeJ+VAo5WoGAHZj20GCG/MtvCQ96kosUj0MbYlCE2A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CNKSS3tdMfBQlpcfeDP5ZnObUmbpvDUNinC//tX7z5L8NQZuL96xLr/I1zwgZga/HsF5T/n1b5QpnSXL0AqyfperwhuQjbUVS9+ZgmmpDDiB1rxHRJ73Cdle4Zrbdv2ova3/mxGBBd/aYRSqFIqm7Z6F/pZ/ErK2tgqVeSwssUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=XoeQRymO; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1781464330; c=relaxed/simple;
+	bh=w8H8VF4ay2nFrbeburyYYNENKSJcO+w6YhkDtVoSxMI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=oCLmuV/smxeSq9zJ7hylGZ0WxHlj0duyolTWBFmXbfY3Fm6i6MTjy5uvSfU2EpCx2Ys06830nquc4QrMlAvgcTrVhzNWiO+z0OShdXG5EH4+3xB+y/sD009XQufrq0XUWR7bGT7XflLhGrhXM8Kf1zz+SPeA/pBBiwMhajNp4hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=Ydp5yoLK; arc=none smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="XoeQRymO"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=TXNeFJn+AG/aK3bbUBS/Q7VeiAGyp4weS0aoeXvjXUA=; b=XoeQRymOQBh8G5gC64tIq3y5eM
-	R+4VJiZGkpv6ehvpJ8zQon7ElnXs9P3Pgv2n+UzS7FVo3Yv0ckPpRsk9TwOhIGO/+wL6U+DFNj1km
-	0bvkBvOcIOPKai4R0N4qDhOa0HDadUIgApcz71vsNDHsd3VtMoV3YUWcgJa2PnTve/k4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wYpjk-007gbh-Ja; Sun, 14 Jun 2026 20:39:12 +0200
-Date: Sun, 14 Jun 2026 20:39:12 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Kees Cook <kees@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
-	Ao Wang <wangao@seu.edu.cn>, Xuewei Feng <fengxw06@126.com>,
-	Qi Li <qli01@tsinghua.edu.cn>, Ke Xu <xuke@tsinghua.edu.cn>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] atm: br2684: reject short VC-MUX bridged frames
-Message-ID: <26ebc58c-6399-4a45-aa55-91a3bf398fef@lunn.ch>
-References: <20260614152746.308-1-zhaoyz24@mails.tsinghua.edu.cn>
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="Ydp5yoLK"
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6913160c9ddso4806910a12.2
+        for <netdev@vger.kernel.org>; Sun, 14 Jun 2026 12:12:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1781464328; x=1782069128; darn=vger.kernel.org;
+        h=mime-version:message-id:date:user-agent:references:in-reply-to
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lQbr/DVUC2MJPasVAk/HJTfXKnamDXGW7esLMB8WW/M=;
+        b=Ydp5yoLKUAgfhAqvsp7GVRJh0ShPQ2nKG5dhnWDBIULD5G13YZygIlKYn26RNhhPn5
+         ire0ed8isgPdiq7omhcHXhkMSlNtxj7ghvPCWijfj9I1ts3MzMsDVSl1NHkuR9BbHxzD
+         NYQA8enkDO/HLx+ebvsk41gO0pyJjhEbcbCvizN3miaeFZy+SxadFn9kEvuZIf1Ofj9v
+         sQVd7hH1Xb+Z8CBH00XnZzEVFEeN75P2uqP9M8maEsWmzMmyd13RYC5f0XxOML1G9cWp
+         F3mXcwQ8rbNzFgnExqHHZhxgEDq/JzTPQ3sYsaURv8qwcfPq9VXJumMH37Cpzj/fDLS0
+         S3ww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781464328; x=1782069128;
+        h=mime-version:message-id:date:user-agent:references:in-reply-to
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=lQbr/DVUC2MJPasVAk/HJTfXKnamDXGW7esLMB8WW/M=;
+        b=DVk+NG6CngLuuqwSZf695gw8Po/qP8VqzMVayDVayruwQA0eh3vp9IVeY2SDCsDgAI
+         kbgCN/J1SJZW6AwC3El0vNub8Bkfs0eiAmsz2endIsvzsHkAQ/Okc7t6YdMDa+R/yWZk
+         Av+Td4dGW/4O2PFC8VezE+PFrJs7Btnu8wp9PGLFVZLBnVg5PjcdCj6Lx8ForcRecf/G
+         ljqRXP9nlZnO0oPxgU6yoLqGsgsEoWfG5oTrsCo1gULxErKgCbevmiXObutxDgLrl3Gy
+         huizDpCAv2KMBzQ2qBLyx72r5sxxJfFrch9Zeqzz2Vn4SAhfBnxxdAL89QZlMOerYTeJ
+         oXjg==
+X-Forwarded-Encrypted: i=1; AFNElJ/yed5+ELwRTQvX4iqCFdEYzK28/GsDoMe++8ta5bJhw7TjUiOZVvONoM4vQRkD6opbdFGHOJ8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwAu/uFzeICRgFYJoIfBocn3N0G4KTJrDAaizg3pEHar0cIsx2m
+	XXIx3h6eVWgj3uxoo3dCTDoqr4UQlEYSeakOg35ZJ9XSyYBjWcDz1ajR3AnkhaIM2qM=
+X-Gm-Gg: Acq92OHr5bDeTKU4dNhGe6aQIgWpbrMZzd2SzxoWckveYlkJ54P2r+0zlR5XXtubdFy
+	6dFo4zTAp+vle9n9cg5QS23k0bPdXf/fOIGkouHT1kFxE3MKxSPTOK2mfQCLPAoqm8Mq5hrJfdY
+	6WCnYxudjQWDRy0vqohhp9HJAbSJXWMsg+CWQRr31Kk+aUrMtzmpRmkUwkm+jWLd2LhX8NfwBm3
+	BbYPe9eN+e391us+UgkxUigF8LwM1Z8p97ihqNFc9cGh4hABTQST1OdCxfl2rRxXdZxWHEmARTJ
+	Cl8gUcKt616QSRk6SKhu1aqFTtAwDl46hH+bQL7+2uh5ESOpB6U1dlOZr0PPuKn+oO2sfVdo5L8
+	hZlDKLz5/1lLA0uPo+kuD3mWeLj1xFN68moRD81twW19ka2OMEs/gTwgVVXJM5wGlgbAgx1VHV5
+	GRut0RwwE7gyn5i1XPGKdQFHC5ug==
+X-Received: by 2002:a17:906:cc58:b0:bcc:e8f:c3a8 with SMTP id a640c23a62f3a-bff4bbffc88mr220569866b.29.1781464327163;
+        Sun, 14 Jun 2026 12:12:07 -0700 (PDT)
+Received: from cloudflare.com ([104.28.21.182])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c01d667f63asm68108466b.19.2026.06.14.12.12.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 14 Jun 2026 12:12:05 -0700 (PDT)
+From: Jakub Sitnicki <jakub@cloudflare.com>
+To: Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: davem@davemloft.net,  netdev@vger.kernel.org,  edumazet@google.com,
+  andrew+netdev@lunn.ch,  horms@kernel.org,  bpf@vger.kernel.org,
+  john.fastabend@gmail.com,  sd@queasysnail.net
+Subject: Re: [PATCH net-next 1/5] tls: reject the combination of TLS and
+ sockmap
+In-Reply-To: <cbfca457-d118-44cf-b51e-9b0221ae0973@redhat.com> (Paolo Abeni's
+	message of "Sun, 14 Jun 2026 10:09:15 +0200")
+References: <20260614014102.461064-1-kuba@kernel.org>
+	<20260614014102.461064-2-kuba@kernel.org>
+	<cbfca457-d118-44cf-b51e-9b0221ae0973@redhat.com>
+User-Agent: mu4e 1.14.1; emacs 30.2
+Date: Sun, 14 Jun 2026 21:12:05 +0200
+Message-ID: <87bjddc4xm.fsf@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260614152746.308-1-zhaoyz24@mails.tsinghua.edu.cn>
+Content-Type: text/plain
 
-On Sun, Jun 14, 2026 at 11:27:45PM +0800, Yizhou Zhao wrote:
-> br2684_push() validates the two-byte pad at the start of received
-> VC-MUX bridged frames with memcmp(), but does not first make sure that
-> those two bytes are present in the skb.
-> 
-> A short AAL5 PDU can reach this path after a BR2684 VCC is attached with
-> BR2684_ENCAPS_VC and bridged payload.  If skb->len is 0 or 1, the pad
-> comparison reads beyond the valid skb data.  When the bytes beyond
-> skb->len compare as zero, the code then continues toward eth_type_trans()
-> with the malformed frame.
-> 
-> Reject frames shorter than BR2684_PAD_LEN before checking the pad.  This
-> keeps the existing validation for valid VC-MUX bridged frames, which must
-> carry the two-byte pad before the Ethernet header.
-> 
-> Fixes: 7e903c2ae36e ("atm: [br2864] fix routed vcmux support")
-> Cc: stable@vger.kernel.org
-> Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-> Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
-> Reported-by: Ao Wang <wangao@seu.edu.cn>
-> Reported-by: Xuewei Feng <fengxw06@126.com>
-> Reported-by: Qi Li <qli01@tsinghua.edu.cn>
-> Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
-> Assisted-by: GLM:GLM-5.1
+On Sun, Jun 14, 2026 at 10:09 AM +02, Paolo Abeni wrote:
+> On 6/14/26 3:40 AM, Jakub Kicinski wrote:
+>> TLS and sockmap (BPF psock) integration hides a lot of latent bugs.
+>> Bugs which may be more or less relevant for real users but they
+>> are definitely exploitable.
+>> 
+>> We could not find anyone actively using this integration so let's
+>> reject this config. Adding a TLS socket to a sockmap was already
+>> rejected by sk_psock_init() through the inet_csk_has_ulp() check.
+>> We need to reject the attempts to configure the TLS keys (rather
+>> than adding the ULP itself) because checking prior to the ULP
+>> installation is tricky without risking a race with sockmap getting
+>> added in parallel (sockmap does not hold the socket lock).
+>
+> Aren't both tls_ctx_create() and sk_psock_init() under (write) the
+> callback lock? Isn't that enough to avoid races?
 
-Same questions as for the previous patch. Lots of parallel
-discoveries? What hardware was used, etc.
++1, but we would have to tweak inet_csk_has_ulp() to check for
+icsk_ulp_data in addition to icsk_ulp_ops. Only icsk_ulp_data is set
+under sk_callback_lock.
 
-	     Andrew
+espintcp faces the same race...
+
+
