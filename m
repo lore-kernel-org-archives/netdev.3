@@ -1,134 +1,208 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8093CB90F
-	for <netdev@vger.kernel.org>; Sun, 14 Jun 2026 16:59:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83BA939A04A;
+	Sun, 14 Jun 2026 17:01:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781456354; cv=none; b=oP93jTsZRxUJsLcNKJvbathbaee7+w/anaIXTkgeZ6Xn3Pdc0qAW1jdTeZriQKkrFPFE6p3qv5z+f1lEJLRfn/pQ/9FqnTCJjzT9kGyk5XoqeCCgsZ2PaiHWUYcH7Zchhc27C22V4H3eY4+Q3ZHnJ9TmK0bc7hBao4WfYh5Sqw0=
+	t=1781456465; cv=none; b=iaJR5lLcn9RUmYnp2vY/0qBqDP4CgLAECpn78EGrcB3EmzUkfyns1QYx12GPJxIC08gQGP35F+LYycultHvPEKC6N7ttNh7McjGxI/qI1+j+PAtbokTvO3gVMgzKc1cEBCHCukGxJ14yQdemlWOy10GFck/mbo+OB/l6AkayXHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781456354; c=relaxed/simple;
-	bh=FrdCFvpw9MoOQ0+PkoEs5DFfpaCKlDpBo6fwG5E9ypo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OAEfGPb+9oAPni5V5No2QMUXtrjR4PanYSniNZK6rADszl0hJ6VAZ03drzthPIFZ8tX+uVZfSv5ZmBwc4IOqDYVQbmpWQWk6B+rX1I7+e9r22l6tGwPFsAGMg7Pf4Qiax5lCAwypLAgogNprGNMt2sxbx6qDic7LonONBEc2r2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G2FSOKdF; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781456465; c=relaxed/simple;
+	bh=abSDnklMhPkzH3cacoyWsD0X877o1oWORkEVJvyGUmY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=ZK5FLaqjUd2Rw0fk/PEE/IswlV/2tfLyi3HkF/BrpSsis4EjZUx32AWC0bJVgCBwsd6OXpBzH/IN8uRjBXPy/Ojq1nOo1salRLIL/mMZ5+SWl07fqWY0Vko+mTegRZtWxvkLV6NPQ+oT1A831m1FSTQlKf7cwmIFe1ppTFn6uQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SIw0iEJX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G2FSOKdF"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-36baeec21dcso1609696a91.3
-        for <netdev@vger.kernel.org>; Sun, 14 Jun 2026 09:59:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781456353; x=1782061153; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=z3rN8waOyeNHOu4xKjl7MMlKsb/kdxpH+0daFeUyAvA=;
-        b=G2FSOKdFwQB13J5J8gIr5yRDvQTS4MNA42/W8Ff/ytJadLTWEpV4xOolmHCDa4e2vg
-         lW2u2IsxAQEnZZYxBiQVmXJlaNY0UReLg+yq2Epses5U8MnRJaoqUZoRzkcdfJbr9lWt
-         G+FJZV54xgAbL/mZXNatMVBCh2Tx8V8nfreOMJYLB5rTGX+ZMEb6qy8m+hlI9Yrm+Tjs
-         IScyLeZkFDk8i++cTsKcWqPl75ed2YLmmPFoaC8a7oeeKAkOIesR3xvPlbtf31tZglWH
-         aivb+hHGeEVxZlr/sJltVaWdVHtDL1an5td7hyOF9J5OD4iCzQ2VKjtI8cmvyswz8Ugx
-         f1Lw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781456353; x=1782061153;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=z3rN8waOyeNHOu4xKjl7MMlKsb/kdxpH+0daFeUyAvA=;
-        b=B7G5orQT6gN1PEosAFNEWeyKEVRqEjvggpVYAr97uHwuZwDHTQO/3Wy1gzhfRPosHh
-         ZCLVkYqWROjclDZ/J9D7fMscjNxrJhHs+uZgGrUD6aLDPpOlz11fsRgq8UkIpGLFEnfs
-         NGjCZ2HcSguCZriMyxmz7cc938RpIrzc1Lzc7qSyP6U/9u9Gf57BIQgbk6nB3254XFGb
-         G0XkJirTwa3ddcW+4SGM0SrQH82emUm+NukK3JBAB3WDV51V1lQHUAysawa+TT4y5IgU
-         Bf+M+cIfw/1zjAyfvidtFipn6qG4fk5oGSR7AGXbfAfnR8awxXbmWU8fT80uJHAWIBfm
-         aY9A==
-X-Gm-Message-State: AOJu0YxttTRpmdNp4bvPVbdG0WfklHoBfen3m+QvXmIyuZ+Z00Gstjhi
-	nW1j3fNVTLSUq35Q6yPqVG4a5INbc1O/KG4CpbhorlIluFAsU5cEXPyd
-X-Gm-Gg: Acq92OE+rPQxrNncEsdGPSidD7kmHoOxPlPE6fnhkMqWly6tyEbkB0pI0EEKy8p87VR
-	z8IIETsn2A0j4AXGJbnEHpE9WUdyPqSq2DdbhR9FQMJbBWzstqWwl7P81GzDS0HmW58o8AIVxjA
-	7TpydTsZAF9LgpD+IPeYGCwdtNVeSq/Zve+pATnnUfUsvMboBAu2g/dMNgrP9j+lazr3ob6TWb2
-	o8CE01/TmHm/TbS3FWlhHVi2ie7+nt0SGMFzvKSKTL13nBPgTNZ9MHcxVBy0g4G46/hpKICVKDR
-	ipZBAVZLBt1MYUnfSmgplrEUKOIQ/ICzE1zoL/xIxRaIbEa4TKJlp4RtlpqG3PzwKgVScb0cwKt
-	LhqfWaf1Qo4WZC2W3TvD1tskkCInT6fGQJKYF/4nIwOSo+juBzxfF6xSeJBB2l6UqM6HiNaPRNV
-	6vyFA/2YVYOCUFfrkpAMo633JVEo6wVLw=
-X-Received: by 2002:a17:903:3887:b0:2b2:4d36:7ba with SMTP id d9443c01a7336-2c40e0350d2mr121454055ad.0.1781456352693;
-        Sun, 14 Jun 2026 09:59:12 -0700 (PDT)
-Received: from DESKTOP-MUHC17F.lan ([188.253.121.147])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c42fbb5b79sm74457405ad.36.2026.06.14.09.59.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Jun 2026 09:59:12 -0700 (PDT)
-From: Zhenzhong Wu <jt26wzz@gmail.com>
-To: bpf@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	john.fastabend@gmail.com,
-	andrii@kernel.org,
-	martin.lau@linux.dev,
-	song@kernel.org,
-	yonghong.song@linux.dev,
-	kpsingh@kernel.org,
-	haoluo@google.com,
-	jolsa@kernel.org,
-	menglong8.dong@gmail.com,
-	eddyz87@gmail.com,
-	shung-hsi.yu@suse.com,
-	stable@vger.kernel.org,
-	mykolal@fb.com,
-	tamird@kernel.org
-Subject: [PATCH stable 6.6.y v3 4/4] selftests/bpf: Update comments find_equal_scalars->sync_linked_regs
-Date: Mon, 15 Jun 2026 00:58:41 +0800
-Message-ID: <3b5b6d9879fac3fb22b76c8249bd7c71609e1c39.1781194510.git.jt26wzz@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1781194510.git.jt26wzz@gmail.com>
-References: <cover.1781194510.git.jt26wzz@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SIw0iEJX"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3F72EC4AF14;
+	Sun, 14 Jun 2026 17:01:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1781456465;
+	bh=abSDnklMhPkzH3cacoyWsD0X877o1oWORkEVJvyGUmY=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=SIw0iEJXPCsa5/J/LQQiJ0MZGlCsZITPi2Dw9SsltgOgpO4S0RW8kiP7p+X8YOVkm
+	 +Jox5zfZLqDs/m3rGNr4B4kJC5SNcdN3AOD8eTsL/9cugiHTnnXSKqY9pqsEAtvNXL
+	 vQGxyEiFGbJe9/oZtWenj4H8nvL7j8p6WRtDc2kj3iiHmggv7yCumux/F7dBX+BSRB
+	 RE0goZYJwelw19g8vS0C8+jZeksoNYtQfF6yHjMgx4EQ36/LBtZavvcqA0I3wS9+rO
+	 42WZwyizMoCRuHp+vHUSIdYjVNx/6ZOxiwaowpVoc2BAXRwzmIKpgxEUWE8kX2V9Gi
+	 +7r5VlzznVIbg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2BE89CD98D2;
+	Sun, 14 Jun 2026 17:01:05 +0000 (UTC)
+From: Selvamani Rajagopal via B4 Relay <devnull+Selvamani.Rajagopal.onsemi.com@kernel.org>
+Date: Sun, 14 Jun 2026 10:00:19 -0700
+Subject: [PATCH net-next v5 03/15] net: ethernet: oa_tc6: Move oa_tc6.c to
+ its own directory
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260614-s2500-mac-phy-support-v5-3-89874b72f725@onsemi.com>
+References: <20260614-s2500-mac-phy-support-v5-0-89874b72f725@onsemi.com>
+In-Reply-To: <20260614-s2500-mac-phy-support-v5-0-89874b72f725@onsemi.com>
+To: Andrew Lunn <andrew@lunn.ch>, 
+ Piergiorgio Beruto <pier.beruto@onsemi.com>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, 
+ Selva Rajagopal <selvamani.rajagopal@onsemi.com>, 
+ Richard Cochran <richardcochran@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Simon Horman <horms@kernel.org>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-doc@vger.kernel.org, 
+ Jerry Ray <jerry.ray@microchip.com>, 
+ Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781456463; l=4679;
+ i=Selvamani.Rajagopal@onsemi.com; s=20260531; h=from:subject:message-id;
+ bh=nUMaHrHDko7SZtuCRHrJClGk41kNUJRTm4LqR9h67eE=;
+ b=WFck5nlVxknuqI9EiqEI4KA0OBY3o/KzG29yf3iW/swkXSEttIqZ4+DfpFSI8vBxZAvPSn2Ku
+ zTH0X8DPvgqDs5gvLzItCYmvovh28cq8qx+t40UerB0Si3ZQzAs2jC5
+X-Developer-Key: i=Selvamani.Rajagopal@onsemi.com; a=ed25519;
+ pk=5QRdM0HS/LGWWcUZZ9hVfZ+qbPQGZCumcTXOiN7Fyug=
+X-Endpoint-Received: by B4 Relay for
+ Selvamani.Rajagopal@onsemi.com/20260531 with auth_id=803
+X-Original-From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+Reply-To: Selvamani.Rajagopal@onsemi.com
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 
-[ Upstream commit cfbf25481d6dec0089c99c9d33a2ea634fe8f008 ]
+Moving oa_tc6.c to its own directory, drivers/net/ethernet/oa_tc6. This
+will facilitate adding more files to support other features
+defined by OPEN Alliance 10BASE-T1x Serial Interface specification
 
-find_equal_scalars() is renamed to sync_linked_regs(),
-this commit updates existing references in the selftests comments.
+This patch series is adding two files, one for hardware
+timestamp related functions and one for PTP related APIs.
 
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20240718202357.1746514-5-eddyz87@gmail.com
-[ zhenzhong: only two pre-existing comments still needed updating in 6.6.y. ]
-Signed-off-by: Zhenzhong Wu <jt26wzz@gmail.com>
+Signed-off-by: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+
 ---
- tools/testing/selftests/bpf/progs/verifier_spill_fill.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+changes in v5
+  - No change
+changes in v4
+  - Removed reference to onsemi in Kconfig files
+changes in v3
+  - Moved oa_tc6.c to its own, oa_tc6 directory under ethernet.
+  - First patch
+---
+ MAINTAINERS                                |  2 +-
+ drivers/net/ethernet/Kconfig               | 12 +-----------
+ drivers/net/ethernet/Makefile              |  2 +-
+ drivers/net/ethernet/oa_tc6/Kconfig        | 16 ++++++++++++++++
+ drivers/net/ethernet/oa_tc6/Makefile       |  7 +++++++
+ drivers/net/ethernet/{ => oa_tc6}/oa_tc6.c |  0
+ 6 files changed, 26 insertions(+), 13 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/progs/verifier_spill_fill.c b/tools/testing/selftests/bpf/progs/verifier_spill_fill.c
-index 1f71f596d..07a2527a8 100644
---- a/tools/testing/selftests/bpf/progs/verifier_spill_fill.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_spill_fill.c
-@@ -392,7 +392,7 @@ __naked void spill_32bit_of_64bit_fail(void)
- 	*(u32*)(r10 - 8) = r1;				\
- 	/* 32-bit fill r2 from stack. */		\
- 	r2 = *(u32*)(r10 - 8);				\
--	/* Compare r2 with another register to trigger find_equal_scalars.\
-+	/* Compare r2 with another register to trigger sync_linked_regs.\
- 	 * Having one random bit is important here, otherwise the verifier cuts\
- 	 * the corners. If the ID was mistakenly preserved on spill, this would\
- 	 * cause the verifier to think that r1 is also equal to zero in one of\
-@@ -431,7 +431,7 @@ __naked void spill_16bit_of_32bit_fail(void)
- 	*(u16*)(r10 - 8) = r1;				\
- 	/* 16-bit fill r2 from stack. */		\
- 	r2 = *(u16*)(r10 - 8);				\
--	/* Compare r2 with another register to trigger find_equal_scalars.\
-+	/* Compare r2 with another register to trigger sync_linked_regs.\
- 	 * Having one random bit is important here, otherwise the verifier cuts\
- 	 * the corners. If the ID was mistakenly preserved on spill, this would\
- 	 * cause the verifier to think that r1 is also equal to zero in one of\
+diff --git a/MAINTAINERS b/MAINTAINERS
+index cc1dde0c9067..4cee98fc922c 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -20001,7 +20001,7 @@ M:	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
+ L:	netdev@vger.kernel.org
+ S:	Maintained
+ F:	Documentation/networking/oa-tc6-framework.rst
+-F:	drivers/net/ethernet/oa_tc6.c
++F:	drivers/net/ethernet/oa_tc6/oa_tc6*
+ F:	include/linux/oa_tc6.h
+ 
+ OPEN FIRMWARE AND FLATTENED DEVICE TREE
+diff --git a/drivers/net/ethernet/Kconfig b/drivers/net/ethernet/Kconfig
+index 78c79ad7bba5..49d93488ba52 100644
+--- a/drivers/net/ethernet/Kconfig
++++ b/drivers/net/ethernet/Kconfig
+@@ -134,6 +134,7 @@ source "drivers/net/ethernet/netronome/Kconfig"
+ source "drivers/net/ethernet/8390/Kconfig"
+ source "drivers/net/ethernet/nvidia/Kconfig"
+ source "drivers/net/ethernet/nxp/Kconfig"
++source "drivers/net/ethernet/oa_tc6/Kconfig"
+ source "drivers/net/ethernet/oki-semi/Kconfig"
+ 
+ config ETHOC
+@@ -146,17 +147,6 @@ config ETHOC
+ 	help
+ 	  Say Y here if you want to use the OpenCores 10/100 Mbps Ethernet MAC.
+ 
+-config OA_TC6
+-	tristate "OPEN Alliance TC6 10BASE-T1x MAC-PHY support" if COMPILE_TEST
+-	depends on SPI
+-	select PHYLIB
+-	help
+-	  This library implements OPEN Alliance TC6 10BASE-T1x MAC-PHY
+-	  Serial Interface protocol for supporting 10BASE-T1x MAC-PHYs.
+-
+-	  To know the implementation details, refer documentation in
+-	  <file:Documentation/networking/oa-tc6-framework.rst>.
+-
+ source "drivers/net/ethernet/pasemi/Kconfig"
+ source "drivers/net/ethernet/pensando/Kconfig"
+ source "drivers/net/ethernet/qlogic/Kconfig"
+diff --git a/drivers/net/ethernet/Makefile b/drivers/net/ethernet/Makefile
+index bba55d9af387..77b11d5a7abf 100644
+--- a/drivers/net/ethernet/Makefile
++++ b/drivers/net/ethernet/Makefile
+@@ -71,6 +71,7 @@ obj-$(CONFIG_NET_VENDOR_NETRONOME) += netronome/
+ obj-$(CONFIG_NET_VENDOR_NI) += ni/
+ obj-$(CONFIG_NET_VENDOR_NVIDIA) += nvidia/
+ obj-$(CONFIG_LPC_ENET) += nxp/
++obj-$(CONFIG_OA_TC6) += oa_tc6/
+ obj-$(CONFIG_NET_VENDOR_OKI) += oki-semi/
+ obj-$(CONFIG_ETHOC) += ethoc.o
+ obj-$(CONFIG_NET_VENDOR_PASEMI) += pasemi/
+@@ -104,4 +105,3 @@ obj-$(CONFIG_NET_VENDOR_XILINX) += xilinx/
+ obj-$(CONFIG_NET_VENDOR_XIRCOM) += xircom/
+ obj-$(CONFIG_NET_VENDOR_SYNOPSYS) += synopsys/
+ obj-$(CONFIG_NET_VENDOR_PENSANDO) += pensando/
+-obj-$(CONFIG_OA_TC6) += oa_tc6.o
+diff --git a/drivers/net/ethernet/oa_tc6/Kconfig b/drivers/net/ethernet/oa_tc6/Kconfig
+new file mode 100644
+index 000000000000..97345f345fb9
+--- /dev/null
++++ b/drivers/net/ethernet/oa_tc6/Kconfig
+@@ -0,0 +1,16 @@
++# SPDX-License-Identifier: GPL-2.0-only
++#
++# OA TC6 10BASE-T1x MAC-PHY configuration
++#
++
++config OA_TC6
++	tristate "OPEN Alliance TC6 10BASE-T1x MAC-PHY support"
++	depends on SPI
++	select PHYLIB
++	help
++	  This library implements OPEN Alliance TC6 10BASE-T1x MAC-PHY
++	  Serial Interface protocol for supporting 10BASE-T1x MAC-PHYs.
++
++	  To know the implementation details, refer documentation in
++	  <file:Documentation/networking/oa-tc6-framework.rst>.
++
+diff --git a/drivers/net/ethernet/oa_tc6/Makefile b/drivers/net/ethernet/oa_tc6/Makefile
+new file mode 100644
+index 000000000000..f24aae852ef2
+--- /dev/null
++++ b/drivers/net/ethernet/oa_tc6/Makefile
+@@ -0,0 +1,7 @@
++# SPDX-License-Identifier: GPL-2.0-only
++#
++# Makefile for OA TC6 10BASE-T1x MAC-PHY
++#
++
++obj-$(CONFIG_OA_TC6) := oa_tc6_mod.o
++oa_tc6_mod-objs := oa_tc6.o
+diff --git a/drivers/net/ethernet/oa_tc6.c b/drivers/net/ethernet/oa_tc6/oa_tc6.c
+similarity index 100%
+rename from drivers/net/ethernet/oa_tc6.c
+rename to drivers/net/ethernet/oa_tc6/oa_tc6.c
+
 -- 
 2.43.0
+
 
