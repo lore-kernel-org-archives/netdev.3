@@ -1,104 +1,223 @@
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679AA146D53
-	for <netdev@vger.kernel.org>; Sun, 14 Jun 2026 00:30:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781397032; cv=pass; b=qbNyWebeTHIvAYc88RDXDg5ZcaLkAR7c44ZwAD7KZr2rLcHCDxY0XgNgG2DhtGMvKm07QMuTCfRvnES0SNKANL4cUYW5rnvczOv5wlgNxKW/2aTxnqANnfRwC+TXdw3fnVZlwisrfBbryzOdO8QMlAv2ZEtO/7Xg/qdMBj6Lc68=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781397032; c=relaxed/simple;
-	bh=FD1hYeZSVuDKmLdk4UZhd6jkbyxws/bb84NjF61sU5s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mkKcnDPUwo2BhagsitFVJHl2ZZq4eGkfqGmT4QvZk8mhfIM0Dm5ccvwGR3afA8U8O4WXp3eVWDm8DO6L8ztxyI0E7CL8U9ICY4S8qhcxSRpNi6/mYKgsTqBK0+LWuOTKx3Fr2vk3wYkr6bh4e5q3hKzwFmA7DfG8dlX7b/kPyI0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mNJONOSV; arc=pass smtp.client-ip=209.85.160.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 117991E9B37;
+	Sun, 14 Jun 2026 00:31:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781397076; cv=none; b=D9gJgKbL1g7+XDBH0tIlWdeSkce7sHMf3gpz9H8k/8gPcuwNdZHoYjWgRF8vdYa6iDouuT7rL/78b1lbj7aNj6BH95SbJPecHgc6CRW932Cs+w40Nswpq6T104hXLNxcpFb+nOILFS0vHXpX8dlJpqZ3Bs2qmouSL2EHwetTZuc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781397076; c=relaxed/simple;
+	bh=8mYJYvcpyLC563E8e5G/kEn95obSwkzshUm0zHc6GYI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ZkybE04Og6CZ96sFsJ3RK6A1VxgTY3gCn8ZXJQz4oKfffSIdZtn76rB7CRWGLAHsQ0JvHPXA0pnvi5xfYdL8TkWyuvV+ohxM0Sl0YClRnQvjFdRSAjbjstsT1C8kAj/fY7sh5fgY9uB1AKxuDI/xZoXSGWFL3gjxNpxgjRzA05w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c/Qs4wWo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mNJONOSV"
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-51765531803so529041cf.0
-        for <netdev@vger.kernel.org>; Sat, 13 Jun 2026 17:30:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781397030; cv=none;
-        d=google.com; s=arc-20240605;
-        b=LrPmDSlvdlr0gd3KIDABPJ2+trMvq4ZB+6Qaqj/A6jPckQRqruhlCMFACugUDZ4L+8
-         EGdOp6GtanxNgBZi7J7h7+58vMaNvtY/cDhgB9tLXO90hEw/jWAqvvlwQOP4aAhnEo9k
-         HkqoO3UswpjoH2o7smfdFK4WdQ9ajY4VjyQz/wRHWiyt5rywRk5/kJnXF4oD+axPbBWL
-         E1jjNZei3p6+v5CiMnj2hoJfmS1hF0OoZnQLpgtqd4AYCP+10Z2r3eqgv+OAk4zkgxLb
-         4+AghTe4hpIQzbTWW71dgkgpsJv+HUfYYQFsFnM+ROCcr3d5GuTYNUj3ZnFK7JLsB3LE
-         ctFQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=FD1hYeZSVuDKmLdk4UZhd6jkbyxws/bb84NjF61sU5s=;
-        fh=5QdTtu3ybmToaiuprbogLCLiU2dhWBDWoqrepRKrpP4=;
-        b=Q6If1LPkJdVOvYRXzPLvnztV6jLas5VoQ4rmW+OzpfWELLnksSODtKhrVxwSLgou2R
-         iqBeSZf6Fw/NJsM5MzSYsKUpDi5CL2hE4Y23CtVoa3eWIdjc5TA8aBzGH31pciXY5Vml
-         wu5AIEpYyF+fuh+yYOI40Bz5ymcALaPN23lY17JGuboFAma2smMyU7bzAzQmmsyCZSMj
-         PA8B+eVFtDfbiCpP87wuBJ38t8JLeilgTLWHbFBGgAjfPNsHf0E50pSOHgxLh/5voH+b
-         nrjB8IqWe3dhmOMc3YmpmDocQ3rMeK7JXePzBoCHA8/hmmoQoN68yOXvPHmLL5V/u7CG
-         UsfA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781397030; x=1782001830; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=FD1hYeZSVuDKmLdk4UZhd6jkbyxws/bb84NjF61sU5s=;
-        b=mNJONOSV3TjNLRhgSQ+oonDr20CCTyuW/cimauUu2goZ1ptIUTn0YNtfC9AINdWQ0p
-         X1uHKC3ymsaIWBtz1RISBeI3Op4E9WsCH4i/3Ku87lI9ukq1KngmOzg0kyBM+Hf+Lsdq
-         EvCnp4eyw0/cSsMECXAYUcrEMlYUNi36C/Ji35PYMaj45E+dCkq3iQb/VS/wCitRnqlh
-         j+TqZ4RuMMGzhFj8OEoutIhCdFvWFvZ0STPwmMPD1qjliLtSR8CxIAVmm/4ZoaF/1WvI
-         wdRUyjl7l7RwyC20PTcu7Bquq6Z3tm6/aBClbEJXkLFff2DLchTBrMr/0GQ8aMJcGwAl
-         JbKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781397030; x=1782001830;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FD1hYeZSVuDKmLdk4UZhd6jkbyxws/bb84NjF61sU5s=;
-        b=Yv9ahBZSI6lxE+kd2vZXegIpimrBWBa/Y95Fu3iBSPVJH0INrOQ7DhfRnDy+qovrfL
-         /JUMcFiumlE+TLyt3OHWXWL+8GfL9npTyL+fqumgLHbd3KlWZYjeqXZaO1OtVHHOPJD7
-         PdORTQIN3tCJyeXJc0QTSQ15S0q+G2dVCNIDuAYyqzQn5sqtXk8qvIL+Pxa3TVz+bq0A
-         jrHIOjnLAALDMibw4rITUXkNozmj+90l2BoPrFcUog3/j8MhxBjARqgKBIeZzz6VXASl
-         k5Wa0ycGXqPuRNrH7SGFIoOgrSavo66ytK2UEHXF+E4qziQ9X1C4E5aP90Yu99vYCZ10
-         ppSw==
-X-Forwarded-Encrypted: i=1; AFNElJ+JYPSVRHOzn86y7COHA36ed96iy9tC7dm9dH1gfDQW1ws+MvcovmpisWXXqZx+PbspkilbOwE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzTxYfwc6111MypdQ8fwP2DXV6o2XYD0cHjoxMEf+6KvDi+bjvE
-	xGNxQutDC4oj5huRtdMpyOEvExFcQyvbL6Q8ELgoMXpnUSRxmo5OIYcMutYQrXr43/y58nWn4+R
-	f6sPe+FtTeXyJ0mwrCwDtEHD7VOysPP7ddch0IqmH
-X-Gm-Gg: Acq92OFfloWUygDweTq2HRLwPaaIXA//eHm/kudEW0IUky280KtRifkF8G+1ZhGRPbd
-	7cLINIgMXK4rnlxZVGLDlzdLsISVxA7gJDR4Mm6d7DphLVcOdryWafKueLgYne0aHlyQLcRikgK
-	kioiP1IyRaF3jB6I9irtWj4AuKUbvwh86eK743sThwaRPkysI88+pFnqQH5xtvcJ3Yrz0eFk0e9
-	uf8CjbNnWh5AcMPYg8Oxi/fJSqUEUd7euGkb+70G3BgRZ4qTyTF3278xceGVjwOa/WGmGnNmx3m
-	u8xI9+i2wTuKQh9ikeoMnADDInyzZBvPediVDQ7ORZXQAS5fdSyVG6AWPfJ6tfSIkcYZO1TI
-X-Received: by 2002:ac8:5a14:0:b0:50f:be7b:923a with SMTP id
- d75a77b69052e-51955e93234mr6932301cf.9.1781397029793; Sat, 13 Jun 2026
- 17:30:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c/Qs4wWo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB56F1F000E9;
+	Sun, 14 Jun 2026 00:31:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781397074;
+	bh=Osk2e50RUY4RQGcxII9so6cvH9/DLpbiJiZuFVeibpA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=c/Qs4wWoUXcIn20mRXYd2HSircOepmYOc8868RlrPLkaGMQk2trCwEkObid+Ng4FX
+	 +U1IPGkzrUgmKn+Lvsbbup3F6AswV+tiqYvbJ85XEv+jpsfTAxEH9NMNmGRgZKRANr
+	 aPbn7+fjKNRUuGXpfVqm/uQ3+ERJwVxd/5oDwOdzUXGUrruj8YgLA7kXZFY2RkJuGu
+	 MI3dvFvFp1qA3zwyIegXBDdrnJOu4FPwBlaX6a/RKj37GthWQlgXrPd+RVpXv7XX+t
+	 MP9TrqqdlUTz3RUI8pJeQjlXjrMHUnEVMNtDD87vkdqOQ6emZ24SAd+r/ltjdniTPT
+	 bV14SqWVgEgSA==
+From: Jakub Kicinski <kuba@kernel.org>
+To: hexlabsecurity@proton.me
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	alibuda@linux.alibaba.com,
+	dust.li@linux.alibaba.com,
+	sidraya@linux.ibm.com,
+	wenjia@linux.ibm.com,
+	mjambigi@linux.ibm.com,
+	tonylu@linux.alibaba.com,
+	guwen@linux.alibaba.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	raspl@linux.ibm.com,
+	ubraun@linux.ibm.com,
+	linux-rdma@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net/smc: bound the peer producer cursor on SMC-D and SMC-R CDC receive
+Date: Sat, 13 Jun 2026 17:31:11 -0700
+Message-ID: <20260614003111.383195-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260610084803.186516-1-hexlabsecurity@proton.me>
+References: <20260610084803.186516-1-hexlabsecurity@proton.me>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260609122646.2297540-1-yuyanghuang@google.com>
- <fdcc6f4b-6f81-4422-bfbc-7376dd5cd19f@6wind.com> <CADXeF1FaYn2sDyM3Kfic5eyP2oQO9uQE_rFbwwRZFrOqyWSJcQ@mail.gmail.com>
- <5224a3f8-16e9-4967-9fce-14e1a0fc5205@6wind.com> <CADXeF1EtcaMaA0DseoR96R7Ru0Fgu9YTrOX_y887MajN7kw57g@mail.gmail.com>
-In-Reply-To: <CADXeF1EtcaMaA0DseoR96R7Ru0Fgu9YTrOX_y887MajN7kw57g@mail.gmail.com>
-From: Yuyang Huang <yuyanghuang@google.com>
-Date: Sun, 14 Jun 2026 09:29:52 +0900
-X-Gm-Features: AVVi8Ces_bvwdDhhszBH0gszlGqvi6KPOy2Sn5reaZRBOCXMv40_DZxdCPGuOAo
-Message-ID: <CADXeF1E97LDTzmE-oFMdEWUEgVU_6vwSWK53MTiGY4z8LVRtkg@mail.gmail.com>
-Subject: Re: [PATCH net-next] ipv4: igmp: remove multicast group from hash
- table on device destruction
-To: nicolas.dichtel@6wind.com
-Cc: "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
-	Eric Dumazet <edumazet@google.com>, Ido Schimmel <idosch@nvidia.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-If there is a strong preference for adding a Fixes tag, I will include
-it in the v2 patch.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+net/smc: bound the peer producer cursor on SMC-D and SMC-R CDC receive
 
-Thanks,
-Yuyang
+This patch attempts to close an out-of-bounds read in the SMC CDC
+receive path by clamping the peer producer cursor and the
+bytes_to_rcv accumulator against rmb_desc->len.  A couple of
+questions on the approach below.
+
+> diff --git a/net/smc/smc_cdc.c b/net/smc/smc_cdc.c
+> index 619b3bab3824..738c45fd5cd0 100644
+> --- a/net/smc/smc_cdc.c
+> +++ b/net/smc/smc_cdc.c
+> @@ -382,6 +382,8 @@ static void smc_cdc_msg_recv_action(struct smc_sock *smc,
+>  		smp_mb__before_atomic();
+>  		atomic_add(diff_prod, &conn->bytes_to_rcv);
+>  		/* guarantee 0 <= bytes_to_rcv <= rmb_desc->len */
+> +		if (atomic_read(&conn->bytes_to_rcv) > conn->rmb_desc->len)
+> +			atomic_set(&conn->bytes_to_rcv, conn->rmb_desc->len);
+
+[Critical]
+Is this clamp safe against a concurrent smc_rx_recvmsg() on another
+CPU?
+
+smc_cdc_msg_recv() runs the BH path under bh_lock_sock() (slock with
+BH disabled), while smc_rx_recvmsg() runs under lock_sock(), which
+sets sk_lock.owned but releases the slock for the body of the
+syscall.  The body contains:
+
+    /* update cursors */
+    if (!(flags & MSG_PEEK)) {
+        smp_mb__before_atomic();
+        atomic_sub(copylen, &conn->bytes_to_rcv);
+        smp_mb__after_atomic();
+        ...
+    }
+
+so the BH on CPU0 and the recvmsg body on CPU1 can run concurrently
+on the same connection.
+
+The new clamp here is a non-atomic read-then-set:
+
+    atomic_add(diff_prod, &conn->bytes_to_rcv);
+    if (atomic_read(&conn->bytes_to_rcv) > conn->rmb_desc->len)
+        atomic_set(&conn->bytes_to_rcv, conn->rmb_desc->len);
+
+With L = rmb_desc->len, the commit message notes that the
+differing-wrap branch of smc_curs_diff() can return up to
+(L - old.count) + new.count, i.e. close to 2L, even after the count
+itself is clamped.  Can the following interleaving happen?
+
+  CPU0 (BH)                                CPU1 (recvmsg)
+  atomic_add(diff_prod) -> X (~2L)
+                                           readable =
+                                             atomic_read(&bytes_to_rcv) = X
+                                           copylen = min(remaining, X)
+                                           chunk_len = min(copylen,
+                                                           L - cons.count)
+                                           second chunk = copylen - chunk_len
+                                           memcpy_to_msg(rcvbuf_base + 0,
+                                                         second_chunk_len)
+  atomic_read() -> X
+  atomic_set(&bytes_to_rcv, L)
+
+With cons.count near L/2 and copylen near 2L, the second chunk reads
+roughly 3L/2 bytes starting at rcvbuf_base + 0, walking past the end
+of the RMB allocation.  Is that not the same OOB read this patch is
+meant to close?
+
+A second variant of the same race seems to silently corrupt the
+counter:
+
+  CPU0 (BH)                                CPU1 (recvmsg)
+  atomic_add(diff_prod)        -> X > L
+                                           atomic_sub(Y) -> X - Y
+  atomic_read()                -> X - Y
+  (X - Y still > L?)
+  atomic_set(L)
+
+If X - Y is still above L, CPU0 overwrites the consumer's decrement
+and bytes_to_rcv ends up at L even though Y bytes were already
+consumed, leaving a persistent over-report that future recvmsg calls
+use as readable.
+
+smp_mb__after_atomic() does not turn this read-then-set into an RMW;
+atomic_set() is a relaxed store.  Would clamping diff_prod against
+(L - atomic_read(&bytes_to_rcv)) before the atomic_add (or using an
+atomic_cmpxchg loop) close both windows?
+
+>  		smp_mb__after_atomic();
+>  		smc->sk.sk_data_ready(&smc->sk);
+>  	} else {
+> diff --git a/net/smc/smc_cdc.h b/net/smc/smc_cdc.h
+> index 696cc11f2303..7fa6e0d3817f 100644
+> --- a/net/smc/smc_cdc.h
+> +++ b/net/smc/smc_cdc.h
+> @@ -230,6 +230,12 @@ static inline void smc_cdc_cursor_to_host(union smc_host_cursor *local,
+>  	smc_curs_copy_net(&net, peer, conn);
+>  	temp.count = ntohl(net.count);
+>  	temp.wrap = ntohs(net.wrap);
+> +	/* the peer producer cursor is wire-controlled; bound the SMC-R count to
+> +	 * our RMB before it is used as a raw index by the urgent path, mirroring
+> +	 * the SMC-D conversion in smcd_cdc_msg_to_host().
+> +	 */
+> +	if (temp.count > conn->rmb_desc->len)
+> +		temp.count = conn->rmb_desc->len;
+
+[High]
+Should this clamp live in the shared helper, or only on the prod
+call site?
+
+smc_cdc_cursor_to_host() is invoked twice from smcr_cdc_msg_to_host():
+
+    smc_cdc_cursor_to_host(&local->prod, &peer->prod, conn);
+    smc_cdc_cursor_to_host(&local->cons, &peer->cons, conn);
+
+The producer cursor is bounded by our local RMB (conn->rmb_desc->len),
+but the consumer cursor lives in the peer's RMB space and is bounded
+by conn->peer_rmbe_size, which is set independently in
+smcr_conn_save_peer_info() from the peer's CLC bufsize.
+
+smc_cdc_msg_recv_action() confirms the asymmetry:
+
+    diff_cons = smc_curs_diff(conn->peer_rmbe_size, &cons_old,
+                              &conn->local_rx_ctrl.cons);
+    ...
+    atomic_add(diff_cons, &conn->peer_rmbe_space);
+
+so peer_rmbe_size (not rmb_desc->len) is the right bound for the cons
+cursor.
+
+Whenever peer_rmbe_size > rmb_desc->len, legitimate peer cons.count
+values in (rmb_desc->len, peer_rmbe_size] are silently truncated to
+rmb_desc->len here, diff_cons is under-credited and
+peer_rmbe_space stays artificially low, which can stall TX flow
+control on perfectly well-behaved peers.
+
+The SMC-D companion in this same patch is structured the way the
+prod/cons asymmetry suggests -- it clamps prod and copies cons
+unmodified:
+
+> @@ -260,6 +266,12 @@ static inline void smcd_cdc_msg_to_host(struct smc_host_cdc_msg *local,
+>  
+>  	temp.wrap = peer->prod.wrap;
+>  	temp.count = peer->prod.count;
+> +	/* the peer producer cursor is wire-controlled; a count past our RMB is
+> +	 * used as a raw index by the urgent path (smc_cdc_handle_urg_data_arrival)
+> +	 * and as a length by the recv path.  Bound it to the RMB.
+> +	 */
+> +	if (temp.count > conn->rmb_desc->len)
+> +		temp.count = conn->rmb_desc->len;
+>  	smc_curs_copy(&local->prod, &temp, conn);
+>  
+>  	temp.wrap = peer->cons.wrap;
+
+Should the SMC-R hunk be moved out of the shared smc_cdc_cursor_to_host()
+helper and onto the prod call site in smcr_cdc_msg_to_host(), to match
+the SMC-D shape?
+-- 
+pw-bot: cr
