@@ -1,119 +1,77 @@
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB73732C8B
-	for <netdev@vger.kernel.org>; Sun, 14 Jun 2026 10:13:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 352BA1CD2C
+	for <netdev@vger.kernel.org>; Sun, 14 Jun 2026 10:26:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781432011; cv=none; b=XxZMT0eGRcso/2OcYWG8DFLQD9KmEu3ad2F7AkxdN14kBNywziUTZfPGwaNJ24AVuX02Er6FAgeBWG4WqWQmHJokogUs2kEOhAmp1qkvHFjNb17kFcZFtusX8dDcbiZnhI5x1EaGprKTxofv+zRggpWOcnX2KXKDq1B63StTt+o=
+	t=1781432779; cv=none; b=d7Vsgs6TJ5JJHxRYvDnz1LAlQYhIfMC7lDy5Jfda3P1V4dRrfzs96kP1AilRoAAdtLcWkQ0jmpZyH16Ctgnl6CH6WFsUR52YV1T5iIJLbkFEEpJ13Z3Ax/FluXoTBCeJKGVkCxrLmXOURqaeq3C0rsJfrL2vzzauaxO2VZNJies=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781432011; c=relaxed/simple;
-	bh=V8ILNRycnctlx/yOK6n8nBlj8d32lWGWZ4pfWzD5iFg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XBIaf5UHgwaY02hkQPLAdrlh39qQB5VwW22PTp/SJg3RFlSN/wWv8kgSCmstIoTdapq4fxt7GlZC4pkNFkvsNjedxqfqvtdez17vuZvAIeYhYFO11Krxe5cl/tkiGzXSiC6xgU1dT1mH3r9k9etIlBQ833lrqnb0Ey0PfENOKSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=keN1i+Xz; arc=none smtp.client-ip=95.215.58.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1781432779; c=relaxed/simple;
+	bh=LGxlUHvm49zlmH3DCeEICRhQwusGrsHuTiREnJ7QZrA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QqHqfZUNuA7jYLMQCmWEvvYOMXjU33KU+5xgZSI2IjNtwUPOPH4l+ktMuwGO+DZQ+OFn94jGF+1W/MhdOWPnd5Jo8zHuouV0x8Fg52thYIdUhYS1Kyf1+DKIayblA/9xEsMLdlu42JQt5+QOfwvsp0uhJc+s9OCqC8q+kAU3sfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=W0pPurYD; arc=none smtp.client-ip=213.133.104.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="keN1i+Xz"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781431997;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JqdQnygkXzMaJ6mt2m2i9i/0wK8Xf9zkeWFs7G9YnSw=;
-	b=keN1i+XzPhw3q+UVIxflyveBC6Pq8TVXYfrfwfsMc9rSNLicLDzplzy2EbhwdIX6vCvsTl
-	rUEhj2+St3Wbsw7jDNB8QUWWLLp5MdCOcjxzaF5nvALqzXQHeiJbO1MgTdXUWTYma6qEIr
-	/fQJ2Y1zXfi9D3wI1RxEfpveL4EN+mY=
-From: Menglong Dong <menglong.dong@linux.dev>
-To: menglong8.dong@gmail.com, Jakub Kicinski <kuba@kernel.org>
-Cc: jasowang@redhat.com, mst@redhat.com, xuanzhuo@linux.alibaba.com,
- eperezma@redhat.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, magnus.karlsson@intel.com,
- maciej.fijalkowski@intel.com, sdf@fomichev.me, horms@kernel.org,
- ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
- john.fastabend@gmail.com, bjorn@kernel.org, kerneljasonxing@gmail.com,
- netdev@vger.kernel.org, virtualization@lists.linux.dev,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH net-next 1/3] net: busy-poll: introduce sk_tx_busy_loop()
-Date: Sun, 14 Jun 2026 18:12:46 +0800
-Message-ID: <TYn10tJ2SIGF1pAhF26DRQ@linux.dev>
-In-Reply-To: <20260613112113.55d9313f@kernel.org>
-References:
- <20260611071242.2485058-1-dongml2@chinatelecom.cn>
- <20260611071242.2485058-2-dongml2@chinatelecom.cn>
- <20260613112113.55d9313f@kernel.org>
+	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="W0pPurYD"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=Zxs5Ovly51mb6oje983rn9ZnoWy+J/eSB5IqeJt3VLU=; b=W0pPurYDNnKm4KGPkUfMYZ2jn/
+	3b1ilu7Rgbz+OGoXLH4dVP+i3v1WY5sbLi6dvUiAVoG23GjRxelTeT8V5MLcb4b3JQAt2Y7hnqfyS
+	HhkyxvcUk0B1WWGRa570/T4bRX1l8XSWF9bXmdB9BVWQXlsbUM9ecFUm01LhWd/9QlcL6IlqMFJTT
+	Gwh0Q3Hd2u4/EkHibsdjmNNvXVxydKhKrks73Sn9ugXfyES5wu89qHcx0RRDAoDgE8kL1u7wJrzfV
+	aCvU/cZpudVL/3MgeVkproJV4Fj4D+ASqzJguFs/DRY7Yng4Q1V22aiUXgovHeB19lKrRmp8DjapP
+	5E+Fcn7w==;
+Received: from localhost ([127.0.0.1])
+	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1wYi2Z-000Ngq-2w;
+	Sun, 14 Jun 2026 12:26:08 +0200
+From: Daniel Borkmann <daniel@iogearbox.net>
+To: kuba@kernel.org
+Cc: razor@blackwall.org,
+	bobbyeshleman@meta.com,
+	dw@davidwei.uk,
+	netdev@vger.kernel.org
+Subject: [PATCH net-next v3 0/4] Extend netkit io_uring ZC selftests
+Date: Sun, 14 Jun 2026 12:26:03 +0200
+Message-ID: <20260614102607.863838-1-daniel@iogearbox.net>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: Clear (ClamAV 1.4.3/28031/Sun Jun 14 08:35:08 2026)
 
-On 2026/6/14 02:21, Jakub Kicinski wrote:
-> On Thu, 11 Jun 2026 15:12:40 +0800 menglong8.dong@gmail.com wrote:
-> > For now, we use sk_busy_loop() for both rx and tx path. The sk_busy_loop()
-> > will call napi_busy_loop() for the specified napi_id. However, some
-> > nic drivers have tx napi, such as virtio-net. In this case, sk_busy_loop()
-> > doesn't work, as it can only schedule the NAPI for the rx queue.
-> > 
-> > Therefore, introduce sk_tx_busy_loop() for the nic drivers that support tx
-> > napi, which will schedule the tx napi if available.
-> 
-> First, I thought the only difference with Tx NAPI is that it can't be
-> busy polled. So if you want to poll an instance don't register it as 
-> a Tx one instead of adding all this "tx polling" stuff in the core?
+Small follow-up to the HW net selftests, in particular to add a
+selftest showing that also large rx_buf_len for io_uring ZC is
+supported with netkit queue leasing.
 
-I see. Register the tx NAPI with netif_napi_add_config() allow us
-busy poll it. But we still have two NAPI instance: rx NAPI and tx NAPI.
-sk_busy_loop() can only busy poll on one of them.
+v2 -> v3:
+  - rebase to latest net-next
+v1 -> v2:
+  - Switch to cmd(..., ns=cfg.netns) (Bobby)
+  - Add mp_clear_wait for large rx_buf_len test (Bobby)
 
-Before AF_XDP, we don't have the need to send packet via tx NAPI, which
-means that we don't need to busy poll it.
+Daniel Borkmann (4):
+  selftests/net: Move netkit lease hw setup into per-test fixtures
+  selftests/net: Use public NetDrvContEnv API in nk_qlease fixtures
+  selftests/net: Add netkit io_uring ZC test for large rx_buf_len
+  selftests/net: Add hugepage kernel config dependency for zcrx
 
-I analyst some nic drivers on the implement of AF_XDP. Some of them
-will check xsk tx ring of current queue and send the data in it in the
-rx NAPI, such as mlx5. Some of them will allocate a extra "rxtx" NAPI
-for the AF_XDP zero-copy queue, which will poll both the data receiving
-and sending.
+ tools/testing/selftests/drivers/net/hw/config |   1 +
+ .../selftests/drivers/net/hw/nk_qlease.py     | 300 +++++++++++++++---
+ .../selftests/drivers/net/lib/py/env.py       |  10 +-
+ 3 files changed, 259 insertions(+), 52 deletions(-)
 
-In the case about, they will do the data sending and receiving for the
-AF_XDP in a single NAPI instance.
-
-However, some driver receiving the data in rx NAPI and send data in
-tx NAPI for AF_XDP. In this case, we can't use sk_busy_loop() for both
-rx path and tx path, as we need to wake different NAPI instance.
-
-> 
-> Second, can this problem happen for any other NIC or is it purely 
-> an artifact of virtio's delayed Tx completion handling?
-
-According to my analysis, only virtio-net and ICSSG driver have
-split NAPI for AF_XDP. I don't have a ICSSG nic, but the codex tell
-me that it does have the same problem.
-
-I'm not sure if it is a good idea to introduce the sk_tx_busy_loop().
-Maybe we can modify the driver instead by using the same NAPI
-for both data sending and receiving, just like others do. The
-advantage of introduce sk_tx_busy_loop() is that we can split the
-data sending and receiving, which maybe more efficient.
-
-> 
-> Third, this series does not apply.
-
-Ah, I'll rebase this series if a V2 is acceptable.
-
-Thanks!
-Menglong Dong
-
-> 
-> 
-
-
-
+-- 
+2.43.0
 
