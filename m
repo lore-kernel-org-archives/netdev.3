@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22AD93B42F1;
-	Mon, 15 Jun 2026 19:50:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DCA83B530D
+	for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 19:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781553036; cv=none; b=RwsueROciueLGfb6f1eueSVV3/DM3az60cqUy1mbDflRGk74eR/W+PyCnEPwfqkeCTeiiUSeJ4qHWx68kvLWg2GGjTuK+hKKup1L0iBT2emennY1xHQbq1DVgoygvS7AYgarauFhO0bjBN+ZCq17RVbT3j7pxzB+Hi8kaxYZiF8=
+	t=1781553037; cv=none; b=QIIQRVENFjwbWdwM3cLS2aoVKMs+u1XkhGTwD6ftCpz07S43ZtkKl7dWYSYlKHAR+Iy1NeeCroArTrrlrHPWyAh88WjG5+3B9uIqNSST38MRfHmPDr0odG8gsQdNgkVaCWUVqI7EOjFYJi17/7WNJ25xsQcoOH9Vjo4rpY46NE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781553036; c=relaxed/simple;
-	bh=EUFDYhrFJESAeO8mrJmNZcwzqnKAa8kBWCA473BPdZQ=;
+	s=arc-20240116; t=1781553037; c=relaxed/simple;
+	bh=26TukVbLG29rKT/ZGTbe03pFiFw9n88YYkgOf86J+0U=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=jeovjTpb4ggP7zExRCosmpeRrxYDTepsRyrjdJ/taPiYRnJ5zP2sf76gWyzjpYv8Y5A2XBEyuXmgdTuCv3L4MF4QcRBT/Ivu9g5u5UJUO7mJN/F5F1saKXGqhBhzvLekqI+2+9DiU//WhRxsNOmMF7K/86X+6BfvpsL7xCoEtNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kKcXZZXV; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=bz2zB+IgXlGKUxwvLws6JHsiZr7Kpj1yelV5ImwxUvkmA1efW3T7AxpXCQvBTouL0ynW9GR/m5p/lDt8JsoAepzhdPu+eI/pXnAyGwLI+WbuvV7aXlWLVw2Sgh7OqIbgqxah5hX9VtLUY88tbR0E1AS35Z5mLdYmh2i6+pYW0oE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fGUYKvVo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kKcXZZXV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 084741F00A3A;
-	Mon, 15 Jun 2026 19:50:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fGUYKvVo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82BCB1F000E9;
+	Mon, 15 Jun 2026 19:50:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781553035;
-	bh=Ywu36GF+JzT7opTbaIFg+FjRAJujNHtYpeGS/esxG68=;
+	s=k20260515; t=1781553036;
+	bh=Y9XOi9qTrmbwbiT8v+AtP/gm0n9V1iHHZRKPg8j/3K4=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=kKcXZZXVk3SFxN41+tue3AjtTdQ33aKanaT8NIhs22f14XZNHP8kd+ZDPwocg4R+P
-	 ZX48ITRVuqn0UBdyTBGssmyMJ9S6bVFmlI5I18HAdOJZgGQY7daJo2WRkyi4O6kIlw
-	 qfnowwZLsPvrgfuvPst4aa0qKJ/lnB37Tt/9uW3S8Sx7E9nQt/JYqvfb3QisVGwXs1
-	 4x6c208vwPKERl/BQGyStjZ04nxKyUjjnL+lJCLrHz/9V5kb8ozX/C8HOv+Rk/AzF4
-	 QBhR6Cohb9hyd96OGe1xzAV6Z68hbwjumPwo7QWlZSi21jdYcbAtAdvFcTjiroHBjl
-	 Inb06L0dubryg==
+	b=fGUYKvVoayRxwytGWq6Z4+FtcJawYR18i82H38zDVJ2LPaUiaK7DOy2GmAFTl6Q+o
+	 NLlvwxe9ZvZWZiX+BpQOTqGWcgpjWDtd1VgljcQGPaJ81xPDO/pSG1HZUoU1EDOLGT
+	 xlgbW8bc+4eBPOLHYkkqBFZcptSZaxmAMFJTYOxG411PI895MIrXmStSrYq9r8o8VF
+	 HPn4FEd4A15vh0vQjv0iZRSwX9lXpII68oI55nAjTicUrKNtvv5KrqWto5BEAOZUru
+	 47u8qGsQYiKcuWXqN0spjD+D12spCwEzyzEb03tTtvuvG9mk+a3p0/hfsoVRok42u8
+	 nG3X3oBw93YLw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 569303839A06;
-	Mon, 15 Jun 2026 19:50:31 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0A0B3839A06;
+	Mon, 15 Jun 2026 19:50:32 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,49 +37,47 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2 0/5] devlink: Warn on resource ID collision
- with
- PARENT_TOP
+Subject: Re: [PATCH v1 net-next 0/5] ipv4: fib: Remove RTNL in
+ fib_net_exit_batch().
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178155302988.269508.8987903722532704224.git-patchwork-notify@kernel.org>
-Date: Mon, 15 Jun 2026 19:50:29 +0000
-References: <20260611070856.889700-1-mmyangfl@gmail.com>
-In-Reply-To: <20260611070856.889700-1-mmyangfl@gmail.com>
-To: David Yang <mmyangfl@gmail.com>
-Cc: netdev@vger.kernel.org, florian.fainelli@broadcom.com,
- jonas.gorski@gmail.com, andrew@lunn.ch, olteanv@gmail.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- kurt@linutronix.de, jiri@resnulli.us, horms@kernel.org,
- linux-kernel@vger.kernel.org
+ <178155303138.269508.18385193981213232628.git-patchwork-notify@kernel.org>
+Date: Mon, 15 Jun 2026 19:50:31 +0000
+References: <20260612063225.455191-1-kuniyu@google.com>
+In-Reply-To: <20260612063225.455191-1-kuniyu@google.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ kuni1840@gmail.com, netdev@vger.kernel.org
 
 Hello:
 
 This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 11 Jun 2026 15:08:46 +0800 you wrote:
-> Filter out the ambiguous case of
+On Fri, 12 Jun 2026 06:32:03 +0000 you wrote:
+> Currently, we flush all IPv4 routes at ->exit_batch() during
+> netns dismantle, which requires an extra RTNL.
 > 
-> enum {
->     MY_RESOURCE_ID_A,  /* == DEVLINK_RESOURCE_ID_PARENT_TOP ! */
->     MY_RESOURCE_ID_B,
->     ...
-> };
+> IPv4 routes are not added from the fast path unlike IPv6, so
+> we can flush routes before default_device_exit_batch().
+> 
+> However, there is implicit ordering between ip_fib_net_exit()
+> and default_device_exit_batch().
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v2,1/5] net: dsa: dsa_loop: avoid devlink resource IDs collision with PARENT_TOP
-    https://git.kernel.org/netdev/net-next/c/b2772157e5ae
-  - [net-next,v2,2/5] net: dsa: b53: avoid devlink resource IDs collision with PARENT_TOP
-    https://git.kernel.org/netdev/net-next/c/89ccbd3fe837
-  - [net-next,v2,3/5] net: dsa: hellcreek: avoid devlink resource IDs collision with PARENT_TOP
-    https://git.kernel.org/netdev/net-next/c/31d2b61ba2cc
-  - [net-next,v2,4/5] net: dsa: mv88e6xxx: Avoid devlink resource IDs collision with PARENT_TOP
-    https://git.kernel.org/netdev/net-next/c/bfdf01f4d161
-  - [net-next,v2,5/5] devlink: Warn on resource ID collision with PARENT_TOP
-    https://git.kernel.org/netdev/net-next/c/f1e13d23e0c8
+  - [v1,net-next,1/5] ipv4: fib: Flush all fib_info in fib_table_flush() during netns dismantle.
+    https://git.kernel.org/netdev/net-next/c/64587e936b65
+  - [v1,net-next,2/5] ipv4: fib: Call fib_proc_exit() and nl_fib_lookup_exit() at ->pre_exit().
+    https://git.kernel.org/netdev/net-next/c/c993bd0102aa
+  - [v1,net-next,3/5] ipv4: fib: Free net->ipv4.{fib_table_hash,notifier_ops} without RTNL.
+    https://git.kernel.org/netdev/net-next/c/49374d87e839
+  - [v1,net-next,4/5] ipv4: fib: Avoid calling fib_trie_table() in fib_new_table() for dying net.
+    https://git.kernel.org/netdev/net-next/c/5a7fef12d931
+  - [v1,net-next,5/5] ipv4: fib: Convert fib_net_exit_batch() to ->exit_rtnl().
+    https://git.kernel.org/netdev/net-next/c/759923cf03b0
 
 You are awesome, thank you!
 -- 
