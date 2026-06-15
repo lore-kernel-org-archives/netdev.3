@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A5A3A7D91;
-	Mon, 15 Jun 2026 21:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B573AE706;
+	Mon, 15 Jun 2026 21:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781558443; cv=none; b=u9VRrGoWY3LjvoE8FVNQQ1pvHllszpdHUwiqljp/ai52SldO0pLhlaJpUEqNnPUpszi6c7y/brUtMuP83+kb3RyWlKPvdLXqLkJ4FtWSpHJr5t2piLR7ULDu0dA2vAUCRxkKB2HWeIr6o0Dfd9awzF3v4a6ay3NJss7ndE8Qgeg=
+	t=1781558445; cv=none; b=ax/yt2FscerHuP+J82hNjVuvEA+TkWHnWKTJ8zu4T/tC/ze03zev90nSSIFwJvK+/edUAKaMeKl/gxAg9u0xlVJ9fLcWtiv6IgP0o68U7eBJ1+YpPg0ssb1FmK3DnaBv7pLKmo/VDinE7P5d9BJbGau3gWaSWfV2QRHue+y1sqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781558443; c=relaxed/simple;
-	bh=6SFZ1Z8FWmFOFN0+EapHzJIpEVt9aMs8514PT78fDu0=;
+	s=arc-20240116; t=1781558445; c=relaxed/simple;
+	bh=lwMiZA0PVhBjGIxlXjCZxvblaO57+GTOMoT0+3bOXYk=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=QgMbxRcfIK4C+phaTM6n9rwCwiJF/tK8N6zDHBf2rIznQSiW/hRW71jmAuCzRaZOd0sYDqadVkvX4z3J/OB9Dkgkod6ymfkXY1gPLmBoAEvWMaLxrVRl9XFS2js63nZ6PCByfNeiknCCtPLMHHF54BBVLUyxKJ3hyRPGSEPtYSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P5SMW8he; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=Ba8pMkBTuyjixGossZ9/C0F7lacMHUr0FuokgyFeSFHj87TEb5EfXd9v/m63TV+fgMYJwCaXbl02mPin2sez/yZGCdsxLdn/FK8POKwRiKMzQqt/6AttC71f2hCwTkvrZH2oY2epLBRPw9S/FnUVJ7GIyjbn+2FqzxYEWDjuwvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oynQtO5x; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P5SMW8he"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ADD21F000E9;
-	Mon, 15 Jun 2026 21:20:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oynQtO5x"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10DA91F000E9;
+	Mon, 15 Jun 2026 21:20:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781558442;
-	bh=hIklq/7rHscenEH8VHGYyl23zXN1GT6gbEWhbckp1hM=;
+	s=k20260515; t=1781558444;
+	bh=s4Qbe+W/lEvK6Mb1Mos7N4Qvk6t3oGI2t9y8rUkD/XA=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=P5SMW8hewF1NtC5pAYHdm1xzzkXhYCk0f1jGU5vAtyy9par8dUBfggGrG5xG9vbtN
-	 toBVaUTaoXB+YUqLeplsUwp+bECqA263Y63q2p9cGW34ittCcJEInFWv+BUHbtR1xA
-	 8yyvovVOY96MXkK/qrkuTsuSvkfFFaISzIeKS6y1uTgPbLBWKoHgjhlioY2tqOhFLY
-	 vr+WyUkC6eu734C5RX4pM2//s8Ur3m8HGUJQ1DAOMtjKZtF4TfY3/8McaCn2pkeZGL
-	 t2p0imHGTdLyir/nh7waEK/EvnNf5YoO2HFN2MBdZrfJYY6TgIWlFbmkdkGGW/HP54
-	 m3uFR8hwB37UQ==
+	b=oynQtO5xh6fJq+YqFbWHP0xv0JbM2DWEBGyZ9ApAfObzRgmDsH2xBIeKQ2/+l/JEZ
+	 QDzaGu2OthSeJoxg6bqaXS+Ps5t0kclI5sp9yk2GjAC/BFH5hJNzVjpMXA/l/gQe6/
+	 E2oT9leJIVJeXOdmQE4JAE9eY4cvAcK/ro5VAwMUWQO0tt87M8jN9iUPCulKWy2K0M
+	 jbbKtqfZ/hp1U7lfGchpL2iv0LbiVPwLxVhkm4NduG2l8vGbXWmaj+VONRgJxd1QJd
+	 2ZARBdCloyA6HkHESJxDYHnN/og96hthXHSrlDYAd1y6xFVtGfBEfP2sNRWygSweZ4
+	 KnqTo8+44MPRw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D097F3839A06;
-	Mon, 15 Jun 2026 21:20:38 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568B33839A06;
+	Mon, 15 Jun 2026 21:20:40 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v11 0/2] net: sfp: extend SMBus support
+Subject: Re: [PATCH net-next] selftests/net/openvswitch: add SET action test
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178155843738.301119.9459899533729939488.git-patchwork-notify@kernel.org>
-Date: Mon, 15 Jun 2026 21:20:37 +0000
-References: <20260614133418.2068201-1-jelonek.jonas@gmail.com>
-In-Reply-To: <20260614133418.2068201-1-jelonek.jonas@gmail.com>
-To: Jonas Jelonek <jelonek.jonas@gmail.com>
-Cc: linux@armlinux.org.uk, andrew@lunn.ch, hkallweit1@gmail.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- maxime.chevallier@bootlin.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, bjorn@mork.no, horms@kernel.org
+ <178155843888.301119.8263394079175828047.git-patchwork-notify@kernel.org>
+Date: Mon, 15 Jun 2026 21:20:38 +0000
+References: <20260612130503.311240-1-houminxi@gmail.com>
+In-Reply-To: <20260612130503.311240-1-houminxi@gmail.com>
+To: Minxi Hou <houminxi@gmail.com>
+Cc: netdev@vger.kernel.org, aconole@redhat.com, echaudro@redhat.com,
+ i.maximets@ovn.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
+ dev@openvswitch.org, linux-kselftest@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sun, 14 Jun 2026 13:34:16 +0000 you wrote:
-> Today, the SFP driver only drives I2C adapters that advertise full
-> I2C_FUNC_I2C, or SMBus-only adapters via single-byte transfers (with
-> hwmon disabled). Several SoCs ship I2C/SMBus-only controllers that
-> support more than just byte access -- e.g. word and I2C block -- and
-> have SFP cages wired to them. Today, those adapters either work
-> poorly or not at all.
+On Fri, 12 Jun 2026 21:05:03 +0800 you wrote:
+> Add test_action_set exercising OVS_ACTION_ATTR_SET with an ipv4 dst
+> rewrite. The test verifies the SET action in three steps: first
+> confirm normal forwarding, then apply set(ipv4(dst=10.0.0.99)) to
+> rewrite the destination to an address nobody owns and verify ping
+> fails, then restore normal forwarding and verify connectivity
+> recovers.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v11,1/2] net: sfp: apply I2C adapter quirks to limit block size
-    https://git.kernel.org/netdev/net-next/c/f2a138abfb71
-  - [net-next,v11,2/2] net: sfp: extend SMBus support
-    https://git.kernel.org/netdev/net-next/c/58b29bdf6186
+  - [net-next] selftests/net/openvswitch: add SET action test
+    https://git.kernel.org/netdev/net-next/c/3b165c2a29cf
 
 You are awesome, thank you!
 -- 
