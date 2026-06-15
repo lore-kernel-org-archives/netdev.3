@@ -1,111 +1,120 @@
-Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD5B3253958;
-	Mon, 15 Jun 2026 22:24:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E27783B71CD;
+	Mon, 15 Jun 2026 22:29:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781562254; cv=none; b=TAHZITrNZW8cCjXkJJ0r9DZH5HFC69Wfc+e+YJ2EwN3zgyf8Fc0kXDNT/OINpb/pLGr08DI6lGgwuRSB6grNdDY2I57R5InRoHvmYH3TLU4NyEK4X3mPFPBcx50XauHi+m2IsDQHYdzUYJYx2MsX0+IHt+ZRq1bqtVPVfON/egU=
+	t=1781562580; cv=none; b=aB76bYya7LzOWE4KZnCz455g8t9h/77iCSKaeBXD5cKcbDcHaTEwZyhv9ul5lHIRmsF7t97+6PMA/iHyaQ1pLuTw9kqtyyYVcwm1OAgk0b0SUqRAG5Dc8E86VD1hr22UpawJP/VP2I/4lZWfeVDe0p73gHL7gOYsejw6X7aP0p4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781562254; c=relaxed/simple;
-	bh=Ck6oW+UV6WWpELEiwLGD3DMzFlKYRT7AuvIE5fJxano=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z5rKr9RbpcHK/7+k8aenD33uFjPEl5PAvrMdYPtwPAd4v/PCn6WB3mg3WEwptjbsjK/IsDJgjFX6glL4rVr75kwlJuKjYA0yjc9upFSjkOK1rjYJ1qjLmH11lTKV9iDBVCSgl6INDNATydqE9sj8jO7phlGERodtpiZKKGGGzqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=MWmVgEvt; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=AliQLUpt; arc=none smtp.client-ip=103.168.172.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	s=arc-20240116; t=1781562580; c=relaxed/simple;
+	bh=xjxmNjXcUMlhc/D7hgaOfAdUFh2+r6FSs83MmHaOjzk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TV9PDxS1en+N/BDmBss+R97nkp2HY2YNbzkkODCkNdmFynikor+OVi20DKeOMKFaswUsaAFGO+OTqFeExNZ1+nn/oUO7d0tVL665Tvir5akPsQ2k1MYYJEiyXjNgdOXCjX17ui51fT/lnXd/Yflgbr0JM9kbMilpL4d1no3XbuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n+SMgU71; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="MWmVgEvt";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="AliQLUpt"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.phl.internal (Postfix) with ESMTP id E5793EC0184;
-	Mon, 15 Jun 2026 18:24:11 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Mon, 15 Jun 2026 18:24:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1781562251; x=
-	1781648651; bh=vTb+Ifos7RekvApIv68Ss6RZwt/Fqz7M8khzu9TWQH4=; b=M
-	WmVgEvtt1O+6xUQHW42k6U/PdLH48pzAiGVBazVW6SBXilkfA/ba6vSWB5vv8ddZ
-	Nk8r2QEJLXJqqkPYF3ucak3LYCJfx6/jf/Inu5kZH2c/GWY3FA/OC/hdld6ET0No
-	E+bHX0N0buwm4iWMoEKjNxhuKZJcsu3O5O9pB2I7w4FIxVe4IR43kP9fIkP/SbCh
-	dI0qTTSyI5oH4FPtvgsbCVYIT57krOUInYEjHV1B72IKHWBR6+o7/atJLqZqHZvh
-	tqvzPXKPZzYbiW93Q3ByERS6xlp57eBLM3s2KDplsj4QgYM7RI3qxKdoGHNlLYzU
-	qY/yRzLXvIQ6jIh2gs5jw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1781562251; x=1781648651; bh=vTb+Ifos7RekvApIv68Ss6RZwt/Fqz7M8kh
-	zu9TWQH4=; b=AliQLUptKEjpKdSA6lNP7XNotAa+Bsey4mNQLvLvWxG/TLCWhGd
-	ZdUP/ziFtjuCZLqDTYyIE65Jjgh4YlrYL+V8gqUatmUFNx5voJpS5J+o8QgkoZLD
-	vqM7l07T8yRbXgOT8kd+hQpO7LrmlOvCkDEY/ae2O9zAbkNYeseYnm/csLg1GWlE
-	yk/Ra8AK7btWkvTSa8bCWiBLCka6Xppa4LJSsMvzsk64EV852lzeXbcoHIN8ESsX
-	UEZGWOlM9TcgxP17IpQTw46c+MIDfUEXjlIaIQcPYUJg4i1sU2BbOc0ZDIemLJNi
-	406Ni8155aMfWPSdG9HPZ/48QiSr/Etq7mA==
-X-ME-Sender: <xms:i3swak3G17vKdUgnYSKKbbCjrB0-3oqlwSypYHT5W4OT7Aed84iX2A>
-    <xme:i3swagrasp4iL5hu6s0B8CxImpurJlx77k0QYNAaszm_26vRRXSUom3_ibU_zkuaG
-    TYwDuU4ghOR-bwo5tqMR6B1F8zFZcRXLoiLxglpDwioemJcNnsb9dI>
-X-ME-Received: <xmr:i3swasJozjU1LnzbuEBudqaA_I8REYfSn-6_aM0mH_neWLiIDJeyJS_38Q_sxL9w0uZi8KUdmIiPKa18Y2y4QFU>
-X-ME-Proxy-Cause: dmFkZTGcC0OyF7QcL8zHSJPvYuC/f2eOMXgRz+jax2sxEVGQFMgdPdSHImiIbtpQza1Hhe
-    zANnl3bNLbt8BSu5Q86oZDgYVHPTxgmFpX04+rdi4XU9c3+/1oRsFAjFfYuJpv4691xr9+
-    xEG+Bp7OX3soPs8ay4FOR+vzQJnI8hzjuMa3AQ7eIEjquN5Pzad/StkaL+0wdYiIdajWFw
-    oS69uf6rJvqDtYuV0a1TOfgTx6hCboyb+LCV2e6mPYpdlRIuwKBbPFAK9VQRlAYGVazIUA
-    qjZpFRuyhdq4B2jT2LsGISNZ2gpdga2V7lD0gWlhsEaMjCtI1XPvCQabgGg1nL+uUaR1G9
-    tSeY8E+AlvxPJbvacUVhCZWZtndR8WispB1FmzT2Nh15Lr13i/1BdQHS0xmJyX25tplGZf
-    Rl7ZwWWgK4u1J8uUxHWVHam1rBlR/X/rhzL+hsQu9QzhdcAgwYaGCyZNtwt/PNwEKCcqQQ
-    QTeowr55N+7YnPBb4W+uYOA2S9M3n1X8fg7nFC/1K/R9wMBVDghoEZhy9L+XfZZZybxDf2
-    B8whAOSlOZpDeqLCkKNr920ZYUAGq1UPMuY2MVlRsGSBQTpBh+3t1m5Iq/6z5lYDOi3xcw
-    Fh9u6N3E5FRu7ZyRvGfv5dVqLTrd3nHVo1X7KzbxHBXOV5rB7wNw8U4UKTCw
-X-ME-Proxy: <xmx:i3swakS411SLZQNvWUmqVMOvyoVFp5NwJAvG60MntzwGnF-Dl1mcBw>
-    <xmx:i3swasOar4-fRnlu927JQgIneHuW-lx4uyV1G69lQ6b7OpZtrDRmjA>
-    <xmx:i3swapWV_gr2rK41ffylk27CQH-CfiDS5f4Gh4Si9lePXHJjMV9kpQ>
-    <xmx:i3swavivFQF_eedquDaaE752ZxA9ar2XjiJMtXb04Y97QUMTF4AzIw>
-    <xmx:i3swalqT8HsyjS_85wiYkBvPOXiA5LZH96f5_ubCY3Y8RA2Qo7Ug4xZe>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 15 Jun 2026 18:24:10 -0400 (EDT)
-Date: Tue, 16 Jun 2026 00:24:09 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
-	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
-	corbet@lwn.net, linux-doc@vger.kernel.org, john.fastabend@gmail.com,
-	jiri@resnulli.us, skhan@linuxfoundation.org
-Subject: Re: [PATCH net-next v2 1/3] docs: net: tls-offload: document
- tls_dev_del, tls_dev_resync, and rekey
-Message-ID: <ajB7iZQfwX2fnw9K@krikkit>
-References: <20260613165846.2913092-1-kuba@kernel.org>
- <20260613165846.2913092-2-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n+SMgU71"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD22D1F000E9;
+	Mon, 15 Jun 2026 22:29:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781562579;
+	bh=jlQPGxguRWI9qpH8iTo7hAEJVXsf499qSnGcNlAN4u4=;
+	h=From:To:Cc:Subject:Date;
+	b=n+SMgU71YsGGMv6moPGk4CQZF8N2L8grY3o1ZPaYpPXUyvwZ0VTr9qxnXviqgdWRP
+	 gNJDjpfVWAKQwvqzKBPVHqdynuXXf01jNTycOmituSFzxVvL/GGXEmFBUi1aboeyq4
+	 HX8Cd3SkqEzCqCtWfgLqu5LwuLOS+pVfn9t6S0kzSQlh+9H1IEWuMH78I8AVKR8qXD
+	 rIsDHILdPs8R+Y1sjcAh7QUz0m1Cnxg7pYbAEjX4HB59l3nUU/sgbUuEV6+Tu74Kkf
+	 0heByX00Kl5cC8OCGETsi+QB5HLC+7Ti8ZRrl8wHJaHlmh7e4iS0BqvmaKtxnhQaC0
+	 Qzysy9WcmjHlQ==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	geert@linux-m68k.org,
+	chleroy@kernel.org,
+	npiggin@gmail.com,
+	mpe@ellerman.id.au,
+	maddy@linux.ibm.com,
+	linux-mips@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org,
+	linuxppc-dev@lists.ozlabs.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH net-next 0/2] appletalk: move the protocol out of tree
+Date: Mon, 15 Jun 2026 15:29:33 -0700
+Message-ID: <20260615222935.947233-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260613165846.2913092-2-kuba@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-2026-06-13, 09:58:44 -0700, Jakub Kicinski wrote:
-> Fill in some gaps in the TLS offload doc:
-> 
-> - describe the tls_dev_del and tls_dev_resync callbacks
-> - add a mention of rekeying being out of scope for now
-> 
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
-> v2:
->  - add mentions of the callback in resync text
+This tiny series moves appletalk out of tree, to:
 
-Thanks!
+  https://github.com/linux-netdev/mod-orphan
 
->  - Stack -> The stack
-> v1: https://lore.kernel.org/20260609201224.1191391-1-kuba@kernel.org
+Core maintainainers are unable to keep up with the rate of security
+bug reports and fixes. Nobody seems to care about appletalk enough
+to review the patches.
 
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+As Eric pointed out Mac OS dropped AppleTalk over a decade ago.
+
+Jakub Kicinski (2):
+  appletalk: stop storing per-interface state in struct net_device
+  appletalk: move the protocol out of tree
+
+ MAINTAINERS                                   |    5 +-
+ Documentation/admin-guide/sysctl/net.rst      |   46 +-
+ .../networking/net_cachelines/net_device.rst  |    1 -
+ net/Kconfig                                   |    1 -
+ net/appletalk/Kconfig                         |   30 -
+ net/802/Makefile                              |    1 -
+ net/Makefile                                  |    1 -
+ net/appletalk/Makefile                        |   10 -
+ include/linux/atalk.h                         |  186 --
+ include/linux/netdevice.h                     |    4 -
+ net/appletalk/aarp.c                          | 1041 ---------
+ net/appletalk/atalk_proc.c                    |  242 --
+ net/appletalk/ddp.c                           | 2017 -----------------
+ net/appletalk/sysctl_net_atalk.c              |   58 -
+ arch/arm/configs/ixp4xx_defconfig             |    1 -
+ arch/m68k/configs/amiga_defconfig             |    1 -
+ arch/m68k/configs/apollo_defconfig            |    1 -
+ arch/m68k/configs/atari_defconfig             |    1 -
+ arch/m68k/configs/bvme6000_defconfig          |    1 -
+ arch/m68k/configs/hp300_defconfig             |    1 -
+ arch/m68k/configs/mac_defconfig               |    1 -
+ arch/m68k/configs/multi_defconfig             |    1 -
+ arch/m68k/configs/mvme147_defconfig           |    1 -
+ arch/m68k/configs/mvme16x_defconfig           |    1 -
+ arch/m68k/configs/q40_defconfig               |    1 -
+ arch/m68k/configs/sun3_defconfig              |    1 -
+ arch/m68k/configs/sun3x_defconfig             |    1 -
+ arch/mips/configs/gpr_defconfig               |    1 -
+ arch/mips/configs/malta_defconfig             |    1 -
+ arch/mips/configs/malta_kvm_defconfig         |    1 -
+ arch/mips/configs/malta_qemu_32r6_defconfig   |    1 -
+ arch/mips/configs/maltaaprp_defconfig         |    1 -
+ arch/mips/configs/maltasmvp_defconfig         |    1 -
+ arch/mips/configs/maltasmvp_eva_defconfig     |    1 -
+ arch/mips/configs/maltaup_defconfig           |    1 -
+ arch/mips/configs/maltaup_xpa_defconfig       |    1 -
+ arch/mips/configs/mtx1_defconfig              |    1 -
+ arch/powerpc/configs/ppc6xx_defconfig         |    1 -
+ arch/sh/configs/landisk_defconfig             |    1 -
+ 39 files changed, 3 insertions(+), 3665 deletions(-)
+ delete mode 100644 net/appletalk/Kconfig
+ delete mode 100644 net/appletalk/Makefile
+ delete mode 100644 include/linux/atalk.h
+ delete mode 100644 net/appletalk/aarp.c
+ delete mode 100644 net/appletalk/atalk_proc.c
+ delete mode 100644 net/appletalk/ddp.c
+ delete mode 100644 net/appletalk/sysctl_net_atalk.c
 
 -- 
-Sabrina
+2.54.0
+
