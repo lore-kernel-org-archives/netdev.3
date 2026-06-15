@@ -1,76 +1,134 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC00440F8C5;
-	Mon, 15 Jun 2026 16:54:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781542444; cv=none; b=fcAdwTdfKC68EPphqiJPjyQQAMA0mH7TF3nRT9fqnAdsEiaEyi1y99ctc50JCe5ngVsTcC1ueIC8n8XDxDhUA7kRF972Y0QN1LMVnzZalSlzrsitS7QQf21KPfFRqw+LB2mnTvu9lzTW0AU8JMLrbAi7hS6H4OF/kGp+Tijsbz8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781542444; c=relaxed/simple;
-	bh=uaptR4eB/ksjA8/Crygio18xgxXnoIhbgU+ERQEvnRY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E9xADFLjzU/o7OPP7SGHEuB40OMFTS6cI11oeUWBxE0MnzwCmc0RmjVFMWc633UpbqZNi13mpLn8xT3d6/DzzpTHY+Ft4hPv9+7jRWYfIJjT/QJCn6DJ032Fq1HD7MIP/yMHBdmTqsyfSV5/ycgsZaH4ta/21ddfmf71hm4luOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kXE4LLhy; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51C0B411695
+	for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 16:54:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781542454; cv=pass; b=mY1yFlVJUiQ/Rlhc++dHXTlFNUS9LWepzjYTA+UJqoFl1BgYRgJ8n6tWVawm+TIExnGoip7oDguUWBVHSYR+NIompcvPGQUrLQhgUElXn/ap68PQrajo8dNog021Tg1av2XIlSLO1So8MHBZO30QMv7hwqqNjuEvx3cfdEPRRLI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781542454; c=relaxed/simple;
+	bh=zEwHvDF/Oi5KrPI8PZGGTgCBVKgki0dlIsLL4ZGwkRE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pi5mr8yahSHvvqK3h5xZJP0owMNL2hPubNSCZrgCOo40lg7O8BmN4AtRqLi87zL7etlxExYtF88Yak1A7In9739KN/4EQACZUTshcYILEz6ESZFSVlw5qD/vwheBs6msTALQWYHL4D9iUfkl0gfs/DxgBeytTe2ifbmloqWgBdo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pnPimeq3; arc=pass smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kXE4LLhy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38B1E1F000E9;
-	Mon, 15 Jun 2026 16:54:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781542443;
-	bh=c7VLpTjiJlPakzgidAeJWFZIvAEOGJqmv9AoRpZJbBA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=kXE4LLhyWtex2w1o3Y41tplzjao1nvvTI72/KjlE6bHni7vXnToVnpVilqYDDx8F4
-	 L+CY8m29jNCP+2TAEmeAcbJZQyjts64yCdPMC5oHJI0xqJgRxgViiDvmEv0lyRNSML
-	 eJjEAGI0qEkjRFO3Ic8FammvCBS2lM+6EjpnqlnMJO9sO9A7KhnV3QbYmQqh1bJGVg
-	 iubgo3QFBIFUWHP32XZZYDMgqP4lc6dlLJ3tKbUMfIDLr3GM6ytmqMg8857MzNWQ59
-	 khaT+5Rt086Klxfy76Hs/mGc6S0WBXcULigcTPOgU9Y7DtiCCyelmKQ5lvHCZUsR6q
-	 2JoyeCW/NvVfw==
-Date: Mon, 15 Jun 2026 09:54:01 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Cedric Jehasse <cedric.jehasse@gmail.com>
-Cc: Cedric Jehasse via B4 Relay
- <devnull+cedric.jehasse.luminex.be@kernel.org>, cedric.jehasse@luminex.be,
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, "David
- S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Russell King
- <linux@armlinux.org.uk>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Luke Howard <lukeh@padl.com>, Marek
- =?UTF-8?B?QmVow7pu?= <kabel@kernel.org>
-Subject: Re: [PATCH net-next v7 2/2] net: dsa: mv88e6xxx: add support for
- credit based shaper
-Message-ID: <20260615095401.4be9706c@kernel.org>
-In-Reply-To: <4dvydmir7hw4zhfrxonjuu4l7as6hma5yg4iuv3vgoqed7zai6@knkmyvh4sa54>
-References: <20260609-net-next-mv88e6xxx-cbs-v7-0-7d5d732df545@luminex.be>
-	<20260609-net-next-mv88e6xxx-cbs-v7-2-7d5d732df545@luminex.be>
-	<20260612153656.4c5b8c62@kernel.org>
-	<4dvydmir7hw4zhfrxonjuu4l7as6hma5yg4iuv3vgoqed7zai6@knkmyvh4sa54>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pnPimeq3"
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-5177ad0cc67so30798031cf.0
+        for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 09:54:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781542452; cv=none;
+        d=google.com; s=arc-20240605;
+        b=dpAf1+PsVh06l/r+JiN+NI3w0iU9a+Ohr+FRDGzbds35V/tgXLkMT1YYUMMNCW2t6p
+         yOBUmHpoH11vlAVt7s8d9ZjNDySve0OMLbFOMxTELZ79JRsJOEktQaCLS5lnxXczqMP/
+         cVvTELfP8PaufzFSShjU/YoouNhD65LGMyhvwUoqxLlrxpcoDZOQgN4h57Mh+zqnFxtS
+         AjVvr9yMKhMa1jNQ1ljGXkedWy8q2SHIqZk4ldYZRHlbPScV45a7yhd+e4M1sVvAWTHU
+         iNH1oNmxv6sIm+0GKm34QihJyKxfb9TYiab6v6s9gVhwfeunvxj+XvdDa/pjqI63WRwW
+         NwDA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=mywi67azb0tF9mzCm0wSWcis576R5CWVcMnbNHwMBko=;
+        fh=2v+NdO+A9yLCsEo4b/bwyvlCHrOU3gpbpPGMZaLC7kk=;
+        b=MpDXuXE6n666TG+yoE6SpMct2EAav4aJeaa+35nsA6TiiZnHIz6ktc3uqFEkBSMoSJ
+         Lk1NzB32YjVA0fZkvhTOV/tYXFGLrLfHIABnKjovtrEB2mknoUBkgdv89okmIr9IblVr
+         3EJJwxM3HS7M3U1AbLxIWZbzay+t2oojW9yJkwhwop0J+hd/O+Jn0Hfa2DmuPBohrzhI
+         ORaazoDXm2hWVbg4ooDqSwDV3M9+esFQS/jvtMZFagYHbc4woy+wqw67ZrNcee2X3TiB
+         UE9ylGXRA9Rd/gy1ukeq8nxSIC+fRwvdwgtWnZemi3rh2blkvDmfAkTrCWEu/KnQX5OI
+         keaA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781542452; x=1782147252; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mywi67azb0tF9mzCm0wSWcis576R5CWVcMnbNHwMBko=;
+        b=pnPimeq3PasLW2m/m2aPTBBuHtxjcV2Hijm+v89CPObPUDJBq9cRNcjd3WjM7p6z/H
+         pn2K90CX+0tYvf9DWCdkeSWKS3xiU7tTesxW9ZRokRcTIp9ia27Or0oBOWhafGjwD6By
+         ns0tDASzGDGDTvko3cTiyp0vf9zwhzd5sMf6oFcxBKA+QYKch1W2EjbkxcXSlO1ByStb
+         4RXtW0PFrt9tVvtZ5rq5XH9gZX/klKTTbn2IXn9KFByyFkof5IA5FbePDX/WsEncnTvU
+         mhcvDE00cWvt07YOjy9V8eYPfgNyj5qAhWV60iN46Iw1TV0kX8y1HXjfl9K4QvGNLa+t
+         Dhfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781542452; x=1782147252;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=mywi67azb0tF9mzCm0wSWcis576R5CWVcMnbNHwMBko=;
+        b=ixn7fimho0QMlXjIOkTntC/mH3uO20AeXWOVixYbuyxq4VtoiPTm8L0/On9R+RKpFY
+         dJccfyWWk/2V0UBjymc+j46GcXhouGcqQsQbGnipwDU6M8mVB6TUtGf7shIAjHVuKTeS
+         b07PqLhEl7TdIh30LceqPMJrWuOQorL+VygU2wADhkwibbNoQ+xdKkiIDow3jZaX1u3n
+         X+wlS98rtW9IxcMjk0b/vl5seHw+1WHtYVyvqwsV6vqTDIKHypcn+QuDzFNRngLCBXAd
+         qkNGSJAguxXytdwFKf6cdgB8nPqLECkVZmM8sR0ENld+5sf0B5Gfqz04m78pElTMFDmj
+         6mBg==
+X-Gm-Message-State: AOJu0YxgMjDPYHau4u0wB/QcEG74rbVtObzMuefIXfvJvCAc70onIy9q
+	RamU/BFR5vh292GZe3nh0HZ64t4jqLSc+z+ia6Ax0INvEcuAC8dyg/PERlhN5Cc978XX3jGpVLz
+	4l4Zjr1kGHG2oSkJhyMMJe5HYn4dl4J2+B+8u9cvX
+X-Gm-Gg: Acq92OEK4IFNgp5W+4YWh1i9nDQbH46vePetlijv+xz2ZtNfXfI4dMDYhJq1q2qG/eC
+	qVlwFvctBbw+A+a3w73LI2fn2xf3V6k1k5rqDEwDbvpx1zwSFX8kDzzjpA5IIUWVaNTjxCvFkaH
+	flDsryQeEaBB5RLf4xRz0Q9jS+DbYwwfXtT4vDzmJy6aTknibkKw0jcIt7/a/bfFzv3bIbiNqL5
+	zAzaPWljZlyKe27VH2B0yxl82E9df9X/X7wJcFtdBFMrfcJY+ZwzVK1tQZKPNP9am4r75k9ghH2
+	15KQv4e7L4Rhd79n4dwyjAerjkege19e4itg9ol+5iJ29IJ0u/IOMzoHKosu9vZFjFvZHFIjYxW
+	9txbrunDv6S+2cUb7nfvK
+X-Received: by 2002:a05:622a:607:b0:517:a02f:171a with SMTP id
+ d75a77b69052e-517fe4e576amr226669271cf.36.1781542451604; Mon, 15 Jun 2026
+ 09:54:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20260614095226.1210-1-zhaoyz24@mails.tsinghua.edu.cn>
+In-Reply-To: <20260614095226.1210-1-zhaoyz24@mails.tsinghua.edu.cn>
+From: Eric Dumazet <edumazet@google.com>
+Date: Mon, 15 Jun 2026 09:53:59 -0700
+X-Gm-Features: AVVi8Cdal2O6L20-PUAih4P0EZ9-LRL2uZJ_l9mNVqrSp_BUJSjPaDqeyqTpi_U
+Message-ID: <CANn89iLwy0tsB5wMrREnGSvmPrThyCkjHEz0hpWbCiTJSG0NCA@mail.gmail.com>
+Subject: Re: [PATCH net] appletalk: Hold socket reference in atalk_rcv()
+To: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Kees Cook <kees@kernel.org>, Kito Xu <veritas501@foxmail.com>, linux-kernel@vger.kernel.org, 
+	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>, Ao Wang <wangao@seu.edu.cn>, 
+	Xuewei Feng <fengxw06@126.com>, Qi Li <qli01@tsinghua.edu.cn>, Ke Xu <xuke@tsinghua.edu.cn>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 15 Jun 2026 16:29:34 +0200 Cedric Jehasse wrote:
-> > > +static int mv88e6xxx_setup_tc_cbs(struct dsa_switch *ds, int port,
-> > > +				  struct tc_cbs_qopt_offload *cbs)  
-> > 
-> > please stick an extack into struct tc_cbs_qopt_offload and use it to
-> > report the reason for rejection back to the user
-> 
-> Do you mean modifying cbs_enable_offload to report a driver specified reason isof
-> reportig the generic "Specified device failed to setup cbs hardware offload"?
-> What should be done for other drivers who handle TC_SETUP_QDISC_CBS, but don't
-> fill in extack? Should cbs_enable_offload fill in extack with "Specified device
-> failed to setup cbs hardware offload"?
+On Sun, Jun 14, 2026 at 2:52=E2=80=AFAM Yizhou Zhao
+<zhaoyz24@mails.tsinghua.edu.cn> wrote:
+>
+> atalk_search_socket() walks the global atalk_sockets list while holding
+> atalk_sockets_lock, but it returns the matching socket after dropping the
+> lock without taking a reference.  atalk_rcv() then passes that pointer to
+> sock_queue_rcv_skb().
+>
+> That leaves a race with close().  A concurrent atalk_release() can orphan
+> the socket, remove it from atalk_sockets, and drop the final reference vi=
+a
+> atalk_destroy_socket(), freeing the socket before atalk_rcv() queues the
+> incoming skb.
+>
+> On a KASAN-enabled kernel this can be reproduced by racing AppleTalk DDP
+> delivery on loopback against close/rebind of the destination DGRAM socket=
+:
+>
+>   BUG: KASAN: slab-use-after-free in selinux_socket_sock_rcv_skb()
+>   sk_filter_trim_cap()
+>   sock_queue_rcv_skb_reason()
+>   atalk_rcv()
+>   snap_rcv()
+>   llc_rcv()
+>
+> Take a reference on the selected socket before dropping
+> atalk_sockets_lock, and put it after sock_queue_rcv_skb() has finished.
+> This keeps the socket alive for the receive path without changing socket
+> lookup semantics.  A malformed or racing receive still drops the skb on
+> queueing failure as before.
 
-There's a "weak" version of the extack-setting macro which you can use
-to avoid overriding the driver-specified message. With that you should
-be able to set the generic error for existing switches while allowing
-your driver to provide more specific reason.
+No idea why linux still carries appletalk.
 
-BTW please note that net-next is now closed for the duration of the
-merge window.
+MacOS dropped it 20 years ago.
