@@ -1,95 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243B12FFFB5;
-	Mon, 15 Jun 2026 23:21:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA6E9253958;
+	Mon, 15 Jun 2026 23:34:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.133.4.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781565721; cv=none; b=sD/OIEPHc/soEIQvcUD1BtqU0JA64CUQztpQhSx+boCHEB+Mh3TMBRHSKEuib46YtIO1rVL3D8KFGJSBbGqy81mJ5T1teIB+N2Kr0fSNoYoWKhxdnNELpejRwNEtVS2eGHL25TKbMMHAJfG5p72ivYh0G4Dfn/o/nzGBrySbKoY=
+	t=1781566454; cv=none; b=hSbg85hkAL5/mVshb5P+N0GpiYvqsyhzkqVHVRKkIfIbK9wR8qxZwaqy93MzRkGLtPWY+4Uq6pZD45w7q4roSXeY23uE9OwzdGtoDtEzz5QI6eMBgl+X9OyaPLgHJSGlFAHHAQVNV0CGC8kp6DVpButLCOCLNMIQYRJbTPRuKxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781565721; c=relaxed/simple;
-	bh=anIGmxFrM6IOXYEJWhizU+cURCoxzWoYfP6Nf1Aav+o=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DEsf5NsB0es5SvBFgR8uN4y5/cP3SU0/NPApbDF5gYtah3RjOu0wB1TlR4VmdETlt69h9kFhz33ezmrOpi5dvgxecAm7KpoYdhf1XoYZkJ2oShRMarjk/0maRr6WShGBJDcFEbRaVFjZS0K1znOk45xSite+eiFkLU+FvAeytTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M5u3AMZs; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781566454; c=relaxed/simple;
+	bh=LXPzkweTrBcVo856qcmPgb1DtDvaLPEH+jEfOqPfT2s=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=f+3cqXpJgkQPo0ne/hlNTk1eLdW87m+1gJHsTEe1lcsLoR5tH7m9HWvsOCs9eGiIZyDkMPefo98Q+gLfn6YWIEhLhvurT6XAZo07k+g117B3cjkXnvZg3JOHepvZgKy7cea0HV0Fh5KFcv1qtYPz26IMizgUEkkA1lsyVoMDtcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de; spf=pass smtp.mailfrom=zedat.fu-berlin.de; dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b=gbi4/14R; arc=none smtp.client-ip=130.133.4.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zedat.fu-berlin.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M5u3AMZs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B99DB1F000E9;
-	Mon, 15 Jun 2026 23:21:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781565719;
-	bh=12xCYe4ieqhwExskYGWu30pRBE8o996AZrPppTl9ixc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=M5u3AMZs/zrNeptcKR/L1LwbH8tGYHQ7LuESwqK2Zr+LXrbIfZvIJUwqYeFNiebGX
-	 iFfbLnHb1CUU+oOQIcC08SZRM3Y9YxTPje6vwwuFrMJJNkKBiIyiLJxjVbg3IS2Wl6
-	 Y2hBNkowlbIneF8BmmkzejNkJFiKFRNkm0lKT9Mjihmk404AWG6/vrrowxXUwhmI94
-	 ERma0k0Hlt8qKKgxQ6hrBQJ8UxAR7pJQ+BlqTaa269l1+oKyzsMRD3IKen+Gr8k4Tu
-	 tX43ewxQ533ID9F63RyPZJCJ/nykt11otHxSU1mOFk2tQgga7r/3O9JAA1nYxeQpZ+
-	 XU7M8epez5D/A==
-Date: Mon, 15 Jun 2026 16:21:57 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Meghana Malladi <m-malladi@ti.com>
-Cc: <diogo.ivo@siemens.com>, <haokexin@gmail.com>,
- <vadim.fedorenko@linux.dev>, <devnexen@gmail.com>, <horms@kernel.org>,
- <jacob.e.keller@intel.com>, <sdf@fomichev.me>, <john.fastabend@gmail.com>,
- <hawk@kernel.org>, <daniel@iogearbox.net>, <ast@kernel.org>,
- <pabeni@redhat.com>, <edumazet@google.com>, <davem@davemloft.net>,
- <andrew+netdev@lunn.ch>, <bpf@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
- <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>, Vignesh Raghavendra
- <vigneshr@ti.com>, Roger Quadros <rogerq@kernel.org>, <danishanwar@ti.com>
-Subject: Re: [PATCH net 4/4] net: ti: icssg: Fix XSK zero copy TX during
- application wakeup
-Message-ID: <20260615162157.3748bcda@kernel.org>
-In-Reply-To: <20260611185744.2498070-5-m-malladi@ti.com>
-References: <20260611185744.2498070-1-m-malladi@ti.com>
-	<20260611185744.2498070-5-m-malladi@ti.com>
+	dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b="gbi4/14R"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:From:
+	Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=UcyzNe2kkvCr0tmZScGHxnkfzSMWsq/75HfrZoct7a8=; t=1781566451;
+	x=1782171251; b=gbi4/14Rbq1UHRcZuwhRyoS/XOMsmNb05vcdPgr1il1d/7KL64g7WLXa3kg12
+	GYVrFxJK/5GXJXX8iA58s2RTudg/eDEH4zCT1FLb5XYdBc9dWtKOluI2Ha1ju0nhQrEhVzKlyRz/w
+	pmqrjH8+p6D3lR9GHFmqacZvc4e99T74P3QD28dqSp8NMW7TE3JGO9aZoPs3gUVnOwXW5uqTomXJi
+	aUqlZUxIhqyQP7tLshjCIPwPrAl+NQF7igdaUJdd9tchfhspTZ5DZsGWnLsicvu3hvd5kL6xw8Q5l
+	HLZC6Be9dhOB6JzquvALsmWapkIbb3RTtqHr33vcctG27jNdCQ==;
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.99)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1wZGoh-00000000EPh-2I78; Tue, 16 Jun 2026 01:34:07 +0200
+Received: from p57bd94c1.dip0.t-ipconnect.de ([87.189.148.193] helo=suse-laptop.fritz.box)
+          by inpost2.zedat.fu-berlin.de (Exim 4.99)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1wZGoh-00000000RxC-1Ebx; Tue, 16 Jun 2026 01:34:07 +0200
+Message-ID: <c3789160609a10e232ba3e27c4b13adbb170956c.camel@physik.fu-berlin.de>
+Subject: Re: [PATCH net-next 0/2] appletalk: move the protocol out of tree
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
+Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com, 
+	andrew+netdev@lunn.ch, horms@kernel.org, geert@linux-m68k.org,
+ chleroy@kernel.org, 	npiggin@gmail.com, mpe@ellerman.id.au,
+ maddy@linux.ibm.com, 	linux-mips@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, 	linuxppc-dev@lists.ozlabs.org
+Date: Tue, 16 Jun 2026 01:34:06 +0200
+In-Reply-To: <20260615222935.947233-1-kuba@kernel.org>
+References: <20260615222935.947233-1-kuba@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-ZEDAT-Hint: PO
 
-On Fri, 12 Jun 2026 00:27:44 +0530 Meghana Malladi wrote:
-> @@ -169,9 +169,6 @@ static int emac_xsk_xmit_zc(struct prueth_emac *emac,
->  
->  		num_tx++;
->  	}
-> -
-> -	xsk_tx_release(tx_chn->xsk_pool);
-> -	return num_tx;
+Hello Jakub,
 
-Why are you deleting this?
+On Mon, 2026-06-15 at 15:29 -0700, Jakub Kicinski wrote:
+> This tiny series moves appletalk out of tree, to:
+>=20
+>   https://github.com/linux-netdev/mod-orphan
+>=20
+> Core maintainainers are unable to keep up with the rate of security
+> bug reports and fixes. Nobody seems to care about appletalk enough
+> to review the patches.
 
->  }
->  
->  void prueth_xmit_free(struct prueth_tx_chn *tx_chn,
-> @@ -279,9 +276,6 @@ int emac_tx_complete_packets(struct prueth_emac *emac, int chn,
->  		num_tx++;
->  	}
->  
-> -	if (!num_tx)
-> -		return 0;
+Why would fixing these vulnerabilities be relevant? No one is going to
+expose an Apple Talk server to an untrusted network, are they? The same
+applies to hamradio and AX.25, they are all used by hobbyists in DMZ
+networks, so no one really cares about vulnerabilities in these protocols.
 
-Does something prevent us from running all this code if budget is 0?
-If budget is 0 we can complete normal Tx with skbs but we must
-not touch any AF-XDP related state.
+I find it sad that AI tools are basically used to shoot at the kernel
+to kill off features as some people are apparently getting scared by
+these AI reports and just nuke everything in a panic reaction as if it
+wouldn't just be possible to disable these protocols at compile time
+to reduce the attack surface.
 
->  	netif_txq = netdev_get_tx_queue(ndev, chn);
->  	netdev_tx_completed_queue(netif_txq, num_tx, total_bytes);
->  
-> @@ -306,7 +300,9 @@ int emac_tx_complete_packets(struct prueth_emac *emac, int chn,
->  
->  		netif_txq = netdev_get_tx_queue(ndev, chn);
->  		txq_trans_cond_update(netif_txq);
+> As Eric pointed out Mac OS dropped AppleTalk over a decade ago.
 
-This looks misplaced, now we will hit it even if we didn't complete 
-or submit any Tx.
+That's not the point though. No one is going to use AppleTalk to network
+a Linux box to a modern macOS machine. The usefulness lies in hooking up
+a Linux box to a vintage Mac or other retro computer.
 
-> +		__netif_tx_lock(netif_txq, smp_processor_id());
->  		emac_xsk_xmit_zc(emac, chn);
-> +		__netif_tx_unlock(netif_txq);
->  	}
+So far, one of the huge advantages of open source operating systems has
+always been that even niche use cases were supported and people could make
+use of old hardware by using open source operating systems over commercial
+offerings such as Windows or macOS.
+
+With the advent of AI security reports, these niche use cases are more and
+more being killed off with the argument that a vulnerability in the harmrad=
+io
+code could pose a threat to a large SAP database running on a Linux enterpr=
+ise
+distribution. However, if your enterprise distribution is enabling kernel
+features their customers aren't using and therefore enlarging the attack su=
+rface,
+it's more a problem of said enterprise distribution and not of these old an=
+d
+obscure network protocols.
+
+I am trying my best to save as many classic features in the kernel as possi=
+ble
+to enable retro computing but I am sometimes fearing that commercial intere=
+st
+in the kernel is taking over too much making my efforts harder every day.
+
+Adrian
+
+--=20
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
