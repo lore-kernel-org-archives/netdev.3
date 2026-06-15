@@ -1,72 +1,93 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B737A36DA13
-	for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 08:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5EB33D1ABC
+	for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 08:47:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781513006; cv=none; b=XRkCe8EYaft/Z/mYfqQkHaVKmyor8GDTP8mBtl1+LYg2IsWJ/EuQiCbJbgww/KM0GFWzK3N4+cpK0lV9yMjJi9ZBf7uaN5cr/oBPNrzsfFf49OB4nP6VsrWeXhqsT5GCs3vtA7BG07CbWknvFNHVj4Ly365VYY1MQbovt2eXocI=
+	t=1781513231; cv=none; b=Ij2AJ7m8jjbdxcMfnXRJ5IDvpgfyJ8IfS+oP7/o6hMbeIDtN1xWf41QDyXBPZEibiejZQl6zO+IuCtkfiXDntpyH2SFtBZAhk+8Shm5eJHdRa1v85pgL3aEyIoyo/azaChr+WH7WvNq38hmQq2Y/7EBIhiRcBnW/tt95gCNNeLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781513006; c=relaxed/simple;
-	bh=nEFnZVqL+LDXRPQtO/HgdeszxPxPEhdXuBzRZy8hvP0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FLU+VXXs2uzYeI5c9cekgiqGMsGAyRYbmFEalMc8tk2LIJj+A3B/ZdhsIL+eWXlr4MENhWU13IKZOXQrwGIclyUUXod2Mf5sWtg/EJukfh1bigBPZVR/5+ShBfROxiG7GWpit+43rpBA0rt2BvQjvwukH0nSX73SSTAqDWxc9Jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WWYQntTc; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781513231; c=relaxed/simple;
+	bh=36Eqe3P0lexDFT9WtRGkeP33r12T3Ldt/0fjyKtZHsA=;
+	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YzOynlic+ry1LC9KoF1Mn9HflB0bZ0vvWaVO3ca2/FCh3V6XNbBt6dJgauCJ8YkNtFtcbGSgDblO1ocEVUVTKHPkWpNHNukosLqsGDpj/LvwgVMhGmENqTTQwjtebMBAnU0NaNZ/AQZMquYR32NkZgTPY78kQn+5UtabxGBER8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ihkxr7IK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WWYQntTc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB6331F00A3A;
-	Mon, 15 Jun 2026 08:43:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ihkxr7IK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 907481F00AC4
+	for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 08:47:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781513005;
-	bh=pTEAVceORCrEk9ppHC+HAlUIJDS4sYHs3Plc5as2XXg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=WWYQntTc6lsKuaKUC8x6s9bjALKtVjwPNzO3clPG5F0U14PajZfHbFAsgaS8h8SUM
-	 Uch+KJ1cVkz2r6QYHK2ay1rEFvn3N5UP09CN/0Ko7vzbTmFPHmyY0l0VZukg5vL53U
-	 R1iPJdd/frlfdOCGh5Sr+9S+MbGsdlJltf3dLE4XsNlrGsFv9WIKHK+4bRd/4fWpOu
-	 65KFvkBq+TdXhQ9K/z5nNKqFh3I9ney0lVODLTBwlpM8qzzNDETBKiPWfQ70o0oyVE
-	 HZsO6llwyZSANhV+t9nUqNlyp3FNcrCbAJQkLYL/zuZH4Dz4Uk9Nnq6jWQusdoDT1i
-	 TIBqMVZC/z95g==
-Date: Mon, 15 Jun 2026 09:43:21 +0100
-From: Simon Horman <horms@kernel.org>
-To: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>, netdev@vger.kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	"zdi-disclosures@trendmicro.com" <zdi-disclosures@trendmicro.com>,
-	Willy Tarreau <w@1wt.eu>
-Subject: Re: [PATCH] xfrm: Fix xfrm state cache insertion race
-Message-ID: <20260615084321.GE712698@horms.kernel.org>
-References: <aiuSE5J-U8SuoZnk@gondor.apana.org.au>
+	s=k20260515; t=1781513229;
+	bh=36Eqe3P0lexDFT9WtRGkeP33r12T3Ldt/0fjyKtZHsA=;
+	h=From:In-Reply-To:References:Date:Subject:To:Cc;
+	b=Ihkxr7IK9UQqH9939NKfzpzZPtyXug9rksT7re6jcnEAjJ5KkJaT25gIZcDrDlryE
+	 VXPdtnFAe9S1DUdHvYq42Vs2JIoPKGKlRi+y/GR4Bm4PWDQn8A7CQ6luRtmOnNFwNo
+	 1wLlldKK/P9owFbjFGkwVFJKLDwjsmgJr/G+DouPALuVcN1YnCevUi4RuPex0AzcuL
+	 eGzP8y/i2iID2lXwOm//y9IgLPAeL4JaWdKspPxYssTs83N+150FgJh/6ciYUtDlYK
+	 8FPZmF7XqZ8AZteDJvJc11uWYhutkVlAAVTCkkBv4KNNhkWA9XJemsf0Er7lYpk77f
+	 lhtzbwUDYaYSQ==
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-3967724bed1so34327631fa.1
+        for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 01:47:09 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ9YudalMHB/v2EbSMt3VMV8NPkoz5Skc5PgnohwF5dV0QggF+WFBlUbXa5GcWsLOwSIGFsuwnY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3/csDzQY1K6rABW2xIjmQ6BNl8Ny+CSYYUWDP2n739s91XdD+
+	N4yO68RaMCQapRRNiPZD6JSENRe+N8AHn7Qo6vMhGo+vbmn6f1ukdAM7Dfz1VN92Pr3f5Zr6fA2
+	WAY3haCm0fS9e7FbyEQ0xGwuSSDek/r7rGnp04KAEPA==
+X-Received: by 2002:a05:651c:1594:b0:396:5f6f:6e40 with SMTP id
+ 38308e7fff4ca-39935760c65mr24339471fa.22.1781513227972; Mon, 15 Jun 2026
+ 01:47:07 -0700 (PDT)
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 15 Jun 2026 01:47:06 -0700
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 15 Jun 2026 01:47:06 -0700
+From: Bartosz Golaszewski <brgl@kernel.org>
+In-Reply-To: <20260612-block-as-nvmem-v5-1-95e0b30fff90@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aiuSE5J-U8SuoZnk@gondor.apana.org.au>
+References: <20260612-block-as-nvmem-v5-0-95e0b30fff90@oss.qualcomm.com> <20260612-block-as-nvmem-v5-1-95e0b30fff90@oss.qualcomm.com>
+Date: Mon, 15 Jun 2026 01:47:06 -0700
+X-Gmail-Original-Message-ID: <CAMRc=MeNhR=30Q=gvPt0XwXbjJHgwjdC8gJ4nstwu2iKBD0x5w@mail.gmail.com>
+X-Gm-Features: AVVi8Cd1V_fZoItE_I9KGUw7uwZ51MCBbXABRmFn8vXyiXcSneoYaZc7Se-syqA
+Message-ID: <CAMRc=MeNhR=30Q=gvPt0XwXbjJHgwjdC8gJ4nstwu2iKBD0x5w@mail.gmail.com>
+Subject: Re: [PATCH v5 1/9] block: partitions: of: Skip child nodes without
+ reg property
+To: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Cc: linux-mmc@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-block@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	ath10k@lists.infradead.org, linux-bluetooth@vger.kernel.org, 
+	netdev@vger.kernel.org, daniel@makrotopia.org, Ulf Hansson <ulfh@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Jens Axboe <axboe@kernel.dk>, Johannes Berg <johannes@sipsolutions.net>, 
+	Jeff Johnson <jjohnson@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, 
+	Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>, Rocky Liao <quic_rjliao@quicinc.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Srinivas Kandagatla <srini@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	Saravana Kannan <saravanak@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Jun 12, 2026 at 12:58:59PM +0800, Herbert Xu wrote:
-> The xfrm input state cache insertion code checks the validity of
-> the state before acquiring the global xfrm_state_lock.  Thus it's
-> possible for someone else to kill the state after it passed the
-> validity check, and then the insertion will add the dead state
-> to the cache.
-> 
-> Fix this by moving the validity check inside the lock.
-> 
-> This entire function is called on the input path, where BH must
-> be off (e.g., the caller of this function xfrm_input acquires
-> its spinlocks without disabling BH).
-> 
-> So there is no need to disable BH here or take the RCU read lock.
-> Remove both and replace them with an assertion that trips if BH
-> is accidentally enabled on some future calling path.
-> 
-> Fixes: 81a331a0e72d ("xfrm: Add an inbound percpu state cache.")
-> Reported-by: Zero Day Initiative <zdi-disclosures@trendmicro.com>
-> Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+On Fri, 12 Jun 2026 15:20:53 +0200, Loic Poulain
+<loic.poulain@oss.qualcomm.com> said:
+> Child nodes of a fixed-partitions node are not necessarily partition
+> entries, for example an nvmem-layout node has no reg property. The
+> current code passes a NULL reg pointer and uninitialized len to the
+> length check, which can result in a kernel panic or silent failure to
+> register any partitions.
+>
+> Fix validate_of_partition() to return a skip indicator when no reg
+> property is present. Guard add_of_partition() with a reg property
+> check for the same reason.
+>
+> Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+> ---
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+I think this warrants a Cc: stable and backporting as well as a Fixes tag.
 
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
