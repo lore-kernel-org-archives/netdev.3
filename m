@@ -1,127 +1,128 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 542833F7A83
-	for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 14:05:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A9F3F4DC6;
+	Mon, 15 Jun 2026 14:07:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781532339; cv=none; b=PKJiwfWzvk7/RA7YPwwgQPrsuCh3awln9DkyYDQ/EQOlICwnXMR7g6ExYHpJ5ghPtMMDk1XSITsQgQnAfxvTYI8zvRuttVQ24/DxUpNjuuo629KoUwJpuhT9erMO5YmbLufUv2Vt3qc1Mw5350BO/i5H2+Awh6ypnejfqO55mjM=
+	t=1781532438; cv=none; b=WrwWPUIHPR9dzRcFXPQUicNEZhu5dHZw8CkYbxhl2486+tha5Z7MbQZ+zeugVZxi0mtj/o1zoBMNCKFs7HQ9l7dYg8agMakJYZP0siKaIhqvxmGz6vtuN+53hOPO4Tut6kc0VhRCCGOMG+pHYGEw2sevYsWdH04SOibyV5I0vCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781532339; c=relaxed/simple;
-	bh=WEKfdR3nIfiUBVE84Vc5XVgzZju8SkfK1ojCBLqiM+c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rFd0b/ehccveWzvBYJ4AwKvqhyOc9ke4MwKybbALJNHUT72bdBv1TYSA/m19dGf+umxXgmxB9qB+Nqf7kS6M6JI4HExSGkV7p4WGVOYXoGGu7JlOQhxjjGs3YVZi5peBT1lZs0rXhRHQnATblvBA5SqBCGnPPajBFaMLuNekHZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=EKySjeyz; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0sec.ai
+	s=arc-20240116; t=1781532438; c=relaxed/simple;
+	bh=iunEIKNm11CTXyLswfX8qxc5Ol986Egd0t8gsHMmhrs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=AKVRdFYElhnkM6cK17eACzqPNlIoiiP4DWBxAqp+xYswdprVZrTAJz9l+J9ox6hmb6aWyyuowHTamVenjEOfPBSXy+c1ryzllg64ma9nTlCmmFYlzK6ReckOqguaD0rALSlbvt24/Hz4ABML0IE2MMyA9hQiqzvoRE3ItEWpoRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=zdj55i0X; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b="EKySjeyz"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-490cdae130cso16391965e9.0
-        for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 07:05:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=0sec.ai; s=google; t=1781532335; x=1782137135; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=cvAw1dsEWiSRXIXzLCtyB3OxbKLq8//WuTTzMwNXLh4=;
-        b=EKySjeyzwVR2/b6wcOTqk0G9chk5aVfbuDom3iyG2nsa867olWyjzEYgRdgVATTf+v
-         Vk4YQOGGQsJtFRAigF2e6sgD6rIOW9Xoax4GGSCfvwEEXeGNrcLFQwako20qHddp0CHS
-         iNP/QZNWjm4roTQjLgtVONL/M1Huj/0jL8ohQx161EAyIdolIkPRkGiDhu+fx/fj/V/S
-         OlHIiXc3D7zV/YyiP64jIttKzu+A0WDmHCSiFw5ak7qVAQnDq2D+o3UpT8kYUu9FaLhC
-         UTiBnpFzk4l27gW5WyGY3fbL1LdZ//tzXCmqwmCroyLaknk//RF1TPBrTKOC+tU/UeYr
-         g+rA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781532335; x=1782137135;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cvAw1dsEWiSRXIXzLCtyB3OxbKLq8//WuTTzMwNXLh4=;
-        b=T41jv/V5EIfKAkEdRo3MheYLZqj/GfaDTUwLlmIcXErm0drNTpOGdIdKg7uFDAwKdC
-         wlyfDkUPA3lt+XZoD0CSyA/TVkJVD3/H+jffcZiJOG+51sgmqLvYE342H3GP5PNOAMkT
-         IkuCtIkRjIrc5zILkVljmU3Ap6DCqRNA4IEBtae9uLwl1LZOfHW3oCXSywF4h9st1tho
-         fI/XAqIsSVDnZJI8TJ+AmFL8IUc9BLPurYo7Yn5Rpy0G4XH0ufIT8lOGrj2xLFNHy1Ax
-         dNgceUcfR1SMNpbkM7b/SY7X38s+q3ndpoQ7IypqsMJ7U/E2eag0l5VtKnVOWj1QHIbo
-         PBKw==
-X-Forwarded-Encrypted: i=1; AFNElJ+N8MGgwmHgB6aNPX9DWn3GV28OysNSyDlom3QCrCNRpp5FDPc2pEcixpDQ2y1CzNKo3f4TFlo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyzSQFeyV6FLMrDNAWbVqms5qlcIwhq76M3r7TUcfJOSwTscPCD
-	Wy+lENqA6HU10gnflw2qs6+TC1bun1NkM0eAq2z7gKNc73LSTjUKpvgPZmTF8UD1MBrh
-X-Gm-Gg: Acq92OEOHFpihJYnGMJEKYnZ5yNGVmkSvI1wUe+KYFsTVMEb8eZalqRtu4WLceqx8I4
-	c+cMkIDSeDq/4mgL6qmMJK+s/Z2kjN1n1m9c0iX/juZTBWLivF8bnojDu8lcDvhTfryofhYiGBo
-	mHNd5Yo4nYzWtYhiga+uvbIKyB6F3gaL6WNnX9YgS6AuDU5HsacIAKgA7Z42whi84sxQkRtnOaA
-	P57RGEf4Ajk3JvVDdUitlLg7yuXmVE7l5oGF9vSXZTHPSQ4ttDBrzkFrzDeTfDX5y5RvwqCLlpJ
-	UAALo2LE62nL9F2Jv32L3kb/BhGhM6B+YxtRbJVfPoTYaY6b6VWu2UERcy72s0feLyJejM1TXam
-	m+g06jUbFHdRJgnrY31xHbkN1OWrsHB9s3SKRybK2Ff9b50su7CpyJcMSCV2MxtRF63VS5LKsKP
-	ZVQmc7QPoqwMBqlYruhZxm5gxd9csOuM8oh7lBM/ZN9EsJkUevZt/Wo79Eztu0FLK+0g0zthxlM
-	arfqFcuoACF5YfrkEcX9HD7mTVwsG4JOS572QNNHm9l3Q==
-X-Received: by 2002:a05:600c:47d3:b0:490:d354:bcf4 with SMTP id 5b1f17b1804b1-492200e2409mr89495105e9.27.1781532334628;
-        Mon, 15 Jun 2026 07:05:34 -0700 (PDT)
-Received: from PeakBook-Mini.tail8e484.ts.net ([178.197.218.209])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f2c4240sm32087268f8f.27.2026.06.15.07.05.33
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 15 Jun 2026 07:05:34 -0700 (PDT)
-From: Doruk Tan Ozturk <doruk@0sec.ai>
-To: anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: piotr.raczynski@intel.com,
-	michal.swiatkowski@linux.intel.com,
-	wojciech.drewek@intel.com,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Doruk Tan Ozturk <doruk@0sec.ai>,
-	stable@vger.kernel.org
-Subject: [PATCH net] ice: eswitch: fix use-after-free of metadata_dst in repr release
-Date: Mon, 15 Jun 2026 16:05:32 +0200
-Message-ID: <20260615140532.52676-1-doruk@0sec.ai>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="zdj55i0X"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 54432C5146A;
+	Mon, 15 Jun 2026 14:07:19 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 20E3360015;
+	Mon, 15 Jun 2026 14:07:15 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AF69D106C96A5;
+	Mon, 15 Jun 2026 16:07:04 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1781532433; h=from:subject:date:message-id:to:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=12cJkgmNpZePALEcCCii3OEhCzXZc//+4qAWWEONSCc=;
+	b=zdj55i0XH3giozHt1HpWm9UfrnYusBZsrgy8BIRAXrB12gRGFYttdKWdel5vEcrpKgU3pO
+	kBhdbrbf9QdwQ+fPiu2opW/5t31ghiReeLTz6M8Y8J0kWp7gICiIuQG7YVavMSQEiI06nh
+	XvF3aocbyXTK/ga1gpylQ0kuKXc0Um1owXiC90x7Ys+HJLXRgCbneEwZiDpMT/vI957D7Q
+	/Mj+jd+MV5kLA+KI0SHns+JUCPL7eeozwOQqR9YDjvnN/Pc7ZtsNkSm9VnBjFNVavlxozq
+	mJ5t9Eg7cg97pu12QnsGmSdYOCU/VEFxF7+986tvH4yr+YZ/rUitb7n14j6Eew==
+Message-ID: <867a39de-ccc2-4dcf-be24-ab2542d20ab6@bootlin.com>
+Date: Mon, 15 Jun 2026 16:07:03 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v7 05/12] net: phylink: support late PCS provider
+ attach
+To: Christian Marangi <ansuelsmth@gmail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Simon Horman <horms@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Lorenzo Bianconi <lorenzo@kernel.org>, Heiner Kallweit
+ <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>,
+ Saravana Kannan <saravanak@kernel.org>,
+ Philipp Zabel <p.zabel@pengutronix.de>, Nathan Chancellor
+ <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ llvm@lists.linux.dev
+References: <20260615122950.22281-1-ansuelsmth@gmail.com>
+ <20260615122950.22281-6-ansuelsmth@gmail.com>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260615122950.22281-6-ansuelsmth@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-ice_eswitch_release_repr() frees the port representor metadata_dst via
-metadata_dst_free(), which directly kfree()s the object and ignores the
-dst_entry refcount. The eswitch slow-path TX routine
-ice_eswitch_port_start_xmit() takes a reference on this dst with
-dst_hold() and attaches it to the skb via skb_dst_set(). If such an skb
-is still in flight (e.g. queued in a qdisc) when the representor is torn
-down, the metadata_dst is freed while the skb still points at it. When
-the skb is later freed, dst_release() operates on already-freed memory.
+Hi Christian,
 
-Replace metadata_dst_free() with dst_release() so the metadata_dst is
-freed only after the last reference is dropped. The dst subsystem frees
-metadata_dst objects from dst_destroy() once the refcount reaches zero
-(DST_METADATA is set by metadata_dst_alloc()).
+On 6/15/26 14:29, Christian Marangi wrote:
+> Add support for late PCS provider attachment to a phylink instance.
+> This works by creating a global notifier for the PCS provider and
+> making each phylink instance that makes use of fwnode subscribe to
+> this notifier.
+> 
+> The PCS notifier will emit the event FWNODE_PCS_PROVIDER_ADD every time
+> a new PCS provider is added.
+> 
+> phylink will then react to this event and will call the new function
+> fwnode_phylink_pcs_get_from_fwnode() that will check if the PCS fwnode
+> provided by the event is present in the pcs-handle property of the
+> phylink instance.
+> 
+> If a related PCS is found, then such PCS is added to the phylink
+> instance PCS list.
+> 
+> Then we link the PCS to the phylink instance and we refresh the supported
+> interfaces of the phylink instance.
+> 
+> Finally we check if we are in a major_config_failed scenario and trigger
+> an interface reconfiguration in the next phylink resolve.
+> 
+> In the example scenario where the link was previously torn down due to
+> removal of PCS, the link will be established again as the PCS came back
+> and is now available to phylink.
+> 
+> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+> ---
 
-Same class of bug and fix as commit c32b26aaa2f9 ("netfilter:
-nft_tunnel: fix use-after-free on object destroy").
+[...]
 
-Fixes: fff292b47ac1 ("ice: add VF representors one by one")
-Cc: stable@vger.kernel.org
-Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
----
- drivers/net/ethernet/intel/ice/ice_eswitch.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> @@ -2151,6 +2204,10 @@ void phylink_destroy(struct phylink *pl)
+>  	if (pl->link_gpio)
+>  		gpiod_put(pl->link_gpio);
+>  
+> +	/* Unregister notifier for late PCS attach */
+> +	if (pl->fwnode_pcs_nb.notifier_call)
+> +		unregister_fwnode_pcs_notifier(&pl->fwnode_pcs_nb);
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_eswitch.c b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-index 2e4f0969035f..41b30a7ca4a9 100644
---- a/drivers/net/ethernet/intel/ice/ice_eswitch.c
-+++ b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-@@ -95,7 +95,7 @@ ice_eswitch_release_repr(struct ice_pf *pf, struct ice_repr *repr)
- 		return;
- 
- 	ice_vsi_update_security(vsi, ice_vsi_ctx_set_antispoof);
--	metadata_dst_free(repr->dst);
-+	dst_release(&repr->dst->dst);
- 	repr->dst = NULL;
- 	ice_fltr_add_mac_and_broadcast(vsi, repr->parent_mac,
- 				       ICE_FWD_TO_VSI);
--- 
-2.43.0
+I wanted to try this out, but I get :
+
+drivers/net/phy/phylink.c:2218:17: error: implicit declaration of function ‘unregister_fwnode_pcs_notifier’; did you mean ‘register_fwnode_pcs_notifier’? [-Werror=implicit-function-declaration]
+ 2218 |                 unregister_fwnode_pcs_notifier(&pl->fwnode_pcs_nb);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                 register_fwnode_pcs_notifier
+
+I guess you either need to stub this, or there's a missing Kconfig
+dependency somewhere
+
+Maxime
+
+
 
