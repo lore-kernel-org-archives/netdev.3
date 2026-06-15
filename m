@@ -1,342 +1,71 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B03127A133
-	for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 16:19:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B03B5409124;
+	Mon, 15 Jun 2026 16:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781540342; cv=none; b=Y4CPWn9xZX72i1omjSMES8UaZHRHMtBJbvXkNaj0oYqF4Fi5KUDE6xtXObQSFZTVlsxF2nbLNTujncBwVcnAA5Iqz/FaxsWRO/GisQSntV8DRRLzT0K9RFth2udGsptqQ3LkkDGwMeJlsMG990k5V+9jgCzbzvBNVhAVd5RqZJk=
+	t=1781540351; cv=none; b=OXc4ddW3Jr2xTjj4ByigJig30Jv94rww4LnRQw7uqeOk2AhXbj4tKBBbnddf0BBMc7A7/6qJx+Q0VP+3yGuO0a8c9MipcICwdcEFOEAOkOtqaduPcjysO1Ky5oRUotA4//wT7s1pv9D55q5QkV3r0t0l9ex+lSqrcRod/o2Tcw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781540342; c=relaxed/simple;
-	bh=5Uag3zjIxtRvrFUaEFGUBr5db5WRq86PStUEaSYY9AU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rNweW6+kA7KqrBws7tUuQt2Y3uuJOzmXOD24wCu//Su+6AwNp3GPxpRK/PxnNHtgsEs9snolQo/kqfp6TYguRzOxiB7M7cV6usYi2WyE7mp6aZVH5/oFiHNNYSqZBsHa+U2xGmcnAAWFzqxm7QEf9ssxQssWohgqhfoqS2kkmVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E/ZggfeJ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781540351; c=relaxed/simple;
+	bh=jntwFKaHDJlCsM+KlNmjUGhdfYUHTXLwvp5aO0ZLZR0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Zp0EQEYfe/DHS80D1Q+7zKqrjo9/zeTtzYr+/FZWGXWTQSokf+DtC7QnOJNgHBztH+eoEBPLuwG2zfQLcSI8WCJiVX9owb+T0SRxTEEL9cN2m1JHmh5WAlF0EfV6Jkjf5s1iwJTN5a7HGRfm+0nb+Hm9jH1D8uS4UE4MSPo7mQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C1/hHUJO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E/ZggfeJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 152271F000E9;
-	Mon, 15 Jun 2026 16:18:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C1/hHUJO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4A371F000E9;
+	Mon, 15 Jun 2026 16:19:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781540341;
-	bh=rOVwRblq+kXOEfnLr/2rV1WvW/4t23PkkcJBFhDrgBQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=E/ZggfeJJvFdx5Totz5pb49AIvcH99XwILodHwtTz2iyaL6nKwKOJTAqPorwG0aM5
-	 9fD6uLVkmMqIIlTTzi/4LRW2ezxNdKTHChmLctkFmlX6MSbpg3pDpwn8UDZE/RqhEv
-	 VwCVw1n+VY1OeAQg2F5QCoqk9Nf8EwcpWz5LAE6XVs4hgfpIghATN+V7JfWyBeKE1+
-	 9IKh2oyFk9ilEe0JEAT/pAGQVy3UE2phLLPjf5BJbLs23SlNl0TImwQh5yZKVxBKVv
-	 UNXa4tsNBibHk4VvbswkQE7y2riQU567PbnuHujDWRiYDlvhql4lvX7/QjYUIukOVI
-	 4DtQudHJ6aoGA==
-From: Simon Horman <horms@kernel.org>
-To: nikhil.rao@amd.com
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	brett.creeley@amd.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	eric.joyner@amd.com
-Subject: Re: [PATCH v4 4/6] pds_core: add PLDM component info display
-Date: Mon, 15 Jun 2026 17:08:45 +0100
-Message-ID: <20260615160842.776643-4-horms@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260614050052.1048328-5-nikhil.rao@amd.com>
-References: <20260614050052.1048328-5-nikhil.rao@amd.com>
+	s=k20260515; t=1781540350;
+	bh=0DsLxYAcK9o6T2BXzYuXKF8hIfKyhiYsUxUJ8qJ4wGg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=C1/hHUJOD7oUAg5viE5twi8PnfCwMkqavwUHjoG/OqFoFKP9z6ibzfhxp+97dy2z/
+	 HIqFKfZtB9gQ9RCU9nwYqEK4cTkVvefqX8xYNJkrsvGeTK5yihlCuuYT/p19t2uziU
+	 6fqvCnR5zisPbkJMOVy1f39YTBx+AvoDGlbQj9OBDsJz/10LNm1l7gJLo+6q+FTO3R
+	 Gdl8oFmVG5cedUf81AHauETH7qJIAahzPN298KjR54wBkOYVjkDuvFDibYrE0jkd23
+	 zCIB+H6hYS03FcUz8UCoIKCMEIammwXrMiDw8RA+KMSJ4vwDgIlV22qAA+kBs7uWzB
+	 fRrzIEC3nFC6w==
+Date: Mon, 15 Jun 2026 09:19:09 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ johannes@sipsolutions.net, corbet@lwn.net, skhan@linuxfoundation.org,
+ workflows@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH net-next] docs: exclude driver and netdevsim bugs
+Message-ID: <20260615091909.78ad2b03@kernel.org>
+In-Reply-To: <20260615091436.GP327369@unreal>
+References: <20260603162943.2406080-1-kuba@kernel.org>
+	<20260615091436.GP327369@unreal>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/
+On Mon, 15 Jun 2026 12:14:36 +0300 Leon Romanovsky wrote:
+> > +Unless explicitly excluded all bug fixes should be targeting the ``net``
+> > +tree and contain an appropriate Fixes tag.
+> > +
+> > +Obvious exclusions:
+> > +
+> > + - fixes for bugs which only exist in ``net-next`` should target ``net-next``
+> > +   (please still include the Fixes tag in the commit message)
+> > + - bugs which cannot be reached, e.g. in code paths not executed given
+> > +   current in-tree callers
+> > + - fixes for compiler warnings and typos  
+> 
+> If you decide to resubmit this patch, could you please remove "fixes for
+> compiler warnings" from the exclusion list?
+> 
+> It is quite frustrating to receive a compiler warning originating from a
+> different subsystem after the merge window, knowing it will not be
+> addressed until the next merge window (around eight weeks later).
 
-Simon says: This review seems to be a bit of a mixed bag.
-            I've annotated the issues it raises that I'd appreciate
-	    you looking over, and the rest, which I don't feel fall
-	    in that category.
----
-pds_core: add PLDM component info display
-
-This patch reports per-component firmware versions through devlink info on
-v2+ devices, replacing the single fw running version with names derived
-from the firmware-supplied component list and slot/flag fields.
-
-Simon says: I'm not particularly concerned about the issue raised below -
-            I'm forwarding this review because of others raised further down.
-
-[Low]
-Before going to the diff, this patch immediately renames user-visible
-component names introduced in the immediately preceding commit in the
-same series ("pds_core: add PLDM firmware update support via devlink
-flash"):
-
-  fw.mainfw      -> fw
-  fw.mainfw.gold -> fw.gold
-
-Could these two patches be folded together (or reordered) so the series
-introduces the final naming once?  Anyone bisecting between the two
-commits would land on the obsolete names.
-
-> diff --git a/drivers/net/ethernet/amd/pds_core/devlink.c b/drivers/net/ethernet/amd/pds_core/devlink.c
-> index 3b763ee1715e..2f40b97affd6 100644
-> --- a/drivers/net/ethernet/amd/pds_core/devlink.c
-> +++ b/drivers/net/ethernet/amd/pds_core/devlink.c
-> @@ -93,14 +93,105 @@ int pdsc_dl_flash_update(struct devlink *dl,
->  	return pdsc_firmware_update(pdsc, params, extack);
->  }
->  
-> +static int pdsc_dl_report_component(struct devlink_info_req *req,
-> +				    struct pds_core_fw_component_info *info)
-> +{
-> +	enum devlink_info_version_type ver_type;
-> +	u16 flags = le16_to_cpu(info->flags);
-> +	char *ver = info->version;
-> +	const char *name;
-> +	char buf[32];
-> +
-> +	/* Main firmware is reported as generic "fw" */
-> +	if (info->component_type == PDS_CORE_FW_TYPE_MAIN) {
-> +		if (info->slot_id == PDS_CORE_FW_SLOT_GOLD)
-> +			snprintf(buf, sizeof(buf), "fw.gold");
-> +		else
-> +			snprintf(buf, sizeof(buf), "fw");
-> +	} else {
-> +		name = pdsc_fw_type_to_name(info->component_type);
-> +		if (!name)
-> +			return 0;
-
-Simon says: Ditto
-
-[Low]
-When firmware reports a component_type that pdsc_fw_type_names[] does
-not know about, this returns 0 and silently drops the entry.  Should
-this at least dev_warn_once() so a newer firmware advertising a new
-component type does not vanish from devlink output without any
-operator-visible signal?
-
-> +
-> +		if (info->slot_id == PDS_CORE_FW_SLOT_GOLD)
-> +			snprintf(buf, sizeof(buf), "fw.%s.gold", name);
-> +		else
-> +			snprintf(buf, sizeof(buf), "fw.%s", name);
-> +	}
-
-Simon says: And this one seems intentional, so I think
-            this portion of the review can be ignored.
-
-[Low]
-This branch appends ".gold" to any non-MAIN component when slot_id ==
-PDS_CORE_FW_SLOT_GOLD, which produces names like fw.bootloader.gold,
-fw.uboot.gold and fw.cpld.gold.  The Documentation table updated in
-this same patch only lists fw.gold as the stored variant, and the
-example output only mentions fw.uboot.gold.
-
-Should the gold suffix be restricted to MAIN, or should the
-documentation table be expanded to cover any component_type also
-appearing as a .gold variant?
-
-> +
-> +	ver_type = DEVLINK_INFO_VERSION_TYPE_NONE;
-> +	if (flags & PDS_CORE_FW_COMPONENT_INFO_F_UPDATE_BY_NAME)
-> +		ver_type = DEVLINK_INFO_VERSION_TYPE_COMPONENT;
-> +
-> +	if (flags & PDS_CORE_FW_COMPONENT_INFO_F_FIXED) {
-
-[ ... ]
-
-> +	return 0;
-> +}
-> +
-> +static int pdsc_dl_component_info_get(struct devlink *dl,
-> +				      struct devlink_info_req *req,
-> +				      struct netlink_ext_ack *extack)
-> +{
-> +	struct pds_core_component_list_info *list_info;
-> +	struct pdsc *pdsc = devlink_priv(dl);
-> +	u8 num_components;
-> +	int err;
-> +	int i;
-> +
-> +	if (!pdsc->fw_components.num_components) {
-> +		err = pdsc_get_component_info(pdsc);
-> +		if (err) {
-> +			dev_err(pdsc->dev, "Failed to get component_info %pe\n",
-> +				ERR_PTR(err));
-> +			return err;
-> +		}
-> +	}
-
-Simon says: ditto
-
-[Medium, Medium]
-Two questions about the cache check above.
-
-First, pdsc_get_component_info() has a branch that returns 0 without
-populating num_components when firmware reports
-comp.get_component_info.ver == 0:
-
-  if (comp.get_component_info.ver == 0) {
-          dev_warn_once(pdsc->dev,
-                        "Incompatible get_component_info version %u ...\n",
-                        comp.get_component_info.ver);
-          err = 0;
-          goto out;
-  }
-
-Since pdsc->fw_components.num_components stays 0 on this path, every
-subsequent devlink dev info request re-enters pdsc_get_component_info()
-and runs through kmalloc / kzalloc(PDS_PAGE_SIZE) / dma_map_single() /
-a full devcmd round-trip with pdsc->devcmd_timeout * 2 under
-devcmd_lock / dma_unmap_single().  dev_warn_once() suppresses the
-warning after the first hit, so the repetition is invisible.  Should
-there be an "unsupported" sentinel that prevents re-querying once v0
-firmware is detected?
-
-
-Simon says: However, the issue flagged below seems to warrant
-            investigation in the context of this patch-set.
-
-Second, pdsc->fw_components is only invalidated at the end of
-pdsc_firmware_update() ("pdsc->fw_components.num_components = 0;").
-If firmware versions change through any other path (FW recovery via
-health_work, PCI reset via pci_reset_work, side-channel upgrade) the
-cached list stays around and devlink dev info reports stale versions.
-Should those reset paths also clear pdsc->fw_components?
-
-> +
-> +	list_info = &pdsc->fw_components;
-> +	num_components = min_t(u16, list_info->num_components,
-> +			       le16_to_cpu(pdsc->dev_ident.max_fw_slots));
-
-Simon says: Likewise, the one below seems to warrant investigation too.
-
-[Medium]
-num_components has already been bounded against
-PDS_CORE_FW_COMPONENT_LIST_LEN inside pdsc_get_component_info().
-max_fw_slots looks like a slot count (gold/main-a/main-b), but the
-component list also contains cpld/bootloader/uboot/etc.  If firmware
-reports six components on a three-slot device, this min_t() silently
-truncates legitimate component entries from the devlink output.
-
-Is this cap intentional, and if so should truncation be logged?  If
-not, can the cap simply be dropped?
-
-> +	for (i = 0; i < num_components; i++) {
-> +		err = pdsc_dl_report_component(req, &list_info->info[i]);
-> +		if (err)
-> +			return err;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->  static char *fw_slotnames[] = {
->  	"fw.goldfw",
->  	"fw.mainfwa",
->  	"fw.mainfwb",
->  };
->  
-> -int pdsc_dl_info_get(struct devlink *dl, struct devlink_info_req *req,
-> -		     struct netlink_ext_ack *extack)
-> +static int pdsc_dl_fw_list_info_get(struct devlink *dl,
-> +				    struct devlink_info_req *req,
-> +				    struct netlink_ext_ack *extack)
->  {
-
-[ ... ]
-
-> @@ -134,12 +225,49 @@ int pdsc_dl_info_get(struct devlink *dl, struct devlink_info_req *req,
->  			return err;
->  	}
->  
-> +	return 0;
-> +}
-> +
-> +static int pdsc_dl_info_get_v1(struct devlink *dl,
-> +			       struct devlink_info_req *req,
-> +			       struct netlink_ext_ack *extack)
-> +{
-> +	struct pdsc *pdsc = devlink_priv(dl);
-> +	int err;
-> +
-> +	err = pdsc_dl_fw_list_info_get(dl, req, extack);
-> +	if (err)
-> +		dev_warn_once(pdsc->dev, "Failed to get fw list: %pe\n",
-> +			      ERR_PTR(err));
-
-Simon says: Again, the one below seems to warrant investigation.
-
-[Medium]
-Pre-patch, devlink_info_version_stored_put() failures inside the fw
-list loop returned to the devlink layer immediately.  After this
-refactor, pdsc_dl_fw_list_info_get() returns the error but
-pdsc_dl_info_get_v1() converts it to dev_warn_once() and continues to
-append the running fw version and the ASIC fields.
-
-Does this mean a mid-loop failure (for example -EMSGSIZE from netlink
-attribute append) is now masked, leaving a partially populated devlink
-info reply that gets reported as success?
-
-> +
-> +	/* Version 1: report fw from dev_info (running only) */
->  	err = devlink_info_version_running_put(req,
->  					       DEVLINK_INFO_VERSION_GENERIC_FW,
->  					       pdsc->dev_info.fw_version);
->  	if (err)
->  		return err;
->  
-> +	return 0;
-> +}
-> +
-> +int pdsc_dl_info_get(struct devlink *dl, struct devlink_info_req *req,
-> +		     struct netlink_ext_ack *extack)
-> +{
-> +	struct pdsc *pdsc = devlink_priv(dl);
-> +	char buf[32];
-> +	int err;
-> +
-> +	if (pdsc->dev_ident.version >= PDS_CORE_IDENTITY_VERSION_2) {
-> +		err = pdsc_dl_component_info_get(dl, req, extack);
-> +		if (err)
-> +			dev_warn_once(pdsc->dev, "Failed to get component info: %pe\n",
-> +				      ERR_PTR(err));
-> +	} else {
-> +		err = pdsc_dl_info_get_v1(dl, req, extack);
-> +		if (err)
-> +			return err;
-> +	}
-
-Simon says: but this one seems to be more a question of style that substance.
-
-[Medium]
-On v2+ devices, errors from pdsc_dl_component_info_get() are swallowed
-into dev_warn_once() and the function falls through to the ASIC
-fields.  Pre-patch behavior always reported pdsc->dev_info.fw_version
-via DEVLINK_INFO_VERSION_GENERIC_FW.
-
-After this change, transient failures inside pdsc_get_component_info()
-(DMA mapping failure, -ENOMEM, the -ETIMEDOUT/-EAGAIN deferred-DMA
-path, the v0-firmware return-0-without-populating branch, the
-num_components > LIST_LEN -ENOMEM branch), or even firmware enumerating
-components without setting PDS_CORE_FW_COMPONENT_INFO_F_RUNNING on the
-MAIN component, cause devlink dev info to show only asic.id, asic.rev
-and the serial number with no firmware version reported at all.
-
-Could the v2 path either retain the unconditional running fw fallback
-from dev_info.fw_version, or fall through to pdsc_dl_info_get_v1() on
-failure, so devlink info never silently loses the fw running version?
-
-Also, since dev_warn_once() suppresses the warning across the lifetime
-of the device, callers cannot tell that the netlink reply is partial:
-a partially populated message gets the ASIC fields appended and is
-reported as success.
-
-> +
->  	snprintf(buf, sizeof(buf), "0x%x", pdsc->dev_info.asic_type);
->  	err = devlink_info_version_fixed_put(req,
->  					     DEVLINK_INFO_VERSION_GENERIC_ASIC_ID,
+Agreed, FWIW, but not planning to resubmit.
+I think people misunderstood that I'm __documenting what I already do__
+rather than trying to have a discussion :/
