@@ -1,110 +1,129 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7414D155757
-	for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 01:41:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B460D1E376C
+	for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 02:15:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781487666; cv=none; b=eRa1T/CAwWgXQ6MCSbf92HwViGzcbQOYckVaWcezFj8/DdHZQTHYW974QlsEflhqLnscG9BpnN8OJZhzYX4Pina87CrfKERMWKgBsrp0yzxA93Y0Wqdg3rbANVinjXMzbsJi9asJC3riYd+bJiAffCwf/t4jLyxV9SWshd/FXKc=
+	t=1781489713; cv=none; b=PNOrfQDwPmYLe8pll5UJqvygq/RhRGVMFE2oIua7dbm3uRrr2nT/1Qx3zuaif8urAXVbsYLdPXJRgH4LMA6QcKUZS+41sbsXkVixFRV4NaQ1fRxvD67TFzEMaTQhdZZjrbUn/+i+szRPYZYpwPOt708IC5F+74yeXejWvZDLl8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781487666; c=relaxed/simple;
-	bh=tL22lFV/p6qljk7tMljJ0+hqT64iKX7IAbGQ19Zwuls=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pn7tcPZOh5cOpS+XfqzHBw/TIfMSwZkkSo7JguUKxo/GE63dgP252ErIDxzSJ47if4yHriqydK47wPNsJFr/fUxfI04wYcua0Xjsy7sUuIKcDbjRfg1LfARau9yYZdCD0D75Xl7s4yFkVawNGCbyVcZDD+P6O56UOIP5wi7dsXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=jj/zqXFe; arc=none smtp.client-ip=117.135.210.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1781489713; c=relaxed/simple;
+	bh=gyjz/USqjUUtM62ty/LRr7o6O6v2mzhDa0axURjvys0=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=H7INsAjkUUduFoss/XX79c50XEapINf1baov6VEFgEYkdBLRsujVYXgLHVAMpro4MMHEgaUqNF4vYmbaCKfeIXgar1JklrYu1VYwwhxxY/3QYruuD5DNDUc1PwkBt0tTTd0SAqrltEGGLsWCt7yQbGZdmutt+Nqgg2V6FfvzGIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oKH6HG9J; arc=none smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="jj/zqXFe"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
-	Content-Type; bh=rkSJZJv6R0h/oeGm4YkXS/z977/uuGVq+lopNuX2gt8=;
-	b=jj/zqXFeTA0dWoN//f2z6vDL56BJfsqUUHvoSLib3FVpIsC85nYvjxKWoelmNX
-	YwtnMDtWfd1i5QA364AKIP5ThuhMyli8owciGFTPiUQp265WAllpu4cvlr1f7DpO
-	8rLYacTySYS97WF8/k8W68F7likyHtbeTiFE7hmGjvj2o=
-Received: from [10.42.20.136] (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wDnZ5caWC9q21ylDg--.7092S2;
-	Mon, 15 Jun 2026 09:40:43 +0800 (CST)
-Message-ID: <9d3dfe98-676f-4a85-9e85-241f79ecfaea@163.com>
-Date: Mon, 15 Jun 2026 09:40:42 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oKH6HG9J"
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-51780bbc560so33169771cf.0
+        for <netdev@vger.kernel.org>; Sun, 14 Jun 2026 19:15:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781489711; x=1782094511; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Dgs8zi4UB7t/plEWUkJHCQvofyIKmiToTSGYIIN2vkI=;
+        b=oKH6HG9J7mdqg1cvcFmByA+uLIzS8ZX6O2HF2P84ewmRZF/aO8R+Qg/dlFSSN/09XV
+         aOURHT6qcKBOUuIw4jj78edELRrFNyuIw4kerq7etpHRpwYg0+gJrTN4loVU6FeGGT+W
+         0Ixzyz430IXXFg8hIFsVUn+EY6b5nSFELU9heDKR9RVGhEmewJHVVGHMKoyMf+4HiMD/
+         2hOaXI0AGY+czjXkwbR+a7rVBvMOlmrfibf4QoICUmgx3/DNgV01VzIhcEhNB8n9Q9xi
+         xIA8R+5D/pULPHZCUywYC4Z9LBnbc6xm97xB64573ezt+Ba7yK5gLykSHAtZvCG9+y/0
+         vvSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781489711; x=1782094511;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Dgs8zi4UB7t/plEWUkJHCQvofyIKmiToTSGYIIN2vkI=;
+        b=Zbc0+hzRvHSYpA7uDh/yXxiqubR+/VWoNogsUPbXLsHFyExQ6DEGLTCTrgjwej86bV
+         4x1bX2YppBjuV8Tv0kmvffLwYwl9Vh5of5rZ/CFCfFXed5tdipMl0Gs+hMsSASLRESqa
+         cCM1sRp96QkKgyJuPM1ZfhiDCSPynjcyP5cgUmkTr6oRyrSZ8LZkHjZEE7UidV1+SWrz
+         AiYFAzdhzVrc/H6u0jeu2e1IkQMgZNuutTQIUgS1qGZ8/qL1rVF0frHEjoTqSlYXq6i7
+         3GP3w0tKDhkbQ9GdzzSSHwpHfBpW79z/GiZdgo5pY2xQ1JAcB4+5YtV3UgG++jXxv+ue
+         iNJg==
+X-Forwarded-Encrypted: i=1; AFNElJ9avT+WU51XBZgFGxWwrrqVk8GDlil8UVjd24oENL12iyR3k81EEDjDGJl7Ay5mEuu1tCYPvNk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywr3KSOenBGK/5163nHeePaWimKm1EqA5r3hlvvQhmNdysp+WRo
+	Iql17Pba+Dkk69OiOSVdLscZxZ7ROE31MQ4mOG71droNqzAOD3MegISPeu88ggL8ElGMfw==
+X-Gm-Gg: Acq92OHoVYL9fBNu/z/mjgEtgYGBSib/rvXokwuxvbiW2VALesjOVAWhnriMrgIZY1L
+	aXdELsgRr3xtCGgj6GG13Go8dBVwXbdcGRcAtZBKA1SMuD8JwS+Q0FyY3pGWWT5qKaJ3Vb4TyK7
+	IEuAkaJXVdSQQVIPJv+okcxCDVE48igYXc9nptzHzIgNdPQqLHnIYxbDl2WwReQDQRiNQCC3z/r
+	xfZhZGFLcnyNFl/edybHQ1NlGpYeZF5sPGA2roYYH3NXxyOwZY5T/3Hzo0pI4zkQDTD8xTXYYPE
+	BqwzAifKnwxlMpi17YKYT1RmZV+AF87vfSO1s/Fu7zTNfxANUFtS7ikluJPslVzjG34wuf7Buhg
+	mwZg9RFnSnmtvpb7byuZmHXnGFt/NvkzzdBHWT7Fd9rfINzsHs4pmIMKTQ31nZwbT8DGzUXq2hO
+	hUeasTFgI/2hZ13Pd9BOaKrvStYRfv5SZOwHtyHUQU/zPEqxfR68Dl0vDjzE5FwqtBksCDJg==
+X-Received: by 2002:a05:622a:1819:b0:517:5bc6:b575 with SMTP id d75a77b69052e-517fbc898cfmr172653761cf.4.1781489710652;
+        Sun, 14 Jun 2026 19:15:10 -0700 (PDT)
+Received: from localhost.localdomain ([2601:985:4601:5df0:2106:6ce9:6b1:8f70])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8d305134b20sm96793466d6.43.2026.06.14.19.15.10
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 14 Jun 2026 19:15:10 -0700 (PDT)
+From: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
+To: dwmw2@infradead.org,
+	richardcochran@gmail.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [BUG] ptp: vmclock: KASAN slab-use-after-free in vmclock_miscdev_read
+Date: Sun, 14 Jun 2026 22:15:08 -0400
+Message-ID: <178144969601.60470.14493569608271069160@gmail.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v1] e1000: Initialize phy_data to avoid
- unexpected values
-Content-Language: en-US
-To: "Jagielski, Jedrzej" <jedrzej.jagielski@intel.com>,
- "Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>,
- "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
- Rongguang Wei <weirongguang@kylinos.cn>
-References: <20260612080331.120096-1-clementwei90@163.com>
- <PH0PR11MB590263784927AAB47EE558BAF0182@PH0PR11MB5902.namprd11.prod.outlook.com>
-From: Rongguang Wei <clementwei90@163.com>
-In-Reply-To: <PH0PR11MB590263784927AAB47EE558BAF0182@PH0PR11MB5902.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDnZ5caWC9q21ylDg--.7092S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Ar4xZFW3WryfWF4xJFykAFb_yoW8Cr1Dpr
-	WUCa4DCr4UWr9Fga97Xw18ZF90k392qrWruF4fCw1Yg3s8JrWktr1xtF4UGryavw47C3y3
-	JF1Yv3ZxA3Z8AaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Uca9-UUUUU=
-X-CM-SenderInfo: 5fohzv5qwzvxizq6il2tof0z/xtbC4huC7WovWBvqpgAA3c
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-
-
-在 2026/6/12 16:58, Jagielski, Jedrzej 写道:
-> From: Rongguang Wei <clementwei90@163.com> 
-> Sent: Friday, June 12, 2026 10:04 AM
-> 
->> From: Rongguang Wei <weirongguang@kylinos.cn>
->>
->> The phy_data variable is not initialized. If e1000_read_phy_reg
->> returns an error, phy_data will not point to a valid value from
->> the PHY register, which may cause the regs_buff array to be populated
->> with unexpected values.
-> 
-> Hi,
-> 
-> Sounds like a fix, but i believe we would like to have any real
-> scenario when the issue occurs and how it can be reproduced.
-> If such is provided please target the patch against net tree and
-> add fixes tag.
-> 
 Hi,
-I was not face a real scenario. I just found out there is no check for 
-e1000_read_phy_reg return value when I reading the driver code. 
-Maybe is better to initialized the value or check the return value of e1000_read_phy_reg.
->>
->> Signed-off-by: Rongguang Wei <weirongguang@kylinos.cn>
->> Change-Id: I46071b3b21a566f8da650168d38d6968251b077d
-> 
-> 
-> i doubt this is a correct kernel commit tag
-> 
->> ---
->> drivers/net/ethernet/intel/e1000/e1000_ethtool.c | 2 +-
->> 1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/net/ethernet/intel/e1000/e1000_ethtool.c b/drivers/net/ethernet/intel/e1000/e1000_ethtool.c
->> index 4dcbeabb3ad2..f068108c5004 100644
->> --- a/drivers/net/ethernet/intel/e1000/e1000_ethtool.c
->> +++ b/drivers/net/ethernet/intel/e1000/e1000_ethtool.c
->> @@ -327,7 +327,7 @@ static void e1000_get_regs(struct net_device *netdev, struct ethtool_regs *regs,
->> 	struct e1000_adapter *adapter = netdev_priv(netdev);
->> 	struct e1000_hw *hw = &adapter->hw;
->> 	u32 *regs_buff = p;
->> -	u16 phy_data;
->> +	u16 phy_data = 0;
->>
->> 	memset(p, 0, E1000_REGS_LEN * sizeof(u32));
->>
->> -- 
->> 2.25.1
-> 
 
+I hit the following KASAN report while testing current upstream kernel.
+
+The issue was reproduced by opening /dev/vmclock0, unbinding the vmclock
+platform device, and then reading from the old fd.
+
+KASAN: slab-use-after-free in vmclock_miscdev_read
+
+I reproduced this on commit: e8c2f9fdadee7cbc75134dc463c1e0d856d6e5c7 (May 25 2026)
+
+The reproducer and .config files are here.
+https://gist.github.com/shuangpengbai/7c2d117852611448a80026f8aa4d4bc4
+
+I'm happy to test debug patches or provide additional information.
+
+Reported-by: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
+
+[  148.011605][ T8390] BUG: KASAN: slab-use-after-free in vmclock_miscdev_read (drivers/ptp/ptp_vmclock.c:409)
+[  148.015241][ T8390] Read of size 8 at addr ffff88811fdc7478 by task repro_vmclock_o/8390
+[  148.018209][ T8390] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[  148.018216][ T8390] Call Trace:
+[  148.018226][ T8390]  <TASK>
+[  148.018232][ T8390]  dump_stack_lvl (lib/dump_stack.c:94 lib/dump_stack.c:120)
+[  148.018248][ T8390]  print_report (mm/kasan/report.c:378 mm/kasan/report.c:482)
+[  148.018314][ T8390]  kasan_report (mm/kasan/report.c:595)
+[  148.018335][ T8390]  vmclock_miscdev_read (drivers/ptp/ptp_vmclock.c:409)
+[  148.018384][ T8390]  vfs_read (fs/read_write.c:572)
+[  148.018453][ T8390]  __x64_sys_pread64 (fs/read_write.c:765 fs/read_write.c:773 fs/read_write.c:770 fs/read_write.c:770)
+[  148.018483][ T8390]  do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
+[  148.018498][ T8390]  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+[  148.018604][ T8390]  </TASK>
+[  148.042173][ T8390] Freed by task 8390 on cpu 1 at 147.908511s:
+[  148.042791][ T8390]  kasan_save_track (mm/kasan/common.c:57 mm/kasan/common.c:78)
+[  148.043265][ T8390]  kasan_save_free_info (mm/kasan/generic.c:584)
+[  148.043775][ T8390]  __kasan_slab_free (mm/kasan/common.c:253 mm/kasan/common.c:285)
+[  148.044256][ T8390]  kfree (include/linux/kasan.h:235 mm/slub.c:2689 mm/slub.c:6251 mm/slub.c:6566)
+[  148.044668][ T8390]  devres_release_all (drivers/base/devres.c:50 drivers/base/devres.c:547 drivers/base/devres.c:576)
+[  148.045171][ T8390]  device_release_driver_internal (drivers/base/dd.c:598 drivers/base/dd.c:1357 drivers/base/dd.c:1375)
+[  148.045791][ T8390]  unbind_store (drivers/base/bus.c:244)
+[  148.046252][ T8390]  kernfs_fop_write_iter (fs/kernfs/file.c:352)
+[  148.046798][ T8390]  vfs_write (fs/read_write.c:595 fs/read_write.c:688)
+[  148.047229][ T8390]  ksys_write (fs/read_write.c:740)
+[  148.047678][ T8390]  do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
+[  148.048144][ T8390]  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+[  148.048996][ T8390] The buggy address belongs to the object at ffff88811fdc7400
+[  148.048996][ T8390]  which belongs to the cache kmalloc-512 of size 512
+[  148.050394][ T8390] The buggy address is located 120 bytes inside of
+[  148.050394][ T8390]  freed 512-byte region [ffff88811fdc7400, ffff88811fdc7600)
+
+
+Best,
+Shuangpeng
