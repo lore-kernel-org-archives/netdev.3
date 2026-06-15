@@ -1,41 +1,44 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D0B340D90;
-	Mon, 15 Jun 2026 11:22:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376CF33262A
+	for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 11:24:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781522534; cv=none; b=iTqwsCXF0t566DCel7ulKCUq8Q/mFD9cz6iaC3lvDFIX5CtzD4+G64O5QmDzrRqcO+mHriTndPhp+pD/RpExvupTkg4BFvNblGDg66ktzUCwo8JbdA1rQ1XZX88bumgWz5H84I9+sevQ5WL6ss1/loOly0zRMWRhOU7RZdshRao=
+	t=1781522693; cv=none; b=Y2HO8z2a/jBQtlagmDU7zonOOHRtTdQw/aAGssykk6yLfw0yM6oqpMQxJZisbpwn5V3f3D0cz0ELX8sVFa6nX/pqH3pn+Sr5SlUqJoxq1ZdzaJ5i6WZtopoY442t+h0bsTyw5pLAzUXkZVbBIikuVLu3bwbMWnFmQQyl7K3Zkqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781522534; c=relaxed/simple;
-	bh=/MuDaOiHF9DYQ0To4fpXzkTT9w/BiYVGRh6hDqbgQMg=;
+	s=arc-20240116; t=1781522693; c=relaxed/simple;
+	bh=/LsWDg8Z4r4/aZq1N5Rgf98imEnctVngbdNq714rESo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y1wN6NOb+sXX2VJm8PDPVGfEAD6q/DKRm9H4jWIc+fn8y1XmvmLn6tH8k8ybzLIcMEJY4S9nivXFsdTqk+i1vFaB7LP7388cB8PlKU4VXLUQjvQvSs/NcNP9HV6aKZI6jn//Y2vSvvJkqtievPQp0jzypD/FJizTHr6D4GOz9nI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GVEy0/Tb; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=tCn1QY8GxDXaVz5rCCr/xA20hQVDQWYvmjg5yA82bM8cxkDYyLadaTdkKB8ZmcpoCgrn4SjKAR2w63brUtWSzEDIPrE4iyPUJE/RvZL0WWJvY1/NW2OyY46gs87I+cDvgFFZQWm9tONXZzebslJm6JjlmTlN7tBI9CaKbGBjiIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=QtP4DHFH; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GVEy0/Tb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 434421F000E9;
-	Mon, 15 Jun 2026 11:22:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781522532;
-	bh=dWu3x3+fKrurpYN/VpyZ05LCbhYa2x74DLFqWmaIIE4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GVEy0/Tb2dOviS+hlhbHFbd9rTD0S6QqlTRG1HpCLE5XSNN/VAX4FAkcYc2ugYp/y
-	 gjkvEU5/TBn8sWML4BrWzWHPILxx4fj/OvOqeHXBUnnw3T+W0wMdcXQXOLcCG3/17N
-	 75ktiJZOc6eZkP9XeNEUxhLjXY7/DnswX/8mvGQx2rFafJiHRqxN6DCv5MTNePE00r
-	 aX3aMWTAFMzHqLGQaBhIe86q9Up8lnoIF4cCtcLVgMp0sz0C5CpcfPsbXY46gNEdJj
-	 bhL2UVcwU64WpWkVBY2FEp3YlndZbIHlBTUfly5IEN4GTEGGE70o4EXWI8jKbENySq
-	 GGclnvpXppB6A==
-Date: Mon, 15 Jun 2026 12:22:08 +0100
-From: Simon Horman <horms@kernel.org>
-To: Ruoyu Wang <ruoyuw560@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] net: pch_gbe: handle TX skb allocation failure
-Message-ID: <20260615112208.GG712698@horms.kernel.org>
-References: <20260613080043.873027-1-ruoyuw560@gmail.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="QtP4DHFH"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=Xnl02vDl8tHcP3eFvIi31Hf07qNa+r6eqOGMBuYfG0A=; b=QtP4DHFHIbs4gmDgs1H51B2vKL
+	E7J96FoWMUJ4a+J8DPaffJbc0eceCkXYgPus0GbAvu+hXyIQyn9qMDvYPcn1ISsHCGBZc2tMxavDO
+	HS619o7RXsYp1ogwysOzg6tzOIT2NZFT+XT5lpgnRCZiDi/bJutuaGLO/og6aN+izI3s=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wZ5Qi-007mxk-Jz; Mon, 15 Jun 2026 13:24:36 +0200
+Date: Mon, 15 Jun 2026 13:24:36 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Rongguang Wei <clementwei90@163.com>
+Cc: przemyslaw.kitszel@intel.com, anthony.l.nguyen@intel.com,
+	netdev@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
+	Rongguang Wei <weirongguang@kylinos.cn>
+Subject: Re: [PATCH net-next v1] e1000: Initialize phy_data to avoid
+ unexpected values
+Message-ID: <df2fe788-34b4-42da-9f46-274abf5eb9ff@lunn.ch>
+References: <20260612080331.120096-1-clementwei90@163.com>
+ <1578c474-ffbf-46f7-b906-49da4ea48142@lunn.ch>
+ <6a4bb07e-dbfb-4017-b0c3-b01ef2fc5432@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,44 +47,23 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260613080043.873027-1-ruoyuw560@gmail.com>
+In-Reply-To: <6a4bb07e-dbfb-4017-b0c3-b01ef2fc5432@163.com>
 
-On Sat, Jun 13, 2026 at 04:00:43PM +0800, Ruoyu Wang wrote:
-> pch_gbe_alloc_tx_buffers() allocates an skb for each TX descriptor and
-> then passes the returned pointer to skb_reserve(). If netdev_alloc_skb()
-> fails, skb_reserve() dereferences NULL.
-> 
-> Make pch_gbe_alloc_tx_buffers() return an error when an skb allocation
-> fails. On failure while bringing the device up, clean any TX buffers that
-> were already allocated and release the RX buffer pool through a shared
-> cleanup helper before unwinding the IRQ setup.
-> 
-> Fixes: 77555ee72282 ("net: Add Gigabit Ethernet driver of Topcliff PCH")
-> Signed-off-by: Ruoyu Wang <ruoyuw560@gmail.com>
+> > Isn't a cable length of 0 also unexpected?
+> > 
+> > How does this patch actually make the situation better?
+> > 
+> Uninitialized variables may be initialized to 0 by the system, explicit initialization
+> is performed to avoid accidents. 
 
-...
+That is still not an explanation why 0 is better.
 
-> @@ -1887,7 +1902,13 @@ int pch_gbe_up(struct pch_gbe_adapter *adapter)
->  			   "Error: can't bring device up - alloc rx buffers pool failed\n");
->  		goto freeirq;
->  	}
-> -	pch_gbe_alloc_tx_buffers(adapter, tx_ring);
-> +	err = pch_gbe_alloc_tx_buffers(adapter, tx_ring);
-> +	if (err) {
-> +		netdev_err(netdev,
-> +			   "Error: can't bring device up - alloc tx buffers failed\n");
-> +		pch_gbe_clean_tx_ring(adapter, tx_ring);
+Maybe you want to change this from a void function to something which
+can return an error code?
 
-I think that if pch_gbe_alloc_tx_buffers() fails then
-it should handle cleaning up the ring buffer.
+But also consider the history of this driver. When did anybody do any
+serious development work on it? Does it makes sense to do work on it?
+I assume you have the hardware and can test the changes you are
+making.
 
-IOW, assuming it is safe to call pch_gbe_clean_tx_ring() like this,
-I think that call belongs in error handling in pch_gbe_alloc_tx_buffers().
-
-> +		goto freebuf;
-> +	}
->  	pch_gbe_alloc_rx_buffers(adapter, rx_ring, rx_ring->count);
->  	adapter->tx_queue_len = netdev->tx_queue_len;
->  	pch_gbe_enable_dma_rx(&adapter->hw);
-
-...
+	Andrew
