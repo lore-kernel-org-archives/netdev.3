@@ -1,249 +1,178 @@
-Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
+Received: from CHN02-SH0-obe.outbound.protection.partner.outlook.cn (mail-sh0chn02on2138.outbound.protection.partner.outlook.cn [139.219.146.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11FA2DDCD
-	for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 02:15:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.92
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781489725; cv=none; b=GrM0jCIr7leWh5nAp4ciYNRugFD13k8TabAgP64Laon0j/ow/+9CzFQjwDwsbBFefv1orNXijSvbA0njD3BMXDtAM3KVBRsZr2FLXKKE4UL/MR1FxfJbR47qBO9QcGivYiuDCen94ZieISnPGh0Xpn6xIUITadp99ly1CNR23aM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781489725; c=relaxed/simple;
-	bh=NvL+i5g+zVsvLYVycDEmE95MROyO7PdhUZNBHmGps3I=;
-	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
-	 MIME-Version:Content-Type; b=s1FWhdRK2khEAsyPxGc+cGhKsQuV5+QY3nBQ0x3fTvCwsDzBJxAR8kS77BF/pTLtp3OHK6NQFPP+UeNHbXwk/1oYG8NyzNPvMcP71yTBia/G9qJlDv0Exex4gjgAJGYQS1OY/jBwsKiVwH0ISF4L1X5OwCZX16QDy/2izD0r28I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.254.200.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid:Yeas4t1781489623t034t60564
-Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [183.157.22.210])
-X-QQ-SSF:0000000000000000000000000000000
-From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
-X-BIZMAIL-ID: 17249502123495819819
-To: "'Simon Horman'" <horms@kernel.org>
-Cc: <netdev@vger.kernel.org>,
-	"'Mengyuan Lou'" <mengyuanlou@net-swift.com>,
-	"'Andrew Lunn'" <andrew+netdev@lunn.ch>,
-	"'David S. Miller'" <davem@davemloft.net>,
-	"'Eric Dumazet'" <edumazet@google.com>,
-	"'Jakub Kicinski'" <kuba@kernel.org>,
-	"'Paolo Abeni'" <pabeni@redhat.com>,
-	"'Richard Cochran'" <richardcochran@gmail.com>,
-	"'Russell King'" <linux@armlinux.org.uk>,
-	"'Jacob Keller'" <jacob.e.keller@intel.com>,
-	"'Michal Swiatkowski'" <michal.swiatkowski@linux.intel.com>,
-	"'Kees Cook'" <kees@kernel.org>,
-	"'Larysa Zaremba'" <larysa.zaremba@intel.com>,
-	"'Joe Damato'" <joe@dama.to>,
-	"'Breno Leitao'" <leitao@debian.org>,
-	"'Aleksandr Loktionov'" <aleksandr.loktionov@intel.com>,
-	=?iso-8859-1?Q?'Uwe_Kleine-K=F6nig_=28The_Capable_Hub=29'?= <u.kleine-koenig@baylibre.com>,
-	"'Fabio Baltieri'" <fabio.baltieri@gmail.com>,
-	"'Thomas Gleixner'" <tglx@kernel.org>,
-	"'Greg Kroah-Hartman'" <gregkh@linuxfoundation.org>,
-	<netdev@vger.kernel.org>,
-	"'Mengyuan Lou'" <mengyuanlou@net-swift.com>,
-	"'Andrew Lunn'" <andrew+netdev@lunn.ch>,
-	"'David S. Miller'" <davem@davemloft.net>,
-	"'Eric Dumazet'" <edumazet@google.com>,
-	"'Jakub Kicinski'" <kuba@kernel.org>,
-	"'Paolo Abeni'" <pabeni@redhat.com>,
-	"'Richard Cochran'" <richardcochran@gmail.com>,
-	"'Russell King'" <linux@armlinux.org.uk>,
-	"'Jacob Keller'" <jacob.e.keller@intel.com>,
-	"'Michal Swiatkowski'" <michal.swiatkowski@linux.intel.com>,
-	"'Kees Cook'" <kees@kernel.org>,
-	"'Larysa Zaremba'" <larysa.zaremba@intel.com>,
-	"'Joe Damato'" <joe@dama.to>,
-	"'Breno Leitao'" <leitao@debian.org>,
-	"'Aleksandr Loktionov'" <aleksandr.loktionov@intel.com>,
-	=?iso-8859-1?Q?'Uwe_Kleine-K=F6nig_=28The_Capable_Hub=29'?= <u.kleine-koenig@baylibre.com>,
-	"'Fabio Baltieri'" <fabio.baltieri@gmail.com>,
-	"'Thomas Gleixner'" <tglx@kernel.org>,
-	"'Greg Kroah-Hartman'" <gregkh@linuxfoundation.org>
-References: <20260610060917.23980-1-jiawenwu@trustnetic.com> <20260610060917.23980-6-jiawenwu@trustnetic.com> <20260612154117.GC671640@horms.kernel.org>
-In-Reply-To: <20260612154117.GC671640@horms.kernel.org>
-Subject: RE: [PATCH net-next v6 5/5] net: wangxun: add pcie error handler
-Date: Mon, 15 Jun 2026 10:13:42 +0800
-Message-ID: <018201dcfc6c$96419460$c2c4bd20$@trustnetic.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D564128816;
+	Mon, 15 Jun 2026 02:58:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.146.138
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781492338; cv=fail; b=rxE13VdnqIgsZ8w0551C99BNppeNu1+u6A/+CLG/feIE4GyOZwQPH0fCe3DkNGsv6bfWXKtDa4WpgcaNxG5biQc/VTx/oeClx0oWTRKpP97UY4lOulWyKFmtViZMvG31MU2AHQoqrN0bW9c8gyycd1MPiWK+vFUof0AXT4GB6F0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781492338; c=relaxed/simple;
+	bh=gvxjd+BivmwY2Q3VJ9dbTb+WM7AjgIIWTm7Um5Zsgp8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=TQR/HhzJxE4bm9B/4UI8F6ZoV8Kot2z4fsamiYt9KP3aDiJNGym/ZiPjPBdDiH1oXj7mWQsVj5GrCPxbXCoD8BmlVK2QgQaEHzMcO0NBNIJ5M4k4dWyhAGJM33vfKBzq2NFvVAk3naojRZXcG4oxZZobCljNjKpqqFhbrWvU8Ok=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.146.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=M9EvC2h+1pkhXnuEgUKDpI8lftRJERpGSv0Flf5riGt3yxZvMNtKwNt3QcUVIW9hzCOma0VE0R+Bahfe3/STNJvOdNPmmd4co71TBEFlFsNKqe/X/LQ8O+H5pY78F5bxgBbH32YK+gH0fnvk72NCMar66RQ/ghZbmY3jhgGWE7eBsB/N+j760jVe1oLW/KCD0WiIYj0vCtjSgfZl5F4TnrQvlumgxpHbVbGC9PkkKHulX5blmJwRM435KELYnYfUULTikOFYLwq0DpevWJLa7LpA07EIofYZT6RBP+bl0RcOiMhWCnGyWO/TIcgcRDgHBEo2PEl83nP34s6Ay7PtKg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=a/UWQP0DGSm6A8W1do7ZQEVppFyB01zLmnQNfo+bRJI=;
+ b=gEz/q+/TeUhSgjZtjgkRPtPOkvbuCnqvxR/BbqTGuIY/wdXEsdvg9kLzP5VUEdmuTtPjKMjTv/2iAkBZXiyOoDTFp+xPiRpDhtxuhb2Q6ogjRC32ctpstjPYexvOuSXDOv/bTqM1wFwb5/p4NQk+dRrl60S+AiW/3/uOOuyA6XU0ERcYkUvqrPybQVawhrIBfeADx13tCiugQ5smBhNO11UkParjUkwEGKWdXHBacCcad9wYpDwPNYlcvodZZQBK8kDbQRSNXLmdGEy4JrU6qq/dJ9pkAvuE8Ys5Xx2Vwp7RfuzwxgJCjqzOuasCnJZbXiUMARmoCJp+rcASx+UZlA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=starfivetech.com; dmarc=pass action=none
+ header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
+Received: from SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c311:25::15) by SHXPR01MB0877.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c311:1f::16) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.18; Mon, 15 Jun
+ 2026 01:25:08 +0000
+Received: from SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
+ ([fe80::9b99:12dc:a115:b90f]) by
+ SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn ([fe80::9b99:12dc:a115:b90f%3])
+ with mapi id 15.21.0113.015; Mon, 15 Jun 2026 01:25:08 +0000
+From: Minda Chen <minda.chen@starfivetech.com>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Jose Abreu
+	<joabreu@synopsys.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Russell
+ King <linux@armlinux.org.uk>, Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Rob Herring
+	<robh+dt@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	<conor@kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-stm32@st-md-mailman.stormreply.com"
+	<linux-stm32@st-md-mailman.stormreply.com>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>
+Subject: Re: [net-next v1 2/6] net: stmmac: Checking whether priv->phylink if
+ NULL in NCSI case
+Thread-Topic: [net-next v1 2/6] net: stmmac: Checking whether priv->phylink if
+ NULL in NCSI case
+Thread-Index: AQHc+KotsU7CSx9q1kuYrR3iPfERvbY3dEMAgAdmAgA=
+Date: Mon, 15 Jun 2026 01:25:07 +0000
+Message-ID:
+ <SHXPR01MB086317D16524E2E0CEE46D66E6E62@SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn>
+References: <20260610072420.64699-1-minda.chen@starfivetech.com>
+ <20260610072420.64699-3-minda.chen@starfivetech.com>
+ <f3a32c42-27b2-496f-b236-02c33bee1773@lunn.ch>
+In-Reply-To: <f3a32c42-27b2-496f-b236-02c33bee1773@lunn.ch>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=starfivetech.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SHXPR01MB0863:EE_|SHXPR01MB0877:EE_
+x-ms-office365-filtering-correlation-id: 53f4cca8-5fc9-4fcd-7720-08deca7cefb2
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|376014|7416014|23010399003|1800799024|56012099006|4143699003|22082099003|18002099003|38070700021;
+x-microsoft-antispam-message-info:
+ rcRb6qzZvhDWUvd30Hodq7nsgaLIlFgPOdXq1m/FhM3nYWeZ98PuEB3w18LbLEZGAPUICmqZVvzr0f8Gl/2KK5YWdFT2VD0HDxKLZ5HMLJH/YRi+ewSrDAW7kskoBGZIOvcjJ8obyaTSQy8rln0kD1TmpVniD8hqAGCsfC/9i3SYkIsmqucFQLZSkMvGK3kd8sZ+c3PrqKzrILRb5YdEqE3ACkjvwUNkU7KqNxXZgwgN4vxVxw7z0I1FxlbYZNmV71/IzfflQADrcNgPf+auuKY/Y56lcAIpvUoz4l3Tnw0tzkEzGoKBgx6iTXRjFxvuzuXArfG3vZXAKTEWgqp7h/hbjbLhfD9TuZZ+umzWhDJeBCm1sdsz7cS+1fOiQvpg0Cv52AaGVsyKS4mYUn3SmH3odVvu0PbDq9QrI5Er+rNBUm1nmMsF9sBhSTVBGZ9wg3WRTlQlN7U755C6IL3FbvtEKL2RkhbNBs3axNlvZvQNFE3+8zKVVGGoTswqcThoF1ToIt/+esiYKL9uVs+HUjsUrsHTnKPRefMmcwXN9WOQeMZljWN5rJz88U1f6ePl
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(23010399003)(1800799024)(56012099006)(4143699003)(22082099003)(18002099003)(38070700021);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?hK7+qHUAvr2za3/vDTPNvZR8LreExHYL0jvADhIwYWByijrG6ZLqD0uA2ZC6?=
+ =?us-ascii?Q?rwwKZPSR1CW80j+7JnMvHnTgBUPyT1xWbVx8vtTAOi3fp+vveG6e3A6n/Ez5?=
+ =?us-ascii?Q?y5qYNst7Btudx0XEX28vG5xG5qa/5ugxp+SU5aP+W9xniz42T57ISRfFlezt?=
+ =?us-ascii?Q?AQaao/dV6YHo7v7vMXhbqaJZkWNfmsZFPiy3EB97MyRDNth8Xzz+1nRdFXmN?=
+ =?us-ascii?Q?/S94PB8dAcJPNAMQWSPoD7Dqn8xxJvwK7go/IBDzPOisMAe67x8JE/GYOGa+?=
+ =?us-ascii?Q?37K6Rzdq4tfKuV66vu6oKbAy5r5GyIR0rtBl1vdmEuJt1KPsJUWlac9uUY3t?=
+ =?us-ascii?Q?e6pV0c/nzszj/qklF/2ZmVf3NUSTeGKJZiRorhPaaeDHgkA4juIUSJbMuFLs?=
+ =?us-ascii?Q?s+KsphA2CKFCvAoI0O8y3lkZvFwUhHbgPnyhOnLuRVZZcXst0J5CVDE9Yq5Y?=
+ =?us-ascii?Q?je3gMPveonXqkXHT3+ZHIzB1sbSfNuR6ikh8KCXxVPj+UIrqzBBF1wh7oq1+?=
+ =?us-ascii?Q?I4MF+FiUz2n1m2YOMLRtlFlLByAeJ7vAjOkgzlBRfQx0xPzIqtuLvOvUAO8a?=
+ =?us-ascii?Q?8Y4VFno2YIy6E0W7wQryx845KTj3dw0fV22gp1QcG7ja3xF8V+rZBtJT1rAG?=
+ =?us-ascii?Q?7EwAbZJyZUNYRpfclf2BKfaGFd7ZVV48mgXePHZcqY8Ro8amFgCbrFRv/4kF?=
+ =?us-ascii?Q?+JwbX1ucd38C4U5dwdj80Kf7Qp/L3nULxUSM2tXnaukGo5doTfe4UjMKZ1Ak?=
+ =?us-ascii?Q?cJrzLLltHMyy+OvVaohLq5FPzvlpWrPmdE+wAyjPTBmf1/M0a9d12Ee5x5Ew?=
+ =?us-ascii?Q?tFIs4OFbVtUdebm33fgwmwc3l0lWxsURtc4SyQ/tnzc2LzrTwXZ3No+Brgb/?=
+ =?us-ascii?Q?x7xTNy/ubBWBkkT9SwI4hQALpLRna1iGrTxA9eDofBb+fROWa9zbHW5LlOwS?=
+ =?us-ascii?Q?8Zx7Nivdmw1V5BoYGibw4VJFM3S+pE3BJ/lM7UpgrIt+WYsDK1Y0or8J18Mq?=
+ =?us-ascii?Q?8b/+hbCemynot8z9GgVsXnyAhxzabfvk9fNNzv5odR605C7wmJKqGUuKbSkf?=
+ =?us-ascii?Q?a8Gje/PO76iqTE01A4fgdDSsWfheph/F7J/gyXexa2iywuOAxKOZ56Yo5hK4?=
+ =?us-ascii?Q?zuCPSSz2WXjNMNKKe4v88zTDNEVjHtI6P+//GKZc56rltj9+ieDI5mWLYcd7?=
+ =?us-ascii?Q?pApDD+fLjlh/WABNu714MWRVFX75Coa2FPmPggDzQZrpHY8305jC6nqJP8Sb?=
+ =?us-ascii?Q?CaID1BcVcYPYirKXQ76y6ISu76oOJzwsCTp4C685lkE8QifcJspivibHpZpk?=
+ =?us-ascii?Q?OEreOGZR8ZJm+QzZZ08aKcAmHRS3t2ueffXHmIT5yF805+xcltx4kpmHB1np?=
+ =?us-ascii?Q?W6b2PTpxRELUHIG4uRa5/91bJoL77t1Ui/Wl2tKMqdmUsFQc6+/o7q9wZODZ?=
+ =?us-ascii?Q?vuBttpMQiGN+8dBuKmO0pcvYrNoHCohe/JPm0r4EG2n1HA7Ej1oI2I1ZQsK/?=
+ =?us-ascii?Q?f1HFwCabzOomXBbdb0hCQlYm/dD6nfeWW4fJOcsDpEAx4kgJEZPWZ+4K5jsU?=
+ =?us-ascii?Q?PNLzqjVgXl2P2aq9To5fMP/CUb1GBqXuhmCfEFxx5sifgcJ6NoN4WhFmTsri?=
+ =?us-ascii?Q?AT8YcG7aOhOv4gLUExRfQZNRD4b64eYcF98WyIPuclbd/wi7b0t+Dj7pH0Vi?=
+ =?us-ascii?Q?OTUnhHQsVMFo67aKE+SXlu6svyzE0KENYvq4+/Fhndbck9Al7iMqG+N+C7aW?=
+ =?us-ascii?Q?g5knzyUNyg=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Content-Language: zh-cn
-Thread-Index: AQH9NqXiSq8t3g99zFNQdAvFN/QoIQJ20AayAkkGzz+12GL9QA==
-X-QQ-SENDSIZE: 520
-Feedback-ID: Yeas:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: OceqJ+fpM4/sv7GBIWzlDWCN0iXD+zR/48oXju9HvHqw0ibF7x84y2Wc
-	qT4SSE/GlgMnOJWY6VXKkJXE+r+R9lrnXphPU9iWNXu9b2JkxNEH8zF/7/ieWpu6909qupy
-	NGSd+7ZZ2NiXuU8H1bvrS4/FNAQBkb6KSsX9mH+x7GOA5SOuUKkHSVFtzvRDfi1/Cx0telB
-	+igG4/bLmuI/PpytAG/GxYv+orG4iGQ+1gPSqMc76iFQRFCL4AuIqKFO5R37/Wqf3uTOYbl
-	NJa3iuMiSmF8oEPuj4W7o7zOshW2/owR75cY8fHluhSnJ01O0bQ01VKb0x0ycnkBWGi8j+3
-	R33c/uobGipiLnGdqWG0fIBnyhkOaP1P40AYDxuS/wF5aYcpKUUT1oOi7gpZuCZHh/nMvdj
-	12OYM22C3pJ0k9hbsIf9ky5/yrFLbFA3UUatOp63kBHOtJrNCs3LNDcCER0YQAGz1ZQ+fMw
-	KcotWaHlDpQBWl1BzLqhZd1TGUuO1sS6s6cm1084yUC+EJtUJN9UKZ+w7/wobmsqzKOrB4U
-	PTN5/qhd/eJcuwdcxmXH5ihwQdGxtTxkUbrkgD8H0cGhZ8McNWYs2th2lXlHdHupd8/sX26
-	0a5dZ4x7NLdoYKfeNmM+rKhtTgL+UTrG/4ef1NEVa1mpFna+zzncsExJv8H+x7G7ACwh4LQ
-	HM5E7sAJl91eOBQHXiDlg1tJERbdeExaHifzMBjBsCPdu8gJxrSdFwCS1ACfBJE7dMFBCql
-	UVdH2I6bgby0NMGZgR+2XIn/1MuBVbkdkwvp8f4WmBJDoexh1tCtD85M2Xyl2MDnk/i5Z/c
-	IIrZT60fgDB9qNOv0HCN3QvPOKV9mpvtoEHum1HaUYdAJKjPm9mM8HH0jZkOTW65E3ArKIo
-	xr41YYndLdkUFvjjfTc/3Pltoii7v3zCQVssBepY9JzMGSeo3qrcOn/bVzsMQnxbqXadvAr
-	ZiE41erdP0/MuAtnW7tmoAXITM0/DDXQsRHcHDVg2NbqMhYIXxaAhtZjrHeFlquQgedyoQK
-	u7aYi2V91ouft0xgFwTDc5Rz8yfQh6XzHm/B1vqOhtbbGajHXlGCwFYlLlnI1txK1EdTJ01
-	VJCcQE8Q9Ol0NzpAwKgMGE=
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
-X-QQ-RECHKSPAM: 0
+X-OriginatorOrg: starfivetech.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SHXPR01MB0863.CHNPR01.prod.partner.outlook.cn
+X-MS-Exchange-CrossTenant-Network-Message-Id: 53f4cca8-5fc9-4fcd-7720-08deca7cefb2
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Jun 2026 01:25:07.8418
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: IQlHREwQzw7P7T5sN26ypsVBlQtDBl6e6uIxy11gYJ82CkY3nbxySljwbqSydGctx/4h5iiBQGRaIuSgBQZ1LPs7EAL0SbsBfZBQ7Zq/HYU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SHXPR01MB0877
 
-On Fri, Jun 12, 2026 11:41 PM, Simon Horman wrote:
-> On Wed, Jun 10, 2026 at 02:09:17PM +0800, Jiawen Wu wrote:
-> > Support AER driver to handle the PCIe errors. Sometimes netdev watchdog
-> > Tx timeout happens before the AER error report when a PCIe error occurs,
-> > CPU blocking would be caused by MMIO during the reset process. To
-> > prevent it, check PCIe error status in .ndo_tx_timeout. The current
-> > function of ngbe is not yet fully developed, it will be completed in the
-> > future.
-> >
-> > Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-> 
-> Hi Jiawen,
-> 
-> There is AI-generated review of this patch-set available on both
-> https://sashiko.dev and https://netdev-ai.bots.linux.dev/sashiko/
-> 
-> I've tried to filter out only those that seem strictly relevant
-> to the progress of this patch and have included them inline.
-> 
-> I'd appreciate it if you could take a look over this.
-> 
-> > diff --git a/drivers/net/ethernet/wangxun/libwx/wx_err.c b/drivers/net/ethernet/wangxun/libwx/wx_err.c
-> 
-> ...
-> 
-> > +/**
-> > + * wx_io_slot_reset - called after the pci bus has been reset.
-> > + * @pdev: Pointer to PCI device
-> > + *
-> > + * Return: pci_ers_result_t.
-> > + *
-> > + * Restart the card from scratch, as if from a cold-boot.
-> > + */
-> > +static pci_ers_result_t wx_io_slot_reset(struct pci_dev *pdev)
-> > +{
-> > +	struct wx *wx = pci_get_drvdata(pdev);
-> > +	pci_ers_result_t result;
-> > +
-> > +	if (pci_enable_device_mem(pdev)) {
-> > +		wx_err(wx, "Cannot re-enable PCI device after reset.\n");
-> > +		result = PCI_ERS_RESULT_DISCONNECT;
-> > +	} else {
-> > +		/* make all memory operations done before clearing the flag */
-> > +		smp_mb__before_atomic();
-> > +		clear_bit(WX_STATE_DISABLED, wx->state);
-> > +		clear_bit(WX_FLAG_NEED_PCIE_RECOVERY, wx->flags);
-> > +		pci_set_master(pdev);
-> > +		pci_restore_state(pdev);
-> > +		pci_wake_from_d3(pdev, false);
-> > +
-> > +		rtnl_lock();
-> > +		if (netif_running(wx->netdev) && wx->down_suspend)
-> > +			wx->down_suspend(wx);
-> > +		if (wx->do_reset)
-> > +			wx->do_reset(wx->netdev, false);
-> 
-> The AI-generated review on sashiko.dev flags the following.
-> 
-> 	"Does this properly initialize the hardware MAC during PCIe AER
-> 	 slot reset recovery for the ngbe driver?
-> 
-> 	"For txgbe, this correctly maps to txgbe_reset(), which calls
-> 	 txgbe_reset_hw().  However, for ngbe, wx->do_reset maps to
-> 	 ngbe_do_reset() which calls ngbe_reset().
-> 
-> 	"Looking at ngbe_reset():
-> 
-> 	"drivers/net/ethernet/wangxun/ngbe/ngbe_main.c:ngbe_reset() {
-> 	    if (test_bit(WX_FLAG_NEED_PCIE_RECOVERY, wx->flags))
-> 	        return;
-> 	    wx_flush_sw_mac_table(wx);
-> 	    wx_mac_set_default_filter(wx, wx->mac.addr);
-> 	    if (test_bit(WX_STATE_PTP_RUNNING, wx->state))
-> 	        wx_ptp_reset(wx);
-> 
-> 	"This skips ngbe_reset_hw() and fails to fully reset the hardware.
-> 	 Since a PCIe slot reset clears the device's internal state, when
-> 	 wx_io_resume() subsequently calls ndo_open(), could the device fail
-> 	 to function because its hardware registers and PHY state were never
-> 	 reset?
 
-As stated in the commit message, ngbe is not yet fully implemented due to some
-existing issues with its reset mechanism. These will be refined in a future patch.
 
-> > +		rtnl_unlock();
-> > +		result = PCI_ERS_RESULT_RECOVERED;
-> > +	}
+>=20
+> > +static inline bool stmmac_phylink_expects_phy(struct phylink *link) {
+> > +	if (link)
+> > +		return phylink_expects_phy(link);
 > > +
-> > +	pci_aer_clear_nonfatal_status(pdev);
-> > +
-> > +	return result;
+> > +	return false;
 > > +}
-> 
-> ...
-> 
-> > +static void wx_tx_timeout_recovery(struct wx *wx)
-> > +{
-> > +	/*
-> > +	 * When a PCIe hardware error occurs, the driver should initiate a PCIe
-> > +	 * recovery mechanism. However, this recovery flow relies on the AER
-> > +	 * driver for current kernel policy. Therefore, a self-contained
-> > +	 * recovery mechanism is not implemented yet.
-> > +	 */
-> > +	set_bit(WX_FLAG_NEED_PCIE_RECOVERY, wx->flags);
-> > +	wx_err(wx, "PCIe error detected during tx timeout\n");
-> > +	queue_work(wx->reset_wq, &wx->reset_task);
+> > +
+> > +static inline int stmmac_phylink_pcs_pre_init(struct phylink *link,
+> > +struct phylink_pcs *pcs) {
+> > +	if (link)
+> > +		return phylink_pcs_pre_init(link, pcs);
+> > +
+> > +	return 0;
 > > +}
-> 
-> The AI-generated review on https://netdev-ai.bots.linux.dev/sashiko/ flags:
-> 
-> 	"What clears WX_FLAG_NEED_PCIE_RECOVERY if AER never follows up?
-> 	 wx_tx_timeout_recovery() sets the flag and queues reset_task.
-> 	 reset_task only calls wx_soft_quiesce() and does not clear the
-> 	 flag:
-> 
-> 	    if (test_bit(WX_FLAG_NEED_PCIE_RECOVERY, wx->flags))
-> 	        wx_soft_quiesce(wx);
-> 
-> 	"The flag is cleared only on the success branch of
-> 	 wx_io_slot_reset(). If the PCIe error never escalates to AER (AER
-> 	 disabled in firmware or kernel, error not reportable, slot_reset
-> 	 returns PCI_ERS_RESULT_DISCONNECT), the flag remains set
-> 	 indefinitely.
-> 
-> 	"Both ngbe_reset() and txgbe_reset() now early-return on this flag:
-> 
-> 	    static void ngbe_reset(struct wx *wx)
-> 	    {
-> 	        if (test_bit(WX_FLAG_NEED_PCIE_RECOVERY, wx->flags))
-> 	            return;
-> 	        ...
-> 	    }
-> 
-> 	"so any subsequent reset path (ethtool reset, ndo_set_features
-> 	 triggered reset, watchdog timeout reset, FDIR reinit,
-> 	 ngbe_reinit_locked / txgbe_reinit_locked) is silently a no-op. The
-> 	 hardware reset capability is effectively disabled until the module
-> 	 is reloaded.
-> 
-> 	"Should wx_tx_timeout_recovery() (or reset_task after the quiesce)
-> 	 clear the flag once the soft-quiesce completes, so the driver's
-> 	 reset machinery remains functional when AER does not follow up?
+> > +
+> > +static inline void stmmac_phylink_start(struct phylink *link) {
+> > +	if (link)
+> > +		phylink_start(link);
+> > +}
+> > +
+> > +static inline void stmmac_phylink_stop(struct phylink *link) {
+> > +	if (link)
+> > +		phylink_stop(link);
+> > +}
+>=20
+> Please take a step back and think about the Linux big picture architectur=
+e.
+>=20
+> What is stmmac specific here? If you were to add NCSI support to another =
+driver
+> which uses phylink, would it need to replicate all this?
+>=20
+> When you consider how the MAC is configured, does it need to know it is
+> connected to an NCSI? Can the MAC tell the difference between NSCI, fixed=
+-link,
+> a PHY or an SFP? Or does the MAC just need to know RGMII, the link is up,=
+ send
+> frames?
+>=20
+> Please look at adding generic support for NSCI in phylink, and see if the=
+ existing
+> phylink mac ops covers everything needed for configuring the MAC.
+>=20
+> 	Andrew
 
-If a PCIe error happens and AER is unresponsive, the driver currently lacks
-alternative recovery mechanisms. This renders the hardware unusable, making
-any further reset operations disallowed.
-
-
+Thanks. I will try to use fix-PHY link.
