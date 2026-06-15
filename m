@@ -1,61 +1,63 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CFB13AE1B4
-	for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 19:51:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B84363B4EAA
+	for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 19:51:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781553065; cv=none; b=luIf3zJ+ECL2sp9i5U3x1hThW48piqxWDVnxhcga++eWl5KkBATcrXLN28ikofNOnKG90eJjckTGTWCvdiA6xQMWoI7NvO2zni2nJnqWTpKUECcgS7XDlL5Fc3SK4z4kbunJ+fiFFaaae3Dhjfmuu8vNkfH8ldhNLGfqiu4qm8o=
+	t=1781553074; cv=none; b=PkIiJejUs0gi1mC8UQQUO/KkAW2EoxJEEvaf5oBEA+caHqhvzemFe7yDT6dVeTVcV5jYbHTv743GCSLRBGeMIi9l7cQM4sNqdYE80VoK8YUGKhgZuZVtmdXX9qIZB5qxMa0CCAY0seXVG1XyhuDD96s6h8gm8uqyenPgWxiZIdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781553065; c=relaxed/simple;
-	bh=XiN2TAV/Jyt9rlfhH6SndFvcpYzd2iWP8XXKPVfWnAQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mvjeXX7ZeR7aHqS5QItS9TL+t7e4wVeW+0vfZXBJTxLyj9n2wrSH+CD2YdPcqcE2mpaobSDiEtRfofeq3+3HYvDTnaFSiWjj0hT9YeI3Rcb1asw7B3iiX0/TCOzmSq6219pAzQhhh/nbSxFjs6awEOV+JNG7DIxMUug9tkPBuGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mYLdmI/p; arc=none smtp.client-ip=209.85.214.180
+	s=arc-20240116; t=1781553074; c=relaxed/simple;
+	bh=uOByGr4vblK9B20Aq+PsLQex9gmyDLYAbOyz1m5A/po=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=WdWoRAZFnG5ArBRARvKiTpdkySumF4d6TVJJlQSXF1lq1/qk3ILfjTCmNWQGuZXyo2NPq6BkjbJin2HbKtWQ181q/0i5i/R8xXc7OqoEwki0mq23SanujYBgLfTM6bmMICsQU09+2Ocp01zvskwJ5/S+ZW8mY+C+GU8PBLDy5T8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LHiU+i0v; arc=none smtp.client-ip=209.85.214.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mYLdmI/p"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2c0c1e0b0faso23393855ad.0
-        for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 12:51:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LHiU+i0v"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2c0aa420401so27783505ad.3
+        for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 12:51:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781553064; x=1782157864; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=kR2H058KfWptgCGHf0keM7qDW2F2uynpG+pGsuzFvRs=;
-        b=mYLdmI/ptaO92JNih2lqipfXupiC9p5mz09Zxws9fwIr5bSBWjmQrwlRf95orK6zGE
-         IJO8NMxCkN72ZJ+1dOqATWVndwkm/M5pYML58ZslnFH5eKY9CWboaR9TdLlYHax79RqV
-         HVtQiAqkpE0dO/x8P15nWMKko2auJKGi0G0fyQ+fiZJUBRJTyuAksxdRt0KhT3GS/bsw
-         Dph0IvAlk/rHBukqYbsbugPpMwV73a+EVoQOMe4AU4rV8bO7fHKkJgYIYowMCq957chP
-         adko3c/SzEuUUOdE1w+gkUfLkHYwc/AmfgLUrjDxOp6s9m2NhPCy14yS/K1EGnMu24Lk
-         wnDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781553064; x=1782157864;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1781553072; x=1782157872; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kR2H058KfWptgCGHf0keM7qDW2F2uynpG+pGsuzFvRs=;
-        b=HCYyKIhres79sHAMB+IIEtWfRWjM0a3hu2lizMPYsgXr/BFxJzm0BSX08e8h7Dwa45
-         fsi0bdPi7a9OmvPMdJTuSpdzasDogwmPOcQ5YM/m44dz39hlhpN4tMi3j8mhua6qO0Pq
-         j7BF2fuVh9x2hkJhL1xm30fF2v64LJp16xqqvn/VDjUKtPmGN3JdIwrpyrFM6nKO9md1
-         Xj9YQNo6zS/oss9DxFN6+BvufEXemVDp4BIBu0pao4qW+qpnZDLdMgI9jVTd8f03aWhm
-         ZiiTuVD3WpLGWdEPfCWSXCUorBMDT3Vo5La349WNh9h+HYnIclkRH4dZBODUCUhDy/zY
-         M21Q==
-X-Forwarded-Encrypted: i=1; AFNElJ/XgTnJ9P44HJDnYR4Y1rPrxb+duxmra822hppOV+obWsoqotoECIfLPr5YCms2Zl13W9rFUxw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyKFXmIPkh5UyHvlexPD1C5i6QkX7BAG2kZEHlcmZmFtqV9MppY
-	BqdFzf+pE54YyJGPrQPe5SzD6U/nl7wRamJlkBGxjanUs45qtwPL4cdL
-X-Gm-Gg: Acq92OGeR3SxGq3nLk83tJQO127Pu7ufdvuC6BLE96pxDwlxSMmR2nTprBhh7ns83PU
-	+oamjZW9xQ0xg3Vt99Dzt1ol1ClELhfn4/lriNyTdKyLA0dobpmpbeJLWT/jinUOMeWra51V3EB
-	IfDzh7Qb1x/0GsLTwIPyWImYMnYuTkm1GRJ8npLnbgj9wkejZP+Q/xOeT+kWLyGdvWvcCndlLPh
-	zjeb2AIOU/uR/cv/CHKxsu7dDwe4CAook2OQoxY39ptzpucGRNk4LrnUO/uu1ig0Ihm4EHghLIh
-	RQYczzTcVF3VRUzOel7pJ3HcBkIoLP4amOhyfk2WLa7dacT9OuEhRABV2p9M+K72oRqlt4ED/tz
-	e6N1WF3SKjzDLxoJGURQ2GN0zQOEUbOTt34Es3SJ77qipqbHg6Vtq4u3Nl1YtoQYLYZbMpZe/cX
-	yPXI16KhZtQCsyQX9S3SllySNGrepD+HscnBU0MbQN9md10eZsKC8pbkonytJdFg==
-X-Received: by 2002:a17:903:1a27:b0:2c0:c940:dc1e with SMTP id d9443c01a7336-2c4125593d9mr173197865ad.20.1781553063994;
-        Mon, 15 Jun 2026 12:51:03 -0700 (PDT)
+        bh=zbfwy+N51pnPP3dCRs58iA2OlGOjosl6R8dDok6B7Dc=;
+        b=LHiU+i0vkUWSFh2FCqJXLW65/zd59RiY2l5K8/acrNrXOIwnq/ETwwEhkqsbPhchel
+         1eUFfRcWSHqYShNTMd+2l8T5BeQWgX8CS3E3vz0BZd2cKQpklUbtvRu6Xyvd2gnhv3Bk
+         5GfdJ1JZMq8FKckq4azZ6mh6z/Rim1kXxS8zIlIRyk1op6N6hqGpPGnVumbvgpJ8aYfo
+         OTp2HnbxkS/bqKrY/1mR9Jp3KGtC71+TixzxhkCStuOhd7xIpw8kjqarHPykC0qZxk5t
+         keV8SKkeaTj+E6LlsLMkXd7ax+B6D8plTGSgibduoUSOSBk76wxA4RNS7CLpRj5weL5v
+         UMfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781553072; x=1782157872;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=zbfwy+N51pnPP3dCRs58iA2OlGOjosl6R8dDok6B7Dc=;
+        b=SxI8ZTDDnodmMcS71117rtXRdwX8wT6jnLUHheSB9r22wR6VcWKt/eo0fOCZQ4ORXI
+         +d2tMoQONPm2LiVxDHkGpSEgs+Qgb+AbW7YxDUeAjzaiO39hQ8pb3ToXuSiterbz4VKg
+         EctxhgHHn2+jjJbGYhHUGOMzYo9VVagUyUG3CBCnun1afSlRg+IefFimr8ufVbySHU1V
+         v0FPnSPG39ysUfilviZ2b23bACtCFSCPowt3Ql8y3y1JvbfTZDCEJd9Z67iIscJJKk0q
+         pJYGG4AnIgyciot0YQjxhx1oRasj7a52DQsCdLiAkZyyziLY1tpzTp4XzTj+GzuF8v1f
+         F90w==
+X-Forwarded-Encrypted: i=1; AFNElJ+SFKi7U1mglOh+iRw8eWo2al01AK3yUfvesl49Yc8w2bGvKoWHkgM3/KgXtQk9yRGDm9MZ/IU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwT6b2gwEKGV0p2HitXIhUW21FFUQwJDUArXLdc1/LH/Mj8VrFV
+	OmY2XyVJY7LWXXOl3uk4ApnoEKj11hLYBZ//F8lDKXiWfY9/zLhpFYt4
+X-Gm-Gg: Acq92OFD0A5NduoH36Y19aQmBGcXd3OCC9wjkv5dEfUmSmMBCrj8lru5sUc9onU1UbW
+	Nb62L8xiyxl3vpYketh9Vpx97vLs0EU0/Spi7mYSuFK3oh9noqBmr5Mu09Fi8BFZE6GXO+oegsB
+	5jIjU+TDa/sv5jyyZrG8G3XiaQmby9Rsp+GpsgXFh0PrwQ3QC/de306VIIFMYsGHsnyN6JwHGgk
+	VO/idqgWofz/qVCzQKM2fGbG/ymTCv+i/sMJo/1ViB5nSzufcEWJkIW8VMEAULOp0b878mu5atw
+	6A+z0yzEz3HbsJJ2eH26JTJrK9UR9xsJYkoINR0rjGC9APSZTBx8fmKLqPsbq7Z+K2lbBqtFOco
+	Izbhk2Ahx+wuwByoITTS6MkoS7LKcdvK1ZDld3vDHmxpS72qasvbxjub9n1QsJzqK4wSXmH/G7v
+	wQpuxQ1KXTgNGp0bWTB7NFL2JMwQuLxc/KyCFo13t3TxpGl15SxnWOx0u6p8IAFPemWcVadB2V
+X-Received: by 2002:a17:903:944:b0:2c4:608:167c with SMTP id d9443c01a7336-2c410cd152emr164854215ad.6.1781553072069;
+        Mon, 15 Jun 2026 12:51:12 -0700 (PDT)
 Received: from localhost.localdomain ([115.110.225.242])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c42f2e5644sm113307285ad.4.2026.06.15.12.51.00
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c42f2e5644sm113307285ad.4.2026.06.15.12.51.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jun 2026 12:51:03 -0700 (PDT)
+        Mon, 15 Jun 2026 12:51:11 -0700 (PDT)
 From: Shitalkumar Gandhi <shital.gandhi45@gmail.com>
 X-Google-Original-From: Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
 To: Wells Lu <wellslutw@gmail.com>
@@ -68,10 +70,12 @@ Cc: Andrew Lunn <andrew@lunn.ch>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
-Subject: [PATCH net v2 0/2] net: ethernet: sunplus: spl2sw: fix of_node refcount leaks
-Date: Tue, 16 Jun 2026 01:20:30 +0530
-Message-Id: <cover.1781552725.git.shitalkumar.gandhi@cambiumnetworks.com>
+Subject: [PATCH net v2 1/2] net: ethernet: sunplus: spl2sw: fix phy_node refcount leak in remove
+Date: Tue, 16 Jun 2026 01:20:31 +0530
+Message-Id: <f3bdd4c91f3e2269b4e256075f9dc70808b1b8e9.1781552725.git.shitalkumar.gandhi@cambiumnetworks.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <cover.1781552725.git.shitalkumar.gandhi@cambiumnetworks.com>
+References: <cover.1781552725.git.shitalkumar.gandhi@cambiumnetworks.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -80,36 +84,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series fixes of_node refcount leaks in the Sunplus SP7021 ethernet
-driver, found by inspection. Compile-tested only; no SP7021 hardware
-available here.
+mac->phy_node is acquired via of_parse_phandle() in spl2sw_probe() and
+stored in the mac private data, transferring ownership of the
+device_node reference to mac. On driver removal, spl2sw_phy_remove()
+disconnects the PHY but never drops that reference, so each
+probe-then-remove cycle leaks one of_node refcount per port permanently.
 
-Patch 1/2 fixes the phy_node leak in the remove path.
-Patch 2/2 fixes multiple leaks in the probe path and depends on the
-cleanup contract from patch 1/2.
+Drop the reference after phy_disconnect(). While at it, remove the
+redundant inner "if (ndev)" check; comm->ndev[i] was just verified
+non-NULL on the line above.
 
-Changes since v1:
-  - Combined the two related fixes into a single series with cover
-    letter, per netdev convention.
-  - Added "Compile-tested only" note to both commit messages
-    (Andrew Lunn).
-  - Dropped Cc: stable@vger.kernel.org -- the leaks only manifest on
-    driver unbind/rebind, which is not a path normally exercised on
-    this SoC (Andrew Lunn).
-  - Fix author email to match Signed-off-by (DCO).
+Compile-tested only; no SP7021 hardware available.
 
-v1: https://lore.kernel.org/netdev/20260607193029.589736-1-shitalkumar.gandhi@cambiumnetworks.com/
-    https://lore.kernel.org/netdev/20260607193711.601544-1-shitalkumar.gandhi@cambiumnetworks.com/
+Fixes: fd3040b9394c ("net: ethernet: Add driver for Sunplus SP7021")
+Signed-off-by: Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
+---
+ drivers/net/ethernet/sunplus/spl2sw_phy.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-Shitalkumar Gandhi (2):
-  net: ethernet: sunplus: spl2sw: fix phy_node refcount leak in remove
-  net: ethernet: sunplus: spl2sw: fix multiple of_node refcount leaks in
-    probe
-
- drivers/net/ethernet/sunplus/spl2sw_driver.c | 20 +++++++++++++-------
- drivers/net/ethernet/sunplus/spl2sw_phy.c    |  6 ++++--
- 2 files changed, 17 insertions(+), 9 deletions(-)
-
+diff --git a/drivers/net/ethernet/sunplus/spl2sw_phy.c b/drivers/net/ethernet/sunplus/spl2sw_phy.c
+index 6f899e48f51d..a4889c52e00e 100644
+--- a/drivers/net/ethernet/sunplus/spl2sw_phy.c
++++ b/drivers/net/ethernet/sunplus/spl2sw_phy.c
+@@ -79,12 +79,14 @@ int spl2sw_phy_connect(struct spl2sw_common *comm)
+ void spl2sw_phy_remove(struct spl2sw_common *comm)
+ {
+ 	struct net_device *ndev;
++	struct spl2sw_mac *mac;
+ 	int i;
+ 
+ 	for (i = 0; i < MAX_NETDEV_NUM; i++)
+ 		if (comm->ndev[i]) {
+ 			ndev = comm->ndev[i];
+-			if (ndev)
+-				phy_disconnect(ndev->phydev);
++			mac = netdev_priv(ndev);
++			phy_disconnect(ndev->phydev);
++			of_node_put(mac->phy_node);
+ 		}
+ }
 -- 
 2.25.1
 
