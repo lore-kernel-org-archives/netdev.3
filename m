@@ -1,72 +1,124 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33618404BE1;
-	Mon, 15 Jun 2026 15:33:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F6A405C52
+	for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 15:35:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781537610; cv=none; b=UTgj/1RsnPgpvWwHF71kBZT1xp8lgFjL/9G7iuPGlam5fAD3Ww3NXWhVjW93ZdI8D3eBnqH23vMpHCTMcA/nwFvf8ne0RNh/nFewP8Swh5+OtEmJUc5p3Eo5f+gHu4fd8f5hu05doY3nNY8t7lysCvTOrWD6EXrpCeSUfWXTVrc=
+	t=1781537703; cv=none; b=WvnS/nVDs0r+0tW/CYHZWA2Bye1TpxYrT/RSO/knuJbs3GCwHBvqAzsEdj4GH1MZhS45Jxkz8da2qm0YoHR4ssSYg5LAdf8PmnLaT2XKjtikYxXtQrpIU/CdLLrJkXUeQZe4PIx4bepwATLh042xr60a4Jts07G58HYmwuvAEmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781537610; c=relaxed/simple;
-	bh=l1uB0EgEm3OBElTfRhmlX1HSd+akqf6wyzQgXqBCLOk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oKet70tWkGf5HK+zJILSCoCwHAGqDa86DsmbaK8RU2RSemnrj8J7hU0Mcl7Mmti9UTZtsWmNxpsTPyGc7JdodMsiYUUIUnjLTVP7MFYDTPEzXMLEccMP5/PSrWmgHZCqeWljRFt8hW2naE7nbmllM5bq6fVAuxxMrdjlysaH46Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
-	 (Exim 4.99)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1wZ9JP-000000004Nf-1xqC;
-	Mon, 15 Jun 2026 15:33:19 +0000
-Date: Mon, 15 Jun 2026 16:33:16 +0100
-From: Daniel Golle <daniel@makrotopia.org>
-To: Christian Marangi <ansuelsmth@gmail.com>
-Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH net] net: ethernet: mtk_eth_soc: fix supported_interface
- set after phylink_create
-Message-ID: <ajAbPJU70G4kGw67@makrotopia.org>
-References: <20260615151106.15438-1-ansuelsmth@gmail.com>
+	s=arc-20240116; t=1781537703; c=relaxed/simple;
+	bh=d98kcthOM0gMZdNWf68Lz6H91/isa754lxZq2ugkS5M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jnR/g54T3itO3tniL7RZ+q0MVZW4vfUUlNrcrgnTPxsYn0mNzb8QnJUdQiSPFv8Vfm1MRRrTnQ9ZuEomUNWeH2SAld2MEPKy8BbMfIFs/YcOKUa6q6QWEVYZDL/1LuTHDkokH0BVWiLQH1Cd83tQW7wot1WUsDP4llxZkiQ0wx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MBzk29dZ; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MBzk29dZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA8321F000E9;
+	Mon, 15 Jun 2026 15:35:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781537702;
+	bh=KrIaSO/ZO6K1FnrFLw8wD6DuseJBE+Qqfiz9rZBR01Q=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=MBzk29dZNVaLC3Y10iyTWg1g+gDobi84bFPH4oDa+rrI23ZDp0/jvq0hAh1KcOwDA
+	 KLS/+mn2ogtdV+p08olD86Rjucvtzgd2v0KnBAFW6poWCEH6RNCrtrxekK9vn1jZ9G
+	 5secdHvLjEtVXaw8pGjZK6fWGvhqfPGxKWIATuWyibx9muKgS0pHgtBZtcSYgUAiWS
+	 k2hbsScgz5W4u7L3ygGTKmr8wHUazudPtiZrk9Kbg/Hgl8f7INOAs5xlO1qZHWsHsC
+	 O3knsWtQ3Ci2c2Nwr84Pf20JgkrR/6GqG3oeD1jC12Fg+GPv0TE13LVbb0SG4SfYQ+
+	 VS2towlwaoBhg==
+From: Simon Horman <horms@kernel.org>
+To: nikhil.rao@amd.com
+Cc: Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	brett.creeley@amd.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	eric.joyner@amd.com
+Subject: Re: [PATCH v4 1/6] pds_core: add support for quiet devcmd failures
+Date: Mon, 15 Jun 2026 16:34:02 +0100
+Message-ID: <20260615153400.772876-3-horms@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260614050052.1048328-2-nikhil.rao@amd.com>
+References: <20260614050052.1048328-2-nikhil.rao@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260615151106.15438-1-ansuelsmth@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jun 15, 2026 at 05:11:00PM +0200, Christian Marangi wrote:
-> Everything configured in phylink_config it's assumed to be set before
-> calling phylink_create() to permit correct parsing of all the different
-> modes and capabilities.
-> 
-> Commit 51cf06ddafc9 ("net: ethernet: mtk_eth_soc: add support for MT7988
-> internal 2.5G PHY") while introducing support for 2.5G phy for MT7988,
-> probably due to an auto-rebase, placed the configuration of the INTERNAL
-> interface mode for the supported_interfaces for phylink_config right after
-> phylink_create() introducing a possible problem with supported interfaces
-> parsing.
-> 
-> While this doesn't currently create any problem/bug, move setting this bit
-> before phylink_create() to prevent any possible regression in future code
-> change in phylink core.
-> 
-> Fixes: 51cf06ddafc9 ("net: ethernet: mtk_eth_soc: add support for MT7988 internal 2.5G PHY")
-> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://sashiko.dev
+---
+pds_core: add support for quiet devcmd failures
 
-Reviewed-by: Daniel Golle <daniel@makrotopia.org>
+This commit introduces support for suppressing error messages during device
+commands by adding a boolean parameter to wait and lock functions. It changes
+pdsc_devcmd_wait and pdsc_devcmd_locked into internal __pdsc_devcmd_wait and
+__pdsc_devcmd_locked variants that handle the new messaging flag. This
+functionality is intended for negotiating the PDS_CORE_IDENTITY_VERSION_2.
 
-As no user-visible bug surfaces because of that it is questionable though if
-the Fixes:-tag is justified.
+> diff --git a/drivers/net/ethernet/amd/pds_core/dev.c b/drivers/net/ethernet/amd/pds_core/dev.c
+> index bded6b33289ce..dd9989cfe6b3f 100644
+> --- a/drivers/net/ethernet/amd/pds_core/dev.c
+> +++ b/drivers/net/ethernet/amd/pds_core/dev.c
+
+[ ... ]
+
+> -int pdsc_devcmd_locked(struct pdsc *pdsc, union pds_core_dev_cmd *cmd,
+> -		       union pds_core_dev_comp *comp, int max_seconds)
+> +static int __pdsc_devcmd_locked(struct pdsc *pdsc, union pds_core_dev_cmd *cmd,
+> +				union pds_core_dev_comp *comp, int max_seconds,
+> +				const bool do_msg)
+>  {
+>  	int err;
+>  
+> @@ -197,7 +199,7 @@ int pdsc_devcmd_locked(struct pdsc *pdsc, union pds_core_dev_cmd *cmd,
+>  
+>  	memcpy_toio(&pdsc->cmd_regs->cmd, cmd, sizeof(*cmd));
+>  	pdsc_devcmd_dbell(pdsc);
+> -	err = pdsc_devcmd_wait(pdsc, cmd->opcode, max_seconds);
+> +	err = __pdsc_devcmd_wait(pdsc, cmd->opcode, max_seconds, do_msg);
+>  
+>  	if ((err == -ENXIO || err == -ETIMEDOUT) && pdsc->wq)
+>  		queue_work(pdsc->wq, &pdsc->health_work);
+
+[Severity: Critical]
+This isn't a bug introduced by this patch, but it occurs in the function
+modified here.
+
+Can this queue_work() call trigger a use-after-free during driver removal?
+
+Looking at pdsc_remove() in drivers/net/ethernet/amd/pds_core/main.c,
+destroy_workqueue() is called but the pdsc->wq pointer is not cleared:
+
+pdsc_remove() {
+    ...
+    if (pdsc->wq)
+        destroy_workqueue(pdsc->wq);
+    
+    mutex_lock(&pdsc->config_lock);
+    set_bit(PDSC_S_STOPPING_DRIVER, &pdsc->state);
+    
+    pdsc_stop(pdsc);
+    pdsc_teardown(pdsc, PDSC_TEARDOWN_REMOVING);
+    ...
+}
+
+Subsequently, pdsc_teardown() issues a RESET command to the firmware.
+If the firmware is unresponsive and the command times out, we reach this
+error path in __pdsc_devcmd_locked(). Since the pdsc->wq pointer was never
+set to NULL, the check here succeeds, and it attempts to queue work to a
+destroyed workqueue.
+
+Should pdsc->wq be explicitly set to NULL immediately after being destroyed
+in pdsc_remove() to prevent this?
+
+>  	else
+>  		memcpy_fromio(comp, &pdsc->cmd_regs->comp, sizeof(*comp));
+>
