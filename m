@@ -1,96 +1,89 @@
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112192BE02C
-	for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 06:25:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.180
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [207.46.229.174])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D24C3B14CB;
+	Mon, 15 Jun 2026 06:28:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.46.229.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781504729; cv=none; b=mfpVtrlpf7M+g8qEvjuc5u8RukGQ748XIY63mg/ZFf0+e2WY4KfD7QOUUgtFE0yaZaSnPrKoEjwOezbk4hxLQVk93VLdukP9eczbLHcy5vFiDyps3iLh7m5Siu8FxI6XMWv+4z0aKl4KERxe/7tpBua4K/64MK+3YF1YKHFFm3w=
+	t=1781504893; cv=none; b=cLbSp/8FHwYujxy8ZLwufIlaiYbVC07Aw15ezy/rP3ETfRUB14juyE2RzClzEeBFBdhPkLXil9N+D0572dmCRKS3LOL9Q8zymAM2gZBIm1eCvRYmaHWCZFD4VBNjyumM5AmgWCpENCz7+XIJ/LnbmQ+yT8DMnci82NV9Oy8rfIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781504729; c=relaxed/simple;
-	bh=eMpF6TIlf6+lXcDXCRWJ1GSlKGnokAF6Mi84MZza0gc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SX9VBVb/tp86Uu2NuooGkWDowiToLunbU7/x400xN27ryRhmBgAXuijn2SI0gchgBH9mvaQt3jorQ9uWPbBlQP0EbmAyb0cufkJWNmK75efnb+/w4rG8wTE7eof2sKLO+5ZZRmI+DstJovAJbuU66aa0EKDTb5G1q5GzMm1Cbm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=ircNaqFJ; arc=none smtp.client-ip=91.218.175.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
+	s=arc-20240116; t=1781504893; c=relaxed/simple;
+	bh=y6XxhbY60dG0xbY+ie3dpqCXk+DmKuE1kabryxtn0PA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HTrkyAlqY/jot1JqgyInDVNJBEQUD3enkwYJGL+HpwBGZHh5VPGPRo6UMgW3Djc7ElTqX8JONyH9CoChP+LOE7zm96W8pq8uv3VQc86eomwadYv/oP9v+TWxXBLMhG9wun1ppwhuz53b28WpjBVQnnbcEX23YPrlRneBXDhPJ6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=RP7LsnDG; arc=none smtp.client-ip=207.46.229.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="ircNaqFJ"
-Message-ID: <83f05c55-efba-4bf5-abfe-d2ab0819e904@packett.cool>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=packett.cool;
-	s=key1; t=1781504714;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dIagr78v8+wu8I0zN50DJ/gAtpHtsl0YE4lvqsZn4bE=;
-	b=ircNaqFJIqIbLoIQAsKyoXo4rpXEoQiRy6zyFmI9hK3HrAfkw05xW4pZqyr/gEPP8FmgQe
-	YCMXXOF0Ojr6Ke64K6mJnYe9JlDM5n9QaPTquf4RxnS2VJebzilW8irZlVAq2ZBbu8tU3H
-	Ym5nnlp7yvHYcIa6UVoQguJIN6I828BXaZ6Oa3MyWDm++G633gd71/V0K0NJtv18Wf3rcc
-	TGhtZ7HAjNfT3f/melWV8TK5yeAV4SGF18G26grrndY/UhwmBAr77wIkgpV/3r4qCrE+rr
-	yyIzP94mT15QER7XOLBnD39ifvW2hpCx+GHe19vIvRAPUfC7zO4rmCN5XEqkKQ==
-Date: Mon, 15 Jun 2026 03:25:04 -0300
+	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="RP7LsnDG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
+	Date:Message-ID:In-Reply-To:References:MIME-Version:
+	Content-Transfer-Encoding; bh=7AY37jUilyOOppCw24yu2Fs6f2pcjFO5/7
+	U8o9TKtYo=; b=RP7LsnDGbbIXyVMyb2LI1/zK1HQ2P8NedGTmh85BseubLQ2jwb
+	KuCH0QHa/RLCXK8A9vXADyogaMS6fMUMFA7lDJeetVP3lwX/l76FANVU/0bWQ2CA
+	+oXOcYr2xhW3tbHXIHF6U7Ym+SzHjMoD+aPYYDz7KG+eGDMOmYaNrr/QA=
+Received: from localhost.localdomain (unknown [59.66.142.89])
+	by web5 (Coremail) with SMTP id zAQGZQCHQcFsmy9qe1dwAg--.25454S2;
+	Mon, 15 Jun 2026 14:27:56 +0800 (CST)
+From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+To: andrew@lunn.ch
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	fengxw06@126.com,
+	horms@kernel.org,
+	kees@kernel.org,
+	kuba@kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	qli01@tsinghua.edu.cn,
+	stable@vger.kernel.org,
+	wangao@seu.edu.cn,
+	xuke@tsinghua.edu.cn,
+	yangyx22@mails.tsinghua.edu.cn,
+	zhaoyz24@mails.tsinghua.edu.cn
+Subject: Re: [PATCH net] atm: br2684: reject short VC-MUX bridged frames
+Date: Mon, 15 Jun 2026 14:27:56 +0800
+Message-ID: <20260615062756.31081-1-zhaoyz24@mails.tsinghua.edu.cn>
+X-Mailer: git-send-email 2.46.2
+In-Reply-To: <26ebc58c-6399-4a45-aa55-91a3bf398fef@lunn.ch>
+References: <26ebc58c-6399-4a45-aa55-91a3bf398fef@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for
- preadv2/pwritev2
-To: Al Viro <viro@zeniv.linux.org.uk>,
- Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Christian Brauner <brauner@kernel.org>, Askar Safin
- <safinaskar@gmail.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-api@vger.kernel.org, netdev@vger.kernel.org,
- Matthew Wilcox <willy@infradead.org>, Jens Axboe <axboe@kernel.dk>,
- Christoph Hellwig <hch@infradead.org>, David Howells <dhowells@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
- Miklos Szeredi <miklos@szeredi.hu>, patches@lists.linux.dev,
- linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.cz>,
- Steven Rostedt <rostedt@goodmis.org>, Joanne Koong <joannelkoong@gmail.com>,
- fuse-devel <fuse-devel@lists.linux.dev>
-References: <20260531010107.1953702-1-safinaskar@gmail.com>
- <20260601-enthusiasmus-canceln-anlehnen-0e62317a9784@brauner>
- <CAHk-=wifX_rrDjRGnDnOqE-usptAukuXKrmuPuVDP5bOCBWzGQ@mail.gmail.com>
- <20260601173325.GH2636677@ZenIV>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Val Packett <val@packett.cool>
-In-Reply-To: <20260601173325.GH2636677@ZenIV>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-CM-TRANSID:zAQGZQCHQcFsmy9qe1dwAg--.25454S2
+X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUYJ7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcV
+	AFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2
+	jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAac4AC62xK8xCEY4
+	vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv
+	7VCjz48v1sIEY20_GrWkJr1UJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr4
+	1lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkIecxEwVAF
+	wVW8AwCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26r4rKr1UJr1l4c8EcI0Ec7
+	CjxVAaw2AFwI0_Jw0_GFyl4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWU
+	JVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7V
+	AKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42
+	IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUxeMNUUUUU
+X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAQITAWovKbDI+gABs+
 
-Hi,
+Hi Andrew,
 
-On 6/1/26 2:33 PM, Al Viro wrote:
-> On Mon, Jun 01, 2026 at 10:17:23AM -0700, Linus Torvalds wrote:
->
->> TLDR: maybe we could ghet rid of "f_op->splice_read". *That* would be
->> a big simplification.
-> FUSE might be interesting - fuse_dev_splice_read() and its ilk.
-> Communications between the kernel and fuse server at least used to
-> seriously want that, so that would be one place to look for unhappy
-> userland...
+On Sun, Jun 14, 2026 at 08:39:12PM +0800, Andrew Lunn wrote:
 
-speaking of fuse_dev_splice……_write actually, this series has broken 
-xdg-document-portal!
+> Same questions as for the previous patch. Lots of parallel
+> discoveries? What hardware was used, etc.
 
-https://github.com/flatpak/xdg-desktop-portal/issues/2026
+I'm sorry that in this case no physical ATM/DSL hardware was 
+used either. I verified this in QEMU/KVM with a small dummy 
+ATM device as in the previous patch. I think that this is a
+real logical bug, but whether it can be triggered by a real
+Device was not verified.
 
-Specifically what happens is that the EINVAL is returned due to oh.len 
-!= nbytes:
-
-fuse_dev_do_write: oh.len 16400 != nbytes 15526
-
-(where 16400 == 16384 (read len) + 16, 15526 == 15510 (file len) + 16)
-
-After reverting the series, there is no error because oh.len 
-becomes 15526 too.
-
-
-Thanks,
-~val
+Yours Sincerely,
+Yizhou
 
