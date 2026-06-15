@@ -1,215 +1,289 @@
-Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013030.outbound.protection.outlook.com [40.107.162.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5EC3B38B6
-	for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 06:51:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.59.177.22
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781506296; cv=none; b=WEwrw6mmPzGl8hPZO/E5fuR89u08SFrjTfdFBrSEbVy/U31KwBnj93Ai1QkXOFJTCexvvbU0jOYEiK2I47HpthaodKRDNBECBCPzGnFPzx2KzUnBZqLrfD7EVmuUoNk4iQG/dghTtinl8mI/OgduluHtIKfN8yU07wwHMHKp8nQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781506296; c=relaxed/simple;
-	bh=Qqbmu1Bnyrbr45w/uTdby1w6pvDJSwS2fO/hvCb+l6g=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=IcYF1TFkslMKstG2zfgYvHrqnPOf4fG3tOGzwFDmTC+mZjoEd/qDmbDVLzpjxbSpU8oCoYMiYQ3S6OmeFjIBC59ZJeJ30T+V/1E4wh+srqK5VHL+w9sumkje309sJARxpjoKrQTQsNMQWJ9BzizVnwngHNp+ZAULAAL8CgxDmaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=52.59.177.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpsz11t1781506241tccfc38a5
-X-QQ-Originating-IP: K2yatRTTNPR/2ME5W/yfRB22zkfsA8rKyzqDyJ5J8ik=
-Received: from lap-jiawenwu.trustnetic.com ( [183.157.22.210])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 15 Jun 2026 14:50:39 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 3548404415593128235
-EX-QQ-RecipientCnt: 21
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: netdev@vger.kernel.org
-Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Breno Leitao <leitao@debian.org>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>,
-	Fabio Baltieri <fabio.baltieri@gmail.com>,
-	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next v7 4/5] net: wangxun: implement soft quiesce for PCIe error recovery
-Date: Mon, 15 Jun 2026 14:50:15 +0800
-Message-Id: <20260615065016.21672-5-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.21.0.windows.1
-In-Reply-To: <20260615065016.21672-1-jiawenwu@trustnetic.com>
-References: <20260615065016.21672-1-jiawenwu@trustnetic.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362E43AEB35;
+	Mon, 15 Jun 2026 06:54:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.30
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781506447; cv=fail; b=HUv12nDQOrDlAdOLUss1eSDfzPcA6+Si6I7g3NqA/DFY3Pguy4j7wKKknxWGhLj/RiuhEMSF0cHwS0FF6W8ht+64ioRLKRK7SAA67cYkk16LE07biWp4E4YfnPxVJkFLjyuKJL/apdm6PkpNX9Mb4cfStmNzHZw1yvQJHVZQCv8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781506447; c=relaxed/simple;
+	bh=Bb79avXE0YVBPES8AlBWStN3O2nOB78U62nETa28YJQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=HVh+TOixuJeLMakXUklP0lcDG13kQH0B/WbawwccVNHWP28W2yR3WMqNvMEX3cd+k+42awtbBDFalV+xbWOtbJAeRtjc+x73Oaw0bmanwE9we1CQGJmRFwoI97Z0JlHIeMwzCJTWwo72SV/Tt/3DeTKvB75HsNxJg2u7/VkrHLc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech; spf=pass smtp.mailfrom=est.tech; dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b=MZ8jdYFM; arc=fail smtp.client-ip=40.107.162.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=est.tech
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b="MZ8jdYFM"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qcYLWOc3lDXDtcTP/jQBiPOM+wdKcPFfViplp9qgVZC3rJ2sGJyQYkgqxVN94+ZwgA1xhIrWzjtpKjCpUDFaN0UaWx1ogVf9Z2cNjSTQk8Muitq+yksN9dX9TAyyJpQFQZ/o4eTUmsJ1dgO2lNre3sDQPPeyM5QeoSAiu3GbCfQUNBr+c+Agc2fNhFMNFhanq+eYCvJewbqGXBWfhc5PGRPNlSCjtP/c4tm+VU/NtvK6DUK5GwHncPkBZtfrWF1oBjSd3Fcjo7SfEo7oTzkJ3tJrPGQXSbPDDfgvfbUqwsXrNeU+Tbp8S2IvA854rZ5kQj85iACb2TPY+mfrdCu2tQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rWbe6npVx5FLRtUXYmvrRGmpZ6i+z8O7EnuSx78qDQg=;
+ b=ywg4x2MTM0YDRWmVg6WzUrY3sledht9Q15dADtM5RrAYyGw4LBKvOkEttFuHaO7Yy+uav5D9XO8dFOF5qoIwGqIaR8vqGbxpKBZDjoszcYL03FWaqkCPGbz1o19F0FhmsQbpJpLug1vDSgx+telJCzjpSDdq6f+jPdoQTYFTgcGubyX13s2KAWTnNDQZabS7oKyK8Z+Gc+VlAn/ADLZJ3NS5JEC0A3/P1UQzzuPnJah0IjTfTtcmt0CQlWdm+MmPzI6mCCi/o0SlcqKc9jDXj7E3FgasTkg5EZE4T1cq3vxR1841OW4VcEviQoIjRMuNX6hIiAbaweOZ4dM2UaeWzA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
+ dkim=pass header.d=est.tech; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rWbe6npVx5FLRtUXYmvrRGmpZ6i+z8O7EnuSx78qDQg=;
+ b=MZ8jdYFM3WZXyZCWed74SKeMrmVJYNTYRkl1NwjWGtuZNvPigx3t0zk4U5msXf0zbws2kMkYU4uubqZ24rL5zn2eKaGx5/xCPGckS7gbWgsNhCfIkfRBb9HqLHu0TMSGfWYewj2R3k707+d3VH0h6MIS8IDsoneSwdTFslMyec6N5SFtbcw9ZBJXTZz1Aj0FTJl4prID2MITeWr0AqESWFeqNEO43S68pQssaoJ9dnQbemvrxQD1hg09tmWX5xLkI4Te6fY1OSRcUTfXjs9FHDLfxXpVwia9F+IdwcDcI0LgyTdjkDqxZrYRqaQL2coDNvh+DG5eKsj9srgwOUgPJA==
+Received: from GV1P189MB1988.EURP189.PROD.OUTLOOK.COM (2603:10a6:150:63::5) by
+ AM0P189MB0819.EURP189.PROD.OUTLOOK.COM (2603:10a6:208:19a::11) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.113.18; Mon, 15 Jun 2026 06:54:01 +0000
+Received: from GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
+ ([fe80::bfff:5391:8a49:21b7]) by GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
+ ([fe80::bfff:5391:8a49:21b7%6]) with mapi id 15.21.0113.015; Mon, 15 Jun 2026
+ 06:54:01 +0000
+From: Tung Quang Nguyen <tung.quang.nguyen@est.tech>
+To: Doruk Tan Ozturk <doruk@0sec.ai>
+CC: "jmaloy@redhat.com" <jmaloy@redhat.com>, "aleksander.lobakin@intel.com"
+	<aleksander.lobakin@intel.com>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"horms@kernel.org" <horms@kernel.org>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "tipc-discussion@lists.sourceforge.net"
+	<tipc-discussion@lists.sourceforge.net>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH net v2] tipc: fix slab-use-after-free Read in
+ tipc_aead_decrypt_done
+Thread-Topic: [PATCH net v2] tipc: fix slab-use-after-free Read in
+ tipc_aead_decrypt_done
+Thread-Index: AQHc+RTOyMkQg45BZ0atzvBgrVOC7rY45MwAgAXjDoCAAGxEMA==
+Date: Mon, 15 Jun 2026 06:54:00 +0000
+Message-ID:
+ <GV1P189MB1988AABD9D26A0EF0C5481A3C6E62@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
+References:
+ <GV1P189MB1988B2B662DC781F7347EBD4C61B2@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
+ <20260615002211.90694-1-doruk@0sec.ai>
+In-Reply-To: <20260615002211.90694-1-doruk@0sec.ai>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=est.tech;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: GV1P189MB1988:EE_|AM0P189MB0819:EE_
+x-ms-office365-filtering-correlation-id: 0ca52de0-c79c-4381-54aa-08decaaae18a
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|366016|376014|7416014|23010399003|38070700021|22082099003|18002099003|4143699003|11063799006|56012099006|6133799003;
+x-microsoft-antispam-message-info:
+ b1wvbBsJiC47G57cE/XTqhE6jsfauwVDnKCtq3Ba0qscBtNJJg6S26zPwDPL2KHa5Akru4r+0hV/RTFqFZUFh+bXpbDIs36vRoDFPYoMdgbxko6mebtDAtr4ydzRzDDMkO7oZvJWP76C5uqy3kJRHjQaQXOM91ulVv0KM94jf1VWFMYoOmK+hQ8tb4pUjnoycthuhyCZkyc8qF39VRG9DJvblHkX7rILO9ubd3llWwJTuqLSXL1tpDZu2xaq0dvS0VEes+OJREWXEGYn2G15dlXjnBiE30R7bcoPAgV1KrJwaxy6hTGqAL54DM09T3VDaeggfZ0Ib53m8bjrDGaxynCK4h6t0j78J7ZX6Dl0GFRIbf7FG4R8mjPS9BQlG2EU2CgVtNr89t8h/Zg9WWWuoKJrPXeiWeAM737YjfsY6H1UhGayJVeuYipCWnlJscWsczF1We9m0z6/6Tx/lhzPuVwl6cfJAHE6xj3fzMEqvazr13G78AAfPcy+V1ySeRntxzacHOCbOKFe8DTx2x9hKCe1YNgfm8XRU8Ji71yaSNVm+I6DRxSykCWMCBzMjHc6ZnuYEfgs3nESd56XX5LI7MyMleN9iFcUyVLUMtC9CJVk8m/uhG9vMrE3dNtQPJGLKkauDCDOzzJA1F/76IRilf9RDxqULfa8gKIL/qkguEPAdM20as8W4S4k7bOLsZskYgMblVSVCzI3OrpMVu5VgLqhtcHdUaJnK8jaMav9Zm7zbBlyVNURlSxk82RTRQ3T
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1P189MB1988.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(23010399003)(38070700021)(22082099003)(18002099003)(4143699003)(11063799006)(56012099006)(6133799003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?RtlE3+KG31wcG7rQDdReuMFnsZUyakOlX5lSZ1wv8Pe/hRz5X1ewgAZFHCgb?=
+ =?us-ascii?Q?QQuNBO0Z8n37L0S2Yeze4sZJlOf8fFFth2yudQAFJtQWHWVP0c9pCLb3JhPf?=
+ =?us-ascii?Q?XJPiQXzU9huLLPmmMcql7vJzU1IjNfTX4GCGew63Z+xScWLiToaDfxd2ky6g?=
+ =?us-ascii?Q?IJFinKnlmI7KhSzuC87JTgqVXawS5RwAZgW6lmNhgjsZOmminXzlMbEiskJI?=
+ =?us-ascii?Q?bLBf6SORAvKNOEt4jDYagQKdvQkNGSOal+5WRN/xOa0FAqdr3gTb6CbZfNpx?=
+ =?us-ascii?Q?tpkfpxApspcC/O83wI9YfRjdK37goGir2OMuhYtDfGGz0gKf5Wr0xbUIjDNP?=
+ =?us-ascii?Q?0zY92kjme5QYWqa3hUuLrQYBrydaTv094dEddUB+qvy5e8LUfKJEolilmsFZ?=
+ =?us-ascii?Q?xjYdESUj8nvUFmClGGHCND2k3huFlAzU8r6D4nujEMZ2s8jR46kZV6eCQRXg?=
+ =?us-ascii?Q?I1u1QifjLJxAod+v+jMPwyEfd6U+4CDMJbWnr8uHaTSc2v+6k2XsmuYbkFee?=
+ =?us-ascii?Q?RC2GKHV8ZjzhM+0SJxVJdATYEoA4nntU1GYYqcSBxllTxE9BbPhAxqetXDj0?=
+ =?us-ascii?Q?miXdFizzdTGvp4WSGCy9Fd2gdwa6ypNybzd6xTATEvjyOKFQMVC3w9pXQlKm?=
+ =?us-ascii?Q?ds5QxAiyx38oKIb9MvKoxb6/NgEAh3CdtXbSDolpZzUzpeRm5Q4Mu1KehrTS?=
+ =?us-ascii?Q?ccyuhhyEtg0trXJ6MS1HUR9edAZUpQ4Hm9DN47AjFKpPjaqJwvZA0MExe9NI?=
+ =?us-ascii?Q?2A+CO6+81b6JY9OWzOQ9b9L4ZQ1r9wcTeJK2kyBGRN6OCgxJxL/gH67shFA9?=
+ =?us-ascii?Q?4QZNTqhoLzfdzz8THTnRZvMg30VHGlAbd9QZWe5Ri4tC1QE6Y636W3aCrkSt?=
+ =?us-ascii?Q?HUpIhbt1FkXjvvSjJv3uXeHsOed2OC2cUJs7sf8RwL9g3DEVu2vNM7+165dZ?=
+ =?us-ascii?Q?DmYTFT1Su0Rip5R6xJpbh1rg1xz7WE9UyTeWASJMpdUAM0lhKxYLVEJfrGJg?=
+ =?us-ascii?Q?E9Xe2D2QUBq64izduIniU8kMzGtlSKJKcJKod5fbefckSn2uFiLimIs+yBSO?=
+ =?us-ascii?Q?Lft2O7VlSfOpjJSoG8HE40ktroZP6cNiRAYKc+eoo/IOuq9ReBYT3rQ5Zemx?=
+ =?us-ascii?Q?7Pke+yr3oquOc2mdqyyojQQ3R223yyYHfhNRMXdezwzThRxWSKppZRmrQns4?=
+ =?us-ascii?Q?SQiMUfCC7MlWPQVp8VNI0RH7oc50hxH96F2Q5e9YobzAkIJLqtw0Pk1T4g8P?=
+ =?us-ascii?Q?rE9ByijOOUvCiXXWni8CB72nkWHIHJYrPRn1Gz4zQgzyuB1GNC1MTQn6wn4n?=
+ =?us-ascii?Q?sklVXchzhTYR4vAKiJcSXWcemJU/yJfrY+XsvQSqiXSFl2eHKdvY1NLtF+CQ?=
+ =?us-ascii?Q?Bjuop1P0peK2dLvm9ROlSfdEIzQ0s0wZ+R71pgdTmuOH7El4cqH972AMMMCK?=
+ =?us-ascii?Q?E9PQ2Mqo16ADhsqqPUm3yUtjF9tFQ7qnx/1sFoNLFew+74CerGygTg8fodl7?=
+ =?us-ascii?Q?eRNxD/+l2hmhYUPbdQ3Gh7mFeHoAUhmIDhyx7JY7p8ewz/hPlQ5YuZG73Qtf?=
+ =?us-ascii?Q?7gaw7nY3AqghbWeN1b7njmZ49KhcOlit2ZxM5+/XOOdYxLWzFr218e5Oklem?=
+ =?us-ascii?Q?39eF0ExtHWmBbxo3HrJCnn7pm/ga5FCp87Bw8xYy9wzBGGxVssBMrwNkN+3M?=
+ =?us-ascii?Q?DOrBH4EPC966klAgG+0K2cZIe3itkPyt3PCp9d5pKWVgwzyFm48IeBqB/BzD?=
+ =?us-ascii?Q?ukKRYyo0lQ=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: N3l5ASPewLWqiqbmW4RwlU5mGUsD8nJ/8EJ197krjCP1p6DXpwBQiYDj
-	oROS+ngqX5+lrRj9AP77IeNzpC7ZQ280WBTJahcJEw3pHmlV1tfGGfyrcwUL2Lll/RUheU2
-	gFUJJiEHMTeuGLdsMWD0SBZRb2Ik5vD1bQOPljd6bD01GaqIqAtXwAmpPJlqZSaxURYxfki
-	oQo+wuq20A8YwOenr/A5o7PxSn0FDfIkLwxXdoTfZzSKmq3SNGYkTqIg/ArO3x+V9sLLs5z
-	Tc87zUCDmHTvtZAa1Ej3Ptvj8Xpv4kNSZTlw8+HlwB97yGaIfNSB/BdTaV2uzEooTu+oUtV
-	i7oDTswFITYZm6E8IouLoST16bEYyyTE1dxydiJ4ccoOWhxULRkMQ8SgXZkE0kya6egibhH
-	Ljz9ZEVYuWASZHLotoDfpvDkMBgIAe8sA9okUcCfHMKk8DznhxVK3GQkLeWf+hxZIJLuxTu
-	f2vhInsxkiqC3X/GzJgyVVZC2z8T9F0CVUgEivLFI7BlThbf9lMYO2BGJol+gSZZV+dUpNI
-	SxnUa01fvOJ2bnsZPNiJ0+0dSYpS0UQUEIRqQ4dXuT8ALLk25RHYm0uYrSgGLRBr/Yz0GQC
-	4bVnUoJbHLZwd5h137pZkHjF1K1uIQHUe4eFEwrFvuCc24520sl1j6Ac9groCqJuQr2ujJq
-	eQzELSONHFeUDmdTQ6Vbcq97VI/tsCHJfdJt7r/OIHNZUfR3mVBmzuHuuCgXVWxO3SzQCpu
-	Ylv2Zcn8wkdrWtM1FS2jYwak/fpAcXUBJqdpZ+PMz3tbs3ZZM+2vTtSyx3RoFcEAXfoEw5g
-	F+Km2QpA3Adnd5We+DCuwOGhJB1qW1OIw6cHf2viNIcfzST0XZCIHCF4JTYfK8wvHuXkCOs
-	MkdXvphppKVU+HqN+a4S6ROYrQICUK/svCLvmdJiETq1LA5voFhwZn1KJ1GjJc3lUTYXktE
-	v/Bqp8I94jufg0/2QxscXNO8OENvTT5npWVVDfYDZb3BsePDlXl67dLbJVZm92kYWyA3dCd
-	IMB3KVppDNQEgkgQzZPTVbjWB2t7TBoU9x7AzVw1WBAo7G83ZlJTlOv9s3rtstNWXzqcbyy
-	VaZrcDtJBCKszAz8il8tAc=
-X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
-X-QQ-RECHKSPAM: 0
+X-OriginatorOrg: est.tech
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0ca52de0-c79c-4381-54aa-08decaaae18a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Jun 2026 06:54:00.9971
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: +nG5LYUuYRYLugy2meYRT5nam3qC8FIjBkLKxKv5Mvn4ID728KAhFqaDJizs5wxJ7IbQjvdyo6raDhpKwgniv0E6L5n5K8sAQijx6STTETo=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0P189MB0819
 
-Function wx_soft_quiesce() provide a lightweight shutdown path during
-PCIe error recovery. It avoids MMIO-dependent operations in PCIe error
-status.
+>Subject: Re: [PATCH net v2] tipc: fix slab-use-after-free Read in
+>tipc_aead_decrypt_done
+>
+>On Tue, Jun 10, 2026, Tung Quang Nguyen wrote:
+>> Can you decode the stack trace (using
+>> linux/scripts/decode_stacktrace.sh)
+>> for more readable text?
+>>
+>> Is the issue reproducible on the latest net branch, or just on the old
+>> v6.12.92 you mentioned?
+>
+>Hi Tung,
+>
+>Thanks for the review. Answers to both questions below.
+>
+>1) Decoded stack trace
+>----------------------
+>Decoded with scripts/decode_stacktrace.sh against the vmlinux that produce=
+d
+>the splat (6.12.92, CONFIG_KASAN_INLINE + CONFIG_TIPC +
+>CONFIG_TIPC_CRYPTO).
+>The use-after-free read and the allocation/free sites resolve as follows:
+>
+>BUG: KASAN: slab-use-after-free in tipc_crypto_rcv_complete
+>(net/tipc/crypto.c:1917) Read of size 8 at addr ffff888104c8c808 by task
+>kworker/3:2/70
+>Workqueue: cryptd cryptd_queue_worker
+>Call Trace:
+> <TASK>
+> dump_stack_lvl (lib/dump_stack.c:123)
+> print_report (mm/kasan/report.c:378 mm/kasan/report.c:481)  kasan_report
+>(mm/kasan/report.c:596)  tipc_crypto_rcv_complete (net/tipc/crypto.c:1917)
+>tipc_aead_decrypt_done (net/tipc/crypto.c:996)  cryptd_aead_crypt
+>(include/crypto/internal/aead.h:85 crypto/cryptd.c:772)  cryptd_queue_work=
+er
+>(crypto/cryptd.c:181)  process_one_work (kernel/workqueue.c:3264)
+>worker_thread (kernel/workqueue.c:3339 kernel/workqueue.c:3426)  kthread
+>(kernel/kthread.c:389)  ret_from_fork (arch/x86/kernel/process.c:152)
+>ret_from_fork_asm (arch/x86/entry/entry_64.S:257)  </TASK>
+>
+>Allocated by task 1550:
+> kasan_save_stack (mm/kasan/common.c:49)  kasan_save_track
+>(mm/kasan/common.c:61 mm/kasan/common.c:70)  __kasan_kmalloc
+>(mm/kasan/common.c:378 mm/kasan/common.c:395)  tipc_crypto_start
+>(net/tipc/crypto.c:1484)  tipc_init_net (net/tipc/core.c:73)  ops_init
+>(net/core/net_namespace.c:140)  setup_net (net/core/net_namespace.c:357)
+>copy_net_ns (net/core/net_namespace.c:512)  create_new_namespaces
+>(kernel/nsproxy.c:110)
+>
+>(The captured report has the KASAN read trace and the Allocated-by track; =
+the
+>free is on the netns teardown path tipc_crypto_stop() <- tipc_exit_net() <=
+-
+>cleanup_net(), as described in the changelog.)
+>
+>So the freed object is the per-netns struct tipc_crypto allocated in
+>tipc_crypto_start() at netns creation (crypto.c:1484), and the cryptd work=
+er
+>then reads it from the async completion: tipc_aead_decrypt_done()
+>(crypto.c:996) -> tipc_crypto_rcv_complete() (crypto.c:1917). Immediately =
+after
+>the UAF read the worker also faults dereferencing the stale node pointer i=
+n
+>tipc_node_put() (net/tipc/node.c:319), confirming the object is gone.
+>
+>2) Reproducibility on the latest net branch
+>--------------------------------------------
+>The bug is still present on the latest net tree. I checked out v7.1-rc7 an=
+d
+>inspected net/tipc/crypto.c first: the encrypt side already carries the
+>maybe_get_net() guard from commit e279024617134 ("net/tipc: fix slab-use-
+>after-free Read in tipc_aead_encrypt"), but tipc_aead_decrypt() still goes
+>straight from tipc_bearer_hold(b) to crypto_aead_decrypt(req) with no
+>maybe_get_net(aead->crypto->net) and no matching put_net() -- i.e. the exa=
+ct
+>gap this patch closes. So the decrypt path is unguarded on 7.1-rc7 and the=
+ UAF
+>is reachable there in the same way.
+>
+>I also built v7.1-rc7 (HEAD at v7.1-rc7) with KASAN_INLINE + TIPC +
+>TIPC_CRYPTO and reproduced the UAF live. The workload is the same as on
+>6.12.92: a UDP bearer with a cluster key is flooded with crafted encrypted
+>frames from an unknown peer, taking the cluster-key (pick_tx) RX decrypt p=
+ath,
+>while the bearer's netns is repeatedly torn down. Decoded against the rc7
+>vmlinux:
+>
+>BUG: KASAN: slab-use-after-free in tipc_aead_decrypt_done
+>(net/tipc/crypto.c:999) Read of size 8 at addr ffff8881056258a8 by task
+>kworker/u16:2/51
+>CPU: 2 UID: 0 PID: 51 Comm: kworker/u16:2 Not tainted 7.1.0-rc7-00020-... =
+#15
+>Workqueue: events_unbound
+>Call Trace:
+> <TASK>
+> dump_stack_lvl (lib/dump_stack.c:94 lib/dump_stack.c:120)  print_report
+>(mm/kasan/report.c:378 mm/kasan/report.c:482)  kasan_report
+>(mm/kasan/report.c:595)  tipc_aead_decrypt_done (net/tipc/crypto.c:999)
+>process_one_work (kernel/workqueue.c:3314)  worker_thread
+>(kernel/workqueue.c:3397 kernel/workqueue.c:3478)  kthread
+>(kernel/kthread.c:436)  ret_from_fork (arch/x86/kernel/process.c:158)
+>ret_from_fork_asm (arch/x86/entry/entry_64.S:245)  </TASK>
+>
+>Allocated by task 169:
+> __kasan_kmalloc (mm/kasan/common.c:398 mm/kasan/common.c:415)
+>tipc_crypto_start (net/tipc/crypto.c:1502)  tipc_init_net (net/tipc/core.c=
+:72)
+>ops_init (net/core/net_namespace.c:137)  setup_net
+>(net/core/net_namespace.c:446)  copy_net_ns
+>(net/core/net_namespace.c:579)  create_new_namespaces
+>(kernel/nsproxy.c:132)  unshare_nsproxy_namespaces (kernel/nsproxy.c:234)
+>ksys_unshare (kernel/fork.c:3242)  __x64_sys_unshare (kernel/fork.c:3316)
+> do_syscall_64 (arch/x86/entry/syscall_64.c:63)
+>entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+>
+>Freed by task 8:
+> kfree (mm/slub.c:6566)
+> tipc_exit_net (net/tipc/core.c:119)
+> ops_undo_list (net/core/net_namespace.c)  cleanup_net
+>(net/core/net_namespace.c:704)  process_one_work
+>(kernel/workqueue.c:3314)  worker_thread (kernel/workqueue.c)  kthread
+>(kernel/kthread.c:436)
+>
+>The freed object is the per-netns struct tipc_crypto allocated in
+>tipc_crypto_start() at netns creation (crypto.c:1502 on rc7); the async de=
+crypt
+>completion then reads aead->crypto->stats from it (crypto.c:999) after
+>cleanup_net() -> tipc_exit_net() -> tipc_crypto_stop() has freed it -- the=
+ exact
+>read/alloc/free triple this patch closes, now on 7.1-rc7 rather than 6.12.=
+92.
+>
+>One note on the harness: on x86 the in-tree gcm(aes) the SIMD aead wrapper
+>used to register via simd_register_aeads_compat() is, as of the aesni rewr=
+ite,
+>now registered directly with crypto_register_aeads() and decrypts
+>synchronously, so the cryptd async window the original 6.12.92 splat used =
+does
+>not arise from the stock aesni path on rc7. To exercise the same async
+>completion the changelog describes, I forced tipc_aead_decrypt()'s complet=
+ion
+>onto a workqueue in my test tree; the unguarded aead->crypto dereference i=
+n
+>tipc_aead_decrypt_done() is what KASAN catches, and that code is byte-for-
+>byte the unpatched upstream path. The source state is in any case
+>unambiguous: tipc_aead_decrypt() on rc7 still lacks maybe_get_net(aead-
+>>crypto->net), so the completion can outlive the free on any config where
+>crypto_aead_decrypt() goes async (e.g. cryptd offload).
+>
+>Reproduced under KASAN on both v6.12.92 and v7.1-rc7; the decrypt path
+>lacks the guard on the latest net tree.
 
-Waiting for the service task to complete may unnecessarily delay PCIe
-error recovery, especially if the work item is already blocked by the
-hardware failure that triggered AER. So the service task is not
-explicitly cancelled in quiesce path. As a measure to block the service
-task, the checking of WX_STATE_DOWN and WX_STATE_RESETTING is added at
-the entry of every work item.
+Thanks. Please submit v3 with updated changelog (decoded stack trace, remov=
+e v6.12.92) because we always prefer latest tree to old one.
 
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
----
- drivers/net/ethernet/wangxun/libwx/wx_lib.c   | 18 ++++++++++++++++
- drivers/net/ethernet/wangxun/libwx/wx_lib.h   |  1 +
- drivers/net/ethernet/wangxun/libwx/wx_ptp.c   | 21 +++++++++++++++++++
- drivers/net/ethernet/wangxun/libwx/wx_ptp.h   |  1 +
- .../net/ethernet/wangxun/txgbe/txgbe_main.c   |  8 +++++++
- 5 files changed, 49 insertions(+)
-
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-index e5a45356ba00..c10a3bf5cf02 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-@@ -3382,5 +3382,23 @@ void wx_service_timer(struct timer_list *t)
- }
- EXPORT_SYMBOL(wx_service_timer);
- 
-+void wx_soft_quiesce(struct wx *wx)
-+{
-+	if (!netif_running(wx->netdev) ||
-+	    test_and_set_bit(WX_STATE_DOWN, wx->state))
-+		return;
-+
-+	wx_ptp_quiesce(wx);
-+	pci_clear_master(wx->pdev);
-+	netif_tx_stop_all_queues(wx->netdev);
-+	netif_carrier_off(wx->netdev);
-+	netif_tx_disable(wx->netdev);
-+	wx_napi_disable_all(wx);
-+
-+	clear_bit(WX_FLAG_NEED_PF_RESET, wx->flags);
-+	timer_delete_sync(&wx->service_timer);
-+}
-+EXPORT_SYMBOL(wx_soft_quiesce);
-+
- MODULE_DESCRIPTION("Common library for Wangxun(R) Ethernet drivers.");
- MODULE_LICENSE("GPL");
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.h b/drivers/net/ethernet/wangxun/libwx/wx_lib.h
-index aed6ea8cf0d6..11bd79985e17 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_lib.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.h
-@@ -41,5 +41,6 @@ void wx_set_ring(struct wx *wx, u32 new_tx_count,
- void wx_service_event_schedule(struct wx *wx);
- void wx_service_event_complete(struct wx *wx);
- void wx_service_timer(struct timer_list *t);
-+void wx_soft_quiesce(struct wx *wx);
- 
- #endif /* _WX_LIB_H_ */
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ptp.c b/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
-index 44f3e6505246..bb89eff3dd45 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
-@@ -842,6 +842,27 @@ void wx_ptp_stop(struct wx *wx)
- }
- EXPORT_SYMBOL(wx_ptp_stop);
- 
-+void wx_ptp_quiesce(struct wx *wx)
-+{
-+	if (!test_and_clear_bit(WX_STATE_PTP_RUNNING, wx->state))
-+		return;
-+
-+	clear_bit(WX_FLAG_PTP_PPS_ENABLED, wx->flags);
-+
-+	if (wx->ptp_clock) {
-+		ptp_clock_unregister(wx->ptp_clock);
-+		wx->ptp_clock = NULL;
-+		dev_info(&wx->pdev->dev, "removed PHC on %s\n", wx->netdev->name);
-+	}
-+
-+	if (wx->ptp_tx_skb) {
-+		dev_kfree_skb_any(wx->ptp_tx_skb);
-+		wx->ptp_tx_skb = NULL;
-+	}
-+	clear_bit_unlock(WX_STATE_PTP_TX_IN_PROGRESS, wx->state);
-+}
-+EXPORT_SYMBOL(wx_ptp_quiesce);
-+
- /**
-  * wx_ptp_rx_hwtstamp - utility function which checks for RX time stamp
-  * @wx: pointer to wx struct
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ptp.h b/drivers/net/ethernet/wangxun/libwx/wx_ptp.h
-index 50db90a6e3ee..ad2f824875d5 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_ptp.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_ptp.h
-@@ -10,6 +10,7 @@ void wx_ptp_reset(struct wx *wx);
- void wx_ptp_init(struct wx *wx);
- void wx_ptp_suspend(struct wx *wx);
- void wx_ptp_stop(struct wx *wx);
-+void wx_ptp_quiesce(struct wx *wx);
- void wx_ptp_rx_hwtstamp(struct wx *wx, struct sk_buff *skb);
- int wx_hwtstamp_get(struct net_device *dev,
- 		    struct kernel_hwtstamp_config *cfg);
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-index 9251e7a1d416..f6e596eb9217 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-@@ -94,6 +94,10 @@ static void txgbe_module_detection_subtask(struct wx *wx)
- {
- 	int err;
- 
-+	if (test_bit(WX_STATE_DOWN, wx->state) ||
-+	    test_bit(WX_STATE_RESETTING, wx->state))
-+		return;
-+
- 	if (!test_and_clear_bit(WX_FLAG_NEED_MODULE_RESET, wx->flags))
- 		return;
- 
-@@ -107,6 +111,10 @@ static void txgbe_module_detection_subtask(struct wx *wx)
- 
- static void txgbe_link_config_subtask(struct wx *wx)
- {
-+	if (test_bit(WX_STATE_DOWN, wx->state) ||
-+	    test_bit(WX_STATE_RESETTING, wx->state))
-+		return;
-+
- 	if (!test_and_clear_bit(WX_FLAG_NEED_LINK_CONFIG, wx->flags))
- 		return;
- 
--- 
-2.51.0
-
+>
+>Thanks,
+>Doruk
