@@ -1,68 +1,159 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 647BC286D5E;
-	Mon, 15 Jun 2026 20:42:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 439A0286D5E
+	for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 20:43:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781556171; cv=none; b=LbzJ/zHav9oGp4dAD8/Cz3lgPG5odrqHAd/2Y3Tua4sy9fXq5K/xwIg0EEWyppVre6QzVtafx+N60w82VgutiPzwN1JvX8tPRR4+b0cZXQb5PSK54QCcpGqSMDmY4Rr6OwJnya7TpGSdq5xoB/dMPPRi92Zhtk5bLv5yeyJnT7Y=
+	t=1781556192; cv=none; b=IRcjbefgWwm1+xWIEnNHWTLHzJCyi5NK3gcK2g9ocHzUGFmSRtlXD/Xyjj7nCbG3Bvsr3nBJwjhIVHW0KDgyPsE5Gf/gWvmYBOSTZSGnj6igQ+mvxLV2NEtO8nEB7aAKmDBHh1zMrqnKZljg8cPSkyDisCTuFu0IT0zOUayw+ek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781556171; c=relaxed/simple;
-	bh=aPTdsFC7OL8pWaV8feS5opuevgkA+VecbasCdeVpSeg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bnoVxxtM/NOj5nygLqssP6kZ4Fu3/XsV1hA2mtSI0jOt6bKsy5ET6pqxzDpGZ7YuLTcAt96+TxerwPvl/xp5vuxDrGTJlkbQ2KmuYuDvKVjiZ3xXxGH0YwnSzCOHUoVWgHdyqRM/NtzbopHuZLo6c9ff6ahOvOBFvW8zKtjZ34w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d1HKdjLw; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781556192; c=relaxed/simple;
+	bh=jBlnsK/KMS3kauJF9/6kISkgmEqaeXoqt4eJCNdej84=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gJIInqn29wvxWW9mz+yhWcwu6QsDJKi0zRdn3O+f9Bnt5Xd8Th84WLRvwgGcpJFe8XhwYpsdLzfolUCModjBv4VwaQ8xMGiEaBh0Y+wmB0l1iReLEnfX7ia0iZNkUsBDkVrGCjjLftiiMmjfDZ/OTJ5Q73Ttfg3O4lkd+CZCdLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pD1g71S7; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d1HKdjLw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 813AE1F00A3D;
-	Mon, 15 Jun 2026 20:42:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781556170;
-	bh=nMnhxfNIZVyV93CrAHISz+K1WU9OroQwaebImzftECY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=d1HKdjLwer4f02pwmKsxGAre7uZHyuXLCAFi/cGSJVg9/QJcLIjK1XgQi1MrjpW35
-	 ECfZ/zEhxc2e0rSqjAXLKUqsNdX2CizYp3sUP7X7QCQKH1xDjerrukAAyjJ2dPzAGy
-	 /6ZNzquNxJuNEZOVjDqDSuyOqZUjoaPvfKirr9VSIYC2ghiUz91NdW1kFYA2rDHqAE
-	 zFb13JkG6klttPUh9WjcPyrX9NTacXowa/uYomdRYCTX/4z5UZ5YSSXstiqSJIzmoS
-	 ahHeu5ukRiw0IvdPAj/gIEbEbCNYsLiXQTsCpNGVuB/T+5k5ogh9FOlqw9uOgiz6TA
-	 Z1ikLUSwVDVnA==
-Date: Mon, 15 Jun 2026 13:42:47 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Dipayaan Roy <dipayanroy@linux.microsoft.com>
-Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
- decui@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, leon@kernel.org,
- longli@microsoft.com, kotaranov@microsoft.com, horms@kernel.org,
- shradhagupta@linux.microsoft.com, ssengar@linux.microsoft.com,
- ernis@linux.microsoft.com, shirazsaleem@microsoft.com,
- linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
- stephen@networkplumber.org, jacob.e.keller@intel.com,
- dipayanroy@microsoft.com, leitao@debian.org, kees@kernel.org,
- john.fastabend@gmail.com, hawk@kernel.org, bpf@vger.kernel.org,
- daniel@iogearbox.net, ast@kernel.org, sdf@fomichev.me,
- yury.norov@gmail.com, pavan.chebbi@broadcom.com
-Subject: Re: [PATCH net-next v10 0/2] net: mana: add ethtool private flag
- for full-page RX buffers
-Message-ID: <20260615134247.0bd7e16e@kernel.org>
-In-Reply-To: <ajBRwYftEol8IE49@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <20260602202801.1873742-1-dipayanroy@linux.microsoft.com>
-	<ajBRwYftEol8IE49@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pD1g71S7"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2bf2d865383so5275ad.1
+        for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 13:43:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781556191; x=1782160991; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=TBDZMBYyw+UgUQjRNToZ0sLPA9XJndpfItnW356E0MI=;
+        b=pD1g71S7EtpQTpT/BiJKtBZQRzfYIfK1WP6Ecf1qhkq9I2q6+0lzhgkJbQX7E6OQx6
+         8lYPIXsjJGFFmk0JHUpWjMO830tdFyAi4czLo4JWIsG9CmGUVWYN36QRues19Q5DkVdj
+         uAb6x+QL2KT8NFZQqfFYaM2OErBJSvUL1I4Qqi2Gw4blEeX6e5fcACZs5tVxoZz7MPRZ
+         XpM+9MbJBKt+snIfigmtEgPTGHOMCfwOSkYzkisOYnJS5b7bxPLQE6QRF/w22kQpxi6z
+         3iR+OB7SKTTm2BqoMleG4St1JpsngU8TGjGfsyVzOw0ZohYNP8iumIUcX+Jidlm/7BNS
+         Y3bg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781556191; x=1782160991;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TBDZMBYyw+UgUQjRNToZ0sLPA9XJndpfItnW356E0MI=;
+        b=YE+Y3EYmATgADNfHw8Ydko66HwwUKAGjSq8EAkK8KJ0GFvkP5UoWC2V2qHqUp/8MnK
+         ZwLQgpUHiLC3+aFseshLlOar+FY3pdUK/64vsv3JR1x1UDcqawBZxm5JirH5l2s+PE2w
+         z2g8bcBN6VATHDIw8KEGoMbKsXrf09vUfAWI7jJ1dCsZFTxfiPntH6gAnZCXywYlHh1v
+         K7m8JaQil2YX+O6UqCQNfQpyTzniuqBsMnGYXpSBbX+OrIJxpCPc+gOiSO/FbtSE4fXc
+         t8c6XDvdyMmutFpW0/pOctCunwM91TSuhVnTwa4TEjRWVdwvZoJeKA+oaZvv75PD4YqE
+         jWmw==
+X-Forwarded-Encrypted: i=1; AFNElJ++1A5E79e74GVL4DoK4aLg9RwN2ShMvRy/f2SpBdSKPlTFGH33c+gRMoJXAvhdW8p5SQ6yNFs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+S3va9/GnS1LmBhxsFJZVq+ZOLgpdrxD9QaiE7lA079tWQsE6
+	f3a/+jr8l4p6MBdbx/9Ub15/tAEocTVWQNfm/ME7pXKO5Ftj76YMKocvk/YFk3bhCg==
+X-Gm-Gg: Acq92OFLunYTFY7zMvlu1j5L34xb5Z/mCMU1uMlw+MvD9MnMJ7DJQFomTWQHu+orgL4
+	nDMhjo6UIVpDCxyPdxKKizPGIH2TSzg1qIk0kccJq1ZhPLEJWMzrhlaWNGWhcdPG+ZZRy3TcrWT
+	WQ1NvS+eU6usd4KGZ9/RcWjl9hsCg/NskcI038Sfn8udBdIKKlfWA3R1vGFOB4lJjpH3ZhS+l1h
+	mgF3Smi93D6aRnSi4/b7ia3CCMenJaEZMbgbs9GTiR5aZavsAkngEFoLUR2wjdmm0UAFBeZfTp2
+	jwEB1zPmiewehSHAqW/DQx8bkIYqKPU08N4Huir72iiE7RSkXcO+E2z6gclR5it0IFIHc6Qu0hN
+	LNw9Fukg996iCFowX2t9eZBdilFiduVfEnUgDESThiXVyAb4+fPXki9edyYadSqYMWH+uLtKIa7
+	zMYoXj2iH+WqYiHCa3HRwTaqN7qqhdixjxxrTnu+8xBrq4R4p747NmVaXopWsoQdcF85e6KbjIf
+	u6JowEitIUiGooWe+8a1j99e/miNBsVBjKDCB/tIRM6bQ==
+X-Received: by 2002:a17:902:d581:b0:2c1:ee6e:be1e with SMTP id d9443c01a7336-2c69a35837amr651055ad.28.1781556190181;
+        Mon, 15 Jun 2026 13:43:10 -0700 (PDT)
+Received: from google.com (112.174.16.34.bc.googleusercontent.com. [34.16.174.112])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37c5228eb5bsm483197a91.12.2026.06.15.13.43.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Jun 2026 13:43:09 -0700 (PDT)
+Date: Mon, 15 Jun 2026 20:43:04 +0000
+From: Carlos Llamas <cmllamas@google.com>
+To: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Christian Brauner <christian@brauner.io>,
+	David Ahern <dsahern@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-mm@kvack.org,
+	Lorenzo Stoakes <ljs@kernel.org>, netdev@vger.kernel.org,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Todd Kjos <tkjos@android.com>, Vlastimil Babka <vbabka@kernel.org>
+Subject: Re: [PATCH v2 4/5] binder: Remove mmap_lock fallback
+Message-ID: <ajBj2BzEalR8jYX9@google.com>
+References: <20260610230409.A44D29FA@davehans-spike.ostc.intel.com>
+ <20260610230417.77D64DBB@davehans-spike.ostc.intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260610230417.77D64DBB@davehans-spike.ostc.intel.com>
 
-On Mon, 15 Jun 2026 12:25:53 -0700 Dipayaan Roy wrote:
-> Just a gentle ping on this series. The approach was agreed upon, and it
-> has picked up a few Reviewed-by tags as well.
+On Wed, Jun 10, 2026 at 04:04:17PM -0700, Dave Hansen wrote:
 > 
-> Please let me know if you need anything else from me, or if I should
-> resend it to collect the tags.
+> From: Dave Hansen <dave.hansen@linux.intel.com>
+> 
+> Previously, the per-VMA locking could fail in the face of writers
+> which necessitate a fallback to mmap_lock. The new
+> vma_start_read_unlocked() will wait for writers instead of failing.
+> 
+> Use the new helper. Wait for writers. Remove the fallback to mmap_lock.
+> 
+> Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Acked-by: Lorenzo Stoakes <ljs@kernel.org>
+> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> Cc: Vlastimil Babka <vbabka@kernel.org>
+> Cc: Shakeel Butt <shakeel.butt@linux.dev>
+> Cc: linux-mm@kvack.org
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Arve Hjønnevåg <arve@android.com>
+> Cc: Todd Kjos <tkjos@android.com>
+> Cc: Christian Brauner <christian@brauner.io>
+> Cc: Carlos Llamas <cmllamas@google.com>
+> Cc: Alice Ryhl <aliceryhl@google.com>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: David Ahern <dsahern@kernel.org>
+> Cc: netdev@vger.kernel.org
+> 
+> ---
+> 
+>  b/drivers/android/binder_alloc.c |   17 +++++------------
+>  1 file changed, 5 insertions(+), 12 deletions(-)
+> 
+> diff -puN drivers/android/binder_alloc.c~binder-vma-waiter drivers/android/binder_alloc.c
+> --- a/drivers/android/binder_alloc.c~binder-vma-waiter	2026-06-10 15:57:56.419452721 -0700
+> +++ b/drivers/android/binder_alloc.c	2026-06-10 15:57:56.423452863 -0700
+> @@ -259,21 +259,14 @@ static int binder_page_insert(struct bin
+>  	struct vm_area_struct *vma;
+>  	int ret = -ESRCH;
+>  
+> -	/* attempt per-vma lock first */
+> -	vma = lock_vma_under_rcu(mm, addr);
+> -	if (vma) {
+> -		if (binder_alloc_is_mapped(alloc))
+> -			ret = vm_insert_page(vma, addr, page);
+> -		vma_end_read(vma);
+> +	vma = vma_start_read_unlocked(mm, addr);
+> +	if (!vma)
+>  		return ret;
+> -	}
+>  
+> -	/* fall back to mmap_lock */
+> -	mmap_read_lock(mm);
+> -	vma = vma_lookup(mm, addr);
+> -	if (vma && binder_alloc_is_mapped(alloc))
+> +	if (binder_alloc_is_mapped(alloc))
+>  		ret = vm_insert_page(vma, addr, page);
+> -	mmap_read_unlock(mm);
+> +
+> +	vma_end_read(vma);
+>  
+>  	return ret;
+>  }
+> _
 
-Don't recall now what the exact sequence was but pretty sure this 
-no longer applied after some other mana series was merged.
+
+Thanks,
+Acked-by: Carlos Llamas <cmllamas@google.com>
