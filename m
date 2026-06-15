@@ -1,31 +1,65 @@
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ABC215CD7E;
-	Mon, 15 Jun 2026 00:38:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DCA91C2AA
+	for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 00:43:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781483899; cv=none; b=pYzOouwHsEXXey9uEyKJ35kxNDV9b8QbVPtA8nyl2Gj7BE+QxBIVfJXLXiummEaIv2mPi37xklLaiaxyUoLUeoRodfpW971krAWJnSokCYipshJ/gToUjknlGWHtSnJjDGUyAsELOY27FfDJhHy81Hrq4nEEIE82dBR86sE6tzQ=
+	t=1781484185; cv=none; b=tByPw8cR/e1lVKEmVeQpNSbRWKNfC4YB3aAzLCGmAD7ehuV2H5leelER03oiqfX1t1tHuRtDyT8PwvvnhRnyiRdSsJdHMWU9HjWNMmOrMclK5qdki3O9gtkY1gpikIl0BaqnUCcc32pY1r1otPOckJ+nJqC3+tKRmWVo+qAKWtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781483899; c=relaxed/simple;
-	bh=x7Baw3v2AaNLY94j7SiqoQfh1bcLC24lGt0gRNQISzE=;
+	s=arc-20240116; t=1781484185; c=relaxed/simple;
+	bh=AvZdXTNtSkDZo5aV+FuouBwHA4hBOPkcsNaFuzZuWL4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QEVlviqNCflwNr8nUDW4+Bw7KCdBRz6d/Zr9z5OSXmswX7p78fm1HXbro0zZXTzJzERFs8Sl90vcU42ws3sc5LtKZJJQ6zC5kpf8cyzPdD/R4tDWxjonO/C2ZDzQffBxyDLuABxvHstV2DrkQDkqT3H5mwxSvO/DpX3ekAGo8+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
-Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
-	id EB61560529; Mon, 15 Jun 2026 02:38:09 +0200 (CEST)
-Date: Mon, 15 Jun 2026 02:38:09 +0200
-From: Florian Westphal <fw@strlen.de>
-To: kernel test robot <lkp@intel.com>
-Cc: oe-kbuild-all@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
-	netdev@vger.kernel.org, netfilter-devel@vger.kernel.org
-Subject: Re: [netfilter-nf-next:for-netdev-nf-next-26-06-14 3/11]
- net/netfilter/nf_conncount.c:502:18: sparse: sparse: incompatible types in
- comparison expression (different address spaces):
-Message-ID: <ai9JaPRfvc3R_9Uz@strlen.de>
-References: <202606150616.cpmJToWO-lkp@intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=X/+i7XNpnjMAMQQMADOzJQ6TD8RLKGeCa5yh9yCRhuAfF8oCPcPCJNGN5S8hoNqom0Y4HcKBYY6zk1x0VJo2t5IU3fhxxy/sV6nHTuCmMfNFAuvtwbTa/zRx/OFy7huIXbL8qaVwjvsDksl9XdnPbihsWECp9O5BC15/OHV0VVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L817aBrg; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L817aBrg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781484183; x=1813020183;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=AvZdXTNtSkDZo5aV+FuouBwHA4hBOPkcsNaFuzZuWL4=;
+  b=L817aBrgm+DoF7Qh1P1TcQWMqOoj5xBsRviTyB0j6uO1xYfC4p8w0lum
+   DKerxU3vfXATutA/T6m/NxQCj6pM7Kx+sTuuTfyVRbGyEvAp9bAPyxbtr
+   9NbUrSKlE0UljCQe6Hi2bIeThuznTgXpDMrnTBU2z5bAh1gHrnhx7F965
+   h6OYZRMPlNSbHktVv90Dx8wYVC5kdp5TizEGwsa4AHgyF9Ajs7KoZ8jrr
+   Ork/AHshnVGxTqP+0eNSsKhJk6RgLnbXAeXCe2cmYac/+pgwGgEacwtcD
+   lQoYKIh8d4PQMKKwS5NBh3IxPpSNH38C+pqSnu3zpd1O2ijj/umEQmXE2
+   g==;
+X-CSE-ConnectionGUID: EtvdzxOgTSeKdlGjfs/bfw==
+X-CSE-MsgGUID: cyu4AyjKTsWUv6Fvx+8DZA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11817"; a="82233292"
+X-IronPort-AV: E=Sophos;i="6.24,205,1774335600"; 
+   d="scan'208";a="82233292"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2026 17:43:03 -0700
+X-CSE-ConnectionGUID: qoqDpLDbTSWJblD78y8e5g==
+X-CSE-MsgGUID: C8Pxmp9mSZ2qIN7l1XsRHg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,205,1774335600"; 
+   d="scan'208";a="271003255"
+Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 14 Jun 2026 17:42:58 -0700
+Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wYvPj-00000000RKs-3KLk;
+	Mon, 15 Jun 2026 00:42:55 +0000
+Date: Mon, 15 Jun 2026 08:42:55 +0800
+From: kernel test robot <lkp@intel.com>
+To: mheib@redhat.com, intel-wired-lan@lists.osuosl.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	netdev@vger.kernel.org, jiri@resnulli.us, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, corbet@lwn.net, anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com, andrew+netdev@lunn.ch,
+	Mohammad Heib <mheib@redhat.com>
+Subject: Re: [Intel-wired-lan] [PATCH net-next] i40e: add devlink parameter
+ for Flow Director ATR sample rate
+Message-ID: <202606150807.u6hUM8VJ-lkp@intel.com>
+References: <20260614161131.192068-1-mheib@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -34,36 +68,57 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <202606150616.cpmJToWO-lkp@intel.com>
+In-Reply-To: <20260614161131.192068-1-mheib@redhat.com>
 
-kernel test robot <lkp@intel.com> wrote:
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf-next.git for-netdev-nf-next-26-06-14
-> head:   2354e975932dabb06fad239f07a3b68fd1809737
-> commit: 64d7d5abe2160bba369b4a8f06bdf5630573bab0 [3/11] netfilter: nf_conncount: callers must hold rcu read lock
-> config: x86_64-randconfig-123-20260614 (https://download.01.org/0day-ci/archive/20260615/202606150616.cpmJToWO-lkp@intel.com/config)
-> compiler: gcc-13 (Debian 13.3.0-16) 13.3.0
-> sparse: v0.6.5-rc1
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260615/202606150616.cpmJToWO-lkp@intel.com/reproduce)
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202606150616.cpmJToWO-lkp@intel.com/
-> 
-> sparse warnings: (new ones prefixed by >>)
-> >> net/netfilter/nf_conncount.c:502:18: sparse: sparse: incompatible types in comparison expression (different address spaces):
->    net/netfilter/nf_conncount.c:502:18: sparse:    struct rb_node [noderef] __rcu *
->    net/netfilter/nf_conncount.c:502:18: sparse:    struct rb_node *
->    net/netfilter/nf_conncount.c:510:34: sparse: sparse: incompatible types in comparison expression (different address spaces):
->    net/netfilter/nf_conncount.c:510:34: sparse:    struct rb_node [noderef] __rcu *
->    net/netfilter/nf_conncount.c:510:34: sparse:    struct rb_node *
->    net/netfilter/nf_conncount.c:512:34: sparse: sparse: incompatible types in comparison expression (different address spaces):
->    net/netfilter/nf_conncount.c:512:34: sparse:    struct rb_node [noderef] __rcu *
->    net/netfilter/nf_conncount.c:512:34: sparse:    struct rb_node *
+Hi,
 
-Thanks but I have no intent to fix this.
+kernel test robot noticed the following build errors:
 
-Between rcu_dereference_raw() not giving sparse warnings but also not
-providing any hints when callers don't hold rcu read lock and plain
-rcu_dereference() that does give runtime coverage but results in above
-sparse output I will pick the latter and just ignore these warnings.
+[auto build test ERROR on net-next/main]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/mheib-redhat-com/i40e-add-devlink-parameter-for-Flow-Director-ATR-sample-rate/20260615-001257
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20260614161131.192068-1-mheib%40redhat.com
+patch subject: [Intel-wired-lan] [PATCH net-next] i40e: add devlink parameter for Flow Director ATR sample rate
+config: sparc64-allmodconfig (https://download.01.org/0day-ci/archive/20260615/202606150807.u6hUM8VJ-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260615/202606150807.u6hUM8VJ-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202606150807.u6hUM8VJ-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/net/ethernet/intel/i40e/i40e_devlink.c:106:9: error: incompatible function pointer types initializing 'int (*)(struct devlink *, u32, union devlink_param_value *, struct netlink_ext_ack *)' (aka 'int (*)(struct devlink *, unsigned int, union devlink_param_value *, struct netlink_ext_ack *)') with an expression of type 'int (struct devlink *, u32, union devlink_param_value, struct netlink_ext_ack *)' (aka 'int (struct devlink *, unsigned int, union devlink_param_value, struct netlink_ext_ack *)') [-Wincompatible-function-pointer-types]
+     106 |                              i40e_atr_sample_rate_validate),
+         |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/net/devlink.h:650:14: note: expanded from macro 'DEVLINK_PARAM_DRIVER'
+     650 |         .validate = _validate,                                          \
+         |                     ^~~~~~~~~
+   1 error generated.
+
+
+vim +106 drivers/net/ethernet/intel/i40e/i40e_devlink.c
+
+    93	
+    94	static const struct devlink_param i40e_dl_params[] = {
+    95		DEVLINK_PARAM_GENERIC(MAX_MAC_PER_VF,
+    96				      BIT(DEVLINK_PARAM_CMODE_RUNTIME),
+    97				      i40e_max_mac_per_vf_get,
+    98				      i40e_max_mac_per_vf_set,
+    99				      NULL),
+   100		DEVLINK_PARAM_DRIVER(I40E_DEVLINK_PARAM_ID_ATR_SAMPLE_RATE,
+   101				     "atr_sample_rate",
+   102				     DEVLINK_PARAM_TYPE_U32,
+   103				     BIT(DEVLINK_PARAM_CMODE_RUNTIME),
+   104				     i40e_atr_sample_rate_get,
+   105				     i40e_atr_sample_rate_set,
+ > 106				     i40e_atr_sample_rate_validate),
+   107	};
+   108	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
