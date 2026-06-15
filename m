@@ -1,197 +1,186 @@
-Received: from sender-op-o17.zoho.eu (sender-op-o17.zoho.eu [136.143.169.17])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE783F825A;
-	Mon, 15 Jun 2026 13:39:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.169.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781530779; cv=pass; b=uSMXtfMlqEDMz78pNto1Wr/ZyKfnHGjF3rVk7nU03WHupKnaw3+WQx173HB+wFC0d8xxCJWt1+0b8wog+Gd1Nnd9i1jhotAvus9xbZu5fsi9fRc4mkmNKf6VT/8TKcSuVBCBKJZt3ubeeXC6XZ8Si1VBxD7h4sSMqLMW9jjNE+8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781530779; c=relaxed/simple;
-	bh=K++4jwxDoBjtuNFxZGnp39UuDBHSP5pIpnDynUOqpic=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 415A21990C7
+	for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 13:56:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781531762; cv=none; b=EKYLeKDoveO307TlT4Ulefm8A+VES/SmlBXGHi68CoEJ6fSn+jPfITF5Ip/Ijmxnl92KGkJ5uHmk7pLTT0HgbfBbHfC4L7SFDmgxZYwjXByVvJbdKSyXtDLzirCQAVXbaxYHENqhnGD5tIZZM83DL43Oi3pTWmE4Mfl4EgZ2wVs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781531762; c=relaxed/simple;
+	bh=azPHeJ6RdZ6MYg3yN5YCdVKMCdOR3cGIJZpIxCTg1u0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qcVEqXrj5I4l1MNGgnMQUwzASx40B42SazanmpeEYjV0tmvzQS5YmzwMspsIV4anNPJN4dRsG/Nvfo15SYwEoeWWQGQlaczCGsFcr1iuBeb0TRWS7wwieA363tIV3ibhKfnMa5yYFv8AX644URuSPGE0Z/Xyzamxkxubeoe8tIU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=carlosgrillet.me; spf=pass smtp.mailfrom=carlosgrillet.me; dkim=pass (1024-bit key) header.d=carlosgrillet.me header.i=carlos@carlosgrillet.me header.b=MBoTxtDW; arc=pass smtp.client-ip=136.143.169.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=carlosgrillet.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=carlosgrillet.me
+	 MIME-Version:Content-Type; b=c23ptFp/9CKO9Gnifirw8OqTk2dBuFpvHHlXwTsdjWt1Ysz3fLe0S4XMyHyfTLZOOzD9y+XYFgAjSXB2ltA7NpLtbyUU+TtRPmbCawHeleVm8ITtYuYXMWBbbNldaQ46DzmO6PkgNi83hfRp/8SlH10c4sc9OQx+QF5C7E1OW9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JnKqJ564; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=DllrCIKz; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=carlosgrillet.me header.i=carlos@carlosgrillet.me header.b="MBoTxtDW"
-ARC-Seal: i=1; a=rsa-sha256; t=1781530752; cv=none; 
-	d=zohomail.eu; s=zohoarc; 
-	b=DAnU3Vv0w3LzEPh67Fqt6P5GNLUc0gGLg1A2AOnEmGpiHa7NANG7XkZNgv2+4CibWBMaAPOhXWmyb3lirvEDKyCcyjXjaMUp+naG5FcX6HmuQjzz1cJH5/IHf+RgdA1uoTYaG7TmygOxrP5ULl08jlnAjFuud8/2KqPH7YEoQxI=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1781530752; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=KiTQOYN1I+OtIv4YvCjhM/TalG2MjRm+KUqOn9IZnlw=; 
-	b=WP09XQiuBaRZe3CZvMEned2QO/pBkEUmUtPOetXU0MnXGrKfDPn2JcLbO0g3XdF4ONBWROCQJnt2NM9D2BX+vTiabAMxghIxp7XTo/hNYV7IW9J93giRJRw7G5vJe76sr1D6pPE9/w+m65t589ULSifIr7ktixbsd8z1swhy2Is=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-	dkim=pass  header.i=carlosgrillet.me;
-	spf=pass  smtp.mailfrom=carlos@carlosgrillet.me;
-	dmarc=pass header.from=<carlos@carlosgrillet.me>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1781530752;
-	s=zmail; d=carlosgrillet.me; i=carlos@carlosgrillet.me;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=KiTQOYN1I+OtIv4YvCjhM/TalG2MjRm+KUqOn9IZnlw=;
-	b=MBoTxtDWAarnK8iXupO+ovvOKf6cRiqtMCJFdx0aeDPw9tSrvv7CFuhEIgjBck6a
-	7tQlMLnxk507mJ+PILAiWhpc97o98kDWGjrV734kgweJuD7aNihsuTUdMlVwccLycwd
-	ojxxZbvk/3KJOnmBqEuOAioZtl3Hsl7AlbR3rE+k=
-Received: by mx.zoho.eu with SMTPS id 1781530750121484.3758794580334;
-	Mon, 15 Jun 2026 15:39:10 +0200 (CEST)
-From: Carlos Grillet <carlos@carlosgrillet.me>
-To: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>
-Cc: netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH nf-next v2 6/6] netfilter: nf_log: replace u_int8_t with u8
-Date: Mon, 15 Jun 2026 15:38:31 +0200
-Message-ID: <20260615133835.51273-7-carlos@carlosgrillet.me>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260615133835.51273-1-carlos@carlosgrillet.me>
-References: <20260615133835.51273-1-carlos@carlosgrillet.me>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JnKqJ564";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="DllrCIKz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781531760;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YPckBN/w9iQXsyyujFhuNAKZOopC9y7aQZ4NPid9/sA=;
+	b=JnKqJ564gx0Df2+o3vRwN31TJcQyKWINNRCN9cuy0dX6fP8YCw1rNdWg4ia5CX8xgRHKu8
+	00hpZxqnucs+vhExIQPdUM1V7/lWMgvL6g1rqOh1jO/0aH22FyqZfuTR+BamXnJ2JG1odW
+	C41xexfTiBTUOiaEag/xa/ORMRIOrtw=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-617-ZjG0nHOINFiiBKbGntW4vg-1; Mon, 15 Jun 2026 09:55:58 -0400
+X-MC-Unique: ZjG0nHOINFiiBKbGntW4vg-1
+X-Mimecast-MFC-AGG-ID: ZjG0nHOINFiiBKbGntW4vg_1781531758
+Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-68b3e28267dso3683943a12.3
+        for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 06:55:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1781531757; x=1782136557; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YPckBN/w9iQXsyyujFhuNAKZOopC9y7aQZ4NPid9/sA=;
+        b=DllrCIKz4+C6GWqfdsAPxm12vPFHmLsu5gAHu+DQfnESa/FmSJ+ukAKCpw1BSTD2kT
+         UPc+FLgkkicj8lajnPOx3jTsBxRDgb1ypVFCAaoFI2yGp6bsw1RZlq0JUfI+KtH5I02/
+         QsPG9CS+gvhjsfoB+PZGcEsWBpcIK2jZZ02SBWAP34IqZkw2j3RU5nEJWQiaInvqD+EX
+         fHxns0vQD8iTFrqDItYv8e0mrYHgdqf8rcbOIPO6kTko/Enq+YMAyZs4rrjzOTewu5sg
+         9Vordw3+VGH6vb5cFxinnViqQNaOi1Uv6IObtR1aqdTsJPgMPpcPM6PcZGtiTbzTbwxI
+         PIQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781531757; x=1782136557;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=YPckBN/w9iQXsyyujFhuNAKZOopC9y7aQZ4NPid9/sA=;
+        b=MatAE4t/xcm1sNTK2yYb2pRK2WyEF7VV+KCzAoiiRI6EABLeT9K2NOrVIk+b7qPEPW
+         Lwx2M/w8rF7lneUd5K4l2coda3tK0BuEVZDopbG+NwojcC9Fi27lA9J1xEaLkXbY1yHu
+         C1aoSEi67QgbUnAKaWu1GD7S6fbULGGW38Jc7D75iElebaaEM3ahUnt8FVF6TtIInTsR
+         qP/TeHL1HPOSWddFNXKCmnKWi0B9w8EYLPc/tEZnraignD5rtiBKXmBND9Awwk/HvClL
+         mfIVT0HlIDvRwylUvYbFiJDFScAjUzoO8S8fSCt/9pZbn6y9I8V1Ll6dcbzypkzYdG+A
+         Hvsg==
+X-Gm-Message-State: AOJu0Yyo3RSZOBFX1siK1Mz0G9H+mFMI4Z7qD7Dzg/IHbQ19MYA1v1XA
+	eCjC0pgFUFjXfpoKC+L/NUs46vQbhUMcf8xsc3sqVJb/6p8xj+l+Nfr5TuLZMEfcQ+BIYaiHBLE
+	wA1ZsmqYswuTvZPKjRw4QNLxKYPLUkQ/3KYrR4LiZJ7jkDVeVNcxtsTBtIQ==
+X-Gm-Gg: Acq92OHrR4AAh3BTuD+Ica57K85E6PntxUDIxy0Vw9TdXW+g6k4H6Bc2jqpc8MXdJjE
+	knfO2b32ZZy1frC4gR8bZRXZYNbq6zGGL46x/U9zd+ZE6hllOKgeqL7X8uejusTJCV9B6b9jXmz
+	vK6VEkKypOFYwP0Kns2146J9gupYDzL/D+pT6j67n35/6nN8YJmM3LDffKOusU9t539I7gef/bW
+	atpKcQAyxHVD7zdL2pEJpSUVun3bPU1vAnsJGGrqQagSjJ081/SzIIFWBDlfmEF3ZXv1WxpuhzB
+	9jjHy22J0ZQbjzEN/GUamsyFB0bZC//sBJJ4TKZKOeQPdhwt13cJARRokSKXH0qh6r8gyvvDlgA
+	YMCtwASellpCOR4nTjbu2ciz+LvO8bk5dI+xavD7Qo7IFCLdTwAxNdU2af6gWdvNtNk5Mxg==
+X-Received: by 2002:a05:6402:350c:b0:687:9c0f:5897 with SMTP id 4fb4d7f45d1cf-693c6a16992mr4050531a12.9.1781531757562;
+        Mon, 15 Jun 2026 06:55:57 -0700 (PDT)
+X-Received: by 2002:a05:6402:350c:b0:687:9c0f:5897 with SMTP id 4fb4d7f45d1cf-693c6a16992mr4050500a12.9.1781531757036;
+        Mon, 15 Jun 2026 06:55:57 -0700 (PDT)
+Received: from [10.44.33.51] (5920ab7b.static.cust.trined.nl. [89.32.171.123])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-693ab54e6e5sm2952596a12.1.2026.06.15.06.55.56
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 15 Jun 2026 06:55:56 -0700 (PDT)
+From: Eelco Chaudron <echaudro@redhat.com>
+To: Adrian Moreno <amorenoz@redhat.com>
+Cc: netdev@vger.kernel.org, aconole@redhat.com, pabeni@redhat.com,
+ Ilya Maximets <i.maximets@ovn.org>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Simon Horman <horms@kernel.org>,
+ "open list:OPENVSWITCH" <dev@openvswitch.org>,
+ open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next v4 2/4] net: openvswitch: add per-flow_table
+ lockdep checks
+Date: Mon, 15 Jun 2026 15:55:55 +0200
+X-Mailer: MailMate (2.0r6292)
+Message-ID: <FE904B6B-A82F-4657-A323-2EDB59FA0979@redhat.com>
+In-Reply-To: <20260611045817.1302665-3-amorenoz@redhat.com>
+References: <20260611045817.1302665-1-amorenoz@redhat.com>
+ <20260611045817.1302665-3-amorenoz@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-Replace POSIX u_int8_t with preferred kernel type u8 and update typedef
-and declaration in include/net/netfilter/nf_log.h
+On 11 Jun 2026, at 6:58, Adrian Moreno wrote:
 
-No functional changes.
+> A future patch will introduce a per-flow_table mutex that will protect
+> flow operations independently. In preparation for that, this patch
+> introduces a flow_table lockdep macro, and modifies some function
+> signatures to allow lockdep assertions to run.
+>
+> For now, the actual lockdep check logic is a no-op, but adding the
+> infrastructure helps reduce the size of the upcoming patch.
+>
+> Signed-off-by: Adrian Moreno <amorenoz@redhat.com>
 
-Signed-off-by: Carlos Grillet <carlos@carlosgrillet.me>
----
- include/net/netfilter/nf_log.h | 16 ++++++++--------
- net/netfilter/nf_log.c         | 14 +++++++-------
- 2 files changed, 15 insertions(+), 15 deletions(-)
+Hi Adrian,
 
-diff --git a/include/net/netfilter/nf_log.h b/include/net/netfilter/nf_log.h
-index 00506792a06d..cff636f29f45 100644
---- a/include/net/netfilter/nf_log.h
-+++ b/include/net/netfilter/nf_log.h
-@@ -37,7 +37,7 @@ struct nf_loginfo {
- };
- 
- typedef void nf_logfn(struct net *net,
--		      u_int8_t pf,
-+		      u8 pf,
- 		      unsigned int hooknum,
- 		      const struct sk_buff *skb,
- 		      const struct net_device *in,
-@@ -56,18 +56,18 @@ struct nf_logger {
- extern int sysctl_nf_log_all_netns;
- 
- /* Function to register/unregister log function. */
--int nf_log_register(u_int8_t pf, struct nf_logger *logger);
-+int nf_log_register(u8 pf, struct nf_logger *logger);
- void nf_log_unregister(struct nf_logger *logger);
- 
- /* Check if any logger is registered for a given protocol family. */
--bool nf_log_is_registered(u_int8_t pf);
-+bool nf_log_is_registered(u8 pf);
- 
--int nf_log_set(struct net *net, u_int8_t pf, const struct nf_logger *logger);
-+int nf_log_set(struct net *net, u8 pf, const struct nf_logger *logger);
- void nf_log_unset(struct net *net, const struct nf_logger *logger);
- 
--int nf_log_bind_pf(struct net *net, u_int8_t pf,
-+int nf_log_bind_pf(struct net *net, u8 pf,
- 		   const struct nf_logger *logger);
--void nf_log_unbind_pf(struct net *net, u_int8_t pf);
-+void nf_log_unbind_pf(struct net *net, u8 pf);
- 
- int nf_logger_find_get(int pf, enum nf_log_type type);
- void nf_logger_put(int pf, enum nf_log_type type);
-@@ -78,7 +78,7 @@ void nf_logger_put(int pf, enum nf_log_type type);
- /* Calls the registered backend logging function */
- __printf(8, 9)
- void nf_log_packet(struct net *net,
--		   u_int8_t pf,
-+		   u8 pf,
- 		   unsigned int hooknum,
- 		   const struct sk_buff *skb,
- 		   const struct net_device *in,
-@@ -88,7 +88,7 @@ void nf_log_packet(struct net *net,
- 
- __printf(8, 9)
- void nf_log_trace(struct net *net,
--		  u_int8_t pf,
-+		  u8 pf,
- 		  unsigned int hooknum,
- 		  const struct sk_buff *skb,
- 		  const struct net_device *in,
-diff --git a/net/netfilter/nf_log.c b/net/netfilter/nf_log.c
-index f4d80654dfe6..978e082a91b5 100644
---- a/net/netfilter/nf_log.c
-+++ b/net/netfilter/nf_log.c
-@@ -42,7 +42,7 @@ static struct nf_logger *__find_logger(int pf, const char *str_logger)
- 	return NULL;
- }
- 
--int nf_log_set(struct net *net, u_int8_t pf, const struct nf_logger *logger)
-+int nf_log_set(struct net *net, u8 pf, const struct nf_logger *logger)
- {
- 	const struct nf_logger *log;
- 
-@@ -76,7 +76,7 @@ void nf_log_unset(struct net *net, const struct nf_logger *logger)
- EXPORT_SYMBOL(nf_log_unset);
- 
- /* return EEXIST if the same logger is registered, 0 on success. */
--int nf_log_register(u_int8_t pf, struct nf_logger *logger)
-+int nf_log_register(u8 pf, struct nf_logger *logger)
- {
- 	int i;
- 	int ret = 0;
-@@ -133,7 +133,7 @@ EXPORT_SYMBOL(nf_log_unregister);
-  *
-  * Returns: true if at least one logger is active for @pf, false otherwise.
-  */
--bool nf_log_is_registered(u_int8_t pf)
-+bool nf_log_is_registered(u8 pf)
- {
- 	int i;
- 
-@@ -151,7 +151,7 @@ bool nf_log_is_registered(u_int8_t pf)
- }
- EXPORT_SYMBOL(nf_log_is_registered);
- 
--int nf_log_bind_pf(struct net *net, u_int8_t pf,
-+int nf_log_bind_pf(struct net *net, u8 pf,
- 		   const struct nf_logger *logger)
- {
- 	if (pf >= ARRAY_SIZE(net->nf.nf_loggers))
-@@ -167,7 +167,7 @@ int nf_log_bind_pf(struct net *net, u_int8_t pf,
- }
- EXPORT_SYMBOL(nf_log_bind_pf);
- 
--void nf_log_unbind_pf(struct net *net, u_int8_t pf)
-+void nf_log_unbind_pf(struct net *net, u8 pf)
- {
- 	if (pf >= ARRAY_SIZE(net->nf.nf_loggers))
- 		return;
-@@ -235,7 +235,7 @@ void nf_logger_put(int pf, enum nf_log_type type)
- EXPORT_SYMBOL_GPL(nf_logger_put);
- 
- void nf_log_packet(struct net *net,
--		   u_int8_t pf,
-+		   u8 pf,
- 		   unsigned int hooknum,
- 		   const struct sk_buff *skb,
- 		   const struct net_device *in,
-@@ -264,7 +264,7 @@ void nf_log_packet(struct net *net,
- EXPORT_SYMBOL(nf_log_packet);
- 
- void nf_log_trace(struct net *net,
--		  u_int8_t pf,
-+		  u8 pf,
- 		  unsigned int hooknum,
- 		  const struct sk_buff *skb,
- 		  const struct net_device *in,
--- 
-2.54.0
+See some comments below, and maybe address the Sashiko comment in the
+commit message.
+
+Cheers,
+
+Eelco
+
+[...]
+
+> diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
+> index e78c28dd5d9d..72ad3ed12675 100644
+> --- a/net/openvswitch/datapath.c
+> +++ b/net/openvswitch/datapath.c
+> @@ -840,15 +840,16 @@ static size_t ovs_flow_cmd_msg_size(const struct =
+sw_flow_actions *acts,
+>  		+ nla_total_size_64bit(8); /* OVS_FLOW_ATTR_USED */
+>  }
+>
+> -/* Called with ovs_mutex or RCU read lock. */
+> +/* Called with table->lock or RCU read lock. */
+>  static int ovs_flow_cmd_fill_stats(const struct sw_flow *flow,
+> +				   const struct flow_table *table,
+
+Should 'table' come before 'flow' to be consistent with
+ovs_flow_tbl_insert() and ovs_flow_tbl_remove()? This applies
+to all functions in this patch adding the 'table' parameter.
+
+>  				   struct sk_buff *skb)
+>  {
+>  	struct ovs_flow_stats stats;
+>  	__be16 tcp_flags;
+>  	unsigned long used;
+
+[...]
+
+> diff --git a/net/openvswitch/flow_table.h b/net/openvswitch/flow_table.=
+h
+> index 6211bcc72655..3e5e9845c28a 100644
+> --- a/net/openvswitch/flow_table.h
+> +++ b/net/openvswitch/flow_table.h
+> @@ -72,6 +72,22 @@ struct flow_table {
+>
+>  extern struct kmem_cache *flow_stats_cache;
+>
+> +static inline int lockdep_ovs_tbl_is_held(const struct flow_table *tab=
+le
+> +					  __always_unused)
+> +{
+> +	return 1;
+> +}
+> +
+> +#define ASSERT_OVS_TBL(tbl)   WARN_ON(!lockdep_ovs_tbl_is_held(tbl))
+> +
+> +/* Lock-protected update-allowed dereferences.*/
+> +#define ovs_tbl_dereference(p, tbl)	\
+> +	rcu_dereference_protected(p, lockdep_ovs_tbl_is_held(tbl))
+> +
+> +/* Read dereferences can be protected by either RCU, table lock. */
+
+nit; This comment reads odd, maybe;
+
+/* Read dereferences can be protected by either RCU or table lock. */
+
+> +#define rcu_dereference_ovs_tbl(p, tbl) \
+> +	rcu_dereference_check(p, lockdep_ovs_tbl_is_held(tbl))
+> +
+>  int ovs_flow_init(void);
+>  void ovs_flow_exit(void);
 
