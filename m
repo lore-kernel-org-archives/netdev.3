@@ -1,131 +1,254 @@
-Received: from mail-qv1-f74.google.com (mail-qv1-f74.google.com [209.85.219.74])
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70BD53C4B76
-	for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 09:02:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 542B430568A
+	for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 09:05:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781514163; cv=none; b=Tb2rEhhmq62Xqi9ieUPc+7J+KSlOMz2C6PUlhMlRM4KHemsetIiczmUQN7im4DXqqHMTMRF0SykcPV00kQuTz5vZdDWoL6faqJP1orwofyne3mZ8q9h7JbG9CMQuZv2MfCRshOQS/TaNbPZG6Q3kG4t3sGx8qp+0cvZxf08FtB8=
+	t=1781514320; cv=none; b=gq+wIqHwPRzhNFN60MQCNE984j1oSFnHl9c80/L1T1USgq+w7fFlhMYdxjD3tLugwCHwMdl7hJUWO3MEsLs0CI60y4mEe1xFUXbJlyyP4fJH6zXd7KVkzVZ/BOCdcqPksRlvraCl9gYLyl9YUJEgJHFwJ+xgJdgXGDAX+Na95A8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781514163; c=relaxed/simple;
-	bh=P0koOR9FH0pchRQmGTFL+9SxCYyq3oLtOQRb4q+NvK0=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ZfJxfxBhyUVlkfrakuWE/298I4TsiMjEEpoKw1PMOlPSi09qEHjMo2feUiDdkzz8vCbB79a1gXUgDIWwnvwXgcCoLszQOlH73Vl9hqs+JqvsTx8L7yocZHvJXhFoJ597NraRd1AB+iio+7znAwC4Jg97IhMR02vLoQWUrNAWOK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=j7xWa5Ml; arc=none smtp.client-ip=209.85.219.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1781514320; c=relaxed/simple;
+	bh=is0aUcqvIZ1xcT2jK43lwzQy9+ksca8vwiUx2SlLA9s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ouXUF7lfYkSteADq3fsa5A/dg8MOUFysxOTpbCCO4YbEuNsLqAf/ttr8mt/rWQX3lMwyI9x6DywkgbEnPOrrKnEx4KZbO/BMKCBZ90n1Bj1QOlxwTMY1jZ87X0PgFwdP0EaPSud4KTO0+83fh7jSD0GJoufTOjGHKB4arbXTZr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F2VSxmuZ; arc=none smtp.client-ip=209.85.219.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="j7xWa5Ml"
-Received: by mail-qv1-f74.google.com with SMTP id 6a1803df08f44-8cce2b4c290so60996896d6.3
-        for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 02:02:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F2VSxmuZ"
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-8ccd1f57b32so39986756d6.2
+        for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 02:05:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781514159; x=1782118959; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Rbg/xXKt8EoObxZ+MhaOU9VlLSA6G2MuSMTpVqNSt7Y=;
-        b=j7xWa5MlZgYMAZDZQKSE3EYKmvggZwgF/7M4npREQlMOxB+wzp3yJeJOOnoxuTfMoc
-         0xiR9hSDdsdBAKY3wiC3Hzeyh4URiA1b2uxQux5L6O2Y7ZwfW/Jm5k9arFe4ZdOmrgwW
-         2OF55r/7jZ93J2bo4ZIVC4baDd92YqTbqBS/N4Dlun8rnCggYn/c+4kdBu0HCbLZFhMP
-         rTDZ37qr6jVE6f7ZRNw2FizBKChpJLtSfGOHS1YXPr/9GjhlERtm3CqLbCAtxB6yhe3m
-         VqNotudklPfWZWYAZAychnYf1GlPC6kWkGgEeDb0LICAJRmx07qqAqod7z+KSewVXagY
-         mh5g==
+        d=gmail.com; s=20251104; t=1781514318; x=1782119118; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OvV17BgpJQmVQrI1yyaY3qROAJv7ED+Gi/LtXIZqMPI=;
+        b=F2VSxmuZK3+lLiaTVErbvzZRXcA0gpZd111o4WAO/7BG2E47jI/iYOeprIWpPMJ7DT
+         edFsRWqxMHU4K7Sd8Q3D0UDbeRhqUfgBr1aEX4Yfks42AjeWLGOsGujU6DEsXa7C64tj
+         7I+UqBD6kA/a91zOzFprsyECq0COBq/I/Uk9a9q2C/EYfStgf5ux4UFp4xGGyc8PckAf
+         3pjOma9ymSGyzmmjB9ZoH7JaGVlzl78NnK5ktAQH73+Y76bV0cz7sBFqs3TFX3rg4GKG
+         zQu6m150M6jVXc+n4wb4CLKIln0+U9qpVOidX1Sm52UTfppfG56mFKlgWYEuM9o4tKgB
+         XNIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781514159; x=1782118959;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Rbg/xXKt8EoObxZ+MhaOU9VlLSA6G2MuSMTpVqNSt7Y=;
-        b=KCaGE/91jH2bTNHWVaxkLtahZfrZujfENcMCLs6nTkckvxLF7l4mgb6772tKKqulVt
-         goMYoqqIUJHbIjvaoO1W9B407/ytyEHE36b2Om2c4zTCz6+WbVq/iDF78D3Yn9pbywh3
-         SRh7PvwtYhT/Kbk0/o30XXaeh4GGsjLBrP9H60DczwNLs9JALIE+TK0oC7/gzZXVnamm
-         AhCw6B7zZxG+Us3/Fc+0NzVw2pmiCUdtPs2iRSLjyjLqoMjVfY196iyJTT0MzPdemQtF
-         SUtTHdzxhK4KEGbgfdnw6tcd7aNuxYy31vdRbPNPI9GRVv9Pv4AjXa6FZ5mYJMyc7EQI
-         juMg==
-X-Forwarded-Encrypted: i=1; AFNElJ8AcvRpJilDmPhYctTZ8uuwtQTxwX0Em+0g2XIXIFsJnrhN86G3KFbZkoDDftz1HP30Nmeu6xo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxmOfGVz3KrRIQJZ9jno/eVl5tT+ZI73/NS6RfvbVYPxZhNSL32
-	ScmuHcjLOVIKLalv3C9uqcAJME1GVpba0571gd4jfHlqzMcHstk6XY0tH8xbdcdaq7Ts8i2iqCU
-	iSu0NiQEpxRpd1w==
-X-Received: from qvbdr5.prod.google.com ([2002:a05:6214:8e5:b0:8b4:eeca:74ce])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6214:3a84:b0:8ac:8938:ee55 with SMTP id 6a1803df08f44-8d44d8fdad2mr184269296d6.11.1781514158895;
- Mon, 15 Jun 2026 02:02:38 -0700 (PDT)
-Date: Mon, 15 Jun 2026 09:02:37 +0000
+        d=1e100.net; s=20251104; t=1781514318; x=1782119118;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=OvV17BgpJQmVQrI1yyaY3qROAJv7ED+Gi/LtXIZqMPI=;
+        b=U63P0yGJ7yeeUg0ThP5vfpGv0FVPNs9kES8RArS+awZ+Pylc3YDhtYbqrcUtIAWPRW
+         PVumXpYGLzuV+mWcRZBgX6RDVz/1QlBau4oPqhd8M/9+vmboSxIv1a4RYfvZuC+pR+nK
+         q+W8s+h4FHRGP1TBFIa0LlyrnY1EN+YmcQuGegh9GlBI4v90jJAKGAPDUAiHmU1R83gq
+         WexkXzCeIPggkTBEkNobZhFhzK2g9bc+UvQyuXQ2E0cNm4ppD9kgZWC80Pbif57Szs1O
+         6mB9qap6naog0MRRegnodDnc0UE9s/kgrG6ScG0rjs0TBq7z/bq91OjycnZCaSxjdzO2
+         bf0g==
+X-Gm-Message-State: AOJu0Yw1BihzlYsTzaZB8+T7jmjOzYn7I0jO43cCiI61KVovvEuA4LcF
+	GsEdgOF3OSHb40ulUSZKh9yGKUU8bqW6jc8LBWDOtg/QK5tL8RAneYeA0gQoxXOhPVw=
+X-Gm-Gg: Acq92OFT6wWheSFRbPBRi4vGfge8ORUG98giMLPWNRVXnIy9rh7f/omyGBE5pqhK82P
+	OpcuZEoQC2m8lzdvXYwLR7x16c7lJbg6e+r8UKbyvmFAzoEXOOWJwtytmX42pN1kuuQd0nTKP5s
+	Gw+zcgjm4UutnrwpgfFonXQ1QDsPz9nnwGPP27GWGfVPC8OYFUN+r3lYR3xZfsGYgwj7YR+bfIO
+	y0ROoIgLVF8c3j+/9/s219BHU/Tz2ewZ7laPg106RcWQm3cK4tFlzvcXZ+rn26+kTPb8tySr9cm
+	KPYQlGWLpK0YT4cynrHkC/CfPyKgvPt8HTW8wCvkzZ9JgTNsnPDljAINyWwdH9v92XMvDLA+ZTy
+	Si14OpMOmIZzv2p0xnJLDaFwifSr0fXV7UbegqHtM9oEFXcu0loFbWMp52awoBYEUHLL+pCX1lF
+	cYKY/eRFqRyNuBJEAOWFU5a50=
+X-Received: by 2002:ad4:5761:0:b0:8ae:62aa:665a with SMTP id 6a1803df08f44-8d32d858216mr244104566d6.28.1781514318228;
+        Mon, 15 Jun 2026 02:05:18 -0700 (PDT)
+Received: from houminxi.lan ([163.123.141.225])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8d302114676sm109704966d6.20.2026.06.15.02.05.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Jun 2026 02:05:17 -0700 (PDT)
+From: Minxi Hou <houminxi@gmail.com>
+To: netdev@vger.kernel.org
+Cc: aconole@redhat.com,
+	echaudro@redhat.com,
+	i.maximets@ovn.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	shuah@kernel.org,
+	dev@openvswitch.org,
+	linux-kselftest@vger.kernel.org,
+	Minxi Hou <houminxi@gmail.com>
+Subject: [PATCH net-next v2] selftests/net/openvswitch: add ICMPv6 echo type match test
+Date: Mon, 15 Jun 2026 17:05:07 +0800
+Message-ID: <20260615090507.3647256-1-houminxi@gmail.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260613141429.3084962-1-houminxi@gmail.com>
+References: <20260613141429.3084962-1-houminxi@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
-Message-ID: <20260615090237.2689082-1-edumazet@google.com>
-Subject: [PATCH net] xfrm: validate selector family and prefixlen during match
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>, syzbot+9383b1ff0df4b29ca5e6@syzkaller.appspotmail.com, 
-	Sabrina Dubroca <sd@queasysnail.net>, Steffen Klassert <steffen.klassert@secunet.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-syzbot reported a shift-out-of-bounds in xfrm_selector_match()
-due to AF_UNSPEC selector with large prefixlen (e.g. 128) matched
-against IPv4 flow (when XFRM_STATE_AF_UNSPEC is set).
+Register OVS_KEY_ATTR_ICMPV6 in the flow key parser so that
+icmpv6(type=...) can be used in flow specifications. Without this
+registration the parser silently drops the token and the kernel
+rejects the flow with EINVAL because the expected ICMPv6 key
+attribute is missing.
 
-Fix this by:
+While here, add convert_int() to the ovs_key_ipv6 and ovs_key_icmp
+fields_map entries so that specifying a field value produces the
+correct wildcard mask. The IPv6 flow label uses convert_int(20) to
+produce a 20-bit mask (0x000FFFFF), matching the kernel constraint in
+flow_netlink.c that rejects masks with bits 20-31 set; byte-wide
+fields use convert_int(8). The ipv4 counterpart already does this via
+convert_int(); the ipv6 and icmp classes were simply missing the fifth
+tuple element. Existing callers that pass empty parentheses are
+unaffected because convert_int("") returns (0, 0).
 
-- Rejecting mismatched families in xfrm_selector_match.
-- Returning false in addr4_match if prefixlen > 32.
-- Returning false in addr_match if prefixlen > 128 (prevents overflow).
+Add test_icmpv6 exercising the ICMPv6 echo flow key. The test uses
+static neighbour entries to bypass NDP, then verifies in three steps:
+install icmpv6(type=128) and icmpv6(type=129) flows and confirm ping
+works, remove the flows and confirm ping fails, reinstall and confirm
+recovery.
 
-Fixes: 3f0ab59e6537 ("xfrm: validate new SA's prefixlen using SA family when sel.family is unset")
-Reported-by: syzbot+9383b1ff0df4b29ca5e6@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6a2fbe35.be3f099c.2836ae.0018.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Minxi Hou <houminxi@gmail.com>
 ---
-Cc: Sabrina Dubroca <sd@queasysnail.net>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>
----
- include/net/xfrm.h     | 7 +++++++
- net/xfrm/xfrm_policy.c | 3 +++
- 2 files changed, 10 insertions(+)
+v2: fix ovs_key_ipv6 label mask to use convert_int(20) instead of
+    convert_int(32); the IPv6 flow label is 20 bits and the kernel
+    rejects masks with bits 20-31 set in validate_set().
 
-diff --git a/include/net/xfrm.h b/include/net/xfrm.h
-index 874409127e292197c17dbac4686efdd5ff56c185..baa7454a0b7b8d1faffa7e8375510082b811e903 100644
---- a/include/net/xfrm.h
-+++ b/include/net/xfrm.h
-@@ -943,6 +943,9 @@ static inline bool addr_match(const void *token1, const void *token2,
- 	unsigned int pdw;
- 	unsigned int pbi;
+ .../selftests/net/openvswitch/openvswitch.sh  | 63 +++++++++++++++++++
+ .../selftests/net/openvswitch/ovs-dpctl.py    | 26 +++++---
+ 2 files changed, 82 insertions(+), 7 deletions(-)
+
+diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+index d533decca5c1..8923224fa88e 100755
+--- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
++++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+@@ -31,6 +31,7 @@ tests="
+ 	pop_vlan				vlan: POP_VLAN action strips tag
+ 	dec_ttl					ttl: dec_ttl decrements IP TTL
+ 	flow_set				flow-set: Flow modify
++	icmpv6					icmpv6: ICMPv6 echo type match
+ 	psample					psample: Sampling packets with psample"
  
-+	if (prefixlen > 128)
-+		return false;
-+
- 	pdw = prefixlen >> 5;	  /* num of whole u32 in prefix */
- 	pbi = prefixlen &  0x1f;  /* num of bits in incomplete u32 in prefix */
- 
-@@ -967,6 +970,10 @@ static inline bool addr4_match(__be32 a1, __be32 a2, u8 prefixlen)
- 	/* C99 6.5.7 (3): u32 << 32 is undefined behaviour */
- 	if (sizeof(long) == 4 && prefixlen == 0)
- 		return true;
-+
-+	if (prefixlen > 32)
-+		return false;
-+
- 	return !((a1 ^ a2) & htonl(~0UL << (32 - prefixlen)));
+ info() {
+@@ -377,6 +378,68 @@ test_flow_set() {
+ 	return 0
  }
  
-diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-index 95954442569290719b9fdb7b0f9462d70b5d755e..bcc6ab6b0c183bfa90a94800c68dd0d029c2497c 100644
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -242,6 +242,9 @@ __xfrm6_selector_match(const struct xfrm_selector *sel, const struct flowi *fl)
- bool xfrm_selector_match(const struct xfrm_selector *sel, const struct flowi *fl,
- 			 unsigned short family)
- {
-+	if (family != sel->family && sel->family != AF_UNSPEC)
-+		return false;
++test_icmpv6() {
++	sbx_add "test_icmpv6" || return $?
++	ovs_add_dp "test_icmpv6" icmpv6 || return 1
 +
- 	switch (family) {
- 	case AF_INET:
- 		return __xfrm4_selector_match(sel, fl);
++	info "create namespaces"
++	for ns in client server; do
++		ovs_add_netns_and_veths "test_icmpv6" "icmpv6" \
++			"$ns" "${ns:0:1}0" "${ns:0:1}1" || return 1
++	done
++
++	ip netns exec client ip addr add fd00::1/64 dev c1 nodad
++	ip netns exec client ip link set c1 up
++	ip netns exec server ip addr add fd00::2/64 dev s1 nodad
++	ip netns exec server ip link set s1 up
++
++	local cl_mac sl_mac
++	cl_mac=$(ip netns exec client \
++		ip link show c1 | awk '/link\/ether/ {print $2}')
++	[ -z "$cl_mac" ] && \
++		{ info "failed to get c1 hwaddr"; return 1; }
++	sl_mac=$(ip netns exec server \
++		ip link show s1 | awk '/link\/ether/ {print $2}')
++	[ -z "$sl_mac" ] && \
++		{ info "failed to get s1 hwaddr"; return 1; }
++	ip netns exec client \
++		ip -6 neigh add fd00::2 lladdr "$sl_mac" dev c1
++	ip netns exec server \
++		ip -6 neigh add fd00::1 lladdr "$cl_mac" dev s1
++
++	ovs_add_flow "test_icmpv6" icmpv6 \
++	  'in_port(1),eth(),eth_type(0x86dd),ipv6(proto=58),icmpv6(type=128)' \
++	  '2' || return 1
++	ovs_add_flow "test_icmpv6" icmpv6 \
++	  'in_port(2),eth(),eth_type(0x86dd),ipv6(proto=58),icmpv6(type=129)' \
++	  '1' || return 1
++
++	info "verify ICMPv6 echo with type-specific flows"
++	ovs_sbx "test_icmpv6" ip netns exec client \
++		ping -6 -c 1 -W 2 fd00::2 || return 1
++
++	ovs_del_flows "test_icmpv6" icmpv6
++
++	info "verify ping fails without echo flows"
++	ovs_sbx "test_icmpv6" ip netns exec client \
++		ping -6 -c 1 -W 2 fd00::2 >/dev/null 2>&1 \
++		&& { info "FAIL: ping should fail without flows"
++		     return 1; }
++
++	ovs_add_flow "test_icmpv6" icmpv6 \
++	  'in_port(1),eth(),eth_type(0x86dd),ipv6(proto=58),icmpv6(type=128)' \
++	  '2' || return 1
++	ovs_add_flow "test_icmpv6" icmpv6 \
++	  'in_port(2),eth(),eth_type(0x86dd),ipv6(proto=58),icmpv6(type=129)' \
++	  '1' || return 1
++
++	info "verify connectivity restored"
++	ovs_sbx "test_icmpv6" ip netns exec client \
++		ping -6 -c 1 -W 2 fd00::2 || return 1
++
++	return 0
++}
++
+ # psample test
+ # - use psample to observe packets
+ test_psample() {
+diff --git a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
+index e1ecfad2c03e..f3edd198223f 100644
+--- a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
++++ b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
+@@ -1255,11 +1255,16 @@ class ovskey(nla):
+                 lambda x: ipaddress.IPv6Address(x).packed if x else 0,
+                 convert_ipv6,
+             ),
+-            ("label", "label", "%d", lambda x: int(x) if x else 0),
+-            ("proto", "proto", "%d", lambda x: int(x) if x else 0),
+-            ("tclass", "tclass", "%d", lambda x: int(x) if x else 0),
+-            ("hlimit", "hlimit", "%d", lambda x: int(x) if x else 0),
+-            ("frag", "frag", "%d", lambda x: int(x) if x else 0),
++            ("label", "label", "%d", lambda x: int(x) if x else 0,
++                convert_int(20)),
++            ("proto", "proto", "%d", lambda x: int(x) if x else 0,
++                convert_int(8)),
++            ("tclass", "tclass", "%d", lambda x: int(x) if x else 0,
++                convert_int(8)),
++            ("hlimit", "hlimit", "%d", lambda x: int(x) if x else 0,
++                convert_int(8)),
++            ("frag", "frag", "%d", lambda x: int(x) if x else 0,
++                convert_int(8)),
+         )
+ 
+         def __init__(
+@@ -1344,8 +1349,10 @@ class ovskey(nla):
+         )
+ 
+         fields_map = (
+-            ("type", "type", "%d", lambda x: int(x) if x else 0),
+-            ("code", "code", "%d", lambda x: int(x) if x else 0),
++            ("type", "type", "%d", lambda x: int(x) if x else 0,
++                convert_int(8)),
++            ("code", "code", "%d", lambda x: int(x) if x else 0,
++                convert_int(8)),
+         )
+ 
+         def __init__(
+@@ -1982,6 +1989,11 @@ class ovskey(nla):
+                 "icmp",
+                 ovskey.ovs_key_icmp,
+             ),
++            (
++                "OVS_KEY_ATTR_ICMPV6",
++                "icmpv6",
++                ovskey.ovs_key_icmpv6,
++            ),
+             (
+                 "OVS_KEY_ATTR_TCP_FLAGS",
+                 "tcp_flags",
 -- 
-2.54.0.1136.gdb2ca164c4-goog
+2.54.0
 
