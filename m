@@ -1,179 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395213A1DB;
-	Mon, 15 Jun 2026 04:54:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CEAE267AF2;
+	Mon, 15 Jun 2026 05:21:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781499288; cv=none; b=ia1jdpwdx3ABDKLZbjXFIRfHfj7Yb0Wu1EE//eOrjinyCEv5pxef0wkACzb5HMitHInaePs5CTVYDCOjHPPTiadg3aQyoAE5g1l/xG+ad2e5ZE2RODnt9aK+fD51Uoc8vprOmmaSDazoMxNeQ2v1q3NU5VAcR3eeElTU9b3qUxc=
+	t=1781500873; cv=none; b=g/gD5Ybp9SO2tDTUaqu8pWZXZIvSY10V3OCNa3g1bvMMBZQxDE8YkvtZRo/lQM0R3uUSz3rU3uYhf3qU+Yk2gWAcRYeRBOeSXm5UJIbiJyIfwOERAOI/A9Nf3QybarBXu8/cvh7cqA0dA5heBw73pcU7NalNej/0H3qbbcU+g2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781499288; c=relaxed/simple;
-	bh=DwI1QGjBl+eFmOOKHqt8cmGm1eswWHvQ465qNrrlpXw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=izyYAqEmIrEXF0XrJ3DxiXNam+8V3rN7iCcG73w7m/PdU1rOJ3COtonxknqTrJjBEOwk1mkb++mibidzq4VQzxhMhSx0kxRQPXsBZiztGTrzalNsEEjZyfR4qqRq0CebNDRaaRtLajh5i4I94Bn7Dr+o8wvr0jMibygCAwXFFV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e1VpKlxG; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e1VpKlxG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 471021F000E9;
-	Mon, 15 Jun 2026 04:54:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781499286;
-	bh=x5U/riXi12CQinv00Fshdw+mxzCpH2LghnOXNQ4N4yE=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=e1VpKlxGslHv1esBgPVHEP2n7IS7dOTCdCSXIbd4LIT/O/bO5axZwrAbp1NVfY7ZN
-	 Fc3IKN1OZTgz1ldrXKxKFeAHjlJDWkqMq63N9qVa+Uaog+W3Dc7ttck95pw6j8ar2Z
-	 WKzyKg9oeVOC004RHkOI3EA/ikWSUjT614bYcddx1utWBge8XYnEw0s39xIYrR4gti
-	 TFR7gAH7hkJm2dInZ1o2fuPthISv/QYiLIOKT5Zy1qZBndb6qhYbyxbC0jGONhj4ns
-	 dfx53IzptDkClrLrLCrFYI11I9HD0CFuxkTd9pGKF95HwbnlKxo2qybxuujFQB+WG1
-	 tP9PPx+bRwS1g==
-Message-ID: <81a65e76f5524dfae8a644bed887d9461bcbfd26.camel@kernel.org>
-Subject: Re: [PATCH net] net: rds: check cmsg_len before reading
- rds_rdma_args in size pass
-From: Allison Henderson <achender@kernel.org>
-To: Michael Bommarito <michael.bommarito@gmail.com>, "David S . Miller"
-	 <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	 <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com, 
-	linux-kernel@vger.kernel.org
-Date: Sun, 14 Jun 2026 21:54:45 -0700
-In-Reply-To: <20260614130725.2520842-1-michael.bommarito@gmail.com>
-References: <20260614130725.2520842-1-michael.bommarito@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	s=arc-20240116; t=1781500873; c=relaxed/simple;
+	bh=acyX5blWL3Rpac8wUnp2hiruH1ByWcO0M4eWEe5W5jk=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=pQX8G9WlKknBY04AiJo+zTpWR2OMBYOVW4tkT5n6wirvWnAbhjB6M0ku/mq/sqjKnKc2RSdCpk3JLXAF1VpBlW291+Dpe9J222cnqHPlpwnzIhY4eWrkZ/ATUWKPBsQ2KrBpO7+Zqj7B8iEH2aEsErVdvywo7OMRDpxsH2q2KEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+	 (Exim 4.99)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1wYzko-000000000vI-1viC;
+	Mon, 15 Jun 2026 05:20:58 +0000
+Date: Mon, 15 Jun 2026 06:20:55 +0100
+From: Daniel Golle <daniel@makrotopia.org>
+To: "Chester A. Unal" <chester.a.unal@arinc9.com>,
+	Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH net-next v3 0/8] net: dsa: mt7530: modernise register access
+ and add two DSA ops
+Message-ID: <cover.1781500517.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Sun, 2026-06-14 at 09:07 -0400, Michael Bommarito wrote:
+The mt7530 driver carries its own register accessors that predate the
+regmap conversion and now largely duplicate what regmap already
+provides, including locking. Most of this series removes that layer.
 
-Hi Michael,
+It first moves the MDIO bus locking into the switch regmap via
+.lock/.unlock callbacks, matching the PCS regmaps, so any path reaching
+the regmap is serialised automatically. With the wrappers no longer
+adding locking, the thin mt7530_mii_* indirection is folded away and the
+remaining accessors are replaced mechanically with the plain regmap API,
+using the coccinelle semantic patches included in the commit messages.
+Open-coded register fields are then converted to FIELD_GET/FIELD_PREP.
+None of this is intended to change behaviour.
 
-Thanks for looking at this.  A few comments below:
+The last two patches implement .port_fast_age, which flushes dynamically
+learned MAC entries on topology changes, and .port_change_conduit, which
+moves a user port's CPU-port affinity at runtime.
+---
+v3:
+ * 5/8: initialise register read-back variables to 0 so a failed
+   regmap_read keeps the previous read-as-zero behaviour, and use u32
+   for the value in mt7530_setup_port5
+ * 6/8: name the age timer field AGE_TIMER_MASK and document the
+   corrected ATC_HASH/VTCR_VID field macros
+ * 7/8: serialise the port_fast_age ATC flush under reg_mutex and log
+   on timeout, align a define, and correct the commit message which
+   wrongly claimed per-port parity with b53/realtek
+ * 8/8: populate the netlink extack on rejection and refuse a conduit
+   that lives on a different switch
+v2:
+ * fix stray 'static void' left-over in 4/8 which had a fix accidentally
+   folded into 5/8 (byte-identical state at 8/8, but bisectability is
+   restored)
+ * extend port_change_conduit op commit message
 
-> For RDS_CMSG_RDMA_ARGS, rds_rm_size() calls rds_rdma_extra_size() after
-> only CMSG_OK(), without checking that cmsg_len covers struct
-> rds_rdma_args. rds_rdma_extra_size() reads args->local_vec_addr and
-> args->nr_local, so a short control message reads past the copied control
-> buffer. The value bounds an allocation count, so this is an
-> out-of-bounds read in the kernel, not a leak to user space, and an
-> unprivileged AF_RDS socket can trigger it with one short cmsg.
->=20
-> The two later RDS_RDMA passes (rds_cmsg_rdma_args() and the rdma-bytes
-> loop in rds_sendmsg())=C2=A0
->=20
+Daniel Golle (8):
+  net: dsa: mt7530: move MDIO bus locking into regmap
+  net: dsa: mt7530: fold mt7530_mii_write/read into mt7530_write/read
+  net: dsa: mt7530: replace mt7530_write with regmap_write
+  net: dsa: mt7530: replace mt7530_rmw/set/clear with regmap API
+  net: dsa: mt7530: replace mt7530_read with regmap_read
+  net: dsa: mt7530: convert to use field accessor macros
+  net: dsa: mt7530: implement port_fast_age
+  net: dsa: mt7530: implement port_change_conduit op
 
-I puzzled over this line for a bit since rds_sendmsg doesnt call
-rds_cmsg_rdma_args directly.  I think you meant:
-
-"(rds_rdma_bytes() in rds_sendmsg(), and rds_cmsg_rdma_args() in rds_cmsg_s=
-end())"
-
-?
-
-Also, note that rds_rdma_bytes() runs before rds_rm_size(), not later.
-That ordering matters as noted below:
-
-> already reject cmsg_len < CMSG_LEN(sizeof(struct
-> rds_rdma_args)); only this size pass does not. Reject it the same way.
->=20
-> Reproduced under KASAN on QEMU via a KUnit driving the real
-> rds_rm_size(); the out-of-bounds read is gone after this change.
->=20
-> Fixes: ff87e97a9d70 ("RDS: make m_rdma_op a member of rds_message")
-> Cc: stable@vger.kernel.org
-> Assisted-by: Claude:claude-opus-4-8
-> Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-> ---
-> A short RDS_CMSG_RDMA_ARGS placed at a page boundary makes
-> rds_rdma_extra_size() read the args fields past the allocation:
->=20
->   BUG: KASAN: slab-out-of-bounds in rds_rdma_extra_size
->=20
-> an 8-byte read. On stock it faults; patched it returns -EINVAL with no
-> report. Controls (well-formed args; a short cmsg with args still in
-> bounds) drive the same pass cleanly on both trees.
->=20
-> No in-tree selftest exercises rds_rm_size(); I can send the KUnit suite
-> as a separate net-next patch if wanted, kept out so the fix is not held.
->=20
->  net/rds/send.c | 2 ++
->  1 file changed, 2 insertions(+)
+ drivers/net/dsa/mt7530-mdio.c |   9 +-
+ drivers/net/dsa/mt7530.c      | 823 +++++++++++++++++-----------------
+ drivers/net/dsa/mt7530.h      | 209 +++++----
+ 3 files changed, 541 insertions(+), 500 deletions(-)
 
 
-The code change itself looks ok, but it's not really a bug fix.=C2=A0
-rds_rm_size() is only called from once place: line 1290 in  rds_sendmsg().
-Here, cmsg_len is already verified by rds_rdma_bytes(), which performs the
-same cmsg_len <  CMSG_LEN(sizeof(struct rds_rdma_args)) check for
-RDS_CMSG_RDMA_ARGS before rds_rm_size() ever runs.
-
-
-        ret =3D rds_rdma_bytes(msg, &rdma_payload_len);    <------------ cm=
-sg sanity checking done here
-        if (ret)
-                goto out;
-
-        if (max_t(size_t, payload_len, rdma_payload_len) > RDS_MAX_MSG_SIZE=
-) {
-                ret =3D -EMSGSIZE;
-                goto out;
-        }       =20
-               =20
-        if (payload_len > rds_sk_sndbuf(rs)) {
-                ret =3D -EMSGSIZE;
-                goto out;
-        }      =20
-                       =20
-        if (zcopy) {
-                if (rs->rs_transport->t_type !=3D RDS_TRANS_TCP) {
-                        ret =3D -EOPNOTSUPP;
-                        goto out;
-                }
-                num_sgs =3D iov_iter_npages(&msg->msg_iter, INT_MAX);
-        }
-        /* size of rm including all sgs */
-        ret =3D rds_rm_size(msg, num_sgs, &vct);    <-------------- rds_rm_=
-size only called here
-        if (ret < 0)
-                goto out;
-
-A KUnit test directly calling rds_rm_size() might run across an OOB if it
-shortcuts this pre-check, but this isnt something a user could reach throug=
-h
-sendmesg since the rds_rdma_bytes() check would reject it first.
-
-The patch is still a reasonable hardening fix, it just shouldn't be carryin=
-g
-a fixes tag or targeting net.  Please re-target this patch for net-next ins=
-tead
-of net, and drop the fixes tag.  No need to cc stable.  We should also clar=
-ify
-the commit message as noted above, as well as remove the line about the AF_=
-RDS
-socket.  Other than that, I think it's a good change.
-
-Thanks for working on this!
-Allison
-
-
->=20
-> diff --git a/net/rds/send.c b/net/rds/send.c
-> index d8b14ff9d366b..6ca3192b1d8af 100644
-> --- a/net/rds/send.c
-> +++ b/net/rds/send.c
-> @@ -967,6 +967,8 @@ static int rds_rm_size(struct msghdr *msg, int num_sg=
-s,
->=20
->  		switch (cmsg->cmsg_type) {
->  		case RDS_CMSG_RDMA_ARGS:
-> +			if (cmsg->cmsg_len < CMSG_LEN(sizeof(struct rds_rdma_args)))
-> +				return -EINVAL;
->  			if (vct->indx >=3D vct->len) {
->  				vct->len +=3D vct->incr;
->  				tmp_iov =3D
->=20
-> base-commit: 5200f5f493f79f14bbdc349e402a40dfb32f23c8
+base-commit: 2319688890d97c63da423a3c57c23b4ab5952dfc
+-- 
+2.54.0
