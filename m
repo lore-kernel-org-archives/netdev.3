@@ -1,222 +1,212 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012039.outbound.protection.outlook.com [52.101.43.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE5C82E7392;
-	Mon, 15 Jun 2026 04:11:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781496670; cv=none; b=R1pS6AmnHvOHZovrVNf6XAL301+GMY121LIaOi0m58Nu95R4j/MjBunjP7JE7mpskFZWM7J/hOXhwZ3n/lcYaiFV8RdW3xvSrzeeemeTIzLU+aV4cdfDzGtj1BwGHQVEetR1dIQGUcEDu9kYICplROo5+NsRPNF7TVq7cfwQqWI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781496670; c=relaxed/simple;
-	bh=aog5QSyuPZj78VvYT5GarDMPkG7YfuWdmAAth6qp678=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=I1fbmCKKmPEQlmZML6gKKCp11JzzKsONwGf/7o89u0DgOxIz0V09q8RQ0QGNXgZhLymWXhxLdgkLVNAUsIL2wkDg3QikWA379eJxd4tpEZQoKGjWHaASmt/JtyOnjnMmWc/7YZB9oHnI08DQwK0uL+8/uO0oSmHwCN/dfwzpIE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=LqT+pKax; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D51262A6;
+	Mon, 15 Jun 2026 04:19:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.39
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781497176; cv=fail; b=tODe4497SrUk1OoKIkEx0N+H8AR9u03WjyCPYorTj5OiFoOqs2WuWptZZkqs1SXQHOQCPnHcpsrQYMU5BAapEEElgcKp3bT9jstdjq1IzmPMQaOVcixY2PKZQJpXBsqdAP8+9XqYPlzCsZ56WulclAX2MR0R2jXVDUlsVbCz2ek=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781497176; c=relaxed/simple;
+	bh=bK4zIMPPdgOT1UQ8GBYwRb567+bBq6JOeohzm9HSVd4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=BfIz5Rerp47cKKPnM64CPHRkVGdWn+HzFmaa/ILy68F9+C2hSVWIeAi9bq6KPIT7IrcCQQlltyXheRI7SNEwcRYxpNNNy+ANuBl97x0CmRHAm2pnpm3o7XIH0yU/Qnt30R+z0C6Fo60+z9vcG0ai8UhW6YJj1/Np0kHq1MwkY50=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=Jj62fcOR; arc=fail smtp.client-ip=52.101.43.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="LqT+pKax"
-Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65F1lQub3665057;
-	Sun, 14 Jun 2026 21:11:00 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=r/eVr+VMxVsX4Htxts73dSE
-	BM6h8TCkFfGSi+OM32mM=; b=LqT+pKaxPef4I+LPNe7fGCQXzXAbsiTBr+E4mzk
-	9TFCs3cxsojoA+BFWhOnk0NxMgMDcWSB7qHN+Z1+8BFidrH2fHITM6MLxRUknTFs
-	d5uzP8BR8BbW7vofFiNpX52s6BnOI6+lUqBGUFD/AYi2A2cvOXDpBSOfcSaoz7hV
-	Kvufp+AxvCYfGfo1iJmG3b6fguduhuRsbfDFv4ngzt2VTr6M45ubGBoEk+79uIYe
-	Z/bkuEdzYg3zIp1LYXE5mq2+vvDXbw9Jm1ufDPwprC9RpDIDMnoOLIQBOeiDeJAu
-	O0ZfPLIuopkTd1b9cSyzlR2ArKMSqvfZ8fa+goPpvBceNQw==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4es6qedcsw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 14 Jun 2026 21:11:00 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Sun, 14 Jun 2026 21:10:59 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Sun, 14 Jun 2026 21:10:59 -0700
-Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id 2BC623F704E;
-	Sun, 14 Jun 2026 21:10:55 -0700 (PDT)
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <stephen@networkplumber.org>, <dsahern@kernel.org>, <kuba@kernel.org>,
-        <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <rkannoth@marvell.com>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-        <pabeni@redhat.com>, <sgoutham@marvell.com>
-Subject: [PATCH iproute2-next] devlink: support u32-array values in devlink param show/set
-Date: Mon, 15 Jun 2026 09:40:42 +0530
-Message-ID: <20260615041042.549715-1-rkannoth@marvell.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="Jj62fcOR"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iAqbpMXWmBfZRGUwGIflkXsxUfW1g8NAeJARwnNJCcKHp9i8CrTl7ElFRjnoXgCxEtDuj2JxmCenVN//Ff/h4qw0wsTm3rqWoYedlWd7Jwwpgwu5cBFHoD8GWhccr9RMu81Lm1hfRvNkAeQd3zgvH2SyyrsWKbUTJv99xpR1MrfhMOFbUhgDietNWeYyNlLj9kdDmY3CeFpZK8tLbwoWjzeBK57lCG2NCVUfQYmwdhEDXt6I7QPt/lfO4n+Woqtms1ZeBmpxeGt2s/mUYthhAAO/PwZ5X8K9nZaovelzrR3HBQ1MhIu+jjpITVeWW0yzHqaAiZ3kCS0qvxg3xHwZBQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=R6MKA5XFkNhc6q8l1Ql8ABfQ8bs1ogMnuNJP8RNI3sc=;
+ b=AEFRhJxXCTR4rc6PC5yNGy6zOFg6U71lUMX+QmBi+hQ0euxS2Q6kQK0LX6JNcxMzWOaaxSWUj07OXs6RAoDOP62AeB1HoSTxu2XSQnqBaX66xNr8ois+KFcZFpYji8ZT+w5ZzaZ3fPjrIiIJHqTMcx7gWXsigfkyvc36NO9e6uyVWgEEpm5l2RZnctRUj0hIU/1VcLl4TSZ1wHMrGN2yT9K2I+TX1toWjf3S+OG9yiR365e/FE0p0Djyy1QL0GttCfc/1wte9EVOKm3fASSdwfixu6SdwXYRCbyjnQeNWekTCOjGVZOx9Cjm2UrAFa8YMo2vb2+6WHcVvq4ucHxkBA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microchip.com; dmarc=pass action=none
+ header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microchip.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=R6MKA5XFkNhc6q8l1Ql8ABfQ8bs1ogMnuNJP8RNI3sc=;
+ b=Jj62fcORYFQfh42EhQUV/NcdVGWJHNdXLiZiuT2S/+xE0kN5usnmP4HzdLph+94TLZwIk9RWvJlZ80pSDPFXcobPPi0XGDmw4xY3++DzCjzu68YJKcheNVDLVwl+TDNZmijrXDAKOVfBJjv+Akkfv3v5FjvTqIvEI03hJRjjT36fpt6xx+BPjfF8sSuzLeYHC/JVXTjgCspg4XayBcuBsRdumk/+BmZHMWhvEFIdUmrWfIg4E1RFAkV4nIGtyV01VaYo3znpNBsvRt4cCaVtjhjsS6iHaTuk/Js+KNH8oJmtMmODANhUAnidlsHFKAxNADtXShjv5J6VB6bCQCpxxw==
+Received: from DSWPR11MB9715.namprd11.prod.outlook.com (2603:10b6:8:355::17)
+ by DSWPR11MB9715.namprd11.prod.outlook.com (2603:10b6:8:355::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.18; Mon, 15 Jun
+ 2026 04:19:33 +0000
+Received: from DSWPR11MB9715.namprd11.prod.outlook.com
+ ([fe80::25ec:56c9:f864:9139]) by DSWPR11MB9715.namprd11.prod.outlook.com
+ ([fe80::25ec:56c9:f864:9139%6]) with mapi id 15.21.0113.015; Mon, 15 Jun 2026
+ 04:19:32 +0000
+From: <Thangaraj.S@microchip.com>
+To: <horms@kernel.org>
+CC: <netdev@vger.kernel.org>, <Bryan.Whitehead@microchip.com>,
+	<UNGLinuxDriver@microchip.com>, <andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH net-next v3 1/2] net: lan743x: add RMII strap status
+ detection for PCI11x1x
+Thread-Topic: [PATCH net-next v3 1/2] net: lan743x: add RMII strap status
+ detection for PCI11x1x
+Thread-Index: AQHc9y5VKw1WPwWBfk+QD1te2Z63brY3/QoAgAcPRKA=
+Date: Mon, 15 Jun 2026 04:19:32 +0000
+Message-ID:
+ <DSWPR11MB9715A868735D547BEE29C477ECE62@DSWPR11MB9715.namprd11.prod.outlook.com>
+References: <20260608100435.11214-2-thangaraj.s@microchip.com>
+ <20260610162507.466793-3-horms@kernel.org>
+In-Reply-To: <20260610162507.466793-3-horms@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microchip.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DSWPR11MB9715:EE_
+x-ms-office365-filtering-correlation-id: 3f12a4a1-26f5-400d-6c5e-08deca954d51
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|23010399003|376014|1800799024|366016|38070700021|5023799004|4143699003|56012099006|11063799006|18002099003|22082099003;
+x-microsoft-antispam-message-info:
+ 732ggkvRLYnktTDCZwIfnxTvd7tZXM2r26aizoT1EVJk2EmS+dbW97cbIgo2yTiVNxpvCOkg0xg1GdX7a6Gwbej+tLCXeYxsirTxfJ9aufGvyFd8h4aTTOGrXBYu96O2CWFuetqHJzXG+jYR7XEs4WHqimwL5ZZEGVMhQEsC3LTUQgW55A7dRxgj94I1w8xP+klH1X5yZoj4n3z78HtmzNCjwZXENoF/LunmVa/xHydZRUYZFTUK9cWzlS+hm1crrXxjkC5DmN/bKeGZlrAoSnl1gUjq+8+MyDC4XMp58uq9UVfs3qTWbsEgO5ik/iKDrOSaxczPcgB4Tlp8UZBUa8LzGd2uFZk2NsGv+8B9pBqVE2rd8o15pPwlHSEyGfQsZOOJJf2MrgOVGL0Stq1Vtx0dQnn+BvU/1VaGxJBVvgTd298EjXJGLeofW4V+6pqBSXP/ZMT6di+jHfM+5iUORX4nrnPmN4Vyrbl1Iscl398uPM1G0R+750uDuU22Bk/oHBCa4fnyGNbCr4kfuTG3LF0hgnLLCvukmDIz6xej46zlKnFuKR94rgLK8LxZBKta92Kinamzi/gIkZLPp9Mke3AzkDHHzeQf19LzuLhIWYNvISsUrWQTgbGc3TmL2TX1LHkDaFsaeaC1rLoullkNuQ9LZj+YW4QiyIYAyak/7zYooTZ4bjTtdOzri8cIJBQKvjU3El+gcZzqI3qGHl9sAg==
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DSWPR11MB9715.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(366016)(38070700021)(5023799004)(4143699003)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?aXhD+xWMTIUEZqJ0B1LdmQ8Luoyg0l9+z65IEv8ii6NTt2EostGVORjUnznT?=
+ =?us-ascii?Q?SAm4zJnbgAsxj1cGnzhfo+IfHuYwAdYeZuTK4icSU31fZnbz5jOdiJvvkjgU?=
+ =?us-ascii?Q?l+KnAAyKiLdOaGMEKEas+YQ5uDVBy12MMTyitAUnVDxzlRjOJ7Rr35riGSyk?=
+ =?us-ascii?Q?WSE0Pxr58Bd30VIt5+S5PZXMU1GlwY/uifuURH0PMFk4IKRYHID2eGAZnbzG?=
+ =?us-ascii?Q?elqNuK61DIsKvWUR4HcVNVobSe9sXM6qZuK4F5NbLzw+opyPKc2o2Vu9gjgm?=
+ =?us-ascii?Q?dp4O7QJz7LxQX81FNFvlvN85OYvHR5y2VTuBnnNuixDuyL2r5djgX4KbZaBw?=
+ =?us-ascii?Q?ac5ZQNiD2iKmD3r01Uq3UKuOSlMkwvMq4SJr5HcxiJU4pN3ZtkSkDRMbp2U0?=
+ =?us-ascii?Q?YKaxKGe6mZBV71bOSq+YmnECD/YvElczIGFkx7a4kcgPPBzKcHwI7ru+hofI?=
+ =?us-ascii?Q?X/eoirOMLjfdOaD9aajwcRffImf29p1UkxXXA40Eyn1FmGS9kF4j26vwVGt7?=
+ =?us-ascii?Q?tQZhETTFv+ySwqRrcsTgLVD9MBabBI7iC9cRpiGwrpA4Pxu0Ob+nng88SBX3?=
+ =?us-ascii?Q?DXK5DyrNLH6luaxn0I7o+9P6orAubZfrlVl888+00m2BWHnyfTUJPOr93zqo?=
+ =?us-ascii?Q?nuGZbNMtOX0+JiYys9aPGwKlqCK0hmqTBIdW5CLhsQ8KwGVqcdc908GCIEE9?=
+ =?us-ascii?Q?fDF+M4dRLDTS86m9GQXYqCQi1bcZlMsKAeN5F1SN5DTckIJtP2rR87ZvXcCa?=
+ =?us-ascii?Q?786ebZ4P19MBDb6Zez4qaZMKz6IetVLfnUEAJHsWtR0gp8oEesfTevyn5mfu?=
+ =?us-ascii?Q?iWy1fuqhFjOyWET3pmmYcRmEoFoIJIpSwnp78lDU178NEGCS4Zg+dRfbzHfM?=
+ =?us-ascii?Q?0beG4Km5Q+toSSKAlu9MiFA/0pC9y3EPuAPd6/uAZulXU6NACezv1HY0a2Gn?=
+ =?us-ascii?Q?xTTQXuzP8pGLXoqx9MkAM1S88RaaWeFUf6AKmP5B+qKSNvt6cR34Sx4OaxyJ?=
+ =?us-ascii?Q?XtdA1dH+KARBRKPL+c4mbO8c81QmIa2MUtlkMpdStL06Q2YnB8b7ws8s38eA?=
+ =?us-ascii?Q?777AscRkjTAu+sPl0XEWnFfK3AiI/F0wiJtKBgiilaRfPf7SqMG/LSNDka99?=
+ =?us-ascii?Q?p+SX2B8hrJ2XnAScCbhXonVqVHN4dQAFe1FnAvXhzIPmViv/SOFNCxo8u2hA?=
+ =?us-ascii?Q?zQ/1fMMxOACiUS+ISuh9xY1osOQ2mYuiISPwqHajS7YlFuQaHO7rVPcorYiH?=
+ =?us-ascii?Q?n3b2CG9qp8ATz8UONftrIjnudaD481/hWIHYSul5VTZzKKACdfLl5eysF4bn?=
+ =?us-ascii?Q?yIuKzTK6ECYwpUdZ1VACP0B8PdstNtqAca6aCbIP63rC1a2Z6k3jCigGMuiD?=
+ =?us-ascii?Q?DVgEE7VTt71VnYfL/CwF1le5WwYoN/hUpdCkEpgWWaRxp3qMepLFE4edep6+?=
+ =?us-ascii?Q?FRoGSgxANNddzBHJClwE77uQZkEzgWa45qhbF3IjvNMvBM95G82cgcnsvcG/?=
+ =?us-ascii?Q?MdaaO3yEsGJ4MtZ6qRXYwQ8Nf+MCvZLZgay+WfDRSTV5Afb7OurRSrHl6rs2?=
+ =?us-ascii?Q?nTHK7lkZdBumIHgQCPupZySlJUMwGJjYCnLfcCAHjpyD0f20ObBJZGTUWqTW?=
+ =?us-ascii?Q?m78+L1uT1TBS6qEqpdEGIaU82p4Bn2DHlSqB2LEGifiqNj5gfZS+nfulaYQI?=
+ =?us-ascii?Q?RWT8F0IQ8d7G4fyIS86h8ukV5fSA35IY7KzjjpsuAJeHAX806rgja9lxXdnP?=
+ =?us-ascii?Q?8UxRdrling=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: Si1Yv7KjOA5GttXhfON-fA-0I2zTJ44W
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE1MDAzOSBTYWx0ZWRfX1mYeszqojyrs
- Jgc7aMVOWkvzIJCiXTAb9Sa5LNKfdrmHuFNcZDbMjATcJlbBJMYM9PvFyiOTiqPVfKOGTRpmOav
- iGnyIxRSMC4Niy7051Tx0sB8XuKDP0I=
-X-Authority-Analysis: v=2.4 cv=TuXWQjXh c=1 sm=1 tr=0 ts=6a2f7b54 cx=c_pps
- a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
- a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=QXcCYyLzdtTjyudCfB6f:22 a=M5GUcnROAAAA:8 a=bza--CHlKw4mGccpSsIA:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-ORIG-GUID: Si1Yv7KjOA5GttXhfON-fA-0I2zTJ44W
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE1MDAzOSBTYWx0ZWRfX7pG9z4homE2c
- NjO0IfE2yuNOl4qCUjs89DuWtoYYQBJhmk2BdrkCslomozE99qybBhHnkcT3lM9azuGvLtrWTNH
- UCN6pATjfp9Hh+j+3TZ2K5c/gJbomHEu1qJnrA/U9mR59yQQ0DpiHlTIAsXxBqhjBkBVQ65NA7Y
- /dkIFA/Nf4haKYu9pKtBMr9knFom7N4aEwaWbsY0FNzHyyqMlXQ5eDK8HBUXBQpH4DfGixB/q4w
- IdlYzNYEtzJCCOKZYNzm+zQXekprIGWXHPcdWC1tdeFUoUaMdYWz50i28iorrPIgr/bEzhkTBri
- TAJYPTqorwzKcmRrE0ZQaWVaVhCIG2msBm2s/+7+Dt0F2JGWenprc9BTExEKYuU14jMI1VWPEYh
- EqpoW1qaIlicsEuuLRk7Y+s9MhIx5wvZOQ9tlAvr9DIeeLXuQm3Txi+QK1sewumKfAfz2UHyHmo
- zkOzyku4VcZM9NFqZWQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-15_01,2026-06-12_03,2025-10-01_01
+X-OriginatorOrg: microchip.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DSWPR11MB9715.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3f12a4a1-26f5-400d-6c5e-08deca954d51
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Jun 2026 04:19:32.9059
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: v2wXOUzOH800UHxARCxBp0EoiyVR24nFbjYHbFPMQobRx6rfMVhIDJuw1JeMydhl3eXukvvLBiuUUtMLGvSRIJ3mRjRi5i/pHpqH7hTMQYE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DSWPR11MB9715
 
-Teach param value printing about MNL type 129 by walking nested attributes,
-collecting u32 elements, and formatting them for output
+Hi Simon,
+Thanks for the comments.
 
-For param set, accept a space- or comma-separated list of integers and encode
-it as multiple DEVLINK_ATTR_PARAM_VALUE_DATA u32 attributes.
+> -----Original Message-----
+> From: Simon Horman <horms@kernel.org>
+> Sent: Wednesday, June 10, 2026 9:55 PM
+> To: Thangaraj Samynathan - I53494 <Thangaraj.S@microchip.com>
+> Cc: 'Simon Horman' <horms@kernel.org>; netdev@vger.kernel.org; Bryan
+> Whitehead - C21958 <Bryan.Whitehead@microchip.com>; UNGLinuxDriver
+> <UNGLinuxDriver@microchip.com>; andrew+netdev@lunn.ch;
+> davem@davemloft.net; edumazet@google.com; kuba@kernel.org;
+> pabeni@redhat.com; linux-kernel@vger.kernel.org
+> Subject: Re: [PATCH net-next v3 1/2] net: lan743x: add RMII strap status
+> detection for PCI11x1x
+>=20
+> EXTERNAL EMAIL: Do not click links or open attachments unless you know th=
+e
+> content is safe
+>=20
+> From: 'Simon Horman' <horms@kernel.org>
+>=20
+> This is an AI-generated review of your patch. The human sending this emai=
+l
+> has considered the AI review valid, or at least plausible.
+> Full review at: https://netdev-ai.bots.linux.dev/sashiko/
+> ---
+> Subject: net: lan743x: add RMII strap status detection for PCI11x1x
+>=20
+> This patch extends pci11x1x_strap_get_status() to read RMII strap bits fr=
+om
+> STRAP_READ and initialise a new is_rmii_en flag on the adapter, updating =
+the
+> netif_dbg() to print the selected interface as SGMII, RMII or RGMII.
+>=20
+> > diff --git a/drivers/net/ethernet/microchip/lan743x_main.c
+> > b/drivers/net/ethernet/microchip/lan743x_main.c
+> > index 1cdce35e1423..0798f3f1f435 100644
+> > --- a/drivers/net/ethernet/microchip/lan743x_main.c
+> > +++ b/drivers/net/ethernet/microchip/lan743x_main.c
+> > @@ -73,8 +74,15 @@ static void pci11x1x_strap_get_status(struct
+> lan743x_adapter *adapter)
+> >                       adapter->is_sgmii_en =3D false;
+> >               }
+> >       }
+> > -     netif_dbg(adapter, drv, adapter->netdev,
+> > -               "SGMII I/F %sable\n", adapter->is_sgmii_en ? "En" : "Di=
+s");
+> > +
+> > +     if (!adapter->is_sgmii_en && strap & STRAP_READ_USE_RMII_EN_) {
+> > +             if (strap & STRAP_READ_RMII_EN_)
+> > +                     adapter->is_rmii_en =3D true;
+> > +     }
+> > +
+> > +     netif_dbg(adapter, drv, adapter->netdev, "Selected I/F: %s\n",
+> > +               adapter->is_sgmii_en ? "SGMII" :
+> > +               adapter->is_rmii_en  ? "RMII"  : "RGMII");
+> >  }
+>=20
+> [Low]
+> This isn't a bug, but does the new "Selected I/F: %s" debug print stay
+> consistent with the rest of the driver when is_rmii_en is true?
+>=20
+> In lan743x_mdiobus_init() the non-SGMII branch still prints unconditional=
+ly:
+>=20
+>         } else {
+>                 dev_dbg(&adapter->pdev->dev, "RGMII operation\n");
+>                 // Only C22 support when RGMII I/F
+>                 adapter->mdiobus->read =3D lan743x_mdiobus_read_c22;
+>                 adapter->mdiobus->write =3D lan743x_mdiobus_write_c22;
+>                 adapter->mdiobus->name =3D "lan743x-mdiobus";
+>=20
+> So an RMII-strapped board will report "Selected I/F: RMII" from
+> pci11x1x_strap_get_status() and then "RGMII operation" from
+> lan743x_mdiobus_init() in the same boot. The C22-only setup is correct fo=
+r
+> both RGMII and RMII, so the only effect is the contradictory dmesg line.
+> Should this dev_dbg() also be updated to reflect the RMII case, either in=
+ this
+> patch or in the follow-up "net: lan743x: add support for RMII interface"?
+[Thangaraj Samynathan]  Agreed, I will fix this in next revision.
 
-Pass the enclosing netlink attribute into pr_out_param_value_print so nested
-payloads can be parsed alongside the existing scalar types.
-
-  - Show search order
-
-  devlink dev param show pci/0002:01:00.0 name npc_srch_order
-  pci/0002:01:00.0:
-    name npc_srch_order type driver-specific
-      values:
-        cmode runtime value  value  0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31
-
-   - Set search order
-
-   devlink dev param set pci/0002:01:00.0 name npc_srch_order value 31,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,\
-		22,23,24,25,26,27,28,29,30  cmode runtime
-
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
----
- devlink/devlink.c | 47 +++++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 43 insertions(+), 4 deletions(-)
-
-diff --git a/devlink/devlink.c b/devlink/devlink.c
-index b4deba30..efb558c5 100644
---- a/devlink/devlink.c
-+++ b/devlink/devlink.c
-@@ -3497,12 +3497,28 @@ static const struct param_val_conv param_val_conv[] = {
- 
- #define PARAM_VAL_CONV_LEN ARRAY_SIZE(param_val_conv)
- 
-+struct devlink_param_u32_array {
-+	uint32_t size;
-+	uint32_t val[32];
-+};
-+
-+static int param_value_nested_u32_attr_cb(const struct nlattr *attr, void *data)
-+{
-+	struct devlink_param_u32_array *arr = data;
-+
-+	arr->val[arr->size++] = mnl_attr_get_u32(attr);
-+
-+	return MNL_CB_OK;
-+}
-+
- static int pr_out_param_value_print(const char *nla_name, int nla_type,
- 				     struct nlattr *val_attr, bool conv_exists,
--				     const char *label, bool flag_as_u8)
-+				     const char *label, bool flag_as_u8, struct nlattr *nl)
- {
-+	struct devlink_param_u32_array u32_arr = { };
- 	const char *vstr;
--	int err;
-+	char buffer[1024];
-+	int err, cnt = 0;
- 
- 	print_string(PRINT_FP, NULL, " %s ", label);
- 
-@@ -3563,6 +3579,18 @@ static int pr_out_param_value_print(const char *nla_name, int nla_type,
- 		else
- 			print_bool(PRINT_ANY, label, "%s", val_attr);
- 		break;
-+	case 129:
-+		err = mnl_attr_parse_nested(nl, param_value_nested_u32_attr_cb,
-+					    (void *)&u32_arr);
-+		if (err != MNL_CB_OK)
-+			return -EINVAL;
-+
-+		for (int i = 1; i < u32_arr.size; i++)
-+			cnt += snprintf(buffer + cnt, sizeof(buffer) - cnt, "%u ", u32_arr.val[i]);
-+
-+		print_string(PRINT_ANY, "value def", " value  %s", buffer);
-+
-+		break;
- 	}
- 
- 	return 0;
-@@ -3595,14 +3623,14 @@ static void pr_out_param_value(struct dl *dl, const char *nla_name,
- 					    nla_name);
- 
- 	err = pr_out_param_value_print(nla_name, nla_type, val_attr,
--				       conv_exists, "value", false);
-+				       conv_exists, "value", false, nl);
- 	if (err)
- 		return;
- 
- 	val_attr = nla_value[DEVLINK_ATTR_PARAM_VALUE_DEFAULT];
- 	if (val_attr) {
- 		err = pr_out_param_value_print(nla_name, nla_type, val_attr,
--					       conv_exists, "default", true);
-+					       conv_exists, "default", true, nl);
- 		if (err)
- 			return;
- 	}
-@@ -3685,6 +3713,7 @@ struct param_ctx {
- 		uint64_t vu64;
- 		const char *vstr;
- 		bool vbool;
-+		struct devlink_param_u32_array u32arr;
- 	} value;
- };
- 
-@@ -3764,12 +3793,14 @@ static int cmd_dev_param_set(struct dl *dl)
- {
- 	struct param_ctx ctx = {};
- 	struct nlmsghdr *nlh;
-+	char delim[] = " ,";
- 	bool conv_exists;
- 	uint64_t val_u64 = 0;
- 	uint32_t val_u32;
- 	uint16_t val_u16;
- 	uint8_t val_u8;
- 	bool val_bool;
-+	char *token, *buf;
- 	int err;
- 
- 	err = dl_argv_parse(dl, DL_OPT_HANDLE |
-@@ -3904,6 +3935,14 @@ static int cmd_dev_param_set(struct dl *dl)
- 		if (!strcmp(dl->opts.param_value, ctx.value.vstr))
- 			return 0;
- 		break;
-+	case 129:
-+		buf = (char *)dl->opts.param_value;
-+		token = strtok(buf,  delim);
-+		while (token) {
-+			mnl_attr_put_u32(nlh, DEVLINK_ATTR_PARAM_VALUE_DATA, atoi(token));
-+			token = strtok(NULL, delim);
-+		}
-+		break;
- 	default:
- 		printf("Value type not supported\n");
- 		return -ENOTSUP;
--- 
-2.43.0
-
+Thanks,
+Thangaraj Samynathan
