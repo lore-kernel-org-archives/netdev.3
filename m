@@ -1,84 +1,64 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92C374071D0;
-	Mon, 15 Jun 2026 15:57:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FD44407593;
+	Mon, 15 Jun 2026 16:04:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781539024; cv=none; b=oSMK/4fwYb04/EeoTFbW2dc+UJnizNWg64+RuJ8GpN82EJRFsjcHH4S8BlsnKGr+M3gPnnjZlXN8B3vLJlW8J8q3vZuJaGS4S6IM4cUD/0saRoTFN7Qk3+GgH9mgtjR9mn7swoC8O8X5ya5VZE0t9Fagusrq1G4gGcy6bj94LpI=
+	t=1781539475; cv=none; b=GsZ/hy3dxPx1ClESM4hGpW9Sz+VtyuO0aMqMQU9tvHhnvp49bd12b+oAP0IimNPbzrow63KhvuD3/fYmvJbkPAoqdR8xKC4UVANG3GdywrhbYltog/ZS48P7KoADKPdbxaon/RZbXOAoHSK3HCGFMaPzotoNMuFt55KljtKbtG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781539024; c=relaxed/simple;
-	bh=9DlfF3EFBHkzeuQHHb/zDDjnIvxfrKX6jQr/6dSSxls=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S0G/FDTvm2waSe6IraEsKO6y6WXTRTtz7OWaHx2tUvpITMnNUYsTwziProX3ScfYj/X7trsHUBdlIvdXVfHW0VFPmIlDYq+rED2EYXZrjR5NBpGJx7FxnQOrXKZfps99UjvDu0X6hgzpcb+XdA0i7XwFmK23O4TMd9spO8QBLlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=qE61y84b; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1781539475; c=relaxed/simple;
+	bh=jbG1Ust+FiBggxWGf6DQg+1jmY1hXtQYGd8GTxQBRzc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mljuFTJHWISN8+J2mflbJzg5Fh85WqU7flWA7qHumblD3TquN5O6kn17fHpAFAtIYKOdAt04Yoi5rzHq2iZkneBZrHhTBNRMn8vYtacrdX9BnqSOqqtzieTkyrgcoh4BPbN6QuCUY8IKXTHCYR2Mhe3/uV+d9iSilEfvT7C+oxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OPXb1Gi6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="qE61y84b"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=Nqx4b4PhavDoBw85ZcXFI5T45guTiq32b+oAUPWx6A0=; b=qE61y84bREqLZDvZuLSyxYpnPY
-	tFUA0cVojuL9Z2gKT6SFOQhm0ZbtrA1pGaQsQhejzykJ/TF6SFye2iKHLjnhwSdJllsFU1L40b5P5
-	f+pBSm2l7bMQZMUL4zLMfTP3yG/iNrwI76QNaM3ghlRRms6GgeVzyl4Q2wXzs7NZnIug=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wZ9gE-007pQS-PV; Mon, 15 Jun 2026 17:56:54 +0200
-Date: Mon, 15 Jun 2026 17:56:54 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Kyle Switch <kyle.switch@motor-comm.com>
-Cc: mmyangfl@gmail.com, olteanv@gmail.com, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, ming.xu@motor-comm.com,
-	xiaolin.xu@motor-comm.com, jianmin.wang@motor-comm.com,
-	de.ge@motor-comm.com
-Subject: Re: [RESEND PATCH v1] net: dsa: motorcomm: add yt92xx dsa driver
-Message-ID: <774d976a-779f-4f11-b003-ca3381d8cfa0@lunn.ch>
-References: <20260615111235.3544282-1-kyle.switch@motor-comm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OPXb1Gi6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 261531F000E9;
+	Mon, 15 Jun 2026 16:04:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781539474;
+	bh=jbG1Ust+FiBggxWGf6DQg+1jmY1hXtQYGd8GTxQBRzc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=OPXb1Gi6S8JolKi40bWgOxIi774hz4UJ2gouKSpxjeGXLf7jXkd6SDwVIY+o4t1fP
+	 Blds1K7780L3LCWJoI+/ubteG5J5aAd9ltFCB16bEnWxB2CaU4PFFkpd5lwVTx3GnG
+	 FJPjQrcc97zSE4qehQMTzrGD5PwEE5paJ1l1n0PtC9CEuiP12Y2lqDGXLYcZh1WfcI
+	 d25dsR3bh9X1iYdGlbN56q2FMA1XkmTYOfj7Hm7yE3s04LUHsGKKD8ZvM7PaZdr3aT
+	 6Sos1w7TLaBLcm2xjwRVPvHt0/n4Vmp8mjb2KqLABFfrCYvfLasDtanaioYXj6Zmu4
+	 RDPqVreEHtR3g==
+Date: Mon, 15 Jun 2026 09:04:32 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: davem@davemloft.net, Andrew Lunn <andrew@lunn.ch>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Russell King
+ <linux@armlinux.org.uk>, Heiner Kallweit <hkallweit1@gmail.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ thomas.petazzoni@bootlin.com, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Herve Codina <herve.codina@bootlin.com>,
+ Florian Fainelli <f.fainelli@gmail.com>, Vladimir Oltean
+ <vladimir.oltean@nxp.com>, =?UTF-8?B?S8O2cnk=?= Maincent
+ <kory.maincent@bootlin.com>, Marek =?UTF-8?B?QmVow7pu?= <kabel@kernel.org>,
+ Oleksij Rempel <o.rempel@pengutronix.de>, =?UTF-8?B?Tmljb2zDsg==?= Veronese
+ <nicveronese@gmail.com>, Simon Horman <horms@kernel.org>,
+ mwojtas@chromium.org, Romain Gantois <romain.gantois@bootlin.com>, Daniel
+ Golle <daniel@makrotopia.org>, Dimitri Fedrau
+ <dimitri.fedrau@liebherr.com>, Frank Wunderlich
+ <frank.wunderlich@linux.dev>
+Subject: Re: [PATCH net-next v12 00/10] net: phy_port: SFP modules
+ representation and phy_port listing
+Message-ID: <20260615090432.4eaf832c@kernel.org>
+In-Reply-To: <20260615153907.862987-1-maxime.chevallier@bootlin.com>
+References: <20260615153907.862987-1-maxime.chevallier@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260615111235.3544282-1-kyle.switch@motor-comm.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jun 15, 2026 at 07:12:35PM +0800, Kyle Switch wrote:
-> Add yt92xx dsa driver supports yt921x and yt922x switch series.
-> To support more switch series in the future (e.g., yt923x), the most common configurations are abstracted into switch operation interfaces, due to yt921x and yt922x share similar register layouts and operational logic.
-> 
-> - Merge drivers/net/dsa/yt921x.c and the new yt922x support into a
->   unified yt92xx.c driver.
-> 
-> - Add support for yt922x, which can operate with either 4 bytes or
->   8 bytes DSA tag.
-> 
-> - Not change yt921x behaviour but use common switch apis
+On Mon, 15 Jun 2026 17:38:56 +0200 Maxime Chevallier wrote:
+> Here's V12 for the phy_port netlink interface.
 
-You should comment about why you resent.
-
-Also, you should of waited 24 hours.
-
-https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
-
-Anyway, please don't send it yet again until you have broken it up
-into lots of smaller patches.
-
-You also have a lot of work to do to bring this code up to Mainline
-standards. Please spend some time looking at other DSA drivers, and
-network drivers. Anything your driver does which no other driver does,
-is probably wrong. Please start with a small patchset with just the
-core code, enough to have the ports act as independent interfaces,
-nothing more. You can then submit further patchsets for offloading
-bridges, statistics, trunks, ptp etc.
-
-    Andrew
-
----
-pw-bot: cr
+net-next is closed, deferring
