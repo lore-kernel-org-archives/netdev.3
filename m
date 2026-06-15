@@ -1,89 +1,110 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [207.46.229.174])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D24C3B14CB;
-	Mon, 15 Jun 2026 06:28:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.46.229.174
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBAED3B19B6;
+	Mon, 15 Jun 2026 06:31:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781504893; cv=none; b=cLbSp/8FHwYujxy8ZLwufIlaiYbVC07Aw15ezy/rP3ETfRUB14juyE2RzClzEeBFBdhPkLXil9N+D0572dmCRKS3LOL9Q8zymAM2gZBIm1eCvRYmaHWCZFD4VBNjyumM5AmgWCpENCz7+XIJ/LnbmQ+yT8DMnci82NV9Oy8rfIg=
+	t=1781505093; cv=none; b=GIVALVy165A+icGQlq29cd7PSr1HmRuEyNZlPVkNWCTpVJwAyvqrhbBW17pYMoDBb9GzQHb1PLb+s3Kyscro4A4sGaOb1JMNkzrpfSyufta6jX16YY99vRB1LHvy65ns3VXWcBgP6FHa6bhyhgqYMt5huZwrxLQ9JmxlQSKde+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781504893; c=relaxed/simple;
-	bh=y6XxhbY60dG0xbY+ie3dpqCXk+DmKuE1kabryxtn0PA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HTrkyAlqY/jot1JqgyInDVNJBEQUD3enkwYJGL+HpwBGZHh5VPGPRo6UMgW3Djc7ElTqX8JONyH9CoChP+LOE7zm96W8pq8uv3VQc86eomwadYv/oP9v+TWxXBLMhG9wun1ppwhuz53b28WpjBVQnnbcEX23YPrlRneBXDhPJ6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=RP7LsnDG; arc=none smtp.client-ip=207.46.229.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
+	s=arc-20240116; t=1781505093; c=relaxed/simple;
+	bh=HdUtVP4U03r6hFt/mhZ0+qgOk5+eeHWfsach15VK63I=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HP9blnR1nzxxxoH7xQNwMeV4zC/tnFyLKAgzYnGIjpUYlGkn568ENaaIbynEyECYbV5ZOeaS8gsVwh5yI61EaNTC3+62ec93z/l5xz+Y2gkCZsu7ME5bbIQG6cRQpPdLJTC0JXthPBn8sTAv/1c3r4nTKDyCHDuIC+ptR4fKYU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=BNgF7ifa; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="RP7LsnDG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
-	Date:Message-ID:In-Reply-To:References:MIME-Version:
-	Content-Transfer-Encoding; bh=7AY37jUilyOOppCw24yu2Fs6f2pcjFO5/7
-	U8o9TKtYo=; b=RP7LsnDGbbIXyVMyb2LI1/zK1HQ2P8NedGTmh85BseubLQ2jwb
-	KuCH0QHa/RLCXK8A9vXADyogaMS6fMUMFA7lDJeetVP3lwX/l76FANVU/0bWQ2CA
-	+oXOcYr2xhW3tbHXIHF6U7Ym+SzHjMoD+aPYYDz7KG+eGDMOmYaNrr/QA=
-Received: from localhost.localdomain (unknown [59.66.142.89])
-	by web5 (Coremail) with SMTP id zAQGZQCHQcFsmy9qe1dwAg--.25454S2;
-	Mon, 15 Jun 2026 14:27:56 +0800 (CST)
-From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-To: andrew@lunn.ch
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	fengxw06@126.com,
-	horms@kernel.org,
-	kees@kernel.org,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	qli01@tsinghua.edu.cn,
-	stable@vger.kernel.org,
-	wangao@seu.edu.cn,
-	xuke@tsinghua.edu.cn,
-	yangyx22@mails.tsinghua.edu.cn,
-	zhaoyz24@mails.tsinghua.edu.cn
-Subject: Re: [PATCH net] atm: br2684: reject short VC-MUX bridged frames
-Date: Mon, 15 Jun 2026 14:27:56 +0800
-Message-ID: <20260615062756.31081-1-zhaoyz24@mails.tsinghua.edu.cn>
-X-Mailer: git-send-email 2.46.2
-In-Reply-To: <26ebc58c-6399-4a45-aa55-91a3bf398fef@lunn.ch>
-References: <26ebc58c-6399-4a45-aa55-91a3bf398fef@lunn.ch>
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="BNgF7ifa"
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65F6HJPx4184455;
+	Sun, 14 Jun 2026 23:31:17 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pfpt0220; bh=HdUtVP4U03r6hFt/mhZ0+qgOk
+	5+eeHWfsach15VK63I=; b=BNgF7ifaniB8tO9rBT7qfq8y/AKh0rU1V85TzqrYz
+	+GiGpbrzo6P6xb3r7Y1CAgvzVLWode1nskGMHKp4myU2OQ2Wx0B1uzLsTwknNdgH
+	lJ/x9eTLUDsICjuibscEWpwZDZ1pgX/FmtbjlEZv29Chz7DO+hL8HRD1WRQY7LpB
+	PgEJFico4vlIDIfm8eObpysW5ELuy4kn+zcFp4WInKlldBrKZY4EJIXvdLA1370t
+	4lTCmdr1aQH4uxNbxmgpRFcagADXJGmDWHu371lWHTjyzJ6+ty1giKzjoIEm54Cv
+	owpj9pMZYXM01ULeKgivoLvTXyUFuwQsJf1xoFodLPe2Q==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4es6qedry1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 14 Jun 2026 23:31:16 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Sun, 14 Jun 2026 23:31:16 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Sun, 14 Jun 2026 23:31:16 -0700
+Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with SMTP id BB1093F706A;
+	Sun, 14 Jun 2026 23:31:11 -0700 (PDT)
+Date: Mon, 15 Jun 2026 12:01:10 +0530
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: Runyu Xiao <runyu.xiao@seu.edu.cn>
+CC: <netdev@vger.kernel.org>, <sgoutham@marvell.com>, <gakula@marvell.com>,
+        <sbhatta@marvell.com>, <hkelam@marvell.com>, <bbhushan2@marvell.com>,
+        <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <amakarov@marvell.com>,
+        <tduszynski@marvell.com>, <linux-kernel@vger.kernel.org>,
+        <jianhao.xu@seu.edu.cn>
+Subject: Re: [PATCH net 0/2] octeontx2: quiesce stale mailbox IRQ state
+ before request_irq()
+Message-ID: <ai-cLqrb5JDaxqng@rkannoth-OptiPlex-7090>
+References: <20260611160014.3202224-1-runyu.xiao@seu.edu.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zAQGZQCHQcFsmy9qe1dwAg--.25454S2
-X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUYJ7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcV
-	AFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2
-	jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAac4AC62xK8xCEY4
-	vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv
-	7VCjz48v1sIEY20_GrWkJr1UJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr4
-	1lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkIecxEwVAF
-	wVW8AwCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26r4rKr1UJr1l4c8EcI0Ec7
-	CjxVAaw2AFwI0_Jw0_GFyl4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWU
-	JVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7V
-	AKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42
-	IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUxeMNUUUUU
-X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAQITAWovKbDI+gABs+
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260611160014.3202224-1-runyu.xiao@seu.edu.cn>
+X-Proofpoint-GUID: 6CJJywh2rym2yram3Z2gs5Uj76_nPMrO
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE1MDA2NyBTYWx0ZWRfX+cfSp6BQrgs5
+ cYJvxnOr68feb158HF3JyxDyq081Hh+gKulYZnJGOUCcgL5EQtfdkDb39r2pwPPG5rxFY4yn9pc
+ AWR6YZ4won8E3ImK199erZY2ZWo29F4=
+X-Authority-Analysis: v=2.4 cv=TuXWQjXh c=1 sm=1 tr=0 ts=6a2f9c34 cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
+ a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=l0iWHRpgs5sLHlkKQ1IR:22 a=QXcCYyLzdtTjyudCfB6f:22 a=M5GUcnROAAAA:8
+ a=gsvKqhphM9sicTsUmusA:9 a=CjuIK1q_8ugA:10 a=zZCYzV9kfG8A:10
+ a=OBjm3rFKGHvpk9ecZwUJ:22 a=4Pbm1F1Cy1QVNLGpYn_S:22
+X-Proofpoint-ORIG-GUID: 6CJJywh2rym2yram3Z2gs5Uj76_nPMrO
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE1MDA2NyBTYWx0ZWRfX4rY01r2Di1iT
+ 5+eSktubXOsI7Fe7wjakoIvIEmW1sGJn/v5lho6fC2PE2XmxEfoa6EoWYwCgvtTykk28cADWePk
+ kgAiNT1OAO1cjVhakiuBFwtLh09UHWC705ATtofaDWhv4j+aigwZjpW53swsHMIya2FvEbdCG74
+ mZWBht295uW36q6h3fVoPFoC2p0w52i7EVGkXGa43j41CfgJ0mWGovJgiPE8QmZqFMrmRGbWxGH
+ CPLMW/H/Udn9iDGpW8cVJLMD8YTXeYw/YfyPSd08e82bGUt5A+mx+b03OgQKsbSAcngK8zuQ/q/
+ vbIoI7gQWaxrADDYztLObNbMiqrnR4+4i8ZWF7oRBxijiEbD0WNvkb6+olGdfawJXpL6sSNWDPj
+ D89vqoozX9JyU+88quJtVS1huMWLB08Dhb1prDKSHL1eS2tGaBtGrAscNyy+IQ+9x/JJW/JHXHK
+ /5plpSM9bJWAKj+lJ0A==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-15_02,2026-06-12_03,2025-10-01_01
 
-Hi Andrew,
+On 2026-06-11 at 21:30:12, Runyu Xiao (runyu.xiao@seu.edu.cn) wrote:
+> Both OTX2 mailbox registration paths currently install their IRQ
+> handlers before clearing stale local mailbox interrupt state, even
+> though the code comments already say that the clear is needed first to
+> avoid spurious interrupts.
+>
+> This issue was found by our static analysis tool and manually audited on
+> Linux v6.18.21. Directed QEMU no-device validation further showed that
+> the real PF and VF mailbox handlers are already reachable in that
+> pre-clear window and can touch the same mailbox and workqueue carrier
+> before local quiesce has completed.
+>
+> This series keeps the change minimal:
+>
+> - clear stale mailbox interrupt state before request_irq()
+> - keep interrupt enabling after the handler is installed
+>
+> That closes the early-IRQ window without introducing a new
+> enable-before-handler window.
 
-On Sun, Jun 14, 2026 at 08:39:12PM +0800, Andrew Lunn wrote:
-
-> Same questions as for the previous patch. Lots of parallel
-> discoveries? What hardware was used, etc.
-
-I'm sorry that in this case no physical ATM/DSL hardware was 
-used either. I verified this in QEMU/KVM with a small dummy 
-ATM device as in the previous patch. I think that this is a
-real logical bug, but whether it can be triggered by a real
-Device was not verified.
-
-Yours Sincerely,
-Yizhou
-
+Reviewed-by: Ratheesh Kannoth <rkannoth@marvell.com>
