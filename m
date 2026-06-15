@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A28B2FFFB5;
-	Mon, 15 Jun 2026 23:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF0834887E;
+	Mon, 15 Jun 2026 23:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781566823; cv=none; b=VYDNtD58scE2IrJO3PjLUSEm85rv4aQR/l/PQy7L6db6/5moBboJY3+D6jz7p12v/e1UOWHvJ7gFWF2rGDyR1rtE8LX3eyHkrbSJ9wddf8t8eel3kYN2h4m/vLnP00+59XD1Fq9BWPwlveXgva3ZtCAypT6XQcf5juc0Z57zTzI=
+	t=1781566824; cv=none; b=Ka0ZqirOJ8AhgWOBw8tkwEj4cuTVFL/in1fYcvB+tY310f8yplCIu1Qb/em3Xvh5PBYnkmxy8ELZw0YJcqE60+fX0ICHfazz+eu9F7+hEijkzY58y5Zws1Ue9+IHvyZvtEHfxjkCSZpt1wrgHPu9u4wXK7Pn7z0KliPk6gslOyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781566823; c=relaxed/simple;
-	bh=HHdUfbaEjQ41R9T6Q1Qd+ec2nt8+WSsNqfTCq1pmptU=;
+	s=arc-20240116; t=1781566824; c=relaxed/simple;
+	bh=ZyOLMaLwJs6p6k/MNvaM2k6PKzaG9mXiPuBRfBfovk8=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=bw+amFtcZeY17XtV72n2AcUde3HF3xtEzD0sHin4nBiJ4u0k1PNWEwDSPI35Sa6TJkAfuylSeusG52+zPJ+pKlZUbk1Rvr6zeiZ4y3BENJzumB04Y4PkV6fT25Br0EaN4Jg3aPcsV25Q/q5rDuT/is/xbuDamKqL2siLpnl4g/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AEoY0qeQ; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=XF4we298+du41tgdIwOxJAlOm4A+ZIAFepRPWFyGB1aeDqq6Xtf224MZPzhc+9Cbt4z0AOVAUM4hUgX5k3k6Oh5s001F5IXzD4bRohm/U5QkI4knlNx9PwKsx+h1x8MLtAlWTUEem2FQ5F4gCv+MtZOU9T7Z+/WQcBUmga60eFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QkuZZPZR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AEoY0qeQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D67BD1F000E9;
-	Mon, 15 Jun 2026 23:40:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QkuZZPZR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F4D71F000E9;
+	Mon, 15 Jun 2026 23:40:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781566821;
-	bh=WzzZkl0ITKGF+e89UCTNrQ3QOTm2s+mNTX72P5uC134=;
+	s=k20260515; t=1781566823;
+	bh=+1apkrB1jbaFhw7WCwrOwJDH1R+HLyNSgYxDojcEzTQ=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=AEoY0qeQ6ryZxCtIx8/jTZzyAqawRslLOub3uUTkYMX0kiicXnwmjkT+oK4NhxzGF
-	 EQ7Clm9X03BRFRHtMMxlM12FqgogeM39l96olju/Cz3JSbq8H5FNB4szo83f3KRRmi
-	 WN6VVVLB5Fhyabn0d/I+19gDZa5dP7kYodSIveQNLNuB+qkBgdk0BBbmfxAF2NsUOJ
-	 hc77OMZA8O8rRqOM93gqmpdoz8C9v91aJxCYGRGVDmic4JX5fnlASBDdbMweeq4K9z
-	 ordxeihikraCNS9LC7EHq/7Fp5KucgMJ0OMp4WF39JJpsxxH3u81TyBzcFpPNUxOy/
-	 d08IJJQWk/7pg==
+	b=QkuZZPZRfnL1Eptpvfskua2yScD3nyWGmdhfvWNs1MWDvy9FyHM4kjp7z0+mBephC
+	 fMPeNTjIIDDPdxqsI6tDzTW+v9ziCpsg8RntwOqtTZzcb0gMW3TqAuH0517KZGMfti
+	 FuRMsSc+HWCfsHuhrswN+DEbh03o2B5l3NU1a2+p7lic1FNWCaHK807IRIcZFzvzO5
+	 sDWDLyGwN8904FQ7JfWPgf2D6vt+yvNMlvCGSJczUtvPdcQBYncU8HOZRlzyP5cyvE
+	 MewLRBrhNEFYLDxgfgvmOvYx4ZI/vJySklKssl5vMJdqzYWAIfxnocJZEQCX/mYt8N
+	 nqZEaN5mGB25Q==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198093839A08;
-	Mon, 15 Jun 2026 23:40:18 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 939433839A08;
+	Mon, 15 Jun 2026 23:40:19 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,49 +37,48 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/4] ICSSG XDP zero copy bug fixes
+Subject: Re: [PATCH net v5 0/4] MAC-PHY interrupt changed to level triggered
+ interrupt
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178156681669.339383.12184092559832097375.git-patchwork-notify@kernel.org>
-Date: Mon, 15 Jun 2026 23:40:16 +0000
-References: <20260611185744.2498070-1-m-malladi@ti.com>
-In-Reply-To: <20260611185744.2498070-1-m-malladi@ti.com>
-To: Meghana Malladi <m-malladi@ti.com>
-Cc: diogo.ivo@siemens.com, haokexin@gmail.com, vadim.fedorenko@linux.dev,
- devnexen@gmail.com, horms@kernel.org, jacob.e.keller@intel.com,
- sdf@fomichev.me, john.fastabend@gmail.com, hawk@kernel.org,
- daniel@iogearbox.net, ast@kernel.org, pabeni@redhat.com, kuba@kernel.org,
- edumazet@google.com, davem@davemloft.net, andrew+netdev@lunn.ch,
- bpf@vger.kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, srk@ti.com, vigneshr@ti.com,
- rogerq@kernel.org, danishanwar@ti.com
+ <178156681813.339383.7315045393443753551.git-patchwork-notify@kernel.org>
+Date: Mon, 15 Jun 2026 23:40:18 +0000
+References: <20260611-level-trigger-v5-0-4533a9e85ce2@onsemi.com>
+In-Reply-To: <20260611-level-trigger-v5-0-4533a9e85ce2@onsemi.com>
+To: Selvamani Rajagopal <selvamani.rajagopal@onsemi.com>
+Cc: parthiban.veerasooran@microchip.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ pier.beruto@onsemi.com, andrew@lunn.ch, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, conor.dooley@microchip.com,
+ devicetree@vger.kernel.org, Parthiban.Veerasooran@microchip.com,
+ Selvamani.Rajagopal@onsemi.com
 
 Hello:
 
 This series was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 12 Jun 2026 00:27:40 +0530 you wrote:
-> This patch series fixes bugs introduced while adding xdp
-> zero copy support in the icssg driver.
+On Thu, 11 Jun 2026 14:55:37 -0700 you wrote:
+> According to OPEN Alliance 10BASE-T1x MAC-PHY Serial Interface
+> specification, MAC-PHY interrupt is "active low, level triggered".
+> The specification mentions about the conditions in which the IRQ
+> is asserted and deasserted.
 > 
-> Patch 1/4: Fix wakeup handling for Rx when available CPPI
-> descriptor is zero
-> Patch 2,3/4: Fix destination tag in CPPI descriptor to enable
-> proper Tx xmit for HSR offload mode with XDP and zero copy
-> Patch 4/4: Fix Tx copy wakeup handling for XDP zero copy
+> Bug is inadvertently introduced by treating the IRQ in the OA TC6
+> framework driver and in dt-binding YAML file as edge triggered.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,1/4] net: ti: icssg-prueth: Fix AF_XDP fill ring alloc and wakeup condition
-    https://git.kernel.org/netdev/net/c/dfb787f7d157
-  - [net,2/4] net: ti: icssg: Use undirected TX tag for native XDP in HSR offload mode
-    https://git.kernel.org/netdev/net/c/bcbf73d98195
-  - [net,3/4] net: ti: icssg: Use undirected TX tag for XDP zero copy in HSR offload mode
-    https://git.kernel.org/netdev/net/c/f9691288413c
-  - [net,4/4] net: ti: icssg: Fix XSK zero copy TX during application wakeup
-    (no matching commit)
+  - [net,v5,1/4] net: ethernet: oa_tc6: Interrupt is active low, level triggered.
+    https://git.kernel.org/netdev/net/c/b542d13fab0f
+  - [net,v5,2/4] net: ethernet: oa_tc6: mdiobus->parent initialized with NULL
+    https://git.kernel.org/netdev/net/c/a221d3f7e3f3
+  - [net,v5,3/4] net: ethernet: oa_tc6: Remove FCS size in RX frame
+    https://git.kernel.org/netdev/net/c/a5a1d11dd372
+  - [net,v5,4/4] dt-bindings: net: updated interrupt type to be active low, level triggered
+    https://git.kernel.org/netdev/net/c/31e56112e654
 
 You are awesome, thank you!
 -- 
