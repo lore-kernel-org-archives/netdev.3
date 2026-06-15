@@ -1,172 +1,279 @@
-Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD43223DFB
-	for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 03:07:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3551726738B;
+	Mon, 15 Jun 2026 03:14:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781492882; cv=none; b=kpW5aMIzz/FjGRayiBzzeqdTdapiRnXlW6gYe0AGFl9+IRiBcdpiWkF/NHk8bphoBFBpzbuChlisj2ChyKeMz1z8/wteX3yNOfpNrlHj0bIUllsjooIJypdatYtpVhgKAG01ae2f4wBTezcsALtXlEaniwVWIDVzDTMQh8dw+kk=
+	t=1781493269; cv=none; b=VsHl7Q/UdBtsN7Bb8D6ZDmvxL+JTTvjJPqTmFJ2M8Fq4O7bTzZR6D8X7zh1BG1FhdIipMDl5cR9QnhxEyHNomIyl8GMLIdk2pdvLL/n8ap3VQZohDy/80w8H1Y5biJVf7kQVG7tME/rZ3aK99JjJXF33mgryRIy9jZ/vXda6vOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781492882; c=relaxed/simple;
-	bh=0C1UYnmCry08Huufzy/KPisYPs31PBRDAhLGOsARSss=;
-	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Qts3LdxYqbEQKS6eHYrdmhMfmc5GBwpZJpQZ17Wg4kUdqx96WiH0SfKn9HLT3z+31nraKdBNJEqRIMTZXE1E0+I2/zv2EeJcQ3Ez33DXWadGLe7fHEIvALJI39K1QDKvDBcQHTxGYT5ChZl65M5iqaNj9SbW/PdrlZjke86gILc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.204.34.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid:Yeas8t1781492807t791t52977
-Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [183.157.22.210])
-X-QQ-SSF:0000000000000000000000000000000
-From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
-X-BIZMAIL-ID: 12619361186151596884
-To: "'Simon Horman'" <horms@kernel.org>
-Cc: <netdev@vger.kernel.org>,
-	"'Mengyuan Lou'" <mengyuanlou@net-swift.com>,
-	"'Andrew Lunn'" <andrew+netdev@lunn.ch>,
-	"'David S. Miller'" <davem@davemloft.net>,
-	"'Eric Dumazet'" <edumazet@google.com>,
-	"'Jakub Kicinski'" <kuba@kernel.org>,
-	"'Paolo Abeni'" <pabeni@redhat.com>,
-	"'Richard Cochran'" <richardcochran@gmail.com>,
-	"'Russell King'" <linux@armlinux.org.uk>,
-	"'Jacob Keller'" <jacob.e.keller@intel.com>,
-	"'Michal Swiatkowski'" <michal.swiatkowski@linux.intel.com>,
-	"'Kees Cook'" <kees@kernel.org>,
-	"'Larysa Zaremba'" <larysa.zaremba@intel.com>,
-	"'Joe Damato'" <joe@dama.to>,
-	"'Breno Leitao'" <leitao@debian.org>,
-	"'Aleksandr Loktionov'" <aleksandr.loktionov@intel.com>,
-	=?iso-8859-1?Q?'Uwe_Kleine-K=F6nig_=28The_Capable_Hub=29'?= <u.kleine-koenig@baylibre.com>,
-	"'Fabio Baltieri'" <fabio.baltieri@gmail.com>,
-	"'Thomas Gleixner'" <tglx@kernel.org>,
-	"'Greg Kroah-Hartman'" <gregkh@linuxfoundation.org>,
-	<netdev@vger.kernel.org>,
-	"'Mengyuan Lou'" <mengyuanlou@net-swift.com>,
-	"'Andrew Lunn'" <andrew+netdev@lunn.ch>,
-	"'David S. Miller'" <davem@davemloft.net>,
-	"'Eric Dumazet'" <edumazet@google.com>,
-	"'Jakub Kicinski'" <kuba@kernel.org>,
-	"'Paolo Abeni'" <pabeni@redhat.com>,
-	"'Richard Cochran'" <richardcochran@gmail.com>,
-	"'Russell King'" <linux@armlinux.org.uk>,
-	"'Jacob Keller'" <jacob.e.keller@intel.com>,
-	"'Michal Swiatkowski'" <michal.swiatkowski@linux.intel.com>,
-	"'Kees Cook'" <kees@kernel.org>,
-	"'Larysa Zaremba'" <larysa.zaremba@intel.com>,
-	"'Joe Damato'" <joe@dama.to>,
-	"'Breno Leitao'" <leitao@debian.org>,
-	"'Aleksandr Loktionov'" <aleksandr.loktionov@intel.com>,
-	=?iso-8859-1?Q?'Uwe_Kleine-K=F6nig_=28The_Capable_Hub=29'?= <u.kleine-koenig@baylibre.com>,
-	"'Fabio Baltieri'" <fabio.baltieri@gmail.com>,
-	"'Thomas Gleixner'" <tglx@kernel.org>,
-	"'Greg Kroah-Hartman'" <gregkh@linuxfoundation.org>
-References: <20260610060917.23980-1-jiawenwu@trustnetic.com> <20260610060917.23980-5-jiawenwu@trustnetic.com> <20260612154929.GD671640@horms.kernel.org>
-In-Reply-To: <20260612154929.GD671640@horms.kernel.org>
-Subject: RE: [PATCH net-next v6 4/5] net: wangxun: implement soft quiesce for PCIe error recovery
-Date: Mon, 15 Jun 2026 11:06:46 +0800
-Message-ID: <018b01dcfc74$00443c30$00ccb490$@trustnetic.com>
+	s=arc-20240116; t=1781493269; c=relaxed/simple;
+	bh=SDW+1aca+i8yDrqxFwq2oaZia/1LeDbXSozLBKAhGDk=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lbfD1Rfpi6Wfln+WCfqIaoNdshw7GXdlb6GI/59/fjA1UyxUzOQkoFYvyElm5wMni3zSGLF7NNz9z0J/QjtsdlWgE/Vr3C3Jn/qf/kuurYZnggzKLOc22/0CZDPyGc+JSBan6z/5r/hoGuDPgZBv9cBOPMr5rvF+dFIVwgSWRNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=PfUZcr3N; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="PfUZcr3N"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 65F3DpQxA457249, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
+	s=dkim; t=1781493231;
+	bh=wrj5UsQq6LyDhfuIzqwXJb1M1z4Wiycs5p67n8lSfcI=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding:Content-Type;
+	b=PfUZcr3NPnGItFP4JvdP8N43Y+qaPMLx1yGIwsCkLWEbab7Qb+A1wDuu72LPL03C7
+	 FIkK8JP1QDhh7ecphmn25vM8PZizECgpA/wOoJCnBdAGeMGvGF/P3yNUYnFSIl7yc5
+	 ocpOJNcBjKNep8QEmlkPSkDERYy7A17jRYgWvYkMgka7Zi0+QIHfJsYWyZIoj+gfju
+	 m7uSuy0POPYAfqycL9OAWe6u0IYnbxK097rFli/yOeO0QUXLy/GRUyTU3c5+wecQF5
+	 vxbuJr5m6RT4CZcXuCzk81ZYCXKQ+q9RI+wpnOGz/+mzMpdb7it3YdBJpQJ52uZVd4
+	 sNVfpBYloO8NQ==
+Received: from RS-EX-MBS2.realsil.com.cn ([172.29.17.102])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 65F3DpQxA457249
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 15 Jun 2026 11:13:51 +0800
+Received: from RS-EX-MBS2.realsil.com.cn (172.29.17.102) by
+ RS-EX-MBS2.realsil.com.cn (172.29.17.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Mon, 15 Jun 2026 11:13:49 +0800
+Received: from 172.29.37.154 (172.29.37.152) by RS-EX-MBS2.realsil.com.cn
+ (172.29.17.102) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Mon, 15 Jun 2026 11:13:49 +0800
+From: javen <javen_xu@realsil.com.cn>
+To: <hkallweit1@gmail.com>, <nic_swsd@realtek.com>, <andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <horms@kernel.org>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Javen Xu
+	<javen_xu@realsil.com.cn>
+Subject: [PATCH net-next v8 7/7] r8169: support setting rx queue numbers via ethtool
+Date: Mon, 15 Jun 2026 11:13:45 +0800
+Message-ID: <20260615031345.548-8-javen_xu@realsil.com.cn>
+X-Mailer: git-send-email 2.50.1.windows.1
+In-Reply-To: <20260615031345.548-1-javen_xu@realsil.com.cn>
+References: <20260615031345.548-1-javen_xu@realsil.com.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Content-Language: zh-cn
-Thread-Index: AQH9NqXiSq8t3g99zFNQdAvFN/QoIQJw8LB5AZ4y8Z213f6/MA==
-X-QQ-SENDSIZE: 520
-Feedback-ID: Yeas:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: Nj0bGi/6uW3PSes0yMhWFvyO2EG+v8EjaHTQN1sI2S0QVRmVbMO3h+D/
-	cCpbdWupbdpBhGd1KXAERc85vg+Y6WEkBUasvX783VES6PJs9axNh0WgGvnHbmK8jmhk3CC
-	/2dFcDlzzXQeeKQSA0c3YEpn1oFK9QSULbaTLl+UWqDV4w4etlAUk3vptL4uGAYd0RCnXM7
-	1LAur71mPg6myVJOTN2kxPTQMnjpZc6JkL+h3HMtGus+vnJUdQo74RgGcKu9LOZYYij2Dli
-	KVhI7K0tM1Cxm8A0pk+LxQpaSBDmERk2nQ9E2dm0kMVwiBi0Ik8WoToL/BuEaTuTUti8Jd7
-	WSr0SiaogDZyy4h8XNa1OAgvVLamrWBkIYQRHYLbAm6kqi7pqrUfAvDrl9t6ky0WrVNk3jp
-	yAjdxqZVZo0bJhTYfrcG6C1GcIcP4WV85OwXlbAFbGwDNIDbxQBa7XbxJxRIRiLil6IODFc
-	A7WRua+NUUD4kR+Rwze40SbjRkn6Jriw9LKuZo+HT5am16AhYm2G3sGJnhgM/V0uamGoiix
-	GZGxGeAnx7FoCvoTzIwGFZbpxdWykKUVyHiIm6yEeOsJpKHrXnrGOso0EnD/25Deg006Cws
-	3Nj5KwsNQZ5+gC335mRzdXowq9AutS0n7hayQHGGaS1Yc2Bd7bNgI28B9imXIC+IXHUmVLu
-	RYZ6PI7m1QE9kRdwJdJljH4hO4TuZCQ5R86TdGEJMVWIvpA8NkqYg2KqiB+b1bMHmMP3D6a
-	CTF6J8Mu5KU5BMYjShDDoNK27T8peuFGAoBO6+VqRLyl1mldFQiqLUKIbF0kBtZyRGJU+dF
-	E1gbxhDXtDMQLz/42b+zyGr0A8ND2ehJxSpBV9m2xxMBoAorqgAwL6YFAEjBnrTMTwfQJjL
-	9A2V1NBKChEkXp7QMYo9rAgC+ZIa+2GH/YUes6HO47PFFpSoBpqZ7fKO77irHDhq+4hnlrd
-	SCkmcbFUik5HQ2rQz0dhEwEe+VlmlehgJ7Ubjol0rap1LrFpF+kc3H1pOYOZ2YuqPMX/KgP
-	35e3xNMVeTEAKev0l439bwGhnZp9DnM2cUtkXhdvKMJIL2nnSY7W9fEGmCgIDn5V7ZofnLa
-	ivMo1hbuqIw6X+5J8jIwjo=
-X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
-X-QQ-RECHKSPAM: 0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On Fri, Jun 12, 2026 11:49 PM, Simon Horman wrote:
-> On Wed, Jun 10, 2026 at 02:09:16PM +0800, Jiawen Wu wrote:
-> > Function wx_soft_quiesce() provide a lightweight shutdown path during
-> > PCIe error recovery. It avoids MMIO-dependent operations in PCIe error
-> > status.
-> >
-> > Waiting for the service task to complete may unnecessarily delay PCIe
-> > error recovery, especially if the work item is already blocked by the
-> > hardware failure that triggered AER. So the service task is not
-> > explicitly cancelled in quiesce path. As a measure to block the service
-> > task, the checking of WX_STATE_DOWN and WX_STATE_RESETTING is added at
-> > the entry of every work item.
-> >
-> > Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-> > Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-> 
-> ...
-> 
-> > diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ptp.c b/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
-> > index 44f3e6505246..dcc8b3ae1445 100644
-> > --- a/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
-> > +++ b/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
-> > @@ -842,6 +842,27 @@ void wx_ptp_stop(struct wx *wx)
-> >  }
-> >  EXPORT_SYMBOL(wx_ptp_stop);
-> >
-> > +void wx_ptp_quiesce(struct wx *wx)
-> > +{
-> > +	if (!test_and_clear_bit(WX_STATE_PTP_RUNNING, wx->state))
-> > +		return;
-> > +
-> > +	clear_bit(WX_FLAG_PTP_PPS_ENABLED, wx->flags);
-> > +
-> > +	if (wx->ptp_tx_skb) {
-> > +		dev_kfree_skb_any(wx->ptp_tx_skb);
-> > +		wx->ptp_tx_skb = NULL;
-> > +	}
-> 
-> AI-generated review of this patch on sashiko.dev flags a potential UAF here:
-> 
-> 	"Could freeing wx->ptp_tx_skb here cause a use-after-free or
-> 	double-free?
-> 
-> 	"Because ptp_clock_unregister() is called after this block, the PTP
-> 	 kworker might still be running.
-> 
-> 	"If wx_ptp_tx_hwtstamp() reads wx->ptp_tx_skb just before this
-> 	 free, it will pass the freed skb to skb_tstamp_tx() and call
-> 	 dev_kfree_skb_any() on it again.
-> 
-> I'd appreciate it if you could look into that.
+From: Javen Xu <javen_xu@realsil.com.cn>
 
-I will move ptp_clock_unregister() to be executed before we free wx->ptp_tx_skb.
+This patch add support for changing rx queues by ethtool. We can set rx
+1, 2, 4, 8 by ethtool -L eth1 rx num.
 
-> 
-> I believe that the other issues raised in that AI-generated review have
-> already been discussed in the context of earlier versions of this
-> patch-set.
-> 
-> > +	clear_bit_unlock(WX_STATE_PTP_TX_IN_PROGRESS, wx->state);
-> > +
-> > +	if (wx->ptp_clock) {
-> > +		ptp_clock_unregister(wx->ptp_clock);
-> > +		wx->ptp_clock = NULL;
-> > +		dev_info(&wx->pdev->dev, "removed PHC on %s\n", wx->netdev->name);
-> > +	}
-> > +}
-> 
-> ...
-> 
+Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
+---
+Changes in v2:
+ - no changes
+
+Changes in v3:
+ - no changes
+
+Changes in v4:
+ - remove rss_support and rss_enable
+ - remove some zero-initialized
+ - use kzalloc_objs instead of kcalloc
+
+Changes in v5:
+ - no changes
+
+Changes in v6:
+ - change subject of this patch
+ - defer the assignment of tp->init_rx_desc_type until after
+   rtl8169_down()
+ - call netif_set_real_num_rx_queues() to synchronize the new rx queue
+   number with networking core
+
+Changes in v7:
+ - no changes
+ 
+Changes in v8:
+ - if dev is not running, updating tp->rss_data->rss_indir_tbl and
+   calling netif_set_real_num_rx_queue when change rx queue number
+ - if system does not provide enough irq_nvecs, return -EINVAL
+ - malloc new_rx before device down
+---
+ drivers/net/ethernet/realtek/r8169_main.c | 146 +++++++++++++++++++++-
+ 1 file changed, 144 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index e43366468101..c893f0e3ecff 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -2790,11 +2790,16 @@ static void rtl_hw_reset(struct rtl8169_private *tp)
+ 	rtl_loop_wait_low(tp, &rtl_chipcmd_cond, 100, 100);
+ }
+ 
+-static void rtl8169_init_rss(struct rtl8169_private *tp)
++static void rtl8169_set_rss_indir_tbl(struct rtl8169_private *tp,
++				      unsigned int num_rx_rings)
+ {
+ 	for (int i = 0; i < tp->rss_data->hw_supp_indir_tbl_entries; i++)
+-		tp->rss_data->rss_indir_tbl[i] = ethtool_rxfh_indir_default(i, tp->num_rx_rings);
++		tp->rss_data->rss_indir_tbl[i] = ethtool_rxfh_indir_default(i, num_rx_rings);
++}
+ 
++static void rtl8169_init_rss(struct rtl8169_private *tp)
++{
++	rtl8169_set_rss_indir_tbl(tp, tp->num_rx_rings);
+ 	netdev_rss_key_fill(tp->rss_data->rss_key, RTL_RSS_KEY_SIZE);
+ }
+ 
+@@ -6228,6 +6233,141 @@ static void r8169_init_napi(struct rtl8169_private *tp)
+ 	}
+ }
+ 
++static void rtl8169_get_channels(struct net_device *dev,
++				 struct ethtool_channels *ch)
++{
++	struct rtl8169_private *tp = netdev_priv(dev);
++
++	ch->max_rx = tp->hw_supp_num_rx_queues;
++	ch->max_tx = 1;
++
++	ch->rx_count = tp->num_rx_rings;
++	ch->tx_count = 1;
++}
++
++static int rtl8169_realloc_rx(struct rtl8169_private *tp,
++			      struct rtl8169_rx_ring *new_rx,
++			      int new_count)
++{
++	int i, ret;
++
++	for (i = 0; i < new_count; i++) {
++		struct rtl8169_rx_ring *ring = &new_rx[i];
++
++		ring->rx_desc_array = dma_alloc_coherent(&tp->pci_dev->dev,
++							 R8169_RX_RING_BYTES,
++							 &ring->rx_phy_addr,
++							 GFP_KERNEL);
++		if (!ring->rx_desc_array) {
++			ret = -ENOMEM;
++			goto err_free;
++		}
++
++		memset(ring->rx_databuff, 0, sizeof(ring->rx_databuff));
++		ret = rtl8169_rx_fill(tp, ring);
++		if (ret) {
++			dma_free_coherent(&tp->pci_dev->dev, R8169_RX_RING_BYTES,
++					  ring->rx_desc_array, ring->rx_phy_addr);
++			goto err_free;
++		}
++	}
++	return 0;
++
++err_free:
++	while (--i >= 0) {
++		rtl8169_rx_clear(tp, &new_rx[i]);
++		dma_free_coherent(&tp->pci_dev->dev, R8169_RX_RING_BYTES,
++				  new_rx[i].rx_desc_array, new_rx[i].rx_phy_addr);
++	}
++	return ret;
++}
++
++static int rtl8169_set_channels(struct net_device *dev,
++				struct ethtool_channels *ch)
++{
++	struct rtl8169_private *tp = netdev_priv(dev);
++	bool if_running = netif_running(dev);
++	enum rx_desc_type old_rx_desc_type;
++	enum rx_desc_type new_desc_type;
++	struct rtl8169_rx_ring *new_rx;
++	int i, ret;
++
++	old_rx_desc_type = tp->init_rx_desc_type;
++
++	if (!rtl_hw_support_rss(tp)) {
++		netdev_warn(dev, "This chip does not support multiple channels/RSS.\n");
++		return -EOPNOTSUPP;
++	}
++
++	if (ch->rx_count > R8169_MAX_RX_QUEUES || !is_power_of_2(ch->rx_count) ||
++	    tp->irq_nvecs < get_min_irq_nvecs(tp))
++		return -EINVAL;
++
++	if (ch->rx_count == tp->num_rx_rings)
++		return 0;
++
++	new_desc_type = ch->rx_count > 1 ? RX_DESC_TYPE_RSS : RX_DESC_TYPE_DEFAULT;
++
++	if (!if_running) {
++		ret = netif_set_real_num_rx_queues(dev, ch->rx_count);
++		if (ret)
++			return ret;
++
++		tp->num_rx_rings = ch->rx_count;
++		tp->init_rx_desc_type = new_desc_type;
++
++		rtl8169_set_rss_indir_tbl(tp, tp->num_rx_rings);
++		rtl_set_irq_mask(tp);
++		return 0;
++	}
++
++	new_rx = kzalloc_objs(*new_rx, R8169_MAX_RX_QUEUES);
++	if (!new_rx)
++		return -ENOMEM;
++
++	netif_stop_queue(dev);
++	rtl8169_down(tp);
++
++	ret = netif_set_real_num_rx_queues(dev, ch->rx_count);
++	if (ret)
++		goto err_up;
++
++	tp->init_rx_desc_type = new_desc_type;
++
++	ret = rtl8169_realloc_rx(tp, new_rx, ch->rx_count);
++	if (ret)
++		goto err_reset;
++
++	for (i = 0; i < tp->num_rx_rings; i++)
++		rtl8169_rx_clear(tp, &tp->rx_ring[i]);
++	rtl8169_free_rx_desc(tp);
++
++	tp->num_rx_rings = ch->rx_count;
++
++	memset(tp->rx_ring, 0, sizeof(tp->rx_ring));
++	memcpy(tp->rx_ring, new_rx, sizeof(*new_rx) * ch->rx_count);
++
++	rtl8169_set_rss_indir_tbl(tp, tp->num_rx_rings);
++	rtl_set_irq_mask(tp);
++
++	rtl8169_up(tp);
++	netif_start_queue(dev);
++
++	kfree(new_rx);
++
++	return 0;
++
++err_reset:
++	netif_set_real_num_rx_queues(dev, tp->num_rx_rings);
++	tp->init_rx_desc_type = old_rx_desc_type;
++err_up:
++	rtl8169_up(tp);
++	netif_start_queue(dev);
++	kfree(new_rx);
++
++	return ret;
++}
++
+ static const struct ethtool_ops rtl8169_ethtool_ops = {
+ 	.supported_coalesce_params = ETHTOOL_COALESCE_USECS |
+ 				     ETHTOOL_COALESCE_MAX_FRAMES,
+@@ -6246,6 +6386,8 @@ static const struct ethtool_ops rtl8169_ethtool_ops = {
+ 	.nway_reset		= phy_ethtool_nway_reset,
+ 	.get_eee		= rtl8169_get_eee,
+ 	.set_eee		= rtl8169_set_eee,
++	.get_channels		= rtl8169_get_channels,
++	.set_channels		= rtl8169_set_channels,
+ 	.get_link_ksettings	= phy_ethtool_get_link_ksettings,
+ 	.set_link_ksettings	= rtl8169_set_link_ksettings,
+ 	.get_ringparam		= rtl8169_get_ringparam,
+-- 
+2.43.0
 
