@@ -1,411 +1,149 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sonic313-10.consmr.mail.ne1.yahoo.com (sonic313-10.consmr.mail.ne1.yahoo.com [66.163.185.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A31552F7F14
-	for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 08:17:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781511447; cv=fail; b=eZSnucM8OjK8yYsZnouVYHx8THs37aa0HdKADMPZWcFXhENxo7LaFZEgWjs0LIsSclOEJAvw/Xrha0QY3q1eJTo9L8EkgtZGOzHUgm8a41BRLNpel/BFbypu5g4jMpnTzpHMx3mT4nGSZQ+vxJ6AmF258f33ddA5WKqRoVU97KA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781511447; c=relaxed/simple;
-	bh=xA1pLRZEPPVVHTQliQMNXHFtWXDqLOOEw144R0tT0SI=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=klGMiyCnebMeVqTLuz4ncjJ2Ixpbud+hONnZfFP/8/H3+co0hAiuo6Kxxly+4T75d7Q73GhdK4+SkMk8GPYsBQZaqD1bE9l7GsNSGP7kGw7YdMqq+9yZUbrF7dfahjWHPAtVws8BSlxE2SMYkccmG9OM7216lyxcHkSU9H4HniQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W6L3RzNX; arc=fail smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D25393C277F
+	for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 08:18:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.185.33
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781511497; cv=none; b=D6iHJ0OGT+g5XiRXn1rFCXRnf5WQDF9Wwjz4RYEop6xsB3tvaJux3AyK6jqClAFliLMNODfkFRR1p3WOaO37io78N8HVUl0nM9CJJJN5kxuoyZi0LWSNoHKX2CT40gauauQ53iGLq/8TKd5PqAcqpfbGVSX6H/bcj8AbYe7q15A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781511497; c=relaxed/simple;
+	bh=yvCVzqImGRUZZ9h3hgG/1sCOj+NBomhdJ3FPLmQIKEU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TowLc1EqHH9w466Wdj+vGQde45rXvlQOzKlnwHqEzUgDeIRplEgdGnsi3GUzuKz/9WAyOt78prZZWnGYELNLB7EUHjoD+SLL1CmTn3tHL8y4TL5bTPom0f+7AWV2VCOqRAROnvgqtMwPTlpwtOGySGR9Nsmp/qX0ogchSHz90gA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=b+JoZdVQ; arc=none smtp.client-ip=66.163.185.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W6L3RzNX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781511445; x=1813047445;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=xA1pLRZEPPVVHTQliQMNXHFtWXDqLOOEw144R0tT0SI=;
-  b=W6L3RzNXj9Uop9JTQt9Gr6XwGVKLsXutrEUQkE0t76yORNxOOMxE6S8F
-   cxN8wfdsQHBlXIKrZeDtHHxSxrtTcs0aOuJBIsY1gUOTvp+SXeEEjXZpi
-   LQFjvUrQG33KcxkbeGAZs3HKcTaCpwjBWV10HQkZHtbZmzFjPuYM/s2pS
-   eHAQjjYobeNXLxrSK0zPOv8R+nNCOQZ2P6mfxCQHdH5lqDG86qYj7Tvfi
-   hxA9eHfMwdrFYfI0k4/pq58o8tOG0AZf05xL3YQMxA0vk3EqEH6KPCY6F
-   05lTsAzbBmZRqBvHEB8ivpRgAB/Px57aky7653aJ9tdsa1XTrGzqfszG+
-   Q==;
-X-CSE-ConnectionGUID: UTjcUTgGSEy1jFHkhhXVXA==
-X-CSE-MsgGUID: ddoqX1AvQriqdrZ1mLnpww==
-X-IronPort-AV: E=McAfee;i="6800,10657,11817"; a="93361810"
-X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; 
-   d="scan'208";a="93361810"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 01:17:19 -0700
-X-CSE-ConnectionGUID: 9fedjiecQ2mJQ9eD/N87Mw==
-X-CSE-MsgGUID: BpBfha36RiSDKYgvstFU3g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,206,1774335600"; 
-   d="scan'208";a="251685958"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2026 01:17:19 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 15 Jun 2026 01:17:18 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Mon, 15 Jun 2026 01:17:18 -0700
-Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.25) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 15 Jun 2026 01:17:18 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NHQQKTkjH/PhVsj6GCP6kB1kAsf5no1QTLhz/OQ2IOfuu4JJ+45Oq7jnWUenZ15z7hDyIp2AU4XXULbSHcZrHXHRqlemscG7Kc+UURT5IdD7MvxbiBue3ZHMD9BnSc1md1FflgnbBxVI6H3XWD0EauGIZSB/3xhhatol0KyNmn1UcRbbrMsfu9LQ/pctODyMHImY3h5Nk74BB70J0QSG56/lLybXpWxcI0o+hwZnjbqz0IrAjqmzcjdig3VhXYisDFFE48/lEtMDlD4QrQ0pN+vz4y1BRZsjU4svCgPaE3ok97I4ocNGlaoyTnPQxzdw+S6Jl/CJ7sDnC9ngBrT3KA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8aKb+omOlyTexOqnpFFlX4y01eUIwcpmQwXGldg2TCg=;
- b=Om9gY3A0XUOhLDxyU51rbO0oCN/lc63ho1LQiiO9HfYdz3rDDGtMnI/ToxyvqbBLtw+BL5UYUzymKbb2JWoqhIoNv+jDEMM68PyudzE4ZqVd1LWsBx4uf+7vL2gi2PaUvuw2vzGzbdJ12Ytj5hXRph8bAhcrb9X8LBb6iXwgIPbytpzLm8Wzpvngsb969YK8NhFMolCW73S2G6Z7I+cevc1DEL1koZkB9vvf4TVP2VzY3aQs3nJu51y0ffZOTJTSIN6Gdt9P66GMKx+GdKjC+9fAnk/0LcKe52vBN0oUaCr7gLIvS4XYv4on6nZUjYU3tatORE5OY3XC0PuMF7ankA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB7958.namprd11.prod.outlook.com (2603:10b6:8:f9::19) by
- CYYPR11MB8429.namprd11.prod.outlook.com (2603:10b6:930:c2::15) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.113.16; Mon, 15 Jun 2026 08:17:13 +0000
-Received: from DS0PR11MB7958.namprd11.prod.outlook.com
- ([fe80::8cb2:cffc:b684:9a99]) by DS0PR11MB7958.namprd11.prod.outlook.com
- ([fe80::8cb2:cffc:b684:9a99%4]) with mapi id 15.21.0113.015; Mon, 15 Jun 2026
- 08:17:13 +0000
-Message-ID: <4d3720e1-1268-4a17-a8f8-f03e82aa1c5b@intel.com>
-Date: Mon, 15 Jun 2026 13:47:02 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/4] drm/xe/ras: Add support for error threshold
-To: Raag Jadav <raag.jadav@intel.com>, <intel-xe@lists.freedesktop.org>,
-	<dri-devel@lists.freedesktop.org>, <netdev@vger.kernel.org>
-CC: <simona.vetter@ffwll.ch>, <airlied@gmail.com>, <kuba@kernel.org>,
-	<lijo.lazar@amd.com>, <Hawking.Zhang@amd.com>, <davem@davemloft.net>,
-	<pabeni@redhat.com>, <edumazet@google.com>, <dev@lankhorst.se>,
-	<zachary.mckevitt@oss.qualcomm.com>, <rodrigo.vivi@intel.com>,
-	<michal.wajdeczko@intel.com>, <matthew.d.roper@intel.com>,
-	<mallesh.koujalagi@intel.com>
-References: <20260604184849.1011985-1-raag.jadav@intel.com>
- <20260604184849.1011985-4-raag.jadav@intel.com>
-Content-Language: en-US
-From: "Tauro, Riana" <riana.tauro@intel.com>
-In-Reply-To: <20260604184849.1011985-4-raag.jadav@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA5P287CA0296.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:21e::7) To DS0PR11MB7958.namprd11.prod.outlook.com
- (2603:10b6:8:f9::19)
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="b+JoZdVQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1781511495; bh=Bc9px8cI20ZVXe9+AP1eIGT2WkRsSPaJgX7qz7NUCo4=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=b+JoZdVQ5LwcxxBnm/r7iaYazGPJEseOibcQrF+CHPlvd/4uXkMkZniUOM5nt1F+You41iJoDzKLzPIwytQErYt9LJi6hH5+ah2LMTSek+PDzN5cX+BRTV/sG7Yf2yxcNycEu5/hFmjS+8gA/9C7PX8rOTDokBExJ6WpD/51+X2AVc5Qiaaw/QJNg5IGzjVNOpjLOiMtZYflaYv/s/eOXOpXuXYarub73rru64bTuorWKzQU57CktdkAKK8ts2rt5kpSpWa/UyrJu30me4DglxQmAVS26RO5+5WtG9EQZhzX76xoWiOf1PFFU9y2A4daD7NCNJgbYWB64qfC781UPQ==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1781511495; bh=lbw1EQlpX33TNkWngKdFCIS2Va9voPDIg/nFrvvHHBW=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=JZ4X98Xemw/KQBaEIH/mYcr65g8tGkzXc33s5UrZvBcS3cj8Fy5HtuS7W2tzxFeotPEKmd7TKZhctom6oeETRKyJeWWEDb5bDFAMr8EOqPkx33+O9FjeThskXHqoYBzMIxAKE7W/aWhGjaGqtRInHW5Qr/+M+8GKGeIHR7uGgBnbGM9HZr1MWDTaWvh1peD6VYIgatmumCDI1sONISYhOmCBu8pHfv68BYUq4881bZv6cz19jp4o8FfiHkAisQHNHspD+vbXTM5bp48HhP3oKmxGhNbDDXFz7sHrfM9z1puxU+MaB/mHaV2nXXAbECxP0Prmo7JjwZzRFDnonsfoTg==
+X-YMail-OSG: hThR9zQVM1kDxYknI6LHONk7KJtL5mhx7mKQvueg4X_Of9w0u9UebaVPJBHw0JY
+ tRSXo2uK3n_Oa.p.3iTambb4yn7LjC2zplqqgYmnwOBqb3dNoI2bOA9aIAaPWbNCzLp975oCoj6W
+ 9C2zrlr06NLdcYqHBM28zP85Ui5rVj.KdAKOP2BVZqx28JOIYlEWXJIjtW4nVgbfCje_THfRQ18s
+ KckSVOYwDfJGrjKwqIiRRA0_6q8LyF2pva0saG6fI88OludRglEoZ_49LyTBgserdRrsm_jevuZy
+ Nkd7S_y8YNBL5EccnJK4K__fBhWvLXyQX4.7r6jb4LXUP0PA37ukFl796k5d713R0WLQ3ZtMXp3F
+ 3O6b4P2kwKM_2V8pbmEfLVcsIwFZZ.y0DY1Cl0db4YEk9ugKOR0YLPn2oaoukbBAQVHzHIy5W1oz
+ exSQYnL7PlXnpRhr4SYqEJtLH4YNrAHtu49qsD.fX8caApzcQFgmbf_Ufvt_NYiE6YtLsnE89Pvw
+ kq9j5yGv7T6sf9gVLfYguOvOdqu_RoX55F1A0Q0viq4Y0kdGjT4wXkMPJmIoR4wRmqX7igqbQw6U
+ .BzoPc1mW_snKL4onD2kOnsB6gBcblFxDBz_wbtrk7DZfUkBwpTZQmM2NgJbFJUKlMy5Wb4AF.eB
+ SrvuAtAl8ApTVvplZWm_4mN21VllEdNveO5pE9oftvidPBuJi_DeDoZ05Gj_WEC._ZvK6SgJdqHr
+ 6YFkvQrtaB1VojdPahqeI.c5VFKIH.LrbeaSbs2qGOX4d4L3TbyM_Tte.BzoWfUASfXqZoahzw31
+ GUwg4KqTIiJZRudUSRvntX4MWOB_RyEnUeJ4efkuVHizgDj5JyGWuKFw4tG2LkF6pf6Hrp1jy2Wv
+ RreMkpmEurbLDwTjo9nMHhn.qv2ziSpD5ZPlp8LdokVhuD8g1EiYrEMynZ3mgCQbCQJaZAw1MuCY
+ ETqT_5yNVxzbAxJMVVrlQ5gLxFwzCOauAtY.GQjbuQCcfo4RjTaKsOAbZuiZaLvfcktlKsf_bokT
+ zUTHSlzDpsmkxtV5qMGn8AbUoJQVwWut5wzBGR6LYtExF0OSD_hKLJTvvEJ1yZt0Y8g_g6OGOY2X
+ fRxRPl8DoVyZgVNJlsVGFqnF9FmBKYwpb3P03OX3WigIzCh2S3oX9YIfC.vjHi2ve1VfMf1UrIU7
+ 6rXO0N9bbGLBMKCcbRcZ.ejXxAWmsk3KH1_kGqfrRyrTXdfpikF_E.FooBiWC3VD37131sQncVfb
+ uSPtESoSvlRDf1ct66xsKO0HXAPXz3ZoD7SdyuYG1XCuATZf7.yFGmSKMk_FvkIVV33LAlLgObxm
+ J_LR6HNI8VGsZk1HSwrbNAqEs7Un6vcz4nF3RBJ9KMDgH8VrNiE2_iaUmlSgyi0gr.Qxh3WL5Yuf
+ twv_C9BuXMwKpRH1Y3SZME08XCeyCEMYp8Tb.XgwLmfQb0CVzdXt4XodZaNxzYVvMastFsNHIzdz
+ 86KXyzKusFR10sLMZDPfZQyep1JkCPi7nVvRYjzv9eAR0k2sjHwwBo4yW997b34CHxW1J29MVW86
+ pagx1G3Psj8fSiCqT3Eha.YZTOeYHBIJxuhCMt4YFwxNeq24v4jviwpXSESelFTtisiDr8bxGQ36
+ ly0knEH0u2igVuf5JQC7qTP6dZB9eBobiptKecabsYAleR._I1PrJzHOhubbAfHeMx1iYRRL_5zl
+ 4HT_IhBr_ixDk_4nbx_dKro1vm.C1QCwZkgJlfOpUQLw2q8u09tr74e1ycj8Ooa5PWL8oATDKK2J
+ oIL3izebtvAKDaTjicND8cn5CQspBWe5fgsG5yTUveVLTFgFQnnuBf0bXmfLRZgscmOwrIMlAfRi
+ S9jlQEW237QkHYZhCIt55tlRRuZS4yb7msNrMkuA5gZAaTO7ki0uFrQOTMNQcFXLYAUMAQ6Q8rq6
+ 3IO.nuOulgONvoA4Ajj0LzgjvmoWVsMrlVNTJSt8UHY98LfiuMJm7GHDYQ_BVtUcB0_vh1vvpZ1G
+ 8W3n2OUBUx7CLxgcuvBrQtMHI2v8KCyCbEPaWJ9kWbi1LLj5UmJghFc7DrXeObfYxxPyeqQclvMI
+ eyCPIpgknAU39LT1JeJAGyKC9lcERAGMRR21Iq3JxzzeHP_L7vfivpfTMtNKVTdvdHtLpBQpkw0E
+ H8IsCix6cjQgN63CwnFirN0K5f_vsoYjGchyt2ebeSTKYDnrKD9SuoMOcKsP_wgrfwKlILkF6kAA
+ 63.yezhCie079UWxaWH_Dqna0gfUU21k7Hekllu2H.BkdMg34p7BKdNEcQWmtw6iLvcNbPxao_y7
+ _HbeRycsgXJft2xrerJc69VU6H5IiH2N.1Wp9rRk-
+X-Sonic-MF: <namiltd@yahoo.com>
+X-Sonic-ID: 9f434d0b-e22a-40f6-8885-ea7bf5e92160
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic313.consmr.mail.ne1.yahoo.com with HTTP; Mon, 15 Jun 2026 08:18:15 +0000
+Received: by hermes--production-ir2-89844b765-l79qj (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 0cc11c8e7a555de02951ddb59df734b9;
+          Mon, 15 Jun 2026 07:23:28 +0000 (UTC)
+Message-ID: <30f6ce89-dfe8-4b8f-adab-d52e18d9dad2@yahoo.com>
+Date: Mon, 15 Jun 2026 09:23:25 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7958:EE_|CYYPR11MB8429:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9e85a7e2-71c7-4c87-6c1d-08decab6811f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024|23010399003|56012099006|4143699003|11063799006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: kFvgWoA68CQkDCnODOnlqt+RfN1g+Atxo53KddoJEQHutpfuu/b5SfTgRnoCIM7N8Ps5ngET1L7Uj2Asfb9eeB1wlKW/xau9Fzo2sbvWsuDNSeQOjQQtfjve1ylHRBHrznEdxsrLFe+hY08f5fQMLtL5o7N/zH2TBxlf3jzFBw8G80DZ1jU0dVK9E1EXmjeyFZ00Zh7TY+71HqsxaC/RqBRENuPr2JMcM4ggyzR84WJ5pRMa9Q0J+mOLboatwh9Wp7uHRc7RotT0cVLvVDk/BP47f1BDFs5OxEgOdthQRabtk2BeTN6AvYefKY8uEo0tRdmFqhI8+8TUEqxJdNXjv5fgI3wZvNPpXLNRqZeGT/uCFcSK8inxhrljuj8W7IdUZbMc8c2qr3whGUO496zjauCyi/ebhd9RNVvzSm0HE/lfr90fKtlYUg2SZR0jEIFgvQtxHakAnfQM/3uRRe0imFdOon25JVfPbL/pRRv1n9rb/4TmNRRFRUTgQyoeJqUE5O5AWxeswbemmbe0Lc0zjNF7BzZihasyA2Me78Cpz1bReKqvJd9HcHCiljKTcvRa5r0jdI+jsgPoMfXzgEl4PyEF4TgosA7LGV8EiUTiwlAACuMN6tXMYRqVHW3DphuJprUaiAzhzNmHz4Az+IithjPdgmvg0kQzSSBDa3fBIWIZVMJRL+KmFFyQliz19tbh
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7958.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(23010399003)(56012099006)(4143699003)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dCtybk1rbzJ6Nk1GSjFBcnNYTGh3ZXBvM2hXQjZJeS9neUFqb3NPQy80YUdN?=
- =?utf-8?B?cnVEWm1ULzBmcFhHZlhPYXdjZjRWak1vSC9aMU9rY2N5YWpzSXRpWnBwZ3lV?=
- =?utf-8?B?b2JhRDNiMHJHRDZqYmVnYnlpeTh2VG9xR0lNcmIwMmNoY2JxYjdLQWhqZlVY?=
- =?utf-8?B?YytsVVQwS1VVSFgyMnFPcUFkeXJPSDI3ZmF6V2ZXUVRzaklPWTV6QmE0ZGtn?=
- =?utf-8?B?YmtPNysvTDZ3dzZRMVRxdUI0MFB6cmlCK1RMRkVhTGoyTnBoV3lxMEFFRjh6?=
- =?utf-8?B?Wnc3YUR2S2FGSHBJQjc4QnYwKzlubHFQL2JWUWloeDNGeGlDblV2OFI1cDhk?=
- =?utf-8?B?T0FBa3k0cmpIaDBTQXM2eSs3NE9ic2o1Zy95WGhWU1FoR2t6TVBTR3ZHeStv?=
- =?utf-8?B?QW9naFZCZ1RYTzJxYjhPNEVEdEJ2R0kveE1nRXhvMUtsYXQxbjlTbWpHUTlo?=
- =?utf-8?B?LzlnNS8zbFBxc3Jsci9SVm9NVmd1OXdTSjNZUW1aaG8yN2tWQ1Fsb2RoUHNl?=
- =?utf-8?B?WlZCR1NiSVQwMHJ6eXp6RzhaUllaZ0JEd2NPbERVUVJoRjBNT3IrRURoVEpX?=
- =?utf-8?B?ckM2WElEUTY5SlVnbklPSk0waGc2Ny9STjBsNmt6bEpFb0MvOHdLUDU2a3M4?=
- =?utf-8?B?WWk2bXlGNG5STTNLZUJQYVZiM3ByaURDanJGZ0ErczFMNldieC82dkxudVZv?=
- =?utf-8?B?K1poTUQ5V21aeHQwQ3NkVE1RakJ3d0Nrd2pTb0dSYjVOWFd1b1ZkdXFHeXdZ?=
- =?utf-8?B?VGxpdnhBaWRRdXA5SU5MbFBsZUludVRpM1FYNEdiTTlPOGNGS3dBUXZKSUh6?=
- =?utf-8?B?YTlQYm1PU0ErQXVrVWVNaDRvUGNCVW5Ra1loYWtoby9MYjZRa2tIUXF4d1ZO?=
- =?utf-8?B?SWtTeEQyUlkzZEllRE44MFg4Wm9USndmcFdxa3Y4MkZXRkpHQ1d1K015ZTMz?=
- =?utf-8?B?VmhLK0Z2ZDRxbk5ack45YktxdjdXVW01aVZKTkk3Zk9UYXVSZDhvYnFrY0hI?=
- =?utf-8?B?MCtyY1BrVlFOYkticTlRYlNVTHNtVERDdTExbEFoRUwxKzdpMm5IRHl4cUh0?=
- =?utf-8?B?allEUWdPTmRJTFFYYWtEQ2JzdjJ5bFl1R3NIQ1ZoQW5FcTRlRi9MdHBqWCsz?=
- =?utf-8?B?QWMwR0oxN0JqSmhEWjRBWFRVSzlmMjd1LzF5UWcxUDlrbWFUTDQ4b1pKcUtx?=
- =?utf-8?B?MGN3V2ZZN3U1ZTBITTNKSExxOE9qY09oQmJ3dllsTzBuaVpHWkRKT1Q5amVu?=
- =?utf-8?B?WURWQ0tBZTAyditGaHBmK1VNcm11amkrbG1NRkJNMGY0QWZUdFpvZXhjOU9y?=
- =?utf-8?B?Ym05VDNlUmZuZWVQcUx6aWtISlRHcDBQWmhFK0hOVjBCQmlkclBBdTJSZWFt?=
- =?utf-8?B?U2pZZFAvVnkrc1V5Qjd4VG4rWjFHdmE1SkFuSHE4YXVYNlR2VVRuTW1NMjRw?=
- =?utf-8?B?QnM1azRocVBHVkhvRTRvWVRlYnNucW9VdWQ2NUtpbU1WMDdGNGIwOFlZaEpn?=
- =?utf-8?B?RWxYRC8wc0hFS2xlbW55VXFmc2diWFB3OU44UWdlMFUvOVdzOHY4amxnbTVQ?=
- =?utf-8?B?UU5uWWpTYlNQd1VYWndkRlMySkNycmdHVjNmUkFpNGd0cEtvdGpkZ2orWlAv?=
- =?utf-8?B?TkI0bjhvV2haVUR1VjdmK3dDTS80VmQwc1Bya2s4bmZXZWlFSi9Idi9KbHhX?=
- =?utf-8?B?TUl2c1Z6VGN1N3FETUh1dzhvb05hTFJVMjZGUElYZzlVT0RKaDVhL2lhcnk2?=
- =?utf-8?B?NWowbzVkV0pVRnREbmt2cDBvK2ZiMXlFdm1TdWozYWhUZysyakZwWHJ4MUJu?=
- =?utf-8?B?aTVwWGJnaEtlY1l5SU81YStuQ1g4SFA5Z1F4QWlad21YUDVJYityN2tJeXVw?=
- =?utf-8?B?bThyYmhWdGt3SUg2K094U2lkaWZDSGtacU9FWnNXSDcxeHh5dFFEVmJ6QlQ0?=
- =?utf-8?B?ZnEyci9CTG5hUTJaUFg1akxVdTdseGtsd1lsV0JmVzBFYVVDUGw0Mjc5eks2?=
- =?utf-8?B?ZGNNVS9PbE1vTnpXekt1bzJYelYrdjJDTnpiVFZSdC91U0JMZ1lXMUxnVyty?=
- =?utf-8?B?WFhkTWVKTTR5VXp6SmF5clNUSGxtTlB1OTM4TzdLa1NqVTN0T2FkbG1rdGNL?=
- =?utf-8?B?eG9wcks3UDBwZ1lHRk96TnlIVmxWTXgybTZRTUdxODl6SWQ0cTVjaTIzUUhV?=
- =?utf-8?B?RXVZcHZlMzdteFBMUU1pTnBRdWVEVVVBL0k4MHhTa2hKTnhFNnMyWmYxZXY1?=
- =?utf-8?B?VkZGN0tLaEVma3NpOWJWUGd2Q0tWTi9IS0JhYm15VUcwT1lFbTFFMlBZeWky?=
- =?utf-8?B?eThtWk5hL2l5cmxlNERNbmNSaEcvVzcyQkp0QmIyTG8yMW54VThDdz09?=
-X-Exchange-RoutingPolicyChecked: D+tZV0gbX/KVmHcJmuaDo2qAxD8nK/xPs8Tq/6wdokqMulQO3MJaJdx+79Z/pn8iqZz7wgp52C8/hl4kLy8D1s2GTxyKczk5SWlVY//qhb5Tx3WZHQB8dG7KWNtR3a4QJrLVKl/1uMAdy5so9cgitN5PbTiDBFAFNUob5Mcn1x/G6xju4QAGtET5SebAnRiJnH30hv65Z3dS1mizXQeCazcpNGNMdYfok3pc52rmAzE6bpZtKheNDvZJNAU2ZJCndNdU/MTPo3ecu9hHEms+gh9PZD1QY0PBvb8Bb+SS6ncn5N1vpLEgECw8B3dr6cKrVApX9DQB839uu6oYOy7Sfw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9e85a7e2-71c7-4c87-6c1d-08decab6811f
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7958.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jun 2026 08:17:13.5816
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rSZTtRHx/0pT6WOUnACsXqn5uVsr6IveEp8Qj2sWKdu6uRCs79U/1feLUs0c0NW6XCmZeavrfbx3jeb9pui5vA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR11MB8429
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3 0/2] net: dsa: realtek: rtl8365mb: add
+ SGMII/HSGMII support for RTL8367S
+To: Johan Alvarado <contact@c127.dev>, linusw@kernel.org,
+ alsi@bang-olufsen.dk, andrew@lunn.ch, olteanv@gmail.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, netdev@vger.kernel.org
+Cc: linux@armlinux.org.uk, luizluca@gmail.com, linux-kernel@vger.kernel.org
+References: <0100019ec34ab9b0-cd42493d-62f2-4bd7-9ace-2e4f8e41bbbd-000000@email.amazonses.com>
+Content-Language: pl
+From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+In-Reply-To: <0100019ec34ab9b0-cd42493d-62f2-4bd7-9ace-2e4f8e41bbbd-000000@email.amazonses.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.25942 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
+The fix applies not only to the RTL8367S but also to the RTL8367SB.
 
-On 05-06-2026 00:16, Raag Jadav wrote:
-> System controller allows getting/setting per counter threshold, which it
-
-for correctable errors.
-
-> uses to raise error events to the driver. Get/set it using the respective
-> mailbox command.
->
-> Signed-off-by: Raag Jadav <raag.jadav@intel.com>
+On 6/14/2026 1:21 AM, Johan Alvarado wrote:
+> The RTL8367S is a 5+2 port switch from the same family as the
+> RTL8365MB-VC already supported by this driver. Its chip info table
+> entry declares SGMII and HSGMII on external interface 1, but the
+> driver so far only implements RGMII, leaving boards that wire the
+> switch to the CPU over the SerDes without a working CPU port.
+> 
+> This series implements both modes. The configuration sequence and the
+> SerDes tuning parameters are derived from the GPL-licensed Realtek
+> rtl8367c vendor driver, as distributed in the Mercusys MR80X GPL code
+> drop, and cross-checked against the real register sequence captured at
+> runtime by chainloading a custom U-Boot ahead of the stock firmware
+> and logging the live SerDes accesses on hardware.
+> 
+> The vendor driver brings up the SerDes by loading firmware into the
+> switch's embedded DW8051 microcontroller. Analysis of that firmware
+> (by Luiz Angelo Daros de Luca) showed it only performs a SerDes
+> data-path reset right after the SerDes reset is deasserted, and then
+> runs a link-polling loop that writes the external interface force
+> registers -- duplicating, and racing with, the link management phylink
+> already performs. This series therefore keeps the DW8051 disabled and
+> performs the one necessary action (the data-path reset via the SerDes
+> BMCR register) directly in the driver, avoiding both the race and a
+> dependency on a redistributable firmware blob.
+> 
+> Patch 1 adds the SerDes indirect access helpers and SGMII (1 Gbps)
+> support. Patch 2 extends this to HSGMII (2.5 Gbps), which phylink
+> represents as 2500base-x.
+> 
+> Tested on a Mercusys MR80X v2.20 (RTL8367S wired to the SoC over the
+> SerDes), in both SGMII and HSGMII modes with a fixed-link device tree
+> description: link bring-up verified across cold boots, warm reboots,
+> module reloads and link down/up cycles, with sustained traffic and no
+> CRC/symbol errors. The HSGMII link is confirmed running at 2.5G at the
+> register level (SoC uniphy mode and gmac clocks); per-direction
+> throughput could not be pushed past ~1 Gbps on this board because the
+> SoC side is driven by the IPQ5018 SSDK and the user-facing PHY is 1G,
+> so full 2.5G line-rate throughput remains unverified on my hardware.
+> 
+> Signed-off-by: Johan Alvarado <contact@c127.dev>
 > ---
-> v2: Add RAS operation status codes (Riana)
-> v3: Reuse status codes and uapi mapping from counter series (Riana)
->      Access request/response counter using local pointer (Riana)
->      Mark unused field as reserved (Riana)
-> ---
->   drivers/gpu/drm/xe/xe_ras.c                   | 105 ++++++++++++++++++
->   drivers/gpu/drm/xe/xe_ras.h                   |   2 +
->   drivers/gpu/drm/xe/xe_ras_types.h             |  51 +++++++++
->   drivers/gpu/drm/xe/xe_sysctrl_mailbox_types.h |   4 +
->   4 files changed, 162 insertions(+)
->
-> diff --git a/drivers/gpu/drm/xe/xe_ras.c b/drivers/gpu/drm/xe/xe_ras.c
-> index 7cb6fcb1254a..d6f89b429cec 100644
-> --- a/drivers/gpu/drm/xe/xe_ras.c
-> +++ b/drivers/gpu/drm/xe/xe_ras.c
-> @@ -270,6 +270,111 @@ int xe_ras_clear_counter(struct xe_device *xe, u8 severity, u8 component)
->   	return 0;
->   }
->   
-> +/**
-> + * xe_ras_get_threshold() - Get error counter threshold
-> + * @xe: Xe device instance
-> + * @severity: Error severity to be queried (&enum drm_xe_ras_error_severity)
-> + * @component: Error component to be queried (&enum drm_xe_ras_error_component)
-> + * @threshold: Counter threshold
-> + *
-> + * This function retrieves the error threshold of a specific counter based on
-> + * severity and component.
-> + *
-> + * Return: 0 on success, negative error code on failure.
-> + */
-> +int xe_ras_get_threshold(struct xe_device *xe, u8 severity, u8 component, u32 *threshold)
-> +{
-> +	struct xe_ras_get_threshold_response response = {};
-> +	struct xe_ras_get_threshold_request request = {};
-> +	struct xe_sysctrl_mailbox_command command = {};
-> +	struct xe_ras_error_class *counter;
-> +	size_t len;
-> +	int ret;
-> +
-> +	counter = &request.counter;
-> +	counter->common.severity = drm_to_xe_ras_severity(severity);
-> +	counter->common.component = drm_to_xe_ras_component(component);
-> +
-> +	xe_sysctrl_create_command(&command, XE_SYSCTRL_GROUP_GFSP, XE_SYSCTRL_CMD_GET_THRESHOLD,
-> +				  &request, sizeof(request), &response, sizeof(response));
-> +
-> +	guard(xe_pm_runtime)(xe);
-> +	ret = xe_sysctrl_send_command(&xe->sc, &command, &len);
-> +	if (ret) {
-> +		xe_err(xe, "sysctrl: failed to get threshold %d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	if (len != sizeof(response)) {
-> +		xe_err(xe, "sysctrl: unexpected get threshold response length %zu (expected %zu)\n",
-> +		       len, sizeof(response));
-> +		return -EIO;
-> +	}
-> +
-> +	counter = &response.counter;
-> +	*threshold = response.threshold;
-> +
-> +	xe_dbg(xe, "[RAS]: get counter threshold %u for %s %s\n", *threshold,
-> +	       comp_to_str(counter->common.component), sev_to_str(counter->common.severity));
+> v3:
+>   - Drop the DW8051 firmware loading entirely. Analysis of the vendor
+>     firmware showed it only duplicates the link management phylink
+>     already does; the one needed action (SerDes data-path reset via
+>     the BMCR register) is now performed directly in the driver, with
+>     the DW8051 kept disabled. This removes the dependency on the
+>     rtl8367s-sgmii.bin firmware blob, which could not be redistributed
+>     via linux-firmware (the GPL vendor source ships it as a byte array
+>     without the corresponding microcode source). Thanks to Luiz Angelo
+>     Daros de Luca for the firmware analysis.
+> v2: https://lore.kernel.org/netdev/0100019eb0b1822e-ffc5626c-1b9f-4c8a-8a1a-759a9e665f4f-000000@email.amazonses.com/
+>   - No code changes; resend because the SMTP provider used for v1
+>     corrupted the mails and patch 1/2 never reached the list.
+> v1: https://lore.kernel.org/netdev/aebccaad-eca3-4ea4-99dd-ae7edbc8981b@smtp-relay.sendinblue.com/
+> 
+> Johan Alvarado (2):
+>   net: dsa: realtek: rtl8365mb: add SGMII support for RTL8367S
+>   net: dsa: realtek: rtl8365mb: add HSGMII support for RTL8367S
+> 
+>  drivers/net/dsa/realtek/rtl8365mb.c | 336 +++++++++++++++++++++++++++-
+>  1 file changed, 332 insertions(+), 4 deletions(-)
+> 
+> 
+> base-commit: 8f4695fb67b259b2cae0be1eef55859bfc559058
 
-"get threshold" to be consistent with <operation> <value> <component> 
-<severity>
-and other prints
-
-> +	return 0;
-> +}
-> +
-> +/**
-> + * xe_ras_set_threshold() - Set error counter threshold
-> + * @xe: Xe device instance
-> + * @severity: Error severity to be set (&enum drm_xe_ras_error_severity)
-> + * @component: Error component to be set (&enum drm_xe_ras_error_component)
-> + * @threshold: Counter threshold
-> + *
-> + * This function sets the error threshold of a specific counter based on
-> + * severity and component.
-> + *
-> + * Return: 0 on success, negative error code on failure.
-> + */
-> +int xe_ras_set_threshold(struct xe_device *xe, u8 severity, u8 component, u32 threshold)
-> +{
-> +	struct xe_ras_set_threshold_response response = {};
-> +	struct xe_ras_set_threshold_request request = {};
-> +	struct xe_sysctrl_mailbox_command command = {};
-> +	struct xe_ras_error_class *counter;
-> +	size_t len;
-> +	int ret;
-> +
-> +	counter = &request.counter;
-> +	counter->common.severity = drm_to_xe_ras_severity(severity);
-> +	counter->common.component = drm_to_xe_ras_component(component);
-> +	request.threshold = threshold;
-> +
-> +	xe_sysctrl_create_command(&command, XE_SYSCTRL_GROUP_GFSP, XE_SYSCTRL_CMD_SET_THRESHOLD,
-> +				  &request, sizeof(request), &response, sizeof(response));
-> +
-> +	guard(xe_pm_runtime)(xe);
-> +	ret = xe_sysctrl_send_command(&xe->sc, &command, &len);
-> +	if (ret) {
-> +		xe_err(xe, "sysctrl: failed to set threshold %d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	if (len != sizeof(response)) {
-> +		xe_err(xe, "sysctrl: unexpected set threshold response length %zu (expected %zu)\n",
-> +		       len, sizeof(response));
-> +		return -EIO;
-> +	}
-> +
-> +	ret = ras_status_to_errno(response.status);
-> +	if (ret) {
-> +		xe_err(xe, "sysctrl: set threshold command failed with status %#x\n",
-> +		       response.status);
-> +		return ret;
-> +	}
-> +
-> +	counter = &response.counter;
-> +
-> +	xe_dbg(xe, "[RAS]: set counter threshold %u for %s %s\n", response.threshold,
-
-set threshold
-
-> +	       comp_to_str(counter->common.component), sev_to_str(counter->common.severity));
-> +	return 0;
-> +}
-> +
->   /**
->    * xe_ras_init - Initialize Xe RAS
->    * @xe: xe device instance
-> diff --git a/drivers/gpu/drm/xe/xe_ras.h b/drivers/gpu/drm/xe/xe_ras.h
-> index ba0b0224df23..1aa43c54b710 100644
-> --- a/drivers/gpu/drm/xe/xe_ras.h
-> +++ b/drivers/gpu/drm/xe/xe_ras.h
-> @@ -15,6 +15,8 @@ void xe_ras_counter_threshold_crossed(struct xe_device *xe,
->   				      struct xe_sysctrl_event_response *response);
->   int xe_ras_get_counter(struct xe_device *xe, u8 severity, u8 component, u32 *value);
->   int xe_ras_clear_counter(struct xe_device *xe, u8 severity, u8 component);
-> +int xe_ras_get_threshold(struct xe_device *xe, u8 severity, u8 component, u32 *threshold);
-> +int xe_ras_set_threshold(struct xe_device *xe, u8 severity, u8 component, u32 threshold);
->   void xe_ras_init(struct xe_device *xe);
->   
->   #endif
-> diff --git a/drivers/gpu/drm/xe/xe_ras_types.h b/drivers/gpu/drm/xe/xe_ras_types.h
-> index c6392435d1c6..8ea817583eed 100644
-> --- a/drivers/gpu/drm/xe/xe_ras_types.h
-> +++ b/drivers/gpu/drm/xe/xe_ras_types.h
-> @@ -121,4 +121,55 @@ struct xe_ras_clear_counter_response {
->   	/** @reserved1: Reserved for future use */
->   	u32 reserved1[3];
->   } __packed;
-> +
-> +/**
-> + * struct xe_ras_get_threshold_request - Request structure for get threshold
-> + */
-> +struct xe_ras_get_threshold_request {
-> +	/** @counter: Counter to get threshold for */
-> +	struct xe_ras_error_class counter;
-> +	/** @reserved: Reserved for future use */
-> +	u32 reserved;
-> +} __packed;
-> +
-> +/**
-> + * struct xe_ras_get_threshold_response - Response structure for get threshold
-> + */
-> +struct xe_ras_get_threshold_response {
-> +	/** @counter: Counter ID */
-> +	struct xe_ras_error_class counter;
-> +	/** @threshold: Threshold value */
-> +	u32 threshold;
-> +	/** @reserved: Reserved for future use */
-> +	u32 reserved[4];
-> +} __packed;
-> +
-> +/**
-> + * struct xe_ras_set_threshold_request - Request structure for set threshold
-> + */
-> +struct xe_ras_set_threshold_request {
-> +	/** @counter: Counter to set threshold for */
-> +	struct xe_ras_error_class counter;
-> +	/** @threshold: Threshold value to set */
-> +	u32 threshold;
-> +	/** @reserved: Reserved for future use */
-> +	u32 reserved;
-> +} __packed;
-> +
-> +/**
-> + * struct xe_ras_set_threshold_response - Response structure for set threshold
-> + */
-> +struct xe_ras_set_threshold_response {
-> +	/** @counter: Counter ID */
-> +	struct xe_ras_error_class counter;
-> +	/** @reserved: Reserved */
-> +	u32 reserved;
-> +	/** @threshold: Updated threshold value */
-> +	u32 threshold;
-> +	/** @status: Set threshold operation status */
-
-Nit: Already part of set threshold.  Can be just operation status
-
-Thanks
-Riana
-
-> +	u32 status;
-> +	/** @reserved1: Reserved for future use */
-> +	u32 reserved1[2];
-> +} __packed;
-> +
->   #endif
-> diff --git a/drivers/gpu/drm/xe/xe_sysctrl_mailbox_types.h b/drivers/gpu/drm/xe/xe_sysctrl_mailbox_types.h
-> index 6e3753554510..10f06aa5c4b5 100644
-> --- a/drivers/gpu/drm/xe/xe_sysctrl_mailbox_types.h
-> +++ b/drivers/gpu/drm/xe/xe_sysctrl_mailbox_types.h
-> @@ -24,11 +24,15 @@ enum xe_sysctrl_group {
->    *
->    * @XE_SYSCTRL_CMD_GET_COUNTER: Get error counter value
->    * @XE_SYSCTRL_CMD_CLEAR_COUNTER: Clear error counter value
-> + * @XE_SYSCTRL_CMD_GET_THRESHOLD: Retrieve error threshold
-> + * @XE_SYSCTRL_CMD_SET_THRESHOLD: Set error threshold
->    * @XE_SYSCTRL_CMD_GET_PENDING_EVENT: Retrieve pending event
->    */
->   enum xe_sysctrl_gfsp_cmd {
->   	XE_SYSCTRL_CMD_GET_COUNTER		= 0x03,
->   	XE_SYSCTRL_CMD_CLEAR_COUNTER		= 0x04,
-> +	XE_SYSCTRL_CMD_GET_THRESHOLD		= 0x05,
-> +	XE_SYSCTRL_CMD_SET_THRESHOLD		= 0x06,
->   	XE_SYSCTRL_CMD_GET_PENDING_EVENT	= 0x07,
->   };
->   
