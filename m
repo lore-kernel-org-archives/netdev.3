@@ -1,105 +1,137 @@
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E093FBB79
-	for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 14:55:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EABBC3FFAA3
+	for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 15:01:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781535308; cv=none; b=L0K2Cz4pR2jrdtpOkZ+YYeQsnaxj3m0TpA+4P01jkwCHkCH/W5zqyjswumGMUy+5iI1eizMAH1ZgGWAXRTZNW3pF/RRAkzu4mpG8j6w4VwslXKfH4PatGbyv+s4RBw8uoHiUvpLeTFAd72vzRZ5hJlg7AhxC4PkwFMrqUZU4eV8=
+	t=1781535672; cv=none; b=any9GHYO//L0L6+QxuwH/BR1L1LyzdGOyBIG2s04N7a88xdXzC/Tmtrkgg6VEn4Uy7+SLbrX3ilyZgG9zniSUTrc1Kqg6h8WLz2hyAwcHbypCSZtADS1bh3KsBjnmJBNNmXzBu8FCrytCiBBB5a8aYEPIjgAII6V0Gwgoh21NMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781535308; c=relaxed/simple;
-	bh=TMNsHaBtmsq2RZT9rlpxYqnanVi6lepK09rczAvkJgI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=RzKeLxmXwiy+p/v5ZuYPI+l9cbucT3+46S7KvRpJYFnJBRilf74QUOMv2G4T8EY5wEQwb52/UbHXoNg8+1GIdDAEYkYbEStVZq3fwwe4XqjaRL0N4QlJYRxdmyNp06rDvvZ4xQSIDLxzddT7uLXP33G5WKFSM4oEN6tI87iI8ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=bg8sQcEN; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	s=arc-20240116; t=1781535672; c=relaxed/simple;
+	bh=/9k6sT4MtrkT6HKWvvkUyJQlITanHuZy5nOkg8tNSqs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VcPMWdg3NEEw9b6YBychVZ33Sti4qNt4QIgLEm4qczo0fGqMYy+lMij7Y9RgKNb1S0g7V4JIpb6snrrA3Ndk3DsDg6RRg6zpXfNGmPRYUE1XIPSvSF8UoEdQFzYsSfN+sumH0/fqCASkO7HbVLfFveoDkq9tNtK9HJFuqfpVhoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qYTKn/oT; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="bg8sQcEN"
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-bf84a2b2077so388273966b.2
-        for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 07:55:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qYTKn/oT"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-490cdae130cso16794815e9.0
+        for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 08:01:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1781535305; x=1782140105; darn=vger.kernel.org;
-        h=mime-version:message-id:date:user-agent:references:in-reply-to
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=TMNsHaBtmsq2RZT9rlpxYqnanVi6lepK09rczAvkJgI=;
-        b=bg8sQcENGe97LxqpuelFjqr5bvDEIm1qw8dkRQ6PSJ2WWpHP/NPtKNEviiZI/CBX/W
-         +/4800SY/KjxqOq5AiCMWUfKfAh/Zl6JLrYkTag4rr2/4ZFI7co3UVuRcCjRjQjGnbvq
-         Lf2jb+vliAXL5hJlTcLzx7+fXyxrui2ujG0+1x8pTiMQiMUfVpzDj50huOeqKis3MYjj
-         uLquI8t8gUhe3RM1azEtKylYaKPiczHxIIrVq45pqzd/O93uoCo5ZUNBoYQ/xdZoTqYC
-         lnW7CgliDcz6s94bgIar1N5yEQv6sAzjxxbOxs+7nk2ZAXVuKVJWJ6AQJNODlpoiff0W
-         Bozg==
+        d=gmail.com; s=20251104; t=1781535667; x=1782140467; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=khnpdZ2IamFmJh+fpxC56x6GA1zuKN5sdVLEGs525B8=;
+        b=qYTKn/oT4I+IpLaxpqlQn9eQX99VzRNenvy81z5MqVSTo1toWHm9StrH4ElHSnsQRH
+         X0E6HCJxYDCa9y/PeOQTO0A+H+g7blVwLVCnHj94HjWT6ytsAPiG4n11D1wNRR4mU8pP
+         KcSWe0IGQhsAXcd8T7hfXuLvMZNVt4YMwedQBvMrMzQR/hGM73p6KlG9hIdT1UlgT4bc
+         A1PNwuQg0p9Qr4jLyLMfLUvSd0XFfTaUJXUWQzceOiPk9C+NLqltJI02zc1vmXZUan2M
+         gMshcDQy7UAeks9uq0ctMSB3+yqRXqPg+dXNo49hNqplig9t0+HCPtSovhnGQLOgBEFb
+         5zmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781535305; x=1782140105;
-        h=mime-version:message-id:date:user-agent:references:in-reply-to
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=TMNsHaBtmsq2RZT9rlpxYqnanVi6lepK09rczAvkJgI=;
-        b=VSFnAHLWpBKuISda0uy9h2GI5z3uz64HYzgCOXDtVBpyXy4799+h5IgR2CnApWHCI1
-         yreuPyiBIMC2AZRJ7CWqBQccEN4FRcZFKLalzEAXRqS1wJfKCyeSPV3m4pX6y9GgoVXw
-         GDG2anqtNwAlNetfyRVoQowKUzY/ExcF2yDZ7ovbq+SEcQ0VhZKHQhuFpYMkALVcDPWP
-         ajunGWNgNidXgIZhu9hBsrjUZudqcl7WkCjWHiwNuzLGehblqAwthUJs4Gu6abjxTpVg
-         Ndgd5NnfPJgZ5Bft30U7NjGcBdRT1+FnZRhUS/M59jZkWIF5HUOVKCTAqLG/YBys9SZF
-         kq0g==
-X-Forwarded-Encrypted: i=1; AFNElJ9kJdAMdAffpSZMh2VfRMN1aOxfi63czSpbgVzrc52zMCTMCIrljBT8yknCt/GgsmHUq9fyu+s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwF6Y77QOXA4Lgt7cOOy4OIohyQK53psuIUfPXDlmif47osxfBi
-	p4zT4qmTAPyMY32K9G/viSJZKAPAsLOQFDmd3KToXwWLnZK8zpJEWiQSnGCDK8AtV+0=
-X-Gm-Gg: Acq92OG9Ksbnwik4Sn35SzzkAsBfTXgNKhjQZI/Ulfx2HN2krMEgQ4GYk+c7JHa9/Bb
-	1fK0MC1E97VF0OnwjXSNUZDCvGCEn0Dw/iHi9k/MRKzdGcuxuHk5Dt0qNlsRYOI7X2i2lEt8doA
-	JB6/+2hWr50xjHaOV1DmTTpdVsaZ+dsMeQq4Goz9NgmSmqhYNkf9LuaLRl8AvOhka7PRoBEQrZZ
-	XZUxfpah0/qEpL8qtH79KZdmduvc2vzMivkkZSnmuMqkm5ZSOZsBe2H974xS36dBFLPHwz6a6BC
-	2m2gdikEwaXXqY2nhkBKsAXuslrpiBzlu9mse7S7edriOaFe5gjBDn1QN/MRJFHm+R+TES9iHeO
-	zOaOgOunwsji4i1kieans6sUqdJ/Jjw0rgE62ftGJUdgbAi+rxM93Ju0x6QPLnx16aHUsrpfviI
-	VzBJ/VSV2LvBhsrqX6ZILaBE57AQ==
-X-Received: by 2002:a17:907:75f3:b0:bf8:b1ed:43e0 with SMTP id a640c23a62f3a-bfe28d1b424mr498313966b.18.1781535304852;
-        Mon, 15 Jun 2026 07:55:04 -0700 (PDT)
-Received: from cloudflare.com ([104.28.21.182])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bfdb44203c9sm499562266b.12.2026.06.15.07.55.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jun 2026 07:55:04 -0700 (PDT)
-From: Jakub Sitnicki <jakub@cloudflare.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net,  netdev@vger.kernel.org,  edumazet@google.com,
-  pabeni@redhat.com,  andrew+netdev@lunn.ch,  horms@kernel.org,
-  bpf@vger.kernel.org,  john.fastabend@gmail.com,  sd@queasysnail.net
-Subject: Re: [PATCH net-next 2/5] tls: remove dead sockmap (psock) handling
- from the SW path
-In-Reply-To: <20260614014102.461064-3-kuba@kernel.org> (Jakub Kicinski's
-	message of "Sat, 13 Jun 2026 18:40:57 -0700")
-References: <20260614014102.461064-1-kuba@kernel.org>
-	<20260614014102.461064-3-kuba@kernel.org>
-User-Agent: mu4e 1.14.1; emacs 30.2
-Date: Mon, 15 Jun 2026 16:55:03 +0200
-Message-ID: <875x3jdfaw.fsf@cloudflare.com>
+        d=1e100.net; s=20251104; t=1781535667; x=1782140467;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=khnpdZ2IamFmJh+fpxC56x6GA1zuKN5sdVLEGs525B8=;
+        b=bbvb6TBG0aoD6kKI/NqOLDIcN3DXqr68BGwI1dN1AXFdfXyIOOi6zX+2xkR23NCTlO
+         /+A2oI03Y50BrhTVuCC2vFoj/8gaZQOMI8bKAdvxLSM+2ZtcsqpcDSRMxlQCBCMK5jPe
+         SaaoywGID/b/cSPFy2T6hysp5QquSnFizC4baQpyhS+m8OCh6QN/leY3HTurkufxCfj0
+         fHb4ExY3LhnmTxNx6khNQ08joTzZdmV8OeEKZWlJtNsjZ0cqkqsc2Cbl0hDHSJdwCFSX
+         EZgo1Z9WJJ7NIql+EgYkl4+474eaq3PAGbvNQ1svAaTwVfQy5xgRIrsQd89VhQ55k3aM
+         ivIw==
+X-Forwarded-Encrypted: i=1; AFNElJ/HDW4U8+UdNChfKQc0wA1lStvl/gpK2irMsiPB3MPrRJAm1GinuckJKkEr+3KshUBhNUDgPc8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YydwCp62FoWOdh7I2ccfA1KeNcz4r7XPYpbytSo0Dhbwlq1bPes
+	8Zovfv/s2FkdJF7ImmEnlTJlAUHQv8mS8BEKTLRfLq+lCoJK5DlNxCYr
+X-Gm-Gg: Acq92OGU3HuA8woMUxZqsHAOsUuIPYA62xGLnR3DVPhIIx37Ld0CZ5hXV6eskbCp2dJ
+	0/Hyzl/pWNCl5DbulgauYRwaUps1vIRvW56TJYFqZXYPhTbhr117qNXcVlw7QJAr/anUkjRfpyH
+	FGuV28NMRzbDvP8R9qOZmr0F3x+J7b2H/K4RuAR7Okk1gDJ7t2k9dx5wu2S0HfqKuE+x0GogBXO
+	4oDbvNxHDHKkusfJSb+Ed4AjkZM/+p6YBpq/aedp5BBGeR5BxnBVjDqYSBPrDit9ttD+f6dz8Yj
+	m4N+a4fh5P06KgUVbMWlBQo8Dp1Ff0QzbOvX41JKvmAetjtYE4VI9du6JRNZiYKVm7Ggrr5M6DP
+	1PGWM7o7w7wGOX+I0EBgoNF6/RoiZzPs40xlnRx5DsGWjJBTJYvzQwE8yVONTAE9CySK+uLMx6n
+	5XKVRGBu6TzogwBfnqUEn25SNjH8kY6EGMAw3iUSkaRDmEdSZJoPvucUYWzCOJmiMpEL8YsVFIq
+	wLB4dtpwN4lpHSMFoJ4rlswUWBJpQ==
+X-Received: by 2002:a05:600c:c0c3:10b0:490:b724:dbd6 with SMTP id 5b1f17b1804b1-4922005087emr113879755e9.6.1781535666481;
+        Mon, 15 Jun 2026 08:01:06 -0700 (PDT)
+Received: from [10.128.10.215] (195-23-151-163.net.novis.pt. [195.23.151.163])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4619a041986sm11773154f8f.23.2026.06.15.08.01.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 15 Jun 2026 08:01:05 -0700 (PDT)
+Sender: Julian Braha <julian.braha@gmail.com>
+Message-ID: <eeacfa0d-9303-407f-8e8a-ecc95d1ab1c8@gmail.com>
+Date: Mon, 15 Jun 2026 16:01:04 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RESEND PATCH v1] net: dsa: motorcomm: add yt92xx dsa driver
+To: Kyle Switch <kyle.switch@motor-comm.com>, mmyangfl@gmail.com,
+ andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
+ jianmin.wang@motor-comm.com, de.ge@motor-comm.com
+References: <20260615111235.3544282-1-kyle.switch@motor-comm.com>
+Content-Language: en-US
+From: Julian Braha <julianbraha@gmail.com>
+In-Reply-To: <20260615111235.3544282-1-kyle.switch@motor-comm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, Jun 13, 2026 at 06:40 PM -07, Jakub Kicinski wrote:
-> TLS and sockmap are now mutually exclusive. Try to delete the code
-> from sendmsg and recvmsg path which is now obviously dead.
->
-> The main goal is to delete enough code for AI security scanners
-> to no longer bother us with sockmap related bugs. At the same
-> time retain the code in case someone has the cycles to fix
-> all of this and make the integration work, again.
->
-> If the integration does not get restored we can wipe the rest
-> of the skmsg code from TLS in two or three releases.
->
-> The changes on the Tx side are deeper since that's where most
-> of the bugs are, Rx side simply takes the data from sockmap
-> and gives it to the user. On Tx split record handling and
-> rolling back the iterator were the two problem areas.
->
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
+Hi Kyle,
 
-Nice! This unlocks further cleanup in tcp_bpf and tcp_ulp.
+On 6/15/26 12:12, Kyle Switch wrote:
 
-Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
+> diff --git a/drivers/net/dsa/motorcomm/Kconfig b/drivers/net/dsa/motorcomm/Kconfig
+> new file mode 100644
+> index 000000000000..f40d75e2a3f2
+> --- /dev/null
+> +++ b/drivers/net/dsa/motorcomm/Kconfig
+> @@ -0,0 +1,30 @@
+> +# SPDX-License-Identifier: GPL-2.0-only
+> +
+> +config MOTORCOMM
+> +	tristate "Motorcomm YT92XX switch family support"
+> +	depends on NET_DSA
+> +	select FIXED_PHY
+> +	help
+> +	  This driver adds support for Motorcomm switch chips. It supports
+> +	  YT921X and YT922X switch.
+> +
+> +choice
+> +	prompt "Motorcomm switch series selection"
+> +	depends on MOTORCOMM
+> +
+> +config MOTORCOMM_YT921X
+> +	bool "Motorcomm YT921X series."
+> +
+> +config MOTORCOMM_YT922X
+> +	bool "Motorcomm YT922X series."
+> +endchoice
+> +
+> +config NET_DSA_MOTORCOMM
+> +	tristate "Motorcomm YT92XX switch DSA driver"
+> +	depends on MOTORCOMM
+> +	depends on (MOTORCOMM_YT921X || MOTORCOMM_YT922X)
+> +	select NET_DSA_TAG_MOTORCOMM
+> +	select NET_IEEE8021Q_HELPERS if DCB
+> +	help
+> +	  Select to enable support for Motorcomm driver.
+> +
+> diff --git a/drivers/net/dsa/motorcomm/Makefile b/drivers/net/dsa/motorcomm/Makefile
+NET_DSA_MOTORCOMM already depends on:
+(MOTORCOMM_YT921X || MOTORCOMM_YT922X)
+with both of those options depending on MOTORCOMM due to the 'choice'
+that they're in, so this additional dependency on MOTORCOMM is
+unnecessary.
 
+You could also consider using a comment to document that this option is
+depended on indirectly.
+
+- Julian Braha
