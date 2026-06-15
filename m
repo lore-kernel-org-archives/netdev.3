@@ -1,35 +1,35 @@
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80E53331EBF;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D4C2F39AB;
 	Mon, 15 Jun 2026 09:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781514591; cv=none; b=kyOggkk2HuIHECcH1cGl7rC9xY3GB7Nc0nMa2DZNoFXqSocLPdd915phP0dOADHFhsgTCkxbG4Rbowjt2RF51W+uHuURT3MEVrUp7uCF1K5GkuzlyLSKkTUHUSudazl5DPprHna/dXF8Q4RpPmS5RtsDRGP8KozqdPKtByP4L8I=
+	t=1781514591; cv=none; b=ZwlORjK1iMVBwdzOesiIt61no2Zl3DiUOXP84UEjBM/kaHNZQ3fOmEvtT2VpWMuWhhUwGbOPv8hygQTfVFSdSVuwMg/vYt830SOq8bgU9D5RA8HvoSH4NOX/VF3n3NP716SbMUUE1qan3pzsbMKd72X13U1+MP3m19MmRvUw4ic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1781514591; c=relaxed/simple;
-	bh=Y3um3qpyHWGl0lz/BSlArkpQ3KA3tg7clz18nyjmlps=;
+	bh=XOw3wVJYzoD7vQxFAlu25Vwc4UhkBmAfnCK8B61j6fY=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HHGw5ZyaRxwAmu5kZo5/Byg2Okyx8SBtF9xINIsGpXDiEzveFDDhlDLD2VAuMebDUFzt45dCMUNKvuPK6jscFM0g38jepYEIjAufQcgtnA+CqCx4MRM4l/sf3T3GkwK3tHl1oeKqA4UyxXsHl6Vj+KAquc6csXOtRRQlzhi2Fb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=ALT0Bglj; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=NeV39NOQ86Gara1jWrQw/0KZOGnF5ieYWAKFGsBBZfVznBoNLtaFy/eFXc1TqOJZoWmFCvWHMwGGoQQF1SgxYzJOhbfVafoeIiSoM9bmtUkIXYIa9dlcLSpxxUMiPYtEmA+sLbctmci0y1bUbskQiny2Ac51fEQlJAqB6vlpYCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=Gqin6RjW; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="ALT0Bglj"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 65F98KxG4611677, This message is accepted by code: ctloc85258
+	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="Gqin6RjW"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 65F98KxH4611677, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
 	s=dkim; t=1781514500;
-	bh=C5A7DXA96OZ3Yl78IqhHnJQrzYi9kruAq5KanhjRFRg=;
+	bh=h/rLb5FfioloKUAU6KfPQKgIAfw49Yh/hSCmSRuV13Y=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=ALT0BgljtCFcBCHB7xFfH77u6tJPe+s4/vrRyuH3fm8urMZrUGBNZs8sk9HEXVPBC
-	 t+gUabB6q4AIH+LVVrVqGvCjCf3NWPSoSw3BvM0RK3fJBXHSvvGR0dtwTSAGHSGDOy
-	 7AihtuC7LR78WbrbBT6i9EuvUfUJoZ5EldOsvzPevaIoXatGw20FGwgsGqVJBL1fS/
-	 cfGCpK4pjQWscIDbVYlGWKgs03FMmGfwJtx/NWOSxtFoCaelj9MekDqdq4jKQrvYLP
-	 Ok1mH7KFfT+WMg3q/6/N1mwmVHs/oHWkvsL9l27n5WkYxuT5g2Ewx0IQKqBl3yWKlT
-	 gnYA+Q+Xg332w==
+	b=Gqin6RjWo+TRxnalk31jt0BTHai8eaT3u1Gf5Zm7cUqohuJWHlRcdMrZ+IFpwl/RA
+	 Y3Z5gWnSPlqImouEgIBJ/KgM8A6yTsH8RwAnHQLKfFYur0KeFjkILuv2b03dUQsFTd
+	 AdXnzfAWbhG9yr1moV/6c6ToXsf28nINYjCFajiStfCKRjjCs53BFzqGKs3It9bIBX
+	 7UuXETFcRalKrHfbwpEGhQ9JSjuFmIw3wDTd1T9MwGGTVAP7KxupCS0BwUDqVEKW5f
+	 El2cyHIFL6TbkwpYaarF2pofItCx2KPGAXB5sqfYHI2rWI4MYm8TlX2bbbKy7KoWzX
+	 yzg2DYVDdBI4A==
 Received: from RS-EX-MBS2.realsil.com.cn ([172.29.17.102])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 65F98KxG4611677
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 65F98KxH4611677
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
 	Mon, 15 Jun 2026 17:08:20 +0800
 Received: from RS-EX-MBS1.realsil.com.cn (172.29.17.101) by
@@ -46,9 +46,9 @@ To: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
 CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<daniel@makrotopia.org>, <vladimir.oltean@nxp.com>, Javen Xu
 	<javen_xu@realsil.com.cn>
-Subject: [PATCH net-next v5 1/4] net: phy: c45: add genphy_c45_soft_reset()
-Date: Mon, 15 Jun 2026 17:08:13 +0800
-Message-ID: <20260615090817.429-2-javen_xu@realsil.com.cn>
+Subject: [PATCH net-next v5 2/4] net: phy: c45: add genphy_c45_config_master_slave()
+Date: Mon, 15 Jun 2026 17:08:14 +0800
+Message-ID: <20260615090817.429-3-javen_xu@realsil.com.cn>
 X-Mailer: git-send-email 2.50.1.windows.1
 In-Reply-To: <20260615090817.429-1-javen_xu@realsil.com.cn>
 References: <20260615090817.429-1-javen_xu@realsil.com.cn>
@@ -63,11 +63,9 @@ Content-Type: text/plain
 
 From: Javen Xu <javen_xu@realsil.com.cn>
 
-Add a generic Clause 45 software reset helper. The helper sets the reset
-bit in the PMA/PMD control register and waits until the bit is cleared by
-hardware.
+Add a generic helper to configure forced master/slave mode for Clause 45
+PHYs using the 10GBASE-T AN control register.
 
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
 ---
 Changes in v2:
@@ -75,65 +73,165 @@ Changes in v2:
 
 Changes in v3:
  - re-order function according to the order in phy-c45.c
+ - add kernel-doc about return value
+ - add MASTER_SLAVE_CFG_MASTER_PREFERRED,
+   MASTER_SLAVE_CFG_SLAVE_PREFERRED, MASTER_SLAVE_CFG_UNKNOWN,
+   MASTER_SLAVE_CFG_UNSUPPORTED, MASTER_SLAVE_CFG_SLAVE_PREFERRED cfg
 
 Changes in v4:
  - no changes
 
 Changes in v5:
- - no changes
+ - move genphy_c45_an_setup_master_slave() to genphy_c45_config_aneg(),
+   as that C22 does.
 
 Changes in v6:
- - increase timeout to 600ms
+ - add colon in the function description
+ - add genphy_c45_read_master_slave in read function
 ---
- drivers/net/phy/phy-c45.c | 22 ++++++++++++++++++++++
- include/linux/phy.h       |  1 +
- 2 files changed, 23 insertions(+)
+ drivers/net/phy/phy-c45.c | 96 +++++++++++++++++++++++++++++++++++++++
+ include/uapi/linux/mdio.h |  5 ++
+ 2 files changed, 101 insertions(+)
 
 diff --git a/drivers/net/phy/phy-c45.c b/drivers/net/phy/phy-c45.c
-index 126951741428..60d044156a83 100644
+index 60d044156a83..4af532d5080a 100644
 --- a/drivers/net/phy/phy-c45.c
 +++ b/drivers/net/phy/phy-c45.c
-@@ -384,6 +384,28 @@ int genphy_c45_check_and_restart_aneg(struct phy_device *phydev, bool restart)
+@@ -406,6 +406,90 @@ int genphy_c45_soft_reset(struct phy_device *phydev)
  }
- EXPORT_SYMBOL_GPL(genphy_c45_check_and_restart_aneg);
+ EXPORT_SYMBOL_GPL(genphy_c45_soft_reset);
  
 +/**
-+ * genphy_c45_soft_reset - software reset the PHY via Clause 45 PMA/PMD control register
++ * genphy_c45_an_setup_master_slave - Configure Master/Slave setting for C45 PHYs
 + * @phydev: target phy_device struct
 + *
-+ * Return: 0 on success, negative errno on failure.
++ * Description: Configure the forced or preferred Master/Slave role
++ * 10GBASE-T control register (MMD 7, Register 0x0020) according to
++ * IEEE 802.3 standards.
++ *
++ * Return: negative errno code on failure, 0 if Master/Slave didn't change,
++ * or 1 if Master/Slave modes changed.
 + */
-+int genphy_c45_soft_reset(struct phy_device *phydev)
++static int genphy_c45_an_setup_master_slave(struct phy_device *phydev)
 +{
-+	int ret, val;
++	u16 ctl = 0;
 +
-+	ret = phy_set_bits_mmd(phydev, MDIO_MMD_PMAPMD, MDIO_CTRL1,
-+			       MDIO_CTRL1_RESET);
-+	if (ret < 0)
-+		return ret;
++	switch (phydev->master_slave_set) {
++	case MASTER_SLAVE_CFG_MASTER_PREFERRED:
++		ctl = MDIO_AN_10GBT_CTRL_MS_PORT_TYPE;
++		break;
++	case MASTER_SLAVE_CFG_SLAVE_PREFERRED:
++		break;
++	case MASTER_SLAVE_CFG_MASTER_FORCE:
++		ctl = MDIO_AN_10GBT_CTRL_MS_ENABLE | MDIO_AN_10GBT_CTRL_MS_VALUE;
++		break;
++	case MASTER_SLAVE_CFG_SLAVE_FORCE:
++		ctl = MDIO_AN_10GBT_CTRL_MS_ENABLE;
++		break;
++	case MASTER_SLAVE_CFG_UNKNOWN:
++	case MASTER_SLAVE_CFG_UNSUPPORTED:
++		return 0;
++	default:
++		phydev_warn(phydev, "Unsupported Master/Slave mode\n");
++		return -EOPNOTSUPP;
++	}
 +
-+	return phy_read_mmd_poll_timeout(phydev, MDIO_MMD_PMAPMD,
-+					 MDIO_CTRL1, val,
-+					 !(val & MDIO_CTRL1_RESET),
-+					 5000, 600000, true);
++	return phy_modify_mmd_changed(phydev, MDIO_MMD_AN, MDIO_AN_10GBT_CTRL,
++				      MDIO_AN_10GBT_CTRL_MS_ENABLE |
++				      MDIO_AN_10GBT_CTRL_MS_VALUE |
++				      MDIO_AN_10GBT_CTRL_MS_PORT_TYPE, ctl);
 +}
-+EXPORT_SYMBOL_GPL(genphy_c45_soft_reset);
++
++/**
++ * genphy_c45_read_master_slave - read master/slave status
++ * @phydev: target phy_device struct
++ *
++ * Description: Read the Master/Slave configuration and status
++ * from 10GBASE-T control/status registers (MMD 7, Reg 0x0020 and 0x0021).
++ *
++ * Return: 0 on success, or a negative error code on failure.
++ */
++static int genphy_c45_read_master_slave(struct phy_device *phydev)
++{
++	int val;
++
++	val = phy_read_mmd(phydev, MDIO_MMD_AN, MDIO_AN_10GBT_CTRL);
++	if (val < 0)
++		return val;
++
++	if (val & MDIO_AN_10GBT_CTRL_MS_ENABLE) {
++		if (val & MDIO_AN_10GBT_CTRL_MS_VALUE)
++			phydev->master_slave_get = MASTER_SLAVE_CFG_MASTER_FORCE;
++		else
++			phydev->master_slave_get = MASTER_SLAVE_CFG_SLAVE_FORCE;
++	} else {
++		if (val & MDIO_AN_10GBT_CTRL_MS_PORT_TYPE)
++			phydev->master_slave_get = MASTER_SLAVE_CFG_MASTER_PREFERRED;
++		else
++			phydev->master_slave_get = MASTER_SLAVE_CFG_SLAVE_PREFERRED;
++	}
++
++	val = phy_read_mmd(phydev, MDIO_MMD_AN, MDIO_AN_10GBT_STAT);
++	if (val < 0)
++		return val;
++
++	if (val & MDIO_AN_10GBT_STAT_MS_FAULT)
++		phydev->master_slave_state = MASTER_SLAVE_STATE_ERR;
++	else if (val & MDIO_AN_10GBT_STAT_MS_RES)
++		phydev->master_slave_state = MASTER_SLAVE_STATE_MASTER;
++	else
++		phydev->master_slave_state = MASTER_SLAVE_STATE_SLAVE;
++
++	return 0;
++}
 +
  /**
   * genphy_c45_aneg_done - return auto-negotiation complete status
   * @phydev: target phy_device struct
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 199a7aaa341b..25a66320df56 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -2309,6 +2309,7 @@ int genphy_c37_read_status(struct phy_device *phydev, bool *changed);
- /* Clause 45 PHY */
- int genphy_c45_restart_aneg(struct phy_device *phydev);
- int genphy_c45_check_and_restart_aneg(struct phy_device *phydev, bool restart);
-+int genphy_c45_soft_reset(struct phy_device *phydev);
- int genphy_c45_aneg_done(struct phy_device *phydev);
- int genphy_c45_read_link(struct phy_device *phydev);
- int genphy_c45_read_lpa(struct phy_device *phydev);
+@@ -1214,6 +1298,10 @@ int genphy_c45_read_status(struct phy_device *phydev)
+ 			ret = genphy_c45_baset1_read_status(phydev);
+ 			if (ret < 0)
+ 				return ret;
++		} else {
++			ret = genphy_c45_read_master_slave(phydev);
++			if (ret < 0)
++				return ret;
+ 		}
+ 
+ 		phy_resolve_aneg_linkmode(phydev);
+@@ -1247,6 +1335,14 @@ int genphy_c45_config_aneg(struct phy_device *phydev)
+ 	if (ret > 0)
+ 		changed = true;
+ 
++	if (!genphy_c45_baset1_able(phydev)) {
++		ret = genphy_c45_an_setup_master_slave(phydev);
++		if (ret < 0)
++			return ret;
++		if (ret > 0)
++			changed = true;
++	}
++
+ 	return genphy_c45_check_and_restart_aneg(phydev, changed);
+ }
+ EXPORT_SYMBOL_GPL(genphy_c45_config_aneg);
+diff --git a/include/uapi/linux/mdio.h b/include/uapi/linux/mdio.h
+index b2541c948fc1..06f4bc3c20c7 100644
+--- a/include/uapi/linux/mdio.h
++++ b/include/uapi/linux/mdio.h
+@@ -332,8 +332,13 @@
+ #define MDIO_AN_10GBT_CTRL_ADV2_5G	0x0080	/* Advertise 2.5GBASE-T */
+ #define MDIO_AN_10GBT_CTRL_ADV5G	0x0100	/* Advertise 5GBASE-T */
+ #define MDIO_AN_10GBT_CTRL_ADV10G	0x1000	/* Advertise 10GBASE-T */
++#define MDIO_AN_10GBT_CTRL_MS_ENABLE	0x8000	/* Master/slave manual config enable */
++#define MDIO_AN_10GBT_CTRL_MS_VALUE	0x4000	/* Master/slave config value (1=Master) */
++#define MDIO_AN_10GBT_CTRL_MS_PORT_TYPE	0x2000	/* Master Preferred Type */
+ 
+ /* AN 10GBASE-T status register. */
++#define MDIO_AN_10GBT_STAT_MS_FAULT	0x8000	/* Master/slave fault */
++#define MDIO_AN_10GBT_STAT_MS_RES	0x4000	/* Master/slave resolution (1=Master) */
+ #define MDIO_AN_10GBT_STAT_LP2_5G	0x0020  /* LP is 2.5GBT capable */
+ #define MDIO_AN_10GBT_STAT_LP5G		0x0040  /* LP is 5GBT capable */
+ #define MDIO_AN_10GBT_STAT_LPTRR	0x0200	/* LP training reset req. */
 -- 
 2.43.0
 
