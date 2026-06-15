@@ -1,105 +1,54 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4599D28B4E1
-	for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 03:55:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4634249E5;
+	Mon, 15 Jun 2026 04:10:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781495728; cv=none; b=b0YiR8aY2X9nZtl3snu+GkvqzyCwnP7asmHZSiiDCQLbJ2vNCPFL3q1+GieUw2X4amsZFtSrVtnYHIfS7ALsKOnHbm3CTskDeGFCg1R7P6TU9iAgFGweCA/r+ocEHHh3k+3CoBauF+GMgrlycEmG+tkTS+xMOX+wJYZMTLEmU1U=
+	t=1781496659; cv=none; b=A86kl4mZDd+EZoiEfrp4ssdOv7MjFUgy33apn+5VAH7QabY4vXPfIEDvAH66Tm00+EEiht0WCxK21d9IkSHdNXfH4D0Bl9XLTlSQYrvzWtFwD4PL6DrUPNr6vUJVhkk2Xk3TFQbu+pHOw/HrMw0WOybaL2otYQ2ZbbrzC8I60jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781495728; c=relaxed/simple;
-	bh=L15k8u3orIgT0R6SYaW0sHn7giGstxi9IUpykbO6UXk=;
+	s=arc-20240116; t=1781496659; c=relaxed/simple;
+	bh=9oxFnvt0hqbPVELZESivaWFfXLv1XhiCca+xj5vV/QI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VErNH3cJmToaBkD0wprWy9zP9Zd3EtFlnsQ4advHCR53CsnsfhCIkLitPJlhdxSom4Bqfmzxe+N7kvbQz3jPee+LrKLNzHWmoCvTB0sodKMHneYCF5z3P6DgF04eS080Wavyx7qQ6B7ty+WHya61KxHTF0QJo9jI/jivXB6++A8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=PBqZaOn1; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=AMHa9Zzm; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=jaT1HvsM+2mXMlAFudSnYobLQvCzN+iBhhl/v1pCNq2u8nDkSrWAbl51ZogUmhZRiNGviptxOcR60sFIY8kXeU4sp8lGNeaRwcMsl37AhAyOzCx1fKJaO1967PLv7smc2gEdgeg+/bAzI/arPoVP3xBA92vRSoQjcQbGZELfVsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f/P/tUVK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="PBqZaOn1";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="AMHa9Zzm"
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65F1j26a3244029
-	for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 03:55:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=V5iYWamYBGi2g8X7XD8Ib5OY
-	dq2ngK3owfPK32tRL48=; b=PBqZaOn1Mm3Oh21rL2hiBioLYSupkG3cmm4KUfYe
-	mxmuJm7Fm5A19YvPHu6zLwEKJVGvRvSCgGVeYdo/NBzXqDM3lYkRzU9tF9JEtaNJ
-	5VTXoNHPQaceMTusIrT+dc2hdQJ1FTvHfiQEW+Np3V/D+/HcwhCClYB+idhK6CwA
-	+vTGh3weu/DDo7VhLdLaxAhsHhWz4MNWJYwJ8f9R76jmz9QKqVkm+guTftMjK3kC
-	6yATU0P5UCM827/3ekTbic95ipQZMw+IxZN5jLtjdq2QM1jsdst/ewu2rCWLK7og
-	cgB4+/mjT7mWnD1gOPKDfSwSBUiBrJZwVaE5Knt1jvrv+w==
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ery7gwdty-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 03:55:25 +0000 (GMT)
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-c8620ee0971so3111681a12.0
-        for <netdev@vger.kernel.org>; Sun, 14 Jun 2026 20:55:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1781495725; x=1782100525; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=V5iYWamYBGi2g8X7XD8Ib5OYdq2ngK3owfPK32tRL48=;
-        b=AMHa9Zzm9A5ymAgh5yxiVeY/6sSOiywDTHAhC/qtVPophLSr98dSRoAtEM2Bqg4BwN
-         rcTvHLBaObZsjMRuDrtdxZ53nnvRiM5jTySmRisyeO6E9dWE6uhItkUlgOSqu/7mzTg5
-         S5LF6Nqy4gak25iEDeHkAQcJp5O+jRveDVhWeRvdXofloEW8G7qpjeRXbmzg2Wkw5leU
-         AHuNxBXIGYiqhjUynlKUPY7tB+FDOjZo2vt65Zs+setmMfDaTsyx7KXqbIS3C8BMmlv3
-         1RwF2tb0sitQi7vS7/W5/AvIjpDnmyGwTLkb6N5hzkX5kTmwewNIcCsvGtlYQxJwTjJ9
-         37jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781495725; x=1782100525;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=V5iYWamYBGi2g8X7XD8Ib5OYdq2ngK3owfPK32tRL48=;
-        b=lJ7tlRPbFfl791YwEJF/J9zEHCbEBiOzTHyHxzgp4FqcUdzWw79ru/BL9aZS3RZwsy
-         TeReVSMbfJ4L8rWjZqPsfg240qdFkObrKxAeuIPChzSM1V0JfotH9V5KW6weFWLao7RW
-         +0pdFqNuLqoPK+/gDzF/bhxKj2Fk3REFRJEi5uHsHMzdoJsvmRCR6pgGcaGkA9mPPf13
-         e5YX1sdDEmP9dt1S6PBhKzcr/cd8ECWCMJkt5GuTeLeJx6hA6HJ/10FwI0TE5wGOnmko
-         i6kZR9EcrcAO9J2jCL/MJuEYx6HCTP0MzQx4WO5gioQ8D7j5y4CMLkyJf8Nl9DZjSbJl
-         y+nA==
-X-Forwarded-Encrypted: i=1; AFNElJ8a8/VgRK+478NV5DCe7/V3XPQ8Yy49mBxLj9+bvtmboyjkv4thMHsCqbFT9djw2MOewBt1gnU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4f42ouOLNYR/UnVgpWTKYrc7Dueid0U+lkRQEXDPpoqCrVrRR
-	XCHCtvpGp2TzLxQcKJFPJ1V2qcEqgygVM52ITBNZDmAVWZnRATz9xwsjh65lwruan2ekTQPGbL6
-	fVW8QGH4/csNXjCthtt7RqBa/8bRH8QvXjsx9I9Sm8aZP3vIMKptDAcvG8qY=
-X-Gm-Gg: Acq92OH9FJJJVXT0ffXP9hCRM1THwUvOeHHG+PdIn9/lrM1FMMWT8ZKeU854fwv1h9U
-	SvUc4rqQORczPJSIxhgHT411R2IzAMvo/NBhITnFJFDWDzxAUBs4joMmf2b2SbBzr8SWjMRlIv0
-	pjVE8rP+Ac65sqGgsl6yKu1TL7i209EBbksrzIUVd/RsC1gj/4SG0fkp3BbwhMFJ1Ikk3aaw0/0
-	3R4PDB37jjWYEavJxzuFVmy8cZq0msaNu8fqfnDR7PeA3fNtvGdjTeeSFJ1Sfvz5lKhhWb18byi
-	8krZBj61jWty0W+tmKqKpTdIgq5zwtKYMT5t9SUcydPgKm9b3Gn8gmmXAX+lLxZQEfi2pb8DQE3
-	Oi/SPtesS125NpiIeDn1XZjQtCXiExMx3Q64=
-X-Received: by 2002:a05:6a00:23c5:b0:842:6004:3fbe with SMTP id d2e1a72fcca58-844e1a28e6fmr10448207b3a.25.1781495725011;
-        Sun, 14 Jun 2026 20:55:25 -0700 (PDT)
-X-Received: by 2002:a05:6a00:23c5:b0:842:6004:3fbe with SMTP id d2e1a72fcca58-844e1a28e6fmr10448182b3a.25.1781495724608;
-        Sun, 14 Jun 2026 20:55:24 -0700 (PDT)
-Received: from oss.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434b05921bsm8482573b3a.59.2026.06.14.20.55.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Jun 2026 20:55:24 -0700 (PDT)
-Date: Mon, 15 Jun 2026 09:25:16 +0530
-From: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Russell King <linux@armlinux.org.uk>, linux-arm-msm@vger.kernel.org,
-        netdev@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH RFC 7/9] arm64: dts: qcom: shikra-cqm-evk: Enable
- ethernet0
-Message-ID: <ai93pMA6MQ2zBv6q@oss.qualcomm.com>
-References: <20260612-shikra_ethernet-v1-0-f0f4a1d19929@oss.qualcomm.com>
- <20260612-shikra_ethernet-v1-7-f0f4a1d19929@oss.qualcomm.com>
- <6fde35ce-52dd-4679-9952-728b6553b843@lunn.ch>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f/P/tUVK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 005D41F00A3A;
+	Mon, 15 Jun 2026 04:10:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781496658;
+	bh=MBs5J8wgb3QPn7TFVPRBrDLOU6PSgWEFjXQWr3rd7wo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=f/P/tUVKDQRTjQxFEJPRYeZkdgACDWBVh/FKp3USEjrjcQ9/khiDt2Th7+YOL5pKf
+	 D4pZXIbZes/4BW34sS1nH3bV8vxDvi31JCmRFYSCvabgUf6tQH+3brYSgI4R82/PKd
+	 kkMj8wmDzhepe3QXDg52Xz3v2Q7+2mYXM+9vMmq8MD3WwdnZEvor+3u/CIhpzqv91L
+	 PQUVLYL3P0NYb1o3YtPvI3AYZJ4POz/BwF/6kzrflteURWWYsc2jtXTIqSXoM1schM
+	 sBNozTPApq1iyCmcXaqVjPOERjSpaJV4g9Lboy92PXkCXJnIE30X6H4SRAw0WVCYPj
+	 33NbkzTYtROWA==
+Date: Sun, 14 Jun 2026 23:10:56 -0500
+From: Rob Herring <robh@kernel.org>
+To: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+Cc: Andrew Lunn <andrew@lunn.ch>,
+	Piergiorgio Beruto <pier.beruto@onsemi.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-doc@vger.kernel.org, Jerry Ray <jerry.ray@microchip.com>
+Subject: Re: [PATCH net-next v5 14/15] dt-bindings: net: add onsemi's S2500
+Message-ID: <20260615041056.GA1426553-robh@kernel.org>
+References: <20260614-s2500-mac-phy-support-v5-0-89874b72f725@onsemi.com>
+ <20260614-s2500-mac-phy-support-v5-14-89874b72f725@onsemi.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -108,47 +57,42 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6fde35ce-52dd-4679-9952-728b6553b843@lunn.ch>
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE1MDAzNyBTYWx0ZWRfX9kdC/zbWiVlD
- 2O/71SziR/88ehNvqMiqCaPNyltPtpchJHQy8G1Z2E2OXX+igewzhJSJDyF7iArU2Vf4pNHxvNt
- TuLtgi6v8QCqhkT+R5FCgeG+0ilu94Y=
-X-Authority-Analysis: v=2.4 cv=fLYJG5ae c=1 sm=1 tr=0 ts=6a2f77ae cx=c_pps
- a=Qgeoaf8Lrialg5Z894R3/Q==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
- a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22
- a=HuS8l_LH735D3i-wPbwA:9 a=CjuIK1q_8ugA:10 a=x9snwWr2DeNwDh03kgHS:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE1MDAzNyBTYWx0ZWRfX/dYyJF5Y+6xE
- q97kk3suW3E1qgaQ+8C1+ntXnN4WR7ahpoW/TPaBzmm61jhoRGGtgfrLs454+M8XDS6rizCiCE1
- lwkD7DhAQOhaBm2ATZXRF9HQyENRqhmNud/V607BRKUoty6Hnlfr4RxFWN6COE9zPJzgdPom07R
- yLnbjvHMMfo4g8vlzMB9OuGmwkJkNgggc9Kx6INbscE4Rt0uLmZOc8acyt/89vTsAPL+KshDDl8
- VvBrXb4SXExM7ODaDWpcvJuZfnrmhUJoHhz+lORvBZ+b1pOpRdJZ9vtffJw7mrlAmcR9X8dDtix
- DMIP8ucZ21FNYTy8mO/fjdQqvfJXXkZE5wSxKuXB8oAjMBxA5D4O/8HQ4tE1ekQ5vKBr1rxEYFE
- gAmqpok7e+iXxvHr3Ak0WKSA9uheRfXpYQckl3jDK+cVY4AP57IxNjB3Uck9KUJvlFq2ZVnVa1F
- 1u+zRlP6JsFyAnJTJMQ==
-X-Proofpoint-GUID: TpjQTS6Po_FCvAfH5k2LCpLSpt5AZuIQ
-X-Proofpoint-ORIG-GUID: TpjQTS6Po_FCvAfH5k2LCpLSpt5AZuIQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-15_01,2026-06-12_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 bulkscore=0 suspectscore=0 priorityscore=1501 clxscore=1015
- malwarescore=0 impostorscore=0 phishscore=0 lowpriorityscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606150037
+In-Reply-To: <20260614-s2500-mac-phy-support-v5-14-89874b72f725@onsemi.com>
 
-On Thu, Jun 11, 2026 at 10:58:39PM +0200, Andrew Lunn wrote:
-> > +		ethphy0: ethernet-phy@7 {
-> > +			compatible = "ethernet-phy-ieee802.3-c22";
-> > +			reg = <7>;
-> > +			reset-gpios = <&tlmm 135 GPIO_ACTIVE_LOW>;
-> > +			reset-assert-us = <10000>;
-> > +			reset-deassert-us = <50000>;
-> > +			ti,tx-internal-delay = <DP83867_RGMIIDCTL_2_00_NS>;
-> > +			ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_00_NS>;
+On Sun, Jun 14, 2026 at 10:00:30AM -0700, Selvamani Rajagopal wrote:
+> Add YAML device tree binding for the onsemi S2500 IEEE 802.3cg
+> compliant Ethernet transceiver device.
 > 
-> Are these two needed? It should default to 2ns, since that is what the
-> RGMII standard says the delay should be.
+> We use IRQF_TRIGGER_FALLING, though OPEN Alliance 10BASE-T1x
+> Serial Interface specification calls for IRQF_TRIGGER_LOW.
 > 
-That is true, I will remove these in v2.
+> This is to match IRQF_TRIGGER_FALLING used by OA TC6 framework code.
+> This bug fix requires changes to the stable branch. At that time,
+> this will be changed to IRQF_TRIGGER_LOW.
+> 
+> ---
 
-	Ayaan
+Everything after this is dropped from the commit message when applying. 
+Your Sob needs to be above it.
+
+And you are missing tags from prior versions. It is your responsibility 
+to add them.
+
+> changes in v5
+>   - no changes
+> changes in v4:
+>   - added spi-max-frequency as suggested by AI review
+>   - changed interrupt to IRQ_TYPE_EDGE_FALLING as it is
+>     being taken care in net (stable) branch
+> changes in v3
+>   - Removed URL link that failed verification
+> changes in v2
+>   - removed spi-max-frequency entry
+>   - changed the compatible string to s2500
+> changes in v1
+>   - Added the first version of YAML file for onsemi MAC-PHY
+> 
+> Signed-off-by: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+> ---
+>  .../devicetree/bindings/net/onnn,s2500.yaml        | 67 ++++++++++++++++++++++
+>  1 file changed, 67 insertions(+)
