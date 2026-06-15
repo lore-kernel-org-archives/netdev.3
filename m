@@ -1,104 +1,275 @@
-Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A68CB339708;
-	Mon, 15 Jun 2026 10:43:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.175.24.41
+Received: from smtpbgau2.qq.com (smtpbgau2.qq.com [54.206.34.216])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86ED1309DB1
+	for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 10:49:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.34.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781520233; cv=none; b=Wjx44uOUfGTiO/ScBM2daqEhP2iMZ4U8YWXHWYI//BwUKdeezdBwW8/d1cmpI7cdd8I69+KW6r79F1tfzm7Cp6IaFRBO+yHw3qks733VD6lwMqRu1CxR3GoIDtB00suL3z0HfyutBPnpeJ3NxKeYjmH64rUIxWRAiApUywcraBo=
+	t=1781520581; cv=none; b=f0U1RcBVuoH5Lhqk+LY3KtI2jRu3FOiXWZvHQYZ93GCBdbRuR/U1zI5G6MNiwl+/WHdZurHpYvKlANkuJpF7UWmFTDxD2qoXP6lDgIAm/96Gyxa5/v/f+UPe/VXPxaXnYYXM7izeZW443nv3GkfGWbx/qachzmoxAjSSUA5lPmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781520233; c=relaxed/simple;
-	bh=oVfd44ufR+op111XMW1UXh0Dk/Avy9DCMpoW+by1up8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a6zf9w9OuO0ugr/TjXFDSh5Y4SxKLIEX/GMLUaJEbqkkssPP0Llz++56hJTFP7yDlJWpfxshz4qShW/zG9shhgGixEb+48gGo4W6AzeDw6lLByT4Vzgxz4JmXXSrJJ33iJlUTmm859M9SfQKzZYUV9B+uecB/UN6xGQxZdlp55A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpha.franken.de; spf=pass smtp.mailfrom=alpha.franken.de; arc=none smtp.client-ip=193.175.24.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpha.franken.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alpha.franken.de
-Received: from uucp by elvis.franken.de with local-rmail (Exim 3.36 #1)
-	id 1wZ4ey-0000JJ-00; Mon, 15 Jun 2026 12:35:16 +0200
-Received: by alpha.franken.de (Postfix, from userid 1000)
-	id C060CC084D; Mon, 15 Jun 2026 12:33:22 +0200 (CEST)
-Date: Mon, 15 Jun 2026 12:33:22 +0200
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To: Arnd Bergmann <arnd@kernel.org>
-Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Arnd Bergmann <arnd@arndb.de>,
-	Christian Lamparter <chunkeey@googlemail.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-wireless@vger.kernel.org, linux-omap@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-	linux-sh@vger.kernel.org, linux-input@vger.kernel.org,
-	linux-leds@vger.kernel.org, netdev@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Subject: Re: [PATCH 05/10] [v2] mips: select legacy gpiolib interfaces where
- used
-Message-ID: <ai_U8j3uOoIzoYrJ@alpha.franken.de>
-References: <20260520183815.2510387-1-arnd@kernel.org>
- <20260520183815.2510387-6-arnd@kernel.org>
+	s=arc-20240116; t=1781520581; c=relaxed/simple;
+	bh=oClq9joEFN9YdwhUiAV4YyU6TlmQI1V9SXgvORg1Lhw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Q169S8iCItud1HM66LfOpRWIL4BHrkkIkyQiJiYkvIxlP5/+GE+EKBzyxEB0ah0MCaP3teesYzNbidq5oAHO84u7E/MCmn0CVDYRWHVbTd9KWZSd3H3nD3NhxK3+cJlkLaeB5/z23wCkcmP4V6s3vZeiKo3n+lllezIrcg4sDDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=54.206.34.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
+X-QQ-mid: esmtpsz19t1781520539tb46e1a11
+X-QQ-Originating-IP: xkcMglleC3Nz9npszMHZHKTVSzmrE+3FW2OPm3oU0O8=
+Received: from localhost.localdomain ( [183.157.22.210])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 15 Jun 2026 18:48:58 +0800 (CST)
+X-QQ-SSF: 0001000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 13065718457049212845
+EX-QQ-RecipientCnt: 7
+From: Mengyuan Lou <mengyuanlou@net-swift.com>
+To: netdev@vger.kernel.org
+Cc: jiawenwu@trustnetic.com,
+	duanqiangwen@net-swift.com,
+	horms@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	Mengyuan Lou <mengyuanlou@net-swift.com>
+Subject: [PATCH net-next v5 3/3] net: libwx: support vf per-queue statistics via ethtool -S
+Date: Mon, 15 Jun 2026 18:48:49 +0800
+Message-Id: <20260615104849.60444-4-mengyuanlou@net-swift.com>
+X-Mailer: git-send-email 2.30.1
+In-Reply-To: <20260615104849.60444-1-mengyuanlou@net-swift.com>
+References: <20260615104849.60444-1-mengyuanlou@net-swift.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260520183815.2510387-6-arnd@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:net-swift.com:qybglogicsvrgz:qybglogicsvrgz5b-1
+X-QQ-XMAILINFO: Nn63v61n7E7W8tPtGXV1vXu+uXIp/jihCr//iUR9uaFDls6XC4stdGon
+	9Ytf9QwynCl/bGm+qSJ5EAjsr6/+eu9+t0rkczZKR62RXo4fCJs1bytNZiXiqZ+/OzkArWP
+	Db74of5ps+vtTJ0khaaR53F4qf1maHsGMy+ArhP/5/6GYtaywpsHl+Ae1HRPLAp6Lma9Fd5
+	G8upPwtstBU/NUuIo2fr+4tiEBM7HV4KbBNJ+0u2bLBmGk9GJ1utTUqb4etlBKdY+zQYSVF
+	J3JPY3jwEbRsBQK0EcfNuLOKnkaB2IfFJnMAjF5g/CzRnoSSXyGSpobNjdr+5FiUwtdJqQy
+	7LIM6hUALGyVpTndBCCq9Sl1SpWcOfuJ/T8DVnKOK89gz8+N0IvejUEcb8j30pdpYzUoQKB
+	gUfQkRQpp9/DyLjG4SC3XiTVyJp9+5czAn/o66SewXzK+nWr4KUzataiuhQ8TQeF0oazthI
+	Q/WQg+H2xlVmQP0qoTHQQzPnO0EtKT3YIZGrf3Ifhd+FGAjZBO9QIMIKn6We9sXIN00vinE
+	Ea5iJHduAj2kUtYGrfdgabQhcoJ6vCC8shDhhMXvr4YgRynUPVK9sMxF5Oy4pgUvStXrhgy
+	RpC/7g/MMWfbA4RjH1I7ZJrrIRQWv/GgWvY9laCv4ypyesiRIL49EWiObTFm7hoIgPefwVD
+	nOuzfYpMkFxUwhJIfbv4lzBqbNQQFhNFLGLL40CRBE/cnAL9K6qjVds95pd54s7dMLKsu/w
+	OGpGBYmfylzSWFm2NgDvYgX7aDp7UNbv/0wVSrEL5qdy26NglI56KenvPfhNHuPd1hFXpkM
+	305X04Hf/53gCI1WdDmwX34R6Sol+sD6epjq37jTuCjv7qTCO96+wyNt1zDv5OvPZWyzaH/
+	D9nkS9ZKH08SqgdI7bbxY8ZIy/wYUgLig6mms37X1+knlrDjugGp/DCT/302JemIKaBdd4B
+	MDSOia2TdEXMBN4wX4qKhD3nSw8RslZ9KiHR/ImORIgGnzkQhhjLgnUkisOHFs2ol0/5u01
+	XsqI6v1IYkb7HVfUNJ6plLt7owlhwvJYFLE04DRiIZUpnd4l4XCBEw/m2CGK4ngR0BxsYwx
+	l02+SZtWIZh0LoVW21Ho+ks8Xk/1ljVzNNCNCQI7O08G7e2nyxOeHejOH/oS9WGasuPmml7
+	NAfUIeiDCRvX2l/qxLqJHHykEYZE0s/s5Gz8
+X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
+X-QQ-RECHKSPAM: 0
 
-On Wed, May 20, 2026 at 08:38:10PM +0200, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> A few old machines have not been converted away from the old-style
-> gpiolib interfaces. Make these select the new CONFIG_GPIOLIB_LEGACY
-> symbol so the code still works where it is needed but can be left
-> out otherwise.
-> 
-> This is the list of all gpio_request() calls in mips:
-> 
->   arch/mips/alchemy/devboards/db1000.c:           gpio_request(19, "sd0_cd");
->   arch/mips/alchemy/devboards/db1000.c:           gpio_request(20, "sd1_cd");
->   arch/mips/alchemy/devboards/db1200.c:   gpio_request(215, "otg-vbus");
->   arch/mips/bcm47xx/workarounds.c:        err = gpio_request_one(usb_power, GPIOF_OUT_INIT_HIGH, "usb_power");
->   arch/mips/bcm63xx/boards/board_bcm963xx.c:              gpio_request_one(board.ephy_reset_gpio,
->   arch/mips/txx9/rbtx4927/setup.c:        gpio_request(15, "sio-dtr");
-> 
-> Most of these should be easy enough to change to modern gpio descriptors
-> or remove if they are no longer in use.
-> 
-> Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-> Reviewed-by: Linus Walleij <linusw@kernel.org>
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
-> v2: no changes. There was no discussion on this, but the patch
->     has so far not made it into the linux-mips tree, so I'm including
->     it for completeness.
-> ---
->  arch/mips/Kconfig         | 5 +++++
->  arch/mips/alchemy/Kconfig | 1 -
->  arch/mips/txx9/Kconfig    | 1 +
->  3 files changed, 6 insertions(+), 1 deletion(-)
+Add per-queue TX/RX packet and byte counters to the VF ethtool stats
+table.
+Convert WX_NUM_{RX,TX}_QUEUES macros to take explicit netdev parameter.
+Then replace both WX_GLOBAL_STATS_LEN and WX_STATS_LEN macros with
+type-safe static helpers wx_global_stats_len() and wx_stats_len().
+The stats length is now dynamically determined based on whether the
+device is a VF or PF via wx_stats_len().
 
-applied to mips-next
+Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
+---
+ .../net/ethernet/wangxun/libwx/wx_ethtool.c   | 71 +++++++++++++------
+ drivers/net/ethernet/wangxun/libwx/wx_hw.c    |  4 ++
+ .../net/ethernet/wangxun/libwx/wx_vf_common.c |  2 +
+ 3 files changed, 56 insertions(+), 21 deletions(-)
 
-Thomas.
-
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
+index 30c6ef6103ac..d8b7576fbfaa 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
+@@ -48,6 +48,10 @@ static const struct wx_stats wx_gstrings_stats[] = {
+ 	WX_STAT("rx_hwtstamp_cleared", rx_hwtstamp_cleared),
+ };
+ 
++static const struct wx_stats wx_gstrings_stats_vf[] = {
++	WX_STAT("non_eop_descs", non_eop_descs),
++};
++
+ static const struct wx_stats wx_gstrings_fdir_stats[] = {
+ 	WX_STAT("fdir_match", stats.fdirmatch),
+ 	WX_STAT("fdir_miss", stats.fdirmiss),
+@@ -63,21 +67,33 @@ static const struct wx_stats wx_gstrings_rsc_stats[] = {
+  * used because we do not have a good way to get the max number of
+  * rx queues with CONFIG_RPS disabled.
+  */
+-#define WX_NUM_RX_QUEUES netdev->num_tx_queues
+-#define WX_NUM_TX_QUEUES netdev->num_tx_queues
+-
+-#define WX_QUEUE_STATS_LEN ( \
+-		(WX_NUM_TX_QUEUES + WX_NUM_RX_QUEUES) * \
+-		(sizeof(struct wx_queue_stats) / sizeof(u64)))
+-#define WX_GLOBAL_STATS_LEN  ARRAY_SIZE(wx_gstrings_stats)
++#define WX_NUM_RX_QUEUES(netdev) ((netdev)->num_tx_queues)
++#define WX_NUM_TX_QUEUES(netdev) ((netdev)->num_tx_queues)
+ #define WX_FDIR_STATS_LEN  ARRAY_SIZE(wx_gstrings_fdir_stats)
+ #define WX_RSC_STATS_LEN  ARRAY_SIZE(wx_gstrings_rsc_stats)
+-#define WX_STATS_LEN (WX_GLOBAL_STATS_LEN + WX_QUEUE_STATS_LEN)
++
++static unsigned int wx_global_stats_len(const struct wx *wx)
++{
++	return wx->pdev->is_virtfn ?
++	       ARRAY_SIZE(wx_gstrings_stats_vf) : ARRAY_SIZE(wx_gstrings_stats);
++}
++
++static unsigned int wx_stats_len(const struct wx *wx)
++{
++	struct net_device *netdev = wx->netdev;
++	unsigned int queue_stats_len;
++
++	queue_stats_len = (WX_NUM_TX_QUEUES(netdev) +
++			   WX_NUM_RX_QUEUES(netdev)) *
++			  (sizeof(struct wx_queue_stats) / sizeof(u64));
++
++	return wx_global_stats_len(wx) + queue_stats_len;
++}
+ 
+ int wx_get_sset_count(struct net_device *netdev, int sset)
+ {
+ 	struct wx *wx = netdev_priv(netdev);
+-	int len = WX_STATS_LEN;
++	int len = wx_stats_len(wx);
+ 
+ 	switch (sset) {
+ 	case ETH_SS_STATS:
+@@ -100,8 +116,11 @@ void wx_get_strings(struct net_device *netdev, u32 stringset, u8 *data)
+ 
+ 	switch (stringset) {
+ 	case ETH_SS_STATS:
+-		for (i = 0; i < WX_GLOBAL_STATS_LEN; i++)
+-			ethtool_puts(&p, wx_gstrings_stats[i].stat_string);
++		for (i = 0; i < wx_global_stats_len(wx); i++)
++			if (wx->pdev->is_virtfn)
++				ethtool_puts(&p, wx_gstrings_stats_vf[i].stat_string);
++			else
++				ethtool_puts(&p, wx_gstrings_stats[i].stat_string);
+ 		if (test_bit(WX_FLAG_FDIR_CAPABLE, wx->flags)) {
+ 			for (i = 0; i < WX_FDIR_STATS_LEN; i++)
+ 				ethtool_puts(&p, wx_gstrings_fdir_stats[i].stat_string);
+@@ -114,7 +133,7 @@ void wx_get_strings(struct net_device *netdev, u32 stringset, u8 *data)
+ 			ethtool_sprintf(&p, "tx_queue_%u_packets", i);
+ 			ethtool_sprintf(&p, "tx_queue_%u_bytes", i);
+ 		}
+-		for (i = 0; i < WX_NUM_RX_QUEUES; i++) {
++		for (i = 0; i < WX_NUM_RX_QUEUES(netdev); i++) {
+ 			ethtool_sprintf(&p, "rx_queue_%u_packets", i);
+ 			ethtool_sprintf(&p, "rx_queue_%u_bytes", i);
+ 		}
+@@ -134,10 +153,16 @@ void wx_get_ethtool_stats(struct net_device *netdev,
+ 
+ 	wx_update_stats(wx);
+ 
+-	for (i = 0; i < WX_GLOBAL_STATS_LEN; i++) {
+-		p = (char *)wx + wx_gstrings_stats[i].stat_offset;
+-		data[i] = (wx_gstrings_stats[i].sizeof_stat ==
+-			   sizeof(u64)) ? *(u64 *)p : *(u32 *)p;
++	for (i = 0; i < wx_global_stats_len(wx); i++) {
++		if (wx->pdev->is_virtfn) {
++			p = (char *)wx + wx_gstrings_stats_vf[i].stat_offset;
++			data[i] = (wx_gstrings_stats_vf[i].sizeof_stat ==
++				   sizeof(u64)) ? *(u64 *)p : *(u32 *)p;
++		} else {
++			p = (char *)wx + wx_gstrings_stats[i].stat_offset;
++			data[i] = (wx_gstrings_stats[i].sizeof_stat ==
++				   sizeof(u64)) ? *(u64 *)p : *(u32 *)p;
++		}
+ 	}
+ 
+ 	if (test_bit(WX_FLAG_FDIR_CAPABLE, wx->flags)) {
+@@ -169,7 +194,7 @@ void wx_get_ethtool_stats(struct net_device *netdev,
+ 		} while (u64_stats_fetch_retry(&ring->syncp, start));
+ 		i += 2;
+ 	}
+-	for (j = 0; j < WX_NUM_RX_QUEUES; j++) {
++	for (j = 0; j < WX_NUM_RX_QUEUES(netdev); j++) {
+ 		ring = wx->rx_ring[j];
+ 		if (!ring) {
+ 			data[i++] = 0;
+@@ -219,19 +244,20 @@ EXPORT_SYMBOL(wx_get_pause_stats);
+ 
+ void wx_get_drvinfo(struct net_device *netdev, struct ethtool_drvinfo *info)
+ {
+-	unsigned int stats_len = WX_STATS_LEN;
+ 	struct wx *wx = netdev_priv(netdev);
++	unsigned int stats_len;
+ 
++	stats_len = wx_stats_len(wx);
+ 	if (test_bit(WX_FLAG_FDIR_CAPABLE, wx->flags))
+ 		stats_len += WX_FDIR_STATS_LEN;
+ 
+ 	strscpy(info->driver, wx->driver_name, sizeof(info->driver));
+ 	strscpy(info->fw_version, wx->eeprom_id, sizeof(info->fw_version));
+ 	strscpy(info->bus_info, pci_name(wx->pdev), sizeof(info->bus_info));
+-	if (wx->num_tx_queues <= WX_NUM_TX_QUEUES) {
++	if (wx->num_tx_queues <= WX_NUM_TX_QUEUES(netdev)) {
+ 		info->n_stats = stats_len -
+-				   (WX_NUM_TX_QUEUES - wx->num_tx_queues) *
+-				   (sizeof(struct wx_queue_stats) / sizeof(u64)) * 2;
++				(WX_NUM_TX_QUEUES(netdev) - wx->num_tx_queues) *
++				(sizeof(struct wx_queue_stats) / sizeof(u64)) * 2;
+ 	} else {
+ 		info->n_stats = stats_len;
+ 	}
+@@ -851,6 +877,9 @@ static const struct ethtool_ops wx_ethtool_ops_vf = {
+ 	.set_coalesce		= wx_set_coalesce,
+ 	.get_ts_info		= ethtool_op_get_ts_info,
+ 	.get_link_ksettings	= wx_get_link_ksettings_vf,
++	.get_sset_count		= wx_get_sset_count,
++	.get_strings		= wx_get_strings,
++	.get_ethtool_stats	= wx_get_ethtool_stats,
+ };
+ 
+ void wx_set_ethtool_ops_vf(struct net_device *netdev)
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+index 260e14d5d541..ce172b6deb80 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+@@ -2917,6 +2917,9 @@ void wx_update_stats(struct wx *wx)
+ 	wx->restart_queue = restart_queue;
+ 	wx->tx_busy = tx_busy;
+ 
++	if (wx->pdev->is_virtfn)
++		goto skip_hw_stats;
++
+ 	wx_update_xoff_rx_lfc(wx);
+ 
+ 	hwstats->gprc += rd32(wx, WX_RDM_PKT_CNT);
+@@ -2956,6 +2959,7 @@ void wx_update_stats(struct wx *wx)
+ 		hwstats->qmprc += rd32_wrap(wx, WX_PX_MPRC(i),
+ 					    &wx->last_stats.qmprc[i]);
+ 
++skip_hw_stats:
+ 	spin_unlock(&wx->hw_stats_lock);
+ }
+ EXPORT_SYMBOL(wx_update_stats);
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
+index 26de78e9a69e..1d84fe35d7d9 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
+@@ -5,6 +5,7 @@
+ #include <linux/pci.h>
+ 
+ #include "wx_type.h"
++#include "wx_hw.h"
+ #include "wx_mbx.h"
+ #include "wx_lib.h"
+ #include "wx_vf.h"
+@@ -409,6 +410,7 @@ static void wxvf_service_task(struct work_struct *work)
+ 
+ 	wxvf_link_config_subtask(wx);
+ 	wxvf_reset_subtask(wx);
++	wx_update_stats(wx);
+ 	wx_service_event_complete(wx);
+ }
+ 
 -- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
-good idea.                                                [ RFC1925, 2.3 ]
+2.30.1
+
