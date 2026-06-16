@@ -1,108 +1,129 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0CEB426D02
-	for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 11:04:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2122F3CBE8B
+	for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 11:07:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781607882; cv=none; b=APHf5zslx5qKMt1PTDGo8XRC7wxIDr17v48X0cpGHWyDj5Dl2rXFkqoPho4ycrnFBUm4tROW+aDRmJ/R9AWRIYqbDN6ZA5CsVutFcmELg1AfeVkMH09UqkPSyIKm/zzu0dcCQIkmtRaFs3MffQvvAUKnmHrtIybufisUtzPMe38=
+	t=1781608025; cv=none; b=pBPj1EZ7+QVo0JmH0S8ITYZC3ZLBC2EHVu/kvsnmZF16lG1XnVfAwG/CJAQzpvNTZMw1uP8GitVDOcH3peqjT2jnzVW9MNCMOYyYeCveCSCYzJGMXPEq+1aeyjb18CRsUpdPp+93DtJPLIDC7JlzM7iqS86MXPw5eZskTxS9hQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781607882; c=relaxed/simple;
-	bh=jsrjb1gJOrLNfKVeyrgWHu2ndB1T3GxIUzfpraL1a4I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QkoqK5juGrm80bGtiEiD2hJO5PlZqGEBGw/MFxUz4dQBUrJuRs0U00RcpcI8K81QAYS/qDi2wwrPGcEotwS9O3S/f0rhmO1aa1sgtQL+8f/qRPC3yUcRdEguMYttsFWMpXM98qFLuoI5McRDh1d+kVCzzBuV6PWL25H9nvrNiMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bynar.io; spf=pass smtp.mailfrom=bynar.io; dkim=pass (2048-bit key) header.d=bynar.io header.i=@bynar.io header.b=cQ0V94Kh; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bynar.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bynar.io
+	s=arc-20240116; t=1781608025; c=relaxed/simple;
+	bh=8L7LN5GWKaXLjw308PhIswoJMOtulW5cOuUEITh9aLI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Hhg8IhD/8r8O+Riwq+rfryG21Ls7Mhu6ztj7nP2aTl0NQr5n7V5eqEPBfXpsHsXkX1UeHw0VA0HFTd/iHHqXOiajx/Uz5Nh+0NVITbK5QlSOJTWwlB9hwBpV4ibfnNwNsPj2qDDegqboSPn2saCUQc1+h68uCb77MC4VP+w8ag0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=s0dDammC; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bynar.io header.i=@bynar.io header.b="cQ0V94Kh"
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5aa2c25c632so4440293e87.1
-        for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 04:04:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="s0dDammC"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4891b4934ffso44265e9.0
+        for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 04:07:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bynar.io; s=google; t=1781607879; x=1782212679; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=be9SAeX73nlM0ApRPdBK338zST/MXfWJxoZEdM6cwMg=;
-        b=cQ0V94Kh4fDe7vFkKPmwOXcuNSXd18So0R13CfUVBT962BlpZwhVg904t8wEBD7oSN
-         eqsMjTfZCd2bCdBwGUKNds7CFinc+FgN0+q0bIA7KcMSdk3nD4jDre12sGDptmiJmqrb
-         XZXk9OsSeB4SFtzXNUcOKsCnl/l6jdy3CbuwGNkEIhsTPSXE9LJFwM9HC3F2Cwb5/y8k
-         0BXfguvH/qZnKSF8lz+Fm3nMxTzkCm6DVHEtJfLwVDsYUfiPQVyFSOq+rKI1pyufYBjx
-         l7pfCKPZsFgq7soo3MmXvzVxQk8V8kgIQHkqLJQ0GR86XqSAzpHhbqwAdLJ4pDFmwm+5
-         eIhQ==
+        d=google.com; s=20251104; t=1781608022; x=1782212822; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=eJ3fUZ+/EYmTkDXUK4ZNvux/ajtwZf6cg0AECRGmMnI=;
+        b=s0dDammCBCw6WQnhJiLaI5FSDeCMnXGJ/V7Htq9NOoieO5xbrJ0d5WAfbAJmpiuHlb
+         vgXDnLkT0H+yGynRrxSohSposzVOdjBV1XV2yB0oz9RQNX82FG900JTUiKfNmWG1tEVs
+         EwT05VVo26DFdu3cntCQM+ZRwHnXaT+a2n1ptFfnx+O1gZCEG3NbT1jlaWt8NbY8Nw3R
+         kHlM3+qrspfscti8TWIvs9Jj5klAfStgA1GUCFfkkgOnYdckm4Gs+PEUz1zNbsDQyjq8
+         FaEmkueTkkDjLGECDitqGDjkvCYY8jDaKXf9q84g7Ezj8fzECCNj1MwNvLrJXmkgzrm1
+         w8OA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781607879; x=1782212679;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=be9SAeX73nlM0ApRPdBK338zST/MXfWJxoZEdM6cwMg=;
-        b=aty3HalhycFg/BHrLoOD35gS3FRgtXnAXH8BXiWn3/ovmBMsAhiSHrWAN2/Y5goPAy
-         yKhhsSrvBiLZ2EqVOXVodJbnUZ8Wb5I8I16aCKi6A4sopUc8O//scFJS2HY1CLdZdn43
-         YXeFS979NlqbFsxyylhkFLiB1luEVr9xN3T6edSG610cTQlk7P4EvzrIPAXgcuKUX+DI
-         ic4j4Of1IpnMlRasCl1XGAIyhEiJQj4nZobqNriX2jsRq8marM6Pn0sntriX6WZqBLsg
-         R20Qv7y8g3RCvo/VPnY8gHXMEGtKQ3txWAEhrOk7DYwF/GmNyHYu3SWMZKkdipAHc4kx
-         2fTQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8jED3Z0dlCqtWojeP1byzbY6iZJ1kRvzWCTmTz44ly8zndt4fhb4KQIfoPejacXM7w6l81rQg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwsN9S4LKAu7QN1A7G+9MYSguJ6cEYzs7wBEqJ30IY53LOF1Ulc
-	CsGbH8tBSDZEFkQYkuMUkum0s7Hai+yL6QlKads0bAkOdBIvCJ4EAtc+W9LDolSAuWr/
-X-Gm-Gg: Acq92OH5JsG1WGakzCNwlYjMop4tbldm64DeVtD/XH7UUXRAkUFJ5LQg5Q+Pi2XsIf+
-	ePKA0CFEXF6xkAlowBQW/SOAUqjwQs1KOATl0gwSGF6fHz9CYTbJMe3AoRU7XVjGjYmi37YGGYv
-	bF0PmZybjKo4uyoFPyLCB/jVxgEBee2Z3JBbGXzg5mNw3RgyvHjjpQ2zMqhXmhFs/9opZXiJGAC
-	lIqBpumdB+zYP2QZSFemAlSgmye1RihK0GoKG1CMVoSvXYJ/vlBJ6kUXWCdj7GEtj/fw+auXCzO
-	h2y/X7xFqi7cp1kovBf8nVQ6fz0w+DK7TMA+KORz2l7o8yxMx0zGUrxtgHWASjbSjoF9qhM5niS
-	j+kUnGfzGAthR70e6/l4ccH9qpaQMuybMxCembOQTYjEWLgMDaOYxLvTLEirggSMaYTrKpTiRfd
-	HoE5VtVH4X1YXWGIbyx7htJSw7nnd7WLi0sm87mkfFQt84MtAhQ1mj4XiNzxgV
-X-Received: by 2002:a05:6512:3984:b0:5aa:6290:f78d with SMTP id 2adb3069b0e04-5ad30d99426mr3972154e87.2.1781607878023;
-        Tue, 16 Jun 2026 04:04:38 -0700 (PDT)
-Received: from ?IPV6:2a00:23ee:1510:399a:1882:f251:1d3c:955? ([2a00:23ee:1510:399a:1882:f251:1d3c:955])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5ad2e16915dsm3486523e87.19.2026.06.16.04.04.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 Jun 2026 04:04:37 -0700 (PDT)
-Message-ID: <fa2e0cfb-9d60-4295-8a46-f69ce1229094@bynar.io>
-Date: Tue, 16 Jun 2026 12:04:32 +0100
+        d=1e100.net; s=20251104; t=1781608022; x=1782212822;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=eJ3fUZ+/EYmTkDXUK4ZNvux/ajtwZf6cg0AECRGmMnI=;
+        b=bT9ATdUbrO+2TTJFWzUY5FXhRH4s6i4wImyIQji0PsmkdiyLul6O4i4Qer8q5WEBXR
+         XqRWJD0fTM/XQUpobDIM5EH1bKd7SUaKc23ZvuAexnG6ltvMDM/s/ah5Qx80tLizXAm4
+         EPXUa0wmUhupkKfrq+8ydjkpgImTdzLwc/4OJaSAPrTNQ5NM7YhfgjS5ds38IgBQacDk
+         XKsUfDrYSVavcBbmXOarfkAwJQTkBPVnGs05OXAg5nAa/KPRLwKCTGzcDonj2nsAFBTn
+         87HSvsWBA0Raz05BCQ7CXjLeVi+LrCwbBR21OP3wsX2k0ffq+tfPakTwzwRxNHLQB9L0
+         9IPg==
+X-Forwarded-Encrypted: i=1; AFNElJ+3KH2uKEYABdxZkFBcWgmk44cQhJPOgV5CdrlPXdbCacHubjzKXpcxsb8LUxrIuP+MXBmcyqY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx2KeFcEDsh0KQ0ivE/Frc2kM2vCWuHuzrjaDrBGLJb/N0HgPoB
+	nI3PBH5E66oab8WLCBsZaoOcRsOJiY+vld+3b/VbJyVrQ4AIB0kV8g8EhLB4cG4EdA==
+X-Gm-Gg: Acq92OEez2LDe8yuDKnE1FSnsbSUOxplHTcY99CgTK+esQHAl5ChYrqoxDFsqu0Q/Iq
+	V7sb6OK+WUxfBnoaq/rDoWNbX6OG9ZBags5b0YYKDmrcG8+66+teMNdXbyJl+HkUHt2eFZ9PChb
+	EtKyCg5g7GFBZuzzUE3srSRmKz1K6ndR+PDaRC7E2B+LtndyFZNucfBQJB2APpov3M+IXEUkMOy
+	joAhEhjE8JlMSv2MJLWHKqIjIOT89WynWzus6M4VkfnWrKkUf8SSiObyUUeEyFdsSBw7HAnhkg7
+	5GYr3saWiQBiE0UMUoNzc0U6W20PlF2FduL4hPmM2ekE8J07esoH84C1wwA4v55zJQ6sgZonp+E
+	UT68ZPx8lMhc5hqT2IGslWM4a4uvpBbcaA0yJISRjS+bWEO61+yqYmEevv26Jt6UkmKcL/JOk0k
+	bt8EUGWsimnUPmr+5e2w44xlIVA+2jCQhwUI3DeczTm1tuAKHdWcLB5wgP5ZuAWQ==
+X-Received: by 2002:a05:600c:c059:10b0:48a:5aa3:ac1e with SMTP id 5b1f17b1804b1-4923088e313mr879485e9.3.1781608022038;
+        Tue, 16 Jun 2026 04:07:02 -0700 (PDT)
+Received: from google.com (140.240.76.34.bc.googleusercontent.com. [34.76.240.140])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f26393asm46289637f8f.5.2026.06.16.04.07.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Jun 2026 04:07:01 -0700 (PDT)
+Date: Tue, 16 Jun 2026 11:06:57 +0000
+From: Mostafa Saleh <smostafa@google.com>
+To: Luigi Rizzo <lrizzo@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, rizzo.unipi@gmail.com,
+	m.szyprowski@samsung.com, robin.murphy@arm.com, willemb@google.com,
+	kuniyu@google.com, davem@davemloft.net, edumazet@google.com,
+	pabeni@redhat.com, gregkh@linuxfoundation.org, rafael@kernel.org,
+	akpm@linux-foundation.org, david@kernel.org, netdev@vger.kernel.org,
+	linux-mm@kvack.org, iommu@lists.linux.dev,
+	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] swiotlb: avoid double copy with swiotlb on tx socket
+Message-ID: <ajEuUZMgS_NRmDcp@google.com>
+References: <20260615234220.3946885-1-lrizzo@google.com>
+ <20260615172535.080cf94f@kernel.org>
+ <CAMOZA0KAHKsvA9yRcdrjG13S+=rJhw-Cvnw2WdLjGGY0azG0kw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] tipc: free bearer discoverer via RCU to fix
- tipc_disc_rcv UAF
-To: Tung Quang Nguyen <tung.quang.nguyen@est.tech>
-Cc: "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "tipc-discussion@lists.sourceforge.net"
- <tipc-discussion@lists.sourceforge.net>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Jon Maloy <jmaloy@redhat.com>, bestswngs@gmail.com
-References: <20260615150009.1734270-1-sam@bynar.io>
- <GV1P189MB19887A9A37B5B170C112DF8EC6E52@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
-Content-Language: en-GB
-From: Sam P <sam@bynar.io>
-In-Reply-To: <GV1P189MB19887A9A37B5B170C112DF8EC6E52@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMOZA0KAHKsvA9yRcdrjG13S+=rJhw-Cvnw2WdLjGGY0azG0kw@mail.gmail.com>
 
-On 16/06/2026 08:50, Tung Quang Nguyen wrote: 
-> A similar patch was submitted 6 days ago: https://patchwork.kernel.org/project/netdevbpf/patch/20260610153349.2546041-2-bestswngs@gmail.com/
+On Tue, Jun 16, 2026 at 02:33:52AM +0200, Luigi Rizzo wrote:
+> On Tue, Jun 16, 2026 at 2:25 AM Jakub Kicinski <kuba@kernel.org> wrote:
+> >
+> > On Mon, 15 Jun 2026 23:42:20 +0000 Luigi Rizzo wrote:
+> > > The use of swiotlb causes an extra data copy on I/O.  For tx sockets,
+> > > especially with greedy senders, this has a high chance of happening in
+> > > the softirq handler for tx network interrupts, creating a significant
+> > > performance bottleneck.
+> >
+> > What's the use case? I associate swiotlb with debug / testing mostly,
+> > so it'd be useful for people like me to explain why you care.
 > 
-> I do not receive updated patch from the submitter yet.
-> Your patch has the same coding style issue (long line, over 80 columns), see linux/Documentation/process/coding-style.rst
+> Ah sorry, I forgot to mention.
+> swiotlb is used in guest kernels for confidential computing VMs.
+> Ordinary memory pages are encrypted and the host or devices
+> have no way to decrypt them, so the kernel must use
+> unencrypted bounce buffers to exchange data with I/O devices.
+
+I started looking into the same problem recently, to reduce the
+bouncing in protected KVM (pKVM) confidential guests.
+My first attempt was to update dma_direct_map_phys() to skip
+bouncing and do inline memory decryption (for pKVM that is a hypercall
+which updates the stage-2 page tables), however, that was really slow
+compared to the memcpy in bouncing even for massive pages.
+My conclusion was similar that we need to solve this at construction
+by making this memory allocated from a pre-decrypted pool (which
+does not have to be part of the SWIOTLB)
+My initial idea was to teach some of the kernel subsystems (SKB,
+BLK, SLAB) about "CoCo allocators" that allocate decrypted memory,
+as this is not a net specific problem.
+
+I am still looking into this, I was planning to bring this up in the
+upcoming LPC.
+I will give this patch a try. However, I believe that we need a more
+generalised concept for CoCo pre-decrypted allocators in the kernel.
+
+Thanks,
+Mostafa
+
 > 
-> If you break the long line into 2 lines and submit again, I think I can acknowledge your patch.
-
-Oops, I missed that patch! I'm not sure what the etiquette
-is in this case, but I'm happy to defer to the original
-submitter (CCd) if they're working on a new patch and/or
-add any appropriate trailers to my v2.
-
-I've prepared a v2 to submit after the ~24h period,
-addressing your changes and taking into account Eric's
-feedback from the earlier submission as well
-(adding an rcu_barrier() in tipc_exit()).
-
+> cheers
+> luigi
+> 
