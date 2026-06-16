@@ -1,159 +1,88 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C00934889F;
-	Tue, 16 Jun 2026 15:38:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B9339282C;
+	Tue, 16 Jun 2026 15:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624336; cv=none; b=KoqD+Y+nk/8ya4+iwL5+EFCyiqPT3MKL7Jerf26nrCiFwlhlyj/TYiRR8S1Fl5NYVyQE9tkeFkVADacxWZVIdoXOMb+g69O/f/HxAB4JvNHIk/iNdz9igtitB0lKOF2MEFC4lf1Bg+aBWmwGgCKouWdTRxLt3M4ZzY60Sf3ohMc=
+	t=1781624943; cv=none; b=QHc2a7ikmJUfhXa3JSo+B6cbs2vOG5NSYIQNQMgpxIwagpjeWoz7N8nUvOqdZMarNRWYbjZ/cvaDPFDDsDqTSg8VWNpNJqsewXVMjZBoaxIBWBiLeu09mf6mAdR5H1AlIFJ+MMzbIbuGpnp8ImGtm2ea3hdy1+Lne0J6jAwWHa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624336; c=relaxed/simple;
-	bh=Yd+8gkZvuBf6TELS3hA7y+TKR7gkefGaMvb0p0Jkgho=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nlHmDeaH93AthLeU6+TJmhObCeLZ+D7EaHQnaLvlLpsWD7aMVdcMFXp4HkoYXW/pH8N74y4mtk3AJMeuPgsO0ssaRhIM91tNPZwtYlt/N2WCEGI0gPp1k+3fBl7eXDrr60q4fysxf9REtH5STa6Jsa6Od300bjRKSvWPCggPA9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AKidPHRl; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781624943; c=relaxed/simple;
+	bh=NQKEtwuJplslo1S0a1EuGFXO5pQxOKxvj/9PhHq1Gw0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eAsEYpyUHsE2ca0dy5FYNCEzzNhAYhmc2CzqGzuncP41+T73jgsm/NbNYiWT4CGlI7p88iDoWks/FUhVTtFzJbW//E5NfT+Td0/Se3x3vOF44LElgN5C2OUatuTcmDDXxKFGTvzQESOG8tqSrtXBysaizhC13eRNPvpu19EEcg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K1Zgu4IM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AKidPHRl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 820ED1F000E9;
-	Tue, 16 Jun 2026 15:38:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624335;
-	bh=QPwG/1zga6N4eayrk9XWciA/NcnISqRcg3qJiO78OwU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AKidPHRlV36aAkEf0N1ArCRo+IZGDMLQ4OqHxOfV7/X8TU/zL0Gm9MbWEVF/4fgO/
-	 jVDLssoEbD9G2Igj6fEwq/gKH8YSZoIbF/va/FbvaoMT49/7VX3duv1lbtOaWYNd8B
-	 yikasAeeh1P7s/r2W1WRRn0OnvtkN7H7JEk6fO/I=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	netdev@vger.kernel.org,
-	stable@kernel.org
-Subject: [PATCH 7.0 317/378] rxrpc: Fix the ACK parser to extract the SACK table for parsing
-Date: Tue, 16 Jun 2026 20:29:08 +0530
-Message-ID: <20260616145126.942134948@linuxfoundation.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K1Zgu4IM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D13EC1F00A3A;
+	Tue, 16 Jun 2026 15:49:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781624942;
+	bh=LwBPJI0zIYaGqkx1gEaeFo2rsRmh3p4qrOGbWDxyeO0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=K1Zgu4IMExh7jVVg+2IFXKcFfxCtgqqknPSgNk95pMqsypDLzD2QVFu6TptWzkDGZ
+	 1YRTc4b7aRDRfRCJLepsIdRKV5PlqaJRGKGzjOzgErOK+HC6N+5vicmrEDClCyYvrG
+	 YEm5iik1EYQiaWU5qzafp8VM/hJ1QPW6iusrwEaaSZWtD/CtGIzbai0Z2JCQJPH2nz
+	 4I/CEpzHPrk0WGCzwnkZeJSrepcJ3biv4V1RH6JUebicDQcaPZifoORh3ZbSOpE+do
+	 CDP1qjdZij4tJYT85PBnJMjWGjmTmywO1no7Rx4VzWJeyaIo6tBSEENR2qURrq5B8B
+	 wOgf3aKc7W4kg==
+Date: Tue, 16 Jun 2026 08:49:01 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Carsten Strotmann <cas@strotmann.de>
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ geert@linux-m68k.org, chleroy@kernel.org, npiggin@gmail.com,
+ mpe@ellerman.id.au, maddy@linux.ibm.com, linux-mips@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH net-next 0/2] appletalk: move the protocol out of tree
+Message-ID: <20260616084901.3319d82e@kernel.org>
+In-Reply-To: <A3590144-073C-46D6-8425-90EE0C4D48E8@strotmann.de>
+References: <20260615222935.947233-1-kuba@kernel.org>
+	<c3789160609a10e232ba3e27c4b13adbb170956c.camel@physik.fu-berlin.de>
+	<20260615175535.5bc56cfc@kernel.org>
+	<A3590144-073C-46D6-8425-90EE0C4D48E8@strotmann.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+On Tue, 16 Jun 2026 09:13:46 +0200 Carsten Strotmann wrote:
+> I'm a user of AppleTalk and other "Retro"-Features in the Linux Kernel.
+> 
+> On 16 Jun 2026, at 2:55, Jakub Kicinski wrote:
+> 
+> > We can complain about the AI slop til the cows comes home.
+> > I don't like it, you don't like it. What difference does it make?
+> >
+> > If y'all have real solutions please share. Complaining about
+> > "commercial interests" and "nuk[ing] everything in a panic reaction"
+> > is not helpful.  
+> 
+> the solution, as Adrian pointed out, is to leave these features in
+> the Linux kernel but have them disabled by default.
 
-------------------
+I think y'all need to internalize that "just leave it in" means work.
+_Someone_ has to handle the reports and patches. And since nobody is
+doing that the code is going to GitHub, where it can continue to "just
+be left" or whatever, without racking up CVEs for the Linux kernel
+and leading to maintainer burn out :/
 
-From: David Howells <dhowells@redhat.com>
+> Maybe put a warning message in the kernel config tools that people
+> should only enable these if they know what they are doing.
+> 
+> These "retro"-features should not pose any security risk of they are
+> not compiled into a kernel.
 
-commit 333b6d5bb9f87827ac2639c737bf9613dbae7253 upstream.
+Nobody is stopping you from using this code! It's perfectly suitable 
+to be an out of tree module. Maybe it'd be harder if someone wanted to
+remove a CPU architecture you want to use, but protocols are perfectly
+fine as loadable modules. You can continue to use the code from:
+ https://github.com/linux-netdev/mod-orphan
 
-Fix modification of the received skbuff in rxrpc_input_soft_acks() and a
-potential incorrect access of the buffer in a fragmented UDP packet (the
-packet would probably have to be deliberately pre-generated as fragmented)
-when AF_RXRPC tries to extract the contents of the SACK table by copying
-out the contents of the SACK table into a buffer before attempting to parse
-
-AF_RXRPC assumes that it can just call skb_condense() and then validly
-access the SACK table from skb->data and that it will be a flat buffer -
-but skb_condense() can silently fail to do anything under some
-circumstances.
-
-Note that whilst rxrpc_input_soft_acks() should be able to parse extended
-ACKs, the rest of AF_RXRPC doesn't currently support that.
-
-Further, there's then no need to call skb_condense() in rxrpc_input_ack(),
-so don't.
-
-Fixes: d57a3a151660 ("rxrpc: Save last ACK's SACK table rather than marking txbufs")
-Reported-by: Michael Bommarito <michael.bommarito@gmail.com>
-Link: https://lore.kernel.org/r/20260513180907.2061972-1-michael.bommarito@gmail.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Eric Dumazet <edumazet@google.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: netdev@vger.kernel.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/105362.1780573560@warthog.procyon.org.uk
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- net/rxrpc/input.c |   26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
-
---- a/net/rxrpc/input.c
-+++ b/net/rxrpc/input.c
-@@ -963,23 +963,34 @@ static void rxrpc_input_soft_acks(struct
- 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
- 	struct rxrpc_txqueue *tq = call->tx_queue;
- 	unsigned long extracted = ~0UL;
--	unsigned int nr = 0;
-+	unsigned int nr = 0, nsack;
- 	rxrpc_seq_t seq = call->acks_hard_ack + 1;
- 	rxrpc_seq_t lowest_nak = seq + sp->ack.nr_acks;
--	u8 *acks = skb->data + sizeof(struct rxrpc_wire_header) + sizeof(struct rxrpc_ackpacket);
-+	u8 sack[256] __aligned(sizeof(unsigned long));
-+	u8 *acks = sack;
- 
- 	_enter("%x,%x,%u", tq->qbase, seq, sp->ack.nr_acks);
- 
- 	while (after(seq, tq->qbase + RXRPC_NR_TXQUEUE - 1))
- 		tq = tq->next;
- 
-+	/* Extract an individual SACK table.  A normal SACK table is up to 255
-+	 * bytes with 1 ACK flag per byte, but an extended SACK table can be up
-+	 * to 256 bytes with up to 8 ACK/NACK flags per byte.  The ACK flags go
-+	 * across all bit 0's then all bit 1's, then all bit 2's, ...
-+	 */
-+	memset(sack, 0, sizeof(sack));
-+	nsack = umin(sp->ack.nr_acks, 256);
-+	if (skb_copy_bits(skb,
-+			  sizeof(struct rxrpc_wire_header) + sizeof(struct rxrpc_ackpacket),
-+			  sack, nsack) < 0)
-+		return;
-+
- 	for (unsigned int i = 0; i < sp->ack.nr_acks; i++) {
- 		/* Decant ACKs until we hit a txqueue boundary. */
-+		if ((i & 255) == 0)
-+			acks = sack;
- 		shiftr_adv_rotr(acks, extracted);
--		if (i == 256) {
--			acks -= i;
--			i = 0;
--		}
- 		seq++;
- 		nr++;
- 		if ((seq & RXRPC_TXQ_MASK) != 0)
-@@ -1117,9 +1128,6 @@ static void rxrpc_input_ack(struct rxrpc
- 	    skb_copy_bits(skb, ioffset, &trailer, sizeof(trailer)) < 0)
- 		return rxrpc_proto_abort(call, 0, rxrpc_badmsg_short_ack_trailer);
- 
--	if (nr_acks > 0)
--		skb_condense(skb);
--
- 	call->acks_latest_ts = ktime_get_real();
- 	call->acks_hard_ack = hard_ack;
- 	call->acks_prev_seq = prev_pkt;
-
-
+Presumably you could get Debian to package that and you wouldn't even
+know the sources no longer live in the kernel tree.
