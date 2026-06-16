@@ -1,136 +1,97 @@
-Received: from server.couthit.com (server.couthit.com [162.240.164.96])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35291FFC59;
-	Tue, 16 Jun 2026 12:38:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94B3361662
+	for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 12:40:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781613520; cv=none; b=heuZ69DY1R47P5OdaZyKLLVAHSh5SEMqTFPgnRWNsnGJvZAB0JptS5SdpSVOVVm+2RzmwqBZAKLgKNq4kCK9QgmNKJ+xh0wiwb3JvsH0zCkf+7xl3w8670c5RvWyViRbnmhUz54ay71KxJ/YZVDA8HeEyvyk5eoDoA20momvFLw=
+	t=1781613604; cv=none; b=d9pqcTevvifHf8XgiAbGdzm20qlmIzACgy5dh9PYB+4nQdoTmtvNwttKy8a2fCwmqpuKBTS4dP99iMTm1rtqr55Fh0VOjDMuL2gtvLhSCkHaEWY7Fun5SeWejjFS5KD3WR/50XzNkc8HQItNuBz5NCfS0mG0Qm8rW0N66HAHHIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781613520; c=relaxed/simple;
-	bh=1HZnf3YOIZr3sNa+UAJiKFcAZfuOWvElho0ZtXxTpxo=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=XJSd85yuRWwln6xBeLWB7XVclGsZmFTzVo1W+iET9cfC0h46GZS3qdOa/2mrfeuY+Xp09+hp5dCHphyFBsXsUElS1Ulbek4s6H+C2Bb2Y/INM7Je7EOIxxT9DWJbifuI7M0IF8Sha6Tq5CC1eqsGe75RCwyALPgTGXSpwHfA0I8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=eK+jspAT; arc=none smtp.client-ip=162.240.164.96
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
+	s=arc-20240116; t=1781613604; c=relaxed/simple;
+	bh=+qoGij95oCB5Tcj73SYSEIQXpI4gExKhrc1Em04cpas=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=NdCUDYe2IoJcjwWI9/E/STuCBX7D7tJLVqeAplDlcObou4PEYu4xW7l+2+9PSU9vRdPsVBs9dJSnlbgthMre9+7bqbZ+RvegC78BY1J7jKOKn2t7MDzAcwDboPTFmjoIOUg2FznYzAVx9t+IR5y15IUqjT8GcjtpgGPEXsmZCYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pEo8i2LW; arc=none smtp.client-ip=74.125.82.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="eK+jspAT"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
-	; s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:
-	References:In-Reply-To:Message-ID:Cc:To:From:Date:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=wckBC5c3hxxozy+99Tfp2OGtxZAPUj+u4sggN2dYdKM=; b=eK+jspATY35msdfbuS2bfO/vxH
-	OZuCLaX+VbPQhCNfNtpbJrTL++QtTQhLKXAFZzNzTHQ/6c58GsivezfOCQxXFrdFTq0DeYk0REgZu
-	keS/0lhiHJE/08PPtO7MdVfKV00ZaU7AiZLYpv48lk5TH2Fx/EfNFORQ8MkYNKJQ0A/uEMhy9p5Ql
-	nvZc24kPzEv6QaRK5f2JOQudf0+cmAjgFV02yv9kS0xMqN967tMqcB87dIKmEPPJWCFGT+MtBPSuv
-	WDM+hEfxUMNWpAoH5DBUQNbD3Ie+zP3VkdaS/lIMiZQR7LsFGMkgBdhvaF4M0mm1BoaS9XgY0od08
-	l95aaJOQ==;
-Received: from [115.246.246.98] (port=64590 helo=zimbra.couthit.local)
-	by server.couthit.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.4)
-	(envelope-from <parvathi@couthit.com>)
-	id 1wZT3k-0000000At2L-2NQa;
-	Tue, 16 Jun 2026 08:38:28 -0400
-Received: from localhost (localhost [127.0.0.1])
-	by zimbra.couthit.local (Postfix) with ESMTP id BBE2119A7F6F;
-	Tue, 16 Jun 2026 18:08:20 +0530 (IST)
-Received: from zimbra.couthit.local ([127.0.0.1])
- by localhost (zimbra.couthit.local [127.0.0.1]) (amavis, port 10032)
- with ESMTP id I02UczKp5CFk; Tue, 16 Jun 2026 18:08:19 +0530 (IST)
-Received: from localhost (localhost [127.0.0.1])
-	by zimbra.couthit.local (Postfix) with ESMTP id 4213E19A7F69;
-	Tue, 16 Jun 2026 18:08:19 +0530 (IST)
-X-Virus-Scanned: amavis at couthit.local
-Received: from zimbra.couthit.local ([127.0.0.1])
- by localhost (zimbra.couthit.local [127.0.0.1]) (amavis, port 10026)
- with ESMTP id 0To_K82wJQZa; Tue, 16 Jun 2026 18:08:19 +0530 (IST)
-Received: from zimbra.couthit.local (zimbra.couthit.local [10.10.10.103])
-	by zimbra.couthit.local (Postfix) with ESMTP id 25E6F19A7F6F;
-	Tue, 16 Jun 2026 18:08:19 +0530 (IST)
-Date: Tue, 16 Jun 2026 18:08:19 +0530 (IST)
-From: Parvathi Pudi <parvathi@couthit.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Parvathi Pudi <parvathi@couthit.com>, andrew+netdev <andrew+netdev@lunn.ch>, 
-	davem <davem@davemloft.net>, edumazet <edumazet@google.com>, 
-	pabeni <pabeni@redhat.com>, danishanwar <danishanwar@ti.com>, 
-	rogerq <rogerq@kernel.org>, pmohan <pmohan@couthit.com>, 
-	afd <afd@ti.com>, basharath <basharath@couthit.com>, 
-	arnd <arnd@arndb.de>, linux-kernel <linux-kernel@vger.kernel.org>, 
-	netdev <netdev@vger.kernel.org>, 
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
-	pratheesh <pratheesh@ti.com>, j-rameshbabu <j-rameshbabu@ti.com>, 
-	Vignesh Raghavendra <vigneshr@ti.com>, praneeth <praneeth@ti.com>, 
-	srk <srk@ti.com>, rogerq <rogerq@ti.com>, 
-	m-malladi <m-malladi@ti.com>, krishna <krishna@couthit.com>, 
-	mohan <mohan@couthit.com>
-Message-ID: <358063548.1400426.1781613499101.JavaMail.zimbra@couthit.local>
-In-Reply-To: <20260615135600.655e4be4@kernel.org>
-References: <20260611123636.376577-1-parvathi@couthit.com> <20260611123636.376577-4-parvathi@couthit.com> <20260615135600.655e4be4@kernel.org>
-Subject: Re: [PATCH net-next 3/3] net: ti: icssm-prueth: Support duplicate
- HW offload feature for HSR and PRP
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pEo8i2LW"
+Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-30bb2df6fbbso1333490eec.0
+        for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 05:40:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781613603; x=1782218403; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+qoGij95oCB5Tcj73SYSEIQXpI4gExKhrc1Em04cpas=;
+        b=pEo8i2LWRYoozGPu5oIpXOukzWB/Elcq6XtfxfC2tyRr47iSJC2PG5aoWpB3A7wP45
+         Flsjf4/D7ahJd/dr8sDScT/0slGgGKOoRNo7Ri35sBqrcPRQWkoqhRtJRTX2KaETNbR/
+         B4/pRdjZCrDXMtB3kl8qbpIhvJP4MfPUuQmPoFqvtZbI/Px5Po1TagmF6BunWzeZALf3
+         2UnTdQzgJtfknLPVvkQ1yHVRj0LesSqvCgZik/6xo4MxO8EPhVTQAWRLcdJI5eXtMnky
+         rPcUwF6cgtCRXTwZKZRJ2wCBOgImHacR5A4vTsUAf065+C2+be3qxoVp6dxqK8TUtrSZ
+         hLxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781613603; x=1782218403;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+qoGij95oCB5Tcj73SYSEIQXpI4gExKhrc1Em04cpas=;
+        b=GOPvqubAt4BbxQPJEaUwKMQwX5OXEZD09OsdQ5KL0wfedZB5gHPdVYJmXZoFnfSJkQ
+         e5IF+/lupBenUo3piLT9gqR2mHfxDw15JHlWZprpZgzY8ta0XPPi2HjQzJySTY6Jp4EV
+         LTP+daFN/LfFC0rSCITNYGPi1frcOu9R3hMZyk6hyENkR7jwdOkHjzj2q16+idkaNgC5
+         vXhKMMMUjYtcuf1ZEzosIaz7q7u3MUGyMqtTb3uTnEp46/CdZpUtvKQZ0icesmLj6OSz
+         eFdKJIE1gINBGRj6KtqFGjXhl+Yhd9JAZGAsWtVEZNac5ZegZ11btxckQx1zm9LVIYVe
+         e8kg==
+X-Forwarded-Encrypted: i=1; AFNElJ8l4infTuKdgT0UzDs6ijcqrmBC6zAoSQ30vkPeVoc/J2YkG2mYGkJ5GC/fE9ViqDjHWbvfftQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/RGfDZxrBhzo19ejF/gk70QNYYzxCLd0IYvCiREHarHQhvzZF
+	eJHUURDX5YHQUz0olERJr8gxkblenk4dilr8HNcsA5JcGx9UIRke1kDv
+X-Gm-Gg: Acq92OHt8D3/9zIFZupx3t4yRACLUqOVkD4UHU/2gn0LcCuz5hjSwaDJ5CzdWZk2qja
+	/dF8xagfx1ofh+2ZYlK+hs4R3HWuw7We7ZiiPLtR1BhCzP8NCS+LFx7L0FOP3s7RA3vz0oRZgvy
+	KPxRzCDgi339KppndG/LWiiu+ZuFt67ugUIw3kNROspN11inI1haSBPmejj8gGoUVYKB5kbMes2
+	vweB2eGRMVBechClt83HkVrXrnNbFwPFqJnDllvb6GkWVgaJH7HYPfEENMZZMDk6wG/099Eeu1N
+	P57WlShmal4/baH+pW8VIJq8w/e3y6/RLoCoJvWf59pf70BDbahyaa8Z7TG9cYqbWb8zCBIkQAs
+	cXnM9OijIy1YOXvBZBFJtuZpGLOllCqMnyzR1Zp9sM4xwXNWeK7iKMJjwlMmDrQQ7/J7pN5+tuW
+	/9/CnNZgDDOdkfSmZcykGy43TQIu3EIeQ3dwEwnHiwa4KUd+wInrc=
+X-Received: by 2002:a05:7300:d10:b0:2ed:e12:3773 with SMTP id 5a478bee46e88-30ba5fb4473mr2390102eec.35.1781613602609;
+        Tue, 16 Jun 2026 05:40:02 -0700 (PDT)
+Received: from localhost ([198.176.50.157])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3081e48bfa7sm18872680eec.5.2026.06.16.05.39.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 16 Jun 2026 05:40:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: Zimbra 9.0.0_ZEXTRAS_20240927 (ZimbraWebClient - GC148 (Mac)/9.0.0_ZEXTRAS_20240927)
-Thread-Topic: icssm-prueth: Support duplicate HW offload feature for HSR and PRP
-Thread-Index: kRQq2cZyjwWaZc+5ja0kIgdhxnV0YQ==
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.couthit.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - couthit.com
-X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: smtp@couthit.com
-X-Authenticated-Sender: server.couthit.com: smtp@couthit.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 16 Jun 2026 20:39:57 +0800
+Message-Id: <DJAHB7Q63R2X.1IQUT9806HSE8@gmail.com>
+Cc: "Chas Williams" <3chas3@gmail.com>, "David S . Miller"
+ <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Paolo Abeni"
+ <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
+ <linux-atm-general@lists.sourceforge.net>, <netdev@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Xiang Mei" <xmei5@asu.edu>
+Subject: Re: [PATCH v2] atm: fix use-after-free in sigd_put_skb()
+From: "Weiming Shi" <bestswngs@gmail.com>
+To: "Jakub Kicinski" <kuba@kernel.org>, "Weiming Shi" <bestswngs@gmail.com>
+X-Mailer: aerc 0.21.0
+References: <20260609162107.2865310-2-bestswngs@gmail.com>
+ <20260612161051.2d4df09b@kernel.org>
+In-Reply-To: <20260612161051.2d4df09b@kernel.org>
 
-Hi,
+On Sat Jun 13, 2026 at 7:10 AM CST, Jakub Kicinski wrote:
+> On Wed, 10 Jun 2026 00:21:08 +0800 Weiming Shi wrote:
+>> sigd_put_skb() delivers a signalling message to the daemon socket named
+>> by the global @sigd pointer, ending in a call to sk_data_ready(). It
+>> reads @sigd with no synchronisation, so it can race with a close of the
+>> daemon socket: sigd_close() clears @sigd and the socket is then torn
+>> down and freed.
+>
+> Hm, we intend to only retain the portions of the ATM stack which are
+> still used in PPPoATM and ADSL. I don't believe the signaling stuff=20
+> is used there. I will post a patch to delete this code.
 
-> On Thu, 11 Jun 2026 18:03:28 +0530 Parvathi Pudi wrote:
->> From: Roger Quadros <rogerq@ti.com>
->> 
->> In HSR and PRP modes each outgoing frame must be sent on both PRU slave
->> ports.
->> 
->> Previously the driver was writing the frame into each port's transmit queue
->> independently after updating the tags resulting in performing two OCMC
->> buffer copy operations.
->> 
->> Frame duplicate offloading is implemented with a common shared queue
->> between the two ports. The driver writes the frame once into OCMC RAM,
->> each port reads from the shared queue and replicates the transmission to
->> both PRU ports, synchronising between PRU ports are maintained within
->> firmware with appropriate handling.
->> 
->> For HSR the driver inspects the encapsulated ethertype in the HSR tag.
->> PTP frames (ETH_P_1588) are sent on the directed port only to avoid double
->> duplication and all other HSR frames are duplicated to both ports.
->> VLAN-tagged HSR frames are handled by advancing past the 4-byte VLAN header
->> before reading the HSR tag.
->> 
->> For PRP the driver checks the 6-byte RCT trailer for the ETH_P_PRP suffix
->> to identify redundancy-tagged frames. Frames without an RCT are sent on the
->> originating port only.
-> 
-> Warning: drivers/net/ethernet/ti/icssm/icssm_prueth.h:113 struct member
-> 'host_recv_flag' not described in 'prueth_packet_info'
-> 
+Thanks, that makes sense to me.=20
 
-We will address this in the next version.
-
-> Please note that net-next will be closed for the next two weeks.
-
-Also noted regarding the net-next closure. We will post the updated series
-once the tree reopens.
-
-Thanks and Regards,
-Parvathi.
