@@ -1,164 +1,140 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1017423142
-	for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 09:20:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0045330BB9B;
+	Tue, 16 Jun 2026 09:25:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781601632; cv=none; b=rMGoXSVYEEeXKhIb8HsScsnHwrnMGxX8pa1nSR55+7u6+sClRxJI1FlczFJBNYAGQAoeQWKJsjxniVSopIVIejmc4+/Rf/bmpDTSQ8MuJW+5/AZCmb3+YK7/o8gRXLU1Vx6nXGiPZ1JfmFQs43v0yllxDUjW/v0eYNY4umykhl8=
+	t=1781601957; cv=none; b=V8Ql1W8AO2vnBCz0xLLUZWdqBwnN+npZ91lFSA6i/lKeFJLz7gPf74FJTJuqXg05aecDA8jncLOdIUrziy5QRVjHwLEHD0Lo77n/0dU3L8GOIf8YRcR1LVzill77VHl+NZuDTCAzkTeGLuIpZlZzHwPQIBxVrTj9Uwdjua8v6qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781601632; c=relaxed/simple;
-	bh=i0DVo8L4z7bKXdFdqTZAdPKP4ihP4U+9EZ39XGunM3s=;
+	s=arc-20240116; t=1781601957; c=relaxed/simple;
+	bh=TtifNOYPVhoMafVwpVEQep+EfwNSl6WGJi3e7DdtEnA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aOJv2Sy4TJN/MeuVK/rWeFzbx4r0o4XTxbljEb47uVFAqyfMgrFRk4fWyC/exOWM+9VLkdxdcgnTLgE0viMz00LUMfEWVOJOubq6YP3YsbJJGRDrEFLdWT+iAe0qZL8ebaqVKY4P1Yuj4PZdPGHzixgl3uXgelJBrYyEVox0k3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=GG1VgaOa; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=OmMcESaN; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=GG1VgaOa; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=OmMcESaN; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=WFMNZl9K5ebcVwQKfLwPhT/RkADJN7628eEmwZC/K1Pg3PIoC2J/5q64jKOfowBlEcLKnBoUlnQMeXoKWSCRng0jkqEvTRL1TwO73ac3JjfYFpPYRS4PycYDaEWp3xDIu/P8XejgVqcZs0hiKm8NTPs1XV01Cv/BrRoNuYEYync=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iHjsBn6Z; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="GG1VgaOa";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="OmMcESaN";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="GG1VgaOa";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="OmMcESaN"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 013356C6B9;
-	Tue, 16 Jun 2026 09:20:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1781601629; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1yCvhH13gtBfeltjB9Ohv+Zzo8kfs8ztYt0Jc+FSMBg=;
-	b=GG1VgaOa/mxsWhVtWBV31CGGeWvEvBjcmIQ4YxWXPZlesczPS6DWMrswsTUIBiF6h94qwP
-	/2TxhAtMBz+2kO/VUK6sPjpaJ+aFe74HPKE8TTAn7qdfPycnqY6Vp35gtB1E4bmdbbDtTw
-	Pc2gOKpO9CNRiLXWBteAsxn7qhglsZE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1781601629;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1yCvhH13gtBfeltjB9Ohv+Zzo8kfs8ztYt0Jc+FSMBg=;
-	b=OmMcESaNOU9hK6UE4bKh79NId7JOMOXXy4UlXza8smGwMf85+9pPvCj6A94Z1iiEXfUrt2
-	+MDehBtltHZH8ACw==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=GG1VgaOa;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=OmMcESaN
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1781601629; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1yCvhH13gtBfeltjB9Ohv+Zzo8kfs8ztYt0Jc+FSMBg=;
-	b=GG1VgaOa/mxsWhVtWBV31CGGeWvEvBjcmIQ4YxWXPZlesczPS6DWMrswsTUIBiF6h94qwP
-	/2TxhAtMBz+2kO/VUK6sPjpaJ+aFe74HPKE8TTAn7qdfPycnqY6Vp35gtB1E4bmdbbDtTw
-	Pc2gOKpO9CNRiLXWBteAsxn7qhglsZE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1781601629;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1yCvhH13gtBfeltjB9Ohv+Zzo8kfs8ztYt0Jc+FSMBg=;
-	b=OmMcESaNOU9hK6UE4bKh79NId7JOMOXXy4UlXza8smGwMf85+9pPvCj6A94Z1iiEXfUrt2
-	+MDehBtltHZH8ACw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9D3D9779A8;
-	Tue, 16 Jun 2026 09:20:27 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id JOUNI1sVMWoTMAAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 16 Jun 2026 09:20:27 +0000
-Date: Tue, 16 Jun 2026 10:20:25 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Luigi Rizzo <lrizzo@google.com>
-Cc: rizzo.unipi@gmail.com, m.szyprowski@samsung.com, robin.murphy@arm.com, 
-	willemb@google.com, kuniyu@google.com, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, gregkh@linuxfoundation.org, rafael@kernel.org, 
-	akpm@linux-foundation.org, david@kernel.org, netdev@vger.kernel.org, linux-mm@kvack.org, 
-	iommu@lists.linux.dev, driver-core@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Subject: Re: [PATCH] swiotlb: avoid double copy with swiotlb on tx socket
-Message-ID: <ajESl4osXP7roz5q@pedro-suse.lan>
-References: <20260615234220.3946885-1-lrizzo@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iHjsBn6Z"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781601956; x=1813137956;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=TtifNOYPVhoMafVwpVEQep+EfwNSl6WGJi3e7DdtEnA=;
+  b=iHjsBn6Ze0Li9invDyQvlKiUf+6VVhzuIH6SXYBOcOStsc91e+1zTuio
+   bP2KmJo81PTTrhg280Zo62vl0dyjN/NEe9kJHYoWAHhuMMlx7FyhaGvxE
+   haMB554bmD5d0zbRUP8EkY1P72V7/vUURoKNXgwpeF+YyrpBAGZ+ZEcnA
+   G/dYo0hV6smlOgN1PP8FjGNKwgpwK3ZL4s9QXs0KlBYjYJ/u2dwTKEwT/
+   hGFo4zKp6u7/eUiCaQUU0gbm71q0ANzbkHsSAuyUEYlCI0eqJsdW8QF7p
+   UOBJ6wzA4tw8HXCU+vr66dkjLMbd3CTiO4NV35uazRObb/4Lv0m+q8g7e
+   w==;
+X-CSE-ConnectionGUID: mVtjsGSSTvCGOs3L4Xacbg==
+X-CSE-MsgGUID: btLDClT1TzK0HJlVyn3z5g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="84926129"
+X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; 
+   d="scan'208";a="84926129"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2026 02:25:55 -0700
+X-CSE-ConnectionGUID: ztESuGFPRGKTrZ2x9Uo0jQ==
+X-CSE-MsgGUID: vWQndoUdTdaQYAYMNv8a/w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; 
+   d="scan'208";a="246606342"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by orviesa006.jf.intel.com with ESMTP; 16 Jun 2026 02:25:53 -0700
+Received: by black.igk.intel.com (Postfix, from userid 1001)
+	id 3229395; Tue, 16 Jun 2026 11:25:52 +0200 (CEST)
+Date: Tue, 16 Jun 2026 11:25:52 +0200
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+To: Maoyi Xie <maoyixie.tju@gmail.com>
+Cc: Mika Westerberg <westeri@kernel.org>,
+	Yehezkel Bernat <YehezkelShB@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: net: thunderbolt: tbnet_poll() can overflow skb_shinfo()->frags[]
+Message-ID: <20260616092552.GB2990@black.igk.intel.com>
+References: <178159529251.2170936.1136950368069628844@maoyixie.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260615234220.3946885-1-lrizzo@google.com>
-X-Spam-Flag: NO
-X-Rspamd-Action: no action
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	RCVD_TLS_ALL(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DWL_DNSWL_BLOCKED(0.00)[suse.de:dkim];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,samsung.com,arm.com,google.com,davemloft.net,kernel.org,redhat.com,linuxfoundation.org,linux-foundation.org,vger.kernel.org,kvack.org,lists.linux.dev,linaro.org];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:dkim]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: 013356C6B9
-X-Spam-Score: -3.01
+In-Reply-To: <178159529251.2170936.1136950368069628844@maoyixie.com>
 
-(+cc page pool maintainers)
-On Mon, Jun 15, 2026 at 11:42:20PM +0000, Luigi Rizzo wrote:
-> The use of swiotlb causes an extra data copy on I/O.  For tx sockets,
-> especially with greedy senders, this has a high chance of happening in
-> the softirq handler for tx network interrupts, creating a significant
-> performance bottleneck.
+Hi,
+
+On Tue, Jun 16, 2026 at 03:34:52PM +0800, Maoyi Xie wrote:
+> Hi all,
 > 
-> Allow tx sockets to allocate socket buffers directly from the bounce
-> buffers. This avoids the second copy and removes the above bottleneck.
-> The fraction of swiotlb buffers allowed for this feature is set with
->    /sys/module/swiotlb/parameters/zerocopy_tx_percent
-> (0 means disabled, 90 is the maximum, to avoid persistent I/O failures).
+> After the recent skb frags[] overflow fixes (t7xx, cdc-phonet, f_phonet), I
+> went looking for the same pattern. I think tbnet_poll() in
+> drivers/net/thunderbolt/main.c has it too. I would appreciate it if you could
+> take a look.
 > 
-> Implementation:
-> - define a new page type to unambiguously identify bounce buffers used
->   as backing storage for socket buffers
-> - modify skb_page_frag_refill to perform the modified allocation
-> - modify the destructors __free_frozen_pages(), free_unref_folio() to
->   handle those pages and return them to the pool.
+> tbnet_poll() reassembles a ThunderboltIP packet that spans several frames into
+> one skb. It adds one rx fragment per frame.
 > 
-> The savings are especially visible with fewer queues. In synthetic
-> benchmarks, senders with 1-2 queues would cap around 50Gbps with
-> conventional swiotlb, and reach over 170Gbps with the feature enabled.
+> 	skb = net->skb;
+> 	if (!skb) {
+> 		skb = build_skb(...);
+> 		...
+> 		net->skb = skb;
+> 	} else {
+> 		skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
+> 				page, hdr_size, frame_size,
+> 				TBNET_RX_PAGE_SIZE - hdr_size);
+> 	}
+> 
+> Nothing checks skb_shinfo(skb)->nr_frags against MAX_SKB_FRAGS here. The frame
+> count comes from the peer, in the frame header. tbnet_check_frame() only bounds
+> it at the start of a packet.
+> 
+> 	if (frame_count == 0 || frame_count > TBNET_RING_SIZE / 4) {
+> 		net->stats.rx_length_errors++;
+> 		return false;
+> 	}
+> 
+> TBNET_RING_SIZE is 256, so frame_count can be as large as 64. MAX_SKB_FRAGS is 17
+> by default. Frame 0 builds the skb and every frame after it adds a fragment, so
+> nr_frags can reach 63. Once nr_frags hits MAX_SKB_FRAGS, skb_add_rx_frag() writes
+> one entry past skb_shinfo()->frags[]. The frame_size and MTU checks do not stop
+> this. With small frames, 64 fragments stay well under TBNET_MAX_MTU.
+> 
+> So a malicious or buggy peer can send a packet with frame_count between 19 and
+> 64. The frames only need to increment the way tbnet_check_frame() wants. That
+> drives nr_frags past frags[] and overruns skb_shared_info.
 
-I could be wrong, but I genuinely think that the way to go about this is
-using page_pool for regular TX as well. page_pool pages are all dma-mapped
-(so whatever swiotlb optimization you want can be done there), and the net
-stack already has awareness of these special pages and special skbs, so it
-won't Just Return Them back to the page allocator.
+I agree this can happen.
 
-Otherwise you can easily go all over the place, and that's just not great.
-Also this could possibly benefit setups that use IOMMU as well.
+> The fix I had in mind mirrors f0813bcd2d9d ("net: wwan: t7xx: fix potential
+> skb->frags overflow in RX path") and 600dc40554dc ("net: usb: cdc-phonet: fix
+> skb frags[] overflow in rx_complete()"). Add the fragment only while there is
+> room, and drop the packet otherwise.
+> 
+> 	-	} else {
+> 	+	} else if (skb_shinfo(skb)->nr_frags < MAX_SKB_FRAGS) {
+> 			skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
+> 					page, hdr_size, frame_size,
+> 					TBNET_RX_PAGE_SIZE - hdr_size);
+> 	+	} else {
+> 	+		net->stats.rx_length_errors++;
+> 	+		__free_pages(page, TBNET_RX_PAGE_ORDER);
+> 	+		dev_kfree_skb_any(net->skb);
+> 	+		net->skb = NULL;
+> 	+		continue;
+> 		}
+> 
+> I do not have two Thunderbolt hosts, so this is from reading the code. I can put
+> together a focused reproducer if that helps.
+> 
+> Does this look like a real overflow? And is the MAX_SKB_FRAGS guard the right
+> place, or would you rather tighten the frame_count bound in tbnet_check_frame()?
+> It has been there since the driver was added (e69b6c02b4c3), so it is a stable
+> candidate. Happy to send a proper patch once you confirm.
 
--- 
-Pedro
+I would prefer do this in tbnet_check_frame(). Thanks!
