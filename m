@@ -1,140 +1,130 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0045330BB9B;
-	Tue, 16 Jun 2026 09:25:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428063043C8;
+	Tue, 16 Jun 2026 09:30:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781601957; cv=none; b=V8Ql1W8AO2vnBCz0xLLUZWdqBwnN+npZ91lFSA6i/lKeFJLz7gPf74FJTJuqXg05aecDA8jncLOdIUrziy5QRVjHwLEHD0Lo77n/0dU3L8GOIf8YRcR1LVzill77VHl+NZuDTCAzkTeGLuIpZlZzHwPQIBxVrTj9Uwdjua8v6qc=
+	t=1781602216; cv=none; b=s9MDrc6jUX9k9qRHpJVZzqbWDN47Tcm0kCDohqgZxuQ+4HzcWZPUXfaQ8HdIFQSc1MOG9WQkTPVFtWXLCXnce5qDRnKHDvI3nlAAKobUE3W8110RKUbJljcxZ7mFlKlk/WFeiZ/2+o4iT+qqpzCTsYCTjZXTOUhADrfZRJmUNrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781601957; c=relaxed/simple;
-	bh=TtifNOYPVhoMafVwpVEQep+EfwNSl6WGJi3e7DdtEnA=;
+	s=arc-20240116; t=1781602216; c=relaxed/simple;
+	bh=BZd1+7kFgWteNht00h5YxHdkTi83EI5MB+Ho523Bqnk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WFMNZl9K5ebcVwQKfLwPhT/RkADJN7628eEmwZC/K1Pg3PIoC2J/5q64jKOfowBlEcLKnBoUlnQMeXoKWSCRng0jkqEvTRL1TwO73ac3JjfYFpPYRS4PycYDaEWp3xDIu/P8XejgVqcZs0hiKm8NTPs1XV01Cv/BrRoNuYEYync=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iHjsBn6Z; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=Sj7B0JPJ3ShqaG2+yxQbklWbkEfGS6WvJU2/+N7yLyBUKOr7osWqEPP3X6a9EE56XG1E7wqvKMfh3LCqjZMAAj8qtHXU3AJ3n/IOLIJvYI0+H6OY2IbqEyTDvm2HZGng3Ej0M54d3nyt7ZxQn8UcMtt9Btnn/8tI8pFQWCkG3jg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=TW7cUI5N; arc=none smtp.client-ip=115.124.30.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iHjsBn6Z"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781601956; x=1813137956;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=TtifNOYPVhoMafVwpVEQep+EfwNSl6WGJi3e7DdtEnA=;
-  b=iHjsBn6Ze0Li9invDyQvlKiUf+6VVhzuIH6SXYBOcOStsc91e+1zTuio
-   bP2KmJo81PTTrhg280Zo62vl0dyjN/NEe9kJHYoWAHhuMMlx7FyhaGvxE
-   haMB554bmD5d0zbRUP8EkY1P72V7/vUURoKNXgwpeF+YyrpBAGZ+ZEcnA
-   G/dYo0hV6smlOgN1PP8FjGNKwgpwK3ZL4s9QXs0KlBYjYJ/u2dwTKEwT/
-   hGFo4zKp6u7/eUiCaQUU0gbm71q0ANzbkHsSAuyUEYlCI0eqJsdW8QF7p
-   UOBJ6wzA4tw8HXCU+vr66dkjLMbd3CTiO4NV35uazRObb/4Lv0m+q8g7e
-   w==;
-X-CSE-ConnectionGUID: mVtjsGSSTvCGOs3L4Xacbg==
-X-CSE-MsgGUID: btLDClT1TzK0HJlVyn3z5g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11818"; a="84926129"
-X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; 
-   d="scan'208";a="84926129"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2026 02:25:55 -0700
-X-CSE-ConnectionGUID: ztESuGFPRGKTrZ2x9Uo0jQ==
-X-CSE-MsgGUID: vWQndoUdTdaQYAYMNv8a/w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,208,1774335600"; 
-   d="scan'208";a="246606342"
-Received: from black.igk.intel.com ([10.91.253.5])
-  by orviesa006.jf.intel.com with ESMTP; 16 Jun 2026 02:25:53 -0700
-Received: by black.igk.intel.com (Postfix, from userid 1001)
-	id 3229395; Tue, 16 Jun 2026 11:25:52 +0200 (CEST)
-Date: Tue, 16 Jun 2026 11:25:52 +0200
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-To: Maoyi Xie <maoyixie.tju@gmail.com>
-Cc: Mika Westerberg <westeri@kernel.org>,
-	Yehezkel Bernat <YehezkelShB@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: net: thunderbolt: tbnet_poll() can overflow skb_shinfo()->frags[]
-Message-ID: <20260616092552.GB2990@black.igk.intel.com>
-References: <178159529251.2170936.1136950368069628844@maoyixie.com>
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="TW7cUI5N"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1781602205; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=081T06/+yJZlOpVrqr9xmO+pHUgrPiz3emTfwHp8+wc=;
+	b=TW7cUI5N1kG5CSyANNG2gMx2Bfr9mCgrjynH9crlZJKA+WtJHwDkGR+UweGq8Rqei32w2fwFu2cJ4xgexmrSCB3OZdvLdzOfUYpfg5MpOhvZ4fm0Zcbxw1bhtUMxXU+ugH1AYkSvVVDVLY4NxIAgN3UDLwXjAxitkTZHIh12X/E=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=dust.li@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0X5.0WJf_1781602204;
+Received: from localhost(mailfrom:dust.li@linux.alibaba.com fp:SMTPD_---0X5.0WJf_1781602204 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 16 Jun 2026 17:30:04 +0800
+Date: Tue, 16 Jun 2026 17:30:03 +0800
+From: Dust Li <dust.li@linux.alibaba.com>
+To: Ren Wei <n05ec@lzu.edu.cn>, linux-rdma@vger.kernel.org,
+	linux-s390@vger.kernel.org, netdev@vger.kernel.org
+Cc: alibuda@linux.alibaba.com, sidraya@linux.ibm.com, wenjia@linux.ibm.com,
+	mjambigi@linux.ibm.com, tonylu@linux.alibaba.com,
+	guwen@linux.alibaba.com, ubraun@linux.ibm.com,
+	stefan.raspl@linux.ibm.com, davem@davemloft.net,
+	yuantan098@gmail.com, zcliangcn@gmail.com, bird@lzu.edu.cn,
+	lx24@stu.ynu.edu.cn, d4n.for.sec@gmail.com
+Subject: Re: [PATCH net 1/1] net: smc: fix splice entry lifetime imbalance in
+ smc_rx_splice
+Message-ID: <ajEXm3PDY8Wv8Ohh@linux.alibaba.com>
+Reply-To: dust.li@linux.alibaba.com
+References: <cover.1781097957.git.d4n.for.sec@gmail.com>
+ <192d1b44ed358ca143f44ef167d14153bccc51e9.1781097957.git.d4n.for.sec@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <178159529251.2170936.1136950368069628844@maoyixie.com>
+In-Reply-To: <192d1b44ed358ca143f44ef167d14153bccc51e9.1781097957.git.d4n.for.sec@gmail.com>
 
-Hi,
+On 2026-06-11 01:54:11, Ren Wei wrote:
+>From: Daming Li <d4n.for.sec@gmail.com>
+>
+>smc_rx_splice() hands candidate pages to splice_to_pipe() without taking
+>references for the lifetime of each splice entry first. That breaks the
+>splice ownership contract in the VM-backed RMB path.
+>
+>splice_to_pipe() drops unqueued entries through spd_release(), while
+>queued entries are later dropped through the pipe buffer release
+>callback. The current code only tries to take page references after the
+>splice succeeds, and it derives the number of queued VM pages from a
+>mutated offset value. This can underflow page refcounts and trigger a
+>use-after-free. It also leaves the socket lifetime imbalanced in the
+>multi-page VM case, where one sock_hold() can be followed by multiple
+>sock_put() calls.
+>
+>Fix this by taking the page and socket references for every candidate
+>splice entry before calling splice_to_pipe(), and by releasing the
+>matching private state, page reference, and socket reference from
+>smc_rx_spd_release() for entries that never get queued. This makes the
+>SMC splice path follow the normal splice lifetime rules and removes the
+>broken post-splice VM page counting entirely.
+>
+>Fixes: 9014db202cb7 ("smc: add support for splice()")
+>Cc: stable@vger.kernel.org
+>Reported-by: Yuan Tan <yuantan098@gmail.com>
+>Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
+>Reported-by: Xin Liu <bird@lzu.edu.cn>
+>Assisted-by: Codex:GPT-5.4
+>Co-developed-by: Liu Xiao <lx24@stu.ynu.edu.cn>
+>Signed-off-by: Liu Xiao <lx24@stu.ynu.edu.cn>
+>Signed-off-by: Daming Li <d4n.for.sec@gmail.com>
+>Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
 
-On Tue, Jun 16, 2026 at 03:34:52PM +0800, Maoyi Xie wrote:
-> Hi all,
-> 
-> After the recent skb frags[] overflow fixes (t7xx, cdc-phonet, f_phonet), I
-> went looking for the same pattern. I think tbnet_poll() in
-> drivers/net/thunderbolt/main.c has it too. I would appreciate it if you could
-> take a look.
-> 
-> tbnet_poll() reassembles a ThunderboltIP packet that spans several frames into
-> one skb. It adds one rx fragment per frame.
-> 
-> 	skb = net->skb;
-> 	if (!skb) {
-> 		skb = build_skb(...);
-> 		...
-> 		net->skb = skb;
-> 	} else {
-> 		skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
-> 				page, hdr_size, frame_size,
-> 				TBNET_RX_PAGE_SIZE - hdr_size);
-> 	}
-> 
-> Nothing checks skb_shinfo(skb)->nr_frags against MAX_SKB_FRAGS here. The frame
-> count comes from the peer, in the frame header. tbnet_check_frame() only bounds
-> it at the start of a packet.
-> 
-> 	if (frame_count == 0 || frame_count > TBNET_RING_SIZE / 4) {
-> 		net->stats.rx_length_errors++;
-> 		return false;
-> 	}
-> 
-> TBNET_RING_SIZE is 256, so frame_count can be as large as 64. MAX_SKB_FRAGS is 17
-> by default. Frame 0 builds the skb and every frame after it adds a fragment, so
-> nr_frags can reach 63. Once nr_frags hits MAX_SKB_FRAGS, skb_add_rx_frag() writes
-> one entry past skb_shinfo()->frags[]. The frame_size and MTU checks do not stop
-> this. With small frames, 64 fragments stay well under TBNET_MAX_MTU.
-> 
-> So a malicious or buggy peer can send a packet with frame_count between 19 and
-> 64. The frames only need to increment the way tbnet_check_frame() wants. That
-> drives nr_frags past frags[] and overruns skb_shared_info.
+The patch looks good to me, a minor nit below
 
-I agree this can happen.
+Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
 
-> The fix I had in mind mirrors f0813bcd2d9d ("net: wwan: t7xx: fix potential
-> skb->frags overflow in RX path") and 600dc40554dc ("net: usb: cdc-phonet: fix
-> skb frags[] overflow in rx_complete()"). Add the fragment only while there is
-> room, and drop the packet otherwise.
-> 
-> 	-	} else {
-> 	+	} else if (skb_shinfo(skb)->nr_frags < MAX_SKB_FRAGS) {
-> 			skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
-> 					page, hdr_size, frame_size,
-> 					TBNET_RX_PAGE_SIZE - hdr_size);
-> 	+	} else {
-> 	+		net->stats.rx_length_errors++;
-> 	+		__free_pages(page, TBNET_RX_PAGE_ORDER);
-> 	+		dev_kfree_skb_any(net->skb);
-> 	+		net->skb = NULL;
-> 	+		continue;
-> 		}
-> 
-> I do not have two Thunderbolt hosts, so this is from reading the code. I can put
-> together a focused reproducer if that helps.
-> 
-> Does this look like a real overflow? And is the MAX_SKB_FRAGS guard the right
-> place, or would you rather tighten the frame_count bound in tbnet_check_frame()?
-> It has been there since the driver was added (e69b6c02b4c3), so it is a stable
-> candidate. Happy to send a proper patch once you confirm.
 
-I would prefer do this in tbnet_check_frame(). Thanks!
+>---
+> net/smc/smc_rx.c | 21 +++++++++++----------
+> 1 file changed, 11 insertions(+), 10 deletions(-)
+>
+>diff --git a/net/smc/smc_rx.c b/net/smc/smc_rx.c
+>index c1d9b923938d..88aee0d93597 100644
+>--- a/net/smc/smc_rx.c
+>+++ b/net/smc/smc_rx.c
+>@@ -150,18 +150,23 @@ static const struct pipe_buf_operations smc_pipe_ops = {
+> static void smc_rx_spd_release(struct splice_pipe_desc *spd,
+> 			       unsigned int i)
+> {
+>+	struct smc_spd_priv *priv = (struct smc_spd_priv *)spd->partial[i].private;
+>+	struct sock *sk = &priv->smc->sk;
+>+
+>+	kfree(priv);
+> 	put_page(spd->pages[i]);
+>+	sock_put(sk);
+> }
+> 
+> static int smc_rx_splice(struct pipe_inode_info *pipe, char *src, size_t len,
+> 			 struct smc_sock *smc)
+> {
+> 	struct smc_link_group *lgr = smc->conn.lgr;
+>-	int offset = offset_in_page(src);
+> 	struct partial_page *partial;
+> 	struct splice_pipe_desc spd;
+> 	struct smc_spd_priv **priv;
+> 	struct page **pages;
+>+	int offset = offset_in_page(src);
+
+Minor nit:
+moving int offset = offset_in_page(src) down breaks the existing
+reverse-xmas-tree declaration ordering. We keep this style in SMC.
+
+Best regards,
+Dust
+
