@@ -1,129 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9E3364935
-	for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 12:45:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1B5D239E6C
+	for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 12:46:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781613907; cv=none; b=b4l966f4BKaSlp1tjlSxylC+w8rOLyEGp9k0ntl5AlTDFHZJaZxMUlIHlaBK9QgTG7Qd2cACp08FxuHjyZOiEfhYifHffrYmnxcYzopwK2+wLBY3R/cquKuhIxPW5qHb+zjD0H21dGkuPBdnruQlcag8CHtc4IkHpGhQwG71hfE=
+	t=1781613994; cv=none; b=UCffT1WHBjvr7T8Z/pbvXt5XOMhKtLwNLGIgOR4cxfkB/0SchrkHyXGw50xQP0vsg723Vtkfjk6cTljz+7YES34BmYvzRXvrACeO2fM+CXp2PxBIjILNnBvoWW1/mnRf9ee8Lc27hLjbfVKkR4LU1KIBqflq+q20HQAAqHumzNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781613907; c=relaxed/simple;
-	bh=4LN9sWdkmxfEh2YuEURvyIL7JOPWqb0CqMEhBY9MkG8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S7mPTB+Zm88u4VOdIt+BiSHL3bYzGL/f6zu5jXDdTkLEY8Z8qrtGNc5Fp+gp994ToRIFOPx7K6j/+eEN2UuJpeCjVxVDMqBxt5oAbBUnRrXMbyiCNj54Vgc0eElcxMVBT4VKWhEITvb3dGdO4QqoBiAzsG7lQeFmyvpUyOedOMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J5ySzhET; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781613994; c=relaxed/simple;
+	bh=KyRc72+NguvBY9yPIfIA0NmYMPUItZRpVrU4CEpFR50=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FwlmfdC90WvQSTEBAq0O3QsezZzI+M7TVtZOkqLiefdD0IJbyAFQoxkiRqHNNmZEXq4Bql5KfdxjHjTczn/8DqH5/EGRIwYbPnWeD2p5y9fgTh2utv7wD/RUEK7OeqJ/fOSr4dymjLxF94bUxb3ksb/4bFWJRNNAFndgXAxMq24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dTZIT3Yg; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J5ySzhET"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA611F00A3A;
-	Tue, 16 Jun 2026 12:45:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781613906;
-	bh=RSxvpTbCusWvzxxh+O+6AIb5tE3WgMP54vCTbFP+AEs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=J5ySzhETylCMwlWJqWi2xiHpCYAbtxTalJzbQ1tiNxnXEXXmlpUF5s76yDrsFT+Th
-	 un+UlxxuV43H3KlRjBS7KXnq2/Tfmq9E0BYvkJAFkT0O9Ox7j1qqiwdDFDV9Jw740T
-	 knJ3VMAcrqOIDJj0JU1BgIGuVZ+Q0rnNwOuldLegv0CiqvLjQArC/1Yh0izAiP1296
-	 uheO3IjE4eXUngi/GISPMiOliLxR+Wd4VDtTXIPkLwr5hMlTxX2e6c4O9wPnRdtEGN
-	 +4oADLKrPsimhEzMF/FByaXU/7CqXjgwBEQXgqGFWUe5oBIcB+uyRmgC3OqTD0yAf8
-	 XEfLMicbv1dFw==
-Date: Tue, 16 Jun 2026 14:45:04 +0200
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Wayen Yan <win847@gmail.com>
-Cc: netdev@vger.kernel.org, horms@kernel.org, pabeni@redhat.com,
-	kuba@kernel.org, edumazet@google.com, andrew+netdev@lunn.ch,
-	angelogioacchino.delregno@collabora.com, matthias.bgg@gmail.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH v2] [net] net: airoha: Clean up RX queues in
- airoha_dev_stop
-Message-ID: <ajFFUFgsd9KDvdGy@lore-desk>
-References: <178161160256.2165161.14322392784449633554@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dTZIT3Yg"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-46013161068so2268571f8f.2
+        for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 05:46:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781613991; x=1782218791; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=d2wC+3zzoiNCbeuds87FJRBM3s7JRdJtWIi8U2VjAZE=;
+        b=dTZIT3YgwJcZ+A8KSMNgAOnVlEIwOKtmL0QOUguV2HVIcoBw7pzRwu7CWjj0iO1Fh+
+         Ibi9/T4KiBU1hMyKpNwydv+0GSWUYwbrgXE3SzyOgQqdAt4cP+RsQKGiC9LJ1x3XNzqi
+         pca3eiHub0xiH2A979eur+viwN24f59oYtj2NWAPT566JF4JBHmFbPjvjrHeavkOXFV/
+         FaCcITVPSVJ8uuwsg0OdKtVX7nHuvW3In0rZHoe3zkCrFIJpJwbhdDxN9hlvc+JgC9DH
+         2GfQXyBfWQrvemgDlqKZSldsZhmylcaDNKhxPKL/dfnfLDfoDAKsosm40vUQZBxGwS65
+         l40w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781613991; x=1782218791;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=d2wC+3zzoiNCbeuds87FJRBM3s7JRdJtWIi8U2VjAZE=;
+        b=EbbLWe6p5zIwVhxm5c+EL9o+YGCVjhkQeHLtCMrZ0b8/GtbTObhWq3NArMsVBx5bXZ
+         4/U1C3VJ/23kcdTpGobGg3xrO2zQGvDMIEdYTd+Hk7/uvL8ZbQxnflHXMYfRUf++jG7Y
+         go1Fvz2oaK6lAwL7mECR9RozPegxlO1ZeZ3Mh7B5CdzEq1+HY+g/YCp2xU4SlX5/eyxF
+         /LIgTfXa4XT5JpwYbOhumSQC+L083kFu107GqrclAC4RnUfuBSzSPaQGqf+sHFMotNvp
+         8NQ7pLfV6mmE+zTAeAGpfscEIC76ve2ck8NysBMDtBEfggqTN1Y0LP8PKvN/SUbxzrJJ
+         avzA==
+X-Forwarded-Encrypted: i=1; AFNElJ9bwUwxEbfavV7EEQd7RKf4oXmxV/vt3W32Rt9JD6KcPhVVP4N2upqBhdwJ5LNqq0GTnG85+QU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGgAsnOEljqd5tqJpxUO9gL2Qghmi8wPITBo16iGQHoWUonN8/
+	kQ7kRXKF5wG4zWviSY1SuA0XXO4cEJugjc4x/vCtBSIs0xlZFiTs7IYH
+X-Gm-Gg: Acq92OGd7TZvifu0AA24ewcvy1sXNdKnNs1ZduV9dWtD45XF/cF86fu1nYssSns7hML
+	Zd8KN1CAgtdpirKUxeUyQWxeH5Q1BkTEhIim0W6WGGe3u8JXRTYwbMr+XVVopB47ZEWcHH3Bkpe
+	kf0cx6crUppZY9C/oWYI7sV0il7DiC39IMytbVZdVHsb6kj4+xhkRnH9CTSbK1VafeImN1BEiPq
+	3c/zHRnkFIOjYKXTnuRkN35zepoK1rGCoE2GD6f1IX3eKo+OPRHwdLZ2vhYUixRR5hioIUOCbsa
+	ZCtGO0txU5yVQQiFZzLupc9lt/k8cpO6a0iI/ceL42PWVgZPpk8qGrkHEC98kP5+wTNtBToe6fF
+	g039AQGFnOa5q0ZOuuxRLIn/xLCDg10E56Y0vii9wv0oh3bW9BB5+m4QDd3mFGutd0GdZVgBTw8
+	VmRq319ofKeyH+yXvS0l5/NHJwLkidZuDRaCWd5Tr860JJnXnBXEPko3lcPdXa
+X-Received: by 2002:a05:6000:41f6:b0:45e:73eb:5119 with SMTP id ffacd0b85a97d-4619f3abcbcmr5896293f8f.22.1781613991000;
+        Tue, 16 Jun 2026 05:46:31 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f2b0c10sm44484375f8f.21.2026.06.16.05.46.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Jun 2026 05:46:30 -0700 (PDT)
+Date: Tue, 16 Jun 2026 13:46:29 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ 3chas3@gmail.com, mitch@sfgoth.com,
+ linux-atm-general@lists.sourceforge.net, dwmw2@infradead.org
+Subject: Re: [PATCH net-next 1/9] atm: remove AAL3/4 transport support
+Message-ID: <20260616134629.41017dc4@pumpkin>
+In-Reply-To: <20260613201032.77274-2-kuba@kernel.org>
+References: <20260613201032.77274-1-kuba@kernel.org>
+	<20260613201032.77274-2-kuba@kernel.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="oUOTYG3fwkRvybn7"
-Content-Disposition: inline
-In-Reply-To: <178161160256.2165161.14322392784449633554@gmail.com>
-
-
---oUOTYG3fwkRvybn7
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
 
-On Jun 16, Wayen Yan wrote:
-> When the last port is stopped, airoha_dev_stop() clears TX queues
-> but neglects to clean up RX queues. This can lead to:
-> - RX ring buffer descriptors remaining valid after device close
-> - Potential DMA synchronization issues on device reopen
-> - Risk of use-after-free if pages are freed while DMA is still active
->=20
-> Add cleanup loop for RX queues to mirror the TX queue cleanup,
-> ensuring symmetric resource management.
->=20
-> Fixes: 23020f049327 ("net: airoha: Introduce ethernet support for EN7581 =
-SoC")
-> Signed-off-by: Wayen Yan <win847@gmail.com>
+On Sat, 13 Jun 2026 13:10:24 -0700
+Jakub Kicinski <kuba@kernel.org> wrote:
 
-when you send a new revision:
-- please add a note of what you changed with respect to the previous one.
-- please give some time to reviewers to take a look to the previous revisio=
-n.
+> AAL3/4 is an obsolete connection-oriented ATM adaptation layer that has
+> seen no real use since the SMDS-era hardware it was designed for (90s?).
+...
 
-> ---
->  drivers/net/ethernet/airoha/airoha_eth.c | 7 +++++++
->  1 file changed, 7 insertions(+)
->=20
-> diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ether=
-net/airoha/airoha_eth.c
-> index 31cdb11cd7..9ca5bbf64d 100644
-> --- a/drivers/net/ethernet/airoha/airoha_eth.c
-> +++ b/drivers/net/ethernet/airoha/airoha_eth.c
-> @@ -1771,6 +1771,13 @@ static int airoha_dev_stop(struct net_device *dev)
-> =20
->  			airoha_qdma_cleanup_tx_queue(&qdma->q_tx[i]);
->  		}
-> +
-> +		for (i =3D 0; i < ARRAY_SIZE(qdma->q_rx); i++) {
-> +			if (!qdma->q_rx[i].ndesc)
-> +				continue;
-> +
-> +			airoha_qdma_cleanup_rx_queue(&qdma->q_rx[i]);
-> +		}
->  	}
+=46rom what I remember they weren't really used even then.
+Apart from 'uncompressed 64k telephony audio' pretty much everything actual=
+ly
+used AAL5 so that data could be compressed.
 
-I do not think this patch is needed since there is no point to remove all t=
-he
-RX buffers from the hw RX queues stopping the device, this is necessary just
-removing the module (I think we can avoid it for TX too, I have a patch for=
- it
-I need to post).
-Moreover, doing so, when the device is opened again, RX queues will be empt=
-y.
+I do remember PCI ATM cards that could be used for TCP/ATM to the desktop.
+The equipment you needed in the network rack to make it work was stunning.
+Completely killed by 100M ethernet over twisted pair.
 
-Regards,
-Lorenzo
-
-> =20
->  	return 0;
-> --=20
-> 2.51.0
->=20
->=20
-
---oUOTYG3fwkRvybn7
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCajFFUAAKCRA6cBh0uS2t
-rEYHAQCdVSubIzZ2cVft7kjoGjr/zu7URV9JU3sxY5jp8tVr4QEA7hR72xCrHK/G
-RBtj7gTHqoSlUgRBVIgKNfP494jhvAU=
-=a8N+
------END PGP SIGNATURE-----
-
---oUOTYG3fwkRvybn7--
+	David
