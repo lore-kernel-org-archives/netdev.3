@@ -1,186 +1,125 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f78.google.com (mail-oo1-f78.google.com [209.85.161.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1F623385AC
-	for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 14:26:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A944D3385AC
+	for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 14:27:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781619989; cv=none; b=Jr9+40DqdCOY83eETuSNzQfeDYu0ZIZkIvLYBXJyHYfx1Lf1y4zp3UmoSUvUMNpS5sziKh0/KxAKbnvh9ul0iAbV042kiTJNiy0g9SqsQmR4SDR8tfhTIvluiDCmCRv7zOO7Ite/XsJaE8FXhzo5nx2FrL/FY32cudMrC0XThOA=
+	t=1781620043; cv=none; b=nUsIh+Sp2uHFTTqC36N513C6zf47ab6GENE9AG6DtZQhpRIuJLlFQWLk4HRV0iT6IqNoKsHMe4FWhEcELd86amFUg9ExuhEqL/bi+UuMpkjqtqLxSmoAcGjKXJO43Fc1FI1C7Axss9aJMUrdXnpIgUFcYVTAFqWt7CSUV/NIWjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781619989; c=relaxed/simple;
-	bh=2FtnmkA6sYVjNf1cUAA6sjpblaIDR9OLH/SC1eJdstY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TInWljQQipppF4SPjGyoeHC7JlRx7rnWoY97LM29jve2khgRUVgHZn+uKLIxOvEVPdh1jL/1IDw1bUCnlHF8OU1jlH9z4AKSUb1cbSyT3Uxc8bDPuNWc8ROUqlUsFoIoTSYEjBUMAa4cQXQBBAVUPquKVcfqwaQKsx2i9Ymz+ds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WFPLgVWZ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=FNzC7M3Z; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WFPLgVWZ";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="FNzC7M3Z"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781619987;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Dhl41uHQlhSDcthFJy4ATeZ9aIkqmiVNQn4jmxc+ZZI=;
-	b=WFPLgVWZaM5XshKGqaS3O479q/pcyeydlSO2TxXHDyEkhlqLkgTTqw5gHrzx6ZjkrFm445
-	lIyFz9CulitOLjzDRiI+o/YJZ+JdZVYJR0Z+VN7G8nz0alG209OJ0L32PYfnuJjPNpXC+5
-	NwM5GLIA1GBvBmLW5D7lME6RXuzBuRE=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-693-nbe7kqQQPHqbAMU2-Ox09Q-1; Tue, 16 Jun 2026 10:26:25 -0400
-X-MC-Unique: nbe7kqQQPHqbAMU2-Ox09Q-1
-X-Mimecast-MFC-AGG-ID: nbe7kqQQPHqbAMU2-Ox09Q_1781619984
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-45ef63d1214so3007782f8f.3
-        for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 07:26:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1781619984; x=1782224784; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Dhl41uHQlhSDcthFJy4ATeZ9aIkqmiVNQn4jmxc+ZZI=;
-        b=FNzC7M3ZEcquH5Fh+MJ5LvOIRbOh4dE3tSW9dISD1vwewkWZt9rSFtYsNCw3n1UINw
-         hXnNtzHZhVyuHadmDI6zlIXL0gnPUVmissZE7eaBI4SUbmc6jnga68VkZBt8PaTlKEVE
-         oZJ9FIjSos+WB3hOg2FjQ9DS2GqbfshrhBQCVcurjxSnywmoa0OUtAKVTHl/UgCxfnIb
-         JYIA4MZCkj+5O3edgfJ7L9xc3wkE5Btg3gGwJOCJRbUwcY4NNcCg785mTz2ItJRd5tb9
-         Nq1V4Hx2/zjMZXzwdiQQksnVWmOISsgL1sRuOk3JxwTCGm8hb0WO1HIG2srJmr9GoSev
-         MiAg==
+	s=arc-20240116; t=1781620043; c=relaxed/simple;
+	bh=8yFVcSsqRfy1MJQP9CJOO+dHPpNs4D5zRwb8yKcs2MY=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=NIj1RNkCzBJgBNmh5tNwD4ssixeX6DOvlq5MqAFQyR+Iozvd2FEhzF3NTJcCatlDeTG3b7jhLyUspdGiXHg8rpVTXUFSpfJ1hxH58dQedOONcxIZv3SqR5K9TyQYfSlIqHNvDwX52VUEwMS/1RuKIlq5stnddNGfwrGa0gUb/tE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f78.google.com with SMTP id 006d021491bc7-69dac65fd9bso3311999eaf.1
+        for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 07:27:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781619984; x=1782224784;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Dhl41uHQlhSDcthFJy4ATeZ9aIkqmiVNQn4jmxc+ZZI=;
-        b=EtPzw462xJC0hO1WspMbWMxEGP4PZa5mTDHezaattKeY0/KFEAQDZBbhUWAf62V79B
-         4/lk/ThMPVOLNs8q8vDXx3WnIp6Wobtq7uQqzBAsOj5gXms1sUC0zh7JnAU432f+0aF4
-         saiDk8TUOSIQsFsc6ScHYJ/4XQtwUEYWKmfUditNZTID8mGOeWVQU2QYE2IlPeltTMJH
-         hLnaG0lxFo6JliDAbnKqYEmeJ1ehLRYJLX2r+WmCzzJJFfVezw+uxZrLcx0DQGTTR7PM
-         C5JOSK3tJaG3gSP8aFZyrba/5XLsghxt4biLQbzyZOk/x54lPzfiWPqomgi8WBiWSUuD
-         NObg==
-X-Forwarded-Encrypted: i=1; AFNElJ857wFBr05tbKmH+6KvlOCKcs+C6xlfGnyyIO4iN66gBjrrGkqjtF/Y5LRUfX+2RavYcRkW+XY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNd670q0KBQKtrklm3K4hMxErkzGRVWLrYaNapDLrG8P2lBnMn
-	i124eZxLtkngfMjm4nlANg3J2UjgI9wCjZy7Z40KiUgHnhsoivb7N/O94udmZcupp7dGMcH96uY
-	/DTH6bgWLsMiWFsfGaNjQo+yVcp+wn8+Kr4tS0l3hHMTIVfP5olm/3T1PpA==
-X-Gm-Gg: Acq92OFxcc5MeZf/TguOV5w6Q7KU6m5aDJBE4ZjvQeOIuozJbaSFQBK+4jaAu3/jXZR
-	Cp+6DhHN6n9dP+RBSg8L30BCNDj10qTee65/8srvqJq1ndqQh2GvktdTWSZTjZlc9EHD+yGmzZA
-	y6pG+zcScI8y+P2QgxQoN2RSad+6bTabLo5O6gtCCHm+mVQRQ9S8r4iH/9/EU9lQ1inFR95abMu
-	GvKJDZMHcwsfaZ3oDTfFmPw3+QjeOpEia2tWE/5wyk08uQJb1Qe9RlkB0lQLfb9wo+/WyAcHxIw
-	cDvioh2u/kuERxOb2FYnOlF3GOt3GFvAYal6qfyOy4v+hKhDqGeUQixfRlsCoJthAZDWe219UnK
-	Q9xPq/Fs81s/s9k60qUhySqpy+lrkWqM3NjygavwlMuinsBEisBInbmLmH59HZ387EhGvfn8=
-X-Received: by 2002:a05:6000:1ac9:b0:45e:eaed:afd2 with SMTP id ffacd0b85a97d-4619f33afc1mr6376240f8f.0.1781619984270;
-        Tue, 16 Jun 2026 07:26:24 -0700 (PDT)
-X-Received: by 2002:a05:6000:1ac9:b0:45e:eaed:afd2 with SMTP id ffacd0b85a97d-4619f33afc1mr6375916f8f.0.1781619981390;
-        Tue, 16 Jun 2026 07:26:21 -0700 (PDT)
-Received: from sgarzare-redhat (host-82-53-135-12.retail.telecomitalia.it. [82.53.135.12])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f2c5266sm51566784f8f.29.2026.06.16.07.26.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jun 2026 07:26:20 -0700 (PDT)
-Date: Tue, 16 Jun 2026 16:26:08 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	virtualization@lists.linux.dev, netdev@vger.kernel.org, mst@redhat.com, stefanha@redhat.com, 
-	maciej.szmigiero@oracle.com, bchaney@akamai.com, mark.kanda@oracle.com, 
-	ptikhomirov@virtuozzo.com, den@openvz.org
-Subject: Re: [PATCH 2/4] vhost/vsock: add VHOST_RESET_OWNER ioctl
-Message-ID: <ajFcf00nmUcfqofx@sgarzare-redhat>
-References: <20260612165718.433546-1-andrey.drobyshev@virtuozzo.com>
- <20260612165718.433546-3-andrey.drobyshev@virtuozzo.com>
- <ajFRRmA9req1muX6@sgarzare-redhat>
- <129f5833-3a7f-4b2d-a965-20903e4e2fb5@virtuozzo.com>
+        d=1e100.net; s=20251104; t=1781620041; x=1782224841;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=QqoMiqh1Z8KtpXEtnmBXvlUuF3fai2r7IUxS3BRLfAY=;
+        b=k+Emk1n2PrUpswEtEH2qfnsRfjui4n2jd1Uc1Do3+BFR0dQYXFk/3K4EBkfS/BkOlb
+         7J0kLsJoYzAQUU9xuCJnhI/40Z0Unqrct4gAW3s5SxCH9U75WMd8wticdE4Gc2GnZKiT
+         pNS7bo/dR+Ium9rubhlH6ZB9SQYIv5YE83yMSiCP8dUoHg1PJwr/EXvv4a3SzZpkCiJu
+         HRM5RbCG9RGxk4jGx2c7UqwZkot985Bi03oHUOYtNNCFg3kK/D9NFZU/yuhNUZXbk4A2
+         u/ZKfhN2ySfi/8hQ5KxP06yQajyoXY9ebX/wSvirIYyl618TLMfqPQoU8q85IcXPxU31
+         HL4A==
+X-Forwarded-Encrypted: i=1; AFNElJ9TlQqxqVeJlqzqo13MpUWRa2OHOLY8QyDVoj9vNTUuVgYB5cln7sl1djJJpR2anlzz2b+8PNA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwMDRSVjYRAq1O70jF0tuax9hCh1mLtzvUGey3vIKW8o/JIG9cU
+	YnzEWnDsBaIah5V+FK8Irx+amIZs+4Cc0ozSoJG23bCMcoL8Xow772lv/mKgB6wEY5O3/64Liy4
+	nHNL5UVaHqydKPjLSA1J/PNJMVwB5n9XdXdSxvEq/Ja3EkAe3SdU6I1HzeYU=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <129f5833-3a7f-4b2d-a965-20903e4e2fb5@virtuozzo.com>
+X-Received: by 2002:a05:6820:208d:b0:696:21ad:a4f0 with SMTP id
+ 006d021491bc7-69eec931353mr9880399eaf.36.1781620040763; Tue, 16 Jun 2026
+ 07:27:20 -0700 (PDT)
+Date: Tue, 16 Jun 2026 07:27:20 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a315d48.b0403584.28d0ff.0002.GAE@google.com>
+Subject: [syzbot] [net?] WARNING in tls_err_abort
+From: syzbot <syzbot+cca46a9d1276f38af2ae@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
+	john.fastabend@gmail.com, kuba@kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, sd@queasysnail.net, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Jun 16, 2026 at 05:10:38PM +0300, Andrey Drobyshev wrote:
->On 6/16/26 4:48 PM, Stefano Garzarella wrote:
->> On Fri, Jun 12, 2026 at 07:57:16PM +0300, Andrey Drobyshev wrote:
->>> From: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
->>>
->>> This ioctl is needed for QEMU's CPR (checkpoint-restore) migration of
->>> the guest with vhost-vsock device.  For this to work, we need to reset
->>> the device ownership on the source side by calling RESET_OWNER, and then
->>> claim it on the dest side by calling SET_OWNER.  We expect not to lose any
->>> AF_VSOCK connection while this happens.
->>>
->>> Signed-off-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
->>> ---
->>> drivers/vhost/vsock.c | 28 ++++++++++++++++++++++++++++
->>> 1 file changed, 28 insertions(+)
->>>
->>> diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
->>> index b12221ce6faf..e629886e5cf8 100644
->>> --- a/drivers/vhost/vsock.c
->>> +++ b/drivers/vhost/vsock.c
->>> @@ -894,6 +894,32 @@ static int vhost_vsock_set_features(struct vhost_vsock *vsock, u64 features)
->>> 	return -EFAULT;
->>> }
->>>
->>> +static int vhost_vsock_reset_owner(struct vhost_vsock *vsock)
->>> +{
->>> +	struct vhost_iotlb *umem;
->>> +	long err;
->>> +
->>> +	mutex_lock(&vsock->dev.mutex);
->>> +	err = vhost_dev_check_owner(&vsock->dev);
->>> +	if (err)
->>> +		goto done;
->>> +	umem = vhost_dev_reset_owner_prepare();
->>> +	if (!umem) {
->>> +		err = -ENOMEM;
->>> +		goto done;
->>> +	}
->>> +	/* Follows vhost_vsock_dev_release closely except for guest_cid drop */
->>> +	vsock_for_each_connected_socket(&vhost_transport.transport,
->>> +					vhost_vsock_reset_orphans);
->>
->> In vhost_vsock_reset_orphans() we have:
->>
->> 	rcu_read_lock();
->>
->> 	/* If the peer is still valid, no need to reset connection */
->> 	if (vhost_vsock_get(vsk->remote_addr.svm_cid, sock_net(sk))) {
->> 		rcu_read_unlock();
->> 		return;
->> 	}
->>
->> IIUC we are not removing the guest cid from the hash table, so this
->> check will be always true, and nothing is done.
->>
->> So, is this call really useful?
->>
->
->You're right, and it's most probably an artifact from mimicking the
->vhost_vsock_dev_release() implementation, as mentioned in the comment.
->In our case this whole iteration is a no-op, we better remove it.
->
->BTW earlier I received some feedback from Sashiko AI reviewer, which
->also spotted that same issue (and some more interesting races):
->
->https://sashiko.dev/#/patchset/20260612165718.433546-1-andrey.drobyshev@virtuozzo.com
+Hello,
 
-Oh they seems similar to claude comments I included in my comment on 
-patch 3.
+syzbot found the following issue on:
 
-Yeah, we should takes a look, they seems real issues.
+HEAD commit:    f6033078a9e6 ip6_tunnel: annotate data-races around t->err..
+git tree:       net-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=122a98ae580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=8697a140486f5628
+dashboard link: https://syzkaller.appspot.com/bug?extid=cca46a9d1276f38af2ae
+compiler:       Debian clang version 22.1.6 (++20260514074242+fc4aad7b5db3-1~exp1~20260514074407.73), Debian LLD 22.1.6
 
->
->Apparently it only CC's its reviews to kvm@vger.kernel.org so you can't
->see them right away.  Just wanted to let you know to save your time
->here.  I'll send a v2 with respect to Sashiko remarks.  But of course
->would be great if you spot some more issues here.
->
+Unfortunately, I don't have any reproducer for this issue yet.
 
-Thanks for pointing that out, but in general I try to do my reviews 
-before looking at AI reviews (both sashiko or claude locally) to avoid 
-to be too much biased.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/7af9eb2b9b5a/disk-f6033078.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/4b7e03b76e68/vmlinux-f6033078.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/38042dd09caa/bzImage-f6033078.xz
 
-Thanks,
-Stefano
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+cca46a9d1276f38af2ae@syzkaller.appspotmail.com
 
+------------[ cut here ]------------
+err >= 0
+WARNING: net/tls/tls_sw.c:73 at tls_err_abort+0x5d/0x80 net/tls/tls_sw.c:73, CPU#0: kworker/0:11/6099
+Modules linked in:
+CPU: 0 UID: 0 PID: 6099 Comm: kworker/0:11 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/18/2026
+Workqueue: pencrypt_serial padata_serial_worker
+RIP: 0010:tls_err_abort+0x5d/0x80 net/tls/tls_sw.c:73
+Code: e8 03 48 b9 00 00 00 00 00 fc ff df 0f b6 04 08 84 c0 75 1b 89 ab 9c 01 00 00 48 89 df 5b 5d e9 c9 a2 32 ff e8 a4 60 8a f7 90 <0f> 0b 90 eb c3 89 f9 80 e1 07 80 c1 03 38 c1 7c d9 e8 1d 9f f5 f7
+RSP: 0018:ffffc900069379e0 EFLAGS: 00010293
+RAX: ffffffff8a3adf8c RBX: ffff88807d1e0d80 RCX: ffff888058bfdd00
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 00000000ffffffff
+RBP: 0000000000000000 R08: ffffe8ffffc513e3 R09: 1ffffd1ffff8a27c
+R10: dffffc0000000000 R11: ffffffff8a3c4d70 R12: ffff888028eaf400
+R13: ffff88804441030c R14: dffffc0000000000 R15: ffff888028eaf460
+FS:  0000000000000000(0000) GS:ffff8881252a0000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f521f503ff8 CR3: 0000000086fc2000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ tls_encrypt_done+0x223/0x480 net/tls/tls_sw.c:500
+ padata_serial_worker+0x2b9/0x430 kernel/padata.c:343
+ process_one_work kernel/workqueue.c:3314 [inline]
+ process_scheduled_works+0xa8e/0x14e0 kernel/workqueue.c:3397
+ worker_thread+0xa47/0xfb0 kernel/workqueue.c:3478
+ kthread+0x389/0x470 kernel/kthread.c:436
+ ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
