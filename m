@@ -1,85 +1,164 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711B33B5835
-	for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 09:12:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1017423142
+	for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 09:20:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781601174; cv=none; b=UoNlyMZfZVyRmoZLMW4xeCZpbd8JLIVsdhlVfjAFNib75YGRHctm9aqabUwamaORiLQhAuRdvtEPKWYbCjyK0FHBh26TRdHW57FFSxe+Zqc3jCmtEYWzO9U2IbX3wNbSpC2BQd8M0Nh2UsIHOeu6vUuy4RsArGD1t67mQG7b5vU=
+	t=1781601632; cv=none; b=rMGoXSVYEEeXKhIb8HsScsnHwrnMGxX8pa1nSR55+7u6+sClRxJI1FlczFJBNYAGQAoeQWKJsjxniVSopIVIejmc4+/Rf/bmpDTSQ8MuJW+5/AZCmb3+YK7/o8gRXLU1Vx6nXGiPZ1JfmFQs43v0yllxDUjW/v0eYNY4umykhl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781601174; c=relaxed/simple;
-	bh=DerSPE8IIwXDA40j0MY0KfN5j2dMWtXXT6W6NOD0unc=;
+	s=arc-20240116; t=1781601632; c=relaxed/simple;
+	bh=i0DVo8L4z7bKXdFdqTZAdPKP4ihP4U+9EZ39XGunM3s=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nqQp2tlV9xlZBSHw3jFVLUzQ98d7AFQldcErd/+0ZTqd5Ssuu6XXC1JsJHkiZyLUmM0muUkW8DKO66tbfVMQhdSi3hUjzivZncyUN/kCLHlH5B0LEQ+1oXJgbnq5+RRjKcKWULkdAyFopucXd/Xl4aLFTXDGJVobrJCrtKHF2yI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XxWGbp6g; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=aOJv2Sy4TJN/MeuVK/rWeFzbx4r0o4XTxbljEb47uVFAqyfMgrFRk4fWyC/exOWM+9VLkdxdcgnTLgE0viMz00LUMfEWVOJOubq6YP3YsbJJGRDrEFLdWT+iAe0qZL8ebaqVKY4P1Yuj4PZdPGHzixgl3uXgelJBrYyEVox0k3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=GG1VgaOa; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=OmMcESaN; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=GG1VgaOa; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=OmMcESaN; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XxWGbp6g"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BB3E1F000E9;
-	Tue, 16 Jun 2026 09:12:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781601173;
-	bh=FW1d3+ywfL/u89Y0GaANXP2o6Did6zok4uhLhWb9zSM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=XxWGbp6geRDNQzfxDhSwRIUZBmg3xTl0P94mNm/l6/oZFK0Hu0sZjXjX2wtaIekTW
-	 knC5/NwA80iuU0sE8HEUoabMVZi8wONVDqoa/E6K9ithuGPv/XIDfwJgM4c3A2zmRS
-	 7lyHeYFjMGiFz7HvwgN0fWiWh/ClKVOCccvfBMOmsqTZh1GIlqGn2IByfMw09oA5R7
-	 Mh2KW5sN2aN8Jjkqz5gGN/HZQzIROUm7jbY8R+W3so4kEqrHf7lQ9n5MGa35GPMscf
-	 bEtrOHAWWdG7tRP5kZMzj/0cz4YnH6X20DeSAuMXqxZTptHnzrdNYieR2E/ZVC7vtH
-	 ESYqMRO6pCkLA==
-Date: Tue, 16 Jun 2026 11:12:50 +0200
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
-	Madhur Agrawal <madhur.agrawal@airoha.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>
-Subject: Re: [PATCH net-next v5 0/3] airoha: add the capability to configure
- GDM3/GDM4 as WAN/LAN on demand
-Message-ID: <ajETkkD9DlBtYHLu@lore-desk>
-References: <20260611-airoha-ethtool-priv_flags-v5-0-c11de08486d1@kernel.org>
- <20260615163713.665271a2@kernel.org>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="GG1VgaOa";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="OmMcESaN";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="GG1VgaOa";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="OmMcESaN"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 013356C6B9;
+	Tue, 16 Jun 2026 09:20:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1781601629; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1yCvhH13gtBfeltjB9Ohv+Zzo8kfs8ztYt0Jc+FSMBg=;
+	b=GG1VgaOa/mxsWhVtWBV31CGGeWvEvBjcmIQ4YxWXPZlesczPS6DWMrswsTUIBiF6h94qwP
+	/2TxhAtMBz+2kO/VUK6sPjpaJ+aFe74HPKE8TTAn7qdfPycnqY6Vp35gtB1E4bmdbbDtTw
+	Pc2gOKpO9CNRiLXWBteAsxn7qhglsZE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1781601629;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1yCvhH13gtBfeltjB9Ohv+Zzo8kfs8ztYt0Jc+FSMBg=;
+	b=OmMcESaNOU9hK6UE4bKh79NId7JOMOXXy4UlXza8smGwMf85+9pPvCj6A94Z1iiEXfUrt2
+	+MDehBtltHZH8ACw==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=GG1VgaOa;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=OmMcESaN
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1781601629; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1yCvhH13gtBfeltjB9Ohv+Zzo8kfs8ztYt0Jc+FSMBg=;
+	b=GG1VgaOa/mxsWhVtWBV31CGGeWvEvBjcmIQ4YxWXPZlesczPS6DWMrswsTUIBiF6h94qwP
+	/2TxhAtMBz+2kO/VUK6sPjpaJ+aFe74HPKE8TTAn7qdfPycnqY6Vp35gtB1E4bmdbbDtTw
+	Pc2gOKpO9CNRiLXWBteAsxn7qhglsZE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1781601629;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1yCvhH13gtBfeltjB9Ohv+Zzo8kfs8ztYt0Jc+FSMBg=;
+	b=OmMcESaNOU9hK6UE4bKh79NId7JOMOXXy4UlXza8smGwMf85+9pPvCj6A94Z1iiEXfUrt2
+	+MDehBtltHZH8ACw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9D3D9779A8;
+	Tue, 16 Jun 2026 09:20:27 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id JOUNI1sVMWoTMAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 16 Jun 2026 09:20:27 +0000
+Date: Tue, 16 Jun 2026 10:20:25 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Luigi Rizzo <lrizzo@google.com>
+Cc: rizzo.unipi@gmail.com, m.szyprowski@samsung.com, robin.murphy@arm.com, 
+	willemb@google.com, kuniyu@google.com, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, gregkh@linuxfoundation.org, rafael@kernel.org, 
+	akpm@linux-foundation.org, david@kernel.org, netdev@vger.kernel.org, linux-mm@kvack.org, 
+	iommu@lists.linux.dev, driver-core@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Subject: Re: [PATCH] swiotlb: avoid double copy with swiotlb on tx socket
+Message-ID: <ajESl4osXP7roz5q@pedro-suse.lan>
+References: <20260615234220.3946885-1-lrizzo@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="veXpHt1QEexMKAbu"
-Content-Disposition: inline
-In-Reply-To: <20260615163713.665271a2@kernel.org>
-
-
---veXpHt1QEexMKAbu
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20260615234220.3946885-1-lrizzo@google.com>
+X-Spam-Flag: NO
+X-Rspamd-Action: no action
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	RCVD_TLS_ALL(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DWL_DNSWL_BLOCKED(0.00)[suse.de:dkim];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,samsung.com,arm.com,google.com,davemloft.net,kernel.org,redhat.com,linuxfoundation.org,linux-foundation.org,vger.kernel.org,kvack.org,lists.linux.dev,linaro.org];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:dkim]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: 013356C6B9
+X-Spam-Score: -3.01
 
-> On Thu, 11 Jun 2026 23:55:50 +0200 Lorenzo Bianconi wrote:
-> >       net: airoha: use int instead of atomic_t for qdma users counter
-> >       net: airoha: refactor QDMA start/stop into reusable helpers
-> >       net: airoha: defer GDM3/GDM4 WAN mode and GDM2 loopback to QoS of=
-fload
->=20
-> only the first patch applies cleanly right now
+(+cc page pool maintainers)
+On Mon, Jun 15, 2026 at 11:42:20PM +0000, Luigi Rizzo wrote:
+> The use of swiotlb causes an extra data copy on I/O.  For tx sockets,
+> especially with greedy senders, this has a high chance of happening in
+> the softirq handler for tx network interrupts, creating a significant
+> performance bottleneck.
+> 
+> Allow tx sockets to allocate socket buffers directly from the bounce
+> buffers. This avoids the second copy and removes the above bottleneck.
+> The fraction of swiotlb buffers allowed for this feature is set with
+>    /sys/module/swiotlb/parameters/zerocopy_tx_percent
+> (0 means disabled, 90 is the maximum, to avoid persistent I/O failures).
+> 
+> Implementation:
+> - define a new page type to unambiguously identify bounce buffers used
+>   as backing storage for socket buffers
+> - modify skb_page_frag_refill to perform the modified allocation
+> - modify the destructors __free_frozen_pages(), free_unref_folio() to
+>   handle those pages and return them to the pool.
+> 
+> The savings are especially visible with fewer queues. In synthetic
+> benchmarks, senders with 1-2 queues would cap around 50Gbps with
+> conventional swiotlb, and reach over 170Gbps with the feature enabled.
 
-ack, I will repost missing ones as soon as net-next is open again.
+I could be wrong, but I genuinely think that the way to go about this is
+using page_pool for regular TX as well. page_pool pages are all dma-mapped
+(so whatever swiotlb optimization you want can be done there), and the net
+stack already has awareness of these special pages and special skbs, so it
+won't Just Return Them back to the page allocator.
 
-Regards,
-Lorenzo
+Otherwise you can easily go all over the place, and that's just not great.
+Also this could possibly benefit setups that use IOMMU as well.
 
---veXpHt1QEexMKAbu
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCajETkgAKCRA6cBh0uS2t
-rOReAPsEmnYAMhDF28XS2vXZY1/UTQg2145bDKxI02AfrrbHKAD/RlrEtKZzVD+t
-rV+CYqb0oXC+8tSoTWXY/uU+fRE88wk=
-=SZVh
------END PGP SIGNATURE-----
-
---veXpHt1QEexMKAbu--
+-- 
+Pedro
