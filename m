@@ -1,91 +1,82 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E589B19D07A;
-	Tue, 16 Jun 2026 00:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C117D20E702
+	for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 00:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781568923; cv=none; b=QSgQGtPY5QjO/bAfMufLPev84rllEkAP/6ocKToJZFySIzPwo4pN59jlCBJlemYFhtTNuO18So9OoKb4jxIhzbuvcM5hAy5OdD/mJhtK6reD142vN/K20NqtoEc77Zlxm5GY/UMXZ6iHIfzrKTZRV9qr2a3yxD8LeLSMTZAJaFE=
+	t=1781569211; cv=none; b=jqFKaPjPMKmXmYoX28a/ZBUqFRXGZmX1mOJV7NBCEgEkR4o30feE+2V0bm3Sx8C9zR2WxHkcJNFlULewOhpQwbdCHy56cIZewaacfeHVBejYN5iRWpuXhyv6QkFA4+mHUhlA8UKn1xFVuKzOrbC1GwLAw55TFrl6w/oMl0lNg34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781568923; c=relaxed/simple;
-	bh=nAJovhwBTVkTiFEcITJJg8ZhgJaJExeRuwFj8cl0msA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V4FlrRIOealJM7h24+hf+sbuBbgHtam2cX4DkRvb8nRvUSK4iHrUQQn0dFIrHAjCkuhkqhwKvCJX1juSMTEGZMTleuN2cR5dlnqpvPC+l/NWeRenk3foyLsOccqRhrLBWlL3LXPL/MGBataQTNvo7AOqVLXNl9eHcQO3ef59z50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T+q5pju7; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781569211; c=relaxed/simple;
+	bh=UUx20JhzvphTtxfkh6MZdHPFlT7Ifs8HRI6w5pKu3zI=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=pBYzMSDMrZJW3WRzyldNmR0OZ3QWe010KP+u+IDgsu0XGbiXlh8ldl8v7kO0A7BmrdHes9l/QsJ8QxuhjJR6bMXSKLiNUIO5RPGQMLPvg9ZjG468wKYCwlAnJfQ/KldGG7UBfO9quoWndMy0+QAD10C+SYO9v/NrrzhtkWdKP1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QpkVhquY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T+q5pju7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6DC11F000E9;
-	Tue, 16 Jun 2026 00:15:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QpkVhquY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6090B1F000E9;
+	Tue, 16 Jun 2026 00:20:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781568922;
-	bh=WzApdNind1Co5Xbcn1rQaSPzEq7He8P/6Dkl73QhY40=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=T+q5pju7LWkXd6Y1SVay308qFKHCSGXe8YQWAXzQQLRhoLNOLXzV1F73822ZYC85z
-	 IlLlAvhIYmnN2QcfASlc1yAUZBKFXbPxLRFkLNMQIP75jyeBK17y/t+KCYA92cfKLG
-	 EsciXIYoR4P/Eg+1zcRDmKU3MCSWZICwYbbZw7RXTy5UYG+RHOWq5Ar2qa0LOSCFdr
-	 hVM8Ensq68LbFj1dR0BQNVGO2Gw4mqnJAwZU84AxQ3b0Cae7bYWTqpkNcF6xO0aEqM
-	 8tV3Ffsx2SGbMKO4SVbFHPsPUX4WSq/XHLwt1FSiQgs1nIeRVj08Z+NTxrMc6Hg3Lt
-	 giATJZ4GSttxQ==
-Date: Mon, 15 Jun 2026 17:15:21 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: daniel@makrotopia.org
-Cc: chester.a.unal@arinc9.com, andrew@lunn.ch, olteanv@gmail.com,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
- linux@armlinux.org.uk, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH net-next v2 5/8] net: dsa: mt7530: replace mt7530_read
- with regmap_read
-Message-ID: <20260615171521.60d93bf1@kernel.org>
-In-Reply-To: <20260615235649.1060736-1-kuba@kernel.org>
-References: <c6fc9cfae9762bf8d8a136339c91d4a76a307355.1781312667.git.daniel@makrotopia.org>
-	<20260615235649.1060736-1-kuba@kernel.org>
+	s=k20260515; t=1781569210;
+	bh=+6/QjuRGJWhzJiYsFb4zArvnhQy+cy8hHzkFU94yP8I=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=QpkVhquYuDU2AX4DYVJsJvF6u5sRTbsEiNMGAPWWaJlG6UCnS38hoYtGUc7dBOTm0
+	 +52AzvGyBxtG66MFnTX9vWRSENnoQ53lz9F2NUBxrlTn6cz6Qz/QCz6nEcgeVQtAvd
+	 bvujSVfV8LO49vGBDdv0/DTlxt0PC4g2jAJB8bPLxK/squoKGyObe256Fj/0ZkeafG
+	 x14YY2Nq+3rYNDldt2Fg09yqia1Ez62Ot8qqyk9FA7Twnr6ELYLEmjt1nWF6BN4kqx
+	 fSQfy9XcxqKW9M4wN6d6rJ7ho3oZbwThFHbPOKnScXVcVJfRcFy9EY8lsOiawOBI7u
+	 C9LVxzg/IRMmw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93A003839A26;
+	Tue, 16 Jun 2026 00:20:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v5 0/3] airoha: add the capability to configure
+ GDM3/GDM4 as WAN/LAN on demand
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178156920539.351484.2629045688985264535.git-patchwork-notify@kernel.org>
+Date: Tue, 16 Jun 2026 00:20:05 +0000
+References: <20260611-airoha-ethtool-priv_flags-v5-0-c11de08486d1@kernel.org>
+In-Reply-To: <20260611-airoha-ethtool-priv_flags-v5-0-c11de08486d1@kernel.org>
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
+ madhur.agrawal@airoha.com, aleksander.lobakin@intel.com
 
-On Mon, 15 Jun 2026 16:56:49 -0700 Jakub Kicinski wrote:
-> >  static u32
-> > -mt7530_read(struct mt7530_priv *priv, u32 reg)
-> > +mt7530_mii_poll(struct mt7530_dummy_poll *p)
-> >  {
-> > -	int ret;
-> >  	u32 val;
-> >  
-> > -	ret = regmap_read(priv->regmap, reg, &val);
-> > -	if (ret) {
-> > -		WARN_ON_ONCE(1);
-> > -		dev_err(priv->dev,
-> > -			"failed to read mt7530 register\n");
-> > -		return 0;
-> > -	}
-> > +	regmap_read(p->priv->regmap, p->reg, &val);
-> >  
-> >  	return val;
-> >  }  
-> 
-> [Medium]
-> The old wrapper guaranteed val == 0 on failure. The new mt7530_mii_poll()
-> declares val without an initializer and ignores the regmap_read() return
-> code, so on a failed underlying transfer val is whatever was on the stack.
-> 
-> Looking at drivers/net/dsa/mt7530-mdio.c::mt7530_regmap_read():
-> 
->     ret = bus->write(bus, priv->mdiodev->addr, 0x1f, page);
->     if (ret < 0)
->         return ret;
-> 
->     lo = bus->read(bus, priv->mdiodev->addr, r);
->     hi = bus->read(bus, priv->mdiodev->addr, 0x10);
-> 
->     *val = (hi << 16) | (lo & 0xffff);
+Hello:
 
-This looks legit, AFAICT, sadly.
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Maybe just write *val = 0; in mt7530_regmap_read() unconditionally ?
+On Thu, 11 Jun 2026 23:55:50 +0200 you wrote:
+> Add the capability to configure GDM3/GDM4 as WAN/LAN on demand when QoS
+> offload is created or destroyed.
+> Make dev->qdma an RCU pointer so the TX path can safely dereference it
+> without holding RTNL.
+> Introduce airoha_qdma_start() and airoha_qdma_stop() helpers.
+> 
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next,v5,1/3] net: airoha: use int instead of atomic_t for qdma users counter
+    https://git.kernel.org/netdev/net-next/c/a459b560e58b
+  - [net-next,v5,2/3] net: airoha: refactor QDMA start/stop into reusable helpers
+    (no matching commit)
+  - [net-next,v5,3/3] net: airoha: defer GDM3/GDM4 WAN mode and GDM2 loopback to QoS offload
+    (no matching commit)
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
