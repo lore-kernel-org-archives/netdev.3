@@ -1,35 +1,42 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7E92877F4;
-	Tue, 16 Jun 2026 22:00:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D387349CDD
+	for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 22:03:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781647219; cv=none; b=jXWpSRolj4O5bmc3v+mj4dmdgTFzVLBXyJsGDmhNoBuWcrV66Vaa+Vlgm8m71F+nfJHp84iy6idT/7+BmoVLyrPl6HGtZM5HJw5/a4afmcWb0HycgD9yvznP6smNcgnpFbgRFNU1fxzAH9IZqsezI24aYdi0S2th3pJp2URF60w=
+	t=1781647401; cv=none; b=F18vKKA/bIEbqILR4eu0IeV1qWxlLrVL5IASBg8P9SmBnJHd2jesMnF6Ijpj6nHjKPslHhCTmxfTnCQmV21W8hH+p/wJYIV4FJTvCS/BOi3rpjmkj+sa1z1DKY2VzrGxjLE7AgXf1SBcOrkm7nnI59UHSrKh67LD4JhEJsUkdxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781647219; c=relaxed/simple;
-	bh=7a+p+OyXk5sFsbk1C1Cq816Ny9n0Mkp9sVLu/7ongXE=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=JrOYpqVwAfau0HuXgTvWUbhnLBuAKsuK6A15xr1QYcibJqwLG/qbrglOaST/56r/ThPNj4Bc2t+igTB+9sxlRznJWEZEDAem+Osx1k1smYx4VkHxzu4vzySrZHuXb5CMRWtC9qhD9hhJgFjfQro5hCMG7V/xTKs2TNTyuDRZOPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m1H0XPZ/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781647401; c=relaxed/simple;
+	bh=kMIyOPyyPt38UyDnITJTgKCZUzj9WUW/qPR3hrmv3u0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y/67NhWsb6rWoPdU+j6kuuEnLF2wHRx9S8SCwz8GpG/Q3JTQg6cnIULIqBd3B0CuXjMp4upGVWXdqTdcnStXV9yEiEADvdfQYFmzlqtLDyRHXZcKGGnAhrbSZhhgPxxLbfpKfHGsAp2HhHHl1hWHEJ6tFDdblU0j/FJzmEpUlHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=b1n.io; spf=pass smtp.mailfrom=b1n.io; dkim=pass (2048-bit key) header.d=b1n.io header.i=@b1n.io header.b=uzlfo+cH; arc=none smtp.client-ip=91.218.175.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=b1n.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=b1n.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m1H0XPZ/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E11601F000E9;
-	Tue, 16 Jun 2026 22:00:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781647217;
-	bh=ga1OeZSzR83I+bdZkALtFqlm11Tz5ZprDN2LnllVuuo=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=m1H0XPZ/YZbBgyH3tnrJ6j1r2M6+6elhCGuK0pN6k5a+sJSKsxxgIBnYMzgNBg+aw
-	 8al1mUPkhgyi2bTVabXIYMFi/z5l4yV3wd6csAqc8I2mwclV8BxOmBPlGOcMtIo/ZG
-	 wEg/r+6LoZPDh2ODMtYPbSPzrG48yfugOVhBI97AdZ7c8txuTlA276H8jaEnUntKSY
-	 KgWy5tWRv1vQI8NErJqgroIv1pfhFiKdw2BZck/RCdw7Phs4t5+P6SaatWwO4rYFIQ
-	 HTGCnonB9DyI7WfMUOqJG00HcUeqNVm1R+0aEbhZQHFrTqOfaICHHS4LarNk2bCyyi
-	 Nrq80K5Jm6ssA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 938A13930C2B;
-	Tue, 16 Jun 2026 22:00:13 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=b1n.io header.i=@b1n.io header.b="uzlfo+cH"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=b1n.io; s=key1;
+	t=1781647388;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=aC2zHBB7viNDTfbkrGQIbZDq1+Il4dEG6NUdwG6XLkE=;
+	b=uzlfo+cH+54jWn/5+a5l4GOQ2w+ndhW+rRFr+4Z/PV7mItD+8aGqM4xBbVqMPYjQMhLgqP
+	Hbobx+8GNxkrvrhka2XsLRkEubTHRtCphWoZDIpytVI6YCzOExs5/Q//4goLHYfkO8slEd
+	mhH1g4GPeTRszimOPqtUniKSU1Zw2avH4N1UL7OXM2X+GpWEBSwMwewx+nMRbmAgf7N3Dw
+	9kN0GDURfd64wiebyV2/eBC91q8MI7tgB6V0p52pCYdmdWSkAwo/s4GPNYkc0biujofz91
+	hSoB0imnBb+gWeXjjQxMIOw9T2LVBbBMP8DOaEoug6YDcQhGm6IURj/JQKQ9Lg==
+From: Xingquan Liu <b1n@b1n.io>
+To: netdev@vger.kernel.org
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Xingquan Liu <b1n@b1n.io>,
+	stable@vger.kernel.org
+Subject: [PATCH] net/sched: dualpi2: fix GSO backlog accounting
+Date: Tue, 16 Jun 2026 18:02:43 -0400
+Message-ID: <20260616220303.31552-1-b1n@b1n.io>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,45 +44,65 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 0/2] appletalk: move the protocol out of tree
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178164721213.1257010.7015290603652926955.git-patchwork-notify@kernel.org>
-Date: Tue, 16 Jun 2026 22:00:12 +0000
-References: <20260615222935.947233-1-kuba@kernel.org>
-In-Reply-To: <20260615222935.947233-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- geert@linux-m68k.org, chleroy@kernel.org, npiggin@gmail.com,
- mpe@ellerman.id.au, maddy@linux.ibm.com, linux-mips@vger.kernel.org,
- linux-m68k@lists.linux-m68k.org, linuxppc-dev@lists.ozlabs.org
+X-Migadu-Flow: FLOW_OUT
 
-Hello:
+When DualPI2 splits a GSO skb into N segments, it propagates N
+additional packets to its parent before returning NET_XMIT_SUCCESS.
+The parent then accounts for the original skb once more, leaving its
+qlen one larger than the number of packets actually queued.
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+With QFQ as the parent, after all real packets are dequeued, QFQ still
+has a non-zero qlen while its in-service aggregate has no active
+classes. qfq_choose_next_agg() returns NULL and qfq_dequeue() passes
+the result to qfq_peek_skb(), causing a NULL pointer dereference.
 
-On Mon, 15 Jun 2026 15:29:33 -0700 you wrote:
-> This tiny series moves appletalk out of tree, to:
-> 
->   https://github.com/linux-netdev/mod-orphan
-> 
-> Core maintainainers are unable to keep up with the rate of security
-> bug reports and fixes. Nobody seems to care about appletalk enough
-> to review the patches.
-> 
-> [...]
+Count only successfully queued segments and propagate the difference
+between the original skb and those segments. Return success whenever
+at least one segment was queued.
 
-Here is the summary with links:
-  - [net-next,1/2] appletalk: stop storing per-interface state in struct net_device
-    https://git.kernel.org/netdev/net-next/c/023f9b0f2f4f
-  - [net-next,2/2] appletalk: move the protocol out of tree
-    https://git.kernel.org/netdev/net-next/c/8a398a0c189e
+Fixes: 8f9516daedd6 ("sched: Add enqueue/dequeue of dualpi2 qdisc")
+Cc: stable@vger.kernel.org
+Signed-off-by: Xingquan Liu <b1n@b1n.io>
+---
+ net/sched/sch_dualpi2.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+diff --git a/net/sched/sch_dualpi2.c b/net/sched/sch_dualpi2.c
+index dfec3c99eb45..37d6a8960310 100644
+--- a/net/sched/sch_dualpi2.c
++++ b/net/sched/sch_dualpi2.c
+@@ -461,7 +461,7 @@ static int dualpi2_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		if (IS_ERR_OR_NULL(nskb))
+ 			return qdisc_drop(skb, sch, to_free);
 
+-		cnt = 1;
++		cnt = 0;
+ 		byte_len = 0;
+ 		orig_len = qdisc_pkt_len(skb);
+ 		skb_list_walk_safe(nskb, nskb, next) {
+@@ -488,16 +488,15 @@ static int dualpi2_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 				byte_len += nskb->len;
+ 			}
+ 		}
+-		if (cnt > 1) {
++		if (cnt > 0) {
+ 			/* The caller will add the original skb stats to its
+ 			 * backlog, compensate this if any nskb is enqueued.
+ 			 */
+-			--cnt;
+-			byte_len -= orig_len;
++			qdisc_tree_reduce_backlog(sch, 1 - cnt,
++						  orig_len - byte_len);
+ 		}
+-		qdisc_tree_reduce_backlog(sch, -cnt, -byte_len);
+ 		consume_skb(skb);
+-		return err;
++		return cnt > 0 ? NET_XMIT_SUCCESS : err;
+ 	}
+ 	return dualpi2_enqueue_skb(skb, sch, to_free);
+ }
+
+base-commit: fbc6a80cb5d3fd4ac4b56e8c9d791dd17be890c4
+--
+Xingquan Liu
 
