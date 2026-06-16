@@ -1,120 +1,119 @@
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from server.couthit.com (server.couthit.com [162.240.164.96])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D98851FFC59
-	for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 12:40:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1AEA367B77;
+	Tue, 16 Jun 2026 12:40:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781613623; cv=none; b=K2jvdQNl+yqX49sLaRVIC3gdcAQgTp+JdWzRGtSGcT3jEtLJYZKj8c3JP3MNdcYqy606fASZY7A41bFIAXUGwOT1RCgW0CPhqKRDjGuK7Qks4VkyTDx0ohJAHPDfYYY3NN7m9DsQSBYOdWL+2kbqEdge67zbQoKYTz+Qw5x21ws=
+	t=1781613625; cv=none; b=iprS59ywrqF6w7sEGbvNriLL3JzLXaeMj2TdHWLVpoUmrVpG7MyqtOGBr7hcyxo1jL3Z8ljAbrqfN7gelSev9sIiFH8Pg5TBo+jR4fItajmuWqZMduJPynoxmKkkdRM4VSj2bYY07BKgpkSKGqTKZq6dO7AUUqf4MahQCVspex4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781613623; c=relaxed/simple;
-	bh=tPbjX8dfzPLu8onhnfm0DNzfCkJoWXqGLy1Lxvc2NUs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Dfz08Eh07eiS1LZ0p9w8Opz/5QCQNfKoTcyL+H8cJSkbfG59aHBk+QJIcqO8oJ837iA6JxYdHCir/UFIi7QxnPK8Br+UGIgSDxhrrMuE65eO8Xug2pFi8tfS76LK76La0Dsd2E/1F44uIw9kqYVmZvk6slaKXJW9mH/7XKhl1aE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=LkPMS57S; arc=none smtp.client-ip=209.85.160.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1781613625; c=relaxed/simple;
+	bh=4XeKWq60UBV2qmrPOY9bwFztkwl7zBGTvEprmRc+0Wo=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=eK8FzyXxkN3zbVmvjUq/UZsfiJTDNfjT5KavVwxTSP82qIq2Xjq2fU7blBiaUO0e9AvOFC723cwuxDfURrUYf+0Ui+IKLfuVVgcmPU7eoTBhlorpi7xrmby+7HUVk5leXMbNk1NFB0dipHz8Ndd/vvgyrLglmlLuzm5DkIXLoM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=J/0ZxW7L; arc=none smtp.client-ip=162.240.164.96
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="LkPMS57S"
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-5177ad0cc67so39287921cf.0
-        for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 05:40:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1781613621; x=1782218421; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tPbjX8dfzPLu8onhnfm0DNzfCkJoWXqGLy1Lxvc2NUs=;
-        b=LkPMS57SheHWUiSvnK76MNPuPeTpmepRr/zvfJ4ZpBSaUTrCEOpDnjQIDbl4YV/8pK
-         0RvEWX124XtPixmZGL7nu5gP6/f8YLcuJcemmDyc9fyshX/R+SxjdOfeGu82kKdDYZho
-         Cd9Pz1ccepPbodA6fjVyV8/JveKyJe3KP8MRwGAwYk9TlUcvrqnzf0p67yRmqK1zFBkn
-         ueRtbFdomSo6KVgL++OLAEQDKjcHqEnR+zzX9N0gqBkuWhJN80xWe9ysGRvBjlwR0mH0
-         ufusAQb6vCoO1JcuHxGMggFcSZTI3SlLFb/IbD7/qTV/l7St0K9Px/RxVE6ka7P8+N04
-         W1fw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781613621; x=1782218421;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tPbjX8dfzPLu8onhnfm0DNzfCkJoWXqGLy1Lxvc2NUs=;
-        b=m3sZuqbDED/reIBfEDpMmnGjyjWvubRa1284Tz/wOlyZ2qTAdVOhx38hL4qp+c7iLp
-         Tl63QNwYOdO6T6xThYrFXgnWBpMGZhuOMG2z4Vcm9HWOvxfxtj48A7thdcsf7a1CzucU
-         m+YRYY8ZbPJQzFtUWCTcbS1zno2m3IB9LXWBrRZhk6Xw6mbAFmrIwGuwKXAUd8zR3Ghj
-         ZtJpHId89arEZiJVYJd1On2iK9SlBluKhj3tLzsGzLrf7qKghITZ2QVdi77tvWMh2x/U
-         8+S+E2Nj6BtsTzuck3FJlYtlqLSTGHHEPztdxbSJQ9A7wDWF8j50Or01CbqueAyF26VH
-         GmlA==
-X-Forwarded-Encrypted: i=1; AFNElJ9vMp9nDnTen1eKS4j9T8L+/7X+/NL7x5YJ1P6NQBUrTd/N+cc2NZpzsI9vL0rQKzMfdUNqpYE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YybYdSI1eaFk/3XajMahZSkDf6xEnLIj689tVnWEPz12CeDlg7r
-	CvhqV6LT5SoqNMPIonla+q1oe9jz8RrY53O+ExEG+NfjxbM4wumYCLdNJoznWdd5SKA=
-X-Gm-Gg: Acq92OH4Wo4p8OJ1KkQxgfjUMSiZHeSI8Xby6Zo2hlAs2Dd8U+SQdwQQbNL+MdKNNch
-	tELgeJKXGGx5ZMnXpE0FjblmBQk4VJSeqHy8Pzi7td1PeUbRV3KPkXC4wRMwTtcPM30Y7eT8iPS
-	/HrFX4ZgVuUaUwC8wax6YdnOQ1waeMwOQIbfQXWaUyEBwKJEQDTXoCBOsJwWKPhkSTuuGRTCTLt
-	KE3t3MtcNcmJJQDiJMhzPF3kM+X3cSO2qHzgv7bc8+hPVkEFUUiY+GoGA8jn0KYRbXwoOPt7ZZm
-	I5to4LH4DMC1eEXTVidNffixpVMuVG7RyON2pxmlYYzfbBN35yM8H123i0tezT/QJy+pEbBMSXI
-	3CjMHmxCYneghffPdOGlt/p3/q2JmtCiNuIybqqFPNlaGiZgGAuy5Nsrg7VBe760jqiWWn4kaXy
-	O/Zt/nJAsMC7FMKDaD1Od8WQiLJxLbYXD9HOYIowY1H6Vpz7OtlYLzxMQigHupjmLp4VnbZYSyF
-	LspIQ==
-X-Received: by 2002:a05:622a:2282:b0:517:6804:1fb3 with SMTP id d75a77b69052e-517fe230d82mr282972431cf.18.1781613620607;
-        Tue, 16 Jun 2026 05:40:20 -0700 (PDT)
-Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-517fb61d948sm133785221cf.1.2026.06.16.05.40.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jun 2026 05:40:19 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wZT5X-0000000Fzb5-0uZr;
-	Tue, 16 Jun 2026 09:40:19 -0300
-Date: Tue, 16 Jun 2026 09:40:19 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Kasireddy, Vivek" <vivek.kasireddy@intel.com>
-Cc: Bobby Eshleman <bobbyeshleman@gmail.com>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	Shuah Khan <shuah@kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	"linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
-	"linaro-mm-sig@lists.linaro.org" <linaro-mm-sig@lists.linaro.org>,
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
-	"sdf@fomichev.me" <sdf@fomichev.me>,
-	"razor@blackwall.org" <razor@blackwall.org>,
-	"daniel@iogearbox.net" <daniel@iogearbox.net>,
-	"almasrymina@google.com" <almasrymina@google.com>,
-	"matttbe@kernel.org" <matttbe@kernel.org>,
-	"skhawaja@google.com" <skhawaja@google.com>,
-	"dw@davidwei.uk" <dw@davidwei.uk>,
-	Bobby Eshleman <bobbyeshleman@meta.com>
-Subject: Re: [PATCH net-next v2 2/4] udmabuf: emit one sg entry per pinned
- folio
-Message-ID: <20260616124019.GA3577091@ziepe.ca>
-References: <20260611-tcpdm-large-niovs-v2-0-ee2bf15e7523@meta.com>
- <20260611-tcpdm-large-niovs-v2-2-ee2bf15e7523@meta.com>
- <IA0PR11MB71852246277F773AC41DAAA3F8E52@IA0PR11MB7185.namprd11.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="J/0ZxW7L"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
+	; s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:
+	References:In-Reply-To:Message-ID:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=bvkZ8DMLt8TicAIiC7x/wSALOp0M65czhxs+ZBfdPY4=; b=J/0ZxW7Ly02wggASZ1/Xbr5nox
+	8y5LtBgN4Sq6q0qPBvmgIBDTn1QLslLD60FUFhspSQuXFoVS9UDhHoeFUUE8Ezwj/hf3Cay5Oeznu
+	f+xEwKl+CZenKqe/M9SxGJTqdk4ipMVnKYOYHdkZu2K2TDvMKyZb5kB64bX+KvGEbp/qMSWWAaTWf
+	Rzj7pVl4gj6C/HOWGKqY15GPqkJfI3a2SVOqK+vsN3tIo67nuBK4LpRWYTiCc1pskWAPMDyFrafPd
+	mGmSXOh2yypq7B5g23STrRwrdwbL6beVsaGzSMaZW0d1Htji2IFHrE9tAI6erpxfhd1pFa85nMMDk
+	fT1Ypu9Q==;
+Received: from [115.246.246.98] (port=40588 helo=zimbra.couthit.local)
+	by server.couthit.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.4)
+	(envelope-from <parvathi@couthit.com>)
+	id 1wZT5Y-0000000At4u-11Yd;
+	Tue, 16 Jun 2026 08:40:20 -0400
+Received: from localhost (localhost [127.0.0.1])
+	by zimbra.couthit.local (Postfix) with ESMTP id 6435E19A7FA4;
+	Tue, 16 Jun 2026 18:10:13 +0530 (IST)
+Received: from zimbra.couthit.local ([127.0.0.1])
+ by localhost (zimbra.couthit.local [127.0.0.1]) (amavis, port 10032)
+ with ESMTP id feLN8dZta5RF; Tue, 16 Jun 2026 18:10:10 +0530 (IST)
+Received: from localhost (localhost [127.0.0.1])
+	by zimbra.couthit.local (Postfix) with ESMTP id C412419A7F9B;
+	Tue, 16 Jun 2026 18:10:10 +0530 (IST)
+X-Virus-Scanned: amavis at couthit.local
+Received: from zimbra.couthit.local ([127.0.0.1])
+ by localhost (zimbra.couthit.local [127.0.0.1]) (amavis, port 10026)
+ with ESMTP id 47KudGkixjvB; Tue, 16 Jun 2026 18:10:10 +0530 (IST)
+Received: from zimbra.couthit.local (zimbra.couthit.local [10.10.10.103])
+	by zimbra.couthit.local (Postfix) with ESMTP id 9FF6319A7FA4;
+	Tue, 16 Jun 2026 18:10:10 +0530 (IST)
+Date: Tue, 16 Jun 2026 18:10:10 +0530 (IST)
+From: Parvathi Pudi <parvathi@couthit.com>
+To: Simon Horman <horms@kernel.org>
+Cc: Parvathi Pudi <parvathi@couthit.com>, andrew+netdev <andrew+netdev@lunn.ch>, 
+	davem <davem@davemloft.net>, edumazet <edumazet@google.com>, 
+	kuba <kuba@kernel.org>, pabeni <pabeni@redhat.com>, 
+	danishanwar <danishanwar@ti.com>, rogerq <rogerq@kernel.org>, 
+	pmohan <pmohan@couthit.com>, afd <afd@ti.com>, 
+	basharath <basharath@couthit.com>, arnd <arnd@arndb.de>, 
+	linux-kernel <linux-kernel@vger.kernel.org>, 
+	netdev <netdev@vger.kernel.org>, 
+	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
+	pratheesh <pratheesh@ti.com>, j-rameshbabu <j-rameshbabu@ti.com>, 
+	Vignesh Raghavendra <vigneshr@ti.com>, praneeth <praneeth@ti.com>, 
+	srk <srk@ti.com>, rogerq <rogerq@ti.com>, 
+	m-malladi <m-malladi@ti.com>, krishna <krishna@couthit.com>, 
+	mohan <mohan@couthit.com>
+Message-ID: <1748606529.1400457.1781613610625.JavaMail.zimbra@couthit.local>
+In-Reply-To: <20260612200102.GN671640@horms.kernel.org>
+References: <20260611123636.376577-1-parvathi@couthit.com> <20260612200102.GN671640@horms.kernel.org>
+Subject: Re: [PATCH net-next 0/3] Introduce HSR/PRP HW offload support for
+ PRU-ICSSM Ethernet driver
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <IA0PR11MB71852246277F773AC41DAAA3F8E52@IA0PR11MB7185.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: Zimbra 9.0.0_ZEXTRAS_20240927 (ZimbraWebClient - GC148 (Mac)/9.0.0_ZEXTRAS_20240927)
+Thread-Topic: Introduce HSR/PRP HW offload support for PRU-ICSSM Ethernet driver
+Thread-Index: iqq9OEROOlbAtE0K3nChzbBATFVm3g==
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - server.couthit.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - couthit.com
+X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: smtp@couthit.com
+X-Authenticated-Sender: server.couthit.com: smtp@couthit.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On Tue, Jun 16, 2026 at 06:04:03AM +0000, Kasireddy, Vivek wrote:
+Hi,
 
-> > This is helpful for importers like net/core/devmem that expect dmabuf sg
-> IMO, udmabuf needs to detect whether importers can handle segments that
-> are > PAGE_SIZE and set the entries appropriately. Please look into how the
-> GPU drivers and other dmabuf exporters/importers handle this situation, so
-> that we can adopt best practices to address this issue.
+> On Thu, Jun 11, 2026 at 06:03:25PM +0530, Parvathi Pudi wrote:
+>> Hi,
+>> 
+>> This series introduces HSR and PRP protocol HW offload support for
+>> ICSSM-Prueth driver.  HW offload support for HSR/PRP is implemented using
+>> dedicated HSR/PRP firmware running on 2 PRU cores(PRU-ICSS) as a "DAN"
+>> available in AM57xx, AM437x and AM335x.
+> 
+> Hi Parvathi,
+> 
+> There is AI-generated review of this patch-set available on
+> https://sashiko.dev
+> 
+> I would appreciate it if you could look over that with a view
+> to addressing any issues that directly affect this patch-set.
 
-Importers have to handle arbitary scatterlists, devmem is just broken
-if it can't handle the output of sg_alloc_table_from_pages().
+Sure. We will review the sashiko feedback for this patch series and
+address any findings that are directly relevant in the next version.
 
-Jason
+Thanks and Regards,
+Parvathi.
