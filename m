@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D54466B59
-	for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 15:58:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3652347799B
+	for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 15:58:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625492; cv=none; b=EPtuvDTkyYZZF+vEfMDX4kNJFcTIwjnqsLPXlSUfI1ThZezjOMBwiAkm/SsvFIjsCnQymofTlMV4EqrcmuXACVx+363g1ywc4rdf+NmZqm3enHaA4Vw7YFAiW8iv1sy59OCwpUkJaR1EYPEAiizTZj1Fv6r97lNRtJbtCoshK0I=
+	t=1781625493; cv=none; b=Lw5JSK4S3J+gFu3JZvfkdsoaJ6lKFK5s8klSuYicNNgD7vFUrfU63G5HhxwpdCmpgTOYnwAo3HWDibvUygOrLpENJjFqaEulRV3b5DtxEvyxCo29LsN+L6qYW8wdsJ8AakGv/6otN6swQANgX/5/oXSbxm5wavdKORBjOSKPGW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625492; c=relaxed/simple;
-	bh=P1I+KWbK76llHaE2wH3T1Kgg++GDTr9b0M+6bQ/aXrk=;
+	s=arc-20240116; t=1781625493; c=relaxed/simple;
+	bh=8nwdQtBPYv4uOmSu6Wkd/1b8WQrwpc4CCxSg9N/B0PE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hC/QHPmHpnukjqL3VP6HaVcTDBQtufZMpF1bDdg8pZvrs+nvV64VN39+XmLgAFr6FojuMvzCvAAtz0G6tr90b5w8u+btA1SNRKsaqH2rJXJm2daEZGv5Xv9/5UiQ3f/mdCThI7ZkbE4D6TtVCN/baJWuFl4QFrnFzw8DU3VNX1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=h7AD17RJ; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=F3kPwjYZC343yeA7YsDo7B+nWK5t2i78Hyjj80+G4slmQngA2pw+21WhiccP35xF0mKed78ySjiXq9Nr0+aW2Qh6Z0oIenjJWbbsNJMgLlkiJez6um2+jOypi0vMvMpPZ3MS6uFZJW6JnpU9lE6BOS0srg+yF8suzyV/lINEak4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=f36gjftr; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="h7AD17RJ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="f36gjftr"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781625489;
+	s=mimecast20190719; t=1781625491;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vZ6shKU2Olrq5XLk9VR7nCy5qua26jmULBJsUITnQx4=;
-	b=h7AD17RJO0JupCf0VceNXXa2yquNOAzb9yOsp+PRTlN6703GVEMaVG/lTJSVgOCh8uCrDh
-	0UyvieKbS4RaQ1Lm9GYQ3qhh/e22IZ9eczdn41DOwEKvwfOxQ5kVdHjSFEGJf3GRGZ/XRs
-	h9crwtTICNVTxf/lOqWMdrZk0J22H00=
+	bh=85uWVUY9V2s5UjhcsvLOsswYy01tW6tr9ulaUKagkw0=;
+	b=f36gjftr71S90RkGUjJx1HZxBv8Wnm3BkkH0+LPwtY4SCxp+CBdQy9wTf+JtJUGHCCz0yM
+	8nWqzi01ejaUouJe6bDQceyTh5BBp17jErPmqotJixxHumZr75ahpsCxkRZTVgLTmwoPT6
+	MeHE/+qM1jqgZS95IaNfNZLnXQBDwd8=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-570-YYgferILNXm0AdRbM1RG4A-1; Tue,
- 16 Jun 2026 11:58:05 -0400
-X-MC-Unique: YYgferILNXm0AdRbM1RG4A-1
-X-Mimecast-MFC-AGG-ID: YYgferILNXm0AdRbM1RG4A_1781625483
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-527-Mr71eOsPMSmuHcCaEhze1g-1; Tue,
+ 16 Jun 2026 11:58:09 -0400
+X-MC-Unique: Mr71eOsPMSmuHcCaEhze1g-1
+X-Mimecast-MFC-AGG-ID: Mr71eOsPMSmuHcCaEhze1g_1781625488
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E40441800A3E;
-	Tue, 16 Jun 2026 15:58:02 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 163FA1800358;
+	Tue, 16 Jun 2026 15:58:08 +0000 (UTC)
 Received: from warthog.procyon.org.com (unknown [10.44.50.44])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 201311800595;
-	Tue, 16 Jun 2026 15:57:56 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9BD1F18005A3;
+	Tue, 16 Jun 2026 15:58:04 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: netdev@vger.kernel.org
 Cc: David Howells <dhowells@redhat.com>,
@@ -53,17 +53,10 @@ Cc: David Howells <dhowells@redhat.com>,
 	Simon Horman <horms@kernel.org>,
 	linux-afs@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	Wyatt Feng <bronzed_45_vested@icloud.com>,
-	stable@vger.kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ren Wei <n05ec@lzu.edu.cn>
-Subject: [PATCH net 1/5] rxrpc: input: reject ACKALL outside transmit phase
-Date: Tue, 16 Jun 2026 16:57:43 +0100
-Message-ID: <20260616155749.2125907-2-dhowells@redhat.com>
+	stable@kernel.org
+Subject: [PATCH net 2/5] rxrpc: Fix leak of connection from OOB challenge
+Date: Tue, 16 Jun 2026 16:57:44 +0100
+Message-ID: <20260616155749.2125907-3-dhowells@redhat.com>
 In-Reply-To: <20260616155749.2125907-1-dhowells@redhat.com>
 References: <20260616155749.2125907-1-dhowells@redhat.com>
 Precedence: bulk
@@ -75,65 +68,38 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-From: Wyatt Feng <bronzed_45_vested@icloud.com>
+Fix leak of connection object from OOB challenge queue when response is
+provided by userspace.
 
-rxrpc_input_ackall() accepts ACKALL packets without checking whether
-the call is in a state that can legitimately have outstanding transmit
-buffers.  A forged ACKALL can therefore reach a new service call in
-RXRPC_CALL_SERVER_RECV_REQUEST before any reply packets have been
-queued.
-
-In that state call->tx_top is zero and call->tx_queue is NULL, so
-rxrpc_rotate_tx_window() dereferences a NULL txqueue and triggers a
-null-pointer dereference.
-
-Fix rxrpc_input_ackall() to mirror the transmit-state gating already
-used for normal ACK processing, and ignore ACKALL when there is no
-outstanding transmit window to rotate.
-
-Fixes: b341a0263b1b ("rxrpc: Implement progressive transmission queue struct")
-Cc: stable@vger.kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Assisted-by: Codex:GPT-5.4
-Signed-off-by: Wyatt Feng <bronzed_45_vested@icloud.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Fixes: 5800b1cf3fd8 ("rxrpc: Allow CHALLENGEs to the passed to the app for a RESPONSE")
+Link: https://sashiko.dev/#/patchset/20260609140911.838677-1-dhowells%40redhat.com
 Signed-off-by: David Howells <dhowells@redhat.com>
 cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Eric Dumazet <edumazet@google.com>
+cc: "David S. Miller" <davem@davemloft.net>
+cc: Jakub Kicinski <kuba@kernel.org>
+cc: Paolo Abeni <pabeni@redhat.com>
+cc: Simon Horman <horms@kernel.org>
 cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
 ---
- net/rxrpc/input.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ net/rxrpc/oob.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/rxrpc/input.c b/net/rxrpc/input.c
-index ce761466b02d..37881dffa898 100644
---- a/net/rxrpc/input.c
-+++ b/net/rxrpc/input.c
-@@ -1214,8 +1214,22 @@ static void rxrpc_input_ack(struct rxrpc_call *call, struct sk_buff *skb)
- static void rxrpc_input_ackall(struct rxrpc_call *call, struct sk_buff *skb)
- {
- 	struct rxrpc_ack_summary summary = { 0 };
-+	rxrpc_seq_t top = READ_ONCE(call->tx_top);
-+
-+	switch (__rxrpc_call_state(call)) {
-+	case RXRPC_CALL_CLIENT_SEND_REQUEST:
-+	case RXRPC_CALL_CLIENT_AWAIT_REPLY:
-+	case RXRPC_CALL_SERVER_SEND_REPLY:
-+	case RXRPC_CALL_SERVER_AWAIT_ACK:
+diff --git a/net/rxrpc/oob.c b/net/rxrpc/oob.c
+index 05ca9c1faa57..3318c8bd82ad 100644
+--- a/net/rxrpc/oob.c
++++ b/net/rxrpc/oob.c
+@@ -210,6 +210,11 @@ static int rxrpc_respond_to_oob(struct rxrpc_sock *rx,
+ 		break;
+ 	}
+ 
++	switch (skb->mark) {
++	case RXRPC_OOB_CHALLENGE:
++		rxrpc_put_connection(sp->chall.conn, rxrpc_conn_put_oob);
 +		break;
-+	default:
-+		return;
 +	}
-+
-+	if (call->tx_bottom == top)
-+		return;
- 
--	if (rxrpc_rotate_tx_window(call, call->tx_top, &summary))
-+	if (rxrpc_rotate_tx_window(call, top, &summary))
- 		rxrpc_end_tx_phase(call, false, rxrpc_eproto_unexpected_ackall);
+ 	rxrpc_free_skb(skb, rxrpc_skb_put_oob);
+ 	return ret;
  }
- 
 
