@@ -1,143 +1,249 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F8F44BCB8;
-	Tue, 16 Jun 2026 16:13:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31111466B5E
+	for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 16:13:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626385; cv=none; b=bHnizwBd4vTl1fxMDDZ0SDk9CJmCq3Z7hnQOnxQshAf9Xf2wVH/CoBkaLwTdzxD/HNHHB6WV1QBmkvEJIeLSC7R5/Z0zeF6A+Sp0T0uGFpIJDJx9pvptlarruW79bhahu2Hwq3hubXUEuAApryECmr58LbCGf82Nptqw3GLyBG8=
+	t=1781626420; cv=none; b=izV0Kjkuj5GIKklOXizg2IojnctjbPu1vbJX88nSpRpFZnK6JAXxh4bdTQmYq6a3xVeGh52M8aDlX8NYQHUxGXED1IbMkIkJiRKI00MVcOqfUXxVY8KV0Kpef6NSrOkW2VSleeay/SsXdynJvsQqUyE/KRGzYTz1bTSLXt/7wyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626385; c=relaxed/simple;
-	bh=Rzr0teClqHVGIgTKa2SjL/rTJ0Pgys1zgYVSRiRYIxw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=dQw6boQRpRsHuYrjRyEx/hRMxLJoN4gbrK3SgJ8BwRKXNQLwIWPMxI2Ht2D43FE4qkpiHhKx3xeUodWUwWwxf0noEjcDEbEtcGBXxOyIsxhCGsTGNhouM3z7JJu0q1wN4rJjtkzGX7qRBPqmQQLcpTuQjHYIIIgeimVm5N3410g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=FC5mOlFS; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	s=arc-20240116; t=1781626420; c=relaxed/simple;
+	bh=I6hDshcql7hu2jZUKkXZROC4LwQYUnvoGKyBIzxyt6U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hCL/rgkLz5+azLXS1OLFwTEd7sKXm1/kaxqG2TllU8SsGfHjqkgnXfFrCkfbEhKgVcHZCCEYgjkyX5mbUqdO6/nnO0VC7WSEzzIA7ZiM/zfb51AQIkfBvRrlxZ5RD1ADv23SwNQWnlNOhcnSnvdlNOXXTlZdmZCOVjQCkOeJS38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=R4DLgviK; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=JOMP4+Xq; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="FC5mOlFS"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
-	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
-	bh=8FfOzm9e3P0FRx2FSqYMKY7LFYF+7iCjjydnhlodSKk=; b=FC5mOlFSEcQWn0P/LetqeNlu+P
-	bDV9dTZoPcdBRsPf01iQ+Bw4xnQDBSGNloKhXO3g/fA9J3H0Osu+3a0QpI01eia9JwQWKBO6Gkrkg
-	XvldhYXIlFoRoU0Ym9ATzo2vFsoJsp3zPIKCAt/OysOpeG98HDh+BiEeA0EbEj3blm75jg23lVZvh
-	CifqPw0+JxeE5P+nWpHz+7XBmyKN0aCy+lx+3XywEdAvCrSM2Gm35FLmyNXIackLO/J4CRSkY8OKu
-	nKrNFH6FC6tj8R2uXI7Bxo5dd4kZaafK8EH5HUk6HV/6obZktJptpP49PAgsYBl1bG+Kk33oyu8x+
-	d1jUqVcw==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wZWPH-00Dy4f-37;
-	Tue, 16 Jun 2026 16:12:56 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Tue, 16 Jun 2026 09:09:52 -0700
-Subject: [PATCH net] netconsole: don't drop the last byte of a full-sized
- message
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="R4DLgviK";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="JOMP4+Xq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781626418;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Rcm9nGjfceIF2EHrZZqsS5ZGgLaEGuCuXjnHMYeIjik=;
+	b=R4DLgviK8hRGCGootfTj5V3DebmEqHf8hYtRVEwpMik2QpEVrptOXsGSECpOEj3pwJ22sm
+	6aOgBvek6OqhGWHSZH97Zu3OGMCYETnPBWg3gCrMQXAl7MdJ69gs6sHtTAGSSEvvPfMDsK
+	Ucb71QVPqYCT+1UiVaYqxrMfb7+a3qs=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-466-ugDX6D33MMyueaZQLlK5jw-1; Tue, 16 Jun 2026 12:13:34 -0400
+X-MC-Unique: ugDX6D33MMyueaZQLlK5jw-1
+X-Mimecast-MFC-AGG-ID: ugDX6D33MMyueaZQLlK5jw_1781626413
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-45ef4931de5so7295f8f.1
+        for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 09:13:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1781626413; x=1782231213; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Rcm9nGjfceIF2EHrZZqsS5ZGgLaEGuCuXjnHMYeIjik=;
+        b=JOMP4+Xqppz7SBR63V9fZVBS6J3VxD32DpcR2+8areH2Z1zYuTS4w2hbgxE5V3ebxc
+         AvrWAtrF0hN6Xt6uoy+AyBxriFJwSNYP8arO56Bg71tJfotuVCLLVdIHa7Hp9tKO0R2C
+         ra/xYA0PFXZrN069fi0+r/mrhIf0hZpf7mx4pdrP9o3njN1jGCjDsR/AFLBwrcdTRpFG
+         SomjjSIfsEAg8PMcPqEu5qzS/Az7v5vz5DZBN4nuu3mXjRtNbfuubjhhdMu0qrTTAd1S
+         9aK0LuuYm5eKIZzDBNDGUlQRZoTu6okTIi9LNRPlACVdhqlDgJvHyoHVnOBtfEVRP8/q
+         dklQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781626413; x=1782231213;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Rcm9nGjfceIF2EHrZZqsS5ZGgLaEGuCuXjnHMYeIjik=;
+        b=f/F5UCu5mKtB4x82ywFKlkVvQfqKKxuP2X89p8D52ERC1CC5LyaWDgqM0pOtGQABRT
+         0d2GsIfb6LsBu61cX85y//P1W7MSBrCuoZqBpZvGUDDfBgOmOf9yAv00/F2iFO7hiDca
+         c6J00rRjmHijCenKerCVZHlfdHammXeonZr7bEJ3Ou2kwWfKLol3lwlWEe68b89saWMA
+         PWTMtr8zmjCaKNd5AELjrfDd4HimuyxOowjhi06Wo9x37uIChgQAvuaKThKkzuwZsBdh
+         rsyEG1I1tgvr0G9xhnJe+S8rF1HKJSyYNVmqWSoDYF5e5T+GKo/LQ/F8j2Iorjj6JjWL
+         gssA==
+X-Forwarded-Encrypted: i=1; AFNElJ/r+cp06ecpd8iz7+tGW0L7w3eWSRti6gDkCHtNfUILfW+tT9MKO13q89jgdFZAqzXwcWbFKw8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzsuagBQdqujpK/iore9cRFDuBHmI1kdtr9fsVZxn+W2pDsDkRO
+	tJ8Lbh4K4ft6wsjQ1XYRc6v2cHGMQvNgKw0Tj6YYZTvsm+e7UkeudattxKO4EPmGQayyu8uwK4Q
+	dAkZEr8DHbkpG2vCY25JOjKktmz52jzEU+FkmWJXtLw1tjfuqi23gFENeGQ==
+X-Gm-Gg: Acq92OEB4E6owhCFyi/ixYkO8JuGKO5znP9uU98sbGlYl3+c6AB+ifyDt8avJlkNlsM
+	jwkmhoW5W88VlFnzaytwqbpGoCk6NhyL+sVXUtJ2sQcv1z0IpuBD6EKtbSK5hGcnWvTvMyRidPc
+	DSlpt87Qr3uSP3biq5OpZMGEa1LPoh0cVWzYaNY/KSsujFAnaICZaTA149bom/jawUxeVVCgH/5
+	fOKnXkV7QljKofoKa71npNQT04/xmFMLcKc/iWiUlN0FSj69Yoe68WanT1YMosznwP9Cfz27SbD
+	kMYswaQQP1eDFDiKwssi3vPa08JFRiggScTUBmee9apzfcQmbNphRPu4CSrps2PeGyi7n7kZh21
+	ZTAlIznA/OGb4fh1xCjIMRk58f6VZjf4lrgF7lzSO2Q0s7259qH3tRujAY/7cInrGXUAGALM=
+X-Received: by 2002:a05:600c:19cc:b0:490:9dc3:3483 with SMTP id 5b1f17b1804b1-492332c11dfmr4760545e9.2.1781626413333;
+        Tue, 16 Jun 2026 09:13:33 -0700 (PDT)
+X-Received: by 2002:a05:600c:19cc:b0:490:9dc3:3483 with SMTP id 5b1f17b1804b1-492332c11dfmr4759895e9.2.1781626412794;
+        Tue, 16 Jun 2026 09:13:32 -0700 (PDT)
+Received: from sgarzare-redhat (host-82-53-135-12.retail.telecomitalia.it. [82.53.135.12])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f2c4240sm41852524f8f.27.2026.06.16.09.13.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Jun 2026 09:13:31 -0700 (PDT)
+Date: Tue, 16 Jun 2026 18:13:19 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev, netdev@vger.kernel.org, mst@redhat.com, stefanha@redhat.com, 
+	maciej.szmigiero@oracle.com, bchaney@akamai.com, mark.kanda@oracle.com, 
+	ptikhomirov@virtuozzo.com, den@openvz.org
+Subject: Re: [PATCH 3/4] vhost/vsock: suppress EHOSTUNREACH fast-fail during
+ CPR pause
+Message-ID: <ajF0To9N3yc2NlIr@sgarzare-redhat>
+References: <20260612165718.433546-1-andrey.drobyshev@virtuozzo.com>
+ <20260612165718.433546-4-andrey.drobyshev@virtuozzo.com>
+ <ajFUk7quPhbI7Te-@sgarzare-redhat>
+ <021a6604-289c-4dd8-a0be-33c7812c0105@virtuozzo.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260616-max_print_chunk-v1-1-8dc125d67083@debian.org>
-X-B4-Tracking: v=1; b=H4sIAE91MWoC/x3MwQmEMBAF0FaGfzaQeIiSVhaRGEcdZEdJ3EUQe
- xd8BbwLhbNwQaALmf9SZFMEchUhLVFnNjIiEGpbe+udN9949nsWPfq0/HQ1NraJoxscjw0qwp5
- 5kvMdP1A+0N33A1N2jVNmAAAA
-X-Change-ID: 20260616-max_print_chunk-0a8cea1b1ed7
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- asantostc@gmail.com, gustavold@gmail.com, kernel-team@meta.com, 
- Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2435; i=leitao@debian.org;
- h=from:subject:message-id; bh=Rzr0teClqHVGIgTKa2SjL/rTJ0Pgys1zgYVSRiRYIxw=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqMXYD6geUvKbRapyTEkXciDiyeVVM3S4AJ+cda
- UPnYFrR5SKJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCajF2AwAKCRA1o5Of/Hh3
- bRMjEACSBrF7kK6TejsV8rD9AditbyclnCwZhFXPLoLv1aG+R+CilVUCIJqrbWUXdZTGUIHugxA
- 7BzCytcA6/X7F7nAfyPRSz4+5zWJvpvhzQ37zsZFkqqUyID0hxDTbcP01eImnZa1vYq387zAiyz
- kdxhbAyp52AKH2qufB/v6PygN3ZGb+xrUx3nO+lXfUhwzdeoyfI9pSg5zZq30Lcs8CprRWx823S
- itt6wAu1LZl0VKOe8qnIJ6YloCMVgJrX1RXSTDIXTAs2aI4nnpbQvYItPv2ZnYhlLZONl+KDKKF
- E97bOhc+XvwngBRG1he/EOoMMT3Vr4wLOnnCK6d0wD3ZuL3xZnJjKy+46x8+1Ua9j2smrxjK0h/
- XZoSASoMNDxuq25oCW7odM8oH1vZALgMM/51QxOjRXB/FLydSFoNtBLqMySBYOb4ZWDmuL8FEmk
- 7aPbsZUTyqvMtWEWmX7QA14IkN0A1Bb4hkYMYnfM8wxLNwGKu2xp+Tai66lOSGqPXe2+6AprkmA
- BK8wkigyWTTJ1nnwgNesDIu/S0aPWkE+MWjCAPCZBPZcMIdHdGI0pu1Z5zkjmYDQKCH3Tn7dKW3
- nAGv3CdpnDfzDiiApgEAmgkbnR7JrSxthwVXNzNHFzqMPF3WoyhL6k5MmLUP8UM8+vj2r2Z30D/
- RrJEw5pepOsc6vg==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <021a6604-289c-4dd8-a0be-33c7812c0105@virtuozzo.com>
 
-nt->buf is exactly MAX_PRINT_CHUNK bytes, but scnprintf() reserves one
-byte for its NUL terminator, so a non-fragmented payload of exactly
-MAX_PRINT_CHUNK loses its last byte (emitted as a stray NUL in the
-release path). Grow nt->buf to MAX_PRINT_CHUNK + 1 and bound the
-scnprintf() calls with sizeof(nt->buf); the transmitted length stays
-capped at MAX_PRINT_CHUNK.
+On Tue, Jun 16, 2026 at 06:58:40PM +0300, Andrey Drobyshev wrote:
+>On 6/16/26 5:18 PM, Stefano Garzarella wrote:
+>> On Fri, Jun 12, 2026 at 07:57:17PM +0300, Andrey Drobyshev wrote:
 
-Alternatively, nt->buf could be left at MAX_PRINT_CHUNK and the NUL byte
-reserved by routing exactly-MAX_PRINT_CHUNK payloads to fragmentation
-('len < MAX_PRINT_CHUNK'), at the cost of fragmenting those messages.
-But it would look less sane, thus the current approach.
+[...]
 
-Fixes: c62c0a17f9b7 ("netconsole: Append kernel version to message")
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- drivers/net/netconsole.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+>>> static u32 vhost_transport_get_local_cid(void)
+>>> @@ -311,11 +312,17 @@ vhost_transport_send_pkt(struct sk_buff *skb, struct net *net)
+>>> 	 * the mutex would be too expensive in this hot path, and we already have
+>>> 	 * all the outcomes covered: if the backend becomes NULL right after the check,
+>>> 	 * vhost_transport_do_send_pkt() will check it under the mutex anyway.
+>>> +	 *
+>>> +	 * Don't fast-fail if cpr_paused is set, keep queueing skbs instead.
+>>> +	 * The kick in vhost_vsock_start() will drain them on resume.
+>>> 	 */
+>>> 	if (unlikely(!data_race(vhost_vq_get_backend(&vsock->vqs[VSOCK_VQ_RX])))) {
+>>> -		rcu_read_unlock();
+>>> -		kfree_skb(skb);
+>>> ]		return -EHOSTUNREACH;
+>>> +		smp_rmb();	/* pairs with smp_wmb() in start/drop_backends */
+>>> +		if (!READ_ONCE(vsock->cpr_paused)) {
+>>
+>> Can we avoid this which is not really readable and maybe add a single
+>> variable to control the fast-fail at all?
+>>
+>> I mean replacing both cpr_paused + backend-pointer with a single
+>> `started` flag: set it to false at open, true on start via
+>> smp_store_release(), back to false on normal stop, and leave it true
+>> during CPR pause.
+>>
+>> The reader in send_pkt can do just:
+>>
+>>      if (!smp_load_acquire(&vsock->started))
+>>          return -EHOSTUNREACH;
+>>
+>> WDYT?
+>>
+>
+>I don't think it's gonna work as suggested.  As I understand, the order
+>during CPR migration is:
+>
+>1) SET_RUNNING(0)
+>       -> vhost_vsock_stop()
+>           -> vhost_vsock_drop_backends()
+>2) RESET_OWNER
+>       -> vhost_vsock_drop_backends()
+>3) SET_OWNER
+>4) SET_RUNNING(1)
+>       -> vhost_vsock_start
+>           -> for (...) vhost_vq_set_backend()
+>
+>(Btw I just noticed backends are already NULL at step 2), but that's
+>just our CPR case, for any potential RESET_OWNER users it might not be
+>the case).
+>
+>So the race windows starts from 1) (not from 2)).  We have no way of
+>differentiating whether device is actually being stopped for good, or
+>we're in the middle of CPR.  If we set the flag to false on stop as you
+>suggested, we'll still hit the -EHOSTUNREACH case eventually, and
+>avoiding it is the whole purpose of this patch.
+>
+>The fast-fail with -EHOSTUNREACH relies on the presence of backends.
+>IIUC the backend will only become set after initial SET_RUNNING(1),
+>which will only happen once the guest driver writes smth to virtio
+>config register, QEMU catches it and calls SET_RUNNING(1).  So we have
+>ordering with the guest's actions here, which is logical.  But for our
+>issue that means that the only true marker of paused/not paused is the
+>presence of backends - and that's why the flag is set in
+>vhost_vsock_drop_backends().
 
-diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-index 57dd6821a8aa9..bfab0a47678c9 100644
---- a/drivers/net/netconsole.c
-+++ b/drivers/net/netconsole.c
-@@ -184,8 +184,10 @@ struct netconsole_target {
- 	bool			extended;
- 	bool			release;
- 	struct netpoll		np;
--	/* protected by target_list_lock */
--	char			buf[MAX_PRINT_CHUNK];
-+	/* protected by target_list_lock; +1 gives scnprintf() room for its
-+	 * NUL terminator so a full MAX_PRINT_CHUNK payload is not truncated
-+	 */
-+	char			buf[MAX_PRINT_CHUNK + 1];
- 	struct work_struct	resume_wq;
- };
- 
-@@ -1692,7 +1694,7 @@ static void send_msg_no_fragmentation(struct netconsole_target *nt,
- 	if (release_len) {
- 		release = init_utsname()->release;
- 
--		scnprintf(nt->buf, MAX_PRINT_CHUNK, "%s,%.*s", release,
-+		scnprintf(nt->buf, sizeof(nt->buf), "%s,%.*s", release,
- 			  msg_len, msg);
- 		msg_len += release_len;
- 	} else {
-@@ -1701,12 +1703,12 @@ static void send_msg_no_fragmentation(struct netconsole_target *nt,
- 
- 	if (userdata)
- 		msg_len += scnprintf(&nt->buf[msg_len],
--				     MAX_PRINT_CHUNK - msg_len, "%s",
-+				     sizeof(nt->buf) - msg_len, "%s",
- 				     userdata);
- 
- 	if (sysdata)
- 		msg_len += scnprintf(&nt->buf[msg_len],
--				     MAX_PRINT_CHUNK - msg_len, "%s",
-+				     sizeof(nt->buf) - msg_len, "%s",
- 				     sysdata);
- 
- 	send_udp(nt, nt->buf, msg_len);
+Okay, so what about avoiding to set `started` to false in 
+SET_RUNNING(0)? I mean use it just to track the first SET_RUNNING(1).
+(And maybe changing the name to that variable).
 
----
-base-commit: fbc6a80cb5d3fd4ac4b56e8c9d791dd17be890c4
-change-id: 20260616-max_print_chunk-0a8cea1b1ed7
+Apart from CPR, when can SET_RUNNING(0) occur?
 
-Best regards,
--- 
-Breno Leitao <leitao@debian.org>
+At the end that was just an optimization, if we queue the packet is not 
+a big issue IMO.
+
+>
+>>> +			rcu_read_unlock();
+>>> +			kfree_skb(skb);
+>>> +			return -EHOSTUNREACH;
+>>> +		}
+>>
+>>
+>> That said claude here is reporting a potential issue that I think we
+>> should consider:
+>>      After VHOST_RESET_OWNER, the guest CID stays in the hash, so
+>>      vhost_transport_send_pkt() can still find the vsock, skip the
+>>      fast-fail (cpr_paused=true), and call vhost_vq_work_queue() while
+>>      vhost_workers_free() is freeing workers without a synchronize_rcu()
+>>      — risking a use-after-free. Also, any send_pkt_work queued between
+>>      the last flush and worker teardown gets its VHOST_WORK_QUEUED 
+>>      bit
+>>      stuck (the vhost task exits without draining), deadlocking
+>>      host→guest traffic after restart.
+>>
+>>      A synchronize_rcu() in vhost_workers_free() between the
+>>      rcu_assign_pointer(NULL) loop and the destroy loop would close the
+>>      use-after-free, and reinitializing send_pkt_work via
+>>      vhost_work_init() after vhost_dev_reset_owner() returns would clear
+>>      the stuck QUEUED bit.
+>>
+>>
+>
+>Yes, this looks real indeed.  Though I couldn't hit the UAF issue while
+>testing host->guest transfer under KASAN.
+>
+>>> 	}
+>>>
+>>> 	if (virtio_vsock_skb_reply(skb))
+>>> @@ -640,6 +647,9 @@ static int vhost_vsock_start(struct vhost_vsock *vsock)
+>>> 		mutex_unlock(&vq->mutex);
+>>> 	}
+>>>
+>>> +	smp_wmb();	/* pairs with smp_rmb() in send_pkt */
+>>> +	WRITE_ONCE(vsock->cpr_paused, false);
+>>> +
+>>> 	/* Some packets may have been queued before the device was started,
+>>> 	 * let's kick the send worker to send them.
+>>> 	 */
+>>> @@ -671,6 +681,11 @@ static void vhost_vsock_drop_backends(struct vhost_vsock *vsock)
+>>>
+>>> 	lockdep_assert_held(&vsock->dev.mutex);
+>>>
+>>> +	if (vhost_vq_get_backend(&vsock->vqs[VSOCK_VQ_RX])) {
+>>> +		WRITE_ONCE(vsock->cpr_paused, true);
+>>> +		smp_wmb();	/* pairs with smp_rmb() in send_pkt */
+>>> +	}
+>>
+>> Why here and not in vhost_vsock_reset_owner()?
+>>
+>> Also having this here will set it to true also with
+>> VHOST_VSOCK_SET_RUNNING(0), is that right?
+>>
+>
+>That was added here precisely to cover the vhost_vsock_stop() case (see
+>above).
+
+I see now, a comment or something in the commit would have helped.
+
+Thanks,
+Stefano
 
