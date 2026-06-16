@@ -1,110 +1,131 @@
-Received: from mx0a-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91480362149;
-	Tue, 16 Jun 2026 19:00:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943CE3DE428
+	for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 19:00:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636447; cv=none; b=qHIdDggMS9Ibio/9ojHWMIAVus5+tMYSYzplNJMC6q46tcvsqTK1W6LMfeXF0yLrFKiWwYweDNX8CVOKkiDOX+PWFkiy4qagR1l11mXIQuknnh7pxJYtYgENXTEjG53OAltHgMy8O8XKGDjjpIcBMWp+KTzmz/uS9pnXhRAcE58=
+	t=1781636456; cv=none; b=gN8Hj1OsaSPkns5QimMmLtcLsoftKEce4vRMDuCKExWTG7YNf//mOVs/j03TIKMI77101+kDW2FARzNpAQn5iucvvYSlAaIdZA4zOL9rXpdIAp/XdQw8Mia+b3YZlz9W2y0m+xr3eo3YsYrmVoRKVECgQRzZta/nU+F6tBYZXwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636447; c=relaxed/simple;
-	bh=GIy6PliBD4y+R8b6uO2g5XSkSc/3nMQi7P6B3FvBOXQ=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RDUh9c2InDWdj+cFcvA2BZrOIwOJcHxF3bEwYGSIEUiDeJK9rv0TJ9jNmUKQXDHmE5PIZ599pUhsbyG2MDBHFoK3ba5KYM3K727FGdQ3dv1i8fTB7Bw+wAcPu2pltWvr2ZaNWsBC9aRLAB0IXwC4LbvO7YLova8BRXgaAikDFZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=IPRSFJ2s; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1781636456; c=relaxed/simple;
+	bh=9Tyx3IZ683JCdQMRbGJeTjnP9qW7Us8tqu9ScIW2eJ0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZulkPsnN3oHnEy1DdoEnSbMqdixKyd2QcNabVg6KkQ3LYMfzSC4/fx5EPHE18T66Ko2S09VwyBoyIUI9vF7HFT5sxav+5k4NltqFCm6ZawLy5FCl7Uxcr9WR5Z9VjgC3UwZEGlnrl6OCcYnka1gnhYI2oruTAelBRd2Fq0pqabo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bE3JPLzf; arc=none smtp.client-ip=209.85.167.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="IPRSFJ2s"
-Received: from pps.filterd (m0431384.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65GIRuFM3433572;
-	Tue, 16 Jun 2026 12:00:32 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pfpt0220; bh=E4wuYy3vP4u2hYK1CCYuR6IyI
-	uiVldv1KgZ/wsZ5Zvs=; b=IPRSFJ2sOuIeK5v081gHZveFajGFAaXnTM860qscm
-	SCECInh5sPrM2UyFBeKyzKCEJgDKzyOCUs2E3RWOumrgqxIubz94pl4y3NPmoGck
-	Evusrtv5mxYQka8i6t8LS2NUjkadzjJzi6ep2473uyByn229W2rKealSK5cLVDX9
-	4Z1Ea9L0Cl2rW/Yt3xkyBuUBZ4VlXNlhmTdD4shMm5tFkLTcAuvyX2iV6Vpq979Y
-	lL/K8BY8XimD2snlvC7lidAjyHDjRTNnCjgxQwiKGC4RRNcorA/RaTMS0jOenG+z
-	4jrOtj4QfbyVFDClYLVl3+dsAKZx76FMBR1c4vdnTgJkQ==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4eu9p7gqdh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Jun 2026 12:00:32 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Tue, 16 Jun 2026 12:00:31 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Tue, 16 Jun 2026 12:00:31 -0700
-Received: from hyd1358.marvell.com (unknown [10.29.37.11])
-	by maili.marvell.com (Postfix) with ESMTP id A45543F7048;
-	Tue, 16 Jun 2026 12:00:27 -0700 (PDT)
-From: Subbaraya Sundeep <sbhatta@marvell.com>
-To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>,
-        <gakula@marvell.com>, <bbhushan2@marvell.com>, <rkannoth@marvell.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        "Subbaraya
- Sundeep" <sbhatta@marvell.com>
-Subject: [PATCH] octeontx2-pf: Clear stats of all resources when freeing resources
-Date: Wed, 17 Jun 2026 00:30:19 +0530
-Message-ID: <1781636420-19816-2-git-send-email-sbhatta@marvell.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1781636420-19816-1-git-send-email-sbhatta@marvell.com>
-References: <1781636420-19816-1-git-send-email-sbhatta@marvell.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bE3JPLzf"
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5aa63628d26so4856146e87.0
+        for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 12:00:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781636453; x=1782241253; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hAylVLBoI1FWIRaqnARn0iCZWEh0HddelhXPEdFepIU=;
+        b=bE3JPLzf2Ayr90aodKGCy3QXSoUKQacdo32bqaaB1GxC8d2+KrbeH4ujPMw3Bl+Ln+
+         gwa8VvdpxKapffdh+G67FlMyVuI+I4LJO5A3Ccp8Egzw4O2fPhGc/BBWkC7ZhYQEDeTk
+         sEzsTIJG7g/PLmIPt3tCUemUUa3VLAP3/7e9XztNdxOLb/V04V/OAVWbt6Cydr8jKasl
+         A+3XsPRDsMxCfIRZQs5KueO/ftN/k6TvI6RamGeZ5cMrJHP20TIbEAS/oxVRHUi7sdMF
+         lcdnCQ/+gPvXMBIOXVo3B3uGTWZaoapq+rFjBPnS+a4WThbrFNL7v0O2cnvObe91sd9N
+         trsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781636453; x=1782241253;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hAylVLBoI1FWIRaqnARn0iCZWEh0HddelhXPEdFepIU=;
+        b=sML1tihdLznpbnYY2hUJ1RNKJ+A+JH7slGc0aVOc/SzyjqZKvdXvBVDBK7vRn7C0/L
+         VEDfYCBax4Dy6mG0yOJQ6i6yisYXiL7NzyDlUY7XlyiBftq+qbNwA/0cjzBLfqrzyjRw
+         TL3xtrwRKc5KNeqma6y7g4rW/EZkTOpRbKuglHMHGQP3OdYTszw4Jh6P5q+YipA3R2cC
+         TdjeVHu9Q+v3JT6vP3YQQg1moETWqZx/1FI09UF4oE+AbI1PT7b1Shv79tLRzEcm7XZX
+         M2U055Qw78nlr3j0KdrnXOB2AT70HsvelRLTrgTCM2AoUlGCY0dwiJ5Rt9vKnamjh6MJ
+         n+4A==
+X-Forwarded-Encrypted: i=1; AFNElJ9f8r9z2pP+kJXFQWaRO2Olnoc5B7TBvnGWcz+8etx6zcSnDDZrfJfg+k20Cuo7BSTjs/kT/VE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOkUzMdIaKKMM2lUJDrrmlfzAMvi9K4CYfzO2vKMsMo0C9j1Lb
+	/x6CVagSj1nRQMw/K6D36MXMHrl0MXSbS20Y8mTQKqgIZB+j354ig/UX
+X-Gm-Gg: Acq92OEIT82QIuA0wOrfloBdnfUZZxu66Hily6IwL94OcpvhxehwH+XVOOnbREdn8HR
+	RdRRJdUobKV69oZXLoM8QfOWFU3OHo3t3ubhIWV7WjZfiFCtjvoBFGzQ5M/nFt99lREySGwekaV
+	46z3xD653h09aoIjTz4ZZBhEC40pcsPAIKRvqXr5VeaSw9u2B5dSdlhs/1OHILJ1xlICmpUQZvW
+	X74FBwBShW+N5lU/zjV5hi2A2I7fddX4q47+9jtexOflWyPiRuADqSn4kh0UqPtpxeiC/E1XkEA
+	oyD7H1/4fw6elASHWofI8YQwyQA4ye3hqXfAoWR7uonsk7rwbtxuK3kMMsb1hdIllCkcX6EB9LB
+	pttWPqQDVIXY+09dNYUi+8/y2nIr0PNnRh3nd5zXb79ND6k9+ml4hGNrNmBVkC8HLAC8RGL0MSV
+	operYDoMXijYhqkPCG+a6wAUopFNU7j16IEUnIsrE=
+X-Received: by 2002:a05:6512:baa:b0:5aa:74f8:72f4 with SMTP id 2adb3069b0e04-5ad46fe041bmr185686e87.32.1781636452394;
+        Tue, 16 Jun 2026 12:00:52 -0700 (PDT)
+Received: from grower.astra-academy.ru ([185.32.135.49])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5ad2e124462sm3738075e87.0.2026.06.16.12.00.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Jun 2026 12:00:51 -0700 (PDT)
+From: Alexander Martyniuk <alexevgmart@gmail.com>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Alexander Martyniuk <alexevgmart@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Huzaifa Sidhpurwala <huzaifas@redhat.com>,
+	Willem de Bruijn <willemb@google.com>
+Subject: [PATCH 6.1] net: gro: don't merge zcopy skbs
+Date: Tue, 16 Jun 2026 22:00:36 +0000
+Message-ID: <20260616220038.87364-1-alexevgmart@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-GUID: 7fL57m4u7vOuL8P1jvC0zgogW567puG8
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE2MDE5MyBTYWx0ZWRfX7C8/jvCqgbPs
- nQNA/fVmAZ7WkGGHVztd6nbBrv00IBPcUTIzje2ZJBktp/zsPT5hLWG2V9YvvxV03FPL1Q5YJs4
- nwHyLm8xbi3QzI1M55oRTMhPBDzcQoo=
-X-Proofpoint-ORIG-GUID: 7fL57m4u7vOuL8P1jvC0zgogW567puG8
-X-Authority-Analysis: v=2.4 cv=eIgjSnp1 c=1 sm=1 tr=0 ts=6a319d50 cx=c_pps
- a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
- a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=TtqV-g6YmW1Jfm2GSLaY:22 a=M5GUcnROAAAA:8 a=xEhMEBUeZgw2hLcffmoA:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE2MDE5MyBTYWx0ZWRfX6MaY4AuoDi7S
- xwAgNCWj6Jvm5ShSd8Pwl3A7+DRFDWnW74qDhjKXHQ46fjxrm+NTBVK2dUaRNFKgRsi2j7N7LMU
- +ksJ55yrg/VZjVz4Ey+7MGXGXYDiAjd2vt5a1dOl/ZNnAzlqv52Ufe+1mGrWTQT6+VhV+1yoZam
- yE5/5qBz7aLgNl6XhdE53IDbJKbE2EwNxldJ6lPK66zrZVLuxLa5YcQHiwVcTeyh8Q5U19ULmJv
- NvJXaedskVqeFQFuX5RUTDanB0HOXqA20HgpRM69W1RBkVHpK0v/cG7/S4spkHlNT43Mf6x5xM5
- aNC3q0mWa80qweDbFXl4Q/c2xHxeF3b68gR1xIx6ahxUJYrnoX+0izJARIR079gavdq2CYwvDvs
- bFIlGvhnqFXGKJC3PDt+qWu2N94pWoGUnRWpGEq4lwPN8LufydkwB5ncbNCwlbjj5JBc+RPEmat
- hDxaglJaAFs1CLzJBhw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-16_05,2026-06-16_02,2025-10-01_01
+Content-Transfer-Encoding: 8bit
 
-When all MCS resources mapped to a PF are being freed then clear
-stats of all those resources too.
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-Fixes: 815debbbf7b5 ("octeontx2-pf: mcs: Clear stats before freeing resource")
-Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+commit 4db79a322db8c97f7b73b8a347395ef4d685eb40 upstream.
+
+skb_gro_receive() can currently copy frags between the source and GRO
+skb, without checking the zerocopy status, and in particular the
+SKBFL_MANAGED_FRAG_REFS flag.
+
+When SKBFL_MANAGED_FRAG_REFS is set, the skb doesn't hold a reference
+on the pages in shinfo->frags. Appending those frags to another skb's
+frags without fixing up the page refcount can lead to UAF.
+
+When either the last skb in the GRO chain (the one we would append
+frags to) or the source skb is zerocopy, don't merge the skbs.
+
+Fixes: 753f1ca4e1e5 ("net: introduce managed frags infrastructure")
+Reported-by: Huzaifa Sidhpurwala <huzaifas@redhat.com>
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/c3b7f906bbfcbdfd7b4fa9d6c18a438870df85be.1779307748.git.sd@queasysnail.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Alexander Martyniuk <alexevgmart@gmail.com>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c | 1 +
- 1 file changed, 1 insertion(+)
+Backport fix for CVE-2026-46323
+ net/core/gro.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
-index 4d3a7f4be962..9524d38f1582 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
-@@ -182,6 +182,7 @@ static void cn10k_mcs_free_rsrc(struct otx2_nic *pfvf, enum mcs_direction dir,
- 	clear_req->id = hw_rsrc_id;
- 	clear_req->type = type;
- 	clear_req->dir = dir;
-+	clear_req->all = all;
+diff --git a/net/core/gro.c b/net/core/gro.c
+index ea6571c01faa..c5a9733d929a 100644
+--- a/net/core/gro.c
++++ b/net/core/gro.c
+@@ -171,6 +171,9 @@ int skb_gro_receive(struct sk_buff *p, struct sk_buff *skb)
+ 	if (p->pp_recycle != skb->pp_recycle)
+ 		return -ETOOMANYREFS;
  
- 	req = otx2_mbox_alloc_msg_mcs_free_resources(mbox);
- 	if (!req)
++	if (skb_zcopy(p) || skb_zcopy(skb))
++		return -ETOOMANYREFS;
++
+ 	/* pairs with WRITE_ONCE() in netif_set_gro_max_size() */
+ 	gro_max_size = READ_ONCE(p->dev->gro_max_size);
+ 
 -- 
-2.48.1
+2.30.2
 
