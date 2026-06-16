@@ -1,65 +1,65 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1145F34E741
-	for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 12:02:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD27043C055
+	for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 12:04:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781611330; cv=none; b=VJ1+B0R7SxFJkRwV8G8dJKxozvJ+Fr4zsg08roJPO28gmEcMEI1f9y6XLrIqzRQYBkzIuXtLoObSAZbSVvkZK12QFdHgeqB6fFIXGf8XdAmRtvOd+i8d5G4KtnTFLdJxlqKP7mXY7nSMwQQ/EO7mqtW4WXmYmapIvS6CRZmJgkA=
+	t=1781611474; cv=none; b=FsN0YpPcFYbmTRVWGkSTrMjctehHTIYGtUs1xYproR78ZCxyE4FxrJkSa4SRDd3ZmHUNOAfrbARebTWNMFp8fI60SWxDmds8Lseci2WimLvbtvThSmvKFrcPmbenb1fYfURhHK6LNuSJ3MAbEWqyXOOPwsKuLEfAxzCiWT2TQGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781611330; c=relaxed/simple;
-	bh=YA05WrW8GLWqzUGnP2oKazYooiYLhjswwVleumjucTQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=HTuy64JiIbPK0VVYGj/d2TN4Hv6QYQXX77rO/ukDYaPHPL6sw1Ovirz4t3wP5s908SUAhiT+VjMQcA4yF9OqmX/xXuolC2wkAIfHBi6/eEGjmDmqyaOPtWJNuWt2IBv6RB9ZUOTpQX4+Wwxi40jWqZKbkqPMP0Z8G0MpxoZ156g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CQFngQ8f; arc=none smtp.client-ip=209.85.210.180
+	s=arc-20240116; t=1781611474; c=relaxed/simple;
+	bh=/WESTBL+Tg2kPxaGx9LqBJWcIxfQG29/aVDxhNwgp50=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=Fb5RYT6at3a6TUe+Eac97F6Qxl1w2DE2nPIW+IwsO4kZ/mftpjfaaV9+b6vk0mVZDXd8OdO67dv5PE4Xjg9kkJ7Fm6uD/csQjiZsHo2NtAxTj3jiY9GsVmIdRwTkHAafy22H8McqUCo0Lp3H3VKJVQlfAOPBuXLLdyhnhdH3cK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NRHLeeLR; arc=none smtp.client-ip=209.85.215.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CQFngQ8f"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-8424b00710aso3124326b3a.0
-        for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 05:02:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NRHLeeLR"
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c86307c4e6bso1557709a12.0
+        for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 05:04:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781611328; x=1782216128; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1781611473; x=1782216273; darn=vger.kernel.org;
         h=mime-version:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=R6rJ2lBTSRBiSi/3hBuK1toMuKkxHnWeZuud2dPMa4c=;
-        b=CQFngQ8f2ZdYiVUEphLUUzUK3Tz/k0dhvTDSjcXbYFEz6Jl8H5j/5qehzreAzJXW4i
-         /FjVftIVANff3ftMmKxn6RKJuWN/Y5llGN71FubsDPkut4oe1EFvHaIUd1C5xmHDe2hY
-         HS/dmcRRNYzwb3NgPg80wQ3Ywt0yBak7DSBtvdHnGhG5NFgnsQF9lkY3SHj4ZuecU0Zf
-         tRpU0+BwZsU2xsXWgaLKtrsBXoo5CvYqVdXyhhOO/pKQHYry/+65S7xR4/eOON1eiRVP
-         fxSc7vhZrA2HF+MdwJOFQMMD/zlg1nfBMZ/yuIJK8ziSov67+DTFoEaHaXUm6YnVNPx4
-         Dp+A==
+        bh=JVH7znTjFWA0bwu5sf/vJ2V8033VWhifM4UtG4Dd7PM=;
+        b=NRHLeeLRaC8/NdJALwv84DWI/L2G0zHlG5V3OTNxOkWumTpYvTCraqQ8eS68yDCDM6
+         NNnmYMmiIRuH3oJoOEbfNU2R0naG3OjMpyZKsrk1+tNzV+A9R0XqcEZEDpQI87Glf0xC
+         ba25eNB+Afv/K8aPJlFZJAjjgMVxCc+DnAzlsbGYTDjcgLybSICyQHqWzbriArk59GqS
+         0Z+szhGsxhbH/6RXmej4+Y5coeiyaXKj5H370i0amlNSanXqkE2QgvdwsADJLwP7+fn6
+         zYFny5ewIOus1JzRT/CRnOm0pYF+ZZN6Q2OwkxGhROw37pVQN5qih+zaURwDKsPqPAKO
+         GjtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781611328; x=1782216128;
+        d=1e100.net; s=20251104; t=1781611473; x=1782216273;
         h=mime-version:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=R6rJ2lBTSRBiSi/3hBuK1toMuKkxHnWeZuud2dPMa4c=;
-        b=a8m6GWjw8h7MFpQhR5TdQp1hXtNZUtepNq9qHMMLs+OlGp+wjs5AZfLMnBkU9uH+I4
-         acuM1UxpIGT/y1Ygzy9dblIUgNOACei7s1wzdairZNXq4LhAGjpMSVncexfjwHm4NskN
-         fd+nVEaZMqUe3h43Nht030L9y0zyETDs7IwtbHit5cnJbjn75zXSuYxtHMfj5RpdQXJ4
-         cxjjV07CfO33mIcwu7ll/HqgCm3JTCyiem+zM7PyL6+5zktOwh0WPRJOm5l5Htw2bSRV
-         k2D51+PYOBpFOCVpWruBAQBVA0T0/A2nhhSJ6vpZyixbzhHQCx8+uezQM3I234sht6w7
-         Ao5w==
-X-Gm-Message-State: AOJu0YypVdLcCn1QmNrP9GkvfT6vAP9sDolIyDa5huRCyuTMuGjYthlv
-	I6f9BN3AtL+NUSWIiqeRd0HN7S2Q4t2sVSLbyBNuzJWO52ZIAjpKJQmmNQrrGnqcEzTMPg==
-X-Gm-Gg: Acq92OHpXWflaW24e6nC3LTnitGXszVvJu8SzvYaH5TKal15EHSokit4tCJ7X53E87q
-	0OJXEeOU+cyqf8k6TO+uj3lgc7mrN5Cw9IoUz5mj0qGdEY5ZdQRJMoUtDM1rWy2GeILV+K9AWN3
-	+p/3i7hxlRrAu+OFqJbuEeXlyYa0c3/jC/iegYEcKOZlPuQM3C2uA2/nkJQJpzMTyxN8z+T6Xtf
-	Sj6AzRXT0DR0einnyJx2MuU2fc0/v68d6p9fp/fnyYnLjw9i0rquzNBJj/UTPn0f+i7PMSGpqSv
-	wWPA1R9EOuNQ5WNJHr/itJBpOg9zJl3BE/BJGgZGxjEXv7t3ZLqK8aEctrgCaksn94yM7wX1Xhl
-	n2yqHz8lZaIFE9QcG0PI9VMDFyOOkHz4ZyrZXIxyKTP3sBM4HZ2Jy0iexZiE0/lfXpCTvwtIYYy
-	GSfFALgwweolGcnSub
-X-Received: by 2002:a05:6a00:993:b0:83a:4846:90bf with SMTP id d2e1a72fcca58-8451566da92mr3284092b3a.43.1781611328433;
-        Tue, 16 Jun 2026 05:02:08 -0700 (PDT)
+        bh=JVH7znTjFWA0bwu5sf/vJ2V8033VWhifM4UtG4Dd7PM=;
+        b=GUCksob3kwAAuuxJTh/okhxyBlKy/VVySn/4P6shZgNVuNjEQh/wo0fg/PD+2ElrjX
+         QZL6rBhY4i3l1jsgjNswXRPMweUH3wJbRctglKcpjxY5Ggn1MfhjI0T9DLzdV5hRwlGC
+         29738cxD2T5wvUVkp8curnALAtguMoCUfZvIaTFv+qKHir8kLFZh2Y3FfWS7sSKUUEki
+         wIGRijJRydI+cCmuZGUtmdyqC2WDplmSu0v5eilCm8hVJzYtA3fy7Heb2ysMnQmYgWpx
+         zpLm9XMQRWGE61M41c3zJHx8Zh6y37lwVy3vscgXoJCBMZ/wu4USQMrn8joSZmX8CJKR
+         Amsg==
+X-Gm-Message-State: AOJu0YzvVuPgvNFiXWk1tC9dAOwkVKdPNVt63zd0EX7glty5EIxv8QPT
+	CzAwfPLhdFGOX8Mzkv6u8MdAgbtKoavNwFgceI0IZLrq4mAKmkUzqbPlWX/Oz1Tv6haEbg==
+X-Gm-Gg: Acq92OEUrIf+cjGtefCEaPUC3ZZm2R2nYb7EPTGWUnJdMIMRCbtM0oRjWNvIDW1eCJx
+	EhMcLbhDOPC6QiR3Cj2cRcGXxaWCCUQFjIz4daGeitAejT3hrAu8w9ENsYqSGSNzqXF3SA9njja
+	FFIpigxhXiHPqXzO81+W5ckbapsRyXKGJ98olU9ei4JunmiBZKlgHRzUHP6+TSSdqdMHkvNaUYN
+	Ct8z9wpAqKkNiF4NeKZmk/rsf6UGYLxAypmxdDPnWFKWt5GtTyrE1/r9tIt9qk/L8vgdlLnwiwB
+	+eLj5KLlW4Dhbka66T8gn0Ur6o4OJI+kNNs6+jV/g/Zw+cd9cgAONOcgMgLpQzdjl7drCZcCm5V
+	jfD+P8vgAVV1RDsQec7+727x2eSaaPAeSy5LxqWJcg67xLnJaM56SwfS428dgChykkNS1L6Er4s
+	WxVhZU58ZdcHLadH3A6RcE9eQ0T7A=
+X-Received: by 2002:a05:6a20:7285:b0:3b4:669c:ee32 with SMTP id adf61e73a8af0-3b7e49d08a6mr3763004637.37.1781611473094;
+        Tue, 16 Jun 2026 05:04:33 -0700 (PDT)
 Received: from [127.0.1.1] ([47.253.114.73])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434ac9bfe1sm13341635b3a.12.2026.06.16.05.02.03
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c866325d156sm11768400a12.13.2026.06.16.05.04.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jun 2026 05:02:08 -0700 (PDT)
+        Tue, 16 Jun 2026 05:04:32 -0700 (PDT)
 From: Wayen Yan <win847@gmail.com>
 To: netdev@vger.kernel.org
 Cc: lorenzo@kernel.org, horms@kernel.org, pabeni@redhat.com, kuba@kernel.org, edumazet@google.com, andrew+netdev@lunn.ch, angelogioacchino.delregno@collabora.com, matthias.bgg@gmail.com, linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-Subject: [PATCH v2] [net] net: airoha: Fix QoS counter configuration for Tx-fwd channels
-Date: Tue, 16 Jun 2026 18:50:29 +0800
-Message-ID: <178161132384.2164449.18407700117859190327@gmail.com>
+Subject: [PATCH v2] [net] net: airoha: Stop TX queues on error path in airoha_dev_open
+Date: Tue, 16 Jun 2026 18:50:39 +0800
+Message-ID: <178161146875.2165143.7400860261990016053@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -68,33 +68,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-In airoha_qdma_init_qos_stats(), the Tx-fwd counter was incorrectly
-using register index (i << 1) instead of ((i << 1) + 1). This caused
-the Tx-fwd configuration to overwrite the Tx-cpu configuration for
-each QoS channel, resulting in incorrect QoS statistics.
+In airoha_dev_open(), if airoha_set_vip_for_gdm_port() fails after
+netif_tx_start_all_queues() has been called, the TX queues remain
+started while the device configuration is incomplete. This leaves
+the device in an inconsistent state where packets could be
+transmitted before the VIP/IFC port configuration is complete.
 
-Fix by using the correct register index ((i << 1) + 1) for Tx-fwd
-counter configuration.
+Add netif_tx_stop_all_queues() call on the error path to properly
+roll back the TX queue state.
 
-Fixes: 20bf7d07c956 ("net: airoha: Add sched ETS offload support")
+Fixes: 23020f049327 ("net: airoha: Introduce ethernet support for EN7581 SoC")
 Signed-off-by: Wayen Yan <win847@gmail.com>
 ---
- drivers/net/ethernet/airoha/airoha_eth.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/airoha/airoha_eth.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index 31cdb11cd7..329988a840 100644
+index 31cdb11cd7..cf9c366907 100644
 --- a/drivers/net/ethernet/airoha/airoha_eth.c
 +++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -1256,7 +1256,7 @@ static void airoha_qdma_init_qos_stats(struct airoha_qdma *qdma)
- 			       FIELD_PREP(CNTR_CHAN_MASK, i));
- 		/* Tx-fwd transferred count */
- 		airoha_qdma_wr(qdma, REG_CNTR_VAL((i << 1) + 1), 0);
--		airoha_qdma_wr(qdma, REG_CNTR_CFG(i << 1),
-+		airoha_qdma_wr(qdma, REG_CNTR_CFG((i << 1) + 1),
- 			       CNTR_EN_MASK | CNTR_ALL_QUEUE_EN_MASK |
- 			       CNTR_ALL_DSCP_RING_EN_MASK |
- 			       FIELD_PREP(CNTR_SRC_MASK, 1) |
+@@ -1715,8 +1715,10 @@ static int airoha_dev_open(struct net_device *dev)
+ 
+ 	netif_tx_start_all_queues(dev);
+ 	err = airoha_set_vip_for_gdm_port(port, true);
+-	if (err)
++	if (err) {
++		netif_tx_stop_all_queues(dev);
+ 		return err;
++	}
+ 
+ 	if (netdev_uses_dsa(dev))
+ 		airoha_fe_set(qdma->eth, REG_GDM_INGRESS_CFG(port->id),
 -- 
 2.51.0
 
