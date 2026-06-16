@@ -1,97 +1,475 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C50B2EC0AE;
-	Tue, 16 Jun 2026 13:22:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A2D2BE026;
+	Tue, 16 Jun 2026 13:31:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781616138; cv=none; b=oUBW1p4Suw18+ceu1o49YH+siIf37vKcXJLCLEytoB9FQ5T8xu/aQN/D+dQjFYM24Khmp+9CUFgfBYEWC/XiWSfvYkORgJGUYOZxn3l8YuEYTD3/AsUkOfSJmDAKmFvOyJ2PWuedpmfPnnm0C9lBMd2wo5MVMbCKnLGb4lVgNpU=
+	t=1781616686; cv=none; b=t/QJW8fajnyU4AL6Ng8YxbjVZWDSaTAtZVPbS1pmbwHYq2MY+PF0BoSjbv1oULKOjKLguymfhlcy3SegsI3/mY6S0/1HkIncZ7m5daIZQ39yoCZdaiIu/jcVt0OuuFW1QwH9htyKF+TXqC+JbNggZX1g1yLtN9RXuFf3VAPBsxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781616138; c=relaxed/simple;
-	bh=TsXinStHtWl5K2yKuHlOl4bUsbZy1AvuMwCW0izFIC0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rGyxGqpfQ+O/2F+mSVJ1F5NiGhaFjXnkcVZGjert6grhoV29/XszEHdXQMIrpitOzNswJUFFo01PS/Q2IV0duY0vZ1oLyQ5QPIaj4cmz7WXpU/9F85KXBwr6AF3+VvW394hLu7sy84SXXbo8DTdbpNEGdwhg8052MxDib8RBWzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cv7enJ9U; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cv7enJ9U"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B45E71F000E9;
-	Tue, 16 Jun 2026 13:22:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781616136;
-	bh=1+P+K7C8m0gS0Giz5lDKi9nkVJKlfkfqXl54LcBLclk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=cv7enJ9UBb2POCviyNZNStx6GndmMuKnRkVvOD3ViojcbKq5JI/TVcWqwiI89e/Ik
-	 kSgGc3YJ85kE8kl/WvgQjuK08NQj0CxajlK2nr0nrQfz0ZpJykOligD5PryyE3piPk
-	 3t1Ls0JsJGieKh/RWTtOfroDJhz2awYJXmb4jAMu9HUcpGn7+t7GrXm5pOwuXvvvCr
-	 SS+Aw4wZJp2dUXuzMwoF/N5EOYoExSUjBKeIhAmp30fbsmnzwvV0lMWQdvMEr/A3G5
-	 Ds/NrzC5t+koTqX533cttr74mI/ATLNtRgKBOuICcR2l1a2Asm8SwgVMdccHKUYZ9J
-	 zkcyuTpkp2Kew==
-Date: Tue, 16 Jun 2026 14:22:11 +0100
-From: Simon Horman <horms@kernel.org>
-To: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Kees Cook <kees@kernel.org>, Kito Xu <veritas501@foxmail.com>,
-	linux-kernel@vger.kernel.org,
-	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
-	Ao Wang <wangao@seu.edu.cn>, Xuewei Feng <fengxw06@126.com>,
-	Qi Li <qli01@tsinghua.edu.cn>, Ke Xu <xuke@tsinghua.edu.cn>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net v2] appletalk: fix TOCTOU race in atalk_sendmsg
-Message-ID: <20260616132211.GT712698@horms.kernel.org>
-References: <20260615090635.1549-1-zhaoyz24@mails.tsinghua.edu.cn>
+	s=arc-20240116; t=1781616686; c=relaxed/simple;
+	bh=FkD3aclKQOEI3lz7lfXFpiz0i3/O2auAYh7ArU1GHKU=;
+	h=Message-ID:In-Reply-To:References:Date:Mime-Version:From:To:Cc:
+	 Subject:Content-Type; b=qgaGri5bU6ekcJtYnvkKeJMfW551TjV5a4VFJmU83+gfCEPswSGw9sb8fe17m4f4tG4so1SNefadOCFdBhQnsiN5kOzyGzf+pxxil6gQLom0DepvkfZB1Rn2+jV9/GazTVZSqkTiYky16ezToOTSkpCqkXWfk/Qg0ZPRqYHRwEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=160.30.148.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gfnv72l8Yz8Xrrn;
+	Tue, 16 Jun 2026 21:31:15 +0800 (CST)
+Received: from njy2app04.zte.com.cn ([10.40.12.64])
+	by mse-fl1.zte.com.cn with SMTP id 65GDUsvQ024029;
+	Tue, 16 Jun 2026 21:30:54 +0800 (+08)
+	(envelope-from han.junyang@zte.com.cn)
+Received: from mapi (njy2app02[null])
+	by mapi (Zmail) with MAPI id mid204;
+	Tue, 16 Jun 2026 21:30:57 +0800 (CST)
+X-Zmail-TransId: 2afa6a315011c1e-6a245
+X-Mailer: Zmail v1.0
+Message-ID: <20260616213057452I2KLm3mVgWYl_SUTy_YYS@zte.com.cn>
+In-Reply-To: <20260616212106742_trNLb7r-FL04eDlJO8tT@zte.com.cn>
+References: 20260616212106742_trNLb7r-FL04eDlJO8tT@zte.com.cn
+Date: Tue, 16 Jun 2026 21:30:57 +0800 (CST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260615090635.1549-1-zhaoyz24@mails.tsinghua.edu.cn>
+Mime-Version: 1.0
+From: <han.junyang@zte.com.cn>
+To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>
+Cc: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <han.junyang@zte.com.cn>, <ran.ming@zte.com.cn>,
+        <han.chengfei@zte.com.cn>, <zhang.yanze@zte.com.cn>
+Subject: =?UTF-8?B?W1BBVENIIG5ldC1uZXh0IHY2IDEvMl0gZGluZ2hhaTogYWRkIFpURSBuZXR3b3JrIGRyaXZlciBzdXBwb3J0?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl1.zte.com.cn 65GDUsvQ024029
+X-TLS: YES
+X-ENVELOPE-SENDER: han.junyang@zte.com.cn
+X-SOURCE-IP: 10.5.228.132 unknown Tue, 16 Jun 2026 21:31:15 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6A315023.004/4gfnv72l8Yz8Xrrn
 
-On Mon, Jun 15, 2026 at 05:06:33PM +0800, Yizhou Zhao wrote:
-> atalk_sendmsg() looks up an AppleTalk route, stores the returned
-> atalk_route and net_device pointers, and then drops the socket lock
-> around sock_alloc_send_skb().  The route pointer returned by
-> atrtr_find() is only protected while atalk_routes_lock is held; after
-> that lock is dropped, a concurrent SIOCDELRT or device-down path can
-> unlink the route, drop the device reference, and free the route.
-> 
-> When sendmsg resumes, it can still dereference the stale route and
-> device pointers while building or transmitting the packet.  A KASAN
-> reproducer using AF_APPLETALK sockets and SIOCADDRT/SIOCDELRT reports
-> slab-use-after-free reads in atalk_sendmsg(), with the object allocated
-> by atrtr_create() and freed by atrtr_delete().
-> 
-> Fix this by splitting the route lookup into a helper that is called with
-> atalk_routes_lock already held.  atalk_sendmsg() now performs route
-> lookup, copies the route fields it needs, and takes references to the
-> selected devices with netdev_hold() while still holding
-> atalk_routes_lock.  After the lock is dropped and skb allocation sleeps,
-> the send path uses only the copied route data and the held net_device
-> references, which are released with netdev_put() before returning.
-> 
-> This preserves the existing route selection behaviour, including the
-> separate loopback route used for broadcast loopback, while removing the
-> dangling route/device window.
-> 
-> Fixes: 60d9f461a20b ("appletalk: remove the BKL")
-> Cc: stable@vger.kernel.org
-> Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-> Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
-> Reported-by: Ao Wang <wangao@seu.edu.cn>
-> Reported-by: Xuewei Feng <fengxw06@126.com>
-> Reported-by: Qi Li <qli01@tsinghua.edu.cn>
-> Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
-> Assisted-by: GLM:GLM-5.1
-> Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-> ---
-> Changes in v2:
-> - Use netdev_hold()/netdev_put() instead of dev_hold()/dev_put().
-> - Drop explicit NULL checks before releasing temporary device refs.
-> - Link to v1: https://lore.kernel.org/netdev/20260610052315.64504-1-zhaoyz24@mails.tsinghua.edu.cn/
+From: Junyang Han <han.junyang@zte.com.cn>
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Add basic framework for ZTE DingHai ethernet PF driver, including
+Kconfig/Makefile build support and PCIe device probe/remove skeleton.
 
+Signed-off-by: Junyang Han <han.junyang@zte.com.cn>
+---
+ MAINTAINERS                               |   6 +
+ drivers/net/ethernet/Kconfig              |   1 +
+ drivers/net/ethernet/Makefile             |   1 +
+ drivers/net/ethernet/zte/Kconfig          |  20 +++
+ drivers/net/ethernet/zte/Makefile         |   6 +
+ drivers/net/ethernet/zte/dinghai/Kconfig  |  34 ++++
+ drivers/net/ethernet/zte/dinghai/Makefile |  10 ++
+ drivers/net/ethernet/zte/dinghai/en_pf.c  | 183 ++++++++++++++++++++++
+ drivers/net/ethernet/zte/dinghai/en_pf.h  |  65 ++++++++
+ 9 files changed, 326 insertions(+)
+ create mode 100644 drivers/net/ethernet/zte/Kconfig
+ create mode 100644 drivers/net/ethernet/zte/Makefile
+ create mode 100644 drivers/net/ethernet/zte/dinghai/Kconfig
+ create mode 100644 drivers/net/ethernet/zte/dinghai/Makefile
+ create mode 100644 drivers/net/ethernet/zte/dinghai/en_pf.c
+ create mode 100644 drivers/net/ethernet/zte/dinghai/en_pf.h
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 2fb1c75afd16..73692b09bf7b 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -29440,6 +29440,12 @@ S:	Maintained
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tiwai/sound.git
+ F:	sound/hda/codecs/senarytech.c
+
++ZTE DINGHAI ETHERNET DRIVER
++M:	Junyang Han <han.junyang@zte.com.cn>
++L:	netdev@vger.kernel.org
++S:	Maintained
++F:	drivers/net/ethernet/zte/
++
+ THE REST
+ M:	Linus Torvalds <torvalds@linux-foundation.org>
+ L:	linux-kernel@vger.kernel.org
+diff --git a/drivers/net/ethernet/Kconfig b/drivers/net/ethernet/Kconfig
+index b8f70e2a1763..c2b6996b0cfe 100644
+--- a/drivers/net/ethernet/Kconfig
++++ b/drivers/net/ethernet/Kconfig
+@@ -188,5 +188,6 @@ source "drivers/net/ethernet/wangxun/Kconfig"
+ source "drivers/net/ethernet/wiznet/Kconfig"
+ source "drivers/net/ethernet/xilinx/Kconfig"
+ source "drivers/net/ethernet/xircom/Kconfig"
++source "drivers/net/ethernet/zte/Kconfig"
+
+ endif # ETHERNET
+diff --git a/drivers/net/ethernet/Makefile b/drivers/net/ethernet/Makefile
+index 57344fec6ce0..a34bcbd4df4e 100644
+--- a/drivers/net/ethernet/Makefile
++++ b/drivers/net/ethernet/Makefile
+@@ -104,3 +104,4 @@ obj-$(CONFIG_NET_VENDOR_XIRCOM) += xircom/
+ obj-$(CONFIG_NET_VENDOR_SYNOPSYS) += synopsys/
+ obj-$(CONFIG_NET_VENDOR_PENSANDO) += pensando/
+ obj-$(CONFIG_OA_TC6) += oa_tc6.o
++obj-$(CONFIG_NET_VENDOR_ZTE) += zte/
+diff --git a/drivers/net/ethernet/zte/Kconfig b/drivers/net/ethernet/zte/Kconfig
+new file mode 100644
+index 000000000000..b95c2fc7db77
+--- /dev/null
++++ b/drivers/net/ethernet/zte/Kconfig
+@@ -0,0 +1,20 @@
++# SPDX-License-Identifier: GPL-2.0-only
++#
++# ZTE driver configuration
++#
++
++config NET_VENDOR_ZTE
++    bool "ZTE devices"
++    default y
++    help
++      If you have a network (Ethernet) card belonging to this class, say Y.
++      Note that the answer to this question doesn't directly affect the
++      kernel: saying N will just cause the configurator to skip all
++      the questions about Zte cards. If you say Y, you will be asked
++      for your specific card in the following questions.
++
++if NET_VENDOR_ZTE
++
++source "drivers/net/ethernet/zte/dinghai/Kconfig"
++
++endif # NET_VENDOR_ZTE
+diff --git a/drivers/net/ethernet/zte/Makefile b/drivers/net/ethernet/zte/Makefile
+new file mode 100644
+index 000000000000..cd9929b61559
+--- /dev/null
++++ b/drivers/net/ethernet/zte/Makefile
+@@ -0,0 +1,6 @@
++# SPDX-License-Identifier: GPL-2.0-only
++#
++# Makefile for the ZTE device drivers
++#
++
++obj-$(CONFIG_DINGHAI) += dinghai/
+diff --git a/drivers/net/ethernet/zte/dinghai/Kconfig b/drivers/net/ethernet/zte/dinghai/Kconfig
+new file mode 100644
+index 000000000000..94b5bd9b3c50
+--- /dev/null
++++ b/drivers/net/ethernet/zte/dinghai/Kconfig
+@@ -0,0 +1,34 @@
++# SPDX-License-Identifier: GPL-2.0-only
++#
++# ZTE DingHai Ethernet driver configuration
++#
++
++config DINGHAI
++    bool "ZTE DingHai Ethernet driver"
++    depends on NET_VENDOR_ZTE && PCI
++    select NET_DEVLINK
++    help
++      This driver supports ZTE DingHai Ethernet devices.
++
++      DingHai is a high-performance Ethernet controller that supports
++      multiple features including hardware offloading, SR-IOV, and
++      advanced virtualization capabilities.
++
++      If you say Y here, you can select specific driver variants below.
++
++      If unsure, say N.
++
++if DINGHAI
++
++config DINGHAI_PF
++    tristate "ZTE DingHai PF (Physical Function) driver"
++    help
++      This driver supports ZTE DingHai PCI Express Ethernet
++      adapters (PF).
++
++      To compile this driver as a module, choose M here. The module
++      will be named dinghai10e.
++
++      If unsure, say N.
++
++endif # DINGHAI
+diff --git a/drivers/net/ethernet/zte/dinghai/Makefile b/drivers/net/ethernet/zte/dinghai/Makefile
+new file mode 100644
+index 000000000000..f55a8de518be
+--- /dev/null
++++ b/drivers/net/ethernet/zte/dinghai/Makefile
+@@ -0,0 +1,10 @@
++# SPDX-License-Identifier: GPL-2.0-only
++#
++# Makefile for ZTE DingHai Ethernet driver
++#
++
++ccflags-y += -I$(src)
++
++obj-$(CONFIG_DINGHAI_PF) += dinghai10e.o
++dinghai10e-y := en_pf.o
++
+diff --git a/drivers/net/ethernet/zte/dinghai/en_pf.c b/drivers/net/ethernet/zte/dinghai/en_pf.c
+new file mode 100644
+index 000000000000..99f2a8af5bf4
+--- /dev/null
++++ b/drivers/net/ethernet/zte/dinghai/en_pf.c
+@@ -0,0 +1,183 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * ZTE DingHai Ethernet driver
++ * Copyright (c) 2022-2026, ZTE Corporation.
++ */
++
++#include <linux/module.h>
++#include <linux/pci.h>
++#include <net/devlink.h>
++#include <linux/dma-mapping.h>
++#include "en_pf.h"
++
++MODULE_AUTHOR("Junyang Han <han.junyang@zte.com.cn>");
++MODULE_DESCRIPTION("ZTE DingHai series Ethernet driver");
++MODULE_LICENSE("GPL");
++
++static const struct devlink_ops dh_pf_devlink_ops = {};
++
++static const struct pci_device_id dh_pf_pci_table[] = {
++	{ PCI_DEVICE(ZXDH_PF_VENDOR_ID, ZXDH_PF_DEVICE_ID), 0 },
++	{ PCI_DEVICE(ZXDH_PF_VENDOR_ID, ZXDH_VF_DEVICE_ID), 0 },
++	{ 0, }
++};
++
++MODULE_DEVICE_TABLE(pci, dh_pf_pci_table);
++
++static int dh_pf_pci_init(struct dh_core_dev *dev)
++{
++	struct zxdh_pf_device *pf_dev = dev->priv;
++	int ret;
++
++	pci_set_drvdata(dev->pdev, dev);
++
++	ret = pci_enable_device(dev->pdev);
++	if (ret) {
++		dev_err(dev->device, "pci_enable_device failed: %d\n", ret);
++		return ret;
++	}
++
++	ret = dma_set_mask_and_coherent(dev->device, DMA_BIT_MASK(64));
++	if (ret) {
++		ret = dma_set_mask_and_coherent(dev->device, DMA_BIT_MASK(32));
++		if (ret) {
++			dev_err(dev->device, "dma_set_mask_and_coherent failed: %d\n", ret);
++			goto err_pci;
++		}
++	}
++
++	ret = pci_request_selected_regions(dev->pdev,
++					   pci_select_bars(dev->pdev, IORESOURCE_MEM),
++					   "dh-pf");
++	if (ret) {
++		dev_err(dev->device, "pci_request_selected_regions failed: %d\n", ret);
++		goto err_pci;
++	}
++
++	pci_set_master(dev->pdev);
++	ret = pci_save_state(dev->pdev);
++	if (ret) {
++		dev_err(dev->device, "pci_save_state failed: %d\n", ret);
++		goto err_pci_save_state;
++	}
++
++	pf_dev->pci_ioremap_addr[0] =
++		ioremap(pci_resource_start(dev->pdev, 0),
++			pci_resource_len(dev->pdev, 0));
++	if (!pf_dev->pci_ioremap_addr[0]) {
++		ret = -ENOMEM;
++		dev_err(dev->device, "dh pf pci ioremap failed\n");
++		goto err_pci_save_state;
++	}
++
++	return 0;
++
++err_pci_save_state:
++	pci_release_selected_regions(dev->pdev,
++				     pci_select_bars(dev->pdev, IORESOURCE_MEM));
++err_pci:
++	pci_disable_device(dev->pdev);
++	return ret;
++}
++
++void dh_pf_pci_close(struct dh_core_dev *dev)
++{
++	struct zxdh_pf_device *pf_dev = dev->priv;
++
++	iounmap(pf_dev->pci_ioremap_addr[0]);
++	pci_release_selected_regions(dev->pdev,
++				     pci_select_bars(dev->pdev, IORESOURCE_MEM));
++	pci_disable_device(dev->pdev);
++}
++
++static int dh_pf_probe(struct pci_dev *pdev, const struct pci_device_id *id)
++{
++	struct zxdh_pf_device *pf_dev;
++	struct dh_core_dev *dh_dev;
++	struct devlink *devlink;
++	int ret;
++
++	devlink = devlink_alloc(&dh_pf_devlink_ops, sizeof(struct dh_core_dev),
++				&pdev->dev);
++	if (!devlink) {
++		dev_err(&pdev->dev, "dh_pf devlink alloc failed\n");
++		return -ENOMEM;
++	}
++
++	dh_dev = devlink_priv(devlink);
++	dh_dev->device = &pdev->dev;
++	dh_dev->pdev = pdev;
++	dh_dev->devlink = devlink;
++
++	pf_dev = dh_core_alloc_priv(dh_dev, sizeof(*pf_dev));
++	if (!pf_dev) {
++		dev_err(&pdev->dev, "dh_pf_dev alloc failed\n");
++		ret = -ENOMEM;
++		goto err_pf_dev;
++	}
++
++	pf_dev->bar_chan_valid = false;
++	pf_dev->vepa = false;
++	mutex_init(&dh_dev->lock);
++	mutex_init(&pf_dev->irq_lock);
++
++	dh_dev->coredev_type = GET_COREDEV_TYPE(pdev);
++
++	ret = dh_pf_pci_init(dh_dev);
++	if (ret) {
++		dev_err(&pdev->dev, "dh_pf_pci_init failed: %d\n", ret);
++		goto err_cfg_init;
++	}
++
++	devlink_register(devlink);
++
++	return 0;
++
++err_cfg_init:
++	mutex_destroy(&pf_dev->irq_lock);
++	mutex_destroy(&dh_dev->lock);
++	dh_core_free_priv(dh_dev);
++err_pf_dev:
++	devlink_free(devlink);
++	return ret;
++}
++
++static void dh_pf_remove(struct pci_dev *pdev)
++{
++	struct dh_core_dev *dh_dev = pci_get_drvdata(pdev);
++	struct devlink *devlink = priv_to_devlink(dh_dev);
++	struct zxdh_pf_device *pf_dev = dh_dev->priv;
++
++	devlink_unregister(devlink);
++	dh_pf_pci_close(dh_dev);
++	mutex_destroy(&pf_dev->irq_lock);
++	mutex_destroy(&dh_dev->lock);
++	dh_core_free_priv(dh_dev);
++	devlink_free(devlink);
++	pci_set_drvdata(pdev, NULL);
++}
++
++static void dh_pf_shutdown(struct pci_dev *pdev)
++{
++	struct dh_core_dev *dh_dev = pci_get_drvdata(pdev);
++	struct devlink *devlink = priv_to_devlink(dh_dev);
++	struct zxdh_pf_device *pf_dev = dh_dev->priv;
++
++	devlink_unregister(devlink);
++	dh_pf_pci_close(dh_dev);
++	mutex_destroy(&pf_dev->irq_lock);
++	mutex_destroy(&dh_dev->lock);
++	dh_core_free_priv(dh_dev);
++	devlink_free(devlink);
++	pci_set_drvdata(pdev, NULL);
++}
++
++static struct pci_driver dh_pf_driver = {
++	.name = "dinghai10e",
++	.id_table = dh_pf_pci_table,
++	.probe = dh_pf_probe,
++	.remove = dh_pf_remove,
++	.shutdown = dh_pf_shutdown,
++};
++
++module_pci_driver(dh_pf_driver);
+diff --git a/drivers/net/ethernet/zte/dinghai/en_pf.h b/drivers/net/ethernet/zte/dinghai/en_pf.h
+new file mode 100644
+index 000000000000..80ff1b860b83
+--- /dev/null
++++ b/drivers/net/ethernet/zte/dinghai/en_pf.h
+@@ -0,0 +1,65 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * ZTE DingHai Ethernet driver - PF header
++ * Copyright (c) 2022-2026, ZTE Corporation.
++ */
++
++#ifndef __ZXDH_EN_PF_H__
++#define __ZXDH_EN_PF_H__
++
++#include <linux/types.h>
++#include <linux/pci.h>
++#include <linux/mutex.h>
++#include <linux/device.h>
++#include <linux/slab.h>
++
++#define ZXDH_PF_VENDOR_ID	0x1cf2
++#define ZXDH_PF_DEVICE_ID	0x8040
++#define ZXDH_VF_DEVICE_ID	0x8041
++
++enum dh_coredev_type {
++	DH_COREDEV_PF,
++	DH_COREDEV_VF,
++	DH_COREDEV_SF,
++	DH_COREDEV_MPF
++};
++
++struct devlink;
++
++struct dh_core_dev {
++	struct device *device;
++	enum dh_coredev_type coredev_type;
++	struct pci_dev *pdev;
++	struct devlink *devlink;
++	struct mutex lock; /* Protects device configuration */
++	void *priv;
++};
++
++struct zxdh_pf_device {
++	void __iomem *pci_ioremap_addr[6];
++	bool bar_chan_valid;
++	bool vepa;
++	struct mutex irq_lock; /* Protects IRQ operations */
++};
++
++static inline void *dh_core_alloc_priv(struct dh_core_dev *dh_dev,
++				       size_t size)
++{
++	void *priv = kzalloc(size, GFP_KERNEL);
++
++	if (priv)
++		dh_dev->priv = priv;
++	return priv;
++}
++
++static inline void dh_core_free_priv(struct dh_core_dev *dh_dev)
++{
++	kfree(dh_dev->priv);
++}
++
++#define GET_COREDEV_TYPE(pdev) \
++	((pdev)->device == ZXDH_VF_DEVICE_ID ? DH_COREDEV_VF : DH_COREDEV_PF)
++
++void dh_pf_pci_close(struct dh_core_dev *dev);
++
++#endif /* __ZXDH_EN_PF_H__ */
+-- 
+2.27.0
