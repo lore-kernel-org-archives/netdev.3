@@ -1,209 +1,163 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962163A1E69;
-	Tue, 16 Jun 2026 14:27:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2938379C4A
+	for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 14:28:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781620047; cv=none; b=BpOK4rvl1xVDwTC/8EIuN7XTjqjvyLkbnq9tMJcRVQms3WsSztbpfNmJMbQKMBJh+XZf+LZ5AMTQScQtBnwLoP6pKmWw0z0nVWJyhfjsXFaTdoTXabmlkZdncQ2bU8MDTgg0BgXWiXPkN9jeV7GiA+igk1y2tfEJyCkQcdLsitU=
+	t=1781620101; cv=none; b=qG6OEW7QXCOKq/XIOamzrwA+8AaEFBT9HmNaHvoncaUV6VWEBK+ORq0SWD0Ne1anDsaD9FoECSVxtDj9UdfySVR9WO813Gcr7wJnpDX0WJKp5gvfIWsP0D4KqouAmYv7RHvRy4cji2CvFTGcXCdvq7JuEl9UzaeHFuXnOhS1NtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781620047; c=relaxed/simple;
-	bh=1TEa1AEWrpo5vlROCNgvTad5PWUPE/qQn8wASMr7nCI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rYFlxNNljk3OgAb7QSfXwHQsEnK8NOzoBm9Mffvs1wKCnzBXvzLYzZnlbgkNnrnYVtc90cYZhrVnI7ULvtkRHeqyqLq/Zm6NktxUAlXfDhBAQZUBGK0tkizThOcEqnx2N9AJzu2UU4kqUfw70KZUOObfbQRa4RfRSDdtXX/g8TY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=aRI6qfEo; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1781620101; c=relaxed/simple;
+	bh=Mgo9D7i4SAm1ix+EblDUBSQHvAGRBPGGbt8S1ocsF40=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=N0w+O3sDo9y/Wc3UI7ubUXigmsdOSzbxbH2y7glvoRAPb3iaSIqqfKDO+gN7J/+XOGorGf4uyB2W80LAofJLWGdMkRP3Ck+kGuaQ/o0tGoyhVnyPjlvszXUQUpa26EANg2IIBZgKP9l1zKf+FN14gHZZ7iH7Gkh6pVFnJrFqjBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HVgGzkTm; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=WCRkvpkc; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="aRI6qfEo"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65GEICjj1763843;
-	Tue, 16 Jun 2026 14:27:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=IjuEIJ
-	SriwuP01r/+rNqGP9V1B2LCAw9Xpaog56O+38=; b=aRI6qfEoXL+uBKVIlvR1P+
-	DUjnck+WtmfRzEYpFdxNSPPozP25iDNI9i13sKCum7JQbawWmYMynlD0LY3VgFHn
-	/gIWOHDgzEzjXATGUcaePVXKCOxaXSyqmOAF6T7S4qSoZ2irSv49lHGlWi+VygOe
-	VcB9jBZdFUxz1uYJ78unQtBJz/z5abIgfMSv9/kopVLFUsSGonR+pyxn8CRKBbxr
-	CS7J8Lw2uFqokAegqewYMOo1XFHJS1Twfik4nvGw1L1eSPdUsgTppXtu/ruCT6rE
-	MQ5McqFS34VBh3qh3dbheMvlr/6um28nY7GXzxf0lV61jGD59LURWoVRCnmKIGdw
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4es23np4ef-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Jun 2026 14:27:12 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65GEJd7C032673;
-	Tue, 16 Jun 2026 14:27:11 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4eshhq3x7n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Jun 2026 14:27:11 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65GER6OE23593388
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 16 Jun 2026 14:27:06 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 04EFA20043;
-	Tue, 16 Jun 2026 14:27:06 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0205F20040;
-	Tue, 16 Jun 2026 14:27:02 +0000 (GMT)
-Received: from [9.39.16.33] (unknown [9.39.16.33])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 16 Jun 2026 14:27:01 +0000 (GMT)
-Message-ID: <430a9dd9-ecfb-4465-9eeb-f854fbbc2e61@linux.ibm.com>
-Date: Tue, 16 Jun 2026 19:57:00 +0530
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HVgGzkTm";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="WCRkvpkc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781620099;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=e3l0uGCFBLNdzhr5oLMo3wkv8DBSjThMgB4WocmXwXI=;
+	b=HVgGzkTmhHURXUO4qCbAe0LcvmHKJomiuv43Ciu6fm9LsUErRLq9fZ/BqTJcDVktvZZqQ1
+	tcCDzvWlPeNImH0NtsuvHWwoELZK8AVF0B4KrpjbVUkfWvjznoY7cr5PKmpX+1xIjexTj+
+	kLJqre1K3kiMCHWkIqZEMgch0j+pyCE=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-588-FLVPDOuNOYuGU2FSDgSAdw-1; Tue, 16 Jun 2026 10:28:17 -0400
+X-MC-Unique: FLVPDOuNOYuGU2FSDgSAdw-1
+X-Mimecast-MFC-AGG-ID: FLVPDOuNOYuGU2FSDgSAdw_1781620097
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-45eebc943bfso3246882f8f.0
+        for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 07:28:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1781620096; x=1782224896; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=e3l0uGCFBLNdzhr5oLMo3wkv8DBSjThMgB4WocmXwXI=;
+        b=WCRkvpkcdUPdKArPaBw6uJobvAeaOlvmOIjCCBV+gSP+T7BaMnQSVljbdj++ATNeR5
+         0jFUYJ6GdXSl5wSeyqTgefuGuWPB7FVbKTDLgg5HRJfBwXMVG6wcN7PhqBUJXd3G8ox7
+         HIdFZcdsyW2wqQW28BHcT1AttQqfKYYysMO0JDRtUyvbQOZgJrUCDpJXCwHLkn61Sfzh
+         39ICQaf0yA1uZROMquqixifw/fXGY1bCNUMY1qS4DlBjiGlqRCt5KvQgHh+MUYssBKNy
+         vOcKvEpodS63Z5V13s+AiER73IeWomlMPTps6ZdIUAENft6Qd1oGt9dik0XB4ZOAlaaS
+         L3/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781620096; x=1782224896;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=e3l0uGCFBLNdzhr5oLMo3wkv8DBSjThMgB4WocmXwXI=;
+        b=U80RXlX0KJNoAk0GMn9IBkGTShR2tvGHnFuRet5UU06HE+ZccsRRUvm+fV3gfYoY9i
+         2ILzHmoE/PV7LQzCBV0gCEOI5m/H4jmxvJLhCT62iMh6i1e189SY1MVHTcApPwdirucu
+         a7B23ozgHtxn9RaLueloKQbutmEwSAKqikrqFoqAjZnKrzm0RkV9QtlltlntWINXDpnk
+         2bHERvGtw3xx60XgFCGvnAZcf+GGtDbIc58pq/4lqWeixsdeuJThx5SdocDwB6B4Sx4s
+         Nd8+n5kufvZ35obD7ct+51fnIWPTWD6atkHkhSM1HgE98zYMq2ajX1D/abagSkGnXY7+
+         Aocw==
+X-Forwarded-Encrypted: i=1; AFNElJ/kx2lmvghMhjGKdkWZD7Jcy/C97fpyYmCNb7G8IZKwnfDlLM3xrLrkVzzvfObfSmppqI7/yR4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0uSLS0bupChQTTIl9X8GaWnXOJGW3HGkJVUu+ySEERGLefau9
+	CuEmmjErqgTJa1IBgEWfgfXDMNEg/tYgqax6JyCpxSnpUlnx+BSDV6JCoG+mrlkvjlZW7eSesV0
+	/meH9iLeu0kmYglBTZHmfgGmRD9jycJyXy7znJSSzWYROCFJa4oFBwa3IekwmkYyBxA==
+X-Gm-Gg: Acq92OHT7mlC4fT+FaNpO0B9Lud07dHFNCKn1hSO85i9AnZErmkP0DX8mFLsC9GwZxy
+	rWxg8k91T3oOEIr2B22BvYfQyQ21G+617BAJeZW0NXhC0JuWCgSttlB0Ua+2h28nTpTC2akuvtv
+	w7a6DbNzjyz7B6mVrJV/csGLl815hdxBJQVrJTITRWvkOBG5Yd/BygASdRXFySCUr71sKcm0IQY
+	pzbCOppiJy2nT80V6zi3WmTHM8F3kqxqJbYap3+Ej8wL4r9mOVYhnZA9vO4wQfhblbYpUVvW3Gf
+	MADB4KeJ+3Uh25h6TrdfjFUFtJCbDKpwZPKS8O9f3iBOxreoiyGfgjFWECJL4BqkWf1K4jcTOq1
+	xmAm4otkR6+xVWHXj++QLtoV32a4E2jygwWXPoMYRKVhHLFJ3yphzEu+eSz5ck1L7pREshR4=
+X-Received: by 2002:a05:600c:a413:b0:490:bbc1:c9be with SMTP id 5b1f17b1804b1-4922fa492b5mr47691335e9.0.1781620096475;
+        Tue, 16 Jun 2026 07:28:16 -0700 (PDT)
+X-Received: by 2002:a05:600c:a413:b0:490:bbc1:c9be with SMTP id 5b1f17b1804b1-4922fa492b5mr47690935e9.0.1781620095878;
+        Tue, 16 Jun 2026 07:28:15 -0700 (PDT)
+Received: from sgarzare-redhat (host-82-53-135-12.retail.telecomitalia.it. [82.53.135.12])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49230a9a399sm60380495e9.14.2026.06.16.07.28.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Jun 2026 07:28:14 -0700 (PDT)
+Date: Tue, 16 Jun 2026 16:28:03 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev, netdev@vger.kernel.org, mst@redhat.com, stefanha@redhat.com, 
+	maciej.szmigiero@oracle.com, bchaney@akamai.com, mark.kanda@oracle.com, 
+	ptikhomirov@virtuozzo.com, den@openvz.org
+Subject: Re: [PATCH 0/4] vhost/vsock: add support for VHOST_RESET_OWNER and
+ CPR migration
+Message-ID: <ajFdI921uj-nftA7@sgarzare-redhat>
+References: <20260612165718.433546-1-andrey.drobyshev@virtuozzo.com>
+ <ajFLvKcT-A0wvLYW@sgarzare-redhat>
+ <4fa88fa6-a188-4c63-876c-ed748809bf0b@virtuozzo.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 1/1] net: smc: fix splice entry lifetime imbalance in
- smc_rx_splice
-To: Ren Wei <n05ec@lzu.edu.cn>, linux-rdma@vger.kernel.org,
-        linux-s390@vger.kernel.org, netdev@vger.kernel.org
-Cc: alibuda@linux.alibaba.com, dust.li@linux.alibaba.com, wenjia@linux.ibm.com,
-        mjambigi@linux.ibm.com, tonylu@linux.alibaba.com,
-        guwen@linux.alibaba.com, ubraun@linux.ibm.com,
-        stefan.raspl@linux.ibm.com, davem@davemloft.net, yuantan098@gmail.com,
-        zcliangcn@gmail.com, bird@lzu.edu.cn, lx24@stu.ynu.edu.cn,
-        d4n.for.sec@gmail.com
-References: <cover.1781097957.git.d4n.for.sec@gmail.com>
- <192d1b44ed358ca143f44ef167d14153bccc51e9.1781097957.git.d4n.for.sec@gmail.com>
-Content-Language: en-US
-From: Sidraya Jayagond <sidraya@linux.ibm.com>
-In-Reply-To: <192d1b44ed358ca143f44ef167d14153bccc51e9.1781097957.git.d4n.for.sec@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=XtnK/1F9 c=1 sm=1 tr=0 ts=6a315d41 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=pGLkceISAAAA:8
- a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=lELoO6ydEwu01aG-FtUA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE2MDE0NSBTYWx0ZWRfX3aLGkuxzoGY9
- nQ8con6vPfodRZHjAhAtq7B5aqdrNqZ/zW0qc9cTwUNyO7feqwS+u93GPdt1URw8RBaxXpOj7Fr
- X5L5sNG0uOvsEdMNpEHhj4AM9/jzwfR9FqMoCMa9ERnTStuqGDTDH2qa7X9zK/rSmMeKuqeG+Yd
- 5SjnfYqRcbTsjn45nFVFAKULD9xAYG2xLe1yS27cjqDHy69YatG5RNatTXs0/hrgChj4oITUF6w
- 3v8FqzTVHQ8nRpMef9lvHqBBN2Y9y4s7PqsC42x0eUwWBLZqAZkV8YHKsnTKmgqHtKMZ+LglcxH
- tYXEtfqj1XiWDUbv0+K8bhv7FK/k6gAVU3Y9lttrfrAVjrDaCvd2fWmUa8lb5o6u58vVSQM5jCb
- OLw6EhPzkZfPh35xxOAWH0+U+fxRN+1Nt0SahssZRagPtrnSjWWHgpdQrMsIIaxURF1Qq46iasi
- zfnpjx4SqoLS2ZfwKjA==
-X-Proofpoint-GUID: c0J0dIn_JX-poNTUfy1y4PPQMiLBYcKK
-X-Proofpoint-ORIG-GUID: 34lRAMndiN_j3wEzws5yH02GX2zEQfeh
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE2MDE0NSBTYWx0ZWRfX3rX96ezEwEg0
- ilxy5r6FKDjUmNWIbHrN5zKu99LrCKOY6GjYuY4WsN1epbalw0P14BA6EP8OBjj7uUIFPdQ2Bsk
- hwc90HB8XsyAYAYu3aOpu4NKPTAtOgo=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-16_04,2026-06-15_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 adultscore=0 phishscore=0 lowpriorityscore=0 priorityscore=1501
- suspectscore=0 clxscore=1011 malwarescore=0 spamscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606160145
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <4fa88fa6-a188-4c63-876c-ed748809bf0b@virtuozzo.com>
 
+On Tue, Jun 16, 2026 at 05:01:34PM +0300, Andrey Drobyshev wrote:
+>Hello Stefano,
+>
+>On 6/16/26 4:35 PM, Stefano Garzarella wrote:
+>> Hi Andrey,
+>> thanks for the series!
+>>
+>> On Fri, Jun 12, 2026 at 07:57:14PM +0300, Andrey Drobyshev wrote:
+>>> Host<-->guest connections via AF_VSOCK sockets aren't supposed to
+>>> outlive VM migration, since VM is moving to another host.  However
+>>> there's a special case, which is QEMU live-update, or CPR
+>>> (checkpoint-restore) migration.  In this case, VM remains on the same
+>>> host, and we'd like such connections to persist.
+>>
+>> In the spec we have VIRTIO_VSOCK_EVENT_TRANSPORT_RESET which is usually
+>> sent by the device after a migration.
+>>
+>> IIUC the specs don't say this has to be done all the time, so we don't
+>> need to change anything in the specs, right?
+>>
+>> We just need to avoid sending it (which I think is what we're doing
+>> here... I still need to look at the patches).
+>>
+>
+>Sending this exact ioctl is guarded by one of my patches in the QEMU
+>counterpart series:
+>
+>https://lore.kernel.org/qemu-devel/20260612165110.431376-6-andrey.drobyshev@virtuozzo.com/
+>
+>So we indeed avoid sending it on migration target in case of CPR migration.
 
+Great, so we are aligned :-)
 
-On 10/06/26 11:24 pm, Ren Wei wrote:
-> From: Daming Li <d4n.for.sec@gmail.com>
-> 
-> smc_rx_splice() hands candidate pages to splice_to_pipe() without taking
-> references for the lifetime of each splice entry first. That breaks the
-> splice ownership contract in the VM-backed RMB path.
-> 
-> splice_to_pipe() drops unqueued entries through spd_release(), while
-> queued entries are later dropped through the pipe buffer release
-> callback. The current code only tries to take page references after the
-> splice succeeds, and it derives the number of queued VM pages from a
-> mutated offset value. This can underflow page refcounts and trigger a
-> use-after-free. It also leaves the socket lifetime imbalanced in the
-> multi-page VM case, where one sock_hold() can be followed by multiple
-> sock_put() calls.
-> 
-> Fix this by taking the page and socket references for every candidate
-> splice entry before calling splice_to_pipe(), and by releasing the
-> matching private state, page reference, and socket reference from
-> smc_rx_spd_release() for entries that never get queued. This makes the
-> SMC splice path follow the normal splice lifetime rules and removes the
-> broken post-splice VM page counting entirely.
-> 
-> Fixes: 9014db202cb7 ("smc: add support for splice()")
-> Cc: stable@vger.kernel.org
-> Reported-by: Yuan Tan <yuantan098@gmail.com>
-> Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
-> Reported-by: Xin Liu <bird@lzu.edu.cn>
-> Assisted-by: Codex:GPT-5.4
-> Co-developed-by: Liu Xiao <lx24@stu.ynu.edu.cn>
-> Signed-off-by: Liu Xiao <lx24@stu.ynu.edu.cn>
-> Signed-off-by: Daming Li <d4n.for.sec@gmail.com>
-> Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-> ---
->  net/smc/smc_rx.c | 21 +++++++++++----------
->  1 file changed, 11 insertions(+), 10 deletions(-)
-> 
-> diff --git a/net/smc/smc_rx.c b/net/smc/smc_rx.c
-> index c1d9b923938d..88aee0d93597 100644
-> --- a/net/smc/smc_rx.c
-> +++ b/net/smc/smc_rx.c
-> @@ -150,18 +150,23 @@ static const struct pipe_buf_operations smc_pipe_ops = {
->  static void smc_rx_spd_release(struct splice_pipe_desc *spd,
->  			       unsigned int i)
->  {
-> +	struct smc_spd_priv *priv = (struct smc_spd_priv *)spd->partial[i].private;
-> +	struct sock *sk = &priv->smc->sk;
-> +
-> +	kfree(priv);
->  	put_page(spd->pages[i]);
-> +	sock_put(sk);
->  }
->  
->  static int smc_rx_splice(struct pipe_inode_info *pipe, char *src, size_t len,
->  			 struct smc_sock *smc)
->  {
->  	struct smc_link_group *lgr = smc->conn.lgr;
-> -	int offset = offset_in_page(src);
->  	struct partial_page *partial;
->  	struct splice_pipe_desc spd;
->  	struct smc_spd_priv **priv;
->  	struct page **pages;
-> +	int offset = offset_in_page(src);
->  	int bytes, nr_pages;
->  	int i;
->  
-> @@ -209,6 +214,10 @@ static int smc_rx_splice(struct pipe_inode_info *pipe, char *src, size_t len,
->  			offset = 0;
->  		}
->  	}
-> +	for (i = 0; i < nr_pages; i++) {
-> +		get_page(pages[i]);
-> +		sock_hold(&smc->sk);
-> +	}
->  	spd.nr_pages_max = nr_pages;
->  	spd.nr_pages = nr_pages;
->  	spd.pages = pages;
-> @@ -217,16 +226,8 @@ static int smc_rx_splice(struct pipe_inode_info *pipe, char *src, size_t len,
->  	spd.spd_release = smc_rx_spd_release;
->  
->  	bytes = splice_to_pipe(pipe, &spd);
-> -	if (bytes > 0) {
-> -		sock_hold(&smc->sk);
-> -		if (!lgr->is_smcd && smc->conn.rmb_desc->is_vm) {
-> -			for (i = 0; i < PAGE_ALIGN(bytes + offset) / PAGE_SIZE; i++)
-> -				get_page(pages[i]);
-> -		} else {
-> -			get_page(smc->conn.rmb_desc->pages);
-> -		}
-> +	if (bytes > 0)
->  		atomic_add(bytes, &smc->conn.splice_pending);
-> -	}
->  	kfree(priv);
->  	kfree(partial);
->  	kfree(pages);
-Code changes looks good to me.
-Reviewed-by: Sidraya Jayagond <sidraya@linux.ibm.com>
+>
+>>>
+>>> For this to work, we need to be able to transfer device ownership from
+>>> source QEMU to dest QEMU.  Namely, source needs to reset ownership by
+>>> issuing VHOST_RESET_OWNER ioctl, and then target has to claim it by
+>>> calling VHOST_SET_OWNER.
+>>>
+>>> Since VHOST_RESET_OWNER isn't yet implemented for vhost-vsock, let's add
+>>> such implementation (patches 1-2).  Also fix regression introduced by
+>>> the earlier commit [1] (patch 3), and fix the deadlock bug (commit 4).
+>>
+>> If it's a regression, should we fix it separately?
+>>
+>> Or is it related to this series?
+>>
+>
+>Probably my wording wasn't quite correct.  I posted this patch here
+>because we found the problem during testing this particular
+>functionality, i.e. vsock data transfer + CPR migration.  And the
+>problem was introduced by a recent commit, which is fine on its own, but
+>breaks the CPR case.
+
+Yeah, I figured out while reviewing the patch.
+I'd avoid "regression" here and use just "issue", because at the end is 
+just affecting this work that is not yet merged, so it can be a 
+regression.
+
+Thanks,
+Stefano
+
