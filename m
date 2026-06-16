@@ -1,67 +1,34 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.rulkc.org (mail.rulkc.org [155.212.184.193])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3377837C91F
-	for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 14:43:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4065322A1C;
+	Tue, 16 Jun 2026 15:03:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=155.212.184.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781621036; cv=none; b=LqQYnVcvuYmO+Zj4iTSLZGbuKRLPGBb2PX1H507EjlEq0zgI3ZPAWYnr7YM8IHCZjRI/psc3y/ngIyYmJOoXH2Y4FKc+6FiYqqGfXAz8KQdLKkkhwj2Eq1IP5OY50rgUakiPqHdBW/YE/5mc0Y7FqGht1q8iKVqH19+LtUUu5EA=
+	t=1781622199; cv=none; b=ii2ppOyep0P6tdPSm4GhtalqkPEOfrZPVYnCNDh7dTDU02APjysP2KQbiJEAPz/R1nUEkyyC/Z0iNz9FzyNatlxO372Iqhwud/biGwlCigHRp8COB8ep1kFMNZdSHE2HUA10H8A0jL7kjHUwDS+JZHf2le53DugxOpvH1Esv9YA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781621036; c=relaxed/simple;
-	bh=1lvL5cDlAGzUVesMPoNtNmQEcI6fyKiPZjT5VrpViug=;
+	s=arc-20240116; t=1781622199; c=relaxed/simple;
+	bh=xC+beP4a6w3VIhynN6Bo100Xb4uAkVRIkb4MDIWhP9w=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iUSBDK1tqigYNmOsGPCwc6aGuDnztSioPoHDrxRbEAztrxc3VS4WAcegzl2C1SpAGIdot5AfBvO1m91FA4jLb4i5+ESbabNff9J8l8KtOLLWNPbqNO6hh6GolTYkxJJVZcGqan6NeTcZEEZQVp+KZUmcceHxaNQHbIzYNHBxxdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nm0opJEK; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 In-Reply-To:Content-Type; b=t5QVQlca4Lp+qRsICjesnwC14noIq94Syt/rmV9FQAhZggK8lvAVsmVbkSLPbvk0ZPSSZF1X6wypDgwsm6+7ZFrmzqgO3e8RRhJk7dT8FBGujXDJ2EssO4sjYhBw7PsYvPqn6sUUiDOhplQaOuE7zsk2yZDIOUVx3naeOhmH18U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rulkc.org; spf=pass smtp.mailfrom=rulkc.org; dkim=pass (2048-bit key) header.d=rulkc.org header.i=@rulkc.org header.b=MnnYmzxT; arc=none smtp.client-ip=155.212.184.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rulkc.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rulkc.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nm0opJEK"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8423f236418so2547040b3a.1
-        for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 07:43:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781621034; x=1782225834; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gkd9lKRyopVrugwMVot3B/HiKXmkebEFxISTfLV9UhQ=;
-        b=Nm0opJEKdGtiVHaJ83XZzlDwII1kjfhTqGP+yS8blcJ9gtQkhD7G+ak7rZ92N8vFAN
-         9tmvLeQ1EOxQzQlos04V31LTkyKahINA9P9N59JgzpJbTXOo+fKrncJ/RsoaaMS0pqLV
-         R07I0q6lB9nbWH826AlhQs2eIZJ7AgseJ/Afc3S+aqzHob84bH0mIoBg0wGRB1Pie0kb
-         bxyRKqhPFY/SVX86ZGTOvBlmp7uP4SEnO3dLejgwglXXlxVgqoqPCWJhvC8AUFfGq3H4
-         nB2E7+QsTQSjA78JBoN01JeyY8jFxYJMzIhfMKSyb4MrQ5qvCOEQ9eFZ9oi7QxW0a2W5
-         BCaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781621034; x=1782225834;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gkd9lKRyopVrugwMVot3B/HiKXmkebEFxISTfLV9UhQ=;
-        b=PV59zE/3E0+JLMxi/gRLEUjGC+6DWbQ85o1BjWy7DD+XVdERcNhA7ZGUi5rAqA9Wj/
-         3xqw/9ucR1YOiN2HOMWpszfXgiL1pwW0znvCmySZao5A3TzxTPeqb+P4ec1+7Jws/6Pq
-         47Wgh8Cq+C2OpBdw2VHB7hn7yl2L+Ek4pUAsE4q2e3fuhbaWxerC5UV3HDmlW7wgx+Dx
-         FlSYOuCH8c+sThHR0+4Dd71lQz9UXr/hLYhiLMI1fkJYc9cPYLn371miedgUVkFOUlfx
-         YBgFho46C8088QW0FuhKQNkIYzukly67wepjNE9xuVzYBBbU8vDr9FR/3+SwQ55qHzLh
-         uq2g==
-X-Forwarded-Encrypted: i=1; AFNElJ+dOzq8ogWiLliykiYNjKQS9tSZ05PA6Te2UljKcd0jmt4BhNrbUgWcPJSu9NaRIcidytFOWB4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2b3ICejIT6vJtfiUu52XsmbTWfBT92rTEoiLiI4WAVi96m2Nv
-	nowJVI9iMdYzF6AJlXeXoGhWkVHsjXhHjVRMXv0SbZ3wF0x9LuOWdLij
-X-Gm-Gg: Acq92OExFxn7lbKCcmfoIe74yV5jEFtKpnMvq5EEF8hGB3sARjtaC+IuRC9n7ROsLHd
-	LiK0me0edZ/yNNtY9F/PR/snpjQ8304rWEUn24jgr/X+7xCB2PlLRZPQnhIOYsoXrrQFNu+dEnt
-	ORjDFpcKl6P7eh7iTeDTjrR6oXkGV1t9MucsYXfE7oDtcCPU64z8Opr2/MCO4lBiwwe5ly79Ufe
-	3ThS/sWy6J2h27aWg1JOs47UoU4AJ+YxWS/fPET9HBudVImsNiNZ5bwojb+k2P9bUPSETAQwSjp
-	X5SX1UkHvkUKN/080bH9U5GkWyzZvqr6cyZgQ4HLUGF55YGfzPCTXrIUSL5WIrNTF8e9Ua3g8Wt
-	OJL4nTW0jvqRBPC8DlEZpLXV+VVrtsvdm025zp4++w5umaw1Qm90gUgaxIp3dLLRQ1vlz4jxdaM
-	T+At08ju0kPYP8+PWCcZg+Gzix/vQlaAOhMxFBsLwqZ70VHskZEdsivS/Kcmli3bvYgX0W+nsS5
-	AcvCg==
-X-Received: by 2002:a05:6a00:23cc:b0:835:3f51:730e with SMTP id d2e1a72fcca58-845153054c0mr4211420b3a.13.1781621034323;
-        Tue, 16 Jun 2026 07:43:54 -0700 (PDT)
-Received: from ?IPV6:2001:ee0:4f0c:3090:6fa0:dfe4:1cab:bb2a? ([2001:ee0:4f0c:3090:6fa0:dfe4:1cab:bb2a])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434b00d4c7sm13288270b3a.40.2026.06.16.07.43.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 Jun 2026 07:43:53 -0700 (PDT)
-Message-ID: <01d04d25-9f6c-4a3e-9292-4f6e26ab2031@gmail.com>
-Date: Tue, 16 Jun 2026 21:43:46 +0700
+	dkim=pass (2048-bit key) header.d=rulkc.org header.i=@rulkc.org header.b="MnnYmzxT"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4B6DA1011EF;
+	Tue, 16 Jun 2026 18:02:48 +0300 (MSK)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rulkc.org; s=dkim;
+	t=1781622185; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=BOZdJldyA9xjQSPbHtynyt1B2+NL3cHwnFTKNzeJ14A=;
+	b=MnnYmzxTpoDkBkxeqEEUwVjjOGeJZtB9ee9alhl8qU/pmY6E0HLibQescqHzEwLHptkCuT
+	x7JqE62HoGa48mNCPwUffgUKTsUxmEMMkIBDj8Lf+VWT9G/nZmfgJ/S0aDLsSOgmshXa+m
+	NlLj02J9sp2ZQ5AMBZ5d7ezMkmEcOePpE9hBTbDz/j+IGmdjvEOuVjJphr8P4mtHwEwsT8
+	7jA5HnLLCcGXPCfuyw4jM4s/rlfhYv+LJufAssEDScXREQRB14fgbarezI9Qs3dyt2WWp6
+	YT5aHokJXJRbMvpARcWpejDMKRNRvIISb+9TDedlroKmuj5AJVpRKn4U6MXkWQ==
+Message-ID: <772885a4-c755-433c-b076-ae7ac73794aa@rulkc.org>
+Date: Tue, 16 Jun 2026 18:02:43 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,78 +36,99 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v4] virtio-net: fix len check in receive_big()
-To: Xiang Mei <xmei5@asu.edu>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
- bestswngs@gmail.com, mst@redhat.com, jasowang@redhat.com,
- xuanzhuo@linux.alibaba.com, eperezma@redhat.com
-References: <20260616042837.2249468-1-xmei5@asu.edu>
-Content-Language: en-US
-From: Bui Quang Minh <minhquangbui99@gmail.com>
-In-Reply-To: <20260616042837.2249468-1-xmei5@asu.edu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2] vsock/virtio: rework MSG_ZEROCOPY flag handling
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Bobby Eshleman <bobby.eshleman@bytedance.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Simon Horman <horms@kernel.org>, kvm@vger.kernel.org,
+ virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, oxffffaa@gmail.com, rulkc@linuxtesting.org
+References: <20260614174756.170631-1-avkrasnov@rulkc.org>
+ <ajFFOJSdqpNWgohB@sgarzare-redhat>
+Content-Language: ru
+From: Arseniy Krasnov <avkrasnov@rulkc.org>
+In-Reply-To: <ajFFOJSdqpNWgohB@sgarzare-redhat>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 6/16/26 11:28, Xiang Mei wrote:
-> receive_big() bounds the device-announced length by
-> (big_packets_num_skbfrags + 1) * PAGE_SIZE.  That is still too loose:
-> add_recvbuf_big() sets sg[1] to start at offset
-> sizeof(struct padded_vnet_hdr) into the first page, so the chain
-> actually carries hdr_len + (PAGE_SIZE - sizeof(padded_vnet_hdr)) +
-> big_packets_num_skbfrags * PAGE_SIZE bytes -- 20 bytes less than the
-> check allows for the common hdr_len == 12 case.
+
+On 16/06/2026 16:09, Stefano Garzarella wrote:
+> On Sun, Jun 14, 2026 at 08:47:56PM +0300, Arseniy Krasnov wrote:
+>> Logically it was based on TCP implementation, so make further support
+>> easier, rewrite it in the TCP way.
 >
-> A malicious virtio backend can announce a len in that gap.  page_to_skb()
-> then walks one frag past the page chain, storing a NULL page->private
-> into skb_shinfo()->frags[MAX_SKB_FRAGS], which is both an out-of-bounds
-> write past the static frag array and a NULL frag handed up the rx path.
+> Hi Arseniy, and thank you so much for the patch!
 >
-> Bound len by the size add_recvbuf_big() actually advertised.
+> I’d like to ask you to expand on the message a bit, especially to explain why we’re making this change.
 >
-> Fixes: 0c716703965f ("virtio-net: fix received length check in big packets")
+> In particular, I’d like to better understand whether this is just a cosmetic change or if we’re fixing any issues (and if so, which ones), so we can determine whether this patch should be backported to the stable branches.
 
-I think we should Cc: stable@vger.kernel.org
+This is cosmetic change. I'll update commit message in v3.
 
-> Reported-by: Weiming Shi <bestswngs@gmail.com>
-> Signed-off-by: Xiang Mei <xmei5@asu.edu>
-> Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-> ---
-> v4: use easy to understand math to compute the max_len
-> v3: revoke 2/2 and add Xuan Zhuo's Reviewed-by tag
-> v2: add additiona check as 2/2
 >
->   drivers/net/virtio_net.c | 7 ++++---
->   1 file changed, 4 insertions(+), 3 deletions(-)
+>>
+>> Signed-off-by: Arseniy Krasnov <avkrasnov@rulkc.org>
+>> ---
+>> Changelog v1->v2:
+>> * Rebase on last 'net-next'. Don't need 'skb_zcopy_set()' now - it was
+>>   already added.
 >
-> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-> index f4adcfee7a80..8f4562316aaa 100644
-> --- a/drivers/net/virtio_net.c
-> +++ b/drivers/net/virtio_net.c
-> @@ -1999,15 +1999,16 @@ static struct sk_buff *receive_big(struct net_device *dev,
->   				   struct virtnet_rq_stats *stats)
->   {
->   	struct page *page = buf;
-> +	unsigned long max_len = (vi->big_packets_num_skbfrags + 1) * PAGE_SIZE -
-> +				sizeof(struct padded_vnet_hdr) + vi->hdr_len;
->   	struct sk_buff *skb;
->   
->   	/* Make sure that len does not exceed the size allocated in
->   	 * add_recvbuf_big.
->   	 */
-> -	if (unlikely(len > (vi->big_packets_num_skbfrags + 1) * PAGE_SIZE)) {
-> +	if (unlikely(len > max_len)) {
->   		pr_debug("%s: rx error: len %u exceeds allocated size %lu\n",
-> -			 dev->name, len,
-> -			 (vi->big_packets_num_skbfrags + 1) * PAGE_SIZE);
-> +			 dev->name, len, max_len);
->   		goto err;
->   	}
->   
+> Ah, okay is net-next material, please use the net-next tag (ie. [PATCH net-next v2]). 
 
-Reviewed-by: Bui Quang Minh <minhquangbui99@gmail.com>
+Sure!
 
-Thanks,
-Quang Minh.
+>
+>>
+>> net/vmw_vsock/virtio_transport_common.c | 48 ++++++++++++-------------
+>> 1 file changed, 23 insertions(+), 25 deletions(-)
+>>
+>> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+>> index 09475007165b..787524b8cb44 100644
+>> --- a/net/vmw_vsock/virtio_transport_common.c
+>> +++ b/net/vmw_vsock/virtio_transport_common.c
+>> @@ -328,38 +328,36 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+>>     if (pkt_len == 0 && info->op == VIRTIO_VSOCK_OP_RW)
+>>         return pkt_len;
+>>
+>> -    if (info->msg) {
+>> -        /* If zerocopy is not enabled by 'setsockopt()', we behave as
+>> -         * there is no MSG_ZEROCOPY flag set.
+>> +    if (info->msg && (info->msg->msg_flags & MSG_ZEROCOPY)) {
+>> +        /* If 'info->msg' is not NULL, this is only VIRTIO_VSOCK_OP_RW.
+>> +         * 'MSG_ZEROCOPY' flag handling here is based on the same flag
+>> +         * handling from 'tcp_sendmsg_locked()'.
+>>          */
+>> -        if (!sock_flag(sk_vsock(vsk), SOCK_ZEROCOPY))
+>> -            info->msg->msg_flags &= ~MSG_ZEROCOPY;
+>> +        if (info->msg->msg_ubuf) {
+>> +            uarg = info->msg->msg_ubuf;
+>> +            can_zcopy = virtio_transport_can_zcopy(t_ops, info, pkt_len);
+>> +        } else if (sock_flag(sk_vsock(vsk), SOCK_ZEROCOPY)) {
+>> +            uarg = msg_zerocopy_realloc(sk_vsock(vsk), pkt_len,
+>> +                            NULL, false);
+>> +            if (!uarg) {
+>> +                virtio_transport_put_credit(vvs, pkt_len);
+>> +                return -ENOMEM;
+>> +            }
+>>
+>> -        if (info->msg->msg_flags & MSG_ZEROCOPY)
+>>             can_zcopy = virtio_transport_can_zcopy(t_ops, info, pkt_len);
+>>
+>
+> nit: we can remove this extra blank line.
+>
+> For the rest I can't see anything wrong, but a bit more context in the commit would help me in the review.
 
+Ack, I'll update commit message in v3. Also need to check some reports about pre-existing issues from sashiko, triggered by this patch.
+
+Thanks!
+
+>
+> Thanks,
+> Stefano
+>
