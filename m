@@ -1,56 +1,54 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC80395AFD;
-	Tue, 16 Jun 2026 21:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F322037EFE6;
+	Tue, 16 Jun 2026 21:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781643907; cv=none; b=Yu54L8/7mvq5OM96Wycpu5TvsEly7KrN8EIoLEdsIY3U6jZcIEWfl60bpIMiWZOSK3tc1qmhPjU9Oa6Idg1uEYzVIoLXxQOJBj1rthxruw3hCI3r6sViSmyTbafgRRR8zZjKilZn8lL9s/g8VeOvh0kfFN/j10ccGXZkv5GJ8Bs=
+	t=1781644642; cv=none; b=oOQhzP4nLhRjZKQod00ftn0oBXd6JbgPbTmREF7KADFCxsWM23+wQlh5p6vQ/Qj20UREqIsdLrrwvZ8kRJUN648WbpcJis7LhkwdSn8fY/NMHdEqEXBX0zSceOLX8TIHmQY1HB15i+A0F74LqM0bByh9HU6/OkBd+O5HfAbzKeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781643907; c=relaxed/simple;
-	bh=20MOj3cFIfEmwj14kTofb3V5BqW7mpcKZIyGsLatgfw=;
+	s=arc-20240116; t=1781644642; c=relaxed/simple;
+	bh=QTMau5ie2GGEAKVBGPZRNG3hRy6adIvv5lbrYw+yI7Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XBIeR9FHJOKnqZhgrOxOH86Hj02Iqwuq7h4VyIGapxMLCy8xQo0LqeJgxbEhsknnPEQ4f1jDTAYBP5QgEeJgCmSj4ugbO/3ADtNN9pn+tct64Oo5JXb1ZxWD8TgdMtdyrOu76Jd318JkEZXjsQTJ+j9HPVTjCTpz9lrFO9HlqYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SQLTYRBb; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=J9pbAcRSK1N2BqEcLwrGL/bGZn44WRNLG56blWun7cu9a4w7lvgrbcHzzzgq7Fm0MOVypF1balYdWPl9+U8wNI6SfYgTcYIfWf1gzKakzBtxMKpwQIFfHaB5G52QRXnTseoqJPxyMrbxNvbmRQLqqcMfYs5RhM+S6mztbC6PM8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DrPAWzPo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SQLTYRBb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B94841F000E9;
-	Tue, 16 Jun 2026 21:05:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DrPAWzPo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A8411F00A3A;
+	Tue, 16 Jun 2026 21:17:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781643906;
-	bh=2R8CmtVTZGIH+ClggiKNd4YljShJHA2SfkJJ6kv1B44=;
+	s=k20260515; t=1781644641;
+	bh=NmootHN4igiCQs8RopCQPxrV4Rp0tI0uYhX2d5/vyBg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=SQLTYRBbi06gYKC7IZ5HTVbl+rJze67jKydMVFmDf+lJ8ZGRbRIKf00iiYEK2zCZl
-	 OolnUXytFooF06TzCunHiuhB72WLWp0herX34zZHsiw5FNzMzxmlsMp9p7/DSlZgFs
-	 duxuaxQEHEff7Qj/gLUhPMqSu6mqxw4sDzs7ktDQfP2XxqOvlx1/IFP5DGhdhP+djc
-	 164+kEgQYm6sdkeMqHauFp3eAOqkRAz9G7WFAKj3x0DqVUSAEg6PKh4Uma95HP21Kl
-	 azC1lkGaUUfoXMhcQYqRF142jVkf6xfbckm9o5xeSvmj1NH+lfKvOmCmiqMgldBBIs
-	 897ZmG8dq3GEQ==
-Date: Tue, 16 Jun 2026 14:05:04 -0700
+	b=DrPAWzPozIAd8z0OeZ+cn5GcnA0lYsXw9qioSOB3wnNF/Gisatr1GakVW+8Dj+TbP
+	 WaJbfdg46Jwhx0sMo1uTfI2YHyQ0iSb2SldhS5PDDSLWj3yYzyvL7bN4p2U65MTAUv
+	 PzrOYNrhWG7s0b6PXS5nl1vCTXDry6bAIOPsPThUHM2M4/bTxENJCJsCDMGhBvCzd1
+	 +/rJTSQIqdBDBsNufBqonhIwBIKUH0u7Hc/TXozvP03HeXsvjpsd9ABZ+8CU1L53e1
+	 SPZ4vOzs0pURzmN1s0QufSkCufmL96dLt006EM54nUIIBFIwZZlWipICYdeJqexZlJ
+	 kBPtdv6u4ORiw==
+Date: Tue, 16 Jun 2026 14:17:19 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Mark Bloch <mbloch@nvidia.com>
-Cc: Jiri Pirko <jiri@resnulli.us>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
- <skhan@linuxfoundation.org>, Simon Horman <horms@kernel.org>, Sunil Goutham
- <sgoutham@marvell.com>, Linu Cherian <lcherian@marvell.com>, Geetha
- sowjanya <gakula@marvell.com>, hariprasad <hkelam@marvell.com>, Subbaraya
- Sundeep <sbhatta@marvell.com>, Bharat Bhushan <bbhushan2@marvell.com>,
- Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
- Tariq Toukan <tariqt@nvidia.com>, Ethan Nelson-Moore
- <enelsonmoore@gmail.com>, linux-doc@vger.kernel.org,
- netdev@vger.kernel.org, linux-rdma@vger.kernel.org
-Subject: Re: [PATCH net-next V3 2/7] netdevsim: Register devlink after
- device init
-Message-ID: <20260616140504.75979b27@kernel.org>
-In-Reply-To: <7635d50c-1c82-4090-8907-53a72444fc04@nvidia.com>
-References: <20260605181030.3486619-1-mbloch@nvidia.com>
-	<20260605181030.3486619-3-mbloch@nvidia.com>
-	<20260610165053.7c91f331@kernel.org>
-	<eb525345-da07-414c-9d05-7e00e3eb472f@nvidia.com>
-	<20260611085440.4fe36bf2@kernel.org>
-	<f266dfa5-0c6c-4be0-b73e-b2185dadd6a7@nvidia.com>
-	<7635d50c-1c82-4090-8907-53a72444fc04@nvidia.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Petr Mladek
+ <pmladek@suse.com>, John Ogness <john.ogness@linutronix.de>, Sergey
+ Senozhatsky <senozhatsky@chromium.org>, Vlad Poenaru <vlad.wing@gmail.com>,
+ Thomas Gleixner <tglx@kernel.org>, netdev@vger.kernel.org, "David S .
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Breno Leitao
+ <leitao@debian.org>, Clark Williams <clrkwllms@kernel.org>, Steven Rostedt
+ <rostedt@goodmis.org>, linux-rt-devel@lists.linux.dev,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, Frederic Weisbecker
+ <frederic@kernel.org>, Ingo Molnar <mingo@redhat.com>, Vincent Guittot
+ <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ K Prateek Nayak <kprateek.nayak@amd.com>
+Subject: Re: [PATCH net] netpoll: run NAPI poll in softirq context to avoid
+ rq->lock self-deadlock
+Message-ID: <20260616141719.67684bf0@kernel.org>
+In-Reply-To: <20260616170257.GH49951@noisy.programming.kicks-ass.net>
+References: <20260610183621.3915271-1-vlad.wing@gmail.com>
+	<20260611191114.5bc43a59@kernel.org>
+	<20260616103529.Yh9Dxsjp@linutronix.de>
+	<20260616170257.GH49951@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,13 +58,22 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 16 Jun 2026 20:29:25 +0300 Mark Bloch wrote:
-> I think the explicit helper is the cleanest option here, without any
-> workqueue fallback inside devlink. It avoids depending on devl_register()
-> ordering, and makes the support explicit per driver.
+On Tue, 16 Jun 2026 19:02:57 +0200 Peter Zijlstra wrote:
+> > So this is not an issue since commit 7eab73b18630e ("netconsole: convert
+> > to NBCON console infrastructure"). Because from here now on writes are
+> > deferred to the nbcon thread. So this purely about -stable in this case.  
 > 
-> Does that sound like an acceptable direction?
+> Hmm, I thought netconsole had some reserved skbs and could to writes
+> 'atomic' like? That said, it was 2.6 era the last time I looked at
+> netconsole.
 
-I'd much rather have the workqueue with the purely theoretical race
-with user space than a bunch of drivers that don't act on the cmdline
-params.
+Yes, that part is fine. The problem is that netconsole tries
+to reap Tx completions if the Tx queue is full. We can't call
+skb destructor in irq context so we put the completed skbs on
+a queue and try to arm softirq to get to them later.
+Arming softirq causes a ksoftirq wake up.
+
+We already skip the completion polling if we detect getting called
+from the same networking driver. It's best effort, anyway.
+Networking-side fix would be to toss another OR condition into
+the skip. But we don't have one that'd work cleanly :S
