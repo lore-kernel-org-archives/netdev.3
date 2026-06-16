@@ -1,146 +1,103 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44F23CFF60
-	for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 05:51:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4753D6CB2
+	for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 05:56:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781589113; cv=none; b=JvdCSb36jlypJpIiZaBT2/j8v/kDYIHW3+BmO5WJVTGx0h/iLAk8+sIUSjXvfVUhf8aFTPNzPNRbKpMOqxxkQSVDoF8qX/F4ner/+HkF1a5iwnQlu/MLQovRLTytGiFZU5v/BlRQ5REsOXTI6zMmAdJwek6meQbMKh74XYEmZXg=
+	t=1781589367; cv=none; b=hSf58WFnetZ5bHp71DEVEgAyjsBGu+NslFvh1Uu6B2xm8k+siySnO9WY17G25XAIMD7PYNwqbCO2/ORGl/SWW9RlDWRyE6JeC+OJgY3/UYXsr63TIpATuKkEyl9S3bqCt8w8LgAoQbnQt2u9loTaBrVWlFTqpxVq61ExZMYNEko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781589113; c=relaxed/simple;
-	bh=7BG2QmmZRLh5N3+eiC64oaFFvrrLDzoLyfL/lriehHI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l0IV11KFO+3nHTMbjvIfYfnC//VJbqLfU+Q4lr/o0c40szUbDDMsSqRCY/SUvIvQrMTjwPgJgTavsMFLsgKwiFibkYfCEfJZW2/T+MgYBNKFHoAjfgCRujEH7vZY9VWj9HMwkiHaMvFroNanfy269CQHfd3fMuZrlGpNgZtICsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=QxDfpumc; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1781589367; c=relaxed/simple;
+	bh=NyfookAa63q1ictUDIoV585GRd6fpY8Rc4VWSwwaJv8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=n8x4WC6fE+AL15i7h0dYdtnGqBWybXFD2a7dBnOksRDWWDfNzjqxpBwnJwg0zUzSydVIeKUUzzZAg08t0YqIqtIcSl76pGEVEpWA3ZvuYHubo+2CJmQArX5NDRFOiLBtdL9p/3AWWLMSVN6K2ZCSVgHH7OApkdMhVhIyFU8hB8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=h7E3ix+e; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="QxDfpumc"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-490ace40f4bso38902625e9.3
-        for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 22:51:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1781589109; x=1782193909; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pn+WbxeK/3ieMZ9WvMfWf1pVnmuN4tJPxKr7sK9EIcY=;
-        b=QxDfpumcliIkLkFyq2V538vW9GarjHCMoWbjN4HO8T6s/IiDNpncAa0mI5H4wdn/e0
-         2wJQDN0duell/pBFWpiRxlH/rx95giBgzcgD2VZ7/Xx6pXrTa5qEJIhfuN/TWR4EbWU8
-         pD1dM+RTYz9kjj8R6jAHI9PCvEmMvrnZy9qnsy6SNI8eMC83e4bZhq6PcZtpS4hRHmMW
-         fuRAnjH3iBxl/p7geKLZs9qwBBPfgIWIxvSSuosapzeO18oKP41Gc9WUig5HXSYSz+En
-         xdZ0j7pZdcayL5dGVLvPUfSL0b9imeKgdXiNL+RsMhqo6X1lko2slE4zbQt7HZ1564xR
-         rBNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781589109; x=1782193909;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pn+WbxeK/3ieMZ9WvMfWf1pVnmuN4tJPxKr7sK9EIcY=;
-        b=UVcr9j3wCG6KNvOOUMPlnf0CYv6ek6xICi8WnJY8nLrpufmD1h2Flt+gsz9AdwsddB
-         /c2D8RV4+aFtj95HzlTepjqCxc4MHhSRbtFcSLPHl7yMWAjxN/LbYj809SUkKq9a3tlj
-         uQTyN7wHEor5YbkD70XShJCxzs9x6NDQ86HPPutL/Mz1gguW+gkO4mlhLykkJ6JTEDqb
-         ODehUbIzVPz6hvwtEeTWhr/uKmxNB7ZeSb997DVzhgPVhkiZDtPTLW+gRz5InIPQActX
-         uVUTycjeo58QliVMBAVraxzyAmUShnb9zAl0PAnRlIOq4nbglIPDhKVXTx21/vUX7bdo
-         Qrlg==
-X-Forwarded-Encrypted: i=1; AFNElJ8cLqPSXaGQG5r0TIb6AZfKu0WlVovErSm3k+8U0/CKmVzGYiB6QxjRoPbVwHqVDQWT3oUytUA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwVUbGgn7MYIlB3GbdT8E0sKiwTlsWPZ9a4pziR5DbsU/2i1dsw
-	AlPMOPHjDNwhC2DgNuuLsnlQPUVg9ZJt2mjZxIupiFnI4eWJSVnf+dsd+8qWeHMZJiY=
-X-Gm-Gg: Acq92OGXdz1uW5QPb7/DgJYMSsU5gCh7jWH546jm9hc2QJEFxKYvgg/qheLnK0Cak+k
-	kUZOe3vkt0ybB7TPuIbJnwy10vmOp5l2A8VF1+108azhU4+v7MznPakH5gSNoXlo+wlGL2t3F2K
-	KUuCL+FSW2Q4YehirCwZ0vL1JkTz+aZynb1tVt9Xv+4VujvG7IGK/U99ic/L5oF288LgiwE/Xo9
-	L2l2f+h4dtESSGGPGc3lys/DM2kMj8FOYsHOgKoh499TDRWvlBAI0MVUCjax04qWE3CzwhsyJAW
-	OugcxKHQLGuO+v3Nznic7iUXkjOrmWEXVBsj0RbS16y5y0rUndE+5qRlsWrLauT0FcEGz43F1PG
-	/vS46QMEePWf7c7udyS1wgc5Hj89eRhPHL9W9yExePzpYFVF4E0dq0S0wuaSnyz8TlCYSlNWNsQ
-	wBneJgPm6Lj92sj1jku4WvgR+AfO4lfG+C0SrRMjxLzRSJ6w==
-X-Received: by 2002:a05:600c:1f8c:b0:488:d6eb:e63c with SMTP id 5b1f17b1804b1-492200768abmr192521925e9.15.1781589109336;
-        Mon, 15 Jun 2026 22:51:49 -0700 (PDT)
-Received: from u94a (39-12-139-247.adsl.fetnet.net. [39.12.139.247])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30b6191bf9asm12009774eec.31.2026.06.15.22.51.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jun 2026 22:51:48 -0700 (PDT)
-Date: Tue, 16 Jun 2026 13:51:39 +0800
-From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-To: Zhenzhong Wu <jt26wzz@gmail.com>
-Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, ast@kernel.org, daniel@iogearbox.net, john.fastabend@gmail.com, 
-	andrii@kernel.org, martin.lau@linux.dev, song@kernel.org, yonghong.song@linux.dev, 
-	kpsingh@kernel.org, haoluo@google.com, jolsa@kernel.org, menglong8.dong@gmail.com, 
-	eddyz87@gmail.com, stable@vger.kernel.org, mykolal@fb.com, tamird@kernel.org, 
-	Hao Sun <sunhao.th@gmail.com>
-Subject: Re: [PATCH stable 6.6.y v3 1/4] bpf: Track equal scalars history on
- per-instruction level
-Message-ID: <ajDiLjjSYPp5p7KF@u94a>
-References: <cover.1781194510.git.jt26wzz@gmail.com>
- <7f27d335fa6280d5eb04e7b27a7e3d7e7ac1d641.1781194510.git.jt26wzz@gmail.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="h7E3ix+e"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id AF5DBC2BB2B;
+	Tue, 16 Jun 2026 05:56:07 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 22FDF601A9;
+	Tue, 16 Jun 2026 05:56:03 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CB68F106C99FF;
+	Tue, 16 Jun 2026 07:55:56 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1781589361; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=ppjhNAIB/2tNSgO5JKwtJnxCIz21sN2sjhPw6SrZ4Cw=;
+	b=h7E3ix+eJBEkVbo9Hx2TAJ+kno+HlZGcXuBSJAcT3lL0tthbRz9tynX4JKoagrRzknJK5r
+	fBVOAkWSY4DzVqpnyw5QtgovdL0ZwEztdhLV03xwPpAIlFwhNRiKi194BNELmxLbmmmrTY
+	C0IMFfWDf7Qu82a96ERGtSbW82OxCx0SYBJ9idaJnqrVWjdMuJLGj7giqefvnAKmiY56Fn
+	l8MSlfL5+xaV/otM2tNKEiIF+4MKD0cPrkzsh7HSu1GchNuhqEBW8Vk4RtYD2kIW7myxZF
+	0eanb3TgnXtbev19BYsSnbSH262vBIm+UagB9lqR4/tpN1Dtbr0h3ArOGlJdbQ==
+Message-ID: <f15e8b91-36b8-4821-b027-5cec6599f3f0@bootlin.com>
+Date: Tue, 16 Jun 2026 07:55:55 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7f27d335fa6280d5eb04e7b27a7e3d7e7ac1d641.1781194510.git.jt26wzz@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3 1/2] net: dsa: realtek: rtl8365mb: add SGMII
+ support for RTL8367S
+To: Johan Alvarado <contact@c127.dev>, linusw@kernel.org,
+ alsi@bang-olufsen.dk, andrew@lunn.ch, olteanv@gmail.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, netdev@vger.kernel.org
+Cc: linux@armlinux.org.uk, namiltd@yahoo.com, luizluca@gmail.com,
+ linux-kernel@vger.kernel.org
+References: <0100019ecd045b3f-a7bfbb9d-6659-45c6-8fca-9cdce637092c-000000@email.amazonses.com>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <0100019ecd045b3f-a7bfbb9d-6659-45c6-8fca-9cdce637092c-000000@email.amazonses.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Mon, Jun 15, 2026 at 12:58:38AM +0800, Zhenzhong Wu wrote:
-[...]
-> +/* For all R being scalar registers or spilled scalar registers
-> + * in verifier state, save R in linked_regs if R->id == id.
-> + * If there are too many Rs sharing same id, reset id for leftover Rs.
-> + */
-> +static void collect_linked_regs(struct bpf_verifier_state *vstate, u32 id,
-> +				struct linked_regs *linked_regs)
-> +{
-> +	struct bpf_func_state *func;
->  	struct bpf_reg_state *reg;
-> +	int i, j;
->  
-> -	bpf_for_each_reg_in_vstate(vstate, state, reg, ({
-> -		if (reg->type == SCALAR_VALUE && reg->id == known_reg->id) {
-> +	for (i = vstate->curframe; i >= 0; i--) {
-> +		func = vstate->frame[i];
-> +		for (j = 0; j < BPF_REG_FP; j++) {
-> +			reg = &func->regs[j];
-> +			__collect_linked_regs(linked_regs, reg, id, i, j, true);
-> +		}
-> +		for (j = 0; j < func->allocated_stack / BPF_REG_SIZE; j++) {
-> +			if (!is_spilled_reg(&func->stack[j]))
-> +				continue;
-> +			reg = &func->stack[j].spilled_ptr;
-> +			__collect_linked_regs(linked_regs, reg, id, i, j, false);
-> +		}
-> +	}
-> +
-> +	if (linked_regs->cnt == 1)
-> +		linked_regs->cnt = 0;
+Hi Johan,
 
-This part seems new, not found on the original commit, and also not in
-bpf-next. Can you add some more explaining (in the notes before your
-signed-off-by) regarding why this is needed?
+On 6/15/26 22:41, Johan Alvarado wrote:
+>> This comment implies that you could deal with SGMII aneg at some point.
+>> [...] makes me wonder if this whole SGMII/2500BaseX series should be
+>> represented as a PCS phylink driver.
+> 
+> Hi Maxime,
+> 
+> You're right, and I'll convert the SerDes path to a phylink_pcs for v4.
+> It splits the MAC and SerDes layers cleanly, drops the "ext then sds"
+> branches in mac_link_up/down, and makes future in-band aneg an additive
+> change instead of a rewrite.
 
-> +}
-[...]
-> @@ -14704,6 +14899,21 @@ static int check_cond_jmp_op(struct bpf_verifier_env *env,
->  		return 0;
->  	}
->  
-> +	/* Push scalar registers sharing same ID to jump history,
-> +	 * do this before creating 'other_branch', so that both
-> +	 * 'this_branch' and 'other_branch' share this history
-> +	 * if parent state is created.
-> +	 */
-> +	if (BPF_SRC(insn->code) == BPF_X && src_reg->type == SCALAR_VALUE && src_reg->id)
-> +		collect_linked_regs(this_branch, src_reg->id, &linked_regs);
-> +	if (dst_reg->type == SCALAR_VALUE && dst_reg->id)
-> +		collect_linked_regs(this_branch, dst_reg->id, &linked_regs);
-> +	if (linked_regs.cnt > 0) {
+great !
 
-Same here, the original commit and bpf-next has the '> 1' conditional,
-where as your has '> 0'. Can you also added some explanation on this
-part?
+> 
+> One point I'd like to confirm on scope: I can only test the forced-link
+> path on my MR80X (fixed-link / conventional PHY), and I have no setup to
+> exercise SGMII in-band autonegotiation. My plan is to do the PCS refactor
+> keeping the link forced (outband / no in-band AN), and leave actual
+> in-band aneg support for a follow-up once I have hardware to validate it.
+> Does limiting v4 to the forced path sound acceptable, or would you prefer
+> in-band aneg implemented up front? I'd rather not add a code path I can't
+> test.
 
-> +		err = push_jmp_history(env, this_branch, 0, linked_regs_pack(&linked_regs));
-> +		if (err)
-> +			return err;
-> +	}
-> +
-...
+That's fine by me, it's usually better to have something smaller but fully
+tested :)
+
+> 
+> I'll also reword the misleading "disable in-band aneg" comment.
+> 
+> net-next being closed until the 29th gives me time to do this properly,
+> so v4 will carry the PCS conversion, retested on the MR80X v2.20.
+
+Thanks,
+
+Maxime
+
+> 
+> Best regards,
+> Johan
+
