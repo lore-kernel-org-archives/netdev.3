@@ -1,63 +1,86 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43BDE3E1682;
-	Tue, 16 Jun 2026 22:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68173A7F4B
+	for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 22:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781649611; cv=none; b=HuVLZFIX3kW+2u/Wl8D+JOXhmVSeKw20zJGLe025ueqEhypmhMXwvKRVL8WaVbf7OeXdC7O+o9FDxovhLpJ752oRglQYTAVcahcDlshQQ2bQ6H6ZY9olOtzlKY6gDhBVm+3Tes/PG4JWAjC3tPzscox7HHG6tjEmKKilGee/cOw=
+	t=1781650213; cv=none; b=o5XNU8G8wutHMYvB2AiySMf0KbpRrh5Kabrt6jXGsiVMk7ttQEzG+V5MvQsoGReU75FX2lBR0looRVbIR0gvOONJsioLoCHiSXCC0xWrsMkOCwBdkxe9QCOZpb6XKNlYvohO8gLpDwK9RYt6RHD/v3nH2FivzG9/TGb4UwYBvZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781649611; c=relaxed/simple;
-	bh=NUYjqR6sR5srieQsMlyK4PjiDVO0qcPJpXizvfJzKzY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=L1mUb5lu3NR8IuKE5h3EHCs0q0X4I+fQU65W/+sQT+5IGjhyQp58kMzLoly9dTTll4HpNtqsByzC3Ajz0VvSu21dPj19Mdg4SMM/VvPxEOXKAmA81qLyVKqbtRTVI1o8IXksvOe4efmZ/2V/TSLxrjZZHBo0E6ADSIEDLfVGp0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EifnjJ2Z; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781650213; c=relaxed/simple;
+	bh=3mQjbqjhWkcH6zTyJZsjuXLyMP3J8YXQdMFYW2elx10=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Vw22ZugxSOf5VWyPlPMlziCPFradvGpFhSJBXbsGitj69bXKF1PEUxixJcO/hcDgC437oNwGD3ADJXvynBgEDMlksxhoqZi+blNfZxb9NtErlkXqzJbEv3FyEErUFfFJ3on13HL+MaP0eMC2AabS6vR6AgVdfEZb+d7PGGsu8SI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ll4MBcOH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EifnjJ2Z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70D531F00A3E;
-	Tue, 16 Jun 2026 22:40:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ll4MBcOH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C5CD1F000E9;
+	Tue, 16 Jun 2026 22:50:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781649609;
-	bh=3AVIqwiOf2ilwfObX2BqNzPwAgSeltapZaaNIUL0kXc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=EifnjJ2ZWjjRJjjxKvHYcni84M0WTOCYZ1oiC4t96p7d0RNHiwpy4l+7rZtHlKwmd
-	 Yth0wIEqDD9+YXfKvja/OWljwTPZjWyKQIyWWP0GpGjXfOV/XEJLZyTaYot1tJIMSw
-	 NLI63Jvv0CAhXD/9vxcPR91N7pJ4ENgqC+HqoQBc4x2XZ1tDgrY7Zbuc+Xti5XnohT
-	 PVROkVKFzue0wZQvC+IDQUFXPALiu8McgPaZvf5gaOOYNppzwwPqgeRCDhcV98ofDk
-	 v+HoFUAk22YoOnRPYf7GSh8OVFbEICTICP2dnjGwgBriCs3PhA8/mckAWwc4GhA6HK
-	 kvajRB3/6d4Tg==
-Date: Tue, 16 Jun 2026 15:40:08 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Moksh Panicker <mokshpanicker.7@gmail.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- skhan@linuxfoundation.org,
- syzbot+1cf303af03cf30b1275a@syzkaller.appspot.com
-Subject: Re: [PATCH] netdevsim: Fix deadlock in del_device_store() and
- nsim_bus_exit()
-Message-ID: <20260616154008.0804ea70@kernel.org>
-In-Reply-To: <20260616222644.41344-1-mokshpanicker.7@gmail.com>
-References: <20260616222644.41344-1-mokshpanicker.7@gmail.com>
+	s=k20260515; t=1781650212;
+	bh=HUnCtpHGZm+thAAPgmOlVd0e0hbDwbzUPPm+bmRPHQk=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=Ll4MBcOHUFOrxG1MuAfL6PUzpJz8tYv0hjPXMU8DoqLsMDkb5NrxExqPqvYJBvw1O
+	 4GjtnGpWWqQ7xWQlG1v/RdCVMaW9lTzvOelk2kAs5v7Fib2rBy4EmUcuvYlULQYOJq
+	 RZpnQW+dp1FpV85yLGzv2QX/ZwH1Ja7/54375CLhCF1lGY4jO1sv8Vd1QY3CLaz4qb
+	 cF1T5DbcFI6JSrBbfei4SeZxnqKrVE8VyN322ZreY4rCYhl2Vmkm92hnaHuJg79R4/
+	 MRU/tI99vRWe7JVhPnOrd6Q2Wl+Y4SXQ1itN4R5sWWRVOrXehvsvj0mSeG2NBhxLmN
+	 PWNL9OBs9QFaA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 199463930C2E;
+	Tue, 16 Jun 2026 22:50:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v1 net-next] ipv4: fib_rule: Move fib4_rules_exit() to
+ ->exit().
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178165020689.1270198.450287651539968178.git-patchwork-notify@kernel.org>
+Date: Tue, 16 Jun 2026 22:50:06 +0000
+References: <20260616191359.4142661-1-kuniyu@google.com>
+In-Reply-To: <20260616191359.4142661-1-kuniyu@google.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ kuni1840@gmail.com, netdev@vger.kernel.org,
+ syzbot+965506b59a2de0b6905c@syzkaller.appspotmail.com
 
-On Tue, 16 Jun 2026 22:26:44 +0000 Moksh Panicker wrote:
->  	mutex_lock(&nsim_bus_dev_list_lock);
-> -	list_for_each_entry_safe(nsim_bus_dev, tmp, &nsim_bus_dev_list, list) {
-> +	list_for_each_entry_safe(nsim_bus_dev, tmp, &nsim_bus_dev_list, list)
->  		list_del(&nsim_bus_dev->list);
-> -		nsim_bus_dev_del(nsim_bus_dev);
-> -	}
->  	mutex_unlock(&nsim_bus_dev_list_lock);
-> +	list_for_each_entry_safe(nsim_bus_dev, tmp, &nsim_bus_dev_list, list)
-> +		nsim_bus_dev_del(nsim_bus_dev);
+Hello:
 
-How could this possibly work?
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Tue, 16 Jun 2026 19:13:48 +0000 you wrote:
+> syzbot reported use-after-free of net->ipv4.rules_ops. [0]
+> 
+> It can be reproduced with these commands:
+> 
+>   while true; do
+>   	ip netns add ns1
+>   	ip -n ns1 link set dev lo up
+>   	ip -n ns1 address add 192.0.2.1/24 dev lo
+>   	ip -n ns1 link add name dummy1 up type dummy
+>   	ip -n ns1 address add 198.51.100.1/24 dev dummy1
+>   	ip -n ns1 rule add ipproto tcp sport 12345 table 12345
+>   	ip -n ns1 fou add port 5555 ipproto 47 local 192.0.2.1 peer 198.51.100.2 peer_port 54321
+>   	ip netns del ns1
+>   done
+> 
+> [...]
+
+Here is the summary with links:
+  - [v1,net-next] ipv4: fib_rule: Move fib4_rules_exit() to ->exit().
+    https://git.kernel.org/netdev/net-next/c/d954a67a7dfa
+
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
