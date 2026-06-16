@@ -1,146 +1,63 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09B039768C
-	for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 22:39:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43BDE3E1682;
+	Tue, 16 Jun 2026 22:40:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781649554; cv=none; b=CiEXmL8yw9gCpKisaHKQaOM7XqI5vNT4AEhemt9SlFuyW0h0xxcYDmbMCOCNLSxK6GnzBL9jd/fHHFK6W8ExBaYjXnPRgtqT7VvpqTZABsdALtUqrw+bXm+uFclLRgPGV7OG+bfhhW89wfMgRuHb6pR5cLBNwv82Ouhg4Zb/uT0=
+	t=1781649611; cv=none; b=HuVLZFIX3kW+2u/Wl8D+JOXhmVSeKw20zJGLe025ueqEhypmhMXwvKRVL8WaVbf7OeXdC7O+o9FDxovhLpJ752oRglQYTAVcahcDlshQQ2bQ6H6ZY9olOtzlKY6gDhBVm+3Tes/PG4JWAjC3tPzscox7HHG6tjEmKKilGee/cOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781649554; c=relaxed/simple;
-	bh=SZge3+wENcu5w1P1BVM627D1qeRTJqud1ZjCOFFrjto=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=EjJiLTTnW3ONZ4wXSvI+WDv86qWFPL1Hdm9mRxf8J1QwLNQ/vVH3woKIcdEauxZxfgQbxsOV8WKUxCK4DDh/clTnIg4c/HcJY4hqzcc5QW0rqnn8McMBTe6zJq1xbck3Z7Bu9TY0RGlWP/yPIRjTfsc2Y7oqhM93QlQ7qSrJnnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VoMomymS; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781649611; c=relaxed/simple;
+	bh=NUYjqR6sR5srieQsMlyK4PjiDVO0qcPJpXizvfJzKzY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=L1mUb5lu3NR8IuKE5h3EHCs0q0X4I+fQU65W/+sQT+5IGjhyQp58kMzLoly9dTTll4HpNtqsByzC3Ajz0VvSu21dPj19Mdg4SMM/VvPxEOXKAmA81qLyVKqbtRTVI1o8IXksvOe4efmZ/2V/TSLxrjZZHBo0E6ADSIEDLfVGp0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EifnjJ2Z; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VoMomymS"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2c0c1e0d00bso45750915ad.0
-        for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 15:39:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781649553; x=1782254353; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uqf3MKkeefxf95U2zVNMolrJWHRRcuWWVaIRUGiTD6g=;
-        b=VoMomymSItxXX/yYRHXUy7HFs8VXoKKqAZBI6M20rlWwu+/ImhzCRTboHaCbZfDPiK
-         PLPR1OlSUxvtZMOTqz4Fz7LRL8uYS/rFA7+D69iiMQUm3THpCSxJM+JgCpyg5KzAGNwT
-         eflJcqNJGItC18PXmYjiMEnqdCJ0EUwV9fMDArCSfLud8ZXXjC4TnH/s7ugGJB4/1IlQ
-         rmiTuBp+1O4NCsyjuhnSe6OJ5VBI5Y5IMCPUFFKcikwy+OcDdUmqvFQQ80e84GLkJWj8
-         KmMxeKJRbaG0UIpFzDRio6h2DTNoVm3Y2U7koeLn39LB2gVkaMinQ9d+JZEaFFHUqvSy
-         E0GQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781649553; x=1782254353;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=uqf3MKkeefxf95U2zVNMolrJWHRRcuWWVaIRUGiTD6g=;
-        b=BtPfAY9kQ1tjlOeL+8iW83bCzDmtvV/UtRAhSk+HdO8D2WDUOWBjEw0mKmVlxBKCDL
-         8j03D4ps5wuxUAeN5/hz0oLE/3zxozrRI3PW7g9cQggHMI+K3lBjSST/yVmx3bSJFtoI
-         hhuCDlUurwUDN/9K3XenZpOiSTPqUltXvWFs9bJABXXMgiXCOftk+vIjZE9DvFzKt91N
-         47+6BGsyjgcrimavCo4I/AlctKH01hzXbqD9x8NJysNhO/affpG5hOkwbJHUVr3LvTEu
-         HvBbJM3Rsib0fSt8sbUv9yfJTymynQv5o+hngQqxMlgaGZbJuN/YxksYO8OtOAUZz0Si
-         sVQA==
-X-Forwarded-Encrypted: i=1; AFNElJ/G9xc0aJ/IqJgcn8wwUNXwldqrF5QEjZ3+1GLffpBQv6QuMMp56pWiup3UxTmWbiciJyTRsiY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxD7zwNJRHFSUMmU4ERJX3J6qib5s7b7SRKeFewICmFbrvLH1jg
-	vflwyvZht8QiuHYdYXzktDojf/Nj9HH3oAFZKm6W2hhOm8QjoQ5+i4Du
-X-Gm-Gg: AfdE7cljAEvTHYYPeEjtZZsdss8HbfT3oCOAo3i+DsNDvdQ7Azfj18wHYGqlz+EKZcX
-	DhEE3M+NaGQsfIjqQn1tGVpMcWzFyNSAxTDlhrjOj/s+PYOjtUnmATNBeJQJj1oatkrl3W8xK9E
-	wYU/Cfy1kTey+MK5gCA4/benLQ/vGsX5aTbkEE4D6RH+NUmicL7HJEiUvxgM8/9a/QRxJlOZ0vN
-	7dy8YzodpAZW13rMsjAORGO9Ljf1cMeEfFD+FQfX382xrAOenrmWunnUPKG+29xgOXQ7iM2POoB
-	Xy0MFj4oYzZsZqfBqcoLCZlXiIxMOMCSQeZGqhW+oedHjDfWTdtcYxPZt33IaZTxygpp5w9ad6m
-	2vpN3F25zwwWt8ahRsUpmo06UxyanFzvoCMDBDjNXqx1X0hfTSiubqzvhMSEQYwTRFnlQ4lXZJ0
-	2++TXhkCDDmK45+2rqlLFgt1SYf6ReKpT6fCMkKaCeNHTwkVauoUmJI6NrTuj/J6uxqWFk6xiIq
-	atiYp2VRSy8qkg=
-X-Received: by 2002:a17:903:b86:b0:2c6:ab89:4ff1 with SMTP id d9443c01a7336-2c6bc0ab228mr8552345ad.12.1781649552968;
-        Tue, 16 Jun 2026 15:39:12 -0700 (PDT)
-Received: from moksh-Nitro-ANV15-51.. ([203.192.239.31])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c42f2e535csm137073595ad.6.2026.06.16.15.39.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jun 2026 15:39:12 -0700 (PDT)
-From: Moksh Panicker <mokshpanicker.7@gmail.com>
-To: kuba@kernel.org
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	skhan@linuxfoundation.org,
-	xujiakai24@mails.ucas.ac.cn,
-	Moksh Panicker <mokshpanicker.7@gmail.com>,
-	syzbot+1cf303af03cf30b1275a@syzkaller.appspot.com
-Subject: [PATCH v2] netdevsim: Fix deadlock in del_device_store() and nsim_bus_exit()
-Date: Tue, 16 Jun 2026 22:39:04 +0000
-Message-Id: <20260616223904.42509-1-mokshpanicker.7@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260509092837.3432281-1-xujiakai24@mails.ucas.ac.cn>
-References: <20260509092837.3432281-1-xujiakai24@mails.ucas.ac.cn>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EifnjJ2Z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70D531F00A3E;
+	Tue, 16 Jun 2026 22:40:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781649609;
+	bh=3AVIqwiOf2ilwfObX2BqNzPwAgSeltapZaaNIUL0kXc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=EifnjJ2ZWjjRJjjxKvHYcni84M0WTOCYZ1oiC4t96p7d0RNHiwpy4l+7rZtHlKwmd
+	 Yth0wIEqDD9+YXfKvja/OWljwTPZjWyKQIyWWP0GpGjXfOV/XEJLZyTaYot1tJIMSw
+	 NLI63Jvv0CAhXD/9vxcPR91N7pJ4ENgqC+HqoQBc4x2XZ1tDgrY7Zbuc+Xti5XnohT
+	 PVROkVKFzue0wZQvC+IDQUFXPALiu8McgPaZvf5gaOOYNppzwwPqgeRCDhcV98ofDk
+	 v+HoFUAk22YoOnRPYf7GSh8OVFbEICTICP2dnjGwgBriCs3PhA8/mckAWwc4GhA6HK
+	 kvajRB3/6d4Tg==
+Date: Tue, 16 Jun 2026 15:40:08 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Moksh Panicker <mokshpanicker.7@gmail.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ skhan@linuxfoundation.org,
+ syzbot+1cf303af03cf30b1275a@syzkaller.appspot.com
+Subject: Re: [PATCH] netdevsim: Fix deadlock in del_device_store() and
+ nsim_bus_exit()
+Message-ID: <20260616154008.0804ea70@kernel.org>
+In-Reply-To: <20260616222644.41344-1-mokshpanicker.7@gmail.com>
+References: <20260616222644.41344-1-mokshpanicker.7@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-del_device_store() holds nsim_bus_dev_list_lock while calling
-nsim_bus_dev_del(), which calls device_unregister() which internally
-acquires the device lock. Similarly, nsim_bus_exit() holds the same
-lock while calling nsim_bus_dev_del(). If another thread already holds
-the device lock and tries to acquire nsim_bus_dev_list_lock, a deadlock
-occurs:
+On Tue, 16 Jun 2026 22:26:44 +0000 Moksh Panicker wrote:
+>  	mutex_lock(&nsim_bus_dev_list_lock);
+> -	list_for_each_entry_safe(nsim_bus_dev, tmp, &nsim_bus_dev_list, list) {
+> +	list_for_each_entry_safe(nsim_bus_dev, tmp, &nsim_bus_dev_list, list)
+>  		list_del(&nsim_bus_dev->list);
+> -		nsim_bus_dev_del(nsim_bus_dev);
+> -	}
+>  	mutex_unlock(&nsim_bus_dev_list_lock);
+> +	list_for_each_entry_safe(nsim_bus_dev, tmp, &nsim_bus_dev_list, list)
+> +		nsim_bus_dev_del(nsim_bus_dev);
 
-  INFO: task hung in nsim_bus_dev_del
-
-Fix this by releasing nsim_bus_dev_list_lock before calling
-nsim_bus_dev_del() in both locations, after the devices have already
-been removed from the list with list_del().
-
-A similar issue exists in new_device_store() which can be addressed
-separately.
-
-Reported-by: syzbot+1cf303af03cf30b1275a@syzkaller.appspot.com
-Closes: https://syzkaller.appspot.com/bug?extid=1cf303af03cf30b1275a
-Signed-off-by: Moksh Panicker <mokshpanicker.7@gmail.com>
----
- drivers/net/netdevsim/bus.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/netdevsim/bus.c b/drivers/net/netdevsim/bus.c
-index 41483e371..0f02ff8ad 100644
---- a/drivers/net/netdevsim/bus.c
-+++ b/drivers/net/netdevsim/bus.c
-@@ -241,11 +241,12 @@ del_device_store(const struct bus_type *bus, const char *buf, size_t count)
- 		if (nsim_bus_dev->dev.id != id)
- 			continue;
- 		list_del(&nsim_bus_dev->list);
--		nsim_bus_dev_del(nsim_bus_dev);
- 		err = 0;
- 		break;
- 	}
- 	mutex_unlock(&nsim_bus_dev_list_lock);
-+	if (!err)
-+		nsim_bus_dev_del(nsim_bus_dev);
- 	return !err ? count : err;
- }
- static BUS_ATTR_WO(del_device);
-@@ -527,11 +528,11 @@ void nsim_bus_exit(void)
- 		complete(&nsim_bus_devs_released);
- 
- 	mutex_lock(&nsim_bus_dev_list_lock);
--	list_for_each_entry_safe(nsim_bus_dev, tmp, &nsim_bus_dev_list, list) {
-+	list_for_each_entry_safe(nsim_bus_dev, tmp, &nsim_bus_dev_list, list)
- 		list_del(&nsim_bus_dev->list);
--		nsim_bus_dev_del(nsim_bus_dev);
--	}
- 	mutex_unlock(&nsim_bus_dev_list_lock);
-+	list_for_each_entry_safe(nsim_bus_dev, tmp, &nsim_bus_dev_list, list)
-+		nsim_bus_dev_del(nsim_bus_dev);
- 
- 	wait_for_completion(&nsim_bus_devs_released);
- 
+How could this possibly work?
 -- 
-2.34.1
-
+pw-bot: cr
