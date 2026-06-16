@@ -1,77 +1,78 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B310391E49;
-	Tue, 16 Jun 2026 02:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF63B37B413;
+	Tue, 16 Jun 2026 02:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781575811; cv=none; b=becoZwR51twE0bHjbfam1/6VAY91XkKn9hR7zRalM1bTzNNPLv5XNZK1Os8lvIG96SYxlDGm4xRo/Yc2vmyzRTHxHGELTGOQLtH0vmcpk/LsArM3bt6D/BIeJALZQGfE0jpWTOO9lYNI44dEMNcqn2tZu+6NbZd9yfZJUKxdf6g=
+	t=1781576227; cv=none; b=PVwmllBjv9fIvXWSxqMt8Hi9Thw61Ej3gAmRfZajEutcnXoziHxtWwJrgnrG46JVK3yOAeCVvNGgaBchvxEluW6yjXX2Oe8XfQVWmXw2mistMd9GzjtHxHSbrgqoBclI1c5aPANj3OwmUds8bpV9m0YWe3vzTfM6yXvfFu4eRp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781575811; c=relaxed/simple;
-	bh=of34fRKBYUZvDxAyR6UMEDMCu20pX0y5iC5TZScvzL4=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=j/1As3xGgRLu1VcZlMfGRE6vPW+ThwAuWgIFdnF+nNJYRZ6AjgD27CrbhXF5GhGpGeb0oTJ3vZPHSqRdMU7COe/p0gvAjelPI4o+/91HlnLQ+dSuoisjKvNlAnT6biU8fKEP0sNMWv0/QgDTl+cdW289cxneuqs5Wo85YgHFv6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N8CNRlWB; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781576227; c=relaxed/simple;
+	bh=iYuwh/QjPCaFltZgY1oNyGfCkwfgJLRV5G8y/pey57o=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dDwyFBXPviVRojsR9lz2pUixS+AkXHmOkoMenmN6JcArVvgoIg1fD02gTj/McWu8yE9fav7qzQO1tephnUuFpleif7+ah3gmC2610VsjDOgVhWOfhxrU12SM8YVwJbAY2j4RhLTYxBI/IJuo3lnFGqNF+lva9AobhhaBS4CREbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OStTHS9c; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N8CNRlWB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A97BF1F000E9;
-	Tue, 16 Jun 2026 02:10:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OStTHS9c"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6E4D1F000E9;
+	Tue, 16 Jun 2026 02:17:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781575810;
-	bh=NYfWWcl8Vaz5dyQoFNOwiQBYjsJN4KQ+mYA8kF+EyLo=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=N8CNRlWBeEBYVaVEUrbi4TznVZaamfaX1lYr4WeCV/HNvfbLBm8ChXYkeF+KjfWSy
-	 TIWtRVYXPM1HaIcQ0HomTQ5A2Ri+5lYa5SjBRaYY/TVXJLEtUtmlZYk/xRrYktHve3
-	 RTccuSC1t5I9gE6evXyKKkVJrQo57b4G75AuWCxLIkQ8B0PuQS6xN4C+Rj3Ikak/2K
-	 AjIz+lHq/eLhwVopF4avT2AtuLgDsm2wK5Q5ln9HasOvw2Dw6u+bRtEtWxkDvD7mE8
-	 9sbDqNibM9Ofs0WjHMCTX4STjlMN0fKTKVA1QQNoiE3dzL9VHmLcdKWjqqVhG+2xms
-	 ZSDNb9OE65n3Q==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0AA93839A26;
-	Tue, 16 Jun 2026 02:10:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1781576226;
+	bh=xD+Oip3IRpQPzSxenYyTvneudjF43QmGVA6/28MSifo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=OStTHS9ceHewKrSU9o18QwJHMw4AaB6qp16uTX1ZTaLPmPIBVJ1pSMw1/lJ3jQeA+
+	 G1Vj/m3qrDZP/n3iLx4qkdSkdRQD7RAXYKDxBmdm/4HEpJs6zXA5x6lFVaHtN17NAI
+	 hw74FSwUS74Zigh7lKdAGeN2AS+22bqzFTCbWu0athb/SR13nF5ZZT3dcoGyc1vCHL
+	 BHjECOGWU8Y7vIwGaDgVr1A4bbBgAtxKo1f8Q6Qn65+vqV6m5HJXYSEBJOYKaMqWjV
+	 i75kqeYQMypXa9zyHUjO7tSEBlL7sd/dgKS8PXvUFzFLOPYGDDsrrFm92iX/5Qa371
+	 H7KQ1oHer7+Qw==
+Date: Mon, 15 Jun 2026 19:17:04 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: edumazet@google.com, ncardwell@google.com
+Cc: chia-yu.chang@nokia-bell-labs.com, jolsa@kernel.org,
+ yonghong.song@linux.dev, song@kernel.org, linux-kselftest@vger.kernel.org,
+ memxor@gmail.com, shuah@kernel.org, martin.lau@linux.dev, ast@kernel.org,
+ daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com,
+ horms@kernel.org, dsahern@kernel.org, bpf@vger.kernel.org,
+ netdev@vger.kernel.org, pabeni@redhat.com, jhs@mojatatu.com,
+ stephen@networkplumber.org, davem@davemloft.net, andrew+netdev@lunn.ch,
+ donald.hunter@gmail.com, kuniyu@google.com, ij@kernel.org,
+ koen.de_schepper@nokia-bell-labs.com, g.white@cablelabs.com,
+ ingemar.s.johansson@ericsson.com, mirja.kuehlewind@ericsson.com,
+ cheshire@apple.com, rs.ietf@gmx.at, Jason_Livingood@comcast.com,
+ vidhi_goel@apple.com
+Subject: Re: [PATCH v2 net-next 1/1] tcp: Replace min_tso_segs() with
+ tso_segs() CC callback for TCP Prague
+Message-ID: <20260615191704.31be22da@kernel.org>
+In-Reply-To: <20260615185102.5e8de52d@kernel.org>
+References: <20260614071756.239686-1-chia-yu.chang@nokia-bell-labs.com>
+	<20260615185102.5e8de52d@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: dsa: sja1105: fix lastused timestamp in
- flower
- stats
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178157580564.388586.11606897833464458044.git-patchwork-notify@kernel.org>
-Date: Tue, 16 Jun 2026 02:10:05 +0000
-References: <20260614141320.1133321-1-mmyangfl@gmail.com>
-In-Reply-To: <20260614141320.1133321-1-mmyangfl@gmail.com>
-To: David Yang <mmyangfl@gmail.com>
-Cc: netdev@vger.kernel.org, olteanv@gmail.com, andrew@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Sun, 14 Jun 2026 22:13:16 +0800 you wrote:
-> flow_stats_update() takes an absolute timestamp for lastused, not delta.
-> Fix that.
+On Mon, 15 Jun 2026 18:51:02 -0700 Jakub Kicinski wrote:
+> On Sun, 14 Jun 2026 09:17:56 +0200 chia-yu.chang@nokia-bell-labs.com
+> wrote:
+> > This patch replaces existing min_tso_segs() with tso_segs() CC callbak
+> > for CC algorithm to provides explicit tso segment number of each data
+> > burst and overrides tcp_tso_autosize().
+> > 
+> > No functional change.  
 > 
-> Signed-off-by: David Yang <mmyangfl@gmail.com>
-> ---
->  drivers/net/dsa/sja1105/sja1105_vl.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+> Eric, Neal, looks good?
+> 
+> The min rtt thing in tcp_tso_autosize() helps a bit but if the sender
+> gets congested for a longer stretch min_rtts on new connections are
+> high and we're back to sending small TSO, keeping the sender overloaded.
+> Which is to say - I _hope_ this also solves some of Meta's problems :)
 
-Here is the summary with links:
-  - [net-next] net: dsa: sja1105: fix lastused timestamp in flower stats
-    https://git.kernel.org/netdev/net-next/c/72dfa4700f78
+Ugh, I didn't see the Sashiko report, it's only CCed to the author and
+bpf@, not to netdev :/
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+The zero-check sounds legit. Let's revisit this after the merge window.
