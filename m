@@ -1,49 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4698D248886;
-	Tue, 16 Jun 2026 01:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C00248886;
+	Tue, 16 Jun 2026 01:54:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781574824; cv=none; b=uHNMVcvrXGgiHCqpUFaJ3ggglXHVn5Y6hjBKUyLnfaTh7b8LqUC+rG8jS2EzlHEWneqZZnG3hw+B+aXfdweL21St/dK/r3AVn4WGjp4Rzjc1ESOgo4wvNIQS8979MH37HmunC4z3bVnNaiTtdXKERtWDh+4RpXJ9oORokgQEjJM=
+	t=1781574891; cv=none; b=H8HAOotJ215HqjQDUWgW5DgQnckjS1oEfapbDC/Wf3CgpDnpjE6DlgNxkKQ/FXuE+9QSbRVj+pM8AUAvZ+/tnCfL4mE3d7GVWuUWdf/NF1XtYsFnKbbdxVQbEJFi2siWEdSMSkg4RBMh1JPlCBUnbV3DY7aEhmk94oJaN9wt/m8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781574824; c=relaxed/simple;
-	bh=kNeCfqEenlY04WlHne1AA7F6OaLYPtklWk5bpmTB1Kc=;
+	s=arc-20240116; t=1781574891; c=relaxed/simple;
+	bh=1OTtdrVdMwcsqHxVYAtrpUX2n8+40J5vZPyZtkd8uOU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qTOi71oxTXwyGNNaTWG58uAr1yo/V+8Z0DK95oDJlVH38ADm6pooTkHU8eT5XgRdhTqdbANVCi/RCAlUSiBaN/TUi6/GI9BCMBCYj5Ua+PyltXKx+T4tYuPl98yY3jKnBr7dv4BetMqbPJmuyX7XyJ/ujnPpcYRP9eTrwfIl40k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k1fwelov; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=LFGoTaQ8WCCSR2efiMhLTP6n8geu6xk1b0o7zbl9/sb0ophxyvbB9FAujOpXBeit4Vbm3JE1ONijgteI4wCKQVMTcIktuV6rHxHwm0wCdOIm1dI9KqSc3F26Cf3UYQdw8R/3fieK1Td3NGANGAU2EX0Zm4AIvvRYS4NsbF3hQ1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kDp2M/pS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k1fwelov"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 439FD1F000E9;
-	Tue, 16 Jun 2026 01:53:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kDp2M/pS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDBA31F000E9;
+	Tue, 16 Jun 2026 01:54:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781574823;
-	bh=cC/Qq17Q/gmbCF8jfLZDR9hb9OX1RM4b10Kgps4ijI0=;
+	s=k20260515; t=1781574890;
+	bh=xVB2C8Izg4g9sd9i5QQCFPWuDiomXx2/37KEb+1MF2Y=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=k1fwelovHEcxdGS4GGIR0EPViVWaXXA79N1xszdfnw4umHPw9c/8FiwX3tB3vG5UI
-	 NanEBVxW6cIstuX/34IHyW9Q/GAduANP0rFzwIM/em6UzV7JsaP3+oWYH3tneG0ANj
-	 yE4cZyzE3RsHdIyR/ZPCQXEWnzzeWW78EynuAyXfyCfWXrM/Eo+5IG4NNQdq0OXQjV
-	 L36/lMPQLL3zP+689zpC14rC/MOuK4yLsS6LPGyj8kkc8eCpDJLZVLd8z3WsWNU3hY
-	 AH0VdMLa6yXC8wMAFRWDfG5ohMI8pDpwuo8u/rrpWdAn7+9FFrVgPH85EmT8geOsoR
-	 SNWHPyAdFuC2Q==
-Date: Mon, 15 Jun 2026 18:53:41 -0700
+	b=kDp2M/pSrkAbqIOUJCckm8SnZND80Tl9OlXlq5UKaB3MEUxj6hAS0RM47jhzKYzJ4
+	 CbHDdw4/I7ztuOw8dbS0tXGQpa5iB7IZ8a5wbcQ9L4SBguQTB+j+zt5WrnlinjWNYj
+	 p49Fo2OyQaOU/Iokc9fHBlX1j5voNwNwh44Nw3CTNVXEAIMCUaZ/Darvv5cGwFL13s
+	 DxxSJIvcxvIIbbOlD1lIyrzw8a1XnI2IQC4qybWsShHPIKD03eIOXFaMKTSVAmwF9H
+	 Jzxw2vcdn1uiAoGj2iDnCp08Phvhby3VLU59ssxcEY7CJrVFh+X8Ooy828oU3+ME5U
+	 Oou/iBzhiF07Q==
+Date: Mon, 15 Jun 2026 18:54:49 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: hawk@kernel.org
-Cc: netdev@vger.kernel.org, kernel-team@cloudflare.com,
- simon.schippers@tu-dortmund.de, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, Chris Arges <carges@cloudflare.com>, Mike
- Freemon <mfreemon@cloudflare.com>, Toke =?UTF-8?B?SMO4aWxhbmQtSsO4cmdl?=
- =?UTF-8?B?bnNlbg==?= <toke@toke.dk>, Jonas =?UTF-8?B?S8O2cHBlbGVy?=
- <j.koeppeler@tu-berlin.de>, Breno Leitao <leitao@debian.org>, Alexei
- Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, John
- Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>,
- bpf@vger.kernel.org
-Subject: Re: [PATCH net-next v7 0/5] veth: add Byte Queue Limits (BQL)
- support
-Message-ID: <20260615185341.339a4dd8@kernel.org>
-In-Reply-To: <20260612083530.1650245-1-hawk@kernel.org>
-References: <20260612083530.1650245-1-hawk@kernel.org>
+To: Haiyang Zhang <haiyangz@linux.microsoft.com>
+Cc: linux-hyperv@vger.kernel.org, netdev@vger.kernel.org, "K. Y. Srinivasan"
+ <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu
+ <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, Long Li
+ <longli@microsoft.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, Konstantin Taranov <kotaranov@microsoft.com>,
+ Simon Horman <horms@kernel.org>, Shradha Gupta
+ <shradhagupta@linux.microsoft.com>, Erni Sri Satya Vennela
+ <ernis@linux.microsoft.com>, Dipayaan Roy <dipayanroy@linux.microsoft.com>,
+ Aditya Garg <gargaditya@linux.microsoft.com>, Breno Leitao
+ <leitao@debian.org>, linux-kernel@vger.kernel.org,
+ linux-rdma@vger.kernel.org, paulros@microsoft.com
+Subject: Re: [PATCH net-next v4] net: mana: Add Interrupt Moderation support
+Message-ID: <20260615185449.6a496c1f@kernel.org>
+In-Reply-To: <20260613205812.2659945-1-haiyangz@linux.microsoft.com>
+References: <20260613205812.2659945-1-haiyangz@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,10 +54,19 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 12 Jun 2026 10:35:23 +0200 hawk@kernel.org wrote:
-> Subject: [PATCH net-next v7 0/5] veth: add Byte Queue Limits (BQL) support
+On Sat, 13 Jun 2026 13:57:54 -0700 Haiyang Zhang wrote:
+> Add Static and Dynamic Interrupt Moderation (DIM) support for
+> Rx and Tx.
+> Update queue creation procedure with new data struct with the related
+> settings.
+> Add functions to collect stat for DIM, and workers to update DIM data
+> and settings.
+> Update ethtool handler to get/set the moderation settings from a user.
+> To avoid detach/re-attach ops, ring DIM doorbell to change settings
+> at run time.
+> By default, adaptive-rx/tx (DIM) are enabled if supported by HW.
 
-I'm calling it a day and dropping all remaining net-next patches from
-pw since the merge window has started, sorry. You know the drill...
+The merge window has started and we need to start working on our PRs.
+This will need to be reposted after 7.2-rc1 is tagged, sorry
 -- 
 pw-bot: defer
