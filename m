@@ -1,72 +1,83 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA01138C427
-	for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 21:59:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D983AA1BB;
+	Tue, 16 Jun 2026 22:00:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781647201; cv=none; b=tkXzySvTxT6xgl6CoVAgNE3gtdWelPzn+EQYleWYBX+O6WNfv1mNYQ+tg35w7hMzxmal7JLq7g1eW/yNj20Rd0yDBYGQr3s/c0IXz9X0LcFaX4Bd0zhRfOX3KLOY4hOMO7DdslaDQ0iUBlYTclpWL1lvGfraCqCbV0jL33bzlZs=
+	t=1781647213; cv=none; b=C0F8gAjsTFC8JQmI1OaqTVNaIV35ogDL4dEO0Iv/4g+dnpUsqeXoZxdVCWVLTEQ4+4j9N1jESFB5UIumMlAkKgYJSA59deYbLcj7dBHGPDKJsMyVt+PX6aqLYts75z1oo7Wx0NtgdPFnurVMUtWHqWN2cA+HQW2SIjgdPTZmyEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781647201; c=relaxed/simple;
-	bh=PCSVkWb9evagpAo7A/b0nKVdvhkhvdTJAPdD598sx00=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g0lU30W4MHefbcAfd1I+tBtk8K+8FwoCYEJBcE0eDOU8bUxlDEYytiMVvlqvGkQ12U/+yzoRBmSDH1NOXyf+i8RyNw7I+Bj7mfbnxHpIbNxKYxSj7qNOL7Pj6kL7bgKMx8cepQXlR6kMdETa6C28jt/0bq/cv+4K2caqIUt7MUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=2U4caDUx; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1781647213; c=relaxed/simple;
+	bh=kSovyPQf1u2/+wpyT4dQZ1O7R+GwVZMm10TSoSuDU04=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=YSzBMIbwkJ99NF4PgRb5oM/CMsrWRqGec3eMIoE9LzwJqC76SbKhqWU3IN2OooCvaIHMwO5lty8LuwtELEFaEqzY43oQl7PX7C946daM3FORAuxgcqRfyiKpJu6UsT08Sbh68jTwOcTDKGO/8VKFaJ/lRMBFfwJpsvPkVtjfGg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TtNwvbPU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="2U4caDUx"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=yn4JTONkucNpp7G5/eQyLNtOYAjCl76BiAINMQrjBJw=; b=2U4caDUxztGMOCq6pv1Xs7gM/H
-	E6QBytWGgAUz1XgI6p2uVi2GfwWFOCLKay67naLp6JV9n3LPpTwD8xMzGYvpDtSUINmqUqC7L7YzN
-	qYgBlgEvLhbyiRNPnoVp9d8UFR1T7izBq3HMwdiviHdvTsm0EHkVd+0D4mVEcFADq5u4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wZboy-0082AE-6c; Tue, 16 Jun 2026 23:59:48 +0200
-Date: Tue, 16 Jun 2026 23:59:48 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: "Ruinskiy, Dima" <dima.ruinskiy@intel.com>
-Cc: Helge Deller <deller@gmx.de>, Helge Deller <deller@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org
-Subject: Re: [Intel-wired-lan] e1000e: Report link down after "Detected
- Hardware Unit Hang" ?
-Message-ID: <d86c0dd8-8bd8-495a-b750-2a0036fbbee4@lunn.ch>
-References: <ai8hmGQmXQu64Ld3@carbonx1>
- <e78576e0-9b55-446f-9d10-da3b7aec9b31@lunn.ch>
- <9d80ed59-5483-4c33-9d27-52fdf24aac6e@gmx.de>
- <51828156-e859-44db-9926-c076796d0f75@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TtNwvbPU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2EA21F000E9;
+	Tue, 16 Jun 2026 22:00:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781647210;
+	bh=QX+gVE0CESSzoDMopJzLLtkh0bSG3nJdRekHMwjNQJA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=TtNwvbPUrr3/Ys4kJsn4oXYtTJdt5toBBhhuCa28ouxp/5yV3IUpohtwf63BP0mfv
+	 mw4cz5J0gwJF+gpfEUEeajUmenuw4PrE+lrF8XqdIGYX5juI255CSeZ4HQQhJnmsWu
+	 xaflEccirz9LQuM7g2TeX/gCaoH7Qahf4TdYVpjtCL6get8kH8AWA1+24dFB7MsLGe
+	 kmYIQrktAr6/Q1+vKWTyDZNi/cRwd085xqq59gii+ZETGDEUYpcjnJ8AAbIC6wWUgk
+	 v/vXYKFB8bbsLST362F0SozlIYrSb+hlAmmqFWK7WDljlxXLWFY1CxhCsSRGXMK95M
+	 4PlSl0i++NwEw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93B393930C2B;
+	Tue, 16 Jun 2026 22:00:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <51828156-e859-44db-9926-c076796d0f75@intel.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2] net: skmsg: preserve sg.copy across SG transforms
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178164720514.1257010.17974091199123614376.git-patchwork-notify@kernel.org>
+Date: Tue, 16 Jun 2026 22:00:05 +0000
+References: <20260610062137.49075-1-yimingqian591@gmail.com>
+In-Reply-To: <20260610062137.49075-1-yimingqian591@gmail.com>
+To: Yiming Qian <yimingqian591@gmail.com>
+Cc: security@kernel.org, john.fastabend@gmail.com, jakub@cloudflare.com,
+ kuba@kernel.org, sd@queasysnail.net, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+ keenanat2000@gmail.com, netdev@vger.kernel.org, bpf@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
-> This does not seem like the right direction to me.
-> 
-> The "Detected Hardware Unit Hang" print does not indicate that the interface
-> is dead, but that the transmitter is stalled.
-> 
-> This can be due to an unusually high load, or a HW fault / race condition
-> with another component, etc.
-> 
-> When a hang is detected, the transmitter is stopped with netif_stop_queue()
-> and eventually ndo_tx_timeout triggers a full reset to the device, which in
-> many cases recovers it from the hang.
+Hello:
 
-Does a full reset cause the link to be negotiated again? If so, there
-is no harm in setting the carrier down. If the reset is successful,
-the carrier will be restored. However, if the reset does not recover
-the system, does the carrier say down?
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-    Andrew
+On Wed, 10 Jun 2026 06:21:36 +0000 you wrote:
+> The sk_msg sg.copy bitmap is part of the scatterlist entry ownership
+> state. A set bit tells sk_msg_compute_data_pointers() not to expose the
+> entry through writable BPF ctx->data. This protects entries backed by
+> pages that are not private to the sk_msg, such as splice-backed file
+> page-cache pages.
+> 
+> Several sk_msg transform paths move, copy, split, or compact
+> msg->sg.data[] entries without moving the matching sg.copy bit. This can
+> make an externally backed entry arrive at a new slot with a clear copy
+> bit. A later SK_MSG verdict can then expose sg_virt(sge) as writable
+> ctx->data and BPF stores can modify the original page cache.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,v2] net: skmsg: preserve sg.copy across SG transforms
+    https://git.kernel.org/netdev/net/c/406e8a651a7b
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
