@@ -1,60 +1,133 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEAF027707;
-	Tue, 16 Jun 2026 00:25:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D662513DBA0
+	for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 00:28:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781569537; cv=none; b=VdRFxLAsavt0G/4QCOUjESNNjpNoS7Ilsbti56hvUGIzBC+nGXCwEmKBF4Y5uQG1yhy5WafmwhZ3wzODqZ3sg3ZHPvD6NijkU3nNMpyLq+BsuGg7EJtrt9J5eO23SuE0TaaD0MTjgPdMTm69rtyWGz4HUosf3KA5Dda3H9fQ9Kk=
+	t=1781569685; cv=none; b=Qc7u20l1pE83NK8uHASVjdvpw8jOhKSMgnesLloOD777U4BENsJF1PAtB+GMRy4kpJy8zCr9cyEGcEcdEk1tYY8mx69/iQJ8CCe7SDwFjZV3/vwjVmfr4E/dmyb4EurdA4uzPQqJJ+h+gAqOpC6to68ALzcNhGSrpv/DhyyaKi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781569537; c=relaxed/simple;
-	bh=CWFSTFYTiBH76MJ3gjOj6t9+K4Ep3BVEdPwrbvarmng=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DH9VVYKrKTMPV6K6UEZpQnkjUn6WNKkpsxLyvT/j6sNrjwEsJFJRB5zHezzyhwRVqLVyoN55TjVYNTN2Tw0qXPkslziiTkP8LOT6CZXLJzVTnibq2j+sGV8uI3iaXFgYgfLgiGOze3KzBdTAM5ZHEh0vDMaR4TGjvNjzfuHq6z8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YD2garaE; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781569685; c=relaxed/simple;
+	bh=Fz7DRDx/ys8/9DEE57BDgxgsaZw6Dt+6ycduI4iFjS0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SK8jabIjQke3crRqWWWqKxO+BzuU8wB5X2nJa/JfcZbzBBm4igPBD5A51W0IFmRhMRcDGhgyXfM+3kwjdwna8pqSYK9aE3x+tOVcqdQtHXI7+mQ/L96BSyleASn/Xk9qZly3nhGqXQiLMkFukrqYfMv1HOfEfyVTu4tRyMnxP0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=J7oCtNih; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YD2garaE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5D211F000E9;
-	Tue, 16 Jun 2026 00:25:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781569536;
-	bh=hH9/51g//fMBZa4WquaIwRZMdG5lN0iHPMy6YWWkEkY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=YD2garaEL559AP5FR7kdfCzIspY2D6tCIEctRlILjopg10F0/GTT+kDRVQgKPNi4i
-	 jOlOMhi15o646GxtKpw9p7pQgqrnlLwIHsb0IMt+9MGV0PBbZzUNCiRmRInpXpfJ2u
-	 /Qev49XJSvZwsrO6EVbpH64sHbbEkzDu/NlfrK+nMzqJUuLfKYdFKj6cyaigGrIdax
-	 RSPiK5jWhzmxwddBDsu69spWt5R4BnX4+emEvw5PAZXMADovD0nxMIdor0Xkxcy9mV
-	 rI5Ic367l98uI0FcSWn7K98eh/GbqGxjvPq3W8SZmWVnQrOLS4Hwxsi+DqaGMbjuaO
-	 e3v3HJXZKXDSw==
-Date: Mon, 15 Jun 2026 17:25:35 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Luigi Rizzo <lrizzo@google.com>
-Cc: rizzo.unipi@gmail.com, m.szyprowski@samsung.com, robin.murphy@arm.com,
- willemb@google.com, kuniyu@google.com, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, gregkh@linuxfoundation.org,
- rafael@kernel.org, akpm@linux-foundation.org, david@kernel.org,
- netdev@vger.kernel.org, linux-mm@kvack.org, iommu@lists.linux.dev,
- driver-core@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] swiotlb: avoid double copy with swiotlb on tx socket
-Message-ID: <20260615172535.080cf94f@kernel.org>
-In-Reply-To: <20260615234220.3946885-1-lrizzo@google.com>
-References: <20260615234220.3946885-1-lrizzo@google.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="J7oCtNih"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2bf22c18ad3so24765ad.0
+        for <netdev@vger.kernel.org>; Mon, 15 Jun 2026 17:28:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781569684; x=1782174484; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=A2aERsjGF0PDWk2sO+FNhRojIc+YeRBYDcFVxz8BN5c=;
+        b=J7oCtNihOlP/7QK7gbmjqj5hOTb7AJ8mzQtDyWulUp0Gfny8BSZ/NoPIA+2ho3wlR0
+         0vJdxSwmSKdNfgYEhZZqOauFYlxSjeQ0L5fv2cHAzJqOY8pJX3f6m1zc0tq0iUFQI/nn
+         xE1KCQYLXAOluu1zsU/Tz6h+3+htZ84ftXQY4htNU9xCBy/VEdeYFeKBJsoEh2TsfH6r
+         F8u0ujvWc0D4jKzEaDkbFIbYWWbkxkR0JE6tAKIO22w7I1SAhAHz78slBrqhtXAIU332
+         PfIQ0ssYVabEsnbO4e4gs2q4GN5vmhFnt54CC91fMOMKrnEtVQpp7XA85Dm2QlTlP42r
+         mWKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781569684; x=1782174484;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=A2aERsjGF0PDWk2sO+FNhRojIc+YeRBYDcFVxz8BN5c=;
+        b=kmtGUn9M/g0mvG+TVVFznnyUmGA/1ULkY7jlKls1uxgt6nA8fBYg4ig3KDDPgvmGRb
+         qg5ak0y0ForfhbxgwsEwH1eKUufVzG4IZGQpuZMnPXY/Ihi3BaYen2fBS8l1hHwFKSkN
+         n6ah9Z5aPWMqQatQNdjPTBGip1g+rJoQyCsDsT2A0n2R89LnQP+VJ9QMIz3xbhK3iMzn
+         UOXaMLLfVKQQvqBSdCdsvnsEYtq8pohOF4wdXWJlTGfLPLOEQNixidU8QUJX2g9IJGpn
+         W68qWXpqW5EtcsQFkpHDXgjLLSXt406rlwhvL/cpRhQ4e8oYMcyAF1mWsLFizgLB0YPT
+         7jVw==
+X-Forwarded-Encrypted: i=1; AFNElJ/ezNn/BHIlERb6X04X3C5j+JSJV0SEnyYnC41ynb/HOaBXBrnDYboX7MRcU4GKbmix6oMN40Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPKCF65HjJcTf03PFX+K5fj9oudFP0ocZm2CaDDJ8fcGA7K/vK
+	J+K5wAtNih83IssrFucr8nULmADnfBsE4Z9pMVvDPzN+r0IHpSCth1MDkvLi0xph8Q==
+X-Gm-Gg: Acq92OFHAI9mQhIKdfLUbxkp2M9EFcNhKqR8jtFsl1VZMx1isvi0sUs3PEGmpxnzyL7
+	AVpPk9X6QaVfMui1uWikPL2c5n5C8UA1NXiRebSF2962EuOV7R+CEitiIdKHXv/pT8xyj0n2i8r
+	1bLqZjXeX6kP9k2C2Ez3dtK0OjBPRA2hI30SMGzyP1kryt/XlJctjrcTPDeCDj+zNnOCVHtLbcC
+	zAnenPLvLGCqIuRTmP5MUi0FKtDG2d6LS/+WXKnUdCuAHTRZ7GcP0Q3YlR3syUk37IPup4MtWqg
+	WoWzvyA5yOuNaCe0XBGq9TlgxaIp0UHUDd1ZakCUy9E0NBoAbfS+Ua8oEPqd/gPu/sRLMIOdCKW
+	yC4H9V8nfJA34NNVTvgVQeo+fKXJaqck4qcmGRbrFHeCR/xCuxx04+D79yxlUm+xM9eUsaTq49D
+	54j6N1GogQ7qFDGiVZnovg7lmIl28j8Vaa8hwP6mbQBV3aPXxqB6BP41JnFY2r00wIQUkRg1u9j
+	iKPKrGHACQPy7Lkq98=
+X-Received: by 2002:a17:902:ef02:b0:2b4:641a:6b7c with SMTP id d9443c01a7336-2c69c1d4b35mr670855ad.13.1781569683615;
+        Mon, 15 Jun 2026 17:28:03 -0700 (PDT)
+Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c8663164a0fsm9890419a12.8.2026.06.15.17.28.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Jun 2026 17:28:03 -0700 (PDT)
+Date: Tue, 16 Jun 2026 00:27:59 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Maoyi Xie <maoyixie.tju@gmail.com>
+Cc: "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Nikolay Aleksandrov <razor@blackwall.org>, 
+	David Wei <dw@davidwei.uk>, Stanislav Fomichev <sdf@fomichev.me>, 
+	Dragos Tatulea <dtatulea@nvidia.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH net] netdev-genl: report NAPI thread PID in the caller's
+ pid namespace
+Message-ID: <ajCYhCB7pdywVnM9@google.com>
+References: <20260615171736.1709318-1-maoyixie.tju@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260615171736.1709318-1-maoyixie.tju@gmail.com>
 
-On Mon, 15 Jun 2026 23:42:20 +0000 Luigi Rizzo wrote:
-> The use of swiotlb causes an extra data copy on I/O.  For tx sockets,
-> especially with greedy senders, this has a high chance of happening in
-> the softirq handler for tx network interrupts, creating a significant
-> performance bottleneck.
+On Tue, Jun 16, 2026 at 01:17:36AM +0800, Maoyi Xie wrote:
+>netdev_nl_napi_fill_one() reports the NAPI kthread PID in NETDEV_A_NAPI_PID
+>using task_pid_nr(), which returns the PID in the initial pid namespace.
+>
+>NETDEV_CMD_NAPI_GET does not have GENL_ADMIN_PERM and the netdev genl family
+>is netnsok, so a caller in a child pid namespace can issue it. That caller
+>then sees the kthread's global PID, even though the kthread is not visible
+>in its pid namespace, where the value should be 0.
+>
+>Translate the PID through the caller's pid namespace, the same way commit
+>3799c2570982 ("io_uring/fdinfo: translate SqThread PID through caller's
+>pid_ns") did for the io_uring SQPOLL thread. The doit and dumpit paths both
+>run synchronously in the caller's context, so task_active_pid_ns(current) is
+>the caller's pid namespace.
+>
+>Fixes: db4704f4e4df ("netdev-genl: Add PID for the NAPI thread")
+>Cc: stable@vger.kernel.org
+>Signed-off-by: Maoyi Xie <maoyixie.tju@gmail.com>
+>---
+> net/core/netdev-genl.c | 4 +++-
+> 1 file changed, 3 insertions(+), 1 deletion(-)
+>
+>diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
+>index b8f6076d8007..4c23e985cc01 100644
+>--- a/net/core/netdev-genl.c
+>+++ b/net/core/netdev-genl.c
+>@@ -2,6 +2,7 @@
+>
+> #include <linux/netdevice.h>
+> #include <linux/notifier.h>
+>+#include <linux/pid_namespace.h>
+> #include <linux/rtnetlink.h>
+> #include <net/busy_poll.h>
+> #include <net/net_namespace.h>
+>@@ -189,7 +190,8 @@ netdev_nl_napi_fill_one(struct sk_buff *rsp, struct napi_struct *napi,
+> 		goto nla_put_failure;
+>
+> 	if (napi->thread) {
+>-		pid = task_pid_nr(napi->thread);
+>+		pid = task_pid_nr_ns(napi->thread,
+>+				     task_active_pid_ns(current));
+> 		if (nla_put_u32(rsp, NETDEV_A_NAPI_PID, pid))
+> 			goto nla_put_failure;
+> 	}
+>--
+>2.43.0
+>
 
-What's the use case? I associate swiotlb with debug / testing mostly,
-so it'd be useful for people like me to explain why you care.
-
-BTW net-next is closed: https://netdev.bots.linux.dev/net-next.html
+Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
