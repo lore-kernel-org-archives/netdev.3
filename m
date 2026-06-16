@@ -1,122 +1,100 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 910A9426D14
-	for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 10:04:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D076F43636F
+	for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 10:10:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781604265; cv=none; b=MM0LLwgS8VwBVbE2gIb87roIt6wqCP9JFVyonmRCtLkVfOesQzelPuMhselB9QutVg6HobybH3yBI6HBWIl7CY80qDzJDway67jU5g3QWQVZzcCgRdUFF8ZRINsyD7uGa195WwcaAfuSwzAc/hfAUUTZKEcF6RAYLzk4PFPFIj8=
+	t=1781604617; cv=none; b=DPpojuJCX2eHxoPys+pMXuch0DSZXluk/ir9hvbZRde595Z4tWB8elc68fOaYLT/UPNN/qTdFidpwDjEB6vfT1N9cBhweB9fjiwicT6ENFb/IQTuaBzzBk+tw4M7fgv4LCuw61dU19MJ11Q2mtiakGXLD8XxPWN/ZJQr3A3sQG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781604265; c=relaxed/simple;
-	bh=TIIjdlJ1X8AiPK1RSlH0x9/gUJnCBnzteMJ7p4ST+kQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=UEIAmPnzIgwlsM9p6yOK1AKz6466a0uzZOyelYnRnhwdulmwECT/XaNMf4TB7h6uWucZqEnLRpTZsgKMFlMxRoDb4IqaiAlrOTGsI5npdzE74Gf8RbZ2hgVSgv8Ca85CNJ1OqrftEI/HaAFxKAMO0DuSjXwcUb8gbHhzI6oVPZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=aLdyCTz8; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	s=arc-20240116; t=1781604617; c=relaxed/simple;
+	bh=uzXYv5SaMaQDxMG6VgWPySzJIVbasUl5XEm2P8yHpGQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=U28i5xBK+thq+KWFi+8nm3gqjur9jOAfkigAj/fYFNpZsT8pBrEdiTHLaGTU5orzXi8aKgl7O9cP6fNCgn0zqlSTalJ/BCeDlUveRHWvvKy9IpKDTnBT4SqVY+yRERNxpYbxNYFliolXlnGM10m/4hDXtzU6p3wNIZSuKctkCp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lawd5phv; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="aLdyCTz8"
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-693c51a8a19so4688599a12.3
-        for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 03:04:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lawd5phv"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-842848fd613so3794758b3a.3
+        for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 03:10:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1781604263; x=1782209063; darn=vger.kernel.org;
-        h=mime-version:message-id:date:user-agent:references:in-reply-to
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Mcc40ssZ1K96Uavp2GwOvrRk3/YMLKSUvUHIzWqkOLo=;
-        b=aLdyCTz8BxLb2pE1vibPX7G9oJV1/kj0dy8k3ph3UnhioQS5hZhY5lD5YX+9JE8uOB
-         Nqf4kCfkyaxnz/Zm6N8mCDq7Bxn9uWZP3Bip2K2tFoTb266D/dv48U1iGi0rULXS2YWj
-         vZjAedcZkYI7uyy8WAqwrtTMZApuJ7VirSnUjUyUVBGSkHhxwGW3lvQskcEd7Kcdpdps
-         /Wr8zoy7aVQR+PddCHSo0/y2pIu4BpUlddj30UuTGtbmLO8hll2KQt9UFgH0MLtEAros
-         1S8Y0tRUXC2p3M0PucOuuEL6euv9cXR3bHRQCVkhS36Ptbx1KGZ/HvQsJqs98YSd45Ne
-         gSQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781604263; x=1782209063;
-        h=mime-version:message-id:date:user-agent:references:in-reply-to
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1781604615; x=1782209415; darn=vger.kernel.org;
+        h=mime-version:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=Mcc40ssZ1K96Uavp2GwOvrRk3/YMLKSUvUHIzWqkOLo=;
-        b=pigCTviKo1bYlKQzVqiEjSkj7aZHDfkWXkQuNHSsGqE4e7fuR36WVAehyvC82JHdP0
-         VK2eUItDX9P1KIps1To0F9rWreV8AAD+d3Hl6CVg8KzocMINcLbhaOk454fE7Z3Nk6Zs
-         4t+oR9eHbcR24v6/cOZLiMv0kjPQEJR3BQ+0Ihvf/kkv0KY9UQq7WCISWbkrz4K3NqT8
-         P3wPJ54SpJrLidTeKyMh1Sl1H5/Z2D4v1ILHFaSxJK0cKdSwFY2oWp5mq0PMNHWnafqe
-         pu/oXoFVsAA7ryHFGwt2rkvN2K7QKzcAMlRk5vMeLvhELlJ03w2Epelk9u5HmTt4gdnv
-         GjMQ==
-X-Forwarded-Encrypted: i=1; AFNElJ//1HJDQd35nsT00Mak9e08v5fipAgwD+nQPh0S1gCtGJX1sRw7ySHKDC3zrLW5jw/NfgMapf8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzDE4Ke2pFuMxLQRVVsBEsBQSlZQuvDNIJTt6+hRMHQs1Qz4Lpr
-	kzu67Dh4sAIJ6+iANc43LvSa6bvilAdsYrRqq6GrvqwQqdaO0lsBNRwaHwcySrrLkts=
-X-Gm-Gg: Acq92OHcZFH+vhnCCftwDP58AnkHRSVI2eivmv8FiX+GYW1oQ857/22EcFRjWnMaohv
-	/FV1HgE13hg5MW3BlWdY6rLzkXCGdDu3O4FJ6ZiXagUWwBFDDhmGBZSbXOFao/4PWv0KkAh9DMC
-	bmvqB52SxtWtN6gfteukZB7aSk0WKhEPelXis5bf61UzvyP+0GFzrA/0zE2KQX7/2osUBXXTBbK
-	BmkngtUKlINbqDDq4t0PxlISWVYvxWw3Rf1d2btAG9F/k6TaM6mAooLMNyGzLFnRA5w22u1yk2G
-	NJdb1UdpQy2mfFwoVjbLTuq0TetsrS+waUVrCx9hB3wTtqflGaIc8chBlbaBaXXUvllHCSXhUD3
-	Iv4oVyWriNcDqdDku9x8uaa0WCRaFEF2s3EcMcWMqL9kq15g3QMN3yKL5XaUNababtl0kUGn+u0
-	qv9XZglsVnxlWcExNSvYaqmp7iBA==
-X-Received: by 2002:a17:906:209a:b0:bfe:ed06:565e with SMTP id a640c23a62f3a-bfeed065926mr404990866b.51.1781604260716;
-        Tue, 16 Jun 2026 03:04:20 -0700 (PDT)
-Received: from cloudflare.com ([104.28.21.182])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bfdb8341ba5sm623905066b.42.2026.06.16.03.04.19
+        bh=rgXck3qhvoJPxsaGkk1pMrxcKj77tOWzD/6bHjBzG1I=;
+        b=Lawd5phvUBOUpFePSkG6DFAMetQgCPnSpla+UOAoX5G4/M5TbNF+7gw+2gIQ3aWXRd
+         eW/4UmBRXJuuwzK1C/MbHHyLMzY211hetqaKtY8uYLxzXfmiO/juBTHFhkZaSXPigW8Z
+         vqz9EE/nGCw2Gru6qNSkJ1/v6ym/gjvEBML8hCYvKMue0IL13Yy2rCs/a7GrzQ5sYV7b
+         i68tUqqPYq9yPv2l43J1yqBeef1wLXYWG5aLI8W8TUK90KK5ApaghWIJiNaFyZGetGMd
+         +Sla7car0KFqxIPPV1x763CFKCEspYF/eVeMmW+at7Fqg4v7JlbYTbs24ym2lUbZopAc
+         ZHng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781604615; x=1782209415;
+        h=mime-version:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rgXck3qhvoJPxsaGkk1pMrxcKj77tOWzD/6bHjBzG1I=;
+        b=aXtaqeL49s3KHagafRjG9Kkslps/HhUDv8N2op1nrqQDB5/jtv86+mk6DLPLJ34nzp
+         xKN9EVcpMK4VCxURYG/1pN1kjWh928c9Fx6rldhFRy9kGINRsmMuOZmetaFKq1cmgr4c
+         PSvLvXTU3YjK556Wcjerrppx/cx5XjZnigsuRuZFX8KPu2Yz94v2mNbEFJrGGjGritzj
+         zjlb3Dtnq913tDyAadVFJt2dJlH/rOFhFXTotmJkium6yKpxOnJrFxq/pWrvAeYIEgwZ
+         AGDWXW+sqf2rdNGQjlRqLD1qL3xnstdwG/4YmFNwAODRZUryeCggiw9XNtEuhfPTC14V
+         yi4A==
+X-Gm-Message-State: AOJu0YxcfaktD7o3BPG4PPv0bt1qG5rAo7A772meWSL9ho30hH5/n9fS
+	DljpvD2/DE9HilGBfiEIWNv0XLc/YjVbDJIvDLN/5GB61KyJ5a2qeBUhbmpUruK/iBFb+Q==
+X-Gm-Gg: Acq92OFyOsoLy2MaeUrxuHTcHoSAlCHRF/qTmrGfrlnTv9/+omckdjSRTjGpEMcg8hE
+	qIW20FDwA+B+vFRn/TJmylUHxplJlXLeEXCvgSKFBkphOYzu2vLCbk2kA0qPpyrv/VCt1YKBnTM
+	PPwW7+gKL18UPQUON3mMFp+2R5O26fIvpZ6FE207FHKjAJD204KwXwgDEsxbT87sWzMtHShNAAf
+	AVGEg0B2cRK3NswBoSRaYGqGT/XKTfN8KqdZaUW/i5XkSDejIKhSDuzFgAD/z6OM7IpumrpQH76
+	XIEfr9Rl3VVAtHIO5VUetgJA3BH3CqTdTsVAL9Z6f4HgRZYHS607J+jqKzimTH83I9dHJE2IOIi
+	M8sGbcvTQ2y0k42w6rPM8w0l7pckRoFWgQfJxEFv/VVcXZyq53cPiW1DoLdsuFG+Zb/OXDE2+dl
+	/mimeHlT0v777wfqHJ
+X-Received: by 2002:a05:6a00:1151:b0:842:6fac:bd3 with SMTP id d2e1a72fcca58-84515556183mr2848320b3a.28.1781604615062;
+        Tue, 16 Jun 2026 03:10:15 -0700 (PDT)
+Received: from [127.0.1.1] ([47.253.114.73])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434ad03fdcsm12396943b3a.24.2026.06.16.03.10.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jun 2026 03:04:20 -0700 (PDT)
-From: Jakub Sitnicki <jakub@cloudflare.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net,  netdev@vger.kernel.org,  edumazet@google.com,
-  pabeni@redhat.com,  andrew+netdev@lunn.ch,  horms@kernel.org,
-  bpf@vger.kernel.org,  john.fastabend@gmail.com,  sd@queasysnail.net
-Subject: Re: [PATCH net-next 3/5] selftests/bpf: remove sockmap + ktls tests
-In-Reply-To: <20260614014102.461064-4-kuba@kernel.org> (Jakub Kicinski's
-	message of "Sat, 13 Jun 2026 18:40:58 -0700")
-References: <20260614014102.461064-1-kuba@kernel.org>
-	<20260614014102.461064-4-kuba@kernel.org>
-User-Agent: mu4e 1.14.1; emacs 30.2
-Date: Tue, 16 Jun 2026 12:04:19 +0200
-Message-ID: <87ik7iby3g.fsf@cloudflare.com>
+        Tue, 16 Jun 2026 03:10:14 -0700 (PDT)
+From: Wayen Yan <win847@gmail.com>
+To: netdev@vger.kernel.org
+Cc: lorenzo@kernel.org, horms@kernel.org, pabeni@redhat.com, kuba@kernel.org, edumazet@google.com, andrew+netdev@lunn.ch, angelogioacchino.delregno@collabora.com, matthias.bgg@gmail.com, linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
+Subject: [PATCH] net: airoha: fix foe_check_time allocation size
+Date: Tue, 16 Jun 2026 17:49:03 +0800
+Message-ID: <178160461057.2154221.15886112443159132305@gmail.com>
+Content-Type: text/plain; charset=utf-8
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
 
-On Sat, Jun 13, 2026 at 06:40 PM -07, Jakub Kicinski wrote:
-> The combination of sockmap and TLS is no longer supported - installing
-> the TLS ULP on a sockmap socket (and vice versa) is now rejected. Remove
-> the tests that exercise the combination along with their BPF program;
-> the file covered nothing but sockmap sockets holding kTLS contexts.
->
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
->  .../selftests/bpf/prog_tests/sockmap_ktls.c   | 355 ------------------
->  .../selftests/bpf/progs/test_sockmap_ktls.c   |  61 ---
->  tools/testing/selftests/bpf/test_sockmap.c    | 227 +----------
->  3 files changed, 1 insertion(+), 642 deletions(-)
->  delete mode 100644 tools/testing/selftests/bpf/progs/test_sockmap_ktls.c
->
-> diff --git a/tools/testing/selftests/bpf/prog_tests/sockmap_ktls.c b/tools/testing/selftests/bpf/prog_tests/sockmap_ktls.c
-> index 6ed8e149e3d5..cda6b22cf759 100644
-> --- a/tools/testing/selftests/bpf/prog_tests/sockmap_ktls.c
-> +++ b/tools/testing/selftests/bpf/prog_tests/sockmap_ktls.c
+foe_check_time is declared as u16 pointer but was allocated with
+only ppe_num_entries bytes instead of ppe_num_entries * sizeof(u16).
 
-[...]
+When airoha_ppe_foe_verify_entry() is called with hash >= ppe_num_entries/2,
+it writes beyond the allocated buffer, causing heap buffer overflow and
+potential kernel crash.
 
->  static void run_ktls_test(int family, int sotype)
->  {
->  	if (test__start_subtest("tls simple offload"))
->  		test_sockmap_ktls_offload(family, sotype);
+Signed-off-by: Wayen Yan <win847@gmail.com>
+---
+ drivers/net/ethernet/airoha/airoha_ppe.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Nit: We probably don't need to keep this one test around.
-It tests pure kTLS and overlaps with selftests/net/tls.c.
+diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ethernet/airoha/airoha_ppe.c
+index 5c9dff6bcc..8fb8ecf909 100644
+--- a/drivers/net/ethernet/airoha/airoha_ppe.c
++++ b/drivers/net/ethernet/airoha/airoha_ppe.c
+@@ -1578,7 +1578,8 @@ int airoha_ppe_init(struct airoha_eth *eth)
+ 			return -ENOMEM;
+ 	}
+ 
+-	ppe->foe_check_time = devm_kzalloc(eth->dev, ppe_num_entries,
++	ppe->foe_check_time = devm_kzalloc(eth->dev,
++					   ppe_num_entries * sizeof(*ppe->foe_check_time),
+ 					   GFP_KERNEL);
+ 	if (!ppe->foe_check_time)
+ 		return -ENOMEM;
+-- 
+2.51.0
 
-> -	if (test__start_subtest("tls tx cork"))
-> -		test_sockmap_ktls_tx_cork(family, sotype, false);
-> -	if (test__start_subtest("tls tx cork with push"))
-> -		test_sockmap_ktls_tx_cork(family, sotype, true);
-> -	if (test__start_subtest("tls tx egress with no buf"))
-> -		test_sockmap_ktls_tx_no_buf(family, sotype, true);
-> -	if (test__start_subtest("tls tx with pop"))
-> -		test_sockmap_ktls_tx_pop(family, sotype);
-> -	if (test__start_subtest("tls verdict with tls rx"))
-> -		test_sockmap_ktls_verdict_with_tls_rx(family, sotype);
->  }
 
-Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
