@@ -1,101 +1,150 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011069.outbound.protection.outlook.com [52.101.65.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C4942847B
-	for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 10:52:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781607135; cv=none; b=mwnBmbPSDu4DFVNLc/bay6KFx7udseTVV+fZCp2NDcrMxEFk0BDjuYPb4HSqXeiGGMcjjryCStXFfpg0BYEfIe4BOS6vtY6x5QUCsnwgyhDdR+UFvi/leicLR1Qv/Mb6pkd3mMZbMAjfkup9Wx8FXWrCxnNSc/vcg9bS5vHQCpk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781607135; c=relaxed/simple;
-	bh=xElz6TL/v5/9dkWuZiP4MPbAXo84M+Ts9Zd6c9TM5No=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=G44OLrhh+4EZmL8+ZMqN+QJW4gacxX6Ofb85I+UjmtEvf7nmjjSRf8CqgeBLRRs5uksczC1uXRnKz6L6Uwp1lh7Xno8x9I3AwcWQ8QmSQ3yYPhJmCIF9YhcecYWbkk2w899mZTmYLUluHHEdBxf4SqbIJUBscgbk9RKp9moKuPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bYvv89wy; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A51242E009;
+	Tue, 16 Jun 2026 10:54:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.69
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781607294; cv=fail; b=VOPJgcPuDaCgsuc772PR8l71e71jTEwgaIOHrO5dCFjQfE23mydB/UvdbwR/I51QmBYOqdu2bsJD3moZ8f+vBiEx/sRvWymbRzGsEwljdZN51OvWTE5OR4WNEghshlEHS8X8IZW0wGhSHM7QekhIZYXCVDHf6fqOHzh6kwVj2E0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781607294; c=relaxed/simple;
+	bh=zBViJ/MylGgw94NYbumaMw50Wo9oEEw9YkGKW2+T3sQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=ptm58LAw6sL/vNzH8d+s7vWyIti/7Q3c/FTpGziP+ASNIZPar+XMJqRkdKAycaw2MqvxdVjvaVG8E7icLohGR5irKsfKTzk2HqLDLecQlMez/5kJU6WM5XDIZyzkLvIDKF7wfsddknaTus42cS27JY9wONNbk6Sm06ZIPcw7ntA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=S5Al0GSo; arc=fail smtp.client-ip=52.101.65.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bYvv89wy"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2c0b944f6edso44761925ad.2
-        for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 03:52:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781607134; x=1782211934; darn=vger.kernel.org;
-        h=mime-version:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=JsNwyh+KeC3nDRQIncNAKnYy51JDR11+Uff9rlShFdQ=;
-        b=bYvv89wy0kS2EZeVT9UZSq+QRocpnEBUHlZsCUDt2zpZx0nTjqkXZtiHOBdse/URpP
-         wz7aGo/Ac1PO86/faFH0+ZljQav5m6TYraYOBDgIK214XqkRhgCPmNMQl88fJ4pY8te8
-         MaBTGFMQ2g8EbXdw/sHwcULrPWUvA9ITkSm8gqvuTZqJ0KNdGhDA2Lh8fF6T9UDMVcOl
-         yJoO9KmZ05dKrCJl5nTjXOh3FC6ifZXVwBNKIv7PkEDIK6SsOcT+QOxB8U2gybPBUQa7
-         ieLTMaUb4gietKvT8zfZV4hS4TR9qj4IoI4yIKN7O4vCIGMRwA2gkhXcwzN4qTbJDeI0
-         74fg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781607134; x=1782211934;
-        h=mime-version:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JsNwyh+KeC3nDRQIncNAKnYy51JDR11+Uff9rlShFdQ=;
-        b=eM5XHU7JsQ8XUoYZvS+90shaHPu/py7sG9DovlFWYehnIffjOWEVlPk9n9lgS/lNnI
-         4MFMRO3ZxLo/45uqRq0FraVqMfzEvn7TZwB+tUo2AACWFMSkD64Id/ccj85Ej59zW9Dg
-         F3HY1BOYOBYcWMUKDqux8LrfKhsf8fKQaZWuKhHX97xuoPdNb42RggDvNNDOv0S5sJnb
-         aD13bcpdojsG8dRXks4agHr8/UqBnwxw8iPO3Eqj6QbDyz1ZgZL6VpKkpcYV3GPHUnnc
-         HLULyx3EiZ/bdwTrqCpviN1cttQrZ+cLe0CUwlLUEu7bE4BUMhtyIkDKlAjxXrka9HH3
-         tCfg==
-X-Gm-Message-State: AOJu0YzW9Y67BixwyUJ0af1bxxjp8JX24fCnL+KSmkne5PCwBMP0Q8ZC
-	u/WJW6XrzHjMZqWyPWfQonxXoV6DTUcFUEVeNHwyJiE8OgiaJ58+2x9Oid39AopL4itGmQ==
-X-Gm-Gg: Acq92OHT6bD+sQZ99J21Qfw5ikkvJTSMqUhoj5hxaVWZCFMEksc84LErSWu+9KlCb6q
-	fL1w9TSDPydJLb7G3GJSVfYRsFYqKLpNa5WrdKXiNF2/4xot4vAzNOFE4s8GXsMyRIDN0AY16La
-	Whh+ggzCyEJ5khEuFYxX4M1Oa/nEikDYIJHjvk/Poo4LhRmWEnR0ta0AGJR+wo/tBBpaT/2NSuw
-	GywVf7uLfcz4mBAg6A7v//r8czjH18rnGAcgKAvoVi5xMNX8HvgNtB83RhcGM1BJPVeQYmLcLWG
-	dZxgYwQRBPKl50T6t9L5zvFMRHyIX/IWTkkueImvbtEtGgsvl36cMylmFZ3NQ5Qaen9kiUDx85T
-	OfzqBq2F1JjAKV8bCCghQcsmQR5IVLUqxv+K0bAm8EchI5cj1bAk+dYUFXmik+XK96wgO220Noz
-	ChhDdhvsQ9kluFXxQ11Qa6Q5AEU+k=
-X-Received: by 2002:a17:902:e790:b0:2c0:b4f5:41ea with SMTP id d9443c01a7336-2c66424305emr154961485ad.17.1781607133919;
-        Tue, 16 Jun 2026 03:52:13 -0700 (PDT)
-Received: from [127.0.1.1] ([47.253.114.73])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c42f7c5535sm130371465ad.18.2026.06.16.03.52.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jun 2026 03:52:13 -0700 (PDT)
-From: Wayen Yan <win847@gmail.com>
-To: netdev@vger.kernel.org
-Cc: lorenzo@kernel.org, horms@kernel.org, pabeni@redhat.com, kuba@kernel.org, edumazet@google.com, andrew+netdev@lunn.ch, angelogioacchino.delregno@collabora.com, matthias.bgg@gmail.com, linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-Subject: [PATCH] net: airoha: Fix QoS counter configuration for Tx-fwd channels
-Date: Tue, 16 Jun 2026 18:50:29 +0800
-Message-ID: <178160712947.2156222.3765685889775458986@gmail.com>
-Content-Type: text/plain; charset=utf-8
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="S5Al0GSo"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dgWczoAtpmh1GzZEKX/IbVqL/BR12R98s8kW88PU+x2tfMhxwMwCqvA67Fpv3j1DbYN/hCiR6elqFXeJ9YAXOj1P8EG4+/TTwV9fuYlmbz2eOapLsy9m1mEMaQ/TZ9JvlfWzG1YKJIxC98jwvchlmgPurN+vXiqPJOJJr+xY7V5Ttc4Xt1u3vmjxMLqt8bROoBmqgE9NlwslL9UGgNlzP3+KJk/n/NEFHfMgM+IGiNcX+6fCY9yui5Ld0hh2WixdpUfiFR7UkmhuZeWsLFnzdDtK4tDPXtN/ISwKKpBy7+s6p4K4MXY1+tDxYmC23AcZiGwH1RG/NnP4YbTrJuZ20A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+EvwMYWi6v/8wnWTSXx4fa6ny7mQAe0pW4ygu8QaKHs=;
+ b=N2h9viajfFQSkqEIf9cDrj+gH1xhIVkZGYzKw4KSGXivSZQ7TueR49BUYcODS7YIFyDVyLubwWi8V/jFf+YyVhhX0IpgDkq4Pg0rTdje3lECwbzqmA3agCt/SN8hHt3Bg2gI2nGNL6zAUBtUIs3hLpUHWCaGa+82gi2qjn1cBlgfg3Zw4ktUNb1U3qFH4qSrC3Vu+qjqKa1/KlQIlJrXsup91r+C6ILsfoi0gKMqhDvgLMxtChdMw2h67vBVy928d15O1MipGcKkaAEZDs8MfmArA2aqpiwJGnkd7tEGnxW7iJThEjceOst1P1xSw4iRnTSA12cyaSoYAUJpLrbF2A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+EvwMYWi6v/8wnWTSXx4fa6ny7mQAe0pW4ygu8QaKHs=;
+ b=S5Al0GSoORrnr6XVlFYrOYFkstFi6FnYt5qKrDbJGtA+SG7fg4jd6+OuriTW5M/HqADwx//gfNAb0sdbjJr+Ti3JzJE/hFOzWXPhZkbjByGhnOLJglM83BT0QF2um6NzfJWahxMc8dEqfCvTdWGq3dkSY0WCcgAmy+48z8YZuoNhiasBaV4+EJ2+Q9oihqF5VaMX0WaZgpGGgo0iL8j6klf+Q+3R1au2Rbg37jy5h3nCmiaRhtEE/a4daxz//DKibcCSWjt2i1DXekNTVjhPIusIWd3EsvLAVTRFAg5yGsg6F4BSH5w+50BMpeZJ+d3SrUNx2bFX1ZuegQu25BEJHw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from GVXPR04MB12290.eurprd04.prod.outlook.com
+ (2603:10a6:150:319::13) by AS8PR04MB8932.eurprd04.prod.outlook.com
+ (2603:10a6:20b:42f::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.18; Tue, 16 Jun
+ 2026 10:54:51 +0000
+Received: from GVXPR04MB12290.eurprd04.prod.outlook.com
+ ([fe80::1739:3404:2175:33dd]) by GVXPR04MB12290.eurprd04.prod.outlook.com
+ ([fe80::1739:3404:2175:33dd%6]) with mapi id 15.21.0113.015; Tue, 16 Jun 2026
+ 10:54:50 +0000
+From: Ioana Ciornei <ioana.ciornei@nxp.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org
+Cc: f.fainelli@gmail.com,
+	vladimir.oltean@nxp.com,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] dpaa2-switch: fix VLAN upper check not rejecting bridge join
+Date: Tue, 16 Jun 2026 13:54:30 +0300
+Message-Id: <20260616105430.3725910-1-ioana.ciornei@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: AS4P250CA0017.EURP250.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5e3::6) To GVXPR04MB12290.eurprd04.prod.outlook.com
+ (2603:10a6:150:319::13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GVXPR04MB12290:EE_|AS8PR04MB8932:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4d2327fa-254a-4870-bcd5-08decb95b076
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|19092799006|376014|23010399003|18002099003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	+lmzRcDVR1MdCFZKiHqLZsu9/LVX3KqZlvbxxvWu9tAd1v7MfSoNX69FcBhCoq/h0Bmm1tG/YcRXv3M6KS+DuV5PURfEcTAdSjmq1H1t0+TyD1qNrRNTHpq6v/XAEL49EURJxetbgFafI4tA0V8pZcjZcciR26l9WzuFSnd33RcHsyH9R+fvlLprBXdBDfUfyJCHV6gkT683/wVl+C4nfayrrYp3whHPtGBejxaf9Ys1b+jid93hwXwWEaGSRyHosuB85TRtbXZkjiAklprnchEdBpCXJszaZWieUPw9PIjFUDoozfswg+ORvB72WbyA8XKs31DOLUeKXkSPqXRt8OkI9pKaDad+zG0w6IjhpAYv1+Wt00BbLEwUTYW/vB2/q6c1k3aVT+AwvPnHBsgQ1pQA+CdGwfnR1kOsiMzLy9G+92hwsx8zpLpp/eRQGjJTV9B+SjWSEvoqVH/BvEt0JTmTTJwWCmwt0IAdSCOBNstzWq9hs/UBElUW4s5KgDRTo7PVYy4K8+CAadoOD8snecFxC41q9JKXcqz88kMgw7c42xvgA2H5I59OeQG6rqTw5wpAwiB3itAfZxpmloRKWoPUjMEC3rp4Q90/+zKwl2/pSnBRfzrVqXgXbcRxgavyfJHv3rYr4B2smIOV93cMlnv2XdPVD6pgsC7UC6qbrY4xSHYy1V3yNs0Tm2qr8niZ
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12290.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(376014)(23010399003)(18002099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Mtc5KUzZZqhOeuqPEmguxoW38SAns0oq6CevDcChhZtU87tuNTJxUzwVQSQL?=
+ =?us-ascii?Q?hns7KXsIdA2YfVZYbty5zrZ4ZIq+P+GdtY3Hef5BRx0IzEB4FhKTi/zDEUxL?=
+ =?us-ascii?Q?WghpbYT8zRtrW7Y3/59WOeMjOx4kRh03kKx6oup0/uNYJUXddIi71/NvaCO0?=
+ =?us-ascii?Q?cvTvlahGOyrCDPwUEBmBjMSfbgLDqYr29JPHo3q04s3Xdw/uUGFv9M/8641v?=
+ =?us-ascii?Q?vdfGpKJND9yF0RscBNmVd715elo+Lxy50LYG2hgbutNayMgDza9JjqpSDjPX?=
+ =?us-ascii?Q?tIQvFqXknQ+40jbZjTdLfbn6VyATuAF55pV0CZ4i4SbS4HxGkFHoK7Vyljk7?=
+ =?us-ascii?Q?NRY4PJ6xr5E+Nc7jZbi0nKmanKiNsC4K+LfUWQvz0Ak16WN12VuqOvCONWLd?=
+ =?us-ascii?Q?gv5QINdXwyV1cQ1FDysgFKafFkLMdungdnZFuzwt+JFJWOaBBqYmTfwiy6F+?=
+ =?us-ascii?Q?671LRLdqZ2m8sgb/wDbhtZ0ScZA+jpB3jcsLKCgtDF5tsbfP77wMH4o1fYoh?=
+ =?us-ascii?Q?ua5aI8bHkXnqlWOofBZy2Mz3HjP28NxT3ferFaznGgL2K8ViraF4/QWADnzW?=
+ =?us-ascii?Q?jgweky6MmON4aTDpK6s82+iVJ5qUwg/SY3jwr24IzFTVftAPsWiYBx6XxT1R?=
+ =?us-ascii?Q?C36iffvQxlI8uC7sK5mDKxff+dtRYEZdDGjg938sGw9g2Qaxe/rxsr+axex8?=
+ =?us-ascii?Q?6We08qw+AeMzCvaNwS/9xLwsz40Mmal3wvkiRP8MyEkxSuO76KWJfcsVgY8o?=
+ =?us-ascii?Q?l0ce7z5mMHTQyrxXM8k1g27dIYOY4lLoRyT2UZNwpAF50wDzlkWXQZR5Iy1T?=
+ =?us-ascii?Q?Qc5WEhu2V4owIJxrkxK7bgGMxukZjLtro+5FFiy0i2F4lT0WbTTw921+mHqF?=
+ =?us-ascii?Q?tk3bs2JE0IgEgoHVKmF3KU8TvoqbHQ3SQAsesZIWMrE1ANKB6lN06ocl6ou6?=
+ =?us-ascii?Q?vGpit4QJ1xxaXYE+tA7TcMOg/aP0n49rrY96Urnem3g8G9V+iy4Zcm6aatx5?=
+ =?us-ascii?Q?8yWZsi11kX4RRuLh1w4Mp4QYBCDKoGA9sLrBz9U0zVGHM1SsfDJ8UP4+mZ53?=
+ =?us-ascii?Q?Vtkq8qXMmeSf96nj+t6LJ5AyhjR4XBqT/4Eq03VPQAdJMhmy1X1pXCn7rVGE?=
+ =?us-ascii?Q?bPa/JSPWkV9pBSeKCyBf2sUAhNKC95mpZLSq+2wh6MfOk8SOxxzp/KMAqrva?=
+ =?us-ascii?Q?0OItD1w7WY7YHYBoNTc1R/Vstsq6jGKZkGsCgMksET3HCggqo56zJQ6sHSzN?=
+ =?us-ascii?Q?qF25GRnHHsx7SF+sMSG5EsG9HuE4cikH2o0xpSKDqgrxwJlRV9BMqt2wue8q?=
+ =?us-ascii?Q?PR5NUAuGvSk3FmYNjBx234DOeOwV2RDuN+E2Ip+tljmlGdCidXbHUGezu/vY?=
+ =?us-ascii?Q?E80tXKm7a1MR+mAw9VX5R4NAI/wnt8qLgQ1aqB6qRPM84ZXB3QqSZ1T4xi3d?=
+ =?us-ascii?Q?chKUuqIvA9BbzMUETGz7Z4kJWBkI4NojdRvwVh6svf0UPE0CSnuDs1boD221?=
+ =?us-ascii?Q?jBg1z0MwLuWu2rwKwhYKJlcf5VrOZ0dXcFcQKNAU861blpYHC98EV+w1mLrN?=
+ =?us-ascii?Q?3K/zIBn6QRlye6PeoFJLqz5QtOOR3eogAKiIA4QjhGW1LlpsyBfOOVdLYOtk?=
+ =?us-ascii?Q?aFNmnIc25WCUe8m7ecRWyiA3G65txOONY3+xegMPtz4ob3A+ZdyQiabEKalc?=
+ =?us-ascii?Q?v6PxhTdpKz66CE8jYMLTx6AA+d7AScw/sLo6wyn3vOGbGKEhBr3ndXIH7kT/?=
+ =?us-ascii?Q?rxE0kRCp4A=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4d2327fa-254a-4870-bcd5-08decb95b076
+X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12290.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jun 2026 10:54:50.5673
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: usbXeTtFqlH2rHdXMwI21+CULEEPbir26MHbUXCWS99fJTNxDevdlb/ccdnkU8pbWcp8DFGMKOY6sa+H1DLqFA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8932
 
-In airoha_qdma_init_qos_stats(), the Tx-fwd counter was incorrectly
-using register index (i << 1) instead of ((i << 1) + 1). This caused
-the Tx-fwd configuration to overwrite the Tx-cpu configuration for
-each QoS channel, resulting in incorrect QoS statistics.
+The blamed commit refactored the prechangeupper event handling but
+failed to actually return an error in case
+dpaa2_switch_prevent_bridging_with_8021q_upper() detected a 802.1q upper
+on a port which tries to join a bridge. Fix this by returning err
+instead of 0.
 
-Fix by using the correct register index ((i << 1) + 1) for Tx-fwd
-counter configuration.
-
-Fixes: 20bf7d07c956 ("net: airoha: add QDMA support for Airoha EN7581 Ethernet")
-Signed-off-by: Wayen Yan <win847@gmail.com>
+Fixes: 45035febc495 ("net: dpaa2-switch: refactor prechangeupper sanity checks")
+Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
 ---
- drivers/net/ethernet/airoha/airoha_eth.c | 2 +-
+ drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index 31cdb11cd7..329988a840 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -1256,7 +1256,7 @@ static void airoha_qdma_init_qos_stats(struct airoha_qdma *qdma)
- 			       FIELD_PREP(CNTR_CHAN_MASK, i));
- 		/* Tx-fwd transferred count */
- 		airoha_qdma_wr(qdma, REG_CNTR_VAL((i << 1) + 1), 0);
--		airoha_qdma_wr(qdma, REG_CNTR_CFG(i << 1),
-+		airoha_qdma_wr(qdma, REG_CNTR_CFG((i << 1) + 1),
- 			       CNTR_EN_MASK | CNTR_ALL_QUEUE_EN_MASK |
- 			       CNTR_ALL_DSCP_RING_EN_MASK |
- 			       FIELD_PREP(CNTR_SRC_MASK, 1) |
+diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
+index 52c1cb9cb7e0..46ae81c2fa01 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
+@@ -2177,7 +2177,7 @@ dpaa2_switch_prechangeupper_sanity_checks(struct net_device *netdev,
+ 	if (err) {
+ 		NL_SET_ERR_MSG_MOD(extack,
+ 				   "Cannot join a bridge while VLAN uppers are present");
+-		return 0;
++		return err;
+ 	}
+ 
+ 	netdev_for_each_lower_dev(upper_dev, other_dev, iter) {
 -- 
-2.51.0
-
+2.25.1
 
