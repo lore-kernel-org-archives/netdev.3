@@ -1,92 +1,91 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812D13ED126
-	for <netdev@vger.kernel.org>; Wed, 17 Jun 2026 12:44:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D93EEA8
+	for <netdev@vger.kernel.org>; Wed, 17 Jun 2026 12:48:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781700273; cv=none; b=DW/24uQFrZQ2fMKGf/NyoKi757hoaW9+XVNFisbe+DbrLvFzx6Z7DDMMePlkf1wF1HTFfdEXEiq/O38+PM7pMYhpeCICEOf8obbf/qMT+Gw3kEG4DwBsj45ntb2FtxZwnx7LIx78lpQVY/bBUD4bEeqa+JShxQK0EE1LcGKveiY=
+	t=1781700536; cv=none; b=Gw4DGhPDr6O0xTFs2Nca/qT4yPtrnLZwo/SPMfwqcRoaDbZpN1eXVNHICaRQRl8GefQIQHMIMrUx5xkuWERguViUmu/DqWZlwq4cjV59Ue9Mqx2tvNZuuwXliFCEEoJLeVi78BrV9SW6UjEZgIykv9LlNkIPppGd4atoJFZ54Sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781700273; c=relaxed/simple;
-	bh=qtZpg6+SNfqVKkCzu8nevfRevHrYlcFg9kiIrAq1Sj4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=iC4YrFtOj+RUruk6XIdtynilhu50BZxYT32ETxJuBW6FzNSCAmowU0cwvHl43MvTh+d5xk7h77iPECDGRpRXu9D3ofvmvzy2QbwpL1Syptb6rDrYgngsyXMWH1j6Ib1+oc3pTl+kIU0G5xjfNY8XU8qqOVFljJ3UXAQHJVsn8ds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GKJHUjok; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781700536; c=relaxed/simple;
+	bh=IMIppte+gBwuC5XbBRIXlUQ0aozwvo/6xvW4VF9LfrQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p2zBo64Xm27ocazIGH9Xm8vBDQXgi44uMGa3qDJo7dWFPd7RBwzhc5L3kkxnNxGhgHTai/uTqFaz4A/aOifxwxlv1zerye/HmSzbsGvngGF7qzWa5utG+mEA8ouQnn1fLBGHk3AHPT330TqMqOut1xu2pBqp2484EmhcmcMZQkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N+skJEbE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GKJHUjok"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-36dac5d5da0so2762376a91.2
-        for <netdev@vger.kernel.org>; Wed, 17 Jun 2026 05:44:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781700272; x=1782305072; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qtZpg6+SNfqVKkCzu8nevfRevHrYlcFg9kiIrAq1Sj4=;
-        b=GKJHUjokMAEgqtyd7JW5vvdy+sdj1XSLQet9y5JBdczyi23ki1WQ4JdNsFIFt0+8LM
-         FDnyQNCqDT+DHXgD/LdsRvvvZN9AVZGtlfvoE9RSGu7hP/yig0K0cvJe0JKXexP8/kZm
-         iY2a2bAX2x0rVkAayoAsu14rhxsYrxFEZkTxWyeLNuH5fKK+HyTeX7dwtGNHceRWSjsK
-         aQtvGgiP20en1k09umbZOTJ3d7/SMs37ydq/tgjdgF3FDw4m3xBGoN++j3Or5MI9+l2F
-         d0AkZkdQXyVug5KKwNA9lSLgDQWBvrMTdMG+Ka75hOMGjqjDPyhOTuokL399iIKWqqDy
-         xc2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781700272; x=1782305072;
-        h=mime-version:content-transfer-encoding:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=qtZpg6+SNfqVKkCzu8nevfRevHrYlcFg9kiIrAq1Sj4=;
-        b=jywOj8Y73OYo0ZxWqrijyHC2RWKes/J9vtB9puu95sPRNtP+mTT9b3CWoz24xUQKLH
-         YRAWBQCy25x34mKdvAukZixcFiYk99y/xEyemEr6/hiYlbhleXjSusCOsvf7sCxED1Fx
-         sJGIvvoCk3r6gRe3ts15cXlmC0Tc2hIkhR/wg5NowkyR1UvPlhWWpluTkrehvLWCLbFz
-         GIuZ4+18kk1uSnBlPvOg2je7dSaQAegPqafVDTPhskz2e6t11UPfBSdCvR4BUpQ750I5
-         T04XuIY0MQIp9omDZaFH8zBr0YujOrsuA6K3Q5kISVjbd+LAgcyvymGyY+3iN97jdxsk
-         2+5Q==
-X-Gm-Message-State: AOJu0YzoAsPtYt6vUHtwgazR1af+jeDghR8PIcML949oQAazKrDx7es4
-	pIvd95CbASSnEdvPoh8DhD3TWwm+08IzhSzoTuo8T73k6heYnF+zFmYszVk/HpqipvHf2g==
-X-Gm-Gg: AfdE7ckrPZJIirKWjSbAm8Xl/r643S7XECMGDJgun5NkojclmmZa5pAkZ16jXoJhFvr
-	reQTh6UpvJm9t/l550uWVaRTpKj/atiKgUkemSrQk8ojlCAlUUtWtp/zk2Cz1H/hwSqBnwxL06i
-	D7RhF1+PN9Qfxi9iShaLE2vWF8K5iBL0LdyeHZNlopyvjlbzFOI41QIeOfkhCHxbu1vKqlfujR8
-	xyOEl6pGw7W+v6f0tuQztL4jQ/1zf/h0nptBDNhpp/nqF1k7HsjK1gJFE49mgqqOvuMl1Jb0nXf
-	ORHLbiDJA48vXvLqvRaUn38NhQLuKa9LVVPkqAF6NPT+SO/65abm/9x6D0aUD1HnVo+YHFYfQYE
-	y5BT5awbPzcnLZ7pYZE5pj828TCoitEO6sIw5xbYke5Af7ecDo3Jwicbjjd1/dyzIV1THL0iM0z
-	7Ja2FiR5nq
-X-Received: by 2002:a17:90a:7347:b0:36b:b4a1:2939 with SMTP id 98e67ed59e1d1-37c9366b4d2mr2876234a91.15.1781700271792;
-        Wed, 17 Jun 2026 05:44:31 -0700 (PDT)
-Received: from [127.0.1.1] ([58.240.122.156])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37c521ae78csm5987071a91.4.2026.06.17.05.44.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Jun 2026 05:44:31 -0700 (PDT)
-From: Wayen Yan <win847@gmail.com>
-To: netdev@vger.kernel.org
-Cc: lorenzo@kernel.org, horms@kernel.org, pabeni@redhat.com, kuba@kernel.org,
- edumazet@google.com, andrew+netdev@lunn.ch,
- angelogioacchino.delregno@collabora.com, matthias.bgg@gmail.com,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-Subject:
- Re: [PATCH v2] [net] net: airoha: Clean up RX queues in airoha_dev_stop
-Date: Wed, 17 Jun 2026 20:44:26 +0800
-Message-ID: <178170026659.2238511.17652659042899875248@gmail.com>
-In-Reply-To: <178161160256.2165161.14322392784449633554@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N+skJEbE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A9831F000E9;
+	Wed, 17 Jun 2026 12:48:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781700534;
+	bh=IMIppte+gBwuC5XbBRIXlUQ0aozwvo/6xvW4VF9LfrQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=N+skJEbER87qujetlVk/j6Tkuyd1Vhrm3VXBA4mpK2P60nXN0b5oN1qOIIW6l7Wyj
+	 2ms5f0Emq1qAEDkoFKTGqjGgSEtOPjFRk7/XMQBuCoSq6Nvn4CIfyx9BEHS8kIaHzk
+	 aTjbGFxY9/L25JBs+T0SFQPMOKYOTOsaunEOmJQPHli7aEr6PlvgTDOQJ2VKMMSCdB
+	 q7CRFMHrvi2z+xZaTYC/7Dsa3rYsqlHPTf2v/6JhZoacfchH8uET0V1q8BeohY8UJO
+	 vs/F03aR3R1MwdkUoN5GqAtbKaI9jlrVPlelxSmRugQLTvpKc+PNOafKH1LhBkNzKp
+	 NHJ3OkNZj3iXw==
+Date: Wed, 17 Jun 2026 14:48:52 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Wayen Yan <win847@gmail.com>
+Cc: netdev@vger.kernel.org, horms@kernel.org, pabeni@redhat.com,
+	kuba@kernel.org, edumazet@google.com, andrew+netdev@lunn.ch,
+	angelogioacchino.delregno@collabora.com, matthias.bgg@gmail.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH v2] [net] net: airoha: Clean up RX queues in
+ airoha_dev_stop
+Message-ID: <ajKXtDxPipRcA20X@lore-desk>
 References: <178161160256.2165161.14322392784449633554@gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ <178170026659.2238511.17652659042899875248@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="dwA6XgDlcLvaJ+Fq"
+Content-Disposition: inline
+In-Reply-To: <178170026659.2238511.17652659042899875248@gmail.com>
 
-VGhhbmtzIFNpbW9uIGZvciBmb3J3YXJkaW5nIHRoZSBBSSByZXZpZXcuIEkndmUgcmV2aWV3ZWQg
-YWxsIHRocmVlCmNvbmNlcm5zOgoKIzEgKE5BUEkgcmFjZSkgYW5kICMyIChSWCByZWZpbGwpIGFy
-ZSB2YWxpZC4gIzIgaXMgdGhlIGRlY2lzaXZlCmlzc3VlOiBhaXJvaGFfZGV2X29wZW4oKSBoYXMg
-bm8gUlggcmluZyByZWZpbGwsIHNvIGRyYWluaW5nIHRoZQpxdWV1ZXMgaW4gc3RvcCB3b3VsZCBj
-YXVzZSBSWCBzdGFsbCBvbiBuZXh0IG9wZW4uIFRoaXMgYWxpZ25zIHdpdGgKTG9yZW56bydzIGVh
-cmxpZXIgZmVlZGJhY2sg4oCUIFJYIHF1ZXVlcyBkb24ndCBuZWVkIGNsZWFudXAgaW4KZGV2X3N0
-b3AoKS4gSSdsbCBkcm9wIHRoaXMgcGF0Y2guCgojMyAocS0+c2tiIGxlYWspIGlzIGEgcHJlLWV4
-aXN0aW5nIGlzc3VlLCBub3QgaW50cm9kdWNlZCBieSB0aGlzCnBhdGNoLiBJdCBleGlzdHMgZXZl
-biBpbiB0aGUgbW9kdWxlIHVubG9hZCBwYXRoCihhaXJvaGFfcWRtYV9jbGVhbnVwKCkpLiBATG9y
-ZW56byDigJQgZG8geW91IHRoaW5rIHRoaXMgd2FycmFudHMgYQpmaXg/IEEgb25lLWxpbmVyIGlu
-IGFpcm9oYV9xZG1hX2NsZWFudXBfcnhfcXVldWUoKSB3b3VsZCBjb3ZlciBib3RoCnBhdGhzLiBP
-ciBpcyB0aGlzIHRvbyB1bmxpa2VseSB0byBtYXR0ZXIgaW4gcHJhY3RpY2U/Cg==
+
+--dwA6XgDlcLvaJ+Fq
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+> Thanks Simon for forwarding the AI review. I've reviewed all three
+> concerns:
+>=20
+> #1 (NAPI race) and #2 (RX refill) are valid. #2 is the decisive
+> issue: airoha_dev_open() has no RX ring refill, so draining the
+> queues in stop would cause RX stall on next open. This aligns with
+> Lorenzo's earlier feedback =E2=80=94 RX queues don't need cleanup in
+> dev_stop(). I'll drop this patch.
+>=20
+> #3 (q->skb leak) is a pre-existing issue, not introduced by this
+> patch. It exists even in the module unload path
+> (airoha_qdma_cleanup()). @Lorenzo =E2=80=94 do you think this warrants a
+> fix? A one-liner in airoha_qdma_cleanup_rx_queue() would cover both
+> paths. Or is this too unlikely to matter in practice?
+
+Soon I will post a patch to run airoha_qdma_cleanup_tx_queue() just in
+airoha_hw_cleanup() so I think we should just drop this patch.
+
+Regards,
+Lorenzo
+
+--dwA6XgDlcLvaJ+Fq
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCajKXtAAKCRA6cBh0uS2t
+rKmiAQDehtR9VrdOdbmTSHIKJQn9uL7BkvVVXPg39gdOUoJbDgD/cL9I+HyY/qdR
+q4EY1FHiIibYx/ptSfwkEGZI8MtXrgg=
+=owDH
+-----END PGP SIGNATURE-----
+
+--dwA6XgDlcLvaJ+Fq--
