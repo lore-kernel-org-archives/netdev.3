@@ -1,195 +1,130 @@
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AAD9303C9C
-	for <netdev@vger.kernel.org>; Wed, 17 Jun 2026 03:37:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781667433; cv=none; b=fjXsjW98SgDoW0/Cobee9HAM60tjViAYU6q0koljYzYKGDJFvO0cfEH2OqjX2Z3C//3u2NkvDr289z1uIa22ldXQlqEwQ4Te7yyyJk2YAEif8HDL4t6YRZESRn6ML77z62ZuCNpqnd4e+hsoAD7rEJK0QtPhCM8QSATIBwJ7URQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781667433; c=relaxed/simple;
-	bh=3CT2z620rf2EyjaSWmGg2tRgTSPfnmVmEtSzd5fK6cc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lX7c81pHSNjW4ukpfq+pTIBowWvrhH/2yyWpPPMQVeRiSki67YoOKVU3A6IxVla/PpsEkLX2OquVoBXw+RrOcxejYKH/yOYB0n76kulZxB03OqCGNg49+fKdsI0kj2GQxyzXe6dCd+DysDfiwwYGYTIXnWE3NRSTwAJ4WGo4DL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=wdQ6v53i; arc=none smtp.client-ip=91.218.175.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176AE3002A0
+	for <netdev@vger.kernel.org>; Wed, 17 Jun 2026 04:03:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781669028; cv=pass; b=s8IvlC2pHFKlR5xTepJNgG02ZSSmzsMi6/Eo7OTXSU6/8klhHA89xjsf7eQKnhppM932CnuYZZGI2ftXZY5WRFImhdQBveOT1iLwsxjNI59M1SQSTb3Ii+R7Yk+GvczRVDimJw3sjGH1gIIBHCPgcPq9O/F89+GvQl+u7Y881jk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781669028; c=relaxed/simple;
+	bh=nGDDKPMF7cvXoB7/DDIKRcLBkAO/e6gijUwIyJErKRI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BQDMRrw+1+SuDF9Jj58v1clUYBw+Q6h6fKZTwDSGbpfCBR8H2ykA6D6J5lSzC9HbhiAKIiDPmKGuaSdppuAbNmg/nNBQO50BIYn1NUkE76dBivUA53Z/O+Dn+vzBKF2vjVBD210/VQOaYCGxJ7jRU+yYMiMFw8Ig2qbD52E6GDY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=K7hGd8/P; arc=pass smtp.client-ip=209.85.160.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="wdQ6v53i"
-Message-ID: <9da94ca2-a479-42e2-8941-b38c1a08566b@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781667419;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=o2UPW9kkwGh5wpDgrLNe8OYP2oXRcB9R26cFMQbJWnA=;
-	b=wdQ6v53i0T/kFiN5+0oK1L8fu4Q2DOzeMJsubj4iZDEAlsoKyCAH/A87B0MWUHdK2aBJX8
-	6qxZlFkwAKumXbNTCel4Utnz7i0Gyb76E+czkksNiUm0AlSfXrjReIa+hIQiUyXIWwX8Rw
-	9UqBA+NVCMXKxwgoLliAg/o9zHA09WE=
-Date: Wed, 17 Jun 2026 11:36:51 +0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="K7hGd8/P"
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-517654b8e28so38405491cf.3
+        for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 21:03:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781669026; cv=none;
+        d=google.com; s=arc-20240605;
+        b=i3LZHQeP5WRP92Skfh3hlg0bRQ7XSArYoUyixWrPLBDwLcCasZO90cWszPXn/6eLuY
+         ut7vcctjSnxL5U9NPHKJRjO9v8Layytx12VQKBqxPuxrDspCam/66cGajhJrYe3V0vMz
+         IGdYLTvtNfknOX/Te9Gp5tdqxnn3r4kVrHFUjw87e7UAnAayg177OfJ8M4YAfq5Q7iAr
+         dWLVV9heQ+JQdRymg44wIWVY/cvzTfXUxXNpsdUyXgPu9csLS6M1TL8ZHyiZHPwW80lS
+         Ulzhz8lQtf4i9Yo8N0+m0hTCWbiwPk51HsLVTHvPqqkL2s6IcvuzncCxTmsbJYgB1VRw
+         3dHQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=R8KyfV9Pt06ZHHcC1zYd9eBjxY7fk7AzCnkPLQzY7i8=;
+        fh=HO0o4YaoBze70NIioEojEyGKkCbQrzJ5A2b2LeFiBTw=;
+        b=I3IwrMC0fZ5Nibt6SK3LTb7s2HMxUf7z0lkA4xpWUL3MJBWBRoqpSaE1BSxLU+jpdQ
+         ZHVuCDm3nxI4qlF+pHjpZeQOBv4HtJ7dRvCvuwQNCTOg8s4ay++xND07XQ8CXzrdATQB
+         lAc/YTqP1xSbdP9jYGp2rZQO6584ly05PV38MHNQBpdnfaNZ6Pt3oFJtrwHg+c1Udc8L
+         7xe/nYpiHqzP1opguHHP3Go0d9/8bndPolRzVS1UMtG/TbXu6e/7iEX/4JmJhI1wVWBO
+         lo/zS/4p6yUhs18XAe6BoslEYdwhvoyZbBJ2yU1exU7XCNdsxMrI3Sfn3sa+6OQtKagY
+         wpBQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781669026; x=1782273826; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=R8KyfV9Pt06ZHHcC1zYd9eBjxY7fk7AzCnkPLQzY7i8=;
+        b=K7hGd8/PCloNkTaoacnaHuFi3QJf+E/64nTHm70zK8Cw/TePNpSkfC14TqaOyu5Q0H
+         mT0AhyNAhWOSS7wrM6HThj8bmrEr6HVGhL5Ne+MV5ANQrctcKVIyVuDw1G7XVVxjdBzS
+         dGoKE7Bn5ug8s+Y7cUMcwPdir7VmmYY7pg67rkKWbi1+Fdh3ic6RKulFinIKqJGz3UAK
+         SzDo1aHnbhu6vpiUWxFnl9THNuyVSosQNgxU+21+IQN0QDXxy2VNZTvAmNQC92CO6tH7
+         PqtxhqOshiE+4C6Z0897fwC3+nqRUWnzeUs8cefRPWgR6O1ntdjex8xN9pYNaMZJiV7k
+         1Aiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781669026; x=1782273826;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=R8KyfV9Pt06ZHHcC1zYd9eBjxY7fk7AzCnkPLQzY7i8=;
+        b=q3x+EcEjZhaoIbnGsqDH28Jo+sHQ1hCHLtMH/gZJFGToIcux+wxXT15uHBzvGVZY5z
+         QKuwKu05NdnnwrkJupiSC9UXQnw/T0bFzFJ48vq7RiO4ScnOafgxKNzU/fMPcAvvFVrk
+         9yT/18ijNlTDoRo7SLfTdfsrLipGfvNFrsteleLWWbBPFrFRMVHDZNsxYLjQXwETPD/U
+         avDT3rWXzXwDdoxhOyrabcqa7WP6v7CDSkKiqa8E4KLfmWmIyWaRJ0ssR9XgCSgQkp4k
+         +aUQLtv5G+lS8JmZJZ+C9YiNR8t6eTCvuHyWsbhAemPzAQF+ZT7GZT166pV30a5Ce3Rx
+         L3PA==
+X-Gm-Message-State: AOJu0YyRga3l30qTg98l1Z6xGyL08eyfrn5Kfdpb/5cIJozn7qmWmQlt
+	lSh2xstklveq2qKWI9h/QRdQkq1LlE9HHTg2Rf2R8ViILuskD69K3jhriO10SQsdBhA9nfqYIpu
+	d7tyV6axlpxvjQWZHgvaw4fOwqlFhLmjcdN0gIThO
+X-Gm-Gg: Acq92OE1iA+GO1oOYmeGeWXWCIzbRRwkHARundWthpnCtv0ulsOSimhg68ngUEMkcov
+	Bni8PZJ0Fy4ELFK11M8Ujr9Ipkr751n2rcn/Rp0uDDnAUObUKVIpOVOU9QId6MVBue4hPiUECkI
+	qJPOzYmwZAdillz3kI7Gi16hCgVr2tVnTrq9bwMQzSytus8haCxNtnYEFcRgYGLVwuXpzAf7ru2
+	Zf0USl41Yc45wpZbknmza/zrs7pbvqSuihVoRtXdkowm9fE6YN2xZ3bTuEJtnvcF+UdiEadjZtG
+	/dRUPk/nf72NZEf9VzFU7nF++4DRH++fCy/SNBlF0VRElWu0VVGGJHf3iysC7G8Q7XsvWIQQKWN
+	i12GyCVSD
+X-Received: by 2002:a05:622a:a6ca:b0:517:6c6f:8ee6 with SMTP id
+ d75a77b69052e-519a8c6908fmr36262241cf.6.1781669025646; Tue, 16 Jun 2026
+ 21:03:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v1 bpf-next 0/2] bpf: bpf_redirect_peer egress redirection
-To: Paul Chaignon <paul.chaignon@gmail.com>, Jordan Rife <jordan@jrife.io>
-Cc: bpf@vger.kernel.org, netdev@vger.kernel.org,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau
- <martin.lau@linux.dev>, Stanislav Fomichev <sdf@fomichev.me>
-References: <20260613183424.1198073-1-jordan@jrife.io>
- <ajAXF8Nvg91xU4f2@mail.gmail.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <ajAXF8Nvg91xU4f2@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+References: <20260617013208.3781453-1-joshwash@google.com>
+In-Reply-To: <20260617013208.3781453-1-joshwash@google.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 16 Jun 2026 21:03:33 -0700
+X-Gm-Features: AVVi8CesugWGvhT1ob5SAVvgc8BH84Ip7FIlMibVTmgvAH_bFYwrk6DEdOErY80
+Message-ID: <CANn89iLoYFW+TLt02c_sUtXcPL3-ONiQjFxqaA4BSsRCoAd_zA@mail.gmail.com>
+Subject: Re: [PATCH net] gve: fix header buffer corruption with header-split
+ and HW-GRO
+To: Joshua Washington <joshwash@google.com>
+Cc: netdev@vger.kernel.org, Harshitha Ramamurthy <hramamurthy@google.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Willem de Bruijn <willemb@google.com>, Tim Hostetler <thostet@google.com>, 
+	Ziwei Xiao <ziweixiao@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>, 
+	Jeroen de Borst <jeroendb@google.com>, linux-kernel@vger.kernel.org, 
+	Ankit Garg <nktgrg@google.com>, stable@vger.kernel.org, 
+	Jordan Rhee <jordanrhee@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-On 6/15/26 11:15 PM, Paul Chaignon wrote:
-> On Sat, Jun 13, 2026 at 11:34:04AM -0700, Jordan Rife wrote:
->> We have several use cases where a pod injects traffic into the datapath
->> of another so that the traffic appears to have originated from that
->> pod. One such use case is a synthetic flow generator which injects
->> synthetic traffic into a pod's datapath to enable dynamic probing and
->> debugging. Another is a transparent proxy where connections originating
->> from one pod are redirected towards another which proxies that
->> connection. The new connection is bound to the IP of the original pod
->> using IP_TRANSPARENT and its traffic is injected into that pod's
->> datapath and handled as if it had originated there. This can be used for
->> mTLS, etc.
->>
->> We use bpf_redirect(BPF_F_INGRESS) to direct traffic leaving the proxy,
->> flow generator, etc. towards the target pod, ensuring that eBPF programs
->> that are meant to intercept traffic leaving that pod are executed.
->> However, this doesn't work with netkit.
->>
->> With netkit, an ingress redirection from proxy to workload skips eBPF
->> programs that are meant to intercept traffic leaving the pod, since they
->> reside on the netkit peer device. One workaround is to attach the
->> same program to both the netkit peer device and the TCX ingress hook for
->> the netkit pair's primary interface, but
->>
->> a) This seems hacky and we need to be careful not to run the same
->>     program twice for the same skb in cases where we want to pass that
->>     traffic to the host stack.
->> b) We're trying to keep the proxy redirection / traffic injection
->>     systems as modular and separated from Cilium as possible, the system
->>     that manages netkit setup and core eBPF programming.
->>
->> It would be handy if instead we could redirect traffic directly from
->> one netkit peer device to another. This patch proposes an extension
->> to bpf_redirect_peer to allow us to do just that.
->>
->> With this patch, the BPF_F_INGRESS flag tells bpf_redirect_peer to emit
->> the skb in the egress direction of the target interface's peer device
->> While the main use case is netkit, I suppose you could also use this
->> mode with veth as well if, e.g., there were some eBPF programs attached
->> to that side of the veth pair that needed to intercept traffic.
->>
->>   +---------------------------------------------------------------------+
->>   | +-------------------------+         6. bpf_redirect_neigh(eth0)     |
->>   | | pod (10.244.0.10)       |           ------------------------      |
->>   | |                         |          |                        |     |
->>   | |              +--------+ |          |      +---------+       |     |
->>   | | 1. packet -->|        | |          |      |         |       |     |
->>   | |    leaves ^  | netkit |<===========|======| netkit  |       |     |
->>   | |           |  | peer   |=======(eBPF)=====>| primary |       |     |
->>   | |           |  |        | |          |      |         |       |     |
->>   | |           |  +--------+ |          |      +---------+       |     |
->>   | |           |             |          | 2. bpf_redirect        v     |
->>   | +-----------|-------------+          |___________________   +-------|
->>   |             |                                            |  | eth0  |
->>   |             | 5. bpf_redirect_peer(BPF_F_INGRESS)        |  +-------|
->>   |             |________________________                    |          |
->>   | +-------------------------+          |                   |          |
->>   | | proxy (10.244.0.11)     |          |                   |          |
->>   | | IP_TRANSPARENT          |          |                   |          |
->>   | |              +--------+ |          |      +---------+  |          |
->>   | | 3. packet <--|        | |          |      |         |<--          |
->>   | |    enters    | netkit |<===========|======| netkit  |             |
->>   | |    [proxy]   | peer   |=======(eBPF)=====>| primary |             |
->>   | | 4. packet -->|        | |                 |         |             |
->>   | |    leaves    +--------+ |                 +---------+             |
->>   | |    sip=10.244.0.10      |                                         |
->>   | +-------------------------+                                         |
->>   +---------------------------------------------------------------------+
->>
->> Using the proxy use case as an example, in step 5 we would redirect
->> traffic leaving the proxy towards the pod's peer device using
->> bpf_redirect_peer(BPF_F_INGRESS).
->>
->> As a bonus, since the skb doesn't have to go through the backlog queue
->> it can take full advantage of netkit's performance benefits. I set up a
-> The motivation makes sense. Cilium could probably use this as well to
-> avoid some of the hacks we have around proxy reinjection.
+On Tue, Jun 16, 2026 at 6:32=E2=80=AFPM Joshua Washington <joshwash@google.=
+com> wrote:
 >
->> test where outgoing iperf3 traffic is injected into the datapath of
->> another pod using either bpf_redirect_peer(BPF_F_INGRESS) or
->> bpf_redirect(BPF_F_INGRESS). I used Cilium's eBPF host routing mode
->> which skips the host stack and uses BPF redirect helpers to do all the
->> routing.
->>
->>    (net.ipv4.tcp_congestion_control=cubic,mtu=1500,100GiB link,Cilium
->>     eBPF host routing mode)
->>
->> BASELINE [bpf_redirect(BPF_F_INGRESS)]
->>    1. [iperf pod] ==bpf_redirect([pod b], BPF_F_INGRESS)==> [pod b]
->>    2. [pod b]     ==bpf_redirect_neigh([eth0])==>           eth0
->>    3. eth0        ==over network==>                         [host b]
->>
->>    [ ID] Interval           Transfer     Bitrate         Retr
->>    [  5]   0.00-60.00  sec   231 GBytes  33.0 Gbits/sec  12060     sender
->>    [  5]   0.00-60.00  sec   230 GBytes  33.0 Gbits/sec            receiver
->>
->> TEST [bpf_redirect_peer(BPF_F_INGRESS)]
->>    1. [iperf pod] ==bpf_redirect_peer([pod b], BPF_F_INGRESS)==> [pod b]
->>    2. [pod b]     ==bpf_redirect_neigh([eth0])==>                eth0
->>    3. eth0        ==over network==>                              [host b]
->>
->>    [ ID] Interval           Transfer     Bitrate         Retr
->>    [  5]   0.00-60.00  sec   272 GBytes  38.9 Gbits/sec    0       sender
->>    [  5]   0.00-60.00  sec   272 GBytes  38.9 Gbits/sec            receiver
->>
->> In this test, using bpf_redirect_peer(BPF_F_INGRESS) for the hop from
->> [iperf pod] to [pod b] led to ~18% more throughput compared to
->> bpf_redirect(BPF_F_INGRESS).
->>
->> Note: I wasn't sure about the flag name. I can see where BPF_F_INGRESS
->>        might be confusing, since technically it's an egress redirection
->>        from the perspective of the peer device's namespace. But, I didn't
->>        want to add a BPF_F_EGRESS flag just for this and convinced myself
->>        it makes sense, because from the perspective of the caller the skb
->>        will be flowing towards the current namespace.
-> IMO, calling it BPF_F_EGRESS would be less confusing. It's a shame we
-> can't have the same flag API between bpf_redirect() and
-> bpf_redirect_peer(), but this is creating inconsistent semantics for
-> the terms egress/ingress across the two helpers.
+> From: Ankit Garg <nktgrg@google.com>
+>
+> The DQO RX datapath programs a per-buffer-queue-descriptor
+> header_buf_addr at post time and reads the split header back at
+> completion time. Both the post and the read currently index the
+> header buffer by queue position rather than by the buffer's identity:
+>
+>   - post (gve_rx_post_buffers_dqo): header_buf_addr is computed from
+>     bufq->tail
+>   - read (gve_rx_dqo): the header is read from desc_idx (the completion
+>     queue head index)
+>
+...
 
+> Cc: stable@vger.kernel.org
+> Fixes: 5e37d8254e7f ("gve: Add header split data path")
+> Signed-off-by: Ankit Garg <nktgrg@google.com>
+> Reviewed-by: Praveen Kaligineedi <pkaligineedi@google.com>
+> Reviewed-by: Jordan Rhee <jordanrhee@google.com>
+> Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
+> Signed-off-by: Joshua Washington <joshwash@google.com>
+> ---
 
-Agree.
-
-
-For the existing bpf_redirect_peer(ifindex, 0), there are two ways to 
-read what 0 means:
-
-1. If we consider the operated object to be the peer of ifindex, then 0 
-means the peer does ingress.
-2. If we consider the operated object to be ifindex itself, then 0 means 
-ifindex does egress
-    (which results in its peer doing ingress).
-
-This patch's new mode operates on the peer — on the host side, we want 
-to "write" to the dev inside the pod to
-make the packet look like it leaves the pod. That fits reading (1), where
-the flag describes the peer's direction: 0 is peer ingress, and this new 
-mode is peer egress.
-So BPF_F_EGRESS would be the clearer name; reusing BPF_F_INGRESS for 
-what is really a
-peer-egress action is what creates the ambiguity.
-
-
+Reviewed-by: Eric Dumazet <edumazet@google.com>
