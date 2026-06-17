@@ -1,111 +1,125 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5781139D6F6
-	for <netdev@vger.kernel.org>; Wed, 17 Jun 2026 09:03:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7314739E6F0
+	for <netdev@vger.kernel.org>; Wed, 17 Jun 2026 09:06:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781687036; cv=none; b=FZwd61zV5XzwhxoNKze+phfOc0mPWl+4vhm5K/PfbipdjUWBNjnva0BKv/X98zQGEbZR4yMSq2HPWDWMjc3ZFzhpGX6AuG3e4atp2U6G5JlrkFNhRdIYV1fT7qT8JHOpfq45Nw2OAT6mx3j9RDFAtUx11g4ret3YXiPQOYQntjs=
+	t=1781687181; cv=none; b=dOyYVUfzCE0cGKleXb7tAmqF2B0gyHU3buEbdS1zHcqhpNSQhU4LkNDamrVDwKLPRoZ9mDdGTbFLotaDLFfaNVWmUHwweGUs1zBpCMxB8PLzyJM9THaMIrR5gBvM6po3I8BVV8unztVPtn7MS7L+LhZoVsIOrRDNTdzcuY4oof4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781687036; c=relaxed/simple;
-	bh=NT2cYJEa7EmIjdPDmHM6lWBBVPlWeflgweo3534/Szc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=C9Soykf04ZWQfzOTGJwc2EwKaAmtmVcfEauaHruAUvUzRdoR5ZIVaaqDPWKyuuYMxYTqSSGI0hz5khMOuYQVe+Q/6Jd27BN8k4Bz03lXqpphL6AIA3bJL/bK4V6+Y41+plSWJT7TVbPMTx6plffUOcuWc7kpvamowkGi3U+5MbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=m4izoOpZ; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1781687181; c=relaxed/simple;
+	bh=69WZuOaA5uDn33icQVKr/RJg3X4tdnNGNXmU1ISAwwQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=F08ViCez8lw4hhX9D91qYyTNpG8SC748VT0VK1DqQzB/fuQw+s/W/g8yqxy1eg0+fjCCOJXp9wLip8/zlGVoj6IbrzwcHb8C8E7ihfmY49zSSm+HF3/K/i1e9R0ltbb6XyyBbou3CL+hyD0bagcEr1nP/J4SomsTp0CREXGMXNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TCeul5BK; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=omYqJm3Y; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="m4izoOpZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=NQ
-	KrrESnkyY6M0q6v/DR9YD8Jlj3CMz1yFCJPwvYJoc=; b=m4izoOpZbVIJ/P85J/
-	vcdFGJOp3nORts0chrJBsQzNC7QnFzRkMsaibSt0EpZgfny8qPMEfICVpYmH2IHJ
-	i2/Rx8cDcZ9oMfbeBCTWntSJXAa90LffT4uBOmuug7uwyzUELFb1SgSM6dk/RuOn
-	nGRyt48t+nR34IYMzC3Mj9Gjo=
-Received: from localhost.localdomain (unknown [])
-	by gzsmtp5 (Coremail) with SMTP id QCgvCgDHVzLGYjJqfzitCg--.64228S2;
-	Wed, 17 Jun 2026 17:03:03 +0800 (CST)
-From: Lei Zhu <zhulei_szu@163.com>
-To: lorenzo@kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	zhulei_szu@163.com
-Subject: [PATCH net-next] net: airoha: Make use of the helper function dev_err_probe()
-Date: Wed, 17 Jun 2026 17:03:02 +0800
-Message-Id: <20260617090302.210933-1-zhulei_szu@163.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TCeul5BK";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="omYqJm3Y"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781687179;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=69WZuOaA5uDn33icQVKr/RJg3X4tdnNGNXmU1ISAwwQ=;
+	b=TCeul5BKjlp8XAOdMPwAz9lrX/X+cmsSFxdLtV7k+0oqG4CHoxmD1/fpGSzC+NEfleECO1
+	0p2MILKXQx/DWef+N4hmwbZrMB1ebsk0JY+1gj5raQ33fxpx+vcfL95z6ZDwfh0XG4yJcj
+	mL3P35MrZmZDj4SfqbPSrMLMFgEa8TM=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-613-TffVwXTFMD-Eq_4_b_1GZg-1; Wed, 17 Jun 2026 05:06:18 -0400
+X-MC-Unique: TffVwXTFMD-Eq_4_b_1GZg-1
+X-Mimecast-MFC-AGG-ID: TffVwXTFMD-Eq_4_b_1GZg_1781687177
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-4625e71d3ccso404540f8f.0
+        for <netdev@vger.kernel.org>; Wed, 17 Jun 2026 02:06:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1781687177; x=1782291977; darn=vger.kernel.org;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=69WZuOaA5uDn33icQVKr/RJg3X4tdnNGNXmU1ISAwwQ=;
+        b=omYqJm3Y3d6sWHBMiio2UhE6hR1M2vcnpPoyqpdzBMMUK/HhpAOXO2mkZuuvm1CRwl
+         SQfepF6GNbq5DYWL/KhAkwFxPZjq5R1XihXhaj5b9VWGKkp4TSbn/P/BXZTrUY+/kmKH
+         SHzNBJxhaZAx8IIM6fEf6YO5avjOdciZZg2Jbufsh6Sx96+fgb/GcOWwr+jIw72g2Zui
+         aW4QPonVLtl6OwSNLkBbnyHcbeedAb9mR/TpFZVYGgpSZatpqHMCKG3vGeO5YjBTDFLw
+         cpE4R0zjjVXwgrNtVeABo2fFgv15Bd7uvYM5S6lRpbD0iPFQUMCEOJRYD3ltS+uQ30G/
+         +sdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781687177; x=1782291977;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=69WZuOaA5uDn33icQVKr/RJg3X4tdnNGNXmU1ISAwwQ=;
+        b=cWBi0d2idw5DiUxxhX5PyROdeWaiMGHdF14LDV539LmL6RJnszjb8HmRGjh4cnNR5l
+         /fcPK/2Z13B0XSD2J/p+DWFbZdN1pO1EFFhwhrtTHiSdaRH7q5z/LDM1lIRuFXk2LF5n
+         7QpkzB2zl5+UvNKTV22AwxnFwEfRINJOqbksVUK+jVkvR8FNbgLNaVw7KulYxHMx5sKh
+         s/gVz/eKA7ARAYXqyMNYmLsZEfuHOd9BqogzsZepOmadHGx6WRPib95k+3/WPWq4sGXG
+         OQKruW7Iq30Z2kn7MsvXF4dkdEfO8pXIBE9u10YWlhvfp9h1aLlg9xdG5wNUAigl2mrP
+         YHOg==
+X-Forwarded-Encrypted: i=1; AFNElJ/ZghsNmBL9T2prw/IKjqnA3I7hu+YYHFQ3rheRVnoFb9VrLuNyPgweahBaC+pFpmY0PDd/bCE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2wvwxt7YVxTw8BQFdWHJFN34Znk9OTiMwzwPzJtjag7k3UvS6
+	pPNI89d5Eg1SJ8nsL3XywzqBcb7x7ZrhBWSRQ+rWq5N1i4lCr8BZAMBFKx2XI0ShP0yyNOoqHeX
+	vz2DgEMTjsUggLmxclKS6bjjT+5YEmFH9zYmC7MCEOb+TpyCAovRLOYd12A==
+X-Gm-Gg: AfdE7cmKMmsA5FiVnEG7wZ/dIJlGT+Oiw+PMZYzwIHBI6jYkRU0neTDWKmgwCn2e18B
+	JIp+KxdSNRD8SoXMRe9JIc73cWpyqQp9ziyx2Xa0Qye+DG9xXdwLBWyE9LOR7jAsMwtq+TVc1np
+	Oqh5UHYPxmFzjQNRgN93AIj0pD1bQDlQMHN9OwPABtzvPs6olOA7K0oKYhex1DK53vnf3/8kuLK
+	yf9qyBjBoAILDnWk51y4YDL2S3NA5GYjx9qcl1XPgLCTFIqPMCV9+9nkLoKfjfEVj0ISNj3Uvh/
+	sVSGoe/8/FC8zE0uSNXq4XCvV/nSZ/evI7sixpI7yTG3vprew5Ml4CV9eSE1tKEUBUyjFWLe16e
+	eEc3JSixcT/IcWIM6GBWhUoSXdAqo9awrg7Y=
+X-Received: by 2002:a05:6000:603:b0:463:1d06:ab33 with SMTP id ffacd0b85a97d-4631d06ab96mr684818f8f.27.1781687176619;
+        Wed, 17 Jun 2026 02:06:16 -0700 (PDT)
+X-Received: by 2002:a05:6000:603:b0:463:1d06:ab33 with SMTP id ffacd0b85a97d-4631d06ab96mr684756f8f.27.1781687176152;
+        Wed, 17 Jun 2026 02:06:16 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-462a9784497sm3816334f8f.34.2026.06.17.02.06.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Jun 2026 02:06:15 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+	id 9B8D88074B0; Wed, 17 Jun 2026 11:06:14 +0200 (CEST)
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To: Avinash Duduskar <avinash.duduskar@gmail.com>, Alexei Starovoitov
+ <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko
+ <andrii@kernel.org>
+Cc: Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi
+ <memxor@gmail.com>, Martin KaFai Lau <martin.lau@linux.dev>, Song Liu
+ <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa
+ <jolsa@kernel.org>, Emil Tsalapatis <emil@etsalapatis.com>, John Fastabend
+ <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon
+ Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, Shuah Khan
+ <shuah@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>, Mykyta
+ Yatsenko <yatsenko@meta.com>, Leon Hwang <leon.hwang@linux.dev>, KP Singh
+ <kpsingh@kernel.org>, Anton Protopopov <a.s.protopopov@gmail.com>, Amery
+ Hung <ameryhung@gmail.com>, Eyal Birger <eyal.birger@gmail.com>, Rong Tao
+ <rongtao@cestc.cn>, bpf@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH bpf-next v2 1/4] bpf: Initialize the l3mdev field for
+ the fib lookup flow
+In-Reply-To: <20260616223426.3568080-2-avinash.duduskar@gmail.com>
+References: <20260616223426.3568080-1-avinash.duduskar@gmail.com>
+ <20260616223426.3568080-2-avinash.duduskar@gmail.com>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date: Wed, 17 Jun 2026 11:06:14 +0200
+Message-ID: <87bjd9h6yh.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:QCgvCgDHVzLGYjJqfzitCg--.64228S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7ur1kCrykKw1UuF4UurWfKrg_yoW8CFy7pa
-	nxJFWYgFykGFn8J3s3Grs5ZF95Zw45t348GF4I9r4Fy34FyrsFqrs3J3yFgr40yFWkK3y5
-	JFyjvr9Y93WDWFUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pi1xR3UUUUU=
-X-CM-SenderInfo: x2kxzvxlbv63i6rwjhhfrp/xtbC7wfwPmoyYseGqwAA32
+Content-Type: text/plain
 
-From: Lei Zhu <zhulei@kylinos.cn>
+> The helper already initializes the other flow fields the rules path
+> consumes (flowi4_mark, flowi4_tun_key.tun_id, flowi4_uid and the v6
+> counterparts); flowi*_l3mdev was added to that set afterwards and this
+> helper was never updated to match. ip_route_input_slow() likewise zeroes
+> the field before its input lookup. Do the same here.
 
-Use dev_err_probe() to reduce code size and simplify the code.
+So how about we explicitly zero-init the whole struct instead of adding
+more fields ad-hoc like this? Otherwise this seems like something that
+is likely to happen again if we ever add another field to the struct?
 
-Signed-off-by: Lei Zhu <zhulei@kylinos.cn>
----
- drivers/net/ethernet/airoha/airoha_eth.c | 21 +++++++++------------
- 1 file changed, 9 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index 31cdb11cd78d..189f64e83a46 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -3071,10 +3071,9 @@ static int airoha_probe(struct platform_device *pdev)
- 	eth->dev = &pdev->dev;
- 
- 	err = dma_set_mask_and_coherent(eth->dev, DMA_BIT_MASK(32));
--	if (err) {
--		dev_err(eth->dev, "failed configuring DMA mask\n");
--		return err;
--	}
-+	if (err)
-+		return dev_err_probe(eth->dev, err,
-+				     "failed configuring DMA mask\n");
- 
- 	eth->fe_regs = devm_platform_ioremap_resource_byname(pdev, "fe");
- 	if (IS_ERR(eth->fe_regs))
-@@ -3087,10 +3086,9 @@ static int airoha_probe(struct platform_device *pdev)
- 	err = devm_reset_control_bulk_get_exclusive(eth->dev,
- 						    ARRAY_SIZE(eth->rsts),
- 						    eth->rsts);
--	if (err) {
--		dev_err(eth->dev, "failed to get bulk reset lines\n");
--		return err;
--	}
-+	if (err)
-+		return dev_err_probe(eth->dev, err,
-+				     "failed to get bulk reset lines\n");
- 
- 	xsi_rsts = devm_kcalloc(eth->dev,
- 				eth->soc->num_xsi_rsts, sizeof(*xsi_rsts),
-@@ -3105,10 +3103,9 @@ static int airoha_probe(struct platform_device *pdev)
- 	err = devm_reset_control_bulk_get_exclusive(eth->dev,
- 						    eth->soc->num_xsi_rsts,
- 						    eth->xsi_rsts);
--	if (err) {
--		dev_err(eth->dev, "failed to get bulk xsi reset lines\n");
--		return err;
--	}
-+	if (err)
-+		return dev_err_probe(eth->dev, err,
-+				     "failed to get bulk xsi reset lines\n");
- 
- 	eth->napi_dev = alloc_netdev_dummy(0);
- 	if (!eth->napi_dev)
--- 
-2.25.1
+-Toke
 
