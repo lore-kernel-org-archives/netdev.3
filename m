@@ -1,45 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF3A4368D42
-	for <netdev@vger.kernel.org>; Wed, 17 Jun 2026 11:58:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0595A39E19A
+	for <netdev@vger.kernel.org>; Wed, 17 Jun 2026 11:59:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781697520; cv=none; b=WPD3U4WXEY5jNdDZdUpCe7cs4tWR5JyoIyRfe2JjB1l8O+RjiuKdZU+aL0OC69ja0+dU/ec4aa2y/ruf+PhgNasSahwMplbkjA4V+q4wAlZpSNRgRkiCzTsaad6TgreOU8iBFL+wCoyqLYCQcjAmwoxVc5Xw8Bf8ep/LEMp9ciw=
+	t=1781697573; cv=none; b=lVRQWjWBfI4rCSo6otYWz6ECPJh10M+KdzOoefvnS5Hn5qxG044VcCMLuvntvLsc0abpaXbKK/NJl5PjHJbJGw0mfg2SlZlka0I9HEgEgr4oF3SLZ4SnBA99rtjZkUWzzyeVwH6B18DW2GhFTHUlUD//bEQdkneepoWZDr/zh18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781697520; c=relaxed/simple;
-	bh=KIgOs6UkCN406q5DVhqVal/lzCFztBm66NCLYkc8O3U=;
+	s=arc-20240116; t=1781697573; c=relaxed/simple;
+	bh=cvsxccTzFVOpMQezm4HlOWz2aB8KWwD6zxOBa9D3eA8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VtB7O8MKpdNAEXZyJ1t3xzTxiagZlOOeSBqjGe0gb201NcE8XvWM73hbbDp2zpLCu7T3Ny/+z/Slw8s1M8EvbeH0O3CYU8xW/tW5ty/ik6dqinS5tGzgw1Y2Cdn7AgdSdZLUlg8ua7QlQlFNELBk81oE3vu8PTfujtNbhKfRtMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MMQQMtNr; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=Hj4cFemLqcy2NUNESfazY5BbcMMbThF/5+S4ZbwfUN5DTcQ/CpGxmjticveGn9dEWBBUtIQVBzcvbElAeoOpNpssxQOaVGB/giR+Zenf0cgrMjEB2oHC4TYydr/EEnkR7nYKeRQ8k+g1aAnLPpDbFgEjxJBYwbu6ewjSCsBqi1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=M6qD7bvt; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MMQQMtNr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 988E01F00A3A;
-	Wed, 17 Jun 2026 11:58:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781697519;
-	bh=Ue1W0Tug6wA7pToRtgxP1pmUK47ZJOig2n9QSFPHO2Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MMQQMtNrtCsVmvZLdUNb60STpwfD6xl254UWzJS5WS+xVTb/YigQYySUGLxgseWx8
-	 4UIhreRrJBJb+hqaNYds92o6D7edwWugeM7T5rRCraoJ9LU5VwvvNroDpQvdLetoS8
-	 BF7skDtroIUymKM5W7ifEQxX2+Sdt7TDkOTyn8TTq7nB1Agos28k5NIdliF4kGbw6H
-	 6SiJdvFyRnWobyx3enAU3eUBNTDJlRHAxCenXYb4gfML+Bmq0WrYMzEC20O6hzf2RY
-	 5/fTLPsHeuxEoF0TV/0nb+ASNWnVnTso7RSdGFHrNvkHrfdnxz9qvN6cyR97BMwXpA
-	 +qwwV82IRjbIA==
-Date: Wed, 17 Jun 2026 14:58:34 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Wayen Yan <win847@gmail.com>, netdev@vger.kernel.org,
-	lorenzo@kernel.org, horms@kernel.org, pabeni@redhat.com,
-	kuba@kernel.org, edumazet@google.com, andrew+netdev@lunn.ch,
-	angelogioacchino.delregno@collabora.com, matthias.bgg@gmail.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH] net: airoha: Fix MODULE_LICENSE to match SPDX
- GPL-2.0-only identifier
-Message-ID: <20260617115834.GX327369@unreal>
-References: <6a2ded59.63d39acb.391892.7632@mx.google.com>
- <178156440888.329386.11011872053824456703.git-patchwork-notify@kernel.org>
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="M6qD7bvt"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-490b8ac62baso8542395e9.0
+        for <netdev@vger.kernel.org>; Wed, 17 Jun 2026 04:59:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1781697570; x=1782302370; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=wFy1siI5GPA02P4SigwJOvEY2/GCKPj1mDQV6Az/rvE=;
+        b=M6qD7bvtZL4WoGDeCzK3htwiEAuyM4CktDeM5fxxmuqw8gryeGiBqYiMqXeDX0TObt
+         ZhwgjWODAUq1Wf3Ii+fDS6wIbRIKznp+VbtnNcMlXDPeRTSb35z7nADRBqaaQQJpu7c5
+         E+wQDUsA8ekgkOZFpVB+TO4QInOdJdP0boeMLaa7Jm+N+CRknJN8WskaFdqdSBs19MsJ
+         eGKWMVRPZzLWCQU6WqgGC1mSSdRD/AcSd5UzNGZKVBVNC6xyNW6sQLx4BqpiZ+xh4bnR
+         kH561LSvnpzCGzIWt+h44lsPyKA5JUitnlXOYfdn+0QaRB9CPyOj+PXMEt90lJWu8pBR
+         H3GA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781697570; x=1782302370;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wFy1siI5GPA02P4SigwJOvEY2/GCKPj1mDQV6Az/rvE=;
+        b=SDu06JaDcrpPS9kVyQ4Q5SvrdyTUbogETxjCiflrYKJ7TCO38pt0PFrTqm4tElfHRX
+         AkncAAGimr+HfM3KLYnhS+/Fq0otKoxg/75uYhmlXxVqvrqnPwRvWvZLKJHOECBFvmeg
+         gNzuyME2tP7AvXlBx3LCj3G1qmstzhwm5airuoQhwr9xBUnKxe0yW6pAt1yaNdmCWl9G
+         IaBSveuR/5xCqGaFRmi5peJs80UZ/Zezm40Wzvln1zfqn+AzKu5PvLqnwMKtXEiY2wsb
+         GXCg5ULgFDDkT2n0EZBOyN99r3NZAa8tO5mnS9FrfNPruEYEy0AXfC8iLKt9P3FbfZZL
+         wufA==
+X-Forwarded-Encrypted: i=1; AFNElJ9EPH67j/bDaFO1Nnx0jxpKoMpAb+PEc1/wPK4DyUxsymrdOB1jLuVf2UV4RBVVub2UP4sMbGo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmAreu58TTTAUSGMNPxPTt7unHHWbdKtCE6xuAY7WuZSIRu+gI
+	lJLbC66VBPJ4/fNTuSJqaeItJJy9sBoIKs3o5aIq7aO7DB7HUIG3aO0knAOpNcDt4veh0J84OYv
+	fXSBe
+X-Gm-Gg: Acq92OFj7IwUIL8P+u3NCVBLl7xUO5M83m1Vw6rh0Gpoo9l1rVIageI7q3GkIqnn1z2
+	xB0YTZBpum89Q8ko4PAF0XvNp2PR0JuUdxcYAfhWm1mTY3tHV3g1G7wzDnFKuuY3NhMTi3Ss5OM
+	cFSoozbc4jfwShE5dh/FhkWpFN+VNQEzMzXUUpaTiKOxOyS5u7xswnhFgZu/sJKjL0uiQs5bsEX
+	3pYTTDkYYNAIy6LCa6U7qlyDcdIW3Y6+hqK0OIRDtA9RX52S2+tNtK5Rmas0yz9FiXiXa3SqC20
+	wcvUgEH49uZnkuH1TYLmz4P8r8bXTMfKb0k/Kf9ITVHrpvQVnu850Yemf0HpaSl/xU1to/gyabc
+	oNluV5oLqXE9YDJT1MouwkGvwBNF/EiZhQasEL7E1e5Ee6+mn0xOItd7Xh2Yq3at3VhlNDkpTpn
+	xkvX7PqDyYnEu2jCc=
+X-Received: by 2002:a05:600d:8450:10b0:490:4035:323 with SMTP id 5b1f17b1804b1-492340e75cdmr33496715e9.9.1781697570289;
+        Wed, 17 Jun 2026 04:59:30 -0700 (PDT)
+Received: from pathway.suse.cz ([176.114.240.130])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f26f309sm48879291f8f.14.2026.06.17.04.59.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Jun 2026 04:59:29 -0700 (PDT)
+Date: Wed, 17 Jun 2026 13:59:27 +0200
+From: Petr Mladek <pmladek@suse.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	John Ogness <john.ogness@linutronix.de>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Vlad Poenaru <vlad.wing@gmail.com>,
+	Thomas Gleixner <tglx@kernel.org>, netdev@vger.kernel.org,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Breno Leitao <leitao@debian.org>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Frederic Weisbecker <frederic@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>
+Subject: Re: [PATCH net] netpoll: run NAPI poll in softirq context to avoid
+ rq->lock self-deadlock
+Message-ID: <ajKMH_LmiZhjNlOW@pathway.suse.cz>
+References: <20260610183621.3915271-1-vlad.wing@gmail.com>
+ <20260611191114.5bc43a59@kernel.org>
+ <20260616103529.Yh9Dxsjp@linutronix.de>
+ <20260616081128.04e2c8dd@kernel.org>
+ <20260616153122.keHMKvVT@linutronix.de>
+ <ajJy92ES-Q8ro97A@pathway.suse.cz>
+ <20260617111504.GK49951@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,52 +96,43 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <178156440888.329386.11011872053824456703.git-patchwork-notify@kernel.org>
+In-Reply-To: <20260617111504.GK49951@noisy.programming.kicks-ass.net>
 
-On Mon, Jun 15, 2026 at 11:00:08PM +0000, patchwork-bot+netdevbpf@kernel.org wrote:
-> Hello:
-> 
-> This patch was applied to netdev/net-next.git (main)
-> by Jakub Kicinski <kuba@kernel.org>:
-> 
-> On Sun, 14 Jun 2026 07:52:39 +0800 you wrote:
-> > Both airoha_eth.c and airoha_npu.c declare SPDX-License-Identifier:
-> > GPL-2.0-only but use MODULE_LICENSE("GPL"), which the kernel module
-> > loader interprets as GPL-2.0+ (any GPL version). This mismatch causes
-> > license compliance tools (FOSSology, ScanCode, etc.) to misidentify
-> > the effective license as more permissive than intended.
+On Wed 2026-06-17 13:15:04, Peter Zijlstra wrote:
+> On Wed, Jun 17, 2026 at 12:12:07PM +0200, Petr Mladek wrote:
+> > On Tue 2026-06-16 17:31:22, Sebastian Andrzej Siewior wrote:
+> > > On 2026-06-16 08:11:28 [-0700], Jakub Kicinski wrote:
+> > > > > 
+> > > > > Adding sched and printk folks for opinions while eyeballing
+> > > > > WARN_ON_DEFERRED().
+> > > > 
+> > > > Thanks a lot for looking into this! To be clear - the printk_deferred /
+> > > > WARN_DEFERRED would be just for stable? Or there's still some
+> > > > sensitivity even with nbcon?
+> > > 
+> > > We already have printk_deferred(). WARN_DEFERRED() would be new. I
+> > > *think* this is not limited netpoll/ netconsole but all console drivers
+> > > not using CON_NBCON if the printk (via WARN) occurs with the rq held.
+> > > I don't remember all the details but printk_deferred() was introduced to
+> > > circumvent this until printk is fixed.
 > > 
-> > Replace MODULE_LICENSE("GPL") with MODULE_LICENSE("GPL v2") to
-> > align with the GPL-2.0-only SPDX identifier. Per include/linux/module.h,
-> > "GPL v2" maps to GPL-2.0-only, matching the source files' declared
-> > license.
+> > Just to make it clear. The problem with the legacy consoles is that
+> > they are called under console_lock() which is a semaphore. And it
+> > calls wake_up_process() in console_unlock() when there is another
+> > waiter on the lock.
 > > 
-> > [...]
+> > > Once we get rid of those legacy drivers and NBCON is the default we can
+> > > get rid of printk_deferred() :)
+> > 
+> > Yup.
 > 
-> Here is the summary with links:
->   - net: airoha: Fix MODULE_LICENSE to match SPDX GPL-2.0-only identifier
->     https://git.kernel.org/netdev/net-next/c/b0d62ed16424
+> Can't we push all the legacy consoles into a single legacy kthread? I
+> mean, converting all consoles is of course awesome, but should we really
+> wait for that?
 
-Jakub,
+I am afraid that converting the consoles one by one is the deal with
+Linus. I could imagine to moving last few sinners into the kthread
+when the majority is converted. But we are far from there :-/
 
-This patch doesn't fix anything. License rules are pretty clear.
-
-Documentation/process/license-rules.rst
-  444     "GPL"                         Module is licensed under GPL version 2. This
-  445                                   does not express any distinction between
-  446                                   GPL-2.0-only or GPL-2.0-or-later. The exact
-  447                                   license information can only be determined
-  448                                   via the license information in the
-  449                                   corresponding source files.
-  450
-  451     "GPL v2"                      Same as "GPL". It exists for historic
-  452                                   reasons.
-
-> 
-> You are awesome, thank you!
-> -- 
-> Deet-doot-dot, I am a bot.
-> https://korg.docs.kernel.org/patchwork/pwbot.html
-> 
-> 
-> 
+Best Regards,
+Petr
