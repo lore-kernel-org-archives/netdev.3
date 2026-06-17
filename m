@@ -1,135 +1,133 @@
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52244C9544;
-	Wed, 17 Jun 2026 16:50:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781715022; cv=pass; b=Z/CPIV5DqqxAFa3RVZmukimpPhb/wjADRbOHhhq7kc+Bg0RSGpJkyYoXp37sPKa1uTFM9CnOcetVqJovL0ZkacD/pp8ChXY+cwQMx2KxT0pzugHluxs36LeKiaw1pNA59qafcRyLTCyVk9Tr4bjrgl2fIvVeXF6GFjcHLhAHbhQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781715022; c=relaxed/simple;
-	bh=46QMtMcuxnIZoL+xIhNwgGCMpv65BlQ4i4ySlqs4vz8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=OUOcnMIrmNsDtMrDJMIKbgXMUFfQs8TM4pisKvqaJTrXFH2630uipwSwfxqZSAvUJeoFwXa6bKT8jSjsQXEd9kH2pqW+QVrw/0xw0S0jC8DIqBYlag2NdAChDhU82hA2a5iIfe97Z1ErNFYpZAL6JLWABS+yzR59M/feaBgzYlY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rong.moe; spf=pass smtp.mailfrom=rong.moe; dkim=pass (2048-bit key) header.d=rong.moe header.i=i@rong.moe header.b=k25gwzXa; arc=pass smtp.client-ip=136.143.188.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rong.moe
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rong.moe
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C8044C9548
+	for <netdev@vger.kernel.org>; Wed, 17 Jun 2026 16:50:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781715024; cv=none; b=Ks8RpZY45xOYD700QMx+m3vksdOdpBDUAMgWZZxhtKXTrcl0LVGuanxMg9A73OXI8xuVR4TIEQOsGq3Q2bgjZB3Qw+qEGEAvMaTX+i+DKyjNIfn0cORC603Z6NR2H/YazfcRaDojKMhzKgumz174v1XrKa0uo8HCV+6GnQGD9ak=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781715024; c=relaxed/simple;
+	bh=5W4cmUnSvJebGgX72dxHH5s93z4uEUUxOsLpxpGk1xA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dVqYW5FjOKSLm3xXwZ52jl2a1H2ix2UmPiv+jlZKWxnFGbxDriMVd4sg5r7qcolgncfxiCCITKyuwPpKZOP0tWG8UkH5XtA4A9lO3jf4szhxsKwwz4evlMqc+Bhad2Q839hETUsPtrQuHkOEKmBABKtc119RHRBaga+BOUahjrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XFqs8fIg; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rong.moe header.i=i@rong.moe header.b="k25gwzXa"
-ARC-Seal: i=1; a=rsa-sha256; t=1781714999; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=OcWWDEledolNhkJQ9TjvpM2qTnrOmFbg6leB8osTcCuApDDzT5Zeehu7oUzjcYe/Ae2aRvoT2hjxLEtWlmgNJxdOXGHvzDT/LuU7+0UjNHK7cGRNS57MY3Rrd+2YfTf0LVnVU6V+HLqvLZFNZXYxAxqgLLsPp/PU7CRHkAvNGdk=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1781714999; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=GMrEHJIsNQKr3cdYhQRNVQX+p/Pau+HnEdKcTqiCkIQ=; 
-	b=nLyzn3Jqd86hDdoPuRf2vI86YGPoJynRQTshqEs5pRK5xbS28OlYwh36icpGfahaUfHAgBLn03zpKOtabiwLYlhTu2BbKGMSIVzYH4m7iu0plxhY/04Ur8unjibX+MwCqS0ZnCCVCp73swaz/XJB2ryYBaOAJbL2Rw61Ymo2Bqw=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=rong.moe;
-	spf=pass  smtp.mailfrom=i@rong.moe;
-	dmarc=pass header.from=<i@rong.moe>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1781714999;
-	s=zmail2048; d=rong.moe; i=i@rong.moe;
-	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=GMrEHJIsNQKr3cdYhQRNVQX+p/Pau+HnEdKcTqiCkIQ=;
-	b=k25gwzXakN9+nB/04xlV+RgOqoBIM+sj9MER+qwy2nBgGZ+SSakbr74Z4LiyP9U8
-	hpNcC/5rqPHa4YtCrLox3KX4BPOZLQfg3OdCyMnI2xQhOqchLyAjLNVN3D4nMqLkygz
-	aCs6a7by3el2Bwi7FzdXNKhvevL5afPradr9Rg9mJvd4JblYw0/HOqeDLQX23vIL3B+
-	8U8JfCVGJfWfyd0Nvbetyz4Nh5BJ8LUSC27hkDc62I2dpRb/tkSd0run31EltyLx95R
-	l8yBp3QQIkefSxfjxbZ4J3NbY55+Cik+2lkDs67N3V5gXLD6ZFugeQDL5Bqexrmxttt
-	JdczBjYDUA==
-Received: by mx.zohomail.com with SMTPS id 1781714996876469.22452862170087;
-	Wed, 17 Jun 2026 09:49:56 -0700 (PDT)
-From: Rong Zhang <i@rong.moe>
-Date: Thu, 18 Jun 2026 00:48:02 +0800
-Subject: [PATCH RFC v2 8/9] platform/x86: ideapad-laptop: Serialize
- keyboard backlight notifications
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XFqs8fIg"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-4631679f204so427287f8f.0
+        for <netdev@vger.kernel.org>; Wed, 17 Jun 2026 09:50:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781715019; x=1782319819; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=uCkh90iozDZAIJLETl4lX/v4w123Ar9P2GbA4NwH8eY=;
+        b=XFqs8fIg+p4a+MRvs0UPlLKRwooPqXTv/9MA1VLLmn0rK2tF7ui6CT7GKNMF+U0dQ6
+         +4Dl9AJNU6Ps0y2FbePqxwwnw4W/tP24wnHFpNRHdLNCTtVR6UFYlx21bedxzWmG8T3y
+         2jjUtP1G3VUiJSDe1fvjXN5JFo7rnRzqMqmWbQm7HH0GEQCFWapnWXsMXo4yiMzv1mRO
+         3LCc5PtumkRANjPTn6V5InzYQ1+jccvq+2ObXyewoChwC+Stfg/w+bHt6pX2s6BW+dSf
+         YXk9ZrWx7AOaU3Fv6xKU8yNVaVXJ/38JXQb19B3y2DU0kg3fi4lxdfh8EICoV0jmb0Wn
+         3v5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781715019; x=1782319819;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uCkh90iozDZAIJLETl4lX/v4w123Ar9P2GbA4NwH8eY=;
+        b=dSEvwcWNpoqHUWhQQAxXS5Plv9vFl+ATfwhbhixRYjITzKJty7fCEevv8R7XYVLjOy
+         0t1DTx6CG2OB8tlwm438yuawhMyQYBGXvEqVJvRPpoYE/QUFejHM7SmIGWdUGF/j0cgO
+         v9BGPOwQikXSMDCiDzfVVNKm5Ehp8pCqU/BilFQA/jb26MdSjF87H4J3LH6n1ILHm/GE
+         DEKb1D/XZ/bcVEoLNbmOVu1c8pVf1jkkIopN011KqJNoz+fxKKgsAhamxt6Jv62r46Oy
+         5wnSdlp6H9cYIf3LK3MDJ6uV3jOsADGCMrbCEBBCo2iTMHi6cZO9el78G3qOHNI3LmLN
+         JFMQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/04sz7im1zVjQ9ZNKvx2zLCaomsIzbcpW8YfKOJ5gdSSBYRdCa2cJxt9+bggatuY0qc2jvEck=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzt9L8h3KTq3NhXy6gvJwJFP19V88RWvAcHqSWAnfMgdlkdijxS
+	gFwN36ZF4gmP2HNlyFIquUjDO5IAW6nhm56+egsiduDp5bj1M6fLHYhF
+X-Gm-Gg: AfdE7cnm6V/qv5QjKwxYemIXGmD7QxPWseuHwi3ND/RDG95H/ecDQDdmoueVq2CPvut
+	MPNA8Dwg4Th2G9N+qPOWhC0lfh+z2owbUooypcNuGPc3sn30rt4iDfyqQlrJU79OV50P9FUUy3a
+	1bqTCtY3F+HA+FggdPw/XWEEJckyG/7s149B3CUKejQvXcu8ptekTHXobjOmR0hvXKSZ6cknZCs
+	bBfT4r9fBsir9YtHNmNiFeXtXTm8gnjuzjCeD5367NysZYB19iQPz3mRORYUowD5bPyYfDI4kct
+	1fVoZGjIUDRH6+zFlnAx4yMrjL4aTzH6YxhFggpvPNZsfER7v6tDjsIvhU8lRiBYdNiy2DwKAeW
+	eOl14rH7OGEWbcW9eoRfHbcrCRkls1cCTIW+wTXgSCWGqECtkzn7Z8m0dUC2kbvuFTdJSqYBGLc
+	l/rKOMyIX3lVj9u4DvnreUsiDMTkgAS/sLOLH/aautQkJVTwkiikALDeWWTPYZaVXI1HiVgB1g2
+	O6AxeIq3VYxSGGIT9W15M1+UKlJQM8YyXVpud8vhcVS+2mqSlNnI+rSEjzv/Zbodw==
+X-Received: by 2002:a05:6000:4712:b0:45e:f295:33cd with SMTP id ffacd0b85a97d-46396f127b6mr529875f8f.11.1781715019243;
+        Wed, 17 Jun 2026 09:50:19 -0700 (PDT)
+Received: from ?IPV6:2003:ea:8f4a:8700:58d1:af07:762f:9d17? (p200300ea8f4a870058d1af07762f9d17.dip0.t-ipconnect.de. [2003:ea:8f4a:8700:58d1:af07:762f:9d17])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f26393asm58463363f8f.5.2026.06.17.09.50.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 17 Jun 2026 09:50:18 -0700 (PDT)
+Message-ID: <7fe74f0d-b81b-4bde-bdb6-97932a1bdb79@gmail.com>
+Date: Wed, 17 Jun 2026 18:50:16 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] r8169: migrate Rx path to page_pool
+To: Atharva Potdar <atharvapotdar07@gmail.com>,
+ Francois Romieu <romieu@fr.zoreil.com>
+Cc: nic_swsd@realtek.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org
+References: <20260614054137.32181-1-atharvapotdar07@gmail.com>
+ <20260614220934.GA3575431@electric-eye.fr.zoreil.com>
+ <CAF9AHva0TSFz5tedMEgJTkhThzDGqmW7MJshAtf3ULbLY4wd=w@mail.gmail.com>
+Content-Language: en-US
+From: Heiner Kallweit <hkallweit1@gmail.com>
+In-Reply-To: <CAF9AHva0TSFz5tedMEgJTkhThzDGqmW7MJshAtf3ULbLY4wd=w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260618-leds-trigger-hw-changed-v2-8-c28c44053cf3@rong.moe>
-References: <20260618-leds-trigger-hw-changed-v2-0-c28c44053cf3@rong.moe>
-In-Reply-To: <20260618-leds-trigger-hw-changed-v2-0-c28c44053cf3@rong.moe>
-To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
- Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>, 
- =?utf-8?q?Marek_Beh=C3=BAn?= <kabel@kernel.org>, 
- Mark Pearson <mpearson-lenovo@squebb.ca>, 
- "Derek J. Clark" <derekjohn.clark@gmail.com>, 
- Hans de Goede <hansg@kernel.org>, 
- =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
- Ike Panhc <ikepanhc@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>, 
- Vishnu Sankar <vishnuocv@gmail.com>, Vishnu Sankar <vsankar@lenovo.com>, 
- linux-leds@vger.kernel.org, netdev@vger.kernel.org, 
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
- chrome-platform@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
- Rong Zhang <i@rong.moe>
-X-Mailer: b4 0.16-dev-d5d98
-X-ZohoMailClient: External
 
-ACPI notifications are delivered in dedicated work contexts and may
-arrive simultaneously. In the following change, much work will be done
-while handling the notification, which could lead to potential race
-conditions.
+On 17.06.2026 05:28, Atharva Potdar wrote:
+> Hi Heiner, Francois,
+> Thank you for reviewing this patch.
+> 
+> Francois:
+>> You may consider fdd7b4c3302c93f6833e338903ea77245eb510b4 and some related
+>> changes around that time.
+> 
+> I am sorry but I don't fully understand the context of this commit or
+> the behaviour it addresses. Could you please help me regarding what I
+> need to watch out for this change?
+> 
+> Heiner:
+>> Assuming your link speed is 1Gbps, 470Mbps is quite low.
+> 
+> I apologize, that was my benchmark figure when I passed my NIC via
+> VFIO to a VM for testing. When I tested it bare metal again with
+> iperf3, I hit line rates of 941 Mbps.
+> 
 
-Introduce a new mutex to serialize keyboard backlight notifications to
-prevent potential race conditions.
+OK, I see. 1Gbps isn't really a challenge, the same at 10Gbps with
+a RTL8127 may be more telling.
 
-Signed-off-by: Rong Zhang <i@rong.moe>
----
- drivers/platform/x86/lenovo/ideapad-laptop.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+>> If I read this correctly, max_mtu may be lower with this patch.
+>> This may cause a regression for existing users.
+> 
+> My main intention for restricting to order-0 pages is to prepare the
+> driver for XDP support in the subsequent patches. I understand this
+> causes a regression but I am not sure of another way to tackle it. How
+> do you prefer I handle this to avoid breaking current setups while
+> still having the driver be ready for XDP?
+> 
+Is XDP in general not supported with bigger jumbo packets?
+You should find a way to avoid the regression. Intentionally introducing
+a regression I don't think is acceptable.
 
-diff --git a/drivers/platform/x86/lenovo/ideapad-laptop.c b/drivers/platform/x86/lenovo/ideapad-laptop.c
-index 40153dc9a5f2..97949094ead4 100644
---- a/drivers/platform/x86/lenovo/ideapad-laptop.c
-+++ b/drivers/platform/x86/lenovo/ideapad-laptop.c
-@@ -26,7 +26,9 @@
- #include <linux/jiffies.h>
- #include <linux/kernel.h>
- #include <linux/leds.h>
-+#include <linux/lockdep.h>
- #include <linux/module.h>
-+#include <linux/mutex.h>
- #include <linux/platform_device.h>
- #include <linux/platform_profile.h>
- #include <linux/power_supply.h>
-@@ -228,6 +230,8 @@ struct ideapad_private {
- 		int type;
- 		struct led_classdev led;
- 		atomic_t last_hw_brightness;
-+
-+		struct mutex notif_mutex; /* protects notifications */
- 	} kbd_bl;
- 	struct {
- 		bool initialized;
-@@ -1720,6 +1724,8 @@ static void ideapad_kbd_bl_notify(struct ideapad_private *priv)
- 	if (!priv->kbd_bl.initialized)
- 		return;
- 
-+	guard(mutex)(&priv->kbd_bl.notif_mutex);
-+
- 	hw_brightness = ideapad_kbd_bl_hw_brightness_get(priv);
- 	if (hw_brightness < 0)
- 		return;
-@@ -1747,6 +1753,10 @@ static int ideapad_kbd_bl_init(struct ideapad_private *priv)
- 	if (WARN_ON(priv->kbd_bl.initialized))
- 		return -EEXIST;
- 
-+	err = devm_mutex_init(&priv->platform_device->dev, &priv->kbd_bl.notif_mutex);
-+	if (err)
-+		return err;
-+
- 	hw_brightness = ideapad_kbd_bl_hw_brightness_get(priv);
- 	if (hw_brightness < 0)
- 		return hw_brightness;
-
--- 
-2.53.0
+>> Did you test also on non-x86 architectures? We had DMA-related regressions
+>> in the past which showed up on certain non-x86 architectures only.
+> 
+> Unfortunately, I currently only have access to x86 hardware. I cannot
+> test this on a bare-metal ARM machine, only an ARM VM - which may not
+> show those hardware issues. How is the testing typically handled for
+> other architectures in a situation like this?
+> 
+> Thanks,
+> Atharva.
 
