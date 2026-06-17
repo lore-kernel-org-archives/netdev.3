@@ -1,63 +1,176 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 734123932F1;
-	Wed, 17 Jun 2026 08:41:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 379583D0903
+	for <netdev@vger.kernel.org>; Wed, 17 Jun 2026 08:43:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781685675; cv=none; b=QYeLsx2rAteSBiGn95uUx30qMfYkJDr1mLCp5ZGq7TdgAfm4pyL9VonlUx0GFEalQCGdItdWQo6VXZHj4k+40EIl7O4NZN8OPbyUViqPXBRbE5FoYI4NgK9xnPM7wux1jawHde4fWN65eguFt+CEpzac/lSycC56RPTGBGC8OVo=
+	t=1781685823; cv=none; b=ckje9j2LXLbHGEI4lm0o6v0r2S6ie4Ct+Se/G7kOKniRYHMNnjevTLBAMXKXSMkWduDyMZJjFb4iEhFTGrIzYE02mJ8OTTYCsCQeaxwUXYZB87FfXDEnTva5O6E+7yAcKsmUiCRklu990AyiDZeD2lmdz6XFd0u5n+PNS7XnW3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781685675; c=relaxed/simple;
-	bh=LL/XLpMG+01tduNwhUY7wmu9os4kKuO/zowbSfjldmU=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=LDA70Wb62MEVsh9wkM9Lnfvs2pgq9LGLBwFhGIfvR7QFur/jWC92wLFjZYXyJk8wBku7TiRZYwJ2xtEVYREFwlu+uuauW3xSsHFKbXn4wtrKi6am4POWNFCTQiQ1McqdSIMUqOABSq2pIdi4TRa2gfb+0ZitOTZkuWHGRwpQnLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hbce7lz/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781685823; c=relaxed/simple;
+	bh=y6TAMVlRy7PqX/OQ7to6WoMTdCQN7VJj0eBU7zauT9Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Zv3R3gIES/476aHSGb41rLPCVNWPMGnMYhuritHOIEFYbEbht7qlo0PvaPhpRUGoET0DEz2DA8RA/Tco1oyc9sfcrhJOtmdZFswIg3UgR6jZNIp3QookLs4P/DksQhWuddd3aA1+SGm0vM4+0Uh2zQVjsXWxb6hFTP0P1C649Ts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XtAp6LqH; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hbce7lz/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 565A51F00ADE;
-	Wed, 17 Jun 2026 08:41:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781685672;
-	bh=Ae7w3pTdt6QnuNDYgrbPQEQVF1x8C6o8Z2i7PaslWVc=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc;
-	b=Hbce7lz/4MCNfHfyqMPcXVvirWaO0LXDvMNxz1Iq1V57Uf3ZOSiMV3bMCX+Xz3UtY
-	 yQV7kMYvSarUhFRVzlDSZb7KysTwA21z9XywvOMTQhYpLncp9cWnL1fUxIggSK+UXS
-	 UOVQKpW4JWNtxBSz1gDgWPE9yZR+n88CazMgldcJgt1ZV22GqUix6yRTdKXiecgyz9
-	 fZ3J0dmLQ3g7MTEhHSaUXFaeSX0WT6UY+v9w5uIkXXCvhRstuqzHLy19mTJZJuiL0p
-	 74v4OPR1ZjikYRWFkh6/3N7Z++kJ2+/LdZVOjteVzjI6lLOv4qlKBt9ws+0qvHU/gI
-	 Lj7M4J1Xhj2JQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BED123930DCB;
-	Wed, 17 Jun 2026 08:41:07 +0000 (UTC)
-Subject: Re: [GIT PULL] Networking for 7.2
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20260617000705.931602-1-kuba@kernel.org>
-References: <20260617000705.931602-1-kuba@kernel.org>
-X-PR-Tracked-List-Id: <netdev.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20260617000705.931602-1-kuba@kernel.org>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git tags/net-next-7.2
-X-PR-Tracked-Commit-Id: d954a67a7dfa58b7a9b3194322d321b940eb60c8
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: b85966adbf5de0668a815c6e3527f87e0c387fb4
-Message-Id: <178168566654.1433416.18155324279935635597.pr-tracker-bot@kernel.org>
-Date: Wed, 17 Jun 2026 08:41:06 +0000
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: torvalds@linux-foundation.org, kuba@kernel.org, davem@davemloft.net, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, pabeni@redhat.com
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XtAp6LqH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781685812; x=1813221812;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=y6TAMVlRy7PqX/OQ7to6WoMTdCQN7VJj0eBU7zauT9Q=;
+  b=XtAp6LqHdtPFLH92t2xPW/mm7agCHiiBBU1AlMMVAdVPBr3JmK9kOX0R
+   I0zazBWjjoHAfVn48lvYV3FEk9u5GfZbIureajr/h6ebMCsY5SIv8aS7T
+   3IFB5HzDnlHxcMhxib6mrcZMc7kAh2taexuvJMOyV0+cWStWGVvTWCb5z
+   l7PZ3GiRM1cBd73bPn3hVmGdYF6DGAPEI3MroUrxdZ2Eqtp8bJF4dkNjc
+   U/9oTpCf+W1zDyybHf1b2b2wsxQU1r5Z78/SbmJzpTieb54IT/cYKvWt0
+   go4DeVOEuz9CR1EsWBgAAw+GPE/MRU5U17SXCzxbFYSwV2jDrmdAqnrnw
+   A==;
+X-CSE-ConnectionGUID: uATYzFHhSwquhdS7OsU4Zg==
+X-CSE-MsgGUID: t+b6HR/uSpiIx1p2ml+oLQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11819"; a="107943269"
+X-IronPort-AV: E=Sophos;i="6.24,209,1774335600"; 
+   d="scan'208";a="107943269"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2026 01:43:31 -0700
+X-CSE-ConnectionGUID: kVtvwnhAT7W98MA0btWbOg==
+X-CSE-MsgGUID: Curnho7OSn+PQ5NWgpk/pg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,209,1774335600"; 
+   d="scan'208";a="251914883"
+Received: from gnrd8.igk.intel.com (HELO GNRD8) ([10.123.232.137])
+  by orviesa003.jf.intel.com with ESMTP; 17 Jun 2026 01:43:31 -0700
+From: Sergey Temerkhanov <sergey.temerkhanov@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org
+Subject: [PATCH iwl-next v1] ixgbe: Implement PCI reset handler
+Date: Wed, 17 Jun 2026 08:43:29 +0000
+Message-ID: <20260617084329.199110-1-sergey.temerkhanov@intel.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-The pull request you sent on Tue, 16 Jun 2026 17:07:05 -0700:
+Implement PCI device reset handler to allow the network device to
+get re-initialized and function after a PCI-level reset.
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git tags/net-next-7.2
+Signed-off-by: Sergey Temerkhanov <sergey.temerkhanov@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+---
+ drivers/net/ethernet/intel/ixgbe/ixgbe.h      |  1 +
+ drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 72 +++++++++++++++++++
+ 2 files changed, 73 insertions(+)
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/b85966adbf5de0668a815c6e3527f87e0c387fb4
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe.h b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
+index 594ccb28da20..c4b0c5bb89c6 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe.h
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
+@@ -912,6 +912,7 @@ enum ixgbe_state_t {
+ 	__IXGBE_PTP_TX_IN_PROGRESS,
+ 	__IXGBE_RESET_REQUESTED,
+ 	__IXGBE_PHY_INIT_COMPLETE,
++	__IXGBE_PCIE_RESET_IN_PROGRESS,
+ };
+ 
+ struct ixgbe_cb {
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+index 2ac274c73d61..a61ee5fff7be 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+@@ -12352,6 +12352,76 @@ static pci_ers_result_t ixgbe_io_slot_reset(struct pci_dev *pdev)
+ 	return result;
+ }
+ 
++#define IXGBE_PCIE_RESET_RETRIES 1000
++
++/**
++ * ixgbe_reset_prep - called before the pci bus is reset.
++ * @pdev: Pointer to PCI device
++ *
++ * Prepare the card for a reset, preventing the service task from running.
++ */
++static void ixgbe_reset_prep(struct pci_dev *pdev)
++{
++	struct ixgbe_adapter *adapter = pci_get_drvdata(pdev);
++	unsigned int timeout = IXGBE_PCIE_RESET_RETRIES;
++
++	if (!adapter)
++		return;
++
++	/* Prevent the service task from being requeued in the timer callback
++	 * while we're resetting.
++	 */
++	if (test_bit(__IXGBE_SERVICE_INITED, &adapter->state)) {
++		timer_delete_sync(&adapter->service_timer);
++		/* Prevent the service task from running while we're resetting. */
++		cancel_work_sync(&adapter->service_task);
++	}
++
++	pci_clear_master(pdev);
++
++	while (test_and_set_bit(__IXGBE_RESETTING, &adapter->state) && --timeout)
++		usleep_range(1000, 2000);
++
++	if (!timeout) {
++		e_err(drv, "Timed out waiting for __IXGBE_RESETTING to be released. Reset is needed\n");
++		pci_set_master(pdev);
++		return;
++	}
++
++	set_bit(__IXGBE_PCIE_RESET_IN_PROGRESS, &adapter->state);
++	smp_mb__after_atomic();
++}
++
++/**
++ * ixgbe_reset_done - called after the pci bus has been reset.
++ * @pdev: Pointer to PCI device
++ *
++ * Allow the service task to run and schedule re-initialization.
++ */
++static void ixgbe_reset_done(struct pci_dev *pdev)
++{
++	struct ixgbe_adapter *adapter = pci_get_drvdata(pdev);
++
++	smp_mb__before_atomic();
++	if (!test_and_clear_bit(__IXGBE_PCIE_RESET_IN_PROGRESS, &adapter->state)) {
++		e_err(drv, "Reset done called without PCIe reset in progress\n");
++		return;
++	}
++
++	/* Allow the service task to run */
++	if (!test_bit(__IXGBE_REMOVING, &adapter->state)) {
++		clear_bit(__IXGBE_RESETTING, &adapter->state);
++		smp_mb__after_atomic();
++	}
++
++	/* Schedule re-initialization */
++	if (!test_bit(__IXGBE_DOWN, &adapter->state)) {
++		set_bit(__IXGBE_RESET_REQUESTED, &adapter->state);
++		if (test_bit(__IXGBE_SERVICE_INITED, &adapter->state))
++			mod_timer(&adapter->service_timer, jiffies + 1);
++	}
++}
++
+ /**
+  * ixgbe_io_resume - called when traffic can start flowing again.
+  * @pdev: Pointer to PCI device
+@@ -12384,6 +12454,8 @@ static const struct pci_error_handlers ixgbe_err_handler = {
+ 	.error_detected = ixgbe_io_error_detected,
+ 	.slot_reset = ixgbe_io_slot_reset,
+ 	.resume = ixgbe_io_resume,
++	.reset_prepare = ixgbe_reset_prep,
++	.reset_done = ixgbe_reset_done,
+ };
+ 
+ static DEFINE_SIMPLE_DEV_PM_OPS(ixgbe_pm_ops, ixgbe_suspend, ixgbe_resume);
 
-Thank you!
-
+base-commit: c50bfa9768ff3a5163746c6362a8a910a0b4dca0
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.53.0
+
