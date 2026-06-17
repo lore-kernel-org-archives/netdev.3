@@ -1,133 +1,175 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A96311C1B
-	for <netdev@vger.kernel.org>; Wed, 17 Jun 2026 08:55:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E783955C4;
+	Wed, 17 Jun 2026 09:02:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781686509; cv=none; b=GyHH7EEA31fNQFWdw9CbdCtGRyp98mD3ENc1BaKELpbIR3xWPuatnYUflOAjTeUuR2OKo4L4aIvY/BZL+BNZXHkIPXDCGW5+GtIakuzqymIncBuX1z41VIWPU2K6wuf+96ZD7L6jNPplm5g1tB2qQBgntzoCF9m4m7HpacGwCo8=
+	t=1781686926; cv=none; b=X0K5R/Odp6zbapk8aTcxH513WOJrU64fiSi53JU+Sf1SanEnApwN8Wwt+OojPxY0xvePjKYO3BDlI9DOi00p0GEIgX1k4Z7J45pQk9hhbd7DEkIWW/BatdNeeKO1wMdKoxHl06qqQCM5Q0AyaSxva03zyf/EvWPlJ+zXuX/bu9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781686509; c=relaxed/simple;
-	bh=VYojiFvkgd7DZg48Kjc6saIaOOo+1LnPh+V9F6p7Lb4=;
+	s=arc-20240116; t=1781686926; c=relaxed/simple;
+	bh=VjCdms9P9e/BE10dlByAAA420pCw4yeIMQeCJ26sE40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=WipBN6UaP71b6XvhJauIjiuqT08dbqu4c+EbmI2yvzv1UjAEmuXKxbdnx2u1zSpVoy5BVtbR6YFje2i0F1V9RvGz+Zui86BrTFf9zBMAhRHbteGhWL8mUEHTYc0P8y9YibTOh43Eg2zuu6WCIoKaOBx/l8ZzLxxwHqvNjJvvkew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M0nS8XNR; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 MIME-Version; b=EHzMinTyWHllxw2tESKK7h+pX8XP7sGKmzRl1K63V5X1JJqkK20Yl6beEx/Ct8eYBscvzxHwJrxY6/cBrr26wU903jfxClq+2D/dCoxKj/JoSfs4hnmm8nrBfXNfmqmyOhh/pdH/PGZwZW2BkHLou/MCZNYct1feMbuSbB9RoBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I+u8Gt5+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M0nS8XNR"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-c8589498839so2370495a12.2
-        for <netdev@vger.kernel.org>; Wed, 17 Jun 2026 01:55:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781686507; x=1782291307; darn=vger.kernel.org;
-        h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=jU2lF5D8WsZ49yodI+DbJaHAzFovQXJU1C8q9EyojGw=;
-        b=M0nS8XNRYmxyYDBSpAlZpwkoZQQM3xmjZpxjagFKCXf05PuUEGY4g9uC3YSO6r8TIv
-         Rs4ydm62hAcMm9OzqW15PPX8NSjlfj/5Qygj8EFS/QMnL1bMXZWO5ncIHUQ80U0++R2M
-         fYrVAYuzaHgjx7uAiihHvCCtBXwsbEE9bT3s4gfXWW8dWfd9nRrP2w5FVThHGu5qdXoh
-         M5WqtnglYzOv72T8UYrH/ASioWzj1jh9isj3Bftq0azAQQ1XahxRuSTI6bNWUOv7Jc+B
-         HIwuxsOvFkMf1ugMaHaBsVV4mrDoBRXtZK6TKeMDYKPlAuSIAXpA/01SZd1mpWqFLOkL
-         ufSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781686507; x=1782291307;
-        h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jU2lF5D8WsZ49yodI+DbJaHAzFovQXJU1C8q9EyojGw=;
-        b=buq9VbsiqkibwujH8Qjz/K4gttIfWCRr2PvvHCW9S7APZN1Ym4D9/mBr1oqjRH2HZ3
-         SzLcp2CIWDAay/PVU7uvWAPZjdpHVQMgdc65xNKLJ9nH6QedenJ8ppg97c2c5F/zFXKN
-         n3kh51zH7hE4Bun2jm9PPBP6btfJ3eNPI2m+UoaXLlWamaaab42+sADbeChcnqzqJOsH
-         NsXDG6j5l9gs3mugflT/c7DBoZeCp44X9zXMMNgBsl0v6l0i9ZuXQKzxcBPv3iOA28Gh
-         Neb39ueQwN7HDqcxenJq6B+3EGKtcNW4SJVta0iNRdcJMha/hHCr+IMoMavzObOqHUHz
-         Q1HQ==
-X-Gm-Message-State: AOJu0Yx+fqS7/qOnP3fj0ZFqboEmcDF89+eUiWCLrBJd2d0cuZ819asA
-	QyuqS+kSzjQDZEAg4FAGypgTzdIvWXRzDAcWbmR5/TMStoC5YVTkNgrcQT32MGag+48HfQ==
-X-Gm-Gg: AfdE7cnkm7m8SMz2rjnf46mX+DR6qBGNTW7YRpkd+1T9R/BTTziEuNbZ6F43auQIZhg
-	xh2Nf1sURIp2DIMW0dj5wJ7DA5o6Z2r5uO9UYkMm7zJqg2MDZU+GqSZk3hmShZtedBl3bh+oZuR
-	KesqSt6GoVmCxh+VPkZoU3mUoyvZIxrlkwU+Zfd00D6MYSZKX4pdvRcH5x/EP5D1xoTyxbFO6I6
-	f0GmZUTAqlaGWYcrFljzokPBJwNyFBaa+vUaA5d8te4igCvICqBZlVyDivxHLJ1bR1/FxtJCby1
-	vKAYPWk5axF/ZqJsmk8eCafTOdReeiQq93gx4xYTZYeX+vgxmOr6OXRZdcBg9XEyCGvuW+I5EIU
-	jIM7z3W/0PrXkRFYG1ow5mDaEJUwpA3Ns6zrMM/4xkX6PnDedtkSVGpwvmoh0/eyjKVp8Pfosx0
-	k4OgWHaOF9iPIo9DsO
-X-Received: by 2002:a17:902:f64d:b0:2ae:450c:951e with SMTP id d9443c01a7336-2c6bc0e9707mr27907285ad.17.1781686507025;
-        Wed, 17 Jun 2026 01:55:07 -0700 (PDT)
-Received: from [127.0.1.1] ([47.253.114.73])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c6be262b93sm15031735ad.68.2026.06.17.01.55.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Jun 2026 01:55:06 -0700 (PDT)
-From: Wayen Yan <win847@gmail.com>
-To: lorenzo@kernel.org
-Cc: netdev@vger.kernel.org, nbd@nbd.name, linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH net] net: airoha: Fix TX scheduler queue mask loop upper bound
-Date: Wed, 17 Jun 2026 16:55:01 +0800
-Message-ID: <178168650178.2224380.3950331731013129336@gmail.com>
-In-Reply-To: <178166704952.2212140.11002626760717132754@gmail.com>
-References: <178166704952.2212140.11002626760717132754@gmail.com>
-Content-Type: text/plain; charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I+u8Gt5+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 470C41F000E9;
+	Wed, 17 Jun 2026 09:02:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781686925;
+	bh=wxGuVfpE3/0/SzZtTWpM1B4pYips3eAAcaCWqYptZYk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=I+u8Gt5+/0q7kOSUmisuXgUhSH5LQPYoUHgdc7p92uRoYqvFhpNHgNNYzR6d/bVs2
+	 Xy9QJrU0SaQyoN2QWSqtZoKjJtp9Xj0LNB0NVp0zSqizf9Insix7l/w9qNnQ1RsktG
+	 x6Cqc6RC1K7dcn5ewJFloKnORbdx9aj5vqjTI2p35GX5YSXcnNntPEZTou2D/xGrYZ
+	 TE30tnugDKvYiay+ztjmaAJzQIn21+2T3XEPxVFzoWzf41ND3YZcW2I3PqQl0jtNJu
+	 74Zn2bv3zsGEL12WAo285I+/LyCvqUBbqlAB2No++Iy7ABAdwDTrdST0BUZESKCmqo
+	 OB5hGKzECgL/Q==
+From: Simon Horman <horms@kernel.org>
+To: justinlai0215@realtek.com
+Cc: Simon Horman <horms@kernel.org>,
+	kuba@kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	stable@vger.kernel.org,
+	richardcochran@gmail.com,
+	david.laight.linux@gmail.com,
+	aleksander.lobakin@intel.com,
+	pkshih@realtek.com,
+	larry.chiu@realtek.com
+Subject: Re: [PATCH net v3] rtase: Workaround for TX hang caused by short UDP packets entering hardware PTP parsing
+Date: Wed, 17 Jun 2026 09:59:43 +0100
+Message-ID: <20260617085942.843250-2-horms@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260615131653.15730-1-justinlai0215@realtek.com>
+References: <20260615131653.15730-1-justinlai0215@realtek.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jun 17, 2026, Lorenzo Bianconi wrote:
-> Even if the current codebase supports just AIROHA_NUM_QOS_CHANNEL (4), the hw
-> exposes 32 hw QoS channels (AIROHA_NUM_TX_RING). Here we are just clearing the
-> configuration, so I guess the current implementation is correct.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://sashiko.dev
+---
+rtase: Workaround for TX hang caused by short UDP packets entering hardware PTP parsing
 
-Hi Lorenzo,
+The patch adds a workaround for a hardware bug in rtase where short UDP
+packets triggering PTP parsing can cause a TX hang due to out-of-bounds reads.
+It pads affected packets so the transport data reaches a minimum length.
 
-You are right that there is no functional impact, and I agree this
-should not go to net. Let me explain the register layout I was worried
-about, and you can decide whether it is worth a net-next cleanup or
-should just be dropped.
+Cc: stable@vger.kernel.org
 
-The two macros are:
+> diff --git a/drivers/net/ethernet/realtek/rtase/rtase_main.c b/drivers/net/ethernet/realtek/rtase/rtase_main.c
+> index 55105d34bc797..4c295a39c7a0c 100644
+> --- a/drivers/net/ethernet/realtek/rtase/rtase_main.c
+> +++ b/drivers/net/ethernet/realtek/rtase/rtase_main.c
+[ ... ]
+> @@ -1249,6 +1250,81 @@ static u32 rtase_tx_csum(struct sk_buff *skb, const struct net_device *dev)
+>  	return csum_cmd;
+>  }
+>  
+> +static bool rtase_get_udp_offset(struct sk_buff *skb, u32 *udp_offset)
+> +{
+> +	int no = skb_network_offset(skb);
+> +	struct ipv6hdr *i6h, _i6h;
+> +	struct iphdr *ih, _ih;
+> +
+> +	switch (vlan_get_protocol(skb)) {
+> +	case htons(ETH_P_IP):
 
-	REG_QUEUE_CLOSE_CFG(_n)             = 0x00a0 + ((_n) & 0xfc)
-	TXQ_DISABLE_CHAN_QUEUE_MASK(_n, _m) = BIT((_m) + (((_n) & 0x3) << 3))
+[Severity: High]
+Does relying on vlan_get_protocol(skb) allow an unprivileged user to bypass
+this workaround?
 
-REG_QUEUE_CLOSE_CFG() masks the channel with 0xfc, and the bit macro
-folds the channel with & 0x3 (mod 4) shifted by 3. So one 32-bit
-register holds 4 channels x 8 queues, 8 queue bits per channel:
+If an attacker uses an AF_PACKET/SOCK_RAW socket to inject a raw Ethernet
+frame containing an IPv4/UDP packet, they could set skb->protocol to an
+arbitrary value like htons(ETH_P_ALL). The switch statement will fall
+through to the default case and return false, causing rtase_skb_pad() to
+skip the padding.
 
-	channel 0 -> reg 0x00a0, bits  0..7
-	channel 1 -> reg 0x00a0, bits  8..15
-	channel 2 -> reg 0x00a0, bits 16..23
-	channel 3 -> reg 0x00a0, bits 24..31
-	channel 4 -> reg 0x00a4, bits  0..7
-	...
+Since the hardware independently parses the raw frame based on the EtherType,
+could it still process the unpadded packet and trigger the TX hang?
 
-In airoha_qdma_set_chan_tx_sched() the loop variable 'i' is passed as
-the *queue* argument _m, not as a channel:
+> +		ih = skb_header_pointer(skb, no, sizeof(_ih), &_ih);
+> +		if (!ih)
+> +			return false;
+[ ... ]
+> +static bool rtase_skb_pad(struct sk_buff *skb)
+> +{
+> +	__be16 *dest, _dest;
+> +	u32 trans_data_len;
+> +	u32 udp_offset;
+> +	u16 dest_port;
+> +	u32 pad_len;
+> +
+> +	if (!rtase_get_udp_offset(skb, &udp_offset))
+> +		return true;
+> +
+> +	trans_data_len = skb->len - udp_offset;
+> +	if (trans_data_len < offsetof(struct udphdr, len) ||
+> +	    trans_data_len >= RTASE_MIN_PAD_LEN)
+> +		return true;
 
-	for (i = 0; i < AIROHA_NUM_TX_RING; i++)   // i = 0..31
-		airoha_qdma_clear(qdma, REG_QUEUE_CLOSE_CFG(channel),
-				  TXQ_DISABLE_CHAN_QUEUE_MASK(channel, i));
+[Severity: High]
+Does this logic inadvertently skip padding for underflowed lengths and tiny
+payloads?
 
-Since each channel only has AIROHA_NUM_QOS_QUEUES (8) queues, the correct
-logic is to clear the 8 queue bits belonging to 'channel'. With i running
-up to 31 the BIT() shift instead walks past those 8 bits and into the bit
-ranges of the other channels folded into the same register. For channel 0
-the accumulated mask becomes 0xffffffff, i.e. it touches channels 1..3 as
-well.
+If the IP header is malformed such that skb->len < udp_offset, the unsigned
+subtraction for trans_data_len will underflow to a large positive value.
+This causes trans_data_len >= RTASE_MIN_PAD_LEN to be true, bypassing the
+padding.
 
-This is harmless today only because REG_QUEUE_CLOSE_CFG is written
-exclusively here, via airoha_qdma_clear() (RMW clear), and the register
-resets to 0 and is never set anywhere -- so clearing extra bits is a
-no-op. Functionally the current code is fine, as you say.
+Additionally, if the packet has fewer than 4 bytes of UDP payload, meaning
+trans_data_len < offsetof(struct udphdr, len), it explicitly returns true.
 
-The point is just the loop-bound semantics: 'i' is a per-channel queue
-index, so the bound should be AIROHA_NUM_QOS_QUEUES (8), not
-AIROHA_NUM_TX_RING (32). The two happen to be related (32 == 4 channels *
-8 queues) but mean different things.
+Since the hardware blindly fetches the UDP destination port at
+udp_offset + 2 via DMA, won't transmitting these short or malformed packets
+without padding still expose the hardware to out-of-bounds reads?
 
-Since there is no functional change, feel free to drop this if you would
-rather not carry a cosmetic patch. If you think the clarity is worth it I
-can resend against net-next without the Fixes tag.
+> +
+> +	dest = skb_header_pointer(skb,
+> +				  udp_offset + offsetof(struct udphdr, dest),
+> +				  sizeof(_dest), &_dest);
+[ ... ]
+> @@ -1362,6 +1438,9 @@ static netdev_tx_t rtase_start_xmit(struct sk_buff *skb,
+>  		opts2 |= rtase_tx_csum(skb, dev);
+>  	}
+>  
+> +	if (!rtase_skb_pad(skb))
+> +		goto err_dma_0;
+> +
+>  	frags = rtase_xmit_frags(ring, skb, opts1, opts2);
+>  	if (unlikely(frags < 0))
+>  		goto err_dma_0;
 
-Thanks,
-Wayen
+[Severity: High]
+This is a pre-existing issue, but does the err_dma_1 error path in
+rtase_start_xmit() contain a double free of the skb?
 
+When transmitting a fragmented packet, rtase_xmit_frags() maps the
+fragments and assigns ring->skbuff[entry] = skb for the last fragment
+descriptor. Back in rtase_start_xmit(), if dma_map_single() fails for the
+linear part, it jumps to err_dma_1:
+
+err_dma_1:
+	ring->skbuff[entry] = NULL;
+	rtase_tx_clear_range(ring, ring->cur_idx + 1, frags);
+
+err_dma_0:
+	tp->stats.tx_dropped++;
+	dev_kfree_skb_any(skb);
+	return NETDEV_TX_OK;
+
+rtase_tx_clear_range() iterates over the mapped fragments and calls
+dev_kfree_skb_any() when it finds the skb pointer. Execution then falls
+through to err_dma_0, which unconditionally calls dev_kfree_skb_any(skb) a
+second time on the same skb pointer.
