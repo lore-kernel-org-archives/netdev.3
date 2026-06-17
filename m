@@ -1,175 +1,141 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BAED39022E;
-	Wed, 17 Jun 2026 09:07:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87603399350
+	for <netdev@vger.kernel.org>; Wed, 17 Jun 2026 09:17:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781687257; cv=none; b=Rp2YHMyPlVeKOgXRnqGEIw1OPgKj8ftzsRzKSIXc7h95XEDMgEoPge4eeFwdYa8yk3yBlcDRfbPJNPfrsceLnlnx13R9CIG78dGsefcrqewe6uLz/A3ZpADsJ8UtsxL1fLI31nCSqwbl5HRAGvgiJrDdlT846UW2BmGl/onUCU4=
+	t=1781687843; cv=none; b=j2viA8TyHNbRjGurDC6HNa1yvi1jLHxbELZsO7lt9+drE/sNDmYsnSeREoCO5CjthM36vYfqmGhCvEkZp2+KI2hvazIZBKGFIbfY/WPWzqPkcGQdJBR8TOAHT74FyAEdhNbJN5vK7U+YQ5cXhPcg82pNwEZVrY5eUcv62Ik7RCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781687257; c=relaxed/simple;
-	bh=zQDBg7W0tjJGt6fZCeNBPHVz0JlrFM2CG+k3SzBRxOE=;
+	s=arc-20240116; t=1781687843; c=relaxed/simple;
+	bh=NKLImyI3HYH86Vh5hC947ygnor4EsnF46Gid2tc64Bc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eWW6pOl6NfJ5OtNBBRyTtYunnbtqikPTur6eakI8bQueyAFPhd3Exv8vYx7jah5NjYk+VkvQbsUQQUrg3IKXhVjzHmLTr4oXCqpSuhmQ727ijm1qwU+1mm263658t9/fwRoMC7dHi61OpTAG8zdCoc2X4lrlmGq0TYt+qH4oRMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=05W0qCRV; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=QYYwEhfXwRLzAY5jaoM99SxWFr054gCNmofaMYLqHtVsGiUUMrF8klwJ0cMph7uvlPrSs1fAA99Ra7bTS5ZyPHurvjolcc3zEM8M7zzAJoFTz+Dejs3QMb5MEnAZqFG4CeD+AK4IJc7o6zc3zuqx83Srq25eHek+IDmb5e1jp3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tc2o8afQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="05W0qCRV"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=9mQCjsi7dlJQ+lSZ9sXoEOXpUYxJ+F2D5zZ7rEHJnEI=; b=05W0qCRVqSkMVkmOh7ERVV0dIn
-	FoYF8EbXzhP7yJ5mvGgDdaX0508HQQhmccEwTwBmDTLfoceJUR6YxRklyEqBDj+Wr5Xqu46ANt6qx
-	kKpJUDi7GpcHmhCd1F0zqx8HLlwFygY/B5DpBVrSGLlmZBF+MUwwX2lRGM/oF5Ou5W5E=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wZmF1-0089Yw-0F; Wed, 17 Jun 2026 11:07:23 +0200
-Date: Wed, 17 Jun 2026 11:07:22 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Kyle Switch <kyle.switch@motor-comm.com>
-Cc: David Yang <mmyangfl@gmail.com>, olteanv@gmail.com, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, ming.xu@motor-comm.com,
-	xiaolin.xu@motor-comm.com, jianmin.wang@motor-comm.com,
-	de.ge@motor-comm.com
-Subject: Re: [RESEND PATCH v1] net: dsa: motorcomm: add yt92xx dsa driver
-Message-ID: <a689a734-bfd2-4e8f-85dd-9ae210b3161a@lunn.ch>
-References: <20260615111235.3544282-1-kyle.switch@motor-comm.com>
- <CAAXyoMOp8mYLUx4CQBn=9R8rNqEsb8ybWD0z+=FJgh2j-F0s8A@mail.gmail.com>
- <88f726d5-1617-4d2e-8fbb-d3da9478b386@motor-comm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tc2o8afQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3B671F000E9;
+	Wed, 17 Jun 2026 09:17:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781687842;
+	bh=ZnXuxdsvCZXi+yhcRRlP0nnKlUJzsEw2xOj6/CVvJuY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Tc2o8afQpKiwso4i+pUMbegXm9w4FdsldOJEIycWlQuBKzvzKP/80uB25ERY7H9to
+	 rlTBV9HS2My1rfz+o5ejfrZv7pxmZVA/3VLl0xw+1VpT9WdMAaKAWs2fQlF642MRWp
+	 R0fZrndsiKF6U6XD4tFD/tYT8DBjO/HryBTGwlRuKeptvYqTlfyqRpuLmqBTa3OAwh
+	 9j9K164Ij7Ja+gPqjqgK4f0zErjFpRDU0dtYxFsvmZ3zYO7nwHGO0sOdRGvdsT3kqX
+	 /nGioXXdZFVhPWbAzswPyQ096Fsff7VYQk1V1GJ3Rz20/AAqQwlk9iPVEJZVPjwkyo
+	 zcJ2kCDF+XuZQ==
+Date: Wed, 17 Jun 2026 11:17:20 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Wayen Yan <win847@gmail.com>
+Cc: netdev@vger.kernel.org, nbd@nbd.name,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH net] net: airoha: Fix TX scheduler queue mask loop upper
+ bound
+Message-ID: <ajJmIIpju9P3oyne@lore-desk>
+References: <178166704952.2212140.11002626760717132754@gmail.com>
+ <178168650178.2224380.3950331731013129336@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="VyUTMvxzWiaGc/iq"
+Content-Disposition: inline
+In-Reply-To: <178168650178.2224380.3950331731013129336@gmail.com>
+
+
+--VyUTMvxzWiaGc/iq
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <88f726d5-1617-4d2e-8fbb-d3da9478b386@motor-comm.com>
+Content-Transfer-Encoding: quoted-printable
 
-> >> +#define CMM_PARAM_CHK(expr, err_code)    \
-> >> +       do {                             \
-> >> +               if ((u32)(expr)) {       \
-> >> +                       return err_code; \
-> >> +               }                        \
-> >> +       } while (0)
-> >> +
-> >> +#define CMM_ERR_CHK(op, ret)           \
-> >> +       do {                           \
-> >> +               ret = (op);            \
-> >> +               if (ret != CMM_ERR_OK) \
-> >> +                       return ret;    \
-> >> +       } while (0)
-> > 
-> > Do not use macros like this.
-> 
-> Ans: Acknowledged, i will consider how to optimize them in the future.
+> On Tue, Jun 17, 2026, Lorenzo Bianconi wrote:
+> > Even if the current codebase supports just AIROHA_NUM_QOS_CHANNEL (4), =
+the hw
+> > exposes 32 hw QoS channels (AIROHA_NUM_TX_RING). Here we are just clear=
+ing the
+> > configuration, so I guess the current implementation is correct.
+>=20
+> Hi Lorenzo,
+>=20
+> You are right that there is no functional impact, and I agree this
+> should not go to net. Let me explain the register layout I was worried
+> about, and you can decide whether it is worth a net-next cleanup or
+> should just be dropped.
+>=20
+> The two macros are:
+>=20
+> 	REG_QUEUE_CLOSE_CFG(_n)             =3D 0x00a0 + ((_n) & 0xfc)
+> 	TXQ_DISABLE_CHAN_QUEUE_MASK(_n, _m) =3D BIT((_m) + (((_n) & 0x3) << 3))
+>=20
+> REG_QUEUE_CLOSE_CFG() masks the channel with 0xfc, and the bit macro
+> folds the channel with & 0x3 (mod 4) shifted by 3. So one 32-bit
+> register holds 4 channels x 8 queues, 8 queue bits per channel:
+>=20
+> 	channel 0 -> reg 0x00a0, bits  0..7
+> 	channel 1 -> reg 0x00a0, bits  8..15
+> 	channel 2 -> reg 0x00a0, bits 16..23
+> 	channel 3 -> reg 0x00a0, bits 24..31
+> 	channel 4 -> reg 0x00a4, bits  0..7
+> 	...
+>=20
+> In airoha_qdma_set_chan_tx_sched() the loop variable 'i' is passed as
+> the *queue* argument _m, not as a channel:
+>=20
+> 	for (i =3D 0; i < AIROHA_NUM_TX_RING; i++)   // i =3D 0..31
+> 		airoha_qdma_clear(qdma, REG_QUEUE_CLOSE_CFG(channel),
+> 				  TXQ_DISABLE_CHAN_QUEUE_MASK(channel, i));
+>=20
+> Since each channel only has AIROHA_NUM_QOS_QUEUES (8) queues, the correct
+> logic is to clear the 8 queue bits belonging to 'channel'. With i running
+> up to 31 the BIT() shift instead walks past those 8 bits and into the bit
+> ranges of the other channels folded into the same register. For channel 0
+> the accumulated mask becomes 0xffffffff, i.e. it touches channels 1..3 as
+> well.
+>=20
+> This is harmless today only because REG_QUEUE_CLOSE_CFG is written
+> exclusively here, via airoha_qdma_clear() (RMW clear), and the register
+> resets to 0 and is never set anywhere -- so clearing extra bits is a
+> no-op. Functionally the current code is fine, as you say.
+>=20
+> The point is just the loop-bound semantics: 'i' is a per-channel queue
+> index, so the bound should be AIROHA_NUM_QOS_QUEUES (8), not
+> AIROHA_NUM_TX_RING (32). The two happen to be related (32 =3D=3D 4 channe=
+ls *
+> 8 queues) but mean different things.
+>=20
+> Since there is no functional change, feel free to drop this if you would
+> rather not carry a cosmetic patch. If you think the clarity is worth it I
+> can resend against net-next without the Fixes tag.
+>=20
+> Thanks,
+> Wayen
+>=20
 
-It is not about optimization. Hiding a return statement in a macro is
-very bad style. It will lead to locking bugs, and resource leaks,
-because nobody knows the return is there.
+Sorry you are right, I misread the code, your patch is correct. Since as you
+pointed out REG_QUEUE_CLOSE_CFG() is actually never set at the moment and t=
+he
+default register value is 0, I would repost this patch for net-next as soon=
+ as
+it is opened (this will avoid merge conflicts).
 
-> >> +/*
-> >> + * Macro Definition
-> >> + */
-> >> +#ifndef NULL
-> >> +#define NULL 0
-> >> +#endif
-> >> +
-> >> +#ifndef FALSE
-> >> +#define FALSE 0
-> >> +#endif
-> >> +
-> >> +#ifndef TRUE
-> >> +#define TRUE 1
-> >> +#endif
-> > 
-> > Nonsense.
-> 
-> Ans: Acknowledge, will be fixed later.
+Regards,
+Lorenzo
 
-No. They will be fixed now.
+--VyUTMvxzWiaGc/iq
+Content-Type: application/pgp-signature; name=signature.asc
 
-> >> +       /* Print chipid here since we are interested in lower 16 bits */
-> >> +       dev_info(dev,
-> >> +                "Motorcomm %s ethernet switch.\n",
-> >> +                info->name);
-> > 
-> > Stop copy-n-paste.
-> 
-> Ans: Sry for this, i will recheck the code to make sure each line of comments and code
-> meaningful again.
+-----BEGIN PGP SIGNATURE-----
 
-Also, consider the comments. Do the comments add anything useful which
-is not already obvious from the code. Comments should be about "Why?".
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCajJmHwAKCRA6cBh0uS2t
+rFNyAP9PkgQvfxp6CioRi0IbaYkDxw09bkje9eUMjIyNtTw65AEAnUSecAOlA8Ng
+x0S8I6Vr7K3l5fdREJxsd22doNsKKwY=
+=kBNZ
+-----END PGP SIGNATURE-----
 
-> >> --- a/include/uapi/linux/if_ether.h
-> >> +++ b/include/uapi/linux/if_ether.h
-> >> @@ -118,7 +118,7 @@
-> >>  #define ETH_P_QINQ1    0x9100          /* deprecated QinQ VLAN [ NOT AN OFFICIALLY REGISTERED ID ] */
-> >>  #define ETH_P_QINQ2    0x9200          /* deprecated QinQ VLAN [ NOT AN OFFICIALLY REGISTERED ID ] */
-> >>  #define ETH_P_QINQ3    0x9300          /* deprecated QinQ VLAN [ NOT AN OFFICIALLY REGISTERED ID ] */
-> >> -#define ETH_P_YT921X   0x9988          /* Motorcomm YT921x DSA [ NOT AN OFFICIALLY REGISTERED ID ] */
-> >> +#define ETH_P_YT92XX   0x9988          /* Motorcomm YT92xx DSA [ NOT AN OFFICIALLY REGISTERED ID ] */
-> >>  #define ETH_P_EDSA     0xDADA          /* Ethertype DSA [ NOT AN OFFICIALLY REGISTERED ID ] */
-> >>  #define ETH_P_DSA_8021Q        0xDADB          /* Fake VLAN Header for DSA [ NOT AN OFFICIALLY REGISTERED ID ] */
-> >>  #define ETH_P_DSA_A5PSW        0xE001          /* A5PSW Tag Value [ NOT AN OFFICIALLY REGISTERED ID ] */
-> > 
-> > UAPI stands for User-space API. Do not change it unless there is a
-> > very very good reason.
-> > 
-> 
-> Ans: The default tpid both yt921x and yt922x is 0x9988. I have modified this to 
-> allow for simultaneous use in both yt922x and yt921x scenarios.
-
-As pointed out, this is UAPI. Any changes to this file need a good
-explanation how it does not change the user API. Do this break
-backwards compatibility with user space applications? Maybe tcpdump or
-wireshark has a dissector which expects ETH_P_YT921X and you have just
-broken it?
-
-> >> +#define YT922X_TAG_FORMAT2_NAME "yt922x-8b"
-> >> +#define YT922X_FORMAT2_TAG_LEN                  8
-> >> +#define YT922X_PKT_TYPE          GENMASK(15, 14)
-> >> +#define YT922X_8B_CPUTAG_PKT_FROM_CPU      0x1
-> >> +#define YT922X_8B_CPUTAG_SRC_PORT          GENMASK(6, 2)
-> >> +#define YT922X_8B_CPUTAG_DST_PORTMASK      GENMASK(8, 0)
-> >> +#define YT922X_8B_CPUTAG_DST_PORTMASK_0      BIT(15)
-> >> +#define YT922X_8B_CPUTAG_DST_PORTMASK_0_EN      0x1
-> >> +#define YT922X_8B_CPUTAG_FORCE_DST         BIT(9)
-> >> +#define YT922X_8B_CPUTAG_FORCE_DST_EN      0x1
-> > 
-> > If yt922x tag format shares no common with yt921x, make a new tag driver.
-> 
-> Ans: thank you for your suggestion, we will consider whether to create a new driver in the new file.
-
-When you look at other tag drivers, you will also notice some drivers
-implement two taggers in one file. So consider this if there is any
-shared code.
-
-> >> +static struct dsa_tag_driver *dsa_tag_driver_array[] = {
-> >> +       &DSA_TAG_DRIVER_NAME(yt921x_netdev_ops),
-> >> +       &DSA_TAG_DRIVER_NAME(yt922x_4b_netdev_ops),
-> >> +       &DSA_TAG_DRIVER_NAME(yt922x_8b_netdev_ops),
-> >> +};
-> > 
-> > If both are supported by the chip and 4b does nothing more than 8b
-> > does, do not bother with it.
-> 
-> Ans: 4b and 8b dsa tag may have different application scenarios. from my opinion,
->      1. 4b dsa tag can save 4 bytes of payload
->      2. 8b dsa tag carry more package info.
-
-How do you plan to swap between the different formats?
-
-The user perspective is that the machine has a collection of interface
-which are used just as normal, using Linux tools likes like
-iproute2. If the user enables a feature which requires the 8b tag
-format, will you change the format from the DSA driver? And swap back
-to the 4 byte format when the feature is no longer needed?
-
-	Andrew
+--VyUTMvxzWiaGc/iq--
