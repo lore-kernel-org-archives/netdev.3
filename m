@@ -1,141 +1,178 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87603399350
-	for <netdev@vger.kernel.org>; Wed, 17 Jun 2026 09:17:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEFE939B4A3;
+	Wed, 17 Jun 2026 09:17:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781687843; cv=none; b=j2viA8TyHNbRjGurDC6HNa1yvi1jLHxbELZsO7lt9+drE/sNDmYsnSeREoCO5CjthM36vYfqmGhCvEkZp2+KI2hvazIZBKGFIbfY/WPWzqPkcGQdJBR8TOAHT74FyAEdhNbJN5vK7U+YQ5cXhPcg82pNwEZVrY5eUcv62Ik7RCk=
+	t=1781687871; cv=none; b=V71M6voBXu+3puUQCv4ufPKZJESfauXvr/ivqZCcTG+Zwz4KeGd3C0QG0DUqDlxS9s2Cy9HpXkkGo8ppUiItEC4x5i+km8its8FRCHp/aC8hX9082pLXKYDPjhYgVK44z0RBqVG8+0I2MMREVDteFV8IX4iLA8Is6MOOG8Ucj/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781687843; c=relaxed/simple;
-	bh=NKLImyI3HYH86Vh5hC947ygnor4EsnF46Gid2tc64Bc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QYYwEhfXwRLzAY5jaoM99SxWFr054gCNmofaMYLqHtVsGiUUMrF8klwJ0cMph7uvlPrSs1fAA99Ra7bTS5ZyPHurvjolcc3zEM8M7zzAJoFTz+Dejs3QMb5MEnAZqFG4CeD+AK4IJc7o6zc3zuqx83Srq25eHek+IDmb5e1jp3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tc2o8afQ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781687871; c=relaxed/simple;
+	bh=dAGm4PiwWs80ZnheUKD2LU5YAlmFHcW8oMdB+VthDOQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=jNdux0cmCuZ1mKFjXUg66iWfS1yb6Npo4nK2rA+ReiZn0zK1sAcOefH4kIIaDxuVcb5nULvZ8iu2VZtHBD0xZHLLirNNqfXvIXRsGP3hYwfwAtjwiLvwC9sWs8tABI44Eb2dw+KzVbu+U5J44BEPbmjawupnqiA22yJRdYHSYGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OwRxlSgt; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tc2o8afQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3B671F000E9;
-	Wed, 17 Jun 2026 09:17:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781687842;
-	bh=ZnXuxdsvCZXi+yhcRRlP0nnKlUJzsEw2xOj6/CVvJuY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Tc2o8afQpKiwso4i+pUMbegXm9w4FdsldOJEIycWlQuBKzvzKP/80uB25ERY7H9to
-	 rlTBV9HS2My1rfz+o5ejfrZv7pxmZVA/3VLl0xw+1VpT9WdMAaKAWs2fQlF642MRWp
-	 R0fZrndsiKF6U6XD4tFD/tYT8DBjO/HryBTGwlRuKeptvYqTlfyqRpuLmqBTa3OAwh
-	 9j9K164Ij7Ja+gPqjqgK4f0zErjFpRDU0dtYxFsvmZ3zYO7nwHGO0sOdRGvdsT3kqX
-	 /nGioXXdZFVhPWbAzswPyQ096Fsff7VYQk1V1GJ3Rz20/AAqQwlk9iPVEJZVPjwkyo
-	 zcJ2kCDF+XuZQ==
-Date: Wed, 17 Jun 2026 11:17:20 +0200
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Wayen Yan <win847@gmail.com>
-Cc: netdev@vger.kernel.org, nbd@nbd.name,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH net] net: airoha: Fix TX scheduler queue mask loop upper
- bound
-Message-ID: <ajJmIIpju9P3oyne@lore-desk>
-References: <178166704952.2212140.11002626760717132754@gmail.com>
- <178168650178.2224380.3950331731013129336@gmail.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OwRxlSgt"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 32AE0C2B9CB;
+	Wed, 17 Jun 2026 09:17:52 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 44B58601AA;
+	Wed, 17 Jun 2026 09:17:47 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9F496106CA34E;
+	Wed, 17 Jun 2026 11:17:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1781687866; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=+0AqFZZvY0X0WypoYom4SAfWrYqe9FmXmaw/Ruojua0=;
+	b=OwRxlSgtA7X9jK4+a/Ru9tHlDjG2YqNEmcUMawRKfQBsjnIGYczrsLd384l2o31yYDkamX
+	ec5YjD94KnI7l5N/BEFLR8AGqlfIEYUCkWAsy96X3uVwdubFD7pEKWXTht5T4xzySTjx1W
+	99aX7P6I81tXKbNku4+vEuiv17QU6bdnmYjRcGr/OS0fgmKxXOUrtVmG4BRQdkAIaObN4X
+	FqCy54a7kzGmzKId5OA1m3wOw1HSx/Ie/OrLqbwBlykuLywiOktQxi0oZb8EW6acSaRiDZ
+	m/cbYmEuiFqmdKbm9GwP5gkl71tnfDsAIR9bG3JXLcokaoZ8CbIPvdj7QW76gw==
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Date: Wed, 17 Jun 2026 11:17:29 +0200
+Subject: [PATCH net v3 1/2] net: macb: give reasons for Tx SKB kfree
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="VyUTMvxzWiaGc/iq"
-Content-Disposition: inline
-In-Reply-To: <178168650178.2224380.3950331731013129336@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260617-macb-drop-tx-v3-1-d4c7e57d890b@bootlin.com>
+References: <20260617-macb-drop-tx-v3-0-d4c7e57d890b@bootlin.com>
+In-Reply-To: <20260617-macb-drop-tx-v3-0-d4c7e57d890b@bootlin.com>
+To: Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Haavard Skinnemoen <hskinnemoen@atmel.com>, Jeff Garzik <jeff@garzik.org>, 
+ Conor Dooley <conor.dooley@microchip.com>
+Cc: Paolo Valerio <pvalerio@redhat.com>, Nicolai Buchwitz <nb@tipi-net.de>, 
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, 
+ Gregory CLEMENT <gregory.clement@bootlin.com>, 
+ =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>, 
+ Tawfik Bayouk <tawfik.bayouk@mobileye.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.15.2
+X-Last-TLS-Session-Version: TLSv1.3
 
+Using dev_consume_skb_any() marks the drop reason as SKB_CONSUMED every
+time we free a Tx SKB. Instead, replace by SKB_DROP_REASON_NOT_SPECIFIED
+when packet has been dropped without sending.
 
---VyUTMvxzWiaGc/iq
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+It is not precise but at least differs from SKB_CONSUMED and is used by
+many drivers for their error codepaths through dev_kfree_skb_{any,irq}().
 
-> On Tue, Jun 17, 2026, Lorenzo Bianconi wrote:
-> > Even if the current codebase supports just AIROHA_NUM_QOS_CHANNEL (4), =
-the hw
-> > exposes 32 hw QoS channels (AIROHA_NUM_TX_RING). Here we are just clear=
-ing the
-> > configuration, so I guess the current implementation is correct.
->=20
-> Hi Lorenzo,
->=20
-> You are right that there is no functional impact, and I agree this
-> should not go to net. Let me explain the register layout I was worried
-> about, and you can decide whether it is worth a net-next cleanup or
-> should just be dropped.
->=20
-> The two macros are:
->=20
-> 	REG_QUEUE_CLOSE_CFG(_n)             =3D 0x00a0 + ((_n) & 0xfc)
-> 	TXQ_DISABLE_CHAN_QUEUE_MASK(_n, _m) =3D BIT((_m) + (((_n) & 0x3) << 3))
->=20
-> REG_QUEUE_CLOSE_CFG() masks the channel with 0xfc, and the bit macro
-> folds the channel with & 0x3 (mod 4) shifted by 3. So one 32-bit
-> register holds 4 channels x 8 queues, 8 queue bits per channel:
->=20
-> 	channel 0 -> reg 0x00a0, bits  0..7
-> 	channel 1 -> reg 0x00a0, bits  8..15
-> 	channel 2 -> reg 0x00a0, bits 16..23
-> 	channel 3 -> reg 0x00a0, bits 24..31
-> 	channel 4 -> reg 0x00a4, bits  0..7
-> 	...
->=20
-> In airoha_qdma_set_chan_tx_sched() the loop variable 'i' is passed as
-> the *queue* argument _m, not as a channel:
->=20
-> 	for (i =3D 0; i < AIROHA_NUM_TX_RING; i++)   // i =3D 0..31
-> 		airoha_qdma_clear(qdma, REG_QUEUE_CLOSE_CFG(channel),
-> 				  TXQ_DISABLE_CHAN_QUEUE_MASK(channel, i));
->=20
-> Since each channel only has AIROHA_NUM_QOS_QUEUES (8) queues, the correct
-> logic is to clear the 8 queue bits belonging to 'channel'. With i running
-> up to 31 the BIT() shift instead walks past those 8 bits and into the bit
-> ranges of the other channels folded into the same register. For channel 0
-> the accumulated mask becomes 0xffffffff, i.e. it touches channels 1..3 as
-> well.
->=20
-> This is harmless today only because REG_QUEUE_CLOSE_CFG is written
-> exclusively here, via airoha_qdma_clear() (RMW clear), and the register
-> resets to 0 and is never set anywhere -- so clearing extra bits is a
-> no-op. Functionally the current code is fine, as you say.
->=20
-> The point is just the loop-bound semantics: 'i' is a per-channel queue
-> index, so the bound should be AIROHA_NUM_QOS_QUEUES (8), not
-> AIROHA_NUM_TX_RING (32). The two happen to be related (32 =3D=3D 4 channe=
-ls *
-> 8 queues) but mean different things.
->=20
-> Since there is no functional change, feel free to drop this if you would
-> rather not carry a cosmetic patch. If you think the clarity is worth it I
-> can resend against net-next without the Fixes tag.
->=20
-> Thanks,
-> Wayen
->=20
+Pass a reason around rather than call dev_consume_skb_any() or
+dev_kfree_skb_any() because macb_tx_unmap() is called for cleanup in
+all cases.
 
-Sorry you are right, I misread the code, your patch is correct. Since as you
-pointed out REG_QUEUE_CLOSE_CFG() is actually never set at the moment and t=
-he
-default register value is 0, I would repost this patch for net-next as soon=
- as
-it is opened (this will avoid merge conflicts).
+macb_tx_error_task() is made complex because some SKBs encountered have
+been successfully sent.
 
-Regards,
-Lorenzo
+Fixes: 89e5785fc8a6 ("[PATCH] Atmel MACB ethernet driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+---
+ drivers/net/ethernet/cadence/macb_main.c | 24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
 
---VyUTMvxzWiaGc/iq
-Content-Type: application/pgp-signature; name=signature.asc
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index a12aa21244e8..9caae1ef52b1 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -1201,7 +1201,8 @@ static int macb_halt_tx(struct macb *bp)
+ 					bp, TSR);
+ }
+ 
+-static void macb_tx_unmap(struct macb *bp, struct macb_tx_skb *tx_skb, int budget)
++static void macb_tx_unmap(struct macb *bp, struct macb_tx_skb *tx_skb,
++			  int budget, enum skb_drop_reason reason)
+ {
+ 	if (tx_skb->mapping) {
+ 		if (tx_skb->mapped_as_page)
+@@ -1214,7 +1215,7 @@ static void macb_tx_unmap(struct macb *bp, struct macb_tx_skb *tx_skb, int budge
+ 	}
+ 
+ 	if (tx_skb->skb) {
+-		dev_consume_skb_any(tx_skb->skb);
++		dev_kfree_skb_any_reason(tx_skb->skb, reason);
+ 		tx_skb->skb = NULL;
+ 	}
+ }
+@@ -1297,7 +1298,8 @@ static void macb_tx_error_task(struct work_struct *work)
+ 	 * Free transmit buffers in upper layer.
+ 	 */
+ 	for (tail = queue->tx_tail; tail != queue->tx_head; tail++) {
+-		u32	ctrl;
++		enum skb_drop_reason reason = SKB_DROP_REASON_NOT_SPECIFIED;
++		u32 ctrl;
+ 
+ 		desc = macb_tx_desc(queue, tail);
+ 		ctrl = desc->ctrl;
+@@ -1307,7 +1309,10 @@ static void macb_tx_error_task(struct work_struct *work)
+ 		if (ctrl & MACB_BIT(TX_USED)) {
+ 			/* skb is set for the last buffer of the frame */
+ 			while (!skb) {
+-				macb_tx_unmap(bp, tx_skb, 0);
++				/* The reason parameter is unused because it
++				 * only matters when skb is valid.
++				 */
++				macb_tx_unmap(bp, tx_skb, 0, SKB_CONSUMED);
+ 				tail++;
+ 				tx_skb = macb_tx_skb(queue, tail);
+ 				skb = tx_skb->skb;
+@@ -1326,6 +1331,7 @@ static void macb_tx_error_task(struct work_struct *work)
+ 				bp->dev->stats.tx_bytes += skb->len;
+ 				queue->stats.tx_bytes += skb->len;
+ 				bytes += skb->len;
++				reason = SKB_CONSUMED;
+ 			}
+ 		} else {
+ 			/* "Buffers exhausted mid-frame" errors may only happen
+@@ -1339,7 +1345,7 @@ static void macb_tx_error_task(struct work_struct *work)
+ 			desc->ctrl = ctrl | MACB_BIT(TX_USED);
+ 		}
+ 
+-		macb_tx_unmap(bp, tx_skb, 0);
++		macb_tx_unmap(bp, tx_skb, 0, reason);
+ 	}
+ 
+ 	netdev_tx_completed_queue(netdev_get_tx_queue(bp->dev, queue_index),
+@@ -1458,7 +1464,7 @@ static int macb_tx_complete(struct macb_queue *queue, int budget)
+ 			}
+ 
+ 			/* Now we can safely release resources */
+-			macb_tx_unmap(bp, tx_skb, budget);
++			macb_tx_unmap(bp, tx_skb, budget, SKB_CONSUMED);
+ 
+ 			/* skb is set only for the last buffer of the frame.
+ 			 * WARNING: at this point skb has been freed by
+@@ -2357,7 +2363,11 @@ static unsigned int macb_tx_map(struct macb *bp,
+ 	for (i = queue->tx_head; i != tx_head; i++) {
+ 		tx_skb = macb_tx_skb(queue, i);
+ 
+-		macb_tx_unmap(bp, tx_skb, 0);
++		/* The reason parameter is unused, tx_skb->skb has not yet
++		 * been assigned. Parent caller is responsible for freeing
++		 * the SKB.
++		 */
++		macb_tx_unmap(bp, tx_skb, 0, SKB_DROP_REASON_NOT_SPECIFIED);
+ 	}
+ 
+ 	return -ENOMEM;
 
------BEGIN PGP SIGNATURE-----
+-- 
+2.54.0
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCajJmHwAKCRA6cBh0uS2t
-rFNyAP9PkgQvfxp6CioRi0IbaYkDxw09bkje9eUMjIyNtTw65AEAnUSecAOlA8Ng
-x0S8I6Vr7K3l5fdREJxsd22doNsKKwY=
-=kBNZ
------END PGP SIGNATURE-----
-
---VyUTMvxzWiaGc/iq--
