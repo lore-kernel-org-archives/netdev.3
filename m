@@ -1,67 +1,147 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010032.outbound.protection.outlook.com [52.101.69.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE84370AD6;
-	Wed, 17 Jun 2026 11:07:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781694479; cv=none; b=kjeGArxkuwuUYeXeAORLvBi9AVUKUbo0S09MyRSOyukW/1sFuuH3nO7Mnh8lA86wi2aJhtbT62fqEg6jm/XJymW91bfFGMlnpFKrhXFFgtQQJpl7IEju7Kcrxgwd5X3fqWdKWWBloakeKgyu4WaQhlUPTrFV+QvHJYm0MAGoDCk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781694479; c=relaxed/simple;
-	bh=t8E4VL5k1FCWK4bBsLA60HlUaTKskXgiRWXceTi/Z7g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SYkfYBRqaGqTMdUGbcl2Qd4dprzdGTDzGflPI5nzMSNhVXlCIVuXwiUlF8S/6usluOXk4NrQuXQ6XNH5Kd8WVXQhG61Ysq/5VcAHIHD7y+PGxg4l+ZX8fQsM8fNJJP0BLZNqqJHPRNFI7NwRC3wNU5T5ZabhyL2CxxpfsQa6jog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NLqJtmaf; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A993B42E1
+	for <netdev@vger.kernel.org>; Wed, 17 Jun 2026 11:08:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781694502; cv=fail; b=fhxrXMcL9+29Y0AjBNRFcLmppS9HKaBqEoDnoijLKWNpULqLwdGfNW6EfgPMCzj98InIptv++VQIZJJSyiPxP6oxP5sVvFRv+8N4kTC95koDkAi8K+JNic6lS9ysXHLDp2WSgKnoG5SsVu9ROd4VcK9d07/QBYSzij2xV5QLt1A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781694502; c=relaxed/simple;
+	bh=a31iT3MgXNiSF5lEXedT5u9SGjWFq7glTl08P6jO1dU=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=cxyijM+9GnrfeGVsAX03cCliLbPRHaU3DgIMu6IDLbeyTEorRvhhCXTM27P0hYPRfcz3lmcN6E/UwY5tZ8kIebjBOz5ZFoGeelX0g19CRj2SQuECnmMC6g9SMRwRJ4SgnVUipUhTER+tqJNrW0cIBtUNmQcm3pmEfz2gwsNGYH4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=etas.com; spf=pass smtp.mailfrom=etas.com; dkim=pass (2048-bit key) header.d=etas.com header.i=@etas.com header.b=HnDHaBxj; arc=fail smtp.client-ip=52.101.69.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=etas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etas.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NLqJtmaf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD8091F000E9;
-	Wed, 17 Jun 2026 11:07:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781694477;
-	bh=t8E4VL5k1FCWK4bBsLA60HlUaTKskXgiRWXceTi/Z7g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=NLqJtmafqtIX3Tb8AE5w+R11U0MKcAWK4r/JDthJKBeBFww+/nhMWIF7Vcjo3XlrP
-	 C+sMhhL877RwyM+BGepimtw0NisPuB3Fe44rYPXiUZt9dVlwKN4VrqVF9me6YdDbHl
-	 pFFXT0/2ZIigetaxoFUza6yYSkGZgku//+clVHrXjPGOM3iNH3j6c9GZ2OoQTBrAiL
-	 VNnD6yyvKpw7cHJSzgO6M1+U/I2Q5KYWJMTWD6vE4mdDhWQ/4FmLOGMt9O6OYslvQT
-	 ZVS4vIGo6Gf6cZHxw6BlWAWXLCudd7RA3cuiRLh4h9rHyWFqgckeY4P/SUMhk1pdmH
-	 DcVGLtqx4J2yA==
-Date: Wed, 17 Jun 2026 13:07:50 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: Val Packett <val@packett.cool>, Al Viro <viro@zeniv.linux.org.uk>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Askar Safin <safinaskar@gmail.com>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-api@vger.kernel.org, netdev@vger.kernel.org, 
-	Matthew Wilcox <willy@infradead.org>, Jens Axboe <axboe@kernel.dk>, 
-	Christoph Hellwig <hch@infradead.org>, David Howells <dhowells@redhat.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Pedro Falcato <pfalcato@suse.de>, Miklos Szeredi <miklos@szeredi.hu>, patches@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.cz>, Steven Rostedt <rostedt@goodmis.org>, 
-	fuse-devel <fuse-devel@lists.linux.dev>, Bernd Schubert <bernd@bsbernd.com>
-Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for
- preadv2/pwritev2
-Message-ID: <20260617-attest-gewechselt-tragik-7ed473860051@brauner>
-References: <20260531010107.1953702-1-safinaskar@gmail.com>
- <20260601-enthusiasmus-canceln-anlehnen-0e62317a9784@brauner>
- <CAHk-=wifX_rrDjRGnDnOqE-usptAukuXKrmuPuVDP5bOCBWzGQ@mail.gmail.com>
- <20260601173325.GH2636677@ZenIV>
- <83f05c55-efba-4bf5-abfe-d2ab0819e904@packett.cool>
- <CAJnrk1Y9egYizkx1H9K0cqxSYuB+7vLvQbV7Tf4C5eHFqnnC-A@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=etas.com header.i=@etas.com header.b="HnDHaBxj"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=K5P2TkCRuZfOu3VeHxRNbWTRKkDWNyb83PHF6K1hggiIZ17AdCHd4eh9eliqKfCTpMHDPGBQ9IkWMtE0RB2omcKrLe2EqrCn0tvJO2k+fu795x105VNOTK2u4hJ1jllNPfCnsd7WDpJKmlFZ2FJnu541h0X1Jl6Z1m0wsisYXlYqpZJh2MrQMHAM1MqgVqqBbDdt3meFeUv12u+wHglJtzymJpLVBBc4WJhSRtaEd2NxcZr8aX+f1m9yHvtXWoWv28q3Z4tNvTYwfFL/bsSiajAzwJCSYRgPvT8UBfn3rDDvOp+PHlS5GGm1EylOjpw9JzCOFk1JQWvQe+FRUqf7jQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=a31iT3MgXNiSF5lEXedT5u9SGjWFq7glTl08P6jO1dU=;
+ b=RLMM25lk4BiCu8ahi0toOMb4H7vGrtmE8GEGhlDXeWO3y/HYs8BA8OigghrNHSMd22x24ZVQEGG1rq8AQnXM4TLrVXYX3Kqjnj3BDG4O281rCumqB+dx3OnL7eASbe8S6pjoU6bZHB/hFTrrNyrkyhurzunpHlwUKyfEbIGMfOoBI1WV8zl9/Tox3L43YH7fKgmz++tzKH8Vq2zRBNKq/Wu9yq6APgqaYv4cB9mbQkEBybCDSkL0aZhBlfludr2Sj0uJTVb0fc146spZhrnTwu6fiQVJ8NYsLHmjicdJWcjUuyxocIeK200/ebR4OIeZ3K1c0d+MlWVhVTA8T89cHw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=etas.com; dmarc=pass action=none header.from=etas.com;
+ dkim=pass header.d=etas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=etas.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=a31iT3MgXNiSF5lEXedT5u9SGjWFq7glTl08P6jO1dU=;
+ b=HnDHaBxjr8c3GJUrPoU48BMi9Wp2Ubk7iao7CtXNDrRTddKKT7ng5NGsI1tHlkRNr5R90Nka3sa3UJnS4YaV1BDSxbce27ulF8UgWYC0PGw8JZuIwgwQVDR32LJW+rRHCWiu9Tz1ym0uAEUo/oTJDZ9Z/wVTy3xlqFOKpsD8RHyhcBmz3hqQxbmNH3FxG8mg8yU/4zmmecZq3znb+Jn8RHhUQ3zUR+bF1GF+yQgOpBRi70rjurkELgOd2BS/uiSRNf9V9NI3jq0umPDjcsaJYW5dsNr1K07//c1mRx3u+SFwSfcE2em3lEdizmD4N+gPwRzXt00pJZssazmrr0MsLA==
+Received: from GVXPR10MB8360.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:150:1e9::20)
+ by DB8PR10MB3355.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:f8::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.11; Wed, 17 Jun
+ 2026 11:08:14 +0000
+Received: from GVXPR10MB8360.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::142d:3d0d:e935:bf09]) by GVXPR10MB8360.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::142d:3d0d:e935:bf09%4]) with mapi id 15.21.0139.009; Wed, 17 Jun 2026
+ 11:08:13 +0000
+From: "Koehrer Mathias (ETAS-ICA/XPC-Fe1)" <mathias.koehrer@etas.com>
+To: Paolo Valerio <pvalerio@redhat.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>
+CC: Nicolas Ferre <nicolas.ferre@microchip.com>, Claudiu Beznea
+	<claudiu.beznea@tuxon.dev>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Lorenzo Bianconi
+	<lorenzo@kernel.org>, =?iso-8859-1?Q?Th=E9o_Lebrun?=
+	<theo.lebrun@bootlin.com>, Nicolai Buchwitz <nb@tipi-net.de>
+Subject: Re: [PATCH net-next v6 7/7] net: macb: introduce ndo_xdp_xmit support
+Thread-Topic: [PATCH net-next v6 7/7] net: macb: introduce ndo_xdp_xmit
+ support
+Thread-Index: AQHc+ZG/hL4YmyignEqKKbVs2X18wLY5MgHPgAltdL0=
+Date: Wed, 17 Jun 2026 11:08:13 +0000
+Message-ID:
+ <GVXPR10MB8360BB01B3BBCFF982EA127E9FE42@GVXPR10MB8360.EURPRD10.PROD.OUTLOOK.COM>
+References: <20260323221047.2749577-1-pvalerio@redhat.com>
+ <20260323221047.2749577-8-pvalerio@redhat.com>
+ <GVXPR10MB8360DB5D2F374574CE33C5779F1B2@GVXPR10MB8360.EURPRD10.PROD.OUTLOOK.COM>
+In-Reply-To:
+ <GVXPR10MB8360DB5D2F374574CE33C5779F1B2@GVXPR10MB8360.EURPRD10.PROD.OUTLOOK.COM>
+Accept-Language: de-DE, en-US
+Content-Language: de-DE
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=etas.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: GVXPR10MB8360:EE_|DB8PR10MB3355:EE_
+x-ms-office365-filtering-correlation-id: 0e2bd0c1-7a2b-4014-47d0-08decc60b9b1
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|366016|376014|7416014|23010399003|56012099006|4143699003|11063799006|18002099003|22082099003|38070700021;
+x-microsoft-antispam-message-info:
+ Qc7H89eZyb0XaKKQS4a4LB3QVaEyByFvLWPXjJMneIWE12vEOqRRck56fmS9wKvB/B6IiUc9RlkMpIk3Q3GmdfgOmqTSivkz+c07ENG8j/+7VOGs2RWgTOQLGGf6ppSBMCOH0yWjXa+4qMGaXvi2Fodz/ptBl5FU42OE353rOvcyBFNri1WLziDT6pUpDhiMjwaln5/MkzmfFUxeMXqiuH1rva+89DgnONhJ685e8sAcxKl0e7pBieu7pHfHMgzGh3e0Q+bekUKBjHR45qO5Pvle3v/8kvfBXHWBb0rBPpNWRnSRCDMV8jH0eG62rcorM8KzqLy7z8b9WdKf7fkrLXVOcGN190fUPkowlR6kgq9pJutxUtYm6NZPBdbvRs8yoMlD2QYBYR/1Wi7aPLlzhTtEopg+t26ul2SDUJydVHZnsYDeY4CWaxNsGVls2g6D8zkEaOeENgfk1fAhpknFCVe0Rmrq5laaxsk7go6/Zc1TxsDsgdnyU21mq3ZG6QtpY4wCpHTkiiTVawfvI/Zy0IshpCWKx0yYxzaRJuakjb1jhugw3B6Bnp+BSGc1hQW/xakIZYoKBWLkLDCg8GTDX4RCcNOIy3Vd7fi9p9/BuZXJJgJTZQCzBj6NbOcUKAEE72oNxqZsPfzwu7uv0jrnW6aczUaHIRfVXMQ5YnemEc7+AdI8rKMssKqQSgrOu1L7cy6jjUiJjaLjWqM0bTvC2m5vWH9KzR9eTWMnItoO8MfH3IeuXck0d8RFpP6IhgT2
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR10MB8360.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(23010399003)(56012099006)(4143699003)(11063799006)(18002099003)(22082099003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?1wQLkcB7Qy/lYpBQ50XgHykLpfQfpEM1m30tcdMgCFm9FCYDI+re0JZrWK?=
+ =?iso-8859-1?Q?kTqaGnqW0qKsvh3GqVLIl8OEwiZWgo4Afs5vAEvVUMlfoSKNq0N9jkNfxY?=
+ =?iso-8859-1?Q?KvzvpfXn2DMpKVDPQI9CHCiELsvL3kJkwyEgRG+X6nLlsxGRLt0X6kde/c?=
+ =?iso-8859-1?Q?Z4a0ei9QtiQNYlddUXxxAeU1sezxYVSsryoN54+GR8/Yg/AT18vVuZ9NZG?=
+ =?iso-8859-1?Q?oy9Nle/S+kOxHtj/GKmTRjrVLf+GQKAj11/Ikn++sySixchVB1e2RlK8lB?=
+ =?iso-8859-1?Q?4TEVBr5+ywm2i439qZriy7HRtBDdB5MC8pZ8k7yPuDzujhe9e+7+5iAChm?=
+ =?iso-8859-1?Q?FpaWQhzEqbQ1hAdwp+z5ZvGJ7EDkXHZZ/TZoXjZ3gF9ExittDeB18fOnf5?=
+ =?iso-8859-1?Q?Sl5O/2MCMbbKQCGsSuPUQmY0NUYrXrTd4M4e2GmyVJoHTbYMrtniqDRvhw?=
+ =?iso-8859-1?Q?jwV18jvmHM9C4HfpA5WrVPPhTTCF7wejkUnKQ4jgVK2pyVEjEtahip38YV?=
+ =?iso-8859-1?Q?QxNgMNQfid5vjAH1kh33WSonbjlJ6RqdrI8cxlra87xOQeNjh7DRqNTWLh?=
+ =?iso-8859-1?Q?l8v7n6P3ePAl83NCIXzE3FJVa96PB4UtadbbwwLp+S/S9RQZ0UPDmUPgKx?=
+ =?iso-8859-1?Q?79W4uctJk+XZX98RstoDlnEVtq6GDyTkxhhbgBsdQrF8bn/lvbtm18Zpaa?=
+ =?iso-8859-1?Q?RPCvDBt4QdiF7W5gQAe7gT+NT6A3lV4VxDeDoywnxq++NgNrypaWdTDjHg?=
+ =?iso-8859-1?Q?0HmuDv+8eerSwLVUcU9UHi7nFtmHplziG3cqqqHLaOoFoxBPLX8ovRPcPg?=
+ =?iso-8859-1?Q?g5vGNYnozFgXK7AKNXu5huHTcRL2A/Sm1qXrsnVoDRofh578adpwCdASxV?=
+ =?iso-8859-1?Q?bl7HWMiNswvhnYI9CCJCa4isjsw9ASLOG1764wMC/mQe8pTR+bzG73gcl2?=
+ =?iso-8859-1?Q?rbdc607pGvJIR8tQ9YthI+cxI4yopZqFmAiYqoGuX5WA+HYOK1k0XGUu4S?=
+ =?iso-8859-1?Q?ar4yu1f1LfVyTIA2DGSiAD8UUNW4fbEfs4HRazu1hosAfv41OA9ELs9XDm?=
+ =?iso-8859-1?Q?eJlkkDvm3HHCgD6c9QQfI8WQ+JVbYxhpg7rCpI/Ksx0PsYgroA4CtkiHUe?=
+ =?iso-8859-1?Q?3IlEK8hd91dAxhJCTZrNpEyTc+ySFvDnp6HPp6aCSF3hNRmkHfp2GDzEbu?=
+ =?iso-8859-1?Q?XmsIU27pg0RrBqFmjf0UraLq69Xx44J8RNelK+C7zQoK3WI0u1MQ1eZB8n?=
+ =?iso-8859-1?Q?Ajsgrc4J+cIuZoRY23bTxUYTKOxbCjbtcoD9YNravWOGMAuOOUhMp+qkOo?=
+ =?iso-8859-1?Q?xZXEPeWpT3aMpQJrbfbrHNQtXAcSCNn4mgIL926/Vnoh7saa7lHRaZb9tq?=
+ =?iso-8859-1?Q?U23j6ALJP89rwS+iuvKDArLOSwrOJGi2QV4P7lYZVdUVbTqp3Cl6w49KA9?=
+ =?iso-8859-1?Q?HPbC34XVz72LhBjrYfdya3IIqLdlxSVrRjD9jEayzn8po4GHrmGwNDE9lW?=
+ =?iso-8859-1?Q?aENWiWPKpvYX47agOtDOywmW4QhaZkeyX7GMe6AVgHNqrn3o8gTVzI6UAn?=
+ =?iso-8859-1?Q?86BhOVKw63cBRtDH7K5mv52kqOGt1y6n0hDd4QfDVtHWeAb2j7ABHFpnsD?=
+ =?iso-8859-1?Q?tdrPj5XO4NATtBQlO0MD6MhWYYq1KJTDbdK/qoSi21dI+XWUWm790Zw4uA?=
+ =?iso-8859-1?Q?v6rI77boFZqQRFyKRG1tsMtaPABiNwf75rBNHSwNr0G9FRP5yoyr4zLNpL?=
+ =?iso-8859-1?Q?lXBLF8Dch74ceXVGdxaEKhcm4f9a0oPDrTzRAM6uNNZ2xk?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAJnrk1Y9egYizkx1H9K0cqxSYuB+7vLvQbV7Tf4C5eHFqnnC-A@mail.gmail.com>
+X-OriginatorOrg: etas.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: GVXPR10MB8360.EURPRD10.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0e2bd0c1-7a2b-4014-47d0-08decc60b9b1
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Jun 2026 11:08:13.7281
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: EHK4PvKc3rgAFaijpPjN/Sb0VzbhCD40tGw2w3E6/No/MZ61thaENc9TLAjSPz2wVk7v+s4is/lfvBcSMR21vA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR10MB3355
 
-> After this patch, step b) is a straight copy which means step d)'s
-> fixup doesn't modify what's in the pipe. This could be fixed up in
-> libfuse to not depend on modify-after-vmsplice, but I don't think this
-> helps for applications using already-released libfuse versions. I
-> think this patch needs to be reverted.
-
-Note, nothing was merged. I deliberately kept in -next though for a long
-time to see how quickly we'd see regressions.
+Hi,=0A=
+> within the function gem_xdp_xmit, there should be a call to "xdp_return_f=
+rame" for each successful processing in=0A=
+> "macb_xdp_submit_frame".=0A=
+> Otherwise, this driver does not work properly with Ethernet drivers that =
+XDP_REDIRECT to this driver and use =0A=
+> page_pools. In this case, the pages from the pools are not returned to th=
+e pool.=0A=
+Please ignore the complain.=0A=
+I think the existing code is fine, I found a bug on my side. Sorry for the =
+confusion.=0A=
+=0A=
+Best regards=0A=
+=0A=
+Mathias=
