@@ -1,126 +1,99 @@
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012007.outbound.protection.outlook.com [52.101.43.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E97A3EEAE9
-	for <netdev@vger.kernel.org>; Wed, 17 Jun 2026 11:47:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.7
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781696874; cv=fail; b=C1DiDY5R4Up2958Z0a6GI8azvefohNq8Pp9Rw/UhWLbEXRHU5/HQNhRnec8VRk7fbw77RRPwFOd5/dKROWMElhotj690Z1/vY0utWJxKj/LAcK4p/uzcvLHQvFpFtW8tS4X1qjFcAi4s83yo6Q54/CAWQJZvoAI2E5olbj/nHOY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781696874; c=relaxed/simple;
-	bh=1ipswlaJ1euuDdWSaYxuSat9XlFhtqpzTtHycvtnyPg=;
-	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=JW17FTAJsuXu3zkLz/jJW+wrLLn2f8aQuvNo8KEGCVM9K/0GY/aTDRtZ9fcg6B8CMTfXRyWttfYE+576IOgjTEmMGsjsNwqbmYkv1cqUGsHdHpcvUjYVSbGqy52IYJXvIOnaxmv17VEi9U1RMfG1OM/2mHeoQ9MygEvou0wI7Sg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=dW/gjtKp; arc=fail smtp.client-ip=52.101.43.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF3A4368D42
+	for <netdev@vger.kernel.org>; Wed, 17 Jun 2026 11:58:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781697520; cv=none; b=WPD3U4WXEY5jNdDZdUpCe7cs4tWR5JyoIyRfe2JjB1l8O+RjiuKdZU+aL0OC69ja0+dU/ec4aa2y/ruf+PhgNasSahwMplbkjA4V+q4wAlZpSNRgRkiCzTsaad6TgreOU8iBFL+wCoyqLYCQcjAmwoxVc5Xw8Bf8ep/LEMp9ciw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781697520; c=relaxed/simple;
+	bh=KIgOs6UkCN406q5DVhqVal/lzCFztBm66NCLYkc8O3U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VtB7O8MKpdNAEXZyJ1t3xzTxiagZlOOeSBqjGe0gb201NcE8XvWM73hbbDp2zpLCu7T3Ny/+z/Slw8s1M8EvbeH0O3CYU8xW/tW5ty/ik6dqinS5tGzgw1Y2Cdn7AgdSdZLUlg8ua7QlQlFNELBk81oE3vu8PTfujtNbhKfRtMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MMQQMtNr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="dW/gjtKp"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NGeTK2cSvPaVaL5Wjb4lmNKSh50qrR2pOt13zARtWOJZtbpmY8rzwVil6pbbED4C1yIkP5Tbyfavmne70sCiY3XIkKqQtzoGxeXcy04iGxU5PA69MQ7z2zvAeq44t6EShL6rRt8hwPFr21io8V9+fGsV3yJQZExoAzJ9mIpVdXI8PZfknwnZDWgkB1usokc8KyIzKgvUe6hWE9CYwA5/UDFjuey0fV7KvAiLi12Qh4J/HeSn0HIhDlmhlqgfUo9qLrbea4UAhs5cF60cz/2/ObdtU0uHekiqYeJT72spyaXXSV1Umrm/dkg536zVmOSH43otU93wm8CXuae+4OfRzg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1ipswlaJ1euuDdWSaYxuSat9XlFhtqpzTtHycvtnyPg=;
- b=LOx08mHaoKYG/DRsD5oyiGj4nCwI4apQUPS9qgVXsk5hjvUVFqKUdVMhGv+YlwhSK4qvPeZ2sNtG1Dk3Eww1gi2g9K9g76z0/FpoTZY9J7h749LNZKuKEnRv5yNpRYak68KPtoXEAtv8MlpgfcLm6QbMcJ1wJ7xnCB9JpiO05lILc0wvCSbSPJp4kdVYEMWnt3rS37uUlggR/hjYhdlbbVNbZFjSiDjc3GkfaXu/Jv82iVZotUKCsqhUdKnOHUW7H7jmJFb4fv6BD4Ys783Y9uJ8MFkyjpIrMn0MYhpFwP7P7OlLxD4zsiiidyut74ZLa5v7yokey8HlqtEb9f8JwA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=blackwall.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1ipswlaJ1euuDdWSaYxuSat9XlFhtqpzTtHycvtnyPg=;
- b=dW/gjtKpV4M0G/H763O8AQLzaOa65AbyauYL4oobLRcVUTmChsDVpOONnA5wcD1CxzLre/ReBGiyFrZYh70ctEUGMBP8Q2aZ9dIaiE0Klud8xqz9REJ9HdhAWiqusJKcLippTEaF/D8MMZ1qoNxhtzjb59rlj/4AITKKlwoXKvdLm84vYjkG7IU+b2FbLJt88c0kjfPNK0DVgOWEcXxiSvdgPh2t09sq8/dve6cSGJAX8uAkPS8nArJuf73gfqxHfpkU2YA1I8flePK9cadxoLCxoFWjtbt3HG/yGKe0Y0+5i+rj5is4mLvBhzzAR8uIL1gqRKLeiZrcyKM/sX1HSA==
-Received: from PH8P221CA0013.NAMP221.PROD.OUTLOOK.COM (2603:10b6:510:2d8::24)
- by PH7PR12MB6586.namprd12.prod.outlook.com (2603:10b6:510:212::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.11; Wed, 17 Jun
- 2026 11:47:48 +0000
-Received: from SN1PEPF000397B3.namprd05.prod.outlook.com
- (2603:10b6:510:2d8:cafe::55) by PH8P221CA0013.outlook.office365.com
- (2603:10b6:510:2d8::24) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.139.12 via Frontend Transport; Wed,
- 17 Jun 2026 11:47:47 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SN1PEPF000397B3.mail.protection.outlook.com (10.167.248.57) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.139.8 via Frontend Transport; Wed, 17 Jun 2026 11:47:46 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 17 Jun
- 2026 04:47:31 -0700
-Received: from fedora (10.126.230.37) by rnnvmail201.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 17 Jun
- 2026 04:47:26 -0700
-References: <20260617104323.1069457-1-idosch@nvidia.com>
-User-agent: mu4e 1.8.14; emacs 30.2
-From: Petr Machata <petrm@nvidia.com>
-To: Ido Schimmel <idosch@nvidia.com>
-CC: <netdev@vger.kernel.org>, <davem@davemloft.net>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <edumazet@google.com>, <petrm@nvidia.com>,
-	<horms@kernel.org>, <razor@blackwall.org>
-Subject: Re: [PATCH net] selftests: vlan_bridge_binding: Fix flaky
- operational state check
-Date: Wed, 17 Jun 2026 13:46:43 +0200
-In-Reply-To: <20260617104323.1069457-1-idosch@nvidia.com>
-Message-ID: <875x3hie2e.fsf@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MMQQMtNr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 988E01F00A3A;
+	Wed, 17 Jun 2026 11:58:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781697519;
+	bh=Ue1W0Tug6wA7pToRtgxP1pmUK47ZJOig2n9QSFPHO2Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MMQQMtNrtCsVmvZLdUNb60STpwfD6xl254UWzJS5WS+xVTb/YigQYySUGLxgseWx8
+	 4UIhreRrJBJb+hqaNYds92o6D7edwWugeM7T5rRCraoJ9LU5VwvvNroDpQvdLetoS8
+	 BF7skDtroIUymKM5W7ifEQxX2+Sdt7TDkOTyn8TTq7nB1Agos28k5NIdliF4kGbw6H
+	 6SiJdvFyRnWobyx3enAU3eUBNTDJlRHAxCenXYb4gfML+Bmq0WrYMzEC20O6hzf2RY
+	 5/fTLPsHeuxEoF0TV/0nb+ASNWnVnTso7RSdGFHrNvkHrfdnxz9qvN6cyR97BMwXpA
+	 +qwwV82IRjbIA==
+Date: Wed, 17 Jun 2026 14:58:34 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Wayen Yan <win847@gmail.com>, netdev@vger.kernel.org,
+	lorenzo@kernel.org, horms@kernel.org, pabeni@redhat.com,
+	kuba@kernel.org, edumazet@google.com, andrew+netdev@lunn.ch,
+	angelogioacchino.delregno@collabora.com, matthias.bgg@gmail.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH] net: airoha: Fix MODULE_LICENSE to match SPDX
+ GPL-2.0-only identifier
+Message-ID: <20260617115834.GX327369@unreal>
+References: <6a2ded59.63d39acb.391892.7632@mx.google.com>
+ <178156440888.329386.11011872053824456703.git-patchwork-notify@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF000397B3:EE_|PH7PR12MB6586:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4de7c5ee-40ab-4914-1709-08decc66401f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|23010399003|1800799024|36860700016|13003099007|18002099003|22082099003|11063799006|56012099006|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	ZL7JrBAlEGGyN96kpgx1Jc960bD15oV13FTa31/iheORIT7P1sZDFq5fddCbl6Q5bO/BJyo0mDOgevTchIk1luVH7aHFfgxWAKjxDG1ezn0aQke6vyLKDVkGYQCCNpjvEcdyijVe/gqbQj5cFTPaCvNGPRMCh44uh1pT5S1HGFN1tONbA0vByy9VX18mDG3Dpd1Vvz5gRiHhg9CgzIQU+rmjS+plPyrMHpC6L2NMmcs1EdUj1FPsF4xn8XxxQdjGZxpgZ3D4c9o31NQ/FLdpUflyhpXwXehLUug9KHXP4hqvd2lifApqizAeOp87GtLTwWPUouiasENzxKHDqX5aoH2/S1nfksYyQskO4+Up7luYd96rQTlUEWYBkbikeqS8h47Ltmwvg/p8L8bbih2Ny9Vdq9VkMKg3H56mvrH3vE57PzOOabAIyIDRUBwZ3rLfgpxP/9N0EkCQTf8YbARiLLzEpFH1zIAp3boZ4JvUM8LKuXVxJXFEKNdhhid8LsLDVG3YMJ7frrRS05/3dbrzbGOgo5kZ7F5nCopwmEN/MCJTulvrlEdxvL2FCqYxZkXnwd23wPAb4WLzRCZk5tv2Ax5wa1GjSmm2zJaQRyCEBLbefHsM8TyTODFEY5sXXS8qXEdRDiAke4d5/zFqOYtdYcqMrMkfTvbHEl2qoPd/6qZUr8zqfmxVxbQTzOZ6Bnk13CGRgu5zkRdMiMRG7QlARoICSNvLrLW+SlTg7iAPPB4=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(376014)(23010399003)(1800799024)(36860700016)(13003099007)(18002099003)(22082099003)(11063799006)(56012099006)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	CsswfdoFKtlwTBYFTa0vEaVQFn0krHOMC8gGAgK0agrNWloTCIGeSA9MMswsqVo5Q7T6d7yT3yVrMw8jy+J/A8XxPDC+Xjg0gOfgzead53RsHYmI4dENW2slbuPzxgkCAqJq2jMOFb4qmScOlhiMyd4jxU8YvseiLw1/uFL6KNxI86bNdth+DxUPZLXJBBX3Hl8C5A8VzNBceUKZAQ9+/5uqJDaaIKT4r8NdsI8FGShdjKdu/yGRWFgJpWydoxSM91WpBPYsnwuHuC61xretVlIw0qkGEQi2hMwIMSw5WC/QcvDL32SfdeOrx/o9dODqt+WTRqfX7lB1GUMTdS/oYQhwZojeU1z15W+C8WPCnHr+wBFY+KfIbcEe1oW0t/zi+aVOHnjHwlbUwl0hTocco4wsOd+ULcwAVMvIxuN99g6kpGYvsmoWU5K484CxbdRo
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2026 11:47:46.6214
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4de7c5ee-40ab-4914-1709-08decc66401f
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF000397B3.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6586
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <178156440888.329386.11011872053824456703.git-patchwork-notify@kernel.org>
 
+On Mon, Jun 15, 2026 at 11:00:08PM +0000, patchwork-bot+netdevbpf@kernel.org wrote:
+> Hello:
+> 
+> This patch was applied to netdev/net-next.git (main)
+> by Jakub Kicinski <kuba@kernel.org>:
+> 
+> On Sun, 14 Jun 2026 07:52:39 +0800 you wrote:
+> > Both airoha_eth.c and airoha_npu.c declare SPDX-License-Identifier:
+> > GPL-2.0-only but use MODULE_LICENSE("GPL"), which the kernel module
+> > loader interprets as GPL-2.0+ (any GPL version). This mismatch causes
+> > license compliance tools (FOSSology, ScanCode, etc.) to misidentify
+> > the effective license as more permissive than intended.
+> > 
+> > Replace MODULE_LICENSE("GPL") with MODULE_LICENSE("GPL v2") to
+> > align with the GPL-2.0-only SPDX identifier. Per include/linux/module.h,
+> > "GPL v2" maps to GPL-2.0-only, matching the source files' declared
+> > license.
+> > 
+> > [...]
+> 
+> Here is the summary with links:
+>   - net: airoha: Fix MODULE_LICENSE to match SPDX GPL-2.0-only identifier
+>     https://git.kernel.org/netdev/net-next/c/b0d62ed16424
 
-Ido Schimmel <idosch@nvidia.com> writes:
+Jakub,
 
-> check_operstate() busy waits for up to one second for the operational
-> state to change to the expected state. This is not enough since carrier
-> loss events can be delayed by the kernel for up to one second (see
-> __linkwatch_run_queue()), leading to sporadic failures.
->
-> Fix by increasing the busy wait period to two seconds.
->
-> Fixes: dca12e9ab760 ("selftests: net: Add a VLAN bridge binding selftest")
-> Reported-by: Jakub Kicinski <kuba@kernel.org>
-> Closes: https://lore.kernel.org/netdev/20260616092733.3a31be4d@kernel.org/
-> Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+This patch doesn't fix anything. License rules are pretty clear.
 
-Reviewed-by: Petr Machata <petrm@nvidia.com>
+Documentation/process/license-rules.rst
+  444     "GPL"                         Module is licensed under GPL version 2. This
+  445                                   does not express any distinction between
+  446                                   GPL-2.0-only or GPL-2.0-or-later. The exact
+  447                                   license information can only be determined
+  448                                   via the license information in the
+  449                                   corresponding source files.
+  450
+  451     "GPL v2"                      Same as "GPL". It exists for historic
+  452                                   reasons.
+
+> 
+> You are awesome, thank you!
+> -- 
+> Deet-doot-dot, I am a bot.
+> https://korg.docs.kernel.org/patchwork/pwbot.html
+> 
+> 
+> 
