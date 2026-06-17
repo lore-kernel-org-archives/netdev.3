@@ -1,82 +1,77 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out28-49.mail.aliyun.com (out28-49.mail.aliyun.com [115.124.28.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62BCB2E738F
-	for <netdev@vger.kernel.org>; Wed, 17 Jun 2026 01:50:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 352FD29AAFA;
+	Wed, 17 Jun 2026 02:00:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781661017; cv=none; b=I6a7DtNKDOoJf6de6chUeOCL2+F76CApQ/RpWsIRyt3Na+419COzxJ3N3f3Sq2SRFfbDmoa3QPfI7rDq10fmmrifOnR3NFwlaNcseXlSIHbG7OgS0WBafrz1ouTeNWs3mK/AfrtDDsDHKdhWSigC2I+JZIOZZG0cxvIPT+7F3Vc=
+	t=1781661650; cv=none; b=Y3E9z9cAZMKs2VuTe5xW/d+wsc7dTPypjgvzt7MplGCIWom+u/ejqxQtm1s8VQsAakW5BIziITwxLdQrQ08krDCt69rmgtOp2QTT6qh9dilywtP6vyuQ5LrZpLWB38jkgLNKXHCBVfopt44fZe5m3CJexgsibpScqVEWOswaoCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781661017; c=relaxed/simple;
-	bh=Ob756nkZ0JvHZi9Z046yzZgecDgZuf7ZPZlE9vU2tRk=;
-	h=Content-Type:MIME-Version:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References; b=hxCQ1CCWWjbjzfnDoG9MSQCt3TXFVsVL1VEDpdcN19HffIb0AW6eNsXBbuDGtv2voSTunEtQcXUzG/VTR8tMylp1RkgZ/FeqioyrZX3pFrLxlSy+XmWG5nncwJbO1Y8MM2rLjLymixScDVqWQkF+SyslnZ3zkbQeBqCIGZnJ9XY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IiKJ5mST; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IiKJ5mST"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-36dd65b95f2so365579a91.0
-        for <netdev@vger.kernel.org>; Tue, 16 Jun 2026 18:50:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781661016; x=1782265816; darn=vger.kernel.org;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ob756nkZ0JvHZi9Z046yzZgecDgZuf7ZPZlE9vU2tRk=;
-        b=IiKJ5mSTuzmK8cjUqB8u1UXuLSdRrbITBHG8kFqmSA2YhMQ35IfUyU2WUTkdVPg3sy
-         0NntTSCpKrVmlxHMzp3Q78JpavTCPgxkvPt1RBBQT/EjkyshXAsJ4iLAvT1i1weVJD1/
-         H9Q6+Y/8mtVpW5QP26s1RVmkVK4IBBSKUtwVztIcGw1v4ILO2Mp+VdrHYsFJddEqaR9o
-         5GravxQHnggX+IeZVyXfL0O3aabPGhKsaYc4eN/ZXE/uTV8vssT+TGcs22A2fB5trkvE
-         8CxYMDfBN2l54I+vxmQ5Qj/umNPqYomgstKxxJ7KOk5iGzlXU4T5FrsLQD+JSU8zkJu+
-         +pNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781661016; x=1782265816;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Ob756nkZ0JvHZi9Z046yzZgecDgZuf7ZPZlE9vU2tRk=;
-        b=iEWecMl4eLIUDDaQctMV3MNgiAW26uchayXiz0cBpcKZ+ASwFujXxonOTGxvEseutU
-         2fUR+mfRJHSQW0lCmKqHrVhASnXZWpySNGnD8j6uREtmsJ2IcRR+048GBlnZUaLLSCjW
-         Y+fLFZ989eSF9yB3E++XbTayg8fiup3+Nc+AaivZKOv68xXin/lJ60yEPEpJAtGlF6qt
-         t8T/1mySiGiFFiSAc1SeozK6ZuHO6dB6AeOh4NqQcj4Z3nDZFTM/SxNIRBhkhTslPcHz
-         lOrinRtgnr5NOFXE10W52yVUq1hvAeW4fyegnl7Tt9AKgCaYewfsrVgnCeKYt7P4cNnz
-         LHUg==
-X-Gm-Message-State: AOJu0YyqXb87w2goKNtH4asRqNAG3aQqxqf3wxFgxL3U9hruisl6KLUX
-	+pJfTH6RlWvEhyRFNj5qluIYY9nvLCNeag91iTGz6caAwMT6N8LlxnWBYLRlVbvL5nI=
-X-Gm-Gg: AfdE7cnXYAZnbvInDBG8s1qbSGJw8G5w1hOt1lL1GdwwryhGui1IteB+XrlbnTL9gSQ
-	+yTFjgBWn+6gk65FsUbzokHgby1KQMFoopile0dCvvV4T3M6Gn0auq/NjJGRoO41NYKzIIJxYA7
-	YUtvWL4OCRj6g+QYiKCk2xvNUlDrF1Z7a8fyyVAC7BMg+SjhvUF45tVb4mLWOHzm7C4Xz6JKfp9
-	qOTG89RkO47pXalMlCISMJusQTyiKtVcn4fSmnZ+l7uRZcU1rtyjFMr5Hgd7xaj1hN9Uq2KOMZU
-	cjoziLJK3sTehQo70FwGMv3DXaWcgFswuD+TDGLLkn2hi2BBvrQbiXYVcIeliYEmFWgZRWajs/N
-	4SilzbHv8R4zuAebb7xUsG2EkQnND5Uzh8l778XpHQcIJQ1NW+NpjCMkd/vNj43nf05HulVn3ZH
-	YBWaIaog==
-X-Received: by 2002:a17:90b:3ecd:b0:36a:8254:8eb1 with SMTP id 98e67ed59e1d1-37ca6a6c890mr712381a91.6.1781661015649;
-        Tue, 16 Jun 2026 18:50:15 -0700 (PDT)
-Received: from [127.0.1.1] ([47.253.114.73])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37ca1dbc8c9sm434740a91.2.2026.06.16.18.50.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jun 2026 18:50:15 -0700 (PDT)
-Content-Type: text/plain; charset="us-ascii"
+	s=arc-20240116; t=1781661650; c=relaxed/simple;
+	bh=rCPhsZcrKw5TsOjAfX/d+Cp5oPcxTcO+6Nx2NEFoyN4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fOQpJ96Q2CtqINKAKFGYiyL+jjgdDrVRbZn92NTLSXWqxBw5F9LmWQVtFQ0wVRnmkb9l7l9EBv7qYdB/Z6BozGBIom2k9lNx+H9dUgViHKiVi5ZEusTLniIDvhjzHRexP4BAk5YV9LmKtBKjFIE/nhzXsD1D4w03sDfSY5wDt6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.08501174|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.283752-0.0045549-0.711693;FP=7057726590387724033|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037071049;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=14;RT=14;SR=0;TI=SMTPD_---.i-7sWza_1781661640;
+Received: from 10.30.1.98(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.i-7sWza_1781661640 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Wed, 17 Jun 2026 10:00:43 +0800
+Message-ID: <adc1dc4b-1d9d-42e6-8983-f0a7c650a6cd@motor-comm.com>
+Date: Wed, 17 Jun 2026 10:00:40 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RESEND PATCH v1] net: dsa: motorcomm: add yt92xx dsa driver
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: mmyangfl@gmail.com, olteanv@gmail.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
+ jianmin.wang@motor-comm.com, de.ge@motor-comm.com
+References: <20260615111235.3544282-1-kyle.switch@motor-comm.com>
+ <3f7bf73b-c8dc-451d-981f-5e5343291960@lunn.ch>
+Content-Language: en-US
+From: Kyle Switch <kyle.switch@motor-comm.com>
+In-Reply-To: <3f7bf73b-c8dc-451d-981f-5e5343291960@lunn.ch>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-From: Wayen Yan <win847@gmail.com>
-To: lorenzo@kernel.org
-Cc: netdev@vger.kernel.org
-Subject: Re: [PATCH v2] [net] net: airoha: Clean up RX queues in airoha_dev_stop
-Date: Wed, 17 Jun 2026 09:50:09 +0800
-Message-ID: <178166100984.2204581.7770239909241189310@ai-server>
-In-Reply-To: <178161160256.2165161.14322392784449633554@gmail.com>
-References: <178161160256.2165161.14322392784449633554@gmail.com>
 
-Understood, thanks. Makes sense - RX queues don't need cleanup
-on device stop since they'll be re-populated on open. Looking
-forward to your TX cleanup patch as well. I'll drop this one.
 
-Regards,
-Wayen
+
+On 6/15/26 19:34, Andrew Lunn wrote:
+> On Mon, Jun 15, 2026 at 07:12:35PM +0800, Kyle Switch wrote:
+>> Add yt92xx dsa driver supports yt921x and yt922x switch series.
+>> To support more switch series in the future (e.g., yt923x), the most common configurations are abstracted into switch operation interfaces, due to yt921x and yt922x share similar register layouts and operational logic.
+>>
+>> - Merge drivers/net/dsa/yt921x.c and the new yt922x support into a
+>>   unified yt92xx.c driver.
+>>
+>> - Add support for yt922x, which can operate with either 4 bytes or
+>>   8 bytes DSA tag.
+>>
+>> - Not change yt921x behaviour but use common switch apis
+> 
+> A 35K line patch is way too big. Please break this up into lots of
+> small patches, each with good commit messages, which are obviously
+> correct.
+> 
+Thank you for your reminding, this patch will submitted  in a series 
+of small patches.
+This patch mainly contains three contents:
+1. Underlying function interface for different motorcomm switch series in 
+the file driver/net/dsa/motorcomm/switch/.
+2. Optimization existing yt921x dsa driver using common switch function apis.
+3. New yt922x dsa driver.
+Can you accept break this up into lots of small patch according to this logic?
+if not, do you have any suggestion? thank you.
+
+>     Andrew
+> 
+> ---
+> pw-bot: cr
