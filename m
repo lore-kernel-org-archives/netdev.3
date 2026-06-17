@@ -1,64 +1,81 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59BE33B8413;
-	Wed, 17 Jun 2026 21:35:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 847E6386C20;
+	Wed, 17 Jun 2026 21:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781732148; cv=none; b=gCJApUPhBK64F2WpGv3r14qmrIXN8PRLQC8zZBkXIt8mMmawDwhg6paPn1DpK7pgT0EkD+JcbomtlPJj9366NKhO6WqyquYk74+AY7i+AjV+q49n9/XazMMKLjKHSayw4DgW9qIckiknDwbdfKYgwRDkCDAK4m0fCrwam4lDCDU=
+	t=1781733147; cv=none; b=NjSu2x05oajh9iQTFRK6Ldnl/y02CTOpGIJGlNrkDDwArXB5sFpMgBGe/RtrvON7Eo2Ui1J9gV9ocMcm0ri2bhXrD1LQciaA83zQCuCSwXLzRdxzroAQAm0v/p/NCn6mKFrQ0RNTFPNRmmPmjP+3PIt+SrzVUTfaASImBanl+Ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781732148; c=relaxed/simple;
-	bh=4zM0t/NNS0aXX/L0toG6tdWJncYQSTlT23kpgauvtnY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rXDH4tiSjbI61s4LLZK9w9lQ5QmF/NkqjvwPMt3qRI6I9KNCQxcWcWORQVCeI26fZLuF1cG5d3Y/dzlS+uuYgUtM+siVETF0S9d5z8pgFz9WNtz+nWdadAcPoj6CKIg9tG3KKatNTBoN1MDoEL4Ez1hlN0RBoT6pN6KQsiXuy6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gYHJW721; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781733147; c=relaxed/simple;
+	bh=u91/Gr8QP7fH6w2fiW94UDBR0FPYyTtWXCVs9PXPN8Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Mv7jn9hTyBHFFcpIqE8n2vjvHZubPryr70N7RZq/qdxglqnxWMlEX1JDnzbk4IHWCtHYxaWlVlGZkLyf4L7PyACXJ5pcBJOhoarta99F5y+3KYySKfgo0rOu5U+B0iHpw8f87r53Qtb20f/UQrP8TrvPAKBzRYM9Mcqz80iSvvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U28s7e3v; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gYHJW721"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F232A1F000E9;
-	Wed, 17 Jun 2026 21:35:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U28s7e3v"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C74761F000E9;
+	Wed, 17 Jun 2026 21:52:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781732146;
-	bh=uRfXJNcthQCgAy/2/5C1RpLOF0v4wynixEcGeTRlwY4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=gYHJW721aT41s7LJYe3ehqyMWZyVPIgaI7TMN1juAZlDCo8jWTa44Fzq5DtfuNF46
-	 0p2UDcxYWtFekykg4boRkkWB0v3aIwsnXzFq+s0VP1vwXlOl9xA3tFgd1PoS2+HT1a
-	 DT/m5QP+GcUcTNJcZ1gz5jZSHqFH7XDhAk/6aNymim6kcSX35x9vfJMKbsIm7RRg0W
-	 Vh47OlW3MxdzcqORw3A/MDn8557x3N/YVq0CQMdqzzdqRe0DBcP8x/bbKB7yOlSN0C
-	 jue5RbMxoVNMFDG5TYHRHeYqvy2NJ/3wJlR9r4mFcp1UFtUJ9AcDC1uT2z+iKbsoGD
-	 DC67wR/MLxSTQ==
-Date: Wed, 17 Jun 2026 14:35:44 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Yun Zhou <yun.zhou@windriver.com>
-Cc: <marcin.s.wojtas@gmail.com>, <andrew+netdev@lunn.ch>,
- <davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
- <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3] net: mvneta_bm: add suspend/resume support to
- prevent crash after resume
-Message-ID: <20260617143544.2310b7a6@kernel.org>
-In-Reply-To: <20260616112540.4181231-1-yun.zhou@windriver.com>
-References: <20260616112540.4181231-1-yun.zhou@windriver.com>
+	s=k20260515; t=1781733146;
+	bh=XBhULN87TTfxM8KHC3ilMiQOCnX7++hxcpXK3eSVbiQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=U28s7e3vr1Tib0RGPLU81tBoz9VlTgzJ9XndxETY9vLceedtJcdC2w5VUKDoTyQNn
+	 +7riiQx+CuAQdhGewnNZ6pJssnCoG5cP7tVs67S8DQCxESYN6O7654PNP4bw2DTWIb
+	 zf7jQ9s4BA5N6om67Gin/438ltTFd85CHX2KmfLY4c1vcCljN5Fm9lNVkdXLQpz2US
+	 j/rJdnO3pZbaXiBru65m77NXt4YFnMgW9LjPJafRMUAvm9xsi8+tMc/vsOoVl/GFDE
+	 5IsxmrTve1qXnFba9PYAQPqOFciuIPZ9oyMgnm9mKi8bvIVAFhs/dwRo6cXGDwoOAD
+	 rVk8+4QMBVTbQ==
+Date: Wed, 17 Jun 2026 17:52:24 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org, David Howells <dhowells@redhat.com>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org, netdev@vger.kernel.org,
+	stable@kernel.org
+Subject: Re: [PATCH 6.6.y] rxrpc: Fix the ACK parser to extract the SACK
+ table for parsing
+Message-ID: <ajMXGIoyTqpZCvw-@laps>
+References: <2026061543-superior-passerby-d597@gregkh>
+ <20260617180410.271223-1-sashal@kernel.org>
+ <20260617132704.0e1fe56b@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260617132704.0e1fe56b@kernel.org>
 
-On Tue, 16 Jun 2026 19:25:40 +0800 Yun Zhou wrote:
-> Add a device_link (DL_FLAG_AUTOREMOVE_CONSUMER) in mvneta_probe to
-> guarantee BM resumes before mvneta and suspends after mvneta.
+On Wed, Jun 17, 2026 at 01:27:04PM -0700, Jakub Kicinski wrote:
+>On Wed, 17 Jun 2026 14:04:10 -0400 Sasha Levin wrote:
+>> Subject: [PATCH 6.6.y] rxrpc: Fix the ACK parser to extract the SACK table for parsing
+>> Date: Wed, 17 Jun 2026 14:04:10 -0400
+>> X-Mailer: git-send-email 2.53.0
+>>
+>> From: David Howells <dhowells@redhat.com>
+>>
+>> [ Upstream commit 333b6d5bb9f87827ac2639c737bf9613dbae7253 ]
+>
+>nit: you missed the "skip patchwork" header on this?
 
-You say "guarantee" but you pretty much ignore the failure to add it:
+Hey Jakub,
 
-+				if (!device_link_add(&pdev->dev,
-+						     &pp->bm_priv->pdev->dev,
-+						     DL_FLAG_AUTOREMOVE_CONSUMER))
-+					dev_warn(&pdev->dev,
-+						 "failed to create device link to BM\n");
- 			}
+This one is a backport crafted in response to a failed backport of a stable
+tagged commit.
 
-Why not handle this error properly ?
+I followed Greg's template to sending those backports to him, but I also think
+that I do want folks to review the actual backport itself.
+
+Do you think it makes sense to add a skip patchwork header on these too?
+
 -- 
-pw-bot: cr
+Thanks,
+Sasha
