@@ -1,48 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE5839524B;
-	Wed, 17 Jun 2026 22:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763233B14B8;
+	Wed, 17 Jun 2026 22:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781733926; cv=none; b=t1s8Ki7sQcbkKXs7QkJRj3lRfZzaJa4FDIpkTdrofTvrNCGGdoiL7l61kx4Rr5mvG2iCIJ1YrbymIUfyDzmbWIeWDoOXDYq0mqIkbDtXD7z5jwEyhgdrhvR1udUMeYDwrdImtuQTIEV10skUsv7bp/dkE1ZltEMzUb9HqWrjfEk=
+	t=1781734067; cv=none; b=Qr6RTaT/C+4W+sFXq1DqjYvgmk1LECeI3iR8eQQluRrZRTgahHSB+RBdwL4duYKtzBlJDZBBMTj3KR/Hq9ljbIjb9UL3BDhuw3roCK+pwhjiq27kxB51Z6gqspabzNpOF8AZ1hCMeYm0sDyl0GfnoHBtp0nMHZ5KMsDB8/d6fpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781733926; c=relaxed/simple;
-	bh=/RWLcjq0LrvNt8Syg4lAVdGlcETIvNd2khLbHi6ojSY=;
+	s=arc-20240116; t=1781734067; c=relaxed/simple;
+	bh=QD9+BuX8vNnlpmK7MBUF8BffYmSDp+kgIN1GCWUfQ4c=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uwvsuP+zWPxxz5QLndjLoGJDZydI84QQxnRBtXzXqU1rZqF4l3GzrGn4hA6TJtsIm/KbebAQDAMT6BdhT5sZzILaib0AtihI5EzLKgEsvzBn2PIJ/Q3fdV4bQkRNXAcGAamJdbT3TiFK1qsDt4DxFW4QpNYv6afb8c3F97u5jjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aLceKYlg; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=k4PkSoSFXIkf7geygyDP3b898ZXPygrC2mhuqUbGl7OZpTwKfSwghq/sEKNv955i9tEMlPrk2K8ozrjyL0SWTNcTdjgwGuUhbjdlVCnPWLoh8qZsJcdJdkKuQbhV2iHCzCF1mAKIiyQpttZrZFSnlCTU8wRMIj5eji4is4cbQ/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XNxowSn0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aLceKYlg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF0681F000E9;
-	Wed, 17 Jun 2026 22:05:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XNxowSn0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BE301F000E9;
+	Wed, 17 Jun 2026 22:07:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781733925;
-	bh=lIqMtEF9Rd4rP4mbW4Fu71TyM2PocpUsF9vug3MkTII=;
+	s=k20260515; t=1781734066;
+	bh=CqN76L0GmoGTlUxyqmYpYwkQVk5OIJLansyMs93EdPk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=aLceKYlgGnk/0SEhYll97JgZQWX/vuWU/+OUKJSrtxQ5xyitsS7Y4l58RCpOrW+xo
-	 6KQ5M+F/5um9QpuYQH2zQSGkG0Idk7hg7SB/UpeJCmBh+0tG/8vkPiSAJkWBV5fMXF
-	 uNTvL9FbINzeyA9I14FmdFbUrZ5I+0c6dk3p3idakpUdZa/I/2u81WlI0mYncsHUqG
-	 0FzByms4OqUqaUBOHzmOm0IX5O/yYLeD8aMDg/qFgqNDSppz7CJODqp1Q9PXXvOWcJ
-	 +E1t+iBkiIxpE3Uz7OKq9eePihwS/OiFP8brLlyYG3FHzcY2/ii7hrh65e3mS2loHz
-	 8IzYARMmigzZw==
-Date: Wed, 17 Jun 2026 15:05:24 -0700
+	b=XNxowSn0OJP7I2CIW2JV0Oo+0Rb+Kin3QNSOcQuHP6QKaSXwJYNG4kFgHdWzc6Kdf
+	 2pVYVBMVbEft9I+hqRuLM45mXxtDKkIrE16UXxKkNjSPtiG0cNyVdWldzciE/3B/Lg
+	 dxmDRcDjInvW5G/O+L5ZZ2G8zkczw4R31UbnwJ/UclDCiyAl0ng5d7bpd777pgunfq
+	 wEI2dW2j+0XDGEpTVhUup+ZP8N7/EzprERi1gqb9r29KVHngQmWAiFWLOLK0y/EQo+
+	 sQc92qNEXX27qZIhquXOuI/QZ49TFfmsRnXHvh5qclJjht0ry/VefZz5qfZQLLtCR2
+	 qWca2TTAx2Y6A==
+Date: Wed, 17 Jun 2026 15:07:44 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, David Howells <dhowells@redhat.com>, Michael
- Bommarito <michael.bommarito@gmail.com>, Marc Dionne
- <marc.dionne@auristor.com>, Jeffrey Altman <jaltman@auristor.com>, Eric
- Dumazet <edumazet@google.com>, "David S. Miller" <davem@davemloft.net>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- linux-afs@lists.infradead.org, netdev@vger.kernel.org, stable@kernel.org
-Subject: Re: [PATCH 6.6.y] rxrpc: Fix the ACK parser to extract the SACK
- table for parsing
-Message-ID: <20260617150524.2298f6f3@kernel.org>
-In-Reply-To: <ajMXGIoyTqpZCvw-@laps>
-References: <2026061543-superior-passerby-d597@gregkh>
-	<20260617180410.271223-1-sashal@kernel.org>
-	<20260617132704.0e1fe56b@kernel.org>
-	<ajMXGIoyTqpZCvw-@laps>
+To: Jacob Keller <jacob.e.keller@intel.com>
+Cc: <keguang.zhang@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ "Paolo Abeni" <pabeni@redhat.com>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, <linux-mips@vger.kernel.org>,
+ <netdev@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] net: stmmac: loongson1: Use dev_err_probe()
+Message-ID: <20260617150744.05756f0b@kernel.org>
+In-Reply-To: <6b8db599-5bb2-47f9-ab53-a0b5141af2e5@intel.com>
+References: <20260615-dwmac-loongson1-v1-1-cbcf5bc01d9b@gmail.com>
+	<31630db0-85cb-421b-8ebe-bbae07521533@intel.com>
+	<20260617135407.6ff54e27@kernel.org>
+	<6b8db599-5bb2-47f9-ab53-a0b5141af2e5@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,36 +52,17 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 17 Jun 2026 17:52:24 -0400 Sasha Levin wrote:
-> On Wed, Jun 17, 2026 at 01:27:04PM -0700, Jakub Kicinski wrote:
-> >On Wed, 17 Jun 2026 14:04:10 -0400 Sasha Levin wrote:  
-> >> Subject: [PATCH 6.6.y] rxrpc: Fix the ACK parser to extract the SACK table for parsing
-> >> Date: Wed, 17 Jun 2026 14:04:10 -0400
-> >> X-Mailer: git-send-email 2.53.0
-> >>
-> >> From: David Howells <dhowells@redhat.com>
-> >>
-> >> [ Upstream commit 333b6d5bb9f87827ac2639c737bf9613dbae7253 ]  
-> >
-> >nit: you missed the "skip patchwork" header on this?  
-> 
-> Hey Jakub,
-> 
-> This one is a backport crafted in response to a failed backport of a stable
-> tagged commit.
-> 
-> I followed Greg's template to sending those backports to him, but I also think
-> that I do want folks to review the actual backport itself.
+On Wed, 17 Jun 2026 14:26:25 -0700 Jacob Keller wrote:
+> It does claim that it has benefit since you get the error code emitted
+> symbolically. But we have %pe for that. I wonder if dev_err_probe
+> predates %pe?
 
-I see!
- 
-> Do you think it makes sense to add a skip patchwork header on these too?
+I'd argue
 
-Hm, maybe some clever patchwork DB query would tell us what others do.
-For networking the patchwork queue is purely for patches we have to
-apply. So my preference would be to skip, but I didn't realize this
-was intentional. 
+  No of match data provided: -EINVAL
 
-It'd still be useful to add _some_ header that we could filter on. 
-We have bots which complain if people repost patches too fast,
-they will get confused.
+is more confusing than just:
+
+  No of match data provided
+
+the EINVAL is meaningless and hardcoded in this case?
