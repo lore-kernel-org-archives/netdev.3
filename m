@@ -1,96 +1,121 @@
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-b2-smtp.messagingengine.com (fout-b2-smtp.messagingengine.com [202.12.124.145])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF573C4B85
-	for <netdev@vger.kernel.org>; Wed, 17 Jun 2026 09:55:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C8B739F162;
+	Wed, 17 Jun 2026 10:00:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781690139; cv=none; b=fzZ/0yoD+RKWFtebHIJHCjCtnZBwLvXVNnBwMGBUCJnzuRK4QWMO4s/oCui7soSJfziQhdkseZaVb7IpSqTkSK2NnDaNjgPgZiYRMqC+Kaxo27XSmz4Rb+IMuCR2AbaPUhowzYeO1ldu86yEPrA2bI1Vg3hw9FcJ5mszbaNdu3I=
+	t=1781690439; cv=none; b=l+nSJ926lCIoQX3bE4qxIGGhFA7AbNEEuHuB3pXxLQc/hi7hzHTt64TWcYOHgY758UgBiy+KG/mSwBibcPYWg0h/XryvZb2EgtDw/OtzHbOkJ+MCyuGNpcgWw6Jx/6Jl0L/2DUkU4FcZcgMpr6+5OoMslnUEVFd9IhVshK8jPAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781690139; c=relaxed/simple;
-	bh=XDrz+dFmPnRs6hfiObnwyD8/s7tk2XKP0mFc/3BTGDs=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=oHFblmYe5btf8UHmJJ2ULen7kGMQiz38VLSxK8dFrJsuo5ErS+UpR+W7aMW2kuymZCxhQFtYpL3wH8l19NNNGJf07R+CBFfuxN7GViEObC+RmNUdSlnK7gDvbGhuR2YrAwBo54H+MvNURdyhu4/fsDOKDExZgU/soIjxAUU2hO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IMKRMi1L; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781690439; c=relaxed/simple;
+	bh=vFePy412tZrj1pquGV7Iqax3UX1paocgmjl5R+aD3ho=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uQ6p98KMG/Li5AwFGad+mn45k9OwgvWzZYjwiOw2WfmEnQAtFI4BYYgd3fwdxpBhs9FjOnCbtCE103cQ+JfEkA1qIlGEKF/STwrSlkJeOpdbQtBftlsg6a2AUNV7BLdCsrKEfvLxzlooSI9YEXFCeyPBzgJxqa0qH8qjRpu3V/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=QQWRis/R; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=O3iwMR7g; arc=none smtp.client-ip=202.12.124.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IMKRMi1L"
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-bec449cf976so688562866b.2
-        for <netdev@vger.kernel.org>; Wed, 17 Jun 2026 02:55:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781690136; x=1782294936; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language:subject
-         :references:cc:to:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XDrz+dFmPnRs6hfiObnwyD8/s7tk2XKP0mFc/3BTGDs=;
-        b=IMKRMi1LUzRiFD33B/e6RsViOcDk9pmKOhwuu/e7ix8A1iuLzKdnYdWW+0Vlx6/3Pj
-         ksStYcHoQYiqae9i1jRP5KDzU0UAMCk2Y2wQU/koMzEjqyawRxTfYy6gNuO+sPjiOqs6
-         o3ukzAwkMUdaXDwLOOwV2p5E0eQyJzIElQ84xiCIJRYSNK99bc87pMyCQ48hq3cnoMyp
-         TcSLU+e13a3QCF3adRK4rGRKUvq17+hDvWdFKeUVTKy+igaKQxZNlRUZixJucl5lSiGL
-         zcdw3LwXE0dI1vRzOq28kuF7gwWrybvGdrqJSH94kJclhRxQtSLZyLSI8Qhfby3t6PhA
-         OgDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781690136; x=1782294936;
-        h=content-transfer-encoding:in-reply-to:from:content-language:subject
-         :references:cc:to:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XDrz+dFmPnRs6hfiObnwyD8/s7tk2XKP0mFc/3BTGDs=;
-        b=RFzglnNb4X0NB3mR0ag1fBWh2QEyi5WiPAdbnDP/M6Es6s1NYrjhmdFdr+UNqBglKG
-         QNW9UxKHKpFE8C587j72oEfbH31m8jp285T/Nfke3pXp5BNTr5xTbbiANgnGlizsCQHo
-         8QfFY+BFt+tpKoczCYl8Z9/4frPoGfGzP+oTHYfdSSimS2PzBLLnu4Q6bsGEiJhs2Qr/
-         lY4/Ml49myN45IA4s0J1eYoCx2maqNju/jX4oSwAEFrQqephwKKF0KKGvLhU5YgJdA6m
-         6LY/T7FnzBVAxyQpmT5gU/Sm/0t0joscJQOnKx/Gr7ggulBDt9LZ61qZPUvgMO6aOvOq
-         Dg9Q==
-X-Forwarded-Encrypted: i=1; AFNElJ/sq/3T8BPoiVZwTXZF4ESgfkrpX8qpIwJsrMR9gN7+1lwVodMw+HrV13J2O1IDeCHGAK8xh+I=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyk56a0Uq/Lt4upRbXsqbYUc2svG+w8c3bvVtI8RElAk05oV/Oy
-	n+AIpOYdhM9s6PdXcE+JvTa8rEYe0k5VcfZrDQq0+CawNCNCiKCtHYzc
-X-Gm-Gg: Acq92OFU66nmGjxWFQjQpjcRompyyxLHVWNRbkwM3pk5znE7z+FIH+lhMVtPPSXFGTF
-	TZZL91PHoirKSUxRNBqMK715LFoMDeLbZ9+TUQeJfx1pCcNLQtCWaL2jC5eSnzkJoQ3KcPn2xw4
-	cGaY3wzYZa3vHw6cao1+F4un6Wbmema63/njX/fwHwkwxh4d6dTP8jrM3rRPonl2uvkKbbgmh+b
-	HhvJBsV5SeliUWY2EfvxRWin03uUdQbB4v6emE46TP+Rcq8+bHFpgjVPvusrji4cFCEgNdrHpAe
-	BywkLVwIEUl7PDoVhC44PRXAfnNqvWihXJpO9F9q7nriDUL4n1FKsTLADp6+0DDRdHcmG8ziULP
-	LLH0VTgkDd/gRn1x4ag5qMHOmGZuqccytF1S0j+SeYp2U+qx9lnUjlbSz2LUh30ijCtrJTMAbVJ
-	+G5PC97k/PVtLFFXKTpIdRa5HrsHcku5EPXhtwp4R8/Ls9ofBwGS2JEj3tPxVCFwnmjdU5n3MEl
-	jzhdWN55fAi13NGfTUT4lfQkA==
-X-Received: by 2002:a17:906:8458:b0:bd5:1482:930a with SMTP id a640c23a62f3a-c05d2a4bb57mr124647866b.39.1781690135973;
-        Wed, 17 Jun 2026 02:55:35 -0700 (PDT)
-Received: from ?IPV6:2001:9e8:f13a:1701:b918:4041:7c7d:eb1d? ([2001:9e8:f13a:1701:b918:4041:7c7d:eb1d])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bfdb4420570sm772705666b.11.2026.06.17.02.55.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Jun 2026 02:55:35 -0700 (PDT)
-Message-ID: <d0e38019-059d-423d-b415-a09e4acdc1e6@gmail.com>
-Date: Wed, 17 Jun 2026 11:55:34 +0200
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="QQWRis/R";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="O3iwMR7g"
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfout.stl.internal (Postfix) with ESMTP id 031091D000B5;
+	Wed, 17 Jun 2026 06:00:34 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Wed, 17 Jun 2026 06:00:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1781690434; x=
+	1781776834; bh=Iitia+nm4SEU8NOqdpm1cv3/pVeEmHmNmKX2zgwhAks=; b=Q
+	QWRis/ROh1JFz9l2Q79JCsnOXJz+NO+iOAUs361Ttmzf3Ag6ealOuA9k8dulvlaM
+	JNK6Npbgp9quyvpdYcC0ZJzJrpvcLRu+aANa/iplPofx3ooo9Kl3I9IESpJojNUp
+	bogiM6+E7aAK5X1DGeeMsqQCvqRGCQZoTiroFyoMzH4kmFlNs1iSYziR9sCqaFVU
+	mieHW28W1cNmgwNLKo9c5r0vZ5t4m1BoL4qrg7B8QVA/nYYfxDdAHtDMsO9MuJyo
+	VZGrkEu4hnp+ziIECBapv41lOQDiiZWG0N9I+EceGFSbNTrUC/DEnQX5VdzylhuZ
+	nG6ANeShj62Z56HHcG3vg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1781690434; x=1781776834; bh=Iitia+nm4SEU8NOqdpm1cv3/pVeEmHmNmKX
+	2zgwhAks=; b=O3iwMR7gBaXTkFNLR6nkMcGdoJstDx9gjykgpJJOxI7LJTLbAbi
+	jWVx7mtYlFFYuFdTbpGyIrrHEoGBSbVVqkSDUOd1pHVdhXUbr4elu7UfivLUQeNz
+	uASLFw1jQtb5ikN0zw/uGLr226NCs0+VKnjDtgoPN3fa26EG9Fx8LrDumiGEeRNQ
+	lq/bjvHzivuDgt544AOF0t+yxDdKE2ZAnVuQQx53gD8dsRQ8zxQZXBtioKxgLGPy
+	DaGdSrS9qxdXKaSwVUjAxO86LPXcGHCRk9KfAmivI6Evv9sODjyMPwWTGAxf2e4T
+	r0z5he/SR1T5gATIllVxxJFIx1R6ZeTunHA==
+X-ME-Sender: <xms:QnAyavvSg2oqsXAniyFd9VK9sUGAYUVdizMer9JgBATtKDLa7jb4_A>
+    <xme:QnAyamfOFMyJLujgh6w-uLCgdxNsSoCCnqrOWDelRHEjkA5WFlUQlybd5cOrb28Fn
+    ZCb8NCD-BwnyIoZIypMghG3MdD8usIwGN2k9YfpmQ0DKpWbxDNfLw>
+X-ME-Received: <xmr:QnAyatnUAMPyiPpUgbmlUhE1cHQRphVbFFb8a_5S3HzOp56SuY8u2r4I_T8tCCPAGyinlBm5DyP-EPyXDBDqIcw>
+X-ME-Proxy-Cause: dmFkZTFzZPdHrXtsdAZHUBxb7Zy6lBmBdO6Jhk0EUHgTJOXZ4Kin/PP7fYFwr90S70K0ew
+    kjp29eJi1sVn/IajN8AAo2Bu/g7mF890tQwE6w7rEYV4XpVv2WSyywdsAfDbfYkyGj2HPL
+    M2CPpT8W0KTyjvsB2iUTFB5Yk3o0uyGFHbfnTmzOs5OU5PRqbg4cVheu8oGXPowgJ3ZJwP
+    ZMC4/sMtF+B7xPUSxmRl/Qz+lQM6aWzRufFwFutfM+lLgZI0BnC5EjFOBTyUZNyP+pzRy1
+    yOB4Nwd1OpLJMr5crXw8D3pWHnrUBi2Mkeg0rSlGOaCBdEHj0hVmZaw4pQfnxiTsHKllom
+    WGiQC3estGvBo3rmNHIkAF8OokHeyvHsyG910BFdQFw2cANXOAPiSLRyXDzV057rCAdTsR
+    jlj/5pHAJE3YuwH154zbfEQ0IhBeM+iZNzQwGnqXD4vjl0oF6TAKkwq0cQv1PQLZW6Nco3
+    eyfJJi8iNpv6wtc7cTCqfnmKtocSWtXpPVdNuZ8aY7FAUNnoDcrjuf/bRBi9a3FzSpsSJg
+    FIlK+6yYpIfG9WsQ9F6s1fikHWVjfLnPcT5UyJHPx8hEvuiMUlbQIEFNHazNIgXVcFc+L4
+    vjjRzhFO8D9cDbRKcAvjYdy9taQKkNymjewRLVUWt16lgx2iUXH9gXjIJGRA
+X-ME-Proxy: <xmx:QnAyahCnE-8MQC2rIshXOrr4hx1yzcRteLWr8B59rrBYS8BlxjH3AA>
+    <xmx:QnAyavNDsd8psWA1nGqFh5E7g9GDXACBpBFHOp_fn8bZr2_APuYvHw>
+    <xmx:QnAyaoPGAkKxk4eucfQ_WWfLulyhzhm9G1ydllxaBNPLNlkZPCF2wQ>
+    <xmx:QnAyanl7misnariz7y2VaJBqMHjP5LA_CspkpXlAO6E9qjOxKLHpRw>
+    <xmx:QnAyagpTMaThk_FSL738n35z3GQPdGIpwTaua6pxbh7bdAYkzEYOJxjl>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 17 Jun 2026 06:00:33 -0400 (EDT)
+Date: Wed, 17 Jun 2026 12:00:31 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: syzbot <syzbot+cca46a9d1276f38af2ae@syzkaller.appspotmail.com>,
+	davem@davemloft.net, edumazet@google.com, horms@kernel.org,
+	john.fastabend@gmail.com, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, pabeni@redhat.com,
+	syzkaller-bugs@googlegroups.com
+Subject: Re: [syzbot] [net?] WARNING in tls_err_abort
+Message-ID: <ajJwP14SWmdwwFYg@krikkit>
+References: <6a315d48.b0403584.28d0ff.0002.GAE@google.com>
+ <ajFpejsl1ukTbG96@krikkit>
+ <20260616082816.4dd0f035@kernel.org>
+ <ajG5hg9oJvyxPplG@krikkit>
+ <20260616142359.43300727@kernel.org>
+ <ajHENGWdBcbQUpWS@krikkit>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: kory.maincent@bootlin.com, github@szelinsky.de, corey@leavitt.info
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- hkallweit1@gmail.com, horms@kernel.org, kuba@kernel.org,
- linux-kernel@vger.kernel.org, linux@armlinux.org.uk, netdev@vger.kernel.org,
- o.rempel@pengutronix.de, pabeni@redhat.com
-References: <20260616184220.72d1b814@kmaincent-XPS-13-7390>
-Subject: Re: [PATCH RFC net-next 0/4] net: pse-pd: decouple controller lookup
- from MDIO probe
-Content-Language: en-US
-From: Jonas Jelonek <jelonek.jonas@gmail.com>
-In-Reply-To: <20260616184220.72d1b814@kmaincent-XPS-13-7390>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ajHENGWdBcbQUpWS@krikkit>
 
-Hi,
+2026-06-16, 23:46:28 +0200, Sabrina Dubroca wrote:
+> 2026-06-16, 14:23:59 -0700, Jakub Kicinski wrote:
+> > On Tue, 16 Jun 2026 23:00:54 +0200 Sabrina Dubroca wrote:
+> > > 2026-06-16, 08:28:16 -0700, Jakub Kicinski wrote:
+> > > > On Tue, 16 Jun 2026 17:19:22 +0200 Sabrina Dubroca wrote:  
+> > > > Don't we depend on it being set
+> > > > to avoid further state transitions once we hit a crypto error?  
+> > > 
+> > > I kind of thought so too.
+> > 
+> > In which case the question is whether we should try to remove 
+> > the sock_error() instead? (stating the obvious I guess)
+> 
+> That would make sense, but we can't prevent sock_error() being called
+> from some helper.
 
-just wanted to point out, whoever continues with this series, to take
-care of an issue I noticed with one of the patches here, see [1].
+Actually, getsockopt(SO_ERROR) will also clear sk_err. If we want to
+prevent further state transitions, we'll have to use something else
+(probably a flag in tls_context set by tls_err_abort()).
 
-Apart from that, I'd really like to see this move forward since the PSE 
-driver I'm currently working on would benefit from it.
+So I'd go with 2 separate patches. The 2nd one will be a change in
+userspace-visible behavior, but hopefully not one they'd be upset
+about.
 
-Best regards,
-Jonas
-
-[1] https://lore.kernel.org/netdev/e00048dd-1ed3-40c3-9912-59bccf015ad5@gmail.com/
+-- 
+Sabrina
