@@ -1,129 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E411D39B4A3;
-	Wed, 17 Jun 2026 09:18:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4774813A86C;
+	Wed, 17 Jun 2026 09:19:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781687908; cv=none; b=p0cn+kwt8jKTV8s6f2Gr7r5s8S/qTWRDqODsjgTZANL0+rTeICufgv33ew9V6l+uM50kX7xFdo4jRMnCb/ge7xvLRvSnvXcuR+x8rbAH9G0kZ4uHjB3gnZCMPf6Yem5QB/jb0WCRPZxIUuZpQ4Vay/IEUiojpS/bHHJCNqg/OU0=
+	t=1781687997; cv=none; b=US1RV1mzHXKLWSJYfO7QZzn7GUTgLbUOgJNWf9MN1mrWBVQxuk+vSHoxDS4RKQSxPXWATnIGzHTOGbv8Yao6GrJdJnHcCM7eYVvp2JspOP5OgMemcZe0QSEv/sP/NE+Z/LtBt2Bmayqy0C8N8DEC/NsO5cUUO2AIpOuVjVX24R0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781687908; c=relaxed/simple;
-	bh=jU+y4zwGW5m9F+uZkVQ/IsuSU9Z9wtD6LH5H8jCyUPk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pu3P5hf+pZsF0KrwxHO5jdst89EYaNvLe2tmNrcBU52qSSUuma17Uy9n0RqKuQq/98xYJZCAJzcWF6kxXqohtXHlDB+FoSZhz9SLjZJsHdAeVo6A14l1aLnM046dw16XAMqwUYCbqhvWzcGyD6dOOxzfQOLWYNY8FEf//PX1+6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SKvst9fX; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781687997; c=relaxed/simple;
+	bh=yPW0/gGgJInFWTDT1Labb4HnGILlEk/0Iq+1T/Whwo0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=d/r8QBBL/RIRCIGEM6nYOG2ovO6am7q2YNesr4t6GWKKZkQJXdEG490ru48VbBm9D3vgC07GvfiUkj74Qi4amfgVwHWL5eCNTIXWMDAZPIHNDTOCYUQ8a28AwZfcmt9J00yi0pV+PPdc9iluWFH46pRCmqcMVhTqO76Qi+b1Nvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=X7UdkVk7; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SKvst9fX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F21A1F000E9;
-	Wed, 17 Jun 2026 09:18:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781687907;
-	bh=EtNxW7/37fBEOlp38QPfab6gfweMcAFcEQ1RgfKloiU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SKvst9fXi2R1TDymljJrc6AzQ+h9tCJfP4PIijyCLDV76XTG3aUP7jios0lc8vvJW
-	 wrRahawIRsQ+OPKPdq7je/hchFPjjHCPZohsuaNjxm1BcPjxTCDVY8n2/mCm2aAM7H
-	 zXLrsbXwC+8ziBuz7+e9gDXD5MCmnpwl3Lju9Y8xKD6VyVNK+tviH3ZXMN+LjOqn30
-	 zjKGX2rO5i/EVprgo85hlksRklXiFopnO57f/mv+7cG+7s0fEDqX6b+LDUE6POjJOg
-	 YGhsPv3hyVNyUXUpEOJqlWfTz0ZBfayCvtda9zGnSUnHNCy5JVQkfNgcospb47T/sG
-	 7cnRM1qBtkO+Q==
-From: Simon Horman <horms@kernel.org>
-To: doruk@0sec.ai
-Cc: Simon Horman <horms@kernel.org>,
-	saeedm@nvidia.com,
-	leon@kernel.org,
-	tariqt@nvidia.com,
-	mbloch@nvidia.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	borisp@nvidia.com,
-	sd@queasysnail.net,
-	raeds@nvidia.com,
-	ehakim@nvidia.com,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] net/mlx5e: macsec: fix use-after-free of metadata_dst on RX SC delete
-Date: Wed, 17 Jun 2026 10:16:35 +0100
-Message-ID: <20260617091634.846438-2-horms@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260615140534.52691-1-doruk@0sec.ai>
-References: <20260615140534.52691-1-doruk@0sec.ai>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="X7UdkVk7"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=KF3jViJ8RV1au3xZmPm/2f7q1mQz98SWnSozj/8FwZA=; b=X7UdkVk7H+72Dgl+jLszPNvht2
+	oLlcCM+SRixL9VfBfVw3W5IKcY5hWWimyjRolYZ1YdIIsvTYMti/NVI8jAWIbVzaEiwwJWU+VbVo/
+	Gf8I+0bsLbWYCGAzZq9m1H1MJI84Iolq5iMJ8aCgKoioNN9TF8kolu3BHW+Pdnds+aW4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wZmR1-0089gl-9Q; Wed, 17 Jun 2026 11:19:47 +0200
+Date: Wed, 17 Jun 2026 11:19:47 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Kyle Switch <kyle.switch@motor-comm.com>
+Cc: mmyangfl@gmail.com, olteanv@gmail.com, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, ming.xu@motor-comm.com,
+	xiaolin.xu@motor-comm.com, jianmin.wang@motor-comm.com,
+	de.ge@motor-comm.com
+Subject: Re: [RESEND PATCH v1] net: dsa: motorcomm: add yt92xx dsa driver
+Message-ID: <ad636332-6678-48c0-a5a7-9c54b1ba720a@lunn.ch>
+References: <20260615111235.3544282-1-kyle.switch@motor-comm.com>
+ <3f7bf73b-c8dc-451d-981f-5e5343291960@lunn.ch>
+ <adc1dc4b-1d9d-42e6-8983-f0a7c650a6cd@motor-comm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <adc1dc4b-1d9d-42e6-8983-f0a7c650a6cd@motor-comm.com>
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev
----
-net/mlx5e: macsec: fix use-after-free of metadata_dst on RX SC delete
+> Thank you for your reminding, this patch will submitted  in a series 
+> of small patches.
+> This patch mainly contains three contents:
+> 1. Underlying function interface for different motorcomm switch series in 
+> the file driver/net/dsa/motorcomm/switch/.
+> 2. Optimization existing yt921x dsa driver using common switch function apis.
+> 3. New yt922x dsa driver.
+> Can you accept break this up into lots of small patch according to this logic?
+> if not, do you have any suggestion? thank you.
 
-This patch replaces metadata_dst_free() with dst_release() during MACsec
-RX SC deletion. It relies on the dst subsystem's refcounting to defer freeing
-the metadata_dst until the last reference is dropped, aiming to fix a
-use-after-free when an skb still references it.
+We need to see the patches, but keep them small, and add functionality
+little by little. I had a very quick look at your first version, and i
+see a lot you will need to change. So just post small bits of code,
+learn from the review comments, and fixup all the rest of the code
+before posting it.
 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
-> index 71b3a059c9647..2a4e7ed76d315 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
-> @@ -829,7 +829,7 @@ static void macsec_del_rxsc_ctx(struct mlx5e_macsec *macsec, struct mlx5e_macsec
->  	 */
->  	list_del_rcu(&rx_sc->rx_sc_list_element);
->  	xa_erase(&macsec->sc_xarray, rx_sc->sc_xarray_element->fs_id);
-> -	metadata_dst_free(rx_sc->md_dst);
-> +	dst_release(&rx_sc->md_dst->dst);
+One thing i need to point out. Linux has a long tradition of not
+replacing existing code with a new implementation. You take the
+existing code and step by step improve it. So i do not want to see a
+patch which just removes the existing driver. I want to see patches
+which add new functionality to the existing driver, doing refactors as
+needed.
 
-[Severity: High]
-Does this change introduce a new use-after-free in the RX datapath?
+Please also remember:
 
-When dst_release() drops the refcount to 0, concurrent readers in
-mlx5e_macsec_offload_handle_rx_skb() can still find the object via RCU
-and call dst_hold(). Because dst_hold() uses rcuref_get(), it fails on a
-0-refcount object without incrementing the count.
+MOTORCOMM YT921X ETHERNET SWITCH DRIVER
+M:      David Yang <mmyangfl@gmail.com>
+L:      netdev@vger.kernel.org
+S:      Maintained
+F:      Documentation/devicetree/bindings/net/dsa/motorcomm,yt921x.yaml
+F:      drivers/net/dsa/yt921x.*
+F:      net/dsa/tag_yt921x.c
 
-However, the datapath still attaches the 0-refcount dst to the skb. When the
-skb is later freed, skb_dst_drop() will call dst_release() on already-freed
-memory.
+David is the Maintainer of this driver. Listen to what he says. In
+time, when you have shown you can also can do the job of being a
+Maintainer, your name will be added.
 
-Should the datapath be updated to use dst_hold_safe() instead?
-
->  	kfree(rx_sc->sc_xarray_element);
-
-[Severity: High]
-This is a pre-existing issue, but does this synchronous kfree() cause a
-use-after-free for concurrent datapath readers?
-
-The element was just removed from the RCU-protected xarray via xa_erase(),
-but the RX datapath can still be accessing it via xa_load() under
-rcu_read_lock() in mlx5e_macsec_offload_handle_rx_skb().
-
-Should this use an RCU-deferred free mechanism instead?
-
-[Severity: Critical]
-This is a pre-existing issue, but does mlx5e_macsec_offload_handle_rx_skb()
-blindly dereference the result of xa_load()?
-
-drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c:mlx5e_macsec_offload_handle_rx_skb() {
-    ...
-    sc_xarray_element = xa_load(&macsec->sc_xarray, fs_id);
-    rx_sc = sc_xarray_element->rx_sc;
-    ...
-}
-
-If xa_load() returns NULL (e.g., if the entry was concurrently deleted by
-xa_erase() or the packet has an unrecognized fs_id), will this cause a
-deterministic kernel panic?
-
-Is a NULL check needed before accessing the returned element?
-
->  	kfree_rcu_mightsleep(rx_sc);
->  }
+      Andrew
