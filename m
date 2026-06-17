@@ -1,43 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E944C388E61
-	for <netdev@vger.kernel.org>; Wed, 17 Jun 2026 23:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D2D280A58
+	for <netdev@vger.kernel.org>; Wed, 17 Jun 2026 23:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781739890; cv=none; b=uUUWJ4KxnxMLONBGxLLSlbRcC1Ay09vSPvl+uyZi8GnNHKsGjWWuwbaebmUOVKIen5cdbRqqSfJ813exJSdxGCjLI7Uhs+zHopjmp/4VPKg+hf8Y75isuqeApRnYIWLRBYs/SRjedWwF1rTUyG/B0lw6HDxkKiOqXG3ncFvAd/0=
+	t=1781740024; cv=none; b=KFpC7YdYMdzOb20BJIFqg8/VQEIc8zQkrJtq95knGQ3Mh8EOO6mmW/sDuRP8FYJ45Rfy3nNUDfp0Oqj0tfn4P9SQMJwcF6c0JWUnu7/TdCVL4+nhCBmAO6aH33rWoKfMBCyahynI9DMIhlTBmWA2N7sLDwvdmDV0UP/HxfC+xRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781739890; c=relaxed/simple;
-	bh=PUtCH2mIavsa719O4vEdePS3+ukWIimZPi7womHrDik=;
+	s=arc-20240116; t=1781740024; c=relaxed/simple;
+	bh=VH93vblaMqJ/K3v1N+MnPdIOelYOWuuCAwyhN+JixFw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h6HPtUJBGcM1C1oAuJWyN2QLYGl1mzHLiL7nrHgYWb+mjOjnTqMedFdbOt+s6/alxF0P9wmFgVzRCA3thDGapyJPccA4PGZIYlhqesGISSefxcqev56uh3R4hbyzC0MbWOQtn3syTBjWzwLkhfON1VWH0Ma7XyT6L27MWsxmkuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ehBABrRF; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=WItnB7HP9VgXehC6QHim3OLTFhZVffhb44kcn9U6/Ph+dQHr6GdZD70eWpQwuk/ckU7cmPbfuRr7GjMHtQPZxcmW97+I2FEhR41DQdPG+OwMPIr9RlnFfOVcerULaZRq/tPZaovZ8w8mkK5wm8uBKwNKrp5nD5t6xoBJUtao5D0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gGC3JDnh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ehBABrRF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 271961F000E9;
-	Wed, 17 Jun 2026 23:44:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gGC3JDnh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 297901F000E9;
+	Wed, 17 Jun 2026 23:47:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781739889;
-	bh=PUtCH2mIavsa719O4vEdePS3+ukWIimZPi7womHrDik=;
+	s=k20260515; t=1781740022;
+	bh=dNfGF+DW/UJTT4QcLtQQaDo5D+dHZFYxNiVjjXI4rcw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=ehBABrRFTO7Z4VezmK8POW8KuVNQovjhhnh0LvYAr9CxzY9wDhDUhg3LD45I87Dv4
-	 yVaXjElmqTiOGfUCCkGLSEDlUikyey6Hj1t/E3GXCm0FBI2r9YiB/4NLRexOgcpMzX
-	 awUGf/LqdpMHOA2U3MBYFHGAp+TPb0OKXBeaT/TTCIL6/xqWIN3b9b1XSt23fBo7dV
-	 swkPqyyicZWs7gYYC/K3fCIQU2IpiFqn7qURKIuk7nwQeDcmMMAB/TITf/sqYdZKez
-	 Nj+2q6teMCNzp047kNGlXZkX08sThANjueFzWweyMgEjQyo+RuBRMnuneWQJ7bEK4J
-	 Gk4OarN5j/NNQ==
-Date: Wed, 17 Jun 2026 16:44:48 -0700
+	b=gGC3JDnh1OaY7JJ3rrvmUUmVAoqVOfLS448ILuwjE1BVMhprCeyP3ued0ZFByPet9
+	 y5ZwRt0j+8wTfWYmoAE5n+nZonqz8Hs8qER2NvyEbAaIcFizKR9jfmODlnVScAG/gG
+	 kNGqMs4q3Ttqi8eSSZfF2tJNfE6IxP7J//ACFRcMTEg+2XkFtzbwNBv6mhhxRpvaon
+	 A/bL0wL72vk+TP5ibYUHAp3c8b5jlEG/G+ysnUeuAKerVHk7Wo+E41f9hZ0ZcbEIc8
+	 W7rrgRTHD0XxxpPXR35kby6Qi1ZCxrCMDgKDneL+pqqEvPCPczUX84AX2W/Qe0QrC1
+	 MSa3XRoFHzJSw==
+Date: Wed, 17 Jun 2026 16:47:01 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Wayen Yan <win847@gmail.com>
-Cc: netdev@vger.kernel.org, lorenzo@kernel.org, horms@kernel.org,
- pabeni@redhat.com, edumazet@google.com, andrew+netdev@lunn.ch,
- angelogioacchino.delregno@collabora.com, matthias.bgg@gmail.com,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH] net: airoha: Stop TX queues on error path in
- airoha_dev_open
-Message-ID: <20260617164448.31e189bc@kernel.org>
-In-Reply-To: <178160729880.2156257.7978513589649053826@gmail.com>
-References: <178160729880.2156257.7978513589649053826@gmail.com>
+To: Lei Zhu <zhulei_szu@163.com>
+Cc: brett.creeley@amd.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next] ionic: Change list definition method
+Message-ID: <20260617164701.3276216d@kernel.org>
+In-Reply-To: <20260617023243.61595-1-zhulei_szu@163.com>
+References: <20260617023243.61595-1-zhulei_szu@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,12 +44,23 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 16 Jun 2026 18:50:39 +0800 Wayen Yan wrote:
-> In airoha_dev_open(), if airoha_set_vip_for_gdm_port() fails after
-> netif_tx_start_all_queues() has been called, the TX queues remain
-> started while the device configuration is incomplete. This leaves
-> the device in an inconsistent state where packets could be
-> transmitted before the VIP/IFC port configuration is complete.
+On Wed, 17 Jun 2026 10:32:43 +0800 Lei Zhu wrote:
+> The LIST_HEAD macro can both define a linked list and initialize
+> it in one step. To simplify code, we replace the separate operations
+> of linked list definition and manual initialization with the LIST_HEAD
+> macro.
 
-Not sure if this was superseded by another posting but FWIW
-this posting did not apply.
+## Form letter - net-next-closed
+
+We have already submitted our pull request with net-next material for v7.2,
+and therefore net-next is closed for new drivers, features, code refactoring
+and optimizations. We are currently accepting bug fixes only.
+
+Please repost when net-next reopens after June 29th.
+
+RFC patches sent for review only are obviously welcome at any time.
+
+See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#development-cycle
+-- 
+pw-bot: defer
+pv-bot: closed
