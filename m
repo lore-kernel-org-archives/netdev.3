@@ -1,44 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10AF376497;
-	Wed, 17 Jun 2026 20:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B6835CBCB;
+	Wed, 17 Jun 2026 20:54:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781729195; cv=none; b=cryHNV7X+BEJXVrQpNTYZLayoe587ZwQU0mLZyiMiokHF3GWzvVfmD85Tkm+/l64JlKha3O/AfawROQ1K/1EyQkr7E+bfAreZMscA8PMOnIF2LW7j35JQVfOR3aP9j4IoOyl4HzG59ZcQ7o70wCguaqSgmO6uBIfhAzOY9sf/J8=
+	t=1781729650; cv=none; b=ga2Qk4jQTNOdt2X1s8zCmobd0qXblnYAzWAN1dM6ha3DSj5xKpZjn9YCdRbkH/btXDWQT07H+htRvfjXgrK3nYUsvrDc6Oty5KfHKc+dUukLBXYAyYpcv+kXz9QSLo3Whf9grmt0PgmiLQcqQoI4Jt8amhaPk0aVayMQgxBnxDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781729195; c=relaxed/simple;
-	bh=cIiNwSHcoDTzPIvAZfDPFdKYxhr1S+VS5uMkVd+Pq5A=;
+	s=arc-20240116; t=1781729650; c=relaxed/simple;
+	bh=Xgdk1TChEBhiU6wHakx3KuSeVSRenMLj/qJLY5mNXwM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sMoODgf3XpSUHxe5oymmoga0LSQJWRScvBInbAzlrwxPcvSRAB3d1JMAmCNcojXtBh0MsNceFu9bVdLr6UQSukHfgoeZJPnSCoCxGwR2sr/Rg6JobN+PIYr0Jz0BNgYdS528EntPuQ7sn1mZDuOqEVGD2TJHhBnXbtjSQ0ThALs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FA1De8wo; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=OwFdXO1t7c5YyTzQAd1NmAB2m+/UIddgKHBkmLq5L5hFdHc9eVyLTLthS3QlVapGerFW+zYHRQvy4Cx00yPL7YWQD89N8tKUvF5p+4m27B88sICsp8Y+xyCOv5/p9HfpZJDE1w/i6a8pdkmIagboZ7qEPQr8WTbezVqStiDULpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=djxb4RDr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FA1De8wo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C53101F000E9;
-	Wed, 17 Jun 2026 20:46:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="djxb4RDr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 412D51F000E9;
+	Wed, 17 Jun 2026 20:54:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781729194;
-	bh=vVNWFmfjwqdxt2e6ldVvF0gW8p2zShG7ToMPkGF8Hf0=;
+	s=k20260515; t=1781729648;
+	bh=yI7oWojBBWCFZtT5GkeyArJgGoTs0Iz+VhD0IZ6tAKI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=FA1De8woQbexsuMpG6HT4QyiZy6gY3yqhU5WhmcMOwI+rMiMCtY83dGw8rxermli0
-	 GsB+BCOugSzjBqm36kyEB/q7OAdlUjDYXfqtVUfpaavLzN0OJ7o/GmK9cxbA6j/GD/
-	 NoEMUCW0nxyOicFCsazxZmHJtaVc+NkBgG6sYM0uFBumqcobWHEzZd9vJwBXmT8byv
-	 hMdcaWgQFQCdcZVWjUnEmpdlt5RNGhraifJ2+jhriy4HbjUUhLkJ70CCkCdGqWY3rq
-	 HcVOHd36HoqIRiYUhr5EH/lHoZcISyVeP0hylFbJC2CN1ncutuG0/xiVUeecnwjpfr
-	 TpUsqvgE4tVxQ==
-Date: Wed, 17 Jun 2026 13:46:33 -0700
+	b=djxb4RDrAOu/bmeS3G3q6kZTONzLdub/v3XZ89XiXHCBOzxwATOUPjT4qECXrAI56
+	 Ya1wiMu1Vt7fRvp1K/PlEeoJW1cTkZ71S5HdpYAx15KXUR0wKbzrkM9YfDXY/vEKcR
+	 4AZt7u/WdJM0zPEdE5zAfudRpdKVDyVXtZrKfC4fnuChVldPp0ofY14Rcw5RDX6zKf
+	 VIytAwUMoq7mEu0S+DEZ5CbUZnB7xqJ0xmWUQcFKBRakMEmPiWEf8bR5kePKfS8qXo
+	 ISTz3SYznNKs02+YwNdn/8JIvoBF0UhKDOTuMQCZyY/aitBGP1bW3is3i1EKkc5za3
+	 H7KFZf93vQC3w==
+Date: Wed, 17 Jun 2026 13:54:07 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: "illusion.wang" <illusion.wang@nebula-matrix.com>
-Cc: dimon.zhao@nebula-matrix.com, alvin.wang@nebula-matrix.com,
- sam.chen@nebula-matrix.com, netdev@vger.kernel.org, andrew+netdev@lunn.ch,
- corbet@lwn.net, horms@kernel.org, linux-doc@vger.kernel.org,
- pabeni@redhat.com, vadim.fedorenko@linux.dev, lukas.bulwahn@redhat.com,
- edumazet@google.com, enelsonmoore@gmail.com, skhan@linuxfoundation.org,
- hkallweit1@gmail.com, linux-kernel@vger.kernel.org (open list)
-Subject: Re: [PATCH v19 net-next 00/11] nbl driver for Nebulamatrix NICs
-Message-ID: <20260617134633.658a8c8e@kernel.org>
-In-Reply-To: <20260617044702.2439-1-illusion.wang@nebula-matrix.com>
-References: <20260617044702.2439-1-illusion.wang@nebula-matrix.com>
+To: Jacob Keller <jacob.e.keller@intel.com>
+Cc: <keguang.zhang@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ <linux-mips@vger.kernel.org>, <netdev@vger.kernel.org>,
+ <linux-stm32@st-md-mailman.stormreply.com>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] net: stmmac: loongson1: Use dev_err_probe()
+Message-ID: <20260617135407.6ff54e27@kernel.org>
+In-Reply-To: <31630db0-85cb-421b-8ebe-bbae07521533@intel.com>
+References: <20260615-dwmac-loongson1-v1-1-cbcf5bc01d9b@gmail.com>
+	<31630db0-85cb-421b-8ebe-bbae07521533@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,24 +50,13 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 17 Jun 2026 12:46:45 +0800 illusion.wang wrote:
-> This patch series represents the first phase. We plan to integrate it in
-> two phases: the first phase covers mailbox and chip configuration,
-> while the second phase involves net dev configuration.
-> Together, they will provide basic PF-based Ethernet port transmission and
-> reception capabilities.
+On Tue, 16 Jun 2026 16:42:18 -0700 Jacob Keller wrote:
+> I'd probably also argue this may go against the desired goals of
+> net-next with only wanting such cleanups when in the context of other
+> larger work. Of course that decision ultimately belongs to the maintainers.
 
-## Form letter - net-next-closed
-
-We have already submitted our pull request with net-next material for v7.2,
-and therefore net-next is closed for new drivers, features, code refactoring
-and optimizations. We are currently accepting bug fixes only.
-
-Please repost when net-next reopens after June 29th.
-
-RFC patches sent for review only are obviously welcome at any time.
-
-See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#development-cycle
+Yes, feeding const EINVAL into dev_err_probe() is pretty pointless
+so if this helps it's just by "saving" 2 LoC. I'm not sure it's worth
+it even in context of larger work, let along by itself.
 -- 
-pw-bot: defer
-pv-bot: closed
+pw-bot: reject
