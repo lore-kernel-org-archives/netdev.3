@@ -1,111 +1,136 @@
-Received: from out28-53.mail.aliyun.com (out28-53.mail.aliyun.com [115.124.28.53])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37DB3E6387;
-	Thu, 18 Jun 2026 09:59:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A963E00A0
+	for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 10:03:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781776798; cv=none; b=fsRySs1Fi+f2o9IipY0cDlGjWDjvviVMi03JSY9k4AUYOIK/GEU0FAsDhjklzFwjtZ5wVUyYlaR7Hpd8pcg1GLHyUsB465GgCnagpucH7RYmujHjtTq/XiRtZTLL7Ncu6G0rXouJcUv1M+y0VzPOVjrZxSh1zrFCuBZmgkMMc+Y=
+	t=1781777028; cv=none; b=FGMSMy7ggN3N7SL6i8MzfqTA9212wytQOkuZ+m2DrqspTsjuXNpz4J/jrL9tkQH1kyefqZHaeiw3uG+XmGaVz8ZfZ6/l3aAOSnrQmwawUE3EDWThFwY3OFPxp9LhNcIG92qOQDOCkQjhBkt8Pmemibnd4hcDVkIPB/kO/CrzTuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781776798; c=relaxed/simple;
-	bh=Af5GXg91NjJxXP55nt+FlV/hEz44bkALO5T42DkbsnY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LraEjiUOWPtBd5yKD93eKOuEACcCF9mkiiyO6GMfCpdFlCSjctQl7LpR7yOCSSgb9IY5TJ5aYH/khsFUExNaim7WwB+6bOHnQeAnQV8D2eI5SwREinIKnz9R0TNFu92QWBo0yLZhvgZ6g/zLrOrvx0EZWeMQ81cBq5HP0Tl+m5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07466074|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.35648-0.0125712-0.630949;FP=15155477914917510673|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037021217;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=14;RT=14;SR=0;TI=SMTPD_---.i.he.P1_1781776784;
-Received: from 10.30.1.98(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.i.he.P1_1781776784 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Thu, 18 Jun 2026 17:59:47 +0800
-Message-ID: <c853b074-20e5-46fd-9b37-1195a9de7a8a@motor-comm.com>
-Date: Thu, 18 Jun 2026 17:59:43 +0800
+	s=arc-20240116; t=1781777028; c=relaxed/simple;
+	bh=/YVueeeUe/gawX533OTdpdjxHchn1sPHZ4ENs6Yx2yo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZYPwhOLIOX6oU6urRAxdz6S+E9nC8b9CMrfiMnjbPSN/QwrBrOOb3moXpuQWBtdQpf80xaZ3KPmyZjjll0aOtNg0kq+zxMJoir2N4MycbG3GvwQGNjycL2WCS8tAX4tX8GP1+bmvfj/ZTZGwuGgyRMb3nHsLBM6J5qRt5E/9R7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PcHZq7Xu; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PcHZq7Xu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01D581F000E9;
+	Thu, 18 Jun 2026 10:03:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781777026;
+	bh=Iom3D6FWo9fllJWbYMA89UYN58mi46iOwnkKnoRIuIM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=PcHZq7Xu9Xos5Y3JaTW2tn+d3FghRtNMdMfvmEfcLw8GZUqArX/N8qgIINhrHwH1K
+	 41cxCdFC4XeJs6V8D1RiXf00+K1KtH1X327h+wwu8t8TzHRi2uUJ8hvoRAghdpvA+l
+	 xMff8g0GJVhjEYOexJO3+AX3ceM3GlrlzITsVneMFECtu+mn1pEG/loVMxOZHCPj5A
+	 ibMwbjroxJbNccIjlA/KYICTDI0h+fc4UbdUESm9t14QWbLUgoGGJjYdZgriu5Ulfv
+	 qF2MA++Gdpv917gr9nBmsipqQrar0TB7IrOLhC4iTk5RkqPY88QKnXPDvqTMqG8c+Z
+	 U0mSLnUtZhYyg==
+Date: Thu, 18 Jun 2026 12:03:44 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Wayen Yan <win847@gmail.com>, netdev@vger.kernel.org, horms@kernel.org,
+	pabeni@redhat.com, edumazet@google.com, andrew+netdev@lunn.ch,
+	angelogioacchino.delregno@collabora.com, matthias.bgg@gmail.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH net v3] net: airoha: Fix skb->priority underflow in
+ airoha_dev_select_queue()
+Message-ID: <ajPCgH7E_ke6Fdur@lore-desk>
+References: <178161373805.2167512.2544164327472822616@gmail.com>
+ <20260617161951.52abe413@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND PATCH v1] net: dsa: motorcomm: add yt92xx dsa driver
-To: David Yang <mmyangfl@gmail.com>
-Cc: andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
- jianmin.wang@motor-comm.com, de.ge@motor-comm.com
-References: <20260615111235.3544282-1-kyle.switch@motor-comm.com>
- <CAAXyoMOp8mYLUx4CQBn=9R8rNqEsb8ybWD0z+=FJgh2j-F0s8A@mail.gmail.com>
- <88f726d5-1617-4d2e-8fbb-d3da9478b386@motor-comm.com>
- <CAAXyoMMYxRTwHD6QmpAkspCtiY853KkYuOAUR=qV0v9g5w9v+g@mail.gmail.com>
-Content-Language: en-US
-From: Kyle Switch <kyle.switch@motor-comm.com>
-In-Reply-To: <CAAXyoMMYxRTwHD6QmpAkspCtiY853KkYuOAUR=qV0v9g5w9v+g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="y49npv9b6mmAWoJY"
+Content-Disposition: inline
+In-Reply-To: <20260617161951.52abe413@kernel.org>
 
 
+--y49npv9b6mmAWoJY
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 6/17/26 19:15, David Yang wrote:
-> On Wed, Jun 17, 2026 at 10:37 AM Kyle Switch <kyle.switch@motor-comm.com> wrote:
->>>> +/* To define the from cpu tag format 8 bytes:
->>>> + *
->>>> + * 0 1 2 3 4 5 6 7 | 0 1 2 3 4 5 6 7
->>>> + *|<----------TPID 0x9988---------->|
->>>> + *|<--RESERVE-->|<-----DST PORT---->|
->>>> + *|-|<---------RESERVE------------->|
->>>> + *|<------------------------------->|
->>>> + */
->>>> +#define YT922X_TAG_FORMAT2_NAME "yt922x-8b"
->>>> +#define YT922X_FORMAT2_TAG_LEN                  8
->>>> +#define YT922X_PKT_TYPE          GENMASK(15, 14)
->>>> +#define YT922X_8B_CPUTAG_PKT_FROM_CPU      0x1
->>>> +#define YT922X_8B_CPUTAG_SRC_PORT          GENMASK(6, 2)
->>>> +#define YT922X_8B_CPUTAG_DST_PORTMASK      GENMASK(8, 0)
->>>> +#define YT922X_8B_CPUTAG_DST_PORTMASK_0      BIT(15)
->>>> +#define YT922X_8B_CPUTAG_DST_PORTMASK_0_EN      0x1
->>>> +#define YT922X_8B_CPUTAG_FORCE_DST         BIT(9)
->>>> +#define YT922X_8B_CPUTAG_FORCE_DST_EN      0x1
->>>
->>> If yt922x tag format shares no common with yt921x, make a new tag driver.
->>
->> Ans: thank you for your suggestion, we will consider whether to create a new driver in the new file.
-> 
-> I'm not an expert in this, but if yt922x tag does support cpu codes
-> and priority, please consider updating yt921x tagger to support it,
-> even if you don't use or test these features for now.
-> 
+> On Sun, 14 Jun 2026 07:30:54 +0800 Wayen Yan wrote:
+> > In airoha_dev_select_queue(), the expression:
+> >=20
+> >   queue =3D (skb->priority - 1) % AIROHA_NUM_QOS_QUEUES;
+> >=20
+> > implicitly converts to unsigned arithmetic: when skb->priority is 0
+> > (the default for unclassified traffic), (0u - 1u) wraps to UINT_MAX,
+> > and UINT_MAX % 8 =3D 7, routing default best-effort packets to the
+> > highest-priority QoS queue. This causes QoS inversion where the
+> > majority of traffic on a PON gateway starves actual high-priority
+> > flows (VoIP, gaming, etc.).
+> >=20
+> > Fix by guarding the subtraction: when priority is 0, map to queue 0
+> > (lowest priority), otherwise apply the original (priority - 1) % 8
+> > mapping.
+> >=20
+> > Fixes: 2b288b81560b ("net: airoha: Introduce ndo_select_queue callback")
+> > Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> > Reviewed-by: Joe Damato <joe@dama.to>
+> > Signed-off-by: Wayen Yan <win847@gmail.com>
+> > ---
+> >  drivers/net/ethernet/airoha/airoha_eth.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >=20
+> > diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/eth=
+ernet/airoha/airoha_eth.c
+> > index 31cdb11cd7..d476ef83c3 100644
+> > --- a/drivers/net/ethernet/airoha/airoha_eth.c
+> > +++ b/drivers/net/ethernet/airoha/airoha_eth.c
+> > @@ -1933,7 +1933,7 @@ static u16 airoha_dev_select_queue(struct net_dev=
+ice *dev, struct sk_buff *skb,
+> >  	 */
+> >  	channel =3D netdev_uses_dsa(dev) ? skb_get_queue_mapping(skb) : port-=
+>id;
+> >  	channel =3D channel % AIROHA_NUM_QOS_CHANNELS;
+> > -	queue =3D (skb->priority - 1) % AIROHA_NUM_QOS_QUEUES; /* QoS queue */
+> > +	queue =3D skb->priority ? (skb->priority - 1) % AIROHA_NUM_QOS_QUEUES=
+ : 0;
+>=20
+> Hi Lorenzo, is there a reason we're subtracting 1 here in the first
+> place? Could be just me, but may be worth adding a comment here.
+>=20
+> Intuitively if we are "narrowing" 16 prios to 8 queues it'd make most
+> sense to group the adjacent ones -- divide by two.
+>=20
+> Please respin with some sort of an explanation..
 
-Ans: here "updating yt921x tagger" you mean yt922x tag driver to support cpu code and dscp prio? We consider
-implementing it in the subsequent patch, but no matter what, when we submit the yt922x dsa driver ,it will support it.
+IIRC this is a leftover of the ETS offload support.
+I agree it is righ to just do:
 
->>>
->>>> +static struct dsa_tag_driver *dsa_tag_driver_array[] = {
->>>> +       &DSA_TAG_DRIVER_NAME(yt921x_netdev_ops),
->>>> +       &DSA_TAG_DRIVER_NAME(yt922x_4b_netdev_ops),
->>>> +       &DSA_TAG_DRIVER_NAME(yt922x_8b_netdev_ops),
->>>> +};
->>>
->>> If both are supported by the chip and 4b does nothing more than 8b
->>> does, do not bother with it.
->>
->> Ans: 4b and 8b dsa tag may have different application scenarios. from my opinion,
->>      1. 4b dsa tag can save 4 bytes of payload
->>      2. 8b dsa tag carry more package info.
-> 
-> We do not support every tag protocol. For DSA switches,
->   - the conduit interface supports jumbo frames so there is room for
-> the DSA header, or
->   - you end up with MTU less than 1500 anyway.
-> 4-byte reduction does not make a practical difference here. An
-> alternative protocol poses 2x work to everyone else, and unnecessarily
-> exposes your driver to interoperability issues, as pointed by Andrew.
-> 
-> As I've commented before, if there is a particular reason to add
-> 4-byte protocol, leave it behind for the moment, and focus on a
-> minimal yt922x_dsa_switch_ops + yt922x_netdev_ops for your first
-> patchset without any offloading supports. This way, others can easily
-> see your changes and move the work forward efficiently.
+	queue =3D skb->priority % AIROHA_NUM_QOS_QUEUES; /* QoS queue */
 
-Ans: Thank you for your advise, 8bytes dsa tag driver will be supported firstly.
+@Wayen: can you please respin fixing the issue? Please add even my Acked-by:
 
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+
+Regards,
+Lorenzo
+
+>=20
+> >  	queue =3D channel * AIROHA_NUM_QOS_QUEUES + queue;
+> > =20
+> >  	return queue < dev->num_tx_queues ? queue : 0;
+> --=20
+> pw-bot: cr
+
+--y49npv9b6mmAWoJY
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCajPCgAAKCRA6cBh0uS2t
+rEPCAQCqDCrcwKyucjgOFBgvz0L4RGD7O8nbPLHaiOpvjvOwjAD9GhOOU9yIs2ZA
+nE8h3U0jkTu24u7OOiE+sJeJpIjNIg8=
+=8RTw
+-----END PGP SIGNATURE-----
+
+--y49npv9b6mmAWoJY--
