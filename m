@@ -1,145 +1,178 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11023097.outbound.protection.outlook.com [40.107.162.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E02F3905E0;
-	Thu, 18 Jun 2026 13:26:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781789210; cv=none; b=tPi3eTdMf0oFa6qd8LcAYJxypUQWbBOXXJ+30EUBlLW3kBrckasQuGrd7IQchJeaO3XKDNsk2CZhRComvxd8q+9VVgWqNnYF+inKlRo9RgafBOSCLDvhdEOJJSxIRnHmnBN3hG2f9/Mf9dTyaqYBExFufIcLw835YUgKG4VvAds=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781789210; c=relaxed/simple;
-	bh=QLElcu9hzb0P9ZXwyhxlrodftHCw/3tjsGb+QSKtCgU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OkTb5D9RmDLAQXe3WCctNpUh8Nu7HeifXXfNnJP3CtBEvONOrzsGAi2fr9gRXlzDKxicUZcgbqqirNNDlTtojfWHAPmyXob70T6REBWRNn3RAgCqaHUOiYWFgzmI9jwYvXs84Mc3SHOy3mSjWazOnKIIDnvWBLEeXfp3GZAIfQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ePH305ta; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 905B93EFFC5;
+	Thu, 18 Jun 2026 13:30:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.97
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781789412; cv=fail; b=cjqTIMfWE6VGHLp3DjIO8E+XOwNpqLC54eBHhmfr8+kqNONbhG6WXJEQ7+Q12+CjpEVjoPj+NNfM7mPUmxTHhgoxKftQ/83gg4Cl4YcZ3xMvuc+0Q099lVR7SM2Twm4m5bUny6/muwzFYV7YEDfun5nvE6cWzrsWph+ebbaXFco=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781789412; c=relaxed/simple;
+	bh=vjamKVOZt3heAMSyoZM1OHnjVI4ZyqHR2VcLhMYp3U0=;
+	h=Message-ID:Date:Subject:To:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=dkZwU1lXEuwp3moSJf+lwEHJU5PD++ZUTlH0PXOS+Y7eHhJRol3c5IrUDaYAQoBAPuWivMOQcUsKoviTD8N7vrMB9D6fka9M2izQvc6I9dgpnJ2YRDBuzaMmeJN1t1+EFXpthSSwyAyieVQK4EchO+rUg1QDGSzmknz6Bo0jhOc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=genexis.eu; spf=pass smtp.mailfrom=genexis.eu; dkim=pass (2048-bit key) header.d=genexis.eu header.i=@genexis.eu header.b=dvfuAyFS; arc=fail smtp.client-ip=40.107.162.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=genexis.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=genexis.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ePH305ta"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 866741F00ACA;
-	Thu, 18 Jun 2026 13:26:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781789208;
-	bh=oP8CklMUaboQLSuBeJTlR6jjiTi2cbJtmz4ndwNg7Hs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ePH305taClEHRX7/p9PObb/G1F17AsBqD1kbzlA8VsxNnxeR/tdpMunsl/VAi3g6c
-	 nCU3YpNI3iOaZZtZ7aVcwhVEyZu24FzADcHAc3LK6j0CKmHYLPyYIhrMdlUd5hfCZN
-	 ah+iD48ZN/VukYANVT49OjnF54g0koiUcAsbdRoz6dle+YDdBYAhEwJEW24Lw4LMGX
-	 9dFfgDwAgENyr8KGA14FItdKASNGvJshTz8VxG3YLMWr4Q6QFe8l+WgE0jq8vw4YAx
-	 23DaOJ+hCdCKO5DCnoeC9K134vJVVDdjOAyeeqcUdUatB5D3BBQloFA9FZcXD85H5Z
-	 cKQl69mYXkSIA==
-From: Simon Horman <horms@kernel.org>
-To: doruk@0sec.ai
-Cc: Simon Horman <horms@kernel.org>,
-	saeedm@nvidia.com,
-	leon@kernel.org,
-	tariqt@nvidia.com,
-	mbloch@nvidia.com,
-	sd@queasysnail.net,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	borisp@nvidia.com,
-	raeds@nvidia.com,
-	ehakim@nvidia.com,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net v2] net/mlx5e: macsec: fix use-after-free of metadata_dst on RX SC delete
-Date: Thu, 18 Jun 2026 14:18:58 +0100
-Message-ID: <20260618131857.894379-2-horms@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260617100558.83654-1-doruk@0sec.ai>
-References: <20260617100558.83654-1-doruk@0sec.ai>
+	dkim=pass (2048-bit key) header.d=genexis.eu header.i=@genexis.eu header.b="dvfuAyFS"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CFwWqutA8m2SHF7NJ7OpWOJpd5eI0HrVjeTjn7EBc8qgKAKsm8U040dlt7gcWaPErtDRebTsZKmmJ6rWPeKSESYZTXBxUBRRLNJmbqlhI1xlnRJCsdMPQcpmP1GX5sF5Uii7YryhxikzxEWL5ygY3TOQ5mFwYHpOFfoM8CtzOFpmYFt3o9ZpUCtAqsqIu9nVeGzsXk2Tb+dfQ8MzTsvdNuz3ve0LWAFGQIqN2zkef+xwUBFQk4KOUB+vKB5gVdfmQpLwizEhmYfbDzRVy016BHndYUieUubcZV8/hAfLjy1KgJT2XZXsMB+aTQaVjaJAdHBn6/2p5+pblfofificrA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NqzVZrxxdtCqsHmvyiTNgkuocxgpVTecJYfn7f0FxYk=;
+ b=F0ixFGBZQE7m9TKPFBDT5ibUUUHUO6h9NIJoyCJbZsQB/Nt5Wxxs5hiyOhsqzscSHpc1D8575kbaTY/9YBKvoBlbcUwPJMmdIqCXVNnXu37WhhSbo2yka3piV3LaybJsPFTFLyaLAFq7jYmeNh7ug9PGM0Iex0zpGfQRgGvKWcEBcRWTYTYc3IEJkgctK5DuuBr+cmIxSLz0AFzu+HXLp2MX9S5iBQy8ZOxwQISRr3qJf8oHOADJv8FKnWhxzScPq/qU0HSV5gv8EQ6qt9JNWEMZ8kdOw1gN7PXcBRW7lgN/YK0SqF5LcYgMfCELccI9qhbHnk2T9fG8+d5LTRLMJg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=genexis.eu; dmarc=pass action=none header.from=genexis.eu;
+ dkim=pass header.d=genexis.eu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=genexis.eu;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NqzVZrxxdtCqsHmvyiTNgkuocxgpVTecJYfn7f0FxYk=;
+ b=dvfuAyFSRxoK9s9lCEQa3DuzHayW5hoF/MktaQ8EVPxkKjsH/Xi2nojOqyjGjUa0w27fXfON8phWhgaa/IYkAJMns6y5+kCj25gRWnFLjqVLpm+Jdj6ddpJXewXNM78nsF8vIZOEN7KynllxeqBilF+/FYXOr7tzujK9FlukTJRar4t7bEXunPVCjaz2O3ds3Gwvfer9s9pr4jdqQjZyzF3Jq31wC90C18SlYYmGD9wUXSG1GMCBknKkIBkD0zuYJRjHlAHRXe/W2dDH4EL+bb6oOXX6z058vMsNkM7QASJ9jinmouNOJyWroKZ0tM3F5JJ4sk9nVmjL7OwdJ9A5dQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=genexis.eu;
+Received: from DB9PR08MB6697.eurprd08.prod.outlook.com (2603:10a6:10:2ad::14)
+ by DB9PR08MB8628.eurprd08.prod.outlook.com (2603:10a6:10:3d0::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.11; Thu, 18 Jun
+ 2026 13:30:06 +0000
+Received: from DB9PR08MB6697.eurprd08.prod.outlook.com
+ ([fe80::bdec:3e95:6614:441f]) by DB9PR08MB6697.eurprd08.prod.outlook.com
+ ([fe80::bdec:3e95:6614:441f%6]) with mapi id 15.21.0139.009; Thu, 18 Jun 2026
+ 13:30:06 +0000
+Message-ID: <5a63af84-3f97-47a3-a39d-f0f2839c9f3a@genexis.eu>
+Date: Thu, 18 Jun 2026 15:30:04 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH net-next v8 11/12] net: pcs: airoha: add PCS driver
+ for Airoha AN7581 SoC
+To: Christian Marangi <ansuelsmth@gmail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Simon Horman <horms@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Lorenzo Bianconi <lorenzo@kernel.org>, Heiner Kallweit
+ <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>,
+ Saravana Kannan <saravanak@kernel.org>,
+ Philipp Zabel <p.zabel@pengutronix.de>, Nathan Chancellor
+ <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ llvm@lists.linux.dev, Maxime Chevallier <maxime.chevallier@bootlin.com>
+References: <20260618125752.1223-1-ansuelsmth@gmail.com>
+ <20260618125752.1223-12-ansuelsmth@gmail.com>
+Content-Language: en-US
+From: Benjamin Larsson <benjamin.larsson@genexis.eu>
+In-Reply-To: <20260618125752.1223-12-ansuelsmth@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: GV2PEPF00023970.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:158:400::332) To DB9PR08MB6697.eurprd08.prod.outlook.com
+ (2603:10a6:10:2ad::14)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB9PR08MB6697:EE_|DB9PR08MB8628:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1e2268de-8b3e-42e1-ed66-08decd3db5e4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|23010399003|921020|18002099003|22082099003|56012099006|11063799006|4143699003;
+X-Microsoft-Antispam-Message-Info:
+	Irmb2hjIIAwBwjVUdCy+Tm17MG0gBpSXCi9Pe2PbOuY2SusbuxGrO3BONobAJdLk0zhkjuLf/VMJfR+6kp5G6k43/BCk7A/0MsMa3/Tk6KJJMCn3bvTtYWf90EAJqZJCPuqEUET4RG0Nl7eKkWeZs86sLNCof9Q96Z+wkbvcDjOr5vTy/X3ocRwR6PX+u+4py4XPcJ2BdiP1wHwQhD0Ic4tZcy54sDp5Hq0p5wivLzyrLFT20slKDuk9MYrXlz8MnI2F/cOmGt9NjAN5tWHsOtKDRxxOjoLrz+LJVAjbj+E8mch6xe41VSu3eu9vQIHdwEVwbfrEM+dS5oeA7Eo4Bohaech6s4/HaKxP8ly8B7uP0zCEN/4Xd0+KuJTlnX/WMMgq0Tz6xulgbLzDX3AZJRUA2I/f0T1zjee9VsrCmkRvJa6XiDLlcXaOiDVd4SxtUy63nbEoffB5AmCFjnZIbOjzl+3ZT9yPTZThtKR6rjCm9tWztZ7u+dR3XnowYxe8eCxOJEdAznHSZPQrl0AYeGws/R0S9NCwYREOYPUD0+TtqmO2y7jlZy+OHAqY2Vah4ZffwVc8Cx6d/I0ueHhIqGigHrlmDkxdusFxcGALlu/6ZEaYuhshEmN8UaD5usJtheC8XPxSuDHKeRITDYe/uZ1OZomB2i5yenkbdXN92Bny/SWhNc5CwXPRmXwNmbE9uncodlmPmUILeXmn4ac5v+jy+wuQ7bD+F5jGWKBZoBg=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR08MB6697.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(23010399003)(921020)(18002099003)(22082099003)(56012099006)(11063799006)(4143699003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WUw0VEJ0Y3ZleFBXcDMrUzI3VkhGTysvR2JyME42eWlVdTZrbjRmdmxNUC9h?=
+ =?utf-8?B?eDl3dHdZSDlQTXpDZUU3UDUwZFV1a1c2aXN1V0dmRHE0Z0JVSUJCbmY0UFJY?=
+ =?utf-8?B?dlJNN2Y0RTNYcFUvb2Q4RUJoSkNvd1NKYm9aQmRxSWZsdkZXNmEzU0cyVWZX?=
+ =?utf-8?B?UG5IZ3FDZDdQbHNLWnhHVE5hMVh0SUQzSE5hdldnZ05GRFN0M2ZZS2NQL1Vu?=
+ =?utf-8?B?dkI0c0Y0VkYxbk44WmRqcGZHeXEwQlpyRE5GOXBacm42NFNtKzRCKy8yVHg4?=
+ =?utf-8?B?RHhScHpnY2d3NHRySGh1Z2l3L1JqZnN4RzFIdzd0emExb3gva2NrSlFFWFBh?=
+ =?utf-8?B?d3p5VkZlWU44SWZXZFdZUFNqQVJNSHc1MlNZVTRYdDdROE1ZNnJXKy8vemtY?=
+ =?utf-8?B?WDNZK2Nta1FZSE1xMEl6RGdEaExiTlc4K0twZGZva1FhOE1Mc0RYcExqTTY1?=
+ =?utf-8?B?NEFleFF4YUJ6NDNtQ2VoYnowTC9TSW1EQmFoN1dWYXlVbDRNbEJBR0Jva0lV?=
+ =?utf-8?B?ZWE1VVg4LzQ3R2lIZEVQU3F2MlAzK2Rya1FpRnZvTXFVejJwRTBOUUlIRTBI?=
+ =?utf-8?B?Z2xKUWJNeXU1c0J5ZXhCZ3E3YytsSS9MYjE1UmQ3N3dzSHFNZjBKUE9qRG9P?=
+ =?utf-8?B?am43SWFRMDFCTnF2aW96T0pJalJVSkl0WlZmLy9tUFArc2cydVBMY1FPTXRo?=
+ =?utf-8?B?WlpraUYzOERPbjBxc2szSW1seDhLV1lCWHFXc3hGaHM3K094ZE5xMTVuZEhK?=
+ =?utf-8?B?aDY1TFY5NGs3b3g0OWFJTHJvY29ROEo0OWxIQktHalp6SmFwUjBpQ1lxQWt4?=
+ =?utf-8?B?bHMzbUxRTkFNM3RsSmJCK2NvTWpKMzBPTmpzRXpqYUJPdUVZQ3B0TDNLSE9J?=
+ =?utf-8?B?OXZRVjlFN0F5cDdML3k5NEM2SHBBSStwVUtsQkpGeDRoTW8yZURTVm1INCt6?=
+ =?utf-8?B?UzMyem4xODZzS0NmaUN0Vmtxc3pYK2kvcDl5ZGM3WUZUL2NYZ1JDNFFQclk3?=
+ =?utf-8?B?NGdmSG9aR1BUaFc3ZVM5dEFFandFOE0wcklRdEhlczhCKzQzb1crUmxlc1d5?=
+ =?utf-8?B?MDI0Y1F1S1ViQWhqVURpeVhzVDBBN0ZMalA1RUl1V2dvc3kwSFA3azZ0NGlU?=
+ =?utf-8?B?dnRjSk12ZjZMNU45TEtHbGdrOFRpNzhob3hTOW40T3VpYWZiTHRaS3BvN0JF?=
+ =?utf-8?B?NC9DMXNSQXlPY0lEdS9pbDlQYkdFUW5YOVQzUEdjZjR3S0UrTkc2TkpjSmFn?=
+ =?utf-8?B?OWkwbDQzUURQb0pYTDBSMHllMXdYWm0xbVExaEFMRHRLN1NEMjNTS0RyNHBH?=
+ =?utf-8?B?T3lReGZ2aGJJTk8yMFh2RDBNcVFGbHUwSGQ4Q3Vwb252a0VOZDhEY1RaemJn?=
+ =?utf-8?B?QitmTjVZR0RUQ1QyOHpoT0x5U3ZRMjVTRjQ2eE1tU0ZrYTZtb29Obi9uVVc3?=
+ =?utf-8?B?SktiUFR1L2M5RUtYcXVkcmZjaEFzWGFjQjRLNnhoOGlmcWliTkplNExwdGpk?=
+ =?utf-8?B?RXZPM3ZvRFVKWStQZm9obVhMODJzaEo3emJnL2x0K01zMmFtelkyNkdmS3VB?=
+ =?utf-8?B?UEYrdldtSVdhUEZ0Ry9QNmdvTDRhU1FIdHJ3cXlsVDczdTZTaDlzSk54TDJy?=
+ =?utf-8?B?MUZaTk1ma25UUmYwTzF1eHlGRjhYRWtUOW5Cb2RWdTg2M1JTck5xcWlNNXhZ?=
+ =?utf-8?B?dHlCdmpLWHYrS2l6VjNaaThvbjJOY2tpbmkwN0lPSXRkT2xER1RRSGdvMFdM?=
+ =?utf-8?B?YjVSTzFwOXBCY0hhYkt2Y0k2NHd0aXdKdndoYWxlZlBDa0o2VHU4Q2NrWms1?=
+ =?utf-8?B?cnZzYXRKbFFNRFRwVktxNDlUdWxLeVV1eEFjUWdvWTE4bVBPeFJWWjIrNWxQ?=
+ =?utf-8?B?cGVuSjM5SURhQmFFeS9RSHpRR3FBaTMvYlgrRHV4QzNvRGRET0RzaHkxdlBi?=
+ =?utf-8?B?b0pHZVVWVlUzWWZ2aHVGTGRUNjZCNkNBUVZSc2ZwUU1QQ2luRjNsTkZocEJp?=
+ =?utf-8?B?MzJmaWpwZWV5UjJEN0V5MTlVOHlCSFpYN0lJRmN0UEVMZ2xveW5RcFVqazRM?=
+ =?utf-8?B?ZnVxc2VOZVF2RXRkSkxRaWsxa1VsTUZ4emNrYWhCRDBEUWVqYmU4bWhiYkFj?=
+ =?utf-8?B?WUpEQUVnNFJDV0JWbE5Dbi9PSmQ5TytJTnY3UlpEWlZCcjB0L09rcWw1VS9w?=
+ =?utf-8?B?KzNWT0sxNXVackVtNDhVNzdYUll0U1hBRlV0VWhnMTdySithYjlNNXVDWDZG?=
+ =?utf-8?B?QndIRWJkVjRlN3dNQWpUZm1MVFdSaklGdDY2amRyajNoMGV2Q0tza3llZHZz?=
+ =?utf-8?B?ZDBvNjVOTldBb3Z0OGdJOHY2b1I0WWJKSjRrejhwbDlQL3VFSzRyTkgwNUll?=
+ =?utf-8?Q?HmTINJnhtJ2CUBt0=3D?=
+X-OriginatorOrg: genexis.eu
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1e2268de-8b3e-42e1-ed66-08decd3db5e4
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR08MB6697.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jun 2026 13:30:06.3484
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8d891be1-7bce-4216-9a99-bee9de02ba58
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: vizWWE/4EaRHshpvi5R2sKa3dJHxEqwucEBMHtjQeLwCYdFf1nf0aSnbXHw3aaOtO2NHq/k7tatr8eX4vixV+20+9Cn7PCxU81V7+/hkdeE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR08MB8628
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev
----
-net/mlx5e: macsec: fix use-after-free of metadata_dst on RX SC delete
+Hi.
 
-This commit fixes a use-after-free in the MACsec RX datapath by replacing
-a synchronous metadata_dst_free() with dst_release() when an RX SC is
-deleted. It also updates the datapath to use dst_hold_safe() to avoid
-acquiring a reference to a dying destination entry.
+On 18/06/2026 14:57, Christian Marangi wrote:
+> Add PCS driver for Airoha AN7581 SoC for Ethernet/PON/PCIe/USB SERDES
+> and permit usage of external PHY or connected SFP cage. Supported modes
+> are USXGMII, 10G-BASER, 2500BASE-X, 1000BASE-X and SGMII.
+> 
+> The driver probe and register the various needed registers and register as
+> a PCS provider for fwnode usage.
+> 
+> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+> ---
+>   drivers/net/pcs/Kconfig                    |    2 +
+>   drivers/net/pcs/Makefile                   |    2 +
+>   drivers/net/pcs/airoha/Kconfig             |   12 +
+>   drivers/net/pcs/airoha/Makefile            |    7 +
+>   drivers/net/pcs/airoha/pcs-airoha-common.c | 1324 +++++++++++++
+>   drivers/net/pcs/airoha/pcs-airoha.h        | 1311 ++++++++++++
+>   drivers/net/pcs/airoha/pcs-an7581.c        | 2093 ++++++++++++++++++++
+>   7 files changed, 4751 insertions(+)
+>   create mode 100644 drivers/net/pcs/airoha/Kconfig
+>   create mode 100644 drivers/net/pcs/airoha/Makefile
+>   create mode 100644 drivers/net/pcs/airoha/pcs-airoha-common.c
+>   create mode 100644 drivers/net/pcs/airoha/pcs-airoha.h
+>   create mode 100644 drivers/net/pcs/airoha/pcs-an7581.c
+My comment that the files should be renamed now instead of later when 
+support for other airoha platforms are added still stands. The common 
+code is not common among other platforms (EN7523 as example).
 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
-> @@ -829,7 +829,7 @@ static void macsec_del_rxsc_ctx(struct mlx5e_macsec *macsec, struct mlx5e_macsec
->  	 */
->  	list_del_rcu(&rx_sc->rx_sc_list_element);
->  	xa_erase(&macsec->sc_xarray, rx_sc->sc_xarray_element->fs_id);
-> -	metadata_dst_free(rx_sc->md_dst);
-> +	dst_release(&rx_sc->md_dst->dst);
->  	kfree(rx_sc->sc_xarray_element);
-
-[Severity: Critical]
-This is a pre-existing issue, but is it safe to synchronously call kfree()
-on rx_sc->sc_xarray_element here?
-
-The RX datapath accesses the xarray under rcu_read_lock() in
-mlx5e_macsec_offload_handle_rx_skb(). If sc_xarray_element is fetched via
-xa_load() by a concurrent reader just before xa_erase() runs, won't this
-kfree() free the element while the reader is still accessing it, leading to
-a use-after-free?
-
->  	kfree_rcu_mightsleep(rx_sc);
->  }
-
-[ ... ]
-
-> @@ -1697,8 +1697,8 @@ void mlx5e_macsec_offload_handle_rx_skb(struct net_device *netdev,
->  	sc_xarray_element = xa_load(&macsec->sc_xarray, fs_id);
->  	rx_sc = sc_xarray_element->rx_sc;
-
-[Severity: Critical]
-This isn't a bug introduced by this patch, but does xa_load() return NULL
-if the fs_id has already been erased by xa_erase() in the deletion path?
-
-If packets matched by hardware before the rule was deleted are still
-lingering in the software RX queues, xa_load() might return NULL.
-Dereferencing sc_xarray_element->rx_sc immediately after could cause a
-NULL pointer dereference. Could we add a NULL check here before accessing
-sc_xarray_element?
-
-[Severity: Critical]
-This is also a pre-existing issue, but is rx_sc fully initialized when it
-becomes visible to RCU readers?
-
-In mlx5e_macsec_add_rxsc(), it appears sc_xarray_element is published to
-the xarray via xa_alloc() before rx_sc->md_dst is allocated and
-initialized:
-
-mlx5e_macsec_add_rxsc() {
-    ...
-    err = xa_alloc(&macsec->sc_xarray, &sc_xarray_element->fs_id, ...);
-    ...
-    rx_sc->md_dst = metadata_dst_alloc(0, METADATA_MACSEC, GFP_KERNEL);
-    ...
-}
-
-Since xa_alloc() assigns the lowest available index, the new fs_id could be
-recycled from a recently deleted SC. If a lingering packet with the old
-fs_id is processed by the datapath, it could find the newly published
-element and attempt to call dst_hold_safe(&rx_sc->md_dst->dst).
-
-Because rx_sc->md_dst is still NULL at that moment, could this cause a NULL
-pointer dereference?
-
->  	if (rx_sc) {
-> -		dst_hold(&rx_sc->md_dst->dst);
-> -		skb_dst_set(skb, &rx_sc->md_dst->dst);
-> +		if (dst_hold_safe(&rx_sc->md_dst->dst))
-> +			skb_dst_set(skb, &rx_sc->md_dst->dst);
->  	}
->  
->  	rcu_read_unlock();
+MvH
+Benjamin Larsson
