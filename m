@@ -1,178 +1,99 @@
-Received: from mail-pl1-f225.google.com (mail-pl1-f225.google.com [209.85.214.225])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED7D43AF64F
-	for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 08:37:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.225
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4733F3DBD51;
+	Thu, 18 Jun 2026 08:39:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781771861; cv=none; b=fX1UodwNxtlVomd7yEdzupQ//o8eYBi7r4r56bAKbbjbn+7v5e+q2U7jv0TPT7IJg9jns/ae2KeGLkOo8Mr76yGLgpTq5USjQ5sLr+kYS7M83v+yteU17AULK5y8EzjlPA705IGfDmA2G8BS6i1m8f75+ENs1z2aIyrwQ5HA97Y=
+	t=1781771996; cv=none; b=SLMXafs2v4Y1/hPmTETsrYP40PqzIvwlqB0ATSy7sSyG4qYIyIRlA95YHWTUg0xFcDymmi6voKktOjiGFyzazMcXaCPy+Dadb71zJcLisjTnvn2KuCahwYL5z8K1QiyftMmPiW/3402k05npZjtUGMEyebeFTiL6UTJ2NX09h6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781771861; c=relaxed/simple;
-	bh=aIbJosctl5OF9ZsLu4oXkOHrco919wfqLXR+++iz1xc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bnbChRdhMNMlYh0JgELk+Si5bFIhDK5EVoQpNTvcrZ9aHmHZXXvtEQjgM8mYpHG/J0V+Txj8w60R0VylTJxWc+wz2DJjlzvQspb8bQsTUYVafUM58/y/DmblqVg/obqU3KfRaM1JWPz86johKZiDLgqM26NJkbnIt6Lr6YouZy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=fnPi7h/+; arc=none smtp.client-ip=209.85.214.225
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1781771996; c=relaxed/simple;
+	bh=90RshJNXcbS0u0V9t6gk2WT1/7k8SRI015G/Y3dPI8k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ncrFhGe6U5PHXm6QZTeoytWVWYid1Yd/KoG9j85+ixyjeEH52BIScFRdIt/FfvFX1EbUVdNwdUsmqnfqAF695xjsk1PA+q+hAftlqf495B/wrE4sB3ZMrnEktOxrv0qACIG3RNlAGPCRKaKg7BMmaelcvip9wvY6rrUELAYc6PU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2yA6YGRM; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=a+W9Xz9h; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="fnPi7h/+"
-Received: by mail-pl1-f225.google.com with SMTP id d9443c01a7336-2c168baac83so2980765ad.2
-        for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 01:37:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781771856; x=1782376656;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=o9hVwQ2uFHG9yjsxEMthJtly1U3KRAfycxfm9+vQlLA=;
-        b=bumIvjtWa/b7+WXocuZfCQ/m1iN4020asCIyLjOks157LBddLih4tY+zARmP/j9tEK
-         6oMV2pMgggc0VKjuBkuSZxsQl3I9rVGVYfrqpagbBhp8KYV0Y1nCvIQ1Q/FIKXq8NGS4
-         5h0whhHcHaWmyNWUkM9Zlhxqz1NStXNHmfFfGQDLUMkcvD7nEk4qB4Gf+YqsrLeayguC
-         aBNbm0fi6P6vbfstP2oTIdhiBUSBlzGr0Cm658EOy0u9LwYU4EO9s2HMDb3Ompp+vfPD
-         Ozd8S8+XKvu9UOaYZYSbK7JO/y4mO4uU7A7BlfJ3zSed+nsNbClnireCmU42/tYHc0QO
-         7PQQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8E0Y9WnwaF8cu7DPXydaR/mQqmGVkY5cNi8r1f7bkHzWIjWELDZl1eBTDoiRyig1oTNq/AH84=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwIXYRBHhVKzrlBQjZpBOHWnU19o+5fYm6AyxDb0sp1Vlfvm20t
-	45Xhdfmo1cCuXhtW90URz+zG1XQzYGUQLmVaVcV3k3PtoWNqEDpcMpSd4YntHGhyF7v1bSKJCg8
-	9xDa24Fo6x4Nexq2oAchTuc4bNL9NVafduHf1IPd+XWfAq87ZBF0nAT+m6v03LZXZlsW+c6/3V8
-	yhMccnPu/88mT9le8sr3UolrKd/sDiqeo1fvL7BHrGnNNUepqCP4vrzVnyS/l9b/THtEQBEEqnF
-	Xe9XlIoasC1b/cheQ==
-X-Gm-Gg: AfdE7cn6DpwJJIPb8qJ5B9lrsJfyo7Rbul2AaADeIozndIZCQtoL5s/X0o1UPdin0zO
-	jn0WJA3rsRgf7ED10ZL3ImRnaWhdmdV0Cxcxi8mFkGF7xxY96J0vQated+XefjKpDZ1cfgApDhv
-	SNg+3IlQmuqO7tUJs8ZrIZDSLUDtVK0ey5z6aRgzOv/SnjkoqYaKxG55RnApF2gouhl+Kw7E3Jp
-	6IYVP7sRZc/o9cAUR5Kq0IeK8oVI9gR7IRcLiqpG9EfNNcFjfhqabSPlAyCwLbSJDW8H8hAXTyX
-	M/LgiQnEbUL966/uVHSkySz6IBqdaBm1PUyVt7xrlCxTlMfCjyzAjqmJuw7b6JtsnGY41NN0pER
-	r2YXXkH6sZY83FPVHn5YLGfhM4vMZk7z6knAdBNQxIBG5/1En8MtYuiidDlMlNIkZef2v38hzLP
-	upJku4qA3ZG+ImxsM3JgaBoLf5gUvXhNo8k6lQNRcxIat8jlxrJQ==
-X-Received: by 2002:a17:903:19ed:b0:2c1:6e2c:a5e2 with SMTP id d9443c01a7336-2c6bc221b98mr77909135ad.17.1781771856151;
-        Thu, 18 Jun 2026 01:37:36 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-23.dlp.protect.broadcom.com. [144.49.247.23])
-        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2c4329a3a83sm15608925ad.34.2026.06.18.01.37.35
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 18 Jun 2026 01:37:36 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-30bccca5620so778851eec.1
-        for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 01:37:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1781771855; x=1782376655; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=o9hVwQ2uFHG9yjsxEMthJtly1U3KRAfycxfm9+vQlLA=;
-        b=fnPi7h/+J2SSTjCUSzrMopCYHYLHUIfXhy7fUkFFuJ3ZYuFFnAN88eLJ7ca9wc+Mv3
-         Uk5ttiN7FpOJ5UM/EZNSwALdHsc3zPxqqIT2wOzrKSd1HqJlD4rResvS9Ua5YIC5NnCA
-         /XDh5FfLTugpc0OmaVWsnjGz/J6tZe+KC1haw=
-X-Forwarded-Encrypted: i=1; AFNElJ8OHNGDTOjVbMCHx7C0DPboOtpk4tSZ47w4NlRfF0EGSdPTAJpdzXSAWtiA0fdTHTml+Ig32Uc=@vger.kernel.org
-X-Received: by 2002:a05:7300:2209:b0:304:acc:f079 with SMTP id 5a478bee46e88-30bca09e535mr4462725eec.27.1781771854585;
-        Thu, 18 Jun 2026 01:37:34 -0700 (PDT)
-X-Received: by 2002:a05:7300:2209:b0:304:acc:f079 with SMTP id 5a478bee46e88-30bca09e535mr4462680eec.27.1781771853897;
-        Thu, 18 Jun 2026 01:37:33 -0700 (PDT)
-Received: from shivania.lvn.broadcom.net ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3081e48e412sm27475037eec.4.2026.06.18.01.37.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Jun 2026 01:37:33 -0700 (PDT)
-From: Shivani Agarwal <shivani.agarwal@broadcom.com>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	xiaosuo@gmail.com,
-	iri@resnulli.us,
-	jhs@mojatatu.com,
-	ajay.kaher@broadcom.com,
-	alexey.makhalov@broadcom.com,
-	vamsi-krishna.brahmajosyula@broadcom.com,
-	yin.ding@broadcom.com,
-	tapas.kundu@broadcom.com,
-	GangMin Kim <km.kim1503@gmail.com>,
-	Bin Lan <lanbincn@139.com>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH v5.10 2/2] net/sched: cls_u32: use skb_header_pointer_careful()
-Date: Thu, 18 Jun 2026 01:08:07 -0700
-Message-Id: <20260618080807.1269070-3-shivani.agarwal@broadcom.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260618080807.1269070-1-shivani.agarwal@broadcom.com>
-References: <20260618080807.1269070-1-shivani.agarwal@broadcom.com>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2yA6YGRM";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="a+W9Xz9h"
+Date: Thu, 18 Jun 2026 10:39:52 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1781771993;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=W/ovdTd4uY76NriLjPfuTvG51woYHXGCCe1NOFnV+UA=;
+	b=2yA6YGRMiIW0zc84lKoWwO1tfPH3yl0c5wDv4vHZYF63XEz0hhs9R08ZNtgtJbsYo5C7/t
+	tk52D7lK1mRTHgQ9nJ+QYxFqg/e6w377FjTrLYr0nOzTCNtjFzARzzqRVxMl3dsKollszZ
+	oO1jMNg81C+RyD81kgMTmQeuKYRuP9M9wmYF0BAOV/tacygPMoAbyihuaSfd0CE14SaOG9
+	C7vpe72a8lXGT+iQbyyw7M70mR8IkfQuOShd0SrJIDJHGzGM4eBIY+35QVE9enVyHxrIEi
+	4cLrjYBdJ0E16xKZChMgHoeicM5QIsxuzFSswMG9WMMS7Ebkgd7WXUpuSnjZ1Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1781771993;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=W/ovdTd4uY76NriLjPfuTvG51woYHXGCCe1NOFnV+UA=;
+	b=a+W9Xz9hwmI/fqkVqBlUSyrE+RxOmn4jPut/eiMWAo/g35/8wP+mmVFVfNsOwmigIIocA/
+	s0cY9XrlyLz9vQAA==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Yun Zhou <yun.zhou@windriver.com>
+Cc: marcin.s.wojtas@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	clrkwllms@kernel.org, rostedt@goodmis.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH v2] net: mvneta: free/request IRQ across suspend/resume
+Message-ID: <20260618083952.IbGzrvJL@linutronix.de>
+References: <20260617092028.1722407-1-yun.zhou@windriver.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260617092028.1722407-1-yun.zhou@windriver.com>
 
-From: Eric Dumazet <edumazet@google.com>
+On 2026-06-17 17:20:28 [+0800], Yun Zhou wrote:
+> On PREEMPT_RT, the mvneta IRQ handler is force-threaded. Under high
 
-[ Upstream commit cabd1a976375780dabab888784e356f574bbaed8 ]
+There is also the `threadirqs' option.
 
-skb_header_pointer() does not fully validate negative @offset values.
+> network traffic, the IRQ can enter suspend with desc->depth == 1
+> (masked by the oneshot mechanism between handler invocations).
 
-Use skb_header_pointer_careful() instead.
+That would be irq_desc::depth.
 
-GangMin Kim provided a report and a repro fooling u32_classify():
+> During suspend, the kernel increments depth to 2 and masks the
+> interrupt at the MPIC level (clearing the SRC_CTL CPU routing bit,
+> due to IRQCHIP_MASK_ON_SUSPEND). 
 
-BUG: KASAN: slab-out-of-bounds in u32_classify+0x1180/0x11b0
-net/sched/cls_u32.c:221
+The interrupt should be masked while the depth counter goes 0->1, no?
 
-Fixes: fbc2e7d9cf49 ("cls_u32: use skb_header_pointer() to dereference data safely")
-Reported-by: GangMin Kim <km.kim1503@gmail.com>
-Closes: https://lore.kernel.org/netdev/CANn89iJkyUZ=mAzLzC4GdcAgLuPnUoivdLaOs6B9rq5_erj76w@mail.gmail.com/T/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260128141539.3404400-3-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Bin Lan <lanbincn@139.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ Shivani: Modified to apply on 5.10.y ]
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
----
- net/sched/cls_u32.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+>                                  On resume, depth is decremented
+> back to 1, but since it does not reach 0, the unmask is never
+> called. The MPIC CPU routing remains cleared, permanently disabling
+> interrupt delivery.
 
-diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
-index f2a0c1068..e501390cc 100644
---- a/net/sched/cls_u32.c
-+++ b/net/sched/cls_u32.c
-@@ -149,10 +149,8 @@ static int u32_classify(struct sk_buff *skb, const struct tcf_proto *tp,
- 			int toff = off + key->off + (off2 & key->offmask);
- 			__be32 *data, hdata;
- 
--			if (skb_headroom(skb) + toff > INT_MAX)
--				goto out;
--
--			data = skb_header_pointer(skb, toff, 4, &hdata);
-+			data = skb_header_pointer_careful(skb, toff, 4,
-+							  &hdata);
- 			if (!data)
- 				goto out;
- 			if ((*data ^ key->val) & key->mask) {
-@@ -202,8 +200,9 @@ static int u32_classify(struct sk_buff *skb, const struct tcf_proto *tp,
- 		if (ht->divisor) {
- 			__be32 *data, hdata;
- 
--			data = skb_header_pointer(skb, off + n->sel.hoff, 4,
--						  &hdata);
-+			data = skb_header_pointer_careful(skb,
-+							  off + n->sel.hoff,
-+							  4, &hdata);
- 			if (!data)
- 				goto out;
- 			sel = ht->divisor & u32_hash_fold(*data, &n->sel,
-@@ -217,7 +216,7 @@ static int u32_classify(struct sk_buff *skb, const struct tcf_proto *tp,
- 			if (n->sel.flags & TC_U32_VAROFFSET) {
- 				__be16 *data, hdata;
- 
--				data = skb_header_pointer(skb,
-+				data = skb_header_pointer_careful(skb,
- 							  off + n->sel.offoff,
- 							  2, &hdata);
- 				if (!data)
--- 
-2.53.0
+But why not? In my naive assumption, we get into suspend with
+irq_desc::depth = 2 and the threaded should be woken up. Once the
+treaded handler is done the counter should decrement by one. Then again
+during resume reaching 0 leading to the unmask. If the thread handler is
+frozen and defrosted on resume then it should still happen but in
+different order.
 
+Something is missing here based on my naive assumption.
+
+> Fix by freeing the IRQ in suspend and re-requesting it in resume.
+> This ensures a clean IRQ state (depth=0, proper hardware routing)
+> on every resume cycle, regardless of the pre-suspend depth. This
+> follows the approach used by other drivers (e.g. igb).
+
+The igb shutdowns the device entirely, not just freeing the IRQ.
+
+> Fixes: 9768b45ceb0b ("net: mvneta: support suspend and resume")
+> Signed-off-by: Yun Zhou <yun.zhou@windriver.com>
+
+Sebastian
