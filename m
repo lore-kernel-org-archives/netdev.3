@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C8E3C0A0F;
-	Thu, 18 Jun 2026 09:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DCD03B71DD;
+	Thu, 18 Jun 2026 09:29:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781774958; cv=none; b=DKdhZECIkcztE2ucZR1fYIZdahFmMp+yDFZ5+xKBFrHNiNj61uJ9Ft6PAUE+on4cO4BbjUyLJYPlo+pQcKE/eUFBsewnO4JPnjn9BNPF5zGwgJZqo/g8eDnCkey7gK0BWWetqw9GbQJE2qv0cqe4P6QfhMVWr6J6HlB19FlyZPc=
+	t=1781774995; cv=none; b=PjCXDIGyTNuzaTu/2k1vUPShJHlUMlbqkuKIaBzwgauqHM47/RK86/6/tMSxTKRmoCzXTMSRm3nn1Fde7df2ZUsqxsgx6sfLxfOmfEflo8N6+oZBOMJKY9+OvuWLcfLQJN43yi5Zche52/PfeQLGKUxnxFNizCRCLHAWfVzqP9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781774958; c=relaxed/simple;
-	bh=c8gqHcV+x26aMaGy/roPIbZdgkOvaUiZUVWoVDqRuCw=;
+	s=arc-20240116; t=1781774995; c=relaxed/simple;
+	bh=ilR+EZ8AS65fpi/jJMtHjhvLmFr7HFjqHwCTNIp6Xsw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iz7M+lNLEcIOtQENaAeYT8ePbAlVUUMN617u/TeLn+3kd9eCgwPKxanXztcNe/rFhnT7IVnt7cTXw37AqCwg1LlXU9m1G5YaVsLO2HkzdE6NaT4vErHl/3J4504WduzUBtgbV6hDw82Y4bVhQrEPUimy7bbBsww1CGm0sz1lVMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R+BfFysw; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=VrCnWHGszPWirYFwVgbNGl53j10t6SU3s4qoe2IfLtSFGTB8vVZImXCHucDl5JMEL+xwE81tQc8zXIfz7p44a3v0GyrHNZT88qR+8XjgsAvbRD7Sy5JalmjKynQ3GPOqIfhCZ2Ui+lyGTWwMsSvopKKWIgsIqDqq3d4oxrXzMQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y9MV890t; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R+BfFysw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C0361F000E9;
-	Thu, 18 Jun 2026 09:29:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y9MV890t"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DF761F000E9;
+	Thu, 18 Jun 2026 09:29:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781774957;
-	bh=sI3OajoS+qnU1/n61HNxOgvTgUraUb6h6oeRCaIbYvA=;
+	s=k20260515; t=1781774994;
+	bh=xY3E02itJZ/3guyWQm3b0qgZmBwdEEtON2CPCiTjekI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=R+BfFysw6R7tgdFX7oD/+7LLjas0ow78Vi3GyCt97EKj5SRxHZDh4JaY8LADC/OhU
-	 rzv9ueUHr9Upyhfdw8pVT12mxW+Gx8EIpaxxMdJOZWA7Fts/8ngNofpgpKLelIEXOh
-	 NVxpfpCv5T1wmWTdIEVqWNvtuAyCc08aeyRHUfcZ5Z3AUud5iQtMXWRp2CF93bddeR
-	 6j+IV4b9OD7tMg0ZWvsq9P0INH8zebWz3S8FrW4v8SR5wzwoUZik6hQIK5XmYAToxX
-	 2qAHF3yCk4cTEApzOzDH2Fite5IHup48KCU5nkeVH1hzpUvZerv5qESfaUIzJ4lgWV
-	 ZvksFKUBqHxKA==
+	b=Y9MV890t52WmmXty1o236vJxVmhjV9mdo++QRAv+YS0h3xqI9wqrIMDpzLag4MaHO
+	 O0J3xGqyy23YnmUAiAvaJ7d2RVzXPe7IOTwXevMsssLf2uYop+2kaWO1L18dxwg2aA
+	 kHuvFS21Hq0uIz5GkkCVbe7ceny979gXr6doloOxJZU16kFHvdKJf9yrYAt2+JZFMj
+	 ETfbiAlVmBZjWwz4/ZNcvomosa6iCEZdBRrOAO2M3oUuXjF3Xz/oVsA4Zv8zZSupEj
+	 +ux9gSl61nInkSuSj0F3PgrXP7PcWuHb2eHN368+xzr5Z9AEAy0a9XcwQVDZqQxNC4
+	 DFruqbVxpFrew==
 From: Simon Horman <horms@kernel.org>
 To: dhowells@redhat.com
 Cc: Simon Horman <horms@kernel.org>,
@@ -41,12 +41,12 @@ Cc: Simon Horman <horms@kernel.org>,
 	n05ec@lzu.edu.cn,
 	jaltman@auristor.com,
 	stable@kernel.org
-Subject: Re: [PATCH net 4/5] afs: Fix further netns teardown to cancel the preallocation charger
-Date: Thu, 18 Jun 2026 10:29:09 +0100
-Message-ID: <20260618092909.888006-1-horms@kernel.org>
+Subject: Re: [PATCH net 5/5] afs: Fix uncancelled rxrpc OOB message handler
+Date: Thu, 18 Jun 2026 10:29:29 +0100
+Message-ID: <20260618092929.888053-1-horms@kernel.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616155749.2125907-5-dhowells@redhat.com>
-References: <20260616155749.2125907-5-dhowells@redhat.com>
+In-Reply-To: <20260616155749.2125907-6-dhowells@redhat.com>
+References: <20260616155749.2125907-6-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,45 +59,70 @@ This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 Full review at: https://sashiko.dev
 ---
-afs: Fix further netns teardown to cancel the preallocation charger
+afs: Fix uncancelled rxrpc OOB message handler
 
-This commit modifies the afs network namespace teardown process to wait for
-the preallocation charger work item. It addresses a small window where the
-work item could be requeued after being cancelled by flushing the workqueue
-on which the charger runs.
+This commit cancels AFS OOB message processing during shutdown and moves it
+to afs_wq. It also prevents queuing if the net namespace is no longer live.
 
 Link: https://sashiko.dev/#/patchset/20260609140911.838677-1-dhowells%40redhat.com
 
 > diff --git a/fs/afs/rxrpc.c b/fs/afs/rxrpc.c
+> index fd2d260fb25f9..6241f9349f6b6 100644
 > --- a/fs/afs/rxrpc.c
 > +++ b/fs/afs/rxrpc.c
-> @@ -130,6 +130,7 @@ void afs_close_socket(struct afs_net *net)
+[ ... ]
+> @@ -128,6 +128,7 @@ void afs_close_socket(struct afs_net *net)
+>  	_enter("");
+>  
 >  	cancel_work_sync(&net->charge_preallocation_work);
+> +	cancel_work_sync(&net->rx_oob_work);
 >  	kernel_listen(net->socket, 0);
 >  	flush_workqueue(afs_async_calls);
-> +	flush_workqueue(afs_wq);
+>  	flush_workqueue(afs_wq);
 
 [Severity: High]
-Will flushing the system-wide global workqueue here cause cross-namespace
-stalls during teardown?
+This is a pre-existing issue, but does placing the cancellation and flush
+before kernel_sock_shutdown() leave a window open for the work to be queued
+afterwards?
 
-It appears afs_wq is allocated once in afs_init() as a system-wide workqueue
-shared by all AFS network namespaces:
+If kernel_sock_shutdown() is what synchronously disables the notify_oob
+callback from firing, couldn't a delayed callback still queue work on afs_wq
+after we've already flushed it here?
 
-fs/afs/main.c:afs_init() {
-    ...
-    afs_wq = alloc_workqueue("afs", WQ_PERCPU, 0);
-    ...
-}
+[ ... ]
+> @@ -985,5 +986,6 @@ static void afs_rx_notify_oob(struct sock *sk, struct sk_buff *oob)
+>  {
+>  	struct afs_net *net = sk->sk_user_data;
+>  
+> -	schedule_work(&net->rx_oob_work);
+> +	if (net->live)
+> +		queue_work(afs_wq, &net->rx_oob_work);
+>  }
 
-Other namespaces use afs_wq for operations like cell management, which can
-block for tens of seconds waiting for userspace DNS lookups via the
-request_key mechanism.
+[Severity: High]
+This is a pre-existing issue, but does this lockless check of net->live allow
+a race condition that leads to a use-after-free?
 
-Since afs_close_socket() runs in the context of the global cleanup_net
-worker thread, does this stall the destruction of all network namespaces
-system-wide until unrelated AFS work across the entire system finishes?
+Consider this sequence:
 
-Would it be safer to explicitly call
-cancel_work_sync(&net->charge_preallocation_work) a second time here instead
-of flushing the shared queue?
+CPU1 (teardown)
+afs_net_exit()
+    net->live = false;
+    afs_close_socket()
+        cancel_work_sync(&net->rx_oob_work);
+        flush_workqueue(afs_wq);
+        kernel_sock_shutdown()  // blocks waiting for recvmsg_lock
+
+CPU2 (incoming OOB)
+rxrpc_notify_socket_oob()
+    spin_lock_irq(&rx->recvmsg_lock);
+    afs_rx_notify_oob()
+        // Reads net->live == true (stale read, or delayed execution)
+        queue_work(afs_wq, &net->rx_oob_work);
+    spin_unlock_irq(&rx->recvmsg_lock);
+
+CPU1 then finishes kernel_sock_shutdown() and frees the net namespace, but
+afs_wq is never flushed again.
+
+Would moving cancel_work_sync() and flush_workqueue() to the end of
+afs_close_socket(), after kernel_sock_shutdown() completes, prevent this race?
