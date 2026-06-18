@@ -1,233 +1,104 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF92D15E8B
-	for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 00:26:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D9722D4C3;
+	Thu, 18 Jun 2026 00:56:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781742362; cv=none; b=jxTxskhoULLRCrNyNGa3In3CfMgHEmAAKDTvJH7dMAd2DZXYb1yZN4Rg9s7aNle6v++pvo1jhYt4hJnx1RWqlhxH7r5qI/NpVE+TjbXbCe9+tAlStYZHD5aGvFi2AoWC4+fg11L6vxUjsU8WxxR0bpk20iErM1igQRjuO3GWWNI=
+	t=1781744164; cv=none; b=erDoklhcNWRJPLaavZp/KRUj4iTgA1IQ68PBxgpAmlInc6Tn1LeTx+FrVelBR6bQZJgXN/+KKqXjVdLPejzAEcB3oQsYO4EZs6a47+J/IPPIbEjfUiS86mPZuqGyTJgkaoKziJLGCQ/tVVzYYgrKjeSXM0zNXmoebTprQOzHlYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781742362; c=relaxed/simple;
-	bh=IaxSBDr03P8BBiR/G3886M8Ma5cyVQXqRTT4MJa/o/g=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=A3IOjp8z8lX4y8JBHbmsrm/ywGBN+Obe4iXOpeDA9MxhYhLuNoEo0ZAwTAq+/cvc51A171Ews8K6ZFpfRlN7+wCzVEyVcwPmW8UUeESN4kWbKLQvcS+sKgtwyBC2bCHHIkIhI++43STf+/3fm52n9Kuk92hrXXLA9VEjN7NEk3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GxltQFk5; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	s=arc-20240116; t=1781744164; c=relaxed/simple;
+	bh=RbRV3/bgZeP5ukGhZT5t5PNTGVWFGDhPacX80uNTx3E=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=nhpfBR0toEu6IQS2V78rJGiCL6HM8vIOg79xrfQDA3TUfE3hoaVvWP+LTns2vE2Rad6vGn1ncKGKNuSpgmikat7bLTQKs4GB/BqweDK90TPygXP2KLhpJPw0MtEkMCVftO8kQ1ho9X+YM3MeKH8cZo0ofE4RSNCQyJcqZBtkFjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=eERmQ0ay; arc=none smtp.client-ip=103.168.172.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GxltQFk5"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c8895156101so247194a12.1
-        for <netdev@vger.kernel.org>; Wed, 17 Jun 2026 17:26:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781742360; x=1782347160; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mCx80f7cZNUeuP+8DK2ePRZ7RWzQXES0UffqVXsTtbI=;
-        b=GxltQFk5a6NNWVu5RsKwp/UXv2lQ6kSFQ1HREWUMj35NWZR3k+JrWNisZJhnoeGwPB
-         BA12Saw6rAEunnZDhzwgChp5NDyMhHdHUS33ml1PZDucWLPG83akDUfTrNLzaYJmC9AZ
-         VXE9/LK1Gr0oR/kCSNbRBNpNm967HRCB1k+T9e2TTE7E+Jjy1wC/hS4YNLnfhxKipC11
-         MnDaFPBCvRpRHpJN5gcCRGdAqRkmZAqcBNDwfeynxFYbsFPikLAZ9cunYnlIPaDRhu1/
-         +ViaX0SYieX8ArDowotXDKmw27W8BNNiLkFzwsgpVF2D+FdbfvpufNiNwNVGacr5jaV2
-         Yl1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781742360; x=1782347160;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mCx80f7cZNUeuP+8DK2ePRZ7RWzQXES0UffqVXsTtbI=;
-        b=pFEy4RQyO1BsFok+45cR/7C+sfCVyvtQVJvxNY3ww3gVNZ9SyFl1lJ4SGiOViSjjLL
-         EeCXrGBz1+B/GrBsfkVLnJsXaF5879HJAmdkUizWBLyMkhhcB7ShZXCVUqPKZ8rnnAed
-         +/zcUhc8WiORulnylIp0B08EkFKWTa7y5mqOSUlVSzMvXTXBEb9DbcufHb7W0YVzYwab
-         RM1mpgtkHI/jufzw6WVNe2v23O0CLx1MPZhi3r2mBwWFICOWxOFoj4jS72rKKRXy8Vrq
-         GaNNSCjb7dONfacTV+tA2QGxD2TBEjknmGG06tbDmo2EjKrLM+kB+Gjbl+sebEuYgyrg
-         Xncg==
-X-Forwarded-Encrypted: i=1; AFNElJ+4V2PXCg02BARrLQhiScYtm7Kf+AnmXLwMRdnYreBoZDPpBMAgdyBOV4s6BZuimB2IYB0v3Hk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzlpgRoy/7i3zleh1X0tm4Kua+h4Ap1EN7i4JeLGCMRWvaUNUFh
-	mEZWBdrZh8aLZu9DvYRlfMmfAx6WZtlOZcPF8B0Jp+hgKCCbmh+6UeB9dOmVAxRSb2jmUSZkezu
-	GQSXpoQ==
-X-Received: from pgah15.prod.google.com ([2002:a05:6a02:4e8f:b0:c79:7757:4178])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:329e:b0:3b4:5c6f:cf30
- with SMTP id adf61e73a8af0-3b9e81f8091mr1492708637.38.1781742359992; Wed, 17
- Jun 2026 17:25:59 -0700 (PDT)
-Date: Thu, 18 Jun 2026 00:25:57 +0000
-In-Reply-To: <20260612123553.2724240-1-rhkrqnwk98@gmail.com>
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="eERmQ0ay"
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfout.phl.internal (Postfix) with ESMTP id 3738DEC05E7;
+	Wed, 17 Jun 2026 20:56:01 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Wed, 17 Jun 2026 20:56:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1781744161; x=1781830561; bh=oRkffw0hyh/GuxJCIVfKgEWNAymvT88Y3XY
+	px2BDW/k=; b=eERmQ0ayn9m8wVNhOnqGRZkMB6lds2D6/ZBX5aKImkIIXfgOTbi
+	bBSDJcR8oILGjvE3+26/CCmg1rMxDZhplAMhmLr74EdkgR03Fzo3Pr33uMyYzruw
+	fLWbiYpqvFnIKO1OkdZ/lTWnLN9ZqzlKZ+Pmae7qKjlBGAAT5assyNo9DU2CLm2n
+	hcYgUn9Dcuv0J6tYCTvW0YPaOY9hT4bfB/Ypusbfl/uBe5yp+sMGPTWW3FfNlwXf
+	yG8FsMyCEJ6CCpuqkbMQFgtW5XCsF/M919yTmBgRSXTDhPvZxrrcNhKur7CAJ3xw
+	F55/rzSyXReRpHb7PsV+qL0k/H92V0c4Itw==
+X-ME-Sender: <xms:H0IzarJoPpga0EVjkyYtDAKpuylNksfat_NvfCUhWSOCtjwCzF_f-g>
+    <xme:H0IzamHdndkLe1JzQqFpQuE1xFHz02NY7tkG3dJxEwoiSQfMF57TOdJOmPEwKtHzY
+    KcN0CeNNl1_j8Yp4J3GkmQjc6ElL7AejiJQZOjTqnxH4p3h_WesQA>
+X-ME-Received: <xmr:H0Izaoy6d2LWswGUSgdxEZiGOOIp7F1GAzeKRKpSJyrH0AcCv47p3z-pU9ecUiICg3vu-MH_bhj3VeOXZCQlmtdBfz8XK8kBIME>
+X-ME-Proxy-Cause: dmFkZTEfsd2sy6rGCX9gKFtzw6P16veTBgEOvotvsGqzQMeY4e0byjs4rXjd0jR1EGh9lH
+    Yq1ys3Ja4IDwXPS3v8h80XGdeqX22kwtwfnwKbBWzdXMbQ3K21J/sdYHJ69m1M3WmEMdIu
+    u1nMszQRk8K9LYU0Q7Q7bmIKdExPNa6BOQgw7kl30YHXVdwKmJf3E0sJPtu/GsirOjXIP1
+    OMohMujEERuDNRRVoYibAAjRUfzIntuPTXU4ZMzzhV1KO9u+QyuBjvQZWPFHNeoyfVgbrS
+    xKlIz72VPlV0PJCNH8exmh65DDQ4fM9o2UBLSyaOZeAPSCtscvI5N+qb7q9WWVzoyMW0KJ
+    OK/PhdNbZwjAicc4o1XuhSDvlAX5cy+FtEEvV2F6GwZhMa+lPcgdxqF8OBb/lmLupQ5tEs
+    eheTqaLv4Nsg7nu414U6XqgJZzeXjEHoQKyhhj/PW+xu5f6FM80JRxgBdtwG9jllgL7YcC
+    yqXxG7Cj/sJGT3xVSMUgNWvoLGL7Kb6t1s9H5aAAQMPyEY0Lgd7FGNcJuDBha9e0gs/fps
+    iOWIrG6DUpVNDUVADq/vCJwf9Ebi7fmT8Ljiah57AZUCaHj9g2RUI1FwTR5wI2qitIaKqu
+    uLTAsCEPC2PcldxNQjt5opO4jHMZ5Rs2C0Zvi0g1/JJ5wDCgBUftZn/Xom5g
+X-ME-Proxy: <xmx:H0IzarhtWgRuIMlu2p5-tLhgH2FkJtO7O_M4iRkuEoFf70ad5bOd_A>
+    <xmx:H0IzatL7Euk8fVpAZfJJAWzsTcu0W72nRDeXBvUtVs0R9OUKs0mo6Q>
+    <xmx:H0IzauC7vQlbiuSjd4tSULVmpAMAV6fSiI9w8wwt0RrhGN4Z63PPVg>
+    <xmx:H0IzauSGYEJXZzWQrOlUMtDDUANieswg55yx3NL-E1fVReVzaCOU8A>
+    <xmx:IUIzavmfDbaASv4X0vfqP16GYSQdU_zCwOTdK2L0zg5ukH_f6P9Pfp7h>
+Feedback-ID: i58a146ae:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 17 Jun 2026 20:55:57 -0400 (EDT)
+Date: Thu, 18 Jun 2026 10:55:54 +1000 (AEST)
+From: Finn Thain <fthain@linux-m68k.org>
+To: Carsten Strotmann <carsten@strotmann.de>
+cc: Jakub Kicinski <kuba@kernel.org>, Carsten Strotmann <cas@strotmann.de>, 
+    John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+    davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com, 
+    pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, 
+    geert@linux-m68k.org, chleroy@kernel.org, npiggin@gmail.com, 
+    mpe@ellerman.id.au, maddy@linux.ibm.com, linux-mips@vger.kernel.org, 
+    linux-m68k@lists.linux-m68k.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH net-next 0/2] appletalk: move the protocol out of tree
+In-Reply-To: <1781694488854.956546368.818588236@strotmann.de>
+Message-ID: <489024bc-b6e5-f601-3bce-444d75abbf5d@linux-m68k.org>
+References: <20260616084901.3319d82e@kernel.org> <1781694488854.956546368.818588236@strotmann.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260612123553.2724240-1-rhkrqnwk98@gmail.com>
-X-Mailer: git-send-email 2.54.0.1189.g8c84645362-goog
-Message-ID: <20260618002559.1479884-1-kuniyu@google.com>
-Subject: Re: [PATCH bpf v2] bpf, sockmap: fix use-after-free when the stream
- parser resizes the skb
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: rhkrqnwk98@gmail.com
-Cc: bobbyeshleman@gmail.com, bpf@vger.kernel.org, davem@davemloft.net, 
-	edumazet@google.com, horms@kernel.org, jakub@cloudflare.com, 
-	john.fastabend@gmail.com, kuba@kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, pabeni@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-
-From: Sechang Lim <rhkrqnwk98@gmail.com>
-Date: Fri, 12 Jun 2026 12:35:51 +0000
-> sk_psock_strp_parse() runs the BPF_PROG_TYPE_SK_SKB stream-parser program
-> to find the length of the next message. strparser assembles a message out
-> of several received skbs by chaining them onto the head's frag_list and
-> recording where to append the next one in strp->skb_nextp:
-> 
-> 	*strp->skb_nextp = skb;
-> 	strp->skb_nextp = &skb->next;
-> 
-> and then calls the parser on the head:
-> 
-> 	len = (*strp->cb.parse_msg)(strp, head);
-> 
-> The parser is only meant to inspect the skb, but the program may call
-> bpf_skb_change_tail() -- or the sibling bpf_skb_pull_data(),
-> bpf_skb_change_head(), bpf_skb_adjust_room(), all allowed for SK_SKB.
-
-It's bpf prog's responsibility not to abuse them.
-
-Even setting aside that, why not simply block such BPF prog ?
-
-It cannot be done at load time, but doable at attach time.
-
----8<---
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index 630d530782fe..4d60b77da8ef 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -4556,6 +4556,12 @@ static int bpf_prog_attach(const union bpf_attr *attr)
- 
- 	switch (ptype) {
- 	case BPF_PROG_TYPE_SK_SKB:
-+		if (attr->attach_type == BPF_SK_SKB_STREAM_PARSER &&
-+		    prog->aux->changes_pkt_data) {
-+			ret = -EINVAL;
-+			goto out;
-+		}
-+		fallthrough;
- 	case BPF_PROG_TYPE_SK_MSG:
- 		ret = sock_map_get_from_fd(attr, prog);
- 		break;
----8<---
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 
 
-> Once the head carries a frag_list these go
+On Wed, 17 Jun 2026, Carsten Strotmann wrote:
+
+> > _Someone_ has to handle the reports and patches. And since nobody is 
+> > doing that the code is going to GitHub, where it can continue to "just 
+> > be left" or whatever, without racking up CVEs for the Linux kernel and 
+> > leading to maintainer burn out :/
+> > 
 > 
-> 	... -> skb_ensure_writable -> pskb_may_pull -> __pskb_pull_tail
+> That's a good point. The large influx of reports is a problem, and burn 
+> out of maintainers is a too high cost.
 > 
-> and __pskb_pull_tail() frees the frag_list skbs that strparser still
-> tracks through skb_nextp:
-> 
-> 	while ((list = skb_shinfo(skb)->frag_list) != insp) {
-> 		skb_shinfo(skb)->frag_list = list->next;
-> 		consume_skb(list);
-> 	}
-> 
-> strp->skb_nextp now points into a freed sk_buff. The next segment of
-> the same message arrives in __strp_recv(), which links it with
-> *strp->skb_nextp = skb, an 8-byte write into the freed skb. The free
-> and the write happen in different __strp_recv() calls, so the message
-> has to span at least three segments before it triggers.
-> 
->   BUG: KASAN: slab-use-after-free in __strp_recv+0x447/0xda0
->   Write of size 8 at addr ffff88810db86140 by task repro/349
-> 
->   Call Trace:
->    <IRQ>
->    __strp_recv+0x447/0xda0
->    __tcp_read_sock+0x13d/0x590
->    tcp_bpf_strp_read_sock+0x195/0x320
->    strp_data_ready+0x267/0x340
->    sk_psock_strp_data_ready+0x1ce/0x350
->    tcp_data_queue+0x1364/0x2fd0
->    tcp_rcv_established+0xe07/0x1640
->    [...]
-> 
->   Allocated by task 349:
->    skb_clone+0x17b/0x210
->    __strp_recv+0x2c3/0xda0
->    __tcp_read_sock+0x13d/0x590
->    [...]
-> 
->   Freed by task 349:
->    kmem_cache_free+0x150/0x570
->    __pskb_pull_tail+0x57b/0xc20
->    skb_ensure_writable+0x236/0x260
->    __bpf_skb_change_tail+0x1d4/0x590
->    sk_skb_change_tail+0x2a/0x40
->    bpf_prog_1b285dcd6c41373e+0x27/0x30
->    bpf_prog_run_pin_on_cpu+0xf3/0x260
->    sk_psock_strp_parse+0x118/0x1e0
->    __strp_recv+0x4f6/0xda0
->    [...]
-> 
-> The same resize also leaves the head's length inconsistent with its
-> frags, so a later __pskb_pull_tail() can instead hit the
-> BUG_ON(skb_copy_bits(...)) in net/core/skbuff.c.
-> 
-> Run the parser on a private clone of the head when the message spans more
-> than one skb and the program can modify the packet
-> (prog->aux->changes_pkt_data), so a resizing helper can only touch the
-> clone and strparser's head and skb_nextp stay valid. Single-skb messages
-> have no frag_list and read-only parsers cannot resize, so both are still
-> parsed in place. If the clone cannot be allocated, return 0 so the caller
-> retries on the next read rather than failing the parser.
-> 
-> Fixes: 8a31db561566 ("bpf: add access to sock fields and pkt data from sk_skb programs")
-> Signed-off-by: Sechang Lim <rhkrqnwk98@gmail.com>
-> ---
-> v2:
->  - clone only when prog->aux->changes_pkt_data (Bobby Eshleman)
->  - return 0 on clone failure instead of -ENOMEM (Bobby Eshleman)
->  - free the clone with consume_skb() instead of kfree_skb()
->  - drop the unrelated guard(rcu)() change (Bobby Eshleman)
-> 
-> v1:
->  - https://lore.kernel.org/all/20260609112316.3685738-1-rhkrqnwk98@gmail.com/
-> 
->  net/core/skmsg.c | 26 +++++++++++++++++++++++---
->  1 file changed, 23 insertions(+), 3 deletions(-)
-> 
-> diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-> index e1850caf1a71..97e5bc5f38c3 100644
-> --- a/net/core/skmsg.c
-> +++ b/net/core/skmsg.c
-> @@ -1149,9 +1149,29 @@ static int sk_psock_strp_parse(struct strparser *strp, struct sk_buff *skb)
->  	rcu_read_lock();
->  	prog = READ_ONCE(psock->progs.stream_parser);
->  	if (likely(prog)) {
-> -		skb->sk = psock->sk;
-> -		ret = bpf_prog_run_pin_on_cpu(prog, skb);
-> -		skb->sk = NULL;
-> +		struct sk_buff *parse_skb = skb;
-> +
-> +		/*
-> +		 * strparser chains the message skbs through skb->frag_list and
-> +		 * keeps a pointer into that list in strp->skb_nextp.  The parser
-> +		 * program may call bpf_skb_change_tail() and friends, which go
-> +		 * through __pskb_pull_tail() and free the frag_list skbs that
-> +		 * strparser still tracks.  Run the program on a clone when the head
-> +		 * has a frag_list and the program can modify the packet, so it
-> +		 * cannot drop frags strparser owns.
-> +		 */
-> +		if (skb_has_frag_list(skb) && prog->aux->changes_pkt_data) {
-> +			parse_skb = skb_clone(skb, GFP_ATOMIC);
-> +			if (!parse_skb) {
-> +				rcu_read_unlock();
-> +				return 0;
-> +			}
-> +		}
-> +		parse_skb->sk = psock->sk;
-> +		ret = bpf_prog_run_pin_on_cpu(prog, parse_skb);
-> +		parse_skb->sk = NULL;
-> +		if (parse_skb != skb)
-> +			consume_skb(parse_skb);
->  	}
->  	rcu_read_unlock();
->  	return ret;
-> -- 
-> 2.43.0
-> 
+
+Carsten, if, as a maintainer, you want to avoid burnout then
+
+1) don't promise what you can't deliver (that is, decline sponsorship)
+
+2) delegate (that is, leverage AI as an ally not as a lame excuse)
+
+So the question remains: what is it which _can_ be delivered by and for 
+the "community" (by which I mean, that group of people which includes 
+actual end users -- not merely paying customers and sponsored developers).
+
+This question has precious little to do with burnout, but it's the 
+question we need to address.
