@@ -1,193 +1,95 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5503E3ACA77
-	for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 10:07:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282C537C0FE
+	for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 10:08:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781777270; cv=none; b=VifSHX0ibllvAlKE7M+5FC3SNKIjDUCytzfKEhhf/Onc3hEy0NKaebhtUZkh1wL4Ll+J+5jtQuMSm+uiTLhf+HqZ/ZXM03SeL0Oyfd6b1HNZmqbi+EKvI4Ga+yGKDWOlx3brA4tSDoi0FixRs6YKRV+GQ8igcSqXToyYd4wGbK4=
+	t=1781777286; cv=none; b=NcXaDA0Zj7piJlydNSdiuaE0yenR6g16KIM7DhlwbkztjqAuE12t9NnauxUC3lliXGoHa/10mYZRdGbxSqtoLdp6aMJeI9x97PjB6RlqnynHtT7gaDK89lJGttZp8JfQ+2GzwNNy0NkaPuCEHmEQQ0wbt8HxgdQqjAzz2RIGay8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781777270; c=relaxed/simple;
-	bh=BCnhMXpiNt6GeK/JNZegIFyy6D8zcdHM6e+0Bxca6Ss=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=HZXEAxEBuCTr/GbtNrobJHCksCm7xiNiHlLr1JvXoDMhumCmL7BmxDzrA7vUssc9V/DaMm+CmBb+BXjfGzC1o1ylnk84XzeyUcJG3vGtgmVRhmxUS485jOUGprbWiNplvvcXH+QAx8KTU/RAPfi5m8qlb63Q8WQGf/FyJmIu35w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dD7GQ3kW; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=BlNso0af; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1781777286; c=relaxed/simple;
+	bh=C+XViI3owNPDk7ocOokFo/XxhRN3dEGwZ3OHdlhAOtU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T+NsC+mduu7Rju+Rb4JJryie2tzY41ZEykoF6ZWko3l3itAUvplanfuo3EU5NHR0hQjra7Hdftp8byKGiVzy4ozvkWmHYgeFa0Bsu7jlXOIa81ULPdweT71GGXGZNG12gEGYyYzpOZxG3CXS7OMOnjRyGFeuU1Ge3Ra9D6IscZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lb4u7GNL; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dD7GQ3kW";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="BlNso0af"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781777268;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=H2D+VZ/Tj0mUVDsv+aTtPFKUCIWgmNxSZBVstBUBcWw=;
-	b=dD7GQ3kWJX8vjuokrZNaD8F9I29d3DP9EAzK1Hh9Nl6tU637SkNpsLy2MnL9vycAuWJCaT
-	ap3YWE0N4F2LSjLD3CJVg45Ke8nQdeUZr0Pa0cqFrAjb2Tl0RJLIiTVFpmRNK7NTT8iY62
-	YEKqWQHAc8zfjC5CoS8to3lWfPqU418=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-333-YnqXxOLDMhqtNrfTPqLX4w-1; Thu, 18 Jun 2026 06:07:46 -0400
-X-MC-Unique: YnqXxOLDMhqtNrfTPqLX4w-1
-X-Mimecast-MFC-AGG-ID: YnqXxOLDMhqtNrfTPqLX4w_1781777265
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-461e0dad8easo513909f8f.0
-        for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 03:07:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1781777264; x=1782382064; darn=vger.kernel.org;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=H2D+VZ/Tj0mUVDsv+aTtPFKUCIWgmNxSZBVstBUBcWw=;
-        b=BlNso0afPaiSvxBB6f5/68vwG3CqZVg+02CbcYz34zMqrVu+OkpZGJyf+Qzd3NEcWe
-         rRqNJjH2VUZIESv32fhmWNFWXXntp7DNxDR+bh2n1cxQILuVLENGNONebB1PQLLJEBTk
-         dlv1Gfiqn/tW93IwxdbUhIM6IJOaU/X4C2KcwqZ5+zBXBaKOWgF84NhHKs3iSNsLpAiF
-         /l8q5X9lm4Z1QICHKgfFvbv105u7XgSOSTmkVc71DvJjAA2IgOheplZev5YXwcHW57yP
-         iTDDcfjNBy9v44ODQqaHkaS0YPl/nTfhOxqIT6Ptxfcg609IqAYj5k6oNxmqd1FQV2Xk
-         dVGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781777264; x=1782382064;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=H2D+VZ/Tj0mUVDsv+aTtPFKUCIWgmNxSZBVstBUBcWw=;
-        b=KXHzNRQp08ZSK4gekijbApCwJPymA1H22bgItF3bKvKzBs5Nh5qsdisXWEHpO9vZ1g
-         21p2XC2NlJ7mtgY/8j8t0aag/xM6Irtq8ID4M2L0aSbTFbmwoT5kwczqaf5m877Quy8e
-         gcEBIQ5ImhgmMeBh4Q0j5dTDVph/3ci4QIkUziw26MF8wkx4Y5W1w4c+tUSMcYHin4b1
-         DdVCuUg2ouLQNRfbIxNNUIx8UKuJepDj45xHkGi1HYA8cyqrBDHCcN9jZRf3j6I3Di5o
-         cOZX+mDeehvb4isGH91YXbh8mec3DL0F084vzcEp0MNWciE+slTSya999egNVE02RC9z
-         Baww==
-X-Forwarded-Encrypted: i=1; AFNElJ/wjCvqVEo33oRyViNSDQr2E7KObf4dLy17LEuGtvJEjJFwmG2gkkjB9eMreyfqToFFOINGl4A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGb+kfUpVyl9hK20ennPmPQzYdEHSBc01HK5+dZwlLN63PZjfQ
-	Ih/nfnRmlAfmgqfMpUbEN3VWpWSiXLxOgmrvDXGQkI/YRocuD1TWv+kuXlFQEvrjDQ2JHnvoXAp
-	rzy7NdCz5EP+2qH86e0pz1gCEpvbjhbqMuL7cUDqXatiQbG7U4/Kwu39LPw==
-X-Gm-Gg: AfdE7cl7LElCPLetpaWYXpBHRqVIWzT+XLlH3v4AOLye3hhnU2xvNZunG/PElMcZoEI
-	dteGHWTyUZJ+daixKiA2c6amsWd+CMkwBQY4RUu4lw7hWEZeAd7sLii5Q51NS+Ceszg7OG8oV8x
-	tAckpBCiCHSZLFOF1ruOFp4zT7I0Xn6C9ApAWVx2BktGZDlMYy73tgaoO1+MPDaIOoRiBbO/Ig9
-	9jpy0P7UQZFeR8bHMuVq/greJQQ9xZyELuEreAR2WQR0NMGOWZNeQKaXADIOiS2+znO7CIm5upy
-	8N4IVKDM7ABvz1kh7LGZhVjL3z7ahquPUCXHUegE1r+6O7RVjGKUqK+RHVlVGPoK6tvpIJGcB5y
-	vAU8DmnpMgHm3tKQzaiMoiW5mQWQaqny3cf1o0w==
-X-Received: by 2002:a05:6000:1a53:b0:45e:dacb:8885 with SMTP id ffacd0b85a97d-4624179ba99mr9709052f8f.35.1781777264551;
-        Thu, 18 Jun 2026 03:07:44 -0700 (PDT)
-X-Received: by 2002:a05:6000:1a53:b0:45e:dacb:8885 with SMTP id ffacd0b85a97d-4624179ba99mr9708996f8f.35.1781777263942;
-        Thu, 18 Jun 2026 03:07:43 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk (alrua-x1.borgediget.toke.dk. [2a0c:4d80:42:443::2])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f2c3fcfsm56057272f8f.26.2026.06.18.03.07.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Jun 2026 03:07:43 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id 97AAE807861; Thu, 18 Jun 2026 12:07:42 +0200 (CEST)
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To: Avinash Duduskar <avinash.duduskar@gmail.com>, ast@kernel.org,
- daniel@iogearbox.net, andrii@kernel.org
-Cc: ameryhung@gmail.com, a.s.protopopov@gmail.com, bpf@vger.kernel.org,
- davem@davemloft.net, dsahern@kernel.org, eddyz87@gmail.com,
- edumazet@google.com, emil@etsalapatis.com, eyal.birger@gmail.com,
- hawk@kernel.org, horms@kernel.org, john.fastabend@gmail.com,
- jolsa@kernel.org, kpsingh@kernel.org, kuba@kernel.org,
- leon.hwang@linux.dev, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, martin.lau@linux.dev, memxor@gmail.com,
- netdev@vger.kernel.org, pabeni@redhat.com, rongtao@cestc.cn,
- sdf@fomichev.me, shuah@kernel.org, song@kernel.org, yatsenko@meta.com,
- yonghong.song@linux.dev
-Subject: Re: [PATCH bpf-next v3 0/3] bpf: bidirectional VLAN support for
- bpf_fib_lookup()
-In-Reply-To: <20260617224729.1428662-1-avinash.duduskar@gmail.com>
-References: <20260617224729.1428662-1-avinash.duduskar@gmail.com>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date: Thu, 18 Jun 2026 12:07:42 +0200
-Message-ID: <87jyrwf9g1.fsf@toke.dk>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lb4u7GNL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781777285; x=1813313285;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=C+XViI3owNPDk7ocOokFo/XxhRN3dEGwZ3OHdlhAOtU=;
+  b=lb4u7GNLUKKbY/N7TxQDuruCz7xDTyOe6RpnVfJ8sUdZapuWGFPJEHap
+   Gcmi8gmy4pak11SgSEA2gAEGzLLNV+2em97PVqHJUv2OOohTYTPwC1O3N
+   /IEbx3besdnGRmSjir/8EKyMjzrEF5P1OLySiU6GCMpN1zK9Ja1Wrd2fr
+   NF+RkkzxOSH6ALkVnLXGWPmM/IWCrxrXXW083YxUs+06+WAtd9TpW1/fg
+   hh0QINBYXzjHZCSkrD4BS1AuTcpykwQe74ToDuPAcTaF7Hd+3pR/UU7b3
+   SrG1obYKzW68iCDEUG6JqjF8ba77WAGURjFBuBFAxabN9UfNjp98MwzlW
+   w==;
+X-CSE-ConnectionGUID: PNFQdHHTT1mhoUueJRs0NQ==
+X-CSE-MsgGUID: mX6v+GMuTlCTZ688ZN3d4A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11820"; a="86450809"
+X-IronPort-AV: E=Sophos;i="6.24,211,1774335600"; 
+   d="scan'208";a="86450809"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2026 03:07:59 -0700
+X-CSE-ConnectionGUID: AkhGEWlSRh+6lM90ZBVbsg==
+X-CSE-MsgGUID: EIj4hHNTTYSlQPkrf+Hrug==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,211,1774335600"; 
+   d="scan'208";a="252644135"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2026 03:07:55 -0700
+Date: Thu, 18 Jun 2026 12:07:52 +0200
+From: Raag Jadav <raag.jadav@intel.com>
+To: Riana Tauro <riana.tauro@intel.com>
+Cc: intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	netdev@vger.kernel.org, aravind.iddamsetty@linux.intel.com,
+	anshuman.gupta@intel.com, rodrigo.vivi@intel.com,
+	joonas.lahtinen@linux.intel.com, kuba@kernel.org,
+	simona.vetter@ffwll.ch, airlied@gmail.com, pratik.bari@intel.com,
+	joshua.santosh.ranjan@intel.com, ashwin.kumar.kulkarni@intel.com,
+	shubham.kumar@intel.com, ravi.kishore.koppuravuri@intel.com,
+	maarten.lankhorst@linux.intel.com, mallesh.koujalagi@intel.com,
+	soham.purkait@intel.com
+Subject: Re: [PATCH v2 2/2] drm/xe/xe_drm_ras: Add error-event support in XE
+ drm_ras
+Message-ID: <ajPDeMpSypYrFllq@black.igk.intel.com>
+References: <20260611052144.784969-4-riana.tauro@intel.com>
+ <20260611052144.784969-6-riana.tauro@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260611052144.784969-6-riana.tauro@intel.com>
 
-Avinash Duduskar <avinash.duduskar@gmail.com> writes:
+On Thu, Jun 11, 2026 at 10:51:47AM +0530, Riana Tauro wrote:
+> Add error-event support in XE drm_ras to notify userspace
+> when an error occurs.
+> 
+> $ sudo ynl --family drm_ras --output-json --subscribe error-notify
 
-> This series adds VLAN awareness to bpf_fib_lookup() in both directions.
-> BPF_FIB_LOOKUP_VLAN resolves a VLAN egress to its underlying real device
-> plus the VLAN tag (XDP programs need this because VLAN devices have no XDP
-> xmit), and BPF_FIB_LOOKUP_VLAN_INPUT runs the lookup as if a tagged frame
-> had arrived on the matching VLAN subinterface, for iif policy routing and
-> VRF table selection.
->
-> The l3mdev/VRF flow-init fix that was patch 1 in v1 and v2 has been split
-> out and sent to bpf on its own, since it is an independent Fixes:-tagged
-> fix that routes to stable on its own schedule. This series is otherwise
-> independent of it: on the default CONFIG_INIT_STACK_ALL_ZERO the VRF
-> selftests pass with or without the fix. Only the one full-lookup VRF arm
-> ("IPv4 VLAN input, tag selects VRF table") depends on it, and only on
-> INIT_STACK_ALL_PATTERN or NONE builds, where the uninitialized
-> flowi_l3mdev otherwise misses the l3mdev rule and the lookup falls
-> through to the main table. Applying the l3mdev fix first closes that
-> window.
->
-> Changes v2 -> v3 (all from Toke's review unless noted):
->
-> - Split the l3mdev/VRF flow-init fix out to a standalone bpf submission
->   (it was patch 1 in v2).
->
-> - Patch 2 (VLAN_INPUT): bpf_fib_vlan_input_dev() returns a
->   struct net_device * with ERR_PTR() for the -EINVAL case and NULL for
->   NOT_FWDED, instead of an int return and a **dev out-parameter.
->
-> - Trim the BPF_FIB_LOOKUP_VLAN and BPF_FIB_LOOKUP_VLAN_INPUT UAPI doc
->   blocks, and drop the in-function comments that restated the commit
->   message or the flag doc.
->
-> - Patch 1 (VLAN egress): on the skb path without tot_len, the deferred mtu
->   check now runs against the resolved egress (VLAN) device, not the parent
->   params->ifindex was swapped to, so a VLAN device with a smaller mtu than
->   its parent is no longer checked against, or reported as, the parent's
->   larger mtu. Found by the bpf ci bot; this was an open question in v2.
->
-> - Patch 3 (selftests): re-run every case through bpf_xdp_fib_lookup() as
->   well, since the feature targets XDP; and flip the no-tot_len mtu arm to
->   expect the VLAN device's mtu after the fix above.
->
-> Open questions (defaults chosen, noted here in case a maintainer
-> prefers otherwise):
->
-> 1. An unmatched, down, or foreign-netns tag returns
->    BPF_FIB_LKUP_RET_NOT_FWDED, matching the DIRECT path when
->    fib_get_table() finds no table, rather than a new return code.
->
-> 2. BPF_FIB_LOOKUP_OUTPUT | BPF_FIB_LOOKUP_VLAN_INPUT is rejected with
->    -EINVAL; restricting now keeps relaxing later backward-compatible.
->
-> 3. The name BPF_FIB_LOOKUP_VLAN_INPUT reads oddly next to
->    BPF_FIB_LOOKUP_OUTPUT. A pair like _VLAN_EGRESS/_VLAN_INGRESS is an
->    option while nothing is merged.
+Same comment as first patch, but upto you.
 
-These three are fine as-is, I think.
+> {
+>     "name": "error-event",
+>      "msg": {
+>          "device-name": "0000:03:00.0",
+>          "node-id": 1,
+>          "node-name": "uncorrectable-errors",
+>          "error-id": 1,
+>          "error-name": "core-compute",
+>          "error-value": 1
+>      }
+> }
+> 
+> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
 
-> 4. The egress flag leaves a VLAN it cannot reduce to a physical parent
->    plus one tag (QinQ, or a parent in another namespace) as SUCCESS with
->    the VLAN device's ifindex and the vlan fields zero, like a plain
->    lookup. The input side instead fails closed (NOT_FWDED) on the
->    cross-namespace case. An XDP caller cannot xmit on a VLAN device, and
->    a zero h_vlan_proto does not distinguish this result from a physical
->    egress, so returning NOT_FWDED would be safer for XDP. But the two
->    cases differ: a foreign-netns parent is clearly fail-worthy, while a
->    QinQ egress is still a forwardable route (tc xmits on the inner VLAN
->    device), so failing it closed would reject a usable route. Should
->    egress signal NOT_FWDED, for both or only foreign-netns? I left it
->    best-effort, but will change it if you prefer.
-
-This one is a bit more ambiguous. Specifically, the inability for an XDP
-program to distinguish between a route that actually targets a physical
-device, and one that targets a VLAN device that couldn't be resolved for
-whatever reason.
-
-Since this is a new feature that's opt-in, I think I would lean towards
-failing lookups with a new error code (BPF_FIB_LKUP_RET_VLAN_FAILURE,
-say) if the lookup finds a VLAN device but can't actually resolve the
-parent. That way the XDP program can repeat the lookup without the
-BPF_FIB_LOOKUP_VLAN flag if it really wants the ifindex of that VLAN
-device, but that will be explicit and not hidden.
-
--Toke
-
+Reviewed-by: Raag Jadav <raag.jadav@intel.com>
