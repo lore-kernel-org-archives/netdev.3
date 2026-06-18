@@ -1,142 +1,185 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF543EC2F8
-	for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 10:15:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+Received: from zg8tmja2lje4os4yms4ymjma.icoremail.net (zg8tmja2lje4os4yms4ymjma.icoremail.net [206.189.21.223])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 907783EBF16;
+	Thu, 18 Jun 2026 10:19:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.21.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781777720; cv=none; b=YetgL21CHOAzpFlEj795dvwpTWEpL1Qm99VsHpmuhhm9rg7qBhJ5OU3B7h+CMYxYT1K79uEoFpAocXet+RQ5EYj8frEGZ6V2NDTNAFeY9+q2a4rbW3pAL68Po9oXTOZAvPjYN6h/ZWh38dcttEcD2Io35zKSEbbH5PmQMreip78=
+	t=1781777985; cv=none; b=lH6qkX3RtLRFEliFEhfqBqUWVg1BVadf92MNNzbCCv2Q1fwb6PtfVh6WCzk9aUkoUJSBs4GtwVVA9TeObwPKbJZOWMea2pU7WUgIURgYmsBGQzCzN7G9p4/itKwR/peUAVmvgbicXBLRNlANWa+XaelDuEsHiSFm+kNLup0Kuxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781777720; c=relaxed/simple;
-	bh=BWcvhUW+0cc5VX+GP36rvT15yne5n9RmucB5Uo/uotk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IJb/5loL1o8xDyW8m+l11Agr5Ze9zkFsxNgDfBAwL35JY4jKnai/0lLpDdNZOmXewqSnbquYADGF/Au2lEy0SEkfjICO0/i4x3b4JEzvXphDxvc+UFZFxHP7U89uVjMXNFRGqshFbryE7HRZQbz+I2Y6P61d89tgGacE+MiQAOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=ZdPgfVt1; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	s=arc-20240116; t=1781777985; c=relaxed/simple;
+	bh=Hr4YQ5pAGnuxxVJ7lS+ujE2PxBUnmkoqFmAfEoJCUeM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=ubUFEOWcHBYHMuQDBU/jhEbqnA+34uI8vhqCAqXbIK2udZ0/+bUBRNV1EvzppNGfguUf8eJTIO8AYvbDLPnF7v2qgeu2WJT9/ys1CAYke8fvyubTiElVbTWaVpg82uS8/fWof9G3BgwBrUkhRN2Nueofamm7mQEmCLgAqgxGYb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=S7EvzAzh; arc=none smtp.client-ip=206.189.21.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="ZdPgfVt1"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-45ef29c5561so460370f8f.0
-        for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 03:15:12 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="S7EvzAzh"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre.com; s=google; t=1781777711; x=1782382511; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OxcIh58Ro8lbA8Z7AdmochDFxerQSeNXvjZHG1Ej2DE=;
-        b=ZdPgfVt1kE2ZaVtU53o5akgU1DgCVRjXIqbxbOeb+SnN93Py2j33xiKcOoVcScw1+m
-         87N1V1EZZssn003Nl2bB18c2cN6pK3zl5XytXdYYRP0DDtcB6qAoD7z0mWFZkI4o8mFs
-         tVqiq88H7/cgkF/6hZLOjLG4ZRHivrX7UrQsqKDooZDjxw3t4ao4d/cSyQjZgZ/SeyH0
-         N991mE41o+0YdxHFrQXyejnnnuJvu3xt/0gFMNkNdsXQDF4yiIgM2ZxIVWa2zwFLu6r0
-         Vhrb3B4prX6ofs0lRvlVjYIgNsat84T3wWUhKZHi8r8NoCl61rH/HmlNok/RwvkSNdqm
-         Fh5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781777711; x=1782382511;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=OxcIh58Ro8lbA8Z7AdmochDFxerQSeNXvjZHG1Ej2DE=;
-        b=aBnUcLl9X7yhL+kVCkBO+Egy+QbqQQBYohKIHHqMTi6XOJ2MHBtRRyxLdrI5fS1elt
-         mgStTw7OxjgoQ/BVvLzSjTMBX31dfI68Wc7yVjRt+jJ9oiWzeUrjPjOdFUBOb52hWGir
-         22bpA6L4N6lmPyXZZ+mobr7YcpHYi5OAfQsS9C75qgva1MODDm/iLkHbDiOqw+m45OBS
-         m33OAdtxpwLU+gBtK1MWgkWS4y5qx+5/NhkYZEXImiD0qK3/ziRw9U8EE9+mJOs4lYrK
-         WrmS0gsUGPRt2t2q/U95KT/VeQlH4FiDc/1Vi5pY+CdjmdgaExBLLL3TZeWbJ/aZ5Aoo
-         4HpQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9IpJV2olfUegWsjxJtEU+vewNgNfE6TLvjtTO00o7WS/5fMUDiYpC0Dsz6LzWYXMnYZNVQdD4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHccNY2UsNXNVLRjGCA9oFNPmbBmGUMhfdb4Nc9+SrgKxQ4Ssh
-	iBvJ79CfqC1dcGgo6ZQREEPur1/cxHKCKSijuniSelxmRRYCw5rRBZs57BzeTEyJoWY=
-X-Gm-Gg: AfdE7cmaM3OPg+AmQp7Vm1cu5FsdUQjPwK7cp7bwuvy81J3eFVvdWc67PxYRCpCXjyR
-	Z1FFX1lNfN3GfpXmvcFv8fT2KS3AarP0fp8xyaa17De27xO41Hp5NAGvEMR3wYGN8DtmBxFj2L7
-	j8N2zp+iw7XdxPs7QuWEI6l++/lpkwHnX9K/WoqEZ8kcyYr6preW6X1fbuq6ieIhIEzL5f9JQvz
-	XcIeE0WX3mPM1sBKF7uYWSkXCKkpTTYKs24tYcSeLi2doEdOWl/7eyC+zMFDUNSk930qBb3lXvO
-	flXdZfGaDJ+HBXFpeZg+wodjnYmbr/q/QmEFw5cr8NIvKN6U/nEm2Nr0kH4V/6lksWNGLIIOrRv
-	ZOB36Tizirbca/nTA8HeJFuFOOn4FyY6RJWovmBcPZPjeylCKE+WxP2kOzKf7R4YHtVWhlWhu0g
-	m6tCJCONaEDz9U8Z3+mTQKQYU89R2IXDs2dL7GWmHVQoPfDVLiRCoLcNAtxqU7TOM2PlcZzBwGm
-	iTD
-X-Received: by 2002:a05:6000:2087:b0:460:70ff:fe14 with SMTP id ffacd0b85a97d-463adc9236bmr4887039f8f.42.1781777711239;
-        Thu, 18 Jun 2026 03:15:11 -0700 (PDT)
-Received: from localhost (p200300f65f47db048595530b320b6c5c.dip0.t-ipconnect.de. [2003:f6:5f47:db04:8595:530b:320b:6c5c])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-462236047c8sm17760805f8f.10.2026.06.18.03.15.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Jun 2026 03:15:10 -0700 (PDT)
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>
-To: Mika Westerberg <westeri@kernel.org>,
-	Yehezkel Bernat <YehezkelShB@gmail.com>,
-	Andreas Noever <andreas.noever@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
+	Date:Message-Id:In-Reply-To:References:MIME-Version:
+	Content-Transfer-Encoding; bh=FQQ+9Ogk6rx/0IEJYojHK6G4ICcLBRBqgr
+	yX2IKHSR4=; b=S7EvzAzhWzIp40TSIYK9q80cu4cn52zi3rsTbpIhDUodphQ7Em
+	egwT75MdaAtTs8ehLSF3JhlKAiThlofzQIoZZmD4vLijJ7Qw5MfpE8wqyg7xI9E/
+	vluHMyFgApWGm5lxQnHIWV9vPvGEg6+7uHoPmHc9uY2VAQ3jMM+u7LcDM=
+Received: from c9a6c405b3f2.. (unknown [202.112.238.121])
+	by web5 (Coremail) with SMTP id zAQGZQB3L78IxjNq23+CAg--.46531S3;
+	Thu, 18 Jun 2026 18:19:01 +0800 (CST)
+From: Yiyang Chen <chenyy23@mails.tsinghua.edu.cn>
+To: bpf@vger.kernel.org,
+	netfilter-devel@vger.kernel.org
+Cc: Yiyang Chen <chenyy23@mails.tsinghua.edu.cn>,
+	pablo@netfilter.org,
+	fw@strlen.de,
+	phil@nwl.cc,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	andrii@kernel.org,
+	eddyz87@gmail.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	memxor@gmail.com,
+	martin.lau@linux.dev,
+	song@kernel.org,
+	yonghong.song@linux.dev,
+	jolsa@kernel.org,
+	emil@etsalapatis.com,
+	shuah@kernel.org,
+	kartikey406@gmail.com,
+	coreteam@netfilter.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-usb@vger.kernel.org
-Subject: [PATCH v1 3/3] thunderbold: Drop comma after device id array terminator
-Date: Thu, 18 Jun 2026 12:14:52 +0200
-Message-ID:  <329e2c612b360a01524df7630a8a3acc34a90940.1781776904.git.u.kleine-koenig@baylibre.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1781776904.git.u.kleine-koenig@baylibre.com>
-References: <cover.1781776904.git.u.kleine-koenig@baylibre.com>
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH bpf-next v2 1/2] bpf: Guard conntrack opts error writes
+Date: Thu, 18 Jun 2026 10:18:43 +0000
+Message-Id: <9535e781fe14449b1d4e9bbc3baa7566a93bf512.1781765747.git.chenyy23@mails.tsinghua.edu.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <cover.1781765747.git.chenyy23@mails.tsinghua.edu.cn>
+References: <cover.1781586477.git.chenyy23@mails.tsinghua.edu.cn> <cover.1781765747.git.chenyy23@mails.tsinghua.edu.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1655; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=BWcvhUW+0cc5VX+GP36rvT15yne5n9RmucB5Uo/uotk=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBqM8UiytK7hE/SMYGmvn17tEkYw4JJmFqOZ+FZ2 TZ5qPoMm06JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCajPFIgAKCRCPgPtYfRL+ TraLB/sEasozUm4YNFh+0ZWpXwFBATBMd6XdLIle165DLme+RkDZn/OSuY3SXYYspOq5PRZZZG7 8EZ7zdpJEdeE6YEYt9Ls5VYG0W1bkqC6ROoie7T75DTFHG6jQZEsH4YKUQ3EIF+zmDfDCVJDKTo ieJ2dKxNrkKgN15TInMfAm60gKjeBc+Zz+Xgjjlh3ldDmeoT9FrBjPW4PPKdzqrPKRgqlXITzcP xFaQUNIaEsHT2dIoCrnNxJL5helTWll5KCzqsQoMa8h9Wi/zVHyZK8AcfKpok02gDFAuv0mnSNA wsnSRoi/lBFIIzrIJ6bsIpUdI7gF6AVbGB7evuFsBnAq99QG
-X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zAQGZQB3L78IxjNq23+CAg--.46531S3
+X-Coremail-Antispam: 1UD129KBjvJXoWxXry5uFy7ZFWxXryUtFW7XFb_yoWrJr4UpF
+	4ak3s7Ar9xAr4qyF4Fvan7A3WY9an3W3W7C34rG393CrsI93WYgFWxWr40vrZ3CFWrGrnx
+	tr45K3Z8CF1kAFUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUH014x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jr4l82xGYIkIc2
+	x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
+	Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJw
+	A2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAa
+	c4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzV
+	Aqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S
+	6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxw
+	ACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVW8ZVWrXwCY02Avz4vE14v_Gw1l
+	42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJV
+	WUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAK
+	I48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26F4j6r
+	4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAI
+	cVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7sRRAwI7UUUUU==
+X-CM-SenderInfo: xfkh05r1stqzpdlo2hxwvl0wxkxdhvlgxou0/
 
-The usual style for other device id arrays doesn't have a comma after
-the initializer.
+The conntrack lookup and allocation kfuncs take an opts pointer
+together with an opts__sz argument. The verifier checks only the memory
+range described by opts__sz, but the wrappers unconditionally write
+opts->error whenever the internal lookup or allocation helper returns an
+error.
 
-Signed-off-by: Uwe Kleine-König (The Capable Hub) <u.kleine-koenig@baylibre.com>
+For an invalid size smaller than the end of opts->error, that write can
+land outside the verifier-checked range. Keep returning NULL for invalid
+arguments, but only report the error through opts->error when the
+supplied size includes the field.
+
+This preserves error reporting for the supported 12-byte and 16-byte
+layouts, and for other invalid sizes that still include opts->error.
+
+Fixes: b4c2b9593a1c ("net/netfilter: Add unstable CT lookup helpers for XDP and TC-BPF")
+Fixes: d7e79c97c00c ("net: netfilter: Add kfuncs to allocate and insert CT")
+Signed-off-by: Yiyang Chen <chenyy23@mails.tsinghua.edu.cn>
 ---
- drivers/net/thunderbolt/main.c | 2 +-
- drivers/thunderbolt/dma_test.c | 2 +-
- drivers/thunderbolt/stream.c   | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ net/netfilter/nf_conntrack_bpf.c | 35 ++++++++++++--------------------
+ 1 file changed, 13 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/net/thunderbolt/main.c b/drivers/net/thunderbolt/main.c
-index edfcfc41a316..c1003e06a8bd 100644
---- a/drivers/net/thunderbolt/main.c
-+++ b/drivers/net/thunderbolt/main.c
-@@ -1455,7 +1455,7 @@ static DEFINE_SIMPLE_DEV_PM_OPS(tbnet_pm_ops, tbnet_suspend, tbnet_resume);
- 
- static const struct tb_service_id tbnet_ids[] = {
- 	{ TB_SERVICE("network", 1) },
--	{ },
-+	{ }
+diff --git a/net/netfilter/nf_conntrack_bpf.c b/net/netfilter/nf_conntrack_bpf.c
+index 40c261cd0af38..f98d1d4b42c3d 100644
+--- a/net/netfilter/nf_conntrack_bpf.c
++++ b/net/netfilter/nf_conntrack_bpf.c
+@@ -65,6 +65,15 @@ enum {
+ 	NF_BPF_CT_OPTS_SZ = 16,
  };
- MODULE_DEVICE_TABLE(tbsvc, tbnet_ids);
  
-diff --git a/drivers/thunderbolt/dma_test.c b/drivers/thunderbolt/dma_test.c
-index 63e6bbf00e12..519c67678b08 100644
---- a/drivers/thunderbolt/dma_test.c
-+++ b/drivers/thunderbolt/dma_test.c
-@@ -689,7 +689,7 @@ static const struct dev_pm_ops dma_test_pm_ops = {
++static void *bpf_ct_opts_result(struct bpf_ct_opts *opts, u32 opts__sz, void *ret)
++{
++	if (!IS_ERR(ret))
++		return ret;
++	if (opts__sz >= offsetofend(struct bpf_ct_opts, error))
++		opts->error = PTR_ERR(ret);
++	return NULL;
++}
++
+ static int bpf_nf_ct_tuple_parse(struct bpf_sock_tuple *bpf_tuple,
+ 				 u32 tuple_len, u8 protonum, u8 dir,
+ 				 struct nf_conntrack_tuple *tuple)
+@@ -297,12 +306,7 @@ bpf_xdp_ct_alloc(struct xdp_md *xdp_ctx, struct bpf_sock_tuple *bpf_tuple,
  
- static const struct tb_service_id dma_test_ids[] = {
- 	{ TB_SERVICE("dma_test", 1) },
--	{ },
-+	{ }
- };
- MODULE_DEVICE_TABLE(tbsvc, dma_test_ids);
+ 	nfct = __bpf_nf_ct_alloc_entry(dev_net(ctx->rxq->dev), bpf_tuple, tuple__sz,
+ 				       opts, opts__sz, 10);
+-	if (IS_ERR(nfct)) {
+-		opts->error = PTR_ERR(nfct);
+-		return NULL;
+-	}
+-
+-	return (struct nf_conn___init *)nfct;
++	return (struct nf_conn___init *)bpf_ct_opts_result(opts, opts__sz, nfct);
+ }
  
-diff --git a/drivers/thunderbolt/stream.c b/drivers/thunderbolt/stream.c
-index b28e4e95b422..68d81958262e 100644
---- a/drivers/thunderbolt/stream.c
-+++ b/drivers/thunderbolt/stream.c
-@@ -1630,7 +1630,7 @@ static const struct dev_pm_ops tbstream_pm_ops = {
+ /* bpf_xdp_ct_lookup - Lookup CT entry for the given tuple, and acquire a
+@@ -331,11 +335,7 @@ bpf_xdp_ct_lookup(struct xdp_md *xdp_ctx, struct bpf_sock_tuple *bpf_tuple,
  
- static const struct tb_service_id tbstream_ids[] = {
- 	{ TB_SERVICE("stream", 1) },
--	{ },
-+	{ }
- };
- MODULE_DEVICE_TABLE(tbsvc, tbstream_ids);
+ 	caller_net = dev_net(ctx->rxq->dev);
+ 	nfct = __bpf_nf_ct_lookup(caller_net, bpf_tuple, tuple__sz, opts, opts__sz);
+-	if (IS_ERR(nfct)) {
+-		opts->error = PTR_ERR(nfct);
+-		return NULL;
+-	}
+-	return nfct;
++	return bpf_ct_opts_result(opts, opts__sz, nfct);
+ }
  
+ /* bpf_skb_ct_alloc - Allocate a new CT entry
+@@ -363,12 +363,7 @@ bpf_skb_ct_alloc(struct __sk_buff *skb_ctx, struct bpf_sock_tuple *bpf_tuple,
+ 
+ 	net = skb->dev ? dev_net(skb->dev) : sock_net(skb->sk);
+ 	nfct = __bpf_nf_ct_alloc_entry(net, bpf_tuple, tuple__sz, opts, opts__sz, 10);
+-	if (IS_ERR(nfct)) {
+-		opts->error = PTR_ERR(nfct);
+-		return NULL;
+-	}
+-
+-	return (struct nf_conn___init *)nfct;
++	return (struct nf_conn___init *)bpf_ct_opts_result(opts, opts__sz, nfct);
+ }
+ 
+ /* bpf_skb_ct_lookup - Lookup CT entry for the given tuple, and acquire a
+@@ -397,11 +392,7 @@ bpf_skb_ct_lookup(struct __sk_buff *skb_ctx, struct bpf_sock_tuple *bpf_tuple,
+ 
+ 	caller_net = skb->dev ? dev_net(skb->dev) : sock_net(skb->sk);
+ 	nfct = __bpf_nf_ct_lookup(caller_net, bpf_tuple, tuple__sz, opts, opts__sz);
+-	if (IS_ERR(nfct)) {
+-		opts->error = PTR_ERR(nfct);
+-		return NULL;
+-	}
+-	return nfct;
++	return bpf_ct_opts_result(opts, opts__sz, nfct);
+ }
+ 
+ /* bpf_ct_insert_entry - Add the provided entry into a CT map
 -- 
-2.47.3
+2.34.1
 
