@@ -1,390 +1,167 @@
-Received: from rcdn-iport-5.cisco.com (rcdn-iport-5.cisco.com [173.37.86.76])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010007.outbound.protection.outlook.com [40.93.198.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AA862F12AC;
-	Thu, 18 Jun 2026 01:54:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.37.86.76
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781747659; cv=none; b=FnNyCEIYbbJygNE7lFA4YtC0bGUpbaUvrtzH0pEfiXqH7UoKbYfK9G+JOjqcDM265Gp2/fzjWEvJOLuI7rPF1DR0SrAQ7VtwOjqXiCciDYNcSnnXQAxWk0/CtQzDujeJLVv7LdwQjjkwGRqjMylUfjvL6FYoldeZMuCf5jEw4hA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781747659; c=relaxed/simple;
-	bh=SVSMY+8jDNt6WYVRlHYL6Xj0aedOBaB0x9FqV8wCDtY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=I7wOv6wjZRCFHSr4e0k9QssAu5W948QzjA2R/SFaZu+z+MCHQzVc2rdLIWWdo/XZrTQXWU7gMbs52/+WhvKvsELPXs3RSV3OALUIytZTav5AhqvzAR8GglUoLwtfEeEWtMG9IB+jl3WnXsVLBh01x4qLBfumGWKiKMUgZXRDFBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b=GFW5fw5N; arc=none smtp.client-ip=173.37.86.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66DA6FC5;
+	Thu, 18 Jun 2026 02:27:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.7
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781749635; cv=fail; b=uAayGucuw3NBIkrMTo2O6+7mapT4bxrF0390EM4ZCw9MF2yGODIMLtuLZNBDNj4+YAcRERhkC0LZ4VhOnWcbzrQYNHm/qcBPxT294BZX+I+HOIcPNu7Fv3OjYNN3NGD1pzzcdnaaJMBqa0f0F7JXVX/w3MJYfU79XcSgjmCJig8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781749635; c=relaxed/simple;
+	bh=Pib6PnOOxZ5D4Eg59dvbOMIN/LveHr2W3zb/FlZU5Ek=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=qSmWLmTLtR3oCc0uY8tD26R2oKUIDk4uDoKhzAdjnE8dZG0/dpb8liRLh/oULCLPzgdyMDLytDGnRBbH/UrBrzRNP1XoQQ/SR/lItKrGlfMxThOVREKEf6NZuFZWpbYEOrT01r+ahrOanOACRgELr9qDsUVXtPRt8MO0D3EqGow=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com; spf=pass smtp.mailfrom=altera.com; dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b=s+EXdzfL; arc=fail smtp.client-ip=40.93.198.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altera.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b="GFW5fw5N"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=cisco.com; i=@cisco.com; l=8939; q=dns/txt;
-  s=iport01; t=1781747655; x=1782957255;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=kr6htwWhZKez6PJ4wGfNiehtHIx8vie4qhHLMQqHDDY=;
-  b=GFW5fw5NuOg+NAQmCmGSVEt/Q9IG2eVCdckAEdjsmndb1BnuPbnNLaGR
-   F0EMxtTpffHpt1nxcfFi4qhMGFjvKEa/k56c36zH1bPxuTAKcZ0gUKZkw
-   lgyBj0PqSNTna4DWMV9bl1mSDa0zKzOYpinialYy0zZW6mSOKrG2qTPmK
-   Y5X7JhHqXXhgKJt+MLHONjNAUtXhCE2US6FSt5AqWSQGEk15yPLfFC097
-   Fe69f/DKYOvzZx9vmtFykhVZYdGDsUAxMh2aZGhIWRkWzLT9lBHHOlXN+
-   Kz72SyS6ZRK69p+Ci/Q2u5f/d4mFqGGnUUiX6g+PPvRrxdO8BRhQaLVWo
-   A==;
-X-CSE-ConnectionGUID: 59oqn2FLTZKkjjD/PTkJRA==
-X-CSE-MsgGUID: utmO+EeSTOuEsPryRiVX7w==
-X-IPAS-Result: =?us-ascii?q?A0BHAgByTzNq/4r/Ja1aglmCV4FSQ0mEV49TgiGRTYxRF?=
- =?us-ascii?q?IFqDwEBAQ9RBAEBhQYCjUQCJjQJDgECBAMCAwEBAQEBAQEBAQEBCwEBBQEBA?=
- =?us-ascii?q?QIBBwWBDhOGXIZbAgEDIwQLATQSECUCJgICRhAGARKDAoJ0A7Jqen8zgQGEf?=
- =?us-ascii?q?dlGgWYBCxQBgQouhXGCagGBcIQGO4RBJxuBSUSBFYNphAUag3+CagSDHBKCS?=
- =?us-ascii?q?o5dCT+BAhwDWSwBVRMNCgsHBWFSMwMgCgsSEhgVAhQcEw8EFjIdcAwQFxIsF?=
- =?us-ascii?q?zRYGwcFgR6BJy8EIYEDhQMjHwM5f4FtgSVnZhUwNYEBAREfCoEbAwsYDUgRL?=
- =?us-ascii?q?DcGDhsEPQFuB4x5Fw+BTGoHPQ4wFEI5MQF7BTCTCx2Dfo5KgTWfWoQngWagD?=
- =?us-ascii?q?wEyl2eMVYYwmQgjo0wSWYRogWg8gVkzGggbFYMiUxkPji0WHMlJJzI9AgcCB?=
- =?us-ascii?q?w4DC5F5gWwBAQ?=
-IronPort-Data: A9a23:FrmtOKIdDKREVvAWFE+REpQlxSXFcZb7ZxGr2PjKsXjdYENS3mNWn
- 2QaD2uAa6yPMTanc4x/PI23oUpQup7Wn4BiTwsd+CA2RRqmiyZq6fd1j6vUF3nPRiEWZBs/t
- 63yUvGZcoZsCCSa/kvxWlTYhSEU/bmSQbbhA/LzNCl0RAt1IA8skhsLd9QR2uaEuvDnRVnR0
- T/Oi5eHYgH9hWcraj58B5+r8XuDgtyj4Fv0gXRmDRx7lAe2v2UYCpsZOZawIxPQKqFIHvS3T
- vr017qw+GXU5X8FUrtJRZ6iLyXm6paLVeS/oiI+t5qK23CulQRuukoPD8fwXG8M49m/c3+d/
- /0W3XC4YV9B0qQhA43xWTEAe811FfUuFLMqvRFTvOTLp3AqfUcAzN0zXUYvO9c23tpFImJM9
- 9BfEAwOTCqq0rfeLLKTEoGAh+w5J8XteYdasXZ6wHSBVLAtQIvIROPB4towMDUY358VW62BI
- ZBENHw2N0Sojx5nYj/7DLollfupnXn8cxVTqUmeouw85G27IAlZjOmza4qNJIXSLSlTtluEo
- 0WF0mnCPjYHGcen0yu/80yc2fCayEsXX6pXTtVU7MVCjFSNy2k7BBQIWF6/pvelzEizR7p3J
- kAJ/yM8oLQa+0usQd3wGRa/pRasvQMWUvJTHvc85QXLzbDbiy6QAGQeQyECbtE6uMIobTg30
- FnPlNOBLSRmurCTSFqH+7uUpC/0Mi8QRUcGZCkZXU4G7sPlrYUbkB3CVJBgHbSzg9mzHiv/q
- xiMoTQyiqs7k8EGzeO48ErBjjbqoYLGJjPZ/S3NVW6jqwc8b4m/asnwsB7Q7O1LK8CSSVzpU
- GU4pvVyJdsmVfml/BFhis1UQNlFO97t3OXgvGNS
-IronPort-HdrOrdr: A9a23:/tt1dak92RS36C+NHldhXlK6tojpDfLa3DAbv31ZSRFFG/FwWf
- re+MjzsiWUtN9xYh8dcL+7VZVoLUm3yXcx2/hyAV7AZmbbURWTTL2KhLGKq1bd8m/Fh41gPM
- xbH5SWZueAaGRSvILW7Ba1FtA4zMLC0qy57N2utktFfEVGZ75t6gFhBh3eKE15QwFaGYE0fa
- DsgPav3wDQHkg/X4CcGmQPWfTFqpngkZLrZgNDOjscgTP+9Q9BLNXBYmKlNtB0aUI1/Ysf
-X-Talos-CUID: 9a23:nMycS20ktgUZfBnO/BbGrLxfR5Eia3uH4lPsEWy7C2RFD4WpSn2q0fYx
-X-Talos-MUID: =?us-ascii?q?9a23=3AixjnyAwxHBw3tPnU42O5rH7NruWaqLmyDWdOvJg?=
- =?us-ascii?q?9h+6ZGDdIISanjQqHHZByfw=3D=3D?=
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-AV: E=Sophos;i="6.24,210,1774310400"; 
-   d="scan'208";a="496380610"
-Received: from rcdn-l-core-01.cisco.com ([173.37.255.138])
-  by rcdn-iport-5.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 18 Jun 2026 01:53:54 +0000
-Received: from [127.0.0.1] (unknown [10.25.128.189])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by rcdn-l-core-01.cisco.com (Postfix) with ESMTPS id BE28418000320;
-	Thu, 18 Jun 2026 01:53:53 +0000 (GMT)
-From: Satish Kharat <satishkh@cisco.com>
-Date: Wed, 17 Jun 2026 18:53:30 -0700
-Subject: [PATCH net-next v9 07/10] enic: add MBOX PF handlers for VF
- register and capability
+	dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b="s+EXdzfL"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lKmOAPx/w6IkMjrdKj3Y8iOew4D2iO38Mth2fnp+MeRVv2vcLqy212vXtCOQg0RAHjEIOJD0a4X5ik3o1/XRMvbyYVsY5cYoHVBU/8hVfWVpd82jFXq0fYdjJGWHT8p6w/1+kknGrRHCE5Qkly1sPAzfOGEx9SBBsUTtKRfWK1O3KCcerEQ/wZO1LOb9O/8YVwYMgmp+4lcFsZMoFD0qLFNehgWoXVZBpDAp3drFvG4yzSkZofOKU4YNgkKF2s4xO67lfSm691RS32aVTtf/9umyXvoBcoQ7pvWcewctLKMTVn8SYdhPyihrgBdA2jrlbPBA5ntN4Y0vySuyft5rTA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Pib6PnOOxZ5D4Eg59dvbOMIN/LveHr2W3zb/FlZU5Ek=;
+ b=BT5ux4+gMoGptcQsbMaxCbZ9EMTeMeVAwZqu5ci66L08aUhQm8lsXZrM0Yw+lpzA9UH6FwX47dK9YkJav+d3wRct6pFuGaaz6RmoUtALsvLVMYifed1WNil/L4+WL39xRDAUxe/5PDlOv4bu9KwxqxUyXLVgzdrIE3G7aCT3EcliDqYSf7+y50CCJABDwKgWYgBA1uhxtIGr0z8hL3yn6MZbVTZDcDGK076o8UAFwg1zMjQvGBpR2qy6CDbQArxezlPPPrh8TTHIavGWPgH6flV5UHyJmTZpr1tbmJDfBIEjtARs+GwjmfCGzIlwc32XAAteKWet5KrjRkx+jYPLeQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=altera.com; dmarc=pass action=none header.from=altera.com;
+ dkim=pass header.d=altera.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=altera.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Pib6PnOOxZ5D4Eg59dvbOMIN/LveHr2W3zb/FlZU5Ek=;
+ b=s+EXdzfLpbQFMXWA1kH5cjajHNkxX8R2oJimgOx8a4lLCaGYCCZ0XdmtYZZIqzhZU0KDkJ23SCcaqP4CK87DoZ2zIiHN22xQ0ONOtAVtVVfoDwazFubyCZKlQzuqz296UdHdL7sRZ/+zo/Cj9TGkDwIaZrPrR7HewuWHI3wXy5vAuWNSeg0IlrIrGyLB6wUyG8j17Yq4KoLV9bCBDVIe0rG2MaMmaF+2gPm7LtGgQeBA85bKwZSKYmmMHBGk3pLOjvMYF74N8sLqJWgtKuh9fuJ3HU/E8yKJZwl8sxTd6F7SF3qp3DuKjuyB1Ky8wxlyUPv5pb7GBcauTLuGdrCqpw==
+Received: from SJ0PR03MB6964.namprd03.prod.outlook.com (2603:10b6:a03:432::18)
+ by CH0PR03MB6132.namprd03.prod.outlook.com (2603:10b6:610:bb::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.11; Thu, 18 Jun
+ 2026 02:27:10 +0000
+Received: from SJ0PR03MB6964.namprd03.prod.outlook.com
+ ([fe80::b965:bfa8:58fb:e775]) by SJ0PR03MB6964.namprd03.prod.outlook.com
+ ([fe80::b965:bfa8:58fb:e775%4]) with mapi id 15.21.0139.011; Thu, 18 Jun 2026
+ 02:27:10 +0000
+From: "Nazle Asmade, Muhammad Nazim Amirul"
+	<muhammad.nazim.amirul.nazle.asmade@altera.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>, Simon Horman <horms@kernel.org>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "andrew@lunn.ch"
+	<andrew@lunn.ch>, "kuba@kernel.org" <kuba@kernel.org>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "faizal.abdul.rahim@linux.intel.com"
+	<faizal.abdul.rahim@linux.intel.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] net: ethtool: mm: Increase FPE verification retry count
+Thread-Topic: [PATCH] net: ethtool: mm: Increase FPE verification retry count
+Thread-Index: AQHc/JgGTDbz08AGuUq7WW8N1IihOrZAx7uAgACFWACAAk2wgA==
+Date: Thu, 18 Jun 2026 02:27:10 +0000
+Message-ID: <52eaf5bb-2bbc-4348-bd77-321e698d326b@altera.com>
+References:
+ <20260615072436.26128-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
+ <20260616071925.GA800687@horms.kernel.org>
+ <20260616151640.qi4bobvcbeyptvgg@skbuf>
+In-Reply-To: <20260616151640.qi4bobvcbeyptvgg@skbuf>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=altera.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ0PR03MB6964:EE_|CH0PR03MB6132:EE_
+x-ms-office365-filtering-correlation-id: 154f6255-93ef-4997-561a-08decce119a0
+x-ms-exchange-atpmessageproperties: SA
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|7416014|23010399003|366016|1800799024|56012099006|11063799006|4143699003|5023799004|18002099003|22082099003|55112099003|38070700021;
+x-microsoft-antispam-message-info:
+ nxH8X8fLsk1eiq/k0jRoT3vaYuAN01YvXFYorDMgfrrqtoQHqKdPRkN+N6KLqPqBdwTbmx2BSuNDZUPEsM1g8/GhhPxCZ7iCQyRzArr+CsVsregdt9X0zMyMDEzJIEBTykb+WcDGw3oa1o8FTPfdMz1zgzQ9yENO0b3CAuSUgZjZytSj+sNMv1tgzMpVC0/7E2+EuSwZDe20GP8ySqDiIuVOPN5ygqPTC2EoqZow/+V6i/QnlAA8c7uxVCJIQi2vNeTRJFK+opV25RQC/F0lU+zjTYR1n98z2XwFKoHVq/RKpixCwVMR8MXV9cw6MraKdw+acYppNOVnfPQVDEbraeYg+tq5rTlK14hFscLcOYy6VkTl/YxaWgQXjx1gI7dW+fgm+OlumHKOzR3zpF5PZSY4rcHqFG3k6/cLatAHkvU/k3cqt1im0XqpzIO7SGp4YQNM7NxctGsNO3XAu8xWgB45sds9Qg8dxE1rt3PrBssE5E20bAkURTc/7eWixo9XF37ri859HtC90iMRIh/a2rh/DZEXAgZa6mUMrd2dH9qJeT1yggvyzyq15AMt+rJEfxUQzFwhHQNS8sl4Cy75PpCEHYUucOLLTwHhzpOQWaPx1Xoa5kwVd8YH6xaXxGN31J5LF93Bzqay+MG+u5wSEUyedB4iyQu6xPxJIPHNQ7QfVwX0Wlj5TAh+xQqjAjJ7+rFIzWnIXXCz4H1LaMITnzpZx6sfTqomqeI601R/1CUjb+lK0ZamVov49TrKH9DS
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR03MB6964.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(366016)(1800799024)(56012099006)(11063799006)(4143699003)(5023799004)(18002099003)(22082099003)(55112099003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 2
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?UnN1Q1E3TTdXMVB1bW9rblBaYitHdzBoeXJrRTBZSzNkRTJobmJzRXduYnEz?=
+ =?utf-8?B?SUtKaUpKdGlsUEdERlNLZWZkSjhRVnVMd000WmlKc3AzcS9KMEg1MEhXOHpX?=
+ =?utf-8?B?aVdLZ2VsVGFsOHpicnRpQzF5S3NzTGgwNGprNm81SkIrVU1sZkp0a1h2bGQ0?=
+ =?utf-8?B?OEJSTm40S3NMSW1uT0dNbW02RG85Q1JLYzJjRWpTSDFVU2RHQnVuSTFNN3RE?=
+ =?utf-8?B?akprVmozNHdXMDlrWjFiTkNwL0JnTUFWSmFKTzlJcmw2SGVsM3BTNXdueENp?=
+ =?utf-8?B?cW5qVzgrYTV2Z0l6V0JSSWRsV2RkMXpaczZnenlxa0lVeGU1OExwK3Q4cHVZ?=
+ =?utf-8?B?dVhpbUdBd0U5UmxYaFBkSGZibjdpeGFjSkxoY051ZG1IWlJHT2JSZTZleWt6?=
+ =?utf-8?B?cmlFcEVUNDB4OCtsMjJzRlY2LzVldzBGSFFoelBqd2VDRFFTWEpVNFVaM2tj?=
+ =?utf-8?B?RERrUFVkTjFMTG1nazAwNXE5OUs3UE1ZU1ppeThmVEx2bFZDVjFJRFArWXNr?=
+ =?utf-8?B?K05DWlpwSUdxRk1rQXdDSndreVEzUmFUZDJpcHYxa2F5b25kb3FXZnB3R0hn?=
+ =?utf-8?B?WVBCcXVrTUVXbHJqaVQ0QmJxSzhCS1Z2TlNxOFhZYmVvV1JxUEY4bno2ZnM4?=
+ =?utf-8?B?YklGRWc0cCtON25tSzI4LytyQTBUaXdLVGpuZWdBWW02SHk4ZjFJVmNRNHha?=
+ =?utf-8?B?Wi9pUkh6cWFMc2VhT3JmdVZqZzF5YmdmZ1d3UHcxSExiMVhmZXVtaGdwSmdF?=
+ =?utf-8?B?VUNEWVVyY1QxeUVJQlFnY2pnR3pjK3ROWUdFRjJVNW5hdnlPRVh3bzY1b0c1?=
+ =?utf-8?B?R3poRkJmTkNGNDNlWlJrd0t0VWw3S0YwVHZxWVFiZjQvV0d2c3orRlB4Z1Rn?=
+ =?utf-8?B?SWh6WGErbDhqblhodDFFcnJQc1Y5RGlxcWJpSk12TExrSW9PUDVHZk94d2Ux?=
+ =?utf-8?B?UVpmRDFNNlNqT1pKNWtKLzZQTi94ZHVMS21uWWhpditaYlpEa1BGaFhySzZX?=
+ =?utf-8?B?c0duVEtpa1lJdmVCdlArVHNFSU5YMGhZWnBkQWpHcmdhYTNYVWh0OFh2NkxV?=
+ =?utf-8?B?SW9PYThncm1abkpEWmtvYVlaNXVWSVRoWWZkeTM2UXQvRVE2bFcrUGxHbjJj?=
+ =?utf-8?B?aUxFTkkvanNidUF5OHFuZXF2bThjdlE4UlZ0Vm5KanNFWlBWeVNPdE5Fd0JI?=
+ =?utf-8?B?Z2VKaWxIRXAvNWNqRGtVRFBZWEZ4US9kWEZ0K0JZbzJ4bzZyeStSbmNOZDhD?=
+ =?utf-8?B?SU80NkNtVlFnVnQvb1ZQZEIwUFRXczliZG4vWkd0aFdZM1R2d2VoMzBwNUVi?=
+ =?utf-8?B?WHIwSTYzbzRzcWRuZHNNN2lmcVlNc1dmZm9ZWWdOVnV5YldQUEJkTkQvbWRY?=
+ =?utf-8?B?ZVI5dzh0Nzc1bGVaUGtsZWZoUG9KZzE2WmgwZXEzSnc0UjQ5K2tTNHpzZXBt?=
+ =?utf-8?B?ZFRJUVpIanVFczlpenFya2gyeEg0SWNkK3JUNnl3emFHZWJMcDZDZWhzdzlF?=
+ =?utf-8?B?ZEVCKzh4TEZKeTdzcm5rY0NSS0pzVTlnc2d4TzVLeWd1S1FkVnJTZGQxVFZ6?=
+ =?utf-8?B?R2lMNXdTU3U3bkhVSGxXOHYvbVMyZFIvS2cyVW8zRmdmckRkOE50dHpXRll5?=
+ =?utf-8?B?MnNuT1FHWWN3RzdLTjhkWldhdDdMQUxVYkplSzV5U0N4LzVzSEExOTlQY1I3?=
+ =?utf-8?B?Yis4OG5DVCtNbmhHSHlKeElhK2RYTmxFRUxQMmN6clJPZ3VEWXF5dGNMdU14?=
+ =?utf-8?B?b0RzbXF4ZktJdjRGN2wrbFFXYjFQM2VMQ3QvaGE4c0VGVHgxSnVwcmRZUy9H?=
+ =?utf-8?B?b0lOZWxYZnhlZnV4QUZ2TXYzWWRoRzBEbmw1NUhXbGlsU1JyUm5FUHZqSC9B?=
+ =?utf-8?B?UHZUY2RodDcwTHE5QWtzcGtWd1grWUFQbDJxNklHeHltMXNvemhZbmZVdTdk?=
+ =?utf-8?B?ekNxNmZvdk51N3lpTGR4UDdoa0tOMzJaSE5UTlFVSCtZeWNUU0ZVdU1oZ1Y5?=
+ =?utf-8?B?SjAyY1BETncrOXF3R1ZMRlJydnI4RStNM1pMYzZqUmVoVTdSL0RWQ2QwU29K?=
+ =?utf-8?B?TFBlc003VHNUZUFGeGhvVjRPalNScUJ6eGtmQVBUeDkzUytKeDF1NHpPeU1r?=
+ =?utf-8?B?OWZxVm9QYmFOVnhqZDUzSzQvd3U2dC9xUVo0RWdBTE9QbkU0Wngzdmp3ZXQ1?=
+ =?utf-8?B?Sm5WalpjYmg4OG1VV3RNblRLblpSaUdCUWI5dzgrTWR4blozUmtoT2s0L1NB?=
+ =?utf-8?B?L3QyVUt2V3B1Y2F0SE1SUkhXTWFOSy9HbWUxZjRrajd5QmxPeHdzWGdUMWtT?=
+ =?utf-8?B?ZjA5SUVFbnZFN0tUOFA2cEtWd1M5YXgyWm0zTE1PQ3FrSHVGM252ZlNacGR0?=
+ =?utf-8?Q?HgwrfpYZr4tRTzt4dRyMh2VkCJYdP0CrHsulhikNWCA9l?=
+x-ms-exchange-antispam-messagedata-1: +8U9tV1rN/xleB/hHxbY4Ot9zaa9a+kQTQA=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <5C1A84911C444A469671369B9260A97B@namprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260617-enic-sriov-v2-admin-channel-v2-v9-7-37f5f5af4c93@cisco.com>
-References: <20260617-enic-sriov-v2-admin-channel-v2-v9-0-37f5f5af4c93@cisco.com>
-In-Reply-To: <20260617-enic-sriov-v2-admin-channel-v2-v9-0-37f5f5af4c93@cisco.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Sesidhar Baddela <sebaddel@cisco.com>, Satish Kharat <satishkh@cisco.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781747628; l=9297;
- i=satishkh@cisco.com; h=from:subject:message-id;
- bh=SVSMY+8jDNt6WYVRlHYL6Xj0aedOBaB0x9FqV8wCDtY=;
- b=Ft0oNegTfmvhxRGvTthpztXWgAzQfmqscON2lDQQwAkg5N+E5yJMTIZwboqLO77LRj83jkHS0
- xiUPuSLo687CVmeAfR3jsHd76AsvaP/oS/emarhZzG8I3gbuAlytUaU
-X-Developer-Key: i=satishkh@cisco.com; a=ed25519;
- pk=4BxbLoCGvHeIMH/PbpiNVx8/2IcTjFvqcr0AD8K6WLY=
-X-Outbound-Client-TLS: ANONYMOUS;unknown [10.25.128.189];TLSv1.3;TLS_AES_256_GCM_SHA384;256
-X-Outbound-SMTP-Client: 10.25.128.189, [10.25.128.189]
-X-Outbound-Node: rcdn-l-core-01.cisco.com
+X-OriginatorOrg: altera.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR03MB6964.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 154f6255-93ef-4997-561a-08decce119a0
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Jun 2026 02:27:10.2293
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: fbd72e03-d4a5-4110-adce-614d51f2077a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 5/D7w1FyuEinvlbuv/upnzyBSRbRISwmdZgHpSBdWfNKhMyEKYFmy+parW5edxL36ya2mJnDQO2pI5Vjbpmfgtn3PvS3AnM9DCO6zZHDEQmTJScB4NUFMRVRPLDQtggQYsuFmBb/8kjxTXOkzw+4VQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR03MB6132
 
-Implement PF-side mailbox message processing for SR-IOV V2
-admin channel communication.
-
-When the PF receives messages from VFs, the dispatch routes
-them to type-specific handlers:
-  - VF_CAPABILITY_REQUEST: reply with protocol version 1
-  - VF_REGISTER_REQUEST: send the register reply, mark the
-    VF registered on success, then send PF_LINK_STATE_NOTIF
-    reflecting the PF's current carrier state
-  - VF_UNREGISTER_REQUEST: mark VF unregistered, send reply
-  - PF_LINK_STATE_ACK: log errors from VF acknowledgment
-
-Per-VF state (struct enic_vf_state) is tracked via enic->vf_state
-which will be allocated when SRIOV V2 is enabled.
-
-Remove the CONFIG_PCI_IOV guard from num_vfs in struct enic. The
-PF handlers reference enic->num_vfs for VF ID bounds checking in
-enic_mbox.c, which is compiled unconditionally. The field must be
-visible regardless of CONFIG_PCI_IOV to avoid build failures.
-
-Add enic_mbox_send_link_state() helper for PF-initiated link
-state notifications, also used later by ndo_set_vf_link_state.
-
-Signed-off-by: Satish Kharat <satishkh@cisco.com>
----
- drivers/net/ethernet/cisco/enic/enic.h      |   7 +-
- drivers/net/ethernet/cisco/enic/enic_mbox.c | 190 +++++++++++++++++++++++++++-
- drivers/net/ethernet/cisco/enic/enic_mbox.h |   1 +
- 3 files changed, 194 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/ethernet/cisco/enic/enic.h b/drivers/net/ethernet/cisco/enic/enic.h
-index 1d6a88d7f8ac..cace8e04e9ce 100644
---- a/drivers/net/ethernet/cisco/enic/enic.h
-+++ b/drivers/net/ethernet/cisco/enic/enic.h
-@@ -256,9 +256,7 @@ struct enic {
- 	struct enic_rx_coal rx_coalesce_setting;
- 	u32 rx_coalesce_usecs;
- 	u32 tx_coalesce_usecs;
--#ifdef CONFIG_PCI_IOV
- 	u16 num_vfs;
--#endif
- 	enum enic_vf_type vf_type;
- 	unsigned int enable_count;
- 	spinlock_t enic_api_lock;
-@@ -309,6 +307,11 @@ struct enic {
- 	/* MBOX protocol state — mbox_lock serializes admin WQ sends */
- 	struct mutex mbox_lock;
- 	u64 mbox_msg_num;
-+
-+	/* PF: per-VF MBOX state, allocated when SRIOV V2 is enabled */
-+	struct enic_vf_state {
-+		bool registered;
-+	} *vf_state;
- };
- 
- static inline struct net_device *vnic_get_netdev(struct vnic_dev *vdev)
-diff --git a/drivers/net/ethernet/cisco/enic/enic_mbox.c b/drivers/net/ethernet/cisco/enic/enic_mbox.c
-index 3709704bee02..b6f05b03ae26 100644
---- a/drivers/net/ethernet/cisco/enic/enic_mbox.c
-+++ b/drivers/net/ethernet/cisco/enic/enic_mbox.c
-@@ -135,10 +135,183 @@ int enic_mbox_send_msg(struct enic *enic, u8 msg_type, u16 dst_vnic_id,
- 	return err;
- }
- 
-+int enic_mbox_send_link_state(struct enic *enic, u16 vf_id, u32 link_state)
-+{
-+	struct enic_mbox_pf_link_state_notif_msg notif = {};
-+
-+	if (!enic->vf_state || vf_id >= enic->num_vfs ||
-+	    !enic->vf_state[vf_id].registered) {
-+		netdev_dbg(enic->netdev,
-+			   "MBOX: skip link state to unregistered VF %u\n",
-+			   vf_id);
-+		return 0;
-+	}
-+
-+	notif.link_state = cpu_to_le32(link_state);
-+	return enic_mbox_send_msg(enic, ENIC_MBOX_PF_LINK_STATE_NOTIF, vf_id,
-+				  &notif, sizeof(notif));
-+}
-+
-+static int enic_mbox_pf_handle_capability(struct enic *enic, void *msg,
-+					  u16 vf_id, u64 msg_num)
-+{
-+	struct enic_mbox_vf_capability_reply_msg reply = {};
-+
-+	reply.reply.ret_major = cpu_to_le16(0);
-+	reply.version = cpu_to_le32(ENIC_MBOX_CAP_VERSION_1);
-+
-+	return enic_mbox_send_msg(enic, ENIC_MBOX_VF_CAPABILITY_REPLY, vf_id,
-+				  &reply, sizeof(reply));
-+}
-+
-+static int enic_mbox_pf_handle_register(struct enic *enic, void *msg,
-+					u16 vf_id, u64 msg_num)
-+{
-+	struct enic_mbox_vf_register_reply_msg reply = {};
-+	u32 link_state;
-+	int err;
-+
-+	if (!enic->vf_state || vf_id >= enic->num_vfs) {
-+		if (net_ratelimit())
-+			netdev_warn(enic->netdev,
-+				    "MBOX: register from invalid VF %u\n",
-+				    vf_id);
-+		return -EINVAL;
-+	}
-+
-+	/* VF re-registering (e.g. guest reboot without clean unregister):
-+	 * mark the previous registration inactive before accepting the new one.
-+	 */
-+	if (enic->vf_state[vf_id].registered) {
-+		netdev_dbg(enic->netdev,
-+			   "MBOX: VF %u re-register, cleaning previous state\n",
-+			   vf_id);
-+		enic->vf_state[vf_id].registered = false;
-+	}
-+
-+	reply.reply.ret_major = cpu_to_le16(0);
-+	err = enic_mbox_send_msg(enic, ENIC_MBOX_VF_REGISTER_REPLY, vf_id,
-+				 &reply, sizeof(reply));
-+	if (err)
-+		return err;
-+
-+	enic->vf_state[vf_id].registered = true;
-+	if (net_ratelimit())
-+		netdev_info(enic->netdev, "VF %u registered via MBOX\n", vf_id);
-+
-+	link_state = netif_carrier_ok(enic->netdev) ?
-+		ENIC_MBOX_LINK_STATE_ENABLE :
-+		ENIC_MBOX_LINK_STATE_DISABLE;
-+	err = enic_mbox_send_link_state(enic, vf_id, link_state);
-+	if (err && net_ratelimit())
-+		netdev_warn(enic->netdev,
-+			    "VF %u: failed to send initial link state: %d\n",
-+			    vf_id, err);
-+	/* Registration succeeded; initial link state notification sent
-+	 * above.  Subsequent link state changes are sent from the PF
-+	 * when enic_link_check() detects carrier changes.
-+	 */
-+	return 0;
-+}
-+
-+static int enic_mbox_pf_handle_unregister(struct enic *enic, void *msg,
-+					  u16 vf_id, u64 msg_num)
-+{
-+	struct enic_mbox_vf_register_reply_msg reply = {};
-+	int err;
-+
-+	if (!enic->vf_state || vf_id >= enic->num_vfs) {
-+		if (net_ratelimit())
-+			netdev_warn(enic->netdev,
-+				    "MBOX: unregister from invalid VF %u\n",
-+				    vf_id);
-+		return -EINVAL;
-+	}
-+
-+	/* VF is unloading; clear local state regardless of whether
-+	 * the reply is successfully delivered to avoid the PF treating
-+	 * a dead VF as still registered.
-+	 */
-+	enic->vf_state[vf_id].registered = false;
-+
-+	reply.reply.ret_major = cpu_to_le16(0);
-+	err = enic_mbox_send_msg(enic, ENIC_MBOX_VF_UNREGISTER_REPLY, vf_id,
-+				 &reply, sizeof(reply));
-+
-+	if (net_ratelimit())
-+		netdev_info(enic->netdev,
-+			    "VF %u unregistered via MBOX\n", vf_id);
-+
-+	return err;
-+}
-+
-+static void enic_mbox_pf_process_msg(struct enic *enic,
-+				     struct enic_mbox_hdr *hdr, void *payload)
-+{
-+	u16 vf_id = le16_to_cpu(hdr->src_vnic_id);
-+	u16 msg_len = le16_to_cpu(hdr->msg_len);
-+	int err = 0;
-+
-+	if (!enic->vf_state) {
-+		netdev_dbg(enic->netdev,
-+			   "MBOX: PF received msg but SRIOV not active\n");
-+		return;
-+	}
-+
-+	if (vf_id >= enic->num_vfs) {
-+		if (net_ratelimit())
-+			netdev_warn(enic->netdev,
-+				    "MBOX: PF received msg from invalid VF %u\n",
-+				    vf_id);
-+		return;
-+	}
-+
-+	switch (hdr->msg_type) {
-+	case ENIC_MBOX_VF_CAPABILITY_REQUEST:
-+		err = enic_mbox_pf_handle_capability(enic, payload, vf_id,
-+						     le64_to_cpu(hdr->msg_num));
-+		break;
-+	case ENIC_MBOX_VF_REGISTER_REQUEST:
-+		err = enic_mbox_pf_handle_register(enic, payload, vf_id,
-+						   le64_to_cpu(hdr->msg_num));
-+		break;
-+	case ENIC_MBOX_VF_UNREGISTER_REQUEST:
-+		err = enic_mbox_pf_handle_unregister(enic, payload, vf_id,
-+						     le64_to_cpu(hdr->msg_num));
-+		break;
-+	case ENIC_MBOX_PF_LINK_STATE_ACK: {
-+		struct enic_mbox_pf_link_state_ack_msg *ack = payload;
-+
-+		if (msg_len < sizeof(*hdr) + sizeof(*ack))
-+			break;
-+		if (le16_to_cpu(ack->ack.ret_major) && net_ratelimit())
-+			netdev_warn(enic->netdev,
-+				    "MBOX: VF %u link state ACK error %u/%u\n",
-+				    vf_id,
-+				    le16_to_cpu(ack->ack.ret_major),
-+				    le16_to_cpu(ack->ack.ret_minor));
-+		break;
-+	}
-+	default:
-+		netdev_dbg(enic->netdev,
-+			   "MBOX: PF unhandled msg type %u from VF %u\n",
-+			   hdr->msg_type, vf_id);
-+		err = -EOPNOTSUPP;
-+		break;
-+	}
-+
-+	if (err && net_ratelimit())
-+		netdev_warn(enic->netdev,
-+			    "MBOX: PF handler for msg type %u from VF %u failed: %d\n",
-+			    hdr->msg_type, vf_id, err);
-+}
-+
- static void enic_mbox_recv_handler(struct enic *enic, void *buf,
- 				   unsigned int len)
- {
- 	struct enic_mbox_hdr *hdr = buf;
-+	void *payload;
-+	u16 msg_len;
- 
- 	if (len < sizeof(*hdr)) {
- 		if (net_ratelimit())
-@@ -156,10 +329,23 @@ static void enic_mbox_recv_handler(struct enic *enic, void *buf,
- 		return;
- 	}
- 
-+	msg_len = le16_to_cpu(hdr->msg_len);
-+	if (msg_len < sizeof(*hdr) || msg_len > len) {
-+		if (net_ratelimit())
-+			netdev_warn(enic->netdev,
-+				    "MBOX: invalid msg_len %u (buf len %u)\n",
-+				    msg_len, len);
-+		return;
-+	}
-+
- 	netdev_dbg(enic->netdev,
- 		   "MBOX recv: type %u from vnic %u len %u\n",
--		   hdr->msg_type, le16_to_cpu(hdr->src_vnic_id),
--		   le16_to_cpu(hdr->msg_len));
-+		   hdr->msg_type, le16_to_cpu(hdr->src_vnic_id), msg_len);
-+
-+	payload = buf + sizeof(*hdr);
-+
-+	if (enic->vf_state)
-+		enic_mbox_pf_process_msg(enic, hdr, payload);
- }
- 
- void enic_mbox_init(struct enic *enic)
-diff --git a/drivers/net/ethernet/cisco/enic/enic_mbox.h b/drivers/net/ethernet/cisco/enic/enic_mbox.h
-index 73fd7f783ee2..f1de67db1273 100644
---- a/drivers/net/ethernet/cisco/enic/enic_mbox.h
-+++ b/drivers/net/ethernet/cisco/enic/enic_mbox.h
-@@ -87,5 +87,6 @@ struct enic;
- void enic_mbox_init(struct enic *enic);
- int enic_mbox_send_msg(struct enic *enic, u8 msg_type, u16 dst_vnic_id,
- 		       void *payload, u16 payload_len);
-+int enic_mbox_send_link_state(struct enic *enic, u16 vf_id, u32 link_state);
- 
- #endif /* _ENIC_MBOX_H_ */
-
--- 
-2.43.0
-
+T24gMTYvNi8yMDI2IDExOjE2IHBtLCBWbGFkaW1pciBPbHRlYW4gd3JvdGU6DQo+IE9uIFR1ZSwg
+SnVuIDE2LCAyMDI2IGF0IDA4OjE5OjI1QU0gKzAxMDAsIFNpbW9uIEhvcm1hbiB3cm90ZToNCj4+
+ICsgVmxhZGltaXINCj4+DQo+PiBPbiBNb24sIEp1biAxNSwgMjAyNiBhdCAxMjoyNDozNkFNIC0w
+NzAwLCBtdWhhbW1hZC5uYXppbS5hbWlydWwubmF6bGUuYXNtYWRlQGFsdGVyYS5jb20gd3JvdGU6
+DQo+Pj4gRnJvbTogTmF6aW0gQW1pcnVsIDxtdWhhbW1hZC5uYXppbS5hbWlydWwubmF6bGUuYXNt
+YWRlQGFsdGVyYS5jb20+DQo+Pj4NCj4+PiBUaGUgY3VycmVudCBGUEUgdmVyaWZpY2F0aW9uIHJl
+dHJ5IGNvdW50IGlzIHNldCB0byAzLiBIb3dldmVyLA0KPj4+IHRoZSBJRUVFIDgwMi4zYnIgc3Rh
+bmRhcmQgZG9lcyBub3Qgc3BlY2lmeSBhIGZpeGVkIHZhbHVlIGZvciB0aGlzLg0KPj4+IEEgcmV0
+cnkgY291bnQgb2YgMyBtYXkgYmUgaW5zdWZmaWNpZW50IHdoZW4gdGhlIHJlbW90ZSBkZXZpY2Ug
+aXMNCj4+PiBzbG93IHRvIHJlc3BvbmQgZHVyaW5nIGxpbmstdXAuIEluY3JlYXNlIHRoZSByZXRy
+eSBjb3VudCB0byAyMCB0bw0KPj4+IGltcHJvdmUgcm9idXN0bmVzcy4NCj4+Pg0KPj4+IFNpZ25l
+ZC1vZmYtYnk6IFJvaGFuIEcgVGhvbWFzIDxyb2hhbi5nLnRob21hc0BhbHRlcmEuY29tPg0KPj4+
+IFNpZ25lZC1vZmYtYnk6IE5hemltIEFtaXJ1bCA8bXVoYW1tYWQubmF6aW0uYW1pcnVsLm5hemxl
+LmFzbWFkZUBhbHRlcmEuY29tPg0KPj4NCj4+IFZsYWRpbWlyLCBJJ20gd29uZGVyaW5nIGlmIHlv
+dSBjb3VsZCB0YWtlIGEgbG9vayBhdCB0aGlzIG9uZS4NCj4gDQo+IElFRUUgODAyLjNiciBpcyBh
+biBvYnNvbGV0ZSBzdGFuZGFyZCwgSSBkb24ndCBldmVuIGhhdmUgYWNjZXNzIHRvIGl0Lg0KPiAN
+Cj4gSUVFRSA4MDIuMy0yMDIyIGlzIHRoZSBjdXJyZW50IG9uZSBmb3IgdGhlIE1BQyBNZXJnZSBs
+YXllci4gQ2xhdXNlDQo+IDk5LjQuNy4yIENvbnN0YW50cyBzdGF0ZXM6DQo+IA0KPiB2ZXJpZnlM
+aW1pdDogdGhlIGludGVnZXIgMywgdGhlIG51bWJlciBvZiB2ZXJpZmljYXRpb24gYXR0ZW1wdHMN
+Cj4gDQo+IEkgZG9uJ3QgaGF2ZSBzb21ldGhpbmcgaW4gcHJpbmNpcGxlIGFnYWluc3QgbWFraW5n
+IHRoZSB2ZXJpZnlMaW1pdA0KPiBjb25maWd1cmFibGUgcGFzdCBJRUVFIDgwMi4zIGZvciBkZWJ1
+Z2dpbmcgcHVycG9zZXMgb3Igbm9uLXN0YW5kYXJkDQo+IGFwcGxpY2F0aW9ucywgYnV0IGtlZXAg
+dGhlIGRlZmF1bHQgdG8gMy4NClRoYW5rcyBTaW1vbiBhbmQgVmxhZGltaXIgZm9yIHlvdXIgcmV2
+aWV3IQ0KDQpCUiwNCk5hemltDQo=
