@@ -1,142 +1,288 @@
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 138702609E3;
-	Thu, 18 Jun 2026 10:44:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781779487; cv=none; b=Im7EJCFqeO+qn4y3Y9a3+HLhygsdc4qblc8ktNoD/oy65/+L/DZn6xJ297gQvyh7h6oxtgCFRLnflEtBylYT8dpn+ND5RpZ0KLMauPsyCuWMzVacjN7+v8qwwdyADFtqXQaOo4TeMZFVoiWYslQt010C6c1OyhqIIwXnTZmNn5k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781779487; c=relaxed/simple;
-	bh=VFXXG5RvzD0D/5bY4Nz0tmnOYc76vgODGIKrssawzzU=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eHnGJJ53/8nYmm401h3gRA04JO9RmjfSj3uqCFyuWZjFmnVN9f6M0X2WVD9ID7LriTzfUoe8mvWAMEGrlCdOmV87ipwqvyv9KIgzaXtTGMookckfrFHFmB2ifzEnU8PCrP3D5E/YA8TDAXXSRdf9I3+MHjtQ+qnzt5wu6ZNyZNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b=OPN5O8Zd; arc=none smtp.client-ip=205.220.178.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B10D3E63BB
+	for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 10:45:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781779534; cv=pass; b=Ht+cp05xm1bs3eWz5lQhbZCxnM4XS5fDk6R/vM5eLrsU5bLY61yyDCh3EQCGp/bdkjA4dxZiuRe/1s5Qw/eEXb+yuSr7lQ6FUXLNvxfmUcaWIO9KmrvscyNjru0t/0DIdquEQw7zo/v0pA0UUdycUgxAv80UCps4EbKGeoBzk+U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781779534; c=relaxed/simple;
+	bh=yeE5VZid+PR+8xO9WKfTDka5xDLbl39UJCqmBBiuLSM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rna5lombEqCuWtkbhxgBzOMYzumrbCf/O/bpGanCZPjcu1Qer+OaZvPpbO3CHGtrgSElxM/D+QoAJ9DAOPbYrEvfJXNH9l0Us02JIY2Jy3WaK+LeeGv2N7mYuoWst+9+r1VovNn58u23GMKVil5J73sQVbAwvIzVlRwZc2TzJFg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DYvfibE6; arc=pass smtp.client-ip=209.85.128.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b="OPN5O8Zd"
-Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65I9qsV13905107;
-	Thu, 18 Jun 2026 10:43:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
-	 h=cc:content-transfer-encoding:content-type:date:from
-	:message-id:mime-version:subject:to; s=PPS06212021; bh=mBlCMtU+Q
-	cj4sYAjPO9TPKSpZBmc5AZXM8mjbjJnoLY=; b=OPN5O8ZdRfwGfJz1C6gMDF7Dd
-	z6M6Asii0CrvDyA0ploMBRX4lDKL1B8101PO/kCkj0NDkeGkLEV/b61UuajkX7tR
-	3GRX6BDoiquCR5UEUh/We0KI23t2mpDA5NiLD5wrjqi65+K0qjWshfWbRuHOEKej
-	MsjXmgiuA4+GghO67MmTElvIEBJeVlH9BTChzFO2uw8ktIn8jTYXPjEEAiXMBLzK
-	30AvXHMshj3fcnBfeykjnVh4SaOWdYzTm3tNb3MtB1DF1g7uorSSJ21vTzAcfWx5
-	KE8C7Sqw99IEku05FM04UTQqmTxlCQrcA/hMtu/xTrmTV6SF2imBWNa8XcNhQ==
-Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [128.224.246.36])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 4euefc2eg3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Thu, 18 Jun 2026 10:43:56 +0000 (GMT)
-Received: from ALA-EXCHNG02.corp.ad.wrs.com (10.11.224.122) by
- ala-exchng01.corp.ad.wrs.com (10.11.224.121) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.61; Thu, 18 Jun 2026 03:43:55 -0700
-Received: from pek-yzhou-d3.wrs.com (10.11.232.110) by
- ALA-EXCHNG02.corp.ad.wrs.com (10.11.224.122) with Microsoft SMTP Server id
- 15.1.2507.61 via Frontend Transport; Thu, 18 Jun 2026 03:43:52 -0700
-From: Yun Zhou <yun.zhou@windriver.com>
-To: <marcin.s.wojtas@gmail.com>, <andrew+netdev@lunn.ch>,
-        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, <maxime.chevallier@bootlin.com>,
-        <bigeasy@linutronix.de>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <yun.zhou@windriver.com>
-Subject: [PATCH v3] net: mvneta: re-enable percpu interrupt on resume
-Date: Thu, 18 Jun 2026 18:43:51 +0800
-Message-ID: <20260618104351.3456161-1-yun.zhou@windriver.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DYvfibE6"
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-7dfe7712572so8107897b3.1
+        for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 03:45:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781779531; cv=none;
+        d=google.com; s=arc-20240605;
+        b=XQdqZ786COPfGynMYcQRd52ghFEpLKKu6FQC9a2QrIsySie1p2yxdeOFtGcQ7gRsTQ
+         ayggvrCkzaCqwfVA5Kza1dLQFAI3Hq/tLkeyZ6ugLwcxmiTLVsRhAyrb4HwdaPd2noEu
+         OhZXYLR/0kjjGLR1+XrsJ4jLnUOakQ7kDWwiqewp1rQJ/s9v0oekLvH00SgUEH6qv4DJ
+         G++IFSBRbTKaxDEYop6wBqM6R5xxhBsmvYM7+T2I1bLGHU++X2EyMY+JcV4RNsTHbSh9
+         Ii1rRmldsoHAhObXsgRM24YOECmXVAKs9+tdoQogzJAsCZaLQqPsEMWryC8JpSX1OAm6
+         fvew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=IAX/QMZ2lNnCR4HEVf+9VfFWBfEVxUbspDlYV1+1z1k=;
+        fh=Vcnvu+RCimF9CDJmMw2RoUhhBbfiYKEV5pTfzR5v6xw=;
+        b=YXuvibKeDklS1LK7lBTewxVNZuJISvhCyw+FrOeG2PD0TQdc28YRCvpuESV7NSaP1u
+         m2pEsj6Yf64CD+imnYt8HoxWdQ8H0ZXCe2rGobtewhw/h/y6XwqBvos/r1tGV74k2bWF
+         fdpfshOVVSMZcnp5Rv9i5V4gRZ7+vEysjfMJikWb1Oa5Z2Jx+SFyIpoD99UklPf1188t
+         wU9rIjM8rwk4utwSwr2UySoPgUGtgXbe4Bn1mm1W+FW6g2LLzqX+4lvU7Zk75+8IL9YG
+         kyxUf5s6A1SGblazVukZkx6vfbntd4z+gsVh/rA8DOaO97gxiVh4M33G6ZzLE+0XIM3l
+         v6tA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781779531; x=1782384331; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IAX/QMZ2lNnCR4HEVf+9VfFWBfEVxUbspDlYV1+1z1k=;
+        b=DYvfibE6iT3k3xxwapGSwjFKAh2mfqmxG+heGaSqRjX6FMW2Pb+vbJcb4+9ALQM0Fo
+         vC1n7S2rJmq1Pji9je9fpoWUzDuukmz5jcNv1Z/200bju5dOj0B3EwBt7XED9LHRiVw9
+         YB49oRBwK20jUDd2ofifnf3lKvhDaOxJbT174SMFCyHOBGHgx/w+T3o9TUB4GtjJl10b
+         fsTYS3iKXbadciPl+Ee6626u75GmGKdTfLPJEY4duXt+TPB0PCifGc+TeQfExSjAk4Ve
+         +tunLmy2LXDglMLwv6OU/DzqPuzJIz9UHPFsZ/ehfJyiaLL+ZTmhOrDX1vf10rHq9yW/
+         XMPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781779531; x=1782384331;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=IAX/QMZ2lNnCR4HEVf+9VfFWBfEVxUbspDlYV1+1z1k=;
+        b=rIy0py67J8TA5fvixNodavw62aabi3KspaAz1xf/0r8ssJmrgonwT586kgdD22jCgW
+         4dfx5o0GC33gYg5rLDtil74hDkToG1BBCo/1TYwGofFaDIESi+uq4YZCMUnb0Rb5pcBg
+         HpgEfYUHVD1+UD5DBuMx+IHhYOrjr0bw75YWJDbzTfCFaCq36LzshvT9cpv/h4hSBCqC
+         kS4fDwOUKNpj51ArLmHGP6h50M1qViwfspI82nmCZtq3QJO3Amm4CiSGUw69z54f7wAo
+         u+l/fm6YHVYzJzp+6uGoaFQRmgrTv2TfHj3luMr9bF0H0/lnws3YpNiEP4bFQSGrw/ga
+         IoJw==
+X-Forwarded-Encrypted: i=1; AFNElJ+fYfxqPevZ5nuQpjC5sJE/D5wCJ/TE9m8sxDpDyCNlMVXhgd7tZaN6n0IVJXqV5iS1d4gfImQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwR/TcOXscsEJZvI8ZnhE41JadCqcagC9bmdFxEsQEIUaIZIwWk
+	LLp+C2FBZcYPkH+QyO4qkoxz3vF6tp7H4qo49yYOqaGyy8CvRYwD7f7xsxnTKP4ylKHqdFKr7/o
+	iLcIA2GyhFMSEgK5FXmoypOkIalog1Lw=
+X-Gm-Gg: AfdE7cmf9uF/QBaaaNn96LE4wBC68anxB453g5XC4qjBa0331ExrWZklChGUlaGDEn2
+	pLbojgZRHSt5TTyGboZi9ZGEkf5iCD6kXF9hlwEa60DcckT4r9spNRkYNK22yZsqnExEjjH1in7
+	mCtNcRplfUmcUMwK39T0ZDqBjX8/bur9NLxvkkZWyicgw3hM3iNd0jqut2z3uHIrd3/romvX+58
+	5P3SqNiq2Czots0NCUaLC+K0b+fRf/3nnn/hQlByS8msfAiBbH3Uet9hH7vlq8aNg+tnM+5ML15
+	yB3PUihS7NBDwcyfSxRwyaMHZI+hz+ALMv5GC5vp
+X-Received: by 2002:a05:690c:b91:b0:7f8:7e6f:f543 with SMTP id
+ 00721157ae682-7ffc86c9549mr29850657b3.49.1781779531112; Thu, 18 Jun 2026
+ 03:45:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE4MDA5OSBTYWx0ZWRfX/eiNkLQzVJN4
- 7jvnUdtYkjzWNXVWGvd9PS237dRFlrSjBrZXH+uOg+HQvA+tb1pTiLEUlFdLrfViPigFUJiHTzI
- qAk/zh84TxaaHYShgiEIC3RuM4SUSA3EFJYcvD5ndD/J00I6bKXw
-X-Proofpoint-GUID: L0D3TEm_vw335OsfdHTkpvX-M0jQoDtl
-X-Proofpoint-ORIG-GUID: L0D3TEm_vw335OsfdHTkpvX-M0jQoDtl
-X-Authority-Analysis: v=2.4 cv=ObGoyBTY c=1 sm=1 tr=0 ts=6a33cbec cx=c_pps
- a=AbJuCvi4Y3V6hpbCNWx0WA==:117 a=AbJuCvi4Y3V6hpbCNWx0WA==:17
- a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=bi6dqmuHe4P4UrxVR6um:22
- a=klDOsUkWDRETUCZYPvoE:22 a=t7CeM3EgAAAA:8 a=IiQtowvc5NyaFes3EFkA:9
- a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE4MDA5OSBTYWx0ZWRfX/v/su5NPtKa2
- 4OVDs5AzbHD4MyzESZis3TiKnsICeGlMrg6TzTNTmy1xs43Xm/5grV7ehPBL+8oa//vnB1oEIre
- 2qmhDIcIYwxqWfbYc/4TBgYJZ2lPgMV+OBd6qh0UTT0FpHHBxmTfCM0/eLWsfR0Ni9Q+j/Ulgi+
- J40/FyESVvBIWUpE81onIM3bzTsYFNZ9auSK7EfY8cpNik1dD6E4oGJc1y0rONI5ef3gUzJR0Ze
- OgrV+KGvSpDgTa+0oD1Zl7f3D4FJ87rZsYjtg+vQ8lOo2+aVyXsQIqdTU+Ty+DnzXRTD3/YcTBv
- ADPbLky2sNXH9qx6Aj6znGLgw0/ZjiLpIiFkCs4ejEMkIoaXrTvUil/erMw/+k1nMx+OXmQJtGJ
- zOTK/pzOsrdSKZKMebz+uLRQFaOaB2uQl9jEWtoD/vl4EuWvEUnj8b9vXL1qCp8MOlbJpLmSMti
- h9Iy8Lig+N/1ZYqmjvQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-18_01,2026-06-17_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 clxscore=1015 adultscore=0 spamscore=0 priorityscore=1501
- impostorscore=0 phishscore=0 lowpriorityscore=0 malwarescore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606180099
+References: <20260617093557.63880-3-sun.jian.kdev@gmail.com>
+ <2dad9b5c184fa101d7cffa1d8f5eea5b5df60f53533d98c68175c9e3ec5ee6ac@mail.kernel.org>
+ <CABFUUZFeh18OjQ6EhjD17ZwQKb1aiVNkYKv-hAkVGrHhPpjE4Q@mail.gmail.com> <ajOv_oOd1zInaW1b@mail.gmail.com>
+In-Reply-To: <ajOv_oOd1zInaW1b@mail.gmail.com>
+From: sun jian <sun.jian.kdev@gmail.com>
+Date: Thu, 18 Jun 2026 18:45:18 +0800
+X-Gm-Features: AVVi8Ceo2RL3_RfBhTUKCmC5sJSFyC9LIcZeW8zb5WpwBtQh_A6J58Lq3pCapyk
+Message-ID: <CABFUUZHCr=4kb7kSaaPGpc4nkyn32i-svD9v7ONF+TYrrQ-xaQ@mail.gmail.com>
+Subject: Re: [PATCH bpf v3 2/2] selftests/bpf: Cover partial copy of
+ non-linear test_run output
+To: Paul Chaignon <paul.chaignon@gmail.com>
+Cc: bot+bpf-ci@kernel.org, bpf@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, ast@kernel.org, 
+	daniel@iogearbox.net, andrii@kernel.org, martin.lau@linux.dev, 
+	eddyz87@gmail.com, memxor@gmail.com, song@kernel.org, yonghong.song@linux.dev, 
+	jolsa@kernel.org, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, shuah@kernel.org, hawk@kernel.org, 
+	john.fastabend@gmail.com, sdf@fomichev.me, toke@redhat.com, 
+	lorenzo@kernel.org, martin.lau@kernel.org, clm@meta.com, 
+	ihor.solodrai@linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Armada XP (non-armada3700), mvneta uses percpu interrupts where
-the ISR (mvneta_percpu_isr) calls disable_percpu_irq() to mask the
-MPIC percpu IRQ, then schedules NAPI. NAPI poll completion calls
-enable_percpu_irq() to unmask.
+On Thu, Jun 18, 2026 at 4:44=E2=80=AFPM Paul Chaignon <paul.chaignon@gmail.=
+com> wrote:
+>
+> On Wed, Jun 17, 2026 at 10:19:52PM +0800, sun jian wrote:
+> > On Wed, Jun 17, 2026 at 6:31=E2=80=AFPM <bot+bpf-ci@kernel.org> wrote:
+> > >
+> > > > diff --git a/tools/testing/selftests/bpf/prog_tests/prog_run_opts.c=
+ b/tools/testing/selftests/bpf/prog_tests/prog_run_opts.c
+> > > > index 01f1d1b6715a..9cc898e6a9f7 100644
+> > > > --- a/tools/testing/selftests/bpf/prog_tests/prog_run_opts.c
+> > > > +++ b/tools/testing/selftests/bpf/prog_tests/prog_run_opts.c
+> > > > @@ -4,6 +4,10 @@
+> > > >
+> > > >  #include "test_pkt_access.skel.h"
+> > > >
+> > > > +#define NONLINEAR_PKT_LEN 9000
+> > > > +#define NONLINEAR_LINEAR_DATA_LEN 64
+> > > > +#define SHORT_OUT_LEN 100
+> > > > +
+> > >
+> > > [ ... ]
+> > >
+> > > > @@ -20,6 +24,69 @@ static void check_run_cnt(int prog_fd, __u64 run=
+_cnt)
+> > > >             "incorrect number of repetitions, want %llu have %llu\n=
+", run_cnt, info.run_cnt);
+> > > >  }
+> > > >
+> > > > +static void init_pkt(__u8 *pkt, size_t len)
+> > > > +{
+> > > > +     size_t i;
+> > > > +
+> > > > +     for (i =3D 0; i < len; i++)
+> > > > +             pkt[i] =3D i & 0xff;
+> > > > +}
+> > >
+> > > A question was raised on v2 about whether pkt_v4 could be reused by
+> > > reducing the linear area to ETH_HLEN, rather than introducing a custo=
+m
+> > > init_pkt() with a 9000-byte stack packet.
+> > >
+> > > Can't we reuse pkt_v4 here by reducing the linear area to ETH_HLEN?
+> > > The v3 still adds init_pkt() and the NONLINEAR_PKT_LEN packet, so thi=
+s
+> > > doesn't seem to have been picked up.
+> > >
+> > > > +
+> > > > +static void test_skb_nonlinear_data_out_partial(struct test_pkt_ac=
+cess *skel)
+> > > > +{
+> > > > +     LIBBPF_OPTS(bpf_test_run_opts, topts);
+> > > > +     __u8 pkt[NONLINEAR_PKT_LEN];
+> > > > +     __u8 out[SHORT_OUT_LEN];
+> > > > +     struct __sk_buff skb =3D {};
+> > > > +     int prog_fd, err;
+> > > > +
+> > > > +     init_pkt(pkt, sizeof(pkt));
+> > > > +
+> > > > +     skb.data_end =3D NONLINEAR_LINEAR_DATA_LEN;
+> > > > +
+> > > > +     topts.data_in =3D pkt;
+> > > > +     topts.data_size_in =3D sizeof(pkt);
+> > > > +     topts.data_out =3D out;
+> > > > +     topts.data_size_out =3D sizeof(out);
+> > > > +     topts.ctx_in =3D &skb;
+> > > > +     topts.ctx_size_in =3D sizeof(skb);
+> > > > +
+> > > > +     prog_fd =3D bpf_program__fd(skel->progs.tc_pass_prog);
+> > >
+> > > [ ... ]
+> > >
+> > > > diff --git a/tools/testing/selftests/bpf/progs/test_pkt_access.c b/=
+tools/testing/selftests/bpf/progs/test_pkt_access.c
+> > > > index bce7173152c6..cd284401eebd 100644
+> > > > --- a/tools/testing/selftests/bpf/progs/test_pkt_access.c
+> > > > +++ b/tools/testing/selftests/bpf/progs/test_pkt_access.c
+> > > > @@ -150,3 +150,15 @@ int test_pkt_access(struct __sk_buff *skb)
+> > > >
+> > > >       return TC_ACT_UNSPEC;
+> > > >  }
+> > > > +
+> > > > +SEC("tc")
+> > > > +int tc_pass_prog(struct __sk_buff *skb)
+> > > > +{
+> > > > +     return TC_ACT_OK;
+> > > > +}
+> > > > +
+> > > > +SEC("xdp.frags")
+> > > > +int xdp_frags_pass_prog(struct xdp_md *ctx)
+> > > > +{
+> > > > +     return XDP_PASS;
+> > > > +}
+> > >
+> > > A related suggestion on v2 was that, once pkt_v4 is reused, the exist=
+ing
+> > > BPF program could be reused instead of adding new pass-through progra=
+ms.
+> > >
+> > > Could tc_pass_prog and xdp_frags_pass_prog be dropped in favour of th=
+e
+> > > existing program? The v3 still adds both of these, so this point also
+> > > seems to be open.
+> > >
+> > >
+> > > ---
+> > > AI reviewed your patch. Please fix the bug or email reply why it's no=
+t a bug.
+> > > See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/R=
+EADME.md
+> > >
+> > > CI run summary: https://github.com/kernel-patches/bpf/actions/runs/27=
+680511802
+> >
+> > Hi,
+> >
+> > Thanks for checking this.
+>
+> Hi Sun Jian,
+>
+> It would help if you could reply inline instead of at the end of the
+> messages, especially when there are multiple comments. See [1] for an
+> explanation of how that works.
+>
+> 1: https://kernelnewbies.org/FirstKernelPatch#Responding_inline
 
-If suspend occurs while NAPI is actively polling (between
-disable_percpu_irq in the ISR and enable_percpu_irq in
-napi_complete_done), the MPIC percpu interrupt remains masked.
-mvneta_stop_dev/mvneta_start_dev do not manage the percpu IRQ
-enable state -- they only control mvneta's own INTR_NEW_MASK register.
+Acknowledged, I will reply inline.
 
-After resume, the MPIC percpu IRQ stays masked permanently: the
-network hardware generates interrupts (INTR_NEW_CAUSE != 0) but the
-CPU never receives them (irq count stops incrementing), causing a
-complete loss of network connectivity.
+>
+> >
+> > I tried reusing pkt_v4 and the existing TC program, but they do not fit
+> > the skb case this test is trying to cover.
+> >
+> > For skb test_run, IPv4/IPv6 inputs with a too-short L3 header in the
+> > linear area are rejected before bpf_test_finish(). With pkt_v4 and a
+> > linear area of ETH_HLEN, the test fails with -EINVAL before reaching th=
+e
+> > partial copy-out path. If the linear area is increased enough to pass t=
+he
+> > IPv4 check, pkt_v4 is too small to both trigger the old
+> > copy_size - frag_size path and verify that the copied prefix spans the
+> > linear data and the first fragment. pkt_v6 has the same issue: after
+> > making the IPv6 header linear, only 20 bytes remain in frags.
+> >
+> > The existing test_pkt_access program has its own packet-access coverage
+> > goals and is not just a pass-through carrier. With such a short linear
+> > area or small packet fixture, it can fail before the test hits the
+> > bpf_test_finish()'s partial copy-out path. A pass-through TC program is
+> > therefore a better fit, because it keeps the test focused on the
+> > bpf_test_finish() copy-out semantics.
+>
+> If we're keeping tc_pass_prog() then can't we use pkt_v4 and get rid of
+> init_pkt?
+>
 
-Fix by calling on_each_cpu(mvneta_percpu_enable) after
-mvneta_start_dev() in the resume path, ensuring the MPIC percpu
-IRQ is always unmasked regardless of the pre-suspend state.
+pkt_v4 is too small to construct a meaningful nonlinear skb with a stable
+linear/frag split while still exercising the partial copy-out boundary in
+bpf_test_finish().
 
-Fixes: 12bb03b436da ("net: mvneta: Handle per-cpu interrupts")
-Signed-off-by: Yun Zhou <yun.zhou@windriver.com>
----
-v3:
-  - Dropped the free_irq/request_irq approach (incorrect root cause).
-  - Instead, call on_each_cpu(mvneta_percpu_enable) in the resume path
-    to ensure the MPIC percpu IRQ is unmasked, matching mvneta_open().
-  - Updated commit message with correct root cause analysis.
+With pkt_v4, we either do not reach a fragmented layout, or lose control ov=
+er
+the linear/frag boundary needed to exercise the regression path.
 
-v2:
-  - Move request_irq before cpuhp registration in resume (matching
-    mvneta_open ordering) so that failure does not leave cpuhp
-    callbacks registered on a non-functional device.
-  - On request_irq failure, call netif_device_detach() to prevent
-    further traffic on the dead interface.
+This test uses a 9000B packet so it does not depend on small-packet
+allocation details. Smaller packets might work depending on allocation
+state, but 9000B reliably gives us a non-linear skb with page frags and a
+stable linear/frag boundary for the copy-out regression.
 
- drivers/net/ethernet/marvell/mvneta.c | 3 +++
- 1 file changed, 3 insertions(+)
+init_pkt() is needed to ensure deterministic byte content across both linea=
+r
+and fragmented regions so that the memcmp-based validation is stable.
 
-diff --git a/drivers/net/ethernet/marvell/mvneta.c b/drivers/net/ethernet/marvell/mvneta.c
-index b4a845f04c05..5ef79e70e319 100644
---- a/drivers/net/ethernet/marvell/mvneta.c
-+++ b/drivers/net/ethernet/marvell/mvneta.c
-@@ -5907,6 +5907,9 @@ static int mvneta_resume(struct device *device)
- 	rtnl_unlock();
- 	mvneta_set_rx_mode(dev);
- 
-+	if (!pp->neta_armada3700)
-+		on_each_cpu(mvneta_percpu_enable, pp, true);
-+
- 	return 0;
- }
- #endif
--- 
-2.43.0
+Thanks,
+Sun Jian
 
+
+> >
+> > For XDP, this object does not have an existing xdp.frags pass-through
+> > program, so the small XDP frags program is needed to cover the other
+> > caller of the shared bpf_test_finish() path.
+> >
+> > Thanks,
+> > Sun Jian
