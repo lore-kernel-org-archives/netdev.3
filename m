@@ -1,127 +1,149 @@
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74B431079B;
-	Thu, 18 Jun 2026 16:08:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05E92E091E
+	for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 16:22:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781798901; cv=none; b=YbT0xHU+lGXLN/9v2zz61bt6xaXraMj1SepNs8iq2StvGSijkuqLPRdd+WU7dTsT0GENh+6/iKA0Y4+Ddya0PxAC4LnbK9f54mxb4Tq4CJbsX0zcUVI67kjOgS1VTZgqcI69CMQhkKemkzM7LnPKKJF4d49eSLuVZwx08r644KY=
+	t=1781799764; cv=none; b=V9ma9hFTKCEvF578ShUoI6qDbxcisXgoUsKY4/N6QY2FhFoigIXeC7Fr6TxZz7eBHu4Nn2R5ltqrxLZZpf/lvb/A5Nm/NpbyJgDr11IKKz2tCj6Znk8PCMPYij8ILYuBrJfSr7+8DQrL3eV3+C86esfjMuJwwovqoJMUnGH2+oI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781798901; c=relaxed/simple;
-	bh=U3qWfoZwH93moURapndx/9QhZN9IoCT8X330pTMepdo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sLqB2n+PCkNexwWi3FyBrjeIWdS6HGrNbtBIrnLQGVvtkypewZWlK79chBZ4LUzMkoqUynPnxyT9IosGOHQHj9Pl9sxBHLD6L8/ONaDiVpewD+9qhfNI7eJf5OfOMVLfT8APrsZ/BGaNRG0DVs7b8VGKN4VMFIQG5G0GuivpTRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=xEJh8oEs; arc=none smtp.client-ip=115.124.30.113
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1781799764; c=relaxed/simple;
+	bh=DeZY7vy0HPv+7TCzuVbQuh8QCWvkxjZ/A7rt97OaWa8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AwH+EIu44YXa77kewhMVjPTPVjghx32AbPSbcFmUBJYq5G5JZDfUnEbbKta4viuxQYZgziEOOzEuoaX291G/zWm6+rLq6LB9jtJtH2ydozvzf5lcHQyLp0xuHl/ILHWO+ELPcgEcxRTlxKEVyOwEm0XJwacDsKtCAMNo8ScHVJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=hWeIyDmh; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=8x/SzGu6; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=AjeSmqS7; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=F6hU66nN; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="xEJh8oEs"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1781798896; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=L0VQtyLFwV0ddYoeCQeOA/TDAT1P2OPF2e8FFINakkM=;
-	b=xEJh8oEs2c6uaaG9mqwOoiwtieSVKg/vMgVmDl5mTtmNROiw2lUMAV5UFa48mGkLFGoY1Aue05+DwrzfqWlCK41vMHzgmg1qKCg+wScS11aMI8oNjl9OpdE6AXi/+me/Cf9KOQJhw07m7wJTay/EOGFCydTDHxBVSl4okaqZiD4=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=dust.li@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0X57TGq3_1781798895;
-Received: from localhost(mailfrom:dust.li@linux.alibaba.com fp:SMTPD_---0X57TGq3_1781798895 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 19 Jun 2026 00:08:15 +0800
-Date: Fri, 19 Jun 2026 00:08:15 +0800
-From: Dust Li <dust.li@linux.alibaba.com>
-To: hexlabsecurity@proton.me, Wenjia Zhang <wenjia@linux.ibm.com>,
-	"D. Wythe" <alibuda@linux.alibaba.com>,
-	Sidraya Jayagond <sidraya@linux.ibm.com>
-Cc: Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Mahanta Jambigi <mjambigi@linux.ibm.com>,
-	Wen Gu <guwen@linux.alibaba.com>, Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org, Ursula Braun <ubraun@linux.ibm.com>,
-	Stefan Raspl <raspl@linux.ibm.com>, linux-s390@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
-	linux-rdma@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
-	Tony Lu <tonylu@linux.alibaba.com>
-Subject: Re: [PATCH v3 3/3] net/smc: bound the send length to the send buffer
- in smc_tx_sendmsg()
-Message-ID: <ajQX7_9xFI9GSaq5@linux.alibaba.com>
-Reply-To: dust.li@linux.alibaba.com
-References: <20260614-b4-disp-edd64be9-v3-0-551fa514257e@proton.me>
- <20260614-b4-disp-edd64be9-v3-3-551fa514257e@proton.me>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="hWeIyDmh";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="8x/SzGu6";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="AjeSmqS7";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="F6hU66nN"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id C5B9E6D3B1;
+	Thu, 18 Jun 2026 16:22:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1781799757; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=N583wkjT9FfAHpnTaqecd0J7emPmTiOyMIfo3A6eenc=;
+	b=hWeIyDmhEra0LYF1jGA4xAnwelv+BLtbz1Gbcdlo47zPA+NYhrzk31qejKyVo9V3weiFPp
+	oQ3pTElXWgrP/JaEeLC29Tfqi5kA63RLxCuVAxYAo041E4axUDO90CoM0HmUXmeUFi3Uy3
+	0DwjflXT0MxwaztgEuOcEWJRJ0AmJDU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1781799757;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=N583wkjT9FfAHpnTaqecd0J7emPmTiOyMIfo3A6eenc=;
+	b=8x/SzGu6Vgm23b82G11Q6UwDefvyS6v2xJstPJQ3G2aRGwzzo1ncOnja4gMLrwQGUawq6s
+	r6985oJLO46W6mBA==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=AjeSmqS7;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=F6hU66nN
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1781799756; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=N583wkjT9FfAHpnTaqecd0J7emPmTiOyMIfo3A6eenc=;
+	b=AjeSmqS7Gy67NjrKgJ4joRncz7GhGh36pFPwSwChdsTo4e6J3DfagAVmTnnwwbZGqxnWZq
+	vJS2EejMhAXJEa7vppgEm9qRi/upuHf2JrL6ah1HpsbRwws/7x9XnhXIZDvkQMW6CvLAsv
+	j8gj5e51lFxu2VabUTCSQrq3a1MHasw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1781799756;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=N583wkjT9FfAHpnTaqecd0J7emPmTiOyMIfo3A6eenc=;
+	b=F6hU66nNn1k3pYoreMi3BslQVf8AXlrhN81BQFlKAovd5tx7atQ7nFlbTquWWkqHCIevUA
+	3GH9DNfmfrejsMAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D5984779A8;
+	Thu, 18 Jun 2026 16:22:35 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 8Hq4MEsbNGqCDgAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Thu, 18 Jun 2026 16:22:35 +0000
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+To: netdev@vger.kernel.org
+Cc: nicolas.dichtel@6wind.com,
+	shemminger@vyatta.com,
+	dforster@brocade.com,
+	gospo@cumulusnetworks.com,
+	ddutt@cumulusnetworks.com,
+	brian.haley@hp.com,
+	horms@kernel.org,
+	pabeni@redhat.com,
+	kuba@kernel.org,
+	edumazet@google.com,
+	davem@davemloft.net,
+	idosch@nvidia.com,
+	dsahern@kernel.org,
+	Fernando Fernandez Mancera <fmancera@suse.de>
+Subject: [PATCH net 0/6] ipv6: fix sysctl error handling and missing notifications
+Date: Thu, 18 Jun 2026 18:22:19 +0200
+Message-ID: <20260618162225.4588-1-fmancera@suse.de>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260614-b4-disp-edd64be9-v3-3-551fa514257e@proton.me>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: C5B9E6D3B1
+X-Spam-Flag: NO
+X-Spam-Score: -3.01
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	URIBL_BLOCKED(0.00)[suse.de:mid,suse.de:dkim,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FROM_EQ_ENVFROM(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:mid,suse.de:dkim];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCVD_COUNT_TWO(0.00)[2];
+	RCVD_TLS_ALL(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
 
-On 2026-06-14 03:23:32, Bryam Vargas via B4 Relay wrote:
->From: Bryam Vargas <hexlabsecurity@proton.me>
->
->On the SMC-D DMB-merge (nocopy) path, smc_cdc_msg_recv_action() advances
->conn->sndbuf_space from the peer's consumer cursor:
->
->	diff_tx = smc_curs_diff(sndbuf_desc->len, &tx_curs_fin,
->				&local_rx_ctrl.cons);
->	atomic_add(diff_tx, &conn->sndbuf_space);
->
->The consumer cursor is wire-controlled and unvalidated, and
->smc_curs_diff()'s differing-wrap branch can return more than
->sndbuf_desc->len, so a forged cursor drives sndbuf_space past the send
->buffer (and across many CDC messages can overflow the signed counter
->negative).  smc_tx_sendmsg() reads it as the available write space and
->performs a wrap-around copy whose second chunk (copylen - first_chunk,
->written at ring offset 0) is never re-bounded to sndbuf_desc->len,
->writing user data past the send buffer -- a heap out-of-bounds write of
->attacker-influenced length and content.
+While working on a different IPv6 patch series I have spotted multiple
+minor bugs around sysctl error handling and notifications. In general,
+they are not serious issues.
 
-Hi Bryam,
+In addition, there is one more issue in forwarding sysctl as it does not
+check for CAP_NET_ADMIN for the namespace. I am keeping that patch out
+of this series and I am aiming it at the net-next tree once it re-opens.
 
-I think this is the same as patch #2.
+Fernando Fernandez Mancera (6):
+  ipv6: fix error handling in disable_ipv6 sysctl
+  ipv6: fix error handling in ignore_routes_with_linkdown sysctl
+  ipv6: fix error handling in forwarding sysctl
+  ipv6: fix error handling in disable_policy sysctl
+  ipv6: reset value and position for proxy_ndp sysctl restart
+  ipv6: fix missing notification for ignore_routes_with_linkdown
 
-Best regards,
-Dust
+ net/ipv6/addrconf.c | 35 +++++++++++++++++++++++++++--------
+ 1 file changed, 27 insertions(+), 8 deletions(-)
 
+-- 
+2.54.0
 
->
->Bound the write space to sndbuf_desc->len where it is consumed, treating
->a negative (sign-overflowed) value as out of range too, so the copy
->length can never exceed the ring.  This enforces the documented
->0 <= sndbuf_space <= sndbuf_desc->len invariant at the producer,
->race-free against the CDC tasklet that advances sndbuf_space.
->
->Fixes: cc0ab806fc52 ("net/smc: adapt cursor update when sndbuf and peer DMB are merged")
->Cc: stable@vger.kernel.org
->Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
->---
-> net/smc/smc_tx.c | 13 +++++++++++++
-> 1 file changed, 13 insertions(+)
->
->diff --git a/net/smc/smc_tx.c b/net/smc/smc_tx.c
->index 3144b4b1fe29..5916f02060fb 100644
->--- a/net/smc/smc_tx.c
->+++ b/net/smc/smc_tx.c
->@@ -233,6 +233,19 @@ int smc_tx_sendmsg(struct smc_sock *smc, struct msghdr *msg, size_t len)
-> 		/* initialize variables for 1st iteration of subsequent loop */
-> 		/* could be just 1 byte, even after smc_tx_wait above */
-> 		writespace = atomic_read(&conn->sndbuf_space);
->+		/* sndbuf_space is advanced from the peer's wire-controlled
->+		 * consumer cursor on the SMC-D DMB-merge path; a forged cursor
->+		 * can inflate it past the send buffer, or overflow the signed
->+		 * accumulator to a negative value across many CDC messages
->+		 * (which a plain "> len" check would miss before the size_t
->+		 * cast below turns it huge).  Bound it to the send buffer in
->+		 * either case so the wrap-around write cannot run past
->+		 * sndbuf_desc->len.  This enforces the documented
->+		 * 0 <= sndbuf_space <= sndbuf_desc->len invariant at the
->+		 * producer, race-free against the CDC tasklet.
->+		 */
->+		if (writespace < 0 || writespace > conn->sndbuf_desc->len)
->+			writespace = conn->sndbuf_desc->len;
-> 		/* not more than what user space asked for */
-> 		copylen = min_t(size_t, send_remaining, writespace);
-> 		/* determine start of sndbuf */
->
->-- 
->2.43.0
->
