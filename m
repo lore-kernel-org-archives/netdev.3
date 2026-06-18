@@ -1,168 +1,77 @@
-Received: from smtp-8faa.mail.infomaniak.ch (smtp-8faa.mail.infomaniak.ch [83.166.143.170])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF6A13DB319
-	for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 09:32:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.166.143.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A3E3DB319;
+	Thu, 18 Jun 2026 09:32:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781775129; cv=none; b=F42HEwdEwRbmidbh3n1N4dUfhlPlIHsvSbhPCkM4U1FrUZD5qtnLzC3umXQGB2ubrIt1GDzgofpe+b9JaUF2gQPnNrQAT+Lfdxc6duQ+OMrz0w+oIFGKrG8RiMIL2pnnkBEEGKpEmWa0ZsPLEj4c5lrVV4RrWm/mHIqkXUJIhWo=
+	t=1781775159; cv=none; b=bRCe9ui1MtRJHWOWXAnFOWWkn5vvLceQPKJ+cj4b5G8HWIjeR+xhBc7xLCOoB7wMbZ5vFr0sFltG7PLZf/D1PR4jlAB79LZom+pTyA4yaM/VEF6iza/ubOlh7bKD2tUGdGrRmfnIRnlUAsGWXFzpU/tLV3Str3eP/8QAe8tCnys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781775129; c=relaxed/simple;
-	bh=yXhezKjx+yVwcCW5dSV5+wzQdX4affVXyHHOblT291E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aq++VA39h9Nd2NFC2X0W+g7bNRtxHh65oM0dMUN/I4F7oyudaWNcqOGd0Povas8fi9CKJaEavOz7zo0LfEjmO+GGWAkXPxssbWfosh/BvkS8wDh/HGYBVwMnacSKM35DT8eyVszwIyngyJUzga7cnLJxy2wJNMSgs3fdg64Qn3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pschenker.ch; spf=pass smtp.mailfrom=pschenker.ch; dkim=pass (1024-bit key) header.d=pschenker.ch header.i=@pschenker.ch header.b=aTgDDw5t; arc=none smtp.client-ip=83.166.143.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pschenker.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pschenker.ch
+	s=arc-20240116; t=1781775159; c=relaxed/simple;
+	bh=uSQDO0PCAJO4gKVbp7oxH3aAC+XDz+Rc8Xd3YIhsr90=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MO0S+Qfq1GsgSjO+5FIklLNoCwuOs5Utb4wHZebZE3tptn+d/u5qkSJvUUlFOEbT29Bcvxz0RvwpyciMbT+Kr7D6G4mhXfF20nLyytQmhPSY/lTKh/wZ5BqkN5M6Ffn+fKuJm2uXkj9SNGaurs0zEhtfSU4XZY/J6cj/bEyeoOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=bEdtXF0/; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=pschenker.ch header.i=@pschenker.ch header.b="aTgDDw5t"
-Received: from smtp-4-0000.mail.infomaniak.ch (unknown [IPv6:2001:1600:7:10::a6b])
-	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4ggwV80p2mzfZ3;
-	Thu, 18 Jun 2026 11:32:00 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pschenker.ch;
-	s=20220412; t=1781775119;
-	bh=afIfWS9qjU1M1kfgfbvSOJ4Gjss3OoSIyUxQqbcy0ow=;
-	h=From:To:Cc:Subject:Date:From;
-	b=aTgDDw5t6//RH1AMUvqKnMBCgHayW51WWLTsIFV27dLlz5s20wlA026e+sHPu6k2C
-	 xMjGfOd5tkglpaL8awoGelbOdoQHNZhgc+hY3YzJ0RSzseiw6uZuC2998i62pbGzrB
-	 f0QE/i0qSt6N4AAzKJwjPKYVcNQY//BUMhOyvIMw=
-Received: from unknown by smtp-4-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4ggwV662lLzjQb;
-	Thu, 18 Jun 2026 11:31:58 +0200 (CEST)
-From: Philippe Schenker <dev@pschenker.ch>
-To: netdev@vger.kernel.org
-Cc: Philippe Schenker <philippe.schenker@impulsing.ch>,
-	Simon Horman <horms@kernel.org>,
-	danishanwar@ti.com,
-	rogerq@kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	stable@vger.kernel.org,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	David Carlier <devnexen@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Kevin Hao <haokexin@gmail.com>,
-	Meghana Malladi <m-malladi@ti.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2] net: ethernet: ti: icssg: guard PA stat lookups
-Date: Thu, 18 Jun 2026 11:30:24 +0200
-Message-ID: <20260618093037.3448858-1-dev@pschenker.ch>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="bEdtXF0/"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=KFgNOFHRT7gMIXe4BXoejHARqTbv7CawbNuZytFwkcg=; b=bEdtXF0/WJsoimzLg61UOJcGk/
+	6ADpiiCywWyzucbuS591wn72+B6HsxValvjoPyrq79V43aQWgasmuqoGwesllX7KMSSnYeeJhOrAA
+	XveL/jFDIvqc9OisWQ6A+43RltQpQBCDMbN15pNFkUJxKzodsipyi8UkRP3dgbt53vpSdg+qbISvD
+	ttzjBNCKl9Ij8xKnfGQyAVlgqQ3v9wv2d+V4AgcEZu4d/AQE5+5qxu4gQDXign62Anm8sJ3j8VpNs
+	TDd6S7e8r1azIZhnBgfSKJyC20ZgTmhAfAsm05j2P/PvtiQhYda9yDKF8GPIYURWEz+db1Cj/QQhW
+	/O2W0u4g==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wa96n-00FIJI-1v;
+	Thu, 18 Jun 2026 09:32:25 +0000
+Date: Thu, 18 Jun 2026 02:32:20 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Satish Kharat <satishkh@cisco.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Sesidhar Baddela <sebaddel@cisco.com>
+Subject: Re: [PATCH net-next v9 01/10] enic: verify firmware supports V2
+ SR-IOV at probe time
+Message-ID: <ajO56uu7WIK_eb6i@gmail.com>
+References: <20260617-enic-sriov-v2-admin-channel-v2-v9-0-37f5f5af4c93@cisco.com>
+ <20260617-enic-sriov-v2-admin-channel-v2-v9-1-37f5f5af4c93@cisco.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Infomaniak-Routing: alpha
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260617-enic-sriov-v2-admin-channel-v2-v9-1-37f5f5af4c93@cisco.com>
+X-Debian-User: leitao
 
-From: Philippe Schenker <philippe.schenker@impulsing.ch>
+On Wed, Jun 17, 2026 at 06:53:24PM -0700, Satish Kharat wrote:
+> During PF probe, query the firmware get-supported-feature interface
+> to verify that the running firmware supports V2 SR-IOV. Firmware
+> version 5.3(4.72) and later report VIC_FEATURE_SRIOV via
+> CMD_GET_SUPP_FEATURE_VER. If the firmware does not support the
+> feature, set vf_type to ENIC_VF_TYPE_NONE and log a warning so the
+> admin knows a firmware upgrade is needed.
+> 
+> VIC_FEATURE_SRIOV is assigned the explicit value 4 to match the
+> firmware ABI.  Slot 3 (firmware's VIC_FEATURE_PTP) is reserved with
+> a comment rather than a placeholder enum entry, since PTP is not
+> used by the upstream driver.
+> 
+> Suggested-by: Breno Leitao <leitao@debian.org>
+> Signed-off-by: Satish Kharat <satishkh@cisco.com>
 
-icssg_ndo_get_stats64() unconditionally calls emac_get_stat_by_name()
-with FW PA stat names regardless of whether the PA stats block is
-present on the hardware.  emac_get_stat_by_name() already guards the
-PA stats lookup with `if (emac->prueth->pa_stats)`; when that pointer
-is NULL the lookup falls through to netdev_err() and returns -EINVAL.
-Because ndo_get_stats64 is polled regularly by the networking stack
-this produces thousands of log entries of the form:
+Reviewed-by: Breno Leitao <leitao@debian.org>
 
-  icssg-prueth icssg1-eth end0: Invalid stats FW_RX_ERROR
-
-A secondary consequence is that the int(-EINVAL) return value is
-implicitly widened to a near-ULLONG_MAX unsigned value when accumulated
-into the __u64 fields of rtnl_link_stats64, silently corrupting the
-rx_errors, rx_dropped and tx_dropped counters reported by `ip -s link`.
-
-Every other PA-aware code path in the driver is already guarded with
-the same `if (emac->prueth->pa_stats)` check.  Apply the same guard
-here.
-
-Fixes: 0d15a26b247d ("net: ti: icssg-prueth: Add ICSSG FW Stats")
-Signed-off-by: Philippe Schenker <philippe.schenker@impulsing.ch>
-Reviewed-by: Simon Horman <horms@kernel.org>
-
-Cc: danishanwar@ti.com
-Cc: rogerq@kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: stable@vger.kernel.org
-
----
-
-Changes in v2:
-- Removed newline between Fixes tag and Signed-off-by
-- Use return in if statement to guard so we get rid
-  of the 80 char warnings.
-- Added Simon's Reviewed-by. Thanks!
-
- drivers/net/ethernet/ti/icssg/icssg_common.c | 49 +++++++++++---------
- 1 file changed, 28 insertions(+), 21 deletions(-)
-
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_common.c b/drivers/net/ethernet/ti/icssg/icssg_common.c
-index a28a608f9bf4..d9af6419e032 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_common.c
-+++ b/drivers/net/ethernet/ti/icssg/icssg_common.c
-@@ -1628,28 +1628,35 @@ void icssg_ndo_get_stats64(struct net_device *ndev,
- 	stats->rx_over_errors = emac_get_stat_by_name(emac, "rx_over_errors");
- 	stats->multicast      = emac_get_stat_by_name(emac, "rx_multicast_frames");
- 
--	stats->rx_errors  = ndev->stats.rx_errors +
--			    emac_get_stat_by_name(emac, "FW_RX_ERROR") +
--			    emac_get_stat_by_name(emac, "FW_RX_EOF_SHORT_FRMERR") +
--			    emac_get_stat_by_name(emac, "FW_RX_B0_DROP_EARLY_EOF") +
--			    emac_get_stat_by_name(emac, "FW_RX_EXP_FRAG_Q_DROP") +
--			    emac_get_stat_by_name(emac, "FW_RX_FIFO_OVERRUN");
--	stats->rx_dropped = ndev->stats.rx_dropped +
--			    emac_get_stat_by_name(emac, "FW_DROPPED_PKT") +
--			    emac_get_stat_by_name(emac, "FW_INF_PORT_DISABLED") +
--			    emac_get_stat_by_name(emac, "FW_INF_SAV") +
--			    emac_get_stat_by_name(emac, "FW_INF_SA_DL") +
--			    emac_get_stat_by_name(emac, "FW_INF_PORT_BLOCKED") +
--			    emac_get_stat_by_name(emac, "FW_INF_DROP_TAGGED") +
--			    emac_get_stat_by_name(emac, "FW_INF_DROP_PRIOTAGGED") +
--			    emac_get_stat_by_name(emac, "FW_INF_DROP_NOTAG") +
--			    emac_get_stat_by_name(emac, "FW_INF_DROP_NOTMEMBER");
-+	stats->rx_errors  = ndev->stats.rx_errors;
-+	stats->rx_dropped = ndev->stats.rx_dropped;
- 	stats->tx_errors  = ndev->stats.tx_errors;
--	stats->tx_dropped = ndev->stats.tx_dropped +
--			    emac_get_stat_by_name(emac, "FW_RTU_PKT_DROP") +
--			    emac_get_stat_by_name(emac, "FW_TX_DROPPED_PACKET") +
--			    emac_get_stat_by_name(emac, "FW_TX_TS_DROPPED_PACKET") +
--			    emac_get_stat_by_name(emac, "FW_TX_JUMBO_FRM_CUTOFF");
-+	stats->tx_dropped = ndev->stats.tx_dropped;
-+
-+	if (!emac->prueth->pa_stats)
-+		return;
-+
-+	stats->rx_errors  +=
-+			emac_get_stat_by_name(emac, "FW_RX_ERROR") +
-+			emac_get_stat_by_name(emac, "FW_RX_EOF_SHORT_FRMERR") +
-+			emac_get_stat_by_name(emac, "FW_RX_B0_DROP_EARLY_EOF") +
-+			emac_get_stat_by_name(emac, "FW_RX_EXP_FRAG_Q_DROP") +
-+			emac_get_stat_by_name(emac, "FW_RX_FIFO_OVERRUN");
-+	stats->rx_dropped +=
-+			emac_get_stat_by_name(emac, "FW_DROPPED_PKT") +
-+			emac_get_stat_by_name(emac, "FW_INF_PORT_DISABLED") +
-+			emac_get_stat_by_name(emac, "FW_INF_SAV") +
-+			emac_get_stat_by_name(emac, "FW_INF_SA_DL") +
-+			emac_get_stat_by_name(emac, "FW_INF_PORT_BLOCKED") +
-+			emac_get_stat_by_name(emac, "FW_INF_DROP_TAGGED") +
-+			emac_get_stat_by_name(emac, "FW_INF_DROP_PRIOTAGGED") +
-+			emac_get_stat_by_name(emac, "FW_INF_DROP_NOTAG") +
-+			emac_get_stat_by_name(emac, "FW_INF_DROP_NOTMEMBER");
-+	stats->tx_dropped +=
-+			emac_get_stat_by_name(emac, "FW_RTU_PKT_DROP") +
-+			emac_get_stat_by_name(emac, "FW_TX_DROPPED_PACKET") +
-+			emac_get_stat_by_name(emac, "FW_TX_TS_DROPPED_PACKET") +
-+			emac_get_stat_by_name(emac, "FW_TX_JUMBO_FRM_CUTOFF");
- }
- EXPORT_SYMBOL_GPL(icssg_ndo_get_stats64);
- 
--- 
-2.54.0
-
-base-commit: 8cd9520d35a6c38db6567e97dd93b1f11f185dc6
-branch: fix-icssg_common-pa-stats-errors__master-7-1
+FWIW: net-next is closed now.
+https://lore.kernel.org/all/20260615085310.014e4e31@kernel.org/
