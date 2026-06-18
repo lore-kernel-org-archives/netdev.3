@@ -1,110 +1,288 @@
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4257E3BBFCF
-	for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 07:53:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781769226; cv=none; b=JNPbrTaU3qKZUff55kqtgaI3QkhZ5AriLhcaHloCj4PNbs59DLZam9n+MWHzG3QzIGGZJVpw1C92MWXseBxZ3BWQhyltvAzgCu/QhND3+GLoDfu/sBkrhNXa7ChUd4uyKRLCjYEnx8syorvXzUv+7/YKG1H6mq2GaXds0SciHT4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781769226; c=relaxed/simple;
-	bh=4Vq75HnajPwjZT+E5ilkdim8fezO3/kV2H48M9+bCAk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a4ekrxEFGHJ3l2wjPsg94EDGRNk3McbytVxHPTDTFz1cSQKPmr/ckMkpubDx/+8SbuU9pNxV2cJ2+BwRdxuwJ1ch78VRo03DvPk/XcSNm8VKEtPRi+pyVx0+Qb+wAqgocMaS78v2IJ8n2oKejlcGavR6yLq+2LDw4pDXcWHSNxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Ds97PlqO; arc=none smtp.client-ip=91.218.175.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99543C942B;
+	Thu, 18 Jun 2026 07:55:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781769323; cv=fail; b=LQ6md0xRIyAeBbAIEUMLs/lNEWJQmlFNg9uiG7Q4AC7cdfzMcGeCfy5TQyanyDfNdeoMOoizcdBpe7v5EZUidq/HU46MRJimuiIB0LGuoSSr1uUs0MeVCgsbOcGWw7gAPiUscIld376SD0A22L7PkmTK37idQxvTc7Oo9Z9oDW0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781769323; c=relaxed/simple;
+	bh=MZLa+JGEw7Tka2OYrrM8qWY+UWoE27zzd2+nZW3WNPM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=doCf/G5Jf918ChJukd7M04OnNrCfaEkvwBiJKwLgUA01oPwwn/nv9KeWpLSVMiddHxbeVv9zRI3nXd5n55/d7ba1zEKepK/ZyHOKC8t6H1prrja7OAhwHP3QNxwE4yQwjxwEvhohooeBMoixGFkaFhSXI/PB06PXUvmB7t88BWk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nKNqBKr/; arc=fail smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Ds97PlqO"
-Message-ID: <7a0b9050-2f46-4beb-85e3-2361dcf57068@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781769212;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HaUWfID3UMJ27+hUZRVu3hLTs/JiBXlp4fSXsq2lxz4=;
-	b=Ds97PlqORj3GIFXKFcfCjghuRnP20n1v9sjJqXWzEbej0TSkzYJsQcY7LGzZHrpyZS6Xqw
-	4+OmlpyG7pvOoWAE4uM08aE/SVToEiubVXRfgpuPOzlfeRpwLXJhUBgINLlMWMRVLr0LrN
-	lYBYmeg9R+qnK03xl76ewHKd15k1e5g=
-Date: Thu, 18 Jun 2026 15:53:01 +0800
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nKNqBKr/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781769322; x=1813305322;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=MZLa+JGEw7Tka2OYrrM8qWY+UWoE27zzd2+nZW3WNPM=;
+  b=nKNqBKr/+kyp2F/pGFHj86HaQQ4nGw5aN6fDDNaGTX5CbamXXIP2h6A0
+   msmCFvs0xhGWprXVXN0NjAQYngMOdQefOK8T/5qkBTJ+7GEKMDA4qrAOp
+   su5MXLf8WvhHmQDsA28ZdFUHuCtax2R5KPrwB3Qd6LV1ubyQ+RGXFvWRX
+   qjm6Jkx2pRJvVXsuycJdVuBubwqjKuQQ94WlqxTiJJX4fTuGsBpzXrW4y
+   O4Cor7ifSzHVuroAYgO78vL5Xzl5Rs2sak7RpqTktewUL6vmHfq5ybyXP
+   NjWNO9c/Xx8sGNIMR+hDjbETK0bQ/FTtlcWMj62/fIonGpW+E4DYopPD1
+   Q==;
+X-CSE-ConnectionGUID: 20cWwZ9QR2a7Il5/taZ/ng==
+X-CSE-MsgGUID: nPvhosyNQOysS325uOutVg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11820"; a="105396519"
+X-IronPort-AV: E=Sophos;i="6.24,211,1774335600"; 
+   d="scan'208";a="105396519"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2026 00:55:22 -0700
+X-CSE-ConnectionGUID: fF5Ku70PQSO6KVZskz/N4Q==
+X-CSE-MsgGUID: em+HDkTVSluyuHZyu/Clpw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,211,1774335600"; 
+   d="scan'208";a="247151169"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2026 00:55:22 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 18 Jun 2026 00:55:21 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Thu, 18 Jun 2026 00:55:21 -0700
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.32)
+ by edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 18 Jun 2026 00:55:20 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FGOQYe62X7Sbiiiaf31+WpxJaagFZzIXQVCnscPIOTEmEyGv6gg9EO0n/7r/slDZGb8/5iA30xddimioyKh7zjl/CQ97tkmepyosEMfBAsf5a0AxxAx10SRW2G9jRi6knaBnJoBO1j83wU/tytTHVxcikuJPz9be2o6z+KbZk6lgW44GNLwecBCjtoP7sSddTvgJfHMNSgIIci0NearyD+dNwGRM9bI7/1TX/djoVxpWOPvV5QVdwmf4IiU38jEmvUG1KBtDgL5YaWwmn05nkI2GmGfxb/yzuyBX6ZCuVYKNn2LZzkDbp5qA4YN4ZZ8WPqf7xtyKnxx6BJS8V0YRyw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=c93bV5Ed2hZJLTorjnJbgQ5rXC8LYkW3LnjEO+0qg8I=;
+ b=Ar0x/Dvj3DasHYyTBftKqOZZaUNH9O6wN4tVM3yAdENPlYgJdziIk5uTadqh917S/RUK1Iqyc+DH/R40n5hrQ+AtB3EYB8ijZonaudX/6/on1+nbfyfgWIFilaqBT0bUJfVHc3iBdCPbQbmQx4M0GO5T7VU/Ds9G8UEBbqBovqX6OJ6hhKq9NQViRSFqWeqYpYGNHpUMPdhZM3N2izicW9O1OHHPgg2WgEvrWZVlll0xsUYNwmMU64u3o+boc3qRPT9GXncEMmVfW0UHc44U8HkvG638xaJ+S9W0Es2H4hSpTF7ygrPqKG8M4wF4Qy6BYsLZYopmHDUmd4ZHd3kWiA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA3PR11MB8986.namprd11.prod.outlook.com (2603:10b6:208:577::21)
+ by SA1PR11MB8351.namprd11.prod.outlook.com (2603:10b6:806:384::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.11; Thu, 18 Jun
+ 2026 07:55:17 +0000
+Received: from IA3PR11MB8986.namprd11.prod.outlook.com
+ ([fe80::e6f0:6afb:6ef9:ab5c]) by IA3PR11MB8986.namprd11.prod.outlook.com
+ ([fe80::e6f0:6afb:6ef9:ab5c%6]) with mapi id 15.21.0139.011; Thu, 18 Jun 2026
+ 07:55:17 +0000
+From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
+To: "kao, acelan" <acelan.kao@canonical.com>, "Nguyen, Anthony L"
+	<anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>
+CC: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [Intel-wired-lan] [PATCH 1/2] igc: Wait for MAC passthrough after
+ reset
+Thread-Topic: [Intel-wired-lan] [PATCH 1/2] igc: Wait for MAC passthrough
+ after reset
+Thread-Index: AQHc/vTUlEkOP48iDECS1E/JP5nT7bZD8Vzg
+Date: Thu, 18 Jun 2026 07:55:17 +0000
+Message-ID: <IA3PR11MB8986B77F49DF672178FEE4BCE5E32@IA3PR11MB8986.namprd11.prod.outlook.com>
+References: <20260618073324.1843310-1-acelan.kao@canonical.com>
+In-Reply-To: <20260618073324.1843310-1-acelan.kao@canonical.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA3PR11MB8986:EE_|SA1PR11MB8351:EE_
+x-ms-office365-filtering-correlation-id: caa66b2b-ed27-4b89-242b-08decd0eefd9
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|23010399003|366016|376014|1800799024|11063799006|56012099006|5023799004|6133799003|18002099003|22082099003|38070700021;
+x-microsoft-antispam-message-info: BC0jvGF7iroZW4GX7cE65mqUC6KTk3ks5yL1juP7/5Dk09Foo108Clj0Adzl7UcGRynI8cxQp/gV2/bDyWLikxXlWO7Znq4DvQ4Sc1LiCF3fUu0/AgeppbVg2PnUGpdMVH72+OQQ9ddMUDOcajz1g6YS52O0+AxgJlDOLz9PK+vuDUcIuyNUqOWYloslZhIh8kjZYvtN+LmeJejPJ35lcF+4LqmGCCLwXnCDFUCpHpzJD5LzYdn2UJ3qoAF2PxgoriUk9utUKQDW6cSVi16H14FRKHKs12RSc8W5wDhwj6qldZS/FQgQsaeUUiXiESCYo4uKcCPFNkNhLFgpKA00YTvlBLlGDFfB21t2g+5XNbndv4FbxwxsvD99UV2WEQsX0CyDJkGwPQqCUQDwsyKDd94Jal943EXWIjekDPGwfbvZNM49g2fMP0aI8Rq5Z82/nPfN52F+wyvFdXcGnPu4gWUf0+vIlED1V7jpQaMObXSYr7KnQl/zUegVDJwERIWC3poLY5Vmr4ZPmmhoXnJD4DKiWtNgwSFo562PG1l0KAle9CtzS7GbCmN3tAHb/hpJBdvOe69vshO7GXHS37pU2Yj6AK9YtgTU4uh7z9IhdZ+Qga8ESQqr2ML5JBBz7XOEzGdTD9VSBpXXtfvbfx8C3UqTsY0RtuwggA5NYq36JW8qy79r45chIc/J+nPKlSBjwYmop+D45Erj9XzP2VA39I4WYsrTEC2cnxjjm+hEL26n0aS+larM9aUN6gibWUOM
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8986.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(376014)(1800799024)(11063799006)(56012099006)(5023799004)(6133799003)(18002099003)(22082099003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?MrhVX7cZ+F34HmVahclzBwe2odEF9a7OoSoM2+loeEzUlIx/e5g4G8W3+6Wz?=
+ =?us-ascii?Q?MEFSXTWxDmi6T4/1dd2Oqwd4H8UpBYuVQqoG6HQmFmHh0+NQshpx5/UaqVC7?=
+ =?us-ascii?Q?cGHbj6t+8zRz6yYemUw+1xkR9cwh9Wg+SaUyP1LNF2b3h56UnIABzdt8NB57?=
+ =?us-ascii?Q?cXJJ5CMaqz60dNmtqTRy30LsfX85PjUKyumgtEQUYWSMxIe0S4HMQgGHSGBc?=
+ =?us-ascii?Q?h7VYUxilzLQKBoiG8Q6Hhco5Bg2tYx5unXEpmT/6ATvTopjJ3dGHodzxOOzo?=
+ =?us-ascii?Q?NgOtGBi25s7B3lQWq0lbujd6SIHC4O5CMfSiowPrN1mN7IH0x0vUkD44PyhH?=
+ =?us-ascii?Q?0hHvBr2lUhWXDUvoA00TjGALfhOYcLBz/h50e2m5Y7sqmUoa0G3j9yNpAk/r?=
+ =?us-ascii?Q?7tb+SxnUNSfTd3pBr/h7fJhEf6g13ukzAR+BhUK8DHx2HkTvJTkCAU/pXuBP?=
+ =?us-ascii?Q?+DzTVR3Wubk5xw1nRKkKkdXKSA0R5jwyaVSYt8UFWDBpI2gpb9gg6DIoHf70?=
+ =?us-ascii?Q?/uLuMK1b4peVzW9ZbRVm//LVXmR46IwG1TTRceJj0TkHdDlWEwFkb+HqmB/7?=
+ =?us-ascii?Q?MzDQfux/Eik/22YzU9WNoRMag5Fu7BXHo/HXzMapEmURjoK8h7GTCjoS061O?=
+ =?us-ascii?Q?yAZtsaUCJFNjKdZ6BNoPI4sfhY0WQzVOvxbnMIKW3Uj7FcKiGJ1DgcBD0RZh?=
+ =?us-ascii?Q?yvm6vt4ILOVr5WAvRlw9jA5Op/OlN3EIOj9s2qgeDwRIHsxWgKXezFxGK6oL?=
+ =?us-ascii?Q?8M9vV+GSFmQ4MUSgq2kpD0n9qHVikYElUMySCgUBFfDR3Iim2ipB6pVDsk3Y?=
+ =?us-ascii?Q?8SD7b4QnKC1FqaO0KmeE4N8rHxbIa1Zhpd7saaeu8FZnBfxYGjj4YmMZU/hJ?=
+ =?us-ascii?Q?WtjXiM6JeQ2a48Wnzni7Zv8wWcPIZCK6yZYtVy6NjsneOfdahDUg8FmswbP2?=
+ =?us-ascii?Q?b1LjgXON7rRQqmYg1JzUOK4qNm7adc1zZXkiBPRM0rnLLNAfggrqPF7cUm10?=
+ =?us-ascii?Q?IPFQdYDMxvv0Uxl2/yVTlD3BLOZxN3QvMhfkBT7i3DogCC3k0MOIJ3AlQyl2?=
+ =?us-ascii?Q?e7Ip5Dh21IdtvllbSwY7lJtk1GtEcU+GkJp7Wwr34Tsf+PhlhDxjLbjxr0FF?=
+ =?us-ascii?Q?+c/0bzmOeZ7HEU3cGNW3tuTVrup+XwnSm7HIAwRkCgrs3CQ/5sChULAjXtpc?=
+ =?us-ascii?Q?3PGcJ7RKLGo39mk3VDHr6UY61fkD0z/5D8IFPydqftHC+tSJ2VeZfG6wOP11?=
+ =?us-ascii?Q?Oy85EWVoPsyRS9CCXNOD4x0n0YT+TQxGmWlsG5ZrO3w6IZ3R1SDBjGX2P3nA?=
+ =?us-ascii?Q?xWORxFnkn+bDNsVuOaz9Zp2jNNGkK6usO/k9tDwQlK8lyoFUuhQSPBAjwp+R?=
+ =?us-ascii?Q?NeOs9UCu12aE/CJu3ZUrtONLxJjrcVvLgrQXdPxpp9W335Hg7gEFyBOCFjMn?=
+ =?us-ascii?Q?/bUAqdP9n+EjbqkKIApHGI/iPiEu8naXJgea/xf29p5Sk9APyScLQH/GQVIq?=
+ =?us-ascii?Q?yfTkyyAXpJ+nQPljbrH5sl9zSqTFVG57uNRl4sw8qVgNOhIjXeXUWK2kiwpW?=
+ =?us-ascii?Q?PbDG3R8T0Szl7BDQCXqyWQdXxRXpGDXgphX49DFDGXjw+9Fso52mwxm9k+7n?=
+ =?us-ascii?Q?/Ug4IY/VQcfSIrOhCtPHZF/U3cnwuyOZ5pW/m9509wbn4nhEW35VRDxHmiH6?=
+ =?us-ascii?Q?6nMFZvwlx4UxMDjO7ukkSKyCoDDGnW9k/1BaTnGvSacvKOZOF0Cb1TR6sCGc?=
+ =?us-ascii?Q?az8katoJIfnBDGff26t6l9PdOoJqPS4=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [BUG REPORT] KCSAN: data-race in __ip6_datagram_connect /
- udpv6_sendmsg
-To: xietangxin <xietangxin@yeah.net>, netdev@vger.kernel.org,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-Cc: horms@kernel.org, kuniyu@google.com, willemb@google.com,
- linux-kernel@vger.kernel.org
-References: <c953e09f-9bd5-43c8-b2e4-7305bb435229@yeah.net>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <c953e09f-9bd5-43c8-b2e4-7305bb435229@yeah.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+X-Exchange-RoutingPolicyChecked: nqhn0BJ7vggreIzaLUSX0cnAdGaw0PqHtlO5mZevERk2cboV7rcAFyhpf/JEeWghZc2SfXOoYfdEnj6SABvbEjVTCad1UjzkJWNXXBFS+xVsar83s+jP5JS9Rlz3JGgHMd6v5wULlUly6w5z89dKd9YMZWL1zPGNA+EbPEvs3iLjuP6/iLQIs9CO+htwO2kIgFrSxnNfnomsQbMmVfblrsHssR6kQgTDaS3ZXFKoDJ2XldXrIe4/n250M9JDIqYDHkH8o6E1iv7pNSBDF+QB9aFMgECDwujsjZwsKRs6vUjhfnaaRPZnEF9eDYmraTflqfqJ7LAQEUylupkWJ9ymaw==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8986.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: caa66b2b-ed27-4b89-242b-08decd0eefd9
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Jun 2026 07:55:17.0282
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Rpb9RNEv22dWsSSXY89KOEJwGsuz50NenGs5YKnXleTgwBD/HH+WLLMxa0/81H3tQgD9Zey0UKWZ9MhHdFhWJl0/xp92h448PZO3+nE/rxM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8351
+X-OriginatorOrg: intel.com
 
 
-On 6/18/26 3:28 PM, xietangxin wrote:
-> Hi all,
->
-> We detected a data-race with syzkaller on master branch (commit 95e56f0f293e).
->
-> The data-race occurs on `sk->sk_v6_daddr`. When a UDP socket is already in
-> the ESTABLISHED state, calling sendmsg() with read `sk->sk_v6_daddr`.
-> Concurrently, another thread call connect() on the same UDP socket to update
-> the remote address, which writes to `sk->sk_v6_daddr`.
->
-> Should we implement READ_ONCE/WRITE_ONCE helpers for `sk->sk_v6_daddr`
-> to prevent torn reads? Or acquire the socket lock inside udpv6_sendmsg()
-> to serialize with connect()?
->
-> # KCSAN Report
-> BUG: KCSAN: data-race in __ip6_datagram_connect / udpv6_sendmsg
-> read to 0xffff0000084dbc38 of 8 bytes by task 16916 on cpu 2:
->   udpv6_sendmsg+0x1264/0x1a20 (/include/net/ipv6.h:593 net/ipv6/udp.c:1579)
->   inet6_sendmsg+0x80/0xc0
->   __sock_sendmsg+0xb0/0x138
->   ____sys_sendmsg+0x41c/0x4f8
->   ___sys_sendmsg+0xcc/0x150
->   __sys_sendmsg+0xe8/0x190
->   __arm64_sys_sendmsg+0x58/0x78
->   invoke_syscall+0x84/0x218
->   el0_svc_common.constprop.0+0x1a4/0x1f8
->   do_el0_svc+0x3c/0x58
->   el0_svc+0x38/0x100
->   el0t_64_sync_handler+0xa0/0xe8
->   el0t_64_sync+0x190/0x198
->
-> write to 0xffff0000084dbc38 of 16 bytes by task 16901 on cpu 1:
->   __ip6_datagram_connect+0x348/0x888 (/net/ipv6/datagram.c:247)
->   udpv6_connect+0x48/0x178
->   inet_dgram_connect+0xe0/0x1e0
->   __sys_connect_file+0xd4/0x128
->   __sys_connect+0xf0/0x130
->   __arm64_sys_connect+0x54/0x78
->   invoke_syscall+0x84/0x218
->   el0_svc_common.constprop.0+0x1a4/0x1f8
->   do_el0_svc+0x3c/0x58
->   el0_svc+0x38/0x100
->   el0t_64_sync_handler+0xa0/0xe8
->   el0t_64_sync+0x190/0x198
->
-> # Syzkaller Reproducer
-> r0 = bpf$PROG_LOAD(0x5, &(0x7f00000001c0)={0x6, 0x4, &(0x7f0000000100)=ANY=[@ANYBLOB="18000000000000000000000000000000070000000200000095"], &(0x7f0000000040)='GPL\x00', 0x0, 0x0, 0x0, 0x0, 0x9, '\x00', 0x0, @xdp=0x25, 0xffffffffffffffff, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x3}, 0x94)
-> bpf$BPF_PROG_TEST_RUN(0xa, &(0x7f00000002c0)={r0, 0x0, 0xe, 0x0, &(0x7f00000005c0)="d9d96e34a80e31f03a049a9e0000", 0x0, 0xb4, 0x0, 0x0, 0x0, 0x0, 0x0, 0x2, 0x0, 0x39}, 0x50) (async, rerun: 32)
-> r1 = socket$inet6(0xa, 0x2, 0x0) (rerun: 32)
-> connect$inet6(r1, &(0x7f0000000040)={0xa, 0x4e23, 0x100200a, @loopback, 0x7f}, 0x1c) (async, rerun: 32)
-> sendmsg$inet6(r1, &(0x7f00000002c0)={&(0x7f0000000140)={0xa, 0x4e22, 0x4, @remote, 0x2}, 0x1c, 0x0}, 0x4000001) (rerun: 32)
+
+> -----Original Message-----
+> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf
+> Of Chia-Lin Kao (AceLan) via Intel-wired-lan
+> Sent: Thursday, June 18, 2026 9:33 AM
+> To: Nguyen, Anthony L <anthony.l.nguyen@intel.com>; Kitszel,
+> Przemyslaw <przemyslaw.kitszel@intel.com>
+> Cc: Andrew Lunn <andrew+netdev@lunn.ch>; David S. Miller
+> <davem@davemloft.net>; Eric Dumazet <edumazet@google.com>; Jakub
+> Kicinski <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>; intel-
+> wired-lan@lists.osuosl.org; netdev@vger.kernel.org; linux-
+> kernel@vger.kernel.org
+> Subject: [Intel-wired-lan] [PATCH 1/2] igc: Wait for MAC passthrough
+> after reset
+>=20
+> Some systems support MAC passthrough for dock Ethernet controllers by
+> having firmware rewrite the receive address registers after the
+> controller reset completes.
+>=20
+> igc resets the controller before reading RAL0/RAH0, so that reset can
+> restore the controller native MAC address temporarily. If the driver
+> reads the registers immediately, it can race the firmware rewrite and
+> keep the native dock MAC instead of the host passthrough MAC.
+>=20
+> For LMVP devices, poll RAL0/RAH0 after reset and before reading the
+> MAC address. Stop once the address registers change to another valid
+> Ethernet address, allowing firmware a bounded window to complete the
+> passthrough update.
+>=20
+Good day, Chia-Lin
+
+It'd be great if you could share more details on how to reproduce the issue=
+.
+
+What exact hardware setup is affected (dock model, NIC, system)?
+Which firmware/BIOS version?
+How often does the race trigger?
+Do you have a way to reliably reproduce it?
+
+Also, what is the observed behavior vs. expected behavior? For example,
+which MAC address is seen and which one should be used?
 
 
-Already exist in syzbot with 11 similar reports.
-
-https://syzkaller.appspot.com/bug?id=e3ef1f59aa88bf20425f0726337b0f6931416ff8
-
-maybe data_race annotation should be used.
+> Signed-off-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
+> ---
+>  drivers/net/ethernet/intel/igc/igc_main.c | 48
+> +++++++++++++++++++++++
+>  1 file changed, 48 insertions(+)
+>=20
+> diff --git a/drivers/net/ethernet/intel/igc/igc_main.c
+> b/drivers/net/ethernet/intel/igc/igc_main.c
+> index 2c9e2dfd8499..fa9752ed8bc5 100644
+> --- a/drivers/net/ethernet/intel/igc/igc_main.c
+> +++ b/drivers/net/ethernet/intel/igc/igc_main.c
+> @@ -11,6 +11,7 @@
+>  #include <net/pkt_sched.h>
+>  #include <linux/bpf_trace.h>
+>  #include <net/xdp_sock_drv.h>
+> +#include <linux/etherdevice.h>
+>  #include <linux/pci.h>
+>  #include <linux/mdio.h>
+>=20
+> @@ -69,6 +70,52 @@ static const struct pci_device_id igc_pci_tbl[] =3D {
+>=20
+>  MODULE_DEVICE_TABLE(pci, igc_pci_tbl);
+>=20
+> +static void igc_read_rar0(struct igc_hw *hw, u8 *addr, u32 *ral, u32
+> +*rah) {
+> +	*ral =3D rd32(IGC_RAL(0));
+> +	*rah =3D rd32(IGC_RAH(0));
+> +
+> +	addr[0] =3D *ral & 0xff;
+> +	addr[1] =3D (*ral >> 8) & 0xff;
+> +	addr[2] =3D (*ral >> 16) & 0xff;
+> +	addr[3] =3D (*ral >> 24) & 0xff;
+> +	addr[4] =3D *rah & 0xff;
+> +	addr[5] =3D (*rah >> 8) & 0xff;
+> +}
+> +
+> +static bool igc_is_lmvp_device(struct pci_dev *pdev) {
+> +	switch (pdev->device) {
+> +	case IGC_DEV_ID_I225_LMVP:
+> +	case IGC_DEV_ID_I226_LMVP:
+> +		return true;
+> +	default:
+> +		return false;
+> +	}
+> +}
+> +
+> +static void igc_wait_for_lmvp_mac_passthrough(struct pci_dev *pdev,
+> +					      struct igc_hw *hw)
+> +{
+> +	u8 addr[ETH_ALEN] __aligned(2);
+> +	u32 orig_ral, orig_rah;
+> +	u32 ral, rah;
+> +	int i;
+> +
+> +	if (!igc_is_lmvp_device(pdev))
+> +		return;
+> +
+> +	igc_read_rar0(hw, addr, &orig_ral, &orig_rah);
+> +
+> +	for (i =3D 0; i < 100; i++) {
+> +		msleep(100);
+> +		igc_read_rar0(hw, addr, &ral, &rah);
+> +		if ((ral !=3D orig_ral || rah !=3D orig_rah) &&
+> +		    is_valid_ether_addr(addr))
+> +			return;
+> +	}
+> +}
+> +
+>  enum latency_range {
+>  	lowest_latency =3D 0,
+>  	low_latency =3D 1,
+> @@ -7259,6 +7306,7 @@ static int igc_probe(struct pci_dev *pdev,
+>  	 * known good starting state
+>  	 */
+>  	hw->mac.ops.reset_hw(hw);
+> +	igc_wait_for_lmvp_mac_passthrough(pdev, hw);
+>=20
+>  	if (igc_get_flash_presence_i225(hw)) {
+>  		if (hw->nvm.ops.validate(hw) < 0) {
+> --
+> 2.53.0
 
