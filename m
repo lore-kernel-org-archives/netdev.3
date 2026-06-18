@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5247A40D56F
-	for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 00:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA8823BD05;
+	Thu, 18 Jun 2026 00:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781742061; cv=none; b=TNGrAKjMbVWFW89ze5ESFMSBUn5BY9uKl+EiGbrA2AdqjEFTKOK44w/8VdiXGX+B/fIf0R3uTDbvZvF9PctCHAQNzB5knxtwOLELZlvnLCTNgLXxZXHW4AAGRsNLclWUbcqVO1ywe554HftbRWkrSLcAfmPk0UPCfQSTeOkS0lc=
+	t=1781742061; cv=none; b=Xmi6s7yBAYnk5wUahz9Q/h73pwYnZ5fF9TFQ5AVk8JUAy3ZVZXiffWh0ClGxZWsq4EA9/ZsAamsiASXPfgtJnbL2hzpXlPuFqZI1TLAbJZ6DJJSHr5ZM+e4kWBvNnq+8a73Bh7buXbH0N9ElYV4wJmp1zqRmQP+w9tvN/sZX+1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1781742061; c=relaxed/simple;
-	bh=8eWueccu3LOtZoris0rEasgWqyxVv8cPWbRFhVeU4rQ=;
+	bh=lr8B23CUEuUVxrs018Ab4gVyzVvF5e+YytiPE25nT7E=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=aVrjM4oZf9f3cSog2Sr9+XOxuAhi1e5HvFCUQd9r3EfDDk+8RStjOqOJYDvyHfPu0KVScs4GtX8rrIqrAmcKhI5K0zRm3+lZC6ySfaPmUySYzX3UtALHnO31T6WYl8c0bXW9tZWCOolEVQpO0OnsFH7M0E9hgEqPz0EqAisJ6Lo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cmLNKJkA; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=THpcfQoqZOxiWGU442cLz5CrrSb/gq8XQi0jaVTM+Ni3kHdA88nWFPGGO/IsiKW0xWyorpx+Sjm0xbnPSSUz5T3qWz+MRElGFhp+KrOuAs1QtG/HoxV9AJLuB/Kwy+kivFy+QjOVVrX/uLqZSwpRowz45Hb0MUmSqrCHKBWpxP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c8Xch6ww; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cmLNKJkA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35B2B1F00A3D;
-	Thu, 18 Jun 2026 00:21:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c8Xch6ww"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 812D01F00A3A;
+	Thu, 18 Jun 2026 00:20:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781742060;
-	bh=Y36d3c9E+J3nQ2hIY9KPFdRkxun7FQwJj96D5/KofuE=;
+	s=k20260515; t=1781742058;
+	bh=txMSbLOB/VgDi7veIhU/GN1KySANA1CPKnIMDHt4Oz4=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=cmLNKJkAWEYPv96ZZeS67kU8bzAykkPraRXUF75VxaWxt3LRWDvB/PItFZhrPlXA/
-	 mxvtwaSFKqwRVE2tBITV32GyjCjGF/BPwG6Afl41H4Sg2VWICxUGhI3t0JuASi6cq6
-	 iS+8BV16YbvzuYIV79+6SJK/r6M/nIRHIX/q/MLUdmai9xaT6dPWrDZA47YrjsRoqa
-	 EUJXiprKLkao6INhU/v+YhfhRghMnS3dTpNVjhadkd13RL5E4oQly8U7zXGzZHw48c
-	 PLNmZMgGNd5XV5zUlhZtX6aRjBFmIlrcgPW4mCnfe4mSJ/DxQOcYbq+BAyJy416TTz
-	 mkO24dQIPnejg==
+	b=c8Xch6wwdJpFFmMVVKziBBDAQvByuV4Oy7oVqymVt/blvGPHTOtgmFqLxz1i/I9af
+	 OfYJ0lCtTVAXyQiiqaz/slhyrKB9ETzNIEXqU8bvVoQIRf3OrnAUdcuUaMucIGgPK0
+	 0CFMcPvGY+spHbmXWmjjq3RAUD2Fv7MWYvRopD1xilUa5XEo2j4DstTQoeRj6AoFme
+	 jDIx3YjsDnEsQLnVOXc97gvpHrBaPsGZ4gmkNyav/zP1Lgg7G0SMubNlorzvBAF9HE
+	 s9JdG33aIoQOJUNwTYLrM6itXBI7BdKw7as4lEFb2hHVtpviwY+56C2kNA7oApmWPM
+	 c1ZzRMqo2k8aA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 197EE393102B;
-	Thu, 18 Jun 2026 00:20:55 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93AD2393102B;
+	Thu, 18 Jun 2026 00:20:53 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: psample: fix info leak in PSAMPLE_ATTR_DATA
+Subject: Re: [PATCH net] netdev-genl: report NAPI thread PID in the caller's
+ pid
+ namespace
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178174205363.1875263.12586731210463427377.git-patchwork-notify@kernel.org>
-Date: Thu, 18 Jun 2026 00:20:53 +0000
-References: <20260616003046.1099490-1-kuba@kernel.org>
-In-Reply-To: <20260616003046.1099490-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- bestswngs@gmail.com, yotam.gi@gmail.com, jhs@mojatatu.com, jiri@resnulli.us
+ <178174205225.1875263.7744214441467621571.git-patchwork-notify@kernel.org>
+Date: Thu, 18 Jun 2026 00:20:52 +0000
+References: <20260615171736.1709318-1-maoyixie.tju@gmail.com>
+In-Reply-To: <20260615171736.1709318-1-maoyixie.tju@gmail.com>
+To: Maoyi Xie <maoyixie.tju@gmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, daniel@iogearbox.net,
+ razor@blackwall.org, dw@davidwei.uk, sdf@fomichev.me, dtatulea@nvidia.com,
+ skhawaja@google.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 15 Jun 2026 17:30:46 -0700 you wrote:
-> psample open codes nla_put() presumably to avoid wiping
-> the data with 0s just to override it with packet data.
-> This open coding is missing clearing the pad, however,
-> each netlink attr is padded to 4B and data_len may
-> not be divisible by 4B.
+On Tue, 16 Jun 2026 01:17:36 +0800 you wrote:
+> netdev_nl_napi_fill_one() reports the NAPI kthread PID in NETDEV_A_NAPI_PID
+> using task_pid_nr(), which returns the PID in the initial pid namespace.
 > 
-> Fixes: 6ae0a6286171 ("net: Introduce psample, a new genetlink channel for packet sampling")
-> Reported-by: Weiming Shi <bestswngs@gmail.com>
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> NETDEV_CMD_NAPI_GET does not have GENL_ADMIN_PERM and the netdev genl family
+> is netnsok, so a caller in a child pid namespace can issue it. That caller
+> then sees the kthread's global PID, even though the kthread is not visible
+> in its pid namespace, where the value should be 0.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net: psample: fix info leak in PSAMPLE_ATTR_DATA
-    https://git.kernel.org/netdev/net/c/aedd02af1f8b
+  - [net] netdev-genl: report NAPI thread PID in the caller's pid namespace
+    https://git.kernel.org/netdev/net/c/1f24c0d01db2
 
 You are awesome, thank you!
 -- 
