@@ -1,47 +1,45 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83E903F413D
-	for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 15:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE0B43FBB47
+	for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 15:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781795378; cv=none; b=AGkkCqGrFjnJaRjJiumrRYROC+rfWe5NUZ6/0JMWHYJy+3CltaWqb2VSYei1mzoPNA8vjeLiMv++2QK1kIAB4gGDLm4te+b5ZjlSOzv/IB1HIZn1wiKv0dqZpQHY2FbbVvpt7DukXzhGqUjtf1hAIX0wer8QPdWy5jczFRyq8Nc=
+	t=1781795383; cv=none; b=NELwNTMRvlkIapJCVVriD6V3ERskTaWu2a6VGpbOiaTg07RARggCAruHCsGUCRwjRwrDTXZqkyt+Z516Uo3tFEg2yyn9GV7nCpqjWja+Udxxa3GCmXBPZjn7c8iGgXtiVh8jx2y+LaJYLaS8nIi2PmGgvZPWWiDQ6C0Bcn0slhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781795378; c=relaxed/simple;
-	bh=nzGZJFbhBOm1hddP5+9aFdF3xlsdHhiFkZ1/wpBDTTI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HgzmW6VL2RKihyOYWNWD4d2nrvdcEYMYG2ydfAXK1KPaZwiucCYAjzjV6Xjkgv5yFdKKwCQMsN2eLJJRxVQbMZ2I1A6RECW0DA3RZlpfwILSXx6R1Uu6R9PcPcxVPlxUKoW5i7E55wqEI7tgH9p0eW3Lo+6cTa8jk5X21/j2vZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IY2SbNsz; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1781795383; c=relaxed/simple;
+	bh=P4a5L+pxLj9M6no31bX83R77apuWeXqglYwceEj3k0Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TNW5LxlZIDtQ/Us1rogbPdnNgjh+3e50mRnPIS3qxCLtDkj78aHXZgxhcmYyJ8oAqWP18wszgm4LY6ctWkQpzU8bL+ARux+wuJWZtQAab88Q3+ds02RyfhPJZvO6sky5lzN0MzrHRLqlPM4vfKCBABGvK6pVSVYZQtblQfoaxPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LHxTbuLq; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IY2SbNsz"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LHxTbuLq"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781795376;
+	s=mimecast20190719; t=1781795380;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LzYZekGzO/AOSypQh+DSKpcUdDPg1Q6wQEiH39OSTDI=;
-	b=IY2SbNszfayrypwdoEB4cLv2bTavGgA6Eyx3mzt6X+W1Ur9+aD6TMg/S7vLV0FHbzT0kh3
-	3jCVTiy4s95BJCIfDJue8zpdH+5LYnFMafHeaLtzSSRVwBweCt+Wcm817SAzgVfP3ebXWu
-	UkbqgYAu7/MOqZ+ZPXxWy4WpbKUvvEQ=
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=8kwvym+FwOGhsUuGGMnEIFmKIYJtNtuISVIci+MTjJ8=;
+	b=LHxTbuLqtmCg+oEWs+mWuqjCJy5zYHly0JNPyizYQ4S+Et/59ccoqoWwOHQ4pB8XW2AKYj
+	ecX9psZp/WWD7a331Wka23nM/5qV2W/Mn98KHYNXhAicAKHfGLnRrB5rVUa5T4Z9vqZ3Lb
+	tjewLRl8uXe64FaSnjW/W80QSuHGiDs=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-531-kM1hXvrUMpuq9N-QMvgNkw-1; Thu,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-127-m3J3Hl3jPxeOh9tBvIrBbQ-1; Thu,
  18 Jun 2026 11:09:31 -0400
-X-MC-Unique: kM1hXvrUMpuq9N-QMvgNkw-1
-X-Mimecast-MFC-AGG-ID: kM1hXvrUMpuq9N-QMvgNkw_1781795369
+X-MC-Unique: m3J3Hl3jPxeOh9tBvIrBbQ-1
+X-Mimecast-MFC-AGG-ID: m3J3Hl3jPxeOh9tBvIrBbQ_1781795360
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EBE5718011C0;
-	Thu, 18 Jun 2026 15:09:28 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6A5011800595;
+	Thu, 18 Jun 2026 15:09:19 +0000 (UTC)
 Received: from ShadowPeak.redhat.com (unknown [10.44.32.243])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CAB8B1800675;
-	Thu, 18 Jun 2026 15:09:24 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B1ED91800664;
+	Thu, 18 Jun 2026 15:09:14 +0000 (UTC)
 From: Petr Oros <poros@redhat.com>
 To: netdev@vger.kernel.org
 Cc: Petr Oros <poros@redhat.com>,
@@ -59,11 +57,9 @@ Cc: Petr Oros <poros@redhat.com>,
 	Grzegorz Nitka <grzegorz.nitka@intel.com>,
 	intel-wired-lan@lists.osuosl.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH iwl-net 2/2] ice: preserve uplink DFLT Rx rule on switchdev release
-Date: Thu, 18 Jun 2026 17:09:11 +0200
-Message-ID: <deef5756e534ef06c12d910c5305d3fd205d30a0.1781786935.git.poros@redhat.com>
-In-Reply-To: <cover.1781786935.git.poros@redhat.com>
-References: <cover.1781786935.git.poros@redhat.com>
+Subject: [PATCH iwl-net 0/2] ice: fix DFLT Rx rule handling for promisc and switchdev
+Date: Thu, 18 Jun 2026 17:09:09 +0200
+Message-ID: <cover.1781786935.git.poros@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -73,126 +69,28 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-ice_eswitch_setup_env() calls ice_set_dflt_vsi() to install the
-ICE_SW_LKUP_DFLT Rx rule on the uplink VSI. The helper returns 0 even
-when the rule is already in place, so the call is a no-op if
-ice_vsi_sync_fltr() had previously installed the DFLT rule in response
-to IFF_PROMISC on the uplink netdev. ice_remove_vsi_fltr() called
-earlier in ice_eswitch_setup_env() does not affect this rule because
-ice_remove_vsi_lkup_fltr() lacks a case for ICE_SW_LKUP_DFLT and falls
-into its default branch which only logs. Switchdev mode then adds an
-ICE_FLTR_TX leg via ice_cfg_dflt_vsi() on the same VSI handle.
+Two fixes for the uplink default VSI Rx rule (DFLT) on E810 when the
+netdev is in IFF_PROMISC.
 
-ice_eswitch_release_env() unconditionally removed both the Rx and Tx
-DFLT rules. When the Rx DFLT was installed by ice_vsi_sync_fltr()
-before the switchdev session started, this clobbered promisc state the
-operator had asked for: the DFLT Rx rule disappeared while IFF_PROMISC
-was still set on the netdev, and the IFF_PROMISC sync path was not
-retriggered, so the uplink ended the session without the catch-all
-rule the netdev flags requested.
+Patch 1 drops the redundant per-VLAN promisc expansion that exhausts
+the FLU pool on a wide VLAN trunk across several PFs.
 
-Skip the Rx DFLT removal when the uplink is still promiscuous, both in
-ice_eswitch_release_env() and in the err_def_tx unwind of
-ice_eswitch_setup_env(). The Tx leg installed by switchdev is always
-removed since switchdev owns it.
+Patch 2 keeps the DFLT Rx rule across a switchdev teardown instead of
+clobbering the promisc state the operator asked for.
 
-The ena_rx_filtering() call earlier in ice_eswitch_release_env() is
-left unconditional: it calls ice_cfg_vlan_pruning(), which returns
-without enabling pruning while the netdev is in IFF_PROMISC, so it
-cannot re-enable VLAN pruning under the preserved DFLT rule and drop
-tagged traffic. Pruning is re-enabled later, when the IFF_PROMISC sync
-path runs after promisc is actually cleared.
+Lab tested on E810-C: functional, VLAN isolation, IFF_ALLMULTI
+regression, stress/flap and switchdev-toggle suites pass with no AQ
+errors, and the FLU pool stays under its ceiling with all four PFs
+loaded.
 
-Use vsi->current_netdev_flags rather than the live netdev->flags for
-this test. netdev->flags is written under RTNL by dev_change_flags(),
-while ice_eswitch_release_env() runs under devl_lock, so reading it
-here would be a TOCTOU against a concurrent promisc change. The
-IFF_PROMISC bit of current_netdev_flags is written only under
-ICE_CFG_BUSY by ice_vsi_sync_fltr(), and ice_set_rx_mode() gates that
-sync off for the uplink while ice_is_switchdev_running() is true. The
-bit is therefore frozen for the whole session and stable when
-release_env reads it.
+Petr Oros (2):
+  ice: skip per-VLAN promisc rules when default VSI Rx rule is set
+  ice: preserve uplink DFLT Rx rule on switchdev release
 
-Because the sync is gated off during the session, a promisc change the
-operator makes while switchdev runs never reaches ice_vsi_sync_fltr():
-current_netdev_flags keeps the value captured before the session while
-netdev->flags carries the new one. Once switchdev is torn down and
-pf->eswitch.is_running is cleared, schedule a filter sync from
-ice_eswitch_disable_switchdev() so the suppressed change is replayed
-and the DFLT Rx rule is reconciled with the current netdev flags. This
-also closes the window where release_env kept the rule based on the
-frozen flag but the operator had since cleared IFF_PROMISC.
+ drivers/net/ethernet/intel/ice/ice_eswitch.c | 32 ++++++-
+ drivers/net/ethernet/intel/ice/ice_main.c    | 90 +++++++++++++++-----
+ 2 files changed, 98 insertions(+), 24 deletions(-)
 
-Fixes: 1a1c40df2e80 ("ice: set and release switchdev environment")
-Signed-off-by: Petr Oros <poros@redhat.com>
----
- drivers/net/ethernet/intel/ice/ice_eswitch.c | 32 +++++++++++++++++---
- 1 file changed, 28 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/ice/ice_eswitch.c b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-index 2e4f0969035f77..b6073fc2375019 100644
---- a/drivers/net/ethernet/intel/ice/ice_eswitch.c
-+++ b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-@@ -66,8 +66,10 @@ static int ice_eswitch_setup_env(struct ice_pf *pf)
- 	ice_cfg_dflt_vsi(uplink_vsi->port_info, uplink_vsi->idx, false,
- 			 ICE_FLTR_TX);
- err_def_tx:
--	ice_cfg_dflt_vsi(uplink_vsi->port_info, uplink_vsi->idx, false,
--			 ICE_FLTR_RX);
-+	/* keep the Rx DFLT rule if still promiscuous (see release_env) */
-+	if (!(uplink_vsi->current_netdev_flags & IFF_PROMISC))
-+		ice_cfg_dflt_vsi(uplink_vsi->port_info, uplink_vsi->idx,
-+				 false, ICE_FLTR_RX);
- err_def_rx:
- 	ice_vsi_del_vlan_zero(uplink_vsi);
- err_vlan_zero:
-@@ -275,11 +277,23 @@ static void ice_eswitch_release_env(struct ice_pf *pf)
- 	vlan_ops = ice_get_compat_vsi_vlan_ops(uplink_vsi);
- 
- 	ice_vsi_update_local_lb(uplink_vsi, false);
-+	/* No-op while IFF_PROMISC is set: ice_cfg_vlan_pruning() self-gates on
-+	 * it, so this cannot re-enable VLAN pruning under a preserved DFLT rule.
-+	 */
- 	vlan_ops->ena_rx_filtering(uplink_vsi);
- 	ice_cfg_dflt_vsi(uplink_vsi->port_info, uplink_vsi->idx, false,
- 			 ICE_FLTR_TX);
--	ice_cfg_dflt_vsi(uplink_vsi->port_info, uplink_vsi->idx, false,
--			 ICE_FLTR_RX);
-+
-+	/* Keep the Rx DFLT rule if the uplink is still promiscuous; it must
-+	 * outlive the session. current_netdev_flags is used because its
-+	 * IFF_PROMISC bit only changes under ice_vsi_sync_fltr(), gated off
-+	 * during switchdev, so the read cannot race the RTNL netdev->flags.
-+	 * Any change made during the session is replayed on teardown.
-+	 */
-+	if (!(uplink_vsi->current_netdev_flags & IFF_PROMISC))
-+		ice_cfg_dflt_vsi(uplink_vsi->port_info, uplink_vsi->idx,
-+				 false, ICE_FLTR_RX);
-+
- 	ice_fltr_add_mac_and_broadcast(uplink_vsi,
- 				       uplink_vsi->port_info->mac.perm_addr,
- 				       ICE_FWD_TO_VSI);
-@@ -327,10 +341,20 @@ static int ice_eswitch_enable_switchdev(struct ice_pf *pf)
-  */
- static void ice_eswitch_disable_switchdev(struct ice_pf *pf)
- {
-+	struct ice_vsi *uplink_vsi = pf->eswitch.uplink_vsi;
-+
- 	ice_eswitch_br_offloads_deinit(pf);
- 	ice_eswitch_release_env(pf);
- 
- 	pf->eswitch.is_running = false;
-+
-+	/* ice_set_rx_mode() was gated off during the session; replay a filter
-+	 * sync so any suppressed promisc change reconciles the DFLT Rx rule.
-+	 */
-+	set_bit(ICE_VSI_UMAC_FLTR_CHANGED, uplink_vsi->state);
-+	set_bit(ICE_VSI_MMAC_FLTR_CHANGED, uplink_vsi->state);
-+	set_bit(ICE_FLAG_FLTR_SYNC, pf->flags);
-+	ice_service_task_schedule(pf);
- }
- 
- /**
 -- 
 2.53.0
 
