@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA8823BD05;
-	Thu, 18 Jun 2026 00:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6276231832;
+	Thu, 18 Jun 2026 00:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781742061; cv=none; b=Xmi6s7yBAYnk5wUahz9Q/h73pwYnZ5fF9TFQ5AVk8JUAy3ZVZXiffWh0ClGxZWsq4EA9/ZsAamsiASXPfgtJnbL2hzpXlPuFqZI1TLAbJZ6DJJSHr5ZM+e4kWBvNnq+8a73Bh7buXbH0N9ElYV4wJmp1zqRmQP+w9tvN/sZX+1o=
+	t=1781742065; cv=none; b=k4V7FLOidNr9UztUCeUZh87WmOEQcub1RsviQbhlC8O6tjBcFRToriqr9sf6pEnPfIw0/RLrcECKWy8b2Z1aUhWHH2iFkfb1wNAAA4d4GZ9QNwTrT/+VpOPvDe0krZT0u1ZwAN5efHsVIqZreSGqQA0wNN40hfAioxrXaBQYQ04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781742061; c=relaxed/simple;
-	bh=lr8B23CUEuUVxrs018Ab4gVyzVvF5e+YytiPE25nT7E=;
+	s=arc-20240116; t=1781742065; c=relaxed/simple;
+	bh=Cjbhjb/KWtAfgGlgSDMuPfDlBC+Pig8YIVBznosYl6I=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=THpcfQoqZOxiWGU442cLz5CrrSb/gq8XQi0jaVTM+Ni3kHdA88nWFPGGO/IsiKW0xWyorpx+Sjm0xbnPSSUz5T3qWz+MRElGFhp+KrOuAs1QtG/HoxV9AJLuB/Kwy+kivFy+QjOVVrX/uLqZSwpRowz45Hb0MUmSqrCHKBWpxP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c8Xch6ww; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=G8GHLlUpwlX2a7BppkIq5QIA3A4GFF9dmV9xKN36aOod95hE+52oNzgPBTJRI4Oa9pZsG/qi84HktBLNsDQmkFCPBsh0LcFOWH08TA/B98T4Mx6q6MCwRc6A6i8wg6/Wi4iIvmxidgPBJHw8ikv+rddEr418jXk8LpdzL7+hWX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xb7fWgoX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c8Xch6ww"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 812D01F00A3A;
-	Thu, 18 Jun 2026 00:20:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xb7fWgoX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 818541F000E9;
+	Thu, 18 Jun 2026 00:21:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781742058;
-	bh=txMSbLOB/VgDi7veIhU/GN1KySANA1CPKnIMDHt4Oz4=;
+	s=k20260515; t=1781742061;
+	bh=TuXxwD1ly/AHxANQlxl6NxnU8Kd9W0BNlkpZ37PLkGE=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=c8Xch6wwdJpFFmMVVKziBBDAQvByuV4Oy7oVqymVt/blvGPHTOtgmFqLxz1i/I9af
-	 OfYJ0lCtTVAXyQiiqaz/slhyrKB9ETzNIEXqU8bvVoQIRf3OrnAUdcuUaMucIGgPK0
-	 0CFMcPvGY+spHbmXWmjjq3RAUD2Fv7MWYvRopD1xilUa5XEo2j4DstTQoeRj6AoFme
-	 jDIx3YjsDnEsQLnVOXc97gvpHrBaPsGZ4gmkNyav/zP1Lgg7G0SMubNlorzvBAF9HE
-	 s9JdG33aIoQOJUNwTYLrM6itXBI7BdKw7as4lEFb2hHVtpviwY+56C2kNA7oApmWPM
-	 c1ZzRMqo2k8aA==
+	b=Xb7fWgoX36IprWFQhjs1SXWTBvyLNPzRbgrd3v8TS+CmZOT/eijgRu/dN0oXzELHX
+	 EaSTr59X5A4fsVTvNBshGE2IHWiLHUOzfGahAre2fV9tl70opvn23OMeN7NVInC3ll
+	 +lO5M6nKy8lUkbnreGZELG6evs/ij3SGeugph8PGKyTUv2RGBTqKtyBkZp3Hp4lZnI
+	 JhmtYY4NKfE4PABjHvc0uBPSPhpeI3LFO9w0csP1HlZ50PuqFzCz4qVWRPjtKS1g5P
+	 YSB8SFQAssT7A+1UB+U+Kn8t3rgnVvkaNEUalKXS36DxAwq++wtIo9SKnyqXNqPYrT
+	 3jSbmC0N1PgJg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93AD2393102B;
-	Thu, 18 Jun 2026 00:20:53 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93A59393102B;
+	Thu, 18 Jun 2026 00:20:56 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,41 +37,36 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] netdev-genl: report NAPI thread PID in the caller's
- pid
- namespace
+Subject: Re: [PATCH net-next] net: pse-pd: set user byte command SUB2 field
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178174205225.1875263.7744214441467621571.git-patchwork-notify@kernel.org>
-Date: Thu, 18 Jun 2026 00:20:52 +0000
-References: <20260615171736.1709318-1-maoyixie.tju@gmail.com>
-In-Reply-To: <20260615171736.1709318-1-maoyixie.tju@gmail.com>
-To: Maoyi Xie <maoyixie.tju@gmail.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, daniel@iogearbox.net,
- razor@blackwall.org, dw@davidwei.uk, sdf@fomichev.me, dtatulea@nvidia.com,
- skhawaja@google.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
+ <178174205515.1875263.11940436993209911826.git-patchwork-notify@kernel.org>
+Date: Thu, 18 Jun 2026 00:20:55 +0000
+References: <20260611102517.445549-1-robert.marko@sartura.hr>
+In-Reply-To: <20260611102517.445549-1-robert.marko@sartura.hr>
+To: Robert Marko <robert.marko@sartura.hr>
+Cc: o.rempel@pengutronix.de, kory.maincent@bootlin.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, luka.perkov@sartura.hr
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 16 Jun 2026 01:17:36 +0800 you wrote:
-> netdev_nl_napi_fill_one() reports the NAPI kthread PID in NETDEV_A_NAPI_PID
-> using task_pid_nr(), which returns the PID in the initial pid namespace.
+On Thu, 11 Jun 2026 12:24:49 +0200 you wrote:
+> The Set User Byte to Save command has three subject bytes.
+> The PD692x0 protocol guides defines SUB2 with value 0x4e, while SUB1
+> carries the NVM user byte.
 > 
-> NETDEV_CMD_NAPI_GET does not have GENL_ADMIN_PERM and the netdev genl family
-> is netnsok, so a caller in a child pid namespace can issue it. That caller
-> then sees the kthread's global PID, even though the kthread is not visible
-> in its pid namespace, where the value should be 0.
+> Template only initialized SUB and SUB1.
+> Fill SUB2 explicitly so the command matches the documented layout.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] netdev-genl: report NAPI thread PID in the caller's pid namespace
-    https://git.kernel.org/netdev/net/c/1f24c0d01db2
+  - [net-next] net: pse-pd: set user byte command SUB2 field
+    https://git.kernel.org/netdev/net/c/e586644d0a89
 
 You are awesome, thank you!
 -- 
