@@ -1,192 +1,90 @@
-Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 096F32EEE61;
-	Thu, 18 Jun 2026 07:55:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.19.206
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E233D75D3;
+	Thu, 18 Jun 2026 08:02:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781769363; cv=none; b=XvlCW2Eym47JZxYN2A0FR8GdUfo0W7PGCl8FvJ/8BHa0FDN6zEkVxjzctB1XLxjhOIDKNhcFZjLu9a6jVyul1SvQ/IL88u1ajd/miiLbree4Is4+JL6WGoe2FvBSvm+Y1jVUm7FgIBwFzTxFZkh6BqBOwkR6rv5TNeRwjMPHOEY=
+	t=1781769738; cv=none; b=fb80ta8AuoOMUaorvl3CgCaqpQGQR2xKdM+or+02KsfhaRVh53ac2PiXOQdD4wvMzp6TxkwMj1vac6OCwN+sfEDV9SWIeDpT97SieGaJDfaNDkXtYKO43feXVY5f45kZm0ulnA6klhKHMegry2Ye4/J9Us0SAnpYZwKXMA0gQJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781769363; c=relaxed/simple;
-	bh=izr3e8xaE7FSAJNGWP+NVdtsvkPSw/DkyFydIwoKxRA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YTHanOR65dbY1tzbg/pKcZ0/soPIDfWlyU+i0p2hu1oj5ZitRUkl2P26ZhtY1wcDoxYlnhrnUfhHemBCL6riawousU+vS2RpZ6vz2ZDkZdEVqQVYhqLypOUfFrUiRPgVUfYnvmSghMkPhXPZuEtU8esyYZe/SN9R6Dn3vYBf998=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=DmRK/I4D; arc=none smtp.client-ip=54.207.19.206
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+	s=arc-20240116; t=1781769738; c=relaxed/simple;
+	bh=xp4tTI3hQOkNRqkPW4jgw3L5Am7roxd8iEf0HQQr+Wg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y+lVXfrM/xU0xy/eDzpn21PLba0buWqa6dRubcZDsh7aAEkX0MTUN4qaF54xhH6iQ4UmiwjZXM0TVscr4bLN0ztwwvNtkgqgTQaT4OivwMSMwUmD88u0ZDJ/wafiHMi50VGhv72h7n9uZCaHeb380KEa8xmxY4mlSVNrN6NcASA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=LW+ddLGK; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="DmRK/I4D"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1781769294;
-	bh=T717HZ9C894Dqy1jhhFqWn/Sw6LU783IrPcrALglV6A=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=DmRK/I4DJMSIpKJrljAOe48SMPr9+KnRKneP0dGEH4XJdRtyo2bh7p9nEfDGivzr/
-	 BvCIZ/Aa0TdoWKj49UMO7WaRHruS1hx86HhmsHtndE5q9JIq2B1cKZp3UyfPTSR1TX
-	 +bJ8dMN1DejGrqTxiFv+KiuVhgycJ6yOhkQxGjIo=
-X-QQ-mid: esmtpsz16t1781769289t900aa2e9
-X-QQ-Originating-IP: tc1D/NFqEptOKYSwYkBpaUPy7wavTZGxAmL57KVP/4U=
-Received: from localhost.localdomain ( [124.126.19.250])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 18 Jun 2026 15:54:39 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 3650313968144136322
-EX-QQ-RecipientCnt: 10
-From: ZhaoJinming <zhaojinming@uniontech.com>
-To: Madalin Bucur <madalin.bucur@nxp.com>
-Cc: Sean Anderson <sean.anderson@linux.dev>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="LW+ddLGK"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=2voqrgEApl3hIFJ06xFwhIwE/g8LBCEOl7qjySZCqms=; b=LW+ddLGKxdV1h2RvPd/Xsci0X0
+	rcoxdFyymM9ZM1FayKR1jQVo+V93Jdyx7IX/LxXuNlk5xaZ3M6IJnRXqF1OzYrrZoT4ZBuml2kxv6
+	InlbBdp22qDbCQEH3Lr7fff2Gl6N0CnqpIoEIBhNtfAwUFFQFV/a4ZAXlSQPGqAbQoUM=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wa7gx-008J4F-Gs; Thu, 18 Jun 2026 10:01:39 +0200
+Date: Thu, 18 Jun 2026 10:01:39 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Finn Thain <fthain@linux-m68k.org>
+Cc: Carsten Strotmann <carsten@strotmann.de>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	ZhaoJinming <zhaojinming@uniontech.com>
-Subject: [PATCH] net: fman: fix clock and device node leak in probe error paths
-Date: Thu, 18 Jun 2026 15:54:35 +0800
-Message-Id: <20260618075435.1262533-1-zhaojinming@uniontech.com>
-X-Mailer: git-send-email 2.20.1
+	Carsten Strotmann <cas@strotmann.de>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+	geert@linux-m68k.org, chleroy@kernel.org, npiggin@gmail.com,
+	mpe@ellerman.id.au, maddy@linux.ibm.com, linux-mips@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH net-next 0/2] appletalk: move the protocol out of tree
+Message-ID: <2791b2e3-bf58-4dce-9262-4f1d8d3241fb@lunn.ch>
+References: <20260616084901.3319d82e@kernel.org>
+ <1781694488854.956546368.818588236@strotmann.de>
+ <489024bc-b6e5-f601-3bce-444d75abbf5d@linux-m68k.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
-X-QQ-XMAILINFO: OUC5DGN0mB58LQVcoNVdoWumBJy6hy+uuoUIioHx9HNLdtMo6NWb6XSv
-	NnnlcDxnatBInMCNgkMmgD1dIROtr4qzJBDu8ylxqrJEgfB3DisXmFnxwcYda3+CerD0TvV
-	BJQOBDiPNiuLeyvUBmIPT9IxhOHaBvMqJDvDFCvmYbA17Q1VHnLhqUUsq9Xk4sdOyO2s6zO
-	A/FMkG9ZnkZ98cAJeo3D0HwAHWtSZuWzLCVFojl99rJ/nuL2ycWHHsGC0P+lCFjNIY/2AKy
-	FHPY18oSdYQQo/2ClOMGSm2zafg53RLgrhUJLEf/ELLsMcFteggcokquepgTK6d4dHBOgl+
-	Dkau/A6R/z7fVVPsuvYmnUVMuIMhonQtIhoPXN+KvgaXiIfNcbx3ZxrbA+/9H1YOPfZ5+ZN
-	lmu+/BBcvlYpe94pvL1+b7nNO3LNifp+PK5+t8/rID5J7f4JFm4gQ+OLNchfjwhWlqQie07
-	mRXvT8uFxdL1goZI2OVODtCk4oAJMwD9aEr5qm/kldzo2jjgY0/uWsQWp0HdnmPjaYVuXuT
-	kermYTZXpKuWZru9597ShETLi8sdSxZ2xwVzSwSblm6YAMjXUjJvndNixDIdPoaJojzNH53
-	pjBsY536n/Agi4xHXL2Fq3J+G+6Affo5/XHwlp8PQQguZ6cBndL3QifambbD1ZQMQ01tnSa
-	jq0EMEMFE43u4YG57p6pWrD815nD8wcmcEWvm9OTpVdEuhD3KV170gbm+idU6p7S8og4zb4
-	xd4G4okRpu9wjlVnbWQzm0Al624N0lyZSEZ3kqtfnL8dre6o9nrhcYeo1+NETCE06clCOM/
-	qZaK5DCqctwPuEsn0cPcdM6UFoDjRxRkTY6OmslLv5S5AY3yFou3ZLrKdivCglIyhjreY/k
-	SnNr6u77XU87Q/+eHvn6M5TLjnFKWWUXVjVSCwH8oBf7fsUjtTAgaz9bvST3OEt07O/Ph4x
-	2rWQ2H0l8iYsDIE9MNPkEQinchI1SloKOnjulQDklo0h1qvZ4X5flQYMOyyqvz/FqyjNzpT
-	M8LHzW6IbdiyjFIQ9GwmS2nACU2q76o4m6MqURDzqs1sVG0ffU
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <489024bc-b6e5-f601-3bce-444d75abbf5d@linux-m68k.org>
 
-In read_dts_node(), fm_node is acquired via of_node_get() and clk is
-acquired via of_clk_get(). After a successful of_clk_get() call, the
-error paths for clk_get_rate failure and of_property_read_u32_array
-failure correctly goto fman_node_put (releasing fm_node) but miss
-clk_put(clk).
+On Thu, Jun 18, 2026 at 10:55:54AM +1000, Finn Thain wrote:
+> 
+> On Wed, 17 Jun 2026, Carsten Strotmann wrote:
+> 
+> > > _Someone_ has to handle the reports and patches. And since nobody is 
+> > > doing that the code is going to GitHub, where it can continue to "just 
+> > > be left" or whatever, without racking up CVEs for the Linux kernel and 
+> > > leading to maintainer burn out :/
+> > > 
+> > 
+> > That's a good point. The large influx of reports is a problem, and burn 
+> > out of maintainers is a too high cost.
+> > 
+> 
+> Carsten, if, as a maintainer, you want to avoid burnout then
 
-Worse, all error paths from the MURAM node lookup onward goto
-fman_free directly, skipping both fman_node_put and clk_put, leaking
-both the fm_node and clk references.
+It is not necessarily Carsten who is heading towards burnout.
+appletalk is just one of many many drivers where the listed
+Maintainers does not respond to patches, or there is no Maintainer at
+all. So a lot of work falls on the top level netdev Maintainers. In
+fact, a lot of the AI driven bug fixes tend to fall into this category
+of old drivers with no active Maintainers, since that tends to be
+where the poorer quality code is. So top level netdev Maintainers are
+having to do a lot more work, on old drivers which very few people
+care about. That is a poor use of their talent, when we actually want
+them working on drivers for modern hardware with a lot of users.
 
-of_clk_get() eventually calls __of_clk_get() -> clk_hw_create_clk() ->
-alloc_clk() -> kzalloc_obj() to allocate the clk struct, so clk_put()
-must be called to release this memory. Without it, the allocated clk
-struct is leaked on every probe failure after of_clk_get() succeeds.
+If the appletalk community can take the workload off the top level
+maintainers, respond to all patches within 2 to 3 days, give
+Reviewed-by, or make change requests, it can probably stay in the
+Mainline kernel. Otherwise it will move out of tree.
 
-Introduce a clk_put label between the success return and fman_node_put
-in the unwind chain, and redirect all error paths after of_clk_get()
-to this new label. Since no goto target remains for fman_free, fold
-it into fman_node_put and remove the now-unused label.
-
-Signed-off-by: ZhaoJinming <zhaojinming@uniontech.com>
----
- drivers/net/ethernet/freescale/fman/fman.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/net/ethernet/freescale/fman/fman.c b/drivers/net/ethernet/freescale/fman/fman.c
-index 013273a2de32..734cbe8efd7e 100644
---- a/drivers/net/ethernet/freescale/fman/fman.c
-+++ b/drivers/net/ethernet/freescale/fman/fman.c
-@@ -2736,7 +2736,7 @@ static struct fman *read_dts_node(struct platform_device *of_dev)
- 		err = -EINVAL;
- 		dev_err(&of_dev->dev, "%s: Failed to determine FM%d clock rate\n",
- 			__func__, fman->dts_params.id);
--		goto fman_node_put;
-+		goto clk_put;
- 	}
- 	/* Rounding to MHz */
- 	fman->dts_params.clk_freq = DIV_ROUND_UP(clk_rate, 1000000);
-@@ -2746,7 +2746,7 @@ static struct fman *read_dts_node(struct platform_device *of_dev)
- 	if (err) {
- 		dev_err(&of_dev->dev, "%s: failed to read fsl,qman-channel-range for %pOF\n",
- 			__func__, fm_node);
--		goto fman_node_put;
-+		goto clk_put;
- 	}
- 	fman->dts_params.qman_channel_base = range[0];
- 	fman->dts_params.num_of_qman_channels = range[1];
-@@ -2757,7 +2757,7 @@ static struct fman *read_dts_node(struct platform_device *of_dev)
- 		err = -EINVAL;
- 		dev_err(&of_dev->dev, "%s: could not find MURAM node\n",
- 			__func__);
--		goto fman_free;
-+		goto clk_put;
- 	}
- 
- 	err = of_address_to_resource(muram_node, 0,
-@@ -2766,7 +2766,7 @@ static struct fman *read_dts_node(struct platform_device *of_dev)
- 		of_node_put(muram_node);
- 		dev_err(&of_dev->dev, "%s: of_address_to_resource() = %d\n",
- 			__func__, err);
--		goto fman_free;
-+		goto clk_put;
- 	}
- 
- 	of_node_put(muram_node);
-@@ -2776,7 +2776,7 @@ static struct fman *read_dts_node(struct platform_device *of_dev)
- 	if (err < 0) {
- 		dev_err(&of_dev->dev, "%s: irq %d allocation failed (error = %d)\n",
- 			__func__, irq, err);
--		goto fman_free;
-+		goto clk_put;
- 	}
- 
- 	if (fman->dts_params.err_irq != 0) {
-@@ -2786,7 +2786,7 @@ static struct fman *read_dts_node(struct platform_device *of_dev)
- 		if (err < 0) {
- 			dev_err(&of_dev->dev, "%s: irq %d allocation failed (error = %d)\n",
- 				__func__, fman->dts_params.err_irq, err);
--			goto fman_free;
-+			goto clk_put;
- 		}
- 	}
- 
-@@ -2794,7 +2794,7 @@ static struct fman *read_dts_node(struct platform_device *of_dev)
- 	if (IS_ERR(base_addr)) {
- 		err = PTR_ERR(base_addr);
- 		dev_err(&of_dev->dev, "%s: devm_ioremap() failed\n", __func__);
--		goto fman_free;
-+		goto clk_put;
- 	}
- 
- 	fman->dts_params.base_addr = base_addr;
-@@ -2806,7 +2806,7 @@ static struct fman *read_dts_node(struct platform_device *of_dev)
- 	if (err) {
- 		dev_err(&of_dev->dev, "%s: of_platform_populate() failed\n",
- 			__func__);
--		goto fman_free;
-+		goto clk_put;
- 	}
- 
- #ifdef CONFIG_DPAA_ERRATUM_A050385
-@@ -2816,9 +2816,10 @@ static struct fman *read_dts_node(struct platform_device *of_dev)
- 
- 	return fman;
- 
-+clk_put:
-+	clk_put(clk);
- fman_node_put:
- 	of_node_put(fm_node);
--fman_free:
- 	kfree(fman);
- 	return ERR_PTR(err);
- }
--- 
-2.20.1
+     Andrew
 
