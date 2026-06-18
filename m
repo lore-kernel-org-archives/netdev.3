@@ -1,155 +1,158 @@
-Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013065.outbound.protection.outlook.com [40.93.201.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD1FC45BE3
-	for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 17:21:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68BC24D8CE;
+	Thu, 18 Jun 2026 17:24:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.65
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781803286; cv=pass; b=iTM2Km0NecEmuCIDJBOY45m6pzQEgRbPNyCEy0XdP9z6bNX1+P5m6qVSv5/AUMFcFq7iajis+vP6lZw2DwWVvG4B/GCHWKUf4ZFjBTOgYFI0DU9ys18tcy/nPcEWONhv+6btg6GdY0SceXBjeYaBeVoV/zfsBl9yBmmng5vD5pU=
+	t=1781803473; cv=fail; b=L+4Mf/IMkSovR3kMHhIEoKFA9TbCDUO12EDtEbBWnlokHsHYkF0ho99vbO3TGEiwcHhVQZ4yzjJcBkSM/cajzJASeL0F1hLvsSdqlf1UWFF9xziHwFdEiIQOsafQVcs3oy5/pRV6I69Z9pAHvE7Cmsz+050KrauNcH1P9rE/IvE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781803286; c=relaxed/simple;
-	bh=SNVxKxZtm6MtxffewaIGtszjj8gQJpxWGCiafHK4u1k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VsUNzBw4YUZwLF6UAqqkLNQ4X5mnuOFcq34JD0qXRk6koQnmm8i935pPOXplTWYO2oszwtxnRskvC83VFrH4oPbCerFC5wR8GB7wiNscJiW0sH7D7i3xpisTE1jqrf/vFmMvQEqSAnfeqxmp/AqcH+AJeLT+6/8r4cXhPy0S7ag=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OTM+26u8; arc=pass smtp.client-ip=209.85.160.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781803473; c=relaxed/simple;
+	bh=+6CwJlBptDeXFGCldN3wkTwBHQVaO8U64/w9xyZVy7g=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PqkHF17VCgAWDzruF5zGp+hkjGNAjMj/I47xQHG+zruvSUKxetp7kYC89b5dYpWJICLetkSBLpeRbB9cKPVzMP48Cpw/9LMpzEN1otYb7mFNwp4NqMEUwNbXkd12osef3dpM7pFtgarfPCogZgZjg/VZWmXMsGoC/vTcwUnlv8A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=mWcrFe7V; arc=fail smtp.client-ip=40.93.201.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OTM+26u8"
-Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-446c53679cbso877146fac.3
-        for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 10:21:24 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781803283; cv=none;
-        d=google.com; s=arc-20240605;
-        b=FqCR4PrQBNUbuwLGUHlo1NyoVl4ma19iuLYCQQ9+51mrNE7t3Z97obo9dcl0FamfQA
-         GylVXdqhMZ661xbXlpmFGL/vsngCS1cLW/cJkjVFjw6PVzPcbiRdg6UAPXttldcLvj6f
-         kkmtMNO+NzbsLZ9nVEl3pB0cydfSdYfJ9TBJN8QMWRWKjoNu2kJtakmouyqCL641js8I
-         XQg/j4whif7ycKG5BI840huHSTo15BjXVUbizx/OAaEpyfdT9C2EnindciwKGOQiu9EY
-         N8pN/DouWZkMJdFOVNk4tPcXHvREbPI6hhiS/64INyVYyhMSwLTxAk01mj8RnvNol9B4
-         yiOQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=T6a3eE2IK2HV0Y82Cb9fPT4nILmvz4oKCqUQPin7x5g=;
-        fh=QnFjqanEv1yzH4T5rB3gKgkxI+NSQULsuJfGUE/whMQ=;
-        b=UJwfBjr6XJaAtAVXNjqRHKvYsaV1A2cDrQ3h5178IHJJVe24D0b9UTZ2ZgvLP8IDzA
-         udcodQ+7Y0KBL4mk6jy0h+5RFIyO2tBd62muJX06mIQABaZzY224JnL+xqkWks9AfC6J
-         NoCixwo6Gu06KOltDlQHL0hNn7ZDJkGVEobwG0RYmHSr5UEhs7Rz2gLx1VGGbq6YZafY
-         Q//T8/F4aTxW1iubyzh/+4uQaeqIPfXe38JFLAGrn/xpTMPOCPgn/BVeenLeB3Le8iIk
-         iya/bRysDcDHCFajoCZm5ulyVpQLfChjRneYcPx0nisWgq7TMTp8GiLWRNi+/C26dnUa
-         e62g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781803283; x=1782408083; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T6a3eE2IK2HV0Y82Cb9fPT4nILmvz4oKCqUQPin7x5g=;
-        b=OTM+26u8acbtvl5XiC+aWAO0p2jvn7O9NDUcr6zsDv2G/JCnF96q/2H/wENfb5DQIO
-         phleS+X/P53FT3yRJjjXDKbwMg13X8hVugIMfGqFdcX7psELfT/F+jyXSDQXy/6aKIbv
-         g6W+0jb1hTJRCBNyv/czyOXIsz2WWQdK21224pOTFBVoXBNd9G4oGNhKp2P4QiscNg9K
-         jAValTkrG13Z+KJ/wr/sTFFpZSuQjCT558x9jJnueKw3mS+2KA/RG/wtyp6ePZowCPva
-         w005SizwxHoDhaKXvV5pT4IHzUwRvcNFSlspcWZd1iBFhPeu0yqc8zd/0/Zsvw4aANrm
-         zw1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781803283; x=1782408083;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=T6a3eE2IK2HV0Y82Cb9fPT4nILmvz4oKCqUQPin7x5g=;
-        b=liuxEBAoQeCzUasSv74qLVm3XAjO9FnJZsu+vR+I7F/JoTmiYemod6RW2Kkj0tfenA
-         PIIshV2Q83s3FxSzbSQ6WZS3YDGbFfa0kbcWLG6kp0PBit9i3vHOBcQ+sNiUSYX+ul0t
-         qqdkd9fJKVc7s5qrERs2stclEEUlDZIhQ7kjghKl0KzeLdFIRvy0Alquv+3eHmzlyWcC
-         r/+CNqCsKo6Dvz/Ow9qVDemENAFWY3h2g5qUu6wn5yfEH/JL4Ethoc4uLXF9jbKzUriN
-         RVO1eR7H/egd/QF+gji9qXAa2opMl64bB1qCHneQ8bt7YnIi9D6rNx11jX8ME2kwt65s
-         WT1g==
-X-Gm-Message-State: AOJu0Yx5d0YI8WXFRq7Un4b392rSNYnpr0mPDvw83pp9hKgfl7Ae1pck
-	vkYaT0ial4abTBEEpOMlFOP10pVoKSHMKJjf9xRotcLqFJ8vQo1J/PbNXBU/wPrO9LpTYA/NVWO
-	PAST3NYcBLrnVcXoDuiVXEw8uIUEjZG4=
-X-Gm-Gg: AfdE7ckK35kVqHyAMb6w2e/emd6AUlBehWBGNkdvH7g2z8jgnig/IV9NL6c8zHO8p6Q
-	mepkPZcsXAzuRxWPiH3eJ7Ww/6JXxHKJtL+3cgiN/+Zg/fxC8h85ZpMB12JryCpxQFdG9Vco12K
-	uxohr5L5Y7e+JJZLx7FWn4OF0Z8fMAGrkkCF7tTGTslAF8ZNieIADpgvHo2sKJ8eN+YFkmqOw4u
-	dEwnxtG43kkJZij4ZVs165L8voz8bCmaNa7Uyp7AG1PlXX3E9kCNn4sXCl5lNND97/yMZhe
-X-Received: by 2002:a05:6871:c8c2:b0:417:3441:6c54 with SMTP id
- 586e51a60fabf-447072a23d5mr305707fac.27.1781803273620; Thu, 18 Jun 2026
- 10:21:13 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="mWcrFe7V"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uh9FlxVgRwfoVVpeu6YwH95orFES61Afk+1iS14TTU97KroWMEmMEQk2rHrDyeMsHEY2mGr98OkSGSh+xHtA92QkxKG072ihltluK3Q7szlv8+pvWf2pmKBeJTcOvfd++srBaOgfbJDovF9Ji0V4JXHeXgTak/fewz35/6Yl1uNo2DA4fZHRGEy/V+JW3dL9NjxH2wG+V1bwBSZts8BDanDM1zW2eEMFi9DXKDoSYRq7Mfj5ymIcifnBEVD3obeKf1E0eIx5QAiKgk8zl20mQau2CnTZVQZiENTY/a/Nime3Uq6rgOS0x/nHlA2t5OwgnWwKlq6gcm3GZsJFUN1wig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ARRokEL9IP2EVu4sYSbmk3TC7pYOGiWnBDRZtGUJ9Uk=;
+ b=LtLYk0vQSATCVqyIN12fVPu4VvFHHTPa18qRwviJj+41AcdqLGlq6RPRhClJYqhvTchHkLWhZ473ubLzZlOsx0JQGPMh7t+ydW2TEurry3+Zp5F12Y1tjdlEM3xhbpGOqQTYB9w05qRHjhXwvLh+qMkJMUhrtfm5xKdz0mlOTyV9bzlYLpsBH2R9TO1r1VEb0VcXgJeM6ChK1JRLsvFmgU/nF5NBapCJNf8IpdFVRwkLcuNJ2rPlOK3g8UJ0eH43yFmGdXSpWc0qSOQOEf9Xpwf9B9M/E2GuH2LFXWukc5ukKkonB0fcw8h1TCIib7dsW5+wNTGDxy3zG6Gte2rHBQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ARRokEL9IP2EVu4sYSbmk3TC7pYOGiWnBDRZtGUJ9Uk=;
+ b=mWcrFe7Vq9TYF9SwLpcjp4K9oc29eiSil92r8ziDyEIEx+RSMXX+2/j3UGUDEM2Gg0VxtwnAxsdbeyt9EsRZz/4TTdh6/3EncWELWpYvYEnEEWGcL7bd8wlh3tkX5AKOpjQp7YhglnJ3efTG2Y816KolodCeXl9PuuDiUgQFpeo=
+Received: from SJ0PR03CA0190.namprd03.prod.outlook.com (2603:10b6:a03:2ef::15)
+ by SJ2PR12MB8783.namprd12.prod.outlook.com (2603:10b6:a03:4d0::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.16; Thu, 18 Jun
+ 2026 17:24:25 +0000
+Received: from SJ5PEPF000001D4.namprd05.prod.outlook.com
+ (2603:10b6:a03:2ef:cafe::8b) by SJ0PR03CA0190.outlook.office365.com
+ (2603:10b6:a03:2ef::15) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.139.13 via Frontend Transport; Thu,
+ 18 Jun 2026 17:24:25 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ SJ5PEPF000001D4.mail.protection.outlook.com (10.167.242.56) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.139.8 via Frontend Transport; Thu, 18 Jun 2026 17:24:24 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 18 Jun
+ 2026 12:24:23 -0500
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
+ (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 18 Jun
+ 2026 12:24:23 -0500
+Received: from galena-46a8.xcblab.xilinx.com (10.180.168.240) by
+ satlexmb07.amd.com (10.181.42.216) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.41 via Frontend Transport; Thu, 18 Jun 2026 12:24:22 -0500
+From: <alejandro.lucero-palau@amd.com>
+To: <linux-cxl@vger.kernel.org>, <netdev@vger.kernel.org>, <djbw@kernel.org>,
+	<edward.cree@amd.com>, <davem@davemloft.net>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <edumazet@google.com>, <dave.jiang@intel.com>
+CC: Alejandro Lucero <alucerop@amd.com>
+Subject: [PATCH v28 0/5] Type2 device basic support
+Date: Thu, 18 Jun 2026 19:18:01 +0100
+Message-ID: <20260618181806.118745-1-alejandro.lucero-palau@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1781788385.git.qianyuluo3@gmail.com> <46eb334399ce0e25e0897b42f21020541d159300.1781788385.git.qianyuluo3@gmail.com>
-In-Reply-To: <46eb334399ce0e25e0897b42f21020541d159300.1781788385.git.qianyuluo3@gmail.com>
-From: Eyal Birger <eyal.birger@gmail.com>
-Date: Thu, 18 Jun 2026 10:21:01 -0700
-X-Gm-Features: AVVi8CfKd8MaV-dXfJPQ83kkQDIHa-CA9lvn7QfmSo5DJWJOfbSl3Ch_eKDsYUA
-Message-ID: <CAHsH6Gvsf-JEQyetucAVT6mjaJDi=gMT1pDWFDagb1fhjmveGg@mail.gmail.com>
-Subject: Re: [PATCH 1/1] xfrm: nat_keepalive: avoid double free on send error
-To: Ren Wei <n05ec@lzu.edu.cn>
-Cc: netdev@vger.kernel.org, steffen.klassert@secunet.com, 
-	herbert@gondor.apana.org.au, davem@davemloft.net, yuantan098@gmail.com, 
-	bird@lzu.edu.cn, qianyuluo3@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001D4:EE_|SJ2PR12MB8783:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6e50c465-e56e-4594-3424-08decd5e71ac
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|23010399003|36860700016|376014|56012099006|11063799006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	ROZoaU3/sw7Bl2svzulurbpNvdAfsEfEzd/KMfiX6sx9dt3BdhJp0Zhd5LqpooWjqBQTjtKKPh1jDbR4BSddWpzvBvi+wiP9raBke8WxpUU+x8F0JHgl/iQSQq7P6JgsoBtSoDEm9pd5aH4qee9LJAJXXlXJxKlixgyKOsPmnN+kjDGo69FYKi0U7C/ig8WBihneA6QbG9oUn2wWV2FUm8c+WMcyfp7d7Gqkp955lQFsgKH1LWueW0+0Z/MHIDx1IEUhuHK6eJUVEsfHYPXld745KrSAlX8fnxzOKC9vHnlNvysBpcDjYPFm03ZWdjTHiVgrlp2i/RcIasq/yARtN8p1/ysuySPJJE96wemH64eTGfIem6FJVGTlFlNStlGbzJBTPvDN4f0id0N15QWepNAgYcDFhVSjfKtkH9BDZ72PNweMjcPAwqNAyIxEYLtFSV7GwaE8adDUryA8OU0KV8bf18tr54uDsTWRP1sSNLKmWKrLhj6YkwD6XNoD+M6PXILMV84Y9pR1vRHWTMHjZxCOJxV5tOtl40IK41OLMvEDIj4fEOT35PKQN26uz4D1fW9bWI+RsccBRxjP+8w3eNXsSlvwF9qOrK8eNI8ZxLhdnHtJgWiV1TMAKOK3MoN76qx61vOfZTNv7RPYBWVops9rVFZIgCKmWfdXBbYSb72ns3w/Hpbv/ElX0XNXjOBD7V7GJo0QWakOw9NMiPQOHgGxg495/0e6KHq3YoLg4p4=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(23010399003)(36860700016)(376014)(56012099006)(11063799006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	DOBoIrsy5Q/82O2A3XiJ742NUOg1a943xuxJyFiG0IDhAZIn08gIy4fHC0f3J2yrlRlX06wZWg6zF/tz2wWzvutLIXYqbNlHuMvTOEUkNpAc3hE5/2FwyhND2Bw4iVTEp6E32vxjq6ZRwTFLX9KRwdJANFjUsv1/bnOZgVGBb7oUYpvl0grcZfsSxRPkKotrtW6lkD+uXICVSKBbzt2pLYyWqA6FmPSvx9RtVvvCusY/qk7spaTQnQ0c5INoTZ2Tn/2qChs9SfHQG0QwB98clCmUcvKteWdGisnCyroj15O0oQdN2g0tDi+bwpBVIoMYbwQqxbXlnqSAsCeOICqV/DFigSB7e4T5uBy/Zgk9j6FRTy4/dKml9r23soKhp3XZOu4t7EM2TvO4cVrEJf062I+Jvd3fqhj1sqxdSt0QF+2r+8NpEVdrkMzPQEpPZIn2
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jun 2026 17:24:24.9576
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6e50c465-e56e-4594-3424-08decd5e71ac
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF000001D4.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8783
 
-On Thu, Jun 18, 2026 at 9:36=E2=80=AFAM Ren Wei <n05ec@lzu.edu.cn> wrote:
->
-> From: Qianyu Luo <qianyuluo3@gmail.com>
->
-> nat_keepalive_send() frees the keepalive skb whenever the IPv4 or IPv6
-> send helper reports an error.
->
-> That cleanup is only correct before the skb is handed to the output
-> path. Once ip_build_and_send_pkt() or ip6_xmit() takes ownership, the
-> networking stack may already have consumed the skb before returning an
-> error, so freeing it again is unsafe.
->
-> Handle the pre-handoff failure cases inside nat_keepalive_send_ipv4()
-> and nat_keepalive_send_ipv6(), where the caller still owns the skb, and
-> keep nat_keepalive_send() responsible only for family dispatch and the
-> unsupported-family cleanup path.
+From: Alejandro Lucero <alucerop@amd.com>
 
-Thanks for the fix!
+This series adds the last bits for allowing a CXL Type2 driver to obtain
+a CXL region linked to the device HDM decoders committed by the BIOS,
+with the driver being the sfc network driver.
 
->
-> Fixes: f531d13bdfe3 ("xfrm: support sending NAT keepalives in ESP in UDP =
-states")
-> Cc: stable@vger.kernel.org
-> Reported-by: Yuan Tan <yuantan098@gmail.com>
-> Reported-by: Xin Liu <bird@lzu.edu.cn>
-> Signed-off-by: Qianyu Luo <qianyuluo3@gmail.com>
-> Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-> ---
->  net/xfrm/xfrm_nat_keepalive.c | 15 +++++++++------
->  1 file changed, 9 insertions(+), 6 deletions(-)
->
-> diff --git a/net/xfrm/xfrm_nat_keepalive.c b/net/xfrm/xfrm_nat_keepalive.=
-c
-> index 458931062a04..f71328096f11 100644
-> --- a/net/xfrm/xfrm_nat_keepalive.c
-> +++ b/net/xfrm/xfrm_nat_keepalive.c
-> @@ -55,8 +55,10 @@ static int nat_keepalive_send_ipv4(struct sk_buff *skb=
-,
->                            ka->encap_sport, sock_net_uid(net, NULL));
->
->         rt =3D ip_route_output_key(net, &fl4);
-> -       if (IS_ERR(rt))
-> +       if (IS_ERR(rt)) {
-> +               kfree_skb(skb);
->                 return PTR_ERR(rt);
-> +       }
->
->         skb_dst_set(skb, &rt->dst);
->
-> @@ -100,6 +102,7 @@ static int nat_keepalive_send_ipv6(struct sk_buff *sk=
-b,
->         sock_net_set(sk, net);
->         dst =3D ip6_dst_lookup_flow(net, sk, &fl6, NULL);
->         if (IS_ERR(dst)) {
-> +               kfree_skb(skb);
->                 local_unlock_nested_bh(&nat_keepalive_sk_ipv6.bh_lock);
+Changes from v27:
 
-Any reason to do the kfree under lock?
+ - patch 1: make driver probe failing if error in efx_cxl_init (Dan)
+ - patch 4: add unmapping if error after efx_cxl_init (Dave)
+ - patch 4/5: move cxl_pio_initialised from patch 4 to patch 5 (Dave)
 
-Eyal
+Tested in the cxl_for_7.3 branch.
+
+Alejandro Lucero (5):
+  sfc: add cxl support
+  cxl/sfc: Map cxl regs
+  cxl/sfc: Initialize dpa without a mailbox
+  sfc: obtain and map cxl range using devm_cxl_probe_mem
+  sfc: support pio mapping based on cxl
+
+ drivers/cxl/core/core.h               |   2 +
+ drivers/cxl/core/mbox.c               |  51 +------------
+ drivers/cxl/core/memdev.c             |  67 ++++++++++++++++
+ drivers/cxl/core/pci.c                |   1 +
+ drivers/cxl/core/port.c               |   1 +
+ drivers/cxl/core/regs.c               |   1 +
+ drivers/cxl/cxlpci.h                  |  12 ---
+ drivers/cxl/pci.c                     |   1 +
+ drivers/net/ethernet/sfc/Kconfig      |   9 +++
+ drivers/net/ethernet/sfc/Makefile     |   1 +
+ drivers/net/ethernet/sfc/ef10.c       |  41 ++++++++--
+ drivers/net/ethernet/sfc/efx.c        |  18 ++++-
+ drivers/net/ethernet/sfc/efx.h        |   1 -
+ drivers/net/ethernet/sfc/efx_cxl.c    | 105 ++++++++++++++++++++++++++
+ drivers/net/ethernet/sfc/efx_cxl.h    |  32 ++++++++
+ drivers/net/ethernet/sfc/net_driver.h |  10 +++
+ drivers/net/ethernet/sfc/nic.h        |   3 +
+ include/cxl/cxl.h                     |   2 +
+ include/cxl/pci.h                     |  22 ++++++
+ 19 files changed, 309 insertions(+), 71 deletions(-)
+ create mode 100644 drivers/net/ethernet/sfc/efx_cxl.c
+ create mode 100644 drivers/net/ethernet/sfc/efx_cxl.h
+ create mode 100644 include/cxl/pci.h
+
+
+base-commit: 9b1e70e8f9ec4b5c6ce7fa774a0023bb6894c686
+-- 
+2.34.1
+
