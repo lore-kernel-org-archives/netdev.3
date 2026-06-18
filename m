@@ -1,156 +1,126 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013010.outbound.protection.outlook.com [52.101.83.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB6453DB960;
-	Thu, 18 Jun 2026 09:28:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781774908; cv=fail; b=m1nFkp85fos9y7ts1MM4kHvDQJCm0drcTK2dc+hR4FKI6PXzDN7GQEXGbwYz8bBOuwfaz6xK/YGwG72rFt6zXdyzuI2+cFkYg6hqocAFPjY+dwO5TPeBSRrGU0GRkzsVAuoHsboKYQsDp+ZrvuHygMn7tLFsvYM9rDnBMEpyudI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781774908; c=relaxed/simple;
-	bh=0m3QcCKzGJMMhja0x1xMnijEz4wK437bwSHxVbJAdT0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=byl3JazIok4K2/5AMhoUfdH2DAmzvMyl1jToYVkmpdRZSzq96bnNCJ7z5nay+Ufj4XXXdeemhCTXHQExIcNKOFPFNcSIJvQbReVKQ9LjhazX4GZQkHNQlRZ8KBLYghQzBNH2//6z4j07fsqB26A0xrXdg8wSNG2BSYdz4O27d/c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=bShKZyQH; arc=fail smtp.client-ip=52.101.83.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E5583C4548;
+	Thu, 18 Jun 2026 09:28:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781774940; cv=none; b=J02+vw8HQhQYE56gwgb4+xPfFqGv/t+VYyIM42HrroF3rH4M0rhk7lk2+OeJq80V+7HqDd1ShtQlsaji6QI//ZIu+dvE1HMYnGkdX5lmZXhhWRsK8IOUyIbHIN/5AhqDLPCpktVD9wK9I+bN5vzDx4O/2Q19V7axfJlKAxj7R1M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781774940; c=relaxed/simple;
+	bh=04V51Do/ddsEblzF46wftbAWhOKq0EbfrQ4E/JQKWsM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Hru+CsiIga9PeFV/BoEXT0UM9FEBH4rfROdoDVlQBr244qt5MOUE5SEjU7jIGdfu15kwDpU/vR9jhiJ0TC1IgyVm5il7e6fIqk6Lo1mCeEcyaFj2RpLR09mcRmQebhpnOsXxuWO2FSRetuT9hirVEU1baAKkfChmQzhVRK+h4P0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ccEMPgpg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="bShKZyQH"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FBvRKtEC+WOWvcYYiYUAGhO32K56AWSDaWbs9ocnNB/6Pgf0qnAXCuWqsZyJy72r2YPqrnAI8rPnOMWPK0/Zv7co916DVnTfXPESUf2ojeP7Y5ecaLDzt/uXJK9T7DE5HMgdNXu2nhHaEKEvFh1juEH4tWHpm0dE8PewDnQFVwIYzwlrwGRL8Sg3o13Dclr9YPD6xjHnrrdFlVC7dc0C2xivBtFzP3yGtD230it5vr92YSGtoL4UgHp9Hunjn+BUPBqi5HCBDeosDFPdIWU6n3yFg1ZheobQ5YpR10yfUdhV86rNozcBx8PRg2lN/Sq2mhQt2GYYtYWXzYz1GcnPlg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PgxEtE466grGHj8LlEJj15fp7X51sXUjThy6fzGiB80=;
- b=Qn5GosSVdpkeQkoggQz5vS/c7+w2UYJ9GZjLDok5wT7zLeN536BtYyqZnz54QJwya2vlTG/5/K7DQHL46fZhZJ+4V6vFhIg1rmvTbmyd1jthZ/Ax1xXpJVcAFgEnMtLZ/15tyulbUxMX0jsqfVnaK8xezJzhgZ/3h2nSdRIRuRRln1ON+2NzyOsoPBxcQ+sVCm6S45gDG+kh2+0LcP+a3JDONUYIGHK07cJRevqWRClNbB6WaBv7J0lg+bNQAO4RbVjUmlb+y8zdECybVaD6Wl5zcR9DvhYQ7W1kLNJ3LCXzYQVvZJ+Tbc7oHKcOJQqR0kKv/jYBDvCxcpTycndgGw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PgxEtE466grGHj8LlEJj15fp7X51sXUjThy6fzGiB80=;
- b=bShKZyQHxxBxrCdfqrpsM8bunrwizQoPhfnHj24mKFFz1pgTLQEosiaL6C8n9UDGAAlZpzLZynhnmcps0XNukTKaxPIo1I1xMmvZP5yU9ff4vM084hGs6pUyjXyz9tNqLYv7AIQYyl/x3jZroatq2/ZhnTsNeeDlzd6dU+BbG8/giBHOF9CFNdFaHosuI4wxZ+FWa1+W1HvCcBYIT0cH8q1lRs5SO8DFXGLkoQYphy0U1oVVrn131XDZlUn7hkoAJt0LUkPISGKjaYiiYzi4bsw08tqVolpNZ4UfmH6v3slMMHRkIW89/0yPKcaRx1u/LNJ0bsJs5kA8zJCetlLyTQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from GVXPR04MB12290.eurprd04.prod.outlook.com
- (2603:10a6:150:319::13) by AM9PR04MB8163.eurprd04.prod.outlook.com
- (2603:10a6:20b:3e8::24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.11; Thu, 18 Jun
- 2026 09:28:23 +0000
-Received: from GVXPR04MB12290.eurprd04.prod.outlook.com
- ([fe80::1739:3404:2175:33dd]) by GVXPR04MB12290.eurprd04.prod.outlook.com
- ([fe80::1739:3404:2175:33dd%6]) with mapi id 15.21.0113.015; Thu, 18 Jun 2026
- 09:28:23 +0000
-From: Ioana Ciornei <ioana.ciornei@nxp.com>
-To: andrew+netdev@lunn.ch,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ccEMPgpg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9826F1F00A3F;
+	Thu, 18 Jun 2026 09:28:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781774939;
+	bh=Jt2XuqikvU1qv2HE6czbAZ3NLNhPzCBmn3S/q0LYmIQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ccEMPgpgZDr2r5HleYCD1DmYRxPW9H+sI+eGq/qPeHfXYh1hjIeklNltAyj48EVGU
+	 P7zqUFadB8SWecRlwrIH6CyhK7ZpErDfTU1wFzNN2LBBDh9lkaxP7LLTD/g83s5+nR
+	 EH4ujJ2OpzFua1x4/DXsXZBpoIjwFrBl40h8XXEPTQKa0cE0eDeIoPsbbf/j3od2Q/
+	 eyFx9OfW1yyN9u85Y6fUQyq+VbUCQlq+2FUc9w3rbU/ovE34YLfkQOOFEPRIARMmQn
+	 uB9KlQCahemRZbxbXWnqz1wN3LXoj6RTx1SIWoe4Bpo2t1tj7Sl0vvX5ZE9rARAZOK
+	 bXT74VYHJ0UKw==
+From: Simon Horman <horms@kernel.org>
+To: dhowells@redhat.com
+Cc: Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	marc.dionne@auristor.com,
+	kuba@kernel.org,
 	davem@davemloft.net,
 	edumazet@google.com,
-	kuba@kernel.org,
 	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Cc: f.fainelli@gmail.com,
-	vladimir.oltean@nxp.com,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2 2/2] dpaa2-switch: fix VLAN upper check not rejecting bridge join
-Date: Thu, 18 Jun 2026 12:28:13 +0300
-Message-Id: <20260618092813.432535-3-ioana.ciornei@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260618092813.432535-1-ioana.ciornei@nxp.com>
-References: <20260618092813.432535-1-ioana.ciornei@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: AS4P189CA0003.EURP189.PROD.OUTLOOK.COM
- (2603:10a6:20b:5d7::8) To GVXPR04MB12290.eurprd04.prod.outlook.com
- (2603:10a6:150:319::13)
+	linux-afs@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	d4n.for.sec@gmail.com,
+	n05ec@lzu.edu.cn,
+	jaltman@auristor.com,
+	stable@kernel.org
+Subject: Re: [PATCH net 1/5] rxrpc: input: reject ACKALL outside transmit phase
+Date: Thu, 18 Jun 2026 10:27:33 +0100
+Message-ID: <20260618092733.887894-1-horms@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260616155749.2125907-2-dhowells@redhat.com>
+References: <20260616155749.2125907-2-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GVXPR04MB12290:EE_|AM9PR04MB8163:EE_
-X-MS-Office365-Filtering-Correlation-Id: f0f92a29-8af8-4432-a0e4-08decd1bf1cb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|19092799006|366016|376014|23010399003|22082099003|18002099003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	x39fUAjrxU9jce6ruoTVpW7ulzpaRWa03LsrZDPqfGpG3itUW3SpEFeP1aWIC49Hp3sxw334dkdZ4lrVAI+OGqqiu7I0L+4THsuhAtDeLm64mlTz+DUKIGSmFZe2o0swwPoBxl46eg9F9IoWdfkI0Nftmh2tXq9pq8pbDLbjxA8u19aEq+/6P/3ar3W18pPOnZW93eg6gkqEpEZxAcCX/e1q/mBONOz2EERt2TXO8ihUK7wUCTxEABI/yzQo2a+m25NDdxVLkFQ4nvEzpqPWj+dWNwYFgaL8xLa/pQHAPXF9SwhjtkI7v2B4Y+moy0iL1DPgY8lc8iCITelmuG5lr3No6ecQFaT1c/kOUqTBPr0P9TNgyGDMMgRUN4Dub7Hf2Xzp39o/EK7+K+2S4bZ9ifzbOIi2vVQ3zEtLVVUUkim2nA+cmp5YCmib9Y4eHf3cTo+z9ntEigd7vf7zdnbQWYe8NA/9Fxr5H6sLa8Whp5g2HsRDGnmfVQLB25DRGp+DS5RBdmu5/TldFQBRhQ4cophQeG2ymquFa1Y92F7gOblW8VNTz07DKZ2SqDlvMhltAtVlRfWVgfKQ1zxNoYsMVyd7O104WJsxB6pwvkdb+/Pzc2GnVHHNuCybhDqzimSQA4cqRsPc6F9e8GLMgqwn+yR/TVHm0dSv63uYlwk8FrBvhgbbB7CTTtPPNpCJ3dIa
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12290.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(366016)(376014)(23010399003)(22082099003)(18002099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?mVN5OdrjdJipFfaNxkxveZ2cdGRAjU5kOFyW70ekQ2ydjfc567iBT2ll5z37?=
- =?us-ascii?Q?fVO+Q+Yp1Ci/VHxZZmqPXJq483Hp444W1bvRd+lr2zXO5E6AMwHQcbCDm39X?=
- =?us-ascii?Q?/S4SZ02EX2Kx0f20UWksyblEqA537BbxNBhWtqcRItL9fbN2wHYH1j4WxluH?=
- =?us-ascii?Q?2d28SG82ULxLlEJpYDRLuvyuR/KURATHx2STRSRQTVscv0uz5YNQxl0PmsAP?=
- =?us-ascii?Q?k+5dP0HMK9RWjtLOU+Ba9J7RHfbdTryMw+UZSHl+fzIV1vMJwIqPt6TxiznL?=
- =?us-ascii?Q?+8mN6/HiP3thAownK2jt8Uiz4FTIIkeEnum2eiDNvPKx4NGZCkH2i+J4pUay?=
- =?us-ascii?Q?Gzo8SRlQ1/fiuSPNBebygIz8jZQYA+DjjHI/81X4iICzgO6n5q5cx+3q1iKc?=
- =?us-ascii?Q?DQKTGc5pBmP3lgr76ijicvGR1RtB3xTApJpnx0G+UuKefNcM6rpcd2bOH0SH?=
- =?us-ascii?Q?WIt8amyboKVc2XYZT+swLJOs5kEZQW/H4VGFmLfelQXbdzdhXlLulpjY5sCY?=
- =?us-ascii?Q?PnTLAHhSoAm1tc2D+yHOxc3bpkg7KcN5bpdSFisbstv1kXJd0MU2lS6PyWLr?=
- =?us-ascii?Q?oKvWVp7siMWTYh4Moo2WWCNXTElTXidbK5UjKqvbLsac/c/VJnmRvmHbCrSV?=
- =?us-ascii?Q?oG/2LImhG4pZFdL5J9t50OoR2FWGPK0q1ImAPe71fl6vYzhAf8kHetp2jBL0?=
- =?us-ascii?Q?7k1cClS/ZSxtFtuNwTNYuvjnU2PYiAZ56TvKoYVcmuhG5Cxmxh48vpuFofKr?=
- =?us-ascii?Q?NVvwq3ySbsBBYN7ff55Cf79ecTIKKhnOQE9XRZZGIXxtrhyoEBOkPxkz75ky?=
- =?us-ascii?Q?wdR7rObiOGd4mV4fKsIJCOi1az+aKDCRuJgQEv7TOv4/cbl9UdGIi1yBNkSF?=
- =?us-ascii?Q?I0O9cmXvO2tF77sEyvlIJN6WGEUBPEYMo8BHcVm3xZBvujekrM5Ykpt+qkVu?=
- =?us-ascii?Q?FvtEjosHElP97XNsgCRJUXJltBjSfRo3L+LnNwqsUO5/l4bCTqPXv6Ua7j+M?=
- =?us-ascii?Q?LwJBCBeQFuXPYwMZqh+uUDcsos8faIRqj1I45HcxSEFNuri2ZZjGf77jNwxn?=
- =?us-ascii?Q?qkfjMuXUjSqAr0F37To8fepHi6HCOIao4qYgfWl8SBJigengbY5qkZP/GI3c?=
- =?us-ascii?Q?WQS+wCrp+FaLDZwefjPbeE/3YYD/yOw9JWsG/Ux54LLrRidQL20QR9M8LtlF?=
- =?us-ascii?Q?ErLGxLcnG05Vh10DSNH/jDZso9TsxI2x2mE9bmsPdl5A8nclJBBIfLa5/yd4?=
- =?us-ascii?Q?kHR8+odQ228uOusAPNlKEXXgNbjIqYlTI2lfZ0YEccGIp1PX58xrhNEZ9MM5?=
- =?us-ascii?Q?NYVXvNR/peNHdXi0MPCEL2YvmcilT578PeZMtRJHzJMS2UNUn5cI5jih9CGp?=
- =?us-ascii?Q?PSAT4RSZwAdzLUMr7VlYEU3t0/0pyS9RGfIuvW4F6+bwci08Ia9uk3HWpQrU?=
- =?us-ascii?Q?7+Mr9YA1M3SpRrqniRp3M6LgPwZ/Gb0QN5YbtWl4RnRY+uiJ5IIAnnIEP7Ae?=
- =?us-ascii?Q?nF7QGtkMLnSJzo/9fneXfFGHaypMtSFl4yT9K+WxO7uKNKknW71Lkhbyhd9H?=
- =?us-ascii?Q?fPa8BMGiWQu4ep8cxlj/lwgBoc8nYbLh5E58w7E80bRfbhYfnXsswdQUv5cb?=
- =?us-ascii?Q?SUBWObfnnrdVGHiMfRJcnwou9gATkljHKunXdY9tsJa7MsBzIN9zz85hAyrI?=
- =?us-ascii?Q?km1l59zxBODF0firk8ecFrVfoOF6NMgEqJ0cRkudgHZzJrl4Un2XiIzlmSf6?=
- =?us-ascii?Q?JckgNRESYw=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f0f92a29-8af8-4432-a0e4-08decd1bf1cb
-X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12290.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jun 2026 09:28:23.8522
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3grZe6y6sPn+DMIxPkctgU7kvbJnCHPf0vsMLVYgsEYyDzszM/6/+bn2mLuLnDvzwd0jgK8tp1ifRauIyaYtMw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8163
+Content-Transfer-Encoding: 8bit
 
-The blamed commit refactored the prechangeupper event handling but
-failed to actually return an error in case
-dpaa2_switch_prevent_bridging_with_8021q_upper() detected a 802.1q upper
-on a port which tries to join a bridge. Fix this by returning err
-instead of 0.
-
-Fixes: 45035febc495 ("net: dpaa2-switch: refactor prechangeupper sanity checks")
-Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://sashiko.dev
 ---
-Changes in v2:
-- none
+rxrpc: input: reject ACKALL outside transmit phase
 
- drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+rxrpc_input_ackall() accepts ACKALL packets without checking whether
+the call is in a state that can legitimately have outstanding transmit
+buffers. A forged ACKALL can reach a new service call and trigger a null
+pointer dereference.
 
-diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-index 83ccefdac59f..858ba844ac51 100644
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-@@ -2212,7 +2212,7 @@ dpaa2_switch_prechangeupper_sanity_checks(struct net_device *netdev,
- 	if (err) {
- 		NL_SET_ERR_MSG_MOD(extack,
- 				   "Cannot join a bridge while VLAN uppers are present");
--		return 0;
-+		return err;
- 	}
- 
- 	netdev_for_each_lower_dev(upper_dev, other_dev, iter) {
--- 
-2.25.1
+> diff --git a/net/rxrpc/input.c b/net/rxrpc/input.c
+> index ce761466b02d6..37881dffa898b 100644
+> --- a/net/rxrpc/input.c
+> +++ b/net/rxrpc/input.c
 
+[ ... ]
+
+> @@ -1214,8 +1214,22 @@ static void rxrpc_input_ack(struct rxrpc_call *call, struct sk_buff *skb)
+>  static void rxrpc_input_ackall(struct rxrpc_call *call, struct sk_buff *skb)
+>  {
+>  	struct rxrpc_ack_summary summary = { 0 };
+> +	rxrpc_seq_t top = READ_ONCE(call->tx_top);
+> +
+> +	switch (__rxrpc_call_state(call)) {
+> +	case RXRPC_CALL_CLIENT_SEND_REQUEST:
+> +	case RXRPC_CALL_CLIENT_AWAIT_REPLY:
+> +	case RXRPC_CALL_SERVER_SEND_REPLY:
+> +	case RXRPC_CALL_SERVER_AWAIT_ACK:
+> +		break;
+> +	default:
+> +		return;
+> +	}
+> +
+> +	if (call->tx_bottom == top)
+> +		return;
+>  
+> -	if (rxrpc_rotate_tx_window(call, call->tx_top, &summary))
+> +	if (rxrpc_rotate_tx_window(call, top, &summary))
+
+[Severity: High]
+This isn't a bug introduced by this patch, but it appears the fix might be
+incomplete. The patch prevents a NULL pointer dereference in
+rxrpc_input_ackall() by checking if call->tx_bottom == top before calling
+rxrpc_rotate_tx_window().
+
+However, does the same vulnerability remain in rxrpc_receiving_reply()?
+
+If a client in the RXRPC_CALL_CLIENT_SEND_REQUEST state receives a forged or
+early DATA packet (acting as a reply) before it has queued any transmit data,
+call->tx_top and call->tx_bottom will both be 0, and call->tx_queue will be
+NULL.
+
+rxrpc_receiving_reply() will then unconditionally call:
+
+    if (!rxrpc_rotate_tx_window(call, top, &summary)) {
+
+Because rxrpc_rotate_tx_window() uses a do { ... } while (before_eq(seq, to))
+loop, it executes exactly once for seq = 1 and to = 0, which dereferences
+the NULL tq:
+
+    if (tq->bufs[ix]->flags & RXRPC_LAST_PACKET) {
+
+Should the empty window check be placed at the top of rxrpc_rotate_tx_window()
+instead, or mirrored in rxrpc_receiving_reply() to protect against early
+replies?
+
+>  		rxrpc_end_tx_phase(call, false, rxrpc_eproto_unexpected_ackall);
+>  }
