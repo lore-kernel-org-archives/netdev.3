@@ -1,66 +1,94 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D2D280A58
-	for <netdev@vger.kernel.org>; Wed, 17 Jun 2026 23:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB8740D56F;
+	Thu, 18 Jun 2026 00:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781740024; cv=none; b=KFpC7YdYMdzOb20BJIFqg8/VQEIc8zQkrJtq95knGQ3Mh8EOO6mmW/sDuRP8FYJ45Rfy3nNUDfp0Oqj0tfn4P9SQMJwcF6c0JWUnu7/TdCVL4+nhCBmAO6aH33rWoKfMBCyahynI9DMIhlTBmWA2N7sLDwvdmDV0UP/HxfC+xRk=
+	t=1781742053; cv=none; b=pLzxQ0GPlbpUHc+GDpftVrCgGOoaiV9a9iuq45cFJJIPeu6gUjl9wS6zy5cd31bU3EttWpIPszMFMjxZ39AveVjKHuNBUU+bMXfW+gwFGpFCntE1s6If2Z7c3RVn86cGhtzbW0zpvZaqES2i3A9b61aYd/n6+EXDBKCFuR+DvPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781740024; c=relaxed/simple;
-	bh=VH93vblaMqJ/K3v1N+MnPdIOelYOWuuCAwyhN+JixFw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WItnB7HP9VgXehC6QHim3OLTFhZVffhb44kcn9U6/Ph+dQHr6GdZD70eWpQwuk/ckU7cmPbfuRr7GjMHtQPZxcmW97+I2FEhR41DQdPG+OwMPIr9RlnFfOVcerULaZRq/tPZaovZ8w8mkK5wm8uBKwNKrp5nD5t6xoBJUtao5D0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gGC3JDnh; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781742053; c=relaxed/simple;
+	bh=UyhPkMo5Y/BP63lFwoyKLSVfjlF0W+UvSyHIa+nwoM4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=bX7m7QDWZagAa6yYXkm68gvtlqwqHN2vSNxqgDjebXYY+JwG5VmGdC56c9Yz4s41Pz7pOBfIRjhCA3MyGq9cRTZvlKB5xNBGa+msOVMrvh8uFwbsFaBVcOoEhrKA7NbJxTiV59r+y3cMd+qKTpymA3G3TwWWbXuGDM0gl4KfLdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UlDs+0Pz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gGC3JDnh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 297901F000E9;
-	Wed, 17 Jun 2026 23:47:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UlDs+0Pz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ECC11F000E9;
+	Thu, 18 Jun 2026 00:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781740022;
-	bh=dNfGF+DW/UJTT4QcLtQQaDo5D+dHZFYxNiVjjXI4rcw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=gGC3JDnh1OaY7JJ3rrvmUUmVAoqVOfLS448ILuwjE1BVMhprCeyP3ued0ZFByPet9
-	 y5ZwRt0j+8wTfWYmoAE5n+nZonqz8Hs8qER2NvyEbAaIcFizKR9jfmODlnVScAG/gG
-	 kNGqMs4q3Ttqi8eSSZfF2tJNfE6IxP7J//ACFRcMTEg+2XkFtzbwNBv6mhhxRpvaon
-	 A/bL0wL72vk+TP5ibYUHAp3c8b5jlEG/G+ysnUeuAKerVHk7Wo+E41f9hZ0ZcbEIc8
-	 W7rrgRTHD0XxxpPXR35kby6Qi1ZCxrCMDgKDneL+pqqEvPCPczUX84AX2W/Qe0QrC1
-	 MSa3XRoFHzJSw==
-Date: Wed, 17 Jun 2026 16:47:01 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Lei Zhu <zhulei_szu@163.com>
-Cc: brett.creeley@amd.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next] ionic: Change list definition method
-Message-ID: <20260617164701.3276216d@kernel.org>
-In-Reply-To: <20260617023243.61595-1-zhulei_szu@163.com>
-References: <20260617023243.61595-1-zhulei_szu@163.com>
+	s=k20260515; t=1781742052;
+	bh=xbiTg0JHE9z1MkGTCI98wP/VzjJo4Nkx2G3Y72iNgF4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=UlDs+0PzlR8GazTiOHWyLjVBHi9ykq5gu+M+kBYPWqO/yTfZA8P48AycX5LFVrNhb
+	 FjIxdY7AMwybQzgwlI/I2uhXt3QuZF9xJVfPdYceC5NWf9eZ7L1fdiX+5egsim7pNx
+	 +68hKPxQBGIR2rASp6h2BrlVuW5WmMa/zWb3oV1u+HTajPUQXNfErhvlke1zYOoVcz
+	 o5SjAGMVvE47PJfoP7QIOfmofXv7aPagSz2jizE/elbuvV1rpeSsIXP8d8BFm1CHj+
+	 cszisBoIdf8x+kmgZjuAe3VaxIo8fjNe/PRvAM86pQrj/a40FqAPjUn88Az5aCF598
+	 NK6ucM3Ug/y9g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93B2D393102B;
+	Thu, 18 Jun 2026 00:20:47 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v6 0/7] net: require CAP_NET_ADMIN in the device netns
+ for
+ tunnel changelink
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178174204613.1875263.5211999687158879407.git-patchwork-notify@kernel.org>
+Date: Thu, 18 Jun 2026 00:20:46 +0000
+References: <20260612085941.3158249-1-maoyixie.tju@gmail.com>
+In-Reply-To: <20260612085941.3158249-1-maoyixie.tju@gmail.com>
+To: Maoyi Xie <maoyixie.tju@gmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, dsahern@kernel.org, steffen.klassert@secunet.com,
+ herbert@gondor.apana.org.au, horms@kernel.org, kuniyu@google.com,
+ shaw.leon@gmail.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
 
-On Wed, 17 Jun 2026 10:32:43 +0800 Lei Zhu wrote:
-> The LIST_HEAD macro can both define a linked list and initialize
-> it in one step. To simplify code, we replace the separate operations
-> of linked list definition and manual initialization with the LIST_HEAD
-> macro.
+Hello:
 
-## Form letter - net-next-closed
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-We have already submitted our pull request with net-next material for v7.2,
-and therefore net-next is closed for new drivers, features, code refactoring
-and optimizations. We are currently accepting bug fixes only.
+On Fri, 12 Jun 2026 16:59:34 +0800 you wrote:
+> A tunnel changelink() operates on at most two netns, dev_net(dev) and
+> the tunnel link netns t->net. They differ once the device is created in
+> or moved to a netns other than the one the request runs in. The rtnl
+> changelink path checks CAP_NET_ADMIN only against dev_net(dev), so a
+> caller privileged there but not in the link netns can rewrite a tunnel
+> that lives in the link netns. Commit 8b484efd5cb4 ("ip6: vti: Use
+> ip6_tnl.net in vti6_siocdevprivate().") added the same check on the
+> ioctl path. This series adds it on the RTM_NEWLINK path.
+> 
+> [...]
 
-Please repost when net-next reopens after June 29th.
+Here is the summary with links:
+  - [net,v6,1/7] net: ip_gre: require CAP_NET_ADMIN in the device netns for changelink
+    https://git.kernel.org/netdev/net/c/8165f7ff57d9
+  - [net,v6,2/7] net: ipip: require CAP_NET_ADMIN in the device netns for changelink
+    https://git.kernel.org/netdev/net/c/8211a2632466
+  - [net,v6,3/7] net: ip_vti: require CAP_NET_ADMIN in the device netns for changelink
+    https://git.kernel.org/netdev/net/c/95cceadbfd52
+  - [net,v6,4/7] net: ip6_tunnel: require CAP_NET_ADMIN in the device netns for changelink
+    https://git.kernel.org/netdev/net/c/2496fa0b7d18
+  - [net,v6,5/7] net: ip6_gre: require CAP_NET_ADMIN in the device netns for changelink
+    https://git.kernel.org/netdev/net/c/f00a50876d28
+  - [net,v6,6/7] net: ip6_vti: require CAP_NET_ADMIN in the device netns for changelink
+    https://git.kernel.org/netdev/net/c/e2ac3b242c37
+  - [net,v6,7/7] xfrm: xfrm_interface: require CAP_NET_ADMIN in the device netns for changelink
+    https://git.kernel.org/netdev/net/c/095515d89b19
 
-RFC patches sent for review only are obviously welcome at any time.
-
-See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#development-cycle
+You are awesome, thank you!
 -- 
-pw-bot: defer
-pv-bot: closed
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
