@@ -1,259 +1,120 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 228803E5A31
-	for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 11:06:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E63C13EFFDE;
+	Thu, 18 Jun 2026 11:10:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781780790; cv=none; b=F2qR0KGdGhrcUWkG5RjpFeKWFHFd3Dy72e5XEZZgXkqM+3R96xJjimhSVnkDhv44E8rqHj0xjR2RSZizVB1F3UoVzttaev8TnWA20+rpgSWkicA0kSwN2mDabND3CWeapqjiTLHeE0GLuR7flLRstjuZnaFJ/NrMzppcA3G/dhg=
+	t=1781781030; cv=none; b=s6w18yr+VVMU7VAIEI7irwTqU9HVVz12L8aVvdmISSCq0FQkT9miOC1H7h6ovy7FCy1m10dydbobund0ZJx9JYQ1zTejChfXCjAQE5QbDXCBBToswfN4y+QLhHvHSBEw9NlS6Lb83ZAW9RpltoFWrtsXqG5h3yNxsOa/UJbANaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781780790; c=relaxed/simple;
-	bh=Q2/gPX351QT9J41evKl/wDt9TJNiRoYd+yFER/bglR4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RJ2Zknu+NAQN1PZfDkl91byfUNRG5WSZWtmVGD2rE6NEfHb+HBSgaXNQq5oqiRBqNvK6x2/T0cbINYhgGgY+GO2gTeeC7zl+jNfFlS5HUzlO3PsMezeSPmzX9ypnHpPo98OVpIW/VTlwlHx1ZlNVgQFlct5G0epClmHeki2f1gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 64C8B6D2D5;
-	Thu, 18 Jun 2026 11:06:16 +0000 (UTC)
-Authentication-Results: smtp-out1.suse.de;
-	none
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 497A9779AB;
-	Thu, 18 Jun 2026 11:06:16 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id qEHJECjRM2q7TgAAD6G6ig
-	(envelope-from <oneukum@suse.com>); Thu, 18 Jun 2026 11:06:16 +0000
-From: Oliver Neukum <oneukum@suse.com>
-To: linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: Oliver Neukum <oneukum@suse.com>
-Subject: [RFT 1/1] usb: class: cdc-wdm: switch to kfifo for buffering
-Date: Thu, 18 Jun 2026 13:04:15 +0200
-Message-ID: <20260618110612.439021-2-oneukum@suse.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260618110612.439021-1-oneukum@suse.com>
-References: <20260618110612.439021-1-oneukum@suse.com>
+	s=arc-20240116; t=1781781030; c=relaxed/simple;
+	bh=HoWGg0zTkUVqatGc0aka4gH64j/XDMTTpDicJojGanI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Rx8buaDXRQ4AO4YFaTp0kufaXz5cen5lKtAduqQ4WhD0K59Te9AIIlh2fXdMqXp5K9gZDHLsD4oGbTtwCYqePfA4JrjgdLtMpi73gmYbAUdGCL0kgqc76Q/jz/3hLEki6GfT0yTFgtRCBj7r7brp/O8iHZOVX34y67/7lYzqXSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=hn8OzFpn; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="hn8OzFpn"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=mls5Y4yVbiDGrtnf2pIJszG8YFMj0EE0dZopTEJKai4=; b=hn8OzFpnX82IHyQ9mFH+jhxsh5
+	gv8ZlbUS4cmhesbFYeTyVwJvyvLYBvyXJ6+yGqWQqLGROC+b6UgEDpRL8i9daIUbqttHSGZyV56go
+	O+sRHanQRzQNH+YPFKzqAXg+2LoVREAP0GkAFlziRN3fut2SniuMhJ9L3ocmZMKSkreo=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1waAdT-008KaN-Bi; Thu, 18 Jun 2026 13:10:15 +0200
+Date: Thu, 18 Jun 2026 13:10:15 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Kyle Switch <kyle.switch@motor-comm.com>
+Cc: David Yang <mmyangfl@gmail.com>, olteanv@gmail.com, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, ming.xu@motor-comm.com,
+	xiaolin.xu@motor-comm.com, jianmin.wang@motor-comm.com,
+	de.ge@motor-comm.com
+Subject: Re: [RESEND PATCH v1] net: dsa: motorcomm: add yt92xx dsa driver
+Message-ID: <5604c06c-0db8-49dd-bc89-823761f49082@lunn.ch>
+References: <20260615111235.3544282-1-kyle.switch@motor-comm.com>
+ <CAAXyoMOp8mYLUx4CQBn=9R8rNqEsb8ybWD0z+=FJgh2j-F0s8A@mail.gmail.com>
+ <88f726d5-1617-4d2e-8fbb-d3da9478b386@motor-comm.com>
+ <a689a734-bfd2-4e8f-85dd-9ae210b3161a@lunn.ch>
+ <39b79f5b-3e13-4620-83ba-b2ef991acca9@motor-comm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Spam-Flag: NO
-X-Spam-Score: -4.00
-X-Spam-Level: 
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-4.00 / 50.00];
-	REPLY(-4.00)[]
-X-Rspamd-Queue-Id: 64C8B6D2D5
-X-Rspamd-Action: no action
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <39b79f5b-3e13-4620-83ba-b2ef991acca9@motor-comm.com>
 
-The kfifo code is more efficient and takes care
-of memory ordering without locking.
+> >>>>  #define ETH_P_QINQ1    0x9100          /* deprecated QinQ VLAN [ NOT AN OFFICIALLY REGISTERED ID ] */
+> >>>>  #define ETH_P_QINQ2    0x9200          /* deprecated QinQ VLAN [ NOT AN OFFICIALLY REGISTERED ID ] */
+> >>>>  #define ETH_P_QINQ3    0x9300          /* deprecated QinQ VLAN [ NOT AN OFFICIALLY REGISTERED ID ] */
+> >>>> -#define ETH_P_YT921X   0x9988          /* Motorcomm YT921x DSA [ NOT AN OFFICIALLY REGISTERED ID ] */
+> >>>> +#define ETH_P_YT92XX   0x9988          /* Motorcomm YT92xx DSA [ NOT AN OFFICIALLY REGISTERED ID ] */
+> >>>>  #define ETH_P_EDSA     0xDADA          /* Ethertype DSA [ NOT AN OFFICIALLY REGISTERED ID ] */
+> >>>>  #define ETH_P_DSA_8021Q        0xDADB          /* Fake VLAN Header for DSA [ NOT AN OFFICIALLY REGISTERED ID ] */
+> >>>>  #define ETH_P_DSA_A5PSW        0xE001          /* A5PSW Tag Value [ NOT AN OFFICIALLY REGISTERED ID ] */
+> >>>
+> >>> UAPI stands for User-space API. Do not change it unless there is a
+> >>> very very good reason.
+> >>>
+> >>
+> >> Ans: The default tpid both yt921x and yt922x is 0x9988. I have modified this to 
+> >> allow for simultaneous use in both yt922x and yt921x scenarios.
+> > 
+> > As pointed out, this is UAPI. Any changes to this file need a good
+> > explanation how it does not change the user API. Do this break
+> > backwards compatibility with user space applications? Maybe tcpdump or
+> > wireshark has a dissector which expects ETH_P_YT921X and you have just
+> > broken it?
+> > 
+> 
+> Ans:Now I have a better understanding of the role of the UAPI representative. 
+> If a new dsa driver is added in the subsequent patch, consider adding one instead of modifying the original content.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
----
- drivers/usb/class/cdc-wdm.c | 62 ++++++++++++++++++-------------------
- 1 file changed, 30 insertions(+), 32 deletions(-)
+Or just use ETH_P_YT921X.
 
-diff --git a/drivers/usb/class/cdc-wdm.c b/drivers/usb/class/cdc-wdm.c
-index 7556c0dac908..83fc253f8c09 100644
---- a/drivers/usb/class/cdc-wdm.c
-+++ b/drivers/usb/class/cdc-wdm.c
-@@ -27,6 +27,7 @@
- #include <linux/wwan.h>
- #include <asm/byteorder.h>
- #include <linux/unaligned.h>
-+#include <linux/kfifo.h>
- #include <linux/usb/cdc-wdm.h>
- 
- #define DRIVER_AUTHOR "Oliver Neukum"
-@@ -77,7 +78,8 @@ struct wdm_device {
- 	u8			*inbuf; /* buffer for response */
- 	u8			*outbuf; /* buffer for command */
- 	u8			*sbuf; /* buffer for status */
--	u8			*ubuf; /* buffer for copy to user space */
-+
-+	struct kfifo		ubuf; /* payload */
- 
- 	struct urb		*command;
- 	struct urb		*response;
-@@ -92,7 +94,6 @@ struct wdm_device {
- 	u16			wMaxCommand;
- 	u16			wMaxPacketSize;
- 	__le16			inum;
--	int			length;
- 	int			read;
- 	int			count;
- 	dma_addr_t		shandle;
-@@ -170,6 +171,7 @@ static void wdm_in_callback(struct urb *urb)
- 	struct wdm_device *desc = urb->context;
- 	int status = urb->status;
- 	int length = urb->actual_length;
-+	int processed;
- 
- 	spin_lock_irqsave(&desc->iuspin, flags);
- 	clear_bit(WDM_RESPONDING, &desc->flags);
-@@ -218,17 +220,13 @@ static void wdm_in_callback(struct urb *urb)
- 		goto skip_zlp;
- 	}
- 
--	if (length + desc->length > desc->wMaxCommand) {
--		/* The buffer would overflow */
--		set_bit(WDM_OVERFLOW, &desc->flags);
--	} else {
--		/* we may already be in overflow */
--		if (!test_bit(WDM_OVERFLOW, &desc->flags)) {
--			memmove(desc->ubuf + desc->length, desc->inbuf, length);
--			smp_wmb(); /* against wdm_read() */
--			WRITE_ONCE(desc->length, desc->length + length);
--		}
-+	processed = kfifo_in(&desc->ubuf, desc->inbuf, length);
-+	if (processed < length) {
-+		 set_bit(WDM_OVERFLOW, &desc->flags);
-+		 /* WDM_OVERFLOW must not be set after WDM_READ */
-+		 smp_wmb(); /* against wdm_read() */
- 	}
-+
- skip_error:
- 
- 	if (desc->rerr) {
-@@ -372,8 +370,8 @@ static void cleanup(struct wdm_device *desc)
- 	kfree(desc->inbuf);
- 	kfree(desc->orq);
- 	kfree(desc->irq);
--	kfree(desc->ubuf);
- 	free_urbs(desc);
-+	kfifo_free(&desc->ubuf);
- 	kfree(desc);
- }
- 
-@@ -524,8 +522,7 @@ static int service_outstanding_interrupt(struct wdm_device *desc)
- static ssize_t wdm_read
- (struct file *file, char __user *buffer, size_t count, loff_t *ppos)
- {
--	int rv, cntr;
--	int i = 0;
-+	int rv, cntr, done;
- 	struct wdm_device *desc = file->private_data;
- 
- 
-@@ -533,8 +530,7 @@ static ssize_t wdm_read
- 	if (rv < 0)
- 		return -ERESTARTSYS;
- 
--	cntr = READ_ONCE(desc->length);
--	smp_rmb(); /* against wdm_in_callback() */
-+	cntr = kfifo_len(&desc->ubuf);
- 	if (cntr == 0) {
- 		desc->read = 0;
- retry:
-@@ -547,7 +543,6 @@ static ssize_t wdm_read
- 			rv = -ENOBUFS;
- 			goto err;
- 		}
--		i++;
- 		if (file->f_flags & O_NONBLOCK) {
- 			if (!test_bit(WDM_READ, &desc->flags)) {
- 				rv = -EAGAIN;
-@@ -568,6 +563,13 @@ static ssize_t wdm_read
- 			rv = -EIO;
- 			goto err;
- 		}
-+		smp_rmb(); /* against wdm_in_callback() */
-+		if (test_bit(WDM_OVERFLOW, &desc->flags)) {
-+			clear_bit(WDM_OVERFLOW, &desc->flags);
-+			rv = -ENOBUFS;
-+			goto err;
-+		}
-+
- 		usb_mark_last_busy(interface_to_usbdev(desc->intf));
- 		if (rv < 0) {
- 			rv = -ERESTARTSYS;
-@@ -591,31 +593,27 @@ static ssize_t wdm_read
- 			goto retry;
- 		}
- 
--		cntr = desc->length;
-+		cntr = kfifo_len(&desc->ubuf);
- 		spin_unlock_irq(&desc->iuspin);
- 	}
- 
- 	if (cntr > count)
- 		cntr = count;
--	rv = copy_to_user(buffer, desc->ubuf, cntr);
--	if (rv > 0) {
-+	rv = kfifo_to_user(&desc->ubuf, buffer, cntr, &done);
-+	if (rv < 0) {
- 		rv = -EFAULT;
- 		goto err;
- 	}
- 
- 	spin_lock_irq(&desc->iuspin);
- 
--	for (i = 0; i < desc->length - cntr; i++)
--		desc->ubuf[i] = desc->ubuf[i + cntr];
--
--	desc->length -= cntr;
- 	/* in case we had outstanding data */
--	if (!desc->length) {
-+	if (kfifo_is_empty(&desc->ubuf)) {
- 		clear_bit(WDM_READ, &desc->flags);
- 		service_outstanding_interrupt(desc);
- 	}
- 	spin_unlock_irq(&desc->iuspin);
--	rv = cntr;
-+	rv = done;
- 
- err:
- 	mutex_unlock(&desc->rlock);
-@@ -1013,7 +1011,7 @@ static void service_interrupt_work(struct work_struct *work)
- 
- 	spin_lock_irq(&desc->iuspin);
- 	service_outstanding_interrupt(desc);
--	if (!desc->resp_count && (desc->length || desc->rerr)) {
-+	if (!desc->resp_count && (!kfifo_is_empty(&desc->ubuf) || desc->rerr)) {
- 		set_bit(WDM_READ, &desc->flags);
- 		wake_up(&desc->wait);
- 	}
-@@ -1071,10 +1069,6 @@ static int wdm_create(struct usb_interface *intf, struct usb_endpoint_descriptor
- 	if (!desc->command)
- 		goto err;
- 
--	desc->ubuf = kmalloc(desc->wMaxCommand, GFP_KERNEL);
--	if (!desc->ubuf)
--		goto err;
--
- 	desc->sbuf = kmalloc(desc->wMaxPacketSize, GFP_KERNEL);
- 	if (!desc->sbuf)
- 		goto err;
-@@ -1083,6 +1077,10 @@ static int wdm_create(struct usb_interface *intf, struct usb_endpoint_descriptor
- 	if (!desc->inbuf)
- 		goto err;
- 
-+	rv = kfifo_alloc(&desc->ubuf, roundup_pow_of_two(desc->wMaxCommand), GFP_KERNEL);
-+	if (rv < 0)
-+		goto err;
-+
- 	usb_fill_int_urb(
- 		desc->validity,
- 		interface_to_usbdev(intf),
--- 
-2.54.0
+> yt921x_vlan_add(struct yt921x_priv *priv, int port, u16 vid, bool untagged)
+> {
+>  u64 mask64;
+>  u64 ctrl64;
+> 
+>  mask64 = YT921X_VLAN_CTRL_PORTn(port) |
+>    YT921X_VLAN_CTRL_PORTS(priv->cpu_ports_mask);
+>  ctrl64 = mask64;
+> 
+>  mask64 |= YT921X_VLAN_CTRL_UNTAG_PORTn(port);
+>  if (untagged)
+>   ctrl64 |= YT921X_VLAN_CTRL_UNTAG_PORTn(port);
+> 
+>  return yt921x_reg64_update_bits(priv, YT921X_VLANn_CTRL(vid),
+>      mask64, ctrl64);
+> }
+> 
+> after patch:
+> 
+> yt921x_vlan_add(struct yt921x_priv *priv, int port, u16 vid, bool untagged)
+> {
+>  struct yt_port_mask member;
+>  struct yt_port_mask untag;
+> 
+>  member.portsbits[0] = BIT(port) | priv->cpu_ports_mask;
+>  if (untagged)
+>   untag.portbits[0] = BIT(port);
+> 
+>   return yt_vlan_port_set(priv->unit, vid, member, untag);  // Here we use encapsulated interfaces to complete the hardware configuration. 
+> 							     // We can ignore the differences between different motorcomm series, which will be reflected in driver/net/dsa/motorocmm/switch/yt_vlan. c
+> }
 
+Look at other DSA drivers, e.g. mv88e6xxx, ocelot. They have
+structures like ocelot_ops and mv88e6xxx_ops which abstract the
+differences between different families.
+
+	Andrew
