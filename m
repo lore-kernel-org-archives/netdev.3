@@ -1,50 +1,55 @@
-Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D493F38D40D;
-	Thu, 18 Jun 2026 14:21:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018B52DE702
+	for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 14:22:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781792516; cv=none; b=PUor9O2WuPDSjLs2NYh24JwM0ub7Eqyxd70IhDx2fTEIz4+8OyUWBUdjVtpYIAIQKnY0rCFJM/5TxeVLUHtw9+UMB0UgecvAubq0OUXZaXTHmEIEpgFGBXMSwZIDnCtERyiB90J3lZkunJzjB8sJRX5eQrqSyVbMVv/68qy/39o=
+	t=1781792536; cv=none; b=bFeiGW+Xz5nVe9mksdWjwaDEAol2Fi7UGCcqjSI2/mLdrpD63gfEPBxkmiTsU5tH+472BQyBdKGuDtSc/tgU9iXIkb5CiMNUtjaZW7RcfoOYaciel2qEONiGxq/vbUhn8UTsc6QUh1UIHfsPr5Usx8m/yqakVYwhsVH7UvVlAGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781792516; c=relaxed/simple;
-	bh=L5U93jZHJyDASCbYgKUYgJLTODAE27QkVBFWgkckHp0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=EqB2qxVCbzj6ADwEIiu4QUvYQC7JenWK2fCq4HyRTm3iCSmH9riiCQ5GoJ0dem9/RU3EVp+Ql03zWov4vnizM+y57WZbo/V787sZgZDpNKogIiWCq7tTlae40npi6xm5KYyRc00RPOcztY/KLZJ9L8o4w3O+E+tsk5v/qiDcfHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=MoqV4MmD; arc=none smtp.client-ip=101.71.155.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+	s=arc-20240116; t=1781792536; c=relaxed/simple;
+	bh=iq3Ezql0D49y86sPQaYvb4jHBq6U1dI1ce9k61tPxSI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mx6rrpbduWSQPYq90TOF/mlO7bW1132CXeEZqQPddRCqNfXE0T6acHmVUgpjNn9FCyqvcfr33ZvKtqSZugYlsW9ikjIv1+Auwijj0WykWPdV916uY5/uXCHwOgtazzzysg7ISBIOah2bVpYMh748TznlKg9mM0Fjwizgh0VTdq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dtQgvFgH; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="MoqV4MmD"
-Received: from PC-202605011814.localdomain (unknown [222.191.246.242])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 42ee4c373;
-	Thu, 18 Jun 2026 22:16:34 +0800 (GMT+08:00)
-From: Runyu Xiao <runyu.xiao@seu.edu.cn>
-To: Mahanta Jambigi <mjambigi@linux.ibm.com>,
-	"D. Wythe" <alibuda@linux.alibaba.com>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Sidraya Jayagond <sidraya@linux.ibm.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Tony Lu <tonylu@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>,
-	Simon Horman <horms@kernel.org>,
-	Karsten Graul <kgraul@linux.ibm.com>,
-	linux-rdma@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	jianhao.xu@seu.edu.cn,
-	runyu.xiao@seu.edu.cn
-Subject: Re: [PATCH net] net/smc: avoid recursive sk_callback_lock in listen data_ready
-Date: Thu, 18 Jun 2026 22:16:29 +0800
-Message-Id: <20260618141629.2904071-1-runyu.xiao@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <f7e36176-d00a-4471-94ed-d385e579b43d@linux.ibm.com>
-References: <f7e36176-d00a-4471-94ed-d385e579b43d@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dtQgvFgH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781792535; x=1813328535;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=iq3Ezql0D49y86sPQaYvb4jHBq6U1dI1ce9k61tPxSI=;
+  b=dtQgvFgHzpQia0GJ+MombG4X5dpkE6hbCNEhmvumOplaQbimtC+efDeu
+   v00I1PyXlATNW5w2Cji+oDUmpbqyUyKgYsdGkyYhIUMGtzlxxKuHLUBnD
+   K7/NxwY63tsWKEe+9N8D4m+ITnXK8LQLdlBGnrpsTPMAq7rHVGgLgs1Pc
+   32pRsxxYKQXUfa+nB/q/WOLfxU+J0mEzpMe7T+TfvnLV4aLn4rrnZ2Pbx
+   NOtSADVadAl5OndaedF7CdKJMGeCG7gjgzau1ddnz/Qg35TzsDvo1sSmK
+   eixjVeTHsQZz3FPxrnxAIjbZTkCFX3M8QMRDfeJ7wTZVTeW9H4j8jnwqL
+   w==;
+X-CSE-ConnectionGUID: mB47Q4rYRfm90ZJ+5SZt5Q==
+X-CSE-MsgGUID: LWZD4/4GSam0775bRe9vYw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11820"; a="82629615"
+X-IronPort-AV: E=Sophos;i="6.24,211,1774335600"; 
+   d="scan'208";a="82629615"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2026 07:22:14 -0700
+X-CSE-ConnectionGUID: sLWbe4QjT8eXL7UIu4bBjQ==
+X-CSE-MsgGUID: vBv+ppFORd+Xs4uDnzakJQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,211,1774335600"; 
+   d="scan'208";a="244214810"
+Received: from gnrd8.igk.intel.com (HELO GNRD8) ([10.123.232.137])
+  by fmviesa010.fm.intel.com with ESMTP; 18 Jun 2026 07:22:13 -0700
+From: Sergey Temerkhanov <sergey.temerkhanov@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	pmenzel@molgen.mpg.de
+Subject: [PATCH iwl-next v2] ixgbe: Implement PCI reset handler
+Date: Thu, 18 Jun 2026 14:22:12 +0000
+Message-ID: <20260618142212.310475-1-sergey.temerkhanov@intel.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,83 +57,137 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9edb173fd803a1kunmb825a670a55e1
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZGE4YVkxKGU9MTB0YSE1DHVYeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUlVSkJKVUlPTVVJT0lZV1kWGg8SFR0UWUFZT0tIVUpLSE
-	pPSExVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=MoqV4MmDRylUoqoUi+YtDHcBMu14DQc4kKkjuz1YU0otMj8TXwY+HxXTf5/VMCJgubQFjGCt3tHFeYrl5EEsZ9tkpL3WZ6577zEriBUPvds8GKpQEwnePFz4aL9F2DRMJUXyNB06jfdOUEHfithPx4fLeKu6NEppZzBTlAZXfkU=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
-	bh=GM5MKfzBrLqFzrUns6jEKAvDRObTqAY5/7+P5HHfT8I=;
-	h=date:mime-version:subject:message-id:from;
 
-Hi,
+Implement PCI device reset handler to allow the network device to
+get re-initialized and function after a PCI-level reset.
 
-Thanks for taking a look.
+This is necessary for the adapter to avoid TX queue timeouts
+occurring when the PCI reset is initiated via sysfs during
+the operation
 
-The exact Lockdep stack I have is from the grounded reproducer, not from
-a production SMC setup.  The reproducer keeps the same callback shape:
-the close/flush side holds sk_callback_lock and invokes the installed
-sk_data_ready callback, which re-enters smc_clcsock_data_ready() and tries
-to take sk_callback_lock again.
+Signed-off-by: Sergey Temerkhanov <sergey.temerkhanov@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+---
 
-The relevant Lockdep report is:
+Previous version: https://lore.kernel.org/netdev/MW4PR11MB6864BC9CA84F060AF7E0248480E42@MW4PR11MB6864.namprd11.prod.outlook.com/
+v1->v2 changes: Rearranged the order of operations, switched to poll_timeout_us() macro
 
-  WARNING: possible recursive locking detected
-  kworker/u4:3/39 is trying to acquire lock:
-    (sk_callback_lock) at smc_clcsock_data_ready+0xa/0x4d
+ drivers/net/ethernet/intel/ixgbe/ixgbe.h      |  1 +
+ drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 82 +++++++++++++++++++
+ 2 files changed, 83 insertions(+)
 
-  but task is already holding lock:
-    (sk_callback_lock) at smc_close_flush_work+0xc/0x30
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe.h b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
+index 594ccb28da20..c4b0c5bb89c6 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe.h
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
+@@ -912,6 +912,7 @@ enum ixgbe_state_t {
+ 	__IXGBE_PTP_TX_IN_PROGRESS,
+ 	__IXGBE_RESET_REQUESTED,
+ 	__IXGBE_PHY_INIT_COMPLETE,
++	__IXGBE_PCIE_RESET_IN_PROGRESS,
+ };
+ 
+ struct ixgbe_cb {
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+index 2ac274c73d61..0fb64aef223e 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+@@ -12352,6 +12352,86 @@ static pci_ers_result_t ixgbe_io_slot_reset(struct pci_dev *pdev)
+ 	return result;
+ }
+ 
++/* 1500 us poll interval */
++#define IXGBE_RESET_PREP_POLL_INTERVAL_US 1500
++/* 2 second timeout to acquire reset lock before proceeding */
++#define IXGBE_RESET_PREP_TIMEOUT_US 2000000
++
++/**
++ * ixgbe_reset_prep - called before the pci bus is reset.
++ * @pdev: Pointer to PCI device
++ *
++ * Prepare the card for a reset, preventing the service task from running.
++ */
++static void ixgbe_reset_prep(struct pci_dev *pdev)
++{
++	struct ixgbe_adapter *adapter = pci_get_drvdata(pdev);
++
++	if (!adapter)
++		return;
++
++	if (poll_timeout_us(test_and_set_bit(__IXGBE_RESETTING, &adapter->state),
++			    test_bit(__IXGBE_RESETTING, &adapter->state),
++			    IXGBE_RESET_PREP_POLL_INTERVAL_US,
++			    IXGBE_RESET_PREP_TIMEOUT_US, false)) {
++		/* ixgbe_reset_done() will exit early if this happens.
++		 * A retry will be needed
++		 */
++		e_err(drv, "Timed out waiting for __IXGBE_RESETTING to be released. Reset is needed\n");
++		return;
++	}
++
++	/* Sync __IXGBE_RESETTING */
++	smp_mb__after_atomic();
++
++	if (test_bit(__IXGBE_SERVICE_INITED, &adapter->state)) {
++		/* Prevent the service task from being requeued in the timer callback */
++		timer_delete_sync(&adapter->service_timer);
++		/* Cancel any possibly queued service task */
++		cancel_work_sync(&adapter->service_task);
++	}
++
++	pci_clear_master(pdev);
++
++	set_bit(__IXGBE_PCIE_RESET_IN_PROGRESS, &adapter->state);
++}
++
++/**
++ * ixgbe_reset_done - called after the pci bus has been reset.
++ * @pdev: Pointer to PCI device
++ *
++ * Allow the service task to run and schedule re-initialization.
++ */
++static void ixgbe_reset_done(struct pci_dev *pdev)
++{
++	struct ixgbe_adapter *adapter = pci_get_drvdata(pdev);
++
++	if (!adapter)
++		return;
++
++	if (!test_and_clear_bit(__IXGBE_PCIE_RESET_IN_PROGRESS, &adapter->state)) {
++		/* Should never get here */
++		e_err(drv, "Reset done called without PCIe reset in progress\n");
++		return;
++	}
++
++	pci_set_master(pdev);
++
++	/* Allow the service task to run */
++	if (!test_bit(__IXGBE_REMOVING, &adapter->state)) {
++		clear_bit(__IXGBE_RESETTING, &adapter->state);
++		/* Sync __IXGBE_RESETTING */
++		smp_mb__after_atomic();
++	}
++
++	/* Schedule re-initialization */
++	if (!test_bit(__IXGBE_DOWN, &adapter->state)) {
++		set_bit(__IXGBE_RESET_REQUESTED, &adapter->state);
++		if (test_bit(__IXGBE_SERVICE_INITED, &adapter->state))
++			mod_timer(&adapter->service_timer, jiffies + 1);
++	}
++}
++
+ /**
+  * ixgbe_io_resume - called when traffic can start flowing again.
+  * @pdev: Pointer to PCI device
+@@ -12384,6 +12464,8 @@ static const struct pci_error_handlers ixgbe_err_handler = {
+ 	.error_detected = ixgbe_io_error_detected,
+ 	.slot_reset = ixgbe_io_slot_reset,
+ 	.resume = ixgbe_io_resume,
++	.reset_prepare = ixgbe_reset_prep,
++	.reset_done = ixgbe_reset_done,
+ };
+ 
+ static DEFINE_SIMPLE_DEV_PM_OPS(ixgbe_pm_ops, ixgbe_suspend, ixgbe_resume);
+-- 
+2.53.0
 
-  Possible unsafe locking scenario:
-
-        CPU0
-        ----
-        lock(sk_callback_lock);
-        lock(sk_callback_lock);
-
-  *** DEADLOCK ***
-
-  Workqueue: smc_close_wq smc_close_flush_work
-
-  Call Trace:
-    dump_stack_lvl
-    __lock_acquire
-    lock_acquire
-    _raw_read_lock_bh
-    smc_clcsock_data_ready+0xa/0x4d
-    smc_close_flush_work+0x1f/0x30
-    process_one_work
-    worker_thread
-    kthread
-    ret_from_fork
-
-The nvmet change I referred to is:
-
-  2fa8961d3a6a ("nvmet-tcp: fixup hang in nvmet_tcp_listen_data_ready()")
-
-The stable/backport patch I originally used as the reference is:
-
-  1c90f930e7b4 ("nvmet-tcp: fixup hang in nvmet_tcp_listen_data_ready()")
-
-Its commit message says that when the socket is closed while in
-TCP_LISTEN, the flush callback can call nvmet_tcp_listen_data_ready()
-with sk_callback_lock already held, so nvmet moved the TCP_LISTEN check
-before taking sk_callback_lock.
-
-For the TCP_LISTEN check: my reasoning was that smc_clcsock_data_ready()
-is installed by smc_listen() on the underlying TCP listen socket and only
-queues smc_tcp_listen_work() for the SMC listen/accept path.  Once that
-underlying socket is no longer in TCP_LISTEN, there should be no SMC
-listen accept work to queue from this callback.  TCP_SYN_RECV and
-TCP_ESTABLISHED are not listen-socket states for this callback path, so I
-did not intend the callback to queue listen work for those states.
-
-That said, if SMC expects smc_clcsock_data_ready() to handle a non-LISTEN
-state during fallback or another transition, then the proposed check is
-too strict and I should rework the fix.
-
-Thanks,
-Runyu
