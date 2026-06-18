@@ -1,236 +1,162 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f226.google.com (mail-pl1-f226.google.com [209.85.214.226])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F6F2319859;
-	Thu, 18 Jun 2026 08:56:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.156.173
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781772970; cv=fail; b=V1V333tgaooc9gFUoTJ3tOYtfSBeZEr+fWObN36D7SqnYie/YzqndwNLNOgYjAx3LV/2I9HeZf+uLOcWIo/ye1ajuYtu0DQvliq2PRsh2sKDYR0cPQRwqW6jurcyNDKPMsNqowpbDtAJHsXZsfthWBe/LGgYxJgq7UKuQhlrH5A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781772970; c=relaxed/simple;
-	bh=bkmJK8jVm3yw2HCUKBhTvhpX6I1r2+TzvJzdPY8+pdU=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=m+om0bpTwtGfSbwoBNLF6M4bPDOKe4hablY/8fnzcbtXq4OkuY0P6HomqJHCDTbCKEU0xEDwQRWxEaDG0VF6og3Ndvu5XMt8LyTfU+BpUCRBZSb+R3nTddIcs3eTDo8yPeppbtukC1ohdyiwIFdVgYTm1YDFk3X8kbFUtMO0o+M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (1024-bit key) header.d=marvell.com header.i=@marvell.com header.b=FcKLpWdx; arc=fail smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B923822B1
+	for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 09:03:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.226
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781773431; cv=none; b=upMMzbFL+UGvk44ddm64gZNkHgmFfSAlhUzeWSmXJD5t/7ujQWjKgx2UR//a5eYgdXKi+y6OlXvBPoVpTk+BYhXvBaf+Z6usCDzUdNQuIsfw0fXydAifSoBh5YvG0bGNPGtt3j+X1EauxK0gG8JHpalzbx9n6Ia0dgfsG6f1J20=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781773431; c=relaxed/simple;
+	bh=pDfYODN8eSb3Osdiy8pGUbcCjj+Vd5hRyuhJN7tkHGY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=l+ehOR+LTCFJd3yO1LwHmBlap8wTN/YyhrJ9goCp2LfegQKaXsWrNdASt61NlBn0gX22CkDWveNSqPMT5KZZuvELvtRVuAjTkYlzgIjr9MwU6eB0QPEj1NvAxWXkiYQHaN4WePBFOybLb4vLw3M82wOs4ntQftNp1CbPHeqMqNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Dr/Ydqrn; arc=none smtp.client-ip=209.85.214.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=marvell.com header.i=@marvell.com header.b="FcKLpWdx"
-Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65I8ED4R014755;
-	Thu, 18 Jun 2026 01:55:54 -0700
-Received: from sn4pr2101cu001.outbound.protection.outlook.com (mail-southcentralusazon11022127.outbound.protection.outlook.com [40.93.195.127])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4eueg5e4a3-2
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 18 Jun 2026 01:55:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Qbol6BcrsusNbnMv236U5c2ZomnAe9YpJJNfpC6ADC/6Zu3QMeRS7kjoX3YKuVu8Az3vNvhXZJS59xrwhdGGyvJNjz1gGQNjvtNRxD/KXN3IV6Yu+4AXhyCy6gBwobwqKyuUR/H1hYc44dgYONw9uwnNs51Hg1TVuJWY9KxMh+39hVD4zX7sSftYlpRyQPgoey4Nk3Vbk9obiTvMmjqM2cazhIuzWNgI/1WulGlDC1mcIsvl7RED6eP5gtQlctDt6zFQYXywUVGzzZJEep+hZVSMsVJ1lTtZiqHsTmPcj+lOsrhhEt+LhlcBbzuTjMdeT7UkBspXHEKIonH30GnlSQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cqVtkmD6hfO8FmtC+qR6Fh6Ga/hfIf8I3K9r7zjRSPw=;
- b=hY2X4jBM+3b8OHs8wOZWITycVDiLKKYHFDmlmxHuO/CPXKnDz3UhbnptzyTmc72BfD8YA0SeOkDmt69KV2M6OlDxvIUevGy4Rf4ahciVcQyDjfgUMm5WjKeKo4g5+qgTSTf8cjAZ2oqe9/dGs89DofzAFFmUqgvKSXq4SSx5qmd/bZUGmDHSUM9JA1fe1dygwpT175N247a+9nKRaFQfPiswYFBM9zpiGrsCH8Lr0H7sefiAsygcNJDok/cWBTQBu0533BTfD7Jh72NsD4Y37omJOGqUGNzWh5dQPKDqNzsOplqiSsQuKI2W/VWPzOIqXGQafpLkm2bgNDutTzzldA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=marvell.com; dmarc=pass action=none header.from=marvell.com;
- dkim=pass header.d=marvell.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cqVtkmD6hfO8FmtC+qR6Fh6Ga/hfIf8I3K9r7zjRSPw=;
- b=FcKLpWdxdFNYMfb5F4K3oBrWl1ak+xyUp+wVk1vLBYg6CDCyi6qkv4wAgOzjWTSUvBdZqOtokRuWF0y/r+WdRxoHU3YouWzK2E+ZdToOivrHuuV6W4DGiffG01PECx9uO9SaIr2tYsBzizH/Varf6blnYkQ/LXV6NWj4yiqdkyI=
-Received: from BL1PR18MB4248.namprd18.prod.outlook.com (2603:10b6:208:311::15)
- by SJ0PR18MB3993.namprd18.prod.outlook.com (2603:10b6:a03:2e5::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.11; Thu, 18 Jun
- 2026 08:55:51 +0000
-Received: from BL1PR18MB4248.namprd18.prod.outlook.com
- ([fe80::2f85:8970:a4bf:7404]) by BL1PR18MB4248.namprd18.prod.outlook.com
- ([fe80::2f85:8970:a4bf:7404%3]) with mapi id 15.21.0139.009; Thu, 18 Jun 2026
- 08:55:51 +0000
-From: Elad Nachman <enachman@marvell.com>
-To: Ruoyu Wang <ruoyuw560@gmail.com>,
-        Taras Chornyi
-	<taras.chornyi@plvision.eu>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S.
- Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Russell King
-	<linux@armlinux.org.uk>,
-        Oleksandr Mazur <oleksandr.mazur@plvision.eu>,
-        Yevhen Orlov <yevhen.orlov@plvision.eu>,
-        "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [EXTERNAL] [PATCH net v2] net: marvell: prestera: initialize err
- in prestera_port_sfp_bind
-Thread-Topic: [EXTERNAL] [PATCH net v2] net: marvell: prestera: initialize err
- in prestera_port_sfp_bind
-Thread-Index: AQHc/pAeMZIwpdE3W0Oz4X6aWdcLDrZEALAg
-Date: Thu, 18 Jun 2026 08:55:51 +0000
-Message-ID:
- <BL1PR18MB42486562FC7E64FBEDB08E3CDBE32@BL1PR18MB4248.namprd18.prod.outlook.com>
-References: <20260617193228.1653582-1-ruoyuw560@gmail.com>
-In-Reply-To: <20260617193228.1653582-1-ruoyuw560@gmail.com>
-Accept-Language: en-US, he-IL
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BL1PR18MB4248:EE_|SJ0PR18MB3993:EE_
-x-ms-office365-filtering-correlation-id: 80a0c243-c959-427d-e116-08decd176611
-x-ld-processed: 70e1fb47-1155-421d-87fc-2e58f638b6e0,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|7416014|376014|23010399003|366016|921020|38070700021|5023799004|56012099006|11063799006|22082099003|18002099003;
-x-microsoft-antispam-message-info:
- Syt/Rxm4pweB7N5WYxjw2QvL6wGi9ryyjbTFAexFbyGVaqfmR9E5RFo1nhBpsxJsZvUX3MLX4tJcFSqzgjDVfgpkGsR+5JCF2dDxlMfoai2d86GKjepMMqKeV+Wps+DASoh6Ju+r0/SX/QIalcE2+rRKFGKQqQUx3qhYixKiPD7YcEn3o/JvOzw8jAVzl9x6jzvBEmI26f0RwrJvII6p97KBqYJgaJD9jJbLz+xvsRthyp5Daui2AJdCfmwJ4xuSHFDHt0C3dZxi09cAoykkmFwvkbTFkjtzBlTPF/o5/EDNlHAiM6I19xAisY29nF1GmFGJdqMI23fLFXdBwsVobwBISN/KMm5wgvg+dSnE023WRTeGzSx/cKt57WMnmnlFnCtO12rpfYURzegZZz2r0v4WpUDIVTFYB7heDUwT+7ixT9dOUah7njTG/ijyU9RIFZDdhfi6nEIWrknn8hNlknkVsT2g6uH7ZmAF72rZitQ0CVl11PZ3VS5XBApAd98HkVami8pA5YEJmjwvjlWHlpMoAhXTNu3DYn7jmv3xv2EvpB22l0/5VFClSPML4FqyTA3q8MzLgg3ktiBrVIuJxM1GuDhkjzSalr0zaW0GSbcPZ1ocKe7GjSuQq1EDQe0WuR+0miNwRKRPbaByODH9leAJiJgMcf1+NvuWAa0y3Vg3+dOENKUAB+r+TUIq8pofG4eVnRWUoX6KzyyDQuIIdVvMWoiaWV2Mc+8lIndNyQScSX/hluK4OQCFSzegYmsMNQDMieGVk/jTePZAfTa09w==
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR18MB4248.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(23010399003)(366016)(921020)(38070700021)(5023799004)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?F7Nn61BIYRx/gmnNBOnlGcmFcvYa330XLUTA5ZSiE/AlGMkaqZK5vUl50FF2?=
- =?us-ascii?Q?3pHaG0feno2dTLK+OuaI7AWLJMK6vuCzUHQgUaSWu8ITan3NEIQyR1It4ZoC?=
- =?us-ascii?Q?vvgxt962YE0qVjw8SKuvJnayV542LpAcqNtlErEj4wpJXq9w2tVKYJx13+WW?=
- =?us-ascii?Q?dJGa0O4I78nz+CojRRzV/tERpC5PIW9S5IcLIXfQYHyUid/XpUT7D5bcGu5L?=
- =?us-ascii?Q?pbNqPSfWZ8KVx8cm+FNFde3RAHRXDq0Owm0LOfvux+j7PylXrcAeipMSxv5P?=
- =?us-ascii?Q?ELSVkfCcLHH4LKLpHZfRldHmwH+CaJKZ+P7C4GwgeVmdOs+gJX6m6WNpJ3wB?=
- =?us-ascii?Q?507PXB6k+5YCJoqsAhSAbGDMvI4gvKQBfCIrofyH1TEE5qiYlyndAxZSJFF0?=
- =?us-ascii?Q?lg88iUzTNi7p2+akgjaBPnhYMh1OOlQ8Qjr53O5UPkjrd+Iwi9oYj90Rsm4/?=
- =?us-ascii?Q?Txu/CwNU7J0MmRqb1Gm6MYYMGvxvM9InvGoCSTorxK2Hmlf2nytmlySQPyS6?=
- =?us-ascii?Q?37lCLZTuaT4sJ3dcE2hWBAGfjzSXw7XwHH7qRChQzUL0GJxLKRyHbTIcjyw3?=
- =?us-ascii?Q?DucjfIER/MeWjOHB9Q2gC5uTQ1xDENmHHig+fJVLLWCDireYPU+BgYUlD+rL?=
- =?us-ascii?Q?toitXoqhB11HcWyMMUT4wWpniGINM0LhzXruwEP4SZvMyEkxaBy/YupNm/74?=
- =?us-ascii?Q?/XOAIEph4JIokmqKjAuT8T70u35I3Osme2sLreyrq3wc5R8upoCpGjUsmBqF?=
- =?us-ascii?Q?vmz6usm/WvUi2Lghhw6gDFIgMTHPP0Tujjhm/qVg22bL4PA609Jy0pYqHj+V?=
- =?us-ascii?Q?qZNWeOrx7LpFuJBM3dxgsf2fZsXkyiINRmwGDuDfmvS4CBNLttwIRikR2BvP?=
- =?us-ascii?Q?b1ZRQtyQxVgCQdwDLdHollAiUNOdQ2B9yvKnOwy5VmpHze5RGJyd7+qIkFo/?=
- =?us-ascii?Q?scFMT/i0WlejIXzn4Fc90Qqhsn5n0mgB8LF7z3rA1MV2fHd7Cqo4F3gRAGiI?=
- =?us-ascii?Q?iQFQnI5Z//Uljb6GyHEPD0wAzIC1vbCmYWwQiV4F0GFdCMRh6eBZMV3Akbwe?=
- =?us-ascii?Q?HrIX6ySPf/c6mRNG7aqfr3k5cO/UQgS7NnVQFqjkC3bsmPVdKR8UvkD8ndg1?=
- =?us-ascii?Q?zLVFQ0imDY5MN9+VOew6ZAeUPK5zAxZmUo+EcWCZXha3icbn9PaXKDVveuwX?=
- =?us-ascii?Q?Yn+n2JbmWMn1eJWGZWezvC7PCyhOSL9J0SmrEayui7QhTLrd3JNia5XcCvnn?=
- =?us-ascii?Q?j36V312t+NYFcgg9muoJ0I5v6KaGBpu4PYSQPY2rjrqAhTeLfBInPQXvef+L?=
- =?us-ascii?Q?Gi6wdXXg4eDWk3ESmurX28Qhgx1KnPB8WX8shQipAnfgqhSXYJznqrd2BV/y?=
- =?us-ascii?Q?6UxY6HV1myg1iZHRI1dHFFQccS4YG3WzS9Y8rXAYO7HfH6KRHcN4+N+3eB7N?=
- =?us-ascii?Q?+BC9E+d3keMcEsJtRZSe+UjcLZD4J35mNd/fP3P7J1/wCOXGA/UQgz04nkWD?=
- =?us-ascii?Q?bCaE1vZ3W2eaE/kX09/lnB4+834tn+7OHKoq9v5ZZNMleZ8GW6MtuZbWzvQO?=
- =?us-ascii?Q?K5CcneXnjz1mu7fbDYIjk2je25XlCvJ7SVBLINXndsFF21udz/fRnGJVAb0L?=
- =?us-ascii?Q?KpSx63rvIHKzSfriiiBj0Kce7/tuHLTnA12rSgr0IR9Cw7IIm96d//AN0+dO?=
- =?us-ascii?Q?6HzK2+ZSoLP4AYmxc31PmT95vyPGaG1/8tSK/iigtLIumvzt?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Dr/Ydqrn"
+Received: by mail-pl1-f226.google.com with SMTP id d9443c01a7336-2bf1cda2b17so4141005ad.1
+        for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 02:03:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781773429; x=1782378229;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QpNixvCXNM3odqaYWueSGP2Z43EAIlNiUuWGIkEd9i8=;
+        b=BeGj0PPjjbxo8lQyxtjqdbf25MoYtbMGPyn0dqufHsnVjlb8Fwn27UmZbYsPgxz04R
+         F5LgJFbiEKtHDgQIFf3yh+6k0HC3xd9hsuy7KAsNrdEOop1EUnmQUqXPXM4wDdGZGUVU
+         qYtODLWyrBPhCg1kohHkywPn5or0mq7+1VTCnGATkoJjbhoHBy4j9vH1PCNcAmsh0NWu
+         AQlcgmQu8yPvMsOIltECun/+bOwxmwXxNRYCmAlSWRNtIn/YUnLGTtIMtgCaFevBWF/g
+         56ZJue6fOs1Cl7TNp2mQbi9ABNMM0SwtDED2pibtPmgK0zvTJ8/IXNeAYxNLAW2Khn0V
+         XTtA==
+X-Forwarded-Encrypted: i=1; AFNElJ9/OwrXj5flN5Q8aXcwZUhWHd+nwRvWcqA6xPct6a/o0xOAM+DZOg5Oh+2qGUMpeS/bCd6N2Vs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFpIpFh17MCM6yR638EN4MqYwKrC8TgHyu0Bm7qFAha/btJUXQ
+	6cb8j+8yqqn/ptPla+PHVq3mAtYPvyMJnrCl9DO8coPv/rB95TWXFaIl8NmOsxIS49IgOFnU1sm
+	z6D3oBbOhADleRn2xdtKAp4s1sv4zu1l4tqKW9rPjLCFQZwz0nKGSfd//T0wYvbkdHqk3JFdXim
+	2ALiJfIPpciITBoJtpB3fTsR9FNbNM6bcHSBWec+7np7EAVidKyaPIcT0plvKyEUVWvmzNTVbO4
+	O0yY2DOn/ajTXc4ig==
+X-Gm-Gg: AfdE7ckzkSlkLPZWZ5Rtr3MK5V60XMgRTG5usmGOopmXDdT/MnBmzsE9K0kT2PFiTZC
+	HXzoltmeAcGEuPZiBpyUfQ+dgxJcTQBhm163+fVSgoz/Ff4DoMJMuKtr8MNh2zSZHN3I1kFx+Qa
+	jpeNY5c0TAl4j+ijUgO/xC7BGNnwnnEnjnMqeXptcH2rjAhs5JnswexEWuJq+jhvlgL0V/o8vqa
+	R0uNd8qMWaBYIhSLVhThVLFgaaeTt4MhvGxfiGBJnAricjzNJhh25sb3GqiR96I2Arr84SqDxV2
+	GZevx5oa0qi7yX1MGFRq9qYwFVw0pYMWgivG2vHmvFY+PF2NkcGFr8wVRzKtMEb2hgPZtOjPLG2
+	KIuSV8lnCfKRhC/t0U44stONZO1weKeNF2c3Kgw75Pc0RBysEOT0j9vKzFLWRETlu5Mz0s5zA3p
+	nh2LD6WloYjMUrbVLQeD9AuproxdppYWFtt2BKp9npDzzn4f9k+g==
+X-Received: by 2002:a17:902:e54c:b0:2c0:c262:b924 with SMTP id d9443c01a7336-2c6de6322admr29358345ad.13.1781773428962;
+        Thu, 18 Jun 2026 02:03:48 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-18.dlp.protect.broadcom.com. [144.49.247.18])
+        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2c4301998ffsm16590025ad.18.2026.06.18.02.03.48
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 18 Jun 2026 02:03:48 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-51956be1f44so33616121cf.1
+        for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 02:03:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1781773428; x=1782378228; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=QpNixvCXNM3odqaYWueSGP2Z43EAIlNiUuWGIkEd9i8=;
+        b=Dr/Ydqrnwbh4TDAFnHL3FK7c9/Rv/ES8ODcuQahihVpAlAZWYGJb3gyzyybRI8NjpO
+         YBBOLM/1Gt6yBlv/pDpl6C8fnEnql4CCMW5USxOQU4nFITglkckgSy3hqJkJscqf7MYj
+         rlnjuWlh4EKQsZ6SmByMvOUMijYrOV5j4x3YQ=
+X-Forwarded-Encrypted: i=1; AFNElJ8664WjveidVsWtd3ADGTAWnnz1+eD5skygmjLAjPKUbVhAtU16Wby7Cv9aGxwBl6hQfAk4QJU=@vger.kernel.org
+X-Received: by 2002:a05:622a:22a4:b0:517:5ed7:d28f with SMTP id d75a77b69052e-519c4de0e85mr37505881cf.25.1781773427869;
+        Thu, 18 Jun 2026 02:03:47 -0700 (PDT)
+X-Received: by 2002:a05:622a:22a4:b0:517:5ed7:d28f with SMTP id d75a77b69052e-519c4de0e85mr37505371cf.25.1781773427211;
+        Thu, 18 Jun 2026 02:03:47 -0700 (PDT)
+Received: from shivania.lvn.broadcom.net ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-517fb61eaf4sm191285561cf.4.2026.06.18.02.03.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Jun 2026 02:03:46 -0700 (PDT)
+From: Shivani Agarwal <shivani.agarwal@broadcom.com>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: pablo@netfilter.org,
+	fw@strlen.de,
+	phil@nwl.cc,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	ajay.kaher@broadcom.com,
+	alexey.makhalov@broadcom.com,
+	vamsi-krishna.brahmajosyula@broadcom.com,
+	yin.ding@broadcom.com,
+	tapas.kundu@broadcom.com,
+	Yiming Qian <yimingqian591@gmail.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH v6.6-v6.1] netfilter: nf_tables: always walk all pending catchall elements
+Date: Thu, 18 Jun 2026 01:34:38 -0700
+Message-Id: <20260618083438.1269242-1-shivani.agarwal@broadcom.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked:
-	GlZj59cUtQXKSBh6ntZDsWWHHQUSi6X2FzlPidfXvJfBAbCHAYdWcEocLoux7lFZYsZV+Shce0w4ztxi+9a1JQwXenBudRLxfl0pzqwE0G4fdS7OWlp48LXqBCxtv0s1PJWJ6cF9Y94IcNeX/1hcMCMJf/Xjn/RaXp5q8GHSC9EsyyR75lfZ/9oQIhpRhu93il7ScwEG43/ZTH3MRlVnH0gZDjgNYlJKlmFcFDGlxmLJ1fy1KOsTrvmtmSmkKmd0LcNbUMMdzXV3PbaBASfT6NCPQGYxJkLfMbWZwA5JfZ6hEtQNTLU52dho9KyvRU6IfWGg7XVSIpToIyOjj2fDYA==
-X-OriginatorOrg: marvell.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR18MB4248.namprd18.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 80a0c243-c959-427d-e116-08decd176611
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Jun 2026 08:55:51.3547
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 70e1fb47-1155-421d-87fc-2e58f638b6e0
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: DQosM41VD1/4tU7QwtaSZl0it3xIEwSl1LvwP94Xjjr1FuUXAZ0tStS+7VS/K27OgslRCVzQReFJguCroL1unA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR18MB3993
-X-Proofpoint-GUID: -KsDh_Xxn242o3GbDVdshJx6ENQHsxrE
-X-Proofpoint-ORIG-GUID: -KsDh_Xxn242o3GbDVdshJx6ENQHsxrE
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE4MDA4MSBTYWx0ZWRfX9g5ONjpVA/Qv
- ArnoSVatBI4jMvY8M77QkJYK0xEg16aCScCyog7f8OpRZL+bUFvFRRVFC+Bc1t3rpqG7NTbXR07
- 0BCJjlBAqir/bFnKgLmBJoKbGCa0V9k=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE4MDA4MSBTYWx0ZWRfX2XS9f1r5I3nc
- VX0oc+Q0KH/NbR1vDDjSdtZ+RyJySgAlsFOOCu91P05mrYaytZcUQeztvC5UsRfPOfk/892Ajr5
- ndSjmHLEoOMnfotzMZW8C5dbejVA983gqgRw6XwDQXW60stlJwwPkVJfcGXW2F5xmgh0SmW1U92
- zWNMaXvGNOfWmEKkQfTsPnKVh2v/0Rs1r3uuqsxlkBArSvbHokdInTbrp/d68wze141vCbcnhiw
- q3ZAe6/nVHovF6um7rIRkrNj5agqR3lx8QmXJm6DAPuWjIvhc0UkQfnejOwVkoIaRtDP2ThHPoG
- lvteopo8lY+C796J/zJnSV8yHuI8JJaFIdmEC+yA/6ilaww0RyKBWUPVJTYIUxPQQ5lDwlk43Hb
- u3TtycA3DMwx3Ja3RP6EPbhH3as3Nobmg3hDkyBEQGCGuQuqHb5XHtlFqtW+/i+npaP814lXf9s
- eX5GTaFUG8tGDAdwQSA==
-X-Authority-Analysis: v=2.4 cv=UqNT8ewB c=1 sm=1 tr=0 ts=6a33b29a cx=c_pps
- a=4J2h7sJdpVYe1tCXGSmzzw==:117 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=FelO9ux0wxsA:10 a=-AAbraWEqlQA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=l0iWHRpgs5sLHlkKQ1IR:22 a=QXcCYyLzdtTjyudCfB6f:22 a=pGLkceISAAAA:8
- a=g8kJ_gb0AAAA:8 a=J1Y8HTJGAAAA:8 a=1XWaLZrsAAAA:8 a=VwQbUJbxAAAA:8
- a=20KFwNOVAAAA:8 a=PHq6YzTAAAAA:8 a=M5GUcnROAAAA:8 a=DyCsGZyHgVGpfJ0Svo0A:9
- a=lqcHg5cX4UMA:10 a=CjuIK1q_8ugA:10 a=ecSNLfPMzbq-p5zXJZOg:22
- a=y1Q9-5lHfBjTkpIzbSAN:22 a=ZKzU8r6zoKMcqsNulkmm:22 a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-18_01,2026-06-17_03,2025-10-01_01
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
->=20
->=20
-> From: Ruoyu Wang <ruoyuw560@gmail.com>
-> Sent: Wednesday, June 17, 2026 10:32 PM
-> To: Taras Chornyi <taras.chornyi@plvision.eu>; Andrew Lunn <andrew+netdev=
-@lunn.ch>; David S. Miller <davem@davemloft.net>; Eric Dumazet <edumazet@go=
-ogle.com>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com=
->; Russell King <linux@armlinux.org.uk>; Oleksandr Mazur <oleksandr.mazur@p=
-lvision.eu>; Yevhen Orlov <yevhen.orlov@plvision.eu>; netdev@vger.kernel.or=
-g; linux-kernel@vger.kernel.org
-> Subject: [EXTERNAL] [PATCH net v2] net: marvell: prestera: initialize err=
- in prestera_port_sfp_bind
->=20
-> prestera_port_sfp_bind() returns err after walking the ports node. If no =
-child node matches the port's front-panel id, err is never assigned. Initia=
-lize err to 0 because absence of a matching optional port device tree node =
-is not an error. In
->=20
-> prestera_port_sfp_bind() returns err after walking the ports node. If no
-> child node matches the port's front-panel id, err is never assigned.
->=20
-> Initialize err to 0 because absence of a matching optional port device
-> tree node is not an error. In that case no phylink is created and port
-> creation should continue with port->phy_link left NULL. Errors from
-> malformed matched nodes and phylink_create() still propagate.
->=20
-> Fixes: 52323ef75414 ("net: marvell: prestera: add phylink support")
-> Signed-off-by: Ruoyu Wang <mailto:ruoyuw560@gmail.com>
-> ---
-> v2:
-> - Add net tree target to the subject.
-> - Explain why the no-match path returns 0 instead of -ENODEV.
->=20
->  drivers/net/ethernet/marvell/prestera/prestera_main.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/net/ethernet/marvell/prestera/prestera_main.c b/driv=
-ers/net/ethernet/marvell/prestera/prestera_main.c
-> index 41e19e9ad28d4..a82e7a8029851 100644
-> --- a/drivers/net/ethernet/marvell/prestera/prestera_main.c
-> +++ b/drivers/net/ethernet/marvell/prestera/prestera_main.c
-> @@ -373,7 +373,7 @@ static int prestera_port_sfp_bind(struct prestera_por=
-t *port)
->  	struct device_node *ports, *node;
->  	struct fwnode_handle *fwnode;
->  	struct phylink *phy_link;
-> -	int err;
-> +	int err =3D 0;
->=20
->  	if (!sw->np)
->  		return 0;
-> --
-> 2.51.0
->=20
+From: Florian Westphal <fw@strlen.de>
 
-prestera_port_sfp_bind() iterates only SFP ports.
-Although all currently existing switch boards have at least one SFP uplink =
-port,
-In theory a manufacturer might produce a switch board without any SFP ports=
-,
-which will unnecessarily fail this function call, so for resolving this cas=
-e indeed
-err should be initialized to zero to make this function return 0 and not an=
- error.
+[ Upstream commit 7cb9a23d7ae40a702577d3d8bacb7026f04ac2a9 ]
 
-Acked-by: Elad Nachman <enachman@marvell.com>
+During transaction processing we might have more than one catchall element:
+1 live catchall element and 1 pending element that is coming as part of the
+new batch.
+
+If the map holding the catchall elements is also going away, its
+required to toggle all catchall elements and not just the first viable
+candidate.
+
+Otherwise, we get:
+ WARNING: ./include/net/netfilter/nf_tables.h:1281 at nft_data_release+0xb7/0xe0 [nf_tables], CPU#2: nft/1404
+ RIP: 0010:nft_data_release+0xb7/0xe0 [nf_tables]
+ [..]
+ __nft_set_elem_destroy+0x106/0x380 [nf_tables]
+ nf_tables_abort_release+0x348/0x8d0 [nf_tables]
+ nf_tables_abort+0xcf2/0x3ac0 [nf_tables]
+ nfnetlink_rcv_batch+0x9c9/0x20e0 [..]
+
+Fixes: 628bd3e49cba ("netfilter: nf_tables: drop map element references from preparation phase")
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ Shivani: Modified to apply on v6.6.y-v6.1.y ]
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
+---
+ net/netfilter/nf_tables_api.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 196ac4e76..0581f6479 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -620,7 +620,6 @@ static void nft_map_catchall_deactivate(const struct nft_ctx *ctx,
+ 
+ 		elem.priv = catchall->elem;
+ 		nft_setelem_data_deactivate(ctx->net, set, &elem);
+-		break;
+ 	}
+ }
+ 
+@@ -5241,7 +5240,6 @@ static void nft_map_catchall_activate(const struct nft_ctx *ctx,
+ 
+ 		elem.priv = catchall->elem;
+ 		nft_setelem_data_activate(ctx->net, set, &elem);
+-		break;
+ 	}
+ }
+ 
+-- 
+2.53.0
+
