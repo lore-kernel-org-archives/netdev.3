@@ -1,59 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF63C3FBED2;
-	Thu, 18 Jun 2026 14:00:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9881DF980
+	for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 14:02:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781791222; cv=none; b=du3sEEBewobVekBebzvYfk9rlsHITlpRlNteNkqSgyjOx9zFXl2m0S60NwJkTyPoyNuXtLuWsbeH+yRtXKtB9T800DjtSGn1qlvBwvA48oPuQBJa+ufsypEtKSjX52uWpSZBw2WAHwPFst0DWWlQvMhvvmiXv25q/ZjfRnH86QM=
+	t=1781791334; cv=none; b=jzBsES0RbSNyldSAKMx/Gnc663+x2h9mOoVzWtFVnLr5zSOZqMbsPjpStMmXTHbVFlAIBARs90SOP84rvWq+ve8vtx4z8Q1AUx3qrOdBrMZ1gaQarCESTLig/oZsNOGcDdmvOsikOhHqDOE5/7FP8pLWekd8lz6BWehdI/CI9u4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781791222; c=relaxed/simple;
-	bh=NjVlpOXm6RHQOlL3ulASs3AfzNZ46gmqIVkXc7lQutk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lVXUWZAEaARZm+J2ffbNk2HIlVG5fyMHO1TN5XEAxbWGJXVF1vYjGQChAjKBCKuE5HlllVhbH41v94AZd12cCXD+0Id6f+jWIt6/VLuULVb3IJMugnw8RRXlAPV/xNkve9WV/Epb0N2r34Q6Y3Q8LoPZG+Eg6uE4XyW6Ngk8Pmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WuCrV+XL; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781791334; c=relaxed/simple;
+	bh=qQxmqb9PnlMG1Fap8IEAL+WwML0IMJMAnH9L4tjYi4k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YZFG27S11U1qP1B0m5YiBZazD+qEpGmco2blRJp3fgNzkieTh7th/sCaWtR53eX3G60YdpHKG+A8OpoKqSLxNUc+dlRenw+4D2fbttzPexKOyF2z7gFL+MZ4E9vVR68PhqBzzB/+YJZOxeJB0IW0hFWQwsbHcxi4ujK1AYfgomc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V8/+z8To; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WuCrV+XL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 999171F00A3A;
-	Thu, 18 Jun 2026 14:00:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781791219;
-	bh=usXAkm81oxURlLo9g3M0MwCRraiXK0GggTZdNWsk98s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=WuCrV+XLsoH8gca7hc6PBW0571b/7hxn6jLHzTNqu6VmqnHJ4i9KAAHbkCl9ycpB3
-	 FPMW0fp77uLtetC8tEoixHehWwfUMXERhYQCLBITlXQCtKB7/LNrYFQ9ThKj4X3gtT
-	 oDDZXiuVZOj9455lDVNEGenAxzy6+fY0ww6PxtnC7srqiOCa+zkzxH2wgfAcLBdcsW
-	 FBVDT1fx9AoDT56qncfQfLLP447tTQNo8tgONbMqxRAmZ0ViqkdxGB0FBiYkr4T92c
-	 wK2Q+GUFwimH7W6XLvwOQNNz1u3pNDDhmfoIN5m+1TN5oiIj3lKsMHnkklvCaP6/D5
-	 M+leZ4/nhJlIQ==
-Date: Thu, 18 Jun 2026 15:00:15 +0100
-From: Simon Horman <horms@kernel.org>
-To: Ratheesh Kannoth <rkannoth@marvell.com>
-Cc: kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	pabeni@redhat.com, sgoutham@marvell.com
-Subject: Re: [PATCH net] octeontx2-af: npc: cn20k: fix NPC defrag
-Message-ID: <20260618140015.GP827683@horms.kernel.org>
-References: <20260617102149.1309913-1-rkannoth@marvell.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V8/+z8To"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2c6ab886da6so6328155ad.0
+        for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 07:02:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781791332; x=1782396132; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XS4R+w0KJN00IzEVRV2kKHMy345QBzFIS6oLc6bdXzg=;
+        b=V8/+z8ToF29pmuT7D8XblJJc8hJrvZ9WJJK+ey/yYvqDlUgd/NS2HImR0umN3Wgx6U
+         KZpG/OtOPe0fMrZ52udDRdJSJy2184IeD8ujHWLP+S+i0rmGf75uVzcDYol17osXkMmR
+         BYV4zFzAzb16pCgw0bUmOBkQ5AyKMCIPKyq5679m942TTxc0Xw4RWkPQjCPCmILkhL6k
+         I7UOsqNX15AiprXxljEMYUmWmKCbfH2cVsiNmKffI8sj/pPFg9W3LIp0pEW0DiAUiQme
+         gzkqmcJiqAqn2xEmQAol0R3pgTLdJcherdjG5QQE7oTKlv74smZTw0cFb3jlJXdjJMac
+         sKvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781791332; x=1782396132;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XS4R+w0KJN00IzEVRV2kKHMy345QBzFIS6oLc6bdXzg=;
+        b=A87YPyX0nAVrSG9PXt9fpQwqh/uIrb5vg01mpiMNYD2K01GMcbG9ohMvbb1VHi2EBw
+         /flX7+vz957D7ww/WjkgmX5jK2AqCEC5OQ5ZjTSafe2v3Ggy3OlnMOsUvt8VkBITOYR+
+         3jBkhz3buZqifd/L13QNggm2PHOfvXTwI4dtSPdyIlRRxT56o/jrKMwoeD5/4MqqBqrP
+         2YNAXEM6ZMtvkizetpGolaK9SMn4i0InQ4yAgcADTNLSYtOL21H9YGF3OSYP/TtE1xRj
+         KRVKKMM1IzCwaFhDzYSJZL0rHVWOW/xcIo3NooTvUSarCsqmmq2PMK/dJ0u2kGypl0Wt
+         nyxg==
+X-Gm-Message-State: AOJu0Yyc/Z/IPa2kfbcug2vRD7CwTk0nqjUPXVnQBZOULbwOH45AR6zD
+	+bQSIjQDhGrHTkNZS4dS5uxuZOWecDWuE7m7u31NsRR+kNmP7zvEGbI/oQPT2+wH
+X-Gm-Gg: AfdE7cmDDtTCM6VQ6Lxbj4DgVBGTwEmtQbRtmx0ljL27i0R7VlEHAOtqsZMpbkhQQXZ
+	ljilf9Nbt3mYmfGX+sAPI/mhDrZjL27mq5Xg/ac9CU0XG7/sEOgugEX7SFMqTjuIeaJUnFY9vlc
+	IOXhSQSw9CsbjAvjOdATCpwp7YnShvxOohjA0XAeg6PfDDgUauNIYcfGWwW0qJuqhi0mpSiVBFS
+	H5ju0eKHcz4QFeIB7NSk7XGPg3Bx6rXUNE3JYXbFqQGcygvLlMe2M1jNODGDB71y+9ye3smNUHb
+	B+R9S6E3Dq5YvOI0MbZJHOM/3nsweHXIu1bOOfVOyqlAeddMo3AZigh25lmxqF3K8XPEHPH5ewj
+	RDElG2g4g4XaUQwE3cPvJG8lCQmJm4OuUfvCBR5VTwNj47iJRsi0H/nyqJou4V8TJnQ0Vqx/QX4
+	qDeSmk/qERHkpc66Sa7wZgiry4xpvdhjNczAQiiQ==
+X-Received: by 2002:a17:903:384d:b0:2bf:2114:ecc2 with SMTP id d9443c01a7336-2c6bc27dfcamr107563505ad.35.1781791329953;
+        Thu, 18 Jun 2026 07:02:09 -0700 (PDT)
+Received: from d.home.yangfl.dn42 ([2a09:bac1:76a0:d30::4cf:38])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c6f9aec764sm21525825ad.2.2026.06.18.07.02.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Jun 2026 07:02:08 -0700 (PDT)
+From: David Yang <mmyangfl@gmail.com>
+To: netdev@vger.kernel.org
+Cc: David Yang <mmyangfl@gmail.com>,
+	Linus Walleij <linusw@kernel.org>,
+	=?UTF-8?q?Alvin=20=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] net: dsa: realtek: fix memory leak in rtl8366rb_setup_led()
+Date: Thu, 18 Jun 2026 22:01:55 +0800
+Message-ID: <20260618140200.1888707-1-mmyangfl@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260617102149.1309913-1-rkannoth@marvell.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jun 17, 2026 at 03:51:49PM +0530, Ratheesh Kannoth wrote:
-> npc_defrag_alloc_free_slots() always passed NPC_MCAM_KEY_X2 into
-> __npc_subbank_alloc(), which must match sb->key_type, so defrag never
-> allocated replacement slots on X4 banks. Pass the subbank key type for
-> bank 0, and only extend the search into bank 1 for X2 (X4 MCAM indices
-> are confined to b0b..b0t).
-> 
-> Fixes: 645c6e3c1999 ("octeontx2-af: npc: cn20k: virtual index support")
-> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+led_classdev_register_ext() only reads init_data.devicename - it never
+stores the pointer. However, the caller allocated devicename with
+kasprintf() but never freed it, leaking the string memory.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Fix it with a stack buffer to avoid dynamic buffers completely.
+
+Fixes: 32d617005475 ("net: dsa: realtek: add LED drivers for rtl8366rb")
+Signed-off-by: David Yang <mmyangfl@gmail.com>
+---
+ drivers/net/dsa/realtek/rtl8366rb-leds.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/dsa/realtek/rtl8366rb-leds.c b/drivers/net/dsa/realtek/rtl8366rb-leds.c
+index 509ffd3f8db5..ba50d311cb15 100644
+--- a/drivers/net/dsa/realtek/rtl8366rb-leds.c
++++ b/drivers/net/dsa/realtek/rtl8366rb-leds.c
+@@ -89,6 +89,7 @@ static int rtl8366rb_setup_led(struct realtek_priv *priv, struct dsa_port *dp,
+ 	struct led_init_data init_data = { };
+ 	enum led_default_state state;
+ 	struct rtl8366rb_led *led;
++	char name[64];
+ 	u32 led_group;
+ 	int ret;
+ 
+@@ -129,10 +130,9 @@ static int rtl8366rb_setup_led(struct realtek_priv *priv, struct dsa_port *dp,
+ 	init_data.fwnode = led_fwnode;
+ 	init_data.devname_mandatory = true;
+ 
+-	init_data.devicename = kasprintf(GFP_KERNEL, "Realtek-%d:0%d:%d",
+-					 dp->ds->index, dp->index, led_group);
+-	if (!init_data.devicename)
+-		return -ENOMEM;
++	snprintf(name, sizeof(name), "Realtek-%d:0%d:%d",
++		 dp->ds->index, dp->index, led_group);
++	init_data.devicename = name;
+ 
+ 	ret = devm_led_classdev_register_ext(priv->dev, &led->cdev, &init_data);
+ 	if (ret) {
+-- 
+2.53.0
 
