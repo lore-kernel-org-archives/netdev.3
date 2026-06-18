@@ -1,128 +1,134 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtp-bc09.mail.infomaniak.ch (smtp-bc09.mail.infomaniak.ch [45.157.188.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DCD03B71DD;
-	Thu, 18 Jun 2026 09:29:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D3D3BED46
+	for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 09:30:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.157.188.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781774995; cv=none; b=PjCXDIGyTNuzaTu/2k1vUPShJHlUMlbqkuKIaBzwgauqHM47/RK86/6/tMSxTKRmoCzXTMSRm3nn1Fde7df2ZUsqxsgx6sfLxfOmfEflo8N6+oZBOMJKY9+OvuWLcfLQJN43yi5Zche52/PfeQLGKUxnxFNizCRCLHAWfVzqP9A=
+	t=1781775054; cv=none; b=H2rTrgfPs0u970QKv5h+Szp7KxNcMgmkWOT01rXCKM3Dv4EqPXP2NOlu2/pKO0r19GiWAjdlErKVBTD5xgz/lSlHGnx93drNp6Mh/Lba8qyLFOK/P2tWA2H1ER6xVBLp3KiAl3zVw6Cb1ZhIGqqDo5CBi0u81oJSqSIGXZ6USLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781774995; c=relaxed/simple;
-	bh=ilR+EZ8AS65fpi/jJMtHjhvLmFr7HFjqHwCTNIp6Xsw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VrCnWHGszPWirYFwVgbNGl53j10t6SU3s4qoe2IfLtSFGTB8vVZImXCHucDl5JMEL+xwE81tQc8zXIfz7p44a3v0GyrHNZT88qR+8XjgsAvbRD7Sy5JalmjKynQ3GPOqIfhCZ2Ui+lyGTWwMsSvopKKWIgsIqDqq3d4oxrXzMQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y9MV890t; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781775054; c=relaxed/simple;
+	bh=dB0Vq19/pojtzKMdhU+ZjSekw7vileLMRuihFiNJgbY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=fGtdnB4nkW1vTgnuQWrzvdsxdHBBtT3N1sHF6IWmg1gPsBt/wUu3P0gFbUaT3wzPUzhOAZOMUhtrqwHiDNCnI5rr5t8xXfZdqVS156U8wMIYwfohw6KJE46HLpWc89LqmSpy95CAQ9d440XR3yI919DL79ziCMley75QVE6HNgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pschenker.ch; spf=pass smtp.mailfrom=pschenker.ch; dkim=pass (1024-bit key) header.d=pschenker.ch header.i=@pschenker.ch header.b=QZkCmAOa; arc=none smtp.client-ip=45.157.188.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pschenker.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pschenker.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y9MV890t"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DF761F000E9;
-	Thu, 18 Jun 2026 09:29:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781774994;
-	bh=xY3E02itJZ/3guyWQm3b0qgZmBwdEEtON2CPCiTjekI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Y9MV890t52WmmXty1o236vJxVmhjV9mdo++QRAv+YS0h3xqI9wqrIMDpzLag4MaHO
-	 O0J3xGqyy23YnmUAiAvaJ7d2RVzXPe7IOTwXevMsssLf2uYop+2kaWO1L18dxwg2aA
-	 kHuvFS21Hq0uIz5GkkCVbe7ceny979gXr6doloOxJZU16kFHvdKJf9yrYAt2+JZFMj
-	 ETfbiAlVmBZjWwz4/ZNcvomosa6iCEZdBRrOAO2M3oUuXjF3Xz/oVsA4Zv8zZSupEj
-	 +ux9gSl61nInkSuSj0F3PgrXP7PcWuHb2eHN368+xzr5Z9AEAy0a9XcwQVDZqQxNC4
-	 DFruqbVxpFrew==
-From: Simon Horman <horms@kernel.org>
-To: dhowells@redhat.com
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	marc.dionne@auristor.com,
-	kuba@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	linux-afs@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	d4n.for.sec@gmail.com,
-	n05ec@lzu.edu.cn,
-	jaltman@auristor.com,
-	stable@kernel.org
-Subject: Re: [PATCH net 5/5] afs: Fix uncancelled rxrpc OOB message handler
-Date: Thu, 18 Jun 2026 10:29:29 +0100
-Message-ID: <20260618092929.888053-1-horms@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616155749.2125907-6-dhowells@redhat.com>
-References: <20260616155749.2125907-6-dhowells@redhat.com>
+	dkim=pass (1024-bit key) header.d=pschenker.ch header.i=@pschenker.ch header.b="QZkCmAOa"
+Received: from smtp-4-0001.mail.infomaniak.ch (smtp-4-0001.mail.infomaniak.ch [10.7.10.108])
+	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4ggwSm312Wzbwx;
+	Thu, 18 Jun 2026 11:30:48 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pschenker.ch;
+	s=20220412; t=1781775048;
+	bh=dB0Vq19/pojtzKMdhU+ZjSekw7vileLMRuihFiNJgbY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=QZkCmAOaWPmGsisoVV7yHqc53vNnggu3Bg6/wYzJCYSgrPjBlmb/6HqOCH9HtFeq1
+	 /oRHdXW3gab/eEdvxtLK+1V8QVwnAgC9tYBywtlMGqYamMHLA6yboVopbf8tiJVjxQ
+	 sL/zRJUCBVWwLL8fkWBN2vWfTWGK0oP4O6u9NTbE=
+Received: from unknown by smtp-4-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4ggwSk2kZbzmC6;
+	Thu, 18 Jun 2026 11:30:46 +0200 (CEST)
+Message-ID: <ecb210fddc9f0926c98d682e8ffbf99defa05991.camel@pschenker.ch>
+Subject: Re: [PATCH net] net: ethernet: ti: icssg: guard PA stat lookups
+From: Philippe Schenker <dev@pschenker.ch>
+To: Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, danishanwar@ti.com, rogerq@kernel.org, 
+	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org, Andrew Lunn	
+ <andrew+netdev@lunn.ch>, David Carlier <devnexen@gmail.com>, "David S.
+ Miller"	 <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jacob
+ Keller	 <jacob.e.keller@intel.com>, Jakub Kicinski <kuba@kernel.org>, Kevin
+ Hao	 <haokexin@gmail.com>, Meghana Malladi <m-malladi@ti.com>, Paolo Abeni	
+ <pabeni@redhat.com>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
+	linux-kernel@vger.kernel.org
+Date: Thu, 18 Jun 2026 11:29:24 +0200
+In-Reply-To: <20260618091004.GG827683@horms.kernel.org>
+References: <20260616143642.1972071-1-dev@pschenker.ch>
+	 <20260618091004.GG827683@horms.kernel.org>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-b4MkfBcVTcys+AbJZKR4"
+User-Agent: Evolution 3.60.2 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Infomaniak-Routing: alpha
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev
----
-afs: Fix uncancelled rxrpc OOB message handler
 
-This commit cancels AFS OOB message processing during shutdown and moves it
-to afs_wq. It also prevents queuing if the net namespace is no longer live.
+--=-b4MkfBcVTcys+AbJZKR4
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Link: https://sashiko.dev/#/patchset/20260609140911.838677-1-dhowells%40redhat.com
+Hi Simon
 
-> diff --git a/fs/afs/rxrpc.c b/fs/afs/rxrpc.c
-> index fd2d260fb25f9..6241f9349f6b6 100644
-> --- a/fs/afs/rxrpc.c
-> +++ b/fs/afs/rxrpc.c
-[ ... ]
-> @@ -128,6 +128,7 @@ void afs_close_socket(struct afs_net *net)
->  	_enter("");
->  
->  	cancel_work_sync(&net->charge_preallocation_work);
-> +	cancel_work_sync(&net->rx_oob_work);
->  	kernel_listen(net->socket, 0);
->  	flush_workqueue(afs_async_calls);
->  	flush_workqueue(afs_wq);
+Thanks for the review and I'll send a v2 with that blank line removed.
+Saw it right after sending the patch.
 
-[Severity: High]
-This is a pre-existing issue, but does placing the cancellation and flush
-before kernel_sock_shutdown() leave a window open for the work to be queued
-afterwards?
+Philippe
 
-If kernel_sock_shutdown() is what synchronously disables the notify_oob
-callback from firing, couldn't a delayed callback still queue work on afs_wq
-after we've already flushed it here?
+On Thu, 2026-06-18 at 10:10 +0100, Simon Horman wrote:
+> On Tue, Jun 16, 2026 at 04:35:34PM +0200, Philippe Schenker wrote:
+> > From: Philippe Schenker <philippe.schenker@impulsing.ch>
+> >=20
+> > icssg_ndo_get_stats64() unconditionally calls
+> > emac_get_stat_by_name()
+> > with FW PA stat names regardless of whether the PA stats block is
+> > present on the hardware.=C2=A0 emac_get_stat_by_name() already guards
+> > the
+> > PA stats lookup with `if (emac->prueth->pa_stats)`; when that
+> > pointer
+> > is NULL the lookup falls through to netdev_err() and returns -
+> > EINVAL.
+> > Because ndo_get_stats64 is polled regularly by the networking stack
+> > this produces thousands of log entries of the form:
+> >=20
+> > =C2=A0 icssg-prueth icssg1-eth end0: Invalid stats FW_RX_ERROR
+> >=20
+> > A secondary consequence is that the int(-EINVAL) return value is
+> > implicitly widened to a near-ULLONG_MAX unsigned value when
+> > accumulated
+> > into the __u64 fields of rtnl_link_stats64, silently corrupting the
+> > rx_errors, rx_dropped and tx_dropped counters reported by `ip -s
+> > link`.
+> >=20
+> > Every other PA-aware code path in the driver is already guarded
+> > with
+> > the same `if (emac->prueth->pa_stats)` check.=C2=A0 Apply the same guar=
+d
+> > here.
+> >=20
+> > Fixes: 0d15a26b247d ("net: ti: icssg-prueth: Add ICSSG FW Stats")
+>=20
+> nit: no blank line between tags
+>=20
+> >=20
+> > Signed-off-by: Philippe Schenker <philippe.schenker@impulsing.ch>
+> >=20
+> > Cc: danishanwar@ti.com
+> > Cc: rogerq@kernel.org
+> > Cc: linux-arm-kernel@lists.infradead.org
+> > Cc: stable@vger.kernel.org
+>=20
+> Reviewed-by: Simon Horman <horms@kernel.org>
 
-[ ... ]
-> @@ -985,5 +986,6 @@ static void afs_rx_notify_oob(struct sock *sk, struct sk_buff *oob)
->  {
->  	struct afs_net *net = sk->sk_user_data;
->  
-> -	schedule_work(&net->rx_oob_work);
-> +	if (net->live)
-> +		queue_work(afs_wq, &net->rx_oob_work);
->  }
+--=-b4MkfBcVTcys+AbJZKR4
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
 
-[Severity: High]
-This is a pre-existing issue, but does this lockless check of net->live allow
-a race condition that leads to a use-after-free?
+-----BEGIN PGP SIGNATURE-----
 
-Consider this sequence:
+iQGzBAABCgAdFiEEPaCxfVqqNYSPnRhRjRDjR2hoXxoFAmozunUACgkQjRDjR2ho
+XxorIgv+MdrlIU+2xGujhlcXTn+Dsq0kw33yjB3erdz6HBgq+DdEkIa0y70uv3T2
+MqpKAYE3rPZQ3S8fZWhmzeJAFFXTgVF+G9XANpH9K3f0GClORwvNfjKfeS6sbbo3
+9eg+iiQbKUSRBp6gYmAWySaaVXtu1rl4dWav4PBpHz+E8psyn7gsdBTePWozMhSe
+g9LI+eN8dt9j3khhcaSNQYulCe3GGomP5akVXTDNgYZo3fksJtoYX1r5wgYk78Ni
+UGBZHDol//C/rhpSGh7OF/HkBhz0ALZ6ceA+HzfCMwbJWy8IStRHtmMVBUEg+jZC
+sgJM8IRw5KRzVtp2N48ZgjYH3nryykpheySI+Rp9c7ZnY0Jqf+vDjS3ucjPUEmSk
+XherZhqhT0+nE4eaYJDNU+F/QudOvMHSYH+sk3mnCjpuGdOai8BDdhV+oq1Ql0LV
+W17nyWFwwmtgSQKbR3NV537nWIzKGqz5PEcHye6GowHRoTeH1rbLPSFYaIbPEvbd
+kgjvWlmW
+=KfCZ
+-----END PGP SIGNATURE-----
 
-CPU1 (teardown)
-afs_net_exit()
-    net->live = false;
-    afs_close_socket()
-        cancel_work_sync(&net->rx_oob_work);
-        flush_workqueue(afs_wq);
-        kernel_sock_shutdown()  // blocks waiting for recvmsg_lock
-
-CPU2 (incoming OOB)
-rxrpc_notify_socket_oob()
-    spin_lock_irq(&rx->recvmsg_lock);
-    afs_rx_notify_oob()
-        // Reads net->live == true (stale read, or delayed execution)
-        queue_work(afs_wq, &net->rx_oob_work);
-    spin_unlock_irq(&rx->recvmsg_lock);
-
-CPU1 then finishes kernel_sock_shutdown() and frees the net namespace, but
-afs_wq is never flushed again.
-
-Would moving cancel_work_sync() and flush_workqueue() to the end of
-afs_close_socket(), after kernel_sock_shutdown() completes, prevent this race?
+--=-b4MkfBcVTcys+AbJZKR4--
