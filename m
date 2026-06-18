@@ -1,278 +1,275 @@
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010002.outbound.protection.outlook.com [52.101.56.2])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B1B280A56;
-	Thu, 18 Jun 2026 17:24:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 329762C21D0;
+	Thu, 18 Jun 2026 17:38:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.15
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781803482; cv=fail; b=pgWg3Zv/ins423/wb1zW3OWtkJX9Veh7gM73EKPLLed4AC5izY3zjV/FlczE7g+a2VrPL8NXKU0pkWkuUnhFY28DPTyeKq9K5NkeOnjRVJiAbe4IkwEupUqfENR4N5phRTf6/kJrY3DG63JDYR7dajfzH9g2X/jmywwAYlu57EI=
+	t=1781804304; cv=fail; b=NzXX8XyHXvH/45cwKAUbD3/iqGuKonkG6DxN7CHc50KcOH7Tp+eXOnYXhEU8E4hv64k6EpQMIdPv9IhwUVd88wEUFhwf2UdG/MbRu8Rw+rdLJWP33DtAsoU687clwtC2Sj5T6qfxRP99pxGcggK7Cpq/xm0ykqswBz6Ct6JYDe8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781803482; c=relaxed/simple;
-	bh=BfzjSc63FwBZPueoci0VJ1WLLfFoV+txwsPw/Ssr+Xg=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cWUl+9vQXJtoZvqhLPMdpX3empy824g1JwyaoA3/jO/I4ja8jGyLqBeLSHiOluL6qqWA/DOvmRVnZ5xSzzYAgYiCVBh0Avr65BzMhbTmrcSkVarAu2A8y5pK3WQfz0yBJugsM7IKMLyQAdmv1jbp2edKDtgG9Y73W+dk45ZqIZc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=NFJOakan; arc=fail smtp.client-ip=52.101.56.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1781804304; c=relaxed/simple;
+	bh=Q/wv1WnErXehmeY6hdiLlRMSPwv/FTkbbvSzIuhhGBA=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=rmZYooHXiPOpCpYBzhyKDwwoFTO4GVbiRCG4X4kAsWpKBXKAAxOouQ/AzNX9ZWo7bqRwkjE2hchkJ1kcNtzUXcQR9oi1p1Hnx+4n+EoCW2ZrLReG6Yx/n8o26lktUNZtwj4WgDS74TaHIXAiIyk3Sb4BQtP7t5QVYdgwkaCzeoY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S+Wopib6; arc=fail smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="NFJOakan"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S+Wopib6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781804303; x=1813340303;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=Q/wv1WnErXehmeY6hdiLlRMSPwv/FTkbbvSzIuhhGBA=;
+  b=S+Wopib6n0Y5mjNWTBrXbltK2oz44cdxOtglLFNw+XiidBDHKmrdXuIg
+   a0ZJlqzrEd0Mgg7IwaT1Y0MTeabSe9qpXr84K8+SfY23nJiXo2BIgxroF
+   3T2Xh+N+LRNtY2wLC1fogS0sbEEKMosdnhYQDa8Fpemrz2i0DKcdb4QK3
+   uTwZPOvNkRcfb9QNMTdU32j1NeezAOkTkaaKzrLhA+wMVG/bNtWgC8F1u
+   GZ9ZSva2p9ZOugPkBCma3snnXH6VWfzYkuq4Wyl+FnwAb3VBxyWU5B+NW
+   YzwKVQwexBGQuWSD6SaAFshXj7pn0fGSIiK68kN5aca3EGJznc95u8rI6
+   g==;
+X-CSE-ConnectionGUID: aI2HzBAXQNaZ1rEuZuN2yw==
+X-CSE-MsgGUID: PvGdY8iCSmGVFctyEiH8Jw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11821"; a="86330160"
+X-IronPort-AV: E=Sophos;i="6.24,211,1774335600"; 
+   d="scan'208";a="86330160"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2026 10:38:22 -0700
+X-CSE-ConnectionGUID: I4yPpTtWTemdsKnmqsCrNw==
+X-CSE-MsgGUID: MJYsuyiXRQmn3P/F1+SCww==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,211,1774335600"; 
+   d="scan'208";a="245501030"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2026 10:38:21 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 18 Jun 2026 10:38:21 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Thu, 18 Jun 2026 10:38:21 -0700
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.71)
+ by edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 18 Jun 2026 10:38:20 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=R7F7YiyhxiVHbgE1qp7eDRqAGa3Fhecs5sfG6vJh6E2KjWljyv0532ynZKz06cMsnUAgUw5XrrkAMRAaW3Vt3UtzAFo19qGAvDxu9iKpIB09D2p1bBNCbr3vUtuPSj5nCBcHDwAvwDYd+b4UTXQWVxO7KgefhrMc8aJ9Mgvjt/G7kB39oisCvDxOh0amLiNUfULxAM08dU1XvsgWKlytKVliv7sPiteTNjr+RlNIOa3PIKvY2Aw49EWDzAo/E2g1j/yFLFpmOBQ9C+5HTXE1Fe5sjmqhpuLUFeKGNbINSiNv6tA30D5bU2YuGmk1E4IAskBs98C5BKyLU6d3D/MNCA==
+ b=kECY9OTYMfDaGeBGL8hDa9joVGHiEm7nz5GYkOgUt+TAg3vgHk6fNT6bybzaZAfDTTRyTHQ3YSyQ6Da3fWw3fbYs3pKc0mi8Ct0satSS/NK5z49cPD/P342vYD6DESau0ZWC//OPvC4fh0sXz3JlPtYu4HsPG2Vup7Hw9D6BacQqAUwqiaPrO6Yhxxp5Y7tsIA4eYTxL23iIWs4uXWENPdrBfkZblLgS8yG/61hvAsuNw2jkYp8q9R85y3Gm3wl7mrwlHlMp6WC8VK0sQIFm2syoY04bPbKSZ3almNu6Uy7ZLcIm/6vJ8W644RQlQuXHLxhUT5oicvysiTQWJKu/VA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QDQbikAnb7EG98f9l8ft7l3MvDMlev9j0KhpyYB3fBA=;
- b=UZzymi0lSuXTOqcoLn/hg69gJXfuQqDZ9/OJbPkH32mTc4FEUTFam+0KvElD9nj6KbnWHuEEOVtxvdATVuwVGpMewvlVWNkizdgyjmRe5R9JXsMaXAOuZPOwNuYo47eEWySLXIpqs+ryO1f5IE5ObV6zUBX87eAjtEzz7Az4x2w3CIYlc9cIdceHoCT+bXZ97yW7pqRG9NIVLATlFmQp8Us17WOT1pEYb8hkXBnmJyM8lv4vTtbBtZzzako6eQwzlnunzCunqyVGbzMPK4STffS3MNVXvjvRvsEld6tAFGrF7kSyMTK2YKnYaTwjMv7+8vwa2YYi9DXFXl4pGoYkMA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QDQbikAnb7EG98f9l8ft7l3MvDMlev9j0KhpyYB3fBA=;
- b=NFJOakanaw4OyHXo6588Cm8sbOLcKPf0F2VOz16f/Gp3w3Pc6jIjpra7/C5OtGbnMkVfWm7GVxmFTpzZK53ahVLG/CGslYvA+U9Ch9zqBG3J4icjKIScq6KcFI1+EVPdWamz6bNYVE0Wp3NqIROl0L1DnEvIKfb7+GcACngMcgs=
-Received: from SA0PR11CA0123.namprd11.prod.outlook.com (2603:10b6:806:131::8)
- by SA3PR12MB8802.namprd12.prod.outlook.com (2603:10b6:806:314::18) with
+ bh=kHKvEpKBK8iUwMVhup+p7AxKipmED+gLYTZSf9tBngc=;
+ b=emz3CE930zCZZPKdINe2i0uyhj8cV9tsfozlw20mnb559YMqXRWMEPre3dk4hIJ54VXnqH33q3EGUe8SKOhLp8DX9sXpIqgccNQDG/onLMlt4QNWoqy7Rf1EIXrAX3N26TDHavfO5JBsGLlmsYodhZWN2YkMtgIMFcWz9OxEa14qpCMPdr7ZQx++pKDUQCV5H6N3aph4UEmcC7L+dExKmBG/PXgEKqQ7HBDQQ8iZJuX2o6/Bkuq8Grm/27JIPPZFJvZHe4rvOzmUqSYINOhNii/5Y4w/IbxSxC/+t1IKUqJPO94jYILHLc3a+baxb7Z7qM+a5G6E8Stt6DVkxmPTQQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB8230.namprd11.prod.outlook.com (2603:10b6:8:158::21)
+ by PH7PR11MB8249.namprd11.prod.outlook.com (2603:10b6:510:1a7::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.12; Thu, 18 Jun
- 2026 17:24:32 +0000
-Received: from SA2PEPF00003AEA.namprd02.prod.outlook.com
- (2603:10b6:806:131:cafe::83) by SA0PR11CA0123.outlook.office365.com
- (2603:10b6:806:131::8) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.139.11 via Frontend Transport; Thu,
- 18 Jun 2026 17:24:32 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SA2PEPF00003AEA.mail.protection.outlook.com (10.167.248.10) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.139.8 via Frontend Transport; Thu, 18 Jun 2026 17:24:31 +0000
-Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 18 Jun
- 2026 12:24:31 -0500
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
- (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 18 Jun
- 2026 12:24:31 -0500
-Received: from galena-46a8.xcblab.xilinx.com (10.180.168.240) by
- satlexmb07.amd.com (10.181.42.216) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.41 via Frontend Transport; Thu, 18 Jun 2026 12:24:30 -0500
-From: <alejandro.lucero-palau@amd.com>
-To: <linux-cxl@vger.kernel.org>, <netdev@vger.kernel.org>, <djbw@kernel.org>,
-	<edward.cree@amd.com>, <davem@davemloft.net>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <edumazet@google.com>, <dave.jiang@intel.com>
-CC: Alejandro Lucero <alucerop@amd.com>
-Subject: [PATCH v28 5/5] sfc: support pio mapping based on cxl
-Date: Thu, 18 Jun 2026 19:18:06 +0100
-Message-ID: <20260618181806.118745-6-alejandro.lucero-palau@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260618181806.118745-1-alejandro.lucero-palau@amd.com>
-References: <20260618181806.118745-1-alejandro.lucero-palau@amd.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.11; Thu, 18 Jun
+ 2026 17:38:18 +0000
+Received: from DS0PR11MB8230.namprd11.prod.outlook.com
+ ([fe80::2592:f5a9:a751:be40]) by DS0PR11MB8230.namprd11.prod.outlook.com
+ ([fe80::2592:f5a9:a751:be40%3]) with mapi id 15.21.0139.009; Thu, 18 Jun 2026
+ 17:38:18 +0000
+Message-ID: <55ab9b13-ee51-4ac6-af7b-b3feb159eb51@intel.com>
+Date: Thu, 18 Jun 2026 10:38:15 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] igb: only strip Rx timestamp header on the first
+ buffer of a frame
+To: Kurt Kanzenbach <kurt@linutronix.de>, Tjerk Kusters <tkusters@aweta.nl>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
+CC: "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+	"przemyslaw.kitszel@intel.com" <przemyslaw.kitszel@intel.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"richardcochran@gmail.com" <richardcochran@gmail.com>, "hawk@kernel.org"
+	<hawk@kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <PAWPR05MB1069106D52F4E17F1EDB99C67B9182@PAWPR05MB10691.eurprd05.prod.outlook.com>
+ <8733yojljf.fsf@jax.kurt.home>
+Content-Language: en-US
+From: Tony Nguyen <anthony.l.nguyen@intel.com>
+In-Reply-To: <8733yojljf.fsf@jax.kurt.home>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW4PR03CA0274.namprd03.prod.outlook.com
+ (2603:10b6:303:b5::9) To DS0PR11MB8230.namprd11.prod.outlook.com
+ (2603:10b6:8:158::21)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF00003AEA:EE_|SA3PR12MB8802:EE_
-X-MS-Office365-Filtering-Correlation-Id: c6192a44-4010-44fa-0a2a-08decd5e75ad
+X-MS-TrafficTypeDiagnostic: DS0PR11MB8230:EE_|PH7PR11MB8249:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6eb7dd23-8c74-44f2-30f3-08decd60620a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|1800799024|36860700016|82310400026|3023799007|18002099003|22082099003|56012099006|11063799006|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	Ovsd8M+DLCqedcXOvLjLWI0hArluq+4VXp6Z6jRPXFTQPleOVtSv8Hxw3BLbNYh0NR75u9M0jq5saJdkPXI3v8F9tM1M9NoUh15Tqjvbf2JQqeonxyUXB/hm5jKDI/PS0l3tMo2cybtOym9I2o+Eis+b70IM5E/mufvD8z78JpR84DcD7TyjIV2R/oHAqUJZ7vLHvd7r1va7mBtu1f++Ea4pOnZa0G6Difhtx89F2BCxpC2rujX2Wsm9rq6g0KKyCYedCqjPZ48RaEM0MlkHxDjcp+qPb5SCsUZu9UcQLKPkJ81iWt8LNPzD0uDEDbFbhr4+bcpDSyfqyyjz65Wl1aRVyti5xymBE0PWPDPrw9S6I6iCryPNtwnUgQJVoD8xh4C6q4euFwZkDF1vTEtbcIr++cIBovhTuFLV3/AbZGlYY5sRgglTyNTRwsIMJIi8jfhOOM3Nqg9Jz/yWigKiBcFUXZ6+U17CwMjoti9d5Gcx113ihxq+0CFJ4AmeqF9GY31ZyWf57ivFPWVBmSudQZEXSMqLF/+JIogVF/sCldPyD9CfpSiBOvLguGV6u2E9rBmd8t9g01B2E395fj0jdgu99bOmd4AVPB2eTObq9Bn2lPFvR1/luvRqajSkgLZBte5kynfbF2ZIPBjsXV/xYYZ1HSrOH5QhET05kxUZyovapl2UJ9uExXhKjWns/xQDlWEjSU/xgsb9L5ex44cke1veLVVeIL1KdZf+oi/U7eg=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(23010399003)(1800799024)(36860700016)(82310400026)(3023799007)(18002099003)(22082099003)(56012099006)(11063799006)(6133799003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|23010399003|7416014|376014|366016|6133799003|4143699003|11063799006|5023799004|56012099006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: XvYs/wPRORedt7x5Nl3c1dHqJTcu+XG+xYy5D3W1WESNRNfvtm0v0GouXOqAQ/EdhU6uG2dKeHrYUkfs5H6JjV10mUy0ljVMCBv2C3M2CKMFznYytzoboP9vXvhxm2eNxl2b1lwRkZBUcEO5WND9jM6UM6Wa7DD/AdOZkm+bf/3qVNAZhppntTPCUo1+phz13SpHK+rwL4P5fTdvpfAlLnPol84r51Aab8Hv7QchzW6czOrP1J0eTclFAheqLkc4xKacwQ6UkdC2Fvphl4rCLRtOyv9iCVwhHOPBsSIkmHsUuHQktUvJPAbBPNaQgdSwsSHKJ0OY+DmeBdiwa6v13OctwCspOOSY2+GzwhHjDDtKC7uBtISZqf3yqgqAFU17WTK5g8RrtmY0e1i3u1FwB3SlPskwMDHUNLIEV/UOflNgFY/JuUBpq4efg1nUEfyNhf8c5lRm1jXHnJ9ETp9Ei3E6h3gdqgiwl/p3WZinwP9zkSUcZx3ueSXeGOKVhm/E0Ku7Y11CI3T7Z17KTcAzgylEivtRPksxxJ9Wv7o6Z40zejT4ITHe+to4tCLmHcObXPGc5AQKtMcG+7AF0B2blfvojKPKZRgwBceZ0mC2pSnskSeCkmXyDUJaLwGoxM9w+Kc4s/vxIqLJjW2+lNQ3oLe6DFMPRj04XjQbMz+KWfnAXUlYZl1DcOHhLjbq3k4oRlnXirBTudduy0Yt5iTYFA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8230.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(7416014)(376014)(366016)(6133799003)(4143699003)(11063799006)(5023799004)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	xbsC3WJ+AGr8C4qI+afQo4ZdiWMsGH6DETBS1/G0hIqESrq+cPkgSGqRs4etd9TTpNPP49siCgIkKlUKvCnpihIY7jcTx0NqtYRrtRhtOuPff1jMvdpjucZA0jylvIa2vzdL9DSzb/395ELllDJISRYVybjm7PmzxmhJ7k3fg6Rdv8wKR8hBTZEzIm5nlJnkU4il9+rNrk2TcY/MoRDxo72fmQH8lZ/+Qf/cD7nVzp2EswXzNP0Rl9PbZUe5QM3pi2H2ha6vE9uyFqm4hikKUQLMGEP5lhy+uuzgm1KceHQv/hBcWM9pV4zfTCbGTsMcc9sBMIyZfgoUNgZcRbEQIvPX+wzt1X7Tb0/OGLNRjtpragNFjGpSlkKDLP1iW0uXWa9ZnSd1DhL4M13FewUTuuhNarBkMiCBcqt0AlRrUpGLI5WHf2Sm9X5z6IoqcQLZ
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jun 2026 17:24:31.7721
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VDdaT09vbU02QmFHeGl1RlBjWTNlM1Yrd3pOV0Y2Yll5cmJvQjJzSXRtaEo3?=
+ =?utf-8?B?eU9KTzJvTWFXNU1sUFpmODg0RlprSnB6YU42aG53NnZuTTFCdTR0RnhSV1FQ?=
+ =?utf-8?B?VUZNVnR0OUNPeXYxSytTRVU5Snh1MGdPKzgxYUhPYU4rdzJlSWRxSFMxT2xk?=
+ =?utf-8?B?YVdWb1pGM2pXRm9zTXBNVURZdzVWUGtobHJIenR1bTlnbDBWa2IyWDFoREpa?=
+ =?utf-8?B?SHJLdG0xVkRZNUhoWVFFUFVUelJQQzdhYk1OZjVqVFVmendJMHYxM09vVDlv?=
+ =?utf-8?B?dkZTcWJLSjRQNC94MCs4TFdGSmgwbS9nTHVlWVFXclVUb0tnbzNTUHJORS9T?=
+ =?utf-8?B?RTVMM0t6K1p3Y2VIdU93TWVVNGxrL0JHNkxmWEtBMG9zVUs1bzdMNy91TXVT?=
+ =?utf-8?B?TE9PWEdBOE95Ump6OEpvdDZEemJ0OU9DNllDU1h2VEVyZXMzN0NMMkJtN2RR?=
+ =?utf-8?B?dFdOd2dlcW4vdUduQno4SW0xYzFwdWx4ZklvY1NTczRGMUFNRXIreWVsWXdE?=
+ =?utf-8?B?UFd4VmZ6djJtL0dtQ2RNWUwzTHhWeTlISFRsN2VneG5rVGRpTXRVNldmaHlz?=
+ =?utf-8?B?QWxXWmRHVnZNRVlScWFMS043MVExM29OYmhKWE1lcjdtOEIydkRVYXRJRzdn?=
+ =?utf-8?B?ZGNiNXRCVHFCMnYwaDVWTXlqVGJ4UWVLT05Dbm8yZEJlQjU4OS9zMkRLNC9r?=
+ =?utf-8?B?MnNkbFo5cHVyUDY4RGFQYlI5NHN3WXZsc0h4ZVZLWmVMWVFlVzMvd1RjaENK?=
+ =?utf-8?B?c0wrakozN1RUVEN3OXF3ZlZDWmNvMjcxUE50WVRGdm1pNGJ6MUdReG5mSys5?=
+ =?utf-8?B?OTR1SDFvNWsyN1EyOFpuMkUzT3BQZkV6T2ptbFBlRkdSbFBiYTBOM3paNUdi?=
+ =?utf-8?B?azVEZkJPZ3VSWXBOZllZY3V2V3NPb2pZcFo1OVZNWFNHOG5uU0EwMU1QWVhM?=
+ =?utf-8?B?VDd1MUU5SWFPN216akhydHZmemY3WVJJcWFYWGUwN1NTZkx0cGM4aTZhRlg2?=
+ =?utf-8?B?L3ZvUjVwdCtYeGE0VWd2M2Q2U0FOTSthZHcvaE9scSswdEdNMVFyWUFsYzY4?=
+ =?utf-8?B?MEcyQVpyUTlneE9QeEZJalZxdmYveG53dlBkRU1LTjNhVEpQelVnaEhUOXg5?=
+ =?utf-8?B?RXBiTVJQcHFKYXk3b3hneUtFOEFUWkJYQnl2S2kwc2U0bnFYZG56T2F2VXZU?=
+ =?utf-8?B?Sk9iT2pndmduV0lZNGw3RFFxUG9uZDMwaXNTd0JkdGR2dUh5YUR2UkM0dXZj?=
+ =?utf-8?B?L3hOR3VUYjVSU2hKYW5KTWdkUEJsc21hR1ZBd2RCcEF2REhlcjd2anhBVXFj?=
+ =?utf-8?B?QkxEd2FiUjg5eDB2NlpKaC9zVDltRTFPV3VuNXFHQVVBNUFaL2lVa01Na29O?=
+ =?utf-8?B?UkZXY1ZxSmtqVWFkWHlYQWRVMkFjNGtnQXNaZ2VUTm9yMzArNHQ0M1RqV2Qx?=
+ =?utf-8?B?WHhKQWZLcmhrMzRRZ2dzWk1nWEVIenc2WUM5ekpiakdTVUxsZU5mblNLLzND?=
+ =?utf-8?B?enBmaUFFQk50ek5BVmNGL2RCSlJvZW5ZVkR0b1NtaGp3cUFNb1NmSnJRNHpH?=
+ =?utf-8?B?aE5vSjJwWmM0WmFsdWc3a1dpdTNDLzVRM2dkSUpwcUJzMExiL2VMMkE5R2VH?=
+ =?utf-8?B?bGdYbGtkazJHRkVCajdjUWRvcWRxSVhpWEJjb1R0S2ZvMjRDdDdoa096Snhn?=
+ =?utf-8?B?Vk9rYjc2TDNHaXhXTmFQVnBqYXZCNnJWN1IvK2pkYlYxL1ZjK0NxbFpHSXpJ?=
+ =?utf-8?B?VDBxNHViVTVHckN2UHV5UWlMSzdqVkI1V1hiL1Noa1VFaXVIOE05c25pQWJJ?=
+ =?utf-8?B?VWVYa29YZUY5UTVSRXMrK3F0ZkEwNGtzYXlYb1E1U3VzYnJFd2FLTi8weVli?=
+ =?utf-8?B?dy9qS1pNS2FzVERDTEF0YmpGa0ZVSnlmUGF0VVJKNVZKQ1hPY1ZOMlRNeHdP?=
+ =?utf-8?B?RStUNWhVREtpZ2lub3FyV1JSa3pLNkVXZWZtNVdKdDdLRnRBcWtxWFl1ODEv?=
+ =?utf-8?B?eSswZCtCM3d6dU9TVDhhN3g1RnVBS3NxOHhYTEtlV3c5OWdFUHY5Y0ZxK2tK?=
+ =?utf-8?B?dTVWNDF3dG9iMG11VjJRNVFRdjFpZy9OTnZobDlLRWdEVytNS2xnTkNUNUlX?=
+ =?utf-8?B?MlptT1VlcjZWRHJlV0E0aWI3dC9JdzMwNEM0eWVoNjQ0OFZucmYrV2ptaXlN?=
+ =?utf-8?B?SW1KZXdOWHVxK1dGTGx0OVBydGJXbXVtbmt2YzFBWUVvQk0zQVBSRlVJd0ZM?=
+ =?utf-8?B?ZkNyYnJmZXUxaDA1UnptUHVEQmdVNldwajJxeDZnd2FLaWkxUitpV1oyZWNQ?=
+ =?utf-8?B?UEJyQkhMQUFzRlYrV00vT2pPVVlTYnpNQkdtSFRnem9HR3cwdUQ3dG05MkMv?=
+ =?utf-8?Q?1gN9DAU3W5NspBxA=3D?=
+X-Exchange-RoutingPolicyChecked: K7mmacc6XLVRl1g3DGYGLEjPBlEMKE38FCdQHC5+ZStIK2YZIaPldTDVKYkbV9d26AtEE93AdkptUazPFZmDpSILRTAOAYomEpJ2Gn4dqIEAlZ0JEbhwS1VRWoQOBiooEXAItR8UxvYiCOnW+9cohdZzAziJjzof4vBViXwB5eKeSfL3DbvOrfPhzQ+oV0oiTQjHexO7EYas/K3bOo5U+ga8qz/ZX8lOHsvL6KS3Tk3/V7rOBsW0mdOL+NXQOTrNCaug0a0eojdgaLItPMBxeGCo0W+CByXTGqRBhfKEI4vmFKj2O35VQom/7vDKKRH3d+seulIvWVdmXGAzTDGqqA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6eb7dd23-8c74-44f2-30f3-08decd60620a
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8230.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jun 2026 17:38:18.0901
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c6192a44-4010-44fa-0a2a-08decd5e75ad
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF00003AEA.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB8802
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nHGcuRw0ysSsxeEVvz9aSoNuHDGF/uvbmD7Ms31N7Mg3E4iGjLJofIOphOXAgdlvG36t5Is0FYLm7MUIhK8Iqa0gZn0GTAK/HDPfZZRFGXc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB8249
+X-OriginatorOrg: intel.com
 
-From: Alejandro Lucero <alucerop@amd.com>
 
-A PIO buffer is a region of device memory to which the driver can write a
-packet for TX, with the device handling the transmit doorbell without
-requiring a DMA for getting the packet data, which helps reducing latency
-in certain exchanges. With CXL mem protocol this latency can be lowered
-further.
 
-With a device supporting CXL and successfully initialised, use the cxl
-region to map the memory range and use this mapping for PIO buffers.
+On 6/15/2026 12:43 AM, Kurt Kanzenbach wrote:
+> Hi,
+> 
+> On Fri Jun 12 2026, Tjerk Kusters wrote:
+>> Hi,
+>>
+>> The patch is attached (0001-igb-only-strip-Rx-timestamp-header-on-the-first-buff.patch)
+>> as my mail setup cannot send it inline via git send-email; apologies for the
+>> attachment.
+> 
+> b4 has a web submission endpoint. Maybe you can use that one:
+> 
+> https://b4.docs.kernel.org/en/latest/contributor/send.html
+Hi Tjerk,
 
-Signed-off-by: Alejandro Lucero <alucerop@amd.com>
----
- drivers/net/ethernet/sfc/ef10.c       | 41 ++++++++++++++++++++++-----
- drivers/net/ethernet/sfc/efx.h        |  1 -
- drivers/net/ethernet/sfc/efx_cxl.c    |  1 +
- drivers/net/ethernet/sfc/net_driver.h |  1 +
- drivers/net/ethernet/sfc/nic.h        |  3 ++
- 5 files changed, 39 insertions(+), 8 deletions(-)
+It would be great if you could get this setup as it makes patch handling 
+easier.
 
-diff --git a/drivers/net/ethernet/sfc/ef10.c b/drivers/net/ethernet/sfc/ef10.c
-index 7e04f115bbaa..73bc064929f6 100644
---- a/drivers/net/ethernet/sfc/ef10.c
-+++ b/drivers/net/ethernet/sfc/ef10.c
-@@ -24,6 +24,7 @@
- #include <linux/wait.h>
- #include <linux/workqueue.h>
- #include <net/udp_tunnel.h>
-+#include "efx_cxl.h"
- 
- /* Hardware control for EF10 architecture including 'Huntington'. */
- 
-@@ -106,7 +107,7 @@ static int efx_ef10_get_vf_index(struct efx_nic *efx)
- 
- static int efx_ef10_init_datapath_caps(struct efx_nic *efx)
- {
--	MCDI_DECLARE_BUF(outbuf, MC_CMD_GET_CAPABILITIES_V4_OUT_LEN);
-+	MCDI_DECLARE_BUF(outbuf, MC_CMD_GET_CAPABILITIES_V7_OUT_LEN);
- 	struct efx_ef10_nic_data *nic_data = efx->nic_data;
- 	size_t outlen;
- 	int rc;
-@@ -177,6 +178,12 @@ static int efx_ef10_init_datapath_caps(struct efx_nic *efx)
- 			  efx->num_mac_stats);
- 	}
- 
-+	if (outlen < MC_CMD_GET_CAPABILITIES_V7_OUT_LEN)
-+		nic_data->datapath_caps3 = 0;
-+	else
-+		nic_data->datapath_caps3 = MCDI_DWORD(outbuf,
-+						      GET_CAPABILITIES_V7_OUT_FLAGS3);
-+
- 	return 0;
- }
- 
-@@ -1140,6 +1147,9 @@ static int efx_ef10_dimension_resources(struct efx_nic *efx)
- 	unsigned int channel_vis, pio_write_vi_base, max_vis;
- 	struct efx_ef10_nic_data *nic_data = efx->nic_data;
- 	unsigned int uc_mem_map_size, wc_mem_map_size;
-+#ifdef CONFIG_SFC_CXL
-+	struct efx_probe_data *probe_data;
-+#endif
- 	void __iomem *membase;
- 	int rc;
- 
-@@ -1263,8 +1273,23 @@ static int efx_ef10_dimension_resources(struct efx_nic *efx)
- 	iounmap(efx->membase);
- 	efx->membase = membase;
- 
--	/* Set up the WC mapping if needed */
--	if (wc_mem_map_size) {
-+	if (!wc_mem_map_size)
-+		goto skip_pio;
-+
-+	/* Set up the WC mapping */
-+
-+#ifdef CONFIG_SFC_CXL
-+	probe_data = container_of(efx, struct efx_probe_data, efx);
-+	if ((nic_data->datapath_caps3 &
-+	    (1 << MC_CMD_GET_CAPABILITIES_V7_OUT_CXL_CONFIG_ENABLE_LBN)) &&
-+	    probe_data->cxl_pio_initialised) {
-+		/* Using PIO through CXL mapping */
-+		nic_data->pio_write_base = probe_data->cxl->ctpio_cxl;
-+		nic_data->pio_write_vi_base = pio_write_vi_base;
-+	} else
-+#endif
-+	{
-+		/* Using legacy PIO BAR mapping */
- 		nic_data->wc_membase = ioremap_wc(efx->membase_phys +
- 						  uc_mem_map_size,
- 						  wc_mem_map_size);
-@@ -1279,12 +1304,14 @@ static int efx_ef10_dimension_resources(struct efx_nic *efx)
- 			nic_data->wc_membase +
- 			(pio_write_vi_base * efx->vi_stride + ER_DZ_TX_PIOBUF -
- 			 uc_mem_map_size);
--
--		rc = efx_ef10_link_piobufs(efx);
--		if (rc)
--			efx_ef10_free_piobufs(efx);
- 	}
- 
-+	rc = efx_ef10_link_piobufs(efx);
-+	if (rc)
-+		efx_ef10_free_piobufs(efx);
-+
-+skip_pio:
-+
- 	netif_dbg(efx, probe, efx->net_dev,
- 		  "memory BAR at %pa (virtual %p+%x UC, %p+%x WC)\n",
- 		  &efx->membase_phys, efx->membase, uc_mem_map_size,
-diff --git a/drivers/net/ethernet/sfc/efx.h b/drivers/net/ethernet/sfc/efx.h
-index 45e191686625..057d30090894 100644
---- a/drivers/net/ethernet/sfc/efx.h
-+++ b/drivers/net/ethernet/sfc/efx.h
-@@ -236,5 +236,4 @@ static inline bool efx_rwsem_assert_write_locked(struct rw_semaphore *sem)
- 
- int efx_xdp_tx_buffers(struct efx_nic *efx, int n, struct xdp_frame **xdpfs,
- 		       bool flush);
--
- #endif /* EFX_EFX_H */
-diff --git a/drivers/net/ethernet/sfc/efx_cxl.c b/drivers/net/ethernet/sfc/efx_cxl.c
-index 3e7c950f83e9..348d7404cd7a 100644
---- a/drivers/net/ethernet/sfc/efx_cxl.c
-+++ b/drivers/net/ethernet/sfc/efx_cxl.c
-@@ -88,6 +88,7 @@ int efx_cxl_init(struct efx_probe_data *probe_data)
- 		return -ENOMEM;
- 	}
- 
-+	probe_data->cxl_pio_initialised = true;
- 	probe_data->cxl = cxl;
- 
- 	return 0;
-diff --git a/drivers/net/ethernet/sfc/net_driver.h b/drivers/net/ethernet/sfc/net_driver.h
-index de3fc9537662..3964b2c56609 100644
---- a/drivers/net/ethernet/sfc/net_driver.h
-+++ b/drivers/net/ethernet/sfc/net_driver.h
-@@ -1213,6 +1213,7 @@ struct efx_probe_data {
- 	struct efx_nic efx;
- #ifdef CONFIG_SFC_CXL
- 	struct efx_cxl *cxl;
-+	bool cxl_pio_initialised;
- #endif
- };
- 
-diff --git a/drivers/net/ethernet/sfc/nic.h b/drivers/net/ethernet/sfc/nic.h
-index ec3b2df43b68..7480f9995dfb 100644
---- a/drivers/net/ethernet/sfc/nic.h
-+++ b/drivers/net/ethernet/sfc/nic.h
-@@ -152,6 +152,8 @@ enum {
-  *	%MC_CMD_GET_CAPABILITIES response)
-  * @datapath_caps2: Further Capabilities of datapath firmware (FLAGS2 field of
-  * %MC_CMD_GET_CAPABILITIES response)
-+ * @datapath_caps3: Further Capabilities of datapath firmware (FLAGS3 field of
-+ * %MC_CMD_GET_CAPABILITIES response)
-  * @rx_dpcpu_fw_id: Firmware ID of the RxDPCPU
-  * @tx_dpcpu_fw_id: Firmware ID of the TxDPCPU
-  * @must_probe_vswitching: Flag: vswitching has yet to be setup after MC reboot
-@@ -187,6 +189,7 @@ struct efx_ef10_nic_data {
- 	bool must_check_datapath_caps;
- 	u32 datapath_caps;
- 	u32 datapath_caps2;
-+	u32 datapath_caps3;
- 	unsigned int rx_dpcpu_fw_id;
- 	unsigned int tx_dpcpu_fw_id;
- 	bool must_probe_vswitching;
--- 
-2.34.1
+> [snip]
+> 
+>>  From fee3e3452dfcd7e109332369672a3e0090cadeb3 Mon Sep 17 00:00:00 2001
+>> From: T Kusters <tkusters@aweta.nl>
+>> Date: Tue, 9 Jun 2026 14:06:24 +0200
+>> Subject: [PATCH net] igb: only strip Rx timestamp header on the first buffer
+>>   of a frame
+>>
+>> When Rx hardware timestamping is enabled (e.g. ptp4l, which configures
+>> HWTSTAMP_FILTER_ALL), the NIC prepends a 16-byte timestamp header to the
+>> first Rx buffer of every received frame. igb_clean_rx_irq() strips this
+>> header inside its per-buffer loop:
+>>
+>> 	if (igb_test_staterr(rx_desc, E1000_RXDADV_STAT_TSIP)) {
+>> 		ts_hdr_len = igb_ptp_rx_pktstamp(rx_ring->q_vector,
+>> 						 pktbuf, &timestamp);
+>> 		pkt_offset += ts_hdr_len;
+>> 		size -= ts_hdr_len;
+>> 	}
+>>
+>> For a frame that spans more than one Rx buffer (e.g. a jumbo frame), this
+>> block runs once per buffer. The timestamp header only exists at the start
+>> of the first buffer, but igb_ptp_rx_pktstamp() is called for every buffer.
+>>
+>> On a continuation buffer the data is packet payload, not a timestamp
+>> header. igb_ptp_rx_pktstamp() already has two guards against acting on a
+>> non-header buffer: it returns 0 if PTP is disabled, and returns 0 if the
+>> reserved dwords (the first 8 bytes) are non-zero. Neither is sufficient
+>> here: PTP is enabled, and a continuation buffer whose payload happens to
+>> begin with 8 zero bytes passes the reserved-dword check. In that case the
+>> payload is mistaken for a valid timestamp header and igb_ptp_rx_pktstamp()
+>> returns IGB_TS_HDR_LEN, so the caller strips 16 bytes of real data from
+>> that buffer. A frame spanning N buffers whose continuation buffers start
+>> with zero bytes therefore loses 16 * (N - 1) bytes from its tail.
+>>
+>> This is easily triggered by a GigE Vision camera streaming dark frames
+>> (mostly 0x00 pixel data) over jumbo UDP with PTP active on the receiver:
+>> the all-zero frames arrive truncated while frames with non-zero content
+>> are fine. There is no error indication.
+>>
+>> No content-based check can reliably tell a continuation buffer that begins
+>> with zero bytes from a real timestamp header, because both are all zero.
+>> Fix it structurally instead: only attempt the strip on the first buffer of
+>> a frame, which is the only buffer that can contain a timestamp header. In
+>> igb_clean_rx_irq() skb is NULL until the first buffer has been processed,
+>> so guarding the strip with !skb restricts it to the first buffer
+>> regardless of payload content.
+>>
+>> Fixes: 5379260852b0 ("igb: Fix XDP with PTP enabled")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: T Kusters <tkusters@aweta.nl>
+
+Sign off should be your full name.
+
+Thanks,
+Tony
+
+> Great explanation! igb_clean_rx_irq_zc() does not need the same
+> treatment, correct?
+> 
+> Reviewed-by: Kurt Kanzenbach <kurt@linutronix.de>
+> 
+>> ---
+>>   drivers/net/ethernet/intel/igb/igb_main.c | 3 ++-
+>>   1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
+>> index ce91dda00ec0..abb55cd589a9 100644
+>> --- a/drivers/net/ethernet/intel/igb/igb_main.c
+>> +++ b/drivers/net/ethernet/intel/igb/igb_main.c
+>> @@ -9061,7 +9061,8 @@ static int igb_clean_rx_irq(struct igb_q_vector *q_vector, const int budget)
+>>   		pktbuf = page_address(rx_buffer->page) + rx_buffer->page_offset;
+>>   
+>>   		/* pull rx packet timestamp if available and valid */
+>> -		if (igb_test_staterr(rx_desc, E1000_RXDADV_STAT_TSIP)) {
+>> +		if (!skb &&
+>> +		    igb_test_staterr(rx_desc, E1000_RXDADV_STAT_TSIP)) {
+>>   			int ts_hdr_len;
+>>   
+>>   			ts_hdr_len = igb_ptp_rx_pktstamp(rx_ring->q_vector,
+>> -- 
+>> 2.27.0
+>>
 
