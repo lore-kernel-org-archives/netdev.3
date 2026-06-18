@@ -1,77 +1,50 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9881DF980
-	for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 14:02:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D493F38D40D;
+	Thu, 18 Jun 2026 14:21:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781791334; cv=none; b=jzBsES0RbSNyldSAKMx/Gnc663+x2h9mOoVzWtFVnLr5zSOZqMbsPjpStMmXTHbVFlAIBARs90SOP84rvWq+ve8vtx4z8Q1AUx3qrOdBrMZ1gaQarCESTLig/oZsNOGcDdmvOsikOhHqDOE5/7FP8pLWekd8lz6BWehdI/CI9u4=
+	t=1781792516; cv=none; b=PUor9O2WuPDSjLs2NYh24JwM0ub7Eqyxd70IhDx2fTEIz4+8OyUWBUdjVtpYIAIQKnY0rCFJM/5TxeVLUHtw9+UMB0UgecvAubq0OUXZaXTHmEIEpgFGBXMSwZIDnCtERyiB90J3lZkunJzjB8sJRX5eQrqSyVbMVv/68qy/39o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781791334; c=relaxed/simple;
-	bh=qQxmqb9PnlMG1Fap8IEAL+WwML0IMJMAnH9L4tjYi4k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YZFG27S11U1qP1B0m5YiBZazD+qEpGmco2blRJp3fgNzkieTh7th/sCaWtR53eX3G60YdpHKG+A8OpoKqSLxNUc+dlRenw+4D2fbttzPexKOyF2z7gFL+MZ4E9vVR68PhqBzzB/+YJZOxeJB0IW0hFWQwsbHcxi4ujK1AYfgomc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V8/+z8To; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781792516; c=relaxed/simple;
+	bh=L5U93jZHJyDASCbYgKUYgJLTODAE27QkVBFWgkckHp0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=EqB2qxVCbzj6ADwEIiu4QUvYQC7JenWK2fCq4HyRTm3iCSmH9riiCQ5GoJ0dem9/RU3EVp+Ql03zWov4vnizM+y57WZbo/V787sZgZDpNKogIiWCq7tTlae40npi6xm5KYyRc00RPOcztY/KLZJ9L8o4w3O+E+tsk5v/qiDcfHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=MoqV4MmD; arc=none smtp.client-ip=101.71.155.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V8/+z8To"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2c6ab886da6so6328155ad.0
-        for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 07:02:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781791332; x=1782396132; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=XS4R+w0KJN00IzEVRV2kKHMy345QBzFIS6oLc6bdXzg=;
-        b=V8/+z8ToF29pmuT7D8XblJJc8hJrvZ9WJJK+ey/yYvqDlUgd/NS2HImR0umN3Wgx6U
-         KZpG/OtOPe0fMrZ52udDRdJSJy2184IeD8ujHWLP+S+i0rmGf75uVzcDYol17osXkMmR
-         BYV4zFzAzb16pCgw0bUmOBkQ5AyKMCIPKyq5679m942TTxc0Xw4RWkPQjCPCmILkhL6k
-         I7UOsqNX15AiprXxljEMYUmWmKCbfH2cVsiNmKffI8sj/pPFg9W3LIp0pEW0DiAUiQme
-         gzkqmcJiqAqn2xEmQAol0R3pgTLdJcherdjG5QQE7oTKlv74smZTw0cFb3jlJXdjJMac
-         sKvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781791332; x=1782396132;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XS4R+w0KJN00IzEVRV2kKHMy345QBzFIS6oLc6bdXzg=;
-        b=A87YPyX0nAVrSG9PXt9fpQwqh/uIrb5vg01mpiMNYD2K01GMcbG9ohMvbb1VHi2EBw
-         /flX7+vz957D7ww/WjkgmX5jK2AqCEC5OQ5ZjTSafe2v3Ggy3OlnMOsUvt8VkBITOYR+
-         3jBkhz3buZqifd/L13QNggm2PHOfvXTwI4dtSPdyIlRRxT56o/jrKMwoeD5/4MqqBqrP
-         2YNAXEM6ZMtvkizetpGolaK9SMn4i0InQ4yAgcADTNLSYtOL21H9YGF3OSYP/TtE1xRj
-         KRVKKMM1IzCwaFhDzYSJZL0rHVWOW/xcIo3NooTvUSarCsqmmq2PMK/dJ0u2kGypl0Wt
-         nyxg==
-X-Gm-Message-State: AOJu0Yyc/Z/IPa2kfbcug2vRD7CwTk0nqjUPXVnQBZOULbwOH45AR6zD
-	+bQSIjQDhGrHTkNZS4dS5uxuZOWecDWuE7m7u31NsRR+kNmP7zvEGbI/oQPT2+wH
-X-Gm-Gg: AfdE7cmDDtTCM6VQ6Lxbj4DgVBGTwEmtQbRtmx0ljL27i0R7VlEHAOtqsZMpbkhQQXZ
-	ljilf9Nbt3mYmfGX+sAPI/mhDrZjL27mq5Xg/ac9CU0XG7/sEOgugEX7SFMqTjuIeaJUnFY9vlc
-	IOXhSQSw9CsbjAvjOdATCpwp7YnShvxOohjA0XAeg6PfDDgUauNIYcfGWwW0qJuqhi0mpSiVBFS
-	H5ju0eKHcz4QFeIB7NSk7XGPg3Bx6rXUNE3JYXbFqQGcygvLlMe2M1jNODGDB71y+9ye3smNUHb
-	B+R9S6E3Dq5YvOI0MbZJHOM/3nsweHXIu1bOOfVOyqlAeddMo3AZigh25lmxqF3K8XPEHPH5ewj
-	RDElG2g4g4XaUQwE3cPvJG8lCQmJm4OuUfvCBR5VTwNj47iJRsi0H/nyqJou4V8TJnQ0Vqx/QX4
-	qDeSmk/qERHkpc66Sa7wZgiry4xpvdhjNczAQiiQ==
-X-Received: by 2002:a17:903:384d:b0:2bf:2114:ecc2 with SMTP id d9443c01a7336-2c6bc27dfcamr107563505ad.35.1781791329953;
-        Thu, 18 Jun 2026 07:02:09 -0700 (PDT)
-Received: from d.home.yangfl.dn42 ([2a09:bac1:76a0:d30::4cf:38])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c6f9aec764sm21525825ad.2.2026.06.18.07.02.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Jun 2026 07:02:08 -0700 (PDT)
-From: David Yang <mmyangfl@gmail.com>
-To: netdev@vger.kernel.org
-Cc: David Yang <mmyangfl@gmail.com>,
-	Linus Walleij <linusw@kernel.org>,
-	=?UTF-8?q?Alvin=20=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="MoqV4MmD"
+Received: from PC-202605011814.localdomain (unknown [222.191.246.242])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 42ee4c373;
+	Thu, 18 Jun 2026 22:16:34 +0800 (GMT+08:00)
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+To: Mahanta Jambigi <mjambigi@linux.ibm.com>,
+	"D. Wythe" <alibuda@linux.alibaba.com>,
+	Dust Li <dust.li@linux.alibaba.com>,
+	Sidraya Jayagond <sidraya@linux.ibm.com>,
+	Wenjia Zhang <wenjia@linux.ibm.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] net: dsa: realtek: fix memory leak in rtl8366rb_setup_led()
-Date: Thu, 18 Jun 2026 22:01:55 +0800
-Message-ID: <20260618140200.1888707-1-mmyangfl@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Tony Lu <tonylu@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>,
+	Simon Horman <horms@kernel.org>,
+	Karsten Graul <kgraul@linux.ibm.com>,
+	linux-rdma@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	jianhao.xu@seu.edu.cn,
+	runyu.xiao@seu.edu.cn
+Subject: Re: [PATCH net] net/smc: avoid recursive sk_callback_lock in listen data_ready
+Date: Thu, 18 Jun 2026 22:16:29 +0800
+Message-Id: <20260618141629.2904071-1-runyu.xiao@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <f7e36176-d00a-4471-94ed-d385e579b43d@linux.ibm.com>
+References: <f7e36176-d00a-4471-94ed-d385e579b43d@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,45 +52,83 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9edb173fd803a1kunmb825a670a55e1
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZGE4YVkxKGU9MTB0YSE1DHVYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUlVSkJKVUlPTVVJT0lZV1kWGg8SFR0UWUFZT0tIVUpLSE
+	pPSExVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=MoqV4MmDRylUoqoUi+YtDHcBMu14DQc4kKkjuz1YU0otMj8TXwY+HxXTf5/VMCJgubQFjGCt3tHFeYrl5EEsZ9tkpL3WZ6577zEriBUPvds8GKpQEwnePFz4aL9F2DRMJUXyNB06jfdOUEHfithPx4fLeKu6NEppZzBTlAZXfkU=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
+	bh=GM5MKfzBrLqFzrUns6jEKAvDRObTqAY5/7+P5HHfT8I=;
+	h=date:mime-version:subject:message-id:from;
 
-led_classdev_register_ext() only reads init_data.devicename - it never
-stores the pointer. However, the caller allocated devicename with
-kasprintf() but never freed it, leaking the string memory.
+Hi,
 
-Fix it with a stack buffer to avoid dynamic buffers completely.
+Thanks for taking a look.
 
-Fixes: 32d617005475 ("net: dsa: realtek: add LED drivers for rtl8366rb")
-Signed-off-by: David Yang <mmyangfl@gmail.com>
----
- drivers/net/dsa/realtek/rtl8366rb-leds.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+The exact Lockdep stack I have is from the grounded reproducer, not from
+a production SMC setup.  The reproducer keeps the same callback shape:
+the close/flush side holds sk_callback_lock and invokes the installed
+sk_data_ready callback, which re-enters smc_clcsock_data_ready() and tries
+to take sk_callback_lock again.
 
-diff --git a/drivers/net/dsa/realtek/rtl8366rb-leds.c b/drivers/net/dsa/realtek/rtl8366rb-leds.c
-index 509ffd3f8db5..ba50d311cb15 100644
---- a/drivers/net/dsa/realtek/rtl8366rb-leds.c
-+++ b/drivers/net/dsa/realtek/rtl8366rb-leds.c
-@@ -89,6 +89,7 @@ static int rtl8366rb_setup_led(struct realtek_priv *priv, struct dsa_port *dp,
- 	struct led_init_data init_data = { };
- 	enum led_default_state state;
- 	struct rtl8366rb_led *led;
-+	char name[64];
- 	u32 led_group;
- 	int ret;
- 
-@@ -129,10 +130,9 @@ static int rtl8366rb_setup_led(struct realtek_priv *priv, struct dsa_port *dp,
- 	init_data.fwnode = led_fwnode;
- 	init_data.devname_mandatory = true;
- 
--	init_data.devicename = kasprintf(GFP_KERNEL, "Realtek-%d:0%d:%d",
--					 dp->ds->index, dp->index, led_group);
--	if (!init_data.devicename)
--		return -ENOMEM;
-+	snprintf(name, sizeof(name), "Realtek-%d:0%d:%d",
-+		 dp->ds->index, dp->index, led_group);
-+	init_data.devicename = name;
- 
- 	ret = devm_led_classdev_register_ext(priv->dev, &led->cdev, &init_data);
- 	if (ret) {
--- 
-2.53.0
+The relevant Lockdep report is:
 
+  WARNING: possible recursive locking detected
+  kworker/u4:3/39 is trying to acquire lock:
+    (sk_callback_lock) at smc_clcsock_data_ready+0xa/0x4d
+
+  but task is already holding lock:
+    (sk_callback_lock) at smc_close_flush_work+0xc/0x30
+
+  Possible unsafe locking scenario:
+
+        CPU0
+        ----
+        lock(sk_callback_lock);
+        lock(sk_callback_lock);
+
+  *** DEADLOCK ***
+
+  Workqueue: smc_close_wq smc_close_flush_work
+
+  Call Trace:
+    dump_stack_lvl
+    __lock_acquire
+    lock_acquire
+    _raw_read_lock_bh
+    smc_clcsock_data_ready+0xa/0x4d
+    smc_close_flush_work+0x1f/0x30
+    process_one_work
+    worker_thread
+    kthread
+    ret_from_fork
+
+The nvmet change I referred to is:
+
+  2fa8961d3a6a ("nvmet-tcp: fixup hang in nvmet_tcp_listen_data_ready()")
+
+The stable/backport patch I originally used as the reference is:
+
+  1c90f930e7b4 ("nvmet-tcp: fixup hang in nvmet_tcp_listen_data_ready()")
+
+Its commit message says that when the socket is closed while in
+TCP_LISTEN, the flush callback can call nvmet_tcp_listen_data_ready()
+with sk_callback_lock already held, so nvmet moved the TCP_LISTEN check
+before taking sk_callback_lock.
+
+For the TCP_LISTEN check: my reasoning was that smc_clcsock_data_ready()
+is installed by smc_listen() on the underlying TCP listen socket and only
+queues smc_tcp_listen_work() for the SMC listen/accept path.  Once that
+underlying socket is no longer in TCP_LISTEN, there should be no SMC
+listen accept work to queue from this callback.  TCP_SYN_RECV and
+TCP_ESTABLISHED are not listen-socket states for this callback path, so I
+did not intend the callback to queue listen work for those states.
+
+That said, if SMC expects smc_clcsock_data_ready() to handle a non-LISTEN
+state during fallback or another transition, then the proposed check is
+too strict and I should rework the fix.
+
+Thanks,
+Runyu
