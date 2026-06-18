@@ -1,117 +1,119 @@
-Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f227.google.com (mail-pl1-f227.google.com [209.85.214.227])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F156838F92D;
-	Thu, 18 Jun 2026 08:32:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E2E438F92D
+	for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 08:37:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781771525; cv=none; b=UZS7uuEzNrHtZtMgUTk0BfunTFcc8V3Bhy4IdHKht/sY6TGy+2lE5/LaBhAKRchm4yiI6S+18Rt4lS4g/V+FD4v7Z62KdQi1I7H0MfXkT0a9z0lHdLAPTMIb/zvXrSKp3M++joftsxbWAL1D2blchQStfN7NBBzh2nREwMe5HO8=
+	t=1781771846; cv=none; b=I0UW0kopVsoCNWdCRvfHff44V3pOAL3y1oONTH8vsXDHwiIeFKHCc/xxsXUHfum3jq0QTuM88INrjNpvj5EcnQ4sow02SUjDy+CMUHSYGo+ANmkWqJ5Mp/W+xJV1/29HNPq73gq6a/h5xRnWy9Ar1ZJgCoRCCsNvQy1wJAXJK+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781771525; c=relaxed/simple;
-	bh=ngGey/dDjPJxxE8rcnNt7BxBlhmXCynXpzagHqIx1G8=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=GN+DYGY4pUMmX17rpueNDG9BJcyyMisTVs14NPujmtTAufMWRmxuc7C/xOzHyZOSajQONNSDdrz5+9M0S3P5dYewEX64YuKXTd3zO6tvt+WGyW8iHaAIRdMxUfAEtRjN38CXpwx6/S5oiJyb0Z2sFj4+Zjgxfp3ZTFZlEfla4k8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=a7bLhF/a; arc=none smtp.client-ip=103.168.172.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
+	s=arc-20240116; t=1781771846; c=relaxed/simple;
+	bh=UplzPm21o1txOIp6An/0DELClqRkTlgQ428lKTxQj6k=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UlTDMXQ2vMTmN3NnaY547PnVRMLIvjqrPpMQVuy4Xrd4iaAnXslVVUbWrvjwh/uqoVlIhiFamSMIFTpB3piCAfo6xj/O+p1sdFcrn9y8Spg15AG9xMzJb+koqUSX/5p3cGmd5ammQv9UvX+AZbSC4vbJeUn4/UX/sKeGQCgVMOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=QUUF1kSk; arc=none smtp.client-ip=209.85.214.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="a7bLhF/a"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.phl.internal (Postfix) with ESMTP id 3EE3CEC0125;
-	Thu, 18 Jun 2026 04:32:03 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Thu, 18 Jun 2026 04:32:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1781771523; x=1781857923; bh=DX/5eoMehoRMx1NS0o3ilj6Cat8DUGz4t+h
-	0dl/9b8w=; b=a7bLhF/avj96bs8ne8CbAjwUs9qrJycSakuzm7NpXWgZobZcDJd
-	97IGbNu/qmA9gBGPBPbt6U3H4fdFM4Ur0JupUaEHSO1CuD6X4PIZLMTtBwmThK7i
-	U1K6naJpXHb8f9MJiYh6yjbr0hBUvvqhMPCPjDVRva6rOovXq8ly7UXnRbt4ZDbg
-	A+v+fWIpNl8XPIEeqB0lFds6r2JG1bp/DrNJ/AIHrPSN4kfZzbFG/96BV154YZ8H
-	Iyd3xXzuZ++SsIQgH8q3kDj/dAiCf35oGVR7FTtQHR5st9k1DzeYsxZJO9Floa+Z
-	hlZRD1hUJ3bwQVBJk9lTd5fPMPyiWj0rSUw==
-X-ME-Sender: <xms:Aq0zap0az8UG10rexhGH9sHYzO9pzrr35k3cJscocbx9fclwlFKmww>
-    <xme:Aq0zar-x1tU0MkrrIzSKKKWpEG0tzYj6npaSbBkuHvbftxLntPwZaEJd-o4icysvq
-    zUrxB9pbwVJcwMpv77L-S5vGnRBGnFLTb3yNGU6Cge9H-Tr9Wp4wM0>
-X-ME-Received: <xmr:Aq0zalYvQ3dpyrtCrpEs9-T8vfL3TYTjJEK2SFc4D32akizW3mvU9SyadFWk>
-X-ME-Proxy-Cause: dmFkZTENUo1ZmJt29bGwYRxNLA/I+cx87fAWyEWHgTjdGerg5dLt/PVhI8bN6q9UjDukdN
-    m0Dby0iAlLvdA93Tb246Tx53rTY4N97xRSicwUn+OaBVZmBlmlNSDPB2p9AXE4zW5ZBNBW
-    yUZ9m5kMt9vA32mPt71DSoPh/ovPZiR47gjL2xWM+ZS/mKDMl5rHa8+816FK43bPOoOy8b
-    t02nTTbmkFWULrtaps3qJnuK0Tk3EU0TIMz+GeRwZusioUwIrQomUDFx+fJXsjjHOyQOCr
-    jpz2p58GQ6I3GuTa3sMzUx466v4Fc+qPeNgnVqY0VVIUZrbr6+0GKUwLT+vdJWuRcK8vee
-    WcWB4I8H1UrY7YgFfyclVx12Iws2XY9FWqutabemH10TvAfLoiT37z3P9GxlG1YDSvgdoH
-    RlI/XownDhkRbg1D3coHR/NFeU+nR4D14Kj/bm51Qh+dae1VZUfig7aa5sFTrcwkCBBsZV
-    YtgvrT3AnUw5QnW/mqpbmFlnHSqTOBR9uxhYMi4aAAOnO1F5QCwS6fzO4ZAJJmthFxOaOH
-    62E9AhfHlCCchvM25CyqKP+0Y95H0/OTIZVKwsq/nLDkfOk7JLve7rQhmJb8UEZysLtwwd
-    tra4bDuA8Ph6lacrGYoSGWYSgNYu9xolAQX8hMIdjxopXjwiXuljwbJvaAGA
-X-ME-Proxy: <xmx:Aq0zaqxV3a70epHyy_Xk7BDS6N4_GJHhP5-h8e4BOPLyNjr0dI3UmA>
-    <xmx:Aq0zaj-7Me0Rt6HBSYVfAX_DliHHakKRqX1cDt3G7usLSRaIYxI4EA>
-    <xmx:Aq0zamzq1qxfnDlMBwn1cqwNsiY__E9NIpjqXRijCKz6MuKgFSzRSg>
-    <xmx:Aq0zaov5eHvAQNUxJ3oQ2L2z1tzg2WzOfTjPen8jL7kTCIU0X1uBxA>
-    <xmx:A60zarQxTkwnS_YYBiQm1quQzacJKLs6ftsDWO2YEV-4YFzYy3Le3l4a>
-Feedback-ID: i58a146ae:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 18 Jun 2026 04:32:00 -0400 (EDT)
-Date: Thu, 18 Jun 2026 18:31:55 +1000 (AEST)
-From: Finn Thain <fthain@linux-m68k.org>
-To: Andrew Lunn <andrew@lunn.ch>
-cc: Carsten Strotmann <carsten@strotmann.de>, Jakub Kicinski <kuba@kernel.org>, 
-    Carsten Strotmann <cas@strotmann.de>, 
-    John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
-    davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com, 
-    pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, 
-    geert@linux-m68k.org, chleroy@kernel.org, npiggin@gmail.com, 
-    mpe@ellerman.id.au, maddy@linux.ibm.com, linux-mips@vger.kernel.org, 
-    linux-m68k@lists.linux-m68k.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH net-next 0/2] appletalk: move the protocol out of tree
-In-Reply-To: <2791b2e3-bf58-4dce-9262-4f1d8d3241fb@lunn.ch>
-Message-ID: <4b08a56c-b209-22c8-7835-6fee7ac7a8b8@linux-m68k.org>
-References: <20260616084901.3319d82e@kernel.org> <1781694488854.956546368.818588236@strotmann.de> <489024bc-b6e5-f601-3bce-444d75abbf5d@linux-m68k.org> <2791b2e3-bf58-4dce-9262-4f1d8d3241fb@lunn.ch>
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="QUUF1kSk"
+Received: by mail-pl1-f227.google.com with SMTP id d9443c01a7336-2bf20f6be6bso4318255ad.3
+        for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 01:37:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781771844; x=1782376644;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VeJxbhN0Ht9jvhVm/ZNGkhtjcsRPRqpGEyUnibfRpak=;
+        b=aD/XKLz2Mx94DdHo4ixRQ0R5mU9xoIy+ow7u7LuoaGKscR0Y5H5CVsdOiKUXA/ayjZ
+         NnoULfiQ4zuARfJPg5pwDMo+fy1Pq0aNxZ1kjY5n2L9SvMNbIl0gpBmvm2ldAya2NCNB
+         6RvN2U0iI49xC7HSvCZHUPWFOCgG2XI7Lp2VmyIja/y/xxEX8+Fp5tGOsYmVtG07iiKK
+         K6calJmBIZPFVTHrOM63oPCRZW30k+493yt0PDHDJg4tVQePufyOFUdnL8AHUW8Qxl2P
+         +vM8uSZ7Zh4xxA+3vFqzf7iEUSLbp8I8nVqkx4ggogV7AFPv8UlTgVU8QzrLPM/kOkY9
+         M0aA==
+X-Forwarded-Encrypted: i=1; AFNElJ+MoDtYXBD1QNDFxfus+YKW4X0XjAYx5WpXm46oxwiW2rzYKCC6XZBgVJtwVaPNCzX/x8yauAU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+AhnM5KRoWok955cFSWqBhqa07FJKlNfOpTL5bUZYFhxA+/HD
+	UBo/xQkHUxtK2pC+1LiZTP21ZC/TShjrLv6VbdhFxp8eVBTN0HQ/iT0qphAcklB3WWwljE8We4e
+	unTZ2dkxPRyNjnybh/inzV/QcGlLPrvZMN5Dnly6SJncf9TqI5CwB2pue9ZNdUqNA7gLmp3cZjA
+	cKI5wIJUglo2KC5qYse+p9hJTk1kUX8dqGbsj9r0n7g4loW/RDrcpdckvVLPZ0QYylMLjmfdA7z
+	Ra57wfLnZDAErnAPg==
+X-Gm-Gg: AfdE7cmvnJ9xXG+9wxvzfu+n3auEzJgqxvH/6Du/6VK8BbxL3B/9ww8cn26JGhdG+a7
+	ry8RU1VJpsDFLb09Bw0ikutK88vrerWE8eoVGDhiyr8U7VkGY8VfScCMj6spKL8U4rcafOTJy8n
+	IKnc507fQs3KG5qi8UNdiOqISEdjgt7o25HWE+hEoCLWoPglBUk+Pgqcive4aH9uA0kR9NNUVVu
+	nlmDhMTYurAbVsg72PYwNWIPa/7afzmEZqCz0OUvPtPEFI2ZtR6Gky8h7e8dOGyx/RAWyzf+KRi
+	xcO95S7y+WU5G1RCoYaCU7N0NKDfBdvuZXU9sVlJ9D2bFYkqgMMgyWcdDD9oHkOa7Lp3i1MRdGt
+	6Dl+egiDGNM8X3y1HCjckDcJhLFKxgsKsBcIba62iB8sj4xv5CcUKm19bceCFtXDWr1Aq8i1FYo
+	TTBn2vmGCmNeZpgNV1x9gvzx20t1e7CZ+ig4qulSEVmYW8vxwspA==
+X-Received: by 2002:a17:902:f54a:b0:2c6:5bae:f9ab with SMTP id d9443c01a7336-2c6bc221f27mr81241145ad.22.1781771843635;
+        Thu, 18 Jun 2026 01:37:23 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-23.dlp.protect.broadcom.com. [144.49.247.23])
+        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2c4301998ffsm16554375ad.18.2026.06.18.01.37.23
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 18 Jun 2026 01:37:23 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-304f23c55b2so677069eec.0
+        for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 01:37:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1781771842; x=1782376642; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VeJxbhN0Ht9jvhVm/ZNGkhtjcsRPRqpGEyUnibfRpak=;
+        b=QUUF1kSkDoIShavYwmqFOxFaFP8h63puhGhiN5SCzIEDKpJ0sGlwLWQEJOVj+RgJeZ
+         qC4bfb0DKwzDdHoC/Mem4er3pahPGi9ufsHG36eRyF23GX46xxH8I9ycY9zL5rH4lVXP
+         TCOwB0r0vtmYnQInjxWZbVQ6KVUoVnlaTK64w=
+X-Forwarded-Encrypted: i=1; AFNElJ9tICw6lVBgs6LU6NJuSrfpEqhrzdxVs2l6x/CpQX3eKHy3lTRoBPzn3tLdcfkZMYD/w+JC5yU=@vger.kernel.org
+X-Received: by 2002:a05:693c:3942:b0:2d8:7302:d3d with SMTP id 5a478bee46e88-30bc998fb73mr4625537eec.8.1781771841484;
+        Thu, 18 Jun 2026 01:37:21 -0700 (PDT)
+X-Received: by 2002:a05:693c:3942:b0:2d8:7302:d3d with SMTP id 5a478bee46e88-30bc998fb73mr4625503eec.8.1781771840833;
+        Thu, 18 Jun 2026 01:37:20 -0700 (PDT)
+Received: from shivania.lvn.broadcom.net ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3081e48e412sm27475037eec.4.2026.06.18.01.37.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Jun 2026 01:37:20 -0700 (PDT)
+From: Shivani Agarwal <shivani.agarwal@broadcom.com>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	xiaosuo@gmail.com,
+	iri@resnulli.us,
+	jhs@mojatatu.com,
+	ajay.kaher@broadcom.com,
+	alexey.makhalov@broadcom.com,
+	vamsi-krishna.brahmajosyula@broadcom.com,
+	yin.ding@broadcom.com,
+	tapas.kundu@broadcom.com,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH v5.10 0/2] Fix CVE-2026-23204
+Date: Thu, 18 Jun 2026 01:08:05 -0700
+Message-Id: <20260618080807.1269070-1-shivani.agarwal@broadcom.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
+To fix CVE-2026-23204, commit cabd1a976375 is required; however,
+it depends on commit 13e00fdc9236. Therefore, both patches
+have been backported to v5.10.
 
-On Thu, 18 Jun 2026, Andrew Lunn wrote:
+Eric Dumazet (2):
+  net: add skb_header_pointer_careful() helper
+  net/sched: cls_u32: use skb_header_pointer_careful()
 
-> appletalk is just one of many many drivers where the listed Maintainers 
-> does not respond to patches, or there is no Maintainer at all. So a lot 
-> of work falls on the top level netdev Maintainers.
+ include/linux/skbuff.h | 12 ++++++++++++
+ net/sched/cls_u32.c    | 13 ++++++-------
+ 2 files changed, 18 insertions(+), 7 deletions(-)
 
-It goes with the territory. If that messes up their performance reviews, I 
-am okay with that. We all make our own choices.
+-- 
+2.53.0
 
-> In fact, a lot of the AI driven bug fixes tend to fall into this 
-> category of old drivers with no active Maintainers, since that tends to 
-> be where the poorer quality code is.
-
-That has not been my experience. I rarely see a review from sashiko-bot on 
-the scsi mailing list that doesn't list as many pre-existing bugs as new 
-bugs. This is almost always actively developed code, not mature code.
-
-In anycase, quality is irrelevant here. I'm happy to see fixes for any 
-code base whatever its level of quality and whatever the quality metric. 
-
-What matters more to me than quality is utility.
-
-> So top level netdev Maintainers are having to do a lot more work, on old 
-> drivers which very few people care about. That is a poor use of their 
-> talent, when we actually want them working on drivers for modern 
-> hardware with a lot of users.
-> 
-
-Again, that has not been my experience. Linux often gets installed because 
-the hardware is not modern enough so the vendor has abandoned it and so
-there's no better alternative than Linux.
-
-As for wasted talent, this industry discards skillsets just as fast as you 
-discard e-waste. It goes with the territory. Moreover, if maintainers are 
-not using AI to make themselves more effective then they should admit to 
-retro-computing.
