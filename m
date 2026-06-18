@@ -1,264 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B0F2BEFFF
-	for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 18:14:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778AF3749FB
+	for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 18:20:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781806442; cv=none; b=PaSYNLnpcVNJqy2CNRm/gTqgE2/nywmQZFlYaLLuOerdxtxINJXfs5UzU4JuUhoeb8VugFApkqg5InZ+sYC4nRyTwoYOMvGO88AP/9D7Kzfm65POD30hkKPn8H3Gj6/KIAwes3pXu/ewrm3LBEYJRPZTYaIpvUMQLp0+jlrdhco=
+	t=1781806841; cv=none; b=huCG2VZieZh/yzJFqfVGhbxMhlWT9iWT3rFizkyIIDVt62DoUtFI0xloyVpSCOE5SR8pjM0UWQC8+MHi51Xrqb5sbpNpzVDMPlfIgr24kXmOdBAJ97B4dLx7oQ8OGebo7134PLq5eNjQ3AqZrPYT0PPwqmmsw8ku8zqNWHYUHzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781806442; c=relaxed/simple;
-	bh=gUG1uHxZ678hOX6pgWw39VDHLrV03DeE5BNTge89lKg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tgWDtkk1D9Qhf9m5Spv5SK1HwTo3uAiwPG+L6pMxKWcJTOSsxB69VyI4ZjvzatFsJ+ZykiP31YIcJzWP1dPKnWn8IjluqW8ZweVX5DahOastnLqb7zXO9VtoF+OCTmJbrBEfBsKm0EIvxZQeBMSkN0CRz8/6YfKf3JCFVSb6q4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OY8kDmta; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781806841; c=relaxed/simple;
+	bh=lmAls8g6TYWNiaABx/R8EHu8Nnn5uWDl1XOyYBPHlEY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZuAQV1CAwF6VYR5n73TykblGOkBo+ZQjmfL+OLq/6ddzqF39DRmnno7bdbN7oZvAhKPFFfamVh6ZQpxTJblgK533PCMSs70nKtvjNc/E4FOZqMIv/DJ0HU9dQUAiV2YiX83ImG7pm2fLpi6Yzgyf3F3/yyKmsKOqiFCf9AeDvc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ezU/w5EJ; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OY8kDmta"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD4831F000E9;
-	Thu, 18 Jun 2026 18:14:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781806441;
-	bh=8VoVWMHy2fc5Sk1hPQECjKS/Z9dsos1yQRYbFOl/neY=;
-	h=From:To:Cc:Subject:Date;
-	b=OY8kDmtawlJfhh0szkzCvMCa6IHDyLY0B/Qa57SPO/GWxfc08bWakwU/g3xj+6zrD
-	 mYsKbjzBk0JdP9zNuTBuLmhdkUPkeEE6hFE4XwZY5Oo0159r8uitRy3xw6sxdXFcAL
-	 hlHd8DKPudfDdXP5fEjvKu7bxRUqQTj+MjBvLXrYM5yexa29CXolc6iS55bsFSnm90
-	 2NXubiOxbMQzNWX0GH5VRPmIMAuIES3/EGx24oxFE5UZumI9s2xh0TxIbLuJFdOhHt
-	 ByoYJbhQj8CVfN5osj4ACEIlptX4N4qABCzQVuHPr6voXee0rGSMzuJupd3okYXpOq
-	 UlqSAQ34WD1lw==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	michael.chan@broadcom.com,
-	pavan.chebbi@broadcom.com
-Subject: [PATCH net] eth: bnxt: improve the timing of stats
-Date: Thu, 18 Jun 2026 11:13:58 -0700
-Message-ID: <20260618181358.3037661-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ezU/w5EJ"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-36d8b644473so1020866a91.3
+        for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 11:20:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781806838; x=1782411638; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=lmAls8g6TYWNiaABx/R8EHu8Nnn5uWDl1XOyYBPHlEY=;
+        b=ezU/w5EJX1t2+iEkAGIsRBUpcyThpvp81RpcvCs0PAcChHSCTl71QGadtQhPetT2Qr
+         /2dBC8BLBn+xfLes0/16SeMHpuqrRXtydm+CTN8PahxcUY7HOWxR5319GTFpJ27mQaXn
+         Sq5O4E1x3dsC7Yuncz+iX/YclJGWs6bTGlW48Xjcua6oJ8odELVu/RNvNxO4ToDj/d2o
+         E2UWcywPsXIa6LwbfXJGaXpMSm3e+UnWN4qaXTXU8d+pYKucFglFnRuYjtNrWPorHSMw
+         dlM/oD9TAR+uyQb8BjpIv9iELbvRVWJqV0yWtUEmUq0ppLw7NLRG71ZDzveQQaiheuSc
+         pZPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781806838; x=1782411638;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lmAls8g6TYWNiaABx/R8EHu8Nnn5uWDl1XOyYBPHlEY=;
+        b=LAoCVOzyjZTV3gO1SRhPZGjJvezMzOlXZsKsVI8MNMdxJlb0xHYuDebG+v14V/E7UX
+         PRkL20dnLaZ9vmxkuwGyE9d0cD7NSN/AFasZxvGqrLSEXEdIgpf6HBwz7vNTPq0tUYX4
+         Y4HyGBFAB1l7IoZd4knClQ8t5Uk2l6VWhhNo1qLwsUXEgjo83hLwBzZCoeNLDQuO/k5W
+         xfOHKyhZDkSsExD2POqR/yulVi9ydFkaUStE0yxw42LiDXDMe0+pRnEkZB0N44x5fx7c
+         HBOJm1ZDPPcT/7Ths0nBRsRSvPapD6oAEXOtoqdhhmWN8l1NXIXro6Vwb8yS+4b1jO9g
+         sTJg==
+X-Forwarded-Encrypted: i=1; AFNElJ/jJq/qFLtsLkZtHsCTe4jPHtIv3ZAFIao1+cAxDQT071LHD90bCUxM6zID4O5nG8rutzxjl+k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHi0xlr+mlHdnK2ePx1iUuqqUwEmzFmUsvbGjqHHv9uC2fv4qP
+	AhOYFjzX126m1IbtBd9QrlrSnB/+xf7+zejfi4s1gJGw2Y2izc8y/FCV
+X-Gm-Gg: AfdE7cmutgdS2VnlwLg/Kks7dBUjRJW6BnKI8j1RbvDuLqMTE/iEQ/s4bk1OgE9qbfL
+	Z0lB2Nwn2TtDRk0fzIMUoAxwmOzcJVe5ByHhtR3mFvxjdvhK8O283qwy0AMlUu83st8ovMp+eJv
+	WoVpo/k8ygxy3rerYJFmdb0VD61sJ3eIddEGkYhPlgB3hlyjtJ6fcoPD7Ip64ENrZ0bDZgWtA5k
+	VeZlhq/L47SyUcQC8LhL6cXTOj3qHgwF+EB1vGMsSuSNjzq06ZBvoWyY3hpccf9WkHBDjGvNT/Z
+	hHsKec4h4UmQnvWH6S6c4oKJwATOrkbWsA8nR9EKHZVdQGjLPd0hAS3ye6cdtYxSJAYXCygJk2G
+	/AA6ZakWa79Nmb8SUmOaHc0fFP/imPTt9TE3CCBrBns7alBskpG9HvTO/yc94hT/BG9TlVQHVMy
+	JQ75VIS7cuhQ==
+X-Received: by 2002:a17:90b:3ece:b0:36d:635b:85a0 with SMTP id 98e67ed59e1d1-37d15fbff00mr568255a91.3.1781806837595;
+        Thu, 18 Jun 2026 11:20:37 -0700 (PDT)
+Received: from john-p8 ([98.97.43.82])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37d1558b599sm341702a91.7.2026.06.18.11.20.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Jun 2026 11:20:36 -0700 (PDT)
+Date: Thu, 18 Jun 2026 11:20:34 -0700
+From: John Fastabend <john.fastabend@gmail.com>
+To: Christian Brauner <brauner@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Jan Kara <jack@suse.cz>, Simon Horman <horms@kernel.org>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Willem de Bruijn <willemb@google.com>, 
+	linux-fsdevel@vger.kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org, 
+	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+	Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, 
+	Jiri Olsa <jolsa@kernel.org>
+Subject: Re: [PATCH 1/2] fs: Add bpf_sock_read_xattr() kfunc to read socket
+ xattrs
+Message-ID: <ajQ0p4ernwLzxkhu@john-p8>
+References: <20260617-work-bpf-sock-xattr-v1-0-a1276f7c9da3@kernel.org>
+ <20260617-work-bpf-sock-xattr-v1-1-a1276f7c9da3@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260617-work-bpf-sock-xattr-v1-1-a1276f7c9da3@kernel.org>
 
-Kernel selftests wait 1.25x of the promised stats refresh time
-(as read from ethtool -c). bnxt reports 1sec by default, but
-the stats update process has two steps. First device DMAs the
-new values, then the service task performs update in full-width
-SW counters. So the worst case delay is actually 2x.
+On Wed, Jun 17, 2026 at 01:18:27PM +0200, Christian Brauner wrote:
+>In c8db08110cbe ("Merge tag 'vfs-7.1-rc1.xattr' of git://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs")
+>we added support for extended attributes for sockets. This comes in two
+>flavors: sockfs and non-sockfs/filesystem sockets. Filesystem sockets
+>are actual filesystem objects so reading xattrs must use dedicated fs
+>helpers such as bpf_get_dentry_xattr() and bpf_get_file_xattr(). Those
+>are inherently sleeping operations. Sockfs sockets on the other hand
+>don't need to use sleeping operations as the underlying data structure
+>is lockless. In addition, retrieval of sockfs extended attributes often
+>happens from LSM hooks that only provide struct socket and it's
+>completely nonsensical to grab a reference to a file, then force a
+>sleeping operation to retrieve the xattr and drop the reference. We know
+>that the sockfs file cannot go away while the LSM hook runs.
 
-Note that there is bnxt_hwrm_port_qstats() but the qstats here
-probably stands for "query stats", and the command itself
-updates detailed MAC-level stats (MAC errors, RMON histogram etc.)
-It must not be updating the stats we care about, otherwise
-update would be synchronous, and this patch would make no
-difference (and it does help).
+[...]
 
-The problem of stale stats impacts not only tests but real workloads
-which monitor egress bandwidth of a NIC. The inaccuracy causes double
-counting in the next cycle and spurious overload alarms.
+>
+>Link: https://github.com/systemd/systemd/pull/40559 [1]
+>Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+>---
 
-Try to read from the DMA buffer more aggressively, to mitigate
-timing issues between DMA and service task. The SW update should
-be cheap.
+Nice this will simplify some of our socket tracking.
 
-Fixes: 51f307856b60 ("bnxt_en: Allow statistics DMA to be configurable using ethtool -C.")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
-CC: michael.chan@broadcom.com
-CC: pavan.chebbi@broadcom.com
-
-With this patch I had a 50 clean runs of ntuple.py in a row.
-Previously it'd fail within 5 runs at most.
-
-Hopefully this is good enough, in the past I sent an RFC to
-convert the driver to use SW stats for everything. That felt
-a little drastic.
----
- drivers/net/ethernet/broadcom/bnxt/bnxt.h     |  4 +++
- drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 36 +++++++++++++++++++
- .../net/ethernet/broadcom/bnxt/bnxt_ethtool.c |  8 +++++
- 3 files changed, 48 insertions(+)
-
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-index 6d312259f852..aab6e88c3ca1 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-@@ -2620,6 +2620,9 @@ struct bnxt {
- #define BNXT_MIN_STATS_COAL_TICKS	  250000
- #define BNXT_MAX_STATS_COAL_TICKS	 1000000
- 
-+	spinlock_t		stats_lock;
-+	unsigned long		stats_updated_jiffies;
-+
- 	struct work_struct	sp_task;
- 	unsigned long		sp_event;
- #define BNXT_RX_NTP_FLTR_SP_EVENT	1
-@@ -3027,6 +3030,7 @@ void bnxt_reenable_sriov(struct bnxt *bp);
- void bnxt_close_nic(struct bnxt *, bool, bool);
- void bnxt_get_ring_drv_stats(struct bnxt *bp,
- 			     struct bnxt_total_ring_drv_stats *stats);
-+void bnxt_sync_stats(struct bnxt *bp);
- bool bnxt_rfs_capable(struct bnxt *bp, bool new_rss_ctx);
- int bnxt_dbg_hwrm_rd_reg(struct bnxt *bp, u32 reg_off, u16 num_words,
- 			 u32 *reg_buf);
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 055e93a417b6..25462f854478 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -10575,6 +10575,35 @@ static void bnxt_accumulate_all_stats(struct bnxt *bp)
- 	}
- }
- 
-+/* Re-accumulate stats from DMA buffers if stale.
-+ * uAPIs for reading sw_stats should call this first.
-+ *
-+ * We promise user space update frequency of bp->stats_coal_ticks but
-+ * the update is a two step process - first device updates the DMA buffer,
-+ * then we have to update from that buffer to driver stats in the service work.
-+ * Worst case we would be 2x off from the desired frequency.
-+ * Sync the stats sooner, if stale. The 20% threshold was chosen arbitrarily.
-+ *
-+ * Ideally we would split the user-configured time into two portions,
-+ * i.e. also lower the DMA period by the 20%. But the DMA timer seems to have
-+ * too coarse granularity to play such tricks.
-+ */
-+void bnxt_sync_stats(struct bnxt *bp)
-+{
-+	unsigned long stale;
-+
-+	if (!netif_running(bp->dev) || !bp->stats_coal_ticks)
-+		return;
-+
-+	spin_lock(&bp->stats_lock);
-+	stale = usecs_to_jiffies(bp->stats_coal_ticks / 5);
-+	if (time_after_eq(jiffies, bp->stats_updated_jiffies + stale)) {
-+		bnxt_accumulate_all_stats(bp);
-+		bp->stats_updated_jiffies = jiffies;
-+	}
-+	spin_unlock(&bp->stats_lock);
-+}
-+
- static int bnxt_hwrm_port_qstats(struct bnxt *bp, u8 flags)
- {
- 	struct hwrm_port_qstats_input *req;
-@@ -13577,6 +13606,7 @@ bnxt_get_stats64(struct net_device *dev, struct rtnl_link_stats64 *stats)
- 		return;
- 	}
- 
-+	bnxt_sync_stats(bp);
- 	bnxt_get_ring_stats(bp, stats);
- 	bnxt_add_prev_stats(bp, stats);
- 
-@@ -14753,7 +14783,10 @@ static void bnxt_sp_task(struct work_struct *work)
- 	if (test_and_clear_bit(BNXT_PERIODIC_STATS_SP_EVENT, &bp->sp_event)) {
- 		bnxt_hwrm_port_qstats(bp, 0);
- 		bnxt_hwrm_port_qstats_ext(bp, 0);
-+		spin_lock(&bp->stats_lock);
- 		bnxt_accumulate_all_stats(bp);
-+		bp->stats_updated_jiffies = jiffies;
-+		spin_unlock(&bp->stats_lock);
- 	}
- 
- 	if (test_and_clear_bit(BNXT_LINK_CHNG_SP_EVENT, &bp->sp_event)) {
-@@ -15488,6 +15521,7 @@ static int bnxt_init_board(struct pci_dev *pdev, struct net_device *dev)
- 	INIT_DELAYED_WORK(&bp->fw_reset_task, bnxt_fw_reset_task);
- 
- 	spin_lock_init(&bp->ntp_fltr_lock);
-+	spin_lock_init(&bp->stats_lock);
- #if BITS_PER_LONG == 32
- 	spin_lock_init(&bp->db_lock);
- #endif
-@@ -16056,6 +16090,7 @@ static void bnxt_get_queue_stats_rx(struct net_device *dev, int i,
- 	if (!bp->bnapi)
- 		return;
- 
-+	bnxt_sync_stats(bp);
- 	cpr = &bp->bnapi[i]->cp_ring;
- 	sw = cpr->stats.sw_stats;
- 
-@@ -16084,6 +16119,7 @@ static void bnxt_get_queue_stats_tx(struct net_device *dev, int i,
- 	if (!bp->tx_ring)
- 		return;
- 
-+	bnxt_sync_stats(bp);
- 	bnapi = bp->tx_ring[bp->tx_ring_map[i]].bnapi;
- 	sw = bnapi->cp_ring.stats.sw_stats;
- 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-index 56d74a3c24b7..835b54287579 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-@@ -606,6 +606,7 @@ static void bnxt_get_ethtool_stats(struct net_device *dev,
- 		goto skip_ring_stats;
- 	}
- 
-+	bnxt_sync_stats(bp);
- 	tpa_stats = bnxt_get_num_tpa_ring_stats(bp);
- 	for (i = 0; i < bp->cp_nr_rings; i++) {
- 		struct bnxt_napi *bnapi = bp->bnapi[i];
-@@ -3310,6 +3311,7 @@ static void bnxt_get_fec_stats(struct net_device *dev,
- 	if (BNXT_VF(bp) || !(bp->flags & BNXT_FLAG_PORT_STATS_EXT))
- 		return;
- 
-+	bnxt_sync_stats(bp);
- 	rx = bp->rx_port_stats_ext.sw_stats;
- 	fec_stats->corrected_bits.total =
- 		*(rx + BNXT_RX_STATS_EXT_OFFSET(rx_corrected_bits));
-@@ -3409,6 +3411,7 @@ static void bnxt_get_pause_stats(struct net_device *dev,
- 	if (BNXT_VF(bp) || !(bp->flags & BNXT_FLAG_PORT_STATS))
- 		return;
- 
-+	bnxt_sync_stats(bp);
- 	rx = bp->port_stats.sw_stats;
- 	tx = bp->port_stats.sw_stats + BNXT_TX_PORT_STATS_BYTE_OFFSET / 8;
- 
-@@ -5572,6 +5575,7 @@ static void bnxt_get_eth_phy_stats(struct net_device *dev,
- 	if (BNXT_VF(bp) || !(bp->flags & BNXT_FLAG_PORT_STATS_EXT))
- 		return;
- 
-+	bnxt_sync_stats(bp);
- 	rx = bp->rx_port_stats_ext.sw_stats;
- 	phy_stats->SymbolErrorDuringCarrier =
- 		*(rx + BNXT_RX_STATS_EXT_OFFSET(rx_pcs_symbol_err));
-@@ -5586,6 +5590,7 @@ static void bnxt_get_eth_mac_stats(struct net_device *dev,
- 	if (BNXT_VF(bp) || !(bp->flags & BNXT_FLAG_PORT_STATS))
- 		return;
- 
-+	bnxt_sync_stats(bp);
- 	rx = bp->port_stats.sw_stats;
- 	tx = bp->port_stats.sw_stats + BNXT_TX_PORT_STATS_BYTE_OFFSET / 8;
- 
-@@ -5610,6 +5615,7 @@ static void bnxt_get_eth_ctrl_stats(struct net_device *dev,
- 	if (BNXT_VF(bp) || !(bp->flags & BNXT_FLAG_PORT_STATS))
- 		return;
- 
-+	bnxt_sync_stats(bp);
- 	rx = bp->port_stats.sw_stats;
- 	ctrl_stats->MACControlFramesReceived =
- 		BNXT_GET_RX_PORT_STATS64(rx, rx_ctrl_frames);
-@@ -5639,6 +5645,7 @@ static void bnxt_get_rmon_stats(struct net_device *dev,
- 	if (BNXT_VF(bp) || !(bp->flags & BNXT_FLAG_PORT_STATS))
- 		return;
- 
-+	bnxt_sync_stats(bp);
- 	rx = bp->port_stats.sw_stats;
- 	tx = bp->port_stats.sw_stats + BNXT_TX_PORT_STATS_BYTE_OFFSET / 8;
- 
-@@ -5712,6 +5719,7 @@ static void bnxt_get_link_ext_stats(struct net_device *dev,
- 	if (BNXT_VF(bp) || !(bp->flags & BNXT_FLAG_PORT_STATS_EXT))
- 		return;
- 
-+	bnxt_sync_stats(bp);
- 	rx = bp->rx_port_stats_ext.sw_stats;
- 	stats->link_down_events =
- 		*(rx + BNXT_RX_STATS_EXT_OFFSET(link_down_events));
--- 
-2.54.0
-
+Reviewed-by: John Fastabend <john.fastabend@gmail.com>
