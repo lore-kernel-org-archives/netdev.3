@@ -1,33 +1,33 @@
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394EC3002D8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3957730BF66
 	for <netdev@vger.kernel.org>; Fri, 19 Jun 2026 07:10:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781853032; cv=none; b=dZuTZrMxJaxVREHw+v0mWsxm0u10lOCA7f2WhhPAKA67f5l1Cu4NIcz6wHGxbMutgKZvn2SK7vfYAJWdK2HGe0I3cHnkir0SJYbPvVaQag93eF036ZO0DWMu+X8nc/jcgkUuMuG8xkcgHFM4wbe0lRUNZhkxqw/uwWBsoErPfZA=
+	t=1781853032; cv=none; b=UNbOojnr2CpzKdfXDTLuAqh/ncGHnxu0UcdbKdHPJgndbB4KAgUlxJjAtSz56JJzlAH+JmEKfIpiQD9SJi1J9Ppdte5Nt1w/a7FZCpRkaYqr6PTmHERh+LXUAt27urGaEO4yquf/U/OT8RqjbdjWRjE6PDAaMa0v6KehJhRBvjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1781853032; c=relaxed/simple;
-	bh=w7bxPsgh+iSnGYABM2r26I5bqD3DJ1CVlll2pC2kkJI=;
+	bh=W0geQ3DtyFL8zJeBT01ebuAxhD9w7RqRbSTDaRIWPSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y7EqmpNxkQoh7uvliVBEOGeGxIhSVUdpe2H4dcFW1Zop+R6SNnfMzxAGppb6Edkzq1PNPcBdIDz/H/a1EYfgwDF31N0zMFQVKT/C/dXOiV5DnqhukOc9Qrg7rDMNoTQQwxdkWN8YjfRzk0elgVUhiHkZ2bqdL+SPRZA24GgAOVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=FIOOpDlp; arc=none smtp.client-ip=23.88.38.48
+	 MIME-Version; b=BM2x53jGj5ibv82OP/Gf158XicsEgCntLgWdxlctkHlhCJJr3/smEtzWxAr6kbAHlr9mVKlZTzXoB73XVSS5eyWhUIXSUc2P31Besi0wfFVJc1Ea0LYTuAh/5oeVGnDpETb2Z3n69Ks0Tc5wPBHO6CBZlxMPjT4SdE0oDHiNifA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=Dff/JlD6; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="FIOOpDlp"
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="Dff/JlD6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
 	s=09092022; t=1781852448;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=dTo7HP3hlGc7rZ83ftkOmb/zYr3PlmAHJyPALL5z5tY=;
-	b=FIOOpDlpkqTk6XP9L4L0d+M7DDT5UljVxuHwOZ10ok9fHkjWWDgh5N+zMHOi+PixRfmZxy
-	X67YceFqMZawsFr5k+9vixqOW/8Ak8Otq0piMS2+JL3zaawW3az8NR3Z71RRB4m9PoerPH
-	IX5GF2RyS5KW63Kp9mI6SfKBhmU8mNilIZjWeCpBb9Dd2Vk3RIMAcluPdHfkc4Jl52kCpn
-	/63f42HXR8d6iZBFpsy6E8ISUwVk+2ddlnirl18j3EsTvn3yzH1FfHt0koeEryhUGGSnGO
-	OIuQOCVMRQ9hgAGgFVHLliA/a0R2aCVb5pK9X/PpChM+sMSoKgJQKQWRd7ZfMA==
+	bh=YneazJjRkjkrqRDvITxwprn6VJASejkPKALeQwRLQHs=;
+	b=Dff/JlD62udaKvKivKPN2l1UmATX2XDIdfCBf1G/zAMZMcwxZ0nnMe8qEdbTo5Ms/k85H4
+	/Yw3wW+rpvoUxiSuAFYV2U/FHdZjlShfCh63+/upslhW9Dy8RcnhWFh+PPLagVIoIIPGF7
+	lWxzfa+5OOed0aj7hdo2VymDHmdbNYhWWE+qOkwXHVMN+hVAffWQXqsaHfGfWQyLguqC+h
+	YVNUpbjURlrwmyXWrPH2QOiGWlHqobl3YKzjBA5m4ej4dS0A3+fGrnmkBL4ouopfjGRCdb
+	t8HNbHnSm5JETZ1RMtcHPk1XAOj3drGblsaRd1GpNJvXFKGvbmx2Hjf+LnZIoQ==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -39,9 +39,9 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Sven Eckelmann <sven@narfation.org>,
 	stable@kernel.org,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net 02/15] batman-adv: ensure bcast is writable before modifying TTL
-Date: Fri, 19 Jun 2026 09:00:32 +0200
-Message-ID: <20260619070045.438101-3-sw@simonwunderlich.de>
+Subject: [PATCH net 03/15] batman-adv: fix (m|b)cast csum after decrementing TTL
+Date: Fri, 19 Jun 2026 09:00:33 +0200
+Message-ID: <20260619070045.438101-4-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260619070045.438101-1-sw@simonwunderlich.de>
 References: <20260619070045.438101-1-sw@simonwunderlich.de>
@@ -55,44 +55,121 @@ Content-Transfer-Encoding: 8bit
 
 From: Sven Eckelmann <sven@narfation.org>
 
-Before batman-adv is allowed to write to an skb, it either has to have its
-own copy of the skb or used skb_cow() to ensure that the data part is not
-shared.
+The broadcast and multicast packets can be received at the same time by the
+local system and forwarded to other nodes. Both are simply decrementing the
+TTL at the beginning of the receive path - independent of chosen paths
+(receive/forward). But such a modification of the data conflicts with the
+hw csum. This is not a problem when the packet is directly forwarded but
+can cause errors in the local receive path.
 
-The old implementation used a shared queue and created copies before
-attempting to write to it. But with the new implementation, the broadcast
-packet is already modified when it gets received. Potentially writing to
-shared buffers in this process.
+Such a problem can then trigger a "hw csum failure". The receiver path must
+therefore ensure that the csum is fixed for each modification of the
+payload before batadv_interface_rx() is reached.
 
-Adding a skb_cow() right before this operation avoids this and can at the
-same time prepare it for the modifications required to rebroadcast the
-packet.
+Since all batman-adv packet types with a ttl have it as u8 at offset 2, a
+helper can be used for all of them. But it is only used at the moment for
+batadv_bcast_packet and batadv_mcast_packet because they are the only ones
+which deliver the packet locally but unconditionally modify the TTL.
 
 Cc: stable@kernel.org
 Fixes: 3f69339068f9 ("batman-adv: bcast: queue per interface, if needed")
+Fixes: 07afe1ba288c ("batman-adv: mcast: implement multicast packet reception and forwarding")
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- net/batman-adv/routing.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/batman-adv/routing.c | 58 ++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 56 insertions(+), 2 deletions(-)
 
 diff --git a/net/batman-adv/routing.c b/net/batman-adv/routing.c
-index cd4368b846add..7b4acd1ad991a 100644
+index 7b4acd1ad991a..8786b66c8a924 100644
 --- a/net/batman-adv/routing.c
 +++ b/net/batman-adv/routing.c
-@@ -1191,6 +1191,12 @@ int batadv_recv_bcast_packet(struct sk_buff *skb,
- 	if (batadv_is_my_mac(bat_priv, bcast_packet->orig))
+@@ -8,6 +8,7 @@
+ #include "main.h"
+ 
+ #include <linux/atomic.h>
++#include <linux/build_bug.h>
+ #include <linux/byteorder/generic.h>
+ #include <linux/compiler.h>
+ #include <linux/errno.h>
+@@ -204,6 +205,59 @@ bool batadv_check_management_packet(struct sk_buff *skb,
+ 	return true;
+ }
+ 
++/**
++ * batadv_skb_decrement_ttl() - decrement ttl in a batman-adv header, csum-safe
++ * @skb: the received packet with @skb->data pointing to the batman-adv header
++ *
++ * Supports the following packet types, all of which carry the TTL at offset 2:
++ *
++ * - batadv_ogm_packet
++ * - batadv_ogm2_packet
++ * - batadv_icmp_header
++ * - batadv_icmp_packet
++ * - batadv_icmp_tp_packet
++ * - batadv_icmp_packet_rr
++ * - batadv_unicast_packet
++ * - batadv_frag_packet
++ * - batadv_bcast_packet
++ * - batadv_mcast_packet
++ * - batadv_coded_packet
++ * - batadv_unicast_tvlv_packet
++ *
++ * Return: true if the packet may be forwarded (ttl decremented),
++ *  false if it must be dropped (ttl would expire)
++ */
++static bool batadv_skb_decrement_ttl(struct sk_buff *skb)
++{
++	static const size_t ttl_offset = 2;
++	u8 *ttl_pos;
++
++	BUILD_BUG_ON(offsetof(struct batadv_ogm_packet, ttl) != ttl_offset);
++	BUILD_BUG_ON(offsetof(struct batadv_ogm2_packet, ttl) != ttl_offset);
++	BUILD_BUG_ON(offsetof(struct batadv_icmp_header, ttl) != ttl_offset);
++	BUILD_BUG_ON(offsetof(struct batadv_icmp_packet, ttl) != ttl_offset);
++	BUILD_BUG_ON(offsetof(struct batadv_icmp_tp_packet, ttl) != ttl_offset);
++	BUILD_BUG_ON(offsetof(struct batadv_icmp_packet_rr, ttl) != ttl_offset);
++	BUILD_BUG_ON(offsetof(struct batadv_unicast_packet, ttl) != ttl_offset);
++	BUILD_BUG_ON(offsetof(struct batadv_frag_packet, ttl) != ttl_offset);
++	BUILD_BUG_ON(offsetof(struct batadv_bcast_packet, ttl) != ttl_offset);
++	BUILD_BUG_ON(offsetof(struct batadv_mcast_packet, ttl) != ttl_offset);
++	BUILD_BUG_ON(offsetof(struct batadv_coded_packet, ttl) != ttl_offset);
++	BUILD_BUG_ON(offsetof(struct batadv_unicast_tvlv_packet, ttl) != ttl_offset);
++
++	ttl_pos = skb->data + ttl_offset;
++
++	/* would expire on this hop -> drop, leave header + csum untouched */
++	if (*ttl_pos < 2)
++		return false;
++
++	skb_postpull_rcsum(skb, ttl_pos, 1);
++	(*ttl_pos)--;
++	skb_postpush_rcsum(skb, ttl_pos, 1);
++
++	return true;
++}
++
+ /**
+  * batadv_recv_my_icmp_packet() - receive an icmp packet locally
+  * @bat_priv: the bat priv with all the mesh interface information
+@@ -1197,7 +1251,7 @@ int batadv_recv_bcast_packet(struct sk_buff *skb,
+ 
+ 	bcast_packet = (struct batadv_bcast_packet *)skb->data;
+ 
+-	if (bcast_packet->ttl-- < 2)
++	if (!batadv_skb_decrement_ttl(skb))
  		goto free_skb;
  
-+	/* create a copy of the skb, if needed, to modify it. */
-+	if (skb_cow(skb, ETH_HLEN) < 0)
-+		goto free_skb;
-+
-+	bcast_packet = (struct batadv_bcast_packet *)skb->data;
-+
- 	if (bcast_packet->ttl-- < 2)
+ 	orig_node = batadv_orig_hash_find(bat_priv, bcast_packet->orig);
+@@ -1304,7 +1358,7 @@ int batadv_recv_mcast_packet(struct sk_buff *skb,
  		goto free_skb;
  
+ 	mcast_packet = (struct batadv_mcast_packet *)skb->data;
+-	if (mcast_packet->ttl-- < 2)
++	if (!batadv_skb_decrement_ttl(skb))
+ 		goto free_skb;
+ 
+ 	tvlv_buff = (unsigned char *)(skb->data + hdr_size);
 -- 
 2.47.3
 
