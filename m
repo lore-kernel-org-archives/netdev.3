@@ -1,33 +1,33 @@
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A5614884C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1FED40D59A
 	for <netdev@vger.kernel.org>; Fri, 19 Jun 2026 07:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781852458; cv=none; b=Filed0TFX4DzhTvXx9GhELIQJv2SH05mbOyiCkdxoDA0C+TVIWjHwba+pBBjOoKNTTFx9VZIVQMtDsFaBOiTDcHqlaLbYseeN+MPzcltEnam73Ph2ED7yOLgwYjm+WKwQK7HocdN9s92tcGyeWgYwz6pzE3+FbYfyIWBLat+eG4=
+	t=1781852458; cv=none; b=X4j4TDYJJfQaqaQF7Un/KYfqcR19Bi6uKPLGeguzbA+tKKKhcu4jtaGqAWDXBNCgU2Ft64qf0IIgnsDdWvAsPb9Hm5mIr3H0M0poToSm2e4xCqWAT9yZVWooGg6uOcNHdMzqqJCrG1QaROoldJqi5BbjUMXvcGELVHObU2LtB64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1781852458; c=relaxed/simple;
-	bh=lyflApWTn53XMEsUYapZK9mcM9JbvEuNViN95DVv5bM=;
+	bh=CAefpSvvnYNWW8ETWr/q3lSMNrR+IMo3pNludyMat0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DzVHeyH625Tj50fgUToV7G9NNs069bQL2yrw6lQ2p8N0BSNbZWzFPDEQBslbrSybBmZTuARB+w07XHT6aFYOyTdvbVoX4kLGvTmdOCWjJ68UYGTDyY07ba3YpwyZMe5T27H6hc010/gDe0DMRhX8obiAQ5/pEWVX1VBVepUbvwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=0MPDU36H; arc=none smtp.client-ip=23.88.38.48
+	 MIME-Version; b=RdZknE39gvqC5yaC4WroOAaXL4+pg1EE2sttq+Q/Xd6he+JG/kIcXydRwu3yaixmLKNRkcuwlrH/15NfGHCWsdWF1BVx8vFqpD2bhMLtWj1pTKKCM3jmz5BTpX11S2k3TPQCUBc/qQA4LDriZXbQFuXC3kGCmVQ0GqpNZpWW3Kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=Xo4awvyM; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="0MPDU36H"
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="Xo4awvyM"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1781852452;
+	s=09092022; t=1781852451;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AQd/cgxuTb+DumCgZg9XLtulPUOEarubULtPkZBCDbc=;
-	b=0MPDU36HfdD6K2dQBF7pvBE2is18mmRXGhtEzLpJCxkOpUMwbv1LAGcFtW+KqQfV0Esn7W
-	Ce7CgPtc3JCp3nfbA5c8VY+iKC0V/g7mzGmjW2S91nGVKKmEXf9HANCbgXB/gddIgdWtWb
-	2a0Ysy5/b0s1RlURGmGuIf6ncOGqVXBR/dmo9m4VOfrxVDJcKg8z/sAyxIfzF1g5RInblF
-	zA0IpgndRnWRVjux2tUe1s/y2lx6N9q3rY/5i5O56Dlw27JFkMhNOT5vpFDtF3DsgtWbJy
-	rWf6AV0nPWM0MozoKjV2IBY9s2ug012QlVfLmgWHp+ukHHyKHUSYVGgV7UUQ8Q==
+	bh=XuA1MAFUn/UG5BjiMRIG4JPFQHZyADK8pcBQ8VRiPsM=;
+	b=Xo4awvyMX0rGla0NA0uui5TQegMjLQsCyDiDVgqYBCl0FQFDJzRsZ4xh7B+RpAwE3Tai+e
+	jsgaShac/FcvsEcTmqN6g33SgLr64bfAVybiS61rZE2EvqXcGN3LwkqKA/5UIOqARfXFVm
+	BeExKIXhBzK/JDQOFFtFW4/MP8TzfT5p8lNt/RW3PcPuqsMTy9tFoWB5Wbl0dsLQE+zHYF
+	YADPXdOactoQoBPWC359GOEftNg/QiqCd/sN25e0OPXoJlIQNdjQxuLZg8KUUOHrQdGjnQ
+	JZoqZqX1LVZR+DwfXEs3Y+RjO9fAtYicxaqZdhMD/d/U8W39KoccVYfXupuJsA==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -39,9 +39,9 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Sven Eckelmann <sven@narfation.org>,
 	stable@kernel.org,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net 08/15] batman-adv: tp_meter: annotate last_recv_time access with READ/WRITE_ONCE
-Date: Fri, 19 Jun 2026 09:00:38 +0200
-Message-ID: <20260619070045.438101-9-sw@simonwunderlich.de>
+Subject: [PATCH net 06/15] batman-adv: v: prevent OGM aggregation on disabled hardif
+Date: Fri, 19 Jun 2026 09:00:36 +0200
+Message-ID: <20260619070045.438101-7-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260619070045.438101-1-sw@simonwunderlich.de>
 References: <20260619070045.438101-1-sw@simonwunderlich.de>
@@ -55,59 +55,99 @@ Content-Transfer-Encoding: 8bit
 
 From: Sven Eckelmann <sven@narfation.org>
 
-The last_recv_time field for batadv_tp_receiver tracks the jiffies value of
-the most recent activity and is used to detect timeouts. These accesses are
-not consistently protected by a lock, so READ_ONCE/WRITE_ONCE must be used
-to prevent data races caused by compiler optimizations.
+When an interface gets disabled, the worker is correctly disabled by
+batadv_hardif_disable_interface() -> ... -> batadv_v_ogm_iface_disable().
+In this process, the skb aggr_list is also freed.
+
+But batadv_v_ogm_send_meshif() can still queue new skbs (via
+batadv_v_ogm_queue_on_if()) to the aggr_list. This will only stop after all
+cores can no longer find the RCU protected list of hard interfaces. These
+queued skbs will never be freed or consumed by batadv_v_ogm_aggr_work.
+
+The batadv_v_ogm_iface_disable() function must block
+batadv_v_ogm_queue_on_if() to avoid leak of skbs.
 
 Cc: stable@kernel.org
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
+Fixes: f89255a02f1d ("batman-adv: BATMAN_V: introduce per hard-iface OGMv2 queues")
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- net/batman-adv/tp_meter.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/batman-adv/bat_v.c     |  1 +
+ net/batman-adv/bat_v_ogm.c | 12 ++++++++++++
+ net/batman-adv/types.h     |  6 ++++++
+ 3 files changed, 19 insertions(+)
 
-diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index 259ac8c307359..fb87fa141e32a 100644
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -1290,7 +1290,7 @@ static void batadv_tp_receiver_shutdown(struct timer_list *t)
- 	bat_priv = tp_vars->common.bat_priv;
+diff --git a/net/batman-adv/bat_v.c b/net/batman-adv/bat_v.c
+index fe7c0113d0df3..db6f5bdcaa985 100644
+--- a/net/batman-adv/bat_v.c
++++ b/net/batman-adv/bat_v.c
+@@ -817,6 +817,7 @@ void batadv_v_hardif_init(struct batadv_hard_iface *hard_iface)
  
- 	/* if there is recent activity rearm the timer */
--	if (!batadv_has_timed_out(tp_vars->last_recv_time,
-+	if (!batadv_has_timed_out(READ_ONCE(tp_vars->last_recv_time),
- 				  BATADV_TP_RECV_TIMEOUT)) {
- 		/* reset the receiver shutdown timer */
- 		batadv_tp_reset_receiver_timer(tp_vars);
-@@ -1532,7 +1532,7 @@ batadv_tp_init_recv(struct batadv_priv *bat_priv,
- 	tp_vars = batadv_tp_list_find_receiver_session(bat_priv, icmp->orig,
- 						       icmp->session);
- 	if (tp_vars) {
--		tp_vars->last_recv_time = jiffies;
-+		WRITE_ONCE(tp_vars->last_recv_time, jiffies);
- 		goto out_unlock;
+ 	hard_iface->bat_v.aggr_len = 0;
+ 	skb_queue_head_init(&hard_iface->bat_v.aggr_list);
++	hard_iface->bat_v.aggr_list_enabled = false;
+ 	INIT_DELAYED_WORK(&hard_iface->bat_v.aggr_wq,
+ 			  batadv_v_ogm_aggr_work);
+ 	/* make sure it doesn't run until interface gets enabled */
+diff --git a/net/batman-adv/bat_v_ogm.c b/net/batman-adv/bat_v_ogm.c
+index 81926ef9c02c9..95efd8a43c79d 100644
+--- a/net/batman-adv/bat_v_ogm.c
++++ b/net/batman-adv/bat_v_ogm.c
+@@ -254,11 +254,18 @@ static void batadv_v_ogm_queue_on_if(struct batadv_priv *bat_priv,
  	}
  
-@@ -1562,7 +1562,7 @@ batadv_tp_init_recv(struct batadv_priv *bat_priv,
- 	kref_get(&tp_vars->common.refcount);
- 	timer_setup(&tp_vars->common.timer, batadv_tp_receiver_shutdown, 0);
+ 	spin_lock_bh(&hard_iface->bat_v.aggr_list.lock);
++	if (!hard_iface->bat_v.aggr_list_enabled) {
++		kfree_skb(skb);
++		goto unlock;
++	}
++
+ 	if (!batadv_v_ogm_queue_left(skb, hard_iface))
+ 		batadv_v_ogm_aggr_send(bat_priv, hard_iface);
  
--	tp_vars->last_recv_time = jiffies;
-+	WRITE_ONCE(tp_vars->last_recv_time, jiffies);
+ 	hard_iface->bat_v.aggr_len += batadv_v_ogm_len(skb);
+ 	__skb_queue_tail(&hard_iface->bat_v.aggr_list, skb);
++
++unlock:
+ 	spin_unlock_bh(&hard_iface->bat_v.aggr_list.lock);
+ }
  
- 	kref_get(&tp_vars->common.refcount);
- 	hlist_add_head_rcu(&tp_vars->common.list, &bat_priv->tp_receiver_list);
-@@ -1613,7 +1613,7 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
- 			goto out;
- 		}
+@@ -415,6 +422,10 @@ int batadv_v_ogm_iface_enable(struct batadv_hard_iface *hard_iface)
+ {
+ 	struct batadv_priv *bat_priv = netdev_priv(hard_iface->mesh_iface);
  
--		tp_vars->last_recv_time = jiffies;
-+		WRITE_ONCE(tp_vars->last_recv_time, jiffies);
- 	}
++	spin_lock_bh(&hard_iface->bat_v.aggr_list.lock);
++	hard_iface->bat_v.aggr_list_enabled = true;
++	spin_unlock_bh(&hard_iface->bat_v.aggr_list.lock);
++
+ 	enable_delayed_work(&hard_iface->bat_v.aggr_wq);
  
- 	/* if the packet is a duplicate, it may be the case that an ACK has been
+ 	batadv_v_ogm_start_queue_timer(hard_iface);
+@@ -432,6 +443,7 @@ void batadv_v_ogm_iface_disable(struct batadv_hard_iface *hard_iface)
+ 	disable_delayed_work_sync(&hard_iface->bat_v.aggr_wq);
+ 
+ 	spin_lock_bh(&hard_iface->bat_v.aggr_list.lock);
++	hard_iface->bat_v.aggr_list_enabled = false;
+ 	batadv_v_ogm_aggr_list_free(hard_iface);
+ 	spin_unlock_bh(&hard_iface->bat_v.aggr_list.lock);
+ }
+diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
+index 5fd5bd358a249..5e81c93b8217d 100644
+--- a/net/batman-adv/types.h
++++ b/net/batman-adv/types.h
+@@ -145,6 +145,12 @@ struct batadv_hard_iface_bat_v {
+ 	/** @aggr_list: queue for to be aggregated OGM packets */
+ 	struct sk_buff_head aggr_list;
+ 
++	/**
++	 * @aggr_list_enabled: aggr_list is active and new skbs can be
++	 * enqueued. Protected by aggr_list.lock after initialization
++	 */
++	bool aggr_list_enabled:1;
++
+ 	/** @aggr_len: size of the OGM aggregate (excluding ethernet header) */
+ 	unsigned int aggr_len;
+ 
 -- 
 2.47.3
 
