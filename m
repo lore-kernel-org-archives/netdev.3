@@ -1,86 +1,43 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1E3F1548C
-	for <netdev@vger.kernel.org>; Fri, 19 Jun 2026 15:03:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D8D33BBAF
+	for <netdev@vger.kernel.org>; Fri, 19 Jun 2026 15:15:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781881437; cv=none; b=fxFgCf5ULOImRGnEbx2m11khQHLDsshYh2uTzcLjotH3GOUtEdw/iP6RDnldWGl7tl+mKtg4ey8goqyjG5EEv1oYLlzP9LDuOVygy8gdSHdd7NpF5J7zWLhAlnIOF3YJHglaecFfSYSSnWQqIhT/0pYWvRXJ48hoOmNNvyojxRI=
+	t=1781882161; cv=none; b=lcj1c6AV5nHOu0sdaE/vXnCl54SNwu2BWEnxjJMjI6vXKH4gr4ckIcGRZphygL2tzq7UzXESEc/rCbcGacpll3ypZMbZRGqaHifeyIzZXSHnLePKLP9cusYVTrl4TYXZqyOR2OHYega/YdddcZwh/ocemFyQbCcWsbPm3IdHO8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781881437; c=relaxed/simple;
-	bh=n0TaIFU2dlUiY6Vzb+eElnBvXKO/Y+F2CeNOmOSDEpc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UrEdBl/jiaR/i8kv/rypc0wSP7951wn5m9+4Yeak3OXfNFCzux8xUAzLRFLRFeij8hO3qSep1xdLaAJBBCz+erg5Owe8eXq/JtU5PVk/P6IGJmXsKmbAmPPGltZoFMlALjQZsXWDNtOrBFe1Ju/4lk0JkcbE612gAowQ/X0DjTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=icaPiIDi; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781882161; c=relaxed/simple;
+	bh=TGYgwiTJHtJNlt/17k021rosdmJg6Kpva8siZ53rSS4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Fg7FX0KR28vrsDLDKPSXJ4YmSd1QFFix8LCY9CAqbUnRYwHtIRw8t6gRjo/0Fjrz43cP95KMS2iViyfSPs7MkO0uyqW4I4myP2QBiUJtTEqkQDTRYdD9EvDKcYMP2PbzyCA8vYFyEBbLGCBIc3pspSbfkvfJ9rxmVf+eLmLdbMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=b1n.io; spf=pass smtp.mailfrom=b1n.io; dkim=pass (2048-bit key) header.d=b1n.io header.i=@b1n.io header.b=oWe0BT6L; arc=none smtp.client-ip=91.218.175.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=b1n.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=b1n.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="icaPiIDi"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-8423610ec93so1925354b3a.2
-        for <netdev@vger.kernel.org>; Fri, 19 Jun 2026 08:03:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781881436; x=1782486236; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=p5fF29AhKZUYQkqmksxc4GcdOoLjfu8vsoNrkddfAwM=;
-        b=icaPiIDia+iWmEFhB2Z748fn+YVVv6PPRnGMgZMay8iUtTkG7gu1SsqMAw7Skq6vFo
-         Aij2rIUYIY5Ft41A0gg2hN0XapAOQGCSm18cZOvew193TwvFWFpbVnPph7wBqub0Q2p4
-         Scy1nT3lyVvtRb3bVrddCUwlYbM8K+sT1hdyLtpsjHi/70Ro9zaP3T4AVhhtny0DTdnC
-         67LXG+zPFF4ZGoP4zz+3V3M0gFWkKlmdRfKif61AeWvLVLkpgXokbEN6zejedbmUlcoU
-         wcBQKVfRezT3RJV52pp/0ptJ6lzVx8rxxSpJssrV7K+G2OpIDj6uYs4sjJPd+Mxa1Gt4
-         nlbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781881436; x=1782486236;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=p5fF29AhKZUYQkqmksxc4GcdOoLjfu8vsoNrkddfAwM=;
-        b=UYHodfZNuZdU9IfRweDyWkHVZ/QV3O+qyp73qGmQBEuQU3FoduDNOrpzK1IeZyt2Jr
-         bC+lx1+i+sC0xCI7tbZWhg49VEmyjLKdCHr9SyaLdbbRfJX8adVNMzv4HqsC+GTRsJq0
-         1jn9TnebSm/zFfnr9z95+0yTOgOZNIZBtOx4J+8G7qvLV9QAhoUyQuD7GMSHcxn9kKmc
-         THrs9g2iETfN2ETM2DQXt6+UM3lZq55wc8VR+5i/I0QmxdZcqn8qhzj7ac7MNfXhKgtY
-         c/G6sew+0P79OT7z8K4SC4w82AnFDBxw9nm0TjVAyyj1/NHBmlwYnjif30XgSuLH9wHi
-         XuGQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8roDJDulURiNoG87ElBXQYB7JazBbQgNHIYUREnGEyUgeCPv/JpHLGhCS59IB6SjW5hCveics=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxImgPota5fDum940xyKSM9/Slz9Ovv4yREjr9c+6Df2Xe7VTve
-	ZFB45iO2QSCrUd8IwR4ssPzYKkhlA3aK2Kb2IitPwReod+EpOaRWwq+x
-X-Gm-Gg: AfdE7clkci27+3kTNO8Qsq+ONE/MyLP+S6CQigxOT6ZIn4seukd/9fn9o0vVQlkRqgE
-	wae2kfOlBHd9rTY4pbXuT8CioezOn1M3Ii8t3uUJA2D2I7WtsgYe1y/P0rzxyPnwmmWQMan/w/M
-	nC+H2N2ZrkF67Ke2XahPvDN901+Cilhcck5qbkJAj9mJXWNL7qj/fOtyQnEPUWgRYVh+JR3vW6W
-	M9DvCjI/cEGQDcZpoMVXhFQBduXiQQUa0ze7FEUp7yS4Eun4tFEh3sf04vTboApWt1nPWr6XYel
-	cwVOV44VF4WKXScw6/H0MhL97/NArYXBEZLqFY13/KE8h1B+Vq9mX6z25B27tnR31pCniqHiVyS
-	N9uqm8VCIlNlm+E+fbnqRh/7pjYknv7pY4iskyZBCTrmrWivgURETb9t5KoSqxZhR+/4aCXmcWq
-	cn3k59G5fMk2hT26yVxXPsyr9/T8lIfaoceBKutd3uo1rAPjgYnGw=
-X-Received: by 2002:aa7:8882:0:b0:842:7e7f:2914 with SMTP id d2e1a72fcca58-8455078a5a4mr4177673b3a.4.1781881435832;
-        Fri, 19 Jun 2026 08:03:55 -0700 (PDT)
-Received: from cps-manycore-1.. ([147.46.174.222])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8455366ec53sm2844747b3a.13.2026.06.19.08.03.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Jun 2026 08:03:55 -0700 (PDT)
-From: Sechang Lim <rhkrqnwk98@gmail.com>
-To: "D . Wythe" <alibuda@linux.alibaba.com>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Sidraya Jayagond <sidraya@linux.ibm.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Mahanta Jambigi <mjambigi@linux.ibm.com>,
-	Tony Lu <tonylu@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>,
-	Simon Horman <horms@kernel.org>,
-	Ursula Braun <ubraun@linux.ibm.com>,
-	Karsten Graul <kgraul@linux.ibm.com>,
-	Guvenc Gulce <guvenc@linux.ibm.com>,
-	linux-rdma@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: [PATCH net v2] net/smc: fix out-of-bounds read when sk_user_data holds a sk_psock
-Date: Fri, 19 Jun 2026 15:03:41 +0000
-Message-ID: <20260619150342.3626224-1-rhkrqnwk98@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=b1n.io header.i=@b1n.io header.b="oWe0BT6L"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=b1n.io; s=key1;
+	t=1781882147;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=PwWF7KrEgnuENNQxPC3DbTo9dxOZ56k4AODfX6tSOv8=;
+	b=oWe0BT6LKfEp3HNDr0a0+gAFN8hTy9XeiHfsSLQcUELBdMJtLwZ1bbGlpAOXTXWP3nbRto
+	7AjIjNUL2WmS1waIXOxsteHZ7TfTGkTzx0hxauNasBgBpxj5ky98xsdyzw9+7t5Pwv+NXn
+	1RMheBWDJPUgt079/n/tmvYRHjddADaovTeIJ+UJNB4F9Zx2OpfznshY5A96Gh47dvN2qb
+	UbkBn2oO6rB1GZG9O30Ifv0nBWl61xmrWsq3LCHsOOmgdEZhNz+60V5nukgwYwFpkuv/8f
+	YSegefPrS3hBjIj0NjfR5HhZhMd8+hNhHO3qKwXC2jX2OPevlDJCSIWRRlrZcg==
+From: Xingquan Liu <b1n@b1n.io>
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: netdev@vger.kernel.org,
+	Jiri Pirko <jiri@resnulli.us>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>,
+	Xingquan Liu <b1n@b1n.io>,
+	stable@vger.kernel.org
+Subject: [PATCH v3 1/2] net/sched: dualpi2: fix GSO backlog accounting
+Date: Fri, 19 Jun 2026 11:13:47 -0400
+Message-ID: <20260619151447.223640-1-b1n@b1n.io>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -88,83 +45,73 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-SMC stores its smc_sock in the clcsock's sk_user_data tagged
-SK_USER_DATA_NOCOPY and reads it back with smc_clcsock_user_data(), which
-only strips that flag. sockmap stores a sk_psock in the same field tagged
-SK_USER_DATA_NOCOPY | SK_USER_DATA_PSOCK. Nothing keeps both off one
-socket, and SMC then casts the sk_psock to an smc_sock.
+When DualPI2 splits a GSO skb into N segments, it propagates N
+additional packets to its parent before returning NET_XMIT_SUCCESS.
+The parent then accounts for the original skb once more, leaving its
+qlen one larger than the number of packets actually queued.
 
-A passive-open child hits this. It inherits the listener's
-smc_clcsock_data_ready(), but sk_clone_lock() clears its NOCOPY
-sk_user_data, and a BPF sock_ops program then adds the child to a sockmap,
-installing a sk_psock in that field. The inherited callback reads it as an
-smc_sock and dereferences a clcsk_* pointer past the end of the sk_psock:
+With QFQ as the parent, after all real packets are dequeued, QFQ still
+has a non-zero qlen while its in-service aggregate has no active
+classes. qfq_choose_next_agg() returns NULL and qfq_dequeue() passes
+the result to qfq_peek_skb(), causing a NULL pointer dereference.
 
-  BUG: KASAN: slab-out-of-bounds in smc_clcsock_data_ready+0x84/0x200 net/smc/af_smc.c:2637
-  Read of size 8 at addr ffff8880013b8674 by task syz.6.12484/67930
-   <IRQ>
-   smc_clcsock_data_ready+0x84/0x200 net/smc/af_smc.c:2637
-   tcp_urg+0x24d/0x360 net/ipv4/tcp_input.c:6264
-   tcp_rcv_state_process+0x280d/0x4940 net/ipv4/tcp_input.c:7336
-   tcp_child_process+0x371/0xa50 net/ipv4/tcp_minisocks.c:1002
-   tcp_v4_rcv+0x1eaa/0x2a00 net/ipv4/tcp_ipv4.c:2186
-   [...]
-   </IRQ>
+Follow the same pattern used by tbf_segment() and taprio: count only
+successfully queued segments, propagate the difference between the
+original skb and those segments, and return NET_XMIT_SUCCESS whenever
+at least one segment was queued.
 
-  Allocated by task 67930:
-   sk_psock_init+0x142/0x740 net/core/skmsg.c:766
-   sock_hash_update_common+0xd3/0x990 net/core/sock_map.c:1010
-   bpf_sock_hash_update+0x114/0x170 net/core/sock_map.c:1229
-   __cgroup_bpf_run_filter_sock_ops+0x74/0xa0 kernel/bpf/cgroup.c:1727
-   tcp_init_transfer+0x1085/0x1100 net/ipv4/tcp_input.c:6693
-   [...]
-
-sk_psock() already guards the other side, returning NULL unless
-SK_USER_DATA_PSOCK is set. Make smc_clcsock_user_data() and its RCU
-variant return the smc_sock only when sk_user_data carries SMC's tag
-alone. A sk_psock then reads back as NULL, which the data_ready and
-fallback callbacks already handle.
-
-Fixes: a60a2b1e0af1 ("net/smc: reduce active tcp_listen workers")
-Signed-off-by: Sechang Lim <rhkrqnwk98@gmail.com>
+Fixes: 8f9516daedd6 ("sched: Add enqueue/dequeue of dualpi2 qdisc")
+Cc: stable@vger.kernel.org
+Signed-off-by: Xingquan Liu <b1n@b1n.io>
 ---
- net/smc/smc.h | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+v3:
+- Move the UDP GSO sender into tdc_gso.py.
 
-diff --git a/net/smc/smc.h b/net/smc/smc.h
-index 52145df83f6e..88dfb459b7cc 100644
---- a/net/smc/smc.h
-+++ b/net/smc/smc.h
-@@ -342,13 +342,25 @@ static inline void smc_init_saved_callbacks(struct smc_sock *smc)
+v2:
+- Change patch commit message.
+- Add tdc test.
+
+ net/sched/sch_dualpi2.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
+
+diff --git a/net/sched/sch_dualpi2.c b/net/sched/sch_dualpi2.c
+index d7c3254ef800..5434df6ca8ef 100644
+--- a/net/sched/sch_dualpi2.c
++++ b/net/sched/sch_dualpi2.c
+@@ -461,7 +461,7 @@ static int dualpi2_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		if (IS_ERR_OR_NULL(nskb))
+ 			return qdisc_drop(skb, sch, to_free);
  
- static inline struct smc_sock *smc_clcsock_user_data(const struct sock *clcsk)
- {
--	return (struct smc_sock *)
--	       ((uintptr_t)clcsk->sk_user_data & ~SK_USER_DATA_NOCOPY);
-+	uintptr_t data = (uintptr_t)clcsk->sk_user_data;
-+
-+	/*
-+	 * Return the smc_sock only if the slot carries SMC's tag alone.
-+	 * sockmap stores a sk_psock here tagged SK_USER_DATA_PSOCK; it is
-+	 * not an smc_sock and must not be dereferenced as one.
-+	 */
-+	if ((data & ~SK_USER_DATA_PTRMASK) != SK_USER_DATA_NOCOPY)
-+		return NULL;
-+	return (struct smc_sock *)(data & SK_USER_DATA_PTRMASK);
+-		cnt = 1;
++		cnt = 0;
+ 		byte_len = 0;
+ 		orig_len = qdisc_pkt_len(skb);
+ 		skb_list_walk_safe(nskb, nskb, next) {
+@@ -488,16 +488,15 @@ static int dualpi2_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 				byte_len += nskb->len;
+ 			}
+ 		}
+-		if (cnt > 1) {
++		if (cnt > 0) {
+ 			/* The caller will add the original skb stats to its
+ 			 * backlog, compensate this if any nskb is enqueued.
+ 			 */
+-			--cnt;
+-			byte_len -= orig_len;
++			qdisc_tree_reduce_backlog(sch, 1 - cnt,
++						  orig_len - byte_len);
+ 		}
+-		qdisc_tree_reduce_backlog(sch, -cnt, -byte_len);
+ 		consume_skb(skb);
+-		return err;
++		return cnt > 0 ? NET_XMIT_SUCCESS : err;
+ 	}
+ 	return dualpi2_enqueue_skb(skb, sch, to_free);
  }
- 
- static inline struct smc_sock *smc_clcsock_user_data_rcu(const struct sock *clcsk)
- {
--	return (struct smc_sock *)rcu_dereference_sk_user_data(clcsk);
-+	uintptr_t data = (uintptr_t)rcu_dereference(__sk_user_data(clcsk));
-+
-+	if ((data & ~SK_USER_DATA_PTRMASK) != SK_USER_DATA_NOCOPY)
-+		return NULL;
-+	return (struct smc_sock *)(data & SK_USER_DATA_PTRMASK);
- }
- 
- /* save target_cb in saved_cb, and replace target_cb with new_cb */
+
+base-commit: 96e7f9122aae0ed000ee321f324b812a447906d9
 -- 
-2.43.0
+Xingquan Liu
 
