@@ -1,54 +1,36 @@
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D63A19D8BC;
-	Fri, 19 Jun 2026 03:31:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469E024B28;
+	Fri, 19 Jun 2026 03:39:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781839884; cv=none; b=kCJbrLA2iiriyUwYs3W9hyVQOHdjmvZ82kGXUfKBM4iCFKwu/eWzAvYjjLU27j6Wyup7Cuo/vL+kUSzzkvLOUdiVM2MUiIkwgIngRMY9b6sMCC25oyxyn0hC/tp1CyuBxkdvlkNw0gxuvH2kaXPw2FIWcTv1yXnwTbLmLQSYJx0=
+	t=1781840384; cv=none; b=j3p9iT7vsLjbdwAVfFDlgad3WtdiWdWHhwdcqPVzqXRRFRbDtIaEGuYYw3elpKOux1NG0YznzErMMlscfqrGTFAaT/gv/UPVLAr5cs09B1NV/VvMg9gZ1Jsy6UPYiD4IlFHWl+2XXFx8yqvB4uui0ijyB+nKB5zvHMW9F6o0GRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781839884; c=relaxed/simple;
-	bh=JzPjOPNYTxb3CLKqeBrTg6gSkEKoAKEwNbvjO9EzUyg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=abDVfaZZIdMFPcDM6zEH4JZ4FC8W5DZr82CJipM+6A7auNlcKNWCdGBiMpVXYBLtoHS78dvvoc/0VkUyGeU3x+Cju8eTdDnzoB4QigEpxNyX6iwVaec2EeoZ9Inf1WFClcwbpciDblEuh1PHYJ55KeywZyleJj7E3NWCVvCA+zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=khGY8gE4; arc=none smtp.client-ip=115.124.30.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="khGY8gE4"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1781839880; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=JzPjOPNYTxb3CLKqeBrTg6gSkEKoAKEwNbvjO9EzUyg=;
-	b=khGY8gE4Nwby2jCpUMCww9DYAhXehD3eCMjN63720EsKnTMcR2ughCC4rW7GsGpCuxIB6/tPFQDrtxGH6gQ2gsFH2XHSteUiEsiHPjmhnFsRN9SGC7Wlecok6ExiyWuUnN7Wj7bdKBTXpF1Ni6nGoAhtZvNXX+Q+YBJ2jQPcGHE=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R551e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=dust.li@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0X58XT8v_1781839879;
-Received: from localhost(mailfrom:dust.li@linux.alibaba.com fp:SMTPD_---0X58XT8v_1781839879 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 19 Jun 2026 11:31:19 +0800
-Date: Fri, 19 Jun 2026 11:31:18 +0800
-From: Dust Li <dust.li@linux.alibaba.com>
-To: Bryam Vargas <hexlabsecurity@proton.me>
-Cc: Wenjia Zhang <wenjia@linux.ibm.com>,
-	"D . Wythe" <alibuda@linux.alibaba.com>,
-	Sidraya Jayagond <sidraya@linux.ibm.com>,
+	s=arc-20240116; t=1781840384; c=relaxed/simple;
+	bh=ucRNkhNSQ0NMD14dGjuPrzzz8jKjTaDeB3MQzKDfDV8=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=VWNY6WqMDCteKNSikdHquIbhCQbP5QkvMksBtrLbBxOF/GWk4Gum16Me8APJ6Z0c7NmyY0xS9PbPGNLjKmdU6pR7K8xqJOdKdxFurlUht9EIVA0PFbbPs5jPC2VaQ3qJTCtJR/nVBAhNAzo0soIGNQD1nm3J9J1imKQnz7WQoxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+	 (Exim 4.99)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1waQ4m-0000000012z-2ff9;
+	Fri, 19 Jun 2026 03:39:28 +0000
+Date: Fri, 19 Jun 2026 04:39:25 +0100
+From: Daniel Golle <daniel@makrotopia.org>
+To: Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Mahanta Jambigi <mjambigi@linux.ibm.com>,
-	Wen Gu <guwen@linux.alibaba.com>, Simon Horman <horms@kernel.org>,
-	Ursula Braun <ubraun@linux.ibm.com>,
-	Stefan Raspl <raspl@linux.ibm.com>,
-	Tony Lu <tonylu@linux.alibaba.com>, Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-	linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/3] net/smc: bound the receive length to the RMB in
- smc_rx_recvmsg()
-Message-ID: <ajS4BgnyzRsa7HVm@linux.alibaba.com>
-Reply-To: dust.li@linux.alibaba.com
-References: <20260614-b4-disp-edd64be9-v3-0-551fa514257e@proton.me>
- <20260614-b4-disp-edd64be9-v3-2-551fa514257e@proton.me>
- <ajQWxQZXzM2J8kaZ@linux.alibaba.com>
- <20260618221106.236699-1-hexlabsecurity@proton.me>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH net 1/2] net: dsa: mxl862xx: avoid unaligned 16-bit access in
+ api_wrap
+Message-ID: <599327521db465a534d277de53ab9b6cac01928b.1781702256.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,41 +39,70 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260618221106.236699-1-hexlabsecurity@proton.me>
 
-On 2026-06-18 22:11:12, Bryam Vargas wrote:
->On Fri, 19 Jun 2026 00:03:17 +0800, Dust Li wrote:
->> Once we validate the CDC message at the input boundary (as in the
->> previous patch), bytes_to_rcv can never exceed rmb_desc->len, so
->> this check becomes unreachable. So I don't think this patch is needed.
->
->This one I'd actually like to keep, and let me walk through why -- I don't think the
->boundary check closes it.
->
->bytes_to_rcv isn't set to a cursor count, it's a running accumulator:
->smc_cdc_msg_recv_action does atomic_add(diff_prod, &bytes_to_rcv), where
->diff_prod = smc_curs_diff(rmb_desc->len, old, new). So bounding each cursor's count at
->the boundary doesn't bound the sum of the deltas.
->
->The differing-wrap branch of smc_curs_diff returns (len - old.count) + new.count,
->which is up to 2*len-1 even when both cursors pass count <= len. With len=16, a prod
->going (0,0) -> (1,15) gives diff=31, so bytes_to_rcv is already 31 > len after one
->message; alternating wrap 0<->1 at count=15 keeps adding ~len and eventually wraps the
->atomic_t negative. I have an A/B for this -- happy to send it along.
+The MXL862XX_API_* macros pass the address of a stack-allocated, __packed
+firmware-ABI struct to mxl862xx_api_wrap() as a void *. The struct has an
+alignment of 1, so the compiler is free to place it at an odd address.
 
-Glad to see you A/B test, I think we can decide after we see the real
-issue.
+mxl862xx_api_wrap() reinterprets that buffer as a __le16 * and accesses it
+with data[i], for which the compiler assumes the natural 2-byte alignment
+of __le16 and emits aligned 16-bit loads/stores (e.g. lhu/sh on MIPS).
+When the buffer lands on an odd address these fault on architectures that
+do not support unaligned access, such as MIPS32.
 
->
->So to make this truly unreachable from the boundary check, we'd need to bound
->prod - cons <= len there, not just the absolute count. The consumer-side clamp is two
->lines and race-free against the tasklet, so my preference would be to keep it as a
->backstop -- but if you'd rather fold it into a stronger boundary check instead, I'm
->open to that.
+-Waddress-of-packed-member does not catch this: the packed origin is
+laundered through the void * parameter, so the cast inside api_wrap looks
+alignment-safe to the compiler and no warning is emitted.
 
-Another thing I'd worry about is if this really happens, should we also
-abort the connection like what we did in patch #1 ?
+Use get_unaligned_le16()/put_unaligned_le16() for the three 16-bit word
+accesses. The byte accesses (*(u8 *)&data[i], crc16()) are already safe
+and are left unchanged.
 
-Best regards,
-Dust
+Link: https://sashiko.dev/#/patchset/cover.1781319534.git.daniel%40makrotopia.org?part=4
+Fixes: 23794bec1cb6 ("net: dsa: add basic initial driver for MxL862xx switches")
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+---
+ drivers/net/dsa/mxl862xx/mxl862xx-host.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
+diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-host.c b/drivers/net/dsa/mxl862xx/mxl862xx-host.c
+index d55f9dff6433..882c5d960941 100644
+--- a/drivers/net/dsa/mxl862xx/mxl862xx-host.c
++++ b/drivers/net/dsa/mxl862xx/mxl862xx-host.c
+@@ -12,6 +12,7 @@
+ #include <linux/crc16.h>
+ #include <linux/iopoll.h>
+ #include <linux/limits.h>
++#include <linux/unaligned.h>
+ #include <net/dsa.h>
+ #include "mxl862xx.h"
+ #include "mxl862xx-host.h"
+@@ -349,7 +350,7 @@ int mxl862xx_api_wrap(struct mxl862xx_priv *priv, u16 cmd, void *_data,
+ 	 * zero words individually.
+ 	 */
+ 	for (i = 0, zeros = 0; i < size / 2 && zeros < RST_DATA_THRESHOLD; i++)
+-		if (!data[i])
++		if (!get_unaligned_le16(&data[i]))
+ 			zeros++;
+ 
+ 	if (zeros < RST_DATA_THRESHOLD && (size & 1) && !*(u8 *)&data[i])
+@@ -395,7 +396,7 @@ int mxl862xx_api_wrap(struct mxl862xx_priv *priv, u16 cmd, void *_data,
+ 			 */
+ 			val = *(u8 *)&data[i] | ((crc & 0xff) << 8);
+ 		} else {
+-			val = le16_to_cpu(data[i]);
++			val = get_unaligned_le16(&data[i]);
+ 		}
+ 
+ 		/* After RST_DATA, skip zero data words as the registers
+@@ -453,7 +454,7 @@ int mxl862xx_api_wrap(struct mxl862xx_priv *priv, u16 cmd, void *_data,
+ 			*(uint8_t *)&data[i] = ret & 0xff;
+ 			crc = (ret >> 8) & 0xff;
+ 		} else {
+-			data[i] = cpu_to_le16((u16)ret);
++			put_unaligned_le16((u16)ret, &data[i]);
+ 		}
+ 	}
+ 
+-- 
+2.54.0
