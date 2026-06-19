@@ -1,202 +1,73 @@
-Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A81AC357D18
-	for <netdev@vger.kernel.org>; Fri, 19 Jun 2026 07:00:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C82340D579;
+	Fri, 19 Jun 2026 07:08:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781852461; cv=none; b=KNi0BQiEmywfpVIAn6kSg+gvKsDMirYEE3LFMVj97oHnspaHQOPFy+PScnJBEJSOE87+9jwDMbqFFWys5ojsDN4j3bg7uTdbbaNmIcEZ+q/0K+yVAjjXKmiYqAJNVfzunzHcXBIk8DCKHJLnW58zq10LwDuN0HMko40gl5lXqes=
+	t=1781852939; cv=none; b=LbA7zSrla01gbt1C+wJGlugzVtYbzwRMe9ptqc+AZ1W0hctp8K4NYusIlUl3JpOV7WCUWU3T35yWPWuqmCW8w1E3cWYZPv4nf4dOHq2BPyPHlUB49r63gqBSDKAJfILy0vIy+LhyrNfvRYhfOCkON3moNVr6NGg1Jh6n1eU7mJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781852461; c=relaxed/simple;
-	bh=e1i9zC95PPnm00W7HUVr9ZzKnhyS4vZe+GzVjQsfba4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Aki8g/Gx7E0C7iqsii5ElUZ6bvIM7DtwuAiy+/euAIpIKmxLUAdLnYKAzf+uHO/pZoX4Dth0rDJKx38lRp6iFFAP3/Qv+//AXw7uWR22vgO7iwdoV/hxHae1YtxJd+N8/VfpBCizLOoMxUI2sPlInNnAclXPKVdO6FggkFc3RJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=VZfdNlO1; arc=none smtp.client-ip=23.88.38.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
+	s=arc-20240116; t=1781852939; c=relaxed/simple;
+	bh=J3TsOZyALZLv2Ge9eOw7b/RW9oDRDk51X8FkIq5J53A=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=UmBdGIgd+OaLmFqemToMyixryCLwV8+9VfcqboFVp6vuVOT0xT2JFwiYsEN6hgmmFhSe4RidJ8YZhrTJaWVFk4ROigICziiqJuoom0xzgxgLweqQ+dmZrqnKacjuhvbnR0/2b7bCNeqPXKaJQWfhca6BDW7bkDV8NijoCfUjXU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fs+GLxc3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="VZfdNlO1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1781852457;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=txph5b6EzyWcZoZ25nYE+Zhi1YekIIHjAUHC8G/RctA=;
-	b=VZfdNlO1cGA75UOkcEhEK1GDxK1UE3LQxdD4Rntjk0girfh8htDCQPhV3BpylOacPGw77z
-	Xadkeq6/0tnRld+dsWmE+dOtN5tuQpwYVAuZCTyTK2UYPcUD+C0JLXIisr+2M/EiDOdJDj
-	i1AYbc8cIHfbCDJBcbD1JLjd/YmrXeJcGixJNM8UGN9JEk/pJ5kL9ysMtkEX3NYe3XKqcb
-	enH8OZbPss/q6VVHEFtdR3zfK3DZUdixLD2VgdsQxt8ZBpo0OdvZwRWMbe+peAP/3ufz/2
-	Yfv+zeeeNqo097DuWEpM/VZJinkY1WneKvKKj9oO6pLcwagLVIOLImhnS0JhWA==
-From: Simon Wunderlich <sw@simonwunderlich.de>
-To: netdev@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	b.a.t.m.a.n@lists.open-mesh.org,
-	Sven Eckelmann <sven@narfation.org>,
-	stable@kernel.org,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net 15/15] batman-adv: tvlv: avoid race of cifsnotfound handler state
-Date: Fri, 19 Jun 2026 09:00:45 +0200
-Message-ID: <20260619070045.438101-16-sw@simonwunderlich.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260619070045.438101-1-sw@simonwunderlich.de>
-References: <20260619070045.438101-1-sw@simonwunderlich.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fs+GLxc3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79AAF1F000E9;
+	Fri, 19 Jun 2026 07:08:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781852937;
+	bh=RIMQb1yKuHonfOKSP0klQ3dfROBzfdEbzclWDXcbWek=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=Fs+GLxc3OUyph1MNj30Soz3TdK4Onl90fcB5kJ1XqOP/gM5N2AjdYeWiGC/Nun6wg
+	 WCXX92qO1JIAjPSs/29HKhywK3UXqKGPJX73WIDN+IhEzSHXfFESMKxRw8Mamh7fIZ
+	 dUX6IL08/yjwmSJhle8R34jB2SkqyUPX1MjPhI5ntYa4HzjdST5326x4CaoEm3ikS3
+	 +eQBkvJLGsMWW0Spx2t+zFWAA3DxfV5K61I9Jjc4MZeEJjZstbTBa6wM/JGnhiwdQt
+	 m93MbA/ZQWxZ/ma7GAlwtlO30P43TbxgNj9iNdMwgSoGIjs2DCVcmM+3LCWkVmKEbu
+	 K0fpXUd2dsIjg==
+Content-Type: multipart/mixed; boundary="===============3794738048082045466=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-Id: <3166d652f38d3acdda9304a12482191496434a5c0b706318b4f0d6e194de8658@mail.kernel.org>
+In-Reply-To: <20260619062959.3277612-4-rhkrqnwk98@gmail.com>
+References: <20260619062959.3277612-4-rhkrqnwk98@gmail.com>
+Subject: Re: [PATCH bpf v4 3/3] selftests/bpf: test rejection of a packet-modifying SK_SKB stream parser
+From: bot+bpf-ci@kernel.org
+To: rhkrqnwk98@gmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,eddyz87@gmail.com,memxor@gmail.com,john.fastabend@gmail.com,jakub@cloudflare.com,davem@davemloft.net,kuba@kernel.org,edumazet@google.com,pabeni@redhat.com,kuniyu@google.com,willemb@google.com,shuah@kernel.org
+Cc: jolsa@kernel.org,martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,horms@kernel.org,bobbyeshleman@gmail.com,jiayuan.chen@linux.dev,bpf@vger.kernel.org,netdev@vger.kernel.org,linux-kernel@vger.kernel.org,linux-kselftest@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Fri, 19 Jun 2026 07:08:57 +0000 (UTC)
 
-From: Sven Eckelmann <sven@narfation.org>
+--===============3794738048082045466==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-TVLV handlers can have the flag BATADV_TVLV_HANDLER_OGM_CIFNOTFND set to
-signal that the OGM handler should be called (with NULL for data) when the
-specific TVLV container was not found in the OGM. This is used by:
+> selftests/bpf: test rejection of a packet-modifying SK_SKB stream parser
+>
+> Verify that attaching an SK_SKB stream parser that can modify the packet
+> is rejected, while a read-only parser still attaches.
+>
+> Signed-off-by: Sechang Lim <rhkrqnwk98@gmail.com>
 
-* DAT
-* GW
-* Multicast (OGM + Tracker)
+This test exercises the rejection of a stream parser that resizes the skb,
+which is the use-after-free path introduced when sk_skb programs gained
+access to packet data. An earlier single-patch version of this work
+carried a Fixes: tag pointing at that commit, and it appears to have been
+dropped when the series was split into multiple patches.
 
-The state whether the handler was executed was stored in the struct
-batadv_tvlv_handler. But the TVLV processing is started without any lock.
-Multiple parallel contexts processing TVLVs would therefore overwrite each
-others BATADV_TVLV_HANDLER_OGM_CALLED flag in the shared
-batadv_tvlv_handler.
+Should this commit include:
 
-Drop the shared BATADV_TVLV_HANDLER_OGM_CALLED flag and instead determine,
-per TVLV buffer, whether a matching container was present by scanning the
-packet's buffer.
+  Fixes: 8a31db561566 ("bpf: add access to sock fields and pkt data from sk_skb programs")
 
-Cc: stable@kernel.org
-Fixes: ef26157747d4 ("batman-adv: tvlv - basic infrastructure")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+
 ---
- net/batman-adv/tvlv.c  | 63 ++++++++++++++++++++++++++++++++++++++----
- net/batman-adv/types.h |  7 -----
- 2 files changed, 57 insertions(+), 13 deletions(-)
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
-diff --git a/net/batman-adv/tvlv.c b/net/batman-adv/tvlv.c
-index a957555d8958d..1c9fb21985f6a 100644
---- a/net/batman-adv/tvlv.c
-+++ b/net/batman-adv/tvlv.c
-@@ -411,7 +411,6 @@ static int batadv_tvlv_call_handler(struct batadv_priv *bat_priv,
- 		tvlv_handler->ogm_handler(bat_priv, orig_node,
- 					  BATADV_NO_FLAGS,
- 					  tvlv_value, tvlv_value_len);
--		tvlv_handler->flags |= BATADV_TVLV_HANDLER_OGM_CALLED;
- 		break;
- 	case BATADV_UNICAST_TVLV:
- 		if (!skb)
-@@ -443,6 +442,48 @@ static int batadv_tvlv_call_handler(struct batadv_priv *bat_priv,
- 	return NET_RX_SUCCESS;
- }
- 
-+/**
-+ * batadv_tvlv_containers_contain() - check if a tvlv buffer holds a container
-+ * @tvlv_value: tvlv content
-+ * @tvlv_value_len: tvlv content length
-+ * @type: tvlv container type to look for
-+ * @version: tvlv container version to look for
-+ *
-+ * Return: true if a container of the given type and version is present in the
-+ * tvlv buffer, false otherwise.
-+ */
-+static bool batadv_tvlv_containers_contain(void *tvlv_value,
-+					   u16 tvlv_value_len, u8 type,
-+					   u8 version)
-+{
-+	struct batadv_tvlv_hdr *tvlv_hdr;
-+	u16 tvlv_value_cont_len;
-+
-+	while (tvlv_value_len >= sizeof(*tvlv_hdr)) {
-+		tvlv_hdr = tvlv_value;
-+		tvlv_value_cont_len = ntohs(tvlv_hdr->len);
-+		tvlv_value = tvlv_hdr + 1;
-+		tvlv_value_len -= sizeof(*tvlv_hdr);
-+
-+		if (tvlv_value_cont_len > tvlv_value_len)
-+			break;
-+
-+		/* the next tvlv header is accessed assuming (at least) 2-byte
-+		 * alignment, so it must start at an even offset.
-+		 */
-+		if (tvlv_value_cont_len & 1)
-+			break;
-+
-+		if (tvlv_hdr->type == type && tvlv_hdr->version == version)
-+			return true;
-+
-+		tvlv_value = (u8 *)tvlv_value + tvlv_value_cont_len;
-+		tvlv_value_len -= tvlv_value_cont_len;
-+	}
-+
-+	return false;
-+}
-+
- /**
-  * batadv_tvlv_containers_process() - parse the given tvlv buffer to call the
-  *  appropriate handlers
-@@ -462,7 +503,9 @@ int batadv_tvlv_containers_process(struct batadv_priv *bat_priv,
- 				   struct sk_buff *skb, void *tvlv_value,
- 				   u16 tvlv_value_len)
- {
-+	u16 tvlv_value_start_len = tvlv_value_len;
- 	struct batadv_tvlv_handler *tvlv_handler;
-+	void *tvlv_value_start = tvlv_value;
- 	struct batadv_tvlv_hdr *tvlv_hdr;
- 	u16 tvlv_value_cont_len;
- 	u8 cifnotfound = BATADV_TVLV_HANDLER_OGM_CIFNOTFND;
-@@ -506,12 +549,20 @@ int batadv_tvlv_containers_process(struct batadv_priv *bat_priv,
- 		if (!tvlv_handler->ogm_handler)
- 			continue;
- 
--		if ((tvlv_handler->flags & BATADV_TVLV_HANDLER_OGM_CIFNOTFND) &&
--		    !(tvlv_handler->flags & BATADV_TVLV_HANDLER_OGM_CALLED))
--			tvlv_handler->ogm_handler(bat_priv, orig_node,
--						  cifnotfound, NULL, 0);
-+		if (!(tvlv_handler->flags & BATADV_TVLV_HANDLER_OGM_CIFNOTFND))
-+			continue;
- 
--		tvlv_handler->flags &= ~BATADV_TVLV_HANDLER_OGM_CALLED;
-+		/* if the corresponding container was present then the handler
-+		 * was already called from the loop above
-+		 */
-+		if (batadv_tvlv_containers_contain(tvlv_value_start,
-+						   tvlv_value_start_len,
-+						   tvlv_handler->type,
-+						   tvlv_handler->version))
-+			continue;
-+
-+		tvlv_handler->ogm_handler(bat_priv, orig_node,
-+					  cifnotfound, NULL, 0);
- 	}
- 	rcu_read_unlock();
- 
-diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
-index 3de3c1ac0244f..b1f9f8964c3fd 100644
---- a/net/batman-adv/types.h
-+++ b/net/batman-adv/types.h
-@@ -2294,13 +2294,6 @@ enum batadv_tvlv_handler_flags {
- 	 *  will call this handler even if its type was not found (with no data)
- 	 */
- 	BATADV_TVLV_HANDLER_OGM_CIFNOTFND = BIT(1),
--
--	/**
--	 * @BATADV_TVLV_HANDLER_OGM_CALLED: interval tvlv handling flag - the
--	 *  API marks a handler as being called, so it won't be called if the
--	 *  BATADV_TVLV_HANDLER_OGM_CIFNOTFND flag was set
--	 */
--	BATADV_TVLV_HANDLER_OGM_CALLED = BIT(2),
- };
- 
- #endif /* _NET_BATMAN_ADV_TYPES_H_ */
--- 
-2.47.3
-
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/27809861429
+--===============3794738048082045466==--
