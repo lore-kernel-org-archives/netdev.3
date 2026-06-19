@@ -1,34 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78BD3793A9
-	for <netdev@vger.kernel.org>; Fri, 19 Jun 2026 11:37:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 576603793A9
+	for <netdev@vger.kernel.org>; Fri, 19 Jun 2026 11:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781869059; cv=none; b=k6qe/P13jwDZ8ilhjHH1yb5Fn5jw3rX1RdTGmqWvDBGF9oKvQTinjptXMCd5ibsQGC7E5ZPMVbVbyuBGZee+U5mjBTeoAt/bjIJZbkXudNjVSAJwFCTauzSVoudb46REIqRLMzBxhWV/PTzL9oAfDISdBmEwiW4tHm2LciErFME=
+	t=1781869062; cv=none; b=bvhjor6rr2OmKY0+HHxcGf8TIrT9jIlnayCe6IEVN7AAevNY8Y0/5SlZsthSPBTR56kjU4SWWrkMCdktjUvZJev6kaK663Z+4sx7SjiH8DAgC/QHWav/6pZmv6HMTg4gm+vR8pyIq61HBpanRzojgscE+0lrSNu50aUBc2wqwak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781869059; c=relaxed/simple;
-	bh=mvonQbQVWa6ZXoLml3aLDQSYxa94cwHBReY5bw7V5Eo=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=R5wYbDTED2g9psEhfFp5kY0R6AGxJ9jECe4ett7ov+cxcareDEB1WXtjXBWVfr0JWpNB23B3KJXLxAcktUXKgUTMJy+GJTNCcwRhx/txN8QNLskRnpOUS4SZlOYTpyHlHWCfYQYoOp6TwR2qLBZe9BVgobBoKsNydauB2OXGa/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XdF8De6o; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781869062; c=relaxed/simple;
+	bh=WpVSKU5AYUdlGh/JmWIkDRS+XWke55vTL36de5TGti4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=OboI7iGwQQhJ1fxWmg3drGfAq+lshX02/C+g9p7HWgc9Cgy+6kx9JXmYCCg0fVdbgrTC7WwWSxlgaUzkWCoGmKGksSXeTKBhjIT75+IMu+ZQp5DHLxwdCSRf0y95cG5SOdh4INhncGpcg0e7HWVmsYxR0Y17GVVdwPIO6nMC4/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b7bGjU+U; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XdF8De6o"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 412291F000E9;
-	Fri, 19 Jun 2026 11:37:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b7bGjU+U"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB0261F00A3D;
+	Fri, 19 Jun 2026 11:37:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781869058;
-	bh=mG0vyVDluQRxAy4jusCEO+px4MVfNltVsG+sO1nmh/4=;
-	h=From:Subject:Date:To:Cc;
-	b=XdF8De6o26MHRFAXcvYne+qrgyDnGUcBJN4ThPYhMrGAyZ1gP2Z7LH2yGkDKsl53B
-	 oJ5SVC7UToQRWLQ/Gwh6RRRQjnkQFtvFs6RqNtpeQEer89JpzVTU2Xn/r53NIupYB3
-	 i/I8RwIO0FQLWHmyGTX/KyU3MZsqcZ+gKSJ2qjujbiEG9r/2AWegY9Cv9qaBQOt8vX
-	 SPogv2jkRQsHKzgk74FjuTjHpgjWWBCwhbav1dzFFNjiK/KOOlMPWPshODYIShMarT
-	 j21mjgal4TsZruwiEZAJW865vnnGt4Ztg0/exeD3uBm47YtnPzh+bGk8KWU2sAfHa0
-	 nCxGDjsEt5maw==
+	s=k20260515; t=1781869061;
+	bh=5YSFkwBdwIZvGA3XLMEJv/9BLBx9P14qbmrv7iQoAww=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=b7bGjU+U38EIWEfujwNOg+vifivWQzXRPCkAvvF+6b+SHVBYhnFkc16N7UucBuwzW
+	 Fe0ijn4s/ibPDBOAZdRvnjG/t/LJ2wSnPTybsR/OElf8k9TpqHUj8MB6q3/gqOybPA
+	 HRJgOhxhGWkiRHFKw9ts6k3h3RDBJ7hJCsk4qvRYEnj8DqlkRzFmBMSSeoZmvKBDfG
+	 qFJwGTSZ6T/BzSAbLBY/vFHP4+0m4sMVeHYHqK5G7p9QroKW6rMzgwcnd2d0cjKzwI
+	 MLLe8p1YGJE40jqcGNn3DlTb/eOIIaiA/YWYH1mTGHPk8eekZdWXhqJgfEg+QPiMQ2
+	 zEcBp6goQaFaA==
 From: Lorenzo Bianconi <lorenzo@kernel.org>
-Subject: [PATCH net v2 0/2] airoha: fixes for sched HTB offload support
-Date: Fri, 19 Jun 2026 13:37:12 +0200
-Message-Id: <20260619-airoha-qos-fixes-v2-0-5c43485038f9@kernel.org>
+Date: Fri, 19 Jun 2026 13:37:13 +0200
+Subject: [PATCH net v2 1/2] net: airoha: Fix off-by-one in
+ airoha_tc_remove_htb_queue()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,11 +38,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WNwQ7CIBBEf6XZs2sAhVZP/ofpodVt2WhAl4ZoG
- v5d0rvHmZc3s0IiYUpwblYQypw4hhrMroGbH8JMyPeawSjjlNMdDizRD/iOCSf+UMLRHZ0aVWd
- dp6BqL6ENVOsKgRboa+k5LVG+203WG/q/mDUqPLT6ZJw12rbT5UES6LmPMkNfSvkBWx8rMrYAA
- AA=
-X-Change-ID: 20260618-airoha-qos-fixes-b6460b085680
+Message-Id: <20260619-airoha-qos-fixes-v2-1-5c43485038f9@kernel.org>
+References: <20260619-airoha-qos-fixes-v2-0-5c43485038f9@kernel.org>
+In-Reply-To: <20260619-airoha-qos-fixes-v2-0-5c43485038f9@kernel.org>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -51,24 +50,34 @@ Cc: Simon Horman <horms@kernel.org>, Wayen Yan <win847@gmail.com>,
  netdev@vger.kernel.org
 X-Mailer: b4 0.14.3
 
+airoha_tc_htb_alloc_leaf_queue() computes the HTB QoS channel index
+as opt->classid % AIROHA_NUM_QOS_CHANNELS and stores it in qos_sq_bmap.
+However, airoha_tc_remove_htb_queue() clears the HTB configuration
+using queue + 1 as the channel index, causing an off-by-one error.
+Use queue directly as the QoS channel index to match the allocation
+logic.
 
+Fixes: ef1ca9271313b ("net: airoha: Add sched HTB offload support")
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
-Changes in v2:
-- cosmetics
-- Link to v1: https://lore.kernel.org/r/20260618-airoha-qos-fixes-v1-0-37192652157f@kernel.org
+ drivers/net/ethernet/airoha/airoha_eth.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
----
-Lorenzo Bianconi (2):
-      net: airoha: Fix off-by-one in airoha_tc_remove_htb_queue()
-      net: airoha: fix netif_set_real_num_tx_queues for sparse QoS channels
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index 64dde6464f3f..aa98d1823ab6 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -3006,7 +3006,7 @@ static void airoha_tc_remove_htb_queue(struct net_device *netdev, int queue)
+ 	struct airoha_qdma *qdma = dev->qdma;
+ 
+ 	netif_set_real_num_tx_queues(netdev, netdev->real_num_tx_queues - 1);
+-	airoha_qdma_set_tx_rate_limit(netdev, queue + 1, 0, 0);
++	airoha_qdma_set_tx_rate_limit(netdev, queue, 0, 0);
+ 
+ 	clear_bit(queue, qdma->qos_channel_map);
+ 	clear_bit(queue, dev->qos_sq_bmap);
 
- drivers/net/ethernet/airoha/airoha_eth.c | 27 +++++++++++++++++----------
- 1 file changed, 17 insertions(+), 10 deletions(-)
----
-base-commit: 96e7f9122aae0ed000ee321f324b812a447906d9
-change-id: 20260618-airoha-qos-fixes-b6460b085680
-
-Best regards,
 -- 
-Lorenzo Bianconi <lorenzo@kernel.org>
+2.54.0
 
