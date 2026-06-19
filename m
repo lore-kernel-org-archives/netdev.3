@@ -1,33 +1,33 @@
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3965B33ADA8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394162F8EA3
 	for <netdev@vger.kernel.org>; Fri, 19 Jun 2026 07:10:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781853032; cv=none; b=H8zD/5CVXFmN50+0/J1I+6alwYf+U3MneLwIS+M6GPAsnz/pnIMcuBsFt/B5/H6M1FfiWG7po5vGN/xV3X0gSjlVtuf/RYMNQhvfPpsSE5LY/VotSQZzP1LvsYuzxj+qp4iYsF+WQE2LzpQpoOnqZIf1q8A58vkY/FczrsAihwo=
+	t=1781853032; cv=none; b=D4wHMo5oPv0KOJIlkozk7Ofxt8p6J9wcfwxE/8Wwc+ycfIycp/nlvf/tEGlHEgcEwUBT+BZu87Q7hzmhJStJ48HlFcHdqD2ikXLrypF82Dm493ORofZfRkOLM6WXsnwQ3U0aVUMu4kzwqhOLt7cyvdCiHugKXiVumBvltP4y+HA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1781853032; c=relaxed/simple;
-	bh=oNM7e/exOP51kma8X00b1dG2eRJClOHuDA9nTaA8nmo=;
+	bh=deXCpsB86/SQXAVTnAeLzXfKyMTqGUr2u2YP+erNrcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WUScaolpOh/JX5rxyxCT2bjmffgx1jHx01ouNsWLmoWJD/hPVjIBQHVbcDnQuRHmi/AQfj+KkSFjsFqKMAGd+mMe/PNP0WWwFsKoBcCC7ee/77hCCLCS4QKfgQSdaTQpXYbhfYTmeSO/PNK2Ukq68P/p9m2AF3v2Lcy2IoC8uuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=Gyx8VoFS; arc=none smtp.client-ip=23.88.38.48
+	 MIME-Version; b=Zh1ujGb3AQ1XCI4pKZFaHrtE0rHK4BilF79V8lpJlMu0aKy+wyvcm9H6S9pCJYUMrtW4vHb1MUxyIsr0X0uDj6NnTk78KS62lbzGGRU/etN/PWZpR5VaVpaRYLQSgQl+BZav4vSw9OSybFqyA9zKF7L+QYtBqd1HGTd/W6D8OVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=bEJhaM3t; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="Gyx8VoFS"
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="bEJhaM3t"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1781852449;
+	s=09092022; t=1781852447;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=df0sc9RvZxEMHTxHbnI9oNmIsDOa2OH9rHZyYmPP0HE=;
-	b=Gyx8VoFSJgR/rJAu3SHlSg43O/brt5+15CKcdS6vmgbPzcULKmnMC0IwPNScH7tOLSzUxh
-	He6s+ovORHfMWoWBwKgoD+kOtR3EZzSQIbc7bl3bBMtDa8S8TX/BY0mvQEFeYxz3T2p7VE
-	5TcGjPATjiKNyR6sMpB1Db97MWnEBsiFb1IRJ44g+lbzqmPnazSU1a3zFYeMiiUwZjcbmY
-	bqaMJGhJmcXIQ7XsgP9uy0vf55gAZFl1D4PkJtIHckzl+9Gekm6GoA5Xgo+tmwPTOgWbPS
-	MIkW8HhalYaI6F1BkplLBErp9EFxBYLgpgOAcjbz617vYW3TgkXEA+9BxQWxkQ==
+	bh=qo0iYtAoCh7dGR3yHCIMed/owbEgbIwKhpDMlELxzWw=;
+	b=bEJhaM3tV3Ir745fax8850NlyCjwpARi0UXkyIOjVWuXppiz+t8EinUOx9Ph2rO54kaGgT
+	LSe17krS+6Q7q3qHw7VCrw+6KhQv9qMxu++tIzpVvAI99pvf0cMXUE7h1XRyHk91+qIsSB
+	NxJQqfiw+pIJa75F9uMOloZcLD4egBGMV3fVlSrrZse197OX9JSyGzKZ/83sB/7jJ0kT6R
+	bw7QiDOJ39kO+lmyjLQUpwKqQ9ipBjqiQcEt9bqANLeNffpnWj52eL0W1SYcQjPfE76vMH
+	Ow5u3YRSWzy3Qvwy3NTs8DVuZ2Yl+Sej66yAVhgVCzzzwdI+Zd+1oSfiSSl4oA==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -38,10 +38,11 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	b.a.t.m.a.n@lists.open-mesh.org,
 	Sven Eckelmann <sven@narfation.org>,
 	stable@kernel.org,
+	Nora Schiffer <neocturne@universe-factory.net>,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net 04/15] batman-adv: frag: ensure fragment is writable before modifying TTL
-Date: Fri, 19 Jun 2026 09:00:34 +0200
-Message-ID: <20260619070045.438101-5-sw@simonwunderlich.de>
+Subject: [PATCH net 01/15] batman-adv: gw: don't deselect gateway with active hardif
+Date: Fri, 19 Jun 2026 09:00:31 +0200
+Message-ID: <20260619070045.438101-2-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260619070045.438101-1-sw@simonwunderlich.de>
 References: <20260619070045.438101-1-sw@simonwunderlich.de>
@@ -55,100 +56,78 @@ Content-Transfer-Encoding: 8bit
 
 From: Sven Eckelmann <sven@narfation.org>
 
-Before batman-adv is allowed to write to an skb, it either has to have its
-own copy of the skb or use skb_cow() to ensure that the data part is not
-shared. But batadv_frag_skb_fwd() modifies the TTL even when it is shared.
+The batadv_hardif_cnt() was previously checking if there is an
+batadv_hard_iface->mesh_iface which is has the same mesh_iface. And since
+batadv_hardif_disable_interface() was resetting the
+batadv_hard_iface->mesh_iface after this check, it had to verify whether
+*1* interface was still part of the mesh_iface before it started the
+gateway deselection.
 
-Adding a skb_cow() right before this operation avoids this and can at the
-same time prepare it for the modifications required to forward the
-fragment.
+But after batadv_hardif_cnt() is now checking the lower interfaces of
+mesh_iface and batadv_hardif_disable_interface() already removed the
+interface via netdev_upper_dev_unlink() earlier in this function, the check
+must now make sure that *0* interfaces can be found by batadv_hardif_cnt()
+before selected gateway must be deselected. Otherwise the deselection would
+already happen one batadv_hard_iface too early.
+
+Because a 0 hardif count from batadv_hardif_cnt() is equal to an empty
+list, it is possible to replace the counting with a simple list_empty().
 
 Cc: stable@kernel.org
-Fixes: 610bfc6bc99b ("batman-adv: Receive fragmented packets and merge")
+Fixes: 7dc284702bcd ("batman-adv: store hard_iface as iflink private data")
+Reviewed-by: Nora Schiffer <neocturne@universe-factory.net>
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- net/batman-adv/fragmentation.c | 15 ++++++++++++++-
- net/batman-adv/fragmentation.h |  3 ++-
- net/batman-adv/routing.c       |  3 +--
- 3 files changed, 17 insertions(+), 4 deletions(-)
+ net/batman-adv/hard-interface.c | 28 ++--------------------------
+ 1 file changed, 2 insertions(+), 26 deletions(-)
 
-diff --git a/net/batman-adv/fragmentation.c b/net/batman-adv/fragmentation.c
-index 1e42cf99f8b33..f311a42203d2e 100644
---- a/net/batman-adv/fragmentation.c
-+++ b/net/batman-adv/fragmentation.c
-@@ -386,6 +386,8 @@ bool batadv_frag_skb_buffer(struct sk_buff **skb,
-  * @skb: skb to forward
-  * @recv_if: interface that the skb is received on
-  * @orig_node_src: originator that the skb is received from
-+ * @rx_result: set to NET_RX_SUCCESS when the fragment was forwarded and
-+ *  NET_RX_DROP when it was dropped; only valid when true is returned
-  *
-  * Look up the next-hop of the fragments payload and check if the merged packet
-  * will exceed the MTU towards the next-hop. If so, the fragment is forwarded
-@@ -395,7 +397,8 @@ bool batadv_frag_skb_buffer(struct sk_buff **skb,
-  */
- bool batadv_frag_skb_fwd(struct sk_buff *skb,
- 			 struct batadv_hard_iface *recv_if,
--			 struct batadv_orig_node *orig_node_src)
-+			 struct batadv_orig_node *orig_node_src,
-+			 int *rx_result)
- {
- 	struct batadv_priv *bat_priv = netdev_priv(recv_if->mesh_iface);
- 	struct batadv_neigh_node *neigh_node = NULL;
-@@ -414,12 +417,22 @@ bool batadv_frag_skb_fwd(struct sk_buff *skb,
- 	 */
- 	total_size = ntohs(packet->total_size);
- 	if (total_size > neigh_node->if_incoming->net_dev->mtu) {
-+		if (skb_cow(skb, ETH_HLEN) < 0) {
-+			kfree_skb(skb);
-+			*rx_result = NET_RX_DROP;
-+			ret = true;
-+			goto out;
-+		}
-+
-+		packet = (struct batadv_frag_packet *)skb->data;
-+
- 		batadv_inc_counter(bat_priv, BATADV_CNT_FRAG_FWD);
- 		batadv_add_counter(bat_priv, BATADV_CNT_FRAG_FWD_BYTES,
- 				   skb->len + ETH_HLEN);
+diff --git a/net/batman-adv/hard-interface.c b/net/batman-adv/hard-interface.c
+index 60cee2c2f2f41..03d01c20a9548 100644
+--- a/net/batman-adv/hard-interface.c
++++ b/net/batman-adv/hard-interface.c
+@@ -814,30 +814,6 @@ int batadv_hardif_enable_interface(struct batadv_hard_iface *hard_iface,
+ 	return ret;
+ }
  
- 		packet->ttl--;
- 		batadv_send_unicast_skb(skb, neigh_node);
-+		*rx_result = NET_RX_SUCCESS;
- 		ret = true;
- 	}
+-/**
+- * batadv_hardif_cnt() - get number of interfaces enslaved to mesh interface
+- * @mesh_iface: mesh interface to check
+- *
+- * This function is only using RCU for locking - the result can therefore be
+- * off when another function is modifying the list at the same time. The
+- * caller can use the rtnl_lock to make sure that the count is accurate.
+- *
+- * Return: number of connected/enslaved hard interfaces
+- */
+-static size_t batadv_hardif_cnt(struct net_device *mesh_iface)
+-{
+-	struct batadv_hard_iface *hard_iface;
+-	struct list_head *iter;
+-	size_t count = 0;
+-
+-	rcu_read_lock();
+-	netdev_for_each_lower_private_rcu(mesh_iface, hard_iface, iter)
+-		count++;
+-	rcu_read_unlock();
+-
+-	return count;
+-}
+-
+ /**
+  * batadv_hardif_disable_interface() - Remove hard interface from mesh interface
+  * @hard_iface: hard interface to be removed
+@@ -878,8 +854,8 @@ void batadv_hardif_disable_interface(struct batadv_hard_iface *hard_iface)
+ 	netdev_upper_dev_unlink(hard_iface->net_dev, hard_iface->mesh_iface);
+ 	batadv_hardif_recalc_extra_skbroom(hard_iface->mesh_iface);
  
-diff --git a/net/batman-adv/fragmentation.h b/net/batman-adv/fragmentation.h
-index dbf0871f87030..51e281027ab63 100644
---- a/net/batman-adv/fragmentation.h
-+++ b/net/batman-adv/fragmentation.h
-@@ -19,7 +19,8 @@ void batadv_frag_purge_orig(struct batadv_orig_node *orig,
- 			    bool (*check_cb)(struct batadv_frag_table_entry *));
- bool batadv_frag_skb_fwd(struct sk_buff *skb,
- 			 struct batadv_hard_iface *recv_if,
--			 struct batadv_orig_node *orig_node_src);
-+			 struct batadv_orig_node *orig_node_src,
-+			 int *rx_result);
- bool batadv_frag_skb_buffer(struct sk_buff **skb,
- 			    struct batadv_orig_node *orig_node);
- int batadv_frag_send_packet(struct sk_buff *skb,
-diff --git a/net/batman-adv/routing.c b/net/batman-adv/routing.c
-index 8786b66c8a924..9db57fd36e7d4 100644
---- a/net/batman-adv/routing.c
-+++ b/net/batman-adv/routing.c
-@@ -1168,10 +1168,9 @@ int batadv_recv_frag_packet(struct sk_buff *skb,
+-	/* nobody uses this interface anymore */
+-	if (batadv_hardif_cnt(hard_iface->mesh_iface) <= 1)
++	/* nobody uses this mesh interface anymore */
++	if (list_empty(&hard_iface->mesh_iface->adj_list.lower))
+ 		batadv_gw_check_client_stop(bat_priv);
  
- 	/* Route the fragment if it is not for us and too big to be merged. */
- 	if (!batadv_is_my_mac(bat_priv, frag_packet->dest) &&
--	    batadv_frag_skb_fwd(skb, recv_if, orig_node_src)) {
-+	    batadv_frag_skb_fwd(skb, recv_if, orig_node_src, &ret)) {
- 		/* skb was consumed */
- 		skb = NULL;
--		ret = NET_RX_SUCCESS;
- 		goto put_orig_node;
- 	}
- 
+ 	hard_iface->mesh_iface = NULL;
 -- 
 2.47.3
 
