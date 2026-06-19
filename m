@@ -1,80 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF9623546C5;
-	Fri, 19 Jun 2026 07:08:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394EC3002D8
+	for <netdev@vger.kernel.org>; Fri, 19 Jun 2026 07:10:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781852941; cv=none; b=MgunTcYA2hCeEBFzsq0Q02qAqX/pJaDbEtIGuENpMxaDUfLjrJoGw3zGKysjzT5gR6JI7spK2dFSzmIjsazKmZznX4YO4iJ6DtPetzvJMS2RIXtM0LK9JXxxEx7L4yJAPT0CHN0nFSB/INk/7POK1hjzwL5SbvTkCyBiLwb2FM0=
+	t=1781853032; cv=none; b=dZuTZrMxJaxVREHw+v0mWsxm0u10lOCA7f2WhhPAKA67f5l1Cu4NIcz6wHGxbMutgKZvn2SK7vfYAJWdK2HGe0I3cHnkir0SJYbPvVaQag93eF036ZO0DWMu+X8nc/jcgkUuMuG8xkcgHFM4wbe0lRUNZhkxqw/uwWBsoErPfZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781852941; c=relaxed/simple;
-	bh=Tiso43pDMy23Il4Q3L9MYRi/ohAadXxDqKPj23OKa38=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=QTeFQ/4/86fTFGE3DaGCoWv8Y7vja7XP/7CqVCSpsrke1rUrH+yV2kOxPAzpQdHXf0Y0HsRtV/+a2ZQ3VgsQQtgBIE7MVL4dc1ncEUvoGjzjyy/D7a3zxOenS1cbqmHLLH83bSB202oDlL6U31v+I99zZ/MiOWKeuITOAtCYLis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CQ4Vn1VL; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781853032; c=relaxed/simple;
+	bh=w7bxPsgh+iSnGYABM2r26I5bqD3DJ1CVlll2pC2kkJI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Y7EqmpNxkQoh7uvliVBEOGeGxIhSVUdpe2H4dcFW1Zop+R6SNnfMzxAGppb6Edkzq1PNPcBdIDz/H/a1EYfgwDF31N0zMFQVKT/C/dXOiV5DnqhukOc9Qrg7rDMNoTQQwxdkWN8YjfRzk0elgVUhiHkZ2bqdL+SPRZA24GgAOVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=FIOOpDlp; arc=none smtp.client-ip=23.88.38.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CQ4Vn1VL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E85C1F000E9;
-	Fri, 19 Jun 2026 07:08:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781852939;
-	bh=5WrPA1KpRetg2BPKOpisB4uo6P3OEkWjhbEdh0thGZQ=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=CQ4Vn1VL8RscqXEuv1NxcGQshEZZTA2S7Vuo8i4BhrPNusZk6SyQTYA70qCi4Qs9Z
-	 z5rYKO1HEoa2vDFWvfrZFV+NhxjoHV5QNeLQ1AXyS8MKFCJqFFW4bp4OCgm1LVHs57
-	 t3V5g1DpEX1munMMvEMJA+Y7h7S7ZzoayVA5apTaGxjb+JxbZXMfUtTySb39j9ThyM
-	 7JNBw95ZoIEwJLLQ024TG2Dkw2TNCb7NmexDNJtMVGF8euhO8QR20Yeq0i4AA7ixhS
-	 5SuqH61Wj8aYXRMbOUijrZlKwqftkY5AAt2fxiP7C9K4jyUH/62HUfiM5Mv13/uPk5
-	 0Q8aAkkU/gm2A==
-Content-Type: multipart/mixed; boundary="===============1744918091706664894=="
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="FIOOpDlp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
+	s=09092022; t=1781852448;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dTo7HP3hlGc7rZ83ftkOmb/zYr3PlmAHJyPALL5z5tY=;
+	b=FIOOpDlpkqTk6XP9L4L0d+M7DDT5UljVxuHwOZ10ok9fHkjWWDgh5N+zMHOi+PixRfmZxy
+	X67YceFqMZawsFr5k+9vixqOW/8Ak8Otq0piMS2+JL3zaawW3az8NR3Z71RRB4m9PoerPH
+	IX5GF2RyS5KW63Kp9mI6SfKBhmU8mNilIZjWeCpBb9Dd2Vk3RIMAcluPdHfkc4Jl52kCpn
+	/63f42HXR8d6iZBFpsy6E8ISUwVk+2ddlnirl18j3EsTvn3yzH1FfHt0koeEryhUGGSnGO
+	OIuQOCVMRQ9hgAGgFVHLliA/a0R2aCVb5pK9X/PpChM+sMSoKgJQKQWRd7ZfMA==
+From: Simon Wunderlich <sw@simonwunderlich.de>
+To: netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	b.a.t.m.a.n@lists.open-mesh.org,
+	Sven Eckelmann <sven@narfation.org>,
+	stable@kernel.org,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH net 02/15] batman-adv: ensure bcast is writable before modifying TTL
+Date: Fri, 19 Jun 2026 09:00:32 +0200
+Message-ID: <20260619070045.438101-3-sw@simonwunderlich.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260619070045.438101-1-sw@simonwunderlich.de>
+References: <20260619070045.438101-1-sw@simonwunderlich.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <09e6a462b410be0756bf7c80ff66c27874ce0f3582e548f12625bd2794b95bc4@mail.kernel.org>
-In-Reply-To: <20260619062959.3277612-2-rhkrqnwk98@gmail.com>
-References: <20260619062959.3277612-2-rhkrqnwk98@gmail.com>
-Subject: Re: [PATCH bpf v4 1/3] selftests/bpf: don't modify the skb in the strparser parser prog
-From: bot+bpf-ci@kernel.org
-To: rhkrqnwk98@gmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,eddyz87@gmail.com,memxor@gmail.com,john.fastabend@gmail.com,jakub@cloudflare.com,davem@davemloft.net,kuba@kernel.org,edumazet@google.com,pabeni@redhat.com,kuniyu@google.com,willemb@google.com,shuah@kernel.org
-Cc: jolsa@kernel.org,martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,horms@kernel.org,bobbyeshleman@gmail.com,jiayuan.chen@linux.dev,bpf@vger.kernel.org,netdev@vger.kernel.org,linux-kernel@vger.kernel.org,linux-kselftest@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Fri, 19 Jun 2026 07:08:59 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 
---===============1744918091706664894==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Sven Eckelmann <sven@narfation.org>
 
->     selftests/bpf: don't modify the skb in the strparser parser prog
->
->     sockmap_parse_prog.c is attached as an SK_SKB stream parser and modifies
->     the skb. It calls bpf_skb_pull_data() and writes a byte into the packet.
->     A stream parser runs on strparser's message head and must not modify it.
->     A resize frees the frag_list segments strparser still tracks, leading to
->     a use-after-free.
->
->     Make the parser read-only. It only needs to return the message length,
->     which keeps it attaching once packet-modifying parsers are rejected.
->
->     Signed-off-by: Sechang Lim <rhkrqnwk98@gmail.com>
->     Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Before batman-adv is allowed to write to an skb, it either has to have its
+own copy of the skb or used skb_cow() to ensure that the data part is not
+shared.
 
-This removes a use-after-free where bpf_skb_pull_data(skb, 10) resizes and
-frees the frag_list segments that strparser still tracks for the message
-head.  The buggy bpf_skb_pull_data(skb, 10) call and the packet write being
-removed here were added by commit 82a8616889d5 ("bpf: add map tests for
-BPF_PROG_TYPE_SK_MSG").
+The old implementation used a shared queue and created copies before
+attempting to write to it. But with the new implementation, the broadcast
+packet is already modified when it gets received. Potentially writing to
+shared buffers in this process.
 
-Should this carry a Fixes: tag?
+Adding a skb_cow() right before this operation avoids this and can at the
+same time prepare it for the modifications required to rebroadcast the
+packet.
 
-  Fixes: 82a8616889d5 ("bpf: add map tests for BPF_PROG_TYPE_SK_MSG")
-
-
+Cc: stable@kernel.org
+Fixes: 3f69339068f9 ("batman-adv: bcast: queue per interface, if needed")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+ net/batman-adv/routing.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/27809861429
---===============1744918091706664894==--
+diff --git a/net/batman-adv/routing.c b/net/batman-adv/routing.c
+index cd4368b846add..7b4acd1ad991a 100644
+--- a/net/batman-adv/routing.c
++++ b/net/batman-adv/routing.c
+@@ -1191,6 +1191,12 @@ int batadv_recv_bcast_packet(struct sk_buff *skb,
+ 	if (batadv_is_my_mac(bat_priv, bcast_packet->orig))
+ 		goto free_skb;
+ 
++	/* create a copy of the skb, if needed, to modify it. */
++	if (skb_cow(skb, ETH_HLEN) < 0)
++		goto free_skb;
++
++	bcast_packet = (struct batadv_bcast_packet *)skb->data;
++
+ 	if (bcast_packet->ttl-- < 2)
+ 		goto free_skb;
+ 
+-- 
+2.47.3
+
