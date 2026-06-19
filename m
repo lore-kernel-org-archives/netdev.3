@@ -1,75 +1,77 @@
-Received: from mail-qt1-f227.google.com (mail-qt1-f227.google.com [209.85.160.227])
+Received: from mail-ua1-f100.google.com (mail-ua1-f100.google.com [209.85.222.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1349369D40
-	for <netdev@vger.kernel.org>; Fri, 19 Jun 2026 09:58:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.227
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6B7369D58
+	for <netdev@vger.kernel.org>; Fri, 19 Jun 2026 09:58:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781863091; cv=none; b=U8nQ9/flTssKkA5eSY9qCzuQEUYfblZyE7OHzlEQvETEkOfYZhJob+zveyATRhRkhiv2dciV0j2RABEuG1OshpKgY1+Bx4pEBtysSWtfDfOxCW+My/urt7NzsreDb+e92CbLA/2wHBjPSDGicJIopYCX6GlP5zy0pkCM5GwJR3g=
+	t=1781863092; cv=none; b=SMsoqUxKZ2H2vkEzTYv6FokBEr0oe3iFGT4rWXERC2nxdEvyUbxRkdoEwMJCb0nO3DaWUoMWu5nP5JNaJeSPhsTXJF/R8sqvOpddSDX37/3wC1/dRA/+EGMlyG7l8s/JI0pO76/jeowKgvAmY0VbN1tgW3EIorTdtATg+R1EKvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781863091; c=relaxed/simple;
-	bh=hk2+uuYecO2IQQF9bcMQEfm2EUhrTFMxzsBYQSG8ZtI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ulpAVup5ObmShkNKNHNhQiVHYUeodhhgJAiaiXHY0vnRiinKhaOiWlFe0uSy57GHCtFuQCtxIUXtmOPcbBRzyUCoM3FkbTw5LH2z1a3acMQbqHUJR50uhV8wVuiWZBu/Rk0DHNhAT6Q3Qhl1V1r/XcHGSIcMZVTh1jzkN6Zqa2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=bddemX/m; arc=none smtp.client-ip=209.85.160.227
+	s=arc-20240116; t=1781863092; c=relaxed/simple;
+	bh=IEn6N3iU6QjaodYk5qDEpFHlgrN2QjMwqgISplwfHP4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=lyjfImm0MZxW3lz6W/Fq2cfu/tORSI252FyER/sJiiWY4K4UQu48wcHN5yTgpOujRil/fPxDjgLEvp3Qtnbh2bCLlUE55n2/jbp6CQ9zgLbU6OsqQDL8T3wmn/iN6cnTylEko9ff+WoeVhwTHHbf9NrfYw8bxNuAbHM8a/j5WAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=iO7vLZGs; arc=none smtp.client-ip=209.85.222.100
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="bddemX/m"
-Received: by mail-qt1-f227.google.com with SMTP id d75a77b69052e-519fa6d7a78so1387081cf.1
-        for <netdev@vger.kernel.org>; Fri, 19 Jun 2026 02:58:04 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="iO7vLZGs"
+Received: by mail-ua1-f100.google.com with SMTP id a1e0cc1a2514c-966d4da9fa6so373047241.0
+        for <netdev@vger.kernel.org>; Fri, 19 Jun 2026 02:58:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781863083; x=1782467883;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=U57pja5e0yJSy8SFBtN6ioJCsbtDVqRKjAnvzO5IXeQ=;
-        b=JC3C0eiY9ADnrVxLNSQ1sxZyDxUKAFVDeFPrTAjneh1YaPQb0bAzwRExCLyR8qPWz5
-         HQv3ATWRMd7/kINvqIFBSgWpqej1/1f8AKJ3fwQWHeIDJo+HjGKaBIUKjjyiiToe68oX
-         JpfzOefY7khnqupmbwTTzNOisPIkPg3k2dMu+mCFjI1S2/l8VXFjLNZPI6u1ZpJx/Uwy
-         XI2mAob9Jqh+h6Lag0uB47z3GzLVR7Z5WEvHUQl8UgSGHaTLYFM46+nzmz4xElxl65eS
-         byCly5g6yz10SyFD1pZxLhzjq5OekxiIN/HzY0CxV7qhSGw0cpcJAg4UCruTkoMul2Mq
-         d0lQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9HL6GRAhttSH0v6bXChK8KCWcVGbMbdikx5nVSBLFI4YiDOh7M1c8hnuRlpnG8f01PrXDwUUU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyj0Sc8q0AZQ2bM/cMRRTdxYYmetTuhEgkCveI4Jw9C6SsNX5rK
-	MICK+39m+tJWNFEFYEXoxXK+Re21Rlier/9th6HhtYbrzb/qhdYiSjmoLPV+t9PKqrhh+sBj/Ob
-	lNSoP82HZwzT6LJfiexbqHgPAk3bipsxgPkCWbmjOQOJ7t7p4y6G52ukjHtjZuA+KdCpVacpGns
-	rZleQHCEmngfbG+fwd81Xgr4la5RftpgDjVQMXkX67Ms0tO7NFr2uQxpH9AxjhtmAjv0F/HyQX9
-	CeHwoRcbVqKYxyFyA==
-X-Gm-Gg: AfdE7cny1NbOpK5UxaSH86f3/2I1a8ebeWZsg3nKoDVTV6vi11ErwxxJWh7rOLLhGO8
-	zDl4VGJC6+OuFe3DdoIlPfW1CkzRE97UJrBKQdI2fx/n+VaGwB//nMcYc6IUsxmx1/bYOwRl7aR
-	Fh2GS/pxx7asPJ/VXqm7rATiD8qDwPC4dlSdZ3ge7HrwE70WXxRo+f/coCQZgwIKPe73dogbDil
-	vQoYuYjlylTx7Qe5AW8OfRVcys73sLs7fhvDeb+AqMs3ixrrSkblSVW3psIM9wNoDp6u8PJjIdm
-	JSDD80ayZM7CnS7twePfz8IRhjWe35hjiC/Ycg+lHQRyANbd1L1yt3MCi1sE2l6o7Tdxflog9NB
-	FwgrFOWGuPX3JL1MU5EV5Bzdsx418wFhe+FT9bgBI/vtECOlzAhaTb30Fyd6lIvwD2V9cPgWNzJ
-	6mVCS9bxGljL00Hzd2LP1QyoiUn/SueN3+q+A5gjK3kc9TQog6kgNx
-X-Received: by 2002:ac8:5d52:0:b0:517:92a6:fcd5 with SMTP id d75a77b69052e-519f02b3045mr23690411cf.18.1781863082220;
-        Fri, 19 Jun 2026 02:58:02 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1781863086; x=1782467886;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0w1vsxUJI0JQJt2Tz8nUeF9KKHPDE+aPNVG7KYxhUoA=;
+        b=pqrB0wQo1Y4yfza6QxzKXzmhIRHuP+kOGqJ9LcffQD5RIiPVJchjFqOHW2lb9ZUNqe
+         F+YJq2sOoRD7m/ffyH181WHgXYTWbhGsxYTzItXyHOrIXn9DtS3W92b+SVVNXuHGVjgC
+         MqkVh9ItpcZz7G/bmFbUdxmYQwxPy71Yt6mf2svm50nmhdeiszq0JipC1gweN0CqSAfK
+         Q0DySQ1Gzmq6rzWXIuULMTT/WD+RH/r/AA3EaG87wJudD0nNbR4ghNyxasvExBsbG284
+         pVUCaiPNuchFLAbjSAxWl0E2U/hqpXwbsM72HDQ6KzS8fp9GOv8ZDepfiNmuQmtrLqXb
+         lw7g==
+X-Forwarded-Encrypted: i=1; AFNElJ94lXFJCEfbD6nsq1ffxBQDbaRHylMdptdyrjzeKnSqeZw25x1DwnDrAZe/TyV75NbmGrFBi1A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxT8IgQLOIhfHv/CYJk8HZtrxdxYatVW0u59QvCAT3AWUjqpUiJ
+	JMX76bsiZ3JA8aaPy/Tz6sn2Jg0XumNOb2hZQxKtyJPkWbLcR7rCRdGRnzD5CKFLVzB1ISTltH1
+	zxlspTTqSr4JzUXZxSS8EVZzbnkGxLB0Y2wNGbeGqJlFjZp0nG3do8W39gN1xFiJ3p83jKfQHP/
+	+TryCIaIbnTCXbKtVbId29Uv/V12ZsJ+xToInPJny1sL/WKUy+qqMeAdOsAwcBF1wRr+UiFiW7E
+	hz7Kpqg5Jprbut26A==
+X-Gm-Gg: AfdE7cl6fXjG+TjO7F0vbHF9cS9mX7D1MX6H17cJGBvbwU936t/92Yz9JOCFY7ByJ6h
+	AZdseiYQ7vordtvPKd+vXBKD/nprxU0Dt2kGzwwD/JpiybZuGlGBCagsvGBNtf64OgvYmeeUNCJ
+	m5EdWsjLMCkubOuKfqiW3DeA1yKkiBTzddndhRUm/9CO4FnwGFBqf3/CA828PlMzcelCPEiGOKg
+	5PBTiDWG+0ANwNo/7s/CVFPyPDN563QsmtVTANXYfaC0f0TiY6NrvcPQg2NtJ+OdRhCasnbXpPS
+	o+85MGMEkkIKephPpXDdAsF5CsZ73SW+iOXfXz3b3CIDBq1sztUj/xPf5Kp3BfTIQCHUz1JhmCG
+	1arl5iPhuaa8ORwHPbNshnP5hVt9pY9YfUkbAOQGCPzym5InlU2FTt7nTEF2F2wW6ewfbgy6Bjz
+	SmvMlKS/XFqtJyF5G7IIOGzeQ4ferYhI7DgMRuXeuHGTML27g+iXXF
+X-Received: by 2002:a05:6102:4187:b0:726:cd42:d023 with SMTP id ada2fe7eead31-72a7680f4f6mr587433137.11.1781863086205;
+        Fri, 19 Jun 2026 02:58:06 -0700 (PDT)
 Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-117.dlp.protect.broadcom.com. [144.49.247.117])
-        by smtp-relay.gmail.com with ESMTPS id d75a77b69052e-519e57c771fsm638731cf.26.2026.06.19.02.58.01
+        by smtp-relay.gmail.com with ESMTPS id ada2fe7eead31-72a3490cf21sm156660137.10.2026.06.19.02.58.05
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 19 Jun 2026 02:58:02 -0700 (PDT)
+        Fri, 19 Jun 2026 02:58:06 -0700 (PDT)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-30c0d568830so1957219eec.1
-        for <netdev@vger.kernel.org>; Fri, 19 Jun 2026 02:58:01 -0700 (PDT)
+Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-30bcb065bfdso3507662eec.0
+        for <netdev@vger.kernel.org>; Fri, 19 Jun 2026 02:58:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1781863081; x=1782467881; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=U57pja5e0yJSy8SFBtN6ioJCsbtDVqRKjAnvzO5IXeQ=;
-        b=bddemX/mueuoTUw+FgpYuMdZmN2YG6KQCleH58432RU1ZqVcX9NspyjesIHnNVo1M8
-         zRXNHpWkO513UvHI+jtYcrSIVHzrDP7EUgyTMneZMbULLdHLIFsZEJxrEmBVPoLK8Y8b
-         xvYl2rvC6rsyZTlwCwbz3grmvbDenVoc7BqKQ=
-X-Forwarded-Encrypted: i=1; AFNElJ++uHwPxJiHG6u6m9Q1leC7FZAwaJ+I3Q9VAAUJ1uRrewVkd1FFaosQuI9tJzEOAVdHXv0m40k=@vger.kernel.org
-X-Received: by 2002:a05:7300:2310:b0:304:705f:e4e8 with SMTP id 5a478bee46e88-30c0d1123b2mr822013eec.32.1781863080698;
-        Fri, 19 Jun 2026 02:58:00 -0700 (PDT)
-X-Received: by 2002:a05:7300:2310:b0:304:705f:e4e8 with SMTP id 5a478bee46e88-30c0d1123b2mr821973eec.32.1781863079967;
-        Fri, 19 Jun 2026 02:57:59 -0700 (PDT)
+        d=broadcom.com; s=google; t=1781863084; x=1782467884; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0w1vsxUJI0JQJt2Tz8nUeF9KKHPDE+aPNVG7KYxhUoA=;
+        b=iO7vLZGsqBmIVTW+0pGPaSRRyUP+dpNZEw7S/eShSb6pHeSLVi+tJjCdWGaoN9xK+v
+         L2h9loLIDatlYzUNDzHY8mSShqyJVnmssLWSYrztxv3h0Ruk22di6NIPRZ/2e54+2+uI
+         fd75CLXiGO6rxWGpqiM1J7urB34kAFjJ/uT2k=
+X-Forwarded-Encrypted: i=1; AFNElJ+D8DOk6aIncvHD6gNuHh7kU9usuN06kAr6JNWi1GvPpRazEFd7UYtiIDNoeQJpeC7ZYj4Em/M=@vger.kernel.org
+X-Received: by 2002:a05:7300:7fa7:b0:2fc:9d97:d59a with SMTP id 5a478bee46e88-30c0d17fb0emr888583eec.32.1781863084395;
+        Fri, 19 Jun 2026 02:58:04 -0700 (PDT)
+X-Received: by 2002:a05:7300:7fa7:b0:2fc:9d97:d59a with SMTP id 5a478bee46e88-30c0d17fb0emr888572eec.32.1781863083755;
+        Fri, 19 Jun 2026 02:58:03 -0700 (PDT)
 Received: from shivania.lvn.broadcom.net ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30c06d5bec5sm1851910eec.26.2026.06.19.02.57.59
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30c06d5bec5sm1851910eec.26.2026.06.19.02.58.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Jun 2026 02:57:59 -0700 (PDT)
+        Fri, 19 Jun 2026 02:58:03 -0700 (PDT)
 From: Shivani Agarwal <shivani.agarwal@broadcom.com>
 To: stable@vger.kernel.org,
 	gregkh@linuxfoundation.org
@@ -90,11 +92,14 @@ Cc: pablo@netfilter.org,
 	vamsi-krishna.brahmajosyula@broadcom.com,
 	yin.ding@broadcom.com,
 	tapas.kundu@broadcom.com,
+	Sasha Levin <sashal@kernel.org>,
 	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH v6.1 0/3] Fix CVE-2026-23272
-Date: Fri, 19 Jun 2026 02:28:47 -0700
-Message-Id: <20260619092850.1274076-1-shivani.agarwal@broadcom.com>
+Subject: [PATCH v6.1 2/3] netfilter: nf_tables: fix set size with rbtree backend
+Date: Fri, 19 Jun 2026 02:28:49 -0700
+Message-Id: <20260619092850.1274076-3-shivani.agarwal@broadcom.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260619092850.1274076-1-shivani.agarwal@broadcom.com>
+References: <20260619092850.1274076-1-shivani.agarwal@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -104,23 +109,217 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-To fix CVE-2026-23272, commit def602e498a4 is required; however,
-it depends on commit d4b7f29eb85c and 8d738c1869f6. Therefore,
-both patches have been backported to v6.1.
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-Florian Westphal (1):
-  netfilter: nf_tables: always increment set element count
+[ Upstream commit 8d738c1869f611955d91d8d0fd0012d9ef207201 ]
 
-Pablo Neira Ayuso (2):
-  netfilter: nf_tables: fix set size with rbtree backend
-  netfilter: nf_tables: unconditionally bump set->nelems before
-    insertion
+The existing rbtree implementation uses singleton elements to represent
+ranges, however, userspace provides a set size according to the number
+of ranges in the set.
 
- include/net/netfilter/nf_tables.h |  6 +++
- net/netfilter/nf_tables_api.c     | 72 ++++++++++++++++++++++++++-----
- net/netfilter/nft_set_rbtree.c    | 43 ++++++++++++++++++
- 3 files changed, 110 insertions(+), 11 deletions(-)
+Adjust provided userspace set size to the number of singleton elements
+in the kernel by multiplying the range by two.
 
+Check if the no-match all-zero element is already in the set, in such
+case release one slot in the set size.
+
+Fixes: 0ed6389c483d ("netfilter: nf_tables: rename set implementations")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ Shivani: Modified to apply on 6.1.y ]
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
+---
+ include/net/netfilter/nf_tables.h |  6 ++++
+ net/netfilter/nf_tables_api.c     | 49 +++++++++++++++++++++++++++++--
+ net/netfilter/nft_set_rbtree.c    | 43 +++++++++++++++++++++++++++
+ 3 files changed, 96 insertions(+), 2 deletions(-)
+
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index dafa0a32e..3329c2eae 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -422,6 +422,9 @@ struct nft_set_ext;
+  *	@remove: remove element from set
+  *	@walk: iterate over all set elements
+  *	@get: get set elements
++ *	@ksize: kernel set size
++ *	@usize: userspace set size
++ *	@adjust_maxsize: delta to adjust maximum set size
+  *	@privsize: function to return size of set private data
+  *	@init: initialize private data of new set instance
+  *	@destroy: destroy private data of set instance
+@@ -470,6 +473,9 @@ struct nft_set_ops {
+ 					       const struct nft_set *set,
+ 					       const struct nft_set_elem *elem,
+ 					       unsigned int flags);
++	u32				(*ksize)(u32 size);
++	u32				(*usize)(u32 size);
++	u32				(*adjust_maxsize)(const struct nft_set *set);
+ 	void				(*commit)(struct nft_set *set);
+ 	void				(*abort)(const struct nft_set *set);
+ 	u64				(*privsize)(const struct nlattr * const nla[],
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index ec4bfe53b..15bfdf07c 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -4264,6 +4264,14 @@ static int nf_tables_fill_set_concat(struct sk_buff *skb,
+ 	return 0;
+ }
+ 
++static u32 nft_set_userspace_size(const struct nft_set_ops *ops, u32 size)
++{
++	if (ops->usize)
++		return ops->usize(size);
++
++	return size;
++}
++
+ static int nf_tables_fill_set(struct sk_buff *skb, const struct nft_ctx *ctx,
+ 			      const struct nft_set *set, u16 event, u16 flags)
+ {
+@@ -4328,7 +4336,8 @@ static int nf_tables_fill_set(struct sk_buff *skb, const struct nft_ctx *ctx,
+ 	if (!nest)
+ 		goto nla_put_failure;
+ 	if (set->size &&
+-	    nla_put_be32(skb, NFTA_SET_DESC_SIZE, htonl(set->size)))
++	    nla_put_be32(skb, NFTA_SET_DESC_SIZE,
++			 htonl(nft_set_userspace_size(set->ops, set->size))))
+ 		goto nla_put_failure;
+ 
+ 	if (set->field_count > 1 &&
+@@ -4698,6 +4707,15 @@ static bool nft_set_is_same(const struct nft_set *set,
+ 	return true;
+ }
+ 
++static u32 nft_set_kernel_size(const struct nft_set_ops *ops,
++			       const struct nft_set_desc *desc)
++{
++	if (ops->ksize)
++		return ops->ksize(desc->size);
++
++	return desc->size;
++}
++
+ static int nf_tables_newset(struct sk_buff *skb, const struct nfnl_info *info,
+ 			    const struct nlattr * const nla[])
+ {
+@@ -4880,6 +4898,9 @@ static int nf_tables_newset(struct sk_buff *skb, const struct nfnl_info *info,
+ 		if (err < 0)
+ 			return err;
+ 
++		if (desc.size)
++			desc.size = nft_set_kernel_size(set->ops, &desc);
++
+ 		err = 0;
+ 		if (!nft_set_is_same(set, &desc, exprs, num_exprs, flags)) {
+ 			NL_SET_BAD_ATTR(extack, nla[NFTA_SET_NAME]);
+@@ -4902,6 +4923,9 @@ static int nf_tables_newset(struct sk_buff *skb, const struct nfnl_info *info,
+ 	if (IS_ERR(ops))
+ 		return PTR_ERR(ops);
+ 
++	if (desc.size)
++		desc.size = nft_set_kernel_size(ops, &desc);
++
+ 	udlen = 0;
+ 	if (nla[NFTA_SET_USERDATA])
+ 		udlen = nla_len(nla[NFTA_SET_USERDATA]);
+@@ -6327,6 +6351,27 @@ static bool nft_setelem_valid_key_end(const struct nft_set *set,
+ 	return true;
+ }
+ 
++static u32 nft_set_maxsize(const struct nft_set *set)
++{
++	u32 maxsize, delta;
++
++	if (!set->size)
++		return UINT_MAX;
++
++	if (set->ops->adjust_maxsize)
++		delta = set->ops->adjust_maxsize(set);
++	else
++		delta = 0;
++
++	if (check_add_overflow(set->size, set->ndeact, &maxsize))
++		return UINT_MAX;
++
++	if (check_add_overflow(maxsize, delta, &maxsize))
++		return UINT_MAX;
++
++	return maxsize;
++}
++
+ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
+ 			    const struct nlattr *attr, u32 nlmsg_flags)
+ {
+@@ -6671,7 +6716,7 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
+ 	}
+ 
+ 	if (!(flags & NFT_SET_ELEM_CATCHALL)) {
+-		unsigned int max = set->size ? set->size + set->ndeact : UINT_MAX;
++		unsigned int max = nft_set_maxsize(set);
+ 
+ 		if (!atomic_add_unless(&set->nelems, 1, max)) {
+ 			err = -ENFILE;
+diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
+index 426becaad..26e1d994f 100644
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -775,6 +775,46 @@ static bool nft_rbtree_estimate(const struct nft_set_desc *desc, u32 features,
+ 	return true;
+ }
+ 
++/* rbtree stores ranges as singleton elements, each range is composed of two
++ * elements ...
++ */
++static u32 nft_rbtree_ksize(u32 size)
++{
++	return size * 2;
++}
++
++/* ... hide this detail to userspace. */
++static u32 nft_rbtree_usize(u32 size)
++{
++	if (!size)
++		return 0;
++
++	return size / 2;
++}
++
++static u32 nft_rbtree_adjust_maxsize(const struct nft_set *set)
++{
++	struct nft_rbtree *priv = nft_set_priv(set);
++	struct nft_rbtree_elem *rbe;
++	struct rb_node *node;
++	const void *key;
++
++	node = rb_last(&priv->root);
++	if (!node)
++		return 0;
++
++	rbe = rb_entry(node, struct nft_rbtree_elem, node);
++	if (!nft_rbtree_interval_end(rbe))
++		return 0;
++
++	key = nft_set_ext_key(&rbe->ext);
++	if (memchr(key, 1, set->klen))
++		return 0;
++
++	/* this is the all-zero no-match element. */
++	return 1;
++}
++
+ const struct nft_set_type nft_set_rbtree_type = {
+ 	.features	= NFT_SET_INTERVAL | NFT_SET_MAP | NFT_SET_OBJECT | NFT_SET_TIMEOUT,
+ 	.ops		= {
+@@ -791,5 +831,8 @@ const struct nft_set_type nft_set_rbtree_type = {
+ 		.lookup		= nft_rbtree_lookup,
+ 		.walk		= nft_rbtree_walk,
+ 		.get		= nft_rbtree_get,
++		.ksize		= nft_rbtree_ksize,
++		.usize		= nft_rbtree_usize,
++		.adjust_maxsize = nft_rbtree_adjust_maxsize,
+ 	},
+ };
 -- 
 2.53.0
 
