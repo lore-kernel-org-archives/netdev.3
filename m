@@ -1,157 +1,79 @@
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.63.166])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A556EED8
-	for <netdev@vger.kernel.org>; Fri, 19 Jun 2026 07:38:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.63.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68D9EED8;
+	Fri, 19 Jun 2026 07:39:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781854692; cv=none; b=aG6ULzcuYBn4/9eXVwpUAVqvWBaj2/cZtOdkqG/9+11VHO1/1mJbh2fOCgZfIAlkjqDB1XVSTm9Jr9o8fnH1Xd36WsM/pMlxnTn6G23ffIaXscShVe98PtjGSwcSC4kGVXTMw5YkDGLOAvIbUuvIxQkBOhwbGtDlwrHhXi9es7Y=
+	t=1781854803; cv=none; b=tImK3qNDPoZpg4wiRQIPYeJGe6nCcTmuup4MTnfSQNWS4dCfz2g17IGs8JKyobnjTFKj40Ud3Sj6OdkjHMnPnmc9/RrVmkv0fwaX0yKVTQr8YV4hh9BXe2exQ1r3DL3OmeDyZHaRREurovYCDZ/R8nJxfGl6Yix2ALpjpu0n7bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781854692; c=relaxed/simple;
-	bh=60wVN4MNQ5tIzzAXM8zjLEYGP+a2Aj6AGUhYsLEE2Bg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mmBZZC2cfgSjD02/cdKyD6Q/wuUS1cBI2xWqkIienuAdcd/nF9r4PCQY+Mqj2MUyUX1uVLplkroCEdlu3ezGR+s9OGXT3EyYQu388OsWojS9EobNuyrQyAxVO4FS0iWuGHKldbF4SWnv7AvXEcHQ1ptQPQ6Za/ruy9C8MxFucW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=IXGsOawr; arc=none smtp.client-ip=188.68.63.166
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+	s=arc-20240116; t=1781854803; c=relaxed/simple;
+	bh=b6TPHQRuqZR4c7BToY2SyoOs8RSVriP8oHPVkCUxoqw=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=cJ3tsDolvMsX6fiT19ir+rpDWVu4FpVTUQdK1AFK4nhwomBcBY/2rMRw32N38Wq/kfRZWbIBoyHUTcx+awM9KFG3GleAzk9wVlwWf4exBpm1KLOqjdk74MVDUz7YJAbqaJZo6kI37k/jLkZrGopm2Gy1oIgx927ABS4TSkkpivM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=qjewW0t1; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="IXGsOawr"
-Received: from mors-relay-8202.netcup.net (localhost [127.0.0.1])
-	by mors-relay-8202.netcup.net (Postfix) with ESMTPS id 4ghTjZ2xSwz3x4S;
-	Fri, 19 Jun 2026 09:28:50 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1781854130;
-	bh=60wVN4MNQ5tIzzAXM8zjLEYGP+a2Aj6AGUhYsLEE2Bg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=IXGsOawrMbuXPWrpXeXEifytz6Pv9Q6vBlr0fHagZtzc5lPH0BkJ/zrLayZYRrmB+
-	 kizJ2tKKRt/2UKeiST/4cj3g9lhaInhyVQTFpVEnLh+RN+so7p/KME1fFGGKQg3iX3
-	 1+Qc/lqkeQfA8Vx98/pEJ9bRuBED2Q7d+sMPyXwzdwtEJXJ0BL92pGenjHl2rK56C8
-	 a9AmAHC70Ixa1EiYej4EneZTKMy0YYnADn7KuvDVnjdtMNghHSGBYt6HxAB6VOxOrc
-	 zkVlgKX3ZG9z0thp2ya2BYQ6BSgIa0crBoAUf39SkXffwHWJtHHS76mXVtnz8PS5LL
-	 gBqa1vxDrYm3w==
-Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
-	by mors-relay-8202.netcup.net (Postfix) with ESMTPS id 4ghTjZ2CPqz3wG4;
-	Fri, 19 Jun 2026 09:28:50 +0200 (CEST)
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4ghTjY686Gz8sZh;
-	Fri, 19 Jun 2026 09:28:49 +0200 (CEST)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 01A825FB04;
-	Fri, 19 Jun 2026 09:28:48 +0200 (CEST)
-Authentication-Results: mxe9fb;
-        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=linux@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <cec7685e-df12-4501-b851-9c8f7b8b06cb@leemhuis.info>
-Date: Fri, 19 Jun 2026 09:28:47 +0200
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="qjewW0t1"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id ED8D2A3F88;
+	Fri, 19 Jun 2026 09:39:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1781854796; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=4p4Y6WbmGM6SMda6SpZT7a84alwNhxR4Wy40ZV3+bm8=;
+	b=qjewW0t1zJDFTwlhI+N8vhSyyfjwpD+4QboNyjzo9CRm+THyWm5+e5ypPccEO4ED2aCh8U
+	VAQNf9YWhYNn1wtaBxUiQA96pn9T1Pk4ehDzI+lD45mArtx/xQ0+bv03L3qmCnpmTLAKqD
+	1Qj9V3xPLPK4Bkwzo+qK3ckWyqTx0Hz4OFX1JIMgwdSrxeLELxnr/zeLf869nWYEVxn4ek
+	IAT5ZWsBczBy1bxTxemEwc52qe3B0PcvT9rejYvdkPfn+BNquFF/9yJccBeJTes9bsbCk/
+	FmlGUep8JuFQrj50rwv6jih761uFopwThuCW2EvF/HOshptevpvx+vhhDFPHng==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: building ynl afaics requires updating the UAPI headers first
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Donald Hunter <donald.hunter@gmail.com>, netdev <netdev@vger.kernel.org>,
- Riana Tauro <riana.tauro@intel.com>
-References: <ade91456-2f93-442c-b76c-28bd7157f074@leemhuis.info>
- <20260618170605.0e2e4dd4@kernel.org>
-From: Thorsten Leemhuis <linux@leemhuis.info>
-Content-Language: de-DE, en-US
-Autocrypt: addr=linux@leemhuis.info; keydata=
- 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 MEK4
-In-Reply-To: <20260618170605.0e2e4dd4@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Date: Fri, 19 Jun 2026 09:39:52 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Andrea della Porta <andrea.porta@suse.com>
+Cc: =?UTF-8?Q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>,
+ netdev@vger.kernel.org, Nicolas Ferre <nicolas.ferre@microchip.com>, Claudiu
+ Beznea <claudiu.beznea@tuxon.dev>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-rpi-kernel@lists.infradead.org,
+ Lukasz Raczylo <lukasz@raczylo.com>, Steffen Jaeckel <sjaeckel@suse.de>
+Subject: Re: [PATCH v2] net: macb: add TX stall timeout callback to recover
+ from lost TSTART write
+In-Reply-To: <ajTtF2xy3WS6NfBi@apocalypse>
+References: <468f480454a314303bac6a54780b153f689f2267.1781598350.git.andrea.porta@suse.com>
+ <DJAKGHKZGUI2.29AHYNFX4LGBJ@bootlin.com> <ajTtF2xy3WS6NfBi@apocalypse>
+Message-ID: <9dec2aa9fc7669a1f86ceb1c2c9de68e@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
-X-PPP-Message-ID: 
- <178185412926.3968449.17187083209717787482@mxe9fb.netcup.net>
-X-Rspamd-Server: rspamd-worker-8404
-X-Rspamd-Queue-Id: 01A825FB04
-X-NC-CID: 5Wjm+GRyIMfrp5Q1hrACSOZikOmW45Y/XIJrFZXRuZH2/tH4PQY=
+X-Last-TLS-Session-Version: TLSv1.3
 
+On 19.6.2026 09:17, Andrea della Porta wrote:
 
+> [...]
 
-On 6/19/26 02:06, Jakub Kicinski wrote:
-> On Thu, 18 Jun 2026 15:39:46 +0200 Thorsten Leemhuis wrote:
->> DRM_RAS_CMD_CLEAR_ERROR_COUNTER was introduced to mainline yesterday as
->> ee18d39a087792 ("drm/drm_ras: Add clear-error-counter netlink command to
->> drm_ras") [v7.1-post].
->>
->> I finally looked closer today and noticed how to prevent this: update
->> the kernel's UAPI files (e.g. the stuff that lives in /usr/include/) on
->> the builder. Thing is: that's basically impossible to do from a srpm, as
->> those should not change the build environment and can't even when
->> working as non-root.
->> [...]
+>> Any news from the Raspberry Pi community about this bug investigation?
 > 
-> Can't repro for some reason, but we probably need something like 
-> commit 46e9b0224475abc to add the explicit include rule.
+> Not from my side, unfortunately.
 
-Thx for the pointer. So I guess you mean something like the below,
-which did the trick for me. Will submit this as properly, unless
-someone points out something stupid in it.
+If I remember it correctly, the downstream kernel carries earlier 
+versions of Lukasz patches,
+which he also submitted there. If time permits, I will run some tests 
+with mainline kernel
+on Pi5 + downstream kernel with reverted patches + only the upstream 
+patches.
 
-Ciao, Thorsten
+But realistically this won't happen before end of next week.
 
-diff --git a/tools/net/ynl/Makefile.deps b/tools/net/ynl/Makefile.deps
-index cc53b2f21c444..43d06ecbae93d 100644
---- a/tools/net/ynl/Makefile.deps
-+++ b/tools/net/ynl/Makefile.deps
-@@ -14,10 +14,12 @@ UAPI_PATH:=../../../../include/uapi/
- 
- get_hdr_inc=-D$(1) -include $(UAPI_PATH)/linux/$(2)
- get_hdr_inc2=-D$(1) -D$(2) -include $(UAPI_PATH)/linux/$(3)
-+get_hdr_inc_drm=-D$(1) -include $(UAPI_PATH)/drm/$(2)
- 
- CFLAGS_dev-energymodel:=$(call get_hdr_inc,_LINUX_DEV_ENERGYMODEL_H,dev_energymodel.h)
- CFLAGS_devlink:=$(call get_hdr_inc,_LINUX_DEVLINK_H_,devlink.h)
- CFLAGS_dpll:=$(call get_hdr_inc,_LINUX_DPLL_H,dpll.h)
-+CFLAGS_drm_ras:=$(call get_hdr_inc_drm,_LINUX_DRM_RAS_H,drm_ras.h)
- CFLAGS_ethtool:=$(call get_hdr_inc,_LINUX_TYPELIMITS_H,typelimits.h) \
-        $(call get_hdr_inc,_LINUX_ETHTOOL_H,ethtool.h) \
-        $(call get_hdr_inc,_LINUX_ETHTOOL_NETLINK_H_,ethtool_netlink.h) \
+BR
+Nicolai
 
+> [...]
