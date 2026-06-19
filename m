@@ -1,51 +1,54 @@
-Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33923438A4;
-	Fri, 19 Jun 2026 05:53:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.197
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F5DD344D8D;
+	Fri, 19 Jun 2026 05:53:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781848420; cv=none; b=Astl9+GYtnTypozooQ3npOzQNxxU77MeLjOadepA5M5x/KION9t99jWrWb5GwU1rxITWcUAhEuYCYDQ3oBmFia8ldk2EeKUM0Zh7ZyF7A0I7vnigbdIcVeFMkVLfjIPOwwl7Poj9ZmeHyRXV7SN7sHIK3jnYMgCbbgk3s3EZpPw=
+	t=1781848440; cv=none; b=knRDxJ2Qdtm4BRyRqjPCoCy8mjpXYO8Dbck2fmeijyrtfBSvg+nApQnWmUvpG3t5XlIwKF2JsENqJHa2cX8h4Y8IMUVi5fn62/KoWc/qWTHJ6BjgtWqO//waFWuPDStwVsrAvlHjjG76uQHxqSCFijBVZ3FPv8i8aze5fvipvHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781848420; c=relaxed/simple;
-	bh=pwU0m4lyd8j1X2A4VZl6+KScuVNCBF0yEhTZlNEn3+g=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NLBxUg3Vk3lK3SALyhOvjSQMEx9GwAZN6ykFPhyFufQMLCR4uI2KuaeOlvwbaZGo/3ZDO7rmZ0VnusAXK7iHFiw8705LpxI+wlweeby+T2dMsZ+YOxh1FucjuA5j1st1LK6FYJxaKit4Sbvqhl0XjIxntfPQ2xKNZHnY6dyL+uU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=c9o4mGhN; arc=none smtp.client-ip=45.254.49.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+	s=arc-20240116; t=1781848440; c=relaxed/simple;
+	bh=/GYwtyj4OiwSnfQ1NkHHQpVoUWEX0p5XIzUtXUf6Fgw=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=ijG1aRlm2p9kO6V/SYSfTUeMa1pf5wuxIDxQagb18sUZUfcaG2xVd0MyHuOi9iE/mK3FABmWo0lZ025WLaHwVD9EuOhfpTqB/uQ7I5DhMwN4rKrJIUIoFn+0AioP5E6w02jHSiDwHHzGXozL55I/1tXKoOa6x9C/lQwcwf36T+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=CVomVZZI; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="c9o4mGhN"
-Received: from PC-202605011814.localdomain (unknown [223.112.146.162])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 42ff5c258;
-	Fri, 19 Jun 2026 13:48:20 +0800 (GMT+08:00)
-From: Runyu Xiao <runyu.xiao@seu.edu.cn>
-To: "D. Wythe" <alibuda@linux.alibaba.com>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Sidraya Jayagond <sidraya@linux.ibm.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Mahanta Jambigi <mjambigi@linux.ibm.com>,
-	Tony Lu <tonylu@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>,
-	Simon Horman <horms@kernel.org>,
-	Karsten Graul <kgraul@linux.ibm.com>,
-	linux-rdma@vger.kernel.org,
-	linux-s390@vger.kernel.org,
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="CVomVZZI"
+Received: by linux.microsoft.com (Postfix, from userid 1173)
+	id 7786820B7168; Thu, 18 Jun 2026 22:53:52 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 7786820B7168
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1781848432;
+	bh=djzZlvhhSVxdzxt5Tfjo+wj0N0UWQ5SDaG8r7yyi7oQ=;
+	h=From:To:Subject:Date:From;
+	b=CVomVZZIgStxfhkcyelsx9ZfoAg2ofDMrPEhYWSHWom7owo3p61oBd2gr0gP4/nL/
+	 WgrexreV8oAx/lrUxeSAH5kloCBvk+TwuHrnTu9RLDrqbsm3LRYhEtoY/dORLIV8H8
+	 pEN93sDZvrjyJvXoWBx1Wl4EmWpPMI2JXwzNL/UA=
+From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+To: kys@microsoft.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	longli@microsoft.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	dipayanroy@linux.microsoft.com,
+	ssengar@linux.microsoft.com,
+	jacob.e.keller@intel.com,
+	ernis@linux.microsoft.com,
+	horms@kernel.org,
+	gargaditya@linux.microsoft.com,
+	kees@kernel.org,
+	linux-hyperv@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	jianhao.xu@seu.edu.cn,
-	runyu.xiao@seu.edu.cn,
-	stable@vger.kernel.org
-Subject: [PATCH net v2] net/smc: avoid recursive sk_callback_lock in listen data_ready
-Date: Fri, 19 Jun 2026 13:48:15 +0800
-Message-Id: <20260619054815.176764-1-runyu.xiao@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260617152855.1039151-1-runyu.xiao@seu.edu.cn>
-References: <20260617152855.1039151-1-runyu.xiao@seu.edu.cn>
+	bpf@vger.kernel.org
+Subject: [PATCH net] net: mana: Fall back to standard MTU when PF reports adapter_mtu of 0
+Date: Thu, 18 Jun 2026 22:53:38 -0700
+Message-ID: <20260619055348.467224-1-ernis@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,107 +56,79 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9ede6c4ccc03a1kunm905fb605c0aad
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaH0tOVh5CT0saH0xJGEweTVYeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUhVSkpJVUpPTVVKTUlZV1kWGg8SFR0UWUFZT0tIVUpLSE
-	pPSExVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=c9o4mGhNnuIp1FH4m4iDWfO8zpzxV8lY6OnmEmhimTACoKeaJ8UmvJsqnqrokI+IvQeveSH8bVWEBwSwlex9k7fhA3Fe2M8y/ylW6xEhO9YQVSbaa8al2E4wshTiiInJdVuHxaQ7NlBoQEaBs8AvU0K9oh2oqARndIOdRP0Zpwg=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
-	bh=y3r//VB8rHOFLln9YAyOG3ki0d6Mj/h1cPOiZugptRA=;
-	h=date:mime-version:subject:message-id:from;
 
-smc_listen() installs smc_clcsock_data_ready() as the underlying TCP
-listen socket's sk_data_ready callback.  The callback takes
-sk_callback_lock before looking up the SMC listener and queuing
-smc_tcp_listen_work().
+Commit d7709812e13d ("net: mana: hardening: Validate adapter_mtu from
+MANA_QUERY_DEV_CONFIG") rejected any adapter_mtu value smaller than
+ETH_MIN_MTU + ETH_HLEN, including 0, returning -EPROTO and failing
+mana_probe().
 
-This can recurse when the underlying TCP listen socket is being closed.
-The close/flush path may invoke the installed sk_data_ready callback with
-sk_callback_lock already held, so smc_clcsock_data_ready() tries to take
-the same rwlock again in the same thread.
+Some older PF firmware versions still in the field report
+adapter_mtu as 0 in the MANA_QUERY_DEV_CONFIG response. With the
+hardening check in place, the MANA VF driver now fails to load on
+those hosts, breaking networking entirely for guests.
 
-This issue was found by our static analysis tool and then manually
-reviewed against the current tree.  The reproducer keeps the SMC listen
-callback installation path:
+MANA hardware always supports the standard Ethernet MTU. Treat a
+reported adapter_mtu of 0 as "the PF did not advertise a value" and
+fall back to ETH_FRAME_LEN, the same value used for the pre-V2
+message version path. Only jumbo frames remain unavailable until
+the PF reports a valid MTU.
 
-  smc_listen()
-  smc_clcsock_replace_cb()
-  sk_data_ready = smc_clcsock_data_ready()
+Other small-but-nonzero bogus values are still rejected, preserving
+the original protection against the unsigned-subtraction wrap that
+would otherwise let ndev->max_mtu underflow to a huge value.
 
-It then models the close/flush carrier that invokes the installed
-sk_data_ready callback while sk_callback_lock is already held.  Lockdep
-reports the same-thread recursive acquisition:
-
-  WARNING: possible recursive locking detected
-  kworker/u4:3/39 is trying to acquire lock:
-    (sk_callback_lock) at smc_clcsock_data_ready+0xa/0x4d
-
-  but task is already holding lock:
-    (sk_callback_lock) at smc_close_flush_work+0xc/0x30
-
-  Possible unsafe locking scenario:
-
-        CPU0
-        ----
-        lock(sk_callback_lock);
-        lock(sk_callback_lock);
-
-  *** DEADLOCK ***
-
-  Workqueue: smc_close_wq smc_close_flush_work
-
-  Call Trace:
-    dump_stack_lvl
-    __lock_acquire
-    lock_acquire
-    _raw_read_lock_bh
-    smc_clcsock_data_ready
-    smc_close_flush_work
-    process_one_work
-    worker_thread
-    kthread
-    ret_from_fork
-
-The same pattern was fixed for nvmet TCP by checking TCP_LISTEN before
-taking sk_callback_lock:
-
-  commit 2fa8961d3a6a ("nvmet-tcp: fixup hang in
-  nvmet_tcp_listen_data_ready()")
-
-Do the same for SMC.  smc_clcsock_data_ready() is installed by
-smc_listen() on the underlying TCP listen socket and only queues
-smc_tcp_listen_work() for the SMC listen/accept path.  Once that socket is
-no longer in TCP_LISTEN, there is no listen accept work to queue from this
-callback, and avoiding sk_callback_lock also avoids the recursive locking
-path.
-
-Fixes: 0558226cebee ("net/smc: Fix slab-out-of-bounds issue in fallback")
-Cc: stable@vger.kernel.org
-Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+Fixes: d7709812e13d ("net: mana: hardening: Validate adapter_mtu from MANA_QUERY_DEV_CONFIG")
+Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
 ---
-v2:
-- Include the fuller Lockdep stack from the grounded reproducer.
-- Add the related nvmet TCP fix reference.
-- Explain why the TCP_LISTEN check is valid for the SMC listen callback.
+ drivers/net/ethernet/microsoft/mana/mana_bpf.c |  3 ++-
+ drivers/net/ethernet/microsoft/mana/mana_en.c  | 16 ++++++++++++++--
+ 2 files changed, 16 insertions(+), 3 deletions(-)
 
- net/smc/af_smc.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index 6421c2e1c84d..1af4e3c333ff 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -2631,6 +2631,9 @@ static void smc_clcsock_data_ready(struct sock *listen_clcsock)
- {
- 	struct smc_sock *lsmc;
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_bpf.c b/drivers/net/ethernet/microsoft/mana/mana_bpf.c
+index b5e9bb184a1d..53308e139cbe 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_bpf.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_bpf.c
+@@ -237,7 +237,8 @@ static int mana_xdp_set(struct net_device *ndev, struct bpf_prog *prog,
+ 		bpf_prog_put(old_prog);
  
-+	if (READ_ONCE(listen_clcsock->sk_state) != TCP_LISTEN)
-+		return;
-+
- 	read_lock_bh(&listen_clcsock->sk_callback_lock);
- 	lsmc = smc_clcsock_user_data(listen_clcsock);
- 	if (!lsmc)
+ 	if (prog)
+-		ndev->max_mtu = MANA_XDP_MTU_MAX;
++		ndev->max_mtu = min_t(unsigned int, MANA_XDP_MTU_MAX,
++				      gc->adapter_mtu - ETH_HLEN);
+ 	else
+ 		ndev->max_mtu = gc->adapter_mtu - ETH_HLEN;
+ 
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index 87862b0434c7..7438ea6b3f26 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -1233,12 +1233,24 @@ int mana_gd_query_device_cfg(struct gdma_context *gc, u32 proto_major_ver,
+ 	*max_num_vports = resp.max_num_vports;
+ 
+ 	if (resp.hdr.response.msg_version >= GDMA_MESSAGE_V2) {
+-		if (resp.adapter_mtu < ETH_MIN_MTU + ETH_HLEN) {
++		if (resp.adapter_mtu == 0) {
++			/*
++			 * Some older PF firmware versions report an
++			 * adapter_mtu of 0. MANA hardware always supports the
++			 * standard Ethernet MTU, so fall back to ETH_FRAME_LEN.
++			 * Jumbo frames will not be available in this case.
++			 */
++			dev_info(dev,
++				 "PF reported adapter_mtu of 0, falling back to %u (jumbo frames disabled)\n",
++				 ETH_FRAME_LEN);
++			gc->adapter_mtu = ETH_FRAME_LEN;
++		} else if (resp.adapter_mtu < ETH_MIN_MTU + ETH_HLEN) {
+ 			dev_err(dev, "Adapter MTU too small: %u\n",
+ 				resp.adapter_mtu);
+ 			return -EPROTO;
++		} else {
++			gc->adapter_mtu = resp.adapter_mtu;
+ 		}
+-		gc->adapter_mtu = resp.adapter_mtu;
+ 	} else {
+ 		gc->adapter_mtu = ETH_FRAME_LEN;
+ 	}
 -- 
 2.34.1
+
