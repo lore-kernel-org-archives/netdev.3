@@ -1,134 +1,69 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F5DD344D8D;
-	Fri, 19 Jun 2026 05:53:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17683346A14;
+	Fri, 19 Jun 2026 05:59:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781848440; cv=none; b=knRDxJ2Qdtm4BRyRqjPCoCy8mjpXYO8Dbck2fmeijyrtfBSvg+nApQnWmUvpG3t5XlIwKF2JsENqJHa2cX8h4Y8IMUVi5fn62/KoWc/qWTHJ6BjgtWqO//waFWuPDStwVsrAvlHjjG76uQHxqSCFijBVZ3FPv8i8aze5fvipvHI=
+	t=1781848786; cv=none; b=KpDi79ZtUMxagoVhf/PKDXfQ7f8T8UbBsDVNXD5k0pcDPGQulCP5DkvIpncHY32KiIeklCHQ4I0LjNcrlY7sYxd2pQU4tpDFzHTvXmt7D4CM5sRhLs/wE4618rBqW/c2Tvw++x4VTQVNAQ/wydrdc+ktLevUb7kqMD+u09QYbjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781848440; c=relaxed/simple;
-	bh=/GYwtyj4OiwSnfQ1NkHHQpVoUWEX0p5XIzUtXUf6Fgw=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=ijG1aRlm2p9kO6V/SYSfTUeMa1pf5wuxIDxQagb18sUZUfcaG2xVd0MyHuOi9iE/mK3FABmWo0lZ025WLaHwVD9EuOhfpTqB/uQ7I5DhMwN4rKrJIUIoFn+0AioP5E6w02jHSiDwHHzGXozL55I/1tXKoOa6x9C/lQwcwf36T+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=CVomVZZI; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1781848786; c=relaxed/simple;
+	bh=+PqijbD9oMdSwOrOcxgtcweO6CEWkp4h/Pjn5wBNGCg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WhxMMQX6bOK/9+RU/nm/fa32EiU5dWjkXpqU90eUVFUm6v+WV9jurlf1C9JtFyzWd+UARvXmYByVK5iVbg/L7FbvyI6RpRGnbmF1hc1Zz/9C6izLWRptEXrC16nOCUD5tQNvDyE9UxkZZDdh56HBPHU+kH3exhMArbSEMOLpwXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=BdZt8wm3; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="CVomVZZI"
-Received: by linux.microsoft.com (Postfix, from userid 1173)
-	id 7786820B7168; Thu, 18 Jun 2026 22:53:52 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 7786820B7168
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1781848432;
-	bh=djzZlvhhSVxdzxt5Tfjo+wj0N0UWQ5SDaG8r7yyi7oQ=;
-	h=From:To:Subject:Date:From;
-	b=CVomVZZIgStxfhkcyelsx9ZfoAg2ofDMrPEhYWSHWom7owo3p61oBd2gr0gP4/nL/
-	 WgrexreV8oAx/lrUxeSAH5kloCBvk+TwuHrnTu9RLDrqbsm3LRYhEtoY/dORLIV8H8
-	 pEN93sDZvrjyJvXoWBx1Wl4EmWpPMI2JXwzNL/UA=
-From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-To: kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	longli@microsoft.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	dipayanroy@linux.microsoft.com,
-	ssengar@linux.microsoft.com,
-	jacob.e.keller@intel.com,
-	ernis@linux.microsoft.com,
-	horms@kernel.org,
-	gargaditya@linux.microsoft.com,
-	kees@kernel.org,
-	linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org,
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="BdZt8wm3"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=HU6WpvPnB6HUBo+ywbe5ytIX1ilWinc/V+jD72zgalk=; b=BdZt8wm3ZqVJ2SWkoOZmoL53ZJ
+	BxRPORc6E09X2btf+2rGD2TXgPYqrpBKIg9xPpwKq39e9ELiw8aOBBCZE/R8NeHEAXhWKDwWkYLdb
+	puaoSTsmdEQrfzuvBRjQEJoBnCzeEa0BV+J55EE2Ox6ZfU/Gw7xd5ruZ9Y5jm1mHQOF0=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1waSGF-008SU4-Vr; Fri, 19 Jun 2026 07:59:27 +0200
+Date: Fri, 19 Jun 2026 07:59:27 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Luke Howard <lukeh@padl.com>
+Cc: Cedric Jehasse <cedric.jehasse@gmail.com>, cedric.jehasse@luminex.be,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: [PATCH net] net: mana: Fall back to standard MTU when PF reports adapter_mtu of 0
-Date: Thu, 18 Jun 2026 22:53:38 -0700
-Message-ID: <20260619055348.467224-1-ernis@linux.microsoft.com>
-X-Mailer: git-send-email 2.43.7
+	Christoph Mellauner <christoph.mellauner@joyned.at>,
+	Kieran Tyrrell <kieran@sienda.com>
+Subject: Re: [PATCH net-next 2/2] net: dsa: mv88e6xxx: add support for credit
+ based shaper
+Message-ID: <00fc2dcc-9fdb-4035-bc7c-0f4ebd37d373@lunn.ch>
+References: <20260522-net-next-mv88e6xxx-cbs-v1-0-c87a8e6bcc0c@luminex.be>
+ <20260522-net-next-mv88e6xxx-cbs-v1-2-c87a8e6bcc0c@luminex.be>
+ <0FB1CAF0-D30C-4A24-A684-1D1DBEE52FA5@padl.com>
+ <CABvLYuBZ=U96gVpYqHnnhwBZxp8OZzH-W503MsbNd4JPqLbEpQ@mail.gmail.com>
+ <A3A6C8D7-3B6D-4716-88C7-EC32DB9D087D@padl.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <A3A6C8D7-3B6D-4716-88C7-EC32DB9D087D@padl.com>
 
-Commit d7709812e13d ("net: mana: hardening: Validate adapter_mtu from
-MANA_QUERY_DEV_CONFIG") rejected any adapter_mtu value smaller than
-ETH_MIN_MTU + ETH_HLEN, including 0, returning -EPROTO and failing
-mana_probe().
+> As an aside, the 6341 driver is buggy. It assumes the chip does not
+> have a dedicated ATU FID register because it has 256 databases. This
+> is incorrect and breaks VLAN-aware bridging. I will post a patch
+> when the merge window reopens.
 
-Some older PF firmware versions still in the field report
-adapter_mtu as 0 in the MANA_QUERY_DEV_CONFIG response. With the
-hardening check in place, the MANA VF driver now fails to load on
-those hosts, breaking networking entirely for guests.
+You can post fixes for net any time. No need to wait for the merge
+window to close.
 
-MANA hardware always supports the standard Ethernet MTU. Treat a
-reported adapter_mtu of 0 as "the PF did not advertise a value" and
-fall back to ETH_FRAME_LEN, the same value used for the pre-V2
-message version path. Only jumbo frames remain unavailable until
-the PF reports a valid MTU.
-
-Other small-but-nonzero bogus values are still rejected, preserving
-the original protection against the unsigned-subtraction wrap that
-would otherwise let ndev->max_mtu underflow to a huge value.
-
-Fixes: d7709812e13d ("net: mana: hardening: Validate adapter_mtu from MANA_QUERY_DEV_CONFIG")
-Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
----
- drivers/net/ethernet/microsoft/mana/mana_bpf.c |  3 ++-
- drivers/net/ethernet/microsoft/mana/mana_en.c  | 16 ++++++++++++++--
- 2 files changed, 16 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_bpf.c b/drivers/net/ethernet/microsoft/mana/mana_bpf.c
-index b5e9bb184a1d..53308e139cbe 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_bpf.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_bpf.c
-@@ -237,7 +237,8 @@ static int mana_xdp_set(struct net_device *ndev, struct bpf_prog *prog,
- 		bpf_prog_put(old_prog);
- 
- 	if (prog)
--		ndev->max_mtu = MANA_XDP_MTU_MAX;
-+		ndev->max_mtu = min_t(unsigned int, MANA_XDP_MTU_MAX,
-+				      gc->adapter_mtu - ETH_HLEN);
- 	else
- 		ndev->max_mtu = gc->adapter_mtu - ETH_HLEN;
- 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 87862b0434c7..7438ea6b3f26 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -1233,12 +1233,24 @@ int mana_gd_query_device_cfg(struct gdma_context *gc, u32 proto_major_ver,
- 	*max_num_vports = resp.max_num_vports;
- 
- 	if (resp.hdr.response.msg_version >= GDMA_MESSAGE_V2) {
--		if (resp.adapter_mtu < ETH_MIN_MTU + ETH_HLEN) {
-+		if (resp.adapter_mtu == 0) {
-+			/*
-+			 * Some older PF firmware versions report an
-+			 * adapter_mtu of 0. MANA hardware always supports the
-+			 * standard Ethernet MTU, so fall back to ETH_FRAME_LEN.
-+			 * Jumbo frames will not be available in this case.
-+			 */
-+			dev_info(dev,
-+				 "PF reported adapter_mtu of 0, falling back to %u (jumbo frames disabled)\n",
-+				 ETH_FRAME_LEN);
-+			gc->adapter_mtu = ETH_FRAME_LEN;
-+		} else if (resp.adapter_mtu < ETH_MIN_MTU + ETH_HLEN) {
- 			dev_err(dev, "Adapter MTU too small: %u\n",
- 				resp.adapter_mtu);
- 			return -EPROTO;
-+		} else {
-+			gc->adapter_mtu = resp.adapter_mtu;
- 		}
--		gc->adapter_mtu = resp.adapter_mtu;
- 	} else {
- 		gc->adapter_mtu = ETH_FRAME_LEN;
- 	}
--- 
-2.34.1
-
+	Andrew
