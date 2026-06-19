@@ -1,109 +1,82 @@
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74FAA23ED5B;
-	Fri, 19 Jun 2026 06:35:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA9335202C
+	for <netdev@vger.kernel.org>; Fri, 19 Jun 2026 06:35:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781850921; cv=none; b=S1PQ1BVo0yN4wep/C+6bl9Wu/DYSh7tSLP2wlEOGNI+/QsYkyLccljPk7XolExe7W5NF5LJxvvQiEbNtRJIzCcyNhsvaEb2qpgLjOFu8OYjTxngkLZ5WksW8TJ88eTIzzuSW+Cu/XBhf1EHGWZ4VeS5e5kwm8g66VvyYEpJtrrM=
+	t=1781850926; cv=none; b=uYNv1ISr1APmo6qOGFQClzZu6KNJhCE7lzDw6Q9E1IDJGARY5VlLGw/RZyEfQj3rAPOE0l4kbSQduTcn2HrnY+IzVnCw21pB+wi8hpnNRY+Y/9ErcYrbcpAS8I+43T9DMao4a5QFIdcud0wRXBB/sxP0mHhLnEpttLiK8a4ZBG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781850921; c=relaxed/simple;
-	bh=44fmCjC9fVUGPXXrd3HwQxzlSiz4jyFTZqz1jkBeNqk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oHXXFqGDo70l6t6eogrn71dFGVu1lcHkOdGNT41snbNan3bbj31z18RrCbxafi6KG2+9KI6JmT6MmAyb9dZJyWEsYWFcnxLmqBRN3ESjGSfyZQLiMFRppldyrtNoPH4oWx8vpAgXHjlRqF35+re0cRV1oRzfdPO9pr+Z6KAcjgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=wlhaCKT9; arc=none smtp.client-ip=115.124.30.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1781850926; c=relaxed/simple;
+	bh=Nk7gGUelhztFXUKSbDziGiDeRv/XGtl9+hWpv9VrpXs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kR2AbARdzvmeXxaUnRsPF1lMgsNRL9ucs4/A2Q6ijLxYhiOUYN2pmNNfdrgwIlj4c4L1FAb+NFuy1wxYpTR9bJZGnR5Jv/OwgZdgB/auxXQum8sKpXCH7hC8Ht2TonV5OJgQnt00Kq5240ff5MalF3EDg4bCgTHulzRN4eh7YS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=lv97Kox4; arc=none smtp.client-ip=95.215.58.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="wlhaCKT9"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1781850915; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=45U6L2scHXerIc02dhZiR8csZdzJQqHBYsy1D50eKBQ=;
-	b=wlhaCKT9qF3NlKFKM8/m+0WjD3sfpC6AgxJTnV12LmdMWpwrNC0V3ChYSRa6bfl6MZU7137C29rniDiN8+WuoFiGeEtFV/6LVYQmlWv3e0q190UFAeXaLXse00mebh5wj4oh1kdrQ16KM+mArnfCeJJjJ5EtIEACTIQAs6FvgVU=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=dust.li@linux.alibaba.com;NM=1;PH=DS;RN=19;SR=0;TI=SMTPD_---0X58zH3Z_1781850913;
-Received: from localhost(mailfrom:dust.li@linux.alibaba.com fp:SMTPD_---0X58zH3Z_1781850913 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 19 Jun 2026 14:35:14 +0800
-Date: Fri, 19 Jun 2026 14:35:13 +0800
-From: Dust Li <dust.li@linux.alibaba.com>
-To: Runyu Xiao <runyu.xiao@seu.edu.cn>,
-	"D. Wythe" <alibuda@linux.alibaba.com>,
-	Sidraya Jayagond <sidraya@linux.ibm.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Mahanta Jambigi <mjambigi@linux.ibm.com>,
-	Tony Lu <tonylu@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>, Simon Horman <horms@kernel.org>,
-	Karsten Graul <kgraul@linux.ibm.com>, linux-rdma@vger.kernel.org,
-	linux-s390@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, jianhao.xu@seu.edu.cn,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] net/smc: avoid recursive sk_callback_lock in listen
- data_ready
-Message-ID: <ajTjIbm4qPvukJzr@linux.alibaba.com>
-Reply-To: dust.li@linux.alibaba.com
-References: <20260617152855.1039151-1-runyu.xiao@seu.edu.cn>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="lv97Kox4"
+Message-ID: <97e79830-f50c-4d28-a12b-7df0ac1be1dc@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781850922;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Nk7gGUelhztFXUKSbDziGiDeRv/XGtl9+hWpv9VrpXs=;
+	b=lv97Kox4PCDig0KLexZk6N62zjvxk4SJ8y11kk21ipX6KpjysrtPLdIgZ+UIXLNmTk48gg
+	pPfKOnXsCeNDwdUeXfuCm8nVllXba1EJHfAZfag6vgGXNDlmHHNObauuWuLsWjb9TbgUxT
+	j+u5tG35xU0I4Eqo5ES0uqkF+ZL0kWo=
+Date: Fri, 19 Jun 2026 14:35:04 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260617152855.1039151-1-runyu.xiao@seu.edu.cn>
+Subject: Re: [PATCH bpf v4 1/3] selftests/bpf: don't modify the skb in the
+ strparser parser prog
+To: Sechang Lim <rhkrqnwk98@gmail.com>, Alexei Starovoitov <ast@kernel.org>,
+ Andrii Nakryiko <andrii@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Eduard Zingerman <eddyz87@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Jakub Sitnicki <jakub@cloudflare.com>, "David S . Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Kuniyuki Iwashima <kuniyu@google.com>, Willem de Bruijn
+ <willemb@google.com>, Shuah Khan <shuah@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>,
+ Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>,
+ Simon Horman <horms@kernel.org>, Bobby Eshleman <bobbyeshleman@gmail.com>,
+ Jiayuan Chen <jiayuan.chen@linux.dev>, bpf@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+References: <20260619062959.3277612-1-rhkrqnwk98@gmail.com>
+ <20260619062959.3277612-2-rhkrqnwk98@gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <20260619062959.3277612-2-rhkrqnwk98@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On 2026-06-17 23:28:55, Runyu Xiao wrote:
->smc_listen() installs smc_clcsock_data_ready() as the underlying TCP
->listen socket's sk_data_ready callback.  smc_clcsock_data_ready() then
->immediately takes sk_callback_lock before looking up the SMC listener and
->queuing smc_tcp_listen_work().
->
->That is unsafe once the TCP listen socket is leaving TCP_LISTEN.  The TCP
->close/flush path can run the installed sk_data_ready callback with
->sk_callback_lock already held, so entering smc_clcsock_data_ready() again
->tries to take the same rwlock recursively in the same thread.  The nvmet
->TCP listener had to make the same state check before taking
->sk_callback_lock for this reason.
->
->This issue was found by our static analysis tool and then manually
->reviewed against the current tree.
->
->The grounded PoC kept the SMC listen callback installation path:
->
->  smc_listen()
->  smc_clcsock_replace_cb()
->  sk_data_ready = smc_clcsock_data_ready()
->
->It then modeled the close/flush carrier that invokes the installed
->sk_data_ready callback while sk_callback_lock is already held.  Lockdep
->reported the same-thread recursive acquisition:
->
->  WARNING: possible recursive locking detected
->  smc_clcsock_data_ready+0xa/0x4d [vuln_msv]
->  smc_close_flush_work+0x1f/0x30 [vuln_msv]
->  *** DEADLOCK ***
->
->Return before taking sk_callback_lock when the underlying TCP socket is no
->longer in TCP_LISTEN.  In that state there is no listen accept work to
->queue for SMC, and avoiding the callback lock mirrors the fix used by the
->TCP nvmet listener.
 
-Hi Runyu,
+On 6/19/26 2:29 PM, Sechang Lim wrote:
+> sockmap_parse_prog.c is attached as an SK_SKB stream parser and modifies
+> the skb. It calls bpf_skb_pull_data() and writes a byte into the packet.
+> A stream parser runs on strparser's message head and must not modify it.
+> A resize frees the frag_list segments strparser still tracks, leading to
+> a use-after-free.
+>
+> Make the parser read-only. It only needs to return the message length,
+> which keeps it attaching once packet-modifying parsers are rejected.
+>
+> Signed-off-by: Sechang Lim <rhkrqnwk98@gmail.com>
 
-I noticed the lockdep splat comes from your own kernel module
-([vuln_msv]) that models the condition, rather than from a real
-TCP code path.
 
-Could you point me to the specific mainline TCP code path that calls
-sk_data_ready() while holding sk_callback_lock? If such a path
-exists, I'm happy to take this patch. But if this is based solely on
-static analysis without a confirmed real call chain, I'd prefer to
-focus our review bandwidth on issues that have demonstrated impact.
+This series should target bpf-next.
 
-Thanks,
-Dust
+
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 
