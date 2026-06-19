@@ -1,239 +1,240 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DD6E18027
-	for <netdev@vger.kernel.org>; Fri, 19 Jun 2026 19:15:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DD9E349B0D;
+	Fri, 19 Jun 2026 19:32:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781896542; cv=none; b=SvYDTXRMWlXACicOi64xgpUnzGW7pgJWuu4XOFkoyL08HK6gTa1DQhFaKXfovXorWqrie5SDBGQ5S4Tj0rqWGKVPyFDhnJ5Ho8rF6SCIdZZr4ADZNnhxWtGJH5iewFL7cH8k7fujoOiOI8B3DJs4EypJZZLdTF95Es3vk9c/nkU=
+	t=1781897557; cv=none; b=L640veypqBp/N1f2M7vWjMlU4mqMW0PYffvpNBBxhNYB9Qcz58XkstFWRs9csS5+vfNqmNrOk8cE2VOoCbZDOSqq5HAJcQHaNcI6a5SaegAx02wnACsG7eJq6vyd416qOriJPhFRqy65qNpE4Fh9jyCeCGCF/EhdfLCVUvJOBzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781896542; c=relaxed/simple;
-	bh=qeFtPSk0a9t/cwi5Hoey59XuV/cxhN+y6cziJ+Nqt74=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GOKisZF328v9l8nD+vFW5uv/lV8rqtHg/1YAebYeKufh1z5p8ln6B3+czuS8R+T0od4qjPFnzbuf5bYA6IWaUQAWIKMRf0zijDWH7ISUMlqNAZm+umnCkFRjJdfNPMZ5lihWhTO6G/Ln5vn/q4ortNUTbcGwZMZxa5tVCiR3ZaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UCF1wsic; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781897557; c=relaxed/simple;
+	bh=gHc8zi5miNpM28ukI1VhOAt03eXkjT0Uh8qx72KdouQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i2HHIcoqXGTzR4nef8D7PBzVyVkaf6mmMgvzi9XZaZ8sk0/FTD1WeGO6+ythhKRsgkfg/vxGXN6S0abES9xIgvMJGsqTy9gHSF0euqZ4C4hcogytSnHMSuYHaS9x7tSzeY4sgP/ThafCI+ZLbdYdhWLcqEsceKqT2EzqLJVSQxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=axv1ytRK; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UCF1wsic"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 785751F00A3A;
-	Fri, 19 Jun 2026 19:15:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781896540;
-	bh=CIDFxpy+sKiaQWkwBZwhwNK8JQ039FvamiFsGnGHZzM=;
-	h=From:To:Cc:Subject:Date;
-	b=UCF1wsic6WZAAVggrn3YafiDJ1Z/3+sr/LqjQ+56D5RciZFna13BCPEsSC092t3zw
-	 QKdtMZ3aqxVltk2GK3/M6EvoUEwpup+LN4jnov/aM+XmZ+1zqVXTxeKUDTiLL0qlV0
-	 Apgl3RTTKZhYANYFY+pJqOB/aQyrWzdrmluaWm6wb1MzU9j/qVmz0qK0tiLU2GgQhY
-	 +uI1uMiU+gH0EIcMGKGzb3eBwyd/GBUC223qOLSOPuVC6EyLLze77S34fMpD6Blsh/
-	 q+mrjsDf8EX+pYVV+cRiMQKbLXBuyhNTdt0ikubN13K4zSPEgBtSkLsz2VnpnQaNz3
-	 nHijKkKkdjvag==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	michael.chan@broadcom.com,
-	pavan.chebbi@broadcom.com
-Subject: [PATCH net v2] eth: bnxt: improve the timing of stats
-Date: Fri, 19 Jun 2026 12:15:38 -0700
-Message-ID: <20260619191538.104165-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="axv1ytRK"
+Received: by linux.microsoft.com (Postfix, from userid 1173)
+	id 3C65C20B7168; Fri, 19 Jun 2026 12:32:34 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 3C65C20B7168
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1781897554;
+	bh=m2uMxxexDXuJiyEDGdvQW8jMxy4JG/jFpxhsKw2zxso=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=axv1ytRKW9J9dLaykB85E5RKw778VJTsAnGBgDm54K5ccP6TuM1idVXo84/+eHuA0
+	 rEC8iInJgqFqMKMf6s7++kxm8T936/8OoShGjH6mw/Xl4Bb8B3sMcaXsLnzJw+eHpX
+	 ZxXYnk/scEgxxjar87N3D8G9YDGhrBnCnlT+j+lw=
+Date: Fri, 19 Jun 2026 12:32:34 -0700
+From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: mkalderon@marvell.com, Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>, zyjzyj2000@gmail.com,
+	sagi@grimberg.me, mgurtovoy@nvidia.com, haris.iqbal@ionos.com,
+	jinpu.wang@ionos.com, bvanassche@acm.org, kbusch@kernel.org,
+	Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
+	kch@nvidia.com, smfrench@gmail.com, linkinjeon@kernel.org,
+	metze@samba.org, tom@talpey.com, trondmy@kernel.org,
+	anna@kernel.org, chuck.lever@oracle.com, jlayton@kernel.org,
+	neil@brown.name, okorniev@redhat.com, Dai.Ngo@oracle.com,
+	achender@kernel.org, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	kees@kernel.org, ebadger@purestorage.com,
+	linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+	target-devel@vger.kernel.org, linux-nvme@lists.infradead.org,
+	linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
+	linux-nfs@vger.kernel.org, netdev@vger.kernel.org,
+	rds-devel@oss.oracle.com, Jason Gunthorpe <jgg@nvidia.com>
+Subject: Re: [PATCH rdma-next v7] RDMA: Change capability fields in
+ ib_device_attr from int to u32
+Message-ID: <ajWZUjSoUCTe0Pb7@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <20260606070735.2163063-1-ernis@linux.microsoft.com>
+ <aigwONAwxQx6rLef@ashevche-desk.local>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aigwONAwxQx6rLef@ashevche-desk.local>
 
-Kernel selftests wait 1.25x of the promised stats refresh time
-(as read from ethtool -c). bnxt reports 1sec by default, but
-the stats update process has two steps. First device DMAs the
-new values, then the service task performs update in full-width
-SW counters. So the worst case delay is actually 2x.
+Hi Andy,
 
-Note that the behavior is different for ring stats and port stats.
-Port stats are fetched synchronously by the service worker, so
-there's no risk of doubling up the delay there.
+Sorry for delayed response.
 
-The problem of stale stats impacts not only tests but real workloads
-which monitor egress bandwidth of a NIC. The inaccuracy causes double
-counting in the next cycle and spurious overload alarms.
+> >  	attr->max_qp_init_rd_atom =
+> >  	    1 << (fls(qattr->max_qp_req_rd_atomic_resc) - 1);
+> 
+> FWIW, this one and below looks like reinvention of rounddown_pow_of_two().
 
-Try to read from the DMA buffer more aggressively, to mitigate
-timing issues between DMA and service task. The SW update should
-be cheap.
+Acked.
+> 
+> >  	attr->max_qp_rd_atom =
+> > -	    min(1 << (fls(qattr->max_qp_resp_rd_atomic_resc) - 1),
+> > +	    min(1U << (fls(qattr->max_qp_resp_rd_atomic_resc) - 1),
+> >  		attr->max_qp_init_rd_atom);
+> 
+> ...
+> 
+> >  int ipoib_cm_dev_init(struct net_device *dev)
+> >  {
+> >  	struct ipoib_dev_priv *priv = ipoib_priv(dev);
+> > -	int max_srq_sge, i;
+> > +	int i;
+> > +	u32 max_srq_sge;
+> >  	u8 addr;
+> 
+> It seems the order is reversed xmas tree, why not preserving it?
+> 
+Right. I'll fix it in the next version.
+> ...
+> 
+> > --- a/drivers/infiniband/ulp/rtrs/rtrs-clt.c
+> > +++ b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
+> 
+> >  		max_send_wr =
+> > -			min_t(int, wr_limit, SERVICE_CON_QUEUE_DEPTH * 2 + 2);
+> > +			min(wr_limit, SERVICE_CON_QUEUE_DEPTH * 2 + 2);
+> 
+> Now perfectly a single line
+> 
+> 		max_send_wr = min(wr_limit, SERVICE_CON_QUEUE_DEPTH * 2 + 2);
+> 
+> >  		max_recv_wr = max_send_wr;
+> 
+> ...
+> 
+> > -		max_send_wr = min_t(int, wr_limit,
+> > -			      /* QD * (REQ + RSP + FR REGS or INVS) + drain */
+> > -			      clt_path->queue_depth * 4 + 1);
+> > -		max_recv_wr = min_t(int, wr_limit,
+> > -			      clt_path->queue_depth * 3 + 1);
+> > +		max_send_wr = min_t(u32, wr_limit,
+> > +				    /* QD * (REQ + RSP + FR REGS or INVS) + drain */
+> > +				    clt_path->queue_depth * 4 + 1);
+> > +		max_recv_wr = min_t(u32, wr_limit,
+> > +				    clt_path->queue_depth * 3 + 1);
+> 
+> Can we rather update the type of one of them and use min() instead?
+> 
+I'll remove all the min_t usages in the next version.
+> ...
+> 
+> > --- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
+> > +++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
+> 
+> Ditto.
+> 
+> ...
+> 
+> > -static int srpt_srq_size = DEFAULT_SRPT_SRQ_SIZE;
+> > -module_param(srpt_srq_size, int, 0444);
+> > +static unsigned int srpt_srq_size = DEFAULT_SRPT_SRQ_SIZE;
+> > +module_param(srpt_srq_size, uint, 0444);
+> 
+> Theoretically this might break ABI (if somebody uses negative values for
+> anything. I don't think it's the case, but just be informed.
+> 
+Okay. Thankyou for the information. 
 
-Fixes: 51f307856b60 ("bnxt_en: Allow statistics DMA to be configurable using ethtool -C.")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
-CC: michael.chan@broadcom.com
-CC: pavan.chebbi@broadcom.com
+> >  MODULE_PARM_DESC(srpt_srq_size,
+> >  		 "Shared receive queue (SRQ) size.");
+> 
+> ...
+> 
+> > --- a/drivers/nvme/target/rdma.c
+> > +++ b/drivers/nvme/target/rdma.c
+> 
+> > -	ndev->srq_size = min(ndev->device->attrs.max_srq_wr,
+> > -			     nvmet_rdma_srq_size);
+> > -	ndev->srq_count = min(ndev->device->num_comp_vectors,
+> > -			      ndev->device->attrs.max_srq);
+> > +	ndev->srq_size = min_t(u32, ndev->device->attrs.max_srq_wr,
+> > +			       nvmet_rdma_srq_size);
+> > +	ndev->srq_count = min_t(u32, ndev->device->num_comp_vectors,
+> > +				ndev->device->attrs.max_srq);
+> 
+> Same question, can we change type type of variables instead?
+>
+Yes. I'll be doing it in the next version.
+ 
+> >  	mutex_lock(&device_list_mutex);
+> 
+> ...
+> 
+> >  	inline_page_count = num_pages(nport->inline_data_size);
+> >  	inline_sge_count = max(cm_id->device->attrs.max_sge_rd,
+> > -				cm_id->device->attrs.max_recv_sge) - 1;
+> > +				cm_id->device->attrs.max_recv_sge);
+> > +	inline_sge_count = inline_sge_count ? inline_sge_count - 1 : 0;
+> 
+> Simple conditional might be better
+> 
+> 	if (inline_sge_count)
+> 		inline_sge_count--;
+> 	OR
+> 		inline_sge_count -= 1;
+Okay. I'll update all such instances.
 
-v2:
- - split the accumulate into port and ring
- - make the sync only cover rings
- - remove sync from callbacks which use port stats (which are fetched
-   synchronously by the service worker)
-v1: https://lore.kernel.org/20260618181358.3037661-1-kuba@kernel.org
+> 
+> ...
+> 
+> > +++ b/include/rdma/ib_verbs.h
+> 
+> > -	int			max_qp;
+> > -	int			max_qp_wr;
+> > +	u32			max_qp;
+> > +	u32			max_qp_wr;
+> 
+> Nice, but please check that none of these (and beyond) were not used in signed
+> multiplication or (which is more disasterous) division. Otherwise it might be
+> subtle issues that will be hard to debug.
+Yes I have checked that for all the variables I updated.
 
-With this patch I had a 50 clean runs of ntuple.py in a row.
-Previously it'd fail within 5 runs at most.
+> 
+> ...
+> 
+> >  	conn_param->responder_resources =
+> > -		min_t(u32, rds_ibdev->max_responder_resources, max_responder_resources);
+> > +		min3(rds_ibdev->max_responder_resources,
+> > +		     max_responder_resources, U8_MAX);
+> >  	conn_param->initiator_depth =
+> > -		min_t(u32, rds_ibdev->max_initiator_depth, max_initiator_depth);
+> > +		min3(rds_ibdev->max_initiator_depth,
+> > +		     max_initiator_depth, U8_MAX);
+> 
+> I believe we can go a few characters over and leave them to be single lines.
+> 
+Okay.
 
-Hopefully this is good enough, in the past I sent an RFC to
-convert the driver to use SW stats for everything. That felt
-a little drastic.
----
- drivers/net/ethernet/broadcom/bnxt/bnxt.h     |  5 ++
- drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 48 ++++++++++++++++++-
- .../net/ethernet/broadcom/bnxt/bnxt_ethtool.c |  1 +
- 3 files changed, 53 insertions(+), 1 deletion(-)
+> >  	conn_param->retry_count = min_t(unsigned int, rds_ib_retry_count, 7);
+> 
+> What about this one?
+Sorry. I missed this one, I'll update it.
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-index 6d312259f852..6335dfc14c98 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-@@ -2620,6 +2620,10 @@ struct bnxt {
- #define BNXT_MIN_STATS_COAL_TICKS	  250000
- #define BNXT_MAX_STATS_COAL_TICKS	 1000000
- 
-+	/* Protects stats_updated_jiffies and writes to sw_stats */
-+	spinlock_t		stats_lock;
-+	unsigned long		stats_updated_jiffies;
-+
- 	struct work_struct	sp_task;
- 	unsigned long		sp_event;
- #define BNXT_RX_NTP_FLTR_SP_EVENT	1
-@@ -3027,6 +3031,7 @@ void bnxt_reenable_sriov(struct bnxt *bp);
- void bnxt_close_nic(struct bnxt *, bool, bool);
- void bnxt_get_ring_drv_stats(struct bnxt *bp,
- 			     struct bnxt_total_ring_drv_stats *stats);
-+void bnxt_sync_ring_stats(struct bnxt *bp);
- bool bnxt_rfs_capable(struct bnxt *bp, bool new_rss_ctx);
- int bnxt_dbg_hwrm_rd_reg(struct bnxt *bp, u32 reg_off, u16 num_words,
- 			 u32 *reg_buf);
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 055e93a417b6..7513618793da 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -10530,7 +10530,7 @@ static void bnxt_accumulate_stats(struct bnxt_stats_mem *stats)
- 				stats->hw_masks, stats->len / 8, false);
- }
- 
--static void bnxt_accumulate_all_stats(struct bnxt *bp)
-+static void bnxt_accumulate_ring_stats(struct bnxt *bp)
- {
- 	struct bnxt_stats_mem *ring0_stats;
- 	bool ignore_zero = false;
-@@ -10553,6 +10553,10 @@ static void bnxt_accumulate_all_stats(struct bnxt *bp)
- 					ring0_stats->hw_masks,
- 					ring0_stats->len / 8, ignore_zero);
- 	}
-+}
-+
-+static void bnxt_accumulate_port_stats(struct bnxt *bp)
-+{
- 	if (bp->flags & BNXT_FLAG_PORT_STATS) {
- 		struct bnxt_stats_mem *stats = &bp->port_stats;
- 		__le64 *hw_stats = stats->hw_stats;
-@@ -10575,6 +10579,41 @@ static void bnxt_accumulate_all_stats(struct bnxt *bp)
- 	}
- }
- 
-+static void bnxt_accumulate_all_stats(struct bnxt *bp)
-+{
-+	bnxt_accumulate_ring_stats(bp);
-+	bnxt_accumulate_port_stats(bp);
-+}
-+
-+/* Re-accumulate ring stats from DMA buffers if stale.
-+ * uAPIs for reading sw_stats should call this first.
-+ *
-+ * We promise user space update frequency of bp->stats_coal_ticks but
-+ * the update is a two step process - first device updates the DMA buffer,
-+ * then we have to update from that buffer to driver stats in the service work.
-+ * Worst case we would be 2x off from the desired frequency.
-+ * Sync the stats sooner, if stale. The 20% threshold was chosen arbitrarily.
-+ *
-+ * Ideally we would split the user-configured time into two portions,
-+ * i.e. also lower the DMA period by the 20%. But the DMA timer seems to have
-+ * too coarse granularity to play such tricks.
-+ */
-+void bnxt_sync_ring_stats(struct bnxt *bp)
-+{
-+	unsigned long stale;
-+
-+	if (!netif_running(bp->dev) || !bp->stats_coal_ticks)
-+		return;
-+
-+	spin_lock(&bp->stats_lock);
-+	stale = usecs_to_jiffies(bp->stats_coal_ticks / 5);
-+	if (time_after_eq(jiffies, bp->stats_updated_jiffies + stale)) {
-+		bnxt_accumulate_ring_stats(bp);
-+		bp->stats_updated_jiffies = jiffies;
-+	}
-+	spin_unlock(&bp->stats_lock);
-+}
-+
- static int bnxt_hwrm_port_qstats(struct bnxt *bp, u8 flags)
- {
- 	struct hwrm_port_qstats_input *req;
-@@ -13577,6 +13616,7 @@ bnxt_get_stats64(struct net_device *dev, struct rtnl_link_stats64 *stats)
- 		return;
- 	}
- 
-+	bnxt_sync_ring_stats(bp);
- 	bnxt_get_ring_stats(bp, stats);
- 	bnxt_add_prev_stats(bp, stats);
- 
-@@ -14753,7 +14793,10 @@ static void bnxt_sp_task(struct work_struct *work)
- 	if (test_and_clear_bit(BNXT_PERIODIC_STATS_SP_EVENT, &bp->sp_event)) {
- 		bnxt_hwrm_port_qstats(bp, 0);
- 		bnxt_hwrm_port_qstats_ext(bp, 0);
-+		spin_lock(&bp->stats_lock);
- 		bnxt_accumulate_all_stats(bp);
-+		bp->stats_updated_jiffies = jiffies;
-+		spin_unlock(&bp->stats_lock);
- 	}
- 
- 	if (test_and_clear_bit(BNXT_LINK_CHNG_SP_EVENT, &bp->sp_event)) {
-@@ -15488,6 +15531,7 @@ static int bnxt_init_board(struct pci_dev *pdev, struct net_device *dev)
- 	INIT_DELAYED_WORK(&bp->fw_reset_task, bnxt_fw_reset_task);
- 
- 	spin_lock_init(&bp->ntp_fltr_lock);
-+	spin_lock_init(&bp->stats_lock);
- #if BITS_PER_LONG == 32
- 	spin_lock_init(&bp->db_lock);
- #endif
-@@ -16056,6 +16100,7 @@ static void bnxt_get_queue_stats_rx(struct net_device *dev, int i,
- 	if (!bp->bnapi)
- 		return;
- 
-+	bnxt_sync_ring_stats(bp);
- 	cpr = &bp->bnapi[i]->cp_ring;
- 	sw = cpr->stats.sw_stats;
- 
-@@ -16084,6 +16129,7 @@ static void bnxt_get_queue_stats_tx(struct net_device *dev, int i,
- 	if (!bp->tx_ring)
- 		return;
- 
-+	bnxt_sync_ring_stats(bp);
- 	bnapi = bp->tx_ring[bp->tx_ring_map[i]].bnapi;
- 	sw = bnapi->cp_ring.stats.sw_stats;
- 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-index 56d74a3c24b7..62bc9cae613c 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-@@ -606,6 +606,7 @@ static void bnxt_get_ethtool_stats(struct net_device *dev,
- 		goto skip_ring_stats;
- 	}
- 
-+	bnxt_sync_ring_stats(bp);
- 	tpa_stats = bnxt_get_num_tpa_ring_stats(bp);
- 	for (i = 0; i < bp->cp_nr_rings; i++) {
- 		struct bnxt_napi *bnapi = bp->bnapi[i];
--- 
-2.54.0
+> 
+> >  	conn_param->rnr_retry_count = 7;
+> 
+> ...
+> 
+> >  int frwr_query_device(struct rpcrdma_ep *ep, const struct ib_device *device)
+> >  {
+> >  	const struct ib_device_attr *attrs = &device->attrs;
+> > -	int max_qp_wr, depth, delta;
+> > +	u32 max_qp_wr;
+> > +	int depth, delta;
+> >  	unsigned int max_sge;
+> 
+> Reversed xmas tree order.
+Okay
 
+Thankyou for all your suggestions.
+The next version will be incorporated with all these changes.
+
+- Vennela
+> 
+> -- 
+> With Best Regards,
+> Andy Shevchenko
+> 
