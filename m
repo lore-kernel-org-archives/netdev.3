@@ -1,31 +1,33 @@
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 396E633E36A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3965B33ADA8
 	for <netdev@vger.kernel.org>; Fri, 19 Jun 2026 07:10:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781853032; cv=none; b=e22Lcks0Fy8NqovAliUMxEo7l2o7IFYId5N7lt70I34wWdrlnSLA7hZDTe9+H0hcEDSa4LPr6wodFHGNIYDq+57Kb2krJUfvr9rLccZ8Cr85yF7GnN1GpRuhdxBrzcfFzULbGIlgKugOp5ahSgHkLtJvslIMZYDPFFw3hsKc2p0=
+	t=1781853032; cv=none; b=H8zD/5CVXFmN50+0/J1I+6alwYf+U3MneLwIS+M6GPAsnz/pnIMcuBsFt/B5/H6M1FfiWG7po5vGN/xV3X0gSjlVtuf/RYMNQhvfPpsSE5LY/VotSQZzP1LvsYuzxj+qp4iYsF+WQE2LzpQpoOnqZIf1q8A58vkY/FczrsAihwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1781853032; c=relaxed/simple;
-	bh=a+oGRw41dh1HY1aj2eszImyS6m4/Gxab2Oaii5OlU3A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Jg0aWxs/jRu4jaavmYddzCvZ0KIP+blNAwRVFk2+aiAu+kOn80rIxZVqGZn7p2iSIUAJGuxbZ17w2ytPxZFaC1XoqbwLV9OIBecdiX05kISPowMw8JYoRrM3GN70HEGr3xsr7NB7iMPfVZIq1km47DZ9NSlT8r0WgBORvbEkCUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=h6ql4ZWx; arc=none smtp.client-ip=23.88.38.48
+	bh=oNM7e/exOP51kma8X00b1dG2eRJClOHuDA9nTaA8nmo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WUScaolpOh/JX5rxyxCT2bjmffgx1jHx01ouNsWLmoWJD/hPVjIBQHVbcDnQuRHmi/AQfj+KkSFjsFqKMAGd+mMe/PNP0WWwFsKoBcCC7ee/77hCCLCS4QKfgQSdaTQpXYbhfYTmeSO/PNK2Ukq68P/p9m2AF3v2Lcy2IoC8uuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=Gyx8VoFS; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="h6ql4ZWx"
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="Gyx8VoFS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1781852446;
+	s=09092022; t=1781852449;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=i1TkLzyUd1JwPopxOLN6MeiT5+G1+YihcZtxk0na7ro=;
-	b=h6ql4ZWxeEWdYnFm1M3mQeM7XLANR3/OrTo0BibVg5XKaA2jrGcDTlCfhrKDHsCGM4eskA
-	a9GGheNn3gp+OsmVgfmuiebwqXbiI8kpxye54C3HydJeN4e3InzAHzSY2zT4zJenVSVB4K
-	x9oaLAI0T3zQckgdydd6ntHJayiEigiU4X5hbU6ds8yDF/154BdOV0kQiqXJKt1sgupeXi
-	Dei5CEQEAgYm93WS0Ix+pOzBLeqSnAXj/Pid0bz1/l/5a/mnKeqIW5agmHxiy/hPlNvYYJ
-	dGPfagCKL/JowiAPmRrqqIOXuQXWf1z3Du4PTzav9WqJARxfT/0QBDOO7DPlqw==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=df0sc9RvZxEMHTxHbnI9oNmIsDOa2OH9rHZyYmPP0HE=;
+	b=Gyx8VoFSJgR/rJAu3SHlSg43O/brt5+15CKcdS6vmgbPzcULKmnMC0IwPNScH7tOLSzUxh
+	He6s+ovORHfMWoWBwKgoD+kOtR3EZzSQIbc7bl3bBMtDa8S8TX/BY0mvQEFeYxz3T2p7VE
+	5TcGjPATjiKNyR6sMpB1Db97MWnEBsiFb1IRJ44g+lbzqmPnazSU1a3zFYeMiiUwZjcbmY
+	bqaMJGhJmcXIQ7XsgP9uy0vf55gAZFl1D4PkJtIHckzl+9Gekm6GoA5Xgo+tmwPTOgWbPS
+	MIkW8HhalYaI6F1BkplLBErp9EFxBYLgpgOAcjbz617vYW3TgkXEA+9BxQWxkQ==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -34,11 +36,15 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
 	b.a.t.m.a.n@lists.open-mesh.org,
+	Sven Eckelmann <sven@narfation.org>,
+	stable@kernel.org,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net 00/15] pull request: batman-adv 2026-06-19
-Date: Fri, 19 Jun 2026 09:00:30 +0200
-Message-ID: <20260619070045.438101-1-sw@simonwunderlich.de>
+Subject: [PATCH net 04/15] batman-adv: frag: ensure fragment is writable before modifying TTL
+Date: Fri, 19 Jun 2026 09:00:34 +0200
+Message-ID: <20260619070045.438101-5-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260619070045.438101-1-sw@simonwunderlich.de>
+References: <20260619070045.438101-1-sw@simonwunderlich.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,75 +53,102 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Dear net maintainers,
+From: Sven Eckelmann <sven@narfation.org>
 
-here are some bugfixes for batman-adv which we would like to have integrated into net.
+Before batman-adv is allowed to write to an skb, it either has to have its
+own copy of the skb or use skb_cow() to ensure that the data part is not
+shared. But batadv_frag_skb_fwd() modifies the TTL even when it is shared.
 
-Please pull or let me know of any problem!
+Adding a skb_cow() right before this operation avoids this and can at the
+same time prepare it for the modifications required to forward the
+fragment.
 
-Thank you,
-      Simon
+Cc: stable@kernel.org
+Fixes: 610bfc6bc99b ("batman-adv: Receive fragmented packets and merge")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+---
+ net/batman-adv/fragmentation.c | 15 ++++++++++++++-
+ net/batman-adv/fragmentation.h |  3 ++-
+ net/batman-adv/routing.c       |  3 +--
+ 3 files changed, 17 insertions(+), 4 deletions(-)
 
-The following changes since commit dad4d4b92a9b9f0edb8c66deda049da1b62f6089:
+diff --git a/net/batman-adv/fragmentation.c b/net/batman-adv/fragmentation.c
+index 1e42cf99f8b33..f311a42203d2e 100644
+--- a/net/batman-adv/fragmentation.c
++++ b/net/batman-adv/fragmentation.c
+@@ -386,6 +386,8 @@ bool batadv_frag_skb_buffer(struct sk_buff **skb,
+  * @skb: skb to forward
+  * @recv_if: interface that the skb is received on
+  * @orig_node_src: originator that the skb is received from
++ * @rx_result: set to NET_RX_SUCCESS when the fragment was forwarded and
++ *  NET_RX_DROP when it was dropped; only valid when true is returned
+  *
+  * Look up the next-hop of the fragments payload and check if the merged packet
+  * will exceed the MTU towards the next-hop. If so, the fragment is forwarded
+@@ -395,7 +397,8 @@ bool batadv_frag_skb_buffer(struct sk_buff **skb,
+  */
+ bool batadv_frag_skb_fwd(struct sk_buff *skb,
+ 			 struct batadv_hard_iface *recv_if,
+-			 struct batadv_orig_node *orig_node_src)
++			 struct batadv_orig_node *orig_node_src,
++			 int *rx_result)
+ {
+ 	struct batadv_priv *bat_priv = netdev_priv(recv_if->mesh_iface);
+ 	struct batadv_neigh_node *neigh_node = NULL;
+@@ -414,12 +417,22 @@ bool batadv_frag_skb_fwd(struct sk_buff *skb,
+ 	 */
+ 	total_size = ntohs(packet->total_size);
+ 	if (total_size > neigh_node->if_incoming->net_dev->mtu) {
++		if (skb_cow(skb, ETH_HLEN) < 0) {
++			kfree_skb(skb);
++			*rx_result = NET_RX_DROP;
++			ret = true;
++			goto out;
++		}
++
++		packet = (struct batadv_frag_packet *)skb->data;
++
+ 		batadv_inc_counter(bat_priv, BATADV_CNT_FRAG_FWD);
+ 		batadv_add_counter(bat_priv, BATADV_CNT_FRAG_FWD_BYTES,
+ 				   skb->len + ETH_HLEN);
+ 
+ 		packet->ttl--;
+ 		batadv_send_unicast_skb(skb, neigh_node);
++		*rx_result = NET_RX_SUCCESS;
+ 		ret = true;
+ 	}
+ 
+diff --git a/net/batman-adv/fragmentation.h b/net/batman-adv/fragmentation.h
+index dbf0871f87030..51e281027ab63 100644
+--- a/net/batman-adv/fragmentation.h
++++ b/net/batman-adv/fragmentation.h
+@@ -19,7 +19,8 @@ void batadv_frag_purge_orig(struct batadv_orig_node *orig,
+ 			    bool (*check_cb)(struct batadv_frag_table_entry *));
+ bool batadv_frag_skb_fwd(struct sk_buff *skb,
+ 			 struct batadv_hard_iface *recv_if,
+-			 struct batadv_orig_node *orig_node_src);
++			 struct batadv_orig_node *orig_node_src,
++			 int *rx_result);
+ bool batadv_frag_skb_buffer(struct sk_buff **skb,
+ 			    struct batadv_orig_node *orig_node);
+ int batadv_frag_send_packet(struct sk_buff *skb,
+diff --git a/net/batman-adv/routing.c b/net/batman-adv/routing.c
+index 8786b66c8a924..9db57fd36e7d4 100644
+--- a/net/batman-adv/routing.c
++++ b/net/batman-adv/routing.c
+@@ -1168,10 +1168,9 @@ int batadv_recv_frag_packet(struct sk_buff *skb,
+ 
+ 	/* Route the fragment if it is not for us and too big to be merged. */
+ 	if (!batadv_is_my_mac(bat_priv, frag_packet->dest) &&
+-	    batadv_frag_skb_fwd(skb, recv_if, orig_node_src)) {
++	    batadv_frag_skb_fwd(skb, recv_if, orig_node_src, &ret)) {
+ 		/* skb was consumed */
+ 		skb = NULL;
+-		ret = NET_RX_SUCCESS;
+ 		goto put_orig_node;
+ 	}
+ 
+-- 
+2.47.3
 
-  Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2026-06-11 14:33:35 -0700)
-
-are available in the Git repository at:
-
-  https://git.open-mesh.org/batadv.git tags/batadv-net-pullrequest-20260619
-
-for you to fetch changes up to edb557b2ba38fea2c5eb710cf366c797e187218c:
-
-  batman-adv: tvlv: avoid race of cifsnotfound handler state (2026-06-14 12:33:18 +0200)
-
-----------------------------------------------------------------
-Here are some batman-adv bugfixes, all by Sven Eckelmann:
-
-- gw: don't deselect gateway with active hardif
-
-- TTL fixes in bcast/mcast and fragmentation handling (4 patches)
-
-- BATMAN V: prevent OGM aggregation on disabled hardif
-
-- tp_meter: concurrency and range fixes, add cap to unacked list
-  (4 patches)
-
-- tt: fix unchecked VLAN ID in tt for local add and roam (2 patches)
-
-- dat: check VLAN ID in the hash
-
-- tvlv: enforce 2-byte alignment
-
-- tvlv: avoid race of cifsnotfound handler state
-
-----------------------------------------------------------------
-Sven Eckelmann (15):
-      batman-adv: gw: don't deselect gateway with active hardif
-      batman-adv: ensure bcast is writable before modifying TTL
-      batman-adv: fix (m|b)cast csum after decrementing TTL
-      batman-adv: frag: ensure fragment is writable before modifying TTL
-      batman-adv: frag: avoid underflow of TTL
-      batman-adv: v: prevent OGM aggregation on disabled hardif
-      batman-adv: tp_meter: restrict number of unacked list entries
-      batman-adv: tp_meter: annotate last_recv_time access with READ/WRITE_ONCE
-      batman-adv: tp_meter: prevent parallel modifications of last_recv
-      batman-adv: tp_meter: handle overlapping packets
-      batman-adv: tt: don't merge change entries with different VIDs
-      batman-adv: tt: track roam count per VID
-      batman-adv: dat: prevent false sharing between VLANs
-      batman-adv: tvlv: enforce 2-byte alignment
-      batman-adv: tvlv: avoid race of cifsnotfound handler state
-
- net/batman-adv/bat_iv_ogm.c            | 11 ++++-
- net/batman-adv/bat_v.c                 |  1 +
- net/batman-adv/bat_v_ogm.c             | 23 ++++++++++-
- net/batman-adv/distributed-arp-table.c | 12 ++++--
- net/batman-adv/fragmentation.c         | 22 +++++++++-
- net/batman-adv/fragmentation.h         |  3 +-
- net/batman-adv/hard-interface.c        | 28 +------------
- net/batman-adv/routing.c               | 73 +++++++++++++++++++++++++++++++--
- net/batman-adv/tp_meter.c              | 74 ++++++++++++++++++++++------------
- net/batman-adv/translation-table.c     | 12 +++++-
- net/batman-adv/tvlv.c                  | 69 ++++++++++++++++++++++++++++---
- net/batman-adv/types.h                 | 21 ++++++----
- 12 files changed, 270 insertions(+), 79 deletions(-)
