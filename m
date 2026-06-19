@@ -1,137 +1,153 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FFD434DB7B
-	for <netdev@vger.kernel.org>; Fri, 19 Jun 2026 07:14:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170A333ADA8;
+	Fri, 19 Jun 2026 07:14:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781853262; cv=none; b=SI8kOmaz0CULtlrLnr+77mbwag5Qr+i9OTPopFTFbqUWTyd6goFPsaY17JTy1NIn0oVxpN576cB7Yv9WOxB15LUME9g+vOknuS7TUV2HrqKbAnAnMBcewFx/XvluCd4XbU54M16s0AWxXskGPhxklbWJejcGcLska39ZA/RhuzU=
+	t=1781853288; cv=none; b=l6ITHURz4I7qiHnM5CnDb6rZ2XgfM7e+6xwXVdE9YilfFuecyKjRyzsGuXdBiudJw60CmsDAZomo/8X0zYbe86JomFTrW8XdcckRgXFkWG5rCQYE3vHwQTU7BN/1Mf2FzWdkl5AtmgwFJwxCajUvBEScczfWfP//1NsrbLRK+qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781853262; c=relaxed/simple;
-	bh=5g5YGofPTDcKTTBlyH2UVXlBM4H480Pv5JkBfDsZK2c=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pBrWRdTDQ19t4HLq7I44G5zrYkiLLHixYqoa53b8d5qLWXqVHNH96wb97Ief6SydzRHZKEi43C3X56kxtjR6gy1k8mfkBsv2xh4VRXwuwNeJ1CdHcViCTul6B2eW8jnPjbrkGq9929o7wgSr0cHEbywCuY8xX80NEfEpfIr4Eao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=hCAbBPit; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1781853288; c=relaxed/simple;
+	bh=nKL6fTOWwY6Hg51AnU7XaHSMtjptIchNEHMyb2ZXzTk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=DLiK/E+infp9pmihAmuMGz8HVvIaYKKbP4n1zfC/NW2g87DYHKPQakHXsPLFFW8NJb10MgLgLMaOyiNB1+iPojVZEptYEnbt29PPlGGA/OYmHmehVbu0C6lUfP60kgydH5YhFGXrzUOynDO/5ZrkypD10puHrfU1MNL1Z6ievws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ds5vPXkc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="hCAbBPit"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-46255b269c2so1322387f8f.3
-        for <netdev@vger.kernel.org>; Fri, 19 Jun 2026 00:14:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1781853260; x=1782458060; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:date:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=dO+UhVuzDjOR9Xal9erNoYHD+4hYeE1itAO+Ot7PglQ=;
-        b=hCAbBPitM5hEMx855/8V8v3d9yJ6DNZ9TbIGYFPfc9nn02JUi1Ds+tXMIF3hkz99k6
-         yEIzFaBEi8lpX3Nhz/5oh50u2bx6YTZB/P/PCd1uNrjFdbXkX+cOWgGQ27TJ17DFr4wp
-         9BGlisO94IY7qNGbgEH4axoBJTvsKu3Rb1hw6N7dtXcmrhImUE/0dj+d3QLSQUJpCsZb
-         phXJ3F5GbKlb6x6Gyi4//GT5mWQpms4YCW3xqXq60nwb8O3Lef0MpUdnPuqo+Bw/8pFE
-         qV/R4WQGzDkAmTNWWKPYwA9I5BoX7Tcuka9CVsEeflZRBkkhFEWb+caXMbgfmif1Jc9v
-         MCrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781853260; x=1782458060;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dO+UhVuzDjOR9Xal9erNoYHD+4hYeE1itAO+Ot7PglQ=;
-        b=TSfwQrbH5+MN7WHMOrFHEm+stB2lNBLQvJVtX0IDykuX0btnuMkkUSGK1WQKx2Jobr
-         0DxVA9movJuFVvUGTvO0ldMmTuRaVM/JR6RvaUJvZpsGOyLKrflXTPvOkbdyYSZji0cT
-         M69n9nBCV6kdtBhRpLzkbzQDgrQyHGkmvZRKDDu04Y1Enz0ok7WXJLmI4jJHHCRcYycw
-         q6uNnAUESvBSbpXJDETKSohF76g4rOPqzuVLxJCopaWluBgqjhk1RYW8PKv7olZRVZLv
-         091Yh7BCp8WoAbwAK0zJqxNXwnl7giaCUtPdU9ZFLJQDQMCPZubmA6kMqDxZ21thZ2Bj
-         C7sA==
-X-Forwarded-Encrypted: i=1; AFNElJ+MO4EQwjZz/GT5hrpC5cLF3yYZ1+x+NuAE3a7aoknHDH0g38Uh8SnzX3l1up4BtsV7zlk3qZU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGKERhh2u/mogdzKkerIww2Rp6bDAPfMoPEmHVMKU/b7dISwiZ
-	1vRIr/Du94PWCCWn81GXO2mPW4pd9nS4ufTOiVZ9DR3jgjMGGr7/MGxSBD7R6adgJxBbb006g6H
-	TrsZDUhE=
-X-Gm-Gg: AfdE7cnjIWIiVBRhjZxp2D1f3/nqzF8d7HUFExYkAyumlamKGaDpevkpB8rtVbB7412
-	eMEyo+0zHg7PuusUoga+gSuIlfyZ5c3wx5ZDXO7QGA2dDEGh+lh/Xfm8rGelZM0Z+AKRed9Y6Q0
-	s54mGvEfyZGvcIYm4zTkKwgqY3/q0i+ZWBcCjA1dz4OBnf4dX3N7jJ4uMz56//XLZP81eXAn1pm
-	shpcoR18gem3FROhXf3dEsOhczGIOzXDNaM8ogb+Jfqf5lUbWzBmsZVOy2U4QjzuW2NcriOM4U5
-	pgP9vkTkZewxl69L4wY6wM7kxfzV0xZnUfwk3dXGbwRyMVTPdHnNl9s4jPnBpbcp0ZCZOplJ+CY
-	eM2gD9wzfB8o5b1hxqSLIceYHshreUintphJL8Z8KHoLUDmy8PZ17bE+pyXWNTskqGKbyUp2Km0
-	ty6DPl7jGKGA==
-X-Received: by 2002:a05:600c:8b24:b0:48a:93f8:dd02 with SMTP id 5b1f17b1804b1-4923f439be6mr49271215e9.14.1781853259707;
-        Fri, 19 Jun 2026 00:14:19 -0700 (PDT)
-Received: from localhost ([195.94.150.2])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4923fce9590sm46202215e9.4.2026.06.19.00.14.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Jun 2026 00:14:19 -0700 (PDT)
-From: Andrea della Porta <andrea.porta@suse.com>
-X-Google-Original-From: Andrea della Porta <aporta@suse.de>
-Date: Fri, 19 Jun 2026 09:17:43 +0200
-To: =?iso-8859-1?Q?Th=E9o?= Lebrun <theo.lebrun@bootlin.com>
-Cc: Andrea della Porta <andrea.porta@suse.com>, netdev@vger.kernel.org,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-rpi-kernel@lists.infradead.org,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	Lukasz Raczylo <lukasz@raczylo.com>,
-	Steffen Jaeckel <sjaeckel@suse.de>
-Subject: Re: [PATCH v2] net: macb: add TX stall timeout callback to recover
- from lost TSTART write
-Message-ID: <ajTtF2xy3WS6NfBi@apocalypse>
-References: <468f480454a314303bac6a54780b153f689f2267.1781598350.git.andrea.porta@suse.com>
- <DJAKGHKZGUI2.29AHYNFX4LGBJ@bootlin.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ds5vPXkc"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C0865C2BCB4;
+	Fri, 19 Jun 2026 07:14:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1781853287;
+	bh=nKL6fTOWwY6Hg51AnU7XaHSMtjptIchNEHMyb2ZXzTk=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=ds5vPXkcqAhs3tK7398CUaBYYhJVO8S6p2m0lNFBB7nacTaIIEkQbidu1Cv3REnYv
+	 GkAEmNWA01A17+O+X47UNz5mQ+0gXV8EtJdOPChciIkI+5708Bl7ZxpCEPNVAKelgG
+	 7pgneeKiasgTaMfPyZJ8IVeIIXg3B3EikHdHB0cLG1n1dx1gYidv75qCo3iYSfaYCF
+	 V6mkD41gtXZTLF5rSy9rUys279tl9brwD1rJEYBJ7zKVBABd/b+F4L874yrtySmsfg
+	 700KfEqUsP9GupvbyeEiBQ96pBfIFF9Pak5BrSAAl1nG0kXRAp/CtcHq+3ekFwFdCD
+	 zmPlEsew6Hzag==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A504ACD98F8;
+	Fri, 19 Jun 2026 07:14:47 +0000 (UTC)
+From: Tjerk Kusters via B4 Relay <devnull+tkusters.aweta.nl@kernel.org>
+Date: Fri, 19 Jun 2026 09:14:44 +0200
+Subject: [PATCH net v2] igb: only strip Rx timestamp header on the first
+ buffer of a frame
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <DJAKGHKZGUI2.29AHYNFX4LGBJ@bootlin.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260619-igb-rx-ts-fix-v2-1-d3b8d605ca62@aweta.nl>
+X-B4-Tracking: v=1; b=H4sIAGPsNGoC/yWMywrCMBQFf6WctRfSlMbHr4gLmx7rdRElN0qh9
+ N8bdTkDMwuMWWk4NQsyP2r6TBX8rkG8X9NE0bEyvPPBhfYoOg2SZykmN50ljnvXH3qyawNq88q
+ s+vc7I7Hg8pf2Hh6M5XvCum7/AMrddgAAAA==
+X-Change-ID: 20260619-igb-rx-ts-fix-cd70585ee316
+To: Tony Nguyen <anthony.l.nguyen@intel.com>, 
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ Jesper Dangaard Brouer <hawk@kernel.org>, 
+ Kurt Kanzenbach <kurt@linutronix.de>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Tjerk Kusters <tkusters@aweta.nl>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781853286; l=3623;
+ i=tkusters@aweta.nl; s=20260619; h=from:subject:message-id;
+ bh=pmAEYror60wCpEvmPM789DYVzXqwCNs6uz+fXRtY1nI=;
+ b=EPtIwt2TBPCz6NMGbTjzfttUjar17h7wguSFerhCZOC/fKnwEY4M0GEmdJgTBJ2nSlJGQA1Kv
+ yQfBwVYve/FA9DdCxq6hAH0LbuHDS8c62xJWNKPgNjGRpcC8A/HQMaU
+X-Developer-Key: i=tkusters@aweta.nl; a=ed25519;
+ pk=JYRpYQ3+LrphEabgnxcbiOUpwvNP8WDDMcLzz+cwKsk=
+X-Endpoint-Received: by B4 Relay for tkusters@aweta.nl/20260619 with
+ auth_id=831
+X-Original-From: Tjerk Kusters <tkusters@aweta.nl>
+Reply-To: tkusters@aweta.nl
 
-Hi Theo,
+From: Tjerk Kusters <tkusters@aweta.nl>
 
-On 17:07 Tue 16 Jun     , Théo Lebrun wrote:
-> Hello Andrea,
-> 
-> On Tue Jun 16, 2026 at 3:23 PM CEST, Andrea della Porta wrote:
-> > From: Lukasz Raczylo <lukasz@raczylo.com>
-> >
-> > The MACB found in the Raspberry Pi RP1 suffers from sporadic stalls on
-> > the TX queue.
-> > While the exact root cause is not yet fully understood, it is likely
-> > related to a hardware issue where a TSTART write to the NCR register
-> > is missed, preventing the transmission from being kicked off.
-> >
-> > Implement a timeout callback to handle TX queue stalls, triggering the
-> > existing restart mechanism to recover.
-> >
-> > Link: https://lore.kernel.org/all/20260514215459.36109-1-lukasz@raczylo.com/
-> > Fixes: dc110d1b23564 ("net: cadence: macb: Add support for Raspberry Pi RP1 ethernet controller")
-> > Signed-off-by: Lukasz Raczylo <lukasz@raczylo.com>
-> > Co-developed-by: Steffen Jaeckel <sjaeckel@suse.de>
-> > Signed-off-by: Steffen Jaeckel <sjaeckel@suse.de>
-> > Co-developed-by: Andrea della Porta <andrea.porta@suse.com>
-> > Signed-off-by: Andrea della Porta <andrea.porta@suse.com>
-> 
-> Thanks for this V2.
-> 
-> Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
-> 
-> Any news from the Raspberry Pi community about this bug investigation?
+When Rx hardware timestamping is enabled (e.g. ptp4l, which configures
+HWTSTAMP_FILTER_ALL), the NIC prepends a 16-byte timestamp header to the
+first Rx buffer of every received frame. igb_clean_rx_irq() strips this
+header inside its per-buffer loop:
 
-Not from my side, unfortunately.
+	if (igb_test_staterr(rx_desc, E1000_RXDADV_STAT_TSIP)) {
+		ts_hdr_len = igb_ptp_rx_pktstamp(rx_ring->q_vector,
+						 pktbuf, &timestamp);
+		pkt_offset += ts_hdr_len;
+		size -= ts_hdr_len;
+	}
 
-Regards,
-Andrea
+For a frame that spans more than one Rx buffer (e.g. a jumbo frame), this
+block runs once per buffer. The timestamp header only exists at the start
+of the first buffer, but igb_ptp_rx_pktstamp() is called for every buffer.
 
-> 
-> Thanks,
-> 
-> --
-> Théo Lebrun, Bootlin
-> Embedded Linux and Kernel engineering
-> https://bootlin.com
-> 
+On a continuation buffer the data is packet payload, not a timestamp
+header. igb_ptp_rx_pktstamp() already has two guards against acting on a
+non-header buffer: it returns 0 if PTP is disabled, and returns 0 if the
+reserved dwords (the first 8 bytes) are non-zero. Neither is sufficient
+here: PTP is enabled, and a continuation buffer whose payload happens to
+begin with 8 zero bytes passes the reserved-dword check. In that case the
+payload is mistaken for a valid timestamp header and igb_ptp_rx_pktstamp()
+returns IGB_TS_HDR_LEN, so the caller strips 16 bytes of real data from
+that buffer. A frame spanning N buffers whose continuation buffers start
+with zero bytes therefore loses 16 * (N - 1) bytes from its tail.
+
+This is easily triggered by a GigE Vision camera streaming dark frames
+(mostly 0x00 pixel data) over jumbo UDP with PTP active on the receiver:
+the all-zero frames arrive truncated while frames with non-zero content
+are fine. There is no error indication.
+
+No content-based check can reliably tell a continuation buffer that begins
+with zero bytes from a real timestamp header, because both are all zero.
+Fix it structurally instead: only attempt the strip on the first buffer of
+a frame, which is the only buffer that can contain a timestamp header. In
+igb_clean_rx_irq() skb is NULL until the first buffer has been processed,
+so guarding the strip with !skb restricts it to the first buffer
+regardless of payload content.
+
+Fixes: 5379260852b0 ("igb: Fix XDP with PTP enabled")
+Cc: stable@vger.kernel.org
+Reviewed-by: Kurt Kanzenbach <kurt@linutronix.de>
+Signed-off-by: Tjerk Kusters <tkusters@aweta.nl>
+---
+Changes in v2:
+ - resend via b4 (v1 was sent with a mail client)
+ - use full author name "Tjerk Kusters" (Jacob Keller)
+ - add Reviewed-by from Kurt Kanzenbach
+ - no functional change
+
+Link to v1: https://lore.kernel.org/all/PAWPR05MB1069106D52F4E17F1EDB99C67B9182@PAWPR05MB10691.eurprd05.prod.outlook.com/
+---
+ drivers/net/ethernet/intel/igb/igb_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
+index ce91dda00ec0..abb55cd589a9 100644
+--- a/drivers/net/ethernet/intel/igb/igb_main.c
++++ b/drivers/net/ethernet/intel/igb/igb_main.c
+@@ -9061,7 +9061,8 @@ static int igb_clean_rx_irq(struct igb_q_vector *q_vector, const int budget)
+ 		pktbuf = page_address(rx_buffer->page) + rx_buffer->page_offset;
+ 
+ 		/* pull rx packet timestamp if available and valid */
+-		if (igb_test_staterr(rx_desc, E1000_RXDADV_STAT_TSIP)) {
++		if (!skb &&
++		    igb_test_staterr(rx_desc, E1000_RXDADV_STAT_TSIP)) {
+ 			int ts_hdr_len;
+ 
+ 			ts_hdr_len = igb_ptp_rx_pktstamp(rx_ring->q_vector,
+
+---
+base-commit: 2d3090a8aeb596a26935db0955d46c9a5db5c6ce
+change-id: 20260619-igb-rx-ts-fix-cd70585ee316
+
+Best regards,
+--  
+Tjerk Kusters <tkusters@aweta.nl>
+
+
