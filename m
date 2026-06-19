@@ -1,208 +1,135 @@
-Received: from mail-pl1-f225.google.com (mail-pl1-f225.google.com [209.85.214.225])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1699536A03F
-	for <netdev@vger.kernel.org>; Fri, 19 Jun 2026 09:58:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.225
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D3D336897C
+	for <netdev@vger.kernel.org>; Fri, 19 Jun 2026 09:58:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781863094; cv=none; b=h1oD0uImK+/HWerW7N66D1nIVP3RgQgeZOHpDQl7rv3ZdG+ZY6c8jbFZ9DzDG6M9vac4uQktwlO5XXibxyO1vSl2cIpqH0TGM5GiyG4WMs1LEzChkjTVLc9QwJgewoaF1aAcLyKTO6RkZruRgxl0l8CfX667IJ1dwdq4Fht7Rrw=
+	t=1781863110; cv=none; b=T4W4Ib0rA9mZtsLH1l8VsQo1qL1fm1mYw51kiDz3yGV9cW6332BDsqFO/DoI5DkTW0GAUAUFBFgkBVZMYIQJub8BBODjyHTIg2myhgxPlOJNPveXTRbHG9HssRZBbNfBg78C3x1sPYzUwou5To0yUchDTz0lSnlF7G+6CLg3cGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781863094; c=relaxed/simple;
-	bh=uTQGVxJp6sa5nGg1fan4r/Fv6LYC2ueA0DG3l4AmA8E=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=KpPmKiDeqRoBur3BtXYIWv730vPkSo7W6WM98ywXXzuN8tEJCuNltzFFXEhAqKgUJRF2TJvlMzOMvnJ9wzznTsh0+GgtqVTYukT977ABM3KrkjyzI6ed4I8yj5A8ot+jNzbUrRcwKjhClYPmfCpRE2Ei1/hOldZtrvqsMWqqhg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=WyIWBXhZ; arc=none smtp.client-ip=209.85.214.225
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1781863110; c=relaxed/simple;
+	bh=BTt/K2JWfrQDdqzbvi++kEY8yewq0GPzCMMRQFavZqE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nVvHHh3yoQN9oHMJRSSA5vTuK4/YC1VDZ6kswSgN8RddCFfTgNuGLQIuPKRA2NSUNFP21eSUikO+zrMLDzahdxoAvO4u/PyM3umNjSaGEyyOCmBQkFO9mA6ZFDsm2wMtyF8YxQ6Fa2flPUpxNIFUucMs3SXWHImxyUsJt1txcUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=SUyQz4Nd; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="WyIWBXhZ"
-Received: by mail-pl1-f225.google.com with SMTP id d9443c01a7336-2c0c3546924so15935995ad.3
-        for <netdev@vger.kernel.org>; Fri, 19 Jun 2026 02:58:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781863088; x=1782467888;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=K+BCE++6dnn9vpZ/E1d7WFQ8H+QlVa8C9fwXmSQekOc=;
-        b=D2v+6AM/z/pWAfXpuLNvUutWz8E04c8IvAkY/dpC/zSWxUjQPkrIKaDtn4j9+cEeHX
-         ATX9CSeF1tlI3M5H+/zxKDr/XEtv8H/15+Oj7EGWsa6TtHF3R+EaLnxCIokmeWT7yvf6
-         rJYlZAhD0bH7N0WNIuGXRfSp2VuE79GOrEWnDl+GSBf8+mlhq6pWsMSTl+M9AJomQDVj
-         kDWqX2TnJXejxYEg5bU5AgXH3eLzN2APGda4XtxfocD/frRLd0bVhmfEDU/ubuJ6Urcr
-         3cqb3fL7S0BuplHaYE/Ed5/6HcqJ785mzfmMRIwU3ldEmljYFOZ2QUW6hpCjOLGeaOn5
-         f5wg==
-X-Forwarded-Encrypted: i=1; AFNElJ9fMZgXl+O8c9l10qb53+sapxJHia/NtR9xqZ6+6ALgZfYV8xIq2EJ9+2SLglYr84ycxRVUKGE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwO59fANkYSC/wGso6Bfir3CLFW29HEoBTyDIwhFBeSxo057A8W
-	GLjaoJY58i6RxYGw9xfiVad+6BqCNoiFH5Otl9vLXGAUBr7lw8pyC1+CkVXRygLOx47YVu6yOiq
-	EPXbS+jawLm5Iab+Nb2tcaoWUMlZsQ4vbN1Gwp4ZIXlafvcfkGkESrCF14fBu9J3fUWnq8uN4tf
-	WAmu3t3xktQFkpnpEvi33pnNcqrwlUE3kWsp/fCH2OEbRWm2SPk53dd0N6YVqGQ0hY0qvyWvUN5
-	3+LTeb9m0Zek2dXNQ==
-X-Gm-Gg: AfdE7cmSQ4rkSCQRKOPlaqk7kZ9z3KRUTPCvpYdp3lTHaLpNhLr6Lcu21Y6STnD1Wwq
-	OGY7s4ak2g8uL288QI9quJEjdW0oyzGTuX6Rl08dJl1bnZPCRzFlX40ftYDGXtlO1MEHcAM5b33
-	9bR6YdZCPw5JgixAbGpLyzUR6hDBUrsyyliQmY1nLvK1OjV3ErEg2sc0ofFb2qK6iQ852bsDmFo
-	/mpXY9P22+Lv/QKy330+Hap3hKJdDe8JU9B8tvCe2B9HfYrlUh9QZ6MWiaDSQthFk7k0PBWL61J
-	/WBc7BGA9hhQCDNPEb77X8ZFOnbsWk113BA8FQ0jnj+FfILQeFMi4k0ihXC8l4A31V/yggWIUA5
-	l3wQDNNWCZLmATXS0y8LksIn7e0Yt//BSdp4auUafzsixQ6wPEvp8jmtqwWpYbchM32GowopqgO
-	LSTg+3HTpgULUIww/b7kzQBZPX8YGsgs9dPizeoQ8UozJ7h6uD2A==
-X-Received: by 2002:a17:902:e74d:b0:2c0:b932:867d with SMTP id d9443c01a7336-2c719017ce8mr33676765ad.29.1781863088150;
-        Fri, 19 Jun 2026 02:58:08 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-29.dlp.protect.broadcom.com. [144.49.247.29])
-        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2c7209e2d16sm1102205ad.49.2026.06.19.02.58.07
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 19 Jun 2026 02:58:08 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-30c13bb8ca9so206659eec.0
-        for <netdev@vger.kernel.org>; Fri, 19 Jun 2026 02:58:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="SUyQz4Nd"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-45ee449671fso154704f8f.2
+        for <netdev@vger.kernel.org>; Fri, 19 Jun 2026 02:58:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1781863086; x=1782467886; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=6wind.com; s=google; t=1781863104; x=1782467904; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:content-language
+         :from:references:cc:to:subject:reply-to:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=D4gSM3/604WX+8tErv38oK3fMXYCTdkycNGjiUgklF0=;
+        b=SUyQz4NdYnefPpfsWep9vJXXFbIxeYhaR9KFMDlfZBAp8vumS2o4p+HlBko7gBJYyV
+         KdX5+A7WdqTd10+rgP0khYt5xSqlX20gGe1ZZCfLaC9jyBNxM+R7E1PTAVGjbcucAxlU
+         Ro7drepVmp6FjMASNn2hSOaaYOHxFYPJ0SJOIUoCsnS+SAwjl2cC8q2hPqW27LAfXigT
+         T3epqE7efzCzkRE0PK5VYtCT+E2RX4LaUJYc+K2udfzcWc1jVEuIfMxxC8ZRz1q+R2zh
+         Z4NpjM5ou+R3ORdkDzD2SvTZu7GA/5B5/O/fLFGyAc0kUl9NATSBj9jeFu4TbmTuK6U3
+         6BpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781863104; x=1782467904;
+        h=content-transfer-encoding:in-reply-to:organization:content-language
+         :from:references:cc:to:subject:reply-to:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=K+BCE++6dnn9vpZ/E1d7WFQ8H+QlVa8C9fwXmSQekOc=;
-        b=WyIWBXhZupzBFdl1r8dQIqLHoIx7lcpk1uOHh8p4P+6Nwu4tyARNVP9EiDJbIEJutM
-         gfH4DdwDV36PILIutZIVEpHgFJaCIvGK2EGhsb+eIeVgsa3cGgwD/NlP95Xssbj4uIIm
-         hsjXbBK/xWIusy9F5RbiMiS5rusFFaQM/anY8=
-X-Forwarded-Encrypted: i=1; AFNElJ/CwaCmhWgADI5cSsHe/X2bfiCGX/h8jNAc3xVTEx1amhFaOo877lsar88x/gJU5au2RNLUQng=@vger.kernel.org
-X-Received: by 2002:a05:7301:4083:b0:2da:2ec2:64e5 with SMTP id 5a478bee46e88-30c070ee980mr1774506eec.18.1781863086290;
-        Fri, 19 Jun 2026 02:58:06 -0700 (PDT)
-X-Received: by 2002:a05:7301:4083:b0:2da:2ec2:64e5 with SMTP id 5a478bee46e88-30c070ee980mr1774490eec.18.1781863085710;
-        Fri, 19 Jun 2026 02:58:05 -0700 (PDT)
-Received: from shivania.lvn.broadcom.net ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30c06d5bec5sm1851910eec.26.2026.06.19.02.58.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Jun 2026 02:58:05 -0700 (PDT)
-From: Shivani Agarwal <shivani.agarwal@broadcom.com>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: pablo@netfilter.org,
-	fw@strlen.de,
-	phil@nwl.cc,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	ajay.kaher@broadcom.com,
-	alexey.makhalov@broadcom.com,
-	vamsi-krishna.brahmajosyula@broadcom.com,
-	yin.ding@broadcom.com,
-	tapas.kundu@broadcom.com,
-	Inseo An <y0un9sa@gmail.com>,
-	Li hongliang <1468888505@139.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH v6.1 3/3] netfilter: nf_tables: unconditionally bump set->nelems before insertion
-Date: Fri, 19 Jun 2026 02:28:50 -0700
-Message-Id: <20260619092850.1274076-4-shivani.agarwal@broadcom.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260619092850.1274076-1-shivani.agarwal@broadcom.com>
-References: <20260619092850.1274076-1-shivani.agarwal@broadcom.com>
+        bh=D4gSM3/604WX+8tErv38oK3fMXYCTdkycNGjiUgklF0=;
+        b=o05RtVg83Cwxj5qUPeoolhTakD3wE9QpE84INbD9bpic4cJK1oEpqzAI/opqJ0F7jm
+         a2RyAWuXXno+ed8dhJM9q5b9t1k9lTflmy8JnQENdnV9PVsOtdJ4p0n+hoy1uVu1my8B
+         c+/jHxEDLn6gj3/6DciLgEdwEboOeVO/JvQNjDLBNumWsOwI48jEBF6DWh2fruuNesGn
+         aCdBfbNBznsrilz2aZR2MAJ5T4/3ZtZMUc2WkDAahUtHaghALWTZYijKC6iD3ULOK0Ba
+         A9TbnrQz960vqSehFbvjqqgJLqRFP9PolcvXJUsE8BrKh5YjOt6H8hdPYhzLcHGt2vHI
+         iESA==
+X-Forwarded-Encrypted: i=1; AFNElJ9lGhEB8czcvD3yy28E/12FtJaYJGJVCbcfn61x06ByLddkp9VcnJX6mPzQdZSfrnt/IP9onCQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxpo6Cs9nIAfc0sy999S2TXSjg34Xq6iqZKfGPglbsbumjvLk/2
+	6+f77OYEMqYGDViEaXIwbbg1gdCsGGChmsiSizpBYXLeKk5SdRS1F6keqvUMyWUeDFU=
+X-Gm-Gg: AfdE7clQBmCrjZRmlnWfmz1U8RSdH+DPhMI0CTLVW9Fj1jEcPKvX7m6vGN3JE3iAbtg
+	7f0XBTxTcE0YZTiDtC9PUYqUGXX1WSAM0E1yEJP8i7+h2dYb8+t/jXwmvxnlm0n+KVbn9f0QpTU
+	MDM6Ho2ZTgCLEOf3s3BneztHZCnc4EYl3RgV0r1wscIxYgJgpFHXZxxl+WPX3+GVN2O+3Ig/4Qi
+	Jcqtld3Zm8rHtIdkb+Xfa5+6uGevU/oq6rgOdAh90ujc2/cfd/22rZZqMYX0XS5tFQmRCaJtzef
+	Qftyqlkg8yCJSJ9DMpYyN3RfyvfwHrlAwHBXubrnsagJ5n8UM8fGBVO6uHfH0NdoDhUosWYZsrh
+	LOX6X7gDfnnCL9J9A0pv3pSMTJbTSdWQFVnvISqV6SjqbGLTUEsDh7tQTaYBeZzIaOJzCLtM6AZ
+	8x5/3k8PyEt94TlkbjXMf1xDgoWLvC7y2vmCNwU6K9zxE8+rslzIS+OI41SmfNdPhCbQ==
+X-Received: by 2002:a05:6000:1ace:b0:460:2db3:8cd8 with SMTP id ffacd0b85a97d-4650005cf49mr2383970f8f.2.1781863104526;
+        Fri, 19 Jun 2026 02:58:24 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:ab7:2110:6a1d:efff:fe52:1959? ([2a01:e0a:ab7:2110:6a1d:efff:fe52:1959])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4650bc429adsm6328086f8f.32.2026.06.19.02.58.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 19 Jun 2026 02:58:24 -0700 (PDT)
+Message-ID: <491465c3-0d1a-42f6-86fe-6c31812e23c9@6wind.com>
+Date: Fri, 19 Jun 2026 11:58:23 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Reply-To: nicolas.dichtel@6wind.com
+Subject: Re: [PATCH net 5/6] ipv6: reset value and position for proxy_ndp
+ sysctl restart
+To: Fernando Fernandez Mancera <fmancera@suse.de>, netdev@vger.kernel.org
+Cc: shemminger@vyatta.com, dforster@brocade.com, gospo@cumulusnetworks.com,
+ ddutt@cumulusnetworks.com, brian.haley@hp.com, horms@kernel.org,
+ pabeni@redhat.com, kuba@kernel.org, edumazet@google.com,
+ davem@davemloft.net, idosch@nvidia.com, dsahern@kernel.org
+References: <20260618162225.4588-1-fmancera@suse.de>
+ <20260618162225.4588-6-fmancera@suse.de>
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Content-Language: en-US
+Organization: 6WIND
+In-Reply-To: <20260618162225.4588-6-fmancera@suse.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+Le 18/06/2026 à 18:22, Fernando Fernandez Mancera a écrit :
+> When handling proxy_ndp, if rtnl_net_trylock() fails, the operation is
+> retried but as the value was already modified by the initial
+> proc_dointvec() call, the restarted syscall will read the newly modified
+> value as the 'old' state.
+> 
+> Fix this by restoring the original value and position pointer before
+> restarting the syscall.
+Is it not better to call rtnl_net_trylock() at the beginning of the function?
+It avoids flapping the sysctl value.
 
-[ Upstream commit def602e498a4f951da95c95b1b8ce8ae68aa733a ]
-
-In case that the set is full, a new element gets published then removed
-without waiting for the RCU grace period, while RCU reader can be
-walking over it already.
-
-To address this issue, add the element transaction even if set is full,
-but toggle the set_full flag to report -ENFILE so the abort path safely
-unwinds the set to its previous state.
-
-As for element updates, decrement set->nelems to restore it.
-
-A simpler fix is to call synchronize_rcu() in the error path.
-However, with a large batch adding elements to already maxed-out set,
-this could cause noticeable slowdown of such batches.
-
-Fixes: 35d0ac9070ef ("netfilter: nf_tables: fix set->nelems counting with no NLM_F_EXCL")
-Reported-by: Inseo An <y0un9sa@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-[ Minor conflict resolved. ]
-Signed-off-by: Li hongliang <1468888505@139.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-[ Shivani: Modified to apply on 6.1.y ]
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
----
- net/netfilter/nf_tables_api.c | 28 +++++++++++++++-------------
- 1 file changed, 15 insertions(+), 13 deletions(-)
-
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 15bfdf07c..196ac4e76 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -6388,6 +6388,7 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 	struct nft_data_desc desc;
- 	enum nft_registers dreg;
- 	struct nft_trans *trans;
-+	bool set_full = false;
- 	u64 timeout;
- 	u64 expiration;
- 	int err, i;
-@@ -6680,10 +6681,18 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 	if (err < 0)
- 		goto err_elem_free;
- 
-+	if (!(flags & NFT_SET_ELEM_CATCHALL)) {
-+		unsigned int max = nft_set_maxsize(set), nelems;
-+
-+		nelems = atomic_inc_return(&set->nelems);
-+		if (nelems > max)
-+			set_full = true;
-+	}
-+
- 	trans = nft_trans_elem_alloc(ctx, NFT_MSG_NEWSETELEM, set);
- 	if (trans == NULL) {
- 		err = -ENOMEM;
--		goto err_elem_free;
-+		goto err_set_size;
- 	}
- 
- 	ext->genmask = nft_genmask_cur(ctx->net);
-@@ -6715,23 +6724,16 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 		goto err_element_clash;
- 	}
- 
--	if (!(flags & NFT_SET_ELEM_CATCHALL)) {
--		unsigned int max = nft_set_maxsize(set);
--
--		if (!atomic_add_unless(&set->nelems, 1, max)) {
--			err = -ENFILE;
--			goto err_set_full;
--		}
--	}
--
- 	nft_trans_elem(trans) = elem;
- 	nft_trans_commit_list_add_tail(ctx->net, trans);
--	return 0;
- 
--err_set_full:
--	nft_setelem_remove(ctx->net, set, &elem);
-+	return set_full ? -ENFILE : 0;
-+
- err_element_clash:
- 	kfree(trans);
-+err_set_size:
-+	if (!(flags & NFT_SET_ELEM_CATCHALL))
-+		atomic_dec(&set->nelems);
- err_elem_free:
- 	nf_tables_set_elem_destroy(ctx, set, elem.priv);
- err_parse_data:
--- 
-2.53.0
+> 
+> Fixes: c92d5491a6d9 ("netconf: add support for IPv6 proxy_ndp")
+> Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+> ---
+>  net/ipv6/addrconf.c | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+> index 8ff015975e27..1cfb223476bd 100644
+> --- a/net/ipv6/addrconf.c
+> +++ b/net/ipv6/addrconf.c
+> @@ -6483,8 +6483,9 @@ static int addrconf_sysctl_proxy_ndp(const struct ctl_table *ctl, int write,
+>  		void *buffer, size_t *lenp, loff_t *ppos)
+>  {
+>  	int *valp = ctl->data;
+> -	int ret;
+> +	loff_t pos = *ppos;
+>  	int old, new;
+> +	int ret;
+>  
+>  	old = *valp;
+>  	ret = proc_dointvec(ctl, write, buffer, lenp, ppos);
+> @@ -6493,8 +6494,12 @@ static int addrconf_sysctl_proxy_ndp(const struct ctl_table *ctl, int write,
+>  	if (write && old != new) {
+>  		struct net *net = ctl->extra2;
+>  
+> -		if (!rtnl_net_trylock(net))
+> +		if (!rtnl_net_trylock(net)) {
+> +			/* Restore the original values before restarting */
+> +			*valp = old;
+> +			*ppos = pos;
+>  			return restart_syscall();
+> +		}
+>  
+>  		if (valp == &net->ipv6.devconf_dflt->proxy_ndp) {
+>  			inet6_netconf_notify_devconf(net, RTM_NEWNETCONF,
 
