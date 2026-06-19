@@ -1,33 +1,31 @@
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3957730BF66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 396E633E36A
 	for <netdev@vger.kernel.org>; Fri, 19 Jun 2026 07:10:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781853032; cv=none; b=UNbOojnr2CpzKdfXDTLuAqh/ncGHnxu0UcdbKdHPJgndbB4KAgUlxJjAtSz56JJzlAH+JmEKfIpiQD9SJi1J9Ppdte5Nt1w/a7FZCpRkaYqr6PTmHERh+LXUAt27urGaEO4yquf/U/OT8RqjbdjWRjE6PDAaMa0v6KehJhRBvjw=
+	t=1781853032; cv=none; b=e22Lcks0Fy8NqovAliUMxEo7l2o7IFYId5N7lt70I34wWdrlnSLA7hZDTe9+H0hcEDSa4LPr6wodFHGNIYDq+57Kb2krJUfvr9rLccZ8Cr85yF7GnN1GpRuhdxBrzcfFzULbGIlgKugOp5ahSgHkLtJvslIMZYDPFFw3hsKc2p0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1781853032; c=relaxed/simple;
-	bh=W0geQ3DtyFL8zJeBT01ebuAxhD9w7RqRbSTDaRIWPSs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BM2x53jGj5ibv82OP/Gf158XicsEgCntLgWdxlctkHlhCJJr3/smEtzWxAr6kbAHlr9mVKlZTzXoB73XVSS5eyWhUIXSUc2P31Besi0wfFVJc1Ea0LYTuAh/5oeVGnDpETb2Z3n69Ks0Tc5wPBHO6CBZlxMPjT4SdE0oDHiNifA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=Dff/JlD6; arc=none smtp.client-ip=23.88.38.48
+	bh=a+oGRw41dh1HY1aj2eszImyS6m4/Gxab2Oaii5OlU3A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Jg0aWxs/jRu4jaavmYddzCvZ0KIP+blNAwRVFk2+aiAu+kOn80rIxZVqGZn7p2iSIUAJGuxbZ17w2ytPxZFaC1XoqbwLV9OIBecdiX05kISPowMw8JYoRrM3GN70HEGr3xsr7NB7iMPfVZIq1km47DZ9NSlT8r0WgBORvbEkCUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=h6ql4ZWx; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="Dff/JlD6"
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="h6ql4ZWx"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1781852448;
+	s=09092022; t=1781852446;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YneazJjRkjkrqRDvITxwprn6VJASejkPKALeQwRLQHs=;
-	b=Dff/JlD62udaKvKivKPN2l1UmATX2XDIdfCBf1G/zAMZMcwxZ0nnMe8qEdbTo5Ms/k85H4
-	/Yw3wW+rpvoUxiSuAFYV2U/FHdZjlShfCh63+/upslhW9Dy8RcnhWFh+PPLagVIoIIPGF7
-	lWxzfa+5OOed0aj7hdo2VymDHmdbNYhWWE+qOkwXHVMN+hVAffWQXqsaHfGfWQyLguqC+h
-	YVNUpbjURlrwmyXWrPH2QOiGWlHqobl3YKzjBA5m4ej4dS0A3+fGrnmkBL4ouopfjGRCdb
-	t8HNbHnSm5JETZ1RMtcHPk1XAOj3drGblsaRd1GpNJvXFKGvbmx2Hjf+LnZIoQ==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=i1TkLzyUd1JwPopxOLN6MeiT5+G1+YihcZtxk0na7ro=;
+	b=h6ql4ZWxeEWdYnFm1M3mQeM7XLANR3/OrTo0BibVg5XKaA2jrGcDTlCfhrKDHsCGM4eskA
+	a9GGheNn3gp+OsmVgfmuiebwqXbiI8kpxye54C3HydJeN4e3InzAHzSY2zT4zJenVSVB4K
+	x9oaLAI0T3zQckgdydd6ntHJayiEigiU4X5hbU6ds8yDF/154BdOV0kQiqXJKt1sgupeXi
+	Dei5CEQEAgYm93WS0Ix+pOzBLeqSnAXj/Pid0bz1/l/5a/mnKeqIW5agmHxiy/hPlNvYYJ
+	dGPfagCKL/JowiAPmRrqqIOXuQXWf1z3Du4PTzav9WqJARxfT/0QBDOO7DPlqw==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -36,15 +34,11 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
 	b.a.t.m.a.n@lists.open-mesh.org,
-	Sven Eckelmann <sven@narfation.org>,
-	stable@kernel.org,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net 03/15] batman-adv: fix (m|b)cast csum after decrementing TTL
-Date: Fri, 19 Jun 2026 09:00:33 +0200
-Message-ID: <20260619070045.438101-4-sw@simonwunderlich.de>
+Subject: [PATCH net 00/15] pull request: batman-adv 2026-06-19
+Date: Fri, 19 Jun 2026 09:00:30 +0200
+Message-ID: <20260619070045.438101-1-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260619070045.438101-1-sw@simonwunderlich.de>
-References: <20260619070045.438101-1-sw@simonwunderlich.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,123 +47,75 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Sven Eckelmann <sven@narfation.org>
+Dear net maintainers,
 
-The broadcast and multicast packets can be received at the same time by the
-local system and forwarded to other nodes. Both are simply decrementing the
-TTL at the beginning of the receive path - independent of chosen paths
-(receive/forward). But such a modification of the data conflicts with the
-hw csum. This is not a problem when the packet is directly forwarded but
-can cause errors in the local receive path.
+here are some bugfixes for batman-adv which we would like to have integrated into net.
 
-Such a problem can then trigger a "hw csum failure". The receiver path must
-therefore ensure that the csum is fixed for each modification of the
-payload before batadv_interface_rx() is reached.
+Please pull or let me know of any problem!
 
-Since all batman-adv packet types with a ttl have it as u8 at offset 2, a
-helper can be used for all of them. But it is only used at the moment for
-batadv_bcast_packet and batadv_mcast_packet because they are the only ones
-which deliver the packet locally but unconditionally modify the TTL.
+Thank you,
+      Simon
 
-Cc: stable@kernel.org
-Fixes: 3f69339068f9 ("batman-adv: bcast: queue per interface, if needed")
-Fixes: 07afe1ba288c ("batman-adv: mcast: implement multicast packet reception and forwarding")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
----
- net/batman-adv/routing.c | 58 ++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 56 insertions(+), 2 deletions(-)
+The following changes since commit dad4d4b92a9b9f0edb8c66deda049da1b62f6089:
 
-diff --git a/net/batman-adv/routing.c b/net/batman-adv/routing.c
-index 7b4acd1ad991a..8786b66c8a924 100644
---- a/net/batman-adv/routing.c
-+++ b/net/batman-adv/routing.c
-@@ -8,6 +8,7 @@
- #include "main.h"
- 
- #include <linux/atomic.h>
-+#include <linux/build_bug.h>
- #include <linux/byteorder/generic.h>
- #include <linux/compiler.h>
- #include <linux/errno.h>
-@@ -204,6 +205,59 @@ bool batadv_check_management_packet(struct sk_buff *skb,
- 	return true;
- }
- 
-+/**
-+ * batadv_skb_decrement_ttl() - decrement ttl in a batman-adv header, csum-safe
-+ * @skb: the received packet with @skb->data pointing to the batman-adv header
-+ *
-+ * Supports the following packet types, all of which carry the TTL at offset 2:
-+ *
-+ * - batadv_ogm_packet
-+ * - batadv_ogm2_packet
-+ * - batadv_icmp_header
-+ * - batadv_icmp_packet
-+ * - batadv_icmp_tp_packet
-+ * - batadv_icmp_packet_rr
-+ * - batadv_unicast_packet
-+ * - batadv_frag_packet
-+ * - batadv_bcast_packet
-+ * - batadv_mcast_packet
-+ * - batadv_coded_packet
-+ * - batadv_unicast_tvlv_packet
-+ *
-+ * Return: true if the packet may be forwarded (ttl decremented),
-+ *  false if it must be dropped (ttl would expire)
-+ */
-+static bool batadv_skb_decrement_ttl(struct sk_buff *skb)
-+{
-+	static const size_t ttl_offset = 2;
-+	u8 *ttl_pos;
-+
-+	BUILD_BUG_ON(offsetof(struct batadv_ogm_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_ogm2_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_icmp_header, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_icmp_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_icmp_tp_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_icmp_packet_rr, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_unicast_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_frag_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_bcast_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_mcast_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_coded_packet, ttl) != ttl_offset);
-+	BUILD_BUG_ON(offsetof(struct batadv_unicast_tvlv_packet, ttl) != ttl_offset);
-+
-+	ttl_pos = skb->data + ttl_offset;
-+
-+	/* would expire on this hop -> drop, leave header + csum untouched */
-+	if (*ttl_pos < 2)
-+		return false;
-+
-+	skb_postpull_rcsum(skb, ttl_pos, 1);
-+	(*ttl_pos)--;
-+	skb_postpush_rcsum(skb, ttl_pos, 1);
-+
-+	return true;
-+}
-+
- /**
-  * batadv_recv_my_icmp_packet() - receive an icmp packet locally
-  * @bat_priv: the bat priv with all the mesh interface information
-@@ -1197,7 +1251,7 @@ int batadv_recv_bcast_packet(struct sk_buff *skb,
- 
- 	bcast_packet = (struct batadv_bcast_packet *)skb->data;
- 
--	if (bcast_packet->ttl-- < 2)
-+	if (!batadv_skb_decrement_ttl(skb))
- 		goto free_skb;
- 
- 	orig_node = batadv_orig_hash_find(bat_priv, bcast_packet->orig);
-@@ -1304,7 +1358,7 @@ int batadv_recv_mcast_packet(struct sk_buff *skb,
- 		goto free_skb;
- 
- 	mcast_packet = (struct batadv_mcast_packet *)skb->data;
--	if (mcast_packet->ttl-- < 2)
-+	if (!batadv_skb_decrement_ttl(skb))
- 		goto free_skb;
- 
- 	tvlv_buff = (unsigned char *)(skb->data + hdr_size);
--- 
-2.47.3
+  Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2026-06-11 14:33:35 -0700)
 
+are available in the Git repository at:
+
+  https://git.open-mesh.org/batadv.git tags/batadv-net-pullrequest-20260619
+
+for you to fetch changes up to edb557b2ba38fea2c5eb710cf366c797e187218c:
+
+  batman-adv: tvlv: avoid race of cifsnotfound handler state (2026-06-14 12:33:18 +0200)
+
+----------------------------------------------------------------
+Here are some batman-adv bugfixes, all by Sven Eckelmann:
+
+- gw: don't deselect gateway with active hardif
+
+- TTL fixes in bcast/mcast and fragmentation handling (4 patches)
+
+- BATMAN V: prevent OGM aggregation on disabled hardif
+
+- tp_meter: concurrency and range fixes, add cap to unacked list
+  (4 patches)
+
+- tt: fix unchecked VLAN ID in tt for local add and roam (2 patches)
+
+- dat: check VLAN ID in the hash
+
+- tvlv: enforce 2-byte alignment
+
+- tvlv: avoid race of cifsnotfound handler state
+
+----------------------------------------------------------------
+Sven Eckelmann (15):
+      batman-adv: gw: don't deselect gateway with active hardif
+      batman-adv: ensure bcast is writable before modifying TTL
+      batman-adv: fix (m|b)cast csum after decrementing TTL
+      batman-adv: frag: ensure fragment is writable before modifying TTL
+      batman-adv: frag: avoid underflow of TTL
+      batman-adv: v: prevent OGM aggregation on disabled hardif
+      batman-adv: tp_meter: restrict number of unacked list entries
+      batman-adv: tp_meter: annotate last_recv_time access with READ/WRITE_ONCE
+      batman-adv: tp_meter: prevent parallel modifications of last_recv
+      batman-adv: tp_meter: handle overlapping packets
+      batman-adv: tt: don't merge change entries with different VIDs
+      batman-adv: tt: track roam count per VID
+      batman-adv: dat: prevent false sharing between VLANs
+      batman-adv: tvlv: enforce 2-byte alignment
+      batman-adv: tvlv: avoid race of cifsnotfound handler state
+
+ net/batman-adv/bat_iv_ogm.c            | 11 ++++-
+ net/batman-adv/bat_v.c                 |  1 +
+ net/batman-adv/bat_v_ogm.c             | 23 ++++++++++-
+ net/batman-adv/distributed-arp-table.c | 12 ++++--
+ net/batman-adv/fragmentation.c         | 22 +++++++++-
+ net/batman-adv/fragmentation.h         |  3 +-
+ net/batman-adv/hard-interface.c        | 28 +------------
+ net/batman-adv/routing.c               | 73 +++++++++++++++++++++++++++++++--
+ net/batman-adv/tp_meter.c              | 74 ++++++++++++++++++++++------------
+ net/batman-adv/translation-table.c     | 12 +++++-
+ net/batman-adv/tvlv.c                  | 69 ++++++++++++++++++++++++++++---
+ net/batman-adv/types.h                 | 21 ++++++----
+ 12 files changed, 270 insertions(+), 79 deletions(-)
