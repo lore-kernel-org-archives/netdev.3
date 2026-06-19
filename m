@@ -1,137 +1,113 @@
-Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A819E40D579
-	for <netdev@vger.kernel.org>; Fri, 19 Jun 2026 06:47:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781851622; cv=pass; b=hruKsVMwaZxiWJBdattXjmeHZW+aZfTYJw3at+WE5ig+71zdAOvYSg8L3P4880kxaFW/nIDfoxQIVDKMhKzlR5rxPcPsJEA/YAWRqiJgR3/WGDST0sjA0yW+gwFCEvkgUSCsJ9zwWlylwhtBlt61FjKOmxHstMXYMPgDGSp+ynY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781851622; c=relaxed/simple;
-	bh=ATeP/BIwP6EgqPgiK5vYo7HtyaoiN0B6SAvCOXGCVbI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=K0aYkU8ANVj+c4iJ0bHTrhl+0h6wKA8FR+dHfBSrUrvaO6uBBvcWz4xcVTeNuhPgZHljjRCQO7pNIqHdbg5Rsiz4UHTVI2GEDUz+9iGY/QzJMNAKV2UwDb6w/Bdd/yy2nLcohfOsz07K1xxUExqbcGiKEtVq7ZVECJugQLamOkM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zd5G0KnM; arc=pass smtp.client-ip=209.85.167.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A5614884C
+	for <netdev@vger.kernel.org>; Fri, 19 Jun 2026 07:00:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781852458; cv=none; b=Filed0TFX4DzhTvXx9GhELIQJv2SH05mbOyiCkdxoDA0C+TVIWjHwba+pBBjOoKNTTFx9VZIVQMtDsFaBOiTDcHqlaLbYseeN+MPzcltEnam73Ph2ED7yOLgwYjm+WKwQK7HocdN9s92tcGyeWgYwz6pzE3+FbYfyIWBLat+eG4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781852458; c=relaxed/simple;
+	bh=lyflApWTn53XMEsUYapZK9mcM9JbvEuNViN95DVv5bM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DzVHeyH625Tj50fgUToV7G9NNs069bQL2yrw6lQ2p8N0BSNbZWzFPDEQBslbrSybBmZTuARB+w07XHT6aFYOyTdvbVoX4kLGvTmdOCWjJ68UYGTDyY07ba3YpwyZMe5T27H6hc010/gDe0DMRhX8obiAQ5/pEWVX1VBVepUbvwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=0MPDU36H; arc=none smtp.client-ip=23.88.38.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zd5G0KnM"
-Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-486b93fc7c8so731958b6e.3
-        for <netdev@vger.kernel.org>; Thu, 18 Jun 2026 23:47:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781851621; cv=none;
-        d=google.com; s=arc-20240605;
-        b=YtwCTxtTtFKyXE600vP8AFkDAU5P16QSbX0RMML0lgXihtTh7JtbmHk3064n08loVu
-         rasnHbI1wCpJicUNoB7D7tJE79/3PNIMdfq2gTAClPEqhTKbU5c583TgI8t/wBVtH4LR
-         Wt0D2vlPEY+xHm0/GLOHowEwZ8eY8QHIpwjzctKzZE6cK9INbF85KqQZxMNf/biEI588
-         E5dUr6hfX9Qxl3aKc5OYH6rDrU4qTBJMgxpZcfoEEjYNGdD1B9CGAi9Muos/xInxrUAn
-         P+CeA/bg4IZ+d+wzalxa+ZA9DzbAVmRiWltXEWFaiACtoTuxYnGkX1LQmm07cVUneLwN
-         kJJA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ttemi/Fz+sxJasBpKSDCYgcaziGolwgbdDy2xiax/a8=;
-        fh=1ffhz1LCn+XjckKwJV4d58j3PNJFvGXtZYChy/J7jCo=;
-        b=hhmNH9x3ULcGNzM5Em2VjIpQm9vnSIPN5tW0dl4y+uDYcQWTANV7eBaTlNRwjb/ebb
-         Z1Xhv2w1Wyf8WYZqDPKywQSNER5N3I8WIvSqXw9aQh7wsUiN7gpPV1hsVcSeV8HkZucs
-         AZgksm/fFh153UbqnAcv407gmmWqPtY7DrS5QlMeeTZvCtneLmDdQhk+d4R2GUQwihPc
-         RaOLnc3sQu/o24QNBCFK7wK9Uf71bvtAGhY6smlS4dvBN6gSx5pyE8sORHb4RTHJ+owj
-         l4Ig9cKFsChkX0zPtsTS52g0EP/PHsFgK1SfcLyc+DX6OVZRiy28korewkRi3QmQEV7y
-         SKgg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781851621; x=1782456421; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ttemi/Fz+sxJasBpKSDCYgcaziGolwgbdDy2xiax/a8=;
-        b=Zd5G0KnMk+0RA2DHWFhtUOEX55toO9twt5kA+YxVnrQoqfn4FuDifHLZKC1VrfmblC
-         kjhBKCv1i5/2UxHa7cKxNrufH/MvRpinKVZveWJ4GOJNdHm7ZuTgoweCp32EhKHmMuMF
-         0qf8jUd6cYYeCW2/S8tRciFGbmTmVW8otUFdUAzL7SfkkycYKWK3VfEbJ7YlyhEMWTa3
-         Z+mPux75TnT8edvec8qVW1TE+W9pSi8WKL54clZSEdYnuOvVQ7uWIshY04nnwqSHocln
-         8R3j/feGv9djXTPInsF6/VWONdTqKw4y+MWulEc9l0qrlwR6sNn/5YdU+8bYZS7woaCv
-         WaWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781851621; x=1782456421;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ttemi/Fz+sxJasBpKSDCYgcaziGolwgbdDy2xiax/a8=;
-        b=gMzyVP6JHNaWIsl03BF8LY01qPAsHvuhzWJwedy/cr3Xqi3vA5lJS1vCIVwbAzFbab
-         DaDhk2TbB9VUaNXYjqHQGd6nDnpMjFVEBkpQd4m5y7E2RJ3WsRllyjkkTv5z/BWpvpnh
-         waASQ08repHRACBVbkkZ6Hfgscxr8PKsQaHWpZllom3mlWm0xEBNp0Vn2l96e/xqr33K
-         ut4Ml2zQF5hD1togk/A6GZWeVN/vH2IoGupyKriNvI+rIqrPVIXk2jodRGJ/ZrRmXRDY
-         KpnBQUSs1Rxo33vRGXyxiU7puo+fKLOicXIFv4C6Srq5zn+atiHKNPzHksIvxdAangBC
-         1fRQ==
-X-Gm-Message-State: AOJu0YxR7USClnKzbJTvvLw7BGUS/gJQa9tc98Tg1HIoV3P04i90mtZl
-	W8MQbKuSqezcyxtz9IkiSMw3CbUTxJ9okyjSNV8dJCW0T0MtyV3A5VS2HNnoPRATq5CMWo/6ztO
-	Qme4c3w523ionXxN8XJ5hZwX/n5WEUGA=
-X-Gm-Gg: AfdE7clpvFtt+av4tDbO95egJhk+XOy/+8Q9W2NUNDloZ02mbC9k2OzeNFybu44O9tK
-	HR54gsBxej0UxiY6LHK2zX5nY8F8viLAnCU3NfOQC6QqmH3Ld+gKdjwd7rNuaFzOSdNw+eBZsnN
-	f6fg10j8JhqYiVkkGLhcgskMGUAt0P9EE+oC3tWo0iFkBQB4y/1osgsLL7SXPUGTPvz5DtJSGdO
-	9juSCx7rlT0lvGOUUGBkAmYRTyJrjvby/SSfyz5E9sQ6EYxD+/0Oxu38sA3exP9THuOoREu7/mC
-	x5aM8rd2FItnxazZc11QrXXchKgY
-X-Received: by 2002:a05:6808:1c09:b0:468:6a2:897 with SMTP id
- 5614622812f47-4896a9b5286mr2137864b6e.6.1781851620553; Thu, 18 Jun 2026
- 23:47:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="0MPDU36H"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
+	s=09092022; t=1781852452;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AQd/cgxuTb+DumCgZg9XLtulPUOEarubULtPkZBCDbc=;
+	b=0MPDU36HfdD6K2dQBF7pvBE2is18mmRXGhtEzLpJCxkOpUMwbv1LAGcFtW+KqQfV0Esn7W
+	Ce7CgPtc3JCp3nfbA5c8VY+iKC0V/g7mzGmjW2S91nGVKKmEXf9HANCbgXB/gddIgdWtWb
+	2a0Ysy5/b0s1RlURGmGuIf6ncOGqVXBR/dmo9m4VOfrxVDJcKg8z/sAyxIfzF1g5RInblF
+	zA0IpgndRnWRVjux2tUe1s/y2lx6N9q3rY/5i5O56Dlw27JFkMhNOT5vpFDtF3DsgtWbJy
+	rWf6AV0nPWM0MozoKjV2IBY9s2ug012QlVfLmgWHp+ukHHyKHUSYVGgV7UUQ8Q==
+From: Simon Wunderlich <sw@simonwunderlich.de>
+To: netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	b.a.t.m.a.n@lists.open-mesh.org,
+	Sven Eckelmann <sven@narfation.org>,
+	stable@kernel.org,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH net 08/15] batman-adv: tp_meter: annotate last_recv_time access with READ/WRITE_ONCE
+Date: Fri, 19 Jun 2026 09:00:38 +0200
+Message-ID: <20260619070045.438101-9-sw@simonwunderlich.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260619070045.438101-1-sw@simonwunderlich.de>
+References: <20260619070045.438101-1-sw@simonwunderlich.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260618202716.2166450-1-mmyangfl@gmail.com> <20260618202716.2166450-4-mmyangfl@gmail.com>
- <f9234e83-e9e1-488d-93f5-1f3c20634c87@lunn.ch>
-In-Reply-To: <f9234e83-e9e1-488d-93f5-1f3c20634c87@lunn.ch>
-From: David Yang <mmyangfl@gmail.com>
-Date: Fri, 19 Jun 2026 14:46:24 +0800
-X-Gm-Features: AVVi8CfKIZlzrVh3jgH_AT5_B3BpZ4AVH4mqi805e2mnKmOVx1ymoX1Y4QXKoP8
-Message-ID: <CAAXyoMN9a6nncr-C1UDuUQMf4i5FR-9s-sfhSpYLYs5nmh9Uhg@mail.gmail.com>
-Subject: Re: [RFC net-next 3/4] net: dsa: motorcomm: Dynamically allocate port structures
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: netdev@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jun 19, 2026 at 2:06=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> On Fri, Jun 19, 2026 at 04:26:31AM +0800, David Yang wrote:
-> > With support for LED introduced later, struct yt921x_priv will be 17k
-> > which is not very good for a single kmalloc(). Convert the ports array
-> > to a array of pointers to stop bloating the priv struct.
-> >
-> > Signed-off-by: David Yang <mmyangfl@gmail.com>
-> > ---
-> >  drivers/net/dsa/motorcomm/chip.c | 95 ++++++++++++++++++++++++--------
-> >  drivers/net/dsa/motorcomm/chip.h |  3 +-
-> >  2 files changed, 75 insertions(+), 23 deletions(-)
-> >
-> > diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorco=
-mm/chip.c
-> > index 6dee25b6754a..d44f7749de02 100644
-> > --- a/drivers/net/dsa/motorcomm/chip.c
-> > +++ b/drivers/net/dsa/motorcomm/chip.c
-> > @@ -548,11 +548,14 @@ yt921x_mbus_ext_init(struct yt921x_priv *priv, st=
-ruct device_node *mnp)
-> >  /* Read and handle overflow of 32bit MIBs. MIB buffer must be zeroed b=
-efore. */
-> >  static int yt921x_read_mib(struct yt921x_priv *priv, int port)
-> >  {
-> > -     struct yt921x_port *pp =3D &priv->ports[port];
-> > +     struct yt921x_port *pp =3D priv->ports[port];
-> >       struct device *dev =3D to_device(priv);
-> >       struct yt921x_mib *mib =3D &pp->mib;
-> >       int res =3D 0;
-> >
-> > +     if (!pp)
-> > +             return -ENODEV;
-> > +
->
-> Are all these tests actually needed? If you cannot allocate the
-> memory, i would expect the probe to fail, so you can never get here.
->
->         Andrew
+From: Sven Eckelmann <sven@narfation.org>
 
-Dummy ports are no longer assigned control blocks (in yt921x_dsa_setup).
+The last_recv_time field for batadv_tp_receiver tracks the jiffies value of
+the most recent activity and is used to detect timeouts. These accesses are
+not consistently protected by a lock, so READ_ONCE/WRITE_ONCE must be used
+to prevent data races caused by compiler optimizations.
+
+Cc: stable@kernel.org
+Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+---
+ net/batman-adv/tp_meter.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
+index 259ac8c307359..fb87fa141e32a 100644
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -1290,7 +1290,7 @@ static void batadv_tp_receiver_shutdown(struct timer_list *t)
+ 	bat_priv = tp_vars->common.bat_priv;
+ 
+ 	/* if there is recent activity rearm the timer */
+-	if (!batadv_has_timed_out(tp_vars->last_recv_time,
++	if (!batadv_has_timed_out(READ_ONCE(tp_vars->last_recv_time),
+ 				  BATADV_TP_RECV_TIMEOUT)) {
+ 		/* reset the receiver shutdown timer */
+ 		batadv_tp_reset_receiver_timer(tp_vars);
+@@ -1532,7 +1532,7 @@ batadv_tp_init_recv(struct batadv_priv *bat_priv,
+ 	tp_vars = batadv_tp_list_find_receiver_session(bat_priv, icmp->orig,
+ 						       icmp->session);
+ 	if (tp_vars) {
+-		tp_vars->last_recv_time = jiffies;
++		WRITE_ONCE(tp_vars->last_recv_time, jiffies);
+ 		goto out_unlock;
+ 	}
+ 
+@@ -1562,7 +1562,7 @@ batadv_tp_init_recv(struct batadv_priv *bat_priv,
+ 	kref_get(&tp_vars->common.refcount);
+ 	timer_setup(&tp_vars->common.timer, batadv_tp_receiver_shutdown, 0);
+ 
+-	tp_vars->last_recv_time = jiffies;
++	WRITE_ONCE(tp_vars->last_recv_time, jiffies);
+ 
+ 	kref_get(&tp_vars->common.refcount);
+ 	hlist_add_head_rcu(&tp_vars->common.list, &bat_priv->tp_receiver_list);
+@@ -1613,7 +1613,7 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
+ 			goto out;
+ 		}
+ 
+-		tp_vars->last_recv_time = jiffies;
++		WRITE_ONCE(tp_vars->last_recv_time, jiffies);
+ 	}
+ 
+ 	/* if the packet is a duplicate, it may be the case that an ACK has been
+-- 
+2.47.3
+
