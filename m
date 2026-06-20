@@ -1,79 +1,78 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05AA439479B
-	for <netdev@vger.kernel.org>; Sat, 20 Jun 2026 16:19:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37DAB212D86
+	for <netdev@vger.kernel.org>; Sat, 20 Jun 2026 16:19:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781972356; cv=none; b=ExlZ/kgX9zpM0wxnmJOjKixxA0/EU8T9IAyGqPfcUUhvpRrWmVM7aTYICudtVCr5GrXRn3a8DTzDGgiuvusgYuXRqu7SM9W+XqNfj6Jaz5ztWfp1I63GKQFMtKFLVo4sux3xlYD2uuwwcDPmnM1Rlf5q5o52s9MXLN6CKJ7siwo=
+	t=1781972360; cv=none; b=HYIbHiNX8X3u55b2dsPi4dsUXTx/0AgJqdSWArWzGgkoQgp11H5AoI6P19eR6ZXFtde4CO9hTMBzMJH+BSgwTEauU+LFw2Qjl366MpVhokxrsBk10uia6aMeLKMoROTMGW9afQohUcwqiLjNJtdYG9l4BcGd/DmO8usZPkOAdcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781972356; c=relaxed/simple;
-	bh=9Aue9oYFiNb2KsKp2XnCcgWyVUEyGl/RQmEMHhL+atY=;
+	s=arc-20240116; t=1781972360; c=relaxed/simple;
+	bh=tFRJSct/pYypj6OvOz88waY2/GRnWUaSP9gqSDW9880=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cUEuwJzWrxVaKILaS26+DnEFSiEE+0KFIyyrI3COdFKGfu5lH7F6R+OGEhOphNZFrOpMhq31e0bXX0IM4h7BQ1cm/bm90TIcpPZeNOABcuY9VpdJxFZ+9Qt82Es8Kjq093q/mwlhoikeghzJV7mrdR6hC5wQZHsf15Q2Ne7v8GQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=cbMgNJnh; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=kKAORHkv; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=cbMgNJnh; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=kKAORHkv; arc=none smtp.client-ip=195.135.223.131
+	 MIME-Version; b=PKj21JaaluqrjsA/hKy+qx8IxZjWyBWqpibHiir4WeH983KdGp1F8BPzcL6uBLC0mWgfIdO0aZ8jookMAIA8BzeroMFszPIDdxCLTpBe3SM12ycJbJ/YHtp+2bmiTPB5zGu45S3a1I7yYKAQ8stQLh8xbsuro90TExgS9pL+SrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Zcuq2nhT; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=BzAC+Rh7; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Zcuq2nhT; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=BzAC+Rh7; arc=none smtp.client-ip=195.135.223.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="cbMgNJnh";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="kKAORHkv";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="cbMgNJnh";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="kKAORHkv"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Zcuq2nhT";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="BzAC+Rh7";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Zcuq2nhT";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="BzAC+Rh7"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 51DF0759C3;
-	Sat, 20 Jun 2026 16:19:07 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id AF1CA6C3A1;
+	Sat, 20 Jun 2026 16:19:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1781972347; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1781972351; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DGYPPU2k5ByJixhZ2mEL5rI4n+IUI6z5/VP0TorVJlw=;
-	b=cbMgNJnhzrWwAS7hQAOw86Z/NbY1Q4Bm1GC7i8Oj/dRKUfLj1XzEUs988CP4oa0+iOQbYp
-	26Zie9fzMp5xE9JU2RXZsmNEshK0Hhrr+ln2G53LEwNzBW+m8GuTXeQNuZ26vN4I1Ugyo9
-	+x/+/+4TsfRpf97DxKl7nmxz85g+BBA=
+	bh=xkUjmq6D+JE0O0QkgvdkXje/EW6djMwXro1sB90juFg=;
+	b=Zcuq2nhTPvPOysFl8tyhhDcf6X/0mTerUhQi2ZqNTj2gOUJnGIRaofUoQy7s1kdLip7pHF
+	uNPTLS3uOXSepUR1MAdOSimfq7qwAthot1a4I8LZB9EUB+hUp7pzV8OV9UhpLR8pmVo7EE
+	uWNMupVszqoCH1awjwpq/tC4OTUbw4Q=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1781972347;
+	s=susede2_ed25519; t=1781972351;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DGYPPU2k5ByJixhZ2mEL5rI4n+IUI6z5/VP0TorVJlw=;
-	b=kKAORHkvw4qzE1tS+A3MWCuH6vpZo54Z1crxbWmnEcuqn743OX9H/8vOqqB1/i4KUr+8Le
-	ZaZXuGgD9QKOjkCw==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=cbMgNJnh;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=kKAORHkv
+	bh=xkUjmq6D+JE0O0QkgvdkXje/EW6djMwXro1sB90juFg=;
+	b=BzAC+Rh7M4CN6/WlNB1bxzMDo8OM6OUbtyTtdx6+Aa4OreDo1FjB0B5fQ8LiboYRGUHQBr
+	NMFi2/ixHEUdHDCw==
+Authentication-Results: smtp-out1.suse.de;
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1781972347; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1781972351; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DGYPPU2k5ByJixhZ2mEL5rI4n+IUI6z5/VP0TorVJlw=;
-	b=cbMgNJnhzrWwAS7hQAOw86Z/NbY1Q4Bm1GC7i8Oj/dRKUfLj1XzEUs988CP4oa0+iOQbYp
-	26Zie9fzMp5xE9JU2RXZsmNEshK0Hhrr+ln2G53LEwNzBW+m8GuTXeQNuZ26vN4I1Ugyo9
-	+x/+/+4TsfRpf97DxKl7nmxz85g+BBA=
+	bh=xkUjmq6D+JE0O0QkgvdkXje/EW6djMwXro1sB90juFg=;
+	b=Zcuq2nhTPvPOysFl8tyhhDcf6X/0mTerUhQi2ZqNTj2gOUJnGIRaofUoQy7s1kdLip7pHF
+	uNPTLS3uOXSepUR1MAdOSimfq7qwAthot1a4I8LZB9EUB+hUp7pzV8OV9UhpLR8pmVo7EE
+	uWNMupVszqoCH1awjwpq/tC4OTUbw4Q=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1781972347;
+	s=susede2_ed25519; t=1781972351;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DGYPPU2k5ByJixhZ2mEL5rI4n+IUI6z5/VP0TorVJlw=;
-	b=kKAORHkvw4qzE1tS+A3MWCuH6vpZo54Z1crxbWmnEcuqn743OX9H/8vOqqB1/i4KUr+8Le
-	ZaZXuGgD9QKOjkCw==
+	bh=xkUjmq6D+JE0O0QkgvdkXje/EW6djMwXro1sB90juFg=;
+	b=BzAC+Rh7M4CN6/WlNB1bxzMDo8OM6OUbtyTtdx6+Aa4OreDo1FjB0B5fQ8LiboYRGUHQBr
+	NMFi2/ixHEUdHDCw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 90587779A8;
-	Sat, 20 Jun 2026 16:19:06 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id ED8D4779A8;
+	Sat, 20 Jun 2026 16:19:10 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 4EEiIHq9NmogRQAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Sat, 20 Jun 2026 16:19:06 +0000
+	id sIz1Nn69NmogRQAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Sat, 20 Jun 2026 16:19:10 +0000
 From: Fernando Fernandez Mancera <fmancera@suse.de>
 To: netdev@vger.kernel.org
 Cc: nicolas.dichtel@6wind.com,
@@ -87,9 +86,9 @@ Cc: nicolas.dichtel@6wind.com,
 	idosch@nvidia.com,
 	dsahern@kernel.org,
 	Fernando Fernandez Mancera <fmancera@suse.de>
-Subject: [PATCH net v2 1/7] ipv6: fix error handling in disable_ipv6 sysctl
-Date: Sat, 20 Jun 2026 18:18:44 +0200
-Message-ID: <20260620161850.7114-2-fmancera@suse.de>
+Subject: [PATCH net v2 4/7] ipv6: fix error handling in disable_policy sysctl
+Date: Sat, 20 Jun 2026 18:18:47 +0200
+Message-ID: <20260620161850.7114-5-fmancera@suse.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260620161850.7114-1-fmancera@suse.de>
 References: <20260620161850.7114-1-fmancera@suse.de>
@@ -101,48 +100,38 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Flag: NO
-X-Rspamd-Action: no action
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
+X-Spam-Score: -2.80
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
 	MID_CONTAINS_FROM(1.00)[];
 	NEURAL_HAM_LONG(-1.00)[-1.000];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	NEURAL_HAM_SHORT(-0.20)[-1.000];
 	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	ARC_NA(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
 	TO_MATCH_ENVRCPT_ALL(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_EQ_ENVFROM(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
+	RCVD_COUNT_TWO(0.00)[2];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	TO_DN_SOME(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:dkim,suse.de:mid]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: 51DF0759C3
-X-Spam-Score: -3.01
+	RCVD_TLS_ALL(0.00)[]
+X-Spam-Level: 
 
-When writing to the disable_ipv6 sysctl, if proc_dointvec() fails to
+When writing to the disable_policy sysctl, if proc_dointvec() fails to
 parse the input, it returns a negative error code. The current
-implementation is overwriting that error for write operations.
-
-This results in a silent failure, it returns a successful write although
-the configuration was not modified at all. When modifying the "all"
-variant it can also modify the configuration of existing interfaces to
-the wrong value.
+implementation is resetting the position argument even if an error
+occurred during proc_dointvec() and not only during sysctl restart.
 
 Fix this by checking the return value of proc_dointvec() and returning
 early on failure.
 
-Fixes: 56d417b12e57 ("IPv6: Add 'autoconf' and 'disable_ipv6' module parameters")
+Fixes: df789fe75206 ("ipv6: Provide ipv6 version of "disable_policy" sysctl")
 Reviewed-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
 Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
 ---
@@ -150,18 +139,18 @@ Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
  1 file changed, 2 insertions(+)
 
 diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index 1f21ccb55caa..c901b444a995 100644
+index d23a89b07eed..5d96cbf76134 100644
 --- a/net/ipv6/addrconf.c
 +++ b/net/ipv6/addrconf.c
-@@ -6467,6 +6467,8 @@ static int addrconf_sysctl_disable(const struct ctl_table *ctl, int write,
+@@ -6769,6 +6769,8 @@ static int addrconf_sysctl_disable_policy(const struct ctl_table *ctl, int write
+ 	lctl = *ctl;
  	lctl.data = &val;
- 
  	ret = proc_dointvec(&lctl, write, buffer, lenp, ppos);
 +	if (ret)
 +		return ret;
  
- 	if (write)
- 		ret = addrconf_disable_ipv6(ctl, valp, val);
+ 	if (write && (*valp != val))
+ 		ret = addrconf_disable_policy(ctl, valp, val);
 -- 
 2.54.0
 
