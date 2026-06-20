@@ -1,45 +1,51 @@
-Received: from outbound.qs.icloud.com (qs-2003f-snip4-11.eps.apple.com [57.103.86.63])
+Received: from mx3.wp.pl (mx3.wp.pl [212.77.101.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC3A92C21C5
-	for <netdev@vger.kernel.org>; Sat, 20 Jun 2026 12:14:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.86.63
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDA4E379EF0
+	for <netdev@vger.kernel.org>; Sat, 20 Jun 2026 13:01:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781957650; cv=none; b=hGRT/Qgd/ZHi6EDE1zXEkAHAV6vtTooI2MI5OQZECwxoG3r86EklVb8kvwBrS8It8NBvEbep6P4QXGfWxXVt1bLuhbXjIfRzRARjxVcPdoaZvFLCA5EtlZ/FwTq+blLkRQQCEYogRdfMfaQG9VtZq0PICGf3Wy/bXysULTiu0/s=
+	t=1781960498; cv=none; b=MVLSaVRUlWsB0D2YRVfbvkQBHfV/ZpHOlQJEN6tYxLoqo8Q9ynSt7RK01Oycvktrpjup5iLlMma7lzJeH4FF83VxjPICKou9tiwcl/uaaMX1X2w7OwfBqnW1OuwvLcBpyZ91tDWwBw+lC2j8Qby6K7ofKzf27KGEc1lWRqCRxHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781957650; c=relaxed/simple;
-	bh=F4nQG/vAy1yKxXgYOlZoathCWfcC0tiqHT340k4o7F0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QJXEjIflalqS7eQXBB0DOaU23baCnhNDmJyG/tO0q+1hrqwxStlzYSUZ8sRc5qurinh1PV6RBWI69MmlnxxdvUB5vOUiE34hWTipR1nk7jREy15T5Z8KI0MTFpuytWgtrhPQpuNca11FjfYwBiERkECz5lEfhtTWNnLMNfpiVlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=fQxxM3fR; arc=none smtp.client-ip=57.103.86.63
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+	s=arc-20240116; t=1781960498; c=relaxed/simple;
+	bh=AZ97wqsFotxnNxdlCBlxJv+DUkfvEG47RhLX9d0fFeA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mlzJ90OQ5GN0sfquSyj7o47N+IMmvHTeSan7afXFA2S8rBR0iVsQfpmOql8Uf7UeMsb20EUJ+9Jfk5uKXosmH+8Tw99MwbHU59JyzhfKM2IA9kyitpLb/Q2a7hDpZ3MFOLFOvtPe/ZsiDXeQpuqJods3s/WGx+b8jk/EhqPj+qA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=llei0qmC; arc=none smtp.client-ip=212.77.101.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="fQxxM3fR"
-Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-east-2d-10-percent-2 (Postfix) with ESMTPS id 6BA2E3000191;
-	Sat, 20 Jun 2026 12:14:05 +0000 (UTC)
-X-ICL-Out-Info: HUtFAUMEWwJACUgBTUQeDx5WFlZNRAJCTQpOHV8CXhxBAFYLWxcOVk1KEVcJXwpABFEbWg9eK1sTVRdGCRkIXR0ZHldQXgheH0wcHQ5YBhICWkUKTV8OXh8EF0YZVQRHHl1WQh4ZAlEcVg1XQ1QEX1BJDEFQbFoARxdIHV0ZWW9QXRwOBFQHXQVdVlACWktfGV1FD18HWQRAD0oDXAVaAUIIVgdYBVkFXQpVQARTD1oRSwxbDl4JWzBQG18CQg8cE1YVDU1DEkIVBBFQAVgeVg==
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1781957648; x=1784549648; bh=B2Pp0WGbRgzLs4Smn37csLZQa4PVookrDR16OraLNYs=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=fQxxM3fRRpdpKDkg9fQNT9MDJfVBRU2DBrRMA+lCbcumsv074awNbA3ORf1CwGDKUIHeIhUf6dkPt/WfPFVZ4fyhzbcQjcsljeic3Kf7VpnmYnx+k4DABggEjq128P0Qp5bguGsDNeXiaAIpLyaDMxPfS8R/oca4lEzMfSEg6FX4dLVQ08H7yEYFmAq6NA7kPuMyIcFAb4HHNUIqjJSGigQU4z9Rvpk4J1K7ALJ3m64x7rbxAvb4+qaO3uAr0Zp548d0kvvx4V5HEtPRn24saFm+8DZXDi9tMPEiwU1kgqrX66ounnexyazhmkLA5sOyT3uthVk1U22Y8w2onv1osw==
-Received: from cibi (unknown [17.57.155.37])
-	by p00-icloudmta-asmtp-us-east-2d-10-percent-2 (Postfix) with ESMTPSA id 11B5B3000184;
-	Sat, 20 Jun 2026 12:14:00 +0000 (UTC)
-From: Siddharth C <siddharthcibi@icloud.com>
-To: ast@kernel.org,
+	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="llei0qmC"
+Received: (wp-smtpd smtp.wp.pl 1931 invoked from network); 20 Jun 2026 15:01:33 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
+          t=1781960493; bh=FihQkQb3fTPCIc0JKtlry5IkU/LW6YEej7nzbs09M78=;
+          h=From:To:Cc:Subject;
+          b=llei0qmCwpn4ljCXSLn0C3nXFJDV8y8PqsJnp15h4W3p/2CFR+FJDEG9ByNf5akWR
+           jJNuX3fiZl8HnhSPGgm3ODK5sYve5gqsgbdQiLIpD2qIyvP6+xGBIWmqG4VBxwHBhO
+           gLiMLGT4XyKPX095H6fkHLf8SoJZfouAucj/yM1de9yw7vSIzLmNfM5v8IGdRLfQ8J
+           hQgD36EU5ZEuWYMN4ZiSPvunhUaeArNgblqw2+0yJvnFNCRFX/V+PkWvMmLcY1CezH
+           xYps8izbyhlrr8IHI2xz11gVdVAkyGiu/IkDA5n16Fg8yZtDdHOLveyjFEKtaqzndd
+           b0LkDjckacVTg==
+Received: from 83.5.151.132.ipv4.supernova.orange.pl (HELO abajkowski.lan) (olek2@wp.pl@[83.5.151.132])
+          (envelope-sender <olek2@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with TLS_AES_256_GCM_SHA384 encrypted SMTP
+          for <linux@armlinux.org.uk>; 20 Jun 2026 15:01:33 +0200
+From: Aleksander Jan Bajkowski <olek2@wp.pl>
+To: linux@armlinux.org.uk,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
 	kuba@kernel.org,
-	hawk@kernel.org,
-	andrii@kernel.org,
+	pabeni@redhat.com,
+	rmk+kernel@armlinux.org.uk,
+	vladimir.oltean@nxp.com,
 	netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Cc: Siddharth_Cibi <siddharthcibi@icloud.com>
-Subject: [PATCH 2/2] selftests/bpf: validate rx_queue_index in xdp_metadata
-Date: Sat, 20 Jun 2026 12:13:14 +0000
-Message-ID: <20260620121321.45227-3-siddharthcibi@icloud.com>
+	linux-kernel@vger.kernel.org
+Cc: Aleksander Jan Bajkowski <olek2@wp.pl>
+Subject: [PATCH next] net: phylink: print correct c45 phy id when missing PHY driver
+Date: Sat, 20 Jun 2026 15:00:58 +0200
+Message-ID: <20260620130131.946866-1-olek2@wp.pl>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260620121321.45227-1-siddharthcibi@icloud.com>
-References: <20260620121321.45227-1-siddharthcibi@icloud.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,69 +53,73 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: tFHWwJf4YN-D4whddqvv-hexfB_5gAlG
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjIwMDEyMSBTYWx0ZWRfX7plsFHKGUv1A
- WP5I9tWiRubvLDY0kEmOz1rGIrP9ys+APeD2YtGhXUH2+Y3lb69pEQNhftKS5YrTvVCh6Ymnddi
- n36ecaavCKERwR7qzxGfPs9cTmN0W9FmAFlrOMiHUPe1QBXWNBxuBnSywGTpzIK15VJiybYllzA
- LJL85veIVY677MBj3lHXFMuqUwU55lqVaxZmt8kbfWS6UYMwa2G0NCW9dzxZm8/+iADIyZtkPv6
- dxkje0LOiqBGtq3MLQBel6Nrmk7ElEgX/RCIQwMLP1Ww1/Inus8Tt/fdwG7Y7E6upWWQQ7hYLcu
- 8G1lfI0OiB2yY2ikGQS
-X-Proofpoint-GUID: tFHWwJf4YN-D4whddqvv-hexfB_5gAlG
-X-Apple-Category-Label: MjA0NzgyOTUxNDY6JGNhdGVnb3J5JF9QZXJzb25hbCw=
+X-WP-DKIM-Status: good (id: wp.pl)                                                      
+X-WP-MailID: 578fef9df83779c954a1b5d4c63bac5a
+X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
+X-WP-SPAM: NO 0000000 [UeNk]                               
 
-From: Siddharth_Cibi <siddharthcibi@icloud.com>
+If no PHY driver is found, `phy_id` is returned. `phy_id` holds the c22 ID.
+Modules with a rollball bridge support only c45 transfers. The c45 IDs are
+stored in the `c45_ids` structure. In the current code these modules report
+an ID 0x00000000. This may lead users to mistakenly conclude that the
+rollball bridge isn't properly implemented in their SFP module. This patch
+fixes the wrong IDs for c45 modules when a driver cannot be found.
 
-Extend xdp_metadata selftest coverage to validate that
-ctx->rx_queue_index is preserved and observable after XDP redirect
-execution.
+Tested on Fiberstore SFP-GB-BE-T (C22) and ONTi ONT-C1TE-R05 (Rollball).
 
-Capture rx_queue_index in metadata and assert that it matches the
-expected queue during packet verification.
+Before:
+[ 2440.373985] mtk_soc_eth 15100000.ethernet sfp-lan: PHY i2c:sfp2:11 (id 0x00000000) has no driver loaded
+[ 2440.383385] mtk_soc_eth 15100000.ethernet sfp-lan: Drivers which handle known common cases: CONFIG_BCM84881_PHY, CONFIG_MARVELL_PHY
+[ 2440.395274] sfp sfp2: sfp_add_phy failed: -EINVAL
 
-Signed-off-by: Siddharth_Cibi <siddharthcibi@icloud.com>
+After:
+[   82.573700] mtk_soc_eth 15100000.ethernet sfp-lan: PHY i2c:sfp2:11 (id 0x001cc898) has no driver loaded
+[   82.583098] mtk_soc_eth 15100000.ethernet sfp-lan: Drivers which handle known common cases: CONFIG_BCM84881_PHY, CONFIG_MARVELL_PHY
+[   82.594996] sfp sfp2: sfp_add_phy failed: -EINVAL
+
+Fixes: ffcbfb5f9779 ("net: phylink: improve phylink_sfp_config_phy() error message with missing PHY driver")
+Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
 ---
- tools/testing/selftests/bpf/prog_tests/xdp_metadata.c | 3 ++-
- tools/testing/selftests/bpf/progs/xdp_metadata.c      | 2 +-
- tools/testing/selftests/bpf/xdp_metadata.h            | 1 +
- 3 files changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/phy/phylink.c | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_metadata.c b/tools/testing/selftests/bpf/prog_tests/xdp_metadata.c
-index 5c31054ad4a4..f8cabbbe7bb7 100644
---- a/tools/testing/selftests/bpf/prog_tests/xdp_metadata.c
-+++ b/tools/testing/selftests/bpf/prog_tests/xdp_metadata.c
-@@ -309,7 +309,8 @@ static int verify_xsk_metadata(struct xsk *xsk, bool sent_from_af_xdp)
- 
- 	if (!ASSERT_NEQ(meta->rx_hash, 0, "rx_hash"))
- 		return -1;
--
-+	if (!ASSERT_EQ(meta->rx_queue_index, QUEUE_ID, "rx_queue_index"))
-+        	return -1;
- 	if (!sent_from_af_xdp) {
- 		if (!ASSERT_NEQ(meta->rx_hash_type & XDP_RSS_TYPE_L4, 0, "rx_hash_type"))
- 			return -1;
-diff --git a/tools/testing/selftests/bpf/progs/xdp_metadata.c b/tools/testing/selftests/bpf/progs/xdp_metadata.c
-index 09bb8a038d52..62ae83860d7f 100644
---- a/tools/testing/selftests/bpf/progs/xdp_metadata.c
-+++ b/tools/testing/selftests/bpf/progs/xdp_metadata.c
-@@ -98,7 +98,7 @@ int rx(struct xdp_md *ctx)
- 	bpf_xdp_metadata_rx_hash(ctx, &meta->rx_hash, &meta->rx_hash_type);
- 	bpf_xdp_metadata_rx_vlan_tag(ctx, &meta->rx_vlan_proto,
- 				     &meta->rx_vlan_tci);
--
-+	meta->rx_queue_index = ctx->rx_queue_index;
- 	return bpf_redirect_map(&xsk, ctx->rx_queue_index, XDP_PASS);
+diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+index 087ac63f9193..7d7595158bf9 100644
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -3917,13 +3917,30 @@ static void phylink_sfp_link_up(void *upstream)
+ 	phylink_enable_and_run_resolve(pl, PHYLINK_DISABLE_LINK);
  }
  
-diff --git a/tools/testing/selftests/bpf/xdp_metadata.h b/tools/testing/selftests/bpf/xdp_metadata.h
-index 87318ad1117a..1f0ae4c00091 100644
---- a/tools/testing/selftests/bpf/xdp_metadata.h
-+++ b/tools/testing/selftests/bpf/xdp_metadata.h
-@@ -49,4 +49,5 @@ struct xdp_meta {
- 		__s32 rx_vlan_tag_err;
- 	};
- 	enum xdp_meta_field hint_valid;
-+	__u32 rx_queue_index;
- };
++static u32 phylink_get_phy_id(struct phy_device *phy)
++{
++	if (phy->is_c45) {
++		const int num_ids = ARRAY_SIZE(phy->c45_ids.device_ids);
++		int i;
++
++		for (i = 1; i < num_ids; i++) {
++			if (phy->c45_ids.mmds_present & BIT(i))
++				return (phy->c45_ids.device_ids[i]);
++		}
++
++		return 0;
++	} else {
++		return phy->phy_id;
++	}
++}
++
+ static int phylink_sfp_connect_phy(void *upstream, struct phy_device *phy)
+ {
+ 	struct phylink *pl = upstream;
+ 
+ 	if (!phy->drv) {
+-		phylink_err(pl, "PHY %s (id 0x%.8lx) has no driver loaded\n",
+-			    phydev_name(phy), (unsigned long)phy->phy_id);
++		phylink_err(pl, "PHY %s (id 0x%.8x) has no driver loaded\n",
++			    phydev_name(phy), phylink_get_phy_id(phy));
+ 		phylink_err(pl, "Drivers which handle known common cases: CONFIG_BCM84881_PHY, CONFIG_MARVELL_PHY\n");
+ 		return -EINVAL;
+ 	}
 -- 
 2.53.0
 
