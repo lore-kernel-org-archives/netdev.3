@@ -1,191 +1,136 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C35348C65
-	for <netdev@vger.kernel.org>; Sat, 20 Jun 2026 16:19:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82FE240D572;
+	Sat, 20 Jun 2026 16:30:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781972373; cv=none; b=i3UsIRGjuRtnrYPqqNSXbEVB4oXvVRU8qADnfztKiYn1XC2LjiVfB/yHVge4QrtRIJSNhWAOhxT0jKyhyP7pTKsjwJUa8/zTT8IF9KEcmijrAAK3XJVxUX1aQ2qCxU8TGIJOzQta/p44FNSR1Ns0DDRErLU31mrZ7DUmJ1mbbgw=
+	t=1781973035; cv=none; b=IebzE3U9iuq+xSYMcy1j/Oh/pAo3aOeCminH4VnzjXGRnoIamSsKnXB0KZBXru8U8wyO+UxI3WeEuCBj1GRVo26918ySXW9UGFx3tqADOjfJKO7qyvkh1tAu8GPuhEcPwgPxXTvJzasxCTyMnuzK/kNdIxXkjANiur5Y/VwsAcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781972373; c=relaxed/simple;
-	bh=Wb17KUkJCUmLv3it19IfxsBne2r/P05MGGxuTsENHMw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tCDLIG7q/BMy0ohqNL1SdXAyJLf7dmOWeD64kiDVG5vs7nxayzOhU8b1vDxFq77oB8mw+2Uz5pYlFeNoCU8Aw/OpN5ktfYNJWHFBizq0BDG9nseMW0UIVcYDOtZ0fBIosE0iUgZxh2d0iPEQGicNYm451AdFbq1ySXdcmCnc4eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=KLHcbRw4; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=EpcLcs2B; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=KLHcbRw4; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=EpcLcs2B; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1781973035; c=relaxed/simple;
+	bh=3Dpmmerb0QG1G8KOpjCvUTZKf0T5mNd9JG1LlDJ0JzM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kHmWPBXnXqlKMNKe5392TG0OnV/RVx1p8v4gSffHXDV6GR41T4S5wgcQBbLv9RIMajmZ13PnGXRaRkDhcQ+ZSTE0AeqWJvLfsWOPSfGRnknM6XJRVmQot2Ct2ssGv69i0XV8LWiLvIEK0EDE5Q+gJIy/2xoZnNPuhmDN0u3QRoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fWXNKPZl; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="KLHcbRw4";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="EpcLcs2B";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="KLHcbRw4";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="EpcLcs2B"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 2DF2B75AE1;
-	Sat, 20 Jun 2026 16:19:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1781972354; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Q7nvC0guHRMCveV+VaTW4MThaii9NlaCh+DP7Lyu8yo=;
-	b=KLHcbRw4ywShrbLBxtpTh5BV7PLpEvVFvUAe3rJ4StbmvZUFi2c7LAFk/kJG2D6Or2osct
-	Pf54yq9+hUzjm8tfcMY8mGfYWiLnbNV1ei5msTtd9PwdoUR3wsSDaVREEAVUCgSn0A1fz1
-	fWC1Ynyw4cvOXDTuZJpBvGBcENrMi34=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1781972354;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Q7nvC0guHRMCveV+VaTW4MThaii9NlaCh+DP7Lyu8yo=;
-	b=EpcLcs2BLdzOPJYI7NV/0I32UTw4NgZobKJiwX4UVtrlq9DCxh+NbiJ6P/4HTR6Qzmm7j/
-	dqQoo5uHCKjq0lAQ==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=KLHcbRw4;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=EpcLcs2B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1781972354; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Q7nvC0guHRMCveV+VaTW4MThaii9NlaCh+DP7Lyu8yo=;
-	b=KLHcbRw4ywShrbLBxtpTh5BV7PLpEvVFvUAe3rJ4StbmvZUFi2c7LAFk/kJG2D6Or2osct
-	Pf54yq9+hUzjm8tfcMY8mGfYWiLnbNV1ei5msTtd9PwdoUR3wsSDaVREEAVUCgSn0A1fz1
-	fWC1Ynyw4cvOXDTuZJpBvGBcENrMi34=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1781972354;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Q7nvC0guHRMCveV+VaTW4MThaii9NlaCh+DP7Lyu8yo=;
-	b=EpcLcs2BLdzOPJYI7NV/0I32UTw4NgZobKJiwX4UVtrlq9DCxh+NbiJ6P/4HTR6Qzmm7j/
-	dqQoo5uHCKjq0lAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6C900779A8;
-	Sat, 20 Jun 2026 16:19:13 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id KMppF4G9NmogRQAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Sat, 20 Jun 2026 16:19:13 +0000
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-To: netdev@vger.kernel.org
-Cc: nicolas.dichtel@6wind.com,
-	stephen@networkplumber.org,
-	brian.haley@hp.com,
-	horms@kernel.org,
-	pabeni@redhat.com,
-	kuba@kernel.org,
-	edumazet@google.com,
-	davem@davemloft.net,
-	idosch@nvidia.com,
-	dsahern@kernel.org,
-	Fernando Fernandez Mancera <fmancera@suse.de>
-Subject: [PATCH net v2 6/7] ipv6: fix missing notification for ignore_routes_with_linkdown
-Date: Sat, 20 Jun 2026 18:18:49 +0200
-Message-ID: <20260620161850.7114-7-fmancera@suse.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260620161850.7114-1-fmancera@suse.de>
-References: <20260620161850.7114-1-fmancera@suse.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fWXNKPZl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C4E1F000E9;
+	Sat, 20 Jun 2026 16:30:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781973034;
+	bh=D6t63Jy9/sgsYx1uJL6I1MjmSXoE7TCkLo+nXd+KPuE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=fWXNKPZlBWyTdQbXzoThXH/SeBRUhorUJKPsfN9xAPKoG18QJhs0snK4JG63X1qVz
+	 DRKCkOEr0kbqBzik+DTrrjTGwBlbqhU1Wngff+WgfdG3ti6dAc64vP3XRd+tOcJQ8X
+	 oG3Iw10H87jzBYATA1+GK/WvnySc2EQuSOdaFauRHoInJq4E+8br/cDv6xKp4++/80
+	 VGTRtUO9n93Not0f5Q2r4VLEDSIVjA3pAle+iii3wQxHsNwBjZ3wS4zZNN+gqZad3S
+	 5Co0ua3fxYiceYokKoHpicoxGDja/XL7V0svTXndP5nDm74+VCs3RQQsFaxet02VGD
+	 7YSzRd+MHSHlw==
+Date: Sat, 20 Jun 2026 17:30:28 +0100
+From: Simon Horman <horms@kernel.org>
+To: Doruk Tan Ozturk <doruk@0sec.ai>
+Cc: saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com,
+	mbloch@nvidia.com, sd@queasysnail.net, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, borisp@nvidia.com, raeds@nvidia.com,
+	ehakim@nvidia.com, netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net v3] net/mlx5e: macsec: fix use-after-free of
+ metadata_dst on RX SC delete
+Message-ID: <20260620163028.GW827683@horms.kernel.org>
+References: <20260618145545.53035-1-doruk@0sec.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 2DF2B75AE1
-X-Spam-Flag: NO
-X-Spam-Score: -3.01
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email,suse.de:mid];
-	FROM_HAS_DN(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_COUNT_TWO(0.00)[2];
-	RCVD_TLS_ALL(0.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RLb3xxm68jmrjpif7i5fm8f49r)];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260618145545.53035-1-doruk@0sec.ai>
 
-When changing the ignore_routes_with_linkdown sysctl for a specific
-interface, the RTM_NEWNETCONF netlink notification was not being emitted
-to userspace. Fix this by emitting the notification when needed.
+On Thu, Jun 18, 2026 at 04:55:45PM +0200, Doruk Tan Ozturk wrote:
+> When an offloaded MACsec RX SC is deleted, macsec_del_rxsc_ctx() released
+> the per-SC metadata_dst with metadata_dst_free(), which calls kfree()
+> unconditionally and ignores the dst reference count. The RX datapath in
+> mlx5e_macsec_offload_handle_rx_skb() looks up the SC under rcu_read_lock()
+> via xa_load() and, while still holding only the RCU read lock, takes a
+> reference with dst_hold() and attaches the dst to the skb with
+> skb_dst_set().
+> 
+> A reader that has already obtained the rx_sc pointer can therefore race
+> with the delete path:
+> 
+>   CPU0 (del_rxsc)			CPU1 (rx datapath)
+>   --------------			------------------
+> 					rcu_read_lock();
+> 					rx_sc = xa_load(...)->rx_sc;
+>   xa_erase(...);
+>   metadata_dst_free(rx_sc->md_dst);	/* kfree(), ignores refcount */
+> 					dst_hold(&rx_sc->md_dst->dst); /* UAF */
+> 					skb_dst_set(skb, &rx_sc->md_dst->dst);
+> 
+> metadata_dst_free() frees the object even though the datapath still holds
+> (or is about to take) a reference, so the subsequent dst_hold() /
+> skb_dst_set() and the later skb free operate on freed memory.
+> 
+> Fix the owner side by dropping the reference with dst_release() instead of
+> freeing unconditionally. dst_release() only schedules the RCU-deferred
+> dst_destroy() once the reference count reaches zero, so a concurrent reader
+> that still holds a reference keeps the object alive.
+> 
+> Dropping the owner reference is not sufficient on its own: once the owner
+> reference is the last one, dst_release() drops the count to zero and the
+> destroy is merely RCU-deferred. A racing reader that runs plain dst_hold()
+> on that already-dead dst gets rcuref_get() == false but dst_hold() only
+> WARNs and attaches the dying dst to the skb anyway; the later skb free then
+> calls dst_release() on an object whose destroy is already scheduled, again
+> a use-after-free.
+> 
+> Convert the RX datapath to dst_hold_safe(), which returns false (without
+> warning) when the dst is already dead, and only attach it to the skb when a
+> reference was successfully taken. When the SC is being deleted the in-flight
+> packet simply proceeds without the offload metadata_dst: skb_metadata_dst()
+> returns NULL, the MACsec core sees !is_macsec_md_dst and skips this secy
+> (rx_uses_md_dst path), which is the correct behaviour for a packet whose SC
+> is going away.
+> 
+> While reworking the datapath lookup, also guard the two NULL dereferences
+> on the same path that an automated review (forwarded by Simon Horman)
+> flagged: xa_load() can return NULL when the fs_id has just been erased, and
+> mlx5e_macsec_add_rxsc() publishes sc_xarray_element via xa_alloc() before
+> rx_sc->md_dst is allocated, so a packet carrying a freshly recycled fs_id
+> can observe a non-NULL rx_sc whose md_dst is still NULL. Check both before
+> dereferencing.
+> 
+> Note: macsec_del_rxsc_ctx() also kfree()s rx_sc->sc_xarray_element without
+> an RCU grace period while the same datapath reads it under rcu_read_lock();
+> that is a separate pre-existing issue and is left to a follow-up patch.
+> 
+> Fixes: b7c9400cbc48 ("net/mlx5e: Implement MACsec Rx data path using MACsec skb_metadata_dst")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
+> ---
+> v3:
+>  - Also guard the RX-datapath NULL dereferences flagged by the automated
+>    review: NULL-check the xa_load() result and rx_sc->md_dst before use.
 
-In addition, fix bogus return value for successful "all" and specific
-interface write operation leading to a wrong reset of the position
-pointer.
+The review of this patch on sashiko.dev flags that this change doesn't
+appear to be complete:
 
-Fixes: 35103d11173b ("net: ipv6 sysctl option to ignore routes when nexthop link is down")
-Reviewed-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
----
- net/ipv6/addrconf.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+  "This is a pre-existing issue, but since xa_alloc() in mlx5e_macsec_add_rxsc()
+   publishes sc_xarray_element before rx_sc->md_dst is allocated and initialized,
+   is it safe to use a plain read here?
+   drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c:mlx5e_macsec_add_rxsc() {
+      ...
+      err = xa_alloc(&macsec->sc_xarray, &sc_xarray_element->fs_id, sc_xarray_element, ...);
+      ...
+      rx_sc->md_dst = metadata_dst_alloc(0, METADATA_MACSEC, GFP_KERNEL);
+      ...
+   }
+   Because there are no memory barriers around the assignment and initialization
+   of md_dst, could a concurrent datapath reader observe a non-NULL md_dst
+   pointer but read uninitialized memory from it in dst_hold_safe()?"
 
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index 82b6f603faa0..cbe681de3818 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -955,11 +955,7 @@ static int addrconf_fixup_linkdown(const struct ctl_table *table, int *p, int ne
- 						     NETCONFA_IGNORE_ROUTES_WITH_LINKDOWN,
- 						     NETCONFA_IFINDEX_DEFAULT,
- 						     net->ipv6.devconf_dflt);
--		rtnl_net_unlock(net);
--		return 0;
--	}
--
--	if (p == &net->ipv6.devconf_all->ignore_routes_with_linkdown) {
-+	} else if (p == &net->ipv6.devconf_all->ignore_routes_with_linkdown) {
- 		WRITE_ONCE(net->ipv6.devconf_dflt->ignore_routes_with_linkdown, newf);
- 		addrconf_linkdown_change(net, newf);
- 		if ((!newf) ^ (!old))
-@@ -968,11 +964,21 @@ static int addrconf_fixup_linkdown(const struct ctl_table *table, int *p, int ne
- 						     NETCONFA_IGNORE_ROUTES_WITH_LINKDOWN,
- 						     NETCONFA_IFINDEX_ALL,
- 						     net->ipv6.devconf_all);
-+	} else {
-+		if (!newf ^ !old) {
-+			struct inet6_dev *idev = table->extra1;
-+
-+			inet6_netconf_notify_devconf(net,
-+						     RTM_NEWNETCONF,
-+						     NETCONFA_IGNORE_ROUTES_WITH_LINKDOWN,
-+						     idev->dev->ifindex,
-+						     &idev->cnf);
-+		}
- 	}
- 
- 	rtnl_net_unlock(net);
- 
--	return 1;
-+	return 0;
- }
- 
- #endif
--- 
-2.54.0
-
+...
