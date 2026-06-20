@@ -1,86 +1,91 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB85813635E
-	for <netdev@vger.kernel.org>; Sat, 20 Jun 2026 01:21:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3F54964F
+	for <netdev@vger.kernel.org>; Sat, 20 Jun 2026 02:44:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781918519; cv=none; b=lexPNzAtRrPdzLOoEv5sg4okkwzfSwbQRq9ccAx862dcMde7QmIJj1CKfqbKcYrrr/Ht6WcxHDscvgEff5VSADYitQzp3bCxlZECQSIz+aGyMvSeL/WzFlFcBeUGZlSgn5m4/otemz/B/WfZ17MP6J8UymN59jY0KXsPTpNHaYk=
+	t=1781923479; cv=none; b=CcTLx5eHO4QkwROHbtwKTRaOOrm6HWGJwxagh5RaxWYRN8LqS1cy4b+hLJb95JbBwy9csUtKSr3LdgBeoNCqgFyQ6tGPtS1Z9qgCjixzcIXIlFO5GI39NSRkdWkK1w2gGOTkHEIbKiZGzlgCysmuRLgOj2Q/O1s8YIkKUvwUQcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781918519; c=relaxed/simple;
-	bh=HqcjuCULUw4qkZsC+NiC1XrWQgI09RM4053kTIirFTQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l/P/2ljNSDIv1GnmdHMHM2sfbWPpe9hWlTlV4fC3buYcAFFwAchZEm10blFRE/8ZrxyyFkNsdU62IlUxv8WadNPWTJRhHM/P2WXDU3B+dtnCuvmbVqnebB210AD0fXTposs34nUh1HZF27ohyuxd2wTmDscwHmDRW0WTRHLuAho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HKbOhjGp; arc=none smtp.client-ip=209.85.128.44
+	s=arc-20240116; t=1781923479; c=relaxed/simple;
+	bh=NP4quYUiUG5ir6Lfp/c0pxMjxtMtKmPdVnpeYKXlUh4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RJyN8YVFiv3rokooyN2+J32HT+Wrc+bP4AHRbeNVS/wDC/mkv2fyEeHe9jBEU0a/qzBR/qktF9Udv1+fKT5Rr6h9SaVtB+Jg8UwogHEEPGLNB3Kmu33R/yP5JyTFH7XUgxji3m/1cFcM5sZhpWaqx6Eg467CvjvsHiJTKVvsjxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dv1hXSxK; arc=none smtp.client-ip=209.85.216.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HKbOhjGp"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4921e4dd62dso19446345e9.0
-        for <netdev@vger.kernel.org>; Fri, 19 Jun 2026 18:21:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dv1hXSxK"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-37c867bd3e0so1281578a91.0
+        for <netdev@vger.kernel.org>; Fri, 19 Jun 2026 19:44:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781918515; x=1782523315; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1781923476; x=1782528276; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=6qFVTuKItGBuoPE7wYIuR/hBckRIiltP6ZLSrXPb+oI=;
-        b=HKbOhjGpawx+Zu5WHuWeJsvF//vcspNeUmhmi0h/JKcMUYKu6yK5dY7hxAH6OIFZ65
-         zj53WmcQsK845cupQb1Gi71l/Srs8XWFbBi88lcFDg1smVPwrF+hHY9zqP7SWjntfWQS
-         0m9JctMiuHPQzYK4zBEhMgJ38h+sLRVc4Qx0z8LVQajLHZZm1YCQ+AJQi0m50rQFESu4
-         3fMVKx3/H2i69LnF4B4e+X+NWlTIKR776pvO6qdys+scA2FDY542O/jNlIYQk65i3s3m
-         1cAuoTpFejP6kXd5Vsv3HiHt/p3Ny/QoC4aTau0dQHo/tRQgH0tfrs0Cu0JuFaDSWuJb
-         fu6w==
+        bh=tEtBLcfn+4nL/oLFXcmstWWRDWBHHiHGLWZQy1ZHB3Y=;
+        b=Dv1hXSxKUXJ9TVQynNVZA6sCZscNGNjyUl8o1fETyyQSirtnuAPVeKpX5BoLCbWuVC
+         md18EqGZZovQGbvXGFqTDG+WpsXkUZVlX1BhQy28REFKzmtq6zw/zfEzqVQA4J5KQSgp
+         bes/khJf490M9lrJm66nWmRTSmIe35AuV2d67ClIhGOFbAfARQ4Vd0UR0EhbkADcrwbQ
+         BLkySwSFMcWaQvrfOINQzmOUsFphR5ue/T8PVVgJQYSUaU3LAI+zcQnuAbAdHlHoG65P
+         a1OBGs3Ih+i0rA6vJ11aqEjeltGVp3twUfLPyDkpFMCQ9u/SNo6JeVGPzNd4mQH2eHcc
+         pqBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781918515; x=1782523315;
+        d=1e100.net; s=20251104; t=1781923476; x=1782528276;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6qFVTuKItGBuoPE7wYIuR/hBckRIiltP6ZLSrXPb+oI=;
-        b=tKYgGBomeuEWIXOgDvxf/RUM07hCSweAYGYIrKb2Gv77/9vNs91Ifc3RwUO8lSkDHL
-         WutHZh+IuuV1dYH+ldy3ehmhzyTlMqINqDEvuixlV0e738fqiZWI336qks313rTmiTy7
-         79XomIod3e5ne5A9y5n2yH15dMhHELfQN+Dcqpg3Q5dkr4JW+dAu0cmSuuqigGdFALi9
-         VHqNPGIXDYOe4vnyM4wfLJEBvBHTFGiYUVO9mQoWU4CTkMzaIQWhpdTWTR7MeLKA4uiV
-         MQZZfuS9oIm8A0TOdBgDnC5/ktgRcyOvm7Z7Y//40ifneP59vsHEg4fONV5VO3rKLUUj
-         leIg==
-X-Forwarded-Encrypted: i=1; AFNElJ/SHGkC9PiI3+Czl9M1B/WT16x9XDDfhzsOS4VnUBmOuMOcst4HZe5jeKDuq4ExAnC6omXCqgo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywqxyj0JE2FVmBbfiyZMavyJfDBaDAEH/fYdQaJ7jvz++E9Qwq/
-	FjYWIjAdOX1mmipLvT3Xhg0VS7MolpPLFcn3o3fv/4zYTPskSGP0d2j4
-X-Gm-Gg: AfdE7ckxiVKQuVl4da3Q49xYhaAiPNlRrE0xqS3wbwnVv/8Wotc6VoK4+tfpalNAjGm
-	DZ4Ea9KhhGA1FrCbElr0DLP0gPKOa6p5AHVXVr4t/Eiw64ZvGzEmHsrsU0aDD9VAUS6PHovD3R4
-	+QM5SjRHHcYvzR1IFdkyJz0bWpzh+W4OYqwcahsbuoQkd1Ijz/cbGbx3mhsHQDvWwIYhVUAE5lu
-	qkZuX1dO8iK/Fm0Xz11HSm/vXTk5RDEeGFLSLleEEKzVzX2+9Ej/kF8AEMgVB8FtXip7QWn+3JV
-	kOTDX3XsacF/Mley5Kf8H8ICKyuIIK9t09RnjCUyqPBUjInIfH2lSwr6KSEMcV7OAEN1wIp5iNO
-	ycjagkcX3UTfe7V8wht5dmg60+WLqKdQISG7HdynYiJZDE7TuY7X383TWxJ53JqQpPt+CTc9eV/
-	NFfAwTllGx01a1jFNz9ivA
-X-Received: by 2002:a05:600c:4e4f:b0:48f:e230:29f5 with SMTP id 5b1f17b1804b1-49240a486cemr74241415e9.16.1781918515037;
-        Fri, 19 Jun 2026 18:21:55 -0700 (PDT)
-Received: from cool.klos.xyz ([2a02:8308:a09d:f500:945a:ea46:4571:736b])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4924923392dsm44059805e9.2.2026.06.19.18.21.53
+        bh=tEtBLcfn+4nL/oLFXcmstWWRDWBHHiHGLWZQy1ZHB3Y=;
+        b=OkdT1mKk7hIKhssmRBdnUrJveG7y+gQW7gtiZAwaXogUKIGorATX4caKDHIZDFnhWx
+         +BtCSsMuZHndt4fYc9vP+YfFaFIzv/72ITV/8MEpykV0sRZtl7Wtd1FxhI+bEUCF/mw8
+         dsVfuGpcKiDfdIvPJMnU5ezyvyd5sSU5Qmq3aMlt6euAwleaBatJq8g9/orgXOS8Vruq
+         qsZy5KyhX+r9mOz+RCTHx/tYU4iub3Q2aRJaQQNgc1/EwgBwKj/E2L5Pa791OxN0k73K
+         w33etgdmbrwwyVlw6WH2JfKjIh2DtUBgJfplzUjyUg2/MGQNF+rGStCmaWbSQ6Iq5RFc
+         vvtg==
+X-Forwarded-Encrypted: i=1; AFNElJ+pmcOxAAXUjVNU/EAJ62zDnFMXTI5zo3ijW3qEADmPCm6gm181HwvEVL348r/NrOMcV/W2oKs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzfK/S3bcDrtbXz9nb6v2AtIdClFr1NRJadYO9EctKCNKNcgvgf
+	Yc8nQ3EloBOctvRgAdVm7bW8Gzys2VRLal/OulZci3XEggI/c9wa4hWd
+X-Gm-Gg: AfdE7cng8DG0D/6QoAJ06QISlL1y14U5qYrTv1DZUOB56c2IGxhhO9Pd6ZgLPHQTAPO
+	CSyWCSp3E5FXGTjhdRNkJ6rm6EDxD8vnU+oabJ6VF/mxJyULmG/1rKG2sm7BjhguAOeqDEZQNE6
+	E9gNMBIqYES9h3Uwa+lM31mzItqYt2RpBaRB2XJ3nX/TxZtme5K/OiahtK4z+P/yEWK4Cou6TxZ
+	VW72oEvQCNPuA+M8lg4e8SHK4YIISuuw0MllGxJupLRMvz+kJ+dUdMHlgv4ehlSYftvIOwgk0Kh
+	NSQ/WBtPylZWv0vO2rMHDtYyhnTkew5QD2aZZOaj7EdnQbAV09y2QDqgcGi8eI2UQD5a/ZqUvl9
+	7XpcmNxB/LOQ6CbdZWlGLEzKi7qrKIWUatObArqqSUAw7hZudToGSDLM9GKDYGwiyCc24L3Tpoq
+	LZxoNeL7+yFCTeLQqDrspt8VHlsjoH2v0iVuJk/xnQAYqiEJeqFG4=
+X-Received: by 2002:a17:90a:f94f:b0:365:a5f6:4a5c with SMTP id 98e67ed59e1d1-37d15dce559mr6675282a91.1.1781923475789;
+        Fri, 19 Jun 2026 19:44:35 -0700 (PDT)
+Received: from cps-manycore-1.. ([147.46.174.222])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37d1600975asm1087971a91.0.2026.06.19.19.44.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Jun 2026 18:21:54 -0700 (PDT)
-From: Jan Klos <honza.klos@gmail.com>
-To: Heiner Kallweit <hkallweit1@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Russell King <linux@armlinux.org.uk>,
-	netdev@vger.kernel.org
-Cc: Jan Klos <honza.klos@gmail.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+        Fri, 19 Jun 2026 19:44:35 -0700 (PDT)
+From: Sechang Lim <rhkrqnwk98@gmail.com>
+To: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	Eduard Zingerman <eddyz87@gmail.com>
+Cc: Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Aleksander Jan Bajkowski <olek2@wp.pl>,
-	Markus Stockhausen <markus.stockhausen@gmx.de>,
-	Jan Hoffmann <jan@3e8.eu>,
-	Issam Hamdi <ih@simonwunderlich.de>,
-	Chukun Pan <amadeus@jmu.edu.cn>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	ChunHao Lin <hau@realtek.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Bobby Eshleman <bobby.eshleman@bytedance.com>,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2] net: phy: realtek: Clear MDIO_AN_10GBT_CTRL_ADV10G bit
-Date: Sat, 20 Jun 2026 03:19:53 +0200
-Message-ID: <20260620011956.37181-1-honza.klos@gmail.com>
-X-Mailer: git-send-email 2.54.0
+Subject: [PATCH bpf-next v5 0/3] bpf, sockmap: reject a packet-modifying SK_SKB stream parser
+Date: Sat, 20 Jun 2026 02:44:15 +0000
+Message-ID: <20260620024423.4141004-1-rhkrqnwk98@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -89,35 +94,42 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On RTL8127A connected to a link partner that advertises 10000baseT
-speed cannot be changed to anything other than 10000baseT as 10GbE
-is always advertised regardless of any setting. Fix this by
-clearing MDIO_AN_10GBT_CTRL_ADV10G bit in rtl822x_config_aneg()'s
-call to phy_modify_mmd_changed().
+A BPF_PROG_TYPE_SK_SKB stream parser runs on strparser's message head,
+which can chain skbs through frag_list. A parser that resizes the skb
+frees the frag_list segments that strparser still tracks through
+skb_nextp, leading to a use-after-free.
 
-Fixes: 83d962316128 ("net: phy: realtek: add RTL8127-internal PHY")
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Signed-off-by: Jan Klos <honza.klos@gmail.com>
----
-v2: Patch formalities (rebase, tree name, tags, ccs)
+A stream parser is only meant to measure the next message, not to modify
+the packet, so reject a packet-modifying parser at attach time.
 
- drivers/net/phy/realtek/realtek_main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+v5:
+ - target bpf-next instead of bpf
+ - add Reviewed-by tag (Jiayuan Chen)
 
-diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
-index 27268811f564..b65d0f5fa1a0 100644
---- a/drivers/net/phy/realtek/realtek_main.c
-+++ b/drivers/net/phy/realtek/realtek_main.c
-@@ -1802,7 +1802,8 @@ static int rtl822x_config_aneg(struct phy_device *phydev)
- 		ret = phy_modify_mmd_changed(phydev, MDIO_MMD_VEND2,
- 					     RTL_MDIO_AN_10GBT_CTRL,
- 					     MDIO_AN_10GBT_CTRL_ADV2_5G |
--					     MDIO_AN_10GBT_CTRL_ADV5G, adv);
-+					     MDIO_AN_10GBT_CTRL_ADV5G |
-+					     MDIO_AN_10GBT_CTRL_ADV10G, adv);
- 		if (ret < 0)
- 			return ret;
- 	}
+v4:
+ - https://lore.kernel.org/all/20260619062959.3277612-1-rhkrqnwk98@gmail.com/
+
+v3:
+ - https://lore.kernel.org/all/20260618102718.2331468-1-rhkrqnwk98@gmail.com/
+
+v2:
+ - https://lore.kernel.org/all/20260612123553.2724240-1-rhkrqnwk98@gmail.com/
+
+v1:
+ - https://lore.kernel.org/all/20260609112316.3685738-1-rhkrqnwk98@gmail.com/
+
+Sechang Lim (3):
+  selftests/bpf: don't modify the skb in the strparser parser prog
+  bpf, sockmap: reject a packet-modifying SK_SKB stream parser
+  selftests/bpf: test rejection of a packet-modifying SK_SKB stream
+    parser
+
+ net/core/sock_map.c                           | 20 ++++++++++++
+ .../selftests/bpf/prog_tests/sockmap_strp.c   | 31 +++++++++++++++++++
+ .../selftests/bpf/progs/sockmap_parse_prog.c  | 22 -------------
+ .../selftests/bpf/progs/test_sockmap_strp.c   |  7 +++++
+ 4 files changed, 58 insertions(+), 22 deletions(-)
+
 -- 
-2.54.0
+2.43.0
 
