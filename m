@@ -1,154 +1,149 @@
-Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5DF81C8603
-	for <netdev@vger.kernel.org>; Sat, 20 Jun 2026 16:14:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781972041; cv=pass; b=Gm56YEO3U4g99MtHhRINaTM/7LjsBNtul6UmSILvGxMo96l9dHUXrhymdeF4WQdMaNj0hgbQLQpjy5OyhmbhvYaVIKB6GWfteov7HC9C8OxqzH2CBh8NrMOfGPPTVDh/uNWygDnoSN0tQgRn79qgSDfVTEHYsip6h6QmwkskRrY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781972041; c=relaxed/simple;
-	bh=4dBRZKtAGoKMI0PqeaL5qpN6rZUR2uA0FcKMvdGDEwI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aqF36Sz+izYP8b+TB+aFwHDyytw1vyQhzjoGP6iu3cEOxHcqmLehSJkqUJ6lMrdF52nhly84lYPgEogOBoZEtnq3rvT7SRdvksr+Kso7/8goJ5GTFW21nM4CBoZnYbDJe8IsqdQbRqlGUkd1wCUa8aX8IPzr7BBmWMLiex2h4R4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hCyLA6TX; arc=pass smtp.client-ip=209.85.167.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B624C176FB1
+	for <netdev@vger.kernel.org>; Sat, 20 Jun 2026 16:19:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781972353; cv=none; b=TnYd3Nf1aBEzgjD8eZSbXc+CaOvNj2p2ePgd153U0aHm30/bew+c6yDXLCD42XxejhnGHhlkL/7nxoAoV35so4F3zgA0LcgXe7kXmXobAzz/rYTbPlOn0WmvCZkO8DqcedGQ3Jiv6FNKnV3dysM4bETBPoKXnjyjViBDRym7N7I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781972353; c=relaxed/simple;
+	bh=7/hratlCedENOGrHjN+Y2MAP5Z/7y4Pkz2mBjKvMTxw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=p26BqMPfOkg89S5fKluDt/KFgU6hxTdRuQOH00z/IE4tdU1NnkwqryCFpRNGvVX5ivMmunhDEZ0gudvT8OJYp5KXNFNp9ByCIySBggIP/n64yZi5pF2ZW8j9xi6ag1NkP/WpbFhvHtnz8OqAxkTFHcOQTga07cLcaiHGJkSI4Bc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=eNaGTRNH; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=/gjc3pDs; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=eNaGTRNH; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=/gjc3pDs; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hCyLA6TX"
-Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-486621f0adbso2081059b6e.2
-        for <netdev@vger.kernel.org>; Sat, 20 Jun 2026 09:14:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781972039; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Bo5F9WUoixTk3P3deg5FnFUjA4qKfkkzMGJ3by0IMbZLK525XeDSQ+TxFOVdmcgnX3
-         Znl3bZmhWy/yT13hdDaNqH3Wxr06gQ8HvTZk72CBjAMwu3nDDcGR6o9c2Vn30v9o+uou
-         DzHc8zY4JVJ89kBQAb0Bdwb6S0xzmykO1MksG4eGNQduUCt0x6BPoUWeSwWd122SdHF9
-         Llg7WaZaOf0ar8ocjJzvZhSqT4l0kn69HMVz5dxH3awOPLbPKE8Sqs22RKcmdF7qnW0t
-         OPVNxqutanJouRopbvRMlJtJ7qb7Worpqa8OxdXMViCryoa6CJQkCdO0Z9FcDUme09Sw
-         5vMg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ulQaBnduoHRZ/m9YHz6Lg718P1rZPjXVOz4ZtgVpBio=;
-        fh=1ffhz1LCn+XjckKwJV4d58j3PNJFvGXtZYChy/J7jCo=;
-        b=kHlqZx/LYVVCRRv5n8fxivOu6pfWTtTLqZuEpFYpXvt8m2YETvHq/7F0gUARY1v5BX
-         FpaIKIVFFiQ6GjbETxlL58x8E8IJfp1bnhGHX9atgfaD7osQnVcEMa7wzP3cgqj9VkOW
-         QpQ+6hnMdRbeU8bxh6OAAT/X2Tj+HAvclG23X0Vb1FkARVrW9dYz5JWwJCRiYQ8rmE36
-         vgStQ0ZYiBY4utqobY82RHJK1dHtlmsbZnJ0bz2AIfrmfb7JeEkpDDraS3+tqQZiqJ0G
-         btaj60NvpH5+jBzPdujLptllPJl5G0DIdcQTKAda5t2Lu/nWg1RvKq/OVLg304aZWHOV
-         AELQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781972039; x=1782576839; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ulQaBnduoHRZ/m9YHz6Lg718P1rZPjXVOz4ZtgVpBio=;
-        b=hCyLA6TXSN64oKVsxa4RJkpSjZBK4KPHuH7l0K/jfm2zZNG/gwv6g/rA3uUz5ZC5Mb
-         eJObI3UXunlJVec3FOr+OBgw87b/wQlwPssqyFOvgYw3IvB5FoupChmOmmzEDl2tzR/G
-         P88CjnlwkjFFcOB+rc1+bLmm6kiEE6Cjyb2ptNNz3nNkYbgfVdHW3ixkLcS3DFO8kwrF
-         EL1IvBjHjg+q38f5kluo+MPnluZBOoHQ4TNXPjkkJ5f66JS9BZFkcjatDmTtrIl/xU6U
-         oFiRzpKw+JQK6SG5FavrSKisnwtn1RUhXiQ++efptPUL5mivBJRlV3l4LMyuw5SU60DL
-         l4/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781972039; x=1782576839;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ulQaBnduoHRZ/m9YHz6Lg718P1rZPjXVOz4ZtgVpBio=;
-        b=EJBW0i+38l2rqv1R+vSVELfrobJ3Gn9TlG6zXdLYV2DdDXX1j69u/uDMnIqk/mUbSf
-         uqRrznNjCe7jd6KCznq6giPz7bOACsSyE0DGH+J/RyDLU7yfT0xCJ4OPZhVw0OC4lNkl
-         Qk6CgO8SKXAr4Q1ZLtroRrZhjdzhFIlgeC6Gpfuq5UNqevDAtet0EDyBZXd4GdR0Z067
-         4xUJPKeRBIsROAtBhyKUchyo42JuAHkGDrKvXMrmknm7HtREMqDX8ayJecFxUc2WZilk
-         OArIbjT1iuwygRmf5mMoT2LF3QT09G6/7lh6rsqWU/+qfnZHMNOf/xUye7MNUFDMV//9
-         Zsiw==
-X-Gm-Message-State: AOJu0YwkDAPTnI6M/EcvcO7kZuTWkWZBhoFt6HZs6D0FGubkBQs0ZfMS
-	65HpVcxNvVL4+Cs+MYPCG4gwB/lugfMzgcXUHtJTwUwGuN8rXV0j1wSnT3P8APxQ3bARlV98NgA
-	LeevKHuoEqkLh1pmRd7EeRVQXGKYzkIs=
-X-Gm-Gg: AfdE7ckRfBurj00oES0mKatzM2Hb1y6kPWso8xdKnCUxfCR8wur0VgNgMfsOyb9y41u
-	94IPOgPW/OkSxuuilYESsY+UeLjmim8Hlx3/baYK0zKOcqszMmSjMeZ5jWTEJi24A1ZmtFYyWu4
-	ytBMZ9SOi9qLw4pdY7yVFk4v72wgu2Z7he0pfDJ/z3Bf8ZfNUYR50UKZOeqxoP7I3zVoO90qHvV
-	+E89LNV1gSHctfwpq8J1Wcyfk9XtIDsXJeDPMoZPVOqfoSet72hwwAvfzLgqMoFNeB3M5xSjyoU
-	gRkyab0afN9FegmJg3McaS95qbEc
-X-Received: by 2002:a05:6808:c2de:b0:486:a9d8:ceba with SMTP id
- 5614622812f47-4896ac94f4emr8380066b6e.32.1781972039594; Sat, 20 Jun 2026
- 09:13:59 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="eNaGTRNH";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="/gjc3pDs";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="eNaGTRNH";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="/gjc3pDs"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 3D00F6B6F7;
+	Sat, 20 Jun 2026 16:19:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1781972345; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=fVspOvob7bdad1/J/QAJRiGRGfH2ZEI+uk6WhaCcnZQ=;
+	b=eNaGTRNH1KNl/xS4MCkaUk0YB3vuPVofyEKcuNc/urN21j6/dnMALIKGtmA7ste060FfJw
+	AGGWjwvwLYQyE+bzLzpaJawActqv2NPxuH4vws2gQA8yUaHayP9azjn0doVpgI2fQHcNXa
+	fZyGAYYcjLTNYRmhoz5bWAAS3VTuHXU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1781972345;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=fVspOvob7bdad1/J/QAJRiGRGfH2ZEI+uk6WhaCcnZQ=;
+	b=/gjc3pDs8uJGtEGSvQnu/gjXB+ecefK1pGlBhq3mvQs7RpUeAqWVU+s6+lPL4aw2LxEJX9
+	lZnRXVBtHMeC8JCQ==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=eNaGTRNH;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="/gjc3pDs"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1781972345; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=fVspOvob7bdad1/J/QAJRiGRGfH2ZEI+uk6WhaCcnZQ=;
+	b=eNaGTRNH1KNl/xS4MCkaUk0YB3vuPVofyEKcuNc/urN21j6/dnMALIKGtmA7ste060FfJw
+	AGGWjwvwLYQyE+bzLzpaJawActqv2NPxuH4vws2gQA8yUaHayP9azjn0doVpgI2fQHcNXa
+	fZyGAYYcjLTNYRmhoz5bWAAS3VTuHXU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1781972345;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=fVspOvob7bdad1/J/QAJRiGRGfH2ZEI+uk6WhaCcnZQ=;
+	b=/gjc3pDs8uJGtEGSvQnu/gjXB+ecefK1pGlBhq3mvQs7RpUeAqWVU+s6+lPL4aw2LxEJX9
+	lZnRXVBtHMeC8JCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 75436779A8;
+	Sat, 20 Jun 2026 16:19:04 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id JDoiGXi9NmogRQAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Sat, 20 Jun 2026 16:19:04 +0000
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+To: netdev@vger.kernel.org
+Cc: nicolas.dichtel@6wind.com,
+	stephen@networkplumber.org,
+	brian.haley@hp.com,
+	horms@kernel.org,
+	pabeni@redhat.com,
+	kuba@kernel.org,
+	edumazet@google.com,
+	davem@davemloft.net,
+	idosch@nvidia.com,
+	dsahern@kernel.org,
+	Fernando Fernandez Mancera <fmancera@suse.de>
+Subject: [PATCH net v2 0/7] ipv6: fix sysctl error handling and missing notifications
+Date: Sat, 20 Jun 2026 18:18:43 +0200
+Message-ID: <20260620161850.7114-1-fmancera@suse.de>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260618202716.2166450-1-mmyangfl@gmail.com> <20260618202716.2166450-4-mmyangfl@gmail.com>
- <f9234e83-e9e1-488d-93f5-1f3c20634c87@lunn.ch> <CAAXyoMN9a6nncr-C1UDuUQMf4i5FR-9s-sfhSpYLYs5nmh9Uhg@mail.gmail.com>
- <fc82aaa6-ff6b-4d17-beb2-e6f156e64059@lunn.ch>
-In-Reply-To: <fc82aaa6-ff6b-4d17-beb2-e6f156e64059@lunn.ch>
-From: David Yang <mmyangfl@gmail.com>
-Date: Sun, 21 Jun 2026 00:13:22 +0800
-X-Gm-Features: AVVi8CdD8BZnOunGDEyPnN0VZA3kdsc0WuvS88p-sXRjUPcGdXVsOrksvKtsC0Q
-Message-ID: <CAAXyoMNOwiQCta9CKVtoBUwmX5JL-1MaDjxLrbWyviADyfs=sQ@mail.gmail.com>
-Subject: Re: [RFC net-next 3/4] net: dsa: motorcomm: Dynamically allocate port structures
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: netdev@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 3D00F6B6F7
+X-Spam-Flag: NO
+X-Spam-Score: -3.01
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:dkim];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
 
-On Sat, Jun 20, 2026 at 4:03=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> On Fri, Jun 19, 2026 at 02:46:24PM +0800, David Yang wrote:
-> > On Fri, Jun 19, 2026 at 2:06=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wr=
-ote:
-> > >
-> > > On Fri, Jun 19, 2026 at 04:26:31AM +0800, David Yang wrote:
-> > > > With support for LED introduced later, struct yt921x_priv will be 1=
-7k
-> > > > which is not very good for a single kmalloc(). Convert the ports ar=
-ray
-> > > > to a array of pointers to stop bloating the priv struct.
-> > > >
-> > > > Signed-off-by: David Yang <mmyangfl@gmail.com>
-> > > > ---
-> > > >  drivers/net/dsa/motorcomm/chip.c | 95 ++++++++++++++++++++++++----=
-----
-> > > >  drivers/net/dsa/motorcomm/chip.h |  3 +-
-> > > >  2 files changed, 75 insertions(+), 23 deletions(-)
-> > > >
-> > > > diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/mot=
-orcomm/chip.c
-> > > > index 6dee25b6754a..d44f7749de02 100644
-> > > > --- a/drivers/net/dsa/motorcomm/chip.c
-> > > > +++ b/drivers/net/dsa/motorcomm/chip.c
-> > > > @@ -548,11 +548,14 @@ yt921x_mbus_ext_init(struct yt921x_priv *priv=
-, struct device_node *mnp)
-> > > >  /* Read and handle overflow of 32bit MIBs. MIB buffer must be zero=
-ed before. */
-> > > >  static int yt921x_read_mib(struct yt921x_priv *priv, int port)
-> > > >  {
-> > > > -     struct yt921x_port *pp =3D &priv->ports[port];
-> > > > +     struct yt921x_port *pp =3D priv->ports[port];
-> > > >       struct device *dev =3D to_device(priv);
-> > > >       struct yt921x_mib *mib =3D &pp->mib;
-> > > >       int res =3D 0;
-> > > >
-> > > > +     if (!pp)
-> > > > +             return -ENODEV;
-> > > > +
-> > >
-> > > Are all these tests actually needed? If you cannot allocate the
-> > > memory, i would expect the probe to fail, so you can never get here.
-> > >
-> > >         Andrew
-> >
-> > Dummy ports are no longer assigned control blocks (in yt921x_dsa_setup)=
-.
->
-> This seems pretty error prone. A missing check will result in an
-> opps. At least it will be obvious. How big is each port structure? Is
-> the memory saving worth it?
->
->     Andrew
+While working on a different IPv6 patch series I have spotted multiple
+minor bugs around sysctl error handling and notifications. In general,
+they are not serious issues.
 
-It's about 1.4k per port for 5 dummy ports.
+In addition, there is one more issue in forwarding sysctl as it does not
+check for CAP_NET_ADMIN for the namespace. I am keeping that patch out
+of this series and I am aiming it at the net-next tree once it re-opens.
+
+Changes:
+  v2: Patch 3: fix return code of addrconf_fixup_forwarding()
+      Patch 5: acquire lock before calling proc_dointvec()
+      Patch 7: new on this revision of the series
+
+Fernando Fernandez Mancera (7):
+  ipv6: fix error handling in disable_ipv6 sysctl
+  ipv6: fix error handling in ignore_routes_with_linkdown sysctl
+  ipv6: fix error handling in forwarding sysctl
+  ipv6: fix error handling in disable_policy sysctl
+  ipv6: reset value and position for proxy_ndp sysctl restart
+  ipv6: fix missing notification for ignore_routes_with_linkdown
+  ipv6: reset position for force_forwarding sysctl restart
+
+ net/ipv6/addrconf.c | 48 +++++++++++++++++++++++++++++----------------
+ 1 file changed, 31 insertions(+), 17 deletions(-)
+
+-- 
+2.54.0
+
