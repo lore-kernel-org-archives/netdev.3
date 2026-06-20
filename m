@@ -1,74 +1,73 @@
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2FD1395DAC
-	for <netdev@vger.kernel.org>; Sat, 20 Jun 2026 15:48:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3315399365
+	for <netdev@vger.kernel.org>; Sat, 20 Jun 2026 15:53:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781970539; cv=none; b=b3UkwQ2TdrKlScLq+Pfm/XCNCiBGT491H3300jABjTw7BrKiPCw1+/1X0MeMnEmk8l76/lu6wxk4QtOCKykUMzHnmGD3d51v49wlzZc4hJUjMBwxqe6T9faHxUAWYahEU2z1MaPxtyR1Qvt2D84ASEDeZSKluYyNYYelGkFO0ww=
+	t=1781970813; cv=none; b=PHFelzB2he6r8JUA2IoJSr518mC2MGuw5yEEBfK2Z/vXMZUqW3HUiQQXBCuGxN/Jq3x0ffRzoEDK3Yj3gxxi8eM4Io1HxAMe7pgkM1LVn7x3yYKPrCIe1qlZild9GH3xLxgAdF3/p+na8eY1KYC2HXw8Y9U5Ecf/PRN+dpukrfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781970539; c=relaxed/simple;
-	bh=y8CKsC4AcCnLZxu7FvlCaKBGb1tsp3+nM9n2z0emRA0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=odlKnVTDuz4GcdIjru1rWxLZNFVpCn0nvrrf8e3DG1CBldHqtfMaMKZ2NIDzmIwaaGQvVEnPQMQld9JyJW0stepE5z71tYfqZ5J52qvImDCsLUp18+WpE5ngFgsH4jxDMBfi6TNYajgZo8XCfTFUt72gGPy9z9nPdRLKeggFfaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hl7m9OKL; arc=none smtp.client-ip=209.85.222.174
+	s=arc-20240116; t=1781970813; c=relaxed/simple;
+	bh=27f18OOfD1wCLKfucVJgwaw2m6et21Q/k59tBorfEmY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pM7xpRIJ6VSMw3WGhfqkBSL8z13RauWntXNWjWXgsmxsdUikEjHI1x4p7GE+d1bZO3oTYX+yJoFQURz7pNJeJl1uuIecEbSlme7hfJ/e6PlMu+9822va29fuMfWZwJhURDWoQbknkvgtW12mpsJcHEQjao5yZvVnTjt7MmH9mbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=egpiAvWV; arc=none smtp.client-ip=209.85.210.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hl7m9OKL"
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-91591f19c30so432378585a.1
-        for <netdev@vger.kernel.org>; Sat, 20 Jun 2026 08:48:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="egpiAvWV"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-845537740ddso779975b3a.0
+        for <netdev@vger.kernel.org>; Sat, 20 Jun 2026 08:53:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781970537; x=1782575337; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1781970812; x=1782575612; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zCqX9SS0fcvxQj6cNLY7hXcBkW2X7Mm+a+jE+6aVrFs=;
-        b=Hl7m9OKLPWIaBfSmlKEhnW6rkDmiQAn3sZ2VI3sgY9g/aLVBvAjoat3VyidxSAg4ve
-         9ML3Jk5uId6lP13RsYS4a7ZHqI1mWfM63vUjd77Qg94jkULuVBACFKyPziw3iwaToDPy
-         PdSzGmFUE+RAZ+LuyCzXly0H+p3zirCRZrAnNY13U7hhuTooaaVcTALiprUynePCgsTb
-         2I/ZZ0CfT5jpf7Mfti1qqx3qyGsSpxrW1RWcPvhw9NXReO6OKJ9XFeU4i/lB3Wa3PKVh
-         FNGf9IpLzUKridb4fN0nCRPxNjwLpHpNcvkyZ4zaPD8/K50g5luA5YGxwyaNlgoNA9Zg
-         06Yg==
+        bh=enS82+dUPNj0lLplgn6nU4h7gPttfijjEVh4iX+6X1Y=;
+        b=egpiAvWVeKL1+HlZwS6Rxkl+HthOb/nfxCycvBYlT8/feNIa0LODwbEwF9Q31aGZvC
+         n+jMpCJ5dTjwrVp2k+LDZYAbHnmoaz3jcB54zDvlfXUiWj+HP5wzeXElUPX5k0r/t12C
+         yDS6kpJhNU5JTFETTiDZ34p7rblakFAWh42nAzTxUJVaxd7ORdsP77Uh+xIP2+k+AcSY
+         +NiEL0vWbDHvMeCMz85rMT8dKcTDkUP2pU+Yk2A1yr7CMD9vg3CjY05njt9xfLi9lt5t
+         8HzvZYS5phLIGdRnsTApYry1y44C3J4IqsXIDsh6ao1ByjEZ3XEeHCMlEuyXV8Qp/wor
+         VZhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781970537; x=1782575337;
+        d=1e100.net; s=20251104; t=1781970812; x=1782575612;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=zCqX9SS0fcvxQj6cNLY7hXcBkW2X7Mm+a+jE+6aVrFs=;
-        b=iZ81z/WlafLbSShpUu8FsbVFmrbt7WGxYjyTKB/gnBkRWGwg4Dl/vVWNHuvIgav3BG
-         LuS2kLlALEu/riAn7EuG0PSR+fE5abKKLQeztEbp34Ubg7e07PQI7rWIynEFDtVlwhxd
-         +VApzSnetb+Q0gs/EYi6JRaqfAvARMou2pvmEnAM/gYXFyDoSc07MZQ7e5RQzJVXDCHQ
-         TmpcT1M1VuuMjMBmlP2AoJiwu7QHb+UBmwxauV7PoAFaPgSQV05QnjyVEcRfbw/o5RfW
-         +fqvG/X+330OjNoaeywW8rQ+v5JTB2Ex+pTpT6OdQXMnnz2bCIIfUwJaWdIzMo4AloNi
-         pTew==
-X-Gm-Message-State: AOJu0YyW7Gigc5rleyyqraGmDokVUDvskqrlXS0pux6btQVS55ZTPdsc
-	tsXh36Uf3TAUd9ksYAvbixks2Lqq3pVVcMBNIko8edU95kuuMHw0O1SNJWHWxxTy
-X-Gm-Gg: AfdE7clL6k1eZPU59th4fUozMYNjFpuZFT8YHZ7kff0hIqVcG/Jzc7tj5ekb1I7KGAD
-	Fld9yro8+R3NnGgoMwjB+uW4dxoW7FwcN8NHF0uMRIbJMR2oMJjyyYDmwhICPdmywE4ac8ugDnb
-	j32D4yyqJ/5qfkwZSmRZ+Vh/KEetWNMjnEtkZw9vrxEGIOmE1GNfckR+MP3SgGfyGWAKFTBtp1M
-	ysXPdPWfG8S350eKM3U8RO/MreT6qrqPSIE4E/k11Y4HFnZlHdVIlmd731Etb77PtGn9+9Zs8kr
-	K+A8sWsCZo3Z8rh2PPADHmD1atvIsOy+3GZ1EzCFTZfIquAevlgRst1htIZ4R+x2RqTpX1mendk
-	Uh7vLX3pFPCXU9cTxdFkbHykXEvvezLSKSckMQLaZ0Nfzz27LB68ZvYB3StV/DhU+tJMKDf/TDl
-	c7qE2j4Rj/WN6Fpez2XzjF1yAH9Edx5rn5/GUOp8HDZsfdmEGMj7domuI2SvZe8c2MSjclyE3jE
-	mvWsJiyPNJES8v+Um93oYRFfDZTE8m17OWc1z7HIhEcvNJSjzArm+U=
-X-Received: by 2002:a05:620a:278b:b0:915:94c7:5840 with SMTP id af79cd13be357-9208f1610f8mr1141369085a.1.1781970536718;
-        Sat, 20 Jun 2026 08:48:56 -0700 (PDT)
-Received: from wsfd-netdev58.anl.eng.rdu2.dc.redhat.com ([66.187.232.140])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8df7f015e50sm34809506d6.6.2026.06.20.08.48.55
+        bh=enS82+dUPNj0lLplgn6nU4h7gPttfijjEVh4iX+6X1Y=;
+        b=n1kRZMFJUxYqoSNW99iy1vRnxRDvLqCF+eCHHFiKk+3mtf6HYMv3SvAQOehcEgaaly
+         ANMq0WdHZHrJYtg7EYEcn34WjO4Ojpu7XmQbXREx9DmIxtzJB7xyvgV0ut5NRdhmAwfn
+         1kkQciDiwfEty1KazWa1aT4kBBMnMLsj21udTG/brdMeDdu4oxZExiHwnwROehd91qLz
+         /7u/csWuS2IzujVPq3zXY9gCytcjzrK/M+rOvbQKAt3C8yXYyFpbl5p7vAelV5F3hn+r
+         B+0QQp2MtZWG+cFYALmcJWXP+BpGMgymyaeAdItVHLtJf5kgOxMw3z3CKt7xo8Al5RBy
+         kOEg==
+X-Gm-Message-State: AOJu0YxTwHT67XJInk9zeOPA3F7r2g3JzE747wK4Q2i1oI2JUgzHy4KQ
+	6xlF7YUpxLmc45be0db89fy6N3idNPkdBbxoAGtUkyLhEdermq3boUZC
+X-Gm-Gg: AfdE7cmKSZRQ5HRBY784h6LVHTPkrzDJCHalfb3sZhA6c+9xCDrrvIT90+F70PhfPcX
+	yzxrSMwejkDeUudGYWICbSIhtaq11A+IzYpg3ePapSsP/3Q10aAQTE7RrAvWa2eysBG6xT4BLUi
+	7hEr4F+jeh7dmur3Rg+YQUmEJnR897FeogEvisEPYfL9FxjCK2+IqeiDFdp1k6dB8uah2jtfZz5
+	ykPK5ZStGZ8pdDSN+O4JoSapd4g3hDpxGzzC7/MNNArF8BuSer+iAc9p/P9dV0igM6ZT1j6j5v6
+	ef6xd9ooS8E61ZCOSC1rGEKLv/C+8AgFvWYP3bcHosxT4EfUAIPkzVRLDpH1co783Qeyt0PCoy0
+	w5oHYlUTsWnb7Yq5XBCl8So1r/9MyprSI2xZb4RZooSs3QV0Yl+qMOIWeUeUofIqAs6cEt9+sww
+	J2gSse61LiHRLzi03cFCWbxCfKva3NlREP
+X-Received: by 2002:a05:6a00:882:b0:842:2382:a0ea with SMTP id d2e1a72fcca58-845507de690mr8534471b3a.14.1781970811867;
+        Sat, 20 Jun 2026 08:53:31 -0700 (PDT)
+Received: from haichao.tail057a43.ts.net ([2001:da8:e000:1206:8e0e:956e:b09c:23cd])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84564ed9516sm2555118b3a.57.2026.06.20.08.53.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 20 Jun 2026 08:48:55 -0700 (PDT)
-From: Xin Long <lucien.xin@gmail.com>
-To: network dev <netdev@vger.kernel.org>,
-	linux-sctp@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
+        Sat, 20 Jun 2026 08:53:31 -0700 (PDT)
+From: Ruoyu Wang <ruoyuw560@gmail.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
-Subject: [PATCH net] sctp: fix err_chunk memory leaks in INIT handling
-Date: Sat, 20 Jun 2026 11:48:54 -0400
-Message-ID: <0656704f1b0158287c98aec09ba36c83e4a537ab.1781970534.git.lucien.xin@gmail.com>
-X-Mailer: git-send-email 2.47.1
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ruoyu Wang <ruoyuw560@gmail.com>
+Subject: [PATCH] net: sungem: fix probe error cleanup
+Date: Sat, 20 Jun 2026 23:53:26 +0800
+Message-ID: <20260620155326.80582-1-ruoyuw560@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -77,64 +76,49 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When sctp_verify_init() encounters unrecognized parameters, it allocates an
-err_chunk to report them. However, this chunk is leaked in several code
-paths:
+gem_init_one() calls gem_remove_one() when register_netdev() fails.
+That path unregisters and frees resources owned by the net_device,
+then probe continues into its own cleanup labels and touches the same
+state again.
 
-1. In sctp_sf_do_5_1B_init(), if security_sctp_assoc_request() fails after
-   sctp_verify_init() has populated err_chunk, the function returns
-   immediately without freeing it.
+Clear the driver data and remove the NAPI instance on this error path,
+then let the existing probe cleanup labels release the resources once.
 
-2. In sctp_sf_do_unexpected_init(), the same leak occurs on the
-   security_sctp_assoc_request() failure path.
-
-3. In sctp_sf_do_unexpected_init(), on the success path after copying
-   unrecognized parameters to the INIT-ACK, the function returns without
-   freeing err_chunk, unlike sctp_sf_do_5_1B_init() which properly frees
-   it.
-
-Fix all three leaks by adding sctp_chunk_free(err_chunk) calls before
-returning in the error paths and on the success path in
-sctp_sf_do_unexpected_init().
-
-Fixes: c081d53f97a1 ("security: pass asoc to sctp_assoc_request and sctp_sk_clone")
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Signed-off-by: Ruoyu Wang <ruoyuw560@gmail.com>
 ---
- net/sctp/sm_statefuns.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/ethernet/sun/sungem.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
-index 6967e889d1bd..2f484c678093 100644
---- a/net/sctp/sm_statefuns.c
-+++ b/net/sctp/sm_statefuns.c
-@@ -400,6 +400,8 @@ enum sctp_disposition sctp_sf_do_5_1B_init(struct net *net,
- 	/* Update socket peer label if first association. */
- 	if (security_sctp_assoc_request(new_asoc, chunk->skb)) {
- 		sctp_association_free(new_asoc);
-+		if (err_chunk)
-+			sctp_chunk_free(err_chunk);
- 		return sctp_sf_pdiscard(net, ep, asoc, type, arg, commands);
+diff --git a/drivers/net/ethernet/sun/sungem.c b/drivers/net/ethernet/sun/sungem.c
+index 8e69d917d827..26974ee71352 100644
+--- a/drivers/net/ethernet/sun/sungem.c
++++ b/drivers/net/ethernet/sun/sungem.c
+@@ -2986,10 +2986,10 @@ static int gem_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	dev->max_mtu = GEM_MAX_MTU;
+ 
+ 	/* Register with kernel */
+-	if (register_netdev(dev)) {
++	err = register_netdev(dev);
++	if (err) {
+ 		pr_err("Cannot register net device, aborting\n");
+-		err = -ENOMEM;
+-		goto err_out_free_consistent;
++		goto err_out_clear_drvdata;
  	}
  
-@@ -1542,6 +1544,8 @@ static enum sctp_disposition sctp_sf_do_unexpected_init(
- 	/* Update socket peer label if first association. */
- 	if (security_sctp_assoc_request(new_asoc, chunk->skb)) {
- 		sctp_association_free(new_asoc);
-+		if (err_chunk)
-+			sctp_chunk_free(err_chunk);
- 		return sctp_sf_pdiscard(net, ep, asoc, type, arg, commands);
- 	}
+ 	/* Undo the get_cell with appropriate locking (we could use
+@@ -3003,8 +3003,13 @@ static int gem_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 		    dev->dev_addr);
+ 	return 0;
  
-@@ -1607,6 +1611,7 @@ static enum sctp_disposition sctp_sf_do_unexpected_init(
- 		 * parameter type.
- 		 */
- 		sctp_addto_chunk(repl, len, unk_param);
-+		sctp_chunk_free(err_chunk);
- 	}
- 
- 	sctp_add_cmd_sf(commands, SCTP_CMD_NEW_ASOC, SCTP_ASOC(new_asoc));
--- 
-2.47.1
-
++err_out_clear_drvdata:
++	pci_set_drvdata(pdev, NULL);
++	netif_napi_del(&gp->napi);
++
+ err_out_free_consistent:
+-	gem_remove_one(pdev);
++	dma_free_coherent(&pdev->dev, sizeof(struct gem_init_block),
++			  gp->init_block, gp->gblock_dvma);
+ err_out_iounmap:
+ 	gem_put_cell(gp);
+ 	iounmap(gp->regs);
