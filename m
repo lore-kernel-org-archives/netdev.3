@@ -1,37 +1,48 @@
-Received: from proxima.lasnet.de (proxima.lasnet.de [78.47.171.185])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 963F0331A63;
-	Sat, 20 Jun 2026 17:49:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.47.171.185
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030D04A32;
+	Sat, 20 Jun 2026 19:00:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781977753; cv=none; b=j5xdZwX7EJNxeFyFeU+HbWpzNk3+CQtM96+gDeKs56LwEx3xp1ejS0IJPnL/R02tU0HryUzkD8FMu5NQ5RCsAm7Q7YeMxa2B1dEoZLCsKv8jaGK2dzIpREt6kA2jYjmpeq/KuM7eo8KWs0mHKfEcQvZlS61MqyM/MgueRJWK7/U=
+	t=1781982050; cv=none; b=YnaSJw08/z7xOj+z/GImvIfdt5Jv7wagrQ5gbbqKqrzAHDudyCrHX9NwVlSL6EDNknU+wXIM/IWp2v4Kd/iOzj5SHRKthMqNV/BjLyRrBxT1J1rZYeUe350tMdP6gJxYESe6//aWxGoXINF8ZHUv7ELt24kSWtwLqgFlsAqLatk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781977753; c=relaxed/simple;
-	bh=KAPoBf9BExen4IaZoij6WCkOt/dAfiQP4OlXnivQIS8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Dilg1D1Rb7SUhiRY9TjQUSr2ZXS4BDM2l3R5ztSDG2KCMZvXLPhNV2NL5gOMUlBEpRzM63r2lOY4BQO7MYa3OHyXdXrR6ddAyGkxiOLWVnARj7V/5C/q698a9fy44O0E6w5XwP5H4i9smwn8ngG0z/Iw5ZGpLKEPRml34cCtG2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=datenfreihafen.org; spf=pass smtp.mailfrom=datenfreihafen.org; arc=none smtp.client-ip=78.47.171.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=datenfreihafen.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=datenfreihafen.org
-Received: from work-wifi.datenfreihafen.local (unknown [46.253.254.161])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: stefan@sostec.de)
-	by proxima.lasnet.de (Postfix) with ESMTPSA id 97159C018D;
-	Sat, 20 Jun 2026 19:49:07 +0200 (CEST)
-From: Stefan Schmidt <stefan@datenfreihafen.org>
-To: davem@davemloft.net,
+	s=arc-20240116; t=1781982050; c=relaxed/simple;
+	bh=GGe715cEZALGIOrNHQ+tNVfJ4PFoerJuXgo6LRfj4V0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=bUHCbzEZwJDnX5OqJw9QuVJQgPMHQX7A0uG01SsvdSptzCzGfG3q5P6OFienl6m9AluUWcjHlxTe5khNhs0r39WJvk1Y4jG/q0Hvlhnn2GRHWiVRn7F5R43QealR7rpJIDihJgOPevaT9buL8IGdJnL10LdxoLQtaSFTFxXWzH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NdkBgXQO; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NdkBgXQO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7E6E1F000E9;
+	Sat, 20 Jun 2026 19:00:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781982048;
+	bh=8Ks9C+Ww3HFk+V5AGhFCwK28yuYhD4ZwkpSUFVnK3kw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=NdkBgXQOP6YwLiLbVEGOZ3d6WW+p4L/IXMc5uukqqcA2ucaLNPfoBIM1x+9iw0Kvj
+	 nJ9AsNkL8TdhUJGJ/kkuZzKE6ALA1r3MBipjP6950cAkAInj17Apu1wEyHY/bBD7s4
+	 5LTrBwNN3GtxLpPY35bc3lsj5lw5ZqVH094OFk65I69QVm/JB1tEQHkYCN6PxYMD8z
+	 WS73aUfw1SBg2z8M9PdJhwZgAgdePZ84TfEx2/XRvalblwQJxkvxahZfK4TvI/N7Y6
+	 RjEhmk/ECg/Fja2KPyGsvlop+yPnyo6OCjaYq1XCGTnPiVkq667oymNxYRc+b2nQva
+	 zwQS55DDjFKTQ==
+From: Simon Horman <horms@kernel.org>
+To: yun.zhou@windriver.com
+Cc: Simon Horman <horms@kernel.org>,
+	marcin.s.wojtas@gmail.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
 	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: linux-wpan@vger.kernel.org,
-	alex.aring@gmail.com,
-	miquel.raynal@bootlin.com,
-	netdev@vger.kernel.org
-Subject: pull-request: ieee802154-next 2026-06-20
-Date: Sat, 20 Jun 2026 19:49:03 +0200
-Message-ID: <20260620174903.1010671-1-stefan@datenfreihafen.org>
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4] net: mvneta_bm: add suspend/resume support to prevent crash after resume
+Date: Sat, 20 Jun 2026 20:00:36 +0100
+Message-ID: <20260620190036.997651-1-horms@kernel.org>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260618143516.1131805-1-yun.zhou@windriver.com>
+References: <20260618143516.1131805-1-yun.zhou@windriver.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,70 +51,203 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hello Dave, Jakub, Paolo.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/
+---
+net: mvneta_bm: add suspend/resume support to prevent crash after resume
 
-An overdue pull request for ieee802154, catching up on all the AI found issues
-at last.
+This patch adds suspend/resume callbacks to mvneta_bm so the BM hardware
+state is drained at suspend and reinitialised at resume, and adds a
+device_link from mvneta to mvneta_bm so PM ordering between the two is
+guaranteed. A few questions on the new paths below.
 
-Shitalkumar Gandhi fixed problems in the ca8210 driver for cases where we could
-have a leak or a pointer truncation.
+> diff --git a/drivers/net/ethernet/marvell/mvneta.c b/drivers/net/ethernet/marvell/mvneta.c
+> index 0c061fb0ed07..488f2663ad2c 100644
+> --- a/drivers/net/ethernet/marvell/mvneta.c
+> +++ b/drivers/net/ethernet/marvell/mvneta.c
+> @@ -5678,6 +5678,24 @@ static int mvneta_probe(struct platform_device *pdev)
+>  					 "use SW buffer management\n");
+>  				mvneta_bm_put(pp->bm_priv);
+>  				pp->bm_priv = NULL;
+> +			} else if (!device_link_add(&pdev->dev,
+> +						    &pp->bm_priv->pdev->dev,
+> +						    DL_FLAG_AUTOREMOVE_CONSUMER)) {
 
-Robertus Diawan Chris made sure we do not overwrite the return code when
-associating.
+[Medium]
+Can the existing mvneta_bm_port_init() failure path leave priv->bm_pools[i]
+in a state that the new suspend handler will then double-free?
 
-Michael Bommarito worked on properly gating our netlink API use in the llsec
-security context.
+mvneta_bm_pool_use() sets new_pool->type to LONG/SHORT before calling
+mvneta_bm_pool_create(). If mvneta_bm_pool_create() fails after the
+dma_alloc_coherent (for example at the alignment check or
+mvebu_mbus_get_dram_win_info()), it does this:
 
-Ivan Abramov cleaned up the netns cases as he did in other subsystems.
+  drivers/net/ethernet/marvell/mvneta_bm.c:mvneta_bm_pool_create() {
+      ...
+      dma_free_coherent(&pdev->dev, sizeof(u32) * size,
+                        bm_pool->virt_addr, bm_pool->phys_addr);
+      return -ENOMEM;
+  }
 
-Doruk Tan Ozturk ensures we have the correct skn ready in cryptoo operation (to
-avoid a  silent overwrite).
+It does not zero virt_addr, and the existing probe error path here only
+calls mvneta_bm_put() and sets pp->bm_priv = NULL, without invoking
+mvneta_bm_pool_destroy() on the partially-initialised pool:
 
-Aleksandr Nogikh fixed a kernel-infoleak detected by syzbot.
+  if (err < 0) {
+      dev_info(&pdev->dev,
+               "use SW buffer management\n");
+      mvneta_bm_put(pp->bm_priv);
+      pp->bm_priv = NULL;
+  } else if (!device_link_add(...)) {
 
-regards
-Stefan Schmidt
+So priv->bm_pools[i] can be left with type != FREE and a freed-but-
+non-NULL virt_addr. When mvneta_bm_suspend() later runs, it skips only
+on type == MVNETA_BM_FREE and unconditionally calls
+dma_free_coherent(bm_pool->virt_addr, ...) on the stale pointer.
 
-The following changes since commit b85966adbf5de0668a815c6e3527f87e0c387fb4:
+Should the suspend loop mirror mvneta_bm_pool_destroy() and guard with
+"if (bm_pool->virt_addr)" before calling dma_free_coherent(), and
+NULL-check after?
 
-  Merge tag 'net-next-7.2' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next (2026-06-17 08:17:00 +0100)
+> +				/*
+> +				 * Link guarantees BM resumes before mvneta.
+> +				 * Without it, BM may not be ready when
+> +				 * mvneta_bm_port_init() runs on resume,
+> +				 * causing stale buffer addresses and a crash.
+> +				 * Fall back to SW management to be safe.
+> +				 */
+> +				dev_warn(&pdev->dev,
+> +					 "failed to link to BM, use SW buffer management\n");
+> +				mvneta_bm_pool_destroy(pp->bm_priv,
+> +						       pp->pool_long, 1 << pp->id);
+> +				mvneta_bm_pool_destroy(pp->bm_priv,
+> +						       pp->pool_short, 1 << pp->id);
+> +				mvneta_bm_put(pp->bm_priv);
+> +				pp->bm_priv = NULL;
+>  			}
+>  		}
+>  		/* Set RX packet offset correction for platforms, whose
+> diff --git a/drivers/net/ethernet/marvell/mvneta_bm.c b/drivers/net/ethernet/marvell/mvneta_bm.c
+> index 6bb380494919..85162a43eaf6 100644
+> --- a/drivers/net/ethernet/marvell/mvneta_bm.c
+> +++ b/drivers/net/ethernet/marvell/mvneta_bm.c
+> @@ -477,6 +477,63 @@ static void mvneta_bm_remove(struct platform_device *pdev)
+>  	clk_disable_unprepare(priv->clk);
+>  }
+>  
+> +static int mvneta_bm_suspend(struct device *dev)
+> +{
+> +	struct mvneta_bm *priv = dev_get_drvdata(dev);
+> +	int i;
+> +
+> +	/* Drain buffers and free pool resources while BM is still clocked */
+> +	for (i = 0; i < MVNETA_BM_POOLS_NUM; i++) {
+> +		struct mvneta_bm_pool *bm_pool = &priv->bm_pools[i];
+> +		int size_bytes;
+> +
+> +		if (bm_pool->type == MVNETA_BM_FREE)
+> +			continue;
+> +
+> +		mvneta_bm_bufs_free(priv, bm_pool, bm_pool->port_map);
+> +		if (bm_pool->hwbm_pool.buf_num)
+> +			dev_warn(&priv->pdev->dev,
+> +				 "pool %d: %d buffers not freed\n",
+> +				 bm_pool->id, bm_pool->hwbm_pool.buf_num);
+> +
+> +		size_bytes = sizeof(u32) * bm_pool->hwbm_pool.size;
+> +		dma_free_coherent(&priv->pdev->dev, size_bytes,
+> +				  bm_pool->virt_addr, bm_pool->phys_addr);
+> +		bm_pool->virt_addr = NULL;
+> +		bm_pool->type = MVNETA_BM_FREE;
+> +	}
+> +
+> +	mvneta_bm_write(priv, MVNETA_BM_COMMAND_REG, MVNETA_BM_STOP_MASK);
+> +	clk_disable_unprepare(priv->clk);
+> +	return 0;
+> +}
 
-are available in the Git repository at:
+[Medium]
+Why does this loop not call mvneta_bm_pool_disable() (or otherwise clear
+MVNETA_BM_POOL_ENABLE_MASK in BASE_REG) per pool the way
+mvneta_bm_pool_destroy() does?
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/wpan/wpan-next.git tags/ieee802154-for-net-next-2026-06-20
+mvneta_bm_pool_destroy() clears the per-pool enable bit before the
+dma_free_coherent of the BPPE region. The new suspend ordering is
+instead drain via BPPI -> dma_free_coherent(BPPE) -> next pool -> a
+single global MVNETA_BM_STOP_MASK write at the end.
 
-for you to fetch changes up to a6bfdfcc6711d1d5a92e98644359dedc67c0c858:
+mvneta_bm_bufs_free() also clears MVNETA_BM_EMPTY_LIMIT_MASK on exit,
+which re-enables auto-refill:
 
-  ieee802154: allow legacy LLSEC ADD/DEL ops to pass strict validation (2026-06-19 23:02:42 +0200)
+  drivers/net/ethernet/marvell/mvneta_bm.c:mvneta_bm_bufs_free() {
+      ...
+      mvneta_bm_config_clear(priv, MVNETA_BM_EMPTY_LIMIT_MASK);
+      ...
+  }
 
-----------------------------------------------------------------
-Aleksandr Nogikh (1):
-      ieee802154: fix kernel-infoleak in dgram_recvmsg()
+Between dma_free_coherent() for one pool's BPPE and the eventual global
+STOP, BM hardware still has BASE_REG pointing at the freed phys_addr
+with ENABLE_MASK set. Would matching mvneta_bm_remove()'s
+"mvneta_bm_pool_destroy() per pool, then global STOP" ordering be safer
+here?
 
-Doruk Tan Ozturk (1):
-      mac802154: llsec: add skb_cow_data() before in-place crypto
+[Low]
+Resetting bm_pool->type to MVNETA_BM_FREE causes mvneta_bm_pool_use()
+to re-enter its initialisation branch on every resume cycle, which
+includes:
 
-Ivan Abramov (3):
-      ieee802154: Restore initial state on failed device_rename() in cfg802154_switch_netns()
-      ieee802154: Avoid calling WARN_ON() on -ENOMEM in cfg802154_switch_netns()
-      ieee802154: Remove WARN_ON() in cfg802154_pernet_exit()
+  mutex_init(&hwbm_pool->buf_lock);
 
-Michael Bommarito (2):
-      ieee802154: admin-gate legacy LLSEC dump operations
-      ieee802154: allow legacy LLSEC ADD/DEL ops to pass strict validation
+on a struct mutex that was already initialised at first use. Repeated
+mutex_init() on a previously-initialised mutex discards lockdep history
+for that lock.
 
-Robertus Diawan Chris (1):
-      mac802154: Prevent overwrite return code in mac802154_perform_association()
+Could suspend either call mutex_destroy() on buf_lock to pair the
+re-init, or leave bm_pool->type unchanged and only clear the dynamic
+state (virt_addr, buf_num) so mvneta_bm_pool_use() does not re-enter
+the init branch?
 
-Shitalkumar Gandhi (2):
-      ieee802154: ca8210: fix cas_ctl leak on spi_async failure
-      ieee802154: ca8210: fix pointer truncation in kfifo on 64-bit
+> +
+> +static int mvneta_bm_resume(struct device *dev)
+> +{
+> +	struct mvneta_bm *priv = dev_get_drvdata(dev);
+> +	int i, err;
+> +
+> +	err = clk_prepare_enable(priv->clk);
+> +	if (err)
+> +		return err;
+> +
+> +	/* Reinitialize BM hardware; pools are refilled by mvneta_resume() */
+> +	mvneta_bm_default_set(priv);
+> +
+> +	/* Restore pool registers lost during clock gating */
+> +	for (i = 0; i < MVNETA_BM_POOLS_NUM; i++) {
+> +		mvneta_bm_write(priv, MVNETA_BM_POOL_READ_PTR_REG(i), 0);
+> +		mvneta_bm_write(priv, MVNETA_BM_POOL_WRITE_PTR_REG(i), 0);
+> +		mvneta_bm_write(priv, MVNETA_BM_POOL_SIZE_REG(i),
+> +				priv->bm_pools[i].hwbm_pool.size);
+> +	}
+> +
+> +	mvneta_bm_write(priv, MVNETA_BM_COMMAND_REG, MVNETA_BM_START_MASK);
+> +	return 0;
+> +}
 
- drivers/net/ieee802154/ca8210.c |  9 +++++---
- net/ieee802154/core.c           | 51 +++++++++++++++++++++++------------------
- net/ieee802154/header_ops.c     |  9 +++++---
- net/ieee802154/ieee802154.h     | 17 ++++++++++++++
- net/ieee802154/netlink.c        | 36 ++++++++++++++---------------
- net/mac802154/llsec.c           | 14 +++++++++++
- net/mac802154/scan.c            |  1 +
- 7 files changed, 91 insertions(+), 46 deletions(-)
+[Medium]
+The comment says "Restore pool registers lost during clock gating", but
+the loop only restores SIZE_REG, READ_PTR_REG and WRITE_PTR_REG, and
+does not touch MVNETA_BM_POOL_BASE_REG (which carries the BPPE physical
+address and the per-pool MVNETA_BM_POOL_ENABLE_MASK).
+
+Combined with mvneta_bm_suspend() not clearing the per-pool ENABLE_MASK
+before clk_disable_unprepare(), MVNETA_BM_START_MASK is being written
+here with each BASE_REG in an unspecified state.
+
+If the IP retains BASE_REG content across clock gating, BM would be
+started with stale BPPE phys_addrs (now freed memory) and ENABLE_MASK
+set, until mvneta_resume() drives mvneta_bm_pool_create() to overwrite
+BASE_REG.
+
+Could resume explicitly clear each MVNETA_BM_POOL_BASE_REG (or at least
+its ENABLE_MASK) before writing START_MASK, or could suspend clear the
+per-pool ENABLE_MASK before disabling the clock?
