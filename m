@@ -1,191 +1,123 @@
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B192B9B7
-	for <netdev@vger.kernel.org>; Sat, 20 Jun 2026 00:33:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB85813635E
+	for <netdev@vger.kernel.org>; Sat, 20 Jun 2026 01:21:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781915596; cv=none; b=DRSAn1kv8C4rszpDIjo0OKQI2YkXkMahi1kq/5wD1C0gtBero0aEnosKoiQNIeOhSZV2acSLOubXJRB0QLViaOeiw3Zrc+yeONmkZoDV4gxvuksry73HvhrC0oXrUOGNnttCuowpZeRpTsc295Z1656JvY5GjLOzS0rbLpK40Y8=
+	t=1781918519; cv=none; b=lexPNzAtRrPdzLOoEv5sg4okkwzfSwbQRq9ccAx862dcMde7QmIJj1CKfqbKcYrrr/Ht6WcxHDscvgEff5VSADYitQzp3bCxlZECQSIz+aGyMvSeL/WzFlFcBeUGZlSgn5m4/otemz/B/WfZ17MP6J8UymN59jY0KXsPTpNHaYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781915596; c=relaxed/simple;
-	bh=Et3meODDERYLPcBSzvBMvXzLFG6dCmuyWHoTXDGfTyQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ew523JA84VF6GHCE98fuBmVKAXTwZLpnoVsvRG+/9cM6Huz5FEKcCwsLiVBTIBPa0MII9DDISk5hViy/rSz96MDvmragUE4RGDm8u43aTR2xpDYQw0E3LajdGBY32QUC6foqh/+or5sIAd+MH+iB/QA4GzhSnWy/qJD/WKUuPis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=A7AfagWR; arc=none smtp.client-ip=95.215.58.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1781918519; c=relaxed/simple;
+	bh=HqcjuCULUw4qkZsC+NiC1XrWQgI09RM4053kTIirFTQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l/P/2ljNSDIv1GnmdHMHM2sfbWPpe9hWlTlV4fC3buYcAFFwAchZEm10blFRE/8ZrxyyFkNsdU62IlUxv8WadNPWTJRhHM/P2WXDU3B+dtnCuvmbVqnebB210AD0fXTposs34nUh1HZF27ohyuxd2wTmDscwHmDRW0WTRHLuAho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HKbOhjGp; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="A7AfagWR"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781915583;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=5LJfKS/Bhv+1VfMV3cw6Hh9fus6tl15FJIsSQ1Nye4c=;
-	b=A7AfagWRMVIKzGssJQmi39iDt6F8KUs166h3+zT0/3yQ5TtdmC0bYglqiZvYNHbGE3JdFM
-	N+S+mufk7kLr7pzpQlELo5E7EJXEPgdsAQeR7e0y2LMJSbaRLuI1bd03nEBeAhusyc4fRN
-	fsCw68G6m0oklhGaRbZ1sQAVszlVmyE=
-From: "Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>
-Date: Sat, 20 Jun 2026 00:32:21 +0000
-Subject: [PATCH bpf] bpf: tcp: Fix use-after-free in
- bpf_iter_tcp_established_batch()
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HKbOhjGp"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4921e4dd62dso19446345e9.0
+        for <netdev@vger.kernel.org>; Fri, 19 Jun 2026 18:21:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781918515; x=1782523315; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6qFVTuKItGBuoPE7wYIuR/hBckRIiltP6ZLSrXPb+oI=;
+        b=HKbOhjGpawx+Zu5WHuWeJsvF//vcspNeUmhmi0h/JKcMUYKu6yK5dY7hxAH6OIFZ65
+         zj53WmcQsK845cupQb1Gi71l/Srs8XWFbBi88lcFDg1smVPwrF+hHY9zqP7SWjntfWQS
+         0m9JctMiuHPQzYK4zBEhMgJ38h+sLRVc4Qx0z8LVQajLHZZm1YCQ+AJQi0m50rQFESu4
+         3fMVKx3/H2i69LnF4B4e+X+NWlTIKR776pvO6qdys+scA2FDY542O/jNlIYQk65i3s3m
+         1cAuoTpFejP6kXd5Vsv3HiHt/p3Ny/QoC4aTau0dQHo/tRQgH0tfrs0Cu0JuFaDSWuJb
+         fu6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781918515; x=1782523315;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6qFVTuKItGBuoPE7wYIuR/hBckRIiltP6ZLSrXPb+oI=;
+        b=tKYgGBomeuEWIXOgDvxf/RUM07hCSweAYGYIrKb2Gv77/9vNs91Ifc3RwUO8lSkDHL
+         WutHZh+IuuV1dYH+ldy3ehmhzyTlMqINqDEvuixlV0e738fqiZWI336qks313rTmiTy7
+         79XomIod3e5ne5A9y5n2yH15dMhHELfQN+Dcqpg3Q5dkr4JW+dAu0cmSuuqigGdFALi9
+         VHqNPGIXDYOe4vnyM4wfLJEBvBHTFGiYUVO9mQoWU4CTkMzaIQWhpdTWTR7MeLKA4uiV
+         MQZZfuS9oIm8A0TOdBgDnC5/ktgRcyOvm7Z7Y//40ifneP59vsHEg4fONV5VO3rKLUUj
+         leIg==
+X-Forwarded-Encrypted: i=1; AFNElJ/SHGkC9PiI3+Czl9M1B/WT16x9XDDfhzsOS4VnUBmOuMOcst4HZe5jeKDuq4ExAnC6omXCqgo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywqxyj0JE2FVmBbfiyZMavyJfDBaDAEH/fYdQaJ7jvz++E9Qwq/
+	FjYWIjAdOX1mmipLvT3Xhg0VS7MolpPLFcn3o3fv/4zYTPskSGP0d2j4
+X-Gm-Gg: AfdE7ckxiVKQuVl4da3Q49xYhaAiPNlRrE0xqS3wbwnVv/8Wotc6VoK4+tfpalNAjGm
+	DZ4Ea9KhhGA1FrCbElr0DLP0gPKOa6p5AHVXVr4t/Eiw64ZvGzEmHsrsU0aDD9VAUS6PHovD3R4
+	+QM5SjRHHcYvzR1IFdkyJz0bWpzh+W4OYqwcahsbuoQkd1Ijz/cbGbx3mhsHQDvWwIYhVUAE5lu
+	qkZuX1dO8iK/Fm0Xz11HSm/vXTk5RDEeGFLSLleEEKzVzX2+9Ej/kF8AEMgVB8FtXip7QWn+3JV
+	kOTDX3XsacF/Mley5Kf8H8ICKyuIIK9t09RnjCUyqPBUjInIfH2lSwr6KSEMcV7OAEN1wIp5iNO
+	ycjagkcX3UTfe7V8wht5dmg60+WLqKdQISG7HdynYiJZDE7TuY7X383TWxJ53JqQpPt+CTc9eV/
+	NFfAwTllGx01a1jFNz9ivA
+X-Received: by 2002:a05:600c:4e4f:b0:48f:e230:29f5 with SMTP id 5b1f17b1804b1-49240a486cemr74241415e9.16.1781918515037;
+        Fri, 19 Jun 2026 18:21:55 -0700 (PDT)
+Received: from cool.klos.xyz ([2a02:8308:a09d:f500:945a:ea46:4571:736b])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4924923392dsm44059805e9.2.2026.06.19.18.21.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Jun 2026 18:21:54 -0700 (PDT)
+From: Jan Klos <honza.klos@gmail.com>
+To: Heiner Kallweit <hkallweit1@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Russell King <linux@armlinux.org.uk>,
+	netdev@vger.kernel.org
+Cc: Jan Klos <honza.klos@gmail.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Aleksander Jan Bajkowski <olek2@wp.pl>,
+	Markus Stockhausen <markus.stockhausen@gmx.de>,
+	Jan Hoffmann <jan@3e8.eu>,
+	Issam Hamdi <ih@simonwunderlich.de>,
+	Chukun Pan <amadeus@jmu.edu.cn>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	ChunHao Lin <hau@realtek.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v2] net: phy: realtek: Clear MDIO_AN_10GBT_CTRL_ADV10G bit
+Date: Sat, 20 Jun 2026 03:19:53 +0200
+Message-ID: <20260620011956.37181-1-honza.klos@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260620-bpf-iter-tcp-refcnt-v1-1-883bf9e69495@linux.dev>
-X-B4-Tracking: v=1; b=H4sIAJTfNWoC/yWMSw7CMAwFr1J5jUUSRPlcBbHIx22NRFrFASFVv
- TsOLN/ozawgVJgErt0Khd4sPGcddtdBnHweCTnpBmdcb3p7wbAMyJUK1rhgoSHmitac0tEFdzg
- nD2ouyvnzq95ABbj/obzCg2JtvXYLXghD8TlODc2FR877pxfNw7Z9AfRhFtacAAAA
-X-Change-ID: 20260619-bpf-iter-tcp-refcnt-107d52b238da
-To: Eric Dumazet <edumazet@google.com>, 
- Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Andrii Nakryiko <andrii@kernel.org>, 
- Yonghong Song <yonghong.song@linux.dev>, 
- Martin KaFai Lau <martin.lau@linux.dev>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- bpf@vger.kernel.org, Ben Cressey <ben@cressey.dev>, 
- "Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 
-reqsk_queue_hash_req() publishes a TCP_NEW_SYN_RECV request_sock onto
-the ehash chain (via inet_ehash_insert(), which drops the bucket lock on
-return) and only afterwards refcount_set()s rsk_refcnt to 3.
+On RTL8127A connected to a link partner that advertises 10000baseT
+speed cannot be changed to anything other than 10000baseT as 10GbE
+is always advertised regardless of any setting. Fix this by
+clearing MDIO_AN_10GBT_CTRL_ADV10G bit in rtl822x_config_aneg()'s
+call to phy_modify_mmd_changed().
 
-Lockless readers such as __inet_lookup_established() account for this by
-using refcount_inc_not_zero(), but bpf_iter_tcp_established_batch() uses
-plain sock_hold() while holding the bucket lock, on the assumption that
-the lock guarantees sk_refcnt > 0. That assumption does not hold for
-request_sock:
-
-  CPU 0                                CPU 1
-  -----                                -----
-  tcp_conn_request()
-   reqsk_queue_hash_req()
-    inet_ehash_insert(req)
-     spin_lock(bucket)
-     __sk_nulls_add_node_rcu(req)      // rsk_refcnt == 0
-     spin_unlock(bucket)
-                                       bpf_iter_tcp_established_batch()
-                                        spin_lock(bucket)
-                                        sock_hold(req)   <-- addition on 0
-                                        spin_unlock(bucket)
-    refcount_set(&req->rsk_refcnt, 3)  // clobbers saturated value
-
-which surfaces as:
-
-  refcount_t: addition on 0; use-after-free.
-  WARNING: lib/refcount.c:25 at refcount_warn_saturate+0x48/0x90, CPU#1
-  Call Trace:
-   bpf_iter_tcp_established_batch+0x14e/0x170
-   bpf_iter_tcp_batch+0x53/0x200
-   bpf_iter_tcp_seq_next+0x27/0x70
-   bpf_seq_read+0x107/0x410
-   vfs_read+0xb9/0x380
-
-refcount_warn_saturate() then saturates the count, the publishing CPU's
-refcount_set() clobbers it, and the socket is left one reference short.
-When the last legitimate owner drops its reference the reqsk is freed
-while still reachable, leading to use-after-free panics in e.g.
-inet_csk_accept() or inet_csk_listen_stop().
-
-This reproduces in seconds with tcp_syncookies=0, a handful of threads
-doing connect()/close() to a local listener while others read an
-iter/tcp link in a tight loop.
-
-Use refcount_inc_not_zero() and skip the socket on failure, the same way
-every other ehash walker does. The listening hash is unaffected as
-listeners are always inserted into lhash2 with sk_refcnt >= 1, so
-bpf_iter_tcp_listening_batch() is left as-is.
-
-If every matching socket in a bucket is mid-init, end_sk can stay at 0;
-advance to the next bucket in that case rather than terminating the
-whole iteration on a stale batch[0].
-
-Fixes: 04c7820b776f ("bpf: tcp: Bpf iter batching and lock_sock")
-Reviewed-by: Ben Cressey <ben@cressey.dev>
-Assisted-by: Claude:unspecified
-Signed-off-by: Jose Fernandez (Anthropic) <jose.fernandez@linux.dev>
+Fixes: 83d962316128 ("net: phy: realtek: add RTL8127-internal PHY")
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Signed-off-by: Jan Klos <honza.klos@gmail.com>
 ---
- net/ipv4/tcp_ipv4.c | 35 ++++++++++++++++++++---------------
- 1 file changed, 20 insertions(+), 15 deletions(-)
+v2: Patch formalities (rebase, tree name, tags, ccs)
 
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index fdc81150ff6c..92342dcc6892 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -3074,25 +3074,25 @@ static unsigned int bpf_iter_tcp_established_batch(struct seq_file *seq,
- {
- 	struct bpf_tcp_iter_state *iter = seq->private;
- 	struct hlist_nulls_node *node;
--	unsigned int expected = 1;
--	struct sock *sk;
-+	unsigned int expected = 0;
-+	struct sock *sk = *start_sk;
- 
--	sock_hold(*start_sk);
--	iter->batch[iter->end_sk++].sk = *start_sk;
--
--	sk = sk_nulls_next(*start_sk);
- 	*start_sk = NULL;
- 	sk_nulls_for_each_from(sk, node) {
--		if (seq_sk_match(seq, sk)) {
--			if (iter->end_sk < iter->max_sk) {
--				sock_hold(sk);
--				iter->batch[iter->end_sk++].sk = sk;
--			} else if (!*start_sk) {
--				/* Remember where we left off. */
--				*start_sk = sk;
--			}
--			expected++;
-+		if (!seq_sk_match(seq, sk))
-+			continue;
-+		if (iter->end_sk < iter->max_sk) {
-+			/* reqsk_queue_hash_req() inserts with sk_refcnt == 0
-+			 * and refcount_set()s it after the bucket lock drops.
-+			 */
-+			if (unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
-+				continue;
-+			iter->batch[iter->end_sk++].sk = sk;
-+		} else if (!*start_sk) {
-+			/* Remember where we left off. */
-+			*start_sk = sk;
- 		}
-+		expected++;
+ drivers/net/phy/realtek/realtek_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
+index 27268811f564..b65d0f5fa1a0 100644
+--- a/drivers/net/phy/realtek/realtek_main.c
++++ b/drivers/net/phy/realtek/realtek_main.c
+@@ -1802,7 +1802,8 @@ static int rtl822x_config_aneg(struct phy_device *phydev)
+ 		ret = phy_modify_mmd_changed(phydev, MDIO_MMD_VEND2,
+ 					     RTL_MDIO_AN_10GBT_CTRL,
+ 					     MDIO_AN_10GBT_CTRL_ADV2_5G |
+-					     MDIO_AN_10GBT_CTRL_ADV5G, adv);
++					     MDIO_AN_10GBT_CTRL_ADV5G |
++					     MDIO_AN_10GBT_CTRL_ADV10G, adv);
+ 		if (ret < 0)
+ 			return ret;
  	}
- 
- 	return expected;
-@@ -3129,6 +3129,7 @@ static struct sock *bpf_iter_tcp_batch(struct seq_file *seq)
- 	struct sock *sk;
- 	int err;
- 
-+again:
- 	sk = bpf_iter_tcp_resume(seq);
- 	if (!sk)
- 		return NULL; /* Done */
-@@ -3167,6 +3168,10 @@ static struct sock *bpf_iter_tcp_batch(struct seq_file *seq)
- 	WARN_ON_ONCE(iter->end_sk != expected);
- done:
- 	bpf_iter_tcp_unlock_bucket(seq);
-+	if (unlikely(!iter->end_sk)) {
-+		++iter->state.bucket;
-+		goto again;
-+	}
- 	return iter->batch[0].sk;
- }
- 
-
----
-base-commit: 4549871118cf616eecdd2d939f78e3b9e1dddc48
-change-id: 20260619-bpf-iter-tcp-refcnt-107d52b238da
-
-Best regards,
---  
-Jose Fernandez (Anthropic) <jose.fernandez@linux.dev>
+-- 
+2.54.0
 
