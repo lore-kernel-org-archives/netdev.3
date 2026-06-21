@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291F71DB92C
-	for <netdev@vger.kernel.org>; Sun, 21 Jun 2026 21:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8859C37104C;
+	Sun, 21 Jun 2026 21:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782078021; cv=none; b=L7RbafYVdBD1Ghift6QWzwW/BvtPnkRg2miD4qkqam8uM7Tr6kaOj4XrV3LxcvzdcSGGuAF7rpwvz4KCwZULGpkj4MwrsAt+pbxYBQTGBYuIfEzgo21Fx9lKhUlr8Su23SNsroX6P9WHxIejnpx11H4dHIdbhE9uEz+R9mJLJMM=
+	t=1782078022; cv=none; b=OvkzNEXBivE6J0dFHMnFx72uXRq24DYmGGvvUVuOOG/nerryX53vqV90/RTJ7tm+bQN6VN9GqGEjCcMOavHi9Ce8c2ygenb4I98g+9Fxzbsayl6UjoCmBqY+uBzWXYqSV5ff1S/f5PDJUklWw7CDHzAoBCDW5YDjIbsGyUX3Jok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782078021; c=relaxed/simple;
-	bh=EOKoGpe9S/y70SBxt6sT7i9M0hkdYyekOw9nQTpeTMI=;
+	s=arc-20240116; t=1782078022; c=relaxed/simple;
+	bh=atf0PITLwZ+8sNB37QLxiy0Hi7KAV8ua4O0y2YqujYg=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=qMRIxoyNZcqW9Q1jIl2Ha+kBC7ILISz/koOPRY70xEogCvohKTjIs+5QXez3BOXjBQhSDXkbYOWC033u9YH38ru4CwY8XouBl/waHaKT2mEwKK2v7bkyo/d7Z7OW8ELfXRTgzYqBuW7g20SbSq9NJm/+HCZOFhcZJ1+1bPHGQ88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g5tLnUSL; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=MmNWIWF6xsnewc2Lp/ca7xQGQKIP5n+vcftnU0sn12v2DiQk9OxJc1iW11h+KVLRx3cK2rxBx1BvN1R3m5cGnBot6WPbVGUZYI5AuL32M9x9ES1Wyf8CscryxwtTZeVRHy9l0xnEj4vATgTzLSxyn4r+ESScptZuIVBY6WGePyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BGP0Tgu/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g5tLnUSL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C95721F000E9;
-	Sun, 21 Jun 2026 21:40:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BGP0Tgu/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E2E81F000E9;
+	Sun, 21 Jun 2026 21:40:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782078019;
-	bh=dlhG6VVL7e735uRZLwmq98hxfSpDNi0y5BfFxqio2bA=;
+	s=k20260515; t=1782078021;
+	bh=PtCUX3BHVHVA2XJOFt5eDGDcY5JTEY+XynH4T68oSeo=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=g5tLnUSLVvAqXwiw9rKtczs152mWsRC3zISrtZI+zsHJyilqlS6HlaS9OuCtaDbH8
-	 RzzxRvfmDyjxbHSDM6Uln4KVBknpegvqPB7BpEfDCo2BFRIxQvCsPDdZCDac0xSwsL
-	 SXyRp7be76av0rQzm7ZPUMBvcSEb5mzS4Z7MIVHpv5LqOAHOeiIZbuO2gQeCv63pVL
-	 x6MCRC9fqLOJROd+48Lr9Ip0st0DgfWtQhm+jcCFELB7l6xPwujM+84CkvQp71IpXw
-	 Cq/0XICyEcquqgenXhjbeJC8j+SqPULoO0M0BYvexqoKGykFcaXouncGy5zkpf7815
-	 W2vOm5Br/sw7w==
+	b=BGP0Tgu/epk9BgkFi12OsW66AzB7JYPMHZrkcqmzSrI0E36VSQ4k4bbni28Okm4Km
+	 Ay2W5aiPehGcDt6NHIavYhK/75V6OTyXQaEfqxCQWh/vUb1cumzj77Xqife+9D3xSt
+	 AYrQHCM6uYuAsq1YRLWb/UkpKHYOUcoH0hKcUSKKKeytbL/pYc0we9NXcMqsO0Eel8
+	 wZRUAYUrZL+3+MRtRoTXvpg7PduvoA8PkFtoOZhmFqbzkYqRzPpWeFIaHtV+lIKXVn
+	 ZBkmTKxXjM7h7/tZEfsLvMebYH3efahiM4zkTJWLQdNYJXmMy8PJqcZW6be3AMAbNM
+	 V8KWOZnDMZ6+w==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568D93AAA6E4;
-	Sun, 21 Jun 2026 21:40:12 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0A443AAA6E4;
+	Sun, 21 Jun 2026 21:40:13 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,41 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: ethernet: mtk_ppe: Fix rhashtable leak in
- mtk_ppe_init error paths
+Subject: Re: [PATCH net v3] tipc: fix use-after-free of the discoverer in
+ tipc_disc_rcv()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178207801105.510072.2195645518730276699.git-patchwork-notify@kernel.org>
-Date: Sun, 21 Jun 2026 21:40:11 +0000
-References: <178167550101.2217645.14579307712717502425@gmail.com>
-In-Reply-To: <178167550101.2217645.14579307712717502425@gmail.com>
-To: Wayen Yan <win847@gmail.com>
-Cc: netdev@vger.kernel.org, lorenzo@kernel.org, horms@kernel.org,
- pabeni@redhat.com, kuba@kernel.org, edumazet@google.com,
- andrew+netdev@lunn.ch, angelogioacchino.delregno@collabora.com,
- matthias.bgg@gmail.com, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org
+ <178207801247.510072.8510116277574588342.git-patchwork-notify@kernel.org>
+Date: Sun, 21 Jun 2026 21:40:12 +0000
+References: <20260617135744.3383175-3-bestswngs@gmail.com>
+In-Reply-To: <20260617135744.3383175-3-bestswngs@gmail.com>
+To: Weiming Shi <bestswngs@gmail.com>
+Cc: jmaloy@redhat.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, ying.xue@windriver.com,
+ netdev@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
+ linux-kernel@vger.kernel.org, xmei5@asu.edu
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 17 Jun 2026 13:48:13 +0800 you wrote:
-> In mtk_ppe_init(), when accounting is enabled, the error paths for
-> dmam_alloc_coherent(mib) and devm_kzalloc(acct) failures return NULL
-> directly, bypassing the err_free_l2_flows label that destroys the
-> rhashtable initialized earlier.
+On Wed, 17 Jun 2026 21:57:45 +0800 you wrote:
+> bearer_disable() frees b->disc with tipc_disc_delete()'s plain kfree(),
+> but tipc_disc_rcv() still dereferences b->disc in RX softirq under
+> rcu_read_lock() (tipc_udp_recv -> tipc_rcv -> tipc_disc_rcv).
 > 
-> While this leak only occurs during probe (not runtime) and the leaked
-> memory is minimal (an empty rhash table), fixing it ensures proper
-> error path cleanup consistency.
+> L2 bearers are safe thanks to the synchronize_net() in
+> tipc_disable_l2_media(), but the UDP bearer defers that call to the
+> cleanup_bearer() workqueue, so the discoverer is freed with no grace
+> period:
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net: ethernet: mtk_ppe: Fix rhashtable leak in mtk_ppe_init error paths
-    https://git.kernel.org/netdev/net/c/41782770be56
+  - [net,v3] tipc: fix use-after-free of the discoverer in tipc_disc_rcv()
+    https://git.kernel.org/netdev/net/c/1579342d7113
 
 You are awesome, thank you!
 -- 
