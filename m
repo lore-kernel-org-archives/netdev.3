@@ -1,43 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 014042EF652;
-	Sun, 21 Jun 2026 22:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 542AA37267E;
+	Sun, 21 Jun 2026 22:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782079572; cv=none; b=jZw5//idDFrmnO3Gf7U8gUEDqlMmFIDtanhFpR8bwtKzqBkEbr0bua9G3qmrcW90/ghVDd629K9+WuI2QAGIrDRKZafUORbI/UvYVEry3JXobJhI7+LADL9Ze0OGCEWp2ALqSgR6sMQOiXXCiwUJdSzBLQ9+WfkqM9rQefuICTs=
+	t=1782079681; cv=none; b=jDoj9DIssMrNKiZ0exeQJLZ/JqmXMow67+2KTGvHvPlGoEJ2wpCdv/2EStlvPGvlejtbAB6mo29uRCZ/uM1H0fGNZnU0CWcaPLaJezU12rqEH6GkFOgzGsvFsZnUz0wXQG9Mj88d3GAzDFPNSOaEmfbl2wRC7czV0+9/WqqVcD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782079572; c=relaxed/simple;
-	bh=1DJqPRY6i99+vjc+yLgP3ut8+7CArs/ZawFf5y8LCzg=;
+	s=arc-20240116; t=1782079681; c=relaxed/simple;
+	bh=wnq0x2nB+8XlZFm4chI0eyIUUmhx6NUujwprcJab2tQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dgNvpSsnq9BQ/Bx+VLz8jk2VQGX+r+kF0MVtLN3fo3UCA7Ih/1XjHAYLrLqZPImJMamHBp7JBOQQE5Ka0qQmWriIipo09GAkAWKGLRo9JOXGgN19JZExOmxWZO0JzLtiqrBWQzHtkmOacT6KS9YIfsFTVEmb+bat+PIcp5DNybk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VAMdFzLx; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=kFUsR3MjAQ5VQhsdlMiChZuiXodLuLc4bWa6XQQO4NYHj12EUFA3qTLapm4AbwBLfuW/3W/YN1+CHkiaHgeJ4nospDmC63cJbNEVpHQaX/k7sYMA4BYE9yI5sDU1hUAkk6r6mplmkKPaOnyXgd220xVJBu1nxsclMY1so43b/XI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W7JzgS/Y; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VAMdFzLx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A0AE1F000E9;
-	Sun, 21 Jun 2026 22:06:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W7JzgS/Y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CE451F000E9;
+	Sun, 21 Jun 2026 22:07:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782079571;
-	bh=0jRK8ItK0sZaZhCC4/wpSQncIoEHVkfMVHG4sDnkFCU=;
+	s=k20260515; t=1782079678;
+	bh=AaJPn54N1jMwmkqD+gZQYUCg8heFpPBUy6KizwuIPv0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=VAMdFzLxa2VAahWb9CUDyjwa+fBm2FAZ8QAsY+uUliz62lSeQ0vk0w2xdFJyijIMo
-	 OzwKCzKxHAykiIsbLZiSSKImGPLTTXK3OqJ/5E3LKrDwJn7kXkZM/AoIXqZUd30bH3
-	 NGMLYDdnkFtjRdgGU3MQ8sQ2WntHCYvjS1YaMhek6H4dPUfVMA9PILhM1e/88vI4B9
-	 725vpvu3GfLv1ziSyxrXIv/x3Rg27QBwWqI8rzQ+Ms9DHioW1ypdt3bEjekNpulZeR
-	 OHiUJWaibObyH0gIH+XOLFsgrU9wZeE5KxFanCHT7bGOv1xw91JuAOQ9SoNqMATg1k
-	 OBARyPDTFlhMA==
-Date: Sun, 21 Jun 2026 15:06:10 -0700
+	b=W7JzgS/YgdorTHSDtwdJNyfzlLUiVjZaOXErWzpOFXTBus/SNPJKqTUgG6EHUGR4N
+	 u6wZCqIVbzpkBgwd3y+vJj9VLWBzoW1IxdbCJiTHarZSCwfylZsKyvMEPgDwQJFqTZ
+	 7pJ+CfBZ1Kb3+fqhP34pORxqfIpTs9o1B/vkMT8aDiUrafBQNm2JiUkDxxRPJqQN9z
+	 xzaRglxm90IUxje0l5WUBUQIVaSGUGHcSn8Po787NJ8H6+762kA8w0qQ7xY790Dt+u
+	 xw2nD7+20hRd/6DCkYh4Q8ILmkdDng41y4im8YUrzye+qOQOxkeUwXsJeJ3fo4BmIW
+	 Qp9CG0zlj0IMQ==
+Date: Sun, 21 Jun 2026 15:07:57 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: xuanzhuo@linux.alibaba.com
-Cc: Menglong Dong <menglong8.dong@gmail.com>, eperezma@redhat.com,
- mst@redhat.com, jasowang@redhat.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- netdev@vger.kernel.org, virtualization@lists.linux.dev,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3] virtio-net: xsk: support tx wake up
-Message-ID: <20260621150610.0ad5d02e@kernel.org>
-In-Reply-To: <20260616115912.513183-1-dongml2@chinatelecom.cn>
-References: <20260616115912.513183-1-dongml2@chinatelecom.cn>
+To: <nshettyj@marvell.com>
+Cc: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <sgoutham@marvell.com>, <lcherian@marvell.com>, <gakula@marvell.com>,
+ <hkelam@marvell.com>, <sbhatta@marvell.com>, <andrew+netdev@lunn.ch>,
+ <davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
+ <Sunil.Goutham@marvell.com>, <naveenm@marvell.com>, <hkalra@marvell.com>
+Subject: Re: [PATCH net 0/2] octeontx2-af: Bug fixes for KPU profile and VF
+ RX mode
+Message-ID: <20260621150757.5b0477a9@kernel.org>
+In-Reply-To: <20260619090746.1829416-1-nshettyj@marvell.com>
+References: <20260619090746.1829416-1-nshettyj@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,21 +48,10 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 16 Jun 2026 19:59:12 +0800 Menglong Dong wrote:
-> For now, XDP_RING_NEED_WAKEUP is not supported properly by the virtio-net
-> in the tx path for example: we set xsk_set_tx_need_wakeup() in
-> virtnet_xsk_xmit(), but we didn't call xsk_clear_tx_need_wakeup()
-> anywhere, which means the user will call send() for every packet.
-> 
-> We call xsk_set_tx_need_wakeup() after virtnet_xsk_xmit_batch() if sq->vq
-> is empty, as we can't be wakeup by the skb_xmit_done() in this case.
-> Otherwise, we will clear the wakeup flag.
-> 
-> Race condition is considered for tx path.
+On Fri, 19 Jun 2026 14:37:44 +0530 nshettyj@marvell.com wrote:
+> This patch series contains two standalone bug fixes for the Octeontx2 
+> administrative function (AF) driver targeting the net branch.
 
-Seems to follow what mlx5 does so presumably this is fine but IDK if
-there's anything virtio-specific that we need to be worried about.
-
-Xuan Zhuo, please TAL?
+Does not apply, please rebase
 -- 
-mping: VIRTIO NET DRIVER
+pw-bot: cr
