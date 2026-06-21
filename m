@@ -1,77 +1,43 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00DE62E7165
-	for <netdev@vger.kernel.org>; Sun, 21 Jun 2026 22:02:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 014042EF652;
+	Sun, 21 Jun 2026 22:06:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782079380; cv=none; b=KXpdWH8uwKtwHyoEHwRHX6lWb+Q9jJT2G4BuMkdsDM12hcAQYRtTsuoX5qr/aWWnNDaD9/yG8DTsSZ89sUYMB5iKDJFYYXglBEkJdPiKlvzvq8ndNUjtDJRoom2C4Qk/pXAIxKPCbYL1kuKTj3GaB/Eieh1ybpoZXNHonVijw3o=
+	t=1782079572; cv=none; b=jZw5//idDFrmnO3Gf7U8gUEDqlMmFIDtanhFpR8bwtKzqBkEbr0bua9G3qmrcW90/ghVDd629K9+WuI2QAGIrDRKZafUORbI/UvYVEry3JXobJhI7+LADL9Ze0OGCEWp2ALqSgR6sMQOiXXCiwUJdSzBLQ9+WfkqM9rQefuICTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782079380; c=relaxed/simple;
-	bh=GotsuY2JtZy8Np0qCYeXbOELyFjEkWO+lDav4MKQc2w=;
+	s=arc-20240116; t=1782079572; c=relaxed/simple;
+	bh=1DJqPRY6i99+vjc+yLgP3ut8+7CArs/ZawFf5y8LCzg=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QgfqbT55eLGx1TbvIQKK6RXMX3fz4wtq1IqugkjnFmOqvckxFI9SNss5jQVo28YxVyF0gAnru/fgX0RJDefvgnQhwqQu5mzYlgU7vvvOddqukMNuEzWUKMH5MIV72VF+85g00pgGIeL41U5XiTiHYnlsvrha5ja8ZGu421BFTXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RoQTNfrs; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 MIME-Version:Content-Type; b=dgNvpSsnq9BQ/Bx+VLz8jk2VQGX+r+kF0MVtLN3fo3UCA7Ih/1XjHAYLrLqZPImJMamHBp7JBOQQE5Ka0qQmWriIipo09GAkAWKGLRo9JOXGgN19JZExOmxWZO0JzLtiqrBWQzHtkmOacT6KS9YIfsFTVEmb+bat+PIcp5DNybk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VAMdFzLx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RoQTNfrs"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-490a76757e5so22910675e9.2
-        for <netdev@vger.kernel.org>; Sun, 21 Jun 2026 15:02:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782079377; x=1782684177; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QmNG9A3WEdwCXFa3vcLlptzdmDIAgfVPQr6/ZnDFWmE=;
-        b=RoQTNfrsLlGmwBh8WVmmRF0Yyx8UyskNyDjVL5lIV0sHp/DFh68t/H9k3EC4ykblhW
-         l89ricf6vyRBkaMQ7ixYza5gf75hrBCUyto9S8KBDSuXhgC4LXSRa6ysOSlfC2FGA3tI
-         qt5Dq+8aYSDLWMAvNqQygHqrBaZYvacEZUPAiK7Y0cbL005mzBAYMoEy8nJuqPmW64M/
-         xQm0rNgPpnKPRG9CzNUZWFdwbdLHDreswKxSEcH7YFi6caO7MOTkn9U2RUfbMWKOUW73
-         Cg2ktkzT0hEzoHX7/Bi8yFeZJlPQ/0X4gO439f74pUX6bhx0B1Xv7mh1/MKqJij8CLTr
-         XI0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782079377; x=1782684177;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=QmNG9A3WEdwCXFa3vcLlptzdmDIAgfVPQr6/ZnDFWmE=;
-        b=UC1XiQnFFP0G+SSfVzcQs0HtcNkzF5B3JfpPYu9CZfWuqYIwGoFvtvoTgt3IvVBDvr
-         Fz7w9JfJdg9ABJCN3AMYR2ol6x4UikKeWm/sFCZiGwfek6NOEl9Cg9KqC6CJynWx9fMc
-         ZPtDYJLA5Lh5qoXBzmw0r5Py2xDoU6IvRSzynKRaVGKR3f38KoZFYobrVwpauJA81fYF
-         LeA0tOAE7Y46tKiAaVZ9KZz0zpIiys3LwICm8YeVCwy1Y4p/DHiIDdmctBZMpVYc//YH
-         p9bl0eflxClC/T5JlJRtOLKHQyRpl0+1iy7OAWNl2CMoPpAp6B76/ggkYo863HcDlR3A
-         itXA==
-X-Forwarded-Encrypted: i=1; AFNElJ91gLcR1klvI5fKS8mR63IIdVUEQXUM13Z6+ctaVmXZKPo8PGaJBaOkCbAx4qmkvnWEOoJ2MBs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZwVdV4/7U017IYIcK4rrQ8aNHVLclZ2ioPBMRW274emLCQ8Yf
-	saHoR2OyshGA5XbMXBjQKQlUt7IuXua/Vp3eqgIwKKSDvLOXbDTLAMJg
-X-Gm-Gg: AfdE7clCVxPuBbaXovVFdRXJ6gPaObTlj0vjTIq7rcFAnmXNYlo0WGaBazG4TOvi8Em
-	5DiduaU1OIj13Eu2oeAafI2ZS3vzg+/gx/GIgEYdQcgJLLApKKJKXjsrenBVkIBjpS5z28AFmFq
-	KQR6LHi3rpk75LqoTlYbONmavk/McjXsTMfQQWRdb18sPKd9NOEYiqNBKQ+Vpgmrju2v61meE8F
-	amwHBF3cCCPRO/DYRgnBCFCY9qybhtGIqWhwIrUb//l6oUjqvlTTaeZlJZ7R8lt2dTx/CJshtLA
-	KQ0SlOMKn/PyrgjEF75TDR4mTQkZBlKzfSpXabTxn75Lx43zSwe9GKqEu2ZywU9K4tVvQ1jmSyt
-	WvaOI+kaQPKWq9fFyBdPDdTYzxraU8tVx5fYbaU3DwgHNlBaLMMmxjONTzCfkorMX+jhRUGLvPb
-	dM6i9o+CsTJjh3QbWyEZ+k3jSruozgUv5rbmlW0Z6VBFQLXe3BgO+KrPQliARK
-X-Received: by 2002:a05:600c:3e14:b0:492:4392:4dbe with SMTP id 5b1f17b1804b1-4924392502dmr176423325e9.34.1782079377192;
-        Sun, 21 Jun 2026 15:02:57 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49240eef2basm255372805e9.2.2026.06.21.15.02.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 21 Jun 2026 15:02:56 -0700 (PDT)
-Date: Sun, 21 Jun 2026 23:02:55 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Alex Goltsev <sasha.goltsev777@gmail.com>, davem@davemloft.net,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Al Viro
- <viro@zeniv.linux.org.uk>
-Subject: Re: [PATCH v2] net: add sock_open() with flags for socket creation
-Message-ID: <20260621230255.0a425b0c@pumpkin>
-In-Reply-To: <b057ea36-9810-40c1-9154-859eb9e0da5e@lunn.ch>
-References: <CAEKmD4KSvAGWEod3h8mPKQ-UYhKqakxfakt4gXrsU8sWuAO77g@mail.gmail.com>
-	<CAEKmD4K-v_srabQDJCfqaqA6vssk-Hg-mLHEdTsphTBLmQVjnw@mail.gmail.com>
-	<20260621135746.067a93be@pumpkin>
-	<b057ea36-9810-40c1-9154-859eb9e0da5e@lunn.ch>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VAMdFzLx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A0AE1F000E9;
+	Sun, 21 Jun 2026 22:06:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782079571;
+	bh=0jRK8ItK0sZaZhCC4/wpSQncIoEHVkfMVHG4sDnkFCU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=VAMdFzLxa2VAahWb9CUDyjwa+fBm2FAZ8QAsY+uUliz62lSeQ0vk0w2xdFJyijIMo
+	 OzwKCzKxHAykiIsbLZiSSKImGPLTTXK3OqJ/5E3LKrDwJn7kXkZM/AoIXqZUd30bH3
+	 NGMLYDdnkFtjRdgGU3MQ8sQ2WntHCYvjS1YaMhek6H4dPUfVMA9PILhM1e/88vI4B9
+	 725vpvu3GfLv1ziSyxrXIv/x3Rg27QBwWqI8rzQ+Ms9DHioW1ypdt3bEjekNpulZeR
+	 OHiUJWaibObyH0gIH+XOLFsgrU9wZeE5KxFanCHT7bGOv1xw91JuAOQ9SoNqMATg1k
+	 OBARyPDTFlhMA==
+Date: Sun, 21 Jun 2026 15:06:10 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: xuanzhuo@linux.alibaba.com
+Cc: Menglong Dong <menglong8.dong@gmail.com>, eperezma@redhat.com,
+ mst@redhat.com, jasowang@redhat.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ netdev@vger.kernel.org, virtualization@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v3] virtio-net: xsk: support tx wake up
+Message-ID: <20260621150610.0ad5d02e@kernel.org>
+In-Reply-To: <20260616115912.513183-1-dongml2@chinatelecom.cn>
+References: <20260616115912.513183-1-dongml2@chinatelecom.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,31 +47,21 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 21 Jun 2026 15:59:30 +0200
-Andrew Lunn <andrew@lunn.ch> wrote:
-
-> On Sun, Jun 21, 2026 at 01:57:46PM +0100, David Laight wrote:
-> > On Sun, 21 Jun 2026 14:05:40 +0300
-> > Alex Goltsev <sasha.goltsev777@gmail.com> wrote:
-> >   
-> > > From a9316957e594708dfb4258ad968fe88666c9b736 Mon Sep 17 00:00:00 2001
-> > > From: 0-x-0-0 <sasha.goltsev777@gmail.com>
-> > > Date: Sun, 21 Jun 2026 13:24:29 +0300
-> > > Subject: [PATCH v2] net: add sock_open() with flags for socket creation  
-> > 
-> > A) There is no info here.
-> > B) You've not said why this is of any use.
-> > C) It isn't a bug fix so would go into net-next
-> > D) net-next is closed.  
+On Tue, 16 Jun 2026 19:59:12 +0800 Menglong Dong wrote:
+> For now, XDP_RING_NEED_WAKEUP is not supported properly by the virtio-net
+> in the tx path for example: we set xsk_set_tx_need_wakeup() in
+> virtnet_xsk_xmit(), but we didn't call xsk_clear_tx_need_wakeup()
+> anywhere, which means the user will call send() for every packet.
 > 
-> E) The patch has had all its whitespace corrupted.
-
-F) Patch sent as a reply to version 1.
-
+> We call xsk_set_tx_need_wakeup() after virtnet_xsk_xmit_batch() if sq->vq
+> is empty, as we can't be wakeup by the skb_xmit_done() in this case.
+> Otherwise, we will clear the wakeup flag.
 > 
-> Please "submit" the patch to yourself and ensure you can cleanly apply
-> it.
-> 
->    Andrew
-> 
+> Race condition is considered for tx path.
 
+Seems to follow what mlx5 does so presumably this is fine but IDK if
+there's anything virtio-specific that we need to be worried about.
+
+Xuan Zhuo, please TAL?
+-- 
+mping: VIRTIO NET DRIVER
