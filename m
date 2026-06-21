@@ -1,57 +1,78 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25CE1234994;
-	Sun, 21 Jun 2026 21:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE7EE272803;
+	Sun, 21 Jun 2026 21:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782078551; cv=none; b=lv1KqXg1ar03hxwCfYaFQNZRcY8NRwkMIiZXZ37dIIqJTe96dhyq4zcIIYjICeST0uB0BZ9QTwLx5mM/vy1pw20vQY8kdwvxvInVpkZlwvA1GL4MAocyuPNDdDqfo68tnzZZGuYkCs7FHpKUOoPR3TK68k4dueyPBUrHccx78cg=
+	t=1782078619; cv=none; b=VyjmaLBPatxq6p3nwjkc7dGYpsKX2LwtE2uMVeU8JqHCuhTcn/rXrNCY5BZo0nivMj6r1ObD2jsw08KahQFUd3P4OMBn1C1aXycEl7yKHT/4v2X8yHMUOMwNJQVJ+C84Q+OLk6HZYRNUjcctpVCiUTTtIMucjl6KRIGjMwl8qME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782078551; c=relaxed/simple;
-	bh=WIddReOZChlERcVaOaVvebYBg3ZsadYURfVxRnWYHY0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FZWaaL9qWMJdBPRIUruR2V7zSZ2CkCd5t7d2e10G1xmKv1ZTzkOneXzQqQ6DNzTAS0eToDP+tY1D/368iMuLIxuha5j4s3FLHOefRrdyrW3oBz4lCCrsdbGuHQ5mDpLEUSPmmPTBTBFtBZ1S72bqDBCzM8d6/UWi8M1GWV8S8e4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QCGfnKu+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782078619; c=relaxed/simple;
+	bh=LB2/8fHx0bn11TEHDYyuRZe6hTb3fHe7C+Smm/oNHbY=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=u7SV4W+I+oRtvsgENwjv/pQajFXv633m0cQImUoWUJQdE9/UjoZN9oYH3xh/nDlNEfb4YtgphYymaDAgaLChZ3UG9v8z0KExlBNndHdvtF9Wvu+TUoUT0OWw1XLkOdB1T1aJJsm9Hjb7lAlkSC4rWEPYNzksewuvwRk9vsj4DH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ww0QiPk9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QCGfnKu+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36E021F000E9;
-	Sun, 21 Jun 2026 21:49:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ww0QiPk9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FAA61F000E9;
+	Sun, 21 Jun 2026 21:50:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782078549;
-	bh=UC/wlLNOwM17JvX56rcj33cHQNR9C3l/TAkqUHzdQvk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=QCGfnKu+1DSb6/coD3QRvS7fBFRzexCbIM7QE2zttcatDjoVJWsO1krXKITsQar6N
-	 Ph78OcvY2NggsO5vgW3xJl/n2pzfNsMD2bw6vSiIVoyZtiSoVP44Q9AQttAc1VXfHI
-	 nA+jJ/vYOqywIv2loRaLhHsqxHFRlAJIjK3SSDBCQyv0z/ZDANka9bI5NcsV0T2tC8
-	 vrsaAfMaD5SdN6jabcQjriR5anGBIxQi+z7wmQPTvFoy2uldtLZr+WrhQVP0hi1GQc
-	 pv5St5H9uA89QCFcIr9DFbWSzx+4/C7Kp56/l4plmSTnbzHzjkCFblaY3S52OI7RU8
-	 pRlni6UV1Hx1Q==
-Date: Sun, 21 Jun 2026 14:49:08 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Subbaraya Sundeep <sbhatta@marvell.com>
-Cc: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
- <pabeni@redhat.com>, <sgoutham@marvell.com>, <gakula@marvell.com>,
- <bbhushan2@marvell.com>, <rkannoth@marvell.com>, <netdev@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [net PATCH v3] octeontx2-af: Validate NIX maximum LFs correctly
-Message-ID: <20260621144908.1826b8ed@kernel.org>
-In-Reply-To: <1781710853-23420-1-git-send-email-sbhatta@marvell.com>
-References: <1781710853-23420-1-git-send-email-sbhatta@marvell.com>
+	s=k20260515; t=1782078618;
+	bh=hxnNmqylWmsfGESRzByUnadDkRn/kz1nMwVAQSsRGws=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=Ww0QiPk9YiohfocdkNDODgzZakBJvit9n/0Y7Kt0kM1gcNStNMicq4eiMUWVhvLuo
+	 BSFCalKRMF7Oas7mu5g1WalwrPlDuE0lLeUYjcZeSNiw0ZsxJhgZVKEqjTvsXcqPEd
+	 PTX3mQ3YqMPLRGNVVXOX/IqE0gex/hAp7aFMpAPtAgoJUVovneEe6G6oJq3uHj5tZ9
+	 /3qqJhHxnE3rYtKb7uDWDMgAcP2rNm8dNl1jnGTBG/nQzOppBhq797+AFiTUZpPDOO
+	 Dn3jq+U56kQW7MC4mEQkQx7HfROJDG1WxCF0AfBq7rRyqxZeEJrVK1yoCteuAofs9T
+	 yc/bBo2oV+y8g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0A343AAA6E8;
+	Sun, 21 Jun 2026 21:50:10 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] octeontx2-af: npc: cn20k: fix NPC defrag
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178207860928.513674.11893535549738089367.git-patchwork-notify@kernel.org>
+Date: Sun, 21 Jun 2026 21:50:09 +0000
+References: <20260617102149.1309913-1-rkannoth@marvell.com>
+In-Reply-To: <20260617102149.1309913-1-rkannoth@marvell.com>
+To: Ratheesh Kannoth <rkannoth@marvell.com>
+Cc: kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, sgoutham@marvell.com
 
-On Wed, 17 Jun 2026 21:10:53 +0530 Subbaraya Sundeep wrote:
-> NIX maximum number of LFs can be set via devlink command
-> but that can be done before assigning any LFs to a PF/VF.
-> The condition used to check whether any LFs are assigned is
-> incorrect. This patch fixes that condition.
+Hello:
 
-Does not apply, please rebase & repost.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Wed, 17 Jun 2026 15:51:49 +0530 you wrote:
+> npc_defrag_alloc_free_slots() always passed NPC_MCAM_KEY_X2 into
+> __npc_subbank_alloc(), which must match sb->key_type, so defrag never
+> allocated replacement slots on X4 banks. Pass the subbank key type for
+> bank 0, and only extend the search into bank 1 for X2 (X4 MCAM indices
+> are confined to b0b..b0t).
+> 
+> Fixes: 645c6e3c1999 ("octeontx2-af: npc: cn20k: virtual index support")
+> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+> 
+> [...]
+
+Here is the summary with links:
+  - [net] octeontx2-af: npc: cn20k: fix NPC defrag
+    https://git.kernel.org/netdev/net/c/48b67c0e8af6
+
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
