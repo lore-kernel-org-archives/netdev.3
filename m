@@ -1,69 +1,109 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21AC2266EE9;
-	Sun, 21 Jun 2026 22:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCE126AE5
+	for <netdev@vger.kernel.org>; Sun, 21 Jun 2026 22:01:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782079214; cv=none; b=tavq7t80jO4Km75lAchH/vZfD/ZY1gjbwTo1UbwWRnu5RzCopo18B/k2GwJHS2iiek9yWN8YKi5eBEk7CuJlehQUg8Z2SXUqsF680grmcFQunVMg+qdrWdSb9KRT6JWZVEYo8MwBXFU8iZxLp1UO8L1WNvlVB6NomMbXWXRE2kg=
+	t=1782079267; cv=none; b=MPX5e2tv1pTtRieDhPaN6cKXiH7kn0GJsAXL2Po1p6zoWJA1FdMhj9w4YZ7bP36K+Ff6BxJ3QSRIGVE3a5Fiypx95r6Ewgb8d4IAXbcCDb9Pg39uZEHS4i6BcOZiH+xfesZNwN7rn0g2+TABTOIFNWal2yll0z+5A2COSD9lo7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782079214; c=relaxed/simple;
-	bh=j+eacf5l31dQ7E+Yr8tezfcUSuwXqZkTxQhwnnMfrqc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BgqZ9VH32GycDxsGQ4JsClv+wrdq9XcOwhgLy7cOhKdvkE/NcjPPIMv0kl25PQoryFxLD9rXNanXhVOXUmHnCj1bUAOSH5tW3u/597XaH8UG3fonCzgKJ8WwnsNDZ+6jv4AXInOM8uS4C74/39t1MsgQgl/b8DqpTvspWJ7HKw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FZE1LukA; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782079267; c=relaxed/simple;
+	bh=LAJyms69SQUTucHOYeWIhLxnsThrdtJ+4KEC3S/e8vM=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Lrqr+Us2AccxTIBX8oqqW7KvUSlBxl3Go4tGUx5qYeoCnlsfVkUYIx/gilA92/FCZWuQpXOKIDFsmcpjp03q24mW1YccKSEugXQe8Q21fvly7/pOFZSOhQr4+UHU/cnUkkwTKkBO0QdAkYEMZ4CyNJOZ6yemWlApRw7aSRqKfag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hVJwVjj9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FZE1LukA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66F361F000E9;
-	Sun, 21 Jun 2026 22:00:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hVJwVjj9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D9751F000E9;
+	Sun, 21 Jun 2026 22:01:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782079212;
-	bh=OUDUBgcr0qOs5Ykzn549bWzd1i/vK7iiNOi1XwlptEc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=FZE1LukAd/ddX8H1jtTeAPuGE5faq6uMtRLYx7ZIGS2WqAK9aAObzzuhjDNslinQl
-	 YFpZVxsWS0fr8GrZYKiVAKbssPbv22mjUhv878BX7KrZ30aYxNZhclDBgV2R5vAho6
-	 aKALpc5umc1BuzgqOMKYVqQQTa9w/EHkwzakWHIAR/7dnspuZEZgDGur/NKwLFQS0k
-	 elYF9TWxSFY4jIniyaaHSoQ///vtOkAzSBzOSknsg3c/PaZ9gHffTlajfXHQcKCngA
-	 P7zllHZZbRHor8wjtBLEjxArzZWkmacU4a7/a/A6nc0y3j5L+CFqe/6bgmziEAryXs
-	 04IDot9LL3lxA==
-Date: Sun, 21 Jun 2026 15:00:11 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Michael Bommarito <michael.bommarito@gmail.com>
-Cc: Taehee Yoo <ap420073@gmail.com>, "David S . Miller"
- <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, Eric Dumazet
- <edumazet@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] amt: don't read the IP source address from a
- reallocated skb header
-Message-ID: <20260621150011.33c2fe80@kernel.org>
-In-Reply-To: <20260617123443.3586930-1-michael.bommarito@gmail.com>
-References: <20260617123443.3586930-1-michael.bommarito@gmail.com>
+	s=k20260515; t=1782079266;
+	bh=JsuGjancIB3kkaE8lcGEpPuGwIH1T+JObM1TkSSPMnk=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=hVJwVjj9jlzBF7ylv6HYk6gxMnz6gwTEqmOjiVxpnnB4HO9qFtkzoJPIBMcDvbazp
+	 3zvsbR4p9E8L+9ekTH69f11sw9PMfkVAd0kiSKw7Wja6xhg2Nx3X6yu1GmSrEV3SmI
+	 6UexNZylHjgTYQfpQjiUdfuy4cFU3Onn2iV2z6edw/MsXyqwFZT8oocDIdLuQoqvDh
+	 ShJn1BJ7k7IiylyKFXxqeR/EK1ZQZIXKFsSrChttthOgFpgzeT9gdBeHR5KtP+nCVf
+	 QVzhmlUekcvWKAu230jam6jGMsYkqNOJUnw7rIrQ7CPHB3BA/PsnILlyWKofyftV9z
+	 SncsuOmmn5vng==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1988B3AAA6EA;
+	Sun, 21 Jun 2026 22:00:59 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 01/15] batman-adv: gw: don't deselect gateway with
+ active
+ hardif
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178207925758.516339.13920013302809099340.git-patchwork-notify@kernel.org>
+Date: Sun, 21 Jun 2026 22:00:57 +0000
+References: <20260619070045.438101-2-sw@simonwunderlich.de>
+In-Reply-To: <20260619070045.438101-2-sw@simonwunderlich.de>
+To: Simon Wunderlich <sw@simonwunderlich.de>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ b.a.t.m.a.n@lists.open-mesh.org, sven@narfation.org, stable@kernel.org,
+ neocturne@universe-factory.net
 
-On Wed, 17 Jun 2026 08:34:43 -0400 Michael Bommarito wrote:
-> amt_update_handler() caches iph = ip_hdr(skb) and then calls
-> pskb_may_pull(). pskb_may_pull() can reallocate the skb head: the new
-> head is allocated and the old one is freed. The cached iph is not
-> refreshed, so the following tunnel lookup reads iph->saddr from the
-> freed head. On an AMT relay this lookup runs for every incoming
-> membership update, before the update's nonce and response MAC are
-> validated.
+Hello:
+
+This series was applied to netdev/net.git (main)
+by Sven Eckelmann <sven@narfation.org>:
+
+On Fri, 19 Jun 2026 09:00:31 +0200 you wrote:
+> From: Sven Eckelmann <sven@narfation.org>
 > 
-> The sibling handlers amt_multicast_data_handler() and
-> amt_membership_query_handler() re-read ip_hdr() after the pull and are
-> not affected; only amt_update_handler() keeps the pre-pull pointer.
+> The batadv_hardif_cnt() was previously checking if there is an
+> batadv_hard_iface->mesh_iface which is has the same mesh_iface. And since
+> batadv_hardif_disable_interface() was resetting the
+> batadv_hard_iface->mesh_iface after this check, it had to verify whether
+> *1* interface was still part of the mesh_iface before it started the
+> gateway deselection.
+> 
+> [...]
 
-Sashikos point out a bunch more of these in AMT:
-https://sashiko.dev/#/patchset/20260617123443.3586930-1-michael.bommarito@gmail.com
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260617123443.3586930-1-michael.bommarito@gmail.com
+Here is the summary with links:
+  - [net,01/15] batman-adv: gw: don't deselect gateway with active hardif
+    https://git.kernel.org/netdev/net/c/df97a7107b16
+  - [net,02/15] batman-adv: ensure bcast is writable before modifying TTL
+    https://git.kernel.org/netdev/net/c/4cd6d3a4b96a
+  - [net,03/15] batman-adv: fix (m|b)cast csum after decrementing TTL
+    https://git.kernel.org/netdev/net/c/e728bbdf3266
+  - [net,04/15] batman-adv: frag: ensure fragment is writable before modifying TTL
+    https://git.kernel.org/netdev/net/c/b7293c6e8c15
+  - [net,05/15] batman-adv: frag: avoid underflow of TTL
+    https://git.kernel.org/netdev/net/c/493d9d2528e1
+  - [net,06/15] batman-adv: v: prevent OGM aggregation on disabled hardif
+    https://git.kernel.org/netdev/net/c/d11c00b95b2a
+  - [net,07/15] batman-adv: tp_meter: restrict number of unacked list entries
+    https://git.kernel.org/netdev/net/c/e7c775110e18
+  - [net,08/15] batman-adv: tp_meter: annotate last_recv_time access with READ/WRITE_ONCE
+    https://git.kernel.org/netdev/net/c/d67c728f07fc
+  - [net,09/15] batman-adv: tp_meter: prevent parallel modifications of last_recv
+    https://git.kernel.org/netdev/net/c/6dde0cfcb36e
+  - [net,10/15] batman-adv: tp_meter: handle overlapping packets
+    https://git.kernel.org/netdev/net/c/cbde75c38b21
+  - [net,11/15] batman-adv: tt: don't merge change entries with different VIDs
+    https://git.kernel.org/netdev/net/c/f08e06c2d5c3
+  - [net,12/15] batman-adv: tt: track roam count per VID
+    https://git.kernel.org/netdev/net/c/12407d5f61c2
+  - [net,13/15] batman-adv: dat: prevent false sharing between VLANs
+    https://git.kernel.org/netdev/net/c/20d7658b7416
+  - [net,14/15] batman-adv: tvlv: enforce 2-byte alignment
+    https://git.kernel.org/netdev/net/c/32a679925552
+  - [net,15/15] batman-adv: tvlv: avoid race of cifsnotfound handler state
+    https://git.kernel.org/netdev/net/c/edb557b2ba38
 
-Let's fix them all with one patch?
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
