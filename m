@@ -1,110 +1,92 @@
-Received: from mout-b-106.mailbox.org (mout-b-106.mailbox.org [195.10.208.46])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E7093C81B5;
-	Mon, 22 Jun 2026 16:05:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.10.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C7A30F958
+	for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 16:05:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782144317; cv=none; b=biJuK9L6/4EcOE56uv+udKcxI2TySKXO0gD2qjJsvlQtGP6z0MY32fxjDOrCZmflkuZXoSEHwzJtwlu3tJvkRGNB84Un1BCEsO8lCTeYJu3ltpbzemMPpMNd5LUyLvSQ6h9e1u07TMCTk7lLLjUb9Yzgqe2GIwbwUmuo3UehPLs=
+	t=1782144336; cv=none; b=bgA2Zf+1dO2schKGSYy5n3P3KMyR04OeFpPz7QUBvLcL59SkRIXtmCh18+2N6Rk98ByscfRefFWbJUpZ3VE4TSxKTO2IjpDtDmhEUZvGoQv8iiDyt+k7RsEhNzw3+N+ePnWobA5QEJrI3LTgkUHICvI6O0KXYly6CNsOZ4F1eRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782144317; c=relaxed/simple;
-	bh=pt766DZdxBUcDyvKEzhF8XNX1Wfs/kuURE/UNuicCnY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k+NuMq6Nh8pBUESvIIKEAWmLOz4gL8KLspyxm5/TI72DM2ZYpNQ/yTKC8cissiasZ+pZUZ74q0cVSsmtgIuTpNaNzaBd1RkKwLOInAnE1vMWKsyILbvkjAqYNjlhAYOZKT4hxIP1A8bkzx7cR+hFcbJyCoG6eIiHyvt8pVI63Io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com; spf=pass smtp.mailfrom=mandelbit.com; dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b=0CuzF18c; arc=none smtp.client-ip=195.10.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
+	s=arc-20240116; t=1782144336; c=relaxed/simple;
+	bh=ssfirgIUMaaVi0ecKU+Nktzvk4V9t/7fwqQ6uDKRp4Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gnkjCTN+LWzyJTvhFqv2gblrRyHsZJr6SnHbq2YsP0ehkhr6GhmLBfwsM5rVVzcjBcN2HkeDVQ/wSTO1k17SlYEY6FdrKLSamrxhG1GfXXUrxRxqawLFPZhsDFgA9PY9p5QGs5ymMvNCFc8ZumtbghuEO5z83BNVEdRqx16fCk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NUn4r672; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b="0CuzF18c"
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-b-106.mailbox.org (Postfix) with ESMTPS id 4gkXqw2bQ9zDsRV;
-	Mon, 22 Jun 2026 17:56:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
-	s=MBO0001; t=1782143788;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=34VfxUHMz8Es3ucc1IX16yTEp9kPd8dZELhVzMf05/A=;
-	b=0CuzF18cz7+Ya0IM7TCIGLWkEOibouzQ/XYIDOr7v+rHVul0tqxnxYof6KlXOTkjSGd9s9
-	YXKKjYrRNBKU6SWGW3TckPx8G5NGxSq9dDko/jRdHSFx2mkzKwnPD21SVtH+Nr4d91p4qm
-	7KHMEAtXBY35VhpR7C1xG4pv4o/vqsMhT4Urf07Zd93o1y/V4GLi5iNsKuO0geEQOuQ+iS
-	MciC0yPIFN1+KNImq/cpzTgVLrDPcUGlBv1yk53h2iSgygbCjyMSJKFsvxAm7jr9811RLu
-	quiRX9VSVU6npUTamCxFpUbPhR4RP3yVUIfAUC65kP4MXkOnm4hVtNuxQMI77w==
-From: Ralf Lici <ralf@mandelbit.com>
-To: Beniamino Galvani <bgalvani@redhat.com>
-Cc: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>,
-	netdev@vger.kernel.org,
-	=?UTF-8?q?Daniel=20Gr=C3=B6ber?= <dxld@darkboxed.org>,
-	Antonio Quartulli <antonio@mandelbit.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC net-next 08/15] ipxlat: add translation engine and dispatch core
-Date: Mon, 22 Jun 2026 17:56:11 +0200
-Message-ID: <20260622155612.591109-1-ralf@mandelbit.com>
-In-Reply-To: <ajjzF3W-0xDC133f@tp>
-References: <ajjzF3W-0xDC133f@tp>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NUn4r672"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B9EA1F000E9;
+	Mon, 22 Jun 2026 16:05:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782144335;
+	bh=9X5edC1I7/8/R36h9GJFjpEJhTUPLktGwLtvem0cQF8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=NUn4r672kuVAaPswq8HMwpzurM04YvW+o3NOu1FouZMIQAEZWeIJxCZD520Of37qj
+	 SHQ34hN5Z22ORRZm5z+Pyr1qzxVPVZmX2J7WtMw5TdHfLNl4binGxUO8urLdWUPPSJ
+	 g8G+rnpUZhTcmYEGma0/wcNmqmjHtSP51afA/Fi7HKN1fV880D9GZhnaiLnaaHpWSZ
+	 2GMAOAkqeZqNgtBBKLN9mvXM/HG3DATODSumR5r6UoxpZs2mtpGkRlsZSv3/GsfpyU
+	 dXTKja/yRKavVx7j974x2Ak2qwOj2pqxWbJLNe9uGiC/6+x8Wy4f+KpDFkQhxfOxwj
+	 UKjrgBuumWnGQ==
+Date: Mon, 22 Jun 2026 09:05:34 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Thorsten Leemhuis <linux@leemhuis.info>
+Cc: Donald Hunter <donald.hunter@gmail.com>, netdev
+ <netdev@vger.kernel.org>, Riana Tauro <riana.tauro@intel.com>
+Subject: Re: building ynl afaics requires updating the UAPI headers first
+Message-ID: <20260622090534.2af8ae9e@kernel.org>
+In-Reply-To: <cec7685e-df12-4501-b851-9c8f7b8b06cb@leemhuis.info>
+References: <ade91456-2f93-442c-b76c-28bd7157f074@leemhuis.info>
+	<20260618170605.0e2e4dd4@kernel.org>
+	<cec7685e-df12-4501-b851-9c8f7b8b06cb@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, 22 Jun 2026 10:32:23 +0200, Beniamino Galvani <bgalvani@redhat.com> wrote:
-> Hi,
->
+On Fri, 19 Jun 2026 09:28:47 +0200 Thorsten Leemhuis wrote:
+> On 6/19/26 02:06, Jakub Kicinski wrote:
+> > On Thu, 18 Jun 2026 15:39:46 +0200 Thorsten Leemhuis wrote:  
+> >> DRM_RAS_CMD_CLEAR_ERROR_COUNTER was introduced to mainline yesterday as
+> >> ee18d39a087792 ("drm/drm_ras: Add clear-error-counter netlink command to
+> >> drm_ras") [v7.1-post].
+> >>
+> >> I finally looked closer today and noticed how to prevent this: update
+> >> the kernel's UAPI files (e.g. the stuff that lives in /usr/include/) on
+> >> the builder. Thing is: that's basically impossible to do from a srpm, as
+> >> those should not change the build environment and can't even when
+> >> working as non-root.
+> >> [...]  
+> > 
+> > Can't repro for some reason, but we probably need something like 
+> > commit 46e9b0224475abc to add the explicit include rule.  
+> 
+> Thx for the pointer. So I guess you mean something like the below,
+> which did the trick for me. Will submit this as properly, unless
+> someone points out something stupid in it.
+> 
+> Ciao, Thorsten
+> 
+> diff --git a/tools/net/ynl/Makefile.deps b/tools/net/ynl/Makefile.deps
+> index cc53b2f21c444..43d06ecbae93d 100644
+> --- a/tools/net/ynl/Makefile.deps
+> +++ b/tools/net/ynl/Makefile.deps
+> @@ -14,10 +14,12 @@ UAPI_PATH:=../../../../include/uapi/
+>  
+>  get_hdr_inc=-D$(1) -include $(UAPI_PATH)/linux/$(2)
+>  get_hdr_inc2=-D$(1) -D$(2) -include $(UAPI_PATH)/linux/$(3)
+> +get_hdr_inc_drm=-D$(1) -include $(UAPI_PATH)/drm/$(2)
+>  
+>  CFLAGS_dev-energymodel:=$(call get_hdr_inc,_LINUX_DEV_ENERGYMODEL_H,dev_energymodel.h)
+>  CFLAGS_devlink:=$(call get_hdr_inc,_LINUX_DEVLINK_H_,devlink.h)
+>  CFLAGS_dpll:=$(call get_hdr_inc,_LINUX_DPLL_H,dpll.h)
+> +CFLAGS_drm_ras:=$(call get_hdr_inc_drm,_LINUX_DRM_RAS_H,drm_ras.h)
+>  CFLAGS_ethtool:=$(call get_hdr_inc,_LINUX_TYPELIMITS_H,typelimits.h) \
+>         $(call get_hdr_inc,_LINUX_ETHTOOL_H,ethtool.h) \
+>         $(call get_hdr_inc,_LINUX_ETHTOOL_NETLINK_H_,ethtool_netlink.h) \
 
-Hi Beniamino,
-
-> speaking as a maintainer of NetworkManager, I would also like to see
-> this feature in the kernel!
->
-> In NetworkManager currently we are using a BPF program [1] to
-> implement the CLAT, but that approach comes with limitations: for
-> example, we can't fragment v4->v6 packets if needed, and it's not
-> possible to recompute checksums in certain cases (e.g. for v4->v6 UDP
-> packets with zero checksum, and for fragmented ICMP). systemd-networkd
-> is also adding CLAT support via BPF [2], with a fallback to userspace
-> for the cases that can't be handled in kernel.
->
-> It would be very useful to have a native in-kernel CLAT that solves
-> the limitations of BPF-based solutions, and can be used by different
-> tools without having to re-implement everything from scratch.
->
-
-Thanks, this is really useful context.
-
-CLAT is exactly the kind of consumer ipxlat aims to serve, and the gaps
-you hit in BPF line up directly with paths ipxlat already handles. I'll
-cite this as motivation in the next cover letter, if that's alright.
-
-While reading the BPF programs, two things stood out that would help
-shape v2. On addressing, both implementations use a single NAT64/PLAT
-prefix for destinations plus an explicit local_v4<>local_v6 mapping for
-the host itself. ipxlat today maps both source and destination through
-one RFC 6052 prefix, so this suggests v2 should probably support
-explicit 1:1 address mappings (EAM, RFC 7757) alongside prefix
-embedding. Is a single local mapping enough for your case, or do you
-foresee needing several?
-
-On the consumer side, is there anything in how NM models a connection
-that would make a particular kernel model awkward to drive, e.g. needing
-to attach to an already-managed interface, or conversely being able to
-create and own a dedicated device? We're still settling the
-kernel-facing model for v2, so consumer input here is genuinely
-valuable.
-
-Thanks,
-
--- 
-Ralf Lici
-Mandelbit Srl
+Looks good, did you send it? Please send it to networking if possible.
+I don't have much experience with DRM trees but I don't want this patch
+to get stuck somewhere and keep causing issues.
