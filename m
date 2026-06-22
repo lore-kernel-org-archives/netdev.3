@@ -1,45 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A95C6264A97;
-	Mon, 22 Jun 2026 15:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62245274B4A;
+	Mon, 22 Jun 2026 15:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782143555; cv=none; b=QhQmT0wRKY0Y4NzMJ0FClzR1i/+F4Qk3FAiy/oBOvL7G/jx+Tdrq9tk7f9UqmyuUmMuwwbJvQP9pQYoK3CgJqw34nwGyRapuXkmkHj5sNA31dTR9lN6prfXQCBdBbzr9Xsrqnn/zqiGVNrRMKJHVZL2+DVv9wVy+Ys1Y9WXnzXs=
+	t=1782143802; cv=none; b=eooRzVCXcOxdGs7fICilQNRsG9U7XEDNdvalz+4WJyoATZ2e98e6ZBHB8TMUCTd1VaSn/ZKAn2HkCpnR5VijoFWe8K6NM/poNuJHvJe1QcXQApPcFGDKO9UhqE1NwDbwn8bB0K2EEf1Ycp5+alLC9bSg0kTU/LdvWcBZii2xAss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782143555; c=relaxed/simple;
-	bh=7VIGyVRF0G8SLl70rRa4kAPFZ7fICm9uqSiCfGJz4Dw=;
+	s=arc-20240116; t=1782143802; c=relaxed/simple;
+	bh=E2npOhROQsK1NVJg4SA3vgkYO3Mo6mPCNcjISx+vSak=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gfs1Su2iVE8ZyPDjK8Rzv0nk3cbHejCWYLYkSQ6/P9KQQhERF1wHGlHaYhPEye7OczlfbuJcYLdx/rDVSRiJppQ9sMZuZECXFKHxHwdd/p51URLeRFEHmReGN6jmDXZwVlrYr5Mk0Niadodddh2vSLzDjmAOD6Ez4CuMcXTm/bA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fEzB/4RZ; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=QD0DK9qcuoXwgizpebBT41yLDIUc8PRCvIsUOeobTd9PF5afIFtyjpxkf+lyWTxpZms26WRq8tc8c1fWBxXOsnDwNJenPFCK4AWideH48XTTaZ7QXO95Rrz5caqqpVUP7S5DScho5rxiXRRNmg077rXRvlgMRS9L5LwATf0Bb5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kv500U24; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fEzB/4RZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA3F61F000E9;
-	Mon, 22 Jun 2026 15:52:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kv500U24"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B36801F00A3A;
+	Mon, 22 Jun 2026 15:56:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782143554;
-	bh=7VIGyVRF0G8SLl70rRa4kAPFZ7fICm9uqSiCfGJz4Dw=;
+	s=k20260515; t=1782143801;
+	bh=U+83Z2ZGm/CyeZD5t6rPdvZf02fZO5x9+ZBmpP19uDc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=fEzB/4RZ8Hz666TAUQbehEpF7F4xglCph556Wwc/uGt54L0f2Xu0KmKGDX8eqK6V4
-	 HIrUfl4KrFHTavJl9NhUzCIHvsmrXZbJSieleiljQz1QAfvbbvH0bY0Z+wkK3Qi436
-	 tE/164mPeHKAVQw0rE2GpFsTi9sT6JzaOhUwjS9eCBDiYgTEqaECAOUygKuqTMG/6e
-	 L/AiBlKUu5Q7+AuhdTMV5AVjhLD/UCpWYGiFbNUW1S3xTu4m9gXE09ai6fmCjrujeN
-	 0tR6ZPb1dpUr+moonk0UpHQOcVRk5PstHkWu+RbmBQdtqjMlI62Txrjejt8H71ITJP
-	 Vc22Pg/xDsaBA==
-Date: Mon, 22 Jun 2026 08:52:32 -0700
+	b=Kv500U243yVra1La+7A6O/uZ/1dYykhDMcxL2heCU+xuse0XnjhV4dod0jOG75if1
+	 Jocv1jBdtyI85tbeJ2rKL5cfaKqNgTEmhrcIg95Nfm4Fmh0pfUpZ4TIHo4wlkaJYqh
+	 PmCPxeztBaJD7TokviIaPYHFHKKrYL1xUl5TWVwlrDdOw77as295kyIBwwIxzocDSp
+	 LlJ02DeHAEk62Fv4SkiIlOeZMIWRBAPg4jJtF8bHsPLk+3AxoBlCflGu7CD+NqejcS
+	 kuKXtYehU3H6QttWgjz3SZilx7XfkoBEkM/jJ/5LlYsYQ56lcry7Y5gbRupvPJ1Qhz
+	 sJDACADTXFbRw==
+Date: Mon, 22 Jun 2026 08:56:40 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: lirongqing <lirongqing@baidu.com>, Saeed Mahameed <saeedm@nvidia.com>,
- Leon Romanovsky <leon@kernel.org>, Mark Bloch <mbloch@nvidia.com>, Andrew
- Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net/mlx5: Fix L3 tunnel entropy refcount leak
-Message-ID: <20260622085232.37d9d5f7@kernel.org>
-In-Reply-To: <cd725cc0-9be1-4d12-bc9f-95ecf789613b@nvidia.com>
-References: <20260613153631.1752-1-lirongqing@baidu.com>
-	<cd725cc0-9be1-4d12-bc9f-95ecf789613b@nvidia.com>
+To: Runyu Xiao <runyu.xiao@seu.edu.cn>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH net] net: au1000: move free_irq out of the close-time
+ spinlocked section
+Message-ID: <20260622085640.14e0018f@kernel.org>
+In-Reply-To: <20260619151816.1144289-1-runyu.xiao@seu.edu.cn>
+References: <20260619151816.1144289-1-runyu.xiao@seu.edu.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,8 +47,31 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 22 Jun 2026 09:49:17 +0300 Tariq Toukan wrote:
-> Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+On Fri, 19 Jun 2026 23:18:16 +0800 Runyu Xiao wrote:
+> au1000_close() calls free_irq() while aup->lock is still held with
+> spin_lock_irqsave(). free_irq() can sleep because it takes the IRQ
+> descriptor request mutex, so it does not belong inside the close-time
+> spinlocked section.
+> 
+> This was found by our static analysis tool and then confirmed by manual
+> review of the in-tree au1000_close() .ndo_stop path. The reviewed path
+> keeps aup->lock held across the MAC reset, queue stop and
+> free_irq(dev->irq, dev).
+> 
+> A directed runtime validation kept that ndo_stop carrier and the same
+> free_irq(dev->irq, dev) operation under the driver lock. Lockdep reported
+> "BUG: sleeping function called from invalid context" and "Invalid wait
+> context" while free_irq() was taking desc->request_mutex, with
+> au1000_close() and free_irq() on the stack.
+> 
+> Drop aup->lock before freeing the IRQ. The protected close-time work still
+> stops the device and queue before IRQ teardown, but the sleepable IRQ core
+> path now runs outside the spinlocked section.
 
-To be clear -- you have to take this via your tree now.
-Our UIs doesn't even show patches older than a week.
+Do you really think that this bug matters if nobody fixed it on
+a 20+ year old platform?
+
+Please do not point your AI scanning tools at old code!
+The patch is valid I guess but we have heaps of bugs like this
+that _nobody care about in practice_! You're wasting everyone's
+time.
