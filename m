@@ -1,285 +1,71 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8993435DA68;
-	Mon, 22 Jun 2026 21:18:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6A92DC78C
+	for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 21:56:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782163135; cv=none; b=Z+5AoYFIiAplg3RLbVWeopqpU5WVPA/KmBv0b/0NnbCRm0Gdbpitp7Def65wowI5MuhHQG9KYSbOOKyvnfQrVqcO/cq8zgS0bbExuIBOsPWlNAfANlzU2TcMnplzLfDl1V1b2cg58FV8v9xIVowViAwKXQbnquhi1dcRQWv2iNM=
+	t=1782165367; cv=none; b=MO6sDWD0yQKV8pizxWiV6OXErkTcYSfbhE0O+IHZ4eN8ZgGf2rp3d1A91PRBTIrQGnHhylPmwPPYpeAGyB9Zchx1QytWrd48R1D+RK/zmGOYhqmBVtr4rVEe1u4fdG9gSHPzJn9UXemRQu7VS7sDYYpzHuUPQGN8V52p/ZF34S0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782163135; c=relaxed/simple;
-	bh=UDWIdd1TUol6dMX6zWpXmyd0xr31snyQDGhdtowSWGo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=crCTgqDh3HtZiD1kYSiK6Guve5E2+u2+NS7oYhtPa1rfhDeTSmgIPIEQv8MhpKhxJJdFvY0I4b7PhudjSSV1c1MOGdb9r2Zf+uC5Gcm+yHsLNAQ6yh7qwzOshAQdsdrS5lGgCAZvebcj/iMYzqiVp/CKf8uFE/RPe5+PZB1WYXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=c0Fdfd/C; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
+	s=arc-20240116; t=1782165367; c=relaxed/simple;
+	bh=MhRnsPauROmUigkS4Ietp3Gci8EbN47PIQDXqtTi5Ao=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=i/YENSxMpuEegFcPvZ/ODUayPYXexDbWaSxxt1jNcdQzE7yFg/nUaU4CB4EQrLZuqJshCBw8C+efn0+LJcbaox/yciFRSYWjOh+REU79AgyReHF7zBlw0wpWo/Gim8ZLmab2LFlDDQqcNOk+TGw0TuMmflR1yaB9rxfX5ebswQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hEw0SkTT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="c0Fdfd/C"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
-	To:From:Reply-To:Content-ID:Content-Description;
-	bh=I2qTUyviPYv8p6dVIJL6NSZELvogb65Re/m0Fr/IDco=; b=c0Fdfd/CcpPthRfTzVCKplez6A
-	XArtTi0AVECmGJC4in1j3qU0YmdMBnGxRhFiE1LDGeiRt2BWNWXZIpIeQCUv+09wb89hrAbOZr0NZ
-	4l/+/bnuGX78d/8rcBX0nAdUro1nXX++9Om29P9Ha6G5vhtmRJWUeCJ47kskFwbynrN5UyeaG6zPe
-	dhjb1AOk1loLSy66q0P58/g68s3qkJb3fuisSU0wzrTD4OLfbHjvM4WFhKPfAllgm/831UDQeW2+Z
-	RXm7AELkW2Cinws20Lby1TDUdU+ksreCt3duN9J0d543q6dte6El0CQD/iFGIMZsDrOsu7y1sbDYO
-	mPPokf4w==;
-Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
-	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1wbm2G-00000000KDt-0UMc;
-	Mon, 22 Jun 2026 21:18:33 +0000
-Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1wbm2D-00000004R53-0PHy;
-	Mon, 22 Jun 2026 22:18:25 +0100
-From: David Woodhouse <dwmw2@infradead.org>
-To: Rodolfo Giometti <giometti@enneenne.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	John Stultz <jstultz@google.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Miroslav Lichvar <mlichvar@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: David Woodhouse <dwmw@amazon.co.uk>
-Subject: [RFC PATCH v3 1/4] timekeeping: Apply extrapolated ntp_error to clock snapshots
-Date: Mon, 22 Jun 2026 21:36:18 +0100
-Message-ID: <20260622211822.1056437-2-dwmw2@infradead.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260622211822.1056437-1-dwmw2@infradead.org>
-References: <20260622211822.1056437-1-dwmw2@infradead.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hEw0SkTT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9D651F000E9;
+	Mon, 22 Jun 2026 21:56:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782165366;
+	bh=fnp4Q8nhNaRHoYvnru7Wu60jtYd7ye9VqRc/LmL8nu4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=hEw0SkTTBwN8FVegJvFAMYUa+5e7BllR3KAO1P9Bku1InJux2qDu9Y3zt1t7Klmjy
+	 +N8PlOZ6/iQtR1VHNME6Cr10z6ja71ezW7tb67Fm5zBCQ9/ZVPLzAZnh6zs0s6Ugu9
+	 twpE2ij3OWMjd8F5UgZ+3tHPkndQ4l/hgSvRt2qULBiZUDqHBYwG8WUtOJTzLI5Me/
+	 lMvEt5UI1fgDx/EtuZ4tZo6azTy4SIAxRzkh7T8DYrcVS9++EhBZXwliXDZefM2Et7
+	 SZht5IxzJHegUFwogjPrk230E4A7Ox1Gsfrydbp4BLH9RJQJ9kUbfqhGI9t5yuCvAB
+	 Rd3jcbcqfE5jQ==
+Date: Mon, 22 Jun 2026 14:56:04 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Thorsten Leemhuis <linux@leemhuis.info>
+Cc: Donald Hunter <donald.hunter@gmail.com>, netdev
+ <netdev@vger.kernel.org>, Riana Tauro <riana.tauro@intel.com>
+Subject: Re: building ynl afaics requires updating the UAPI headers first
+Message-ID: <20260622145604.524949ec@kernel.org>
+In-Reply-To: <f88cfe04-c817-4383-866b-530c5bc5bd95@leemhuis.info>
+References: <ade91456-2f93-442c-b76c-28bd7157f074@leemhuis.info>
+	<20260618170605.0e2e4dd4@kernel.org>
+	<cec7685e-df12-4501-b851-9c8f7b8b06cb@leemhuis.info>
+	<20260622090534.2af8ae9e@kernel.org>
+	<f88cfe04-c817-4383-866b-530c5bc5bd95@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Sender: David Woodhouse <dwmw2@infradead.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+On Mon, 22 Jun 2026 18:33:29 +0200 Thorsten Leemhuis wrote:
+> On 6/22/26 18:05, Jakub Kicinski wrote:
+> > On Fri, 19 Jun 2026 09:28:47 +0200 Thorsten Leemhuis wrote:  
+> >> On 6/19/26 02:06, Jakub Kicinski wrote:  
+> >>> Can't repro for some reason, but we probably need something like 
+> >>> commit 46e9b0224475abc to add the explicit include rule.    
+> >>
+> >> Thx for the pointer. So I guess you mean something like the below,
+> >> which did the trick for me. Will submit this as properly, unless
+> >> someone points out something stupid in it.  
+>  [...]  
+> 
+> No, because the funny thing is: now I fail to reproduce it myself. And I
+> don't know why, as 24h earlier when you had written "Can't repro for
+> some reason" I had once more checked that I could trigger this by
+> downgrading Fedora's kernel-headers package to a version from some weeks
+> ago. Not sure what changed since then.
+> 
+> Want me to sent it nevertheless?
 
-The time reported in ::systime of a system_time_snapshot is known to be
-slightly inaccurate because of the way that the reported realtime clock
-sawtooths around the *intended* time series, limited by the integer mult
-value used to calculate the inter-tick times, and designed to ensure
-smoothness and monotonicity for its consumers.
-
-It is particularly inaccurate in a tickless kernel, where ntp_err_mult
-is not adjusted on each tick, allowing the reported clock to diverge
-from the intended time for a large number of ticks before re-converging.
-
-This appears to be the reason why CONFIG_NTP_PPS is not enabled on
-tickless kernels — because at that scale of precision, the realtime
-snapshot at the time of the pulse bears little relation to the time the
-kernel *actually* believes it to be, thus introducing random errors into
-the PPS phase correction.
-
-It would be better for callers of get_device_system_crosststamp() and
-ktime_get_snapshot_id() to receive the *accurate* time, not the
-sanitized version provided to gettimeofday().
-
-Compute the deviation in snapshot_ntp_error() and add it to the returned
-::systime so the snapshot lands on the ideal line. It sums four terms in
-ns << NTP_SCALE_SHIFT before converting to signed ns:
-
-  - tk->ntp_error, the deviation as of the last update;
-  - (cycle_delta * ntp_err_frac), the fractional-mult drift accrued
-    since then (cycle_delta is at most a tick on a tickful kernel, but
-    many ticks' worth under NO_HZ);
-  - (cycle_delta * ntp_err_mult), subtracting the applied +1 mult dither
-    over the same span;
-  - the sub-nanosecond fraction dropped when the read was truncated to
-    whole ns (low shift bits, exact despite the multiply overflowing).
-
-The helper uses the timekeeper selected for the requested clock id, so
-all NTP-disciplined clocks are corrected, including the AUX clocks (each
-has its own NTP instance); only CLOCK_MONOTONIC_RAW is undisciplined and
-gets no correction. The residual is then a single clocksource cycle, the
-same bound as a tickful kernel.
-
-Note that this *unconditionally* changes the ::systime returned by all
-snapshot and cross timestamp consumers (PTP SYS_OFFSET_PRECISE/EXTENDED,
-etc.): it is now the ideal NTP-disciplined time rather than the raw
-accumulated clock.
-
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Assisted-by: Kiro:claude-opus-4.8
----
- include/linux/timekeeper_internal.h |  6 +++
- kernel/time/timekeeping.c           | 71 +++++++++++++++++++++++++++--
- 2 files changed, 73 insertions(+), 4 deletions(-)
-
-diff --git a/include/linux/timekeeper_internal.h b/include/linux/timekeeper_internal.h
-index fb37a736ec1c..bc05d52a5f96 100644
---- a/include/linux/timekeeper_internal.h
-+++ b/include/linux/timekeeper_internal.h
-@@ -97,6 +97,11 @@ struct tk_read_base {
-  * @ntp_error_shift:		Shift conversion between clock shifted nano seconds and
-  *				ntp shifted nano seconds.
-  * @ntp_err_mult:		Multiplication factor for scaled math conversion
-+ * @ntp_err_frac:		Fractional part of the per-cycle NTP-ideal mult that the
-+ *				integer @mult truncates, as a fraction of 2^32 in
-+ *				clock-shifted nanoseconds per cycle. Used to
-+ *				extrapolate @ntp_error to an arbitrary cycle count in
-+ *				the lockless snapshot readers (ktime_get_snapshot_id).
-  * @cs_tick_adj:		Per-second adjustment handed to NTP via ntp_clear()
-  *				accounting for the difference between the nominal
-  *				NTP interval and the real time taken by the
-@@ -187,6 +192,7 @@ struct timekeeper {
- 	s64			ntp_error;
- 	u32			ntp_error_shift;
- 	u32			ntp_err_mult;
-+	u64			ntp_err_frac;
- 	s64			cs_tick_adj;
- 	u32			skip_second_overflow;
- 	s64			skew_delta;
-diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
-index eb94ec99d503..1c989e5ebe84 100644
---- a/kernel/time/timekeeping.c
-+++ b/kernel/time/timekeeping.c
-@@ -422,6 +422,7 @@ static void tk_setup_internals(struct timekeeper *tk, struct clocksource *clock)
- 	tk->tkr_mono.mult = clock->mult;
- 	tk->tkr_raw.mult = clock->mult;
- 	tk->ntp_err_mult = 0;
-+	tk->ntp_err_frac = 0;
- 	tk->skip_second_overflow = 0;
- 	tk->skew_delta = 0;
- 
-@@ -1226,6 +1227,51 @@ static inline u64 tk_clock_read_snapshot(const struct tk_read_base *tkr,
- 	return clock->read(clock);
- }
- 
-+/*
-+ * snapshot_ntp_error - record how far a snapshot's ::systime is from the
-+ * ideal NTP-disciplined time at @now, in signed nanoseconds, so a caller
-+ * can land exactly on the ideal line by adding it to ::systime.
-+ *
-+ * The value is summed in ns << NTP_SCALE_SHIFT from four parts:
-+ *
-+ *  - tk->ntp_error, the deviation accumulated as of the last timekeeping
-+ *    update (tkr_mono.cycle_last);
-+ *  - (cycle_delta * ntp_err_frac), the fractional-mult drift accrued over
-+ *    the cycles read since then -- at most a tick on a tickful kernel, but
-+ *    potentially many ticks' worth under NO_HZ;
-+ *  - (cycle_delta * ntp_err_mult), subtracting the applied +1 mult dither
-+ *    over the same span;
-+ *  - the sub-nanosecond fraction that ::systime dropped when the read was
-+ *    truncated to whole ns (the low @shift bits, exact even though the
-+ *    multiply overflows).
-+ *
-+ * CLOCK_MONOTONIC_RAW is not NTP-disciplined and carries no error. Every
-+ * other clock id uses its own timekeeper @tk -- including the AUX clocks,
-+ * which each have their own NTP instance.
-+ */
-+static s64 snapshot_ntp_error(const struct timekeeper *tk, clockid_t clock_id,
-+			      u64 now)
-+{
-+	u64 cycle_delta;
-+	u32 nes;
-+	s64 tmp, err;
-+
-+	if (clock_id == CLOCK_MONOTONIC_RAW)
-+		return 0;
-+
-+	cycle_delta = (now - tk->tkr_mono.cycle_last) & tk->tkr_mono.mask;
-+	nes = tk->ntp_error_shift;
-+
-+	err = tk->ntp_error;
-+	err += ((s64)mul_u64_u64_shr(cycle_delta, tk->ntp_err_frac, 32) -
-+		(s64)(cycle_delta * tk->ntp_err_mult)) << nes;
-+
-+	tmp = (s64)(cycle_delta * tk->tkr_mono.mult + tk->tkr_mono.xtime_nsec);
-+	tmp &= (1ULL << tk->tkr_mono.shift) - 1;
-+	err += tmp << nes;
-+
-+	return (err + (1LL << (NTP_SCALE_SHIFT - 1))) >> NTP_SCALE_SHIFT;
-+}
- 
- /**
-  * ktime_get_snapshot_id -  Simultaneously snapshot a given clock ID with
-@@ -1238,6 +1284,7 @@ void ktime_get_snapshot_id(clockid_t clock_id, struct system_time_snapshot *syst
- {
- 	ktime_t base_raw, base_sys, offs_sys, *offs, offs_zero = 0;
- 	u64 nsec_raw, nsec_sys, now;
-+	s64 ntp_error;
- 	struct timekeeper *tk;
- 	struct tk_data *tkd;
- 	unsigned int seq;
-@@ -1300,10 +1347,12 @@ void ktime_get_snapshot_id(clockid_t clock_id, struct system_time_snapshot *syst
- 
- 		nsec_sys = timekeeping_cycles_to_ns(&tk->tkr_mono, now);
- 		nsec_raw = timekeeping_cycles_to_ns(&tk->tkr_raw, now);
-+
-+		ntp_error = snapshot_ntp_error(tk, clock_id, now);
- 	} while (read_seqcount_retry(&tkd->seq, seq));
- 
- 	systime_snapshot->cycles = now;
--	systime_snapshot->systime = ktime_add_ns(base_sys, offs_sys + nsec_sys);
-+	systime_snapshot->systime = ktime_add_ns(base_sys, offs_sys + nsec_sys) + ntp_error;
- 	systime_snapshot->monoraw = ktime_add_ns(base_raw, nsec_raw);
- 
- 	/*
-@@ -1552,6 +1601,7 @@ int get_device_system_crosststamp(int (*get_time_fn)
- 	unsigned int seq, clock_was_set_seq = 0;
- 	ktime_t base_sys, base_raw, *offs;
- 	u64 nsec_sys, nsec_raw;
-+	s64 ntp_error;
- 	u8 cs_was_changed_seq;
- 	bool do_interp;
- 	struct timekeeper *tk;
-@@ -1617,9 +1667,10 @@ int get_device_system_crosststamp(int (*get_time_fn)
- 
- 		nsec_sys = timekeeping_cycles_to_ns(&tk->tkr_mono, cycles);
- 		nsec_raw = timekeeping_cycles_to_ns(&tk->tkr_raw, cycles);
-+		ntp_error = snapshot_ntp_error(tk, xtstamp->clock_id, cycles);
- 	} while (read_seqcount_retry(&tkd->seq, seq));
- 
--	xtstamp->sys_systime = ktime_add_ns(base_sys, nsec_sys);
-+	xtstamp->sys_systime = ktime_add_ns(base_sys, nsec_sys) + ntp_error;
- 	xtstamp->sys_monoraw = ktime_add_ns(base_raw, nsec_raw);
- 
- 	/*
-@@ -2447,6 +2498,7 @@ static void timekeeping_adjust(struct timekeeper *tk, s64 offset)
- {
- 	u64 ntp_tl = ntp_tick_length(tk->id);
- 	s64 skew = ntp_get_skew_delta(tk->id);
-+	u64 dividend;
- 	u32 mult;
- 
- 	/*
-@@ -2465,8 +2517,19 @@ static void timekeeping_adjust(struct timekeeper *tk, s64 offset)
- 		 * scale it back up to the full per-tick rate for the mult bias.
- 		 */
- 		skew *= NTP_INTERVAL_FREQ;
--		mult = div64_u64((tk->ntp_tick + skew) >> tk->ntp_error_shift,
--				 tk->cycle_interval);
-+		dividend = (tk->ntp_tick + skew) >> tk->ntp_error_shift;
-+		mult = div64_u64(dividend, tk->cycle_interval);
-+		/*
-+		 * Stash the fractional part of the per-cycle ideal mult that
-+		 * the integer @mult discards, scaled by 2^32, in clock-shifted
-+		 * ns per cycle. The lockless snapshot readers use it to
-+		 * extrapolate @ntp_error forward over the cycles accumulated
-+		 * since the last tick (which on a NO_HZ kernel may be many
-+		 * ticks' worth).
-+		 */
-+		tk->ntp_err_frac = div64_u64((dividend - (u64)mult *
-+					      tk->cycle_interval) << 32,
-+					     tk->cycle_interval);
- 	}
- 
- 	/*
--- 
-2.54.0
-
+Yes, let's get it in place, it can't hurt AFAIU.
