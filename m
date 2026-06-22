@@ -1,167 +1,104 @@
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A05340A76
-	for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 17:48:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4482C8EB;
+	Mon, 22 Jun 2026 17:51:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782150510; cv=none; b=e3ia6Dk87CANgQDE354JCcWAxjHBwQWXXhuvkChObLI/0j8hQTWA59bflQUG56D8bX3eDgtS5q0DJkfho2gBaTe9AY8Ci0It8M1w2EGHVxOleCs2fNpyMAahhrk479MN/FzUu7zfdFOhkJ15PB990vM/ADfWzzGyeeKxTJQ2heo=
+	t=1782150712; cv=none; b=WP0PjSq2lzHBUPj2ijkeoU7myXDQoRjPN3Y/YqDJwHoMQX1EGqdF18VJeIlXsFjFZyAfyMA7DvmodR4Bxktz6yEXGnBQZzg9KgI7yxPxLy15CpfHffEtyNoglgXhNfgErztPZw9+zJNex737KWojfKh3fxFAn7FC8GXdbP6I2PU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782150510; c=relaxed/simple;
-	bh=rT+UtKMtzGnsnjtDXBDLQP30MQk3djrKnOyWlXkyvIw=;
-	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
-	 MIME-Version:Content-Type; b=U+39+tMJLMkDpq64lr9AKBdg9rUUW8SOuK6aQdGrngyDeiNx6FnLfhyeDBPVc5j0YUMKiHM2XwS6jkBjp3AHzodm44Um7IdNA9XDfh0u2aj+wo/J+aIBMT3CJ7kZfZYAYmxfAjh5a+SOTPvytpAhXvmXPZhR/sLHVIJds5yQwe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q0f92W9A; arc=none smtp.client-ip=209.85.128.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1782150712; c=relaxed/simple;
+	bh=/c4S6PZa53h4GR1K7aD8CQ0ligLDORnOPwMEi663BtQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=tAufJPNBTtsMeSq6yiBaufAP3OynZbWmGSfEb63JxYCD7XnhvgUlhzNqzCUU2qBDn4N6VAAPlIBct7jBK+5wUecY3ZDlnmyAt4xsZElS/DN6GvjxiCMpFEOteZZ7QOA0KBgdwRNLUAVQ8X7FDrlODxxIt/IVOtsMZFnloPbBCa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=bjPgB5lx; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q0f92W9A"
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-80260a90522so25312477b3.0
-        for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 10:48:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782150508; x=1782755308; darn=vger.kernel.org;
-        h=content-language:thread-index:content-transfer-encoding
-         :mime-version:message-id:date:subject:in-reply-to:references:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=33veWonGavd+osVYaZO16Ido/MSdlOEETv1HhacB24U=;
-        b=Q0f92W9AAVD8CyTlZPOOj6rGZXrm1afo90xqXd/BHWsbEW6084DAARrb18A/Uiv3mR
-         3k/ki1DY49QLWFWy8bZ8QyUEr+miikmIAyUM2x3kGMwG2oGLE+r1Gx4UJpVl1d2oaQs2
-         h5Vu5gq/TqZ/KWVv/PaRpOM+wtiSAFreC5D7x2YjQaErOxHbQYQRX0oaXHh/UiEadmEe
-         RLP7VL7ZL+R+oz3Rc8fNu40bdCMo7s7eIvpFhBgCmP7L9g8ztSQdBabQ4e+DSZDF6/vy
-         jBxD+1cREN6469Qx3TIm+0W9oG6/9EYkDK9id4i1WGzjrXAkd3AOPRnOrFv7nama0sAa
-         PPgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782150508; x=1782755308;
-        h=content-language:thread-index:content-transfer-encoding
-         :mime-version:message-id:date:subject:in-reply-to:references:cc:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=33veWonGavd+osVYaZO16Ido/MSdlOEETv1HhacB24U=;
-        b=ZJznMEE+i2ie7ogL9vcISoCxPIt7cQRJnMSlGc6n7XQvoMz9Ztg/nDuRzFKhw8d5rd
-         nrEmemQCLpdCRiWSxNKjgikhsS4SrwnvPblJeStSZVRJhBjoGvxpuuGFOPRJYelGlB2r
-         zOK12LKUBmiO11lJjewzt3vh4/9PWlBb6QjRtbETvrYpzUjcMrONZ34zfN7hY/oa2nlq
-         9ttOgLHRr9liP3uQJNHAuj2edwjPzFjNm1XAl86IWCmtU6IVvsPixJZHfhxPizu9ezPx
-         Ua+AC45VozTTcF4k3KqRASp+xgivqzQZCFDK+SFsbcm+49897UOwRDeOxLn4yDGaS7T9
-         cTqQ==
-X-Gm-Message-State: AOJu0YyJrHv9hsTKYGg4xcutDS4fh8448GXNfSmq0Bm3+dBTUZ5woNBs
-	EyawB+6hW1TWuGbCsbhp4t+vyaLUgss8YjzYMMgjUBTMB/SROVmsPWleCOyj5xXO
-X-Gm-Gg: AfdE7ck/okG0kjDMmj/aw5PXKrjwH4Xq264cNpK2a7Xq2wsxafQSiowc+1Ssek8xtkQ
-	TcAz6dk0BnyzMMUyfPZ4qRDdStA23cJ4nqcFoFqs/iuBQv8gMk7ilHroaTC786aMou9Tc+xWUFt
-	KziF5FsG5kN2+j/3SjHms70Dmp6vgE7LLS+utG2GKNQDalGG3uRWSOTNHbFh29TZEirKsxhIRZZ
-	WLIeJtDTEqF6kbufC4yu9r0dNz//TiP+rVVNxCO3Nq0gxOUTOBVxZIhZ1/loJ1YeLmYtROVMcC4
-	jCt6hgOdiEauejZ03vRpkCGLrkalYWZeAZC2tZGeH/vmLv/9fWdmR8AJu1nsHZNnUlmpnUdCmap
-	6ljGIrmDB2nRIfSYwqSnw9xT/83Vur7fWy6aZUJc82xfbKcseI1ssoV3OacJK1mlzVFVzPHEn7V
-	UN3+5jlluaQwdEVha8bLD5yJN+wL9/XEfDhRdEcSdEFmERnhJrSrANQ5xSpJe9MHO4aDMy76K0J
-	lZOkMugndBvi/c=
-X-Received: by 2002:a05:690c:4b10:b0:7fe:bd7:9cae with SMTP id 00721157ae682-80178c4a2ecmr145514817b3.44.1782150508479;
-        Mon, 22 Jun 2026 10:48:28 -0700 (PDT)
-Received: from WIN6DK41G9CSL2 (c-73-56-149-95.hsd1.fl.comcast.net. [73.56.149.95])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8025f8da5fbsm34884557b3.30.2026.06.22.10.48.27
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 22 Jun 2026 10:48:28 -0700 (PDT)
-From: "Brien Oberstein" <brienpub@gmail.com>
-To: "'Stefano Garzarella'" <sgarzare@redhat.com>
-Cc: <netdev@vger.kernel.org>,
-	<regressions@lists.linux.dev>,
-	<stable@vger.kernel.org>
-References: <467b01dd017b$733792d0$59a6b870$@gmail.com> <ajkAlpiyPWmNPWfx@sgarzare-redhat> <618701dd023e$063de350$12b9a9f0$@gmail.com> <ajkmjgGdJp9Dj6em@sgarzare-redhat>
-In-Reply-To: <ajkmjgGdJp9Dj6em@sgarzare-redhat>
-Subject: RE: [REGRESSION 6.12.90 -> 6.12.94] vsock/virtio: large AF_VSOCK transfers reset under backpressure
-Date: Mon, 22 Jun 2026 13:48:27 -0400
-Message-ID: <672f01dd026f$54fa0600$feee1200$@gmail.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="bjPgB5lx"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 20BD11A07C5;
+	Mon, 22 Jun 2026 17:51:48 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D1B1A601BB;
+	Mon, 22 Jun 2026 17:51:47 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 88B5D106C89C5;
+	Mon, 22 Jun 2026 19:51:39 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1782150706; h=from:subject:date:message-id:to:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=S5YU1ek1hKhtc/CewB+hEaa4quwElWgeX+xAF+JI5qg=;
+	b=bjPgB5lx1B2g1DC1fdAc26ERdrpILHyBKZ/vz7hWq4rjx81UACjgdxgnp4MysBAJiBXDKC
+	UWEpN8G1MT1EZWyQnSKIiA8giPvjQETsoZ0kzs9XdnW4csn9Ai6mnx4dPZKwjsG5RVi16v
+	6OtbV3S6hxkz+gnmaMp3cILta5hbTOjFwklOhRM4OuUC9ohDnF7V6Kns4nE0hxeWo1c1Mk
+	0D1uQbn+zWUo1YUYx6PeAKLsECC78QYEFQbO33F1jpFgq+iptY48QaC25FM7Q5uLg6w2RZ
+	+UAmmDl3pVd60pM35c+JFMS6ZmIR8lwAovj/4EPiaWFzZBrLoaiV1oWFmDSVsg==
+Message-ID: <b375d36c-112e-4662-b538-fd10fa927ecc@bootlin.com>
+Date: Mon, 22 Jun 2026 19:51:39 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: stmmac: fix missed le32_to_cpu()
+To: Ben Dooks <ben.dooks@codethink.co.uk>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>,
+ "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+ netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260622143707.497198-1-ben.dooks@codethink.co.uk>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260622143707.497198-1-ben.dooks@codethink.co.uk>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQGzlm2Q3QdtCPSkkHXQpTkeFGbfJwIutksBAb+8QgECzm+rZbZnykdw
-Content-Language: en-us
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Stefano,
+Hi Ben,
 
-Confirmed -- the 16 MB buffer fixes it: with socat owning the VSOCK-LISTEN
-and SO_VM_SOCKETS_BUFFER_MAX_SIZE/SIZE at 16 MB, a 6.12.94 guest passed
-21/21 large transfers (1.5 MB x12 through 8 MB); the same 1.5 MB payload
-failed every time without it. So the per-socket workaround covers the
-bridges whose listen I control, but not vsock services I can't
-reconfigure, which stay broken on 6.12.94.
+On 6/22/26 16:37, Ben Dooks wrote:
+> The print in ndesc_display_ring() sends the des2 and des3
+> to the pr_info() without passing them through the relevant
+> conversion to cpu order.
+> 
+> Fix the (prototype) sparse warnings by using le32_to_cpu():
+> drivers/net/ethernet/stmicro/stmmac/norm_desc.c:258:17: warning: incorrect type in argument 6 (different base types)
+> drivers/net/ethernet/stmicro/stmmac/norm_desc.c:258:17:    expected unsigned int
+> drivers/net/ethernet/stmicro/stmmac/norm_desc.c:258:17:    got restricted __le32 [usertype] des2
+> drivers/net/ethernet/stmicro/stmmac/norm_desc.c:258:17: warning: incorrect type in argument 7 (different base types)
+> drivers/net/ethernet/stmicro/stmmac/norm_desc.c:258:17:    expected unsigned int
+> drivers/net/ethernet/stmicro/stmmac/norm_desc.c:258:17:    got restricted __le32 [usertype] des3
+> 
+> Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
 
-Agreed the old behaviour was buggy in its own right -- it was
-over-allocating past the advertised buffer. The practical effect for me is
-just that a config that worked on 6.12.90 no longer does on 6.12.94.
-
-A question mainly for stable@: until the merging work lands, would an
-interim be acceptable -- something that keeps ordinary small-packet
-workloads under the limit without reopening the DoS? I don't have the
-kernel-side expertise to judge what's safe there, but I'm glad to prepare
-and test whatever interim you think is right, and to test the merging
-patch when it's ready.
+I agree on the principle, but this isn't a fix so this'll have to wait
+until net-next re-opens :)
 
 Thanks,
-Brien
 
------Original Message-----
-From: Stefano Garzarella <sgarzare@redhat.com> 
-Sent: Monday, June 22, 2026 8:22 AM
-To: Brien Oberstein <brienpub@gmail.com>
-Cc: netdev@vger.kernel.org; regressions@lists.linux.dev;
-stable@vger.kernel.org
-Subject: Re: [REGRESSION 6.12.90 -> 6.12.94] vsock/virtio: large AF_VSOCK
-transfers reset under backpressure
+Maxime
 
-On Mon, Jun 22, 2026 at 07:55:30AM -0400, Brien Oberstein wrote:
->Hi Stefano,
->
->Thanks, that matches what I'm seeing: large transfers reset mid-stream
->instead of the sender being throttled (reliable above ~1.5 MB, fine below
->~90 KB).
->
->The bind for me: it's not just this mail bridge -- I use AF_VSOCK for a few
->host/guest services, some of which open their own sockets, so the
-per-socket
->buffer workaround can't cover them all. That leaves pinning 6.12.90 (losing
->the DoS fix and further kernel updates) as the only blanket option.
-
-Okay, but in that case did it work?
-
->
->A few quick questions:
->
->1. Is a -stable backport of the merging fix likely, and roughly when?
-
-We don't have a fix yet.
-
->2. Could a smaller interim land in -stable sooner (e.g. more default
->   headroom) without reopening the DoS?
-
-What we've merged so far is the best we can do for now, but anyone who 
-wants to help improve the situation is welcome to submit patches.
-
->3. Will the fix guarantee backpressure for any packet size, or just widen
->   the margin?
-
-It should fix STREAM sockets for any packet size.
-SEQPACKET/DGRAM is a bit different since we need to keep boundaries, so 
-it will come later if needed.
-
->
->Happy to test any patch
-
-THanks, I'll ask you to test.
-
->I have a solid reproducer and can turn it around
->in a day. I'll also file this as a tracked regression so it's not lost.
-
-Unfortunately, it's always been partially broken, using more memory than 
-specified, so I don't know if this is actually a full regression, but I 
-understand.
-
-Thanks,
-Stefano
-
+> ---
+>  drivers/net/ethernet/stmicro/stmmac/norm_desc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/norm_desc.c b/drivers/net/ethernet/stmicro/stmmac/norm_desc.c
+> index c4b613564f87..74c9b7b1fe8f 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/norm_desc.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/norm_desc.c
+> @@ -258,7 +258,7 @@ static void ndesc_display_ring(void *head, unsigned int size, bool rx,
+>  		pr_info("%03d [%pad]: 0x%x 0x%x 0x%x 0x%x",
+>  			i, &dma_addr,
+>  			(unsigned int)x, (unsigned int)(x >> 32),
+> -			p->des2, p->des3);
+> +			le32_to_cpu(p->des2), le32_to_cpu(p->des3));
+>  		p++;
+>  	}
+>  	pr_info("\n");
 
