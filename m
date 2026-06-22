@@ -1,135 +1,66 @@
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5A03AD522
-	for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 12:58:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485443B0ACC;
+	Mon, 22 Jun 2026 13:05:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782133124; cv=none; b=ko0jsKuh2lusni2ZXyewBeK/h0W06PXTD22VhkwKhlyx/toX3heuptMJU5WL1wgKWBlWsobND0rGBeShi/2HszGgbNmKcUlbhmY1dfagM1uVQ0KrnBFDPxHIxgR3btw5F/AUYeiytVq+7lNJxgMxuxrn4ZxE/wkjaHp5FNMhqDQ=
+	t=1782133521; cv=none; b=KhtfM9YXWW6+1eTPBqf5lRWpvQ5noRkkI72wpLtRtsqvW08OpK8oj1kKifll/Vakd7pdgEjhcTbJ/17a/pMHLKORP/3QYcI1X0ZwjPxGUQ8RiE++9hSs7mpLp1DMLczTNwsyV1xgzpRNFujoAgwYuPA90o4SjneWFLKM1cduRiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782133124; c=relaxed/simple;
-	bh=qDElADXlgQyAzLqXp1zhsofyI3JFx7Kipplc8adrurk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Q5rXlDZGUqJllVOoJ2MeqjsjDUKCrT+v22d29KTO9AGwd6AHRqQuCJuHhdh5zDzybWlC3yxAnpM0P38zUF22pJpu7fYq1Jge6ldRcP+7q5Xvl5/mUNKYAhzw+uMp6bG122a4W0KsivH1JWDpH8raplkFaVcScasqOdDc8viwkks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=Rk+PzL82; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	s=arc-20240116; t=1782133521; c=relaxed/simple;
+	bh=aAiU1+PeTaueKXXRO5aRh54gV/A4fotfpqPEVsXzdGw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SlhdnJvMk3fhFylCWdao8NLNBMVJcQdHh6effVp24Z7i6FzF7OAL7qBtuwtEqxuaoqxovMCLKQsQz9rbtRhmirmzpFzXxNlM3RWnpUFnNiyCLN6q3FC37sfqpHlmNqQt+8Y5i0GlwIttQsibk7rtXjQa/sbplAn/3hX2My/OLoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JoIMw0Nq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="Rk+PzL82"
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c074ac8adaaso521081666b.3
-        for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 05:58:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1782133121; x=1782737921; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=EfzBz+UdB3nbzgd5M+T+mIKozpGs1yOUYWhHRThmvXE=;
-        b=Rk+PzL82GGZIwxrDYvSGS5tXANJhuLAG0DxXL2bcis3Ekg3+lUp6jYQi7zwN/2CHAR
-         1kNnHJihnBQ3YVCswJqJty8q6sKFjOqYxkz+cO30Q+CByUbrSOwn0aP2BajAULOF2rt1
-         OUmEb+SteutEeWqYJr5IEOKeCx7vXnFAjYQ07sTuzmzr4FCxncXXOnPD9zb/cFUbICj+
-         TRWRv2VYLmGni2ik4xoSMD5vefpDBxPBLxHshBEuOPNMlyM8fT32d2kmKvXPBx3gOmR/
-         lUZB36g5FJ/Q8Ikh9Smu/HdT9h5lDpzl/75kr3lhqKladELHXRMS/uiJFiRv0+m34v/G
-         aA8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782133121; x=1782737921;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EfzBz+UdB3nbzgd5M+T+mIKozpGs1yOUYWhHRThmvXE=;
-        b=ghDAfNyUH1bx47PDzypoM88xdkHYCkbZp+OZ5Jo/t4Csy7ZIkYIMBIgjqXbHWldTdC
-         9kDCuqxPyizEPe/fhO0uj5swjMKvt6ACWTqybR+F2eiXSblDwyCng8Uv4UsQVhZ7/95G
-         sXw7jpC0dZa2OvpfG73mRlQ2Kg4utiEPsaWoLuvgpg+qBt0mXypoB8CxTXxkQo2UxoYc
-         +i0QIqtP95e82KEzbpyNbtXGekowvig0CSBVujCVryJlm20dpClI7xDpbTrWNDrneZ8G
-         cxmDahHJ6CS3g4ZudWTmoE+PC4F08FVEwE5P6Nqvy7kvqTph1QxgL77sKxPGM/K01rhd
-         Ad7A==
-X-Forwarded-Encrypted: i=1; AFNElJ+3bE39kgTAw6RqhX4JRyGOU+sfDVJbws9GuDt8hUwlFRrJI4wV7NzBCycVUds35GbjDZ29RHM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwzOWf1qAtM1AORxChg8czDTHj47HEWNdEsNM8StOr2HXlSBMcP
-	J7rGHFnU4mdi6NHEIjFFBkJ5ZzDSItUVIENOIX9gNbdpUNut6zvULgzQ8L62zhXA8Ok=
-X-Gm-Gg: AfdE7clH6jSki5IuJaN0Tx50Nrw4M4ko67JDlQpmWY/FayusYSa7E0qZ5OsxoSADP/w
-	swb6iy9TvkqooSzRbPjM2jmoumzfaUoT8tojb07jLP2kR2sO4CK/7Y0Xocn40vgiAycEFPtK5n1
-	QBzrUr7KqA7X1FYRO5HSjyZi75StWFbp+v6Key9oQrN2YH5xSGRTkzyLWeLf3eblsswWXBaIY4b
-	O8d1ZIIFpnVYDtBu4zVbtzZhS/H5BNHWbfXI3iJDT8iDOYR37pCdqNeopmpw89nZ6130s09mKhK
-	blK1Lzi+CfYskDpW80Oc2I29rQypp7kJBSNfvjryT5nC1bnb/Nez+FvuCFxOcDLty8r5zX2A3Qk
-	nBJfmw/SsmmU99pNhbLBBsKX3YiYI4nuu6qyQnHxqaWU7PY1mnoDkDE6pLp6b6CbQF8mAXlpUOs
-	n7lOh1D9+5lPrkc1uu3WDjdrh2Ho5qINdxQDf3FRkbtgQWVq0WjzCG5qHmPRk=
-X-Received: by 2002:a17:906:6a29:b0:bfe:ed74:523 with SMTP id a640c23a62f3a-c098f12eb0emr774449366b.50.1782133121181;
-        Mon, 22 Jun 2026 05:58:41 -0700 (PDT)
-Received: from cloudflare.com (79.184.207.15.ipv4.supernova.orange.pl. [79.184.207.15])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c0c60bbf2b3sm352712766b.39.2026.06.22.05.58.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Jun 2026 05:58:40 -0700 (PDT)
-From: Jakub Sitnicki <jakub@cloudflare.com>
-Date: Mon, 22 Jun 2026 14:58:34 +0200
-Subject: [PATCH bpf-next] bpf, unix: Guard sk_msg-dependent code behind
- CONFIG_NET_SOCK_MSG
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JoIMw0Nq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A030A1F000E9;
+	Mon, 22 Jun 2026 13:05:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782133519;
+	bh=ST5sgeGD2s+EyPUvMS7cEgSB0Di8OpE8mQiXgesAnfY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=JoIMw0Nq4A/QLZ9fTo1Z5nkni/OiTAxA8eOoitNkisfdfxfLT+fDTULGljflcubi8
+	 rIAkL6q8aI4/w47eW7u3UOwu8QDHfCN3p67cu32YlTH8OR97e3y/qvdKod7Ay4fbxn
+	 vxlZa1SYgbbG+AXMGwBFd0v8DBG/5A25sOg+sTZhsy692Huzs5bwSdvpsMyDSBhKZy
+	 XaJZJOOFEYS3810q0YSUjzLmMOiO/CZ9Yj0ga5SMHlk+bsM4HHx3ZRbzts3H6DB2kB
+	 lOw7wivSav8wJgxY7j3ko0G7MWlaSfnVOIX+q2OuZiuBngSy6XgrY2Zlx1vAAbTiUH
+	 b++E9joaFCQvQ==
+Date: Mon, 22 Jun 2026 14:05:15 +0100
+From: Simon Horman <horms@kernel.org>
+To: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Cc: skalluru@marvell.com, manishc@marvell.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, barak@broadcom.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net] bnx2x: fix potential memory leak in
+ bnx2x_alloc_mem_bp()
+Message-ID: <20260622130515.GE827683@horms.kernel.org>
+References: <20260620062402.89549-1-nihaal@cse.iitm.ac.in>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260622-bpf-sk_msg-split-unix-v1-1-d7e0cb7bb03b@cloudflare.com>
-X-B4-Tracking: v=1; b=H4sIAHkxOWoC/yWMQQqDMBAAvyJ77kIMYsWvlFKaZNW1bRqysQTEv
- xvtcRhmVhCKTAJ9tUKkHwt/fYH6UoGdnn4kZFcYtNKtarVGEwaU1+MjI0p4c8LFc0Z3rRunSDW
- dNVDaEGngfH5vcCSecoL738hiZrLp2MK27f6dcC+DAAAA
-X-Change-ID: 20260622-bpf-sk_msg-split-unix-d714d0e048cb
-To: bpf@vger.kernel.org
-Cc: Alexei Starovoitov <ast@kernel.org>, 
- Daniel Borkmann <daniel@iogearbox.net>, Jakub Kicinski <kuba@kernel.org>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Jiayuan Chen <jiayuan.chen@linux.dev>, netdev@vger.kernel.org, 
- kernel-team@cloudflare.com
-X-Mailer: b4 0.15.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260620062402.89549-1-nihaal@cse.iitm.ac.in>
 
-Prepare to decouple BPF_SYSCALL config option from NET_SOCK_MSG.
+On Sat, Jun 20, 2026 at 11:53:50AM +0530, Abdun Nihaal wrote:
+> If the allocation of fp[i].tpa_info fails, the error path will not free
+> the struct bnx2x_fastpath allocated earlier, as it is not linked to the
+> bp structure yet. Fix that by linking it immediately after allocation.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 15192a8cf8a8 ("bnx2x: Split the FP structure")
+> Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+> ---
+> Compile tested only. Issue found using static analysis.
 
-Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
----
- net/unix/unix_bpf.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-diff --git a/net/unix/unix_bpf.c b/net/unix/unix_bpf.c
-index f86ff19e9764..5289a04b4993 100644
---- a/net/unix/unix_bpf.c
-+++ b/net/unix/unix_bpf.c
-@@ -7,6 +7,7 @@
- 
- #include "af_unix.h"
- 
-+#ifdef CONFIG_NET_SOCK_MSG
- #define unix_sk_has_data(__sk, __psock)					\
- 		({	!skb_queue_empty(&__sk->sk_receive_queue) ||	\
- 			!skb_queue_empty(&__psock->ingress_skb) ||	\
-@@ -94,6 +95,7 @@ static int unix_bpf_recvmsg(struct sock *sk, struct msghdr *msg,
- 	sk_psock_put(sk, psock);
- 	return copied;
- }
-+#endif /* CONFIG_NET_SOCK_MSG */
- 
- static struct proto *unix_dgram_prot_saved __read_mostly;
- static DEFINE_SPINLOCK(unix_dgram_prot_lock);
-@@ -107,8 +109,10 @@ static void unix_dgram_bpf_rebuild_protos(struct proto *prot, const struct proto
- {
- 	*prot        = *base;
- 	prot->close  = sock_map_close;
-+#ifdef CONFIG_NET_SOCK_MSG
- 	prot->recvmsg = unix_bpf_recvmsg;
- 	prot->sock_is_readable = sk_msg_is_readable;
-+#endif
- }
- 
- static void unix_stream_bpf_rebuild_protos(struct proto *prot,
-@@ -116,8 +120,10 @@ static void unix_stream_bpf_rebuild_protos(struct proto *prot,
- {
- 	*prot        = *base;
- 	prot->close  = sock_map_close;
-+#ifdef CONFIG_NET_SOCK_MSG
- 	prot->recvmsg = unix_bpf_recvmsg;
- 	prot->sock_is_readable = sk_msg_is_readable;
-+#endif
- 	prot->unhash  = sock_map_unhash;
- }
- 
-
-
-
+FTR, there is an AI-generated review of this patch available on sashiko.dev.
+While I don't think that should effect the progress of this patch you may
+want to consider it in the context of follow-up.
