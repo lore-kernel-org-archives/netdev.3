@@ -1,126 +1,129 @@
-Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B3CF363C6C;
-	Mon, 22 Jun 2026 09:07:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.22.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA24369970;
+	Mon, 22 Jun 2026 09:08:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782119232; cv=none; b=okQHhb5uBJezVvjIZfEI0OccNXp+drfU9S5JnQnwDctsSZ9RJ4ZDXICNkEWI5SgBfZ7A9pPf0sTOsrM9pgEsWbs0lqKbyrTOH4eG2xAY41zgSbc68PUqzsBZyI4HBWnPxjV3IqAQtSBBMkQFVCiWj3b4pTCRHUWC6QjrhfhztoU=
+	t=1782119298; cv=none; b=kbFPLiVXbBUF738wNKtVgQbdA5t287KTjz5YPGaTqsnsScb0SqdY6Sj/HPgVI2YSgGTRkaixESEQWAuBErTsntPR48DUfPQARbG8HbGbYVDlWLf4BCb3FoxjT27RKjR8PpKyBGKH4Jolx71LT95OfAeQPI0BxG+hPNzc+qj1gCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782119232; c=relaxed/simple;
-	bh=nJVXmVDY6fj8Jkz5rX/Bvm7WthGIyIkfF9MTEk0djKI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Nwe/FCvR2X4OClTlHGm3qteBRBxFRePlIIMfTdaUOFzROaWt/ctuHnlKvQmSsnOjSipLW6tKbwzyY91DACTRf2/UnitnssTEQjd8nvT86Tj6n63dULRWD9V4TOKGkPGAMQj4Ec1KRb7GbgXlAvsCBAsxVhvbfUSaN3ZQpRDD/L4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=VNgSpSOG; arc=none smtp.client-ip=54.207.22.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+	s=arc-20240116; t=1782119298; c=relaxed/simple;
+	bh=eCHssKVV2pJxL1MZXNEcttSU7Bm5ic3nvRkwWPlZf5s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hWA6/JNroR1nolbIDLAxHYXlTC8xuoiMSRbyeEQ01kjigdl+2K/N1IRPB7K8NdVfd+tnpviPhqrohEbrdQsNdLWcV7yOZjQT62v8Y2MOBuyUv2tf8QyLEycgRltlS+aAKKouE12rKfKfkSvsVISjydCLrXYAi66gU525WCGOmLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G1B1K+pL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="VNgSpSOG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1782119135;
-	bh=YwanOJOBZw3lKW2p5b1/Xyem8AZOuZaSgWGJ17KuRDE=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=VNgSpSOGBvIl5vFZBTbMVjjmgKSOI/rPtl8KQ/Xa74cz/0cjl7m+q7h5TOcsn3jYq
-	 4vjMEVv6R8FUAdhFovyyaCq+w0SORiSY8R0g6mJd+emCRFF9u1VXaVOtL36CHqSQUE
-	 bUD/JJVfK1HZ8KrOJr3eo/tUygeW/Mgv8MpUqurE=
-X-QQ-mid: zesmtpgz3t1782119117t68845b0b
-X-QQ-Originating-IP: 6N5dvQhryBuoB0IdUROh7OrmUPKSJc2P8o5IdwaXUP0=
-Received: from localhost.localdomain ( [1.202.39.170])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 22 Jun 2026 17:05:09 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 11900996019285188267
-EX-QQ-RecipientCnt: 11
-From: ZhaoJinming <zhaojinming@uniontech.com>
-To: horms@kernel.org
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	madalin.bucur@nxp.com,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	sean.anderson@linux.dev,
-	zhaojinming@uniontech.com
-Subject: [PATCH v2 1/2] net: fman: fix clk reference leak in read_dts_node()
-Date: Mon, 22 Jun 2026 17:05:04 +0800
-Message-Id: <20260622090505.2418478-1-zhaojinming@uniontech.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20260619121328.922138-3-horms@kernel.org>
-References: <20260619121328.922138-3-horms@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G1B1K+pL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64B0F1F000E9;
+	Mon, 22 Jun 2026 09:08:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782119294;
+	bh=oMLg+Sr/y5FDapu46bskmirKujQ32N1+2dZN0r1E5GY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=G1B1K+pL0YgcSkF9lt16MUlpIGOSpE0OQoc0ejByA1kBy6EcYPpmvpPFyxXW3QQGd
+	 XTS9JJ7Ilhxkl/7oE1Eqwjfm44/Lttayqjg1LGCnT0BDoXkzx5S6aqO397J7jwBfO4
+	 GqtnM/kB5xJlj8Uft0y12T+3mj5j5lzy6gWaxb4noi6kk0yU4KYyLD5UBXfS1eC0dd
+	 xXDtlemnG1rfWAtd5v0Bok/1PkbZua4Qwb428rve79Xe5kWLE3GKufXsY3iXa2hNuK
+	 s/ugVOYZXOhO48oiuNPRFwm0dq9UIW2sKyeIihaeX5KpAap5diinMI3aL4VvntcfgD
+	 5v0XqsW51cxxg==
+Date: Mon, 22 Jun 2026 11:08:10 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: ricardo@pardini.net, nic_swsd@realtek.com, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Heiko Stuebner <heiko@sntech.de>, Sebastian Reichel <sebastian.reichel@collabora.com>, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org
+Subject: Re: [PATCH v4 1/3] dt-bindings: net: add Realtek RTL8125 PCIe
+ Ethernet
+Message-ID: <20260622-sympathetic-inscrutable-macaque-f3bffc@quoll>
+References: <20260617-rk3588-dts-rtl-eth-describe-dt-alias-v4-0-2bd38922d129@pardini.net>
+ <20260617-rk3588-dts-rtl-eth-describe-dt-alias-v4-1-2bd38922d129@pardini.net>
+ <876a38f8-75ea-4b32-bb65-216cb3adb436@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
-X-QQ-XMAILINFO: NwZEY09ZZGEZjAXbO0mUYUsB+Qoke/k3aUXQYWKkeAS4UWnxo771zOKH
-	deyb0DzyYIkt5nD+GI1/0DeEIjqla8VErYxpsAIl3XzXSpiBIRQ9m5HHN7qjEP2UX4sx2y8
-	NwfwK+haczfbYitXcIc+7Sk0UIwUp64dbtGK9M5h5ISCCZKB89Uhbc2k/K1jPRiQawh7mjG
-	amxTg40+wVUMmNLTya9LZx440q/I7Cd/nNdN9EpW/bUGSx8Sn1e6tSaPEStdXWdIqsMS5Oq
-	2kTJ/TjGG2nTdcBtiQ+1iMcpvM/0qyOeXr8TaZV9FzdTlF8Lb63psbAdKmgMUCmyd5p7csO
-	FlerG1fmwPGdka9ukczMMiX9/dBkKSB6peHKLApnNWkHmi1ASK24hiNtoBzfxGPVngorh5j
-	0wKDXGFuCnjiMYTPePHehkcc9n9UNpESGZPM9wIvx1Lvg0nW/ZPPY53/8XNbjhp9Pcmxa7y
-	NvpUJmr5n5FHWbpmR0sJLuFrUupynxvPCL60SXH9Ifo0ZUqbMSa9e2ekqcOSTtWWap753T0
-	BIxSg/lsGqYMgqRVIxfaMj6Ehf+sw2VAVDPSLKx/Gmz64BStCSG3b73MFF5ZaWO+KYDqF9m
-	VghuVG8t7L4GWqI3ujvAkoL0cw2dlqsbPb1LMy9oF+fPW26Zs9CXLPij1oUFfTiCfTZp+cC
-	U204MPBu2Hg4CaUTRBVpFwlyiYJmx6kFzrmU1Xs9eRqCHVY5qea4CR65lIO4McWTxnfGV1z
-	6TOKIPzdEAFouKa3G6bP5zNUJ/cuvt2o4UdF09XTMixNzMrf5wBINe741trlYN01g1GhKex
-	A0WEJPGU/VLRO+JdV7AWid8m6OLTbcwWk537Q3g8jaRet7LfnJpLYntyuABcCTRETqVP7x8
-	DNgyvwNpn/tEmgelO6iGCWDr7VcdM5621c5Co2GVSoNpmubwn8xtGiuYGnh5ef9haM/Q7Sz
-	mt5S23xZ2/l8PUr0oC0Gox44R8artxPTYQy0b6XcXuIeQ8kH3S1vyeN08BV1n6lvi6mPryb
-	JrzCDL1w5cwmlVuQXp3PQIgQKZk5TQtJPPTpCxikNT18UWrLtI9dOuarehyR4M/Wu0UDk06
-	w==
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <876a38f8-75ea-4b32-bb65-216cb3adb436@gmail.com>
 
-of_clk_get() returns a reference that must be released with clk_put()
-when the clock is no longer needed. The current code never calls
-clk_put(clk), leaking the reference on both the success path and the
-clk_rate == 0 error path.
+On Wed, Jun 17, 2026 at 06:43:42PM +0200, Heiner Kallweit wrote:
+> On 17.06.2026 14:58, Ricardo Pardini via B4 Relay wrote:
+> > From: Ricardo Pardini <ricardo@pardini.net>
+> > 
+> > Add a binding for fixed/soldered Realtek RTL8125 PCIe Ethernet
+> > controller.
+> > 
+> > The "pciVVVV,DDDD" compatibles are the Open Firmware PCI Bus Binding
+> > spelling, auto-derived from PCI-SIG vendor/device IDs, but they still
+> > need a binding when used in a board DT - analogous to "usbVVVV,PPPP"
 
-Add clk_put(clk) after the clock rate is consumed on the success path,
-and jump to a new clk_put label on the error path to properly release
-the clock reference.
+Ricardo,
 
-Signed-off-by: ZhaoJinming <zhaojinming@uniontech.com>
----
- drivers/net/ethernet/freescale/fman/fman.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+No, they do not need. They are already documented, they already have a
+binding, see: dtschema/schemas/pci/pci-device.yaml
 
-diff --git a/drivers/net/ethernet/freescale/fman/fman.c b/drivers/net/ethernet/freescale/fman/fman.c
-index 013273a2de32..31b0081bdf91 100644
---- a/drivers/net/ethernet/freescale/fman/fman.c
-+++ b/drivers/net/ethernet/freescale/fman/fman.c
-@@ -2736,11 +2736,13 @@ static struct fman *read_dts_node(struct platform_device *of_dev)
- 		err = -EINVAL;
- 		dev_err(&of_dev->dev, "%s: Failed to determine FM%d clock rate\n",
- 			__func__, fman->dts_params.id);
--		goto fman_node_put;
-+		goto clk_put;
- 	}
- 	/* Rounding to MHz */
- 	fman->dts_params.clk_freq = DIV_ROUND_UP(clk_rate, 1000000);
- 
-+	clk_put(clk);
-+
- 	err = of_property_read_u32_array(fm_node, "fsl,qman-channel-range",
- 					 &range[0], 2);
- 	if (err) {
-@@ -2818,6 +2820,8 @@ static struct fman *read_dts_node(struct platform_device *of_dev)
- 
- fman_node_put:
- 	of_node_put(fm_node);
-+clk_put:
-+	clk_put(clk);
- fman_free:
- 	kfree(fman);
- 	return ERR_PTR(err);
--- 
-2.20.1
+
+> > compatibles documented in their own bindings (e.g. microchip,lan95xx)
+> > so board DTs attaching properties (fixed MAC, nvmem cell, ...) to
+> > these PCI function nodes can be validated.
+> > 
+> > Suggested-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+> > Signed-off-by: Ricardo Pardini <ricardo@pardini.net>
+> > ---
+> >  .../devicetree/bindings/net/realtek,rtl8125.yaml   | 43 ++++++++++++++++++++++
+> >  MAINTAINERS                                        |  1 +
+> >  2 files changed, 44 insertions(+)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/net/realtek,rtl8125.yaml b/Documentation/devicetree/bindings/net/realtek,rtl8125.yaml
+> > new file mode 100644
+> > index 0000000000000..eee13fbc1e6a6
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/net/realtek,rtl8125.yaml
+> > @@ -0,0 +1,43 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/net/realtek,rtl8125.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Realtek RTL8125 2.5 Gigabit PCIe Ethernet Controller
+> > +
+> > +maintainers:
+> > +  - Heiner Kallweit <hkallweit1@gmail.com>
+> > +
+> > +description:
+> > +  The Realtek RTL8125 is a 2.5GBASE-T Ethernet controller with a PCIe host
+> > +  interface.
+> > +
+> > +allOf:
+> > +  - $ref: ethernet-controller.yaml#
+> > +
+> > +properties:
+> > +  compatible:
+> > +    const: pci10ec,8125
+> 
+> IIRC we came to the conclusion that the compatible string isn't used in the
+> relevant code path. Then why add it here? Is there an alignment on this?
+
+Heiner, it is used - in the DTS.
+
+> If it should be added here, then an explaining comment would be helpful.
+
+Commit msg should explain that.  The compatible is used, so it
+must be documented and in fact already is, so you need to specify them
+ONLY if device nodes have some other properties, like being an ethernet
+controller.
+
+I assume that this is the case here, although that should be mentioned
+in the commit msg.
+
+Best regards,
+Krzysztof
 
