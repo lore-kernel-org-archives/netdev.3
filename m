@@ -1,206 +1,146 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17E762E11D2
-	for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 12:20:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDFB336F427
+	for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 12:22:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782130802; cv=none; b=Oyg6v85XVaMvoROoNlelsokoalzhC24SyZ6Cr8C/ehjKCHPgrkXM8pj4QSbQ3nD6thczXhN+tOCVFVSEZ5FRH6mmmbuy3MqEl7D0C05abjyLVwUi7AVcaFxihmbVPIBQpZIwQLsF0qMvXKCOLEDo0xcJigGY/wm2kzrmYmpnUSw=
+	t=1782130941; cv=none; b=JVlYzn58f+F96hLKc+YI6QkhpEmRLaTpgiReEICN4mrSf9OFhy9i+5NvQTR+SpgsDXxD/aX5Bzrq6bjgPd9mkpTzQ5ystxWZ21xWBpLemBqlp+6ongHxGu37lyREIEN2FqiztJ11IWJ/f+kO/v7kOTzbxMecaX1SNpoJierZgUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782130802; c=relaxed/simple;
-	bh=0VevDQVTDaErw8iSWjbcNXbDaAtDjLJbzkmyX9pzlWA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BB/XNhirzVEKBNjrQADv8TiprgrW0aMYrOqNS1yyhajkaVmaDFNTc5MpJvslnQe97O70lnDLxMcgf5G2yq3GJr/wnJ9pFqoK+L6FpqUw6a3W1O60O+l3L1g0zbmTfrfipl+hxsUktA3Y7zKjBdkF3H5j9vhD1NvpYwjwsqZc7BU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=jqoeueEF; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=U3RfeZ++; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=jqoeueEF; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=U3RfeZ++; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1782130941; c=relaxed/simple;
+	bh=ROjtMhAJVqAplE9ZCKI+gepuDwCOm8vYUnpYF87scYo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Xi1RT5v8AaHlEH1K57O9gjIPvurK7c1MsViwBOW5y7CNTin7TAcjsEj6/N0HAv1g9k10zQ3t0DmSUVFZcsZQiyuqd13tLbkaZa7re4CH5V1NeDEL1JVhUAxPaq9zjtj61DiAov9oJxMAcDATSDKUFNUcwXdnj5HcGBWONDazrEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UGA/fVkZ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=FrOuaElU; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="jqoeueEF";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="U3RfeZ++";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="jqoeueEF";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="U3RfeZ++"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 5146C758EB;
-	Mon, 22 Jun 2026 12:19:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782130799; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UGA/fVkZ";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="FrOuaElU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1782130939;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/ohf9ubqdDTE4+SiZNzzPsJ/5S73zeXWMQQIAR1OJgU=;
-	b=jqoeueEFaWbTzRfb/VpkWvTyS9AMGVQpoJtOJiQvOrwpLflflMZcJfHGXLGo2aLVdkR8tD
-	+VotYY6YdcAXHQPny+fEhVLrgoMMcOEPB09GxumhZ3MFPZUPN527vIJLY9JvP+qgV9hRbG
-	7eP9vbw7nJWWyMkv2yjH71SsMhlfDcY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782130799;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/ohf9ubqdDTE4+SiZNzzPsJ/5S73zeXWMQQIAR1OJgU=;
-	b=U3RfeZ++6Ix1706n6ETN1Z6qkYiiyWtTwmBcWh+G1Sm6+An5sp0NOK6ywxk1+aZ+xtqN9L
-	Dkf6Wn2tBr8OJJAg==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=jqoeueEF;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=U3RfeZ++
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782130799; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/ohf9ubqdDTE4+SiZNzzPsJ/5S73zeXWMQQIAR1OJgU=;
-	b=jqoeueEFaWbTzRfb/VpkWvTyS9AMGVQpoJtOJiQvOrwpLflflMZcJfHGXLGo2aLVdkR8tD
-	+VotYY6YdcAXHQPny+fEhVLrgoMMcOEPB09GxumhZ3MFPZUPN527vIJLY9JvP+qgV9hRbG
-	7eP9vbw7nJWWyMkv2yjH71SsMhlfDcY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782130799;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/ohf9ubqdDTE4+SiZNzzPsJ/5S73zeXWMQQIAR1OJgU=;
-	b=U3RfeZ++6Ix1706n6ETN1Z6qkYiiyWtTwmBcWh+G1Sm6+An5sp0NOK6ywxk1+aZ+xtqN9L
-	Dkf6Wn2tBr8OJJAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A17DE779A8;
-	Mon, 22 Jun 2026 12:19:58 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id F1JPJG4oOWpyXwAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Mon, 22 Jun 2026 12:19:58 +0000
-Message-ID: <05b42695-82a8-45c4-8f99-074a9767ceb5@suse.de>
-Date: Mon, 22 Jun 2026 14:19:47 +0200
+	bh=NE61WDsqzyH4+WIlfYLsAL+lHpKgDOSKscv3FLr3jxs=;
+	b=UGA/fVkZuoG+nTf4hGUN13LAJ4FCpakLu6lVW6RJX6AbmO202MKS1JqsywVKn48gCqczJn
+	cRxxgtIiGgM1GYjTfc4HCTnBd++eYdG0qlxDfpDDgJgdQdHVTsC8EB+uEs2yNLETxb4LI8
+	ZoKtgu9NZbOpaBoJqG+NhpAGH3Noonw=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-203-T85I3E4AMWOeDfocqnZZwQ-1; Mon, 22 Jun 2026 08:22:17 -0400
+X-MC-Unique: T85I3E4AMWOeDfocqnZZwQ-1
+X-Mimecast-MFC-AGG-ID: T85I3E4AMWOeDfocqnZZwQ_1782130936
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-490a767b782so29625655e9.2
+        for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 05:22:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1782130936; x=1782735736; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=NE61WDsqzyH4+WIlfYLsAL+lHpKgDOSKscv3FLr3jxs=;
+        b=FrOuaElU7tcVLBEpK03HOHt+zo52scmlRr82q/oNCRzsq/KnswTTKi2sO9CgIEe1/C
+         KVhxtLb/Kn/93vLazh082SedQ1jyoy8dxoVmbNiMh2jvFta+Xy/kH7ryuumTUvlitt4s
+         1jVrK1rW8DbrkfD7Hcxp9jgVI26BC16uXUnIgUmWGS2PQ/E6r/Rv7ge3bIw+HehU+scC
+         mb8R4eu3XiRDv/kRoWO/6y4PaUfeK+iqY2KQR9qX4YlRc/IS2seQi3aM2PqhOxiSKAYp
+         NmWAdg61zc6RuilLiozrRXEE9D2iYeMwqURAFfQyyXfN034/sxEfJhBpTdUhfqSWMiLj
+         DlEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782130936; x=1782735736;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NE61WDsqzyH4+WIlfYLsAL+lHpKgDOSKscv3FLr3jxs=;
+        b=MxW/wfZvKB49rri2BOeRkMHJoOq4ueR/yHvkT8GYR7+wISCF3w2+Wo9zd0x2GIsk/4
+         kGeO6AyOjn8HOapRRJRuB0JusqfE+ioIq3Ajh3ysLG9ttpVReJZdGs0ox1+TVP9fqwwZ
+         HYov6w9JhvC0W5t9jCkS2jMVrMCDp2RhLxM0/Erh4tl+6AT+/jOfJexJbzriOynHtRWL
+         vjnjj0WAnz7e5Z/ZORVuqfLAfVjb++SpoiTDqLYOP8sK7OOrK03fKUUoIQg93pRhtNCw
+         qWOO/4NBOcVWEWCRhrFNKAKCp0nfZBmjEWBLL5nH6Pkn2UnKGevXKawX3odIFckYeOKa
+         dFzA==
+X-Gm-Message-State: AOJu0Yx8f91/zt9zyKRf+z+RUHUnXY9PPbzViV6p9BPhb4SiTBXqoUNN
+	p90FR0N43KtY5IQG6FjxF1xlDsvoJ+XeXeegzI+S8mDj6Dv2odZFQJ7P8RbkbKKpMRnW52QD+uU
+	s6n4vs9Hc3fUgSddTaC+oPXT1ZG7/OowTMSgY2uJtcmpvNHZqiejc1U0fWQ==
+X-Gm-Gg: AfdE7cmkpUyjJYDNdmUfKhb4fKtF6gczbNiaKswkThL+128Nl1B9PvRnrWN8S3zInlz
+	6a1X5t07VqdC8UhJShCbYw6CF7o7OKmD1rMH3VITpHKRCPz46nlILYGJ97BthXwaENWb6dVdAOj
+	q7UCMahzDx+Skvd7I16E8ZrWYeBZJmyzPLnUoFM7B7DyYNJ8pSfYAFIdfcIyY2woVB9BCMajqif
+	zt7SXSZnhuruZZxggbCrZCVPwSammv0529+aD1jOvdBjuD4GPawMdwBN34u+Vm3XtfLv54c7iMI
+	ooSuVnhRML2Hn9J1ikbUVKwlgyb1CJStmnoyezH/V2pBj2WITzEQdROl6h/Un36BiTUUQPSgWXW
+	pqfTFTDmWTyYAyEi5dQrC76+g3nCjHf/BXdUWpyYlJXpdIor9FPKBsE2U9JU/
+X-Received: by 2002:a05:600c:1c1c:b0:490:b724:507d with SMTP id 5b1f17b1804b1-49240e40a01mr263798015e9.11.1782130936105;
+        Mon, 22 Jun 2026 05:22:16 -0700 (PDT)
+X-Received: by 2002:a05:600c:1c1c:b0:490:b724:507d with SMTP id 5b1f17b1804b1-49240e40a01mr263797255e9.11.1782130935490;
+        Mon, 22 Jun 2026 05:22:15 -0700 (PDT)
+Received: from sgarzare-redhat (host-82-53-135-12.retail.telecomitalia.it. [82.53.135.12])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-466667881bfsm27415740f8f.22.2026.06.22.05.22.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Jun 2026 05:22:14 -0700 (PDT)
+Date: Mon, 22 Jun 2026 14:22:10 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Brien Oberstein <brienpub@gmail.com>
+Cc: netdev@vger.kernel.org, regressions@lists.linux.dev, 
+	stable@vger.kernel.org
+Subject: Re: [REGRESSION 6.12.90 -> 6.12.94] vsock/virtio: large AF_VSOCK
+ transfers reset under backpressure
+Message-ID: <ajkmjgGdJp9Dj6em@sgarzare-redhat>
+References: <467b01dd017b$733792d0$59a6b870$@gmail.com>
+ <ajkAlpiyPWmNPWfx@sgarzare-redhat>
+ <618701dd023e$063de350$12b9a9f0$@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 7/7] ipv6: reset position for force_forwarding
- sysctl restart
-To: Ido Schimmel <idosch@nvidia.com>
-Cc: netdev@vger.kernel.org, nicolas.dichtel@6wind.com,
- stephen@networkplumber.org, brian.haley@hp.com, horms@kernel.org,
- pabeni@redhat.com, kuba@kernel.org, edumazet@google.com,
- davem@davemloft.net, dsahern@kernel.org
-References: <20260620161850.7114-1-fmancera@suse.de>
- <20260620161850.7114-8-fmancera@suse.de> <20260622114223.GA233619@shredder>
-Content-Language: en-US
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-In-Reply-To: <20260622114223.GA233619@shredder>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Flag: NO
-X-Rspamd-Action: no action
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	MIME_TRACE(0.00)[0:+];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_TLS_ALL(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:dkim,suse.de:mid,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: 5146C758EB
-X-Spam-Score: -4.51
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <618701dd023e$063de350$12b9a9f0$@gmail.com>
 
-On 6/22/26 1:42 PM, Ido Schimmel wrote:
-> On Sat, Jun 20, 2026 at 06:18:50PM +0200, Fernando Fernandez Mancera wrote:
->> When handling proxy_ndp, if rtnl_net_trylock() fails, the operation is
-> 
-> s/proxy_ndp/force_forwarding/
-> 
->> retried but the position pointer was already advanced meaning that the
->> restarted sysctl will read from an incorrect offset.
->>
->> Fix this by restoring the original position pointer before restarting
->> the syscall.
->>
->> In addition, remove the redundant position pointer restoration at the
->> end of the function.
->>
->> Fixes: f24987ef6959 ("ipv6: add `force_forwarding` sysctl to enable per-interface forwarding")
->> Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
->> ---
->>   net/ipv6/addrconf.c | 6 +++---
->>   1 file changed, 3 insertions(+), 3 deletions(-)
->>
->> diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
->> index cbe681de3818..8c0741e9dfcc 100644
->> --- a/net/ipv6/addrconf.c
->> +++ b/net/ipv6/addrconf.c
->> @@ -6825,8 +6825,10 @@ static int addrconf_sysctl_force_forwarding(const struct ctl_table *ctl, int wri
->>   	ret = proc_douintvec_minmax(&tmp_ctl, write, buffer, lenp, ppos);
->>   
->>   	if (write && old_val != new_val) {
->> -		if (!rtnl_net_trylock(net))
->> +		if (!rtnl_net_trylock(net)) {
->> +			*ppos = pos;
->>   			return restart_syscall();
->> +		}
-> 
-> Are you sure that this is needed?
-> 
-> AFAICT, the position pointer is only advanced if the return value is
-> positive. From new_sync_write():
-> 
-> kiocb.ki_pos = (ppos ? *ppos : 0);
-> [...]
-> ret = filp->f_op->write_iter(&kiocb, &iter);
-> [...]
-> if (ret > 0 && ppos)
->          *ppos = kiocb.ki_pos;
-> 
-> And restart_syscall() returns '-ERESTARTNOINTR'.
-> 
+On Mon, Jun 22, 2026 at 07:55:30AM -0400, Brien Oberstein wrote:
+>Hi Stefano,
+>
+>Thanks, that matches what I'm seeing: large transfers reset mid-stream
+>instead of the sender being throttled (reliable above ~1.5 MB, fine below
+>~90 KB).
+>
+>The bind for me: it's not just this mail bridge -- I use AF_VSOCK for a few
+>host/guest services, some of which open their own sockets, so the per-socket
+>buffer workaround can't cover them all. That leaves pinning 6.12.90 (losing
+>the DoS fix and further kernel updates) as the only blanket option.
 
-Hm, I think you are right. I was not aware of this check, thanks for 
-pointing it out. That means we can get rid of position pointer reset 
-from the rest of the code.. the are plenty of sysctl following this 
-pattern. I will prepare a batch for net-next.
+Okay, but in that case did it work?
 
-I am sending a v3 dropping this patch.
+>
+>A few quick questions:
+>
+>1. Is a -stable backport of the merging fix likely, and roughly when?
 
-Thank you Ido!
+We don't have a fix yet.
 
->>   
->>   		WRITE_ONCE(*valp, new_val);
->>   
->> @@ -6851,8 +6853,6 @@ static int addrconf_sysctl_force_forwarding(const struct ctl_table *ctl, int wri
->>   		rtnl_net_unlock(net);
->>   	}
->>   
->> -	if (ret)
->> -		*ppos = pos;
->>   	return ret;
->>   }
->>   
->> -- 
->> 2.54.0
->>
+>2. Could a smaller interim land in -stable sooner (e.g. more default
+>   headroom) without reopening the DoS?
+
+What we've merged so far is the best we can do for now, but anyone who 
+wants to help improve the situation is welcome to submit patches.
+
+>3. Will the fix guarantee backpressure for any packet size, or just widen
+>   the margin?
+
+It should fix STREAM sockets for any packet size.
+SEQPACKET/DGRAM is a bit different since we need to keep boundaries, so 
+it will come later if needed.
+
+>
+>Happy to test any patch
+
+THanks, I'll ask you to test.
+
+>I have a solid reproducer and can turn it around
+>in a day. I'll also file this as a tracked regression so it's not lost.
+
+Unfortunately, it's always been partially broken, using more memory than 
+specified, so I don't know if this is actually a full regression, but I 
+understand.
+
+Thanks,
+Stefano
 
