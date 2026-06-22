@@ -1,57 +1,57 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 357AD382385
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35712381AE5
 	for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 07:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782115064; cv=none; b=GMqm6pkZgdAA7lyJTtxhG8JuUmGWu0KKYhPAHGhRUdXE3uKEQRohff1CSMIQnmmg2PZjoRPt+jOEwy+GKV0+egZ/PNqwsYu5YGLxr8jQuWtUjX3QbbSx6vzJ9S4DDta8Ia6rV4QtP0wijqWOlEcLILXxMaQrXDhYVebFGWRBqJo=
+	t=1782115064; cv=none; b=mAEgNlnNxVkU9znUVrwtLLFs3IzGFoLRfPW2GBsPsCeFDiQhsmtA9I5Ec+6iUDp58w4E1I3dJI2bz/u/eukkyceN3jgfPzXm7mi05cOS46GaIQBQyY6Z1ip0zntI680vYAnmqJ9/zM/WNON+FWKX4/F0fT7osK7hBKGokdbFc80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1782115064; c=relaxed/simple;
-	bh=pDB8bRwa5c4hqHlB017KJXhmL/hh95hYL6PCKvrK8VE=;
+	bh=qglayTtlV9MNBP3Gf3/3tK7Cmi3KV52Qp3qBdwLtGaI=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AtlJNcBcqHOt1MfRkrIOSydzD4TDAAjRiAWzztKhqrWpgKmAZLZtAaxt7enUxyAT5D2jUeMrn/koYCaYIfNrp6vrIEo83ODoXJWRKAxPHZvjtH/LKIEyNNXCjSQz548WtlnqjTJR4kBwo2hi0Z/E6E1nWd1p/JlA/oQtn80JmGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=l7F0DdC6; arc=none smtp.client-ip=62.96.220.36
+	 MIME-Version:Content-Type; b=mdpBW/GRBrJ7GXE+cf2wwpSFE1ByVv5dO8OD2YjtCW+jsuZSBr/LjgeEOvyNonAUWTeaISg/r+DUHjNRxXO0p7+ipz6E2krMMHjwd0ZZNQ3GMioFkciFPUtnrbNmuM5mpIjkT5ixzvrzaMbMX3ovfQbCfZIaVtEvEQW4tl6MPzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=bp9dVocf; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="l7F0DdC6"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="bp9dVocf"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 8EE4A2065A;
+	by mx1.secunet.com (Postfix) with ESMTP id 04B2F201E2;
 	Mon, 22 Jun 2026 09:57:35 +0200 (CEST)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id YzR0Q-p25X0r; Mon, 22 Jun 2026 09:57:35 +0200 (CEST)
+ with ESMTP id QkuzZ0m-J7gw; Mon, 22 Jun 2026 09:57:34 +0200 (CEST)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id E9E1F20684;
+	by mx1.secunet.com (Postfix) with ESMTPS id 4935520754;
 	Mon, 22 Jun 2026 09:57:34 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com E9E1F20684
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 4935520754
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
 	s=202301; t=1782115054;
-	bh=vOKrZJvVs8tI7WOCswnMiLK32BhFmQ5+gORKL72L4So=;
+	bh=gMaYxNxtWs2KKmj6H9ZguUSLOBsBq8KP5IUB/6bELYo=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=l7F0DdC6onaXykS6iIQJJjNqslr8j4HvmAU50eYEEacL6L+wc3nAnCr5b+4V9o/T9
-	 jljQdI0R+WMCkJdCnju3woPNFhdaxpvUrkBNzmJHraBOzThcv/z2NxHI0RjOr3UeSZ
-	 KyHRDD7uoR4br937Qjb0lD8LJ/JMN16MO6CkIhpHp6T3vFd6HBM0BnPJQKintdHCMn
-	 ssMUD5UxFjxdEitA8w9jyuo0LbiSB6WhfP0iQBZpzMS/AxcujzkECP1NEJr5AXi2Vq
-	 pgZVD55VZnxB0VnaAPw0llJewluSP2QTVrSOGqkqleUzVUAAHaBN1W1eD+3oyLm3KQ
-	 +JXZLyuRQ9R2Q==
+	b=bp9dVocfoLL6uvA8w61AillJltdJ66bsOXGxaoIaMs6Yj67tncmGM0pDknwc1pbkR
+	 zuyer1XPUh71MyfByqeEl9uPdXEp230HKBz4g41kN9uYmWYBZwOMm20Yvjb+XhyywH
+	 o0YcFmaftO1Iyxv7sUC/YLp2u9IpIZ4lylCGzNOyMlPbIEtdewXn+xhrSOM6XRlnYd
+	 Qby7YfCPxtKwgeDcXdnBwGxsibRx075jr/M8lGqjy1/B/0C785cWoWYTOdVvNWrJTl
+	 mjuu9Ug6EGOioDlbjp0nLrwwf+9lBe2nY9xEmKJpqTaWCaDwJk7e0yGer7pU3LLbI4
+	 JAdWCVcMFTzvA==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 22 Jun
- 2026 09:57:34 +0200
-Received: (nullmailer pid 30070 invoked by uid 1000);
+ 2026 09:57:33 +0200
+Received: (nullmailer pid 30058 invoked by uid 1000);
 	Mon, 22 Jun 2026 07:57:32 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 6/7] espintcp: use sk_msg_free_partial to fix partial send
-Date: Mon, 22 Jun 2026 09:57:08 +0200
-Message-ID: <20260622075726.29685-7-steffen.klassert@secunet.com>
+Subject: [PATCH 2/7] net: af_key: initialize alg_key_len for IPComp states
+Date: Mon, 22 Jun 2026 09:57:04 +0200
+Message-ID: <20260622075726.29685-3-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260622075726.29685-1-steffen.klassert@secunet.com>
 References: <20260622075726.29685-1-steffen.klassert@secunet.com>
@@ -66,78 +66,111 @@ Content-Type: text/plain
 X-ClientProxiedBy: EXCH-02.secunet.de (10.32.0.172) To EXCH-01.secunet.de
  (10.32.0.171)
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Zijing Yin <yzjaurora@gmail.com>
 
-sk_msg_free_partial() ensures consistency of the skmsg at every
-iteration, without having to manually handle uncharges and offsets.
-This simplifies the code, and fixes some bugs in skmsg accounting when
-we don't send the full contents.
+pfkey_msg2xfrm_state() handles the IPComp (SADB_X_SATYPE_IPCOMP) case by
+allocating x->calg and copying only the algorithm name:
 
+	x->calg = kmalloc_obj(*x->calg);
+	if (!x->calg) {
+		err = -ENOMEM;
+		goto out;
+	}
+	strcpy(x->calg->alg_name, a->name);
+	x->props.calgo = sa->sadb_sa_encrypt;
+
+Unlike the authentication (x->aalg) and encryption (x->ealg) branches of
+the same function, the compression branch never initializes
+calg->alg_key_len.  IPComp carries no key and the allocation only
+reserves sizeof(struct xfrm_algo) (i.e. no room for a key), so the field
+is left containing uninitialized slab data.
+
+calg->alg_key_len is later used as a length by xfrm_algo_clone() when an
+IPComp state is cloned during XFRM_MSG_MIGRATE:
+
+	xfrm_state_migrate()
+	  xfrm_state_clone_and_setup()
+	    x->calg = xfrm_algo_clone(orig->calg);
+	      kmemdup(orig, xfrm_alg_len(orig));
+
+where xfrm_alg_len() returns sizeof(*alg) + (alg_key_len + 7) / 8.  With
+a non-zero garbage alg_key_len, kmemdup() reads past the end of the
+68-byte calg object.  Adding an IPComp SA via PF_KEY and then migrating
+it triggers (net-next, KASAN, init_on_alloc=0):
+
+  BUG: KASAN: slab-out-of-bounds in kmemdup_noprof+0x44/0x60
+  Read of size 4164 at addr ff11000025a74980 by task diag2/9287
+  CPU: 3 UID: 0 PID: 9287 Comm: diag2 7.1.0-rc6-g903db046d557 #1
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x10e/0x1f0
+   print_report+0xf7/0x600
+   kasan_report+0xe4/0x120
+   kasan_check_range+0x105/0x1b0
+   __asan_memcpy+0x23/0x60
+   kmemdup_noprof+0x44/0x60
+   xfrm_state_migrate+0x70a/0x1da0
+   xfrm_migrate+0x753/0x18a0
+   xfrm_do_migrate+0xb47/0xf10
+   xfrm_user_rcv_msg+0x411/0xb50
+   netlink_rcv_skb+0x158/0x420
+   xfrm_netlink_rcv+0x71/0x90
+   netlink_unicast+0x584/0x850
+   netlink_sendmsg+0x8b0/0xdc0
+   ____sys_sendmsg+0x9f7/0xb90
+   ___sys_sendmsg+0x134/0x1d0
+   __sys_sendmsg+0x16d/0x220
+   do_syscall_64+0x116/0x7d0
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+   </TASK>
+
+  Allocated by task 9287:
+   kasan_save_stack+0x33/0x60
+   kasan_save_track+0x14/0x30
+   __kasan_kmalloc+0xaa/0xb0
+   pfkey_add+0x2652/0x2ea0
+   pfkey_process+0x6d0/0x830
+   pfkey_sendmsg+0x42c/0x850
+   __sys_sendto+0x461/0x4b0
+   __x64_sys_sendto+0xe0/0x1c0
+   do_syscall_64+0x116/0x7d0
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+  The buggy address belongs to the object at ff11000025a74980
+   which belongs to the cache kmalloc-96 of size 96
+  The buggy address is located 0 bytes inside of
+   allocated 68-byte region [ff11000025a74980, ff11000025a749c4)
+
+Depending on the uninitialized value the same field can instead request
+an oversized kmemdup() allocation and make the migration clone fail.
+
+The XFRM netlink path is not affected: verify_one_alg() rejects an
+XFRMA_ALG_COMP attribute shorter than xfrm_alg_len(), so a calg added via
+XFRM_MSG_NEWSA is always self-consistent.
+
+Initialize calg->alg_key_len to 0, matching the aalg/ealg branches.
+
+Fixes: 80c9abaabf42 ("[XFRM]: Extension for dynamic update of endpoint address(es)")
 Cc: stable@vger.kernel.org
-Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
-Reported-by: Aaron Esau <aaron1esau@gmail.com>
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Zijing Yin <yzjaurora@gmail.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 ---
- net/xfrm/espintcp.c | 34 +++++++---------------------------
- 1 file changed, 7 insertions(+), 27 deletions(-)
+ net/key/af_key.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/xfrm/espintcp.c b/net/xfrm/espintcp.c
-index d9035546375e..374e1b964438 100644
---- a/net/xfrm/espintcp.c
-+++ b/net/xfrm/espintcp.c
-@@ -212,43 +212,23 @@ static int espintcp_sendskmsg_locked(struct sock *sk,
- 	struct sk_msg *skmsg = &emsg->skmsg;
- 	bool more = flags & MSG_MORE;
- 	struct scatterlist *sg;
--	int done = 0;
- 	int ret;
- 
--	sg = &skmsg->sg.data[skmsg->sg.start];
- 	do {
- 		struct bio_vec bvec;
--		size_t size = sg->length - emsg->offset;
--		int offset = sg->offset + emsg->offset;
--		struct page *p;
--
--		emsg->offset = 0;
- 
-+		sg = &skmsg->sg.data[skmsg->sg.start];
- 		if (sg_is_last(sg) && !more)
- 			msghdr.msg_flags &= ~MSG_MORE;
- 
--		p = sg_page(sg);
--retry:
--		bvec_set_page(&bvec, p, size, offset);
--		iov_iter_bvec(&msghdr.msg_iter, ITER_SOURCE, &bvec, 1, size);
--		ret = tcp_sendmsg_locked(sk, &msghdr, size);
--		if (ret < 0) {
--			emsg->offset = offset - sg->offset;
--			skmsg->sg.start += done;
-+		bvec_set_page(&bvec, sg_page(sg), sg->length, sg->offset);
-+		iov_iter_bvec(&msghdr.msg_iter, ITER_SOURCE, &bvec, 1, sg->length);
-+		ret = tcp_sendmsg_locked(sk, &msghdr, sg->length);
-+		if (ret < 0)
- 			return ret;
--		}
--
--		if (ret != size) {
--			offset += ret;
--			size -= ret;
--			goto retry;
--		}
- 
--		done++;
--		put_page(p);
--		sk_mem_uncharge(sk, sg->length);
--		sg = sg_next(sg);
--	} while (sg);
-+		sk_msg_free_partial(sk, skmsg, ret);
-+	} while (skmsg->sg.size);
- 
- 	memset(emsg, 0, sizeof(*emsg));
- 
+diff --git a/net/key/af_key.c b/net/key/af_key.c
+index 9cffeef18cd9..3216f897a305 100644
+--- a/net/key/af_key.c
++++ b/net/key/af_key.c
+@@ -1218,6 +1218,7 @@ static struct xfrm_state * pfkey_msg2xfrm_state(struct net *net,
+ 				goto out;
+ 			}
+ 			strcpy(x->calg->alg_name, a->name);
++			x->calg->alg_key_len = 0;
+ 			x->props.calgo = sa->sadb_sa_encrypt;
+ 		} else {
+ 			int keysize = 0;
 -- 
 2.43.0
 
