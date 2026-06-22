@@ -1,130 +1,135 @@
-Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F817347BD9
-	for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 19:34:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.202.193.197
+Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.38])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F4C349B1F;
+	Mon, 22 Jun 2026 19:39:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782156891; cv=none; b=UOX5uq+FdoLlh2uF8lzxRtzta1gQcF33cgT43f9ItWZlLayLP02eN1oeEx/qfv+8NuxqEx9OQUMZWrOVseld92kxibsDrfqURPSvn/aXLXPWNgYBUK26DeyLjy2GedpzwQ+3e0/NLcAlXhCL893orOfbrm8P5iyq4z28GOPKMm8=
+	t=1782157165; cv=none; b=LMLSE3yqgidCo14m2N/HGpw5B+7/d+V+opsy2CreZEON4kohiJXuEw25v/rt/WlnEOF1vJ9zQOeTxo5d5hY/3U7JEU18lJkDrBMWzMkkHbY2mR3X667jPExBmbOZvsv6rlEAUcxwEE0xPEZ8Guv+tBThGzyvkLbSqopnfo20Haw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782156891; c=relaxed/simple;
-	bh=VQKtJkkEsax0s8nQV8C6c5S66vPEhwny0vyW6W7sYEo=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:
-	 References:In-Reply-To; b=Giv+ZwabpHTTOqkaq596n3nqSW+7GuIqojiri0bpjpxqt0QzpZSXe6KaLXBPaOLIU0wNyME+yIIvzfVMqRy4nYSFQ4ompFp0e/Uk1qorRvdhqi47WCHoA18MYPP4YDNFQ160d8OMelNCazWMAUCZPa0p+iR4i5jk/E+vbG1WQ/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rcpassos.me; spf=pass smtp.mailfrom=rcpassos.me; dkim=pass (2048-bit key) header.d=rcpassos.me header.i=@rcpassos.me header.b=T6m/C7En; dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b=nU3CWbKX; arc=none smtp.client-ip=34.202.193.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rcpassos.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rcpassos.me
+	s=arc-20240116; t=1782157165; c=relaxed/simple;
+	bh=KXzvtIZAttyKcEUFWqV4fPB6Epwr2+B3Qzu2JEI8KjQ=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=Ae/peinlq398Mhrw4x4z+ELk1NLAXeGIEi7FomdEz8JssB+8fj16J18WbEG6qFe1p+DYlxqEKs1eOrVUdHfVsrMkBAUvyGxaYINjjOFkqm6T4aOCX3O5vIsdqvgNWKRoX5UxCmHTbKZPprSY85Df9mIxTtaHVo7wyHi0LeqgGcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=+lPOqnqy; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=nQIS70fJ; arc=none smtp.client-ip=160.80.4.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rcpassos.me header.i=@rcpassos.me header.b="T6m/C7En";
-	dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b="nU3CWbKX"
-DKIM-Signature: a=rsa-sha256; b=T6m/C7En0hnNaKXDbFC9xFrB0WCEmrxA+Aj7cdIDRL9ulAFh2bJjlgHuR5ElSOLQfFc+m5XYzQiIEbhaR1PJapiZNyWPzU5b55QKScHdvYY3FbBzgZ3YKEqHAWqcAQC9Hp7ZpK+AIRSDCL3AMnWSPxcdky1oeLDxUd6d1q1vtcUZhSvFdf/JvrKWWayrRkTLeiKQUC1SKXGzgmw38u+eQ8ur3GfeIudFwdkZ4YloheucB6zT+gmDn2gG275UYNyO1/4BwP8XgkTBuMfot5vww0H//JEdtdrM2VDqPn6FuCz/c4cNLU2vT70DvHINY4axKwdiq2z9wZMY4Ak7UNUPtw==; s=purelymail1; d=rcpassos.me; v=1; bh=VQKtJkkEsax0s8nQV8C6c5S66vPEhwny0vyW6W7sYEo=; h=Received:Date:Subject:From:To;
-DKIM-Signature: a=rsa-sha256; b=nU3CWbKXFX0sXVdNteVleVU7L5fQur84nLtF4o8NVWE5yX2t1NT8R16nWP7MBaryuDNmNQvYD0fPSl9LxE+0ow+pxrvITymzKRIYxzMLwv3/+mgpEMREtY2VLmi+LbKnCwCoe7z+ydN8sHPJYyAswxp0sdNGXp/Lda5qkgF+wf8+PRaRFddmth76oKW7BTszEILTfGcI29NHDyCLkcU9f0a9CrMMx+XaGvOzi4fD43vSrly8JytzhTXFOO7zORV9Tges4XYb2wnsF6lllFfn/bkOylPlsqQmVXBtGTjQGhi2ua5aKG4yyKP1vd1TcMyf8Fj6cZ7+aE+pvtRoWWb/5Q==; s=purelymail1; d=purelymail.com; v=1; bh=VQKtJkkEsax0s8nQV8C6c5S66vPEhwny0vyW6W7sYEo=; h=Feedback-ID:Received:Date:Subject:From:To;
-Feedback-ID: 45355:7809:null:purelymail
-X-Pm-Original-To: netdev@vger.kernel.org
-Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id -1158097400;
-          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
-          Mon, 22 Jun 2026 19:34:30 +0000 (UTC)
+	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="+lPOqnqy";
+	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="nQIS70fJ"
+Received: from smtpauth-2019-1.uniroma2.it (smtpauth-2019-1.uniroma2.it [160.80.5.46])
+	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 65MJXMAD014072;
+	Mon, 22 Jun 2026 21:33:28 +0200
+Received: from lubuntu-18.04 (host-87-20-62-86.retail.telecomitalia.it [87.20.62.86])
+	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id AB73F1208DB;
+	Mon, 22 Jun 2026 21:33:17 +0200 (CEST)
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
+	s=ed201904; t=1782156797; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Pr3an2wgYQSi7AarT7nB9dLtZRX7n36XJpJJA0kYbMc=;
+	b=+lPOqnqyi6sNTSbMQKHyMI1M0rIsuWQreXimUpWyPbGjoMhnI45ZrYwzzHYbzPhkXfMSmq
+	jFEvP5Ualuppa6Cg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
+	t=1782156797; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Pr3an2wgYQSi7AarT7nB9dLtZRX7n36XJpJJA0kYbMc=;
+	b=nQIS70fJfKpaWaRqc7xgLUGfyfUV2CIEP/Ob52JQk6iBGdTLuUKFsy+qdeO/O4wUJ+vkAI
+	ojfU0I9PlW0JUceTAQNNc4xsMswPgmMhyWctAuxoZbb/PbDE7xnT5P/uuvII/Gof7v53b5
+	k8v+Gok0dqHWKoPO4IqJfkp1w+qGlG1kUP9lv03EalJQ20P9pR1vS3STtIFlfz+9D8Hu8i
+	CV+xXNLp+EG3NVE0XUzTWJccWBWyn18V7s9EB4rTFZI5pD6zVeOenRbxHeS8il2b2trh79
+	XTPQLUD8d+mCB+ds+Ua5gw2hyack7jcaiShMTcQUeKbwCPa2aRk0RigLPfF4BA==
+Date: Mon, 22 Jun 2026 21:33:17 +0200
+From: Andrea Mayer <andrea.mayer@uniroma2.it>
+To: Nuoqi Gui <gnq25@mails.tsinghua.edu.cn>
+Cc: "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        netdev@vger.kernel.org, bpf@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stefano.salsano@uniroma2.it,
+        Andrea Mayer <andrea.mayer@uniroma2.it>
+Subject: Re: [PATCH net] seg6: validate SRH length before reading fixed
+ fields
+Message-Id: <20260622213317.52c8b5a38b88d4ccc3849e22@uniroma2.it>
+In-Reply-To: <20260620-f01-17-seg6-srh-len-v1-1-36cbb29c12f1@mails.tsinghua.edu.cn>
+References: <20260620-f01-17-seg6-srh-len-v1-1-36cbb29c12f1@mails.tsinghua.edu.cn>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 22 Jun 2026 16:34:33 -0300
-Message-Id: <DJFTVX3FE7OD.2O8GTO84798T@rcpassos.me>
-Subject: Re: [syzbot] [wireguard?] KCSAN: data-race in
- wg_socket_send_skb_to_peer / wg_socket_send_skb_to_peer (9)
-From: "Rafael Passos" <rafael@rcpassos.me>
-To: <Jason@zx2c4.com>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
- <edumazet@google.com>, <kuba@kernel.org>, <linux-kernel@vger.kernel.org>,
- <netdev@vger.kernel.org>, <pabeni@redhat.com>,
- <syzkaller-bugs@googlegroups.com>, <wireguard@lists.zx2c4.com>, "syzbot"
- <syzbot+9ca7674fa7521a3f1bc2@syzkaller.appspotmail.com>
-X-Mailer: aerc 0.21.0
-References: <6a1d983b.b111c304.35cd64.0028.GAE@google.com>
-In-Reply-To: <6a1d983b.b111c304.35cd64.0028.GAE@google.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
+X-Virus-Status: Clean
 
-Hi,
+On Sat, 20 Jun 2026 23:55:51 +0800
+Nuoqi Gui <gnq25@mails.tsinghua.edu.cn> wrote:
 
-I started investigating this KCSAN warning by syzbot, and would like to
-ask a few questions.
+Hi Nuoqi,
+Thanks for the patch.
 
-On Mon Jun 1, 2026 at 11:33 AM -03, syzbot wrote:
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> BUG: KCSAN: data-race in wg_socket_send_skb_to_peer / wg_socket_send_skb_=
-to_peer
+> seg6_validate_srh() reads fixed SRH fields such as srh->type and
+> srh->hdrlen before checking that the supplied length covers the fixed
+> struct ipv6_sr_hdr fields.  Callers that pass a length smaller than
+> sizeof(struct ipv6_sr_hdr) therefore expose those reads to memory
+> outside the validated range.
 >
-> read-write to 0xffff88811af99028 of 8 bytes by task 310 on cpu 1:
->  wg_socket_send_skb_to_peer+0xe8/0x130 drivers/net/wireguard/socket.c:182
->  wg_socket_send_buffer_to_peer+0xf1/0x120 drivers/net/wireguard/socket.c:=
-199
->  wg_packet_send_handshake_initiation drivers/net/wireguard/send.c:40 [inl=
-ine]
->  wg_packet_handshake_send_worker+0x10d/0x160 drivers/net/wireguard/send.c=
-:51
->  process_one_work kernel/workqueue.c:3314 [inline]
->  process_scheduled_works+0x4f0/0x9c0 kernel/workqueue.c:3397
->  worker_thread+0x58a/0x780 kernel/workqueue.c:3478
->  kthread+0x22a/0x280 kernel/kthread.c:436
->  ret_from_fork+0x146/0x330 arch/x86/kernel/process.c:158
->  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+> The BPF SEG6 encap path (bpf_lwt_push_encap() -> bpf_push_seg6_encap())
+> is one such caller: it forwards a BPF program-supplied pointer and
+> length straight to seg6_validate_srh() with no minimum-size guard, so a
+> 2-byte SEG6 encap header lets the validator read srh->type at offset 2
+> beyond the caller-supplied buffer.
+
+Besides the BPF use case, is there a caller that can reach it with
+len < sizeof(*srh)? The ones I found all pass at least the fixed header.
+
 >
-> read-write to 0xffff88811af99028 of 8 bytes by task 15360 on cpu 0:
->  wg_socket_send_skb_to_peer+0xe8/0x130 drivers/net/wireguard/socket.c:182
->  wg_packet_create_data_done drivers/net/wireguard/send.c:251 [inline]
->  wg_packet_tx_worker+0x12d/0x330 drivers/net/wireguard/send.c:276
->  process_one_work kernel/workqueue.c:3314 [inline]
->  process_scheduled_works+0x4f0/0x9c0 kernel/workqueue.c:3397
->  worker_thread+0x58a/0x780 kernel/workqueue.c:3478
->  kthread+0x22a/0x280 kernel/kthread.c:436
->  ret_from_fork+0x146/0x330 arch/x86/kernel/process.c:158
->  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+> Reject lengths shorter than the fixed SRH at the top of
+> seg6_validate_srh(), before any field is read.  This fixes the BPF helper
+> path and hardens the common validator for any other caller that reaches it
+> with a too-short SRH.
 >
-> value changed: 0x0000000000000a2c -> 0x0000000000000ac0
+> Fixes: fe94cc290f53 ("bpf: Add IPv6 Segment Routing helpers")
+> Signed-off-by: Nuoqi Gui <gnq25@mails.tsinghua.edu.cn>
+> ---
+>  net/ipv6/seg6.c | 3 +++
+>  1 file changed, 3 insertions(+)
 >
-> Reported by Kernel Concurrency Sanitizer on:
-> CPU: 0 UID: 0 PID: 15360 Comm: kworker/0:2 Tainted: G        W           =
-syzkaller #0 PREEMPT(lazy)=20
-> Tainted: [W]=3DWARN
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS G=
-oogle 04/18/2026
-> Workqueue: wg-crypt-wg2 wg_packet_tx_worker
+> diff --git a/net/ipv6/seg6.c b/net/ipv6/seg6.c
+> index 1c3ad25700c4c..d2cb32a1058af 100644
+> --- a/net/ipv6/seg6.c
+> +++ b/net/ipv6/seg6.c
+> @@ -29,6 +29,9 @@ bool seg6_validate_srh(struct ipv6_sr_hdr *srh, int len, bool reduced)
+>       int max_last_entry;
+>       int trailing;
+>
+> +     if (len < (int)sizeof(*srh))
+> +             return false;
+> +
 
-I tracked the change to this counter increment in `wg_socket_send_skb_to_pe=
-er`
+The (int) cast only changes the result when len < 0, which is not a meaningful
+byte length. Plain "len < sizeof(*srh)" would be enough.
 
-+++ b/drivers/net/wireguard/socket.c
-@@ -179,7 +179,8 @@ int wg_socket_send_skb_to_peer(struct wg_peer *peer, st=
-ruct sk_buff *skb, u8 ds)
- 	else
- 		dev_kfree_skb(skb);
- 	if (likely(!ret))
-->		peer->tx_bytes +=3D skb_len;  <- protected by a read_lock_bh only
- 	read_unlock_bh(&peer->endpoint_lock);
+>       if (srh->type != IPV6_SRCRT_TYPE_4)
+>               return false;
+>
+>
+> ---
+> base-commit: 96e7f9122aae0ed000ee321f324b812a447906d9
+> change-id: 20260619-f01-17-seg6-srh-len-a85f35427e0b
+>
+> Best regards,
+> --
+> Nuoqi Gui <gnq25@mails.tsinghua.edu.cn>
+>
 
-It is protected by the read-part of a rwlock.
-However, if the stack trace makes sense, this `wg_socket_send_skb_to_peer`
-is being called after a handshake (wg_packet_send_handshake_initiation) and
-a send worker call (wg_packet_tx_worker).
-
-Does this make sense ? Are such calls possible to really hapen outside of f=
-uzzing ?
-
-Out of curiosity, I changed `tx_bytes` and `rx_bytes` from u64 to atomic64_=
-t
-in peer.h, and also the r/w ops in netlink.c, receive.c and socket.c files.
-I ran the wireguard kselftest suite with and without this patch, and it
-worked fine. Iperf results seem sine (on amd64).
-I'm not sure if this should be the solution, or if this is even a real issu=
-e in the first place.
-
-Any comments ?
-
-Eager to learn.
-Thanks,
-
-Rafael Passos
+Regards,
+Andrea
