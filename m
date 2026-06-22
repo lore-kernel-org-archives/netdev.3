@@ -1,81 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A20C112B94;
-	Mon, 22 Jun 2026 12:47:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5A03AD522
+	for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 12:58:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782132473; cv=none; b=D4lh6guc5bIsKLBMQFqJFpHTeMebtiDTTpOZ6CQTgy/l/2Z3+k2Wkutm70J8KWf4/9j84jaduvq6gCZs4slGo6zygYzihpQrUm/FtSFhcDGdjq+v2mazdewI3ZWkYgtGZzNWxj9C5JDYTYSQUrFHcEBDPRGc2w+7pfPklcYAf2k=
+	t=1782133124; cv=none; b=ko0jsKuh2lusni2ZXyewBeK/h0W06PXTD22VhkwKhlyx/toX3heuptMJU5WL1wgKWBlWsobND0rGBeShi/2HszGgbNmKcUlbhmY1dfagM1uVQ0KrnBFDPxHIxgR3btw5F/AUYeiytVq+7lNJxgMxuxrn4ZxE/wkjaHp5FNMhqDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782132473; c=relaxed/simple;
-	bh=4UF/Am4MtOdJ83Vu4S6+mm9aMvWteN9nXnpm03SdfM8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YaKs7nreMIkXYQcGsDDjPfDYeGDTPiicPQ50IK5+8jJ7zRkMkpWMrJxIFKQLF1n5aoiq6C0DRV10SB6GC6M0pz1POregbAXNUt7/SXdGscA+hkKr9BF+p64fLQBBsiwpvkH7P4lwbXnBMAbbWArTUeFG+wAsYLWZvqvPIrN2eqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XuT7Y1JZ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782133124; c=relaxed/simple;
+	bh=qDElADXlgQyAzLqXp1zhsofyI3JFx7Kipplc8adrurk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Q5rXlDZGUqJllVOoJ2MeqjsjDUKCrT+v22d29KTO9AGwd6AHRqQuCJuHhdh5zDzybWlC3yxAnpM0P38zUF22pJpu7fYq1Jge6ldRcP+7q5Xvl5/mUNKYAhzw+uMp6bG122a4W0KsivH1JWDpH8raplkFaVcScasqOdDc8viwkks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=Rk+PzL82; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XuT7Y1JZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86F771F000E9;
-	Mon, 22 Jun 2026 12:47:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782132471;
-	bh=73XLj4XVCyOSdZQ//mffGZhSsB2aUhfbu9xm49GWSOI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=XuT7Y1JZhH19OB08joG/4F9LKDGYdPRZh2/ULYrhgYC1zhsESxuByY6KU/940GdWu
-	 nbgkO5xQJR5Q/i4/SP6PMLVONrxnHvM7JRJ+PIyUZWVTqEDn23wTqiZt1tTUdqciul
-	 JRPQaAaAKT1Tgy6P8EeRmNK2tXa1SZXaeDX+03QTqr6MYTIEH9E8nlMbzbYroLB2jV
-	 35CaK1d4G97Pq6lfQ4cmMRVCEpYof3nj2sRCrWTVJIx2D7wfJeXZf+5XkzhXXS20gb
-	 hCwxeFSwdmcuQxlfGBWpi54q6ZAfLifCEg9rM2e7vX/TrGW/zWvRW/15hf8EKnM97g
-	 9uHeYAHMGx69w==
-Date: Mon, 22 Jun 2026 13:47:47 +0100
-From: Simon Horman <horms@kernel.org>
-To: Runyu Xiao <runyu.xiao@seu.edu.cn>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] net: au1000: move free_irq out of the close-time
- spinlocked section
-Message-ID: <20260622124747.GD827683@horms.kernel.org>
-References: <20260619151816.1144289-1-runyu.xiao@seu.edu.cn>
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="Rk+PzL82"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c074ac8adaaso521081666b.3
+        for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 05:58:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1782133121; x=1782737921; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=EfzBz+UdB3nbzgd5M+T+mIKozpGs1yOUYWhHRThmvXE=;
+        b=Rk+PzL82GGZIwxrDYvSGS5tXANJhuLAG0DxXL2bcis3Ekg3+lUp6jYQi7zwN/2CHAR
+         1kNnHJihnBQ3YVCswJqJty8q6sKFjOqYxkz+cO30Q+CByUbrSOwn0aP2BajAULOF2rt1
+         OUmEb+SteutEeWqYJr5IEOKeCx7vXnFAjYQ07sTuzmzr4FCxncXXOnPD9zb/cFUbICj+
+         TRWRv2VYLmGni2ik4xoSMD5vefpDBxPBLxHshBEuOPNMlyM8fT32d2kmKvXPBx3gOmR/
+         lUZB36g5FJ/Q8Ikh9Smu/HdT9h5lDpzl/75kr3lhqKladELHXRMS/uiJFiRv0+m34v/G
+         aA8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782133121; x=1782737921;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EfzBz+UdB3nbzgd5M+T+mIKozpGs1yOUYWhHRThmvXE=;
+        b=ghDAfNyUH1bx47PDzypoM88xdkHYCkbZp+OZ5Jo/t4Csy7ZIkYIMBIgjqXbHWldTdC
+         9kDCuqxPyizEPe/fhO0uj5swjMKvt6ACWTqybR+F2eiXSblDwyCng8Uv4UsQVhZ7/95G
+         sXw7jpC0dZa2OvpfG73mRlQ2Kg4utiEPsaWoLuvgpg+qBt0mXypoB8CxTXxkQo2UxoYc
+         +i0QIqtP95e82KEzbpyNbtXGekowvig0CSBVujCVryJlm20dpClI7xDpbTrWNDrneZ8G
+         cxmDahHJ6CS3g4ZudWTmoE+PC4F08FVEwE5P6Nqvy7kvqTph1QxgL77sKxPGM/K01rhd
+         Ad7A==
+X-Forwarded-Encrypted: i=1; AFNElJ+3bE39kgTAw6RqhX4JRyGOU+sfDVJbws9GuDt8hUwlFRrJI4wV7NzBCycVUds35GbjDZ29RHM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwzOWf1qAtM1AORxChg8czDTHj47HEWNdEsNM8StOr2HXlSBMcP
+	J7rGHFnU4mdi6NHEIjFFBkJ5ZzDSItUVIENOIX9gNbdpUNut6zvULgzQ8L62zhXA8Ok=
+X-Gm-Gg: AfdE7clH6jSki5IuJaN0Tx50Nrw4M4ko67JDlQpmWY/FayusYSa7E0qZ5OsxoSADP/w
+	swb6iy9TvkqooSzRbPjM2jmoumzfaUoT8tojb07jLP2kR2sO4CK/7Y0Xocn40vgiAycEFPtK5n1
+	QBzrUr7KqA7X1FYRO5HSjyZi75StWFbp+v6Key9oQrN2YH5xSGRTkzyLWeLf3eblsswWXBaIY4b
+	O8d1ZIIFpnVYDtBu4zVbtzZhS/H5BNHWbfXI3iJDT8iDOYR37pCdqNeopmpw89nZ6130s09mKhK
+	blK1Lzi+CfYskDpW80Oc2I29rQypp7kJBSNfvjryT5nC1bnb/Nez+FvuCFxOcDLty8r5zX2A3Qk
+	nBJfmw/SsmmU99pNhbLBBsKX3YiYI4nuu6qyQnHxqaWU7PY1mnoDkDE6pLp6b6CbQF8mAXlpUOs
+	n7lOh1D9+5lPrkc1uu3WDjdrh2Ho5qINdxQDf3FRkbtgQWVq0WjzCG5qHmPRk=
+X-Received: by 2002:a17:906:6a29:b0:bfe:ed74:523 with SMTP id a640c23a62f3a-c098f12eb0emr774449366b.50.1782133121181;
+        Mon, 22 Jun 2026 05:58:41 -0700 (PDT)
+Received: from cloudflare.com (79.184.207.15.ipv4.supernova.orange.pl. [79.184.207.15])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c0c60bbf2b3sm352712766b.39.2026.06.22.05.58.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Jun 2026 05:58:40 -0700 (PDT)
+From: Jakub Sitnicki <jakub@cloudflare.com>
+Date: Mon, 22 Jun 2026 14:58:34 +0200
+Subject: [PATCH bpf-next] bpf, unix: Guard sk_msg-dependent code behind
+ CONFIG_NET_SOCK_MSG
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260619151816.1144289-1-runyu.xiao@seu.edu.cn>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260622-bpf-sk_msg-split-unix-v1-1-d7e0cb7bb03b@cloudflare.com>
+X-B4-Tracking: v=1; b=H4sIAHkxOWoC/yWMQQqDMBAAvyJ77kIMYsWvlFKaZNW1bRqysQTEv
+ xvtcRhmVhCKTAJ9tUKkHwt/fYH6UoGdnn4kZFcYtNKtarVGEwaU1+MjI0p4c8LFc0Z3rRunSDW
+ dNVDaEGngfH5vcCSecoL738hiZrLp2MK27f6dcC+DAAAA
+X-Change-ID: 20260622-bpf-sk_msg-split-unix-d714d0e048cb
+To: bpf@vger.kernel.org
+Cc: Alexei Starovoitov <ast@kernel.org>, 
+ Daniel Borkmann <daniel@iogearbox.net>, Jakub Kicinski <kuba@kernel.org>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ Jiayuan Chen <jiayuan.chen@linux.dev>, netdev@vger.kernel.org, 
+ kernel-team@cloudflare.com
+X-Mailer: b4 0.15.2
 
-On Fri, Jun 19, 2026 at 11:18:16PM +0800, Runyu Xiao wrote:
-> au1000_close() calls free_irq() while aup->lock is still held with
-> spin_lock_irqsave(). free_irq() can sleep because it takes the IRQ
-> descriptor request mutex, so it does not belong inside the close-time
-> spinlocked section.
-> 
-> This was found by our static analysis tool and then confirmed by manual
-> review of the in-tree au1000_close() .ndo_stop path. The reviewed path
-> keeps aup->lock held across the MAC reset, queue stop and
-> free_irq(dev->irq, dev).
-> 
-> A directed runtime validation kept that ndo_stop carrier and the same
-> free_irq(dev->irq, dev) operation under the driver lock. Lockdep reported
-> "BUG: sleeping function called from invalid context" and "Invalid wait
-> context" while free_irq() was taking desc->request_mutex, with
-> au1000_close() and free_irq() on the stack.
-> 
-> Drop aup->lock before freeing the IRQ. The protected close-time work still
-> stops the device and queue before IRQ teardown, but the sleepable IRQ core
-> path now runs outside the spinlocked section.
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+Prepare to decouple BPF_SYSCALL config option from NET_SOCK_MSG.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
+---
+ net/unix/unix_bpf.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-FTR, I notice that there is an AI-generated review of this patch on
-sashiko.dev. However, I don't think that the issues raised there should
-block progress of this patch.
+diff --git a/net/unix/unix_bpf.c b/net/unix/unix_bpf.c
+index f86ff19e9764..5289a04b4993 100644
+--- a/net/unix/unix_bpf.c
++++ b/net/unix/unix_bpf.c
+@@ -7,6 +7,7 @@
+ 
+ #include "af_unix.h"
+ 
++#ifdef CONFIG_NET_SOCK_MSG
+ #define unix_sk_has_data(__sk, __psock)					\
+ 		({	!skb_queue_empty(&__sk->sk_receive_queue) ||	\
+ 			!skb_queue_empty(&__psock->ingress_skb) ||	\
+@@ -94,6 +95,7 @@ static int unix_bpf_recvmsg(struct sock *sk, struct msghdr *msg,
+ 	sk_psock_put(sk, psock);
+ 	return copied;
+ }
++#endif /* CONFIG_NET_SOCK_MSG */
+ 
+ static struct proto *unix_dgram_prot_saved __read_mostly;
+ static DEFINE_SPINLOCK(unix_dgram_prot_lock);
+@@ -107,8 +109,10 @@ static void unix_dgram_bpf_rebuild_protos(struct proto *prot, const struct proto
+ {
+ 	*prot        = *base;
+ 	prot->close  = sock_map_close;
++#ifdef CONFIG_NET_SOCK_MSG
+ 	prot->recvmsg = unix_bpf_recvmsg;
+ 	prot->sock_is_readable = sk_msg_is_readable;
++#endif
+ }
+ 
+ static void unix_stream_bpf_rebuild_protos(struct proto *prot,
+@@ -116,8 +120,10 @@ static void unix_stream_bpf_rebuild_protos(struct proto *prot,
+ {
+ 	*prot        = *base;
+ 	prot->close  = sock_map_close;
++#ifdef CONFIG_NET_SOCK_MSG
+ 	prot->recvmsg = unix_bpf_recvmsg;
+ 	prot->sock_is_readable = sk_msg_is_readable;
++#endif
+ 	prot->unhash  = sock_map_unhash;
+ }
+ 
+
+
+
