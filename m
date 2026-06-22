@@ -1,136 +1,130 @@
-Received: from szelinsky.de (szelinsky.de [85.214.127.56])
+Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3556D3368B7;
-	Mon, 22 Jun 2026 19:29:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.127.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F817347BD9
+	for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 19:34:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.202.193.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782156561; cv=none; b=r7khj2aGNSPMZSuq+u++hPMQ6h/s5UzMi994z+JwdnuLiK1ArjRJqrq0klSdOKO9TWG+l3e8U4/yAzPEZJoUW3eAvAqXBCpb3QY0UNKCEzz4LQ/XV7PEcORVxcRagKPCTXPjWFa3Ikw8sGh/SJITRHIv0Bg6VlKips/A8tEb5hY=
+	t=1782156891; cv=none; b=UOX5uq+FdoLlh2uF8lzxRtzta1gQcF33cgT43f9ItWZlLayLP02eN1oeEx/qfv+8NuxqEx9OQUMZWrOVseld92kxibsDrfqURPSvn/aXLXPWNgYBUK26DeyLjy2GedpzwQ+3e0/NLcAlXhCL893orOfbrm8P5iyq4z28GOPKMm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782156561; c=relaxed/simple;
-	bh=IlF0pz2gsMAwVai5+zxwXHPKGEW7c6AnprhfYwzDTFA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=j50wHXjBTZpbemkXGere6pb/8Z+VH+GvOzE51Gp7fkkMSC5XnM92JVEYl//Y5H8U/sePhesFfC6lj3UoeSyRXRytoCx19+t0GeyZ4tSZfgXR58/Z0s5U/3UoyfdF2Pg3A+DCrtmaeHZ9540fCdbzGA4K6VOsbcibdvtxSha8DOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=PYQcu3s1; arc=none smtp.client-ip=85.214.127.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
+	s=arc-20240116; t=1782156891; c=relaxed/simple;
+	bh=VQKtJkkEsax0s8nQV8C6c5S66vPEhwny0vyW6W7sYEo=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:
+	 References:In-Reply-To; b=Giv+ZwabpHTTOqkaq596n3nqSW+7GuIqojiri0bpjpxqt0QzpZSXe6KaLXBPaOLIU0wNyME+yIIvzfVMqRy4nYSFQ4ompFp0e/Uk1qorRvdhqi47WCHoA18MYPP4YDNFQ160d8OMelNCazWMAUCZPa0p+iR4i5jk/E+vbG1WQ/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rcpassos.me; spf=pass smtp.mailfrom=rcpassos.me; dkim=pass (2048-bit key) header.d=rcpassos.me header.i=@rcpassos.me header.b=T6m/C7En; dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b=nU3CWbKX; arc=none smtp.client-ip=34.202.193.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rcpassos.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rcpassos.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="PYQcu3s1"
-Received: from localhost (localhost [127.0.0.1])
-	by szelinsky.de (Postfix) with ESMTP id 0850BE83606;
-	Mon, 22 Jun 2026 21:29:12 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
-	s=mail; t=1782156552;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=698GqI9iPEQP2DVBf2DNCaRc1+wpNuobwHaVUvlw7f4=;
-	b=PYQcu3s1mJXYowjkdKo1379740IjX4vUj4ObfGnSMoL2EMT8cQaYrkkY5DjwcE27QVXqav
-	FuowM7fZrRHOgv6ixVghKCZjtzLHO4UxTSw4MDtvpWT4aB1nKosPiyF0JcXwzA7oy0CdL0
-	L1sgVlxwzb7rzdd5xSM4CsNfDVWI70rMco/s42ApkQPaTVEgc5pERiMGduprCuput7qL59
-	VWOasLM9VJOx+HizND+vnpZ95GQNn4bl1Bq3UkvMaXljA0n2TDL5Ut3e5TrzpAa9IQuNyw
-	KkRd/FLD3m26U/CTyidihZR1I4WMyXWofLxabtYLYojFYqoLOD34wFR/Z8/6Qw==
-X-Virus-Scanned: Debian amavis at szelinsky.de
-Received: from szelinsky.de ([127.0.0.1])
- by localhost (szelinsky.de [127.0.0.1]) (amavis, port 10025) with ESMTP
- id 6IqdyJcRPQvs; Mon, 22 Jun 2026 21:29:11 +0200 (CEST)
-Received: from p14sgen5.lanhh (dslb-088-070-183-212.088.070.pools.vodafone-ip.de [88.70.183.212])
-	by szelinsky.de (Postfix) with ESMTPSA;
-	Mon, 22 Jun 2026 21:29:11 +0200 (CEST)
-From: Carlo Szelinsky <github@szelinsky.de>
-To: Oleksij Rempel <o.rempel@pengutronix.de>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Corey Leavitt <corey@leavitt.info>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Carlo Szelinsky <github@szelinsky.de>
-Subject: [PATCH net] net: pse-pd: scope pse_control regulator handle to kref lifetime
-Date: Mon, 22 Jun 2026 21:28:39 +0200
-Message-ID: <20260622192839.2508733-1-github@szelinsky.de>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=rcpassos.me header.i=@rcpassos.me header.b="T6m/C7En";
+	dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b="nU3CWbKX"
+DKIM-Signature: a=rsa-sha256; b=T6m/C7En0hnNaKXDbFC9xFrB0WCEmrxA+Aj7cdIDRL9ulAFh2bJjlgHuR5ElSOLQfFc+m5XYzQiIEbhaR1PJapiZNyWPzU5b55QKScHdvYY3FbBzgZ3YKEqHAWqcAQC9Hp7ZpK+AIRSDCL3AMnWSPxcdky1oeLDxUd6d1q1vtcUZhSvFdf/JvrKWWayrRkTLeiKQUC1SKXGzgmw38u+eQ8ur3GfeIudFwdkZ4YloheucB6zT+gmDn2gG275UYNyO1/4BwP8XgkTBuMfot5vww0H//JEdtdrM2VDqPn6FuCz/c4cNLU2vT70DvHINY4axKwdiq2z9wZMY4Ak7UNUPtw==; s=purelymail1; d=rcpassos.me; v=1; bh=VQKtJkkEsax0s8nQV8C6c5S66vPEhwny0vyW6W7sYEo=; h=Received:Date:Subject:From:To;
+DKIM-Signature: a=rsa-sha256; b=nU3CWbKXFX0sXVdNteVleVU7L5fQur84nLtF4o8NVWE5yX2t1NT8R16nWP7MBaryuDNmNQvYD0fPSl9LxE+0ow+pxrvITymzKRIYxzMLwv3/+mgpEMREtY2VLmi+LbKnCwCoe7z+ydN8sHPJYyAswxp0sdNGXp/Lda5qkgF+wf8+PRaRFddmth76oKW7BTszEILTfGcI29NHDyCLkcU9f0a9CrMMx+XaGvOzi4fD43vSrly8JytzhTXFOO7zORV9Tges4XYb2wnsF6lllFfn/bkOylPlsqQmVXBtGTjQGhi2ua5aKG4yyKP1vd1TcMyf8Fj6cZ7+aE+pvtRoWWb/5Q==; s=purelymail1; d=purelymail.com; v=1; bh=VQKtJkkEsax0s8nQV8C6c5S66vPEhwny0vyW6W7sYEo=; h=Feedback-ID:Received:Date:Subject:From:To;
+Feedback-ID: 45355:7809:null:purelymail
+X-Pm-Original-To: netdev@vger.kernel.org
+Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id -1158097400;
+          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+          Mon, 22 Jun 2026 19:34:30 +0000 (UTC)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 22 Jun 2026 16:34:33 -0300
+Message-Id: <DJFTVX3FE7OD.2O8GTO84798T@rcpassos.me>
+Subject: Re: [syzbot] [wireguard?] KCSAN: data-race in
+ wg_socket_send_skb_to_peer / wg_socket_send_skb_to_peer (9)
+From: "Rafael Passos" <rafael@rcpassos.me>
+To: <Jason@zx2c4.com>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
+ <edumazet@google.com>, <kuba@kernel.org>, <linux-kernel@vger.kernel.org>,
+ <netdev@vger.kernel.org>, <pabeni@redhat.com>,
+ <syzkaller-bugs@googlegroups.com>, <wireguard@lists.zx2c4.com>, "syzbot"
+ <syzbot+9ca7674fa7521a3f1bc2@syzkaller.appspotmail.com>
+X-Mailer: aerc 0.21.0
+References: <6a1d983b.b111c304.35cd64.0028.GAE@google.com>
+In-Reply-To: <6a1d983b.b111c304.35cd64.0028.GAE@google.com>
 
-From: Corey Leavitt <corey@leavitt.info>
+Hi,
 
-__pse_control_release() drops psec->ps via devm_regulator_put(), which
-only succeeds if the devres entry added by the matching
-devm_regulator_get_exclusive() is still present on pcdev->dev at the
-time the pse_control's kref hits zero.
+I started investigating this KCSAN warning by syzbot, and would like to
+ask a few questions.
 
-In practice that assumption does not hold when the controller is
-unbound while any pse_control still has consumers: pcdev->dev's
-devres list is released LIFO, so every per-attach regulator-GET
-devres runs (and regulator_put()s the underlying regulator) before
-pse_controller_unregister() itself is invoked. Any later
-pse_control_put() from that unbind path then reads psec->ps as a
-dangling pointer inside devm_regulator_put() and WARNs at
-drivers/regulator/devres.c:232 (devres_release() fails to find the
-already-released match).
+On Mon Jun 1, 2026 at 11:33 AM -03, syzbot wrote:
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> BUG: KCSAN: data-race in wg_socket_send_skb_to_peer / wg_socket_send_skb_=
+to_peer
+>
+> read-write to 0xffff88811af99028 of 8 bytes by task 310 on cpu 1:
+>  wg_socket_send_skb_to_peer+0xe8/0x130 drivers/net/wireguard/socket.c:182
+>  wg_socket_send_buffer_to_peer+0xf1/0x120 drivers/net/wireguard/socket.c:=
+199
+>  wg_packet_send_handshake_initiation drivers/net/wireguard/send.c:40 [inl=
+ine]
+>  wg_packet_handshake_send_worker+0x10d/0x160 drivers/net/wireguard/send.c=
+:51
+>  process_one_work kernel/workqueue.c:3314 [inline]
+>  process_scheduled_works+0x4f0/0x9c0 kernel/workqueue.c:3397
+>  worker_thread+0x58a/0x780 kernel/workqueue.c:3478
+>  kthread+0x22a/0x280 kernel/kthread.c:436
+>  ret_from_fork+0x146/0x330 arch/x86/kernel/process.c:158
+>  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+>
+> read-write to 0xffff88811af99028 of 8 bytes by task 15360 on cpu 0:
+>  wg_socket_send_skb_to_peer+0xe8/0x130 drivers/net/wireguard/socket.c:182
+>  wg_packet_create_data_done drivers/net/wireguard/send.c:251 [inline]
+>  wg_packet_tx_worker+0x12d/0x330 drivers/net/wireguard/send.c:276
+>  process_one_work kernel/workqueue.c:3314 [inline]
+>  process_scheduled_works+0x4f0/0x9c0 kernel/workqueue.c:3397
+>  worker_thread+0x58a/0x780 kernel/workqueue.c:3478
+>  kthread+0x22a/0x280 kernel/kthread.c:436
+>  ret_from_fork+0x146/0x330 arch/x86/kernel/process.c:158
+>  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+>
+> value changed: 0x0000000000000a2c -> 0x0000000000000ac0
+>
+> Reported by Kernel Concurrency Sanitizer on:
+> CPU: 0 UID: 0 PID: 15360 Comm: kworker/0:2 Tainted: G        W           =
+syzkaller #0 PREEMPT(lazy)=20
+> Tainted: [W]=3DWARN
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS G=
+oogle 04/18/2026
+> Workqueue: wg-crypt-wg2 wg_packet_tx_worker
 
-The pse_control's consumer handle is logically scoped to the
-pse_control's refcount, not to pcdev->dev's devres lifetime. Switch
-to the plain regulator_get_exclusive() / regulator_put() pair so
-__pse_control_release() does the right put regardless of whether
-the controller's devres has already been unwound.
+I tracked the change to this counter increment in `wg_socket_send_skb_to_pe=
+er`
 
-No change to the regulator-framework-visible refcount or lifetime of
-the underlying regulator: a single get paired with a single put. The
-existing devm_regulator_register() for the per-PI rails is unchanged
-(those ARE correctly scoped to the controller's lifetime).
++++ b/drivers/net/wireguard/socket.c
+@@ -179,7 +179,8 @@ int wg_socket_send_skb_to_peer(struct wg_peer *peer, st=
+ruct sk_buff *skb, u8 ds)
+ 	else
+ 		dev_kfree_skb(skb);
+ 	if (likely(!ret))
+->		peer->tx_bytes +=3D skb_len;  <- protected by a read_lock_bh only
+ 	read_unlock_bh(&peer->endpoint_lock);
 
-Fixes: d83e13761d5b ("net: pse-pd: Use regulator framework within PSE framework")
-Signed-off-by: Corey Leavitt <corey@leavitt.info>
-Acked-by: Kory Maincent <kory.maincent@bootlin.com>
-Signed-off-by: Carlo Szelinsky <github@szelinsky.de>
----
-This was patch 1 of the "decouple controller lookup from MDIO probe"
-series [1]. Reposting it standalone for net as suggested, since it is a
-self-contained fix. The rest of the series targets net-next and will be
-resent once net-next reopens.
+It is protected by the read-part of a rwlock.
+However, if the stack trace makes sense, this `wg_socket_send_skb_to_peer`
+is being called after a handshake (wg_packet_send_handshake_initiation) and
+a send worker call (wg_packet_tx_worker).
 
-[1] https://lore.kernel.org/netdev/20260620112440.1734404-1-github@szelinsky.de/
----
- drivers/net/pse-pd/pse_core.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Does this make sense ? Are such calls possible to really hapen outside of f=
+uzzing ?
 
-diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
-index 69dbdbde9d71..a5e6d7b26b9f 100644
---- a/drivers/net/pse-pd/pse_core.c
-+++ b/drivers/net/pse-pd/pse_core.c
-@@ -1367,7 +1367,7 @@ static void __pse_control_release(struct kref *kref)
- 
- 	if (psec->pcdev->pi[psec->id].admin_state_enabled)
- 		regulator_disable(psec->ps);
--	devm_regulator_put(psec->ps);
-+	regulator_put(psec->ps);
- 
- 	module_put(psec->pcdev->owner);
- 
-@@ -1436,8 +1436,8 @@ pse_control_get_internal(struct pse_controller_dev *pcdev, unsigned int index,
- 		goto free_psec;
- 
- 	pcdev->pi[index].admin_state_enabled = ret;
--	psec->ps = devm_regulator_get_exclusive(pcdev->dev,
--						rdev_get_name(pcdev->pi[index].rdev));
-+	psec->ps = regulator_get_exclusive(pcdev->dev,
-+					   rdev_get_name(pcdev->pi[index].rdev));
- 	if (IS_ERR(psec->ps)) {
- 		ret = PTR_ERR(psec->ps);
- 		goto put_module;
+Out of curiosity, I changed `tx_bytes` and `rx_bytes` from u64 to atomic64_=
+t
+in peer.h, and also the r/w ops in netlink.c, receive.c and socket.c files.
+I ran the wireguard kselftest suite with and without this patch, and it
+worked fine. Iperf results seem sine (on amd64).
+I'm not sure if this should be the solution, or if this is even a real issu=
+e in the first place.
 
-base-commit: d07d80b6a129a44538cda1549b7acf95154fb197
--- 
-2.43.0
+Any comments ?
 
+Eager to learn.
+Thanks,
+
+Rafael Passos
