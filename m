@@ -1,241 +1,130 @@
-Received: from mail-qt1-f228.google.com (mail-qt1-f228.google.com [209.85.160.228])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FB93B4E8F
-	for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 13:32:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.228
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B7C3AC0EC;
+	Mon, 22 Jun 2026 13:35:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782135143; cv=none; b=QPVdfblrSIeBLr4YllR/a2i5krAPT0epAQT7QDBvAT2znccah/E/26pqND2l8Yp8EO4aNqha2Lv1QWy4LxU+diR+JjzTJg5lp15ncR/1PT1NC/SC45ntUhEBTMNiab5H6mzHLGfomZR4etqgeC4cN2C85m6/sxyQoLizeZ1r5u8=
+	t=1782135350; cv=none; b=qkv70XTQQ89ZfFRjLdVC9w+U//TRZh0zdVXqEYN+Ilzt4bfJ2S4JdxZI3l/W3VouqFGkqy2KlKDGC6tb4q6iLJS1Egk343CHeqjRvLGxq68ufep5rW2Czihluq/l5PujxCILh4tguKkWn6WU+GX37Wco1CwGGji9Pim/rHB0Bp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782135143; c=relaxed/simple;
-	bh=0dPMTWSh3QcBAeoTAEWJv6fJuCFV0cUyVP60Sn/Odrc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=f9hWb3K2fqK7D8n/yQApJct9d4KVbg+hPC4rdHvfSxnqw21+1JUv/ZN5shrx5rNp5zsPd2ZoDV/b1ebyhUbqNcH+CdAC4qDH7G8aBYvRi/GkP7tGfSZO0mnAJf5cvfg0/WUlq4AmbaTpkVfT8UazyCxZfIGLNDDR+cK3u/Cs29s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=DXX+LsNw; arc=none smtp.client-ip=209.85.160.228
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1782135350; c=relaxed/simple;
+	bh=79GrnNmccOWEnTcWsWeS1nETBKc4S2/rQl047Me7XZg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=E2Lb066AYxZhShtDrLcfkrlc+pFqkN0i6Wz5ecrVrN3arJs5rUnNrBTl1CO+XDCjUp+ph2bKHFeA8IwJqLlM2YetpLkXbhSWZ5K0V7xReyc9GTCOOSXoyVWg+DoYZqKTjvxv7mrkRONbwLDq8yG2b19NcYSrNDOiXErag0f2yzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YFXni578; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="DXX+LsNw"
-Received: by mail-qt1-f228.google.com with SMTP id d75a77b69052e-519ff1c8b8bso25987081cf.3
-        for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 06:32:15 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782135134; x=1782739934;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QvGxT1+m/TvyBu1unkvildlFuAaQVypG03jBPrRyz8I=;
-        b=KbIbDB6/PH5MLTpgllXGLDLemkqECqkEA4wdCGSpCJ5/CZFsVrBEvJcbRgDaSeo1Pc
-         32opaMEdyl15NtuX2qvyf8kkKPYPHl0esplWXqlPk8HBjMkeQ9yr0kOdBq7wfdcCEl+S
-         D8E9ld6U2aVp4zj+cvr4aX56HNmDe2aekcA68+1QA88YAraQl2Rslq4y1okAnec1ffLH
-         7IC9X+2vMj3lkVWbUuCRdMcqfjopz+24eyBshEjp4mQ3oR7QSn5x0+OG9zfSCwhMMU4a
-         fwQeu4n7UdZZsAUv9UWm/Hw/7wEHVHeVtQyEvPR4eH/xAaB0bEhtkErZBbAZbGaz9p9b
-         ThMQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/uoxhcR3tTcGrnUZNuA3IVqpM10qWMMOj5wfqIjzow3Tr5jt9Xit7rjNFd1tM/sh6ikn/Ixgk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyDzCYZDAJGwP7Ke+K5sWEn2X4fqS6ihEsffsKMs6d2nY40cbTW
-	Sg72WwFgxJnn853QbDkt936X4FyM1MDLeQ7m+IetLb5ZJqC2LcREoFw9d9hqWzF9amhbgf7fcwQ
-	QN1rupAT6buiMSY47ucJkDNHniCjYVWbO1eO2lrJXE0AGsw2YGJ65Faaqu5Z7yUsbH/JP0t8D7X
-	f1QXSi0kPIvpcVBA0RFrP8d2Zgkafcc9Ob0lWrmBKp7aP4qJzfg80WDhWEu0N+PsaZjv4zsqRby
-	whSWVwNiB0=
-X-Gm-Gg: AfdE7clrtXfSNGWu9zZ6BURQO8PxDrDh9PAOEL094DGSnPV+7TLlb2YPBiYG8b7R3yw
-	3CuovoNZq5S8aFQfQVvwcuzS2bEw1c4xl/jgOantuRbg+ccO+iqO0kUnkjQegCJqfsJiIDUPksM
-	wrLK+q7I89boPUMGGP6LtgLAWgkpR6d9etorSqe71Aon7uZtqPpcp5omS3wxOtSdSRvnC09O3Ki
-	n+oWP09l/2MJdjNW5f+9IMz0zUUuOe5d+ghnVFkzUCyyhXKSJEtTZF53xQ9q/d4BxkLqkgCfGtg
-	ESUY/PmnR+ZGoE9I3KbHFROaQP9I+lP9EZ5+D5PewGMgDVXPDL66iJ8H1alvZr9Irms1jkBoXEL
-	wxVekf/KTHYT5SIMDFwsqhsnZ112N/3b+DkojsNq0oY5kJtmVpPtD2vovy5ywLr0PJPXHLFY+3q
-	I27tTEbBrlaf5eqD1fuKcUThQxt4ox3lBCvw2Tn79i/3MoGg==
-X-Received: by 2002:ac8:5790:0:b0:516:d781:589a with SMTP id d75a77b69052e-519e4a77316mr215785001cf.22.1782135133853;
-        Mon, 22 Jun 2026 06:32:13 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-23.dlp.protect.broadcom.com. [144.49.247.23])
-        by smtp-relay.gmail.com with ESMTPS id d75a77b69052e-51a0cfc1cd6sm1256561cf.18.2026.06.22.06.32.13
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 22 Jun 2026 06:32:13 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-697560b83f4so3494585a12.1
-        for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 06:32:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1782135132; x=1782739932; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=QvGxT1+m/TvyBu1unkvildlFuAaQVypG03jBPrRyz8I=;
-        b=DXX+LsNw2LA6+FaOEXYJf81qf1JxaxXQBkuZGze+01gz/SwU/KcVue2SNPY/z6eC/a
-         6+2FFNFYM+zo9/O0NOB2zjHNEsfrOMUe79hwNLtwn20nfPGSXa0uJVqYVWwbz6dW6IUK
-         TC1kagszgBOn+Cq/P5L5TZrKDTXZoySevQbDs=
-X-Forwarded-Encrypted: i=1; AFNElJ+NBHNDTFC960zbVxEyov2a+8+mnxOlsmQsN6fFtT7GSGIZ8U8kiftQimTC07iD1tIHi4Nkv90=@vger.kernel.org
-X-Received: by 2002:a05:6402:3492:b0:67e:9cd6:c68f with SMTP id 4fb4d7f45d1cf-6973bb7f98emr6040600a12.7.1782135132261;
-        Mon, 22 Jun 2026 06:32:12 -0700 (PDT)
-X-Received: by 2002:a05:6402:3492:b0:67e:9cd6:c68f with SMTP id
- 4fb4d7f45d1cf-6973bb7f98emr6040554a12.7.1782135131491; Mon, 22 Jun 2026
- 06:32:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YFXni578"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 760521F000E9;
+	Mon, 22 Jun 2026 13:35:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782135348;
+	bh=1Fh81ithYkoGIp0Hgtq9CaMm1HVH3MBQhaSNQwHHFbk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=YFXni578peR0ZKlOn9yOiZ7p47SFlU3xPWWtYEPmY7U7icOQjPwA++Pppbelh2x0z
+	 bjzjl7ZP7AMOmqTv23aAokB2DRAt7F5YmeTHxE51lB6hW5u3WzkXunzK59CLKPxKyo
+	 TdMl9CYIHXOLewuNsSzNjpAkK8gKM7wcFy36VD/qwP+hSBrFGLs/3yoAolhJlaJPYj
+	 Yqjq2vPk1EAM1Oiq7zDRS1RGS5W+DJtKM00m+c+vi67Gu34hGHSYZRNaXZh2B6mie5
+	 hH4xNescEM02xU9LRMHJSCHei+KfqAz+HO/We/5W3MiZia9zjpfvOXWHG3kIqNs7ux
+	 zWS/zYAoJgddA==
+From: Simon Horman <horms@kernel.org>
+To: hrushirajg23@gmail.com
+Cc: Simon Horman <horms@kernel.org>,
+	kuba@kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	jiri@resnulli.us,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+6c25f4750230faf70be9@syzkaller.appspotmail.com
+Subject: Re: [PATCH] netdevsim: fix use-after-free in __nsim_dev_port_del
+Date: Mon, 22 Jun 2026 14:35:13 +0100
+Message-ID: <20260622133513.1025185-1-horms@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260620064937.16301-1-hrushirajg23@gmail.com>
+References: <20260620064937.16301-1-hrushirajg23@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260622111825.88337-1-edumazet@google.com>
-In-Reply-To: <20260622111825.88337-1-edumazet@google.com>
-From: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Date: Mon, 22 Jun 2026 19:01:56 +0530
-X-Gm-Features: AVVi8Cf3EqQoPzDMp2Y5rtewbgocsDtpV4wNLcJP6iKHuG6F5_Q353jInQIXE8o
-Message-ID: <CALs4sv0zuPRD2gsnfB+z3eLVtdEojGSPg2dYagH2Y9MZET9a8Q@mail.gmail.com>
-Subject: Re: [PATCH net] veth: fix NAPI leak in XDP enable error path
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com, Guenter Roeck <groeck@google.com>, 
-	=?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Tariq Toukan <tariqt@nvidia.com>
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000008539900654d7aba4"
+Content-Transfer-Encoding: 8bit
 
---0000000000008539900654d7aba4
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/
+---
+Subject: netdevsim: fix use-after-free in __nsim_dev_port_del
 
-On Mon, Jun 22, 2026 at 4:48=E2=80=AFPM Eric Dumazet <edumazet@google.com> =
-wrote:
->
-> During XDP enablement in veth, if xdp_rxq_info_reg() or
-> xdp_rxq_info_reg_mem_model() fails, the driver rolls back the changes.
->
-> However, the rollback loop:
->         for (i--; i >=3D start; i--) {
->
-> decrements the loop index 'i' before the first iteration. This
-> correctly skips unregistering the rxq for the failed index 'i' (as
-> registration failed or was already cleaned up), but it also
-> erroneously skips calling netif_napi_deli() for rq[i].xdp_napi.
->
-> Since netif_napi_add() was already called for index 'i', this leaves
-> a dangling napi_struct in the device's napi_list. When the veth
-> device is later destroyed, the freed queue memory (which contains the
-> leaked NAPI structure) can be reused.
->
-> The subsequent device teardown iterates the NAPI list and
-> corrupts the reallocated memory, leading to UAF.
->
-> Fix this by explicitly deleting the NAPI association for the failed
-> index 'i' before rolling back the successfully configured queues.
->
-> Fixes: b02e5a0ebb17 ("xsk: Propagate napi_id to XDP socket Rx path")
-> Reported-by: Guenter Roeck <groeck@google.com>
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> Cc: Bj=C3=B6rn T=C3=B6pel <bjorn.topel@intel.com>
-> Cc: Daniel Borkmann <daniel@iogearbox.net>
-> Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-> Cc: Michael S. Tsirkin <mst@redhat.com>
-> Cc: Tariq Toukan <tariqt@nvidia.com>
-> ---
->  drivers/net/veth.c | 2 ++
->  1 file changed, 2 insertions(+)
->
+The patch removes the per-port debugfs directory in nsim_destroy()
+before free_netdev() so that debugfs files referencing fields inside
+the netdevsim struct cannot be reached after the slab is released.
 
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Link: https://syzkaller.appspot.com/bug?extid=6c25f4750230faf70be9
 
---0000000000008539900654d7aba4
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+> diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
+> index 27e5f109f933..08136e7990cb 100644
+> --- a/drivers/net/netdevsim/netdev.c
+> +++ b/drivers/net/netdevsim/netdev.c
+> @@ -1214,6 +1214,13 @@ void nsim_destroy(struct netdevsim *ns)
+>  		ns->page = NULL;
+>  	}
+>  
+> +	/*
+> +	 * Remove per-port debugfs files before free_netdev() releases the
+> +	 * netdevsim struct to prevent use-after-free in concurrent readers.
+> +	 */
+> +	debugfs_remove_recursive(ns->nsim_dev_port->ddir);
+> +	ns->nsim_dev_port->ddir = NULL;
+> +
+>  	free_netdev(dev);
+>  }
 
-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
-/HTPxpDrr4vzZL0yoc9XefyCbdiwfyFl99oBekp+1ZxXc5bZsVhRPVyEWFtCys66nqu5cU2GPT3a
-ySQEHOtIKyGGgzMVvitOzO2suQkoMvu/swsftfgCY/PObdlBZhv0BD97+WwR6CQJh/YEuDDEHYCy
-NDeiVtF3/jwT04bHB7lR9n+AiCSLr9wlgBHGdBFIOmT/XMX3K8fuMMGLq9PpGQEMvYa9QTkE9+zc
-MddiNNh1xtCTG0+kC7KIttdXTnffisXKsX44B8ECAwEAAaOCAd0wggHZMA4GA1UdDwEB/wQEAwIF
-oDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3Nl
-Y3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEF
-BQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1Ud
-IAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIB
-FiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAy
-hjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwJAYDVR0R
-BB0wG4EZcGF2YW4uY2hlYmJpQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
-HSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAdBgNVHQ4EFgQUxJ6fps/yOGneJRYDWUKPuLPk
-miYwDQYJKoZIhvcNAQELBQADggIBAI2j2qBMKYV8SLK1ysjOOS54Lpm3geezjBYrWor/BAKGP7kT
-QN61VWg3QlZqiX21KLNeBWzJH7r+zWiS8ykHApTnBlTjfNGF8ihZz7GkpBTa3xDW5rT/oLfyVQ5k
-Wr2OZ268FfZPyAgHYnrfhmojupPS4c7bT9fQyep3P0sAm6TQxmhLDh/HcsloIn7w1QywGRyesbRw
-CFkRbTnhhTS9Tz3pYs5kHbphHY5oF3HNdKgFPrfpF9ei6dL4LlwvQgNlRB6PhdUBL80CJ0UlY2Oz
-jIAKPusiSluFH+NvwqsI8VuId34ug+B5VOM2dWXR/jY0as0Va5Fpjpn1G+jG2pzr1FQu2OHR5GAh
-6Uw50Yh3H77mYK67fCzQVcHrl0qdOLSZVsz/T3qjRGjAZlIDyFRjewxLNunJl/TGtu1jk1ij7Uzh
-PtF4nfZaVnWJowp/gE+Hr21BXA1nj+wBINHA0eufDHd/Y0/MLK+++i3gPTermGBIfadXUj8NGCGe
-eIj4fd2b29HwMCvfX78QR4JQM9dkDoD1ZFClV17bxRPtxhwEU8DzzcGlLfKJhj8IxkLoww9hqNul
-Md+LwA5kUTLPBBl9irP7Rn3jfftdK1MgrNyomyZUZSI1pisbv0Zn/ru3KD3QZLE17esvHAqCfXAZ
-a2vE+o+ZbomB5XkihtQpb/DYrfjAMYICVzCCAlMCAQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UE
-ChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMfR2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0Eg
-MjAyMwIMClwVCDIzIfrgd31IMA0GCWCGSAFlAwQCAQUAoIHHMC8GCSqGSIb3DQEJBDEiBCDLypFJ
-CPpuSM58K2oKkskuFjtvd1th7dkTqFcpZrd6BTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
-CSqGSIb3DQEJBTEPFw0yNjA2MjIxMzMyMTJaMFwGCSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEq
-MAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCG
-SAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQAp0ZaZoxhyFXDYsOwmTCXqFlKYB8bTqzQsqvT6pdzI
-1B6xdgQJehiG7nVThDYMoOJkpV4HhBzf46HTFan/PzpZdr39wlK6RaOYjaQyHKrKqzmT3wY5/PGD
-5g8rEV99VVJIlb37ehAZcgxtG6zs93By3QpJDndZpxHfHJef5Zz0Z9EupIZxYHl5jarg2eWKp9dk
-L7MNvOGPwdQquUGKGZtJeKRcczr7HSu+Qc1LhfryDXgoPpn30au13GJoWYdQ+kY6W4UELrz8Gfka
-jQAptAstnnO+UtbpPNJc7spP3OWSu8U95dcYadUDv+PHZ+i07+8bgNOuI4kEnYbr+tiFABwG
---0000000000008539900654d7aba4--
+[High]
+Does the same use-after-free window remain on the nsim_create() error
+path?
+
+nsim_create() unconditionally calls nsim_ethtool_init(ns) before the
+init step that can fail:
+
+    SET_NETDEV_DEVLINK_PORT(dev, &nsim_dev_port->devlink_port);
+    nsim_ethtool_init(ns);
+    if (nsim_dev_port_is_pf(nsim_dev_port))
+        err = nsim_init_netdevsim(ns);
+    else
+        err = nsim_init_netdevsim_vf(ns);
+    if (err)
+        goto err_free_netdev;
+    ...
+err_free_netdev:
+    free_netdev(dev);
+    return ERR_PTR(err);
+
+nsim_ethtool_init() populates files under nsim_dev_port->ddir whose
+data pointers reference fields inside ns, for example:
+
+    ethtool = debugfs_create_dir("ethtool", ns->nsim_dev_port->ddir);
+    debugfs_create_u32("get_err", 0600, ethtool, &ns->ethtool.get_err);
+    debugfs_create_u32("set_err", 0600, ethtool, &ns->ethtool.set_err);
+    ...
+    dir = debugfs_create_dir("ring", ethtool);
+    debugfs_create_u32("rx_max_pending", 0600, dir,
+                      &ns->ethtool.ring.rx_max_pending);
+
+If nsim_init_netdevsim() (or nsim_init_netdevsim_vf()) fails, the
+err_free_netdev label runs free_netdev(dev) directly and returns
+ERR_PTR(err). The caller then calls nsim_dev_port_debugfs_exit() to
+tear down ddir, but in the meantime the netdevsim slab has already
+been freed while these debugfs files are still live with data pointers
+into it.
+
+Should the same debugfs_remove_recursive(nsim_dev_port->ddir) be done
+on the err_free_netdev path before free_netdev(dev), or should the
+debugfs file creation be moved past the point of no return so the
+fuzzer-reachable failure paths (alloc pressure on mock_phc_create,
+register_netdevice, nsim_psp_init, etc.) cannot leave dangling
+debugfs entries?
+
+The Fixes: tag e05b2d141fef appears to cover this path as well.
