@@ -1,264 +1,206 @@
-Received: from mail-oi1-f207.google.com (mail-oi1-f207.google.com [209.85.167.207])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20DC19CD1B
-	for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 12:15:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.207
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17E762E11D2
+	for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 12:20:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782130526; cv=none; b=bAwOzeVBdRVb41HBxWi+NZb/sC7SZx4IJlyqth9bU4ax6Xf/v84WlqQ1pQRzvputmkQ1gGOFMMzz26P/xOpBL2mtqJ+e6IO+FB37b/OPbqDvqLlVYDMalrfmeqUxqEGszrBd717nbttMwZzspc37DEmA4JCcRXutg8VkE1uyhqY=
+	t=1782130802; cv=none; b=Oyg6v85XVaMvoROoNlelsokoalzhC24SyZ6Cr8C/ehjKCHPgrkXM8pj4QSbQ3nD6thczXhN+tOCVFVSEZ5FRH6mmmbuy3MqEl7D0C05abjyLVwUi7AVcaFxihmbVPIBQpZIwQLsF0qMvXKCOLEDo0xcJigGY/wm2kzrmYmpnUSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782130526; c=relaxed/simple;
-	bh=iUTH8IWnPm/z1bbfDmIlJlByTLab51WLdmchf63yBXE=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=eHZFnZTUrs1WZAIsR8xY+DAjuJe9RsFc2NcuJ4dhKsUKwfdNGcS1Y/NNIBfrLr1X3P3KXxCSgPYcpUXy9iPBGglGZQygv7gR/doBXjFJnGSkuDsrBikVy0zYEekQxCJFIxv6bwsSusCKA8ZZDCRuoXJbVYemtdv0h/u1eiRpzk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.207
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f207.google.com with SMTP id 5614622812f47-4863a0c3105so8155495b6e.3
-        for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 05:15:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782130524; x=1782735324;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=H+t9IVbbOIStIDm5nW3UphHoukIuS9MqTVXcISHJjlE=;
-        b=lxJy+jf3SP+Y2UoGNiRGEvqiXZDsU/uAFfLRWTvDXyaVpVYiwQUuHsWppOheSM2p2/
-         ZzJ+6V86DrI0YX80Liyyfiyi4rih2leNu8fEemwxs4eDFgIyex0R7Vi8ICj/lt1j7wGZ
-         kBAlEVD6onp86cZfP9Ks+fULLPfcmk6BqZKpS+y7VWIrnjhQUw+o2LdESyPpRwDi/8fB
-         yYlITAzx1hY2LNXjJ2KUgjKyoP4vsHISjWGCW3oQxS5+BNAmBByaSLQzLzLI8TRvWu3L
-         fEcxgTkvxjZkudrDrBNQB6hfxnIJM5VDRRbwFE63Kj3HBwEjiZDNrNvmSkUTH9yYGYo/
-         Yxdg==
-X-Forwarded-Encrypted: i=1; AFNElJ8RBVY0f8chs1TAIs79ez36Nz93Y0Ep+XTGX5GpAMjchly8HhfgXkAtVVg5ivkOaW4S4hKL7EA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxgvrkLb0tSYdFlkbjQQYmxacLAXErqUBtpKNFj5yblEKxENJ2c
-	naHASMNNegRDLWpEszGjf4iUI4CCuc6MI4dMNGEwLfyfXea9D40TxDh86e/VcSkjLoQJIrCszUr
-	+8hJA39maYWQRqGIBgcgMlYpX6H2cmSr6AsylN9yFyadcvsHsVYm+l8MyzzQ=
+	s=arc-20240116; t=1782130802; c=relaxed/simple;
+	bh=0VevDQVTDaErw8iSWjbcNXbDaAtDjLJbzkmyX9pzlWA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BB/XNhirzVEKBNjrQADv8TiprgrW0aMYrOqNS1yyhajkaVmaDFNTc5MpJvslnQe97O70lnDLxMcgf5G2yq3GJr/wnJ9pFqoK+L6FpqUw6a3W1O60O+l3L1g0zbmTfrfipl+hxsUktA3Y7zKjBdkF3H5j9vhD1NvpYwjwsqZc7BU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=jqoeueEF; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=U3RfeZ++; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=jqoeueEF; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=U3RfeZ++; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="jqoeueEF";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="U3RfeZ++";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="jqoeueEF";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="U3RfeZ++"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 5146C758EB;
+	Mon, 22 Jun 2026 12:19:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1782130799; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/ohf9ubqdDTE4+SiZNzzPsJ/5S73zeXWMQQIAR1OJgU=;
+	b=jqoeueEFaWbTzRfb/VpkWvTyS9AMGVQpoJtOJiQvOrwpLflflMZcJfHGXLGo2aLVdkR8tD
+	+VotYY6YdcAXHQPny+fEhVLrgoMMcOEPB09GxumhZ3MFPZUPN527vIJLY9JvP+qgV9hRbG
+	7eP9vbw7nJWWyMkv2yjH71SsMhlfDcY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1782130799;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/ohf9ubqdDTE4+SiZNzzPsJ/5S73zeXWMQQIAR1OJgU=;
+	b=U3RfeZ++6Ix1706n6ETN1Z6qkYiiyWtTwmBcWh+G1Sm6+An5sp0NOK6ywxk1+aZ+xtqN9L
+	Dkf6Wn2tBr8OJJAg==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=jqoeueEF;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=U3RfeZ++
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1782130799; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/ohf9ubqdDTE4+SiZNzzPsJ/5S73zeXWMQQIAR1OJgU=;
+	b=jqoeueEFaWbTzRfb/VpkWvTyS9AMGVQpoJtOJiQvOrwpLflflMZcJfHGXLGo2aLVdkR8tD
+	+VotYY6YdcAXHQPny+fEhVLrgoMMcOEPB09GxumhZ3MFPZUPN527vIJLY9JvP+qgV9hRbG
+	7eP9vbw7nJWWyMkv2yjH71SsMhlfDcY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1782130799;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/ohf9ubqdDTE4+SiZNzzPsJ/5S73zeXWMQQIAR1OJgU=;
+	b=U3RfeZ++6Ix1706n6ETN1Z6qkYiiyWtTwmBcWh+G1Sm6+An5sp0NOK6ywxk1+aZ+xtqN9L
+	Dkf6Wn2tBr8OJJAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A17DE779A8;
+	Mon, 22 Jun 2026 12:19:58 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id F1JPJG4oOWpyXwAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Mon, 22 Jun 2026 12:19:58 +0000
+Message-ID: <05b42695-82a8-45c4-8f99-074a9767ceb5@suse.de>
+Date: Mon, 22 Jun 2026 14:19:47 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:250a:b0:46a:ccae:5517 with SMTP id
- 5614622812f47-4896abffb92mr12335578b6e.28.1782130523947; Mon, 22 Jun 2026
- 05:15:23 -0700 (PDT)
-Date: Mon, 22 Jun 2026 05:15:23 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a39275b.5031c61f.34f2da.0003.GAE@google.com>
-Subject: [syzbot] [wireless?] KASAN: slab-use-after-free Read in
- ath9k_hif_request_firmware (2)
-From: syzbot <syzbot+cb7ed9d85261445a0201@syzkaller.appspotmail.com>
-To: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com, toke@toke.dk
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2 7/7] ipv6: reset position for force_forwarding
+ sysctl restart
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: netdev@vger.kernel.org, nicolas.dichtel@6wind.com,
+ stephen@networkplumber.org, brian.haley@hp.com, horms@kernel.org,
+ pabeni@redhat.com, kuba@kernel.org, edumazet@google.com,
+ davem@davemloft.net, dsahern@kernel.org
+References: <20260620161850.7114-1-fmancera@suse.de>
+ <20260620161850.7114-8-fmancera@suse.de> <20260622114223.GA233619@shredder>
+Content-Language: en-US
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+In-Reply-To: <20260622114223.GA233619@shredder>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Flag: NO
+X-Rspamd-Action: no action
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	MIME_TRACE(0.00)[0:+];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_TLS_ALL(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:dkim,suse.de:mid,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: 5146C758EB
+X-Spam-Score: -4.51
 
-Hello,
+On 6/22/26 1:42 PM, Ido Schimmel wrote:
+> On Sat, Jun 20, 2026 at 06:18:50PM +0200, Fernando Fernandez Mancera wrote:
+>> When handling proxy_ndp, if rtnl_net_trylock() fails, the operation is
+> 
+> s/proxy_ndp/force_forwarding/
+> 
+>> retried but the position pointer was already advanced meaning that the
+>> restarted sysctl will read from an incorrect offset.
+>>
+>> Fix this by restoring the original position pointer before restarting
+>> the syscall.
+>>
+>> In addition, remove the redundant position pointer restoration at the
+>> end of the function.
+>>
+>> Fixes: f24987ef6959 ("ipv6: add `force_forwarding` sysctl to enable per-interface forwarding")
+>> Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+>> ---
+>>   net/ipv6/addrconf.c | 6 +++---
+>>   1 file changed, 3 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+>> index cbe681de3818..8c0741e9dfcc 100644
+>> --- a/net/ipv6/addrconf.c
+>> +++ b/net/ipv6/addrconf.c
+>> @@ -6825,8 +6825,10 @@ static int addrconf_sysctl_force_forwarding(const struct ctl_table *ctl, int wri
+>>   	ret = proc_douintvec_minmax(&tmp_ctl, write, buffer, lenp, ppos);
+>>   
+>>   	if (write && old_val != new_val) {
+>> -		if (!rtnl_net_trylock(net))
+>> +		if (!rtnl_net_trylock(net)) {
+>> +			*ppos = pos;
+>>   			return restart_syscall();
+>> +		}
+> 
+> Are you sure that this is needed?
+> 
+> AFAICT, the position pointer is only advanced if the return value is
+> positive. From new_sync_write():
+> 
+> kiocb.ki_pos = (ppos ? *ppos : 0);
+> [...]
+> ret = filp->f_op->write_iter(&kiocb, &iter);
+> [...]
+> if (ret > 0 && ppos)
+>          *ppos = kiocb.ki_pos;
+> 
+> And restart_syscall() returns '-ERESTARTNOINTR'.
+> 
 
-syzbot found the following issue on:
+Hm, I think you are right. I was not aware of this check, thanks for 
+pointing it out. That means we can get rid of position pointer reset 
+from the rest of the code.. the are plenty of sysctl following this 
+pattern. I will prepare a batch for net-next.
 
-HEAD commit:    1a3746ccbb0a Merge tag 'strncpy-removal-v7.2-rc1' of git:/..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=153b07f2580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=26c7945305cfa3b1
-dashboard link: https://syzkaller.appspot.com/bug?extid=cb7ed9d85261445a0201
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+I am sending a v3 dropping this patch.
 
-Unfortunately, I don't have any reproducer for this issue yet.
+Thank you Ido!
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/634e430ffbca/disk-1a3746cc.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/b11553afbbe2/vmlinux-1a3746cc.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/1fa9342aa2a9/bzImage-1a3746cc.xz
+>>   
+>>   		WRITE_ONCE(*valp, new_val);
+>>   
+>> @@ -6851,8 +6853,6 @@ static int addrconf_sysctl_force_forwarding(const struct ctl_table *ctl, int wri
+>>   		rtnl_net_unlock(net);
+>>   	}
+>>   
+>> -	if (ret)
+>> -		*ppos = pos;
+>>   	return ret;
+>>   }
+>>   
+>> -- 
+>> 2.54.0
+>>
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+cb7ed9d85261445a0201@syzkaller.appspotmail.com
-
-==================================================================
-BUG: KASAN: slab-use-after-free in ath9k_hif_request_firmware+0x416/0x450 drivers/net/wireless/ath/ath9k/hif_usb.c:1219
-Read of size 8 at addr ffff888053c45000 by task kworker/1:8/11284
-
-CPU: 1 UID: 0 PID: 11284 Comm: kworker/1:8 Tainted: G             L      syzkaller #0 PREEMPT(full) 
-Tainted: [L]=SOFTLOCKUP
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/09/2026
-Workqueue: events request_firmware_work_func
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0x13d/0x4b0 mm/kasan/report.c:482
- kasan_report+0xdf/0x1c0 mm/kasan/report.c:595
- ath9k_hif_request_firmware+0x416/0x450 drivers/net/wireless/ath/ath9k/hif_usb.c:1219
- ath9k_hif_usb_firmware_cb+0x3f9/0x530 drivers/net/wireless/ath/ath9k/hif_usb.c:1237
- request_firmware_work_func+0x13f/0x440 drivers/base/firmware_loader/main.c:1164
- process_one_work+0xa23/0x1940 kernel/workqueue.c:3322
- process_scheduled_works kernel/workqueue.c:3405 [inline]
- worker_thread+0x5ef/0xe50 kernel/workqueue.c:3486
- kthread+0x370/0x450 kernel/kthread.c:436
- ret_from_fork+0x72b/0xd50 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-
-Allocated by task 11281:
- kasan_save_stack+0x30/0x50 mm/kasan/common.c:57
- kasan_save_track+0x14/0x30 mm/kasan/common.c:78
- poison_kmalloc_redzone mm/kasan/common.c:398 [inline]
- __kasan_kmalloc+0xaa/0xb0 mm/kasan/common.c:415
- _kmalloc_noprof include/linux/slab.h:969 [inline]
- _kzalloc_noprof include/linux/slab.h:1286 [inline]
- ath9k_hif_usb_probe+0x30e/0x830 drivers/net/wireless/ath/ath9k/hif_usb.c:1369
- usb_probe_interface+0x303/0x8f0 drivers/usb/core/driver.c:396
- call_driver_probe drivers/base/dd.c:628 [inline]
- really_probe+0x241/0xa60 drivers/base/dd.c:706
- __driver_probe_device+0x20e/0x450 drivers/base/dd.c:868
- driver_probe_device+0x4a/0x140 drivers/base/dd.c:898
- __device_attach_driver+0x1df/0x320 drivers/base/dd.c:1026
- bus_for_each_drv+0x159/0x1e0 drivers/base/bus.c:500
- __device_attach+0x1e4/0x4d0 drivers/base/dd.c:1098
- device_initial_probe+0xaf/0xd0 drivers/base/dd.c:1153
- bus_probe_device+0x64/0x160 drivers/base/bus.c:620
- device_add+0x121d/0x1970 drivers/base/core.c:3772
- usb_set_configuration+0xd97/0x1c60 drivers/usb/core/message.c:2268
- usb_generic_driver_probe+0xa1/0xe0 drivers/usb/core/generic.c:250
- usb_probe_device+0xef/0x400 drivers/usb/core/driver.c:291
- call_driver_probe drivers/base/dd.c:628 [inline]
- really_probe+0x241/0xa60 drivers/base/dd.c:706
- __driver_probe_device+0x20e/0x450 drivers/base/dd.c:868
- driver_probe_device+0x4a/0x140 drivers/base/dd.c:898
- __device_attach_driver+0x1df/0x320 drivers/base/dd.c:1026
- bus_for_each_drv+0x159/0x1e0 drivers/base/bus.c:500
- __device_attach+0x1e4/0x4d0 drivers/base/dd.c:1098
- device_initial_probe+0xaf/0xd0 drivers/base/dd.c:1153
- bus_probe_device+0x64/0x160 drivers/base/bus.c:620
- device_add+0x121d/0x1970 drivers/base/core.c:3772
- usb_new_device.cold+0x685/0x115c drivers/usb/core/hub.c:2695
- hub_port_connect drivers/usb/core/hub.c:5567 [inline]
- hub_port_connect_change drivers/usb/core/hub.c:5707 [inline]
- port_event drivers/usb/core/hub.c:5871 [inline]
- hub_event+0x314d/0x4af0 drivers/usb/core/hub.c:5953
- process_one_work+0xa23/0x1940 kernel/workqueue.c:3322
- process_scheduled_works kernel/workqueue.c:3405 [inline]
- worker_thread+0x5ef/0xe50 kernel/workqueue.c:3486
- kthread+0x370/0x450 kernel/kthread.c:436
- ret_from_fork+0x72b/0xd50 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
-Freed by task 5704:
- kasan_save_stack+0x30/0x50 mm/kasan/common.c:57
- kasan_save_track+0x14/0x30 mm/kasan/common.c:78
- kasan_save_free_info+0x3b/0x70 mm/kasan/generic.c:584
- poison_slab_object mm/kasan/common.c:253 [inline]
- __kasan_slab_free+0x5f/0x80 mm/kasan/common.c:285
- kasan_slab_free include/linux/kasan.h:235 [inline]
- slab_free_hook mm/slub.c:2700 [inline]
- slab_free mm/slub.c:6310 [inline]
- kfree+0x22b/0x6c0 mm/slub.c:6625
- ath9k_hif_usb_disconnect+0x207/0x3c0 drivers/net/wireless/ath/ath9k/hif_usb.c:1439
- usb_unbind_interface+0x1dd/0x9e0 drivers/usb/core/driver.c:458
- device_remove drivers/base/dd.c:618 [inline]
- device_remove+0x12a/0x180 drivers/base/dd.c:610
- __device_release_driver drivers/base/dd.c:1349 [inline]
- device_release_driver_internal+0x44e/0x620 drivers/base/dd.c:1372
- bus_remove_device+0x2bc/0x560 drivers/base/bus.c:664
- device_del+0x376/0x9b0 drivers/base/core.c:3961
- usb_disable_device+0x367/0x810 drivers/usb/core/message.c:1478
- usb_disconnect+0x2e2/0x9a0 drivers/usb/core/hub.c:2345
- hub_port_connect drivers/usb/core/hub.c:5407 [inline]
- hub_port_connect_change drivers/usb/core/hub.c:5707 [inline]
- port_event drivers/usb/core/hub.c:5871 [inline]
- hub_event+0x1d0c/0x4af0 drivers/usb/core/hub.c:5953
- process_one_work+0xa23/0x1940 kernel/workqueue.c:3322
- process_scheduled_works kernel/workqueue.c:3405 [inline]
- worker_thread+0x5ef/0xe50 kernel/workqueue.c:3486
- kthread+0x370/0x450 kernel/kthread.c:436
- ret_from_fork+0x72b/0xd50 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
-The buggy address belongs to the object at ffff888053c45000
- which belongs to the cache kmalloc-2k of size 2048
-The buggy address is located 0 bytes inside of
- freed 2048-byte region [ffff888053c45000, ffff888053c45800)
-
-The buggy address belongs to the physical page:
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x53c40
-head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-flags: 0xfff00000000040(head|node=0|zone=1|lastcpupid=0x7ff)
-page_type: f5(slab)
-raw: 00fff00000000040 ffff88813fe40000 dead000000000100 dead000000000122
-raw: 0000000000000000 0000000800080008 00000000f5000000 0000000000000000
-head: 00fff00000000040 ffff88813fe40000 dead000000000100 dead000000000122
-head: 0000000000000000 0000000800080008 00000000f5000000 0000000000000000
-head: 00fff00000000003 fffffffffffffe01 00000000ffffffff 00000000ffffffff
-head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000008
-page dumped because: kasan: bad access detected
-page_owner tracks the page as allocated
-page last allocated via order 3, migratetype Unmovable, gfp_mask 0xd20c0(__GFP_IO|__GFP_FS|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 4965, tgid 4965 (klogd), ts 316220316300, free_ts 316211784975
- set_page_owner include/linux/page_owner.h:32 [inline]
- post_alloc_hook+0xfd/0x120 mm/page_alloc.c:1859
- prep_new_page mm/page_alloc.c:1867 [inline]
- get_page_from_freelist+0xf48/0x3530 mm/page_alloc.c:3946
- __alloc_frozen_pages_noprof+0x299/0x2dc0 mm/page_alloc.c:5304
- alloc_slab_page mm/slub.c:3289 [inline]
- allocate_slab mm/slub.c:3404 [inline]
- new_slab+0xa2/0x670 mm/slub.c:3447
- refill_objects+0xe3/0x430 mm/slub.c:7241
- refill_sheaf mm/slub.c:2827 [inline]
- __pcs_replace_empty_main+0x375/0x660 mm/slub.c:4692
- alloc_from_pcs mm/slub.c:4790 [inline]
- slab_alloc_node mm/slub.c:4924 [inline]
- __kmalloc_cache_noprof+0x48d/0x6e0 mm/slub.c:5446
- _kmalloc_noprof include/linux/slab.h:969 [inline]
- syslog_print+0xf8/0x620 kernel/printk/printk.c:1585
- do_syslog+0x5bd/0x6d0 kernel/printk/printk.c:1763
- __do_sys_syslog kernel/printk/printk.c:1855 [inline]
- __se_sys_syslog kernel/printk/printk.c:1853 [inline]
- __x64_sys_syslog+0x74/0xb0 kernel/printk/printk.c:1853
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-page last free pid 11284 tgid 11284 stack trace:
- reset_page_owner include/linux/page_owner.h:25 [inline]
- __free_pages_prepare mm/page_alloc.c:1406 [inline]
- free_pages_prepare+0x586/0xd80 mm/page_alloc.c:1451
- __free_contig_range_common+0x14f/0x250 mm/page_alloc.c:6895
- __free_contig_range mm/page_alloc.c:6940 [inline]
- free_pages_bulk+0x12a/0x200 mm/page_alloc.c:5257
- vm_area_free_pages+0xad/0x2b0 mm/vmalloc.c:3439
- vfree mm/vmalloc.c:3488 [inline]
- vfree+0x107/0x750 mm/vmalloc.c:3462
- delayed_vfree_work+0x56/0x80 mm/vmalloc.c:3392
- process_one_work+0xa23/0x1940 kernel/workqueue.c:3322
- process_scheduled_works kernel/workqueue.c:3405 [inline]
- worker_thread+0x5ef/0xe50 kernel/workqueue.c:3486
- kthread+0x370/0x450 kernel/kthread.c:436
- ret_from_fork+0x72b/0xd50 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
-Memory state around the buggy address:
- ffff888053c44f00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
- ffff888053c44f80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
->ffff888053c45000: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                   ^
- ffff888053c45080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff888053c45100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-==================================================================
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
