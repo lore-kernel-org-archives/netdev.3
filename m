@@ -1,184 +1,65 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C0836607D;
-	Mon, 22 Jun 2026 10:29:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24E2220F49
+	for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 10:32:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782124186; cv=none; b=PgBskcKRIQMLKFmccJaYpijvuS0XgTE9x15WqqfRRPFSd1OfHj03YJC9coao1u+Cr8dGhtZILufpPUkYy2DzYFBBeNZlScXLG4lMvEyMA6m9onnGZYsmKdX4eF1rTG9PyyS/0CWtj1ZdIdZctHH5xUShK6n+HgFfpVJEdAbqIGs=
+	t=1782124324; cv=none; b=rcYNCjR6otbPr0rtSPHAjtsBjAL+Gi6iN02zPUq7VIWA+fPBr8A4sp4OzSZ9XcIzgq9AbmChPzqaiZowMRe3VcrqE3nkGsGLVFoDb1Rrb6KzNP0eXyhDhwTiTxesujskIMqJ7t55w4JC035zcoUU2fV7cd7oGa8hOm7Vt8AcsrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782124186; c=relaxed/simple;
-	bh=47vcHFLPuP+Dz92uLwTGP3oycukQXMy1KngWp5abA2E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gXqebaRkVeb0J3wP8etR4YfEgQyrf3CuR3GukML3zRto5Y2A+oPIOTwsEM+7JnByENXnJHcuroiyViV2UMUddbXDn1vN8zmhRr5mRFgsLdE8oLsCdbWm+tLIrZI6eltFYnHd8LRdr+qv1me9Zwx+xanJ8F9MvdyZ4FZ1Y7usVU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=ajUllmYM; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1782124324; c=relaxed/simple;
+	bh=pq1K1O7TccNQxJnQ8Nso91YxjW0N8Vf4GxnYClXp/jE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PgfZF4OF23WtY3ZmOe/RO8gvrHJHZguiEJjU8AxMjdXJ6HLtD17qmgPxxin45iaTMOThABNmyQo7tFCQAXMhRWEmih7noAAechSpbc+4Ndbz28zw2xsz4gwbJbHFZj10tYEvLwef5TBuoLn1+LtjSH3LygnxBxRm7ucHJrU/Mec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kWwpze/X; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="ajUllmYM"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BB90FA12E1;
-	Mon, 22 Jun 2026 12:29:30 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1782124173; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=8cPvtgry6fEbZtg+k+Au9a9S0BXjMYqcdb90NcXocuw=;
-	b=ajUllmYMIln5//RHD2CocqO8/L+SF6R1mQis5I20AnMw+CFafMUd8Nm6IQaFFvTfCIzrre
-	FEo8CwVew20hPWK0BClOC8j9HOu3IHAYj13LdRfLNdCQsnDbn2Oy6CKZBSQ3hsd51b65w5
-	ydnZ22XHbZqYXyOrKKPTPKwMTIfnGFgIF43NSPbpIu1HbPF6mRyD3aR1sh8v+kxDmnpcMf
-	bU2/DsrANXWCL9mFMn13/pjkS6Lgf+pTNl0SfvYCPMaApehIOHPQfmHxZIql9/Gtr+St7m
-	8iuuUb0wFurjKGGgz/zqi2YK5EW5WLWi+Lk3JURjn9VFF4NPjGovsVIPVBwHhA==
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Thangaraj Samynathan <Thangaraj.S@microchip.com>,
-	Rengarajan Sundararajan <Rengarajan.S@microchip.com>,
-	UNGLinuxDriver@microchip.com,
-	Woojung.Huh@microchip.com
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sven Schuchmann <schuchmann@schleissheimer.de>,
-	netdev@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Nicolai Buchwitz <nb@tipi-net.de>
-Subject: [PATCH net v2] net: usb: lan78xx: restore VLAN and hash filters after link up
-Date: Mon, 22 Jun 2026 12:29:11 +0200
-Message-ID: <20260622102911.484045-1-nb@tipi-net.de>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kWwpze/X"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 422941F000E9;
+	Mon, 22 Jun 2026 10:32:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782124323;
+	bh=o0SRWiMpacshWYzq/KKBsYhYEY49vcEVFbcZ2GI1sYo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=kWwpze/XQWnhKBgMzO30Cwh22U7ewEbMpxb4AVnZ08kAi7Mbd2Eejj2djeHy/SZDz
+	 8e3Jx0LVe2I5FReK3yo/0EA/MaxI1x4Mm/SiHlWqPiNFnbyVi2j1a0/JrTJ1uVm5oX
+	 U+OGS3qR3HNG7gkMsDUF8sgVo38Ze2UtkMtH9cRePOFvG9IANG5B45MutPBVv21y9i
+	 QulAc6HOwsYGJ0b07bkM6xXv95pChrdMJOEVwMo2U6AClMwLUPp3R9e2Ik/IxO7NKp
+	 rARel/pFfyjKn01DtiG6PdA32BqCa1RiBliQkob65qm2SjoH90h3H2q6GRT85+CskC
+	 SK4uNfbAdk2/Q==
+Date: Mon, 22 Jun 2026 11:31:59 +0100
+From: Simon Horman <horms@kernel.org>
+To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Cc: netdev@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
+	przemyslaw.kitszel@intel.com, aleksandr.loktionov@intel.com,
+	jacob.e.keller@intel.com, jesse.brandeburg@intel.com,
+	anthony.l.nguyen@intel.com, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
+Subject: Re: [PATCH net v6 0/4] Fix i40e/ice/iavf VF bonding after netdev
+ lock changes
+Message-ID: <20260622103159.GZ827683@horms.kernel.org>
+References: <20260619061321.8554-1-jtornosm@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260619061321.8554-1-jtornosm@redhat.com>
 
-Configured VLANs intermittently stop receiving traffic after a link
-down/up cycle, e.g. when the network cable is unplugged and plugged back
-in. VLAN filtering stays enabled but all VLAN-tagged frames are dropped
-until a VLAN is added or removed again.
+On Fri, Jun 19, 2026 at 08:13:15AM +0200, Jose Ignacio Tornos Martinez wrote:
+> This series fixes VF bonding failures introduced by commit ad7c7b2172c3
+> ("net: hold netdev instance lock during sysfs operations").
 
-The LAN7801 datasheet (DS00002123E) states:
+...
 
-  "A portion of the MAC operates on clocks generated by the Ethernet
-   PHY. During a PHY reset event, this portion of the MAC is designed to
-   not be taken out of reset until the PHY clocks are operational"
-  (section 8.10, MAC Reset Watchdog Timer)
+Hi Jose,
 
-  "After a reset event, the RFE will automatically initialize the
-   contents of the VHF to 0h."
-  (section 7.1.4, VHF Organization)
+Unfortunately the Netdev CI was unable to apply this series cleanly against net.
+Would you be able to rebase and repost?
 
-Thus a link down/up cycle stops and restarts the PHY clock, resets the
-PHY-clocked portion of the MAC, and the RFE clears its VLAN/DA hash
-filter (VHF) memory. The VHF holds both the VLAN filter table and the
-multicast hash table, but the driver never reprograms either from its
-shadow copy once the link is back, so both stay empty.
-
-Reprogram the VLAN filter and multicast hash tables on link up.
-
-Reported-by: Sven Schuchmann <schuchmann@schleissheimer.de>
-Closes: https://lore.kernel.org/netdev/BEZP281MB224501E38B30BFDC4BD3D364D9E32@BEZP281MB2245.DEUP281.PROD.OUTLOOK.COM/T/#u
-Tested-by: Sven Schuchmann <schuchmann@schleissheimer.de>
-Fixes: 55d7de9de6c3 ("Microchip's LAN7800 family USB 2/3 to 10/100/1000 Ethernet device driver")
-Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
----
-v2:
- - Reprogram in lan78xx_mac_link_up() instead of lan78xx_reset(); the
-   table is lost on a plain link down/up cycle, where reset() is not
-   called. This also avoids the usb_autopm_get_interface() -EACCES path
-   in reset_resume() that was flagged on v1.
- - Also restore the multicast hash table: the RFE clears the whole VHF
-   (VLAN + hash) memory, per the LAN7801 datasheet.
-
-v1: https://lore.kernel.org/netdev/20260618191109.4086598-1-nb@tipi-net.de/
-
- drivers/net/usb/lan78xx.c | 37 +++++++++++++++++++++++++++++++------
- 1 file changed, 31 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index bcf293ea1bd3..c4cebacabcb5 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -1452,6 +1452,15 @@ static inline u32 lan78xx_hash(char addr[ETH_ALEN])
- 	return (ether_crc(ETH_ALEN, addr) >> 23) & 0x1ff;
- }
- 
-+static int lan78xx_write_mchash_table(struct lan78xx_net *dev)
-+{
-+	struct lan78xx_priv *pdata = (struct lan78xx_priv *)(dev->data[0]);
-+
-+	return lan78xx_dataport_write(dev, DP_SEL_RSEL_VLAN_DA_,
-+				      DP_SEL_VHF_VLAN_LEN,
-+				      DP_SEL_VHF_HASH_LEN, pdata->mchash_table);
-+}
-+
- static void lan78xx_deferred_multicast_write(struct work_struct *param)
- {
- 	struct lan78xx_priv *pdata =
-@@ -1462,9 +1471,7 @@ static void lan78xx_deferred_multicast_write(struct work_struct *param)
- 	netif_dbg(dev, drv, dev->net, "deferred multicast write 0x%08x\n",
- 		  pdata->rfe_ctl);
- 
--	ret = lan78xx_dataport_write(dev, DP_SEL_RSEL_VLAN_DA_,
--				     DP_SEL_VHF_VLAN_LEN,
--				     DP_SEL_VHF_HASH_LEN, pdata->mchash_table);
-+	ret = lan78xx_write_mchash_table(dev);
- 	if (ret < 0)
- 		goto multicast_write_done;
- 
-@@ -1557,6 +1564,7 @@ static void lan78xx_set_multicast(struct net_device *netdev)
- }
- 
- static void lan78xx_rx_urb_submit_all(struct lan78xx_net *dev);
-+static int lan78xx_write_vlan_table(struct lan78xx_net *dev);
- 
- static int lan78xx_mac_reset(struct lan78xx_net *dev)
- {
-@@ -2514,6 +2522,17 @@ static void lan78xx_mac_link_up(struct phylink_config *config,
- 	if (ret < 0)
- 		goto link_up_fail;
- 
-+	/* The RFE clears the VLAN/DA hash filter (VHF) on a link down/up
-+	 * cycle, so reprogram both tables from their shadow copies.
-+	 */
-+	ret = lan78xx_write_vlan_table(dev);
-+	if (ret < 0)
-+		goto link_up_fail;
-+
-+	ret = lan78xx_write_mchash_table(dev);
-+	if (ret < 0)
-+		goto link_up_fail;
-+
- 	netif_start_queue(net);
- 
- 	return;
-@@ -3065,14 +3084,20 @@ static int lan78xx_set_features(struct net_device *netdev,
- 	return lan78xx_write_reg(dev, RFE_CTL, pdata->rfe_ctl);
- }
- 
-+static int lan78xx_write_vlan_table(struct lan78xx_net *dev)
-+{
-+	struct lan78xx_priv *pdata = (struct lan78xx_priv *)(dev->data[0]);
-+
-+	return lan78xx_dataport_write(dev, DP_SEL_RSEL_VLAN_DA_, 0,
-+				      DP_SEL_VHF_VLAN_LEN, pdata->vlan_table);
-+}
-+
- static void lan78xx_deferred_vlan_write(struct work_struct *param)
- {
- 	struct lan78xx_priv *pdata =
- 			container_of(param, struct lan78xx_priv, set_vlan);
--	struct lan78xx_net *dev = pdata->dev;
- 
--	lan78xx_dataport_write(dev, DP_SEL_RSEL_VLAN_DA_, 0,
--			       DP_SEL_VHF_VLAN_LEN, pdata->vlan_table);
-+	lan78xx_write_vlan_table(pdata->dev);
- }
- 
- static int lan78xx_vlan_rx_add_vid(struct net_device *netdev,
-
-base-commit: d07d80b6a129a44538cda1549b7acf95154fb197
 -- 
-2.53.0
+pw-bot: changes-requested
+
 
