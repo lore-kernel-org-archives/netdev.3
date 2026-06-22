@@ -1,84 +1,93 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8984E3783BE
-	for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 10:52:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 480DC3783C4;
+	Mon, 22 Jun 2026 10:54:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782125529; cv=none; b=mdJjVbUx165lpr/RmhrPebCjBz/Y7iMgO9cnPwBNi+SxiZ1jFZWsZ5U0madyYY9cDF8Oe8yovh5Mv1pv+RJOKcQluy9pKZfpnRS7k1IrKEgyKNZ6QBAF3yoH1n9ee3rKgQzKOAnX96FqxbKPSLgd7ntTOSswT3gXodWoWEfZcVQ=
+	t=1782125646; cv=none; b=Dok5oDRo0WQGGON+K8/8EvxCS+zfTbMl6jldWOj+5TVkrfC38iTP4VCd3ig5SZjZ8BpgIMQpVDMOGpTb1ANgpVBv3JL5gHDaqRqT1+uB47faIRIbbeGzYmnc/skwI0CDmIcsUrkVS5uIoBV0FS0O1rrGOzwFgkOWzhYtvjN9NYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782125529; c=relaxed/simple;
-	bh=dP7YOQdMFFWMe6SFbBqJUEKuKE6sG1VVyWa1eKmnmZ0=;
+	s=arc-20240116; t=1782125646; c=relaxed/simple;
+	bh=9ocAbWfJBJnLuv92X+iB4cLtcgQC37d+fIUtTulhn2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FWjNdt6deTm+K2cZd2YL31JT97uGLct2zGkh2j6P6AuVSdsqHOt9iWMcYgmiBI+rgMmBrDoqbBeIXcwRMQc7aFE5C83PMj78EhS5Pp7OR1jnbUfXbBKZ5A4JQrOiwb7at4+tLWIeZA08CNSy6s+DZ0OtXkQxY0of5clV/gx/9ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TB/Mxr1y; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 MIME-Version; b=AoGJONe8e9zbDU/1JqvECOjIRHcP2EPVwuKoZggrmI//PpgzqIfgoIpCbaGhmSQVD42JbuVd7C71Flr/TVmivggrXuh0fWBpwTx8Rguh5lolpjYdlAkH3tK5loJAwVvz9Ehd6TWduE1Y+ridrmR3vP+7s05zN6PB4x61oS4Zs5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oxd5FisK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TB/Mxr1y"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782125527;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dP7YOQdMFFWMe6SFbBqJUEKuKE6sG1VVyWa1eKmnmZ0=;
-	b=TB/Mxr1y2NlbnqUHoIlnV3XeBZXTJGGK4QN07ioN5zCRjMTOZFv0DN8KuFdI1MFZvvztVi
-	pCnUnFsJnJScqsRgXERIWq1lp8YTV2+XSmJYMe65qiF4EOdAmVl9ol5i5WZEZrLs/p8zFL
-	ME/XFQItOEl/UpzhG8lPuBajHBogjrE=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-119-LNoohOtNOv2JJmqnfWRb-g-1; Mon,
- 22 Jun 2026 06:52:01 -0400
-X-MC-Unique: LNoohOtNOv2JJmqnfWRb-g-1
-X-Mimecast-MFC-AGG-ID: LNoohOtNOv2JJmqnfWRb-g_1782125520
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B86B718005AB;
-	Mon, 22 Jun 2026 10:51:59 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.44.32.91])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8DD96195608B;
-	Mon, 22 Jun 2026 10:51:54 +0000 (UTC)
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-To: horms@kernel.org
-Cc: aleksandr.loktionov@intel.com,
-	anthony.l.nguyen@intel.com,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oxd5FisK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F5321F000E9;
+	Mon, 22 Jun 2026 10:54:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782125644;
+	bh=8OMBAfjJBG1yflPxUCVlFyVOJHWYSW70ogFfcfTKQdY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=oxd5FisKJ6gOyWY3BFr+i7qubg8dV2JRXlskDGpVW01s/P1tEWxNQLdrV8Jxck64p
+	 MAyUgexwkuHNJQ1PlSOCtlF6d1O600XkTjQha2CU8ATOmkWkqmqnklkGtBWlG7IrNJ
+	 oO70n+AcfbWKb0/ed9hw/6+kBGvqtoSUcCK1sL2vM4uyevIPfU6vSND1qp+o7W/mfL
+	 PMB3oWUo+wC+j4gZPaPmS9YOhuVZiFBUGdT2/c37QMqysnc0GqxrMelOD3O9zf8QGe
+	 R3jngXM7KK27sRkLkb2y5rpFJ7J4oDE0nsbIDKmbDaEEOKJ1boOMEOeTnT/2xInJJS
+	 lNLTHQ+P0WQ9Q==
+From: Simon Horman <horms@kernel.org>
+To: rkannoth@marvell.com
+Cc: Simon Horman <horms@kernel.org>,
 	davem@davemloft.net,
-	edumazet@google.com,
-	intel-wired-lan@lists.osuosl.org,
-	jacob.e.keller@intel.com,
-	jesse.brandeburg@intel.com,
-	jtornosm@redhat.com,
-	kuba@kernel.org,
+	gakula@marvell.com,
+	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
+	sgoutham@marvell.com,
+	andrew+netdev@lunn.ch,
+	edumazet@google.com,
+	kuba@kernel.org,
 	pabeni@redhat.com,
-	przemyslaw.kitszel@intel.com
-Subject: Re: [Intel-wired-lan] [PATCH net v6 0/4] Fix i40e/ice/iavf VF bonding after netdev lock changes
-Date: Mon, 22 Jun 2026 12:51:51 +0200
-Message-ID: <20260622105152.24016-1-jtornosm@redhat.com>
-In-Reply-To: <20260622103159.GZ827683@horms.kernel.org>
-References: <20260622103159.GZ827683@horms.kernel.org>
+	hkelam@marvell.com
+Subject: Re: [PATCH net] octeontx2-af: Block VFs from clobbering special CGX PKIND state
+Date: Mon, 22 Jun 2026 11:51:50 +0100
+Message-ID: <20260622105149.1009058-2-horms@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260619041002.1773822-1-rkannoth@marvell.com>
+References: <20260619041002.1773822-1-rkannoth@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Hello Simon,
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://sashiko.dev
+---
+(Note: Due to recitation restrictions, the standard unified diff is omitted 
+and the findings are summarized below instead of inline quoting.)
 
-> Unfortunately the Netdev CI was unable to apply this series cleanly against net.
-> Would you be able to rebase and repost?
-Sure, I'll rebase on current net and send v7 shortly.
+commit 40480a8afd593111da0b00679b782cbe187572e6
+Author: Hariprasad Kelam <hkelam@marvell.com>
 
-Thanks
+octeontx2-af: Block VFs from clobbering special CGX PKIND state
 
-Best regards
-José Ignacio
+This commit adds checks to prevent VFs from overwriting LMAC RX PKIND or
+default TX parse configs when a shared LMAC uses HIGIG2 or EDSA parsing.
+It introduces helpers to verify if the PKIND configuration is permitted
+before applying updates.
 
+[Severity: High]
+Can a Time-of-Check to Time-of-Use (TOCTOU) race occur between a VF checking
+the LMAC PKIND state and subsequently updating it?
+
+Looking at rvu_cgx_is_pkind_config_permitted() in rvu_cgx.c, it reads the
+hardware LMAC PKIND register locklessly to check if HIGIG or EDSA parsing
+is enabled.
+
+If the check returns true, the VF proceeds to write its own default PKIND
+to the LMAC via cgx_set_pkind() in nix_interface_init(), or updates the TX
+parse config in rvu_mbox_handler_nix_lf_alloc() in rvu_nix.c.
+
+Since VF mailbox messages are handled by rvu_afvf_mbox_handler() on a separate
+workqueue without holding rvu->mbox_lock, could a PF executing a mailbox
+message like rvu_mbox_handler_npc_set_pkind interleave between the VF's
+lockless read and its subsequent write?
+
+If so, the VF might observe the default PKIND, the PF could then set
+HIGIG_PKIND or EDSA_PKIND, and the VF would then erroneously overwrite the
+PF's configuration. Does this sequence need to be protected by a lock such
+as cgx_cfg_lock or rsrc_lock to prevent bypassing the new protection?
