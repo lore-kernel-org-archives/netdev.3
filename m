@@ -1,73 +1,61 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010009.outbound.protection.outlook.com [52.101.46.9])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E88C34D93B;
-	Mon, 22 Jun 2026 20:29:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782160177; cv=fail; b=i75TxpCc8ThC4+6ot/7mUnmONU4fYYLRfQbAgwnRIsycuCohMSjcKdQSHfaTskzxMoiJ+d+LbOfnBCiHjDl8oUip4LSiK42OipoluQVmQc/Q927T+uErmRaxSu+RfWWYqWMwcaEEx9kaHyjdMcreewZRSyN/ypPUsSl6zbC4qFA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782160177; c=relaxed/simple;
-	bh=gGrNT/o8JKJ3JxkDPRx40IbU9uZ2N7Zq1Omw63IGuME=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ki1sqVoll2RtcI6HatLNYyrAMMkVOya4xyb2LOaRWi9OdzTV3MzAVAV/yiU5Oho9oYj8FVo5clS2L1Wu1zxpEcLTcoLvBmqah8PGfTEgXqnV2VS7g64DZsWKHLV7OAQKLd55ryZ7WYlS3iq75kR6QH8oZdkJvWV871Xo/Y5lznY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Kb8HK5AQ; arc=fail smtp.client-ip=52.101.46.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A341A1A680A;
+	Mon, 22 Jun 2026 21:18:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782163119; cv=none; b=msPxMR7PxshHQQU63wcZ+IfX2qecHjPG0AZkhjUnfcqOc7QEQ0UEa1mOA+2s4s6i/OMFAHmQVnrHFZdSXpzODPf1ryfhVOZZiF6Vrj4W8g3+rtNb98jECAOAAUxciQINNNvW2D0mzz5Mlal7+GZH1I6Qc/Sb3vfHsXiIR/AV7sQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782163119; c=relaxed/simple;
+	bh=2YHuOm3D3nZpwzk5qkMI5I0CYLW2QkXe3tO15X3b22Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Aj1aDr5/wPoFOKDPKXIRXcu37en6pm0ktatssMfsQzg3cwwHb+sdvHvsYDXqxJMU/XiXbjcC7nexai62XTUMfObVuG5q7cXDQGnVacjxxUPPF3Af3DaBX3V+GeXKdcsZzia2rG3dkMPsA6rqNclFsYUH8a2odXrPhQpGW7NUW5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=eRhm43cl; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Kb8HK5AQ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oYtiWUc+0R4jKyl3TTh2yVW1gX8PJirW8184QXEYtGacv5eQwbpN5Bow6KLHNlNlVQd1P4Pdewm2bNbr7KgAquBwVyecNM9AEdSx9ZPf/ovC4NnOav5DalMJxYOMv6gz69SoL+1oyoNrOkoD82d/EI5QIZ7DCt3bP+gWed5OYSJ/kC86lkEEHJBYCVyey5AfSam/KlasDR2RdOlZ49hVINJz7si8OiaN63Rg5YeIF2jy9ICJQ2JebnVOw+hhlCrOWx0YXMqy+Qys1HTWUfhS9ngZq/SqjQ4BCJy+duNrUTxoVH1JcYcG9fCrV30A3TrBp4VDLapPLaswvlFoCHN5jw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=poshX01D31s4IwXi4YvIE4tXZpVBpaIHUoSeSYmK03Y=;
- b=tMUM/HANdwuR2ErKRm7jaqlt7Ly1rfcjI5T+9Z+zocMCb1KS45w28eiMVUTvRnBQsUlQo4qp9AH+Qaqi5suLqS8oXm7NbkBcx3jE+pW1wvflv3n7JGloyiQELVjmk5V2GMByHda12eKHFee2dj3jXjzl1mzao2BiMnxtutmR8zK7DsuVesbcjZ4KFFb8vXORLA4bfDjC8tRWQh9gu+j/D5xdKuOkOII5ia6X4Dwgsuc1SQYYHp5fkrWchpHypbAPrXS9lprW5NXEoyTyqL9jKHVzi+2owFkeO/HPc5eodj3c7ymj0LMMTmPM+RJe350qu5SZBRuc7h5Wy3YeG/KNyA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=poshX01D31s4IwXi4YvIE4tXZpVBpaIHUoSeSYmK03Y=;
- b=Kb8HK5AQPqneCmG1XBoKId5uyePRp4LKsf8Yhk0hn0C94vif19uEovGqvFM/XKG9v4MuZBBfb+a01/plF6abLzH/gQ/lwazBpGPkWFmBktj0mevKaqTJR3XnAXDvxpFeblndpqqIXhx4+fdc/2rxyg11W/CKfYF44jb9Qs2TcwLAzVgLKpO5YgG1/0Y36/JfmhjC/EMla1Y/Lz6oE8i7jVlwAsgCDxhwlNkfMxFeqeZgXOU/OqqZ2D7NtgWs1Zx1NHwWCuBbHuA+WGEKGxebo50sPHmn8CVwxpPwglG13qvQBGJZgp7ZBEXxf1sd3wxOjLw2RNZi5T1W1D+pvod58Q==
-Received: from PH8P222CA0017.NAMP222.PROD.OUTLOOK.COM (2603:10b6:510:2d7::27)
- by PH0PR12MB7096.namprd12.prod.outlook.com (2603:10b6:510:21d::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.11; Mon, 22 Jun
- 2026 20:29:31 +0000
-Received: from CY4PEPF0000FCC3.namprd03.prod.outlook.com
- (2603:10b6:510:2d7:cafe::17) by PH8P222CA0017.outlook.office365.com
- (2603:10b6:510:2d7::27) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.139.20 via Frontend Transport; Mon,
- 22 Jun 2026 20:29:31 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- CY4PEPF0000FCC3.mail.protection.outlook.com (10.167.242.105) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.139.8 via Frontend Transport; Mon, 22 Jun 2026 20:29:31 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 22 Jun
- 2026 13:29:03 -0700
-Received: from 82875d6-lcedt.nvidia.com (10.126.231.37) by
- rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Mon, 22 Jun 2026 13:29:02 -0700
-From: Nirmoy Das <nirmoyd@nvidia.com>
-To: Jakub Kicinski <kuba@kernel.org>, Sabrina Dubroca <sd@queasysnail.net>,
-	John Fastabend <john.fastabend@gmail.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Nirmoy Das
-	<nirmoyd@nvidia.com>
-Subject: [PATCH net-next] selftests: tls: size splice_short pipe by page size
-Date: Mon, 22 Jun 2026 13:28:47 -0700
-Message-ID: <20260622202847.3944076-1-nirmoyd@nvidia.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="eRhm43cl"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=RgNBQWtN3vUtaCAj9PZrfM3f29o0Zexpy8xT+zB0a90=; b=eRhm43cltEuE83Phurdds0Uy+C
+	A+Y7gHCk1pocI1l3BmvmT/nGeFG0htxdWk5sTZfNv80yEJmUD98q2lx3kEC40asvCVaBBTcPTvHXH
+	Foa+LanFoazvgysiyyvn4sZZ0gQJHBVTsHpqAktNHG+wC3UREY5NuJfJZweNd1Nq9GAndTNIZ97Rs
+	OmNZTp6TeaqkC0upwm7I5MIs2B3EQckhkZ/KzZ7L0c3c4KSsWJNiYjYIVBTE8UI5+AO3q8LHTZFfg
+	rf8Cxk4etPddkPKqJC/8NkMQemjqB4U+rQpRjIsR/zEGYohWtRyVHqILKa1bTIPI1m1d0im44AHrY
+	OBn/8eow==;
+Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wbm2C-00000004x8J-4A9T;
+	Mon, 22 Jun 2026 21:18:25 +0000
+Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.2 #2 (Red Hat Linux))
+	id 1wbm2D-00000004R5B-0spj;
+	Mon, 22 Jun 2026 22:18:25 +0100
+From: David Woodhouse <dwmw2@infradead.org>
+To: Rodolfo Giometti <giometti@enneenne.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	John Stultz <jstultz@google.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Miroslav Lichvar <mlichvar@redhat.com>,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: David Woodhouse <dwmw@amazon.co.uk>
+Subject: [RFC PATCH v3 3/4] pps: Always use ktime_get_snapshot_id() for pps_get_ts()
+Date: Mon, 22 Jun 2026 21:36:20 +0100
+Message-ID: <20260622211822.1056437-4-dwmw2@infradead.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260622211822.1056437-1-dwmw2@infradead.org>
+References: <20260622211822.1056437-1-dwmw2@infradead.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -75,84 +63,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000FCC3:EE_|PH0PR12MB7096:EE_
-X-MS-Office365-Filtering-Correlation-Id: 40d7cebb-d79c-45ed-fae9-08ded09cf73a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|82310400026|23010399003|36860700016|18002099003|11063799006|56012099006|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	8UH2nq4B09wWqnFu0ND9Nmenm2vEudFvh3nrupLRPfKx9+X0mGdiuDLcWKUhPwRhceWkP+pJWlHBMK3/UxVEoQkKgZMf4+OYchiPeiqZE7s4xZDjrlO4t/zoHhr5g7Qnn4qG+psvXUSo71mH7gM6FPWIuDKsmimaHp3WvcjK/L90fwGVHqBCSnbbvDjHlk1PzR/MemqpDXXTTSnHO4h9s4x9PT7CjbV8C6IIg+sKDA6rFegFeewdG8VLYIZIe6wYkEDKrzDJrmI4zSIQvvW0HmvsGBYdknF13N2K0WnuDZ35cLgmL5M79kEKE66Bl94jgrs+XZ2cXTyj8Dx06WMZckHSTNFDiLhitimCodtzTFqXLcD04ht0X61PqO5ixy7j8Ugh0yjS7nuUktpTsFtwj0Ikb5jqYgn2tmLEAc6nQeB/LoaoVvcfbbYFF08WVICjj5zdk9iKqQT2911vLgpTaUVBRBhybftuiWaYxDaEyhXHyFiPY7WaAaXAC4zW5zIrFmluekI614JWT4rkrt6ZUsN4ht4Eq52VuBv4Ruy5FKb6auvXmd8XEIRYdU1MQDOza9wny1deEbuvuvUQ0y8AOqGkD0MN1snuAF4J+iHQBHeL5T1NjMz8GnbnAz1TQe98Fg59+DsRBG0tNnweJgz8Tro81L+ifwQwbMCR/5qdPYQnRzlqxdmVmudaKvquyxGTK9WgiA1U0nsb8qr9s++31A==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(1800799024)(82310400026)(23010399003)(36860700016)(18002099003)(11063799006)(56012099006)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	lRNTI4d0cDIPZ4tQsedKdfx2b/HpBSR4g+CiGo/5eE+4lhog2LmzRwd0bmhkkdhdssXwGTQZYXhoHSIEJ1IHNA2DoRIkeI5cxynWTmJhA1jiMaVfH9z116YKLGqcKDgjputPIGoa6No2CztHPPbCGbtzGNN440Cp1ByKDIryii8W7QTCCSk5bF7hqoIvK+Ys0+L/3S0Woap4EU3YKqNg99J9nmTVucybjoOGWfKjfK6V9ne65PBrQBniVZ+Z3quxXeIkat0KFAVKTfQGGIDVtelfRftTwr0Hgmah8YIwYuul7ipuBjBT778DPzz0dtR8Juagwoo7MWDyiebbo/rFm+Xxn9I6b0eiT22msYPNf4mI91ot/ejxCYSoc+Ud+8TT0YB0Q49+zpYnlHlvd+mScYFzrkm4lOp4F5xHEq52B3fkSIDDgt5qhdtHOqd8Fp99
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jun 2026 20:29:31.3284
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 40d7cebb-d79c-45ed-fae9-08ded09cf73a
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000FCC3.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7096
+Sender: David Woodhouse <dwmw2@infradead.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-splice_short grows its pipe with (MAX_FRAGS + 1) * 0x1000 so it can
-queue one short vmsplice() buffer for each fragment before draining the
-pipe. That assumes 4K pipe buffers.
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-On 64K-page kernels the request is rounded to 262144 bytes, which
-provides only four pipe buffers. The fifth one-byte vmsplice() blocks in
-pipe_wait_writable and the test times out before it reaches the TLS path.
+A recent commit changed ktime_get_snapshot_id() to return a corrected
+::systime value which takes into account the divergence of the normal
+per-tick timekeeping from the ideal NTP-disciplined clock.
 
-Request enough bytes for the same number of pipe buffers using the
-runtime page size, and assert that the kernel granted at least that much.
-If an unprivileged run cannot raise the pipe above the system
-pipe-max-size limit, skip the test because it cannot exercise the
-intended path.
+Rather than using that more accurate timestamp *only* in the case where
+CONFIG_NTP_PPS is enabled, do so unconditionally.
 
-Fixes: 3667e9b442b9 ("selftests: tls: add test for short splice due to full skmsg")
-Assisted-by: Codex:gpt-5
-Signed-off-by: Nirmoy Das <nirmoyd@nvidia.com>
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- tools/testing/selftests/net/tls.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ include/linux/pps_kernel.h | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/net/tls.c b/tools/testing/selftests/net/tls.c
-index 30a236b8e9f73..e3bf4ade0f770 100644
---- a/tools/testing/selftests/net/tls.c
-+++ b/tools/testing/selftests/net/tls.c
-@@ -997,6 +997,8 @@ TEST_F(tls, splice_short)
- 	char sendbuf[0x100];
- 	char sendchar = 'S';
- 	int pipefds[2];
-+	int pipe_sz;
-+	int ret;
- 	int i;
+diff --git a/include/linux/pps_kernel.h b/include/linux/pps_kernel.h
+index 9f088c9023b1..5eeed6695882 100644
+--- a/include/linux/pps_kernel.h
++++ b/include/linux/pps_kernel.h
+@@ -99,14 +99,12 @@ static inline void timespec_to_pps_ktime(struct pps_ktime *kt,
  
- 	sendchar_iov.iov_base = &sendchar;
-@@ -1005,7 +1007,12 @@ TEST_F(tls, splice_short)
- 	memset(sendbuf, 's', sizeof(sendbuf));
+ static inline void pps_get_ts(struct pps_event_time *ts)
+ {
+-#ifdef CONFIG_NTP_PPS
+ 	struct system_time_snapshot snap;
  
- 	ASSERT_GE(pipe2(pipefds, O_NONBLOCK), 0);
--	ASSERT_GE(fcntl(pipefds[0], F_SETPIPE_SZ, (MAX_FRAGS + 1) * 0x1000), 0);
-+	pipe_sz = (MAX_FRAGS + 1) * getpagesize();
-+	ret = fcntl(pipefds[0], F_SETPIPE_SZ, pipe_sz);
-+	if (ret < 0 && errno == EPERM)
-+		SKIP(return, "insufficient pipe capacity");
-+	ASSERT_GE(ret, 0);
-+	ASSERT_GE(ret, pipe_sz);
+ 	ktime_get_snapshot_id(CLOCK_REALTIME, &snap);
+ 	ts->ts_real = ktime_to_timespec64(snap.systime);
++#ifdef CONFIG_NTP_PPS
+ 	ts->ts_raw = ktime_to_timespec64(snap.monoraw);
+-#else
+-	ktime_get_real_ts64(&ts->ts_real);
+ #endif
+ }
  
- 	for (i = 0; i < MAX_FRAGS; i++)
- 		ASSERT_GE(vmsplice(pipefds[1], &sendchar_iov, 1, 0), 0);
 -- 
-2.43.0
+2.54.0
 
