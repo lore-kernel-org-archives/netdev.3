@@ -1,146 +1,95 @@
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+Received: from mail-m2425.xmail.ntesmail.com (mail-m2425.xmail.ntesmail.com [45.195.24.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA178136358;
-	Mon, 22 Jun 2026 02:45:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C51175A81;
+	Mon, 22 Jun 2026 03:31:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.195.24.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782096322; cv=none; b=f9KZuUdQqw+PZTcmNfNLnp5MfBmwvl+snsq27kx1Kkc4mUHlO1OKtcV4ji4zR835JeCoyAfjxW2wKaFPGABXC7WlsRlrHsqEvCI/n4aSxpJwaSnervSIpAkqjACF4yoctn+NE2FTCzlzyVqLw0uwmw0zGl+NXAam++eig0rwzfQ=
+	t=1782099097; cv=none; b=Z7szuyUUWua+AWZPmVHYKJGwTA/7BfF9LQgyqAbAcnbMdcUNsBazhjDokFsiNUIEfcK2fzH/rzoCVM9pv9kOLMa98BCaADYmCRBu0PoDHbXoV4VyOd6OM5QJiGk61A816cbB0TTwM/qVu7AZRjPu4IrU24AtLZxr1Y1RdBttWVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782096322; c=relaxed/simple;
-	bh=cCnB8SHaTELhBMM2vNSo8nome0XmO9U28qrztuN+eZY=;
-	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To; b=Nxt8899l6Xz3lh1bT38/FDB+2EIAwhumPIPUz9sYL0ub4AIQ5J5UQJkO4VpcT2WDphyaW54pqcgKzsiirbyKP4kaUw1Tz9HnCrtc1TxHWpTtxqzuzr1V6whgLE1u/TvSGVcirQQL4PgxqSwL9GLeqNpv696uKSVoWlfKk80PIsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=tap6l4BQ; arc=none smtp.client-ip=115.124.30.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1782099097; c=relaxed/simple;
+	bh=4CJ0BW01+ZHpO4AApHrpRXqwxTEX1606TuvSpOUiNyA=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version; b=Drz36k1r2mKTD3En2qT9HA1fqvGG8ZaQJJYS+Hy0XyihfeeG0Ee/kJyTLnjuP9ONMIjT4+5b+femoUOyT41MFIQdLtBPtogOMyL90oEWquP+fJaR26qNiV0Dr0az7WaxAwMR44U2ABHrc/2VprLiH51ti57cj1VFwONTpve97rA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ucloud.cn; spf=pass smtp.mailfrom=ucloud.cn; dkim=pass (1024-bit key) header.d=ucloud.cn header.i=@ucloud.cn header.b=mDlclvaB; arc=none smtp.client-ip=45.195.24.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ucloud.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucloud.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="tap6l4BQ"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1782096313; h=Message-ID:Subject:Date:From:To;
-	bh=6l8D54I1qhjeNtbRwIBHC97XmtG0Dd57mu48xVCfLtk=;
-	b=tap6l4BQF3pctbMQkK0yhd+dZQVQifrYHOJztpJ83oIAnOZnavwIWe9qoNUFG1gZxDnuYmPWtp2hTm4SGcIiDoA73+wUlj8Yi2io4xi/X7VUBeMgYo/xyEyhBCpwBwdsnH+t7r4VUk25nNm2jW3srV47t/r+d63fTkqGfBMTZEo=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R311e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=xuanzhuo@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0X5GhaeY_1782096312;
-Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0X5GhaeY_1782096312 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 22 Jun 2026 10:45:13 +0800
-Message-ID: <1782096043.3540094-1-xuanzhuo@linux.alibaba.com>
-Subject: Re: [PATCH net-next v3] virtio-net: xsk: support tx wake up
-Date: Mon, 22 Jun 2026 10:40:43 +0800
-From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-To: Menglong Dong <menglong8.dong@gmail.com>
-Cc: mst@redhat.com,
- jasowang@redhat.com,
- andrew+netdev@lunn.ch,
- davem@davemloft.net,
- edumazet@google.com,
- kuba@kernel.org,
- pabeni@redhat.com,
- netdev@vger.kernel.org,
- virtualization@lists.linux.dev,
- linux-kernel@vger.kernel.org,
- eperezma@redhat.com
-References: <20260616115912.513183-1-dongml2@chinatelecom.cn>
-In-Reply-To: <20260616115912.513183-1-dongml2@chinatelecom.cn>
+	dkim=pass (1024-bit key) header.d=ucloud.cn header.i=@ucloud.cn header.b="mDlclvaB"
+Received: from yuangap.. (unknown [106.75.220.2])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 1bb5e51a5;
+	Mon, 22 Jun 2026 11:31:24 +0800 (GMT+08:00)
+From: "yuan.gao" <yuan.gao@ucloud.cn>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Yue Haibing <yuehaibing@huawei.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Kyle Zeng <kylebot@openai.com>,
+	"yuan.gao" <yuan.gao@ucloud.cn>,
+	Kees Cook <kees@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] net: dst: block BH in ipip6_tunnel_xmit
+Date: Mon, 22 Jun 2026 11:31:17 +0800
+Message-Id: <20260622033118.244651-1-yuan.gao@ucloud.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9eed6205350229kunmfc98e48e1ebcce
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaHxhNVkhPQklISR1PTRpLSVYVFA
+	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlKS01VTE5VSUlLVUlZV1kWGg8SFR0UWUFZT0tIVUpLSU
+	9PT0hVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=mDlclvaBkntOfGbokVPG4PYZDUp8QwI31TUFiq3I1ksLgVM8YyOeYiA9z8oGuBTu1xknGKzC5DtZ2UKWVW6lQjAgqUa3MBfTUgSLbTwYQC4KMJyyH92ALJqJJ3C4SMf5L6D1pkDwqnCjWWmBytC6/XxjV1HAPsOg+Gl3idJxJlo=; c=relaxed/relaxed; s=default; d=ucloud.cn; v=1;
+	bh=mcu0Q7TU4nmlPL+qM/x69lH/sYmnRorYukFsshfAN5A=;
+	h=date:mime-version:subject:message-id:from;
 
-On Tue, 16 Jun 2026 19:59:12 +0800, Menglong Dong <menglong8.dong@gmail.com> wrote:
-> For now, XDP_RING_NEED_WAKEUP is not supported properly by the virtio-net
-> in the tx path for example: we set xsk_set_tx_need_wakeup() in
-> virtnet_xsk_xmit(), but we didn't call xsk_clear_tx_need_wakeup()
-> anywhere, which means the user will call send() for every packet.
->
-> We call xsk_set_tx_need_wakeup() after virtnet_xsk_xmit_batch() if sq->vq
-> is empty, as we can't be wakeup by the skb_xmit_done() in this case.
-> Otherwise, we will clear the wakeup flag.
->
-> Race condition is considered for tx path.
->
-> Fixes: 89f86675cb03 ("virtio_net: xsk: tx: support xmit xsk buffer")
+Similar to commit 1378817486d6 ("tipc: block BH before using dst_cache"),
+the dst cache helper functions must be invoked with local BH disabled.
 
-This is not a bug, so we do not need this.
-And you post this to net-next.
+This ensures proper synchronization and fixes a potential race condition
+on SMP systems.
 
+Signed-off-by: yuan.gao <yuan.gao@ucloud.cn>
+---
+ net/ipv6/sit.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-> Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
-> ---
-> v3:
-> - remove the confusing comment
->
-> v2:
-> - add the Fixes tag
-> ---
->  drivers/net/virtio_net.c | 23 +++++++++++++++++++----
->  1 file changed, 19 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-> index f4adcfee7a80..6e099edef6e9 100644
-> --- a/drivers/net/virtio_net.c
-> +++ b/drivers/net/virtio_net.c
-> @@ -1440,8 +1440,9 @@ static bool virtnet_xsk_xmit(struct send_queue *sq, struct xsk_buff_pool *pool,
->  	struct virtnet_info *vi = sq->vq->vdev->priv;
->  	struct virtnet_sq_free_stats stats = {};
->  	struct net_device *dev = vi->dev;
-> +	int sent, vring_size;
-> +	bool need_wakeup;
->  	u64 kicks = 0;
-> -	int sent;
->
->  	/* Avoid to wakeup napi meanless, so call __free_old_xmit instead of
->  	 * free_old_xmit().
-> @@ -1451,8 +1452,25 @@ static bool virtnet_xsk_xmit(struct send_queue *sq, struct xsk_buff_pool *pool,
->  	if (stats.xsk)
->  		xsk_tx_completed(sq->xsk_pool, stats.xsk);
->
-> +	vring_size = virtqueue_get_vring_size(sq->vq);
-> +	need_wakeup = xsk_uses_need_wakeup(pool);
-> +
-> +	if (need_wakeup && vring_size == sq->vq->num_free)
-> +		xsk_set_tx_need_wakeup(pool);
+diff --git a/net/ipv6/sit.c b/net/ipv6/sit.c
+index 201347b4e1274..2a63b346634e7 100644
+--- a/net/ipv6/sit.c
++++ b/net/ipv6/sit.c
+@@ -934,14 +934,20 @@ static netdev_tx_t ipip6_tunnel_xmit(struct sk_buff *skb,
+ 			   IPPROTO_IPV6, 0, dst, tiph->saddr, 0, 0,
+ 			   sock_net_uid(tunnel->net, NULL));
+ 
++	local_bh_disable();
+ 	rt = dst_cache_get_ip4(&tunnel->dst_cache, &fl4.saddr);
++	local_bh_enable();
++
+ 	if (!rt) {
+ 		rt = ip_route_output_flow(tunnel->net, &fl4, NULL);
+ 		if (IS_ERR(rt)) {
+ 			DEV_STATS_INC(dev, tx_carrier_errors);
+ 			goto tx_error_icmp;
+ 		}
++
++		local_bh_disable();
+ 		dst_cache_set_ip4(&tunnel->dst_cache, &rt->dst, fl4.saddr);
++		local_bh_enable();
+ 	}
+ 
+ 	if (rt->rt_type != RTN_UNICAST && rt->rt_type != RTN_LOCAL) {
+-- 
+2.32.0
 
-You need to comment this.
-
-
-> +
->  	sent = virtnet_xsk_xmit_batch(sq, pool, budget, &kicks);
->
-> +	if (need_wakeup) {
-> +		if (vring_size == sq->vq->num_free)
-> +			/* we can't wake up by ourself, and it should be done
-> +			 * by the user.
-> +			 */
-> +			xsk_set_tx_need_wakeup(pool);
-> +		else
-> +			/* we can wake up from skb_xmit_done() */
-> +			xsk_clear_tx_need_wakeup(pool);
-> +	}
-> +
->  	if (!is_xdp_raw_buffer_queue(vi, sq - vi->sq))
->  		check_sq_full_and_disable(vi, vi->dev, sq);
-
-
-After fixed above comments, you can add:
-
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-
-Thanks.
-
-
->
-> @@ -1470,9 +1488,6 @@ static bool virtnet_xsk_xmit(struct send_queue *sq, struct xsk_buff_pool *pool,
->  	u64_stats_add(&sq->stats.xdp_tx,  sent);
->  	u64_stats_update_end(&sq->stats.syncp);
->
-> -	if (xsk_uses_need_wakeup(pool))
-> -		xsk_set_tx_need_wakeup(pool);
-> -
->  	return sent;
->  }
->
-> --
-> 2.54.0
->
