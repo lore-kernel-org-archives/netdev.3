@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D818356758
-	for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 22:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E57AC370D63
+	for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 22:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782165680; cv=none; b=r9xmf6tMuVsQ7bMAZ5b+bJbh8wi6mxBFTiwP9FGcgFDTT5aPzHqRFPW8coEStqx8AAfzKL0Fv3s3SSgZpJBlYlyGCzrrnSkSeNjWH8yU26Tx4597q5j0NMmTo9/wJ7qWhjfFvOy9SOhspnmDNqk6ZYXxKPZQYNSszEltZsSPhsE=
+	t=1782165683; cv=none; b=SK/RVhnUqu9kjY3dryNbMX85GkcYof+R/cATD/qYK+OwsmIygXrElG32PL+fVrdSnIWlEBVOLRGfFTUIQc9wyVtknuf3UP1toa/BD26pIE1AXRaKOallgcrIvTUcrfZIA+lg1e0kq184YtAiCpt0tc8F6pEwcOA2LQaG0TjFxP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782165680; c=relaxed/simple;
-	bh=R7C+piqaI93YvOd0r/N47Ydv6xe5tGb3vp1MDdWvmzI=;
+	s=arc-20240116; t=1782165683; c=relaxed/simple;
+	bh=iFdOHC6I9/uXE2gETZz4KB9pBfatJzMykuIGR8SGrNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MtHpYVHVH4d84gdsBVnlVXr55XixRPScro2287DNzy3U5YXMhywLuNL2bsMtviONOuAdMe23CTyy5zuZv/shniZzrwS0KI1a9kFQ9QqJfpXGRJcUDJGJjKwi+23dCu+1vWYl1GicmKsw0t6QOdwudjYzZtvJP2ETzWzULECeulY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D0oIt95q; arc=none smtp.client-ip=198.175.65.20
+	 MIME-Version; b=iD2lt4dvvIETpuqNr1hVMUyZWgX9sam5hK+OB2wvzrRlrYDBx597Tsen+xVLbCiYb2ogF+zDSa4i2CSQ41qdi32QFCKhNWj2LZ0diiWcmdMfukwGNX7VdlQd8vp7ySLJFcceEcoVizgZeFkgZ4Xgp1qaOqXeyFpynn46cmpk8rQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=b8eABmbB; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D0oIt95q"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="b8eABmbB"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782165671; x=1813701671;
+  t=1782165674; x=1813701674;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=R7C+piqaI93YvOd0r/N47Ydv6xe5tGb3vp1MDdWvmzI=;
-  b=D0oIt95qZ1phwQUktw9lGEQdPK9Z9uXECA5Z6xQHFD0CMrE7wgic5kvx
-   R1UMjNEiDHb0SICEG+SGrYCgChZhBudDnwZhkdZOsKIe7ofxx9E/TS7f2
-   0zj7aQkTz5BXvnIt77Ii7uU4vJj7LlcNenyaTLbaqe/rHcRw3MVR8A+hy
-   mPoFV59U9Ycxot80IbISl8HCHPz25tgbVsqm64VyY32bklxiVKOA8mhQ/
-   kXFbBok6YPIk3L9fAINPuYckNnwJx/px/x9cHvZKKhUPWVE+jl8poR3MF
-   NMUK/ljCe6JGo2SHYCMhOqhrt+9kG5PjvwKLLGELTy8D2T0Lr2rMrpF2r
-   w==;
-X-CSE-ConnectionGUID: JlZ506TeQE+OmTvZGX19Kg==
-X-CSE-MsgGUID: aikpPkXwRW6f2VMtrBV/5A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="82675572"
+  bh=iFdOHC6I9/uXE2gETZz4KB9pBfatJzMykuIGR8SGrNI=;
+  b=b8eABmbBQFIsfewCXiz7ttv/g4Gl6WKHG3zia8I3RoHUE/aDw5ru3vA1
+   OsHzZrAofczxy8lDpI8ZCorNFcRZHBDVtwuJ5UdWECd0KydfMeNn5oFDy
+   M0H/Zuz74Of/xne/5p1rUNxZ0kcnUj9/yc50EUW0byNDJz83+digkwGWq
+   oB7bFaGzo1R0r6z0EPry8zU8R3RTIi3lVoHAcV2lhZywxXHiYmseQafQE
+   aUrSNZMRFUcb0f9JMtFXXTiyzCmZcH2p7XesWRPhg/L7d+l+UXRwa5mO2
+   vkiB/EpJGDq5d4W1ip9NV/7yqCHbo+v+StzC6ooZaQ1p/CDgqjZ0F1+gc
+   A==;
+X-CSE-ConnectionGUID: 1U8fqJzJRkyfiuvBWNWSZw==
+X-CSE-MsgGUID: Bi/G+zGtQluP2k8TGY8h5A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="82675607"
 X-IronPort-AV: E=Sophos;i="6.24,219,1774335600"; 
-   d="scan'208";a="82675572"
+   d="scan'208";a="82675607"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
   by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 15:01:05 -0700
-X-CSE-ConnectionGUID: FTqS32ZpTgKX9tszBQ5Xag==
-X-CSE-MsgGUID: Hp1BNPJsQVmLqnqmSon/Jw==
+X-CSE-ConnectionGUID: IkE0rWQiRWakUXU2mApK0Q==
+X-CSE-MsgGUID: duJItJVdTXKNtopCWjAvsQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,219,1774335600"; 
-   d="scan'208";a="248205717"
+   d="scan'208";a="248205732"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by orviesa006.jf.intel.com with ESMTP; 22 Jun 2026 15:01:06 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -50,14 +50,15 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Marcin Szycik <marcin.szycik@intel.com>,
+Cc: Dima Ruinskiy <dima.ruinskiy@intel.com>,
 	anthony.l.nguyen@intel.com,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Patryk Holda <patryk.holda@intel.com>
-Subject: [PATCH net 4/8] ice: call netif_keep_dst() once when entering switchdev mode
-Date: Mon, 22 Jun 2026 15:00:51 -0700
-Message-ID: <20260622220059.2471844-5-anthony.l.nguyen@intel.com>
+	jacob.e.keller@intel.com,
+	timo.teras@iki.fi,
+	Moriya Kadosh <moriyax.kadosh@intel.com>,
+	Todd Brandt <todd.e.brandt@linux.intel.com>
+Subject: [PATCH net 8/8] e1000e: Reconfigure PLL clock gate timeout and re-enable K1 on Meteor Lake
+Date: Mon, 22 Jun 2026 15:00:55 -0700
+Message-ID: <20260622220059.2471844-9-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260622220059.2471844-1-anthony.l.nguyen@intel.com>
 References: <20260622220059.2471844-1-anthony.l.nguyen@intel.com>
@@ -69,44 +70,90 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Marcin Szycik <marcin.szycik@intel.com>
+From: Dima Ruinskiy <dima.ruinskiy@intel.com>
 
-netif_keep_dst() only needs to be called once for the uplink VSI, not
-once for each port representor.  Move it from ice_eswitch_setup_repr()
-to ice_eswitch_enable_switchdev().
+Commit 3c7bf5af21960 ("e1000e: Introduce private flag to disable K1")
+disabled K1 by default on Meteor Lake and newer systems due to packet
+loss observed on various platforms. However, disabling K1 caused an
+increase in power consumption.
 
-Fixes: defd52455aee ("ice: do Tx through PF netdev in slow-path")
-Signed-off-by: Marcin Szycik <marcin.szycik@intel.com>
-Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Tested-by: Patryk Holda <patryk.holda@intel.com>
+To mitigate this, reconfigure the PLL clock gate value so that K1 can
+remain enabled without incurring the additional power consumption.
+Re-enable K1 by default, but keep the private flag to support disabling
+it via ethtool. Additionally, introduce a DMI quirk table, so that K1 may
+be disabled by default on known problematic systems. Currently, this
+includes the Dell Pro 16 Plus, where the issue has been reported to persist
+despite the changes to the PLL lock timeout.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220954
+Link: https://lists.osuosl.org/pipermail/intel-wired-lan/Week-of-Mon-20250623/048860.html
+Link: https://lists.osuosl.org/pipermail/intel-wired-lan/Week-of-Mon-20260330/054059.html
+Signed-off-by: Dima Ruinskiy <dima.ruinskiy@intel.com>
+Co-developed-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
+Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
+Fixes: 3c7bf5af21960 ("e1000e: Introduce private flag to disable K1")
+Tested-by: Moriya Kadosh <moriyax.kadosh@intel.com>
+Tested-by: Todd Brandt <todd.e.brandt@linux.intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_eswitch.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/e1000e/ich8lan.c |  3 +++
+ drivers/net/ethernet/intel/e1000e/netdev.c  | 15 ++++++++++++++-
+ 2 files changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_eswitch.c b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-index 2e4f0969035f..c30e27bbfe6e 100644
---- a/drivers/net/ethernet/intel/ice/ice_eswitch.c
-+++ b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-@@ -117,8 +117,6 @@ static int ice_eswitch_setup_repr(struct ice_pf *pf, struct ice_repr *repr)
- 	if (!repr->dst)
- 		return -ENOMEM;
+diff --git a/drivers/net/ethernet/intel/e1000e/ich8lan.c b/drivers/net/ethernet/intel/e1000e/ich8lan.c
+index dea208db1be5..aa90e0ce8aca 100644
+--- a/drivers/net/ethernet/intel/e1000e/ich8lan.c
++++ b/drivers/net/ethernet/intel/e1000e/ich8lan.c
+@@ -1594,6 +1594,9 @@ static s32 e1000_check_for_copper_link_ich8lan(struct e1000_hw *hw)
+ 			phy_reg &= ~I217_PLL_CLOCK_GATE_MASK;
+ 			if (speed == SPEED_100 || speed == SPEED_10)
+ 				phy_reg |= 0x3E8;
++			else if (hw->mac.type == e1000_pch_mtp ||
++				 hw->mac.type == e1000_pch_ptp)
++				phy_reg |= 0x1D5;
+ 			else
+ 				phy_reg |= 0xFA;
+ 			e1e_wphy_locked(hw, I217_PLL_CLOCK_GATE_REG, phy_reg);
+diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
+index 808e5cddd6a9..844f31ab37ad 100644
+--- a/drivers/net/ethernet/intel/e1000e/netdev.c
++++ b/drivers/net/ethernet/intel/e1000e/netdev.c
+@@ -25,6 +25,7 @@
+ #include <linux/pm_runtime.h>
+ #include <linux/prefetch.h>
+ #include <linux/suspend.h>
++#include <linux/dmi.h>
  
--	netif_keep_dst(uplink_vsi->netdev);
--
- 	dst = repr->dst;
- 	dst->u.port_info.port_id = vsi->vsi_num;
- 	dst->u.port_info.lower_dev = uplink_vsi->netdev;
-@@ -312,6 +310,8 @@ static int ice_eswitch_enable_switchdev(struct ice_pf *pf)
- 	if (ice_eswitch_br_offloads_init(pf))
- 		goto err_br_offloads;
+ #include "e1000.h"
+ #define CREATE_TRACE_POINTS
+@@ -58,6 +59,17 @@ static const struct e1000_info *e1000_info_tbl[] = {
+ 	[board_pch_ptp]		= &e1000_pch_ptp_info,
+ };
  
-+	netif_keep_dst(uplink_vsi->netdev);
++static const struct dmi_system_id disable_k1_list[] = {
++	{
++		.ident = "Dell Pro 16 Plus PB16250",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Dell Pro 16 Plus PB16250"),
++		},
++	},
++	{}
++};
 +
- 	pf->eswitch.is_running = true;
+ struct e1000_reg_info {
+ 	u32 ofs;
+ 	char *name;
+@@ -7670,7 +7682,8 @@ static int e1000_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	/* init PTP hardware clock */
+ 	e1000e_ptp_init(adapter);
  
- 	return 0;
+-	if (hw->mac.type >= e1000_pch_mtp)
++	/* disable K1 by default on known problematic systems */
++	if (hw->mac.type >= e1000_pch_mtp && dmi_check_system(disable_k1_list))
+ 		adapter->flags2 |= FLAG2_DISABLE_K1;
+ 
+ 	/* reset the hardware with the new settings */
 -- 
 2.47.1
 
