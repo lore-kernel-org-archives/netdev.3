@@ -1,72 +1,92 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A37D2C0260;
-	Mon, 22 Jun 2026 11:34:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993502C0260
+	for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 11:34:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782128065; cv=none; b=iX7VI4CIwb0Tdcl7ARtETtJCGuG5xi+NKPw395e7uuOg83pFb1rzAwUFAj3GRS9HzYj/PhfLAhEeNkOhZiBeVR8N9u2KMuLNK13BRK8GAIF/rKbQGo6ADIz/oiDTV3d+6IQJXk+SFSFU+asGU0LWMw29JAFgzsk0MVPqVkJAzjI=
+	t=1782128079; cv=none; b=u6ckHVTykUSSfHdtIjVM60A2l5EPWCmJ7HUCSBmUoTGKP/eE1eQNgFi+ndDLV3ZwHuZI58El+8sVSoEPwONV4EmmEuJZDoDlkI3V2or5MsrzPH5X72rbj31Doh8Ov1HEiLGg89v8BHiR6h7MeAqQbPBSsGcT70ZwQLvixa3sr4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782128065; c=relaxed/simple;
-	bh=8GsnyOIFXzb4TqaaDS3uXsdYZCjWxu0esHdTEhXVSOg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r8ta2nSDsLYu8oEXh+fhwXjqu4IldTP92VzEaIza6WCfwEwmpoITupxzY4mWFfyGWmxwCNsbisO7ZhEtSCLX/D4XChLQk2nHp+f4hL1ROC9YTI0VG0y3/K54P8+EV7xEB2+oa2tbkn2YYbkFu9XYXIiAJLEDDKI7dlAR7p2tXaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=APoEj4Ny; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782128079; c=relaxed/simple;
+	bh=7AyaE7dlqIpv+p4UqSjjUZWRBDykwn+W0zrWfjRjJ68=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=g05Vy1xq2SCHN/iZ2dAs/oHbcigRda61tEUTIamKL1BE3fNpVLap2ajC4o0F9wZp9nPrgLR2WEMxdgNK3/l+gx4wsmHDjAMKIbaR3jcIyYBFMoYrTbbpgFrTqgAlXfYPJVxyNBWnpZ/OAhn4wRnE2c+a3z2UvuYpkNb9XxU8XWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OhhnndO9; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="APoEj4Ny"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00E091F000E9;
-	Mon, 22 Jun 2026 11:34:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782128063;
-	bh=/A3vADDqKy+2FXKvl4UZBKYzGOCuP5pisLV8KH9oGEY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=APoEj4Ny+oUijEwR5iQnNPsmgnr7A9+H2T9EYrWGL4bhcRUv9XZQK8/kuZfvBlbxJ
-	 evBaShc0E7egTC/wkPQGhWmlTIjHu+f/gCSTbkStVCPEBPjn3kcBW1dvEPgNMJeRSC
-	 WzuHTbnSZHy4yqpqFs7uaiPatVvvM/OQhLRZ3wXND3HMTx3XTwt1OOvQwIq8l2/Fts
-	 2Bpc4pAGrovDHNLgEhdvGlXBy6pbszG+nO+tvw34tF3vp6DHSgyWTLtC83h1Av6zws
-	 Ic8WzOyiP1oHuPSL/AvPnqw8T2uGHwsBORfoOWOYzexVRieHtqakDXyBN/AK/0jt84
-	 hJUYioRxYpMyg==
-Date: Mon, 22 Jun 2026 12:34:19 +0100
-From: Simon Horman <horms@kernel.org>
-To: Ratheesh Kannoth <rkannoth@marvell.com>
-Cc: kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	pabeni@redhat.com, sgoutham@marvell.com
-Subject: Re: [PATCH net v2] octeontx2-af: npc: cn20k: Fix subbank free list
- indexing for search order
-Message-ID: <20260622113419.GB827683@horms.kernel.org>
-References: <20260619095100.1864440-1-rkannoth@marvell.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OhhnndO9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1782128077;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=XOFM6abGX4+5COwBd2vN6B30fcL12g1ozNGw26r98DM=;
+	b=OhhnndO9x1PP7XB0EYyNtpsrdjczMg8of0iUb3HB0m1y+7+oWzZls7EMqjranKafhoa1zK
+	5MRHu4t0Q7V66FRW5K3RbtED1S5KyQHNc+OmHGLRpZvinVCgl+fAm4E482R8lB+PAo+YLs
+	1IPQsaUtQX0tHsfyYj73Mi3wAKAxF9w=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-619-tBkleTrwOwOrqfiWQtDVOw-1; Mon,
+ 22 Jun 2026 07:34:36 -0400
+X-MC-Unique: tBkleTrwOwOrqfiWQtDVOw-1
+X-Mimecast-MFC-AGG-ID: tBkleTrwOwOrqfiWQtDVOw_1782128075
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5FD991944CED
+	for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 11:34:32 +0000 (UTC)
+Received: from ShadowPeak.redhat.com (unknown [10.44.33.83])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 79557195608D;
+	Mon, 22 Jun 2026 11:34:31 +0000 (UTC)
+From: Petr Oros <poros@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Petr Oros <poros@redhat.com>
+Subject: [PATCH iwl-net v2 0/2] ice: fix DFLT Rx rule handling for promisc and switchdev
+Date: Mon, 22 Jun 2026 13:34:26 +0200
+Message-ID: <20260622113428.2565255-1-poros@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260619095100.1864440-1-rkannoth@marvell.com>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On Fri, Jun 19, 2026 at 03:21:00PM +0530, Ratheesh Kannoth wrote:
-> subbank_srch_order[i] is the physical subbank at search-order slot i,
-> so each subbank's arr_idx must be i (its slot), not
-> subbank_srch_order[sb->idx].  The old logic mis-keyed xa_sb_free
-> and broke allocation traversal order.
-> 
-> Populate arr_idx and xa_sb_free in a single pass over the search
-> order after subbank structs are initialized.
-> 
-> Fixes: 7ac9d4c4075c ("octeontx2-af: npc: cn20k: add subbank search order control")
-> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
-> 
-> ---
-> v1 -> v2: Addressed simon comments
-> 	https://lore.kernel.org/netdev/20260619091341.918165-1-horms@kernel.org/
+Two fixes for the uplink default VSI Rx rule (DFLT) on E810 when the
+netdev is in IFF_PROMISC.
 
-Thanks for the update.
+Patch 1 drops the redundant per-VLAN promisc expansion that exhausts
+the FLU pool on a wide VLAN trunk across several PFs.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Patch 2 keeps the DFLT Rx rule across a switchdev teardown instead of
+clobbering the promisc state the operator asked for.
 
-FTR, I think the issue flagged in the AI-generated review of this
-patch on sashiko.org can be treated in the context of possible follow-up.
-I don' think it should impede the progress of this patch.
+Changes since v1:
+- Patch 2: reworked to avoid the service task entirely. v1 scheduled a
+  filter sync in ice_eswitch_disable_switchdev(); that work could run
+  after ice_remove() freed the uplink VSI (use-after-free) and was not
+  guaranteed to fire if ice_set_rx_mode() never ran again. v2 keeps or
+  drops the DFLT Rx rule synchronously in ice_eswitch_release_env() by
+  testing the live netdev->flags IFF_PROMISC, the same value
+  ice_cfg_vlan_pruning() already keys on. No service task is scheduled
+  and no symbol is exported. Dropped Aleksandr's Reviewed-by since the
+  fix mechanism changed.
+- Patch 1: no functional changes, collected Aleksandr's Reviewed-by.
+
+Link to v1:
+https://lore.kernel.org/all/cover.1781786935.git.poros@redhat.com/
+
+Petr Oros (2):
+  ice: skip per-VLAN promisc rules when default VSI Rx rule is set
+  ice: preserve uplink DFLT Rx rule on switchdev release
+
+ drivers/net/ethernet/intel/ice/ice_eswitch.c | 18 +++-
+ drivers/net/ethernet/intel/ice/ice_main.c    | 90 +++++++++++++++-----
+ 2 files changed, 84 insertions(+), 24 deletions(-)
+
+-- 
+2.53.0
 
