@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E453376A03;
-	Mon, 22 Jun 2026 22:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DC1937BE6E
+	for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 22:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782165671; cv=none; b=BdtDIW210bH4csSF3W5+0ah/xZoImYND77ij7CA1K94UhN6X2GIHw837KGIsuY8D6V8/+0b9I7YPEokbLvYr6zFM+eROR4CVFR7z0U/Sc3GftwGFQ9TXbLJ7EkupdruwcDpo0bTQIPg3CLkZyGA4uXAjCB+H1dd0WhUP+2pisOo=
+	t=1782165673; cv=none; b=ID2pGmI7jd+/wXnsDhHu6VUSrrkFonst9TUto9XfFlYM/xRm3AdYTyGtjq732BMXmU5i/DBQgXk5xgIXNQUfpT9EVPEpU9S7gEMaVpJS41xmhA3O2eH36f5dBUVvsN2XsyYsEPIWRwXmr5uc7H9m4M3tDPwpWSRarrghL+F4PHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782165671; c=relaxed/simple;
-	bh=78Jq1Dj8kEiG1qk4UyHAziYDZVlH2hpxdJI/v/L9er0=;
+	s=arc-20240116; t=1782165673; c=relaxed/simple;
+	bh=Y1+zdllyrky8xr+DQci2O1Fo1kVAo2TocSFD8EowaqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B5Ded+9iFGMQ1JZrVxLlfy/p2/cED6U/gmWe9wD7Sy8swchmEWoFKVSnJ9RS0IcNkcfkR9bN+XU1JS2zE5fVufAWeSYUGHF5jo2foCfrSdFoN6FY7cf7+wq1/mW2jItsOHoYF6kujGltD7r2TCoQEWROKR8n95xA43NOi7g6kZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gn25p1pl; arc=none smtp.client-ip=198.175.65.20
+	 MIME-Version; b=CI6HwWiNdTFoZAbYsqTcAj27CaQDftkELOAzwox0iBWHw5CrMo1OUBODo1w2i550N5pPPWosNp/fqozDVLXb+Zk3w3+gGcerewKANivLPERhf4+TozLr6qg7z885Hh+scTh1IfQX0UnnRbZuRe+nJXL9IhxpcMFu80JeEZ/ukk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Kg33euVZ; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gn25p1pl"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Kg33euVZ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782165670; x=1813701670;
+  t=1782165671; x=1813701671;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=78Jq1Dj8kEiG1qk4UyHAziYDZVlH2hpxdJI/v/L9er0=;
-  b=gn25p1plaNuOnRNJxzl0ubsAfC00iKjAycsJWX8tnW7YFITIDeTjHysN
-   FC2VfOYu/zbOK2TN6e4aa2fG/1TOmz+DkKOqJalMgGUlIrmrixGSIxiPY
-   nL6tU4Pt5hfbYJ+Chkg8WYxLINlo7DFH/YkUbZtyUn2L1f+7mQaV8iH8V
-   ixfOixNmh8twGPTmAle8yeOKaDnHHGVDbqt6m2jzWZIsuDqttiNuJDb4c
-   qjUAAvz7VL9qZl73uELC3ILu9Pqrc/nYzjGPMtC1NIYOkjctMzc63F5vT
-   8njq9vbzYDPWYmP2ob1pahDahvzwGx/AC+PuG4FRXJKh8uG/+6nrafU2m
-   g==;
-X-CSE-ConnectionGUID: J62n6YLdTwePJMRISGm9Mg==
-X-CSE-MsgGUID: 0ImHcn4IRm+Kcq1RZLjJmw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="82675566"
+  bh=Y1+zdllyrky8xr+DQci2O1Fo1kVAo2TocSFD8EowaqY=;
+  b=Kg33euVZcAUKXu0FR2iVtUZvdctOgGWCf4xP5poMO8hgn19tVFHx0yWV
+   dQHHOLmY9LsewoIgZcFTU8QZNUrfQK34qN3QBjhc2/wub2f/nGtOrhjYZ
+   U3lHm3T5eZOBuf4Y+exjBLXkSXivkANgdlzOenPAD8F5k3BMSItv8qpvh
+   9e8wzuEAl8qY2c8bZeyARLKRGsZybrcc2EegS7okpClRWmB99ab5/XjZR
+   F5YJ+4stQnlzMqggX0fzr1MYay7SIhbf/dLyJjfd8qJLGLb1CtW+L1E76
+   D+h/abNqznSuZbwyvcthhBEBElicb1UMYx0pitckNvZCGAZS8jgQPjdb+
+   Q==;
+X-CSE-ConnectionGUID: pb1aEkrgTCWk2ihNyMVdDA==
+X-CSE-MsgGUID: 5zZBGrmIRJq2OBPF5Kc52w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="82675589"
 X-IronPort-AV: E=Sophos;i="6.24,219,1774335600"; 
-   d="scan'208";a="82675566"
+   d="scan'208";a="82675589"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
   by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 15:01:05 -0700
-X-CSE-ConnectionGUID: dA+pLScgRTCWlDVpe071wQ==
-X-CSE-MsgGUID: D7OImcEmS2Sbp7KxGorQ7g==
+X-CSE-ConnectionGUID: fcewnz40SdKl3bCQE72C+w==
+X-CSE-MsgGUID: UPUDipW8QMKBL4A0xCOWzA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,219,1774335600"; 
-   d="scan'208";a="248205713"
+   d="scan'208";a="248205724"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by orviesa006.jf.intel.com with ESMTP; 22 Jun 2026 15:01:05 -0700
+  by orviesa006.jf.intel.com with ESMTP; 22 Jun 2026 15:01:06 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -50,15 +50,17 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Paul Greenwalt <paul.greenwalt@intel.com>,
+Cc: ZhaoJinming <zhaojinming@uniontech.com>,
 	anthony.l.nguyen@intel.com,
-	stable@vger.kernel.org,
+	arkadiusz.kubalewski@intel.com,
+	grzegorz.nitka@intel.com,
+	jiri@resnulli.us,
+	vadim.fedorenko@linux.dev,
 	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Alexander Nowlin <alexander.nowlin@intel.com>
-Subject: [PATCH net 3/8] ice: fix ice_init_link() error return preventing probe
-Date: Mon, 22 Jun 2026 15:00:50 -0700
-Message-ID: <20260622220059.2471844-4-anthony.l.nguyen@intel.com>
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH net 6/8] ice: dpll: fix memory leak in ice_dpll_init_info error paths
+Date: Mon, 22 Jun 2026 15:00:53 -0700
+Message-ID: <20260622220059.2471844-7-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260622220059.2471844-1-anthony.l.nguyen@intel.com>
 References: <20260622220059.2471844-1-anthony.l.nguyen@intel.com>
@@ -70,91 +72,71 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Paul Greenwalt <paul.greenwalt@intel.com>
+From: ZhaoJinming <zhaojinming@uniontech.com>
 
-ice_init_link() can return an error status from ice_update_link_info()
-or ice_init_phy_user_cfg(), causing probe to fail.
+Several error return paths in ice_dpll_init_info() directly return
+without freeing previously allocated resources, causing memory leaks:
 
-An incorrect NVM update procedure can result in link/PHY errors, and
-the recommended resolution is to update the NVM using the correct
-procedure. If the driver fails probe due to link errors, the user
-cannot update the NVM to recover. The link/PHY errors logged are
-non-fatal: they are already annotated as 'not a fatal error if this
-fails'.
+- When de->input_prio allocation fails, d->inputs is leaked
+- When dp->input_prio allocation fails, d->inputs and de->input_prio
+  are leaked
+- When ice_get_cgu_rclk_pin_info() fails, all previously allocated
+  inputs/outputs/input_prio are leaked
+- When ice_dpll_init_pins_info(RCLK_INPUT) fails, same resources
+  are leaked
 
-Since none of the errors inside ice_init_link() should prevent probe
-from completing, convert it to void and remove the error check in the
-caller. All failures are already logged; callers have no meaningful
-recovery path for link init errors.
+Fix this by jumping to the deinit_info label which properly calls
+ice_dpll_deinit_info() to free all allocated resources.
 
-Fixes: 5b246e533d01 ("ice: split probe into smaller functions")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paul Greenwalt <paul.greenwalt@intel.com>
-Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
+Fixes: d7999f5ea64b ("ice: implement dpll interface to control cgu")
+Signed-off-by: ZhaoJinming <zhaojinming@uniontech.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c | 16 +++++-----------
- 1 file changed, 5 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_dpll.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index e2fbe111f849..e2fd2dab03e3 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -4789,16 +4789,14 @@ static void ice_init_wakeup(struct ice_pf *pf)
- 	device_set_wakeup_enable(ice_pf_to_dev(pf), false);
- }
+diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
+index 3876ee7255ac..30c3a4db7d61 100644
+--- a/drivers/net/ethernet/intel/ice/ice_dpll.c
++++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
+@@ -4752,12 +4752,16 @@ static int ice_dpll_init_info(struct ice_pf *pf, bool cgu)
  
--static int ice_init_link(struct ice_pf *pf)
-+static void ice_init_link(struct ice_pf *pf)
- {
- 	struct device *dev = ice_pf_to_dev(pf);
- 	int err;
+ 	alloc_size = sizeof(*de->input_prio) * d->num_inputs;
+ 	de->input_prio = kzalloc(alloc_size, GFP_KERNEL);
+-	if (!de->input_prio)
+-		return -ENOMEM;
++	if (!de->input_prio) {
++		ret = -ENOMEM;
++		goto deinit_info;
++	}
  
- 	err = ice_init_link_events(pf->hw.port_info);
--	if (err) {
-+	if (err)
- 		dev_err(dev, "ice_init_link_events failed: %d\n", err);
--		return err;
--	}
+ 	dp->input_prio = kzalloc(alloc_size, GFP_KERNEL);
+-	if (!dp->input_prio)
+-		return -ENOMEM;
++	if (!dp->input_prio) {
++		ret = -ENOMEM;
++		goto deinit_info;
++	}
  
- 	/* not a fatal error if this fails */
- 	err = ice_init_nvm_phy_type(pf->hw.port_info);
-@@ -4838,8 +4836,6 @@ static int ice_init_link(struct ice_pf *pf)
- 	} else {
- 		set_bit(ICE_FLAG_NO_MEDIA, pf->flags);
- 	}
--
--	return err;
- }
+ 	ret = ice_dpll_init_pins_info(pf, ICE_DPLL_PIN_TYPE_INPUT);
+ 	if (ret)
+@@ -4782,12 +4786,12 @@ static int ice_dpll_init_info(struct ice_pf *pf, bool cgu)
+ 	ret = ice_get_cgu_rclk_pin_info(&pf->hw, &d->base_rclk_idx,
+ 					&pf->dplls.rclk.num_parents);
+ 	if (ret)
+-		return ret;
++		goto deinit_info;
+ 	for (i = 0; i < pf->dplls.rclk.num_parents; i++)
+ 		pf->dplls.rclk.parent_idx[i] = d->base_rclk_idx + i;
+ 	ret = ice_dpll_init_pins_info(pf, ICE_DPLL_PIN_TYPE_RCLK_INPUT);
+ 	if (ret)
+-		return ret;
++		goto deinit_info;
+ 	de->mode = DPLL_MODE_AUTOMATIC;
+ 	dp->mode = DPLL_MODE_AUTOMATIC;
  
- static int ice_init_pf_sw(struct ice_pf *pf)
-@@ -4982,13 +4978,11 @@ static int ice_init(struct ice_pf *pf)
- 
- 	ice_init_wakeup(pf);
- 
--	err = ice_init_link(pf);
--	if (err)
--		goto err_init_link;
-+	ice_init_link(pf);
- 
- 	err = ice_send_version(pf);
- 	if (err)
--		goto err_init_link;
-+		goto err_deinit_pf_sw;
- 
- 	ice_verify_cacheline_size(pf);
- 
-@@ -5007,7 +5001,7 @@ static int ice_init(struct ice_pf *pf)
- 
- 	return 0;
- 
--err_init_link:
-+err_deinit_pf_sw:
- 	ice_deinit_pf_sw(pf);
- err_init_pf_sw:
- 	ice_dealloc_vsis(pf);
 -- 
 2.47.1
 
