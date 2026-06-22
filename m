@@ -1,69 +1,176 @@
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f206.google.com (mail-oi1-f206.google.com [209.85.167.206])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6526A371D15
-	for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 12:11:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A24175A66
+	for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 12:15:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782130307; cv=none; b=imM5Zwz45A7TcsZ9vxw4jK8buICuyN/6QwFSZ9vRdFtSrTqg01GwC8RQctY7Oe5IHfgKh92lgzA2oAF2rKbkh1Fi/sqzNwYj7CYe3ntp+UVH4mf/ijwlnFMWtmHHyPBWZNsHNk7JRpYcSIY7XY3zfnPuTYs4uYmHA45ymS5RNvw=
+	t=1782130526; cv=none; b=F6Oh2PPnqWrzbLVbuyxIJFB/Kbr2u7bimudVKdtCOy6X5YW+Ojo1mguG+54YiYMA6qZ518DgK5qPeCntSu5Jl4LlrFWdTj1bBjFw4PpA3LMFuao++onstfwIbj7u/2M+A7a54/JS7g+J81XSA4LL/uIeOymxade2P1wSJidd0uU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782130307; c=relaxed/simple;
-	bh=uI9WSwGdTMzaYZwGXdMkLBdsUPtjO9nKT9rYVMurqdE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LB2wifp+t/ez9tpHmEfdakxz+e4/fcTcOUE+AGId/ZmGwW5UTn+Bd51Bst7dRANG9+kdTmuLHBWgUBHWZERbNxG45qVEjh0tMQXPMe5/As/XFk3yfC9HKiL3LGxnvdERfWFzppMpPOPa0ZYNQ6o5LBTgSQYRuE9yN1Vne9cIn0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=R+vfs/AP; arc=none smtp.client-ip=91.218.175.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="R+vfs/AP"
-Message-ID: <fcd16335-4494-428b-87e7-854107a429ba@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782130302;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uI9WSwGdTMzaYZwGXdMkLBdsUPtjO9nKT9rYVMurqdE=;
-	b=R+vfs/APkw56WxPlHUP9pOnikZM/+VP385Li7WJH+0GsIXnOEaH6WMWDDmTXCqMXr5tZiC
-	ad18cj1BZWPwe0flcezNw+u+Rs3KqzRUXvN37Hhuhc3UvYM8dvOj7jQPaLUfP8jGUhDoEr
-	B7gULN7GyoAF3toQbAALxhEOzjLh7MM=
-Date: Mon, 22 Jun 2026 20:11:30 +0800
+	s=arc-20240116; t=1782130526; c=relaxed/simple;
+	bh=WKpGS9JSJbK0ZzMQsOn+ipFHr1d2DVPDrp1OyoJaLwY=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=C3an4KfJ+Xq7wkHs18K3BpxwBQ2u508ouFtExB0FR9FmcMeiMz0vIz7SMiNSqVdByNhbrbWF2hMduRCm8zxlv5Qik3UoEPcH1o5arGpeZJst8d3Hnyn5eb9aPldI3v1zjm5LnFjLQM6UDKfRjSrMZbHZD602MmCS/owp8Is6ylw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f206.google.com with SMTP id 5614622812f47-486660d2abaso7104870b6e.2
+        for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 05:15:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782130524; x=1782735324;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=oNgP9SBR5rvPWzeZce32iGMVrc3C61O1viJd6KKeyOs=;
+        b=k689XcONv8x0M42lk9yAwp1rk4cWWQn4d2Hxsom8byxgeGoJowWMuJQ6EUj05zhA5D
+         RXMohSpKKSG4jAjSTQmVQlHxM2rooamBW6jZh2vDaZP/qKVLhw/ph4HTcq34w6F/wxcw
+         1OMDYB8Yyf88NJSjUEXqSfkE9txKzm9tcvdBcmupAuN+dfPnkhDnC5LuPzy/8+iH+Cfz
+         rjpsZeV+ULYWCdxM3KVzjyTNZ6qfna+n4uNfFTA/UCbUHh0W6biGNh95Hldc9Lc11SrQ
+         BfiGze+MppRPSFndUf2N7ekc0objJzhk7q57PKRLB2FroBY/ys6GJjQtx6m1N4ppvaME
+         J7xA==
+X-Forwarded-Encrypted: i=1; AFNElJ/B7mpBD6mpOpH1xyCGto60C4Eqhj7u8W1XNJInnlti7lvmAmXiYvWGY36Qs4ETFPMOVhkmqXw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy24fl0E0SNnWRbQyqFffbYglEzc/OO9Wm0i/w3syEYFCw2A9mI
+	5kzktZid8wy9lWMfHUIMi0bmrsR43Ky+8UWs/HFTqLDq3bmYyUNWUm5OJ3TDl8CYNXaDts4M/EL
+	61kMxI9HP5vN3nLx+uc/7PQ/6fZU/zgLCy5K9cXwQGgvJqD9f3lhANyrdXVA=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net v2] net/smc: fix out-of-bounds read when sk_user_data
- holds a sk_psock
-To: Sechang Lim <rhkrqnwk98@gmail.com>, "D . Wythe"
- <alibuda@linux.alibaba.com>, Dust Li <dust.li@linux.alibaba.com>,
- Sidraya Jayagond <sidraya@linux.ibm.com>, Wenjia Zhang
- <wenjia@linux.ibm.com>, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-Cc: Mahanta Jambigi <mjambigi@linux.ibm.com>,
- Tony Lu <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>,
- Simon Horman <horms@kernel.org>, Ursula Braun <ubraun@linux.ibm.com>,
- Karsten Graul <kgraul@linux.ibm.com>, Guvenc Gulce <guvenc@linux.ibm.com>,
- linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-References: <20260619150342.3626224-1-rhkrqnwk98@gmail.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <20260619150342.3626224-1-rhkrqnwk98@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+X-Received: by 2002:a05:6808:bd3:b0:487:4d3f:7364 with SMTP id
+ 5614622812f47-4896a79e01dmr12059027b6e.0.1782130523702; Mon, 22 Jun 2026
+ 05:15:23 -0700 (PDT)
+Date: Mon, 22 Jun 2026 05:15:23 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a39275b.5031c61f.34f2da.0002.GAE@google.com>
+Subject: [syzbot] [wireless?] divide error in mac80211_hwsim_write_tsf
+From: syzbot <syzbot+21629c14aa749636db9d@syzkaller.appspotmail.com>
+To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+
+Hello,
+
+syzbot found the following issue on:
+
+HEAD commit:    83f1454877cc Merge tag 'ext4_for_linus-7.2-rc1' of git://g..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=17956aae580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=8deb4438448ed47a
+dashboard link: https://syzkaller.appspot.com/bug?extid=21629c14aa749636db9d
+compiler:       Debian clang version 22.1.6 (++20260514074242+fc4aad7b5db3-1~exp1~20260514074407.73), Debian LLD 22.1.6
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-83f14548.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/06b66919e887/vmlinux-83f14548.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/3dedd791b7cd/bzImage-83f14548.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+21629c14aa749636db9d@syzkaller.appspotmail.com
+
+Oops: divide error: 0000 [#1] SMP KASAN NOPTI
+CPU: 0 UID: 0 PID: 5321 Comm: syz.0.0 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:mac80211_hwsim_write_tsf+0x3a3/0x590 drivers/net/wireless/virtual/mac80211_hwsim_main.c:1628
+Code: 81 c4 e8 49 00 00 4c 89 e0 48 c1 e8 03 42 80 3c 30 00 74 08 4c 89 e7 e8 1b bb 22 fb 48 8b 34 24 41 03 34 24 66 b8 20 03 31 d2 <66> f7 f5 0f b7 d8 4d 8d 65 0a 49 83 c5 0d 4c 89 e0 48 c1 e8 03 42
+RSP: 0018:ffffc900037aedf0 EFLAGS: 00010246
+RAX: 1ffff110080a0320 RBX: 000000000000001c RCX: 0000000000100000
+RDX: 0000000000000000 RSI: 0000000005e6b00c RDI: 0000000000000230
+RBP: 0000000000000000 R08: 0000000000000003 R09: 0000000000000004
+R10: dffffc0000000000 R11: fffff520006f5dac R12: ffff888040547c08
+R13: ffff88803d7fadda R14: dffffc0000000000 R15: 0000000000000020
+FS:  00007f2f6aff66c0(0000) GS:ffff88808c852000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000200000002280 CR3: 0000000013282000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ mac80211_hwsim_tx_frame_no_nl+0x16b/0x1760 drivers/net/wireless/virtual/mac80211_hwsim_main.c:1902
+ mac80211_hwsim_tx+0x1784/0x2500 drivers/net/wireless/virtual/mac80211_hwsim_main.c:2261
+ drv_tx net/mac80211/driver-ops.h:38 [inline]
+ ieee80211_tx_frags+0x3df/0x890 net/mac80211/tx.c:1746
+ __ieee80211_tx+0x267/0x580 net/mac80211/tx.c:1801
+ ieee80211_tx+0x312/0x4b0 net/mac80211/tx.c:1984
+ ieee80211_monitor_start_xmit+0xb33/0x1280 net/mac80211/tx.c:2479
+ __netdev_start_xmit include/linux/netdevice.h:5387 [inline]
+ netdev_start_xmit include/linux/netdevice.h:5396 [inline]
+ xmit_one net/core/dev.c:3889 [inline]
+ dev_hard_start_xmit+0x2cd/0x830 net/core/dev.c:3905
+ __dev_queue_xmit+0x1435/0x37f0 net/core/dev.c:4872
+ packet_snd net/packet/af_packet.c:3082 [inline]
+ packet_sendmsg+0x3d95/0x5040 net/packet/af_packet.c:3114
+ sock_sendmsg_nosec net/socket.c:775 [inline]
+ __sock_sendmsg net/socket.c:790 [inline]
+ __sys_sendto+0x626/0x6c0 net/socket.c:2252
+ __do_sys_sendto net/socket.c:2259 [inline]
+ __se_sys_sendto net/socket.c:2255 [inline]
+ __x64_sys_sendto+0xde/0x100 net/socket.c:2255
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f2f6a19ce59
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f2f6aff5fe8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 00007f2f6a415fa0 RCX: 00007f2f6a19ce59
+RDX: 0000000000000026 RSI: 0000200000000640 RDI: 0000000000000007
+RBP: 00007f2f6a232e6f R08: 0000200000000380 R09: 0000000000000014
+R10: 0000000004000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f2f6a416038 R14: 00007f2f6a415fa0 R15: 00007ffff9cddab8
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:mac80211_hwsim_write_tsf+0x3a3/0x590 drivers/net/wireless/virtual/mac80211_hwsim_main.c:1628
+Code: 81 c4 e8 49 00 00 4c 89 e0 48 c1 e8 03 42 80 3c 30 00 74 08 4c 89 e7 e8 1b bb 22 fb 48 8b 34 24 41 03 34 24 66 b8 20 03 31 d2 <66> f7 f5 0f b7 d8 4d 8d 65 0a 49 83 c5 0d 4c 89 e0 48 c1 e8 03 42
+RSP: 0018:ffffc900037aedf0 EFLAGS: 00010246
+RAX: 1ffff110080a0320 RBX: 000000000000001c RCX: 0000000000100000
+RDX: 0000000000000000 RSI: 0000000005e6b00c RDI: 0000000000000230
+RBP: 0000000000000000 R08: 0000000000000003 R09: 0000000000000004
+R10: dffffc0000000000 R11: fffff520006f5dac R12: ffff888040547c08
+R13: ffff88803d7fadda R14: dffffc0000000000 R15: 0000000000000020
+FS:  00007f2f6aff66c0(0000) GS:ffff88808c852000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000200000002280 CR3: 0000000013282000 CR4: 0000000000352ef0
+----------------
+Code disassembly (best guess):
+   0:	81 c4 e8 49 00 00    	add    $0x49e8,%esp
+   6:	4c 89 e0             	mov    %r12,%rax
+   9:	48 c1 e8 03          	shr    $0x3,%rax
+   d:	42 80 3c 30 00       	cmpb   $0x0,(%rax,%r14,1)
+  12:	74 08                	je     0x1c
+  14:	4c 89 e7             	mov    %r12,%rdi
+  17:	e8 1b bb 22 fb       	call   0xfb22bb37
+  1c:	48 8b 34 24          	mov    (%rsp),%rsi
+  20:	41 03 34 24          	add    (%r12),%esi
+  24:	66 b8 20 03          	mov    $0x320,%ax
+  28:	31 d2                	xor    %edx,%edx
+* 2a:	66 f7 f5             	div    %bp <-- trapping instruction
+  2d:	0f b7 d8             	movzwl %ax,%ebx
+  30:	4d 8d 65 0a          	lea    0xa(%r13),%r12
+  34:	49 83 c5 0d          	add    $0xd,%r13
+  38:	4c 89 e0             	mov    %r12,%rax
+  3b:	48 c1 e8 03          	shr    $0x3,%rax
+  3f:	42                   	rex.X
 
 
-On 6/19/26 11:03 PM, Sechang Lim wrote:
-> SMC stores its smc_sock in the clcsock's sk_user_data tagged
-> SK_USER_DATA_NOCOPY and reads it back with smc_clcsock_user_data(), which
-> only strips that flag. sockmap stores a sk_psock in the same field tagged
-> SK_USER_DATA_NOCOPY | SK_USER_DATA_PSOCK. Nothing keeps both off one
-> socket, and SMC then casts the sk_psock to an smc_sock.
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-How about SK_USER_DATA_BPF
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
