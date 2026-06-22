@@ -1,110 +1,272 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6287225A2DD;
-	Mon, 22 Jun 2026 10:45:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 961B12E1746;
+	Mon, 22 Jun 2026 10:46:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782125154; cv=none; b=c9vzCcAjkClOyLYnr0MxUEKmK4SZ25ihf/KUGTlAOXEOxPjAww3Y06B4uZTNwsmElQ0KKmzMPm6jvHj/Q3uByCbVbvNvduRbmuT8fUemrhbiBDYx9dneoKyXVOND/zHXeAfPER3vF9oaNHipysUkTQTPS5xr/eM/ifbedeQnVw0=
+	t=1782125198; cv=none; b=dgZlRRYEwgCL3MepyIsJLbjvMQetRZGhD4GjIQtkoglAXK0Ii7sEy185/W7VwLFjDVPiYVOSIlWpQFjF2nBj+eGCJf+W/bYamDEXpjTpe+ZS2sb7w8e0jXIQWXPBPHLO+PCCBUfRIxQMEA9Muq+3ReNAsJEfLZIKImeBlpECDPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782125154; c=relaxed/simple;
-	bh=VNvrtxoaG5emAwKov6TZiEf5xy1ZkFNWlEUcXAj737A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rptcXUL5FPbajmk051Xq/AzafAND9li+hEYMo/CM2km79JNczhmvMTFLNIugjeNWKxQ+Tcj9BOo5amZ0ljegB1/nmX2YGWOhNga0AIM2pUhjkq/5fwPA+Iz2lNMsotNH/aazqHSZGIevy2hKnqgSztmWQj0tr/aN27ufvMtm+Lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iMyAkRTT; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782125198; c=relaxed/simple;
+	bh=/hKgAevfumO8x7LfebeUyLh/erlFr2Hmr9kpKNVbH0Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RXODWZKElkwNYpFJonxchYxL7m7+buIIWgUiJMAD0MYfyKNwNMLSslVv6yBoc/HcLQI6ALqaWoX3hI7BUhDfYNAOp/d/O61d+5hIwFcf2eExAjaRh+yyxF4FlmXcJqP/2R2L+iPy0pH17SBJrNaylwgCZ4MV+XxvZHUJxlT/gKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nzU+mGOE; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iMyAkRTT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03C2D1F000E9;
-	Mon, 22 Jun 2026 10:45:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782125153;
-	bh=YtkPB6i0OvwV1lSTcqmCxooTBK1I0ZwQwnbBpJV8564=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iMyAkRTT0g6B+mY3jolDy6vdeFQNrpJ1Y3QrG8k5PwlMTjcN+qHIF9iM80NOLHlmY
-	 DInkHYlF8O2bnciY0LFKHSQ1PHMuMIx6QgHo92TXN99Gck+CDMpZbZ1goEzFUmFaR/
-	 rJl1vVYfq2II8S78Jhn+wyVNq2otuPq+n6m+HxGjznf2maF0vRk8/lZLapb0nf+Civ
-	 BITyJS7pKSQWeORWGaP4YoMm2peErFpYG5RuN2KpUKUHoepY95n9uzp0X00lFc5epL
-	 d56XJ9IFGb2zh4l5JzharQrXnAU1y+KoiUX6rTNRgm1/9Lv/NrAgBvyAyZUKUYbedN
-	 beXtbuUQ0w9+w==
-From: Geliang Tang <geliang@kernel.org>
-To: Matthieu Baerts <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Hannes Reinecke <hare@suse.de>
-Cc: Geliang Tang <tanggeliang@kylinos.cn>,
-	netdev@vger.kernel.org,
-	mptcp@lists.linux.dev,
-	Gang Yan <yangang@kylinos.cn>,
-	Zqiang <qiang.zhang@linux.dev>
-Subject: [RFC net-next 17/17] selftests: mptcp: connect: use espintcp for ulp test
-Date: Mon, 22 Jun 2026 18:43:37 +0800
-Message-ID: <b3f8cf142bf314d3611df4cdf4df01ef511d33d7.1782123118.git.tanggeliang@kylinos.cn>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1782123118.git.tanggeliang@kylinos.cn>
-References: <cover.1782123118.git.tanggeliang@kylinos.cn>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nzU+mGOE"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782125197; x=1813661197;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=/hKgAevfumO8x7LfebeUyLh/erlFr2Hmr9kpKNVbH0Q=;
+  b=nzU+mGOEqWcv1ZhOmQPh7A2Vpfo+LMNqc4tcIPxCOVAjg5E+B8987oJm
+   CRk7qHz3x3v+O+oG7cXujRDkzL1gtlG6mhDITbvghfqBqcfJ18psAc+PI
+   Tg6A1WV+wrBAYDeVjinRSZ8iVzEiuhmQJVGAURRe3kSmW2jMrs7sROlGE
+   u8+D/V9jaSTcCF1v2EIm0ssuPCon5Qce2IQ+52WID3KKCx1hIbTl0AP50
+   tBvVqFdniXMiI+R7HhzvDTzP1eZ59wlltT5mIxb+U8IVJjshC3XaerKJ+
+   nuUFkH1Xgheje/msjZOEt2IJ3ymfBjkuClzZN1MPvQKC7KGcG7O1ntKDW
+   A==;
+X-CSE-ConnectionGUID: RGyONYQVSea0+pxWnZOPdg==
+X-CSE-MsgGUID: tWucpBD+SQmz4hzgmxAYMg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11824"; a="93506230"
+X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; 
+   d="scan'208";a="93506230"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 03:46:35 -0700
+X-CSE-ConnectionGUID: xNR2+KjtQLGBpSv9fyyNaQ==
+X-CSE-MsgGUID: i0RzaMPlRGCEVMh1muYCuA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; 
+   d="scan'208";a="253099713"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.152])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 03:46:25 -0700
+Date: Mon, 22 Jun 2026 13:46:22 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Kaitao Cheng <kaitao.cheng@linux.dev>
+Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+	Tejun Heo <tj@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Paul Moore <paul@paul-moore.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	David Howells <dhowells@redhat.com>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Philipp Stanner <phasta@kernel.org>, linux-block@vger.kernel.org,
+	LKML <linux-kernel@vger.kernel.org>,
+	"open list:CONTROL GROUP (CGROUP)" <cgroups@vger.kernel.org>,
+	linux-ntfs-dev@lists.sourceforge.net,
+	Linux-Fsdevel <linux-fsdevel@vger.kernel.org>,
+	io-uring <io-uring@vger.kernel.org>, audit@vger.kernel.org,
+	bpf <bpf@vger.kernel.org>,
+	Network Development <netdev@vger.kernel.org>,
+	dri-devel@lists.freedesktop.org,
+	"linux-perf-use." <linux-perf-users@vger.kernel.org>,
+	linux-trace-kernel <linux-trace-kernel@vger.kernel.org>,
+	kexec@lists.infradead.org, live-patching@vger.kernel.org,
+	linux-modules@vger.kernel.org,
+	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+	Linux Power Management <linux-pm@vger.kernel.org>,
+	rcu@vger.kernel.org, sched-ext@lists.linux.dev,
+	linux-mm <linux-mm@kvack.org>, virtualization@lists.linux.dev,
+	damon@lists.linux.dev, clang-built-linux <llvm@lists.linux.dev>,
+	chengkaitao <chengkaitao@kylinos.cn>,
+	Muchun Song <muchun.song@linux.dev>
+Subject: Re: [PATCH v3 0/7] Prepare mutable list iterators to cache cursor
+ state
+Message-ID: <ajkSftEbdGoiJXYs@ashevche-desk.local>
+References: <20260622040533.29824-1-kaitao.cheng@linux.dev>
+ <CAADnVQJmPWFT01b7DuLdtafv=8FyB84GYHNZ8zSTck+9Aw0JpA@mail.gmail.com>
+ <8c8f1849-86d3-4c69-be27-30bbdffdf616@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <8c8f1849-86d3-4c69-be27-30bbdffdf616@linux.dev>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+On Mon, Jun 22, 2026 at 02:15:01PM +0800, Kaitao Cheng wrote:
+> 在 2026/6/22 13:28, Alexei Starovoitov 写道:
+> > On Sun, Jun 21, 2026 at 9:06 PM Kaitao Cheng <kaitao.cheng@linux.dev> wrote:
 
-With KTLS being implemented, "tls" should no longer be used in
-sock_test_tcpulp(), it breaks mptcp_connect.sh tests. Another ULP
-name, "espintcp", is set instead in this patch.
+...
 
-Co-developed-by: Gang Yan <yangang@kylinos.cn>
-Signed-off-by: Gang Yan <yangang@kylinos.cn>
-Co-developed-by: Zqiang <qiang.zhang@linux.dev>
-Signed-off-by: Zqiang <qiang.zhang@linux.dev>
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
----
- tools/testing/selftests/net/mptcp/config          | 4 ++++
- tools/testing/selftests/net/mptcp/mptcp_connect.c | 4 ++--
- 2 files changed, 6 insertions(+), 2 deletions(-)
+> >>  block/bfq-iosched.c                 |  17 +-
+> >>  block/blk-cgroup.c                  |  12 +-
+> >>  block/blk-flush.c                   |   4 +-
+> >>  block/blk-iocost.c                  |  18 +-
+> >>  block/blk-mq.c                      |   8 +-
+> >>  block/blk-throttle.c                |   4 +-
+> >>  block/kyber-iosched.c               |   4 +-
+> >>  block/partitions/ldm.c              |   8 +-
+> >>  block/sed-opal.c                    |   4 +-
+> >>  include/linux/list.h                | 269 ++++++++++++++++++++++++----
+> >>  include/linux/llist.h               |  81 +++++++--
+> >>  init/initramfs.c                    |   5 +-
+> >>  io_uring/cancel.c                   |   6 +-
+> >>  io_uring/poll.c                     |   3 +-
+> >>  io_uring/rw.c                       |   4 +-
+> >>  io_uring/timeout.c                  |   8 +-
+> >>  io_uring/uring_cmd.c                |   3 +-
+> >>  kernel/audit_tree.c                 |   4 +-
+> >>  kernel/audit_watch.c                |  16 +-
+> >>  kernel/auditfilter.c                |   4 +-
+> >>  kernel/auditsc.c                    |   4 +-
+> >>  kernel/bpf/arena.c                  |  10 +-
+> >>  kernel/bpf/arraymap.c               |   8 +-
+> >>  kernel/bpf/bpf_local_storage.c      |   3 +-
+> >>  kernel/bpf/bpf_lru_list.c           |  25 ++-
+> >>  kernel/bpf/btf.c                    |  18 +-
+> >>  kernel/bpf/cgroup.c                 |   7 +-
+> >>  kernel/bpf/cpumap.c                 |   4 +-
+> >>  kernel/bpf/devmap.c                 |  10 +-
+> >>  kernel/bpf/helpers.c                |   8 +-
+> >>  kernel/bpf/local_storage.c          |   4 +-
+> >>  kernel/bpf/memalloc.c               |  16 +-
+> >>  kernel/bpf/offload.c                |   8 +-
+> >>  kernel/bpf/states.c                 |   4 +-
+> >>  kernel/bpf/stream.c                 |   4 +-
+> >>  kernel/bpf/verifier.c               |   6 +-
+> >>  kernel/cgroup/cgroup-v1.c           |   4 +-
+> >>  kernel/cgroup/cgroup.c              |  54 +++---
+> >>  kernel/cgroup/dmem.c                |  12 +-
+> >>  kernel/cgroup/rdma.c                |   8 +-
+> >>  kernel/events/core.c                |  44 +++--
+> >>  kernel/events/uprobes.c             |  12 +-
+> >>  kernel/exit.c                       |   8 +-
+> >>  kernel/fail_function.c              |   4 +-
+> >>  kernel/gcov/clang.c                 |   4 +-
+> >>  kernel/irq_work.c                   |   4 +-
+> >>  kernel/kexec_core.c                 |   4 +-
+> >>  kernel/kprobes.c                    |  16 +-
+> >>  kernel/livepatch/core.c             |   4 +-
+> >>  kernel/livepatch/core.h             |   4 +-
+> >>  kernel/liveupdate/kho_block.c       |   4 +-
+> >>  kernel/liveupdate/luo_flb.c         |   4 +-
+> >>  kernel/locking/rwsem.c              |   2 +-
+> >>  kernel/locking/test-ww_mutex.c      |   2 +-
+> >>  kernel/module/main.c                |  11 +-
+> >>  kernel/padata.c                     |   4 +-
+> >>  kernel/power/snapshot.c             |   8 +-
+> >>  kernel/power/wakelock.c             |   4 +-
+> >>  kernel/printk/printk.c              |  11 +-
+> >>  kernel/ptrace.c                     |   4 +-
+> >>  kernel/rcu/rcutorture.c             |   3 +-
+> >>  kernel/rcu/tasks.h                  |   9 +-
+> >>  kernel/rcu/tree.c                   |   6 +-
+> >>  kernel/resource.c                   |   4 +-
+> >>  kernel/sched/core.c                 |   4 +-
+> >>  kernel/sched/ext.c                  |  22 +--
+> >>  kernel/sched/fair.c                 |  28 +--
+> >>  kernel/sched/topology.c             |   4 +-
+> >>  kernel/sched/wait.c                 |   4 +-
+> >>  kernel/seccomp.c                    |   4 +-
+> >>  kernel/signal.c                     |  11 +-
+> >>  kernel/smp.c                        |   4 +-
+> >>  kernel/taskstats.c                  |   8 +-
+> >>  kernel/time/clockevents.c           |   6 +-
+> >>  kernel/time/clocksource.c           |   4 +-
+> >>  kernel/time/posix-cpu-timers.c      |   4 +-
+> >>  kernel/time/posix-timers.c          |   3 +-
+> >>  kernel/torture.c                    |   3 +-
+> >>  kernel/trace/bpf_trace.c            |   4 +-
+> >>  kernel/trace/ftrace.c               |  49 +++--
+> >>  kernel/trace/ring_buffer.c          |  25 ++-
+> >>  kernel/trace/trace.c                |  12 +-
+> >>  kernel/trace/trace_dynevent.c       |   6 +-
+> >>  kernel/trace/trace_dynevent.h       |   5 +-
+> >>  kernel/trace/trace_events.c         |  35 ++--
+> >>  kernel/trace/trace_events_filter.c  |   4 +-
+> >>  kernel/trace/trace_events_hist.c    |   8 +-
+> >>  kernel/trace/trace_events_trigger.c |  17 +-
+> >>  kernel/trace/trace_events_user.c    |  16 +-
+> >>  kernel/trace/trace_stat.c           |   4 +-
+> >>  kernel/user-return-notifier.c       |   3 +-
+> >>  kernel/workqueue.c                  |  16 +-
+> >>  mm/backing-dev.c                    |   8 +-
+> >>  mm/balloon.c                        |   8 +-
+> >>  mm/cma.c                            |   4 +-
+> >>  mm/compaction.c                     |   4 +-
+> >>  mm/damon/core.c                     |   4 +-
+> >>  mm/damon/sysfs-schemes.c            |   4 +-
+> >>  mm/dmapool.c                        |   4 +-
+> >>  mm/huge_memory.c                    |   8 +-
+> >>  mm/hugetlb.c                        |  56 +++---
+> >>  mm/hugetlb_vmemmap.c                |  16 +-
+> >>  mm/khugepaged.c                     |  14 +-
+> >>  mm/kmemleak.c                       |   7 +-
+> >>  mm/ksm.c                            |  25 +--
+> >>  mm/list_lru.c                       |   4 +-
+> >>  mm/memcontrol-v1.c                  |   8 +-
+> >>  mm/memory-failure.c                 |  12 +-
+> >>  mm/memory-tiers.c                   |   4 +-
+> >>  mm/migrate.c                        |  23 ++-
+> >>  mm/mmu_notifier.c                   |   9 +-
+> >>  mm/page_alloc.c                     |   8 +-
+> >>  mm/page_reporting.c                 |   2 +-
+> >>  mm/percpu.c                         |  11 +-
+> >>  mm/pgtable-generic.c                |   4 +-
+> >>  mm/rmap.c                           |  10 +-
+> >>  mm/shmem.c                          |   9 +-
+> >>  mm/slab_common.c                    |  14 +-
+> >>  mm/slub.c                           |  33 ++--
+> >>  mm/swapfile.c                       |   4 +-
+> >>  mm/userfaultfd.c                    |  12 +-
+> >>  mm/vmalloc.c                        |  24 +--
+> >>  mm/vmscan.c                         |   7 +-
+> >>  mm/zsmalloc.c                       |   4 +-
+> >>  124 files changed, 875 insertions(+), 681 deletions(-)
+> > 
+> > Not sure what you were thinking, but this diff stat
+> > is not landable.
+> 
+> [PATCH v3 1/7] and [PATCH v3 2/7] contain the main logic and can
+> be merged directly. They are also compatible with the old API.
+> [PATCH v3 3/7] through [PATCH v3 7/7] are just simple interface
+> replacements and do not change any functional logic. They can be
+> left unmerged for now; individual modules can pick them up later
+> if needed.
+> 
+> In v2, Andy Shevchenko mentioned: "If it's done by Linus himself
+> during the day when he prepares -rc1, it's fine."
 
-diff --git a/tools/testing/selftests/net/mptcp/config b/tools/testing/selftests/net/mptcp/config
-index 59051ee2a986..f48bd5183fb3 100644
---- a/tools/testing/selftests/net/mptcp/config
-+++ b/tools/testing/selftests/net/mptcp/config
-@@ -34,3 +34,7 @@ CONFIG_NFT_SOCKET=m
- CONFIG_NFT_TPROXY=m
- CONFIG_SYN_COOKIES=y
- CONFIG_VETH=y
-+CONFIG_INET_ESP=y
-+CONFIG_INET_ESPINTCP=y
-+CONFIG_INET6_ESP=y
-+CONFIG_INET6_ESPINTCP=y
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_connect.c b/tools/testing/selftests/net/mptcp/mptcp_connect.c
-index cbe573c4ab3a..299a7a02d6f5 100644
---- a/tools/testing/selftests/net/mptcp/mptcp_connect.c
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect.c
-@@ -285,11 +285,11 @@ static void sock_test_tcpulp(int sock, int proto, unsigned int line)
- 	if (buflen > 0) {
- 		if (strcmp(buf, "mptcp") != 0)
- 			xerror("unexpected ULP '%s' for proto %d at line %u", buf, proto, line);
--		ret = do_ulp_so(sock, "tls");
-+		ret = do_ulp_so(sock, "espintcp");
- 		if (ret == 0)
- 			X("setsockopt");
- 	} else if (proto == IPPROTO_MPTCP) {
--		ret = do_ulp_so(sock, "tls");
-+		ret = do_ulp_so(sock, "espintcp");
- 		if (ret != -1)
- 			X("setsockopt");
- 	}
+Yes, but you need to get his blessing first to go with this.
+Have you communicated with him on this?
+
+> Even so, the
+> changes in this patch series are indeed quite large and touch
+> almost every subsystem. I have only converted part of them for
+> now, so I wanted to send this out first and see what people think.
+
+That's why it's better to provide a script to convert (e.g., coccinelle)
+instead of tons of patches.
+
 -- 
-2.53.0
+With Best Regards,
+Andy Shevchenko
+
 
