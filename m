@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F137535B137
-	for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 22:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 183A736EAA8
+	for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 22:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782165671; cv=none; b=jBZEl7beyFbprKCg2ogenn6cEP8Ma4iQ8AXLNEV2/gI8UBQiM22r71/gGQQVMxoZnIFTYL88eA6e3izHtOS4FVUdwuH+S7bR5Gjg+Dnb3AHenUpZ8MdeSAENVuH0RiQjyTe83a1CPBx4NylO793kdg8tfIgCcDEsu/rbADr+f2o=
+	t=1782165671; cv=none; b=p4Aa6ZIcrzls3MuTAljR57I5pbedkBfLhBdlrP9UrSP7X+h6vumXQpuaGgkF8mL1E5ZZWE0rMPNgT9/Ybzd9lHqmVE+t4v1OMaCuXOwsZsY3dbWiKoNuXiZJtJIyBAFl+GBH3JSFMlZ74AILO8NGdRbPaTmIhjuIcbzrNfLM5w0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1782165671; c=relaxed/simple;
-	bh=ys5/efVO3CzfCiTnGxCx11ez5aNrovX+KGtfPAqwAXw=;
+	bh=hhJPtkwWzdgej5p2pcotsrPswsrK6ECzfn22qJnoGkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CX6Og8/ucrbMnJlfCjJRRIXiQBF6go3zALqMHtI+sPi+JbHGZW5Gzfnf9+NQrWom2j1kVPsgXJF3nYC6vv/aFxZ0+m3cYZCjXzKRIMzLFB0t+2wbzposy+0iTDflPwg4V+Wkn1zN9FTnbj4xD3rH1vfIPb3jfOymqfK7g+M0iDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IHhkoG8x; arc=none smtp.client-ip=198.175.65.20
+	 MIME-Version; b=A0kfJeXHd8anuU75zdIVT+6MDNL4Sz8NHeM5/f3NF6DJwym9aU/73AQpaIw3DLCL99Y29Pj58/J0nXj+Tn8bK9wCawQF5/C1giqyqJogscL+w5rUT7ZzGv70xD8GRdwJ/tQbQq6zobDkfvEAOePjel3peFiMXzNsq2zWPamaOCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MUzB5wlz; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IHhkoG8x"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MUzB5wlz"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1782165670; x=1813701670;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=ys5/efVO3CzfCiTnGxCx11ez5aNrovX+KGtfPAqwAXw=;
-  b=IHhkoG8xyrl4oxTcZB3SD4cg4+gtR5xCnkKwwSgjNryAtGl6TnANI4Zo
-   tlEreWsIgQD/J0faa5QOatSehWnvUccUlHslVI0M3qro2xPUl+NIsHsub
-   giCCuUbEnxUO5DYSSlr9yUWa+2vGlT5CJm41P5o3Tw1x3CgGAXEdZfMj9
-   QVpUlUCn7V9ENfr11svphskPvSt8rLnAL5iQli4SGfnUNN3SVCgOPqkZw
-   fbmz0QQu+OpmCvMmyXadgTYImwaHg1EfrX3Mu2TU5D/xZjWjCsuM2N9T/
-   sDOZtC7HTG4ekxsG12IpsQU8jsOnkZh9L/3mmYNu+mTTFSCVS6zaxOksU
+  bh=hhJPtkwWzdgej5p2pcotsrPswsrK6ECzfn22qJnoGkM=;
+  b=MUzB5wlzc9QrN2fPou0vdeQdFdy4ohVMbTR5pnFldYd65jd+UkhEdfRr
+   9o36tPutCxO9cqt3ZHeFkKkR/9NizTmECciGFzFmscSccGbENYGNtOcbl
+   zyh97xH+LesZg33V9EN/L8Rf7NUiSEOKsOiwCWyzcXs0aPIFkdH3f36b7
+   uFHF7vj1FAbeCMN8FkLXGrNIyWu7h4dXqheESprIB0tNm/3iIWP0NzDhl
+   1FcsnzoBiXBJryNo4BCqQkLn1NxEZ1a3GHibYPbdyl0dughx964csadeC
+   n9pIiyBOeYI8JPnzTYgyrnSCfMBhwi2BTlmKuFt5ObwxuPNXVDk6v0ge/
    Q==;
-X-CSE-ConnectionGUID: vLBg8ye8RuinkHArxINmGA==
-X-CSE-MsgGUID: UsYuGYsfQN6ictWKlYaTUA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="82675559"
+X-CSE-ConnectionGUID: BuIoBn0oRqKmAWr0dPnP4w==
+X-CSE-MsgGUID: JYem6SpRSjq3s3qWCh4IAA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="82675580"
 X-IronPort-AV: E=Sophos;i="6.24,219,1774335600"; 
-   d="scan'208";a="82675559"
+   d="scan'208";a="82675580"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
   by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 15:01:05 -0700
-X-CSE-ConnectionGUID: iTc6ssuhSPGnMKRRHymV0g==
-X-CSE-MsgGUID: r4KkR5G8RFumsBSbGigQEQ==
+X-CSE-ConnectionGUID: DRc3HyLyQQGcIkkpl3o3YQ==
+X-CSE-MsgGUID: AWzXNGtxSTqkm5U8jtJnWA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,219,1774335600"; 
-   d="scan'208";a="248205710"
+   d="scan'208";a="248205721"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by orviesa006.jf.intel.com with ESMTP; 22 Jun 2026 15:01:05 -0700
+  by orviesa006.jf.intel.com with ESMTP; 22 Jun 2026 15:01:06 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -50,15 +50,17 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Lukasz Czapnik <lukasz.czapnik@intel.com>,
+Cc: ZhaoJinming <zhaojinming@uniontech.com>,
 	anthony.l.nguyen@intel.com,
-	stephen@networkplumber.org,
+	arkadiusz.kubalewski@intel.com,
+	grzegorz.nitka@intel.com,
+	jiri@resnulli.us,
+	vadim.fedorenko@linux.dev,
 	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Simon Horman <horms@kernel.org>,
 	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH net 2/8] ice: fix AQ error code comparison in ice_set_pauseparam()
-Date: Mon, 22 Jun 2026 15:00:49 -0700
-Message-ID: <20260622220059.2471844-3-anthony.l.nguyen@intel.com>
+Subject: [PATCH net 5/8] ice: dpll: set pointers to NULL after kfree in ice_dpll_deinit_info
+Date: Mon, 22 Jun 2026 15:00:52 -0700
+Message-ID: <20260622220059.2471844-6-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260622220059.2471844-1-anthony.l.nguyen@intel.com>
 References: <20260622220059.2471844-1-anthony.l.nguyen@intel.com>
@@ -70,78 +72,60 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Lukasz Czapnik <lukasz.czapnik@intel.com>
+From: ZhaoJinming <zhaojinming@uniontech.com>
 
-Fix unreachable code: the conditionals in ice_set_pauseparam() used
-the bitwise-AND operator suggesting aq_failures is a bitmap, but it
-is actually an enum, making the third condition logically unreachable.
+ice_dpll_deinit_info() calls kfree() on several pf->dplls fields
+(inputs, outputs, eec.input_prio, pps.input_prio) but does not set
+the pointers to NULL afterward. This leaves dangling pointers in the
+pf->dplls structure.
 
-Replace the if-else ladder with a switch statement.  Also move the
-aq_failures initialization to the variable declaration and remove the
-redundant zeroing from ice_set_fc().
+While not currently exploitable through existing code paths, this is
+unsafe because:
 
-Fixes: fcea6f3da546 ("ice: Add stats and ethtool support")
-Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
-Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
+1. If ice_dpll_init_info() is called again after a deinit (e.g. during
+   driver recovery), and a subsequent allocation within init fails, the
+   error path will jump to deinit_info and call ice_dpll_deinit_info()
+   again. Since some pointers still hold the old freed addresses, this
+   would result in a double-free.
+
+2. Any future code that checks these pointers before use or after free
+   would be unprotected against use-after-free.
+
+Follow the common kernel convention of setting pointers to NULL after
+kfree() so that:
+- kfree(NULL) is a safe no-op, preventing double-free
+- NULL checks on these pointers become meaningful
+
+This is a preparatory fix for a subsequent patch that routes additional
+error paths in ice_dpll_init_info() to the deinit_info label.
+
+Fixes: d7999f5ea64b ("ice: implement dpll interface to control cgu")
+Signed-off-by: ZhaoJinming <zhaojinming@uniontech.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_common.c  |  1 -
- drivers/net/ethernet/intel/ice/ice_ethtool.c | 12 ++++++++----
- 2 files changed, 8 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_dpll.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/net/ethernet/intel/ice/ice_common.c
-index 31e0de9e7f60..ef1ce106f81b 100644
---- a/drivers/net/ethernet/intel/ice/ice_common.c
-+++ b/drivers/net/ethernet/intel/ice/ice_common.c
-@@ -3882,7 +3882,6 @@ ice_set_fc(struct ice_port_info *pi, u8 *aq_failures, bool ena_auto_link_update)
- 	if (!pi || !aq_failures)
- 		return -EINVAL;
+diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
+index 462c69cc11e1..3876ee7255ac 100644
+--- a/drivers/net/ethernet/intel/ice/ice_dpll.c
++++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
+@@ -4645,9 +4645,13 @@ ice_dpll_init_pins_info(struct ice_pf *pf, enum ice_dpll_pin_type pin_type)
+ static void ice_dpll_deinit_info(struct ice_pf *pf)
+ {
+ 	kfree(pf->dplls.inputs);
++	pf->dplls.inputs = NULL;
+ 	kfree(pf->dplls.outputs);
++	pf->dplls.outputs = NULL;
+ 	kfree(pf->dplls.eec.input_prio);
++	pf->dplls.eec.input_prio = NULL;
+ 	kfree(pf->dplls.pps.input_prio);
++	pf->dplls.pps.input_prio = NULL;
+ }
  
--	*aq_failures = 0;
- 	hw = pi->hw;
- 
- 	pcaps = kzalloc_obj(*pcaps);
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-index 236d293aba98..49371b065845 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-@@ -3508,7 +3508,7 @@ ice_set_pauseparam(struct net_device *netdev, struct ethtool_pauseparam *pause)
- 	struct ice_vsi *vsi = np->vsi;
- 	struct ice_hw *hw = &pf->hw;
- 	struct ice_port_info *pi;
--	u8 aq_failures;
-+	u8 aq_failures = 0;
- 	bool link_up;
- 	u32 is_an;
- 	int err;
-@@ -3579,18 +3579,22 @@ ice_set_pauseparam(struct net_device *netdev, struct ethtool_pauseparam *pause)
- 	/* Set the FC mode and only restart AN if link is up */
- 	err = ice_set_fc(pi, &aq_failures, link_up);
- 
--	if (aq_failures & ICE_SET_FC_AQ_FAIL_GET) {
-+	switch (aq_failures) {
-+	case ICE_SET_FC_AQ_FAIL_GET:
- 		netdev_info(netdev, "Set fc failed on the get_phy_capabilities call with err %d aq_err %s\n",
- 			    err, libie_aq_str(hw->adminq.sq_last_status));
- 		err = -EAGAIN;
--	} else if (aq_failures & ICE_SET_FC_AQ_FAIL_SET) {
-+		break;
-+	case ICE_SET_FC_AQ_FAIL_SET:
- 		netdev_info(netdev, "Set fc failed on the set_phy_config call with err %d aq_err %s\n",
- 			    err, libie_aq_str(hw->adminq.sq_last_status));
- 		err = -EAGAIN;
--	} else if (aq_failures & ICE_SET_FC_AQ_FAIL_UPDATE) {
-+		break;
-+	case ICE_SET_FC_AQ_FAIL_UPDATE:
- 		netdev_info(netdev, "Set fc failed on the get_link_info call with err %d aq_err %s\n",
- 			    err, libie_aq_str(hw->adminq.sq_last_status));
- 		err = -EAGAIN;
-+		break;
- 	}
- 
- 	return err;
+ /**
 -- 
 2.47.1
 
