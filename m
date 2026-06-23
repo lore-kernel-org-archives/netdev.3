@@ -1,224 +1,219 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84E4A30BF69
-	for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 16:25:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82CF430DEA6
+	for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 16:28:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782231951; cv=none; b=sQzXmfTUaa5aDuCnOOaoLzvSi0xFOldVihCUjY+PhlpWv17pQHGeEA2T+MWP9slYOd3b5qVbdazkb02vVx2nkd/gN86aSIhhcf0xLMAKOpbAl8j+8NBCuj4a57PVMgzHMwVJnpl6jijW7TJXxLYrUT8s8X8wGN1erkBzy1MAl5Y=
+	t=1782232118; cv=none; b=VawYyVAYSmuzvCT1XUO/uzuGLJH2DIUscoCloewRmtgzv4ucFjoLOCy/Ia0omKzPEkXzjLqlpALMuEa5kxsaNN812nNMKpvpeJK+NjhMaT7EM+8zbW8O4++inC7x6Ne0N7GHsfd9A8b5+7NU3b9zHOsLI7B8j63h4gxEl92TOyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782231951; c=relaxed/simple;
-	bh=eykH2HUbjr/1DyGU71Z9JYt9zH6YNWHF9N1c/Pj+oJ0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oqX08RoEcZTGA0YVvnBUPyKxUS3rsQN9JKMx12e7FnUo7CCpAu72+EgVY4tXcUZzeFiWVJmLMPV6n6Y0TiI0ccE90kmurpauOFDcLd3gAR3XED+lNQiiOybbYKLWzkqDfH0+JslQeQTnl/UksLOrFD0q6qtiXxmiBtgn79hXvXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L6TByLOH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782232118; c=relaxed/simple;
+	bh=JYwpcIX47nddD2774DvC+V55qVO1G31b/w+bMTcMW4E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JtcQ87yMHp5t59lppGQrtgYUi/ZjEzXagt2PjAiu975LLK2SuCPimSB0J3z25HPEZRKpd974AmqgzaJvJ4lhogAo0MQz+Tn9yIs1lqsgkQXX4mZKdTn/ta/a3abc4C6dk/qNHB+xp4J46hwHi5dKPZwH1NC71WhM2J/hMCXT63g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=uqZoB4WI; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L6TByLOH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 691351F000E9;
-	Tue, 23 Jun 2026 16:25:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782231950;
-	bh=X4qclOH+GM0q9kUF3r5VNGXMuLNAeYN7GThgAUUko88=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=L6TByLOHbBACOxPDIIJLjKZb9GAn59Lb3vzrUboi8RVqFH1dv1258nnBpcep5C0fi
-	 57X69KiV7vCa+Qah0BSXVXO4hoAsgPWr/Z01k+sNbVbITE0fadEjsXvXS3cC17wiLb
-	 GizINoivH/0fHf0PLmzIBQUFpjts7SqXeQi5/V5e+EsRZf1g1vYqOuUzIZ7zsTmPNU
-	 bf93rhpIlhlZJYkcMb9Y/2mnDUEKlhQKW70dSppnqBPawxP7Zz7OkwenUBcUXLASkx
-	 SxJVo9Uwq9ZJYHKGVsOWznpyhVvIScsWhpgX4V+QTTYYSCvFo6fOkFX6FJHzS/n9kT
-	 vK2WLtlRB5nJQ==
-From: Simon Horman <horms@kernel.org>
-To: poros@redhat.com
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	aleksandr.loktionov@intel.com
-Subject: Re: [PATCH iwl-net v2 1/2] ice: skip per-VLAN promisc rules when default VSI Rx rule is set
-Date: Tue, 23 Jun 2026 17:25:27 +0100
-Message-ID: <20260623162526.1099096-2-horms@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260622113428.2565255-2-poros@redhat.com>
-References: <20260622113428.2565255-2-poros@redhat.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="uqZoB4WI"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 015F74E40773;
+	Tue, 23 Jun 2026 16:28:34 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id C00D8601C2;
+	Tue, 23 Jun 2026 16:28:33 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BFBF4106C8382;
+	Tue, 23 Jun 2026 18:28:29 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1782232112; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=IchOvVpTDS/Xyh/l6otbYjeAJuO/oG+X0cJodck+dQI=;
+	b=uqZoB4WI32tFj4icHZ/IixSLhTiwXInH5IYr2+lG5Tm1Z6YsFIZ2JJMOyyBbKIJjf6Satm
+	0B1yo9iKHjozGgiy69arYJUg5GRrJ0NlbJq+5zPrwKuqgx7HSGdUbAe16+JJ5Sp10FP9w8
+	uktPnudkhr2Jsvzz6adfI5/eU+FkF4f/pV9n5NfoA/9oIApT1ah8iDhO+6Iul0GJF9eFCu
+	vhyEkjbIn2MkiNXk8YB6wCrBYFLdIByyCmXp6okzE+zMn1HP82Iy79M/HcpF1QQ3q8nEfy
+	CntVKTErfEnuvixDAE6fzhv0GiVlVh69li2Qi5mEvEJ17LEr5gzysuJ0mrJt1g==
+Message-ID: <b43cbdf9-3be4-45dc-ab5a-de85888ab347@bootlin.com>
+Date: Tue, 23 Jun 2026 18:28:28 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3 2/2] net: phy: mdio-i2c: defer RollBall bridge
+ probe to PHY discovery
+To: Petr Wozniak <petr.wozniak@gmail.com>, linux@armlinux.org.uk,
+ andrew@lunn.ch, hkallweit1@gmail.com
+Cc: kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-phy@lists.infradead.org, bjorn@mork.no, olek2@wp.pl, kabel@kernel.org
+References: <20260623080538.7646-1-petr.wozniak@gmail.com>
+ <20260623080538.7646-3-petr.wozniak@gmail.com>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260623080538.7646-3-petr.wozniak@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev
----
-Subject: ice: skip per-VLAN promisc rules when default VSI Rx rule is set
+Hi Petr,
 
-This patch optimizes the number of hardware switch rules used when an ice
-port is part of a vlan-filtering bridge. It avoids installing per-VLAN
-promiscuous rules if the broad default VSI Rx rule is already catching
-all traffic.
+On 6/23/26 10:05, Petr Wozniak wrote:
+> commit 8fe125892f40 ("net: phy: sfp: probe for RollBall I2C-to-MDIO
+> bridge in mdio-i2c") introduced a regression: the RollBall I2C-to-MDIO
+> bridge is not yet ready to respond to CMD_READ/CMD_DONE cycles when
+> sfp_sm_add_mdio_bus() runs in SFP_S_INIT.  The 200 ms probe times out,
+> i2c_mii_probe_rollball() returns -ENODEV, and sfp_sm_add_mdio_bus()
+> sets mdio_protocol = MDIO_I2C_NONE.  By the time sfp_sm_probe_for_phy()
+> runs (up to ~17 s later on affected hardware), the bridge is fully
+> initialized but PHY probing is skipped because the protocol has already
+> been changed to NONE.
+> 
+> This affects both modules inserted before boot and hotplugged modules on
+> hardware where bridge initialization exceeds the 200 ms probe window
+> (confirmed: FLYPRO SFP-10GT-CS-30M with Aquantia AQR113C, hotplugged).
+> 
+> Move the probe from i2c_mii_init_rollball(), called at bus-creation time,
+> to sfp_sm_probe_for_phy() in sfp.c, where it runs after the SFP state
+> machine module initialization delays.  Export the probe function as
+> mdio_i2c_probe_rollball() so sfp.c can call it.
+> 
+> For RTL8261BE-based modules the probe correctly returns -ENODEV at PHY
+> discovery time, causing sfp_sm_probe_for_phy() to destroy the MDIO bus
+> and set MDIO_I2C_NONE, eliminating the 5+ minute PHY probe retry loop.
+> 
+> For genuine RollBall modules (e.g. FLYPRO SFP-10GT-CS-30M with Aquantia
+> AQR113C) the probe now runs after initialization is complete and
+> correctly returns 0, so PHY detection proceeds normally.
+> 
+> Reported-by: Aleksander Bajkowski <olek2@wp.pl>
+> Fixes: 8fe125892f40 ("net: phy: sfp: probe for RollBall I2C-to-MDIO bridge in mdio-i2c")
+> Signed-off-by: Petr Wozniak <petr.wozniak@gmail.com>
 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-> index e2fbe111f8496..efb1f536de6c7 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_main.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_main.c
-[ ... ]
-> @@ -442,17 +496,12 @@ static int ice_vsi_sync_fltr(struct ice_vsi *vsi)
+I'm not currently at home so I can't test that on my side, but as you'll
+have to resend to the net tree, can you CC me for the next round so that
+I can test with the few odd-ball modules I have ?
 
-[Severity: High]
-This is a pre-existing issue, but does MAC filter overflow fail to force
-promiscuous mode, resulting in silent packet drops?
+I expect to be able to test this on friday :(
 
-When the hardware MAC filter limit is reached (LIBIE_AQ_RC_ENOSPC), the driver
-attempts to fall back to promiscuous mode by setting promisc_forced_on = true.
+Maxime
 
-However, the execution flow then reaches a check for IFF_PROMISC:
-
-    if (vsi->current_netdev_flags & IFF_PROMISC) {
-        /* Apply Rx filter rule to get traffic from wire */
-        ...
-    } else {
-        /* Clear Rx filter to remove traffic from wire */
-
-Since the user never explicitly requested IFF_PROMISC, this evaluates to false,
-causing the driver to take the else branch. The else branch actively disables
-the default VSI rule and clears promiscuous mode instead of enabling it. The
-fallback feature appears to be non-functional, leading to lost traffic for
-newly added MACs.
-
-[Severity: High]
-This is a pre-existing issue, but could this function prevent retries of
-incomplete configurations and break multicast promiscuity if any default
-VSI is already active?
-
-In ice_vsi_sync_fltr(), the setup of multicast promiscuity and disabling of
-Rx filtering is gated:
-
-    if (!ice_is_dflt_vsi_in_use(vsi->port_info)) {
-        err = ice_set_dflt_vsi(vsi);
-        ...
-        err = ice_set_promisc(vsi, ICE_MCAST_PROMISC_BITS);
-        if (err)
-            goto out_promisc;
-    }
-
-If ice_set_dflt_vsi() succeeds but the subsequent ice_set_promisc() fails,
-the function jumps to out_promisc to trigger a retry. On the next cycle,
-ice_is_dflt_vsi_in_use() returns true because this VSI is now the default,
-causing the entire block to be skipped and leaving the VSI misconfigured.
-
-Furthermore, if another VSI (such as a VF) is already the default VSI,
-the PF VSI entirely skips setting multicast promiscuity, breaking multicast
-reception in promiscuous mode.
-
->  		} else {
->  			/* Clear Rx filter to remove traffic from wire */
->  			if (ice_is_vsi_dflt_vsi(vsi)) {
-> -				err = ice_clear_dflt_vsi(vsi);
-> +				err = ice_vsi_exit_dflt_promisc(vsi);
->  				if (err) {
-> -					netdev_err(netdev, "Error %d clearing default VSI %i Rx rule\n",
-> -						   err, vsi->vsi_num);
->  					vsi->current_netdev_flags |=
->  						IFF_PROMISC;
->  					goto out_promisc;
->  				}
-> -				if (vsi->netdev->features &
-> -				    NETIF_F_HW_VLAN_CTAG_FILTER)
-> -					vlan_ops->ena_rx_filtering(vsi);
->  			}
-[ ... ]
-> @@ -3675,10 +3724,9 @@ int ice_vlan_rx_add_vid(struct net_device *netdev, __be16 proto, u16 vid)
->  	while (test_and_set_bit(ICE_CFG_BUSY, vsi->state))
->  		usleep_range(1000, 2000);
-
-[Severity: High]
-This is a pre-existing issue, but isn't there a risk of TOCTOU races with
-this ad-hoc lock pattern lacking memory barriers?
-
-The driver spins on ICE_CFG_BUSY using test_and_set_bit() and usleep_range()
-to guard VSI filter synchronization. The lock is subsequently dropped using
-clear_bit(ICE_CFG_BUSY, vsi->state) at the exit label.
-
-Because clear_bit() lacks a memory release barrier, the CPU or compiler can
-reorder memory stores from the critical section to occur after the flag is
-cleared, leading to data races and corruption of shared filter state on
-weakly ordered architectures.
-
-> -	/* Add multicast promisc rule for the VLAN ID to be added if
-> -	 * all-multicast is currently enabled.
-> -	 */
-> -	if (vsi->current_netdev_flags & IFF_ALLMULTI) {
-> +	/* skip the per-VID rule when the DFLT Rx rule already covers this VID */
-> +	if ((vsi->current_netdev_flags & IFF_ALLMULTI) &&
-> +	    !ice_is_vsi_dflt_vsi(vsi)) {
->  		ret = ice_fltr_set_vsi_promisc(&vsi->back->hw, vsi->idx,
->  					       ICE_MCAST_VLAN_PROMISC_BITS,
->  					       vid);
-> @@ -3696,11 +3744,12 @@ int ice_vlan_rx_add_vid(struct net_device *netdev, __be16 proto, u16 vid)
->  	if (ret)
->  		goto finish;
-
-[Severity: High]
-This is a pre-existing issue, but what happens if vlan_ops->add_vlan()
-fails here? Is the hardware switch rule leaked?
-
-When adding a VLAN to an interface with IFF_ALLMULTI enabled, this function
-first allocates a promiscuous switch rule in hardware via
-ice_fltr_set_vsi_promisc().
-
-If this succeeds but the subsequent call to vlan_ops->add_vlan() fails
-(e.g., due to ENOSPC or memory allocation failure), the function returns
-early without rolling back the promiscuous rule. Because the network stack
-considers the VLAN addition to have failed, ice_vlan_rx_kill_vid() will
-never be called for this VID, permanently leaking a Flow Lookup Unit (FLU).
-
-> -	/* If all-multicast is currently enabled and this VLAN ID is only one
-> -	 * besides VLAN-0 we have to update look-up type of multicast promisc
-> -	 * rule for VLAN-0 from ICE_SW_LKUP_PROMISC to ICE_SW_LKUP_PROMISC_VLAN.
-> +	/* On the first non-zero VLAN, promote the VLAN-0 multicast promisc
-> +	 * rule from ICE_SW_LKUP_PROMISC to ICE_SW_LKUP_PROMISC_VLAN. Skip when
-> +	 * the DFLT Rx rule is installed; it already covers every VID.
->  	 */
->  	if ((vsi->current_netdev_flags & IFF_ALLMULTI) &&
-> +	    !ice_is_vsi_dflt_vsi(vsi) &&
->  	    ice_vsi_num_non_zero_vlans(vsi) == 1) {
-[ ... ]
-> @@ -3763,11 +3812,12 @@ int ice_vlan_rx_kill_vid(struct net_device *netdev, __be16 proto, u16 vid)
->  					   ICE_MCAST_VLAN_PROMISC_BITS, vid);
+> ---
+> v3: regenerated against net-next (v2 failed to apply due to transit
+>     corruption); fixed block comment style (checkpatch); no functional
+>     change.
+> v2: commit message only - generalized scope (Aleksander Bajkowski);
+>     corrected SM description (Jan Hoffmann); no code change from v1.
+> v1: initial.
+>  drivers/net/mdio/mdio-i2c.c   | 15 +++++++++------
+>  drivers/net/phy/sfp.c         | 22 +++++++++++++---------
+>  include/linux/mdio/mdio-i2c.h |  1 +
+>  3 files changed, 23 insertions(+), 15 deletions(-)
+> 
+> diff --git a/drivers/net/mdio/mdio-i2c.c b/drivers/net/mdio/mdio-i2c.c
+> index b88f63234b4e..2a3a418c1369 100644
+> --- a/drivers/net/mdio/mdio-i2c.c
+> +++ b/drivers/net/mdio/mdio-i2c.c
+> @@ -419,7 +419,7 @@ static int i2c_mii_write_rollball(struct mii_bus *bus, int phy_id, int devad,
+>  	return 0;
+>  }
 >  
->  	if (!ice_vsi_has_non_zero_vlans(vsi)) {
-> -		/* Update look-up type of multicast promisc rule for VLAN 0
-> -		 * from ICE_SW_LKUP_PROMISC_VLAN to ICE_SW_LKUP_PROMISC when
-> -		 * all-multicast is enabled and VLAN 0 is the only VLAN rule.
-> +		/* Last non-zero VLAN gone: demote the VLAN-0 multicast promisc
-> +		 * rule back to ICE_SW_LKUP_PROMISC. Skip when the DFLT Rx rule
-> +		 * is installed; no recipe swap is needed.
->  		 */
-> -		if (vsi->current_netdev_flags & IFF_ALLMULTI) {
-> +		if ((vsi->current_netdev_flags & IFF_ALLMULTI) &&
-> +		    !ice_is_vsi_dflt_vsi(vsi)) {
+> -static int i2c_mii_probe_rollball(struct i2c_adapter *i2c)
+> +int mdio_i2c_probe_rollball(struct i2c_adapter *i2c)
+>  {
+>  	u8 data_buf[] = { ROLLBALL_DATA_ADDR, 0x01, 0x00, 0x00 };
+>  	u8 cmd_buf[]  = { ROLLBALL_CMD_ADDR, ROLLBALL_CMD_READ };
+> @@ -462,9 +462,13 @@ static int i2c_mii_probe_rollball(struct i2c_adapter *i2c)
+>  
+>  	return -ENODEV;
+>  }
+> +EXPORT_SYMBOL_GPL(mdio_i2c_probe_rollball);
+>  
+>  static int i2c_mii_init_rollball(struct i2c_adapter *i2c)
+>  {
+> +	/* Send the RollBall unlock password; bridge presence is verified
+> +	 * later, in sfp_sm_probe_for_phy(), after module initialization.
+> +	 */
+>  	struct i2c_msg msg;
+>  	u8 pw[5];
+>  	int ret;
+> @@ -486,7 +490,7 @@ static int i2c_mii_init_rollball(struct i2c_adapter *i2c)
+>  	if (ret != 1)
+>  		return -EIO;
+>  
+> -	return i2c_mii_probe_rollball(i2c);
+> +	return 0;
+>  }
+>  
+>  static bool mdio_i2c_check_functionality(struct i2c_adapter *i2c,
+> @@ -531,10 +535,9 @@ struct mii_bus *mdio_i2c_alloc(struct device *parent, struct i2c_adapter *i2c,
+>  	case MDIO_I2C_ROLLBALL:
+>  		ret = i2c_mii_init_rollball(i2c);
+>  		if (ret < 0) {
+> -			if (ret != -ENODEV)
+> -				dev_err(parent,
+> -					"Cannot initialize RollBall MDIO I2C protocol: %d\n",
+> -					ret);
+> +			dev_err(parent,
+> +				"Cannot initialize RollBall MDIO I2C protocol: %d\n",
+> +				ret);
+>  			mdiobus_free(mii);
+>  			return ERR_PTR(ret);
+>  		}
+> diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+> index c4d274ab651e..bbfaa0450798 100644
+> --- a/drivers/net/phy/sfp.c
+> +++ b/drivers/net/phy/sfp.c
+> @@ -2174,17 +2174,10 @@ static void sfp_sm_fault(struct sfp *sfp, unsigned int next_state, bool warn)
+>  
+>  static int sfp_sm_add_mdio_bus(struct sfp *sfp)
+>  {
+> -	int ret;
+> -
+>  	if (sfp->mdio_protocol == MDIO_I2C_NONE)
+>  		return 0;
+>  
+> -	ret = sfp_i2c_mdiobus_create(sfp);
+> -	if (ret == -ENODEV) {
+> -		sfp->mdio_protocol = MDIO_I2C_NONE;
+> -		return 0;
+> -	}
+> -	return ret;
+> +	return sfp_i2c_mdiobus_create(sfp);
+>  }
+>  
+>  /* Probe a SFP for a PHY device if the module supports copper - the PHY
+> @@ -2215,7 +2208,18 @@ static int sfp_sm_probe_for_phy(struct sfp *sfp)
+>  		break;
+>  
+>  	case MDIO_I2C_ROLLBALL:
+> -		err = sfp_sm_probe_phy(sfp, SFP_PHY_ADDR_ROLLBALL, true);
+> +		/* Probe here, after module initialization delays, so that
+> +		 * genuine RollBall bridges have had time to start up.
+> +		 * Modules without a bridge (e.g. RTL8261BE) return -ENODEV.
+> +		 */
+> +		err = mdio_i2c_probe_rollball(sfp->i2c);
+> +		if (err == -ENODEV) {
+> +			sfp_i2c_mdiobus_destroy(sfp);
+> +			sfp->mdio_protocol = MDIO_I2C_NONE;
+> +			break;
+> +		}
+> +		if (!err)
+> +			err = sfp_sm_probe_phy(sfp, SFP_PHY_ADDR_ROLLBALL, true);
+>  		break;
+>  	}
+>  
+> diff --git a/include/linux/mdio/mdio-i2c.h b/include/linux/mdio/mdio-i2c.h
+> index 65b550a6fc32..5cf14f45c94b 100644
+> --- a/include/linux/mdio/mdio-i2c.h
+> +++ b/include/linux/mdio/mdio-i2c.h
+> @@ -20,5 +20,6 @@ enum mdio_i2c_proto {
+>  
+>  struct mii_bus *mdio_i2c_alloc(struct device *parent, struct i2c_adapter *i2c,
+>  			       enum mdio_i2c_proto protocol);
+> +int mdio_i2c_probe_rollball(struct i2c_adapter *i2c);
+>  
+>  #endif
 
-[Severity: High]
-Will this modification cause a stale switch rule (ICE_SW_LKUP_PROMISC_VLAN for
-vid=0) to be permanently leaked if the last VLAN is removed while the DFLT VSI
-rule is active?
-
-This patch skips demoting the vid=0 multicast promiscuous rule from
-ICE_SW_LKUP_PROMISC_VLAN back to ICE_SW_LKUP_PROMISC when the last VLAN is
-removed, if ice_is_vsi_dflt_vsi(vsi) is true.
-
-However, if the interface later drops IFF_PROMISC (removing the DFLT VSI rule)
-and then drops IFF_ALLMULTI, ice_clear_promisc() is called. Because the
-interface now has zero VLANs, ice_clear_promisc() executes its else branch:
-
-    } else {
-        status = ice_fltr_clear_vsi_promisc(&vsi->back->hw, vsi->idx,
-                                            promisc_m, 0);
-    }
-
-This only searches and clears rules from the ICE_SW_LKUP_PROMISC recipe. The
-stranded rule in the ICE_SW_LKUP_PROMISC_VLAN recipe is never cleared,
-resulting in a permanent hardware switch rule leak.
-
->  			ice_fltr_clear_vsi_promisc(&vsi->back->hw, vsi->idx,
->  						   ICE_MCAST_VLAN_PROMISC_BITS,
->  						   0);
