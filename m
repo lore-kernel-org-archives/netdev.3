@@ -1,62 +1,66 @@
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD3C305689
-	for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 15:53:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4146D2853FD
+	for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 15:57:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782230036; cv=none; b=icCfNuaCz727zr6KqXuKBlBC4cwQu+B2+ZXSizgaU0KE5X9ioMp0KTMJBNqsCfPbeJLpZ0kL4WHCDzZe1B7Q31BWPWvMIZ1bf2CVaBLjvoasGUyUumjrR3ebvc5yCIDwYBDm/YOYvGL+VdcD6X3uu2+pBzMmgZ6VFnYGUOKrIcM=
+	t=1782230221; cv=none; b=b9BKPszNmGDJbagzPYSmuByrsPQo3RX+3yskdGppkcTIXbmFQ1TVeYB/1Khi3oqU/vrJsfQJtDLWeFC8GdCVJxipbgtz7G18zvIzVofDxZ6qHXfe8YBpyNyvi8iWbSz4pTY2YHJKW/cw+vE+Uwq77sxmE/71g/4+60moWYcvzOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782230036; c=relaxed/simple;
-	bh=zYXd6ReU2WdIxJbOFNrBVnjOGqbTxv1cNEEG6ENsyng=;
+	s=arc-20240116; t=1782230221; c=relaxed/simple;
+	bh=X8I3A+Gd5xbVF3keweqv65QN4tX5Z5eydFbTsRT6B/w=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rDMSUnq5oN+uEQtaKpdxDAzIpEFWsWssQn/SjCMcFza/j5VHDexsRQNsBlavghAVCK24AeFSSZ1ljOGSpiZzFJHG0JxZzZY5ufKLJy2087h3PPZA63Wg4iuFC9BZRp7psud7xTL3DBXU8WFAKHfVj3P8eGIpJ5hr3u4v9UCKMjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ieee.org; spf=pass smtp.mailfrom=ieee.org; dkim=pass (1024-bit key) header.d=ieee.org header.i=@ieee.org header.b=TplHOpRx; arc=none smtp.client-ip=209.85.160.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ieee.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ieee.org
+	 In-Reply-To:Content-Type; b=PmkmiuZdHsj8CtiTMMiUzoD1aGEFjXJsf8izYTV7Y9wkrQRVi+xTVrt9ipkYIGiedh5dqctXRfHOArsNQnum992P53J/ShMWG/O0K7Kllgdp6Xh+8uTDjKT7/7IN+QG0VzytgZiVHt7Rm1vEgvh9BZ/5smCX62lqrisgE+b2enw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b=0K4HBwyg; arc=none smtp.client-ip=209.85.219.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ieee.org header.i=@ieee.org header.b="TplHOpRx"
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-5177945a279so60377101cf.0
-        for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 08:53:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b="0K4HBwyg"
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-8de7bfa31d5so1023576d6.1
+        for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 08:57:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ieee.org; s=google; t=1782230033; x=1782834833; darn=vger.kernel.org;
+        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1782230219; x=1782835019; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=XqPTCm5YKqWQJxJHEkoz96y23iqGtdrjAIIsxTeKqR8=;
-        b=TplHOpRxxkKEVbj69AkhMrHVomYawMCyP4bLfnOyq/jBZrXkIekITaun9qKutsGkS1
-         MjiW19zEzdDDcdZHnY+Ji+ZyQUScG/8t+67fLBI6HA3KCcpg10kEqULJsZe81e9s9Z1h
-         3t9FnqjKHNO9b1BFIkC7caopC7GFCAC7hReQg=
+        bh=TPDfmVIzr517SVNMJCXJaTtxqPgE7ofDG9u4XZ/jZQY=;
+        b=0K4HBwygbFedkgdPSmoLqaNhzqsbOKlp7HQymWdAKH3wJOe/u9WFiVk4k+SziIIlAF
+         5BKnU9NScrwfKXKyipp/j2yKRdLuQGjwPax9x+js2+RHVTmuGyyGcJjzwm/Bke2orBtk
+         74DzaALUeQzM9JCud+CAWBVI9PqOeZwzL4qrsnEswM7ik0JgOaNE/v6OBy+l5CBqI0yf
+         +EL1bi2tE5YoUoSsf4NeD/Zo6DhMrm47XwN8wU40M14IH1r8hpV4gfzJTBKIWXXx9RGU
+         /PFUbsV0Ifhnb4emweHU3R/xL/AdXgJrICxv7vbgLuOCMKA8WR8gxmygcSVIxs7r7ZzN
+         v7+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782230033; x=1782834833;
+        d=1e100.net; s=20251104; t=1782230219; x=1782835019;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=XqPTCm5YKqWQJxJHEkoz96y23iqGtdrjAIIsxTeKqR8=;
-        b=KutU9x8gfCrHsK1o1S4bQ/cNePKAkgcJ7/Ke2aqOdT6OX9vy7X2ArUWEM5cNUTtakw
-         Hqb4tBcnKKYZrNRLWLF2P7c7W3jnYJeB7Asa2D8CsiRGcOM6ZIgvNyTCOsT/9ngvU0zq
-         9MW5OqQur6JUl61dRZDWBFRwDsKDHkKfbySxY82UyH2SbrsS7poMFY6H/4oxrwbbLF6C
-         CDhqZ0Pv+IoqYHkCAVT/+jWEP+psNM00c56dCi6irnKAlZWDztAYyNvbrgeJIYBerRv8
-         fPybIVLqkjjfZ8wZ7M7sqJD+22WdZGnSWM/RLNLW2LXSKPqDhFPfHU9mqTJdiugjs9sb
-         nBhA==
-X-Gm-Message-State: AOJu0YyYQpFNY4DSB3hXKx/OLyqX9MfqKsjZ9l7DqyrgAbULBBXPjmXR
-	UhhdHsbp28/k6uZ7drzP4M4pX/u4gaBaxSdZhsnI6Rhp6DuogkXSE2XpUIOKHS8nRg==
-X-Gm-Gg: AfdE7cnFIZ/13nKAzCdTZ8ofN9d+ShXYTwIMN3yJwMDsCJF8hAfTf9EX8t/HhxRPRAR
-	XI1FzQWFJMN/Rrtvn4BXI4pcSbkgRc1I/QIrkEIrnNVQapMQqjngjM+vSR0uI5oc0MA79/qMrxR
-	7/W1sFlbsYqSivXm2Ph57pBPUgM6JxmLvFyPzy2GmCweTKZYcPQxfkIMFbXYmHgzIyU/wAccqn/
-	A7lvaV3sqQThC9FOoUZsVo1xEpkwxlkcq/IGF+gEdG3Q1Mta+anf2eL9CPHvp1mBcV7qSP4YWgn
-	1SH2h0K1IH9Dw/nfjYc4/PsPLNRZWK8Xi6zH17MZQzJsnevGzkUyBbzW7OFShoDQKN2u5sKQVhv
-	a/42Nx4YSFYOKfMASW7c06iCj5Uz8szRf3x5zEdPTZbaWoxMTGNijB3dknUoAWIMlM12gkyggDg
-	D2oTBQg89p
-X-Received: by 2002:a05:622a:91:b0:517:9e5b:919b with SMTP id d75a77b69052e-519e4c8ed1cmr286911061cf.47.1782230032727;
-        Tue, 23 Jun 2026 08:53:52 -0700 (PDT)
+        bh=TPDfmVIzr517SVNMJCXJaTtxqPgE7ofDG9u4XZ/jZQY=;
+        b=bHed+wVUJcZqRQHD9L6oxnQcdt34tud7NBytjMV1DTpUQaghU7ePp3lBjEDHab7drV
+         1NSYMgpF6VW6inwGagBbh81N9A+XcjUNvVIZ7SiLpPFX+3YR7JVR+bqlvVqAXCv0CeQI
+         ta+tqmhRx/W0lHDg9+QPsrbsL05j7ddoQxN4C3iUZWm54ZGQf05Fp5qVRCHLDycsjIFF
+         6Ij4qNuMxR/lADRUZ8WPlX97Qp1/VV9tDe/snJFFTXYMwM7gC2syZoGTxHE0nGH18kSW
+         3kLLycVVfkS9j4NSsYENSXQf37q+2PD1O1edg1eNWRXBOZxn/MjaeaJkFgLQi/mgyIcA
+         ywPA==
+X-Forwarded-Encrypted: i=1; AHgh+RqQUNETWdy9+J9jUEdx/r9Qtp+QuAQM0SDScQKxskofSnOFbI+Q0go0h3wBd4ceA2UXR0jsqW8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwfJzJkc1H8amfS7GCNU/7ziyUgGDxqIaNIrLFg7s4P71szt5dC
+	uKkYV990DnT998x61RPxPFq39tZbM6eGUyiETsztK80QScbgRMznFn2IyvG06ktNdy0=
+X-Gm-Gg: AfdE7cmPR4RJiwJTyvSAclhJLka94w4oLq9MEC+2r5SlOUmfZUoqwL+IVd5T8gRvrnz
+	Oom1v5PFeS8nAgl/IRQ8y6LNPHd2ZcgmDi/aPLboMO7mNYjjhp6BfTCmhmQktp7o5WuKgmoBkjz
+	PgfkUpmUgA71wD7sNYKA7s0GjOR9S66GvO9cBUJE6BpUsw5B2tiCYnfUOaU8OUjYkt0+dObrKVd
+	TjG6dlgBG/Iq+s7ijFL+JXEh0B1U+3VZYgmFjy8XrGHa5acWPFlZEeZrMlHr6XytVNAVeiiFPZL
+	fsTv04lkXI5vBHqA36T9ES72wK3PLMbu82U8uZouzZASYPQHItgrVrFNnxrew2PJ4tsASr7IWB3
+	SCrWfNPCOGeRNuOqIlaTBCeFiUNkrZkHarjMc4FcuEDfcs9nMlNyQrKehSndhmQyoa3MKOLsBL8
+	1K2SX2fhFEysu6Ow==
+X-Received: by 2002:a05:6214:4344:b0:8ce:cad9:479a with SMTP id 6a1803df08f44-8e4341be39amr51848766d6.15.1782230219270;
+        Tue, 23 Jun 2026 08:56:59 -0700 (PDT)
 Received: from [172.22.22.234] ([73.62.185.64])
-        by smtp.googlemail.com with ESMTPSA id d75a77b69052e-51a514b4f5dsm26143431cf.1.2026.06.23.08.53.50
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8df7f603b6dsm143054006d6.15.2026.06.23.08.56.57
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Jun 2026 08:53:51 -0700 (PDT)
-Message-ID: <526c68fd-684d-4593-8c6a-e08aafdada5d@ieee.org>
-Date: Tue, 23 Jun 2026 10:53:49 -0500
+        Tue, 23 Jun 2026 08:56:58 -0700 (PDT)
+Message-ID: <959db395-ae71-4a50-bd46-ac5add545a52@riscstar.com>
+Date: Tue, 23 Jun 2026 10:56:56 -0500
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,68 +68,66 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net: ipa: fix SMEM state handle leaks in SMP2P init
-To: Haoxiang Li <haoxiang_li2024@163.com>, elder@kernel.org,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260623031831.1788454-1-haoxiang_li2024@163.com>
+Subject: Re: [PATCH 0/3] SM8450 IPA support
+To: esteuwu@proton.me, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Alex Elder <elder@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+References: <20260622-sm8450-ipa-v1-0-532f0299f96e@proton.me>
 Content-Language: en-US
-From: Alex Elder <elder@ieee.org>
-In-Reply-To: <20260623031831.1788454-1-haoxiang_li2024@163.com>
+From: Alex Elder <elder@riscstar.com>
+In-Reply-To: <20260622-sm8450-ipa-v1-0-532f0299f96e@proton.me>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 6/22/26 10:18 PM, Haoxiang Li wrote:
-> ipa_smp2p_init() acquires two Qualcomm SMEM state handles with
-> qcom_smem_state_get(). However, neither the init error paths
-> nor ipa_smp2p_exit() release them.
+On 6/22/26 8:44 PM, Esteban Urrutia via B4 Relay wrote:
+> This series adds support for the IPA subsystem found in the SM8450 SoC.
+> While IPA v5.0 is very similar to IPA v5.1 (heck, it even managed to
+> properly get the modem up and running), it wasn't perfect, since the
+> modem would sometimes hang when rebooting or powering the AP off.
+> After a thorough investigation, I managed to create the proper data file
+> required for IPA v5.1.
 > 
-> Use devm_qcom_smem_state_get() for both state handles so the
-> references are released automatically when the platform device
-> is removed.
-> 
-> Fixes: 530f9216a953 ("soc: qcom: ipa: AP/modem communications")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+> Regards,
+> Esteban
 
-So I guess they were never "put" before?
+I assume you have implemented this based on what you found in
+some downstream code.  And if so, could you please indicate
+where to find that (so I can do some cross-referencing myself).
+I no longer have access to any Qualcomm internal documentation.
 
-This looks OK, but I'll just mention that the IPA code
-doesn't use devm_*() (managed) interfaces.  So it would
-be more consistent to just call qcom_smem_state_put()
-at the end of ipa_smp2p_exit() for both ipa->enabled_state
-and ipa->valid_state.
+Thanks.
 
 					-Alex
 
+> Signed-off-by: Esteban Urrutia <esteuwu@proton.me>
 > ---
->   drivers/net/ipa/ipa_smp2p.c | 8 ++++----
->   1 file changed, 4 insertions(+), 4 deletions(-)
+> Esteban Urrutia (3):
+>        arm64: dts: qcom: sm8450: Add IPA support
+>        dt-bindings: net: qcom,ipa: Add SM8450 compatible string
+>        net: ipa: Add IPA v5.1 data
 > 
-> diff --git a/drivers/net/ipa/ipa_smp2p.c b/drivers/net/ipa/ipa_smp2p.c
-> index 2f0ccdd937cc..d8fd56949082 100644
-> --- a/drivers/net/ipa/ipa_smp2p.c
-> +++ b/drivers/net/ipa/ipa_smp2p.c
-> @@ -228,15 +228,15 @@ ipa_smp2p_init(struct ipa *ipa, struct platform_device *pdev, bool modem_init)
->   	u32 valid_bit;
->   	int ret;
->   
-> -	valid_state = qcom_smem_state_get(dev, "ipa-clock-enabled-valid",
-> -					  &valid_bit);
-> +	valid_state = devm_qcom_smem_state_get(dev, "ipa-clock-enabled-valid",
-> +					       &valid_bit);
->   	if (IS_ERR(valid_state))
->   		return PTR_ERR(valid_state);
->   	if (valid_bit >= 32)		/* BITS_PER_U32 */
->   		return -EINVAL;
->   
-> -	enabled_state = qcom_smem_state_get(dev, "ipa-clock-enabled",
-> -					    &enabled_bit);
-> +	enabled_state = devm_qcom_smem_state_get(dev, "ipa-clock-enabled",
-> +						 &enabled_bit);
->   	if (IS_ERR(enabled_state))
->   		return PTR_ERR(enabled_state);
->   	if (enabled_bit >= 32)		/* BITS_PER_U32 */
+>   .../devicetree/bindings/net/qcom,ipa.yaml          |   1 +
+>   arch/arm64/boot/dts/qcom/sm8450.dtsi               |  55 ++-
+>   drivers/net/ipa/Makefile                           |   2 +-
+>   drivers/net/ipa/data/ipa_data-v5.1.c               | 477 +++++++++++++++++++++
+>   drivers/net/ipa/gsi_reg.c                          |   1 +
+>   drivers/net/ipa/ipa_data.h                         |   1 +
+>   drivers/net/ipa/ipa_main.c                         |   4 +
+>   drivers/net/ipa/ipa_reg.c                          |   1 +
+>   8 files changed, 536 insertions(+), 6 deletions(-)
+> ---
+> base-commit: 948efecf22e49aa4bf55bb73ec79a0ddcfd38571
+> change-id: 20260622-sm8450-ipa-5da81f67eb65
+> 
+> Best regards,
+> --
+> Esteban Urrutia <esteuwu@proton.me>
+> 
+> 
 
