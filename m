@@ -1,260 +1,267 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27878384CCB
-	for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 14:22:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.173
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782224561; cv=pass; b=NOjwwfyuYnmPjxteSHb3MU0HcKKQbjPar6Fa+jDFEv6K+1FkTYoC7a6IwzLYfYX3+Ae+h8RdRVPZPzQ2iAkfm0ftK3ITbpwkZm+lO1y0Pz9/WbD2wNeg9J2dihtbu5IzZVO+HRa795ZtjRBwYSVAQZh58WEKZy8JmBcmrIN8sbE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782224561; c=relaxed/simple;
-	bh=6OuWNKXUjuJGgtstYVEf3air0BigVE0qUj/4sYp8Up8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gTfUNVEOTRG9sV3GyeJzRjqisZGPLj4zx0VQMg9JmV4HkQ5lMBGWtwsOnQfx2aYZJJ3AExO1yCDmyziVwkvE1GMYbKW5IJI46A2r3gD9kWa4iSSFzoF0U/+cR9c6aZwNftKlNZ46j2qduJTgAzMZJ5vCuDClmfUqGfixDWG9gBY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d0TY2fLM; arc=pass smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B27532B11E;
+	Tue, 23 Jun 2026 14:27:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782224827; cv=none; b=nL6aTiG3mc9RCduwZZg+UiPAw5v8986Yp48oGZvEot5GdmsRDAVXlVLlY4XFLXsrRlo9NPAM+oSgtYs+pnUvsE0S8MBhziLy2HE8BDmcTNDPu/AT0O00PYQi0PH1FCwoWhq2pb2jd4u0DDBM4wDcN+jrpie7W/OKllbSzvSdNjU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782224827; c=relaxed/simple;
+	bh=ey+bZZQJp1LPnLeShhdGyynLcTAcYrBePcWy90OtJ+s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ru7PEdCTC5/5n6XBTqrpQsmSjlNqYgfSn4CQB+g95MTtY0nW7PNSU2wEybElduoIy3xsnGONwvCrkbwYmvSxSKDEz30j6pFx8r8btkytRnLxkJkmcKuXquPHX2QB/PntejKiahyqJ69ghi1wqXthlGQqYwGkL/a9H32A06kwZzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fJNcvDgK; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=S923S6Pr; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d0TY2fLM"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-84229481d44so2562367b3a.0
-        for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 07:22:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782224559; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Qx3bXNiePWEEtxPuH3Dgr3ZHLEBsLKv8JMhhvWJydh+a/dU/c0Z4+hAs1phlNn1ufH
-         l+uVNOU6RKGdufTgVET/BpNePW3CJVjvfmb5Ci+ewWWh56mxoLoFxKocieV63gIFCuGi
-         qzuGzUqwP0HoDrNcmpmNz+rNP9M1tFIuHFiFFycMyj412WyH8m6YcKYvf/a5MnpCw44w
-         kVILAjC8vWfEbdRL+3l7ZHjrbxIrmSB5fu1Z7X6dSxIcSvlKJ380pPL0tV8DgKVZc32i
-         XsNEeP4Y1VKrfx2QKJxvjXg06vN5Zfm+7B+iOeEriJSB+3ZjU/w0YrFwrqY+6wi5ZIF/
-         ePRw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=+cPfbh/CsU7TED7ItD4vJF/Q9AnwnYkUVn4tn9XieKE=;
-        fh=K8tnaMzqLW4acSonRfVuPhvpDU3se+ynKWOLSBfyxA0=;
-        b=bKS//1By2hmiw6gZw0MmdPo2njLfF2KgocgsV96tK5+1kTTlm/GFwRUCNXcVHMCyHP
-         hhZFZ6HnrlIackQA+tfl8IJjD4Hxjs1k3HaE87ZZwccxh+T0cEhH8Ae6BGCUpYY/GkSO
-         OhEBWAs6tctYWceCU74myKhLuA9XdFf8O9Ms9QWW1V8iu0LkPZgot++nVQxPQnc5BGax
-         Mbz0f/XyoQu/VEMxMyDB0jzBZpdNqHZqx9Uzl9l+TvEBY5KFk77U3r4yw8Pr4F6qy1qo
-         SNXDnuxiC1dZkYEvH+ga6mVMIwuezXp9xDz4QcHAQye1Ps/CxTaVIhY4CdbBe61mN4q5
-         fjmg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782224559; x=1782829359; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+cPfbh/CsU7TED7ItD4vJF/Q9AnwnYkUVn4tn9XieKE=;
-        b=d0TY2fLMTZ46c/LPN/7yHvvfdK1DmmnWOlZ7CDJ4dwSGMYnXZxd1UJB4sUKKiGD7hz
-         NK6JCZD8qHWRXgXdR6AK4986h/0jzZj/GMEbts7LcL5N81Hk/KE1aw0mq81J0XjTP+pN
-         EoSVawypyRX6Uv1o7Yo82TlV98bJPz+LFmWiQDd2f2PshNeWqC/YttI2XYVm+cIt1uYk
-         hhi+trbZCfM8eSZdbY1XBGhwesyIvSi7wx24X8PcLjyiQCcYOwMpaCvzopIcE+Zb0lm0
-         6VLh8Rk7CGjpZddmBHeAuA14DD1eJ91S/4GhSJcrTDmdz9uZQypLyNKhhneidSwPDuIw
-         HP3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782224559; x=1782829359;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=+cPfbh/CsU7TED7ItD4vJF/Q9AnwnYkUVn4tn9XieKE=;
-        b=NMlx6vSukGDlQOexEoasGY6DufbW/9Gkf9LpJY1cUmpFbsgTdj0Y0yHfPqid/3CmSQ
-         HhxA4JfdAyiadOlg6H9+k7vEPvXLJ7buEHB+QhbZeJt28NiAve1n8myZSL+mBMiesg80
-         pv4DLEAuhsgjfQuQ9WJYcx88OZV6fDQiPxeCB3TS/SpCUwbRpEhwlZQnb/qm6jXuV0W1
-         0KrAEWBG4Q97A/YmxsMfhjfoQLNCag/vF6fz6qMKUUscV2y+RIbT+XkbCpM8fHMnzA/n
-         k8Oai8V7usdEOX368tyu02a6GnhZCLtoz00ChAjJv9PL4V4t5ybALappigTcpsIEPaHW
-         wtMg==
-X-Forwarded-Encrypted: i=1; AFNElJ/Uowhy61IT4w+5lxUHqKce9UKJ4R9KP34zdzvE8C8qdjlDrzdhCwnD1TEFsD3BN549vCwf0G4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6BTLTpgMc/58+8qDHkUMPEBOsliG9YjqWTXNJFmxEVTnbmo2T
-	nsj1UFP+i6rWY567koYuExBiVKMHvdakKPlnZePtH9vlePFtRwlFjajkW7fp693gI6jwpWbvfX8
-	uDlVFvqSvlHPKHE+xkM//7vk2FTRUr4E=
-X-Gm-Gg: AfdE7ckeXyRzj3lhGba9iXmLJo/kXxJQKRyvTboNhVEuewepJYviUKYrID+k6yY2278
-	UQBvdgcWlWBh80wikbicqlHmnxq4X70opvvFrjncGFkaPMpi4lz0RgAzHcazChyo3GPTYn4lWaP
-	nB78Sz0cj6RgOEWqAC/ojkSXzY1MZx866DvFj10pL2cMhG7aaHK+dXwAjM+oOIYSsbb2D8f02aq
-	LStt0hSCJgDJ3tiGSjUxvIv6KhzDHNxmFLw2Oh86AoV1YhFr45LrmN6l/tJtlDtT9nY4tCNEH6F
-	Byf+QpLNsa8WHQf0sCQfArHpMrQUT6xV/gT1PrtVQIs/ZsyU1rmgBwPL7dtM7waFYAEr4is=
-X-Received: by 2002:a05:6a00:3cd3:b0:842:6a3b:60c9 with SMTP id
- d2e1a72fcca58-845970ed619mr3467557b3a.24.1782224559094; Tue, 23 Jun 2026
- 07:22:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fJNcvDgK";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="S923S6Pr"
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1782224824;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TqFi9Rvvs1tNEUFIO8PSUCUNoZLiDxxwBuBVFdBFL+k=;
+	b=fJNcvDgKfgCA42sQVvl1QKI1X2XbXouIt9e5sLRPaNgid0AFEbc6/twvv/ReLgdg9SR5Zi
+	qZ8pA/pe2qZ3e94DyOsz17+YPCsGMlGxxrN3bYNLnW9MyHdE1ky1Pt415QZJvsT5m7F1dR
+	dJy4NGZdEX2+Fi9IPotciudRy7Pioa2NOwhRHhDu99O4TdzqgRu4k7vmxrqB+1L7d9/YCg
+	RkFcvGeM+pUm8PDqVB99JOs1meHYEPNk++ZX/nUTuKUsU13s/ALSPP54d6Eu0jzL6fNTcU
+	nHQA/3CCpmP8roGM10rWHpu3USUp6lxbRY/9bTXbP3iAPMM92cqsSX/71+9LFw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1782224824;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TqFi9Rvvs1tNEUFIO8PSUCUNoZLiDxxwBuBVFdBFL+k=;
+	b=S923S6Pr9FVH+bCq1hSDF+gjMGjqMpt+yVGtvR51lcHMtxi/6rG+BEFmhwFEttMzfLtQO2
+	eaZRUEFajeZIWxDA==
+To: linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	sched-ext@lists.linux.dev,
+	netdev@vger.kernel.org
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Andrea Righi <arighi@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Ben Segall <bsegall@google.com>,
+	Breno Leitao <leitao@debian.org>,
+	Changwoo Min <changwoo@igalia.com>,
+	David Vernet <void@manifault.com>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	John Ogness <john.ogness@linutronix.de>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Petr Mladek <pmladek@suse.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Simon Horman <horms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Tejun Heo <tj@kernel.org>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Vlad Poenaru <vlad.wing@gmail.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [PATCH 1/2] bug: Provide WARN_ON.*DEFERRED() macros for console deferred output
+Date: Tue, 23 Jun 2026 16:26:49 +0200
+Message-ID: <20260623142650.265721-2-bigeasy@linutronix.de>
+In-Reply-To: <20260623142650.265721-1-bigeasy@linutronix.de>
+References: <20260623142650.265721-1-bigeasy@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260622171048.1626022-1-edumazet@google.com> <CADvbK_e_7184a_jm5ASjKafXrJqaOKFUKJF6V1wp7AnFxK596g@mail.gmail.com>
- <CANn89iKFj9vSS6B-=KAMnLyqFqY5edZ-eChfcq+SuGckU6T9yg@mail.gmail.com>
- <CANn89i+dkbrSAwvaWXW7yWMfcwUebuTBLG5T7AGZaZcpVYGyfQ@mail.gmail.com>
- <CADvbK_cMHtBFGb87P6CoqJN+DCasn_5=RwtNhymdZ6p1eFnjuQ@mail.gmail.com> <CANn89iLOUWwECfTyiPbk--nqNo=tbshZbYAS9Zy_9OFNdpADoA@mail.gmail.com>
-In-Reply-To: <CANn89iLOUWwECfTyiPbk--nqNo=tbshZbYAS9Zy_9OFNdpADoA@mail.gmail.com>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Tue, 23 Jun 2026 10:22:26 -0400
-X-Gm-Features: AVVi8CdMIih0vJDwXMBVhvXhBnwXu5hRhfqx-J_XGJZGcJNJ4KQ3_VIqH1BRJcc
-Message-ID: <CADvbK_cF2F-+trja9E1ahF1oQgdp+zk1bpi3vfgXeNJmjgkNdg@mail.gmail.com>
-Subject: Re: [PATCH net] tipc: fix UAF in cleanup_bearer() due to premature dst_cache_destroy()
-To: Eric Dumazet <edumazet@google.com>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>, "David S . Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	syzbot+e14bc5d4942756023b77@syzkaller.appspotmail.com, 
-	Jon Maloy <jon.maloy@ericsson.com>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 23, 2026 at 9:58=E2=80=AFAM Eric Dumazet <edumazet@google.com> =
-wrote:
->
-> On Tue, Jun 23, 2026 at 6:56=E2=80=AFAM Xin Long <lucien.xin@gmail.com> w=
-rote:
-> >
-> > On Tue, Jun 23, 2026 at 2:35=E2=80=AFAM Eric Dumazet <edumazet@google.c=
-om> wrote:
-> > >
-> > > On Mon, Jun 22, 2026 at 10:37=E2=80=AFPM Eric Dumazet <edumazet@googl=
-e.com> wrote:
-> > > >
-> > > > On Mon, Jun 22, 2026 at 6:48=E2=80=AFPM Xin Long <lucien.xin@gmail.=
-com> wrote:
-> > > > >
-> > > >
-> > > > > Could this corrupt the list for concurrent RCU readers?
-> > > > > When list_del_rcu() is called, it intentionally leaves the next p=
-ointer
-> > > > > intact so concurrent readers can continue their traversal. Howeve=
-r, the
-> > > > > immediate call to list_add() overwrites both the next and prev po=
-inters
-> > > > > to link the entry into private_list.
-> > > > > If a concurrent reader is currently positioned at rcast, won't it=
- follow
-> > > > > the newly clobbered next pointer and jump from the original RCU l=
-ist
-> > > > > directly into private_list?
-> > > > > Because private_list is allocated on the local stack, the reader =
-might
-> > > > > interpret stack memory as a struct udp_replicast. Furthermore, th=
-e reader
-> > > > > would miss its loop termination condition because it expects to r=
-each the
-> > > > > original list head, potentially resulting in an infinite loop or =
-a crash.
-> > > > > [ ... ]
-> > > >
-> > > > I think you are right.
-> > > >
-> > > > Considering there is already one rcu_head in udp_replicast I will u=
-se it in V2.
-> > >
-> > > While looking at many syzbot reports with RTNL pressure. I found this
-> > > gem in  tipc_exit_net()
-> > >
-> > > while (atomic_read(&tn->wq_count))
-> > >       cond_resched();
-> > >
-> > > On some kernel builds cond_resched() can be a NOP, so we might loop
-> > > here for a while :/
-> > >
-> > True, thanks for the report,
-> >
-> > I think a cleanup_wq should be added for 'ub->work' instead of using sy=
-stem_wq,
-> > and then do flush_workqueue(cleanup_wq) in tipc_init_net().
-> >
->
->  I will send a series of 2 patches.
->
-> Second one looks like:
->
-Cool, wait_var_event() looks better.
+Provide a deferred version of the WARN_ON() macro. It will delay
+flushing the console until a later context. It is needed in a context
+where the caller holds locks which can lead to a deadlock content is
+flushed to the console driver.
+An example would from a warning from within the scheduler resulting in a
+wake-up of a task.
 
-Thanks.
+Deferring the output works by using printk_deferred_enter/ exit() around
+the printing output. This must be used in a context where the task can't
+migrate to another CPU. This should be the case usually, since the
+scheduler would acquire the rq lock whith disabled interrupts, but to be
+safe preemption is disabled to guarantee this.
 
-> More complex stuff can be added later in net-next.
->
-> commit 2f6b56e70f7048a9a2577715b8cfdb0ec94c2469
-> Author: Eric Dumazet <edumazet@google.com>
-> Date:   Tue Jun 23 06:48:33 2026 +0000
->
->     tipc: avoid busy looping in tipc_exit_net()
->
->     Blamed commit introduced a busy-wait loop in tipc_exit_net()
->     to wait for pending UDP bearer cleanup works to complete:
->
->            while (atomic_read(&tn->wq_count))
->                    cond_resched();
->
->     This loop can busy-wait for a long time if cond_resched() is a NOP. T=
-his
->     typically happens if the netns exit is executed by a high priority ta=
-sk,
->     or under kernels configured without preemption (CONFIG_PREEMPT_NONE).=
- In
->     such cases, it wastes CPU cycles and can lead to soft lockups.
->
->     Fix this by replacing the busy loop with wait_var_event(), allowing t=
-he
->     thread to sleep properly until the work queue count reaches zero.
->
->     Accordingly, update cleanup_bearer() to use atomic_dec_and_test() and
->     wake_up_var() to wake up the waiter when the count drops to zero.
->
->     This uses the global wait queue hash table, avoiding the need to bloa=
-t
->     struct tipc_net with a wait_queue_head_t. The atomic_dec_and_test()
->     provides the necessary memory barrier to ensure the wakeup is not mis=
-sed.
->
->     Fixes: 04c26faa51d1 ("tipc: wait and exit until all work queues are d=
-one")
->     Signed-off-by: Eric Dumazet <edumazet@google.com>
->     Cc: Xin Long <lucien.xin@gmail.com>
->     Cc: Jon Maloy <jmaloy@redhat.com>
->     Cc: tipc-discussion@lists.sourceforge.net
->
-> diff --git a/net/tipc/core.c b/net/tipc/core.c
-> index 1ddecea1df6e9100334c47a28ff6c065292fb9ad..315975c3be8186784e9c44c9f=
-f69d62c17ffd4b9
-> 100644
-> --- a/net/tipc/core.c
-> +++ b/net/tipc/core.c
-> @@ -45,6 +45,7 @@
->  #include "crypto.h"
->
->  #include <linux/module.h>
-> +#include <linux/wait_bit.h>
->
->  /* configurable TIPC parameters */
->  unsigned int tipc_net_id __read_mostly;
-> @@ -118,8 +119,7 @@ static void __net_exit tipc_exit_net(struct net *net)
->  #ifdef CONFIG_TIPC_CRYPTO
->         tipc_crypto_stop(&tipc_net(net)->crypto_tx);
->  #endif
-> -       while (atomic_read(&tn->wq_count))
-> -               cond_resched();
-> +       wait_var_event(&tn->wq_count, atomic_read(&tn->wq_count) =3D=3D 0=
-);
->  }
->
->  static void __net_exit tipc_pernet_pre_exit(struct net *net)
-> diff --git a/net/tipc/udp_media.c b/net/tipc/udp_media.c
-> index 66f3cb87a0aaaac8f40e8f237ab9a44d539b1cd8..62ae7f5b58409c89798c915de=
-e752ac42487581f
-> 100644
-> --- a/net/tipc/udp_media.c
-> +++ b/net/tipc/udp_media.c
-> @@ -40,6 +40,7 @@
->  #include <linux/igmp.h>
->  #include <linux/kernel.h>
->  #include <linux/workqueue.h>
-> +#include <linux/wait_bit.h>
->  #include <linux/list.h>
->  #include <net/sock.h>
->  #include <net/ip.h>
-> @@ -830,7 +831,8 @@ static void cleanup_bearer(struct work_struct *work)
->         synchronize_net();
->
->         dst_cache_destroy(&ub->rcast.dst_cache);
-> -       atomic_dec(&tn->wq_count);
-> +       if (atomic_dec_and_test(&tn->wq_count))
-> +               wake_up_var(&tn->wq_count);
->         kfree(ub);
->  }
+In order not to bloat the code on architectures which provide an
+optimized __WARN_FLAGS() define BUGFLAG_DEFERRED which is handled by
+__report_bug() and does not increase the code size.
+
+Provide the DEFERRED macros based on __WARN_FLAGS and __WARN_FLAGS
+macros. Extend __report_bug() to handle the deferred case.
+
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+---
+ include/asm-generic/bug.h | 41 +++++++++++++++++++++++++++++++++++++++
+ lib/bug.c                 | 16 +++++++++++++--
+ 2 files changed, 55 insertions(+), 2 deletions(-)
+
+diff --git a/include/asm-generic/bug.h b/include/asm-generic/bug.h
+index 09e8eccee8ed9..1e3ff00f709b8 100644
+--- a/include/asm-generic/bug.h
++++ b/include/asm-generic/bug.h
+@@ -14,6 +14,7 @@
+ #define BUGFLAG_DONE		(1 << 2)
+ #define BUGFLAG_NO_CUT_HERE	(1 << 3)	/* CUT_HERE already sent */
+ #define BUGFLAG_ARGS		(1 << 4)
++#define BUGFLAG_DEFERRED	(1 << 5)
+ #define BUGFLAG_TAINT(taint)	((taint) << 8)
+ #define BUG_GET_TAINT(bug)	((bug)->flags >> 8)
+ #endif
+@@ -115,6 +116,16 @@ extern __printf(1, 2) void __warn_printk(const char *f=
+mt, ...);
+ })
+ #endif
+=20
++#define WARN_ON_DEFERRED(condition) ({					\
++	int __ret_warn_on =3D !!(condition);				\
++	if (unlikely(__ret_warn_on)) {					\
++		__WARN_FLAGS(#condition,				\
++			     BUGFLAG_DEFERRED |				\
++			     BUGFLAG_TAINT(TAINT_WARN));		\
++	}								\
++	unlikely(__ret_warn_on);					\
++})
++
+ #ifndef WARN_ON_ONCE
+ #define WARN_ON_ONCE(condition) ({					\
+ 	int __ret_warn_on =3D !!(condition);				\
+@@ -125,6 +136,16 @@ extern __printf(1, 2) void __warn_printk(const char *f=
+mt, ...);
+ 	unlikely(__ret_warn_on);					\
+ })
+ #endif
++
++#define WARN_ON_ONCE_DEFERRED(condition) ({				\
++	int __ret_warn_on =3D !!(condition);				\
++	if (unlikely(__ret_warn_on)) {					\
++		__WARN_FLAGS(#condition,				\
++			     BUGFLAG_ONCE | BUGFLAG_DEFERRED |		\
++			     BUGFLAG_TAINT(TAINT_WARN));		\
++	}								\
++	unlikely(__ret_warn_on);					\
++})
+ #endif /* __WARN_FLAGS */
+=20
+ #if defined(__WARN_FLAGS) && !defined(__WARN_printf)
+@@ -159,6 +180,19 @@ extern __printf(1, 2) void __warn_printk(const char *f=
+mt, ...);
+ })
+ #endif
+=20
++#ifndef WARN_ON_DEFERRED
++#define WARN_ON_DEFERRED(condition) ({					\
++	int __ret_warn_on =3D !!(condition);				\
++	if (unlikely(__ret_warn_on)) {					\
++		guard(preempt)();					\
++		printk_deferred_enter()					\
++		__WARN();						\
++		printk_deferred_exit()					\
++	}								\
++	unlikely(__ret_warn_on);					\
++})
++#endif
++
+ #ifndef WARN
+ #define WARN(condition, format...) ({					\
+ 	int __ret_warn_on =3D !!(condition);				\
+@@ -180,6 +214,11 @@ extern __printf(1, 2) void __warn_printk(const char *f=
+mt, ...);
+ 	DO_ONCE_LITE_IF(condition, WARN_ON, 1)
+ #endif
+=20
++#ifndef WARN_ON_ONCE_DEFERRED
++#define WARN_ON_ONCE_DEFERRED(condition)				\
++	DO_ONCE_LITE_IF(condition, WARN_ON_DEFERRED, 1)
++#endif
++
+ #ifndef WARN_ONCE
+ #define WARN_ONCE(condition, format...)				\
+ 	DO_ONCE_LITE_IF(condition, WARN, 1, format)
+@@ -215,7 +254,9 @@ extern __printf(1, 2) void __warn_printk(const char *fm=
+t, ...);
+ })
+ #endif
+=20
++#define WARN_ON_DEFERRED(condition) WARN_ON(condition)
+ #define WARN_ON_ONCE(condition) WARN_ON(condition)
++#define WARN_ON_ONCE_DEFERRED(condition) WARN_ON(condition)
+ #define WARN_ONCE(condition, format...) WARN(condition, format)
+ #define WARN_TAINT(condition, taint, format...) WARN(condition, format)
+ #define WARN_TAINT_ONCE(condition, taint, format...) WARN(condition, forma=
+t)
+diff --git a/lib/bug.c b/lib/bug.c
+index 224f4cfa4aa31..f5768f5d17b47 100644
+--- a/lib/bug.c
++++ b/lib/bug.c
+@@ -196,7 +196,7 @@ void __warn_printf(const char *fmt, struct pt_regs *reg=
+s)
+=20
+ static enum bug_trap_type __report_bug(struct bug_entry *bug, unsigned lon=
+g bugaddr, struct pt_regs *regs)
+ {
+-	bool warning, once, done, no_cut, has_args;
++	bool warning, once, done, no_cut, has_args, deferred;
+ 	const char *file, *fmt;
+ 	unsigned line;
+=20
+@@ -219,6 +219,7 @@ static enum bug_trap_type __report_bug(struct bug_entry=
+ *bug, unsigned long buga
+ 	done     =3D bug->flags & BUGFLAG_DONE;
+ 	no_cut   =3D bug->flags & BUGFLAG_NO_CUT_HERE;
+ 	has_args =3D bug->flags & BUGFLAG_ARGS;
++	deferred =3D bug->flags & BUGFLAG_DEFERRED;
+=20
+ 	if (warning && once) {
+ 		if (done)
+@@ -229,7 +230,10 @@ static enum bug_trap_type __report_bug(struct bug_entr=
+y *bug, unsigned long buga
+ 		 */
+ 		bug->flags |=3D BUGFLAG_DONE;
+ 	}
+-
++	if (deferred) {
++		preempt_disable_notrace();
++		printk_deferred_enter();
++	}
+ 	/*
+ 	 * BUG() and WARN_ON() families don't print a custom debug message
+ 	 * before triggering the exception handler, so we must add the
+@@ -245,6 +249,10 @@ static enum bug_trap_type __report_bug(struct bug_entr=
+y *bug, unsigned long buga
+ 		/* this is a WARN_ON rather than BUG/BUG_ON */
+ 		__warn(file, line, (void *)bugaddr, BUG_GET_TAINT(bug), regs,
+ 		       NULL);
++		if (deferred) {
++			printk_deferred_exit();
++			preempt_enable_notrace();
++		}
+ 		return BUG_TRAP_TYPE_WARN;
+ 	}
+=20
+@@ -254,6 +262,10 @@ static enum bug_trap_type __report_bug(struct bug_entr=
+y *bug, unsigned long buga
+ 		pr_crit("kernel BUG at %pB [verbose debug info unavailable]\n",
+ 			(void *)bugaddr);
+=20
++	if (deferred) {
++		printk_deferred_exit();
++		preempt_enable_notrace();
++	}
+ 	return BUG_TRAP_TYPE_BUG;
+ }
+=20
+--=20
+2.53.0
+
