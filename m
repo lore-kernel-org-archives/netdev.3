@@ -1,99 +1,144 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.rulkc.org (mail.rulkc.org [155.212.184.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8633CAA50;
-	Tue, 23 Jun 2026 15:13:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B6E1306764;
+	Tue, 23 Jun 2026 15:38:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=155.212.184.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782227581; cv=none; b=GZ1KLl233sjNsDH1ycIWO4pLSe/ofIy2zz1lUM/0054cAo0ojKbuj8YdgWypBUJIdq09xDYHgGzs+kiVWnsLONpJhIMbaBFE+OzNVQP1w8u06TMoMcMrtqgvWU0B8bgiPxADUmuaZ+cxqKUsqDa7hQZmEOcKGwSwZMQBJaQM5f0=
+	t=1782229131; cv=none; b=rg4bKHtjNY9yLNaYCNOR/5OZaJ0/RimsZAsyn35zMbi91X6iAp0ydgM4HbN8lwgO3qrYOoFRV9mFwlwRbZMP/zDqgzxp6r3jNrbbEHtjFhVIc52FOWZnyD0jCA5yzQkpqGGBeVKzRFJLgPzssil/htK/TVvDq2HRiN0H1s2vokc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782227581; c=relaxed/simple;
-	bh=UvRb/hJ75yqmD7KOHsYc8RNxW1ISLUNyRcOHSB+mnKg=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=XiKofQJ5VqdGEtISxMYpNOCw1lhug6JEkI7G+KWKd2b04EWozOYSOnV7BcKuFhXtpav8niuz/3qXqA5iqRu/LpO6V/WTkispeM7QLNtEEywBoOxX3B6HhXJFysBYr+zD0ZE67yPvcWnH4GOns0PPTCZKV1UXAY9nSJ+ICs1XQCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=erYQ52Vc; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782229131; c=relaxed/simple;
+	bh=0kvOTvkPfdgHJq48ZLpEUHjQXNHEN0MuEIkkH+qd6CU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=krtEG644aRbd9lo3r6RqbTG0A4RPfjOMWtkZjKkCypJNqHe1fwgT8IWntdYx7DJMZHY2J2SVCAigYTB6j07SJvmjdjT91qyREPq5uDfL15fkEVxvtdeV0QxqC5GCY5c6pwXbD+Kfm/YfB2V0q1xLhlHfp+d8yu+6sp5rTdCFBSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rulkc.org; spf=pass smtp.mailfrom=rulkc.org; dkim=pass (2048-bit key) header.d=rulkc.org header.i=@rulkc.org header.b=A3wBmxCL; arc=none smtp.client-ip=155.212.184.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rulkc.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rulkc.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="erYQ52Vc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D9731F000E9;
-	Tue, 23 Jun 2026 15:12:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1782227579;
-	bh=AtvjKrQjn0yaOECYG651fhjPbVJqsgT1jFVa8oh13/M=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=erYQ52Vc0wahfFEjC5jkxkoH7jgtKIkO3enH8kHCLnp8lS8V9OfV6cyOeFWe4dBhG
-	 BLIDAtScWu3JcuLHnoltUE340UnQIkmw+LJEVKLoKL3xetwwmBLsozVNK0N+Ba4MhS
-	 3exzCzkutIxDMbY4VA11dhwknIjPrSRAFHue0FSM=
-Date: Tue, 23 Jun 2026 08:12:58 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
- sched-ext@lists.linux.dev, netdev@vger.kernel.org, "David S . Miller"
- <davem@davemloft.net>, Andrea Righi <arighi@nvidia.com>, Arnd Bergmann
- <arnd@arndb.de>, Ben Segall <bsegall@google.com>, Breno Leitao
- <leitao@debian.org>, Changwoo Min <changwoo@igalia.com>, David Vernet
- <void@manifault.com>, Dietmar Eggemann <dietmar.eggemann@arm.com>, Eric
- Dumazet <edumazet@google.com>, Ingo Molnar <mingo@redhat.com>, Jakub
- Kicinski <kuba@kernel.org>, John Ogness <john.ogness@linutronix.de>, Juri
- Lelli <juri.lelli@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>,
- Paolo Abeni <pabeni@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Petr Mladek <pmladek@suse.com>, Sergey Senozhatsky
- <senozhatsky@chromium.org>, Simon Horman <horms@kernel.org>, Steven Rostedt
- <rostedt@goodmis.org>, Tejun Heo <tj@kernel.org>, Vincent Guittot
- <vincent.guittot@linaro.org>, Vlad Poenaru <vlad.wing@gmail.com>
-Subject: Re: [PATCH 1/2] bug: Provide WARN_ON.*DEFERRED() macros for console
- deferred output
-Message-Id: <20260623081258.580e034fdb5b98f4f8dba44a@linux-foundation.org>
-In-Reply-To: <20260623142650.265721-2-bigeasy@linutronix.de>
-References: <20260623142650.265721-1-bigeasy@linutronix.de>
-	<20260623142650.265721-2-bigeasy@linutronix.de>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=rulkc.org header.i=@rulkc.org header.b="A3wBmxCL"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 54D711004A8;
+	Tue, 23 Jun 2026 18:38:28 +0300 (MSK)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rulkc.org; s=dkim;
+	t=1782229119; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=PfEenKZjBI4EpzXWng3bhv/OXzG/I245ZxmhnzWWya8=;
+	b=A3wBmxCLsQbFz4BH6RjoZQqyB5LquYDs7fZl1lx9k5t459RxcsQcc+Ldn22kH3gT4nN2WP
+	JScLTH5CSh/dUBHIL3w4X9dpUcHmbe3oBF/wqagRmDsvpsb13ouf4JiKu8etTClasb6ZCM
+	0FlJpWmoA6RQ/GeODFQvinjHFvC/MBVzgrEROAIJgCorJkj/a1CtVgqlRzUkxR9VV6bQMR
+	kxedfUiNKAlv/zfbVrjdLqnTpuj05AwQM5sX7nyHNfa9K5d/yeC60RWqfvUmNEcHYclci/
+	ZzauI6oajl91xYXskJC+azl/KK9jeIYR/4qOuas4TgmqPlTjKs0FNWU2ktDJ2A==
+From: Arseniy Krasnov <avkrasnov@rulkc.org>
+To: Stefan Hajnoczi <stefanha@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Bobby Eshleman <bobbyeshleman@meta.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: kvm@vger.kernel.org,
+	virtualization@lists.linux-foundation.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	oxffffaa@gmail.com,
+	rulkc@linuxtesting.org,
+	Arseniy Krasnov <avkrasnov@rulkc.org>
+Subject: [PATCH net-next v3] vsock/virtio: rewrite MSG_ZEROCOPY flag handling
+Date: Tue, 23 Jun 2026 18:38:19 +0300
+Message-ID: <20260623153819.697635-1-avkrasnov@rulkc.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, 23 Jun 2026 16:26:49 +0200 Sebastian Andrzej Siewior <bigeasy@linutronix.de> wrote:
+Logically it was based on TCP implementation, so to make further support
+easier, rewrite it in the TCP way (like in 'tcp_sendmsg_locked()'). This
+patch only rewrites flag handling (e.g. it doesn't change logic).
 
-> Provide a deferred version of the WARN_ON() macro. It will delay
-> flushing the console until a later context. It is needed in a context
-> where the caller holds locks which can lead to a deadlock content is
-> flushed to the console driver.
-> An example would from a warning from within the scheduler resulting in a
-> wake-up of a task.
-> 
-> Deferring the output works by using printk_deferred_enter/ exit() around
-> the printing output. This must be used in a context where the task can't
-> migrate to another CPU. This should be the case usually, since the
-> scheduler would acquire the rq lock whith disabled interrupts, but to be
-> safe preemption is disabled to guarantee this.
-> 
-> In order not to bloat the code on architectures which provide an
-> optimized __WARN_FLAGS() define BUGFLAG_DEFERRED which is handled by
-> __report_bug() and does not increase the code size.
-> 
-> Provide the DEFERRED macros based on __WARN_FLAGS and __WARN_FLAGS
-> macros. Extend __report_bug() to handle the deferred case.
-> 
-> ...
->
-> --- a/include/asm-generic/bug.h
-> +++ b/include/asm-generic/bug.h
-> @@ -229,7 +230,10 @@ static enum bug_trap_type __report_bug(struct bug_entry *bug, unsigned long buga
->  		 */
->  		bug->flags |= BUGFLAG_DONE;
->  	}
-> -
-> +	if (deferred) {
-> +		preempt_disable_notrace();
-> +		printk_deferred_enter();
-> +	}
+Signed-off-by: Arseniy Krasnov <avkrasnov@rulkc.org>
+---
+ Changelog v1->v2:
+ * Rebase on last 'net-next'. Don't need 'skb_zcopy_set()' now - it was
+   already added.
+ Changelog v2->v3:
+ * Update commit message.
+ * Remove one empty line.
 
-For some reason the comment over printk_deferred_enter() says
-"Interrupts must be disabled for the deferred duration".  Is that the
-case for all the printk_deferred_enter() calls which this patch adds?
+ net/vmw_vsock/virtio_transport_common.c | 47 ++++++++++++-------------
+ 1 file changed, 22 insertions(+), 25 deletions(-)
 
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index 09475007165b..41c2a0b82a8e 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -328,38 +328,35 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+ 	if (pkt_len == 0 && info->op == VIRTIO_VSOCK_OP_RW)
+ 		return pkt_len;
+ 
+-	if (info->msg) {
+-		/* If zerocopy is not enabled by 'setsockopt()', we behave as
+-		 * there is no MSG_ZEROCOPY flag set.
++	if (info->msg && (info->msg->msg_flags & MSG_ZEROCOPY)) {
++		/* If 'info->msg' is not NULL, this is only VIRTIO_VSOCK_OP_RW.
++		 * 'MSG_ZEROCOPY' flag handling here is based on the same flag
++		 * handling from 'tcp_sendmsg_locked()'.
+ 		 */
+-		if (!sock_flag(sk_vsock(vsk), SOCK_ZEROCOPY))
+-			info->msg->msg_flags &= ~MSG_ZEROCOPY;
++		if (info->msg->msg_ubuf) {
++			uarg = info->msg->msg_ubuf;
++			can_zcopy = virtio_transport_can_zcopy(t_ops, info, pkt_len);
++		} else if (sock_flag(sk_vsock(vsk), SOCK_ZEROCOPY)) {
++			uarg = msg_zerocopy_realloc(sk_vsock(vsk), pkt_len,
++						    NULL, false);
++			if (!uarg) {
++				virtio_transport_put_credit(vvs, pkt_len);
++				return -ENOMEM;
++			}
+ 
+-		if (info->msg->msg_flags & MSG_ZEROCOPY)
+ 			can_zcopy = virtio_transport_can_zcopy(t_ops, info, pkt_len);
++			if (!can_zcopy)
++				uarg_to_msgzc(uarg)->zerocopy = 0;
+ 
++			have_uref = true;
++		}
++
++		/* 'can_zcopy' means that this transmission will be
++		 * in zerocopy way (e.g. using 'frags' array).
++		 */
+ 		if (can_zcopy)
+ 			max_skb_len = min_t(u32, VIRTIO_VSOCK_MAX_PKT_BUF_SIZE,
+ 					    (MAX_SKB_FRAGS * PAGE_SIZE));
+-
+-		if (info->msg->msg_flags & MSG_ZEROCOPY &&
+-		    info->op == VIRTIO_VSOCK_OP_RW) {
+-			uarg = info->msg->msg_ubuf;
+-
+-			if (!uarg) {
+-				uarg = msg_zerocopy_realloc(sk_vsock(vsk),
+-							    pkt_len, NULL, false);
+-				if (!uarg) {
+-					virtio_transport_put_credit(vvs, pkt_len);
+-					return -ENOMEM;
+-				}
+-
+-				if (!can_zcopy)
+-					uarg_to_msgzc(uarg)->zerocopy = 0;
+-
+-				have_uref = true;
+-			}
+-		}
+ 	}
+ 
+ 	rest_len = pkt_len;
+-- 
+2.25.1
 
