@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02B640D59E
-	for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 01:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E069369234;
+	Tue, 23 Jun 2026 01:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782178221; cv=none; b=VB6x3q1HJ/ahpOyXYMwSry9JaDYJjincMahNbznTzmvx8jGXK185EesDAnyICQxtnJbx4XAneDeOdEErUUCcm3hIRL4LrxjzokFQoDpmo3iSDqyndmZPBBVYK+R8InUBk7Akd6TPfJ1ooUGjef7e/ox0FjHCAiFbb+UbgGLmx10=
+	t=1782178223; cv=none; b=Xz/vN9L5L8wklYdjO2VWnd7y6BP9q+vLMcXJub/Pcl3h/yZSafI+B7nXXapuZIBk8lHJWnKLUMu8cz9S2uV8cuAL529135nH3d6xW8QwTKyHZWdDfX/dyKjt0+BQPoWihqD6BTkNNM9dSWPyhlw9lK50HNq4x+/L9EXqLW1mJS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782178221; c=relaxed/simple;
-	bh=Cbc1IptnmyYPWbPHJpfHk+EdGrUyRbCcPiTcIXYcq9s=;
+	s=arc-20240116; t=1782178223; c=relaxed/simple;
+	bh=YF9ftz5RCBKjYnIjEwLjeaRvCaZnre6RWM+aLZ14O4E=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=P6Y/UMc5KJ4A7jGvyk6O6ZKx3gKqCASChQI9DFy1ViQqcbMgwtDnNhSNCGYn6oR47s6QjhaIIh8pn8NpJv4PBHqBu3EPwPU32fYtnknxw28DeFitSxVOS8mQcFaTv6+fB3WwjywVaPqA4nMGBs6te/yw0SnmCFPlOaF6GRIzqWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IIYvL7+P; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=ocaqm5vPA+5+IRykDkI/WX8vkDrjjYs3AR3vFQrtJmZ7ovM2GKzkVGeY6CQ8GulAQhQcDbgfTpcZENKVpZ+tNUZSD7dq7dGMVXBzyZ28Cl+dAFh10C1V21VKD5BwDSjxRYRi2rPREyC/zrfdtEQJl3wCFoQUfHKTkRMpEf11jqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N55a0gJh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IIYvL7+P"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67E781F000E9;
-	Tue, 23 Jun 2026 01:30:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N55a0gJh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1BE81F000E9;
+	Tue, 23 Jun 2026 01:30:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782178220;
-	bh=bY9CbvwNiGdx3n/spdaZ2EO/smQd5Nd7llRFcIMgLk0=;
+	s=k20260515; t=1782178221;
+	bh=eR7JjrV3zhpo3lRNLX6zAdd9ulOAgIgurKLwWRFmcG0=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=IIYvL7+PGgbdrCY7JxjDYjnikEHmYnxE3336cBqLwPCHvPUd3DDQmCUDJEwpikE6I
-	 u5zmvp0FqH+JlYWj0AS55H8MiLy/51Z1YiSdHLh3GIGCUcaUGQFpetg68MZDdZvgfL
-	 7ohrwgt+TbxgWotfBdCKerCc5ew7WD8IVgP/xybc8RIpspgGHUitmD8kBBPg8pgRQl
-	 qaWg0ZBACHSqqRRUhTKeDtlOjfGw4AbQ5RKRvkVplVwyyjB+ha+qdDIbyJr7SgEhXE
-	 wmCt8pvymEb725p+YiKvBXbTA7nCDVzRCiTbzIcWLkDKUShM7tkDFLFiuTfPeDTfVX
-	 cHe0ndGX+t9PQ==
+	b=N55a0gJhOuRzunH+uiN4s4MTVymbigHQMAUGvay4i9/zBleVOb3s5DKen0k6SsTTA
+	 TfZZAKoj4UbuRV8aAgMMSYiSzZDLRnk0Ee5QO3Oy8aOLEwvK+Hjdz/qrctUn+HM3Ze
+	 z4yhFbzB1+nhJxFnoEcWRe1pi6RTkSqqnlWKKjsddzBxBD5cbCBTbMdC8hNmX0okA/
+	 KFsv8uW1FFpITP5v7h+JRmkXuvDWh9oUjSG2ugsbdx7jy4S38OQ8EBAm/KVo2RdyMG
+	 BtFlpNcLIrMgbfFusx1NggIMymmDE7vgz9Jjg66EYCXUpz4xLVrNUJ4Yiq1OQ6LBap
+	 JblNFafQ5IAKA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0FCF393098F;
-	Tue, 23 Jun 2026 01:30:11 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56C8C393098F;
+	Tue, 23 Jun 2026 01:30:13 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,46 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] eth: bnxt: improve the timing of stats
+Subject: Re: [PATCH net] net/wan/hdlc_ppp: sync per-proto timers before
+ freeing
+ hdlc state
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178217821051.1493333.5714369108079292852.git-patchwork-notify@kernel.org>
-Date: Tue, 23 Jun 2026 01:30:10 +0000
-References: <20260619191538.104165-1-kuba@kernel.org>
-In-Reply-To: <20260619191538.104165-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- michael.chan@broadcom.com, pavan.chebbi@broadcom.com
+ <178217821199.1493333.4954244089937861432.git-patchwork-notify@kernel.org>
+Date: Tue, 23 Jun 2026 01:30:11 +0000
+References: <20260617020518.116319-1-fanwu01@zju.edu.cn>
+In-Reply-To: <20260617020518.116319-1-fanwu01@zju.edu.cn>
+To: Fan Wu <fanwu01@zju.edu.cn>
+Cc: netdev@vger.kernel.org, khc@pm.waw.pl, kuba@kernel.org,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 19 Jun 2026 12:15:38 -0700 you wrote:
-> Kernel selftests wait 1.25x of the promised stats refresh time
-> (as read from ethtool -c). bnxt reports 1sec by default, but
-> the stats update process has two steps. First device DMAs the
-> new values, then the service task performs update in full-width
-> SW counters. So the worst case delay is actually 2x.
+On Wed, 17 Jun 2026 02:05:18 +0000 you wrote:
+> Each PPP control protocol (LCP/IPCP/IPV6CP) embedded in struct ppp
+> registers a timer via timer_setup(). That struct ppp is the
+> hdlc->state allocation, which detach_hdlc_protocol() frees with kfree()
+> in both teardown paths: unregister_hdlc_device() and the re-attach inside
+> attach_hdlc_protocol().
 > 
-> Note that the behavior is different for ring stats and port stats.
-> Port stats are fetched synchronously by the service worker, so
-> there's no risk of doubling up the delay there.
+> The ppp proto never registered a .detach callback, so
+> detach_hdlc_protocol() performs no timer synchronization before the
+> kfree(). The only cancel, timer_delete(&proto->timer) in ppp_cp_event(),
+> is partial (it does not wait for a running callback) and only runs on the
+> ->CLOSED transition; ppp_stop()/ppp_close() do not sync either. A
+> ppp_timer callback already executing (blocked on ppp->lock) survives the
+> kfree and then dereferences proto->state / ppp->lock in freed memory,
+> leading to a use-after-free.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2] eth: bnxt: improve the timing of stats
-    https://git.kernel.org/netdev/net/c/40529e58629b
+  - [net] net/wan/hdlc_ppp: sync per-proto timers before freeing hdlc state
+    https://git.kernel.org/netdev/net/c/c78a4e41ab5e
 
 You are awesome, thank you!
 -- 
