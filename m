@@ -1,62 +1,62 @@
-Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
+Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D247038E5C5
-	for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 17:50:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6AF8390991
+	for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 17:50:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782237025; cv=none; b=mM9zlB34WsAJh1bWd3KuYcMP/gFsI6wvyP/VFsB98EbvFu+Pbcrwol6gOlyhJdKzN4KojIvO4qoxRZw3/V/r7eTjRsz4mCLEu9/Wu0rYoZaPCik8hseyq5Y6GRx7we5LsI1re5kL4q90/EO9hcrCAhFROthg4y9NxBN+cyD4RyI=
+	t=1782237029; cv=none; b=HMC0ZrbgKAUIXTSMjoghzlXNFca9kBy2ctqkU9lYa+hVU0KcTynyWQWyv0ssU/vdlhPypAFcYahnhO2m2YrbZcpE4lsay83BPRmUrR74zFnCdFQdcgqcX+W4EO/dQbtbbxRnpye1uF/b+4m+ZUxVwRqrPAzwfHIvUpMx/OgIEQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782237025; c=relaxed/simple;
-	bh=EITci8Q3PhnnOlttvD28ewG2B7YWQIpT5yuw0hYg1e4=;
+	s=arc-20240116; t=1782237029; c=relaxed/simple;
+	bh=Eq7a+53Jhwj3Y60E0eqcfWa8ZvQaQOz5wHt2RKMJ6iY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rYXHMy9Y/alRGYTFujPA82LetZSSBbveT0WZ9ZJEE+t3kv8bBqseEBCjANTpvb5/vKvhtzqXcAz5igZsCn0a5fXgRnquqoOp5qfJV84aT9LIYdxHor53/YvuIoYUFT9r2/OAm+ZClI/ftd01HMyjElatHaP/z/z2NH5ko2VXuEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LRClnVsY; arc=none smtp.client-ip=209.85.210.52
+	 MIME-Version; b=CDTY/Uwzo+l2JZ4SFn9GMKOzTL1KpfvOIoNgIXEvSEJSe4aXl/oEDnLjldIl5zGW8Uk2EhMd/6SasC/1VllOIOuIULK3hzMMp3bYib7qKyLftH7/qAU8da0EN/8cW6XKKdiWIh0V/YTT5caiUnJcPLmqvYdU9bVO8rek8YBkmA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dM3x+Aa4; arc=none smtp.client-ip=209.85.161.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LRClnVsY"
-Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-7e6b5c374e5so121717a34.0
-        for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 10:50:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dM3x+Aa4"
+Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-6a1009f6adeso100738eaf.3
+        for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 10:50:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782237022; x=1782841822; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1782237025; x=1782841825; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sTMcgsJg5TrOpDPMnIrfst04ZUwxEiFWLFOtmyv8yms=;
-        b=LRClnVsYsbH0RGbm+snCJ68xHeseJOd2Cj1qo6L6Rruw5FpkEY/163L3T7CS9kH00g
-         Amtkvy9dU8lM3FFHCKFPARFlOc5pLB+bZotQZ03E1rh5PkAHGJ5Jhy3rtm0b2jBUnLGv
-         Y0PXeW/xLjCCtXvjt6XO8C80FUP//J0bqEXZII636v9Q2O1W0UedGLPHXyoWuBk0TF9U
-         QGKb0bRRHL1PsbdghE3pt8EQ0gr3EtL6bCJTMCcizN4uLPTQCSTpZdHChKN4yKG2SoTP
-         +DgRgLzpv/TGY3jbBwkQrTpBhHGLMjbpCGFdQom4FVjz7ekFpAF6GXw4rlvfBv8+EOE2
-         Eixw==
+        bh=PiMtg+CA8K/addrg/w0MPHpF32bH/BwsVNnAnFesBpw=;
+        b=dM3x+Aa48oKHJX8bmjTxSrUNOIPMZtFktNL54hzd2AxBNO1F5gJHRlRXZcG3H7nudX
+         iDkrdogR8EQ4WnBOeKPKyqf6b6890fvHQtY46OHgg8PhqEw3lD1epTwjcoua+Mv9Mcnr
+         wrDYmACakrwuaU+aiMGkzw7fiE8mxbBe4gu7oobX7Nt5a8T+zCfCx+DcSycLYwFDKVNT
+         hROxeC0EXDpDqWmdv21TLUbfLntjmp3OGPJ2hYBC0UrFqinNlhMRxGIPD86pDkXep1QM
+         G7SygsOjwXGPQOffTQLjVsWC++pWLGRnOgIHxJ0OdKI2X6hlE8dyzHHXAG2o0wp3swNY
+         VviA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782237022; x=1782841822;
+        d=1e100.net; s=20251104; t=1782237025; x=1782841825;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=sTMcgsJg5TrOpDPMnIrfst04ZUwxEiFWLFOtmyv8yms=;
-        b=FpFS1rVmTsY+eigxa9weyubrTqdsFBvAgP5ywieIMOqdB1rB3e2V7BoJvDSDJFPjlx
-         j0/o2qx2Iewk27uHGHgxHTz1xghMoKOlVRMBiGWtx58pnPFQTr1COeuRT+VMiJC+Udzf
-         8lfPZnfUixk8Erj4GHTzFr/IlQWr0L1Pel7S97dw/ocxtNBTJIW2UR7ALnaOE7A5tLaT
-         pIAXIbznRvwwyenJAndJj04ZarD4/go5P7TrPR07OMnjQMLioz3cdAEgpLr9aW1YfKaa
-         zpVnepg4QCvys5aNFZIxSU1RebCxIE7Ph7y78O4CMrnmk6pyN8iKUJisVTl+YdxJkUoq
-         izkw==
-X-Gm-Message-State: AOJu0YwC27XRHzuU3dEu+/C9No9pWHYRB21ukJzeebMfxTgEKLzfhqno
-	8O0sILAIPtAPt4uwHHVJzoixlIK8jqux/KZthGKN1sojyoIXtmASy0vh
-X-Gm-Gg: AfdE7cnoz10R9KO1uU4roZA0PKQWgqT+NSmUPUE/2+K8vAGQKVzl3XPnlDwAJiUq6aT
-	rrVKL/pkwY+Lkun2QtEBYycDRsC8KhLsajvjEeUCbEZUAthSXQ5Yi8o/kWC8CWyvVAXzkQhkPd8
-	mbODLsohw8XhaCX/1LDTl4cI+v0pjjPlfSDpqhgrJyYuA40od8cTlJrarsiZjrTMK2jQp6F3K75
-	JpxezWuxGDYSUJP+n5GvYp+MH7ajXg2uQdL4gy2KOraTnlCj+vwI0fpKqc68ngIqzqB7PtaFGNP
-	R8HB6yQPiEllWASKd2UEiIl5eYi1TYgCCDsNQ8IDxwlZFumFSmFT0sdIlB+CXLw6UGK+EjYB64a
-	uJqOWlHfWgSXsQujWRrbjUF0LKDCnyY1zAZ8DDIUkpNrWJW43D72YfsOuiLT/gznO2bwCO/ETEv
-	FPom4=
-X-Received: by 2002:a05:6830:83bc:b0:7dc:d7e5:8d43 with SMTP id 46e09a7af769-7e9740286c5mr3201853a34.2.1782237021519;
-        Tue, 23 Jun 2026 10:50:21 -0700 (PDT)
-Received: from localhost ([2a03:2880:ff:57::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7e944007d7fsm9274453a34.2.2026.06.23.10.50.20
+        bh=PiMtg+CA8K/addrg/w0MPHpF32bH/BwsVNnAnFesBpw=;
+        b=LmFKFnV/rgP1wI47HfDEBeBwBzaL03b8OfKplzWtJv+fxPGipTIWIOIs0rhh+zka+1
+         NXiMLsKs5JzOumTcRW/t/yn01FuRnLFn08F0wEDKdK8sMW3pd4DBtu58D5ki05jSlfxh
+         M5jaLEgPu+0pRVIgpDLl3w3czcaJNcEuTZGJAnxo0vBi3Y8jTFg0/DdJ04MazlPIsqTk
+         8IJ1/OVCodM+EbaZmTQjuhqXaqu3ZiH9c73bs4Z9vrYQobDq901jgEE9y6yfWID5hpYm
+         Xts1Ep8hL36PvzEy7rOBosX0kpMmqvW6mJWAXlZDgCjmJabT/mkMIT+TNHvKaPQD/T49
+         hLZg==
+X-Gm-Message-State: AOJu0Ywd3YtZjg5yWiQxl28HoF99M6Iv55DJk6NedkOqEBjtqUXxl4ES
+	I4ytmle9Uo7ug+4vnKolGTd4hfR4anBeiwXlzCeKC9mHqilVu5JjSNcg2vscWg==
+X-Gm-Gg: AfdE7clRIsEmS7npf6KRy23cF+mHbKRbu7+mgOh00DvdmSR41nmqT4pg0VYBmJYxUdd
+	pnirDIyeo1042FTpQr51JRAnoAgTBoPGsqMiWvJkBwhDY9T8ybGY260UhxCrxiTeHWoWvagBKu+
+	5o25QxAlJGFtBA2ek/TfuYSu/Bwyq9vx1IghEVsv2VCJsMTiUdC/qtnJpkFRhXOmgyHGszfU6AZ
+	q+ogE9aiNMmeDTIFW82tcGuFd77ZOjeFx7lH6rw8ZdSjA91bHFifl1aGBDhByX3pfJyKr+ezJH+
+	Nxo1DnlVcWh2YnG56DbJtN3ovjRc2537OojwBfd2Ra7BKaJq9anIUDoqchmAPVyTJdoM0Wl3biy
+	IO6e02sacVSPLQa8sdjmIsQD8hpzG13h+dT8MZWBNBBXCJ/IenX3EkWf5nyslujidPMfKjllCoQ
+	0=
+X-Received: by 2002:a05:6820:1b08:b0:6a1:1292:ec3d with SMTP id 006d021491bc7-6a11292ef69mr3507288eaf.33.1782237024506;
+        Tue, 23 Jun 2026 10:50:24 -0700 (PDT)
+Received: from localhost ([2a03:2880:ff::])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6a0e9f29e37sm7206477eaf.3.2026.06.23.10.50.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Jun 2026 10:50:21 -0700 (PDT)
+        Tue, 23 Jun 2026 10:50:24 -0700 (PDT)
 From: Amery Hung <ameryhung@gmail.com>
 To: bpf@vger.kernel.org
 Cc: netdev@vger.kernel.org,
@@ -72,9 +72,9 @@ Cc: netdev@vger.kernel.org,
 	kerneljasonxing@gmail.com,
 	ameryhung@gmail.com,
 	kernel-team@meta.com
-Subject: [PATCH bpf-next v2 09/15] bpf: Add infrastructure to support attaching struct_ops to cgroups
-Date: Tue, 23 Jun 2026 10:49:57 -0700
-Message-ID: <20260623175006.3136053-10-ameryhung@gmail.com>
+Subject: [PATCH bpf-next v2 11/15] bpf: tcp: Support selected sock_ops callbacks as struct_ops
+Date: Tue, 23 Jun 2026 10:49:59 -0700
+Message-ID: <20260623175006.3136053-12-ameryhung@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260623175006.3136053-1-ameryhung@gmail.com>
 References: <20260623175006.3136053-1-ameryhung@gmail.com>
@@ -86,940 +86,498 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Martin KaFai Lau <martin.lau@kernel.org>
+In LSFMMBPF 2025, I have talked about moving the BPF_PROG_TYPE_SOCK_OPS
+to a struct_ops interface [1].
 
-This patch adds necessary infrastructure to attach a struct_ops
-map to a cgroup. The initial need was to support migrating
-the legacy BPF_PROG_TYPE_SOCK_OPS to a struct_ops.
-Recently, there are other struct_ops use cases that
-need to attach struct_ops to a cgroup. For example,
-the recent BPF OOM and memcg discussion in LSFMMBPF 2026.
+The BPF_SOCK_OPS_*_CB enum interface has grown over time as new TCP
+callback points were added. A BPF_PROG_TYPE_SOCK_OPS program now
+commonly needs a large switch on sock_ops->op, and the shared
+bpf_sock_ops_kern context has become harder to extend because different
+callbacks have different locking, argument, skb, and helper
+requirements. The existing 'union { u32 args[4]; u32 replylong[4]; }' is
+also not reliable in passing args to bpf prog when there are multiple
+progs attached to a cgroup.
 
-The motivation is to create a consistent expectation
-for attaching struct_ops to cgroup instead of each subsystem
-creating its own infrastructure. This logic includes
-hierarchy expectation, ordering expectation,
-attachment API, and rcu gp.
+The above has already been solved in struct_ops. Add a TCP-specific
+struct_ops type, bpf_tcp_ops, and support attaching it to cgroups.
+This allows each callback have its own func signature and allows
+the verifier to select kfuncs/helpers based on the specific
+struct_ops member being implemented.
 
-There is already an existing implementation for attaching
-multiple bpf progs to a cgroup. There are also tools
-built around it for querying. Attaching a struct_ops map
-(which is a group of bpf programs) could also adhere to
-a similar API and potentially reuse most of the existing
-implementation.
+This patch wires up the following existing sock_ops callbacks:
+- BPF_SOCK_OPS_TIMEOUT_INIT
+- BPF_SOCK_OPS_RWND_INIT
+- BPF_SOCK_OPS_RTT_CB
+- BPF_SOCK_OPS_STATE_CB
+- BPF_SOCK_OPS_RETRANS_CB
+- BPF_SOCK_OPS_TCP_CONNECT_CB
+- BPF_SOCK_OPS_TCP_LISTEN_CB
+- BPF_SOCK_OPS_RTO_CB
+- BPF_SOCK_OPS_ACTIVE_ESTABLISHED_CB
+- BPF_SOCK_OPS_PASSIVE_ESTABLISHED_CB
 
-A couple of ideas have been tried. One of them
-is to use mprog.c. In terms of the amount of changes,
-I eventually came to the same conclusion as in
-commit 120933984460 ("bpf: Implement mprog API on top of existing cgroup progs").
-I then shifted the focus to reusing the current
-{update,compute,activate,purge}_effective_progs() which has
-the main logic that implements the mprog API.
+BASE_RTT is ignored as it is not particularly useful. NEEDS_ECN should
+be done in bpf-tcp-cc instead. The tstamp ones should be a separate
+struct_ops (e.g. "bpf_sock_ops") that can work in both TCP and UDP.
 
-Since then, I tried to add a 'struct cgroup *cgroup' member
-to the existing 'struct bpf_struct_ops_link' and link_create
-will create a 'struct bpf_struct_ops_link' object to be stored
-in the pl->link. This turns out to have more changes on
-both cgroup.c and bpf_struct_ops.c than I like.
+timeout_init and rwnd_init could have a request_sock pointer. This patch
+tries a different API and direclty passes the request_sock pointer as
+an arg.
 
-This patch directly reuses the 'struct bpf_cgroup_link' which
-cgroup.c already understands. Add 'struct bpf_map *map'
-to 'struct bpf_cgroup_link'. In the future, as more subsystems
-are extended by struct_ops, we may consider to make
-'struct bpf_map *map' as a primary citizen of a link
-like 'struct bpf_prog *prog' and directly add
-'struct bpf_map *map' to the generic 'struct bpf_link'.
+Two other approaches were considered before settling on having
+bpf_get_retval() read the dispatcher's run_ctx via saved_run_ctx. The
+first was to inherit the retval in the trampoline itself: add a helper
+in the four __bpf_prog_enter*() paths that, for struct_ops programs,
+copies the chained value from the caller's run_ctx (now saved_run_ctx)
+into the program's own run_ctx. It works but puts a per-enter
+program-type check on the generic trampoline fast path, taxing all
+fentry/fexit/lsm callers for a cgroup-struct_ops-only feature. The
+second was to do that same inherit only for the int-returning members
+via a gen_prologue that emits a hidden kfunc at the start of
+timeout_init/rwnd_init; this keeps the cost off the generic path and
+scoped to bpf_tcp_ops, but needs a kfunc + BTF_ID + prologue-emission
+machinery. The chosen approach avoids both: it touches neither the
+trampoline nor the program, since saved_run_ctx already points at the
+dispatcher's run_ctx that carries the value.
 
-The pl->link could be the traditional 'prog' link or the
-new 'map' link. The places that need to handle them differently
-have already been refactored into the new prog_list_*() added in
-the earlier patch. In those new prog_list_*(), this patch will
-check "pl->link && pl->link->map", learn that it is a 'map' link
-and handle it correctly.
-
-The bpf_prog_array also needs to handle that its item can store
-the traditional 'prog' or it can store a struct_ops map.
-The places that need to handle them differently have also
-been refactored into the new bpf_cgroup_array_*() added
-in the earlier patch. The two differences are:
-  - different sentinel (dummy_bpf_prog in prog vs cfi_stub in struct_ops)
-  - the array for struct_ops may need to go through different
-    rcu gp.
-The bpf_cgroup_array_*() functions use the cgroup_bpf_attach_type (ie atype)
-to distinguish the array is storing prog or storing struct_ops map.
-
-This patch also implements a separate struct bpf_link_ops
-"cgroup_struct_ops_link_ops" to have a separate link_ops implementation
-that only handles the cgroup's struct_ops link.
-
-Questions:
-- Although this patch did not change it, it is not obvious to me how
-  the replace_effective_progs() and purge_effective_progs() handle
-  cases when there are existing BPF_F_PREORDER progs attached
-  in the hlist.
-
-Misc notes:
-- CGROUP_TCP_SOCK_OPS is added to the 'enum cgroup_bpf_attach_type'.
-  The actual implementation of the tcp_bpf_ops (a struct_ops)
-  will be added in the next patch.
-
-- free_after_mult_rcu_gp is added to 'struct bpf_struct_ops' such that
-  the bpf_prog_array can have a mix of sleepable and
-  non-sleepable prog in a struct_ops. This can tell
-  how the bpf_prog_array should be freed.
-
-- For a struct_ops that supports cgroup attachment, it does not need to
-  implement its own reg/unreg function. reg/unreg to a cgroup is
-  done by the common infrastructure added in this patch.
-
-- The cgroup's struct_ops link only supports BPF_F_ALLOW_MULTI.
-  This is enforced internally in cgroup_bpf_struct_ops_attach.
-  This should be consistent with the current prog's link
-  behavior in cgroup_bpf_link_attach.
-
-  In the future, we may allow each subsystem to choose differently.
-
-- A cgroup_atype member is added to 'struct bpf_struct_ops'.
-  When a subsystem struct_ops needs to support cgroup attachment,
-  it needs to add a value to 'enum cgroup_bpf_attach_type'
-  and then assign it to the newly added cgroup_atype member
-  in the bpf_struct_ops.
-
-- During LINK_CREATE in syscall, the patch uses the same
-  BPF_STRUCT_OPS (in attr->link_create.attach_type).
-  The bpf_struct_ops_link_create learns the map and
-  from the map it learns the st_ops. If the st_ops->cgroup_atype
-  is not 0, it will create a cgroup's link.
-
-- When a subsystem registers a struct_ops that supports cgroup
-  attachment, the struct_ops infrastructure will also ask the
-  cgroup infrastructure to remember a few things. This is done
-  by calling cgroup_bpf_struct_ops_register().
+[1], page 13: https://drive.google.com/file/d/1wjKZth6T0llLJ_ONPAL_6Q_jbxbAjByp/view?usp=sharing
 
 Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Amery Hung <ameryhung@gmail.com>
 ---
- include/linux/bpf-cgroup-defs.h |   1 +
- include/linux/bpf-cgroup.h      |  28 +++
- include/linux/bpf.h             |  19 +-
- include/uapi/linux/bpf.h        |   4 +-
- kernel/bpf/bpf_struct_ops.c     |  29 +++
- kernel/bpf/btf.c                |  23 +-
- kernel/bpf/cgroup.c             | 375 ++++++++++++++++++++++++++++++--
- kernel/bpf/syscall.c            |   1 +
- tools/include/uapi/linux/bpf.h  |   4 +-
- 9 files changed, 463 insertions(+), 21 deletions(-)
+ include/linux/bpf.h    |   1 +
+ include/net/tcp.h      | 113 +++++++++++++++++++++++++-
+ net/ipv4/Makefile      |   1 +
+ net/ipv4/af_inet.c     |   1 +
+ net/ipv4/bpf_tcp_ops.c | 177 +++++++++++++++++++++++++++++++++++++++++
+ net/ipv4/tcp.c         |   1 +
+ net/ipv4/tcp_input.c   |   4 +
+ net/ipv4/tcp_output.c  |   2 +
+ net/ipv4/tcp_timer.c   |   1 +
+ 9 files changed, 299 insertions(+), 2 deletions(-)
+ create mode 100644 net/ipv4/bpf_tcp_ops.c
 
-diff --git a/include/linux/bpf-cgroup-defs.h b/include/linux/bpf-cgroup-defs.h
-index c9e6b26abab6..0147b8bec973 100644
---- a/include/linux/bpf-cgroup-defs.h
-+++ b/include/linux/bpf-cgroup-defs.h
-@@ -47,6 +47,7 @@ enum cgroup_bpf_attach_type {
- 	CGROUP_INET6_GETSOCKNAME,
- 	CGROUP_UNIX_GETSOCKNAME,
- 	CGROUP_INET_SOCK_RELEASE,
-+	CGROUP_TCP_SOCK_OPS,
- 	CGROUP_LSM_START,
- 	CGROUP_LSM_END = CGROUP_LSM_START + CGROUP_LSM_NUM - 1,
- 	MAX_CGROUP_BPF_ATTACH_TYPE
-diff --git a/include/linux/bpf-cgroup.h b/include/linux/bpf-cgroup.h
-index 4d0cc65976a1..8a75a6cd7309 100644
---- a/include/linux/bpf-cgroup.h
-+++ b/include/linux/bpf-cgroup.h
-@@ -100,6 +100,8 @@ struct bpf_cgroup_storage {
- struct bpf_cgroup_link {
- 	struct bpf_link link;
- 	struct cgroup *cgroup;
-+	struct bpf_map *map;
-+	wait_queue_head_t wait_hup;
- };
- 
- struct bpf_prog_list {
-@@ -110,6 +112,18 @@ struct bpf_prog_list {
- 	u32 flags;
- };
- 
-+#define bpf_cgroup_struct_ops_foreach(var, item, cgrp, atype)		\
-+	for (item = rcu_dereference((cgrp)->bpf.effective[atype])->items;\
-+	     ((var) = READ_ONCE(item->kdata));				\
-+	     item++)
-+
-+static inline bool cgroup_bpf_is_struct_ops_atype(enum cgroup_bpf_attach_type atype)
-+{
-+	return atype == CGROUP_TCP_SOCK_OPS;
-+}
-+void cgroup_bpf_struct_ops_register(int atype, u32 type_id, void *cfi_stubs, bool mult_trace);
-+int cgroup_bpf_struct_ops_attach(struct bpf_map *map, const union bpf_attr *attr);
-+
- void __init cgroup_bpf_lifetime_notifier_init(void);
- 
- int __cgroup_bpf_run_filter_skb(struct sock *sk,
-@@ -479,6 +493,20 @@ static inline int bpf_percpu_cgroup_storage_update(struct bpf_map *map,
- 	return 0;
- }
- 
-+static inline bool cgroup_bpf_is_struct_ops_atype(int atype)
-+{
-+	return false;
-+}
-+static inline void cgroup_bpf_struct_ops_register(int atype, u32 type_id, void *cfi_stubs,
-+						  bool mult_trace)
-+{
-+}
-+static inline int cgroup_bpf_struct_ops_attach(struct bpf_map *map,
-+					       const union bpf_attr *attr)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
- #define cgroup_bpf_enabled(atype) (0)
- #define BPF_CGROUP_RUN_SA_PROG_LOCK(sk, uaddr, uaddrlen, atype, t_ctx) ({ 0; })
- #define BPF_CGROUP_RUN_SA_PROG(sk, uaddr, uaddrlen, atype) ({ 0; })
 diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index e371a4733135..df95ae690da5 100644
+index df95ae690da5..91024d2da4ea 100644
 --- a/include/linux/bpf.h
 +++ b/include/linux/bpf.h
-@@ -2100,11 +2100,18 @@ struct btf_member;
-  *	   unloaded while in use.
-  * @name: The name of the struct bpf_struct_ops object.
-  * @func_models: Func models
-+ * @cgroup_atype: A value in enum cgroup_bpf_attach_type for cgroup attachment.
-+ *		  0 means the struct_ops type does not support cgroup attachment.
-+ *		  If cgroup_atype is non-zero, the @reg and @unreg must be NULL
-+ *		  because the attachment/detachment will be handled by the bpf core.
-  * @free_after_tasks_rcu_gp: Set to true if it needs the bpf core to wait for
-  *                           a tasks_rcu gp before freeing the struct_ops map
-  *                           and its progs. It is unnecessary if the @unreg
-  *                           has waited for the correct rcu gp or the @unreg
-  *                           has ensured all struct_ops prog has finished running.
-+ * @free_after_mult_rcu_gp: Same as @free_after_tasks_rcu_gp but waiting for
-+ *                          both tasks_trace_rcu and regular rcu grace period.
-+ *                          It is usually needed if the struct_ops has sleepable prog.
-  */
- struct bpf_struct_ops {
- 	const struct bpf_verifier_ops *verifier_ops;
-@@ -2123,7 +2130,9 @@ struct bpf_struct_ops {
- 	struct module *owner;
- 	const char *name;
- 	struct btf_func_model func_models[BPF_STRUCT_OPS_MAX_NR_MEMBERS];
-+	int cgroup_atype;
- 	bool free_after_tasks_rcu_gp;
-+	bool free_after_mult_rcu_gp;
+@@ -2597,6 +2597,7 @@ struct bpf_trace_run_ctx {
+ struct bpf_tramp_run_ctx {
+ 	struct bpf_run_ctx run_ctx;
+ 	u64 bpf_cookie;
++	int retval;
+ 	struct bpf_run_ctx *saved_run_ctx;
  };
  
- /* Every member of a struct_ops type has an instance even a member is not
-@@ -2258,6 +2267,7 @@ void *bpf_struct_ops_map_cfi_stubs(struct bpf_map *map);
- bool bpf_struct_ops_valid_to_reg(struct bpf_map *map);
- int bpf_struct_ops_link_update_check(struct bpf_map *new_map, struct bpf_map *old_map,
- 				     struct bpf_map *expected_old_map);
-+int bpf_struct_ops_map_cgroup_atype(struct bpf_map *map);
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index 6d376ea4d1c0..2102f9f2afd6 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -2953,12 +2953,120 @@ static inline void tcp_clear_sock_ops_cb_flags(struct sock *sk)
  
- #ifdef CONFIG_NET
- /* Define it here to avoid the use of forward declaration */
-@@ -2330,6 +2340,10 @@ static inline u32 bpf_struct_ops_kdata_map_id(void *kdata)
- {
- 	return 0;
- }
-+static inline int bpf_struct_ops_map_cgroup_atype(struct bpf_map *map)
-+{
-+	return 0;
-+}
- static inline void *bpf_struct_ops_map_cfi_stubs(struct bpf_map *map)
- {
- 	return NULL;
-@@ -2519,7 +2533,10 @@ u64 bpf_event_output(struct bpf_map *map, u64 flags, void *meta, u64 meta_size,
-  * since other cpus are walking the array of pointers in parallel.
-  */
- struct bpf_prog_array_item {
--	struct bpf_prog *prog;
-+	union {
-+		struct bpf_prog *prog;
-+		void *kdata;
-+	};
- 	union {
- 		struct bpf_cgroup_storage *cgroup_storage[MAX_BPF_CGROUP_STORAGE_TYPE];
- 		u64 bpf_cookie;
-diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
-index 89b36de5fdbb..2b84c69eb814 100644
---- a/include/uapi/linux/bpf.h
-+++ b/include/uapi/linux/bpf.h
-@@ -1756,7 +1756,7 @@ union bpf_attr {
- 			__u32	prog_cnt;
- 			__u32	count;
- 		};
--		__u32		:32;
-+		__u32		type_id;
- 		/* output: per-program attach_flags.
- 		 * not allowed to be set during effective query.
- 		 */
-@@ -6815,6 +6815,8 @@ struct bpf_link_info {
- 		} xdp;
- 		struct {
- 			__u32 map_id;
-+			__u32 :32;
-+			__u64 cgroup_id;
- 		} struct_ops;
- 		struct {
- 			__u32 pf;
-diff --git a/kernel/bpf/bpf_struct_ops.c b/kernel/bpf/bpf_struct_ops.c
-index 1ca44584ed17..85cfc7e88d3f 100644
---- a/kernel/bpf/bpf_struct_ops.c
-+++ b/kernel/bpf/bpf_struct_ops.c
-@@ -13,6 +13,7 @@
- #include <linux/btf_ids.h>
- #include <linux/rcupdate_wait.h>
- #include <linux/poll.h>
-+#include <linux/bpf-cgroup.h>
+ #endif
  
- struct bpf_struct_ops_value {
- 	struct bpf_struct_ops_common_value common;
-@@ -1076,6 +1077,11 @@ static struct bpf_map *bpf_struct_ops_map_alloc(union bpf_attr *attr)
- 		goto errout;
- 	}
- 
-+	if (st_ops_desc->st_ops->cgroup_atype && !(attr->map_flags & BPF_F_LINK)) {
-+		ret = -EOPNOTSUPP;
-+		goto errout;
-+	}
++#if defined(CONFIG_BPF_JIT) && defined(CONFIG_CGROUP_BPF)
 +
- 	vt = st_ops_desc->value_type;
- 	if (attr->value_size != vt->size) {
- 		ret = -EINVAL;
-@@ -1116,6 +1122,7 @@ static struct bpf_map *bpf_struct_ops_map_alloc(union bpf_attr *attr)
- 
- 	mutex_init(&st_map->lock);
- 	bpf_map_init_from_attr(map, attr);
-+	map->free_after_mult_rcu_gp = st_ops_desc->st_ops->free_after_mult_rcu_gp;
- 	map->free_after_rcu_gp = true;
- 
- 	return map;
-@@ -1254,6 +1261,14 @@ u32 bpf_struct_ops_kdata_map_id(void *kdata)
- 	return st_map->map.id;
- }
- 
-+int bpf_struct_ops_map_cgroup_atype(struct bpf_map *map)
-+{
-+	struct bpf_struct_ops_map *st_map;
++struct bpf_tcp_ops {
++	/* Should return the initial SYN (active open) or SYN-ACK (passive open)
++	 * retransmission timeout. Return the timeout in jiffies, or <= 0 for
++	 * the kernel default.
++	 *
++	 * @req: request_sock on the passive (synack) path; NULL otherwise.
++	 */
++	int (*timeout_init)(struct sock *sk, struct request_sock *req);
 +
-+	st_map = container_of(map, struct bpf_struct_ops_map, map);
-+	return st_map->st_ops_desc->st_ops->cgroup_atype;
-+}
++	/* Should return the initial advertised receive window, in packets,
++	 * or < 0 for the kernel default. @req as in timeout_init().
++	 */
++	int (*rwnd_init)(struct sock *sk, struct request_sock *req);
 +
- void *bpf_struct_ops_map_cfi_stubs(struct bpf_map *map)
- {
- 	struct bpf_struct_ops_map *st_map;
-@@ -1429,6 +1444,7 @@ int bpf_struct_ops_link_create(union bpf_attr *attr)
- 	struct bpf_link_primer link_primer;
- 	struct bpf_struct_ops_map *st_map;
- 	struct bpf_map *map;
-+	int cgroup_atype;
- 	int err;
- 
- 	map = bpf_map_get(attr->link_create.map_fd);
-@@ -1442,6 +1458,19 @@ int bpf_struct_ops_link_create(union bpf_attr *attr)
- 		goto err_out;
- 	}
- 
-+	cgroup_atype = st_map->st_ops_desc->st_ops->cgroup_atype;
-+	if (cgroup_atype) {
-+		err = cgroup_bpf_struct_ops_attach(map, attr);
-+		bpf_map_put(map);
-+		return err;
-+	}
++	/* Called when an active connection becomes established.
++	 * @skb is the SYNACK that completed the 3WHS, or NULL for a
++	 * TCP_REPAIR socket (tcp_finish_connect() with no skb).
++	 */
++	void (*active_established)(struct sock *sk, struct sk_buff *skb__nullable);
 +
-+	if (memchr_inv(&attr->link_create.cgroup, 0, sizeof(attr->link_create.cgroup)) ||
-+	    attr->link_create.target_fd) {
-+		err = -EINVAL;
-+		goto err_out;
-+	}
++	/* Called when a passive connection becomes established.
++	 * @skb is the ACK that completed the 3WHS.
++	 */
++	void (*passive_established)(struct sock *sk, struct sk_buff *skb);
 +
- 	link = kzalloc_obj(*link, GFP_USER);
- 	if (!link) {
- 		err = -ENOMEM;
-diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
-index 64572f85edc8..d591f306ace5 100644
---- a/kernel/bpf/btf.c
-+++ b/kernel/bpf/btf.c
-@@ -20,6 +20,7 @@
- #include <linux/btf.h>
- #include <linux/btf_ids.h>
- #include <linux/bpf.h>
-+#include <linux/bpf-cgroup.h>
- #include <linux/bpf_lsm.h>
- #include <linux/skmsg.h>
- #include <linux/perf_event.h>
-@@ -9836,6 +9837,7 @@ btf_add_struct_ops(struct btf *btf, struct bpf_struct_ops *st_ops,
- 		   struct bpf_verifier_log *log)
- {
- 	struct btf_struct_ops_tab *tab, *new_tab;
-+	int cgroup_atype;
- 	int i, err;
- 
- 	tab = btf->struct_ops_tab;
-@@ -9847,8 +9849,10 @@ btf_add_struct_ops(struct btf *btf, struct bpf_struct_ops *st_ops,
- 		btf->struct_ops_tab = tab;
- 	}
- 
-+	cgroup_atype = st_ops->cgroup_atype;
- 	for (i = 0; i < tab->cnt; i++)
--		if (tab->ops[i].st_ops == st_ops)
-+		if (tab->ops[i].st_ops == st_ops ||
-+		    (cgroup_atype && cgroup_atype == tab->ops[i].st_ops->cgroup_atype))
- 			return -EEXIST;
- 
- 	if (tab->cnt == tab->capacity) {
-@@ -9868,6 +9872,23 @@ btf_add_struct_ops(struct btf *btf, struct bpf_struct_ops *st_ops,
- 	if (err)
- 		return err;
- 
-+	if (cgroup_atype) {
-+		if (!cgroup_bpf_is_struct_ops_atype(cgroup_atype) ||
-+		    st_ops->reg || st_ops->unreg || st_ops->free_after_tasks_rcu_gp) {
-+			bpf_struct_ops_desc_release(&tab->ops[btf->struct_ops_tab->cnt]);
-+			return -EINVAL;
-+		}
++	/* Called when the retransmission timer fires. */
++	void (*rto)(struct sock *sk);
 +
-+		/* There is no need to unregister from cgroup when the
-+		 * btf_free(). No struct_ops map and its cgroup link
-+		 * can be created once its btf is gone.
-+		 */
-+		cgroup_bpf_struct_ops_register(cgroup_atype,
-+					       tab->ops[btf->struct_ops_tab->cnt].type_id,
-+					       st_ops->cfi_stubs,
-+					       st_ops->free_after_mult_rcu_gp);
-+	}
++	/* Called on every RTT sample.
++	 * @mrtt: the measured RTT, in microseconds.
++	 * @srtt: the updated smoothed RTT.
++	 */
++	void (*rtt)(struct sock *sk, long mrtt, u32 srtt);
 +
- 	btf->struct_ops_tab->cnt++;
- 
- 	return 0;
-diff --git a/kernel/bpf/cgroup.c b/kernel/bpf/cgroup.c
-index 081d81de1816..a808d2a31f11 100644
---- a/kernel/bpf/cgroup.c
-+++ b/kernel/bpf/cgroup.c
-@@ -24,6 +24,29 @@
- DEFINE_STATIC_KEY_ARRAY_FALSE(cgroup_bpf_enabled_key, MAX_CGROUP_BPF_ATTACH_TYPE);
- EXPORT_SYMBOL(cgroup_bpf_enabled_key);
- 
-+static u32 struct_ops_type_id[MAX_CGROUP_BPF_ATTACH_TYPE];
-+static void *struct_ops_cfi_stubs[MAX_CGROUP_BPF_ATTACH_TYPE];
-+static bool struct_ops_mult_rcu[MAX_CGROUP_BPF_ATTACH_TYPE];
++	/* Called when the connection changes TCP state.
++	 * @state: the new state (one of the TCP_* states).
++	 */
++	void (*set_state)(struct sock *sk, int state);
 +
-+void cgroup_bpf_struct_ops_register(int atype, u32 type_id, void *cfi_stubs, bool mult_rcu)
-+{
-+	struct_ops_type_id[atype] = type_id;
-+	struct_ops_cfi_stubs[atype] = cfi_stubs;
-+	struct_ops_mult_rcu[atype] = mult_rcu;
-+}
++	/* Called when an skb is retransmitted.
++	 * @skb: the retransmitted skb.
++	 * @err: tcp_transmit_skb() return value (0 on success).
++	 */
++	void (*retrans)(struct sock *sk, struct sk_buff *skb, int err);
 +
-+static enum cgroup_bpf_attach_type find_atype_by_struct_ops_id(u32 type_id)
-+{
-+	enum cgroup_bpf_attach_type atype;
++	/* Called right before an active connection is initialized. */
++	void (*connect)(struct sock *sk);
 +
-+	for (atype = 0; atype < MAX_CGROUP_BPF_ATTACH_TYPE; atype++) {
-+		if (cgroup_bpf_is_struct_ops_atype(atype) &&
-+		    struct_ops_type_id[atype] == type_id)
-+			return atype;
-+	}
-+	return CGROUP_BPF_ATTACH_TYPE_INVALID;
-+}
-+
- /*
-  * cgroup bpf destruction makes heavy use of work items and there can be a lot
-  * of concurrent destructions.  Use a separate workqueue so that cgroup bpf
-@@ -306,6 +329,19 @@ static void bpf_cgroup_storages_link(struct bpf_cgroup_storage *storages[],
- 		bpf_cgroup_storage_link(storages[stype], cgrp, attach_type);
- }
- 
-+static void cgroup_struct_ops_link_detach_wake(struct bpf_cgroup_link *link, bool wake_poll)
-+{
-+	cgroup_put(link->cgroup);
-+	link->cgroup = NULL;
-+
-+	bpf_map_put(link->map);
-+	/* READ_ONCE in cgroup_struct_ops_link_poll */
-+	WRITE_ONCE(link->map, NULL);
-+
-+	if (wake_poll)
-+		wake_up_interruptible_poll(&link->wait_hup, EPOLLHUP);
-+}
-+
- /* Called when bpf_cgroup_link is auto-detached from dying cgroup.
-  * It drops cgroup and bpf_prog refcounts, and marks bpf_link as defunct. It
-  * doesn't free link memory, which will eventually be done by bpf_link's
-@@ -313,21 +349,37 @@ static void bpf_cgroup_storages_link(struct bpf_cgroup_storage *storages[],
-  */
- static void bpf_cgroup_link_auto_detach(struct bpf_cgroup_link *link)
- {
--	if (link->link.prog->expected_attach_type == BPF_LSM_CGROUP)
--		bpf_trampoline_unlink_cgroup_shim(link->link.prog);
--	cgroup_put(link->cgroup);
--	link->cgroup = NULL;
-+	if (link->map) {
-+		cgroup_struct_ops_link_detach_wake(link, true);
-+	} else {
-+		if (link->link.prog->expected_attach_type == BPF_LSM_CGROUP)
-+			bpf_trampoline_unlink_cgroup_shim(link->link.prog);
-+		cgroup_put(link->cgroup);
-+		link->cgroup = NULL;
-+	}
-+}
-+
-+static void bpf_cgroup_array_free_rcu(struct rcu_head *rcu)
-+{
-+	kfree(container_of(rcu, struct bpf_prog_array, rcu));
- }
- 
--static void bpf_cgroup_array_free(struct bpf_prog_array *array)
-+static void bpf_cgroup_array_free(struct bpf_prog_array *array,
-+				  enum cgroup_bpf_attach_type atype)
- {
- 	if (!array || array == &bpf_empty_prog_array)
- 		return;
--	kfree_rcu(array, rcu);
-+	if (struct_ops_mult_rcu[atype])
-+		/* RCU tasks trace grace period implies RCU grace period. */
-+		call_rcu_tasks_trace(&array->rcu, bpf_cgroup_array_free_rcu);
-+	else
-+		kfree_rcu(array, rcu);
- }
- 
- static void *bpf_cgroup_array_dummy(enum cgroup_bpf_attach_type atype)
- {
-+	if (cgroup_bpf_is_struct_ops_atype(atype))
-+		return struct_ops_cfi_stubs[atype];
- 	return bpf_prog_dummy();
- }
- 
-@@ -355,7 +407,12 @@ static int bpf_cgroup_array_copy_to_user(struct bpf_prog_array *array,
- 	for (item = array->items; item->prog && i < cnt; item++) {
- 		if (item->prog == bpf_cgroup_array_dummy(atype))
- 			continue;
--		id = item->prog->aux->id;
-+
-+		if (cgroup_bpf_is_struct_ops_atype(atype))
-+			id = bpf_struct_ops_kdata_map_id(item->kdata);
-+		else
-+			id = item->prog->aux->id;
-+
- 		if (copy_to_user(prog_ids + i, &id, sizeof(id)))
- 			return -EFAULT;
- 		i++;
-@@ -417,7 +474,7 @@ static void cgroup_bpf_release(struct work_struct *work)
- 		old_array = rcu_dereference_protected(
- 				cgrp->bpf.effective[atype],
- 				lockdep_is_held(&cgroup_mutex));
--		bpf_cgroup_array_free(old_array);
-+		bpf_cgroup_array_free(old_array, atype);
- 	}
- 
- 	list_for_each_entry_safe(storage, stmp, storages, list_cg) {
-@@ -461,17 +518,26 @@ static struct bpf_prog *prog_list_prog(struct bpf_prog_list *pl)
- 
- static void prog_list_init_item(struct bpf_prog_list *pl, struct bpf_prog_array_item *item)
- {
--	item->prog = prog_list_prog(pl);
--	bpf_cgroup_storages_assign(item->cgroup_storage, pl->storage);
-+	if (pl->link && pl->link->map) {
-+		item->kdata = bpf_struct_ops_map_kdata(pl->link->map);
-+	} else {
-+		item->prog = prog_list_prog(pl);
-+		bpf_cgroup_storages_assign(item->cgroup_storage, pl->storage);
-+	}
- }
- 
- static void prog_list_replace_item(struct bpf_prog_list *pl, struct bpf_prog_array_item *item)
- {
--	WRITE_ONCE(item->prog, pl->link->link.prog);
-+	if (pl->link && pl->link->map)
-+		WRITE_ONCE(item->kdata, bpf_struct_ops_map_kdata(pl->link->map));
-+	else
-+		WRITE_ONCE(item->prog, pl->link->link.prog);
- }
- 
- static u32 prog_list_id(struct bpf_prog_list *pl)
- {
-+	if (pl->link && pl->link->map)
-+		return pl->link->map->id;
- 	return prog_list_prog(pl)->aux->id;
- }
- 
-@@ -591,7 +657,7 @@ static void activate_effective_progs(struct cgroup *cgrp,
- 	/* free prog array after grace period, since __cgroup_bpf_run_*()
- 	 * might be still walking the array
- 	 */
--	bpf_cgroup_array_free(old_array);
-+	bpf_cgroup_array_free(old_array, atype);
- }
- 
- /**
-@@ -631,7 +697,7 @@ static int cgroup_bpf_inherit(struct cgroup *cgrp)
- 	return 0;
- cleanup:
- 	for (i = 0; i < NR; i++)
--		bpf_cgroup_array_free(arrays[i]);
-+		bpf_cgroup_array_free(arrays[i], i);
- 
- 	for (p = cgroup_parent(cgrp); p; p = cgroup_parent(p))
- 		cgroup_bpf_put(p);
-@@ -686,7 +752,7 @@ static int update_effective_progs(struct cgroup *cgrp,
- 
- 		if (percpu_ref_is_zero(&desc->bpf.refcnt)) {
- 			if (unlikely(desc->bpf.inactive)) {
--				bpf_cgroup_array_free(desc->bpf.inactive);
-+				bpf_cgroup_array_free(desc->bpf.inactive, atype);
- 				desc->bpf.inactive = NULL;
- 			}
- 			continue;
-@@ -705,7 +771,7 @@ static int update_effective_progs(struct cgroup *cgrp,
- 	css_for_each_descendant_pre(css, &cgrp->self) {
- 		struct cgroup *desc = container_of(css, struct cgroup, self);
- 
--		bpf_cgroup_array_free(desc->bpf.inactive);
-+		bpf_cgroup_array_free(desc->bpf.inactive, atype);
- 		desc->bpf.inactive = NULL;
- 	}
- 
-@@ -940,7 +1006,7 @@ static int __cgroup_bpf_attach(struct cgroup *cgrp,
- 	if (pl) {
- 		old_prog = pl->prog;
- 	} else {
--		pl = kmalloc_obj(*pl);
-+		pl = kzalloc_obj(*pl);
- 		if (!pl) {
- 			bpf_cgroup_storages_free(new_storage);
- 			return -ENOMEM;
-@@ -1337,7 +1403,17 @@ static int __cgroup_bpf_query(struct cgroup *cgrp, const union bpf_attr *attr,
- 	if (effective_query && prog_attach_flags)
- 		return -EINVAL;
- 
--	if (type == BPF_LSM_CGROUP) {
-+	if (type == BPF_STRUCT_OPS) {
-+		u32 type_id = attr->query.type_id;
-+
-+		atype = find_atype_by_struct_ops_id(type_id);
-+		if (atype == CGROUP_BPF_ATTACH_TYPE_INVALID)
-+			return -ENOENT;
-+		from_atype = to_atype = atype;
-+		flags = 0;
-+		if (!cgroup_bpf_enabled(atype))
-+			goto skip_count;
-+	} else if (type == BPF_LSM_CGROUP) {
- 		if (!effective_query && attr->query.prog_cnt &&
- 		    prog_ids && !prog_attach_flags)
- 			return -EINVAL;
-@@ -1363,6 +1439,7 @@ static int __cgroup_bpf_query(struct cgroup *cgrp, const union bpf_attr *attr,
- 		}
- 	}
- 
-+skip_count:
- 	/* always output uattr->query.attach_flags as 0 during effective query */
- 	flags = effective_query ? 0 : flags;
- 	if (copy_to_user(&uattr->query.attach_flags, &flags, sizeof(flags)))
-@@ -2820,6 +2897,270 @@ const struct bpf_verifier_ops cg_sockopt_verifier_ops = {
- const struct bpf_prog_ops cg_sockopt_prog_ops = {
- };
- 
-+static int __cgroup_struct_ops_link_detach(struct bpf_link *link, bool wake_poll)
-+{
-+	struct bpf_cgroup_link *cg_link = container_of(link, struct bpf_cgroup_link, link);
-+	enum cgroup_bpf_attach_type atype;
-+	struct bpf_prog_list *pl;
-+	struct bpf_map *map;
-+	struct cgroup *cgrp;
-+
-+	cgroup_lock();
-+
-+	cgrp = cg_link->cgroup;
-+	if (!cgrp) {
-+		cgroup_unlock();
-+		return 0;
-+	}
-+
-+	map = cg_link->map;
-+	atype = bpf_struct_ops_map_cgroup_atype(map);
-+
-+	hlist_for_each_entry(pl, &cgrp->bpf.progs[atype], node) {
-+		if (pl->link == cg_link)
-+			break;
-+	}
-+
-+	/* mark deleted so compute_effective_progs() skips it */
-+	pl->link = NULL;
-+	if (update_effective_progs(cgrp, atype)) {
-+		pl->link = cg_link;
-+		purge_effective_progs(cgrp, pl, atype);
-+	}
-+
-+	hlist_del(&pl->node);
-+	cgroup_struct_ops_link_detach_wake(cg_link, wake_poll);
-+	cgrp->bpf.revisions[atype]++;
-+
-+	kfree(pl);
-+	static_branch_dec(&cgroup_bpf_enabled_key[atype]);
-+
-+	cgroup_unlock();
-+
-+	return 0;
-+}
-+
-+static int cgroup_struct_ops_link_detach(struct bpf_link *link)
-+{
-+	return __cgroup_struct_ops_link_detach(link, true);
-+}
-+
-+static void cgroup_struct_ops_link_dealloc(struct bpf_link *link)
-+{
-+	struct bpf_cgroup_link *cg_link = container_of(link, struct bpf_cgroup_link, link);
-+
-+	__cgroup_struct_ops_link_detach(link, false);
-+	kfree(cg_link);
-+}
-+
-+static void cgroup_struct_ops_link_show_fdinfo(const struct bpf_link *link, struct seq_file *seq)
-+{
-+	struct bpf_cgroup_link *cg_link =
-+		container_of(link, struct bpf_cgroup_link, link);
-+
-+	cgroup_lock();
-+	if (!cg_link->cgroup) {
-+		cgroup_unlock();
-+		return;
-+	}
-+
-+	seq_printf(seq, "map_id:\t%u\n", cg_link->map->id);
-+	seq_printf(seq, "cgroup_id:\t%llu\n", cgroup_id(cg_link->cgroup));
-+	cgroup_unlock();
-+}
-+
-+static int cgroup_struct_ops_link_fill_link_info(const struct bpf_link *link,
-+						 struct bpf_link_info *info)
-+{
-+	struct bpf_cgroup_link *cg_link = container_of(link, struct bpf_cgroup_link, link);
-+
-+	cgroup_lock();
-+	if (!cg_link->cgroup) {
-+		cgroup_unlock();
-+		return 0;
-+	}
-+
-+	info->struct_ops.map_id = cg_link->map->id;
-+	info->struct_ops.cgroup_id = cgroup_id(cg_link->cgroup);
-+	cgroup_unlock();
-+	return 0;
-+}
-+
-+static int cgroup_struct_ops_link_update(struct bpf_link *link, struct bpf_map *new_map,
-+					 struct bpf_map *expected_old_map)
-+{
-+	struct bpf_cgroup_link *cg_link = container_of(link, struct bpf_cgroup_link, link);
-+	enum cgroup_bpf_attach_type atype;
-+	struct bpf_prog_list *pl;
-+	struct bpf_map *old_map;
-+	struct cgroup *cgrp;
-+	bool found = false;
-+	int err;
-+
-+	if (!bpf_struct_ops_valid_to_reg(new_map))
-+		return -EINVAL;
-+
-+	cgroup_lock();
-+
-+	cgrp = cg_link->cgroup;
-+	if (!cgrp) {
-+		err = -ENOLINK;
-+		goto out;
-+	}
-+
-+	old_map = cg_link->map;
-+	err = bpf_struct_ops_link_update_check(new_map, old_map, expected_old_map);
-+	if (err)
-+		goto out;
-+
-+	atype = bpf_struct_ops_map_cgroup_atype(new_map);
-+
-+	hlist_for_each_entry(pl, &cgrp->bpf.progs[atype], node) {
-+		if (pl->link == cg_link) {
-+			found = true;
-+			break;
-+		}
-+	}
-+	if (!found) {
-+		err = -ENOENT;
-+		goto out;
-+	}
-+
-+	bpf_map_inc(new_map);
-+	WRITE_ONCE(cg_link->map, new_map);
-+	replace_effective_prog(cgrp, atype, pl);
-+	bpf_map_put(old_map);
-+	cgrp->bpf.revisions[atype]++;
-+
-+out:
-+	cgroup_unlock();
-+	return err;
-+}
-+
-+static __poll_t cgroup_struct_ops_link_poll(struct file *file, struct poll_table_struct *pts)
-+{
-+	struct bpf_cgroup_link *link = file->private_data;
-+
-+	poll_wait(file, &link->wait_hup, pts);
-+
-+	return READ_ONCE(link->map) ? 0 : EPOLLHUP;
-+}
-+
-+static const struct bpf_link_ops cgroup_struct_ops_link_ops = {
-+	.dealloc = cgroup_struct_ops_link_dealloc,
-+	.detach = cgroup_struct_ops_link_detach,
-+	.show_fdinfo = cgroup_struct_ops_link_show_fdinfo,
-+	.fill_link_info = cgroup_struct_ops_link_fill_link_info,
-+	.update_map = cgroup_struct_ops_link_update,
-+	.poll = cgroup_struct_ops_link_poll,
++	/* Called on listen(2), right after the socket enters TCP_LISTEN. */
++	void (*listen)(struct sock *sk);
 +};
 +
-+int cgroup_bpf_struct_ops_attach(struct bpf_map *map, const union bpf_attr *attr)
++#define bpf_tcp_ops_call(op, sk, ...)					\
++do {									\
++	if (cgroup_bpf_enabled(CGROUP_TCP_SOCK_OPS)) {			\
++		const struct bpf_prog_array_item *item;			\
++		const struct bpf_tcp_ops *tcp_ops;			\
++		struct cgroup *cgrp;					\
++									\
++		cgrp = sock_cgroup_ptr(&sk->sk_cgrp_data);		\
++		rcu_read_lock_dont_migrate();				\
++		bpf_cgroup_struct_ops_foreach(tcp_ops, item, cgrp,	\
++					      CGROUP_TCP_SOCK_OPS) {	\
++			if (tcp_ops->op)				\
++				tcp_ops->op(sk, ##__VA_ARGS__);		\
++		}							\
++		rcu_read_unlock_migrate();				\
++	}								\
++} while (0)
++
++#define bpf_tcp_ops_call_int(op, init_retval, sk, ...)			\
++({									\
++	int __retval = (init_retval);					\
++	if (cgroup_bpf_enabled(CGROUP_TCP_SOCK_OPS)) {			\
++		const struct bpf_prog_array_item *item;			\
++		const struct bpf_tcp_ops *tcp_ops;			\
++		struct bpf_tramp_run_ctx run_ctx;			\
++		struct bpf_run_ctx *old_run_ctx;			\
++		struct sock *__sk = sk_to_full_sk(sk);                  \
++		struct request_sock *req = NULL;			\
++		struct cgroup *cgrp;					\
++									\
++		if (__sk) {						\
++			run_ctx.retval = (init_retval);			\
++			cgrp = sock_cgroup_ptr(&__sk->sk_cgrp_data);	\
++			if (!sk_fullsock(sk))				\
++				req = (struct request_sock *)sk;	\
++			rcu_read_lock_dont_migrate();			\
++			old_run_ctx = bpf_set_run_ctx(&run_ctx.run_ctx);\
++			bpf_cgroup_struct_ops_foreach(tcp_ops, item, cgrp, \
++						      CGROUP_TCP_SOCK_OPS) { \
++				if (tcp_ops->op)			\
++					run_ctx.retval = tcp_ops->op(__sk, req, ##__VA_ARGS__); \
++			}						\
++			bpf_reset_run_ctx(old_run_ctx);			\
++			rcu_read_unlock_migrate();			\
++			__retval = run_ctx.retval;			\
++		}							\
++	}								\
++	__retval;							\
++})
++#else
++#define bpf_tcp_ops_call(op, sk, ...)		do { } while (0)
++#define bpf_tcp_ops_call_int(op, init_retval, sk, ...)	(init_retval)
++#endif
++
+ static inline u32 tcp_timeout_init(struct sock *sk)
+ {
+ 	int timeout;
+ 
+ 	timeout = tcp_call_bpf(sk, BPF_SOCK_OPS_TIMEOUT_INIT, 0, NULL);
+-
++	timeout = bpf_tcp_ops_call_int(timeout_init, timeout, sk);
+ 	if (timeout <= 0)
+ 		timeout = TCP_TIMEOUT_INIT;
+ 	return min_t(int, timeout, TCP_RTO_MAX);
+@@ -2969,7 +3077,7 @@ static inline u32 tcp_rwnd_init_bpf(struct sock *sk)
+ 	int rwnd;
+ 
+ 	rwnd = tcp_call_bpf(sk, BPF_SOCK_OPS_RWND_INIT, 0, NULL);
+-
++	rwnd = bpf_tcp_ops_call_int(rwnd_init, rwnd, sk);
+ 	if (rwnd < 0)
+ 		rwnd = 0;
+ 	return rwnd;
+@@ -2984,6 +3092,7 @@ static inline void tcp_bpf_rtt(struct sock *sk, long mrtt, u32 srtt)
+ {
+ 	if (BPF_SOCK_OPS_TEST_FLAG(tcp_sk(sk), BPF_SOCK_OPS_RTT_CB_FLAG))
+ 		tcp_call_bpf_2arg(sk, BPF_SOCK_OPS_RTT_CB, mrtt, srtt);
++	bpf_tcp_ops_call(rtt, sk, mrtt, srtt);
+ }
+ 
+ #if IS_ENABLED(CONFIG_SMC)
+diff --git a/net/ipv4/Makefile b/net/ipv4/Makefile
+index 06e21c26b76f..afbac63d1cb4 100644
+--- a/net/ipv4/Makefile
++++ b/net/ipv4/Makefile
+@@ -70,6 +70,7 @@ obj-$(CONFIG_TCP_AO) += tcp_ao.o
+ 
+ ifeq ($(CONFIG_BPF_JIT),y)
+ obj-$(CONFIG_BPF_SYSCALL) += bpf_tcp_ca.o
++obj-$(CONFIG_CGROUP_BPF) += bpf_tcp_ops.o
+ endif
+ 
+ ifdef CONFIG_GCOV_PROFILE_NETFILTER
+diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
+index 32d006c1a8ee..ac8431da67f4 100644
+--- a/net/ipv4/af_inet.c
++++ b/net/ipv4/af_inet.c
+@@ -227,6 +227,7 @@ int __inet_listen_sk(struct sock *sk, int backlog)
+ 			return err;
+ 
+ 		tcp_call_bpf(sk, BPF_SOCK_OPS_TCP_LISTEN_CB, 0, NULL);
++		bpf_tcp_ops_call(listen, sk);
+ 	}
+ 	return 0;
+ }
+diff --git a/net/ipv4/bpf_tcp_ops.c b/net/ipv4/bpf_tcp_ops.c
+new file mode 100644
+index 000000000000..cf53c95a0dbc
+--- /dev/null
++++ b/net/ipv4/bpf_tcp_ops.c
+@@ -0,0 +1,177 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright (c) 2026 Meta Platforms, Inc. and affiliates. */
++
++#include <linux/bpf.h>
++#include <linux/btf_ids.h>
++#include <linux/bpf_verifier.h>
++#include <net/bpf_sk_storage.h>
++#include <net/tcp.h>
++
++static int timeout_init_stub(struct sock *sk, struct request_sock *req__nullable)
 +{
-+	u32 flags = attr->link_create.flags;
-+	u32 pl_flags = (flags & BPF_F_PREORDER) | BPF_F_ALLOW_MULTI;
-+	enum cgroup_bpf_attach_type atype;
-+	struct bpf_link_primer link_primer;
-+	struct bpf_cgroup_link *link;
-+	struct bpf_prog_list *pl = NULL;
-+	struct hlist_head *progs;
-+	struct cgroup *cgrp;
-+	int err;
++	struct bpf_tramp_run_ctx *ctx =
++		container_of(current->bpf_ctx, struct bpf_tramp_run_ctx, run_ctx);
 +
-+	if (flags & ~BPF_F_LINK_ATTACH_MASK)
-+		return -EINVAL;
-+
-+	/*
-+	 * Attaching struct_ops to cgroup is through link only. All relative
-+	 * position must be corresponding to a link id or fd.
-+	 */
-+	if (attr->link_create.cgroup.relative_fd && !(flags & BPF_F_LINK))
-+		return -EINVAL;
-+
-+	link = kzalloc_obj(*link, GFP_USER);
-+	if (!link)
-+		return -ENOMEM;
-+
-+	bpf_link_init(&link->link, BPF_LINK_TYPE_STRUCT_OPS,
-+		      &cgroup_struct_ops_link_ops, NULL,
-+		      attr->link_create.attach_type);
-+
-+	err = bpf_link_prime(&link->link, &link_primer);
-+	if (err) {
-+		kfree(link);
-+		return err;
-+	}
-+
-+	cgrp = cgroup_get_from_fd(attr->link_create.target_fd);
-+	if (IS_ERR(cgrp)) {
-+		err = PTR_ERR(cgrp);
-+		goto cleanup;
-+	}
-+
-+	bpf_map_inc(map);
-+	link->map = map;
-+	link->cgroup = cgrp;
-+	init_waitqueue_head(&link->wait_hup);
-+
-+	atype = bpf_struct_ops_map_cgroup_atype(map);
-+	progs = &cgrp->bpf.progs[atype];
-+
-+	cgroup_lock();
-+
-+	if (attr->link_create.cgroup.expected_revision &&
-+	    attr->link_create.cgroup.expected_revision != cgrp->bpf.revisions[atype]) {
-+		err = -ESTALE;
-+		goto unlock;
-+	}
-+
-+	if (prog_list_length(progs, NULL) >= BPF_CGROUP_MAX_PROGS) {
-+		err = -E2BIG;
-+		goto unlock;
-+	}
-+
-+	pl = kzalloc_obj(*pl);
-+	if (!pl) {
-+		err = -ENOMEM;
-+		goto unlock;
-+	}
-+
-+	pl->link = link;
-+	pl->flags = pl_flags;
-+	cgrp->bpf.flags[atype] = BPF_F_ALLOW_MULTI;
-+
-+	err = insert_pl_to_hlist(pl, progs, NULL, link,
-+				 flags | BPF_F_ALLOW_MULTI, attr->link_create.cgroup.relative_fd);
-+	if (err)
-+		goto unlock;
-+
-+	err = update_effective_progs(cgrp, atype);
-+	if (err) {
-+		hlist_del(&pl->node);
-+		goto unlock;
-+	}
-+
-+	cgrp->bpf.revisions[atype]++;
-+	static_branch_inc(&cgroup_bpf_enabled_key[atype]);
-+
-+	cgroup_unlock();
-+
-+	return bpf_link_settle(&link_primer);
-+
-+unlock:
-+	cgroup_unlock();
-+
-+cleanup:
-+	kfree(pl);
-+	if (link->cgroup) {
-+		cgroup_put(link->cgroup);
-+		link->cgroup = NULL;
-+		bpf_map_put(link->map);
-+		link->map = NULL;
-+	}
-+	bpf_link_cleanup(&link_primer);
-+	return err;
++	return ctx->retval;
 +}
 +
- /* Common helpers for cgroup hooks. */
- const struct bpf_func_proto *
- cgroup_common_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index b07acf37ad1d..b439c0b0eadd 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -4813,6 +4813,7 @@ static int bpf_prog_query(const union bpf_attr *attr,
- 	case BPF_CGROUP_GETSOCKOPT:
- 	case BPF_CGROUP_SETSOCKOPT:
- 	case BPF_LSM_CGROUP:
-+	case BPF_STRUCT_OPS:
- 		return cgroup_bpf_prog_query(attr, uattr, uattr_size);
- 	case BPF_LIRC_MODE2:
- 		return lirc_prog_query(attr, uattr);
-diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
-index 89b36de5fdbb..2b84c69eb814 100644
---- a/tools/include/uapi/linux/bpf.h
-+++ b/tools/include/uapi/linux/bpf.h
-@@ -1756,7 +1756,7 @@ union bpf_attr {
- 			__u32	prog_cnt;
- 			__u32	count;
- 		};
--		__u32		:32;
-+		__u32		type_id;
- 		/* output: per-program attach_flags.
- 		 * not allowed to be set during effective query.
- 		 */
-@@ -6815,6 +6815,8 @@ struct bpf_link_info {
- 		} xdp;
- 		struct {
- 			__u32 map_id;
-+			__u32 :32;
-+			__u64 cgroup_id;
- 		} struct_ops;
- 		struct {
- 			__u32 pf;
++static int rwnd_init_stub(struct sock *sk, struct request_sock *req__nullable)
++{
++	struct bpf_tramp_run_ctx *ctx =
++		container_of(current->bpf_ctx, struct bpf_tramp_run_ctx, run_ctx);
++
++	return ctx->retval;
++}
++
++static void active_established_stub(struct sock *sk, struct sk_buff *skb__nullable)
++{
++}
++
++static void passive_established_stub(struct sock *sk, struct sk_buff *skb)
++{
++}
++
++static void rto_stub(struct sock *sk)
++{
++}
++
++static void rtt_stub(struct sock *sk, long mrtt, u32 srtt)
++{
++}
++
++static void set_state_stub(struct sock *sk, int state)
++{
++}
++
++static void retrans_stub(struct sock *sk, struct sk_buff *skb, int err)
++{
++}
++
++static void connect_stub(struct sock *sk)
++{
++}
++
++static void listen_stub(struct sock *sk)
++{
++}
++
++static struct bpf_tcp_ops __bpf_tcp_ops = {
++	.timeout_init = timeout_init_stub,
++	.rwnd_init = rwnd_init_stub,
++	.active_established = active_established_stub,
++	.passive_established = passive_established_stub,
++	.rto = rto_stub,
++	.rtt = rtt_stub,
++	.set_state = set_state_stub,
++	.retrans = retrans_stub,
++	.connect = connect_stub,
++	.listen = listen_stub,
++};
++
++BPF_CALL_0(bpf_tcp_ops_get_retval)
++{
++	struct bpf_tramp_run_ctx *ctx =
++		container_of(current->bpf_ctx, struct bpf_tramp_run_ctx, run_ctx);
++
++	/* bpf_get_retval() is only exposed to timeout_init/rwnd_init, which
++	 * always run via bpf_tcp_ops_call_int(). Its run_ctx carries the int
++	 * return value chained across the bpf_tcp_ops attached to the cgroup
++	 * and is this program's saved_run_ctx.
++	 */
++	if (WARN_ON_ONCE(!ctx->saved_run_ctx))
++		return 0;
++
++	return container_of(ctx->saved_run_ctx, struct bpf_tramp_run_ctx,
++			    run_ctx)->retval;
++}
++
++const struct bpf_func_proto bpf_tcp_ops_get_retval_proto = {
++	.func		= bpf_tcp_ops_get_retval,
++	.gpl_only	= false,
++	.ret_type	= RET_INTEGER,
++};
++
++static const struct bpf_func_proto *
++get_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
++{
++	u32 moff = prog->aux->attach_st_ops_member_off;
++
++	switch (func_id) {
++	case BPF_FUNC_sk_storage_get:
++		return &bpf_sk_storage_get_proto;
++	case BPF_FUNC_sk_storage_delete:
++		return &bpf_sk_storage_delete_proto;
++	case BPF_FUNC_setsockopt:
++		/* The listener is not locked. */
++		if (moff == offsetof(struct bpf_tcp_ops, rwnd_init) ||
++		    moff == offsetof(struct bpf_tcp_ops, timeout_init))
++			return NULL;
++		return &bpf_sk_setsockopt_proto;
++	case BPF_FUNC_getsockopt:
++		if (moff == offsetof(struct bpf_tcp_ops, rwnd_init) ||
++		    moff == offsetof(struct bpf_tcp_ops, timeout_init))
++			return NULL;
++		return &bpf_sk_getsockopt_proto;
++	case BPF_FUNC_get_retval:
++		if (moff == offsetof(struct bpf_tcp_ops, timeout_init) ||
++		    moff == offsetof(struct bpf_tcp_ops, rwnd_init))
++			return &bpf_tcp_ops_get_retval_proto;
++		return NULL;
++	default:
++		return bpf_base_func_proto(func_id, prog);
++	}
++}
++
++static bool is_valid_access(int off, int size, enum bpf_access_type type,
++			    const struct bpf_prog *prog, struct bpf_insn_access_aux *info)
++{
++	if (!bpf_tracing_btf_ctx_access(off, size, type, prog, info))
++		return false;
++
++	if (base_type(info->reg_type) == PTR_TO_BTF_ID &&
++	    !bpf_type_has_unsafe_modifiers(info->reg_type) &&
++	    info->btf_id == btf_sock_ids[BTF_SOCK_TYPE_SOCK])
++		/* promote it to tcp_sock */
++		info->btf_id = btf_sock_ids[BTF_SOCK_TYPE_TCP];
++
++	return true;
++}
++
++static int bpf_tcp_ops_init_member(const struct btf_type *t,
++				   const struct btf_member *member,
++				   void *kdata, const void *udata)
++{
++	return 0;
++}
++
++static int bpf_tcp_ops_init(struct btf *btf)
++{
++	return 0;
++}
++
++static int bpf_tcp_ops_validate(void *kdata)
++{
++	return 0;
++}
++
++static const struct bpf_verifier_ops bpf_tcp_ops_verifier = {
++	.get_func_proto		= get_func_proto,
++	.is_valid_access	= is_valid_access,
++};
++
++static struct bpf_struct_ops bpf_tcp_ops = {
++	.verifier_ops = &bpf_tcp_ops_verifier,
++	.init_member = bpf_tcp_ops_init_member,
++	.init = bpf_tcp_ops_init,
++	.validate = bpf_tcp_ops_validate,
++	.name = "bpf_tcp_ops",
++	.cgroup_atype = CGROUP_TCP_SOCK_OPS,
++	.cfi_stubs = &__bpf_tcp_ops,
++	.owner = THIS_MODULE,
++};
++
++static int __init __bpf_tcp_ops_init(void)
++{
++	return register_bpf_struct_ops(&bpf_tcp_ops, bpf_tcp_ops);
++}
++late_initcall(__bpf_tcp_ops_init);
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 455441f1b694..94ed1ac2abc1 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -2996,6 +2996,7 @@ void tcp_set_state(struct sock *sk, int state)
+ 
+ 	if (BPF_SOCK_OPS_TEST_FLAG(tcp_sk(sk), BPF_SOCK_OPS_STATE_CB_FLAG))
+ 		tcp_call_bpf_2arg(sk, BPF_SOCK_OPS_STATE_CB, oldstate, state);
++	bpf_tcp_ops_call(set_state, sk, state);
+ 
+ 	switch (state) {
+ 	case TCP_ESTABLISHED:
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 61045a8886e4..12fb690d21c4 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -6694,6 +6694,10 @@ void tcp_init_transfer(struct sock *sk, int bpf_op, struct sk_buff *skb)
+ 	tp->snd_cwnd_stamp = tcp_jiffies32;
+ 
+ 	bpf_skops_established(sk, bpf_op, skb);
++	if (bpf_op == BPF_SOCK_OPS_ACTIVE_ESTABLISHED_CB)
++		bpf_tcp_ops_call(active_established, sk, skb);
++	else
++		bpf_tcp_ops_call(passive_established, sk, skb);
+ 	/* Initialize congestion control unless BPF initialized it already: */
+ 	if (!icsk->icsk_ca_initialized)
+ 		tcp_init_congestion_control(sk);
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index 26dd751ec72a..93f4a95399ea 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -3678,6 +3678,7 @@ int __tcp_retransmit_skb(struct sock *sk, struct sk_buff *skb, int segs)
+ 	if (BPF_SOCK_OPS_TEST_FLAG(tp, BPF_SOCK_OPS_RETRANS_CB_FLAG))
+ 		tcp_call_bpf_3arg(sk, BPF_SOCK_OPS_RETRANS_CB,
+ 				  TCP_SKB_CB(skb)->seq, segs, err);
++	bpf_tcp_ops_call(retrans, sk, skb, err);
+ 
+ 	if (unlikely(err) && err != -EBUSY)
+ 		NET_ADD_STATS(sock_net(sk), LINUX_MIB_TCPRETRANSFAIL, segs);
+@@ -4298,6 +4299,7 @@ int tcp_connect(struct sock *sk)
+ 	int err;
+ 
+ 	tcp_call_bpf(sk, BPF_SOCK_OPS_TCP_CONNECT_CB, 0, NULL);
++	bpf_tcp_ops_call(connect, sk);
+ 
+ #if defined(CONFIG_TCP_MD5SIG) && defined(CONFIG_TCP_AO)
+ 	/* Has to be checked late, after setting daddr/saddr/ops.
+diff --git a/net/ipv4/tcp_timer.c b/net/ipv4/tcp_timer.c
+index bf171b5e1eb3..4337627ee0ea 100644
+--- a/net/ipv4/tcp_timer.c
++++ b/net/ipv4/tcp_timer.c
+@@ -290,6 +290,7 @@ static int tcp_write_timeout(struct sock *sk)
+ 		tcp_call_bpf_3arg(sk, BPF_SOCK_OPS_RTO_CB,
+ 				  icsk->icsk_retransmits,
+ 				  icsk->icsk_rto, (int)expired);
++	bpf_tcp_ops_call(rto, sk);
+ 
+ 	if (expired) {
+ 		/* Has it gone just too far? */
 -- 
 2.53.0-Meta
 
