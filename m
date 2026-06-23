@@ -1,105 +1,119 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A023CFF46
-	for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 10:39:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 536162E5B2A;
+	Tue, 23 Jun 2026 10:48:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782211150; cv=none; b=XRlNZYta4LPmAp4g7a0KyWzKkFAc4gx/gN8FDDFS/cMwdrzQSsEbJ95vWIDQE5DhqNVd9lWWBpcuVwu5/JANUdWkCtO+0Ei6I/44Hcqcr9OhgE04EjWEvOMq4CfGQIZ3titzCYEL8OiskREGfN7BDKjIOb0E0CgliwT4qKuwWnM=
+	t=1782211715; cv=none; b=mmINxg9q/M57dr9bJ1VNbrIvFokc2dj1aIqrjtaqWiKfbS79bjiXpEqN4i9StvQRVJ/a/SZ/APGHl3k3LVu02c/GXYVz503XgLs8W7+VbW5HAjckwAGtPS0ZGX6gvdI6ZFIN39nApHh0jHiOiAyjdqMVGsIL/Q8OwTtOWcOVUa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782211150; c=relaxed/simple;
-	bh=I2f6itwTgVHCX/qr45W8+N4z2ngD71bJbg3yfx+2XOM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iutocpQXdLm8pdwj8PmjaEOzzhiVw0TlS/+2CDP7j3I1ue7kPaQr3a5m7pBmJUQ5IVADXp8u0GOes03ynlcZaloNKgYWN6yHlC6X1XHJY5FSQ2MRVFnUzZVegxXPgHQKteqNpnEZymWsx3V1JhMi6L7elOsJJ7Th96h0UsSrq2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=gLi/8mGf; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+	s=arc-20240116; t=1782211715; c=relaxed/simple;
+	bh=n2p4Th3gouArNv5pPghXIZk0RERqOXxj3mYIeXpAXL4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=IZOfGIO74NAWf3LdZuN+qyqNXU1JjfMqBOiykSDkb6wbXD3jzKiypqlpIr1pumJ8SiTlngZcyfipvNyNw8WZnirRS39CDYZEfQ1m8Q2CKt5fwJc060HIMCFTPllHxwqWSoJClb4AreO96nbb7uH+mPWrmPCijfBBywEY/gm5BuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KfqCk1jq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="gLi/8mGf"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-45ef6565cfdso2357975f8f.0
-        for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 03:39:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1782211147; x=1782815947; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zbiEUPgR8Q+kRs3L0RvVWt3vrLWa1fdR3yr5B3/v9/Y=;
-        b=gLi/8mGfPDn7KVQRRpmRP+svMHEn8VXcXRpeI1d8qg7cP49+I77aPTF96mde50UoYA
-         Dt2DJJwnpUfI1BKYQ7YVTyxSEDkZEhd8iWQ46VW3LP6mBTVGlGSSQfRrXbDSfkXrE0nU
-         UBnI05Vt3zwNnJzhY/O1QUGsjXt+p2gjOzgjEFxNLC3nF2Uo/M6fTRQJTt5R2ejhHMPC
-         tnxK4Wq5b4ppS9BtUPRGTePQ6H0CkO7WulmXo3jDpFmrM++k3WnKZx+COpPwfmtyKfon
-         xVnALc/r3bSesxj6TvU3bnxysd9JN7i+KaN2Dn3cG0vQgI9YpiKi06aBXkgbJ6dNSpxE
-         /4vA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782211147; x=1782815947;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zbiEUPgR8Q+kRs3L0RvVWt3vrLWa1fdR3yr5B3/v9/Y=;
-        b=B91rupW2EZ7hBcew40XcUV/4wV9Rfl35NFG1fmjdd/IM8NgfXVGbrxCFiVZ5Y/wk9U
-         mSJpZECQTED5g0lrF/2vj9VtQjAzcAS/nMVXsASwe55feft0AcobNsXZ/DNECkqX38El
-         L5rA0SZgsdOcBvvQu3pfoa1QI0NPl47408hshy2bUfzPLSgY3a1L+P/PtB72EupOKqbQ
-         t2b/HVk4a6WHVdpK7ghn3FhKfnhy0HtWivQplxXT4zRXTUtCDyYxRhyry6C3M2Vvn96c
-         kV+xRh9dYd6IKsxgCj5UE6CjI/FZ34hl8lujeJwu5i62I0TLgWPN7/gbMy4dSoHEABMk
-         +V4Q==
-X-Forwarded-Encrypted: i=1; AHgh+RpXAsqi0UKPKj7wjHNeyl0jZUkMrfuWM70W7E0NKjbcoLEq0UfriLS5U7vJiRhIzFmPPXRxqKo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUvKqlVXcldOXcWb9JbagS5zrYbCSgIHef1BHnaoTg8iAYUo77
-	/B/WlSGaI5NlIcnk4KP5hmkQli61T7us+a3zkMZIW4e4tlwNAZYj4VXPk7dw1fVOqVI=
-X-Gm-Gg: AfdE7cnBOu9ZhAUMJ1FZy0gTxakhcBqhuLg1RmuCx3H1ltTBqTe8QvpkRjLZ+nfwHRx
-	71EaRLf918iq8rySW5WI74rxFh23Zo8aq0lbeuPVlgNQL4AQfvsgfjTP1K6QOCElYjHu4GNQllU
-	eGymjWq2XkbLH2bC1XcArNGOgjoSyo1Xn4FsT6WfO1ufLJSZBU7e5wUpWEPGgEcrLmZu7cFTh6c
-	bWgzw8FMGsPGRw2epkBRK/WQWFPGLIAsBTP1U4rFh2/6QjQBkgd9ArRiOXeyGma7XQw8jtMp3hV
-	pk9qX1EQKZPGu7EnWvMyO8y8HhumAn+B1t6RsvZyUhCaPvKQr5c7H+VLqpSOc9H/xRTVckCv2UX
-	xprU1oVGuQ1/XsHb160mwAI/6oLMpEJC4IDJJIiqzy2vMK7bik4R953yBhWtGBtQFh4G37TlZFQ
-	SlB1YfbbUsMgLzJVO3gDan5A==
-X-Received: by 2002:a5d:584e:0:b0:45e:f631:2c73 with SMTP id ffacd0b85a97d-46660743f4cmr22028124f8f.9.1782211147248;
-        Tue, 23 Jun 2026 03:39:07 -0700 (PDT)
-Received: from localhost ([140.209.217.212])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-466643f4e3esm32983815f8f.8.2026.06.23.03.39.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Jun 2026 03:39:06 -0700 (PDT)
-Date: Tue, 23 Jun 2026 12:39:03 +0200
-From: Jiri Pirko <jiri@resnulli.us>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Andrew Lunn <andrew@lunn.ch>, Jacob Keller <jacob.e.keller@intel.com>, 
-	Ziran Zhang <zhangcoder@yeah.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rocker: Fix memory leak in ofdpa_port_fdb()
-Message-ID: <ajpiQUaVEHujX3Jm@FV6GYCPJ69>
-References: <20260616013245.7098-1-zhangcoder@yeah.net>
- <1446e974-0df0-4956-b2af-7a9403da3c8d@intel.com>
- <61892bd4-7368-4cd8-b360-0267e5c47156@lunn.ch>
- <20260617164411.2a8a260e@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KfqCk1jq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5BC91F000E9;
+	Tue, 23 Jun 2026 10:48:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782211714;
+	bh=6iYwGL29g0r1KYRaQ5SGC8YKey7qP0vNbUrVAYJ5Kjk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=KfqCk1jqqK7FDFQ+4uS8bbCe8iAjiIFgmi1Fi7Wdu9+sE7+qh4W9SAQsppAzWsDXX
+	 Fp+zonrWugNUzhox+Ee5PPO3f6K69+G+Kzc1mqukFLOC8w4E4tVt07Mm9zR2hmE+8j
+	 89rxy/qBFoE12nTG0G5O3p5byKLkaY7efEtuVDB3GeYf4Yimj4ixI/PdQ+a2qoUfVH
+	 HaA0GEB58hrLJ1ZdNoqxiJwUZV24GSw1+P7LV+J3enVZzw9VoMnozn/M5kJJ5yl7yH
+	 8vVYuaKsdarNpB8qRDSfA8zoe1wxGmTFiJMll+1umarl2IF0zjdv2i16jd6BOGlQtL
+	 b0AJjnFYkAAtA==
+From: Simon Horman <horms@kernel.org>
+To: tariqt@nvidia.com
+Cc: Simon Horman <horms@kernel.org>,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	cratiu@nvidia.com,
+	eranbe@nvidia.com,
+	feliu@nvidia.com,
+	haiyangz@microsoft.com,
+	lkayal@nvidia.com,
+	leon@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	mbloch@nvidia.com,
+	noren@nvidia.com,
+	saeedm@nvidia.com,
+	gal@nvidia.com,
+	alazar@nvidia.com,
+	cjubran@nvidia.com,
+	kees@kernel.org,
+	eranbe@mellanox.com,
+	saeedm@mellanox.com
+Subject: Re: [PATCH net V3 1/3] net/mlx5e: Fix HV VHCA stats zero-sized buffer allocation
+Date: Tue, 23 Jun 2026 11:46:26 +0100
+Message-ID: <20260623104624.1073738-3-horms@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260622083646.593220-2-tariqt@nvidia.com>
+References: <20260622083646.593220-2-tariqt@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260617164411.2a8a260e@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-Thu, Jun 18, 2026 at 01:44:11AM +0200, kuba@kernel.org wrote:
->On Wed, 17 Jun 2026 11:26:46 +0200 Andrew Lunn wrote:
->> On Tue, Jun 16, 2026 at 04:29:59PM -0700, Jacob Keller wrote:
->> > On 6/15/2026 6:32 PM, Ziran Zhang wrote:  
->> > > In ofdpa_port_fdb(), the hash_del() only unlinks the node from
->> > > hash table, but does not free it.
->> > > 
->> > > Fix this by adding kfree(found) after the !found == removing check,
->> > > where the pointer value is no longer needed.
->> > > 
->> > > Found by Coccinelle kfree script.
->> 
->> Is rocker actually used any more? I'm not too sure of the history, but
->> was it not added as a way to develop the early switchdev code? There
->> was a qemu implementation of the 'hardware'?
->> 
->> Is it still useful? Should we actually just remove the driver?
->
->I think it came up before but I don't remember the conclusion :S
->We should either add rocker to NIPA or delete it. Jiri, WDYT?
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://sashiko.dev
 
-Remove.
+Simon says: I think this issue can be addressed by reversing the order
+that patches 1/3 and 2/3 appear in this patch-set.
 
+---
+net/mlx5e: Fix HV VHCA stats zero-sized buffer allocation
+
+This commit fixes a zero-sized buffer allocation by using max_nch instead of
+stats_nch when allocating the buffer for HV VHCA stats.
+
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/hv_vhca_stats.c b/drivers/net/ethernet/mellanox/mlx5/core/en/hv_vhca_stats.c
+> index 195863b2c013e..06cbd49d4e98e 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en/hv_vhca_stats.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en/hv_vhca_stats.c
+> @@ -122,7 +128,7 @@ static void mlx5e_hv_vhca_stats_cleanup(struct mlx5_hv_vhca_agent *agent)
+>  
+>  void mlx5e_hv_vhca_stats_create(struct mlx5e_priv *priv)
+>  {
+> -	int buf_len = mlx5e_hv_vhca_stats_buf_size(priv);
+> +	int buf_len = mlx5e_hv_vhca_stats_buf_max_size(priv);
+>  	struct mlx5_hv_vhca_agent *agent;
+>  
+>  	priv->stats_agent.buf = kvzalloc(buf_len, GFP_KERNEL);
+
+[Severity: High]
+Does this change introduce a potential double-free regression on memory
+allocation failure?
+
+When mlx5e_hv_vhca_stats_destroy() cleans up the stats agent, it frees the
+agent but does not set priv->stats_agent.agent to NULL.
+
+Before this patch, kvzalloc() was called with 0 and returned ZERO_SIZE_PTR,
+so it never returned NULL. It always proceeded to call
+mlx5_hv_vhca_agent_create() which overwrote priv->stats_agent.agent.
+
+Now that the buffer size is non-zero, if kvzalloc() fails it will return
+NULL and take the early return path in mlx5e_hv_vhca_stats_create():
+
+	priv->stats_agent.buf = kvzalloc(buf_len, GFP_KERNEL);
+	if (!priv->stats_agent.buf)
+		return;
+
+This early return bypasses overwriting the dangling priv->stats_agent.agent.
+If a subsequent device detach occurs, mlx5e_hv_vhca_stats_destroy() could
+dereference and free this stale pointer again.
+
+I noticed this was later addressed upstream in commit e600849cc1e0
+("net/mlx5e: Fix HV VHCA stats agent registration race").
