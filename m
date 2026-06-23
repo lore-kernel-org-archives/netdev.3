@@ -1,73 +1,99 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAEC93D567E
-	for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 12:22:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C2A3D5C2C;
+	Tue, 23 Jun 2026 12:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782217356; cv=none; b=ahQBddDE4L5n7dGNRy5BbNhABhY3XZSkFU79elyUSpVhWh3KixJaD3WP9DZWg0dWBLcTGqyiW5qFZveH8cFWuX8WTR1BDUxlB8K/VA9MmQHio45hwpHwBb5bb1iDHxNluMXbDxw7xB5SaHH3MQidgsl1WpT0uiDX6X9Dsovy6xo=
+	t=1782217749; cv=none; b=VjlCMG3XAUo6hJqpuuleemVZ8J+LmV53q2KRbC6Z70LuXOazH47xv7pF5rNwJzZNGxo8yrNfsZ8711iaQVwh/Z+qnKSB8PEVu1StSXUOHShKSqWcreLccO23rHAE7E4ncJbbdUxbIvxgCpUUXtCsIEWWPNzOK+zVP+EHo/G5v38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782217356; c=relaxed/simple;
-	bh=LH/VnGgCnFwSj9VN7+GY3WRshzT8ch55U7m4NbeUxzY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sndC2e54uPMeO+XKSa8NaxyJDZ523lPc3udFncF1Vr27VNf6pl8Og7K1c8nKM18uLJmnbkIo/zpvpHc12bdCUc7XRGMBvhv8dtW5JCHQF4U7A23+JIKkKH6Wlh6ds74fUaOGPO3BjSBKiuonYuFfNV+4iTVulWlpYEcWET3+RAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ag5Hm+RN; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782217749; c=relaxed/simple;
+	bh=AZA/n+oIZ2Se/sfqnbOS30FAegm93+h0Gc+iPEdrR9E=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=edOmXCcGAW7GTw5pZTgaItkQAXPrvzaW3AJ2tzvjqKACzehyGIkR9eZca04AapPWXjVLAteLE1GcWIqOZLg8RXbxDD8bHMgSk3bJ3vKrgCpbpqe2Zh5pCguJJlfomvV2ZiHiRgw9NkihB4kBqFAX2XhwZFvjp1n/xTYN2PiUE08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O6yzmLij; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ag5Hm+RN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18A061F000E9;
-	Tue, 23 Jun 2026 12:22:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O6yzmLij"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2D2B1F000E9;
+	Tue, 23 Jun 2026 12:28:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782217354;
-	bh=MVDyPTjerdOBmT+C67OudtG1LBzc9F1BxwLCyBzR8hY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Ag5Hm+RNMo+r6yIvjQMLwIJvPs0VMtJdS8EGJegKp4b5iax6ryfCSfvWAa29xCJSx
-	 ob1ItoXIQYRHROsAHA2N+FwAYMOluOfQxAYR32IP5wH9XZN2dYMMysBcFYRty2bkVG
-	 5rbmjUsIAAzpZdfm57nk9TKcrjVgpA533uZ1SKsnoeFfUNFumVJT7wp1cQTW+DPBO0
-	 7Q+XJB0HKniWbooYsDAqdMB1e2hTRKjx1ulwBaHT1E/TkuY2Xc+1tZAJtfK/yLZayA
-	 Sy33aAsKhsRMyM4e1U/UxrCRU40uSPM2QnVqNrxl7ZIVZqzjtTgV2AOYfu/99rA6mr
-	 9E2hQWB/hZLOg==
-Date: Tue, 23 Jun 2026 13:22:30 +0100
-From: Simon Horman <horms@kernel.org>
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, eric.dumazet@gmail.com,
-	Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: Re: [PATCH net] net: do not acquire dev->tx_global_lock in
- netdev_watchdog_up()
-Message-ID: <20260623122230.GK827683@horms.kernel.org>
-References: <20260622110108.69541-1-edumazet@google.com>
+	s=k20260515; t=1782217747;
+	bh=AZA/n+oIZ2Se/sfqnbOS30FAegm93+h0Gc+iPEdrR9E=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=O6yzmLijucxjukp8wJnRR+NnH7jWmeLbGZLSi7ID5Xqueatpz5RfE53EnooxphSh8
+	 3SoCZaVVuswt/P87OrDPW0N6PmZ6d7up5nC4ecUF+RSqo4BulCblqzW8da4PYW7UuY
+	 kqxfJ4CJ11IlDfDX6SvVeIO/ODsiUsea1c3NMTKhIqKQ10+zDYK+rgu6VUeYACwPj/
+	 wlZ8s/w4tPJG9CjVa5eSJXbcQupy99Mr6qC/9qF1NITLq4SreJXHntjxUUQrS0XdRC
+	 9K2NPy7aiRVEUCBFO8jWs8scJhI3/idu1LxKN4vcz3GJxHHdbMgeSxg2WexdLeP4Ke
+	 QB9i+qE0bLoGQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Alvin Sun <alvin.sun@linux.dev>, Miguel Ojeda <ojeda@kernel.org>, Boqun
+ Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6r?=
+ =?utf-8?Q?n?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice Ryhl
+ <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
+ <dakr@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu
+ <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen
+ <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter
+ <simona@ffwll.ch>, Daniel Almeida <daniel.almeida@collabora.com>, Arnd
+ Bergmann <arnd@arndb.de>, Brendan Higgins <brendan.higgins@linux.dev>,
+ David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>, Breno
+ Leitao <leitao@debian.org>, Jens Axboe <axboe@kernel.dk>, Dave Ertman
+ <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, Leon
+ Romanovsky <leon@kernel.org>, Igor Korotin <igor.korotin@linux.dev>,
+ FUJITA Tomonori <fujita.tomonori@gmail.com>, Bjorn Helgaas
+ <bhelgaas@google.com>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>, Arve
+ =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>, Todd Kjos
+ <tkjos@android.com>, Christian
+ Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>
+Cc: rust-for-linux@vger.kernel.org, linux-modules@vger.kernel.org,
+ driver-core@lists.linux.dev, dri-devel@lists.freedesktop.org,
+ nova-gpu@lists.linux.dev, linux-kselftest@vger.kernel.org,
+ kunit-dev@googlegroups.com, linux-block@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-pci@vger.kernel.org, Alvin Sun <alvin.sun@linux.dev>
+Subject: Re: [PATCH v4 2/9] rust: module: add `THIS_MODULE` const to
+ `ModuleMetadata` trait
+In-Reply-To: <20260623-fix-fops-owner-v4-2-0daf5f077d5c@linux.dev>
+References: <20260623-fix-fops-owner-v4-0-0daf5f077d5c@linux.dev>
+ <20260623-fix-fops-owner-v4-2-0daf5f077d5c@linux.dev>
+Date: Tue, 23 Jun 2026 14:28:50 +0200
+Message-ID: <87bjd1e8zh.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260622110108.69541-1-edumazet@google.com>
+Content-Type: text/plain
 
-On Mon, Jun 22, 2026 at 11:01:08AM +0000, Eric Dumazet wrote:
-> Marek Szyprowski reported a deadlock during system resume when virtio_net
-> driver is used.
-> 
-> The deadlock occurs because netif_device_attach() is called while holding
-> dev->tx_global_lock (via netif_tx_lock_bh() in virtnet_restore_up()).
-> netif_device_attach() calls __netdev_watchdog_up(), which now also tries
-> to acquire dev->tx_global_lock to synchronize with dev_watchdog().
-> 
-> This recursive lock acquisition results in a deadlock.
-> 
-> Fix this by removing the tx_global_lock acquisition from netdev_watchdog_up().
-> 
-> The critical state (watchdog_timer and watchdog_ref_held) is already
-> protected by dev->watchdog_lock, which was introduced in the blamed commit.
-> 
-> Fixes: 8eed5519e496 ("net: watchdog: fix refcount tracking races")
-> Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-> Closes: https://lore.kernel.org/netdev/a443376e-5187-4268-93b3-58047ef113a8@samsung.com/
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Alvin Sun <alvin.sun@linux.dev> writes:
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+> Since `const_refs_to_static` has been stable as of the MSRV bump, a
+> `ThisModule` pointer can now be used in const contexts.
+>
+> Add a `THIS_MODULE` const to the `ModuleMetadata` trait so that modules
+> can provide their `ThisModule` pointer in const contexts such as static
+> `file_operations`.
+>
+> Add a `this_module()` helper to retrieve the `THIS_MODULE` pointer of a
+> given module type, and update `__init` to use it instead of the
+> `THIS_MODULE` static generated by the `module!` macro.
+>
+> The `static THIS_MODULE` generated by the `module!` macro is retained
+> for backwards compatibility with existing users and removed in a later
+> patch once all references have been migrated.
+>
+> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
+
+Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+
+
+Best regards,
+Andreas Hindborg
+
+
 
