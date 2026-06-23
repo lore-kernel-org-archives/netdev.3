@@ -1,80 +1,215 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A55D35201B;
-	Tue, 23 Jun 2026 11:22:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC843D4125
+	for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 11:22:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782213742; cv=none; b=NSnCwXdCH27yB2KPp3fZb6udKNzRzttofxjXSV2XK1wDJxh+qLEbcG5TMTYneNAYnRzXNwONOEyLRyuCTMzroLAeBf2sowR/8qrBAKuVeNV5T3e7XfN171ZkM+Pw4rXJul4W3J/pn2ucD93eAfQhHNbNxWIYyGGQvsykp+Hmv/U=
+	t=1782213752; cv=none; b=SjjqiEBsbQanLSJjO17gt+1fppWlzrrHJzQ/hIVvf0l0b5A8bon+mF4AZ9d9hsOljumb5rPdrHVsTkKgGrUoWSrPipU7TgjmpinNxyrZTPhJxkQiVSkKr/jWmH2ghQRXKGBsMnmOnlncgA5GEU6qq+dMSA2Frg4hzJeECr8S2+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782213742; c=relaxed/simple;
-	bh=Ac0PCETedxkC44FI7n46efIbI3KVwGVQr5l+d/rR0tU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=otghejjaBK+iHemlPfytFpdodBLfs0q5fxhY+jkGnZHGu0XMFKHFvKljbPJr3dtFVAvDyBVcJI7kwj/q/+aJDSjaw3ioh0RxMl98RhRhF90cOI5axA+2/bHYzcGcq2T97rKxUvsmE34fbZfeeK4y+XQksKHgzgUlxzzEouQviPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=UZLnO+mW; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1782213752; c=relaxed/simple;
+	bh=S2wixHTY5PpR7xzLsbG2IqKF1SaBjFwr2zTAieLWxXw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GAGAQ4csOFmh+JGSPVVslkMRGTQfDCrQhwuJkCr6JojNV0kbWu2tjfspzrD0tMscGc1neKb+xjjhkhVqy57DEd8/Y8eSiGRqgASc64hE7sFRG2mUT5h0DPGEKDtJCXSjMVfrpcYQEC3YCwKIaX+IIGslOXlA2rS8rRRXCvpPcGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bsfX8BvI; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="UZLnO+mW"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=/Vj+0Lwkf/zlKrbtC5fB9KE6Lv4N7rFR6YHiUjsKwLw=; b=UZ
-	LnO+mWceivMlB1WzCEMpPFlRnUTntCzhikWATdpVSn203GxNaaWF1gpafHeORw2bfxnnIq6ysywcW
-	VAeheLXNM+UK79rtFOaa5Q9OGQbUYgTx2KjiCj+ET+PL2GfisVm+eBwCyBX2Hrd/NFOFP8Nchcwq5
-	s5I5PKAljwbRS1k=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wbzCk-008wag-MA; Tue, 23 Jun 2026 13:22:10 +0200
-Date: Tue, 23 Jun 2026 13:22:10 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: =?utf-8?B?6LW16YeR5piO?= <zhaojinming@uniontech.com>
-Cc: horms <horms@kernel.org>, andrew+netdev <andrew+netdev@lunn.ch>,
-	davem <davem@davemloft.net>, edumazet <edumazet@google.com>,
-	kuba <kuba@kernel.org>, linux-kernel <linux-kernel@vger.kernel.org>,
-	"madalin.bucur" <madalin.bucur@nxp.com>,
-	netdev <netdev@vger.kernel.org>, pabeni <pabeni@redhat.com>,
-	"sean.anderson" <sean.anderson@linux.dev>
-Subject: Re: [PATCH v2 2/2] net: fman: use devm_kzalloc() for fman and rely
- on devres
-Message-ID: <f0a6fd09-2fab-4bb4-85ae-82f8d383452c@lunn.ch>
-References: <20260619121328.922138-3-horms@kernel.org>
- <20260622090505.2418478-1-zhaojinming@uniontech.com>
- <20260622090505.2418478-2-zhaojinming@uniontech.com>
- <4692dda4-657a-4c00-9e65-cff4b79d19be@lunn.ch>
- <823580887DE24145+2026062314162397367012@uniontech.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bsfX8BvI"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4908b92904fso78446745e9.0
+        for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 04:22:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782213750; x=1782818550; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4Ll5fGvrULmASpVjjrUyqyYpgppQmeYjrRkuEZdoatc=;
+        b=bsfX8BvIuCEJWba8m1oEiK+IB3M/pO6Hb9OkWi3LFatWpOwH6zdPW1gfbPSAGYekuk
+         d2V8hs6mhViIsZY/k5wlGzxMjbZOHDfbaC9GbSSTCusqGoIjlBoEmU7RNwMPq78CrrHf
+         RDoowpBFRIufmJ00nvJm2NjjK6SR7M3uOymZB3Fo4uWVTH+cSC3s6WKRIeOru4z7wJAi
+         mK6AEZ9I0AY7DzVDhCPgc2VX374u0JtFT8G0+WKPc4KLGH3cnvVcqh1Tv7lhqpnLKTA+
+         O/2RZ8HuVXcvNUwlEYH5ECjeLpyINra7PtGrBhY6S0D86JuVuZidCIHmpfiMQlLZYDeC
+         h85Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782213750; x=1782818550;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4Ll5fGvrULmASpVjjrUyqyYpgppQmeYjrRkuEZdoatc=;
+        b=ZEMxZf2FHXLtzkAzxgIlJe/4+kOKUKqn3iGewkQp3Yb+fki90Ee5eesZQHvXka3uwD
+         QnUgX+m3tQ/dfYqDFEFAHWL9Boz3f8MQt1iTpM3GquxfumKpSAQDNBw9jXiAQwJPLh/q
+         EE0c2VC2ADbEBsemavIpBgepqpNskAqETh/cEqh3LmOxwXgL6/9tNM6uFh4CDed2d1Ya
+         Oy/RzQYuc+d4ahEr1QXsTHybVGD0xnisICUWkPHwKrdt91bXLyS/QeFujqES928J9HdQ
+         +kNCOvdUO9kvWJPG7sL1iKB0KBytDUFSWEt123NavWHX/46LrWS64StYZWSFdN5eIFw1
+         9PFw==
+X-Forwarded-Encrypted: i=1; AFNElJ9JK64ABovBNLsITVWkZMZfSq9zIhNFTUaz+ebNO3AtpChoqVT9MEJjDgsR9Q0PPV5OUFG5QqM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxXUJnw6BzZYqAWLazCBwWFTK5TlzL9y6SSZdioji7Fxr31aXN1
+	rgcwUqrMY0Uw4sQQU7D5EUPwb5f7+JzcF5i5GEdiWpU6cqUQHACC8X+o
+X-Gm-Gg: AfdE7cmmaybszfJ+A2lUmYAdFWtZSRvQEF4xmF3deElwolH6eDlk8tacRuZOqAXD4xb
+	t/I6VuyE3RLLPfFlrOEA/W2vZvhWTp8njqvgzztge/CLVQzLgWsYrr91HXYwhcF0Ys/GM2nWU/O
+	liar3scuenBjt7WdEZCO7J8F6ZIFMfsgJPDP4GbCff3LxNPoerrbX8ROVJrsU/odei5va2arEaM
+	uwnsseNlKKCx9EeVlsZvwi9rERAbA8SsvdDPu9HWI4NZZrb9I0uR4dtvDqF3+UUIEomQqFb/EbW
+	DroJquTGOT1typuFn7QhQqcoIsKmitWIMHmsGX+XG2aRgMY0iD0JD5IL1BIu23hdKvLFQ37qyLT
+	lkjN3GkurLU2vm65FQd5L7qJCOkwGB/loppFA0lvr1UWyecWM184ngtQNpgRqoBVg88mzfTjfoU
+	0ZAZaB7vzU8FwW0q34KGOpCCeShlRWwBxfY9NqTMkZ6D+vA3b7xkCaHAS6sgDhMaOOUxiUHAe07
+	nX0qMuw7xM=
+X-Received: by 2002:a05:600c:4455:b0:492:40f2:4d78 with SMTP id 5b1f17b1804b1-4925b34a2e6mr33035365e9.2.1782213749442;
+        Tue, 23 Jun 2026 04:22:29 -0700 (PDT)
+Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4924923cbe7sm272220715e9.8.2026.06.23.04.22.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Jun 2026 04:22:29 -0700 (PDT)
+From: David Carlier <devnexen@gmail.com>
+To: danishanwar@ti.com,
+	rogerq@kernel.org,
+	andrew+netdev@lunn.ch,
+	netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	m-malladi@ti.com,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	sdf@fomichev.me,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	bpf@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	David Carlier <devnexen@gmail.com>
+Subject: [PATCH net v2] net: ti: icssg-prueth: fix XDP_TX from the AF_XDP zero-copy RX path
+Date: Tue, 23 Jun 2026 12:22:25 +0100
+Message-ID: <20260623112225.303930-1-devnexen@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <823580887DE24145+2026062314162397367012@uniontech.com>
 
-On Tue, Jun 23, 2026 at 02:16:25PM +0800, 赵金明 wrote:
-> Hi Andrew,
-> 
-> Thank you for pointing me to the netdev maintainer documentation. I have
-> read section 1.7.4 and I understand the concern about standalone
-> cleanup conversions.
-> 
-> I would like to clarify the actual motivation behind the
-> devm_kzalloc() change. While it may appear to be a simple devm_
-> conversion on the surface, it is in fact fixing a use-after-free race
-> condition in the IRQF_SHARED error paths. Let me explain the problem
-> in detail.
+On XDP_TX from the zero-copy RX path, emac_run_xdp() converts the xsk
+buffer via xdp_convert_zc_to_xdp_frame(), which clones the data into a
+fresh MEM_TYPE_PAGE_ORDER0 page that is not DMA mapped. Transmitting it
+as PRUETH_TX_BUFF_TYPE_XDP_TX derives the DMA address with
+page_pool_get_dma_addr(), reading an uninitialized page->dma_addr, so
+the device DMAs from a bogus address (corrupt TX, or an IOMMU fault).
 
-Please make the commit message explain what the fix is, rather then
-saying converting to devm_.
+Pick the TX buffer type from the frame's memory type: keep
+PRUETH_TX_BUFF_TYPE_XDP_TX for page_pool frames and use
+PRUETH_TX_BUFF_TYPE_XDP_NDO for the cloned zero-copy frame, which is then
+DMA mapped through the NDO path and unmapped on completion.
 
-But i also hope you also see why we don't like devm_ conversions,
-because developers get them wrong like this. And all too often, they
-do the conversion without actual hardware to test it with. So it
-results in more bugs, not less.
+While at it, fix the page_pool XDP_TX completion path. A
+PRUETH_TX_BUFF_TYPE_XDP_TX frame carries a page_pool-owned DMA mapping
+(established against rx_chn->dma_dev), yet prueth_xmit_free()
+unconditionally calls dma_unmap_single() on it with tx_chn->dma_dev,
+tearing down a mapping the driver does not own; xdp_return_frame()
+already recycles the page back to the pool. Tag such frames with a
+dedicated PRUETH_SWDATA_XDPF_TX type so the completion path skips the
+unmap, the same way PRUETH_SWDATA_XSK buffers are handled.
 
-	   Andrew
+Fixes: 7a64bb388df3 ("net: ti: icssg-prueth: Add AF_XDP zero copy for RX")
+Fixes: 62aa3246f462 ("net: ti: icssg-prueth: Add XDP support")
+Cc: stable@vger.kernel.org
+Signed-off-by: David Carlier <devnexen@gmail.com>
+---
+v2:
+ - fold in the page_pool XDP_TX completion-path unmap fix raised by
+   Meghana Malladi: tag page_pool TX frames with PRUETH_SWDATA_XDPF_TX
+   so prueth_xmit_free() skips dma_unmap_single() on a pool-owned
+   mapping; xdp_return_frame() already recycles the page.
+ - add Fixes: 62aa3246f462 for that path.
+ - no change to the original zero-copy fix.
+v1: https://lore.kernel.org/netdev/20260620213756.87499-1-devnexen@gmail.com
+ drivers/net/ethernet/ti/icssg/icssg_common.c | 20 +++++++++++++++++---
+ drivers/net/ethernet/ti/icssg/icssg_prueth.h |  1 +
+ 2 files changed, 18 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_common.c b/drivers/net/ethernet/ti/icssg/icssg_common.c
+index 82ddef9c17d5..96c8bf5ef671 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_common.c
++++ b/drivers/net/ethernet/ti/icssg/icssg_common.c
+@@ -185,7 +185,7 @@ void prueth_xmit_free(struct prueth_tx_chn *tx_chn,
+ 	first_desc = desc;
+ 	next_desc = first_desc;
+ 	swdata = cppi5_hdesc_get_swdata(first_desc);
+-	if (swdata->type == PRUETH_SWDATA_XSK)
++	if (swdata->type == PRUETH_SWDATA_XSK || swdata->type == PRUETH_SWDATA_XDPF_TX)
+ 		goto free_pool;
+ 
+ 	cppi5_hdesc_get_obuf(first_desc, &buf_dma, &buf_dma_len);
+@@ -259,6 +259,7 @@ int emac_tx_complete_packets(struct prueth_emac *emac, int chn,
+ 			napi_consume_skb(skb, budget);
+ 			break;
+ 		case PRUETH_SWDATA_XDPF:
++		case PRUETH_SWDATA_XDPF_TX:
+ 			xdpf = swdata->data.xdpf;
+ 			dev_sw_netstats_tx_add(ndev, 1, xdpf->len);
+ 			total_bytes += xdpf->len;
+@@ -769,7 +770,8 @@ u32 emac_xmit_xdp_frame(struct prueth_emac *emac,
+ 	k3_udma_glue_tx_dma_to_cppi5_addr(tx_chn->tx_chn, &buf_dma);
+ 	cppi5_hdesc_attach_buf(first_desc, buf_dma, xdpf->len, buf_dma, xdpf->len);
+ 	swdata = cppi5_hdesc_get_swdata(first_desc);
+-	swdata->type = PRUETH_SWDATA_XDPF;
++	swdata->type = buff_type == PRUETH_TX_BUFF_TYPE_XDP_TX ?
++		PRUETH_SWDATA_XDPF_TX : PRUETH_SWDATA_XDPF;
+ 	swdata->data.xdpf = xdpf;
+ 
+ 	/* Report BQL before sending the packet */
+@@ -804,6 +806,7 @@ EXPORT_SYMBOL_GPL(emac_xmit_xdp_frame);
+  */
+ static u32 emac_run_xdp(struct prueth_emac *emac, struct xdp_buff *xdp, u32 *len)
+ {
++	enum prueth_tx_buff_type tx_buff_type;
+ 	struct net_device *ndev = emac->ndev;
+ 	struct netdev_queue *netif_txq;
+ 	int cpu = smp_processor_id();
+@@ -826,11 +829,21 @@ static u32 emac_run_xdp(struct prueth_emac *emac, struct xdp_buff *xdp, u32 *len
+ 			goto drop;
+ 		}
+ 
++		/* In AF_XDP zero-copy mode xdp_convert_buff_to_frame()
++		 * clones the xsk buffer into a fresh MEM_TYPE_PAGE_ORDER0
++		 * page that is not DMA mapped. Such a frame must be mapped
++		 * via the NDO path; only a page pool-backed frame already
++		 * carries a usable page_pool DMA address.
++		 */
++		tx_buff_type = xdpf->mem_type == MEM_TYPE_PAGE_POOL ?
++				PRUETH_TX_BUFF_TYPE_XDP_TX :
++				PRUETH_TX_BUFF_TYPE_XDP_NDO;
++
+ 		q_idx = cpu % emac->tx_ch_num;
+ 		netif_txq = netdev_get_tx_queue(ndev, q_idx);
+ 		__netif_tx_lock(netif_txq, cpu);
+ 		result = emac_xmit_xdp_frame(emac, xdpf, q_idx,
+-					     PRUETH_TX_BUFF_TYPE_XDP_TX);
++					     tx_buff_type);
+ 		__netif_tx_unlock(netif_txq);
+ 		if (result == ICSSG_XDP_CONSUMED) {
+ 			ndev->stats.tx_dropped++;
+@@ -1395,6 +1408,7 @@ void prueth_tx_cleanup(void *data, dma_addr_t desc_dma)
+ 		dev_kfree_skb_any(skb);
+ 		break;
+ 	case PRUETH_SWDATA_XDPF:
++	case PRUETH_SWDATA_XDPF_TX:
+ 		xdpf = swdata->data.xdpf;
+ 		xdp_return_frame(xdpf);
+ 		break;
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.h b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
+index df93d15c5b78..00bb760d68a9 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_prueth.h
++++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
+@@ -153,6 +153,7 @@ enum prueth_swdata_type {
+ 	PRUETH_SWDATA_CMD,
+ 	PRUETH_SWDATA_XDPF,
+ 	PRUETH_SWDATA_XSK,
++	PRUETH_SWDATA_XDPF_TX,
+ };
+ 
+ enum prueth_tx_buff_type {
+-- 
+2.53.0
+
