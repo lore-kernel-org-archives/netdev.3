@@ -1,107 +1,224 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C50C306757
-	for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 16:23:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84E4A30BF69
+	for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 16:25:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782231795; cv=none; b=JiY/fm6oB62OkIqDHrM2zC/MJe8LmLEiku6FTYzvB+B2QRYvbqWEv4VlKECSgR9EbPUT64qJb3aqZCuD3afkA68Ix949rnNG3Jn2H7Rr/+2+m0rNcUu7PJYxkyYcHj1U4ul/epKL60HlN5NoVF5MfoPFj1BL81mRJppAbNOwi68=
+	t=1782231951; cv=none; b=sQzXmfTUaa5aDuCnOOaoLzvSi0xFOldVihCUjY+PhlpWv17pQHGeEA2T+MWP9slYOd3b5qVbdazkb02vVx2nkd/gN86aSIhhcf0xLMAKOpbAl8j+8NBCuj4a57PVMgzHMwVJnpl6jijW7TJXxLYrUT8s8X8wGN1erkBzy1MAl5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782231795; c=relaxed/simple;
-	bh=vpm2sYXVp2f19p7aRTZC+CwjaVK2aPR511GU9AtxiTM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WS0cuxqZeX5urSIahQ655zJRU3l232OkXRFDSNHJ870vUAPyZ6nVt8RJs8deOzefI316DN8JY01Y+Fp6gClszevnWHrXEl+rtVVUJMFXGlV85/sYbwA7gr8WCdPtWY31kCtWAqYDdUBg3x9sHdk/PBeMiXlXoBqG8eG5D0oT9SI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=YE5a2DeG; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1782231951; c=relaxed/simple;
+	bh=eykH2HUbjr/1DyGU71Z9JYt9zH6YNWHF9N1c/Pj+oJ0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=oqX08RoEcZTGA0YVvnBUPyKxUS3rsQN9JKMx12e7FnUo7CCpAu72+EgVY4tXcUZzeFiWVJmLMPV6n6Y0TiI0ccE90kmurpauOFDcLd3gAR3XED+lNQiiOybbYKLWzkqDfH0+JslQeQTnl/UksLOrFD0q6qtiXxmiBtgn79hXvXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L6TByLOH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="YE5a2DeG"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 9B2221A08AE;
-	Tue, 23 Jun 2026 16:23:09 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 57704601C2;
-	Tue, 23 Jun 2026 16:23:09 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4E7DC106C841A;
-	Tue, 23 Jun 2026 18:23:01 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1782231788; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=/9CbdAPN/4V+FSMLtSl5yulm65CsF7yRuepdwDsnG3I=;
-	b=YE5a2DeGmMl4nhclGldtGgDPhgjcVG06bQ67THBJgVOCnGHBEb/G7C1pXG0iHvf1ZJQcQY
-	b4k4eQ5Km9bP3HTv74szkqqfJD7c5Weq6CnltVyxIV4/WAplF/7YowNGJZA1NYiQCIsP7x
-	KtstEYRrDJ23nwq5f3E9yHdDNbWBTHIZCVPagjuvrs9VHChsiECSU642Csf8I/ui6JAQlQ
-	v0oNJsl9Fq6q2cIi44cqMfNJvX733/ebA2aVAJDDMfgsmGd+wKRaujWcycg2r1IWBy3oSI
-	t3UToQRIxF9wTQ0RiiO101u3NUFMhZXDacI1FcvqwERrPNv9PatCuzxqg0JMJg==
-Message-ID: <376a850a-dabe-421a-b227-9b612056583f@bootlin.com>
-Date: Tue, 23 Jun 2026 18:23:00 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L6TByLOH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 691351F000E9;
+	Tue, 23 Jun 2026 16:25:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782231950;
+	bh=X4qclOH+GM0q9kUF3r5VNGXMuLNAeYN7GThgAUUko88=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=L6TByLOHbBACOxPDIIJLjKZb9GAn59Lb3vzrUboi8RVqFH1dv1258nnBpcep5C0fi
+	 57X69KiV7vCa+Qah0BSXVXO4hoAsgPWr/Z01k+sNbVbITE0fadEjsXvXS3cC17wiLb
+	 GizINoivH/0fHf0PLmzIBQUFpjts7SqXeQi5/V5e+EsRZf1g1vYqOuUzIZ7zsTmPNU
+	 bf93rhpIlhlZJYkcMb9Y/2mnDUEKlhQKW70dSppnqBPawxP7Zz7OkwenUBcUXLASkx
+	 SxJVo9Uwq9ZJYHKGVsOWznpyhVvIScsWhpgX4V+QTTYYSCvFo6fOkFX6FJHzS/n9kT
+	 vK2WLtlRB5nJQ==
+From: Simon Horman <horms@kernel.org>
+To: poros@redhat.com
+Cc: Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	aleksandr.loktionov@intel.com
+Subject: Re: [PATCH iwl-net v2 1/2] ice: skip per-VLAN promisc rules when default VSI Rx rule is set
+Date: Tue, 23 Jun 2026 17:25:27 +0100
+Message-ID: <20260623162526.1099096-2-horms@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260622113428.2565255-2-poros@redhat.com>
+References: <20260622113428.2565255-2-poros@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 1/2] net: phy: sfp: free mii_bus in
- sfp_i2c_mdiobus_destroy
-To: Petr Wozniak <petr.wozniak@gmail.com>, linux@armlinux.org.uk,
- andrew@lunn.ch, hkallweit1@gmail.com
-Cc: kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-phy@lists.infradead.org, bjorn@mork.no, olek2@wp.pl, kabel@kernel.org
-References: <20260623080538.7646-1-petr.wozniak@gmail.com>
- <20260623080538.7646-2-petr.wozniak@gmail.com>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20260623080538.7646-2-petr.wozniak@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://sashiko.dev
+---
+Subject: ice: skip per-VLAN promisc rules when default VSI Rx rule is set
 
+This patch optimizes the number of hardware switch rules used when an ice
+port is part of a vlan-filtering bridge. It avoids installing per-VLAN
+promiscuous rules if the broad default VSI Rx rule is already catching
+all traffic.
 
-On 6/23/26 10:05, Petr Wozniak wrote:
-> sfp_i2c_mdiobus_create() allocates the I2C MDIO bus with mdio_i2c_alloc(),
-> a plain (non-devm) allocation, and registers it. sfp_i2c_mdiobus_destroy()
-> only unregisters the bus and clears sfp->i2c_mii without calling
-> mdiobus_free(). As the only reference to the bus is then cleared, the
-> struct mii_bus is leaked.
-> 
-> This is hit whenever a copper/RollBall SFP module that instantiated an MDIO
-> bus is removed: sfp_sm_main() takes the global teardown path and calls
-> sfp_i2c_mdiobus_destroy(). sfp_cleanup(), on driver unbind, frees
-> sfp->i2c_mii directly, which is why the leak only triggered on module
-> hot-removal and not on unbind.
+> diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+> index e2fbe111f8496..efb1f536de6c7 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_main.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_main.c
+[ ... ]
+> @@ -442,17 +496,12 @@ static int ice_vsi_sync_fltr(struct ice_vsi *vsi)
 
-which is worse, this can happen many times in a row :)
+[Severity: High]
+This is a pre-existing issue, but does MAC filter overflow fail to force
+promiscuous mode, resulting in silent packet drops?
 
-> 
-> Free the bus in sfp_i2c_mdiobus_destroy() to match the allocation done in
-> sfp_i2c_mdiobus_create().
-> 
-> Fixes: e85b1347ace6 ("net: sfp: create/destroy I2C mdiobus before PHY probe/after PHY release")
-> Signed-off-by: Petr Wozniak <petr.wozniak@gmail.com>
+When the hardware MAC filter limit is reached (LIBIE_AQ_RC_ENOSPC), the driver
+attempts to fall back to promiscuous mode by setting promisc_forced_on = true.
 
-With this patch sent towards the -net tree,
+However, the execution flow then reaches a check for IFF_PROMISC:
 
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+    if (vsi->current_netdev_flags & IFF_PROMISC) {
+        /* Apply Rx filter rule to get traffic from wire */
+        ...
+    } else {
+        /* Clear Rx filter to remove traffic from wire */
 
-Maxime
+Since the user never explicitly requested IFF_PROMISC, this evaluates to false,
+causing the driver to take the else branch. The else branch actively disables
+the default VSI rule and clears promiscuous mode instead of enabling it. The
+fallback feature appears to be non-functional, leading to lost traffic for
+newly added MACs.
 
-> ---
->  drivers/net/phy/sfp.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-> index 03bfd8640db9..c4d274ab651e 100644
-> --- a/drivers/net/phy/sfp.c
-> +++ b/drivers/net/phy/sfp.c
-> @@ -963,6 +963,7 @@ static int sfp_i2c_mdiobus_create(struct sfp *sfp)
->  static void sfp_i2c_mdiobus_destroy(struct sfp *sfp)
->  {
->  	mdiobus_unregister(sfp->i2c_mii);
-> +	mdiobus_free(sfp->i2c_mii);
->  	sfp->i2c_mii = NULL;
->  }
+[Severity: High]
+This is a pre-existing issue, but could this function prevent retries of
+incomplete configurations and break multicast promiscuity if any default
+VSI is already active?
+
+In ice_vsi_sync_fltr(), the setup of multicast promiscuity and disabling of
+Rx filtering is gated:
+
+    if (!ice_is_dflt_vsi_in_use(vsi->port_info)) {
+        err = ice_set_dflt_vsi(vsi);
+        ...
+        err = ice_set_promisc(vsi, ICE_MCAST_PROMISC_BITS);
+        if (err)
+            goto out_promisc;
+    }
+
+If ice_set_dflt_vsi() succeeds but the subsequent ice_set_promisc() fails,
+the function jumps to out_promisc to trigger a retry. On the next cycle,
+ice_is_dflt_vsi_in_use() returns true because this VSI is now the default,
+causing the entire block to be skipped and leaving the VSI misconfigured.
+
+Furthermore, if another VSI (such as a VF) is already the default VSI,
+the PF VSI entirely skips setting multicast promiscuity, breaking multicast
+reception in promiscuous mode.
+
+>  		} else {
+>  			/* Clear Rx filter to remove traffic from wire */
+>  			if (ice_is_vsi_dflt_vsi(vsi)) {
+> -				err = ice_clear_dflt_vsi(vsi);
+> +				err = ice_vsi_exit_dflt_promisc(vsi);
+>  				if (err) {
+> -					netdev_err(netdev, "Error %d clearing default VSI %i Rx rule\n",
+> -						   err, vsi->vsi_num);
+>  					vsi->current_netdev_flags |=
+>  						IFF_PROMISC;
+>  					goto out_promisc;
+>  				}
+> -				if (vsi->netdev->features &
+> -				    NETIF_F_HW_VLAN_CTAG_FILTER)
+> -					vlan_ops->ena_rx_filtering(vsi);
+>  			}
+[ ... ]
+> @@ -3675,10 +3724,9 @@ int ice_vlan_rx_add_vid(struct net_device *netdev, __be16 proto, u16 vid)
+>  	while (test_and_set_bit(ICE_CFG_BUSY, vsi->state))
+>  		usleep_range(1000, 2000);
+
+[Severity: High]
+This is a pre-existing issue, but isn't there a risk of TOCTOU races with
+this ad-hoc lock pattern lacking memory barriers?
+
+The driver spins on ICE_CFG_BUSY using test_and_set_bit() and usleep_range()
+to guard VSI filter synchronization. The lock is subsequently dropped using
+clear_bit(ICE_CFG_BUSY, vsi->state) at the exit label.
+
+Because clear_bit() lacks a memory release barrier, the CPU or compiler can
+reorder memory stores from the critical section to occur after the flag is
+cleared, leading to data races and corruption of shared filter state on
+weakly ordered architectures.
+
+> -	/* Add multicast promisc rule for the VLAN ID to be added if
+> -	 * all-multicast is currently enabled.
+> -	 */
+> -	if (vsi->current_netdev_flags & IFF_ALLMULTI) {
+> +	/* skip the per-VID rule when the DFLT Rx rule already covers this VID */
+> +	if ((vsi->current_netdev_flags & IFF_ALLMULTI) &&
+> +	    !ice_is_vsi_dflt_vsi(vsi)) {
+>  		ret = ice_fltr_set_vsi_promisc(&vsi->back->hw, vsi->idx,
+>  					       ICE_MCAST_VLAN_PROMISC_BITS,
+>  					       vid);
+> @@ -3696,11 +3744,12 @@ int ice_vlan_rx_add_vid(struct net_device *netdev, __be16 proto, u16 vid)
+>  	if (ret)
+>  		goto finish;
+
+[Severity: High]
+This is a pre-existing issue, but what happens if vlan_ops->add_vlan()
+fails here? Is the hardware switch rule leaked?
+
+When adding a VLAN to an interface with IFF_ALLMULTI enabled, this function
+first allocates a promiscuous switch rule in hardware via
+ice_fltr_set_vsi_promisc().
+
+If this succeeds but the subsequent call to vlan_ops->add_vlan() fails
+(e.g., due to ENOSPC or memory allocation failure), the function returns
+early without rolling back the promiscuous rule. Because the network stack
+considers the VLAN addition to have failed, ice_vlan_rx_kill_vid() will
+never be called for this VID, permanently leaking a Flow Lookup Unit (FLU).
+
+> -	/* If all-multicast is currently enabled and this VLAN ID is only one
+> -	 * besides VLAN-0 we have to update look-up type of multicast promisc
+> -	 * rule for VLAN-0 from ICE_SW_LKUP_PROMISC to ICE_SW_LKUP_PROMISC_VLAN.
+> +	/* On the first non-zero VLAN, promote the VLAN-0 multicast promisc
+> +	 * rule from ICE_SW_LKUP_PROMISC to ICE_SW_LKUP_PROMISC_VLAN. Skip when
+> +	 * the DFLT Rx rule is installed; it already covers every VID.
+>  	 */
+>  	if ((vsi->current_netdev_flags & IFF_ALLMULTI) &&
+> +	    !ice_is_vsi_dflt_vsi(vsi) &&
+>  	    ice_vsi_num_non_zero_vlans(vsi) == 1) {
+[ ... ]
+> @@ -3763,11 +3812,12 @@ int ice_vlan_rx_kill_vid(struct net_device *netdev, __be16 proto, u16 vid)
+>  					   ICE_MCAST_VLAN_PROMISC_BITS, vid);
 >  
+>  	if (!ice_vsi_has_non_zero_vlans(vsi)) {
+> -		/* Update look-up type of multicast promisc rule for VLAN 0
+> -		 * from ICE_SW_LKUP_PROMISC_VLAN to ICE_SW_LKUP_PROMISC when
+> -		 * all-multicast is enabled and VLAN 0 is the only VLAN rule.
+> +		/* Last non-zero VLAN gone: demote the VLAN-0 multicast promisc
+> +		 * rule back to ICE_SW_LKUP_PROMISC. Skip when the DFLT Rx rule
+> +		 * is installed; no recipe swap is needed.
+>  		 */
+> -		if (vsi->current_netdev_flags & IFF_ALLMULTI) {
+> +		if ((vsi->current_netdev_flags & IFF_ALLMULTI) &&
+> +		    !ice_is_vsi_dflt_vsi(vsi)) {
 
+[Severity: High]
+Will this modification cause a stale switch rule (ICE_SW_LKUP_PROMISC_VLAN for
+vid=0) to be permanently leaked if the last VLAN is removed while the DFLT VSI
+rule is active?
+
+This patch skips demoting the vid=0 multicast promiscuous rule from
+ICE_SW_LKUP_PROMISC_VLAN back to ICE_SW_LKUP_PROMISC when the last VLAN is
+removed, if ice_is_vsi_dflt_vsi(vsi) is true.
+
+However, if the interface later drops IFF_PROMISC (removing the DFLT VSI rule)
+and then drops IFF_ALLMULTI, ice_clear_promisc() is called. Because the
+interface now has zero VLANs, ice_clear_promisc() executes its else branch:
+
+    } else {
+        status = ice_fltr_clear_vsi_promisc(&vsi->back->hw, vsi->idx,
+                                            promisc_m, 0);
+    }
+
+This only searches and clears rules from the ICE_SW_LKUP_PROMISC recipe. The
+stranded rule in the ICE_SW_LKUP_PROMISC_VLAN recipe is never cleared,
+resulting in a permanent hardware switch rule leak.
+
+>  			ice_fltr_clear_vsi_promisc(&vsi->back->hw, vsi->idx,
+>  						   ICE_MCAST_VLAN_PROMISC_BITS,
+>  						   0);
