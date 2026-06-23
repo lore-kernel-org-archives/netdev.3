@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682D433D4E4
-	for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 23:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 138983AA9F4;
+	Tue, 23 Jun 2026 23:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782257434; cv=none; b=fOFX5sV3JvvQutgMXxcXXN3NqEdGylKWZRqm8PsqIMYmj/Iry1W78qnaRVvKhGyJSDIDhU6gXGA0aC7qjswiWHBZoIHJGljpmrYprcIz5Ooq+P3y6odTGw7FtcDxQrDO36MMYcJ7pBefc7PuHdatlUPSLzUqmUYOgKHlI8lnyB4=
+	t=1782257436; cv=none; b=mE2TOdcvAHZtzCSsHuCxcqwCqbkGm+WhoouekDP+Sh+H57dtkNbwhxFiplRchfKoPEhtahDkXA0sMnNN5rSD4XlL5OfhN+ZaFefZZoB1ulAAAXvoycu7eqS5iMnzRxpl6/B/b4RgkSxusLtd+l8QSjXjC1zjxm6xR6k7Rws8q3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782257434; c=relaxed/simple;
-	bh=mvy+5fv9INmzW/Wfx7iqb1gfM3e+XkL4/KHPcBq4Qvo=;
+	s=arc-20240116; t=1782257436; c=relaxed/simple;
+	bh=JLyFT1Jv/J5T1HWl2XSOJT7hQOy7IDnIdZAoaUqZYv4=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=rCBnVOf5z4MCphQYmkCiPauOzd59r27sljdUyGJrn3bkEgYUCZfY/ZGQ0tTMKswPWKlwZnALAzdzEJUvm9xRD5PzAjko9pgluFjK2LlR6YJxjuQ7cVVCL7SsLBFKuVNl+z6Q+oqyDJNvrcw9PbD4cbXszQ02ZdkMArvB/RwaXfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rj4BLx8D; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=kZWc01cLEQbsoeQZ8IvRugx1XtCUojJTcAFfYr4STHxYwIeegN4LWszXvvryJz1iUaN71Q3c0YGhUrfwOag1iCe2lvQjsaUiRY0xEZIlZu2EJoohuKA3Q401nOgaK97Mho4TgOFc0v1zh34mJa2SyJ98y9cF7ZwCSRpXznoRrNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fzLpfpI6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rj4BLx8D"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 090691F000E9;
-	Tue, 23 Jun 2026 23:30:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fzLpfpI6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2ED31F000E9;
+	Tue, 23 Jun 2026 23:30:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782257433;
-	bh=YbNzKE9LQ0v+mZddWkozD/Dm3Kd2AwXXFIosP+ndJGU=;
+	s=k20260515; t=1782257434;
+	bh=aL/M7IRPkz6/JvXVAADlG3jaKhFQEmO0F8gH9rtLMAQ=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Rj4BLx8DQHiVEMWylA28i4HCtAZNh/9f05ObOQGgZ/zRKJI2zK1ZuoGsj/wv8WD62
-	 y2m7/JLTUCXiTWSHq7mxY1+hnp/UIRm//CXMAq2drHIDLAjzIml/MbbcPWkcmfmTq+
-	 UcqxOrs13TrLFzKtop+opjU61m7H5UnapWOpR7nyQlGRtkcaYFy57qJrw7OfKFUpwA
-	 WRdaERgjmmJtT4yBcgrjR14aPwKMJ9BOwNQF7U6406mxVT1wO26HjMkk5ZhWU6Mc7B
-	 ngEoDwcFl7kw2tYptHYoEbwSoRDkOqpF76Y7nOvzEh+/syVHhfWjrg/Tvdw4l9LryE
-	 j3MreT0nowrvg==
+	b=fzLpfpI6AgoaOFSco7n4hZvdDna6ZPhoVBeTcGuNrav34rSkoFp6UhtqcOUrab7L6
+	 yBxYcgz2yPCevLJarAig55IKMwCyUnvtgv3WrO+uV2U/ahsUrwYbvkpTRFkLMBLEZc
+	 jDuzM5Pg1PlawNfcisDuxfzbSho2GNdZ34KLvlRfA9MXkzouWLQ4Zepn+TEY55wt6/
+	 DyqaHTPBEkPW4tv3cWIZazkI1Zh3Ey62qPw5Y2OUVwDLrBv5Et8u53dC1JiPkS8eq5
+	 Lpj6um5i98/K4vH4IIXwt4qCPDDjv+ZvIBCnKgC/ThT4sh3/b+nOb1mJ3DCRvZhkrs
+	 KP11/AdOshQew==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93BAA393101F;
-	Tue, 23 Jun 2026 23:30:23 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 569A1393101F;
+	Tue, 23 Jun 2026 23:30:25 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,48 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 1/7] xfrm: use compat translator only for u64 alignment
- mismatch
+Subject: Re: [PATCH net v2] net: usb: lan78xx: restore VLAN and hash filters
+ after
+ link up
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178225742225.2469097.10118689224229379237.git-patchwork-notify@kernel.org>
-Date: Tue, 23 Jun 2026 23:30:22 +0000
-References: <20260622075726.29685-2-steffen.klassert@secunet.com>
-In-Reply-To: <20260622075726.29685-2-steffen.klassert@secunet.com>
-To: Steffen Klassert <steffen.klassert@secunet.com>
-Cc: davem@davemloft.net, kuba@kernel.org, herbert@gondor.apana.org.au,
- netdev@vger.kernel.org
+ <178225742381.2469097.14730861553288440326.git-patchwork-notify@kernel.org>
+Date: Tue, 23 Jun 2026 23:30:23 +0000
+References: <20260622102911.484045-1-nb@tipi-net.de>
+In-Reply-To: <20260622102911.484045-1-nb@tipi-net.de>
+To: Nicolai Buchwitz <nb@tipi-net.de>
+Cc: Thangaraj.S@microchip.com, Rengarajan.S@microchip.com,
+ UNGLinuxDriver@microchip.com, Woojung.Huh@microchip.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, schuchmann@schleissheimer.de,
+ netdev@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net.git (main)
-by Steffen Klassert <steffen.klassert@secunet.com>:
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 22 Jun 2026 09:57:03 +0200 you wrote:
-> From: Sanman Pradhan <psanman@juniper.net>
+On Mon, 22 Jun 2026 12:29:11 +0200 you wrote:
+> Configured VLANs intermittently stop receiving traffic after a link
+> down/up cycle, e.g. when the network cable is unplugged and plugged back
+> in. VLAN filtering stays enabled but all VLAN-tagged frames are dropped
+> until a VLAN is added or removed again.
 > 
-> The XFRM compat layer (CONFIG_XFRM_USER_COMPAT) translates 32-bit xfrm
-> netlink and setsockopt messages into the native 64-bit layout. It is
-> only needed on architectures where the 32-bit and 64-bit ABIs disagree
-> on u64 alignment, which the kernel encodes as COMPAT_FOR_U64_ALIGNMENT.
+> The LAN7801 datasheet (DS00002123E) states:
 > 
 > [...]
 
 Here is the summary with links:
-  - [1/7] xfrm: use compat translator only for u64 alignment mismatch
-    https://git.kernel.org/netdev/net/c/355fbcbdc253
-  - [2/7] net: af_key: initialize alg_key_len for IPComp states
-    https://git.kernel.org/netdev/net/c/d129c3177d7b
-  - [3/7] xfrm: Fix dev use-after-free in xfrm async resumption
-    https://git.kernel.org/netdev/net/c/8045c0df98d4
-  - [4/7] xfrm: Fix xfrm state cache insertion race
-    https://git.kernel.org/netdev/net/c/ddd3d0132920
-  - [5/7] xfrm: annotate data-races around xfrm_policy_count[] and xfrm_policy_default[]
-    https://git.kernel.org/netdev/net/c/68de007d5ac9
-  - [6/7] espintcp: use sk_msg_free_partial to fix partial send
-    https://git.kernel.org/netdev/net/c/007800408002
-  - [7/7] xfrm: validate selector family and prefixlen during match
-    https://git.kernel.org/netdev/net/c/40f0b1047918
+  - [net,v2] net: usb: lan78xx: restore VLAN and hash filters after link up
+    https://git.kernel.org/netdev/net/c/5c12248673c7
 
 You are awesome, thank you!
 -- 
