@@ -1,38 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A9D3859E0;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B343859E3;
 	Tue, 23 Jun 2026 01:44:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782179061; cv=none; b=X4z/VVl5njiQz2L5bznvSG4LWkcAf7JmBPgOmXO4WMDBRraWqWQwL9IEYKTeAlUxrev7BgxJbI6yHdxP4/FVjw4z8VWf/TbeRiTy4UhxNhWVh9dh68aB5A5JEoDX7QPvHqmX03MpEbnW54VXE6e3dxENBrhLuoicduwGe3vb4mU=
+	t=1782179061; cv=none; b=PVbezSbG8vXIsCFHr4AujcVBUbDCKfS6JnY433iJw8I8T3GYEzURSWzAA67O3CQnYjDLdED3ZJbdeXEU423KU0qnrUvJhrfD4hkh+tx2hgbd/Wqa8YG+MyjYgJtl4M9RtSY+VuSt5xUMjr57oigTlGdHMa5sX3GtoBnyHUXKTP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1782179061; c=relaxed/simple;
-	bh=C6pekLeFAiXx/L721/RQl2O3BL+P1Vu3Tc5jWIQ2eFM=;
+	bh=xAp94depaq4Dj1p9lGi8JJCadhv1Kb/sm6H74JDc88Y=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Co2TS2EdanzfqR7Ugom141qIHW0rvdnjqqn9nVPN4O0VfOAn3iOFG8BB76ClGYNisdv2RtmXsKmxGUlhrCwJ76nJ3GTAwKX7lvNxj/AgRLbbNAwbYYKRiyaVKb+Dt+8TMtaXhRT4CJc+3Zrmo5GAl1x8wGwfzW1oQuBZ3M1nYxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CaRJR8yB; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=OcuU2BrYYqkiKHzuQBj94DhaJlebVhAFgTngSjTSI2aUr1zwWic2RAdserXS3SzwzejS0nHQI3BSHJJxSflCloG0Iw3rA6rfUMWIermrlmYlU+j0HfbfdzQjMZIKobK1pmS+NLC6JX7/aA40a0glJJtOtpfXZNf7Dz6bOD8Sz1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m1cYcdqU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CaRJR8yB"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 234BDC2BCC9;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m1cYcdqU"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 10EACC2BCB4;
 	Tue, 23 Jun 2026 01:44:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1782179061;
-	bh=C6pekLeFAiXx/L721/RQl2O3BL+P1Vu3Tc5jWIQ2eFM=;
+	bh=xAp94depaq4Dj1p9lGi8JJCadhv1Kb/sm6H74JDc88Y=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=CaRJR8yB5JK7L6JhMgcs0rZN8SWApVo9EjARIyPfKyrSIhSMKRSt8/NKPKW6FNLiL
-	 B3n3b5GClNp6a/vfDwv2GPciu9Z9QBBxI+DHmokUNdm0y3okawqV2B2+wz6Npj+e1e
-	 XS447tMXKHis9ufDdmdMKInhk6seSxHPwfxRiVyz8Nm8Zd60WJ4KnRYMLbcknvD+hE
-	 SqMGCXi7BcZbFsCKZEvpgzwPqSQXnG8E6q7oTeHcNBq5hXBKTrm7ZevhPXuvfITZKX
-	 O2vEfsjuZfM0oNjmWCEsv3YJGZ/TsM/0eyxJarHf2q0PCNh43LwNHa0kqLOFNGxWLH
-	 JB7cIni6RGCZA==
+	b=m1cYcdqUysBqwaK3urwKf5yCvIljJkrZSNaTJSLEoB+53MFYKMO1rdBnt69aArGoH
+	 KHQ8EJEZWaEeAXF56Nv3j10Vhu+1DhfqdDTUCHNlUgnB9vaSVn859qWAQTmPsYODVa
+	 PNRJMXAklBwf7U/6YJnIA2Skjkn0rZrOJs0jnoXT4g0G4mhU/It7IHptOUOWJUp117
+	 fiYVMhqmF3wmPKrT6IwdOe5EMxJuEXmxbpS9mrgvWqp6tbsv/9jvOlNcoqm7i3mBY1
+	 ltIQ/qdN65CX7w6JHpEFzzCpI4aV686XGLhRduG1d8i1+4EzZRzRay41562F74Bx2j
+	 Sc8NebDcMRdNg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0E922CDB471;
-	Tue, 23 Jun 2026 01:44:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F12FECDB466;
+	Tue, 23 Jun 2026 01:44:20 +0000 (UTC)
 From: Esteban Urrutia via B4 Relay <devnull+esteuwu.proton.me@kernel.org>
-Date: Mon, 22 Jun 2026 21:44:18 -0400
-Subject: [PATCH 2/3] dt-bindings: net: qcom,ipa: Add SM8450 compatible
- string
+Date: Mon, 22 Jun 2026 21:44:17 -0400
+Subject: [PATCH 1/3] arm64: dts: qcom: sm8450: Add IPA support
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,7 +40,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260622-sm8450-ipa-v1-2-532f0299f96e@proton.me>
+Message-Id: <20260622-sm8450-ipa-v1-1-532f0299f96e@proton.me>
 References: <20260622-sm8450-ipa-v1-0-532f0299f96e@proton.me>
 In-Reply-To: <20260622-sm8450-ipa-v1-0-532f0299f96e@proton.me>
 To: Bjorn Andersson <andersson@kernel.org>, 
@@ -55,11 +54,11 @@ Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
  Esteban Urrutia <esteuwu@proton.me>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1782179059; l=741;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1782179059; l=2576;
  i=esteuwu@proton.me; s=20260622; h=from:subject:message-id;
- bh=W4HaPPuqJKWe7vEYJVxbrdUViHRUB9llZBviI9Yuc4w=;
- b=2V5hi6hHuHqSLGzTbR1Ekc1t3eHAqRambzD/YV3uUWQQviFAkWUMRyt0gVpT2cU1WdSrQBb5h
- nvZGCc5qs15B0JtRCEDVerdRrK8+CODEoyXTZXfzYD4Q5iSV/RocnMi
+ bh=REPoX2GD1ofl2IYq/QGL3Tdyi2FLXycfusk5NUq3JGA=;
+ b=QoxedY3RmE6Ji5eZvOO4tDSdZlVmZEjjpbnrD0VwbIKAeDooafDiOUzrCg+47OP1nv71YOg6y
+ +IktDTKMBbSCEsWTcPMjIXPKhN5U8MV8oGgdCHb1O13JsFKZ/97TEmV
 X-Developer-Key: i=esteuwu@proton.me; a=ed25519;
  pk=wToFt4mOAWkzbqb15Ye1hrhevI13vK9BcMUFiQ/me1M=
 X-Endpoint-Received: by B4 Relay for esteuwu@proton.me/20260622 with
@@ -69,26 +68,94 @@ Reply-To: esteuwu@proton.me
 
 From: Esteban Urrutia <esteuwu@proton.me>
 
-Declare compatible string in ipa binding for SM8450,
-which uses IPA v5.1.
+Add support for IPA in DT while expanding the IMEM region just enough to
+accommodate the modem tables used by IPA.
+As reference, SM8450 uses IPA v5.1.
 
 Signed-off-by: Esteban Urrutia <esteuwu@proton.me>
 ---
- Documentation/devicetree/bindings/net/qcom,ipa.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/sm8450.dtsi | 55 ++++++++++++++++++++++++++++++++----
+ 1 file changed, 50 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/qcom,ipa.yaml b/Documentation/devicetree/bindings/net/qcom,ipa.yaml
-index 68ec76fe4473..db91bfaaf833 100644
---- a/Documentation/devicetree/bindings/net/qcom,ipa.yaml
-+++ b/Documentation/devicetree/bindings/net/qcom,ipa.yaml
-@@ -53,6 +53,7 @@ properties:
-           - qcom,sdx65-ipa
-           - qcom,sm6350-ipa
-           - qcom,sm8350-ipa
-+          - qcom,sm8450-ipa
-           - qcom,sm8550-ipa
-       - items:
-           - enum:
+diff --git a/arch/arm64/boot/dts/qcom/sm8450.dtsi b/arch/arm64/boot/dts/qcom/sm8450.dtsi
+index 56cb6e959e4e..c904720008fa 100644
+--- a/arch/arm64/boot/dts/qcom/sm8450.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8450.dtsi
+@@ -2639,6 +2639,47 @@ adreno_smmu: iommu@3da0000 {
+ 			dma-coherent;
+ 		};
+ 
++		ipa: ipa@3f40000 {
++			compatible = "qcom,sm8450-ipa";
++
++			iommus = <&apps_smmu 0x5c0 0x0>,
++				 <&apps_smmu 0x5c2 0x0>;
++			reg = <0 0x3f40000 0 0x10000>,
++			      <0 0x3f50000 0 0x5000>,
++			      <0 0x3e04000 0 0xfc000>;
++			reg-names = "ipa-reg",
++				    "ipa-shared",
++				    "gsi";
++
++			interrupts-extended = <&intc GIC_SPI 654 IRQ_TYPE_EDGE_RISING>,
++					      <&intc GIC_SPI 432 IRQ_TYPE_LEVEL_HIGH>,
++					      <&ipa_smp2p_in 0 IRQ_TYPE_EDGE_RISING>,
++					      <&ipa_smp2p_in 1 IRQ_TYPE_EDGE_RISING>;
++			interrupt-names = "ipa",
++					  "gsi",
++					  "ipa-clock-query",
++					  "ipa-setup-ready";
++
++			clocks = <&rpmhcc RPMH_IPA_CLK>;
++			clock-names = "core";
++
++			interconnects = <&aggre2_noc MASTER_IPA 0 &mc_virt SLAVE_EBI1 0>,
++					<&gem_noc MASTER_APPSS_PROC 0 &config_noc SLAVE_IPA_CFG 0>;
++			interconnect-names = "memory",
++					     "config";
++
++			qcom,qmp = <&aoss_qmp>;
++
++			qcom,smem-states = <&ipa_smp2p_out 0>,
++					   <&ipa_smp2p_out 1>;
++			qcom,smem-state-names = "ipa-clock-enabled-valid",
++						"ipa-clock-enabled";
++
++			sram = <&ipa_modem_tables>;
++
++			status = "disabled";
++		};
++
+ 		usb_1_hsphy: phy@88e3000 {
+ 			compatible = "qcom,sm8450-usb-hs-phy",
+ 				     "qcom,usb-snps-hs-7nm-phy";
+@@ -4970,17 +5011,21 @@ cti@13900000 {
+ 			clock-names = "apb_pclk";
+ 		};
+ 
+-		sram@146aa000 {
++		sram@146a8000 {
+ 			compatible = "qcom,sm8450-imem", "syscon", "simple-mfd";
+-			reg = <0 0x146aa000 0 0x1000>;
+-			ranges = <0 0 0x146aa000 0x1000>;
++			reg = <0 0x146a8000 0 0x3000>;
++			ranges = <0 0 0x146a8000 0x3000>;
+ 
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
+ 
+-			pil-reloc@94c {
++			ipa_modem_tables: modem-tables@0 {
++				reg = <0 0x2000>;
++			};
++
++			pil-reloc@294c {
+ 				compatible = "qcom,pil-reloc-info";
+-				reg = <0x94c 0xc8>;
++				reg = <0x294c 0xc8>;
+ 			};
+ 		};
+ 
 
 -- 
 2.54.0
