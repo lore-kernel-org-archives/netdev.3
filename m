@@ -1,142 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9EC2FE56F
-	for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 16:32:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F17829992A;
+	Tue, 23 Jun 2026 16:34:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782232329; cv=none; b=s6a2QPQWSUFN/9pP3U+lUnom8bXC6NiWFE31MA6UsjIOKEbW5PN9LfxxL3QXa+0msyFMTULYFFVa6jJ8mDIUQbsJT9vFJSici1jnX/y53JVDgnLSgH8KYNPZl2+R6TONyp+G3SIFKULNgHtQIZf5Wd8+nQ4tIj5qFT0woUSFtpw=
+	t=1782232482; cv=none; b=cjknsJVOO4b431nEkAE3iF1oRJfYQN1t1XjNc4+6NHa3BCJSiPPLnxsRb0W5MT1Y4kd/QGBynDGBIXMse7IgGFHnL7kzGAoS631ifBqJGxtRTwiJthc+NBsDIpAgHrxz5uNlhi5uHSLkpfEQzBT09/3Tc/ZPQo1BmVC9y6ebe9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782232329; c=relaxed/simple;
-	bh=2hoOTGjT0iOQEx/Exz7wfNTSkopKbeI5LcaOoft3HlQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q76XT+NpoYhKzrPxrFKVNYd9G9ubn1SgCxRi+JudfGLfTHaV+FnEkcq28PyNo3L09bM8Rmf9zWkfFQjAhOwyakKCujvmD3m/gD73izXjCZS+ne2+r19N7jp+yDutWwkC04zjFfFXjcEjYDTpq9TfUfrdEIhU+Ea02ASi64rgtWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S/xrgy4t; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782232482; c=relaxed/simple;
+	bh=Q7C2WLq+w3wseZRK2d2WjJK33bsL447mI7ejl55BvK8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hgxbdKZtBBhY11zEI/nsKCzmIMwOwRIYsP91YyrCpF85T0MZVLIwZ/NCM6xcOlrOfLy0EhFz8/TL1ayiOinICJ/M1qsMQOeqGXUwkSYCEvQ3DbamOCKaSJXwJouYrBRjqDCtDcr1Eg5Hx1AcF+gGd7hOe4ZPW1JlfIAFEWD3WZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=PwsCCeSx; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S/xrgy4t"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D71DC1F000E9;
-	Tue, 23 Jun 2026 16:32:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782232327;
-	bh=i7bK2o123A8aeZ5xml42QPCcD4YBHCD5Xw0/ew1PkOw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=S/xrgy4tI1a22XJ+TlGBTIqFxiKR+51mQM4paIBRUM/nkTuqX/oUxFG2UPwi1lX88
-	 es28PTGVYLC6Iw0o2qVnlKpfFiydOPcTt2p9kHJXw9cLjq/3Q0KyAsHYXG9iwwwZ5b
-	 2sGC9arf/1oAHRdsXnCbX3oESK+XvKZMQGt9RqtHsU4uM1Klz3RUkAS7y8kuqV40dq
-	 awjCLPxDtQ0jK7N0aUtSGXOEezAvI+55Gx2CJnqUC5wlcf6ZYUz4dm+eWVPK/95MYR
-	 /2fF5V0jzMIh6Gz7p5Uz73E67//NWDeXJNnKe+UsGHdIAL7B8AVWvNOT4TqEF7vmQ/
-	 6+3kG66sUISVw==
-From: Simon Horman <horms@kernel.org>
-To: poros@redhat.com
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	aleksandr.loktionov@intel.com
-Subject: Re: [PATCH iwl-net v2 2/2] ice: preserve uplink DFLT Rx rule on switchdev release
-Date: Tue, 23 Jun 2026 17:25:56 +0100
-Message-ID: <20260623162556.1100516-2-horms@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260622113428.2565255-3-poros@redhat.com>
-References: <20260622113428.2565255-3-poros@redhat.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="PwsCCeSx"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id A0DA51A08AE;
+	Tue, 23 Jun 2026 16:34:38 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5F793601C2;
+	Tue, 23 Jun 2026 16:34:38 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 85E0A106C8382;
+	Tue, 23 Jun 2026 18:34:33 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1782232477; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=2wrqOjRzMhTb93M3exBJA5foYnr34jfu7Zmsb7q95s4=;
+	b=PwsCCeSxTkhSaGoTDg4xMxOoL2zk6ED1MVfvwyPJwRYk5o/tBKr9xwp0bp3tVAV+1jWQFx
+	aXOFvygrE8H0EM9WRUdBcMhbSGm5hdjaRUlOF4YjdOBWMz7ruzOkAzqJZq+GSinJ0PHaZS
+	OIvOUOReO5w6MMQYLlYlmJiiF6wmd+BoxMc33zS7hYx/XqLHFTnwqI+GspefyRnGHr+p/N
+	hi36FB6nBMSnCDhwtkRiwqd5l44Pf0use01uJ9BgFF5cek9TkqE/RIy9ywPS072cIjLgoM
+	7JDhtOCvX+1BDNMuow4M5LA+oaq6a1O23DTc0O20HQMNJmTcvTSGYPgmgT4Omg==
+Message-ID: <6738bbb7-63ed-4c65-a0df-f5f9514fcde0@bootlin.com>
+Date: Tue, 23 Jun 2026 18:34:32 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3 0/2] net: phy: sfp/mdio-i2c: defer RollBall
+ probe + fix mii_bus leak
+To: Petr Wozniak <petr.wozniak@gmail.com>, linux@armlinux.org.uk,
+ andrew@lunn.ch, hkallweit1@gmail.com
+Cc: kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-phy@lists.infradead.org, bjorn@mork.no, olek2@wp.pl, kabel@kernel.org
+References: <20260623080538.7646-1-petr.wozniak@gmail.com>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260623080538.7646-1-petr.wozniak@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev
----
-ice: preserve uplink DFLT Rx rule on switchdev release
+Hi Petr,
 
-This commit preserves the default Rx rule on the uplink VSI when releasing
-the switchdev environment if the interface is in promiscuous mode. This
-prevents the catch-all rule from being removed while the netdev flags still
-request promiscuity.
+On 6/23/26 10:05, Petr Wozniak wrote:
+> This series resends the RollBall bridge probe deferral (a fix for the
+> regression in commit 8fe125892f40) and adds a related mii_bus leak fix.
 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_eswitch.c b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-> index 2e4f0969035f7..48273ef9f69dc 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_eswitch.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-[ ... ]
-> @@ -278,8 +280,16 @@ static void ice_eswitch_release_env(struct ice_pf *pf)
->  	vlan_ops->ena_rx_filtering(uplink_vsi);
+These are bugfixes, you need to target the 'net' tree as explained here :
 
-[Severity: High]
-Could this lockless read of netdev->flags cause a regression due to a TOCTOU
-race?
+https://docs.kernel.org/process/maintainer-netdev.html
 
-The ena_rx_filtering() call eventually reaches ice_cfg_vlan_pruning(),
-which reads uplink_vsi->netdev->flags & IFF_PROMISC locklessly to decide
-whether to enable VLAN pruning.
+Thanks :)
 
->  	ice_cfg_dflt_vsi(uplink_vsi->port_info, uplink_vsi->idx, false,
->  			 ICE_FLTR_TX);
-> -	ice_cfg_dflt_vsi(uplink_vsi->port_info, uplink_vsi->idx, false,
-> -			 ICE_FLTR_RX);
-> +
-> +	/* Keep the Rx DFLT rule if the uplink is promiscuous; it must outlive
-> +	 * the session. Test the live netdev->flags, the same value
-> +	 * ena_rx_filtering() -> ice_cfg_vlan_pruning() above keys its decision
-> +	 * on, so the preserved DFLT rule and the pruning state stay consistent.
-> +	 */
-> +	if (!(uplink_vsi->netdev->flags & IFF_PROMISC))
+Maxime
+> 
+> Patch 1 fixes a pre-existing mii_bus leak in sfp_i2c_mdiobus_destroy()
+> that has been present since the helper was introduced in 2022. Patch 2's
+> new -ENODEV path destroys the MDIO bus via sfp_i2c_mdiobus_destroy(), so
+> patch 1 is a prerequisite to avoid leaking the bus on that path.
+> 
+> The v2 deferral patch was corrupted in transit and failed to apply; it is
+> regenerated here against current net-next with no functional change.
+> 
+> v3:
+>  - Resend: v2 defer patch was corrupted in transit and failed to apply
+>    (netdev/apply); regenerated against current net-next.
+>  - Fixed block comment style flagged by checkpatch. No functional change.
+>  - Added patch 1/2 (sfp: free mii_bus in sfp_i2c_mdiobus_destroy).
+> v2 (defer):
+>  - Generalized scope: regression affects boot-inserted and hotplugged
+>    modules where bridge init exceeds 200 ms; Aleksander Bajkowski
+>    confirmed FLYPRO SFP-10GT-CS-30M / AQR113C broken when hotplugged.
+>  - Corrected state machine description (probe runs in SFP_S_INIT after
+>    SFP_S_WAIT) - Jan Hoffmann.
+>  - No code changes from v1.
+> v1: initial submission.
+> 
+> Petr Wozniak (2):
+>   net: phy: sfp: free mii_bus in sfp_i2c_mdiobus_destroy
+>   net: phy: mdio-i2c: defer RollBall bridge probe to PHY discovery
+> 
+>  drivers/net/mdio/mdio-i2c.c   | 15 +++++++++------
+>  drivers/net/phy/sfp.c         | 23 ++++++++++++++---------
+>  include/linux/mdio/mdio-i2c.h |  1 +
+>  3 files changed, 24 insertions(+), 15 deletions(-)
+> 
+> 
+> base-commit: b85966adbf5de0668a815c6e3527f87e0c387fb4
 
-... and then the exact same flags are read locklessly again right here.
-
-Because setup/teardown paths are protected by devl_lock rather than
-rtnl_lock, could a concurrent dev_change_flags() holding rtnl_lock toggle
-IFF_PROMISC between the two checks?
-
-If IFF_PROMISC changes from 0 to 1 in this window, the code would incorrectly
-enable VLAN pruning (seeing 0) and then incorrectly retain the DFLT_RX rule
-(seeing 1), leaving the hardware with VLAN pruning enabled during promiscuous
-mode.
-
-[Severity: High]
-Does preserving the Rx DFLT rule here cause a regression by permanently
-breaking multicast promiscuity configuration if IFF_PROMISC was set?
-
-During the switchdev session, ice_remove_vsi_fltr() removes the
-ICE_SW_LKUP_PROMISC rules. By manually preserving the DFLT rule here, any
-future synchronization via ice_vsi_sync_fltr() will evaluate
-!ice_is_dflt_vsi_in_use(vsi->port_info) as false:
-
-ice_main.c:ice_vsi_sync_fltr() {
-    ...
-    if (!ice_is_dflt_vsi_in_use(vsi->port_info)) {
-        err = ice_set_dflt_vsi(vsi);
-        ...
-        err = ice_set_promisc(vsi, ICE_MCAST_PROMISC_BITS);
-    }
-    ...
-}
-
-Because it is skipped, ICE_MCAST_PROMISC_BITS is never configured, leaving
-the VSI in unicast promiscuous mode but silently dropping multicast traffic
-destined for other MAC addresses.
-
-> +		ice_cfg_dflt_vsi(uplink_vsi->port_info, uplink_vsi->idx,
-> +				 false, ICE_FLTR_RX);
-> +
->  	ice_fltr_add_mac_and_broadcast(uplink_vsi,
->  				       uplink_vsi->port_info->mac.perm_addr,
->  				       ICE_FWD_TO_VSI);
-
-[Severity: High]
-This is a pre-existing issue, but does this teardown function fail to
-synchronize hardware state for previously joined multicast groups and
-secondary unicast addresses?
-
-When entering switchdev mode, __dev_uc_unsync() and __dev_mc_unsync() clear
-the synchronization state of OS-level MAC addresses, and
-ice_remove_vsi_fltr() removes the actual hardware filters. While switchdev
-runs, calls to ndo_set_rx_mode return early and do not update hardware.
-
-When returning to legacy mode, this function restores only the primary MAC
-and broadcast addresses, but doesn't seem to invoke netif_set_rx_mode() or
-equivalent to resynchronize the deferred Rx filters from the netdev to the
-hardware. Could this cause the hardware to silently drop packets for
-previously joined groups until the interface is bounced?
