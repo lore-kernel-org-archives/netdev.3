@@ -1,50 +1,75 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 127AE3A6B9C;
-	Tue, 23 Jun 2026 20:36:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FBF9395ADC
+	for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 20:40:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782246996; cv=none; b=o/isvaYZMJdhSwSKOOuTAS6NpTyoD8Yxmp1H8ChJZ56/wnTS04Hs5HLy/hIoKwjwxK3B6EnMEm6FaKweEOxf8xeenpVHQBnOwy5OUgxAKzXeB6OV2sZnuuhu4r4YKf7m0REHmkiHKbnOcHXANxXFlGOjl3Ls5qE7bLhwyquOJmM=
+	t=1782247211; cv=none; b=eL1E68jJuMrTYZULkyscU0Y/jS+JuNmsnBSwn8Q8XxfRQf8SBPS0mPcxzTXjtO3qfj+sNmi8tOoDOlagPcm/PPysr+ZygSq8lr4n/cgrM/R+NsbRlqgxaQnjPtJnVL5BRJ8l6LD/XqKaRcDrQOC9wQK5Fz2WFmFksYe72YGtmBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782246996; c=relaxed/simple;
-	bh=2Gyr82snPt9y2zAFsuCqcD8MRiMv0Xzu72h1HyGDZls=;
+	s=arc-20240116; t=1782247211; c=relaxed/simple;
+	bh=WxRhDkmyHYSaJDOtSuhOSEqOcn39elwhzHAyhk1eWK0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j0kdZ4SV34eYOFNRx1XHo/boz4OV1fYMrLDiiu9xDBEsxjmmbS+C+TEO6Cbj0MW1FQBtSY2ywaFgWSwsO9GhJER2QUnng3ot0MbDf3gqg3EX4FNysLkXXZTVjgLIpRXaNDLGw7DDaMx6Re+MsZBH5VCO7yf+rLk7tBsCaOz2BK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QY3skTBh; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=ZeJsidCgxtIq7q72yJQrthUjTmmSaSyLKiuyVLLEXqlWF63xk/zCl4iUiYhGaxAfrY4XO1ER5Qq+XplkMjPh4Jy0Oyd3JdammLYbRRwsRsAI8ie1R8HD3pkHmZXVDhWq8o/8Y3lRt0pix1/aS4YnzQ1QXZHP3hJ8d7JcozT7VDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=n7w3WnIC; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QY3skTBh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68A071F000E9;
-	Tue, 23 Jun 2026 20:36:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782246994;
-	bh=xpg/nHxXH9DlFY0d8gQErFvMzvxfYuzDRVc9FFshC90=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=QY3skTBhCHtOu23oGQCl4jM38Td9r6cSBj/iGhYxKEiUhLZ1uaboezkJdGfBHkN83
-	 3JmGdOHcO8mV0V5Dg+Mo3O6V7z/MRyhzSdTrgkgbo7E7YS2lyosssgjOw4HJcxSjIJ
-	 9+Ixcc6Nip6a1jcbiKXII5FMHvKaeSFCxJXL2c5WQQnfJLTOBsIjHiUqeHUtKpeDns
-	 kBKD+NmVvBMMAM3KXSyefHhJ23ttzPmO6WnncAjp9RylR9VJURbcYpuLCkZcBNAjuD
-	 QOpiZsaBIlVGcDip3STrDaUiZbk66/GlV/CeUCKGlrRQqwr+p2Uvj5kg0fUgP0WSDt
-	 lNfGociHc36Kg==
-Date: Tue, 23 Jun 2026 13:36:33 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Cc: Jason Xing <kerneljasonxing@gmail.com>, Tushar Vyavahare
- <tushar.vyavahare@intel.com>, <netdev@vger.kernel.org>,
- <magnus.karlsson@intel.com>, <stfomichev@gmail.com>,
- <kernelxing@tencent.com>, <davem@davemloft.net>, <pabeni@redhat.com>,
- <ast@kernel.org>, <daniel@iogearbox.net>, <tirthendu.sarkar@intel.com>,
- <bpf@vger.kernel.org>
-Subject: Re: [PATCH net-next 0/3] selftests/xsk: stabilize timeout test
- behavior
-Message-ID: <20260623133633.34c6fad7@kernel.org>
-In-Reply-To: <ajqfDYznpCU18C2P@boxer>
-References: <20260616154955.1492560-1-tushar.vyavahare@intel.com>
-	<CAL+tcoDr0gtCPeGi1yOUtg+ZD2YxEbjAy41LBgG63b8-=CStcw@mail.gmail.com>
-	<ajJsMj0QMOF5I8qq@boxer>
-	<20260622160706.0b4a27bf@kernel.org>
-	<ajpLuDNCu2PHS78l@boxer>
-	<ajqfDYznpCU18C2P@boxer>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="n7w3WnIC"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-45eeea039ebso178191f8f.1
+        for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 13:40:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782247209; x=1782852009; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iKvfi6e4m/bcxUZ+joIujvCFdP+/ks0gLM/kKthz2XU=;
+        b=n7w3WnICs8WF11H/rYM7v9bi6ox9g12O0pZZ54ErBl2Tq1WfmD93A6VxQ2Z0E2xbly
+         jJ5M5wdp7/vSorKf9l6OZgbLWE/uHXZrBbpWBBb9oK5nJ98GttNVhYdoH8y/DT2O+tmW
+         ArjY+BavNmpEKeB/J8liRRSOJy0bz8Zew22a9nzDwFi5ClbtuoE126YGDNladn7m/kTL
+         RtKcoPZ5SQ3XGYKaN4WY303y0uxwSRFA8TfzwNU/rhpQ6JhQwnJZwwCbRTgJv67DszKx
+         WyxB4UogJGXEFc1gejbNyrq9CobxFo/OAAMG5WqXBPQA5mxSuM5/Ziq1qR1NsnCXN8m7
+         2btQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782247209; x=1782852009;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=iKvfi6e4m/bcxUZ+joIujvCFdP+/ks0gLM/kKthz2XU=;
+        b=s4NdvFTKGSsNK2b8Zo5LZD+RAkR6AvkmUaiI07UGaz4auHPelJmayQ7hBZlnJHG9rs
+         OZF+onywq2fK+KjCxjdiX1qXDiOD7b7CIrGHIjW39lEITsEIDf943OhgOAMPxwpJ6jfW
+         8D8BBZxsfHOGl+VlPCkNuPCMgVHPSjIsjmLCncSUVKebuwGbN+Qq/NUakkiOcxLe1vnQ
+         vucsRRjd2MM/bxcOQqf6sIGEwV9ksiKa6jDDAGqWeoKABtFFDwfJGhuIn0DX65x8yS1/
+         utg2ORsLQnw2+ducMeEDb2larY+vmIlFnaMOotf+S5ddMkOK/lIwn/z0sFvs1O1xIE0X
+         iP3w==
+X-Forwarded-Encrypted: i=1; AHgh+RphzpPOXSrbAyv4iatxIgWVrr/ToJQIYZALuBjJbZziMiybJdye1DI+7Qm8i73H2gfixNIHCNE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6sTrwwDegMbFj4NGmW4mkyBZRqqeTsedG7FF/qW+e78c44tWM
+	EOyk/C1RnwgGVtUVgjRbMdmPAC4GX10Aez/QWO/mCjYP3pXJAWTtdrqb
+X-Gm-Gg: AfdE7ckFN0wvq4h6DAfsT1jSeyAl/y73+wxSs0lB0ezv1hohyMxj5PZIO8qmcGXfqCe
+	oxvkwm5uwx+WMuE/XnCvKUMEkuBXqmEIZU+hf8xsIxoe+SSEQHR96+eOnGO/SNwdbCTADLqgn4V
+	RHEgqdzq45GLIWx0TIdpLwBvZac6EjA1RJY+vI/xru9skVFebhzlLumGf5bV2ORA6c0CbCu1I9D
+	ZN9hsLKma42UjAXwORPfoWTTZWLqaWzNDUZ+B1HVgEPIuX6MjpAdiqsLC4/80wSLBpTU5je4RgT
+	bfh0y0G0rXZ+W9jFwYOchjmNndk3zeZYexJQno89fj0Tc9HCgcPmD/hs1vU6IfJRihdLd+IX4lK
+	M/KKY9GAB7wcA3bg6eGBj6GPGaXPIm4SFSQoUc7FG2ekkbnuvnfs6Ef4wMj+hXv5T+jp/BZoYEm
+	4eqNTWFUtMX3eWChpW62D0wsCe22R+YVEJCVMPuwgCfbKwwauiGg==
+X-Received: by 2002:a5d:634d:0:b0:460:3233:f994 with SMTP id ffacd0b85a97d-46c0b00b249mr467556f8f.43.1782247208369;
+        Tue, 23 Jun 2026 13:40:08 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-46c22c68239sm276534f8f.36.2026.06.23.13.40.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Jun 2026 13:40:08 -0700 (PDT)
+Date: Tue, 23 Jun 2026 21:40:05 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Michael Pratte <slatoncomputers@gmail.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Eric
+ Dumazet <edumazet@google.com>, Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, Simon Horman <horms@kernel.org>,
+ "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org
+Subject: Re: s2io: driver still in use - please reconsider removal
+Message-ID: <20260623214005.0602374d@pumpkin>
+In-Reply-To: <20260623112133.752195-1-slatoncomputers@gmail.com>
+References: <20260623112133.752195-1-slatoncomputers@gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,23 +79,18 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 23 Jun 2026 16:58:21 +0200 Maciej Fijalkowski wrote:
-> On Tue, Jun 23, 2026 at 11:02:48AM +0200, Maciej Fijalkowski wrote:
-> > last refactor from Tushar broke BIDIRECTIONAL test case when HW is test
-> > target, but not on veth, so let me test these changes locally and then get
-> > back to you.
-> > 
-> > BPF CI runs xskxceiver on veth so this has not been caught. Seems my/our
-> > focus should be to enable xskxceiver HW tests on any kind of
-> > environment/infrastructure.
-> > 
-> > Gonna get back to you by the EOD.
-> > Maciej  
-> 
-> Ah I replied on other thread I guess, so let me repeat:
-> 
-> Acked-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-> Tested-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+On Tue, 23 Jun 2026 06:21:33 -0500
+Michael Pratte <slatoncomputers@gmail.com> wrote:
 
-Great, thanks!
+> Hi,
+> 
+> Commit aba0138eb7d7 ("net: ethernet: neterion: s2io: remove unused
+> driver") removed s2io in v7.0 as "highly unlikely to still be used."
+> It is still in use here: an Exar Xframe-II (PCI 17d5:5832) in a
+> Supermicro X5DA8.
 
+Are you really using a dual socket netburst P4 system!
+
+They weren't really any good when new :-)
+
+	David
