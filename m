@@ -1,127 +1,98 @@
-Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8157F33DEFC;
-	Tue, 23 Jun 2026 18:51:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11A1348C42
+	for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 18:56:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782240672; cv=none; b=uw1hecCZUdc9pclLfLeYL6mryY5IXT5ai7r0sYOyzC7bZnlsxKgWOAfP9wXUye8+p0BDjbAuZNL/JoHL0hFcWgRG9FKemhDGr8KMHDfgm+U4eDa9318Tyeb4t0EnX+YGek9nF1+S1bBdOsAxNCLF49TLAoRJ47x6FyAiFIWDM9k=
+	t=1782240990; cv=none; b=a6xuRlSVU5blnPLSBLA/034I2dZWA2GEoKjlX8f+8we4vPoNNP+WB1fLCKgSrCCY/NQISo1u2fbbqm1vJJJ6D6FpnpGUmpQG/36yxz4fQrCxV8oxQNoavPPrpkyTOa4a00G8azi0q9e8zl1Rh+BEc8AVnanmIrDlpMax+YNCUvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782240672; c=relaxed/simple;
-	bh=Ugv8Xcg+Bdw9caH96novsq2SDDNdO66plvCRhVsE79o=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NtIULxbg1/HvsjjDFwp6bGaQWcWBsPOYjYlINMRW/LHnJcxsgIhVuRfE+snQ5D0DUYIWUDJI5QAt5l0gu3AxpKU98hKLSDimb04V0/oGglKCCYXf/kdZ6g/KlysgDNviHimDb3rD5Ma6HJ+MjH+4CSUumgmKlLlDtN5vaHnuIko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=oqKStg6n; arc=none smtp.client-ip=185.226.149.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+	s=arc-20240116; t=1782240990; c=relaxed/simple;
+	bh=24Dn8UqRZ1p8BQICezHYOo9NJl5h5GUSnVLscYJARrU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PqkN1iMxkck/PLPAr16MgnmPFH6NI5iu0Lr10jWJHwA026CFvZ2JYBdRiSuolbiw5sVLb0r0wfnDhqRKsN3qIHdJrVhnSUzCz8liwJMV7Hn6tgdzOXCuU0dbhgoFJeRIigDtIE3Mc6mV4Ir8zhHv1CszBdqbNN3iZPPNrCkXk4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=GjpMQAhk; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="oqKStg6n"
-Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
-	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1wc5Td-003ZpF-92; Tue, 23 Jun 2026 20:04:01 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector2; h=Cc:To:In-Reply-To:References:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
-	bh=apboAO3qKM56/EFEUq4EWGvShNo26Ky6LQz3ESgxAzE=; b=oqKStg6nbAh/CgngXdAr8vH4QI
-	hi0/UVEphW25NQvMOulCOJlhUZmxPWLTc+yu9Zm654O+kR5CXTgohE9C3CELWezxrUhHi8ISjT5L+
-	A/rQXIe7rvQhaScEZnH5/+ptNpqdSGOQk8l1oGVtxtM9j98lqKPICzou9kLA6zNh9KZ6Ys64gldr/
-	xz/CUlr9fW3jtiIO0msfWBjmbIsARf1Ltz/9nmyKMVeMNsebu2q5H88ORIcieVR6gEDDq6g5mxawT
-	ebMWE22/C6XkcxWWJ9632xJbzrUT1ciohCWnLTsRsu4WujWUapJV+8KTxdWOk0NjHV1JpGMADGJgQ
-	N0MWmpcw==;
-Received: from [10.9.9.72] (helo=submission01.runbox)
-	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1wc5TX-0006Rv-9r; Tue, 23 Jun 2026 20:03:55 +0200
-Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.95)
-	id 1wc5TP-00GZY0-VB;
-	Tue, 23 Jun 2026 20:03:48 +0200
-From: Michal Luczaj <mhal@rbox.co>
-Date: Tue, 23 Jun 2026 20:03:09 +0200
-Subject: [PATCH bpf 1/2] bpf, sockmap: Don't leak UDP socks on
- lookup-bind-release
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="GjpMQAhk"
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6870ad8072eso435114a12.0
+        for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 11:56:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1782240987; x=1782845787; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=sTYMiI8T7qy3LqZCJa3jMkJNbrBL8JjUNCpZXVETjNU=;
+        b=GjpMQAhkhcE8X4RT++ptLx82xBK1oNGSa/InTX9Vzyn4cK/rWE3Dy226VmQ1csGENE
+         4IP8uBlPo7j8O7MVdp03bntvV/2cT/lQtVmj80MQFtZ4M2dIt/KyfcaweKLuCJ+3DisO
+         412Jt2KYWBLogZEBYNLk8k6DwvQy3QG4my8QU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782240987; x=1782845787;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sTYMiI8T7qy3LqZCJa3jMkJNbrBL8JjUNCpZXVETjNU=;
+        b=JjeK8/j0ARyXLfGTFDJ975tyv2czzs0pn2Y8/KJygfLlX2G+Pjep24vMa09u3jBJDr
+         pWex3E8RJIyXJNazuSg4X1U4Rb8V0VbcExWsqEBtOoTuQc7Y7Ud1VDP/KVua8eFuGWVn
+         zN9wb1+wkphBGTKQAEQkNhajEeY1NFMxCx0pSMISG43XY+6WaC4HsoaTxrovrSg+K6OU
+         4tvZG2UnlLyHuVjfjsJE6/IooY7BLUZih8OFXUaFhoy4dQvyLCo3GwGRrnXoMxGFiCRm
+         +L83hgkV/q9wncIEy2A41fjq0Uu/kshVndTJD5UaH+CC9gYr0NqfwYWVkYI8e7xGOthx
+         am3A==
+X-Forwarded-Encrypted: i=1; AFNElJ+VzpT92ycu8CgyLNSD6WE7ALrYOKlS1vTkLKTVelJouCiJPoY+0r+mDwB1jrOL884IwihPoZg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxm3iVwB1C1Hyzsd3ImRWHgU/IF+pWy+0uN6YIPrvM1Su6zvOzj
+	fGo/PssbbOJ2vnmZfEza0gl8TPnF0vOk2pvX0Fg3MLY3XR27Wv1wcVBgeBkP4vtYv6bNTz10EKd
+	S8FIVuqs=
+X-Gm-Gg: AfdE7cl04vNF0BN4plVNdnJMu+N84LiTx3wv/9AnZrACfMo/CFi/KrKtRCG9Ssi2Z8s
+	KTCXB8KgE2PmUldnyEblgCZVAAYqwPsAccJLUExDiZIz9IejbolXEdPXQZuBEH+NccETGm45I81
+	O8f2L14+fCpTemWbiDdfuNkHa3Sp/DMZmQZf6PPTY1dAMJOLNvZWwOvotfO8HpRVblf76Cx21Xd
+	p1Bk38sQlDQSn9X3fzQRHMJ+ddZQ88i33f6N7PV62uVgIRqxRVLzHG2rNlmY/YRRNy7N2Y4Vzfk
+	biQ7oQ++eaoY8OZDm8HPjvbZfQ/tn9wPbknqEW+8lHVUj7PExxN73jD9i5zJIuRiq+5EMWdDRqP
+	qb2gwRNvQ/JZpnKVc9M/BvulVhW2dL/Cl7mMbE0wcAPauPWEBdq5Vpc7xtURakpyNgQUSaLjI9i
+	MpShQLHUGgvntsclxMiHj1j6npxrb/3RjoJ+P/9IRdMx6xPeKzn3pSZgcK7AdAXQ==
+X-Received: by 2002:a05:6402:26c9:b0:697:96d4:dece with SMTP id 4fb4d7f45d1cf-697d42d3ec1mr2653628a12.2.1782240987088;
+        Tue, 23 Jun 2026 11:56:27 -0700 (PDT)
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com. [209.85.218.42])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-697c1ec13c3sm2566692a12.7.2026.06.23.11.56.26
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 23 Jun 2026 11:56:26 -0700 (PDT)
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c029505b389so230349266b.1
+        for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 11:56:26 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ/xLuCPAwNhWBkGClKHM8mDmlaPr8XQRmC1OGFOxd7vs2hN9dHsW9IGaXdtoMgFLQl7jgbFT5I=@vger.kernel.org
+X-Received: by 2002:a17:907:c207:b0:c11:8357:40f with SMTP id
+ a640c23a62f3a-c11835704bfmr15229166b.2.1782240986490; Tue, 23 Jun 2026
+ 11:56:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260623-sockmap-lookup-udp-leak-v1-1-05804f9308e4@rbox.co>
-References: <20260623-sockmap-lookup-udp-leak-v1-0-05804f9308e4@rbox.co>
-In-Reply-To: <20260623-sockmap-lookup-udp-leak-v1-0-05804f9308e4@rbox.co>
-To: John Fastabend <john.fastabend@gmail.com>, 
- Jakub Sitnicki <jakub@cloudflare.com>, 
- Jiayuan Chen <jiayuan.chen@linux.dev>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
- Cong Wang <cong.wang@bytedance.com>, Daniel Borkmann <daniel@iogearbox.net>, 
- Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
- Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
- Emil Tsalapatis <emil@etsalapatis.com>, Shuah Khan <shuah@kernel.org>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- Michal Luczaj <mhal@rbox.co>
-X-Mailer: b4 0.15.2
+References: <20260430011544.31823-1-ebiggers@kernel.org> <7d08a6df54279e9915f5df6bd4e5e5dde52b4fe1.camel@hadess.net>
+ <20260623164932.GA1793@sol>
+In-Reply-To: <20260623164932.GA1793@sol>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Tue, 23 Jun 2026 11:56:10 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wgNG=F3xO9PjL0RcKy3UWvq0Np9uZu+nFUQBAA8So9xdA@mail.gmail.com>
+X-Gm-Features: AVVi8CdpFGqem5dP7mBI1VIDKVc8WIWTZWMdjSeug8fejnSzLkFpq4QaapJhuLo
+Message-ID: <CAHk-=wgNG=F3xO9PjL0RcKy3UWvq0Np9uZu+nFUQBAA8So9xdA@mail.gmail.com>
+Subject: Re: [PATCH] crypto: af_alg - Document the deprecation of AF_ALG
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: Bastien Nocera <hadess@hadess.net>, linux-crypto@vger.kernel.org, 
+	Herbert Xu <herbert@gondor.apana.org.au>, Marcel Holtmann <marcel@holtmann.org>, 
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>, linux-doc@vger.kernel.org, linux-api@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-bluetooth@vger.kernel.org, ell@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-UDP sockets get SOCK_RCU_FREE set when (auto-)bound. This means
-sk_is_refcounted(unbound) = true, while sk_is_refcounted(bound) = false.
+On Tue, 23 Jun 2026 at 09:51, Eric Biggers <ebiggers@kernel.org> wrote:
+>
+> We're aware of that and are taking it into account in the allowlist:
 
-Because sockmap accepts unbound UDP sockets, a BPF program can increment a
-socket's refcount via lookup. If the socket is subsequently bound, the
-transition from unbound to bound causes bpf_sk_release() to skip the
-decrement of the refcount, causing a memory leak.
+Note that if we can  just unconditionally make it depend on
+CAP_NET_ADMIN, that would be good - independently of any allowlist.
 
-unreferenced object 0xffff88810bc2eb40 (size 1984):
-  comm "test_progs", pid 2451, jiffies 4295320596
-  hex dump (first 32 bytes):
-    7f 00 00 01 7f 00 00 01 d2 04 1b b7 04 d2 00 00  ................
-    02 00 01 40 00 00 00 00 00 00 00 00 00 00 00 00  ...@............
-  backtrace (crc bdee079d):
-    kmem_cache_alloc_noprof+0x557/0x660
-    sk_prot_alloc+0x69/0x240
-    sk_alloc+0x30/0x460
-    inet_create+0x2ce/0xf80
-    __sock_create+0x25b/0x5c0
-    __sys_socket+0x119/0x1d0
-    __x64_sys_socket+0x72/0xd0
-    do_syscall_64+0xa1/0x5f0
-    entry_SYSCALL_64_after_hwframe+0x76/0x7e
+Because if iwd and abluetoothd are the main two users, and both of
+those already require CAP_NET_ADMIN anyway...
 
-Maintain balanced refcounts across sk lookup/release: (re-)set
-SOCK_RCU_FREE on proto update to treat the socket (whether bound or
-unbound) as not requiring a refcount increment on (a RCU protected) lookup.
-
-Fixes: 0c48eefae712 ("sock_map: Lift socket state restriction for datagram sockets")
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
----
-Note: this issue is related to commit 67312adc96b5 ("bpf: reject unhashed
-sockets in bpf_sk_assign").
----
- net/ipv4/udp_bpf.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/net/ipv4/udp_bpf.c b/net/ipv4/udp_bpf.c
-index ad57c4c9eaab..970327b59582 100644
---- a/net/ipv4/udp_bpf.c
-+++ b/net/ipv4/udp_bpf.c
-@@ -173,6 +173,9 @@ int udp_bpf_update_proto(struct sock *sk, struct sk_psock *psock, bool restore)
- 	if (sk->sk_family == AF_INET6)
- 		udp_bpf_check_v6_needs_rebuild(psock->sk_proto);
- 
-+	/* Treat all sockets as non-refcounted, regardless of binding state. */
-+	sock_set_flag(sk, SOCK_RCU_FREE);
-+
- 	sock_replace_proto(sk, &udp_bpf_prots[family]);
- 	return 0;
- }
-
--- 
-2.54.0
-
+                Linus
