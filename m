@@ -1,125 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48AC73C4574;
-	Tue, 23 Jun 2026 06:30:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782196210; cv=none; b=C7d7vbJEPt9ctmxrOu8Q25MJNWXKVNMxpc3dVRCFWwvHW1gChNLhM29JxOcbyovbXtCTbtPntpGfqQr0HBfbNcmVCo36E9gaIzbk5cNLv+NyrTUifknwV2cEj+dEPkSUyiQ+XirMYX3f5tyb0mh9EzCQu7X1Tjqc0aCwU31yMqM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782196210; c=relaxed/simple;
-	bh=MUwIWDeyTGINk8eYw/EGHpKhVS1I+NdvU8holZVt0xA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Kzm68zNURm59gDMijgazd1akU7alfsq43tUN2PtwLOtPYgksyLEMSqAO9vJW5szO5jvyIyx4e+1peWSRNFKoh0xI/zo+tuTO+H0dCmmJMEn+cYpbkniRkpZBqeLKgxcThAofo9816Z9nvtoNpfQBMtUne5FEusuKvXn3K5FapaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=PAv1VDXO; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65FCA1547C0
+	for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 06:35:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782196538; cv=pass; b=YcUR209rcfNdCeK6InXenNx85kJUEhIu/1jC15sdbQsGfBcahm9C4PzIj8c4g5S50CR+a8Z1uZjdTgGh3Ct4Hlufx/v1aSFOdh9kLc2aQDnGJ6jC7tbP444KgCuoTh+xdPcLbL2kxPogRflEIUnuNW+eKOggP3iOUaWrBZJ6jho=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782196538; c=relaxed/simple;
+	bh=U0ircmHktCJ8xCYoMbhZqHyHDmgQ0AnW9fZmB+Vt7TM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XbT7yx9CmuD2QxSXQ500nzxP0VEfapVUufnMPp04MK+F/9N7XWwS3htnomjf6oEp4YdJnae7uSCAj5QNJSegAOwzH4KW/hGxrnY+EmMzrVzQmtTVBmjmMU+W3VuzqnOVJoUCzh+QteVF2rzNORzW3VcNiCzMhuEpMwD7uFMfoDA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sT4Ch/Pi; arc=pass smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="PAv1VDXO"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id F3761C2BCF4;
-	Tue, 23 Jun 2026 06:30:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux.dev; s=korg;
-	t=1782196210; bh=MUwIWDeyTGINk8eYw/EGHpKhVS1I+NdvU8holZVt0xA=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=PAv1VDXOr8Qlr+kw2XWmVLWj7Ohn8obhw/SMc51GYgwovjV4wXwochWzR/xEPZvTz
-	 Hb7JOuny4CVUFshzLaFWQ7uozBN4TJ7K7xQFX2OQliz5tknQMoMsznG/NsFSod5+Z3
-	 Jox6mFJmaw5Ld9Eqkt3/yiHYHUA9VCKgoMRNbQh4=
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E4F43CDB47D;
-	Tue, 23 Jun 2026 06:30:09 +0000 (UTC)
-From: Alvin Sun <alvin.sun@linux.dev>
-Date: Tue, 23 Jun 2026 14:29:52 +0800
-Subject: [PATCH v4 9/9] rust: macros: remove `THIS_MODULE` static from
- `module!`
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sT4Ch/Pi"
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-5176ca6bab1so7870521cf.0
+        for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 23:35:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782196536; cv=none;
+        d=google.com; s=arc-20260327;
+        b=hH74Z9EYHguDZv7pPFRciGYs9qadbFzFcH9huJfM6FnnND2ujlmrvKHOHTPeguQEK9
+         i3ntXmP44V56SiUD9Q9+rXihA7U66Iwp8tS0zs9QTVVNDZhDQCPLVRjz0xq6eZHAqatD
+         rOc9gP5ZlFvgulQIJfQKKKX/kUiFHNzUhJQqMrKy1jvJlUndxkEDB5Tz87niBVYNqC7E
+         M7nNfmfRHCQnbLbjZD47GpRgFHKDKB/5q2esisXWzT60KZTdsE2UV11hWCVjXQ89KPDd
+         tLmrnitf1RLHdXbb60G688RyutOaTv8SWHiyhrhwlTZBHBQP5YjkOmKa4pvXQev+B1ba
+         Upxw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=XNp8OOr9Dg85fWjggrG8LtNFt4/KIkDIH3WeFv9MgkE=;
+        fh=NLQX11mEjMLhyGjPTkWeAzSfQHVYbNoubEgGRrLiQnU=;
+        b=jis72afKSHha6FZWK32NkvH8dT4AkinxTB4HQlvdRwSfVOAI0leQ+Uf+tEnFHa8In4
+         THkcCCxkGvW3N9yEflwQzkzufGSRfQzXaAXKpLf0TJfyVAm4z0p4ie4vV3iJLMQ4ig+q
+         sIK2FWH1JG4WQgeQ6K3EcfGGZPBFIuEDJFS5/X36x4Sk7fEBxrM4ggBE8CrKl03rkgjo
+         lfJNl2VInePrU0KOflYnaZGC0XaT7YWSh5HDM9LcIl9J2Uhlg6xrOmDzhuTq3eAH6eHK
+         pOsFXmPwZUUV26/G055Lfldc51Kr+bVDEJ5e/2L5bnh+Me3nkhZSA+/DFAEJIpLsvJSB
+         XiPw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782196536; x=1782801336; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XNp8OOr9Dg85fWjggrG8LtNFt4/KIkDIH3WeFv9MgkE=;
+        b=sT4Ch/Pi6emaXTwh5t6EAHLphL21e6uerAuHjYmVe8+OFK/Pe+eINs8z8d7N9vGe6w
+         SLW6RKovRlMbd6HjSs9a0K5n+5xY9d2s9VWqd+e4pJqC6OndDO/leiRywbM4sC1MCgey
+         W6APcgWIjtvwfjWTKw8An8n48hnxKU1D5LGRid9/NSsNH6Ut3Tk4wa/gsn6CO8qFNGiL
+         CPtHdMnXdoWR0uHFQ3dx7TNh55T/M/SAQHUA93uwcx6Vsl1VuOvVwAXppfdJif0r7rcU
+         MPOHDTms0cPdKcZn9kIbo9NbWcKvmUYLUZgOa1+eCwf7NXLNmjqza30OrvEssfvcPROd
+         sn2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782196536; x=1782801336;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=XNp8OOr9Dg85fWjggrG8LtNFt4/KIkDIH3WeFv9MgkE=;
+        b=X7rVZNiK7kf1RvaWMKzTU5a/es4DDMUr+MlxGgfySZupJYYkw9O9R6WDs0ziwdqlF+
+         cHvC7dxHi3LEPsAI5Z1CHgIqn/0X0sjAVsiccxHXOhorDU+h8FhZhI1lbEyIJNgzgK4k
+         xwL9qeuU4i+WXOLNIoiHnZR8zmpEZti+AMdb+ZmVyvUNmyxZoJ1109/dGrlXw/8+D8Xw
+         5g8LApizUhy/LkSJgbalzqXamL0eKJMP6n0qoIj0+/tf9dA1vhpE1D5kJaDjFMhLVB+2
+         L6Oc3NzYcK+1ASBNHVrenFh6gkjTFFolzOxsPO3gHU0wyahuBqwh3xJwP0NqEEuEZviO
+         JNoQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+Nw7HKOp7z9g6pLykUpvej2NZRTJWgGsGPlon5S9Z78YFTWydgwQGaJe9GgNTn2MW7SlS56z8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIbMaLpRo1HzKn4veNB8yp8id40RbUNQ/9wkOWkD4MKt2S84c5
+	9H9hnq1+5Y+Gl07xcXJGuOnuiYiza/cDfwDwSZneVjja7v47HwkgqozTDfbOOrxaYrKcFj0+xFO
+	mYsWFhv7DRxak5qvNc4hgMiB771RhO2yA/XdQAQZe
+X-Gm-Gg: AfdE7cksRlwSFWPZJzLeXDg1zpeso3mU4WvrmwT5v6J2/DphBG339Voq6s2SrdYDxZK
+	Zv3Q6fMpNU8zLTH0gCsaeqjEjObelsTVKVVAof0HLmRGveptqoi1p7bbE8zjr+zGTtds9cpZ9iq
+	qSXqQKy0KakpFA020tOJgZoS12hhgxbMkCzhh+PWNmRvru/U8+y9y4Q4rLc9Fz6KPaExfN8hjR0
+	DyTIcLuRiYUQXZ1UR6th6C/UPXsYdykMWuSSMYucZE4m7pacIcueyk6kj6SEpM3IgirY49Ok1ej
+	9nbETDR8XKnj3RK2ehypUI/mn8bEM6fCCBgwlkEXLYWrsC2iW5BJbBsLQM3D+VPoktYKLwDqSEN
+	2pIaI1cZ/z0AhipmFTNE=
+X-Received: by 2002:ac8:5a48:0:b0:516:ddfa:b6b9 with SMTP id
+ d75a77b69052e-51a51b2e6acmr34930681cf.23.1782196535612; Mon, 22 Jun 2026
+ 23:35:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260623-fix-fops-owner-v4-9-0daf5f077d5c@linux.dev>
-References: <20260623-fix-fops-owner-v4-0-0daf5f077d5c@linux.dev>
-In-Reply-To: <20260623-fix-fops-owner-v4-0-0daf5f077d5c@linux.dev>
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
- Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, 
- Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Arnd Bergmann <arnd@arndb.de>, Brendan Higgins <brendan.higgins@linux.dev>, 
- David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>, 
- Breno Leitao <leitao@debian.org>, Jens Axboe <axboe@kernel.dk>, 
- Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
- Leon Romanovsky <leon@kernel.org>, Igor Korotin <igor.korotin@linux.dev>, 
- FUJITA Tomonori <fujita.tomonori@gmail.com>, 
- Bjorn Helgaas <bhelgaas@google.com>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
- =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, 
- Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
- Carlos Llamas <cmllamas@google.com>
-Cc: rust-for-linux@vger.kernel.org, linux-modules@vger.kernel.org, 
- driver-core@lists.linux.dev, dri-devel@lists.freedesktop.org, 
- nova-gpu@lists.linux.dev, linux-kselftest@vger.kernel.org, 
- kunit-dev@googlegroups.com, linux-block@vger.kernel.org, 
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
- linux-pci@vger.kernel.org, Alvin Sun <alvin.sun@linux.dev>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1782196206; l=1634;
- i=alvin.sun@linux.dev; s=20260317; h=from:subject:message-id;
- bh=MUwIWDeyTGINk8eYw/EGHpKhVS1I+NdvU8holZVt0xA=;
- b=3Wu3lIDcbXp8WsWvNgwJtUDQdTKQMZngklAC5s7CH/cFu9Cyeb9s51Rij3zkvfLA0qhWG9IcI
- ouIq1J6XJzTANQBX3W3FalWDRrlJ9IrTCoWrCUXWjUsEHt4I+HcHlQ/
-X-Developer-Key: i=alvin.sun@linux.dev; a=ed25519;
- pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
-X-Endpoint-Received: by B4 Relay for alvin.sun@linux.dev/20260317 with
- auth_id=684
+References: <20260622171048.1626022-1-edumazet@google.com> <CADvbK_e_7184a_jm5ASjKafXrJqaOKFUKJF6V1wp7AnFxK596g@mail.gmail.com>
+ <CANn89iKFj9vSS6B-=KAMnLyqFqY5edZ-eChfcq+SuGckU6T9yg@mail.gmail.com>
+In-Reply-To: <CANn89iKFj9vSS6B-=KAMnLyqFqY5edZ-eChfcq+SuGckU6T9yg@mail.gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Mon, 22 Jun 2026 23:35:22 -0700
+X-Gm-Features: AVVi8CdaYF7Y6jL9GrW6H3t7INWD9i274710TrnB97EVpN869s4FVrVBu1heiOg
+Message-ID: <CANn89i+dkbrSAwvaWXW7yWMfcwUebuTBLG5T7AGZaZcpVYGyfQ@mail.gmail.com>
+Subject: Re: [PATCH net] tipc: fix UAF in cleanup_bearer() due to premature dst_cache_destroy()
+To: Xin Long <lucien.xin@gmail.com>, Kuniyuki Iwashima <kuniyu@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com, syzbot+e14bc5d4942756023b77@syzkaller.appspotmail.com, 
+	Jon Maloy <jon.maloy@ericsson.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-All users have been migrated to `ModuleMetadata::THIS_MODULE` const or
-`this_module::<LocalModule>()` helper. The `static THIS_MODULE`
-generated by the `module!` macro is no longer referenced anywhere,
-so remove it to avoid having two sources of the same `ThisModule`
-pointer.
+On Mon, Jun 22, 2026 at 10:37=E2=80=AFPM Eric Dumazet <edumazet@google.com>=
+ wrote:
+>
+> On Mon, Jun 22, 2026 at 6:48=E2=80=AFPM Xin Long <lucien.xin@gmail.com> w=
+rote:
+> >
+>
+> > Could this corrupt the list for concurrent RCU readers?
+> > When list_del_rcu() is called, it intentionally leaves the next pointer
+> > intact so concurrent readers can continue their traversal. However, the
+> > immediate call to list_add() overwrites both the next and prev pointers
+> > to link the entry into private_list.
+> > If a concurrent reader is currently positioned at rcast, won't it follo=
+w
+> > the newly clobbered next pointer and jump from the original RCU list
+> > directly into private_list?
+> > Because private_list is allocated on the local stack, the reader might
+> > interpret stack memory as a struct udp_replicast. Furthermore, the read=
+er
+> > would miss its loop termination condition because it expects to reach t=
+he
+> > original list head, potentially resulting in an infinite loop or a cras=
+h.
+> > [ ... ]
+>
+> I think you are right.
+>
+> Considering there is already one rcu_head in udp_replicast I will use it =
+in V2.
 
-Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
----
- rust/macros/module.rs | 16 ----------------
- 1 file changed, 16 deletions(-)
+While looking at many syzbot reports with RTNL pressure. I found this
+gem in  tipc_exit_net()
 
-diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-index aa9a618d5d19e..23b6a1b456b80 100644
---- a/rust/macros/module.rs
-+++ b/rust/macros/module.rs
-@@ -497,22 +497,6 @@ pub(crate) fn module(info: ModuleInfo) -> Result<TokenStream> {
-         /// Used by the printing macros, e.g. [`info!`].
-         const __LOG_PREFIX: &[u8] = #name_cstr.to_bytes_with_nul();
- 
--        // SAFETY: `__this_module` is constructed by the kernel at load time and will not be
--        // freed until the module is unloaded.
--        #[cfg(MODULE)]
--        static THIS_MODULE: ::kernel::ThisModule = unsafe {
--            extern "C" {
--                static __this_module: ::kernel::types::Opaque<::kernel::bindings::module>;
--            };
--
--            ::kernel::ThisModule::from_ptr(__this_module.get())
--        };
--
--        #[cfg(not(MODULE))]
--        static THIS_MODULE: ::kernel::ThisModule = unsafe {
--            ::kernel::ThisModule::from_ptr(::core::ptr::null_mut())
--        };
--
-         /// The `LocalModule` type is the type of the module created by `module!`,
-         /// `module_pci_driver!`, `module_platform_driver!`, etc.
-         type LocalModule = #type_;
+while (atomic_read(&tn->wq_count))
+      cond_resched();
 
--- 
-2.43.0
+On some kernel builds cond_resched() can be a NOP, so we might loop
+here for a while :/
 
+Added in
 
+commit 04c26faa51d1e2fe71cf13c45791f5174c37f986    tipc: wait and exit
+until all work queues are done
