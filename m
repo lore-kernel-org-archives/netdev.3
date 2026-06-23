@@ -1,48 +1,48 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10D039E9C3;
-	Tue, 23 Jun 2026 04:06:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D7939AD25;
+	Tue, 23 Jun 2026 04:06:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782187604; cv=none; b=UV0QGB7Yt2t/QDx4BCHFXCiVyZ8GvIUauAhlIGwoHzQGOXcg0prIvNf3GNaEH/7weTjhsvOLiIEBXXgevfFJvtlwnap6pKrx8d23GIii6o/yX7uy8UXMMjXTf207b6pGwF73fx86dUB/SDcaxahwwKbC2dO/Qs7nXQIu0Wdv6oo=
+	t=1782187615; cv=none; b=TDrrdN7Idwy08YiU1lFck0S4WsPqyXNodQlygiQj+LUtByptrrKBRwXVmXhqHwrLMmwX06KQfpFndOlHUOzWamkvxXJDnH437wlRp3UxCOkP61lM6tBXuZNMPSBX9oP49y5XWzeYT+JTo9TkF6d617zoAY5/bCgTYCVan2B+LZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782187604; c=relaxed/simple;
-	bh=7gTJMuPnSVRmdy3m/A0Ydr8qC7rV6vskwAoEpmuDDYA=;
+	s=arc-20240116; t=1782187615; c=relaxed/simple;
+	bh=HlEDlPEgNiBf0/iFAhX+UDCIIQSnEDBvvj+jHhLEeVI=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eeMkQnoBxdDREk8Yd5XbsrAvYFSLX3H0NoP/wh/3FBDCFXqko9ml/dhvZ/N3sQg1v6v8Iagoy6bEziSRDmUgxUtMHySumB7f+8hPAWaZL+aq1Qsmy2Vz/Dw0AhiTy2qSx/1rXHvLD0bw2RX3M3Fvc/Ob8sTByscrdwXTaDtPQn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=X/wSk1GI; arc=none smtp.client-ip=67.231.156.173
+	 MIME-Version:Content-Type; b=lrqMb8U3nzYu8zMa37UFRIp2sl6McGZMc6tx0NrvCXoQC1rQS2zYBwQo79yj6M0h1YtGd6mjdwhlEeDdXm+FvL5ecgZH0ShvByQQnhlQ7Zl0ChNvwxNNoi+a7Rr2VEOxvZCkJ5pLlpVhlf/7hL2Mb9vQY1wxe00IMN66NPFpGDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=j27m4GWq; arc=none smtp.client-ip=67.231.148.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="X/wSk1GI"
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65N0fofk2739278;
-	Mon, 22 Jun 2026 21:06:27 -0700
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="j27m4GWq"
+Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65N0gVbB4058880;
+	Mon, 22 Jun 2026 21:06:34 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=2
-	qNgs/yDjGKz4/dWCfvR6GRltfOYCfcaDqs7slA89/M=; b=X/wSk1GIdJXVH3oDh
-	0smUv0WUZqsPxedqHbRo1pH8klr21mJ3kthFcr4S6P4FR4BiNdk/m/expVQpCNNt
-	uzugGFW761jgN/ZUYFrLQI//TSixUGT5JxmSXXh11VApjRxRvH5Ob/g7/kzNIk4c
-	5Wv4nvOY6YqzKZyuhfRtQVwkHqtMY5GrHR2p0zHA/SHY8J3//Y8M6EwBmmwsqXOg
-	HaoozxTNO0oAW2/yrI/4OqdR1hbSK3+e7qgTDVW/5tKA/FTGVEnjP+BtiSrXQ892
-	oUEiIb90EupS767pPfe0fRSWpxKTG/2/ABFlRQTmUOYC/i71USB8xKuocRlIYhvE
-	9ikaQ==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4eyerdgjt0-1
+	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=J
+	6tiWUARTEAHNGSanEy1YM1KtlSlrgJBmConQO5urt4=; b=j27m4GWqhbqJdlcaF
+	KYlBV5pp3cYlgUEaZth1Qa3qhcrJ0aPmHjnacIYIEbgyPZpBoadH7RpkxGBx5+cO
+	XLNRgels1Mohnyxr5SiO4nhk8x9SMFRYpnqtczios1EB/BimVIFnRabwm39XRxVC
+	Dj8Mv7GIy0JFkeKB7L7OT7OM9wuI7O8bhftrkAU57zJht8nI5PfdHfOLIjF//Nnj
+	n8rNmIhvi5Zq0XGy/67dPrd8tYhzPT/tLoVhVRa1stV3Y6+O72jD98c61KGaxodm
+	qZLEz6PwelkNHsQe929I6+cT+zM/HQjytu+sjAbY0Rp+lu0itxiSINPwEaqNuqUg
+	vEuyQ==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4ewr7hg55p-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 22 Jun 2026 21:06:26 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+	Mon, 22 Jun 2026 21:06:33 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Mon, 22 Jun 2026 21:06:25 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Mon, 22 Jun 2026 21:06:25 -0700
+ 15.2.1544.25; Mon, 22 Jun 2026 21:06:32 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Mon, 22 Jun 2026 21:06:32 -0700
 Received: from kernel-ep2.caveonetworks.com (unknown [10.29.36.53])
-	by maili.marvell.com (Postfix) with ESMTP id B7AD83F7058;
-	Mon, 22 Jun 2026 21:06:20 -0700 (PDT)
+	by maili.marvell.com (Postfix) with ESMTP id 892BD3F705B;
+	Mon, 22 Jun 2026 21:06:27 -0700 (PDT)
 From: <nshettyj@marvell.com>
 To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 CC: <sgoutham@marvell.com>, <rkannoth@marvell.com>, <lcherian@marvell.com>,
@@ -52,9 +52,9 @@ CC: <sgoutham@marvell.com>, <rkannoth@marvell.com>, <lcherian@marvell.com>,
         <naveenm@marvell.com>, <hkalra@marvell.com>,
         Nitin Shetty J
 	<nshettyj@marvell.com>
-Subject: [PATCH net v2 1/2] octeontx2-af: fix VF bringup affecting PF promiscuous state
-Date: Tue, 23 Jun 2026 09:36:08 +0530
-Message-ID: <20260623040609.3090846-2-nshettyj@marvell.com>
+Subject: [PATCH net v2 2/2] octeontx2-af: suppress kpu profile loading warning
+Date: Tue, 23 Jun 2026 09:36:09 +0530
+Message-ID: <20260623040609.3090846-3-nshettyj@marvell.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20260623040609.3090846-1-nshettyj@marvell.com>
 References: <20260623040609.3090846-1-nshettyj@marvell.com>
@@ -67,70 +67,63 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=IvYutr/g c=1 sm=1 tr=0 ts=6a3a0642 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjIzMDAyOSBTYWx0ZWRfX0WxwncPafqm9
+ TbCfOztOFibza79leFQNGr5c2vAI9EOtQM5Qz1PC3wPF9j4ZWZ1dUyo5t/5tu5CQ10zyBzAShK/
+ 0LCG5mDW2TPGeaappvNnsYeixm02X0HzOvUvXaEgcbTcvLucSAK/1traksbVq1CG4al/Uw5sZNi
+ XSl0Drgax5H+Y/YBZ2fOE66RFqcH+XK4nd49GzdZV+1MzEmsN0BKcGed2BNLQzCtvCStyTMzthD
+ f9c3U+Wv7HDVAHXtQ/+F2LUO4No9X1lPNRSuv2aEd3pdLqr/JZF4bpx2DHTlsiLieI5x0pxgCEY
+ RPZZ8Qpi+irXqrWNPM/hVC+st/Z1baG8HruzCu54YFBgsdIxIeJtrJa9yacAH3QV7Ho2czhPqD6
+ trfji+Ha3eOYl5ePJsHvGgYyDvkD81L6iFBksPJ1uFkL5ZmpRFdRsY4uvfVzL5+DjSwjWoLvwUm
+ PqjmH5/caRalhgA3QbQ==
+X-Proofpoint-ORIG-GUID: JaLPedsJTU1dA36pzSxBB--zaYQsdLeV
+X-Authority-Analysis: v=2.4 cv=aJTAb79m c=1 sm=1 tr=0 ts=6a3a064a cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
  a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=qit2iCtTFQkLgVSMPQTB:22 a=M5GUcnROAAAA:8 a=ZiVtc4tnZ_wSfkjzQ8sA:9
+ a=EAYMVhzMl8SCOHhVQcBL:22 a=M5GUcnROAAAA:8 a=0oH1JDAyb3HKMfM1TsUA:9
  a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjIzMDAyOSBTYWx0ZWRfX+Ob0pGzvdDv6
- V3TS1Ra29wFBZeOe4DIy5N0n+UZrZ+ZzHz23DW0aE0WncyfkzK3CN2Lp83NC3CS/5IP1nIkMA+o
- cV80JvPsHmBz8KUI7TxzCtuWIbqwXuQRiNsnFSzLKa5MbxNpvXvvQuC2bj+yL9RCW4H44qhMkSj
- VPEscfKEPB3tUPir4OQbaEhfTtDLZXE+AzF8mn9NXubenYk79zVAcSlA6djkAOWJ+1pBg1I2Qk8
- siOTNmqSraqmBCa8nPKdPpboVh6rl9MsopsP7p61FlZ+PrZPMU4TZM+/h0VoRtYJoywcC/4dW5J
- Jiu8OsRalqVqmrfVQL4JuMQp689cHGpu4IxSFlsIZyLqhjVt3adFwFtxKiR1CL9jqNYmIuJ183h
- K5XIvLKJq2Dve+MBm2BumK8eHuvi+d0XvHf9LeyVGq3KvgKrsRZId3o0c9pJTkc0khD5FpyycWG
- py3j5nxMklb25ECm4ow==
-X-Proofpoint-GUID: IVGfaWjhJ60fvdwMDgho-z4cuaqzzqB7
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjIzMDAyOSBTYWx0ZWRfX3g/71p0AW8Ny
- 4ZbfbThrTERk4GhUk+vjnFux58rDr6K6T9Gegi+x4RHAEBfv5yeL9olnWxzp3Anx3Tc2RKiW0IG
- TDFaKls9ZmN7yc3MaahnlkH+swRGgBA=
-X-Proofpoint-ORIG-GUID: _rHp2tsh36ogieUj9tG7eOTSRUi__E9j
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjIzMDAyOSBTYWx0ZWRfX/3nlapd2gkfx
+ aQB0Fn04j4xjaNur3iDpG64Ot8MVOXRIitqWYYcMGK3UgWLfV+U/pCS9lP6WnzOVRH0qP4ix+/4
+ 7INm6Xxt1AbrOo+RarDGOr9ynmd4beA=
+X-Proofpoint-GUID: 8bMca-nk26YS3bd8d-3KOMHvHCahSC8l
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
  definitions=2026-06-23_01,2026-06-22_01,2025-10-01_01
 
 From: Harman Kalra <hkalra@marvell.com>
 
-Mbox handling of nix_set_rx_mode for a VF with promiscuous and
-all_multi flags set to false causes deletion of the PF's promiscuous
-and allmulti MCAM rules. This occurs because the APIs that
-enable/disable these rules operate only on the PF, even when the
-mbox request is made via a VF interface.
+There are three ways in which a KPU profile can be loaded
+(in high to low priority order):
+1. profile image integrated in kernel image
+2. firmware database method
+3. default profile
 
-Guard both rvu_npc_enable_allmulti_entry() and
-rvu_npc_enable_promisc_entry() disable paths with an is_vf() check so
-that a VF bringing up or tearing down its interface cannot inadvertently
-clear the PF's MCAM rules.
+In most cases the profile is loaded using the 2nd method, which
+causes a spurious warning from the Linux firmware subsystem (method 1)
+due to the absence of firmware in the kernel image.
 
-Fixes: 967db3529eca ("octeontx2-af: add support for multicast/promisc packet replication feature")
+Replace request_firmware_direct() with firmware_request_nowarn() to
+suppress such warnings when no image is integrated into the kernel image.
+
+Fixes: c0c9ac88156a ("octeontx2-af: npc: Support for custom KPU profile from filesystem")
 Signed-off-by: Harman Kalra <hkalra@marvell.com>
 Signed-off-by: Nitin Shetty J <nshettyj@marvell.com>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-index d8989395e875..a7e0e0e05ad2 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-@@ -4575,7 +4575,7 @@ int rvu_mbox_handler_nix_set_rx_mode(struct rvu *rvu, struct nix_rx_mode *req,
- 		rvu_npc_install_allmulti_entry(rvu, pcifunc, nixlf,
- 					       pfvf->rx_chan_base);
- 	} else {
--		if (!nix_rx_multicast)
-+		if (!nix_rx_multicast && !is_vf(pcifunc))
- 			rvu_npc_enable_allmulti_entry(rvu, pcifunc, nixlf, false);
- 	}
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
+index c7bc0b3a29b9..007d3f22b0c9 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
+@@ -2246,7 +2246,7 @@ static int npc_load_kpu_profile_from_fs(struct rvu *rvu)
  
-@@ -4585,7 +4585,7 @@ int rvu_mbox_handler_nix_set_rx_mode(struct rvu *rvu, struct nix_rx_mode *req,
- 					      pfvf->rx_chan_base,
- 					      pfvf->rx_chan_cnt);
- 	else
--		if (!nix_rx_multicast)
-+		if (!nix_rx_multicast && !is_vf(pcifunc))
- 			rvu_npc_enable_promisc_entry(rvu, pcifunc, nixlf, false);
+ 	strcat(path, kpu_profile);
  
- 	return 0;
+-	if (request_firmware_direct(&fw, path, rvu->dev))
++	if (firmware_request_nowarn(&fw, path, rvu->dev))
+ 		return -ENOENT;
+ 
+ 	dev_info(rvu->dev, "Loading KPU profile from filesystem: %s\n",
 -- 
 2.48.1
 
