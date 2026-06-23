@@ -1,114 +1,181 @@
-Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A42A37B011
-	for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 01:52:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B68234AB01
+	for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 02:52:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782179542; cv=none; b=Rd+EpgxrvgLTZVp4v+vdxk27h2bmEj46GD97oaFoaVy0IG/LmRFVlLYo8N88OBSsUvhxH6IZAjAy+5oM7ubTkLlYw+FveNf/16jtqmRXuQnJWhl4HwZ5sEpUCgTxUX9lQEKBeOk16pm97QKnVZ16T48AOORk6pDMAMC7iqPeXIk=
+	t=1782183121; cv=none; b=Ej85a9WC7LR2zJBfenrQ/oH4sHvppxtV7KJDbPfvVlc/BGmghPYeS6tGNzDPbI9BCtUBWOhHzAHz7qn+a1ziUSXl/EXIIx04zrHXDco3Hq05dxsfe4QeweSWFnnpajo8lo09Yri+iDu09lGsyWudfpQTdje3pWFgx8Os312jeGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782179542; c=relaxed/simple;
-	bh=yo9XuHELrVnO688wjCRiC4G+3rpu4p0EG0QZEywX50w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ay+Eeo2vksdgFtq+mm1KPR/KwbuecSyAhWY1TC9lMH0nwJOVhebcmLdSR/3QR7vLbgNxSwwGqo3n6ObySuxSba7TUnmJiIXJrUG1bLm9gFh0XuNmRwoT1gftOuBSBp2NLZKlrIUc5vYDqpNLlCsEQaYznMKNTaPqdYQAtb6E80M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qKRsk3F0; arc=none smtp.client-ip=74.125.82.179
+	s=arc-20240116; t=1782183121; c=relaxed/simple;
+	bh=p+nffAW408DMeJGJh50kWk8zhQg2b3tHyUIep+5bpYk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WEBt8KVMugA0OB7ELHTjsagxg9+pdVPYi9QEvNbDte8/t+ohD9+dF+u6484sG0pLo9oyxogJjToYjv+kw79af6s+q44Z2eyXxamPBgBHNHIuhiMS6YmCl9EBVG/aunUU3Gx0pK6K384kR1rriAFRixcwLBVyDynZmvRNeYLLy9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O/DR/nIg; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qKRsk3F0"
-Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-30bc5fa5a2aso687730eec.0
-        for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 18:52:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O/DR/nIg"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2c7c684353dso3479135ad.2
+        for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 19:52:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782179540; x=1782784340; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1782183119; x=1782787919; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3/CC8d2SAj+Z99gw5iWPt5xPwSjZn6V/0j7+lMhcsWQ=;
-        b=qKRsk3F0IEVUc+zaS1AkXHqgd0aarETL7OE9bcDfS16AdXxHXrFBY0SUqmddh8Od7K
-         H8uGahM/I6E+20m2UZIcNUAvC/xQEsyczsJYJsbT1vxLT4xTZUu6XOv/nS2k4I3GFoe8
-         pjJdJ02NfP7+bNVhiqZQbfTPWktn6nOnySt53wPtkh3oz4trJd+vtTtXazTdtaNfaQSS
-         2o3nhgjV2VJ5yRTgm6WiF6WT463jK9FF/j4VwWNwhOS5BY43YkvysrV2sOG/z+y6XV7K
-         qBx/cm2r2mgafYQf4n0IjCA6TTtAepQMbf9Kjeh0MjzOHd+IMJ6mYlfVUBsidch2yycm
-         nOqA==
+        bh=KV2chNMnw+kmRFfisbGqimiQM5mDTuIEZMht/aRpHIc=;
+        b=O/DR/nIgi7j9J6O+k0kOUIYS6iTDPzoPM0oac4ANwIJvAhSBE8MDbijgo4KrNuGkl3
+         YZ9njHxQ2FjFEJxWkMT29p3GPI1RCFDW8IcuEyf2TyhyAX09h3+DNRRiVEwUQ6/5CqO4
+         5r5z4QXcEdRedSfd05g2Y1F2MgUnCsTsBmYPfOENKvIrBgbzUOiXY9VhDqqMvuYuCQrQ
+         t0gi48TCtJAUSiEjHZh3mAZMbiqiSEUO/PKKDE+cfYDWvWopfYM3PFOQTxffD8udCDiG
+         OWQ/xVRktN+AqltlgENRhIn8UqCYTq9MJi9R/nSsuCQiqtLgR7MiKUibALg9xii1KwQ2
+         B01Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782179540; x=1782784340;
+        d=1e100.net; s=20251104; t=1782183119; x=1782787919;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3/CC8d2SAj+Z99gw5iWPt5xPwSjZn6V/0j7+lMhcsWQ=;
-        b=JZMGXw4jz2H/LSYfA6LQnbuWr2eNjTIrCfNxwZQ7RUG2B8nEQYCKNJKiMiv87pW2TC
-         z3lyA9DT7cRVNyGMd8tpD4/XbE9wja4jKJdfNsE6EMMDhuuiqq4d9HtrtiitupdyRUgT
-         ch+PZkn96Q1Nxki32gnDxUimkndCDNBy+vFQ+WnAlNZGz1nA4PUU5XuQ5zLYb292cR5z
-         t8FqWo4DTVrGCM68BlPk0xZW2RskzocK2iGiPRsgzanqcm44vM/nI+zg6MopUX5FgnJG
-         xjn5Psrjbu6JgP/URz/lOQDEn4kuZW9mfUBOYhRy+JvjIXNm1R1Qdnm8VZBRKiHefnkV
-         5YtA==
-X-Gm-Message-State: AOJu0Yy9/+j4Bq7/2hx+1q+we0veAMDI/0lJedsvA9CbzV9oxyf7u8Kt
-	jKbDSYVzE6qOpAelTmoWR5RX64ZAjXg3ZbdN23I+GDkYPbbpKw2zDmM5hhdY6kHK
-X-Gm-Gg: AfdE7clw3cK06v7UKURoGyiYORQ6iBrBYciIfaafVjsQzr5/J+DLKWBDVweWYe/wp2Y
-	OrMTUL1V5GgG5eZLXL8kte9gQSsE+oKgWtN/GCcmqinzupkULEEcpqdeomVOvfv3UX4hhmNrC91
-	4rHp3x5LxmPUztgE2UEKUpWQ16V4W6Ua4fv4R2Taxwf5jBe/wA+NNo1h+PH2mhiQv0064uo8yqy
-	EhlEHg4V/YRQDEBSQ9d/HBHobWVVGiFH9kH0n64MiskpR/hwDmZ86jjd8ODqp1VMm1TSZ89cLu/
-	Mw77036kRqHpaKYECLSv8zav2Pb0pi4YtOqPpAFwWCdlu1Dx7wuh0AeYJdZgUw4ckiPfbzHcAcy
-	M44oTxdI5Dl7UhiCPrNycZMOviOf9n4TQCZoR02Jr5rld24gIGRvFlkNCh3V5WMiuj7Sl965mOJ
-	nLIme7Jjr/bXM0KZiE+gtYlK17GcCWSBLPuXd40fQU0w0SrfxZtwVgsU17xkQ8rPUQHyoZu3p/6
-	qdylJ+u296c8+ZrNMkXbg==
-X-Received: by 2002:a05:7300:acae:b0:30b:c021:5045 with SMTP id 5a478bee46e88-30c5232edd4mr687534eec.5.1782179540152;
-        Mon, 22 Jun 2026 18:52:20 -0700 (PDT)
-Received: from localhost.localdomain ([47.246.98.82])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30c1bdffa83sm16056703eec.23.2026.06.22.18.52.17
+        bh=KV2chNMnw+kmRFfisbGqimiQM5mDTuIEZMht/aRpHIc=;
+        b=AF4G4qPXqJyddKQSW2h2zlcS7GXwKiKaVw1OTG6LXHCcY3ODh3CeZxTSpkI+Kas3NA
+         QInHi12anuBJTGenAFLFyh1Tr6FKY+q6B8cziLhxITRtV6Mh7UYGAqaszSpaX/15Rbmh
+         iQZ6BKQEmaABWEJNosuwAroysiBYEsLp7BvcsU0ENqKjrq9eVZxfHw0i1tx78JUc2laP
+         vghEF9DloCHuWPxGKeRHM1LQ60DVzTnGz19hwTyIrVFQkClP2MaJ9t3uZ5GoH6cgqtec
+         qz5uiObQsJ6ooXF+xBsUlSa59KUT/IXOqN5AAPUFu2aYQ/sog4vU4JVpz5wIoxQJEQ17
+         OafQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rpm5en0mZANghQ+/H3IqzPO7RUmh5kzRjHaLl8U7pp528cKenBBayfBn7ti2yozR9qPsieYGgo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7AwcpXxb86Fh+sn/B6MKCpL8Sek09xn3ZQ+JGm0cTftNn9nYo
+	sjiWIl6koM33SB/8LjK3yO+u2gTLacI0QnW6pkxHVx6LcdINFAciE4O4
+X-Gm-Gg: AfdE7cmXL2/5711IIbp3BhjOZ9+HXRoh9AL7ObRRutdvAge6uxrf9IDWrgXRHVHlJi+
+	NroP6qdl4Bs7vF7n4i+6BGUa3/IX6tGfsuqF68k3MwaGaq7+vRGQFw1bJtYHXscY8LXcGO9kBEJ
+	4o6kdhxtLdaQ1F8XM49bJ9AMVdL1RnMYevQ9/HwqDae6lcQ5iw3Y6ZCMSszOgcc5zXVz7G1GOYy
+	3uDDOTcUPIPV9so5lLlTGRfOl/Rh55U+uHrSwozevwG82fLcVW6XRH5vBsWyRHwb3Ors2oKWNFz
+	C40tDFLJk3xnKNFSaw1a2NFkcaBoDCVe8YwMu8+u36vDh9cvcJBCTw1evbu5yxfxQVZzvzyd3yD
+	k2/Ffp6nqmF0QWZvAYRaHphXeMd/lT75lcMf+7+jS8oxQeK/kA4U+utP1echY1FoZrwLD7aZoPe
+	48ww7ZErIi9j4Lj9PYcHVaZd/BBLeWEKZGadBknODSImCbzyT7d5P6mX+1EpPn
+X-Received: by 2002:a17:902:e5c7:b0:2bf:379b:53d2 with SMTP id d9443c01a7336-2c7c995af52mr4223915ad.15.1782183119337;
+        Mon, 22 Jun 2026 19:51:59 -0700 (PDT)
+Received: from r912.tailbb6e1e.ts.net ([182.70.116.80])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7439f8e51sm102704625ad.39.2026.06.22.19.51.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Jun 2026 18:52:19 -0700 (PDT)
-From: HanQuan <eilaimemedsnaimel@gmail.com>
-To: netdev@vger.kernel.org
-Cc: edumazet@google.com,
-	ncardwell@google.com,
-	HanQuan <eilaimemedsnaimel@gmail.com>
-Subject: [PATCH] net/tcp-ao: fix use-after-free of key in del_async path
-Date: Tue, 23 Jun 2026 01:52:08 +0000
-Message-ID: <20260623015208.1191687-1-eilaimemedsnaimel@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        Mon, 22 Jun 2026 19:51:58 -0700 (PDT)
+From: Avinash Duduskar <avinash.duduskar@gmail.com>
+To: ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org
+Cc: eddyz87@gmail.com,
+	memxor@gmail.com,
+	martin.lau@linux.dev,
+	song@kernel.org,
+	yonghong.song@linux.dev,
+	jolsa@kernel.org,
+	emil@etsalapatis.com,
+	john.fastabend@gmail.com,
+	sdf@fomichev.me,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	shuah@kernel.org,
+	hawk@kernel.org,
+	yatsenko@meta.com,
+	leon.hwang@linux.dev,
+	kpsingh@kernel.org,
+	a.s.protopopov@gmail.com,
+	ameryhung@gmail.com,
+	rongtao@cestc.cn,
+	eyal.birger@gmail.com,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	toke@redhat.com,
+	dsahern@kernel.org
+Subject: [PATCH bpf-next v4 0/3] bpf: bidirectional VLAN support for bpf_fib_lookup()
+Date: Tue, 23 Jun 2026 08:21:44 +0530
+Message-ID: <20260623025147.1001664-1-avinash.duduskar@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-In tcp_ao_delete_key(), the del_async path skips the current_key
-and rnext_key validity checks present in the synchronous path,
-assuming these pointers are always NULL on LISTEN sockets.  However,
-if a key was added with set_current=1/set_rnext=1 while the socket
-was in CLOSE state, current_key and rnext_key will be non-NULL
-after listen() transitions the socket to LISTEN.
+This series adds VLAN awareness to bpf_fib_lookup() in both directions.
+BPF_FIB_LOOKUP_VLAN resolves a VLAN egress to its underlying real device
+plus the VLAN tag (XDP programs need this because VLAN devices have no XDP
+xmit), and BPF_FIB_LOOKUP_VLAN_INPUT runs the lookup as if a tagged frame
+had arrived on the matching VLAN subinterface, for iif policy routing and
+VRF table selection.
 
-When such a key is deleted with del_async=1, hlist_del_rcu() and
-call_rcu() free the key without clearing the dangling pointers.
-After the RCU grace period, getsockopt(TCP_AO_INFO) dereferences
-current_key->sndid and rnext_key->rcvid from freed slab memory.
+The independent l3mdev/VRF flow-init fix, patch 1 in v1 and v2, was split
+out and merged to bpf separately.
 
-Clear current_key and rnext_key in the del_async path when they
-reference the key being deleted.
+v4 changes what bpf_fib_lookup() returns in one case. v3 left a VLAN
+egress that cannot be reduced to a physical device plus one tag (a QinQ
+egress, or a parent in another namespace) as best-effort SUCCESS with
+the VLAN device's ifindex. In his v3 review Toke asked for a distinct
+error code there instead, so an XDP program cannot mistake an unresolved
+VLAN egress for a physical one, and suggested the name
+BPF_FIB_LKUP_RET_VLAN_FAILURE; v4 implements that. The
+code is appended after BPF_FIB_LKUP_RET_NO_SRC_ADDR (nothing renumbered,
+tools/ mirror updated) and is returned only when BPF_FIB_LOOKUP_VLAN is
+set, so no existing caller can observe it. On that failure params->ifindex
+is left at the input, like the input-side failures; a tc or XDP program
+that wants the VLAN device's own ifindex re-issues the lookup without the
+flag, the recovery path he described.
 
-Fixes: d6732b95b6fb ("net/tcp: Allow asynchronous delete for TCP-AO keys (MKTs)")
-Signed-off-by: HanQuan <eilaimemedsnaimel@gmail.com>
----
- net/ipv4/tcp_ao.c | 4 ++++
- 1 file changed, 4 insertions(+)
+The reason for a distinct code rather than best-effort SUCCESS: SUCCESS
+on an unreducible egress silently blackholed XDP. A redirect to the VLAN
+device drops at xdp_do_flush() with no in-band signal to the program;
+VLAN_FAILURE makes the unreducible case explicit, and a live-frames
+selftest exercises both the redirected and the passed paths. Only the
+immediate parent is resolved, so QinQ and foreign-netns are the
+unreducible cases; bond, team, TBID and VRF egress resolve, as the
+selftest table pins.
 
-diff --git a/net/ipv4/tcp_ao.c b/net/ipv4/tcp_ao.c
-index 2f69bcecae78..a56bb79e15e0 100644
---- a/net/ipv4/tcp_ao.c
-+++ b/net/ipv4/tcp_ao.c
-@@ -1747,6 +1747,10 @@ static int tcp_ao_delete_key(struct sock *sk, struct tcp_ao_info *ao_info,
- 	 * them and we can just free all resources in RCU fashion.
- 	 */
- 	if (del_async) {
-+		if (ao_info->current_key == key)
-+			WRITE_ONCE(ao_info->current_key, NULL);
-+		if (ao_info->rnext_key == key)
-+			WRITE_ONCE(ao_info->rnext_key, NULL);
- 		atomic_sub(tcp_ao_sizeof_key(key), &sk->sk_omem_alloc);
- 		call_rcu(&key->rcu, tcp_ao_key_free_rcu);
- 		return 0;
+Changes v3 -> v4:
+
+- Patch 1: return BPF_FIB_LKUP_RET_VLAN_FAILURE for an unreducible VLAN
+  egress, leaving params->ifindex at the input.
+
+- Patch 3: the QinQ-egress and cross-namespace-egress arms expect
+  VLAN_FAILURE; an escape-hatch arm re-issues without the flag for the
+  inner VLAN device's ifindex; and test_fib_lookup_vlan_redirect drives
+  live frames (BPF_F_TEST_XDP_LIVE_FRAMES) through the native redirect
+  path, asserting a reducible egress is delivered and a QinQ egress is
+  passed to the stack. The selftest's VLAN_FAILURE arms are IPv4 only,
+  since bpf_ipv6_fib_lookup() restores params->ifindex with the same code
+  as the IPv4 path that the arms exercise.
+
+The three other v3 questions Toke marked fine as-is, and v4 keeps them: an
+unmatched, down, or cross-namespace tag on input returns NOT_FWDED;
+OUTPUT | VLAN_INPUT is rejected with -EINVAL; the BPF_FIB_LOOKUP_VLAN_INPUT
+name is kept.
+
+Taking the tag as lookup input follows the approach David Ahern suggested
+in the 2021 fwmark discussion:
+https://lore.kernel.org/bpf/6248c547-ad64-04d6-fcec-374893cc1ef2@gmail.com/
+
+v3: https://lore.kernel.org/all/20260617224729.1428662-1-avinash.duduskar@gmail.com/
+v2: https://lore.kernel.org/all/20260616223426.3568080-1-avinash.duduskar@gmail.com/
+v1: https://lore.kernel.org/all/20260609172052.81613-1-avinash.duduskar@gmail.com/
+
+Avinash Duduskar (3):
+  bpf: Add BPF_FIB_LOOKUP_VLAN flag to bpf_fib_lookup() helper
+  bpf: Add BPF_FIB_LOOKUP_VLAN_INPUT flag to bpf_fib_lookup() helper
+  selftests/bpf: Add bpf_fib_lookup() VLAN flag tests
+
+ include/uapi/linux/bpf.h                      |  47 +-
+ net/core/filter.c                             | 133 +++-
+ tools/include/uapi/linux/bpf.h                |  47 +-
+ .../selftests/bpf/prog_tests/fib_lookup.c     | 696 +++++++++++++++++-
+ .../testing/selftests/bpf/progs/fib_lookup.c  |  36 +
+ 5 files changed, 930 insertions(+), 29 deletions(-)
+
+
+base-commit: a975094bf98ca97be9146f9d3b5681a6f9cf5ce3
 -- 
-2.43.0
+2.54.0
 
