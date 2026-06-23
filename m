@@ -1,226 +1,171 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5170838D3EA;
-	Tue, 23 Jun 2026 18:27:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A56603932DA
+	for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 18:29:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782239237; cv=none; b=OiEf3BGMCGWFsMBoG1fpDYipLWKBDLTSTfLx1JZ4h1LPi1k50jchdhj3lIHgI5rQzQj/imWjLFQuRF4tYXhDE1TCnLWplPbxM/IhZayX4kKm0C8iSjJwjxJKNHjM9/L2oR7SYl60BaV9GeCG0ivO8rxx8KUMdeeN01T1DkHm2r4=
+	t=1782239343; cv=none; b=Cpkf870t+YAo7442HRTp5kuafWpqDzW3HRzm+BoW/nxh4kQA9Uf90IDm0mP+29IYqU2+OKP4p9TcCtzCtWgoh5MzSl4hJZXnmDiAC7UmMofjT/tqTT/8QGis44FGZeu7ybPucFh/gZDt9gd5Lr9522liY1+qxw9oNvqi0JZexcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782239237; c=relaxed/simple;
-	bh=c266SklNeNU3U1hZxkhZXefmDfRswMXlkKWxX6IQPFU=;
+	s=arc-20240116; t=1782239343; c=relaxed/simple;
+	bh=ur9YcBIx9OOlzB4KIAFGKXMYB4qRT61i90PE7nu7grM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X4hms5qrDHRy0rdLKTty4ORlum4aGQTIogKPvARNLjIahO8fCxXWfqbylkPpj+mFAIIc23hwkDn/PqEYVdLB8ehCkvcjz/es54F7aouC1YRZXZ4t1qwUFMXvjI0jXzgbs9gcvFp7Bxw54IwXWJFPwi5FtZIAnOjrtH5qoM2ErOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VistuIYF; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=hAQ8Up0BmXJX+hSJ+YH2yaXHhrFmasZhTHjo+U+Ha6S6v5Yq9AWRiZlQ3E5jElu7pvL+a/PMXmfrDnANfDe3ZrhuOA6FENKVpAzTKtCgY57PJzPx8JeR1zbh5WGtUGDH4Be3jivPUw0PdYYDPW7XD+kYjYUBPS0gEm4is/jYvEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dVAUnxd2; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VistuIYF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C28DF1F000E9;
-	Tue, 23 Jun 2026 18:27:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782239235;
-	bh=M1H6GgCBkd12Q2vTtVWlECeEISgxezKOQCjK4ILhU5Y=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VistuIYFPmsC9YAjO6zS3akWtB7tmYrnuf958eTRfOHmEFfov6RoofYe0xZdZesIU
-	 gAPBOENhcg6P+A0jRh8KTQqFuVrptXuntVmewM1Zi1fJ2NHMIGPfeQ8nAjeKL79GrJ
-	 pM5UAVCvkUW/3Hp9YiIakqaaEPQRt3R50XKsjR5CZS8hQNT2wYztUtS0KcyryhCzW6
-	 fMl1TumweDCyj4N7hRf13pQIIqroVuGlXcMYYWy/g5IsvF6Aw3MGm02s1h2m+ErNtF
-	 oiRo0PVFQq6eAJZEUX43QsFWk/aU1TPMQeV/zz2rY8/qUvCr4/mXe9+9zATWz7wqjg
-	 imjgaNWU0x7+Q==
-From: Simon Horman <horms@kernel.org>
-To: sam@bynar.io
-Cc: Simon Horman <horms@kernel.org>,
-	david@ixit.cz,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dVAUnxd2"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-84237c55ef9so216071b3a.0
+        for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 11:29:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782239342; x=1782844142; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bTYF1+0lyIvhIpVE2MUXYwIwgLw0923N5fDH7s7CEkc=;
+        b=dVAUnxd21rzpHnZY+B0acolaFB2lQ/rSbryQr5/laYEv5DoVJ30e40G/FimJRVPOfD
+         V8bZ7HqM+qBS8h3ZDJTjYyFrxicvx4wfPFfSQ+dM55uMiJFeOpq5NyxldSmVYrah1laK
+         I2vedj2wEvkv0Q7OqL/IaeA3gdEtBYEGexVyK/bqEsj/iDpqQ7gm8B674Rplj2il39gj
+         FsdWZkUbLUAmHeIb0QLRQH8l/WT5G1JWkwcM1O0fxxLCMqvEBLQ3D4gFBrjToLmYKCVQ
+         fYDlATYC8MDtpuYtpjLh9V5t1ei3n2+mrkQExzSHzSQFW9CYRFKf9NWh5HAj80RY/OZw
+         ZNCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782239342; x=1782844142;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=bTYF1+0lyIvhIpVE2MUXYwIwgLw0923N5fDH7s7CEkc=;
+        b=aw2dBI1YEVm4F5L2E8Ch/8f+NWych+l0v04XK/SwM3sNlmMG/RatwEJZM9pT1A43y8
+         yHCudpVZZlfGbr59sf2HiwLhofWBpOj/8Dgz0MMbSi/h6YMv1BhaGGB1aMr7DtTUaNYo
+         S2BHmm3erAl1/Q6Ye9ISoGVxkVVrO6GlYChe6Hz2NaqaB750tdECWGcgjSLdHcGlucQ2
+         YOrGPT6OF2dNcEst0oJ+P/CEGI/rzjHqDw38IMDC8vTfGagPTil+5aLIahIB5b8qxBT5
+         tcsS/ave/4hMO2wOTfELFq7pudKuklKRtmEAOS/MR5nCpM2R9WsEYDB/+Fe3LBxaRGvc
+         LsYg==
+X-Forwarded-Encrypted: i=1; AFNElJ9YG+46QqRrZ9Ge5E7GTWlzA5TV7NrTJfJi60HW6ukKQ1w5Ze77L/eA1UwPJ8mNXN4936Bf5ao=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwI4oV0wrlNoBlteBvHxVkU71t7k5RmPXvo+mtXcMUEMrxx7Zuj
+	CQOyAQ8Wl8pqK8A6Rt0kmHQFEbSOKmr2bYUJ9wFdwtV/I9Fq7naRqvWG
+X-Gm-Gg: AfdE7cm2TLXajOmTTKd01ZA5F4TCU0wcbcSkl9v1RBcVqxTlRA5SCWaJN19RhbWcUMr
+	FT4gD42UcC8NKJPzoXqhfGgrC8StT3TnZNhLWy3Tp6tll+1J0lJhaUEmsmOy6BpIrgHHyKxCcAe
+	6peMfZxrbEdeWk1FvKk12oD/gCG56XTI8jVXdTBNfridjCEJYRhY6fbqMVBn0NUTogsdXxUxgKW
+	HBqMvGMbZ0wC+4dzul2ykcgIFo/NRezBeWYKypWkr6WEh3N36u6witeK5MOF2GQwm+Fup3HFTbD
+	E3U+IHAFIF+5O0w9buOEwBs9kfzAOroRItT4yDQLjGGRyksWtmKYK4OaSGgdlC6xyDaw+7noH9P
+	Z7QG0ypwvTydy7MXnS/Ui2/b08pbwhSsHfDr6Hb3ylCG0AdWRxQBn5mbCGsSKkjjbQBTtEiJ1zN
+	uLlr+z/yGiOp4/z09ih7I/THQ+Dxbio+bYQiLRgNf2YL4HOwrAHyyZItPShHuO
+X-Received: by 2002:a05:6a00:6c90:b0:845:3033:6cb7 with SMTP id d2e1a72fcca58-8459524d4d5mr5244859b3a.9.1782239341727;
+        Tue, 23 Jun 2026 11:29:01 -0700 (PDT)
+Received: from r912.tailbb6e1e.ts.net ([182.70.116.80])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84564d6c5dbsm10835213b3a.12.2026.06.23.11.28.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Jun 2026 11:29:01 -0700 (PDT)
+From: Avinash Duduskar <avinash.duduskar@gmail.com>
+To: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org
+Cc: eddyz87@gmail.com,
+	memxor@gmail.com,
+	martin.lau@linux.dev,
+	song@kernel.org,
+	yonghong.song@linux.dev,
+	jolsa@kernel.org,
+	emil@etsalapatis.com,
+	john.fastabend@gmail.com,
+	sdf@fomichev.me,
 	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	oe-linux-nfc@lists.linux.dev,
+	horms@kernel.org,
+	shuah@kernel.org,
+	hawk@kernel.org,
+	yatsenko@meta.com,
+	leon.hwang@linux.dev,
+	kpsingh@kernel.org,
+	a.s.protopopov@gmail.com,
+	ameryhung@gmail.com,
+	rongtao@cestc.cn,
+	eyal.birger@gmail.com,
+	bpf@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] nfc: nci: fix out-of-bounds write in nci_target_auto_activated()
-Date: Tue, 23 Jun 2026 18:21:10 +0100
-Message-ID: <20260623172109.1105965-2-horms@kernel.org>
+	linux-kselftest@vger.kernel.org,
+	dsahern@kernel.org
+Subject: Re: [PATCH bpf-next v4 1/3] bpf: Add BPF_FIB_LOOKUP_VLAN flag to bpf_fib_lookup() helper
+Date: Tue, 23 Jun 2026 23:58:49 +0530
+Message-ID: <20260623182849.2623521-1-avinash.duduskar@gmail.com>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260622145243.3167276-1-sam@bynar.io>
-References: <20260622145243.3167276-1-sam@bynar.io>
+In-Reply-To: <877bnpeaeq.fsf@toke.dk>
+References: <20260623025147.1001664-1-avinash.duduskar@gmail.com> <20260623025147.1001664-2-avinash.duduskar@gmail.com> <877bnpeaeq.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev
----
-nfc: nci: fix out-of-bounds write in nci_target_auto_activated()
+Toke Høiland-Jørgensen <toke@redhat.com> writes:
 
-This commit adds a bounds check to nci_target_auto_activated() to prevent
-an out-of-bounds array write. If ndev->n_targets equals
-NCI_MAX_DISCOVERED_TARGETS, it prints a debug message and returns early.
+> I think it's better to just move the assignment of params->ifindex
+> entirely into bpf_fib_set_fwd_params(), instead of this restore dance.
+> That way this can be simplified to:
+>
+> 	err = bpf_fib_set_fwd_params(dev, params, flags, mtu);
+> 	if (!err && fwd_dev)
+> 		*fwd_dev = dev;
+> 	return err;
 
-> diff --git a/net/nfc/nci/ntf.c b/net/nfc/nci/ntf.c
-> index c96512bb86531..566ca839fa488 100644
-> --- a/net/nfc/nci/ntf.c
-> +++ b/net/nfc/nci/ntf.c
-> @@ -603,6 +603,12 @@ static void nci_target_auto_activated(struct nci_dev *ndev,
->  	struct nfc_target *target;
->  	int rc;
->  
-> +	/* This is a new target, check if we've enough room */
-> +	if (ndev->n_targets == NCI_MAX_DISCOVERED_TARGETS) {
-> +		pr_debug("not enough room, ignoring new target...\n");
-> +		return;
+The caller-side restore is ungainly, agreed, but the assignment can't move
+all the way into the helper. The early params->ifindex = dev->ifindex
+sits above the neighbour lookup on purpose: that is d1c362e1dd68a
+("bpf: Always return target ifindex in bpf_fib_lookup"), which took it
+out of bpf_fib_set_fwd_params() and put it there so a program still
+gets the target ifindex on the BPF_FIB_LKUP_RET_NO_NEIGH path and can
+bpf_redirect_neigh() on it. bpf_fib_set_fwd_params() is called only at
+the set_fwd_params label, below the NO_NEIGH return (and below the IPv6
+NO_SRC_ADDR return), so an assignment living in the helper never runs
+on those paths and params->ifindex falls back to the input. That would
+change the reported ifindex for plain bpf_fib_lookup() callers hitting
+NO_NEIGH, not only the VLAN ones.
 
-[Severity: High]
-Does this early return cause the state machine to stall?
+I can still get the caller down to your form by keeping the early write
+and moving just the VLAN_FAILURE rewind into the helper, with one extra
+parameter, the input ifindex saved before the egress write:
 
-Looking at nci_rf_intf_activated_ntf_packet(), the state is transitioned
-to NCI_POLL_ACTIVE right before this function is called:
+	err = bpf_fib_set_fwd_params(dev, params, flags, mtu, in_ifindex);
+	if (!err && fwd_dev)
+		*fwd_dev = dev;
+	return err;
 
-net/nfc/nci/ntf.c:nci_rf_intf_activated_ntf_packet() {
-    ...
-    atomic_set(&ndev->state, NCI_POLL_ACTIVE);
-    if (err == NCI_STATUS_OK)
-        nci_target_auto_activated(ndev, &ntf);
-    ...
-}
+and the helper owning the rewind in the unreducible branch:
 
-Because of the early return here, nfc_targets_found() is skipped. Does this
-leave the state wedged in NCI_POLL_ACTIVE, permanently blocking future 
-attempts to stop polling since nci_stop_poll() requires the state to be 
-NCI_DISCOVERY?
+	} else {
+		params->ifindex = in_ifindex;
+		return BPF_FIB_LKUP_RET_VLAN_FAILURE;
+	}
 
-> +	}
-> +
->  	target = &ndev->targets[ndev->n_targets];
+So the restore leaves the caller; the early egress write stays because
+NO_NEIGH and NO_SRC_ADDR depend on it.
 
-[ ... ]
+3/3 adds a NO_NEIGH arm that pins the egress ifindex (input != egress):
+with the assignment moved into the helper, that case reports the input
+ifindex instead, while the return code stays NO_NEIGH, only the ifindex
+flips. It passes with the early write kept.
 
-[Severity: Critical]
-This isn't a bug introduced by this patch, but can the ntf union copy
-uninitialized stack memory into persistent device structures?
+> If you move the ifdef into the if statement, the if statement can have
+> an else-branch that assigns params->ifindex, so you don't need the
+> restore dance (see below).
 
-In net/nfc/nci/ntf.c:nci_rf_discover_ntf_packet(), the local ntf struct
-is declared on the stack:
+Same constraint: an else-branch inside bpf_fib_set_fwd_params() only
+runs when the helper runs, which is never on the NO_NEIGH/NO_SRC_ADDR
+returns, so it cannot be the sole writer of the egress ifindex.
 
-    struct nci_rf_discover_ntf ntf;
+Does the in_ifindex version look right to you? The alternative is to
+route the error returns through the label so the assignment can live
+fully in the helper; threading the return codes back through it works,
+but it is its own kind of dance and reads worse to me.
 
-If the incoming packet has ntf.rf_tech_specific_params_len == 0, the
-extraction routines are bypassed, leaving the rf_tech_specific_params union
-uninitialized. The struct is then passed to nci_add_new_target():
-
-    if (add_target == true)
-        nci_add_new_target(ndev, &ntf);
-
-This eventually calls nci_add_new_protocol(), which blindly reads from this
-union:
-
-    nfca_poll = (struct rf_tech_specific_params_nfca_poll *)params;
-    target->sens_res = nfca_poll->sens_res;
-    target->sel_res = nfca_poll->sel_res;
-    target->nfcid1_len = nfca_poll->nfcid1_len;
-
-Could this uninitialized stack garbage be copied into ndev->targets, and
-later broadcasted to userspace via Netlink in nfc_targets_found()?
-
-[Severity: Critical]
-This isn't a bug introduced by this patch, but does the general bytes length
-calculation underflow?
-
-In net/nfc/nci/ntf.c:nci_store_general_bytes_nfc_dep():
-
-    ndev->remote_gb_len = min_t(__u8, 
-        (ntf->activation_params.listen_nfc_dep.atr_req_len - 
-         NFC_ATR_REQ_GT_OFFSET), NFC_ATR_REQ_GB_MAXSIZE);
-         
-    memcpy(ndev->remote_gb, 
-        (ntf->activation_params.listen_nfc_dep.atr_req + 
-         NFC_ATR_REQ_GT_OFFSET), ndev->remote_gb_len);
-
-The length is computed by subtracting NFC_ATR_REQ_GT_OFFSET (14) from
-atr_req_len. If atr_req_len is less than 14, this subtraction will
-underflow.
-
-Because of the min_t cast, this large underflowed value is bounded to
-NFC_ATR_REQ_GB_MAXSIZE (48). The memcpy() then copies 48 bytes starting
-from atr_req + 14 into ndev->remote_gb.
-
-Since the source buffer is part of the ntf union allocated on the stack
-in nci_rf_intf_activated_ntf_packet(), could this leak up to 48 bytes of
-uninitialized kernel stack memory to userspace?
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does the lack of skb->len
-validation in NCI response handlers allow out-of-bounds reads?
-
-In nci_core_init_rsp_packet_v1() in net/nfc/nci/rsp.c, fields are read
-and arrays are copied from the payload:
-
-    ndev->num_supported_rf_interfaces = 
-        rsp_1->num_supported_rf_interfaces;
-        
-    memcpy(ndev->supported_rf_interfaces, rsp_1->supported_rf_interfaces, 
-           ndev->num_supported_rf_interfaces);
-
-Similarly in nci_core_init_rsp_packet_v2():
-
-    while (rf_interface_idx < ndev->num_supported_rf_interfaces) {
-        ndev->supported_rf_interfaces[rf_interface_idx++] = 
-            *supported_rf_interface++;
-    }
-
-Since the NCI control header is stripped via skb_pull(), leaving the
-payload length in skb->len, what happens if an NFCC sends a short response
-packet (e.g. plen = 1)? Could this cause the handlers to read adjacent
-kernel slab memory?
-
-[Severity: High]
-This isn't a bug introduced by this patch, but is there a missing boundary
-validation when extracting activation parameters?
-
-In net/nfc/nci/ntf.c:nci_extract_activation_params_iso_dep():
-
-    nfca_poll->rats_res_len = min_t(__u8, *data++, NFC_ATS_MAXSIZE);
-    if (nfca_poll->rats_res_len > 0) {
-        memcpy(nfca_poll->rats_res, data, nfca_poll->rats_res_len);
-    }
-
-And in nci_extract_activation_params_nfc_dep():
-
-    poll->atr_res_len = min_t(__u8, *data++, NFC_ATR_RES_MAXSIZE - 2);
-    if (poll->atr_res_len > 0)
-        memcpy(poll->atr_res, data, poll->atr_res_len);
-
-These inner lengths are bounded by a maximum size like NFC_ATS_MAXSIZE, but
-they are not validated against the remaining bytes in the SKB (skb->len).
-
-If a malformed packet provides a large inner length but a short payload,
-could this memcpy() read out of bounds into the device structure,
-potentially leaking adjacent slab memory to userspace later?
-
-[Severity: High]
-This isn't a bug introduced by this patch, but is there a potential
-priority inversion or timeout deadlock involving the device lock?
-
-Functions like nfc_stop_poll() in net/nfc/core.c acquire the device lock:
-
-    device_lock(&dev->dev);
-    ...
-    if (dev->ops->stop_poll)
-        dev->ops->stop_poll(dev);
-
-This eventually calls nci_request(), which synchronously waits for a
-completion signaled by the nci_rx_work thread. However, if an NTF packet
-is received first, nci_rx_work processes it and invokes
-nfc_targets_found(), which also attempts to acquire the device lock:
-
-    device_lock(&dev->dev);
-
-Since the calling thread already holds the device lock, nci_rx_work blocks
-indefinitely. Because the RX worker is blocked, it cannot process the
-pending RSP, causing nci_request() to time out and fail. Could this
-deadlock the RX thread?
+Thanks,
+Avinash
