@@ -1,151 +1,96 @@
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D4C331EB8;
-	Tue, 23 Jun 2026 06:02:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5467D3ACA79;
+	Tue, 23 Jun 2026 06:16:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782194551; cv=none; b=GPnnoC+Gp4ucLnPAmh7NgQf0fx6ygvjrruuwPa4QEWLcZn4ceGzWTVO6pc+ubZEoQB7EgxVJ2CrOE1UQrag8JdWVgKFkUltLbPaYvtSMxPMXS1PTy5Ngc4lACYCuefnUhyJ8/MOJGDwlhKPhe7Nbu4hIhl5N7aQcDIpzSa0Zjqw=
+	t=1782195366; cv=none; b=KrY550VP3e6r04KLlV8nlZMWkIlnqAkyc7Ptgb00gnrAundVimGWhG0PLlKY4K+js2zRRNrqdVSXvIMDNWAhSNB9qBkR1Vfh/JUYFnhEQGQ9KAFdVWQ4P+oQzeFap8RhbKF8mTK8zrt5ozFwBLtg5ndWy6P0tXhRgsWXiLynynY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782194551; c=relaxed/simple;
-	bh=Ohl8H5CIdVJ0LZVBp5/kkC99ycMWv9vhyOY2FRSkPyc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M5NJdIBsjhoREWewXt3UKF+B+4o2Y7VYdAzmw6q9SyF1TLn5Rrwyl6YcTHS16L7ffFUDs6x9SnKeYLMgCA7d5Yp23A9h3YLF2kgo82/oi1bhimGRwOp+8n923FWLfOnDKwIBtEN5jmWQyviHDZxFq6Tk7qLSn9Eydzs8JmU1bIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Y9vekp61; arc=none smtp.client-ip=115.124.30.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="Y9vekp61"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1782194539; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=5D6qSgcvkXY5fZhgXS+3C6PguwJ4UnErXlSfTf6hK/0=;
-	b=Y9vekp61xn2XhxSvykk9bYtq5TyJ6bTyOa86OlMAzzOKGVp7HLoKyayz+2iRlV0yUWUgJ0rpjkJJiltf4J4gpnu6HSfSAtR+g96UMf83HyOIfEEbjwR2ogbGhYzTS5E+NVe9Cx/IVg0vVDkKqVHGhMd9/lRUH+wK+EgmWBuHjjc=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=alibuda@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0X5SwrVe_1782194538;
-Received: from localhost(mailfrom:alibuda@linux.alibaba.com fp:SMTPD_---0X5SwrVe_1782194538 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 23 Jun 2026 14:02:18 +0800
-Date: Tue, 23 Jun 2026 14:02:18 +0800
-From: "D. Wythe" <alibuda@linux.alibaba.com    >
-To: Sechang Lim <rhkrqnwk98@gmail.com>
-Cc: "D . Wythe" <alibuda@linux.alibaba.com>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Sidraya Jayagond <sidraya@linux.ibm.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>,
-	"David S . Miller" <davem@davemloft.net>,
+	s=arc-20240116; t=1782195366; c=relaxed/simple;
+	bh=dltAV1c0sfR46UqvP8RllgnPbtkyfse/asDFH0vbGjk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nioQtPt9PTTj7qV1O1C6E8WvnprH0F0KW1cdUEHRaaNAs/xI/TQlGYEnwWO3gWXMEUn2NZq3VgFPT6JjPS3eshIs7kcNwqjuSYHBJxLNLawzSxGRMSzCJPnhGq1qsYl1IpsNMpjTF+UbC8ord6dFcGS2pv7JjZQlRKPUVWo1HDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [111.196.245.140])
+	by APP-05 (Coremail) with SMTP id zQCowADHINSVJDpqLTTKFA--.5253S2;
+	Tue, 23 Jun 2026 14:15:49 +0800 (CST)
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+To: Doug Berger <opendmb@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Mahanta Jambigi <mjambigi@linux.ibm.com>,
-	Tony Lu <tonylu@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>, Simon Horman <horms@kernel.org>,
-	Ursula Braun <ubraun@linux.ibm.com>,
-	Karsten Graul <kgraul@linux.ibm.com>,
-	Guvenc Gulce <guvenc@linux.ibm.com>, linux-rdma@vger.kernel.org,
-	linux-s390@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH net v2] net/smc: fix out-of-bounds read when sk_user_data
- holds a sk_psock
-Message-ID: <20260623060218.GA29925@j66a10360.sqa.eu95>
-References: <20260619150342.3626224-1-rhkrqnwk98@gmail.com>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Subject: [PATCH net] net: bcmgenet: report MDIO busy timeout
+Date: Tue, 23 Jun 2026 14:15:24 +0800
+Message-ID: <20260623061524.51411-1-pengpeng@iscas.ac.cn>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260619150342.3626224-1-rhkrqnwk98@gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowADHINSVJDpqLTTKFA--.5253S2
+X-Coremail-Antispam: 1UD129KBjvdXoWruw1Duw1xCF15KFW3CFyUZFb_yoWkKrX_Ww
+	4vqF9rGw48KFyqkw42yr45A34I9FWqvr1kua4I9ryaga9xZw17Zws5Ary5AryDWFWxZF98
+	Jw1aya4fA34I9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUba8FF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
+	6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUtVWrXwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
+	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
+	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
+	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUCVW8Jw
+	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWU
+	CwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26r4UJVWxJrUvcS
+	sGvfC2KfnxnUUI43ZEXa7VUbUPEDUUUUU==
+X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
 
-On Fri, Jun 19, 2026 at 03:03:41PM +0000, Sechang Lim wrote:
-> SMC stores its smc_sock in the clcsock's sk_user_data tagged
-> SK_USER_DATA_NOCOPY and reads it back with smc_clcsock_user_data(), which
-> only strips that flag. sockmap stores a sk_psock in the same field tagged
-> SK_USER_DATA_NOCOPY | SK_USER_DATA_PSOCK. Nothing keeps both off one
-> socket, and SMC then casts the sk_psock to an smc_sock.
-> 
-> A passive-open child hits this. It inherits the listener's
-> smc_clcsock_data_ready(), but sk_clone_lock() clears its NOCOPY
-> sk_user_data, and a BPF sock_ops program then adds the child to a sockmap,
-> installing a sk_psock in that field. The inherited callback reads it as an
-> smc_sock and dereferences a clcsk_* pointer past the end of the sk_psock:
-> 
->   BUG: KASAN: slab-out-of-bounds in smc_clcsock_data_ready+0x84/0x200 net/smc/af_smc.c:2637
->   Read of size 8 at addr ffff8880013b8674 by task syz.6.12484/67930
->    <IRQ>
->    smc_clcsock_data_ready+0x84/0x200 net/smc/af_smc.c:2637
->    tcp_urg+0x24d/0x360 net/ipv4/tcp_input.c:6264
->    tcp_rcv_state_process+0x280d/0x4940 net/ipv4/tcp_input.c:7336
->    tcp_child_process+0x371/0xa50 net/ipv4/tcp_minisocks.c:1002
->    tcp_v4_rcv+0x1eaa/0x2a00 net/ipv4/tcp_ipv4.c:2186
->    [...]
->    </IRQ>
-> 
->   Allocated by task 67930:
->    sk_psock_init+0x142/0x740 net/core/skmsg.c:766
->    sock_hash_update_common+0xd3/0x990 net/core/sock_map.c:1010
->    bpf_sock_hash_update+0x114/0x170 net/core/sock_map.c:1229
->    __cgroup_bpf_run_filter_sock_ops+0x74/0xa0 kernel/bpf/cgroup.c:1727
->    tcp_init_transfer+0x1085/0x1100 net/ipv4/tcp_input.c:6693
->    [...]
-> 
-> sk_psock() already guards the other side, returning NULL unless
-> SK_USER_DATA_PSOCK is set. Make smc_clcsock_user_data() and its RCU
-> variant return the smc_sock only when sk_user_data carries SMC's tag
-> alone. A sk_psock then reads back as NULL, which the data_ready and
-> fallback callbacks already handle.
-> 
-> Fixes: a60a2b1e0af1 ("net/smc: reduce active tcp_listen workers")
-> Signed-off-by: Sechang Lim <rhkrqnwk98@gmail.com>
-> ---
->  net/smc/smc.h | 18 +++++++++++++++---
->  1 file changed, 15 insertions(+), 3 deletions(-)
-> 
-> diff --git a/net/smc/smc.h b/net/smc/smc.h
-> index 52145df83f6e..88dfb459b7cc 100644
-> --- a/net/smc/smc.h
-> +++ b/net/smc/smc.h
-> @@ -342,13 +342,25 @@ static inline void smc_init_saved_callbacks(struct smc_sock *smc)
->  
->  static inline struct smc_sock *smc_clcsock_user_data(const struct sock *clcsk)
->  {
-> -	return (struct smc_sock *)
-> -	       ((uintptr_t)clcsk->sk_user_data & ~SK_USER_DATA_NOCOPY);
-> +	uintptr_t data = (uintptr_t)clcsk->sk_user_data;
-> +
-> +	/*
-> +	 * Return the smc_sock only if the slot carries SMC's tag alone.
-> +	 * sockmap stores a sk_psock here tagged SK_USER_DATA_PSOCK; it is
-> +	 * not an smc_sock and must not be dereferenced as one.
-> +	 */
-> +	if ((data & ~SK_USER_DATA_PTRMASK) != SK_USER_DATA_NOCOPY)
-> +		return NULL;
-> +	return (struct smc_sock *)(data & SK_USER_DATA_PTRMASK);
->  }
->  
->  static inline struct smc_sock *smc_clcsock_user_data_rcu(const struct sock *clcsk)
->  {
-> -	return (struct smc_sock *)rcu_dereference_sk_user_data(clcsk);
-> +	uintptr_t data = (uintptr_t)rcu_dereference(__sk_user_data(clcsk));
-> +
-> +	if ((data & ~SK_USER_DATA_PTRMASK) != SK_USER_DATA_NOCOPY)
-> +		return NULL;
-> +	return (struct smc_sock *)(data & SK_USER_DATA_PTRMASK);
->  }
->  
->  /* save target_cb in saved_cb, and replace target_cb with new_cb */
+bcmgenet_mii_wait() waits for the UNIMAC MDIO command busy bit to clear,
+but ignores wait_event_timeout() and always returns success.
 
-No. The core issue is how to resolve the ownership conflict between
-sockmap and SMC over sk_user_data, which can by no means be solved by
-adding runtime checks on the read path.
+Return -ETIMEDOUT when the busy bit remains set for the whole wait
+period so MDIO callers see the failed transaction instead of continuing
+as if the bus were idle.
 
-Following sk_psock_init(), the simplest approach would be to always
-explicitly set sk_user_data or ulp_ops during the active/passive
-creation of smc->clcsock, thereby avoiding the conflict at its root.
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+---
+ drivers/net/ethernet/broadcom/genet/bcmmii.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-Additionally, compatibility with sockmap in the fallback path needs to
-be considered, though that can be addressed later.
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmmii.c b/drivers/net/ethernet/broadcom/genet/bcmmii.c
+index a4e0d5a68268..92b5997d00b2 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmmii.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmmii.c
+@@ -439,10 +439,12 @@ static int bcmgenet_mii_wait(void *wait_func_data)
+ {
+ 	struct bcmgenet_priv *priv = wait_func_data;
+ 
+-	wait_event_timeout(priv->wq,
+-			   !(bcmgenet_umac_readl(priv, UMAC_MDIO_CMD)
+-			   & MDIO_START_BUSY),
+-			   HZ / 100);
++	if (!wait_event_timeout(priv->wq,
++				!(bcmgenet_umac_readl(priv, UMAC_MDIO_CMD)
++				& MDIO_START_BUSY),
++				HZ / 100))
++		return -ETIMEDOUT;
++
+ 	return 0;
+ }
+ 
+-- 
+2.50.1 (Apple Git-155)
 
-> -- 
-> 2.43.0
