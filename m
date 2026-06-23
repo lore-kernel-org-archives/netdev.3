@@ -1,115 +1,151 @@
-Received: from zg8tmtyylji0my4xnjeumjiw.icoremail.net (zg8tmtyylji0my4xnjeumjiw.icoremail.net [162.243.161.220])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2B38367B86;
-	Tue, 23 Jun 2026 09:53:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.161.220
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782208392; cv=none; b=Suki0gd8oj/+gGqaFsYuOEAyWwjkMBQANemoZzVDRAxVQn9NzJ/DS6UpMIiISssPQ3WEkIFCHHmPFoG8/yt2AvX3NZUy3eXPu/8vvqxSAKTsSDGH4EOgLsOV6fsD3QLblvq/l/iVWgZAB2IWrd0CHFsL7i/YEW2tvk1eSYI1Z6A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782208392; c=relaxed/simple;
-	bh=eNQlh6VTYUAKPQ97pC9x8ZewizrBKpooOvT6XjmDkN8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=Dnbs8Tnujg6zNQa0UjUDsTFsc3Xli6cvSvBBfjDYNFA2N4UHJKJoNpFDmCV9E7aMYwr/Sm4Tzz9mQBDdD7wIMQpJGbxzfZk4OgcSax9J4NixPYjYPX23no09Ew/fsD2bLKzmTnt1JIeqveIM5YCnSkzvZIlRJUO6WvPm7uejjvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=fail (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=nX9l4qUY reason="signature verification failed"; arc=none smtp.client-ip=162.243.161.220
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71CDA369D59
+	for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 09:55:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782208544; cv=pass; b=pcfk4m2JS+K9q0nXb5+gGISbXHnXUr+jPQB7Zd4UUKZhW6OdnuxrxHUR8R1PX27T0AVEgjByT9Te/7axx18LQjvouqiWsKdl9rn3E1YZS4gKxWVBgQallLdkn9aCaQJ5OZhx5kJ97R61StIpcHVkpZK08Z23PnjX0mAxiR5LJhI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782208544; c=relaxed/simple;
+	bh=LvYUThQne3TrY6uaQG9EmEyHuxSQP+aNbK640K+aMxU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=S4PeWghiMsoxHJPJIa1xa/3Vf4MQgP/Py+c/oLU8qSLceYChF8hgZbhb7lXJALBlTM7X3vtRpiIpGPMdMfeMX/Jv9rENBkrRPeBxynOm1JXz+YbMpavBkvT3xe8K3sYbCfGGBFBJK/uec7+oVWhbETFgdt+w8hOQpsQuh+FTxmc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=H1FneK13; arc=pass smtp.client-ip=209.85.219.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="nX9l4qUY"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="H1FneK13"
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-8dd74f90e3eso61795936d6.2
+        for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 02:55:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782208542; cv=none;
+        d=google.com; s=arc-20240605;
+        b=U6RT4S/lkSWdZZdQlK74ybLTixbQSV96GqLJT+21syqBdZU6sQneO+t/tY1C6Z11DK
+         dYjkQh7JHY6oYLStZkdXsWf9g9JL65hXQvVp7wn2cI4TCpkswOEquNONAuQC59ioyahu
+         T5qThVC13Ev4wOs3B+rXriOhp3Cc7kZ80Ode0W+cj9ZNPW6xkIZWWGPGBaEeBE7gQE2W
+         /ZO7/XfGFXmjX4IcsAYpEHgNBNqS3ERy/1myfI//kvbA7RBNi70nrZdTJcxqVVXv3NSR
+         7bF+v27Rj/wCZx3WtF8w6VPd69ZJLpiOKp06MP1p48VtYuAuEUG0/ZoS8KW7ZcRP3icg
+         W3oA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=WWdevSc0aWVCs6aCLgUGOAww7ZtaohjUE77vhEuxp50=;
+        fh=RcSVRXhuFcqFbUIdcnEIqftHOAz6yBvvd9QhOMjwmiI=;
+        b=Zmv6AHv1v4P+ZdRxJyPgjTrBZAVLt9ep5eAyJL+k+nXFSIhb20XuwozNBbjColGGyu
+         cYQIdGAM38+Pivads34weiv+o17uLkDPchi2/JFKDhfGvzJKigHvKVX1rIOPxTWFIuAA
+         j2GSoxjoRTSbJaltH1C1ePsAruCXSLMdAQ5n+U/Gvfy0jrHKRiduCyRO4tMA1ASGuxcV
+         g1lffGxVVAosZ1Tw3+NJFk7EGS2aVK9rvjBAeftgJn+7K3+etp6t9IFHYp1z3cz1kG2U
+         EdSgIm0tUvwIWRMVF6fw9616mHy0AXkhD6X5G/rvIN7pe2QMEslmjc0dIN7KB1ezEGKH
+         yLsQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=mails.tsinghua.edu.cn; s=dkim; h=Received:Date:From:To:Cc:
-	Subject:In-Reply-To:References:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Message-ID; bh=V6A2nlb9Nrrq7OFjAEP17y0
-	JGlpwkRwFoeWr9x4c8k4=; b=nX9l4qUY+RelK+T6BAfYDwdVlS7rVY8UaQ8FM5w
-	iH4QE3jweQuI94LtrEjx+BSBQduZhOYSn/RDB69gQD46dplpUS/6JXuNoex+ZJZt
-	tDDCuVopFCwS5Gx5jU6DKPidU9Am7lehG6fJzWhdlQMTTbXYIlySx7fqkDvnHsw2
-	77X0=
-Received: from gnq25$mails.tsinghua.edu.cn ( [223.91.120.130] ) by
- ajax-webmail-web2 (Coremail) ; Tue, 23 Jun 2026 17:52:52 +0800 (GMT+08:00)
-Date: Tue, 23 Jun 2026 17:52:52 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From: "Nuoqi Gui" <gnq25@mails.tsinghua.edu.cn>
-To: "Andrea Mayer" <andrea.mayer@uniroma2.it>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	"Eric Dumazet" <edumazet@google.com>,
-	"Jakub Kicinski" <kuba@kernel.org>,
-	"Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
-	netdev@vger.kernel.org, bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stefano.salsano@uniroma2.it
-Subject: Re: Re: [PATCH net] seg6: validate SRH length before reading fixed
- fields
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2024.2-cmXT5 build
- 20250909(015d6f0a) Copyright (c) 2002-2026 www.mailtech.cn
- mispb-4df55a87-4b50-4a66-85a0-70f79cb6c8b5-tsinghua.edu.cn
-In-Reply-To: <20260622213317.52c8b5a38b88d4ccc3849e22@uniroma2.it>
-References: <20260620-f01-17-seg6-srh-len-v1-1-36cbb29c12f1@mails.tsinghua.edu.cn>
- <20260622213317.52c8b5a38b88d4ccc3849e22@uniroma2.it>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+        d=google.com; s=20251104; t=1782208542; x=1782813342; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WWdevSc0aWVCs6aCLgUGOAww7ZtaohjUE77vhEuxp50=;
+        b=H1FneK13MT19e+Ln7/c4eyYiN8gUjdB7OjoiAfMZ/itau45v5A1avaCJZxgoPNt/Up
+         VMsX3cnYiyA/4mTLe+3eIEmtqFudhtSEZddiQ+SsmJZfjCAGbVuBdxbF5rxOlhkk21A/
+         UOCMaJBFqh6qsv2TwaJj6ZTFFzAirz3RcJwDz3gWeQpiS5sMYJsMUyMt2ARpTLYb+RB8
+         AMWpZMu+44lGLjm9Al3exiQf656J42rJTn0MJ3a/9+NkUJULSGnqdFqYIv1IekE/dqp5
+         5TjL3GaFpNcSgJMxK8sa2zmeNhjuvK4+H2/xUGAgyW4iU4g3q4Tf5IhalAepClBpOphb
+         Cajw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782208542; x=1782813342;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=WWdevSc0aWVCs6aCLgUGOAww7ZtaohjUE77vhEuxp50=;
+        b=MCDPUMcoXWowg+uX+sAGrh9Q7dtfmBjC5LW+yl0EwjhimPeD8o/er/yMw3F73IDN92
+         kqwxpCamTPbcJSVbWsJVQKbR716lsWSbifgYq8zeTEP5bUqCI5BfNFDObK7BADd5Nm+d
+         k+GzSSjrLj7KQHQkWYVJkz2fgwySa8Vn+PCZYayMU6MNbNMhlU1njOEH/tHKHPXuK1lt
+         gqBn7jgRR53Na8u+RfE4cKRRlKOnH3PZYaW9l/NkevaLHQMqdayC9UYwzLuZ2F7OSjJ8
+         JorlEHfV8eqLnthaIrz7xZoToObLlcdCzcyMHMk4z/RZvx7fKAPA6efkNvKFvEa7X6Cl
+         8M6g==
+X-Forwarded-Encrypted: i=1; AFNElJ+xHGxIlt6c3SShl4mV7/Sraql4m/U+UiBD57ubFPhMX54KHULbIPcg8w6PPrJE+7rFgHBbxSM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7YHNPcZpksq7gQo6Dniq6Od6VS0K0l+BMvxQHbdyoTvVuZzeX
+	lbjwULqe+YpjtjBkPxsu7A3HpPLAKositdm45ABvvVF6sUxP2dZCkUq8tCodGcAzsp/JGwOJ3Mi
+	i/xle8FwYntKOPR+L5q+pZmu5eRscmgUxTxVCj9cJ
+X-Gm-Gg: AfdE7ckN1qlX4UKapB7W8Us8e4Ztmc66a//frhCI9WGaOYDr3T3cuIt0dUJqJerq8H+
+	ZSfbR4cUzoB/nxPbKXUtNRaZ1446HMBjoKY9AHmEDPcgm+kcmFlN6+wGolSVLxWYdEpAhniTf5e
+	cj/2my4F9Accmp3RWz7pKTJMr/lg76qHp5hBMi0olC+BtQGAKvBg6xpI6PlOiJ1QV8tIwD+GV0f
+	dpm4rz7TJ2LAxsrLfjccppp/hgzDX97fKahESKVflSzz4zbqP569NfGYxEMVzLbn5oE9CEvWX3h
+	aycV2Yp82GOUUG0YgR/UgHlumuIliAqqm4CH7lkRTc6Wf7QJj8CRmuDXVGm2t8TFLThi0hePY8o
+	iogfh8R83
+X-Received: by 2002:a05:622a:291:b0:517:5e32:f3ad with SMTP id
+ d75a77b69052e-51a06937e84mr204781371cf.26.1782208541730; Tue, 23 Jun 2026
+ 02:55:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <5cd4ac55.850d6.19ef3e59eab.Coremail.gnq25@mails.tsinghua.edu.cn>
-X-Coremail-Locale: en_US
-X-CM-TRANSID:yQQGZQCXcZl0VzpqmpR8Ag--.26140W
-X-CM-SenderInfo: xjqtjko6pdxz3vow2x5qjk3toohg3hdfq/1tbiAgIHA2o6NDlGngA
-	CsD
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
-	CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
-	daVFxhVjvjDU=
+References: <20260623091901.118315-1-lange_tang@163.com>
+In-Reply-To: <20260623091901.118315-1-lange_tang@163.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 23 Jun 2026 02:55:30 -0700
+X-Gm-Features: AVVi8CdxKu-26NNasQTWpoEm4a53c3jWCLNr8S1zeEbZh07qmL6p3AGRUsDetT0
+Message-ID: <CANn89iLrOTKQNqJA_oZKPjkHb1Xyqm6LS9tDn72X4az65isDGQ@mail.gmail.com>
+Subject: Re: [PATCH v2] virtio_net: disable cb when NAPI is busy-polled
+To: Longjun Tang <lange_tang@163.com>, netdev <netdev@vger.kernel.org>
+Cc: mst@redhat.com, xuanzhuo@linux.alibaba.com, jasowang@redhat.com, 
+	virtualization@lists.linux.dev, tanglongjun@kylinos.cn
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-CgoKPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2VzLS0tLS0KPiBGcm9tOiAiQW5kcmVhIE1heWVyIiA8
-YW5kcmVhLm1heWVyQHVuaXJvbWEyLml0Pgo+IFNlbmQgdGltZTpUdWVzZGF5LCAyMy8wNi8yMDI2
-IDAzOjMzOjE3Cj4gVG86ICJOdW9xaSBHdWkiIDxnbnEyNUBtYWlscy50c2luZ2h1YS5lZHUuY24+
-Cj4gQ2M6ICJEYXZpZCBTLiBNaWxsZXIiIDxkYXZlbUBkYXZlbWxvZnQubmV0PiwgIkVyaWMgRHVt
-YXpldCIgPGVkdW1hemV0QGdvb2dsZS5jb20+LCAiSmFrdWIgS2ljaW5za2kiIDxrdWJhQGtlcm5l
-bC5vcmc+LCAiUGFvbG8gQWJlbmkiIDxwYWJlbmlAcmVkaGF0LmNvbT4sICJTaW1vbiBIb3JtYW4i
-IDxob3Jtc0BrZXJuZWwub3JnPiwgbmV0ZGV2QHZnZXIua2VybmVsLm9yZywgYnBmQHZnZXIua2Vy
-bmVsLm9yZywgbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZywgc3RlZmFuby5zYWxzYW5vQHVu
-aXJvbWEyLml0LCAiQW5kcmVhIE1heWVyIiA8YW5kcmVhLm1heWVyQHVuaXJvbWEyLml0Pgo+IFN1
-YmplY3Q6IFJlOiBbUEFUQ0ggbmV0XSBzZWc2OiB2YWxpZGF0ZSBTUkggbGVuZ3RoIGJlZm9yZSBy
-ZWFkaW5nIGZpeGVkIGZpZWxkcwo+IAo+IE9uIFNhdCwgMjAgSnVuIDIwMjYgMjM6NTU6NTEgKzA4
-MDAKPiBOdW9xaSBHdWkgPGducTI1QG1haWxzLnRzaW5naHVhLmVkdS5jbj4gd3JvdGU6Cj4gCj4g
-SGkgTnVvcWksCj4gVGhhbmtzIGZvciB0aGUgcGF0Y2guCj4gCj4gPiBzZWc2X3ZhbGlkYXRlX3Ny
-aCgpIHJlYWRzIGZpeGVkIFNSSCBmaWVsZHMgc3VjaCBhcyBzcmgtPnR5cGUgYW5kCj4gPiBzcmgt
-PmhkcmxlbiBiZWZvcmUgY2hlY2tpbmcgdGhhdCB0aGUgc3VwcGxpZWQgbGVuZ3RoIGNvdmVycyB0
-aGUgZml4ZWQKPiA+IHN0cnVjdCBpcHY2X3NyX2hkciBmaWVsZHMuICBDYWxsZXJzIHRoYXQgcGFz
-cyBhIGxlbmd0aCBzbWFsbGVyIHRoYW4KPiA+IHNpemVvZihzdHJ1Y3QgaXB2Nl9zcl9oZHIpIHRo
-ZXJlZm9yZSBleHBvc2UgdGhvc2UgcmVhZHMgdG8gbWVtb3J5Cj4gPiBvdXRzaWRlIHRoZSB2YWxp
-ZGF0ZWQgcmFuZ2UuCj4gPgo+ID4gVGhlIEJQRiBTRUc2IGVuY2FwIHBhdGggKGJwZl9sd3RfcHVz
-aF9lbmNhcCgpIC0+IGJwZl9wdXNoX3NlZzZfZW5jYXAoKSkKPiA+IGlzIG9uZSBzdWNoIGNhbGxl
-cjogaXQgZm9yd2FyZHMgYSBCUEYgcHJvZ3JhbS1zdXBwbGllZCBwb2ludGVyIGFuZAo+ID4gbGVu
-Z3RoIHN0cmFpZ2h0IHRvIHNlZzZfdmFsaWRhdGVfc3JoKCkgd2l0aCBubyBtaW5pbXVtLXNpemUg
-Z3VhcmQsIHNvIGEKPiA+IDItYnl0ZSBTRUc2IGVuY2FwIGhlYWRlciBsZXRzIHRoZSB2YWxpZGF0
-b3IgcmVhZCBzcmgtPnR5cGUgYXQgb2Zmc2V0IDIKPiA+IGJleW9uZCB0aGUgY2FsbGVyLXN1cHBs
-aWVkIGJ1ZmZlci4KPiAKPiBCZXNpZGVzIHRoZSBCUEYgdXNlIGNhc2UsIGlzIHRoZXJlIGEgY2Fs
-bGVyIHRoYXQgY2FuIHJlYWNoIGl0IHdpdGgKPiBsZW4gPCBzaXplb2YoKnNyaCk/IFRoZSBvbmVz
-IEkgZm91bmQgYWxsIHBhc3MgYXQgbGVhc3QgdGhlIGZpeGVkIGhlYWRlci4KPiAKTm8sIEkgZG9u
-J3Qgc2VlIGFub3RoZXIgY3VycmVudCBjYWxsZXIgdGhhdCBjYW4gcmVhY2ggc2VnNl92YWxpZGF0
-ZV9zcmgoKSAKd2l0aCBsZW4gPCBzaXplb2YoKnNyaCkuIEknbGwgbmFycm93IHRoZSBjb21taXQg
-bWVzc2FnZSBhY2NvcmRpbmdseS4KCj4gPgo+ID4gUmVqZWN0IGxlbmd0aHMgc2hvcnRlciB0aGFu
-IHRoZSBmaXhlZCBTUkggYXQgdGhlIHRvcCBvZgo+ID4gc2VnNl92YWxpZGF0ZV9zcmgoKSwgYmVm
-b3JlIGFueSBmaWVsZCBpcyByZWFkLiAgVGhpcyBmaXhlcyB0aGUgQlBGIGhlbHBlcgo+ID4gcGF0
-aCBhbmQgaGFyZGVucyB0aGUgY29tbW9uIHZhbGlkYXRvciBmb3IgYW55IG90aGVyIGNhbGxlciB0
-aGF0IHJlYWNoZXMgaXQKPiA+IHdpdGggYSB0b28tc2hvcnQgU1JILgo+ID4KPiA+IEZpeGVzOiBm
-ZTk0Y2MyOTBmNTMgKCJicGY6IEFkZCBJUHY2IFNlZ21lbnQgUm91dGluZyBoZWxwZXJzIikKPiA+
-IFNpZ25lZC1vZmYtYnk6IE51b3FpIEd1aSA8Z25xMjVAbWFpbHMudHNpbmdodWEuZWR1LmNuPgo+
-ID4gLS0tCj4gPiAgbmV0L2lwdjYvc2VnNi5jIHwgMyArKysKPiA+ICAxIGZpbGUgY2hhbmdlZCwg
-MyBpbnNlcnRpb25zKCspCj4gPgo+ID4gZGlmZiAtLWdpdCBhL25ldC9pcHY2L3NlZzYuYyBiL25l
-dC9pcHY2L3NlZzYuYwo+ID4gaW5kZXggMWMzYWQyNTcwMGM0Yy4uZDJjYjMyYTEwNThhZiAxMDA2
-NDQKPiA+IC0tLSBhL25ldC9pcHY2L3NlZzYuYwo+ID4gKysrIGIvbmV0L2lwdjYvc2VnNi5jCj4g
-PiBAQCAtMjksNiArMjksOSBAQCBib29sIHNlZzZfdmFsaWRhdGVfc3JoKHN0cnVjdCBpcHY2X3Ny
-X2hkciAqc3JoLCBpbnQgbGVuLCBib29sIHJlZHVjZWQpCj4gPiAgICAgICBpbnQgbWF4X2xhc3Rf
-ZW50cnk7Cj4gPiAgICAgICBpbnQgdHJhaWxpbmc7Cj4gPgo+ID4gKyAgICAgaWYgKGxlbiA8IChp
-bnQpc2l6ZW9mKCpzcmgpKQo+ID4gKyAgICAgICAgICAgICByZXR1cm4gZmFsc2U7Cj4gPiArCj4g
-Cj4gVGhlIChpbnQpIGNhc3Qgb25seSBjaGFuZ2VzIHRoZSByZXN1bHQgd2hlbiBsZW4gPCAwLCB3
-aGljaCBpcyBub3QgYSBtZWFuaW5nZnVsCj4gYnl0ZSBsZW5ndGguIFBsYWluICJsZW4gPCBzaXpl
-b2YoKnNyaCkiIHdvdWxkIGJlIGVub3VnaC4KPiAKSSdsbCB1c2UgcGxhaW4gbGVuIDwgc2l6ZW9m
-KCpzcmgpLgoKPiA+ICAgICAgIGlmIChzcmgtPnR5cGUgIT0gSVBWNl9TUkNSVF9UWVBFXzQpCj4g
-PiAgICAgICAgICAgICAgIHJldHVybiBmYWxzZTsKPiA+Cj4gPgo+ID4gLS0tCj4gPiBiYXNlLWNv
-bW1pdDogOTZlN2Y5MTIyYWFlMGVkMDAwZWUzMjFmMzI0YjgxMmE0NDc5MDZkOQo+ID4gY2hhbmdl
-LWlkOiAyMDI2MDYxOS1mMDEtMTctc2VnNi1zcmgtbGVuLWE4NWYzNTQyN2UwYgo+ID4KPiA+IEJl
-c3QgcmVnYXJkcywKPiA+IC0tCj4gPiBOdW9xaSBHdWkgPGducTI1QG1haWxzLnRzaW5naHVhLmVk
-dS5jbj4KPiA+Cj4gCj4gUmVnYXJkcywKPiBBbmRyZWEK
+On Tue, Jun 23, 2026 at 2:19=E2=80=AFAM Longjun Tang <lange_tang@163.com> w=
+rote:
+>
+> From: Longjun Tang <tanglongjun@kylinos.cn>
+>
+> When busy-poll is active, napi_schedule_prep() returns false in
+> virtqueue_napi_schedule(), so virtqueue_disable_cb() is skipped.
+> The device may keep firing irqs until reaches virtqueue_napi_complete().
+> Under load (received =3D=3D budget), it will lead to a large number
+> of spurious interrupts.
+>
+> Fix it by disabling the callback at the virtnet_poll() entry. This keeps
+> the callback off while we poll and re-enable by virtqueue_napi_complete()
+> when going idle.
+>
+> Signed-off-by: Longjun Tang <tanglongjun@kylinos.cn>
+>
+
+I added netdev@ to get more attention from networking napi polling experts,
+
+Please add a Fixes: tag as this will ease code review.
+
+My rough guess is:
+
+Fixes: ceef438d613f ("virtio_net: remove custom busy_poll")
+
+Thanks.
+
+> ---
+> V1 -> V2: Remain agnostic to busy polling
+> ---
+>  drivers/net/virtio_net.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+>
+> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+> index f4adcfee7a80..0a11f2b32500 100644
+> --- a/drivers/net/virtio_net.c
+> +++ b/drivers/net/virtio_net.c
+> @@ -3008,6 +3008,11 @@ static int virtnet_poll(struct napi_struct *napi, =
+int budget)
+>         unsigned int xdp_xmit =3D 0;
+>         bool napi_complete;
+>
+> +       /* Keep callbacks suppressed for the duration of this poll,
+> +        * busy-poll need.
+> +        */
+> +       virtqueue_disable_cb(rq->vq);
+> +
+>         virtnet_poll_cleantx(rq, budget);
+>
+>         received =3D virtnet_receive(rq, budget, &xdp_xmit);
+> --
+> 2.43.0
+>
