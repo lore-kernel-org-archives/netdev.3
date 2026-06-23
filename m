@@ -1,71 +1,99 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8809A31E84E;
-	Tue, 23 Jun 2026 15:12:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8633CAA50;
+	Tue, 23 Jun 2026 15:13:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782227567; cv=none; b=YsKa2EytF+MtkHAmZG1/gNtXiN98LB2ksKsudHaXJpYHSpFfyUNUdUFK2m+g7L4/qXqWE5czi3ZSmOzwkmVffMfXGih5i8bV1/5EorgNaykWVWRd9eQTr68W94MlLQvQBc/dNbrtxJB2eSb+/66vnnaxEaZUBjYrFLJRYACgjA8=
+	t=1782227581; cv=none; b=GZ1KLl233sjNsDH1ycIWO4pLSe/ofIy2zz1lUM/0054cAo0ojKbuj8YdgWypBUJIdq09xDYHgGzs+kiVWnsLONpJhIMbaBFE+OzNVQP1w8u06TMoMcMrtqgvWU0B8bgiPxADUmuaZ+cxqKUsqDa7hQZmEOcKGwSwZMQBJaQM5f0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782227567; c=relaxed/simple;
-	bh=nPC4jdeJcRErLmYE+XtVF3VnxBQ2rVXb5nY0nlEKnRE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Du1Crdz8oZC8WdSElNh1c9ytlBsJCIbOLMPbyOvQ/CHz91t/mgwRZgMspOfwoeJV/30uXOwlpl8tgYK3Q3cUUKGzrOTkjPiI3iZA+2aU1zIrK7i5RaO4XcsnkdfVlaXhrZhh3WbP14byGHEHTSUW+qOxJXPOS5uBYZ26Er8VdMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=o+gcWmXA; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	s=arc-20240116; t=1782227581; c=relaxed/simple;
+	bh=UvRb/hJ75yqmD7KOHsYc8RNxW1ISLUNyRcOHSB+mnKg=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=XiKofQJ5VqdGEtISxMYpNOCw1lhug6JEkI7G+KWKd2b04EWozOYSOnV7BcKuFhXtpav8niuz/3qXqA5iqRu/LpO6V/WTkispeM7QLNtEEywBoOxX3B6HhXJFysBYr+zD0ZE67yPvcWnH4GOns0PPTCZKV1UXAY9nSJ+ICs1XQCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=erYQ52Vc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="o+gcWmXA"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=GqkkKeTlLEue6st69aJaBvzWr7y8e4iXOI20z07pTsM=; b=o+gcWmXAdYjZqz94bMd6mlmTqZ
-	KciTdDSSP879m3W5yR696vuTIAUwxoO2nQtkXPTLhEm0NA2K9AAedLmNu1oUbylD0petHRIybNzul
-	QmDr8f/4ucgdQStKPwwtVoepaxIQxu2SqU854Ce74+5xUVYnsdaVxvDADQet/Dw1j1e5O+wUqeRR0
-	e8MvpreKu5utObjQl0hns16vzEq0JCAC16gSjZLnpEWCx9pe+6/gB+W+1GBOMRFJ/1XFu+cwTpIUF
-	pFKEWzfJJ8CiCfmOfkBcu2HoCRxVFAse77fUvwkmM6T0gxobmI3f9wdN7vVNBXSsbEil+LGTuyfHM
-	OGu9L1+g==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wc2ng-001jhy-3D;
-	Tue, 23 Jun 2026 15:12:33 +0000
-Date: Tue, 23 Jun 2026 08:12:27 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Mahanta Jambigi <mjambigi@linux.ibm.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, alibuda@linux.alibaba.com, 
-	dust.li@linux.alibaba.com, sidraya@linux.ibm.com, wenjia@linux.ibm.com, 
-	wintera@linux.ibm.com, pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com, 
-	guwen@linux.alibaba.com, netdev@vger.kernel.org, linux-s390@vger.kernel.org
-Subject: Re: [PATCH net-next v2] Documentation: net/smc: correct old value of
- smcr_max_recv_wr
-Message-ID: <ajqh_3YDwz9q5Aiz@gmail.com>
-References: <20260424052336.3262350-1-mjambigi@linux.ibm.com>
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="erYQ52Vc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D9731F000E9;
+	Tue, 23 Jun 2026 15:12:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1782227579;
+	bh=AtvjKrQjn0yaOECYG651fhjPbVJqsgT1jFVa8oh13/M=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=erYQ52Vc0wahfFEjC5jkxkoH7jgtKIkO3enH8kHCLnp8lS8V9OfV6cyOeFWe4dBhG
+	 BLIDAtScWu3JcuLHnoltUE340UnQIkmw+LJEVKLoKL3xetwwmBLsozVNK0N+Ba4MhS
+	 3exzCzkutIxDMbY4VA11dhwknIjPrSRAFHue0FSM=
+Date: Tue, 23 Jun 2026 08:12:58 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+ sched-ext@lists.linux.dev, netdev@vger.kernel.org, "David S . Miller"
+ <davem@davemloft.net>, Andrea Righi <arighi@nvidia.com>, Arnd Bergmann
+ <arnd@arndb.de>, Ben Segall <bsegall@google.com>, Breno Leitao
+ <leitao@debian.org>, Changwoo Min <changwoo@igalia.com>, David Vernet
+ <void@manifault.com>, Dietmar Eggemann <dietmar.eggemann@arm.com>, Eric
+ Dumazet <edumazet@google.com>, Ingo Molnar <mingo@redhat.com>, Jakub
+ Kicinski <kuba@kernel.org>, John Ogness <john.ogness@linutronix.de>, Juri
+ Lelli <juri.lelli@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>,
+ Paolo Abeni <pabeni@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Petr Mladek <pmladek@suse.com>, Sergey Senozhatsky
+ <senozhatsky@chromium.org>, Simon Horman <horms@kernel.org>, Steven Rostedt
+ <rostedt@goodmis.org>, Tejun Heo <tj@kernel.org>, Vincent Guittot
+ <vincent.guittot@linaro.org>, Vlad Poenaru <vlad.wing@gmail.com>
+Subject: Re: [PATCH 1/2] bug: Provide WARN_ON.*DEFERRED() macros for console
+ deferred output
+Message-Id: <20260623081258.580e034fdb5b98f4f8dba44a@linux-foundation.org>
+In-Reply-To: <20260623142650.265721-2-bigeasy@linutronix.de>
+References: <20260623142650.265721-1-bigeasy@linutronix.de>
+	<20260623142650.265721-2-bigeasy@linutronix.de>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260424052336.3262350-1-mjambigi@linux.ibm.com>
-X-Debian-User: leitao
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, Apr 24, 2026 at 07:23:36AM +0200, Mahanta Jambigi wrote:
-> The smc-sysctl.rst documentation incorrectly stated that the previous
-> hardcoded maximum number of WR buffers on the receive path (smcr_max_recv_wr)
-> was 16. The correct historical value used before the introduction of the sysctl
-> control was 48. Update the documentation to reflect the accurate historical
-> value. Also fix a couple of minor typos.
+On Tue, 23 Jun 2026 16:26:49 +0200 Sebastian Andrzej Siewior <bigeasy@linutronix.de> wrote:
+
+> Provide a deferred version of the WARN_ON() macro. It will delay
+> flushing the console until a later context. It is needed in a context
+> where the caller holds locks which can lead to a deadlock content is
+> flushed to the console driver.
+> An example would from a warning from within the scheduler resulting in a
+> wake-up of a task.
 > 
-> Fixes: aef3cdb47bbb net/smc: make wr buffer count configurable
+> Deferring the output works by using printk_deferred_enter/ exit() around
+> the printing output. This must be used in a context where the task can't
+> migrate to another CPU. This should be the case usually, since the
+> scheduler would acquire the rq lock whith disabled interrupts, but to be
+> safe preemption is disabled to guarantee this.
+> 
+> In order not to bloat the code on architectures which provide an
+> optimized __WARN_FLAGS() define BUGFLAG_DEFERRED which is handled by
+> __report_bug() and does not increase the code size.
+> 
+> Provide the DEFERRED macros based on __WARN_FLAGS and __WARN_FLAGS
+> macros. Extend __report_bug() to handle the deferred case.
+> 
+> ...
+>
+> --- a/include/asm-generic/bug.h
+> +++ b/include/asm-generic/bug.h
+> @@ -229,7 +230,10 @@ static enum bug_trap_type __report_bug(struct bug_entry *bug, unsigned long buga
+>  		 */
+>  		bug->flags |= BUGFLAG_DONE;
+>  	}
+> -
+> +	if (deferred) {
+> +		preempt_disable_notrace();
+> +		printk_deferred_enter();
+> +	}
 
-This Fixes tag is broken. You probably want:
+For some reason the comment over printk_deferred_enter() says
+"Interrupts must be disabled for the deferred duration".  Is that the
+case for all the printk_deferred_enter() calls which this patch adds?
 
-	Fixes: aef3cdb47bbb ("net/smc: make wr buffer count configurable")
 
-Other than that, it looks good, the corrected value checks out.
