@@ -1,224 +1,56 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A695386423
-	for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 01:41:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97C82E36F8;
+	Tue, 23 Jun 2026 01:41:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782178862; cv=none; b=fi38287Yre7R8hXnaihf8jM8FDthScCSyfH+X0S21rxsdwwW/yxwnK57DJBiNBsfL6+PmFTMzM2M3XYPg8OFO4a+wKNTKpl9yUA37nF1G7bRmuEV/Vxwt2PCKJX5tgLcKbWRfUcysriQ1jM4FYlLh6nbA4/VakwKjnv6312uw8I=
+	t=1782178897; cv=none; b=UjRcd36pGwkE52fELX69bSoszWjXYhPMa11oDS1QQRvhXbb/6k1p3JavAt2GpUcqrThxOhkJ+vTxkd4RapAq2Zel5TJev3zhAGd3khmepOduX+fpwwXL0Zzuto3xSTFBxuBrZXsPFQ7CtP+2AiVGK+u4CbKa+UpcenlNifPUEIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782178862; c=relaxed/simple;
-	bh=TeljXPih3XySpBflJVQVLxHCds/34/7xYyQklL7E838=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pNY0Eg8fAAVSj8MWKje9bSHIu29tNpbilL4esymI5qpMc6eACDrZDvyQzLpgQD7HY0ihvNSnD9/7M8XETa16fwme/+cEEQlcMaQM4k03i9ezcMOBybMI2AkJ3xydxJAalFo+SUWAjUq+Xaow4Fc1W3zKR049cYwUfTTa1u90wCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cdJmT8bU; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1782178897; c=relaxed/simple;
+	bh=jZJvMjh77n8hdoYT97eN9tBxTe9H0AF2EvpQ7Y+WUH4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JF6+HRnDFlkY9HEuS7Yiuhx20Ccv4h1gWwDOX5/w06FD+KBQCeOByvBJjBlULandsvo2V/XI7aRAIcMQuhGNf2J2B55RHzHEcawah9kwYRvT1qV/89Wt6hJbjRWw5Gh6qbtxkH9MDMo5JmrfGh2n+vSMFxybamQ61ae1Cc4n1ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aGA9qcDk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cdJmT8bU"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2bf1cda2b17so3335625ad.1
-        for <netdev@vger.kernel.org>; Mon, 22 Jun 2026 18:41:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782178860; x=1782783660; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=dGVecrSz6dhJP1jTtBAIJOkndE4qmahRc7vcfNDXjzo=;
-        b=cdJmT8bUvgv6nOcVBX7TUVeG9a+WndOa4sBxFrA7k8Vh2ZWTaTyaBZUQYY1sloZt5F
-         r+qHxY92zLdyVLeVB5j2bVxYUUDEIWINUosiYpYzvHpia/xTxYWUHUstMEZLeE/PaqEQ
-         vf7ojUb0mMBvPFmrtJOmu1Rfn9pDZbwXpv7/a+dd/jVTIBSlAL2h3SkqCoqTRxwPAB9d
-         +FbIR86hR3PfeL63Ts2zFqsoBiCpIvryrlJv7WfY46IIlUtlxH3OrldnZdavQawaPhkM
-         eOqXQq65J1vRtwd7aIevD/07QKsvj/LP3dKKZvPRqHLkJ8ypU+qppVklFYr8r9PfrdkU
-         jD8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782178860; x=1782783660;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dGVecrSz6dhJP1jTtBAIJOkndE4qmahRc7vcfNDXjzo=;
-        b=M/cTK/rITq/CerVRAxYdIGNKmFS6eQVFXvFl2aGvYAKIGbMNM+eKvIyRZ3qf6bN3IE
-         SJeT8vYI+i24vp6oUZbGn8/B5q98FxWHsYS3mZUqzKLSIYZf33ftAZJfZlrwLLw2k3Tp
-         rwhrBPcTGXI3j5kG/vv3dteQINWJsedVbi26fA4tf752HQfFGcjgV2mfnyMWdXjJ6AUg
-         yDevwD8aG0g/r4d6EFG48MNw91iuGW0uMxrwinUOYrDdm4ksGHQrzjJIDi6IHbMUn73c
-         AdKugxGudhDTgDwDlafGk/BN+RCbSIKKdv6+NvCxRyhUY2U6IprUEjcNy+GImsLcKlt2
-         PAFQ==
-X-Gm-Message-State: AOJu0Yx/yw9rRkY25N0XSU7mpCtlFgmfW02KghFjL4dABvfzIof1v8ba
-	ZPFwP9TWMwxsQoPRLe/D8BvlX/+TRtuOY79axCwkrhh0IdJ0uBkWZpAM
-X-Gm-Gg: AfdE7clZ5A8cOw4zDxYwHVbPes1hwTljcs2CyyuJVQ7Qu8BLj6vaju5pfgsiakMS9J6
-	7rtegDRBJBF+umYIRX710uaGj7+e+xb5T8jqwBLSSJCVWgdclJjRMAqU3T+Vorl4gDZIXAfL/1a
-	ALR4z634KMunRBq/Dtpw+kBu00zcE7euZFOI8T8TUIauMwKFqlEM8aKCMqOkitAWoEKwV7NnbGj
-	22FR6ouAlH2PIa6iFBvEapgmikgUUyjGGdj5SxUSWViSza3EJ8rT1TpmotC7B/ZVugkTSGJ6bWi
-	A08mlTe0ERVdAmZVLVWFhV5MVW7nY6/eUfLPcNNo7PpoOLgcWA9G5q3Tkw4bdhJLAUPlYES95Tq
-	ZSXEpdX3ZgJoe4Y8AitFSUckhNCeVWUaZ+ZO9cHsIWKi8zEQ7inb0zi2+g/+CXw9Qu3kqUKTMTM
-	iVMEnkqhxhaPUYbWsOnWIfEA3LoeZZm79fLqmS2l6mSfPIQaKOYCxXYPIGNkQ5k+NPGkMOSdVFe
-	087q/pnq18=
-X-Received: by 2002:a17:903:4b4f:b0:2ba:6601:8e3d with SMTP id d9443c01a7336-2c7c3d5e7a0mr11648095ad.9.1782178859632;
-        Mon, 22 Jun 2026 18:40:59 -0700 (PDT)
-Received: from localhost.localdomain ([202.8.105.120])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7444aad83sm90093085ad.79.2026.06.22.18.40.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Jun 2026 18:40:59 -0700 (PDT)
-From: Sun Jian <sun.jian.kdev@gmail.com>
-To: bpf@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	martin.lau@linux.dev,
-	paul.chaignon@gmail.com,
-	Sun Jian <sun.jian.kdev@gmail.com>
-Subject: [PATCH bpf v4] selftests/bpf: Cover partial copy of non-linear test_run output
-Date: Tue, 23 Jun 2026 09:40:27 +0800
-Message-ID: <20260623014027.402820-1-sun.jian.kdev@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aGA9qcDk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 122BF1F000E9;
+	Tue, 23 Jun 2026 01:41:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782178896;
+	bh=jZJvMjh77n8hdoYT97eN9tBxTe9H0AF2EvpQ7Y+WUH4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=aGA9qcDkBHeimBJIVzteOPU828olZbgJoFvC2ANRWr2N+AziMo9cOks0ahzS9DdSM
+	 pwDZBo1OX7uUNO1GYobIvZ2wybfpKn3DDlhnmnwf6tSd7xdus4NrsL9pHTqmvS2RU2
+	 jTJZTKQ4eW1A70C8XNPt+3YLzOmBxXuly/EQd85hcGaIvEYma4Y2htmKo08YYK0U92
+	 hwB0ncFKb5wSovB8bJp7Xr5gHduibp0Sa9sP8VjSYo82tX0b36puXx79lyv+AOrQo6
+	 uaE0zMS9XqS/QEg46fLpLA7Z3/yd+6LCzXWZ0h6zs9CC8fK3ah+00Oi8N9FHFhWsgc
+	 uWbRdM2/dNCpg==
+Date: Mon, 22 Jun 2026 18:41:35 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Simon Horman <horms@kernel.org>
+Cc: Abdun Nihaal <nihaal@cse.iitm.ac.in>, skalluru@marvell.com,
+ manishc@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, barak@broadcom.com, stable@vger.kernel.org
+Subject: Re: [PATCH net] bnx2x: fix potential memory leak in
+ bnx2x_alloc_mem_bp()
+Message-ID: <20260622184135.4f185dac@kernel.org>
+In-Reply-To: <20260622130515.GE827683@horms.kernel.org>
+References: <20260620062402.89549-1-nihaal@cse.iitm.ac.in>
+	<20260622130515.GE827683@horms.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-prog_run_opts already verifies that BPF_PROG_TEST_RUN returns -ENOSPC
-for a short data_out buffer while still reporting the full output size
-through data_size_out.
+On Mon, 22 Jun 2026 14:05:15 +0100 Simon Horman wrote:
+> FTR, there is an AI-generated review of this patch available on sashiko.dev.
+> While I don't think that should effect the progress of this patch you may
+> want to consider it in the context of follow-up.
 
-Add the same coverage for non-linear test_run output. Use pass-through
-TC and XDP programs with a 9000-byte packet, a 64-byte linear data area,
-and a 100-byte data_out buffer. The expected output spans both the linear
-data and the first fragment.
-
-Verify that test_run returns -ENOSPC, reports the full packet length
-through data_size_out, and copies the packet prefix into data_out for
-both non-linear skb and XDP frags paths.
-
-Signed-off-by: Sun Jian <sun.jian.kdev@gmail.com>
----
-
-v4:
-- Send only the selftest patch; the fix patch has been applied to bpf/master.
-- Initialize data_out buffers to avoid reading uninitialized stack memory if
-  bpf_prog_test_run_opts() fails unexpectedly.
-
- .../selftests/bpf/prog_tests/prog_run_opts.c  | 70 +++++++++++++++++++
- .../selftests/bpf/progs/test_pkt_access.c     | 12 ++++
- 2 files changed, 82 insertions(+)
-
-diff --git a/tools/testing/selftests/bpf/prog_tests/prog_run_opts.c b/tools/testing/selftests/bpf/prog_tests/prog_run_opts.c
-index 01f1d1b6715a..beb6fa78fd94 100644
---- a/tools/testing/selftests/bpf/prog_tests/prog_run_opts.c
-+++ b/tools/testing/selftests/bpf/prog_tests/prog_run_opts.c
-@@ -4,6 +4,10 @@
- 
- #include "test_pkt_access.skel.h"
- 
-+#define NONLINEAR_PKT_LEN 9000
-+#define NONLINEAR_LINEAR_DATA_LEN 64
-+#define SHORT_OUT_LEN 100
-+
- static const __u32 duration;
- 
- static void check_run_cnt(int prog_fd, __u64 run_cnt)
-@@ -20,6 +24,69 @@ static void check_run_cnt(int prog_fd, __u64 run_cnt)
- 	      "incorrect number of repetitions, want %llu have %llu\n", run_cnt, info.run_cnt);
- }
- 
-+static void init_pkt(__u8 *pkt, size_t len)
-+{
-+	size_t i;
-+
-+	for (i = 0; i < len; i++)
-+		pkt[i] = i & 0xff;
-+}
-+
-+static void test_skb_nonlinear_data_out_partial(struct test_pkt_access *skel)
-+{
-+	LIBBPF_OPTS(bpf_test_run_opts, topts);
-+	__u8 pkt[NONLINEAR_PKT_LEN];
-+	__u8 out[SHORT_OUT_LEN] = {};
-+	struct __sk_buff skb = {};
-+	int prog_fd, err;
-+
-+	init_pkt(pkt, sizeof(pkt));
-+
-+	skb.data_end = NONLINEAR_LINEAR_DATA_LEN;
-+
-+	topts.data_in = pkt;
-+	topts.data_size_in = sizeof(pkt);
-+	topts.data_out = out;
-+	topts.data_size_out = sizeof(out);
-+	topts.ctx_in = &skb;
-+	topts.ctx_size_in = sizeof(skb);
-+
-+	prog_fd = bpf_program__fd(skel->progs.tc_pass_prog);
-+	err = bpf_prog_test_run_opts(prog_fd, &topts);
-+
-+	ASSERT_EQ(err, -ENOSPC, "skb_partial_err");
-+	ASSERT_EQ(topts.data_size_out, sizeof(pkt), "skb_partial_size");
-+	ASSERT_OK(memcmp(out, pkt, sizeof(out)), "skb_partial_data");
-+}
-+
-+static void test_xdp_nonlinear_data_out_partial(struct test_pkt_access *skel)
-+{
-+	LIBBPF_OPTS(bpf_test_run_opts, topts);
-+	__u8 pkt[NONLINEAR_PKT_LEN];
-+	__u8 out[SHORT_OUT_LEN] = {};
-+	struct xdp_md ctx = {};
-+	int prog_fd, err;
-+
-+	init_pkt(pkt, sizeof(pkt));
-+
-+	ctx.data = 0;
-+	ctx.data_end = NONLINEAR_LINEAR_DATA_LEN;
-+
-+	topts.data_in = pkt;
-+	topts.data_size_in = sizeof(pkt);
-+	topts.data_out = out;
-+	topts.data_size_out = sizeof(out);
-+	topts.ctx_in = &ctx;
-+	topts.ctx_size_in = sizeof(ctx);
-+
-+	prog_fd = bpf_program__fd(skel->progs.xdp_frags_pass_prog);
-+	err = bpf_prog_test_run_opts(prog_fd, &topts);
-+
-+	ASSERT_EQ(err, -ENOSPC, "xdp_partial_err");
-+	ASSERT_EQ(topts.data_size_out, sizeof(pkt), "xdp_partial_size");
-+	ASSERT_OK(memcmp(out, pkt, sizeof(out)), "xdp_partial_data");
-+}
-+
- void test_prog_run_opts(void)
- {
- 	struct test_pkt_access *skel;
-@@ -69,6 +136,9 @@ void test_prog_run_opts(void)
- 	run_cnt += topts.repeat;
- 	check_run_cnt(prog_fd, run_cnt);
- 
-+	test_skb_nonlinear_data_out_partial(skel);
-+	test_xdp_nonlinear_data_out_partial(skel);
-+
- cleanup:
- 	if (skel)
- 		test_pkt_access__destroy(skel);
-diff --git a/tools/testing/selftests/bpf/progs/test_pkt_access.c b/tools/testing/selftests/bpf/progs/test_pkt_access.c
-index bce7173152c6..cd284401eebd 100644
---- a/tools/testing/selftests/bpf/progs/test_pkt_access.c
-+++ b/tools/testing/selftests/bpf/progs/test_pkt_access.c
-@@ -150,3 +150,15 @@ int test_pkt_access(struct __sk_buff *skb)
- 
- 	return TC_ACT_UNSPEC;
- }
-+
-+SEC("tc")
-+int tc_pass_prog(struct __sk_buff *skb)
-+{
-+	return TC_ACT_OK;
-+}
-+
-+SEC("xdp.frags")
-+int xdp_frags_pass_prog(struct xdp_md *ctx)
-+{
-+	return XDP_PASS;
-+}
--- 
-2.43.0
-
+TBH it seems like an adjacent enough issue to me, but okay...
