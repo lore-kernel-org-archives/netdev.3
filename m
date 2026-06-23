@@ -1,74 +1,77 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7CB4625;
-	Tue, 23 Jun 2026 00:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 430B9286A7;
+	Tue, 23 Jun 2026 00:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782173037; cv=none; b=g42NCUDUc8yFciyg2IKYpLRX5k++lawIQZiZ1rhjD+EWl4GS74DbuT3+lUCHCXOdEr/eq859lDnCrlqb0hIfl+bECx4zcf9409MjjnbsFfOMFYDi37XqqLbkMbf8WklDqzPTrkae3WwiHIpxl+FJGEUkxKstca+f9uFCj47Cp0c=
+	t=1782173418; cv=none; b=lu4EgdbhMi+PdGZ1CH5VdhOws922d10PpbAm7aRLCTH5qP54LG0PW7zRz/FzPLm0+Do/OkuTrpxWa8NeelaXvMm6ztTVCnZmYTg83pujBZ18Yi3jvLCgYhGsNul62KneVoBrpW+x8d2TQNsr9cTQBPXSSLQ6NBf/8yJ6nXm/Yvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782173037; c=relaxed/simple;
-	bh=MBtfmjtNsl4fI8AjSD87amZiNPakGb8VUKNeDNDbdPE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q1hVTYARupexk1zHDxmRcsMfqKcaPFA7bwnUdgIpqqjzUg6L9QFwuTYHqrUXwJf9cSUCKzv5fmB9MrLywB9q6OAZrnDOtUMxLdIwxH+01Z00JlMJMxG9kAQOeJX4vMUZuAYn3fx82O4Kssiqt71xLMq3P4vnbYa1ysI1ZRR6lg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DSioLey6; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782173418; c=relaxed/simple;
+	bh=SPKqpafvl4lg1C7w4OeX4WsmN0XrAEsa9qDJNzz34HY=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Jea4oBiAwMwJ89gVzFibDfPGxaNMqrQeJv1K9CFSHF5elLonNOPux9s/vk+NX8/D5GOQD+Y+A3QBCuRZp8HgXaU58ocrEYPrGd/q608Xj+pzdJ/Z/I+Es5LAvGcRNwzsNSEAkhx1Cc7HDciA32gTt1Ku1KWTqoexDxkYZ5/wUS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m/I1tGxC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DSioLey6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CD9F1F000E9;
-	Tue, 23 Jun 2026 00:03:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m/I1tGxC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D39D41F000E9;
+	Tue, 23 Jun 2026 00:10:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782173036;
-	bh=+6laKclz3yzidyKAlLLIkCm0CW40HGOttO4vxjnEKUQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=DSioLey6Remu5VpWUZ+ptoDZiudFetgbj707SZT6WK3IU8mp9DxjoHR5fh1lxOnuT
-	 yZe+XUaAjst3QnA+EgmBYRnrDvvIKren4Wg7MlbDLJbvEAYNOC0tWCEgcJLE+jV3aP
-	 xuhoFANOOiJLXs4l1+mao6G40KEhYhkVd323C7pLTmgvg7z3fmz3ZGPNlxfgcGL9XQ
-	 0mzulD0Q1ICaHIgePUuEwTN2G3Nj8aUO77daaMC1ZH73Q4yZP1Nis8Rau1Bg5eJm1V
-	 KbfCO/HVG8utpmlG1NaVEle66mj2xNPf3j0aKFMNL9ysbEL52orBV4D0cqKQpBUhuw
-	 fwsSvoMLUHOHA==
-Date: Mon, 22 Jun 2026 17:03:54 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Shay Drori <shayd@nvidia.com>
-Cc: Simon Horman <horms@kernel.org>, <tariqt@nvidia.com>,
- <edumazet@google.com>, <pabeni@redhat.com>, <andrew+netdev@lunn.ch>,
- <davem@davemloft.net>, <saeedm@nvidia.com>, <mbloch@nvidia.com>,
- <leon@kernel.org>, <ohartoov@nvidia.com>, <edwards@nvidia.com>,
- <msanalla@nvidia.com>, <phaddad@nvidia.com>, <parav@nvidia.com>,
- <gbayer@linux.ibm.com>, <kees@kernel.org>, <moshe@nvidia.com>,
- <rongweil@nvidia.com>, <jacob.e.keller@intel.com>,
- <netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <gal@nvidia.com>
-Subject: Re: [PATCH net 3/3] net/mlx5e: TC, skip peer flow cleanup when LAG
- seq is unavailable
-Message-ID: <20260622170354.5f87d24b@kernel.org>
-In-Reply-To: <e18662ac-413e-43f6-ac65-a4e15fd47bb7@nvidia.com>
-References: <20260617063204.547427-4-tariqt@nvidia.com>
-	<20260618124820.890808-3-horms@kernel.org>
-	<e18662ac-413e-43f6-ac65-a4e15fd47bb7@nvidia.com>
+	s=k20260515; t=1782173416;
+	bh=ekQYUcQ8Pi75poqFdcSoDk6fO3ukIxjdl0REmsbtqCg=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=m/I1tGxCCM45zbQwIeHOkh+0Afkm0hxLMeGOzPwCA5hxYr+FeqWwQHPuHR8K9VlS+
+	 D8OwUa7pTSYCdcQ/DRbcrS1+09O1RMfomFkEqeUYSfB0STKP8j0doxkPpHiHCOsw+5
+	 1Ua1epKwKD/YNIMx8FYfJ6W4KX2Z1Eo4g1VcDci2VjsD/eJGm9FeTJ7dQ13SJkUjvG
+	 NC8ibu3wl2SjyTEMYxpbdfEmDmQvNT8hVSfjZjRgU4bOdHM3OtTckeczV52i8uIUOU
+	 Upobg4aAq23DhFD173xehE3dgxNhyLVkV0yMXEaaRF7pdyqodB+aWys4dfck8S2L+5
+	 41mGNipVODj5g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56933393098A;
+	Tue, 23 Jun 2026 00:10:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] rocker: Fix memory leak in ofdpa_port_fdb()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178217340704.1469780.5855501980510259693.git-patchwork-notify@kernel.org>
+Date: Tue, 23 Jun 2026 00:10:07 +0000
+References: <20260616013245.7098-1-zhangcoder@yeah.net>
+In-Reply-To: <20260616013245.7098-1-zhangcoder@yeah.net>
+To: Ziran Zhang <zhangcoder@yeah.net>
+Cc: jiri@resnulli.us, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-On Mon, 22 Jun 2026 09:40:44 +0300 Shay Drori wrote:
-> > [Severity: Critical]
-> > Does skipping the remainder of this loop prevent the flow from being
-> > unlinked from the doubly-linked list?
-> > 
-> > By using continue here in mlx5e_tc_del_fdb_peers_flow(), we skip calling
-> > mlx5e_tc_del_fdb_peer_flow(), which means flow->peer[i] is never
-> > unlinked from the esw->offloads.peer_flows[original_i] list.  
+Hello:
+
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Tue, 16 Jun 2026 09:32:45 +0800 you wrote:
+> In ofdpa_port_fdb(), the hash_del() only unlinks the node from
+> hash table, but does not free it.
 > 
-> only in case a LAG member is removed from ldev, mlx5_lag_get_dev_seq()
-> will return error.
-> before LAG member is removed, esw->devcom is cleanup, which invoke
-> mlx5e_tc_clean_fdb_peer_flows(), which remove all peer flows.
-> Hence, no flow remains.
+> Fix this by adding kfree(found) after the !found == removing check,
+> where the pointer value is no longer needed.
+> 
+> Found by Coccinelle kfree script.
+> 
+> [...]
 
-Thanks for responding. That said, the series no longer applies.
+Here is the summary with links:
+  - rocker: Fix memory leak in ofdpa_port_fdb()
+    https://git.kernel.org/netdev/net/c/53442aad1d57
+
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
