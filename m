@@ -1,162 +1,160 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81733364038
-	for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 09:38:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A173C661A
+	for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 09:42:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782207530; cv=none; b=D0nSsMKqe9ZY91TyC3/HX5eiWk7UHr+NVaiicB996/rlKBUlKfNDuotl4BA4FLn3DLKlQoOFTubbGKn0QTY3yHiZ/GFQEDGh8L3eW46IniIftqWK1XUed3NOwQUpNe8BnK5mMD9A69EsL2st6O/yRnJWOyAnITknzFwPe6Wpa5Y=
+	t=1782207764; cv=none; b=Q2fZduZqhzdexhbHFduevhd6vCZeBzdYGLBy0kSRE4qwJrRgNiTJydJsnhh/sdpZSCkt+A7bdrjf7CwQFOIcMlhz35mOnnw0KYjGO5FoGoZMFm8UTxTTf2yydQ52Yb0adcvCqvwDi+HuONduFc9u/g26koyR5jlJfoEdsxDh9r4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782207530; c=relaxed/simple;
-	bh=p8cjTem4PmIpasalvrgbmLdyR93xEH7ZkDH1DzQI1i4=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=hJIybVS6tCNffyB3w7kjEJ8wFMRJZS2sq6t6wWNxU9U8RD1ovQ1Sr+orSXzrBTOZ2WqIJtwBskARu5uwN++eH2epAOLkvoydIUFYwC7Euq7QR4xX5PvJP8ypz+mmkfHMQsfpGmsm061pVp0pg0JwfC6iubRZa5zXt1OeEopAKbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mkmmkukr; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1782207764; c=relaxed/simple;
+	bh=2zt4mDfQLCcN7VZdwKtxZoDHgil7aJyHwJKdbeBKs4w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=R1rBuSxFvH4OocDhNSXwP+7XwGFuOYiDfVI0QB5LvQuvlcGA5C/pCbXwpZn+EHQbGdpSvjIaW/acit6B1tZ2Q+Vl53CxQHjM7TRYmjBCiN8aBRI4ky74JGVFz7IFJz+Qftz9YOsQuAPJAL+bUCyz/6XLCutuSrHfL594h2/mwd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=YB/8UGmo; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=DchT3qzt; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mkmmkukr"
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-696bf0e7c9cso1834261a12.1
-        for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 02:38:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="YB/8UGmo";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="DchT3qzt"
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65N7kq3L3228498
+	for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 09:42:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	Gso4/eCWqTGK9+zw2V2gKqpch+D4ZfB1l0eAVrB6LD8=; b=YB/8UGmo765MuLo0
+	dXdHA69ayE7MXPDuMXJO5te4qaOteA0rpPktiMkss4WuOYCOqi2vivLey+r3TRaf
+	2jQVDKIeOZxKis0Z1Lm8QyUyb2j4zRT/fZF/8fX4Yvb+vJsGDtwjmsk/94nqqPuA
+	RkmrafsyDgYqPaiFZLco1hdHb6ac6cjZ6CON6aO2OcrrHaKAsGWr7rzdp/wlGlxY
+	ZkRRJCAKnzu0GMf+NQ+8WpAy0ezSv40+rCA7wrD+CQLpyCa7/pfGWpAeXCuhB4/w
+	HoK8j24/Dg7iZn9ddvMBgHF2CxJGQnxmfguyb6lBLHtblo6MPf9V/TM1N8nWCOhi
+	QqXxQA==
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4eyp29gg1k-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 09:42:43 +0000 (GMT)
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2c2c98c1be2so46195065ad.0
+        for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 02:42:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782207528; x=1782812328; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+        d=oss.qualcomm.com; s=google; t=1782207763; x=1782812563; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=SGC4x0qSqXZMMrxbR1onNL1/9AO9MYtn1caz5Hfjgvs=;
-        b=mkmmkukrIiJ6v4i/hWzA5pwCu2Qi3epeKI4ZI/y2TsR5KNSv61YsiRFvw4OCoggbXI
-         h6mP8dJP18FoG78OB8fnmZSpHiuiFk4prTCm6VCAUIec+OdttTJ+wkkGCVoyanUmLD3M
-         6WrSQh7F2FGS/S4R3eXpHKd4o3RlJa2/g2E3wU0f029m93GgD8VNcmFAQW9VG6wZH8oS
-         Qh9KHsdv75vIST12GCQdKZVdb2A1U0ST5w3zGBnvA6sK7HTCBYuE4iWYnHNVEikKTmwR
-         52L8jv5qoTIfW/f0NZK7G5x+1BmLQnmKIpR5sBsSChFAPyr/2WzjwHH+WQjgBft0dd6A
-         cMZg==
+        bh=Gso4/eCWqTGK9+zw2V2gKqpch+D4ZfB1l0eAVrB6LD8=;
+        b=DchT3qztJF+AEjzIeTnmKTMvlbgQoQakpBFToLIWgTegvCzSKPD6DHpN3oQfaDXA+b
+         kMGnbvF7rOIVvNbTCD2JAPi7aN/nBfX4LoDx9tHgDI0q+zraLv1E7EtKMcx+4ogWZXHy
+         uigm7lQqVRZ8FJEpY4AuboNza2NuZxVpKGFqpLRAGzx1yVe2oaqCofJk2o3RlIFV5eo0
+         GgsYg8jQfdizqNT7kukHixE/aoxIarQJbnCdfe69ZKQY0mvPfmv2ikR+wiH0UwvIvGSp
+         dBm5GIgr39iYu9czOpdFF34iVtPk6Bvq/QhQynnxzz0xzGHsF53wS/rSEovNaqP1W1Ok
+         awjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782207528; x=1782812328;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+        d=1e100.net; s=20251104; t=1782207763; x=1782812563;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=SGC4x0qSqXZMMrxbR1onNL1/9AO9MYtn1caz5Hfjgvs=;
-        b=BdJbFyn7t6zsNGvFMguUuDoCsWlsTOcGkdY30QW6c1FeiQsN6kWXqab+hp0H5bcBsV
-         ROm+Yeedfm4athGb/iSxfoAkTHgvqZTcNbx3+G6ZCH46xC+05HqZz6HhpZQqSQieqbs7
-         Eri9LvXu08YEigM9sU41qKzTBlN7vmmmhUIegHNRPsgFSgcczjMdJktrruRt8u68ikkI
-         6D01iA5NT09k1E4aKl1jJL7fzP/rirIa1RMK/1QU9DeYWsLCaz2zUgoemLtDyWRY6LiA
-         QZmVWp7uJ1b7WKjE3g9X7RpsVlqDh7Af1y+iXDqjiE2sRl8nM7nZtNwLiPvRrloimyl2
-         Vn9w==
-X-Gm-Message-State: AOJu0YyGoj+8iNPGxF6QTJM0O6cAynxzbOW/3J0tqOvjGmu4GZxROlf9
-	69I2fr/yXpl6TRweSmEmQSeq/Kffp8OPQN6LI92mqHRXedTRzzQZTP98VbQO2A==
-X-Gm-Gg: AfdE7ckCMrPJOhsc8oYxv5wK1tHjUNjY+c9QCigbl9Yh1Sg/G9la1p2zvYpM2pKFnb1
-	5KYaVvTJtuPZAEU+/RK5qUVa0SoK7KQvXhaflHrHXJFQh+Hdj7/hiSjIkvbXSDlTlski31XL1uP
-	2I3c8yLsXqj2Rs1JvkhAb0knBBa+/w+k0TIghYsncfa9tf4EqRFFlx6S/rDaYhY5WVw58sLm+G7
-	Z/1+allX8HHy/fyeF1veqF3RD3g1wh2U0GFMNEaIShI6wVUx3fLZhpM+AoHIQVI9i2oHZF0ehC0
-	xEOjbj8a8ZtDCwuaee04/OhnLJzXVehlvLiaqgess3fHASyRoPMrg4kc8p/Os3lwTtYsl3cAdjb
-	XYk2vVBfiIiHFuERNN5/3T0lcoOCOjNK4Ju2yyghv9Zj6CWUW3yTQ9MLSYhVlxHIpPJop1gGtkX
-	gIVMNLc3VsMVTMCVmFMSk=
-X-Received: by 2002:aa7:d70f:0:b0:68f:9fd9:435a with SMTP id 4fb4d7f45d1cf-697d46111f2mr1053795a12.17.1782207527831;
-        Tue, 23 Jun 2026 02:38:47 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6977be4b9f6sm4215334a12.22.2026.06.23.02.38.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Jun 2026 02:38:45 -0700 (PDT)
-Date: Tue, 23 Jun 2026 12:38:42 +0300
-From: Dan Carpenter <error27@gmail.com>
-To: Joakim Zhang <qiangqing.zhang@nxp.com>
-Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com
-Subject: [bug report] net: stmmac: fix dma physical address of descriptor
- when display ring
-Message-ID: <ajpUIqyVSsWMY30x@stanley.mountain>
+        bh=Gso4/eCWqTGK9+zw2V2gKqpch+D4ZfB1l0eAVrB6LD8=;
+        b=aPmvnGnLeDFp1EKnkYX9y/UfJxkNCkv89SA5GT1uSoxrelk2vtAXhLFTl4y+e/vK++
+         HHKnbLowHzV7dq+t5pGz2SugQM8Tojz5T/FkVUPxbcOPahCsWN627hfBFumKzN7O091w
+         9rysXNjUu3JozEqWh6wzlC0YrdaAILAZwbSQJurPYSx6e+nuVC+nQ3E7IFVo8UqgtKAh
+         7HJVUkrZHhgsBZzMihSGaQds5Z4p9UajTB+VC7PLxMfAa9aOrbN93BGuT0GwPJcyxWYk
+         YxXuNs8iGZylM0/YGFn3LRgjUtre1pGb/PaytBdKqorRcTikyP0dL9BgzHBgfSLSj2Z9
+         jR3Q==
+X-Forwarded-Encrypted: i=1; AHgh+Ro6cmxUbLIHH0y8/ftEucL9AjZVHHIuE0KyC7ALNpmTjdA470Ow5cFUgnMPcg2x42CG6JUdUPQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzc2HCZ3tJ/IW/7XGgISqGebuuiJ5b5/tzlvsF7l7Qp821sRuZj
+	AapsaPBux4G2MohP1BS5hrMfJ0gUwc+/ZHRcrC2NFI9r1RPN71THLI7IMBWWU3eGSN/BsphB/Pz
+	lcuZTw0KiwEkfQ7xsq22sPvAzwG+RXJxCk/po8iNIbqYHXHU2LCAUQAaUT2c=
+X-Gm-Gg: AfdE7cmSoxGmqhtwMJOwI2IoDFtnCFhIAYZdJ8hrJo+2b9mohiMeAXQTY2HV04IUYdz
+	2JFOlKbQ7O0DIwYMfxYGVqNrKzsRybKLyHVOgGc1V3L0I49rPwUjUO9QOgf3cS5/zmwHm9Xgni1
+	jYnkRcZ/C4hwx6ylGIobCZUgqZoVh0hJJ/sX6+LgC5a9NINGm2IOmAH8S9Y9wUG/LxrYrpBIuLk
+	0CXQj2/KBBJDsWWhJYEeNvm5JEuiwG8pClUAAfi8ifbM59Hm+lsiDHLQI2jzFdEPpTjiWXTCPXX
+	PVkEl4YUYwbK8Fo+ez62yq9VIuIqQXZkUBZgimAY92AZa7u2VXOsIHndsEODDIHAt3krtyjxRU3
+	AIm5QfUx6dLzRMe1bGLMkRPGNY/6+Yw+mLE7v0ss2KcN/moNXajNa4aKohHTk47g5EEbe898WDf
+	KN
+X-Received: by 2002:a17:903:2ec7:b0:2c0:3400:5c34 with SMTP id d9443c01a7336-2c718c879fbmr191507985ad.3.1782207762713;
+        Tue, 23 Jun 2026 02:42:42 -0700 (PDT)
+X-Received: by 2002:a17:903:2ec7:b0:2c0:3400:5c34 with SMTP id d9443c01a7336-2c718c879fbmr191507745ad.3.1782207762274;
+        Tue, 23 Jun 2026 02:42:42 -0700 (PDT)
+Received: from [10.133.33.169] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c743bfe8aasm97603725ad.68.2026.06.23.02.42.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 23 Jun 2026 02:42:41 -0700 (PDT)
+Message-ID: <8b0560ae-af5c-4d54-be02-d186be1d799c@oss.qualcomm.com>
+Date: Tue, 23 Jun 2026 17:42:34 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: ethernet: qualcomm: ppe: Demote from supported
+ and fix maintainer addresses
+To: Andrew Lunn <andrew@lunn.ch>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd
+ <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Lei Wei <quic_leiwei@quicinc.com>,
+        Suruchi Agarwal <quic_suruchia@quicinc.com>,
+        Pavithra R <quic_pavir@quicinc.com>, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org, netdev@vger.kernel.org
+References: <20260623073307.36483-2-krzysztof.kozlowski@oss.qualcomm.com>
+ <0247dfba-1c14-4fea-aab3-5489a36f35f6@lunn.ch>
+Content-Language: en-US
+From: Jie Luo <jie.luo@oss.qualcomm.com>
+In-Reply-To: <0247dfba-1c14-4fea-aab3-5489a36f35f6@lunn.ch>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=LdAMLDfi c=1 sm=1 tr=0 ts=6a3a5513 cx=c_pps
+ a=JL+w9abYAAE89/QcEU+0QA==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22
+ a=HzQU9uYTMzTt3pVePtwA:9 a=QEXdDO2ut3YA:10 a=324X-CrmTo6CU4MGRt3R:22
+X-Proofpoint-GUID: aDS3P0XlXTV6XLw9Tgu8bdG0nBfu0BWe
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjIzMDA3OCBTYWx0ZWRfX4GnIZOPFEMar
+ /JUBhBPEzGLdChP+RIFy/qivm/+LwKFNFbXbbkR+QH3EvBKgahUSNgBwdCw0tihRrf/zwtbX4gH
+ a5qaH+kAZ+A1X9FnLf7arrfvs0ZB2/E=
+X-Proofpoint-ORIG-GUID: aDS3P0XlXTV6XLw9Tgu8bdG0nBfu0BWe
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjIzMDA3OCBTYWx0ZWRfX9+4w4cO1GFkd
+ P5SBMs3Dbwa+jrFByFsUG+3AbR7g0+qCKJ6rXEs33fhHUIJg+CBMjDboyWb2O+t0gfsi27z8Ewq
+ 0FfCWGEJ+ywh4hSlp7iNaq5/7AO676w+Af6fNSeguQgX2sY5qDv6NKg3QNjBjoVNFKxJ7opcKZc
+ 3jVZrxhp8sNodZOe4XoikZg+3OQyRPxeB1eB5aXE1nF3M6RmqCQtamWdWBLCJs7kicfo2oFON2e
+ QiS21FIt6jSs9nJvjOKOwAyIdpH4G1N/aQcWf8Rz5kFYLMHaGSve0/IMc65s7iBJ35BROjTonnG
+ 1zZfkhn87DFURhZTgSxRoMuzuGFoiXiGZMJYJzPh1Sm7o1u1VCIrkAgCQDjWOaBSIchKiJdCkDT
+ tpjpVyfZlWoZcfRX4URzTc72HESZB1b5vuuLhUTAsW/UVcQUbvW1qH7MTSQH4bg1OYeEK/kLOgl
+ +EORwd3YG2MDdnUnuYg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-23_02,2026-06-22_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 priorityscore=1501 impostorscore=0 lowpriorityscore=0
+ suspectscore=0 malwarescore=0 clxscore=1015 spamscore=0 phishscore=0
+ bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2606230078
 
-Hello Joakim Zhang,
 
-Commit bfaf91ca848e ("net: stmmac: fix dma physical address of
-descriptor when display ring") from Feb 25, 2021 (linux-next), leads
-to the following Smatch static checker warning:
 
-	drivers/net/ethernet/stmicro/stmmac/dwmac4_descs.c:431 dwmac4_display_ring()
-	warn: duplicate check 'desc_size == 32' (previous on line 418)
+On 6/23/2026 4:10 PM, Andrew Lunn wrote:
+>> Driver is not supported - in terms of how netdev understands supported
+>> commitment - if maintainer does not care to receive the patches for its
+>> code, so demote it to "maintained" to reflect true status.
+> 
+> Maybe "Orphan" would be better, if the listed Maintainer is not doing
+> any Maintainer work?
+> 
+> 	   Andrew	   
 
-drivers/net/ethernet/stmicro/stmmac/dwmac4_descs.c
-    399 static void dwmac4_display_ring(void *head, unsigned int size, bool rx,
-    400                                 dma_addr_t dma_rx_phy, unsigned int desc_size)
-    401 {
-    402         dma_addr_t dma_addr;
-    403         int i;
-    404 
-    405         pr_info("%s descriptor ring:\n", rx ? "RX" : "TX");
-    406 
-    407         if (desc_size == sizeof(struct dma_desc)) {
-    408                 struct dma_desc *p = (struct dma_desc *)head;
-    409 
-    410                 for (i = 0; i < size; i++) {
-    411                         dma_addr = dma_rx_phy + i * sizeof(*p);
-    412                         pr_info("%03d [%pad]: 0x%x 0x%x 0x%x 0x%x\n",
-    413                                 i, &dma_addr,
-    414                                 le32_to_cpu(p->des0), le32_to_cpu(p->des1),
-    415                                 le32_to_cpu(p->des2), le32_to_cpu(p->des3));
-    416                         p++;
-    417                 }
-    418         } else if (desc_size == sizeof(struct dma_extended_desc)) {
-    419                 struct dma_extended_desc *extp = (struct dma_extended_desc *)head;
-    420 
-    421                 for (i = 0; i < size; i++) {
-    422                         dma_addr = dma_rx_phy + i * sizeof(*extp);
-    423                         pr_info("%03d [%pad]: 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x\n",
-    424                                 i, &dma_addr,
-    425                                 le32_to_cpu(extp->basic.des0), le32_to_cpu(extp->basic.des1),
-    426                                 le32_to_cpu(extp->basic.des2), le32_to_cpu(extp->basic.des3),
-    427                                 le32_to_cpu(extp->des4), le32_to_cpu(extp->des5),
-    428                                 le32_to_cpu(extp->des6), le32_to_cpu(extp->des7));
-    429                         extp++;
-    430                 }
---> 431         } else if (desc_size == sizeof(struct dma_edesc)) {
-
-The dma_extended_desc and dma_edesc structs are the same size but
-just the basic info is at the start vs at the end.  This code is
-quite old, but I think maybe we changed the Kconfig so now it's showing
-up as a static checker warning?
-
-/* Extended descriptor structure (e.g. >= databook 3.50a) */
-struct dma_extended_desc {
-	struct dma_desc basic;	/* Basic descriptors */
-	__le32 des4;	/* Extended Status */
-	__le32 des5;	/* Reserved */
-	__le32 des6;	/* Tx/Rx Timestamp Low */
-	__le32 des7;	/* Tx/Rx Timestamp High */
-};
-
-/* Enhanced descriptor for TBS */
-struct dma_edesc {
-	__le32 des4;
-	__le32 des5;
-	__le32 des6;
-	__le32 des7;
-	struct dma_desc basic;
-};
-
-    432                 struct dma_edesc *ep = dma_desc_to_edesc(head);
-    433 
-    434                 for (i = 0; i < size; i++) {
-    435                         dma_addr = dma_rx_phy + i * sizeof(*ep);
-    436                         pr_info("%03d [%pad]: 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x 0x%x\n",
-    437                                 i, &dma_addr,
-    438                                 le32_to_cpu(ep->des4), le32_to_cpu(ep->des5),
-    439                                 le32_to_cpu(ep->des6), le32_to_cpu(ep->des7),
-    440                                 le32_to_cpu(ep->basic.des0), le32_to_cpu(ep->basic.des1),
-    441                                 le32_to_cpu(ep->basic.des2), le32_to_cpu(ep->basic.des3));
-    442                         ep++;
-    443                 }
-    444         } else {
-    445                 pr_err("unsupported descriptor!");
-    446         }
-    447 }
-
-This email is a free service from the Smatch-CI project [smatch.sf.net].
-
-regards,
-dan carpenter
+Hello Andrew, Krzysztof,
+I will continue to maintain the listed drivers, so their status can
+remain Supported.
