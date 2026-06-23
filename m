@@ -1,157 +1,101 @@
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC1B38A722
-	for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 18:00:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782237631; cv=pass; b=t1caeJsgVQpTlAzoxgAx6PXwRkvxMN4KKa+F++zKJL2YDz+LYiv9TSdZwkAgTuCpWafsTrhJK1YJMMzOiQTwF8wcSKEtVsm7L+BMhyYPSABv7XfPTw3YTcpX0qVBJGGtlI/DZxg9PfhxDsRoDtMN1uq3gJLLjKlOVWtL56agYhA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782237631; c=relaxed/simple;
-	bh=WZY3NMXCKmiFUL6bEHqIaryLyBJ3QkMRef8kQJc3azI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cFmRhnqfFVKRo3QVObw38pSGMcVxeJpGzl9c5ZCk696NtXKFV2dc200hB6v5UPCOlf+wE6JXS90MOJ8afkuX/6B0f10aUBudR6OD/mQeutDQfvrq33mOcAFEfdMhlB4sXFIOpjZwOlOmrvSXy1oLM1nU4SHQdK3/E3WU4Cwn+b0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=k/bypVSW; arc=pass smtp.client-ip=209.85.215.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F394A38AC85;
+	Tue, 23 Jun 2026 18:13:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782238416; cv=none; b=kY59LfOWGac5pj//d4Rp70ZA60PvM44AoyBs0m3eZiV0YRV0jVWhQshXSQ5+Jd0jpxXjXAJBlOs3Pybk45CMzNzPLZwIY28e2sap9DRfgVfH+dk3imNei7e8e+549MYA3bKravxyqbqEpNfCx3rtPyV06ct5o+mxGLI9gBK1ClQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782238416; c=relaxed/simple;
+	bh=V071eB0OShAJcubanDUfinkZ4YVt3qy8HiCeWjfZSy0=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=dNjP9pRvX9M7aw6kY04mGOrTLS/5LzLVFh7aBexcFGUSihYdFk311gYMv1q3Lnm1vjZP27T8F5D5nIUntvmCL6ckE/MPXS5PXAm0L+m0Oo/Yxn8qJ+sDZQRHhaWLI8+JCkXJROzXcnhyymWgiA8VTtfvbWCPEyGqEJ/g8owvD3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yoka7Gbq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="k/bypVSW"
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c86214eead7so68442a12.0
-        for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 11:00:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782237629; cv=none;
-        d=google.com; s=arc-20260327;
-        b=VqcU2RVyF1VLa5xPL50sr+VX1DBcPvdenCFPu6//J7Dk5DkWKZL28PtmVb6XCoDeR7
-         xNS2i1uyf6x+tYUrp8TGv1nHUFqT5CDSv3kptfb9g4H4DOMTOfgeEslGgpam1hxg3sfX
-         qIDA23AkPBmUo+f14j8nAM7Vn5fCSPZvzmD5MuBX1kNn4rZwYhHcoig5TNYC16Hw1h87
-         jpOt157VhTIEzu7TeejEvPJq3Fuas4i/c222m0NMFz/deqhks4F7Xw0lvnF5IUA7e0D9
-         PR7tXVTiz/cpXkiqWXAIGQ9L0IWMf0E1HMPR2Tt26RgsfqtrX6ScmHOiL6oO8VgOx+Rv
-         u7aw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ryxlULCevungJI7+Ffd92DLwq7x8/EUQZpajQof+bpw=;
-        fh=DIk+uWjbVrBc7q/YfAUkyAnkXMvYL6w/vLBUxsLNVfw=;
-        b=jvahpSGjXn6JReA+kreG0ZlVdT5mqr09UfwzY9cIZzG8iEIaaDeDMMrqVL2PWH5WIL
-         OEcmzUyuOl3FdbKsoazb31rcgFzZJoLIU2s2jNcMb0VAY5GMZ0PkttCTn7K3O1otj/wi
-         9JVtco6a0w3PI6S3Y7xaW4Sn7SXurIPnYYAr1eWaPwj5pUkW+QQ76wDzARmpuks1ssrA
-         8qICPH/pf3xeeAS3WkAoCx2BU4zN8axs6nvX/boCcFU4kjeqUsWpYw5WgUVt0jjpE0Wa
-         IKBM95lyGb1G5ASwjMQ3h1vwmMJbRGrlJPUn2759yOoA3DCr0JzIG8/MftInpBAihNYH
-         HlzA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1782237629; x=1782842429; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ryxlULCevungJI7+Ffd92DLwq7x8/EUQZpajQof+bpw=;
-        b=k/bypVSWPyJREY83nITSpfFFScjog4xfLYOAtvYHwbVf4Zudxr33TWb7gfyH92hyV1
-         IAwdaUJkppB+dWBn6FU4fGHPWkrrqwfZFqgfBSr3SUGx25le9V2ZRxBGfnQwHOTW+Rh8
-         kwOYFjU7OOn2WEMK8YbwH81elKP/qBfS2SaXo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782237629; x=1782842429;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ryxlULCevungJI7+Ffd92DLwq7x8/EUQZpajQof+bpw=;
-        b=WcEz3gd/dYD3Mo7pS9u+Y7GQcBaCr/x3vgY6oRa+NGukcQGFtGapDH/RwJMcvXXSiv
-         /rLMhRT8kMQOBUTIIo1GCTucGTnfYmLWJSTWPNsoGNNrC6sCXJzmXJqIouIKUHoq6ztI
-         5qKmZIl//rAFYgwUHTGTa7J582jEFFD/51AnZEhVplQizJCZ9pqEiv1E+lQOorvsmD9W
-         S3+EpC947+vx+pDErnGlJz0S+UItBV8LlFa9zd99R4mc27xYMYbovKZI3KO3jk+1Wb5s
-         m/II43YjiJMAimvMczR9kVN2fkFMyF99XDsWgmBip2uYTMv5/c/D4kdb7OeMrWqJQKXt
-         YZUA==
-X-Gm-Message-State: AOJu0YzjkPePzzGucfWxcATC+2LFzA8uXUuy7xXWWz0r7xiVul+9dmWj
-	ON5qGB2T4SOu2S/+H1wYuIr4ZJ3wWA7OrQPYxdUtsn43/3WgKG7QectDqRDWnTkbixMWNIlFm1h
-	eGW0If9a3eZqqFjdhlx42EcQQ98jRUs9IZYZuMDDYOF94Wp83H3M=
-X-Gm-Gg: AfdE7clcta1E/rBYqoD/UTLscOF/B/UBxTTgirgUp63ykQP2LXJzXk/McVHQZLVgyML
-	Xpfnp5DeJa3Sil2qwV6jLUkjG831eyy9htKCP5DVZRw2uqXJyd/Sz0MUMThv0GUqQ5OH1xDlM9W
-	j4+PvUl7Zhm4vNry531nEJArC9Yz8HCiTuiw3LY3L9dvXqIIviSbNRX7v8coZK4WOTG4l+4UgW/
-	8El00rfHXCz414WUECNcpg3EArWdAObGqFxZ1Jocu8P5gISN/9uPO0/N7evHTjnhKTjV8mBWGkR
-	w/yx
-X-Received: by 2002:a05:6a00:300e:b0:838:5145:c1c5 with SMTP id
- d2e1a72fcca58-84591c76125mr4780394b3a.21.1782237629355; Tue, 23 Jun 2026
- 11:00:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yoka7Gbq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06CBE1F000E9;
+	Tue, 23 Jun 2026 18:13:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782238414;
+	bh=E/TuaqZp9SrAOm6ih2rrgSDiVa0hufYGsNwM/m76EDQ=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=Yoka7Gbq2SraXyP6jmOdRcPoxXRj5V9Jw/b6qig6mT3ceLH6l9DURwZFj1iCDnHea
+	 J63bsMKj9SqpBC8iHpQ5S8Eu+adrxmereL3A2pBEZR9ly50gJzv+YY0liyoefWF0Bd
+	 y14TZjJuRQvuzoR7Iq7qR22xM3PjjCuxOPcYVkOauMXf2eK46MyFELeG+TMbjVz8Ex
+	 jCFuhAK8Zc/s1e6Ob6hZevI9/OC94CHyWM7SJNd9OUOD8zFa5n617icoqA2K62bgLx
+	 qFyrOXYum0SPZwRlLIdqMhnqQJyjleethFTB17Wqrs68MPGZafaGHSB09mslkW9CeA
+	 CacWWJUyUZXTA==
+Content-Type: multipart/mixed; boundary="===============2774573830481326885=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260620130749.226642-1-jhs@mojatatu.com>
-In-Reply-To: <20260620130749.226642-1-jhs@mojatatu.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Tue, 23 Jun 2026 14:00:17 -0400
-X-Gm-Features: AVVi8CezjsSNxPNvGxNfS0psUshap-NDi0qYBt6lePZ7nsFUJ5LlIkjVJxxvsxg
-Message-ID: <CAM0EoMmtMDXjVgCk735R+-VaAo6L6dcZaHOOKm2VgFATa6Um-g@mail.gmail.com>
-Subject: Re: [PATCH net 1/1] net/sched: cls_api: Handle TC_ACT_CONSUMED in tcf_qevent_handle
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, jiri@resnulli.us, victor@mojatatu.com, 
-	security@kernel.org, Zero Day Initiative <zdi-disclosures@trendmicro.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Message-Id: <8a9d5b1314956de19cdeebcf42f453a392b64019d9685aed93d1dced0e254e34@mail.kernel.org>
+In-Reply-To: <20260622-vmscape-bhb-v12-8-76cbda0ae3e5@linux.intel.com>
+References: <20260622-vmscape-bhb-v12-8-76cbda0ae3e5@linux.intel.com>
+Subject: Re: [PATCH v12 08/12] KVM: Define EXPORT_STATIC_CALL_FOR_KVM()
+From: bot+bpf-ci@kernel.org
+To: pawan.kumar.gupta@linux.intel.com,x86@kernel.org,jon@nutanix.com,nik.borisov@suse.com,hpa@zytor.com,jpoimboe@kernel.org,david.kaplan@amd.com,seanjc@google.com,bp@alien8.de,dave.hansen@linux.intel.com,peterz@infradead.org,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,kpsingh@kernel.org,jolsa@kernel.org,davem@davemloft.net,david.laight.linux@gmail.com,luto@kernel.org,tglx@kernel.org,mingo@redhat.com,dsahern@kernel.org,martin.lau@linux.dev,eddyz87@gmail.com,song@kernel.org,yonghong.song@linux.dev,john.fastabend@gmail.com,sdf@fomichev.me,haoluo@google.com,pbonzini@redhat.com,corbet@lwn.net,jbaron@akamai.com,aliceryhl@google.com,rostedt@goodmis.org,ardb@kernel.org,skhan@linuxfoundation.org
+Cc: linux-kernel@vger.kernel.org,kvm@vger.kernel.org,asit.k.mallick@intel.com,tao1.zhang@intel.com,bpf@vger.kernel.org,netdev@vger.kernel.org,linux-doc@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Tue, 23 Jun 2026 18:13:34 +0000 (UTC)
 
-On Sat, Jun 20, 2026 at 9:07=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu.com>=
- wrote:
->
-> tcf_classify() can return TC_ACT_CONSUMED while the skb is held by the
-> defragmentation engine (e.g. act_ct on out-of-order fragments). When
-> that happens the skb is no longer owned by the caller and must not be
-> touched again.
->
-> tcf_qevent_handle() did not handle TC_ACT_CONSUMED: it fell through the
-> switch and returned the skb to the caller as if classification had
-> passed. The only qdisc that wires up qevents today is RED, via three call=
- sites
-> (qe_mark on RED_PROB_MARK/HARD_MARK, qe_early_drop on congestion_drop)
-> red_enqueue() was continuing to operate on an skb it no longer owns  in t=
-his
-> case -- enqueueing it, dropping it, or updating statistics. Resulting in =
-a UAF.
->
->   tc qdisc add dev eth0 root handle 1: red ... qevent early_drop block 10
->   tc filter add block 10 ... action ct
->
->   (with ct defrag enabled and traffic that produces out-of-order
->   fragments, e.g. a fragmented UDP stream)
->
-> Handle TC_ACT_CONSUMED in tcf_qevent_handle() the same way the ingress
-> and egress fast paths do: treat it as stolen and return NULL without
-> touching the skb. Unlike the TC_ACT_STOLEN case, the skb must not be
-> dropped/freed here, as it is no longer owned by us.
->
+--===============2774573830481326885==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-I just looked at sashiko claims - one of them (on ebpf) is legit but
-the one on qdiscs is some BS it is making up. I will address the ebpf
-one this week.
+> EXPORT_SYMBOL_FOR_KVM() exists to export symbols to KVM modules. Static
+> calls need the same treatment when the core kernel defines a static_call
+> that KVM needs access to (e.g. from a VM-exit path).
+>
+> Define EXPORT_STATIC_CALL_FOR_KVM() as the static_call analogue of
+> EXPORT_SYMBOL_FOR_KVM(). The same three-way logic applies:
+>
+>   - KVM_SUB_MODULES defined: export to "kvm," plus all sub-modules
+>   - KVM=m, no sub-modules: export to "kvm" only
+>   - KVM built-in: no export needed (noop)
+>
+>   As with EXPORT_SYMBOL_FOR_KVM(), allow architectures to override both
+>   macros (e.g. to suppress the export when kvm.ko itself will not be
+>   built despite CONFIG_KVM=m). Add the x86 no-op overrides in
+>   arch/x86/include/asm/kvm_types.h for that case. To keep the pair in
+>   sync, EXPORT_STATIC_CALL_FOR_KVM() is defined inside the
+>   EXPORT_SYMBOL_FOR_KVM #ifndef block; an arch that defines
+>   EXPORT_SYMBOL_FOR_KVM must also define EXPORT_STATIC_CALL_FOR_KVM or the
+>   build will fail with a compile-time error.
+>
+> As with EXPORT_SYMBOL_FOR_KVM(), allow architectures to override
+> EXPORT_STATIC_CALL_FOR_KVM definition (e.g. to suppress the export when
+> kvm.ko itself will not be built despite CONFIG_KVM=m). Add the x86 no-op
+> override in arch/x86/include/asm/kvm_types.h for that case.
+>
+> Architectures must also define EXPORT_STATIC_CALL_FOR_KVM when they define
+> EXPORT_SYMBOL_FOR_KVM.
 
-cheers,
-jamal
+This isn't a bug, but the arch-override rationale appears twice in nearly
+identical form.  The third paragraph (starting "As with
+EXPORT_SYMBOL_FOR_KVM(), allow architectures to override both macros") and
+the fourth paragraph (starting "As with EXPORT_SYMBOL_FOR_KVM(), allow
+architectures to override EXPORT_STATIC_CALL_FOR_KVM definition") both
+explain suppressing the export when kvm.ko will not be built and both
+mention adding the x86 no-op override.
 
-> Fixes: 3f14b377d01d ("net/sched: act_ct: fix skb leak and crash on ooo fr=
-ags")
-> Reported-by: Zero Day Initiative <zdi-disclosures@trendmicro.com>
-> Tested-by: Victor Nogueira <victor@mojatatu.com>
-> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-> ---
->  net/sched/cls_api.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
-> index 20f7f9ee0b353..3e67600a4a1a1 100644
-> --- a/net/sched/cls_api.c
-> +++ b/net/sched/cls_api.c
-> @@ -4049,6 +4049,9 @@ struct sk_buff *tcf_qevent_handle(struct tcf_qevent=
- *qe, struct Qdisc *sch, stru
->                 skb_do_redirect(skb);
->                 *ret =3D __NET_XMIT_STOLEN;
->                 return NULL;
-> +       case TC_ACT_CONSUMED:
-> +               *ret =3D __NET_XMIT_STOLEN;
-> +               return NULL;
->         }
->
->         return skb;
-> --
-> 2.34.1
->
+The requirement that an arch defining EXPORT_SYMBOL_FOR_KVM must also
+define EXPORT_STATIC_CALL_FOR_KVM also shows up twice: once inside the
+third paragraph ("an arch that defines EXPORT_SYMBOL_FOR_KVM must also
+define EXPORT_STATIC_CALL_FOR_KVM or the build will fail") and again as the
+standalone final sentence ("Architectures must also define
+EXPORT_STATIC_CALL_FOR_KVM when they define EXPORT_SYMBOL_FOR_KVM").
+
+Could the duplicate paragraphs be folded into a single statement?
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/28046221590
+--===============2774573830481326885==--
