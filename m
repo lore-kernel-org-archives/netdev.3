@@ -1,65 +1,52 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C1A5377004
-	for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 10:18:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C7AC35200A;
+	Tue, 23 Jun 2026 10:29:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782209918; cv=none; b=ZvJJKk3pXhfSSy7pzVdl3c6O1ERQYZnOGR1ihFRgE3zEQ6ph1x4gHeCeaHj/+UqPk0nbJewnf30uaTl+HthGIDkPorXYknQfZFhoUU6cehR25dKIJvB2xt/Vih+yr6m9o4R+qsrLL9t1TU2S7NJ37sHrixotQ3EW/nMq0qxS0fg=
+	t=1782210597; cv=none; b=CN2AD3C5PT9XHTDeXd7oi7WViQEXGFWPFCrlH9YdNC84HwZL7jc2I66PE/tFPIlqlx43ecqO6lvpkQvI2FAG3kMxc6ji2fm0vly+2fwUKDqDX9y5nXheNsoK72huo1dkSvg6tKW48kbC1IA+FXvbU5cSdVqE3lS6WSOQLwxbxp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782209918; c=relaxed/simple;
-	bh=vaB2XO2v74kdViyuUJWUgXh0F9cIgtx08nFa8yc8/4s=;
+	s=arc-20240116; t=1782210597; c=relaxed/simple;
+	bh=sAG2e6gDVhDw/IMNqh2cES6ptv4l5e7DQ7s0H/IcCeE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hyMSYm7LgXNYD7Rv107cDOCN1T+15dpyFN6hjQ2mg1UowP0PomcnG/1iJKEG4waMY/z6H38IfMpmCFcMdCwZZy5nZpWOvdnWCq2gWDB0f8Knrjhc5BBlCcnx2CbgbKzlbtCiNP8+ffZceBpAHDbcK/55V7W2uTmYjJJIX1+mMaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CPB/ahse; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 MIME-Version; b=eEE18QeDX003mx3c18MZw4ouZibFnngiyVCbpQdEydoG+dfQExvWtSNDOwikVp+4B59qo7kbMPtw8USM7PELqOVh8dEmhDq4svqNGE7idvUkQ5oxhJesZ6/934wOXIuFeKM5OjK2IjQ7ZlgZAbB4wdY1YQ1iPtVUUJFp12eE4RM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hldRoK8v; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CPB/ahse"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782209916;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=adlgMuLZU9orARuzmJXHQQ/r4/TXqlabG4ZF1JkIW0E=;
-	b=CPB/ahseHv+s/9CbIk0FbA75/DHAV25AMoZM1jz9x9y7AMxTsHawRPxQ4zY4N08qncICqH
-	9Kcyy2b422Flt36/0mCATUpcJYZLviy3wtO9iimo6+veJ4z5nXj8rcJnG9HPH8PdvPAVKo
-	5T0LkpXm2dGR6lqHzGs9VWDExDvkRXs=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-368-9dpBrLQHOmaA4s2fMz7x_w-1; Tue,
- 23 Jun 2026 06:18:33 -0400
-X-MC-Unique: 9dpBrLQHOmaA4s2fMz7x_w-1
-X-Mimecast-MFC-AGG-ID: 9dpBrLQHOmaA4s2fMz7x_w_1782209911
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5BBAE19540E7;
-	Tue, 23 Jun 2026 10:18:31 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.44.48.11])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B2EC71800593;
-	Tue, 23 Jun 2026 10:18:27 +0000 (UTC)
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-To: netdev@vger.kernel.org
-Cc: intel-wired-lan@lists.osuosl.org,
-	przemyslaw.kitszel@intel.com,
-	aleksandr.loktionov@intel.com,
-	jacob.e.keller@intel.com,
-	horms@kernel.org,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hldRoK8v"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 985471F000E9;
+	Tue, 23 Jun 2026 10:29:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782210596;
+	bh=7T1CU5SSShDw0aJ9KVYUgQhuWKn/RhlR48iRi5suHSQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=hldRoK8vcpn7kEthG8alQzSf9gF2SaT6ZvQLwwP/WpSnZHbTrSJaeQzykQjKQv4OW
+	 bUk3ic3Ua2enzhh8wA9tt1SSv86e7xsKb9LBy6yLxffWTqULMaTzer1ETP6W4vGL1C
+	 hsO7N28i9oeDbDpZ5AC4HiBfVFcJUMJiFAIQyRINGAXSwAJ5NofUv/Ne2jMoVuCYS2
+	 130Rvc7zknfhC3MlmVDMZMlV/goMSXobtzsFcBvLmGpSpakIwJ+6fyWQeUW/hNBbVl
+	 laEx8Rix5+b0CxuyEqDSh+XwszZqPej60MvjCQnWvdsH6hPMxTX8UNWukO+lYefsnt
+	 5UcKC2eGY0H+g==
+From: Simon Horman <horms@kernel.org>
+To: poros@redhat.com
+Cc: Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
 	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Subject: [PATCH net v7 4/4] ice: skip unnecessary VF reset when setting trust
-Date: Tue, 23 Jun 2026 12:18:00 +0200
-Message-ID: <20260623101800.991293-5-jtornosm@redhat.com>
-In-Reply-To: <20260623101800.991293-1-jtornosm@redhat.com>
-References: <20260623101800.991293-1-jtornosm@redhat.com>
+	jacob.e.keller@intel.com,
+	michal.swiatkowski@linux.intel.com,
+	intel-wired-lan@lists.osuosl.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH iwl-net] ice: clear the default forwarding VSI rule when releasing a VSI
+Date: Tue, 23 Jun 2026 11:29:34 +0100
+Message-ID: <20260623102934.1072800-1-horms@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260622081030.2312129-1-poros@redhat.com>
+References: <20260622081030.2312129-1-poros@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,90 +54,62 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-Similar to the i40e fix, ice_set_vf_trust() unconditionally calls
-ice_reset_vf() when the trust setting changes. While the delay is smaller
-than i40e, this reset is still unnecessary in most cases.
-
-When granting trust, no reset is needed - we can just set the capability
-flag to allow privileged operations.
-
-When revoking trust, we only need to reset (conservative approach) if
-the VF has actually configured advanced features that require cleanup
-(MAC LLDP filters, promiscuous mode). For VFs in a clean state, we can
-safely change the trust setting without the disruptive reset.
-
-When we do reset, we maintain the original ice pattern that has been
-reliable in production: cleanup LLDP filters first, then set vf->trusted,
-then reset. This ensures the privilege capability bit is handled correctly
-during reset rebuild.
-
-When we don't reset, we manually handle the capability flag via helper
-function, eliminating the delay.
-
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://sashiko.dev
 ---
-v7: Rebase on current net tree (no code changes from v6)
-v6: https://lore.kernel.org/all/20260619061321.8554-5-jtornosm@redhat.com/
+ice: clear the default forwarding VSI rule when releasing a VSI
 
- drivers/net/ethernet/intel/ice/ice_sriov.c | 33 +++++++++++++++++++---
- 1 file changed, 29 insertions(+), 4 deletions(-)
+This patch restores the cleanup of the default forwarding VSI rule
+in ice_vsi_release(), clearing it when the VSI owns it. This prevents
+a rule leak if a trusted VF enters promiscuous mode and is then destroyed.
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_sriov.c b/drivers/net/ethernet/intel/ice/ice_sriov.c
-index 7e00e091756d..XXXXXXXXXXXXXXXX 100644
---- a/drivers/net/ethernet/intel/ice/ice_sriov.c
-+++ b/drivers/net/ethernet/intel/ice/ice_sriov.c
-@@ -1364,6 +1364,23 @@ int ice_set_vf_mac(struct net_device *netdev, int vf_id, u8 *mac)
- 	return __ice_set_vf_mac(ice_netdev_to_pf(netdev), vf_id, mac);
- }
+> diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
+> --- a/drivers/net/ethernet/intel/ice/ice_lib.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_lib.c
+> @@ -2871,6 +2871,9 @@ int ice_vsi_release(struct ice_vsi *vsi)
+>  		return -ENODEV;
+>  	pf = vsi->back;
+>  
+> +	if (ice_is_vsi_dflt_vsi(vsi))
+> +		ice_clear_dflt_vsi(vsi);
+> +
 
-+/**
-+ * ice_setup_vf_trust - Enable/disable VF trust mode without reset
-+ * @vf: VF to configure
-+ * @setting: trust setting
-+ *
-+ * Update VF flags when changing trust without performing a VF reset.
-+ * This is only called when it's safe to skip the reset (VF has no advanced
-+ * features configured that need cleanup).
-+ */
-+static void ice_setup_vf_trust(struct ice_vf *vf, bool setting)
-+{
-+	if (setting)
-+		set_bit(ICE_VIRTCHNL_VF_CAP_PRIVILEGE, &vf->vf_caps);
-+	else
-+		clear_bit(ICE_VIRTCHNL_VF_CAP_PRIVILEGE, &vf->vf_caps);
-+}
-+
- /**
-  * ice_set_vf_trust
-  * @netdev: network interface device structure
-@@ -1399,11 +1416,19 @@ int ice_set_vf_trust(struct net_device *netdev, int vf_id, bool trusted)
+[Severity: High]
+Is there a time-of-check to time-of-use race here?
 
- 	mutex_lock(&vf->cfg_lock);
+ice_is_vsi_dflt_vsi() acquires and releases the filt_rule_lock to check if
+the current VSI is the default. If true, ice_clear_dflt_vsi() is called,
+which acquires the lock again during rule removal.
 
--	while (!trusted && vf->num_mac_lldp)
--		ice_vf_update_mac_lldp_num(vf, ice_get_vf_vsi(vf), false);
--
-+	/* Reset only if revoking trust and VF has advanced features configured */
-+	if (!trusted &&
-+	    (vf->num_mac_lldp > 0 ||
-+	     test_bit(ICE_VF_STATE_UC_PROMISC, vf->vf_states) ||
-+	     test_bit(ICE_VF_STATE_MC_PROMISC, vf->vf_states))) {
-+		while (vf->num_mac_lldp)
-+			ice_vf_update_mac_lldp_num(vf, ice_get_vf_vsi(vf), false);
-+		vf->trusted = trusted;
-+		ice_reset_vf(vf, ICE_VF_RESET_NOTIFY);
-+	} else {
-+		vf->trusted = trusted;
-+		ice_setup_vf_trust(vf, trusted);
-+	}
--	vf->trusted = trusted;
--	ice_reset_vf(vf, ICE_VF_RESET_NOTIFY);
- 	dev_info(ice_pf_to_dev(pf), "VF %u is now %strusted\n",
- 		 vf_id, trusted ? "" : "un");
+If the lock is dropped between these two calls, could another thread
+establish a new default VSI rule before ice_clear_dflt_vsi() runs?
 
---
-2.43.0
+When ice_clear_dflt_vsi() executes, it appears the rule search only matches
+by l_data and flag:
 
+ice_switch.c:ice_find_rule_entry() {
+	if (!memcmp(&f_info->l_data, &list_itr->fltr_info.l_data,
+		    sizeof(f_info->l_data)) &&
+	    f_info->flag == list_itr->fltr_info.flag) {
+        ...
+}
+
+For the default VSI rule, l_data is empty, so it might match any newly
+established default rule.
+
+And since ice_remove_rule_internal() does not appear to validate the
+vsi_handle for non-list rules:
+
+ice_switch.c:ice_remove_rule_internal() {
+	if (list_elem->fltr_info.fltr_act != ICE_FWD_TO_VSI_LIST) {
+		remove_rule = true;
+        ...
+}
+
+Could this blindly remove the default forwarding configuration for a
+completely unrelated VSI?
+
+>  	if (test_bit(ICE_FLAG_RSS_ENA, pf->flags))
+>  		ice_rss_clean(vsi);
