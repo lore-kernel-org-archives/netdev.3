@@ -1,89 +1,126 @@
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD5236BCDA
-	for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 10:08:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6741370D43
+	for <netdev@vger.kernel.org>; Tue, 23 Jun 2026 10:14:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782209318; cv=none; b=DSY2pi9e9r6Uz9PwrZ9XSPD9ERlSz1LmxAuD/6zoUcZk3ECz/qYbJQaxXqMMrsobsmVJaSNxBk5J8JKMpDIrKUh8DQ7WdIXteBxrkZ+VD3TpXWBQyzI4eGcK5RiQBjaLjKIiMwy6Z5GV4gsk2ubUpI59XBy2JSkrJWGx/ZwJhuo=
+	t=1782209694; cv=none; b=T0dIlulLK8cv5flJMSY6ERXRXt7agMBXXHSafpUmuAeYxt1L3IWSFPiiZ2WYszNl6XrdVP8yY1mvGPrPPhJFTaxr++f7f2+7TmIy5KcQZ7ljhqmNVjtWdKVO8jkWFCh14uQ8ZCcU0hMP6cgwapV8LGRNniJjFIkOsr4vyQdCk0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782209318; c=relaxed/simple;
-	bh=pZkGyJopL74VE7VjsYav1R6gjjaDsoahje4YVAHTnSM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iZeIgOgOzisFoRFf1qdZH2Kb4TZUSNADzszIdv/+xm1z0n2RenJZVh+ARRSLXo52qfvaqyDARmQI3/HEPPh1/t580V98SDpbD3mB1GNmuwSqDaZ3tkSTPNvCsraa+Ue0ARPWZM3GaEh7Qd5jqsnXzYFzBKs3oE3lkzHpDaPY5bQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=r91+eaR0; arc=none smtp.client-ip=91.218.175.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1782209694; c=relaxed/simple;
+	bh=SMkf0D+YV5OJmnBlJj4MkBurBCKh39zccp5DMkHXsoY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Cd2ZdWTHtoqUgc8nhIPpjF3B8gJM2a6nnHfzxn7GNCbX+62dKDzS67TY4b+/emD6cZ6QQ203KYYHwStkqADF1S0uF6sOVU/LuDw6D1UMKfGmOuT0Vg8Gf6pLbByzQ7p768SDZYkQJ4CNRNqxNnM1fjppuxF8pXck24njfSqs6HU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Xy2U62Qs; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="r91+eaR0"
-Message-ID: <3953e554-9bc4-419e-ac9f-aea3b9fd7b80@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782209313;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lFD9Jph6crM5nRNftF28H4XfKyHcXZ2YzNtJaYuppo4=;
-	b=r91+eaR0Nr0qBjKAaIQNfjey8g1pvhMtE6060+u+/4sxIjmf49565VJ6VfPj5dZttupYHV
-	zM/D7QCVFqHmq5f8eB7nx1yxlVJkJ0tTpdeMbsvP18UebzM5PUE2LIGyk6uMLXgmqXAH2w
-	Dd2HaygB9kXSGGrslxF8VMxUS+tbKDM=
-Date: Tue, 23 Jun 2026 18:08:19 +0800
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Xy2U62Qs"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782209693; x=1813745693;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=SMkf0D+YV5OJmnBlJj4MkBurBCKh39zccp5DMkHXsoY=;
+  b=Xy2U62QsJKpu1JtXtAwdzlKBMg1sxY1OeHCd2cz7ffbFiAPm410KXE7U
+   eB85BLT0jOuQ+lefm2xHmbd8Aq85IFn3sqsWvgVshEiKGWILTW9+cZddh
+   SZYz1q6VRdCKvPMIMbGU2PTtRS+JJMUT1/UCxO4ZKUasU2HhqeOq+vpGr
+   QeStK7IiJhbbvhBfRtqYhLndsLGC8+hMoH5VztoLzhh/qTent7AwadXfC
+   oZvIfmhC5awzwNpLsD1HaYplajMuTWAnqhxyrOMOZzVzSAILm0LSEWos7
+   RYu30pclDXNbtB7Cwo3B+ziUNnxdPUOEGeA/QmsJoUqBIReLfqjgfMBTW
+   Q==;
+X-CSE-ConnectionGUID: vaPD6WmmR2GMJOx6D08SGA==
+X-CSE-MsgGUID: CVHR8RV8QymsSsnB1Zw1MQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="82053137"
+X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; 
+   d="scan'208";a="82053137"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 03:14:52 -0700
+X-CSE-ConnectionGUID: R1kV7eFJQm+LHHdZwJKo8w==
+X-CSE-MsgGUID: GJD4eZNlTgyFMek7vzSAjQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; 
+   d="scan'208";a="273175461"
+Received: from jraag-z790m-itx-wifi.iind.intel.com ([10.190.239.23])
+  by fmviesa002.fm.intel.com with ESMTP; 23 Jun 2026 03:14:47 -0700
+From: Raag Jadav <raag.jadav@intel.com>
+To: intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	netdev@vger.kernel.org
+Cc: simona.vetter@ffwll.ch,
+	airlied@gmail.com,
+	kuba@kernel.org,
+	lijo.lazar@amd.com,
+	Hawking.Zhang@amd.com,
+	davem@davemloft.net,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	dev@lankhorst.se,
+	zachary.mckevitt@oss.qualcomm.com,
+	rodrigo.vivi@intel.com,
+	riana.tauro@intel.com,
+	michal.wajdeczko@intel.com,
+	matthew.d.roper@intel.com,
+	mallesh.koujalagi@intel.com,
+	Raag Jadav <raag.jadav@intel.com>
+Subject: [PATCH v4 0/5] Introduce error threshold to drm_ras
+Date: Tue, 23 Jun 2026 15:39:54 +0530
+Message-ID: <20260623101043.255897-1-raag.jadav@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net] net, bpf: check master for NULL in
- xdp_master_redirect()
-To: Ido Schimmel <idosch@nvidia.com>, Xiang Mei <xmei5@asu.edu>
-Cc: Jakub Kicinski <kuba@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Martin KaFai Lau <martin.lau@linux.dev>,
- Jesper Dangaard Brouer <hawk@kernel.org>, netdev@vger.kernel.org,
- bpf@vger.kernel.org, John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>, Alexei Starovoitov <ast@kernel.org>,
- Jussi Maki <joamaki@gmail.com>, Paolo Abeni <pabeni@redhat.com>,
- Weiming Shi <bestswngs@gmail.com>, Ido Schimmel <idosch@idosch.org>,
- David Ahern <dsahern@gmail.com>
-References: <20260620201531.180123-1-xmei5@asu.edu>
- <7791b9cc-86f4-424b-aa1a-d1a869814130@linux.dev>
- <CAPpSM+TRJaqSSUs6tBp_CBSVUJMiDZm01o5BK6aCNak8vuQi+w@mail.gmail.com>
- <20260622155854.75977aac@kernel.org>
- <CAPpSM+Q4O704OaUAXqKpL6ffvudTfqzzLzLExziUExgvxQWmxw@mail.gmail.com>
- <20260623065218.GA378121@shredder>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <20260623065218.GA378121@shredder>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
+This series introduces error threshold to drm_ras infrastructure. This
+allows user to get and set the error threshold of a specific counter.
 
-On 6/23/26 2:52 PM, Ido Schimmel wrote:
-> On Mon, Jun 22, 2026 at 04:34:06PM -0700, Xiang Mei wrote:
->> On Mon, Jun 22, 2026 at 3:58 PM Jakub Kicinski <kuba@kernel.org> wrote:
->>> Can you double-confirm that this triggers on current HEAD
->>> of linux/master ? I thought commit 2674d603a9e6 ("vrf: Fix a potential
->>> NPD when removing a port from a VRF") was supposed to prevent all the
->>> torn master fetches. Adding VRF folks to CC.
->> Yes.
->>
->> We have triggered the crash on 56abdaebbf0da304b860bed1f2b5a85f5a6a16a0,
->> which is the latest for net.git, and 2674d603a9e6 was applied. We can
->> still trigger the crash:
-> 2674d603a9e6 was only for VRF ports, so it doesn't help with this case
-> (bond port). Also, the problem that 2674d603a9e6 fixed is a bit
-> different. We had a NULL check after netdev_master_upper_dev_get_rcu(),
-> but the issue was that this master device was not necessarily a VRF
-> master.
-Agree, it seems that 2674d603a9e6 only focus on VRF side.
+Detailed description in commit message and documentation.
 
->
-> Looking at __bond_release_one(), assuming that
-> netdev_master_upper_dev_get_rcu() returned a master device, I believe it
-> must be a bond because you have a synchronize_rcu() after
-> bond_upper_dev_unlink().
-Right, synchronize_rcu() only guarantees that the master device is not freed
-while our RCU reader is operating on it, but it does not guarantee that
-we can successfully acquire the master device. We still need NULL check 
-here.
+v2: Document threshold definition (Riana)
+    Return -EOPNOTSUPP on threshold callbacks absence (Riana)
+    Cancel and free genlmsg on failure (Riana)
+    Document threshold bounds checking responsibility (Riana)
+    Add RAS operation status codes (Riana)
+    Use goto (Riana)
+
+v3: Move documentation from yaml to rst file (Riana)
+    s/value/threshold (Riana)
+    Use goto for error handling (Riana)
+    Reuse status codes and uapi mapping from counter series (Riana)
+    Access request/response counter using local pointer (Riana)
+    Mark unused field as reserved (Riana)
+    Return -ENOENT on info absence (Riana)
+
+v4: Clarify 0 threshold expectations (Riana)
+    Drop redundant wrapping (Riana)
+    Make debug logs consistent (Riana)
+    Update kdoc (Riana)
+
+Raag Jadav (5):
+  drm/ras: Cancel and free message on get counter failure
+  drm/ras: Introduce error threshold
+  drm/xe/ras: Add support for error threshold
+  drm/xe/drm_ras: Wire up error threshold callbacks
+  drm/xe/sysctrl: Reuse xe_sysctrl_create_command()
+
+ Documentation/gpu/drm-ras.rst                 |  18 ++
+ Documentation/netlink/specs/drm_ras.yaml      |  32 ++++
+ drivers/gpu/drm/drm_ras.c                     | 178 +++++++++++++++++-
+ drivers/gpu/drm/drm_ras_nl.c                  |  27 +++
+ drivers/gpu/drm/drm_ras_nl.h                  |   4 +
+ drivers/gpu/drm/xe/xe_drm_ras.c               |  34 ++++
+ drivers/gpu/drm/xe/xe_ras.c                   | 105 +++++++++++
+ drivers/gpu/drm/xe/xe_ras.h                   |   2 +
+ drivers/gpu/drm/xe/xe_ras_types.h             |  51 +++++
+ drivers/gpu/drm/xe/xe_sysctrl_event.c         |  28 +--
+ drivers/gpu/drm/xe/xe_sysctrl_mailbox_types.h |   4 +
+ include/drm/drm_ras.h                         |  28 +++
+ include/uapi/drm/drm_ras.h                    |   3 +
+ 13 files changed, 487 insertions(+), 27 deletions(-)
+
+-- 
+2.43.0
+
