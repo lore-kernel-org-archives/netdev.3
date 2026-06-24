@@ -1,65 +1,50 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F87E33A71A
-	for <netdev@vger.kernel.org>; Wed, 24 Jun 2026 16:39:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF7B329C71
+	for <netdev@vger.kernel.org>; Wed, 24 Jun 2026 16:40:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782319174; cv=none; b=sxdnD29cmyPhgkfGNs7bSX72yszbB8J4nUZODOw7bbPY0ePsaixyDhFcpnHSiF407lyNtuTzBwNPiA7hf1NNDQ5FkUTfPyDClEbPM2pCxhSc/K7p0RjnfyHdumu5Anr9fcfWHk05MsgUpVStTgu4ZyJRNoLpu2O9t4AWGGnLUNw=
+	t=1782319241; cv=none; b=qT0hr6I7BpU8Btnzd0AYxFys4ADM149l6ZU+Bzn1fYObOub1yPVjvcGBqGcWrCN+FUguv8S5+lKRXQGKsOSShhlxtrz5IH//zr0E/G0p+AWNdx5FdFAd+6GWI37fz/r+vLqwo7SdkmjsPMlzRcQP4tQmtMX8laL+kRuJM9jdIhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782319174; c=relaxed/simple;
-	bh=ouf00cILEL/4LzoNJQwSsUo2J7Jfm13IomvyrvDvvLk=;
+	s=arc-20240116; t=1782319241; c=relaxed/simple;
+	bh=ERgO9fR+JNxq7Wf7Mihb00HfnEaaOROeM3Vj1Fmqhnc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SsY+sGABv0hQcVQEgQYZlUvOcUIZSijJx0p2jxg5+b8fVVb1mSBspaSHj171OCRcZLRZbS+5O8QYZDGoKle7UJWwXwcOSd7waQ0fWznAdI/j7KQLfuqzQggNw1Ak5BoBpk3gFKXW+Uvu7BoNGDUX+dROoJjrBzszFfZcVZJeKYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=P0kKeU0S; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 MIME-Version; b=BD3aALWiElljSXdeNjB2x1up+hit59DxlROOd2+0EubYSIdEbm1p8/DnoWsbzEuvfBjbVR7QQ1BQO72Gh+XObUD6Qcnwrq4/8HxzxDMXFV01+MqNXUwJ64lR8FgsRF5eT3MxKMSpzswiAL7mM8sKFYH7CeNC3ynmVRzIszPW5QE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YKXSriNJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="P0kKeU0S"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782319172;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=w8hvdAbEtufhYAEgmIVDbv4uWxsJh9nhzvfdHSxY9Ak=;
-	b=P0kKeU0SHGxdD0HnQSJ1XkdV6rdZ9DfxgXom//bu02+P7ewJZ0FBGymbI4TJfPW/8douaf
-	iidzePHjpH2r1EY9XzkpJ2dSwda/5dw2QHk/eFDZAxldS5GddkQFRCb6/Tx5+7R2wFDpMb
-	tpfcCYRDFkQYlST5jQUsmkcMIR/5G5U=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-463-7FzQr6IqMwCaL-pAOvU-Jw-1; Wed,
- 24 Jun 2026 12:39:27 -0400
-X-MC-Unique: 7FzQr6IqMwCaL-pAOvU-Jw-1
-X-Mimecast-MFC-AGG-ID: 7FzQr6IqMwCaL-pAOvU-Jw_1782319165
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8E95E1800603;
-	Wed, 24 Jun 2026 16:39:25 +0000 (UTC)
-Received: from warthog.procyon.org.com (unknown [10.44.49.152])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3873F1956041;
-	Wed, 24 Jun 2026 16:39:21 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: netdev@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Jeffrey Altman <jaltman@auristor.com>,
-	stable@kernel.org
-Subject: [PATCH net v3 11/11] rxrpc: Fix rxrpc_rotate_tx_rotate() to check there's something to rotate
-Date: Wed, 24 Jun 2026 17:38:18 +0100
-Message-ID: <20260624163819.3017002-12-dhowells@redhat.com>
-In-Reply-To: <20260624163819.3017002-1-dhowells@redhat.com>
-References: <20260624163819.3017002-1-dhowells@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YKXSriNJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1401D1F00A3A;
+	Wed, 24 Jun 2026 16:40:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782319240;
+	bh=Vn4fFZoy5PlSeydUMxpIJV+IuqKhUGEhHOXrG3ACH98=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=YKXSriNJ2iEGZzOocLfUXXQEv0axYK9sWp7ILG6hS3ZRG9dkoH/OqQLvQ/2oWSQfg
+	 NyNiIGXaczJ2H/5073TQJ7IaHIvYUTgSpfAxJFOXN656nAqWpLw/hJHKZtyW8hQUW1
+	 EhCJ3s+bbTpATKV+Yy20Etj0zAm89cYf1T0jtFYWitIHCN7jmWW28E1aEokea2+dzH
+	 iDYaBnp+phUcbiF/pzivdX6oN7Adi/OFt6gN+TphZKQOuThfOudQQrbWKKsap8QKdT
+	 bs1U4u7HsnpPCXWXsEeIAR3iJsp5KHt3aV8yxY/gZAj7Ok+MmBa93iMndgR4FHhriH
+	 85uoMQq+pGAiw==
+From: Simon Horman <horms@kernel.org>
+To: jtornosm@redhat.com
+Cc: Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	intel-wired-lan@lists.osuosl.org,
+	przemyslaw.kitszel@intel.com,
+	aleksandr.loktionov@intel.com,
+	jacob.e.keller@intel.com,
+	anthony.l.nguyen@intel.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Subject: Re: [PATCH net v7 3/4] iavf: send MAC change request synchronously
+Date: Wed, 24 Jun 2026 17:31:49 +0100
+Message-ID: <20260624163148.1146093-2-horms@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260623101800.991293-4-jtornosm@redhat.com>
+References: <20260623101800.991293-4-jtornosm@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,39 +52,153 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Fix rxrpc_rotate_tx_rotate() to check that there's something in the
-transmission buffer to be rotated before it attempts to rotate anything.
-
-Fixes: b341a0263b1b ("rxrpc: Implement progressive transmission queue struct")
-Link: https://sashiko.dev/#/patchset/20260618134802.2477777-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Eric Dumazet <edumazet@google.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://sashiko.dev
 ---
- net/rxrpc/input.c | 3 +++
- 1 file changed, 3 insertions(+)
+iavf: send MAC change request synchronously
 
-diff --git a/net/rxrpc/input.c b/net/rxrpc/input.c
-index 9bd0f1b92463..73cafe6bfa9f 100644
---- a/net/rxrpc/input.c
-+++ b/net/rxrpc/input.c
-@@ -237,6 +237,9 @@ static bool rxrpc_rotate_tx_window(struct rxrpc_call *call, rxrpc_seq_t to,
- 		call->acks_lowest_nak = to;
- 	}
- 
-+	if (after(seq, to))
-+		return false;
-+
- 	/* We may have a left over fully-consumed buffer at the front that we
- 	 * couldn't drop before (rotate_and_keep below).
- 	 */
+This commit fixes a deadlock in iavf_set_mac() by making the MAC
+address change synchronous. It introduces iavf_poll_virtchnl_response()
+to directly poll the admin queue instead of waiting on the watchdog task.
 
+> diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+> index 630388e9d28cb..3fa288e3798ae 100644
+> --- a/drivers/net/ethernet/intel/iavf/iavf_main.c
+> +++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+[ ... ]
+> @@ -1049,25 +1103,23 @@ static int iavf_set_mac(struct net_device *netdev, void *p)
+>  		return -EADDRNOTAVAIL;
+>  
+>  	ret = iavf_replace_primary_mac(adapter, addr->sa_data);
+> -
+>  	if (ret)
+>  		return ret;
+>  
+> -	ret = wait_event_interruptible_timeout(adapter->vc_waitqueue,
+> -					       iavf_is_mac_set_handled(netdev, addr->sa_data),
+> -					       msecs_to_jiffies(2500));
+> -
+> -	/* If ret < 0 then it means wait was interrupted.
+> -	 * If ret == 0 then it means we got a timeout.
+> -	 * else it means we got response for set MAC from PF,
+> -	 * check if netdev MAC was updated to requested MAC,
+> -	 * if yes then set MAC succeeded otherwise it failed return -EACCES
+> -	 */
+> -	if (ret < 0)
+> +	ret = iavf_set_mac_sync(adapter, addr->sa_data);
+> +	if (ret) {
+> +		/* Rollback only if send failed (message never reached PF).
+> +		 * Don't rollback on timeout (-EAGAIN) because the message was
+> +		 * sent and PF will eventually respond. When the response arrives,
+> +		 * iavf_virtchnl_completion() will handle rollback (on PF error)
+> +		 * or acceptance (on PF success) automatically.
+> +		 */
+> +		if (ret != -EAGAIN) {
+> +			iavf_mac_add_reject(adapter);
+> +			ether_addr_copy(adapter->hw.mac.addr, netdev->dev_addr);
+> +		}
+>  		return ret;
+> -
+> -	if (!ret)
+> -		return -EAGAIN;
+>  
+>  	if (!ether_addr_equal(netdev->dev_addr, addr->sa_data))
+>  		return -EACCES;
+
+[Severity: High]
+Will this cause a persistent state mismatch if a timeout is followed by a
+retry?
+
+If iavf_set_mac_sync() times out, it returns -EAGAIN and bypasses this
+rollback, leaving adapter->hw.mac.addr updated but netdev->dev_addr at the
+old MAC.
+
+If the user then retries before the PF asynchronously completes the original
+request, iavf_add_ether_addrs() returns -EBUSY. Since -EBUSY != -EAGAIN,
+the rollback runs, forcibly reverting adapter->hw.mac.addr to the old MAC.
+
+When the PF's delayed success response finally arrives,
+iavf_virtchnl_completion() sees the old MAC in both hw.mac.addr and
+netdev->dev_addr, bypassing the netdev MAC update. The PF hardware is now
+programmed with the new MAC, but the kernel retains the old MAC, dropping
+traffic.
+
+> diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+> index ec234cc8bd9db..e6b7e8f82c7c1 100644
+> --- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+> +++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+[ ... ]
+> @@ -555,20 +556,23 @@ iavf_set_mac_addr_type(struct virtchnl_ether_addr *virtchnl_ether_addr,
+>   * @adapter: adapter structure
+>   *
+>   * Request that the PF add one or more addresses to our filters.
+> - **/
+> -void iavf_add_ether_addrs(struct iavf_adapter *adapter)
+> + *
+> + * Return: 0 on success, negative on failure
+> + */
+> +int iavf_add_ether_addrs(struct iavf_adapter *adapter)
+>  {
+>  	struct virtchnl_ether_addr_list *veal;
+>  	struct iavf_mac_filter *f;
+>  	int i = 0, count = 0;
+>  	bool more = false;
+>  	size_t len;
+> +	int ret;
+>  
+>  	if (adapter->current_op != VIRTCHNL_OP_UNKNOWN) {
+>  		/* bail because we already have a command pending */
+>  		dev_err(&adapter->pdev->dev, "Cannot add filters, command %d pending\n",
+>  			adapter->current_op);
+> -		return;
+> +		return -EBUSY;
+>  	}
+
+[Severity: High]
+Could routine background tasks cause MAC changes to frequently fail?
+
+The watchdog task routinely sets adapter->current_op for background commands
+like VIRTCHNL_OP_GET_STATS. If iavf_set_mac() is called during this window,
+iavf_set_mac_sync() will hit this check and immediately fail the MAC change
+with -EBUSY.
+
+Because there is no retry logic in iavf_set_mac(), this error propagates
+directly to userspace, making MAC address configuration randomly fail based
+on watchdog timing.
+
+[ ... ]
+> @@ -712,8 +724,8 @@ static void iavf_mac_add_ok(struct iavf_adapter *adapter)
+>   * @adapter: adapter structure
+>   *
+>   * Remove filters from list based on PF response.
+> - **/
+> -static void iavf_mac_add_reject(struct iavf_adapter *adapter)
+> + */
+> +void iavf_mac_add_reject(struct iavf_adapter *adapter)
+>  {
+>  	struct net_device *netdev = adapter->netdev;
+>  	struct iavf_mac_filter *f, *ftmp;
+
+[Severity: Medium]
+Does exporting and reusing iavf_mac_add_reject() for local rollback cause
+unintended background MAC changes?
+
+When the user requests a MAC address that is already in the filter list
+(e.g., a secondary MAC), iavf_add_filter() sets f->is_new_mac = false and
+f->add = true, and flags IAVF_FLAG_AQ_ADD_MAC_FILTER.
+
+If the synchronous operation fails locally (like the -EBUSY return above),
+iavf_set_mac() calls this function. However, iavf_mac_add_reject() only
+clears the pending state and removes the filter if f->is_new_mac is true:
+
+    if (f->is_new_mac) {
+        list_del(&f->list);
+        kfree(f);
+    }
+
+Reused filters are ignored, leaving f->add = true and the
+IAVF_FLAG_AQ_ADD_MAC_FILTER flag active. The background watchdog task will
+eventually process this flag and blindly send the MAC configuration to the
+PF, even though the VF already aborted the operation locally.
