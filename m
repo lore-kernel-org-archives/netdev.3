@@ -1,212 +1,105 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD6A4317D
-	for <netdev@vger.kernel.org>; Wed, 24 Jun 2026 10:16:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18243248F72
+	for <netdev@vger.kernel.org>; Wed, 24 Jun 2026 10:40:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782296176; cv=none; b=Kn0L1ms2tyQLNsXhwd6ICPUb4cgBKmZ/LvlDYbgF0EoWZ22RtD2Yh9imGF4IHzgnvM6Fmf9y0x1Oi75Y8Ckmp1eH6J3obPcAC3YlTLfF0Wil5uAYXJAb8ZVNDWXCCjLGgFc0S9Rux2lF59G087RYlQu6evW6otyCGSutxEOuB3g=
+	t=1782297612; cv=none; b=BXoF20T9Yasxq7ctDK0lHf1SPKZ1L7ZxLCxrE70TWqrf3ug9bh1DiF4WIQWGyDTrlioUSSWdq7coyYC+TQLBB/qHEDlN2kufQ7oxTGRG10gMCU1kfeNBx9Y2YD56DY3jTvAtpHiOcgmaWl8oB9V37WSXqxSAj40cx1fZKK7A29A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782296176; c=relaxed/simple;
-	bh=BzEk29JGiWKkaiyVUQyQsqDYy9jEYo/hDm64CTzoK7o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Gnvo8AEVYndA/qvDJN/u49Sw4Yr4dQ2O49FUiFRiMwLlVR9CViaEO8cXF+fn9LJxh6MHyqcvt4ZPKWIE19gGGiXnYFTf0S+g2j5TetQD8dTnTQVMkuNmEudbeg4gY7ySSvYBz/KdiSBaSx859tt7edO6GrOXhOJo/8szXmdJjlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=JhAm8PuI; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=baVaFoS4; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1782297612; c=relaxed/simple;
+	bh=SzwY0ArSkepQcN7OqNhWKPW3eLo9VWe8c4Ja3adS3cU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=hgzolYfjob2Wm24zAzAxOukszckft4DsjdnUkea6nHjGDwTayulqiBrLwCyc/VZW8QVbfdub4ObL0ZDyWG41d/asrWbkPjCuoNOQgYet73qeskxvO2sZfLzdXJ9rPmDC3sBpWdIVXjV6vCkD4hH4ZXqzEpytHdNwW1Wr9trc1OQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=DS3UbwvU; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="JhAm8PuI";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="baVaFoS4"
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65O5toZs533303
-	for <netdev@vger.kernel.org>; Wed, 24 Jun 2026 10:16:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	uYUc6DnbYSfkS2y7eIMHId3IdyTyXlVDPIse7G1oYz0=; b=JhAm8PuIimzxY4nu
-	GS2uhlEEqb2Yjm5SVwjENCRXTqJ/Hsxk7kwOE2TCIawEs2ZAJaYTY2G9lHJ+PAPS
-	v/QgCKobCRLv5Awdw8sR9RW60OIpxId1HT5oP4DQk7MVcxQAyDvoYMOd87q7sEIK
-	E9rfyrhIgKlYgWGtVyaXVV2y9iB7FsKh787wUXCp9lkhwaaz4/39GSLND5VyN8eK
-	HsdDu6w2ET6R549FobBtKP+s9gf40Tl+AZIjlUv5dZhYLhGkZvz73cYp8s6Qyij4
-	nwiYOl8TFNkGmFA4kAP+8fKiWjSoVGouTaQcVJuQ28FRlR5z102xHBWEki25THSV
-	Efy52w==
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f06r31jd8-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Wed, 24 Jun 2026 10:16:14 +0000 (GMT)
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2c0c32faa62so13536745ad.2
-        for <netdev@vger.kernel.org>; Wed, 24 Jun 2026 03:16:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="DS3UbwvU"
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-bed19623d6eso111888166b.1
+        for <netdev@vger.kernel.org>; Wed, 24 Jun 2026 03:40:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1782296173; x=1782900973; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=uYUc6DnbYSfkS2y7eIMHId3IdyTyXlVDPIse7G1oYz0=;
-        b=baVaFoS47oL41AXMYtnaMSH/mxk32DJvzuQQbHbWL9gBMMGEExQRZogDX1HazteXxJ
-         tAq44WLta1FHxhpvQKprcaD2l6hAtLUFqyP8WHYkn2ijC/OFRjjKA6fWxqr5RR0mvsyW
-         l0ggRqfydGC41m0bUdOgzmSOcQHe8ww73T+kjDWtQAiFwz13TpdT0p6Kjxs6FFhuNAu1
-         ZwfpesPp5dWfX9zQdejCxuk7iAFQq++bkU1LmkjgAD2cBHjXNCLGaJI5hwAJ0m09bzHk
-         gBSfneWCZQmIfV9FBGEJgNyXyY7h4JiEyOIpYK+8OCWxg00w8qNkvhC9525i2M9hu4C/
-         yZ8g==
+        d=cloudflare.com; s=google09082023; t=1782297609; x=1782902409; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:user-agent
+         :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SzwY0ArSkepQcN7OqNhWKPW3eLo9VWe8c4Ja3adS3cU=;
+        b=DS3UbwvUuClnt0f0ojHK2TcomlHSFCkVepvSFhJLCQx+7xeFSVcCyv6KHqasAdI5Sz
+         9sDxDWWZGHvn9gAGBOcvaGcUiwpWxybjIo5wySO3hWzUUIWgG7m8VOr4vVOKcNEyRi+R
+         8RiZ0lX3FmsVZk1ZdZ4AuO0bVWitpK34vvxg5clhJQqn5/7+h4D6pzduBjx6J9SAYsQ7
+         o+9nstQVX4ZIqlzce78UYJSpOQ/CnQ+Ogu38kvXQQWMtPPcr8aCRx7uWlJbMx/3jez8b
+         Tk8Z8EHPM98kVcfb5WC+jSAAXh0SzToeKePiLeX2mMgMMyHSD7o/BI/T3ULMI6hUyn6z
+         pP2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782296173; x=1782900973;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uYUc6DnbYSfkS2y7eIMHId3IdyTyXlVDPIse7G1oYz0=;
-        b=Iuoz7Lxs5R1l1ywFPdxE3VwobQndQVGU2vIwXR+K5Jg0de0HFdH7I2RkvHQXGrgHLF
-         2ciUn+EKLVX95l9c+sbxYcMmvwfG1JFNqASI4Tt5Li6i3ays0nhFiTZ7A57gkNd91dNd
-         ucN5AUhcKXiC+2kV+gcpM5oIv92KofB8Z3/oJ4MY5tI4lQpk4hBw/SIuobsNWlSDkrXa
-         ymr52SKBo6yWfKzQUnN5v4cGZJg+Y/oEdxHOH7GWoaapdh//WoibB0GAoqppSYKesGYq
-         qhcbNFqcw0uRUe6eItbJqix+Q6xuDOwLt1a4bYgoHM8s88pL+pOWViBGB31OMly19zBG
-         M/OA==
-X-Forwarded-Encrypted: i=1; AHgh+RofyyVEPORxI2BTBOdkT3Ykw1+v0JKAQ5DrrjjLpKG5gsAl1K9nFfu0ua6ginWi7k7oxhZ6xRk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDA5JHG5pm9mV/WVE1ecNEjPXNvisE27xeCDERVP9hNqnH2Vst
-	bHJ/FvUfUPumjI+TcM2fP0RKmz+SBNHbuPd7Q/x3DLuaLj2P7A51p67MkEYlwZ6lyiSLmDj3Sh3
-	lWzl6oeq/3GsDw8TOtYoDGU3K1O/Arz52jENKH9caTln/THx74W+NuoIWNfk=
-X-Gm-Gg: AfdE7cnGlw6V2kLy+AJGQRTnifaHUrZRhpbISRcEXZcdAdB7sUlRYguGqxr8i/zpddi
-	mbvX2noXBUDsOEhtE6tpdGTQs6yJceoeG2gh1Z2U7NQqrYwbfMl+ZBrtxsmO1werFrrhZiLiXcr
-	u6KpZSfpwmyddNinm2eOZIPPYl+ALFImP4XYOJ0/RdaD04UUCk7zyX9RTwMMW6R/b0ppZUuZj+4
-	owPCe2S7lPo6zjeocLaqQ3shbc1JNm/4y5xviPLOa8a00B6NggEw0idghmAGp+GGwetBY1Tq2p8
-	waJCKGp93UACXlHsTOuS7E3BkKQ8n0yTp2nQPTsE8BOnJ9TZwAVSloyfk3ZI5WRKWCuI98a7vJk
-	lvQljBEbCnjxdwOu6wt4L8zl+iWmN7MOnUsLaISjcbct1KJQqBEPn9nycvhlaap0AkCgMH1RmEX
-	hp
-X-Received: by 2002:a17:903:1b03:b0:2c1:77cd:fb0b with SMTP id d9443c01a7336-2c7c772e013mr70238425ad.37.1782296173432;
-        Wed, 24 Jun 2026 03:16:13 -0700 (PDT)
-X-Received: by 2002:a17:903:1b03:b0:2c1:77cd:fb0b with SMTP id d9443c01a7336-2c7c772e013mr70237995ad.37.1782296173004;
-        Wed, 24 Jun 2026 03:16:13 -0700 (PDT)
-Received: from [10.133.33.169] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7ee339400sm4026735ad.33.2026.06.24.03.16.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 24 Jun 2026 03:16:12 -0700 (PDT)
-Message-ID: <50cef9ba-1a64-4079-b416-9b418486cbca@oss.qualcomm.com>
-Date: Wed, 24 Jun 2026 18:16:05 +0800
+        d=1e100.net; s=20251104; t=1782297609; x=1782902409;
+        h=content-transfer-encoding:mime-version:message-id:date:user-agent
+         :references:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SzwY0ArSkepQcN7OqNhWKPW3eLo9VWe8c4Ja3adS3cU=;
+        b=iJGqjA/yFBnS8CejMS3Kb70WeS4zT9V06It/naQ2lyiwZ2E/Sp1d2l4AJit6ZP1/75
+         Im8Ab5MyU4MrCXJU7vRILZ/uC4fHbd0Mj/8BqhRp+UxozXg/y2htJF6q/njJgXPIW4wT
+         CqdZf6EuBl0tiuC1IwJ0jir25uDELG4EVmxCwOKqeTaKOAo2PTJwUIGKizN4nbAnEPen
+         5tdJzdZQzIU1Dcy6f6iHhS4JO4e9mJchP5hPK+Hdt2E0W3gCF/rl0UuTzhMs+Y68GFVk
+         +AZPtKh0xHkJp8/fBn8qaiSMi+XuU68kOSWOunAmigT9WpdNhCbWxdFb3QGXDkuX75Mo
+         v8Cw==
+X-Forwarded-Encrypted: i=1; AFNElJ9VbuTuiDnSQCobR6pvyW33yxXJaFzuZJESL9eA8v9eQktxns5HQvBW2FGbQj4Pw4+SZm2zTXw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw60GbCBSBLQG+6rq9dgoKE2vhtTb5ua6tdYT9V1RrdX3xmS6d/
+	ag2hdKJHqFkumC+ww/JksNMG5lAB/wYMqUBnSAGh2SM2o6/lQ6FfCaIumi314iFPns8=
+X-Gm-Gg: AfdE7cn0rkj53hEDG9nV3FVXB4NJ6+2BBZybEtvjkroVGxbns+/MUI39CVzVA4TO5+Q
+	L/0EvX2eJsXsE3mKN6koOrP+YGQATCDqvpOJnVbfJkhun5X/Q5iTPzDdhQV/SDOiSAdEzVjsgxb
+	EohQfUcEEjJ3gylM9I9QelLI2xemyDAu3HmcuMqyapkOiGCsq1roLF5cQzgWFZsiLEKQY8qlCe0
+	AT1Nmm4t20gI7I4TEwOeE2flejGC44aEj6ehv4pSnhpnElr4oSsD8O+2q47sX4ZgX1lSK+GgUna
+	foqZ6xBFZ66fISmGjZi1n9JVaLEfkT0YOr8noJuz1E/sWs4+M74P1X9N9DcNA6fj8vesqYRHP7L
+	1eCYADDFGzJM5zeLbMD6gIZmwmU+8qFzgtuSvQoJZx6nCnRx34ygep7xfZEoDXUoIEJaCfcQuye
+	F+G9Lzbry16oT8jEc=
+X-Received: by 2002:a17:906:c10b:b0:c05:b9db:68cc with SMTP id a640c23a62f3a-c107a353073mr371151966b.0.1782297609382;
+        Wed, 24 Jun 2026 03:40:09 -0700 (PDT)
+Received: from cloudflare.com ([104.28.21.182])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c0c5e498807sm621703466b.1.2026.06.24.03.40.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Jun 2026 03:40:08 -0700 (PDT)
+From: Jakub Sitnicki <jakub@cloudflare.com>
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: Amery Hung <ameryhung@gmail.com>,  Kuniyuki Iwashima
+ <kuniyu@google.com>,  bpf <bpf@vger.kernel.org>,  Alexei Starovoitov
+ <ast@kernel.org>,  Daniel Borkmann <daniel@iogearbox.net>,  Jakub Kicinski
+ <kuba@kernel.org>,  Jiayuan Chen <jiayuan.chen@linux.dev>,  John Fastabend
+ <john.fastabend@gmail.com>,  Network Development <netdev@vger.kernel.org>,
+  kernel-team <kernel-team@cloudflare.com>
+Subject: Re: [PATCH bpf-next v2] bpf, unix: Guard sk_msg-dependent code
+ behind CONFIG_NET_SOCK_MSG
+In-Reply-To: <CAADnVQKr1XisnigNsBw7CsXxY3Xn5KOGtX_YDdXmNMZyJy4_Cw@mail.gmail.com>
+	(Alexei Starovoitov's message of "Tue, 23 Jun 2026 14:26:06 -0700")
+References: <20260623-bpf-sk_msg-split-unix-v2-1-ca7a626a94a5@cloudflare.com>
+	<CAAVpQUBsQFFxJFDnJzxmsER3bOjm=zqJ5P5MSeW_T9v-4639cw@mail.gmail.com>
+	<87v7b9ysep.fsf@cloudflare.com>
+	<CAAVpQUBARp1qCEomgzWXVe35WatdaswujVLku+RESm_LW0dE7Q@mail.gmail.com>
+	<CAADnVQL2pfQ0BoN-vWcuCpbOBBKq_rM7Bp7P4XdLMFER5LGSDg@mail.gmail.com>
+	<87mrwlyqg4.fsf@cloudflare.com>
+	<CAMB2axMVhJJpP5HZtDFyQLLbKoRxhW08rj1zGRtWtgDkfYaVNA@mail.gmail.com>
+	<878q85yoy5.fsf@cloudflare.com>
+	<CAADnVQKr1XisnigNsBw7CsXxY3Xn5KOGtX_YDdXmNMZyJy4_Cw@mail.gmail.com>
+User-Agent: mu4e 1.14.1; emacs 30.2
+Date: Wed, 24 Jun 2026 12:40:08 +0200
+Message-ID: <8733ycz0fr.fsf@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: ethernet: qualcomm: ppe: Demote from supported
- and fix maintainer addresses
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd
- <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Lei Wei <quic_leiwei@quicinc.com>,
-        Suruchi Agarwal <quic_suruchia@quicinc.com>,
-        Pavithra R <quic_pavir@quicinc.com>, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        devicetree@vger.kernel.org, netdev@vger.kernel.org,
-        "Kiran Kumar C.S.K" <quic_kkumarcs@quicinc.com>,
-        quic_linchen@quicinc.com
-References: <20260623073307.36483-2-krzysztof.kozlowski@oss.qualcomm.com>
- <0247dfba-1c14-4fea-aab3-5489a36f35f6@lunn.ch>
- <8b0560ae-af5c-4d54-be02-d186be1d799c@oss.qualcomm.com>
- <7095f7ba-bacb-4d03-89cf-ed43882d8213@lunn.ch>
-Content-Language: en-US
-From: Jie Luo <jie.luo@oss.qualcomm.com>
-In-Reply-To: <7095f7ba-bacb-4d03-89cf-ed43882d8213@lunn.ch>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI0MDA4NSBTYWx0ZWRfXyf5b1CQqLJP+
- z8+OG6lZ9wRAty05LCGRt/nADGznJRBPdp/bM5VW87nnksRQU8GMkYTOZ+U621/NadcmnMCeN/J
- fHVEbTz4BJg8vGUnDtBNoGcKm3xL1WQlXyuEY2P0dA2mDVHCMvZzomoXShy7HE7R1g9dFgVxoZ+
- eQ+y0t4qsXJd5vJOhTmvrNMiXkw7cUe20BBKlflQBvzlxVwx2A5Hdyoi/nOG+44nvSXVYXCRTY4
- b2vOJqJPIch1/iy6m6jT118wEE9R/mZ//eOynObt68mHdnFGjOQuVvYqo/HS3sZUU34mxA3ZZ3B
- cmkOv9IMmmNG0sETLkLfXtNoKpJOtBcFn4s4poa4HB42tTQQxxohxsAbsAP28DIjRzyn3VzRMzg
- +xHh5VN8EM16GdXgVu7oyW6CWlL0DwGlQu/PDTJSj2o6K9B4G1CmNxvL4zO64uUqH2U2pA0nyD5
- 6I+4fA35dttkw1t8azg==
-X-Proofpoint-ORIG-GUID: oAsUaYAQ9hlGKd8zNS6E66BVpf7buhA1
-X-Authority-Analysis: v=2.4 cv=ZM7nX37b c=1 sm=1 tr=0 ts=6a3bae6e cx=c_pps
- a=IZJwPbhc+fLeJZngyXXI0A==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=0nUQaeTidBPDXHyOA6wA:9 a=QEXdDO2ut3YA:10
- a=uG9DUKGECoFWVXl0Dc02:22
-X-Proofpoint-GUID: oAsUaYAQ9hlGKd8zNS6E66BVpf7buhA1
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI0MDA4NSBTYWx0ZWRfXwTYdx2veXgAz
- D/T5OHEofZcMCCM8HE3CumXTHlU4Z4EidjydYRslrmZCsiOeeWLpO1owkgbLxr7uv5Dm7CaqkTl
- Q3i0gG/t3P1GgqVh4TfXO0ABfe1qgkM=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-24_02,2026-06-23_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0 bulkscore=0 priorityscore=1501 lowpriorityscore=0
- adultscore=0 impostorscore=0 clxscore=1015 suspectscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606240085
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-
-
-On 6/23/2026 7:31 PM, Andrew Lunn wrote:
-> On Tue, Jun 23, 2026 at 05:42:34PM +0800, Jie Luo wrote:
+On Tue, Jun 23, 2026 at 02:26 PM -07, Alexei Starovoitov wrote:
+> On Tue, Jun 23, 2026 at 1:36=E2=80=AFPM Jakub Sitnicki <jakub@cloudflare.=
+com> wrote:
 >>
->>
->> On 6/23/2026 4:10 PM, Andrew Lunn wrote:
->>>> Driver is not supported - in terms of how netdev understands supported
->>>> commitment - if maintainer does not care to receive the patches for its
->>>> code, so demote it to "maintained" to reflect true status.
->>>
->>> Maybe "Orphan" would be better, if the listed Maintainer is not doing
->>> any Maintainer work?
->>>
->>> 	   Andrew	   
->>
->> Hello Andrew, Krzysztof,
->> I will continue to maintain the listed drivers, so their status can
->> remain Supported.
-> 
-> Please understand that being a Maintainer requires that you respond to
-> patches and questions about this driver, give Reviewed-by:, ask for
-> patches to be changed etc. If you don't respond, ideally with 2 to 3
-> days, the driver will be set to Orphaned.
-> 
-> If you want to maintain the Supported status, we can help you set up
-> the needed CI system, and get it registered so it reports the results.
-> 
->     Andrew
+>> This is a follow up from discussions at BPF summit with Alexei & John.
+>
+> Not quite. The discussion was to disable pieces of sockmap
+> that are causing trouble.
+> Not to move them under config knobs, but disable them.
 
-Thank you Andrew, Krzysztof, for the clarification on what "Supported"
-status entails and for the offer to help with CI setup. I would very
-much appreciate the community's help in getting the CI system set up
-and registered for this driver. In the mean time we will also look at
-resources internally within Qualcomm, to understand how to support
-testing using kernelCI/netdevCI for IPQ SoC. This will help us test
-the driver continuously as well.
-
-I fully understand and accept the maintainer responsibilities for this
-driver, and commit to the below:
-- Responding to patches and questions in a timely manner.
-- Providing review comments and requesting changes where appropriate,
-  and providing Reviewed-by tags when needed.
-
-I would also like to take a moment to provide an update on our current
-efforts for IPQ SoC, if it can be of help. We have already re-started
-our efforts for the drivers and are currently actively working to extend
-the IPQ drivers to support more functionality and for newer SoC support
-for same family. We plan to post these updates to the current drivers
-once the review window reopens.
-
-We feel maintaining the "Supported" status is appropriate and reflects
-our genuine long-term commitment to IPQ SoC networking drivers in Linux
-kernel. We request you to retain the current status for this driver if
-acceptable.
-
-Regarding the email ID change, we had attempted to rectify the
-MAINTAINERS file a few months ago based on recommendation given
-internally (please see below thread), however agree that such an update
-in documentation is also required.
-
-https://lore.kernel.org/all/20250903-maintainer_update-v1-1-2183fd2a3c44@oss.qualcomm.com/
-
+I really don't see how we can remove a feature that has users.
+I guess we will just have to weather out the bug wave.
