@@ -1,175 +1,217 @@
-Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78423DD85A
-	for <netdev@vger.kernel.org>; Wed, 24 Jun 2026 17:52:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782323545; cv=pass; b=gJ2fv3GVEe2FuLDGTcGJguuncqgXnWV16Yo48QCiUqW7Gm3FznCkjhMSCuNhl8jas7J93fN9hn5+6JaV6bPw9SQOKCWF0eQrnUmaL/sFiBznwLtOeQsn2L4KYdUveHYe1fuY+zSUopRLD2CkwedZiRNteGkPm1RqCIMW1iwurQk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782323545; c=relaxed/simple;
-	bh=BUqTLbaqUYoKdg3iiW+mLowzEHeWjN5LiDlT2QPIVfI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=l2K18MdEOYg2/mjMQiXEr0WlLEPX83UYr25K/hrozq6hbYro73+QC+Xk10tRQdDwChKE18umdaT1rgiQnOyXxEDDapcK5IbI3zmC//qa0e9ROzIppr4BugFVI8zxGyUGAx9JqZTVG+3H7yADw2XgN0Y+/zVk+Q4lHW2acmu/ILo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dpkHGD01; arc=pass smtp.client-ip=209.85.161.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DF253DD53B;
+	Wed, 24 Jun 2026 17:53:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782323642; cv=none; b=fo9auIU0ozEquh5U8/plu7j4FalG8S/Wg+kqEkQ0QSXB4wXyn+2W/ltfsgr7pYx2RZ6MYH0Jgv1lBjtt6wO0uuNwPP9yCNgdYAbTTA/vum8bDFX0IgvunXnQ3LzlMBskybw84dICOyOwYKtmVd5VtPx9cWOD6vtjR4ibNk3f5Bc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782323642; c=relaxed/simple;
+	bh=lzb8x3aWv1Ia99rUw2Kbf2lIRlZWgK9AkQlGR5zM2So=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lqNkqi9vxxMYCFVWfaqAdwUdfSYAxYKEzy4VeH/YvU2RCE8J0Uo2a1/8oNB0w2UOh6xtuVBa8hrYFHzaDiCnMjFAOpe2m2cFKNJTtmBHfLFmlHvyfFym3GSq2ULvK41f5WMtpanUDAW543EWJt4045MxK8zHqsXXmp1TTXl8Ujw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=FYV5/wbb; arc=none smtp.client-ip=213.133.104.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dpkHGD01"
-Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-69de9bc590aso985432eaf.1
-        for <netdev@vger.kernel.org>; Wed, 24 Jun 2026 10:52:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782323543; cv=none;
-        d=google.com; s=arc-20240605;
-        b=VD9SER2McwpsyCQ83pJnwES+C7Q/72QmxjWd0Kz5Q3WfKlO82qiN8RAY7vF7GGddkT
-         Gj7vet+vwJQLxHAhsnh2yZnVewS5PFWts7USdmZ03SzML/9bRQFEub7bf5/qmSLW/Nmv
-         OX0BXp5jtEf+MjYIQvHwFlyaN3soCyj46FDMbocsjpukgkOIIbePIz/0lexzJquRzWG7
-         rZmd8CJpRcPkfDz1jrFwFHYH+RsSY6N3ZoCfkaQxUqLrcc/z3NC3NRli8fg84Cd8Msng
-         IpjkS7YiJTYzmi3cG5TTkWNrRK4QR7L67tlKSomId7Y3UbRBtvBvMMG6ukJ3Ne/68t9u
-         o8vA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=3yIQCK+bzs9AyvsQ75CttiaMe1DqI5YJnh3974Pl4HA=;
-        fh=m60VJL/f6UJRH9666UcybldfNvpxcreXk3obMnnUWdg=;
-        b=fbqgquUQ830xYC6FEKTx30ai9ciILXU5udYYXcqaOxzA1tDcy+wZpglxPCktC6hl82
-         230eh3TV8qcaqhKRqrg4iIjZ0IRWTyzSB8Mtz3qEHKDnC/v0GHxiih1SVx8vAZKrTRkA
-         EDhEqazC3TZbTY2x9DTJ9PWWaQ8iBjNNDZ8n7KfycQsVvttDnWE03At6rqCCP3mvLIzM
-         opeUBc4xWhQ/PWy5B6S7JOo1ESqcoYrin5rucDGk05BHPCYClOmQ6PzhjRW/C1fBiX0p
-         qcjD3r+sXMNbL8GN/FuNfJvjP1llcASqmip2C0m7+ibqb/fhO7hiQCGHovJ7uG6E0yUu
-         x/Iw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782323543; x=1782928343; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3yIQCK+bzs9AyvsQ75CttiaMe1DqI5YJnh3974Pl4HA=;
-        b=dpkHGD014kNzTRmym8Xmzhh8Uh3XEehN1LpWs11WjWLOwbVCSfy3LK4k12qPPzlUI8
-         9i89Gf/7LdY5kOKX3E9NlLyV2BVEERCY3dARyBZQRO9GOh3T2jtI5mYBD/nZzIP5vR9u
-         7G3nK9LtnnR+BtGBzQyuj+dDtwmlLx+HYSOClLHbyu4rV0nHz6aB/SOU1l5rVdMlryG1
-         +5SRzsGt0xe4rKkknnnaypLkt63oIH3LQfmV+h57Kq7m/UYuq5qnHPbaxmg4/QPGi4YM
-         5uOkKOahVS+/BHS9n1K4Q7yHOdaAZy0Bf7YACl2rlmQ0PmgaZIQL/GE1UBWyknVXIueL
-         fEhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782323543; x=1782928343;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3yIQCK+bzs9AyvsQ75CttiaMe1DqI5YJnh3974Pl4HA=;
-        b=qifUApRdntlcgNbmDmCZ4U+TIe8z/8PQYfjgpxEFw+Nl1T6yZiG7KhTGQ9WGbwHIJH
-         h9BBXzQziCPL+WKuaQBuSgofbnj2FvAQZU1WBopfJfz3hh3E/P8a7Xeg0AVUhN2G9uFi
-         JtpbSthSEfAIm8Oe24xB8j3VddTTALfSG5GNg0C0/EYNQfT7trGTDMpXbMWNWEE4DAT5
-         EnI9s6e4ILM0DTkSH0XQ+m/hgri37DKtP+BKGjXSqgTljT0zA3oQ9KN7lCIPfuRPucU/
-         xEiXCAoF+/uVlmuOuaM2mJEQ3OlgEqBx8M5tm/GS54nzWZ4QR0cOpuP8tDIR1xa5ck0N
-         Hgsw==
-X-Forwarded-Encrypted: i=1; AFNElJ+CJ00l8nzfzjaQJuDTIHjyG+oKa0R8HcpiBupCYwbqkVYPm3WMtJcwQdF100JUZtOC68MdDPA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9v55eAaFYG1dhjksxNgXcCINc1rFYy2NyCmWxO59AydbjSD2S
-	wuE4uORSln6AIoupuVfqRJIh0XjfexoDWSl2uPWzP3FX9tJ7ntjdwGTxvcwwzN6vArUQ+JQatZF
-	p+ActnWAfxfdte5XdFACmMMlLx/3pwYM=
-X-Gm-Gg: AfdE7clco/K3O/ylIxmrS6oWyjUjrDdnjdoxhywgFa7MQL/SwqpswAx6KpTUONi/Hqt
-	YKbYbw//k4uE6Sp+pCA5UzVh3GDgfPUE4Mi0QxfxjRMsG9zKrRAX8k6NvQQt60PYZ0wiMeHhPxv
-	727ptx+cU8yiMmT39BUSsQ1zsbW6o3Vz3aLRdR1+oLZflaGwCC0MkSyaH6OOVA6u6x++LgwZKQb
-	Ym2Aaqh++FAnyWuSfTNUA6CO8+RhTp4rPTTzYn3b/n81dGVLQcKaPER0+qhjfyF0ogeaiA=
-X-Received: by 2002:a05:6820:4d03:b0:6a1:10da:ab9d with SMTP id
- 006d021491bc7-6a123056b05mr2754013eaf.15.1782323542879; Wed, 24 Jun 2026
- 10:52:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="FYV5/wbb"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=zTtiTHPvq+207PbuFOrMvlu3JspgF5HOFyx68riruM0=; b=FYV5/wbbmKYg3sGdJEHDwWrcAr
+	rrM8MqaemumDnV++FOEkcMA8ykytWnwMqO0sESO3CFoSHzlBOWZFDSdYRat0TvW6noTAiolio0mAV
+	ZmfnrqukwmblnIT3Vp3OGWgET0Tf9lIzZcBw6FGPdrwDrvl/vDEe4qNGCTGU8Tdbel6ri9A6cBhov
+	8Z1gx/JIYAGd/OSpWY2+eElUA0PBJnrCffRH+qf0YEpo8791UWQ7gqmwjcZSQ+rX/5TNZHbABynPK
+	SDWvUy5xfbxkHEd4RAC4XHzLuG5UL/I5UTyKPDd63Kl17XbbXOTwDxl1koe4PxWdsPgkWq2ucG4R/
+	vVV4Z2Kw==;
+Received: from sslproxy06.your-server.de ([78.46.172.3])
+	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1wcRnO-000Odm-2c;
+	Wed, 24 Jun 2026 19:53:54 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy06.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1wcRnO-0000FP-0C;
+	Wed, 24 Jun 2026 19:53:54 +0200
+Message-ID: <ca79d73d-a01c-407a-aef4-e41c931aed82@iogearbox.net>
+Date: Wed, 24 Jun 2026 19:53:53 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CANaxB-zK5q=Xw6UZTmeFtXsDZjUsPkFk=p485m-wtNTBnf4hgg@mail.gmail.com>
- <20260624071226.2272209-1-safinaskar@gmail.com>
-In-Reply-To: <20260624071226.2272209-1-safinaskar@gmail.com>
-From: Andrei Vagin <avagin@gmail.com>
-Date: Wed, 24 Jun 2026 10:52:10 -0700
-X-Gm-Features: AVVi8CfO4ShP8XHn8pnL2N4gaP9BD3pzKdndivNRe-NdNvS8dpf9qzg05LfmNXE
-Message-ID: <CANaxB-xUrLQYGiRJZc4Boi+KX=0TJSWymErNovANVko20fMDVA@mail.gmail.com>
-Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
-To: Askar Safin <safinaskar@gmail.com>
-Cc: akpm@linux-foundation.org, alexander@mihalicyn.com, axboe@kernel.dk, 
-	bernd@bsbernd.com, brauner@kernel.org, criu@lists.linux.dev, david@kernel.org, 
-	dhowells@redhat.com, fuse-devel@lists.linux.dev, hch@infradead.org, 
-	jack@suse.cz, joannelkoong@gmail.com, linux-api@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, miklos@szeredi.hu, netdev@vger.kernel.org, 
-	patches@lists.linux.dev, pfalcato@suse.de, rostedt@goodmis.org, 
-	torvalds@linux-foundation.org, val@packett.cool, viro@zeniv.linux.org.uk, 
-	willy@infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 bpf-next 1/2] bpf: Support BPF_F_EGRESS with
+ bpf_redirect_peer
+To: Jordan Rife <jordan@jrife.io>, bpf@vger.kernel.org
+Cc: netdev@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
+ Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau
+ <martin.lau@linux.dev>, Stanislav Fomichev <sdf@fomichev.me>,
+ Jiayuan Chen <jiayuan.chen@linux.dev>,
+ Paul Chaignon <paul.chaignon@gmail.com>
+References: <20260618182035.43811-1-jordan@jrife.io>
+ <20260618182035.43811-2-jordan@jrife.io>
+Content-Language: en-US
+From: Daniel Borkmann <daniel@iogearbox.net>
+Autocrypt: addr=daniel@iogearbox.net; keydata=
+ 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
+In-Reply-To: <20260618182035.43811-2-jordan@jrife.io>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: Clear (ClamAV 1.4.3/28041/Wed Jun 24 08:24:54 2026)
 
-On Wed, Jun 24, 2026 at 12:12=E2=80=AFAM Askar Safin <safinaskar@gmail.com>=
- wrote:
->
-> Andrei Vagin <avagin@gmail.com>:
-> > The CRIU fifo test fails with this change. The problem is that vmsplice
-> > with SPLICE_F_NONBLOCK to a fifo file descriptor fails with -EOPNOTSUPP=
-.
-> >
-> > It seems we need a fix like this one:
-> >
-> > diff --git a/fs/pipe.c b/fs/pipe.c
-> > index 429b0714ec57..6fc49e933727 100644
-> > --- a/fs/pipe.c
-> > +++ b/fs/pipe.c
-> > @@ -1253,6 +1253,7 @@ static int fifo_open(struct inode *inode, struct
-> > file *filp)
-> >
-> >         /* We can only do regular read/write on fifos */
-> >         stream_open(inode, filp);
-> > +       filp->f_mode |=3D FMODE_NOWAIT;
-> >
-> >         switch (filp->f_mode & (FMODE_READ | FMODE_WRITE)) {
-> >         case FMODE_READ:
->
-> Does CRIU actually rely on ability to do SPLICE_F_NONBLOCK vmsplice into
-> named fifos? Or this is merely a test?
-
-Yes, it does.
-
->
-> If this is just a test, I think we need not to preserve this behavior.
->
-> I did debian code search with regex "vmsplice.*SPLICE_F_NONBLOCK" and I
-> found very few packages. And it seems all them use pipes, not named fifos=
-.
-
-In short, this isn't how such cases are handled in the kernel. The fix is
-simple and should be applied to avoid breaking random software.
-
->
-> (On speed: I still think that my vmsplice patches are good thing,
-> despite performance regressions in CRIU.)
-
-I already explained that this isn't just a perfomance degradation, it
-actually breaks the pre-dump mechanism in CRIU. vmsplice is invoked from
-our parasite code within the context of a user process, where execution
-speed is critical. A heavy performance penalty completely invalidates
-the pre-dump logic, making the feature useless.
-
-Under normal circumstances, patches that cause this kind of breakage
-would never be merged. However, since there are exceptions to every
-rule, we should let the maintainers decide how to proceed here. In CRIU,
-we have a backup plan to utilize process_vm_readv to dump process
-memory. We already support this mode, but it isn't the default due to
-performance concerns. If these patches are merged, it will be the
-only option left for CRIU to implement pre-dumping.
-
-However, we need to look at this case in a broader context. This is yet
-another example where the change introduces a workflow breakage, meaning
-there might be other workloads out there that could be broken by this
-change.
-
-At a minimum, we may need to consider a deprecation plan where vmsplice
-with SPLICE_F_GIFT triggers a warning for a few releases before these
-changes are applied. Alternatively, we could introduce the proposed
-behavior alongside a sysctl to fall back to the old behavior and explicitly
-state that this fallback path will be completely deprecated in a future ker=
-nel
-version.
-
-Thanks,
-Andrei
+On 6/18/26 8:20 PM, Jordan Rife wrote:
+> We have several use cases where a pod injects traffic into the datapath
+> of another so that the traffic appears to have originated from that
+> pod. One such use case is a synthetic flow generator which injects
+> synthetic traffic into a pod's datapath to enable dynamic probing and
+> debugging. Another is a transparent proxy where connections originating
+> from one pod are redirected towards another which proxies that
+> connection. The new connection is bound to the IP of the original pod
+> using IP_TRANSPARENT and its traffic is injected into that pod's
+> datapath and handled as if it had originated there. This can be used for
+> mTLS, etc.
+> 
+> We use bpf_redirect(BPF_F_INGRESS) to direct traffic leaving the proxy,
+> flow generator, etc. towards the target pod, ensuring that eBPF programs
+> that are meant to intercept traffic leaving that pod are executed.
+> However, this doesn't work with netkit.
+> 
+> With netkit, an ingress redirection from proxy to workload skips eBPF
+> programs that are meant to intercept traffic leaving the pod, since they
+> reside on the netkit peer device. One workaround is to attach the
+> same program to both the netkit peer device and the TCX ingress hook for
+> the netkit pair's primary interface, but
+> 
+> a) This seems hacky and we need to be careful not to run the same
+>     program twice for the same skb in cases where we want to pass that
+>     traffic to the host stack.
+> b) We're trying to keep the proxy redirection / traffic injection
+>     systems as modular and separated from Cilium as possible, the system
+>     that manages netkit setup and core eBPF programming.
+> 
+> It would be handy if instead we could redirect traffic directly from
+> one netkit peer device to another. This patch proposes an extension
+> to bpf_redirect_peer to allow us to do just that.
+> 
+> With this patch, the BPF_F_EGRESS flag tells bpf_redirect_peer to emit
+> the skb in the egress direction of the target interface's peer device
+> While the main use case is netkit, I suppose you could also use this
+> mode with veth as well if, e.g., there were some eBPF programs attached
+> to that side of the veth pair that needed to intercept traffic.
+> 
+>   +---------------------------------------------------------------------+
+>   | +-------------------------+         6. bpf_redirect_neigh(eth0)     |
+>   | | pod (10.244.0.10)       |           ------------------------      |
+>   | |                         |          |                        |     |
+>   | |              +--------+ |          |      +---------+       |     |
+>   | | 1. packet -->|        | |          |      |         |       |     |
+>   | |    leaves ^  | netkit |<===========|======| netkit  |       |     |
+>   | |           |  | peer   |=======(eBPF)=====>| primary |       |     |
+>   | |           |  |        | |          |      |         |       |     |
+>   | |           |  +--------+ |          |      +---------+       |     |
+>   | |           |             |          | 2. bpf_redirect        v     |
+>   | +-----------|-------------+          |___________________   +-------|
+>   |             |                                            |  | eth0  |
+>   |             | 5. bpf_redirect_peer(BPF_F_EGRESS)         |  +-------|
+>   |             |________________________                    |          |
+>   | +-------------------------+          |                   |          |
+>   | | proxy (10.244.0.11)     |          |                   |          |
+>   | | IP_TRANSPARENT          |          |                   |          |
+>   | |              +--------+ |          |      +---------+  |          |
+>   | | 3. packet <--|        | |          |      |         |<--          |
+>   | |    enters    | netkit |<===========|======| netkit  |             |
+>   | |    [proxy]   | peer   |=======(eBPF)=====>| primary |             |
+>   | | 4. packet -->|        | |                 |         |             |
+>   | |    leaves    +--------+ |                 +---------+             |
+>   | |    sip=10.244.0.10      |                                         |
+>   | +-------------------------+                                         |
+>   +---------------------------------------------------------------------+
+> 
+> Using the proxy use case as an example, in step 5 we would redirect
+> traffic leaving the proxy towards the pod's peer device using
+> bpf_redirect_peer(BPF_F_EGRESS).
+> 
+> As a bonus, since the skb doesn't have to go through the backlog queue
+> it can take full advantage of netkit's performance benefits. I set up a
+> test where outgoing iperf3 traffic is injected into the datapath of
+> another pod using either bpf_redirect_peer(BPF_F_EGRESS) or
+> bpf_redirect(BPF_F_INGRESS). I used Cilium's eBPF host routing mode
+> which skips the host stack and uses BPF redirect helpers to do all the
+> routing.
+> 
+>    (net.ipv4.tcp_congestion_control=cubic,mtu=1500,100GiB link,Cilium
+>     eBPF host routing mode)
+> 
+> BASELINE [bpf_redirect(BPF_F_INGRESS)]
+>    1. [iperf pod] ==bpf_redirect([pod b], BPF_F_INGRESS)==> [pod b]
+>    2. [pod b]     ==bpf_redirect_neigh([eth0])==>           eth0
+>    3. eth0        ==over network==>                         [host b]
+> 
+>    [ ID] Interval           Transfer     Bitrate         Retr
+>    [  5]   0.00-60.00  sec   231 GBytes  33.0 Gbits/sec  12060     sender
+>    [  5]   0.00-60.00  sec   230 GBytes  33.0 Gbits/sec            receiver
+> 
+> TEST [bpf_redirect_peer(BPF_F_EGRESS)]
+>    1. [iperf pod] ==bpf_redirect_peer([pod b], BPF_F_EGRESS)==> [pod b]
+>    2. [pod b]     ==bpf_redirect_neigh([eth0])==>               eth0
+>    3. eth0        ==over network==>                             [host b]
+> 
+>    [ ID] Interval           Transfer     Bitrate         Retr
+>    [  5]   0.00-60.00  sec   272 GBytes  38.9 Gbits/sec    0       sender
+>    [  5]   0.00-60.00  sec   272 GBytes  38.9 Gbits/sec            receiver
+> 
+> In this test, using bpf_redirect_peer(BPF_F_EGRESS) for the hop from
+> [iperf pod] to [pod b] led to ~18% more throughput compared to
+> bpf_redirect(BPF_F_INGRESS).
+> 
+> Signed-off-by: Jordan Rife <jordan@jrife.io>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
