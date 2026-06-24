@@ -1,280 +1,131 @@
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0494E3B7B7B
-	for <netdev@vger.kernel.org>; Wed, 24 Jun 2026 13:59:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CBCC3BADAA
+	for <netdev@vger.kernel.org>; Wed, 24 Jun 2026 14:03:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.174
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782309588; cv=pass; b=Ae/v/i4L95eeqDgtNGGO3r82ksOUTICm+aJ4ixb3ykd1GJbsWsMrPUM9B4pHKDaPls6Terq4YGHSJei2VW9O0UEq6C7GFZQfQ8xi8xortN9iD4z7JreTIO8UXBkG/nYvoEJYglL9vFxBuvdI/tgknk/KVN3q5ZPDBJyFXw1+T38=
+	t=1782309790; cv=pass; b=bmnFTVjR7Q/d/l9yjFd1yp/ySGt4wrO5/jkgBDqR1/k47JWksk1xs1SOv2kyyXridTT7afxEpZYp+Ge1D1bf+7ZZBZiiLhjczmkcFvwKs8GioIvI82Urzv7H1psHjwFth6LBNAKUwm8YCpEW1apX/KN3v/7YhsDI+fPewJiyEIY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782309588; c=relaxed/simple;
-	bh=V2EUYSdGtW7m3Aw4m6n9WbdlxjOlAz7SU+/a3C1AnzY=;
+	s=arc-20240116; t=1782309790; c=relaxed/simple;
+	bh=ksijtf2IRLNHsT3AVS8XAMToSq3zWqz1VXfdch2/aYo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ajR+p4YHEoIeMJaWfdZ/0Np6YQRf+tzR/xcbcCXVJccAHaTqWnw91ThPU7IhLPResUXkdIuTaCaAIe/ORydmuxGg2+wVtk/KdWX4v9Hyc1QnLGfuSMATJgNIfgSwgO1eE3brgoLqGXQstYhBnupxcO6TamEmj7znjUHlX4AdaA4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ECZhB04C; arc=pass smtp.client-ip=209.85.160.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=DNEskCTdSN6BFzS6D9m7ehguj8CcMRMMWYP+yMwpQl9r+UIbWppMyRnOC/lRJW8DyIMu1GjrhElOyll1eOv0u3xWbOSk27Lu6e8cPQucsJKRt8KXHFryMpZkiMPtioXuoRWVatgb+PP7Q+6XrL69Vz/+ENZbdZAzb8wgMw4m0DQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bOD/uamh; arc=pass smtp.client-ip=74.125.82.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ECZhB04C"
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-517dc520840so9723421cf.3
-        for <netdev@vger.kernel.org>; Wed, 24 Jun 2026 06:59:46 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782309586; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bOD/uamh"
+Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-30bb87c90deso164474eec.3
+        for <netdev@vger.kernel.org>; Wed, 24 Jun 2026 07:03:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782309788; cv=none;
         d=google.com; s=arc-20240605;
-        b=FetTSlgSirxcqgXHC5rpcxPiAdGOX6W8zboe7986y0uXuyQSuzr+BS5rukPc9+6np2
-         dQt6dBr27iWYWsQ0NnJtWgUiBuTcw+RJP4/bBQC3GPVykOuTdZ8AQO6gR2Y2rbbJcXLL
-         qUpj20440mLqy9ZJ97U/TQnlcAbELbW0eBha8BLbk6Cmlyhb4qccMPGVb9bxSpzmkIdy
-         IBfBxzKI3X+2IEdoc3JwBs87z/aaP7KDX7X4YAsFP+2s90pzEU1YVyygBWuTfGnRXoNH
-         i2t6+D4BCAIklKU9cs6/8gnWKjb/YRo+YLG4c7AldRVmLyOWDjHpL1ixpPDfzl0qRxGa
-         j9qQ==
+        b=ftWZBU+rWtCkYh32krgyyHd+Ck1ABFGdwmKzfVHjaNVKdES5S9bbPk9xP/uB6ldXMo
+         sOe0BIzwSbxph7eXxtgMfmONvn6G5d0gWAtzyVitcTDNhkW+XI9iOemHCx8BEPvDO7tW
+         ox9gpp4FRE2rvi08Ulo61f9UkJb3HReu2g1bpgalyan+IiLVeOwxYvll+CUCFI9hjuAl
+         wlJbypHQAN+32r46GHoLgrcZhsjpHNDAZyPZwNNwX7tZ6d1FE7kp6blCvwdg+p827/Rd
+         3XPoeQano2Jxq1724s70wDfcch3FGmYDSNMydbsLV1rqNEpc0OIulHbWJNSnGsytJ8nC
+         zQyw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=IPjZx587TohMDbgAlzqgaOnK/IpS5K+mfsCogDhtDgk=;
-        fh=22emKQCdCwvaVfmfg07j/HUi64lqp5cAracPlTX+PSo=;
-        b=Gb/M8ZxjhoGrTcZn92a8VPzSQU3DVaJjZ8anR+3FqUPXnsgmYt+Umv3igtYXEENsF9
-         dYdz5aNuMpj5tXCbw17Bt1UAPZ3+hJMx1VXcLRHH+a6P/lrf9cEWT4n+spMs2elKq3Cp
-         3WUb2rHu+JI03lgWrjqcXI6cVvQSYEvIgk47yE1HK2LYXRDUMCBRI4b19VxmXgIjqNNH
-         eVea3za2Wpswxsw0/74onfZM1fwGVVXudyKjbEumTJh/F4ryR3kC24g5/WfjGJBaY2hc
-         fksCdhd2NaxP6EXqItQkopDqX+RaIzFaAWJuldVNfsQWrjfyGEHU2M4tiPnmKYqM/a3Z
-         uUrw==;
+        bh=ksijtf2IRLNHsT3AVS8XAMToSq3zWqz1VXfdch2/aYo=;
+        fh=sRYdzMrmlwLkEtIYG6vRc3+Y9nXDGq6XGhAU6h0O5AE=;
+        b=LUNc/4tlqjv3Lbr5/89UnppUbbWK7c6BgtreqbyqTwHoZ8Ytcj7UpEQoyNwBtiWDwp
+         7YMCvLsfHrPFW/BVb+C2zsQHeh7StSa0O0xJ7Pzmo1KdDy3iPScRY5pgBGPL1Lg5Dce7
+         XqzAna+GmQvSdgU2wRhJfGk65I312pqJaEIR061R1ug93U6KTMfYbf5krn+lgpsCB+G2
+         nRiOXd3zUIsMzVMKLPUdF9CE//tub9XxnXPwmcuupaDZUf89Oy6e2x+P9Vt7Vz+1eoDX
+         qOwvEo4dKeBjK9a8K3+RTTzuc9vITCHab0/bALpVpTGmGdqq254ljxBFMu/eopaU1uRV
+         BgKQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782309586; x=1782914386; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1782309788; x=1782914588; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=IPjZx587TohMDbgAlzqgaOnK/IpS5K+mfsCogDhtDgk=;
-        b=ECZhB04C1Le/GUG/id3Csa0Jo3cg/BGPfpPl06qgx90TslehBrAuvT5vO0jVHwFYCi
-         X5vWzI7FK3WD+p/06sozo9turnnCrS5KiuNBmNIAuiDIX3cD2S7WF9lR0mDQPxCRpFDW
-         9SYzTAL43v+oI7qhnsPSNiocEXdC5fU9ZkGU8Uj4qL4M1qXoM8z03XTnl6M3rLvo5lVz
-         HLNMN0OdwFq9T5sfa6E6M6qFUVnLICK5sJHRD7Wce+9F4aPg9JmeMZ2/cYpuVZNP7mgD
-         3U6Bn/OfRZY2//DKGO644bicFSC7dLJqkZOMvBmqUjLBjpfsat1k7gtznCRdpyFzpw1z
-         7/jg==
+        bh=ksijtf2IRLNHsT3AVS8XAMToSq3zWqz1VXfdch2/aYo=;
+        b=bOD/uamhEpcZJyswv53R84IDRMeI6M5+ChYBgjLyvLfT1fQ65r7lzzwQ1gmCC+wuEn
+         2vpGRI+m5uC/gsBm7DblfDULWdfIY9ZSe05VXEG08w57lGrNtLwN60ZcYfsqhVWvylng
+         bWEK2eVdZJ0Tmb5pCGX3UXUiIh3E+i6++a9NhVOOHmx/n5nJ0rOXw2ASWQ9fgoOTVTCB
+         3/28G0P4l5fMK7R9as4EUjduvq28vuDMkk4OmSZZcOF7jdfBx/hM62MM+5WWYAjBBcyO
+         /vcLrSxb4845JDcnkXx9wDzYjuWeHm0U98NS/Wqidu+uHZFS1rgP3ozC2XHYFw/vXnIx
+         udvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782309586; x=1782914386;
+        d=1e100.net; s=20251104; t=1782309788; x=1782914588;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=IPjZx587TohMDbgAlzqgaOnK/IpS5K+mfsCogDhtDgk=;
-        b=UN0JTOxKq6XdcwBT1DVG7ctnIEU9MaoxKKRv12kGLg2/23/qBHZsLPnnX6bGR5Qp1H
-         iezdV76c1EUzy4p8Pai5faoMjqY8n94v3CJ9Y8aaMgGU4Y9VtRqVhWer7d2JqXPp6g8j
-         oDsc2rzNn13bhl4s94K9PPLxS3gJBRwQzPv5BAVYrGy4RDYRIAUNZTzwzWpy8GWik6n5
-         np+wgvTapsdOE7LAqkgibFHwD9mynhAxlztFdEBznTWzO2ma8TOnXtrQi8yC5PRIQioe
-         E898x0FRd6cU0t8WS/M0p5VNN5gy7wVOXjZEgXMwRE0XTvNGV8mFLUug7gvhNlKRyeQ6
-         8Mhw==
-X-Forwarded-Encrypted: i=1; AFNElJ8nlPHxY/KjeEyZx+SuaVM/d2Ddte97FpIgim+5kkRUKZo/BaOb8XbTIxafUDR++5j07PR0V6E=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8rog/rd2aYg/gWHiihJBIahJt2v7n6zHq3dgb8eAS8e8pVBAf
-	L6/KdJaRk9mfhJvQEb2y4ljTboixZSZCM+Ez7mBvBiiozTFABIzKvqAzK0W77ShrqOM+oLvtn8X
-	S3RjvNF4poOw/awFyVYhw6IAK4oxu7S/goigeHz1w
-X-Gm-Gg: AfdE7ckhz0dTVlXFABPvBo9yTowoid+e77BKv6Yv37zH273B+PaVqc5hDeaWmpRqhQF
-	U9/ixsKhU4RGkTWhME7QJ5/XTFxjSZgOLKY6Pkm8uUuqI5HmgvMj8Bsrapp0Lgu9gNzZaxwtlDD
-	OvGixjKgp9Z27b1fa2cnwVG1ChXU2Z5EnLwprgoB8xaT2ZoeedVyC2jRd2xwOxBdmr47DIo0u7x
-	YnwtHUZNF0C8Rl8ux5ubd+ul8votfrFrfkTO/gTy1E5qi3PLGaXWtSGYtYXj8GJEEKZu2E/QAUw
-	pielF2mKkLLy5Vt4fIx8uWl7pHGGS7ecYvMeM3f1rg60iXmMiE1RhOEv5ETPHDU8X+3KxOHF5dj
-	HIzJwzrF+Gw==
-X-Received: by 2002:a05:622a:1101:b0:517:29f6:cee5 with SMTP id
- d75a77b69052e-51a61c70f0dmr50950161cf.49.1782309584831; Wed, 24 Jun 2026
- 06:59:44 -0700 (PDT)
+        bh=ksijtf2IRLNHsT3AVS8XAMToSq3zWqz1VXfdch2/aYo=;
+        b=qRMie0FAi19T98gUkqawpzaNenPS55OwThTYsVTcg124GGWHuwFNRb69YYyQoE8uBw
+         dIlIUdAFH+JPOyicJOn+ARhRurSbQJFmpxwbgV0zpIjG5tsWOGhtVNZI817Zwg5hNmCW
+         xr1CE+lc9j5zczTpzf3cSXjiy1JuRlDvEDkccKvdexfOfuhmg/aCH5p+PJLyCeQE10Na
+         nyNNLZ4cn+TyE+/Qd6tsiXBnJ/g8lyxHBauKP1tGSoFPg+Xf70uLznl54uJZESXU3q49
+         4A47xzBRFF3yvZbxMeJGCyMBUujk/vRzKs0cyV63XjIp3ETgDghxIiNfQ7Ln1uvQpG0A
+         KybQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrIXDmE8MWS/NmspjpPRR/9X/OkiXbbTK8UOME8deYdDkjCGUilRK1QlXTBNcE4SmQsWjY/4OQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzVQdpe3Dap4yavQ86q22zdPmUnRvi7tgm41v81plbDXZxoWAmI
+	vj/q67E+S2RXz4W46vrLP6Gk+0yWnNdj5YgRqSPbqSpibkhTWnO87vLbJjklcFfKt5DTvCvbgV5
+	4B+MdRPtBJqtfmv+VX3tQlh1RaPADuQw=
+X-Gm-Gg: AfdE7cnD8szIt726w/YPFHXqP+LBRJB1/SA4fRbztp9hD+zQKU3iTve3SSW4c8Z54I7
+	5uFnCnxpj+BO1kt2WQeodsZZbaLgCMknNTWPkno4e207cIKZ0h3h+csz4notvOE958Yt0A3eHUp
+	z0cz5N1t9+yewarJSZjpKcVibt9ii/vEARVgN0GBtq2frNWiYO7eqVM7dxhqGet8E41cz9lGFsn
+	GNx/WViDBMcpTHASxSGQ41SQQp0FiuvgX0T7/tBkz1BdB1ypvuKgShWWvMiwBDTpzBl+3AEMBA9
+	8/+9eBdqEl3a4TGeAOSeRU7+Bfqd90ABPXUUVvRVkNK4tRXo1vCxZCLz+TffD0R3aFBPU0pTV07
+	H4Ucj7yd2lnYi
+X-Received: by 2002:a05:7301:658a:b0:30b:c8bb:588f with SMTP id
+ 5a478bee46e88-30c5240f7damr3538472eec.5.1782309787929; Wed, 24 Jun 2026
+ 07:03:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260624090135.95763-1-samsun1006219@gmail.com>
- <CANn89iKD=4_A+7K2erw5AZPnzvBrQqTKXJyfKN5ZfNpAYZ+y3A@mail.gmail.com> <CAEkJfYN4Uep_WEzZyaDGkW5p4rW+oVRqq2DgBt2xiYp9ARt0GA@mail.gmail.com>
-In-Reply-To: <CAEkJfYN4Uep_WEzZyaDGkW5p4rW+oVRqq2DgBt2xiYp9ARt0GA@mail.gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 24 Jun 2026 06:59:33 -0700
-X-Gm-Features: AVVi8CfNruVRxa-vPHeF0EFoTPk0YineqVA770lzyibgRqaNz2z7UDVceVDj4EY
-Message-ID: <CANn89iJ5wKuvKy=Ed-JkeyzKYaEoA_8S=mEMBicMjEPxLCY0Vw@mail.gmail.com>
-Subject: Re: [BUG] KFENCE: use-after-free read in udp_tunnel_nic_device_sync_work
-To: Sam Sun <samsun1006219@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	syzkaller@googlegroups.com
+References: <20260624-fix-fops-owner-v5-0-aa1cba242f05@linux.dev> <8ea21b29-9baf-4926-a16f-7d21c5a1a1b8@suse.com>
+In-Reply-To: <8ea21b29-9baf-4926-a16f-7d21c5a1a1b8@suse.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 24 Jun 2026 16:02:53 +0200
+X-Gm-Features: AVVi8CdZJD474qdF4GDgFLlfJ_vD8WsFaomaTI3YSRH6pluhcoRUR51gh_iz4VE
+Message-ID: <CANiq72m_LakPxHt99+3eBn2rXokr3vZbdJf=Wk-Yi8_ufQ2mvA@mail.gmail.com>
+Subject: Re: [PATCH v5 0/9] Fix missing fops.owner in Rust DRM/misc abstractions
+To: Petr Pavlu <petr.pavlu@suse.com>
+Cc: Alvin Sun <alvin.sun@linux.dev>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Daniel Gomez <da.gomez@kernel.org>, 
+	Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <david@davidgow.net>, 
+	Rae Moar <raemoar63@gmail.com>, Breno Leitao <leitao@debian.org>, Jens Axboe <axboe@kernel.dk>, 
+	Dave Ertman <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>, 
+	Igor Korotin <igor.korotin@linux.dev>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	Bjorn Helgaas <bhelgaas@google.com>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
+	Carlos Llamas <cmllamas@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-modules@vger.kernel.org, driver-core@lists.linux.dev, 
+	dri-devel@lists.freedesktop.org, nova-gpu@lists.linux.dev, 
+	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-pci@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 24, 2026 at 6:42=E2=80=AFAM Sam Sun <samsun1006219@gmail.com> w=
-rote:
+On Wed, Jun 24, 2026 at 3:23=E2=80=AFPM Petr Pavlu <petr.pavlu@suse.com> wr=
+ote:
 >
-> On Wed, Jun 24, 2026 at 6:01=E2=80=AFPM Eric Dumazet <edumazet@google.com=
-> wrote:
-> >
-> > On Wed, Jun 24, 2026 at 2:01=E2=80=AFAM Yue Sun <samsun1006219@gmail.co=
-m> wrote:
-> > >
-> > > Hello,
-> > >
-> > > I hit a reproducible use-after-free in the UDP tunnel NIC offload wor=
-k item.
-> > > The original local crash was reported by KFENCE as:
-> > >
-> > >   KFENCE: use-after-free read in udp_tunnel_nic_device_sync_work
-> > >
-> > > On current mainline, the C reproducer below triggers the same lifetim=
-e bug,
-> > > reported by KASAN before KFENCE samples the object:
-> > >
-> > >   BUG: KASAN: slab-use-after-free in __mutex_lock
-> > >   Workqueue: udp_tunnel_nic udp_tunnel_nic_device_sync_work
-> > >
-> > > Tested kernel:
-> > >
-> > >   840ef6c78e6a ("Merge tag 'nfs-for-7.2-1' of git://git.linux-nfs.org=
-/projects/anna/linux-nfs")
-> > >   Linux 7.1.0-11240-g840ef6c78e6a #31 SMP PREEMPT_DYNAMIC
-> > >
-> >
-> >
-> > Thanks or the report.
-> >
-> > Can you test the following patch?
-> >
-> > diff --git a/net/ipv4/udp_tunnel_nic.c b/net/ipv4/udp_tunnel_nic.c
-> > index 9944ed923ddfd10f9adf6ad788c0740daeaf2adb..c5f8d2f9d325de8f4d2247d=
-daa52e33378851857
-> > 100644
-> > --- a/net/ipv4/udp_tunnel_nic.c
-> > +++ b/net/ipv4/udp_tunnel_nic.c
-> > @@ -304,8 +304,8 @@ udp_tunnel_nic_device_sync(struct net_device *dev,
-> > struct udp_tunnel_nic *utn)
-> >         if (!utn->need_sync)
-> >                 return;
-> >
-> > -       queue_work(udp_tunnel_nic_workqueue, &utn->work);
-> >         utn->work_pending =3D 1;
-> > +       queue_work(udp_tunnel_nic_workqueue, &utn->work);
-> >  }
-> >
-> >  static bool
-> > @@ -866,6 +866,11 @@ udp_tunnel_nic_unregister(struct net_device *dev,
-> > struct udp_tunnel_nic *utn)
-> >
-> >         udp_tunnel_nic_lock(dev);
-> >
-> > +       if (utn->work_pending) {
-> > +               udp_tunnel_nic_unlock(dev);
-> > +               return;
-> > +       }
-> > +
-> >         /* For a shared table remove this dev from the list of sharing =
-devices
-> >          * and if there are other devices just detach.
-> >          */
-> > @@ -901,12 +906,6 @@ udp_tunnel_nic_unregister(struct net_device *dev,
-> > struct udp_tunnel_nic *utn)
-> >         udp_tunnel_nic_flush(dev, utn);
-> >         udp_tunnel_nic_unlock(dev);
-> >
-> > -       /* Wait for the work to be done using the state, netdev core wi=
-ll
-> > -        * retry unregister until we give up our reference on this devi=
-ce.
-> > -        */
-> > -       if (utn->work_pending)
-> > -               return;
-> > -
-> >         udp_tunnel_nic_free(utn);
-> >  release_dev:
-> >         dev->udp_tunnel_nic =3D NULL;
->
-> I tested the patch, but unfortunately the C reproducer still triggers the
-> same use-after-free for me.
->
-> Tested on top of:
->
->   840ef6c78e6a ("Merge tag 'nfs-for-7.2-1' of
-> git://git.linux-nfs.org/projects/anna/linux-nfs")
->
-> I booted the kernel with KASAN/KFENCE enabled and:
->
->   panic_on_warn=3D1 panic_on_oops=3D1 kfence.sample_interval=3D1
->
-> Then I ran the same C reproducer:
->
->   timeout -k 10 360 /root/repro
->
-> The VM panicked after about 236 seconds:
->
-> [ 236.471119][ T58] BUG: KASAN: slab-use-after-free in
-> __mutex_lock+0x16d0/0x1d80
-> [ 236.473404][ T58] Read of size 8 at addr ff11000076a63ea8 by task
-> kworker/u16:3/58
-> [ 236.476455][ T58] Hardware name: QEMU Standard PC (i440FX + PIIX,
-> 1996), BIOS 1.15.0-1 04/01/2014
-> [ 236.476478][ T58] Workqueue: udp_tunnel_nic udp_tunnel_nic_device_sync_=
-work
-> [ 236.476787][ T58] __mutex_lock+0x16d0/0x1d80
-> [ 236.477020][ T58] udp_tunnel_nic_device_sync_work+0x32/0x9c0
-> [ 236.477068][ T58] process_one_work+0x9de/0x1bf0
->
-> The allocation/free stacks are still the same shape:
-> ```
-> Allocated by task 11563:
-> __kmalloc_noprof
-> udp_tunnel_nic_netdevice_event+0x12d8/0x1e80
-> register_netdevice
-> nsim_create
-> nsim_dev_reload_up
-> devlink_reload
->
-> Freed by task 11609:
-> kfree
-> udp_tunnel_nic_netdevice_event+0xc26/0x1e80
-> unregister_netdevice_many_notify
-> nsim_destroy
-> nsim_dev_reload_down
-> devlink_reload
->
-> Last potentially related work creation:
-> queue_work_on
-> __udp_tunnel_nic_del_port+0x2af/0x320
-> udp_tunnel_notify_del_rx_port
-> __geneve_sock_release.part.0
-> geneve_stop
->
-> Second to last potentially related work creation:
-> queue_work_on
-> __udp_tunnel_nic_add_port+0x6ec/0xd70
-> udp_tunnel_notify_add_rx_port
-> geneve_open
-> ```
->
-> My read of the patch is that it closes the small window where queue_work(=
-)
-> can publish the work before utn->work_pending is set, and it also prevent=
-s
-> udp_tunnel_nic_unregister() from flushing/freeing the object when
-> work_pending is already set.
->
-> However, the test above suggests that work_pending still does not fully
-> protect the lifetime of struct udp_tunnel_nic. The crashing work was stil=
-l
-> queued through udp_tunnel_nic_device_sync() at line 308, so the patched p=
-ath
-> was exercised. One suspicious point is that udp_tunnel_nic_device_sync_wo=
-rk()
-> clears utn->work_pending at the beginning of the worker, while the same w=
-ork
-> item can still interact with replay/add/del-port state. The reproducer ca=
-n
-> still end up with udp_tunnel_nic_unregister() freeing utn while a
-> udp_tunnel_nic_device_sync_work item later runs and dereferences the free=
-d
-> utn->lock.
->
-> So this patch does not seem to be sufficient for this reproducer.
->
+> I would only suggest adding the new file rust/kernel/module.rs in
+> patch #1 under the MODULE SUPPORT support entry in the MAINTAINERS file,
+> similarly to the other module-related Rust code, so that the module
+> maintainers are emailed when changes to this file are proposed. I think
+> you can change the existing 'F: rust/kernel/module_param.rs' to
+> 'F: rust/kernel/module*.rs'.
 
-Oh well.
+That would be great, yes -- thanks!
 
-u8 need_sync:1;
-u8 need_replay:1;
-u8 work_pending:1;
-
-These bitfields are not safe, obviously :/
-
-Time to convert them to atomic bit operations.
+Cheers,
+Miguel
