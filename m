@@ -1,66 +1,98 @@
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39C835BDDB;
-	Wed, 24 Jun 2026 21:00:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B060A3E5EEB;
+	Wed, 24 Jun 2026 21:24:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782334830; cv=none; b=ruea8zSZMkhzajwXtHPMPLGBi8w3Ry0mYFGuRJHIcaQZzXr5v9cvw2uMHyjMG2WvEJWE9BwKAd3kOgwjyIWaqQdPemQDIk0saFUsByR2Q5mvJwCxRWJIUu27/zw0esirHgF4b2dWpow4rq1O4BvezReDr8tvuFSYlNQ12BpKR8s=
+	t=1782336285; cv=none; b=EKfI74Lxgb4ZtwLr2hDZ1JMyXsONvCNN40dLDfIU/D7NCR9cFsmvSfOioe8WfztxFH/b/lqQcT3iXxKqIKRewJ3MXdds/Wp2zaNn+jJWhmfN4pApWjHFwHM0rRmllZ+pZk+vbQGat8mqFNioacj+6+X0q7tQ6PimA3StQ4SfO8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782334830; c=relaxed/simple;
-	bh=dPgf/IJ9qzzwy8zDMuHuLckZCQqxfojfxbU/z3DkVA4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TJji1i49HW+3xQIfnmtqOn3khByuqd3d7arIaoTroLMqShVAURU4PdAJ78Mu/QaawzbDBWlBSJtdVk5p40148Hw01jhL5rrKD1z/aqUcpVRtI/9S/2x/YPEATf+48JTpyebQhrD5hK8JienxOykOa1+Bcpvyn58oflphVuPtX6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
-Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
-	id 0FE6E602A9; Wed, 24 Jun 2026 23:00:27 +0200 (CEST)
-Date: Wed, 24 Jun 2026 23:00:26 +0200
-From: Florian Westphal <fw@strlen.de>
-To: Carlos Grillet <carlos@carlosgrillet.me>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Phil Sutter <phil@nwl.cc>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH nf-next 1/4] netfilter: nf_conntrack_sane: replace
- u_int16_t with u16
-Message-ID: <ajxFah1khNl5brEl@strlen.de>
-References: <20260624184036.71051-1-carlos@carlosgrillet.me>
- <20260624184036.71051-2-carlos@carlosgrillet.me>
+	s=arc-20240116; t=1782336285; c=relaxed/simple;
+	bh=kHZtBaqOvCugjTHQj0B1OaA+osE8CuIzs3E7zkbVM5g=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=fD9OAurqTK8q4Pihd59c5fGDlu/2J4L6Mtgft2urdguPHRozNMl9IiygyVOikoKMxEjpscZcwlT6xGGoK0kM0yqj1hGIVaGOSSrixJwyX2U6WOs+MsBFA7UtJkShj1nGZg1+OReM3wxkvFvght+L4CBLQT2MLsmjYKWUVqUSn+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=LgP5Xp/i; arc=none smtp.client-ip=185.226.149.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="LgP5Xp/i"
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1wcV5E-0071jo-45; Wed, 24 Jun 2026 23:24:32 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector2; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:
+	Cc:To:Subject:From:MIME-Version:Date:Message-ID;
+	bh=lyDPYtl2CSdhmwVeND7ks61hyybAjQmYm0gRw1OUEcc=; b=LgP5Xp/iVGQmTWyYUs3GITJh3B
+	JH4Rvf6dCYVFWaOsiMWtRhSQtdiAEV5UFe69bpsnD5twwaZnRQwoaSjV8ehK3ctxefHh7xunAnnZu
+	qXW628YRi1v5MhbtBMcmFKmOG5mqreXvROThz6/EhBiTfzIYDJzPj70BZ4Rb2IILBKU7Se2zyy76H
+	BO8rIhrFaJq8BQm7FODMmbVPXjO1hOtlypPPALGHBj2u5eIuSGBnI7z6yZZHUEFLWMAg8Rjg7CjBO
+	3PR3RaJqPDtkyhcFaqXSMN9MAYNHPPhKOV6TJBawOZrKRcvtz/L5eZBxPGLkeGT60V26Sl4DLdsIt
+	/EGsMQWQ==;
+Received: from [10.9.9.73] (helo=submission02.runbox)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1wcV5D-00062X-6L; Wed, 24 Jun 2026 23:24:31 +0200
+Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.95)
+	id 1wcV52-0038uQ-MK;
+	Wed, 24 Jun 2026 23:24:20 +0200
+Message-ID: <e34d8743-58c3-4f50-8c0b-5e779cc53bdd@rbox.co>
+Date: Wed, 24 Jun 2026 23:24:19 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260624184036.71051-2-carlos@carlosgrillet.me>
+User-Agent: Mozilla Thunderbird
+From: Michal Luczaj <mhal@rbox.co>
+Subject: Re: [PATCH bpf 2/2] selftests/bpf: Add test for UDP sock leak on
+ sockmap lookup-bind-release
+To: bot+bpf-ci@kernel.org, john.fastabend@gmail.com, jakub@cloudflare.com,
+ jiayuan.chen@linux.dev, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, ast@kernel.org,
+ cong.wang@bytedance.com, daniel@iogearbox.net, andrii@kernel.org,
+ eddyz87@gmail.com, memxor@gmail.com, martin.lau@linux.dev, song@kernel.org,
+ yonghong.song@linux.dev, jolsa@kernel.org, emil@etsalapatis.com,
+ shuah@kernel.org
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ martin.lau@kernel.org, clm@meta.com, ihor.solodrai@linux.dev
+References: <20260623-sockmap-lookup-udp-leak-v1-2-05804f9308e4@rbox.co>
+ <bd4abd3f584c38f1fc512a9d3ae1f90c2a374588fa23529b32b7f1aed6ab2ead@mail.kernel.org>
+Content-Language: pl-PL, en-GB
+In-Reply-To: <bd4abd3f584c38f1fc512a9d3ae1f90c2a374588fa23529b32b7f1aed6ab2ead@mail.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Carlos Grillet <carlos@carlosgrillet.me> wrote:
-> Use preferred kernel integer type u16 instead of the POSIX u_int16_t
-> variant.
+On 6/23/26 21:32, bot+bpf-ci@kernel.org wrote:
+>> selftests/bpf: Add test for UDP sock leak on sockmap lookup-bind-release
+>>
+>>     Setup and join a cgroup, then attach a cgroup/connect4 program that runs
+>>
+>>        sk = bpf_map_lookup_elem(sockmap, 0)
+>>        bpf_bind(ctx, sa, sizeof(sa))
+>>        bpf_sk_release(sk)
+>>
+>>     Unpatched kernel leaks the socket.
+>>
+>>     Signed-off-by: Michal Luczaj <mhal@rbox.co>
 > 
-> No functional change.
+> This test reproduces a UDP socket leak across sockmap lookup-bind-release,
+> but there is no Fixes: tag.
 > 
-> Signed-off-by: Carlos Grillet <carlos@carlosgrillet.me>
-> ---
->  net/netfilter/nf_conntrack_sane.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> The sibling fix commit a2510dc351c5 ("bpf, sockmap: Don't leak UDP socks on
+> lookup-bind-release") carries a Fixes: tag pointing at the commit that lifted
+> the socket-state restriction allowing unbound UDP sockets into sockmap.
 > 
-> diff --git a/net/netfilter/nf_conntrack_sane.c b/net/netfilter/nf_conntrack_sane.c
-> index 39085acf7a71..130b3e68090e 100644
-> --- a/net/netfilter/nf_conntrack_sane.c
-> +++ b/net/netfilter/nf_conntrack_sane.c
-> @@ -35,7 +35,7 @@ MODULE_DESCRIPTION("SANE connection tracking helper");
->  MODULE_ALIAS_NFCT_HELPER(HELPER_NAME);
->  
->  #define MAX_PORTS 8
-> -static u_int16_t ports[MAX_PORTS];
-> +static u16 ports[MAX_PORTS];
+> Should this test carry the same tag so it stays backportable alongside the
+> fix?
+> 
+>   Fixes: 0c48eefae712 ("sock_map: Lift socket state restriction for datagram sockets")
 
-These port variables are useless and will be removed soon.
+I am skipping this suggestion as the test itself does not address any bugs
+and requires no backporting.
+
+Michal
