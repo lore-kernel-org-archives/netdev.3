@@ -1,64 +1,43 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3149F3B8BBF;
-	Wed, 24 Jun 2026 09:33:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A8A3A16A1;
+	Wed, 24 Jun 2026 09:38:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782293624; cv=none; b=hIO4JB1oWVaJMgK2IbnMpxI6sYJ38DSdS/tVzBJn4SRQOkyru8ltulkSAmA+u/JF6430fy8abzYcgt+W3ZuyCDFHqqPgYjHVJ1abpoGH9x7gwyhJQ/slGz6MfmlHavVlWjRuxGzcTWnF6jVQx/HQd36MRF+Mt/WnmNpS7DJlfRc=
+	t=1782293927; cv=none; b=Vx9/DbmcF6xJgUSDmy2OLvBy29134w0JIuSl4fQ6Wwb+7wSxOJihLmoCQeYa3y5SnEynoobYyibb3BV94VSdUhgzzo0pnx5fOsjJhYtw7zt+5Nf2ZLpQlxW5ImXDzSRfcZsL9Sud56WfmTqqir17hIc6SBk5ZbvLk9WAHdC7+yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782293624; c=relaxed/simple;
-	bh=V4vMrLF5C917jIRL0H6Sc3xfE5TkB1yz3QjooYWMHWY=;
+	s=arc-20240116; t=1782293927; c=relaxed/simple;
+	bh=M2YMAyyrXp+m7daGRk83FBoAsgDyiLWZKk8W6zjdrnU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lsVAPv0HCc4JquiCCDMI28h1oL1ft+vqrs7UMdiYIifjmUQgriEoE4nsgXZ/R1UulP1CBcfcPZgdUi1Uqr3QMqd7kD8n2ocAm30m4P/ttYmdLp/LsTDqshC8zCnDsh4TRbEfqseTyuJL04B3Vz08tBxCFEoZVzjftMwWKBPyhhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ggrrtMIn; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=kFD3QXGxmnJz1kOL1e5SV5QgjIghs0DdZSb3gZxtlZUmKfqAGpm0H7rNY57uw9kFvkjchHreMPTWkCOpwls5xDkj0YyWoo3fyzF+gIXYe4LLjIAoQV1rnlqz8afwg4cCCwG+g+IefolSKYm5bjd1T1uGlgneghQxg8QV/GDyv4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qRFYTXnE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ggrrtMIn"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=sVRuQnNxdi3tJrHHgcSarysIVdxQK98sXhem72xXjy0=; b=ggrrtMInP9TTthnUgcWBoro+wQ
-	BBkKjlj8LcZuG34xXkPE23doalYvTsTPsKw4AVm0qht4vsjrttsvcvf94I9KQS0fmdJ+ohWmalzm1
-	TzVuztK9AOknuMOt8vDAHlAcJ+CYcutqLRaZUm3x3BA4mWTlv07e36+NEUDhRnmoiw8BFOsPVFfz7
-	mFdimNYjlh7kOndRAvTH8lASWCFgcw9AbiyqPmqMrRS1TZ2qw2NyqnfeqyzStBl3w+iZC9SevFQAN
-	CcT2I2qruCmkg99UzMJ+wEwqSi5F0Hx5nSyo/LAmrZ0nB48J3MTVjhnLVmaiLimVHNz0kEogPZaM8
-	4qN15aqg==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wcJz7-00000007mrK-1mY0;
-	Wed, 24 Jun 2026 09:33:29 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 430E0300400; Wed, 24 Jun 2026 11:33:29 +0200 (CEST)
-Date: Wed, 24 Jun 2026 11:33:29 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-	sched-ext@lists.linux.dev, netdev@vger.kernel.org,
-	"David S . Miller" <davem@davemloft.net>,
-	Andrea Righi <arighi@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Arnd Bergmann <arnd@arndb.de>, Ben Segall <bsegall@google.com>,
-	Breno Leitao <leitao@debian.org>,
-	Changwoo Min <changwoo@igalia.com>,
-	David Vernet <void@manifault.com>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Eric Dumazet <edumazet@google.com>, Ingo Molnar <mingo@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	John Ogness <john.ogness@linutronix.de>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Paolo Abeni <pabeni@redhat.com>, Petr Mladek <pmladek@suse.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Simon Horman <horms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>, Tejun Heo <tj@kernel.org>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Vlad Poenaru <vlad.wing@gmail.com>
-Subject: Re: [PATCH 0/2] sched: Introduce and use deferred WARNs in sched
-Message-ID: <20260624093329.GZ48970@noisy.programming.kicks-ass.net>
-References: <20260623142650.265721-1-bigeasy@linutronix.de>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qRFYTXnE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECF251F000E9;
+	Wed, 24 Jun 2026 09:38:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1782293921;
+	bh=HwV1spafxwZqAlW6qWIVPzH+VQ8S47/INwFY5X+vW84=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=qRFYTXnEJeQ7p0Il9HzB8Gcdt6GhOBhMppeXIjxMYGd+tL1swUy7Cb1xJN64rB9Wr
+	 UVvR6h+Q6b1ABEjXrEYUYZK/7tTIfLLFPIbKQGeWkfyHAjLxm9lm9xSIu49S4/tpts
+	 G/13VZbx20tLGL3kauIbdteRfF84AW9LalZh2W7g=
+Date: Wed, 24 Jun 2026 11:37:29 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Wongi Lee <qw3rtyp0@gmail.com>
+Cc: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
+	netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Jungwoo Lee <jwlee2217@gmail.com>
+Subject: Re: Please apply 736b380e28d0 and eca856950f7c down to 6.1.y
+Message-ID: <2026062416-amulet-paradox-cf7c@gregkh>
+References: <ajuR7rZYU943EG6p@DESKTOP-19IMU7U.localdomain>
+ <2026062417-conceal-driving-0ebd@gregkh>
+ <ajujm9+82N1g/HgF@DESKTOP-19IMU7U.localdomain>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,20 +46,55 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260623142650.265721-1-bigeasy@linutronix.de>
+In-Reply-To: <ajujm9+82N1g/HgF@DESKTOP-19IMU7U.localdomain>
 
-On Tue, Jun 23, 2026 at 04:26:48PM +0200, Sebastian Andrzej Siewior wrote:
-> This is a follow-up to the netconsole lockup reported
-> 	https://lore.kernel.org/all/20260610183621.3915271-1-vlad.wing@gmail.com/
+On Wed, Jun 24, 2026 at 06:30:03PM +0900, Wongi Lee wrote:
+> On Wed, Jun 24, 2026 at 11:00:45AM +0200, Greg Kroah-Hartman wrote:
+> > On Wed, Jun 24, 2026 at 05:14:38PM +0900, Wongi Lee wrote:
+> > > Hi,
+> > > 
+> > > Could the following upstream commits be queued for the active stable
+> > > trees?
+> > > 
+> > >   commit 736b380e28d0480c7bc3e022f1950f31fe53a7c5
+> > >   ("ipv6: account for fraggap on the paged allocation path")
+> > 
+> > I do not see that commit id in Linus's tree, are you sure it is correct?
+> > 
+> > >   commit eca856950f7cb1a221e02b99d758409f2c5cec42
+> > >   ("ipv4: account for fraggap on the paged allocation path")
+> > 
+> > Same here, no id of that one in Linus's tree that I can see.
+> > 
+> > thanks,
+> > 
+> > greg k-h
 > 
-> The idea is to use deferred printing for WARNs and use them in sched. I
-> tried to use only where it looks that the rq lock acquired instead a
-> plain s/WARN_ON/WARN_ON_DEFFERED which would be simpler.
 > 
-> This unholy deferred mess can be removed once we don't have legacy
-> consoles anymore _or_ force force_legacy_kthread=true.
+> Hi Greg,
+> 
+> First, sorry for confusing you.
+> 
+> The commit IDs are from netdev/net.git:
+> 
+>   736b380e28d0480c7bc3e022f1950f31fe53a7c5
+>   https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/commit/?id=736b380e28d0
+> 
+>   eca856950f7cb1a221e02b99d758409f2c5cec42
+>   https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/commit/?id=eca856950f7c
+> 
+> They were applied to netdev without Cc: stable@vger.kernel.org, so I
+> wanted to flag them for stable handling but I send it too fast (before
+> merge).
+> 
+> I will resend the request with the Linus tree commit ID.
 
-So I really don't see why we should do this. This has been a 'problem'
-forever, and printk() is actually being fixed.
+They have to be in Linus's tree, before we can take them in a stable
+release, right?
 
+And why were they not originally tagged with the cc: stable?  That would
+save you time in the future as it would all just happen automatically.
 
+thanks,
+
+greg k-h
