@@ -1,41 +1,41 @@
 Received: from sender-op-o17.zoho.eu (sender-op-o17.zoho.eu [136.143.169.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1EE7334692
-	for <netdev@vger.kernel.org>; Wed, 24 Jun 2026 18:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05922331EBB
+	for <netdev@vger.kernel.org>; Wed, 24 Jun 2026 18:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.169.17
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782326522; cv=pass; b=PoaGRVooyPrbpjDZmp3iyTvt0A8M9H+vNpSro7mxv/0HnOQkIfQ4n6aYned0gxHSgMbiE8hoxK+IMWIDPxsFsJ4NYfriz5M7g+pwUOKgfcNnCVgorV/tSI7sxBbU2CvMcUpkaBbzna+Ou1gXwL/v81Yqg9U3MrIrLoXo53CjMY8=
+	t=1782326523; cv=pass; b=q9A+3cwO816nf8Bv+omrGeQGmvf5+j/VuPmZFgxD+X7B8GcjlTobE6MRm48FWCpj3aGoyX5g3DsVvlbKqUJoY6sg05WckYvw9sBr5O42Ck8d8UBWFHorm9WFHKw/sKm4CFKbvhC7qRUXJ4FRnTkGeBUre/4L64bvcj2jIUwuPhE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782326522; c=relaxed/simple;
-	bh=KPpc7i/23DreElerp/UeAsY+MqGXG+BwpFEAEmgejoQ=;
+	s=arc-20240116; t=1782326523; c=relaxed/simple;
+	bh=+doOZHV7zTMOxE5pLmgv0kd7ME4wCMB4guw/Abc3ytk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r7JQ8cjqBQbpOUOQyPjMyJG/wDCQvld+pb1JtuqwNg0ZazfBRQfJ1PXN+IVOFCm0ahQCWrCfzMtQ2D/wohvQeiSLHIorL5jLBoDER3aKQJWKu8a/cGAVBSBT9diVXStf2vliqWMaiTMAGxGE3PjF4yJjvYIoQaX3LiuP2/xRtPY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=carlosgrillet.me; spf=pass smtp.mailfrom=carlosgrillet.me; dkim=pass (1024-bit key) header.d=carlosgrillet.me header.i=carlos@carlosgrillet.me header.b=ead6uOhT; arc=pass smtp.client-ip=136.143.169.17
+	 MIME-Version; b=dv5Wh29T/OU540mysvsdQfELMT+ibQdow6+y/xAyQcyG2B6oMI6BEb9RirsxJLUE69oBasRkmYfQw2Okypl+vycawHDSQKs2fHGcKn72Npc6itqIvzlU1zkbz6hsQ1FVm+bKSq7+zmviW/inHzVqdL4+GkHEG2uShd6yxLmwccs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=carlosgrillet.me; spf=pass smtp.mailfrom=carlosgrillet.me; dkim=pass (1024-bit key) header.d=carlosgrillet.me header.i=carlos@carlosgrillet.me header.b=H3R1Jzck; arc=pass smtp.client-ip=136.143.169.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=carlosgrillet.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=carlosgrillet.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=carlosgrillet.me header.i=carlos@carlosgrillet.me header.b="ead6uOhT"
-ARC-Seal: i=1; a=rsa-sha256; t=1782326470; cv=none; 
+	dkim=pass (1024-bit key) header.d=carlosgrillet.me header.i=carlos@carlosgrillet.me header.b="H3R1Jzck"
+ARC-Seal: i=1; a=rsa-sha256; t=1782326468; cv=none; 
 	d=zohomail.eu; s=zohoarc; 
-	b=XDtxOWQsz35xSZgTCVWCjOADT0Mvc5gCKZRt9+kgZH0zZs242+mmmcdN4VW2oEy0cCwnah0N0b/H73BkOvo7kZzYMyPI67aaFpwvjBKmsv0WDJy2wpy1Qo5dVBT2Yirsoi9oKHHnFhW1CxzSn0kSe9AGElDITXuvAReBzol1QS0=
+	b=dw9v22wV9Bo0ZfpWZ15urx7tVPTEy9VGs3r2qGWIHhQlJTdETfCbFeLCPKZpWSTAW9d3mi7hMxR33Rt2oUfGv0VHLTmkJfuBDJW101mycI+XofVbVy65GN+TQHmo267OoTX9I1OWP/CUxDC9eIpN/kWJpys7Jhqm4YMD1jddx8I=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1782326470; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=mb8IAQf7krbnOGdDD44jfLQUWRAI45q8hD7SpkKN8CQ=; 
-	b=WjlwXTFyX6F1O96jY4Hx9GKgW+f7VbtU/SLD3hHR7mn1vzZaN1CxNlmj48dpuwLkGB+evCvGJXZrOx5NSnqMb3Ci5lX1bfk8JfJsDQFZN4euztyCcYVsVpNzm0Z5nLJH7/Zxd3tpWTPqGHCd+rhDXyw/e5V9/lQH5qiLbNRhfhg=
+	t=1782326468; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=WEoUmbuS1H4OXuhKXddsnI5lWKVDV5u1LMeOr2lxRrQ=; 
+	b=Nba0zpiCRhVj8Hk+tMZAJZnny8cQUQmEZZn/X0m5NJn0BbdAaipKPVKrQ2blIeQNbc/nHexI9tPYyxVrtxOxTJ0gxqf9tkRNNQqnVIkKvfumGCosHVF3XbyBR/goTKR+OB+GFWoWP2esesawD7NweZ9pKp0+0dxISpWLVr8gwU8=
 ARC-Authentication-Results: i=1; mx.zohomail.eu;
 	dkim=pass  header.i=carlosgrillet.me;
 	spf=pass  smtp.mailfrom=carlos@carlosgrillet.me;
 	dmarc=pass header.from=<carlos@carlosgrillet.me>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1782326470;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1782326468;
 	s=zmail; d=carlosgrillet.me; i=carlos@carlosgrillet.me;
 	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=mb8IAQf7krbnOGdDD44jfLQUWRAI45q8hD7SpkKN8CQ=;
-	b=ead6uOhTKiwEqc2NaiTAZv4h1CymQw9jEbRZ3p07XMdfV02SfHKBfXZ9dX85RdaK
-	KkJG65PBZWJtA4NjfanvTt5ZC3Vl5mHpWdsBMHSdSsXpfz1ACOgwb3C0ke62xF1btIb
-	flQLXftNrql6DrujP+nJ5erbFub3m5D7T+k+C5wc=
-Received: by mx.zoho.eu with SMTPS id 1782326469670120.96491153838167;
-	Wed, 24 Jun 2026 20:41:09 +0200 (CEST)
+	bh=WEoUmbuS1H4OXuhKXddsnI5lWKVDV5u1LMeOr2lxRrQ=;
+	b=H3R1JzckW2SQEMxd3+wuFs49lYPLNlwz8KkEtZtgraz58Aa0ud3kl3HfH7j5uOe6
+	2wIHpW1l8J4ycoM+e1Itn8MQWIDvSJ42p2jdAyjU2PE8QpkErBMiMgkuN9bdjtqCAFS
+	pfHGFOR+Zbya9iJACUJkpfu51O0qo8ncLq1X5Fs4=
+Received: by mx.zoho.eu with SMTPS id 178232646578050.257016580389745;
+	Wed, 24 Jun 2026 20:41:05 +0200 (CEST)
 From: Carlos Grillet <carlos@carlosgrillet.me>
 To: Pablo Neira Ayuso <pablo@netfilter.org>,
 	Florian Westphal <fw@strlen.de>,
@@ -49,9 +49,9 @@ Cc: netfilter-devel@vger.kernel.org,
 	coreteam@netfilter.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH nf-next 3/4] netfilter: nf_conntrack_amanda: replace u_int16_t with u16
-Date: Wed, 24 Jun 2026 20:40:33 +0200
-Message-ID: <20260624184036.71051-4-carlos@carlosgrillet.me>
+Subject: [PATCH nf-next 1/4] netfilter: nf_conntrack_sane: replace u_int16_t with u16
+Date: Wed, 24 Jun 2026 20:40:31 +0200
+Message-ID: <20260624184036.71051-2-carlos@carlosgrillet.me>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260624184036.71051-1-carlos@carlosgrillet.me>
 References: <20260624184036.71051-1-carlos@carlosgrillet.me>
@@ -71,22 +71,22 @@ No functional change.
 
 Signed-off-by: Carlos Grillet <carlos@carlosgrillet.me>
 ---
- net/netfilter/nf_conntrack_amanda.c | 2 +-
+ net/netfilter/nf_conntrack_sane.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_conntrack_amanda.c b/net/netfilter/nf_conntrack_amanda.c
-index ddafbdfc96dc..f10ac2c49f4b 100644
---- a/net/netfilter/nf_conntrack_amanda.c
-+++ b/net/netfilter/nf_conntrack_amanda.c
-@@ -89,7 +89,7 @@ static int amanda_help(struct sk_buff *skb,
- 	struct nf_conntrack_tuple *tuple;
- 	unsigned int dataoff, start, stop, off, i;
- 	char pbuf[sizeof("65535")], *tmp;
--	u_int16_t len;
-+	u16 len;
- 	__be16 port;
- 	int ret = NF_ACCEPT;
- 	nf_nat_amanda_hook_fn *nf_nat_amanda;
+diff --git a/net/netfilter/nf_conntrack_sane.c b/net/netfilter/nf_conntrack_sane.c
+index 39085acf7a71..130b3e68090e 100644
+--- a/net/netfilter/nf_conntrack_sane.c
++++ b/net/netfilter/nf_conntrack_sane.c
+@@ -35,7 +35,7 @@ MODULE_DESCRIPTION("SANE connection tracking helper");
+ MODULE_ALIAS_NFCT_HELPER(HELPER_NAME);
+ 
+ #define MAX_PORTS 8
+-static u_int16_t ports[MAX_PORTS];
++static u16 ports[MAX_PORTS];
+ static unsigned int ports_c;
+ module_param_array(ports, ushort, &ports_c, 0400);
+ 
 -- 
 2.54.0
 
