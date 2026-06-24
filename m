@@ -1,154 +1,112 @@
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EAD92BEFEB
-	for <netdev@vger.kernel.org>; Wed, 24 Jun 2026 11:01:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EDC2CA52;
+	Wed, 24 Jun 2026 11:03:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782298867; cv=none; b=cDDVsgfedWtcwDtT7kJH622mV3VWQc2DDlO4mKbZ6AH2w7rVzRMcJinVJuzXnzPgN6KNTlCp9ELqHraxzn4s9OTSPDAcMoaq6AFM2YmKxY96u6iZzo29RKpukWK+aI/JFEsflY/qI645Ipo5pFfiZQjthOwdPqITC1RNCEiHrVY=
+	t=1782299015; cv=none; b=ZckWWczgMRIndvRFngkKEEaEuq/bBbfrwJt/Tms81iexvT2Mk/IeiNPMgVCqVmGD7Og0NhX3CdBu2nrNKdyJJhgRWbIFpDySDUa7pR58y1rhpkJfg4WvCjXBbEYTzHtIPXCHmbw+yq40+DXaM5J6018bsuGLPHk6XwX9SivOJsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782298867; c=relaxed/simple;
-	bh=Bg/C650zMhhzCeh8uDt6OlrHOje50P0/4D6oNiD3c+o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AGhDriC2Q/gXmn3T3wytNY/oXZodAUfIfwkb2PuA+SGride0QsPXfLaS6u5voovUzP3QXdsiemOgEOviAhQRczyYsyhBuGQN3vEORydK+iMxJXx7GcJVFypksCzgb1rzCCOIxnKjNCyKNy1/8O71wKpMK0koZmJffRkbDmUakXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f3yWLuUB; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1782299015; c=relaxed/simple;
+	bh=hUGzCg4pLTxuBArxKUQImUWhWgqWcxFVhlDSFamFQdk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MWpIz/iTNNFTtnPKbaAwzXTHeEk5HTTAwDiRKchSc+cJf63ZoEMOpKi9neQZLEzYMqUWcCvxotW9xqGESrWth1nSaEsjqJLW07cnpRoAhTzmE/FYvcdKmeTUsFvzBDjIlXNQmTukuPjm74VIT81zQHiwhu+V3bzgqfB412+6KZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZUNSRun/; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=qKouf1AV; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f3yWLuUB"
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5ad68b30252so1005159e87.2
-        for <netdev@vger.kernel.org>; Wed, 24 Jun 2026 04:01:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782298863; x=1782903663; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3pxuVeaMBnszMeRz8ajoDN+MAccCemdt9YS/JX9ZEN0=;
-        b=f3yWLuUBgY0PTcUmu9w6/rRbK+mvr4YY3qFzeHPqT9gOoUZiX0m7TE6mZUyMqJ78eL
-         QbsETAYUcMLs8bdD1WQrGo223rNZm5FI0Cvg/YnZusZ8hNCrOwR3QFuc0y5GSk7qImdQ
-         CBkOzGYHSvIZQi0ZTLdulBLrDSRnbzO1foYoja6SwT5KE75fXGzjTXUyqw+th1U7E06W
-         Moj2BZhAugG6VNL1emjdLkydzCuAcT3AznnxfydKt2T6ngLcLtbg5e6VMEpwfluZe6Gt
-         8tYvDKEYSaaRnC4zKqdIQVS/buk0Z9Kt8NkP6y84ib/LEsrhYBeTRM0Szxllo7Ecubgm
-         1xPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782298863; x=1782903663;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3pxuVeaMBnszMeRz8ajoDN+MAccCemdt9YS/JX9ZEN0=;
-        b=ScJ+yhYBWYPejVWHAATKzbP1t/HjhlkpTczoUVXEm26MfO5Sz0SDVEiu9/pwKAzfpu
-         sct7T4bhGDTT4fdZXeNYvaNLdZExB5F+8eUAV8JYBsbfqGti/jyBghg4aJRgyAvaF7xu
-         sD38aUR3VNMROUM5YGiymNTspJSOBrbo1dnHStafsChYLuKxxM7+e5AYSwH3AbXX8pis
-         NdrlDG4fJtwEN7VB7jnvESRjT0axpDx9iKpD1Ub8ZWm7nZinyrhj4wPNZb4OiXxVDLAS
-         GDU8QqhrNHov0A4kDLOC9GKPtn/BqBusel7ocvgMXgsUlP9H7TBk64PH2gUmVUJMUtOv
-         ylXg==
-X-Forwarded-Encrypted: i=1; AHgh+RrG5ZC7UOYZj0eyuLVCWiPTxw3gm57kqIK61QQUR0dclOAM2qaSf30+OzMXm7cU1G+iy7Ao/sg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyIn34YvA5WkCijfEA2BDBx/1Law69kEobudaVFRzGDEI9bz+YU
-	peQfsmZJz9HgRjQRlf6p8pyEYy2k26mMkchO5/kdlCtz15g3zMUFEgbB
-X-Gm-Gg: AfdE7cnMyj4U9briZ8XJg3EuopbDj4dN8WJ/OLZMZUrlVGr5UC6bm3dG27LgOcnHshK
-	PqJXPTiKYB1QLU69wFrcCXL277TzUkeCAblQ6bNKPXihKLwtcCV/ZjJYrbmujIaYUvgh0ji+g8n
-	XpkAf9C9sH25dm/kLoJmrsXM4K0K0USkKSTcKnDmn5UesgpyL9cLML381I0SxM6994JndAfRG4D
-	OseYD3nj7asHRZeRvBfqjVIf5w/uxmYIyqq5mMyFgf8X22sRg4gOH/riTYgujqkZr7q5Q+lA/RL
-	TyToaxVAZqHV+m/o1gnPvvZadwaVm2DCEFPEDZ7iNbinp69XwYKEJ2FzMz+VlWYc302pG/ywUnK
-	rP8Fw6AvZZ5OX7/+v69Gkf7qBbFy5JO+Nxk/20+QMNvJHxhnei3i0k5qLxMxEqtZXGufxK5xWiD
-	4DhVj+3cQiFu8Sz6IFpTZqLWqfgjGPa+A7VvDGC+Y=
-X-Received: by 2002:a05:6512:2c0c:b0:5aa:6d0f:d74e with SMTP id 2adb3069b0e04-5ae9d56fe99mr792437e87.3.1782298862200;
-        Wed, 24 Jun 2026 04:01:02 -0700 (PDT)
-Received: from grower.astra-academy.ru ([185.32.135.49])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5ad695509dfsm1630422e87.18.2026.06.24.04.00.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Jun 2026 04:01:00 -0700 (PDT)
-From: Alexander Martyniuk <alexevgmart@gmail.com>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Alexander Martyniuk <alexevgmart@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
-	Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZUNSRun/";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="qKouf1AV"
+Date: Wed, 24 Jun 2026 13:03:31 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1782299013;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1to4aN27mXUg6e3//FhiOnDtrnDrsfOW2HNyWBwR80g=;
+	b=ZUNSRun/KgPTj+yok/k3XNRhYqfDg34NbQWQximnyMtK4oj2KJOqTTSt/56peOhiLoVFAP
+	BD2C7/hs+paMj1uketRIKjHkCl0bGy9hRONm/u3q9kpQDQJvV5INYZREMeL3ui3/jYjvbm
+	bKOu/VDZhvqdvRp8AT8LrBdN/oXPsbQ0gc30pYfWoXdjhBpkvT9X4ykaUGp7+IugGzJGGZ
+	e5iKB/Kj0cMqyceBtGBbq1KY3V0L1YKm6quKw4J5rDKTkhLgvT4jKj1G91dCeGDjW406h0
+	sr19aOPa9smhnOdWM9BJYeuH2Jl5gAPSXgVtkPVuRbAgfOnsYVM59B/AeT3iww==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1782299013;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1to4aN27mXUg6e3//FhiOnDtrnDrsfOW2HNyWBwR80g=;
+	b=qKouf1AVMwkpseA87WaquDtq2H4f8a+je/52pZlZYEG5kcBNKEzU3NkoVOEsrFDuQ61fWx
+	+3BxS7ihbWvAh3BQ==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Breno Leitao <leitao@debian.org>
+Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+	sched-ext@lists.linux.dev, netdev@vger.kernel.org,
+	"David S . Miller" <davem@davemloft.net>,
+	Andrea Righi <arighi@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Arnd Bergmann <arnd@arndb.de>, Ben Segall <bsegall@google.com>,
+	Changwoo Min <changwoo@igalia.com>,
+	David Vernet <void@manifault.com>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Eric Dumazet <edumazet@google.com>, Ingo Molnar <mingo@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Patrick McHardy <kaber@trash.net>,
-	netfilter-devel@vger.kernel,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Weiming Shi <bestswngs@gmail.com>,
-	Xiang Mei <xmei5@asu.edu>
-Subject: [PATCH 5.10] netfilter: nf_log: validate MAC header was set before dumping it
-Date: Wed, 24 Jun 2026 14:01:15 +0000
-Message-ID: <20260624140117.19799-1-alexevgmart@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	John Ogness <john.ogness@linutronix.de>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Petr Mladek <pmladek@suse.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Simon Horman <horms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>, Tejun Heo <tj@kernel.org>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Vlad Poenaru <vlad.wing@gmail.com>
+Subject: Re: [PATCH 1/2] bug: Provide WARN_ON.*DEFERRED() macros for console
+ deferred output
+Message-ID: <20260624110331.iHt4U2xo@linutronix.de>
+References: <20260623142650.265721-1-bigeasy@linutronix.de>
+ <20260623142650.265721-2-bigeasy@linutronix.de>
+ <ajuWnKsQR0Z825Wn@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ajuWnKsQR0Z825Wn@gmail.com>
 
-From: Xiang Mei <xmei5@asu.edu>
+On 2026-06-24 01:37:53 [-0700], Breno Leitao wrote:
+Hi Breno,
 
-commit a84b6fedbc97078788be78dbdd7517d143ad1a77 upstream
+> Have you considered an approach similar to printk_deferred_enter(),
+> where you mark the code region that needs deferral and all WARN() calls
+> within that region are automatically deferred?
 
-The fallback path of dump_mac_header() guards the MAC header access
-only with "skb->mac_header != skb->network_header", without checking
-skb_mac_header_was_set(). When the MAC header is unset, mac_header is
-0xffff, so the test passes and skb_mac_header(skb) returns
-skb->head + 0xffff, ~64 KiB past the buffer; the loop then reads
-dev->hard_header_len bytes out of bounds into the kernel log.
+Doing this at rq-lock site is not something the scheduler department
+takes. It increases/ bloats the code sides more than what we have now.
 
-This is reachable via the netdev logger: nf_log_unknown_packet() calls
-dump_mac_header() unconditionally, and an skb sent through AF_PACKET
-with PACKET_QDISC_BYPASS reaches the egress hook with mac_header still
-unset (__dev_queue_xmit(), which would reset it, is bypassed).
+Not everything is in __sched section so we can't check for this from
+within printk. So this turd was the only idea I had.
 
-Add the skb_mac_header_was_set() check the ARPHRD_ETHER path already
-uses, and replace the open-coded MAC header length test with
-skb_mac_header_len(). Only skbs with an unset MAC header are affected;
-valid ones are dumped as before.
+> The current proposal requires changing individual WARN() call sites,
+> but whether they need deferral might depend on the calling context. This
+> means you'd need to convert many call sites and ensure all nested
+> warnings are also converted to the deferred variant.
 
- BUG: KASAN: slab-out-of-bounds in dump_mac_header (net/netfilter/nf_log_syslog.c:831)
- Read of size 1 at addr ffff88800ea49d3f by task exploit/148
- Call Trace:
-  kasan_report (mm/kasan/report.c:595)
-  dump_mac_header (net/netfilter/nf_log_syslog.c:831)
-  nf_log_netdev_packet (net/netfilter/nf_log_syslog.c:938 net/netfilter/nf_log_syslog.c:963)
-  nf_log_packet (net/netfilter/nf_log.c:260)
-  nft_log_eval (net/netfilter/nft_log.c:60)
-  nft_do_chain (net/netfilter/nf_tables_core.c:285)
-  nft_do_chain_netdev (net/netfilter/nft_chain_filter.c:307)
-  nf_hook_slow (net/netfilter/core.c:619)
-  nf_hook_direct_egress (net/packet/af_packet.c:257)
-  packet_xmit (net/packet/af_packet.c:280)
-  packet_sendmsg (net/packet/af_packet.c:3114)
-  __sys_sendto (net/socket.c:2265)
+I hope for the forced-threaded-legacy the default but this camp has not
+a lot members. It would increase the pressure to provide nbcon so it
+could be a good thing.
 
-Fixes: 7eb9282cd0ef ("netfilter: ipt_LOG/ip6t_LOG: add option to print decoded MAC header")
-Reported-by: Weiming Shi <bestswngs@gmail.com>
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Alexander Martyniuk <alexevgmart@gmail.com>
----
-Backport fix for CVE-2026-52942
- net/ipv4/netfilter/nf_log_ipv4.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+To accept this series and make it more bullet-proof we could do
+s/WARN_ON\>/WARN_ON_DEFERRED/ for all sched/ and require it regardless
+if the rq-lock is held. So you wouldn't have to audit it each and every
+time. Due to that preempt-disable thingy it can be used in preemptible
+sections without breaking anything.
 
-diff --git a/net/ipv4/netfilter/nf_log_ipv4.c b/net/ipv4/netfilter/nf_log_ipv4.c
-index d07583fac8f8..d6164e8e2c73 100644
---- a/net/ipv4/netfilter/nf_log_ipv4.c
-+++ b/net/ipv4/netfilter/nf_log_ipv4.c
-@@ -296,8 +296,8 @@ static void dump_ipv4_mac_header(struct nf_log_buf *m,
- 
- fallback:
- 	nf_log_buf_add(m, "MAC=");
--	if (dev->hard_header_len &&
--	    skb->mac_header != skb->network_header) {
-+	if (dev->hard_header_len && skb_mac_header_was_set(skb) &&
-+	    skb_mac_header_len(skb) != 0) {
- 		const unsigned char *p = skb_mac_header(skb);
- 		unsigned int i;
- 
--- 
-2.43.0
+> 
+> Thanks,
+> --breno
 
+Sebastian
