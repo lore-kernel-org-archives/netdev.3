@@ -1,124 +1,70 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-m19731103.qiye.163.com (mail-m19731103.qiye.163.com [220.197.31.103])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CEBB3CC7D3;
-	Wed, 24 Jun 2026 15:13:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C05CD3DB31A
+	for <netdev@vger.kernel.org>; Wed, 24 Jun 2026 15:13:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.103
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782314007; cv=none; b=qAeZ5Iy2q/5mtz444rNs1Yde4qUFBSR7u7/zxLgzKKVhwvLpaCvSNaxlZb9YpvxB62CjgEoG6xxBFXYclxgllG/z+RwVBPxkUlCuSmDfJXYS6EnCKsMBgCZFQ65HuotD3G/hSukCbghxYyj0fsdB6BAQu/67SQ+Sxmdug4qv1bI=
+	t=1782314011; cv=none; b=PDQepHx2z52mui3DWuUdpyhTUxfNlJfZsbh5ENqO3tb3UG/7PcaXIVYnjRiMHcR+JCaoI8AZVx+Ur3+1gT/lLvkTwItXyfgX5mhq/p/xvL51WP+c9cDZwCYMk7PcB1ubpM9TwWTfdJeO4qn4V5qbxDpP3DCh4yc2ggOiIbwAFaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782314007; c=relaxed/simple;
-	bh=BBgm4KsunVTzGUFon7JwqfYL59f6oGPb8Jaj6iIoKWc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aIms22Mx2xDjf7LwGOTgT1SGOnFbNOkiJLsG1LEGBGdMHRA1Gix7rSLAKWi/LfySKAhGyU8P6QttVqhPRSFhwcUiwBWkHxB32pnSOlPAPBA+GIvczL/4N4+i5T6977jVxMydWgsH2+OVuTGy1fUQeaZuGyivNX6YscDMwKQkrXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=acZWOAfe; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782314011; c=relaxed/simple;
+	bh=H9514nGSNhwuiyLq8W8xnFS2/Eoa3n5BOZ7QZEhq378=;
+	h=Content-Type:Message-ID:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:From:Date; b=jrO9vw08dIlMy4Pb1oIoiXqYduhXP8RLtWRrLDgWXUhwiP2S8elYlEW0tQLjw5I5oFbNFFgEXecZ+o26CWpmGLbKcoT5Wr+9iTbRCA6A6TfraPY4UsoBCWxqyaEyq9Rlp8szon58pnoUEiV9t8vQtay0Mw+wj5fCqo1jvyTlgo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=TplEoqGE; arc=none smtp.client-ip=220.197.31.103
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="acZWOAfe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A8E11F000E9;
-	Wed, 24 Jun 2026 15:13:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782314006;
-	bh=yAEkEfkFb1rXfvioJSw2SFWRO5YtcpI8u4D3Wdiz19k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=acZWOAfesJMYLaNhI3/19Lz/GBOrFpuz2cdZUCxVkVbcFPEo42CHo5Ld/pI2Q3o+v
-	 7D6xTek3cUIGjVNK5tyxfB9mut+ggJX7GmfOnnhIQ3vX00siS/2TUoR5TjVJLdEH5b
-	 fcF7MlkzHfz1BqMVaoeFBrWQ60S8tu6dN6MapIFwVg/xtJfcx/r0utcqkpJ9/CvOAe
-	 w0OroGJG9qgbfnhFizc2Ya+dg27kXDodxHlxuqA1xco1lofeT121PVnyw/heNjsuot
-	 Ej6GMhZYzMLtfJm7QUDxEOGntPxgst0VFB9nFz2S9CoX0K2+sU9yOZ/YUThj0aw6Ar
-	 Qy1emEdq4K07w==
-From: Simon Horman <horms@kernel.org>
-To: github@szelinsky.de
-Cc: Simon Horman <horms@kernel.org>,
-	o.rempel@pengutronix.de,
-	kory.maincent@bootlin.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	corey@leavitt.info,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: pse-pd: scope pse_control regulator handle to kref lifetime
-Date: Wed, 24 Jun 2026 16:12:51 +0100
-Message-ID: <20260624151251.1137250-1-horms@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260622192839.2508733-1-github@szelinsky.de>
-References: <20260622192839.2508733-1-github@szelinsky.de>
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="TplEoqGE"
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+Message-ID: <AIgAEgCHKvkppDB9sUCsTarf.3.1782297429281.Hmail.220255722@seu.edu.cn>
+To: XIAO WU  <xiaowu.417@qq.com>
+Cc: "D. Wythe" <alibuda@linux.alibaba.com>, Dust Li <dust.li@linux.alibaba.com>, 
+	Sidraya Jayagond <sidraya@linux.ibm.com>, 
+	Wenjia Zhang <wenjia@linux.ibm.com>, 
+	"David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, 
+	Mahanta Jambigi <mjambigi@linux.ibm.com>, 
+	Tony Lu <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>, 
+	Simon Horman <horms@kernel.org>, 
+	Karsten Graul <kgraul@linux.ibm.com>, 
+	linux-rdma <linux-rdma@vger.kernel.org>, 
+	linux-s390 <linux-s390@vger.kernel.org>, 
+	netdev <netdev@vger.kernel.org>, 
+	linux-kernel <linux-kernel@vger.kernel.org>, 
+	"jianhao.xu" <jianhao.xu@seu.edu.cn>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCBuZXQgdjJdIG5ldC9zbWM6IGF2b2lkIHJlY3Vyc2l2ZSBza19jYWxsYmFja19sb2NrIGluIGxpc3RlbiBkYXRhX3JlYWR5?=
+X-Priority: 3
+X-Mailer: HMail Webmail Server V2.0 Copyright (c) 2016-163.com Sirius_WEB_WIN_1.64.1
+In-Reply-To: <tencent_BD4B709F8D16281265EDBC0DC9EFC8758808@qq.com>
+References: <20260617152855.1039151-1-runyu.xiao@seu.edu.cn> <20260619054815.176764-1-runyu.xiao@seu.edu.cn> <tencent_BD4B709F8D16281265EDBC0DC9EFC8758808@qq.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: from 220255722@seu.edu.cn( [223.112.146.162] ) by ajax-webmail ( [127.0.0.1] ) ; Wed, 24 Jun 2026 18:37:09 +0800 (GMT+08:00)
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+Date: Wed, 24 Jun 2026 18:37:09 +0800 (GMT+08:00)
+X-HM-Tid: 0a9ef8c1fe0e02f2kunmf02bd3cd3a74
+X-HM-MType: 1
+X-HM-NTES-SC: AL0_4z5B86Wr4Tz9jdMF+bhXMTUS6Y2fHkyPT6dc03QDwVaZPGiA09TnwhbhTj
+	hLfuFZO94YXwX6xgvkjGVFFRKj5DZd03xfWxKJ5+5n10A36+gYygBUjfIFA2NppH9Q3clqMzZtZS
+	/wBzHlz2GYWAOTQREDhQH2k3gw2BUVE1M9Rj0=
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaTkoaVk8aTk9PSxlOTUtNTFYVFA
+	kWGhdVEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUhVSkpJVUpPTVVKTUlZV1kWGg8SFR0UWUFZT0tIVU
+	pLSEpOT0xVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=TplEoqGEnaAu3cY527AA6eQQ+g/Y9YRGy16bvFcwh4XF2JUUVS9ZXO841jY/F7e5cJLjiZBeUoN4pV7fTMLUkXAFlfniqM2VtzvK2UeyQe1X+aRtklPw40tqQnkdpZG+Q7Lx4Hs+lJMBzN66lTAa7m7U2pnAw3nQhia2HHu5P1A=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=H9514nGSNhwuiyLq8W8xnFS2/Eoa3n5BOZ7QZEhq378=;
+	h=date:mime-version:subject:message-id:from;
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/
----
-net: pse-pd: scope pse_control regulator handle to kref lifetime
-
-This patch switches the pse_control consumer regulator handle from
-devm_regulator_get_exclusive() / devm_regulator_put() to the plain
-regulator_get_exclusive() / regulator_put() pair, so the put in
-__pse_control_release() works regardless of whether the controller's
-devres has already been unwound.
-
-> diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
-> index 69dbdbde9d71..a5e6d7b26b9f 100644
-> --- a/drivers/net/pse-pd/pse_core.c
-> +++ b/drivers/net/pse-pd/pse_core.c
-> @@ -1367,7 +1367,7 @@ static void __pse_control_release(struct kref *kref)
->  
->  	if (psec->pcdev->pi[psec->id].admin_state_enabled)
->  		regulator_disable(psec->ps);
-> -	devm_regulator_put(psec->ps);
-> +	regulator_put(psec->ps);
->  
->  	module_put(psec->pcdev->owner);
-
-[High]
-Does this fix the use-after-free completely, or only the regulator-put
-part of it?
-
-The commit message describes the scenario where the controller is
-unbound while a pse_control still has consumers, and explains that
-pcdev->dev's devres is released LIFO before pse_controller_unregister()
-runs.
-
-In that same scenario, __pse_control_release() still reads
-psec->pcdev->pi[psec->id].admin_state_enabled and psec->pcdev->owner
-just before the regulator_put():
-
-	if (psec->pcdev->pi[psec->id].admin_state_enabled)
-		regulator_disable(psec->ps);
-	regulator_put(psec->ps);
-
-	module_put(psec->pcdev->owner);
-
-pse_controller_unregister() calls pse_release_pis() which does
-kfree(pcdev->pi), and pcdev->pi is plain kzalloc memory rather than
-devres-managed. pcdev itself is typically a driver-owned allocation
-tied to pcdev->dev's lifetime.
-
-If a later pse_control_put() runs from the unbind path after
-pse_controller_unregister() has freed pcdev->pi (and pcdev), would
-these pcdev->pi[...] and pcdev->owner reads operate on already-freed
-memory?
-
-Similarly, would the regulator_put() then be called against an rdev
-that has already been torn down through the controller's devres?
-
-This pre-dates this patch, so it is not a regression introduced here,
-but the commit message frames the change as making
-__pse_control_release() correct "regardless of whether the
-controller's devres has already been unwound", which seems to only
-cover the regulator handle and not the pcdev->pi / pcdev->owner reads
-on the same code path.
-
-Would a more complete fix also need pse_controller_unregister() to
-drain outstanding pse_control references, or have pse_control hold a
-refcount on pcdev, so that psec cannot outlive pcdev->pi and pcdev?
+SGkgWGlhbywKCiZndDsgdGhlIGVycm9yIHBhdGggaW4gc21jX2xpc3RlbigpIGRvZXMgbm90IHJl
+c3RvcmUgaWNza19hZl9vcHMgd2hlbgomZ3Q7IGtlcm5lbF9saXN0ZW4oKSBmYWlscwoKVGhhbmtz
+LCB0aGlzIGxvb2tzIGxpa2UgYSByZWFsIGVycm9yLXBhdGggYnVnLiBJIHdpbGwgcHJlcGFyZSBp
+dCBhcyBhCnNlcGFyYXRlIGZpeCBmb3Igc21jX2xpc3RlbigpIHJhdGhlciB0aGFuIGZvbGRpbmcg
+aXQgaW50byB0aGlzCnNrX2NhbGxiYWNrX2xvY2sgcGF0Y2guCgpSdW55dQoK
