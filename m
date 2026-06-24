@@ -1,144 +1,74 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 188E73D905F;
-	Wed, 24 Jun 2026 15:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D6CC305692
+	for <netdev@vger.kernel.org>; Wed, 24 Jun 2026 15:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782314687; cv=none; b=q2MPmhmfbPrutbJ0DADijrox92AlyTN3wWoVqzJUTbcG2k+NyM/DYBLN8xyXmrOFxd2vHwh9rA/ECxmcd6SG6qlrreOCSRlZcaGzLu0J1ZiUbAhFE5nGlDO5cXWQJzJD6rOuAwarKg23D0fQFEgpe6nfOL51293VJkBTbrBRw/s=
+	t=1782315023; cv=none; b=k1/PY3Y1zZtEmIGh84TjZxRXtulgJLnXu3xYpma2h0SCYuTXM2MFQ59rNL+OCo+I1n5OB4+Wll46fB6Q6x/KPxxuVGLkw9utZm3CN+jp0j5GQelSmcobaTwB5P/Z/udcbewO2bldzWN+CRj1upv8wpli+kQj6fRQYrpxVtYGJPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782314687; c=relaxed/simple;
-	bh=0AXDlhhx2EVTJhKxESKF3/J+HgzWO+ttLuCkwSjK3Gk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VpQqayOzkfO2EOCxhRPGQsNkUTmCeOKDqP1nHYQvDJlDD4AaQuKdI8r3wQwTdN4XbibFWAL8PbUycCEIvHdmB9cewoMwlez8gzQYUPq1AWZO8VledLmAPoLk39rfavRsYm1w6vFKF2NWgMhApnz23DSSCVEvcxiHkMAEZoWzMgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o0YWQzYo; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782315023; c=relaxed/simple;
+	bh=FkhzrnJ7xRFTflz9rMUJLq/spmv9XjoC+PUcQQZn+gQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=KjnI5jkVGDIadjHVkUgojPuhC8rDAW4dFfACioDNLamcoeLHg0DZkELiCzOVRowQ/Z7Cv1pD7XI+4o9MRqIFO7mMRclL3v0zFQBJLuTeSIIKj3MN5IyR90P9cBElgJ6voK/P7MtQABqcgiUU8ebc+4RWwE5g7fMfuF15MaeUMn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NLbwuSVN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o0YWQzYo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 762D61F000E9;
-	Wed, 24 Jun 2026 15:24:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NLbwuSVN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245E41F000E9;
+	Wed, 24 Jun 2026 15:30:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782314685;
-	bh=F/HuVviSppLHm5Q0igLfBiI5LadeQp+102bTsQ7/fPo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=o0YWQzYozjwbS3hYrCZfxdo/96aw6AGr0rWyaBP+oxOJC097GAjmc6E/Y2zuF0lME
-	 NIBS4vWusRPTxbmk1UaN8UGpihPhy8jTpX6G0fdEz2RwXreTSubAmXH81hrY+diBM0
-	 MrKA5ZYv2uZbb1Tum3dpIDEvQnnwO0BNUECDp8UnLmo+HlK8XedZCFw5YbS67QWwa0
-	 Gjbz/JW0VKs6mMbxCSTGaGREDtn9d/Y6QEU0XQ8aTCWTtIKhUKCsseBzrLZtN8FIPK
-	 YoVZJ7c2XjtGECsRp4o8QpWj2YBU5JloC3kri8qenocv0yvqei7kH/G+8YWeOWG/vs
-	 5Ad0tj3rIa9fQ==
-From: Simon Horman <horms@kernel.org>
-To: nshettyj@marvell.com
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	sgoutham@marvell.com,
-	rkannoth@marvell.com,
-	lcherian@marvell.com,
-	gakula@marvell.com,
-	hkelam@marvell.com,
-	sbhatta@marvell.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	Sunil.Goutham@marvell.com,
-	naveenm@marvell.com,
-	hkalra@marvell.com
-Subject: Re: [PATCH net v2 2/2] octeontx2-af: suppress kpu profile loading warning
-Date: Wed, 24 Jun 2026 16:24:25 +0100
-Message-ID: <20260624152424.1138178-2-horms@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260623040609.3090846-3-nshettyj@marvell.com>
-References: <20260623040609.3090846-3-nshettyj@marvell.com>
+	s=k20260515; t=1782315021;
+	bh=RUcbvgmQZC5oKq764H4ENHHBEsmXURttubgifoaZF5I=;
+	h=Date:From:To:Cc:Subject;
+	b=NLbwuSVN9DmYytjs9Dlkf4Qe+kkPcBLajxXTBsLbn5Qx31QtNxtCPYLDyPWJBeHFJ
+	 JFb2RfEOQyUQ12log4GHmmRVXEG+qQo+ZkK9K9hvtUcRqrHoGG85jd/Tmr743v8gOn
+	 2tIH6+riCZzChAXEHmmn2TPbF7u21DTzjD7w7W06dDdaWrsyuiK+/DJYxvNXlPOfxJ
+	 WWZHREoD9CuZ4TFc/1a/4oFRDBRixgNvObU8g9nQO0CYZCkj1njSwuw3gpdcDXUnnk
+	 +pX1BtDCtEaZDc8SgUW98qG0olHWj5JyOD3ULg+E6MKt38gMPwBll7zGDhlAJH8y2W
+	 I9hvA69j1nQlg==
+Date: Wed, 24 Jun 2026 08:30:20 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Adrian Pielech <adrian.pielech@intel.com>, Przemyslaw Kitszel
+ <przemyslaw.kitszel@intel.com>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ intel-wired-lan@lists.osuosl.org
+Subject: [TEST] Weird RSS state on ice
+Message-ID: <20260624083020.131a75fe@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/
----
-octeontx2-af: suppress kpu profile loading warning
+Hi!
 
-This commit replaces request_firmware_direct() with
-firmware_request_nowarn() in npc_load_kpu_profile_from_fs() to suppress
-a warning observed when the KPU profile is loaded via the firmware
-database method rather than being integrated into the kernel image.
+I noticed in the netdev CI that the ice runner fails to run the
+toeplitz tests because of the RSS config.
 
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-> index c7bc0b3a29b9..007d3f22b0c9 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-> @@ -2246,7 +2246,7 @@ static int npc_load_kpu_profile_from_fs(struct rvu *rvu)
->  
->  	strcat(path, kpu_profile);
->  
-> -	if (request_firmware_direct(&fw, path, rvu->dev))
-> +	if (firmware_request_nowarn(&fw, path, rvu->dev))
+https://netdev-ci-results.intel.com/ice-results/net-next-hw-2026-06-23--00-00/ice-E810-CQ2/toeplitz.py/stdout
 
-[Medium]
-Does this actually change the warning behavior the commit message
-describes?
+I added some extra debug on the branch:
 
-Looking at the two helpers in drivers/base/firmware_loader/main.c, both
-pass FW_OPT_NO_WARN into _request_firmware():
+net.lib.ynl.pyynl.lib.ynl.NlError: Netlink error: hash field config is not symmetric 16 304: Invalid argument {'bad-attr': '.input-xfrm'}
 
-  int firmware_request_nowarn(...) {
-        ...
-        ret = _request_firmware(firmware, name, device, NULL, 0, 0,
-                                FW_OPT_UEVENT | FW_OPT_NO_WARN);
-        ...
-  }
+16, 304 means GTP flow, GTP_TEID field. So we are trying to disable
+symmetric RSS, but the field configuration contains TEID. The problem
+is this is an illegal configuration in the first place. We are
+_disabling_ symmetric RSS, but the kernel tries to make sure that both
+before and after states are correct (because the configuration involves
+multiple calls to the drivers and may fail half-way-thru). If the
+current config is illegal net/ethtool/ won't even let us restore it to
+sane state.
 
-  int request_firmware_direct(...) {
-        ...
-        ret = _request_firmware(firmware_p, name, device, NULL, 0, 0,
-                                FW_OPT_UEVENT | FW_OPT_NO_WARN |
-                                FW_OPT_NOFALLBACK_SYSFS);
-        ...
-  }
+So the question is how we got into this state. It does not happen
+on netdev machines. And on Intel machines it happens randomly around
+30% of the time.
 
-The dev_warn() calls in the firmware loader hot path (for example the
-"Direct firmware load for %s failed" message, the "loading %s failed"
-message, and the sysfs fallback notice) are all gated by
-!(opt_flags & FW_OPT_NO_WARN), and have been since commit 1fe6e4f0b0c4
-("firmware_loader: Suppress warning on FW_OPT_NO_WARN flag").
+I tried to look thru the driver code and I don't see how we could end
+up with such a config.
 
-Given that request_firmware_direct() already sets FW_OPT_NO_WARN, where
-does the spurious warning mentioned in the commit message
-("causes a spurious warning from the Linux firmware subsystem ... due
-to the absence of firmware in the kernel image") originate?
-
-[Medium]
-This change also silently drops FW_OPT_NOFALLBACK_SYSFS, which is not
-mentioned in the commit message.
-
-The kerneldoc for request_firmware_direct() says it "doesn't fall back
-to usermode helper even if the firmware couldn't be loaded directly
-from fs.  Hence it's useful for loading optional firmwares, which
-aren't always present, without extra long timeouts of udev."
-
-firmware_request_nowarn()'s kerneldoc states the opposite: "The sysfs
-fallback mechanism is enabled if direct filesystem lookup fails."
-
-On kernels built with CONFIG_FW_LOADER_USER_HELPER_FALLBACK=y, or where
-the force_sysfs_fallback sysctl is enabled, fw_run_sysfs_fallback() no
-longer short-circuits on FW_OPT_NOFALLBACK_SYSFS, so the absent-firmware
-case will now invoke firmware_fallback_sysfs() and wait on udev for the
-loading timeout (default 60s) before returning -ENOENT.
-
-The commit message itself states that "in most cases the profile is
-loaded using the 2nd method", so this is precisely the optional-firmware
-scenario that request_firmware_direct() was designed for. Was the
-fallback-sysfs behavior change intentional, and is there a reason not
-to keep the no-fallback semantics on configurations that enable the
-usermode helper?
-
->  		return -ENOENT;
->  
->  	dev_info(rvu->dev, "Loading KPU profile from filesystem: %s\n",
+Could y'all have a look and figure out / fix this? This has been
+happening for a while back but I was waiting until the merge window 
+to poke at it first.
