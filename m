@@ -1,141 +1,140 @@
-Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DECF2D94B5
-	for <netdev@vger.kernel.org>; Wed, 24 Jun 2026 12:14:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE8A1925BC
+	for <netdev@vger.kernel.org>; Wed, 24 Jun 2026 12:16:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782303274; cv=none; b=ufME0jZ1iwVmvX6m9LwIh0QeS1cH83WP8c/kIiDiSGi3JJLL4ejKYnywz2lKR7Hg9sY0FwUWzJMteaDsa5La5HLa4ZygJHNOEOAdhV4AwaYrWYaftVaKRjgc1ge3C7e9IEVZ8+HAgc5bWMhd1rVh0jq258QAPWKeRHukJuYdppc=
+	t=1782303387; cv=none; b=ZvXM+oZPQYTkeAYttUijOfh5XrFZz64TIRA05fCA4HlFQgH1WOaXfyHcvnFS2pZeWWat9Kx5dkIo5LvsrVKadtBpfJXCJk+JbHjAyqtbnt1z2kXIyM3aGDNp6x+oDNJ7eym2TqZ+P0GRhCBt5hKuJf2XMM03Nlg5JSwPvoyWc3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782303274; c=relaxed/simple;
-	bh=1VcIPUC/nBpYX8U3kB1v5nOwaGgdyAKzTTbUyoLIidY=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=sMIqmC85qU0uPCcA4WVcSHvAE1fsSqrIvRaKPhiWC/pOEVSTIfXjZRE43BZszzL2fNdf0bYr8LBVrPvlI0LUXtnarNzB/fa2dg/ijDRic/hZePcObak+M+EvGsJ1yugFeSGQAmvNSY8EQooZ8OXrx0aTs7fxdaRw2NXwcI3O7HI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-486cc29e03bso1296706b6e.3
-        for <netdev@vger.kernel.org>; Wed, 24 Jun 2026 05:14:33 -0700 (PDT)
+	s=arc-20240116; t=1782303387; c=relaxed/simple;
+	bh=8mTZuUoiyhNRN3gTKiUmzENom/VFrrl5XjY2DI/t9pU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=d4hYh4oMaGHfbt55B5scGcPeIg9vJbkL9Eu+AOeah45qiuIUjijXrRmwu0i1Q4I+9DVxadQBg82lVU4I57KP2Z3nSqeAbS/C5oR0NLJXQrLfatpRgzNcoQ6N2eJSMnLm5UXLcv1wCvIHiBIAYhpuP5LIgwZF5KAPlw86D4eHIbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V2raHcm4; arc=none smtp.client-ip=209.85.208.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V2raHcm4"
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-396669329fbso16809321fa.0
+        for <netdev@vger.kernel.org>; Wed, 24 Jun 2026 05:16:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782303383; x=1782908183; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZWN+ktVTYkpSQqdNFGaR2EYDD+puHcc21cFbcKJgBfs=;
+        b=V2raHcm4aq59i6qi0YfjMaqw8TXp1JbHv1JaNVBJ1C0bXP7+3dHBVRQqMBY0KHnvMm
+         AkG+HFYcLqUUWHwx6Ch0UQEWHrMch9cq/7r1ANOBfHHgpPQPLZSa7kQgD+XCS8rW2QFZ
+         jO1H2gIPQwJmogZ1qKqrSIX9k/VrTj8zNA5ll/vaw8fEoYF1VoG129P0Ayq1mYKXdk3+
+         pXm948Uir2MbhKX1PCUySlzsLAQBHYuytszwn91cmxfRX0tKzwy3Irt0hHiPmyjbwVaT
+         XI9Jt/Rm1oyumHGhgOCN8c1FBXaOvtm4XIWMGeJPw9TJUD5Nmrn0d5jO6QJQi/50LnSD
+         8ddA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782303272; x=1782908072;
-        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=B0/BKGHSgt7kkPjfopsHIa52lwo20kFyOlX7eKJo26Y=;
-        b=L66ZOjoiCgnYGnwWAEBDOcxMDHGt8i4EmgsiT/Xu0hh8VjwIibrnREAS5rSVge18fB
-         q4MGL97kHDweh3lUHIP5O1dRuKxDFwA8VHW5DqX6cFfMNy7YrpWSZH6oKTBe3my5f90b
-         11cTJ/TsbYxpAat4zW18Q8MwdN1d8jLPnBx1D7aD/vwWIRpy8lmr5TjnsGdVrLlL/CeX
-         hjOWXf0CDrXRTz8MPRdHxepcm67G5UIraibF9MXKKCpZsrLZJW2bys9tGRqErlvEBr31
-         f0YBUHmwwpjrI1kcbUc8TDu97xTsUJywAasiSrLhwuWTHJduqqrwIFcSHiUuIjFgdlVJ
-         8BOw==
-X-Forwarded-Encrypted: i=1; AFNElJ/n7PkBSWj+iBlXGSfhBoBJXuEAHhdhduZDL5DEYKoiw4poOoZcCLBD12Zgu2yFFGuil2T8sjU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzopDQzpCdqWEF7PgARgoP0TdjspnSUaUsa78D3V+5rnydTXsTD
-	NMe+kGqrtdMcQTUnKHc/50vCFPtkv95fbyrNJ+nZMqXTg5R3xIdznehZcUyusvl+4R2x0iQRFCs
-	TkvYGwxnJJjcvmkRVByKwFPe0y3E2CzkddnLooQ4TM1ZRrJjQe8Yuu8KBUwg=
+        d=1e100.net; s=20251104; t=1782303383; x=1782908183;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZWN+ktVTYkpSQqdNFGaR2EYDD+puHcc21cFbcKJgBfs=;
+        b=aHSd2JqTp6biVZ8e6zpBvowg7693GEoxaZmf0JS9rXI7kShK/FOjUv5IBuqckGTKXt
+         HMCS3FUVpSlK8soSIYk5md1rtcEAlLcC4O1ZzFr0xEkZzB+hkApZXWYEzMSHjBBD5Jjm
+         VuKudc8pO50yOKU0hO3tflKM4dmLrzbBYO4HiuFYQygzWE5+nIMPJTwsT3WLQkyfi+I+
+         Z2EsVRIIluDEaKZQ3MEHyyNztwPsRJBKl31GQTjbsK0zePOUjBIMlQNz0qW1LiHbReKS
+         /E8C/1D4sKXKq2sD5i89GjHPhbCYSDYH8PFkmZeAzutz0ZrOcbDFpGTgEfvbFWkpNOOz
+         sMcg==
+X-Forwarded-Encrypted: i=1; AHgh+RpEe8X6HRnDvbkmfy5BMpTuhfBSNeGhMMZDyiZMaiproVI0sf1+esdTvocnrvBNacrUhlO1zhc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwF+roiSkHtE/RJc8MlUl87vLmVywULmTRbruHYqm9m9gP9Dsb7
+	hg+p8Ya4rYDlxdn3xBe6+knOHtj9U3pz1G8YXUCzhKAf9AbpwDrHzjZY
+X-Gm-Gg: AfdE7cmb9crLOinO8XMKgxL9S+UyocJou1w2Ks3jvQnhLThqVo8QJ2BLzmRsohco39p
+	/YtlEyrTSJ1t0vBSjH0rbISufQdq2AmDddGF4oJIYfV5hPphzTLL1L5Ah3k1o5ECnVhEmAdPlFN
+	xvnpydCylAYawGvYRYxvp+mI834wxYXkB6AI4Rb4CNk6HgIlH3YO4SyaCfPxLDN3Dse0e/3c9s/
+	0vkm3blyyAtWROdOyTelH6N4mQqCAMx/XoHZMW/hTTvOslg9wonGzdDDPdQ2pJfbZqLhBeufdz/
+	xy1E26vW7mpno4kQRgu23QeVwQOWRPOrHZyAO+aaw7GkAuYJ9jz8WJAcF5Lrt+X89yqIZoobcC3
+	TQSZxfBl0yL52a7TIeTMuQtmvJ1IOK9Cn7yxZVUh9/7JJkl7eeYQk9QN7emZAqOMH73GrYpyh12
+	ZO+HZ0t8fYOl7stXIEx3Py8pDv9l+j
+X-Received: by 2002:a2e:a913:0:b0:38e:8357:c5ae with SMTP id 38308e7fff4ca-39ac25ddbedmr400571fa.9.1782303382591;
+        Wed, 24 Jun 2026 05:16:22 -0700 (PDT)
+Received: from grower.astra-academy.ru ([185.32.135.49])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3999b156f23sm33089191fa.27.2026.06.24.05.16.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Jun 2026 05:16:22 -0700 (PDT)
+From: Alexander Martyniuk <alexevgmart@gmail.com>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Alexander Martyniuk <alexevgmart@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jann Horn <jannh@google.com>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Rao Shoaib <rao.shoaib@oracle.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Jiexun Wang <wangjiexun2025@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>
+Subject: [PATCH 5.15/6.1/6.6] af_unix: Reject SIOCATMARK on non-stream sockets
+Date: Wed, 24 Jun 2026 15:16:48 +0000
+Message-ID: <20260624151651.38894-1-alexevgmart@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:6718:b0:485:5982:4cfc with SMTP id
- 5614622812f47-49079492366mr2337970b6e.33.1782303272549; Wed, 24 Jun 2026
- 05:14:32 -0700 (PDT)
-Date: Wed, 24 Jun 2026 05:14:32 -0700
-In-Reply-To: <20260624073209.3703492-1-edumazet@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a3bca28.92e8a34c.2b91f1.0008.GAE@google.com>
-Subject: [syzbot ci] Re: net: clear transport header during tunnel decapsulation
-From: syzbot ci <syzbot+ci7e1fc283906ef7ab@syzkaller.appspotmail.com>
-To: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com, 
-	eric.dumazet@gmail.com, horms@kernel.org, idosch@nvidia.com, kuba@kernel.org, 
-	netdev@vger.kernel.org, pabeni@redhat.com, syzbot@syzkaller.appspotmail.com
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-syzbot ci has tested the following series
+From: Jiexun Wang <wangjiexun2025@gmail.com>
 
-[v1] net: clear transport header during tunnel decapsulation
-https://lore.kernel.org/all/20260624073209.3703492-1-edumazet@google.com
-* [PATCH net] net: clear transport header during tunnel decapsulation
+commit d119775f2bad827edc28071c061fdd4a91f889a5 upstream.
 
-and found the following issue:
-WARNING in geneve_udp_encap_recv
+SIOCATMARK reports whether the receive queue is at the urgent mark for
+MSG_OOB.
 
-Full report is available here:
-https://ci.syzbot.org/series/1f6dc47e-354f-4904-bc18-c2b7ea4d79b2
+In AF_UNIX, MSG_OOB is supported only for SOCK_STREAM sockets.
+SOCK_DGRAM and SOCK_SEQPACKET reject MSG_OOB in sendmsg() and recvmsg(),
+so they should not support SIOCATMARK either.
 
-***
+Return -EOPNOTSUPP for non-stream sockets before checking the receive
+queue.
 
-WARNING in geneve_udp_encap_recv
-
-tree:      net
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/netdev/net.git
-base:      d87363b0edfc7504ff2b144fe4cdd8154f90f42e
-arch:      amd64
-compiler:  Debian clang version 22.1.6 (++20260514074242+fc4aad7b5db3-1~exp1~20260514074407.73), Debian LLD 22.1.6
-config:    https://ci.syzbot.org/builds/7bb83c16-d55d-4d99-8c2b-6050e0022ef6/config
-
-------------[ cut here ]------------
-!skb_transport_header_was_set(skb)
-WARNING: ./include/linux/skbuff.h:3094 at geneve_udp_encap_recv+0x26ed/0x4130, CPU#1: kworker/1:3/5072
-Modules linked in:
-CPU: 1 UID: 0 PID: 5072 Comm: kworker/1:3 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-Workqueue: mld mld_ifc_work
-RIP: 0010:geneve_udp_encap_recv+0x26ed/0x4130
-Code: c8 00 00 00 0f b6 04 01 84 c0 0f 85 f2 18 00 00 48 8b 7c 24 78 66 44 89 6f 0a e8 7e 9b 7a 03 e9 8c 00 00 00 e8 f4 fc 33 fb 90 <0f> 0b 90 e9 2e e3 ff ff 49 83 c6 06 4c 89 f0 48 c1 e8 03 48 b9 00
-RSP: 0018:ffffc90000a08620 EFLAGS: 00010246
-RAX: ffffffff8691f92c RBX: ffff8881bcc8b5d0 RCX: ffff88816a7abb80
-RDX: 0000000000000100 RSI: 000000000000ffff RDI: 000000000000ffff
-RBP: ffffc90000a08790 R08: ffffffff903114f7 R09: 1ffffffff206229e
-R10: dffffc0000000000 R11: fffffbfff206229f R12: ffff888109f6a108
-R13: 1ffff110213ed5df R14: 0000000000000010 R15: dffffc0000000000
-FS:  0000000000000000(0000) GS:ffff8882a927b000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f6956ea5440 CR3: 000000016f55c000 CR4: 00000000000006f0
-Call Trace:
- <IRQ>
- udp_queue_rcv_one_skb+0xfc5/0x10e0
- udp_unicast_rcv_skb+0x21a/0x3a0
- udp_rcv+0xecb/0x1db0
- ip_protocol_deliver_rcu+0x27e/0x440
- ip_local_deliver_finish+0x3bb/0x6f0
- NF_HOOK+0x336/0x3c0
- NF_HOOK+0x336/0x3c0
- process_backlog+0xa34/0x1860
- __napi_poll+0xaa/0x330
- net_rx_action+0x61d/0xf50
- handle_softirqs+0x225/0x840
- do_softirq+0x76/0xd0
- </IRQ>
- <TASK>
- __local_bh_enable_ip+0xf8/0x130
- __dev_queue_xmit+0x1ed7/0x37f0
- ip6_output+0x337/0x540
- NF_HOOK+0x177/0x4f0
- mld_sendpack+0x890/0xe10
- mld_ifc_work+0x839/0xe70
- process_scheduled_works+0xa8e/0x14e0
- worker_thread+0xa47/0xfb0
- kthread+0x388/0x470
- ret_from_fork+0x514/0xb70
- ret_from_fork_asm+0x1a/0x30
- </TASK>
-
-
-***
-
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
-
+Fixes: 314001f0bf92 ("af_unix: Add OOB support")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
+Signed-off-by: Jiexun Wang <wangjiexun2025@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260506140825.2987635-1-n05ec@lzu.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Alexander Martyniuk <alexevgmart@gmail.com>
 ---
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+Backport fix for CVE-2026-52928
+ net/unix/af_unix.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-To test a patch for this bug, please reply with `#syz test`
-(should be on a separate line).
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 32892a40d139..8bd78cad69e7 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -3139,6 +3139,9 @@ static int unix_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
+ 			struct sk_buff *skb;
+ 			int answ = 0;
+ 
++			if (sk->sk_type != SOCK_STREAM)
++				return -EOPNOTSUPP;
++
+ 			skb = skb_peek(&sk->sk_receive_queue);
+ 			if (skb && skb == READ_ONCE(unix_sk(sk)->oob_skb))
+ 				answ = 1;
+-- 
+2.43.0
 
-The patch should be attached to the email.
-Note: arguments like custom git repos and branches are not supported.
