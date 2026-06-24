@@ -1,37 +1,38 @@
-Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
+Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DABC23BE16F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A8663BD653;
 	Wed, 24 Jun 2026 14:13:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.227
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.221
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782310426; cv=none; b=oXp6kdtM/APs0LlODd8ES9v1CIPAt5jkgBFYemzzoxe98kPA9i6AYL7YWgkJGwZwLjNJC0JU2+L4069OFvAmZEk3lXk5zRpOQaG+XNtdTDzAKmspADPeCHcPFVL9Fgjntkbt2f1/NlYmS6GOjaaKmtjqQHBCi+z/STyRUgs0Y54=
+	t=1782310427; cv=none; b=Yexs3+XQXvxS+Py07gHNQfW838nGUQD97G4RjD/1aJxQpv1exHpG2OO1RkJ6hV3w3/kFEEylZEQ/gwpUDjuuWtqi6ZLwPt/ARahbR2Lwjx9nJHls37YC0w9mWE2KgxBT6DFPOs0BeCom4G2m9pkYk3K414p69E6MKM4xf6Ck+GU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782310426; c=relaxed/simple;
-	bh=6yWkG9PW+032UiDeSgeMjm/fI49U2DAbsrsd18VgFMM=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mumIt4cU7ce6Svm8oY90ATFIvCNj1Mntw9/ibHbQC9K7l/rdpYQXxDuK+5xGmVmASyKWSmZaZV7atDwCSD/hiKVlyYqaxFp9bt1Ro20kuAvOK22ScFlHjWKiMw2u296DTawuTlHqAI5Zas9SsMhKTnlAHp+Gp3Elt0hbFDtvpPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=iM1eUJyr; arc=none smtp.client-ip=113.46.200.227
+	s=arc-20240116; t=1782310427; c=relaxed/simple;
+	bh=qs4HdGGXnidMeXPJoY99yhlSz/Oo1iirDN7Wu9FHlco=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=aCg5knoZASRYzVZpqnKMKTwfx+h7GYJz4bfsyaSWY0wMw7lk47s1YMnLi6L7tnePaVyYfCiYj3X5etN+lX0fgpZjgl4y+241SExELfemw7VpCy9/0+N+z4T+KK2PJEuwBEQOkqw5hHRdnRDzzTBm00jPKJtMcYpCye7it1PQfFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=JpRHnsy1; arc=none smtp.client-ip=113.46.200.221
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="iM1eUJyr"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="JpRHnsy1"
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=EuKBtsStI+IbD385S1gTKavPswm9jCgAZ91EbOUF964=;
-	b=iM1eUJyrtVlKvFhHSeevM96mdbBaCE2sB0KtvBn6TFqIKEXYBFMp4PWvum3aOGUaGI8N12zRv
-	PW0XQbRvr6HJ6i7OVI8HHCaNCwvqARjFW/mgbw0gZPaKsJtkjRR44fPZWdVXrkMJnrjM5fps12u
-	48OM5lRDET0iYL4anCO1MM0=
-Received: from mail.maildlp.com (unknown [172.19.162.92])
-	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4glkGH0dMXznTVF;
-	Wed, 24 Jun 2026 22:04:55 +0800 (CST)
+	bh=bD1mdxzpceNQDEF5KCevWSq4lzcjd2fEFXJ9CIadwxs=;
+	b=JpRHnsy1EP7FEhzMjc5FcDl9DkeTsZWL8Qv3TQ0986pZijeYCGwdUeWRVdPpzKLMybJL80q7U
+	SAPvVpBXf0c4cLOfS0CNcUBp7BQB/xlMnPMsWhP8mrL8t+ZoDJdL8TJapKMRDU2P4MRB31Zi0+L
+	jyKf0Qy3QKUDYZpvCtF66bM=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4glkFw1W6czRhQQ;
+	Wed, 24 Jun 2026 22:04:36 +0800 (CST)
 Received: from kwepemo500018.china.huawei.com (unknown [7.202.195.199])
-	by mail.maildlp.com (Postfix) with ESMTPS id DBB6540565;
-	Wed, 24 Jun 2026 22:13:38 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 5F79640569;
+	Wed, 24 Jun 2026 22:13:40 +0800 (CST)
 Received: from localhost.huawei.com (10.90.31.46) by
  kwepemo500018.china.huawei.com (7.202.195.199) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Wed, 24 Jun 2026 22:13:38 +0800
+ 15.2.1544.36; Wed, 24 Jun 2026 22:13:39 +0800
 From: Jijie Shao <shaojijie@huawei.com>
 To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
 	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
@@ -39,10 +40,12 @@ CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
 	<chenhao418@huawei.com>, <huangdonghua3@h-partners.com>,
 	<yangshuaisong@h-partners.com>, <netdev@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <shaojijie@huawei.com>
-Subject: [PATCH V2 net 0/4] net: hns3: fix configuration deadlocks and refactor link setup
-Date: Wed, 24 Jun 2026 22:13:15 +0800
-Message-ID: <20260624141319.271439-1-shaojijie@huawei.com>
+Subject: [PATCH V2 net 3/4] net: hns3: fix permanent link down deadlock after reset
+Date: Wed, 24 Jun 2026 22:13:18 +0800
+Message-ID: <20260624141319.271439-4-shaojijie@huawei.com>
 X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20260624141319.271439-1-shaojijie@huawei.com>
+References: <20260624141319.271439-1-shaojijie@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,73 +57,114 @@ Content-Type: text/plain
 X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
  kwepemo500018.china.huawei.com (7.202.195.199)
 
-This patch series addresses a sequence of link configuration deadlocks
-and parameter contamination issues in the hns3 network driver, which
-typically occur during hardware resets or driver initialization under
-specific user-configured scenarios.
+From: Shuaisong Yang <yangshuaisong@h-partners.com>
 
-The bugs root from asynchronous discrepancies between the MAC state
-machine and cached user requests during sudden hardware resets, leading
-to invalid parameter combos or frozen registers.
+Fix a critical race condition deadlock where the network interface
+remains permanently Link Down after a hardware reset under specific
+ethtool sequences.
 
-Changes in V2:
-- Squashed the former patch 5 ("fix init failure caused by lane_num
-  contamination") into patch 2, introducing the req_lane_num separation
-  directly where the helper is created. This avoids a bisect-time
-  regression where an intermediate commit could fail probe with an
-  inconsistent (speed, lane_num) pair.
-- Added a NULL phydev guard in patch 1 (hclge_set_phy_link_ksettings)
-  to prevent a kernel panic when firmware reports PHY_INEXISTENT on a
-  copper port. The previous netdev->phydev check was lost during the
-  ethtool refactor.
-- In patch 1, for copper ports where neither IMP firmware nor a kernel
-  PHY is available (e.g. PHY_INEXISTENT), hclge_set_phy_link_ksettings()
-  now returns -ENODEV, and hns3_set_link_ksettings() catches this error
-  to proceed to the existing MAC-level path (check_ksettings_param
-  -> cfg_mac_speed_dup_h), preserving compatibility with PHY-less copper
-  deployments.
-- Preserved the 1000BASE-T forced-mode rejection in the kernel PHY
-  path inside the new hclge_set_phy_link_ksettings() wrapper, closing
-  a gap identified in community review.
-- Fixed a link-loss regression in patch 4 where fiber ports in forced
-  mode would be configured with the static default_speed instead of the
-  firmware-probed SFP speed, by synchronizing req_speed from mac.speed
-  when req_autoneg is overridden to AUTONEG_DISABLE.
-- Rewrote the commit message of patch 2 to accurately describe the
-  init/reset path asymmetry and the req_lane_num rationale.
+This issue exclusively manifests in firmware-controlled PHY topologies
+where the driver relies on the IMP firmware to arbitrate link parameters.
+Standard devices driven by the kernel's native PHY_LIB are unaffected.
 
-The series is organized as follows:
-- Patch 1 refactors the ethtool link settings entry path to unify copper
-  port handling (both native kernel PHY_LIB and firmware-controlled PHY)
-  and ensures req_xxx configurations are uniformly saved across all modes.
-  For PHY_INEXISTENT copper ports, -ENODEV is returned to allow fallthrough
-  to MAC-level configuration.
-- Patch 2 refactors the MAC initialization by extracting the autoneg and
-  speed configuration logic out of hclge_mac_init() into a dedicated
-  helper function, and introduces req_lane_num to isolate the user-
-  requested lane count from firmware-overwritten mac.lane_num.
-- Patch 3 fixes a permanent link-down deadlock after a reset by ensuring
-  that the driver caches and uses the user's intended autoneg/speed
-  settings (req_***) rather than unsynchronized runtime states or
-  SPEED_UNKNOWN tokens.
-- Patch 4 fixes a link loss issue on optical ports during initialization
-  by differentiating autoneg default values between copper and fiber
-  media types, and synchronizing req_speed with the firmware-probed
-  SFP speed when forced mode is detected.
+The deadlock occurs via the following path:
+1. User disables autoneg and forces an unmatched speed, forcing link
+   down: `ethtool -s ethx autoneg off speed 10 duplex full`
+2. User re-enables autoneg: `ethtool -s ethx autoneg on`. The netdev
+   stack passes cmd->base.speed as SPEED_UNKNOWN (0xffffffff).
+3. Driver saves req_autoneg=1, but before the interface can link up,
+   a hardware reset is triggered.
+4. During reset recovery, MAC init reads the un-synchronized runtime
+   state mac.autoneg (which is still 0/OFF), misinterprets it as
+   forced mode, and pushes the cached SPEED_UNKNOWN into the hardware
+   registers, causing the MAC firmware state machine to freeze.
+   Meanwhile, PHY init reads req_autoneg=1 and enables PHY autoneg.
 
-Shuaisong Yang (4):
-  net: hns3: unify copper port ksettings configuration path
-  net: hns3: refactor MAC autoneg and speed configuration
-  net: hns3: fix permanent link down deadlock after reset
-  net: hns3: differentiate autoneg default values between copper and
-    fiber
+Since the MAC is frozen with 0xffffffff and PHY is running autoneg,
+they mismatch permanently.
 
- .../ethernet/hisilicon/hns3/hns3_ethtool.c    |  31 +++--
- .../hisilicon/hns3/hns3pf/hclge_main.c        | 108 ++++++++++++++----
- .../hisilicon/hns3/hns3pf/hclge_main.h        |   1 +
- 3 files changed, 102 insertions(+), 38 deletions(-)
+Fix this by:
+1. Intercepting SPEED_UNKNOWN/DUPLEX_UNKNOWN in
+   hclge_set_phy_link_ksettings() and hclge_cfg_mac_speed_dup_h() to
+   prevent it from corrupting the driver's cached valid configuration.
+2. Save req_autoneg in hclge_set_autoneg().
+3. Aligning the state judgment in hclge_set_autoneg_speed_dup() to use
+   req_autoneg instead of the un-synchronized runtime mac.autoneg,
+   ensuring both MAC and PHY consistently enter the autoneg branch to
+   eliminate configuration discrepancies during reset recovery.
 
+Fixes: 05eb60e9648c ("net: hns3: using user configure after hardware reset")
+Signed-off-by: Shuaisong Yang <yangshuaisong@h-partners.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+---
+ .../hisilicon/hns3/hns3pf/hclge_main.c        | 22 +++++++++++++------
+ 1 file changed, 15 insertions(+), 7 deletions(-)
 
-base-commit: d87363b0edfc7504ff2b144fe4cdd8154f90f42e
---
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index fb12ba77228c..d176100d3e4c 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -2585,8 +2585,10 @@ static int hclge_cfg_mac_speed_dup_h(struct hnae3_handle *handle, int speed,
+ 		return ret;
+ 
+ 	hdev->hw.mac.req_lane_num = lane_num;
+-	hdev->hw.mac.req_speed = (u32)speed;
+-	hdev->hw.mac.req_duplex = duplex;
++	if (speed != SPEED_UNKNOWN)
++		hdev->hw.mac.req_speed = (u32)speed;
++	if (duplex != DUPLEX_UNKNOWN)
++		hdev->hw.mac.req_duplex = duplex;
+ 
+ 	return 0;
+ }
+@@ -2617,6 +2619,7 @@ static int hclge_set_autoneg(struct hnae3_handle *handle, bool enable)
+ {
+ 	struct hclge_vport *vport = hclge_get_vport(handle);
+ 	struct hclge_dev *hdev = vport->back;
++	int ret;
+ 
+ 	if (!hdev->hw.mac.support_autoneg) {
+ 		if (enable) {
+@@ -2628,7 +2631,10 @@ static int hclge_set_autoneg(struct hnae3_handle *handle, bool enable)
+ 		}
+ 	}
+ 
+-	return hclge_set_autoneg_en(hdev, enable);
++	ret = hclge_set_autoneg_en(hdev, enable);
++	if (!ret)
++		hdev->hw.mac.req_autoneg = enable;
++	return ret;
+ }
+ 
+ static int hclge_get_autoneg(struct hnae3_handle *handle)
+@@ -3343,8 +3349,10 @@ hclge_set_phy_link_ksettings(struct hnae3_handle *handle,
+ 		return ret;
+ 
+ 	hdev->hw.mac.req_autoneg = cmd->base.autoneg;
+-	hdev->hw.mac.req_speed = cmd->base.speed;
+-	hdev->hw.mac.req_duplex = cmd->base.duplex;
++	if (cmd->base.speed != SPEED_UNKNOWN)
++		hdev->hw.mac.req_speed = cmd->base.speed;
++	if (cmd->base.duplex != DUPLEX_UNKNOWN)
++		hdev->hw.mac.req_duplex = cmd->base.duplex;
+ 
+ 	return 0;
+ }
+@@ -9313,12 +9321,12 @@ static int hclge_set_autoneg_speed_dup(struct hclge_dev *hdev)
+ 	int ret;
+ 
+ 	if (hdev->hw.mac.support_autoneg) {
+-		ret = hclge_set_autoneg_en(hdev, hdev->hw.mac.autoneg);
++		ret = hclge_set_autoneg_en(hdev, hdev->hw.mac.req_autoneg);
+ 		if (ret)
+ 			return ret;
+ 	}
+ 
+-	if (!hdev->hw.mac.autoneg) {
++	if (!hdev->hw.mac.req_autoneg) {
+ 		ret = hclge_cfg_mac_speed_dup_hw(hdev, hdev->hw.mac.req_speed,
+ 						 hdev->hw.mac.req_duplex,
+ 						 hdev->hw.mac.req_lane_num);
+-- 
 2.33.0
+
