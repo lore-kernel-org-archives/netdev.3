@@ -1,89 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA733275B03
-	for <netdev@vger.kernel.org>; Wed, 24 Jun 2026 02:21:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C4B72857CC
+	for <netdev@vger.kernel.org>; Wed, 24 Jun 2026 02:30:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782267665; cv=none; b=M7oucYcTRRjPJ6s4DX8ZLa5JfvyzC/84Q5f9Vs/V6RmwFa7gu2Hn//ly2wqWeGsf+jirwDAKFYWu1FxsnOfaoTLqwmfG39lv9sq497OqQFN67tpO+0/QcA2giD3lDi/d8t8lFPx3moaObFZ4vBx2vur7gBwO1b1PiT7s2GcyKF8=
+	t=1782268235; cv=none; b=VyOfbpG5JB7rbeK+h7WNPwUMk4Omrn6DH3Lp51nm3CnsSsjJ8yRIk1B1BiMPfSb5CVZqvdqUjIioPRXNJSAtbx4q92tBInKzUOlqvT6zDatxVp+QN7SFMSNBZUT/XEXH7zWqFkygkWCjacEGLX22XTYwnIXC9z4kQ060AS3PmXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782267665; c=relaxed/simple;
-	bh=T/Bq86BjZdt/IivZEZGHu4jsLL4a9cKYPS3624V4wMI=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=tUFiFlLRzTm2mtC70TPEYwbwGtrtnDAU89qzbdC3gp/oO5vYLnhG79idbUpIbbsy3N2Tlg/mX12djafXAsaQ0f+Y6MF/U2YHLgMn/poILAdHeM6HhOyjd6u6alYQm5ZH+xd73VmjlTBNgU2OeAw2p5HLwwHg05D2bRcA7yZf/2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ONhyk7p9; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782268235; c=relaxed/simple;
+	bh=nksDu5yyFmXaqsW8EE2cTW17CPVO6hsTaFF/gmdHOWw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RfucA5xVPYrOLRsRfbwmUHcYvNphkPUa1eoAp8OlDJfLcYFmMZG7xTqY7a/nOqUP6w20aZDF0JvD/kS2RqMtAOxybZmoGGSKNF9ENn71NeFnEP1uCCDJhlR9g3MzS2ZN5nMLxKjK3mEn/Yqmc84uY7GETt+tJC7Dr+kQMeNjZZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=J/XH9OST; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ONhyk7p9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E02C01F000E9;
-	Wed, 24 Jun 2026 02:21:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782267660;
-	bh=nIcghOPdEg9s7M3qtKpFUe2LjQx2WBFCQvfbHsCf84w=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=ONhyk7p9P2C9oKUFF5k+yna/0Tvma0VP/rZnshrzIq0q59zfcXCly7Hz4uOi7stDU
-	 ooXSNsbJ/0n7jzyNWf3oEVE+woetyV1dVGAxoFpX+tYIZ3kA+/vTE1Hepm3z2D+ZmM
-	 DQCI0bo9oBdiib/YrohVboxL55hlTqk4ZUurkgkglOiMbzt8yApgEGQW2IrfA0yZUN
-	 4P0vTTQ1MdIEPlfUKxekAIIgOrFl4ALK1JyInGWH1IVfCvC48Ey1wb4SqscEyHOg24
-	 vRPy/Z5Gb4U5OF9vFA6jf8TLeXBwldUSEKDo+9MIumaEd6S2et1+ycrNYIbZFYjPOR
-	 6gVj8BkHwgCDw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5688E393102A;
-	Wed, 24 Jun 2026 02:20:51 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="J/XH9OST"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=cwkN8WKDn4xDdeIp1Dq+VVasAbicD8jCRQpIpf6d36M=; b=J/XH9OSTujJgPkikT4O1a6FtTq
+	znJn9yun7/v/KopP1o+ti+izygrcHQWVW4/41Xr50hsJzWSYqcJdHZYZNufop51tvHkVxdElMHFza
+	X+1sz3qDxKhnb+Qp23g6sgUB+N5wQFo7HXlqwHdCDDwgogS1KUQK+XwpF7+I1E3psifQ=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wcDNk-0092Cw-JL; Wed, 24 Jun 2026 04:30:28 +0200
+Date: Wed, 24 Jun 2026 04:30:28 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Lee Trager <lee@trager.us>
+Cc: "Das, Shubham" <shubham.das@intel.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Alexander H Duyck <alexander.duyck@gmail.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"mkubecek@suse.cz" <mkubecek@suse.cz>,
+	"D H, Siddaraju" <siddaraju.dh@intel.com>,
+	"Chintalapalle, Balaji" <balaji.chintalapalle@intel.com>,
+	"Lindberg, Magnus" <magnus.k.lindberg@ericsson.com>,
+	"niklas.damberg@ericsson.com" <niklas.damberg@ericsson.com>
+Subject: Re: Ethtool : PRBS feature
+Message-ID: <38359a70-ebc7-49c5-bae5-0d3d7bf82fac@lunn.ch>
+References: <f4a3e4ad-91e2-4844-a29b-81f70151228e@lunn.ch>
+ <SN7PR11MB81099B4885C10E16D52A2EB9FFE52@SN7PR11MB8109.namprd11.prod.outlook.com>
+ <06d8c98da24e80d148ede4e933bb621c5515a7a2.camel@gmail.com>
+ <SN7PR11MB8109C173933D08F994FBB084FFE22@SN7PR11MB8109.namprd11.prod.outlook.com>
+ <26971635-b13a-4ed3-b2cb-ce35da9b63d3@lunn.ch>
+ <SN7PR11MB81096CF160930DB8FA278B3CFFE12@SN7PR11MB8109.namprd11.prod.outlook.com>
+ <be5c474b-c969-49af-8235-825580ee945c@bootlin.com>
+ <SN7PR11MB8109149608172808784CDCBEFFEF2@SN7PR11MB8109.namprd11.prod.outlook.com>
+ <5f22c491-b816-421e-a531-bf87a07fea70@lunn.ch>
+ <08f1b0c2-2b09-4c30-b95a-02959d409a03@trager.us>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3 0/6] ipv6: fix error handling in disable_ipv6
- sysctl
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178226764994.2513445.6893091614764518724.git-patchwork-notify@kernel.org>
-Date: Wed, 24 Jun 2026 02:20:49 +0000
-References: <20260622130857.5115-1-fmancera@suse.de>
-In-Reply-To: <20260622130857.5115-1-fmancera@suse.de>
-To: Fernando Fernandez Mancera <fmancera@suse.de>
-Cc: netdev@vger.kernel.org, nicolas.dichtel@6wind.com,
- stephen@networkplumber.org, horms@kernel.org, pabeni@redhat.com,
- kuba@kernel.org, edumazet@google.com, davem@davemloft.net, idosch@nvidia.com,
- dsahern@kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <08f1b0c2-2b09-4c30-b95a-02959d409a03@trager.us>
 
-Hello:
-
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon, 22 Jun 2026 15:08:51 +0200 you wrote:
-> While working on a different IPv6 patch series I have spotted multiple
-> minor bugs around sysctl error handling and notifications. In general,
-> they are not serious issues.
+>     To avoid race conditions, maybe some of these commands need combining.
+>     ethtool --phy-test eth1 tx-prbs prbs7 rx-prbs prbs7 bert start
 > 
-> In addition, there is one more issue in forwarding sysctl as it does not
-> check for CAP_NET_ADMIN for the namespace. I am keeping that patch out
-> of this series and I am aiming it at the net-next tree once it re-opens.
+>     The configuration is then atomic, with respect to the uAPI, so we
+>     don't get two users configuring it at the same time, ending up with a
+>     messed up configuration.
 > 
-> [...]
+> Testing consumes the link so you really don't want anything done to the netdev
+> while testing is running. fbnic does the following.
+> 
+> 1. Testing cannot start when the link is up
 
-Here is the summary with links:
-  - [net,v3,1/6] ipv6: fix error handling in disable_ipv6 sysctl
-    https://git.kernel.org/netdev/net/c/c779441e5070
-  - [net,v3,2/6] ipv6: fix error handling in ignore_routes_with_linkdown sysctl
-    https://git.kernel.org/netdev/net/c/cf4f2b14401f
-  - [net,v3,3/6] ipv6: fix error handling in forwarding sysctl
-    https://git.kernel.org/netdev/net/c/058b9b19f963
-  - [net,v3,4/6] ipv6: fix error handling in disable_policy sysctl
-    https://git.kernel.org/netdev/net/c/3e0e51c0ee1d
-  - [net,v3,5/6] ipv6: fix state corruption during proxy_ndp sysctl restart
-    https://git.kernel.org/netdev/net/c/6a1b50e585f0
-  - [net,v3,6/6] ipv6: fix missing notification for ignore_routes_with_linkdown
-    https://git.kernel.org/netdev/net/c/17dc3b245de4
+That is not going to work in the generic case. Many MAC drivers don't
+bind to there PCS or PHY until open() is called. So there is no way to
+pass the uAPI calls onto the PCS or PHY if the interface is
+down. There are also some MACs which connect to multiple PCSs, and
+there can be multiple PHYs. So you need to somehow indicate which
+PCS/PHY should perform the PRBS. There was a discussion about loopback
+recently, which has the same issue, you can perform loopback testing
+in multiple places. So i expect the same concept will be used for
+this.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+> 2. Once testing starts the driver removes the netdev to prevent use. The netdev
+> is only added back when testing stops. The upstream solution will need
+> something that can keep the netdev but lock everything down while testing is
+> running.
 
+Probably IF_OPER_TESTING would be part of this. If the interface is in
+this state, you want many other things blocked. However, probably
+ksettings get/set need to work, so you can force the link into a
+specific mode.
 
+> 3. Once testing starts you cannot change the test, even on an individual lane
+> basis. You must stop testing first.
+> 
+> 
+>     Traditionally, Unix does not offer a way to clear statistic counters
+>     back to zero. So i'm not sure about clear-stats. We also need to think
+>     about hardware which does not support that. And there is locking
+>     issues, can the stats be cleared while a test is active?
+> 
+> fbnic actually has separate registers for PRBS test results. Results do need to
+> be clean between runs but I never created an explicit clear interface. Firmware
+> automatically reset the registers when a new test was started. This also allows
+> results to be viewed after testing has stopped.
+
+We should really take 802.3 as the model, but i've not had time yet to
+read what it says about the statistics.
+
+> Reading results was a little tricky due to roll over between two 32bit
+> registers.
+
+802.3 is make this even more interesting, since those registers are 16
+bits.
+
+> When I spoke to hardware engineers at Meta they did not want a timeout. Testing
+> often occurred over days, so they wanted to be able to start it and explicitly
+> stop it. I'm not against a time out but I do think it should be optional.
+> 
+> Since PRBS testing is handled by firmware one safety measure I added is if
+> firmware lost contact with the host testing was automatically stopped and TX
+> FIR values were reset to factory. This ensured that the NIC won't get stuck in
+> testing and on initialization the driver doesn't have to worry about testing
+> state.
+
+That will work for firmware, but not when Linux is driving the
+hardware. I don't know if netlink will allow it, or if RTNL will get
+in the way etc, but it could be we actually don't want a start and
+stop commands at all, it is a blocking netlink call, and the test runs
+until the user space process closes the socket?
+
+      Andrew
