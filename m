@@ -1,135 +1,78 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C4B72857CC
-	for <netdev@vger.kernel.org>; Wed, 24 Jun 2026 02:30:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B40233952
+	for <netdev@vger.kernel.org>; Wed, 24 Jun 2026 03:00:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782268235; cv=none; b=VyOfbpG5JB7rbeK+h7WNPwUMk4Omrn6DH3Lp51nm3CnsSsjJ8yRIk1B1BiMPfSb5CVZqvdqUjIioPRXNJSAtbx4q92tBInKzUOlqvT6zDatxVp+QN7SFMSNBZUT/XEXH7zWqFkygkWCjacEGLX22XTYwnIXC9z4kQ060AS3PmXc=
+	t=1782270019; cv=none; b=BNWZoc+zLA46nG+FgKd/94/saqtanIOvxJGyqYwgNnSo1AFe9OLRGEkops8f3FIO+b2eR3c54FP6pfRIB98K8xioiHWTPCk4E3uUwVXaBO0tYNbR5JF+T9LKvbYXA6nDURqLCOu/g+kb1FDA+eCgGpULPslhRl/VmKrEQtoFJaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782268235; c=relaxed/simple;
-	bh=nksDu5yyFmXaqsW8EE2cTW17CPVO6hsTaFF/gmdHOWw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RfucA5xVPYrOLRsRfbwmUHcYvNphkPUa1eoAp8OlDJfLcYFmMZG7xTqY7a/nOqUP6w20aZDF0JvD/kS2RqMtAOxybZmoGGSKNF9ENn71NeFnEP1uCCDJhlR9g3MzS2ZN5nMLxKjK3mEn/Yqmc84uY7GETt+tJC7Dr+kQMeNjZZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=J/XH9OST; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1782270019; c=relaxed/simple;
+	bh=/sFDRXCGiR5v249Umo0KYPCPMQT4LDI65W21VM1JZAU=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=JigQvaxG4paSzxPpr8hwRzBOTKq10aVJ0+BnD2995jRLRCK5cTpVPx2TaRwwa1rKFSndeIOptT2Cr2ALRtwJm6JRdRuWMd0gaqezpwEl4eDhRSZMimuMB09BDpTIlPtLmubBayg1YNLPkopA7v+p8idUk/rCu6r5k1tUHPn76fE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KT95Qr23; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="J/XH9OST"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=cwkN8WKDn4xDdeIp1Dq+VVasAbicD8jCRQpIpf6d36M=; b=J/XH9OSTujJgPkikT4O1a6FtTq
-	znJn9yun7/v/KopP1o+ti+izygrcHQWVW4/41Xr50hsJzWSYqcJdHZYZNufop51tvHkVxdElMHFza
-	X+1sz3qDxKhnb+Qp23g6sgUB+N5wQFo7HXlqwHdCDDwgogS1KUQK+XwpF7+I1E3psifQ=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wcDNk-0092Cw-JL; Wed, 24 Jun 2026 04:30:28 +0200
-Date: Wed, 24 Jun 2026 04:30:28 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Lee Trager <lee@trager.us>
-Cc: "Das, Shubham" <shubham.das@intel.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Alexander H Duyck <alexander.duyck@gmail.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"mkubecek@suse.cz" <mkubecek@suse.cz>,
-	"D H, Siddaraju" <siddaraju.dh@intel.com>,
-	"Chintalapalle, Balaji" <balaji.chintalapalle@intel.com>,
-	"Lindberg, Magnus" <magnus.k.lindberg@ericsson.com>,
-	"niklas.damberg@ericsson.com" <niklas.damberg@ericsson.com>
-Subject: Re: Ethtool : PRBS feature
-Message-ID: <38359a70-ebc7-49c5-bae5-0d3d7bf82fac@lunn.ch>
-References: <f4a3e4ad-91e2-4844-a29b-81f70151228e@lunn.ch>
- <SN7PR11MB81099B4885C10E16D52A2EB9FFE52@SN7PR11MB8109.namprd11.prod.outlook.com>
- <06d8c98da24e80d148ede4e933bb621c5515a7a2.camel@gmail.com>
- <SN7PR11MB8109C173933D08F994FBB084FFE22@SN7PR11MB8109.namprd11.prod.outlook.com>
- <26971635-b13a-4ed3-b2cb-ce35da9b63d3@lunn.ch>
- <SN7PR11MB81096CF160930DB8FA278B3CFFE12@SN7PR11MB8109.namprd11.prod.outlook.com>
- <be5c474b-c969-49af-8235-825580ee945c@bootlin.com>
- <SN7PR11MB8109149608172808784CDCBEFFEF2@SN7PR11MB8109.namprd11.prod.outlook.com>
- <5f22c491-b816-421e-a531-bf87a07fea70@lunn.ch>
- <08f1b0c2-2b09-4c30-b95a-02959d409a03@trager.us>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KT95Qr23"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DC771F000E9;
+	Wed, 24 Jun 2026 03:00:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782270018;
+	bh=K2hq0j9rzoX2xdMvNm+BE75YFf6k1QT24YxhizRBxRA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=KT95Qr23HSPYvKCOorEOrvhDHbu2wZynZzVepiHKMgW+4ZEYpOMLH6xVFYM1DLLFW
+	 /zIRiWpQ0I05oQZgD64JiRVh4ffPmwTBo4CGtm6VNtJX4M65s4081aaIvtlr/i82ps
+	 U/7PAEBBk0BLeErkC0eueKMcExinxgvXJDehB3+Ue1Xf9pNnQ1Zkzj8SGrAHauqzZE
+	 DzIfIox0oL5LsfO74p7aoAWhP8wPs97WCvZo086Q3MWkIbfv3Y2CKqR8f+xS3hrN2x
+	 gmMQ/zplfbKxiXgBvV0yPZ68G9lJ49PamdV9hnN2G4kAT1JvTfKGtKqzoq4nlHa0Ul
+	 CPHOy+H3rdaiw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09BD3931030;
+	Wed, 24 Jun 2026 03:00:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <08f1b0c2-2b09-4c30-b95a-02959d409a03@trager.us>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] eth: fbnic: fix ordering of heartbeat vs ownership
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178227000733.2525878.4158207920722049162.git-patchwork-notify@kernel.org>
+Date: Wed, 24 Jun 2026 03:00:07 +0000
+References: <20260622154753.827506-1-kuba@kernel.org>
+In-Reply-To: <20260622154753.827506-1-kuba@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ alexanderduyck@fb.com
 
->     To avoid race conditions, maybe some of these commands need combining.
->     ethtool --phy-test eth1 tx-prbs prbs7 rx-prbs prbs7 bert start
+Hello:
+
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Mon, 22 Jun 2026 08:47:53 -0700 you wrote:
+> When requesting ownership of the NIC (MAC/PHY control), we set up
+> the heartbeat to look stale:
 > 
->     The configuration is then atomic, with respect to the uAPI, so we
->     don't get two users configuring it at the same time, ending up with a
->     messed up configuration.
+>   /* Initialize heartbeat, set last response to 1 second in the past
+>    * so that we will trigger a timeout if the firmware doesn't respond
+>    */
+>   fbd->last_heartbeat_response = req_time - HZ;
+>   fbd->last_heartbeat_request = req_time;
 > 
-> Testing consumes the link so you really don't want anything done to the netdev
-> while testing is running. fbnic does the following.
-> 
-> 1. Testing cannot start when the link is up
+> [...]
 
-That is not going to work in the generic case. Many MAC drivers don't
-bind to there PCS or PHY until open() is called. So there is no way to
-pass the uAPI calls onto the PCS or PHY if the interface is
-down. There are also some MACs which connect to multiple PCSs, and
-there can be multiple PHYs. So you need to somehow indicate which
-PCS/PHY should perform the PRBS. There was a discussion about loopback
-recently, which has the same issue, you can perform loopback testing
-in multiple places. So i expect the same concept will be used for
-this.
+Here is the summary with links:
+  - [net] eth: fbnic: fix ordering of heartbeat vs ownership
+    https://git.kernel.org/netdev/net/c/d87363b0edfc
 
-> 2. Once testing starts the driver removes the netdev to prevent use. The netdev
-> is only added back when testing stops. The upstream solution will need
-> something that can keep the netdev but lock everything down while testing is
-> running.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Probably IF_OPER_TESTING would be part of this. If the interface is in
-this state, you want many other things blocked. However, probably
-ksettings get/set need to work, so you can force the link into a
-specific mode.
 
-> 3. Once testing starts you cannot change the test, even on an individual lane
-> basis. You must stop testing first.
-> 
-> 
->     Traditionally, Unix does not offer a way to clear statistic counters
->     back to zero. So i'm not sure about clear-stats. We also need to think
->     about hardware which does not support that. And there is locking
->     issues, can the stats be cleared while a test is active?
-> 
-> fbnic actually has separate registers for PRBS test results. Results do need to
-> be clean between runs but I never created an explicit clear interface. Firmware
-> automatically reset the registers when a new test was started. This also allows
-> results to be viewed after testing has stopped.
-
-We should really take 802.3 as the model, but i've not had time yet to
-read what it says about the statistics.
-
-> Reading results was a little tricky due to roll over between two 32bit
-> registers.
-
-802.3 is make this even more interesting, since those registers are 16
-bits.
-
-> When I spoke to hardware engineers at Meta they did not want a timeout. Testing
-> often occurred over days, so they wanted to be able to start it and explicitly
-> stop it. I'm not against a time out but I do think it should be optional.
-> 
-> Since PRBS testing is handled by firmware one safety measure I added is if
-> firmware lost contact with the host testing was automatically stopped and TX
-> FIR values were reset to factory. This ensured that the NIC won't get stuck in
-> testing and on initialization the driver doesn't have to worry about testing
-> state.
-
-That will work for firmware, but not when Linux is driving the
-hardware. I don't know if netlink will allow it, or if RTNL will get
-in the way etc, but it could be we actually don't want a start and
-stop commands at all, it is a blocking netlink call, and the test runs
-until the user space process closes the socket?
-
-      Andrew
