@@ -1,78 +1,71 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75BC23A7F72;
-	Thu, 25 Jun 2026 02:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD5E3655C5;
+	Thu, 25 Jun 2026 02:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782352837; cv=none; b=isuANyAV2foxKYQ13K6NFETFfWzv+BgS3n5rsj7I6j3BJWM2jEDUCVG0JmE45UuKvwn1czZTudszGmgYpKBZScHk3CirfmEX8+LHMBeQPfzmi6EHBsEJgg4VRGFFMUNC1dAMwrYhKMN9sL7ylu3jB8W/9j3oru7X1/YvSXeY8K4=
+	t=1782352876; cv=none; b=rRRvdJL3ZoIm3b5avsBTnMgq1sctXoooAe/Nhk1XrytZ3or3Q64+7a9mVjVRgLYxjU+XqpG/3ydwikvxc/JKv7RGUwlQSLQWn4gbV8Swi4voDVvaX/85Ak652zLHoiWgCjsBATEuLP42GjdJR8TPfntMbxSN+EoyfXR8CbF8nx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782352837; c=relaxed/simple;
-	bh=975sQuwo80I0EU6ZpZjfglBn1vQTBlLV8RJh06nw32o=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=nMI8GTX3/5E0/XghfgIvFNCc4XLVB3UsTk25ebhVvcT1Q+DzUFokE3GfRX3mkhn+T7JO+zvh95/T1Y9/DUWz0XBIXNYbgRhKlAjobL3FoLN7JxQmhK2eJoshLrQLLVb0xP5aybrGmxiBVV+mVHnxLSFoaShEIUFpCLXQIXEY8wQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fOBC0eaq; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782352876; c=relaxed/simple;
+	bh=5fwKkWOdRgv8AYwCq9cF27hJ4iVT/vs3FPoo28SGqgw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qezOgj0tR8+/p6Tvv/7BiqnfNixZEgUeSG9T9dqyXUI7b3FIotUk0WbBtmMGh+BWDl/3iHMS+A1ls0Z18gNYcG7++d/4MnrM/c+li6pjVBIiIHGwBu6zlKo98e7yl8A+U7b46hKv0pWGEqupztnu1Sgh1aEnFNu36Nj6K3yL4MY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iv0Q0Rbx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fOBC0eaq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20FA61F000E9;
-	Thu, 25 Jun 2026 02:00:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iv0Q0Rbx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC2CD1F000E9;
+	Thu, 25 Jun 2026 02:01:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782352829;
-	bh=WWNX5zIuzAuAK/UOwrsV7r8JbUomActzaBQdI5UHQcw=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=fOBC0eaqAwpOrFsSWklf3XRA34/u3ZxodtkW0qf2CHzz8kE9lpP5lO6hR8Ycaj8jZ
-	 ZOHdhtinf5+palTviwB6UQRMPF8gYB968Ly6G5MSXNlmEPg0ab89KstUIL8nggoa1t
-	 gUy36Z2omzz5H6a3IjGv4pN3Mnm4NS9ZFo7Acm4SB3mnIuh2bwuTKcfHhk7OUuoICa
-	 8HfkVmQZhOQlXmiS090R+x0Nq9X0nY54MJd1yiasxQTQVEzLpMi+TFgRTSCpYsA1b2
-	 BCtzBkVLxU6ZsL96A307mVg34T7VT2iPNMauBkNH/8qoyVeund4fXFCn1T/OuhLkUS
-	 7WXIo0MY6K31g==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93BC93AAA6D4;
-	Thu, 25 Jun 2026 02:00:18 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1782352875;
+	bh=wW6nsLdslasre0ulUwLa728OsKwT54yRmRh1tbw2mPY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=iv0Q0Rbxg0ZUTDyBLmZyb2PLawiGmkmfRHQGjdUC1w1KVDEkucG4QBVntAYVzdd4X
+	 NLDN6Mh7ZV00EodOw++UgD9YwZ/l5q+8RAXTcQA0KYDu9EVTrd5FSytQSvQds90nxy
+	 W3ynJQao1WBvw2hOAJ2RZFH0xuMbSXMhob+Y1qTdqQw6ish+FodqnmrSdaC0mRSsbW
+	 yB/un86FvEP0aszINcvOYtAFqjl5u1Aa1dfafVmFv5Ggv7V3mLFMKLLIQFTsv2efSu
+	 NawbZsg0jyZ0NbZOQU9BtEq38CwLJjM2LfYs482BTJPhJliqqirK6XzmaFMEKBeSwI
+	 jb9kP+QrtkOIQ==
+Date: Wed, 24 Jun 2026 19:01:14 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Wentao Liang <vulab@iscas.ac.cn>
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, Xin Long
+ <lucien.xin@gmail.com>, "David S . Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
+ Horman <horms@kernel.org>, linux-sctp@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 net-next] sctp: use sctp_auth_shkey_release() in
+ error path for consistency
+Message-ID: <20260624190114.10060932@kernel.org>
+In-Reply-To: <20260622100235.34263-1-vulab@iscas.ac.cn>
+References: <20260622100235.34263-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [net PATCH v4] octeontx2-af: Validate NIX maximum LFs correctly
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178235281728.3078979.15467412971095949192.git-patchwork-notify@kernel.org>
-Date: Thu, 25 Jun 2026 02:00:17 +0000
-References: <1782082853-6941-1-git-send-email-sbhatta@marvell.com>
-In-Reply-To: <1782082853-6941-1-git-send-email-sbhatta@marvell.com>
-To: Subbaraya Sundeep <sbhatta@marvell.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, sgoutham@marvell.com, gakula@marvell.com,
- bbhushan2@marvell.com, rkannoth@marvell.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Mon, 22 Jun 2026 18:02:35 +0800 Wentao Liang wrote:
+> Use the proper refcount-aware helper sctp_auth_shkey_release() instead
+> of kfree() when freeing cur_key in the error path of sctp_auth_set_key().
+> While both are equivalent in the current code, using the helper maintains
+> abstraction consistency and prevents potential issues if the code is
+> reordered in the future.
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+## Form letter - net-next-closed
 
-On Mon, 22 Jun 2026 04:30:53 +0530 you wrote:
-> NIX maximum number of LFs can be set via devlink command
-> but that can be done before assigning any LFs to a PF/VF.
-> The condition used to check whether any LFs are assigned is
-> incorrect. This patch fixes that condition.
-> 
-> Fixes: dd7842878633 ("octeontx2-af: Add new devlink param to configure maximum usable NIX block LFs")
-> Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
-> 
-> [...]
+We have already submitted our pull request with net-next material for v7.2,
+and therefore net-next is closed for new drivers, features, code refactoring
+and optimizations. We are currently accepting bug fixes only.
 
-Here is the summary with links:
-  - [net,v4] octeontx2-af: Validate NIX maximum LFs correctly
-    https://git.kernel.org/netdev/net/c/1576d12a3986
+Please repost when net-next reopens after June 29th.
 
-You are awesome, thank you!
+RFC patches sent for review only are obviously welcome at any time.
+
+See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#development-cycle
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: defer
+pv-bot: closed
