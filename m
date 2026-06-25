@@ -1,112 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48821234973;
-	Thu, 25 Jun 2026 16:44:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB9E01F1534;
+	Thu, 25 Jun 2026 16:47:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782405877; cv=none; b=bEjyCb0y/cZmMTT1SUorg4o1JsEKwGdY2Uzq2K63Tl6qNhD2h0/qdK4pcUMSAxyUv6ovVGDgeROEmDi5tW0iIKaxF3DNLbS5c2lmVIxza65IgooYUPzqQOxCAJo7Fso8k8xxGFhZF3TXqaDmdBIfQ7DdbfKgjlambHpvW4OK6Hs=
+	t=1782406074; cv=none; b=lL8pxaIv+KGrp7+mR+isU40xm2OCXgxQ8tHTkMuGTXXx5C5sdaJT7VHToyoNOKDsmJT+F1hkiJVfBDknYOmy/3tnIZBJvjWBDGURS8hTPg89VPUZPchHi2KQI9z9CHEjnFdoKbQdQMKxy4I3gssiNO9Md8xWb7fRfHg8AszvS68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782405877; c=relaxed/simple;
-	bh=kNt9QrFfh80uOPSfI9Nt2YZ0FsaXnE0dmAZBxM7411U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QD9VSmZUhsewpK9+a/36NcdgNGViK9sxcwY7DCCZYPr/5TJDGyyFbQtnckVRsqIj6KilOjE52z14Olzq9mU0Dy97OsxBCTFfXzoZsdkdShDfaluEyIZatgBWEut9XFnfBCKR6Swr7mmU/2hKRlGYhws12gFxiLszbcBB3Az1wwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b2v21fIA; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782406074; c=relaxed/simple;
+	bh=6nx+0OO4UdD24tZ8q/MQ027UX9B3EPpe+eGnGMmyyHM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=G2iGo3y3UtHfrPAs4TmI3Av7xYxpg+RyQwXUs+t+U08LdqlQ/wD3byTNGY1nzgyh4EePH97m5/nuRwpkbk8sarTnLyAbByxlai5KCkn8lEtKwnDsXudm/0Q7QH58VSqQNgXz5OoUyjQZZe1ihPLHvseBXXtpUegEt0jB45OIt04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=L3fcd1+/; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b2v21fIA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A588D1F000E9;
-	Thu, 25 Jun 2026 16:44:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782405875;
-	bh=yYoSG8Q0/z3dVqwDUiXME2MGOAvB0sQt1yyfNt3ktMc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=b2v21fIAG6oZt2/0Rh2Hb6vWLmm7ugzOp2s3LcD6KD089EUqgR/QL5tM7lk/+48xC
-	 DLgfgTFVlemA4ONOgx/H5H6pEDMHYjTB+D8X7maz3wkDVUS93Xz+E+Nr7Y9q1nyM7p
-	 u/yb6OkoAsGLDsWxARPg9WKk/C+b+Icu9jBRV0NE5vctzrF0CgwRP8wCUw90oKzTaY
-	 e5ub5sfxjeHmobRM9kt/DZax66oCLPkEUEzS4giPYMYQ25xZ3L6DiNoMBCaf/SZFpG
-	 SwNjKTtGWvGpvf8FW4zuj73fZvzRPfukfB8Vtr05lOw0aY8GfcGkZCAXkG58DNKNee
-	 oxrECx04jyPsg==
-From: Simon Horman <horms@kernel.org>
-To: zhaojinming@uniontech.com
-Cc: Simon Horman <horms@kernel.org>,
-	andrew@lunn.ch,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	madalin.bucur@nxp.com,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	sean.anderson@linux.dev
-Subject: Re: [PATCH v3] net: fman: fix use-after-free on IRQF_SHARED handler after probe failure
-Date: Thu, 25 Jun 2026 17:42:37 +0100
-Message-ID: <20260625164237.1222477-1-horms@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260624094922.2971930-2-zhaojinming@uniontech.com>
-References: <20260624094922.2971930-2-zhaojinming@uniontech.com>
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="L3fcd1+/"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=dUVqNH0sF2VDjlyOlgXl2DQF+Wyz+CjJZf1nWQi/wOQ=; b=L3fcd1+/5LLlT6wYCHAy3dPMKK
+	LLoHntODYesRlKMRDjShUJQOXbCBsJKgZcf7dalxdUtppecXk5+cJ2WFc3unsg1d3yg2lW2s1OMs3
+	YqiUobpw1zSPGeU6ktVYY6NKklIW+j9g+vpr0tzuADTIQCmJC8//+61kcrHrX3Fn1BcxYwZlOiyhy
+	rDnyAqCq7WF5qKUe7iUKVBqyGGToRmkLaocUomcfwkQRzxQzB5xscVTOGOfS+klz6hUJsG9uJ+GsW
+	MvQWtyFT/X76LeYtrjBK0SE+YypkYBZEV0sEgCHyitPmAVTvkAbxC4Ql82y6c6FmJ8ziDHTLmP8LG
+	F/6Si45Q==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wcnEr-003Kz3-2N;
+	Thu, 25 Jun 2026 16:47:41 +0000
+Date: Thu, 25 Jun 2026 09:47:33 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Stanislav Fomichev <sdf.kernel@gmail.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net, 
+	netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com, andrew+netdev@lunn.ch, 
+	horms@kernel.org, joshwash@google.com, hramamurthy@google.com, 
+	anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com, saeedm@nvidia.com, 
+	tariqt@nvidia.com, mbloch@nvidia.com, leon@kernel.org, alexanderduyck@fb.com, 
+	kernel-team@meta.com, kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org, 
+	decui@microsoft.com, longli@microsoft.com, jordanrhee@google.com, 
+	jacob.e.keller@intel.com, nktgrg@google.com, debarghyak@google.com, mohsin.bashr@gmail.com, 
+	ernis@linux.microsoft.com, sdf@fomichev.me, gal@nvidia.com, linux-rdma@vger.kernel.org, 
+	linux-hyperv@vger.kernel.org
+Subject: Re: [PATCH net] net: ethtool: keep rtnl_lock for ops using
+ ethtool_op_get_link()
+Message-ID: <aj1bi7xuFlRZGxar@gmail.com>
+References: <20260624190439.2521219-1-kuba@kernel.org>
+ <aj1Nqe3RoITzxSEb@devvm7509.cco0.facebook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aj1Nqe3RoITzxSEb@devvm7509.cco0.facebook.com>
+X-Debian-User: leitao
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev
----
-net: fman: fix use-after-free on IRQF_SHARED handler after probe failure
+On Thu, Jun 25, 2026 at 08:48:03AM -0700, Stanislav Fomichev wrote:
+> On 06/24, Jakub Kicinski wrote:
+> > Breno reports following splats on mlx5:
+> > 
+> >   RTNL: assertion failed at net/core/dev.c (2241)
+> >   WARNING: net/core/dev.c:2241 at netif_state_change+0xed/0x130, CPU#5: ethtool/1335
+> >   RIP: 0010:netif_state_change+0xf9/0x130
+> >   Call Trace:
+> >     <TASK>
+> >      __linkwatch_sync_dev+0xea/0x120
+> >      ethtool_op_get_link+0xe/0x20
+> >      __ethtool_get_link+0x26/0x40
+> >      linkstate_prepare_data+0x51/0x200
+> >      ethnl_default_doit+0x213/0x470
+> >      genl_family_rcv_msg_doit+0xdd/0x110
+> > 
+> > Looks like I missed ethtool_op_get_link() trying to sync linkwatch,
+> > which needs rtnl_lock. Not all drivers do this - bnxt doesn't,
+> > it just returns the link state, so add an opt-in bit.
+> > 
+> > Reported-by: Breno Leitao <leitao@debian.org>
+> > Fixes: 45079e00133e ("net: ethtool: optionally skip rtnl_lock on Netlink path for GET ops")
+> > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> 
+> Acked-by: Stanislav Fomichev <sdf@fomichev.me>
 
-This patch fixes a use-after-free in the error path of read_dts_node(). It
-manually releases the registered IRQ handlers before freeing the fman
-structure, preventing the devres cleanup from leaving a registered IRQ
-pointing to freed memory.
-
-> diff --git a/drivers/net/ethernet/freescale/fman/fman.c b/drivers/net/ethernet/freescale/fman/fman.c
-> index 013273a2de32f..ba2338da0cea1 100644
-> --- a/drivers/net/ethernet/freescale/fman/fman.c
-> +++ b/drivers/net/ethernet/freescale/fman/fman.c
-[ ... ]
-> @@ -2786,7 +2790,7 @@ static struct fman *read_dts_node(struct platform_device *of_dev)
->  		if (err < 0) {
->  			dev_err(&of_dev->dev, "%s: irq %d allocation failed (error = %d)\n",
->  				__func__, fman->dts_params.err_irq, err);
-> -			goto fman_free;
-> +			goto free_main_irq;
-
-[Severity: High]
-This is a pre-existing issue, but since we are modifying the IRQ error
-handling here, could the shared interrupt handler crash if it fires during
-this setup phase?
-
-Just before this snippet in read_dts_node(), devm_request_irq() is called
-with IRQF_SHARED while fman is still partially initialized. Since fman was
-allocated with kzalloc_obj(), fman->cfg and fman->fpm_regs are NULL.
-
-If a shared interrupt fires immediately, fman_irq() is called:
-
-drivers/net/ethernet/freescale/fman/fman.c:fman_irq() {
-        ...
-        if (!is_init_done(fman->cfg))
-                return IRQ_NONE;
-
-        fpm_rg = fman->fpm_regs;
-        pending = ioread32be(&fpm_rg->fm_npi);
-        ...
-}
-
-Since fman->cfg is NULL, is_init_done() behaves like this:
-
-drivers/net/ethernet/freescale/fman/fman.c:is_init_done() {
-        if (!cfg)
-                return true;
-        ...
-}
-
-Would this cause fman_irq() to bypass the early return, proceed with a NULL
-fpm_rg pointer, and dereference it during the ioread32be() call?
-
->  		}
->  	}
+Reviewed-by: Breno Leitao <leitao@debian.org>
