@@ -1,80 +1,55 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528F5293B75;
-	Thu, 25 Jun 2026 02:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E74D11C861D;
+	Thu, 25 Jun 2026 02:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782354632; cv=none; b=K193tSS6sFIKvbWZDTSVUduoLy6BZaOUp77OVJfN5bj0uefJUd5doJsXdwLCUIuI3R7rrYxdOW3tdluRl2Z5ibDdw9jrdqQ4H17c6T8sFVr7Ken5iBQOuNiHXU8lTZFPdlXJSuLGx8kxjPgax5lKockUgte2xE42hGcSPwTqRTA=
+	t=1782354808; cv=none; b=ebv2HHnuVnFcE74Phas8ZNm+jFEuM+1AzC9K6JCWYu55BzdN3AeJd/4lAYwlZO1UBAg7QAEjBJO+u+axRH/yzkuEQS9O7BZ+PHGvwgniWK3CM/Mo1AsD9luv+yMbTnKaswySQxKyeBPVsH3pflFMQbOVt44abLpRvRcfHvYeXTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782354632; c=relaxed/simple;
-	bh=ICmyJ4907qCBkbbMLTKFMDrEPqktIge4J3LxYDt4SiM=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=dYdQZauxsceVUKKWDOpfezBHCBHNxbucy5/t8Dg9xwOeu2M9P60Aj4iNDSWuTg14Eilf7utZNeXj2zW595cFHU3P8tGoWPaLYP1wSCX3W+l60DHRr4TIVJiiAwJzPR1VfsO/tAhhtbeIzVn3gM7VMz5dFhgO7n6PCRV3a4iZESo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lyT8OeT3; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782354808; c=relaxed/simple;
+	bh=WKlTbfrUNwUFyGpobav8CApD6v5B/qIAYIViXKGD7u8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=iMVsSB+1a2bJzzZjQHBSWGNxSakGO3JTD7xuwG/e/2zKR2qKluDKK7PWWGBXN8uOTd3b1b5JNOio0fbqGkatPePB92tWLJPPMMOTPw+EPwz2/OBzAoSB1Agkd+y1RIblXej7py63/ZcWUAEYpMYxvK0Vi/mIzayL31M7thuUYzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iYQocmNE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lyT8OeT3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2484B1F00A3A;
-	Thu, 25 Jun 2026 02:30:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iYQocmNE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 303D71F000E9;
+	Thu, 25 Jun 2026 02:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782354631;
-	bh=Q+IyHpflciDj3wZp1cwaEblnrPMuWYbay4+4zLMHa8A=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=lyT8OeT3efnmNWY2yLvqmcAeYfHMOhcd/LJRAfwAT0x4uSezRpdk1tK91CbZsWPzX
-	 qUp50RFNcPid5bQ/jOBnYiJ2VJFzNERW2O7oKNiiE5jXJ4T3KLWZIu7UKYSNVNPajW
-	 pT1RhKFnSC83Yf7cmRKBAAnXLJ+ShVr+e6nT0clmxySRKARtbMreVqi4SPzt+Bm4PR
-	 22iCvx/jNIkw7yNtIio7c1Byw3N2t5tUG0sUGTB39aXVbolmgWhNAysIk4BTV+ubWU
-	 b5lbxpdL0WTkeLnrHB6ERP2TFo0ysHjYo59eTn/Prdarn0go8gZWn0EAD6X1wDqsw5
-	 4vGKJpiBoHW1A==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 938C43AAA6DE;
-	Thu, 25 Jun 2026 02:30:20 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1782354807;
+	bh=gAp5DqBsrf+qqTJrCHBvd6moSshxYS3r3vVwtm7UlQU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=iYQocmNEMzyuFLh2RGCIPVlHqIqg1hTe+T8GaNwVV15IZwsj/PUgyaDpScjdfAwN9
+	 SuX2DwknSxTky/q3WUUiu9hPz7r9cSEC603Dz4r/ZPi9SyEwz5NA86awUWno0Pm8+6
+	 Jl5O/7nTg+qGtHq36kw8JUSNza+Neer8xIJQKZLpkb3aK0PA7tyW3tRyYcWolqcGiQ
+	 27aqd75O4senmoIaBXjd39TkFvNf37NHZtmWFkruUOt18UD/vLJKnsvl8SsfTGJce8
+	 1g/tTQs0tefhfnKwa+TOz/BIKI+CiNImeywAHhUEoOXmCgicsK5r/JS+gmjVQEwq6I
+	 LpFZ27jiS/JRQ==
+Date: Wed, 24 Jun 2026 19:33:26 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, magnus.karlsson@intel.com,
+ stfomichev@gmail.com, pabeni@redhat.com, horms@kernel.org,
+ tushar.vyavahare@intel.com, kerneljasonxing@gmail.com
+Subject: Re: [PATCH net-next] selftests/xsk: preserve UMEM view in bidi test
+Message-ID: <20260624193326.295e3711@kernel.org>
+In-Reply-To: <20260623091008.1046547-1-maciej.fijalkowski@intel.com>
+References: <20260623091008.1046547-1-maciej.fijalkowski@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net: sungem: fix probe error cleanup
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178235461930.3088510.2174930670555719019.git-patchwork-notify@kernel.org>
-Date: Thu, 25 Jun 2026 02:30:19 +0000
-References: <20260623025759.3468566-1-ruoyuw560@gmail.com>
-In-Reply-To: <20260623025759.3468566-1-ruoyuw560@gmail.com>
-To: Ruoyu Wang <ruoyuw560@gmail.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Tue, 23 Jun 2026 11:10:08 +0200 Maciej Fijalkowski wrote:
+> Subject: [PATCH net-next] selftests/xsk: preserve UMEM view in bidi test
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Do you want it in net? Either way - we'll need a rebase
 
-On Tue, 23 Jun 2026 10:57:59 +0800 you wrote:
-> gem_init_one() calls gem_remove_one() when register_netdev() fails.
-> gem_remove_one() unregisters and frees resources owned by the net_device,
-> including the DMA block, MMIO mapping, PCI regions, and the net_device
-> itself. gem_init_one() then falls through to its own cleanup labels and
-> frees the same resources again.
-> 
-> Keep the register_netdev() error path in gem_init_one(): clear drvdata so
-> PM/remove paths do not see a half-registered device, remove the NAPI
-> instance added during probe, and let the existing cleanup labels release
-> the resources once.
-> 
-> [...]
+> Signed-off-by: Maciej Fijalkowski maciej.fijalkowski@intel.com
 
-Here is the summary with links:
-  - [net,v2] net: sungem: fix probe error cleanup
-    https://git.kernel.org/netdev/net/c/36dea2f63924
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+missing <> around the email 
