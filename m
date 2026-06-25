@@ -1,157 +1,114 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA96923C516;
-	Thu, 25 Jun 2026 13:23:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F102E8B83
+	for <netdev@vger.kernel.org>; Thu, 25 Jun 2026 13:31:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782393814; cv=none; b=kG4zWH80Bn8Y5BJLmIN9ZDALRPgsbTV95DfcVJEZvb6WK6yP/W/ktpg7uWllZxK4LFfjE29wqMo/cBD6A13nk/JNw6/sEpJWdveOmq+3bdr+Ud0PGYRdQX4tRyYamoijAk23+Zj8atxsE27IdH/yXMztmZfw3tuGlkuyw2+aVDE=
+	t=1782394305; cv=none; b=bN6NCPb6ItpzcaQaKdA07LoUQ+oELKd/65Cdv1tenU0eap1bAcm3RO/zPCca7TS6wZ/5SPo1XJOeAwvC3Foa2tPm3b3N91CTFJ8oJAJzgeDm3nL3nvL2+4eHRlFMUEMhqeg1bpRwFnIEq+MFdrThY5hHg+hjXHZc0VoopZJ+eIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782393814; c=relaxed/simple;
-	bh=+tkMH6jyKTm8lPIHgKIXG9i6uma37p5YMiK6CXfUI4E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qYNH0VdX6oU2W9FrS+0P7NOnvJYVga2CiLpK+fbfXWwNaTU16il6bYIiWzhMOdcKjqZDqUAF6jI5F8deyrEaVPh4w417IYtB7uDnM6r6g1nfSJhBqH4S5ML4Dp8E3lqpOGBivWtPvqceU47lG7Q4eI1dw1N8EeQd8/BrgcIFwow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=lW6UpjAy; arc=none smtp.client-ip=220.197.32.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1782394305; c=relaxed/simple;
+	bh=GkObJTGOwvo/yZsse89jgOyAK3tQLcC4VOm5XflDZOQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=chrCA6yL8hcXREQR49KRcJtaP2WvLVq3MJm7bvr+lRNpbpT3IYSv7meUMrXST4FkCD8gJOCmeknCRkudOuUfWlP558EmJBhhHTlAMf8Z0KkcoznFH5fZdUDsQkQZBFGpn0GRkan+tsgOsq0+k2uTBqmlkZwrw/OsEuIz009uQxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eS3r46eC; arc=none smtp.client-ip=74.125.82.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="lW6UpjAy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
-	Content-Type; bh=N+RBk4CiZmBuhtTLrDyIBUQwhv4MJJ7hR5rq2loSkBU=;
-	b=lW6UpjAyBa5AtGIyhNborrH7g6cn7viMVK6HzaZCEagdEDpV6kXzZlO70HUOlD
-	ucc734YYGT3Uy0kL4/UOJg0r2R31CmQ56c4qUDZfTlKUr9liEmqqRCH/KN5s2CXv
-	XCHH1U1yPIGVmfJLIn89WG2PdjNNt4NHj9SxcEoEr4eHs=
-Received: from [100.70.221.233] (unknown [])
-	by gzsmtp2 (Coremail) with UTF8SMTPA id Ms8vCgDXVwiXKz1qtchAAA--.42358S2;
-	Thu, 25 Jun 2026 21:22:33 +0800 (CST)
-Message-ID: <585bc5ca-8348-49e6-bbce-acbf6b99d912@yeah.net>
-Date: Thu, 25 Jun 2026 21:22:30 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eS3r46eC"
+Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-13981833e13so2778943c88.1
+        for <netdev@vger.kernel.org>; Thu, 25 Jun 2026 06:31:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782394304; x=1782999104; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=NK6SpJYh+oLbM19wL4RZRwc0NJUjhwQHIffBTILtoP8=;
+        b=eS3r46eC4opLOzjO0f2kQBTShxHcOHDa3ckBl3twkGEkKAtbVuHFvB6AJ6aTMweHG0
+         LC/JXTA5kiU00rW3GXXNIRjcTlQWoV7oVtkFiQ/UvsSDtR3ZrAfUROeirefsM/X/qXxW
+         Wx8IYJHsZv3q5/utYbvHnBkaUjb6zb7G6/aAjf1+TKNpbswG0jhxqYhnK9XmP8+2z1HX
+         uwWbp8mJkEkZQlFWZa0zaEQ3wXWeE0Ud3867ViRubxCgee0kljfwEJ45L6UGN3pkJcSo
+         ObOOavSn3bPSKCzVmdo+Aq+SVblcj7nNZHxF17GESq7DrFdnUYYBRLVkAdzxt11IL3AU
+         RrfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782394304; x=1782999104;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NK6SpJYh+oLbM19wL4RZRwc0NJUjhwQHIffBTILtoP8=;
+        b=nAG7wA3g2qfl3qtumXCXU3/+Cf1nhSSnoSDqgcEvKmDF64kTceZO83BqwS92F9GNF2
+         WXuJdhUIy2oqpi2uVKQtMuflnjxDWxMRuM17zFvcXz+CHAUgpeFP4iPQl19feXd+/yME
+         I2nk8/5uIl0uBasllm2KvMlK61pUNB0Tz2INClKTTy7zINBeFsbCGMZQ+18a/KIasYUU
+         psGIUQoXEO1iaPSsYDvva8QLn6Qmy3GxDTLD7v8nRDjZmDBvz8BFeHVxfl/TD7OUmOl4
+         iUzya7fBUQP1Fa42tcBv9ltmre/wfneSj8MY4aRBteaB1BUnD2bGSO41pBtju3IvJNIn
+         u5Zw==
+X-Forwarded-Encrypted: i=1; AFNElJ+rbVlq/3nVVdvND1GH07GIhrm9crSZM2moN/TRTd6ldEEjEriNmHs1e/TL86u/1RG3g66ldjc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzjYIAlUBhlha7k6dcZ4Tuz52sQOgfhc8Qpspee4tnD8mMUU7ui
+	HQuxdP0a6gUSm8UE93WFrPqzll3eZNBQNyyj14ipsF1TL7PevpRgp7LB
+X-Gm-Gg: AfdE7cl0Lh+cMrSp0mo+n35sYg9nXl0TOhbwV2H9g6s9lePXAkEJ+yqOrKcJ2ylHrq4
+	5Y7dkjGZCFw9L9SQyloD3mLuYrWsg8eL2KmPsRd3xnh0bMkPc1uhJ1aAKkvdz/GLzfLK4b37Jbo
+	guly2V0Guh6aCC7u+YPfVKfacGtVS16nHbxnEPfEadxCSIKp2s1hU8uyvvHqtN6XKfoWyEAxxo4
+	KvCgDgrujhQNxPbrz7n8lbipjtTefmo/GJfEQ6bdM0s+41gsaFp6ZwvTgPtfTU5ZPIYx0LVUzSN
+	jalB7ERpKwgEjA0iXlmR4AQRc826PlJlahX0ntF8kAUT6j4n0oJrzRgFI4LGFFseUFzgvXBLJk6
+	aZKRR3sVYVVsT8CFkvse1LRoq/N6IKMVQMmkpJmGR5N5wniXG2OuQE/smNUG1ZfFASRzRMAjo/y
+	UwlF/uTOw2Khn7uzFpHTU75kQhF8lhY9M=
+X-Received: by 2002:a05:7022:6192:b0:138:e4:c44d with SMTP id a92af1059eb24-139dbae0ad1mr2171642c88.25.1782394303648;
+        Thu, 25 Jun 2026 06:31:43 -0700 (PDT)
+Received: from idcredbox1391.. ([2404:f801:8028:3:40af:bf67:9423:25ae])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-139d8f55b04sm8806333c88.4.2026.06.25.06.31.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Jun 2026 06:31:43 -0700 (PDT)
+From: Subasri S <subasris1210@gmail.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Subasri S <subasris1210@gmail.com>
+Subject: [PATCH nf-next] netfilter: remove redundant null check before kvfree()
+Date: Thu, 25 Jun 2026 19:01:24 +0530
+Message-ID: <20260625133124.970238-1-subasris1210@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [BUG] TCP connection deadlock under simultaneous bidirectional
- ICSK_ACK_NOMEM (OOM)
-To: Menglong Dong <menglong.dong@linux.dev>
-Cc: edumazet@google.com, davem@davemloft.net, kuba@kernel.org,
- pabeni@redhat.com, jmaloy@redhat.com, menglong8.dong@gmail.com,
- kuniyu@google.com, horms@kernel.org, willemb@google.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-stable@vger.kernel.org
-References: <b8a3b4eb-b75d-4cbd-ac1c-9b0a606a932a@yeah.net>
- <g7DvITFWSiW9AoI49uyghw@linux.dev>
-From: xietangxin <xietangxin@yeah.net>
-In-Reply-To: <g7DvITFWSiW9AoI49uyghw@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:Ms8vCgDXVwiXKz1qtchAAA--.42358S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxXr17Xr13ArW7AF15tryrZwb_yoWrGw1Dp3
-	s3JFyxKr4ktryvkr4Iyr17GF1UJw1rAF45Jr18Wr1xAw1Yvrn2qr17tr40kr9rGrW8A347
-	CrykXFyDtr4kCaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRUUUUUUUUU=
-X-CM-SenderInfo: x0lh3tpqj0x0o61htxgoqh3/1tbiIBnaD2o9K5lHWgAA3U
+Content-Transfer-Encoding: 8bit
 
+kvfree() internally performs NULL check on the pointer
+handed to it and takes no action if it indeed is NULL.
+Hence there is no need for a pre-check of the memory
+pointer before handing it to kvfree().
 
+Issue reported by ifnullfree.cocci Coccinelle semantic
+patch script.
 
-On 6/8/2026 7:55 PM, Menglong Dong wrote:
-> On 2026/6/4 16:22 xietangxin <xietangxin@yeah.net> write:
->> Hi all,
->>
->> We have observed a TCP connection deadlock on stable 6.6 under heavy stress testing.
->>
->> 1.Both Peer A and Peer B enter the ICSK_ACK_NOMEM branch in tcp_select_window().
->> After commit 8c670bdfa58e ("tcp: correct handling of extreme memory squeeze"),
->> Both peers freeze their rcv_nxt and set rcv_wnd = 0.
->>
->> 2.Prior to freezing, both sides had already sent out flight data.
->> Since both sides are dropping incoming data packets due to OOM, rcv_nxt stops advancing,
->> but the peer's seq of subsequent packets continues to grow.
->>
->> 3.When Peer A receives Peer B's Zero Window ACK,
->> the packet's seq is far ahead of Peer A's frozen rcv_nxt.
->> Both peers drop each other's packet, also no Zero Window Probes are triggered
->> because snd_wnd is never updated to 0.
->>
-> 
-> Hi,
-> 
-> The problem you addressed is already fixed in this commit:
-> 0e24d17bd966 ("tcp: implement RFC 7323 window retraction receiver requirements"),
-> which hasn't been picked to the 6.6 branch.
-> 
-> That patch doesn't have the Fix tag, so I'm not sure if it will be picked
-> to the 6.6 branch. Just CC the linux-stable :)
-> 
-> Thanks!
-> Menglong Dong
-> 
->>
->> Simplified Packet Trace:
->>
->> Assume Peer A's rcv_nxt = 1000, and Peer B's rcv_nxt = 5000 initially.
->>
->> Time  Dir      Type        Seq   Ack   Win  Len  Status
->> ------------------------------------------------------------------------
->> T1:   B -> A   [PSH, ACK]  1000  5000  3000 100  (A hits OOM, rcv_nxt=1000)
->> T2:   B -> A   [ACK]       1100  5000  3000 200  (Dropped due to A's OOM)
->> T3:   B -> A   [PSH, ACK]  1300  5000  3000 200  (Dropped due to A's OOM)
->>
->> T4:   A -> B   [PSH, ACK]  5000  1000  3000 100  (B hits OOM, rcv_nxt=5000)
->> T5:   A -> B   [ACK]       5100  1000  3000 200  (Dropped due to B's OOM)
->> T6:   A -> B   [PSH, ACK]  5300  1000  3000 200  (Dropped due to B's OOM)
->>
->> -- Both sides are now in OOM. B's Seq is 1500; A's Seq is 5500 --
->>
->> T7:   B -> A   [ZeroWin]   1500  5000  0    0    (Dropped: Seq 1500 != 1000)
->> T8:   A -> B   [ZeroWin]   5500  1000  0    0    (Dropped: Seq 5500 != 5000)
->> T9:   A -> B   [WinUpdate] 5500  1000  20   0    (Dropped: Seq 5500 != 5000)
->>
->> Should we relax the sequence check in tcp_sequence() for zero window ACK?
->>
->> Any feedback or guidance would be greatly appreciated.
->>
->> -- 
->> Best regards,
->> Tangxin Xie
->>
->>
->>
-> 
-> 
-> 
+Signed-off-by: Subasri S <subasris1210@gmail.com>
+---
+ net/netfilter/nft_set_rbtree.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Hi,
-
-We observed a throughput regression (dropping from ~1GB/s to 100MB/s)
-in our test environment after commit 0e24d17bd966
-("tcp: implement RFC 7323 window retraction receiver requirements").
-
-When the rcv_buf reaches the pressure triggers tcp_clamp_window().
-then rcv_ssthresh is strictly capped to 2 * advmss.
-Subsequently, even after the user completely consumes the data and releases
-a massive amount of free_space, tcp_select_window() is still heavily
-suppressed by the clamped rcv_ssthresh. As a result, the receiver advertises
-an extremely small window (Win=23) to the peer.
-
-The sender cannot transmit any new data segments, until the sender's RTO timer
-expires and triggers a slow-start recovery. This 200ms silence window slashes
-our bandwidth by 90%.
-
-
-No.   Time           Source       Destination  Info
------------------------------------------------------------------------------------------------
-1045  08:16:06.8005  192.168.1.9  192.168.1.10  [TCP ZeroWindow] 57334 -> 6666 [PSH, ACK] Win=0
-1052  08:16:06.8013  192.168.1.9  192.168.1.10  [TCP Window Update] 57334 -> 6666 [ACK] Win=23
-1055  08:16:06.8036  192.168.1.10  192.168.1.9  6666 -> 57334 [ACK] Seq=2999704568 Ack=2416286095
-=========================== 200ms  SILENCE (RTO WAITING) ===================================
-1088  08:16:07.0056  192.168.1.10  192.168.1.9  [TCP Retransmission] 6666 -> 57334 Len=1448
-1090  08:16:07.0060  192.168.1.10  192.168.1.9  [TCP Retransmission] Len=2896
-
+diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
+index 018bbb6df4ce..efc25e788a1c 100644
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -544,8 +544,7 @@ static int nft_array_intervals_alloc(struct nft_array *array, u32 max_intervals)
+ 	if (!intervals)
+ 		return -ENOMEM;
+ 
+-	if (array->intervals)
+-		kvfree(array->intervals);
++	kvfree(array->intervals);
+ 
+ 	array->intervals = intervals;
+ 	array->max_intervals = max_intervals;
 -- 
-Best regards,
-Tangxin Xie
+2.43.0
 
