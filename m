@@ -1,192 +1,138 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6D6386571;
-	Thu, 25 Jun 2026 08:50:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C954038657D
+	for <netdev@vger.kernel.org>; Thu, 25 Jun 2026 08:54:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782377439; cv=none; b=E/gCYW7HsWqerJEx6dK117jLUSnGF/L+gCRaYoclEDcdMGnpg1MoQRQj43zklDYwS7E5CaU8bySb2YRnXJMqEr0zrT4GBMIrMc7gD51uzzjHwMfP2XG/rdqiViN0uw6AidQ89roNwgbLYqmnmp66YJkLEFL736aAM9aK0XZV094=
+	t=1782377651; cv=none; b=T7L6wnZtiGfZ4KkyRNDajeDEmp0O3dYAtaxYEY0rTrt8kVcjidYwgsdqrmUkLffNuCmRdvGoI93O8NPNwYuFoWpHRxPGZA7yfirxJMqEMPPeY+2vUURedEGr1Bq5O11nokDuUeZRE42a1DOagnEuBY27t/HSTBlaz2XCgMEfnqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782377439; c=relaxed/simple;
-	bh=3CavB3xFcg6aPEmH4BBYZKfZU71D5ex0qIHZqodBe44=;
+	s=arc-20240116; t=1782377651; c=relaxed/simple;
+	bh=07Gz4DVxSchKBz41aocKqPwLf5Q7wYxmqWLTrZ9H6nY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ktn8OZZC46UepmzoceTuTX84X2Pnxy/iACMAohs+OzWHs7FhE7QmGWFIZwiAxroCkn6X/LbJjNHZX8ZzUnR+c7CUv6IeWWeINJbbOY4rmQLTkCiOiOEAGmYEl0XAPIi+UB8aEAaObfuJR7qCrRPbAqZxfY9c/v9d2GArd1F45no=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ld6Rr9qV; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=U1y9TtBAICVvjHcaMOS9GPkuHi8r2kgpZ16Vure9cWj9jAsDxMqqk7N/s0vk84JOA0NdgHrpyEsizRG7Xr0qCVkKo3+1O5GvHOUqHOyGPGECcXeqvfyXfnJds0hhbOrYLCyjDXCa8NtB7LbcSTceu17UPEfyut88izhaQ9t5OIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TeZSIzER; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ld6Rr9qV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0528E1F000E9;
-	Thu, 25 Jun 2026 08:50:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782377438;
-	bh=wgnueYGHh9WXeRoyt7ilJit1Zlim1DNaRtritPKy+1w=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ld6Rr9qVNm2zPem8/TfMnMxeMUGclZUZhL4DAV3+f1WkOaxRFmovyLx2PMt8FmnGO
-	 C13qTJdPOUEuZaGms6WVmbrF2kF8hwse+i7HtxiFEHm7dgvwBatXwmFDYyWWXrF1a/
-	 K+VmxHwgCDJqDBXxVm9w3Tck81o5ZSpbDu4fR3Sab18NDpPYj2vnBB0cXmuAsbW/sw
-	 pAl6oiPda69flVy7lCFZG0Uc1eP2pn/woXgTGoANfHHr7xGKd4O3Nb7D5ZIurV6v3u
-	 6o86mzsxMcgUs9YESdTt/tiwnNs2XlHXI+DfQ7h/0GAQjwW87d9zizmdbTa/dl5H6z
-	 /on2msPQ73zQg==
-From: Simon Horman <horms@kernel.org>
-To: haoxiang_li2024@163.com
-Cc: Simon Horman <horms@kernel.org>,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	pavan.chebbi@broadcom.com,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TeZSIzER"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-46e30429b10so64270f8f.1
+        for <netdev@vger.kernel.org>; Thu, 25 Jun 2026 01:54:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782377648; x=1782982448; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/jDoMmJJU0PpNgF+w3Xx9Gr+Xmtdk7u64RSrEr55CTg=;
+        b=TeZSIzEROk+wXDUJ2H7J9qtITFj/majCzC4RRZwR633P94dRl4K2X4xiaAK7By7ze+
+         K7DEGTJXoevUXfACUrh94xn6QJW/a9k6IusZA+lUxNCYXYF8S42eYkontmM4rq0Na2aQ
+         VAdzE3UF3hq9AN3CidWOXPvSKb8xj/JDx7dUSbkR9TK0a4z59WyHTnjeoB6VqCsbWJCd
+         waHDjV9/lCOJFuenJhABaW6KNlKJAQTtgSEFSccoL/kpVwQ5UPfl1w/boO/W8vAonLkh
+         N+SyAwoJJ5z6KfqBhkwIIquIKvHtokZto2zPXoQgTZiVHXJCs0z+izxUUJ24lECJRKpq
+         ljPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782377648; x=1782982448;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=/jDoMmJJU0PpNgF+w3Xx9Gr+Xmtdk7u64RSrEr55CTg=;
+        b=dLh7aHiYVfpLiSJ/bdfpdzPxp1gHt83ugfjOhyq67HpFWwp0SOCkEdiq0hPQEWmcAN
+         jtVj5kbFgBV38mBCgIhuwbrHvtekomuRgqtedE6V+HV3mkht8+kaQlESGI/UpyBGADws
+         s5HPh31/mZNIhgym3qHXq7DkJHryrFWAJ0VSKxsyMXScvPz8yQnqj2EpLetRvmSyTDDF
+         o01lqdVuwV70SBy4ny929bVu0B4m3p8vyA3qZBlp04gfU87ve5A3UQVcmMySrXC7UMc5
+         fXj2d1V+bOHN8UDQMI7/i5x18SJuxmLUc2qnAUWEzt8Ll452ggL3jQvY5po+hqM0FSmq
+         RZww==
+X-Forwarded-Encrypted: i=1; AHgh+Rp0GM/a4nm56L/gYCTZe5jbaKBZ7oZTfEZ6fhzdq62odaK908chBdhq9QoCX5RGCq7yenuvnTE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwYYoB8mTsiUBvk+POqIDMH7pd2ByQlDIm5LDWVVKg5rZsiVw1F
+	REAnkqsJCzyxdYL/hLbavp8/a2nkdtUsKKpFNgRb1s/chj0BzAsJ5WX5
+X-Gm-Gg: AfdE7cnskOFxrLhLF8/LypYNACBioBr5ZMu/hcPqgig7scJ/kfcHTJy9uI2BrAPjs4c
+	C6OinLUiBSAghH/p/fkpOttzWGVIEAw0HIHF6BfpDzTLTMqMcvURY3A94Cc+LlF/QkSaS0MvZ53
+	yx46uKQHXBBldibwb4dbjXpRZcaFZmenKLHwW0GGH5PGsVaYVPH335LokQ/+zHjjHDqs/DDf6q7
+	kOjDZ2ueK+NFpliGhZG6nrL02Gv1ghOlze2ZBH7vyVvQv/1Ec6d62PU/kCGXIm7+/+9oyN425SX
+	FGs4OqPsux8GfbW3joJkw15IgI6nss4kc2gAz8RTDUdDoj1CIVc1bdDiqDgwTktxr3Lt7KocPed
+	aoaSUZX6zJqOP+XA8WZxFvZ1cnIwN9/1vkAnGrKI3l2xhQtwAKoj85Tx6bqe2f7LEFwjgYmkG9R
+	5e8iG7WNu6
+X-Received: by 2002:a5d:64e4:0:b0:460:67b7:54f1 with SMTP id ffacd0b85a97d-46dc30e2c21mr2268492f8f.42.1782377648254;
+        Thu, 25 Jun 2026 01:54:08 -0700 (PDT)
+Received: from localhost ([212.73.77.104])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-46c1ee018e8sm15530598f8f.11.2026.06.25.01.54.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 Jun 2026 01:54:07 -0700 (PDT)
+From: Askar Safin <safinaskar@gmail.com>
+To: avagin@gmail.com
+Cc: akpm@linux-foundation.org,
+	alexander@mihalicyn.com,
+	axboe@kernel.dk,
+	bernd@bsbernd.com,
+	brauner@kernel.org,
+	criu@lists.linux.dev,
+	david@kernel.org,
+	dhowells@redhat.com,
+	fuse-devel@lists.linux.dev,
+	hch@infradead.org,
+	jack@suse.cz,
+	joannelkoong@gmail.com,
+	linux-api@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	miklos@szeredi.hu,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] net: meth: Fix skb allocation failure handling in RX init
-Date: Thu, 25 Jun 2026 09:47:46 +0100
-Message-ID: <20260625084744.1163212-3-horms@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260624031940.2690439-1-haoxiang_li2024@163.com>
-References: <20260624031940.2690439-1-haoxiang_li2024@163.com>
+	patches@lists.linux.dev,
+	pfalcato@suse.de,
+	rostedt@goodmis.org,
+	safinaskar@gmail.com,
+	torvalds@linux-foundation.org,
+	val@packett.cool,
+	viro@zeniv.linux.org.uk,
+	willy@infradead.org
+Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
+Date: Thu, 25 Jun 2026 11:53:57 +0300
+Message-ID: <20260625085401.3787887-1-safinaskar@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <CANaxB-xUrLQYGiRJZc4Boi+KX=0TJSWymErNovANVko20fMDVA@mail.gmail.com>
+References: <CANaxB-xUrLQYGiRJZc4Boi+KX=0TJSWymErNovANVko20fMDVA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev
+Andrei Vagin <avagin@gmail.com>:
+> On Wed, Jun 24, 2026 at 12:12 AM Askar Safin <safinaskar@gmail.com> wrote:
+> > Does CRIU actually rely on ability to do SPLICE_F_NONBLOCK vmsplice into
+> > named fifos? Or this is merely a test?
+> 
+> Yes, it does.
 
-Simon says:
+I. e. CRIU relies on that named fifo behavior? Okay, I just sent
+v2 version of my fixes. The patchset contains fix for named fifos.
 
-Hi Haoxiang,
+Please, test that this fixes that named fifo problem.
 
-I think that the pre-existing issues flagged below do not need
-to be considered in the context of this patch. But I am wondering
-if you could take a look over the others.
+> I already explained that this isn't just a perfomance degradation, it
+> actually breaks the pre-dump mechanism in CRIU. vmsplice is invoked from
+> our parasite code within the context of a user process, where execution
+> speed is critical. A heavy performance penalty completely invalidates
+> the pre-dump logic, making the feature useless.
 
----
-net: meth: Fix skb allocation failure handling in RX init
+This is very unfortunate. But I still want to remove vmsplice.
 
-meth_init_rx_ring() does not check the return value of alloc_skb().
-If the allocation fails, the NULL skb is passed to skb_reserve() and
-then dereferenced through skb->head.
+> At a minimum, we may need to consider a deprecation plan where vmsplice
+> with SPLICE_F_GIFT triggers a warning for a few releases before these
+> changes are applied. Alternatively, we could introduce the proposed
+> behavior alongside a sysctl to fall back to the old behavior and explicitly
+> state that this fallback path will be completely deprecated in a future kernel
+> version.
 
-> --- a/drivers/net/ethernet/sgi/meth.c
-> +++ b/drivers/net/ethernet/sgi/meth.c
-> @@ -228,6 +228,9 @@ static int meth_init_rx_ring(struct meth_private *priv)
->  
->  	for (i = 0; i < RX_RING_ENTRIES; i++) {
->  		priv->rx_skbs[i] = alloc_skb(METH_RX_BUFF_SIZE, 0);
-> +		if (!priv->rx_skbs[i])
-> +			goto err_free_skbs;
-> +
->  		/* 8byte status vector + 3quad padding + 2byte padding,
->  		 * to put data on 64bit aligned boundary */
->  		skb_reserve(priv->rx_skbs[i],METH_RX_HEAD);
+My patches change not only SPLICE_F_GIFT behavior, but also vmsplice
+behavior in general.
 
-[ ... ]
+Let other developers decide what to do (i. e. do nothing, remove
+vmsplice now or implement some deprecation scheme).
 
-> @@ -240,6 +243,17 @@ static int meth_init_rx_ring(struct meth_private *priv)
->  	}
->          priv->rx_write = 0;
->  	return 0;
-> +
-> +err_free_skbs:
-> +	while (i--) {
-> +		dma_unmap_single(&priv->pdev->dev, priv->rx_ring_dmas[i],
-> +				 METH_RX_BUFF_SIZE, DMA_FROM_DEVICE);
-
-[Severity: Critical]
-During the allocation loop, each successfully mapped DMA address is pushed
-immediately to the hardware via the mace->eth.rx_fifo register. Unmapping
-them here frees the memory, but the hardware FIFO still retains the physical
-addresses.
-
-When meth_init_rx_ring() returns -ENOMEM to meth_tx_timeout(), the error is
-ignored and the RX DMA engine is enabled anyway:
-
-meth_tx_timeout()
-    ...
-    meth_init_rx_ring(priv);
-    priv->dma_ctrl |= METH_DMA_TX_EN | METH_DMA_RX_EN | METH_DMA_RX_INT_EN;
-
-Will this cause the hardware to DMA incoming packet data into the unmapped
-and potentially reallocated memory?
-
-> +		priv->rx_ring[i] = 0;
-
-[Severity: High]
-If the hardware remains active as described above, will the RX interrupt
-handler dereference this NULL pointer?
-
-When the hardware receives a packet, it raises an RX interrupt and meth_rx()
-attempts to process it:
-
-meth_rx()
-    ...
-    status = priv->rx_ring[priv->rx_write]->status.raw;
-
-Since the pointer at this index was cleared in the error path, this looks
-like it will cause a kernel panic.
-
-> +		priv->rx_ring_dmas[i] = 0;
-> +		kfree_skb(priv->rx_skbs[i]);
-> +		priv->rx_skbs[i] = NULL;
-
-[Severity: Critical]
-Does this partial cleanup lead to a double free of socket buffers?
-
-When meth_init_rx_ring() fails at index N, this loop zeroes out elements 0
-through N-1. The elements from N through 63 retain their dangling pointers
-from the previous execution of meth_free_rx_ring(), which fails to clear SKB
-pointers after freeing them.
-
-Since meth_tx_timeout() ignores the error and leaves the device running, the
-next time meth_free_rx_ring() is called, it iterates over all 64 elements
-again. Will this call kfree_skb() on the dangling pointers in indices N
-through 63?
-
-> +	}
-> +	return -ENOMEM;
->  }
-
-[Severity: High]
-This isn't a bug introduced by this patch, but dma_map_single() is called in
-meth_init_rx_ring() without checking for mapping errors:
-
-meth_init_rx_ring()
-    ...
-    priv->rx_ring_dmas[i] = dma_map_single(&priv->pdev->dev,
-                                           priv->rx_ring[i],
-                                           METH_RX_BUFF_SIZE,
-                                           DMA_FROM_DEVICE);
-    mace->eth.rx_fifo = priv->rx_ring_dmas[i];
-
-If the mapping fails, an error cookie is passed directly to the hardware.
-Could this lead to IOMMU faults or memory corruption when DMA bounce buffers
-are exhausted?
-
-[Severity: High]
-This is a pre-existing issue, but there appears to be a race condition due
-to lockless processing in meth_rx().
-
-The interrupt handler drops the spinlock before processing the ring:
-
-meth_rx()
-    ...
-    spin_unlock_irqrestore(&priv->meth_lock, flags);
-    ...
-    while (priv->rx_write != fifo_rptr) {
-
-Concurrently, meth_tx_timeout() can acquire the lock and destroy the RX rings,
-falsely assuming it is protected:
-
-meth_tx_timeout()
-    ...
-    spin_lock_irqsave(&priv->meth_lock,flags);
-    meth_reset(dev);
-    ...
-    meth_free_rx_ring(priv);
-
-If meth_free_rx_ring() frees the SKBs while meth_rx() is still executing the
-lockless while loop, could this result in a use-after-free or NULL pointer
-dereference?
+-- 
+Askar Safin
