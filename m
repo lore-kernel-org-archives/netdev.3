@@ -1,132 +1,144 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp-out.kfki.hu (smtp-out.kfki.hu [148.6.0.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC8812F8EB5
-	for <netdev@vger.kernel.org>; Thu, 25 Jun 2026 07:21:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4090D7260D;
+	Thu, 25 Jun 2026 07:30:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.6.0.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782372110; cv=none; b=RbqY6FSykeQavoePs41tuLCkaSUSS9U4llWRHZaHflmv6Hhx8UAtbCxsdRhVlHaEVCdIVbQw4yOYjr/sn0JOKpTcX1OldY+XXz2fp6lEbYv0HgY0f1Yy2VOqj76EyphcLleOSVxRGoXlod7aS0U+Aw+JdWO0VmKSgPEU4RGK9wE=
+	t=1782372659; cv=none; b=S1utWJLCrbvkKm951O7FRmRJhwWObttraQsa9GVu0hx4XBo3pY7M5ojIPk3lUN45jc7LTOiROWtbs1kC0sjvnuSIWOUbixhraULrbgaPky1CHaC/4LegSXBX1AqBHRY3MvKrs/olvDjByKwQZuiiVzmnb+AnXdNJLKqyyHfImU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782372110; c=relaxed/simple;
-	bh=GK5OCCGpaPCkWmQItyOrt7IoPN7Vm7IoHjk4uyDscH8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PVfHZo2hNHt9DnD6LT/ox1nHBrPJVvzpsdZEbwDNJDu7LUwvyOwB03LI/nc79x/A5rTd6+CodLajl1mYcDiB5rbcTIknRhT2XKnbdWCDO7FNE1lmGHXe0PvCbVdMnAt9TYJVOViw9Fhbq07KkaoR6WG55xK9JNtt1T9zS4OObSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KFS84mNO; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=H4UpW//G; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1782372659; c=relaxed/simple;
+	bh=L0353zEMEtdSh7bVVdcWIzM0c9UguQfgQW33erWXeSE=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=L8+3GHN7aitSvspQJY5SvhATIGgl5c64IxTx9yqIPRNrdQChxCrFatHxkIpRpxjfy+atyuChaM92Wc0n5qnmOCfBLlSixmh6i1SZpdfFWxYLkVqub4t7PLS8SNwPY0XkmTP5cGp48qAGHsF1no4itDPNqIVueCmAhWnoACCukVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=blackhole.kfki.hu; spf=pass smtp.mailfrom=blackhole.kfki.hu; dkim=pass (1024-bit key) header.d=blackhole.kfki.hu header.i=@blackhole.kfki.hu header.b=mlMi4KQj; arc=none smtp.client-ip=148.6.0.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=blackhole.kfki.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=blackhole.kfki.hu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KFS84mNO";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="H4UpW//G"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782372107;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GK5OCCGpaPCkWmQItyOrt7IoPN7Vm7IoHjk4uyDscH8=;
-	b=KFS84mNOISC0r2MRv3mhxEvRpS/3SdXnoDIpl03dzs75FCbFZEosFnlpbjkpQ4FDBPeTID
-	H7v283S8bvOu+OwzkYn2p65vVwds5D3nZf/LIOmyIWimA8sSO8TZ8YuYIpx5x/HKwoDLNs
-	MLGIFUabQsvUilI1P3/PBr+CUcntZbA=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-127-A-m11TRYOUSybVWGVmoh1w-1; Thu, 25 Jun 2026 03:21:45 -0400
-X-MC-Unique: A-m11TRYOUSybVWGVmoh1w-1
-X-Mimecast-MFC-AGG-ID: A-m11TRYOUSybVWGVmoh1w_1782372104
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c0cf538efe1so131382466b.2
-        for <netdev@vger.kernel.org>; Thu, 25 Jun 2026 00:21:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1782372103; x=1782976903; darn=vger.kernel.org;
-        h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=GK5OCCGpaPCkWmQItyOrt7IoPN7Vm7IoHjk4uyDscH8=;
-        b=H4UpW//GlrrbeY+Zyx8CWhUcYRMV8+9RFC0o3iw2iqEBuMsZyciwYQlZnUmx+PWOgS
-         o3yjZRND/t5NnFy5hMLx1gQ0gl23rTeadD7PLWRQG3kA8tPiluAYOKvq/LL9V3DR6JL6
-         IzMSzHAVhXPHoK203fUBUUowrQWY9UMy7/qHHxbRLUiLfi/wFp5UeoJO7hNQLgRp868D
-         PJMZTqFyp+M0vx/woayIuekiIFYWOnpb9aJrrh1YsoPmRmvMTAG1wIMwr3eQIAYzD3qC
-         BYR5GKZSSH5/xxjmxPD+RUUt/Yo8xgxr3iMUnAdw1mXfk4Zda9MrmILTc201yq4uMjtE
-         wxoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782372103; x=1782976903;
-        h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GK5OCCGpaPCkWmQItyOrt7IoPN7Vm7IoHjk4uyDscH8=;
-        b=QUQR3LWYgxp5EbdnJV1++IZBx7PqxbxypKFwGjhRCPC0pbFM0DjyAktcqEnQMt0D3G
-         8omf6aSOG171DRraak7PdmG8RtDQacVrqtqkpjssJADnStS+3T0SUAQdSyaNrZW8EoQU
-         oeJgacGnt7KP38G9K8AEOtmAd0qPPTamL/uTPzECA5IhqHc2NzSHC8ac+hb8ZfuvmX0y
-         PK8R/TYa82cFqb7w82ESArt1/w9LmZaHO8vHiZfadHlw/8veHXP+WdvvPN1zLdRtXhqt
-         +CpPGl+Wyi7V6zeRjMgfsDcPYDqS0UB+3eg5OwjGSNABr7JhfP9Dtv+rZN8LUZDl/KIC
-         TRgg==
-X-Forwarded-Encrypted: i=1; AHgh+Rq+UecAcam094wyo/Np0Ic/VR6wXhYveKDIIkU9DD/sYipjW9CltDoBaPv/N/UWGGvkUTn2xq0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxzHfwT/2GNoL53IZ2vKkpUVJYQpkYmNP/L8cK8R6/3mJohcM4R
-	Bh/AAP+PUOr5D9fg0jRdUSJ6YEM8sb/kv52KYF5fVId8mA94W0/CQFQfOlv+Rj+DhA0niGdOju5
-	jxP7YdRgA08Z/11DEmh+cdwbXOJkN+7mqPpSZFb9fFxBBHdIosbKd52k4+A==
-X-Gm-Gg: AfdE7clp6K5BVkc6yyXNYn5RYBrvPM7JerO+JZOb2vdMN/mhI4Rxa0TKvSKT0BESDGc
-	dl1nbQ5xNiKDkOLLXxmb5L/msmvjCTD0Y4WdGFZPsOzv4HFYyWFlKricwdYcJCJf2a9Ge+rIobe
-	sYuqPIIjyu+hs28xC7jdGfcgUjmxd/6HodSnaa+fO9FFs1nxHhE39JKJjLA6hO7iYc7K+w4cel+
-	j07oqdPe2oBuc8yFAjRjEuSb9Fkh1aCYKw9YB8n0IukT1s7pdFVupBrGPjz82ihxEmGIWDVnTLQ
-	LJNMTlZMZfYwee2rM2rGkJXVWgIEa9vMW/1N6rLTfU62Aoh1JaB5NLqlfXkBolLKdKa2QBZceUs
-	lxLA+GmYb6KMyupGU7AuV0ykN6pSRgGlTjf0rFAzVChxeielWViuk1Fn1AZMz
-X-Received: by 2002:a17:907:97cc:b0:bee:9809:3ccd with SMTP id a640c23a62f3a-c1205d98c17mr70145866b.4.1782372103581;
-        Thu, 25 Jun 2026 00:21:43 -0700 (PDT)
-X-Received: by 2002:a17:907:97cc:b0:bee:9809:3ccd with SMTP id a640c23a62f3a-c1205d98c17mr70142866b.4.1782372103024;
-        Thu, 25 Jun 2026 00:21:43 -0700 (PDT)
-Received: from [10.44.49.141] (5920ab7b.static.cust.trined.nl. [89.32.171.123])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c11fbe05c22sm117182866b.39.2026.06.25.00.21.42
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 25 Jun 2026 00:21:42 -0700 (PDT)
-From: Eelco Chaudron <echaudro@redhat.com>
-To: Runyu Xiao <runyu.xiao@seu.edu.cn>
-Cc: aconole@redhat.com, i.maximets@ovn.org, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, dev@openvswitch.org, linux-kernel@vger.kernel.org,
- jianhao.xu@seu.edu.cn
-Subject: Re: [PATCH net-next] openvswitch: conntrack: annotate ct limit hlist
- traversal
-Date: Thu, 25 Jun 2026 09:21:39 +0200
-X-Mailer: MailMate (2.0r6292)
-Message-ID: <8D2F8228-CA85-4522-8B39-07C1DB463AEE@redhat.com>
-In-Reply-To: <20260624150149.3510541-1-runyu.xiao@seu.edu.cn>
-References: <20260624150149.3510541-1-runyu.xiao@seu.edu.cn>
+	dkim=pass (1024-bit key) header.d=blackhole.kfki.hu header.i=@blackhole.kfki.hu header.b="mlMi4KQj"
+Received: from localhost (localhost [127.0.0.1])
+	by smtp2.kfki.hu (Postfix) with ESMTP id 4gm9GM3khDz7s7wk;
+	Thu, 25 Jun 2026 09:21:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	blackhole.kfki.hu; h=mime-version:references:message-id
+	:in-reply-to:from:from:date:date:received:received:received
+	:received; s=20151130; t=1782372089; x=1784186490; bh=bRSr6OoZ9J
+	JPnp3T3cmji4ZfZNrVf7E0txBMBISE3Zg=; b=mlMi4KQjQavRrlko1sMJG1eojF
+	B6JiNHsN2TdnkDMTgAWJz8f/cDu7t+qoN33eiXQrD5Q6HSalEuq8kerBs1nRxKRm
+	o5SOT9jspEPVlEc4/i8FJVT3J7kw2BslH+UTVF7AkfOdOZmVDnT2feRz5sw7GkPR
+	1K3Pf0H91vKaL6iG0=
+X-Virus-Scanned: Debian amavis at smtp2.kfki.hu
+Received: from smtp2.kfki.hu ([127.0.0.1])
+ by localhost (smtp2.kfki.hu [127.0.0.1]) (amavis, port 10026) with ESMTP
+ id fABJDYI3Poh3; Thu, 25 Jun 2026 09:21:29 +0200 (CEST)
+Received: from blackhole.kfki.hu (blackhole.szhk.kfki.hu [IPv6:2001:738:5001:1::240:2])
+	by smtp2.kfki.hu (Postfix) with ESMTP id 4gm9GJ6tlSz7s7wR;
+	Thu, 25 Jun 2026 09:21:28 +0200 (CEST)
+Received: by blackhole.kfki.hu (Postfix, from userid 1000)
+	id D161F34317F; Thu, 25 Jun 2026 09:21:28 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by blackhole.kfki.hu (Postfix) with ESMTP id CF0EA34317E;
+	Thu, 25 Jun 2026 09:21:28 +0200 (CEST)
+Date: Thu, 25 Jun 2026 09:21:28 +0200 (CEST)
+From: Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>
+To: Xiang Mei <xmei5@asu.edu>
+cc: Florian Westphal <fw@strlen.de>, Pablo Neira Ayuso <pablo@netfilter.org>, 
+    Jozsef Kadlecsik <kadlec@netfilter.org>, Phil Sutter <phil@nwl.cc>, 
+    netfilter-devel@vger.kernel.org, kees@kernel.org, horms@kernel.org, 
+    Weiming Shi <bestswngs@gmail.com>, coreteam@netfilter.org, 
+    netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH nf] netfilter: ipset: fix race between dump and ip_set_list
+ resize
+In-Reply-To: <20260625010006.1448558-1-xmei5@asu.edu>
+Message-ID: <0cc0f340-3b68-13ab-cbb7-a6904fdae396@blackhole.kfki.hu>
+References: <20260625010006.1448558-1-xmei5@asu.edu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=US-ASCII; format=flowed
 
+Hi,
 
+On Wed, 24 Jun 2026, Xiang Mei wrote:
 
-On 24 Jun 2026, at 17:01, Runyu Xiao wrote:
+> The release path of ip_set_dump_do() and ip_set_dump_done() read
+> inst->ip_set_list via ip_set_ref_netlink(), a plain rcu_dereference_raw()
+> of the array pointer. These run from netlink_recvmsg() without the nfnl
+> mutex and without an RCU read-side critical section.
+>
+> A concurrent ip_set_create() can grow the array: it publishes the new
+> array, calls synchronize_net() and then kvfree()s the old one. Since the
+> dump paths read the array outside any RCU reader, synchronize_net() does
+> not wait for them and the old array can be freed while they still index
+> into it, causing a use-after-free.
+>
+> The dumped set itself stays pinned via set->ref_netlink, so only the
+> array load needs protecting. Take rcu_read_lock() around it, matching
+> ip_set_get_byname() and __ip_set_put_byindex().
+>
+>  BUG: KASAN: slab-use-after-free in ip_set_dump_do (net/netfilter/ipset/ip_set_core.c:1697)
+>  Read of size 8 at addr ffff88800b5c4018 by task exploit/150
+>  Call Trace:
+>   ...
+>   kasan_report (mm/kasan/report.c:595)
+>   ip_set_dump_do (net/netfilter/ipset/ip_set_core.c:1697)
+>   netlink_dump (net/netlink/af_netlink.c:2325)
+>   netlink_recvmsg (net/netlink/af_netlink.c:1976)
+>   sock_recvmsg (net/socket.c:1159)
+>   __sys_recvfrom (net/socket.c:2315)
+>   ...
+>  Oops: general protection fault, probably for non-canonical address ... KASAN NOPTI
+>  KASAN: maybe wild-memory-access in range [0x02d6...d0-0x02d6...d7]
+>  RIP: 0010:ip_set_dump_do (net/netfilter/ipset/ip_set_core.c:1698)
+>  Kernel panic - not syncing: Fatal exception
+>
+> Fixes: 8a02bdd50b2e ("netfilter: ipset: Fix calling ip_set() macro at dumping")
+> Reported-by: Weiming Shi <bestswngs@gmail.com>
+> Assisted-by: Claude:claude-opus-4-8
+> Signed-off-by: Xiang Mei <xmei5@asu.edu>
 
-> ct_limit_set() is documented as being called with ovs_mutex held. It
-> walks the ct limit hlist with hlist_for_each_entry_rcu(), but the
-> iterator does not currently pass the OVS lockdep condition used
-> elsewhere for RCU-protected OVS objects.
->
-> Pass lockdep_ovsl_is_held() to the iterator. This matches the function's
-> existing caller contract and lets CONFIG_PROVE_RCU_LIST distinguish the
-> ovs_mutex-protected update path from the RCU read-side ct_limit_get()
-> path.
->
-> This was found by our static analysis tool and then manually reviewed
-> against the current tree. In the reviewed CONFIG_PROVE_RCU_LIST triage
-> run, the writer-side ct limit update produced the expected "RCU-list
-> traversed in non-reader section!!" warning while ovs_mutex was held,
-> with the stack matching ct_limit_set() and ovs_ct_limit_set_zone_limit().
-> The change is limited to documenting the existing protection contract.
->
-> This is a lockdep annotation cleanup. It does not change the conntrack
-> limit list update or release behavior.
->
-> Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+Thank you for the nice report and fix, good catch.
+
+Acked-by: Jozsef Kadlecsik <kadlec@netfilter.org>
+
+Best regards,
+Jozsef
 > ---
-
-Hi Runyu,
-
-I think net-next is still closed, so you might need to resend it once
-it opens. But the patch itself looks good to me.
-
-Reviewed-by: Eelco Chaudron <echaudro@redhat.com>
-
+> net/netfilter/ipset/ip_set_core.c | 8 +++++++-
+> 1 file changed, 7 insertions(+), 1 deletion(-)
+>
+> diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
+> index a531b654b8d9..6cfad152d7d1 100644
+> --- a/net/netfilter/ipset/ip_set_core.c
+> +++ b/net/netfilter/ipset/ip_set_core.c
+> @@ -1480,7 +1480,11 @@ ip_set_dump_done(struct netlink_callback *cb)
+> 		struct ip_set_net *inst =
+> 			(struct ip_set_net *)cb->args[IPSET_CB_NET];
+> 		ip_set_id_t index = (ip_set_id_t)cb->args[IPSET_CB_INDEX];
+> -		struct ip_set *set = ip_set_ref_netlink(inst, index);
+> +		struct ip_set *set;
+> +
+> +		rcu_read_lock();
+> +		set = ip_set_ref_netlink(inst, index);
+> +		rcu_read_unlock();
+>
+> 		if (set->variant->uref)
+> 			set->variant->uref(set, cb, false);
+> @@ -1686,7 +1690,9 @@ ip_set_dump_do(struct sk_buff *skb, struct netlink_callback *cb)
+> release_refcount:
+> 	/* If there was an error or set is done, release set */
+> 	if (ret || !cb->args[IPSET_CB_ARG0]) {
+> +		rcu_read_lock();
+> 		set = ip_set_ref_netlink(inst, index);
+> +		rcu_read_unlock();
+> 		if (set->variant->uref)
+> 			set->variant->uref(set, cb, false);
+> 		pr_debug("release set %s\n", set->name);
+> -- 
+> 2.43.0
+>
+>
+>
