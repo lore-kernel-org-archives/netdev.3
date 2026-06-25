@@ -1,52 +1,62 @@
-Received: from forward102a.mail.yandex.net (forward102a.mail.yandex.net [178.154.239.85])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B565C184;
-	Thu, 25 Jun 2026 11:49:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.85
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA5C3D8131;
+	Thu, 25 Jun 2026 11:52:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782388159; cv=none; b=u8c1/OPJ6tAi5g9EiekCUUx+1Rj4RHTA5icSXd6aNHZVyv5NB63foYx+zVMqJqEAVAkWM0QNU/pPI+NaWDtan5Rjsj2RMPvwXBotftVX2I5N+O9Ga6DPf3m1OsmOVgcRexvLIF8sU088gQ/isyuKhF6dUc+3OsKsPfMLvXk6eo4=
+	t=1782388343; cv=none; b=PgEGWkL2XF+GzRmf9FOYp529OsQm7FSHoMMouFLJsx6QV3y/w3vF6DQWkR0UxDJ9LRWSY7EGhVVs/JEHLriABdsIXx98TsHYiT5UdDj2AkE89GSvxBUiB59plfjY5GTXfyarEDnunMC9ofMxCOI5P1brD7WF6Sm3kWdQOtFniww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782388159; c=relaxed/simple;
-	bh=siMqfGA2LbcLpc8TVJBf9szt0ISO8uooGPF6kp3XeSs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fFz4zPfgFWuuz62siK5JybatSFrxuc0I/e/TUFHhV+BfyHmcaPO/DKF4UDooUTY4/fMmEwajZrRAgzFlv4VD0WPEyA7au4/MkSeap7YCuRIUxYc7kKjEilVoZGbu27KdKsieK9J7sgJfUqNdlhlFi5epLoht0vgkAQ5RauBuvlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=wU5c1pbx; arc=none smtp.client-ip=178.154.239.85
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
+	s=arc-20240116; t=1782388343; c=relaxed/simple;
+	bh=1QgyVE0VKY8LGCv8Iung0ENYj2jFbspc8w9gsaoFru8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=umfLUMWw4nh3Pxe6Ay2nhZE9mVfGvGN0U8teTcSDk+hRt6uiux65F8p+L7GAgqGOfWOjZCcFlFWxS3foQU/HFc0ACzBViuE8znzQoaNXC3/g0xcorv3in00/CQGHOOzn49B4X6wJ89z1YStXDjuKt1hFROvZQgRK15e824ioLDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H06QXh4q; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="wU5c1pbx"
-Received: from mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net [IPv6:2a02:6b8:c0f:39a:0:640:15c4:0])
-	by forward102a.mail.yandex.net (Yandex) with ESMTPS id BF39EC0303;
-	Thu, 25 Jun 2026 14:49:07 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net (smtp) with ESMTPSA id imX0h9Zd7a60-9VPCYWd1;
-	Thu, 25 Jun 2026 14:49:06 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1782388146; bh=N3iJX4b7hiSFwQlA4tOHWUsCIZUNpe0ZD60sev6y8NA=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=wU5c1pbxBjWOZrMRoEOGDGa8Hcqtk0iEH/Q/6NO75zGGCmSHaVg7badtMMUluXY0S
-	 NEjxiyR4gqM5trvVOhq8JCT/AbNNE7QRPbw9ZKZUOQMwtS4AS50lT3/zhr2DwPId6h
-	 tcVpKCdlg3c1B1WtKKclbTX0jJD35z8upiMinaHI=
-Authentication-Results: mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From: Evgenii Burenchev <evg28bur@yandex.ru>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Evgenii Burenchev <evg28bur@yandex.ru>,
-	idosch@nvidia.com,
-	petrm@nvidia.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H06QXh4q"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782388342; x=1813924342;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=1QgyVE0VKY8LGCv8Iung0ENYj2jFbspc8w9gsaoFru8=;
+  b=H06QXh4qvFx07Ube2LHt2/Ehjb8y502wS+r5yrAl5lAKjAC8JrU5xcGX
+   EvuzylOJXIYF0H8LGHoPCY8ulTcgL51/ZLQbpItXfKhhcXyHwbxO0+xMb
+   09XOZecRisffm2JF3/pMX/ASFhmSma5HH74QKUJeGg3SutI2kCiLAZBas
+   eXQ9Ilvb0Xk1vDoOgKBvGs6vGY0/y+h8W9HdJF2yhkGg8sbg6F70FYhlG
+   ACsvkRCy5fJyMINZhwa1hYf5Y6zidxJo2wc5nKDP6EnWxFEXAEql7Uf4Y
+   Z1F/0tAQJQ+2WfVFYxTvZ07ZD8rqV+nsze/6+plre1nrT4k9fE4d7I7gQ
+   A==;
+X-CSE-ConnectionGUID: WT4NOTUbQsK9QhNs80ckmg==
+X-CSE-MsgGUID: mGGOMtLGTZ2h+ZQDK/gpFg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11827"; a="83215155"
+X-IronPort-AV: E=Sophos;i="6.24,224,1774335600"; 
+   d="scan'208";a="83215155"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 04:52:21 -0700
+X-CSE-ConnectionGUID: LRe6WxBgSTOuxFWfSDddWw==
+X-CSE-MsgGUID: UxBhEGdRRXKBY1AI8DzgrQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,224,1774335600"; 
+   d="scan'208";a="246661084"
+Received: from boxer.igk.intel.com ([10.102.20.173])
+  by fmviesa010.fm.intel.com with ESMTP; 25 Jun 2026 04:52:19 -0700
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+To: netdev@vger.kernel.org
+Cc: bpf@vger.kernel.org,
+	magnus.karlsson@intel.com,
+	stfomichev@gmail.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	jiri@resnulli.us,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: [PATCH net] mlxsw: spectrum_acl_erp: Fix const qualifier of delta_clear()
-Date: Thu, 25 Jun 2026 14:48:31 +0300
-Message-ID: <20260625114831.17386-1-evg28bur@yandex.ru>
-X-Mailer: git-send-email 2.43.0
+	horms@kernel.org,
+	tushar.vyavahare@intel.com,
+	kerneljasonxing@gmail.com,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Subject: [PATCH v2 net-next] selftests/xsk: Preserve UMEM view in BIDIRECTIONAL test
+Date: Thu, 25 Jun 2026 13:52:15 +0200
+Message-Id: <20260625115215.1101928-1-maciej.fijalkowski@intel.com>
+X-Mailer: git-send-email 2.38.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,50 +65,60 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-mlxsw_sp_acl_erp_delta_clear() takes 'const char *enc_key' but modifies
-the memory it points to. This is a logical error in the function
-declaration.
+The UMEM state refactor made __send_pkts() use xsk->umem for Tx
+address generation. At the same time, the shared-UMEM Tx setup copies the
+Rx UMEM state into a Tx-local state object and resets base_addr and
+next_buffer before configuring the Tx socket.
 
-The only caller passes a non-const buffer (aentry->ht_key.enc_key), so
-the const qualifier is misleading and unnecessary.
+Passing that Tx-local object to xsk_configure() makes xsk->umem point to
+the zero-based Tx allocator state. This breaks the BIDIRECTIONAL test once
+the roles are switched: the same socket is then used for Rx validation, but
+received descriptors from the other logical UMEM half are checked against
+base_addr == 0. With the new UMEM bounds check, a valid address such as
+base_addr + XDP_PACKET_HEADROOM is rejected as being outside the UMEM
+window.
 
-Remove const from the enc_key parameter to match the actual usage.
+Keep xsk->umem as the shared/Rx UMEM view used for socket configuration
+and Rx validation. Use the ifobject-local UMEM copy only for Tx descriptor
+address generation, preserving the BIDIRECTIONAL test's intent of using
+the proper logical UMEM half after the direction switch.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: c22291f7cf45 ("mlxsw: spectrum: acl: Implement delta for ERP")
-Signed-off-by: Evgenii Burenchev <evg28bur@yandex.ru>
+Fixes: b17631032769 ("selftests/xsk: Move UMEM state from ifobject to xsk_socket_info")
+Reviewed-by: Tushar Vyavahare <tushar.vyavahare@intel.com>
+Tested-by: Tushar Vyavahare <tushar.vyavahare@intel.com>
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 ---
- drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_erp.c  | 2 +-
- drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+v2:
+- fix SoB line
+- rebase
+- add tags from Tushar
+---
+ tools/testing/selftests/bpf/prog_tests/test_xsk.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_erp.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_erp.c
-index cbb272a96359..0d0cd093b3c6 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_erp.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_erp.c
-@@ -1118,7 +1118,7 @@ u8 mlxsw_sp_acl_erp_delta_value(const struct mlxsw_sp_acl_erp_delta *delta,
- }
- 
- void mlxsw_sp_acl_erp_delta_clear(const struct mlxsw_sp_acl_erp_delta *delta,
--				  const char *enc_key)
-+				  char *enc_key)
+diff --git a/tools/testing/selftests/bpf/prog_tests/test_xsk.c b/tools/testing/selftests/bpf/prog_tests/test_xsk.c
+index 72875071d4f1..26437d4bdc8e 100644
+--- a/tools/testing/selftests/bpf/prog_tests/test_xsk.c
++++ b/tools/testing/selftests/bpf/prog_tests/test_xsk.c
+@@ -1169,8 +1169,8 @@ static int receive_pkts(struct test_spec *test)
+ static int __send_pkts(struct ifobject *ifobject, struct xsk_socket_info *xsk, bool timeout)
  {
- 	u16 start = delta->start;
- 	u8 mask = delta->mask;
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.h b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.h
-index 010204f73ea4..67cc7a5737dd 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.h
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.h
-@@ -245,7 +245,7 @@ u8 mlxsw_sp_acl_erp_delta_mask(const struct mlxsw_sp_acl_erp_delta *delta);
- u8 mlxsw_sp_acl_erp_delta_value(const struct mlxsw_sp_acl_erp_delta *delta,
- 				const char *enc_key);
- void mlxsw_sp_acl_erp_delta_clear(const struct mlxsw_sp_acl_erp_delta *delta,
--				  const char *enc_key);
-+				  char *enc_key);
+ 	u32 i, idx = 0, valid_pkts = 0, valid_frags = 0, buffer_len;
++	struct xsk_umem_info *umem = ifobject->xsk_arr[0].umem_real;
+ 	struct pkt_stream *pkt_stream = xsk->pkt_stream;
+-	struct xsk_umem_info *umem = xsk->umem;
+ 	bool use_poll = ifobject->use_poll;
+ 	struct pollfd fds = { };
+ 	int ret;
+@@ -1521,7 +1521,7 @@ static int thread_common_ops_tx(struct test_spec *test, struct ifobject *ifobjec
+ 	umem_tx->base_addr = 0;
+ 	umem_tx->next_buffer = 0;
  
- struct mlxsw_sp_acl_erp_mask;
- 
+-	ret = xsk_configure(test, ifobject, umem_tx, true);
++	ret = xsk_configure(test, ifobject, umem_rx, true);
+ 	if (ret)
+ 		return ret;
+ 	ifobject->xsk = &ifobject->xsk_arr[0];
 -- 
 2.43.0
 
