@@ -1,56 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7CB538A72A;
-	Thu, 25 Jun 2026 10:42:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E93C378839;
+	Thu, 25 Jun 2026 10:42:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782384129; cv=none; b=C0vzENsIdwULSA1X/H97c4VSXPjUMj1ykFeuQ6CC5PJi39XlBvmJrPEm25Qh6/taV5eArKTpxoHEXv+JTnIbagvh76y0+Ago7S5JRok9yF768V8GSOH4+3hz6AEgNiIelGOPXeRpLf/pxZTiK8sFP61DoV9uyhJcfJMWWtqclIU=
+	t=1782384136; cv=none; b=qOUd8hNOWBk+qdtgQ0QEy9DtAzoS4uOGCPMoSqNZFj+qZC2PIw6XNuCu9JV7q9JOQCSr2uMkl3ADapBYYY6BrBu9sJadh6FEnN5IR6oGpKzs489WRJjArFo+mEl7WeYl3RTMzc58uHlmLNcw7U/bAptGHjQ05Th7HOCqOxNelXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782384129; c=relaxed/simple;
-	bh=RJbzB444OWrgTxvsYUH/llEvnk5lqYsfA9FXH00KzmU=;
+	s=arc-20240116; t=1782384136; c=relaxed/simple;
+	bh=nd+/EIfepnNIo5PLnS9kqP0mPMVtpLh+XEgbKruww+A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JoNn8mcbkSbO2tR2ro0C+2BCWi3Rv7OWakcbVv1dagsxTGQvkj2kGhU7VUxB7ppYEkPfpTyESDcQcNAvj7fwZwp2A3HFanpLkGsemGCLcI14k0Hc0VUEkT+eFO/Kg6sB/k34uVCBMOqFhgZutKS4RUE3zW3s5xUIkJ1SJN4qhyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q887776v; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=fsj7ivpoPnOvR/laSswH/FKxTatZ+7Swc9D9a1+gvwG5WQPrcq8nRYiyySDE7BbBgQ12TmRhcEGE8R0FmNQSNSHqLZIjsGlIPrX07Q/dzpUOipwU8i+JFsWNxFJdT55oPXbfJ9wphICrzqYura5tJWKrZYwBn8HuXfHzS485pzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oaPH1vz/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q887776v"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ED841F00A3A;
-	Thu, 25 Jun 2026 10:42:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oaPH1vz/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65D061F00A3A;
+	Thu, 25 Jun 2026 10:42:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782384127;
-	bh=RJbzB444OWrgTxvsYUH/llEvnk5lqYsfA9FXH00KzmU=;
+	s=k20260515; t=1782384133;
+	bh=nd+/EIfepnNIo5PLnS9kqP0mPMVtpLh+XEgbKruww+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Q887776vUMG3Au1XXl8ruHpHXSLJBXoTWwGgBC2GkpS76taI0r3CtcP4ONfBYk0nl
-	 MxnT4LvMooak966yROgF84LrHgXNQY3kPj+pD6X6EE/zdpGN2h7APaImin06wg/9fL
-	 xezZOLja3iQCVI4KQDn2akVUNMa/N0s2MyxA+mUJ3rn4kX5uiPnKybTWxrYjhkaQ6Z
-	 EiMBGA2r5pofOQ1UA4JN+Wl5yaa1vfibz0LjwsLtt+AtXBbOGH+lgVUyE0rOkJyMav
-	 fM0HYtPGNwwJqvM/PfdgpSxDbf3cCJd6ckYgeoLZV73YHaUJpkfsFK9Vfn8I1OvcRr
-	 YTEppl7KhC46w==
+	b=oaPH1vz/FlHyDa4xVMnd6XNR4n2mOFsocCXHFj6LHlktoNcphIMlf2NurP6oqqhox
+	 cZmtw3vmb4K6fMbG8anblK8XlzxLAw2GYuOxN+Zf6BNNPHRHV7UoM4F0fU3u+j5WGb
+	 uJFo/lIG1rlnN8bZOY4jidmRnptl185c00XEUfpoEDzQHi6Zc/gxPOvdHf9sZxYbif
+	 REkm9/BbRreD2laLjG6QjChTgesy/Qz9NeOeDD/vDFmLXdDwT4u7hsiFCqfP5+XVfC
+	 Ul9zReYKQoktkAPG6BnsV9bFrxf2o9ciC8HLG9r2tUepC7wZ79yEVwSwEosSVrQdpu
+	 tG+FeDT887a0A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: Sasha Levin <sashal@kernel.org>,
 	Alexander Martyniuk <alexevgmart@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
 	"David S. Miller" <davem@davemloft.net>,
-	Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
-	Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Patrick McHardy <kaber@trash.net>,
-	netfilter-devel@vger.kernel,
-	coreteam@netfilter.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jann Horn <jannh@google.com>,
+	Lee Jones <lee@kernel.org>,
+	Rao Shoaib <rao.shoaib@oracle.com>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Weiming Shi <bestswngs@gmail.com>,
-	Xiang Mei <xmei5@asu.edu>
-Subject: Re: [PATCH 5.10] netfilter: nf_log: validate MAC header was set before dumping it
-Date: Thu, 25 Jun 2026 06:41:50 -0400
-Message-ID: <20260625054005.0003.nflog-510@kernel.org>
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Jiexun Wang <wangjiexun2025@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>
+Subject: Re: [PATCH 5.15/6.1/6.6] af_unix: Reject SIOCATMARK on non-stream sockets
+Date: Thu, 25 Jun 2026 06:41:54 -0400
+Message-ID: <20260625054005.0007.afunix-siocatmark@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260624140117.19799-1-alexevgmart@gmail.com>
-References: <20260624140117.19799-1-alexevgmart@gmail.com>
+In-Reply-To: <20260624151651.38894-1-alexevgmart@gmail.com>
+References: <20260624151651.38894-1-alexevgmart@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,18 +61,12 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-> [PATCH 5.10] netfilter: nf_log: validate MAC header was set before
-> dumping it
+> [PATCH 5.15/6.1/6.6] af_unix: Reject SIOCATMARK on non-stream sockets
 >
-> --- a/net/ipv4/netfilter/nf_log_ipv4.c
-> +++ b/net/ipv4/netfilter/nf_log_ipv4.c
+> Backport fix for CVE-2026-52928. Reject SIOCATMARK in unix_ioctl()
+> for non-stream sockets.
 
-Thanks for the backport - the retarget to nf_log_ipv4.c is right for 5.10.
-
-One gap though: upstream fixed both loggers via the consolidated
-nf_log_syslog.c, but in 5.10 the IPv6 logger (net/ipv6/netfilter/
-nf_log_ipv6.c) still has the identical unguarded fallback and is left
-vulnerable here - which is also Pablo's "why only 5.10?" point.
+Queued for 6.6, 6.1 and 5.15, thanks!
 
 --
 Thanks,
