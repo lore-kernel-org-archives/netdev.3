@@ -1,112 +1,104 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B282A221DB6
-	for <netdev@vger.kernel.org>; Thu, 25 Jun 2026 18:16:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD7CD1A9F87;
+	Thu, 25 Jun 2026 18:22:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782411365; cv=none; b=UCmnsOQS3tMZ48PJX3cfslZxuz7EVtnEvIbRfGFmmlEz5zgNdv70WsJdto06R1YyXdRdNQpKDZjZTP2wMytQS3xf4pxzZYawvBXMsY6Cbkw20fIm3NP+Fnd+UV6Vum1sqi46EjvokfwiGBdSTx7zwmjTfDzNQ4DGi1bK65Tlzeo=
+	t=1782411723; cv=none; b=JvvYgKGqQDCvFu5FP5xj9mS8G6DKkGRzsyBN2Fg0zF0MgCRPwITck4/ibFeNu/H4BSyKEPJmoVaZ9YtqLcETY8/SnfBn4mK4MDEOeVKrGx186iomk81bbQWryKIZXWvTUMJ+2bIHsv6PWI3iGg+ZTPK8kzKc80F36GmJK+APZ8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782411365; c=relaxed/simple;
-	bh=R4zMRsC5dgEt3GQ1wY+GOgTcL+mtlusQkycwEbXBb0s=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=VmdpX1wsEjQbSeemKIw9sBL+RI9k1NGlHX3NkdTUtxivzNVno6o+/qOBvwHqJyiYf7Qu96FBC7oT62Oryr4/cIJ3vbt2eOwfqdG7m1bOn0Y7qgJBsqfLYarADgX54FgWu2vkK6hXXvZtEH7WO94xlAOxNyPT3WN7undCnSnJqig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tjmercier.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uYvgCGwt; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tjmercier.bounces.google.com
+	s=arc-20240116; t=1782411723; c=relaxed/simple;
+	bh=4kcohas5CotEUtuW1XN3cQnyi/ZXv7ymOPLjK33VnLk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=A5FQnE38fELWzDzFWpQcsUKgPRVi1RHkZOleVmLm2eN44HZ5hya0n2wC+H4goHoWKmLdwNz5roB7sknP2CTNtjP1i7MRz5MnY81+ceMB6/wPt2zK8A9/YfvYxRjGnLIt80FlzyjylZutQuvAW109n67vek0+SsQupo3+brRKDSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gw00Nwie; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uYvgCGwt"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-37e09f9c4dbso100906a91.0
-        for <netdev@vger.kernel.org>; Thu, 25 Jun 2026 11:16:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782411364; x=1783016164; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Hbt4jAxuO3yIsMnFSQ/zOto2meD/sUjo/A+mTkmLM7Y=;
-        b=uYvgCGwt85R1MSPJg9ffGwiyALwqY/ladzGbWwfSFILpgyLHrrkfcuTXzGLzTTnnd3
-         Hk+wYStyrKokFa7eGH6722hearuTQVLF6uY9fHVMOi0b2X1nnAFBQcqZYhQzMgTzKnIe
-         0qrVQadYPxE9YkBcKqD0Po8aNZMdiUYfBXr72TM3LGvoCp1Lf0ehQPx/gbLDQRjRA2M7
-         V4nlN0jC22keZCOHTcnE3yjKoQaNf5XfYUtGMWjY8xcSDWFm5C40kUVwPGlH2yMdbNx6
-         unlIguNHENRUahx7hMGGh2v/Ts63ehEwRvJ0TtXPb93vc9oUw6UXrSMYs0VhOFCPss6F
-         g4Nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782411364; x=1783016164;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Hbt4jAxuO3yIsMnFSQ/zOto2meD/sUjo/A+mTkmLM7Y=;
-        b=PlSLt28HDVhWY/RQfL7iek841xyRsq0mITht0o3a4Uq/1BKeylZWQlI6VxnvxNL8Hs
-         tSNDvtNlTdS3Jo67GS/aysFOXBrhpmFMpH+FT/7U6KGjRejQd3MsQ5PAPHE1En06iJPT
-         hwHiVrdjtTjtg9w2eHjdFX7bkdVPB6MajZiV39Pkf42Xg/59R2Kql3fcxqPCOJb3lhg8
-         m6l7LmtGSeLzSuj5zHWcnhz/hsarze5z4fMncP/mFPZTxUoNsJaboIwUDp1Gjn+YkTQB
-         n9Cw+Eh9wfjyrp47mdk13PvNMjWo8Vy8lBJ5ctbAeLvPr7aVTrTQumvkrfLBLu/GeAdS
-         zGCQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpzGbmPbXg1aPvN0K25X5ogJw494io5RMP0kJYZYv7rvdRDJvjFeqFuWquRuQ7MEEmGeL/EDTI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxqjV7u0LzpTijuGcBYJDAi1GFtVHRKVuLaVpy4BSmfpsNNwOb1
-	1LifOq0X4A95/NYO2Z4HldVkvC+2ToJzXWt9b4BfEKCvHz25NTbHMMBZBhmmfIUZKWfsRatDBLb
-	FTuLhhrEn8tNgs2Xg/Q==
-X-Received: from pjqa10.prod.google.com ([2002:a17:90a:a50a:b0:36b:a5eb:cb3c])
- (user=tjmercier job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:3509:b0:36b:b1f4:e0ac with SMTP id 98e67ed59e1d1-37dfa25191amr3459010a91.14.1782411363681;
- Thu, 25 Jun 2026 11:16:03 -0700 (PDT)
-Date: Thu, 25 Jun 2026 11:15:55 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gw00Nwie"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7ED38C2BCF5;
+	Thu, 25 Jun 2026 18:22:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1782411723;
+	bh=4kcohas5CotEUtuW1XN3cQnyi/ZXv7ymOPLjK33VnLk=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=Gw00NwiePhxGqj93/zs7gmQ7fUk5KDFgNn6JmCojEw7JsbzPhdWwvgUDp418UyoG4
+	 wdI6qO8BAUooBerF7oh8IFZ4Y3VCB7xzUINeett+wWy/rLY8Kepc5HQFA08A9qV4G7
+	 ldATv5EIbU7lzucvwPChXn97ponDYLPC4LUk/R4rEHu3rstxzX2B1rtsHrzTMJFtbW
+	 H+/O1ckHeKTjMkkdxA0iKbAYf3IC0R7dyAnPW6zw0dbAiJDZR5Y6VJwz0Zm7P/tSMY
+	 eKke1mXr+AEWSTWTSFCItR9AGM2RtS0ft3jd7KFlhumiQxlpiQCyFy2tU3NvhxhcIs
+	 Vfn5FXEZxjFXg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 71BBCCDE000;
+	Thu, 25 Jun 2026 18:22:03 +0000 (UTC)
+From: Dmitry Safonov via B4 Relay <devnull+0x7f454c46.gmail.com@kernel.org>
+Date: Thu, 25 Jun 2026 19:21:41 +0100
+Subject: [PATCH net v3 3/3] tcp: Decrement tcp_md5_needed static branch
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260625181557.1086105-1-tjmercier@google.com>
-Subject: [PATCH] selftests: Open /dev/udmabuf O_RDONLY
-From: "T.J. Mercier" <tjmercier@google.com>
-To: kraxel@redhat.com, vivek.kasireddy@intel.com, 
-	Shuah Khan <shuah@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: "T.J. Mercier" <tjmercier@google.com>, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260625-tcp-md5-connect-v3-3-1fd313d6c1e0@gmail.com>
+References: <20260625-tcp-md5-connect-v3-0-1fd313d6c1e0@gmail.com>
+In-Reply-To: <20260625-tcp-md5-connect-v3-0-1fd313d6c1e0@gmail.com>
+To: David Ahern <dsahern@kernel.org>, Eric Dumazet <edumazet@google.com>, 
+ Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Salam Noureddine <noureddine@arista.com>
+Cc: Michael Bommarito <michael.bommarito@gmail.com>, 
+ Qihang <q.h.hack.winter@gmail.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Dmitry Safonov <0x7f454c46@gmail.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1782411722; l=1079;
+ i=0x7f454c46@gmail.com; s=20260625; h=from:subject:message-id;
+ bh=3nejDl07SxPQHPLWOUILyQffd40iVMwRdwvbto6+Q+g=;
+ b=1z/VwT3MAPmFWz84HE6RimvnKtCVahxfjaRzbgTMqNxF5IGu7IsK/61L8Hc2WaP41sdb9eXS3
+ WjExpgfhfjkAhtHHXccinyLQdcJpeswDO1XIjDX07Uss+c3E7Lb+yX0
+X-Developer-Key: i=0x7f454c46@gmail.com; a=ed25519;
+ pk=clHVGbfKfZMeCUp+xCL/096jI68XK5EZLytgy6lSyrc=
+X-Endpoint-Received: by B4 Relay for 0x7f454c46@gmail.com/20260625 with
+ auth_id=841
+X-Original-From: Dmitry Safonov <0x7f454c46@gmail.com>
+Reply-To: 0x7f454c46@gmail.com
 
-Write permissions on the /dev/udmabuf device file are not required to
-issue ioctls and allocate udmabufs. Applications should be opening this
-file as O_RDONLY. The BPF dmabuf_iter selftest already does this. [1]
+From: Dmitry Safonov <0x7f454c46@gmail.com>
 
-Remove the write access mode from the drivers/dma-buf/udmabuf.c and
-drivers/net/hw/ncdevmem.c selftests.
+In case of early freeing an unwanted TCP-MD5 key on TCP-AO connect(),
+md5sig_info is freed right away (and set to NULL). Later, at
+the moment of socket destruction, the static branch counter
+is not getting decremented.
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/tools/testing/selftests/bpf/prog_tests/dmabuf_iter.c?h=v7.1#n49
+Add a missing decrement for TCP-MD5 static branch.
 
-Signed-off-by: T.J. Mercier <tjmercier@google.com>
+Reported-by: Qihang <q.h.hack.winter@gmail.com>
+Fixes: 0aadc73995d0 ("net/tcp: Prevent TCP-MD5 with TCP-AO being set")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Safonov <0x7f454c46@gmail.com>
 ---
- tools/testing/selftests/drivers/dma-buf/udmabuf.c | 2 +-
- tools/testing/selftests/drivers/net/hw/ncdevmem.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ net/ipv4/tcp_output.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/drivers/dma-buf/udmabuf.c b/tools/testing/selftests/drivers/dma-buf/udmabuf.c
-index d78aec662586..ced0b95c876c 100644
---- a/tools/testing/selftests/drivers/dma-buf/udmabuf.c
-+++ b/tools/testing/selftests/drivers/dma-buf/udmabuf.c
-@@ -140,7 +140,7 @@ int main(int argc, char *argv[])
- 	ksft_print_header();
- 	ksft_set_plan(7);
- 
--	devfd = open("/dev/udmabuf", O_RDWR);
-+	devfd = open("/dev/udmabuf", O_RDONLY);
- 	if (devfd < 0) {
- 		ksft_print_msg(
- 			"%s: [skip,no-udmabuf: Unable to access DMA buffer device file]\n",
-diff --git a/tools/testing/selftests/drivers/net/hw/ncdevmem.c b/tools/testing/selftests/drivers/net/hw/ncdevmem.c
-index e098d6534c3c..8114a29692fd 100644
---- a/tools/testing/selftests/drivers/net/hw/ncdevmem.c
-+++ b/tools/testing/selftests/drivers/net/hw/ncdevmem.c
-@@ -149,7 +149,7 @@ static struct memory_buffer *udmabuf_alloc(size_t size)
- 
- 	ctx->size = size;
- 
--	ctx->devfd = open("/dev/udmabuf", O_RDWR);
-+	ctx->devfd = open("/dev/udmabuf", O_RDONLY);
- 	if (ctx->devfd < 0) {
- 		pr_err("[skip,no-udmabuf: Unable to access DMA buffer device file]");
- 		goto err_free_ctx;
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index bc03809ca3af..d7c1444b5e30 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -4334,8 +4334,8 @@ int tcp_connect(struct sock *sk)
+ 			tcp_clear_md5_list(sk);
+ 			md5sig = rcu_replace_pointer(tp->md5sig_info, NULL,
+ 						     lockdep_sock_is_held(sk));
+-			if (md5sig)
+-				kfree_rcu(md5sig, rcu);
++			kfree_rcu(md5sig, rcu);
++			static_branch_slow_dec_deferred(&tcp_md5_needed);
+ 		}
+ 	}
+ #endif
+
 -- 
-2.55.0.rc0.799.gd6f94ed593-goog
+2.51.2
+
 
