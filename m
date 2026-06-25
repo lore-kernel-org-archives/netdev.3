@@ -1,195 +1,264 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11021117.outbound.protection.outlook.com [52.101.65.117])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E34F2E6116;
-	Thu, 25 Jun 2026 15:54:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.117
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782402875; cv=fail; b=SOCpcSLpx6vz0ceNNTeYTW0DJLH3ZWvhUOxQ6+4CFQscbrnuADmXxBl90YIFfMZNatx/qB+n5XmjWI2uKnffBh90k2cTNTCe6CJl/PxkDTTpYGOaeJUsbBUewl1cf0yURHdO4DY6T1L2DtzbZksRAEIBSsLtuJxCUifzRfsd21I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B6E26E173
+	for <netdev@vger.kernel.org>; Thu, 25 Jun 2026 15:54:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782402875; cv=none; b=Y/sh1I7TNWwKkVnTGkmOIPm1BcVX9h+YT5OYrNgjzgfV+g+J4DMSeiehhDAJ5oNKbOGFjLJWva0o40c+3/5rlQpgkvuJv+GwXD6KWmTeWPd1hGAOJb5/oZAiU1uBJoMhlI7RRJdMrGAmSU+714AMZXPo30dv8r4XgK2e/PmS/VE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1782402875; c=relaxed/simple;
-	bh=QUUo5LdoJC3/+9LejyhzEuy9Db4qM7GyIsMW4+lSXX8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GRwyPQ5BpoJpYKZDK3do/cHpPXAo/0HBoN4uLTddsK00ncXrI5l6yu0jqY+9gTq0N0ZGO+qcEpUG6SqLzJerypo++9FTXZe1/PH0sFqKo9V5Azjs5XyE9Cp95r4s/QIv4A7Gd+r79ZWCSiSclawnBvhl708fp4p6UYDW6FPObd8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=euxRyDjw; arc=fail smtp.client-ip=52.101.65.117
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
+	bh=GjibqhTRoSMwtT2rQf8/YwUCCraZ5cjmIu/wmd8c/uY=;
+	h=Message-ID:Date:MIME-Version:Subject:From:Cc:References:
+	 In-Reply-To:Content-Type; b=AgqqWs6QDlEnC+le9mo6j7uWk3tEhwBTxNz/RxuW60nkZW5RMW6vNyev5qXHSwmN8C6J5zojatLJvatxKZl56KtbnEFgOrVgi2X0gJbg/xLqcwx3qHQVYx3j4y5WK2yD4ahENR27s5ZdeZ8JC5qqrLGfYwoYZjVDHAsdmrwgn2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RZ1GBGiR; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="euxRyDjw"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GqZVvoKYyhatJPgj380Atst3zoL5ptJynjcRYfUuPtZ+bnGOTO9oH95hUIptg7r1VdiiISFoG6vjFUv5j0ZZvVh8U6SCkkuEWyurNbFcfCf7xBUytsnxKoHhXqwg/rsZwzAGfmxlvU9kZKxUzcvMrE2pgCgn8vK/3lJCiE4HpFgiTeubJ+UW+Zsi6uf48ursPdH0bB4pjDcPiNsQSlrQuriRCN19y8WZvBm6KNC9e5+sTTQRE6Zm8r4yI7fleqsyG43SpAAZeMVW3bOI3SmMVFMB4wLSMlTsjkTLx0LRzGfqvlhyyrIUgMCNUr8m4+EUOdcv1UYXQxf82+dfo8oBkg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2+vb3H7ga1/zO8JIhDlu/cn9DNQ0Sk/VBwY/dIrZDik=;
- b=MbCplMJWB9udZRomRP2WTJYD39EanUcXzxloNnCk8rmvPnmB/WoIvHInrsAo2JGhCXtH2VEL8Opg2kmXE/kIgCVNor5z4eDFP3VWK412xkE/3l8FoqretekqUUtw6efdRPSSSgNjshpW8cRM+HcEgZEg0kmVVjB61BDkUztvxAjPYJmXU/0piBdmHmHwW3K1vjwMl4VE87HELLSeMTy2323Hs7ZyxMAniQ+2cjCkwikiyTKOhGqxdipSEcFcCmu8jaJ9cNVKnS2z1Mf6XdorLvHSkF7kNh+V0n+4MwzLTA2YFnwV4BQVWLXnWyZNs5qrjjrH3dVNQuvZ8DEFnQqvwQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2+vb3H7ga1/zO8JIhDlu/cn9DNQ0Sk/VBwY/dIrZDik=;
- b=euxRyDjwSlZSr7krRW/pD44W5PlLaSczvhMPdnxwlRZkV0c3VG+L9e7dD/GF/wGqclx2dUT1P4jZ6nmAucfDpbZAnjwW4bk45UXjrkiMjWqaH88YIu9eLktP+bw0Rj1DfMi66W/KdLYtZMYumt7BAiJ0lgsh9f2zLytGjjhTye7YHriQQrwAgKSECXSrTlJdBgUK6vehS9oOAvrPzryz0YXxoZAG2hm83pPZ4D8PmvgiUoimFxuGqZs638TYDd+iPIOpJPg4B2rgzJv8VNqgx3UgHiKMyna2EClJ3X2wreHmDJf+eq0mXmAYe1UvhA6vKb+C4pkSvJA2vOfCbZKThQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
- (2603:10a6:800:20a::12) by DU0PR08MB8043.eurprd08.prod.outlook.com
- (2603:10a6:10:3e7::8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.19; Thu, 25 Jun
- 2026 15:54:30 +0000
-Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
- ([fe80::4e37:b189:ddcd:3dd8]) by VI0PR08MB10656.eurprd08.prod.outlook.com
- ([fe80::4e37:b189:ddcd:3dd8%5]) with mapi id 15.21.0159.013; Thu, 25 Jun 2026
- 15:54:30 +0000
-From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-To: linux-kernel@vger.kernel.org
-Cc: kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	sgarzare@redhat.com,
-	mst@redhat.com,
-	stefanha@redhat.com,
-	dongli.zhang@oracle.com,
-	maciej.szmigiero@oracle.com,
-	bchaney@akamai.com,
-	mark.kanda@oracle.com,
-	ptikhomirov@virtuozzo.com,
-	den@openvz.org,
-	andrey.drobyshev@virtuozzo.com
-Subject: [PATCH v3 1/4] vhost/vsock: split out vhost_vsock_drop_backends helper
-Date: Thu, 25 Jun 2026 18:54:13 +0300
-Message-ID: <20260625155416.480669-2-andrey.drobyshev@virtuozzo.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20260625155416.480669-1-andrey.drobyshev@virtuozzo.com>
-References: <20260625155416.480669-1-andrey.drobyshev@virtuozzo.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: VIYP296CA0007.AUTP296.PROD.OUTLOOK.COM
- (2603:10a6:800:29d::12) To VI0PR08MB10656.eurprd08.prod.outlook.com
- (2603:10a6:800:20a::12)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RZ1GBGiR"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-4627adcf4d6so1888309f8f.3
+        for <netdev@vger.kernel.org>; Thu, 25 Jun 2026 08:54:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782402872; x=1783007672; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:from:subject:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=r11YPBeFUMC/ykhviZOTZPIZ364dxZdsWoCdVPJYmuw=;
+        b=RZ1GBGiRE/nozlrNcIh9AsgEV1qo/O/2GviCrTxteM39GPuzlxEUboYaqzdx7E0wMB
+         IzMNQp4JYCjVHiel972AT4vemkz7bZ0Q21ARzxxx8IfwZnfrwej5v09pmf3wzPWxE2lM
+         ldr8Xb/qWYqCpS71Z4NyTx5MKdT4ugPQvME3gUfBWQPv9VaovOU9nB8pygTzLCsepI7Y
+         Cr8bSaULQSk9ljrH+54+FO0kldl6Ub9/ARocLAz8gVOCHeW3wCdfk3jW1Rv1O9aZsMer
+         YsptXDikunyAESsRSnn5rGJJMm7eCRzJ4Caj9k6v1gDVoIMHqPmlO5SZ6s3pwq3in/fv
+         /vQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782402872; x=1783007672;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:from:subject:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=r11YPBeFUMC/ykhviZOTZPIZ364dxZdsWoCdVPJYmuw=;
+        b=SFHxSe6KDH0+B5avy7+GKqzHTmC1XYCseoN6Mujy3YGUkURGcPAQfaUMdkKQAVyrru
+         ndgmN9GR/gmID7JWujDK7dVyXyMNlpkzoVa5YqEHb7vWTHvY0el6VOJPn2txHg2/Lzkg
+         b2NcN4FS1eE/ynRP0v9ATTpPDMJKks0mdpJoL4QeWZtdj1/mIkjAfLvnOU9vRyX/rPwr
+         EiVqyRGloMMJfQLMjpfTQUkSTlx1EJWfnIDhmjPGyJFIxcox/uPrV46pvvOHpEB57ca5
+         bIMHkxzISL2WmEZUcYHSqwDdaih1BqmOBBcnmurUQVQjIt066d3Mnb6nBg+QhhxZ0D1+
+         xFTg==
+X-Gm-Message-State: AOJu0YxPGpDpS7F5fEMwzKAdZL8gnsRGotddFPG5lJpbV5MtL3XCmhg8
+	y7Xdiu0zi5iC0mEQ1Fxi8e95SHscAfON+9mCTSJbC2YSZ4iLdqQCUcVwSB7YsoW6
+X-Gm-Gg: AfdE7cm6exuVpRfFhNDExzyVbZGbRbsE2luhOLhZsFpDaytapWXE5XY3bL1iNkNMRm0
+	bTk1cVLxiZf9RUGTPVqTj4tmPtAI1u0P39zS/FjekthyuNsYVsIM+Jo49bnkrj3aO2es/bJ8Me3
+	5zeKcwWM2Hsz1g2W26RN00BEFkUakZTR633KL8rFseafFAJNKTc/kKk8FPm4kWhbn6ApJkNK0uO
+	JV93vOWwgrJ4eS+aarFBh43PDNwZ4V3xI8OYxa4QY9HqBMKd0/AKpDyn+b1A9ugrQpVgVmP00GP
+	NOaOaABfmrBF9Ote4AfsgfRzde+M6tJnocRRRKYf+tBF66rkLKzFRYIFOFT/wt2GuFipswNOytU
+	XYsu48Pw0Zt5tW/gnPuUvSYin7g813/MOjeKi+nOO3vHvbzwLsgTup61n7y17euPho+LuRkgxsb
+	xqUI13jkriEERF4QHMfpOaKauJHOX8JWneK996eX6xJmw/I40DLvfx4MU=
+X-Received: by 2002:a05:6000:220e:b0:46e:878c:9194 with SMTP id ffacd0b85a97d-46e879bd418mr960662f8f.32.1782402872265;
+        Thu, 25 Jun 2026 08:54:32 -0700 (PDT)
+Received: from ?IPV6:2001:bb6:1b96:9200:cf2e:dbb6:5a08:1ea4? ([2001:bb6:1b96:9200:cf2e:dbb6:5a08:1ea4])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-46c221d9405sm18758152f8f.22.2026.06.25.08.54.31
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 Jun 2026 08:54:31 -0700 (PDT)
+Message-ID: <65f53987-c992-41b9-9603-9e9a448e469d@gmail.com>
+Date: Thu, 25 Jun 2026 16:54:29 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VI0PR08MB10656:EE_|DU0PR08MB8043:EE_
-X-MS-Office365-Filtering-Correlation-Id: f7495631-bdc1-4bfb-e75b-08ded2d20b05
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|23010399003|7416014|52116014|376014|18002099003|22082099003|56012099006|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	tASAo1IKMzSMQ3En7PbOU1kdMCj2YJpL5qxeodK3gQMDV7CW2tdbCNNSPzDcBtuBvwhpNSjx59qOKuObDEw8Rk2JxYArNJSeEZdUgyhlBJ1ikLsmRook5skKleyxpaw0wCjKQfFsTdpWjOPTbhseLRIqPsksCpSOL3EjZGexAUk3cPQUEVpzcu+2YJoSqUw93W1etUG2npJ2B8oKOVF7cnohkuhOuw/bYnqjZ8Yuw/K1wfV+KQAbJaL6ETBsPY4dinrwscMIspB7SvwNopB+MUsrbYCvM2K5ucUlfYAvUy/YBK7deHZLm11cMq7ai7lQfT+f/TQ89XV2uCnWETpCsEhR7iCFU6XtB5TbIbFVGTzGAtSx3OcZWtPalPwf8rE0OS5m1Ro0PxCFh5AmprPRR+5PPy7vNF/GI5ra4jhYLOdk1BPdQAJyJ+U9x4bUTiN5OQshyYkAxrDgV8tCLH/tRMNzgBS1cu5t8cJZLsN2ItvCoG2DPR4VGqAm7TC8g3/kYSTLudTP9+3hdkRGJsTIrMYRwRPKmf+167vOd8UwwvwFiKSPYR7ONx7V3hoWAS2yY+1lbRtHGZeL1P3D1YiCdg4lKs4Vtxqj8CJ7dhyUI/RG5bZ4vcKZy0D4DRX3eS7AQJA6RByv0yGmC7LhdMVLGN5T+AksuHPhxIMCdTbbuKumlFrFyJ04CF1aAaAdvCO7hGk2fYCWbpri0T3E41K4A0iU4AqXBF8weq0JduZi46A=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR08MB10656.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(7416014)(52116014)(376014)(18002099003)(22082099003)(56012099006)(38350700014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?5EoOmT8wr0smkm8jNr7m8xJMbqca9d3l8fbHIDpNzRMYeRFJaEXJNPS2qHse?=
- =?us-ascii?Q?JKXyww6C95lrqq87AiwFYiAXgwUYAE3uIcUIde22hVBCzafhFpe1yjBa9c5S?=
- =?us-ascii?Q?58D4bVmsngdjmkGQdbxGgxzXGozt2j7XtA4NsmektPRwjLUuW0F1vq/+Ynl5?=
- =?us-ascii?Q?5oE1cRwgn8xB4KvDlj2645HZVibtGhvsxQ0ht9aj+E4twUEyV+uIi9Rm1KOi?=
- =?us-ascii?Q?Rl+AQLi7Qqkts02Z2wT4Ic9aNiVXJzVCcwCE2GypgHEgqtvE4UXWbWOqqFcH?=
- =?us-ascii?Q?yKvzE+la6856604crwXil5taVdH3ORR0o93Ins+vQ6F3HuME7YUP7Zp515jq?=
- =?us-ascii?Q?zHsqwgBi6tNj8ajZXEX5NYHcq6oBNgE0zUwULGhC+7MlScIYZF5iIeZ4q5PY?=
- =?us-ascii?Q?1FRP0y55J0NY+BrdB2VkH1x+4xd6Nh+/lILv50jbb8uSOqsw15YXlVVaij4w?=
- =?us-ascii?Q?ItKIvaiHP2xvJsDbO91TMmBuNK0LdHu/wrbuWOdc+OOAN9Ut7zW0U/4ehb4z?=
- =?us-ascii?Q?uWHGBL0zBF5P5fN9UCQY6PyKQf+Mx7r51sriF+WBYYqPLZ+96ocuEzh7pQom?=
- =?us-ascii?Q?dNUVI3XUCVjJ54fdyPFJCSsiojbN57yKTu6Rur0HChRXoy/ah8+hAfcghKN1?=
- =?us-ascii?Q?0ieV6QDc0Yv7aXCeYc/g9dk4hyUxOZ0a4PXRAgoIRI2YuIMYlEvSHJ0FsNeQ?=
- =?us-ascii?Q?m6o+D+13578nvARo4X502jiusDibRV9uEPIGNSvcWqFAdUASHBMVm+r3/4LJ?=
- =?us-ascii?Q?sJjKTaw7b8aEadTvZmU32fmXxoJtTQBaP4m+4nzl/cgbioLXXPzJZteuILuq?=
- =?us-ascii?Q?MEw6MY4b3q7bPyy/Md6EaYVknAhfhKlc2KPe6nABDHoRG6HZE44ldoBXDqMM?=
- =?us-ascii?Q?m9UZ/Tnl80bvbljwokcicT3h5HaYX7AKR9Vie+Lc2gn+I3v+r4C1pfEy3SET?=
- =?us-ascii?Q?U0tm9f0ODzYcYuhGHwHRKdGrOJoF2iPpxq6FKj9GMNl/3uxO9D/YCU3J+yiH?=
- =?us-ascii?Q?1DwaYkmzt5Bm6gkt/EtxzN0s784+DalTcDxSTSVvA0jRMBQVsM2Rj/hlHlFi?=
- =?us-ascii?Q?N4wSAIEKummmuqDMQcXdWMzYtIiQLOdnA0Ae7n33PMKCJH+5ZA42KL2z2An3?=
- =?us-ascii?Q?c+n5RLOZrCfjKFq3Hu0FJJz7gtAcaj5yhFPOUM+nsXghoCw2CadzgD87z3vy?=
- =?us-ascii?Q?15ZEoaQHiENA6gIbTLs1MFXUsHfPa8u3C6U1eXJ//3DRY/vwZWPkL6OJ2Orz?=
- =?us-ascii?Q?BDu9OaHo5Gb12cIi6wNRmESCAnoUt1jdKrBVTuycfmAuwh9WYgkHJ3ywi7DS?=
- =?us-ascii?Q?cL5VWIr4fgnhN4FQs284jm0kM7BawSP5PjCp7lpbX0N/HZD5fBOUqVYdU3ub?=
- =?us-ascii?Q?DAELcMzyME3AyIh/Mxs3BQZLgng41oUeIcUTEHzi3BudGkqo5N3e5OwZ5Qnh?=
- =?us-ascii?Q?Hzdeivc1AuimNa2hPzkHNdfJvKdn3Yg/PWgGkIxSw23kzPPJPsZ5IJIVrVZJ?=
- =?us-ascii?Q?g7MBXe1CctwKxAqEmCa3Tj01oWkqvJDiOW7zJRLm0Xzu7qTtua3Tj8iiatm9?=
- =?us-ascii?Q?700PPozDkLDzwmSQnZsr8RZyu3fFDfqFs7niJ6/KdydmF1j9GQx2H07u4mFs?=
- =?us-ascii?Q?SVVNCOBeW9OUl+yo8HZOiBGMh74+oX/KK0RmC0YJBrtOY3o7V7CGgqitK1tU?=
- =?us-ascii?Q?rfMMpBKI6WZg8IlNrTFU6GJvJ9y70hPRb5luNLJeAYmhNCZbPPJQlXeSkHne?=
- =?us-ascii?Q?9OkRbhhPP2IMy2JFoTayVPibGX1hs/o=3D?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f7495631-bdc1-4bfb-e75b-08ded2d20b05
-X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10656.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2026 15:54:30.4349
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pDjNne9Z6ieD02V4G1kEB047bI2TWX4KdP1e419GsOj9aVRuhyFtQLh0195bX8v3IEUP/CkrX/v0RPHX8HO6WxGqv1ZVUYNMqKJlraqv4RM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR08MB8043
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH iproute2-next] "ip help" wrong output, exit code.
+From: Dmitri Seletski <drjoms@gmail.com>
+Cc: netdev@vger.kernel.org
+References: <62f09fe8-899c-4d22-b7a1-67e2745613df@gmail.com>
+ <20260621082105.1196ef72@phoenix.local>
+ <069b13e1-f689-410b-bd40-b5e5831b67e7@gmail.com>
+ <20260622075700.27806286@phoenix.local> <20260622174454.576b3580@pumpkin>
+ <3d6f256c-3bd0-441a-bece-8692985c5ddc@gmail.com>
+Content-Language: en-US
+In-Reply-To: <3d6f256c-3bd0-441a-bece-8692985c5ddc@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-From: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+I am confused.
 
-Split the actual backend dropping part from vhost_vsock_stop.  We're
-going to need it for the VHOST_RESET_OWNER implementation in the
-following patch, when vsock->dev.mutex is already taken and owner is
-checked.
+Whats the next step here?
 
-Signed-off-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
-Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-Reviewed-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
----
- drivers/vhost/vsock.c | 26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+Regards
 
-diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-index 9aaab6bb8061..b12221ce6faf 100644
---- a/drivers/vhost/vsock.c
-+++ b/drivers/vhost/vsock.c
-@@ -664,9 +664,24 @@ static int vhost_vsock_start(struct vhost_vsock *vsock)
- 	return ret;
- }
- 
--static int vhost_vsock_stop(struct vhost_vsock *vsock, bool check_owner)
-+static void vhost_vsock_drop_backends(struct vhost_vsock *vsock)
- {
-+	struct vhost_virtqueue *vq;
- 	size_t i;
-+
-+	lockdep_assert_held(&vsock->dev.mutex);
-+
-+	for (i = 0; i < ARRAY_SIZE(vsock->vqs); i++) {
-+		vq = &vsock->vqs[i];
-+
-+		mutex_lock(&vq->mutex);
-+		vhost_vq_set_backend(vq, NULL);
-+		mutex_unlock(&vq->mutex);
-+	}
-+}
-+
-+static int vhost_vsock_stop(struct vhost_vsock *vsock, bool check_owner)
-+{
- 	int ret = 0;
- 
- 	mutex_lock(&vsock->dev.mutex);
-@@ -677,14 +692,7 @@ static int vhost_vsock_stop(struct vhost_vsock *vsock, bool check_owner)
- 			goto err;
- 	}
- 
--	for (i = 0; i < ARRAY_SIZE(vsock->vqs); i++) {
--		struct vhost_virtqueue *vq = &vsock->vqs[i];
--
--		mutex_lock(&vq->mutex);
--		vhost_vq_set_backend(vq, NULL);
--		mutex_unlock(&vq->mutex);
--	}
--
-+	vhost_vsock_drop_backends(vsock);
- err:
- 	mutex_unlock(&vsock->dev.mutex);
- 	return ret;
--- 
-2.47.1
+Dmitri
 
+On 6/22/26 18:47, Dmitri Seletski wrote:
+> Hello David,
+>
+>
+> Based on change introduced:
+>
+> Two samples of "ip help" with demonstration of exit code and standard 
+> output are below.
+>
+> This is in line with what expect.
+>
+>
+> dimkosPC~/compiled/iproute2-next #if ./ip/ip help a >>/dev/null  ; 
+> then echo help triggered  ; else echo error code triggered  ;fi  #this 
+> redirects standard output  to /dev/null, so text missing is not error,
+> but standard text
+> help triggered
+>
+> dimkosPC~/compiled/iproute2-next #if ./ip/ip help   ; then echo help 
+> triggered  ; else echo error code triggered  ;fi
+> Usage: ip [ OPTIONS ] OBJECT { COMMAND | help }
+>       ip [ -force ] -batch filename
+> where  OBJECT := { address | addrlabel | fou | help | ila | ioam | 
+> l2tp | link |
+>                   macsec | maddress | monitor | mptcp | mroute | mrule |
+>                   neighbor | neighbour | netconf | netns | nexthop | 
+> ntable |
+>                   ntbl | route | rule | sr | stats | tap | tcpmetrics |
+>                   token | tunnel | tuntap | vrf | xfrm }
+>       OPTIONS := { -V[ersion] | -s[tatistics] | -d[etails] | -r[esolve] |
+>                    -h[uman-readable] | -iec | -j[son] | -p[retty] |
+>                    -f[amily] { inet | inet6 | mpls | bridge | link } |
+>                    -4 | -6 | -M | -B | -0 |
+>                    -l[oops] { maximum-addr-flush-attempts } | -echo | 
+> -br[ief] |
+>                    -o[neline] | -t[imestamp] | -ts[hort] | -b[atch] 
+> [filename] |
+>                    -rc[vbuf] [size] | -n[etns] name | -N[umeric] | 
+> -a[ll] |
+>                    -c[olor]}
+> help triggered
+>
+> Two samples of command that is broken on purpose.
+>
+> dimkosPC~/compiled/iproute2-next #if ./ip/ip idontexist   ; then echo 
+> help triggered  ; else echo error code triggered  ;fi
+> Object "idontexist" is unknown, try "ip help".
+> error code triggered
+>
+> dimkosPC~/compiled/iproute2-next #if ./ip/ip idontexist  >>/dev/null 
+>  ; then echo help triggered  ; else echo error code triggered  ;fi 
+>  #this redirects standard output  to /dev/null, so text missing is not 
+> error, but standard text
+> Object "idontexist" is unknown, try "ip help".
+> error code triggered
+>
+> This works as expected as per my understanding.
+>
+>
+> Not everything is fixed, but chunk of things fixed is better than non 
+> of it.
+>
+> for example:
+>
+> if ip  add help    ; then echo help triggered  ; else echo error code 
+> triggered  ;fi  #this redirects standard output  to /dev/null, so text 
+> missing is not error, but standard text
+> Usage: ip address {add|change|replace} IFADDR dev IFNAME [ LIFETIME ]
+>                                                      [ CONFFLAG-LIST ]
+>       ip address del IFADDR dev IFNAME [mngtmpaddr]
+>       ip address {save|flush} [ dev IFNAME ] [ scope SCOPE-ID ] [ to 
+> PREFIX ]
+>                            [ FLAG-LIST ] [ label LABEL ] [ { up | down 
+> } ]
+>       ip address [ show [ dev IFNAME ] [ scope SCOPE-ID ] [ master 
+> DEVICE ]
+>                         [ nomaster ]
+>                         [ type TYPE ] [ to PREFIX ] [ FLAG-LIST ]
+>                         [ label LABEL ] [ { up | down } ] [ vrf NAME ]
+>                         [ proto ADDRPROTO ] ]
+>       ip address {showdump|restore}
+> IFADDR := PREFIX | ADDR peer PREFIX
+>          [ broadcast ADDR ] [ anycast ADDR ]
+>          [ label IFNAME ] [ scope SCOPE-ID ] [ metric METRIC ]
+>          [ proto ADDRPROTO ]
+> SCOPE-ID := [ host | link | global | NUMBER ]
+> FLAG-LIST := [ FLAG-LIST ] FLAG
+> FLAG  := [ permanent | dynamic | secondary | primary |
+>           [-]tentative | [-]deprecated | [-]dadfailed | temporary |
+>           CONFFLAG-LIST ]
+> CONFFLAG-LIST := [ CONFFLAG-LIST ] CONFFLAG
+> CONFFLAG  := [ home | nodad | mngtmpaddr | noprefixroute | autojoin ]
+> LIFETIME := [ valid_lft LFT ] [ preferred_lft LFT ]
+> LFT := forever | SECONDS
+> ADDRPROTO := [ NAME | NUMBER ]
+> TYPE := { amt | bareudp | bond | bond_slave | bridge | bridge_slave |
+>          dsa | dummy | erspan | geneve | gre | gretap | gtp | hsr |
+>          ifb | ip6erspan | ip6gre | ip6gretap | ip6tnl |
+>          ipip | ipoib | ipvlan | ipvtap |
+>          macsec | macvlan | macvtap | netdevsim |
+>          netkit | nlmon | pfcp | rmnet | sit | team | team_slave |
+>          vcan | veth | vlan | vrf | vti | vxcan | vxlan | wwan |
+>          xfrm | virt_wifi }
+> error code triggered
+>
+> This is still problematic.
+>
+>
+> But so far code leaves "ip help" command/argument in better shape than 
+> it found it in.
+>
+>
+> I may try improve things more, but lets submit what we already have 
+> "better", please.
+>
+> Kind Regards
+>
+> Dmitri Seletski
+>
+>
+> On 6/22/26 17:44, David Laight wrote:
+>> On Mon, 22 Jun 2026 07:57:00 -0700
+>> Stephen Hemminger <stephen@networkplumber.org> wrote:
+>>
+>>> On Sun, 21 Jun 2026 22:48:59 +0100
+>>> Dmitri Seletski <drjoms@gmail.com> wrote:
+>>>
+>>>>  From 0805e07105cd15c5b94271a4706e50e3c65dbde5 Mon Sep 17 00:00:00 
+>>>> 2001
+>>>> From: Dmitri Seletski <drjoms@gmail.com>
+>>>> Date: Sun, 21 Jun 2026 22:12:43 +0100
+>>>> Subject: [PATCH iproute2-next]  "ip help" wrong output, exit code.
+>>>>
+>>>> Changed output of "ip help" from standard error to standard output. 
+>>>> And
+>>>> Exit is now 0 instead of -1. "ip help|grep bridge" - now gives bridge
+>>>> syntax instead of flooding user with everything from "ip help".
+>>>> ---
+>>>> ip/ip.c | 4 ++--
+>>>> 1 file changed, 2 insertions(+), 2 deletions(-)
+>>>>
+>>>> diff --git a/ip/ip.c b/ip/ip.c
+>>>> index e4b71bde..4627b61c 100644
+>>>> --- a/ip/ip.c
+>>>> +++ b/ip/ip.c
+>>>> @@ -56,7 +56,7 @@ static void usage(void) __attribute__((noreturn));
+>>>>
+>>>> static void usage(void)
+>>>> {
+>>>> -fprintf(stderr,
+>>>> +fprintf(stdout,
+>>>> "Usage: ip [ OPTIONS ] OBJECT { COMMAND | help }\n"
+>>>> "       ip [ -force ] -batch filename\n"
+>>>> "where  OBJECT := { address | addrlabel | fou | help | ila | ioam | 
+>>>> l2tp
+>>>> | link |\n"
+>>>> @@ -72,7 +72,7 @@ static void usage(void)
+>>>> "                    -o[neline] | -t[imestamp] | -ts[hort] | -b[atch]
+>>>> [filename] |\n"
+>>>> "                    -rc[vbuf] [size] | -n[etns] name | -N[umeric] |
+>>>> -a[ll] |\n"
+>>>> "                    -c[olor]}\n");
+>>>> -exit(-1);
+>>>> +exit(0);
+>>>> }
+>>> Your mailer damages white space.
+>>>
+>> The output also needs to depend on whether these is a 'usage' error or
+>> if 'help' is requested.
+>> Code code is correct for the former - except it should do exit(1).
+>>
+>>     David
+>>
+>>
