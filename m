@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC96379EE7;
-	Thu, 25 Jun 2026 02:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A973A7F4E;
+	Thu, 25 Jun 2026 02:40:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782355233; cv=none; b=OZR1UFg89Ap2ZElCqW7w5+o2HK5kvdQgUnAJJgDOj7ChKO3QLVxmonwirCrfA1TyZnrSIgoYFom0pRVGmsriDT2GuAIj5jmYIJyygkW3/qgeXIyPHkBljXmqadNMcGbagw0hx6dt2gXKZlCnkf2tS28z4Ol2CswCKwQuHsWYhiw=
+	t=1782355235; cv=none; b=eu5sb+lYKiqZft5Hcu4XeZxxppZfHic7cRuC5YnYm73tUzRE5I4tfDsC5f6OQiJ6VyeB2RbiTg1XCM1kLZTy160oFjephGtiSGkSFEESDLBbHhaBdcLgSjqxrYeZEG9HknGMusx4PF/fEOrIB+1XlX9q4+LmT5Dj/x6Z5lMgl3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782355233; c=relaxed/simple;
-	bh=uAQZzIfbwtFY5HNVfNjZueCqi/eEGnEJlGFf1d1vPhc=;
+	s=arc-20240116; t=1782355235; c=relaxed/simple;
+	bh=rX3XmZP71HSRI4WS0Wtx0rS8ZJaYt92AceqJPkmks1w=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=naEl6xxQPcwAl0u6CoCp+Z0/NX1D1Vk650WLVXQcj1ruBqBZF6BkdM+w0bBTKG2ltqKRcDiedl4OkBu2V3TcrUWE9/tFcw2FHXlamKuuD0NhVkEQVn5pS1v+7EhFYYS3/sHOL1M0+tDtDC2zG/Q2jQvygH2i2nB/BhZcr7DP0ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fhh56fqT; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=CZFdRda0boeZ8CtYTKwDauIdKZAfuyyCI7+Rcp+uPBMaoV7MKxE+04rGx6GifcxB92l83unENYpu8hEIZFCzRdVoJbxyW2Tp50nyI44ZRSKLH6kmc3MCe9bQHF7dbXeL6UpDGTYxjEtOzlmN/L0RT5iEoSxchAiBhUkMzZa/QKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V2SlsrY6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fhh56fqT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62D851F000E9;
-	Thu, 25 Jun 2026 02:40:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V2SlsrY6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCA4C1F00A3A;
+	Thu, 25 Jun 2026 02:40:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782355232;
-	bh=xyAPI4p0/MTTG/aGrzMpxqG01cR4hkSNRrdo/rcgw0k=;
+	s=k20260515; t=1782355233;
+	bh=A+oVeHrsUVC8bRiRf77SQD6LgVvJyKOKm+ncDz0MjJg=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Fhh56fqTKqidCRn6VypRYY7ASeRw1bn00oziepAsDsPYjoP1U1bUNogCxceT93+Gu
-	 fSdPPT3ugovEM+OTuvIgwJU3P85hezj9YkYNjXN0P7uS7trovOdu4slUeKtA08rnfZ
-	 nyKLSG1WBj44AvLvoS0sJHufJ5fsk00ogufZt6s9UHC9iKnEbPAyGX9HJUtXe7cLJm
-	 bhiDfZsDUPf/20TFF0qGr7YXD8A66XTlNc3lutQa1dBNPD1nFWgrkwtF4e5Q2QCWtR
-	 o5lxhdItAw2W0IU1UnLP+q/xZlbSo3QP+cvo4x1vEtUnvn3AplwHTR6s7+Uyje0SUi
-	 h2N2bwEAf67xw==
+	b=V2SlsrY66onCE04zEVuPxJarwSVv9ALK7WUBs7mcDth6j6nTUy3Z4vODcCMv2bR0r
+	 1YI4tqa1ThBGSzqKsKSJUXOuebW6NIUlvdiMuKansfXHRaW/j57PFMoekTE6X9Mtsu
+	 H5TmDKtZ/lwD6ulBE/Qgv8bkbB+bvR0B+mKzDS6T62HSrtEBzm4p3w7jTGU/E1PCV9
+	 RujV430tQqAStXZW7O9iwICdW4hlGY+raiD9t57CV2UvIhLeqj4mUpXtYy1TkGX8sC
+	 nRG3G2jD71fY6duN4gbWvAkh9HunvE2MAzbYJfkpsCtTscMZXb40Ik3YCHzbJoNVml
+	 soNyOC6ojy4GA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09993AAA6DE;
-	Thu, 25 Jun 2026 02:40:21 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5692B3AAA6DE;
+	Thu, 25 Jun 2026 02:40:23 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3 0/2] net: ethernet: sunplus: spl2sw: fix of_node
- refcount leaks
+Subject: Re: [PATCH net] tools/ynl: add missing uapi header deps in
+ Makefile.deps
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178235522029.3091545.3009752981446571608.git-patchwork-notify@kernel.org>
-Date: Thu, 25 Jun 2026 02:40:20 +0000
-References: <cover.1782195965.git.shitalkumar.gandhi@cambiumnetworks.com>
-In-Reply-To: <cover.1782195965.git.shitalkumar.gandhi@cambiumnetworks.com>
-To: Shitalkumar Gandhi <shital.gandhi45@gmail.com>
-Cc: wellslutw@gmail.com, kuba@kernel.org, andrew@lunn.ch, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- shitalkumar.gandhi@cambiumnetworks.com
+ <178235522202.3091545.15269584684983413822.git-patchwork-notify@kernel.org>
+Date: Thu, 25 Jun 2026 02:40:22 +0000
+References: <20260623070818.2161810-1-linux@leemhuis.info>
+In-Reply-To: <20260623070818.2161810-1-linux@leemhuis.info>
+To: Thorsten Leemhuis <linux@leemhuis.info>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, donald.hunter@gmail.com,
+ riana.tauro@intel.com, linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 23 Jun 2026 12:11:41 +0530 you wrote:
-> This series fixes of_node refcount leaks in the Sunplus SP7021 ethernet
-> driver, found by inspection. Compile-tested only; no SP7021 hardware
-> available here.
+On Tue, 23 Jun 2026 09:08:18 +0200 you wrote:
+> drm_ras includes drm/drm_ras.h, which is a relatively new header not yet
+> shipped in most distro kernel-header packages. Without the explicit
+> entry, the build might fail with a message like this:
 > 
-> Patch 1/2 fixes the phy_node leak in the remove path.
-> Patch 2/2 fixes multiple leaks in the probe path and depends on the
-> cleanup contract from patch 1/2.
+>   drm_ras-user.c:19:10: error: ‘DRM_RAS_CMD_CLEAR_ERROR_COUNTER’ \
+>    undeclared here (not in a function); did you mean \
+>   ‘DRM_RAS_CMD_GET_ERROR_COUNTER’
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v3,1/2] net: ethernet: sunplus: spl2sw: fix phy_node refcount leak in remove
-    https://git.kernel.org/netdev/net/c/a9e29dcd8a84
+  - [net] tools/ynl: add missing uapi header deps in Makefile.deps
+    https://git.kernel.org/netdev/net/c/636838ebb74a
 
 You are awesome, thank you!
 -- 
