@@ -1,192 +1,195 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11021117.outbound.protection.outlook.com [52.101.65.117])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9BA123BD1B
-	for <netdev@vger.kernel.org>; Thu, 25 Jun 2026 15:53:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782402796; cv=none; b=Hc3L4cZ5bzwpvLiTn5o1pRKJBJlf7XJraWvGrkG5vaI5nMyzxys0zhfOdfrx8XLRxfVUg7osJF1FFEAr7eA5JyIavlZKqdciG82sG8AZu6B2rFdCH/zBYwfhcH4DgT1Q75qwFrJiXOOdynWyMXL4+ozuFSniGu1TgRlOGkT/PmY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782402796; c=relaxed/simple;
-	bh=Og4C+MaKmLZf2JGAM2OHBn7Ig4cAXYb1eQ5nglnohRE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Yz4q/sve9FYdZtxMF+XS+RDrp0qfwSKepLg/rp5007oBeB6Ep10oqMjT2sUifgvfvKrfoYW/HA0lS4cMYfwHjaFRex1TYhFOUshCYS0Rmm15E4vmAzef/lsH003ZTUqr2Trf7CVb0WN9qfFb5XQy6Av8ef+1sukRrpKJTSwcoC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Vfec3vHM; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E34F2E6116;
+	Thu, 25 Jun 2026 15:54:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.117
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782402875; cv=fail; b=SOCpcSLpx6vz0ceNNTeYTW0DJLH3ZWvhUOxQ6+4CFQscbrnuADmXxBl90YIFfMZNatx/qB+n5XmjWI2uKnffBh90k2cTNTCe6CJl/PxkDTTpYGOaeJUsbBUewl1cf0yURHdO4DY6T1L2DtzbZksRAEIBSsLtuJxCUifzRfsd21I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782402875; c=relaxed/simple;
+	bh=QUUo5LdoJC3/+9LejyhzEuy9Db4qM7GyIsMW4+lSXX8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=GRwyPQ5BpoJpYKZDK3do/cHpPXAo/0HBoN4uLTddsK00ncXrI5l6yu0jqY+9gTq0N0ZGO+qcEpUG6SqLzJerypo++9FTXZe1/PH0sFqKo9V5Azjs5XyE9Cp95r4s/QIv4A7Gd+r79ZWCSiSclawnBvhl708fp4p6UYDW6FPObd8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=euxRyDjw; arc=fail smtp.client-ip=52.101.65.117
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Vfec3vHM"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-84540760dc9so3281073b3a.0
-        for <netdev@vger.kernel.org>; Thu, 25 Jun 2026 08:53:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782402794; x=1783007594; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rqq6IGdnrj8L6K/Vi13GJ/747gQZalzJyYJwzbs/ueg=;
-        b=Vfec3vHMDJyrBz7aiZGFzK20XD8SlSlqdv2tAqRia9pE0THxPko95iOaIFEse6hhDn
-         UKZR0EbpbxerMF6PW98ApbhAUzeOk9Ru8pn6k+Ni3GRt7Mal8M913t3ZVt/v3XBalmA3
-         +aRTCCGgK2uao866zmS/Zx0xAR0VRME2cX8nADxoz6/Z6C00TQvyM5j4CBUCMO8MmowO
-         pJAoT3a+MFDFFDHDCxOswkuv7WHNpgr3KmfM3yn/qo0aBfUKC9JxG5KMtnB92VATrPrM
-         2prc5zHz0I/NHHd95ukr2WZw7cs7K5xXFp7upomLKMvQnHSLwLgSVYV1kDa9DyMGf0T3
-         j5pg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782402794; x=1783007594;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rqq6IGdnrj8L6K/Vi13GJ/747gQZalzJyYJwzbs/ueg=;
-        b=Fnbqh5vQPueaOcHqCWMUZ0U4u6/X/ACPHhhNWuI1gDohJOIm8HBb3Ou2sIeS+atO2K
-         VeH3LUusK1A0/Kw9jeVhw56r1pUt36EtJ0R0gISkACpQyBooqSK8pGL7zjM9tnEsabiM
-         AAg8UMJEev2chQfu2/Iwjj3QtH/kegTusrlGAQ/Y9cTyvpYFFJ6OXGDIYO/gaFyzGZlQ
-         W4RO6ctiPq+Ylje9lS8X3Zq6a0W4t9Hou/WAEHxNvdCZK1NtAKOEEf1iT23fWnlle15p
-         eQE85fXjLsXrLxzTOmwxbR/J2wHELzU+vUpEcNkgJecmQe6OUAF3XsvlkiLF6qUdvp7n
-         I59A==
-X-Forwarded-Encrypted: i=1; AFNElJ/6Ol+Qq8vCBdfJHdwcXAx+CVo+/gTOM7bhr0HL5qxjeMid6IG2N0K6ubB71F8Ei/8D4PKe3cE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwgOsevPXUChPKgbuVn0OHNOUUbDm3+K3XEQz7Hb1JP55HEhpaU
-	jPAOxTutb7YpFNvxaaAjmt+8zQJe+EguNeXuxbVhVhYyPAkwemDsRTFafPZ6/dZQ+TpunwIpUHz
-	b6w74cQ==
-X-Received: from pgc15.prod.google.com ([2002:a05:6a02:2f8f:b0:c8b:d999:75ee])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:9183:b0:3b4:b276:a789
- with SMTP id adf61e73a8af0-3bd4af04b93mr3574816637.36.1782402793879; Thu, 25
- Jun 2026 08:53:13 -0700 (PDT)
-Date: Thu, 25 Jun 2026 15:51:54 +0000
-In-Reply-To: <036a0c95-f5d4-46ab-88e7-1eab567d7a84@uclouvain.be>
+	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="euxRyDjw"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GqZVvoKYyhatJPgj380Atst3zoL5ptJynjcRYfUuPtZ+bnGOTO9oH95hUIptg7r1VdiiISFoG6vjFUv5j0ZZvVh8U6SCkkuEWyurNbFcfCf7xBUytsnxKoHhXqwg/rsZwzAGfmxlvU9kZKxUzcvMrE2pgCgn8vK/3lJCiE4HpFgiTeubJ+UW+Zsi6uf48ursPdH0bB4pjDcPiNsQSlrQuriRCN19y8WZvBm6KNC9e5+sTTQRE6Zm8r4yI7fleqsyG43SpAAZeMVW3bOI3SmMVFMB4wLSMlTsjkTLx0LRzGfqvlhyyrIUgMCNUr8m4+EUOdcv1UYXQxf82+dfo8oBkg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2+vb3H7ga1/zO8JIhDlu/cn9DNQ0Sk/VBwY/dIrZDik=;
+ b=MbCplMJWB9udZRomRP2WTJYD39EanUcXzxloNnCk8rmvPnmB/WoIvHInrsAo2JGhCXtH2VEL8Opg2kmXE/kIgCVNor5z4eDFP3VWK412xkE/3l8FoqretekqUUtw6efdRPSSSgNjshpW8cRM+HcEgZEg0kmVVjB61BDkUztvxAjPYJmXU/0piBdmHmHwW3K1vjwMl4VE87HELLSeMTy2323Hs7ZyxMAniQ+2cjCkwikiyTKOhGqxdipSEcFcCmu8jaJ9cNVKnS2z1Mf6XdorLvHSkF7kNh+V0n+4MwzLTA2YFnwV4BQVWLXnWyZNs5qrjjrH3dVNQuvZ8DEFnQqvwQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2+vb3H7ga1/zO8JIhDlu/cn9DNQ0Sk/VBwY/dIrZDik=;
+ b=euxRyDjwSlZSr7krRW/pD44W5PlLaSczvhMPdnxwlRZkV0c3VG+L9e7dD/GF/wGqclx2dUT1P4jZ6nmAucfDpbZAnjwW4bk45UXjrkiMjWqaH88YIu9eLktP+bw0Rj1DfMi66W/KdLYtZMYumt7BAiJ0lgsh9f2zLytGjjhTye7YHriQQrwAgKSECXSrTlJdBgUK6vehS9oOAvrPzryz0YXxoZAG2hm83pPZ4D8PmvgiUoimFxuGqZs638TYDd+iPIOpJPg4B2rgzJv8VNqgx3UgHiKMyna2EClJ3X2wreHmDJf+eq0mXmAYe1UvhA6vKb+C4pkSvJA2vOfCbZKThQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12) by DU0PR08MB8043.eurprd08.prod.outlook.com
+ (2603:10a6:10:3e7::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.19; Thu, 25 Jun
+ 2026 15:54:30 +0000
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::4e37:b189:ddcd:3dd8]) by VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::4e37:b189:ddcd:3dd8%5]) with mapi id 15.21.0159.013; Thu, 25 Jun 2026
+ 15:54:30 +0000
+From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+To: linux-kernel@vger.kernel.org
+Cc: kvm@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	sgarzare@redhat.com,
+	mst@redhat.com,
+	stefanha@redhat.com,
+	dongli.zhang@oracle.com,
+	maciej.szmigiero@oracle.com,
+	bchaney@akamai.com,
+	mark.kanda@oracle.com,
+	ptikhomirov@virtuozzo.com,
+	den@openvz.org,
+	andrey.drobyshev@virtuozzo.com
+Subject: [PATCH v3 1/4] vhost/vsock: split out vhost_vsock_drop_backends helper
+Date: Thu, 25 Jun 2026 18:54:13 +0300
+Message-ID: <20260625155416.480669-2-andrey.drobyshev@virtuozzo.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20260625155416.480669-1-andrey.drobyshev@virtuozzo.com>
+References: <20260625155416.480669-1-andrey.drobyshev@virtuozzo.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: VIYP296CA0007.AUTP296.PROD.OUTLOOK.COM
+ (2603:10a6:800:29d::12) To VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <036a0c95-f5d4-46ab-88e7-1eab567d7a84@uclouvain.be>
-X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260625155313.847098-1-kuniyu@google.com>
-Subject: Re: [Regression] Broken MPLS routes with multiple nexthops
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: anthony.doeraene@uclouvain.be
-Cc: davem@davemloft.net, kuniyu@google.com, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI0PR08MB10656:EE_|DU0PR08MB8043:EE_
+X-MS-Office365-Filtering-Correlation-Id: f7495631-bdc1-4bfb-e75b-08ded2d20b05
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|23010399003|7416014|52116014|376014|18002099003|22082099003|56012099006|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	tASAo1IKMzSMQ3En7PbOU1kdMCj2YJpL5qxeodK3gQMDV7CW2tdbCNNSPzDcBtuBvwhpNSjx59qOKuObDEw8Rk2JxYArNJSeEZdUgyhlBJ1ikLsmRook5skKleyxpaw0wCjKQfFsTdpWjOPTbhseLRIqPsksCpSOL3EjZGexAUk3cPQUEVpzcu+2YJoSqUw93W1etUG2npJ2B8oKOVF7cnohkuhOuw/bYnqjZ8Yuw/K1wfV+KQAbJaL6ETBsPY4dinrwscMIspB7SvwNopB+MUsrbYCvM2K5ucUlfYAvUy/YBK7deHZLm11cMq7ai7lQfT+f/TQ89XV2uCnWETpCsEhR7iCFU6XtB5TbIbFVGTzGAtSx3OcZWtPalPwf8rE0OS5m1Ro0PxCFh5AmprPRR+5PPy7vNF/GI5ra4jhYLOdk1BPdQAJyJ+U9x4bUTiN5OQshyYkAxrDgV8tCLH/tRMNzgBS1cu5t8cJZLsN2ItvCoG2DPR4VGqAm7TC8g3/kYSTLudTP9+3hdkRGJsTIrMYRwRPKmf+167vOd8UwwvwFiKSPYR7ONx7V3hoWAS2yY+1lbRtHGZeL1P3D1YiCdg4lKs4Vtxqj8CJ7dhyUI/RG5bZ4vcKZy0D4DRX3eS7AQJA6RByv0yGmC7LhdMVLGN5T+AksuHPhxIMCdTbbuKumlFrFyJ04CF1aAaAdvCO7hGk2fYCWbpri0T3E41K4A0iU4AqXBF8weq0JduZi46A=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR08MB10656.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(7416014)(52116014)(376014)(18002099003)(22082099003)(56012099006)(38350700014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?5EoOmT8wr0smkm8jNr7m8xJMbqca9d3l8fbHIDpNzRMYeRFJaEXJNPS2qHse?=
+ =?us-ascii?Q?JKXyww6C95lrqq87AiwFYiAXgwUYAE3uIcUIde22hVBCzafhFpe1yjBa9c5S?=
+ =?us-ascii?Q?58D4bVmsngdjmkGQdbxGgxzXGozt2j7XtA4NsmektPRwjLUuW0F1vq/+Ynl5?=
+ =?us-ascii?Q?5oE1cRwgn8xB4KvDlj2645HZVibtGhvsxQ0ht9aj+E4twUEyV+uIi9Rm1KOi?=
+ =?us-ascii?Q?Rl+AQLi7Qqkts02Z2wT4Ic9aNiVXJzVCcwCE2GypgHEgqtvE4UXWbWOqqFcH?=
+ =?us-ascii?Q?yKvzE+la6856604crwXil5taVdH3ORR0o93Ins+vQ6F3HuME7YUP7Zp515jq?=
+ =?us-ascii?Q?zHsqwgBi6tNj8ajZXEX5NYHcq6oBNgE0zUwULGhC+7MlScIYZF5iIeZ4q5PY?=
+ =?us-ascii?Q?1FRP0y55J0NY+BrdB2VkH1x+4xd6Nh+/lILv50jbb8uSOqsw15YXlVVaij4w?=
+ =?us-ascii?Q?ItKIvaiHP2xvJsDbO91TMmBuNK0LdHu/wrbuWOdc+OOAN9Ut7zW0U/4ehb4z?=
+ =?us-ascii?Q?uWHGBL0zBF5P5fN9UCQY6PyKQf+Mx7r51sriF+WBYYqPLZ+96ocuEzh7pQom?=
+ =?us-ascii?Q?dNUVI3XUCVjJ54fdyPFJCSsiojbN57yKTu6Rur0HChRXoy/ah8+hAfcghKN1?=
+ =?us-ascii?Q?0ieV6QDc0Yv7aXCeYc/g9dk4hyUxOZ0a4PXRAgoIRI2YuIMYlEvSHJ0FsNeQ?=
+ =?us-ascii?Q?m6o+D+13578nvARo4X502jiusDibRV9uEPIGNSvcWqFAdUASHBMVm+r3/4LJ?=
+ =?us-ascii?Q?sJjKTaw7b8aEadTvZmU32fmXxoJtTQBaP4m+4nzl/cgbioLXXPzJZteuILuq?=
+ =?us-ascii?Q?MEw6MY4b3q7bPyy/Md6EaYVknAhfhKlc2KPe6nABDHoRG6HZE44ldoBXDqMM?=
+ =?us-ascii?Q?m9UZ/Tnl80bvbljwokcicT3h5HaYX7AKR9Vie+Lc2gn+I3v+r4C1pfEy3SET?=
+ =?us-ascii?Q?U0tm9f0ODzYcYuhGHwHRKdGrOJoF2iPpxq6FKj9GMNl/3uxO9D/YCU3J+yiH?=
+ =?us-ascii?Q?1DwaYkmzt5Bm6gkt/EtxzN0s784+DalTcDxSTSVvA0jRMBQVsM2Rj/hlHlFi?=
+ =?us-ascii?Q?N4wSAIEKummmuqDMQcXdWMzYtIiQLOdnA0Ae7n33PMKCJH+5ZA42KL2z2An3?=
+ =?us-ascii?Q?c+n5RLOZrCfjKFq3Hu0FJJz7gtAcaj5yhFPOUM+nsXghoCw2CadzgD87z3vy?=
+ =?us-ascii?Q?15ZEoaQHiENA6gIbTLs1MFXUsHfPa8u3C6U1eXJ//3DRY/vwZWPkL6OJ2Orz?=
+ =?us-ascii?Q?BDu9OaHo5Gb12cIi6wNRmESCAnoUt1jdKrBVTuycfmAuwh9WYgkHJ3ywi7DS?=
+ =?us-ascii?Q?cL5VWIr4fgnhN4FQs284jm0kM7BawSP5PjCp7lpbX0N/HZD5fBOUqVYdU3ub?=
+ =?us-ascii?Q?DAELcMzyME3AyIh/Mxs3BQZLgng41oUeIcUTEHzi3BudGkqo5N3e5OwZ5Qnh?=
+ =?us-ascii?Q?Hzdeivc1AuimNa2hPzkHNdfJvKdn3Yg/PWgGkIxSw23kzPPJPsZ5IJIVrVZJ?=
+ =?us-ascii?Q?g7MBXe1CctwKxAqEmCa3Tj01oWkqvJDiOW7zJRLm0Xzu7qTtua3Tj8iiatm9?=
+ =?us-ascii?Q?700PPozDkLDzwmSQnZsr8RZyu3fFDfqFs7niJ6/KdydmF1j9GQx2H07u4mFs?=
+ =?us-ascii?Q?SVVNCOBeW9OUl+yo8HZOiBGMh74+oX/KK0RmC0YJBrtOY3o7V7CGgqitK1tU?=
+ =?us-ascii?Q?rfMMpBKI6WZg8IlNrTFU6GJvJ9y70hPRb5luNLJeAYmhNCZbPPJQlXeSkHne?=
+ =?us-ascii?Q?9OkRbhhPP2IMy2JFoTayVPibGX1hs/o=3D?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f7495631-bdc1-4bfb-e75b-08ded2d20b05
+X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10656.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2026 15:54:30.4349
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: pDjNne9Z6ieD02V4G1kEB047bI2TWX4KdP1e419GsOj9aVRuhyFtQLh0195bX8v3IEUP/CkrX/v0RPHX8HO6WxGqv1ZVUYNMqKJlraqv4RM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR08MB8043
 
-From: Anthony Doeraene <anthony.doeraene@uclouvain.be>
-Date: Thu, 25 Jun 2026 17:07:41 +0200
-> Hello all,
-> 
-> According to my experiments, it seems that ECMP with MPLS (i.e. an MPLS 
-> route with multiple
-> nexthops) is broken on the master branch of the kernel.
-> 
-> Indeed, whenever adding an MPLS route with multiple nexthops, ip route 
-> show the route as
-> a dead route/link down, even if nexthops are reachable.
-> 
-> Example to reproduce the error (tested with virtme-ng and the master 
-> branch of the kernel):
-> ```
-> modprobe mpls_iptunnel mpls_router
-> sysctl net.mpls.platform_labels=100000
-> ip link set dummy0 up
-> ip addr add fc00:1::1/112 dev dummy0
-> ip addr add fc00:2::1/112 dev dummy0
-> ip -M route add 16000 \
->      nexthop via inet6 fc00:1::2 as 16001 \
->      nexthop via inet6 fc00:2::2 as 16002
-> 
-> # Check the route
-> ip -M route
-> # Output:
-> #     16000 dead linkdown
-> #
-> # Route is not present, even if accepted
-> ```
-> 
->  From a git blame, it seems that commit 
-> f0914b8436c589b7ab32c614d8d7868eb4ebd5bf
-> broke the core logic for building nexthops.
+From: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
 
-Thanks for the report !
+Split the actual backend dropping part from vhost_vsock_stop.  We're
+going to need it for the VHOST_RESET_OWNER implementation in the
+following patch, when vsock->dev.mutex is already taken and owner is
+checked.
 
-It was to balance refcount with netdev_put() in mpls_rt_alloc().
-I'll post the patch below.
+Signed-off-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+Reviewed-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+---
+ drivers/vhost/vsock.c | 26 +++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
 
-(Updating rt->rt_nhn is not strictlly needed for netdev_put()
- because it has NULL check and rt is allocated with kzalloc(),
- but it's a bit error prone, so I'll keep it)
-
----8<---
-diff --git a/net/mpls/af_mpls.c b/net/mpls/af_mpls.c
-index ca504d9626cf..4a81514e919a 100644
---- a/net/mpls/af_mpls.c
-+++ b/net/mpls/af_mpls.c
-@@ -922,8 +922,7 @@ static int mpls_nh_build_multi(struct mpls_route_config *cfg,
- 	struct nlattr *nla_via, *nla_newdst;
- 	int remaining = cfg->rc_mp_len;
- 	int err = 0;
--
--	rt->rt_nhn = 0;
-+	u8 nhs = 0;
- 
- 	change_nexthops(rt) {
- 		int attrlen;
-@@ -959,12 +958,15 @@ static int mpls_nh_build_multi(struct mpls_route_config *cfg,
- 			rt->rt_nhn_alive--;
- 
- 		rtnh = rtnh_next(rtnh, &remaining);
--		rt->rt_nhn++;
-+		nhs++;
- 	} endfor_nexthops(rt);
- 
-+	rt->rt_nhn = nhs;
-+
- 	return 0;
- 
- errout:
-+	rt->rt_nhn = nhs;
- 	return err;
+diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
+index 9aaab6bb8061..b12221ce6faf 100644
+--- a/drivers/vhost/vsock.c
++++ b/drivers/vhost/vsock.c
+@@ -664,9 +664,24 @@ static int vhost_vsock_start(struct vhost_vsock *vsock)
+ 	return ret;
  }
  
----8<---
+-static int vhost_vsock_stop(struct vhost_vsock *vsock, bool check_owner)
++static void vhost_vsock_drop_backends(struct vhost_vsock *vsock)
+ {
++	struct vhost_virtqueue *vq;
+ 	size_t i;
++
++	lockdep_assert_held(&vsock->dev.mutex);
++
++	for (i = 0; i < ARRAY_SIZE(vsock->vqs); i++) {
++		vq = &vsock->vqs[i];
++
++		mutex_lock(&vq->mutex);
++		vhost_vq_set_backend(vq, NULL);
++		mutex_unlock(&vq->mutex);
++	}
++}
++
++static int vhost_vsock_stop(struct vhost_vsock *vsock, bool check_owner)
++{
+ 	int ret = 0;
+ 
+ 	mutex_lock(&vsock->dev.mutex);
+@@ -677,14 +692,7 @@ static int vhost_vsock_stop(struct vhost_vsock *vsock, bool check_owner)
+ 			goto err;
+ 	}
+ 
+-	for (i = 0; i < ARRAY_SIZE(vsock->vqs); i++) {
+-		struct vhost_virtqueue *vq = &vsock->vqs[i];
+-
+-		mutex_lock(&vq->mutex);
+-		vhost_vq_set_backend(vq, NULL);
+-		mutex_unlock(&vq->mutex);
+-	}
+-
++	vhost_vsock_drop_backends(vsock);
+ err:
+ 	mutex_unlock(&vsock->dev.mutex);
+ 	return ret;
+-- 
+2.47.1
 
-
-> 
-> This commit modified function `mpls_nx_build_multi` by setting 
-> `rt->rt_nhn` to 0 at the
-> start of the function. However, the loop `change_nexthops` just below 
-> depends on
-> `rt->rt_nhn` to know the actual number of nexthops that it should build. 
-> As `rt->rt_nhn`
-> is set to 0 just before, **no nexthop is ever built**, leading to a dead 
-> route. Even if we
-> remove this modification, this commit incorrectly increments 
-> `rt->rt_nhn` at the end of
-> the loop (`rt->rt_nhn++`),  such that the loop always end with an error 
-> as it tries to
-> constructs more nexthops that actually provided.
-> 
-> Commenting these two lines fix the issue, and allows to create once 
-> again MPLS routes
-> with multiple nexthops:
-> 
-> ```
-> modprobe mpls_iptunnel mpls_router
-> sysctl net.mpls.platform_labels=100000
-> ip link set dummy0 up
-> ip addr add fc00:1::1/112 dev dummy0
-> ip addr add fc00:2::1/112 dev dummy0
-> ip -M route add 16000 \
->      nexthop via inet6 fc00:1::2 as 16001 \
->      nexthop via inet6 fc00:2::2 as 16002
-> 
-> # Check the route
-> ip -M route
-> # Output:
-> #     16000
-> #            nexthop as to 16001 via inet6 fc00:1::2 dev dummy0
-> #            nexthop as to 16002 via inet6 fc00:2::2 dev dummy0
-> #
-> # Route is accepted and present !
-> ```
-> 
-> Overall, I think it would be interesting to discuss what this patch was 
-> trying to achieve,
-> and how we can conciliate both use-cases.
-> 
-> Best regards and looking forward to hearing from you,
-> Doeraene Anthony
