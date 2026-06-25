@@ -1,264 +1,150 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11020095.outbound.protection.outlook.com [52.101.84.95])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B6E26E173
-	for <netdev@vger.kernel.org>; Thu, 25 Jun 2026 15:54:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782402875; cv=none; b=Y/sh1I7TNWwKkVnTGkmOIPm1BcVX9h+YT5OYrNgjzgfV+g+J4DMSeiehhDAJ5oNKbOGFjLJWva0o40c+3/5rlQpgkvuJv+GwXD6KWmTeWPd1hGAOJb5/oZAiU1uBJoMhlI7RRJdMrGAmSU+714AMZXPo30dv8r4XgK2e/PmS/VE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 092F824A076;
+	Thu, 25 Jun 2026 15:54:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.95
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782402875; cv=fail; b=uhlP7XQAA1k9thFp2zpS6ZZc9M83u1V/IEFP82jFuZK8YGi6FkaMCx46KbLYgwNUioN9aEK1fScoBupqCJuiqSj2GK0QEzSlIY303kTfzd8QlsBJ1hrlnDLRjluUTwPR8nFPvNSQe5rwIVnwuiPU3wiMvyZTYoL6pzD+wM9i/w0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1782402875; c=relaxed/simple;
-	bh=GjibqhTRoSMwtT2rQf8/YwUCCraZ5cjmIu/wmd8c/uY=;
-	h=Message-ID:Date:MIME-Version:Subject:From:Cc:References:
-	 In-Reply-To:Content-Type; b=AgqqWs6QDlEnC+le9mo6j7uWk3tEhwBTxNz/RxuW60nkZW5RMW6vNyev5qXHSwmN8C6J5zojatLJvatxKZl56KtbnEFgOrVgi2X0gJbg/xLqcwx3qHQVYx3j4y5WK2yD4ahENR27s5ZdeZ8JC5qqrLGfYwoYZjVDHAsdmrwgn2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RZ1GBGiR; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	bh=P9v8Fs2lxN672pn0HxSya5Q05J/FpPD4eqiKrHbmJN8=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=GCQ+TNoQqF6UDednHYP6HfxcAxNSgR04UxzNmaw9zM79BcIJmAifidPcBwFh0C+Xd95FR9ukrvZDQfCsNZKE0ovwQ335ZInPkG6LF3KHypZQ4/ORiHuoGxjuw7MSRiaYScE1902bxbxWd6ry039JMwwN1ZUOuDbqCgzR7C1JCQ0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=BanvHn+W; arc=fail smtp.client-ip=52.101.84.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RZ1GBGiR"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-4627adcf4d6so1888309f8f.3
-        for <netdev@vger.kernel.org>; Thu, 25 Jun 2026 08:54:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782402872; x=1783007672; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:from:subject:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=r11YPBeFUMC/ykhviZOTZPIZ364dxZdsWoCdVPJYmuw=;
-        b=RZ1GBGiRE/nozlrNcIh9AsgEV1qo/O/2GviCrTxteM39GPuzlxEUboYaqzdx7E0wMB
-         IzMNQp4JYCjVHiel972AT4vemkz7bZ0Q21ARzxxx8IfwZnfrwej5v09pmf3wzPWxE2lM
-         ldr8Xb/qWYqCpS71Z4NyTx5MKdT4ugPQvME3gUfBWQPv9VaovOU9nB8pygTzLCsepI7Y
-         Cr8bSaULQSk9ljrH+54+FO0kldl6Ub9/ARocLAz8gVOCHeW3wCdfk3jW1Rv1O9aZsMer
-         YsptXDikunyAESsRSnn5rGJJMm7eCRzJ4Caj9k6v1gDVoIMHqPmlO5SZ6s3pwq3in/fv
-         /vQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782402872; x=1783007672;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:from:subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=r11YPBeFUMC/ykhviZOTZPIZ364dxZdsWoCdVPJYmuw=;
-        b=SFHxSe6KDH0+B5avy7+GKqzHTmC1XYCseoN6Mujy3YGUkURGcPAQfaUMdkKQAVyrru
-         ndgmN9GR/gmID7JWujDK7dVyXyMNlpkzoVa5YqEHb7vWTHvY0el6VOJPn2txHg2/Lzkg
-         b2NcN4FS1eE/ynRP0v9ATTpPDMJKks0mdpJoL4QeWZtdj1/mIkjAfLvnOU9vRyX/rPwr
-         EiVqyRGloMMJfQLMjpfTQUkSTlx1EJWfnIDhmjPGyJFIxcox/uPrV46pvvOHpEB57ca5
-         bIMHkxzISL2WmEZUcYHSqwDdaih1BqmOBBcnmurUQVQjIt066d3Mnb6nBg+QhhxZ0D1+
-         xFTg==
-X-Gm-Message-State: AOJu0YxPGpDpS7F5fEMwzKAdZL8gnsRGotddFPG5lJpbV5MtL3XCmhg8
-	y7Xdiu0zi5iC0mEQ1Fxi8e95SHscAfON+9mCTSJbC2YSZ4iLdqQCUcVwSB7YsoW6
-X-Gm-Gg: AfdE7cm6exuVpRfFhNDExzyVbZGbRbsE2luhOLhZsFpDaytapWXE5XY3bL1iNkNMRm0
-	bTk1cVLxiZf9RUGTPVqTj4tmPtAI1u0P39zS/FjekthyuNsYVsIM+Jo49bnkrj3aO2es/bJ8Me3
-	5zeKcwWM2Hsz1g2W26RN00BEFkUakZTR633KL8rFseafFAJNKTc/kKk8FPm4kWhbn6ApJkNK0uO
-	JV93vOWwgrJ4eS+aarFBh43PDNwZ4V3xI8OYxa4QY9HqBMKd0/AKpDyn+b1A9ugrQpVgVmP00GP
-	NOaOaABfmrBF9Ote4AfsgfRzde+M6tJnocRRRKYf+tBF66rkLKzFRYIFOFT/wt2GuFipswNOytU
-	XYsu48Pw0Zt5tW/gnPuUvSYin7g813/MOjeKi+nOO3vHvbzwLsgTup61n7y17euPho+LuRkgxsb
-	xqUI13jkriEERF4QHMfpOaKauJHOX8JWneK996eX6xJmw/I40DLvfx4MU=
-X-Received: by 2002:a05:6000:220e:b0:46e:878c:9194 with SMTP id ffacd0b85a97d-46e879bd418mr960662f8f.32.1782402872265;
-        Thu, 25 Jun 2026 08:54:32 -0700 (PDT)
-Received: from ?IPV6:2001:bb6:1b96:9200:cf2e:dbb6:5a08:1ea4? ([2001:bb6:1b96:9200:cf2e:dbb6:5a08:1ea4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-46c221d9405sm18758152f8f.22.2026.06.25.08.54.31
-        for <netdev@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 25 Jun 2026 08:54:31 -0700 (PDT)
-Message-ID: <65f53987-c992-41b9-9603-9e9a448e469d@gmail.com>
-Date: Thu, 25 Jun 2026 16:54:29 +0100
+	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="BanvHn+W"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lkNtK/pwBXrwiGCJSbjq081CgiL2hVdwPO0VUEeXnqqkkrTRYWGYzyLD15GtGFHzS564uuJiUv6vGd+Ybc5AmXzBNRLNRZxm9uQPbg5IcUVtImbCOGalQ1RQnyi7eTTALWLptJlqPK96T1qRe/lJfTEY6cFDea3vpOR63lrGjXUjPGMH1o8iPT6W4MYMEGOgo247OaiMVGRbDud2bzmmGyTwPihX18fDHzsEwXJPjXpDvjZTy4Nvy5wJPFx7uUqKvzlndq0kShXrCivKHP4fsDwtqcygvJbqICIDSeuIaWLbSATCA0fbrXKp9/1GrFs4hOiFsqJ4n+V1wnIlYSc6Mw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jBKFCEfmCQvHhePt+LD6twX7zu4dY6N0nMWFL1ely10=;
+ b=TSfsKwWax1IFNFI0adLhk97PFlguZ7pXTDdM6prBoEujthS1lYqY+WkWdHrJMCrM40Gn5zFvDaV0woZw9HXjZhvyNKoCtMtUQmRo/P3/VP8BHv5QdksN7D0cziro8qirKxqxRVgnHU1xcR+/cXiqZthD15P+rXM0DTrT8aMRbDKwSibTOJ0tue4krbaONNo+i36XM1y0/lARoF/pomflEVq+wsAXT5l7JGaLJ7/2gBY7pGrl2qoIuuXYfELklXvOzkBjL2ToMDh8BD7EF3q13Ao0losZKX0m0rPs2J1GfJVgwEEnx+Yet5lNARrK7bKs9F28Gsd6ud79hcOZn1GXsg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jBKFCEfmCQvHhePt+LD6twX7zu4dY6N0nMWFL1ely10=;
+ b=BanvHn+WI9dyt/cEwZ1vpS6G6i6ZGw5IiuyKRf5wv4crdg6lx1zZYadr4oIPpFTly6h4yQMxRCD1dq9v3fKjw9EIl2S9r/ANpaRc7r60LE6s9s03v7xcxjn084jDoOTVH6dqxoZEMMBmujvmvEAXP0htMODLplFykM7+H4qXNFVUUoAaAFr/MRHil9JuIR6CwQfgzA18bidgzsGLW833Xg9RN/D36SUSyygLqbDU2h3/AR4KhUI03EFVXu3y0qpxh+2FhSrhuOW2Kq8wB50BlegAAS5WO/eH97jaPiCmjAqi8CFFUhXrcuMTkWm3Eliw6JTChnfc4UK8siD44f5ihQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12) by AS8PR08MB6566.eurprd08.prod.outlook.com
+ (2603:10a6:20b:33a::17) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.16; Thu, 25 Jun
+ 2026 15:54:29 +0000
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::4e37:b189:ddcd:3dd8]) by VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::4e37:b189:ddcd:3dd8%5]) with mapi id 15.21.0159.013; Thu, 25 Jun 2026
+ 15:54:29 +0000
+From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+To: linux-kernel@vger.kernel.org
+Cc: kvm@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	sgarzare@redhat.com,
+	mst@redhat.com,
+	stefanha@redhat.com,
+	dongli.zhang@oracle.com,
+	maciej.szmigiero@oracle.com,
+	bchaney@akamai.com,
+	mark.kanda@oracle.com,
+	ptikhomirov@virtuozzo.com,
+	den@openvz.org,
+	andrey.drobyshev@virtuozzo.com
+Subject: [PATCH v3 0/4] vhost/vsock: add support for VHOST_RESET_OWNER and CPR migration
+Date: Thu, 25 Jun 2026 18:54:12 +0300
+Message-ID: <20260625155416.480669-1-andrey.drobyshev@virtuozzo.com>
+X-Mailer: git-send-email 2.47.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: VIYP296CA0007.AUTP296.PROD.OUTLOOK.COM
+ (2603:10a6:800:29d::12) To VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iproute2-next] "ip help" wrong output, exit code.
-From: Dmitri Seletski <drjoms@gmail.com>
-Cc: netdev@vger.kernel.org
-References: <62f09fe8-899c-4d22-b7a1-67e2745613df@gmail.com>
- <20260621082105.1196ef72@phoenix.local>
- <069b13e1-f689-410b-bd40-b5e5831b67e7@gmail.com>
- <20260622075700.27806286@phoenix.local> <20260622174454.576b3580@pumpkin>
- <3d6f256c-3bd0-441a-bece-8692985c5ddc@gmail.com>
-Content-Language: en-US
-In-Reply-To: <3d6f256c-3bd0-441a-bece-8692985c5ddc@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI0PR08MB10656:EE_|AS8PR08MB6566:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8e8b492b-3b04-4fbf-2720-08ded2d20a80
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|366016|376014|7416014|52116014|38350700014|56012099006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	rOELQV+IwdsedWtLXbN9iz7I609Bw/WpQOpIf7w+91G4JcJJzGGSa5Zg+PJqKrn9VxCO7ZAjPUeagqF7pP8kgfUxKU4BEyC9EqEe6FJJxm2nb2blkCKanyVS1P0hfJFYjd19iYiAFTXNaRwI/r3uLOOenYUxFEQMveoa8LgkkOIQpkbs+W+hruJY4XOI/3CKvAl28vuUwq9nVrn7GCaGbeJzttkmLqj9ol+JzwvW/BwpQ4zSBnuG7YtZSlD+3UvBYrBtYQGBhpN5DjSFw80JRXu1bt1iSXWDjEj+aWTnUbXbAEBvYSTqUAvkup90oHbcA5mu8ISHR9iRr/Mk6G/qPrSk8fxLeWK6neuFr6CAKOy/0JSCLcSOw7l/Ljtkv7LHJkYxcrrUEhAgxcVuf47vTYwUx1rTrnuWNOfsyZQtEcDQXzWmTB+89Ie1ImAz5kMV4HNl/xjQAP/AT6FK4Hgynp6nPa3Z9BNprjrnzGV8sHK18pUVkhCbOIII3O2kEWL+O63Ti+OQmHz1J20DeXd9NtnNAtuSeVhcH5sq90MgfqK8/Hb2HMPnUL0Q3AeGIz1izqi+CjqhUpNxE3LG7/4Tl+htLH65dBVWWoZqhtwXHjTxuK25TUzSi+m2ofOjYKj6SwIRy/++Dk9lXRMkhvevI5wD4ugN62hxY0OzGRZVKr9x63tbj4zHUaHElCFMhZPg+b4i891xt/+ZPMaLLL12QPlvzUIeaSWgudrU1L/UuBE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR08MB10656.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(376014)(7416014)(52116014)(38350700014)(56012099006)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?QfMjtz/e3DwgtYJeULugmHyPIRFVx/cR3hYnPcFjbqR1vj6vmoHN1zCXdHSS?=
+ =?us-ascii?Q?5qSEyWc2fERF/Sn4pdGLw4CAb8a7alL17XIxjcCzGzEa6HYIZgPEnYEHk1TC?=
+ =?us-ascii?Q?bpHSyhyO61wk30IadgCSDBlLl1uBtdMo1hm1zvMBSe2Pl/dtBtnvSREYw7Vf?=
+ =?us-ascii?Q?K9oscunyUvIm3R/h/zddJY+QC5MM742MEgDTSRb6qyA7jIWz2eLPo4g0B9An?=
+ =?us-ascii?Q?lujO0P98dsbqsIKRLch/LYEMmIUOAvmUn74XZzHJDqc8Gwg+Zk95Hn6K0/d2?=
+ =?us-ascii?Q?Qq0o4euxZwUdLVX6UnagLK3/WDjQz/Ny+VG8WT+Ur6Ne5bwMuR3xCaedbNoq?=
+ =?us-ascii?Q?CXfa5dC8wpisNUNoGuJTwTo014BcrCqoJ62df38cDEsekoxt9HACo1tmh58h?=
+ =?us-ascii?Q?OEh0FoO3+AUz1oDnPhXSKi6TKH9oodT/Y1YCOlKHtC8ZhFKlDt7G6r+eTlYi?=
+ =?us-ascii?Q?02crQ8tOj1sBrYqvDNbUZkvMVy3qA/eTmQFT2/25J4bFbzHiVa2Nl+G1quuZ?=
+ =?us-ascii?Q?k3K90G+BIAG307qgH9BPP3sSNS/sU/N8CVKhjrL1PJcqTqFZ7zrcMdgrMpTr?=
+ =?us-ascii?Q?sUpBjvUXXlSXQUduck4xPywJaZ0hu3qFYbVa8uOHVGVFcfg2pg7lGDPQtfVk?=
+ =?us-ascii?Q?EKtIaqagHhFI1ftGg4E78kMdDuPPTFR5I5APWoTICMruf0+eqyXgjrsoaLyz?=
+ =?us-ascii?Q?tEZyEX0nL/pQX0dhjBpyOkJQz5i5Qh6jOhEokkjS9UB3LK4UCCWvDAa6xWvM?=
+ =?us-ascii?Q?SghryunloBsWzi1YIXc9FBbc+0EmDQev5/WfCwLyut086/ZYllZmZOCqPoP1?=
+ =?us-ascii?Q?FjkMRz0nGauJK7EaQVg+yFBM5RlOb5cHpQrtNs1l1TF/MCyy15JoaffTSBuB?=
+ =?us-ascii?Q?zlcYl97xDgZOoDBe8B3gXhk73fz+KcR92l/AvYEu6evMsJf4TROpliMf2dK0?=
+ =?us-ascii?Q?idMPnWCc0ZPFqoCcfCGK+TxbWnmW4yWmqJiiygCPk78Jq02/n/+HkaZEGxky?=
+ =?us-ascii?Q?8rr6ifpYL8Tqwit+hDBNOcfFmKkGEm49UN+nvQ7L6ox3eM2A7A1TTZ4z7Jc5?=
+ =?us-ascii?Q?9VVlYkQKRCI+O2Fhmz40HBblTKxw0SO/XDLxcaQF7NmvwxImKmFEe1DlEUbW?=
+ =?us-ascii?Q?CHwCH/rvF0Ex9EvoAwg5M6D13JwQsgfboZZNOrGSI2cpbelybhCdugaYEA9M?=
+ =?us-ascii?Q?yHSx0UUfqNlMVvuHuEPIISLyTGtQVTIMKcmB/Cvw8R1qO0OYK6D3/ULHt+VQ?=
+ =?us-ascii?Q?R9iALP/sUun1N264Cz/oZSGgIium1RnKrRAUZl1xjeYv8T+6dsxJaFgKV1Q/?=
+ =?us-ascii?Q?aGLl7dEAL1/YUyUtO6zuuSo1GShdoSIFxa5nBhZhywpyo+wfrNZPIxb4SRpF?=
+ =?us-ascii?Q?EVwE/oktA8P3yLGoIdDYVX+mJRxJXM18A7wBqIfQeZGSv8KiY+6MYBoZ+1GS?=
+ =?us-ascii?Q?yVP2atwWsROAuX40Znd6FsNu/qyZ+uEpSCjN4DTZS0ZV7ywoYs4doroNc2g0?=
+ =?us-ascii?Q?zVtDQ+7r5DwBoCOCT/NkCuN83w/fO1lvdM6h1kSZKHJiwIYNDM6e9URk73/5?=
+ =?us-ascii?Q?7bs+gf+I6CmUG/4BtDhMMRpmkbXKDIUJc7xCdhqG+GJQ7AIvPerwGWPZZ6tD?=
+ =?us-ascii?Q?3NxETIwx+XJk0uEmbP1n5DiQq047CgIKU9jPzWMH8qGhu5bHw50Ga9G52YbT?=
+ =?us-ascii?Q?+aXO50E1o0cHf5YN5XlL5NpiUf4vNf8YB1+iDoqDO2ZAJ3dD7hiCCQm3KCUi?=
+ =?us-ascii?Q?gV2FH7+7Ui9jXSY93prmgRO/hOd3Ni8=3D?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8e8b492b-3b04-4fbf-2720-08ded2d20a80
+X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10656.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2026 15:54:29.6481
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lRMLFqJ5q5MTWjxxxMpjSd6r2x+9172BcySy+v+XFzs5kSD3Lk+QDDAMJnKM1sju90+C3lS9c6lAWl1yoZc0WffQHNMFOcZ9NBIZjLg8qNs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB6566
 
-I am confused.
+v2 -> v3:
 
-Whats the next step here?
+  * Patch 4: skip the kick of TX VQ worker once backend is gone - add
+    to cancel_pkt() the same guard as in send_pkt().
+    (Reported by Sashiko AI)
 
-Regards
+v2: https://lore.kernel.org/virtualization/20260622175808.508084-1-andrey.drobyshev@virtuozzo.com
 
-Dmitri
+Andrey Drobyshev (2):
+  vhost/vsock: suppress EHOSTUNREACH fast-fail during CPR pause
+  vhost/vsock: re-scan TX virtqueue on device start
 
-On 6/22/26 18:47, Dmitri Seletski wrote:
-> Hello David,
->
->
-> Based on change introduced:
->
-> Two samples of "ip help" with demonstration of exit code and standard 
-> output are below.
->
-> This is in line with what expect.
->
->
-> dimkosPC~/compiled/iproute2-next #if ./ip/ip help a >>/dev/null  ; 
-> then echo help triggered  ; else echo error code triggered  ;fi  #this 
-> redirects standard output  to /dev/null, so text missing is not error,
-> but standard text
-> help triggered
->
-> dimkosPC~/compiled/iproute2-next #if ./ip/ip help   ; then echo help 
-> triggered  ; else echo error code triggered  ;fi
-> Usage: ip [ OPTIONS ] OBJECT { COMMAND | help }
->       ip [ -force ] -batch filename
-> where  OBJECT := { address | addrlabel | fou | help | ila | ioam | 
-> l2tp | link |
->                   macsec | maddress | monitor | mptcp | mroute | mrule |
->                   neighbor | neighbour | netconf | netns | nexthop | 
-> ntable |
->                   ntbl | route | rule | sr | stats | tap | tcpmetrics |
->                   token | tunnel | tuntap | vrf | xfrm }
->       OPTIONS := { -V[ersion] | -s[tatistics] | -d[etails] | -r[esolve] |
->                    -h[uman-readable] | -iec | -j[son] | -p[retty] |
->                    -f[amily] { inet | inet6 | mpls | bridge | link } |
->                    -4 | -6 | -M | -B | -0 |
->                    -l[oops] { maximum-addr-flush-attempts } | -echo | 
-> -br[ief] |
->                    -o[neline] | -t[imestamp] | -ts[hort] | -b[atch] 
-> [filename] |
->                    -rc[vbuf] [size] | -n[etns] name | -N[umeric] | 
-> -a[ll] |
->                    -c[olor]}
-> help triggered
->
-> Two samples of command that is broken on purpose.
->
-> dimkosPC~/compiled/iproute2-next #if ./ip/ip idontexist   ; then echo 
-> help triggered  ; else echo error code triggered  ;fi
-> Object "idontexist" is unknown, try "ip help".
-> error code triggered
->
-> dimkosPC~/compiled/iproute2-next #if ./ip/ip idontexist  >>/dev/null 
->  ; then echo help triggered  ; else echo error code triggered  ;fi 
->  #this redirects standard output  to /dev/null, so text missing is not 
-> error, but standard text
-> Object "idontexist" is unknown, try "ip help".
-> error code triggered
->
-> This works as expected as per my understanding.
->
->
-> Not everything is fixed, but chunk of things fixed is better than non 
-> of it.
->
-> for example:
->
-> if ip  add help    ; then echo help triggered  ; else echo error code 
-> triggered  ;fi  #this redirects standard output  to /dev/null, so text 
-> missing is not error, but standard text
-> Usage: ip address {add|change|replace} IFADDR dev IFNAME [ LIFETIME ]
->                                                      [ CONFFLAG-LIST ]
->       ip address del IFADDR dev IFNAME [mngtmpaddr]
->       ip address {save|flush} [ dev IFNAME ] [ scope SCOPE-ID ] [ to 
-> PREFIX ]
->                            [ FLAG-LIST ] [ label LABEL ] [ { up | down 
-> } ]
->       ip address [ show [ dev IFNAME ] [ scope SCOPE-ID ] [ master 
-> DEVICE ]
->                         [ nomaster ]
->                         [ type TYPE ] [ to PREFIX ] [ FLAG-LIST ]
->                         [ label LABEL ] [ { up | down } ] [ vrf NAME ]
->                         [ proto ADDRPROTO ] ]
->       ip address {showdump|restore}
-> IFADDR := PREFIX | ADDR peer PREFIX
->          [ broadcast ADDR ] [ anycast ADDR ]
->          [ label IFNAME ] [ scope SCOPE-ID ] [ metric METRIC ]
->          [ proto ADDRPROTO ]
-> SCOPE-ID := [ host | link | global | NUMBER ]
-> FLAG-LIST := [ FLAG-LIST ] FLAG
-> FLAG  := [ permanent | dynamic | secondary | primary |
->           [-]tentative | [-]deprecated | [-]dadfailed | temporary |
->           CONFFLAG-LIST ]
-> CONFFLAG-LIST := [ CONFFLAG-LIST ] CONFFLAG
-> CONFFLAG  := [ home | nodad | mngtmpaddr | noprefixroute | autojoin ]
-> LIFETIME := [ valid_lft LFT ] [ preferred_lft LFT ]
-> LFT := forever | SECONDS
-> ADDRPROTO := [ NAME | NUMBER ]
-> TYPE := { amt | bareudp | bond | bond_slave | bridge | bridge_slave |
->          dsa | dummy | erspan | geneve | gre | gretap | gtp | hsr |
->          ifb | ip6erspan | ip6gre | ip6gretap | ip6tnl |
->          ipip | ipoib | ipvlan | ipvtap |
->          macsec | macvlan | macvtap | netdevsim |
->          netkit | nlmon | pfcp | rmnet | sit | team | team_slave |
->          vcan | veth | vlan | vrf | vti | vxcan | vxlan | wwan |
->          xfrm | virt_wifi }
-> error code triggered
->
-> This is still problematic.
->
->
-> But so far code leaves "ip help" command/argument in better shape than 
-> it found it in.
->
->
-> I may try improve things more, but lets submit what we already have 
-> "better", please.
->
-> Kind Regards
->
-> Dmitri Seletski
->
->
-> On 6/22/26 17:44, David Laight wrote:
->> On Mon, 22 Jun 2026 07:57:00 -0700
->> Stephen Hemminger <stephen@networkplumber.org> wrote:
->>
->>> On Sun, 21 Jun 2026 22:48:59 +0100
->>> Dmitri Seletski <drjoms@gmail.com> wrote:
->>>
->>>>  From 0805e07105cd15c5b94271a4706e50e3c65dbde5 Mon Sep 17 00:00:00 
->>>> 2001
->>>> From: Dmitri Seletski <drjoms@gmail.com>
->>>> Date: Sun, 21 Jun 2026 22:12:43 +0100
->>>> Subject: [PATCH iproute2-next]  "ip help" wrong output, exit code.
->>>>
->>>> Changed output of "ip help" from standard error to standard output. 
->>>> And
->>>> Exit is now 0 instead of -1. "ip help|grep bridge" - now gives bridge
->>>> syntax instead of flooding user with everything from "ip help".
->>>> ---
->>>> ip/ip.c | 4 ++--
->>>> 1 file changed, 2 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/ip/ip.c b/ip/ip.c
->>>> index e4b71bde..4627b61c 100644
->>>> --- a/ip/ip.c
->>>> +++ b/ip/ip.c
->>>> @@ -56,7 +56,7 @@ static void usage(void) __attribute__((noreturn));
->>>>
->>>> static void usage(void)
->>>> {
->>>> -fprintf(stderr,
->>>> +fprintf(stdout,
->>>> "Usage: ip [ OPTIONS ] OBJECT { COMMAND | help }\n"
->>>> "       ip [ -force ] -batch filename\n"
->>>> "where  OBJECT := { address | addrlabel | fou | help | ila | ioam | 
->>>> l2tp
->>>> | link |\n"
->>>> @@ -72,7 +72,7 @@ static void usage(void)
->>>> "                    -o[neline] | -t[imestamp] | -ts[hort] | -b[atch]
->>>> [filename] |\n"
->>>> "                    -rc[vbuf] [size] | -n[etns] name | -N[umeric] |
->>>> -a[ll] |\n"
->>>> "                    -c[olor]}\n");
->>>> -exit(-1);
->>>> +exit(0);
->>>> }
->>> Your mailer damages white space.
->>>
->> The output also needs to depend on whether these is a 'usage' error or
->> if 'help' is requested.
->> Code code is correct for the former - except it should do exit(1).
->>
->>     David
->>
->>
+Pavel Tikhomirov (2):
+  vhost/vsock: split out vhost_vsock_drop_backends helper
+  vhost/vsock: add VHOST_RESET_OWNER ioctl
+
+ drivers/vhost/vsock.c | 106 +++++++++++++++++++++++++++++++++---------
+ 1 file changed, 85 insertions(+), 21 deletions(-)
+
+-- 
+2.47.1
+
