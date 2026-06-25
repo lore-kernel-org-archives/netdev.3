@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7222136826B;
-	Thu, 25 Jun 2026 01:09:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5DA3368296;
+	Thu, 25 Jun 2026 01:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782349757; cv=none; b=lfqzDQPJj2kaZXTLdlS3L00y39hcFUIBEFmU9DTJ0eSZLXZIk9ALQIJcGYmhFSCwf0CCu2xiQwPhAEpfvkXJj/X7F7Px+aa7WprM04khbrQPHjGUmuoUpn8Vgv4EgcUuIe6Udg+1/SvJaw40MZRnmQkbYDkj85jUYj6C8MHsWt0=
+	t=1782349757; cv=none; b=dN8va5CMcA+xBW8EZ0FS1e3MWvRPBsqzrdqRXkd219Hwwb9l4TT5zwboOGtO2EUX2/JoNpA/pMUfEEQLJ6W21bH9YbwkZ8i1YUli+9iMKeM8lQ/3IHgFLu5WYGkHUy3hCgmcjEcY6qXRH6K7bnUOSdt9OZniX6JlcJmGoLk97wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1782349757; c=relaxed/simple;
-	bh=kpewF/rPWYxnFccLuqdraPbJuV36lrpciYeSlOO0RL8=;
+	bh=fuTFkVyS3OF/WN/Q34+waGSmg3FQhJJ6T3aBWUi6dVQ=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=AZQDImH7pu5n7a+v3TzEihF7Aw8iBxpSLOd83QwqB5sciTGYcTger/tqGrkerKwGgMhjZheBs8d9iSAJjAzecWWpurEdYw33RthLsRtWdPBFF1PegpfZMDpY0ZWC6tfmEU7mKYwe0OeYDquFQF2Sog+WQiVHXj3DcreTB+zltdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PbZ/x6Ax; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=CWXkMCcj4plzIDfV/fysu7Z9LPYmUO1rGVNELHaYxDeroMAj/8DFyGr4HOZknfN8aPLXQJlAmiL4vlx3sl8p6Bk3U8BERE0ydPn4YC5xXuP0895cIR1CIrOW/CKEdMNeA+V2xlUA0qk42mPBTbDAZExWNt5s25a+q3RCL0kT0t8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MHIdDMcG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PbZ/x6Ax"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 554D11F00A3F;
-	Thu, 25 Jun 2026 01:09:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MHIdDMcG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A6E1F000E9;
+	Thu, 25 Jun 2026 01:09:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782349754;
-	bh=KSyb2XtjEX1eDUWv4A7qcjknp0JqfZehvr6jo6mvFpQ=;
+	s=k20260515; t=1782349752;
+	bh=Nj25xJQtIXZclHFrcwxFe9gDkwAEVgsPYTZ0/bIje5M=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=PbZ/x6AxRAkXBIuusdBvANE1T1Xci4UQYkbzLietEy3tEwW8JIIbSUFemeol83U9u
-	 L+ZRikNvzDk75UOKiPuVc897sCx2Xudm7R+Luq9amk8LAO6dxPMYRgKGaTwUkgIlCC
-	 CXCpie0saI26iqyK03XESK5xvdSjmxi/5eG0OYlgWp6Plrc6xzpiqlcTCuQSQIIa7T
-	 Jp/HYmsAetYV67GMmVNIXq1EqBSwTMK0FKOZ2OoECsr4BtavZnq7YHZD0wnfg++RfU
-	 ruonreID+5nIc0PfzQ4HWC+DsmFGME3wBGKnsuZnNi5AcLrDFU3OK1l3/XKKrvO9nV
-	 UXvqLrD8RFTbQ==
+	b=MHIdDMcGjczjGaNDmgRo1k4Bmpk/FhjcFglfxPIfdhm14x9vyMlD7snKM+bDppshA
+	 G21Ghk2rogNEWHPHhPyq3nlWWSK/krBG/sNukjLVKJdGVRJ4omPwAVigni23WZC4No
+	 wiReTRQ+kZnZCR/DJyseGHlf4khI7xjdW6g8EM6uAmuguXvjI5pfAtCzshRY8ASuKJ
+	 Zcui5dyDjW2qEKu6mHG9wrD4/XMjgjE43pKcbt2iqTwuwjosUQqwREcG7sfSsI60yg
+	 h20+RjooonRgcFJJRLCx7H3MWY8pudktyzCghwfrNc1JVTH+F3Wu6NvRo9pbhenUp4
+	 iE7sERjQuX19A==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0CD93AAA0F5;
-	Thu, 25 Jun 2026 01:09:03 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 197B03AAA0F5;
+	Thu, 25 Jun 2026 01:09:02 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,41 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: ixp4xx_hss: fix duplicate HDLC netdev allocation
+Subject: Re: [PATCH net] net: dsa: realtek: fix memory leak in
+ rtl8366rb_setup_led()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178234974236.3045401.8869362652520123568.git-patchwork-notify@kernel.org>
-Date: Thu, 25 Jun 2026 01:09:02 +0000
-References: <20260622043015.643637-1-haoxiang_li2024@163.com>
-In-Reply-To: <20260622043015.643637-1-haoxiang_li2024@163.com>
-To: Haoxiang Li <haoxiang_li2024@163.com>
-Cc: linusw@kernel.org, kaloz@openwrt.org, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- huangguangbin2@huawei.com, lipeng321@huawei.com,
- linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
+ <178234974075.3045401.10753543727590918296.git-patchwork-notify@kernel.org>
+Date: Thu, 25 Jun 2026 01:09:00 +0000
+References: <20260618140200.1888707-1-mmyangfl@gmail.com>
+In-Reply-To: <20260618140200.1888707-1-mmyangfl@gmail.com>
+To: David Yang <mmyangfl@gmail.com>
+Cc: netdev@vger.kernel.org, linusw@kernel.org, alsi@bang-olufsen.dk,
+ andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, luizluca@gmail.com,
+ linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 22 Jun 2026 12:30:15 +0800 you wrote:
-> ixp4xx_hss_probe() allocates two HDLC netdevs. The first one is stored
-> in ndev, initialized, and registered with register_hdlc_device(). The
-> second one is stored in port->netdev and later used by the remove path
-> for unregister_hdlc_device() and free_netdev().
+On Thu, 18 Jun 2026 22:01:55 +0800 you wrote:
+> led_classdev_register_ext() only reads init_data.devicename - it never
+> stores the pointer. However, the caller allocated devicename with
+> kasprintf() but never freed it, leaking the string memory.
 > 
-> This means that the registered netdev is not the same object that is
-> unregistered and freed on remove. It also leaks the first allocation if
-> the second alloc_hdlcdev() call fails, and the first allocation is not
-> checked before ndev is used.
+> Fix it with a stack buffer to avoid dynamic buffers completely.
+> 
+> Fixes: 32d617005475 ("net: dsa: realtek: add LED drivers for rtl8366rb")
+> Signed-off-by: David Yang <mmyangfl@gmail.com>
 > 
 > [...]
 
 Here is the summary with links:
-  - net: ixp4xx_hss: fix duplicate HDLC netdev allocation
-    https://git.kernel.org/netdev/net/c/db818b0e8af7
+  - [net] net: dsa: realtek: fix memory leak in rtl8366rb_setup_led()
+    https://git.kernel.org/netdev/net/c/056a5087d87e
 
 You are awesome, thank you!
 -- 
