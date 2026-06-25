@@ -1,140 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f193.google.com (mail-pl1-f193.google.com [209.85.214.193])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B4E3C10A1
-	for <netdev@vger.kernel.org>; Thu, 25 Jun 2026 16:05:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8450A37C0FB
+	for <netdev@vger.kernel.org>; Thu, 25 Jun 2026 16:05:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782403515; cv=none; b=iCTBYEeddNg/u4zptw6/AoluSl+nKV2zGRU7afbck2zOFlOa6CxNFGPNPed/5AxKvUguu6c6sP7GGC6hxZEweHsaH+6JkjrbI0rJhWjm4bIK6HLC2Vc1L8+4yQtzMbcSOF0AkUmmp1QLPzBxs215oExiMGSplj2LVfy9iYQDDqU=
+	t=1782403541; cv=none; b=c+1dv201kC28UEMbnwOrpD21B9R4Dge0tG+NTXndKEvFtk4t0Qwb7S5RNp+Q2loaCmkrmICPKvzyz1Dd43VdKChAu1J4PubFqPPM1FeH31hv8YREikzfJhrBOS7gmSjNJcVtgdT7I7JzUd/dQqa9sWcz4FZh/S6XpSjN2KYYgMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782403515; c=relaxed/simple;
-	bh=2zknjp4KEwoStsh3baAqtyrh88HafZb5I4gpP6cPQWE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OnWP7MUf6vFSzgjBX5YUNH2j7jLiHIEvYKs4LwCblfUkBbWcaoYtEbhyQhXHhCUh3yttn1seWGvNoU3U/EoGDDJqV2wjXPeJSbno3jFg+L3dz3PeWVPsqkIn6ssoekR/9O4J6BCTfStUzoynD4iqTZNKVh1Zj2NOOgmdm4dbBG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UpyAnn/g; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782403541; c=relaxed/simple;
+	bh=KgPJePNXcynL5wVdvESOxTecPqRWFfNIHcFNR4q+q9c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U+eHUMsSiQ1NJrqoX93N3ODxryNwI63zlkOE8w8I7tHd6/oUlAIsOdgE5WAnCxNSpq9dIuxmFo6kYW8NOcRqRf5Equxtc2E0NuK3aFziplWyCDV245Nsfmu1LUkGESj39X01xFsQCXSNoeFrrRAtWIzQvLYgSdeTV2wg7S3GGss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pht8evVM; arc=none smtp.client-ip=209.85.214.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UpyAnn/g"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B1C51F000E9;
-	Thu, 25 Jun 2026 16:05:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782403512;
-	bh=T1gW0Cc9o60Vp4qxG4NmhRcqrLFX/LrDP+KCQYtN4sA=;
-	h=From:To:Cc:Subject:Date;
-	b=UpyAnn/gpPHRBz3iN8cxSomyv8a1nOqASvPIb9195Nf+4KHvWDBfhZXXp14tcRF2S
-	 GSYFVeNUg8T+BfNr+j9mzuGl2Lqv8jYjd5s2NFQBxgacrAzETisf7MVplZPnC+rJ2O
-	 lVl8qdzUqo3tTpHvSkCsE0WAwNNCqKiCzlcveU56dQafRWSzucv5fc1ATM56ZuqJsu
-	 O0gHbdfJupDiIwtX85/3fSo4oM4299Y46Mt0pjyN6rEeEuMcQZKw1tbTudo8qDXQtU
-	 skLF8kDjSAl3+ZybfV2QnR8lPSXSgpClOoun8k7D5dL/hYJfCPpME/G/dB7jIGILoo
-	 kDXLyZn/vgJTQ==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Alexander Duyck <alexanderduyck@fb.com>,
-	kernel-team@meta.com,
-	mohsin.bashr@gmail.com
-Subject: [PATCH net] eth: fbnic: don't cache shinfo across skb realloc
-Date: Thu, 25 Jun 2026 09:05:08 -0700
-Message-ID: <20260625160508.3327986-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pht8evVM"
+Received: by mail-pl1-f193.google.com with SMTP id d9443c01a7336-2c80810247dso1098615ad.1
+        for <netdev@vger.kernel.org>; Thu, 25 Jun 2026 09:05:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782403537; x=1783008337; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q2MJP6G+0qiz8VruHee0NS0DtXdE/aa4R8BvTRRv9rU=;
+        b=Pht8evVMH8uAy8YyOIR+NHbB/QuSgB/d3L5cl3CxOuf3Xt9cji6s5xP7gqOAc8LZaz
+         76h3PpodPpZH5ojY3Esbhu57ixM9kx/Esrqj4r0fc6sm7v1At8Y6umX0JIPpN5IamOkQ
+         nmtw8T/LCJb8kPY96S5k9GCfZb4k7/j91Si0U5Ww+iELWYUWzaXIAv36qcYB8F5QL6G7
+         TghBU65QihvIk0tQG/mKqCH+5DP2omBMZiI9aLntVeyX3TCKIE6/o51HX1xNbzpxtzgF
+         OLSvEAOX4w5+eZ6gdJHyMYwU5RR9QcxHc8kPTc1s+rX1e+PJgEA1DxXgmZVMhkP+07mL
+         KKnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782403537; x=1783008337;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Q2MJP6G+0qiz8VruHee0NS0DtXdE/aa4R8BvTRRv9rU=;
+        b=mq941KswF9wCr1B3vnMG4llU66oew39d6vSVHGfqntyMgfpQ9/jSCANzSaAxZJKVVg
+         yFA4s9rEJE7HVsvwU4hgHV97XnVgFbMLmbuwbwDnUsbm2UVZliLGyQlowjJuN6ODlBaF
+         wSlIQTGyHWY/sEostqO/5inKH5fuMyMz8S5XAct/8RfkN6QrZkhZDHHKiWfZ46c3kzc+
+         N4mX35sdqrwDkGhTS9761cxjLkoujz4/wkVoBDK9zAeqEJPhoYuI75AUHSnkOqQwyQaK
+         oXjcpu6DbOl+HjVFhrE34A4IeX4IIeD/RFkJPVkcnGtxCPuWbjIvIINptf/0Z6XCBJ3v
+         C9Mw==
+X-Forwarded-Encrypted: i=1; AHgh+RoFEe0yIDbYlmYs+jlKdhHWZFo/Fgh8LpXVXji5Bb2PbzrSn4GbKPZFmt1il5tQHyJ43D+NREY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxyj9qt34glhGpAmi8UyXcl0gLfiFLYyhJg9u6UIGi9Jg0zXZr9
+	2nHbSxLhYY4efNFIbUsBdNnDnJliQNFw4y7Flr6GkD+52WM9uhgLNh/H
+X-Gm-Gg: AfdE7cnHkffO5gnMsIx/s4JDR81tolh15X0W5EqgRsP7idb1sagfe5Wa1Dp7lc/3aD0
+	rOhkvMXs4fWe4XFOOG7BDBk/uWqIkgixF1koerDkhwsLBr4ZUQSeAuJiFtWayjdrx7SZtAd6RZt
+	faLf+SukkjNAZDj4dwpYN9eccBe6ve+tIF3xPayqi8X2ZxKLjegISpQdg+M0ShwzQvVM1M7F+1W
+	z7l6VtHE/TsFDykPrG3edT/Cp11liDnryk1zhj3D0HMjafaoxXTqhkLGF8kafGzSt4dEMpj6NKL
+	ipxghTBpCbKM/FV8YyPHYiz6n2vRoOEC1y/ls5697V7hZJeGOnNwTf3IHY0014Zj8v0uuKYArNT
+	P+ndYPjlPo8+tQtl0whNA4mUedqOuSv4k3uz2CaNm24cgLdkLz8bdNmCdDWkrbhKTtnonVDPSfC
+	aE3VDv
+X-Received: by 2002:a17:902:ef03:b0:2c0:d9b7:b7a3 with SMTP id d9443c01a7336-2c7fc740665mr30975935ad.21.1782403537535;
+        Thu, 25 Jun 2026 09:05:37 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:8::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7f63b27dasm22916635ad.45.2026.06.25.09.05.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Jun 2026 09:05:36 -0700 (PDT)
+Date: Thu, 25 Jun 2026 08:48:03 -0700
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com, 
+	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, 
+	Breno Leitao <leitao@debian.org>, joshwash@google.com, hramamurthy@google.com, 
+	anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com, saeedm@nvidia.com, 
+	tariqt@nvidia.com, mbloch@nvidia.com, leon@kernel.org, alexanderduyck@fb.com, 
+	kernel-team@meta.com, kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org, 
+	decui@microsoft.com, longli@microsoft.com, jordanrhee@google.com, 
+	jacob.e.keller@intel.com, nktgrg@google.com, debarghyak@google.com, mohsin.bashr@gmail.com, 
+	ernis@linux.microsoft.com, sdf@fomichev.me, gal@nvidia.com, linux-rdma@vger.kernel.org, 
+	linux-hyperv@vger.kernel.org
+Subject: Re: [PATCH net] net: ethtool: keep rtnl_lock for ops using
+ ethtool_op_get_link()
+Message-ID: <aj1Nqe3RoITzxSEb@devvm7509.cco0.facebook.com>
+References: <20260624190439.2521219-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260624190439.2521219-1-kuba@kernel.org>
 
-fbnic_tx_lso() calls skb_cow_head() which may reallocate the skb
-including the shared info. We can't use the pointer calculated
-before the call.
+On 06/24, Jakub Kicinski wrote:
+> Breno reports following splats on mlx5:
+> 
+>   RTNL: assertion failed at net/core/dev.c (2241)
+>   WARNING: net/core/dev.c:2241 at netif_state_change+0xed/0x130, CPU#5: ethtool/1335
+>   RIP: 0010:netif_state_change+0xf9/0x130
+>   Call Trace:
+>     <TASK>
+>      __linkwatch_sync_dev+0xea/0x120
+>      ethtool_op_get_link+0xe/0x20
+>      __ethtool_get_link+0x26/0x40
+>      linkstate_prepare_data+0x51/0x200
+>      ethnl_default_doit+0x213/0x470
+>      genl_family_rcv_msg_doit+0xdd/0x110
+> 
+> Looks like I missed ethtool_op_get_link() trying to sync linkwatch,
+> which needs rtnl_lock. Not all drivers do this - bnxt doesn't,
+> it just returns the link state, so add an opt-in bit.
+> 
+> Reported-by: Breno Leitao <leitao@debian.org>
+> Fixes: 45079e00133e ("net: ethtool: optionally skip rtnl_lock on Netlink path for GET ops")
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-    BUG: KASAN: slab-use-after-free in fbnic_tx_lso.isra.0+0x668/0x8e0
-    Read of size 4 at addr ff110000262edd98 by task swapper/5/0
-    Call Trace:
-     fbnic_tx_lso.isra.0+0x668/0x8e0
-     fbnic_xmit_frame+0x622/0xba0
-     dev_hard_start_xmit+0xf4/0x620
-
-    Allocated by task 8653:
-     __alloc_skb+0x11e/0x5f0
-     alloc_skb_with_frags+0xcc/0x6c0
-     sock_alloc_send_pskb+0x327/0x3f0
-     __ip_append_data+0x188b/0x47a0
-     ip_make_skb+0x24a/0x300
-     udp_sendmsg+0x14d2/0x21e0
-
-    Freed by task 0:
-     kfree+0x123/0x5a0
-     pskb_expand_head+0x36c/0xfa0
-     fbnic_tx_lso.isra.0+0x500/0x8e0
-     fbnic_xmit_frame+0x622/0xba0
-     dev_hard_start_xmit+0xf4/0x620
-     sch_direct_xmit+0x25b/0x1100
-
-    The buggy address belongs to the object at ff110000262edc40
-     which belongs to the cache skbuff_small_head of size 640
-    The buggy address is located 344 bytes inside of
-     freed 640-byte region [ff110000262edc40, ff110000262ede
-
-Link: https://netdev.bots.linux.dev/logs/vmksft/fbnic-qemu-dbg/results/705762/15-uso-py/stderr
-Fixes: b0b0f52042ac ("eth: fbnic: support TCP segmentation offload")
-Reviewed-by: Alexander Duyck <alexanderduyck@fb.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
-CC: kernel-team@meta.com
-CC: mohsin.bashr@gmail.com
----
- drivers/net/ethernet/meta/fbnic/fbnic_txrx.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-index 9cd85a0d0c3a..401f8b8ae1ca 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-@@ -194,16 +194,18 @@ static bool fbnic_tx_tstamp(struct sk_buff *skb)
- 
- static bool
- fbnic_tx_lso(struct fbnic_ring *ring, struct sk_buff *skb,
--	     struct skb_shared_info *shinfo, __le64 *meta,
--	     unsigned int *l2len, unsigned int *i3len)
-+	     __le64 *meta, unsigned int *l2len, unsigned int *i3len)
- {
- 	unsigned int l3_type, l4_type, l4len, hdrlen;
-+	struct skb_shared_info *shinfo;
- 	unsigned char *l4hdr;
- 	__be16 payload_len;
- 
- 	if (unlikely(skb_cow_head(skb, 0)))
- 		return true;
- 
-+	shinfo = skb_shinfo(skb);
-+
- 	if (shinfo->gso_type & SKB_GSO_PARTIAL) {
- 		l3_type = FBNIC_TWD_L3_TYPE_OTHER;
- 	} else if (!skb->encapsulation) {
-@@ -258,7 +260,6 @@ fbnic_tx_lso(struct fbnic_ring *ring, struct sk_buff *skb,
- static bool
- fbnic_tx_offloads(struct fbnic_ring *ring, struct sk_buff *skb, __le64 *meta)
- {
--	struct skb_shared_info *shinfo = skb_shinfo(skb);
- 	unsigned int l2len, i3len;
- 
- 	if (fbnic_tx_tstamp(skb))
-@@ -273,8 +274,8 @@ fbnic_tx_offloads(struct fbnic_ring *ring, struct sk_buff *skb, __le64 *meta)
- 	*meta |= cpu_to_le64(FIELD_PREP(FBNIC_TWD_CSUM_OFFSET_MASK,
- 					skb->csum_offset / 2));
- 
--	if (shinfo->gso_size) {
--		if (fbnic_tx_lso(ring, skb, shinfo, meta, &l2len, &i3len))
-+	if (skb_is_gso(skb)) {
-+		if (fbnic_tx_lso(ring, skb, meta, &l2len, &i3len))
- 			return true;
- 	} else {
- 		*meta |= cpu_to_le64(FBNIC_TWD_FLAG_REQ_CSO);
--- 
-2.54.0
-
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
