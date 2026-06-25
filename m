@@ -1,78 +1,90 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCBD38236C;
-	Thu, 25 Jun 2026 01:50:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C41D383980;
+	Thu, 25 Jun 2026 01:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782352223; cv=none; b=QmmCAUI2kCFO+ncfgEpM6siVnXlSvvX5vNuFt5RFh2EaI+mVKX3Do3IyNHM8551Mfmej+lriCT1RWPKyQLcefPlkLaPS+A1wbxIvD4+B0jC0Tkw4Wfp9Jrzvf5H/IRug6+26Ct6TNrRbI0HlZwLoEoqZQ6xC8xKNnRAqpOZjOe0=
+	t=1782352475; cv=none; b=YVmPHRGyFwAylsCDmRQVt4v3IRhY3zaugaYMsvimh8R+gFzjeDQa3lQA+J5Rvy0iUwAm4cOvEfWZy/IJFVylqBKrQS6tOk29VAaPDks4WhCYKj2CJO85a8S9sOLZ8UQDKw0aSg16I4hpObfT7tOzEvWKmcO9KjN8MR0Tdfc9W3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782352223; c=relaxed/simple;
-	bh=3SSekSvY/kw3gqgvYAAHvbkrEmUCGyGNlJrnEptlnIU=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=fhxgJxLXfXKE4M62qEQbgmJnzOLFHwWSt1AgLmITvoJ+bS7YFPPOvFPMSZ5cQeVkrlHTuF6aRizilriRPUADAZbLAPmclC/GybIB/O7iKfvocJzw4BhZOU976u0FQ5tSowf8yVSJkpcQtyGGgPfm1VaJAXYrqCdNrcB2oLWxBkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MdAStIHM; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782352475; c=relaxed/simple;
+	bh=97fKS2/77xyGAj6E6rnQNr+rlMBH79HuffSZ9p3mgtw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XHM3z1TRMNMhoueN4kaeGlFsaMYWZIDpFAk341o6J5q3cT3ataFl0UskaHxTcW5alKEjUF5abIO06FyB5eD+rgGc6dou59Z7WnT93v7O1Y47JvGrU3E6BioxJQhQtuZEud5sRXwoATA6cXm+e8WGVnqZ1OubISrE4D+rp+hXlrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JpkAQxuM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MdAStIHM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 990641F000E9;
-	Thu, 25 Jun 2026 01:50:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JpkAQxuM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A59FD1F000E9;
+	Thu, 25 Jun 2026 01:54:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782352222;
-	bh=fLr5SBaZROw1uH9V+5+Th0+iftdyQ8kxpUCEzchCZbY=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=MdAStIHMhmy3y12zampdtZNw4a7Gp+afOQhWGehx516Jedz5m9Fjhe6BDo5kHEYkK
-	 +kbDqrVYTudTSMRDOXk/yMKX7vhf5kmAyxEwCpb5paM6pVvbMwWKS4S8Rbt+6XyYg3
-	 Bvw+QpqHZJRJIE3hdMdGRM0gvTfIYFcQPN2q2ubj4GZBzgbSrWtIblL4KiIm7R7kD+
-	 VW+yV8b++jn5ZZdKzhV4kF4q7flOM8+1b5P2Lxm1tSOmHLvmAwhyzGylfYXsFU7EOP
-	 114N43SkeVUkc8IE3wP5xTK2DAU+zxDJliz8LXrmAjXFLQUnpVF1yw4hfgJ+Z9rNGd
-	 KeIyH5K/Os/HA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19A2C3AAA6D1;
-	Thu, 25 Jun 2026 01:50:12 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1782352474;
+	bh=7R6Poq8sjGJXdHlWLk9FmKhkwwl1mLRpvuQp6vXdjOE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=JpkAQxuMRLKvWMLzENnWMzqNWPedjCxwzoF/vhwwERpDEob+HLiRWcxkE1Ui0LiNJ
+	 LCZtvigND+x8B+T9wnJe1T6umMZA9huUYIqg6GJoLqCYeN033YMx7du4j/5KhLBCga
+	 X8c2SYoDdSk1aKyZAXkLuM/LaCxOe4cAR1RrZD10rDIPVgq21+XwNV/aavS5kwCKtZ
+	 EkrFbxyEv/DSXIU8mNrliRNhzUBBde+jBnMMBrBsJT/QmjVMZ7jKEoKtMFzB41XZBR
+	 f/QvR0N/5c0mAKcg/XEOD2Jc0bZHgtoTBfb2UN+BgWbEAuGfcDX9xH3jbbJYBu+bb3
+	 Olurw15xzujfw==
+Date: Wed, 24 Jun 2026 18:54:32 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Siddharth C <siddharthcibi@icloud.com>
+Cc: ast@kernel.org, hawk@kernel.org, andrii@kernel.org,
+ netdev@vger.kernel.org, bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH 1/2] bpf: preserve rx_queue_index across XDP redirects
+Message-ID: <20260624185432.32d90aa8@kernel.org>
+In-Reply-To: <20260620121321.45227-2-siddharthcibi@icloud.com>
+References: <20260620121321.45227-1-siddharthcibi@icloud.com>
+	<20260620121321.45227-2-siddharthcibi@icloud.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] octeontx2-af: npc: cn20k: Fix subbank free list
- indexing for search order
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178235221055.3075556.4312731991418835345.git-patchwork-notify@kernel.org>
-Date: Thu, 25 Jun 2026 01:50:10 +0000
-References: <20260619095100.1864440-1-rkannoth@marvell.com>
-In-Reply-To: <20260619095100.1864440-1-rkannoth@marvell.com>
-To: Ratheesh Kannoth <rkannoth@marvell.com>
-Cc: kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, sgoutham@marvell.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Sat, 20 Jun 2026 12:13:13 +0000 Siddharth C wrote:
+> diff --git a/kernel/bpf/cpumap.c b/kernel/bpf/cpumap.c
+> index 5e59ab896f05..8f2d7013620f 100644
+> --- a/kernel/bpf/cpumap.c
+> +++ b/kernel/bpf/cpumap.c
+> @@ -197,7 +197,7 @@ static int cpu_map_bpf_prog_run_xdp(struct bpf_cpu_map_entry *rcpu,
+>  
+>  		rxq.dev = xdpf->dev_rx;
+>  		rxq.mem.type = xdpf->mem_type;
+> -		/* TODO: report queue_index to xdp_rxq_info */
+> +		rxq.queue_index = xdpf->rx_queue_index;
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Do you actually need this or you're just trying to address the TODO?
+You can always store the info you need in the metadata prepend.
 
-On Fri, 19 Jun 2026 15:21:00 +0530 you wrote:
-> subbank_srch_order[i] is the physical subbank at search-order slot i,
-> so each subbank's arr_idx must be i (its slot), not
-> subbank_srch_order[sb->idx].  The old logic mis-keyed xa_sb_free
-> and broke allocation traversal order.
-> 
-> Populate arr_idx and xa_sb_free in a single pass over the search
-> order after subbank structs are initialized.
-> 
-> [...]
+>  		xdp_convert_frame_to_buff(xdpf, &xdp);
+>  
+> diff --git a/kernel/bpf/devmap.c b/kernel/bpf/devmap.c
+> index dc7b859e8bbf..f419fa0e53e5 100644
+> --- a/kernel/bpf/devmap.c
+> +++ b/kernel/bpf/devmap.c
+> @@ -339,7 +339,7 @@ static int dev_map_bpf_prog_run(struct bpf_prog *xdp_prog,
+>  				struct net_device *rx_dev)
+>  {
+>  	struct xdp_txq_info txq = { .dev = tx_dev };
+> -	struct xdp_rxq_info rxq = { .dev = rx_dev };
+> +	struct xdp_rxq_info rxq = { };
+>  	struct xdp_buff xdp;
+>  	int i, nframes = 0;
+>  
+> @@ -349,6 +349,9 @@ static int dev_map_bpf_prog_run(struct bpf_prog *xdp_prog,
+>  		int err;
+>  
+>  		xdp_convert_frame_to_buff(xdpf, &xdp);
+> +		rxq.dev = rx_dev;
+> +		rxq.mem.type = xdpf->mem_type;
 
-Here is the summary with links:
-  - [net,v2] octeontx2-af: npc: cn20k: Fix subbank free list indexing for search order
-    https://git.kernel.org/netdev/net/c/429ef02895db
+Why are you setting mem_type?
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+> +		rxq.queue_index = xdpf->rx_queue_index;
+>  		xdp.txq = &txq;
+>  		xdp.rxq = &rxq;
