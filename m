@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19CD1329367;
-	Thu, 25 Jun 2026 01:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE6C36A34E;
+	Thu, 25 Jun 2026 01:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782349749; cv=none; b=WHK0sC2y7fvMlQpynn2wXs7GVMe7s2viS56P8JKMwv18E3FyI7ROPF4GegiJMBHcLFwQfWUAMJikmr37BpUfYnCJoedQplrgWqMhTdCIBKRGwUzMrPnqYCpWoZhMAOoE4UvliOV23ar9RNnyZO09r5naxl4r4dELjiTY5iYxiPc=
+	t=1782349750; cv=none; b=DuzlgaD5KltQrtPxRSkQgo/VtYzp1d4byrtTgtsGiHo0uTDPVVDzemWTa4bzmL+DWcVeWYEsWPSgU73v1aj15ec4486GZfiTV00rkTTnZ8qp1qqP2MW+vTsu5uJsyUK0GamrE9aP+GVUrQ+S+JqDASd5/4wIBjdrNE9puDF+F0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782349749; c=relaxed/simple;
-	bh=QdpxjdLKQXhd/9c42dttAVfWFHmlS7Ad4Mjy0yCuwDU=;
+	s=arc-20240116; t=1782349750; c=relaxed/simple;
+	bh=EhBWeBor7+3TLkCvfTysfZR/VPJ7nKtlH2rnA0Lob+k=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=VPT5jNug6kWeu6sux1iGyGO2z7U4Tk3Gjanx5C5ZmNvXXd5Ssl+jNhKZY8zyHnf/RU0phk542NYiWrPF0MDmZmIjEM0E/AeBnCBO6TBGqDgA7HKkYGx9I+DA7xpeEEmO3SkAaQEOMLcoG+Dsrnt76ej4CSQ2hR9XLcdQbixbgck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QOeaxYZb; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=txLxuMMfMUcGhT809pDbgyWDTWhvAm7XhW4U1CcF9yUNH+DYcf6QPvpyQhtxFwfO1PYCbs9PiuW5D4jN3VC5aFFJbkUKxjJ9tyC2zquXKOvRqeFXpuh7cgLUJZCdkO7t0iqHFEpXls+nAo3XOjWBr16qe8AG5E+IVuhrUD9gCCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DrRfq9DY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QOeaxYZb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDC5E1F000E9;
-	Thu, 25 Jun 2026 01:09:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DrRfq9DY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54BE01F000E9;
+	Thu, 25 Jun 2026 01:09:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782349747;
-	bh=aEyxyFWrLqjdUO9HK8isXKGS6z8rSKYj9whMQhaLB6o=;
+	s=k20260515; t=1782349749;
+	bh=u8uJ8GHJ07pejXcy4KRwPpXgXLjWoU2SgIbTVNpVTno=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=QOeaxYZbxqGGy3EAb20ZPGcinOJ7InCLIFOS7DPId/hicdCeOyt/66JanGZecvTZH
-	 WfESjPjiD6elDgBfev+AADp3QQ4t0vCMaVTV82iU4lpFSyvJYxzhaqKyUl8mLwYyQD
-	 Xr3/XUthIBkvSzhS/knUiJYxUP981HuUVC7uI2yYhKMrz4PSu3u5ik7drBaRUzEeyv
-	 Jf5qSQc62azXKyxkBSIJjH3INaBRuxKM8wC6i6b0bSNzAf+SkqzGJHyURRIbEPrOyt
-	 W1Db1K4oat1JjYRQktIcqziT64Ize8CC8pdgG7xxgtOs+6fgYZ6zNA7Cfc2X0y8RiN
-	 2v+SUpwXC9e6A==
+	b=DrRfq9DYyT2ITNIiPP1cG2dYEFGN5wFRdae2H8DC497cS/AvP46JuNtDLPySpl5uo
+	 eZWnIID07v7aa693/lU2AjQGVwVunaKPvAHkk7nQ7ZCv9tMrHwmdyJFUYLm4GFDSLr
+	 1CbrrC2pWXNQCuJQKIz8JqXarlyWIbJ6Hz0BrsqgkxSFBvfZeSGUC55lrUJwyAsUDc
+	 Bfl9EaSIFBTu6Z+3wY78Wr3DSPberQcORbb5H6GaNI841acmdPpw4xJ+BbG2DzYAMl
+	 H6ShURy4ZY00ueODPnixTnKYJcaVHq+IaezdKlr9JAaGPsezylFQd+JazXHCXHqNEm
+	 qH4GKnOxPVaYg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56E533AAA0F5;
-	Thu, 25 Jun 2026 01:08:57 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0AC03AAA0F5;
+	Thu, 25 Jun 2026 01:08:58 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,45 +37,44 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 1/2] net: dsa: mxl862xx: avoid unaligned 16-bit access
- in
- api_wrap
+Subject: Re: [PATCH net] net: mana: Fall back to standard MTU when PF reports
+ adapter_mtu of 0
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178234973601.3045401.4338455297838317160.git-patchwork-notify@kernel.org>
-Date: Thu, 25 Jun 2026 01:08:56 +0000
-References: 
- <599327521db465a534d277de53ab9b6cac01928b.1781702256.git.daniel@makrotopia.org>
-In-Reply-To: 
- <599327521db465a534d277de53ab9b6cac01928b.1781702256.git.daniel@makrotopia.org>
-To: Daniel Golle <daniel@makrotopia.org>
-Cc: andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+ <178234973748.3045401.8722834683122221137.git-patchwork-notify@kernel.org>
+Date: Thu, 25 Jun 2026 01:08:57 +0000
+References: <20260619055348.467224-1-ernis@linux.microsoft.com>
+In-Reply-To: <20260619055348.467224-1-ernis@linux.microsoft.com>
+To: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+ decui@microsoft.com, longli@microsoft.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ dipayanroy@linux.microsoft.com, ssengar@linux.microsoft.com,
+ jacob.e.keller@intel.com, horms@kernel.org, gargaditya@linux.microsoft.com,
+ kees@kernel.org, linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 19 Jun 2026 04:39:25 +0100 you wrote:
-> The MXL862XX_API_* macros pass the address of a stack-allocated, __packed
-> firmware-ABI struct to mxl862xx_api_wrap() as a void *. The struct has an
-> alignment of 1, so the compiler is free to place it at an odd address.
+On Thu, 18 Jun 2026 22:53:38 -0700 you wrote:
+> Commit d7709812e13d ("net: mana: hardening: Validate adapter_mtu from
+> MANA_QUERY_DEV_CONFIG") rejected any adapter_mtu value smaller than
+> ETH_MIN_MTU + ETH_HLEN, including 0, returning -EPROTO and failing
+> mana_probe().
 > 
-> mxl862xx_api_wrap() reinterprets that buffer as a __le16 * and accesses it
-> with data[i], for which the compiler assumes the natural 2-byte alignment
-> of __le16 and emits aligned 16-bit loads/stores (e.g. lhu/sh on MIPS).
-> When the buffer lands on an odd address these fault on architectures that
-> do not support unaligned access, such as MIPS32.
+> Some older PF firmware versions still in the field report
+> adapter_mtu as 0 in the MANA_QUERY_DEV_CONFIG response. With the
+> hardening check in place, the MANA VF driver now fails to load on
+> those hosts, breaking networking entirely for guests.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,1/2] net: dsa: mxl862xx: avoid unaligned 16-bit access in api_wrap
-    https://git.kernel.org/netdev/net/c/6b3f7af57881
-  - [net,2/2] net: dsa: mxl862xx: fix use-after-free of DSA ports in crc_err_work
-    https://git.kernel.org/netdev/net/c/bcb3b8314611
+  - [net] net: mana: Fall back to standard MTU when PF reports adapter_mtu of 0
+    https://git.kernel.org/netdev/net/c/6bd81a5b4e0d
 
 You are awesome, thank you!
 -- 
