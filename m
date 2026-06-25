@@ -1,1333 +1,323 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BBFA36C581
-	for <netdev@vger.kernel.org>; Thu, 25 Jun 2026 07:47:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782373632; cv=none; b=Sbb6ycTAA0Z2lGlAUl9FHx+h/qkG749E4D6otr6TbMYyxnEfBARoTBupWYUeiN8yMLM4Gf5KrfkzpUOp5LrD5cbRJdcBHZ5G8fH0exY0REqsNrTdEOiB51I67QtPOInZ8SRbC1uPHlBTKSbDhO8NQbFuQRa22g5wMfyDliK8DJU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782373632; c=relaxed/simple;
-	bh=zDSSJSxTE+uIDbom/rkDpJ/8Y/Gtx9ssVgfj+wQAru4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=SxVsh9ksvwG4shc/veAp/MYvL0xbKMq1ZctXdQAIbvj9SBgNp+/QxAhXkrcVYe927nOZY22SpFA1B39Vx+D9Y1bQbV/PVC/S3VcMR/u/K9r3SgQujAP/KVNnFeM/4jkBTHxdz/BTd57hoqyfdrGk83pwXZ9lFciIOm1u3ziVgZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HulFpSY1; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4168C332604
+	for <netdev@vger.kernel.org>; Thu, 25 Jun 2026 07:51:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782373901; cv=fail; b=EGxqY7w1RL/PXYylOaF6PCCtYpL+ldkxa99wogR1zaoAe/ot99yh7ZHAbIcRRqFlTS9dJfkmupTNLJAteg73GdThokLxfNkbPUaSD2srU3CKy2w0p8rEoVETs9QbSPnT19RVO/Bpl1eCeAsXMsim9OG09r4jrNJzjK+w8dB3o/w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782373901; c=relaxed/simple;
+	bh=PBJYErrS/KUXoJQLmsW+YqFQ1cup7rVkCs++5dEkt/Q=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=ZG9wKhS2eZ+/JFlnKEiCEDa9V+tptkGsToZK3qV84BAq/3daFM8jje3jsnzWLAH8/Mwzj/7KoP8/Ic/qBc0JmTcH4wEfC25Qssaxddnjh+r+rcLnq1il3QWt12EZIC1jxCvuIzNNef6WxVJL3b+zzKd8W7mMP9m6/vDBv26CphI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D2yyhuFh; arc=fail smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HulFpSY1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB2041F000E9;
-	Thu, 25 Jun 2026 07:47:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782373629;
-	bh=Rs6dN1DsF/31OWy8VE421dpZUIpEO+6855WcMNpgDYY=;
-	h=From:Date:Subject:To:Cc;
-	b=HulFpSY1MKb1TrHKBip9405PVawXf5if+dZGSd9Ue1fSq6duCWOqicETp6MYNLO4e
-	 U8lPXjL0lkHKh2MLf3MNStYbHTHHMy7jN/WXB9J6Owp7GWkDrT4kq42QN6zrpO/sxt
-	 0PgcoI4IJUrAPjTRQr9udNmM3780bPtI4KOz+1eR5jDXSX7b1vHpQ3ZHv85/MKBLdS
-	 OUNmQjXfa7sorRovJ/GJjpIcmJFYbNe8Xv8JrTu8rQcR0d6HRkEdwpFGY/QY+EH3Ch
-	 58q/cS2DBRE95C5xz9t2wPxYDAqAiFqDDesZGIzlGoVKz6jRzDbyLuxg9IhexjYLLj
-	 /vtQFE4rVbjvg==
-From: Linus Walleij <linusw@kernel.org>
-Date: Thu, 25 Jun 2026 09:47:01 +0200
-Subject: [PATCH net v5] net: dsa: Fix skb ownership in taggers
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D2yyhuFh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782373899; x=1813909899;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=PBJYErrS/KUXoJQLmsW+YqFQ1cup7rVkCs++5dEkt/Q=;
+  b=D2yyhuFhjdusDPgKwxCm4q3oszsXBengWgXOsLQHCR8TEC8k9JEXIYPy
+   K7xVNy33MsRp/PPYVyFEelCYtk2+THdBJ87INSRIL/ZtRNkOobW7I2e24
+   76eDVKjudxUOciDB5SyvVjsawmQNBQjcZgS9/CyC9zKQcDp9XOIN7wrJd
+   hcVovm685hnwhlu/I3kaMAnApTmN7grxPwL0ozQNocJHVgQetFwALNiG6
+   qk1fw+a6BaaEDy6jOzWQMslv/wE7XGsMuEaVnbEhydWPGbT9qtV53Vugp
+   tO0nhgbv2MOpemxl7VxBLRsivOVH4/CYQp04qiQ3Wb7/zJi2l0FSqZjYr
+   A==;
+X-CSE-ConnectionGUID: 7u5G4+MPSp2wvX6K0QW/eg==
+X-CSE-MsgGUID: k32hRirxQLCt0ttAb8tk1A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11827"; a="86991184"
+X-IronPort-AV: E=Sophos;i="6.24,224,1774335600"; 
+   d="scan'208";a="86991184"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 00:51:38 -0700
+X-CSE-ConnectionGUID: I10b5wiBTaKFXgJ9c+nfLQ==
+X-CSE-MsgGUID: UqmDwUGhRquQQ1+SaelpwQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,224,1774335600"; 
+   d="scan'208";a="255357120"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 00:51:39 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 25 Jun 2026 00:51:38 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Thu, 25 Jun 2026 00:51:38 -0700
+Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.57) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 25 Jun 2026 00:51:37 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oN5MuDQTFDNwmp3KFUswuUMDpoN+pTufNJxagr0RDJ/cA0EMWre/g3/dT/YQIXcCmRlHbZvJyvvQU0kGASr0Bx3Ptxy2as4r2XaGS7OdkeYkgPElXx52n00kmEy6KtalkMqFyOu8pAvqbRttQ5yF+vR+CVOv6dupc1z9OrsQHXi4qKm/BDW8m8WdZalxg1IALhmgNTPi5ov4XnGMYerIzlDDj0gMfTZPkj+gB3rAZkI5n1U/BmCynWtxEOlD69ZOhEF22vBGgANPOjA4HbpBw9gUJmccHsRjRseM9i2OZ9Mj4HKq5CW5OfsgdeuMtpA37U4zyw9UBTDpDqfPRw/NxQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=loQ2eajmtVvqNAvULnitAxpvmFsercXz+ytzpokkE2o=;
+ b=kOGPDIqjb275DrOO3IAJGLOInBSgKvXIP3i14254htHJcNz5iRDjLvXpd4G5y+SwS7VIT6seq8fHA7GHwm+Yfx/J6C0QAa2tveKoJEUqRC/i/r3LgcrRoQzARDnVdTdcTfee6KQNUZEp3gQad1QQ9qf1yHjxbUsWPbVXQ5gg9Z1b9Xqg6Qp7ut6Or05nsB7alFQTXUvBLHu9HWxJFwoDwp2zLmo+SLTsTtHI0SV8mhhYPj+Octn8jhcDOH0otbdJZdLryZS+cAJq9PmoyLhNyQXEH5e9jPhV++RjBzdmxW3RO37vpHTcRqUoXgtROhwCVStvaRxc/dMy+boOni/8oA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from LV3PR11MB8508.namprd11.prod.outlook.com (2603:10b6:408:1b4::8)
+ by DS4PPF11E6CAE14.namprd11.prod.outlook.com (2603:10b6:f:fc02::c) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.16; Thu, 25 Jun
+ 2026 07:51:35 +0000
+Received: from LV3PR11MB8508.namprd11.prod.outlook.com
+ ([fe80::a1e8:1786:e5d1:8e51]) by LV3PR11MB8508.namprd11.prod.outlook.com
+ ([fe80::a1e8:1786:e5d1:8e51%5]) with mapi id 15.21.0139.018; Thu, 25 Jun 2026
+ 07:51:35 +0000
+Message-ID: <5658849b-0425-4132-ba32-5801e2907c60@intel.com>
+Date: Thu, 25 Jun 2026 09:53:39 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH iwl v3] ice: retry reading NVM if admin queue returns
+ EBUSY
+To: Robert Malz <robert.malz@canonical.com>, Simon Horman <horms@kernel.org>,
+	Grzegorz Nitka <grzegorz.nitka@intel.com>
+CC: <anthony.l.nguyen@intel.com>, <intel-wired-lan@lists.osuosl.org>,
+	<netdev@vger.kernel.org>
+References: <20260617120753.1785565-1-robert.malz@canonical.com>
+ <20260618152003.909400-1-horms@kernel.org>
+ <CADcc-bydFL4KNDQEznStE41NFXuCey9S+kyXg0usbonwyWpiAQ@mail.gmail.com>
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Content-Language: en-US
+In-Reply-To: <CADcc-bydFL4KNDQEznStE41NFXuCey9S+kyXg0usbonwyWpiAQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: TL0P290CA0013.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:5::20) To LV3PR11MB8508.namprd11.prod.outlook.com
+ (2603:10b6:408:1b4::8)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260625-dsa-fix-free-skb-v5-1-b5931e4cbdb0@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4XPzQ7CIAwH8FcxnMUUmDA8+R7GAx9FUbMZmItm2
- buL86JR47Htv7+mA8mYImaymg0kYR9zbJtSLOcz4vam2SGNvtSEA5cgmaQ+GxrilYaESPPRUmu
- B1w411MBJWTsnLPOJ3JAGO7J9NvPFHtB1D+wR28fctek2He7ZFP59o2eU0eAFWLH0Lki5PmJq8
- LRo027ye/5P4EXQ3nojDdOo1YcgXgX1RRBFcN5XCErVRugPoXoROP8iVEVQBg0wGyoQ71+M43g
- Hy6lgAo4BAAA=
-X-Change-ID: 20260616-dsa-fix-free-skb-bb028ce90802
-To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, 
- Florian Fainelli <florian.fainelli@broadcom.com>, 
- Jonas Gorski <jonas.gorski@gmail.com>, Hauke Mehrtens <hauke@hauke-m.de>, 
- Kurt Kanzenbach <kurt@linutronix.de>, 
- Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
- "Chester A. Unal" <chester.a.unal@arinc9.com>, 
- Daniel Golle <daniel@makrotopia.org>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, 
- =?utf-8?q?Cl=C3=A9ment_L=C3=A9ger?= <clement.leger@bootlin.com>, 
- George McCollister <george.mccollister@gmail.com>, 
- David Yang <mmyangfl@gmail.com>
-Cc: netdev@vger.kernel.org, Sashiko AI Review <sashiko-bot@kernel.org>, 
- Linus Walleij <linusw@kernel.org>
-X-Mailer: b4 0.15.2
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV3PR11MB8508:EE_|DS4PPF11E6CAE14:EE_
+X-MS-Office365-Filtering-Correlation-Id: 74517fed-588b-47bb-833a-08ded28e948c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|18002099003|22082099003|4143699003|6133799003|3023799007|11063799006|5023799004|56012099006;
+X-Microsoft-Antispam-Message-Info: LZf+9nUI2Axn+OO0BVUMpp73/RTQHXLGTGmvDi3ZiExDmHbjH0w/FsZyYbX99zU9Aqz5V+rFqIMKafXJtPEOMEMWQF3+eLOFUUJIVZmKkTn/uIN8xN8xF1bwA6IdnPha3mphgmH1fEL026JrSoF9MUj1M1/y/CPxw+jen4WXXNnkshv4gG57jM8OD2CkqI3zT2ZvJyj8PwMK6qF+bFnxCrl49NyxhgVIx17imK9BR/69+gqurODmrZu3yV23qF1eVSpwFjNhzqbki6Fc+KEaQ9dgUlCVFFSXLOiI/iI+fNDeYsMj7JbqWahgc26BmTZ3Tp8O4rMzaejMjG0VPCG/vSatCfNN3tGfMlU1efHA0VX/PmmL18llmM+mZxlCa0Yaet7dZbWnQZ2n/al7JuRjjR5qV+U7UHc481hwirQbrZkfO34vI0EHjWZ/d2L9YptelOSy4tIqH1VfvlN5+ivGjq98IdL8faB/8ruXLYpTj2H/qvbIYf90t0kYmSn2+x+4yGMnLkh1z9T1ZVN35MX0gHQcAvIOrPmVdgux0TC1U9otGWXT7CCVdcyMGfXV1mQGQdct9QAbBux4g+hoEjgx9Yd0mvesywT2w779+un9I5soAk8BkI0NJXCd1pdhNvC15j1SRwlB4ZXVL+R4Kyp3+0XK5CIzf7GyIYvXs95wa4w=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR11MB8508.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(18002099003)(22082099003)(4143699003)(6133799003)(3023799007)(11063799006)(5023799004)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?T05XdXNKQmtUdERvNHUwLzBNeHJsUG52QjVYTlVHN0lPSkhOQTVhSm9XcSth?=
+ =?utf-8?B?Z3dNeG9POURpYUtHS2VCVmp6eVZTb3RobjFsMHUxRWYwSlQwR3JFYjlGa2lT?=
+ =?utf-8?B?SFNYQ1diV2RWVjVQcG1qOUZyN1JCOWxBK2lrejIwV3hiR21oM3BkTXU1K3RG?=
+ =?utf-8?B?VERrSG5jQWhXd1ZTd0ZjSS9kbFhTQmxhbjRST2YwbUp6eCtuMlJTaG9mb2pv?=
+ =?utf-8?B?bXJOSjNsV2hxbDNLVmpRRmJta2RGMUw5YlVQNTQ1VVdUZElVSXFRTDQ2ZVFw?=
+ =?utf-8?B?TnVoVzZNQS85MTFvd3B6dDN4YWp3MFUzYkFNTkVBNjZkWkdNZFltSG8zWVNT?=
+ =?utf-8?B?dWNYNU8rZTQrWVJJVTRnQktWRGkrU3RBNzcxSWNEQjlFOGVoWGpQSExlVVZs?=
+ =?utf-8?B?TVlvVFB0dHBTVDBaeTloR25kM21zZUYyajJETkNYL0hjWmQwbnE1eE9vbjZs?=
+ =?utf-8?B?d2RlWnJ3VmlTVnFHVEJLdUxlMTN5N2J2WmhQaHIzeEkyWXlqaHhrN1pYR2o2?=
+ =?utf-8?B?Y1NaVm9IYmx1M0k0T2ZFN1BnREhuVGNJc25RSGh6L2t3WHo2a3h3QURmdC9i?=
+ =?utf-8?B?VTlBV1YvWVpxWUdycVJ6TGQ4SUwxQi9yZG11b2JBeEhaQ1hDeUR4b1lrVTNJ?=
+ =?utf-8?B?dGhweSt1UDBLbkJhRys4R0k3VHV5dGhvOWplaFRJZkdCcDNOWkM0SUtaVVd2?=
+ =?utf-8?B?Q3dRcmFieGFoNVZOWU9iL0NSaDNud0J1N3Q0S2VCVWd2dGRSUXpvTXJ2eFJ4?=
+ =?utf-8?B?NHhFVTR0RE9nTFlIZVJqS3hOcmNtZ2Q3Ylh4MHFnSVRNMmg1NGo5T0d5V0Fw?=
+ =?utf-8?B?SzNCY2o3Tmc1aS9MV3R2ckdTaG82NFB2ZnJhWVRqZENuRVRudFFDU1dUcTB5?=
+ =?utf-8?B?L0VjMkJjZkZjWW9KVnNrYXVzdHVPVFpMWnZvZFdjZjNWR2RYQ1VTamJDZUhq?=
+ =?utf-8?B?d1BpaFlCejk4NXlEWEtEY0NZL2lLQjhZaWpsWXROaDZDQ1FkR21FZzhsNlRM?=
+ =?utf-8?B?VGJhTUoxSzV2Z3RIWmZFdVdVejNCSitmcEowak1SVHlrZUMyaDliOUR0MSs0?=
+ =?utf-8?B?RElvY2ttWHpZMm92N2pNWEdFQ3N4UWdOVEJkZXJiS1hibDE1VTZEeDZMY0NE?=
+ =?utf-8?B?QkUrUWtWa1hrT1FQUHBWcHQ2YnlDTW9hSGk3TFJoSnl2WHd6ZFFtUXdEZnpn?=
+ =?utf-8?B?amVVeWxxME1xNzRqc2lsOVg0ZHJ0VzZSQkkycjdCd1I3Vmd0UWxDVlBHSG1z?=
+ =?utf-8?B?ZGs1SEhqdGkwelByMFZLSmVTL1BqYnFXd2hWK3hyek4yblJzQ1BIUERta1FS?=
+ =?utf-8?B?eUpNV3R1blhlRVEwaENoU0tiQW9GU1RVM3VuRlFyOGlxTFMwOWNkSnZZdDc3?=
+ =?utf-8?B?SEplOVpZemNYeWNTcGYxSDUxNkdiWEFlWm5xUXpvTjg2SjRaYW1JSitiOFZT?=
+ =?utf-8?B?dEM4UHhraktONFd2V0xkK3NNVm5Ea3BUWFJGd2hiOFlISCtkd0J5VnFOeXpB?=
+ =?utf-8?B?UGRvT2FuRGpvY2pZWkNaN2ZFTXQ0cVhHSC9QdC9WNUpzWktRY0dtMzhtT1Z3?=
+ =?utf-8?B?a1p4ZmlwckR6TkphakhVNDdSY0lPZ055Z1J1dzFIMExSOXVpcUI0TTNZN0VV?=
+ =?utf-8?B?UE1oSVduL1BlUENmK2d2MGx2b1lRYWpJNzFKZTE3ajJ0UWs0MVkyeWlSWlhr?=
+ =?utf-8?B?am9mNEEzZGZ4cm9GZi9pcU04c2Jpb0hGTEo5Q1FpMHoxdkVib3lDdnJSR0Jk?=
+ =?utf-8?B?YXlMTjA0d2lnUzRaZUhBck5CSWVoWWxxSFMzM0RjUHRzenZjd0lWMS8yMEVy?=
+ =?utf-8?B?UklTdnpZdzJhMWZHVnRFSkZ0L2JpWVkxVm5ueTg0YzRPajNmZElreG0xZGxS?=
+ =?utf-8?B?UldjbEdLaHFZeGtkU2JycTA2TXAxTkVtdm50cytiRCtmRFNrazZTM0pseEFv?=
+ =?utf-8?B?T003WkprVlc0UC9Uc2h5UzlMQlhTWVFGZFg2L2ZnTFJ0SmlvZW54aUN4YTkw?=
+ =?utf-8?B?eDNEaTAzb0UzcnJiOXVxSllhcEIrOVIyLzVxdFdjQWllaHRZWFBGMENQNU5X?=
+ =?utf-8?B?WllybnY1dzd3K2JVcnNDVERYdi8vSjR0SEQwWHhSWjRMZjRrQS9sYk82UGRp?=
+ =?utf-8?B?ekM1ZjlaSUZEbmlYNVJTalg0UmF6eU9QSW1QRG5GUE5RcUx4YkNkcmFLWEt5?=
+ =?utf-8?B?NmhtSGRaWWgzWWFkWGh2TlE5a3NvQ2x2eEhVQ21hek9tYWJRcFJtWFlxbndL?=
+ =?utf-8?B?TEQ1UHNrTmN0VmhEYlcxbE4yVzV0cnM2clVqWVduYStoOUlhYkx1aG5FUGsx?=
+ =?utf-8?B?SS9IWklFbDU0Qlc1bms0eGtkVGM2S1l2cHd5UVlDMlpMNGppYVNjSmd4MHBj?=
+ =?utf-8?Q?+svYnUhNLjkiAdPE=3D?=
+X-Exchange-RoutingPolicyChecked: Pj9EyxO/coznYr3lvBSWW09sbTP14/A8u2oU9ymNh+ggnR6vqBlZ5kjaxCiF7PT216Xa7+biOJ7PbGxvKHwK5fklWzQUSYceuT5g+HiwBMRBzV7zJYaq7TyY/fDL7fMwobDI0kpdB0hUV/Ks5Qb2s7VutqTHYp5JZ4p5I1EnQr62XkWWBexMjHTDbAKN4L3b/Q6TVLyt4aNA5lXjwEgfzMhr1kVu/K5OSftPAvjUizaC0gqs3y2ipKTzjftPOH0u9o1ssTQ6O/nOZ1v9ihF00fGHoqZYfFoQq57LG3IQXbP9oYCOLdZqXhIdfBqo1qzShUyvViWJ5BiTz47GBa3LTg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 74517fed-588b-47bb-833a-08ded28e948c
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8508.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2026 07:51:35.3451
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: NcQEbQ0E+ofmmjTJmeNFaH0FUMmoykQEX6pHCLz6Z06D3y+hOIciQaVMwkLA74NxF0UQO/YMVVCtbU125F0rOmFTZ1kMevhcFOTUFvlG10M=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPF11E6CAE14
+X-OriginatorOrg: intel.com
 
-The tag_8021q.c tagger calls vlan_insert_tag() in dsa_8021q_xmit().
-vlan_insert_tag() will consume the skb with kfree_skb() on failure
-and return NULL.
+>> This is an AI-generated review of your patch. The human sending this
 
-When NULL is returned as error code to ->xmit() in dsa_user_xmit()
-it will free the same skb again leading to a double-free.
 
-The idea of dsa_user_xmit() and dsa_switch_rcv() dropping the skb
-they held before the call to ->xmit() and ->rcv() is conceptually
-wrong: the pattern elsewhere in the networking code is that consumers
-drop their skb:s on failure.
+>> [Severity: Low]
+>> Does this check allow an extra retry execution? Since retry_cnt starts at 0,
+>> using a strictly greater-than check allows the loop to retry 4 times
+>> (5 total executions) instead of the 3 executions intended by
+>> ICE_SQ_SEND_MAX_EXECUTE.
+>>
+>>> +                             break;
+>>> +                     ice_debug(hw, ICE_DBG_NVM,
+>>> +                               "NVM read EBUSY error, retry %d\n",
+>>> +                               retry_cnt + 1);
+>>> +                     last_cmd = false;
+>>> +                     ice_release_nvm(hw);
+>>> +                     msleep(ICE_SQ_SEND_DELAY_TIME_MS);
+>>
+> The review is correct that this allows one extra execution. However, I
+> intentionally kept this verbatim from the OOT driver (1.15.4) to
 
-Modify the ->xmit() and ->rcv() call sites to not drop the SKB if
-the taggers return NULL from any of these calls. Move those drops into
-the taggers so every callback error path that retains ownership consumes
-the skb before returning NULL.
+This OOT change was made entirely by Grzegorz, for E825C. Would be great 
+to acknowledge his authorship (+ SoB ofc, below).
+Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
 
-Keep the existing helper ownership rules: VLAN insertion helpers already
-free on failure (this is the case in tag_8021q.c), while deferred
-transmit paths either transfer the skb reference to worker context or
-hold a worker reference with skb_get() and drop the caller's reference.
+What was the platform that you have encountered the bug on?
 
-For SJA1105 meta RX, transfer the buffered stampable skb under the meta
-lock and return NULL while the skb is waiting for its meta frame: the
-skb is not dropped in this case.
+> retain the significant test exposure it has there. The absolute worst
+> case is one harmless extra retry before giving up. If you strongly
+> prefer strict adherence to ICE_SQ_SEND_MAX_EXECUTE, I can update the
+> condition in a v4.
 
-NOTICE: Backporting patches to taggers (e.g. for stable kernels) after
-this point cannot be mechanical or they will introduce double
-kfree_skb().
+Please update (to have one attempt less).
 
-Reported-by: Sashiko AI Review <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/r/20260610153952.1685895-1-kuba@kernel.org/
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Assisted-by: Codex:gpt-5-5
-Acked-by: David Yang <mmyangfl@gmail.com> # yt921x
-Acked-by: Kurt Kanzenbach <kurt@linutronix.de> # hellcreek
-Reviewed-by: Wei Fang <wei.fang@nxp.com> # netc
-Signed-off-by: Linus Walleij <linusw@kernel.org>
----
-Changes in v5:
-- Fix another potential double-free in dsa_switch_rcv() when calling
-  dsa_software_vlan_untag() and still free:ing skb if this returns NULL,
-  while Sashiko duly noted that the only path in dsa_software_vlan_untag()
-  where NULL is returned is on skb_vlan_untag() which already will
-  drop the skb.
-- Link to v4: https://patch.msgid.link/20260622-dsa-fix-free-skb-v4-1-7aea01bf4036@kernel.org
+> 
+>> [Severity: High]
+>> Does dropping the NVM lock here violate the caller's assumption of mutual
+>> exclusion?
+>>
+>> Callers of ice_read_flat_nvm() typically acquire the NVM lock beforehand to
+>> ensure an atomic read of multiple sectors without interleaved writes. By
+>> explicitly dropping the lock during the msleep() window, another thread, VF,
+>> or PF could acquire the NVM lock and modify the NVM before the read resumes,
+>> potentially resulting in reading torn or inconsistent NVM data.
+>>
+>>> +                     status = ice_acquire_nvm(hw, ICE_RES_READ);
+>>> +                     if (status)
+>>> +                             break;
+>>
+> 
+> I don't think this is an issue. The NVM resource (req_res 0x0008) is
+> an ownership lease, not a content snapshot. The FW grants it with a
+> hold timeout (see the timeout field handling in ice_aq_req_res). It
+> never guaranteed a point-in-time view of the flash.
+> Very similar behavior already exists in ice_devlink_nvm_snapshot(),
+> which reads the NVM in chunks via ice_read_flat_nvm() and deliberately
+> acquires/releases the lock between chunks (with a comment explaining
+> the FW reclaim).
+> Additionally, the lock is only dropped on the failure path, where
+> neither bytes_read nor offset have been advanced. The driver simply
+> re-reads the failed chunk after re-acquiring. So no data that is
+> returned to the caller is committed across the drop window.
+> Overall the lock drop does not weaken any guarantee callers actually
+> have. If we wanted to introduce a true snapshot guarantee, that would
+> probably require different approach and separate patch.
+> 
+> 
+>> [Severity: High]
+>> Can this lead to an unbalanced NVM resource lock release and potential data
+>> corruption?
+>>
+>> If ice_acquire_nvm() fails here, the loop breaks and returns an error with the
+>> lock currently unheld. However, callers like ice_read_flash_module() are
+>> unaware of this internal lock state change and will unconditionally call
+>> ice_release_nvm() upon failure:
+>>
+>> drivers/net/ethernet/intel/ice/ice_nvm.c:ice_read_flash_module() {
+>>          status = ice_acquire_nvm(hw, ICE_RES_READ);
+>>          if (status)
+>>                  return status;
+>>
+>>          status = ice_read_flat_nvm(hw, start + offset, &length, data, false);
+>>
+>>          ice_release_nvm(hw);
+>>      ...
+>>
+>> Because firmware tracks resource locks per-PF rather than per-OS-thread, this
+>> errant second release could forcefully strip the lock from another thread on
+>> the same PF that successfully acquired it, exposing the NVM to concurrent
+>> modification.
+>>
+> 
+> Agreed, this might be a real bug, and the one of the three I think is
+> worth investigating.
+> If ice_acquire_nvm() fails after the drop, ice_read_flat_nvm() returns
+> with the lock unheld while callers unconditionally call
+> ice_release_nvm(), so a stray release is issued.
+> 
+> On probability, though, the window is very small. Reaching it requires
+> sustained EBUSY across the retry budget plus a failed re-acquire
+> (which itself polls up to ICE_NVM_TIMEOUT), and concurrently another
+> requester taking the lock. Most reads happen during init (ice_probe,
+> and reset/rebuild via ice_init_nvm), and NVM writes only happen on an
+> already initialized driver. The devlink/ethtool nvm_read paths are
+> also exposed, but hitting this race would require precise timing
+> against a concurrent NVM owner on the device.
+> 
+> I'd prefer to keep the scope of this patch limited to the EBUSY retry
+> path and not take on the unbalanced-release fix here. A proper fix
+> should change the lock-ownership contract of ice_read_flat_nvm() (on
+> error, the lock must be released by ice_read_flat_nvm(), callers
+> release only on success) and update all callers. Code change sould be
+> simple for all callers but ice_discover_flash_size(), it intentionally
+> holds one lease across a read loop and would need to re-acquire after
+> each expected boundary failure.
+> 
+> Given how small the original window is, I'd rather not trade tested
+> OOT behavior for the risk of a complex unbalanced NVM lock fix. I
+> actually have a patch mostly ready that fixes the lock-ownership
+> contract, but I really don't like it. It changes the design of
+> ice_read_flat_nvm(), making it less intuitive for callers. More
+> importantly, I just don't have the resources or test coverage right
+> now to properly verify such change.
+> 
+> However, I can modify the failure path for ice_acquire_nvm inside
+> ice_read_flat_nvm. Instead of bailing out immediately, we can just
+> retry it within the existing retry budget. In this case, the
+> probability of leaving ice_read_flat_nvm without holding the lock is
+> reduced even further without needing a refactor.
+> 
+> Please let me know what you think about my thought process on this.
 
-Changes in v4:
-- Add a kfree_skb() on the else{} path of if (likely(skb->dev)) {} after
-  skb->dev = dsa_conduit_find_user(dev, 0, port);
-  Doing this explicitly rather than keeping the old code is more readable.
-- Tag for net now that net-next is closed.
-- Link to v3: https://patch.msgid.link/20260617-dsa-fix-free-skb-v3-1-cdd4e0778a39@kernel.org
+I think that both AI-reported issues against the lock are valid
+concerns.
 
-Changes in v3:
-- Simplify __skb_put_padto(skb, ETH_ZLEN, false) and
-  skb_put_padto(skb, ETH_ZLEN) to eth_skb_pad().
-- Pick up Wei's review tag.
-- Link to v2: https://patch.msgid.link/20260616-dsa-fix-free-skb-v2-1-9dbda6a19e97@kernel.org
+I think that sleep was the actual fix, and re-locking were merely
+a necessity due to their expiration (as you said).
 
-Changes in v2:
-- In some instances __skb_pad() and __skb_put_padto() followed by a
-  kfree_skb() could be simplified to just call skb_pad() and
-  skb_put_padto() which will free the skb on failure.
-- Use a label and goto for the kfree_skb(); return NULL; in
-  the netc_rcv() callback in tag_netc.c as requested.
-- Collect ACKs.
-- Retag for net-next.
-- Link to v1: https://patch.msgid.link/20260616-dsa-fix-free-skb-v1-1-fd30b35dcf66@kernel.org
----
- net/dsa/tag.c               | 12 ++++++------
- net/dsa/tag_ar9331.c        | 10 ++++++++--
- net/dsa/tag_brcm.c          | 39 ++++++++++++++++++++++++---------------
- net/dsa/tag_dsa.c           | 15 ++++++++++++---
- net/dsa/tag_gswip.c         |  8 ++++++--
- net/dsa/tag_hellcreek.c     |  9 +++++++--
- net/dsa/tag_ksz.c           | 44 +++++++++++++++++++++++++++++++-------------
- net/dsa/tag_lan9303.c       |  2 ++
- net/dsa/tag_mtk.c           |  8 ++++++--
- net/dsa/tag_mxl-gsw1xx.c    |  3 +++
- net/dsa/tag_mxl862xx.c      |  3 +++
- net/dsa/tag_netc.c          | 18 ++++++++++--------
- net/dsa/tag_ocelot.c        |  4 +++-
- net/dsa/tag_ocelot_8021q.c  | 20 +++++++++++++-------
- net/dsa/tag_qca.c           | 14 +++++++++++---
- net/dsa/tag_rtl4_a.c        |  8 ++++++--
- net/dsa/tag_rtl8_4.c        | 24 ++++++++++++++++++------
- net/dsa/tag_rzn1_a5psw.c    |  8 ++++++--
- net/dsa/tag_sja1105.c       | 42 +++++++++++++++++++++++++++---------------
- net/dsa/tag_trailer.c       | 16 ++++++++++++----
- net/dsa/tag_vsc73xx_8021q.c |  1 +
- net/dsa/tag_xrs700x.c       | 12 +++++++++---
- net/dsa/tag_yt921x.c        |  7 ++++++-
- net/dsa/user.c              |  7 +++----
- 24 files changed, 233 insertions(+), 101 deletions(-)
+A proper fix would be to just increase lock-timeout to accommodate all
+attempts (and still do the retries&sleep, but without unlocking).
 
-diff --git a/net/dsa/tag.c b/net/dsa/tag.c
-index 79ad105902d9..991732d6eae2 100644
---- a/net/dsa/tag.c
-+++ b/net/dsa/tag.c
-@@ -79,15 +79,16 @@ static int dsa_switch_rcv(struct sk_buff *skb, struct net_device *dev,
- 		if (likely(skb->dev)) {
- 			dsa_default_offload_fwd_mark(skb);
- 			nskb = skb;
-+		} else {
-+			/* Just drop the skb if we can't find the user */
-+			kfree_skb(skb);
- 		}
- 	} else {
- 		nskb = cpu_dp->rcv(skb, dev);
- 	}
- 
--	if (!nskb) {
--		kfree_skb(skb);
-+	if (!nskb)
- 		return 0;
--	}
- 
- 	skb = nskb;
- 	skb_push(skb, ETH_HLEN);
-@@ -107,11 +108,10 @@ static int dsa_switch_rcv(struct sk_buff *skb, struct net_device *dev,
- 
- 	if (unlikely(cpu_dp->ds->untag_bridge_pvid ||
- 		     cpu_dp->ds->untag_vlan_aware_bridge_pvid)) {
-+		/* dsa_software_vlan_untag() drops skb on failure */
- 		nskb = dsa_software_vlan_untag(skb);
--		if (!nskb) {
--			kfree_skb(skb);
-+		if (!nskb)
- 			return 0;
--		}
- 		skb = nskb;
- 	}
- 
-diff --git a/net/dsa/tag_ar9331.c b/net/dsa/tag_ar9331.c
-index cbb588ca73aa..2e2388143b02 100644
---- a/net/dsa/tag_ar9331.c
-+++ b/net/dsa/tag_ar9331.c
-@@ -51,8 +51,10 @@ static struct sk_buff *ar9331_tag_rcv(struct sk_buff *skb,
- 	u8 ver, port;
- 	u16 hdr;
- 
--	if (unlikely(!pskb_may_pull(skb, AR9331_HDR_LEN)))
-+	if (unlikely(!pskb_may_pull(skb, AR9331_HDR_LEN))) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	hdr = le16_to_cpu(*(__le16 *)skb_mac_header(skb));
- 
-@@ -60,12 +62,14 @@ static struct sk_buff *ar9331_tag_rcv(struct sk_buff *skb,
- 	if (unlikely(ver != AR9331_HDR_VERSION)) {
- 		netdev_warn_once(ndev, "%s:%i wrong header version 0x%2x\n",
- 				 __func__, __LINE__, hdr);
-+		kfree_skb(skb);
- 		return NULL;
- 	}
- 
- 	if (unlikely(hdr & AR9331_HDR_FROM_CPU)) {
- 		netdev_warn_once(ndev, "%s:%i packet should not be from cpu 0x%2x\n",
- 				 __func__, __LINE__, hdr);
-+		kfree_skb(skb);
- 		return NULL;
- 	}
- 
-@@ -75,8 +79,10 @@ static struct sk_buff *ar9331_tag_rcv(struct sk_buff *skb,
- 	port = FIELD_GET(AR9331_HDR_PORT_NUM_MASK, hdr);
- 
- 	skb->dev = dsa_conduit_find_user(ndev, 0, port);
--	if (!skb->dev)
-+	if (!skb->dev) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	return skb;
- }
-diff --git a/net/dsa/tag_brcm.c b/net/dsa/tag_brcm.c
-index cf9420439054..411e3b57d16a 100644
---- a/net/dsa/tag_brcm.c
-+++ b/net/dsa/tag_brcm.c
-@@ -102,9 +102,9 @@ static struct sk_buff *brcm_tag_xmit_ll(struct sk_buff *skb,
- 	 * (including FCS and tag) because the length verification is done after
- 	 * the Broadcom tag is stripped off the ingress packet.
- 	 *
--	 * Let dsa_user_xmit() free the SKB
-+	 * Free the SKB on error.
- 	 */
--	if (__skb_put_padto(skb, ETH_ZLEN + BRCM_TAG_LEN, false))
-+	if (skb_put_padto(skb, ETH_ZLEN + BRCM_TAG_LEN))
- 		return NULL;
- 
- 	skb_push(skb, BRCM_TAG_LEN);
-@@ -151,27 +151,35 @@ static struct sk_buff *brcm_tag_rcv_ll(struct sk_buff *skb,
- 	int source_port;
- 	u8 *brcm_tag;
- 
--	if (unlikely(!pskb_may_pull(skb, BRCM_TAG_LEN)))
-+	if (unlikely(!pskb_may_pull(skb, BRCM_TAG_LEN))) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	brcm_tag = skb->data - offset;
- 
- 	/* The opcode should never be different than 0b000 */
--	if (unlikely((brcm_tag[0] >> BRCM_OPCODE_SHIFT) & BRCM_OPCODE_MASK))
-+	if (unlikely((brcm_tag[0] >> BRCM_OPCODE_SHIFT) & BRCM_OPCODE_MASK)) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	/* We should never see a reserved reason code without knowing how to
- 	 * handle it
- 	 */
--	if (unlikely(brcm_tag[2] & BRCM_EG_RC_RSVD))
-+	if (unlikely(brcm_tag[2] & BRCM_EG_RC_RSVD)) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	/* Locate which port this is coming from */
- 	source_port = brcm_tag[3] & BRCM_EG_PID_MASK;
- 
- 	skb->dev = dsa_conduit_find_user(dev, 0, source_port);
--	if (!skb->dev)
-+	if (!skb->dev) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	/* Remove Broadcom tag and update checksum */
- 	skb_pull_rcsum(skb, BRCM_TAG_LEN);
-@@ -228,8 +236,10 @@ static struct sk_buff *brcm_leg_tag_rcv(struct sk_buff *skb,
- 	__be16 *proto;
- 	u8 *brcm_tag;
- 
--	if (unlikely(!pskb_may_pull(skb, BRCM_LEG_TAG_LEN + VLAN_HLEN)))
-+	if (unlikely(!pskb_may_pull(skb, BRCM_LEG_TAG_LEN + VLAN_HLEN))) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	brcm_tag = dsa_etype_header_pos_rx(skb);
- 	proto = (__be16 *)(brcm_tag + BRCM_LEG_TAG_LEN);
-@@ -237,8 +247,10 @@ static struct sk_buff *brcm_leg_tag_rcv(struct sk_buff *skb,
- 	source_port = brcm_tag[5] & BRCM_LEG_PORT_ID;
- 
- 	skb->dev = dsa_conduit_find_user(dev, 0, source_port);
--	if (!skb->dev)
-+	if (!skb->dev) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	/* The internal switch in BCM63XX SoCs always tags on egress on the CPU
- 	 * port. We use VID 0 internally for untagged traffic, so strip the tag
-@@ -273,10 +285,8 @@ static struct sk_buff *brcm_leg_tag_xmit(struct sk_buff *skb,
- 	 * need to make sure that packets are at least 70 bytes
- 	 * (including FCS and tag) because the length verification is done after
- 	 * the Broadcom tag is stripped off the ingress packet.
--	 *
--	 * Let dsa_user_xmit() free the SKB
- 	 */
--	if (__skb_put_padto(skb, ETH_ZLEN + BRCM_LEG_TAG_LEN, false))
-+	if (skb_put_padto(skb, ETH_ZLEN + BRCM_LEG_TAG_LEN))
- 		return NULL;
- 
- 	skb_push(skb, BRCM_LEG_TAG_LEN);
-@@ -325,10 +335,8 @@ static struct sk_buff *brcm_leg_fcs_tag_xmit(struct sk_buff *skb,
- 	 * need to make sure that packets are at least 70 bytes (including FCS
- 	 * and tag) because the length verification is done after the Broadcom
- 	 * tag is stripped off the ingress packet.
--	 *
--	 * Let dsa_user_xmit() free the SKB.
- 	 */
--	if (__skb_put_padto(skb, ETH_ZLEN + BRCM_LEG_TAG_LEN, false))
-+	if (skb_put_padto(skb, ETH_ZLEN + BRCM_LEG_TAG_LEN))
- 		return NULL;
- 
- 	fcs_len = skb->len;
-@@ -351,8 +359,9 @@ static struct sk_buff *brcm_leg_fcs_tag_xmit(struct sk_buff *skb,
- 	brcm_tag[5] = dp->index & BRCM_LEG_PORT_ID;
- 
- 	/* Original FCS value */
--	if (__skb_pad(skb, ETH_FCS_LEN, false))
-+	if (skb_pad(skb, ETH_FCS_LEN))
- 		return NULL;
-+
- 	skb_put_data(skb, &fcs_val, ETH_FCS_LEN);
- 
- 	return skb;
-diff --git a/net/dsa/tag_dsa.c b/net/dsa/tag_dsa.c
-index 2a2c4fb61a65..d5ffee35fbb5 100644
---- a/net/dsa/tag_dsa.c
-+++ b/net/dsa/tag_dsa.c
-@@ -224,6 +224,7 @@ static struct sk_buff *dsa_rcv_ll(struct sk_buff *skb, struct net_device *dev,
- 			/* Remote management is not implemented yet,
- 			 * drop.
- 			 */
-+			kfree_skb(skb);
- 			return NULL;
- 		case DSA_CODE_ARP_MIRROR:
- 		case DSA_CODE_POLICY_MIRROR:
-@@ -244,12 +245,14 @@ static struct sk_buff *dsa_rcv_ll(struct sk_buff *skb, struct net_device *dev,
- 			/* Reserved code, this could be anything. Drop
- 			 * seems like the safest option.
- 			 */
-+			kfree_skb(skb);
- 			return NULL;
- 		}
- 
- 		break;
- 
- 	default:
-+		kfree_skb(skb);
- 		return NULL;
- 	}
- 
-@@ -271,8 +274,10 @@ static struct sk_buff *dsa_rcv_ll(struct sk_buff *skb, struct net_device *dev,
- 						 source_port);
- 	}
- 
--	if (!skb->dev)
-+	if (!skb->dev) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	/* When using LAG offload, skb->dev is not a DSA user interface,
- 	 * so we cannot call dsa_default_offload_fwd_mark and we need to
-@@ -335,8 +340,10 @@ static struct sk_buff *dsa_xmit(struct sk_buff *skb, struct net_device *dev)
- 
- static struct sk_buff *dsa_rcv(struct sk_buff *skb, struct net_device *dev)
- {
--	if (unlikely(!pskb_may_pull(skb, DSA_HLEN)))
-+	if (unlikely(!pskb_may_pull(skb, DSA_HLEN))) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	return dsa_rcv_ll(skb, dev, 0);
- }
-@@ -375,8 +382,10 @@ static struct sk_buff *edsa_xmit(struct sk_buff *skb, struct net_device *dev)
- 
- static struct sk_buff *edsa_rcv(struct sk_buff *skb, struct net_device *dev)
- {
--	if (unlikely(!pskb_may_pull(skb, EDSA_HLEN)))
-+	if (unlikely(!pskb_may_pull(skb, EDSA_HLEN))) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	skb_pull_rcsum(skb, EDSA_HLEN - DSA_HLEN);
- 
-diff --git a/net/dsa/tag_gswip.c b/net/dsa/tag_gswip.c
-index 5fa436121087..5c407d448c9f 100644
---- a/net/dsa/tag_gswip.c
-+++ b/net/dsa/tag_gswip.c
-@@ -80,16 +80,20 @@ static struct sk_buff *gswip_tag_rcv(struct sk_buff *skb,
- 	int port;
- 	u8 *gswip_tag;
- 
--	if (unlikely(!pskb_may_pull(skb, GSWIP_RX_HEADER_LEN)))
-+	if (unlikely(!pskb_may_pull(skb, GSWIP_RX_HEADER_LEN))) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	gswip_tag = skb->data - ETH_HLEN;
- 
- 	/* Get source port information */
- 	port = (gswip_tag[7] & GSWIP_RX_SPPID_MASK) >> GSWIP_RX_SPPID_SHIFT;
- 	skb->dev = dsa_conduit_find_user(dev, 0, port);
--	if (!skb->dev)
-+	if (!skb->dev) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	/* remove GSWIP tag */
- 	skb_pull_rcsum(skb, GSWIP_RX_HEADER_LEN);
-diff --git a/net/dsa/tag_hellcreek.c b/net/dsa/tag_hellcreek.c
-index 544ab15685a2..dd9f328f3182 100644
---- a/net/dsa/tag_hellcreek.c
-+++ b/net/dsa/tag_hellcreek.c
-@@ -27,8 +27,10 @@ static struct sk_buff *hellcreek_xmit(struct sk_buff *skb,
- 	 * checksums after the switch strips the tag.
- 	 */
- 	if (skb->ip_summed == CHECKSUM_PARTIAL &&
--	    skb_checksum_help(skb))
-+	    skb_checksum_help(skb)) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	/* Tag encoding */
- 	tag  = skb_put(skb, HELLCREEK_TAG_LEN);
-@@ -47,11 +49,14 @@ static struct sk_buff *hellcreek_rcv(struct sk_buff *skb,
- 	skb->dev = dsa_conduit_find_user(dev, 0, port);
- 	if (!skb->dev) {
- 		netdev_warn_once(dev, "Failed to get source port: %d\n", port);
-+		kfree_skb(skb);
- 		return NULL;
- 	}
- 
--	if (pskb_trim_rcsum(skb, skb->len - HELLCREEK_TAG_LEN))
-+	if (pskb_trim_rcsum(skb, skb->len - HELLCREEK_TAG_LEN)) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	dsa_default_offload_fwd_mark(skb);
- 
-diff --git a/net/dsa/tag_ksz.c b/net/dsa/tag_ksz.c
-index d2475c3bbb7d..67fa89f102e0 100644
---- a/net/dsa/tag_ksz.c
-+++ b/net/dsa/tag_ksz.c
-@@ -88,11 +88,15 @@ static struct sk_buff *ksz_common_rcv(struct sk_buff *skb,
- 				      unsigned int port, unsigned int len)
- {
- 	skb->dev = dsa_conduit_find_user(dev, 0, port);
--	if (!skb->dev)
-+	if (!skb->dev) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
--	if (pskb_trim_rcsum(skb, skb->len - len))
-+	if (pskb_trim_rcsum(skb, skb->len - len)) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	dsa_default_offload_fwd_mark(skb);
- 
-@@ -123,8 +127,10 @@ static struct sk_buff *ksz8795_xmit(struct sk_buff *skb, struct net_device *dev)
- 	struct ethhdr *hdr;
- 	u8 *tag;
- 
--	if (skb->ip_summed == CHECKSUM_PARTIAL && skb_checksum_help(skb))
-+	if (skb->ip_summed == CHECKSUM_PARTIAL && skb_checksum_help(skb)) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	/* Tag encoding */
- 	tag = skb_put(skb, KSZ_INGRESS_TAG_LEN);
-@@ -141,8 +147,10 @@ static struct sk_buff *ksz8795_rcv(struct sk_buff *skb, struct net_device *dev)
- {
- 	u8 *tag;
- 
--	if (skb_linearize(skb))
-+	if (skb_linearize(skb)) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
- 
-@@ -255,22 +263,24 @@ static struct sk_buff *ksz_defer_xmit(struct dsa_port *dp, struct sk_buff *skb)
- 	xmit_work_fn = tagger_data->xmit_work_fn;
- 	xmit_worker = priv->xmit_worker;
- 
--	if (!xmit_work_fn || !xmit_worker)
-+	if (!xmit_work_fn || !xmit_worker) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	xmit_work = kzalloc_obj(*xmit_work, GFP_ATOMIC);
--	if (!xmit_work)
-+	if (!xmit_work) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	kthread_init_work(&xmit_work->work, xmit_work_fn);
--	/* Increase refcount so the kfree_skb in dsa_user_xmit
--	 * won't really free the packet.
--	 */
- 	xmit_work->dp = dp;
- 	xmit_work->skb = skb_get(skb);
- 
- 	kthread_queue_work(xmit_worker, &xmit_work->work);
- 
-+	kfree_skb(skb);
- 	return NULL;
- }
- 
-@@ -284,8 +294,10 @@ static struct sk_buff *ksz9477_xmit(struct sk_buff *skb,
- 	__be16 *tag;
- 	u16 val;
- 
--	if (skb->ip_summed == CHECKSUM_PARTIAL && skb_checksum_help(skb))
-+	if (skb->ip_summed == CHECKSUM_PARTIAL && skb_checksum_help(skb)) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	/* Tag encoding */
- 	ksz_xmit_timestamp(dp, skb);
-@@ -310,8 +322,10 @@ static struct sk_buff *ksz9477_rcv(struct sk_buff *skb, struct net_device *dev)
- 	unsigned int port;
- 	u8 *tag;
- 
--	if (skb_linearize(skb))
-+	if (skb_linearize(skb)) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	/* Tag decoding */
- 	tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
-@@ -352,8 +366,10 @@ static struct sk_buff *ksz9893_xmit(struct sk_buff *skb,
- 	struct ethhdr *hdr;
- 	u8 *tag;
- 
--	if (skb->ip_summed == CHECKSUM_PARTIAL && skb_checksum_help(skb))
-+	if (skb->ip_summed == CHECKSUM_PARTIAL && skb_checksum_help(skb)) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	/* Tag encoding */
- 	ksz_xmit_timestamp(dp, skb);
-@@ -418,8 +434,10 @@ static struct sk_buff *lan937x_xmit(struct sk_buff *skb,
- 	__be16 *tag;
- 	u16 val;
- 
--	if (skb->ip_summed == CHECKSUM_PARTIAL && skb_checksum_help(skb))
-+	if (skb->ip_summed == CHECKSUM_PARTIAL && skb_checksum_help(skb)) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	ksz_xmit_timestamp(dp, skb);
- 
-diff --git a/net/dsa/tag_lan9303.c b/net/dsa/tag_lan9303.c
-index 258e5d7dc5ef..d1194696499a 100644
---- a/net/dsa/tag_lan9303.c
-+++ b/net/dsa/tag_lan9303.c
-@@ -85,6 +85,7 @@ static struct sk_buff *lan9303_rcv(struct sk_buff *skb, struct net_device *dev)
- 	if (unlikely(!pskb_may_pull(skb, LAN9303_TAG_LEN))) {
- 		dev_warn_ratelimited(&dev->dev,
- 				     "Dropping packet, cannot pull\n");
-+		kfree_skb(skb);
- 		return NULL;
- 	}
- 
-@@ -102,6 +103,7 @@ static struct sk_buff *lan9303_rcv(struct sk_buff *skb, struct net_device *dev)
- 	skb->dev = dsa_conduit_find_user(dev, 0, source_port);
- 	if (!skb->dev) {
- 		dev_warn_ratelimited(&dev->dev, "Dropping packet due to invalid source port\n");
-+		kfree_skb(skb);
- 		return NULL;
- 	}
- 
-diff --git a/net/dsa/tag_mtk.c b/net/dsa/tag_mtk.c
-index dea3eecaf093..c7dc7731675e 100644
---- a/net/dsa/tag_mtk.c
-+++ b/net/dsa/tag_mtk.c
-@@ -72,8 +72,10 @@ static struct sk_buff *mtk_tag_rcv(struct sk_buff *skb, struct net_device *dev)
- 	int port;
- 	__be16 *phdr;
- 
--	if (unlikely(!pskb_may_pull(skb, MTK_HDR_LEN)))
-+	if (unlikely(!pskb_may_pull(skb, MTK_HDR_LEN))) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	phdr = dsa_etype_header_pos_rx(skb);
- 	hdr = ntohs(*phdr);
-@@ -87,8 +89,10 @@ static struct sk_buff *mtk_tag_rcv(struct sk_buff *skb, struct net_device *dev)
- 	port = (hdr & MTK_HDR_RECV_SOURCE_PORT_MASK);
- 
- 	skb->dev = dsa_conduit_find_user(dev, 0, port);
--	if (!skb->dev)
-+	if (!skb->dev) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	dsa_default_offload_fwd_mark(skb);
- 
-diff --git a/net/dsa/tag_mxl-gsw1xx.c b/net/dsa/tag_mxl-gsw1xx.c
-index 60f7c445e656..4b1b6ef94196 100644
---- a/net/dsa/tag_mxl-gsw1xx.c
-+++ b/net/dsa/tag_mxl-gsw1xx.c
-@@ -73,6 +73,7 @@ static struct sk_buff *gsw1xx_tag_rcv(struct sk_buff *skb,
- 
- 	if (unlikely(!pskb_may_pull(skb, GSW1XX_HEADER_LEN))) {
- 		dev_warn_ratelimited(&dev->dev, "Dropping packet, cannot pull SKB\n");
-+		kfree_skb(skb);
- 		return NULL;
- 	}
- 
-@@ -81,6 +82,7 @@ static struct sk_buff *gsw1xx_tag_rcv(struct sk_buff *skb,
- 	if (unlikely(ntohs(gsw1xx_tag[0]) != ETH_P_MXLGSW)) {
- 		dev_warn_ratelimited(&dev->dev, "Dropping packet due to invalid special tag\n");
- 		dev_warn_ratelimited(&dev->dev, "Tag: %8ph\n", gsw1xx_tag);
-+		kfree_skb(skb);
- 		return NULL;
- 	}
- 
-@@ -90,6 +92,7 @@ static struct sk_buff *gsw1xx_tag_rcv(struct sk_buff *skb,
- 	if (!skb->dev) {
- 		dev_warn_ratelimited(&dev->dev, "Dropping packet due to invalid source port\n");
- 		dev_warn_ratelimited(&dev->dev, "Tag: %8ph\n", gsw1xx_tag);
-+		kfree_skb(skb);
- 		return NULL;
- 	}
- 
-diff --git a/net/dsa/tag_mxl862xx.c b/net/dsa/tag_mxl862xx.c
-index 8daefeb8d49d..87b80ddf0946 100644
---- a/net/dsa/tag_mxl862xx.c
-+++ b/net/dsa/tag_mxl862xx.c
-@@ -64,6 +64,7 @@ static struct sk_buff *mxl862_tag_rcv(struct sk_buff *skb,
- 
- 	if (unlikely(!pskb_may_pull(skb, MXL862_HEADER_LEN))) {
- 		dev_warn_ratelimited(&dev->dev, "Cannot pull SKB, packet dropped\n");
-+		kfree_skb(skb);
- 		return NULL;
- 	}
- 
-@@ -73,6 +74,7 @@ static struct sk_buff *mxl862_tag_rcv(struct sk_buff *skb,
- 		dev_warn_ratelimited(&dev->dev,
- 				     "Invalid special tag marker, packet dropped, tag: %8ph\n",
- 				     mxl862_tag);
-+		kfree_skb(skb);
- 		return NULL;
- 	}
- 
-@@ -83,6 +85,7 @@ static struct sk_buff *mxl862_tag_rcv(struct sk_buff *skb,
- 		dev_warn_ratelimited(&dev->dev,
- 				     "Invalid source port, packet dropped, tag: %8ph\n",
- 				     mxl862_tag);
-+		kfree_skb(skb);
- 		return NULL;
- 	}
- 
-diff --git a/net/dsa/tag_netc.c b/net/dsa/tag_netc.c
-index ccedfe3a80b6..df72a61796ad 100644
---- a/net/dsa/tag_netc.c
-+++ b/net/dsa/tag_netc.c
-@@ -131,14 +131,13 @@ static struct sk_buff *netc_rcv(struct sk_buff *skb,
- 	int type, subtype;
- 
- 	if (unlikely(!pskb_may_pull(skb, NETC_TAG_MAX_LEN)))
--		return NULL;
-+		goto err_free_skb;
- 
- 	tag_cmn = dsa_etype_header_pos_rx(skb);
- 	if (ntohs(tag_cmn->tpid) != ETH_P_NXP_NETC) {
- 		dev_warn_ratelimited(&ndev->dev, "Unknown TPID 0x%04x\n",
- 				     ntohs(tag_cmn->tpid));
--
--		return NULL;
-+		goto err_free_skb;
- 	}
- 
- 	if (tag_cmn->qos & NETC_TAG_QV)
-@@ -149,14 +148,13 @@ static struct sk_buff *netc_rcv(struct sk_buff *skb,
- 	if (!sw_id) {
- 		dev_warn_ratelimited(&ndev->dev,
- 				     "VEPA switch ID is not supported yet\n");
--
--		return NULL;
-+		goto err_free_skb;
- 	}
- 
- 	port = FIELD_GET(NETC_TAG_PORT, tag_cmn->switch_port);
- 	skb->dev = dsa_conduit_find_user(ndev, sw_id, port);
- 	if (!skb->dev)
--		return NULL;
-+		goto err_free_skb;
- 
- 	type = FIELD_GET(NETC_TAG_TYPE, tag_cmn->type);
- 	subtype = FIELD_GET(NETC_TAG_SUBTYPE, tag_cmn->type);
-@@ -165,11 +163,11 @@ static struct sk_buff *netc_rcv(struct sk_buff *skb,
- 	} else if (type == NETC_TAG_TO_HOST) {
- 		/* Currently only subtype0 supported */
- 		if (subtype != NETC_TAG_TH_SUBTYPE0)
--			return NULL;
-+			goto err_free_skb;
- 	} else {
- 		dev_warn_ratelimited(&ndev->dev,
- 				     "Unexpected  tag type %d\n", type);
--		return NULL;
-+		goto err_free_skb;
- 	}
- 
- 	/* Remove Switch tag from the frame */
-@@ -178,6 +176,10 @@ static struct sk_buff *netc_rcv(struct sk_buff *skb,
- 	dsa_strip_etype_header(skb, tag_len);
- 
- 	return skb;
-+
-+err_free_skb:
-+	kfree_skb(skb);
-+	return NULL;
- }
- 
- static void netc_flow_dissect(const struct sk_buff *skb, __be16 *proto,
-diff --git a/net/dsa/tag_ocelot.c b/net/dsa/tag_ocelot.c
-index 3405def79c2d..d208c7322cd6 100644
---- a/net/dsa/tag_ocelot.c
-+++ b/net/dsa/tag_ocelot.c
-@@ -107,14 +107,16 @@ static struct sk_buff *ocelot_rcv(struct sk_buff *skb,
- 	ocelot_xfh_get_rew_val(extraction, &rew_val);
- 
- 	skb->dev = dsa_conduit_find_user(netdev, 0, src_port);
--	if (!skb->dev)
-+	if (!skb->dev) {
- 		/* The switch will reflect back some frames sent through
- 		 * sockets opened on the bare DSA conduit. These will come back
- 		 * with src_port equal to the index of the CPU port, for which
- 		 * there is no user registered. So don't print any error
- 		 * message here (ignore and drop those frames).
- 		 */
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	dsa_default_offload_fwd_mark(skb);
- 	skb->priority = qos_class;
-diff --git a/net/dsa/tag_ocelot_8021q.c b/net/dsa/tag_ocelot_8021q.c
-index e89d9254e90a..f50f1cd83f16 100644
---- a/net/dsa/tag_ocelot_8021q.c
-+++ b/net/dsa/tag_ocelot_8021q.c
-@@ -33,30 +33,34 @@ static struct sk_buff *ocelot_defer_xmit(struct dsa_port *dp,
- 	xmit_work_fn = data->xmit_work_fn;
- 	xmit_worker = priv->xmit_worker;
- 
--	if (!xmit_work_fn || !xmit_worker)
-+	if (!xmit_work_fn || !xmit_worker) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	/* PTP over IP packets need UDP checksumming. We may have inherited
- 	 * NETIF_F_HW_CSUM from the DSA conduit, but these packets are not sent
- 	 * through the DSA conduit, so calculate the checksum here.
- 	 */
--	if (skb->ip_summed == CHECKSUM_PARTIAL && skb_checksum_help(skb))
-+	if (skb->ip_summed == CHECKSUM_PARTIAL && skb_checksum_help(skb)) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	xmit_work = kzalloc_obj(*xmit_work, GFP_ATOMIC);
--	if (!xmit_work)
-+	if (!xmit_work) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	/* Calls felix_port_deferred_xmit in felix.c */
- 	kthread_init_work(&xmit_work->work, xmit_work_fn);
--	/* Increase refcount so the kfree_skb in dsa_user_xmit
--	 * won't really free the packet.
--	 */
- 	xmit_work->dp = dp;
- 	xmit_work->skb = skb_get(skb);
- 
- 	kthread_queue_work(xmit_worker, &xmit_work->work);
- 
-+	kfree_skb(skb);
- 	return NULL;
- }
- 
-@@ -84,8 +88,10 @@ static struct sk_buff *ocelot_rcv(struct sk_buff *skb,
- 	dsa_8021q_rcv(skb, &src_port, &switch_id, NULL, NULL);
- 
- 	skb->dev = dsa_conduit_find_user(netdev, switch_id, src_port);
--	if (!skb->dev)
-+	if (!skb->dev) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	dsa_default_offload_fwd_mark(skb);
- 
-diff --git a/net/dsa/tag_qca.c b/net/dsa/tag_qca.c
-index 9e3b429e8b36..510792fbfa92 100644
---- a/net/dsa/tag_qca.c
-+++ b/net/dsa/tag_qca.c
-@@ -46,16 +46,20 @@ static struct sk_buff *qca_tag_rcv(struct sk_buff *skb, struct net_device *dev)
- 
- 	tagger_data = ds->tagger_data;
- 
--	if (unlikely(!pskb_may_pull(skb, QCA_HDR_LEN)))
-+	if (unlikely(!pskb_may_pull(skb, QCA_HDR_LEN))) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	phdr = dsa_etype_header_pos_rx(skb);
- 	hdr = ntohs(*phdr);
- 
- 	/* Make sure the version is correct */
- 	ver = FIELD_GET(QCA_HDR_RECV_VERSION, hdr);
--	if (unlikely(ver != QCA_HDR_VERSION))
-+	if (unlikely(ver != QCA_HDR_VERSION)) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	/* Get pk type */
- 	pk_type = FIELD_GET(QCA_HDR_RECV_TYPE, hdr);
-@@ -64,6 +68,7 @@ static struct sk_buff *qca_tag_rcv(struct sk_buff *skb, struct net_device *dev)
- 	if (pk_type == QCA_HDR_RECV_TYPE_RW_REG_ACK) {
- 		if (likely(tagger_data->rw_reg_ack_handler))
- 			tagger_data->rw_reg_ack_handler(ds, skb);
-+		kfree_skb(skb);
- 		return NULL;
- 	}
- 
-@@ -71,6 +76,7 @@ static struct sk_buff *qca_tag_rcv(struct sk_buff *skb, struct net_device *dev)
- 	if (pk_type == QCA_HDR_RECV_TYPE_MIB) {
- 		if (likely(tagger_data->mib_autocast_handler))
- 			tagger_data->mib_autocast_handler(ds, skb);
-+		kfree_skb(skb);
- 		return NULL;
- 	}
- 
-@@ -78,8 +84,10 @@ static struct sk_buff *qca_tag_rcv(struct sk_buff *skb, struct net_device *dev)
- 	port = FIELD_GET(QCA_HDR_RECV_SOURCE_PORT, hdr);
- 
- 	skb->dev = dsa_conduit_find_user(dev, 0, port);
--	if (!skb->dev)
-+	if (!skb->dev) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	/* Remove QCA tag and recalculate checksum */
- 	skb_pull_rcsum(skb, QCA_HDR_LEN);
-diff --git a/net/dsa/tag_rtl4_a.c b/net/dsa/tag_rtl4_a.c
-index 3cc63eacfa03..590ea3b921c9 100644
---- a/net/dsa/tag_rtl4_a.c
-+++ b/net/dsa/tag_rtl4_a.c
-@@ -41,7 +41,7 @@ static struct sk_buff *rtl4a_tag_xmit(struct sk_buff *skb,
- 	u16 out;
- 
- 	/* Pad out to at least 60 bytes */
--	if (unlikely(__skb_put_padto(skb, ETH_ZLEN, false)))
-+	if (unlikely(eth_skb_pad(skb)))
- 		return NULL;
- 
- 	netdev_dbg(dev, "add realtek tag to package to port %d\n",
-@@ -75,8 +75,10 @@ static struct sk_buff *rtl4a_tag_rcv(struct sk_buff *skb,
- 	u8 prot;
- 	u8 port;
- 
--	if (unlikely(!pskb_may_pull(skb, RTL4_A_HDR_LEN)))
-+	if (unlikely(!pskb_may_pull(skb, RTL4_A_HDR_LEN))) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	tag = dsa_etype_header_pos_rx(skb);
- 	p = (__be16 *)tag;
-@@ -92,6 +94,7 @@ static struct sk_buff *rtl4a_tag_rcv(struct sk_buff *skb,
- 	prot = (protport >> RTL4_A_PROTOCOL_SHIFT) & 0x0f;
- 	if (prot != RTL4_A_PROTOCOL_RTL8366RB) {
- 		netdev_err(dev, "unknown realtek protocol 0x%01x\n", prot);
-+		kfree_skb(skb);
- 		return NULL;
- 	}
- 	port = protport & 0xff;
-@@ -99,6 +102,7 @@ static struct sk_buff *rtl4a_tag_rcv(struct sk_buff *skb,
- 	skb->dev = dsa_conduit_find_user(dev, 0, port);
- 	if (!skb->dev) {
- 		netdev_dbg(dev, "could not find user for port %d\n", port);
-+		kfree_skb(skb);
- 		return NULL;
- 	}
- 
-diff --git a/net/dsa/tag_rtl8_4.c b/net/dsa/tag_rtl8_4.c
-index 852c6b88079a..4da3beebef75 100644
---- a/net/dsa/tag_rtl8_4.c
-+++ b/net/dsa/tag_rtl8_4.c
-@@ -143,8 +143,10 @@ static struct sk_buff *rtl8_4t_tag_xmit(struct sk_buff *skb,
- 	/* Calculate the checksum here if not done yet as trailing tags will
- 	 * break either software or hardware based checksum
- 	 */
--	if (skb->ip_summed == CHECKSUM_PARTIAL && skb_checksum_help(skb))
-+	if (skb->ip_summed == CHECKSUM_PARTIAL && skb_checksum_help(skb)) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	rtl8_4_write_tag(skb, dev, skb_put(skb, RTL8_4_TAG_LEN));
- 
-@@ -201,11 +203,15 @@ static int rtl8_4_read_tag(struct sk_buff *skb, struct net_device *dev,
- static struct sk_buff *rtl8_4_tag_rcv(struct sk_buff *skb,
- 				      struct net_device *dev)
- {
--	if (unlikely(!pskb_may_pull(skb, RTL8_4_TAG_LEN)))
-+	if (unlikely(!pskb_may_pull(skb, RTL8_4_TAG_LEN))) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
--	if (unlikely(rtl8_4_read_tag(skb, dev, dsa_etype_header_pos_rx(skb))))
-+	if (unlikely(rtl8_4_read_tag(skb, dev, dsa_etype_header_pos_rx(skb)))) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	/* Remove tag and recalculate checksum */
- 	skb_pull_rcsum(skb, RTL8_4_TAG_LEN);
-@@ -218,14 +224,20 @@ static struct sk_buff *rtl8_4_tag_rcv(struct sk_buff *skb,
- static struct sk_buff *rtl8_4t_tag_rcv(struct sk_buff *skb,
- 				       struct net_device *dev)
- {
--	if (skb_linearize(skb))
-+	if (skb_linearize(skb)) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
--	if (unlikely(rtl8_4_read_tag(skb, dev, skb_tail_pointer(skb) - RTL8_4_TAG_LEN)))
-+	if (unlikely(rtl8_4_read_tag(skb, dev, skb_tail_pointer(skb) - RTL8_4_TAG_LEN))) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
--	if (pskb_trim_rcsum(skb, skb->len - RTL8_4_TAG_LEN))
-+	if (pskb_trim_rcsum(skb, skb->len - RTL8_4_TAG_LEN)) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	return skb;
- }
-diff --git a/net/dsa/tag_rzn1_a5psw.c b/net/dsa/tag_rzn1_a5psw.c
-index 10994b3470f6..734910156dc3 100644
---- a/net/dsa/tag_rzn1_a5psw.c
-+++ b/net/dsa/tag_rzn1_a5psw.c
-@@ -48,7 +48,7 @@ static struct sk_buff *a5psw_tag_xmit(struct sk_buff *skb, struct net_device *de
- 	 * least 60 bytes otherwise they will be discarded when they enter the
- 	 * switch port logic.
- 	 */
--	if (__skb_put_padto(skb, ETH_ZLEN, false))
-+	if (eth_skb_pad(skb))
- 		return NULL;
- 
- 	/* provide 'A5PSW_TAG_LEN' bytes additional space */
-@@ -77,6 +77,7 @@ static struct sk_buff *a5psw_tag_rcv(struct sk_buff *skb,
- 	if (unlikely(!pskb_may_pull(skb, A5PSW_TAG_LEN))) {
- 		dev_warn_ratelimited(&dev->dev,
- 				     "Dropping packet, cannot pull\n");
-+		kfree_skb(skb);
- 		return NULL;
- 	}
- 
-@@ -84,14 +85,17 @@ static struct sk_buff *a5psw_tag_rcv(struct sk_buff *skb,
- 
- 	if (tag->ctrl_tag != htons(ETH_P_DSA_A5PSW)) {
- 		dev_warn_ratelimited(&dev->dev, "Dropping packet due to invalid TAG marker\n");
-+		kfree_skb(skb);
- 		return NULL;
- 	}
- 
- 	port = FIELD_GET(A5PSW_CTRL_DATA_PORT, ntohs(tag->ctrl_data));
- 
- 	skb->dev = dsa_conduit_find_user(dev, 0, port);
--	if (!skb->dev)
-+	if (!skb->dev) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	skb_pull_rcsum(skb, A5PSW_TAG_LEN);
- 	dsa_strip_etype_header(skb, A5PSW_TAG_LEN);
-diff --git a/net/dsa/tag_sja1105.c b/net/dsa/tag_sja1105.c
-index de6d4ce8668b..bfe1f746f55b 100644
---- a/net/dsa/tag_sja1105.c
-+++ b/net/dsa/tag_sja1105.c
-@@ -149,19 +149,20 @@ static struct sk_buff *sja1105_defer_xmit(struct dsa_port *dp,
- 	xmit_work_fn = tagger_data->xmit_work_fn;
- 	xmit_worker = priv->xmit_worker;
- 
--	if (!xmit_work_fn || !xmit_worker)
-+	if (!xmit_work_fn || !xmit_worker) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	xmit_work = kzalloc_obj(*xmit_work, GFP_ATOMIC);
--	if (!xmit_work)
-+	if (!xmit_work) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	kthread_init_work(&xmit_work->work, xmit_work_fn);
--	/* Increase refcount so the kfree_skb in dsa_user_xmit
--	 * won't really free the packet.
--	 */
- 	xmit_work->dp = dp;
--	xmit_work->skb = skb_get(skb);
-+	xmit_work->skb = skb;
- 
- 	kthread_queue_work(xmit_worker, &xmit_work->work);
- 
-@@ -401,10 +402,7 @@ static struct sk_buff
- 			kfree_skb(priv->stampable_skb);
- 		}
- 
--		/* Hold a reference to avoid dsa_switch_rcv
--		 * from freeing the skb.
--		 */
--		priv->stampable_skb = skb_get(skb);
-+		priv->stampable_skb = skb;
- 		spin_unlock(&priv->meta_lock);
- 
- 		/* Tell DSA we got nothing */
-@@ -436,6 +434,7 @@ static struct sk_buff
- 			dev_err_ratelimited(ds->dev,
- 					    "Unexpected meta frame\n");
- 			spin_unlock(&priv->meta_lock);
-+			kfree_skb(skb);
- 			return NULL;
- 		}
- 
-@@ -443,6 +442,7 @@ static struct sk_buff
- 			dev_err_ratelimited(ds->dev,
- 					    "Meta frame on wrong port\n");
- 			spin_unlock(&priv->meta_lock);
-+			kfree_skb(skb);
- 			return NULL;
- 		}
- 
-@@ -501,18 +501,21 @@ static struct sk_buff *sja1105_rcv(struct sk_buff *skb,
- 	/* Normal data plane traffic and link-local frames are tagged with
- 	 * a tag_8021q VLAN which we have to strip
- 	 */
--	if (sja1105_skb_has_tag_8021q(skb))
-+	if (sja1105_skb_has_tag_8021q(skb)) {
- 		dsa_8021q_rcv(skb, &source_port, &switch_id, &vbid, &vid);
--	else if (source_port == -1 && switch_id == -1)
-+	} else if (source_port == -1 && switch_id == -1) {
- 		/* Packets with no source information have no chance of
- 		 * getting accepted, drop them straight away.
- 		 */
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	skb->dev = dsa_tag_8021q_find_user(netdev, source_port, switch_id,
- 					   vid, vbid);
- 	if (!skb->dev) {
- 		netdev_warn(netdev, "Couldn't decode source port\n");
-+		kfree_skb(skb);
- 		return NULL;
- 	}
- 
-@@ -539,12 +542,15 @@ static struct sk_buff *sja1110_rcv_meta(struct sk_buff *skb, u16 rx_header)
- 	if (!ds) {
- 		net_err_ratelimited("%s: cannot find switch id %d\n",
- 				    conduit->name, switch_id);
-+		kfree_skb(skb);
- 		return NULL;
- 	}
- 
- 	tagger_data = sja1105_tagger_data(ds);
--	if (!tagger_data->meta_tstamp_handler)
-+	if (!tagger_data->meta_tstamp_handler) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	for (i = 0; i <= n_ts; i++) {
- 		u8 ts_id, source_port, dir;
-@@ -562,6 +568,7 @@ static struct sk_buff *sja1110_rcv_meta(struct sk_buff *skb, u16 rx_header)
- 	}
- 
- 	/* Discard the meta frame, we've consumed the timestamps it contained */
-+	kfree_skb(skb);
- 	return NULL;
- }
- 
-@@ -572,8 +579,10 @@ static struct sk_buff *sja1110_rcv_inband_control_extension(struct sk_buff *skb,
- {
- 	u16 rx_header;
- 
--	if (unlikely(!pskb_may_pull(skb, SJA1110_HEADER_LEN)))
-+	if (unlikely(!pskb_may_pull(skb, SJA1110_HEADER_LEN))) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	/* skb->data points to skb_mac_header(skb) + ETH_HLEN, which is exactly
- 	 * what we need because the caller has checked the EtherType (which is
-@@ -609,8 +618,10 @@ static struct sk_buff *sja1110_rcv_inband_control_extension(struct sk_buff *skb,
- 		 * padding and trailer we need to account for the fact that
- 		 * skb->data points to skb_mac_header(skb) + ETH_HLEN.
- 		 */
--		if (pskb_trim_rcsum(skb, start_of_padding - ETH_HLEN))
-+		if (pskb_trim_rcsum(skb, start_of_padding - ETH_HLEN)) {
-+			kfree_skb(skb);
- 			return NULL;
-+		}
- 	/* Trap-to-host frame, no timestamp trailer */
- 	} else {
- 		*source_port = SJA1110_RX_HEADER_SRC_PORT(rx_header);
-@@ -653,6 +664,7 @@ static struct sk_buff *sja1110_rcv(struct sk_buff *skb,
- 
- 	if (!skb->dev) {
- 		netdev_warn(netdev, "Couldn't decode source port\n");
-+		kfree_skb(skb);
- 		return NULL;
- 	}
- 
-diff --git a/net/dsa/tag_trailer.c b/net/dsa/tag_trailer.c
-index 4dce24cfe6a7..49c802c10ca6 100644
---- a/net/dsa/tag_trailer.c
-+++ b/net/dsa/tag_trailer.c
-@@ -30,22 +30,30 @@ static struct sk_buff *trailer_rcv(struct sk_buff *skb, struct net_device *dev)
- 	u8 *trailer;
- 	int source_port;
- 
--	if (skb_linearize(skb))
-+	if (skb_linearize(skb)) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	trailer = skb_tail_pointer(skb) - 4;
- 	if (trailer[0] != 0x80 || (trailer[1] & 0xf8) != 0x00 ||
--	    (trailer[2] & 0xef) != 0x00 || trailer[3] != 0x00)
-+	    (trailer[2] & 0xef) != 0x00 || trailer[3] != 0x00) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	source_port = trailer[1] & 7;
- 
- 	skb->dev = dsa_conduit_find_user(dev, 0, source_port);
--	if (!skb->dev)
-+	if (!skb->dev) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
--	if (pskb_trim_rcsum(skb, skb->len - 4))
-+	if (pskb_trim_rcsum(skb, skb->len - 4)) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	return skb;
- }
-diff --git a/net/dsa/tag_vsc73xx_8021q.c b/net/dsa/tag_vsc73xx_8021q.c
-index af121a9aff7f..f4736a1a7a0f 100644
---- a/net/dsa/tag_vsc73xx_8021q.c
-+++ b/net/dsa/tag_vsc73xx_8021q.c
-@@ -44,6 +44,7 @@ vsc73xx_rcv(struct sk_buff *skb, struct net_device *netdev)
- 	if (!skb->dev) {
- 		dev_warn_ratelimited(&netdev->dev,
- 				     "Couldn't decode source port\n");
-+		kfree_skb(skb);
- 		return NULL;
- 	}
- 
-diff --git a/net/dsa/tag_xrs700x.c b/net/dsa/tag_xrs700x.c
-index a05219f702c6..bb268020ee86 100644
---- a/net/dsa/tag_xrs700x.c
-+++ b/net/dsa/tag_xrs700x.c
-@@ -30,15 +30,21 @@ static struct sk_buff *xrs700x_rcv(struct sk_buff *skb, struct net_device *dev)
- 
- 	source_port = ffs((int)trailer[0]) - 1;
- 
--	if (source_port < 0)
-+	if (source_port < 0) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	skb->dev = dsa_conduit_find_user(dev, 0, source_port);
--	if (!skb->dev)
-+	if (!skb->dev) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
--	if (pskb_trim_rcsum(skb, skb->len - 1))
-+	if (pskb_trim_rcsum(skb, skb->len - 1)) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	/* Frame is forwarded by hardware, don't forward in software. */
- 	dsa_default_offload_fwd_mark(skb);
-diff --git a/net/dsa/tag_yt921x.c b/net/dsa/tag_yt921x.c
-index f3ced99b1c85..294784ab6694 100644
---- a/net/dsa/tag_yt921x.c
-+++ b/net/dsa/tag_yt921x.c
-@@ -87,8 +87,10 @@ yt921x_tag_rcv(struct sk_buff *skb, struct net_device *netdev)
- 	__be16 *tag;
- 	u16 rx;
- 
--	if (unlikely(!pskb_may_pull(skb, YT921X_TAG_LEN)))
-+	if (unlikely(!pskb_may_pull(skb, YT921X_TAG_LEN))) {
-+		kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	tag = dsa_etype_header_pos_rx(skb);
- 
-@@ -96,6 +98,7 @@ yt921x_tag_rcv(struct sk_buff *skb, struct net_device *netdev)
- 		dev_warn_ratelimited(&netdev->dev,
- 				     "Unexpected EtherType 0x%04x\n",
- 				     ntohs(tag[0]));
-+		kfree_skb(skb);
- 		return NULL;
- 	}
- 
-@@ -104,6 +107,7 @@ yt921x_tag_rcv(struct sk_buff *skb, struct net_device *netdev)
- 	if (unlikely((rx & YT921X_TAG_PORT_EN) == 0)) {
- 		dev_warn_ratelimited(&netdev->dev,
- 				     "Unexpected rx tag 0x%04x\n", rx);
-+		kfree_skb(skb);
- 		return NULL;
- 	}
- 
-@@ -112,6 +116,7 @@ yt921x_tag_rcv(struct sk_buff *skb, struct net_device *netdev)
- 	if (unlikely(!skb->dev)) {
- 		dev_warn_ratelimited(&netdev->dev,
- 				     "Couldn't decode source port %u\n", port);
-+		kfree_skb(skb);
- 		return NULL;
- 	}
- 
-diff --git a/net/dsa/user.c b/net/dsa/user.c
-index 8704c1a3a5b7..072fa76972cc 100644
---- a/net/dsa/user.c
-+++ b/net/dsa/user.c
-@@ -935,13 +935,12 @@ static netdev_tx_t dsa_user_xmit(struct sk_buff *skb, struct net_device *dev)
- 		eth_skb_pad(skb);
- 
- 	/* Transmit function may have to reallocate the original SKB,
--	 * in which case it must have freed it. Only free it here on error.
-+	 * in which case it must have freed it. Taggers will drop the
-+	 * passed skb on error.
- 	 */
- 	nskb = p->xmit(skb, dev);
--	if (!nskb) {
--		kfree_skb(skb);
-+	if (!nskb)
- 		return NETDEV_TX_OK;
--	}
- 
- 	return dsa_enqueue_skb(nskb, dev);
- }
 
----
-base-commit: f34c6b3a3c3d98f34918e1d2ea846a5acccac6d1
-change-id: 20260616-dsa-fix-free-skb-bb028ce90802
-
-Best regards,
---  
-Linus Walleij <linusw@kernel.org>
+> 
+> 
+> 
+>>> +                     retry_cnt++;
+>>> +             } else {
+>>> +                     bytes_read += read_size;
+>>> +                     offset += read_size;
+>>> +                     retry_cnt = 0;
+>>> +             }
+>>>        } while (!last_cmd);
+>>>
+>>>        *length = bytes_read;
+> 
+> Thanks,
+> Robert
 
