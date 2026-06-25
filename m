@@ -1,111 +1,118 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [13.75.44.102])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED7CD2D7D47
-	for <netdev@vger.kernel.org>; Thu, 25 Jun 2026 11:20:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.75.44.102
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA7883CDBD3
+	for <netdev@vger.kernel.org>; Thu, 25 Jun 2026 11:37:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782386405; cv=none; b=tP5dRfJb3m/3KESpRoTVDVlsrRdZlOlaCzp/lq0vh7Dtsq3NFbcojNL78jcbOb9csqrz9JJhzl9fNcLYFu7/azSRPok6+SoCBcK2IErmve6DvJGust1t9c9zNla2mDnTSeF7Ej5/C/XciiA42st4RgxYo4ZyA5mzBtq3bLPoDKw=
+	t=1782387473; cv=none; b=uJX/U56bdpJ3dXwSpYB/fUKD7nT6ya2DZH0HJ8lpV7IEA0bY+gq1Qo+abLQX0hbjIqMuWJBtYecWvdKkuiw4FaiSyyxuLYgJjt/J52xS+8bteDSsnqDfvWAJVQRgRLdYD4JjpUNYTUZZgiCnHabvG+AbZvPe17te2exCxv79RAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782386405; c=relaxed/simple;
-	bh=POMXdWhfI8qBwKUl1nNS6A3c2JppL3Vs6FUZFJgcmC8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sVT5MPrEPxUtIn3p5YeyJM/kfTdy3PIJ/7EZE3IWahSAeJHB03H8fUz/7lXOt6R1dYpdGVFErgAnfQS1Jwn5nsnHs9Z/LEVAKTePb8E31JjTXgGV2zmW7dopKyFL6JRx9KcBBF3A56WfXCMZOi0bOzVdztwO7WWE3JgO/hfnuEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn; spf=pass smtp.mailfrom=hust.edu.cn; arc=none smtp.client-ip=13.75.44.102
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hust.edu.cn
-Received: from hust.edu.cn (unknown [172.16.0.50])
-	by app2 (Coremail) with SMTP id HwEQrAB3_zW7Dj1q+GQ+AA--.53363S2;
-	Thu, 25 Jun 2026 19:19:23 +0800 (CST)
-Received: from uu22.. (unknown [38.79.119.137])
-	by gateway (Coremail) with SMTP id _____wAH4RGxDj1q5h1bAA--.1028S2;
-	Thu, 25 Jun 2026 19:19:22 +0800 (CST)
-From: Yinhao Hu <dddddd@hust.edu.cn>
-To: netdev@vger.kernel.org
-Cc: david@ixit.cz,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	dzm91@hust.edu.cn,
-	hust-os-kernel-patches@googlegroups.com,
-	Yinhao Hu <dddddd@hust.edu.cn>
-Subject: [PATCH net] nfc: clear active_target when the target list is replaced
-Date: Thu, 25 Jun 2026 04:18:35 -0700
-Message-ID: <20260625111835.2411251-1-dddddd@hust.edu.cn>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1782387473; c=relaxed/simple;
+	bh=cF8ABWT+HMyamWTf0qy0N9g3VZHpF7rJcGUwn8QT1es=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=p30x0FFMNgmTz2aACdI9fNhLmZyevbBEiJI83unjPohCW2OQbkWsQLir5HUizU1VzRC9ahN1Ayx2CBqNm1rECTzMqbZxzLADG+9VdR9WgFUmXMM4v7I0qk22L8oIf9AbvJ9j2U51P63ZpZN3m0m6zX3zwJB5tUELYAKyieX0FOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=K1fCw4Xo; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="K1fCw4Xo"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3680FA3ED1;
+	Thu, 25 Jun 2026 13:37:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1782387460; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=3PsuiJMX7K0gsO2erZaFsQtKtSASmz0tXod/eQxJiNA=;
+	b=K1fCw4XoVm3oQCCSsns1TpAbGjNOfeGyoNBziKlyQKKP8jHItPc+ppMXf5WDBG6z4vQbbe
+	g6KItTkbr+igQeQr2IfR5iHpmPBMlX3H/MqMsHvCOwkqwEP7xj6GL7UEcVMy0r3O2xSJsd
+	+xKahdP3opVG/BDwpJF7MOVnpMToQxVGpxJOjXzsDvcZ59ol3L1F4rbe/pEPqgQgvgPJGM
+	1VeBz/rEf15oMgq3yZPlims2NOjyDzOgJXfMpGb2j4Su1ZSggFOW27+x5h/ny2qWHA9Dxs
+	paPK3wz1ok4Y5B9ZAGNxqT4x/nsS4+yLVP5eR8bAYmr7t98f6UHZuPHlHpLNfg==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:HwEQrAB3_zW7Dj1q+GQ+AA--.53363S2
-Authentication-Results: app2; spf=neutral smtp.mail=dddddd@hust.edu.cn
-	;
-X-Coremail-Antispam: 1UD129KBjvJXoW7KrWruFykXrWUCFykXr1rXrb_yoW8WrWxpa
-	93JFn3tFWUXrWxA3yfAF1UXr1ru3WkGFyUCryIk34rC3Z8G34xJ3WfGryfXFyjyFZ8CFW3
-	AF1jyr4rGrZ8uF7anT9S1TB71UUUUjJqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUm2b7Iv0xC_tr1lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
-	cIk0rVWrJVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjx
-	v20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1l84ACjcxK
-	6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1ln4kS14v26r
-	126r1DM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I8C
-	rVACY4xI64kE6c02F40Ex7xfMcIj64x0Y40En7xvr7AKxVW8Jr0_Cr1UMcIj6x8ErcxFaV
-	Av8VW8uFyUJr1UMcIj6xkF7I0En7xvr7AKxVW8Jr0_Cr1UMcvjeVCFs4IE7xkEbVWUJVW8
-	JwACjcxG0xvY0x0EwIxGrwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCF04
-	k20xvE74AGY7Cv6cx26r4fZr1UJr1l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAF
-	wI0_JF0_Jw1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zV
-	AF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1l
-	IxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCw
-	CI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVF
-	xhVjvjDU0xZFpf9x07j-Z2-UUUUU=
-X-CM-SenderInfo: bgsqjkiyqyjko6kx23oohg3hdfq/
+Date: Thu, 25 Jun 2026 13:37:31 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ jv@jvosburgh.net, sdf@fomichev.me, dongchenchen2@huawei.com,
+ idosch@nvidia.com, n05ec@lzu.edu.cn, yuantan098@gmail.com,
+ kuniyu@google.com, aleksandr.loktionov@intel.com, dtatulea@nvidia.com,
+ syzbot+09da62a8b78959ceb8bb@syzkaller.appspotmail.com,
+ syzbot+cb67c392b0b8f0fd0fc1@syzkaller.appspotmail.com,
+ syzbot+9bb8bd77f3966641f298@syzkaller.appspotmail.com
+Subject: Re: [PATCH net 3/4] vlan: defer real device state propagation to
+ netdev_work
+In-Reply-To: <20260624182018.2445732-4-kuba@kernel.org>
+References: <20260624182018.2445732-1-kuba@kernel.org>
+ <20260624182018.2445732-4-kuba@kernel.org>
+Message-ID: <dd271c70bbcdedf79940e013523451b7@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-nfc_activate_target() and nfc_dep_link_up() cache dev->active_target as a
-raw pointer into the dev->targets array. When a later poll reports new
-targets, nfc_targets_found() frees and replaces dev->targets but does not
-clear dev->active_target, so the cached pointer is left dangling into
-freed memory. Any subsequent NFC core path that dereferences
-dev->active_target->idx then reads the freed memory, e.g.
-nfc_deactivate_target(), nfc_data_exchange().
+On 24.6.2026 20:20, Jakub Kicinski wrote:
+> vlan_device_event() generates nested UP/DOWN, MTU and feature
+> change events. It executes an event for the VLAN device directly
+> from the notifier - while the locks of the lower device are held.
+> 
+> This causes deadlocks, for example:
+> 
+>   bond    (3) bond_update_speed_duplex(vlan)
+>     |           ^                v
+>   vlan    (2) UP(vlan)    (4) vlan_ethtool_get_link_ksettings()
+>     |           ^                v
+>   dummy   (1) UP(dummy)   (5) __ethtool_get_link_ksettings()
+> 
+> The dummy device is ops locked, vlan creates a nested event (2),
+> then bond wants to ask vlan for link state (3). bond uses the
+> "I'm already holding the instance lock" flavor of API. But in
+> this case the lock held refers to vlan itself. We hit vlan's
+> link settings trampoline (4) and call __ethtool_get_link_ksettings()
+> which tries to lock dummy. Deadlock. There's no clean way for us
+> to tell the vlan_ethtool_get_link_ksettings() that the caller
+> is already in lower device's critical section.
+> 
+> Defer the propagation to the per-netdev work facility instead:
+> the notifier only schedules netdev_work_sched(vlandev, VLAN_WORK_*),
+> and ndo_work (vlan_dev_work) applies the change later. Hopefully
+> nobody expects the VLAN state changes to be instantaneous.
+> 
+> If someone does expect the changes to be instantaneous we will
+> have to do the same thing Stan did for rx_mode and "strategically"
+> place sync calls, to make sure such delayed works are executed
+> after we drop the ops lock but before we drop rtnl_lock.
+> 
+> Stan suggests that if we need that down the line we may
+> consider reshaping the mechanism into "async notifications".
+> AFAICT only vlan does this sort of netdev open chaining,
+> so as a first try I think that sticking the complexity into
+> the vlan code makes sense.
+> 
+> One corner case is that we need to cancel the event if user
+> explicitly changes the state before work could run. Consider
+> the following operations with vlan0 on top of dummy0:
+> 
+>   ip link set dev dummy0 up    # queues work to up vlan0
+>   ip link set dev vlan0 down   # user explicitly downs the vlan
+>   ndo_work                     # acts on the stale event
+> 
+> Reported-by: syzbot+09da62a8b78959ceb8bb@syzkaller.appspotmail.com
+> Reported-by: syzbot+cb67c392b0b8f0fd0fc1@syzkaller.appspotmail.com
+> Reported-by: syzbot+9bb8bd77f3966641f298@syzkaller.appspotmail.com
+> Fixes: 9f275c2e9020 ("net: ethtool: make sure 
+> __ethtool_get_link_ksettings() is ops-locked")
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
 
-When nfc_targets_found() is about to free the current target array, clear
-dev->active_target if it points into that array, and tear down the
-associated active state (stop the presence-check timer, drop the DEP link
-and reset the RF mode) as nfc_deactivate_target() does.
+> [...]
 
-Fixes: 900994332675 ("NFC: Cache the core NFC active target pointer instead of its index")
-Signed-off-by: Yinhao Hu <dddddd@hust.edu.cn>
----
- net/nfc/core.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 
-diff --git a/net/nfc/core.c b/net/nfc/core.c
-index a92a6566e6a0..950807906645 100644
---- a/net/nfc/core.c
-+++ b/net/nfc/core.c
-@@ -786,6 +786,21 @@ int nfc_targets_found(struct nfc_dev *dev,
- 
- 	dev->targets_generation++;
- 
-+	if (dev->active_target && dev->targets) {
-+		for (i = 0; i < dev->n_targets; i++) {
-+			if (dev->active_target != &dev->targets[i])
-+				continue;
-+
-+			if (dev->ops->check_presence)
-+				timer_delete_sync(&dev->check_pres_timer);
-+
-+			dev->active_target = NULL;
-+			dev->dep_link_up = false;
-+			dev->rf_mode = NFC_RF_NONE;
-+			break;
-+		}
-+	}
-+
- 	kfree(dev->targets);
- 	dev->targets = NULL;
- 
--- 
-2.43.0
-
+Thanks
+Nicolai
