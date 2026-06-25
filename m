@@ -1,160 +1,203 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10973BB104;
-	Thu, 25 Jun 2026 09:51:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCA96387345
+	for <netdev@vger.kernel.org>; Thu, 25 Jun 2026 10:00:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782381079; cv=none; b=iSBPDvPKAiXlDmvg05/i5Lxx9FGx0qIMEta6MW5OiPHKN95bMZct7gV2kvQp8P89RJdPyhSIj9AZX0KinXv21SktWqdT2Zj5/nJz56nxY00k/t1Wh1hBopltbpvBUJlm+JiqeoU+rj6SOnzuH0aFZSI7b8DcmKyUAK+dnzEQTPs=
+	t=1782381633; cv=none; b=NsMa2BfDGQYywBOgr9yJOOfTjOfmCQi7fwagGldPR2RP7oEalsikRjg7gEv/GTEmsKjR80Y+Du4CJ8CdWWXlUyEuO59sp8/kMexH79+IRnFf8pO1qC8xYcySjbt6vl2vSy9mcRnkY/y3ZfYkXHTC7bAYd+FdGLPJNxKUwPwsgh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782381079; c=relaxed/simple;
-	bh=B7/s9d6mVek1Q/XNG+xw8Tpj1nPLed6zevlG4m/N6iQ=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=qbgwxuXf+VRdza5LNpWZIqBcJKK7QZZxORQEhnUhcaGvBM2s0HFkLBGC/ktFquLqRqQKkNHlm4kkaaHsCK7XiQ4vA2pK9vSyyDaGBtDFtu+DLQUtE/A2vE2V5sFlvSXrdb2/I2rv2fydgI3U+ggurUMyt7SLY0v+4q7wNZLhRKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gc9QgqNJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1782381633; c=relaxed/simple;
+	bh=mM4Erhdqs5dGAvX86t2HWhP+eYFqprApKsJva3KiiJ8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GAzZmVvklJpAmGv90KvnrxqdOB2Z2AbC6J0SpFFP/0Ya4uAq7/8X2XIq8PuOGINowSap5AntnsbpQbLzgOrTLBdeKaxZR6G5tJRLCXN2Mmmwf4iCc7ImlkdS+IzmyN1PrPHL8IhZqk4BUIJRtpdbdl40hTALujNmC1ElELFTklE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bynar.io; spf=pass smtp.mailfrom=bynar.io; dkim=pass (2048-bit key) header.d=bynar.io header.i=@bynar.io header.b=DjyEQ+ve; arc=none smtp.client-ip=209.85.167.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bynar.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bynar.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gc9QgqNJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 46E64C2BCB3;
-	Thu, 25 Jun 2026 09:51:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1782381079;
-	bh=B7/s9d6mVek1Q/XNG+xw8Tpj1nPLed6zevlG4m/N6iQ=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=Gc9QgqNJ9RIwsceGCBwKo25l34Wh2mKOyVA5vOBSZauWTORglrmJkWx1AcVveEBQP
-	 6pOHaWtMkNoJhOMrMtr7OYBEBZKmp/vZ+1vMAD/QSuz6vRLkuBpBbcwYTLkpAJ/YGn
-	 PTYc0WLFvaT/PW8OKn3md4iVw6U/Ds6BRFZe2g0iKehoepjNNJh/ojBL8rp0A/j/0m
-	 GWI+Ze+p0lreLZD6O4y+2n+yVdtpiTLHpKi4UW6LpgulyG6keACMDm08+loYqMHrVp
-	 /zkPOyveXRanQkLzZZg4mOQJnvqMCiErHgF/C5gYnH8ZG75hLvIFHwTs3wbPcY4r0T
-	 3PSkfFIQ/5wGQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1584ECDB479;
-	Thu, 25 Jun 2026 09:51:19 +0000 (UTC)
-From: Bryam Vargas via B4 Relay <devnull+hexlabsecurity.proton.me@kernel.org>
-Subject: [PATCH 0/2] net/sched: finish the qdisc_dequeue_peeked conversion
- (taprio, multiq)
-Date: Thu, 25 Jun 2026 04:51:18 -0500
-Message-Id: <20260625-b4-disp-31bcb279-v1-0-85c40b83c529@proton.me>
+	dkim=pass (2048-bit key) header.d=bynar.io header.i=@bynar.io header.b="DjyEQ+ve"
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5aea177627aso447347e87.2
+        for <netdev@vger.kernel.org>; Thu, 25 Jun 2026 03:00:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bynar.io; s=google; t=1782381629; x=1782986429; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Kfvqp0FMHwIzAEoP9ZK6/aC9uV9vpu6XtwDN93+Lfpc=;
+        b=DjyEQ+ve5w+KMkF8luduSW1EnT5DDISka7eRRP8A7+inBrsxgtgr8WIb0Dhl8fNtIi
+         SkQrpEXB+M93y/UTcvqFuN3l/2ruLID3CawE0h7f9RAe85itLQc1zu0DWquCOIspql3I
+         t9GhFQSfsirLWRs7GLOgJ4G/E+lhCRbwUQwAC/a8xjyOCusCusBs1cJd/jS9tBcjhXTK
+         7o1ntwHhJV3+U6GGXeuPN8eLKEfb7op/9lS5e8FAXJ/1Hjzt5DQZs23sIkEJyZn3aGTG
+         kJOzgwvhM3yKPKoGnBTbonG5h4gNKtRbIxleTEPYCbLpdpcNHJ+Cs3oXCKAzC20kZ/vG
+         aMuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782381629; x=1782986429;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Kfvqp0FMHwIzAEoP9ZK6/aC9uV9vpu6XtwDN93+Lfpc=;
+        b=jxkQkXJY+aBZ1crh8chhGIsijhNA52S9a31ki2xUN50Ml5ywBwdjXcs5KW769EYKyh
+         +QUJsTB07mFvRG/lNFbKthegwBtksS4U2mOIJF2qgo/R10N4Y0xo1o+r92Aw4mt4e3Aj
+         lbKzcwI0hDc0QsYrnW0oFr13ei8+R6wPOaRszRuu5iUFHRdKgTSLOIdLVd0esqsAeYJy
+         GHBOl44XghPZoeS+fTju5CXuyPw/zahTdrJ5PuejIzmJCSLrt0FEBH4cOHb4L0Im7JtA
+         uByppFXfaj5INT97JHvIyuicBJeeobGkiH1f8/N5mzYFxMZmT4CiCdo7B2X32as94n4Y
+         faCw==
+X-Forwarded-Encrypted: i=1; AHgh+Rpdh6On6GWRGDgedoq0hxUchUdOO1lAYpaHZU2c5UyYALb4upTshwM54xixFGX7/EqQq6YsLbw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yza1eLa8xZmIr6u6l4Wd1ilrBUF1U5lH1WecG1wqZ5Nx0P3mHh+
+	kfWWYExydq/DypIxgwON7xAKicwtoDsKRlvWXecLHlmKPz9eZxmdJcoqRkxGNBt+gCvd
+X-Gm-Gg: AfdE7cmJtynQVPsURU0ijWsi2a1wfnYGHdGhOt6sTfHGAH0qJcyT7XEZWx8RUs4kc5Z
+	5g+/7oLr5Q2JSy9Lw7ZwxGcpbLwfCfeyTpR82nZRLYt0U7DBM3fN0j71VqGxi0Ch/K6iXBDOSBq
+	BMYRc4xsrWj3WbOhzWFgR06q8hYXnqrn4cQJMNTdMx5w72aNFpjEFLYgRIWyt8o9WI954u6OTNL
+	TlrkFQXWfQrPn7n8ri8SvfUc0z+5QTlfL0U46sEOfC09Gk9My8tF4RHkbysnfoW+fM8cZZVO9Fk
+	4qCVAjbvHucYnKKYItZ2Jp5erUNZS63pzH1iQq2fSXipoE+8LxUPj7wjPjFYtsrh09i20InObRB
+	6XFA0C7VpaxGCG9fywK0ni2GqEVgpOezuhKmRIzfPafR9vcct4bG/mIP31eG1mMb+i3V6ta9RRY
+	GqOSATrV1QCHA7EHnMqRvgb/o3OdWyRME5Ma9aNrSAlA9YEw==
+X-Received: by 2002:a05:6512:8342:b0:5ae:9d52:8ce with SMTP id 2adb3069b0e04-5aea1f290e4mr378980e87.1.1782381628133;
+        Thu, 25 Jun 2026 03:00:28 -0700 (PDT)
+Received: from ?IPV6:2a06:61c2:d427:0:b321:1c7a:b072:326e? ([2a06:61c2:d427:0:b321:1c7a:b072:326e])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5ae9d8fb537sm1407079e87.21.2026.06.25.03.00.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 Jun 2026 03:00:27 -0700 (PDT)
+Message-ID: <a0e53c0f-c4f0-4200-a88c-61469687269a@bynar.io>
+Date: Thu, 25 Jun 2026 11:00:26 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] tipc: fix out-of-bounds read in broadcast Gap ACK
+ blocks
+To: Tung Quang Nguyen <tung.quang.nguyen@est.tech>
+Cc: "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "tipc-discussion@lists.sourceforge.net"
+ <tipc-discussion@lists.sourceforge.net>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Jon Maloy <jmaloy@redhat.com>
+References: <20260624135629.727262-1-sam@bynar.io>
+ <GV1P189MB19881AD711511094760906DCC6EC2@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
+Content-Language: en-GB
+From: Sam P <sam@bynar.io>
+In-Reply-To: <GV1P189MB19881AD711511094760906DCC6EC2@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIABb6PGoC/x3MTQqAIBBA4avErBuwMe3nKtFCc6rZVChEIN09a
- fkt3suQOAonGKsMkW9Jch4FTV3BsrtjY5RQDKTIKksGfYtB0oW68YunbkDVE5vBaee0hZJdkVd
- 5/uU0v+8Hn0+1GGIAAAA=
-To: Vinicius Costa Gomes <vinicius.gomes@intel.com>, 
- Paolo Abeni <pabeni@redhat.com>, Jamal Hadi Salim <jhs@mojatatu.com>, 
- Jiri Pirko <jiri@resnulli.us>, Jakub Kicinski <kuba@kernel.org>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
- Jarek Poplawski <jarkao2@gmail.com>, 
- Vladimir Oltean <vladimir.oltean@nxp.com>, linux-kernel@vger.kernel.org
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1782381078; l=4699;
- i=hexlabsecurity@proton.me; s=proton; h=from:subject:message-id;
- bh=B7/s9d6mVek1Q/XNG+xw8Tpj1nPLed6zevlG4m/N6iQ=;
- b=r833+U02l28X7VE9MKQUlfqmiACBRaY/LH1TePDXczr8Q2WauMtTMHgCt+8yOwMaTu5tKOoWn
- w4+EgQKEOVXCJEl+t5zjFPXe+ou9m8m8TbfRjhpHqm1p3SE9T6h7T8a
-X-Developer-Key: i=hexlabsecurity@proton.me; a=ed25519;
- pk=dmppBMZNLLoPzxHi9l8tZDzEZUunPbgsYqIZYXeUrL0=
-X-Endpoint-Received: by B4 Relay for hexlabsecurity@proton.me/proton with
- auth_id=814
-X-Original-From: Bryam Vargas <hexlabsecurity@proton.me>
-Reply-To: hexlabsecurity@proton.me
 
-Commit 77be155cba4e added peek emulation: a non-work-conserving qdisc's
-->peek dequeues one skb and stashes it in the child's gso_skb. A parent
-that peeks such a child must then take the packet with
-qdisc_dequeue_peeked(), not a direct ->dequeue(), or the stashed skb is
-bypassed and the child's qlen/backlog desync. sch_red and sch_sfb were
-just fixed for this; taprio and multiq still take the direct path.
+On 25/06/2026 10:23, Tung Quang Nguyen wrote:
+>> diff --git a/net/tipc/bcast.c b/net/tipc/bcast.c index
+>> 76a1585d3f6b..08637c3c9db0 100644
+>> --- a/net/tipc/bcast.c
+>> +++ b/net/tipc/bcast.c
+>> @@ -497,11 +497,12 @@ void tipc_bcast_ack_rcv(struct net *net, struct
+>> tipc_link *l,
+>>   */
+>> int tipc_bcast_sync_rcv(struct net *net, struct tipc_link *l,
+>> 			struct tipc_msg *hdr,
+>> -			struct sk_buff_head *retrq)
+>> +			struct sk_buff_head *retrq, bool *valid)
+>> {
+>> 	struct sk_buff_head *inputq = &tipc_bc_base(net)->inputq;
+>> 	struct tipc_gap_ack_blks *ga;
+>> 	struct sk_buff_head xmitq;
+>> +	u16 glen;
+> 
+> Move this variable declaration to the bottom to follow reverse xmas tree style.
+> 
+>> 	int rc = 0;
+>>
+>> 	__skb_queue_head_init(&xmitq);
+>> @@ -510,13 +511,18 @@ int tipc_bcast_sync_rcv(struct net *net, struct
+>> tipc_link *l,
+>> 	if (msg_type(hdr) != STATE_MSG) {
+>> 		tipc_link_bc_init_rcv(l, hdr);
+>> 	} else if (!msg_bc_ack_invalid(hdr)) {
+>> -		tipc_get_gap_ack_blks(&ga, l, hdr, false);
+>> -		if (!sysctl_tipc_bc_retruni)
+>> -			retrq = &xmitq;
+>> -		rc = tipc_link_bc_ack_rcv(l, msg_bcast_ack(hdr),
+>> -					  msg_bc_gap(hdr), ga, &xmitq,
+>> -					  retrq);
+>> -		rc |= tipc_link_bc_sync_rcv(l, hdr, &xmitq);
+>> +		glen = tipc_get_gap_ack_blks(&ga, l, hdr, false);
+>> +		if (glen > msg_data_sz(hdr)) {
+>> +			/* Malformed Gap ACK blocks; caller drops the msg */
+>> +			*valid = false;
+>> +		} else {
+>> +			if (!sysctl_tipc_bc_retruni)
+>> +				retrq = &xmitq;
+>> +			rc = tipc_link_bc_ack_rcv(l, msg_bcast_ack(hdr),
+>> +						  msg_bc_gap(hdr), ga, &xmitq,
+>> +						  retrq);
+>> +			rc |= tipc_link_bc_sync_rcv(l, hdr, &xmitq);
+>> +		}
+>> 	}
+>> 	tipc_bcast_unlock(net);
+>>
+>> diff --git a/net/tipc/bcast.h b/net/tipc/bcast.h index
+>> 2d9352dc7b0e..55d17b5413e1 100644
+>> --- a/net/tipc/bcast.h
+>> +++ b/net/tipc/bcast.h
+>> @@ -97,7 +97,7 @@ void tipc_bcast_ack_rcv(struct net *net, struct tipc_link *l,
+>> 			struct tipc_msg *hdr);
+>> int tipc_bcast_sync_rcv(struct net *net, struct tipc_link *l,
+>> 			struct tipc_msg *hdr,
+>> -			struct sk_buff_head *retrq);
+>> +			struct sk_buff_head *retrq, bool *valid);
+>> int tipc_nl_add_bc_link(struct net *net, struct tipc_nl_msg *msg,
+>> 			struct tipc_link *bcl);
+>> int tipc_nl_bc_link_set(struct net *net, struct nlattr *attrs[]); diff --git
+>> a/net/tipc/node.c b/net/tipc/node.c index 97aa970a0d83..2887f94ee28f
+>> 100644
+>> --- a/net/tipc/node.c
+>> +++ b/net/tipc/node.c
+>> @@ -1831,12 +1831,13 @@ static void tipc_node_mcast_rcv(struct tipc_node
+>> *n)  }
+>>
+>> static void tipc_node_bc_sync_rcv(struct tipc_node *n, struct tipc_msg *hdr,
+>> -				  int bearer_id, struct sk_buff_head *xmitq)
+>> +				  int bearer_id, struct sk_buff_head *xmitq,
+>> +				  bool *valid)
+>> {
+>> 	struct tipc_link *ucl;
+>> 	int rc;
+>>
+>> -	rc = tipc_bcast_sync_rcv(n->net, n->bc_entry.link, hdr, xmitq);
+>> +	rc = tipc_bcast_sync_rcv(n->net, n->bc_entry.link, hdr, xmitq, valid);
+> 
+> 'valid' needs to be checked after this call. Then, return immediately if it is false.
+> 
+>>
+>> 	if (rc & TIPC_LINK_DOWN_EVT) {
+>> 		tipc_node_reset_links(n);
+>> @@ -2140,12 +2141,18 @@ void tipc_rcv(struct net *net, struct sk_buff *skb,
+>> struct tipc_bearer *b)
+>>
+>> 	/* Ensure broadcast reception is in synch with peer's send state */
+>> 	if (unlikely(usr == LINK_PROTOCOL)) {
+>> +		bool valid = true;
+>> +
+>> 		if (unlikely(skb_linearize(skb))) {
+>> 			tipc_node_put(n);
+>> 			goto discard;
+>> 		}
+>> 		hdr = buf_msg(skb);
+>> -		tipc_node_bc_sync_rcv(n, hdr, bearer_id, &xmitq);
+>> +		tipc_node_bc_sync_rcv(n, hdr, bearer_id, &xmitq, &valid);
+>> +		if (!valid) {
+>> +			tipc_node_put(n);
+>> +			goto discard;
+>> +		}
+>> 	} else if (unlikely(tipc_link_acked(n->bc_entry.link) != bc_ack)) {
+>> 		tipc_bcast_ack_rcv(net, n->bc_entry.link, hdr);
+>> 	}
+>>
+>> base-commit: a986fde914d88af47eb78fd29c5d1af7952c3500
+>> --
+>> 2.54.0
+> 
 
-With a qfq child the desync re-enters qfq_dequeue on an emptied aggregate
-list and dereferences NULL, panicking from softirq on ordinary egress.
-taprio reaches it on its own (root-only software path, all gates open);
-multiq reaches it when a peeking parent such as tbf wraps it over a
-non-work-conserving grandchild. Both need only CAP_NET_ADMIN.
-
-Confirmed under KASAN: the unpatched arm panics, the patched arm is
-clean, and a work-conserving-child control is clean. The reproducers and
-splats for both are below; the per-patch changes are one line each.
-
-taprio reproducer (self-triggering, no parent qdisc needed):
-
-  ip link add dummy0 numtxqueues 4 type dummy; ip link set dummy0 up
-  ip addr add 10.10.11.10/24 dev dummy0
-  tc qdisc add dev dummy0 root handle 1: taprio num_tc 2 \
-     map 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 queues 1@0 1@1 \
-     base-time 9000000000000000000 sched-entry S 03 200000 flags 0x0 clockid CLOCK_TAI
-  tc qdisc replace dev dummy0 parent 1:1 handle 3: qfq
-  tc class  add dev dummy0 classid 3:1 parent 3: qfq maxpkt 512 weight 1
-  tc filter add dev dummy0 parent 3: protocol ip prio 1 matchall classid 3:1
-  ping -c1 10.10.11.99 -I dummy0
-
-[  903.769174] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000009: 0000 [#1] SMP KASAN NOPTI
-[  903.769953] KASAN: null-ptr-deref in range [0x0000000000000048-0x000000000000004f]
-[  903.770456] CPU: 7 UID: 0 PID: 16162 Comm: ping Not tainted 7.1.0-rc5 #1 PREEMPT(lazy)
-[  903.771725] RIP: 0010:qfq_dequeue+0x362/0x1580 [sch_qfq]
-[  903.777452] Call Trace:
-[  903.778311]  taprio_dequeue_from_txq+0x383/0x680 [sch_taprio]
-[  903.778685]  taprio_dequeue_tc_priority+0x19a/0x330 [sch_taprio]
-[  903.779645]  taprio_dequeue+0xa6/0x330 [sch_taprio]
-[  903.780299]  __qdisc_run+0x16c/0x1890
-[  903.780854]  __dev_queue_xmit+0x1ece/0x3390
-[  903.784109]  ip_finish_output2+0x571/0x1da0
-[  903.785996]  ip_output+0x26c/0x4d0
-[  903.789572]  ping_v4_sendmsg+0xd22/0x12b0
-[  903.796118]  __x64_sys_sendto+0xe0/0x1c0
-[  903.796612]  do_syscall_64+0xee/0x590
-[  903.818669] Kernel panic - not syncing: Fatal exception in interrupt
-
-multiq reproducer (needs a peeking parent over a stashing child; tbf
-values chosen to force it to throttle):
-
-  ip link add dummy0 numtxqueues 2 type dummy; ip link set dummy0 up
-  ip addr add 10.10.11.10/24 dev dummy0
-  tc qdisc add dev dummy0 root handle 1: tbf rate 88bit burst 1661b \
-     peakrate 2257333 minburst 1024 limit 7b
-  tc qdisc add dev dummy0 parent 1: handle 2: multiq
-  for b in 1 2; do                          # qfq on every band
-    tc qdisc  add dev dummy0 parent 2:$b handle 3$b: qfq
-    tc class  add dev dummy0 classid 3$b:1 parent 3$b: qfq maxpkt 512 weight 1
-    tc filter add dev dummy0 parent 3$b: protocol ip prio 1 matchall classid 3$b:1
-  done
-  ping -c12 10.10.11.99 -I dummy0
-
-[ 1066.385097] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000009: 0000 [#1] SMP KASAN NOPTI
-[ 1066.386385] KASAN: null-ptr-deref in range [0x0000000000000048-0x000000000000004f]
-[ 1066.387227] CPU: 1 UID: 0 PID: 5357 Comm: ping Not tainted 7.1.0-rc5 #1 PREEMPT(lazy)
-[ 1066.389183] RIP: 0010:qfq_dequeue+0x362/0x1580 [sch_qfq]
-[ 1066.396316] Call Trace:
-[ 1066.396768]  multiq_dequeue+0x163/0x360 [sch_multiq]
-[ 1066.397885]  tbf_dequeue+0x6b9/0xf17 [sch_tbf]
-[ 1066.398269]  __qdisc_run+0x16c/0x1890
-[ 1066.399315]  __dev_queue_xmit+0x1ece/0x3390
-[ 1066.403276]  ip_finish_output2+0x571/0x1da0
-[ 1066.404818]  ip_output+0x26c/0x4d0
-[ 1066.408620]  ping_v4_sendmsg+0xd22/0x12b0
-[ 1066.415264]  __x64_sys_sendto+0xe0/0x1c0
-[ 1066.416251]  do_syscall_64+0xee/0x590
-[ 1066.441210] Kernel panic - not syncing: Fatal exception in interrupt
-
----
-Bryam Vargas (2):
-      net/sched: sch_taprio: Replace direct dequeue call with peek and qdisc_dequeue_peeked
-      net/sched: sch_multiq: Replace direct dequeue call with peek and qdisc_dequeue_peeked
-
- net/sched/sch_multiq.c | 2 +-
- net/sched/sch_taprio.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
----
-base-commit: 02f144fbb4c86c360495d33debe307cb46a57f95
-change-id: 20260625-b4-disp-31bcb279-082e59a3aa36
-
-Best regards,
--- 
-Bryam Vargas <hexlabsecurity@proton.me>
-
-
+Thanks for the review, I'll address this in a v3.
