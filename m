@@ -1,124 +1,105 @@
-Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F18DD225413
-	for <netdev@vger.kernel.org>; Thu, 25 Jun 2026 09:45:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F701C3318;
+	Thu, 25 Jun 2026 09:51:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782380753; cv=none; b=SApPujSO0v9BXNgUSffpTCcsLpvG1ABStd6PxRKvftzdmAwh1C2REP3tB/FfLzB7eIK5LNOxGaEdoVg02JQIiEvmOGLOx5qDdNcRtGToycu89NIEji1hwAPJNd0yXDGccj7J8LjyIOMVmu1Sa4TVDLWCXb7zibag9nLuqq8iEIg=
+	t=1782381079; cv=none; b=iFfc4itULrD94NtVuzUqWpjLhN0y53c9Hi8GWxK0/QUkn9Nq+a7qCMxJmDP3dQOkVAlH7couGqkLSp/w3WqeiL8MUZN4K0C5HYx3WHMzzBsnraGczih3dmHZsIVtgHIzHjj5HtHXK5THGek2BiNVQMIUev3sOGtjtAtAjxnVvKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782380753; c=relaxed/simple;
-	bh=zOWrvn3ss+QEOyij0G8oc1ZwjQLhi/VPlCPJGR/+byE=;
-	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
-	 MIME-Version:Content-Type; b=oclGnZLC3Im+zLRIGmBSPRLwQ+kuIz61CITFJnFV5J4XzqjI5ZPQX+/UVgB53P8tfqmpmKaNbsqVEdzDEgLeZd3FoDvUT+oYJcYm3AzBOh4z4ZsXMWQxbmLV8zEvIjeTGJmy1Ekmwmo0rgBRxO0N5eeR3PqzBGJIYWtT/dK+GaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.204.34.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid:tivesync5t1782380674te10425e7
-Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [115.204.248.247])
-X-QQ-SSF:0000000000000000000000000000000
-From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
-X-BIZMAIL-ID: 138484462909513450
-To: "'Larysa Zaremba'" <larysa.zaremba@intel.com>
-Cc: <netdev@vger.kernel.org>,
-	"'Mengyuan Lou'" <mengyuanlou@net-swift.com>,
-	"'Andrew Lunn'" <andrew+netdev@lunn.ch>,
-	"'David S. Miller'" <davem@davemloft.net>,
-	"'Eric Dumazet'" <edumazet@google.com>,
-	"'Jakub Kicinski'" <kuba@kernel.org>,
-	"'Paolo Abeni'" <pabeni@redhat.com>,
-	"'Simon Horman'" <horms@kernel.org>,
-	"'Kees Cook'" <kees@kernel.org>
-References: <60D88ADD3E295420+20260625090851.539640-1-jiawenwu@trustnetic.com> <ajz3QK96wKoLD4n4@soc-5CG4396X81.clients.intel.com>
-In-Reply-To: <ajz3QK96wKoLD4n4@soc-5CG4396X81.clients.intel.com>
-Subject: RE: [PATCH net] net: libwx: fix VMDQ mask for 1-queue mode
-Date: Thu, 25 Jun 2026 17:44:33 +0800
-Message-ID: <062401dd0487$3a3152f0$ae93f8d0$@trustnetic.com>
+	s=arc-20240116; t=1782381079; c=relaxed/simple;
+	bh=3ddgQfLkuEXFWzCfXbLrEe7g1KrOicWxKW1/OfJxceo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=XQLyTShEsqgzlYtnTruPn2wO/78lxwcIQ3ZSh6wWoPt2sr72d1waByq9219jg5vuyondGhG/vJ+kP6NDI+v1meu62mIUmXLQHY48jazK75umuLO3p3UX8AyXD7IbnESBWk9poU1NCp+yQdKTjuoZeeRFm6eZhXChh5pHyz4OFe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zby0xdjJ; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zby0xdjJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7208CC2BCC9;
+	Thu, 25 Jun 2026 09:51:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1782381079;
+	bh=3ddgQfLkuEXFWzCfXbLrEe7g1KrOicWxKW1/OfJxceo=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=Zby0xdjJa+4zneVMEOT+kMURPOzBWKeIziA3CjT8NNodirnfzVE+4xCDQXWWkS5VQ
+	 iE88VFXeq+HHsBP7bDN6P2dBuqnUw1FIlrJC6yowvR2VDfsT7XjpgRvIoZcAh7Rouz
+	 98n1MN/YxHd6JsLtN5PvT8Vtp6G3wlQkuxQBChque8lmRwGzM3zCu6C1BxfH2tckKv
+	 s+W3Cg5mAHBC7z1QK68ht1USGBLJIklw72Q42vEbEmFN4q+IpPKwDm6Fp/73WwrMal
+	 KeeFsHUy3aQNBGPGt3xU2rNcbw+jmiToziG/AhuhrugLcui7ESMbqmk5XfjMwo0qSi
+	 qEFqGAV/aCfVA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 66A08CDE007;
+	Thu, 25 Jun 2026 09:51:19 +0000 (UTC)
+From: Bryam Vargas via B4 Relay <devnull+hexlabsecurity.proton.me@kernel.org>
+Date: Thu, 25 Jun 2026 04:51:20 -0500
+Subject: [PATCH 2/2] net/sched: sch_multiq: Replace direct dequeue call
+ with peek and qdisc_dequeue_peeked
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Content-Language: zh-cn
-Thread-Index: AQKqh+6WpHH9Hogzz1b3o6qRTsUUpQN2I7B0tJhMjbA=
-X-QQ-SENDSIZE: 520
-Feedback-ID: tivesync:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: MlPIYQpV14UTjvyRfkRl7WnZqr1XLaIuFLVC887F0A9TpuhEL68aBRmi
-	CrvhBeJzyNOYhrP2XvrjDTrd/H8TfFuskHdgBrN63ejzDpOIbRHUqZL6fDV4K2RqOb/TNXn
-	RTqkgHZV7U6K4kAaRkqVYj6/6pIgg0SHpemhQtCsj0TcNlkScek2nCH2artugi+izNujglm
-	156CmjKzJJyem9poIKnKF8W2mqahEoiCDOoRiYhDL2A6Yo88RVYsmmyn62ypnSYWLZTQh9P
-	Zy/wPg9f1jRvY5ZVMZKrupGtfI+vaD8CZsmg/9MdcJfv0dRRU5M04r5fiHqOfSNIp4n9hlO
-	mVGEC94TFAVNclB1ML4TEhh3zecwakhDQZStJVJiG3OofiEVhBgU9izogetZKVmcuFWkbiW
-	Tb1NLQ9GQJvSfMiZ2Z5rGKvZIlZ4o4N4CzDuTT7Jx9NbicnWzneWmDqEs/jAptoW2x5czHC
-	a4R7WcDkTZ3njRVTrmVQXo7hEIi6O3aDKJh8fC4mz2M9ofMnjSaCeAD5teTZXXxpwZyoJq2
-	4xsWGuJ0Yb8eoe/j0tx8h3M9wcfrtsXsQJTrKvpSFTMkDPNGBuZnQp6QCso4KragONE7fGC
-	b2gGgscRBOCCpDEb6CuTAJ0FnzKYFnfzAfmZso/hbW/dPOY+CU0culfi+gLiXP4Bs0nGGtS
-	+9Cp/1gvpDdfaA74E3TMw6YdZsuLo9nV27/qp0LV6ZH3YpuJspuCxE13gXll6RbX49sJldH
-	tis32B88N7MKrzd+8n6VFwgjG5S+ky8RnqKs5tX+Ht+9lvXOoFWlIbpBVAkCoD6hoohqUCp
-	VJaVu4P7KdYuEiHHDuoGYgvC7dGMGUoM6sHCd3zNmnq8agv8qHk7n/EWuudELfL0DhKA55F
-	vZZHg7wNLbJtUsETctqSBdyulHsjfdvXprM4PGg0r+/Aa++Q7MQd2v8sOr1FMlQne+tuaN8
-	YY4g+ZeCFbse9s70svLFC2gkyXxzVVLDW7Rp9BM8z+Re19HNjp34RtEgqZv+oNNCWieI78T
-	rKe6ZCa0S6rKN4NccONFAlwjwfml6ogVzASCepf5kKjQ/aPtIT8Hu11+/jMhXOn4Q2yORfP
-	KfOxY18epRxIiTb1VAcEyuawmohRCPGI9ORjB1xFOLdagYI4OgfbAM=
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
-X-QQ-RECHKSPAM: 0
+Message-Id: <20260625-b4-disp-31bcb279-v1-2-85c40b83c529@proton.me>
+References: <20260625-b4-disp-31bcb279-v1-0-85c40b83c529@proton.me>
+In-Reply-To: <20260625-b4-disp-31bcb279-v1-0-85c40b83c529@proton.me>
+To: Vinicius Costa Gomes <vinicius.gomes@intel.com>, 
+ Paolo Abeni <pabeni@redhat.com>, Jamal Hadi Salim <jhs@mojatatu.com>, 
+ Jiri Pirko <jiri@resnulli.us>, Jakub Kicinski <kuba@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
+ Jarek Poplawski <jarkao2@gmail.com>, 
+ Vladimir Oltean <vladimir.oltean@nxp.com>, linux-kernel@vger.kernel.org
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1782381078; l=1511;
+ i=hexlabsecurity@proton.me; s=proton; h=from:subject:message-id;
+ bh=w7wRNrInJ6R59lQnmw33WI/qx8pFQzfYwnA3wVu2g3I=;
+ b=oHcZfonzbWyvjEJ/9reY7m8sV1mXVgFCQwYOBjtHIu0+V+ehrqN115C5tJeykZedL1y9JlU0I
+ T7Dr2ZwHnJ+AlQmpGjtYP5sN9xSpDZJzoG31ugsp/2FgeeBv26O6+rl
+X-Developer-Key: i=hexlabsecurity@proton.me; a=ed25519;
+ pk=dmppBMZNLLoPzxHi9l8tZDzEZUunPbgsYqIZYXeUrL0=
+X-Endpoint-Received: by B4 Relay for hexlabsecurity@proton.me/proton with
+ auth_id=814
+X-Original-From: Bryam Vargas <hexlabsecurity@proton.me>
+Reply-To: hexlabsecurity@proton.me
 
-On Thu, Jun 25, 2026 5:39 PM, Larysa Zaremba wrote:
-> On Thu, Jun 25, 2026 at 05:08:51PM +0800, Jiawen Wu wrote:
-> > In wx_set_vmdq_queues(), the VMDQ mask was not set for the devices not
-> > support WX_FLAG_MULTI_64_FUNC, i.e., NGBE devices. A mask of 0 causes
-> > __ALIGN_MASK(1, ~vmdq->mask) to return 0, which incorrectly sets
-> > q_per_pool to 0 in wx_write_qde().
-> >
-> > Fix the VMDQ 1-queue mask to 0x7F then ensures that __ALIGN_MASK(1,
-> > 0x7F) correctly evaluates to 1.
-> 
-> __ALIGN_MASK(1, 0x7F) evaulates to 0x80 (128), not to 1. __ALIGN_MASK(1, 0x7E)
-> evaluates to 1. Maybe you need 0x7D for 2 queues and 0x7E for 1 queue?
+From: Bryam Vargas <hexlabsecurity@proton.me>
 
-Sorry, the commit log is so wrong for that '~' is missing...
-I want to describe that __ALIGN_MASK(1, ~0x7F) evaluates to 1.
+multiq_dequeue() takes a packet from a band's child with a direct
+->dequeue() call after multiq_peek() peeked it. When the child is
+non-work-conserving the peek stashes the skb in the child's gso_skb, so
+the direct dequeue returns a different skb and orphans the stash,
+desyncing the child's qlen/backlog. With a qfq child reached through a
+peeking parent (e.g. tbf) this re-enters the child on an emptied list and
+dereferences NULL, panicking the kernel from softirq on ordinary egress.
 
-> 
-> >
-> > Fixes: c52d4b898901 ("net: libwx: Redesign flow when sriov is enabled")
-> > Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-> > ---
-> >  drivers/net/ethernet/wangxun/libwx/wx_lib.c  | 1 +
-> >  drivers/net/ethernet/wangxun/libwx/wx_type.h | 1 +
-> >  2 files changed, 2 insertions(+)
-> >
-> > diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-> > index d042567b8128..814d88d2aee4 100644
-> > --- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-> > +++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-> > @@ -1802,6 +1802,7 @@ static bool wx_set_vmdq_queues(struct wx *wx)
-> >  			rss_i = 4;
-> >  		}
-> >  	} else {
-> > +		vmdq_m = WX_VMDQ_1Q_MASK;
-> >  		/* double check we are limited to maximum pools */
-> >  		vmdq_i = min_t(u16, 8, vmdq_i);
-> >
-> > diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-> > index c7befe4cdfe9..65e3e55db1cf 100644
-> > --- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-> > +++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-> > @@ -486,6 +486,7 @@ enum WX_MSCA_CMD_value {
-> >
-> >  #define WX_VMDQ_4Q_MASK              0x7C
-> >  #define WX_VMDQ_2Q_MASK              0x7E
-> > +#define WX_VMDQ_1Q_MASK              0x7F
-> >
-> >  /****************** Manageablility Host Interface defines ********************/
-> >  #define WX_HI_MAX_BLOCK_BYTE_LENGTH  256 /* Num of bytes in range */
-> > --
-> > 2.51.0
-> >
-> 
+Take the packet through qdisc_dequeue_peeked(), as sch_prio already does
+and as sch_red and sch_sfb were just fixed to do. The helper is a no-op
+when the child has no stash, so a work-conserving child is unaffected.
+
+Fixes: 77be155cba4e ("pkt_sched: Add peek emulation for non-work-conserving qdiscs.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
+---
+ net/sched/sch_multiq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/sched/sch_multiq.c b/net/sched/sch_multiq.c
+index 4e465d11e3d7..a467dd122369 100644
+--- a/net/sched/sch_multiq.c
++++ b/net/sched/sch_multiq.c
+@@ -103,7 +103,7 @@ static struct sk_buff *multiq_dequeue(struct Qdisc *sch)
+ 		if (!netif_xmit_stopped(
+ 		    netdev_get_tx_queue(qdisc_dev(sch), q->curband))) {
+ 			qdisc = q->queues[q->curband];
+-			skb = qdisc->dequeue(qdisc);
++			skb = qdisc_dequeue_peeked(qdisc);
+ 			if (skb) {
+ 				qdisc_bstats_update(sch, skb);
+ 				qdisc_qlen_dec(sch);
+
+-- 
+2.43.0
+
 
