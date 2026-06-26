@@ -1,47 +1,45 @@
 Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B38CB3BAD99;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB603B8921;
 	Fri, 26 Jun 2026 20:37:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782506238; cv=none; b=RNuavZyjNoNh1QmNa0conGhjVyhG63wcJRSuSUkYaz1vuGeohXkW1j2MrVeP+1Y/SOmuAgVAjKnzGrWM7se0f23nC2n5CSD8dkPRgIk1Jn9/5ug7wY9LDazC8jRFilrgZRhZOobul59UmD1NabdV+pDGY8tKqe3HkhKl1WWWEz8=
+	t=1782506246; cv=none; b=gU/+yIIY6NzfsUiBL2zKI/fvWWIKkVMf5Q+SkzXkjpIHrXFnSxXFIuepHwT1hSMvrp3y1GsHaaBCDhXfOZ7t0E6JcJO/4L/7MhJnNATrn6tHawPaGE9LoLb7kSWeB5c5ZQuWxlvbIx1axHA5i12RNPtWkiiFKtm/ovfVK0VFCJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782506238; c=relaxed/simple;
-	bh=I6g+8SpdXdjhioluOEmx+djNmznqhg3KaenoZldWUZw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=pUDcBfs8ggI61E7Eddegfq97Tk4NwC342Dr7+tIXBUPhCTeV/qnOnGxWS+OSpzEA/Rzz8vyPL84n9muZqzU7qmlbO5a+LF6WX2tN3xZahqhPBvH4CQqYPXvDimHhrxKf7/O7/mbzQKsC373VGVQIVqTCqFzhENCa09QGcOE65z8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=GiZIPK6q; arc=none smtp.client-ip=185.226.149.37
+	s=arc-20240116; t=1782506246; c=relaxed/simple;
+	bh=pKVjCjcmwgLFIBfm/gjvwtOU+DQ4pjGWSvVcM4JnwZY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Um8LEJsvPkrmgLyyLQ7lsv33hfw4zJLl3L7v71ree7HG1xgXJ6eJxQzWZ2vCqM1FNtQys5JJsMUJzDEgtxWjbsyE5qC1EWEJg5Mjok0sPeQrwoH8VxNaglMNXmVqIHLJ6B4gnT19BqjV17w1jmtCQ9rDaXm6RrKIrm3rWnzwBv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=g3vLQTxf; arc=none smtp.client-ip=185.226.149.37
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="GiZIPK6q"
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="g3vLQTxf"
 Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
 	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.93)
 	(envelope-from <mhal@rbox.co>)
-	id 1wdDIJ-00AoOZ-Sz; Fri, 26 Jun 2026 22:36:59 +0200
+	id 1wdDIJ-00AoOX-Qn; Fri, 26 Jun 2026 22:36:59 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector2; h=Cc:To:In-Reply-To:References:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
-	bh=LpBhJhJrUC1GKzMEeSrhYvGmeMugOCvZmTFSKlTJJYE=; b=GiZIPK6qVj7i1sVNP6Ghr0eRbm
-	pP0lgBMeP6RGoeezi+oZ3LRduxeGGc8mrLxFOS1vRITT5FpkmOJg7E5HNZuYetBIGY2UNszyx0S96
-	8gFApRfs5dPKZG+KbOp11ZBGs8qgpSp79YYtXC929L6uE+DZURL0ngES24jI6JicafR8bFo1q40Bd
-	++0y5iIfTGXbfI0Xt6Y3jUNFoSk1SM3hD7wIxOuUJSsGC0F1Pa7asjrvJggvT1jCiz+/b+0+hBcSY
-	KFP6FtA8fZ9CVqVBcI42gWBmN9gaXwFaFy13VWeYMw/1OAcmNeSf5rG2HF0kQ5cF8VnsqBEVmnBq5
-	edEvIljA==;
+	s=selector2; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Message-Id:Date:Subject:From; bh=ly+rs5U3NFQZDhMCTmcjPlOV6xPqKVnp71dYXhsnJ9M=
+	; b=g3vLQTxfMgbgck9LjrMYPOiXAqzvpS1ZvYCYczUpEeiykwFrJADJUOSZCMCAEkPmd+Jg+C8Uk
+	G1rXCm21GeRGXULNkp+SXCogNP7fO9zQgcGxhK4uj1jGVMpP/ruwcCYe2V9NQqnsuZ0xeUMitz5GH
+	m7/3PbNw02CvVf/yFu9BBLtcRDrNwOeZfi5aOnz6H2a0SSYOqQ521FuQ2K5d65Vi8/AZodKXZY1Ay
+	KB1ActC51x9AQnnxzLmLoapiiMk0YRUbSD9X4CWuEFatJ36mARdDWMJEjcUuMBh4s/lN4rgvUpzuR
+	7M4A0LgV9Ol70upVBLhNu6cKTWG1enuF5Xt/Gg==;
 Received: from [10.9.9.72] (helo=submission01.runbox)
 	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
 	(envelope-from <mhal@rbox.co>)
-	id 1wdDII-0003ZW-3N; Fri, 26 Jun 2026 22:36:58 +0200
+	id 1wdDIH-0003ZS-S8; Fri, 26 Jun 2026 22:36:58 +0200
 Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.95)
-	id 1wdDID-006anB-0R;
-	Fri, 26 Jun 2026 22:36:53 +0200
+	id 1wdDI7-006anB-ML;
+	Fri, 26 Jun 2026 22:36:47 +0200
 From: Michal Luczaj <mhal@rbox.co>
-Date: Fri, 26 Jun 2026 22:36:32 +0200
-Subject: [PATCH bpf v2 4/4] selftests/bpf: Fail unbound UDP on sockmap
- update
+Subject: [PATCH bpf v2 0/4] bpf, sockmap: Fix sockmap leaking UDP socks
+Date: Fri, 26 Jun 2026 22:36:28 +0200
+Message-Id: <20260626-sockmap-lookup-udp-leak-v2-0-7e7e201c951a@rbox.co>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,9 +48,11 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260626-sockmap-lookup-udp-leak-v2-4-7e7e201c951a@rbox.co>
-References: <20260626-sockmap-lookup-udp-leak-v2-0-7e7e201c951a@rbox.co>
-In-Reply-To: <20260626-sockmap-lookup-udp-leak-v2-0-7e7e201c951a@rbox.co>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WNzQ6CMBCEX8Xs2TVtKT968j0MB1oWqShtWiAYw
+ rtb4OxtZjIz3wKBvKEAt9MCniYTjO2jEecT6Lbqn4Smjh4EExnLeI7B6u5TOXxb240OxzpKqjp
+ UWlKqU1nwOoe4dp4aM+/PD1CugfIIw6hepIftc6u1JgzWf3f+xPfygRLJX9TEkSFLCyaba8IKk
+ nev7HzRFsp1XX+eRwPL0wAAAA==
+X-Change-ID: 20260617-sockmap-lookup-udp-leak-bc4e5c5481d7
 To: Eric Dumazet <edumazet@google.com>, 
  Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, 
  Willem de Bruijn <willemb@google.com>, 
@@ -72,37 +72,33 @@ Cc: netdev@vger.kernel.org, bpf@vger.kernel.org,
  Michal Luczaj <mhal@rbox.co>
 X-Mailer: b4 0.15.2
 
-sockmap now rejects unbound UDP sockets. Adjust test_maps.
-
-This effectively reverts commit c39aa2159974 ("bpf, selftests: Fix
-test_maps now that sockmap supports UDP").
+Fix for UDP sockets getting leaked during sockmap lookup/release.
+Accompanied by selftests updates.
 
 Signed-off-by: Michal Luczaj <mhal@rbox.co>
 ---
- tools/testing/selftests/bpf/test_maps.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Changes in v2:
+- selftest: drop the original, adapt old tests
+- fix: change approach to rejecting unbound UDP [Kuniyuki]
+- Link to v1: https://patch.msgid.link/20260623-sockmap-lookup-udp-leak-v1-0-05804f9308e4@rbox.co
 
-diff --git a/tools/testing/selftests/bpf/test_maps.c b/tools/testing/selftests/bpf/test_maps.c
-index c32da7bd8be2..81cd5d0d69c1 100644
---- a/tools/testing/selftests/bpf/test_maps.c
-+++ b/tools/testing/selftests/bpf/test_maps.c
-@@ -759,12 +759,12 @@ static void test_sockmap(unsigned int tasks, void *data)
- 		goto out_sockmap;
- 	}
- 
--	/* Test update with unsupported UDP socket */
-+	/* Test update with unsupported unbound UDP socket */
- 	udp = socket(AF_INET, SOCK_DGRAM, 0);
- 	i = 0;
- 	err = bpf_map_update_elem(fd, &i, &udp, BPF_ANY);
--	if (err) {
--		printf("Failed socket update SOCK_DGRAM '%i:%i'\n",
-+	if (!err) {
-+		printf("Failed allowed unbound SOCK_DGRAM socket update '%i:%i'\n",
- 		       i, udp);
- 		goto out_sockmap;
- 	}
+---
+Michal Luczaj (4):
+      bpf, sockmap: Reject unhashed UDP sockets on sockmap update
+      selftests/bpf: Ensure UDP sockets are bound
+      selftests/bpf: Adapt sockmap update error handling
+      selftests/bpf: Fail unbound UDP on sockmap update
 
--- 
-2.54.0
+ net/core/sock_map.c                                     |  2 ++
+ tools/testing/selftests/bpf/prog_tests/sockmap_basic.c  |  6 +++---
+ tools/testing/selftests/bpf/prog_tests/sockmap_listen.c | 17 +++++++++--------
+ tools/testing/selftests/bpf/test_maps.c                 |  6 +++---
+ 4 files changed, 17 insertions(+), 14 deletions(-)
+---
+base-commit: 26490a375cb9be9bac96b5171610fd85ca6c2305
+change-id: 20260617-sockmap-lookup-udp-leak-bc4e5c5481d7
+
+Best regards,
+--  
+Michal Luczaj <mhal@rbox.co>
 
