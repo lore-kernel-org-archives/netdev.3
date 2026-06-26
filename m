@@ -1,88 +1,72 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C48373BE7;
-	Fri, 26 Jun 2026 16:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD5F3F99E5;
+	Fri, 26 Jun 2026 16:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782490221; cv=none; b=AwR5aGpdTZEiJiR87zF77mpRMgAHpXsP2Gw8m4BdXMcY3y2luzZKBZ/9vCArHC2PeRT4y/yqJdV2QIfg4lE9eFFsa8arFlmdM/+eMJ5lVlWhBkf7rMRezMDuFfjwklrTeu7JZTXyFV38DhksB2UrESjnxbF+KGeyq6iH2Pg6Le8=
+	t=1782490297; cv=none; b=ReSD/xsm46pV9ByRQMA5gyn2CCIZaQGXijHdlBMvfRQ5H8tQnmAJJQZaI+ZUEL4iVY00CrgamkKuBkUvr/HkItKYOQPNSWyVOPY1l3pkUQbHmF0qUxySu1qD6fszwxxoyULyqfaeUHTfKo2LU/30o/R3/26+C+2HlYRNE2DirGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782490221; c=relaxed/simple;
-	bh=jM0fxqGdN3P1GRFOqvJj8Dwt0iyeQLQRZCEcZ8CaIGQ=;
+	s=arc-20240116; t=1782490297; c=relaxed/simple;
+	bh=v/xtA6lKsmOo4sGuIQCBILfM1fTqp2X4TK4qOq1hJYA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k0wtvO5wwXKZbuuRT4Huhl3SphO5hR2ym9kpWv6U7RQk/T55r0pexhL2zOOB4ZsyWnUsrK5zE0nVm3xU60mga4AAxnqOLB0eRnkBigJBoFh3Bou8gO+xfQmFNPCPTu+uonCZJ8W0k9oO3v4wSE5pJ1R4AqMbwPNBl7RqtrBTco8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ZwJG6c54; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=ncqk/feD/ey7vVX+PeS/g0YJCsHiNlIGHbiqIVRpLew//8Mt3K7pryv2w8Eric/0rJvtQ/JEVFhcuUc+PRYO6KdD++w861EG/rw26ldnsrwAJDr9d65DTPxZQCPxtUqIKuTGKBcSxgu69fZsWJaJII4Kvs+ns6Y/mCnvcCxOX6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Sio4tBw2; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ZwJG6c54"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Sio4tBw2"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=LqTmciX5H0Eo9RMsPQbpjVewR3Vqa3rOZ1Ov7e2wKPY=; b=Zw
-	JG6c54b7NeCbaLn2bGVxYPD5LPxalaTXM3AfBxDQSS6sPYoCnAeYN6UotAh0IvIIrNUmzBqUZE3Lp
-	LZ3zOJiKgb1YW192TEa/yAwujtR0wS9xve+iFkqmT19qewRqfaxRhYl/NYm+8Yxle+Svhz2ZB8cE2
-	y/SdkO71A5Mgets=;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=KvTW42MNJMvmiaxA36D15Hj/y7V1IlN7NJdDL8uPPds=; b=Sio4tBw2XzlIAwKnA2dOP+7mXy
+	bxIcI+UhhGjLIkLPxWk7S0zy84J/XyffKZ38xEcWXmsog4gBB4Vejx8OFutdRINaKEVt5F3y3ruli
+	25lu+yUqUUzGTI1NAq+3uNQsQCu1q3qgp0915Iqkm0SOXVnW20PpHG44qJZcZ+YTh3lw=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1wd983-009OEP-Il; Fri, 26 Jun 2026 18:10:07 +0200
-Date: Fri, 26 Jun 2026 18:10:07 +0200
+	id 1wd99K-009OFF-Lj; Fri, 26 Jun 2026 18:11:26 +0200
+Date: Fri, 26 Jun 2026 18:11:26 +0200
 From: Andrew Lunn <andrew@lunn.ch>
 To: WenTao Liang <vulab@iscas.ac.cn>
-Cc: netdev@vger.kernel.org,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
 	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] fix: net: renesas: rswitch_mii_register: fix double
- of_node_put after   of_mdiobus_register
-Message-ID: <fdb2120d-5d0e-445f-97a5-ef2307ebd4d1@lunn.ch>
-References: <20260626152430.51835-1-vulab@iscas.ac.cn>
- <20260626152550.51911-1-vulab@iscas.ac.cn>
+Subject: Re: [PATCH] fix: net: phy: phy_sfp_probe: fix kref leak when
+ phy_setup_sfp_port fails   after sfp_bus_add_upstream
+Message-ID: <e8f1d4b5-ddf3-43ab-a324-8325582b2d20@lunn.ch>
+References: <20260626153443.52842-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260626152550.51911-1-vulab@iscas.ac.cn>
+In-Reply-To: <20260626153443.52842-1-vulab@iscas.ac.cn>
 
-On Fri, Jun 26, 2026 at 11:25:50PM +0800, WenTao Liang wrote:
-> After of_mdiobus_register succeeds, the mdio_np reference ownership is
->   transferred to the mii_bus device (released via fwnode_handle_put during
->   mdiobus_release). The success path calls of_node_put(mdio_np) which,
->   combined with the automatic release via bus teardown, results in a double
->   put and refcount underflow.
+On Fri, Jun 26, 2026 at 11:34:43PM +0800, WenTao Liang wrote:
+> sfp_bus_add_upstream unconditionally acquires a kref on the SFP bus. When
+>   this call succeeds but the subsequent phy_setup_sfp_port fails, the error
+>   path returns without releasing the upstream reference. Since probe fails,
+>   the device's remove function (which would normally clean this up) will
+>   never be called, permanently leaking the kref.
 > 
-> Move of_node_put so it is only called in the error path where
->   of_mdiobus_register failed. On success, the bus driver manages the
->   reference lifecycle.
+> Call sfp_bus_del_upstream on the error path after a successful
+>   sfp_bus_add_upstream to properly release the upstream reference.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 298e54fa810e ("net: phy: add core phylib sfp support")
+> Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
 
-Please stop with these patches.
 
-First please read:
+    Andrew
 
-https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
-
-and
-
-https://docs.kernel.org/process/submitting-patches.html
-
-You are getting a lot of things wrong. 
-
-* don’t repost your patches within one 24h period
-* Don't thread new versions of a patch to the old one
-* Include version history, how is v2 different to v1
-* When you see your own patch is broken, reply with NACK, and explain
-  what is wrong with it.
-
-Until you learn how to correctly submit patches, please only submit
-them one at a time, get it accepted, and move onto the next. Otherwise
-you are wasting peoples time, and getting yourself a bad reputation.
-
-     Andrew
+---
+pw-bot: cr
