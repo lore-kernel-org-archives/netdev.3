@@ -1,77 +1,132 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 581B83FC5A7;
-	Fri, 26 Jun 2026 16:32:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC673FCB39
+	for <netdev@vger.kernel.org>; Fri, 26 Jun 2026 16:35:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782491577; cv=none; b=a708+akEdUCDxpIzQocam8ylWUwJR6lkAsSTbrbOgU6utI+e/CXfMX6iGAI3B6S7APhitEvuKoDGWFXYbe2sYxCrtPBgT8RlL73wRHW09M+stZ0mTGC6KxzR/9RynoK5BSLHNUZFz41BDIz5imV6/KDbwuyECSMUwJX/xsi97yk=
+	t=1782491727; cv=none; b=AM8+K3UWudM5PbljSnTfakYk6PwWVSqdJkcEMJWNN/r4C5c/sMSAmt2t0ioW+Vhhg/k6lQUyeXxoa+vl0TaE+9YGjZ2qwrd5jApgpJ9h7GZgxffVr0iWXJkW+9fnpAAsLdFiRzLmqpEDXDYrCo95SX6MAmrLnha0t/tn2rMhJOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782491577; c=relaxed/simple;
-	bh=tG6J2GY+4jXTir/Fox0Z0bwsDCMHan1veiHDMjutll8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K9PKW7HpokfOkcfIFdg3kIjxL3QWiGutwSADRgIvXVH8fbhHnmG3QIGllg+ABlt199bFq8DgnRmmq8ZIp5YHJSwxhqpP7BVgaXBkNhG/KHMZS6DEFNH5dtcqPraJkCUmyMBI6QmrJNBVxmUsa8b/rDEJgxi3nVkOjyrcbV0II9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GY9TLwMy; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782491727; c=relaxed/simple;
+	bh=G0ur+VGsK5u8uehJUY577XPYpSiXqEDgqalyWKWqXew=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GDPLPK7cXyRpr0alJ8LJTCkfedGY6NiJoz2pkJjsQgTdvNMNs8uPQEIPLGRsJ6jGHeO6F0WQnXmqS/9Qdet2dLI/9fnG6QFAQDh4Boy616LkotYPgZEtC07irG4bfaOgYdd+8r3A2fiC8p/puK4Hr+cZmVZuNr7gLF7fnl6rSl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ImNjInA5; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GY9TLwMy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DB5C1F000E9;
-	Fri, 26 Jun 2026 16:32:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782491576;
-	bh=7s3t+HgFUoid2HXcYb60+6re4RXT2/C56sdjNS8djm4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=GY9TLwMyro/2WA0H9oXIsm3mscusHmvezbIXGXWhgkLKQK4EcdlHgc91WmtZCiOPl
-	 V9k7kQ6iZs9+c5iTtRC66YvCdBF89ifHBy58rnny+YvTVGCg2XQhLM3eqWHGeh0y74
-	 3Ut4ZKdDhlhL7P8MikZ4Vt1ObGon2RqVStPd8zMPfDEb5v+6RmbEgIpPxsHxYceVRw
-	 madmhuNkZC+OC11CpCntxKCU9XhBLyItA5D9lWLzDC2KRMIVInT1sUBFZKMLhIIIRo
-	 25j/qUzX5JxxzoMGapW6YL4MT3KT2FNy1UeY6Mk4hfFf6VquLT1AGYAMT8cEpMeMrQ
-	 /kywlUh8OKy2w==
-Date: Fri, 26 Jun 2026 09:32:54 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Geliang Tang <geliang@kernel.org>
-Cc: Matthieu Baerts <matttbe@kernel.org>, Mat Martineau
- <martineau@kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>, Kuniyuki
- Iwashima	 <kuniyu@google.com>, John Fastabend <john.fastabend@gmail.com>,
- Sabrina Dubroca	 <sd@queasysnail.net>, Hannes Reinecke <hare@suse.de>,
- Geliang Tang	 <tanggeliang@kylinos.cn>, netdev@vger.kernel.org,
- mptcp@lists.linux.dev, Gang Yan	 <yangang@kylinos.cn>, Zqiang
- <qiang.zhang@linux.dev>
-Subject: Re: [RFC net-next 00/17] MPTCP KTLS support
-Message-ID: <20260626093254.19ee6485@kernel.org>
-In-Reply-To: <a0358bb3aa8e2d45bd1e74851416728c3f08ddff.camel@kernel.org>
-References: <cover.1782123118.git.tanggeliang@kylinos.cn>
-	<20260622090059.5d1813dd@kernel.org>
-	<a0358bb3aa8e2d45bd1e74851416728c3f08ddff.camel@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ImNjInA5"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4923fb1f095so11528715e9.1
+        for <netdev@vger.kernel.org>; Fri, 26 Jun 2026 09:35:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782491723; x=1783096523; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/9JIf9OJEzVS6CWv1FSk8ReHN3mioJ8+p1Xh5mgkJRk=;
+        b=ImNjInA5iKioWKD+XL+xYCLmU7oLyGLf25sa+a19d17uFXgl9+atFON9qKpenByXne
+         VKaI/Oi6oWkeM35rcLzmDSD1QytduBqaKSOd3H2iR0b/K8QAtXZGEn4mzD5n3j6TMLV2
+         A0FkOJPlBc/ClIXvxcW+U+gY3xgBwKoY3ehV7P56MajuvzcxC1zRjezzLBZ/WhGozvcj
+         Q5L8gcsmCGXHtFTpjwhKXVl9RuLbi3BJ2was23bzqwoo+xcloBBcrt1PJlhqdXs4PTC3
+         PgIGiFzb1QphOzS7UAu1siRgMMyMQB1I4gK0I68wpmjHcpKmQIaMHzIyqnPjU84BsS5j
+         zR7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782491723; x=1783096523;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=/9JIf9OJEzVS6CWv1FSk8ReHN3mioJ8+p1Xh5mgkJRk=;
+        b=sEOV0mge3/0P3N6JVqGcHjF3khzKQ+2I+DU9tgRj7OhBKutZ6TumfPOQMzKzrXdIJJ
+         n8ZMezfRUY7futXBkkr0HEHOiliPU4acAv0oHdYT2OnGK9+zUz5q0qORNG1xUG+6Zlia
+         3PYVqmYwKhCnEf5Xu/GQsXgNPHvxqkKJKphttyoFexbsnluh4IL4dGn7MNfglpeBBBKF
+         EzFBbMYyeC4csDLgfwjwDH441lGUmH3aUu6tUX8kwUV6SKP2IbCxgOJhha19X2Z6pktq
+         K9apLl4ggyvWHfkpmDMdR96NTGoCYgPyewZi+ryq30r2UUDPkvuTIR6lM3KV/MbRp4z6
+         CX3Q==
+X-Forwarded-Encrypted: i=1; AFNElJ9DVq39h6JnGDWRm58EQxoMQU6LETu3X/MTl4SCJeub8fOf8Mw7lzPu7+17nfHiv2ogc9uQOkQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4BrNXN/3TA6c+ZfyF9wKp1XuQyMo73vMJrjXLfkevzBMfMLPI
+	6bVCWearSIgVN7nSZjTeaoXUS5QyQP7fA8sawluXUW1hBRe8c+JXEodL
+X-Gm-Gg: AfdE7ckBCvqo4wpukF09xDAgbN1/b/KQzWI+VI/zhK+Lffur3NnHdsjg0OqpR9kF3Hq
+	IAzkXjNsd9RqNsOP6+0gi/UCzBc9lrOLLsQKLPPhSpUcwFZR0waN0f1FK+XtbrDsKN+6CU4m7/i
+	yDCG925Gcsv9311YbErAPIEXXE13Q9eomnMIvB5y8tPXVxt/mIpbkYcUkdOzQ8iWxLv0XHhMPiL
+	9Ff0rd1hAdyxGMFZmVQw58q60XvDIoAQSHtjMdooxmkwfNLS7g3/30TElPUqhSBYoMUgaKssww3
+	HtJV0ODtYgpPBUkSaksDx4Z0JvGu9B9AhEIh/VkuzOqH2IQGZJZ/1HNfWRie+58oeJeq4xPMJOz
+	PcZsiQZ5BadO0G0vsj0+XJclnADwZWPP1db2ofceHXsU3mxTgWu7Zc8T+1AZj1zMpM+RaUMf/Na
+	mdmw17WGh4GUYOAZfK7suBSmDNvgzqO2/CiZnJ8oRFwZyl6C9sXPxbtvXKzvIZnxujfBee8Si/M
+	xpDLf/DCENMJ6a8HA==
+X-Received: by 2002:a05:600c:34ca:b0:492:58d6:2565 with SMTP id 5b1f17b1804b1-4926689dfe6mr106861335e9.25.1782491722478;
+        Fri, 26 Jun 2026 09:35:22 -0700 (PDT)
+Received: from localhost.localdomain (ip-89-176-136-191.bb.vodafone.cz. [89.176.136.191])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49269071e49sm89894875e9.10.2026.06.26.09.35.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Jun 2026 09:35:21 -0700 (PDT)
+From: Petr Wozniak <petr.wozniak@gmail.com>
+To: maxime.chevallier@bootlin.com,
+	olek2@wp.pl,
+	linux@armlinux.org.uk,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com
+Cc: kuba@kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-phy@lists.infradead.org,
+	bjorn@mork.no,
+	kabel@kernel.org,
+	Petr Wozniak <petr.wozniak@gmail.com>
+Subject: Re: [PATCH net v4 2/2] net: phy: mdio-i2c: defer RollBall bridge probe to PHY discovery
+Date: Fri, 26 Jun 2026 18:35:19 +0200
+Message-ID: <20260626163519.10678-1-petr.wozniak@gmail.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260624084814.20972-3-petr.wozniak@gmail.com>
+References: <20260624084814.20972-3-petr.wozniak@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Fri, 26 Jun 2026 15:56:53 +0800 Geliang Tang wrote:
-> On Mon, 2026-06-22 at 09:00 -0700, Jakub Kicinski wrote:
-> > On Mon, 22 Jun 2026 18:43:20 +0800 Geliang Tang wrote:  
-> > > Subject: [RFC net-next 00/17] MPTCP KTLS support  
-> > 
-> > Please no. We have a ton of unfixed bugs and may have to revert some
-> > of
-> > the features we dropped back in. I'd prefer to avoid large new bug
-> > surfaces until we reach an LTS release.  
-> 
-> Sure, I can wait. During this time, I'll go over the implementation
-> more carefully to make sure there are no issues on the MPTCP side.
+Maxime Chevallier wrote:
+> I finally got time to test this with a RollBall module, and I
+> confirm what Aleksander says, the RollBall module's PHY doesn't
+> get detected even with this patch. It does work on v7.0 though,
+> so before the bridge probing was introduced.
 
-The two things that I'd be most interested in understanding better are
-1) perf impact on all the pointer chasing and indirect calls you're
-   adding
-2) what's your plan on implementing HW offload? I understand that _you_
-   may not care, but if you follow the ML you'll discover that sooner
-   or later some well meaning person will slop code such support.
-   We have pretty solid (by kernel standards) documentation for the
-   offload. Please read if you haven't already. And then you should
-   hopefully realize the huge issue with the layering you chose...
+Thanks a lot for taking the time to test, Maxime - and Aleksander
+for the original report.
+
+That settles it: the deferred-probe approach in patch 2/2 doesn't
+actually restore genuine RollBall PHY detection, and as you both
+confirm it worked before 8fe125892f40 introduced the bridge probing.
+Sashiko's static review flagged the same thing (the probe bypasses the
+PHY discovery retry loop for slow-initializing modules), so the static
+analysis and the two hardware reports all point at the same flaw.
+
+I only have RTL8261BE-based copper modules here, not a genuine RollBall
+one, so I can't develop and verify a proper slow-init timing fix
+(module_t_wait / a retry that waits for the bridge) without the
+hardware to test against.
+
+Given that, my suggestion:
+
+- Please drop patch 2/2 from the series.
+
+- Since 8fe125892f40 regressed genuine RollBall detection and the
+  deferred probe doesn't restore it, I think the cleanest fix is to
+  revert 8fe125892f40. I'm happy to send that revert if you'd prefer.
+  The 5-minute RTL8261BE probe loop it was addressing is handled in our
+  downstream tree, so reverting it upstream is fine on our side.
+
+- Patch 1/2 (the mii_bus leak fix) is independent of all this and
+  already has Reviewed-by from Maxime and Larysa - it would be good to
+  take that one regardless. I can resend it standalone if that's easier.
+
+A proper fix covering slow-firmware modules really needs a genuine
+RollBall module to validate, so it's better owned by someone who has
+that hardware - happy to help review.
+
+Thanks again,
+Petr
