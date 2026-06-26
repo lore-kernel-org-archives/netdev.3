@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA473F4DC3;
-	Fri, 26 Jun 2026 12:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01FFA253958;
+	Fri, 26 Jun 2026 12:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782478631; cv=none; b=I3GTxoB5fXkQSTMUnLX/73gPHuwVToIdzrUGr1Px1as2cqITtHxbocO4JhlOSZscz/N67ttGqnHsz0gMBOLcyc+ddVXoWUaEQRp4wxP5CRfShtX1t3/teE9GfPmcrFz0DowZZXfUPBlCx2HgDcBWd02qJiHXtTbLjmt6xy71r2I=
+	t=1782478663; cv=none; b=IyT1wATI7Vdo+cNRqYU4ztL4/cVFf9AQurlWjxS0O5RKwH0F7NSeSeYEXHlilCdvbnUoHshrJWNjtasVyXC8POH2IwdqbCKWt86adeoH2zJnx4GtSjzRsTx5RC9wOP5EgXQOG37uhfaxToSZp9QhpLXFk6wz5d3Rm6wvuHDsT5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782478631; c=relaxed/simple;
-	bh=JKkIQ2xtaWpdcdL5oNWIYG2ZruReetAGYT/TabZTvJI=;
+	s=arc-20240116; t=1782478663; c=relaxed/simple;
+	bh=d4QJEuNiVaTqLR42uDIxg0/aSDX3ISUzOxLI+ex8Xvc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ugL8yP3KT2As5GBR4nskhNFxxqCShaUnpzuxMZvNqT3oiuBjDT1rvB+n+NSxM6Cb/iGTZNblNcAHNilap65x6vSwTOMRvX/uDnGr4cWihW+MzEWpgzYx+hf2tHu0Sax3s9A+SjSLHakCxpYC6+0WZk7P+StDXPLNy0wHmRnmQu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OSzHaDCv; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q7K5zl9av++WbukVIQiZQzYjdlpjDNT8nSDix6D2CPwPEZDf8uFINf4BZTkiAlyw5XHHfVU0vuu5A0uKLJtjzhlLyTYZCoF6vZaTB64n9Pb/um4XxIddwpiiJzGpBvN6mTqVq97zphX5MkvMEbzxSPGc0d4D2Fq3V3waXh3qOrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JYBEok7e; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OSzHaDCv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 076CC1F000E9;
-	Fri, 26 Jun 2026 12:57:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JYBEok7e"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0FC41F000E9;
+	Fri, 26 Jun 2026 12:57:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782478629;
-	bh=DTiO5SmGaNqn/JfhF5aNozR6oqtKfzT51CnTd6I+BIc=;
+	s=k20260515; t=1782478661;
+	bh=HkeL5ZEgSnnfcgqLGPg8pzG1Em1yMjrCzGjXLmFgA6w=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=OSzHaDCvOWkLxy3KL2rN7a0YJ557rlhZuv19gn1Nwjj4P3tHx+7dufQ5Ouu1R5CWH
-	 IcivpfuGVo3rl6cyoJX5rd9u2QMNK7Z69hHqzjE1IGrcr0tXJBnluHuk/epZeF0mkH
-	 LjG20JEzNqkX3Rb0woYP+6LtuLtVDMDkMvuojg9JS/x6Nsj3XaByEPEfXeLgUEd60i
-	 TIo09YpLYLl6NlTOEnfZS3CLmGvTO52jTOLuHPDAcw8ZkFW4AfRzGl1SS1mezmUg2g
-	 8/TTcBFfTSR3sat+VooSBy6h9bmJKl1iKZHvQFFgs3KyEGzmnvhqqVlSYx9AiQDxSQ
-	 mRtT8cg2UYuGA==
-Date: Fri, 26 Jun 2026 13:57:04 +0100
+	b=JYBEok7ef34aLsRhOaXtmjwYifV2O6L4BxBtuUmJVMStaMRHPHHELUhFiTGZzjOgT
+	 FRUjKli7Th9lB7DdlEvjp+QtGBDzJp0mDPBYJG1BeruHwqkpxh/2SeNgoHa9nZUXx1
+	 RVPBcQRU8dnCYU7N2TvevP9H9jVyUAYCaY+2vtciNHETUuqRxeX81WacrJOsyprvTl
+	 +J4ZH2XkmLfQC8Ihjajykh0xVdCerGAPXcQA6bWYCvkONmCAR9DMy4CoN0X3roEO1H
+	 Vav+lVMCs+CGd7pqJ82DOyrYZy6OI1916YuFEZGcHSZUPOdvkUQcIAsCSO553XKCUn
+	 ZJaqVbbwQi+kg==
+Date: Fri, 26 Jun 2026 13:57:36 +0100
 From: Simon Horman <horms@kernel.org>
 To: Carlo Szelinsky <github@szelinsky.de>
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
@@ -35,13 +35,14 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Corey Leavitt <corey@leavitt.info>, netdev@vger.kernel.org,
+	Corey Leavitt <corey@leavitt.info>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: pse-pd: scope pse_control regulator handle to
- kref lifetime
-Message-ID: <20260626125704.GB1286967@horms.kernel.org>
-References: <20260624151251.1137250-1-horms@kernel.org>
- <20260624203838.2752376-1-github@szelinsky.de>
+Subject: Re: [PATCH net v2] net: pse-pd: scope pse_control regulator handle
+ to kref lifetime
+Message-ID: <20260626125736.GC1286967@horms.kernel.org>
+References: <20260624204017.2752934-1-github@szelinsky.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,44 +51,65 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260624203838.2752376-1-github@szelinsky.de>
+In-Reply-To: <20260624204017.2752934-1-github@szelinsky.de>
 
-On Wed, Jun 24, 2026 at 10:38:38PM +0200, Carlo Szelinsky wrote:
-> On Wed, 24 Jun 2026 16:12:51 +0100, Simon Horman wrote:
-> > This is an AI-generated review of your patch. The human sending this
-> > email has considered the AI review valid, or at least plausible.
-> [...]
-> > [High]
-> > Does this fix the use-after-free completely, or only the regulator-put
-> > part of it?
-> [...]
-> > Would a more complete fix also need pse_controller_unregister() to
-> > drain outstanding pse_control references, or have pse_control hold a
-> > refcount on pcdev, so that psec cannot outlive pcdev->pi and pcdev?
+On Wed, Jun 24, 2026 at 10:40:16PM +0200, Carlo Szelinsky wrote:
+> From: Corey Leavitt <corey@leavitt.info>
 > 
-> Thanks, the review is correct. This patch only fixes the regulator
-> handle. In the same unbind-while-held case __pse_control_release()
-> also reads psec->pcdev->pi[] and psec->pcdev->owner after
-> pse_controller_unregister() has freed pcdev->pi, so those are still
-> use-after-free reads on their own.
+> __pse_control_release() drops psec->ps via devm_regulator_put(), which
+> only succeeds if the devres entry added by the matching
+> devm_regulator_get_exclusive() is still present on pcdev->dev at the
+> time the pse_control's kref hits zero.
 > 
-> That wider problem is exactly what you describe: the controller does
-> not drain its outstanding pse_control references on unregister. It is
-> fixed by draining them, which is what the PSE notifier series does --
-> PSE_UNREGISTERED drops every phydev->psec before pse_release_pis()
-> frees pcdev->pi. This patch is patch 1 of that series (by Corey
-> Leavitt); the rest targets net-next and is deferred until it reopens:
+> That assumption does not hold when the controller is unbound while a
+> pse_control still has consumers: pcdev->dev's devres list is released
+> LIFO, so every per-attach regulator-GET devres runs (and
+> regulator_put()s the underlying regulator) before
+> pse_controller_unregister() itself is invoked. Any later
+> pse_control_put() from that unbind path then reads psec->ps as a
+> dangling pointer inside devm_regulator_put() and WARNs at
+> drivers/regulator/devres.c:232 (devres_release() fails to find the
+> already-released match).
 > 
->   https://lore.kernel.org/netdev/20260620112440.1734404-1-github@szelinsky.de/
+> The pse_control's consumer handle is logically scoped to the
+> pse_control's refcount, not to pcdev->dev's devres lifetime. Switch to
+> the plain regulator_get_exclusive() / regulator_put() pair so the
+> regulator put in __pse_control_release() no longer depends on the
+> controller's devres still being present. No change to the
+> regulator-framework-visible refcount or lifetime of the underlying
+> regulator: a single get paired with a single put. The existing
+> devm_regulator_register() for the per-PI rails is unchanged (those ARE
+> correctly scoped to the controller's lifetime).
 > 
-> Jakub suggested sending this one to net on its own since it is a fix,
-> so it is here without the notifier patches. My v1 commit message
-> overclaimed by saying it makes __pse_control_release() correct
-> regardless of the controller's devres state, which is only true for
-> the regulator handle. I have reworded it in v2 to scope it to the
-> regulator put and to point at the series for the wider lifetime fix.
+> This addresses only the regulator handle. The same unbind-while-held
+> scenario also leaves __pse_control_release() reading psec->pcdev->pi[]
+> and psec->pcdev->owner after pse_controller_unregister() has freed
+> pcdev->pi, because the controller does not drain its outstanding
+> pse_control references on unregister. That wider pse_control vs
+> pcdev lifetime problem pre-dates this change and is addressed by the
+> PSE controller notifier series, which drains phydev->psec on
+> PSE_UNREGISTERED before pcdev->pi is freed.
 > 
-> Does you agree? Another option would be to wait for the entire series.
+> Link: https://lore.kernel.org/netdev/20260620112440.1734404-1-github@szelinsky.de/
+> Fixes: d83e13761d5b ("net: pse-pd: Use regulator framework within PSE framework")
+> Signed-off-by: Corey Leavitt <corey@leavitt.info>
+> Acked-by: Kory Maincent <kory.maincent@bootlin.com>
+> Signed-off-by: Carlo Szelinsky <github@szelinsky.de>
+> ---
+> This is patch 1 of the "decouple controller lookup from MDIO probe"
+> series, reposted on its own for net as Jakub suggested. The rest of the
+> series targets net-next and is deferred until it reopens.
+> 
+> Changes in v2:
+> - Reword the commit message to scope the fix to the regulator handle.
+>   As Simon's review pointed out, the same unbind-while-held path also
+>   reads pcdev->pi[] and pcdev->owner after pse_release_pis(); that wider
+>   pse_control vs pcdev lifetime issue is fixed by the notifier series,
+>   not here. No code change.
+>   Link: https://lore.kernel.org/netdev/20260624151251.1137250-1-horms@kernel.org/
+> v1: https://lore.kernel.org/netdev/20260622192839.2508733-1-github@szelinsky.de/
 
-Thanks for the clarification.
-Yes, I agree this is a good approach.
+Thanks for the update.
+
+Reviewed-by: Simon Horman <horms@kernel.org>
+
