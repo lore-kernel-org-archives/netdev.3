@@ -1,29 +1,30 @@
 Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A659712CDA5;
-	Fri, 26 Jun 2026 02:06:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2767E2E5B21;
+	Fri, 26 Jun 2026 02:06:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782439576; cv=none; b=ENeAotl1KzJBERP3LEj+bKeEpi18DCSatLoKSC/tU4Mfd5JkQtXY/0M5Zl/+BYVumyi054j/uc8uUpuM82TKP/boIqBG8XBrCB5SjfcBTHYIEc4eDLB89jFw0a+4sfzx6f+Zk0BIQ+6Pn3pDcnXoWbShdElZc956PdAYbv9IGPU=
+	t=1782439579; cv=none; b=Meewm0FxkjUQDDq53CyQyKZ40i7QnW/rKnLqZMw2QhAsgvusiiOntTa8CByIRON6EhbDvzWXRFsYc+7iX5aqBkP6CqEQR/QBaRa6SXlXSgO6EMB3www2Jm3iqrMbfv9iYB8q/xdn/jtHtGV1B4haeNrH1Ar0QQlakqDSjo7aI7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782439576; c=relaxed/simple;
-	bh=5+wJ6pTDbqo6a5OaXQZYq75bjR1odo+XYKOik9uLp3M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AmVAQETaAvLNLyqrYJhJ0ZJ+p3H3CrxncnWemq6ps2ewZ57gSWLuz68PfjpNlKBqrNeiPG7CwTrCa4UknIYeIoUdIg/tPrs/NrXHnM/QfPlHoJr2xgGK/Z/wFrXtoThveGGNJCF4B1RFZwHnMxZSqW8fdxIPnaSGtAkPjGrHwLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=QWQuvBiU; arc=none smtp.client-ip=117.135.210.4
+	s=arc-20240116; t=1782439579; c=relaxed/simple;
+	bh=4FXp5PQVJ76PQWdQb9EUxvO1upRB+jeYLoezL3xQtFU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WE/56xoFDjbIUuw97MAL8zYHn2Xcmb+BR4KNHWmI987LMSHk3Ep9FfAHpyXhAWbsVUo1e8yDc/XThqXesnPRHu7WtMTov66lArnYStLQCuPvjdrHFsc+gGCLMLFDA2fmxy0gqwSIcXZFV8sYE2F0vEGjgkGpQf2lacz/FqMgaq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=mUlO9m/l; arc=none smtp.client-ip=117.135.210.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="QWQuvBiU"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="mUlO9m/l"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=mO
-	SgYwaLawiIFYNPeX44qpXqdxhREpsWdcKCCKp8Sow=; b=QWQuvBiU+ZCjVB7V4K
-	xBYysWD1egowB6GO2M7yUMc+1fxh7E6mOW9txsZbpUvlJCeQ2/pn4L2ahskCajjc
-	aNgDRmTk+3bSyJs4ntwL6/vN1iTDflFzInxjC1CEdGmKwncfk2m4Jy0OFgMWGMRt
-	Ee9O9hsRresk7ZLhKUV3PQ+yw=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=cH
+	7aFmRWGYY6CfpfEv2VdnHPQeojmPM4ZBgcF3Q7Xgk=; b=mUlO9m/lOvAwJ8r7w4
+	wNYCMmUDGDTNcc6Ccw3BMco5L8dFMzOdr0pWCbwAmR9f080rKTln06lIO2jZzTKZ
+	7M249aSNZ7qNOwwokSaGTj84tNdY/u6/lg51EJ8zG1OVd+yHdZyJVvP12QGw/r/S
+	0jV+lNiu8q3rBFzKfcGoChIy4=
 Received: from xwm-TianYi510Pro-14IMB.. (unknown [])
-	by gzsmtp5 (Coremail) with SMTP id QCgvCgBn4SB83j1qWhWLEA--.17305S2;
-	Fri, 26 Jun 2026 10:05:49 +0800 (CST)
+	by gzsmtp5 (Coremail) with SMTP id QCgvCgBn4SB83j1qWhWLEA--.17305S4;
+	Fri, 26 Jun 2026 10:05:55 +0800 (CST)
 From: Xiong Weimin <15927021679@163.com>
 To: Jason Wang <jasowang@redhat.com>,
 	"Michael S . Tsirkin" <mst@redhat.com>
@@ -31,10 +32,12 @@ Cc: netdev@vger.kernel.org,
 	virtualization@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	Xiong Weimin <xiongweimin@kylinos.cn>
-Subject: [PATCH 0/2] vdpa_sim: fix suspend/reset and dma_unmap locking
-Date: Fri, 26 Jun 2026 10:05:43 +0800
-Message-ID: <20260626020545.607600-1-15927021679@163.com>
+Subject: [PATCH 2/2] vdpa_sim: hold iommu_lock across dma_unmap passthrough transition
+Date: Fri, 26 Jun 2026 10:05:45 +0800
+Message-ID: <20260626020545.607600-3-15927021679@163.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260626020545.607600-1-15927021679@163.com>
+References: <20260626020545.607600-1-15927021679@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,35 +45,51 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:QCgvCgBn4SB83j1qWhWLEA--.17305S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrZF47Gw4rXw4kGr18Jw1kXwb_yoW3CrbEgr
-	Z7uryqyw1rGrZayw1UKr9rJFsxK39FkrWrZw1qga17X34rtwnxWa1kKFyUJF17GFW2yFs5
-	tF1UtryfAr1xCjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUbgdb7UUUUU==
-X-CM-SenderInfo: jprvmjixqsilmxzbiqqrwthudrp/xtbC0h3ASWo93n2IHQAA3n
+X-CM-TRANSID:QCgvCgBn4SB83j1qWhWLEA--.17305S4
+X-Coremail-Antispam: 1Uf129KBjvJXoW7KFy7Kw1fur4xKw13Xw1UKFg_yoW8Gw1Upr
+	WjgFZ8K3WIqw48XFnrGw45ZF1vgwnYgF4FqF98tasrCrn8Jr1DXa93KasxXr1YyrWfAF13
+	Z3WkJ398uFW7WFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jzUDJUUUUU=
+X-CM-SenderInfo: jprvmjixqsilmxzbiqqrwthudrp/xtbC0QPBSmo93oNoDgAA31
 
 From: Xiong Weimin <xiongweimin@kylinos.cn>
 
-This series fixes two independent issues in the vDPA simulator:
+vdpasim_dma_map() updates the IOTLB and the passthrough (iommu_pt)
+state under iommu_lock.  vdpasim_dma_unmap() clears iommu_pt and
+resets the IOTLB before taking iommu_lock, then deletes the mapping
+while holding the lock.
 
-1. Clear pending_kick on device reset so a deferred kick from a
-   suspended device cannot be replayed after reset/re-init.
+A concurrent dma_map(), dma_unmap(), or reset path that also touches
+the same address space can therefore observe or modify the IOTLB and
+iommu_pt state without consistent locking.
 
-2. Hold iommu_lock across the full dma_unmap() path, including the
-   passthrough-to-custom mapping transition, matching dma_map().
+Perform the passthrough transition and range deletion under the same
+iommu_lock scope, matching dma_map().
 
-Both patches tested on an openEuler VM running kernel 6.16.8: built
-vdpa_sim.ko from /usr/src/linux-6.16.8 and reloaded vdpa_sim /
-vdpa_sim_net successfully.
+Tested-on: openEuler VM (6.16.8, /usr/src/linux-6.16.8)
+Tested-by: Xiong Weimin <xiongweimin@kylinos.cn>
 
-Xiong Weimin (2):
-  vdpa_sim: clear pending_kick on device reset
-  vdpa_sim: hold iommu_lock across dma_unmap passthrough transition
-
+Signed-off-by: Xiong Weimin <xiongweimin@kylinos.cn>
 ---
- drivers/vdpa/vdpa_sim/vdpa_sim.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/vdpa/vdpa_sim/vdpa_sim.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
+--- a/drivers/vdpa/vdpa_sim/vdpa_sim.c
++++ b/drivers/vdpa/vdpa_sim/vdpa_sim.c
+@@ -736,12 +736,11 @@ static int vdpasim_dma_unmap(struct vdpa_device *vdpa, unsigned int asid,
+ 	if (asid >= vdpasim->dev_attr.nas)
+ 		return -EINVAL;
+ 
++	spin_lock(&vdpasim->iommu_lock);
+ 	if (vdpasim->iommu_pt[asid]) {
+ 		vhost_iotlb_reset(&vdpasim->iommu[asid]);
+ 		vdpasim->iommu_pt[asid] = false;
+ 	}
+-
+-	spin_lock(&vdpasim->iommu_lock);
+ 	vhost_iotlb_del_range(&vdpasim->iommu[asid], iova, iova + size - 1);
+ 	spin_unlock(&vdpasim->iommu_lock);
+ 
 -- 
 2.43.0
 
