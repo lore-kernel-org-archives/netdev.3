@@ -1,116 +1,124 @@
-Received: from szelinsky.de (szelinsky.de [85.214.127.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3335C401A25;
-	Fri, 26 Jun 2026 17:00:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.127.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2EA53FFAC5
+	for <netdev@vger.kernel.org>; Fri, 26 Jun 2026 17:06:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782493217; cv=none; b=HFpu399kSB0YyZNGtRSPwQB2KKl3vqrK4wRoa+p5u0a1G9qRJLbc0y0LVkVms8CKew2TieswNV7RP1uuSlWO9lIi8jsv+KdM6mbznBW4w4JH4s/v9RQl25kxA3l0BrS6SkIYjHza/TNpPVP/YMuNelfDSGH0de8mZXOCC/32lvE=
+	t=1782493564; cv=none; b=SLeFIfdxPUXC9GNTPLylqYWOXxPVSTysug80PkLsox4dYRdFIEGEXyqZlAt4he+phrYyFGWYw9ChCi9ZOTvEWOd03a/NVyiUHrQaIjncozhZRrtOvWN+ZDYCwW32o/HS3uFwoqSE9RCXE5awNAO/ivaWadpbrKOIonu9VFkt4o4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782493217; c=relaxed/simple;
-	bh=Y6+5qepS+YeXyE3tdWCBNEUe0gdsOnQyh/Moqih+Tck=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mLshUpLWOaX0RP9e/awfVqI23DysseK63PtVBMNwPIxN7VFQ2JyTiuqtgY3GpzLoGbhoR9/c0D0vp4JkE5B8HetwRrZfTsT50P7f7MFQ9gTf/XXEBbcUcyyE14KoqbuEqD0arXzYlkY6fmjPM27YLe2ksKCgvg7g5TOFJXzJu5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=bxsBwFt2; arc=none smtp.client-ip=85.214.127.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
+	s=arc-20240116; t=1782493564; c=relaxed/simple;
+	bh=GQKFAfjK37kURb8eXgj/bP3eu1MfUrZ2X80i3UfUWBU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=p2y1jZT6v8sta7bvJeMfIjhkk+jNtV9jgPNLgXIKqs88ApRCVEPJuSRe79hQTusrGBcpU4nvHTKVAoR8g38kygzgOL0VuevjfqMIQrWr7DCp2n+477jv/sPw0CeHOCI2EZykM3qa6uSIa47C596tsQI3MwXSwPtvxdM3vZD6hRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PfGGy3dD; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="bxsBwFt2"
-Received: from localhost (localhost [127.0.0.1])
-	by szelinsky.de (Postfix) with ESMTP id B53DAE833E4;
-	Fri, 26 Jun 2026 18:59:57 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
-	s=mail; t=1782493197;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hl2c4C1zfRutMZ0q3xXwaH9XYCKVjPo/8MxgsRvbOlw=;
-	b=bxsBwFt2i+fxdzN8bvuC8mS017Vve2cDi1xtT28ibv6dgqg8bh5PssKhS9TSnXJa/95Whk
-	kTtOuvwcKmNmvKI0nCz/FMoMDMpXrHUFBF03XJoAxNuL+D/FbINu1ihbqY/2dDPUfiYzu3
-	rmqugWowqJhvD9kQ84NVnX0YjfJR0i7fTRoV0Emro8iKyaTW929OjQM+Oc+OSFtCmfksNs
-	hte1X4ueY+0iY82GAcYRq9Qls2jjjRKE86h8S+VVz/D26m4igZayuKTcWBeRrTWLJccl1U
-	G1CcEMBuzqoQIqOA7CH/CzZFz7twneNzmAVAcVi/3FVIHJSgymw754eL8ya1GQ==
-X-Virus-Scanned: Debian amavis at szelinsky.de
-Received: from szelinsky.de ([127.0.0.1])
- by localhost (szelinsky.de [127.0.0.1]) (amavis, port 10025) with ESMTP
- id PqosfwpXgARf; Fri, 26 Jun 2026 18:59:57 +0200 (CEST)
-Received: from p14sgen5.lan (p5784dea5.dip0.t-ipconnect.de [87.132.222.165])
-	by szelinsky.de (Postfix) with ESMTPSA;
-	Fri, 26 Jun 2026 18:59:56 +0200 (CEST)
-From: Carlo Szelinsky <github@szelinsky.de>
-To: Oleksij Rempel <o.rempel@pengutronix.de>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Corey Leavitt <corey@leavitt.info>,
-	Jonas Jelonek <jelonek.jonas@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Carlo Szelinsky <github@szelinsky.de>
-Subject: [PATCH net-next v3 2/3] net: pse-pd: fire lifecycle events on controller register/unregister
-Date: Fri, 26 Jun 2026 18:59:28 +0200
-Message-ID: <20260626165929.2908782-3-github@szelinsky.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260626165929.2908782-1-github@szelinsky.de>
-References: <20260626165929.2908782-1-github@szelinsky.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PfGGy3dD"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4926046fbc5so13851595e9.0
+        for <netdev@vger.kernel.org>; Fri, 26 Jun 2026 10:06:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782493559; x=1783098359; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=ctcxDsWWE5CsrZTwx1xGnbf39A7pUyPEOclo5R2hslQ=;
+        b=PfGGy3dDJntvUAhwdN74MoQyZ7Kb76WVRvfiYiz1r1uk3V/wjmc0ccylG8JVhL0+aO
+         9WSY+r+SENhfxJL8CUeOB1pmR59D9qbmsIm0QL0geqEQ3IJNFp5Fq7qrY/5fyGWdsqG0
+         nIyYMLaVYge3kigQjmdxvMGDVbUqMNI+4R/I6uQ1sMOrczr5lwCRWg+mi2S0BVuQYDKL
+         dDgqcqfyH8rsZo98a4Dkff0WHyw9Af1jwt2qhjUEWTtw3ws3bdrW5rBD3IoBPhrQQzZE
+         8/ce3DSxR7gM6HlnWvwnjDorWuEU3FMzRK5nbfmPEGSUPopV0SrDeRoc0yqUq7qQ+8gO
+         PhKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782493559; x=1783098359;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ctcxDsWWE5CsrZTwx1xGnbf39A7pUyPEOclo5R2hslQ=;
+        b=oLgDjAzuZZ87EwztE2gwSX8Qfb9GFqHtwLgv4RoP3ZFGNVq/1cz6SacXQXGXiZ2aF3
+         woL/UjXxlm+s82WkoABGoPOIaOylGsGOndHejBrGkzoRx0xWr96gAnr/NsbKTM5Nv4Ga
+         6/x469jfHI3dpnNwYTfbTeitdCzWkkVd372HHh7v7uEkzsUQywiIn4vVI+TonB2w5EWb
+         qarGaokNVzU9/XaOK2qgEboSOiMLg1Nqwjed04PpSgHUdxcEobtKzoMm8lJcFDpFEsH7
+         8dsQttNKu/J3wG2s5PpavQQOa2fHEPa9EukFjb8v5sTV9ZkHl9xpZjq8a34qkXJ4OVY9
+         A93Q==
+X-Forwarded-Encrypted: i=1; AFNElJ9xusQ/Hn9DcUTsWQEvbCbsJwraOWVnKRX6mhxd7o1nDgmXOO3Ff/L+nGs5V6s0B4tBvH1bNqg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxlaxpdk/eN/Kc8Cey1l5YGOVbfQ/PfIQyjn9dmHRQUxz7CDbky
+	QOJnBl1L/Xf8MHnnPlUSTTW9fMIaDWXUfZDoBGJrU1SD1eCM6aP1Ocuu
+X-Gm-Gg: AfdE7ckflVSxfcnG8oJTrL4Ljmu/M8AYzVJDA2byvGHThY0OkwtTzeBnC1YyAJ5c0hy
+	8emqocuFsHJI5fdgKbaC+3jaV9fzXrgXRVdb2MbdLCgZrHauETAzUTugYanWMBhzlixewKgPmYm
+	UdwLKqo7CnhJUVccSD4FYy7cqbLCHlPaDJKOUJ5xOs9iuX5zeUW5A6lmy36kkJgTGg7ZMhhmIYl
+	XUbgsgM9LW1ztFT9R3B5+/HFp30+30jJ5nNr7NHhCpM9RjrxeMV3BmsVMUC8m6auIIls+CF8ZF1
+	ZOHEAQFuweD9XTDbfWWWkyqQMFz7BstKBi2/asNyfuKD6+Ftgl+ehA5hCv1qAD1Ph8H7kJesap3
+	oY7P8H8F3ko3wIdN5qhNMJpU4IFmBYBDl9GLonTHBqIMkn6gn7xN3EpR+As3bnD8yP879wTiIUp
+	sL5qfs1mX3zvcF+UAH5eNvE48GxHJv2QPc2yHnR6BSjlWLYLb/ks3xR6IQsSVN//+7de8RtaL5s
+	naBvRyQ
+X-Received: by 2002:a05:600d:864a:20b0:492:5bf9:d149 with SMTP id 5b1f17b1804b1-4925bf9d18amr186215685e9.5.1782493559068;
+        Fri, 26 Jun 2026 10:05:59 -0700 (PDT)
+Received: from [10.128.11.240] (195-23-151-163.net.novis.pt. [195.23.151.163])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-46fe25429d5sm1694876f8f.7.2026.06.26.10.05.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 26 Jun 2026 10:05:57 -0700 (PDT)
+Sender: Julian Braha <julian.braha@gmail.com>
+Message-ID: <ac8c92cb-21f2-4274-8fe6-f771fe48eec7@gmail.com>
+Date: Fri, 26 Jun 2026 18:05:54 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 02/14] firmware: qcom_scm: Migrate to generic PAS
+ service
+To: Sumit Garg <sumit.garg@kernel.org>, andersson@kernel.org
+Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ freedreno@lists.freedesktop.org, linux-media@vger.kernel.org,
+ netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+ ath12k@lists.infradead.org, linux-remoteproc@vger.kernel.org,
+ konradybcio@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, robin.clark@oss.qualcomm.com, sean@poorly.run,
+ akhilpo@oss.qualcomm.com, lumag@kernel.org, abhinav.kumar@linux.dev,
+ jesszhan0024@gmail.com, marijn.suijten@somainline.org, airlied@gmail.com,
+ simona@ffwll.ch, vikash.garodia@oss.qualcomm.com, bod@kernel.org,
+ mchehab@kernel.org, elder@kernel.org, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, jjohnson@kernel.org, mathieu.poirier@linaro.org,
+ trilokkumar.soni@oss.qualcomm.com, mukesh.ojha@oss.qualcomm.com,
+ pavan.kondeti@oss.qualcomm.com, jorge.ramirez@oss.qualcomm.com,
+ tonyh@qti.qualcomm.com, vignesh.viswanathan@oss.qualcomm.com,
+ srinivas.kandagatla@oss.qualcomm.com, amirreza.zarrabi@oss.qualcomm.com,
+ jens.wiklander@linaro.org, op-tee@lists.trustedfirmware.org,
+ apurupa@qti.qualcomm.com, skare@qti.qualcomm.com,
+ linux-kernel@vger.kernel.org, Sumit Garg <sumit.garg@oss.qualcomm.com>,
+ Harshal Dev <harshal.dev@oss.qualcomm.com>
+References: <20260626133440.692849-1-sumit.garg@kernel.org>
+ <20260626133440.692849-3-sumit.garg@kernel.org>
+Content-Language: en-US
+From: Julian Braha <julianbraha@gmail.com>
+In-Reply-To: <20260626133440.692849-3-sumit.garg@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Corey Leavitt <corey@leavitt.info>
+Hi Sumit,
 
-Hook the newly-introduced pse_controller_notifier chain so that
-pse_controller_register() fires PSE_REGISTERED after the controller
-has been added to pse_controller_list (i.e. is now resolvable by
-of_pse_control_get()), and pse_controller_unregister() fires
-PSE_UNREGISTERED before the controller is removed from the list
-(while it is still valid to dereference from a subscriber's
-pse_control pointer targeting it).
+On 6/26/26 14:34, Sumit Garg wrote:
 
-With no subscribers yet, this is observably a no-op. A later change
-wires the phy subsystem in as the first subscriber.
+>  config QCOM_SCM
+> +	tristate "Qualcomm PAS SCM interface driver"
+> +	select QCOM_PAS
+>  	select QCOM_TZMEM
+> -	tristate
+I think QCOM_SCM is missing a 'select IRQ_DOMAIN'. Right now I get a
+build error without it:
 
-Signed-off-by: Corey Leavitt <corey@leavitt.info>
-Signed-off-by: Carlo Szelinsky <github@szelinsky.de>
----
- drivers/net/pse-pd/pse_core.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+drivers/firmware/qcom/qcom_scm.c: In function ‘qcom_scm_get_waitq_irq’:
+  drivers/firmware/qcom/qcom_scm.c:2512:16: error: implicit declaration
+of function ‘irq_create_fwspec_mapping’; did you mean
+‘irq_create_of_mapping’? [-Wimplicit-function-declaration]
+   2512 |         return irq_create_fwspec_mapping(&fwspec);
+        |                ^~~~~~~~~~~~~~~~~~~~~~~~~
+        |                irq_create_of_mapping
 
-diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
-index 3c4d09f1d6e4..0190fac33c78 100644
---- a/drivers/net/pse-pd/pse_core.c
-+++ b/drivers/net/pse-pd/pse_core.c
-@@ -1138,6 +1138,9 @@ int pse_controller_register(struct pse_controller_dev *pcdev)
- 	list_add(&pcdev->list, &pse_controller_list);
- 	mutex_unlock(&pse_list_mutex);
- 
-+	blocking_notifier_call_chain(&pse_controller_notifier,
-+				     PSE_REGISTERED, pcdev);
-+
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(pse_controller_register);
-@@ -1148,6 +1151,9 @@ EXPORT_SYMBOL_GPL(pse_controller_register);
-  */
- void pse_controller_unregister(struct pse_controller_dev *pcdev)
- {
-+	blocking_notifier_call_chain(&pse_controller_notifier,
-+				     PSE_UNREGISTERED, pcdev);
-+
- 	pse_flush_pw_ds(pcdev);
- 	pse_release_pis(pcdev);
- 	if (pcdev->irq)
--- 
-2.43.0
-
+- Julian Braha
