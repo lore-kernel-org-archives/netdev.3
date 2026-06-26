@@ -1,170 +1,151 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0BF3ED3B9
-	for <netdev@vger.kernel.org>; Fri, 26 Jun 2026 10:16:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.171
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782469017; cv=pass; b=WYbmVqPhRVq4MWl3tzy9XosP0bHIKv4PNTpmt6rflBvNWb8vEcQlKZSETmD+vRJyAeeX6vdkY+6lBbF3eha1JqkaBeRlpYpCCQBuFpExBiZvNaOpJyjTK1oEqOs7yNbPXu8bcXgGEyL9CeOocpJbvVjaTUKfdBjrkeSeCoJ0oW0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782469017; c=relaxed/simple;
-	bh=Q0VkRyZGMx8Ip+nI1uCNkWg9svwog6B4Nwe9YU0ExFM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MCmqf75epb4/IlpjazGJXvOyl7VvLhTxnFWlcAc4jDAL010SyN2EvkmG/eZIEjp1F7sm/Nuu2aNAoRiAfj3VlcfCCR+V8iGTY4ZnKzehp0hoLC2S263wscS7/cY0LJvLE3J0eRFqo4Z9Fu0wLjcrtqDKy8+MMapamTd/ctPWA2o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=PFif3UjD; arc=pass smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F26E937C935;
+	Fri, 26 Jun 2026 10:47:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782470880; cv=none; b=sWRwQ2Lm32UCUhpU+juQzB4ieVVshWpU0SdbV8yVjoUtJ4/ydWqfxVzVfjLk+Wbm1+yRyiyeQaheBu88mVwyG7lG+JXBHK4XKtV5vB/1mKKzYBsmlTz5EoZ4c3xz0xbodaZp7ArDAcQc249RdkujobZnSiaTEmNnG0GPOdG2vag=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782470880; c=relaxed/simple;
+	bh=vP2IdaVPbSZOk1XpzpIw7n5ZLCjv5/AMwDD8kEjAC3Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BwUQ1BuHAVwruyRTMzVUYCJcNJbS74/IIL44/5aFhtCBjKfr3TqM9/cFBEp/O0oFjxYVBwvDhkT3AKJoJ3HDeQ12+XqilAKmvxYsnhCokWuamUYqueM20NeDtQ/VvEQSnVcRwge0U3iBlGuMAR+8SHrWgHWquQxFS782G6dAGMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fY082PXT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="PFif3UjD"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-84536ecfc5bso613619b3a.2
-        for <netdev@vger.kernel.org>; Fri, 26 Jun 2026 03:16:55 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782469015; cv=none;
-        d=google.com; s=arc-20260327;
-        b=JvRTG/umNI7MzOI2WgBmjAdnp1nO6V0eHJO1Hm7mpbcGYjZeaVEzJ9Pvhr5Lg29esU
-         p3WHiX5WhiJz6jNxoLLSMl88RPcoX2Jhe50WJE0czECUps9JauWP7CE0DrhJA7hGiciS
-         EoeJ9CVtcSqjFFUZ+aJi3+X3QTQMTE/EsXOOvEHycSytxVMhFvhZQH7hYfFKfb4ZC3AW
-         EMF7087OOpNEZ4QLChUxYcjVBFCUWAGVCf8fL3hoLfEDfU9GE1xn6LKDNJxFyIj2BUWo
-         1bF2qoZcXXiYyiXnADzqKzm0lZgq0hLUIFxFD8thclfSXKetZh+VUe6L2dpGLUZ+eEo/
-         eZXQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Q0VkRyZGMx8Ip+nI1uCNkWg9svwog6B4Nwe9YU0ExFM=;
-        fh=KRv1BJQB9N+Hx6F3XJrmjsu6+e+VwIymwxj2UtUwR0E=;
-        b=CJ7Ct4d/UWuNR8rYSh8WgIV8vKJc3ku14FNsGHRq1nRfjEXFTB1U4WD/kOcAXsrGE2
-         xnrFiDJklPk6XvYuVd9EnT3HbD2wxXY7HHSjeMvhLK+DyFAiJUo5+qeL14UbglT9c1ci
-         Ai1+luz5Ud8RShUE7Pd+V/l00FWkDcdmJUopJreELdcGzCWqHZfLZLe2a4vjrXnm5iHg
-         fPnUH77ntzWFqDinbdtzVrU+yv6mf8uAzlae9pECuuLo0k9jwj6Jsg6daDtXLxWk+++m
-         fO3e8IKxWB0idOnazAgTZJj1s2RxKPBaF7XFsTh5HeT1Trxrw0AZrmpFYqjzyLP1YfBg
-         Yu/w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1782469015; x=1783073815; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q0VkRyZGMx8Ip+nI1uCNkWg9svwog6B4Nwe9YU0ExFM=;
-        b=PFif3UjDTqdX/mCLhIAN/C9cyGlL9i0cierzz341tur+BTBYQ524X2t8djIlEZWWSf
-         NhddQgXRaxqKG5r0hnFR50m6RR6AQZMulEmghsQKoWEpyJVi2EvpYJpAuYmdR8ENoV7x
-         4y5zwm45kQX0Mgksgw+5494nqoKhqGcL3NqVE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782469015; x=1783073815;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Q0VkRyZGMx8Ip+nI1uCNkWg9svwog6B4Nwe9YU0ExFM=;
-        b=RRQ4KdvDTqzQcxk6HcbXSBh7I4LbXCPr+ca0v3ILl3FvD1oMmrTWpskP7qZoe3C6LN
-         WPu2buBQ/cbG3s+SUIqv6RqJ1iHMZBLy8JpWaunLn6nK0Y0n9YusC+P33Id/20I7asLo
-         P8pEH48a3O24mJWrmJhvOWRmr02xvKMzXzvPTpQvDyJHWOXfywEh4/x0h89Fd+Z+8z65
-         nx4FDrUy5dIGRjd6HwO3NqCeyWX8NkmoW3PWV0bFaA5g+87+mEuOGY/x9ifjmTE5vvTg
-         CVUMkASqwabcTGzssPunI6KSSHt8XZOI+nJrbdFZH44U7hnMOQJUmoQSzpcKbVaHQ7MR
-         cpZg==
-X-Gm-Message-State: AOJu0YxSr1rMLgYZl2wxcrN1x8Bg1so/rwR0UOCGUsXqy6PM6kuWCka/
-	1rNXVgQubm/S2BDKcLcNirUeh5WOf/fbwnVzJW8djpVtE7wVOIeW33pRrfFA52r8q3GnDNXCXdQ
-	Bau8tUJaxyT7mdgvPMFOY8J+1Gt2LVCtzxERXLDPMoNYXoqodF1ogLA==
-X-Gm-Gg: AfdE7clL3SX3KAqeF6oX50Kzw0tAE3bq6CvpfW5hF7lL6ALLCiIHVyslFloaKni5Aei
-	lzgQlYvAzbmZHoZBGcv+ggvyAjqddHvQ634v9B/IpDTGWypHqVx9tVLOI+gIqLxjb0vuA0BHQ2n
-	BqghobQpnF3jibPP7UzCPGfgH7pXflH/BN8gd2CTqNvNTRtGNSm0zYzz+UAAkPm8QXpoYK0wNiu
-	/m5FhnkmNV7m2+pqyhTG+44ETFQEri1nkQdSnEsn1sPVuBDNik4a4+MSc+jxVeODBqL0j4/2g==
-X-Received: by 2002:a05:6a00:2389:b0:845:d0d6:b9 with SMTP id
- d2e1a72fcca58-845d0d601bbmr147884b3a.4.1782469015279; Fri, 26 Jun 2026
- 03:16:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fY082PXT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60BC21F000E9;
+	Fri, 26 Jun 2026 10:47:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782470878;
+	bh=VYo3Ganq+WzA7X6u0ccLN2QJdHrunNuBmjyvihQ9bgU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=fY082PXTc0XtaGqK1Hxo1xcbFPGuQTOnC+RsZjw9yja3eyqFAenyPMbvFNEemsn5Z
+	 w4gKJn3LogYURADXofWVfPjE+SzX1pyCBgzJEmkoc8aSozQ2j1SEfTFh8c0E0RhEag
+	 S/NsbXu+SpGb9H7LHESpq2ypWE5GeJHm6mONXHpXrZHfQEyZhUJLyNbCpZiUDfQMWV
+	 BwyueZHKfzhPI/qfKkfCXxm65Cp8zd69hD+Sf71y9NcZQunQzK9BXCDYV+sHXh+BLT
+	 WB+Xtgy1DyNTyNYjapjabA5G06SQ6AzSfqc4IDSCfwhh4mFAet8c1DA7SUgSWrcn/q
+	 taKGxC0Cj0RCw==
+Date: Fri, 26 Jun 2026 12:47:54 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: George Moussalem <george.moussalem@outlook.com>
+Cc: Jens Axboe <axboe@kernel.dk>, Ulf Hansson <ulfh@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Johannes Berg <johannes@sipsolutions.net>, 
+	Jeff Johnson <jjohnson@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, 
+	Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>, Rocky Liao <quic_rjliao@quicinc.com>, 
+	Saravana Kannan <saravanak@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Mathieu Poirier <mathieu.poirier@linaro.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-wireless@vger.kernel.org, ath10k@lists.infradead.org, 
+	linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-remoteproc@vger.kernel.org
+Subject: Re: [PATCH 1/6] dt-bindings: remoteproc: document M0 Bluetooth
+ Subsystem secure PIL
+Message-ID: <20260626-tiny-warm-jerboa-3ba57a@quoll>
+References: <20260625-ipq5018-bluetooth-v1-0-d999be0e04f7@outlook.com>
+ <20260625-ipq5018-bluetooth-v1-1-d999be0e04f7@outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260624224016.24018-1-jhs@mojatatu.com>
-In-Reply-To: <20260624224016.24018-1-jhs@mojatatu.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Fri, 26 Jun 2026 06:16:43 -0400
-X-Gm-Features: AVVi8Cf2P7f9br_adTOBaN-EcnhYa4YwGzb1Nua8DRNE1VC5vPu11kXmT85D-_I
-Message-ID: <CAM0EoMmJZxAbOsyW7bBp0DbTTiQKZeGaaBHPEw45D5b6DKDEvg@mail.gmail.com>
-Subject: Re: [PATCH net v2 1/1] net/sched: sch_teql: Introduce slaves_lock to
- avoid race condition and UAF
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, jiri@resnulli.us, victor@mojatatu.com, 
-	security@kernel.org, zdi-disclosures@trendmicro.com, stable@vger.kernel.org, 
-	kernel test robot <lkp@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260625-ipq5018-bluetooth-v1-1-d999be0e04f7@outlook.com>
 
-"
+On Thu, Jun 25, 2026 at 06:10:05PM +0400, George Moussalem wrote:
+> Document the M0 Bluetooth Subsystem remote processor core found in the
+> Qualcomm IPQ5018 SoC. Firmware loaded is authenticated via TrustZone.
+> The firmware running on the M0 core provides bluetooth functionality.
+> 
+> Signed-off-by: George Moussalem <george.moussalem@outlook.com>
+> ---
+>  .../bindings/remoteproc/qcom,m0-btss-pil.yaml      | 72 ++++++++++++++++++++++
+>  1 file changed, 72 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/remoteproc/qcom,m0-btss-pil.yaml b/Documentation/devicetree/bindings/remoteproc/qcom,m0-btss-pil.yaml
+> new file mode 100644
+> index 000000000000..397bb6815d71
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/remoteproc/qcom,m0-btss-pil.yaml
 
-On Wed, Jun 24, 2026 at 6:40=E2=80=AFPM Jamal Hadi Salim <jhs@mojatatu.com>=
- wrote:
->
-> The teql master->slaves singly linked list is not protected against
-> multiple writes. It can be mod'ed concurently from teql_master_xmit(),
-> teql_dequeue(), teql_init() and teql_destroy() without holding any list
-> lock or RCU protection.
->
-> zdi-disclosures@trendmicro.com has demonstrated that the qdisc is freed
-> after an RCU grace period, but teql_master_xmit() running on another
-> CPU can still hold a stale pointer into the list, resulting in a
-> slab-use-after-free:
->
-> BUG: KASAN: slab-use-after-free in teql_destroy+0x3ca/0x440 linux/net/sch=
-ed/sch_teql.c:142
-> Read of size 8 at addr ffff88802923aa80 by task ip/10024
->
-> The zdi-disclosures@trendmicro.com repro created concurrent AF_PACKET
-> senders on a teql device against a thread that repeatedly adds/deletes th=
-e
-> slave qdisc, together with a SLUB spray that reclaims the freed slot; the
-> resulting UAF is controllable enough to be turned into a read/write
-> primitive against the freed qdisc object.
->
-> The fix?
-> Add a per-master slaves_lock spinlock that serializes all mutations of
-> master->slaves and the NEXT_SLAVE() links in teql_destroy() and
-> teql_qdisc_init(). teql_master_xmit() also takes the same slaves_lock
-> around those updates.
-> Annotate master->slaves and the per-slave ->next pointer with __rcu and
-> use the appropriate RCU accessors everywhere they are touched:
-> rcu_assign_pointer() on the writer side (under slaves_lock),
-> rcu_dereference_protected() for the writer-side loads (also under
-> slaves_lock), rcu_dereference_bh() for the loads in teql_master_xmit() an=
-d
-> rtnl_dereference() for the loads in teql_master_open()/teql_master_mtu(),
-> which run under RTNL.
-> Pair this with rcu_read_lock_bh()/rcu_read_unlock_bh() around the list
-> traversal in teql_master_xmit(), so that readers either observe a fully
-> linked list or are deferred until the in-flight mutation completes. The t=
-wo
-> early-return paths in teql_master_xmit() are updated to release the RCU-b=
-h
-> read-side critical section before returning, since leaving it held would
-> disable BH on that CPU for good.
->
+Use compatible as filename.
 
-sashiko-gemini's complaints:
-https://sashiko.dev/#/patchset/20260624224016.24018-1-jhs%40mojatatu.com
-seem bogus to me (someone correct me if i am wrong). I am only going
-to address the first claim of "TOCTOU / "resurrection" race in
-teql_master_xmit()"
-teql_master_xmit() holds rcu_read_lock_bh() across the entire
-traversal. teql_destroy() freeing can only proceed once the qdisc's
-RCU grace period has elapsed - so where is this TOCTOU? Let's say this
-were true: both calls hold the slaves_lock.
-The other issues are of similar nature.
+> @@ -0,0 +1,72 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/remoteproc/qcom,m0-btss-pil.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Qualcomm M0 BTSS Peripheral Image Loader
+> +
+> +maintainers:
+> +  - George Moussalem <george.moussalem@outlook.com>
+> +
+> +description:
+> +  Qualcomm M0 BTSS Peripheral Secure Image Loader loads firmware and powers up
+> +  the M0 BTSS remote processor core on the Qualcomm IPQ5018 SoC.
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - qcom,ipq5018-btss-pil
+> +
+> +  firmware-name:
+> +    maxItems: 1
+> +    description: Firmware name for the M0 Bluetooth Subsystem core
 
-OTOH, sashiko-claude
-(https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260624224016.24018-1=
--jhs%40mojatatu.com)
-does make some valid claims which are low value, so not sure a resend
-is worth it.
-For example in claim 1 it says "Should the changelog mention this
-teql_dequeue() site too?" Sure I can - but just because I provided
-extra information in the commit log, which I could have omitted, now I
-have to add more info? ;-> The second claim is "rcu_dereference_bh()
-should be rcu_dereference_protected() on writer side". Sparse didnt
-complain and i dont see this as breakage rather a consistency measure.
+You can drop description, pretty obvious.
 
-Unless I am missing something ..
+> +
+> +  clocks:
+> +    items:
+> +      - description: M0 BTSS low power oscillator clock
+> +
+> +  clock-names:
+> +    items:
+> +      - const: btss_lpo_clk
 
-cheers,
-jamal
+Just "lpo"
+
+> +
+> +  memory-region:
+> +    items:
+> +      - description: M0 BTSS reserved memory carveout
+> +
+> +  resets:
+> +    items:
+> +      - description: M0 BTSS reset
+> +
+> +  reset-names:
+> +    items:
+> +      - const: btss_reset
+
+Drop names. Using block name as input name is not really useful.
+
+No supplies? no address space? How do you actually trigger remoteproc
+startup?
+
+> +
+> +required:
+> +  - compatible
+> +  - firmware-name
+> +  - clocks
+> +  - clock-names
+> +  - resets
+> +  - reset-names
+> +  - memory-region
+> +
+> +additionalProperties: false
+
+Best regards,
+Krzysztof
+
