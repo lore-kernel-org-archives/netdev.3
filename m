@@ -1,88 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5892A3F54AC;
-	Fri, 26 Jun 2026 12:28:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA06369D64;
+	Fri, 26 Jun 2026 12:40:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782476889; cv=none; b=ixL9JbGqH1o9n5Pc+9eXvHZUeFPfoArHDKmD8nyep6XDRoeojHG9/wyEbYHhMJHrdW4idzFH9BDAcAivf9iZsn5Bav6cVPJwMqSwUeCDbivUhM6zL26gjlHzcH5Sx4VL0npH9n/ZvO02Xj4hXRctWjLso4m2EToXsNubTHKku0I=
+	t=1782477615; cv=none; b=pSHrUjE3uZO8oYpGwupR+hu8fIDmcA+N1/0Yht1ODtiqrawtLsmT1KMcvK3OKEheijJjSlo0l5bhd1nxIAe6xYbrPj63P3BA0lMuHaDhkgqNHKPuMNOczHNfO07UfKhu8vk6nljCRpgsHbwZz15+capQZ7sbIaEGbKz1V1+Q/jQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782476889; c=relaxed/simple;
-	bh=koirBBT/qK2A9zaDXwaGZPBcn7D9UGYI9QUQHY8zqtg=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=o/SiE6jiRVGq5mGkRE247mvPzsOhhc9GjXnt24wtMEBx+pwW4PcBnMwEfbnQxf/IevC5IxUqeK7iJbHBRDE1qmNAo8xXId78N6f9jzLi0J7NCq2Vg5SzGckucrh3+HsUOYb4c+av2VrlE1qQe/38/mruSDWzapxcPl2rdV8Io6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=llGw7a99; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782477615; c=relaxed/simple;
+	bh=OVxZMbiaQlrp+L2yCRrOoOuGO6RSDY2XFX6v4SFoZGs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KyURfstK1L/CqtvonORKA/Qy20I9R4d5QarDLYI5Wx5Xf7sVm7d57x4kep45EMBiJNtbrKMwfSBpCEIQLTLuCv7V5WHJMqLlggox32OBnyGCl8Vq3I82zFMbqhmnNofzSyOF+zcdTQ4YAZkgdWLZgOMghwgckkIeKz5ubbGxP/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=DadMQrqy; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="llGw7a99"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39CDC1F000E9;
-	Fri, 26 Jun 2026 12:28:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782476887;
-	bh=1JoY8aAZ1FpJcQAZiSMr5c9UvyVZ2LMJPzXpbzCvMYM=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=llGw7a99nz3mOvWfrA5TTxzCM5nSwx/FZycLp88XIyIXSTm2fmXWQohxIbTlo4M8L
-	 rJXlZe8et+Bx9pKXBt8a2r8629IXcnRNt/8ortATwO6655UfXkAR3iu5Re7udBSjlJ
-	 NMIRu9bThLW8rQ1l1wSGno8WpUvpS+KiSJz2M35XnG2LArtT+cp+YkfhgPpFjePjKV
-	 pC4H44dp4VAQ55EzfxtblGLoZpccSG664uX5CHIOqywDdH5F8TSiGwlak1UvPonvNO
-	 h7+zdb9JBaQI38Ge7yaqN1kObEszXNLSz9wB/by5dGVRBkpU8/J4l7QzkCeH2yH+YN
-	 vrAy9SrWe/rfQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56AD839389F8;
-	Fri, 26 Jun 2026 12:27:55 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="DadMQrqy"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=20j2IfcmT+en6mrD70QCKDlefTLZF8HYkqHZlLQLew0=; b=DadMQrqy5iHANxOAA5Spl1ZGFC
+	ku2c0vrkmAZkVyLQCuWXg4tIWt4WdW67i8bWp5ZtF9oQag5luroOiWm4m2aSJU58f+yz5ZacuxiNq
+	BTFhUmE+OL439ChDNM8zIyGmJzz2LFZBDgfCqfLzmgco+8SGoNNno8XRus7HC9bTV5uQ=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wd5qf-009MzV-VT; Fri, 26 Jun 2026 14:39:57 +0200
+Date: Fri, 26 Jun 2026 14:39:57 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	thomas.petazzoni@bootlin.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH net-next] Documentation: networking: Add a test plan for
+ ethtool pause validation
+Message-ID: <5b7dbdbc-93fd-4664-abad-0f47855fab55@lunn.ch>
+References: <20260522175109.198059-1-maxime.chevallier@bootlin.com>
+ <20260526172447.10ca4b9e@kernel.org>
+ <5cb8e2b4-8eb6-4446-9b90-1cd4c7964cd9@lunn.ch>
+ <38bafe7e-d419-46f7-8fa7-87e9183e578c@bootlin.com>
+ <58f37d6e-973b-4242-be82-0561ccdb1a6f@lunn.ch>
+ <65d26fd2-fbb3-49cd-a9ac-07863d9a8909@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH bpf-next v5 0/3] bpf,
- sockmap: reject a packet-modifying SK_SKB stream parser
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178247687401.457674.14278516857626852476.git-patchwork-notify@kernel.org>
-Date: Fri, 26 Jun 2026 12:27:54 +0000
-References: <20260620024423.4141004-1-rhkrqnwk98@gmail.com>
-In-Reply-To: <20260620024423.4141004-1-rhkrqnwk98@gmail.com>
-To: Sechang Lim <rhkrqnwk98@gmail.com>
-Cc: ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
- john.fastabend@gmail.com, jakub@cloudflare.com, eddyz87@gmail.com,
- edumazet@google.com, kuniyu@google.com, pabeni@redhat.com,
- willemb@google.com, davem@davemloft.net, kuba@kernel.org,
- martin.lau@linux.dev, song@kernel.org, yonghong.song@linux.dev,
- jolsa@kernel.org, memxor@gmail.com, horms@kernel.org, shuah@kernel.org,
- jiayuan.chen@linux.dev, bobby.eshleman@bytedance.com, netdev@vger.kernel.org,
- bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <65d26fd2-fbb3-49cd-a9ac-07863d9a8909@bootlin.com>
 
-Hello:
-
-This series was applied to bpf/bpf.git (master)
-by Alexei Starovoitov <ast@kernel.org>:
-
-On Sat, 20 Jun 2026 02:44:15 +0000 you wrote:
-> A BPF_PROG_TYPE_SK_SKB stream parser runs on strparser's message head,
-> which can chain skbs through frag_list. A parser that resizes the skb
-> frees the frag_list segments that strparser still tracks through
-> skb_nextp, leading to a use-after-free.
+On Fri, Jun 26, 2026 at 10:33:50AM +0200, Maxime Chevallier wrote:
 > 
-> A stream parser is only meant to measure the next message, not to modify
-> the packet, so reject a packet-modifying parser at attach time.
+> > Sphinx follows pythons object orientate structure. So you could have a
+> > class test_ethtool_pause_advertising, with class documentation. And
+> > then methods within the class which are individual tests.  The
+> > commented out section would then be method documentation.
 > 
-> [...]
+> Good point, so maybe something along these lines :
+> 
+>  - A class for the test
+>  - methods for indivitual tests
+>  - For readability, I've written what the internal test helper would look
+>    like (_adv_test), and how a test would look like without the helper in
+>    adv_rx_on_tx_on().
+> 
+> I'm already diving into coding, but it helps me a bit in the definition of the
+> "description" format :)
+> 
+> this is what the class would look like :
 
-Here is the summary with links:
-  - [bpf-next,v5,1/3] selftests/bpf: don't modify the skb in the strparser parser prog
-    https://git.kernel.org/bpf/bpf/c/22a0cc10dacb
-  - [bpf-next,v5,2/3] bpf, sockmap: reject a packet-modifying SK_SKB stream parser
-    https://git.kernel.org/bpf/bpf/c/31e2f36d3821
-  - [bpf-next,v5,3/3] selftests/bpf: test rejection of a packet-modifying SK_SKB stream parser
-    https://git.kernel.org/bpf/bpf/c/05fb34384d20
+I like this :-)
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+> 
+> 
+>     @ksft_ethtool_needs_supported_allof([Pause])
+>     def adv_rx_on_tx_on(cfg, peer) -> None:
 
+Using decorators is a nice idea. Since it is not a C concept, please
+give the decorator a good comment explaining what it does. We should
+not assume driver developers know python.
 
+>         """Advertising test with rx on tx on
+> 
+>         - run 'ethtool -A ethX rx on tx on autoneg on'
+>         - FAIL if the return isn't 0
+>         - FAIL if ETHTOOL_A_LINKMODES_OURS's advertised values does not contain
+>           "Pause" or contains "Asym_Pause"
+>         - FAIL if peer's lp_advertising doesn't contain "Pause" or contains
+>           "Asym_Pause"
+>         - Succeed otherwise
+>         """
+>         ret = cfg.run('ethtool -A ethX rx on tx on autoneg on')
+>         ksft_eq(ret, 0)
+> 
+>         linkmodes = cfg.get_advertising()
+>         ksft_in('Pause', linkmodes, "rx on tx on must advertise Pause")
+>         ksft_not_in('Asym_Pause', linkmodes, "rx on tx on must not advertise Asym_Pause")
+> 
+>         remote_linkmodes = peer.get_lp_advertising()
+>         ksft_in('Pause', linkmodes, "PHY does not advertise Pause")
+>         ksft_not_in('Asym_Pause', linkmodes, "PHY incorrectly advertises Asym_Pause")
+
+There should be a sleep in here somewhere, to allow the autoneg to
+complete.
+
+	Andrew
