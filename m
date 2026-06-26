@@ -1,165 +1,185 @@
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959C12EB859
-	for <netdev@vger.kernel.org>; Fri, 26 Jun 2026 08:52:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A67B13E3160
+	for <netdev@vger.kernel.org>; Fri, 26 Jun 2026 08:56:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782463956; cv=none; b=npMi33KidAikBQTJmMfIzM1yl30W8WOcwC2U+nLijq2lxHp4/UIlYIxueSaTHKP/hBhn00UKlWWa617YzmA+u5rXlpcxSBxd1aPcaCZmwmbH7DqZ1YBuxNSnibIPGnOwnTQFKc+JoNBGG2iLtodCQk2wH8qLPJPyhBQukuT4fYA=
+	t=1782464205; cv=none; b=kHIXGjVUGDLl8PQavTXY8BALL9qrWb/DxGZQdQ/1JMkDhrBc6E7P+ONND/uzrNdty83TPCtBCRpE+oEm3jorIPHhOf6zwaFGfAZxUYqhZGVZS31u30p0cIgLvaohMLJFTXOgulzRW2NST2kJOrFBcEo/KCsK5UTpUqQFsV6F+g4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782463956; c=relaxed/simple;
-	bh=4Q4kwEItPghZptzI7w7yAwAaOy5jEDXFyh70cxxpS7w=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=kEl5zCTNS06o7ZmUwza1hp5Hu0rPQ8vOOQM4Ll6tHp1FRNBayCDakJ7E+sYgHPsO83bmYJ/gbFY+LkD308da7Xtnwp/40uOB0y26JBi/WbnMq+XfWxc3CgY/gEfLFIljByONVg7FHHPlUrrsl09mSSwE2f/Y4kHbriO0KT9bvtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--clecigne.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=toOW+/kz; arc=none smtp.client-ip=209.85.208.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--clecigne.bounces.google.com
+	s=arc-20240116; t=1782464205; c=relaxed/simple;
+	bh=1aXJGRbVoYKOn4u0DgdN8Q+n5LU9ZhzbykXuBdXCH40=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=W8MaW3s4aOBjOo6Bc8jcln9/C8Aef6Aih9tds2hIb4UN4vVH+iXsjckar0W3t94jbrDFe9FhTYHHqClRoJJ3RWw/1CpyaMPv26MgpsJ2lD+2ceLJw6iRK3A6X4s8Y8w5R4rxdkPHlJ//eIOAcuvcBSou3U1/PIJ0/vTe5GWAyp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k8q13b5b; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="toOW+/kz"
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-695bbac451bso855784a12.1
-        for <netdev@vger.kernel.org>; Fri, 26 Jun 2026 01:52:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k8q13b5b"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-37d4ab2e7c5so480703a91.2
+        for <netdev@vger.kernel.org>; Fri, 26 Jun 2026 01:56:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782463953; x=1783068753; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CMQwGfZ+4fg0c6+aiBQoHL3kx0Z8EfvRBL6AIlt5U1s=;
-        b=toOW+/kz+DBojB5RjZ2MgxrATvqJDfThot/OuWoeHvoFYeFqK/lWMgxXSuuw6+P2yf
-         aqGLZCuEpCLNJXZ12rELl935upCpYQxGidZQokYuzHQMDC1V68U58Wyk9RBn7mRq/OPs
-         /KC9S8b+cPrnHdlNKmI6VSOcbwyAAUbxmeGUciUueIfhJTb4D8/BfJ8G7RchAQU+Oy8v
-         TFF9msCFWnTcpuIOMHEEukNUagWTZWj2kDLqEakxI572s3p2UqCX6dKAFgYbXoP5abee
-         Ka5766O7Os/c9ttVnvnKiJBobS/iRB/yldtEwBy21DtWgbmG6kOaPcknUYPRsDgmBpMf
-         +pDg==
+        d=gmail.com; s=20251104; t=1782464203; x=1783069003; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=71FI73VI21O1fNx/zNQGP47ZU6D3Tij4DI4glfvr49s=;
+        b=k8q13b5bB9Q1E9rCDWAS3XdVpNoh5b6iDUgKpLcNWPv+TKy0HzK/8NIWuCKm8C6d6B
+         Fg8Qktp/8DDFZ1e2taxoVIZ9vcPFNxFB9BsIEKXctO0nQH3w1bxypX4H84Vwqjo9KoKd
+         RNrHFu9kTDhba5B+s2M5q1jPKSxkA5oD7A7AFYMn+hYzay4Bngscoew26QcQ0HGvIDRv
+         +8kiRp8k+sVPxJJKdafOD0EtZFuThnkfrGxY1vMbOPvwcS7mVQOfW3uAaXRad3nSNtyY
+         fhyhHRNIw6jiJD3EHktl/T77SV31OPL9B33t2USd1sBXQukWsGR4fdkZ23xaoEuG0rm1
+         /bZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782463953; x=1783068753;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=CMQwGfZ+4fg0c6+aiBQoHL3kx0Z8EfvRBL6AIlt5U1s=;
-        b=PXkziZo/mo+q4A1sXjNIyM+YNbwpREOLSbTne4PYd7ItmaxbOa9apRO8i+foa3ib4K
-         gRXdO9RG4jUeRBGZmOQDlOt02oISEk0AbJPtvW9c/kIRjAyGjokODI68UtbZT76gyENZ
-         YUjEzTOpfK9dAbscqEkYkJl2tAKsX4Vof/9T98WDrvaAOJBl4xiQT2N0M06+P03KdWe9
-         HG8OAncMDhclJrKBr9wXnC8nZops2KNjA8BMpuQ8uC92Sje5fbrPc4keEYu7bqiPwTCd
-         znm/a1Egq2OFFGkK/1B/Y9jSEcPbKfoVU8JnzKEkZFKX7I3cY8ZBf9RTHAWPy0RndNE8
-         yTZg==
-X-Forwarded-Encrypted: i=1; AHgh+RoScpxFXgIroRwg9H7JXVLjRGlinOpohEBQ+mN4EuGdOWDy9//ZFulQ/sCvcL6kwcpeflYKGtA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzALtkptt0/6A+NKnCdSm7pTaWuJFLUqBdBZMpzP2sEQxsQreiC
-	w2faikrgUKCK+FyKCSa0rUvVa02SzDnyGg648SY2FH4vYq4dcWG8Jgz+npHFjCmKxkViTCUIhE5
-	SXJAiMi7yYDkTqg==
-X-Received: from edsx13.prod.google.com ([2002:aa7:dacd:0:b0:696:5e7:d0af])
- (user=clecigne job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:51d2:b0:697:750e:e9f5 with SMTP id 4fb4d7f45d1cf-69810ae06c1mr1512484a12.23.1782463952731;
- Fri, 26 Jun 2026 01:52:32 -0700 (PDT)
-Date: Fri, 26 Jun 2026 08:52:25 +0000
-In-Reply-To: <0922ce5d-48d8-44e7-983c-e547f3126ef4@intel.com>
+        d=1e100.net; s=20251104; t=1782464203; x=1783069003;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=71FI73VI21O1fNx/zNQGP47ZU6D3Tij4DI4glfvr49s=;
+        b=Ov3hoVBVZ2/u21OKVrnOwX97tAG2gHB/27KHCMPUXVw7HegW5kQlVhPlgJIPFA6ztu
+         6NCGc8jNWb6aIHwcgmtxcVaGwUVYxLgmRz7O8PtoYYsc8HYFbIWJcKO/hzy8o47MX8X+
+         iIm37PGXmUrybD1mEbO3L5BXg6+wubTXyMvUPEKt3QUPENUQocsA9ozTi3igwVFLApQM
+         ZkpfWwGEgEknFbxHALMID2DccPieQYZ1OcLDdyfeyeHfb/FXZJHOsgXgIHX54bYx8WuF
+         0WGf0N9eQsDiM5o/oyX5WEG+LEUq0Zf1kfoe0J2H7DarJswLNVqq65on6/6FG4vBzcE8
+         HBYw==
+X-Forwarded-Encrypted: i=1; AHgh+Rq44hAQmBq0X5pE3+uAkAPj4ZJpBSz1Cwiaq2bfB0d9ytkQjNmvwYEioz1oIDiyB1sWek8NwiU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yznp5xWSuazCkoxDguBYHq2DhtlAzagCjRLaEJXJYKbHwPPpp7o
+	3lDppf0uliVWTmo/l1hVWogJE5m3Vk3WUIAIW/k0XlXeSKrH5oQeCg8C
+X-Gm-Gg: AfdE7cnEsmcu9K76D8ANLI8diz6i97ZO8Cp04OrYe5Zi5seyCRm3ADFgNkCdh8vkgxr
+	BhYH7m631Nps+Wp0ktPK+YdVhnm7EvZXm9gpVAmL0/tglyRM1XoPo/9MQRS/HsrvH7ZUeWl5gwC
+	hd7zQyl0Q+p7uE3+LLuqv4HaWIRkhN+ND22AvC6UFmShYWzb5fDt95xV4lScmn9lnFmW4Wbursy
+	09THPpewuZZ2h22vHvt5gxlUjIX+OkLkwQnSww2RZq9SXGdn6K1ZaBOwQHXSKtZ7N1sCBAuJEte
+	9Q3qlU3IdSRFAIlgubeXy0uAkwujilwZ4kGkCk0JBF409WTcvWGjHH4koT/JEWN2KxR+KHcJDYH
+	dwsGlXKHolA2419XaWqumHPEJuQoqeJbj1k9tFqC2efNUPXA9Y+QfCKp8B6IcuBk3S8IXiyzWce
+	b7qFM2VxWwjwodpfdmm2AOdV02CdO1wYlw+fWjRg==
+X-Received: by 2002:a17:90b:3a47:b0:36d:b9c5:e8f6 with SMTP id 98e67ed59e1d1-37dfa235cbamr5609647a91.19.1782464202811;
+        Fri, 26 Jun 2026 01:56:42 -0700 (PDT)
+Received: from online.mioffice.cn ([43.224.245.228])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37e1c93272fsm418179a91.14.2026.06.26.01.56.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Jun 2026 01:56:42 -0700 (PDT)
+From: Pengfei Zhang <zhangfeionline@gmail.com>
+To: dsahern@kernel.org,
+	idosch@nvidia.com
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	chenzhangqi@xiaomi.com,
+	baohua@kernel.org,
+	zhangpengfei16@xiaomi.com,
+	Pengfei Zhang <zhangfeionline@gmail.com>
+Subject: [PATCH net-next] ipv4: fib: fix route re-dump in inet_dump_fib() on multi-batch dump
+Date: Fri, 26 Jun 2026 16:56:36 +0800
+Message-Id: <20260626085636.1524451-1-zhangfeionline@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <0922ce5d-48d8-44e7-983c-e547f3126ef4@intel.com>
-X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260626085226.1765180-1-clecigne@google.com>
-Subject: [PATCH v2] xsk: fix memory corruptions in net/core/xdp.c
-From: Clement Lecigne <clecigne@google.com>
-To: aleksander.lobakin@intel.com, edumazet@google.com, netdev@vger.kernel.org
-Cc: clecigne@google.com, bpf@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kuba@kernel.org, sdf@fomichev.me, horms@kernel.org, john.fastabend@gmail.com, 
-	ast@kernel.org, daniel@iogearbox.net
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-From: Cl=C3=A9ment Lecigne <clecigne@google.com>
+inet_dump_fib() saves its progress in cb->args[1] as a positional
+index within the current hash chain.  Between batches, a concurrent
+fib_new_table() can insert a new table at the chain head, shifting
+all existing entries.  On resume the saved index lands on a different
+table, causing already-dumped tables to be re-dumped and the
+originally suspended table to restart from the beginning.
 
-Commit 560d958c6c68 ("xsk: add generic XSk &xdp_buff -> skb conversion")
-introduced a vulnerability in the handling of XDP_PASS for AF_XDP zero-copy
-frames.
+Fix by storing tb->tb_id in cb->args[1] instead of a positional
+index, mirroring the fix applied to inet6_dump_fib().
 
-Note: Currently, this specific AF_XDP zero-copy conversion path is only
-reachable from the drivers/net/ethernet/intel/ice and
-drivers/net/ethernet/intel/idpf drivers.
-
-When building an skb, xdp_build_skb_from_zc() uses the chunk size
-(xdp->frame_sz) for the allocation. However, napi_build_skb() automatically
-reserves space at the end of the allocation for the skb_shared_info
-structure.=20
-
-Most high performance UMEM applications use 4K chunks, where the
-corruption cannot happen. However, if the UMEM is configured with 2KB
-chunks (a very common configuration to maximize packet density in memory),
-a standard 1500 MTU packet will trigger the corruption because the required
-space exceeds the 2048 byte chunk size:
-
-Headroom (256) + Packet (1514) + skb_shared_info (320) =3D 2090 bytes
-
-Because 2090 bytes > 2048 bytes and __skb_put() does not perform bounds
-checking, the memcpy() writes past the available linear data area and
-corrupts the skb_shared_info structure. This can lead to arbitrary code
-execution if pointers like destructor_arg are overwritten.
-
-Additionally, in xdp_copy_frags_from_zc(), the allocation size is set
-strictly to the fragment size (len), but the subsequent memcpy() uses
-LARGEST_ALIGN(len). This mismatch results in an out-of-bounds write of
-up to 7 bytes, which triggers KASAN warnings and is unsafe despite typical
-page pool allocator padding.
-
-Fix the skb allocation in xdp_build_skb_from_zc() by dynamically
-calculating the exact truesize required using SKB_HEAD_ALIGN() to
-properly account for the headroom, the packet length, and the
-skb_shared_info overhead.
-
-Fix the out-of-bounds write in xdp_copy_frags_from_zc() by rounding up
-the allocation request using LARGEST_ALIGN(len) to match the copy
-operation.
-
-Fixes: 560d958c6c68 ("xsk: add generic XSk &xdp_buff -> skb conversion")
-CC: Alexander Lobakin <aleksander.lobakin@intel.com>
-CC: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Cl=C3=A9ment Lecigne <clecigne@google.com>
+Fixes: 1b43af5480c3 ("[IPV6]: Increase number of possible routing tables to 2^32")
+Signed-off-by: Pengfei Zhang <zhangfeionline@gmail.com>
 ---
-Changes since v1:
- - Used SKB_HEAD_ALIGN to properly calculate the required allocation size
-   including the skb_shared_info overhead.
- - Re-ordered variable declarations.
+Consider a hash slot containing two tables [A(pos=0), B(pos=1)] where
+B is large enough to require multiple batches.  On the first batch, B
+suspends mid-walk and the loop saves:
 
----
-diff --git a/net/core/xdp.c b/net/core/xdp.c
-index 9890a30584ba..52546746378a 100644
---- a/net/core/xdp.c
-+++ b/net/core/xdp.c
-@@ -698,8 +698,8 @@ static noinline bool xdp_copy_frags_from_zc(struct sk_b=
-uff *skb,
-=20
- 	for (u32 i =3D 0; i < nr_frags; i++) {
- 		const skb_frag_t *frag =3D &xinfo->frags[i];
--		u32 len =3D skb_frag_size(frag);
--		u32 offset, truesize =3D len;
-+		u32 offset, len =3D skb_frag_size(frag);
-+		u32 truesize =3D LARGEST_ALIGN(len);
- 		struct page *page;
-=20
- 		page =3D page_pool_dev_alloc(pp, &offset, &truesize);
-@@ -738,9 +738,10 @@ static noinline bool xdp_copy_frags_from_zc(struct sk_=
-buff *skb,
-  */
- struct sk_buff *xdp_build_skb_from_zc(struct xdp_buff *xdp)
- {
-+	u32 headroom =3D xdp->data_meta - xdp->data_hard_start;
- 	const struct xdp_rxq_info *rxq =3D xdp->rxq;
- 	u32 len =3D xdp->data_end - xdp->data_meta;
--	u32 truesize =3D xdp->frame_sz;
-+	u32 truesize =3D SKB_HEAD_ALIGN(headroom + len);
- 	struct sk_buff *skb =3D NULL;
- 	struct page_pool *pp;
- 	int metalen;
-@@ -762,7 +763,7 @@ struct sk_buff *xdp_build_skb_from_zc(struct xdp_buff *=
-xdp)
+  cb->args[1] = e;   /* e=1, position of B in the chain */
+
+The lock is then released.  At this point a concurrent fib_new_table()
+inserts table C at the chain head via hlist_add_head_rcu(), making the
+chain [C(pos=0), A(pos=1), B(pos=2)].
+
+On the next batch, inet_dump_fib() resumes with s_e=1 and iterates:
+
+  s_e = cb->args[1];   /* s_e = 1 */
+  hlist_for_each_entry_rcu(tb, head, tb_hlist) {
+      if (e < s_e)     /* skip C at pos=0 */
+          goto next;
+      /* e=1: tb now points to A, not B */
+      if (dumped)
+          memset(...);  /* resets B's suspended progress */
+      fib_table_dump(tb, ...);   /* re-dumps A from scratch */
+      dumped = 1;
+      /* e=2: tb now points to B */
+      fib_table_dump(tb, ...);   /* re-dumps B from beginning */
+  }
+
+Routes from A are dumped twice, and the portion of B that was already
+dumped in the first batch is dumped again.
+
+ net/ipv4/fib_frontend.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/net/ipv4/fib_frontend.c b/net/ipv4/fib_frontend.c
+index 42212970d..65fa245af 100644
+--- a/net/ipv4/fib_frontend.c
++++ b/net/ipv4/fib_frontend.c
+@@ -1019,10 +1019,11 @@ static int inet_dump_fib(struct sk_buff *skb, struct netlink_callback *cb)
+ 		.dump_routes = true,
+ 		.dump_exceptions = true,
+ 	};
+-	unsigned int e = 0, s_e, h, s_h;
+ 	struct hlist_head *head;
+ 	int dumped = 0, err = 0;
++	unsigned int h, s_h;
+ 	struct fib_table *tb;
++	u32 s_id;
+ 
+ 	rcu_read_lock();
+ 	if (cb->strict_check) {
+@@ -1054,29 +1055,28 @@ static int inet_dump_fib(struct sk_buff *skb, struct netlink_callback *cb)
  	}
-=20
- 	skb_mark_for_recycle(skb);
--	skb_reserve(skb, xdp->data_meta - xdp->data_hard_start);
-+	skb_reserve(skb, headroom);
-=20
- 	memcpy(__skb_put(skb, len), xdp->data_meta, LARGEST_ALIGN(len));
-=20
+ 
+ 	s_h = cb->args[0];
+-	s_e = cb->args[1];
++	s_id = cb->args[1];
+ 
+ 	err = 0;
+-	for (h = s_h; h < FIB_TABLE_HASHSZ; h++, s_e = 0) {
+-		e = 0;
++	for (h = s_h; h < FIB_TABLE_HASHSZ; h++, s_id = 0) {
+ 		head = &net->ipv4.fib_table_hash[h];
+ 		hlist_for_each_entry_rcu(tb, head, tb_hlist) {
+-			if (e < s_e)
+-				goto next;
++			if (s_id && tb->tb_id != s_id)
++				continue;
++
++			s_id = 0;
+ 			if (dumped)
+ 				memset(&cb->args[2], 0, sizeof(cb->args) -
+ 						 2 * sizeof(cb->args[0]));
++			cb->args[1] = tb->tb_id;
+ 			err = fib_table_dump(tb, skb, cb, &filter);
+ 			if (err < 0)
+ 				goto out;
+ 			dumped = 1;
+-next:
+-			e++;
+ 		}
+ 	}
+ out:
+ 
+-	cb->args[1] = e;
+ 	cb->args[0] = h;
+ 
+ unlock:
+-- 
+2.34.1
+
