@@ -1,144 +1,181 @@
-Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8263EB0ED
-	for <netdev@vger.kernel.org>; Fri, 26 Jun 2026 09:53:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.92.39.34
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782467595; cv=none; b=TOCApek9KBmOqtn3tqa8+oRbYTOIcz+sdY6mjhJQfCE1WLwVErcqkcdA8laYI3ree41zW9Ms8+TcdONZ2Njx6yMmo3gJuKVic/S54larq8hvS7XSpLn6+OJWEUfzw5gYIT3+lKMsl4iThX+fp0Xni8Rflyims9ipg3szQPQ4oQc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782467595; c=relaxed/simple;
-	bh=Yi/qUZt9qg0ByP4Mcln3ZqWM0Uqkr5E9KpTPDXr8Gqk=;
-	h=Date:From:To:Cc:Subject:References:Mime-Version:Message-ID:
-	 Content-Type; b=Q2E4Qp5nBaFij0bu6SfHKl7Z2ysE4Dp0nh8znzzn0vZ3o7SAkWKMmp4C2yZqhBFMI/ReEZyMvQeM6RkLETUcZeNvvhyBD5+BJDkLjoKfFMSGaTNQK/BL6Ox9RrUqncyms95buq5DXNKkpjjsxPp88cNCdksksb1yG5mkls/U0gA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=XeQrqlNd; arc=none smtp.client-ip=54.92.39.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9AF3E51DB
+	for <netdev@vger.kernel.org>; Fri, 26 Jun 2026 09:54:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.180
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782467676; cv=pass; b=QXrKmHg2Li2C+HUKaa9m6bAfA1GXknpF/fpxrTi3mZ3Z0xxoS+ZlPdDtPTFFIyZ1jA59hWZCGzUl/G8ZWVfavdnfwfnn63PIoywUZe/d+34iLs5l8ij6+da+vaSk337EJVJLOqqcVc0fHbeKa9/DceQ9FLnAgq/0zm7SxWnOgsQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782467676; c=relaxed/simple;
+	bh=5Ujxexs7zgr7C40wCeMDjMeQCtjw6UIbG164MRDU/pw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rVAMtgFUMqe8k5F2ab/PMQUQEU7L2N/Eh6JlAgEi15Vq7v/IrogtijQpUm2Z1x6lxx6+M7Kmufv/Cxcgp3dcmh/dZQNRdFcFiMDwYeexNGQv1b3L9AKzwcf4MUFIrQ8g2ReJERsvS/m9fn5/mhoslXWsBxS3b2ES1vHc+ASW78Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=aLa9iGIm; arc=pass smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="XeQrqlNd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1782467587;
-	bh=Yi/qUZt9qg0ByP4Mcln3ZqWM0Uqkr5E9KpTPDXr8Gqk=;
-	h=Date:From:To:Subject:Mime-Version:Message-ID;
-	b=XeQrqlNdDsk/le/gyojpwXRIViWZlOvZ9L3FrFAExA5LsC0/oXOqo4dgv7ZLKS5zp
-	 04Htgrm7vAFsMfBberLkPxmxlL8wR/f9MZ1nfP1trqaa4vaLy+rJbVcZz2/sw1XlNW
-	 z1PqbzI76D038LifrsVtiBxJjueRHa6GeFXZqOC4=
-X-QQ-mid: esmtpsz19t1782467584t5a7fa496
-X-QQ-Originating-IP: U+eTu1JUOTbwCH3OSXH9MotKvQopZeeKuAkQZkjc1Rk=
-Received: from PEN002676 ( [1.202.39.170])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 26 Jun 2026 17:53:01 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 18176677891781331183
-Date: Fri, 26 Jun 2026 17:53:02 +0800
-From: =?GB2312?B?1dS98MP3?= <zhaojinming@uniontech.com>
-To: horms <horms@kernel.org>
-Cc: horms <horms@kernel.org>, 
-	"Andrew Lunn" <andrew@lunn.ch>, 
-	andrew+netdev <andrew+netdev@lunn.ch>, 
-	davem <davem@davemloft.net>, 
-	edumazet <edumazet@google.com>, 
-	kuba <kuba@kernel.org>, 
-	linux-kernel <linux-kernel@vger.kernel.org>, 
-	madalin.bucur <madalin.bucur@nxp.com>, 
-	netdev <netdev@vger.kernel.org>, 
-	pabeni <pabeni@redhat.com>, 
-	sean.anderson <sean.anderson@linux.dev>
-Subject: Re: [PATCH v3] net: fman: fix use-after-free on IRQF_SHARED handler after probe failure
-References: <20260624094922.2971930-2-zhaojinming@uniontech.com>, 
-	<20260625164237.1222477-1-horms@kernel.org>
-X-Priority: 3
-X-GUID: E840455C-9460-4682-B1B5-5A72F72EF2E7
-X-Has-Attach: no
-X-Mailer: Foxmail 7.2.25.375[cn]
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="aLa9iGIm"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-845385adf4cso304951b3a.0
+        for <netdev@vger.kernel.org>; Fri, 26 Jun 2026 02:54:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782467674; cv=none;
+        d=google.com; s=arc-20260327;
+        b=FY8uJkQDHscJA0xDcrfxgDCk6AEX0nKtTP9OqyrfH0R9ORo7m9WZ1XP3VfU+OpTZd9
+         d1P/9e/JF39PznEo5c2nQag5mUVhVeD4goyUDq7cNPon/ztIg14+rFsvhM1QpHvudS0z
+         dSco2YadJK8+217Yt1nDZN8WTTjCa3WS0oT+Api7luB/0VjECIh5GI5Vg4uO97wb1OHI
+         dGc0hBKtglZIbKW765SPQN1guCqvkoYxja+IPb4xD8WswmkhKEo7BENUSsHHNZmw3dth
+         VjZrQUawAU66DdYhap0BTyfvjcIbqo4yqcj0xjLaAmJHX54h4X3luwiUvN1zk1hflB1v
+         1iNw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=tb6/kCYFWaOp2/+XL8Yus2t+0SvabVj6fTOT0ndFg+g=;
+        fh=criikB2eCkSb0oe24NhTkWcMWM1DWj6st8k1kU5v+nc=;
+        b=Yzl26Pw/ExHUx4P83bly4jWQYU0B0zPxkVKKXmD4AO9tp7VMZy3YMGMwT8/zTZo2Wq
+         7uRGGmJclHudQmsWc/TuEwV7TPxMZNxf/YfLK55Wv90n0Mj7VwULNivjY5Jw7/udHlBv
+         a8sw7nRygrW6syEQg8wv2R0GEXQo/smhx2L3CF//irnnMxvB5uNUYlBzDj+D7I7s2o7w
+         l50B3wyzKKeAqHjRFSuVr2lm4Qh0oxqfH3W5oa/DkAQPA1WbSq+F1wdyhWkpu64ilk5j
+         OH2JOoSr3EIJG+2eKXS2PH2n0a4nlr+O34xB06IoiR4i6oX/vXw8sJqsvohd41KTpw9N
+         yQag==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1782467674; x=1783072474; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tb6/kCYFWaOp2/+XL8Yus2t+0SvabVj6fTOT0ndFg+g=;
+        b=aLa9iGIm3ZSmgm+ndmH0moLTWmzv3qKfRDdhABwSMGJueGwiIDbuwnxxGG0I5KULCR
+         mVtBA4en5w96Q7e9RPcl+PoqeGNbmKyh0RhcMpuT2uoPlipOw06Ps19DqMB1LlNF/QwV
+         HGUW2zqlgldDN4TTwBBsZm0frD0QTmhF8v2Vg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782467674; x=1783072474;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=tb6/kCYFWaOp2/+XL8Yus2t+0SvabVj6fTOT0ndFg+g=;
+        b=aksCRIUTeND7V412JHK0t9WFMZp8Bt/Q7JjfCEhpo+O/yekHGkwjKgK17GIODKcGXY
+         RBIcSjoaj41eLe+91HQL+eTevWUq8XA/3nAas9AbL7FtQZ1Ly/ue3sN13SqpyL3aPawA
+         M6iqkK1/okaa6W4EVPRrc+H11+1iF0IT0dnaMYnQh3wKcXqBac4phIK2p1YO0K3AH8MV
+         sCSn/SQfoU6LBKmnzw3whFcI75l8e1tqg2qCQw0ZQegFNmyr++vRHEAD7ibbvUsGkRmQ
+         fNMRj47G3NUawKV2Vtk72PzUYd3qLoy+zIYRQogxNMdljAqSL28b7KKjrWuuS6DOUyYk
+         v1/A==
+X-Gm-Message-State: AOJu0YyGFFp6DlEBLr7AZ7i2YQer/h+sja48gFpLpVvU35adM6mPwTTu
+	t7Lfzt3hgNzfPPP5iwd5GR8H7U1GSZYpTbuqniDxtgIH6rVOqsPBfvueFKVjQ3xo9nWkRBZZ2vh
+	8OQv9VexF+4ROg9YF0sCy+cpTlzwZQrjNla5FCxnz
+X-Gm-Gg: AfdE7clYy16npSqKD1ZYX1bo2eEgevWnvL+cT+4D0tGlscKFLe0vLp/OpSb35uEXsxZ
+	oNyy/Gtc6wVWvpncK6P9N4/AxaWor+sEq21nNvhIlW9w2nSbx1WP73X0EJqTgxaXU/FBJTiQzQR
+	M1zZp1rLyd3gC562ZGrFRgZ9SYtrd07Lpy7lPiD5jpPNEomEzx55CCIVZK8I8e80b09VrScTzAQ
+	F39LBXYtVwxkdm2Nr+oiWWexa1YVP1RUnC2mf6Zbj4kZKlj7NWMrO0A22CaLW1wdExcxtJMfw==
+X-Received: by 2002:a05:6a00:1d14:b0:842:83d1:ee6d with SMTP id
+ d2e1a72fcca58-845b3b09c68mr7082948b3a.45.1782467674607; Fri, 26 Jun 2026
+ 02:54:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Message-ID: <A2160E1BFD1B78E6+202606261753007787241@uniontech.com>
-Content-Type: text/plain;
-	charset="GB2312"
-Content-Transfer-Encoding: base64
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
-X-QQ-XMAILINFO: NhdiEwnVOUqE09iVaV7teDv2sXjmIYoPQ0TQ8EbC5TRTVaNjsuzzQfEk
-	EBNZ/HLXNZ9myAwq5M5cVyx5epi+WmA7GLj7YsTBg5nRdDK4czVz7hLQqlrjjnnrPZjBZFx
-	AbFbwssxYtElN7KaJOSR8w8VZSJEi5BKBMk0EAXdAiqwOlsb/6xG7QUASMbPylSQgb8JmVq
-	26GH9zPHTGqOuBbzVIe9CtZAd1R+4pNnm+LXsxITlAbGyvPDdTeEc4cbU65m+ggDQPAZZVB
-	G4cB48b6hDyxGP35d8HhNRLrooIbyXcttnLyrQ7Higoi56ZhVDTEe2hIMZV2+GfiGR/31r4
-	IFBgaGPECEfteUluc8du2jjFZCjrHyxWzJaDPqVmw1YIgkYf6uJ3K0sIJyi9BZQSswSxQls
-	YD3mVKKKbp6opPR+A+Hq+bhV9ZXT24KnOtPFbIIY9jSVKXBCJ5FAmY9KAT40L49FdAfBXKc
-	FlGse6OHfe4yu0a1zKovMB4z3fgm20yq66QPlXIo0yG7bwl0l0nMWeKCmb2qSypz1qrdXbS
-	n57yZLBi1K2TWD4YEVcQunZFSeDHx1Mc10mEQHKKpfQjnd9KvZxYD9L3n0n92kyvpvv0pTf
-	zZyDkME8SzMXXJ7tCOkUTD0Nw7ND7PXiCmf9FM6oFG/bbblU+oCfEU7Zr0zUgBinDJM3KFl
-	t5xRjRb/I39n1voYdSYkGBjOF63AcyXGeCnP4QZ/X7AyrG1H2gaO9BY8TyoHEnFuW9GYoM5
-	hg8KfK/qjWvHRMfGdOge9pXEWmFmhYLOLl5yefbluKyEgMXwV+pzdYQeYlRbZIBv2fkT61m
-	in/zpva+s5lHMAKP9WnGRALnCrQ8GrcfBf5SaETHrJAUsju6hWZeyk6yEiGTx3LtzAqB2Od
-	DWlZSCNJS2rPb79lxUxhzKgyp4QzW21nIQbWzBJCQ3rKHf4HGXjxvBkerc9d5GmKEmnP9Bz
-	Uo5XOCv0ZhpeUUHpJu0hMLOdXVtw995rC7M2oSnX9X7yp+5G9JK+3k5D1NUq7d/5e4y0Kse
-	53AXsfiQ==
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
-X-QQ-RECHKSPAM: 0
+MIME-Version: 1.0
+References: <0e17a0309061300d31036a6a4c139919192f6373.1782379460.git.bronzed_45_vested@icloud.com>
+In-Reply-To: <0e17a0309061300d31036a6a4c139919192f6373.1782379460.git.bronzed_45_vested@icloud.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Fri, 26 Jun 2026 05:54:23 -0400
+X-Gm-Features: AVVi8CesP5WdQnuL7V6DAuZuumuosjiasQ7RcpRqFUUrhtsG9gqIm1VOJLRxPNM
+Message-ID: <CAM0EoM=FvNKemH4Z5dL_pFQZcGWxLb4c_AMahOePLY7s6Pkhcg@mail.gmail.com>
+Subject: Re: [PATCH net v2 1/1] net: sched: ets: avoid deficit wrap and bound
+ empty dequeue rounds
+To: Ren Wei <n05ec@lzu.edu.cn>
+Cc: netdev@vger.kernel.org, jiri@resnulli.us, davem@davemloft.net, 
+	petrm@mellanox.com, yuantan098@gmail.com, yifanwucs@gmail.com, 
+	tomapufckgml@gmail.com, zcliangcn@gmail.com, bird@lzu.edu.cn, 
+	bronzed_45_vested@icloud.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-SGksCgpUaGUgYW5hbHlzaXMgaXMgbG9naWNhbGx5IGNvcnJlY3QuIFNpbmNlIGZtYW4gaXMgemVy
-by1pbml0aWFsaXplZCBieQpremFsbG9jX29iaigpLCBib3RoIGZtYW4tPmNmZyBhbmQgZm1hbi0+
-ZnBtX3JlZ3MgYXJlIE5VTEwgd2hlbgpkZXZtX3JlcXVlc3RfaXJxKCkgcmVnaXN0ZXJzIHRoZSBz
-aGFyZWQgSVJRIGhhbmRsZXIuIFRoZSBndWFyZCBpbgpmbWFuX2lycSgpOgoKICAgIGlmICghaXNf
-aW5pdF9kb25lKGZtYW4tPmNmZykpCiAgICAgICAgcmV0dXJuIElSUV9OT05FOwoKZG9lcyBub3Qg
-cHJvdGVjdCBhZ2FpbnN0IHRoaXMgY2FzZSBiZWNhdXNlIGlzX2luaXRfZG9uZShOVUxMKSByZXR1
-cm5zCnRydWUsIHNvIHRoZSBoYW5kbGVyIHdvdWxkIHByb2NlZWQgdG8gZGVyZWZlcmVuY2UgdGhl
-IE5VTEwKZnBtX3JlZ3MgcG9pbnRlciB2aWEgaW9yZWFkMzJiZSgpLgoKSG93ZXZlciwgdGhpcyBp
-cyBhIHByZS1leGlzdGluZyBpc3N1ZSB1bnJlbGF0ZWQgdG8gdGhlIFVBRiBmaXggaW4gdGhpcwpw
-YXRjaC4gVGhlIHdpbmRvdyBpcyB2ZXJ5IHNob3J0IC0tIGJldHdlZW4gZGV2bV9yZXF1ZXN0X2ly
-cSgpIGFuZCB0aGUKY29tcGxldGlvbiBvZiBmbWFuX2luaXQoKSAtLSBhbmQgd291bGQgcmVxdWly
-ZSBhbm90aGVyIGRldmljZSBvbiB0aGUKc2FtZSBzaGFyZWQgSVJRIGxpbmUgdG8gZmlyZSBhbiBp
-bnRlcnJ1cHQgZHVyaW5nIHRoYXQgaW50ZXJ2YWwuCgpJZiB0aGlzIHNob3VsZCBiZSBhZGRyZXNz
-ZWQsIEkgd2lsbCBzZW5kIGEgc2VwYXJhdGUgcGF0Y2ggZm9yIGl0LgpUaGUgY3VycmVudCBwYXRj
-aCBpcyBmb2N1c2VkIHNvbGVseSBvbiB0aGUgcG9zdC1JUlEtcmVnaXN0cmF0aW9uIFVBRgpvbiBl
-cnJvciBwYXRocy4KClBsZWFzZSBsZXQgbWUga25vdyBpZiB5b3Ugd291bGQgbGlrZSBtZSB0byBo
-YW5kbGUgdGhpcyBzZXBhcmF0ZWx5LgoKQmVzdCByZWdhcmRzLApaaGFvSmlubWluZwoKCgo+VGhp
-cyBpcyBhbiBBSS1nZW5lcmF0ZWQgcmV2aWV3IG9mIHlvdXIgcGF0Y2guIFRoZSBodW1hbiBzZW5k
-aW5nIHRoaXMKCgoKPmVtYWlsIGhhcyBjb25zaWRlcmVkIHRoZSBBSSByZXZpZXcgdmFsaWQsIG9y
-IGF0IGxlYXN0IHBsYXVzaWJsZS4KCgoKPkZ1bGwgcmV2aWV3IGF0OiBodHRwczovL3Nhc2hpa28u
-ZGV2CgoKCj4tLS0KCgoKPm5ldDogZm1hbjogZml4IHVzZS1hZnRlci1mcmVlIG9uIElSUUZfU0hB
-UkVEIGhhbmRsZXIgYWZ0ZXIgcHJvYmUgZmFpbHVyZQoKCgo+CgoKCj5UaGlzIHBhdGNoIGZpeGVz
-IGEgdXNlLWFmdGVyLWZyZWUgaW4gdGhlIGVycm9yIHBhdGggb2YgcmVhZF9kdHNfbm9kZSgpLiBJ
-dAoKCgo+bWFudWFsbHkgcmVsZWFzZXMgdGhlIHJlZ2lzdGVyZWQgSVJRIGhhbmRsZXJzIGJlZm9y
-ZSBmcmVlaW5nIHRoZSBmbWFuCgoKCj5zdHJ1Y3R1cmUsIHByZXZlbnRpbmcgdGhlIGRldnJlcyBj
-bGVhbnVwIGZyb20gbGVhdmluZyBhIHJlZ2lzdGVyZWQgSVJRCgoKCj5wb2ludGluZyB0byBmcmVl
-ZCBtZW1vcnkuCgoKCj4KCgoKPj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L2V0aGVybmV0L2Zy
-ZWVzY2FsZS9mbWFuL2ZtYW4uYyBiL2RyaXZlcnMvbmV0L2V0aGVybmV0L2ZyZWVzY2FsZS9mbWFu
-L2ZtYW4uYwoKCgo+PiBpbmRleCAwMTMyNzNhMmRlMzJmLi5iYTIzMzhkYTBjZWExIDEwMDY0NAoK
-Cgo+PiAtLS0gYS9kcml2ZXJzL25ldC9ldGhlcm5ldC9mcmVlc2NhbGUvZm1hbi9mbWFuLmMKCgoK
-Pj4gKysrIGIvZHJpdmVycy9uZXQvZXRoZXJuZXQvZnJlZXNjYWxlL2ZtYW4vZm1hbi5jCgoKCj5b
-IC4uLiBdCgoKCj4+IEBAIC0yNzg2LDcgKzI3OTAsNyBAQCBzdGF0aWMgc3RydWN0IGZtYW4gKnJl
-YWRfZHRzX25vZGUoc3RydWN0IHBsYXRmb3JtX2RldmljZSAqb2ZfZGV2KQoKCgo+Pj8gCQlpZiAo
-ZXJyIDwgMCkgewoKCgo+Pj8gCQkJZGV2X2Vycigmb2ZfZGV2LT5kZXYsICIlczogaXJxICVkIGFs
-bG9jYXRpb24gZmFpbGVkIChlcnJvciA9ICVkKVxuIiwKCgoKPj4/IAkJCQlfX2Z1bmNfXywgZm1h
-bi0+ZHRzX3BhcmFtcy5lcnJfaXJxLCBlcnIpOwoKCgo+PiAtCQkJZ290byBmbWFuX2ZyZWU7CgoK
-Cj4+ICsJCQlnb3RvIGZyZWVfbWFpbl9pcnE7CgoKCj4KCgoKPltTZXZlcml0eTogSGlnaF0KCgoK
-PlRoaXMgaXMgYSBwcmUtZXhpc3RpbmcgaXNzdWUsIGJ1dCBzaW5jZSB3ZSBhcmUgbW9kaWZ5aW5n
-IHRoZSBJUlEgZXJyb3IKCgoKPmhhbmRsaW5nIGhlcmUsIGNvdWxkIHRoZSBzaGFyZWQgaW50ZXJy
-dXB0IGhhbmRsZXIgY3Jhc2ggaWYgaXQgZmlyZXMgZHVyaW5nCgoKCj50aGlzIHNldHVwIHBoYXNl
-PwoKCgo+CgoKCj5KdXN0IGJlZm9yZSB0aGlzIHNuaXBwZXQgaW4gcmVhZF9kdHNfbm9kZSgpLCBk
-ZXZtX3JlcXVlc3RfaXJxKCkgaXMgY2FsbGVkCgoKCj53aXRoIElSUUZfU0hBUkVEIHdoaWxlIGZt
-YW4gaXMgc3RpbGwgcGFydGlhbGx5IGluaXRpYWxpemVkLiBTaW5jZSBmbWFuIHdhcwoKCgo+YWxs
-b2NhdGVkIHdpdGgga3phbGxvY19vYmooKSwgZm1hbi0+Y2ZnIGFuZCBmbWFuLT5mcG1fcmVncyBh
-cmUgTlVMTC4KCgoKPgoKCgo+SWYgYSBzaGFyZWQgaW50ZXJydXB0IGZpcmVzIGltbWVkaWF0ZWx5
-LCBmbWFuX2lycSgpIGlzIGNhbGxlZDoKCgoKPgoKCgo+ZHJpdmVycy9uZXQvZXRoZXJuZXQvZnJl
-ZXNjYWxlL2ZtYW4vZm1hbi5jOmZtYW5faXJxKCkgewoKCgo+Pz8/Pz8/PyAuLi4KCgoKPj8/Pz8/
-Pz8gaWYgKCFpc19pbml0X2RvbmUoZm1hbi0+Y2ZnKSkKCgoKPj8/Pz8/Pz8/Pz8/Pz8/PyByZXR1
-cm4gSVJRX05PTkU7CgoKCj4KCgoKPj8/Pz8/Pz8gZnBtX3JnID0gZm1hbi0+ZnBtX3JlZ3M7CgoK
-Cj4/Pz8/Pz8/IHBlbmRpbmcgPSBpb3JlYWQzMmJlKCZmcG1fcmctPmZtX25waSk7CgoKCj4/Pz8/
-Pz8/IC4uLgoKCgo+fQoKCgo+CgoKCj5TaW5jZSBmbWFuLT5jZmcgaXMgTlVMTCwgaXNfaW5pdF9k
-b25lKCkgYmVoYXZlcyBsaWtlIHRoaXM6CgoKCj4KCgoKPmRyaXZlcnMvbmV0L2V0aGVybmV0L2Zy
-ZWVzY2FsZS9mbWFuL2ZtYW4uYzppc19pbml0X2RvbmUoKSB7CgoKCj4/Pz8/Pz8/IGlmICghY2Zn
-KQoKCgo+Pz8/Pz8/Pz8/Pz8/Pz8/IHJldHVybiB0cnVlOwoKCgo+Pz8/Pz8/PyAuLi4KCgoKPn0K
-CgoKPgoKCgo+V291bGQgdGhpcyBjYXVzZSBmbWFuX2lycSgpIHRvIGJ5cGFzcyB0aGUgZWFybHkg
-cmV0dXJuLCBwcm9jZWVkIHdpdGggYSBOVUxMCgoKCj5mcG1fcmcgcG9pbnRlciwgYW5kIGRlcmVm
-ZXJlbmNlIGl0IGR1cmluZyB0aGUgaW9yZWFkMzJiZSgpIGNhbGw/CgoKCj4KCgoKPj4/IAkJfQoK
-Cgo+Pj8gCX0KCgoKPgoKCg==
+On Fri, Jun 26, 2026 at 4:32=E2=80=AFAM Ren Wei <n05ec@lzu.edu.cn> wrote:
+>
+> From: Wyatt Feng <bronzed_45_vested@icloud.com>
+>
+> ETS keeps each DRR-style deficit in a u32 and replenishes it with
+> the configured quantum whenever the head packet is too large. Both
+> the quantum and qdisc_pkt_len() are user-controlled inputs: a large
+> quantum can wrap the deficit counter, while a tiny quantum combined
+> with an inflated qdisc_pkt_len() can force billions of iterations in
+> softirq context before any packet becomes eligible.
+>
+> Store the deficit in u64 so replenishment cannot wrap the counter.
+> This keeps the existing dequeue logic unchanged while fixing the
+> overflow condition.
+>
+> Bound one dequeue attempt to at most nbands * 2 ETS rotations, as
+> suggested in review. This avoids the livelock without adding heavier
+> logic to the fast path.
+>
+> Fixes: dcc68b4d8084 ("net: sch_ets: Add a new Qdisc")
+> Cc: stable@vger.kernel.org
+> Reported-by: Yuan Tan <yuantan098@gmail.com>
+> Reported-by: Yifan Wu <yifanwucs@gmail.com>
+> Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+> Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
+> Reported-by: Xin Liu <bird@lzu.edu.cn>
+> Suggested-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> Assisted-by: Codex:GPT-5.4
+> Signed-off-by: Wyatt Feng <bronzed_45_vested@icloud.com>
+> Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
 
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+
+Note, you did not Cc many maintainers. Next time, or if you have to
+resend this patch make sure you Cc the stakeholders (see
+scripts/get_maintainers.pl)
+
+cheers,
+jamal
+
+> ---
+> changes in v2:
+>   - Instead of doing a div() in the fast path, simply bound the loop per
+>     dequeue
+>   - v1 Link: https://lore.kernel.org/all/20260615103759.2404228-2-n05ec@l=
+zu.edu.cn/
+>
+>
+>  net/sched/sch_ets.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+>
+> diff --git a/net/sched/sch_ets.c b/net/sched/sch_ets.c
+> index cb8cf437ce87..12a156ccb0a6 100644
+> --- a/net/sched/sch_ets.c
+> +++ b/net/sched/sch_ets.c
+> @@ -40,7 +40,7 @@ struct ets_class {
+>         struct list_head alist; /* In struct ets_sched.active. */
+>         struct Qdisc *qdisc;
+>         u32 quantum;
+> -       u32 deficit;
+> +       u64 deficit;
+>         struct gnet_stats_basic_sync bstats;
+>         struct gnet_stats_queue qstats;
+>  };
+> @@ -463,6 +463,8 @@ ets_qdisc_dequeue_skb(struct Qdisc *sch, struct sk_bu=
+ff *skb)
+>  static struct sk_buff *ets_qdisc_dequeue(struct Qdisc *sch)
+>  {
+>         struct ets_sched *q =3D qdisc_priv(sch);
+> +       unsigned int max_loops =3D READ_ONCE(q->nbands) * 2;
+> +       unsigned int loops =3D 0;
+>         struct ets_class *cl;
+>         struct sk_buff *skb;
+>         unsigned int band;
+> @@ -499,6 +501,8 @@ static struct sk_buff *ets_qdisc_dequeue(struct Qdisc=
+ *sch)
+>
+>                 cl->deficit +=3D READ_ONCE(cl->quantum);
+>                 list_move_tail(&cl->alist, &q->active);
+> +               if (++loops > max_loops)
+> +                       goto out;
+>         }
+>  out:
+>         return NULL;
+> --
+> 2.47.3
+>
