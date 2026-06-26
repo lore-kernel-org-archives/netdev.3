@@ -1,75 +1,60 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BBC532E128;
-	Fri, 26 Jun 2026 15:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8BCD37AA83;
+	Fri, 26 Jun 2026 15:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782487353; cv=none; b=akPR6xHkGH6OGzzKIqk2QoiGEfWLJWB8om1zZbb4WUXMolOkiFm4pKfE/s0139djShGNmn3iKkzoDe1yOIe3sl9LOifQHLIkMO78UZHrFGsFXMbjXW3IQBN1eMI5WcBw/Gb/f6wJr/TR2k+1DNtwj5cY2D5gvygaPo2Bn7Gs9oo=
+	t=1782487417; cv=none; b=RqQ6ucoIIhUEnWRoVAqjsvFWtbIiFoH4ckjANSbeGjx5px/6E0TkhKEXwIPPTxFaaQTaE7LDg9/FOCYqUWP6Q1n+7tbmLWN+2RjovUdssARIdUf6BvXvmNo5hY0Fr/S6mu7vHiHk90+erl3+wMq9FrWjyabeuEZSO55D3cuVOng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782487353; c=relaxed/simple;
-	bh=a+PmPZy77MT0l0MsmzX289TBUK2qqpVAaGxjL7fADHg=;
+	s=arc-20240116; t=1782487417; c=relaxed/simple;
+	bh=bmOVwBc7W6hG2k4uI94bIn7gWV6EYU3fzxRLNlMRZq0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LzC9dKUkBQEpck9x8yIhzLNFUj9B6qr6uoyplV1Is9j7rTdgsprf08RItqYpd/Aa58bf+ttH13deR5NBw7XcNKezNVu3BroyzYeR9tuvnuIl+5oI8ISJY3VxTyEJpUjFRbgEjjEvO7ZP3wCVb/gdnk5WylFOVp9a8rNUsr0bEUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dHiBFbm0; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=tEjD5lOkrn3KVTU6vfR0RiqU/hhY8m1LPxjNzMEiu3cSXxsA9zO/tb6Oykkx3i5vKTmuE+XwivM7bOYTvgVfTEduFUx8Qomf4whxpjS3SLB4qzUhZwNdZpqWt/VL1IXmnjxUsUUJ8kPrYo4fmm4sxhNj97UPnDbuwZVdHCVsq8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bQDQlJkj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dHiBFbm0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C2131F00A3A;
-	Fri, 26 Jun 2026 15:22:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bQDQlJkj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE1A41F000E9;
+	Fri, 26 Jun 2026 15:23:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782487351;
-	bh=a1xj1TG/PfyEbhWtltQ6KeqTCcGTiLODcOSnoEj/Dr8=;
+	s=k20260515; t=1782487416;
+	bh=bmOVwBc7W6hG2k4uI94bIn7gWV6EYU3fzxRLNlMRZq0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=dHiBFbm0/zrKL7Y+MqfOSUeJEg6ahiCxi5m8fPPrDIC37t5fGJ6Km2LIZNcSZWvgQ
-	 NAoE1MUslSg7FM544ZvX8XFhAVAuUUr1wrcj+LCcNA9nV7w0PD053bFpxGbRSkB/+C
-	 ZEqvWuPkuN/2RL+0irsgVIDAKVjde2dlI3KXRFjS+xleSG7hJAaSrh8kta/T5EwhwF
-	 qF3EQxve/6N8xslFWMkHs3Kkpc4crhdQIyaOH+i80MEkjvvO10MDquTYLBme1zeAgl
-	 tZal3TWalWMgWqxUgV2Z4aDfM1alPpOkm6r/q4o9rNJZ15Ci+gDwy+sgA/eb6AlbTE
-	 M4WKVs/fN3oGw==
-Date: Fri, 26 Jun 2026 16:22:26 +0100
+	b=bQDQlJkjp6johkW7EbQcEFV5PE37jpMgJqZuUtq93ZFNtT39wmWmDmwbtaPL5KByv
+	 znz9mfj/t33i/OZloSnl5K8mVR173hmquzqV/NTGefgs2/ZxwnjNyobX+qZCs/yh/p
+	 txeYDptuNmRgXfdloDvyRCQJWTROiKO9XyqokBdw5uA8HBYRDWJnJ4Y9VMqd7Ya8Tk
+	 bqf33XLb3ujxgvR+g2T/UCdMZheVb8MBZYOn749RZTom6opdsPl3SPWqywTQxVkiIO
+	 iqz5Pjkz4wyvrJok+5k0kXopK2wODz9Itw5WSlZVdBqRmxaLcqtwAMX3CspotjX/04
+	 Zta7N6BuMqbjw==
+Date: Fri, 26 Jun 2026 16:23:32 +0100
 From: Simon Horman <horms@kernel.org>
-To: haoxiang_li2024 <haoxiang_li2024@163.com>
-Cc: sgoutham@marvell.com, lcherian@marvell.com, gakula@marvell.com,
-	hkelam@marvell.com, sbhatta@marvell.com, andrew+netdev@lunn.ch,
+To: Rosen Penev <rosenp@gmail.com>
+Cc: netdev@vger.kernel.org, claudiu.manoil@nxp.com, andrew+netdev@lunn.ch,
 	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] octeontx2-af: Free BPID bitmap on setup failure
-Message-ID: <20260626152226.GC1310988@horms.kernel.org>
-References: <20260623114316.2182271-1-haoxiang_li2024@163.com>
- <20260624170930.GB1131256@horms.kernel.org>
- <78397a8d.5bc.19efc3325e6.Coremail.haoxiang_li2024@163.com>
+	pabeni@redhat.com, afleming@freescale.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: gianfar: use of_irq_get()
+Message-ID: <20260626152332.GD1310988@horms.kernel.org>
+References: <20260624032122.986986-1-rosenp@gmail.com>
+ <20260625093630.1173136-1-horms@kernel.org>
+ <CAKxU2N__hbPOrPe3JUeTLF6d6+=uN+p5ez78rVg6cnrekkvQPw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <78397a8d.5bc.19efc3325e6.Coremail.haoxiang_li2024@163.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKxU2N__hbPOrPe3JUeTLF6d6+=uN+p5ez78rVg6cnrekkvQPw@mail.gmail.com>
 
-On Thu, Jun 25, 2026 at 08:34:31AM +0800, haoxiang_li2024 wrote:
-> 
-> 
-> At 2026-06-25 01:09:30, "Simon Horman" <horms@kernel.org> wrote:
-> >On Tue, Jun 23, 2026 at 07:43:16PM +0800, Haoxiang Li wrote:
-> >> nix_setup_bpids() allocates bp->bpids with rvu_alloc_bitmap(), which uses
-> >> a plain kcalloc(). If any of the following devm_kcalloc() allocations for
-> >> the BPID mapping arrays fails, the function returns without freeing the
-> >> bitmap. Free the BPID bitmap before returning from those error paths.
-> >> 
-> >> Fixes: d6212d2e41a0 ("octeontx2-af: Create BPIDs free pool")
-> >> Cc: stable@vger.kernel.org
-> >> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-> >
-> >Reviewed-by: Simon Horman <horms@kernel.org>
-> >
-> >I am wondering if you did a pass for any other similar problems
-> >with users of rvu_alloc_bitmap.
-> 
-> Thanks for your review! Yes, I did. I found similar issues in
-> nix_setup_ipolicers() and rvu_setup_msix_resources(), and
-> I will address them in follow-up patches.
+On Thu, Jun 25, 2026 at 05:42:05PM -0700, Rosen Penev wrote:
+> On Thu, Jun 25, 2026 at 2:36 AM Simon Horman <horms@kernel.org> wrote:
 
-Likewise, thanks.
+...
+
+> Meh I'll submit to net-next. This is way too messy to fix for net.
+
+Thanks. Be aware that net-next is currently closed for the merge window.
+I expect it will repoen next week.
