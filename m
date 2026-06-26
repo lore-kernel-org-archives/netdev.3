@@ -1,80 +1,259 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtp-190e.mail.infomaniak.ch (smtp-190e.mail.infomaniak.ch [185.125.25.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46BDD37D124;
-	Fri, 26 Jun 2026 21:14:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E5AA3BB10E
+	for <netdev@vger.kernel.org>; Fri, 26 Jun 2026 21:20:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.25.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782508492; cv=none; b=QlNfiVmE4OE/N/yGtRr2MpMeNlJE2PPNqt/NWn9xztoCoXW/UKbWuVbzQPEvPKtioM3qQiKGwMO3E7UQFDZ/zJfyuLTFIrVl9G8tcPEgDYhMuOpxXQfBPN9T15arU66Q8zSmFIzjony8cOeSNlJqH404MODd3JyD7I38HdDfNDI=
+	t=1782508814; cv=none; b=bauL7B5D2Yn4fiCQU8T0L1XpmbpWO07A+hiGn6VtsOJf7/vJtcrU/1glfKH0liTSrrH7A6oC8pT4qnvYFp6Hkn0XIgMj97yie8d7tSnx5mZi2sQYQSLBp73sdY3Y+woPhtKCmSWrF7lO9Cdc5K+aCFU47LQoOwvmDHy2vxxt8ao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782508492; c=relaxed/simple;
-	bh=eg52iwAq7d9bopUm/H/1bFhrLyhHwFFRH6aGL8XZYHI=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=sjKFBEsKEZ1JCoiCDwXGYY4S6rvoofKiiFqUor3XL+UgmtLYaIeYQ5ZP/TjQNVDUWjwTQVFhGVjzExVCaMU0Jx3xIlrIFVETbCsV30oMooj4c+zIeEGi7V3k6zVAryYX19pSORUkaO22TfM6TkA6yD896dpvV2B42Ka5/y4UBok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oJhyeRc4; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782508814; c=relaxed/simple;
+	bh=30k/EqGAorSVjoOSk9ip3EDqNZjX6yjL8m37IxBctxs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OkqrC1SY5yGJSgMzi2llPG8AFzBAychrOuONXA4fQhQsBJrSZQZ+np64svemJyCPjQqAVh6f2n8ZRfXAHVFAu3efP/tCY5T+pbt2gKF9XCnhGUwQ2m0sRnznXCusQ4zOYZNsFfwuEo0ZZ+Eq2ldwkw8eDTgD19pxtYMa7Foh8jU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=FU5QH7ox; arc=none smtp.client-ip=185.125.25.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oJhyeRc4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 804B61F000E9;
-	Fri, 26 Jun 2026 21:14:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782508491;
-	bh=lbXYKsCuCUgf0KVI/EIkHjtTOP4QQd0BPQJ4Ova8GN0=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=oJhyeRc4Lx869y39oZDLx+tylyZrZ7x1Wfm4rIrbH1/MEPHYgQ7j+LemeaI/ZVoRB
-	 +eeLoXyukK5xRF4ySo1uoLtEJWZndIS1Ku1iUceg+7wR80PzY00J0FJ4jtIKfoBC/F
-	 m72kVTTO6SM8BFvvNLOVW3hkKKqjIiZn8IyAuRYVMOLb5CN4pVqe42DGwWgwwyQ+X5
-	 e3d88OvH+P+ftBM1+ysIpmsAt4D9tFtwD1dFDoS2MKT/skskDdG0x25wOVMV2wsjdd
-	 3p4wGknD8comUWBz9AhL2czwBQv0+CW9BJKQrvpu2YwjKS58PGcxP3sT0n4sr2n/rA
-	 XPo4E4sGeuWCg==
-Content-Type: multipart/mixed; boundary="===============5848927899764250450=="
+	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="FU5QH7ox"
+Received: from smtp-4-0001.mail.infomaniak.ch (unknown [IPv6:2001:1600:7:10::a6c])
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4gn7qT0X5kzrKB;
+	Fri, 26 Jun 2026 23:20:05 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
+	s=20191114; t=1782508804;
+	bh=c0NaLpnIYrB3GZw7BCcXSauBvaVEunE3KzxssDSer20=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FU5QH7oxPHL+JAAcaCHPYySWN7Rlxx2weRfaPRLH/u6TS1+DEBA4ivpaL0At0526Y
+	 57Sn3kl+GValSBMYNWiuxvcmmVeTTihyPNNb7d6rFJRESfTcxJZwb1ZxIBnURFETwH
+	 TjEu7O7pHL4dfH7V2T5OYS8sE///Eo2F93jI4DSE=
+Received: from unknown by smtp-4-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4gn7qS2MKnz5G1;
+	Fri, 26 Jun 2026 23:20:04 +0200 (CEST)
+Date: Fri, 26 Jun 2026 23:19:58 +0200
+From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
+To: Matthieu Buffet <matthieu@buffet.re>
+Cc: Bryam Vargas <hexlabsecurity@proton.me>, 
+	=?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, linux-security-module@vger.kernel.org, 
+	Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>, Paul Moore <paul@paul-moore.com>, 
+	Eric Dumazet <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [RFC PATCH 2/2] selftests/landlock: Add test for TCP fast open
+Message-ID: <20260626.Ahk8pe9boong@digikod.net>
+References: <20260617.eemahv8ui7Ee@digikod.net>
+ <20260617180526.15627-1-matthieu@buffet.re>
+ <20260617180526.15627-3-matthieu@buffet.re>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <2503796768ba9b066c1ff1591c1a2d91c30a30af45823d5739b0ed251b2472ee@mail.kernel.org>
-In-Reply-To: <20260626-sockmap-lookup-udp-leak-v2-3-7e7e201c951a@rbox.co>
-References: <20260626-sockmap-lookup-udp-leak-v2-3-7e7e201c951a@rbox.co>
-Subject: Re: [PATCH bpf v2 3/4] selftests/bpf: Adapt sockmap update error handling
-From: bot+bpf-ci@kernel.org
-To: mhal@rbox.co,edumazet@google.com,kuniyu@google.com,pabeni@redhat.com,willemb@google.com,john.fastabend@gmail.com,jakub@cloudflare.com,jiayuan.chen@linux.dev,davem@davemloft.net,kuba@kernel.org,horms@kernel.org,ast@kernel.org,cong.wang@bytedance.com,daniel@iogearbox.net,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,shuah@kernel.org
-Cc: netdev@vger.kernel.org,bpf@vger.kernel.org,linux-kernel@vger.kernel.org,linux-kselftest@vger.kernel.org,mhal@rbox.co,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Fri, 26 Jun 2026 21:14:50 +0000 (UTC)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260617180526.15627-3-matthieu@buffet.re>
+X-Infomaniak-Routing: alpha
 
---===============5848927899764250450==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Wed, Jun 17, 2026 at 08:05:24PM +0200, Matthieu Buffet wrote:
+> Enforce that TCP Fast Open is controlled by
+> LANDLOCK_ACCESS_NET_CONNECT_TCP. Semantics of connect() and
+> sendmsg(MSG_FASTOPEN) should be identical from Landlock's perspective.
+> Also enforce error code consistency, since UDP sockets ignore
+> the MSG_FASTOPEN flag while Unix sockets reject it.
+> 
+> Signed-off-by: Matthieu Buffet <matthieu@buffet.re>
+> ---
+>  tools/testing/selftests/landlock/net_test.c | 155 ++++++++++++++++++++
+>  1 file changed, 155 insertions(+)
+> 
+> diff --git a/tools/testing/selftests/landlock/net_test.c b/tools/testing/selftests/landlock/net_test.c
+> index 0c256e7c8675..177ed28e70f6 100644
+> --- a/tools/testing/selftests/landlock/net_test.c
+> +++ b/tools/testing/selftests/landlock/net_test.c
+> @@ -258,6 +258,64 @@ static int connect_variant(const int sock_fd,
+>  	return connect_variant_addrlen(sock_fd, srv, get_addrlen(srv, false));
+>  }
+>  
+> +static int sendto_variant_addrlen(const int sock_fd,
+> +				  const struct service_fixture *const srv,
+> +				  const socklen_t addrlen, void *buf,
+> +				  size_t len, size_t flags)
+> +{
+> +	const struct sockaddr *dst = NULL;
+> +	ssize_t ret;
+> +
+> +	/*
+> +        * We never want our processes to be killed by SIGPIPE: we check return
+> +        * codes and errno, so that we have actual error messages.
+> +        */
 
->     selftests/bpf: Adapt sockmap update error handling
->
->     Update sockmap_listen to accommodate the recent change in sockmap that
->     rejects unbound UDP sockets.
->
->     TCP: Reject unbound and bound (unless established or listening).
->     UDP: Accept only bound sockets.
->
->     Signed-off-by: Michal Luczaj <mhal@rbox.co>
+There are some extra spaces above.
 
-This adjusts the test expectations that commit 0c48eefae712 ("sock_map:
-Lift socket state restriction for datagram sockets") had introduced, the
-per-sotype branching in test_insert_opened() along with the matching
-changes in test_insert_bound() and test_ops().
+> +	flags |= MSG_NOSIGNAL;
+> +
+> +	if (srv != NULL) {
 
-The companion kernel fix 77a34848a723 ("bpf, sockmap: Reject unhashed UDP
-sockets on sockmap update") already carries:
+Just `if (srv) {`
 
-  Fixes: 0c48eefae712 ("sock_map: Lift socket state restriction for datagram sockets")
+> +		switch (srv->protocol.domain) {
+> +		case AF_UNSPEC:
+> +		case AF_INET:
+> +			dst = (const struct sockaddr *)&srv->ipv4_addr;
+> +			break;
+> +
+> +		case AF_INET6:
+> +			dst = (const struct sockaddr *)&srv->ipv6_addr;
+> +			break;
+> +
+> +		case AF_UNIX:
+> +			dst = (const struct sockaddr *)&srv->unix_addr;
+> +			break;
+> +
+> +		default:
+> +			errno = EAFNOSUPPORT;
+> +			return -errno;
+> +		}
+> +	}
+> +
+> +	ret = sendto(sock_fd, buf, len, flags, dst, addrlen);
+> +	if (ret < 0)
+> +		return -errno;
+> +
+> +	/* errno is not set in cases of partial writes. */
+> +	if (ret != len)
+> +		return -EINTR;
+> +
+> +	return 0;
+> +}
+> +
+> +static int sendto_variant(const int sock_fd,
+> +			  const struct service_fixture *const srv, void *buf,
+> +			  size_t len, size_t flags)
+> +{
+> +	socklen_t addrlen = 0;
+> +
+> +	if (srv != NULL)
 
-Should this selftest commit carry the same Fixes: tag?
+ditto
 
-  Fixes: 0c48eefae712 ("sock_map: Lift socket state restriction for datagram sockets")
+> +		addrlen = get_addrlen(srv, false);
+> +
+> +	return sendto_variant_addrlen(sock_fd, srv, addrlen, buf, len, flags);
+> +}
+> +
+>  FIXTURE(protocol)
+>  {
+>  	struct service_fixture srv0, srv1, srv2, unspec_any0, unspec_srv0;
+> @@ -950,6 +1008,103 @@ TEST_F(protocol, connect_unspec)
+>  	EXPECT_EQ(0, close(bind_fd));
+>  }
+>  
+> +TEST_F(protocol, tcp_fastopen)
+> +{
+> +	const bool restricted = variant->sandbox == TCP_SANDBOX &&
+> +				variant->prot.type == SOCK_STREAM &&
+> +				(variant->prot.protocol == IPPROTO_TCP ||
+> +				 variant->prot.protocol == IPPROTO_IP) &&
+> +				(variant->prot.domain == AF_INET ||
+> +				 variant->prot.domain == AF_INET6);
+> +	const struct landlock_ruleset_attr ruleset_attr = {
+> +		.handled_access_net = LANDLOCK_ACCESS_NET_CONNECT_TCP,
+> +	};
+> +	int bind_fd, client_fd, status;
+> +	char buf;
+> +	pid_t child;
+> +
+> +	bind_fd = socket_variant(&self->srv0);
+> +	ASSERT_LE(0, bind_fd);
+> +	EXPECT_EQ(0, bind_variant(bind_fd, &self->srv0));
+> +	if (self->srv0.protocol.type == SOCK_STREAM)
+> +		EXPECT_EQ(0, listen(bind_fd, backlog));
+> +
+> +	child = fork();
+> +	ASSERT_LE(0, child);
+> +	if (child == 0) {
+> +		int connect_fd, ret;
+> +
+> +		/* Closes listening socket for the child. */
+> +		EXPECT_EQ(0, close(bind_fd));
+> +
+> +		connect_fd = socket_variant(&self->srv0);
+> +		ASSERT_LE(0, connect_fd);
+> +
+> +		if (variant->sandbox == TCP_SANDBOX) {
+> +			const int ruleset_fd = landlock_create_ruleset(
+> +				&ruleset_attr, sizeof(ruleset_attr), 0);
+> +			ASSERT_LE(0, ruleset_fd);
+> +
+> +			enforce_ruleset(_metadata, ruleset_fd);
+> +			EXPECT_EQ(0, close(ruleset_fd));
+> +		}
+> +
+> +		/* Fast Open with no address. */
+> +		ret = sendto_variant(connect_fd, NULL, NULL, 0, MSG_FASTOPEN);
 
 
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+> +		if (self->srv0.protocol.domain == AF_UNIX) {
+> +			ASSERT_EQ(-ENOTCONN, ret);
+> +		} else if (self->srv0.protocol.type == SOCK_DGRAM) {
+> +			ASSERT_EQ(-EDESTADDRREQ, ret);
+> +		} else {
+> +			ASSERT_EQ(-EINVAL, ret);
+> +		}
+> +
+> +		/* Fast Open to a denied address. */
+> +		ret = sendto_variant(connect_fd, &self->srv0, "A", 1,
+> +				     MSG_FASTOPEN);
+> +		if (restricted) {
+> +			ASSERT_EQ(-EACCES, ret);
+> +		} else if (self->srv0.protocol.domain == AF_UNIX &&
+> +			   self->srv0.protocol.type == SOCK_STREAM) {
+> +			ASSERT_EQ(-EOPNOTSUPP, ret);
+> +		} else {
+> +			ASSERT_EQ(0, ret);
+> +		}
 
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/28264556257
---===============5848927899764250450==--
+All these ret checks should be done with EXPECT_EQ because they don't
+block the test itself and we can get more info by checking more after
+that.
+
+> +
+> +		EXPECT_EQ(0, close(connect_fd));
+> +		_exit(_metadata->exit_code);
+> +		return;
+> +	}
+> +
+> +	client_fd = bind_fd;
+> +	if (!restricted && self->srv0.protocol.type == SOCK_STREAM &&
+> +	    self->srv0.protocol.domain != AF_UNIX) {
+> +		client_fd = accept(bind_fd, NULL, 0);
+> +		ASSERT_LE(0, client_fd);
+> +	}
+> +
+> +	if (restricted) {
+> +		EXPECT_EQ(-1, read(client_fd, &buf, 1));
+> +		EXPECT_EQ(ENOTCONN, errno);
+> +	} else if (self->srv0.protocol.domain == AF_UNIX &&
+> +		   self->srv0.protocol.type == SOCK_STREAM) {
+> +		EXPECT_EQ(-1, read(client_fd, &buf, 1));
+> +		EXPECT_EQ(EINVAL, errno);
+> +	} else {
+> +		EXPECT_EQ(1, read(client_fd, &buf, 1));
+> +		EXPECT_EQ('A', buf);
+> +	}
+> +
+> +	EXPECT_EQ(child, waitpid(child, &status, 0));
+> +	EXPECT_EQ(1, WIFEXITED(status));
+> +	EXPECT_EQ(EXIT_SUCCESS, WEXITSTATUS(status));
+> +
+> +	if (client_fd != bind_fd)
+> +		EXPECT_LE(0, close(client_fd));
+> +
+> +	EXPECT_EQ(0, close(bind_fd));
+> +}
+> +
+>  FIXTURE(ipv4)
+>  {
+>  	struct service_fixture srv0, srv1;
+> -- 
+> 2.47.3
+> 
+> 
