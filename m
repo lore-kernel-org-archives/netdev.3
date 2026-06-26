@@ -1,94 +1,94 @@
-Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8938E3BB682
-	for <netdev@vger.kernel.org>; Fri, 26 Jun 2026 20:58:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49383B38BB
+	for <netdev@vger.kernel.org>; Fri, 26 Jun 2026 21:04:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.52
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782507533; cv=pass; b=n9o8vob3fQt0ztX0qXZVLOceteJQ39HI939OzndJEkwUFFsbc2RP/i8f2zxGgJ+maEFXLkK1C/bY8Izf0nLmS+HWbmO7UXcT6Lr2U6fcrmyS3aVBawKEQkM/3saffjwCvVrzLL+2eDS3qqo3FVxe+60QkDw5q4sTf7DRXssEy0g=
+	t=1782507850; cv=pass; b=cuJUflYyeyHXO8ZOFhXUb7zbm0Nm9MZCHwI7lzsvv+3UTjHoLQul+eQz7dwVdTRlY0K8K62PSZ44P7exaW7h525DyqZYGr5dXwoz5Bshq0gt05JplKp51Ca9ciQXj86QhhTOAqBpFbj+cN8MxOTYxaa/tlY9m3y3R/bFFte2d64=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782507533; c=relaxed/simple;
-	bh=6xbLFFtqBJ01FSBulKyjDCamVJlD6Oqp5iYuAsl9x2c=;
+	s=arc-20240116; t=1782507850; c=relaxed/simple;
+	bh=Vwt5xW+F+uiSa1tQBJJ8nSM9E4LO58GodGc6uVU7V3w=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BZ+9FiAep+QV+iucRt3NLUQXiS0820e4gYXlxO1plA257vuhRFWFVC9rLnQ0Q7lPsDGSiNpTReOI3bIZ+iK5de7ojf2NHMzKbS9x7x1s5GqLCKg3IuY9s6kSvQIUrYKhXfaZvKKjctqYwIrgBriqtj/uVjBOXZ9FgRcA+/ffLJI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=toCfuY8t; arc=pass smtp.client-ip=74.125.82.50
+	 To:Cc:Content-Type; b=UD2l3dxkBXIlvMOXlG+i4nLojR3bijdOHfnWN1Z7hWZQ2bgzf7a0V+E0OriEyiN3hmBFRywbRq9Ijl6UwkmyOlsY3zIFI07fclC8TEXlt6Mpigt9PeUuoB/8g0EJg3/XWh0LL6cmcE40CI3ZiJpcaawcono1by4TWX4Y1Q6wxow=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RQbAIVHV; arc=pass smtp.client-ip=209.85.208.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="toCfuY8t"
-Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-1390f75d8bbso2424598c88.0
-        for <netdev@vger.kernel.org>; Fri, 26 Jun 2026 13:58:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782507532; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RQbAIVHV"
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-69532288224so3087611a12.0
+        for <netdev@vger.kernel.org>; Fri, 26 Jun 2026 14:04:07 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782507846; cv=none;
         d=google.com; s=arc-20260327;
-        b=KbxITNmQbxCN/ncG1+M8tFgB157g0w7dYLxPWCvalYR3ao0GvRmPvoCkE6tUKrfYxO
-         H/nwXBaMmerKqBFmNRm8/UnjxMK1lwoxPIsjjuMxl2SoXSjPQClR1KfaRQjWvkCAlvP7
-         f2ISbN4JtxUWuXE9uPmGQO9DlN+79PwlsmoT/m7K4r6XiEIQbb4hkDsivhMuT/EeajCM
-         CIStiwvynq+TZ2LXdlwTsIvctAfcGBtucHSfUPNmQ+Cpd/IiooyfW3uR9LqRiehMvAPi
-         EiFXsrbH2RagBhikDAuxgDzC1tS61JCtqpn/bPC2Tzu4c2xFzq0Gcs8WMGtlCehvba0k
-         00uA==
+        b=ovTdaqspqm14mUlYiduvo/5ahnqQORQx/eBR6CXFk5oALzxWYx8qhWP4LBlflDThmb
+         RlG6rjaLRuk47mfJydVpCxwofvJ5ZonMXZFJ0zleHImB0fPMFmFVBxjoxF4/DKt6EXHO
+         k5tyYvlATNqL93UsIwhYzSDtnlsqIf2VlvrTeJQfWGnG6lExIIkwn1SoSRFtYzqR2rqh
+         XFVbLCQj06cfd25ytfKsKCXjLRMvq51jX/j3dEU7kMc2ml/rdq6QfhPadRf23deE8Ekp
+         nm3+KcDDl7AwhMeBFU7vwViSS4DYOYrMMh3WUrh7DiMg11hkcHyI/NvkgNCS4zTr0YRm
+         WoHg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=F8WYF+0x5GNVnLrxh0pZVzPZyopUV+zJjv6tx8gPPi0=;
-        fh=gNeejt9OHo1BdpXsSdBVJeMn+I1OtgTtorpX3nbHg9U=;
-        b=JJBsQBF5OVzPOPBaXBm/HJ5Go4wTgevJddpjsYDtW/jIOG1/B56D4GA5Dbpe49P8KU
-         7sMMN3B68qiDIOwcfQyIGdQc6Ttz2b+go2LP8fCk1K7irflOko0h9mGQ0TnDXoOl0hbe
-         7u4bNTCfXrOOydSK+QXLmODTIvXQ8v4QMoLLAeO5QOu1Oaq8co0TxxcU/kK3u33AODEL
-         71YD6+cp6MhYghWI9mlCTEVmKAY0rL/Z/6mlXi2AhafZsTOXIqp5hCTMJUMpBJaPw+IV
-         +/mXCd96k4OILoKva/wAqzHdwTuiwAjrJU1yV4JVnbtOglfrnIvRDMqtQ9R5ylQBQAmO
-         8Yng==;
+        bh=tvCC8HZmChXEnRo8N9gbNXNqVSfwU8t8eArZec9rkjI=;
+        fh=7s4XeG5l0J/gIiFRPAUHmeZ2x4fITtiBXKH6xgM17ts=;
+        b=EAu94i9CXAOcrP0I3Tso9jqGNGeiPqNEEvwAe1GJKECSK8XcMnlhI/v7AwB9yhAPaa
+         tefmGp+qCHfrAEd0QVhyfaN1roqns/q4mClV3AqBISPPL0D2lh7ivSUvixCM0YoJSNei
+         IcYOYbIfPka8l55ry6dPL3NEgrf7KNubA+9JatHHzLCngOKX9jVMeDsW/r357hAnfSk9
+         xxQ7+pqpxoXgH2Sx9wcCTExuwSvx6QQQ3oNyiCVz5m1Ml3z6TjNUcgnVJvbGTpXjFLcg
+         dk3EMYEs0oleJiRIroiyA0uY1Y6wZ9y2j11tsqFl8ilFlxzvz0VeCiJeUoY4XSgUseRr
+         su1w==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782507532; x=1783112332; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1782507846; x=1783112646; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=F8WYF+0x5GNVnLrxh0pZVzPZyopUV+zJjv6tx8gPPi0=;
-        b=toCfuY8tnZglDXvHih+sU5z8TlaYroWWJlbxW4++Z4MzkWbG+wTTygYubM1KAnQa2D
-         oGylxxSh9C/i/m1/dvgb1LlrViqqH4m+5VRV2Ac1jND+AYIUJWMTFlN5AjnaAm3bVPCF
-         3DbQbQTlPxiOXx6MqGsRrvQM+RHAI4WRovF+fs/xtBYQOc+13EkHlx6c5CVeT7WkBMRy
-         E37qErtYCVS+doAw+QJWCD4i82Bmh8C394EO6grp6J5jr8UmitsdYnyqS1q9fIQbVAuK
-         ep9+WIwKZ+MmlxzQXGef5WYTLI9alqZL06BA5aRJCH9epgn8sS4DoqXgdKVjkISZD6q5
-         E0HA==
+        bh=tvCC8HZmChXEnRo8N9gbNXNqVSfwU8t8eArZec9rkjI=;
+        b=RQbAIVHVzTu+u5DJwVg+56s5qoOktbvUMx+93V2Mj/kvl58IkMc0hFN9Ord4Mgn9yg
+         bRjxKXSSkBzR99R6NuihGd9rJWlzc/8CpgN/qltnwnRgCl4WH2BG0GtEq/oMzNRgcgMA
+         u34e1dFzklc9lyj627vBex6wkQMlIM/YjiTra6tonnka7/K2yY6bIm9hSnY9T0yQx2T1
+         mzPq4iVh2SsQW2Ukg5qYnbYLr16q+0xjEmAR1ND4aajDhdYqRR822vOzQ883BjgeDtyf
+         lsWxLKlhzAyYhQhKnO9urh+SyLd+qARQ2+4nlkmO8HdXtKPK505ICOTdxSdb1Uv+4j+B
+         O0DA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782507532; x=1783112332;
+        d=1e100.net; s=20251104; t=1782507846; x=1783112646;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=F8WYF+0x5GNVnLrxh0pZVzPZyopUV+zJjv6tx8gPPi0=;
-        b=EI0Kt9O6p5Z4LWjNIy9Em1zSliG7aXXd8AHHdeeTMYbNPZq/3DDba2tjw8Wp+bwY6E
-         IVh37Sk1PIrWh2OFgCjmFyTtUd6ZEH0+M9cBWHHSypemwYHH1ZHUbGap/c1WP9317kg9
-         1mCMpYn8COrUiZeK/j03f8wtx2FzQtW9H/wET4FFQDzy1+fJ1hpLvuSSQXIuMTiPV2Q8
-         rGrsGTJWyxDhybux+OpjHpuX4tcZ6uVR/+UI5j3beti1n/c18dCNeiF9UNqPJ3+I8r3M
-         ZVyER0dpyFyFu/aCR+6b9EEFO1cnQPoY92v7WZLjLttS/Si+BNwOTEnw3EbrxAsvAx3u
-         6dLw==
-X-Forwarded-Encrypted: i=1; AFNElJ9FdPpPt7BccANj1JAcsn6tX9Dy+jSZpe/8w99RzL2vk3kPBu8+gFr+++Jpg6tJIxE4+SYItRw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YywO7el+2XUq2wLYLCeK+Gfyd1ljJ+6h07o0shP2pnmpXGPrkWe
-	3gZK6q2xjc1pY2vdMc4es9cQWEoy6oiHxVOeNcVaUIxO1dKMbG7jyIlM/tbOMPeJNKbqQX1eLBg
-	lKdYGgXj1aRgOcHT0YNepk9zpEZdpQl1Bp7QT1Eou
-X-Gm-Gg: AfdE7cnQvcLolEAt0FxGARl03Usn+224Yn4JcMr3gPS1j4SJuM1tP41q32Dvne63lY4
-	OjdyWFS3IznBfdemq83g+p5mB+nykyezT0+SfGsZxXSKwRqD3mBhSZKWPnONNRqv4j67g6jTr4l
-	k2K3PbBvosE81cC8XfuYZgr1nESBYpsOuDEsJhPRhPoKS2bUG6Lq5BEu432qsX7olMIROc1T2Xo
-	aJ0nSCt7aaD8dL7bXG5s5NXolulU3wElrWa6+mSXTx3G53Y44VeT2WR7sxS8OpwMKjIqlm+5Uti
-	m5hNJyT4GfjzeJ8dMECU7lj8QBXf9bzrLXJLTMfVYk6JAK+x5CaAwktMU8i+tC2qoavdmAjm2WO
-	zcsiCn6rUACluywZHWeabkpSuObye5D7uc5bs6Fs=
-X-Received: by 2002:a05:7022:629b:b0:139:b63c:a0f2 with SMTP id
- a92af1059eb24-139dbb8bdb6mr5708446c88.33.1782507530580; Fri, 26 Jun 2026
- 13:58:50 -0700 (PDT)
+        bh=tvCC8HZmChXEnRo8N9gbNXNqVSfwU8t8eArZec9rkjI=;
+        b=VSA2/TILlqnbw4uuM8657hWGLriJcD3ghggKqbPJFQjKUJ1sak04/qwrBZROP8xBo3
+         KVPAMqyIXLwigjK2S8sg8UHacam0vKT/JVfvC8S8LxNFjGdMvITMI09vVKvuwamO0Ydp
+         nCDaytyYWlccRAVRDngO6ZG8x4AoNGguvMol+hRUE6NaEWFOwzV5cMuSvMLLxKdT/3CR
+         MVH0LLKZlw+Or7DNaQXly7YpRIuQymCWy0BuFDD1u9AEZhpR1f1aDVFg1fIFquXPcPyb
+         yH/r4JT5SJWXqGJsP8aFg2xgyW/Vr85yyAA6we8U2mtCIh+uIQINxbgw9nOjH/Vl+z5g
+         JjqQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rofd+TEP1cuSlw90yBGXrTe2oj7JayT5/aBBaxty+xV7FLoOCDaNbzIUXUb1His8eFdP0S6YLo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmuxXaZ8nwFbZGJO5ouwUWevFYQ0cdfikhrflov+INW5h3wVZs
+	eXrMZbJ8bB69rmGvGGzVgnpqmd82ianfYGW/ObJg70jE6/jO08pvUMGSZS1dY9BgJY0CCGoC9jx
+	XA+AYwIDUMdlJrxVKqcXlPzNQk9dvwvpIHvELOPip
+X-Gm-Gg: AfdE7cnK1owkpxriroycTKUbe56IwEXHfDdUEZNtD5CPAr3OyYAt99HbYjEoCMNu0J2
+	Ef3d+VXIwLdl60BCGj0Xe8/jP777JcD7Dx6cQzImRf6kYtdNRf/I/dlwKk9U8sBT1KN7pQpnaTB
+	wrahX1soAyQQAFk7hFqtMxCPnowKIc0Q4DHCRhfTBeEI/ohDN3GfDiPxueFUyRoU427TJy9i+9G
+	j4TgWMyTIn7yQYVZ+MCEST4osuko5cJ+bkukywBj4kMKTZVvXAaWPBkxtVNc3utF+n894ROZYs6
+	qMsAgSc7OK3svcMYwLB/BWve1nKnGWw56brIiF+WDHBITyylRfE85ElfEGx6W9++vwixmq2wUiS
+	vhpQwOwFot6hsbWtGwczgPQJJQkvog++q7rSeSyM=
+X-Received: by 2002:a05:6402:d0e:b0:66e:abe5:ab22 with SMTP id
+ 4fb4d7f45d1cf-69810a15744mr3008960a12.5.1782507845615; Fri, 26 Jun 2026
+ 14:04:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260626-sockmap-lookup-udp-leak-v2-0-7e7e201c951a@rbox.co> <20260626-sockmap-lookup-udp-leak-v2-3-7e7e201c951a@rbox.co>
-In-Reply-To: <20260626-sockmap-lookup-udp-leak-v2-3-7e7e201c951a@rbox.co>
+References: <20260626-sockmap-lookup-udp-leak-v2-0-7e7e201c951a@rbox.co> <20260626-sockmap-lookup-udp-leak-v2-4-7e7e201c951a@rbox.co>
+In-Reply-To: <20260626-sockmap-lookup-udp-leak-v2-4-7e7e201c951a@rbox.co>
 From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Fri, 26 Jun 2026 13:58:38 -0700
-X-Gm-Features: AVVi8CeP2eiu_fzuvOztLhngiE1Tsu5qut2zHfev-g_7GKVOiJ1ehpzU4Kk_fcY
-Message-ID: <CAAVpQUDULzZh58oKkRaYqgM9bRToGb7wHrzT+cZNpRmAtM12Ow@mail.gmail.com>
-Subject: Re: [PATCH bpf v2 3/4] selftests/bpf: Adapt sockmap update error handling
+Date: Fri, 26 Jun 2026 14:03:50 -0700
+X-Gm-Features: AVVi8CfI1JvVlmFD7FSw9WWO-q0ESRJAmfkw-4ZmG4UOIO4tf4PPeHZBhXKMPPU
+Message-ID: <CAAVpQUAJYkOBEtgUpL5UgnwM9Hu3Y57a9xZWRy7zHg5XkGnW5w@mail.gmail.com>
+Subject: Re: [PATCH bpf v2 4/4] selftests/bpf: Fail unbound UDP on sockmap update
 To: Michal Luczaj <mhal@rbox.co>
 Cc: Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
 	Willem de Bruijn <willemb@google.com>, John Fastabend <john.fastabend@gmail.com>, 
@@ -107,37 +107,40 @@ Content-Transfer-Encoding: quoted-printable
 
 On Fri, Jun 26, 2026 at 1:37=E2=80=AFPM Michal Luczaj <mhal@rbox.co> wrote:
 >
-> Update sockmap_listen to accommodate the recent change in sockmap that
-> rejects unbound UDP sockets.
+> sockmap now rejects unbound UDP sockets. Adjust test_maps.
 >
-> TCP: Reject unbound and bound (unless established or listening).
-> UDP: Accept only bound sockets.
+> This effectively reverts commit c39aa2159974 ("bpf, selftests: Fix
+> test_maps now that sockmap supports UDP").
 >
 > Signed-off-by: Michal Luczaj <mhal@rbox.co>
 > ---
->  tools/testing/selftests/bpf/prog_tests/sockmap_listen.c | 17 +++++++++--=
-------
->  1 file changed, 9 insertions(+), 8 deletions(-)
+>  tools/testing/selftests/bpf/test_maps.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 >
-> diff --git a/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c b/to=
-ols/testing/selftests/bpf/prog_tests/sockmap_listen.c
-> index cc0c68bab907..6ee1bc6b3b23 100644
-> --- a/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c
-> +++ b/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c
-> @@ -63,11 +63,8 @@ static void test_insert_opened(struct test_sockmap_lis=
-ten *skel __always_unused,
->         errno =3D 0;
->         value =3D s;
->         err =3D bpf_map_update_elem(mapfd, &key, &value, BPF_NOEXIST);
-> -       if (sotype =3D=3D SOCK_STREAM) {
-> -               if (!err || errno !=3D EOPNOTSUPP)
-> -                       FAIL_ERRNO("map_update: expected EOPNOTSUPP");
-> -       } else if (err)
-> -               FAIL_ERRNO("map_update: expected success");
+> diff --git a/tools/testing/selftests/bpf/test_maps.c b/tools/testing/self=
+tests/bpf/test_maps.c
+> index c32da7bd8be2..81cd5d0d69c1 100644
+> --- a/tools/testing/selftests/bpf/test_maps.c
+> +++ b/tools/testing/selftests/bpf/test_maps.c
+> @@ -759,12 +759,12 @@ static void test_sockmap(unsigned int tasks, void *=
+data)
+>                 goto out_sockmap;
+>         }
+>
+> -       /* Test update with unsupported UDP socket */
+> +       /* Test update with unsupported unbound UDP socket */
+>         udp =3D socket(AF_INET, SOCK_DGRAM, 0);
+>         i =3D 0;
+>         err =3D bpf_map_update_elem(fd, &i, &udp, BPF_ANY);
+> -       if (err) {
+> -               printf("Failed socket update SOCK_DGRAM '%i:%i'\n",
+> +       if (!err) {
+> +               printf("Failed allowed unbound SOCK_DGRAM socket update '=
+%i:%i'\n",
 
-Initially I thought AF_UNIX still exercised this path but it was removed
-in f3de1cf621f7.  The leftover in family_str() was a bit confusing, so plea=
-se
-follow up on bpf-next.
+nit: Maybe s/Failed/Unexpectedly succeeded/ ?
+
+If we want to avoid breakage, this patch needs to be squashed to
+the fix patch, but it's discouraged in netdev, not sure about bpf tree.
 
 Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
