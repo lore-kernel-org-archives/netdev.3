@@ -1,44 +1,88 @@
-Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F973E0088
-	for <netdev@vger.kernel.org>; Fri, 26 Jun 2026 09:26:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.92.39.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6724C3EBF16
+	for <netdev@vger.kernel.org>; Fri, 26 Jun 2026 09:38:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782466021; cv=none; b=OxYiN1p01gSEvEUdiSQ7AkJirNzbWN7tHDdjj2xmjr9IBdGKIxNPIfWKuqZBzfLT1AWduD4T3j9ORGNvdFd5ku6asA2u1ksiom8T9GgjtK+SioYwBIifb4MmA7tgzFUtSvnNK+lw3z1niZ6hYgc7/ydJyoQvZQGlrDjEKSpr3uw=
+	t=1782466720; cv=none; b=rItq/banRdZmj8TF8jXO5oie/HUrUQJAiRJWd9Iul1vnAFhmm2YA7wDvdW0BRzsqebhvfjmkIqS+UG4LSvH+CMfPNSNIOuAz29yCDz15A5U0410lSKetgKwweyPCZY7q4A0p2S2oQpEVI5sP12GLONebtyJvdcbl4IfN1n51siU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782466021; c=relaxed/simple;
-	bh=uQobXsQSNAX3k2ODEqtgDd9YvIiqsBwbs1LBdTQRjGY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IPdompKtHMvC479IfeCJqQ+QbqaQHHjhbeDALgmb1SXDbbRMRRvIxA7fkvDgpR9D5xVVt7ortOB4zFAJgSN67Pi4ieN3DtMTKvMcwkovjlRUvhoys+pTvKPIbzXEvG9FCEmgXF+ZDN09aUip6S4zUxwNwzJr5QLCyJiQBkTCA3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.92.39.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpgz14t1782465945ta89462e6
-X-QQ-Originating-IP: 2FF64DXsg90CZzZDiofj2Otd3SmpGS6DM9GeTnyUniY=
-Received: from w-MS-7E16.trustnetic.com ( [183.157.4.88])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 26 Jun 2026 17:25:39 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 6671071256694873249
-EX-QQ-RecipientCnt: 12
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: netdev@vger.kernel.org
-Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Kees Cook <kees@kernel.org>,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Larysa Zaremba <larysa.zaremba@intel.com>
-Subject: [PATCH net v2] net: libwx: fix VMDQ mask for 1-queue mode
-Date: Fri, 26 Jun 2026 17:25:30 +0800
-Message-ID: <161F704D2C983E2C+20260626092530.551028-1-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1782466720; c=relaxed/simple;
+	bh=JLAIROYePggFfJJH59UH4ireJPYPOsIoeVi6uJuUcDg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=maAl9j4IIiL2bmcWA967EWSqmvgYHh4smuY+JwtXVvMNEX4hgJfywAtXys9xHwKJ4lKi6X14Y6EjTVzY1Bc4QTy7AOz9N0b1g/8vzdkxe3CwlRFnAO2mcuhTYmGKBaIGi5lrj9n6eDpGBgtLpaTF9MRVB3z07jcFyBCSorl9VHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KaZbZ040; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KaZbZ040"
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5aea4cbeb94so567384e87.1
+        for <netdev@vger.kernel.org>; Fri, 26 Jun 2026 02:38:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782466714; x=1783071514; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JLAIROYePggFfJJH59UH4ireJPYPOsIoeVi6uJuUcDg=;
+        b=KaZbZ040pxAKh8WZxDgx4yp9V4lNiyl+iVVJgEfWGPZFj/DjnEnMYvV2Y8bwgOpjxp
+         DSpV4zHeZwAxjXayA7nA63Egupll8AkPjC/WHn328Muot8u1Mw4Bt1ymuslh3DPIyI14
+         vcHiFnVCO3+hjU9a6i9wwWsE/IUjwy4IDSi0woWe3eGdbz0rX1JikbB30AYCb3AT+oNE
+         SnhpvseloeIwY5UPnfYGUFbRrih9XCFoqivD/O4I+qeDpkK+H9We0D24W113PrQ2+XLF
+         t1HJgGs1esDe/Pb6IHRBbscO899huux84H+GMEN87NhwJBTI7G25cpgQ6y1WBblMKNRE
+         Tr4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782466714; x=1783071514;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=JLAIROYePggFfJJH59UH4ireJPYPOsIoeVi6uJuUcDg=;
+        b=cydK6D/yFThRtJ8wwrnWpZDMynI3Do4fCnyFu1GH4ciYGClpGmLgonAWwlg90KgWjW
+         7qmOvcWZkdr2X4rXvl6THB29h78nRFSPg8PMiqwV2ZdsfW3iNy7XMndyzqYuf61mdL8O
+         UVn/4eCGRtvH0iH0QCpmyhGvs00cXI/8tWVvatrk7JB9vvex270P+1FD+yfRyuFGTvpq
+         8MXRb/WyhhSfo70nj9VBvDwZ7hSWtJ/b5wMuVOaGhxfx3lb1fk1WvICOXl95xihtk0rz
+         lsRGEy1NYkrVZSWa0rkoEBdVCmb7l+TONxW8Csl88MUfPjCowZvS5ouTfNPYIlwfWVi3
+         dYSA==
+X-Forwarded-Encrypted: i=1; AHgh+Rp2n/NElT7wlHjnE1mAEZPz7IX29weA7mxny8OQ50GNzSTMp0ETC1J1u7qtuhyooB0XH5qgvFk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyo+ALUQ5NbNHdH5qXCFWHhYrts6BA5mcNcl5jLs+p4a89k7WC3
+	ApCFXCY5J8oej6r86gEGXbk1zMNVIayk8WTW18i2wX8/wbjr57RasN1D
+X-Gm-Gg: AfdE7ckMgRu/2hK37j3T9mK+dZL02DbardlO+R80x3Q6c/t/6UrGdWO+SPSNSXKzafM
+	4ddG7bq0ss0Oy5bRGvmZZQnhko3WZyYhh8BctPxqrCJYmTge6u3FK0uyxAFBbic9hsSboZsWacC
+	l18uOaXCMxQM4GBla22R+zuQj/dDSPqW9H0kGC40Q2IhSXWYw2ptIV3ppPs1MSaae9nBHTddLL5
+	TwxSUbAcLQdolSb40o+RV7+RLUg4Qq2M4Qip2YXM/t7pOBZPT6f82g1KFV/rNXnBLW7dtnWgtG7
+	u6b7JK/KiLHRHFGjRn/pic+KsfHa6ZSQUmK4pQP1ZxD3OrXwSu3FqJ3qrZwpNZPMZUTcNTuebbN
+	/pqZyxfaWagztV9rPSa9dZaC6wBukW98iS73Tt0YekJDa5jqKLZ6JQn0Je310AsjGBKnj5lbPSG
+	AkUad97BmHtVTakXEbnby/OnKPRa/d
+X-Received: by 2002:ac2:51c7:0:b0:5ad:49da:67c9 with SMTP id 2adb3069b0e04-5aea1f48c2fmr1756704e87.18.1782466713996;
+        Fri, 26 Jun 2026 02:38:33 -0700 (PDT)
+Received: from grower.astra-academy.ru ([185.32.135.49])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5ad6954a5bfsm3270613e87.4.2026.06.26.02.38.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Jun 2026 02:38:33 -0700 (PDT)
+From: Alexander Martyniuk <alexevgmart@gmail.com>
+To: gregkh@linuxfoundation.org
+Cc: alexevgmart@gmail.com,
+	bestswngs@gmail.com,
+	coreteam@netfilter.org,
+	davem@davemloft.net,
+	fw@strlen.de,
+	kaber@trash.net,
+	kadlec@netfilter.org,
+	kuba@kernel.org,
+	kuznet@ms2.inr.ac.ru,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	netfilter-devel@vger.kernel,
+	pablo@netfilter.org,
+	sashal@kernel.org,
+	stable@vger.kernel.org,
+	xmei5@asu.edu,
+	yoshfuji@linux-ipv6.org
+Subject: Re: [PATCH v2] netfilter: nf_log: validate MAC header was set before dumping it
+Date: Fri, 26 Jun 2026 12:38:20 +0300
+Message-ID: <20260626093820.196664-1-alexevgmart@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2026062658-pregame-buggy-ccbc@gregkh>
+References: <2026062658-pregame-buggy-ccbc@gregkh>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,70 +90,7 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpgz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: NpuL9oZpxXj09J1j04zkHvJqrSd8VDswtzrKK6o6w0idSfQiJh24O1yf
-	juV9JoU3HdPGYcK/JL4aW1ebgq/Am/4ArNOFbxrbxSmU9Tn1w+WEucW0Wl0HkzbrFLrn0FI
-	PN13uvZBR1qN4SQU+6rSVWxoqor0fvYGGQYfBvWhIzeYBfiM5Ho2ZKhcw0rQ0OtulXSMuOA
-	JViEExEtOTcNZG3H5YJbT5SoJPI2zHJcXjbLGTuc646c/Fu5/Qi4Rzsp1YquhFBVcR2N78B
-	ROtRH1u/EJzP7Sf8Qsa10bArupVFTsiQPBhJxS+VvHcFF95b4SkRgn69Uj+/FeEazifu/tQ
-	oM0J4wBfL1fe+9zbeAxyvHhsPGXroMHPprOOLp85ckqZwPMrYBeZNMTfAMQW3jDY4zxUa6/
-	4Mv5oQYc0XXOz3JGB0JZG2gtZDTACX7Z3jFZm7/5Rapb6bNQwHINUlsLCPzeM5MXInp1IOi
-	qccN4ZnVNjakClrVdaEY/92MF/ykAc7vRl4qk+Eft65EF9WTxKPjtO/Sl+NI+3AOOWWC6jB
-	QazQ9x51PujLVTZGRFUt3PYSTRth19khSCVXenHcgwIbs6/yPUK/IKuHt8QHUuJGMsIiIC6
-	Dz3eXOTg2Q2+Vd4nbhnrJ47GX37x06jW/quVS6UtrBuqaRaBV7EcaRx6UJ6TrJlm5lam+i2
-	bJNVkxGGJUtMmBludyuxffAWyXiYf4ZbBltf6FmP4SJD6aU5DU+4sRnKQxP6clAmgwdelHx
-	yKSSuU4EVy7h93uqdwrjX40YOJusmxxNf7h1z5BaAn4BoEehoK6+ilaMSnVeU0CWOnBU1XE
-	p/94C5nK95dIsHAhJ4spTAy0xANF93eFUa1FT8/H4ABcWdjJmqvVtAgMj8FLuzSzRu+tnIv
-	pdThmDC82tWM2jKXhc4aYEJs10y7i9oJW8wxn3vPqJIbvPONCGqvMi5wMcbLfGpS/9dnZ+G
-	dbGVrEB4dxK84KTlKnfeobpf57xeUK/D3z4YuLLIOMzKBisut7t2Wmwmb90biS6fg1LK11X
-	MI2TfFnExpqYyGXjPsWLwsr3stmr060FZQbu2B3/b0p3UOHWUFLMtTBP4XL/OzXZgSevitr
-	3zXUKlWkAxYwyyeupMkGpTtujNS+XNp5Rv7hAMWUYPd9QfjCWInhT0=
-X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
-X-QQ-RECHKSPAM: 0
 
-In wx_set_vmdq_queues(), the VMDQ mask was not set for the devices not
-supporting WX_FLAG_MULTI_64_FUNC, i.e., NGBE devices. A mask of 0 causes
-__ALIGN_MASK(1, ~vmdq->mask) to return 0, which incorrectly sets
-q_per_pool to 0 in wx_write_qde().
+> What kernel(s) is this for?
 
-Fix the VMDQ 1-queue mask to 0x7F then ensures that __ALIGN_MASK(1,
-~0x7F) correctly evaluates to 1.
-
-Fixes: c52d4b898901 ("net: libwx: Redesign flow when sriov is enabled")
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
----
-v2: Fix the commit message.
----
- drivers/net/ethernet/wangxun/libwx/wx_lib.c  | 1 +
- drivers/net/ethernet/wangxun/libwx/wx_type.h | 1 +
- 2 files changed, 2 insertions(+)
-
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-index d042567b8128..814d88d2aee4 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-@@ -1802,6 +1802,7 @@ static bool wx_set_vmdq_queues(struct wx *wx)
- 			rss_i = 4;
- 		}
- 	} else {
-+		vmdq_m = WX_VMDQ_1Q_MASK;
- 		/* double check we are limited to maximum pools */
- 		vmdq_i = min_t(u16, 8, vmdq_i);
- 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-index c7befe4cdfe9..65e3e55db1cf 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-@@ -486,6 +486,7 @@ enum WX_MSCA_CMD_value {
- 
- #define WX_VMDQ_4Q_MASK              0x7C
- #define WX_VMDQ_2Q_MASK              0x7E
-+#define WX_VMDQ_1Q_MASK              0x7F
- 
- /****************** Manageablility Host Interface defines ********************/
- #define WX_HI_MAX_BLOCK_BYTE_LENGTH  256 /* Num of bytes in range */
--- 
-2.51.0
-
+5.10
