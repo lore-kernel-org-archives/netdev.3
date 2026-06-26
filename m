@@ -1,116 +1,121 @@
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+Received: from smtp-190a.mail.infomaniak.ch (smtp-190a.mail.infomaniak.ch [185.125.25.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370B83B9DAE;
-	Fri, 26 Jun 2026 20:37:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E335E1F1534
+	for <netdev@vger.kernel.org>; Fri, 26 Jun 2026 20:40:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.25.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782506259; cv=none; b=Sxi+YYgGm2DR3/UR7ucu0S8T6suwdBp+p395+LESMGw3NhEtwTVvFwOaQe4K1cFEf+V41hJo77kDhlbpY/HWKFkDmmWQGpJ/D4GnQibu3KlpCJGRjfRexO90WzTb/tScZmyiLGT+gA8NAmA6ItfWNV/FoMbXHcygpVgikIPgl4s=
+	t=1782506422; cv=none; b=ZF9aFaHk3s8htIZokOa0jpLClk24BVW5Nu/uaCw2T4IQqraqGRk/vdfWp6jzyH7kRqJvbrPq0MJjxvqXIdKA6zvMT/j/oFL6DGKJfJ/SAZqBtZigZNomK6gNzw5PXPMS4i3VcbDLakLvvCd4hkc8bsYlCYyiuIl326klbsgqnDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782506259; c=relaxed/simple;
-	bh=+A2FU6VF/cIfIOhUFB1LNMfzDHTD0hmtVaW25lwPGjs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=oRIbMWs2Tcw1J1oHzpC6A4Z6dl/RDBOymDIF0AjFiwlbirOu9X1bpptp4mVs0NbaGYmk6HzV4dPhokmgNOp77F9nkYCIo0xGWgu3SG8eQBmwg+52sW24RXe+RiqUlEYLfc/s+cGUTpSlhEWV83oI5d8C/t6l5ukeM9exdaA6fhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=KonUhT/u; arc=none smtp.client-ip=185.226.149.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+	s=arc-20240116; t=1782506422; c=relaxed/simple;
+	bh=ANWck8WLbRAXZ361J9dhNik1il372xldklrcJQiz0+4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=N3wW6LKtwy0qc0BmDE25R/+w6HybxSO422b30o9j5F005sKG4OdetFvGpRLWznhBLX87sM2DXN/xCgcAcPB31PVB7RzA6k+QwDu98jqSAxtulyr3pA3sq1SCRsIc2ZMaiIb0+Hg8QL2wTDjLYd9TTyld96/OmAOWSq6dXk4nZLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=vy+Tatby; arc=none smtp.client-ip=185.125.25.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="KonUhT/u"
-Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1wdDIJ-00AoOV-Iv; Fri, 26 Jun 2026 22:36:59 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector2; h=Cc:To:In-Reply-To:References:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
-	bh=hx9bkK2sxM76pNzLvsxqdpArZV/FzA5Z2NgVR5n6pec=; b=KonUhT/upZ6LIwJONzq4FRcnWi
-	och4Vhxm7DYI4/scm4Pa1nvadiDShAiztMChZ8cYt3mj4o7Cd7UFbkfk1/QshQMuiUK1FJDW/tawg
-	mwdBEzJ7pA3gH3kvgjOgxgaRFHuNnFeluVdEUIN/nfugu72ognZanZGDPz1DV0liMvJuAxSIEX4KU
-	nFhHxs/6DFWh0tBdisjsd98+eBmXSUYq07bKp1cy7GS9c8DJdrttLJSRX3mFK+C+zeQVL5qktZ5xl
-	3njWmbD2WJ3trDHzodgYL8y5TgHwYOeeVXym0dJW1MUjIqw7VTixLYnhZiZEWudnWrhX5S9H8h4Mq
-	tqxUydhQ==;
-Received: from [10.9.9.72] (helo=submission01.runbox)
-	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1wdDIH-0006SG-Ko; Fri, 26 Jun 2026 22:36:57 +0200
-Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.95)
-	id 1wdDIA-006anB-Cz;
-	Fri, 26 Jun 2026 22:36:50 +0200
-From: Michal Luczaj <mhal@rbox.co>
-Date: Fri, 26 Jun 2026 22:36:30 +0200
-Subject: [PATCH bpf v2 2/4] selftests/bpf: Ensure UDP sockets are bound
+	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="vy+Tatby"
+Received: from smtp-3-0001.mail.infomaniak.ch (unknown [IPv6:2001:1600:4:17::246c])
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4gn6xQ3bn9zhBm;
+	Fri, 26 Jun 2026 22:40:10 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
+	s=20191114; t=1782506410;
+	bh=+VmxfcqJWx2b/sUIHGbG0OEVcTdIR7OEfECFfcjnP4o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vy+TatbysO9/4zv2ZAaEeC3RSyJfmSUEGS58qiVY7kOayCvk25FG0p2n3hCoZj/zT
+	 r8bF6GwIcl16dMclkbNGdRf4vt33Gfcnch9q0Fc9+tFNZOEBKSSrDG2wn01QT226k/
+	 D/09kwO0Qq6h9ViZq5Kb6DYpf9m9FeNAin24KsGQ=
+Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4gn6xP1qnLzRhj;
+	Fri, 26 Jun 2026 22:40:09 +0200 (CEST)
+Date: Fri, 26 Jun 2026 22:40:04 +0200
+From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
+To: Matthieu Buffet <matthieu@buffet.re>
+Cc: Bryam Vargas <hexlabsecurity@proton.me>, 
+	=?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, linux-security-module@vger.kernel.org, 
+	Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>, Paul Moore <paul@paul-moore.com>, 
+	Eric Dumazet <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [RFC PATCH 1/2] landlock: fix TCP Fast Open connection bypass
+Message-ID: <20260626.taijohThood1@digikod.net>
+References: <20260617.eemahv8ui7Ee@digikod.net>
+ <20260617180526.15627-1-matthieu@buffet.re>
+ <20260617180526.15627-2-matthieu@buffet.re>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260626-sockmap-lookup-udp-leak-v2-2-7e7e201c951a@rbox.co>
-References: <20260626-sockmap-lookup-udp-leak-v2-0-7e7e201c951a@rbox.co>
-In-Reply-To: <20260626-sockmap-lookup-udp-leak-v2-0-7e7e201c951a@rbox.co>
-To: Eric Dumazet <edumazet@google.com>, 
- Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, 
- Willem de Bruijn <willemb@google.com>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Jakub Sitnicki <jakub@cloudflare.com>, 
- Jiayuan Chen <jiayuan.chen@linux.dev>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Simon Horman <horms@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
- Cong Wang <cong.wang@bytedance.com>, Daniel Borkmann <daniel@iogearbox.net>, 
- Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
- Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
- Emil Tsalapatis <emil@etsalapatis.com>, Shuah Khan <shuah@kernel.org>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- Michal Luczaj <mhal@rbox.co>
-X-Mailer: b4 0.15.2
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260617180526.15627-2-matthieu@buffet.re>
+X-Infomaniak-Routing: alpha
 
-Update sockmap_basic tests to bind sockets before they are used. This
-accommodates the recent change in sockmap that rejects unbound UDP sockets.
+Thanks Matthieu, could you please rebase this serise on the master
+branch (especially on top of your UDP changes)?
 
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
----
- tools/testing/selftests/bpf/prog_tests/sockmap_basic.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+This patch will be useful for backports though.
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c b/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
-index cb3229711f93..2d22a9058a8e 100644
---- a/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
-+++ b/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
-@@ -853,7 +853,7 @@ static void test_sockmap_many_socket(void)
- 		return;
- 	}
- 
--	udp = xsocket(AF_INET, SOCK_DGRAM | SOCK_NONBLOCK, 0);
-+	udp = socket_loopback(AF_INET, SOCK_DGRAM | SOCK_NONBLOCK);
- 	if (udp < 0) {
- 		close(dgram);
- 		close(tcp);
-@@ -922,7 +922,7 @@ static void test_sockmap_many_maps(void)
- 		return;
- 	}
- 
--	udp = xsocket(AF_INET, SOCK_DGRAM | SOCK_NONBLOCK, 0);
-+	udp = socket_loopback(AF_INET, SOCK_DGRAM | SOCK_NONBLOCK);
- 	if (udp < 0) {
- 		close(dgram);
- 		close(tcp);
-@@ -993,7 +993,7 @@ static void test_sockmap_same_sock(void)
- 		return;
- 	}
- 
--	udp = xsocket(AF_INET, SOCK_DGRAM | SOCK_NONBLOCK, 0);
-+	udp = socket_loopback(AF_INET, SOCK_DGRAM | SOCK_NONBLOCK);
- 	if (udp < 0) {
- 		close(dgram);
- 		close(tcp);
+On Wed, Jun 17, 2026 at 08:05:23PM +0200, Matthieu Buffet wrote:
+> The documentation of the socket_connect() LSM hook states that it
+> controls connecting a socket to a remote address. It has not been the
+> case since the addition of TCP Fast Open (RFC 7413) support, which allows
+> opening a TCP connection (thus, setting a socket's destination address)
+> via the MSG_FASTOPEN flag passed to sendto()/sendmsg()/sendmmsg(). The
+> problem then got duplicated into MPTCP.
+> 
+> Landlock did not take it into account when its TCP support was added,
+> leaving a bypass of TCP connect policy.
+> 
+> Ideally a call to the LSM hook would be added in the fastopen code path,
+> in order to fix this generically. But connect() hooks are designed to run
+> with the socket locked, unlike sendmsg() hooks.
+> 
+> Closes: https://github.com/landlock-lsm/linux/issues/41
+> Fixes: fff69fb03dde ("landlock: Support network rules with TCP bind and connect")
+> Signed-off-by: Matthieu Buffet <matthieu@buffet.re>
+> ---
+>  security/landlock/net.c | 17 +++++++++++++++++
+>  1 file changed, 17 insertions(+)
+> 
+> diff --git a/security/landlock/net.c b/security/landlock/net.c
+> index 4ee4002a8f56..a2375762c18b 100644
+> --- a/security/landlock/net.c
+> +++ b/security/landlock/net.c
+> @@ -246,9 +246,26 @@ static int hook_socket_connect(struct socket *const sock,
+>  					   access_request);
+>  }
+>  
+> +static int hook_socket_sendmsg(struct socket *const sock,
+> +			       struct msghdr *const msg, const int size)
+> +{
+> +	struct sockaddr *const address = msg->msg_name;
+> +	const int addrlen = msg->msg_namelen;
+> +
+> +	if (sk_is_tcp(sock->sk) && address != NULL &&
+> +	    (msg->msg_flags & MSG_FASTOPEN) != 0) {
 
--- 
-2.54.0
+This might be a bit better:
 
+  if ((msg->msg_flags & MSG_FASTOPEN) && address && sk_is_tcp(sock->sk))
+
+> +		return current_check_access_socket(
+> +			sock, address, addrlen,
+> +			LANDLOCK_ACCESS_NET_CONNECT_TCP);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>  static struct security_hook_list landlock_hooks[] __ro_after_init = {
+>  	LSM_HOOK_INIT(socket_bind, hook_socket_bind),
+>  	LSM_HOOK_INIT(socket_connect, hook_socket_connect),
+> +	LSM_HOOK_INIT(socket_sendmsg, hook_socket_sendmsg),
+>  };
+>  
+>  __init void landlock_add_net_hooks(void)
+> -- 
+> 2.47.3
+> 
+> 
