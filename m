@@ -1,175 +1,122 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A3091A3160
-	for <netdev@vger.kernel.org>; Fri, 26 Jun 2026 10:55:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF62388397;
+	Fri, 26 Jun 2026 11:03:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782471307; cv=none; b=clWerSODeH7uwVhIfrk63Rhu6FDzKJP+plNwmyaOSeh+GdFSU75nzpKXwoyb2ap6ziyS6HGCzYlt0B1lOxj8ybTu7csMzLOezyld/QfyYsbnFXavM9/HY2RjBEWZFuqD+SUHSbCFB/w2HpV5CvnJqsFkl9LwG/4+0EHToEXbdbA=
+	t=1782471786; cv=none; b=SCh7ULWTDdWPnCkXh6R0PBqF82w3b/sHRzWLU1ncI9W2dDYKF66cI9c8u0/XRBxsb7Qj7vrH0Qx5AePH6mP3iIaVHKOERnA4MCYNQYpqsPzfM8+NlLCGEBT+7ib6XqNzJreYHybQhoSVBhPnYb1g8x+1cbcT535LH4UlQwmCrUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782471307; c=relaxed/simple;
-	bh=rZ08VcXOIrjOKCf/cAe0dTUIbyeOhQ4FOfMIPhkaGBY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cnk0ZdTc9zvFxQzWR6X6fwJ4eq9sF4dlVUK0YYd5ejcO2mq1Ln7+uVd594Nm71Hd62PmqVSbeG3/tTjZQt6eBGoTNBQaiz0PpGvrqgoC7QPKcMKa7yfO8EOX9tWx2Talqet0tQPtY0EtI2sY/8k/bZLKmOnbHFYb0/i45Tj58KY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=diFhm5fv; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1782471786; c=relaxed/simple;
+	bh=4xhENnZVz/hdk7ZqW2LTM+Brps5lFoVyNoXxRb45eQs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=elFKo/R94ZTBbVBIf9vo9pr2PlvD6JQDnwayWdWW1Uh0DM8D8dNGj4dJkbnrGjYbA0JUzA5/9t5PfaKaPBUufDV4hHg+plvBtk4yOxbv3AD3rXtq0YoGsSMmKxzIrqdJPfa7tgRuxeV5AqRc+hyyzlDN3sa+uiFWl7sq3ye2768=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=VV20kC8s; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=VD0cw75g; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="diFhm5fv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782471304;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="VV20kC8s";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="VD0cw75g"
+Date: Fri, 26 Jun 2026 13:03:00 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1782471783;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FDoLmRFdjTWaJPTg5Rz1/wyvQlw0NWoNDIzgPbuVeHs=;
-	b=diFhm5fvyMBRVrUTxbctVhb//hrSXyn4I63NKxt5O2mrXolIgrvYN0XAlzYABV1Dfb/B1U
-	Z+gnMLFRZbRacxkPwQH9g4hCfP23Zj1FX8Rsqxd1HW0GOfde9gFfLk293p8S9izBt6A2Ly
-	dFO19ax1x1xF29CwL51zvRRheud6xdQ=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-258-QwSM5qfePAyDVLZIptudnw-1; Fri,
- 26 Jun 2026 06:55:00 -0400
-X-MC-Unique: QwSM5qfePAyDVLZIptudnw-1
-X-Mimecast-MFC-AGG-ID: QwSM5qfePAyDVLZIptudnw_1782471298
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2B72E1955F26;
-	Fri, 26 Jun 2026 10:54:58 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.44.32.38])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 919EB1800361;
-	Fri, 26 Jun 2026 10:54:54 +0000 (UTC)
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-To: horms@kernel.org
-Cc: aleksandr.loktionov@intel.com,
-	anthony.l.nguyen@intel.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	intel-wired-lan@lists.osuosl.org,
-	jacob.e.keller@intel.com,
-	jtornosm@redhat.com,
-	kuba@kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	przemyslaw.kitszel@intel.com
-Subject: Re: [PATCH net v7 3/4] iavf: send MAC change request synchronously
-Date: Fri, 26 Jun 2026 12:54:53 +0200
-Message-ID: <20260626105453.215716-1-jtornosm@redhat.com>
-In-Reply-To: <20260624163148.1146093-2-horms@kernel.org>
-References: <20260624163148.1146093-2-horms@kernel.org>
+	bh=vgyG4JYr6Vz+QgoLYeDfXMNz2G667R6u0Wnv+qmfHYs=;
+	b=VV20kC8sI1KhN1xrUd12GIm4/ufvjTTeGzq1YZqPfrkX05CDqlXNT6/VNsOei7WgrqHmEl
+	VTGheMYRboFZj8o5lNiqjrsRUbyvwDwOJdumd+jPauJcoYnuMMTWfdvmdziBpNAL7T/Ua6
+	7WnEEUSWlVZOIrUJf4Zvod837Zntq6++4qfeT8q0DzM7dD7u4s1sxk77fC48ujuwURpr2a
+	AFwXVYK04GZ6Ee05Ki/eEyivi5JwtgMcVgNHuD2308sLsuqw8WdEQXP4i90wAT9akFtUgN
+	IejmztjUkC0bGzk7jycYNeETVCUb7vTRHgI2vXec4RXJpJLpjDE5C1LWc8l6YA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1782471783;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vgyG4JYr6Vz+QgoLYeDfXMNz2G667R6u0Wnv+qmfHYs=;
+	b=VD0cw75gmuwO8c0fdsJwZsj6ROZ9uCOzpzatMkjVmqqbuatKXXwevrrx+szNIH4sxsRkjN
+	VxWr8Ld4nl248HBA==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: Thomas Gleixner <tglx@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, 
+	David Woodhouse <dwmw2@infradead.org>, Miroslav Lichvar <mlichvar@redhat.com>, 
+	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, 
+	Arthur Kiyanovski <akiyano@amazon.com>, Rodolfo Giometti <giometti@enneenne.com>, 
+	Vincent Donnefort <vdonnefort@google.com>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oliver.upton@linux.dev>, kvmarm@lists.linux.dev, Oliver Upton <oupton@kernel.org>, 
+	Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org, Takashi Iwai <tiwai@suse.com>, 
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>, Johannes Berg <johannes.berg@intel.com>, 
+	Jacob Keller <jacob.e.keller@intel.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Peter Hilber <peter.hilber@oss.qualcomm.com>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, virtualization@lists.linux.dev, linux-wireless@vger.kernel.org, 
+	linux-sound@vger.kernel.org
+Subject: Re: [patch 09/24] timekeeping: Add CLOCK_AUX support for
+ ktime_get_snapshot_id()
+Message-ID: <20260626125819-d8b197fc-7671-4d12-a578-9025affc52d9@linutronix.de>
+References: <20260526165826.392227559@kernel.org>
+ <20260526171223.374814973@kernel.org>
+ <20260626103359-66ab2b54-d36f-416b-94a4-3f3708dccced@linutronix.de>
+ <87echtk24a.ffs@fw13>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+In-Reply-To: <87echtk24a.ffs@fw13>
 
->>       if (!ether_addr_equal(netdev->dev_addr, addr->sa_data))
->>               return -EACCES;
-
-> [Severity: High]
-> Will this cause a persistent state mismatch if a timeout is followed by a
-> retry?
->
-> If iavf_set_mac_sync() times out, it returns -EAGAIN and bypasses this
-> rollback, leaving adapter->hw.mac.addr updated but netdev->dev_addr at the
-> old MAC.
->
-> If the user then retries before the PF asynchronously completes the original
-> request, iavf_add_ether_addrs() returns -EBUSY. Since -EBUSY != -EAGAIN,
-> the rollback runs, forcibly reverting adapter->hw.mac.addr to the old MAC.
+On Fri, Jun 26, 2026 at 12:49:41PM +0200, Thomas Gleixner wrote:
+> On Fri, Jun 26 2026 at 10:48, Thomas Weißschuh wrote:
+> > On Tue, May 26, 2026 at 07:14:13PM +0200, Thomas Gleixner wrote:
+> > (...)
+> >
+> >>  static inline void tk_update_aux_offs(struct timekeeper *tk, ktime_t offs)
+> >> @@ -1218,6 +1223,12 @@ bool ktime_get_snapshot_id(struct system
+> >>  		tkd = &tk_core;
+> >>  		offs = &tk_core.timekeeper.offs_boot;
+> >>  		break;
+> >> +	case CLOCK_AUX ... CLOCK_AUX_LAST:
+> >> +		tkd = aux_get_tk_data(clock_id);
+> >> +		if (!tkd)
+> >> +			return false;
+> >> +		offs = &tkd->timekeeper.offs_aux;
+> >> +		break;
+> >
+> > 'tkd' is also used to compute 'monoraw'. However 'tkr_raw' and 'tkr_mono'
+> > are the same for auxilary clocks, so this will compute a wrong 'monoraw'.
 > 
-> When the PF's delayed success response finally arrives,
-> iavf_virtchnl_completion() sees the old MAC in both hw.mac.addr and
-> netdev->dev_addr, bypassing the netdev MAC update. The PF hardware is now
-> programmed with the new MAC, but the kernel retains the old MAC, dropping
-> traffic.
+> AUX clocks are independent in the first place and the MONORAW part is
+> the "MONORAW" related to the AUX clock itself. 
+> 
+> > Instead 'monoraw' should be computed based on 'tk_core'.
+> > Which then also requires the sequence locking of 'tk_core'.
+> 
+> No. From a PTP and steering point of view you want the "raw" value which
+> is related to the AUX clock itself and not the global one.
 
-This scenario requires an extremely narrow timing window: a 2.5s PF timeout
-(rare in normal operation, PF typically responds much faster), followed by an
-immediate retry before adminq_task clears current_op (microsecond window).
+Ack.
 
-Even if this race occurs, it's recoverable - the retry fails with -EBUSY
-and the user retries again successfully. This is a transient failure, not
-permanent state corruption.
+However the kdocs call it 'CLOCK_MONOTONIC_RAW'. Can we clean this up?
 
->>       if (adapter->current_op != VIRTCHNL_OP_UNKNOWN) {
->>               /* bail because we already have a command pending */
->>               dev_err(&adapter->pdev->dev, "Cannot add filters, command %d pending\n",
->>                      adapter->current_op);
->> -             return;
->> +             return -EBUSY;
->>       }
->
-> [Severity: High]
-> Could routine background tasks cause MAC changes to frequently fail?
->
-> The watchdog task routinely sets adapter->current_op for background commands
-> like VIRTCHNL_OP_GET_STATS. If iavf_set_mac() is called during this window,
-> iavf_set_mac_sync() will hit this check and immediately fail the MAC change
-> with -EBUSY.
->
-> Because there is no retry logic in iavf_set_mac(), this error propagates
-> directly to userspace, making MAC address configuration randomly fail based
-> on watchdog timing.
+> The global MONORAW and the AUX clock MONORAW are related obviously as
+> they share the same conversion factors.
+> 
+>      MONORAW(AUX$N) = MONORAW(GLOBAL) + OFFSET(AUX$N)
+> 
+> We don't have that information anywhere right now and we might want to
+> expose it to allow user space a proper correlation, but that's an
+> orthogonal problem.
+> 
+> From a PTP/steering point of view the code is correct as is.
 
-Background virtchnl operations (like GET_STATS) complete quickly, typically
-within milliseconds. The collision window is very small.
-
-Fail-fast with -EBUSY is semantically correct and allows user-space retry.
-If a collision occurs, it's spurious and recoverable immediately on retry.
-This is acceptable compared to the complexity and deadlock risks of queuing
-or waiting for background operations to complete while holding netdev_lock.
-
->> -static void iavf_mac_add_reject(struct iavf_adapter *adapter)
->> + */
->> +void iavf_mac_add_reject(struct iavf_adapter *adapter)
->>  {
->>       struct net_device *netdev = adapter->netdev;
->>       struct iavf_mac_filter *f, *ftmp;
->
-> [Severity: Medium]
-> Does exporting and reusing iavf_mac_add_reject() for local rollback cause
-> unintended background MAC changes?
->
-> When the user requests a MAC address that is already in the filter list
-> (e.g., a secondary MAC), iavf_add_filter() sets f->is_new_mac = false and
-> f->add = true, and flags IAVF_FLAG_AQ_ADD_MAC_FILTER.
->
-> If the synchronous operation fails locally (like the -EBUSY return above),
-> iavf_set_mac() calls this function. However, iavf_mac_add_reject() only
-> clears the pending state and removes the filter if f->is_new_mac is true:
->
->    if (f->is_new_mac) {
->        list_del(&f->list);
->        kfree(f);
->    }
->
-> Reused filters are ignored, leaving f->add = true and the
-> IAVF_FLAG_AQ_ADD_MAC_FILTER flag active. The background watchdog task will
-> eventually process this flag and blindly send the MAC configuration to the
-> PF, even though the VF already aborted the operation locally.
-
-This scenario only occurs when setting the primary MAC to an address that
-already exists as a secondary MAC in the filter list - an extremely rare
-configuration.
-
-Even if this occurs and the watchdog later sends the MAC to the PF, it is
-harmless: the MAC is already configured on the PF (as a secondary), so the
-redundant ADD_ETH_ADDR message has no adverse effect.
-
-The common case - changing primary MAC to a new address - uses is_new_mac =
-true and is handled correctly by the rollback logic.
+Thanks for the clarifications.
 
 
-
-These concerns represent theoretical edge cases that are extremely unlikely
-in practice. The synchronous approach fixes a reproducible deadlock affecting
-all users in production, allowing the user to retry and complete the
-operation. The trade-off is justified.
-
+Thomas
