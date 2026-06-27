@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B183812DA;
-	Sat, 27 Jun 2026 22:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78C03016E0;
+	Sat, 27 Jun 2026 22:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782600650; cv=none; b=mMbe9SOKSVkgkAResHjyFHPBtzEgcIEX/pp2hIs902hiIjOWtOEVvdZAt0OcOZcoYe5DjK8ILdjXW6LDLBMlIkC/yTbSlvJa4Ey3dQXPUv7/kQRNybaZeJ8qQpCV9NrYS9j7F0XSJ74xq5jGWK0+rFmmNLswsyczbtbGwIEmMJY=
+	t=1782600650; cv=none; b=tpB2/H3Y7DGblKgF2nGHnoOIQAkVFe6rrntER2gMXalQPhwJLQXrnDfC7u6Dcit/x+3lJWdvugynElSYCvbgM9s7VwkrDYY3tLXSP4AtGGroqbydSjTsZeF6WgmUCL/mCenm4W3MZSJdCIa4QmLqZXIrlFpLH7JmCb5bL2m2HrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1782600650; c=relaxed/simple;
-	bh=C+NG5QQa4hOLhinEOftJWLkyUGE6/PCuJbIe+d6jj88=;
+	bh=3Pnqf1f/5VxowyidrigA+RqxFhZhcTgyBCAjsoy/zUY=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ghkGmKIermQqgERCa+olj0aJS8ESuT0V7oyQ5PEaSxNkr7X5k9e1elr6tUdmOtyq5v5Di2hHUeixgEhXHdz1d1iV800Yd7dzqN3+3uq9VucPqAQjvkNu4pGdyclrCVMlPtgl/os60kOrnKAPHhMiYzQzKzy1MwJOFwwww6dGFvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lugLdlzx; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=BZX49E6vuA9iMtxM0BtdiuK1IQ0WaFM7axltyVL3i9pGfR25wBQ9ZUq4ycCrY9tdYAuOEaMvB9Yl7fZKPHAoPaYQ1qngIm1O4EbGQokVNLLGcIML4W8k62rDnv7K+szBrs+IkQcaMcJ3CAepD/9FXlJk1dLf6gDsV5ob0HCY/WE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yp3dH8pZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lugLdlzx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 146841F000E9;
-	Sat, 27 Jun 2026 22:50:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yp3dH8pZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B9BB1F00A3D;
+	Sat, 27 Jun 2026 22:50:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782600646;
-	bh=kZWjOiSImPrfh80sKo7yeGE91rVFd7WvXtigqP3CJC4=;
+	s=k20260515; t=1782600649;
+	bh=dGHcDsGOrD4TVd5B/eHXrzmMA+KKXUboBgjSGm4gJ28=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=lugLdlzxZ9Aosx77zfBgZmZ7ReTImSIcanXbGjA93UdeuxF1rUYqGyWXRMVMR7Ca3
-	 gKB46qN+JWKd54frifVcgbS6NqmO9zRXhEIKMBY9CrdRPFyO2+hZy9z11XD6oEdtI+
-	 j6rGFrIZ0XpepY+xemRol5xUNrUrOPVFT+pK7kKwseQyow6/1jzE8ZNetQNQEK3Tfi
-	 /1JYMhIjZVdLrMlGr/wSU7kqDnT9p3RvS7ArRUZVaVimK6/X4x6BQrIYRWxGozJa6P
-	 7V/NufDb3O9YDbdl+huOGaY2Rw/WKZJXA94dD+s4hbc8745RTQQbZfTjPieNVHJW1M
-	 duBQj7wPPGpnQ==
+	b=Yp3dH8pZ+5lRHbODLoms7YcgXCcllDN+zoNnTxcYPEhrqzFx0f6lgEJmvvbXNGaYD
+	 z2tr/ayG1YJb7wNLszJGiJzipMQUpho+gcBp41WR8G41OQc8RArHW0E2gJr7XE3olR
+	 Wwgeuiqfs8fZUwYKFclEMSMyIe26md/oto9VDdTZlh2fZ3z2a+KvFYJn7E+bFSLREo
+	 eGd4+Jad12WI2hg4cYeWKX4tuQudLAOIh6Por+UUKMRsQqFB0tEV5eHbpLZ911w7ZN
+	 TLVEDMvOBiwkzqAS/EjXHrsVo6PbqZHmkFNFhPapHei4C25iPe2bkL6jlV4sBMgO7W
+	 qANxA9jJy4J+w==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198673938452;
-	Sat, 27 Jun 2026 22:50:33 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 938113938452;
+	Sat, 27 Jun 2026 22:50:36 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,50 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] netpoll: fix a use-after-free on shutdown path
+Subject: Re: [PATCH net v3] sctp: add INIT verification after cookie unpacking
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178260063154.1451849.16906699436504289458.git-patchwork-notify@kernel.org>
-Date: Sat, 27 Jun 2026 22:50:31 +0000
-References: <20260625-netpoll_rcu_fix-v2-1-0748ffac1e98@debian.org>
-In-Reply-To: <20260625-netpoll_rcu_fix-v2-1-0748ffac1e98@debian.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, amwang@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, vlad.wing@gmail.com,
- asantostc@gmail.com, paulmck@kernel.org, kernel-team@meta.com,
- stable@vger.kernel.org, pavan.chebbi@broadcom.com
+ <178260063522.1451849.11621475280238770353.git-patchwork-notify@kernel.org>
+Date: Sat, 27 Jun 2026 22:50:35 +0000
+References: 
+ <ebcbbac574815b0850f371b4bdb02f2e602b94d3.1782341592.git.lucien.xin@gmail.com>
+In-Reply-To: 
+ <ebcbbac574815b0850f371b4bdb02f2e602b94d3.1782341592.git.lucien.xin@gmail.com>
+To: Xin Long <lucien.xin@gmail.com>
+Cc: netdev@vger.kernel.org, linux-sctp@vger.kernel.org, davem@davemloft.net,
+ kuba@kernel.org, edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+ marcelo.leitner@gmail.com
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 25 Jun 2026 05:03:18 -0700 you wrote:
-> There is a use-after-free error on netpoll, which is clearly detected by
-> KASAN.
+On Wed, 24 Jun 2026 18:53:12 -0400 you wrote:
+> In SCTP handshake, the INIT chunk is initially processed by the server
+> and embedded into the cookie carried in INIT-ACK. The client then
+> returns this cookie via COOKIE-ECHO, where the server unpacks it and
+> reconstructs the original INIT chunk.
 > 
->       BUG: KASAN: slab-use-after-free in _raw_spin_lock_irqsave+0x3b/0x80
->       Read of size 1 at addr ... by task kworker/9:1
->       Workqueue: events queue_process
->       Call Trace:
->        skb_dequeue+0x1e/0xb0
->        queue_process+0x2c/0x600
->        process_scheduled_works+0x4b6/0x850
->        worker_thread+0x414/0x5a0
->       Allocated by task 242:
->        __netpoll_setup+0x201/0x4a0
->        netpoll_setup+0x249/0x550
->        enabled_store+0x32f/0x380
->       Freed by task 0:
->        kfree+0x1b7/0x540
->        rcu_core+0x3f8/0x7a0
+> When cookie authentication is enabled, the cookie contents are protected
+> against tampering, so reusing the unpacked INIT without re-verification
+> is safe.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2] netpoll: fix a use-after-free on shutdown path
-    https://git.kernel.org/netdev/net/c/45f1458a8501
+  - [net,v3] sctp: add INIT verification after cookie unpacking
+    https://git.kernel.org/netdev/net/c/414c5447fe6a
 
 You are awesome, thank you!
 -- 
