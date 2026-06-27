@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0968A2773CA;
-	Sat, 27 Jun 2026 02:00:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122BF25B0A5;
+	Sat, 27 Jun 2026 02:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782525640; cv=none; b=qsbdNPlqezXyF2fY0RrwcMlbNzkD4E2wRj5W4CIXctAAZr3pe2cBk4jITlnfLsu8pL9HHUOjZUGsKsbZGra1KAEKAUJ/jZp1SvpNyFivEZ9sHhMkD0qLdxPdVkLkzWoGND3hNMcMDzg0rS+LatpAOO58CkP3pubWcOaD4rVzDy8=
+	t=1782525642; cv=none; b=sB5A3AKHUB1bDN89EqITf1Bk/Kk5/nBhHyenaoApMWENn2VKcYf/ou4mI3IdW0wDDkkNWR4w5KTlb5z4F6PxiigkVwh5ThsgEPcc2FI6u2YVdOS2x/0kiGS0bTap/jY9VQnG6rT4B3A8yVEEFLRQK5nJBSesPcmv/byYXOdpw9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782525640; c=relaxed/simple;
-	bh=aBu7WwNSA106j04af2V3nMVbhEprCuCy37bfeSUemCA=;
+	s=arc-20240116; t=1782525642; c=relaxed/simple;
+	bh=EFjoQt5Foug5DO1fQU0jSVTrUzZcJmb2zgIrDvDBDJM=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ptZ49++rTu3DbZcLDAwtix72vujJRv77khkoyz/f6V1g9VB9T8YIIJqLhApO8TKgEgH3t602ZvHBb3uRDsDSE05DK/ncoLoy2Qc25RdUf7M2xNAozU3eGViQNesW8z6ep+DJMACvN7uA8Wgxatr83GdTk6LQptQ4Sq7MIuT6YBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UyGFd9SX; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=uqepE5PGjWhGgcP1KS+cG8qT7hlU4VFZwAti6W6VvwB8UdXyXZFRW1adufYrapx44J5rqB0nYlikDV89y7WortVPj6BMEYJBX6dzKffDbgwIj6AmcYbAQH4OlBqF0ZmTHUrUF9H/4AA6Nx/gL0ClF+BVMqaNqXvM/92bqqK2+W8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FxppuCnD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UyGFd9SX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E35501F000E9;
-	Sat, 27 Jun 2026 02:00:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FxppuCnD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7CC71F000E9;
+	Sat, 27 Jun 2026 02:00:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782525638;
-	bh=4yHdHGfkrZLSnwfN25jAjiOc+CedmjCoRZsVINi5sNw=;
+	s=k20260515; t=1782525640;
+	bh=88bgxuwezmvW1f5k01honCxuGEX4KlXiyI8bc/EBdw0=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=UyGFd9SX/qOM10FK3ksdjzHPgYYDJ3r6uWWjT+yb/bUXEPRJW4lQyQV7dSMkivcDP
-	 rXxUwf28Fn+7lotYbz1/sVKywCrnOODUYayjp4EW36/IK6x+nXVEUfHHljbdn6iHUM
-	 oZfKxLVYpN3pcbCMF03Ym3Ibls5fVi0R897oveA7XDdgwdoSAWIm67gcNufO6Gk8bG
-	 wKsWebiKy9yTS5Sv89SHHztGSFAb8Hf+iJ/xf5EE6LgAceVCl+RrQtJHjReteZsJDN
-	 uqZAdcRNqgsMj1ln+I3rtKMUThgp566yL8lGmVX4Y9KN7LkPNSJ7lPfXlPhKTV3/Mv
-	 rmRpgnbzWIVjQ==
+	b=FxppuCnDzKfLdAShoKxwVfgAarciUROYgZhZpMTule5FdxAQPSI7GcwYCJtFPd7Yy
+	 JIHSeUN/EPsOJoulTbOjPLEBDIYgnvAq6FMKIZY/2CpHVLCjGS95Fzr4eeuZCuCoKk
+	 I4ZX7Fi7U4eMlBG8CPDSKJG7FIJMIygv+PUgNhIgT9eIT/8IOKPGzR5xXCUPxsZhxs
+	 mpEkh/fxP0uW3vLAvT1+JEMkoMF2+IkSUXs3JqgnSzlsg0YgV2664tgO5VTypWyWql
+	 HUJ5Bq8L/jV2fguPlB4IB5ToLwTPCn8S9FioQLlogLBV5xXCI8thIaErSzS4F6Noxw
+	 htpVL796wZkJA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 938A73938C76;
-	Sat, 27 Jun 2026 02:00:26 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56B3C3938C76;
+	Sat, 27 Jun 2026 02:00:28 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,40 +37,44 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 0/2] net/sched: finish the qdisc_dequeue_peeked conversion
- (taprio, multiq)
+Subject: Re: [PATCH net v2] seg6: validate SRH length before reading fixed
+ fields
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178252562506.1167656.8248831428302845030.git-patchwork-notify@kernel.org>
-Date: Sat, 27 Jun 2026 02:00:25 +0000
-References: <20260625-b4-disp-31bcb279-v1-0-85c40b83c529@proton.me>
-In-Reply-To: <20260625-b4-disp-31bcb279-v1-0-85c40b83c529@proton.me>
-To: Bryam Vargas <hexlabsecurity@proton.me>
-Cc: vinicius.gomes@intel.com, pabeni@redhat.com, jhs@mojatatu.com,
- jiri@resnulli.us, kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
- horms@kernel.org, netdev@vger.kernel.org, jarkao2@gmail.com,
- vladimir.oltean@nxp.com, linux-kernel@vger.kernel.org
+ <178252562681.1167656.14195813566936530803.git-patchwork-notify@kernel.org>
+Date: Sat, 27 Jun 2026 02:00:26 +0000
+References: 
+ <20260623-f01-17-seg6-srh-len-v2-1-2edc40e9e3e1@mails.tsinghua.edu.cn>
+In-Reply-To: 
+ <20260623-f01-17-seg6-srh-len-v2-1-2edc40e9e3e1@mails.tsinghua.edu.cn>
+To: Nuoqi Gui <gnq25@mails.tsinghua.edu.cn>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, andrea.mayer@uniroma2.it,
+ netdev@vger.kernel.org, bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
+ m.xhonneux@gmail.com, daniel@iogearbox.net, dlebrun@google.com
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 25 Jun 2026 04:51:18 -0500 you wrote:
-> Commit 77be155cba4e added peek emulation: a non-work-conserving qdisc's
-> ->peek dequeues one skb and stashes it in the child's gso_skb. A parent
-> that peeks such a child must then take the packet with
-> qdisc_dequeue_peeked(), not a direct ->dequeue(), or the stashed skb is
-> bypassed and the child's qlen/backlog desync. sch_red and sch_sfb were
-> just fixed for this; taprio and multiq still take the direct path.
+On Tue, 23 Jun 2026 18:32:31 +0800 you wrote:
+> seg6_validate_srh() reads fixed SRH fields such as srh->type and
+> srh->hdrlen before checking that the supplied length covers the fixed
+> struct ipv6_sr_hdr fields.
+> 
+> The BPF SEG6 encap path reaches this with a BPF program-supplied pointer
+> and length: bpf_lwt_push_encap() and the SEG6 local BPF END_B6 and
+> END_B6_ENCAP actions call bpf_push_seg6_encap(), which forwards the
+> length to seg6_validate_srh() with no minimum-size guard.  A 2-byte SEG6
+> encap header can therefore make the validator read srh->type at offset 2
+> beyond the caller-supplied buffer.
 > 
 > [...]
 
 Here is the summary with links:
-  - [1/2] net/sched: sch_taprio: Replace direct dequeue call with peek and qdisc_dequeue_peeked
-    https://git.kernel.org/netdev/net/c/e056e1dfcddc
-  - [2/2] net/sched: sch_multiq: Replace direct dequeue call with peek and qdisc_dequeue_peeked
-    https://git.kernel.org/netdev/net/c/54f6b0c843e2
+  - [net,v2] seg6: validate SRH length before reading fixed fields
+    https://git.kernel.org/netdev/net/c/a75d99f46bf2
 
 You are awesome, thank you!
 -- 
