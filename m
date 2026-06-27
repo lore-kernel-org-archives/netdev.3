@@ -1,64 +1,42 @@
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6BFC17B50F;
-	Sat, 27 Jun 2026 09:19:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609D538F954;
+	Sat, 27 Jun 2026 09:27:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782552000; cv=none; b=CX7oSo/bo05xHhgVabvjRBKlGHf8Calq2FF/P0CkrH7sEr6mnt+ySoZuhjAyhoGgt3W53TnnKYyVGdVbyyEIA5XhMtsHTqWGKQROTvehjXmN2Cb8YBNTBbwZXQX+Z6gJNaIOUfFf6r/li5t+a3B0iH7AfMjMikpmVekc+4XJWvM=
+	t=1782552457; cv=none; b=KEwuLP3XQ7RkfnwXkA+D21y4GB3a57UIuehkeFSuXr2Mt87J4vPg1vmun6kgl0iC+3WVpDzrHL7x/007qXI5/JgU3Rg0DrN9yGXYXri497/KO404fcYugPj1/wKyQLB3vnzwANXPeYPSf2nm3pJQOWhEVHqt677RLqz824LEmWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782552000; c=relaxed/simple;
-	bh=tR9LIJrkNhSMMGn3D8mQBonHeNu3FT+AcZtzgtdtwQU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kyAYEOtTMl9MMYDV53Jp3wiYzDkZuWTKvQxk5G1ButThxZ1mXPmWLV/51LX+d7PBPbzSK83FwGf3whlpOT55ueGtGtq8AAY/WP3+5/ZlJtkL8+rIwh7opv9m+rG4BC4mkpgo+RIyqm8fRrdBHPKURDBLHn7CY0xcFwUt3yzxOQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=Nfpzm/Eu; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=vzOhjkWv; arc=none smtp.client-ip=80.241.56.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1782552457; c=relaxed/simple;
+	bh=jrVtsHnfDRNSEJ/aii/rkH/8a/kolbD9GzkJQOM0Svs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=iBYsrboKgvQukE91KNBi2yn60HCfQF1Ro7sJ/yJb7mtss0csypjlaU59gpffN7ddS0ysasPHS4nz3JyKFzAHy2wLiyU17HINJUfaMV0NTfw/lKrt4AdVzAqJMjBWRcp5rsgFjQlkcGfLH+YY9EFCfZFwDOb4d87ZoAuEBBMRFWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=hF2yAGFB; arc=none smtp.client-ip=45.254.49.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="Nfpzm/Eu";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="vzOhjkWv"
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4gnRp60Spzz9trN;
-	Sat, 27 Jun 2026 11:19:58 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1782551998;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=QwieZNzbB1xPTt1ikPHi9VJDWtgRYqxWd5mD+A2G+L8=;
-	b=Nfpzm/EuR0PMAaih8vxJ7Bum44QP3W0OMPFT7tc/1ATdcm0foDbLVuXxWijPVGnL0BYjCO
-	fnsQIbbWfH2QBlDPZ8Az7NFo0OjIL9cDszpOXfESIuR5UJD6vlg3uBCLFUqSZD3RTc1Opk
-	MqfigFiank63wad2X1SGN88nsuOtbMXInvgJ3VwZkfG8xUd/prDNJlpA+K9ZDUxrizavYb
-	Lwn6f1/nutRhDvaG9DYYv0YHGYtcfZPwSJBYPZyFl7G0pK26o3l2ya67mrjUc8Ub0S11GY
-	XJvBacrJ+IjhtRXCfwFml4yHTiTNsF71H0Wr4nAO34dXPbpgm6iNP88VDBwEhQ==
-From: Manuel Ebner <manuelebner@mailbox.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1782551996;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=QwieZNzbB1xPTt1ikPHi9VJDWtgRYqxWd5mD+A2G+L8=;
-	b=vzOhjkWvm3rBBO6KfvDSDxSdLszKcl1A07W0pay3nFXpVjSp3jf3E/0T8Dj3Z6jYCCQnQz
-	aiYJHkbGzutiMVaTCIKH3qQ5wWgairyT6hGUUVFmn66PgYG6/CIeP2Dym2K2l5XYX7Srul
-	/XWH6lUeDxXh5rN1/leca8NXmgKI4X5FG3GwLD7I/g3iiWHiK65Y6oON7NVy/987KRjgYH
-	hXPKBLYkUjO3rupDV+ZbVw2Z12gDfluIEmBYeynpGCq/68CKefUT6kdCtSWLKgZ9jESq+T
-	6hKDU6E7YOKqdORmcny/abS6juxhn5HDGzbI8ncWl0elxHjzP/McXHpzBfHm0Q==
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-kernel@vger.kernel.org (open list),
-	Randy Dunlap <rdunlap@infradead.org>
-Cc: Manuel Ebner <manuelebner@mailbox.org>
-Subject: [PATCH] dt-bindings: Fix bracket
-Date: Sat, 27 Jun 2026 11:19:36 +0200
-Message-ID: <20260627091936.29809-1-manuelebner@mailbox.org>
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="hF2yAGFB"
+Received: from PC-202605011814.localdomain (unknown [223.112.146.162])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 43fdf9cd9;
+	Sat, 27 Jun 2026 17:22:20 +0800 (GMT+08:00)
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+To: sam@mendozajonas.com,
+	fercerpav@gmail.com
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	runyu.xiao@seu.edu.cn,
+	jianhao.xu@seu.edu.cn
+Subject: [RFC PATCH net 1/2] net/ncsi: defer freeing VLAN filter entries after RCU removal
+Date: Sat, 27 Jun 2026 17:22:13 +0800
+Message-Id: <20260627092214.373480-2-runyu.xiao@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260627092214.373480-1-runyu.xiao@seu.edu.cn>
+References: <20260627092214.373480-1-runyu.xiao@seu.edu.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -66,29 +44,70 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MBO-RS-META: 63gb6egznrbshnejs9oa3xasgy6d3efg
-X-MBO-RS-ID: f1f64c14bcd14920713
+X-HM-Tid: 0a9f08631a5903a1kunmb5b491adc8bea
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDGksZVksdSh1KHk1JGBhCS1YeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUhVSkpJVUpPTVVKTUlZV1kWGg8SFR0UWUFZT0tIVUpLSE
+	pPSExVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=hF2yAGFB0J0rFrsaO1TUsCScW+pX1hdnLcU4Ikse4f3DnarNY5ZlgRJcjMjyzz3/nn/ZFq8hsHNvargspqPmwP0gj3x11nz58kDw7qBbLTMqMYp7/WzvHKJKZWdmw1wXnxUsQLOHmEe7m/cklsyj0y/L+MOUVRKq3j7yTaVDick=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=PeYn69QskiMyDm2sM1NSc6St2B7NpfiUq6HwvAi6PVs=;
+	h=date:mime-version:subject:message-id:from;
 
-Add "(Alternate" to "ID)"
+NCSI keeps VLAN filter entries on ndp->vlan_vids and updates the list
+with RCU primitives. The configuration workqueue reads the list in
+set_one_vid() under rcu_read_lock(), then dereferences vlan->vid while
+constructing a Set VLAN Filter command.
 
-Signed-off-by: Manuel Ebner <manuelebner@mailbox.org>
+ncsi_vlan_rx_kill_vid() removes matching entries with list_del_rcu(),
+but it frees the object immediately with kfree(). VLAN add/delete
+callbacks are serialized by RTNL, but RTNL does not serialize the NCSI
+configuration workqueue reader. A reader can therefore keep a pointer to
+a struct vlan_vid across list_del_rcu() and race with the immediate
+free.
+
+Give struct vlan_vid an rcu_head and release removed entries with
+kfree_rcu(). This keeps the existing list structure and makes the
+list_del_rcu() lifetime contract match the real set_one_vid() reader.
+
+This was found by our static analysis tool and then manually reviewed
+against the current tree. CONFIG_PROVE_RCU_LIST was used as
+target-matched triage evidence; the lifetime change is based on the
+matching source-level reader and updater paths rather than on the
+dynamic warning alone.
+
+Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
 ---
- Documentation/devicetree/bindings/net/microchip,lan95xx.yaml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ncsi/internal.h    | 1 +
+ net/ncsi/ncsi-manage.c | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/net/microchip,lan95xx.yaml b/Documentation/devicetree/bindings/net/microchip,lan95xx.yaml
-index accff93d38f8..62bf982aff2b 100644
---- a/Documentation/devicetree/bindings/net/microchip,lan95xx.yaml
-+++ b/Documentation/devicetree/bindings/net/microchip,lan95xx.yaml
-@@ -33,7 +33,7 @@ properties:
-           - usb424,9906   # SMSC9505A USB Ethernet Device (HAL)
-           - usb424,9907   # SMSC9500 USB Ethernet Device (Alternate ID)
-           - usb424,9908   # SMSC9500A USB Ethernet Device (Alternate ID)
--          - usb424,9909   # SMSC9512/9514 USB Hub & Ethernet Device  ID)
-+          - usb424,9909   # SMSC9512/9514 USB Hub & Ethernet Device (Alternate ID)
-           - usb424,9e00   # SMSC9500A USB Ethernet Device
-           - usb424,9e01   # SMSC9505A USB Ethernet Device
-           - usb424,9e08   # SMSC LAN89530 USB Ethernet Device
+diff --git a/net/ncsi/internal.h b/net/ncsi/internal.h
+index adee6dcabdc3..d9f0eadc7a24 100644
+--- a/net/ncsi/internal.h
++++ b/net/ncsi/internal.h
+@@ -310,6 +310,7 @@ enum {
+ 
+ struct vlan_vid {
+ 	struct list_head list;
++	struct rcu_head rcu;
+ 	__be16 proto;
+ 	u16 vid;
+ };
+diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
+index 446e4e3b9553..5316eadd8ce4 100644
+--- a/net/ncsi/ncsi-manage.c
++++ b/net/ncsi/ncsi-manage.c
+@@ -1737,7 +1737,7 @@ int ncsi_vlan_rx_kill_vid(struct net_device *dev, __be16 proto, u16 vid)
+ 			netdev_dbg(dev, "NCSI: vid %u found, removing\n", vid);
+ 			list_del_rcu(&vlan->list);
+ 			found = true;
+-			kfree(vlan);
++			kfree_rcu(vlan, rcu);
+ 		}
+ 
+ 	if (!found) {
 -- 
-2.54.0
+2.34.1
 
