@@ -1,66 +1,80 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F1A9463
-	for <netdev@vger.kernel.org>; Sat, 27 Jun 2026 22:49:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69ED43016E0;
+	Sat, 27 Jun 2026 22:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782600575; cv=none; b=q1YRN5eSP2bTmM58pXG/qVb4Fb5lV1prh88jTNrEbSSm1hHmFbKXQp0p6/bsu9SYxYzNf2Fg5XeVKRs7JpFj1Y9/M3O4iDbvH7JPhFH44pnurBoE/lYy/7dWfYvny62TXjof9jsSRFEwLnp6lFRRPHEEsIklws+qWr2ubQTyLBM=
+	t=1782600642; cv=none; b=KHfUqQAHsBkfDUu+YfaPKcIjOUPL9UQlygNWwPQqlit4kw8LZzSOSLzNAsMMxgn1/Pp+oxJW1traCg71y+bras4lPtd/hBcyY6gEVz5x2puUOYJxIWkrqJbL05v1R00kJzCSd5EEAqcupQoYIPZ9pq9X5hyQgmdwI7qSn5fuuqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782600575; c=relaxed/simple;
-	bh=EDV4vW7XuXcYOKgF8ffKtCsB4ZtaV4p1IMk5iDX3t70=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SvTiW57Gvn3tDXoK5yTQgh9Eq3NteDUJp3LCE0uOmqY7zrJLWP3QVHVM9QpUOWiPCUvpDkqCeXD4p2lmYao22u4XlYzJCvO/2w2XOLZPaNQpGw8wUu1vTznYGMX2KA7DxgibDbkePf76M1u+9lsLde63Wq1yb5vLIDoIYG/iRc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GzC94qMH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782600642; c=relaxed/simple;
+	bh=dJ7pXABRGOScU6m4JSi0LnBB2aXeCP2ysvxhvfBOh4M=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=ryedgdm/u6N6px567TudISzt8hMN78t/Udh+ZmAjZg8CTzwl8EJ+WwtI8EYsXg5njCBt/fSw6Bbw71nKIU0k8qBkoR/j19XciusXx5ewrEyYYnxEtuOuLgM/BlZNaPrpZp/mIpJsD9oRBhsLXthl/+xzkyEbP+JKksFxP/5Hk1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e8mZdO38; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GzC94qMH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAC081F000E9;
-	Sat, 27 Jun 2026 22:49:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e8mZdO38"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1538B1F000E9;
+	Sat, 27 Jun 2026 22:50:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782600574;
-	bh=lvc4789cmtfQZqve++GjyXObf85hW1/QotscR9uDLek=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=GzC94qMHKna911BVaHrhsAln32XiWYt0EojNHEEVQaAlKRzVsoGY01S6nSUcMIqmc
-	 B+fwmwpzvxBj8zQVg3ApeV8HU8VBFll1jLytppVWD93GK7qBH8Zg15jOn8ws8B6CF1
-	 COphaCX3dV9UNfNI6ULQCMXpP5BneshmWe3sAkGDdWBOAvWuJIVZfbCy+GlDxLzQeE
-	 YciTgJS/dPPs/9o3Xjs5eVQgfJ8R/JV2MPQ84Ouac/2tIXZmyGlJUdff+/KwKKv8aA
-	 ZoW0yy52dwUfGgo0fcf0o65sT+URodqdgfMp8+Hq0M7re4gMBlh8E8rdtNaVa3sm22
-	 QYr/N1mNMAGdA==
-Date: Sat, 27 Jun 2026 15:49:32 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Linus Walleij <linusw@kernel.org>
-Cc: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Florian Fainelli <florian.fainelli@broadcom.com>, Jonas
- Gorski <jonas.gorski@gmail.com>, Hauke Mehrtens <hauke@hauke-m.de>, Kurt
- Kanzenbach <kurt@linutronix.de>, Woojung Huh <woojung.huh@microchip.com>,
- UNGLinuxDriver@microchip.com, "Chester A. Unal"
- <chester.a.unal@arinc9.com>, Daniel Golle <daniel@makrotopia.org>, Matthias
- Brugger <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
- <angelogioacchino.delregno@collabora.com>, Wei Fang <wei.fang@nxp.com>,
- Clark Wang <xiaoning.wang@nxp.com>, =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?=
- <clement.leger@bootlin.com>, George McCollister
- <george.mccollister@gmail.com>, David Yang <mmyangfl@gmail.com>,
- netdev@vger.kernel.org, Sashiko AI Review <sashiko-bot@kernel.org>
-Subject: Re: [PATCH net v5] net: dsa: Fix skb ownership in taggers
-Message-ID: <20260627154932.1304e1f4@kernel.org>
-In-Reply-To: <20260625-dsa-fix-free-skb-v5-1-b5931e4cbdb0@kernel.org>
-References: <20260625-dsa-fix-free-skb-v5-1-b5931e4cbdb0@kernel.org>
+	s=k20260515; t=1782600641;
+	bh=KK1xQmf+wVy5ZvgMHkZv2n76zynSmPXrIRD2VdxwkJ8=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=e8mZdO38R36kEk4ixQxV02UtHkI/bO/JKZpF8prhj0Uf3ahkON7dMN8yJypr+mxPc
+	 AzZCor7nxsgwwzkuge5w8PPYFZqD6UbyaNG2B+JY1CyNo7p8HuVhYXSPN2Y5npo0FM
+	 mzPbnJK6tN9j9FYs8JQj10PvP2d4Qp7Pu4zPZM0OL9gld5wNn1Z2eNwN1+IfIEewqa
+	 cQpWjzhUi/RH3mobLGhKAHC9evQ6YfYR2yR2YmPf11m5Pp3MeUL/2FPDijtWB8ZoZ5
+	 y6x+oDn/CuhGkMt3sPX5D7op2+9nqLE/c7alJm+W9Kd0xPpupb5rn/l5Uya2HM4BD1
+	 CUWJ08s41GZ1w==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198AD3938452;
+	Sat, 27 Jun 2026 22:50:28 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net: enetc: check the number of BDs needed for
+ xdp_frame
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178260062679.1451849.6906135488386878812.git-patchwork-notify@kernel.org>
+Date: Sat, 27 Jun 2026 22:50:26 +0000
+References: <20260626073244.2168214-1-wei.fang@oss.nxp.com>
+In-Reply-To: <20260626073244.2168214-1-wei.fang@oss.nxp.com>
+To: Wei Fang (OSS) <wei.fang@oss.nxp.com>
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, ast@kernel.org, daniel@iogearbox.net,
+ hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me, wei.fang@nxp.com,
+ imx@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ bpf@vger.kernel.org
 
-On Thu, 25 Jun 2026 09:47:01 +0200 Linus Walleij wrote:
-> NOTICE: Backporting patches to taggers (e.g. for stable kernels) after
-> this point cannot be mechanical or they will introduce double
-> kfree_skb().
+Hello:
 
-Sorry for the backporting pain but since the DSA reviews have been 
-a bit sparse lately - I think we need to keep this code base free
-of tribal knowledge, to the extent possible.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Fri, 26 Jun 2026 15:32:44 +0800 you wrote:
+> From: Wei Fang <wei.fang@nxp.com>
+> 
+> The size of xdp_redirect_arr array is ENETC_MAX_SKB_FRAGS. However, the
+> number of fragments contained in xdp_frame may be greater than or equal
+> to ENETC_MAX_SKB_FRAGS, which will cause the access to xdp_redirect_arr
+> to be out of bounds.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net] net: enetc: check the number of BDs needed for xdp_frame
+    https://git.kernel.org/netdev/net/c/555c5475e787
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
