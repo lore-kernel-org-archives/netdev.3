@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B26537DE8D
-	for <netdev@vger.kernel.org>; Sat, 27 Jun 2026 22:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21B6E3382C3;
+	Sat, 27 Jun 2026 22:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782600652; cv=none; b=dDXHOQm967NvqJcuaOME7nQ4HnWR66pasUrzTgelKwR6QXBLtINZeZesVoC/FwFJ1oZVPrVZbt+JrlGjyjwyHACw3bncyx8IJAOSg+gI/SOFaIQGgJrZHmVd2w//WPJv8RpZBthWZLmysvCHw564G+F6Kabxat2sEYmc6NkI/fM=
+	t=1782600659; cv=none; b=czPDfsMT92ICMndk8oTqJSQI5D/v4gqeDwLi2bNy9qsl5bOAadYYsSQxK0TFLU5DfNusiXjgT3rGw/G2qXUmRTEZNlUsx5hUjPcfsN7Vsxr128/LHL3qdp9+Jy1xBTVKSyQfQChLLJUBRbJeo+qji+fsmXhcdG9hpPL0eaxkaLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782600652; c=relaxed/simple;
-	bh=52WZHKffL/Td1hvw29mynhk4Ti+HY/RzHTOskX6w3/A=;
+	s=arc-20240116; t=1782600659; c=relaxed/simple;
+	bh=7pN58KAjqRzxmECDQFd/BlH0XKgQyoUo0/7Qd2x9vK8=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=nte49XWhLBmQrnG9V9LaAnIlX/LWZp4XqyqxqQly7EDz5Ssb1fWIinaAOLWatUI+S6smRUotUXYV7toyAomYP7jfFD/Vr5M91pYNs7r4a1KwxY7LZt/mIFr7apHrO7O0lMqnBKrPOiiqmFjRQptkmlqCorNL/dSCzMFmph35Eng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ICJ2pavM; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=D+a+BJeQ1FcAA90yGVdbaZ1KFGO5V/lzrid/hzGNceYcvjyQTQ577Ace4d2H/czaxLJJng3FcIk3U1nwiKMnRShtP4RQoEsEJjyT3MynsbWU/gCNv7bMGk++YDn5syKxch1HNEmnHMhb8J3QqWnk9o0dsmdA3J5KlRseX5RquCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O5JSPTbn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ICJ2pavM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 501881F000E9;
-	Sat, 27 Jun 2026 22:50:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O5JSPTbn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB72D1F00A3A;
+	Sat, 27 Jun 2026 22:50:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782600651;
-	bh=WUBEoH15RqIo4oFjBLLuDYUfLC4Rqnn2RSE89hLfxZc=;
+	s=k20260515; t=1782600647;
+	bh=Wx5JmIrHjn2nOrnRlXE/MNwWt4FjR4DXRdY4uRTqoKs=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=ICJ2pavMSOSnqjG0tMQMLjrvwApy9T1MWm1vKfispbXS/6zXo1O2uzFS0Ugdm1T7M
-	 j7ie0vtRfWX09Xq+e4B6fYE929MksJZ6/JMPFyjepVLZJnjG/cCc8dwu2LvA1+Io2A
-	 Igyl6symkXW6vGiMiBDRYYkQF8qye/9TBzIygVCGCmlFCcSBWOnwxt6V/DDMuTGVp3
-	 hdnhqP8dUJBtPe97jSsi50nOyMYD2csRMs3STAecLEZi0XSHym9QbrZGoPTgPIYh38
-	 Zm8mJL6ZtKiMoty26gRKkUqBEPU5aex4/dfPRNO0KhXEuYOrrrVmVYj6ycClvkUClX
-	 4k8Nu2efuw5BA==
+	b=O5JSPTbnCXwnh7e6QnKmiG8/OMyBwflxQybl7dJONOKiOdMxbtijfMrR2hloC9LdB
+	 mN5bsHQ1h5oy5BKOyhf25vJNO3dVaIfBJZNegocKWa+mMBSBCiHwrKLeRL/4lWRcli
+	 1bT7Llbhr1SZOQ2O3WfvP7CS4qtkl3khS2EXTMqLxDkmNBxyciCrXZVLyVAx7aNJcl
+	 mNEQDD3141PAJclL+3vetGcCJnjxWVwqBkimDCw/KEuiaduPCLzbJLsYumDTFZEw27
+	 ns+Ele1D3G+qFfNZYYcOWrrrCKM1KMeEhUJLh3xw9rUjwZm1gZz7r+7r0VXitfo28y
+	 i+vPJPvVm2REw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5686D3938452;
-	Sat, 27 Jun 2026 22:50:38 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09773938452;
+	Sat, 27 Jun 2026 22:50:34 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,44 +37,36 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: airoha: dma map xmit frags with
- skb_frag_dma_map()
+Subject: Re: [PATCH net] MAINTAINERS: Update Marvell octeontx2 driver
+ maintainers
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178260063683.1451849.7063958705946574115.git-patchwork-notify@kernel.org>
-Date: Sat, 27 Jun 2026 22:50:36 +0000
-References: 
- <20260625-airoha-eth-skb_frag_dma_map-v1-1-31d9e460aae6@kernel.org>
-In-Reply-To: 
- <20260625-airoha-eth-skb_frag_dma_map-v1-1-31d9e460aae6@kernel.org>
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
+ <178260063332.1451849.10661256898846524415.git-patchwork-notify@kernel.org>
+Date: Sat, 27 Jun 2026 22:50:33 +0000
+References: <20260626044819.3004811-1-rkannoth@marvell.com>
+In-Reply-To: <20260626044819.3004811-1-rkannoth@marvell.com>
+To: Ratheesh Kannoth <rkannoth@marvell.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ sgoutham@marvell.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 25 Jun 2026 11:42:46 +0200 you wrote:
-> Map xmit skb fragments using skb_frag_dma_map() instead of
-> dma_map_single(skb_frag_address()). skb_frag_address() relies on
-> page_address() to obtain a kernel virtual address, which is not
-> guaranteed to work for all page types (e.g. highmem pages or
-> user-pinned pages from MSG_ZEROCOPY).
-> skb_frag_dma_map() maps the fragment directly via its struct page and
-> offset through dma_map_page(), avoiding the need for a kernel virtual
-> address entirely.
-> Introduce an enum airoha_dma_map_type to track how each queue entry was
-> mapped (single vs page), so that the matching unmap function is called
-> on completion and in error paths.
+On Fri, 26 Jun 2026 10:18:19 +0530 you wrote:
+> Update the maintainer entries for the Marvell OcteonTX (RVU) drivers to
+> reflect recent organizational changes.
 > 
-> [...]
+> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+> ---
+>  MAINTAINERS | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
 
 Here is the summary with links:
-  - [net] net: airoha: dma map xmit frags with skb_frag_dma_map()
-    https://git.kernel.org/netdev/net/c/32f1c2bbb26a
+  - [net] MAINTAINERS: Update Marvell octeontx2 driver maintainers
+    https://git.kernel.org/netdev/net/c/56114690ff3c
 
 You are awesome, thank you!
 -- 
