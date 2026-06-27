@@ -1,94 +1,168 @@
-Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74682F7EF4;
-	Sat, 27 Jun 2026 09:27:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1DC211466;
+	Sat, 27 Jun 2026 09:28:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782552458; cv=none; b=A0G/k0qxvTHQFy+imkJBjnCX3F0SjTXBxCNCjn0dNT/8nCGWvSvP0pz9i6Cn98jSes86KThf7k2yZy5SHbjjXm7lV0dgi0YC07lNNk0SnQtFTWvyCmE8S6zu18IBeTT5DOYEY8mr+rT4kR/ebMva0j6IkDreY6OQION3nT4ySPQ=
+	t=1782552528; cv=none; b=LfI7PAG2348PSrOUwpc/lorTtvVcXsbwkc1Wv8j6Y/7hufOVOLahpMuRm21QX3K9RidblOXiYrXywOsBOjdRAkrzuaSrk6yiDPGs5c/CXgrQLAvR4Wyo9uXZV8Zt8GBPU7FHl3XKl+bxwUo1Ca8zNS3a2rUcgw+iybgQQ8eLc7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782552458; c=relaxed/simple;
-	bh=2sksE9mrMTwqXS27DmqRUSUAaLxtRQqcOObEDQV4qUY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kgHvSNFucLDgLYA64rltidsUHHcT3BHrtM09aThR4GPjQ54kK6dpZ8mP473oUvH9qufphC6obbQVWjoIcuDYGQMHN0VxJLcRFxdFqCk7jyKSsIh57VvoI+p25+V52PcJ6ydlpTIc59fPNN0sZJh5ogn+o6y14mUN8xM+ZYJOD0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=cWf7OYzZ; arc=none smtp.client-ip=101.71.155.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+	s=arc-20240116; t=1782552528; c=relaxed/simple;
+	bh=aF47iLMPZHY8ikZj0/3fPMH5Q4mRqmYCLQexdlk5/mo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=gpNkYLfuBY0Qex4lGk0agh2UM+QZfUF17aNErYAofdhk77PPxS66PmwLC02V6I7OoG5EOPZc+bYo1W0zhb7itHhJf0u+5nvWELJHzXrMxDiUJWOiClbwo8dXHVNVaRxl3lqKehUPC0i23SWlmd2xxuZ84QGFaAsBFf25w0Yzn6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=TsWvUQMt; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="cWf7OYzZ"
-Received: from PC-202605011814.localdomain (unknown [223.112.146.162])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 43fdf9cd8;
-	Sat, 27 Jun 2026 17:22:19 +0800 (GMT+08:00)
-From: Runyu Xiao <runyu.xiao@seu.edu.cn>
-To: sam@mendozajonas.com,
-	fercerpav@gmail.com
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	runyu.xiao@seu.edu.cn,
-	jianhao.xu@seu.edu.cn
-Subject: [RFC PATCH net 0/2] net/ncsi: tighten RCU-list lifetime handling
-Date: Sat, 27 Jun 2026 17:22:12 +0800
-Message-Id: <20260627092214.373480-1-runyu.xiao@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="TsWvUQMt"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id BA97AC2BCF4;
+	Sat, 27 Jun 2026 09:28:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux.dev; s=korg;
+	t=1782552527; bh=aF47iLMPZHY8ikZj0/3fPMH5Q4mRqmYCLQexdlk5/mo=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=TsWvUQMt62wgvD+ef+UVGOqHtKVfLbwtduFNfuSabHEs0UrZfg2NB048fs4EnTH47
+	 IyBXPPvoPmzKjxGu0DOzlihUKYk/pHITmJb2ozXO8ZmBw6mJz+/CHablDhSUftGImD
+	 ulkY+iqbXG6A0X82GkvfDMPCAV0ObG/Wicl4DkP0=
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AA646C43602;
+	Sat, 27 Jun 2026 09:28:47 +0000 (UTC)
+From: Alvin Sun <alvin.sun@linux.dev>
+Date: Sat, 27 Jun 2026 17:28:40 +0800
+Subject: [PATCH v7 02/10] rust: module: add `THIS_MODULE` const to
+ `ModuleMetadata` trait
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9f0863166c03a1kunmb5b491adc8be8
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCThpLVktNQkxDSU9JGkgeHVYeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUhVSkpJVUpPTVVKTUlZV1kWGg8SFR0UWUFZT0tIVUpLSE
-	pPSExVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=cWf7OYzZu2t3M2LOexcXhflsehnsV7nTYzbkktRM0o+/hGk9QwercykJXgmARVtjIYsrSppqbH71r655BSH/ir7danpCjCXsLtwZ6K+D9IF2atJ6Yb1gvawPhxK9miOwSsV3h3cO9cMS//t5TzH8ufe4yD8jpCO72h+xk6cLFsg=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
-	bh=1NTtOf8NoGC+0DDLouyTbE8AK+VOvoODnH2UcTV8FJA=;
-	h=date:mime-version:subject:message-id:from;
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260627-fix-fops-owner-v7-2-33cd3990edf0@linux.dev>
+References: <20260627-fix-fops-owner-v7-0-33cd3990edf0@linux.dev>
+In-Reply-To: <20260627-fix-fops-owner-v7-0-33cd3990edf0@linux.dev>
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+ Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, 
+ Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Arnd Bergmann <arnd@arndb.de>, Brendan Higgins <brendan.higgins@linux.dev>, 
+ David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>, 
+ Breno Leitao <leitao@debian.org>, Jens Axboe <axboe@kernel.dk>, 
+ Dave Ertman <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>, 
+ Igor Korotin <igor.korotin@linux.dev>, 
+ FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+ Bjorn Helgaas <bhelgaas@google.com>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, 
+ Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
+ Carlos Llamas <cmllamas@google.com>
+Cc: rust-for-linux@vger.kernel.org, linux-modules@vger.kernel.org, 
+ driver-core@lists.linux.dev, dri-devel@lists.freedesktop.org, 
+ nova-gpu@lists.linux.dev, linux-kselftest@vger.kernel.org, 
+ kunit-dev@googlegroups.com, linux-block@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-pci@vger.kernel.org, Alvin Sun <alvin.sun@linux.dev>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1782552525; l=3594;
+ i=alvin.sun@linux.dev; s=20260317; h=from:subject:message-id;
+ bh=aF47iLMPZHY8ikZj0/3fPMH5Q4mRqmYCLQexdlk5/mo=;
+ b=7R/uNBFs1pvnOfA6/pe6CcnnqKBFT1zKiiahnOmqWa6q1JXz/QYMu5TA8HTmfpXdXZwymQcLc
+ qYCInzcENwBC5nnEPgxrUZrDd5pO/3oLK3qm3nWWEBIShkmRXUCzaor
+X-Developer-Key: i=alvin.sun@linux.dev; a=ed25519;
+ pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
+X-Endpoint-Received: by B4 Relay for alvin.sun@linux.dev/20260317 with
+ auth_id=684
 
-Hi,
+Since `const_refs_to_static` has been stable as of the MSRV bump, a
+`ThisModule` pointer can now be used in const contexts.
 
-This small RFC series addresses two NCSI RCU-list lifetime issues.
+Add a `THIS_MODULE` const to the `ModuleMetadata` trait so that modules
+can provide their `ThisModule` pointer in const contexts such as static
+`file_operations`.
 
-The candidates were found by our static analysis tool and then manually
-reviewed against the current tree. CONFIG_PROVE_RCU_LIST was used as
-target-matched triage evidence; the RFC patches below are based on the
-source-level lifetime review rather than on the dynamic warning alone.
+Add a `this_module()` helper to retrieve the `THIS_MODULE` pointer of a
+given module type, and update `__init` to use it instead of the
+`THIS_MODULE` static generated by the `module!` macro.
 
-Patch 1 defers freeing VLAN filter entries removed with list_del_rcu().
-The NCSI configuration workqueue is a real RCU reader of the same list
-in set_one_vid(), so RTNL serialization of VLAN add/delete callbacks is
-not enough to protect that reader.
+The `static THIS_MODULE` generated by the `module!` macro is retained
+for backwards compatibility with existing users and removed in a later
+patch once all references have been migrated.
 
-Patch 2 moves the existing NCSI device workqueue shutdown before
-package/channel teardown and clears channel_queue while the channel
-objects are still alive. Current trees already disable the work item
-before freeing ndp itself, but still free channels before
-disable_work_sync(). NCSI work can walk the package/channel lists and
-channel_queue during that window.
+Assisted-by: opencode:glm-5.2
+Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Acked-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
+---
+ rust/kernel/module.rs |  9 +++++++++
+ rust/macros/module.rs | 18 +++++++++++++++++-
+ 2 files changed, 26 insertions(+), 1 deletion(-)
 
-I am sending this as RFC because I have not tested it on NCSI hardware,
-and maintainers should confirm whether additional request timer
-cancellation or RCU-delayed package/channel release is desirable for the
-unregister path.
-
-The patches intentionally do not claim a standalone exploitable UAF. The
-evidence is a source-level lifetime risk plus target-matched
-CONFIG_PROVE_RCU_LIST warnings for the affected NCSI helpers.
-
-Runyu Xiao (2):
-  net/ncsi: defer freeing VLAN filter entries after RCU removal
-  net/ncsi: stop device work before freeing channels
-
- net/ncsi/internal.h    |  1 +
- net/ncsi/ncsi-manage.c | 11 +++++++++--
- 2 files changed, 10 insertions(+), 2 deletions(-)
+diff --git a/rust/kernel/module.rs b/rust/kernel/module.rs
+index be242a82e86d2..d713705984477 100644
+--- a/rust/kernel/module.rs
++++ b/rust/kernel/module.rs
+@@ -42,6 +42,15 @@ fn init(module: &'static ThisModule) -> impl pin_init::PinInit<Self, crate::erro
+ pub trait ModuleMetadata {
+     /// The name of the module as specified in the `module!` macro.
+     const NAME: &'static crate::str::CStr;
++
++    /// The module's `THIS_MODULE` pointer.
++    const THIS_MODULE: ThisModule;
++}
++
++/// Returns a reference to the `THIS_MODULE` of the given module type.
++#[inline]
++pub const fn this_module<M: ModuleMetadata>() -> &'static ThisModule {
++    &M::THIS_MODULE
+ }
+ 
+ /// Equivalent to `THIS_MODULE` in the C API.
+diff --git a/rust/macros/module.rs b/rust/macros/module.rs
+index 06c18e2075083..aa9a618d5d19e 100644
+--- a/rust/macros/module.rs
++++ b/rust/macros/module.rs
+@@ -519,6 +519,22 @@ pub(crate) fn module(info: ModuleInfo) -> Result<TokenStream> {
+ 
+         impl ::kernel::ModuleMetadata for #type_ {
+             const NAME: &'static ::kernel::str::CStr = #name_cstr;
++
++            #[cfg(MODULE)]
++            const THIS_MODULE: ::kernel::ThisModule = {
++                extern "C" {
++                    static __this_module: ::kernel::types::Opaque<::kernel::bindings::module>;
++                }
++
++                // SAFETY: `__this_module` is constructed by the kernel at load time
++                // and lives until the module is unloaded.
++                unsafe { ::kernel::ThisModule::from_ptr(__this_module.get()) }
++            };
++
++            #[cfg(not(MODULE))]
++            const THIS_MODULE: ::kernel::ThisModule = unsafe {
++                ::kernel::ThisModule::from_ptr(::core::ptr::null_mut())
++            };
+         }
+ 
+         // Double nested modules, since then nobody can access the public items inside.
+@@ -616,7 +632,7 @@ pub extern "C" fn #ident_exit() {
+                 /// This function must only be called once.
+                 unsafe fn __init() -> ::kernel::ffi::c_int {
+                     let initer = <super::super::LocalModule as ::kernel::InPlaceModule>::init(
+-                        &super::super::THIS_MODULE
++                        ::kernel::module::this_module::<super::super::LocalModule>()
+                     );
+                     // SAFETY: No data race, since `__MOD` can only be accessed by this module
+                     // and there only `__init` and `__exit` access it. These functions are only
 
 -- 
-2.34.1
+2.43.0
+
+
