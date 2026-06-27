@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78C03016E0;
-	Sat, 27 Jun 2026 22:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B26537DE8D
+	for <netdev@vger.kernel.org>; Sat, 27 Jun 2026 22:50:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782600650; cv=none; b=tpB2/H3Y7DGblKgF2nGHnoOIQAkVFe6rrntER2gMXalQPhwJLQXrnDfC7u6Dcit/x+3lJWdvugynElSYCvbgM9s7VwkrDYY3tLXSP4AtGGroqbydSjTsZeF6WgmUCL/mCenm4W3MZSJdCIa4QmLqZXIrlFpLH7JmCb5bL2m2HrY=
+	t=1782600652; cv=none; b=dDXHOQm967NvqJcuaOME7nQ4HnWR66pasUrzTgelKwR6QXBLtINZeZesVoC/FwFJ1oZVPrVZbt+JrlGjyjwyHACw3bncyx8IJAOSg+gI/SOFaIQGgJrZHmVd2w//WPJv8RpZBthWZLmysvCHw564G+F6Kabxat2sEYmc6NkI/fM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782600650; c=relaxed/simple;
-	bh=3Pnqf1f/5VxowyidrigA+RqxFhZhcTgyBCAjsoy/zUY=;
+	s=arc-20240116; t=1782600652; c=relaxed/simple;
+	bh=52WZHKffL/Td1hvw29mynhk4Ti+HY/RzHTOskX6w3/A=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=BZX49E6vuA9iMtxM0BtdiuK1IQ0WaFM7axltyVL3i9pGfR25wBQ9ZUq4ycCrY9tdYAuOEaMvB9Yl7fZKPHAoPaYQ1qngIm1O4EbGQokVNLLGcIML4W8k62rDnv7K+szBrs+IkQcaMcJ3CAepD/9FXlJk1dLf6gDsV5ob0HCY/WE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yp3dH8pZ; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=nte49XWhLBmQrnG9V9LaAnIlX/LWZp4XqyqxqQly7EDz5Ssb1fWIinaAOLWatUI+S6smRUotUXYV7toyAomYP7jfFD/Vr5M91pYNs7r4a1KwxY7LZt/mIFr7apHrO7O0lMqnBKrPOiiqmFjRQptkmlqCorNL/dSCzMFmph35Eng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ICJ2pavM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yp3dH8pZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B9BB1F00A3D;
-	Sat, 27 Jun 2026 22:50:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ICJ2pavM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 501881F000E9;
+	Sat, 27 Jun 2026 22:50:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782600649;
-	bh=dGHcDsGOrD4TVd5B/eHXrzmMA+KKXUboBgjSGm4gJ28=;
+	s=k20260515; t=1782600651;
+	bh=WUBEoH15RqIo4oFjBLLuDYUfLC4Rqnn2RSE89hLfxZc=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Yp3dH8pZ+5lRHbODLoms7YcgXCcllDN+zoNnTxcYPEhrqzFx0f6lgEJmvvbXNGaYD
-	 z2tr/ayG1YJb7wNLszJGiJzipMQUpho+gcBp41WR8G41OQc8RArHW0E2gJr7XE3olR
-	 Wwgeuiqfs8fZUwYKFclEMSMyIe26md/oto9VDdTZlh2fZ3z2a+KvFYJn7E+bFSLREo
-	 eGd4+Jad12WI2hg4cYeWKX4tuQudLAOIh6Por+UUKMRsQqFB0tEV5eHbpLZ911w7ZN
-	 TLVEDMvOBiwkzqAS/EjXHrsVo6PbqZHmkFNFhPapHei4C25iPe2bkL6jlV4sBMgO7W
-	 qANxA9jJy4J+w==
+	b=ICJ2pavMSOSnqjG0tMQMLjrvwApy9T1MWm1vKfispbXS/6zXo1O2uzFS0Ugdm1T7M
+	 j7ie0vtRfWX09Xq+e4B6fYE929MksJZ6/JMPFyjepVLZJnjG/cCc8dwu2LvA1+Io2A
+	 Igyl6symkXW6vGiMiBDRYYkQF8qye/9TBzIygVCGCmlFCcSBWOnwxt6V/DDMuTGVp3
+	 hdnhqP8dUJBtPe97jSsi50nOyMYD2csRMs3STAecLEZi0XSHym9QbrZGoPTgPIYh38
+	 Zm8mJL6ZtKiMoty26gRKkUqBEPU5aex4/dfPRNO0KhXEuYOrrrVmVYj6ycClvkUClX
+	 4k8Nu2efuw5BA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 938113938452;
-	Sat, 27 Jun 2026 22:50:36 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5686D3938452;
+	Sat, 27 Jun 2026 22:50:38 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,40 +37,44 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3] sctp: add INIT verification after cookie unpacking
+Subject: Re: [PATCH net] net: airoha: dma map xmit frags with
+ skb_frag_dma_map()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178260063522.1451849.11621475280238770353.git-patchwork-notify@kernel.org>
-Date: Sat, 27 Jun 2026 22:50:35 +0000
+ <178260063683.1451849.7063958705946574115.git-patchwork-notify@kernel.org>
+Date: Sat, 27 Jun 2026 22:50:36 +0000
 References: 
- <ebcbbac574815b0850f371b4bdb02f2e602b94d3.1782341592.git.lucien.xin@gmail.com>
+ <20260625-airoha-eth-skb_frag_dma_map-v1-1-31d9e460aae6@kernel.org>
 In-Reply-To: 
- <ebcbbac574815b0850f371b4bdb02f2e602b94d3.1782341592.git.lucien.xin@gmail.com>
-To: Xin Long <lucien.xin@gmail.com>
-Cc: netdev@vger.kernel.org, linux-sctp@vger.kernel.org, davem@davemloft.net,
- kuba@kernel.org, edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- marcelo.leitner@gmail.com
+ <20260625-airoha-eth-skb_frag_dma_map-v1-1-31d9e460aae6@kernel.org>
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 24 Jun 2026 18:53:12 -0400 you wrote:
-> In SCTP handshake, the INIT chunk is initially processed by the server
-> and embedded into the cookie carried in INIT-ACK. The client then
-> returns this cookie via COOKIE-ECHO, where the server unpacks it and
-> reconstructs the original INIT chunk.
-> 
-> When cookie authentication is enabled, the cookie contents are protected
-> against tampering, so reusing the unpacked INIT without re-verification
-> is safe.
+On Thu, 25 Jun 2026 11:42:46 +0200 you wrote:
+> Map xmit skb fragments using skb_frag_dma_map() instead of
+> dma_map_single(skb_frag_address()). skb_frag_address() relies on
+> page_address() to obtain a kernel virtual address, which is not
+> guaranteed to work for all page types (e.g. highmem pages or
+> user-pinned pages from MSG_ZEROCOPY).
+> skb_frag_dma_map() maps the fragment directly via its struct page and
+> offset through dma_map_page(), avoiding the need for a kernel virtual
+> address entirely.
+> Introduce an enum airoha_dma_map_type to track how each queue entry was
+> mapped (single vs page), so that the matching unmap function is called
+> on completion and in error paths.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v3] sctp: add INIT verification after cookie unpacking
-    https://git.kernel.org/netdev/net/c/414c5447fe6a
+  - [net] net: airoha: dma map xmit frags with skb_frag_dma_map()
+    https://git.kernel.org/netdev/net/c/32f1c2bbb26a
 
 You are awesome, thank you!
 -- 
