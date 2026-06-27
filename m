@@ -1,227 +1,57 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 118BB1684BE
-	for <netdev@vger.kernel.org>; Sat, 27 Jun 2026 22:31:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620973112BD;
+	Sat, 27 Jun 2026 22:42:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782599465; cv=none; b=e0tiFkV4loF62qmwH0lsTDlNwGUK0yeqdfCdMn3xMJze+1cD6ybOavCLF9jEiYE1jey9qSctAxbGhcu3o+r4QMkdE3rhkl63Rpe9CTD7f9X4OlJfs3d7OWi7UsKXsBkKCcgWA5fF9n65cyEAzGqbuGCma85taD+KJsg7SitI03g=
+	t=1782600134; cv=none; b=M7mTaE7xdsk+yq6qo4gLd2Acb4Fvd9asEzkleK2VXd7+IyS33HpzrvW73nJAP7n6wuCsp9W2CJD7k7kIiNHSWpaaR0RfaFz3EHQ4D0Av08BMUR72keRNmxd4Sy5prUUCsVm2mSC8NWV3oTZLVmXfpqltwC0zNjaKPjORqVPFg3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782599465; c=relaxed/simple;
-	bh=GgrIpowPt0gYM+hInsqIaEhdI36x5tUL6UzdU2OHJBY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Fte9EOWmlJfMhWc2sZwW8HuPLzlI+fvkcT5XH+YVctwfgRTIdMao+wim8QmdkJN1bzadGl+4w+Zf+B8g8QkKpU0TOEtXVF+hQS8jVkswLJemJWjCpC1vDTlkTEARDPspR3vkLFLVdNUU47oVNsmiqTbxEdDoo48X3aECl//wC9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=hmXnvMhF; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0sec.ai
+	s=arc-20240116; t=1782600134; c=relaxed/simple;
+	bh=eCnQsGUFKlGLqmnsbUyFi5GKS0WYhvRrrIXshT/swyg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nZpkp5+uPKSd9byrPGbgepkP375MDITcOQ/fkWWfd1Wh8yrKcdTP645aE7VK9UF8LK7NAd5PQYEuoO6E6C7wzmQSfm191NTVTHF74mhBqKbfmL06txG0vELvS7RIuz2z68+qmEYQSgfDJuyacrd7J26rq5a1fF1SaGQy156VvJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rrt2w0Fu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b="hmXnvMhF"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-49241dbf9c1so19272415e9.2
-        for <netdev@vger.kernel.org>; Sat, 27 Jun 2026 15:31:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=0sec.ai; s=google; t=1782599462; x=1783204262; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=wfQpUHY0GFJWX8Gxj2L7x91zN6hrfhBDwHrlwXgs7Dc=;
-        b=hmXnvMhFLaA1yev6v9KNx1iZStfaRRHgv4yRPB4/2qXYwAMA2k+VIlExkTo2Vw5ncg
-         G1M774JKc096b22dZMuGM68Ht0E3cc6NklCCX5PPEDGDx1PnW9fIjSdenO35iApdKGb0
-         2aedqKrhrmu1PWsvFRjg7bwQKkEUBZV8dvA0gL3VNo93qIy0jJ+SWxvEGNJFExEM7g+1
-         0kFEY1qG3bnTMM9g85ag4YTKdruFSFEtlNgOQ+2Bawah2jVT2AesZOiqBYcrAVqSLanX
-         a/Vj4Q7nD1rOkgVH0Ft+xcMIG2m7WWz20uSI3OKx2n1gsiMxjsc3Qdgv3u9B/Nz60KYl
-         7KXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782599462; x=1783204262;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wfQpUHY0GFJWX8Gxj2L7x91zN6hrfhBDwHrlwXgs7Dc=;
-        b=gXxSvMSf/YNe9iPNwfe4Ri235zC25pc+pB9CB6zHMhj/UziWIVjaK7w5HltY6BloRT
-         7RiXrS4/qllwV2/e1YM+VKxli1Fm0i+B65wM0JN0lqxIoamKOc582OO7Q6lOdbys0PeQ
-         hIfM1HAGE3XwxGcp7V9yigcXj6yUx4QMd+JbYUB+AVr0udy3iJWvTphH6+9AFplaTmIF
-         w273EDr6P+otG+nGzplsVSyZ7LjfH8K4yCDsb/Z2GfxShq5xzK4TQbtPPE8QWTa5vLYA
-         BkVTtJeHjKjz8OabxDRQSMR/VAg33cNug889pYNIv2kniTUT0EyyJ7RJjlTWGsmTgEYH
-         Xlbw==
-X-Forwarded-Encrypted: i=1; AHgh+RqmsIWlIXNFslGktgtbk9FGn8IHd/BZGRm37O3IyqTVLdXP/jYKiEwBoGdtf6x1jzW5Qkdf7tY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5hlWOO3P2cLPKLn3tdJaHCZZekOtIuhle2GlX0lLdkCxlupvp
-	UnRgvJr23mvTJ2NeOuFPIQgKelnfFqSB9/5dq3ABSH3dtGlacA02KsN6rp/ShGfLnHD4
-X-Gm-Gg: AfdE7cm4EW2XjiW4CL+PtLbBtv35HYy8+TYH8Okaq/qUcrLy51INEhkEEDQePibsvRE
-	SiKs6by6J5fjNuRGPLQw3nC0SayHvDOdTgqOZZOV7CEP9wjX9p52AezsQ+FIFlSSuLZIN8felZU
-	oT4mqqEJwRhFdGRdjEO+dZkT8Q+gtJSGgcbcSD03Trypa5iVblgNaL5wu8FE5Y7qxiW+MIw8roc
-	3doi2LGQ//ywudebHUDBd3cF1eoI5jRhyaxeg4OKBAvhr+5OkfW+IYa2l5+/GpKpvH1ZP1Xfy/3
-	GCt1q+91BBToJWS/il1wjpjG86pYhm0kq9KX6t2VYuVv55ENiGzTU15VdMWQswu+iGzJqpPv10N
-	HR2ZCfZstQ7QyXBkVjvvOIZIolJlvDViKsn7pY60OsglnKS3x0MKKOFMd2U7RwKWMO6LWgZTqQ+
-	sLv9fqxit6uUb3tQlHONG/cXZfmzbQ5C/HEhBDfKh6kRMFEDEM/pMhNvO/PIpA6+4eVWBquJm7c
-	I1hIG3y8UWZIXcCwkmnJrftg6AeaQmWAQKuvlBatEcO/Q==
-X-Received: by 2002:a05:600d:6454:10b0:490:e243:4806 with SMTP id 5b1f17b1804b1-49266866378mr141283065e9.9.1782599462338;
-        Sat, 27 Jun 2026 15:31:02 -0700 (PDT)
-Received: from PeakBook-Mini.tail8e484.ts.net ([178.197.218.209])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4926c291489sm134368885e9.2.2026.06.27.15.31.00
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 27 Jun 2026 15:31:01 -0700 (PDT)
-From: Doruk Tan Ozturk <doruk@0sec.ai>
-To: saeedm@nvidia.com,
-	leon@kernel.org,
-	tariqt@nvidia.com,
-	mbloch@nvidia.com,
-	sd@queasysnail.net,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: horms@kernel.org,
-	borisp@nvidia.com,
-	raeds@nvidia.com,
-	ehakim@nvidia.com,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Doruk Tan Ozturk <doruk@0sec.ai>
-Subject: [PATCH net v4] net/mlx5e: macsec: fix use-after-free of metadata_dst on RX SC delete
-Date: Sun, 28 Jun 2026 00:30:59 +0200
-Message-ID: <20260627223059.29917-1-doruk@0sec.ai>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rrt2w0Fu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8C4F1F000E9;
+	Sat, 27 Jun 2026 22:42:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782600133;
+	bh=+WU6Nm3UAzz1lJfTyKmC+aPncx0urnLp7yRTIpxGwaE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Rrt2w0Fuy1QK7DComCXc4aA8aWcrsQwNvb80io6wEuv07J+VXOt+quuloXHof1v1J
+	 7uo/TFy8RLSMVmb4tstdowKJDkDEx/j6XuSV8uAflyAQzLmojgNgdGfW3mF4ASAMrJ
+	 pQe/hsaQJ5ar4QgqoXbnDSO8cttSbqNMjGf5pzJrZ5ybpkNzNHIR0g9ZnCuu3ab+Fb
+	 g1gzJ3v0JEYsW/I2liDGXVQrtwwrB7c45g5eWL/oPvXuFEC3nlBmnDSzpJzHMxGbvE
+	 ddLWqTmyZfRH/PDR6Z7z4M/43jJ3y0EPLH5pk4J8FfiTzIuvs84GKf2Zo53LahuITU
+	 gIZ2jlM4JLDCQ==
+Date: Sat, 27 Jun 2026 15:42:12 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, magnus.karlsson@intel.com,
+ stfomichev@gmail.com, pabeni@redhat.com, horms@kernel.org,
+ tushar.vyavahare@intel.com, kerneljasonxing@gmail.com
+Subject: Re: [PATCH v2 net-next] selftests/xsk: Preserve UMEM view in
+ BIDIRECTIONAL test
+Message-ID: <20260627154212.353d9b1a@kernel.org>
+In-Reply-To: <20260625115215.1101928-1-maciej.fijalkowski@intel.com>
+References: <20260625115215.1101928-1-maciej.fijalkowski@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-When an offloaded MACsec RX SC is deleted, macsec_del_rxsc_ctx() freed
-the per-SC metadata_dst with metadata_dst_free(), which kfree()s the
-object unconditionally and ignores the dst reference count. The RX
-datapath in mlx5e_macsec_offload_handle_rx_skb() looks up the SC under
-rcu_read_lock() via xa_load(), takes a reference with dst_hold() and
-attaches the dst to the skb with skb_dst_set(). A reader that already
-obtained the rx_sc pointer can race with the delete path and operate on
-freed memory.
+On Thu, 25 Jun 2026 13:52:15 +0200 Maciej Fijalkowski wrote:
+> Subject: [PATCH v2 net-next] selftests/xsk: Preserve UMEM view in BIDIRECTIONAL test
+> 
+> Fixes: b17631032769 ("selftests/xsk: Move UMEM state from ifobject to xsk_socket_info")
 
-Fix the owner side by dropping the reference with dst_release() instead
-of freeing unconditionally, and convert the RX datapath to
-dst_hold_safe() so a reader racing the SC delete cannot attach a dst
-whose last reference was just dropped; only attach it when a reference
-was actually taken.
-
-mlx5e_macsec_add_rxsc() also published sc_xarray_element via xa_alloc()
-before rx_sc->md_dst was allocated and initialised, so a datapath reader
-that looked the SC up by fs_id could observe rx_sc with md_dst still
-NULL or, on weakly-ordered architectures, a non-NULL md_dst pointer
-whose contents were not yet visible. NULL-check the xa_load() result and
-md_dst on the datapath, and reorder add_rxsc() so the xa_alloc() publish
-happens only after md_dst is fully initialised; the xarray RCU publish
-then pairs with the rcu_read_lock()/xa_load() in the datapath.
-
-Note: macsec_del_rxsc_ctx() also kfree()s rx_sc->sc_xarray_element
-without an RCU grace period while the same datapath reads it under
-rcu_read_lock(); that is a separate pre-existing issue left to a
-follow-up patch.
-
-Found by 0sec automated security-research tooling (https://0sec.ai).
-
-Fixes: b7c9400cbc48 ("net/mlx5e: Implement MACsec Rx data path using MACsec skb_metadata_dst")
-Cc: stable@vger.kernel.org
-Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
----
-v4:
- - Reorder mlx5e_macsec_add_rxsc() so xa_alloc() publishes the SC only
-   after rx_sc->md_dst is allocated and initialised; a datapath reader
-   could otherwise observe a non-NULL md_dst with uninitialised contents
-   (raised by the automated review forwarded by Simon Horman). Error
-   paths adjusted (no xa_erase before the publish).
-v3: NULL-check the xa_load() result and rx_sc->md_dst on the datapath.
-v2: convert the datapath dst_hold() to dst_hold_safe().
-v1: https://lore.kernel.org/netdev/20260615140534.52691-1-doruk@0sec.ai/
- .../mellanox/mlx5/core/en_accel/macsec.c      | 47 +++++++++++--------
- 1 file changed, 28 insertions(+), 19 deletions(-)
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
-index 71b3a059c..daff53ba7 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
-@@ -714,34 +714,43 @@ static int mlx5e_macsec_add_rxsc(struct macsec_context *ctx)
- 	}
- 
- 	sc_xarray_element->rx_sc = rx_sc;
--	err = xa_alloc(&macsec->sc_xarray, &sc_xarray_element->fs_id, sc_xarray_element,
--		       XA_LIMIT(1, MLX5_MACEC_RX_FS_ID_MAX), GFP_KERNEL);
--	if (err) {
--		if (err == -EBUSY)
--			netdev_err(ctx->netdev,
--				   "MACsec offload: unable to create entry for RX SC (%d Rx SCs already allocated)\n",
--				   MLX5_MACEC_RX_FS_ID_MAX);
--		goto destroy_sc_xarray_elemenet;
--	}
- 
- 	rx_sc->md_dst = metadata_dst_alloc(0, METADATA_MACSEC, GFP_KERNEL);
- 	if (!rx_sc->md_dst) {
- 		err = -ENOMEM;
--		goto erase_xa_alloc;
-+		goto destroy_sc_xarray_elemenet;
- 	}
- 
- 	rx_sc->sci = ctx_rx_sc->sci;
- 	rx_sc->active = ctx_rx_sc->active;
--	list_add_rcu(&rx_sc->rx_sc_list_element, rx_sc_list);
--
- 	rx_sc->sc_xarray_element = sc_xarray_element;
- 	rx_sc->md_dst->u.macsec_info.sci = rx_sc->sci;
-+
-+	/*
-+	 * Publish the fully-initialised SC last: xa_alloc() makes
-+	 * sc_xarray_element->rx_sc (and rx_sc->md_dst) reachable from the RX
-+	 * datapath via xa_load().  Doing it only after md_dst is allocated and
-+	 * initialised pairs with the rcu_read_lock()/xa_load() in
-+	 * mlx5e_macsec_offload_handle_rx_skb(), so a reader can never observe
-+	 * a non-NULL md_dst with uninitialised contents.
-+	 */
-+	err = xa_alloc(&macsec->sc_xarray, &sc_xarray_element->fs_id, sc_xarray_element,
-+		       XA_LIMIT(1, MLX5_MACEC_RX_FS_ID_MAX), GFP_KERNEL);
-+	if (err) {
-+		if (err == -EBUSY)
-+			netdev_err(ctx->netdev,
-+				   "MACsec offload: unable to create entry for RX SC (%d Rx SCs already allocated)\n",
-+				   MLX5_MACEC_RX_FS_ID_MAX);
-+		goto destroy_md_dst;
-+	}
-+
-+	list_add_rcu(&rx_sc->rx_sc_list_element, rx_sc_list);
- 	mutex_unlock(&macsec->lock);
- 
- 	return 0;
- 
--erase_xa_alloc:
--	xa_erase(&macsec->sc_xarray, sc_xarray_element->fs_id);
-+destroy_md_dst:
-+	dst_release(&rx_sc->md_dst->dst);
- destroy_sc_xarray_elemenet:
- 	kfree(sc_xarray_element);
- destroy_rx_sc:
-@@ -829,7 +838,7 @@ static void macsec_del_rxsc_ctx(struct mlx5e_macsec *macsec, struct mlx5e_macsec
- 	 */
- 	list_del_rcu(&rx_sc->rx_sc_list_element);
- 	xa_erase(&macsec->sc_xarray, rx_sc->sc_xarray_element->fs_id);
--	metadata_dst_free(rx_sc->md_dst);
-+	dst_release(&rx_sc->md_dst->dst);
- 	kfree(rx_sc->sc_xarray_element);
- 	kfree_rcu_mightsleep(rx_sc);
- }
-@@ -1695,10 +1704,10 @@ void mlx5e_macsec_offload_handle_rx_skb(struct net_device *netdev,
- 
- 	rcu_read_lock();
- 	sc_xarray_element = xa_load(&macsec->sc_xarray, fs_id);
--	rx_sc = sc_xarray_element->rx_sc;
--	if (rx_sc) {
--		dst_hold(&rx_sc->md_dst->dst);
--		skb_dst_set(skb, &rx_sc->md_dst->dst);
-+	rx_sc = sc_xarray_element ? sc_xarray_element->rx_sc : NULL;
-+	if (rx_sc && rx_sc->md_dst) {
-+		if (dst_hold_safe(&rx_sc->md_dst->dst))
-+			skb_dst_set(skb, &rx_sc->md_dst->dst);
- 	}
- 
- 	rcu_read_unlock();
+Yup, doesn't apply, conflicts with the patches that went via net
+but are now in both trees.
 -- 
-2.43.0
-
+pw-bot: cr
