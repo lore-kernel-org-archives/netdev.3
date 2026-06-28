@@ -1,84 +1,119 @@
-Received: from mail-m49228.qiye.163.com (mail-m49228.qiye.163.com [45.254.49.228])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5CF2F872
-	for <netdev@vger.kernel.org>; Sun, 28 Jun 2026 07:26:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.228
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4937626ADC;
+	Sun, 28 Jun 2026 07:31:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782631613; cv=none; b=Df4mTf48pFBFdtvDZBWhajhhnrw6XZ7yCpc0spQTqIYY0lm3+Fj5MoQoBLFQLmHGoYdClkdWNQeGLi6NWt1DgZUUIA4zC2Ylqp41GTOdtbL/DB5vgik7LFRsHB+X0kl2aRZsPJ17MRL26CAHBBdcWGS5WIHuQWnH4pEU3HEJpkg=
+	t=1782631868; cv=none; b=AwnYJLFIZLj2w/p1nIbl0vRbuASswSjEQijdVNfiLGvsQg3uXOZSTKX4a6BL0Q2EkkY5hJP4AjGYoItpjJhOBei+VF617Qj1sG/H6HhxizjexwFBPlaZXKh8oJZ5/hudNSh4g6hu5ZMatKkTdsUG6Tq4bkgETWa5ui0Z32azauA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782631613; c=relaxed/simple;
-	bh=yns7EYALhF6S1Qn2UCp2deAXK5Ibk5U2WE4Q5prGCGk=;
-	h=Content-Type:Message-ID:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:From:Date; b=XT6vzE9yaojbmvocWTH158GeFwGZ78gHsuOD2pt6rk3y0JEaRrSqxD9h/bf7AcYrZ6Qes4j6uBR+0aQdNESTm8l94vAmotOVibWnk6K2Rz/yQc6AbAtDv7OrDu/Pn67E9Amq5U3WamSNa1kcEYJFe+qFS5nF1lJby23Gt/cQ+dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=PxQ+6usg; arc=none smtp.client-ip=45.254.49.228
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="PxQ+6usg"
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-Message-ID: <AFEAtADoKs22QyipHhKwe4op.3.1782623057057.Hmail.220255722@seu.edu.cn>
-To: Jakub Kicinski  <kuba@kernel.org>
-Cc: davem <davem@davemloft.net>, edumazet <edumazet@google.com>, 
-	pabeni <pabeni@redhat.com>, horms <horms@kernel.org>, 
-	leitao <leitao@debian.org>, sashal <sashal@kernel.org>, 
-	bigeasy <bigeasy@linutronix.de>, netdev <netdev@vger.kernel.org>, 
-	linux-kernel <linux-kernel@vger.kernel.org>, 
-	"jianhao.xu" <jianhao.xu@seu.edu.cn>
-Subject: =?UTF-8?B?UmU6IFtSRkMgUEFUQ0ggbmV0LW5leHRdIG5ldHBvbGw6IGhvbGQgUkNVIHdoaWxlIHdhbGtpbmcgbmFwaV9saXN0?=
-X-Priority: 3
-X-Mailer: HMail Webmail Server V2.0 Copyright (c) 2016-163.com Sirius_WEB_WIN_1.64.1
-In-Reply-To: <20260627142105.29f1322c@kernel.org>
-References: <20260627101228.1191586-1-runyu.xiao@seu.edu.cn> <20260627142105.29f1322c@kernel.org>
+	s=arc-20240116; t=1782631868; c=relaxed/simple;
+	bh=EZuM9tIjkK9Bm52oBPRRnOgm/j1TJt1t7FG52vTzUSE=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=IrGfRf1XWiWwTB9QlowczLkTws9kM+DKx/dClADBkBdaEGPviFHLgq7AkKoddTaiQoXiuSv5yVzi1fsoEDw3IHbP3CJWDL1x6u0/+TkbnD56uiJE2nfEKViELQK1QImuZlwWnmWdO7ZXyxSGqWMMUg85YBON0y+KeI5rJdGjkKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from smtpclient.apple (unknown [117.182.74.7])
+	by APP-05 (Coremail) with SMTP id zQCowAB3zhGfzUBq4rG6FQ--.42871S2;
+	Sun, 28 Jun 2026 15:30:40 +0800 (CST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Received: from 220255722@seu.edu.cn( [223.112.146.162] ) by ajax-webmail ( [127.0.0.1] ) ; Sun, 28 Jun 2026 13:04:17 +0800 (GMT+08:00)
-From: Runyu Xiao <runyu.xiao@seu.edu.cn>
-Date: Sun, 28 Jun 2026 13:04:17 +0800 (GMT+08:00)
-X-HM-Tid: 0a9f0c9a86ef02f2kunm8623471ff3b0
-X-HM-MType: 1
-X-HM-NTES-SC: AL0_4z5B86Wr4Tz9jdMF+bhXMTUS6Y2fHkyPT6dc03QDwVaZPGiA09TnwhbhTj
-	hLfuFZO94YXwX6xgvkjGVFFRKj5KLe6NS1CGiyhuD0RcZHIxcyljU39+n1YnYQfUuQJf73cLjTIU
-	yq9bpWVPXKN3Z9gsEIaThAzp9eqY0COUUIz5A=
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDTh0ZVh9JGUoYGRpCTR1MS1YVFA
-	kWGhdVEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUhVSkpJVUpPTVVKTUlZV1kWGg8SFR0UWUFZT0tIVU
-	pLSEpOT0xVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=PxQ+6usgxK/4JU6RU1m4g+jF/+WEdvEYwuupMmevs0a7vOnPsKYoxLvhGqY0D6X4NinUWzEym1cbXCibQzneeCrQjpi6+D1V7vk8lrblROwcQyslemabgl5ZOctpMmu7prHWHhftsrRQMxcFVorotFXzjFdNLS46msBHYcp4Gcg=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
-	bh=yns7EYALhF6S1Qn2UCp2deAXK5Ibk5U2WE4Q5prGCGk=;
-	h=date:mime-version:subject:message-id:from;
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.8\))
+Subject: Re: [PATCH] fix: net/batman-adv: batadv_interface_kill_vid: extra
+ batadv_meshif_vlan_put after destroy
+From: WenTao Liang <vulab@iscas.ac.cn>
+In-Reply-To: <20260627034636.59693-1-vulab@iscas.ac.cn>
+Date: Sun, 28 Jun 2026 15:30:28 +0800
+Cc: horms@kernel.org,
+ b.a.t.m.a.n@lists.open-mesh.org,
+ netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <60CD91EB-833B-40D9-8DCA-A982CE336041@iscas.ac.cn>
+References: <20260627034636.59693-1-vulab@iscas.ac.cn>
+To: marek.lindner@mailbox.org,
+ sw@simonwunderlich.de,
+ antonio@mandelbit.com,
+ sven@narfation.org,
+ davem@davemloft.net,
+ edumazet@google.com,
+ kuba@kernel.org,
+ pabeni@redhat.com
+X-Mailer: Apple Mail (2.3826.700.81.1.8)
+X-CM-TRANSID:zQCowAB3zhGfzUBq4rG6FQ--.42871S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Kr18XF17Jr1UJrWrXFyfXrb_yoW8Xr4kpr
+	WUKFW3KFZxCayxKa9rKFy5uF1j9w4Skry0kF9akw4rAwnrta4Iga4F9r9rXFn5CFWxKF17
+	Jr4UCas7X3WDWrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvCb7Iv0xC_tr1lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
+	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xII
+	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I
+	8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8Jw
+	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkI
+	wI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr
+	0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY
+	17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcV
+	C0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY
+	6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26r4UJVWxJrUvcSsGvfC2Kf
+	nxnUUI43ZEXa7IU8U5r7UUUUU==
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwIMA2pAixFu8QAAsl
 
-SGksCgpPbiBTYXQsIDI3IEp1biAyMDI2IDE0OjIxOjA1IC0wNzAwIEpha3ViIEtpY2luc2tpIHdy
-b3RlOgomZ3Q7IFBsZWFzZSBwcm92aWRlIHRoZSBzdGFjayB0cmFjZSBmcm9tIHRoZSByZXBvcnQs
-IHJhdGhlciB0aGFuIGp1c3Qgc2F5aW5nCiZndDsgdGhhdCB5b3UgY2FuIHRyaWdnZXIgaXQuCgpT
-dXJlLCBzb3JyeSBmb3Igbm90IGluY2x1ZGluZyBpdCBpbiB0aGUgUkZDLiAgVGhlIHdhcm5pbmcg
-d2FzIGZyb20gdGhlCnJldmlld2VkIHJlcHJvZHVjZXIgdXNlZCBmb3IgdGhlIENPTkZJR19QUk9W
-RV9SQ1VfTElTVCB0cmlhZ2UsIG5vdCBmcm9tCmEgcHJvZHVjdGlvbiBjcmFzaC4gIFRoZSByZWxl
-dmFudCBwYXJ0IG9mIHRoZSBkbWVzZyBpczoKCiAgV0FSTklORzogc3VzcGljaW91cyBSQ1UgdXNh
-Z2UKICA2LjEuNjYgIzMgVGFpbnRlZDogRyAgICAgICAgICAgTwogIC0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tCiAgL2hvbWUvdWJ1bnR1MjIvbXN2X3dvcmtzcGFjZS9zaGFyZWQvdnVsbl9t
-c3YuYzo0NSBSQ1UtbGlzdCB0cmF2ZXJzZWQgaW4gbm9uLXJlYWRlciBzZWN0aW9uISEKCiAgb3Ro
-ZXIgaW5mbyB0aGF0IG1pZ2h0IGhlbHAgdXMgZGVidWcgdGhpczoKCiAgcmN1X3NjaGVkdWxlcl9h
-Y3RpdmUgPSAyLCBkZWJ1Z19sb2NrcyA9IDEKICBubyBsb2NrcyBoZWxkIGJ5IGluc21vZC8xOTAu
-CgogIHN0YWNrIGJhY2t0cmFjZToKICBDUFU6IDEgUElEOiAxOTAgQ29tbTogaW5zbW9kIFRhaW50
-ZWQ6IEcgICAgICAgICAgIE8gICAgICAgNi4xLjY2ICMzCiAgSGFyZHdhcmUgbmFtZTogUUVNVSBT
-dGFuZGFyZCBQQyAoaTQ0MEZYICsgUElJWCwgMTk5NiksIEJJT1MgMS4xNS4wLTEgMDQvMDEvMjAx
-NAogIENhbGwgVHJhY2U6CiAgIDx0YXNrPgogICBkdW1wX3N0YWNrX2x2bCsweDQ1LzB4NWQKICAg
-bG9ja2RlcF9yY3Vfc3VzcGljaW91cy5jb2xkKzB4MmQvMHg2NAogICBwb2xsX25hcGkuY29uc3Rw
-cm9wLjArMHg0My8weDcxIFt2dWxuX21zdl0KICAgbmV0cG9sbF9wb2xsX2Rldi5jb25zdHByb3Au
-MCsweDI3LzB4MzYgW3Z1bG5fbXN2XQogICA/IDB4ZmZmZmZmZmZjMDAwNTAwMAogICByY3VfbGlz
-dF9tc3ZfaW5pdCsweGUyLzB4MTAwMCBbdnVsbl9tc3ZdCiAgIGRvX29uZV9pbml0Y2FsbCsweDU2
-LzB4MjUwCiAgIGRvX2luaXRfbW9kdWxlKzB4NDcvMHgxYzAKICAgX19kb19zeXNfZmluaXRfbW9k
-dWxlKzB4YTYvMHgxMDAKICAgZG9fc3lzY2FsbF82NCsweDNiLzB4OTAKICAgZW50cnlfU1lTQ0FM
-TF82NF9hZnRlcl9od2ZyYW1lKzB4NjQvMHhjZQogICA8L3Rhc2s+CgpUaGUgcmVwcm9kdWNlciBr
-ZWVwcyB0aGUgc2hhcGUgaW50ZW50aW9uYWxseSBzbWFsbDogbmV0cG9sbF9wb2xsX2RldigpCmlz
-IGV4ZXJjaXNlZCBkaXJlY3RseSBhbmQgY2FsbHMgcG9sbF9uYXBpKCksIHdoaWNoIHdhbGtzIGRl
-di0mZ3Q7bmFwaV9saXN0CndpdGggbGlzdF9mb3JfZWFjaF9lbnRyeV9yY3UoKSBvdXRzaWRlIGFu
-IGV4cGxpY2l0IFJDVSByZWFkLXNpZGUgc2VjdGlvbi4KSXQgZG9lcyBub3QgbW9kZWwgYSBjb25j
-dXJyZW50IE5BUEkgZnJlZS4KClRoYW5rcy4K
+
+
+> 2026=E5=B9=B46=E6=9C=8827=E6=97=A5 11:46=EF=BC=8CWenTao Liang =
+<vulab@iscas.ac.cn> =E5=86=99=E9=81=93=EF=BC=9A
+>=20
+> In batadv_interface_kill_vid(), batadv_meshif_vlan_get() acquires a
+> reference on the vlan object. batadv_meshif_destroy_vlan() internally
+> calls batadv_meshif_vlan_put() which balances that reference. However, =
+an
+> additional batadv_meshif_vlan_put(vlan) is called after
+> batadv_meshif_destroy_vlan(), causing a refcount underflow and =
+potential
+> use-after-free of the vlan object.
+>=20
+> Remove the extra batadv_meshif_vlan_put(vlan) call.
+>=20
+> Cc: stable@vger.kernel.org
+> Fixes: 5d2c05b21337 ("batman-adv: add per VLAN interface attribute =
+framework")
+> Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
+> ---
+> net/batman-adv/mesh-interface.c | 3 ---
+> 1 file changed, 3 deletions(-)
+>=20
+> diff --git a/net/batman-adv/mesh-interface.c =
+b/net/batman-adv/mesh-interface.c
+> index e7aa45bc6b7a..cc974f243200 100644
+> --- a/net/batman-adv/mesh-interface.c
+> +++ b/net/batman-adv/mesh-interface.c
+> @@ -691,9 +691,6 @@ static int batadv_interface_kill_vid(struct =
+net_device *dev, __be16 proto,
+>=20
+> 	batadv_meshif_destroy_vlan(bat_priv, vlan);
+>=20
+> -	/* finally free the vlan object */
+> -	batadv_meshif_vlan_put(vlan);
+> -
+> 	return 0;
+> }
+>=20
+> --=20
+> 2.39.5 (Apple Git-154)
+
+Please ignore this patch. I will resend a proper version after
+learning the kernel submission process.
+
+Apologies for the noise.
+
+Best regards,
+WenTao Liang=
+
