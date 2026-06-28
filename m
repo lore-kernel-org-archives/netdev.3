@@ -1,124 +1,109 @@
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from lan.nucleusys.com (lan.nucleusys.com [92.247.61.126])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 910A93A7F66
-	for <netdev@vger.kernel.org>; Sun, 28 Jun 2026 13:59:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782655182; cv=pass; b=rACdso2wZ17l/hqYOWYkhCsDJ8gge0zQAYP/zzgGNRwRH/dTsrvYeFC3w+njTlG0slEh76tifRv03jYjcqk+Tr8vPVvRlW3T7/PxcKhI8gP9/NaQGznTC74TYBkg432Vf/VBie7dBc/hiGP+MjF3YU/G0zTaxTChL0aMuTTON7A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782655182; c=relaxed/simple;
-	bh=iYIhjYVr3YCB5gJuCm045DGHO+A3CUSIkTn+4OuZeok=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DQlGdg5DJaJ4Ih9PQEbhts9+w88oIdMQJyhjRPk+k1x2zuzkXbEBKTFID3h9wGePtyUr4u3FKcj38+tjX/GhEW2NNxT35D0THwnjDWRHzIjpMojzM7MzjrzuP9KPRRHl+p4ZCxRDbq9V0XMcl6tieKzqCOxYOSH+xzMPjmM+Egc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=HADoFSpK; arc=pass smtp.client-ip=209.85.167.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF3B5A79B;
+	Sun, 28 Jun 2026 15:25:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.247.61.126
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782660318; cv=none; b=G5vNOrgJtN+wjjwPmsacZIUQSJ6XnTH2/IumL4tpLcljmTAjG9zV8Md65hK5msiHxCyQs8sGlp0ldv65YTJRzwJeUUS7Pi7umLSoft/dd8mecr9xQmzWhethBj3XaRL6xNJVhIU7ZZrbkKrBfTtsjgmqcZKgUfwZlOHPF+JctBg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782660318; c=relaxed/simple;
+	bh=w/epT0ahS6q94buTFyAQH/uBAn9kJQHvuxCbCRAFn7k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Pjh5+Iuy+YEH68gJRvcrRvdHCEfE0spBMxxk3W4hRRYriVOubILec9WJ5MJitD0D4BPA+XfoROQ5wS7UtUmk2CWa4WyX7yeuKpdISdM7RKJ6FVPa2EX7M3eKC3H95ocWDR7OuIPhRT6f3xPBZokWYKwbnM6/enXaBuWTSCD8ubc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nucleusys.com; spf=pass smtp.mailfrom=nucleusys.com; dkim=pass (2048-bit key) header.d=nucleusys.com header.i=@nucleusys.com header.b=PrTr3khF; arc=none smtp.client-ip=92.247.61.126
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nucleusys.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nucleusys.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="HADoFSpK"
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5aeb8c19017so86990e87.0
-        for <netdev@vger.kernel.org>; Sun, 28 Jun 2026 06:59:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782655179; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Az0iuhEpZkDIdB+eyQMuc2lmBUKiutPnJ1AaYiM01BumCr2S2T6Jts1J7O9Zy5Vy1P
-         nuMtnDaEYBtTmajapwRt6Z5GcdlMOX/rF2UgLmkjkrQALBqnQqAaLFuFfgnXy7u8QoUS
-         p5qvqyaZpdbnzZsN3t5kSFMRcMJzKrBKx2UqD5QimjPA1C24PfehorexiCKexGUPN1NV
-         T6tlOEL4yRQkh1+JwM24oXgWZTebMVB2xBH23ObuPHrtW0uuK2CEXsCgv3rgzKn459Sd
-         q+GmYVhmQW/Lg7jpzeFiLmbIzoeOeI3gif5B/YzULAU78dQgTvsZ/hekiivUDCYUlvD8
-         4haw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=pl64OGcNMjExLSIMvN1odvcmcAO32g2DtQEWzMRicaI=;
-        fh=lOOtcnJ5P6UVJA5uvQYA+6p40xx66hG35U3LX4luG3Y=;
-        b=lBXC8o73AtsF3Hz7B8bVo9Z435nMLhzI/g5+HS6Nf4WD8ztyOxjX873bQpo/V26XI3
-         oEFGzbQGZQdUljacc5NeCtu5URcq+RNGW6atHRrhG8N/EStOofk7loXqXWNSf44y+6SY
-         p/du0DYD+jin0x8c2C0ApoAxKLEPLFNQhNmNfgAdcGXkfdlpl/PdCK/7Us1AyqfFaQQL
-         FSHfiRqDpJJle66Z2Vqg1PqLQd67CC5VOtVXBG5VuCTB344yQM08NUn3ce/JxBre0n3B
-         zIpVnzMimVzRAU083d65PCzWvPuqfCCkPUYzV8wkzZx6L9uKsDvGcOs0tCeL0VfW+sQ3
-         Z+Dw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=trailofbits.com; s=google; t=1782655179; x=1783259979; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pl64OGcNMjExLSIMvN1odvcmcAO32g2DtQEWzMRicaI=;
-        b=HADoFSpKzc3DSMmaDIv7AKtoyax7SUHMS2/pDyibVms8cd4ZiYmrtmkZZCeNgXMq4N
-         UJ+riPGtcSx5wIG+kCMyp+cUAvE++txWjWZB+FOgWeUNQD4PDaipSAGA7LsCsjpn2d4m
-         1ShqSuRw0h1WbH/syCwSA8e+kMlD7yl0BCA+kt2RxS//tA8MeoEipVACOtcMwu98PvIF
-         oYQDRVkcopoIiQCLt5QXvNQvOu2jGk05qzQsF5gTEhmXL6tQfe2IHQUFw7LvnO3BHQCD
-         pitZQ4+6YTsRpqHjJBJ+MluiR/PejD0NGBcoJPLoPmk1iNWbxP39RzOj+DbpCIc5AOD5
-         RPqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782655179; x=1783259979;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=pl64OGcNMjExLSIMvN1odvcmcAO32g2DtQEWzMRicaI=;
-        b=IOXEYljoIEXz5XXLP+pIG9Nvj/2jjeMc0ttCQeD4nQB2IM39y8Apk7D9lPykZIFGmx
-         Ix9BpZNzqtHXvEJ6OhtDQLSk3HQqCAF3cCatJaMLyXpewvYe82XP7VIdfmOCa/FUDmVC
-         h1slxH+xwXAy7W6E1ylDPD9sPhpSpmWrcEjmB4ae9wYQdWoxROEcnMuG2BO45dMWL2aV
-         Vy5QadmwZMbvE0TXOxZOicuJUezDINgAmMA3kXUx39H88L4Jz/EJe0kQMs9TePkR5MSY
-         5C4RszXjpHqb3Q3Hov1Qi6UWDv/QXuHz77X0ZADQ1exgAYMX++brQqjHqJ0EnmiOR6Af
-         l4ZQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqydXkyIoaeKU32guVIP+ab8Ii5tOk8HllnvwaxOyHyUMFPZiDDqnVxqfI6p12VbBRwosBvMoM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxvxPQynuUoah0woDlEg6GM6vRMDjG/BUsKd6blDWED4CdGA90C
-	EI4ewTY4raD8NTC2olNZGyKVwrT2zy6S1Qpj+yH9D6N7nQ/9RSN8T8nUHTF33nUaM8u4RaithWw
-	a7vJuxjrb46aJ8nxtwFvmLjn1hlDhUk9KTmB2QKBpOQ==
-X-Gm-Gg: AfdE7cku9HXehLz1k5gnW8JKQulYsMZBRENKqimzaGVmW0wS1hN7XM41JFEtbEvK+7c
-	m2xWqZHYkv1I7q3SBf4GapY0wket2GXG0GHdFAWET/ZV9gCRH96/GNFPh150z16FwogvcA9MtB8
-	dS26nb0hdYz0FSobYY95SITR49T4tKnUZ0EtBEQ5tTYsvzExUFnVbcmUtXCytHYfDIBKbQgwxNI
-	iH/eL1IAvBwusWrA5zq1GZ1ZTIlM0TKoo0JzgweVEXveaFg/ocVd3i/qc1uUbmARAbF7sE=
-X-Received: by 2002:a05:6512:3093:b0:5ae:b0f0:c217 with SMTP id
- 2adb3069b0e04-5aeb0f0c2admr845655e87.9.1782655178876; Sun, 28 Jun 2026
- 06:59:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nucleusys.com header.i=@nucleusys.com header.b="PrTr3khF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nucleusys.com; s=xyz;
+	t=1782659915; bh=w/epT0ahS6q94buTFyAQH/uBAn9kJQHvuxCbCRAFn7k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PrTr3khF9brmi02LWzuiNOkw+TePq9rB+8wtA2F8urhbxgOUj2iTUm92/ffkVFE5c
+	 p3o6MOZF5VMepLu9sHzrNRbq9KCE//icMrmMAetfJUmkvXaQHIuFxuNEPVtTMus5q0
+	 zYHmcKXO8Mfheuh4Q0aUwW8h/TOABZzLMPleRYxxJJc9BVtd9VBJw4s9u5adct9XFR
+	 ek8tsyJoP6zfKq11bA/Rw1B5qfVdObXd9NZLEJPctDXhAywg6/OqbCZRuNd2dP5EAO
+	 dHzMXep4txsoWiu95LPsq/DW/ljOL/JxV25AN/ct+UnHmtEFhfmIeXNYNXzp/4wisz
+	 ya+GRC3bOuXfA==
+Received: from carbon.k.g (unknown [85.187.61.220])
+	by lan.nucleusys.com (Postfix) with ESMTPSA id DB5B53FBC8;
+	Sun, 28 Jun 2026 18:18:34 +0300 (EEST)
+Date: Sun, 28 Jun 2026 18:18:35 +0300
+From: Petko Manolov <petkan@nucleusys.com>
+To: Yousef Alhouseen <alhouseenyousef@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	syzbot+9db6c624635564ad813c@syzkaller.appspotmail.com
+Subject: Re: [PATCH] net: usb: rtl8150: handle link status read failures
+Message-ID: <20260628151835.GC14404@carbon.k.g>
+References: <20260628093929.44214-1-alhouseenyousef@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260609001013.1234755.d884b9e2028f.codel-limit-zero-bypass@trailofbits.com>
- <CANn89iJdrwPtMkexacercdV+2qDAZ=JYwGjW8xA1aKZTk3muhg@mail.gmail.com>
-In-Reply-To: <CANn89iJdrwPtMkexacercdV+2qDAZ=JYwGjW8xA1aKZTk3muhg@mail.gmail.com>
-From: Samuel Moelius <sam.moelius@trailofbits.com>
-Date: Sun, 28 Jun 2026 09:59:27 -0400
-X-Gm-Features: AVVi8CdfwLKISM-o_F_DryKNaa0rIlXCu6TvGzhfgwCjIqUwotxoPubZQm4wa6k
-Message-ID: <CAE+C+DanBVutAamhr9RkQbhnAPphTaSEsznLn-PhbNK1LXyw2Q@mail.gmail.com>
-Subject: Re: [PATCH] net/sched: codel: refresh CAN_BYPASS when limit changes
-To: Eric Dumazet <edumazet@google.com>
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, "open list:TC subsystem" <netdev@vger.kernel.org>, 
-	open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260628093929.44214-1-alhouseenyousef@gmail.com>
 
-On Tue, Jun 9, 2026 at 11:28=E2=80=AFPM Eric Dumazet <edumazet@google.com> =
-wrote:
->
-> On Mon, Jun 8, 2026 at 5:12=E2=80=AFPM Samuel Moelius
-> <sam.moelius@trailofbits.com> wrote:
-> >
-> > sch_codel and sch_fq_codel update their packet limit without refreshing
-> > the queue bypass state.  Changing the limit to zero can leave CAN_BYPAS=
-S
-> > set from the previous configuration.
-> >
-> > The enqueue path can then bypass limit enforcement even though the new
-> > limit should prevent queued packets.
-> >
-> > Recompute the bypass flag whenever the configured limit changes.
-> >
-> > Assisted-by: Codex:gpt-5.5-cyber-preview
-> > Signed-off-by: Samuel Moelius <sam.moelius@trailofbits.com>
-> > ---
->
-> We can't change sch->flags in a change() method even under qdisc
-> spinlock, look at __dev_xmit_skb() which reads q->flags locklessly.
+On 26-06-28 11:39:29, Yousef Alhouseen wrote:
+> set_carrier() ignores the result of the USB control transfer and tests the
+> stack variable supplied as its receive buffer. If the device rejects or aborts
+> the request, that variable remains uninitialized and the driver chooses an
+> arbitrary carrier state.
+> 
+> Report carrier down when the link status cannot be read.
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Reported-by: syzbot+9db6c624635564ad813c@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=9db6c624635564ad813c
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Yousef Alhouseen <alhouseenyousef@gmail.com>
+> ---
+>  drivers/net/usb/rtl8150.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
+> index c880c95c41a5..5606490aaea0 100644
+> --- a/drivers/net/usb/rtl8150.c
+> +++ b/drivers/net/usb/rtl8150.c
+> @@ -732,7 +732,11 @@ static void set_carrier(struct net_device *netdev)
+>  	rtl8150_t *dev = netdev_priv(netdev);
+>  	short tmp;
+>  
+> -	get_registers(dev, CSCR, 2, &tmp);
+> +	if (get_registers(dev, CSCR, 2, &tmp)) {
+> +		netif_carrier_off(netdev);
+> +		return;
+> +	}
+> +
+>  	if (tmp & CSCR_LINK_STATUS)
+>  		netif_carrier_on(netdev);
+>  	else
 
-Your point is well taken. Thank you for the feedback.
+I'd rather do something along these lines:
 
-I withdraw this patch.
+@@ -732,7 +732,9 @@ static void set_carrier(struct net_device *netdev)
+ 	rtl8150_t *dev = netdev_priv(netdev);
+ 	short tmp;
+ 
+-	get_registers(dev, CSCR, 2, &tmp);
++	if (get_registers(dev, CSCR, 2, &tmp)
++		return;
++
+ 	if (tmp & CSCR_LINK_STATUS)
+ 		netif_carrier_on(netdev);
+ 	else
+
+IIRC it is possible for the message get lost in bus noise while the device is
+still operating correctly.  So if my memory isn't failing me, it is better to
+not do anything if usb_control_msg_recv() is non-zero and only change the
+carrier status if 'tmp' contains meaningful value.
+
+
+		Petko
