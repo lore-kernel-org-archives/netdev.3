@@ -1,61 +1,82 @@
-Received: from szelinsky.de (szelinsky.de [85.214.127.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2997432D7FA;
-	Sun, 28 Jun 2026 15:31:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.127.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68AD72459EA
+	for <netdev@vger.kernel.org>; Sun, 28 Jun 2026 16:25:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782660713; cv=none; b=fWWH+B/SSwjvUPYKe6QN/smBYKAtRCeFAmq077X0Pz97u4kfDyAt2/U99ZWdiSAudrXR+EyosYc4gw7Maiir8K8qQ3IzzRUX7VeaL+H/vh9AOjPmX5f8Jrocq4QEbPzaT951N2szkQU4kqlImP3w/KG+OkJf4jHhFwFZ0QOj+Zc=
+	t=1782663961; cv=none; b=Ysl8Fhc/p6tKW2TYmPpB3uac8E7Rz/6RfURy6w3jCYGFQwSgb1ITGPVYTLRyCpzY3Qa0SxGH7bUv3F/w61hZo2PSzn8n8livB4SzJ9qxJNNAprW7rj2vqwnamj5TJuBQ/RFzZG1CDbe0WQOZ2ufi3G9balbHQRUggynLnThUKe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782660713; c=relaxed/simple;
-	bh=hrho+VCEM+PMn9utCj/hdI2qNbx+XRvATBOImWER0fw=;
+	s=arc-20240116; t=1782663961; c=relaxed/simple;
+	bh=g2UA5Nh4NURnQU5YTpPXu2g0qAmphQXzC4iKtTM9Trg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l0l3OvM366XmLdpZbcV/GES8Ql7aOx0lkJtJ2dNikdHbvjbMJVxu65qeXW4mBEsQxGoL1vH0WYvxyyb0dKvPfR7I3ZrGPeHc/xWyy9TUftxcnwmx9BLVXF8gH18PLvsZg3d+/tZWSNcQNGoTBmsiolL84lTDQv7kKrrhsfm8xzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=OE9PIx8o; arc=none smtp.client-ip=85.214.127.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
+	 MIME-Version; b=YtP1OQu/jc4vIPitiJz8ei/4v9MYCVsA8FrgqgLw1MwC3J7p8rpYBVte0+oKHHhd6+ozhK5l0t/6dg9SQb0/XOzwo/GJr9d0BDoOUFo+S0KBbyMQpM96rdTUJtnHaO/3OAaUot2SVsngPbZ5O/oh7y8RWPharz1tgIGhe71glSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JKL0oaxE; arc=none smtp.client-ip=209.85.128.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="OE9PIx8o"
-Received: from localhost (localhost [127.0.0.1])
-	by szelinsky.de (Postfix) with ESMTP id C34B9E83957;
-	Sun, 28 Jun 2026 17:31:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
-	s=mail; t=1782660703;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ifs9Rqu4NSwYS2nYn0dX6lUO6UMTsxCOrL6aDSb7bAw=;
-	b=OE9PIx8oyIlU71IPVUpEHjYWYzihV/oEvOTqIFw+eFEuSrDmom4O/C0seDKXJt4lv7umJi
-	yRfQnubKEqC2CU8pcz0y2S+ObQJXw8dXjAEgb/AN+34iqRNiOiKDGKYamS5VG9kFKuJtnO
-	rNIun7oMSJ2nTL1tRuZDyg9rsV616U1gO/8fk9u2bLm9Qvg0QrEUpZIXPb4J4R5OtAfGPu
-	GiLOyFemQowS1UTNW0Y/tcrL2Xe4g+kNaIKdspGFsyKy4zoijGoIOvPNhFM6oR7IuNuSiV
-	6XAuAl9jwQp6YZ7rSm3jwuZrDpBgD1UfXouXaIhzsMkbze9Z1CsBx+c8+iP+VQ==
-X-Virus-Scanned: Debian amavis at szelinsky.de
-Received: from szelinsky.de ([127.0.0.1])
- by localhost (szelinsky.de [127.0.0.1]) (amavis, port 10025) with ESMTP
- id 2VweZJsA0lRj; Sun, 28 Jun 2026 17:31:43 +0200 (CEST)
-Received: from p14sgen5.lan (p5784dea5.dip0.t-ipconnect.de [87.132.222.165])
-	by szelinsky.de (Postfix) with ESMTPSA;
-	Sun, 28 Jun 2026 17:31:43 +0200 (CEST)
-From: Carlo Szelinsky <github@szelinsky.de>
-To: Simon Horman <horms@kernel.org>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	Kory Maincent <kory.maincent@bootlin.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JKL0oaxE"
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-80bb578d58bso19969277b3.0
+        for <netdev@vger.kernel.org>; Sun, 28 Jun 2026 09:25:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782663958; x=1783268758; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7van/FF1WCavCF+DOAc6ZN9nL2beTOurDM/vGTwpdMI=;
+        b=JKL0oaxEiINbu1DR3+UgnHxBeii6/FkKYzrTKvU22+fk/ChTSA9jy4eXhj4jc7Gpg2
+         w8iShpVkpWTw+VJMXd0bvzw1dac5s7uJYNjwhJR+yvxqbkEyzYHPLZcoX1vIyHvL0qM5
+         Zeqz+0XIHZNyMZA/4gNAJx/ufqauTdTSGhhqWaVmEyjCoazpVp6NYmlgdlN2N7egKt12
+         Bz6kccKKyd7hXyyOiMlBPGb5hSfPRnYntMwytSBFoXanRyeFCutJJyep1DeqmHIS45St
+         MHvDrxjk5Qox3p+bJl9ydS8yzcYjbQZs7sVmlLS0vuZoiB32n6o196YZ2/3IxHWBjoQX
+         itrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782663958; x=1783268758;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7van/FF1WCavCF+DOAc6ZN9nL2beTOurDM/vGTwpdMI=;
+        b=ZDsZB+OcgsbXKc7VEhmE4YPbWM7HHfo7a2bXJWez0tHUPHqA7BwXAzg1YYZxvTDNpu
+         lTtwCSQK7yYqbQppltRYFYPUr8xmKOMF6kSl7bN2sMdWPot9h4c6Td67Z5y+irsd3INO
+         77nPnKZRUsKKbj4ZOPU9JLE44TKkKeLXPaZ8uexcXxVK1oRotgSZsyNWiGUvZoePqa92
+         ZZ4v2IXDu9OTT39MNiwjtNtvLLFUqsJhN4z7AtEhNozlzaAdLASTiDsqB3EIh1+lgMin
+         Y29ioRo/D++b9FTnpARv/43HxqLlWnGxhmbFz68UyR61scivr6RmxOLOJ8L4FjzNvWrQ
+         yQEg==
+X-Forwarded-Encrypted: i=1; AHgh+Rppa0TOfmhzjZcnqe1BTAZ3AipMNYp+cv5Z5iZa7umKh/rl6zCwXdp2Rnv7seRW1Z0z99pkAjA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywx3hpqsZvG4rhy6ICOg2JKzqPFM4UQiXV8aHJiG6IW4M+TNSWR
+	xJpWHqZwuOkH4A4R8YPMH5iSCX9WEruSYc0wz9UAuCuIy6XppgXoki6F
+X-Gm-Gg: AfdE7cmku2DNqK9yCMU50h4s8Z6ezVbXJ2vrN1SO3tzDTomNdVf3mboskxIVxbyGkJ7
+	74f1BJMvMSejedVhlV97mP2jZA+dIGcNQvp0zh85ejLsiWByKOFhh9jm3diwoj59aGlFZVYSz6U
+	K6lbBHdQFvB17t7R/+jHC/8V9gwTS804oVtHPS+eHoRICz5IqDEZ+CLksspsPHqETwYSY2dWUJJ
+	NyEjHRSb+s9KjM5L0Fb4w6hVBYa79QyQE156DYEbmv90TusGFYTcPaI5ipNkp8w4EyxMcAxnfOI
+	bPJvubEkQNhjRT49zzwidmtV+15QV/jGLdtsSOmcjpDrOx/zOAPlIGVDTGvQW7DxaJ5r8WUQyqn
+	0lGL9GnOn3R0yYRIgpgoeJZklCzjw1H3p5s2QevZ0pkuW6oAztRMFxn9VkMgtv9Kn0hWP29fzAn
+	NimuVUo8E+TTsdgY0uYrMukn8skQ==
+X-Received: by 2002:a05:690c:6185:b0:80c:85b6:764a with SMTP id 00721157ae682-80c85b69188mr75232687b3.63.1782663958305;
+        Sun, 28 Jun 2026 09:25:58 -0700 (PDT)
+Received: from Dev-Null-MSI ([2a0d:3344:52ac:a808:98a4:4381:be45:536f])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-80259d20d84sm106446247b3.0.2026.06.28.09.25.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 28 Jun 2026 09:25:57 -0700 (PDT)
+From: Yousef Alhouseen <alhouseenyousef@gmail.com>
+To: Petko Manolov <petkan@nucleusys.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: linux-usb@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Carlo Szelinsky <github@szelinsky.de>
-Subject: Re: [PATCH net 2/2] net: pse-pd: guard against freed PI data on regulator disable
-Date: Sun, 28 Jun 2026 17:31:29 +0200
-Message-ID: <20260628153129.2995903-1-github@szelinsky.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260615180048.828053-1-github@szelinsky.de>
-References: <20260615180048.828053-1-github@szelinsky.de>
+	stable@vger.kernel.org,
+	syzbot+9db6c624635564ad813c@syzkaller.appspotmail.com,
+	Yousef Alhouseen <alhouseenyousef@gmail.com>
+Subject: [PATCH v2] net: usb: rtl8150: handle link status read failures
+Date: Sun, 28 Jun 2026 18:25:28 +0200
+Message-ID: <20260628162528.8273-1-alhouseenyousef@gmail.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260628151835.GC14404@carbon.k.g>
+References: <20260628151835.GC14404@carbon.k.g>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,25 +85,38 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi Simon,
+set_carrier() ignores the result of the USB control transfer and tests
+the stack variable supplied as its receive buffer. If the device rejects
+or aborts the request, that variable remains uninitialized and the driver
+chooses an arbitrary carrier state.
 
-Gentle ping on this one... I think I'm just waiting on your read before
-I send v2, and I'd like to get it unblocked :-)
+Leave the existing carrier state unchanged when the link status cannot be
+read. A transient USB error should not be treated as link loss.
 
-v2 would take pcdev->lock around the kfree() + pcdev->pi = NULL in
-pse_release_pis() so the NULL is authoritative, and add the same
-!pcdev->pi guard to pse_pi_is_enabled() and pse_pi_enable().
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+9db6c624635564ad813c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9db6c624635564ad813c
+Cc: stable@vger.kernel.org
+Signed-off-by: Yousef Alhouseen <alhouseenyousef@gmail.com>
+---
+ drivers/net/usb/rtl8150.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Two things I'd value your view on before I send the next version:
+diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
+index c880c95c41a5..d51e43170e03 100644
+--- a/drivers/net/usb/rtl8150.c
++++ b/drivers/net/usb/rtl8150.c
+@@ -732,7 +732,9 @@ static void set_carrier(struct net_device *netdev)
+ 	rtl8150_t *dev = netdev_priv(netdev);
+ 	short tmp;
+ 
+-	get_registers(dev, CSCR, 2, &tmp);
++	if (get_registers(dev, CSCR, 2, &tmp))
++		return;
++
+ 	if (tmp & CSCR_LINK_STATUS)
+ 		netif_carrier_on(netdev);
+ 	else
+-- 
+2.54.0
 
- - Is the contained fix (lock around the free) ok, or would you prefer
-   the regulator unregister reordered ahead of pse_release_pis()?
-
- - I couldn't find a concrete consumer hitting a regulator op on
-   another CPU during unbind, so I'd describe it as a narrow window
-   rather than a proven race. Does that sound right to you?
-
-Happy to just send v2 with the lock fix if that works for you.
-
-Thanks,
-Carlo
