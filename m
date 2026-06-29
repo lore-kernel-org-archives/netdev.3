@@ -1,169 +1,167 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013035.outbound.protection.outlook.com [40.107.201.35])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B49438E12D;
-	Mon, 29 Jun 2026 18:22:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD012D0C7E
+	for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 18:23:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782757336; cv=fail; b=hYDsnZX+s4o0iAgsDQDFf9AwgsEORUXjEu0WuEbhx6+OYxU9Lr2oRdXicDUsTmp500bxj8LmXjHGPIE5iSKQwrZSOP+16WkBBB518AxJAAmLWcgV1jgu77SotE12oiFj440i4bprxiVesp4Jrx0gcJXwkmho9CHwU4eHNp2+p4k=
+	t=1782757400; cv=pass; b=G7HDNqA61/tiNXOx3vlMe9JVYyxx2fYEep6HgMRl480x9wSMk5hqmpj2jq1XcH181bWENVBETvn3pVnHjSQU3MxUU4i5PK7bwN1Qz2AJjCGwGFsRgemHyeVLEfS2N0+UNTPXd2oUGWXQ/zqLu7pY4T6XogVnRZK5JvNHcanTm4c=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782757336; c=relaxed/simple;
-	bh=D7y1w1hAd0iotSyKh7CxtFC4/yc2h/GnCKbOuoAwXZ4=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KDVS7KrEi/DqOiAgOWW2qzFW4drKA20FqUvRreUhYbC6q2CVvukhjYbrBD9UwjKqKXjKbbWtZo0ywT+E6Q0qeCxQgHiriUU+X8v3YCT12DLLYj2SMxKn32ezcKVU/FfqpL//uq0//ToMg81vB3ukFdLFBiDC3FkJVei2VOSrqNo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=AY4Z7Cqu; arc=fail smtp.client-ip=40.107.201.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1782757400; c=relaxed/simple;
+	bh=0kMhyv18E/s/SZ4DXmnkJytiPYdf902rVtsaGJRhjtw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=o9k84ZxC7VwF7ICAv/knhdCwQ31DcuCPOnPNCSDNWEQAsY/DLYMM2WeTohOnxDsf3s92Qf6zJ2Bu6PmH10UYQ7ra6sIHvUbpg1i7DmUuqULOBMzeNHbKfmiz+fxPjV0HSqGbkbSBbaq32f58f65ky0kHGKErhw5m8DrEWgV0+cM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Gsfvklzv; arc=pass smtp.client-ip=74.125.82.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="AY4Z7Cqu"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=st5u1hGrcJ34B3LUN1tOnrnZKJYmcTPbDxLorMpixlEwAMZo/Vjb9mvmBSzrWcdRYUWvZekQWvpcAY/Lvlp+8EqOIa/2rP4j38lYBYtyFHR2rc/6H86AE/xrpJIwsNpPR+QJue3iBP0DZ2TXE3msriGpSNNEfjzvAvxrbFIufqEgBSxHtEHgDjsFW8YRWQUy8hTJ45zEGmsZ7TvPnHrkBY+Y6tFrl7vvWfy6vGPBWyECvbPhgx8AF6EXlCWLtaI3WSbO4HfPqsqV+U1GaWjVEr9C8g4Ti9h4CeMQN+my0XJ+bpNFdhW/qrKyECS8NltHrsH7VmqcYkn2Rb5uKoR0qQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YruQRGdooAus926mXQ5iORF2/vtVgeWZuFRhOiiAGHc=;
- b=LBuuHDL5OVrxD3aQJXJkuU0pxQrLfXA92j6S96Asn6Hg4/cAcjZD3Fq0ho6p0AagN9bUAaU88+PhFMB0BGkHFKMJi86sTQbW+X0K9PpFWoMbYLfzaxDP38o9GNu0KRi/jTFcaJ3/KQNSEAA0W1C8qqFU0w8yREYpT9U0fDwHdFKS3NM4wSUxqyntlgBvqTsU7G+U3AX1/bv7I1Fru4KVXlG4pIhJXjRvRLoft7F8eo+Pj1v87IoNxjv8ER8bhEcHWbj3HlEQeXr+mZ16e0nLR7Rsn5/I3ioWEeIvIG/1sEDN1yg30Qf0mn6vD+5fa+Bv0ZbVBCK/hf18Sojd/yhunQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=resnulli.us smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YruQRGdooAus926mXQ5iORF2/vtVgeWZuFRhOiiAGHc=;
- b=AY4Z7CqukUG9xa6zK8F8own0nn7p6DaTi0pLccSQV1S8XG0R8STi0fQZlCRPPSFoyM1dZMy+hzQzLprdlhXJmylRxBaJMDMA1P2FnHyY5L6OgS3bE/7kDp19BfJc5JWsndetfpr1EUcv57eke+8lIX8Ut6psoe+AOque5EDE4pUgjrFAbvgL4cB6oHj+Y/nOcDZad4t+cabOoZ3N2bDAu+Kx7WHXVsOSlLlhB97FRXSjmrD8R+wjT/HY2HBaXL2+1ZjVMCEMC+H6mKpOfJ53g1hPVw5FaGX7y2O9EuMBsD79KIbaW01Ol0mJXGY/8L/2mzhN5IVU0x9EVzeCq9+2mA==
-Received: from BY3PR03CA0004.namprd03.prod.outlook.com (2603:10b6:a03:39a::9)
- by CH2PR12MB9544.namprd12.prod.outlook.com (2603:10b6:610:280::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Mon, 29 Jun
- 2026 18:22:03 +0000
-Received: from SJ5PEPF00000204.namprd05.prod.outlook.com
- (2603:10b6:a03:39a:cafe::6b) by BY3PR03CA0004.outlook.office365.com
- (2603:10b6:a03:39a::9) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.159.19 via Frontend Transport; Mon,
- 29 Jun 2026 18:22:02 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SJ5PEPF00000204.mail.protection.outlook.com (10.167.244.37) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.6 via Frontend Transport; Mon, 29 Jun 2026 18:22:02 +0000
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 29 Jun
- 2026 11:21:34 -0700
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail203.nvidia.com
- (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 29 Jun
- 2026 11:21:33 -0700
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.7)
- with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Mon, 29
- Jun 2026 11:21:29 -0700
-From: Mark Bloch <mbloch@nvidia.com>
-To: Jiri Pirko <jiri@resnulli.us>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>
-CC: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
-	<netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, Mark Bloch <mbloch@nvidia.com>
-Subject: [PATCH net-next V4 6/6] net/mlx5: Apply devlink eswitch mode boot default on probe
-Date: Mon, 29 Jun 2026 21:21:01 +0300
-Message-ID: <20260629182102.245150-7-mbloch@nvidia.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260629182102.245150-1-mbloch@nvidia.com>
-References: <20260629182102.245150-1-mbloch@nvidia.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Gsfvklzv"
+Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-139b914bab6so4961387c88.1
+        for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 11:23:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782757399; cv=none;
+        d=google.com; s=arc-20260327;
+        b=VYyEGo9no68Mittx6LmqCInHNcfSJS6pKv5GLx5ynfxz9VIN0wktFmtfoXwv47r52y
+         oAltz/J2HucjXJPhXeDkX90WUiaUZyAIrpkkjw5jAWagAYnPSF/iTo0xJEfP1M4TJLMz
+         4dOwwjNe0fgGqJ1DunoF5zdKdyQpKurE+6gzlwwfsPryAekdtdyoPDImEaB4m22vvCAB
+         +QhRk06LxUAMKvFDZlNPM8kJ5kyI2XS4gQIv1lHvzVE/Nul392eB4n8xHC+HfFsjN+SU
+         zQEXMOqnG0hvH2MRjv95qV7okPxi/2HpCoBHOpal50VDz8wbtYabqxRBFcSLIAFxYtwe
+         jVXg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=vOw0rQqEXt5i55zXTGD6v7I1obmXvoCtQycP+cacIvM=;
+        fh=mAUzy9Wpf4SYAEjvgxyF4HBbXCQ6od2ZKrNb3oNb0y4=;
+        b=Z6Q2od8VI2XIroaPGSw07lqoAb5/hc8KJ/+X2PAn86O5ZNmx7X10XjybMRUbVd14hU
+         a/v0soZ3X8Wy9HJBlHtSv8+EAKgu8fqZGbVP7kzcEh0Gro/3LwyAqXsa0RvN71W4Xopy
+         Pxt7+z8UP6TUZzM3eiK6b0yowfyu1ljukDabwX/B2bxVFjqc5Gs/ele0ggUVQTXKJmN/
+         K3xRx7EyLC4niPAMKdvu4OQJTLcB8QRpE/UWFK4YV9nmCDR4uoxQ3/fIAWMVgAuRF1cP
+         d+TrcLF6UYqJpZENxQVqHmrBmb3aU6K+horcT/ZRYHiDHcWsbnZRt+kJBEgocNt1Gb4+
+         6oYw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782757399; x=1783362199; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vOw0rQqEXt5i55zXTGD6v7I1obmXvoCtQycP+cacIvM=;
+        b=GsfvklzvEsdmASY7x9kfLoJg720y02mz1wQhRFuS34MltsiEOR3dp/Nf2+/0HeMzH4
+         kcYU/G1CKSkncVkBiwhrwti6QeSKjilvj43Ml+Ng8omEGB2OlK0YdxqThv70hss4GZwJ
+         8m+AmTUtM22sx/emG3OgfulrbeVdRuvPp1HhIuMG5NbEuG8KxuyExBnIV9yhryi8LdL1
+         ax8/yzjOj0G5tF47aDBrfgvWeD+J7ulvsdX5wmOleK7dyQUBP93gzMi292JGig0hUtIH
+         OaquK/1ait3yvKBV/S5hTPMDPzmi0srjy3YzeJdeIf4ZZOtn9TOFilR7vun+OnWbe3HI
+         k31Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782757399; x=1783362199;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=vOw0rQqEXt5i55zXTGD6v7I1obmXvoCtQycP+cacIvM=;
+        b=QcE5huzla91Br5Oa6msIbh5/55zu65njblzhufFsrCU5Dt1WorxqbJhEierXjz0R3y
+         nhX7d6Qo7CqUInHuAgJasMtqMGsxFj2NQaPTlmyfgl/7tXmQddiOlmnFWsrS8+YM2Tgp
+         NWHVCWr+OMW2EaUUZLRT2QFfrNI+vRcSjyQeYTs2cnzPlOzLVePrFCRIdXlbZ1/is1re
+         ek2pv90KzOsLedSR3+gPCL0uG3H5CC9fgoFnVLLT4Kp3VeoTF0xMFrVa+8Kj4xjx6SOw
+         X8GXsuFjYxryfpMOuGHp519GHvQsTBcAuECPBrNhmJLgHesnsu4IjhNREgMzkxjy18kY
+         uqsA==
+X-Gm-Message-State: AOJu0YxPxQx8Lf1TotyJAmHfSD/jn8Q8igA58EJLE3wsQhoZueDZZVAO
+	CFPTPEL9KH4nK1e04AAyrYZ1x91i4HLaoK5H1FNJXxpt0G9SEd7tFv1c5qcqTPDZNMUI+uPS41q
+	lr8hHrJA5QQZAxT9wua7B1sahBD+pqL2YTGNOdvYM
+X-Gm-Gg: AfdE7ckqfTLpqIHcg4yKawR5xbA254lCkc+n36YMtMqrl5xLA5wR7l6qljar8hdsAsr
+	E+MLfu5dDZDXqz9JcFmlYQ8zVkg/ITfKi2rDIROvzVZ6vvKsGSQ5P2FCAWs8+EXYQbDxAcPGKNT
+	dG3qnHMcwtBI8xGG2Rt9yfQJDxdrusK+o1aLtXnsYpPo+DQvVeTUkZRJeY+DaCeJr7x7mIrbJQI
+	7o3q6RIAAzDMOPBCEUWo4yM5N9TJu1lMgJTccqT1mvMj4cUx1BZyBQElyNRympTROBnB2h0htFk
+	6i0DpvDttZfZ3jQr/DV1z9/+FS4quWOOb88XJoCEVDyJoYTd1uo2JEfthJifIqvup1MtXVZ9SZV
+	TIxxaNWhyC58I4aNsReaukZ4vXT5oh1VWh2HWLJ2ewA==
+X-Received: by 2002:a05:7022:625:b0:138:5049:cb7c with SMTP id
+ a92af1059eb24-13b2a1bee3amr287057c88.36.1782757397786; Mon, 29 Jun 2026
+ 11:23:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF00000204:EE_|CH2PR12MB9544:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3dbc2d87-a2c5-442e-9c42-08ded60b5121
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|7416014|376014|36860700016|82310400026|22082099003|56012099006|18002099003|6133799003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	BxKV+01KYuzasOYrOOvG0xFXztPW13FlPHwUO+yDzG9b9gmFVD76l06xrWufSQcOpc6O5A5oSSYzOT7ssi2fZryfoEsxdm1Lv87nrTrKweasbdfGlxrQEuaUOgaIAgVP6+AZleeO4DxmG/yFA8AcgETs0NLOxWVuEaVbKSYB4OSDYAou1BOCfCV/YwWNhFW0oNGfcq8h1xmZQUq7WZfmXipDkHThrVE/rWKzZGMOC9qChfu9EUX+cMymrLO+BHJEbSR0JpN0Rvpaa0DNXbBapi8WzjpfKrVLJXduKIt0jLKgaUt8qmilEOdFE6G/EV0ZCeI8WBOZQDMWmJfsW0Fw2ZE0BfW40G4Wz9kVXq++BOz8s/Bu+JINNqcv4S28AL6UdE7d1WCLU88mv038puCMTVt5zLHaYxVs84HkF+ZL6LpTLxGFGaAz0CIWIghMlUtq4YVM5vNYYkDd47JwMHyNw9PmxpqaJcySQFrXxp/7ranYb10WmbYJW+ZKuNLepvM02J3L2/dfcukhSZ+UUUmJYp6+0H4awK8y4aJmihwuIhhlI+tBudUEN40FOkV4AjkqY5ErconLfQQqGTmlESzEcdy+mUK4egLnq0pjd193PIvOX64RpkzUVNs2OXPv90zFDMBgn/JpoHRIp7sxbIZNcSEegNfrT22bBxFwI6I7yqc/BOEO+oxDgICsy9Gn2qmqjbnkm/EWoLX4Katmm8dupA==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(7416014)(376014)(36860700016)(82310400026)(22082099003)(56012099006)(18002099003)(6133799003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	1IDKa+ktD+TI/p0FeGl4lZXcuHmSOdWap/z0sEBwkQaF/pTbV0OWuCWfl1GXRwC3FSlXARzx9c7Hr24HNuXNf7mCJ+5izvDek7fK/RJpEaOY5V55rNwRa+ppWLt268kRzfANWXCSEmiyHlSo3cmvwnJqF6qSkKq3mjLBoDwnkZBo0C1AgFBa/eWxvJ3lfnBICp8II+JF5SDxjQ/esA/fk6oQW1x+i+B8Tn4qr06AGyVhGbdiGYIXFRP+qh/xOp86yLKOmmp55NNhKzw1H78H3CTBBhG/BMpZE7K1/bp0HJ0JBq1fxgvpzv9lgGaVPVmSLFp5eWC3zFQBSD1M66kxQiJ2sU2oP5t69R1az35ntX5Eo8zzc86ge75M/iNSjyP+99Ea6eV1frdbqKjudrlRKnmP+Sc/arnc3Wu4921qwAHcdeW7C7LjJO98mAgLowNg
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 18:22:02.6996
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3dbc2d87-a2c5-442e-9c42-08ded60b5121
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF00000204.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB9544
+References: <20260629155748.715754-1-paritosh.potukuchi@amd.com>
+In-Reply-To: <20260629155748.715754-1-paritosh.potukuchi@amd.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Mon, 29 Jun 2026 11:23:06 -0700
+X-Gm-Features: AVVi8CdKWkhz_TIxG2JW_sG4Rd8F2WPYkm8JLftWpC2QolRYiehyUK9angcAF5M
+Message-ID: <CAAVpQUADJeSx0njB96i90Upq8zw-pcfZX0HqWkqjcuKm17XZ3w@mail.gmail.com>
+Subject: Re: [PATCH] net: neighbour: add neigh_parms_lookup_dev() helper
+To: Paritosh Potukuchi <paritoshpotukuchi@gmail.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Paritosh Potukuchi <paritosh.potukuchi@amd.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Apply devlink_eswitch_mode= boot defaults for mlx5 after the initial
-probe finishes device initialization while holding the devlink instance
-lock.
+On Mon, Jun 29, 2026 at 8:58=E2=80=AFAM Paritosh Potukuchi
+<paritoshpotukuchi@gmail.com> wrote:
+>
+> Provide a helper to lookup neigh_parms associated
+> with a given (neigh_table, net_device) pair.
+>
+> The existing lookup_neigh_parms() helper is internal to the
+> neighbour subsystem and cannot be used by other subsystems.
+> Some stacked/virtual devices like bond require access to the
+> underlying device's neigh_parms.
+>
+> neigh_parms_lookup_dev() is designed to be a wrapper around
+> lookup_neigh_parms(). The function provides controlled access
+> to per device neigh_parms.
 
-At this point the devlink instance is registered and mlx5 can perform an
-eswitch mode change. Calling devl_apply_default_esw_mode() also clears
-any pending default apply work queued by devl_register(), so the queued
-work will not apply the same default again.
+Please post a series of patches with the neigh_parms_lookup_dev()
+users.
 
-Keep this call in mlx5_init_one() rather than the lower-level
-devl-locked init helper. That helper is also used by devlink reload, and
-devlink core already applies the boot default after a successful
-DRIVER_REINIT reload.
 
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
----
- drivers/net/ethernet/mellanox/mlx5/core/main.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-index 643b4aac2033..0712efea74cc 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-@@ -1392,6 +1392,17 @@ static void mlx5_unload(struct mlx5_core_dev *dev)
- 	mlx5_free_bfreg(dev, &dev->priv.bfreg);
- }
- 
-+static void mlx5_devl_apply_default_esw_mode(struct mlx5_core_dev *dev)
-+{
-+	struct devlink *devlink = priv_to_devlink(dev);
-+
-+	if (!MLX5_ESWITCH_MANAGER(dev))
-+		return;
-+
-+	devl_assert_locked(devlink);
-+	devl_apply_default_esw_mode(devlink);
-+}
-+
- int mlx5_init_one_devl_locked(struct mlx5_core_dev *dev)
- {
- 	bool light_probe = mlx5_dev_is_lightweight(dev);
-@@ -1471,6 +1482,8 @@ int mlx5_init_one(struct mlx5_core_dev *dev)
- 	err = mlx5_init_one_devl_locked(dev);
- 	if (err)
- 		devl_unregister(devlink);
-+	else
-+		mlx5_devl_apply_default_esw_mode(dev);
- unlock:
- 	devl_unlock(devlink);
- 	return err;
--- 
-2.43.0
-
+>
+> The caller is expected to hold rcu_read_lock().
+>
+> This does not break any existing functionality.
+>
+> Signed-off-by: Paritosh Potukuchi <paritosh.potukuchi@amd.com>
+> ---
+>  include/net/neighbour.h | 2 ++
+>  net/core/neighbour.c    | 8 ++++++++
+>  2 files changed, 10 insertions(+)
+>
+> diff --git a/include/net/neighbour.h b/include/net/neighbour.h
+> index 8860cc2175fc..1b3b06eda886 100644
+> --- a/include/net/neighbour.h
+> +++ b/include/net/neighbour.h
+> @@ -438,6 +438,8 @@ int neigh_sysctl_register(struct net_device *dev, str=
+uct neigh_parms *p,
+>                           proc_handler *proc_handler);
+>  void neigh_sysctl_unregister(struct neigh_parms *p);
+>
+> +struct neigh_parms *neigh_parms_lookup_dev(struct neigh_table *tbl, stru=
+ct net_device *dev);
+> +
+>  static inline void __neigh_parms_put(struct neigh_parms *parms)
+>  {
+>         refcount_dec(&parms->refcnt);
+> diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+> index 1349c0eedb64..6d32c2668af3 100644
+> --- a/net/core/neighbour.c
+> +++ b/net/core/neighbour.c
+> @@ -1757,6 +1757,14 @@ static inline struct neigh_parms *lookup_neigh_par=
+ms(struct neigh_table *tbl,
+>         return NULL;
+>  }
+>
+> +/* Caller must hold rcu_read_lock()*/
+> +
+> +struct neigh_parms *neigh_parms_lookup_dev(struct neigh_table *tbl, stru=
+ct net_device *dev)
+> +{
+> +       return lookup_neigh_parms(tbl, dev_net(dev), dev->ifindex);
+> +}
+> +EXPORT_SYMBOL(neigh_parms_lookup_dev);
+> +
+>  struct neigh_parms *neigh_parms_alloc(struct net_device *dev,
+>                                       struct neigh_table *tbl)
+>  {
+> --
+> 2.43.0
+>
