@@ -1,47 +1,157 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9414F2D3ECF
-	for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 14:59:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9B726ED2D
+	for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 14:59:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782745153; cv=none; b=u72T8k3HQYtQmEu2qwwff3aG+TxuyZoaKXtOgZ5NYLp7Hdl//B3zWWdxzlNKDSx0EvuzRmga1WbhLFHYEYVSBUKNaVksSSGOczBC89ZLgSWNRycyrtMI+NLAsk30aSY/XJwU3SWuE2LK/XVGD5euacC4bRrdYDCgl5LFbr0DiU0=
+	t=1782745162; cv=none; b=Bfqc0rTx89pR6a1552C/T7XFxp5lEosaamANj2brleDEz2tsmA21H5uGBLZlpfYT7EnMOpjfWH9tR5IBi4jbxqNsDYgorBAgnyedFIzj5as5PZd2HL/9zh79ZrYzZqOA9gNrPNVS7sGXKS0k85TSsgcpXB720nHSQgef3gXJ8VM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782745153; c=relaxed/simple;
-	bh=U73iG2jB4U3G09IyI7yXFibzsSq/khlKp9BoHFddutI=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=gxhrOl2h/5s8O65VufbTRO9pwBzYW0tzMm07SunoMzwA9jCprEyWKqvPKCBvZAjHn6/BisEMlNS7zMOHajm3wOTNlZwQRH7/lxc62e0S9evAi5PuS6EjAbwVtFcAPBZqQ/WJNCdhtVkmTmi0iGk+2QdafdVLpFOMpVyTqw2AfEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DSvYaW5y; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DSvYaW5y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F13C61F000E9
-	for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 14:59:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782745152;
-	bh=Ty6y97JMdpTzGhE20SLOr6806cgGUcOEM1g9ulnp+70=;
-	h=Date:From:To:Subject;
-	b=DSvYaW5ytC8+ytMAmm4TXa38Dz2OG0MgCxa5txVSEWBDF0gb28JLGpKxJqBwbXKqH
-	 fFUBxVoqyZH9b9lSJ8ArTk25cwElVU9SpTnwfyjqm2rBwe/+VwEcA3e/P+gGo7uEJl
-	 C8RqdRH4Vdr7hlLhJoFMnc2Kf0JE5pJaivW7X2B7loLPNzNhCxgwKmojCMZhQVM1TX
-	 GZpdDp/fqNrSa/woYMgrhuxwtFr3DRq5LKMawB1JjwHR+9R8LvlC5F8UF2tywRjS9Q
-	 npUuu1xPpMbHAFuUCAb4gASTGXY0NcDXQ0lbFjKNpTbiXNBy500JG38R+E0Yq5Y40k
-	 uYX93MeAGHu5w==
-Date: Mon, 29 Jun 2026 07:59:10 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: netdev@vger.kernel.org
-Subject: [ANN] net-next is OPEN
-Message-ID: <20260629075910.20c08b2b@kernel.org>
+	s=arc-20240116; t=1782745162; c=relaxed/simple;
+	bh=LAoZJqVfdU9+V8F5hBZtY//uWnuQHis0eN8ii8DLed0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AARZg94cby/e4b2Gp/GQRMrCIiXuxdo/ZuSs4El9BUAtSo+ahJY/DdaTcNoeSTLJ4UmgwOnAg3Hjgsl9nNKqzupCbNIXtuNqnbtiFxDjbcIOzhYENFoFqYiNAyBJaOep8ApN83MoNKG5PsoX9B2B4QpA9Q1daLK3tPdQ2M2QTQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-6a16bcd0a2aso723593eaf.0
+        for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 07:59:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782745160; x=1783349960;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YrA9ccFaco9J2BZQ3eRpFjtGI3CKCK/xF2koXbFr26M=;
+        b=RIrNpuqESMcM6avLBCmoEmoCNPNaPbeBQDS+xreNDC9imSX9pa8kIbm42Tym9LAW1O
+         W7jxjcjzkwKaGTFSP27IBch9VNY8iYa5J6ATa2J7rQH3PhwC1CojL+uASypJ2u/241Vx
+         oSJgOuwHxtx0dEhqz8tNcmskC2BImRStV11AqTGPribMLilU37iHrJNAlJ5g2s6U9aw3
+         n80RNM2OlyZVrxaiac/Km6LYQDAp2oyMNC5MftdEclxZlfenqfTs5anhEYTNvuKeKEok
+         6gEK62YSG8m7s2kebtYikRAGXpcuXvcCHGAF3s1RqE7SZYHD3iAg/vN1Y0bM+xWZ9apr
+         hOtg==
+X-Forwarded-Encrypted: i=1; AFNElJ/ES1D9GxzTkLZC7pucv3N8LRH9t97hh+PAvpWzjVPKatxePa3SLphoRvF6Iq8H/gQqcuwxkCY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxyYo+RCvTAXBAgKkLu5tXYHK3YbtJDXpelL3h0at/qbSDQkMOH
+	L3ghtH7lhAq4vBXWIeYwKFMUegEL/h5CBdPwg+aFT63oqrE5RzJ4eyDeouOO5OKB
+X-Gm-Gg: AfdE7cmbGXdFiOKvF1AxEy4mgty2+hoLdPhO7ufGjIRwixQT+ozUG+R6/r4EIOuMlB9
+	/bgEdTOR03baj91Mc2DkmgpTeQ/eBOUwBdQGepO0t6QljG1eb68P9E47oKKRomlotootsxOkp5X
+	sQ+gJDbDE2Nuwm+kDG4nhD90P+iL2rzVb4tfNs53jifW9g3sNZuRREJ8YvYt7Szv42sqPfrtQEP
+	RTEUm/XCJhc9TSZMJc0d/TnQ1//ZfQ1iKj9uQRz7oOOcgoZa07TVUkpxCPOTqmk6KDizrPv3C1L
+	x8NICkxieD1nIJeOppjzIvhuUXhxDfUFfELVh+c6Y2LWfZoyWY5g2R2ZjOdGiD/KxCtHo8LcQLA
+	0v8uBagRdVBsCbN3a3MGupzjoPEybdI2l87q3EDcroCrr9Ie7PT3dnjIMxrN2bCsaW+T4XfDuFQ
+	SAPIQ32HCd0jVgT1w1580/ix9abnrxaJcyJsh4vn/QQctvlNKW+qjdktQyRxnM
+X-Received: by 2002:a05:6820:20b:b0:6a0:e523:99a6 with SMTP id 006d021491bc7-6a18921600dmr10284eaf.51.1782745160166;
+        Mon, 29 Jun 2026 07:59:20 -0700 (PDT)
+Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com. [209.85.161.46])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4472f0464a6sm21274411fac.15.2026.06.29.07.59.19
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 29 Jun 2026 07:59:19 -0700 (PDT)
+Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-69dead44101so2958201eaf.3
+        for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 07:59:19 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ9p/5O4yIwMMnHWE+h7o0NfbmTuU1ZA7Ng8Wd1qg7aBACy7JkPlfPsDkSv6mRN2RqReIbgGF8E=@vger.kernel.org
+X-Received: by 2002:a05:6102:c86:b0:738:ecd7:198e with SMTP id
+ ada2fe7eead31-738ecd71defmr1394925137.19.1782744721048; Mon, 29 Jun 2026
+ 07:52:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20260629-qcom-sa8255p-emac-v11-0-1b7fb95b51f9@oss.qualcomm.com>
+ <20260629-qcom-sa8255p-emac-v11-1-1b7fb95b51f9@oss.qualcomm.com>
+ <CAMuHMdXen+E-Ai51aWBa_KV9W8Fz2cQPpT-FG_kQ7akhrrYa_A@mail.gmail.com> <CAMRc=Me3jaZXiXa1sFXr=8Do4sCd+XN1pKTcWC8-0j78SjCkKA@mail.gmail.com>
+In-Reply-To: <CAMRc=Me3jaZXiXa1sFXr=8Do4sCd+XN1pKTcWC8-0j78SjCkKA@mail.gmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 29 Jun 2026 16:51:49 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdVUBgG0EFB16OxHisbxx-sBvDKvBPNZdpyDnmBrnX4ptQ@mail.gmail.com>
+X-Gm-Features: AVVi8CdkJoaQviVQ7ltoNYHwA2g-kW32TDsBBJn2QkEKdC-zwJrV4O3to75iJ6g
+Message-ID: <CAMuHMdVUBgG0EFB16OxHisbxx-sBvDKvBPNZdpyDnmBrnX4ptQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v11 1/7] dt-bindings: phy: document the serdes
+ PHY on sa8255p
+To: Bartosz Golaszewski <brgl@kernel.org>
+Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Vinod Koul <vkoul@kernel.org>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
+	Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
+	Jerome Brunet <jbrunet@baylibre.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Fabio Estevam <festevam@gmail.com>, Jan Petrous <jan.petrous@oss.nxp.com>, s32@nxp.com, 
+	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>, Romain Gantois <romain.gantois@bootlin.com>, 
+	Magnus Damm <magnus.damm@gmail.com>, Maxime Ripard <mripard@kernel.org>, 
+	Christophe Roullier <christophe.roullier@foss.st.com>, Radu Rendec <rrendec@redhat.com>, 
+	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, Drew Fustini <dfustini@tenstorrent.com>, 
+	linux-sunxi@lists.linux.dev, linux-amlogic@lists.infradead.org, 
+	linux-mips@vger.kernel.org, imx@lists.linux.dev, 
+	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+	sophgo@lists.linux.dev, linux-riscv@lists.infradead.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi!
+Hi Bartosz,
 
-net-next is now open, and accepting v7.3 patches.
+On Mon, 29 Jun 2026 at 16:07, Bartosz Golaszewski <brgl@kernel.org> wrote:
+> On Mon, 29 Jun 2026 15:51:31 +0200, Geert Uytterhoeven
+> <geert@linux-m68k.org> said:
+> > On Mon, 29 Jun 2026 at 13:29, Bartosz Golaszewski
+> > <bartosz.golaszewski@oss.qualcomm.com> wrote:
+> >> Describe the SGMII/SerDes PHY present on the Qualcomm sa8255p platforms.
+> >> This is essentially the same hardware as sa8775p rev3 but the PHY is
+> >> managed by firmware over SCMI.
+> >
+> > So why can't it be reuse the DT bindings, and be compatible with
+> > qcom,sa8775p-dwmac-sgmii-phy?
+> >
+> >> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+> >
+> >> --- /dev/null
+> >> +++ b/Documentation/devicetree/bindings/phy/qcom,sa8255p-dwmac-sgmii-phy.yaml
+> >
+> >> +  power-domains:
+> >> +    maxItems: 1
+> >> +
+> >> +  power-domain-names:
+> >> +    items:
+> >> +      - const: serdes
+> >
+> >> +examples:
+> >> +  - |
+> >> +    phy@8901000 {
+> >> +        compatible = "qcom,sa8255p-dwmac-sgmii-phy";
+> >> +        reg = <0x08901000 0xe10>;
+> >> +        #phy-cells = <0>;
+> >> +        power-domains = <&scmi7_dvfs 0>;
+> >> +        power-domain-names = "serdes";
+> >
+> > Ah, this uses power-domains, while the existing bindings for
+> > qcom,sa8775p-dwmac-sgmii-phy use a clock.
+> > I guess the clock is the correct hardware description?
+> >
+> > Adding to my list of examples for backing a hardware-to-SCMI remapping
+> > driver...
+> >
+>
+> Russell King asked me to put the PHY logic for SCMI pm domains into the PHY
+> driver instead of the MAC driver where it was previously. Instead of cramming
+> both HLOS and firmware handling into the same driver, I figured it makes more
+> sense to have a dedicated, cleaner driver as the two share very little code (if
+> any).
 
-It will probably be quite bumpy in July with a lot of vacations 
-and netdev.conf along the way.
+I think you are mixing up DT bindings and driver implementation?
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
