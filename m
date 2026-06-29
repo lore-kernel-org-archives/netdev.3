@@ -1,167 +1,134 @@
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from tpecef21.compal.com (exmail3.compal.com [59.120.207.196])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6753CF043
-	for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 07:23:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8623E3D171F;
+	Mon, 29 Jun 2026 07:26:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=59.120.207.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782717805; cv=none; b=VkiZmM0nurauJIJhTZ7Yp+P+HBq10zBHBBS3bQl5hpd/M0ybCtZmY6KiDmwyMeql/C8xy6w7DnxzlpwFiUzjS7Rai/U82hM3bemMNRCDpnlnHMT7EDkW/Xen5FWx6Ldc06+eT1gEVb6UYo8YCaWxUzTU+aGgw+dcEKKlzIB2BU0=
+	t=1782718021; cv=none; b=NuBfYzhuKRII13YmSfyS7zqQULD8Q2dJFgjbkFX8y/GbW3Qum5Av/KVpwkJBLhCnqNb95gJKU0ZmWOeR/ObLp2/wbfBCLF/05YTxRldkKIJxTGFEbZh5UYImp5UciKyXKaUWGPH9Yhak45DMYSXWnOKNuNsRmWcQ8EeSQxOSmFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782717805; c=relaxed/simple;
-	bh=F4mUr5fBW1c1Axigt0EZGxBodn37EyWGG5Bvapzj6BA=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=LOHw9L2g6FfQIEUBQv1pTTSTV38uLrq+VeJXzMGCO46hz4N9DPLMS6VGsMVokxIHijvBT/2FxJR524u1QYh6ozGGWhELWret+1T7RX4ia2nCCsrDUNQIEU2Emb5lokFLIkbcyMVWH68icyqz0HR9TeAvSeVtVfQcYxnNs/RMyp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--clecigne.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KFoMNT+Z; arc=none smtp.client-ip=209.85.208.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--clecigne.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KFoMNT+Z"
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-69681505eabso3188569a12.2
-        for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 00:23:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782717801; x=1783322601; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=esIyG5vSRRrObBzd9FBYvLdlPmWTHEKEhlqipjb5aLM=;
-        b=KFoMNT+Z3IUv44V2WDO4nmwk0jVWhc2avf3twLkEiT0zC+bo+OV5BorxbIRkAtr4Se
-         wJMhGJM4b7eDiIvkabthe7LoUzlt/UuiFddM+e0tI5O5eKxMffGjqxQ4Ukf4lVaXIWzQ
-         myNLd55O2h5efC5BE4jh4pp06AtSTl0+4oiemVCIgEi9E1+UzitUohSj1QqWWLLqS8vV
-         QCk1DLwtaDzCB15iIn4PEUgtKinmBz1/03vLlQ1ahFukJYepsjfuja2q1r7grmCfmh6T
-         VnXNiH5qYiUg2ibLbFEUKX6ruy9Dv3vGTU99cavVObLewmbm0fzStxbY93vHFc7kzHoF
-         Y4WA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782717801; x=1783322601;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=esIyG5vSRRrObBzd9FBYvLdlPmWTHEKEhlqipjb5aLM=;
-        b=Yt5Ctm2L/JhqAvpVS8vD5vM0dbmQArR8furchWDVmj5OiBGvbZOkfrk244xULInuUo
-         09zTNDE7hAc6fgr6ZCi3k+729ehKdJApdQtE0J162PT+j4luTG4O6n/9GP2X1GCzHrxD
-         mJMieR8ZFHgN2vzDILxLgY1LlUkuEpKu7A7/ZaHABMvdCD74M8lJKD6NhPWCxiM8azks
-         EExp0G1HeWm1u3fIe0Q8fZVOSSjoJYaUAhZaVIxh90lU08UbwpqTDxl4MUmR7n4n7e4O
-         JGgEInXhtMKkIFzZTGphNT2VoGBDFNTtYvajkn+ab+MVSvYh0E8j6aWjtzkD4q5Zik30
-         oslw==
-X-Forwarded-Encrypted: i=1; AHgh+Rp29ey7si2q5ns5VJDOwpasF6rbGIGnwgm8CuzrBMyJX/xZbcMGi2/7CqcDHMMVV425BVVKLsI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyqXQKGaQZouWxMK5/NfVuNCg7EMt49rx9mvM2poKKyfq+CmZVx
-	Vx+VIcZ6NTD3YiXi0b5S3Udw6XPgIF9V1EyH4U1q420D/hIUMun0D6MdIignxJoS4gKZvSs5uwY
-	2/dZ5Ev8swREW9g==
-X-Received: from edyd4.prod.google.com ([2002:a05:6402:784:b0:698:3f24:d08a])
- (user=clecigne job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:190b:b0:697:c0f6:394c with SMTP id 4fb4d7f45d1cf-69810a44a6dmr5463438a12.9.1782717800656;
- Mon, 29 Jun 2026 00:23:20 -0700 (PDT)
-Date: Mon, 29 Jun 2026 07:22:58 +0000
+	s=arc-20240116; t=1782718021; c=relaxed/simple;
+	bh=SyP1rDr+scbd8EHqOhd2SEKwzz9Yk3yho9coNffyF3s=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=L5Ax4B+Mdlq6DDSMLfLWlk914mrXMDI5jnbS/uHg+uSMiNhBMKUifbpmsGZNXRGnci/3yxJ7IeBcHxOfmWSzits7vHwCWBo0zuipLax1d9fE58fQA1iYLpcHiO/WKE7FgZGZ+7Yk/3LfyFC2/cMwHQgfwry4z5i48/ugvRs9aS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=compal.com; spf=pass smtp.mailfrom=compal.com; arc=none smtp.client-ip=59.120.207.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=compal.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=compal.com
+X-UUID: e513c540738b11f1b2470fb4f881575f-20260629
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.15,REQID:37279384-69ba-457e-9911-d0efb34ab850,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:e276073,CLOUDID:2eed0748-b183-4e35-bd22-a1c52f713e18,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102|110|111|836|865|888|
+	898,TC:-5,Content:-10|0|15|50|99,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:ni
+	l,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE
+	:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: e513c540738b11f1b2470fb4f881575f-20260629
+Received: from sdmg12.sdbg.compal.com [(10.113.168.10)] by tpecef21.compal.com
+	(envelope-from <jackbb_wu@compal.com>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 212231599; Mon, 29 Jun 2026 15:26:50 +0800
+X-UUID: e216f86c738b11f1a9f9c99e036204b4-20260629
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.15,REQID:412e1593-7594-480f-8640-49ac201ef9bf,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:e276073,CLOUDID:d57df88b-c1a3-4335-bf81-c4a7f9da024d,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102|110|111|836|865|888|
+	898,TC:-5,Content:-10|0|15|50|99,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:ni
+	l,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE
+	:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: e216f86c738b11f1a9f9c99e036204b4-20260629
+Received: from sdbmbx12.tpe.compalcomm.com [(10.113.2.136)] by sdmg12.sdbg.compal.com
+	(envelope-from <jackbb_wu@compal.com>)
+	(Compal Mail Service with TLSv1.2 ECDHE-RSA-AES256-SHA 256/256)
+	with ESMTP id 1908956407; Mon, 29 Jun 2026 15:26:45 +0800
+Received: from SDBMBX13.tpe.compalcomm.com (10.113.2.137) by
+ SDBMBX12.tpe.compalcomm.com (10.113.2.136) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA) id 15.2.2562.29;
+ Mon, 29 Jun 2026 15:26:40 +0800
+Received: from SDBMBX13.tpe.compalcomm.com ([fe80::7d1b:448d:4d95:51b0]) by
+ SDBMBX13.tpe.compalcomm.com ([fe80::7d1b:448d:4d95:51b0%11]) with mapi id
+ 15.02.2562.029; Mon, 29 Jun 2026 15:26:40 +0800
+From: "Wu. JackBB (GSM)" <JackBB_Wu@compal.com>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: Loic Poulain <loic.poulain@oss.qualcomm.com>, Sergey Ryazanov
+	<ryazanov.s.a@gmail.com>, Johannes Berg <johannes@sipsolutions.net>, "Andrew
+ Lunn" <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Wen-Zhi Huang <wen-zhi.huang@mediatek.com>, Shi-Wei Yeh
+	<shi-wei.yeh@mediatek.com>, Minano Tseng <Minano.tseng@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
+	<angelogioacchino.delregno@collabora.com>, Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-mediatek@lists.infradead.org"
+	<linux-mediatek@lists.infradead.org>, "linux-doc@vger.kernel.org"
+	<linux-doc@vger.kernel.org>
+Subject: RE: [External Mail] Re: [PATCH v3 2/7] net: wwan: t9xx: Add control
+ plane transaction layer
+Thread-Topic: [External Mail] Re: [PATCH v3 2/7] net: wwan: t9xx: Add control
+ plane transaction layer
+Thread-Index: AQHdA/KoG0AzoVDQmky5mWyAxH40ubZVI4cU
+Date: Mon, 29 Jun 2026 07:26:40 +0000
+Message-ID: <49939d4d682f4c1fb359973ea2cdbd00@compal.com>
+References: <20260624-t9xx_driver_v1-v3-0-73ff03f60c48@compal.com>
+ <20260624-t9xx_driver_v1-v3-2-73ff03f60c48@compal.com>,<2a90ae6b-2b6d-4340-b557-915252cc3488@lunn.ch>
+In-Reply-To: <2a90ae6b-2b6d-4340-b557-915252cc3488@lunn.ch>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-tm-as-product-ver: SMEX-14.0.0.3239-9.1.2019-30036.005
+x-tm-as-result: No-10--4.183300-8.000000
+x-tmase-matchedrid: tkB2VEODQ1cuv++HU7VXryRFbfQbCufdN0X64jGy2db7+pncqRJfy2XQ
+	7TcqkNINhElhJj9TP7jAaX2MpgGS36gkniSqkpn+WZxYhPYYrMlHgZVDYg0zz4vmY1hE2VDUJQk
+	txNYzOLPtFo0/MAzmm/xu9bNQI/V0YNP5ZvfGAKupSoJx15avkdZEjr6xrP/hagCqz15rA4CvI7
+	qr7lIWqpm1ztAFUDBkjMlIlc7424OFF2q3JMLbrJGPSO6O5JCao4NJa7SjFsq4ssz2NHTRNT0wV
+	pvG2n4d28gAxP/Ts6IHvfG6dvIquv6mDCw61sljHGqZLFSL6vqvbctbyBVCOC+JND9IHIJ4kfMa
+	fuDIkC0Ich2EKbNazC40qe60KYOEZS4zlkrLF17MiA92IomI4m+o7cT3SFLw39InOc4KUjGgIAo
+	CghvZZgz+8rPHUa6xHcvjWJiii5la1X5Zxk7x/Q==
+x-tm-as-user-approved-sender: No
+x-tm-as-user-blocked-sender: No
+x-tmase-result: 10--4.183300-8.000000
+x-tmase-version: SMEX-14.0.0.3239-9.1.2019-30036.005
+x-tm-snts-smtp: BD93CB2734EF2CC9B20D2CE68070D84515D2F48398ED874D2E0ED1AAC02636F92000:8
+Content-Type: text/plain; charset="big5"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260629072300.1664622-1-clecigne@google.com>
-Subject: [PATCH v3] xsk: fix memory corruptions in net/core/xdp.c
-From: Clement Lecigne <clecigne@google.com>
-To: aleksander.lobakin@intel.com, edumazet@google.com, netdev@vger.kernel.org
-Cc: clecigne@google.com, bpf@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kuba@kernel.org, sdf@fomichev.me, horms@kernel.org, john.fastabend@gmail.com, 
-	ast@kernel.org, daniel@iogearbox.net
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 
-From: Cl=C3=A9ment Lecigne <clecigne@google.com>
-
-Commit 560d958c6c68 ("xsk: add generic XSk &xdp_buff -> skb conversion")
-introduced a vulnerability in the handling of XDP_PASS for AF_XDP zero-copy
-frames.
-
-Note: Currently, this specific AF_XDP zero-copy conversion path is only
-reachable from the drivers/net/ethernet/intel/ice and
-drivers/net/ethernet/intel/idpf drivers.
-
-When building an skb, xdp_build_skb_from_zc() uses the chunk size
-(xdp->frame_sz) for the allocation. However, napi_build_skb() automatically
-reserves space at the end of the allocation for the skb_shared_info
-structure.=20
-
-Most high performance UMEM applications use 4K chunks, where the
-corruption cannot happen. However, if the UMEM is configured with 2KB
-chunks (a very common configuration to maximize packet density in memory),
-a standard 1500 MTU packet will trigger the corruption because the required
-space exceeds the 2048 byte chunk size:
-
-Headroom (256) + Packet (1514) + skb_shared_info (320) =3D 2090 bytes
-
-Because 2090 bytes > 2048 bytes and __skb_put() does not perform bounds
-checking, the memcpy() writes past the available linear data area and
-corrupts the skb_shared_info structure. This can lead to arbitrary code
-execution if pointers like destructor_arg are overwritten.
-
-Additionally, in xdp_copy_frags_from_zc(), the allocation size is set
-strictly to the fragment size (len), but the subsequent memcpy() uses
-LARGEST_ALIGN(len). This mismatch results in an out-of-bounds write of
-up to 7 bytes, which triggers KASAN warnings and is unsafe despite typical
-page pool allocator padding.
-
-Fix the skb allocation in xdp_build_skb_from_zc() by dynamically
-calculating the exact truesize required using SKB_HEAD_ALIGN() to
-properly account for the headroom, the LARGEST_ALIGN(len), and the
-skb_shared_info overhead.
-
-Fix the out-of-bounds write in xdp_copy_frags_from_zc() by rounding up
-the allocation request using LARGEST_ALIGN(len) to match the copy
-operation.
-
-Fixes: 560d958c6c68 ("xsk: add generic XSk &xdp_buff -> skb conversion")
-CC: Alexander Lobakin <aleksander.lobakin@intel.com>
-CC: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Cl=C3=A9ment Lecigne <clecigne@google.com>
----
-Changes since v2:
- - Used LARGEST_ALIGN to calculate the len to account for the aligned memcp=
-y.
- - Fixed the commit message to include the idpf driver.
-
-Changes since v1:
- - Used SKB_HEAD_ALIGN to properly calculate the required allocation size
-   including the skb_shared_info overhead.
- - Re-ordered variable declarations.
-
----
-diff --git a/net/core/xdp.c b/net/core/xdp.c
-index 9890a30584ba..7e39f17ad407 100644
---- a/net/core/xdp.c
-+++ b/net/core/xdp.c
-@@ -698,8 +698,8 @@ static noinline bool xdp_copy_frags_from_zc(struct sk_b=
-uff *skb,
-=20
- 	for (u32 i =3D 0; i < nr_frags; i++) {
- 		const skb_frag_t *frag =3D &xinfo->frags[i];
--		u32 len =3D skb_frag_size(frag);
--		u32 offset, truesize =3D len;
-+		u32 offset, len =3D skb_frag_size(frag);
-+		u32 truesize =3D LARGEST_ALIGN(len);
- 		struct page *page;
-=20
- 		page =3D page_pool_dev_alloc(pp, &offset, &truesize);
-@@ -738,9 +738,10 @@ static noinline bool xdp_copy_frags_from_zc(struct sk_=
-buff *skb,
-  */
- struct sk_buff *xdp_build_skb_from_zc(struct xdp_buff *xdp)
- {
-+	u32 headroom =3D xdp->data_meta - xdp->data_hard_start;
- 	const struct xdp_rxq_info *rxq =3D xdp->rxq;
--	u32 len =3D xdp->data_end - xdp->data_meta;
--	u32 truesize =3D xdp->frame_sz;
-+	u32 len =3D LARGEST_ALIGN(xdp->data_end - xdp->data_meta);
-+	u32 truesize =3D SKB_HEAD_ALIGN(headroom + len);
- 	struct sk_buff *skb =3D NULL;
- 	struct page_pool *pp;
- 	int metalen;
-@@ -762,7 +763,7 @@ struct sk_buff *xdp_build_skb_from_zc(struct xdp_buff *=
-xdp)
- 	}
-=20
- 	skb_mark_for_recycle(skb);
--	skb_reserve(skb, xdp->data_meta - xdp->data_hard_start);
-+	skb_reserve(skb, headroom);
-=20
- 	memcpy(__skb_put(skb, len), xdp->data_meta, LARGEST_ALIGN(len));
-=20
+SGkgQW5kcmV3LA0KDQo+ID4gK3N0YXRpYyBpbnQgX19pbml0IG10a19jb21tb25fZHJ2X2luaXQo
+dm9pZCkNCj4gPiArew0KPiA+ICsJcmV0dXJuIDA7DQo+ID4gK30NCj4gPiArbW9kdWxlX2luaXQo
+bXRrX2NvbW1vbl9kcnZfaW5pdCk7DQo+ID4gKw0KPiA+ICtzdGF0aWMgdm9pZCBfX2V4aXQgbXRr
+X2NvbW1vbl9kcnZfZXhpdCh2b2lkKQ0KPiA+ICt7DQo+ID4gK30NCj4gPiArbW9kdWxlX2V4aXQo
+bXRrX2NvbW1vbl9kcnZfZXhpdCk7DQo+DQo+IFNpbmNlIHRoZXNlIGRvbid0IGRvIGFueXRoaW5n
+LCB0aGV5IHNob3VsZCBub3QgYmUgbmVlZGVkLg0KDQpXaWxsIG1vdmUgbW9kdWxlX2luaXQvbW9k
+dWxlX2V4aXQgdG8gdGhlIHBhdGNoIHRoYXQgZmlyc3QgYWRkcw0KY29udGVudCB0byB0aGVtIGlu
+IHY0Lg0KDQo+ID4gKwlTRVRfSFdfQklUUyhod19iaXRzLCBjaHMsIE1IQ0NJRl9SQzJFUF9FVlRf
+REVWSUNFX1JFU0VULA0KPiA+ICsJCSAgICBERVZfRVZUX0gyRF9ERVZJQ0VfUkVTRVQpOw0KPiA+
+ICsNCj4gPiArCXJldHVybiBMRTMyX1RPX1UzMihjcHVfdG9fbGUzMihod19iaXRzKSk7DQo+DQo+
+IFBsZWFzZSBkb24ndCBhZGQgd2hpdGUgc3BhY2UgbGlrZSB0aGlzLiBJIGFzc3VtZSBhIHByZXZp
+b3VzIHBhdGNoDQo+IGFkZGVkIHRoaXMgY29kZSwgc28gbW92ZSB0aGlzIHRvIHRoYXQgcGF0Y2gu
+DQoNCldpbGwgcmVtb3ZlIHRoZSBleHRyYSBibGFuayBsaW5lIGluIHY0Lg0KDQo+ID4gLQlkZXZt
+X2tmcmVlKGRldiwgbWRldik7DQo+ID4gKwltdGtfZGV2X2ZyZWUobWRldik7DQo+DQo+IFdoeSBh
+cmUgeW91IHJlbW92aW5nIGRldm1fIGNhbGxzPw0KDQptdGtfZGV2X2FsbG9jL210a19kZXZfZnJl
+ZSBhcmUgcGFpcmVkIHdyYXBwZXJzIHNvIHRoZSBjYWxsZXINCmRvZXNuJ3QgbmVlZCB0byBrbm93
+IHRoZSB1bmRlcmx5aW5nIGFsbG9jYXRpb24gbWVjaGFuaXNtLg0KVGhlIGRldm1fa2ZyZWUgaXMg
+c3RpbGwgY2FsbGVkIGluc2lkZSBtdGtfZGV2X2ZyZWUuDQoNClRoYW5rcy4NCg0KSmFjayBXdS4N
+Cg0K
