@@ -1,159 +1,118 @@
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CCE8352C52
-	for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 10:53:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782730440; cv=none; b=aVU/UdwQfzwDOOeOkK6iahXf0x8pn/vB9VxW0lk6Ie6KSkALS2WdmK/7F+s8RholGZh5Q24kpzR/vbNijGB6cs4lyfIabODpLdlOhXTH6sdRG11m9/Jub7SZw9JUMVdKDpICWVsPPV/I1CntkoCL5yNOkj4qM6hJKNSQRLJtN0k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782730440; c=relaxed/simple;
-	bh=udyCZGNKqOQAWVNVNHMzg8tGuxWgDsieM7QYxqo7QUs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ef09BPHwGif5jBAo53mbNPTrsqVMxO2ujWUmeWyIAhfnNUTMpx9d3QIQzOAplhll+Q9eHhp5EosbMBI7+g89BMi5SMnr7A1dxfsNPveBGCKQ7qnq4ZJZgpLdNrizBM4JHQG1wUHCYPQHkjJqRqZT+noFH6XnIrTyv1iMVq7+hcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=itRtvG7z; arc=none smtp.client-ip=91.218.175.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B675338593
+	for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 11:00:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.172
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782730839; cv=pass; b=GEjERpP8mkcza8IpZZ1R95XwTgeNiETqZJ/VjgoNc1QmFmeIOfX+dP5Fj9gCX+qcAoCVgyGsgF8618qF4mv6sOqp2Zvi4219zZfZK+wK1xGj+3ai/d03Rgwxes23f0QcTgvLJo4j0TCgivsIG2cWJKWh02VN+G4z6fPLr11wXEY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782730839; c=relaxed/simple;
+	bh=d9bUFRFkcAVF/hsfuRQFMIWn5yakrRuB3kHsvpivjPo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DjlLWE/1QBazXFmobuWWMjywBW6h+/6wCwZllN0CkTSo/7Oqr6sV44BuF30Ribd8BQ0OF6zXsFv7EQ8P3PqmSmbG7vWoHpu3Vf6pJubTGHPw+IUbuMTRvbRWe1hU0wb0K3GQZM2ClfMoSmciq4dyUUVP+jREujyMMLjD0i1GFNc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vPySupCZ; arc=pass smtp.client-ip=209.85.160.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="itRtvG7z"
-Message-ID: <ad2b814e-d9f3-45db-8a3d-953b96f6c6cf@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782730435;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=haX9RCflfTGHuwSZYRJAFHPwWCml2J3/1/qlRjiXNuU=;
-	b=itRtvG7zwfVSQ+mzbSnn0mJDQjPDbcgnHI2sfcWykQjRD2PTKAtPLF4dGpeRx2rDbRxIpq
-	IziaPTzGJLyYMF4qGvCiP6VIpl6DXBRd+Ke0N1wZIYTG+PdfhnUD2mVl4CQzQC2xaeCCtO
-	N7jQZgHCXHOgw+i0rOLKnwBjmuZJaI8=
-Date: Mon, 29 Jun 2026 11:53:50 +0100
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vPySupCZ"
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-51bfbe05683so6009941cf.2
+        for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 04:00:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782730837; cv=none;
+        d=google.com; s=arc-20260327;
+        b=FYmVFZX5zB9H38iZRWBM7QqcWWLL7kCAfJA3fhXMDsejj9ye9lNPWdI/hMCMCFIQGN
+         B6m+jTCFPFH3CfxPKsqqdodzEz2KiqD6ATcU+a/ZdVybmJkMbVH2GOuf6KA32lOu5kvE
+         kqS8cq0biCtiD7bH4SigUVy/mkVtbIo835HtAbA1kJZxCBRFPRr5OK95tyE9JRIusLLE
+         Oemv6hi5A8XOfHi1b30aQZt3eKw6KA/8e4UBu9er2AMq+2rI+DPH2v5yofWuOR2a6BYU
+         eFfKBxYlPsBZZtOzOuNpqG55d2qg8s16f+HQTAkuw7haYDDIg+BShaxXqBeKignWOWIv
+         7t9w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=IuiydVO1YeGeOUVbhoF+gzm0Gc06c1e5LfPUBj8lddM=;
+        fh=Jucyx6VDZoP5N33g4MSBnFDoqzGFE3vQZ+SuFxYY3h0=;
+        b=pIRw+8KuRIt5NTfLRX+6/xrFAf6ubm7kOsXas+7ACILq2iuwTTcfM+9fHWi+Cg7VXy
+         gRNxq2j8HlTyAvm3PD2zm/Ryz0LfSXOYtsxkiDhyiO6kJsUcsbz/IH4B1LjkN34k0uC+
+         GTOaFqRGXiXMqXZIuosELP1lBavbtQpxmmOcBB1UB2e7M815419/VimoPZBF78tsuJ4n
+         J03L5PDzRSZWhPGlK5Sjp1c0EBJjo6LV+MnwXxL2+AUqSnc85909Mf0XPBhslFFeJR7M
+         MPfaUlczTpydvBWt/Tke8kpy2M3qqnDhwJBZ4HRMQmYO9hXYCJP0RJG3cBNlZmjjMqy8
+         90nA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782730837; x=1783335637; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IuiydVO1YeGeOUVbhoF+gzm0Gc06c1e5LfPUBj8lddM=;
+        b=vPySupCZOrzANtrZKgye2YjMuwKzPskIuCGZn9bZqdgAi8vihKL1TpYbwL29Ep1FAL
+         jfNoa4DcPVnkFE4o4IuxEfipUSQ9Xoi66IWjstv11XUyUoo5kVb4Pt4CoyqumcigsPaa
+         uDkxAiNX3l+RPD67BoN5a9LUYdTN4zZlciFTssqfkEpdA7pSCxb90eP5J3yaZb7KNhO6
+         NLRzW9/w9BT8fLB+29nyl3g082Jyx9B4SChd3MqxF/LXvtHKBcw6EEH3nlK6a0sqw1nE
+         6/6WXJ4+yv6g8HCn/zTHcLoK4adVuOPX2piNA/iUDPh0epU3L0j15AuwFvRZvvrED2m+
+         caSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782730837; x=1783335637;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=IuiydVO1YeGeOUVbhoF+gzm0Gc06c1e5LfPUBj8lddM=;
+        b=kLPtqBXJhB7TLD5jyQT4JgdewYCh9BEjgFZh7/e/HO6q0SSwALLjNi+Fx7k+mLEVG6
+         S3GSLmNsDKpyJLChoKJhdcxCHv5a0dTBK7t5jLbCpu4i/DCYnCelzXrpb4m5K+yDpxuJ
+         RRELqYpUX+qxFqugPprXsop5mrfSkT3/pp1l2xwCYBBVwNPmQ/TfxnnGYcBAHQ5CYwfE
+         b1mxxUY6id9EcArlyFWWFbJ5j/2Rzese9rJCIOqk2POHMwOzZOhi253m72489H4LjYKq
+         oBUiwV2Iocpjw2DYi2jY09ShNn9JUBpflAwDCG3sl4lJ2hLMA5ZPaZIA33TDxIiYtJJa
+         NJLw==
+X-Gm-Message-State: AOJu0YwBimbe6w8HQ98t8K9yuO9sxb3vfm/8uRoTy0lu1ZORh6ys1HjM
+	ll2l/JdrRcrY7ZqVi+3Yw8IxFv51jim9qGQu+wB4nZ0qjUgcI2puS6T+24fMld8151jun+ydgB/
+	U552rlkVXWiGkHRVU+UylfqjpxxASodGOFXfiJzmb
+X-Gm-Gg: AfdE7clxVNRrjezJOo7Ix6czfK4Z1maLf8H6wI4NdbgdTznIBW6AEc4yqs9x7+DsziN
+	EDAJgQGn+1szh+ypO8olvlnDBSmftKtUo0P+GRIQTNdqBCH4fnxopqjhLGo+wtsG0k8yRR0iHm/
+	8jNVGOLAYaXORE3BPGgSIky4A0ELehiicGLU6cb5IEKDW49T+sLX99rwtjd0K60p0f0cAcF0zhI
+	UkqAzfOraSrUIEUmv8N4FUBjhWl7HTb6NwBhF6/glF5nDvNxb1U06DEPguA3UGX2/88zvgg8uVI
+	ufvj7Rcjk+ev+3YJrw4AOCGv/59d2IfR9NS0Owt37QQqxfRwfXeVvr8sxnqBCWp0vWX2mOhu33x
+	+wV16+DA=
+X-Received: by 2002:ac8:5558:0:b0:51c:63b:3b70 with SMTP id
+ d75a77b69052e-51c063b3ce6mr11447221cf.17.1782730836248; Mon, 29 Jun 2026
+ 04:00:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net-next v5 1/4] dpll: add DPLL_PIN_TYPE_INT_NCO pin type
-To: Jiri Pirko <jiri@resnulli.us>
-Cc: Ivan Vecera <ivecera@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
- Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
- netdev@vger.kernel.org, Jiri Pirko <jiri@nvidia.com>,
- "David S. Miller" <davem@davemloft.net>,
- Donald Hunter <donald.hunter@gmail.com>, Eric Dumazet <edumazet@google.com>,
- Michal Schmidt <mschmidt@redhat.com>, Paolo Abeni <pabeni@redhat.com>,
- Pasi Vaananen <pvaanane@redhat.com>, Petr Oros <poros@redhat.com>,
- Prathosh Satish <Prathosh.Satish@microchip.com>,
- Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
- Grzegorz Nitka <grzegorz.nitka@intel.com>
-References: <20260531194423.383366-1-ivecera@redhat.com>
- <20260531194423.383366-2-ivecera@redhat.com>
- <20260603185037.05f8c6a0@kernel.org>
- <be19bd30-0bb0-4a22-8932-e62f7678ccc5@redhat.com>
- <20260604081649.1ae5302d@kernel.org>
- <3c5e01f5-8563-41a3-964f-13fcb80383b7@redhat.com>
- <d6b69d21-4542-498d-8253-7009a56634cc@linux.dev>
- <aiftnkuT9IP31qUm@FV6GYCPJ69>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <aiftnkuT9IP31qUm@FV6GYCPJ69>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+References: <cover.1782643946.git.roxy520tt@gmail.com> <02e24eb83639e9d7ecc623f000c60254bb5c40a5.1782643946.git.roxy520tt@gmail.com>
+In-Reply-To: <02e24eb83639e9d7ecc623f000c60254bb5c40a5.1782643946.git.roxy520tt@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Mon, 29 Jun 2026 04:00:24 -0700
+X-Gm-Features: AVVi8CdVVFVcuH-41Bt5pOxvcv1rd-qM0ogvYjmsqGnxu8WZoc6RDrE2qVIbaFY
+Message-ID: <CANn89i+zu=9LAaSppJ_+YZQK8Mu5HVmoQa9uw17MDY+cXdpXkw@mail.gmail.com>
+Subject: Re: [PATCH net 1/1] tcp: bound SYN-ACK timers to reqsk timeout range
+To: Ren Wei <n05ec@lzu.edu.cn>
+Cc: netdev@vger.kernel.org, ncardwell@google.com, kuniyu@google.com, 
+	davem@davemloft.net, pabeni@redhat.com, horms@kernel.org, 
+	chia-yu.chang@nokia-bell-labs.com, ij@kernel.org, 
+	bronzed_45_vested@icloud.com, yuuchihsu@gmail.com, idosch@nvidia.com, 
+	yuantan098@gmail.com, yifanwucs@gmail.com, tomapufckgml@gmail.com, 
+	bird@lzu.edu.cn, roxy520tt@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 09/06/2026 12:06, Jiri Pirko wrote:
-> Mon, Jun 08, 2026 at 01:33:56PM +0200, vadim.fedorenko@linux.dev wrote:
->> On 04/06/2026 17:42, Ivan Vecera wrote:
->>> On 6/4/26 5:16 PM, Jakub Kicinski wrote:
->>>> On Thu, 4 Jun 2026 17:01:36 +0200 Ivan Vecera wrote:
->>>>>> Purely going on intuition here but feels like NCO should be a mode
->>>>>> (enum dpll_mode) rather than one of the input pins?
->>>>>>
->>>>>> More acks here would be great, Vadim, Arkadiusz, Grzegorz... ?
->>>>>
->>>>> I had a long discussion with Jiri about this and we agreed finally
->>>>> that dpll_mode represents a reference (input pin) selection strategy
->>>>> mode and not a DPLL device running mode.
->>>>
->>>> Long discussion? I see 2 emails ;) Let's hear from others.
->>>> (thanks for the link BTW, _if_ there's a v6 please put it in the cover
->>>> letter)
->>>
->>> I called him... he explained me 'why?' in detail.
->>> I also appreciate others' opinion.
->>
->> Well, NCO mode means manual operation of frequency tuning. Does it mean
->> that different tunings may be applied to different out pins of DPLL
->> device? My assumption that it's not possible, and in this case NCO is
->> property/mode of DPLL device rather than single pin.
->>
->> @Jiri could you please share your detailed explanation on "why"?
-> 
-> Since the "why a pin and not a new dpll_mode?" question keeps coming up,
-> let me try to describe why I believe that modelling NCO as an input pin
-> (DPLL_PIN_TYPE_INT_NCO) is the right thing to do.
-> 
-> In the DPLL UAPI, 'mode' only describes the *input selection policy*:
-> MANUAL means userspace picks which input the loop locks to, AUTOMATIC
-> means the DPLL auto-selects the highest-priority input. I know there was
-> some fuzz about this semantics in the early stages of upstreaming DPLL
-> subsystem, but eventually this became very clear both in code and in
-> kdoc:
-> 
-> <qoute>
->   * enum dpll_mode - working modes a dpll can support, differentiates if and how
->   *   dpll selects one of its inputs to syntonize with it, valid values for
->   *   DPLL_A_MODE attribute
-> </quote>
-> 
-> NCO *is not* a third selection policy - it is just another *source* the
-> loop is disciplined from. Except the source is steered by the host
-> (via the PHC .adjfine() path) instead of being an external reference.
-> Think of it as a virtual pin of some sort.
-> 
-> The object we already use for "a source the DPLL can lock to" is a pin,
-> so an internal NCO belongs right next to DPLL_PIN_TYPE_INT_OSCILLATOR,
-> which is already existing example of a similar virtual pin.
-> 
-> By having NCO as an input pin we reuse the existing model instead of
-> inventing a parallel one. "Run as NCO" becomes "connect the NCO input"
-> using the same connect/disconnect, pin state and pin-dump infrastructure
-> as any other input. No new control surface, and it stays orthogonal to
-> mode: we don't have to define what AUTOMATIC+NCO or pin priorities
-> mean, and we don't grow enum dpll_mode and the supported-modes
-> bitmask that every mode-aware consumer would then have to relearn.
-> 
-> For the pin info uAPI exposure we reuse the attributes pins already have
-> - the output frequency offset from nominal is reported via the pin's
-> fractional-frequency-offset / -ppt. A new device mode would need
-> brand new device-level attributes for the same information.
-> 
-> Having said that, I think it's a perfect fit. The only "real" pull
-> towards a new mode is that vendor datasheets call this NCO/DCO a "mode".
-> But that is HW register terminology and we learned many times in
-> the past that may be more or less misleading/incorrect wrt the uAPI.
-> 
-> Therefore my strong preference is DPLL_PIN_TYPE_INT_NCO, no new mode.
-> Honestly, I don't really understand why it would make even little sense
-> to have this as new mode. Perhaps I'm missing something, if you can
-> describe it, that would be awesome.
+On Sun, Jun 28, 2026 at 4:43=E2=80=AFAM Ren Wei <n05ec@lzu.edu.cn> wrote:
+>
+> From: Zhiling Zou <roxy520tt@gmail.com>
+>
 
-Ok, I see your point. Even though the pin UAPI fits the model, I still
-have some concerns:
+...
 
-1. I cannot really imagine AUTOMATIC mode selecting NCO pin by priority
-in case other pins are gone somehow. It doesn't make sense without
-steering SW running on the host. And the other way around - switching to
-a higher priority pin while SW is keep "steering" DPLL. But looks like
-we have discussed it in the other thread. Adding DPLL mode restrictions
-based on pin selection/connection breaks the model, I think...
+> -       max_retries =3D READ_ONCE(icsk->icsk_syn_retries) ? :
+> -               READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_synack_retries) +=
+ 1;
+> +       max_retries =3D READ_ONCE(icsk->icsk_syn_retries);
+> +       if (!max_retries) {
+> +               max_retries =3D READ_ONCE(net->ipv4.sysctl_tcp_synack_ret=
+ries);
+> +               max_retries++;
+> +       }
 
-2. SW steering cannot be pure SW. Every disciplining algorithm relies on
-measurements, the product of phase comparators. That technically means
-the device has to have other inputs configure as monitor, which can be 
-configured in AUTO mode with priorities. How will we model it then?
-
-Thanks,
-Vadim
-
+Please do not change this part which looks good, let's avoid code churn.
