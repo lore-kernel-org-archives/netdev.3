@@ -1,66 +1,40 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 073533FFAD0
-	for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 12:23:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9805C4014B8
+	for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 12:23:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782735832; cv=none; b=QapOH2r7OypaPESeH2eJNJxIvsygEa5+NYJ/TyqkYqYasFSf96QPLWpDHYqYaXMC9zhMxqI30hPYxgR26RTt3Pen31doaoyzIOcMbrgbm9BXziCUE1JtytoaSUzcdvhd1JnUYa2GA/AaGq7eag0u1UrRmUK1ba0DXqBPeWrMN4E=
+	t=1782735840; cv=none; b=eEXPz2MB2OOdquTBoVd5euyWk1eKe/mkpVgwyzMBioL0tMBLTjrr22l0a7z1kmTIdxMxyH8NMOY652TubVFW14HURFhwx7x43HeCwCVDyBgGkrHdiiH5Y0K6ePmDPHo2Fb4w5e0ZeFNqesZ2yyYELdtSGftRyUjtCD0qa/ZnnLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782735832; c=relaxed/simple;
-	bh=JiweOcpD2gpG/D1UI6s63Lm84Lx/AQcHh2xZgunNp4w=;
+	s=arc-20240116; t=1782735840; c=relaxed/simple;
+	bh=ILrOk2P+4YIbgjhwimr6mEMlIbotrvQIk7b4uuv31Eg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DhG+L1VEyhOJD3RxDueG9A/mdg13XtGb8leu/uj+7r0hgi1FtTz3mXwJ8ctjuBqw31hz6fgbFSxAXWFJ9MkDI2cc/uvD13G6bGvG4woC51pxtgXiUHfqtd3JhyN6ApxEsl9Utk3v43dYV4BqpcWZHUFnfsSzDhgDe1RmLXIAUoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bynar.io; spf=pass smtp.mailfrom=bynar.io; dkim=pass (2048-bit key) header.d=bynar.io header.i=@bynar.io header.b=A8zoHkA2; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bynar.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bynar.io
+	 In-Reply-To:Content-Type; b=iik3vfmJj8A2FGAMmNGbsAPYTQwhmIFgOkA3g0OBgn64jZRT5x2i07kLZPBvJuSZrq79quNBTw4U80qxV/Fjc82eN2Repi0PFk/tFpNP1w1izsCKu+rUoiT6qhGdJ/RfQr9apDwE1hIJylYWbte8o6rbnV84y9dKNImSWjExO0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ADtwEzya; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bynar.io header.i=@bynar.io header.b="A8zoHkA2"
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-697bd21fdc2so5787540a12.1
-        for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 05:23:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bynar.io; s=google; t=1782735829; x=1783340629; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=c42ikaiQsX4R+I2gt7m3Uhxc5QLT/t1/qPY6OMkStPw=;
-        b=A8zoHkA2gd+dw7bz2EaMOpGNULqy3f/dq6uWhXmOlktNLWm5FeqC3PpkAMWQQ+Zb2U
-         tFTnWzMHlN3VjOFU5QWdMpl6cAITVfGDXp2Nu+z7QQ3D5WxEKSUpzzk95Owkz/xWQ+z4
-         7MquCn+Q4NhIaY45VknAtk9g8rUrH2m8WlZV8okOutHUoIrqOyFjvefn4CIWPkNvkxSU
-         rrTkJUWOhOm8/x1Sd4HB0PJ4+7deHg+hpYzf1hjlC4BrGfFUzlcP7jaiA7b5fqdRbing
-         C2LeDFwgk8DI9MV+tmgN0wTxS6BcaP4Z4QMJW7LX0cuPlaoYZG6Ju6LS5YqSr3SuT06H
-         9GuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782735829; x=1783340629;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=c42ikaiQsX4R+I2gt7m3Uhxc5QLT/t1/qPY6OMkStPw=;
-        b=IKlZ6A9sGF48fkCOfEL8h/WjuNa1yRzH9frmVgu7Qff0TRrJMUv5QjRjGLanVzeh+2
-         Atqzinqp2/81EQnmSCzcjwG/3XKUv77A8D9WJ9a22sHhr5PJn0Wj+hzcmencvNj5VUS0
-         HGiZefMETjViTkMWXq30GNf1TcMoQH8pWtplTMTwKcjpE6GEqUkf6G+pSu2Om6CJxVTN
-         91RrV4RKINrmbviPgZ+IxbsULtizCi49ez+YvT0pwb1pfrraKJqIYvvBA1TkNHeiFzox
-         PK5mYHMfqyPWqYQ66DoqJkjo1otouJQh9L2jsHfeykTIWZ4UrcWAF+8T7/3vydl9rt6I
-         RgKA==
-X-Forwarded-Encrypted: i=1; AHgh+RqCe9xNhf0Q2ToQR3JANX8ikKGV/1fYTud3UnuAu2zWGP+oapBtMApaPPmPmj8MR0P1Ar44n+E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQ7IJbdH1WWyckWJ8nep9S8ugCcE7izu19JLtKeVs3jGqn0vdE
-	RKUXlW6uSYItxVkNNPVy3VueWEagCnAjZ/VXfvcQ6aYXFQVHZou0lXAkQOLWhdV408R6
-X-Gm-Gg: AfdE7ckeupunrtO878u7xn/lZQB+j7Jc4BK+Zmp04nn4fFiB+TIXGK9SF5a3SrB5Ehm
-	vLqAS7w6xX4NVR8gUzssAm4E0ROET9mSL5zwszGnlXtqTULVKD6Qc14UuGSWlgyXy74Xv2Lt3F3
-	CWg3jNGbMpKQpVCkf457SuuFCITMEH1htdwvW1JKvRiw/XGC7u0IWiAzd6yZ1b4t/OZTnMfZpwH
-	m4nrbn7Rb5nbvox0pqasHj9LTfPqbLvetTw8ezLopksyiLkxTi0p/ktizXKdolwrTxb1aqY4CME
-	a04u5zWpI2TjnsHDk3Lt68928yS+i21KBlcZntIFDdBHq/59F+NDioEQdPN29n+K+W++f2s2i2Z
-	PTtrsh8LR+8oYu4EKhWzslWloSeeLm5imxr11Z+tfUd/Plz9Wxu3iftZfZjgqHQ7hGOLkcZq17T
-	Y3IqmCzMY3FU8I3u8MMfScnlY+vu3TyS5bMqKQhOo5ACWf8w==
-X-Received: by 2002:a17:907:d26:b0:c12:45fc:c25 with SMTP id a640c23a62f3a-c1245fc3060mr292629466b.17.1782735828774;
-        Mon, 29 Jun 2026 05:23:48 -0700 (PDT)
-Received: from ?IPV6:2a06:61c2:d427:0:b321:1c7a:b072:326e? ([2a06:61c2:d427:0:b321:1c7a:b072:326e])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1256c8c643sm233359466b.52.2026.06.29.05.23.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Jun 2026 05:23:48 -0700 (PDT)
-Message-ID: <edfa1b87-a28c-40ca-85ca-e11ac3482518@bynar.io>
-Date: Mon, 29 Jun 2026 13:23:45 +0100
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ADtwEzya"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id EAB93C5145E;
+	Mon, 29 Jun 2026 12:24:05 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id CD8315FF96;
+	Mon, 29 Jun 2026 12:23:55 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 49017106F0D1D;
+	Mon, 29 Jun 2026 14:23:49 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1782735834; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=0JWC3/HI5GLNMPJskSp8HrjRuViFmhXlpOl8T51fHMY=;
+	b=ADtwEzyayQKbH7uffhbV5HjZb6jgSKm0ln+QaeWEfBtv4Avx6Pyn8AUMGtv5nwhQ78SZSn
+	OVBILzWAJt3tUiqUvWTr5Q+m+gOlc6xPmtueWxm5nx8T6eH2naDh+0pTCchwDE2j73h4A1
+	znJ1KT6cwoeJ/q4i+vJP+lTHG2hsEVPo1qMkrchzOERa5UVU1kYp+CT9N92OhwhLuekSPt
+	lJPLpFCIxAtlpQYO1mSw3AihoJzPRIi7Sz78gjMsx6diQ+MLW3f9s+4z4ktT7bhTrKsQYF
+	kb5re/z+NpY9QdxXnq5mwUF3AW0kX9qa5gF8Vuv3idNmffuiQ4BPlKva2gqsDg==
+Message-ID: <1bdf0dd4-4f34-406e-ae97-f2ec5b540906@bootlin.com>
+Date: Mon, 29 Jun 2026 14:23:48 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,41 +42,67 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] nfc: nci: fix uninit-value in the RF
- discover/activated NTF handlers
-To: David Heidelberg <david@ixit.cz>
-Cc: "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260626090301.2139500-1-sam@bynar.io>
- <9f73948f-7045-4ef3-bc8c-731fde943c1e@ixit.cz>
-Content-Language: en-GB
-From: Sam P <sam@bynar.io>
-In-Reply-To: <9f73948f-7045-4ef3-bc8c-731fde943c1e@ixit.cz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH net v5 2/2] Revert "net: phy: sfp: probe for RollBall
+ I2C-to-MDIO bridge in mdio-i2c"
+To: Petr Wozniak <petr.wozniak@gmail.com>, linux@armlinux.org.uk,
+ andrew@lunn.ch, hkallweit1@gmail.com
+Cc: kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-phy@lists.infradead.org, bjorn@mork.no, olek2@wp.pl, kabel@kernel.org
+References: <cover.1782581445.git.petr.wozniak@gmail.com>
+ <23e3931915c3ed2a14cec95f1490e43d30b225e8.1782581445.git.petr.wozniak@gmail.com>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <23e3931915c3ed2a14cec95f1490e43d30b225e8.1782581445.git.petr.wozniak@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 27/06/2026 19:41, David Heidelberg wrote:
->> Assisted-by: Bynario AI
-> 
-> Hello Samuel,
-> 
-> the fix look good, may I ask you to follow the Assisted-by syntax as requested in [1]?
-> 
-> Thank you
-> David
-> 
-> [1] https://docs.kernel.org/process/coding-assistants.html
+Hi Petr,
 
-Hey David,
+On 6/27/26 19:32, Petr Wozniak wrote:
+> This reverts commit 8fe125892f40 ("net: phy: sfp: probe for RollBall
+> I2C-to-MDIO bridge in mdio-i2c").
+> 
+> That commit added a RollBall bridge probe at MDIO bus creation time, in
+> i2c_mii_init_rollball(), to avoid a multi-minute PHY probe retry loop on
+> modules without a bridge (e.g. RTL8261BE). The probe runs in SFP_S_INIT,
+> before genuine RollBall modules have finished their firmware/bridge
+> initialization, so the bridge does not yet answer CMD_READ/CMD_DONE. The
+> probe times out, mdio_protocol is set to MDIO_I2C_NONE, and PHY detection
+> is then skipped for genuine RollBall modules that worked before the commit.
+> 
+> This was confirmed on hardware by Maxime Chevallier and Aleksander
+> Bajkowski: their RollBall modules no longer detect a PHY, and work again
+> on v7.0 (before the bridge probing was introduced). The Sashiko static
+> review flagged the same path.
+> 
+> Deferring the probe to PHY discovery time does not fix it either: at that
+> point a slow module may still be initializing, so the probe still returns
+> -ENODEV. A proper fix needs per-module init timing (a longer module_t_wait
+> or a per-module quirk, per SFF-8472 the host must also wait at least 300 ms
+> after insertion), which requires genuine RollBall hardware to develop and
+> validate. Revert to restore the previous, working behaviour in the meantime.
 
-The :MODEL_VERSION was omitted as we use a range of different models and versions in our pipeline, making it hard to attribute to a single model/version. As for the AGENT_NAME, in this instance, would the correct syntax be to remove the spacing here (e.g. Bynario-AI)?
+Sorry this didn't work out :(
 
-Once clarified, I'll submit a new patch with the correct syntax.
+> 
+> The RTL8261BE retry-loop latency that the reverted commit addressed is
+> handled in our downstream tree, so reverting upstream is safe on our side.
+> 
+> Fixes: 8fe125892f40 ("net: phy: sfp: probe for RollBall I2C-to-MDIO bridge in mdio-i2c")
+> Reported-by: Aleksander Bajkowski <olek2@wp.pl>
+> Suggested-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+> Link: https://lore.kernel.org/netdev/20260624084814.20972-1-petr.wozniak@gmail.com/
+> Signed-off-by: Petr Wozniak <petr.wozniak@gmail.com>
+
+I confirm this restores rollball PHY detection on my side.
 
 Thanks,
-Sam
+
+Tested-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+
+Maxime
 
 
