@@ -1,184 +1,214 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+Received: from rcdn-iport-5.cisco.com (rcdn-iport-5.cisco.com [173.37.86.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50E9646AF1B;
-	Mon, 29 Jun 2026 17:26:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4ABA46AF2B;
+	Mon, 29 Jun 2026 17:26:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.37.86.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782753981; cv=none; b=WC/oNdxL5MaxR0JoHggFDFgyN8fMG45WRQiqYu7VGZGLaLkW0XdeDgFaag8jED6+uKwaCekv+9oaiGH/dwnStKcyFYj3erTw5c4sRcY4vYSBl5ikW+cInCWjvyO6HgrdU2Ij86hFF3JIrzKkIvIHy4K9tVcOil0prVppZfBPBO0=
+	t=1782753985; cv=none; b=MuUwYOIYfMlZXdEIkM13/jKgA/ancTg0KZaGSo3xBeS4Vwm9j9DMPO6hSsb8i7ChvKBwVKMg99WxL9nCYdeDFgROo+VydBr/gnQv50HPbgRe69SSsMuZp+u29L6JsfxfBd2kIRAEiYeIUztS5vl7BPyrVmZsQH36DRZ6CxCLHIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782753981; c=relaxed/simple;
-	bh=87wtZrcK1lDe1l6jGSt8sARWsY1ldhw3+AP+qA5H/IU=;
-	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ghTxmIbleDz993ZxJ2SjSQGQuZFsM5Gt1rbaGTodZFlyOLmZaHxCi4wI+fBZIs+kKmQsRi4H3N77woGTYIDlZfBkVrNBQmSsbCnuhDhrq6GDk8H+A6gc7BREkaNAZWx59gyluvihYJ6cqASlPf6BBB8nMWyGYRUuUgOjKaYPTFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b=DlknxXen; arc=none smtp.client-ip=212.227.15.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+	s=arc-20240116; t=1782753985; c=relaxed/simple;
+	bh=DJOEZz0LgusiJsaMcuyJ/mo5kxauoqkYFLtqBtwJznQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=kRFV8Q1tWwBiNfxG6Bmu1WoAVtPUeAsgitmDNRykvAn9Ox3hLlWEfyN7uKMLsJFhxzN7vO/A1jWuQ3Yvr/ygsO265/dhaX0JsUUuttN6DFjNcDL9gP/Tdmxrqs5U/H1BEPrBeEmdNv1flVcGPmD02syRbkKyJv7uDj2Op62CSNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b=k1SHTSb5; arc=none smtp.client-ip=173.37.86.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b="DlknxXen"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1782753956; x=1783358756;
-	i=markus.stockhausen@gmx.de;
-	bh=MhXDa0AjoX+NG5+ntWtzhc5s9BFcxFwhzmcp1V6neFM=;
-	h=X-UI-Sender-Class:From:To:Cc:References:In-Reply-To:Subject:Date:
-	 Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=DlknxXenFrWfiZ8q/VSP/z+zb6rPWA7+q9FR1ecWvpuGfx0Pi70nyXhC3Fa/otgg
-	 BGOk2tIC+1rElVp41LB5MWSPwc5nkegDPHhyqgLhA8H8QJJzqVyl0NywwsWQfRc7V
-	 wau2lkNSBM2XLjG3kz6MSN2VC4QgTjqX6PeHzZTkg8kKFlrU9LXFuvLat2GqY8M+p
-	 jDdxv48OnjsGb6AB6KUd7D6Dr3dh2V+a7kv4W3Ce5KNJGVqtX4B/W3xfha11Tq3vN
-	 y6B0xf/hb+jbeaw6NaO6SUcF+fPisvMZ39I+emEAyjPCEyJUAf/77wNQggt0YSeob
-	 bx5WIKVsJvmXDBbLLw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from client.hidden.invalid by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MHoRA-1wrzFa2tQU-007H0Z; Mon, 29
- Jun 2026 19:25:56 +0200
-From: "Markus Stockhausen" <markus.stockhausen@gmx.de>
-To: "'Andrew Lunn'" <andrew@lunn.ch>
-Cc: <hkallweit1@gmail.com>,
-	<linux@armlinux.org.uk>,
-	<davem@davemloft.net>,
-	<edumazet@google.com>,
-	<kuba@kernel.org>,
-	<pabeni@redhat.com>,
-	<netdev@vger.kernel.org>,
-	<chris.packham@alliedtelesis.co.nz>,
-	<daniel@makrotopia.org>,
-	<robh@kernel.org>,
-	<krzk+dt@kernel.org>,
-	<conor+dt@kernel.org>,
-	<devicetree@vger.kernel.org>
-References: <20260629152336.2239826-1-markus.stockhausen@gmx.de> <20260629152336.2239826-3-markus.stockhausen@gmx.de> <f3b0ddab-372a-49c5-977e-59c7a104d0a8@lunn.ch>
-In-Reply-To: <f3b0ddab-372a-49c5-977e-59c7a104d0a8@lunn.ch>
-Subject: AW: [PATCH net-next v2 2/8] net: mdio: realtek-rtl9300: Add page tracking
-Date: Mon, 29 Jun 2026 19:25:52 +0200
-Message-ID: <004201dd07ec$585a6ba0$090f42e0$@gmx.de>
+	dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b="k1SHTSb5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=cisco.com; i=@cisco.com; l=3222; q=dns/txt;
+  s=iport01; t=1782753983; x=1783963583;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:references:in-reply-to:to:cc;
+  bh=Ismjn8aCzPjNAuW3z5gQmVHzab5Wc6BkN3bhmJ9vQgA=;
+  b=k1SHTSb5MAeeUQ8hxGPIDDMxrquSfb6pKfhsTmqgx3yYTiG2AL0V+Qxq
+   eqb8GjoetPrpuD5wHFE7FZGcLUrhiXdbFkjB1bD0w08xOPR8btVm0q13L
+   TE0NvXtm+tfY4aojDRx49WfuIPyBMkPgetqBRcA7zd/c/epGmKY9YhhU7
+   xC3ed6SubSf1kotU88u4nreJ/DLWp6wWyFmYXCb6n7FvQL9KsGkHblS6V
+   W7lTp+JKfdLOhyJSKGT/aVfIgdxFVp8dBhV3v4SRQF5qozzYpM+1OzKk/
+   CZW+mp+C3G0nHw0rJ8lZ+dVJ0w+LXDN73fvsnpHw61dXwN0pmKF5EGYud
+   g==;
+X-CSE-ConnectionGUID: veuvTtVrQK6Yr4+5ITmxtg==
+X-CSE-MsgGUID: BisBCaOKQCmLVKHtRWOkYA==
+X-IPAS-Result: =?us-ascii?q?A0A6AABUqkJq/5D/Ja1aHQEBAQEJARIBBQUBgXwIAQsBh?=
+ =?us-ascii?q?ChDSYRXiByHN4IhkU2MURSBag8BAQEPUQQBAYUGAo1LAiY0CQ4BAgQDAgMBA?=
+ =?us-ascii?q?QEBAQEBAQEBAQsBAQUBAQECAQcFgQ4ThlyGWwIBAyNEEhAlAiYCAkYQBgESg?=
+ =?us-ascii?q?wKCdAO4c3qBMoEBhH3ZRoFnCxQBgQouAYVwgmoBgXCEBjuEQScbgUlEgRQBg?=
+ =?us-ascii?q?2mEBQEZg3+CagSDHBKRBgk/gQIcA1ksAVUTDQoLBwVhUjMDIAoLEhIYFQIUH?=
+ =?us-ascii?q?BMPBBYyHXAMJxIsFzRYGwcFgR2BFS8EIYEEhH0jHwM5f4EwdVhmFTA1gREeC?=
+ =?us-ascii?q?oFSJwMLGA1IESw3Bg4bBD0BbgeMXRcPgUxxgQ58NWMal1aNX2uhD4QngWagD?=
+ =?us-ascii?q?wEyl2eTBZkII6MbQwlQhGiBaDyBWTMaCBsVgyJTGQ+OX8w/JzI9AQEHAgcOA?=
+ =?us-ascii?q?wuBaJARgWwBAQ?=
+IronPort-Data: A9a23:MO23T6mb9wqFJK8IR5NytGXo5gxBJ0RdPkR7XQ2eYbSJt1+Wr1Gzt
+ xJLXm+BbvePNmDxeYh+aIrnpxgDsZ/TxoM1HFZk/H88QVtH+JHPbTi7wugcHM8zwunrFh8PA
+ xA2M4GYRCwMZiaC4E/raf658SUUOZigHtLUEPTDNj16WThqQSIgjQMLs+Mii+aEu/Dha++2k
+ Y20+ZG31GONgWYubDpKsfPb8XuDgdyr0N8mlg1mDRx0lAe2e0k9VPo3Oay3Jn3kdYhYdsbSb
+ /rD1ryw4lTC9B4rDN6/+p6jGqHdauePVeQmoiM+t5mK2nCulARrukoIHKZ0hXNsttm8t4sZJ
+ OOhGnCHYVxB0qXkwIzxWvTDes10FfUuFLTveRBTvSEPpqHLWyOE/hlgMK05FZMV5/hLHV9Uz
+ N9GGSpRLU2iu+em3L3uH4GAhux7RCXqFJkUtnclyXTSCuwrBMicBa7L/tRfmjw3g6iiH96HO
+ JFfMmUpNkmdJUQTZj/7C7pm9AusrmL2bzxDqFGVjaE2+GPUigd21dABNfKIIobRGJQKxxzwS
+ mTu1WXiKDoTE/+m4j+hzFGMmtXwuiDKcddHfFG/3rsw6LGJ/UQfAQMbUHO3qOe0j0q5Vc4ZL
+ UEIkgIjobU3/V6mUvHyWBq3pHPCtRkZM/JTDuczwAKA0KzZ50CeHGdsZjdHZMYrq4wwSCAm2
+ 0Ghm87vA3pksNW9UXuX+7GVhSm/NSgcMSkJYipsZQ8E5cTz5YI+lBTCSv59H6OvyN74Azf9x
+ 3aNtidWr7MekcIGyY2l8l3dxTGhvJ7ESkgy/Aq/Y46+xhlyaIjgY8mj7kLWqK4fao2YVVKG+
+ nMDnqBy8dwzMH1ErwTVKM1lIV1jz6rt3OH06bK3I6Qcyg==
+IronPort-HdrOrdr: A9a23:0+/xV6hatFxi1fN9cx3Y1HRTXnBQXiwji2hC6mlwRA09TyVXrb
+ HLoB19737JYVcqNk3I9ursBEDtexnhHNtOkOss1NSZMzUOxlHJEGgK1+KLqAEIWReOldK1vp
+ 0NT0ERMqyUMXFKyev3/wW8Fc8t252k/LDAv5am815dCSxndK1k6R50EUKgEkNwTBRbHpZRLu
+ v72iM+nUvGRV0nKuKmG3ICQ+/P4/fPlJ7gfFo6IiRP0nj3sdttg4SKaSRxGXwlIkhy/Ys=
+X-Talos-CUID: 9a23:mW6gg2EAOvw4rZ05qmJ5+VMKJtwbaET+kkbKfwzlKFpsWKGaHAo=
+X-Talos-MUID: 9a23:kYd+HgR6dShjMmotRXTGhSpIH85PwJ2FDWQzsrUagfajNh1ZbmI=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="6.24,232,1774310400"; 
+   d="scan'208";a="502359712"
+Received: from rcdn-l-core-07.cisco.com ([173.37.255.144])
+  by rcdn-iport-5.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 29 Jun 2026 17:26:02 +0000
+Received: from [127.0.0.1] (unknown [10.25.130.254])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by rcdn-l-core-07.cisco.com (Postfix) with ESMTPS id C4622180004BC;
+	Mon, 29 Jun 2026 17:26:01 +0000 (GMT)
+From: Satish Kharat <satishkh@cisco.com>
+Date: Mon, 29 Jun 2026 10:25:58 -0700
+Subject: [PATCH net-next v10 06/12] enic: define MBOX message types and
+ header structures
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQGLWj2oQThrBp+2CfDhF4qpCxunlgDPFPhbAZqHJLm25dYLoA==
-Content-Language: de
-X-Provags-ID: V03:K1:qusDnO7wJM5Yxpd9IcA9feiTCyFU45PVlIKRKxYe1wEkLA3thhg
- KmKVKTc/qzjWdvWrTKBR1U8vtQPe7TC9Zzh5gg+OBeSdDfbJ1lWeGneHD5e2IKHY8ZWXHea
- lAsmmJ5Yad1oUHsKx1OaSOvTHlGrTdMkqEkUBBvLIgeZCV2dqQ/SfC8+yTzLEw97k81hCla
- psZg2/w+7hj4LOwYTIZ2g==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:XPV4yASqAVM=;XbWyogRj067m+rD1PaAs+ZegdWV
- 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
- keF5giNOB1dE8ob/3U=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260629-enic-sriov-v2-admin-channel-v2-v10-6-62569af83417@cisco.com>
+References: <20260629-enic-sriov-v2-admin-channel-v2-v10-0-62569af83417@cisco.com>
+In-Reply-To: <20260629-enic-sriov-v2-admin-channel-v2-v10-0-62569af83417@cisco.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Sesidhar Baddela <sebaddel@cisco.com>, Satish Kharat <satishkh@cisco.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1782753956; l=3237;
+ i=satishkh@cisco.com; h=from:subject:message-id;
+ bh=DJOEZz0LgusiJsaMcuyJ/mo5kxauoqkYFLtqBtwJznQ=;
+ b=PBW+Cfmsdy3nTQaNsasnRW00qm9vganX2kJQY7PFZ/nN+2oXm/8OgK4n8CKD5n3EoBO+jU2as
+ ui6vQ5YmcGRBvhXx82LqMbTYFghZoBnm4M8V9gpORpP4A+ylIoEMnta
+X-Developer-Key: i=satishkh@cisco.com; a=ed25519;
+ pk=4BxbLoCGvHeIMH/PbpiNVx8/2IcTjFvqcr0AD8K6WLY=
+X-Outbound-Client-TLS: ANONYMOUS;unknown [10.25.130.254];TLSv1.3;TLS_AES_256_GCM_SHA384;256
+X-Outbound-SMTP-Client: 10.25.130.254, [10.25.130.254]
+X-Outbound-Node: rcdn-l-core-07.cisco.com
 
-> Von: Andrew Lunn <andrew@lunn.ch>=20
-> Gesendet: Montag, 29. Juni 2026 18:29
-> An: Markus Stockhausen <markus.stockhausen@gmx.de>
-> Betreff: Re: [PATCH net-next v2 2/8] net: mdio: realtek-rtl9300: Add pag=
-e
-tracking
-> ...
-> > Intercept access to register 31 and store the desired value for each
-port
-> > in the driver. When issuing access to other registers add the saved
-page.
-> > This given, the hardware will run two consecutive c22 commands that ar=
-e
-> > not interrupted by polling.
-> >=20
-> >   ... hardware poll ...
-> >   phy_write(phy, 31, page)
-> >   phy_write(phy, reg, value)
-> >   ... hardware poll ...
->
-> How do you guarantee the polling will not get between?
+Define the mailbox protocol structures for PF-VF communication:
+message header, generic reply, and per-message-type payloads for
+capability negotiation, VF registration/unregistration, and link
+state notification/acknowledgment.
 
-The page is part of a single command towards the controller.
-If a page is given the hardware will make the above two MDIO=20
-commands out of this without any polling in between.
+Include linux/types.h and linux/bits.h for __le16/__le32/__le64
+and BIT() used in the header.
 
-I will clarify this in the next version.
+Message types use an even=request / odd=reply convention.  The
+header carries source and destination VNIC IDs, a monotonically
+increasing message number, and the total message length.
 
-Markus=20
+Signed-off-by: Satish Kharat <satishkh@cisco.com>
+---
+ drivers/net/ethernet/cisco/enic/enic_mbox.h | 83 +++++++++++++++++++++++++++++
+ 1 file changed, 83 insertions(+)
+
+diff --git a/drivers/net/ethernet/cisco/enic/enic_mbox.h b/drivers/net/ethernet/cisco/enic/enic_mbox.h
+new file mode 100644
+index 000000000000..a52f1d25cb21
+--- /dev/null
++++ b/drivers/net/ethernet/cisco/enic/enic_mbox.h
+@@ -0,0 +1,83 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/* Copyright 2025 Cisco Systems, Inc.  All rights reserved. */
++
++#ifndef _ENIC_MBOX_H_
++#define _ENIC_MBOX_H_
++
++#include <linux/bits.h>
++#include <linux/types.h>
++
++/*
++ * Mailbox protocol for PF-VF communication over the admin channel.
++ *
++ * Even numbers are requests, odd numbers are replies/acks.
++ * The prefix indicates the initiator: VF_ = VF-initiated, PF_ = PF-initiated.
++ */
++enum enic_mbox_msg_type {
++	ENIC_MBOX_VF_CAPABILITY_REQUEST		= 0,
++	ENIC_MBOX_VF_CAPABILITY_REPLY		= 1,
++	ENIC_MBOX_VF_REGISTER_REQUEST		= 2,
++	ENIC_MBOX_VF_REGISTER_REPLY		= 3,
++	ENIC_MBOX_VF_UNREGISTER_REQUEST		= 4,
++	ENIC_MBOX_VF_UNREGISTER_REPLY		= 5,
++	ENIC_MBOX_PF_LINK_STATE_NOTIF		= 6,
++	ENIC_MBOX_PF_LINK_STATE_ACK		= 7,
++	ENIC_MBOX_MAX
++};
++
++struct enic_mbox_hdr {
++	__le16 src_vnic_id;
++	__le16 dst_vnic_id;
++	u8 msg_type;
++	u8 flags;
++	__le16 msg_len;
++	__le64 msg_num;
++};
++
++struct enic_mbox_generic_reply {
++	__le16 ret_major;
++	__le16 ret_minor;
++};
++
++#define ENIC_MBOX_ERR_GENERIC		BIT(0)
++#define ENIC_MBOX_ERR_VF_NOT_REGISTERED	BIT(1)
++#define ENIC_MBOX_ERR_MSG_NOT_SUPPORTED	BIT(2)
++
++/* ENIC_MBOX_VF_CAPABILITY_REQUEST / _REPLY */
++#define ENIC_MBOX_CAP_VERSION_0		0
++#define ENIC_MBOX_CAP_VERSION_1		1
++
++struct enic_mbox_vf_capability_msg {
++	__le32 version;
++	__le32 reserved[32];
++};
++
++/* The embedded enic_mbox_generic_reply has 2-byte alignment, but the
++ * __le32 members give this struct 4-byte natural alignment.  Receive
++ * buffers come from kmalloc (>= 8-byte aligned), so there is no
++ * misaligned access risk when casting from the receive buffer.
++ */
++struct enic_mbox_vf_capability_reply_msg {
++	struct enic_mbox_generic_reply reply;
++	__le32 version;
++	__le32 reserved[32];
++};
++
++/* ENIC_MBOX_VF_REGISTER / _UNREGISTER */
++struct enic_mbox_vf_register_reply_msg {
++	struct enic_mbox_generic_reply reply;
++};
++
++/* ENIC_MBOX_PF_LINK_STATE_NOTIF / _ACK */
++#define ENIC_MBOX_LINK_STATE_DISABLE	0
++#define ENIC_MBOX_LINK_STATE_ENABLE	1
++
++struct enic_mbox_pf_link_state_notif_msg {
++	__le32 link_state;
++};
++
++struct enic_mbox_pf_link_state_ack_msg {
++	struct enic_mbox_generic_reply ack;
++};
++
++#endif /* _ENIC_MBOX_H_ */
+
+-- 
+2.43.0
 
