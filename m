@@ -1,228 +1,580 @@
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9883D35C1AD
-	for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 07:37:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C42282F3A;
+	Mon, 29 Jun 2026 07:38:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.222
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782718680; cv=none; b=t0F+bhutw3owcF7DxyOicFKZvK7qttkcl31hja0SfgW7S2fmNx14P9RgQEqQb+YO6EofEs3ovzTOenwOQsQ3/JS+X83lbRNf7eFxoDNQJFrtQU46Xs6p42Q51QTwSaTw7Ujnt6y/5RoCOmDneITJyoJpQRdbpvFnz0LcBS/Lno4=
+	t=1782718687; cv=none; b=eRqE386eB+/lIh+Vz4lzdb8HLZ1wVYvJi+cupI/Oy6oJsKSz7I9RWNnFK8Awbd56bJgFk0XQGs2AKRibj966c5ApztkDRX7WX62z7bobksirxChkGXHfvSgHxLb6U6n1LoIoXzjgsPLGKV8u8id7eJyG59Mh4tLxj0QzpgAub8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782718680; c=relaxed/simple;
-	bh=I35hEtDrAXhoNI0mxRcc1f7Z9oY6fkjujWvXDnGY9Yk=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=rXcfVEO9/QQGGmFUua9RWqFEt1WOLUBAqjxlvCJBKZAsoK+QD2JStjvVoI+Nwn3QNQU0nyqHGy9QG1kZbdbTop4GNfAH2LGvL0psMQKF/mVsMhss2BV3NCsrAjLH7sjIVwyXfupBNKMM1JtzWyd2QalkI07GOo9mlklGlW9U6Ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=jtX1l+EW; arc=none smtp.client-ip=209.85.160.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
+	s=arc-20240116; t=1782718687; c=relaxed/simple;
+	bh=fs7+nDC7SC8xjdJQxWufUp11DkNcQ5AILn/OVlDlrys=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MLjTzkpUfLfbga9jCmDFJfxBFiIycKXtakmwMQSnoHIsaineS0exdrbtT9qbnSUXI4GyK7+xXMfyG9RkCt+3JSiErBL/YP37RyNMjfa0bG8LK8xCLqlKEmmDtJ6v/F4KCsmFH8WSMuqkRtpXECMaoiiiEb/8hS+pzXSB4aWY6CQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=KPDR0ijP; arc=none smtp.client-ip=113.46.200.222
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="jtX1l+EW"
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-51a14efe25fso34167201cf.1
-        for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 00:37:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1782718674; x=1783323474; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4uk2iJJWg07hdPaXD839hIa4BGV53hv+EQb/4KoaaWM=;
-        b=jtX1l+EW9DiqnexjzSYQA92HE/nesR9+tpb6xMRZdlQ6dS1ACXRwpE9KL/xqmFjmh3
-         yzdl++1v1znJ+YKVZvywxYFVbAkLvqmSmkejEb4MCca4o3qdstApdDUe8Yos+otHj3FW
-         ZNAqp+bW7uYDlTq5wuujMb59hxIBuCLisgyTrDLo7ug+CnZWncA5U4zoOw0vXyxnzgek
-         vKdiO6FqhYiN4cfScyBpRz6/QKA0bwZZL1xjpFunqQspcNcUqB2QU4Q3CbQoOVXb2BSd
-         9H2MJNbI45/2Fl6nhw1JrohxthUSq25JqCsIgkDdan8tfv3NfX+jXukLOzxhkrmWbfps
-         UjyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782718674; x=1783323474;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4uk2iJJWg07hdPaXD839hIa4BGV53hv+EQb/4KoaaWM=;
-        b=X9Q80U/7cuyBqMSczP8a53B2FtaK0DmLhr/FMkt4i5LF7YEP+JVeSW66vafiHh2tzj
-         GCdauKjLs5QH7itLLj3Y1UrACh9V8UCbnjyhLsm0rUFISob8ypyUVBYu1hP+vt4dXqfp
-         pcNR59ESXfAhyq13SzhrkuQLikSpQf6fgiUk2cUqyB7eLh8NHMHb5wIzwfK/ThkDZppf
-         X+eIyIngUpFQ3ibZMVxPIEWjLzxO4HwruDkH/u5mvhEiOl1IgAmEepU0XkRxFVm/9Tdo
-         C7Ra8aijPzXJ34usQg47p4Nx2IPaogz9y/ydLrUO9TiKVb+oYGd8qlA3sHbrMbBk0koW
-         tMaQ==
-X-Gm-Message-State: AOJu0YxNPFF+gxqP4F3D0oDYa3jIG7hosSQtYRvpoNyVeSGTm6YeMt/+
-	JCgcr5oni1BD738/eEJ5vGj5Iqkhot1Vrt+Z+vqyxeedtN2P5WJS8Bt3HX/+YRwyXYs=
-X-Gm-Gg: AfdE7clubWEeO66K8+VkfMuIIU4K/RnmTf6ItCuVXoNnP+Au5aRdsL+5WRMvNHjZWX+
-	pDaFAHa54OLm0TL8n8xFDOVRoQaJHUEOnnzKa9UGVE/92p+iHkPo+iXi/Bqo/GNHetJxRYqrIuO
-	swu0LJoPtF5r4XjCbP9GDE7pIEO1PaNpkkraBxA+cRT5DMNdfHHU7PT8J0IbCAPMfVzYSlXLpB+
-	JSIgKLYa8zva6zZWmMbgw3mlWyIiTcQpYeu0Y0bNjLtcua0cw5Qb6Y5G/erqYKCPgeM6Sjx6RiF
-	24L04btT+dlUtgDOZRgtGDBmJ3BLnqrAw9pWEJ1ixmGcW+HFMg/S1TYblXohIhJjf2YGjsi6tHr
-	UiMVG2naoi8DjWAQ1/AU3mz4P0byTq64+NZD1GqrMhBhqk9BLnO944NIpT8h+/tCfnDd8Jy6STq
-	2piCGyfhOBk3s=
-X-Received: by 2002:ac8:5f0e:0:b0:516:de71:e216 with SMTP id d75a77b69052e-51a72763cc0mr219264161cf.1.1782718674154;
-        Mon, 29 Jun 2026 00:37:54 -0700 (PDT)
-Received: from localhost ([198.58.242.173])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51a51a9b10esm159580571cf.15.2026.06.29.00.37.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Jun 2026 00:37:53 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="KPDR0ijP"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=wmpM2YfvOvRA/sSyMGpSaDY6nWb+juPpoAxwFlpeObE=;
+	b=KPDR0ijPY8M1svfbiJ7K8bR5pNM2LtzuchqM3Pvjq0dsp+FGAccmaUsI3YVGpf06E9L9EmBce
+	yIvUe/NXfWVunk3A8OqsP2Az2AQmNRgxaKuf1VEIXd738jFf2sKZ7yI6EV8dKZ0sOZn0gJ1E71j
+	GXIQGuwSRndFtrhMd0JvnB8=
+Received: from mail.maildlp.com (unknown [172.19.163.127])
+	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4gpdDx0bntzLlXX;
+	Mon, 29 Jun 2026 15:28:49 +0800 (CST)
+Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
+	by mail.maildlp.com (Postfix) with ESMTPS id 72E66402AB;
+	Mon, 29 Jun 2026 15:37:57 +0800 (CST)
+Received: from DESKTOP-62GVMTR.china.huawei.com (10.174.189.124) by
+ kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Mon, 29 Jun 2026 15:37:56 +0800
+From: Fan Gong <gongfan1@huawei.com>
+To: Fan Gong <gongfan1@huawei.com>, Wu Di <wudi234@huawei.com>, Teng Peisen
+	<tengpeisen@huawei.com>, <netdev@vger.kernel.org>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, Ioana Ciornei
+	<ioana.ciornei@nxp.com>, Mohsin Bashir <mohsin.bashr@gmail.com>, Dimitri
+ Daskalakis <dimitri.daskalakis1@gmail.com>, Harshitha Ramamurthy
+	<hramamurthy@google.com>
+CC: <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>, luosifu
+	<luosifu@huawei.com>, Xin Guo <guoxin09@huawei.com>, Zhou Shuai
+	<zhoushuai28@huawei.com>, Wu Like <wulike1@huawei.com>, Shi Jing
+	<shijing34@huawei.com>, Zheng Jiezhen <zhengjiezhen@h-partners.com>, Maxime
+ Chevallier <maxime.chevallier@bootlin.com>
+Subject: [PATCH net-next v10 1/5] hinic3: Add ethtool queue ops
+Date: Mon, 29 Jun 2026 15:37:42 +0800
+Message-ID: <3414df08001307c6d96c17ffc0921206c62f85a1.1782718232.git.wudi234@huawei.com>
+X-Mailer: git-send-email 2.50.1.windows.1
+In-Reply-To: <cover.1782718232.git.wudi234@huawei.com>
+References: <cover.1782718232.git.wudi234@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 29 Jun 2026 03:37:51 -0400
-Message-Id: <DJLD0ZG9V0D8.HLAXEIVG8HSP@etsalapatis.com>
-Cc: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <bpf@vger.kernel.org>, "Ben Cressey" <ben@cressey.dev>
-Subject: Re: [PATCH bpf] bpf: tcp: Fix use-after-free in
- bpf_iter_tcp_established_batch()
-From: "Emil Tsalapatis" <emil@etsalapatis.com>
-To: "Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>, "Eric Dumazet"
- <edumazet@google.com>, "Neal Cardwell" <ncardwell@google.com>, "Kuniyuki
- Iwashima" <kuniyu@google.com>, "David S. Miller" <davem@davemloft.net>,
- "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
- "Simon Horman" <horms@kernel.org>, "Andrii Nakryiko" <andrii@kernel.org>,
- "Yonghong Song" <yonghong.song@linux.dev>, "Martin KaFai Lau"
- <martin.lau@linux.dev>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260620-bpf-iter-tcp-refcnt-v1-1-883bf9e69495@linux.dev>
-In-Reply-To: <20260620-bpf-iter-tcp-refcnt-v1-1-883bf9e69495@linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemf100013.china.huawei.com (7.202.181.12)
 
-On Fri Jun 19, 2026 at 8:32 PM EDT, Jose Fernandez (Anthropic) wrote:
-> reqsk_queue_hash_req() publishes a TCP_NEW_SYN_RECV request_sock onto
-> the ehash chain (via inet_ehash_insert(), which drops the bucket lock on
-> return) and only afterwards refcount_set()s rsk_refcnt to 3.
->
-> Lockless readers such as __inet_lookup_established() account for this by
-> using refcount_inc_not_zero(), but bpf_iter_tcp_established_batch() uses
-> plain sock_hold() while holding the bucket lock, on the assumption that
-> the lock guarantees sk_refcnt > 0. That assumption does not hold for
-> request_sock:
->
->   CPU 0                                CPU 1
->   -----                                -----
->   tcp_conn_request()
->    reqsk_queue_hash_req()
->     inet_ehash_insert(req)
->      spin_lock(bucket)
->      __sk_nulls_add_node_rcu(req)      // rsk_refcnt =3D=3D 0
->      spin_unlock(bucket)
->                                        bpf_iter_tcp_established_batch()
->                                         spin_lock(bucket)
->                                         sock_hold(req)   <-- addition on =
-0
->                                         spin_unlock(bucket)
->     refcount_set(&req->rsk_refcnt, 3)  // clobbers saturated value
->
-> which surfaces as:
->
->   refcount_t: addition on 0; use-after-free.
->   WARNING: lib/refcount.c:25 at refcount_warn_saturate+0x48/0x90, CPU#1
->   Call Trace:
->    bpf_iter_tcp_established_batch+0x14e/0x170
->    bpf_iter_tcp_batch+0x53/0x200
->    bpf_iter_tcp_seq_next+0x27/0x70
->    bpf_seq_read+0x107/0x410
->    vfs_read+0xb9/0x380
->
-> refcount_warn_saturate() then saturates the count, the publishing CPU's
-> refcount_set() clobbers it, and the socket is left one reference short.
-> When the last legitimate owner drops its reference the reqsk is freed
-> while still reachable, leading to use-after-free panics in e.g.
-> inet_csk_accept() or inet_csk_listen_stop().
->
-> This reproduces in seconds with tcp_syncookies=3D0, a handful of threads
-> doing connect()/close() to a local listener while others read an
-> iter/tcp link in a tight loop.
->
-> Use refcount_inc_not_zero() and skip the socket on failure, the same way
-> every other ehash walker does. The listening hash is unaffected as
-> listeners are always inserted into lhash2 with sk_refcnt >=3D 1, so
-> bpf_iter_tcp_listening_batch() is left as-is.
->
-> If every matching socket in a bucket is mid-init, end_sk can stay at 0;
-> advance to the next bucket in that case rather than terminating the
-> whole iteration on a stale batch[0].
->
-> Fixes: 04c7820b776f ("bpf: tcp: Bpf iter batching and lock_sock")
-> Reviewed-by: Ben Cressey <ben@cressey.dev>
-> Assisted-by: Claude:unspecified
-> Signed-off-by: Jose Fernandez (Anthropic) <jose.fernandez@linux.dev>
+  Implement following ethtool callback function:
+.get_ringparam
+.set_ringparam
 
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+  These callbacks allow users to utilize ethtool for detailed
+queue depth configuration and monitoring.
 
-> ---
->  net/ipv4/tcp_ipv4.c | 35 ++++++++++++++++++++---------------
->  1 file changed, 20 insertions(+), 15 deletions(-)
->
-> diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-> index fdc81150ff6c..92342dcc6892 100644
-> --- a/net/ipv4/tcp_ipv4.c
-> +++ b/net/ipv4/tcp_ipv4.c
-> @@ -3074,25 +3074,25 @@ static unsigned int bpf_iter_tcp_established_batc=
-h(struct seq_file *seq,
->  {
->  	struct bpf_tcp_iter_state *iter =3D seq->private;
->  	struct hlist_nulls_node *node;
-> -	unsigned int expected =3D 1;
-> -	struct sock *sk;
-> +	unsigned int expected =3D 0;
-> +	struct sock *sk =3D *start_sk;
-> =20
-> -	sock_hold(*start_sk);
-> -	iter->batch[iter->end_sk++].sk =3D *start_sk;
-> -
-> -	sk =3D sk_nulls_next(*start_sk);
->  	*start_sk =3D NULL;
->  	sk_nulls_for_each_from(sk, node) {
-> -		if (seq_sk_match(seq, sk)) {
-> -			if (iter->end_sk < iter->max_sk) {
-> -				sock_hold(sk);
-> -				iter->batch[iter->end_sk++].sk =3D sk;
-> -			} else if (!*start_sk) {
-> -				/* Remember where we left off. */
-> -				*start_sk =3D sk;
-> -			}
-> -			expected++;
-> +		if (!seq_sk_match(seq, sk))
-> +			continue;
-> +		if (iter->end_sk < iter->max_sk) {
-> +			/* reqsk_queue_hash_req() inserts with sk_refcnt =3D=3D 0
-> +			 * and refcount_set()s it after the bucket lock drops.
-> +			 */
-> +			if (unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
-> +				continue;
-> +			iter->batch[iter->end_sk++].sk =3D sk;
-> +		} else if (!*start_sk) {
-> +			/* Remember where we left off. */
-> +			*start_sk =3D sk;
->  		}
-> +		expected++;
->  	}
-> =20
->  	return expected;
-> @@ -3129,6 +3129,7 @@ static struct sock *bpf_iter_tcp_batch(struct seq_f=
-ile *seq)
->  	struct sock *sk;
->  	int err;
-> =20
-> +again:
->  	sk =3D bpf_iter_tcp_resume(seq);
->  	if (!sk)
->  		return NULL; /* Done */
-> @@ -3167,6 +3168,10 @@ static struct sock *bpf_iter_tcp_batch(struct seq_=
-file *seq)
->  	WARN_ON_ONCE(iter->end_sk !=3D expected);
->  done:
->  	bpf_iter_tcp_unlock_bucket(seq);
-> +	if (unlikely(!iter->end_sk)) {
-> +		++iter->state.bucket;
-> +		goto again;
-> +	}
->  	return iter->batch[0].sk;
->  }
-> =20
->
-> ---
-> base-commit: 4549871118cf616eecdd2d939f78e3b9e1dddc48
-> change-id: 20260619-bpf-iter-tcp-refcnt-107d52b238da
->
-> Best regards,
-> -- =20
-> Jose Fernandez (Anthropic) <jose.fernandez@linux.dev>
+  Change port_state_mutex to state_lock as a unified mutex lock
+in hinic3_nic_dev.
+
+Co-developed-by: Wu Di <wudi234@huawei.com>
+Signed-off-by: Wu Di <wudi234@huawei.com>
+Co-developed-by: Teng Peisen <tengpeisen@huawei.com>
+Signed-off-by: Teng Peisen <tengpeisen@huawei.com>
+Signed-off-by: Fan Gong <gongfan1@huawei.com>
+---
+ .../ethernet/huawei/hinic3/hinic3_ethtool.c   |  91 +++++++++++++++
+ .../net/ethernet/huawei/hinic3/hinic3_irq.c   |  11 +-
+ .../net/ethernet/huawei/hinic3/hinic3_main.c  |  13 ++-
+ .../huawei/hinic3/hinic3_netdev_ops.c         | 110 ++++++++++++++++--
+ .../ethernet/huawei/hinic3/hinic3_nic_dev.h   |  11 +-
+ .../ethernet/huawei/hinic3/hinic3_nic_io.c    |   4 +-
+ .../ethernet/huawei/hinic3/hinic3_nic_io.h    |   8 +-
+ .../net/ethernet/huawei/hinic3/hinic3_rx.c    |   2 +-
+ .../net/ethernet/huawei/hinic3/hinic3_tx.c    |   7 +-
+ 9 files changed, 236 insertions(+), 21 deletions(-)
+
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_ethtool.c b/drivers/net/ethernet/huawei/hinic3/hinic3_ethtool.c
+index 90fc16288de9..e6dff46a0d00 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_ethtool.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_ethtool.c
+@@ -9,6 +9,7 @@
+ #include <linux/errno.h>
+ #include <linux/etherdevice.h>
+ #include <linux/netdevice.h>
++#include <linux/netlink.h>
+ #include <linux/ethtool.h>
+ 
+ #include "hinic3_lld.h"
+@@ -409,6 +410,94 @@ hinic3_get_link_ksettings(struct net_device *netdev,
+ 	return 0;
+ }
+ 
++static void hinic3_get_ringparam(struct net_device *netdev,
++				 struct ethtool_ringparam *ring,
++				 struct kernel_ethtool_ringparam *kernel_ring,
++				 struct netlink_ext_ack *extack)
++{
++	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
++
++	ring->rx_max_pending = HINIC3_MAX_RX_QUEUE_DEPTH;
++	ring->tx_max_pending = HINIC3_MAX_TX_QUEUE_DEPTH;
++	ring->rx_pending = nic_dev->q_params.rq_depth;
++	ring->tx_pending = nic_dev->q_params.sq_depth;
++}
++
++static void hinic3_update_qp_depth(struct net_device *netdev,
++				   u32 sq_depth, u32 rq_depth)
++{
++	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
++	u16 i;
++
++	nic_dev->q_params.sq_depth = sq_depth;
++	nic_dev->q_params.rq_depth = rq_depth;
++	for (i = 0; i < nic_dev->max_qps; i++) {
++		nic_dev->txqs[i].q_depth = sq_depth;
++		nic_dev->txqs[i].q_mask = sq_depth - 1;
++		nic_dev->rxqs[i].q_depth = rq_depth;
++		nic_dev->rxqs[i].q_mask = rq_depth - 1;
++	}
++}
++
++static int hinic3_check_ringparam_valid(struct net_device *netdev,
++					const struct ethtool_ringparam *ring,
++					struct netlink_ext_ack *extack)
++{
++	if (ring->tx_pending < HINIC3_MIN_QUEUE_DEPTH ||
++	    ring->rx_pending < HINIC3_MIN_QUEUE_DEPTH) {
++		NL_SET_ERR_MSG_FMT_MOD(extack,
++				       "Queue depth underflow[%d]: tx[%d], rx[%d]",
++				       HINIC3_MIN_QUEUE_DEPTH,
++				       ring->tx_pending, ring->rx_pending);
++
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++static int hinic3_set_ringparam(struct net_device *netdev,
++				struct ethtool_ringparam *ring,
++				struct kernel_ethtool_ringparam *kernel_ring,
++				struct netlink_ext_ack *extack)
++{
++	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
++	struct hinic3_dyna_txrxq_params q_params = {};
++	u32 new_sq_depth, new_rq_depth;
++	int err;
++
++	err = hinic3_check_ringparam_valid(netdev, ring, extack);
++	if (err)
++		return err;
++
++	new_sq_depth = rounddown_pow_of_two(ring->tx_pending);
++	new_rq_depth = rounddown_pow_of_two(ring->rx_pending);
++	if (new_sq_depth == nic_dev->q_params.sq_depth &&
++	    new_rq_depth == nic_dev->q_params.rq_depth)
++		return 0;
++
++	if (new_sq_depth != ring->tx_pending ||
++	    new_rq_depth != ring->rx_pending)
++		NL_SET_ERR_MSG_FMT_MOD(extack,
++				       "Requested Tx/Rx ring depth %u/%u trimmed to %u/%u",
++				       ring->tx_pending, ring->rx_pending,
++				       new_sq_depth, new_rq_depth);
++
++	if (!netif_running(netdev)) {
++		hinic3_update_qp_depth(netdev, new_sq_depth, new_rq_depth);
++	} else {
++		q_params = nic_dev->q_params;
++		q_params.sq_depth = new_sq_depth;
++		q_params.rq_depth = new_rq_depth;
++
++		err = hinic3_change_channel_settings(netdev, &q_params);
++		if (err)
++			return err;
++	}
++
++	return 0;
++}
++
+ static const struct ethtool_ops hinic3_ethtool_ops = {
+ 	.supported_coalesce_params      = ETHTOOL_COALESCE_USECS |
+ 					  ETHTOOL_COALESCE_PKT_RATE_RX_USECS,
+@@ -417,6 +506,8 @@ static const struct ethtool_ops hinic3_ethtool_ops = {
+ 	.get_msglevel                   = hinic3_get_msglevel,
+ 	.set_msglevel                   = hinic3_set_msglevel,
+ 	.get_link                       = ethtool_op_get_link,
++	.get_ringparam                  = hinic3_get_ringparam,
++	.set_ringparam                  = hinic3_set_ringparam,
+ };
+ 
+ void hinic3_set_ethtool_ops(struct net_device *netdev)
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c b/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c
+index e7d6c2033b45..5479c235e3de 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c
+@@ -135,10 +135,13 @@ static int hinic3_set_interrupt_moder(struct net_device *netdev, u16 q_id,
+ {
+ 	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
+ 	struct hinic3_interrupt_info info = {};
+-	int err;
++	int err = 0;
++
++	if (!mutex_trylock(&nic_dev->state_lock))
++		goto out;
+ 
+ 	if (q_id >= nic_dev->q_params.num_qps)
+-		return 0;
++		goto err_unlock;
+ 
+ 	info.interrupt_coalesc_set = 1;
+ 	info.coalesc_timer_cfg = coalesc_timer_cfg;
+@@ -156,6 +159,10 @@ static int hinic3_set_interrupt_moder(struct net_device *netdev, u16 q_id,
+ 		nic_dev->rxqs[q_id].last_pending_limit = pending_limit;
+ 	}
+ 
++err_unlock:
++	mutex_unlock(&nic_dev->state_lock);
++
++out:
+ 	return err;
+ }
+ 
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_main.c b/drivers/net/ethernet/huawei/hinic3/hinic3_main.c
+index 0a888fe4c975..bb2b000f86e8 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_main.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_main.c
+@@ -178,7 +178,7 @@ static int hinic3_sw_init(struct net_device *netdev)
+ 	u8 mac_addr[ETH_ALEN];
+ 	int err;
+ 
+-	mutex_init(&nic_dev->port_state_mutex);
++	mutex_init(&nic_dev->state_lock);
+ 
+ 	nic_dev->q_params.sq_depth = HINIC3_SQ_DEPTH;
+ 	nic_dev->q_params.rq_depth = HINIC3_RQ_DEPTH;
+@@ -315,21 +315,28 @@ static void hinic3_link_status_change(struct net_device *netdev,
+ {
+ 	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
+ 
++	if (!mutex_trylock(&nic_dev->state_lock))
++		return;
++
+ 	if (link_status_up) {
+ 		if (netif_carrier_ok(netdev))
+-			return;
++			goto err_unlock;
+ 
+ 		nic_dev->link_status_up = true;
+ 		netif_carrier_on(netdev);
+ 		netdev_dbg(netdev, "Link is up\n");
+ 	} else {
+ 		if (!netif_carrier_ok(netdev))
+-			return;
++			goto err_unlock;
+ 
+ 		nic_dev->link_status_up = false;
+ 		netif_carrier_off(netdev);
+ 		netdev_dbg(netdev, "Link is down\n");
+ 	}
++
++err_unlock:
++	mutex_unlock(&nic_dev->state_lock);
++	return;
+ }
+ 
+ static void hinic3_port_module_event_handler(struct net_device *netdev,
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_netdev_ops.c b/drivers/net/ethernet/huawei/hinic3/hinic3_netdev_ops.c
+index da73811641a9..2d527b0ecbbe 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_netdev_ops.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_netdev_ops.c
+@@ -288,7 +288,8 @@ static void hinic3_free_channel_resources(struct net_device *netdev,
+ 	hinic3_free_qps(nic_dev, qp_params);
+ }
+ 
+-static int hinic3_open_channel(struct net_device *netdev)
++static int hinic3_prepare_channel(struct net_device *netdev,
++				  struct hinic3_dyna_txrxq_params *qp_params)
+ {
+ 	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
+ 	int err;
+@@ -299,12 +300,25 @@ static int hinic3_open_channel(struct net_device *netdev)
+ 		return err;
+ 	}
+ 
+-	err = hinic3_configure_txrxqs(netdev, &nic_dev->q_params);
++	err = hinic3_configure_txrxqs(netdev, qp_params);
+ 	if (err) {
+ 		netdev_err(netdev, "Failed to configure txrxqs\n");
+ 		goto err_free_qp_ctxts;
+ 	}
+ 
++	return 0;
++
++err_free_qp_ctxts:
++	hinic3_free_qp_ctxts(nic_dev);
++
++	return err;
++}
++
++static int hinic3_open_channel(struct net_device *netdev)
++{
++	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
++	int err;
++
+ 	err = hinic3_qps_irq_init(netdev);
+ 	if (err) {
+ 		netdev_err(netdev, "Failed to init txrxq irq\n");
+@@ -321,6 +335,7 @@ static int hinic3_open_channel(struct net_device *netdev)
+ 
+ err_uninit_qps_irq:
+ 	hinic3_qps_irq_uninit(netdev);
++
+ err_free_qp_ctxts:
+ 	hinic3_free_qp_ctxts(nic_dev);
+ 
+@@ -341,9 +356,9 @@ static int hinic3_maybe_set_port_state(struct net_device *netdev, bool enable)
+ 	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
+ 	int err;
+ 
+-	mutex_lock(&nic_dev->port_state_mutex);
++	mutex_lock(&nic_dev->state_lock);
+ 	err = hinic3_set_port_enable(nic_dev->hwdev, enable);
+-	mutex_unlock(&nic_dev->port_state_mutex);
++	mutex_unlock(&nic_dev->state_lock);
+ 
+ 	return err;
+ }
+@@ -428,6 +443,78 @@ static void hinic3_vport_down(struct net_device *netdev)
+ 	}
+ }
+ 
++int
++hinic3_change_channel_settings(struct net_device *netdev,
++			       struct hinic3_dyna_txrxq_params *trxq_params)
++{
++	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
++	struct hinic3_dyna_txrxq_params cur_trxq_params = {};
++	struct hinic3_dyna_qp_params new_qp_params = {};
++	struct hinic3_dyna_qp_params cur_qp_params = {};
++	int err;
++
++	cur_trxq_params = nic_dev->q_params;
++
++	mutex_lock(&nic_dev->state_lock);
++	hinic3_config_num_qps(netdev, trxq_params);
++
++	err = hinic3_alloc_channel_resources(netdev, &new_qp_params,
++					     trxq_params);
++	if (err) {
++		netdev_err(netdev, "Failed to alloc channel resources\n");
++		mutex_unlock(&nic_dev->state_lock);
++		return err;
++	}
++
++	hinic3_vport_down(netdev);
++	hinic3_close_channel(netdev);
++	clear_bit(HINIC3_INTF_UP, &nic_dev->flags);
++	hinic3_get_cur_qps(nic_dev, &cur_qp_params);
++
++	hinic3_init_qps(nic_dev, &new_qp_params);
++
++	err = hinic3_prepare_channel(netdev, trxq_params);
++	if (err)
++		goto err_uninit_qps;
++
++	if (nic_dev->num_qp_irq > trxq_params->num_qps)
++		hinic3_qp_irq_change(netdev, trxq_params->num_qps);
++
++	nic_dev->q_params = *trxq_params;
++
++	err = hinic3_open_channel(netdev);
++	if (err)
++		goto err_qp_irq_reset;
++
++	err = hinic3_vport_up(netdev);
++	if (err)
++		goto err_close_channel;
++
++	set_bit(HINIC3_INTF_UP, &nic_dev->flags);
++
++	hinic3_free_channel_resources(netdev, &cur_qp_params, &cur_trxq_params);
++
++	mutex_unlock(&nic_dev->state_lock);
++
++	return 0;
++
++err_close_channel:
++	hinic3_close_channel(netdev);
++err_qp_irq_reset:
++	nic_dev->q_params = cur_trxq_params;
++
++	if (trxq_params->num_qps > cur_trxq_params.num_qps)
++		hinic3_qp_irq_change(netdev, cur_trxq_params.num_qps);
++err_uninit_qps:
++	hinic3_get_cur_qps(nic_dev, &new_qp_params);
++	hinic3_config_num_qps(netdev, &cur_trxq_params);
++	hinic3_init_qps(nic_dev, &cur_qp_params);
++	hinic3_free_channel_resources(netdev, &new_qp_params, trxq_params);
++	mutex_unlock(&nic_dev->state_lock);
++
++	return err;
++}
++
+ static int hinic3_open(struct net_device *netdev)
+ {
+ 	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
+@@ -458,6 +545,10 @@ static int hinic3_open(struct net_device *netdev)
+ 
+ 	hinic3_init_qps(nic_dev, &qp_params);
+ 
++	err = hinic3_prepare_channel(netdev, &nic_dev->q_params);
++	if (err)
++		goto err_uninit_qps;
++
+ 	err = hinic3_open_channel(netdev);
+ 	if (err)
+ 		goto err_uninit_qps;
+@@ -473,7 +564,7 @@ static int hinic3_open(struct net_device *netdev)
+ err_close_channel:
+ 	hinic3_close_channel(netdev);
+ err_uninit_qps:
+-	hinic3_uninit_qps(nic_dev, &qp_params);
++	hinic3_get_cur_qps(nic_dev, &qp_params);
+ 	hinic3_free_channel_resources(netdev, &qp_params, &nic_dev->q_params);
+ err_destroy_num_qps:
+ 	hinic3_destroy_num_qps(netdev);
+@@ -493,10 +584,15 @@ static int hinic3_close(struct net_device *netdev)
+ 		return 0;
+ 	}
+ 
++	mutex_lock(&nic_dev->state_lock);
+ 	hinic3_vport_down(netdev);
+ 	hinic3_close_channel(netdev);
+-	hinic3_uninit_qps(nic_dev, &qp_params);
+-	hinic3_free_channel_resources(netdev, &qp_params, &nic_dev->q_params);
++	hinic3_get_cur_qps(nic_dev, &qp_params);
++	hinic3_free_channel_resources(netdev, &qp_params,
++				      &nic_dev->q_params);
++	hinic3_free_nicio_res(nic_dev);
++	hinic3_destroy_num_qps(netdev);
++	mutex_unlock(&nic_dev->state_lock);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_dev.h b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_dev.h
+index 9502293ff710..ccef82d57fdd 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_dev.h
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_dev.h
+@@ -10,6 +10,9 @@
+ #include "hinic3_hw_cfg.h"
+ #include "hinic3_hwdev.h"
+ #include "hinic3_mgmt_interface.h"
++#include "hinic3_nic_io.h"
++#include "hinic3_tx.h"
++#include "hinic3_rx.h"
+ 
+ #define HINIC3_VLAN_BITMAP_BYTE_SIZE(nic_dev)  (sizeof(*(nic_dev)->vlan_bitmap))
+ #define HINIC3_VLAN_BITMAP_SIZE(nic_dev)  \
+@@ -127,8 +130,8 @@ struct hinic3_nic_dev {
+ 	struct workqueue_struct         *workq;
+ 	struct delayed_work             periodic_work;
+ 	struct work_struct              rx_mode_work;
+-	/* lock for enable/disable port */
+-	struct mutex                    port_state_mutex;
++	/* Protects Interface state */
++	struct mutex                    state_lock;
+ 
+ 	struct list_head                uc_filter_list;
+ 	struct list_head                mc_filter_list;
+@@ -143,6 +146,10 @@ struct hinic3_nic_dev {
+ 
+ void hinic3_set_netdev_ops(struct net_device *netdev);
+ int hinic3_set_hw_features(struct net_device *netdev);
++int
++hinic3_change_channel_settings(struct net_device *netdev,
++			       struct hinic3_dyna_txrxq_params *trxq_params);
++
+ int hinic3_qps_irq_init(struct net_device *netdev);
+ void hinic3_qps_irq_uninit(struct net_device *netdev);
+ 
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_io.c b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_io.c
+index 87e736adba02..0e7a0ccfba98 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_io.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_io.c
+@@ -484,8 +484,8 @@ void hinic3_init_qps(struct hinic3_nic_dev *nic_dev,
+ 	}
+ }
+ 
+-void hinic3_uninit_qps(struct hinic3_nic_dev *nic_dev,
+-		       struct hinic3_dyna_qp_params *qp_params)
++void hinic3_get_cur_qps(struct hinic3_nic_dev *nic_dev,
++			struct hinic3_dyna_qp_params *qp_params)
+ {
+ 	struct hinic3_nic_io *nic_io = nic_dev->nic_io;
+ 
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_io.h b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_io.h
+index 12eefabcf1db..571b34d63950 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_io.h
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_io.h
+@@ -14,6 +14,10 @@ struct hinic3_nic_dev;
+ #define HINIC3_RQ_WQEBB_SHIFT      3
+ #define HINIC3_SQ_WQEBB_SIZE       BIT(HINIC3_SQ_WQEBB_SHIFT)
+ 
++#define HINIC3_MAX_TX_QUEUE_DEPTH  65536
++#define HINIC3_MAX_RX_QUEUE_DEPTH  16384
++#define HINIC3_MIN_QUEUE_DEPTH     128
++
+ /* ******************** RQ_CTRL ******************** */
+ enum hinic3_rq_wqe_type {
+ 	HINIC3_NORMAL_RQ_WQE = 1,
+@@ -136,8 +140,8 @@ void hinic3_free_qps(struct hinic3_nic_dev *nic_dev,
+ 		     struct hinic3_dyna_qp_params *qp_params);
+ void hinic3_init_qps(struct hinic3_nic_dev *nic_dev,
+ 		     struct hinic3_dyna_qp_params *qp_params);
+-void hinic3_uninit_qps(struct hinic3_nic_dev *nic_dev,
+-		       struct hinic3_dyna_qp_params *qp_params);
++void hinic3_get_cur_qps(struct hinic3_nic_dev *nic_dev,
++			struct hinic3_dyna_qp_params *qp_params);
+ 
+ int hinic3_init_qp_ctxts(struct hinic3_nic_dev *nic_dev);
+ void hinic3_free_qp_ctxts(struct hinic3_nic_dev *nic_dev);
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_rx.c b/drivers/net/ethernet/huawei/hinic3/hinic3_rx.c
+index 309ab5901379..389b1c2158be 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_rx.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_rx.c
+@@ -541,7 +541,7 @@ int hinic3_configure_rxqs(struct net_device *netdev, u16 num_rq,
+ 		rq_associate_cqes(rxq);
+ 
+ 		pkts = hinic3_rx_fill_buffers(rxq);
+-		if (!pkts) {
++		if (pkts < rxq->q_mask) {
+ 			netdev_err(netdev, "Failed to fill Rx buffer\n");
+ 			return -ENOMEM;
+ 		}
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c b/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
+index 9306bf0020ca..53c065194136 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
+@@ -261,8 +261,7 @@ static int hinic3_tx_csum(struct hinic3_txq *txq, struct hinic3_sq_task *task,
+ 		    ((struct udphdr *)skb_transport_header(skb))->dest !=
+ 		    VXLAN_OFFLOAD_PORT_LE) {
+ 			/* Unsupported tunnel packet, disable csum offload */
+-			skb_checksum_help(skb);
+-			return 0;
++			return skb_checksum_help(skb);
+ 		}
+ 	}
+ 
+@@ -412,6 +411,10 @@ static u32 hinic3_tx_offload(struct sk_buff *skb, struct hinic3_sq_task *task,
+ 		offload |= HINIC3_TX_OFFLOAD_TSO;
+ 	} else {
+ 		tso_cs_en = hinic3_tx_csum(txq, task, skb);
++		if (tso_cs_en < 0) {
++			offload = HINIC3_TX_OFFLOAD_INVALID;
++			return offload;
++		}
+ 		if (tso_cs_en)
+ 			offload |= HINIC3_TX_OFFLOAD_CSUM;
+ 	}
+-- 
+2.43.0
 
