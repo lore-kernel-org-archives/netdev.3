@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBCCC43DA27;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE1443E9F6;
 	Mon, 29 Jun 2026 17:23:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782753836; cv=none; b=gfShpIK8YC3q6pTqTLB+vnvdgm504XHeQA6F+Uu0/2cY/pgI8m6TMug4tvTPCL8KGIfXnbtbEiUNCKRqkdz/VDwqqfHI6VQTH1PK6V/B/7UV5wvLtYhka+X4B43PzRMURytT8e7TfmWiSbZ2kmL0CUUj+hOhCSyFBz7DdF39Q/o=
+	t=1782753836; cv=none; b=W+rrFQMGDkbdtrzGAfGyteXRGhV7+H6LNq4T+Wk8v0qskMzzbOWLvWyP+tprq8o41+ijfqiYdE/GSD0CLWNrAy61pUfRdhRBtAwLXB5VeUkBz5VkIf6IdBYqyrXhAaI3XwrePjk86IJqrazdcRIauAM1HrTdNNjsyrg8zTF2/Es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1782753836; c=relaxed/simple;
-	bh=f9pd5sfQd/b4Few40x+aRTW745nRwbGdQ11nESr9tpY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QMF+WvsLC0c+ZgUlGjkX9hc4YHPiaTtW+CmV3RiR+GxjixcNNTTYByBnmO4+bpEw/R28CGWk76GKwStDy9sUb4syJcQlIwuL8fcD55rBgOer6e31Kmg7yh/lqJRNr8Db1TowytyBT8d+PHQqav7e9l+1mZ2HcneIJOcZaCgaE7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aaQUB33W; arc=none smtp.client-ip=10.30.226.201
+	bh=MHM3iY9rUPUkIOtHIDHO5SKUbABanUkmnTNbJIA8c78=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=SG1UIrHpVtf4JPetBNoEgKgfyGFZ+XEg1lFWgoc6pMMJIm+zXq8xKpf370y5SHffRpe5m+DSNNuvQBL9K95GNRZ1e8haOWs6Msx5ipkLVrcS7b3jmi17Oy5fhXDzSov727TIPcahq089ZYtxsL1pfQxcL3XTYOp4X/jolov+OVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VQvTDCNV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aaQUB33W"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A1AC8C2BCF5;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VQvTDCNV"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 82A72C19425;
 	Mon, 29 Jun 2026 17:23:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1782753835;
-	bh=f9pd5sfQd/b4Few40x+aRTW745nRwbGdQ11nESr9tpY=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=aaQUB33W3g73rWbHJzDrJUh9jXOxI8DdVxYVhim145nFDKvYYLiT7jtcJd2uoE+SA
-	 6hZ176j9yrN4s+gHnmqX5Eh9k4qecp6dQiiDRaS/IHwNar68G0XO2uSHdRAR7BZQim
-	 zlffgTmimR+P2TejdESj+eMOj8NiGKSU4HQ9dJUtCTntEZVTMpC+tkJ0JnDgBucNmb
-	 3Pqjp150ztsEJYBzeN4YeGMc/6oTYjkLCG2SxmSquhXTSol6mZ+2GIrZ0UZ7bSRntT
-	 PfjWL28R9lbUsglGxpmRdZ9PfbRyabYNF8CZ6tN4gRtwQFMFbhn/SZ9qLJ7SqnOfkV
-	 lC07U4qr5Lv1g==
+	bh=MHM3iY9rUPUkIOtHIDHO5SKUbABanUkmnTNbJIA8c78=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=VQvTDCNVSVNXtjcxK7d4W7nUL3h7sQU589T8rOpocXa/ym4kRoOkNVBFkM8dNfCme
+	 zM5Wfx52YChHBznvhsEfrddTc34NV1r3eovIqV15AlXfI55ahriUcsIMoUWzzEGHgH
+	 L1fRwofdKA242gU45edVco7v85wtN3640g18ukZJk5PlCDhW1FraNckLHzOwnC+yqy
+	 IDbMf4gpEd/wYUEoSAK0ffCPq3/M0OEHTCoRPqcIHsPd1Q7kda03rj03gBluTkbvkQ
+	 CEn1Qz6NkHxmQD2jmFXsvwmpCn/D//wR3+47k3o7evM9WdfBd5XwxWrul3HitmSGOf
+	 qg0hq1JPBS0Ig==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8C507C43638;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 66F3CC43458;
 	Mon, 29 Jun 2026 17:23:55 +0000 (UTC)
 From: Selvamani Rajagopal via B4 Relay <devnull+Selvamani.Rajagopal.onsemi.com@kernel.org>
-Date: Mon, 29 Jun 2026 10:23:32 -0700
-Subject: [PATCH net-next v6 02/15] net: phy: Helper to modify PHY loopback
- mode only
+Subject: [PATCH net-next v6 00/15] Support for onsemi's S2500 10Base-T1S
+ MAC-PHY
+Date: Mon, 29 Jun 2026 10:23:30 -0700
+Message-Id: <20260629-s2500-mac-phy-support-v6-0-18ce79500371@onsemi.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,9 +41,10 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260629-s2500-mac-phy-support-v6-2-18ce79500371@onsemi.com>
-References: <20260629-s2500-mac-phy-support-v6-0-18ce79500371@onsemi.com>
-In-Reply-To: <20260629-s2500-mac-phy-support-v6-0-18ce79500371@onsemi.com>
+X-B4-Tracking: v=1; b=H4sIABSqQmoC/3WOyw6DIBBFf6Vh3WkQwUdX/Y+mC8Wx0kQggEZj/
+ Pei7aJduLy5c8+ZhXh0Cj25nhbicFReGR1Ddj4R2VX6iaCamAmjLKMZTcAzQSn0lQTbzeAHa40
+ LwNu0wpLRts5TErfWYaumnXsnGgNonAJ5fBo/1C+UYcNut53ywbh5f2Hk++JrEwe2kQOFBqNNJ
+ qnMmuJmtMdeXaTpd8kofjAJP8KIiCnKIud1ztqciT/Muq5va6hgXR4BAAA=
 To: Andrew Lunn <andrew@lunn.ch>, 
  Piergiorgio Beruto <pier.beruto@onsemi.com>, 
  Heiner Kallweit <hkallweit1@gmail.com>, 
@@ -62,11 +63,11 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  Jerry Ray <jerry.ray@microchip.com>, 
  Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1782753817; l=3379;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1782753817; l=5694;
  i=Selvamani.Rajagopal@onsemi.com; s=20260531; h=from:subject:message-id;
- bh=hMIbVwaKFuafgqzYxUbUppCDDkeDK8PcrFXQu+sNb/0=;
- b=EUA5cYQklRL1+fwztEoz0HVQpKShKK608HJyhyxWb18m3htklKK1vT+t+SPGXvfm0C7T709GJ
- ss5Ofne198eAH1KxgRgrkfBMhjGMXyw6qR3EdxngRxHOAVZbXhq6ISF
+ bh=MHM3iY9rUPUkIOtHIDHO5SKUbABanUkmnTNbJIA8c78=;
+ b=6OLFiXySIPehNp8RCOGYSLAjvBmvBK8CMHOpta2yUI5tgoGEblmat3xZ8OWJRCxqG2OVKJueY
+ 3RxbdujPkgqAyWsIGQzKacax61lPrHCC2Tg/ooApqq446x90YVpDqhx
 X-Developer-Key: i=Selvamani.Rajagopal@onsemi.com; a=ed25519;
  pk=5QRdM0HS/LGWWcUZZ9hVfZ+qbPQGZCumcTXOiN7Fyug=
 X-Endpoint-Received: by B4 Relay for
@@ -74,104 +75,117 @@ X-Endpoint-Received: by B4 Relay for
 X-Original-From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 Reply-To: Selvamani.Rajagopal@onsemi.com
 
-From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+This patch series brings support for onsemi's S2500 that iss
+IEEE 802.3cg compliant Ethernet transceiver with an integrated
+Media Access Controller (MAC-PHY)
 
-Generic helper function to modify loopback bit of the PHY without
-modifying any other bit. This will help the PHYs that may have fixed
-speed, like 10Base-T1S or PHYs that don't need any other settings
-to set them in loopback mode.
+Driver implementation is compatible and works with OA TC6
+framework that is already present. S2500 driver supports
+hardware timestamping.
+
+Driver has support for running selftest and loopback tests.
+Through ethtool, it can provide traffic stats, rmon stats,
+and timestamping related traffic stats.
+
+As S2500 has an internal PHY, changes have been added
+to onsemi's PHY driver to support this device.
 
 Signed-off-by: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+---
+Changes in v6:
+- Changes to ensure onsemi code stay within 80 columns.
+- Fixed the error of "not described in comments section"
+  in comments section.
+
+- Fixed compiler warnings.
+- Link to v5: https://patch.msgid.link/20260614-s2500-mac-phy-support-v5-0-89874b72f725@onsemi.com
+
+Changes in v5:
+ - kernel doc related changes in oa_tc.c, onsemi driver files and
+  oa tc6 rst file
+- Link to v4: https://lore.kernel.org/r/20260605-s2500-mac-phy-support-v4-0-de0fbc13c6d8@onsemi.com
+
+Changes in v4:
+ - Added return value comment for genphy_read/write_phy_mmd functions
+ - Added genphy_loopback_fixed_speed helper function to be used in
+   set_loopback callbacks
+ - Updated networking documentation for OA TC6 framework to elaborate
+   on what is expected in the ptp_clock_info structure for registration.
+ - added spi-max-frequency in YAML file based on alert from sashiko-bot
+ - Removed model/version from the onsemi driver's private structure as
+   they were useful as "information-only" data.
+ - Replaced the non-standard selftest with Linux's standard selftest
+   and made it as a separate patch
+ - Changed bit manipulation, shift operations to use macros so that
+   it is clean and readable.
+ - added new read_register and write_register apis with _mms postfix
+   so that MMS (memory map selector) can be given as a parameter.
+ - Fixed the wrong condition check with NETIF_F_RXFCS to subtract
+   FCS size from the length of the frame.
+ - Link to v3: https://lore.kernel.org/r/CY8PR02MB92499C9080614FA3CEB8CD0483162@CY8PR02MB9249.namprd02.prod.outlook.com
+
+Changes in v3:
+ - Moved OA TC6 framework to its own directory.
+ - Split changes to smaller patches based on feedback.
+ - Added PHY loopback support as a separate patch.
+ - New, read and write register APIs with extra parameter MMS
+ - Link to v2: https://lore.kernel.org/r/CY8PR02MB924920C8825C7AE5D22EFA4483382@CY8PR02MB9249.namprd02.prod.outlook.com
+
+Changes in v2:
+ - API to add vendor specific MMS to mdio device map.
+ - Link to v1: https://lore.kernel.org/r/CY8PR02MB9249D083B637477C254F9B0583322@CY8PR02MB9249.namprd02.prod.outlook.com
 
 ---
-changes in v6
-  - No change
-changes in v5
-  - No change
-changes in v4
-  - Created a new genphy API to set the loopback. No other PHY
-    registers touched.
+Selvamani Rajagopal (15):
+      net: phy: Helper to read and write through C45 without lock
+      net: phy: Helper to modify PHY loopback mode only
+      net: ethernet: oa_tc6: Move oa_tc6.c to its own directory
+      net: phy: microchip_t1s: Use generic APIs for C45 read and write
+      net: ethernet: oa_tc6: Move constant definitions to header file
+      net: ethernet: oa_tc6: Support for hardware timestamp
+      net: ethernet: oa_tc6: Support for vendor specific MMS
+      net: ethernet: oa_tc6: read, write interface with MMS option
+      net: phy: ncn26000: Support for onsemi's S2500 internal phy
+      net: phy: ncn26000: Enable enhanced noise immunity
+      net: phy: ncn26000: Support for loopback
+      onsemi: s2500: Add driver support for TS2500 MAC-PHY
+      onsemi: s2500: Added selftest support to onsemi's S2500 driver
+      dt-bindings: net: add onsemi's S2500
+      Documentation: networking: Add timestamp related APIs to OA TC6 framework
+
+ .../devicetree/bindings/net/onnn,s2500.yaml        |  67 +++
+ Documentation/networking/oa-tc6-framework.rst      |  80 +++
+ MAINTAINERS                                        |  13 +-
+ drivers/net/ethernet/Kconfig                       |  12 +-
+ drivers/net/ethernet/Makefile                      |   2 +-
+ drivers/net/ethernet/microchip/lan865x/lan865x.c   |  61 +-
+ drivers/net/ethernet/oa_tc6/Kconfig                |  16 +
+ drivers/net/ethernet/oa_tc6/Makefile               |   7 +
+ drivers/net/ethernet/{ => oa_tc6}/oa_tc6.c         | 468 +++++++++------
+ drivers/net/ethernet/oa_tc6/oa_tc6_ptp.c           |  67 +++
+ drivers/net/ethernet/oa_tc6/oa_tc6_std_def.h       | 190 ++++++
+ drivers/net/ethernet/oa_tc6/oa_tc6_tstamp.c        | 201 +++++++
+ drivers/net/ethernet/onsemi/Kconfig                |  21 +
+ drivers/net/ethernet/onsemi/Makefile               |   7 +
+ drivers/net/ethernet/onsemi/s2500/Kconfig          |  22 +
+ drivers/net/ethernet/onsemi/s2500/Makefile         |   7 +
+ drivers/net/ethernet/onsemi/s2500/s2500_ethtool.c  | 360 +++++++++++
+ drivers/net/ethernet/onsemi/s2500/s2500_hw_def.h   | 225 +++++++
+ drivers/net/ethernet/onsemi/s2500/s2500_main.c     | 655 +++++++++++++++++++++
+ drivers/net/ethernet/onsemi/s2500/s2500_ptp.c      | 250 ++++++++
+ drivers/net/phy/dp83867.c                          |  11 +-
+ drivers/net/phy/microchip_t1s.c                    |  32 +-
+ drivers/net/phy/ncn26000.c                         |  63 +-
+ drivers/net/phy/phy_device.c                       |  75 +++
+ include/linux/oa_tc6.h                             |  36 ++
+ include/linux/phy.h                                |   6 +
+ 26 files changed, 2704 insertions(+), 250 deletions(-)
 ---
- drivers/net/phy/dp83867.c    | 11 +----------
- drivers/net/phy/phy_device.c | 20 ++++++++++++++++++++
- include/linux/phy.h          |  2 ++
- 3 files changed, 23 insertions(+), 10 deletions(-)
+base-commit: 805185b7c7a1069e407b6f7b3bc98e44d415f484
+change-id: 20260601-s2500-mac-phy-support-4f3ae920fb73
 
-diff --git a/drivers/net/phy/dp83867.c b/drivers/net/phy/dp83867.c
-index 88255e92b4cd..01ea2e8dd253 100644
---- a/drivers/net/phy/dp83867.c
-+++ b/drivers/net/phy/dp83867.c
-@@ -991,15 +991,6 @@ static void dp83867_link_change_notify(struct phy_device *phydev)
- 	}
- }
- 
--static int dp83867_loopback(struct phy_device *phydev, bool enable, int speed)
--{
--	if (enable && speed)
--		return -EOPNOTSUPP;
--
--	return phy_modify(phydev, MII_BMCR, BMCR_LOOPBACK,
--			  enable ? BMCR_LOOPBACK : 0);
--}
--
- static int
- dp83867_led_brightness_set(struct phy_device *phydev,
- 			   u8 index, enum led_brightness brightness)
-@@ -1204,7 +1195,7 @@ static struct phy_driver dp83867_driver[] = {
- 		.resume		= dp83867_resume,
- 
- 		.link_change_notify = dp83867_link_change_notify,
--		.set_loopback	= dp83867_loopback,
-+		.set_loopback	= genphy_loopback_fixed_speed,
- 
- 		.led_brightness_set = dp83867_led_brightness_set,
- 		.led_hw_is_supported = dp83867_led_hw_is_supported,
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index b82b99d08132..11fd204eea16 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -2842,6 +2842,26 @@ int genphy_phy_write_mmd(struct phy_device *phydev, int devnum,
- }
- EXPORT_SYMBOL(genphy_phy_write_mmd);
- 
-+/**
-+ * genphy_loopback_fixed_speed - Helper to modify the PHY loopback mode
-+ * without affecting any other settings.
-+ * @phydev: The phy_device struct
-+ * @enable: Flag to enable or disable the PHY level loopback.
-+ * @speed: Speed setting. Not expected to be set. Error if it is set.
-+ *
-+ * Returns: 0 if successful, negative error code on failure.
-+ */
-+int genphy_loopback_fixed_speed(struct phy_device *phydev, bool enable,
-+				int speed)
-+{
-+	if (enable && speed)
-+		return -EOPNOTSUPP;
-+
-+	return phy_modify(phydev, MII_BMCR, BMCR_LOOPBACK,
-+			  enable ? BMCR_LOOPBACK : 0);
-+}
-+EXPORT_SYMBOL(genphy_loopback_fixed_speed);
-+
- int genphy_suspend(struct phy_device *phydev)
- {
- 	return phy_set_bits(phydev, MII_BMCR, BMCR_PDOWN);
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 8266dd4a8dbe..61bcd71a3143 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -2301,6 +2301,8 @@ int genphy_read_mmd_unsupported(struct phy_device *phdev, int devad,
- 				u16 regnum);
- int genphy_write_mmd_unsupported(struct phy_device *phdev, int devnum,
- 				 u16 regnum, u16 val);
-+int genphy_loopback_fixed_speed(struct phy_device *phydev, bool enable,
-+				int speed);
- int genphy_phy_write_mmd(struct phy_device *phydev, int devnum,
- 			 u16 regnum, u16 val);
- int genphy_phy_read_mmd(struct phy_device *phydev, int devnum,
-
+Best regards,
 -- 
-2.43.0
+Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 
 
