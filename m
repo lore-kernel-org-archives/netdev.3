@@ -1,188 +1,172 @@
-Received: from mail-dy1-f201.google.com (mail-dy1-f201.google.com [74.125.82.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.186])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91563976A7
-	for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 19:20:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA633B42E9
+	for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 19:42:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.121.94.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782760838; cv=none; b=mYJIGVTno3oegW6iooVuXw/bU44QTg85xp+G3Tlq5tYKLEgVWybWH2T2xMNN9eb3Xhssowzi3ZDcgK++pwX4D62T46ryFpti8rlALL+nkU0yS45rArosHfBA7bOXJJo6Y6vW/cGvPwZk2wnSmx26Hs0eIYoxtDdBWBWKL7xHznA=
+	t=1782762153; cv=none; b=YzK1LUaYVV9SacFqEZBLhmGiFtuZlsxE+1y7VZ7I5iX/22yosgzVO0ge+yieGqIL+4tjgRp53ZAxd26OkHwnhzBO3srpTX/2k1I6u8ZS0NadMZfB3ynKQT+4sQ2i3YjF4WzE+Kw+Wp6vmSx7enwKqYfrX9TchXNFTz1SkFWviQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782760838; c=relaxed/simple;
-	bh=QBZxmTWawUTZNQSQjCCZw78T/8SJZ6wFeJT6/geEVGM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=BVmDi7Xvawv0nEwOqDxoEfUcnAzp+ozGPadUBG7GBKS3T9U9/KqFlr5DN2+FP06x6/GMHN3/B5TdQ1QHy7EqIEn540m5b39U+zwP7ucBZ5z0fss1hp6z/qoaNmx61qU8rfFwdWEJyMokE6fwvP1gs33/YNlZfRgcA1hcjyzuYyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tanshuhao.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bd4p6ltj; arc=none smtp.client-ip=74.125.82.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tanshuhao.bounces.google.com
+	s=arc-20240116; t=1782762153; c=relaxed/simple;
+	bh=iQfIYpwKRdMJy1a/rEWr97wL5aBe1iET1JEYChP+I3I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=i5yh8mJoExAIlWqO+pu7Z++mPUiA3Q/FNxxXSsk8ECyeb7pyW+BRO0NnjHPh3gIe2HqK2b3z+IG0VNPIwrZBwpWfh8BOaMzSingp47KnbmYdl5kjrKgXG6B4VHwYp1ggnRbyCvuHjVmkW8dYdqIp0BZqL1ZV4+j7gsuvBFN5Cds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=xs4all.nl; dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b=WZ273hGX; arc=none smtp.client-ip=195.121.94.186
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xs4all.nl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bd4p6ltj"
-Received: by mail-dy1-f201.google.com with SMTP id 5a478bee46e88-30ec59471a3so1207638eec.0
-        for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 12:20:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b="WZ273hGX"
+X-KPN-MessageId: aa60ef0f-73f2-11f1-bfba-00505699b430
+Received: from smtp.kpnmail.nl (unknown [10.31.155.7])
+	by ewsoutbound.so.kpn.org (Halon) with ESMTPS
+	id aa60ef0f-73f2-11f1-bfba-00505699b430;
+	Mon, 29 Jun 2026 21:42:30 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782760836; x=1783365636; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9fpTPHw0jPF1PHgzGmVWLf8QEAGl8IOcqrkx31ztxko=;
-        b=bd4p6ltjqlA3As4odq1WHdN4n5ECMvrczee92pBCx52PdzmmzcJ+Le+u6hcaUEBp2z
-         b6HBkVEd7NoIWLFA8VRR36oBo7Uf3lwGIL856FZpBBR0rXl1IlyyrWz5yUrB+tkfo96j
-         Htb0QKxZT/KecBS64DmN3EiCGLM1/oatgd5vh18fXrrjhKK2PpGhVVc0VUk2PfdcZPYf
-         eFn25OVUzW3Ms2qYsRQ2N12o66akau/9L4tcl9Fm3eWEqtBruW7o+NaDryuo3iS6UKQs
-         Zetky7YCw9US64RHgwmyIA7C2BRhtQPQ5V0pASSn8uo3CKAL7fu17z2ddJttn4rztvkQ
-         YGeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782760836; x=1783365636;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9fpTPHw0jPF1PHgzGmVWLf8QEAGl8IOcqrkx31ztxko=;
-        b=Rorn+8woBzyRp01v1IuKYMbI6bhwUlpzhzscIzfxmDTXzbKP9CmeUFPyZTR95th2c/
-         +WFprSy604E2AVyJxqVndvcfr7IDoewZ+D4wh1MrbJUzjjrqGvKHVTQ2H6mYNGBuqlw8
-         glEqoXppzh8puTFdzdAXnVb8NOgrWOK7XVFoE3JPe6AqzeZrsJm6v4GsiFrC6dfvFMA0
-         gRhbjDPnbGb2nQJ5Qym+RoxFhc0l0cTL+WEsv+1mByr+ktMTOJWeS3xHDdorCf2J1RwW
-         T/0Jt7K9MaqAlXCmZfjJomIyJ3+WctYnYS0ZjvR0q1xwiJYtPMoiwr1x2kUyKbMlAdVO
-         CQFQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rr5g2VO86FBPLGcL9ZMiOa+he2vSiR4XIlWbmXNr9F+ov5ObYZi8PVXX+KU3BzSnJ+QTusD52U=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy5u//KdFgXFQp7K5gbhj8kMHnONQaavLcOTECbX/eej/H62Nkq
-	yC8s8Ce4mXKEc4/AEiPd/KESMn/cAaEW7sTzASIkYqKin4ECGsFjTE83iK5QnM7XUk3FGB80p+e
-	O1sqHIhE1HP9U+58c7A==
-X-Received: from dyjw37.prod.google.com ([2002:a05:7300:56a5:b0:30c:9f7d:e238])
- (user=tanshuhao job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7300:3b09:b0:30c:ab96:7306 with SMTP id 5a478bee46e88-30ee1cc79a8mr325933eec.22.1782760835402;
- Mon, 29 Jun 2026 12:20:35 -0700 (PDT)
-Date: Mon, 29 Jun 2026 12:20:27 -0700
-In-Reply-To: <20260629192029.4013794-1-tanshuhao@google.com>
+	d=xs4all.nl; s=xs4all01;
+	h=mime-version:message-id:date:subject:to:from;
+	bh=hku7+dnRaiVh1NM/qXbJI8Zf9gVv0HH2UBe/fZ82O0k=;
+	b=WZ273hGXp03+FKSSyaQAaMEdUswtfTn2b0EzukA7/l9AZDqXW2sLy+cKfMj1cVp+p82YB6tjYO9FZ
+	 bLTRQA2A50Uw43YCNGsH+4aVEpF/66SbA2U4JDOX0PJ+ANIhR/mPh7UjjomDMuhP6SCX2P+K62sWU4
+	 zDZc/rWaLVFPBWfToxcnjCJMQXdeXot6pormsUqlG9ew2sjnR9u4VEUtF/FeuLaizm5TzCZfnPt8Tj
+	 /Qy3ApxXzARDNIbmsA0Zu/kp5xQ+BKqCUyhU+WIuU8vl73KjcROTffOOjPpX2g1OAWvRQwmwMGuOc5
+	 eK7Xz+A37X088jNJ3VXKLaGDUSGdqkw==
+X-KPN-MID: 33|0C3WjuoC7fcDt4DX3tFEUDiET9bw8m0mRysKIUfg5clLNUEXDmOHmgbY1TS+W6v
+ dbn2uNFl7g3/TFs/KsQIjuS51+5MwTX8MmE6fM9bxD9E=
+X-KPN-VerifiedSender: Yes
+X-CMASSUN: 33|eJfPE4vLd3Z3OFLlEEN9Uxms50YEzpzckxJS0ScKqlv4r9VZ/zMCIJi6pOYKsX9
+ acUZdQw+ND8ZKG77RbVrDPg==
+Received: from daedalus.home (unknown [178.231.11.185])
+	by smtp.xs4all.nl (Halon) with ESMTPSA
+	id aa1ff099-73f2-11f1-8076-005056998788;
+	Mon, 29 Jun 2026 21:42:30 +0200 (CEST)
+From: Jori Koolstra <jkoolstra@xs4all.nl>
+To: Christian Brauner <brauner@kernel.org>,
+	Aleksa Sarai <cyphar@cyphar.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jori Koolstra <jkoolstra@xs4all.nl>
+Subject: [PATCH net-next v3 2/5] vfs: add function receive_fd_filtered() that makes LSM filtering explicit
+Date: Mon, 29 Jun 2026 21:43:24 +0200
+Message-ID: <20260629194327.2270798-3-jkoolstra@xs4all.nl>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260629194327.2270798-1-jkoolstra@xs4all.nl>
+References: <20260629194327.2270798-1-jkoolstra@xs4all.nl>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260629192029.4013794-1-tanshuhao@google.com>
-X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260629192029.4013794-3-tanshuhao@google.com>
-Subject: [PATCH net-next v1 2/2] selftests: net: Add kthread preserving test
- in napi_threaded and busy_poll_test
-From: Shuhao Tan <tanshuhao@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, Shuah Khan <shuah@kernel.org>
-Cc: Shuhao Tan <tanshuhao@google.com>, Mina Almasry <almasrymina@google.com>, 
-	Samiullah Khawaja <skhawaja@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Add a testcase to ensure the kthread stays the same across NIC link
-flap.
+To prepare for filtering LSM blocked fds received with SCM_RIGHTS, we
+first need to know when a received fd was filtered. Currently,
+receive_fd() relays the error returned by security_file_receive(). As
+there is no strict convention about what errnos this LSM hook can
+return, the caller of receive_fd() has no robust way of knowing whether
+an error is returned because the LSM blocked the fd, or because of some
+other failure (put_user, FD_PREPARE, etc.)
 
-Add a testcase to ensure the same kthread can poll different napis
-across NIC link flap.
+Fix this by adding receive_fd_filtered() which carries an out-argument
+that is set only on LSM error.
 
-Signed-off-by: Shuhao Tan <tanshuhao@google.com>
+Signed-off-by: Jori Koolstra <jkoolstra@xs4all.nl>
 ---
- .../selftests/drivers/net/napi_threaded.py    | 41 ++++++++++++++++++-
- tools/testing/selftests/net/busy_poll_test.sh | 24 +++++++++++
- 2 files changed, 64 insertions(+), 1 deletion(-)
+ fs/file.c            | 48 +++++++++++++++++++++++++++++---------------
+ include/linux/file.h |  2 ++
+ 2 files changed, 34 insertions(+), 16 deletions(-)
 
-diff --git a/tools/testing/selftests/drivers/net/napi_threaded.py b/tools/testing/selftests/drivers/net/napi_threaded.py
-index f4be72b2145a..20110fb6942e 100755
---- a/tools/testing/selftests/drivers/net/napi_threaded.py
-+++ b/tools/testing/selftests/drivers/net/napi_threaded.py
-@@ -127,6 +127,44 @@ def change_num_queues(cfg, nl) -> None:
-     _assert_napi_threaded_enabled(nl, napi0_id)
-     _assert_napi_threaded_enabled(nl, napi1_id)
- 
-+def nic_link_flap(cfg, nl) -> None:
-+    """
-+    Test that if threaded is enabled, and NIC goes through
-+    a reset, the kthread stays unchanged across the link flap.
-+    """
-+    napis = nl.napi_get({'ifindex': cfg.ifindex}, dump=True)
-+    ksft_ge(len(napis), 2)
-+
-+    napi0_id = napis[0]['id']
-+    napi1_id = napis[1]['id']
-+
-+    _setup_deferred_cleanup(cfg)
-+
-+    # set threaded
-+    _set_threaded_state(cfg, 1)
-+    napis = nl.napi_get({'ifindex': cfg.ifindex}, dump=True)
-+
-+    # check napi threaded is set for both napis
-+    _assert_napi_threaded_enabled(nl, napi0_id)
-+    _assert_napi_threaded_enabled(nl, napi1_id)
-+
-+    pid0 = napis[0].get('pid')
-+    pid1 = napis[1].get('pid')
-+
-+    cmd(f"ip link set {cfg.ifname} down")
-+    cmd(f"ip link set {cfg.ifname} up")
-+
-+    # re-acquire napi info
-+    napis = nl.napi_get({'ifindex': cfg.ifindex}, dump=True)
-+    ksft_ge(len(napis), 2)
-+
-+    # check napi threaded is set for both napis
-+    _assert_napi_threaded_enabled(nl, napi0_id)
-+    _assert_napi_threaded_enabled(nl, napi1_id)
-+
-+    # check the kthread remains the same
-+    ksft_eq(napis[0].get('pid'), pid0)
-+    ksft_eq(napis[1].get('pid'), pid1)
- 
- def main() -> None:
-     """ Ksft boiler plate main """
-@@ -134,7 +172,8 @@ def main() -> None:
-     with NetDrvEnv(__file__, queue_count=2) as cfg:
-         ksft_run([napi_init,
-                   change_num_queues,
--                  enable_dev_threaded_disable_napi_threaded],
-+                  enable_dev_threaded_disable_napi_threaded,
-+                  nic_link_flap],
-                  args=(cfg, NetdevFamily()))
-     ksft_exit()
- 
-diff --git a/tools/testing/selftests/net/busy_poll_test.sh b/tools/testing/selftests/net/busy_poll_test.sh
-index 5ec1c85c1623..897ce6700601 100755
---- a/tools/testing/selftests/net/busy_poll_test.sh
-+++ b/tools/testing/selftests/net/busy_poll_test.sh
-@@ -124,6 +124,23 @@ test_busypoll_with_napi_threaded()
- 	return $?
+diff --git a/fs/file.c b/fs/file.c
+index 628ca07dc4b1..2bc22cc69e84 100644
+--- a/fs/file.c
++++ b/fs/file.c
+@@ -1367,6 +1367,25 @@ int replace_fd(unsigned fd, struct file *file, unsigned flags)
+ 	return err;
  }
  
-+test_busypoll_with_napi_threaded_link_flap()
++static int __receive_fd(struct file *file, int __user *ufd, unsigned int o_flags)
 +{
-+	# Only enable napi threaded poll. Set suspend timeout and prefer busy
-+	# poll to 0. Run again after a link flap.
-+	test_busypoll 0 ${NAPI_THREADED_MODE_BUSY_POLL} 0 || return $?
++	int error;
 +
-+	ip netns exec nssv ip link set dev $NSIM_SV_NAME down
-+	ip netns exec nscl ip link set dev $NSIM_CL_NAME down
++	FD_PREPARE(fdf, o_flags, file);
++	if (fdf.err)
++		return fdf.err;
++	get_file(file);
 +
-+	ip netns exec nssv ip link set dev $NSIM_SV_NAME up
-+	ip netns exec nscl ip link set dev $NSIM_CL_NAME up
++	if (ufd) {
++		error = put_user(fd_prepare_fd(fdf), ufd);
++		if (error)
++			return error;
++	}
 +
-+	test_busypoll 0 ${NAPI_THREADED_MODE_BUSY_POLL} 0
-+
-+	return $?
++	__receive_sock(fd_prepare_file(fdf));
++	return fd_publish(fdf);
 +}
 +
- ###
- ### Code start
- ###
-@@ -176,6 +193,13 @@ if [ $? -ne 0 ]; then
- 	exit 1
- fi
+ /**
+  * receive_fd() - Install received file into file descriptor table
+  * @file: struct file that was received from another process
+@@ -1384,27 +1403,24 @@ int replace_fd(unsigned fd, struct file *file, unsigned flags)
+  */
+ int receive_fd(struct file *file, int __user *ufd, unsigned int o_flags)
+ {
+-	int error;
+-
+-	error = security_file_receive(file);
++	int error = security_file_receive(file);
+ 	if (error)
+ 		return error;
++	return __receive_fd(file, ufd, o_flags);
++}
++EXPORT_SYMBOL_GPL(receive_fd);
  
-+test_busypoll_with_napi_threaded_link_flap
-+if [ $? -ne 0 ]; then
-+	echo "test_busypoll_with_napi_threaded_link_flap failed"
-+	cleanup_ns
-+	exit 1
-+fi
-+
- echo "$NSIM_SV_FD:$NSIM_SV_IFIDX" > $NSIM_DEV_SYS_UNLINK
+-	FD_PREPARE(fdf, o_flags, file);
+-	if (fdf.err)
+-		return fdf.err;
+-	get_file(file);
+-
+-	if (ufd) {
+-		error = put_user(fd_prepare_fd(fdf), ufd);
+-		if (error)
+-			return error;
++int receive_fd_filtered(struct file *file, int __user *ufd, unsigned int o_flags,
++		bool *filtered)
++{
++	int error = security_file_receive(file);
++	if (error) {
++		*filtered = true;
++		return error;
+ 	}
+-
+-	__receive_sock(fd_prepare_file(fdf));
+-	return fd_publish(fdf);
++	*filtered = false;
++	return __receive_fd(file, ufd, o_flags);
+ }
+-EXPORT_SYMBOL_GPL(receive_fd);
  
- echo $NSIM_CL_ID > $NSIM_DEV_SYS_DEL
+ int receive_fd_replace(int new_fd, struct file *file, unsigned int o_flags)
+ {
+diff --git a/include/linux/file.h b/include/linux/file.h
+index 27484b444d31..748f08470bb4 100644
+--- a/include/linux/file.h
++++ b/include/linux/file.h
+@@ -119,6 +119,8 @@ DEFINE_FREE(fput, struct file *, if (!IS_ERR_OR_NULL(_T)) fput(_T))
+ extern void fd_install(unsigned int fd, struct file *file);
+ 
+ int receive_fd(struct file *file, int __user *ufd, unsigned int o_flags);
++int receive_fd_filtered(struct file *file, int __user *ufd, unsigned int o_flags,
++		bool *filtered);
+ 
+ int receive_fd_replace(int new_fd, struct file *file, unsigned int o_flags);
+ 
 -- 
-2.55.0.rc0.799.gd6f94ed593-goog
+2.54.0
 
