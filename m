@@ -1,46 +1,46 @@
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011012.outbound.protection.outlook.com [40.93.194.12])
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013005.outbound.protection.outlook.com [40.107.201.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 319D12744F
-	for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 23:02:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B1CD2FD1B3
+	for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 23:02:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.5
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782774157; cv=fail; b=cp0NiMr/nziMqk/fE6M+FjOi5K4U9eixA/dYtxZ5ojLj4qBqRsymrdonSHBvyYrUO/NcHdT001EI3AuhXMykQvjhsrIwXXDoVyMHMMCxWojpQDw3oIU6cyWGy7xAaP070IFW8t6aqADNGU/VG4Drtt3SwrNIhzQJdWVSiJxgSbU=
+	t=1782774157; cv=fail; b=hjSceiEZYg3FaMaiANsjCVB9SqXO5k1qNkgP6k6KphxdPCWSh3Wx+jkK4HJwUhUvlYtnePDBupSutaDQr8xSXwsCOR17orV8RIroMi1wH0saXc2we0drReC0tKWpzJDX8o1XY8YZLO5pcd2JZz2H+DWpBHzMfnMVId9JtmmH2DQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1782774157; c=relaxed/simple;
-	bh=IpW58tjuS5VVZuyn/2Akg6AVMlDqt8L2Jkf2HvK7kYc=;
+	bh=X9c8G4p6e94RW4p/vQD97JCqx3D8HTDARSAQmvAb7Dk=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lkkpg+XZfGvd9M7L0h5k3yhLtpB37MiuV9ywred0t4v+fonc8fEZ4mf+iI41ZotirR8lzs3w225AvXhGqtJsqDy7RU4Xh6sqbdmFJzxr6UUqnVki9rFc9kmPOSWxPNPjDiPnrWd8mPxe0vMXHU6gSx6kk/Kpdm5XkM7Rglu9xfA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Z3M1z6EA; arc=fail smtp.client-ip=40.93.194.12
+	 MIME-Version:Content-Type; b=N/dNvX6/IrB5bFbcpJU0lV5tsQ25TrvAzR/WiB5tON10BQU0nYwLrCv6n2Kn1PZyqe9VKwSRyEHEUAXCcNz26wa3Yrzg//g6USmqVsQBZxN4ghtMnHX/KowS3g8T0zZbNXWKBm3yioAtGQgc0LyTsnKEOsYnyAH+n4Gf5arVg7I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=YOe4gUpY; arc=fail smtp.client-ip=40.107.201.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Z3M1z6EA"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="YOe4gUpY"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rvqNGMPffhTGtlazN6mFhrPhEzujVAeSb3PcGVd9NP9PLPjLtShXrgvl0+ndN5SgC20TttZsbt+tv+H77OqIPLZzr4FmqYHNLoepo9eHNN6TkPtD5QRMkSrr6aseQXwOWzrT/dqkYeH6G6n9U3LmJrJbaKTWgroUZChdnrMVWbERlIQpm1GF4C2ZQF9z7038yfJMHzN8ZkzRmFKHPDaYf+H1mhNE873K7SdZHcknDMTbC/BD0kDP4aWoXahxtePIaTTn9NaFB1iBBWOzDv0nabi7cssfyD+AULleiwzLIM8G9c6Tql8D+p/DSiXYJV7ER3eGQRyzFr8Dbtl0jbgU5w==
+ b=OfC2cQ04yBTPG0Vt6kfOEHq2Jh3ptvGUHstNbeNWwO2SxsbBadzCkkWTAXeHvbBlnSbnxEvCewhZ428pQa+UOYUfcW8gnKwVPu1RCUZyYXDsePQkdbHfUpw4pkjxgaStw3k6mdfqPPWUitde8e09B3aQeyqdBcsYSfjfcwGQJVBuM1reUurMtPvVGuJPLdAf/Ai8kmpFPovFIirk45Z4zP29c32M6NSRnmwt1Kv0NXZDfz21IMnAciamoqcxbzI6z7e2AD6LdGDoksW7jkl6C4J+z6HS94fpyols8XTbf1qGF4VsMJrjl1fHsFQWi9Z0i7vmiQVeiBrScLTdVj8j7A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eitWM4TjPBRnQrhiWBbIsRd8Cp9i+jY6giJQwN7oMxM=;
- b=XiOH3zTiZq7fiobtl84VB4oU4P1su5kYe3awe8zEIuumtI43QZ37sjZL3zIhPGg68DNrtDLjVuFZ404+QvjW3LqyYM8Z9IGevNYRf8GTdP3cnoJFuT/mZ1/1oApm4ApEyFuAlyy3FhI+JFLkAuE2cvrknq05WZKwHotl5B7UPwpoAo6TTg5ZVtDz3fXZPeXvRew0i5o+ZpD60AtUavilXAkLZOFxBD7XwnBZmW7oCBKnh7BC4TVfgwnWssa50SVRkaMfqKUGGoRMR02Hdj8ifsVt37+ms/9QQSaIlcl9IZdq0x5jPamj1NODDDFJxTKlsR+FazU4x/J1NO4wBAuxCQ==
+ bh=0PsYkjcx8jQYBxmBMKict45NRlxtOoZEpxLm0P1VbsU=;
+ b=Y7O/fWWmqoDaN84GG4pGUxJFpLp9TMLZ+H4BAuvBtKRrvAFehixOX/xdQRjdHRSTJH76pjF/vUKbnGVqd5uEEOXgo0KyjLKZMZBh2nofVnRXkkHtodhdpjFcWol/6/fcLikiz9ERiWo0PjeTqqsXCwDrnvm79LzHlbIupFBsuDMmqXRo8S6o09Dw+T5LjLRMMSSyoJ/CLQURwgftcwYTywlg8eDaBifRoUCCCFkx8K0C16CctpolOfYC6+VPpsFyaQ0iJINZKw9/3N+ipUoUAw6hB+PY9K1zMueQIJ/FY76djga4I8GBBSlqi98Hkorvg5Mv0KroS5S5nc15ZOW4cg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eitWM4TjPBRnQrhiWBbIsRd8Cp9i+jY6giJQwN7oMxM=;
- b=Z3M1z6EAuLkOagoKuXN2ZumM85zmqn1ANZ9u8e+ID1SnVypw3k1UZUPio4QPpkMoioXX7UGphvSzNkkYZI+2yTbnNXlY+R13XCnIB5/C85RahoVpB+E55JhD0qFN7FEeW2owreWu2DF+uaSf+jSMnMsywoG08SVer4P364gF0a8=
-Received: from SJ0PR13CA0173.namprd13.prod.outlook.com (2603:10b6:a03:2c7::28)
- by MW6PR12MB8662.namprd12.prod.outlook.com (2603:10b6:303:243::6) with
+ bh=0PsYkjcx8jQYBxmBMKict45NRlxtOoZEpxLm0P1VbsU=;
+ b=YOe4gUpYSwbKVGMf4rd3G3LT3A4K9Ld3RfWx+xQEurecOBBuo+hzcVWuD4VFV6onhY0N2E4KtDwyog/bLWRxzNYT+rXyzBEqL85noqWydoR3FfccXBakR2ugSPwpdu/8sWTCqipUWR6GUfD/Hg+sPO4PhfO4ckaC4bMpZ3GF94A=
+Received: from BY3PR04CA0021.namprd04.prod.outlook.com (2603:10b6:a03:217::26)
+ by CH3PR12MB8933.namprd12.prod.outlook.com (2603:10b6:610:17a::22) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Mon, 29 Jun
- 2026 23:02:28 +0000
-Received: from BY1PEPF0001AE16.namprd04.prod.outlook.com
- (2603:10b6:a03:2c7:cafe::43) by SJ0PR13CA0173.outlook.office365.com
- (2603:10b6:a03:2c7::28) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.181.8 via Frontend Transport; Mon, 29
- Jun 2026 23:02:28 +0000
+ 2026 23:02:33 +0000
+Received: from BY1PEPF0001AE1C.namprd04.prod.outlook.com
+ (2603:10b6:a03:217:cafe::9b) by BY3PR04CA0021.outlook.office365.com
+ (2603:10b6:a03:217::26) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.159.19 via Frontend Transport; Mon,
+ 29 Jun 2026 23:02:33 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,21 +48,22 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- BY1PEPF0001AE16.mail.protection.outlook.com (10.167.242.104) with Microsoft
+ BY1PEPF0001AE1C.mail.protection.outlook.com (10.167.242.105) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.6 via Frontend Transport; Mon, 29 Jun 2026 23:02:28 +0000
+ 15.21.181.6 via Frontend Transport; Mon, 29 Jun 2026 23:02:32 +0000
 Received: from amd.rund-run.pensando.io (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 29 Jun
- 2026 18:02:27 -0500
+ 2026 18:02:31 -0500
 From: "Nikhil P. Rao" <nikhil.rao@amd.com>
 To: <netdev@vger.kernel.org>
 CC: <kuba@kernel.org>, <brett.creeley@amd.com>, <eric.joyner@amd.com>,
 	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<pabeni@redhat.com>, <jacob.e.keller@intel.com>
-Subject: [PATCH net-next v6 1/6] pds_core: add support for quiet devcmd failures
-Date: Mon, 29 Jun 2026 23:01:55 +0000
-Message-ID: <20260629230200.82092-2-nikhil.rao@amd.com>
+	<pabeni@redhat.com>, <jacob.e.keller@intel.com>, Vamsi Atluri
+	<Vamsi.Atluri@amd.com>
+Subject: [PATCH net-next v6 6/6] pds_core: add debugfs support for host backed memory
+Date: Mon, 29 Jun 2026 23:02:00 +0000
+Message-ID: <20260629230200.82092-7-nikhil.rao@amd.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260629230200.82092-1-nikhil.rao@amd.com>
 References: <20260629230200.82092-1-nikhil.rao@amd.com>
@@ -78,101 +79,128 @@ X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY1PEPF0001AE16:EE_|MW6PR12MB8662:EE_
-X-MS-Office365-Filtering-Correlation-Id: c0f5a40f-ce23-45ef-db7f-08ded6327e2c
+X-MS-TrafficTypeDiagnostic: BY1PEPF0001AE1C:EE_|CH3PR12MB8933:EE_
+X-MS-Office365-Filtering-Correlation-Id: b3b0f529-5004-42be-0014-08ded63280c4
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|23010399003|82310400026|36860700016|18002099003|22082099003|11063799006|56012099006;
+	BCL:0;ARA:13230040|82310400026|376014|36860700016|1800799024|23010399003|6133799003|22082099003|11063799006|56012099006|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	XNX+faC0pBgEZqAjhWVM+dkTQ+yPB+V7gjrgzXolqq8M2rZbqPqtqRmsjTPBRIUVfflftQLaAe/Smk4/g77s9VktXI7+MvXzcSkfScYiv3sIuOJPNA0x6Hq2w8WwJ62RKwd6dZ/VyL1A/2SDJrMufluCnUPx4xOtlmvjLOhJWU610DAShkV/7JvjaOdjJOXVPdrj6ot/pucwQLagXM3tROPdRsH/gdbK3KJjOKggpvB4HDM3ykfId/G6MkNMr+HI/gwt3DkT/ZFWoXiV/L8ZH/fa4lZqRs9MnyZVQv2qS5BLaKkz8hxxYMQCFk/+oT31zO56yTGqwWNZJ5XwXIJO7lKGtOa3RNGYioVRDpTJRelYTJrkeXDVwswszUGb2kvqRLPO48UKAaWPF/hYCwdqDfF9E4OPGS1mkUz9C251UMWiWSbLHVL+jhEfF9CM5BpPySSld35romCyMbgnUfgj0NazPiGElt9IiXZyH/S1PyWDpyt5cRFTyOW00ByGMc+wYxj6Q2HPScslLTGr/UzecSgUWEbFV8WyqGJE+uAd3UPnQ0naTRxcIC3yOLkJOYQtk5mBrs97vZi4uZ7lLaFW9c6vc5deFAVfNseXSmFpfXEDv9JvbH4Uon6/7ImZFMt51cXCDgjeZX0EBKUpCPyo02t0v1yuSHKoxVfaU8IC4VVjPH6UYD3hlzCF9Xadm9vsH0hQIoZwtYqgN/ngLhp5GQ==
+	48fnMv/XvvUrJAbiAcFQZCWDS08ABpmcrxHTve+01N3YKA6MBwfFygN/85u8sqHyoNnl5tgD3SblKJ5cvdbVUOMBRD7Hqd5rBKJ0BLRtel8qdsh72gvetomfJgqKdcLUYvk2s2u2vEjT/BevujS8ciYKrDnNF7QyP1aiklj/6+Hr+HrVail4iJbCK6faoWpAW/rxLyLA0a29IG94baef/LABHD9idxLBukhFCvD4iS2CrSC5TkM4rbwA3sg4y5Y77TBs917Ug2RBICXJvwUCB8MHYSx3lSngoV9RAyM8xscnpWa48kF7TbrdonTvnSbFTCjGM8ei1q66AuiLBjDcas3siAfxlxJA3Wzhn8SDo5ItsRKpx2bOA1jWPw0TtC3MvG1JmRWhWGi99ppiKckqMxFXdn2YjRGXVtgiaPTuLSu6uu/n5OdKA5zJx0E7O5KH+Sr8AV/YJQGvSwdkO261BY+tM5sLhWpkt6f1A1Lb5Kehw4fWdmmKAQZOgtAmV9iqKxtNQVUP2Rvx26+mVrcNg7DbeNA032+jvc5m5KJjG5VP8aySm83/Z1tJiN9DyGgZp7yeNvCJmgxEZyPFpDfkJ4AYs6Rhc+MoqvX9aFgqPdl3arXWITq8EGQHiBPue1Q0dGnCrEddPM4qhaeIl3/cweMQY1JmnnWYlwOHDD2cQhxEQmtSLYG7lRQWKA85AwKF26wJshnYYAoznz+pRxA8Ig==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(23010399003)(82310400026)(36860700016)(18002099003)(22082099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(36860700016)(1800799024)(23010399003)(6133799003)(22082099003)(11063799006)(56012099006)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	JwUWNYJwdYLE/B6udF2NKkkdjRboOJHt2h1VZ1YhNk94l+2BIUlD6ZCpO7U7V3ya2E5mWXoM0T5+vtWRPXqBrY4XRJ5FVDvBKx8ohBASlBabqC3P4K3vK1ThsW5BVQG7lqJYXeSMNKCrtnf0UfaCRWWQknIxleJREN4nn7hR/gR1Bmai7svELL+Bqzd200lmJ3rwI1wijXDNMqLEDTR2uJqdYe5WgBEwDijz4B5Cay05eaOV839rbfALEWNvMGqhgztCJ4OPUWntZm5fBquucdP/rMhZD8CyXzr2vaZEXk9wHo4/UyPdvaoDmaRul89J4kOmZpENTPLUdVqwQ89n9gVY0i6ltYaEP7Zg1hl3UayYy2hgsqZgcOUljZYw5O9vHzj4q31Fg9UCTbsiPHuSMUJT+kGDga1cHYua0rqzd0sS/Abbv550SuZcPzD/HjhN
+	Rhi9Cqt5JVUEeu+ZpobsmoyWt6L+wcDG8supJsos84nY45BiDZ9pMZl3kZQkJbDAIcurqrGiyyRGMO3WVdyv6lmUw76amnNR91KaptFFP9GnyhP19jE192I500k60Jow6lbIpZRi6BHcBKheUKUDqAhm99/KST+ejC3TAHXh+lt57dpnGK5Q/c+94h1bWkbiUQ8Tu8kszFw0XPVQJwlLWrLr0SAB3ITMhMkNDzjqd28xMAmpyt6O2IVjVuQUUV7mH2daqNK+nf0vZ0bu9jrIcw5j+Ed5zMxcLupYPg9x9kgl1IfNpge4x39vk9qQOYRooFkXcsxQG/DwMRyAorft1eaP5TK0DxkYflJndAeRdy6djYTUylL4cGCpuyR/7Y0d8fy5OFSBQbggigFOXIEPquPQeIe06j9McUbWDJyeu3hM/BJt7UkWcP7U1dwY6Ius
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 23:02:28.5755
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 23:02:32.9413
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c0f5a40f-ce23-45ef-db7f-08ded6327e2c
+X-MS-Exchange-CrossTenant-Network-Message-Id: b3b0f529-5004-42be-0014-08ded63280c4
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BY1PEPF0001AE16.namprd04.prod.outlook.com
+	BY1PEPF0001AE1C.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB8662
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8933
 
-From: Brett Creeley <brett.creeley@amd.com>
+From: Vamsi Atluri <Vamsi.Atluri@amd.com>
 
-Currently there aren't any use-cases that require special handling
-on whether or not to print devcmd failures. Specifically
-non-generic failures, i.e. not supported failures. Add support to
-allow these messages to be suppressed. This will be used when
-adding support to negotiate PDS_CORE_IDENTITY_VERSION_2.
+Add debugfs file to display host memory allocations including tag,
+size, order, and physical address for each memory request.
 
-Signed-off-by: Brett Creeley <brett.creeley@amd.com>
+Signed-off-by: Vamsi Atluri <Vamsi.Atluri@amd.com>
 ---
- drivers/net/ethernet/amd/pds_core/dev.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/amd/pds_core/core.c    |  2 +
+ drivers/net/ethernet/amd/pds_core/core.h    |  1 +
+ drivers/net/ethernet/amd/pds_core/debugfs.c | 45 +++++++++++++++++++++
+ 3 files changed, 48 insertions(+)
 
-diff --git a/drivers/net/ethernet/amd/pds_core/dev.c b/drivers/net/ethernet/amd/pds_core/dev.c
-index bded6b33289c..dd9989cfe6b3 100644
---- a/drivers/net/ethernet/amd/pds_core/dev.c
-+++ b/drivers/net/ethernet/amd/pds_core/dev.c
-@@ -126,7 +126,8 @@ static const char *pdsc_devcmd_str(int opcode)
+diff --git a/drivers/net/ethernet/amd/pds_core/core.c b/drivers/net/ethernet/amd/pds_core/core.c
+index be8d802ca921..dbeda801648c 100644
+--- a/drivers/net/ethernet/amd/pds_core/core.c
++++ b/drivers/net/ethernet/amd/pds_core/core.c
+@@ -491,6 +491,7 @@ void pdsc_teardown(struct pdsc *pdsc, bool removing)
+ 		pdsc->viftype_status = NULL;
  	}
+ 
++	pdsc_debugfs_del_host_mem(pdsc);
+ 	pdsc_host_mem_free(pdsc);
+ 	pdsc_dev_uninit(pdsc);
+ 
+@@ -502,6 +503,7 @@ int pdsc_start(struct pdsc *pdsc)
+ 	pds_core_intr_mask(&pdsc->intr_ctrl[pdsc->adminqcq.intx],
+ 			   PDS_CORE_INTR_MASK_CLEAR);
+ 	pdsc_host_mem_add(pdsc);
++	pdsc_debugfs_add_host_mem(pdsc);
+ 
+ 	return 0;
  }
+diff --git a/drivers/net/ethernet/amd/pds_core/core.h b/drivers/net/ethernet/amd/pds_core/core.h
+index 085f2e988aa0..791756a50870 100644
+--- a/drivers/net/ethernet/amd/pds_core/core.h
++++ b/drivers/net/ethernet/amd/pds_core/core.h
+@@ -306,6 +306,7 @@ void pdsc_debugfs_add_irqs(struct pdsc *pdsc);
+ void pdsc_debugfs_add_qcq(struct pdsc *pdsc, struct pdsc_qcq *qcq);
+ void pdsc_debugfs_del_qcq(struct pdsc_qcq *qcq);
+ void pdsc_debugfs_add_host_mem(struct pdsc *pdsc);
++void pdsc_debugfs_del_host_mem(struct pdsc *pdsc);
  
--static int pdsc_devcmd_wait(struct pdsc *pdsc, u8 opcode, int max_seconds)
-+static int __pdsc_devcmd_wait(struct pdsc *pdsc, u8 opcode, int max_seconds,
-+			      const bool do_msg)
- {
- 	struct device *dev = pdsc->dev;
- 	unsigned long start_time;
-@@ -179,7 +180,7 @@ static int pdsc_devcmd_wait(struct pdsc *pdsc, u8 opcode, int max_seconds)
- 
- 	status = pdsc_devcmd_status(pdsc);
- 	err = pdsc_err_to_errno(status);
--	if (err && err != -EAGAIN)
-+	if (do_msg && err && err != -EAGAIN)
- 		dev_err(dev, "DEVCMD %d %s failed, status=%d err %d %pe\n",
- 			opcode, pdsc_devcmd_str(opcode), status, err,
- 			ERR_PTR(err));
-@@ -187,8 +188,9 @@ static int pdsc_devcmd_wait(struct pdsc *pdsc, u8 opcode, int max_seconds)
- 	return err;
+ int pdsc_err_to_errno(enum pds_core_status_code code);
+ bool pdsc_is_fw_running(struct pdsc *pdsc);
+diff --git a/drivers/net/ethernet/amd/pds_core/debugfs.c b/drivers/net/ethernet/amd/pds_core/debugfs.c
+index 810a0cd9bcac..ef0a1b7d159b 100644
+--- a/drivers/net/ethernet/amd/pds_core/debugfs.c
++++ b/drivers/net/ethernet/amd/pds_core/debugfs.c
+@@ -178,3 +178,48 @@ void pdsc_debugfs_del_qcq(struct pdsc_qcq *qcq)
+ 	debugfs_remove_recursive(qcq->dentry);
+ 	qcq->dentry = NULL;
  }
- 
--int pdsc_devcmd_locked(struct pdsc *pdsc, union pds_core_dev_cmd *cmd,
--		       union pds_core_dev_comp *comp, int max_seconds)
-+static int __pdsc_devcmd_locked(struct pdsc *pdsc, union pds_core_dev_cmd *cmd,
-+				union pds_core_dev_comp *comp, int max_seconds,
-+				const bool do_msg)
- {
- 	int err;
- 
-@@ -197,7 +199,7 @@ int pdsc_devcmd_locked(struct pdsc *pdsc, union pds_core_dev_cmd *cmd,
- 
- 	memcpy_toio(&pdsc->cmd_regs->cmd, cmd, sizeof(*cmd));
- 	pdsc_devcmd_dbell(pdsc);
--	err = pdsc_devcmd_wait(pdsc, cmd->opcode, max_seconds);
-+	err = __pdsc_devcmd_wait(pdsc, cmd->opcode, max_seconds, do_msg);
- 
- 	if ((err == -ENXIO || err == -ETIMEDOUT) && pdsc->wq)
- 		queue_work(pdsc->wq, &pdsc->health_work);
-@@ -207,6 +209,12 @@ int pdsc_devcmd_locked(struct pdsc *pdsc, union pds_core_dev_cmd *cmd,
- 	return err;
- }
- 
-+int pdsc_devcmd_locked(struct pdsc *pdsc, union pds_core_dev_cmd *cmd,
-+		       union pds_core_dev_comp *comp, int max_seconds)
++
++static int host_mem_show(struct seq_file *seq, void *v)
 +{
-+	return __pdsc_devcmd_locked(pdsc, cmd, comp, max_seconds, true);
++	struct pdsc *pdsc = seq->private;
++	struct pdsc_host_mem *hm;
++	int i;
++
++	if (!pdsc->host_mem_reqs || pdsc->num_host_mem_reqs == 0) {
++		seq_puts(seq, "No host memory allocated\n");
++		return 0;
++	}
++
++	seq_printf(seq, "Host memory requests: %u\n\n",
++		   pdsc->num_host_mem_reqs);
++	seq_puts(seq, "Tag    Size         Order  PA\n");
++	seq_puts(seq, "---    ----         -----  --\n");
++
++	for (i = 0; i < pdsc->num_host_mem_reqs; i++) {
++		hm = &pdsc->host_mem_reqs[i];
++
++		if (!hm->pg)
++			continue;
++
++		seq_printf(seq, "%-6u %-12u %-6u %pad\n",
++			   hm->tag, hm->size, hm->order, &hm->pa);
++	}
++
++	return 0;
++}
++DEFINE_SHOW_ATTRIBUTE(host_mem);
++
++void pdsc_debugfs_add_host_mem(struct pdsc *pdsc)
++{
++	if (!(pdsc->dev_ident.capabilities &
++	     cpu_to_le64(PDS_CORE_DEV_CAP_HOST_MEM)))
++		return;
++
++	debugfs_create_file("host_mem", 0400, pdsc->dentry,
++			    pdsc, &host_mem_fops);
 +}
 +
- int pdsc_devcmd(struct pdsc *pdsc, union pds_core_dev_cmd *cmd,
- 		union pds_core_dev_comp *comp, int max_seconds)
- {
++void pdsc_debugfs_del_host_mem(struct pdsc *pdsc)
++{
++	debugfs_lookup_and_remove("host_mem", pdsc->dentry);
++}
 -- 
 2.43.0
 
