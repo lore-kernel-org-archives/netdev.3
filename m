@@ -1,33 +1,40 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D557253B42;
-	Mon, 29 Jun 2026 09:25:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E12737998C
+	for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 09:30:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782725131; cv=none; b=gaoXpkEF4Zz7ZiZTQ/mHkqmS0slI0EBsdGzbu4ronmSnab3IjgNwXB/Dee/ihAKWIUC1BL998IQtW+ekR8A05DHhIMHCYopQ06/fPbgKmJELTBxK8+GuXchkw2mu7spuMw6FtrDOs40xxwbCPjdERRHC0hyQJckWbNBwPQTm7P4=
+	t=1782725452; cv=none; b=bcJUBqlSEpxae3qGjlk3nRTQZu0ke/807pgaDl91Ws5Y/e3U3PwH/i+pV+CNRAwaEiYd0WRgFMmiEIWiU+ypJFymHOA0xTvmGxDyUPWs4/ZLX90T064VekStAflihUo4cZlK1E8E2Uz0BbgcIimeALMIt3kCp7vc0hgDNKGvOZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782725131; c=relaxed/simple;
-	bh=7f9EIp3MIU7u0GZugRizJAQAB4jZImz2w+4PvmhKSAU=;
+	s=arc-20240116; t=1782725452; c=relaxed/simple;
+	bh=t1FMdQ1smOG7dSC5qcmD6qxt4wO2Y84/h0+n8e+iADw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Zyy8YXcC+HmI3Nh7JBuviYDk/DG1aTWdkucEfhBXox4FUKlVJ0vZJUbQpZyIBmtScUNPGugs+Y7YHuh6U+IoVqHPI2FqdmDg9Irv4hWPgHAmDRPzCJwypqxAdtJK6w8aty+TSTA+EQToFqjp6+8oHhzK2jOitoun7aMLoznfUe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CLDlTjkM; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=Ey/7BkDEScveSiQVwwYpHAR6ijF+EbOnsLVQaNxYXgmC0lwVw3DvrMw0XbeV9OaL687RSpzfbSymSL2JYTcffe53MuOMix458p379HeL/GTPLbWbNM9OhJdMcFjx5PO85SZttuARusvr2gR/E01Na0pkv53BWaITv3d0hzX0oGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=EFpPL8VO; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CLDlTjkM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A7741F000E9;
-	Mon, 29 Jun 2026 09:25:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782725130;
-	bh=K1vAbP8SPmIZNCKAx2sj7IMmi9y/s8DNYbOCmhd9/+Y=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=CLDlTjkMOaGXT4/38V9PmWpf2xWhxmw267zCE9uEUSBaIypzSED1KhA7AF+y/AuYL
-	 yK1qo6rG9AmyiWFFLwhT4HqWVXTmpAtMvTtIUS88GKN78b9DVbMglqy8E/52LBOcRH
-	 KCAziEz7MsPexqfsmt7gJtN18Mc4Z/sTJ7aaImLrB+vuQAnvDat4LuMAhP1SifWCJU
-	 wZR3jKSKc4d7fhXO2pLoy11K/pEx5z4LPq54fdiuHuKi7/4Hwy3rBk3yOdeAjEeYIB
-	 I1Tx3jNGp0tS8PmCA44PeKHNIj4J1r9MEVgFtXItJKfYu0bOFXBjdcCsk1H9Du+dMY
-	 ndQaQ+zjiVuKw==
-Message-ID: <d4ae7c3c-b0ad-48e7-ad93-ad3e4c37c725@kernel.org>
-Date: Mon, 29 Jun 2026 11:25:10 +0200
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="EFpPL8VO"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id CB25E4E40B71;
+	Mon, 29 Jun 2026 09:30:46 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 9DD0F5FF96;
+	Mon, 29 Jun 2026 09:30:46 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7067D106F169E;
+	Mon, 29 Jun 2026 11:30:43 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1782725446; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=ifd0ynvUGQGwkdE3eU1CD0ZPuKRIYA4F4nsjtxLfbYo=;
+	b=EFpPL8VOyfgS3I+G9iv61IlYZeQdVOAGqO1vxosq8ZYcXgYDUdh78zSeDQy2skdMxKhqEG
+	fr6NsdwilFwIXGxsv23Yr13UUjLN4uZ/PIbNY1vzRcVJ9Jxalo87Y0ZabUkEFhdZdJJblh
+	gAZD7NZdSjTcf/p1KrX5ohMpyjQmZw7AOWTWKaXXtblVyFz3tZLoINnNDwmNumm84XoEla
+	fhmV2VUn3GTuiBOCWe+7heivGmU/BODzPj8c//50mz1fSYw/z5kfUT3Twy9C1Mwx942EzR
+	N4TqnEBEdvpuGwOVCEFTAVrIzlVpz2Z5xJCSpIdwSWiB5lUNjSWt1nl2EYiP1w==
+Message-ID: <1b3975a8-788a-4b81-94ec-3ab5708b251b@bootlin.com>
+Date: Mon, 29 Jun 2026 11:30:43 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -35,67 +42,67 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 12/19] slimbus: qcom-ngd-ctrl: use
- platform_device_set_of_node()
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
- Lee Jones <lee@kernel.org>, Mark Brown
- <broonie@opensource.wolfsonmicro.com>,
- Thierry Reding <thierry.reding@avionic-design.de>,
- Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Srinivas Kandagatla <srini@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Vinod Koul <vkoul@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>,
- Saravana Kannan <saravanak@kernel.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- Andi Shyti <andi.shyti@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Robin Murphy <robin.murphy@arm.com>, Doug Berger <opendmb@gmail.com>,
- Florian Fainelli <florian.fainelli@broadcom.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Ulf Hansson <ulfh@kernel.org>,
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Matthew Brost <matthew.brost@intel.com>,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Peter Chen <peter.chen@kernel.org>,
- Paul Cercueil <paul@crapouillou.net>, Bin Liu <b-liu@ti.com>,
- Philipp Zabel <p.zabel@pengutronix.de>,
- Maximilian Luz <luzmaximilian@gmail.com>, Hans de Goede <hansg@kernel.org>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: brgl@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
- driver-core@lists.linux.dev, devicetree@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org,
- iommu@lists.linux.dev, linux-pm@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, intel-xe@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-usb@vger.kernel.org,
- linux-mips@vger.kernel.org, platform-driver-x86@vger.kernel.org
-References: <20260629-pdev-fwnode-ref-v2-0-8abe2513f96e@oss.qualcomm.com>
- <20260629-pdev-fwnode-ref-v2-12-8abe2513f96e@oss.qualcomm.com>
+Subject: Re: the confusing 10000base_CR. Shouldn't it be 10000_SFI_DA?
+To: "D H, Siddaraju" <siddaraju.dh@intel.com>, Andrew Lunn <andrew@lunn.ch>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "Das, Shubham" <shubham.das@intel.com>,
+ "Chintalapalle, Balaji" <balaji.chintalapalle@intel.com>,
+ "Srinivasan, Vijay" <vijay.srinivasan@intel.com>,
+ Michal Kubecek <mkubecek@suse.cz>
+References: <MW4PR11MB6912A234CAAAFD25EAC7C8909AEB2@MW4PR11MB6912.namprd11.prod.outlook.com>
+ <2994edfc-0894-49c9-abac-6daea5e12075@lunn.ch>
+ <MW4PR11MB6912BE7FEDE5C509B6C5D5DF9AEB2@MW4PR11MB6912.namprd11.prod.outlook.com>
+ <2baa5a77-3305-4ed9-b56d-ba27cecc1911@lunn.ch>
+ <MW4PR11MB6912BABFEED268D38B4BC2BB9AEB2@MW4PR11MB6912.namprd11.prod.outlook.com>
 Content-Language: en-US
-From: Konrad Dybcio <konradybcio@kernel.org>
-In-Reply-To: <20260629-pdev-fwnode-ref-v2-12-8abe2513f96e@oss.qualcomm.com>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <MW4PR11MB6912BABFEED268D38B4BC2BB9AEB2@MW4PR11MB6912.namprd11.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 6/29/26 11:12 AM, Bartosz Golaszewski wrote:
-> Ahead of reworking the reference counting logic for platform devices,
-> encapsulate the assignment of the OF node for dynamically allocated
-> platform devices with the provided helper.
+Hi,
+
++Michal
+
+On 6/26/26 21:19, D H, Siddaraju wrote:
+> Sure, thanks for pointing them, Andrew, will follow.
+> Now I realized what you meant there, thank you for the quick feedback.
 > 
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-> ---
+> About options,
+> Ok, got it: "option-(a): renaming *10000baseCR*" is out.
+>   Sure, will support this from uAPI backward-compatibility point-of-view.
+> 
+>   Just to highlight Maxime, yes during exploration, we too came across
+>   those few vendor products. But when we looked further to understand
+>   which standard those 10GBaseCR cables were following, we found they all
+>   explicitly call out that its SFP+ DA conforming to SFF-8431.
+> 
+> What about
+> "option-(b): create a new enum ETHTOOL_LINK_MODE_10G_SFI_DA_Full_BIT"?
+>   Idea is just to create a new enum, with same enum value of 10000baseCR.
+>   This will NOT consume a bit position in "ethtool_link_mode_bit_indices".
+>   It just helps those tech-savvy people, who does not accept 10000baseCR
+>   and prefer 10000sfiDA for being explicit.
 
-Acked-by: Konrad Dybcio <konradybcio@kernel.org>
+The thing is that even with a new enum value, that won't bring much to
+the table. It would likely be better to have a comment near the
+10000baseCR definition explaining the SFF equivalency.
 
-Konrad
+> 
+> At worst case, hope we agree for
+> "option-(c): ethtool.8 man page help strings to indicate 10G_SFI_DA"
+>   Something like
+>     "10000baseCR (10G_SFI_DA    SFF-8431 SFP+ DA)
+>   under "advertise" mask values.
+
+In that case, let's add Michal in the loop as the ethtool maintainer. Even
+then it's not straightforward as some tooling relies on the JSON output
+from ethtool, so _if_ we change the output for that mode, it should only
+be in the non-json output.
+
+My personal opinion would be that adding a comment in the enum definition
+near 10000baseCR is enough :/
+
+Maxime
+
