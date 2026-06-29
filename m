@@ -1,45 +1,46 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013041.outbound.protection.outlook.com [40.107.162.41])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010055.outbound.protection.outlook.com [52.101.84.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0FAB15B998;
-	Mon, 29 Jun 2026 11:23:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3812A3BAD92;
+	Mon, 29 Jun 2026 11:23:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.55
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782732206; cv=fail; b=QTWxSUoMHlmMZZFyhJYSc+zYOrvR9xng2qsQv2xSmUS0oitz7SwXmIfeBR17Hy3v7lJxtY3mJmllu/0JuObHRYYl1FKjsJZ4hknvDWOE9iw/FTkKCuNmKx6N4k42zXtXAPMUL3+/8hioWp9N7rWBmcbNKi1SJDPsLU8uEse3j/Q=
+	t=1782732210; cv=fail; b=RN2/R1sY8sl1uLpxuDpN+y1WnxvE/FJ8mnEiqsgdXCDslzuPd1WCs2421S4l038zvv9LJPKDOo7b4Xg0ZLvq/MnUTcerUrRO7Bx8ADU2aTISIkWo/emMG5akc7Uwae3TQNGroj0OItgj3XOX4D41/rGYXURsAXFaLXolJGlj4lI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782732206; c=relaxed/simple;
-	bh=MokUzETEpoywHvG6W7dI3TdxjbSO1DXLi0Jilsmfhlo=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=TZ2WcWULNTAtCBWzrsxNtbfd+MSnCIYigQbCijPvjLVFL9y5LoHDiIbQMM/ns2ZZeEStr5IY4N4t2FEipGb5d0F1aeMQRT0f4/68DQP/THeAYv5Dl4OJ3r0Prg5O52QDOlZZz2ESYPUoZ8knYpbfaEf4ajff/eKDYowrtnDvaTo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=C8IgTxV6; arc=fail smtp.client-ip=40.107.162.41
+	s=arc-20240116; t=1782732210; c=relaxed/simple;
+	bh=Z88bmDPv2T9moben0hdtNCJz3A/ld+N5rhLMVkuDzGA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=FPLG2vdGxAlgoajStG84vRA+hvXjIvbsWVp5LkTQDGfAjRP5O2cYBtk6lmFveV8QReXuKryr+j7kPHJ0sHsdOdfwDjvAupnEeQg2Sr6b9GXeEVcnTXjKmnFAxCTcs+Fb0tb6TMHJ9aRu/LwawGs+Tx+G5mlMfKbmhGUf4xHq/E0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=LIJTJBkD; arc=fail smtp.client-ip=52.101.84.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="C8IgTxV6"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="LIJTJBkD"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KJuXibgjCStMrnmgMu50sTT0KHHLsEbI+PsvvvCK0NKKJVGbmgtJI8FDrihlTCYnJh5TpkvzblshSXkylDZnZQm8qQhpq7KyLXvqcQlgLkHp7yR+ICKUpAFi/ej2DeoHTxNez/TWBLFXwMlFPLvmYPZCsDMKbeW7YiCOQMK9YKETDxq3HwGO4TvKuSCuYa2t2DQju24MH+h3BMdwATq6fg3ZsMXLlBgvQJ3Pr70DyV1P4whNlHq1P8zdnZoVDHKSK/lafRTmY7LO0NPvls3zlHbUBecAUAeVu58wi3eU4YP6FEPM/EJh+QoDfiX4tC8hwIxBFJl9sy7QmvUG4RE81w==
+ b=oYNPIdnv6JzbbJ63evSeKfzCWZCa/ioh6P+L0JlCfWYCnP7toylQBMLlAone9ivsU52oz3egobW9oS5831LXS8DLo4BUm85rlNqLRJ337fYDy+/nrxhmZ/OFncOESVA+HFso0c83s9WSbX1gQ1rEDEXFaafBCHw6jfwYKfsYfNTrXNGblMc1v0TYBAQ72FTZ8q7I2S8vEULOnPAV9K5Rfyf2LdvwxElz7/5JJbCFuhqU5GtnuZeVBe8Fr+AaJDswy5pIrp5uRWRZGCr4MiLV49QTu+wZWEf6swyLLmxb5n/5JZt3cG1h37G+q0HU+6kUq/glUTQG2Km3yScMvQg1cA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rb6p6p/VNRgSzH3rcVrWmUNrTjivqpvwAtJAkvplKME=;
- b=zMoUAw7B2Jy/urwgfYP9M7hug1IokzcW4zzpr00l0upcbTaG7Dc0LOOQK+DZfTHbyYfXD4zqxH2Yq+US4sRGuGV0/Wkg0GC8iRb8b/FoYPWfVhXO0+Cbj2Ze6fZBc8/uEMl4UF9j1Algv6VuL2RsFkqSSVIfBP571BMsxWjMPUt0vDNMzmU69XLHr0yBFp6MpfZgkuuVWj+GDmJHNaerA171tFcXAxpn6c8+xXtbRljMoNOgTvNXeOMWVS0pEXp8epboMc6brxwiWc4Kxp6XVnbIJrzhoWLTNcMR237/1dk8y8YcMh2NFZKUQbK0U/kiqjLplmhXie2Huznqxh9UaQ==
+ bh=DUnFQ0u2I8+7hYr/8SkupQfFq3k+w3PV6bRB9rw6juM=;
+ b=zSA9I5HjT6i6r+/FxJAS0MMSl/Ad+eLn9KWU+LSLZR/nLWxqZ+W1BLiduCCnWcglgxSKw9aMHGHixvZK3evfbSiZefNyGFu87O72TNQWAXsE3ToauGRr2Fi3+47IeBmAV4ESoPY2/3EIPYNiHsMknymX8FaRf5F/3FRB52sM40V3iy155j4Jx3phj23gXd0IWkjKm/IOKBCwBXIHI7zIZNSdn/GRhXIh2sv9klBrmKELl6j54aczwxjGUDzzghD+GJZIFtSslu4pDjfD2qHdaIgbEeZcdKuWH/phGjwHgnyYFghUssF+VVkErWLCERKYJQ1CuDXB19Ukphuankg6SQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rb6p6p/VNRgSzH3rcVrWmUNrTjivqpvwAtJAkvplKME=;
- b=C8IgTxV6wTR0CZ1KujrPeaeviz/tG1IUjwFLoJ+8Fa2zLnlki4SpuBXs/8YJslyHbua7NfFbQW5ZFerkx+7rMVM5FZtwtTB050iKHimy4yp835qjO4nSNA+3c2SCdU6nkVG+K6vee0fd7QjyKtnThN7ducTnlUf4T5sfYhhfXRQ7x7fGgnoqTDM/jQM7fg4ZJ+Q0SmF/tDO3ZYc907VyxMlb35I6KtzabsoIxHOmMgoKIzyyvPfAyrMg+wwhSF1F0JMmWQApd13ar5zto4Ct6tf/FmJVwxLu8muNnrtaJMW9Dj8lYVCzGs6T9huF7oGsgJ0LLzxvAfqyZh35Mcnj0w==
+ bh=DUnFQ0u2I8+7hYr/8SkupQfFq3k+w3PV6bRB9rw6juM=;
+ b=LIJTJBkDzMP+wEKqPamukgmiuCBf+ayOq8pwnSkHhEwSR0zRBRQI+0yt3YvzDso2Jl1mpnw4gj8gM1Aq3YnrYZO1nSPX/J9BW8INosD6uiAklNW/nkjHxkCm33WJVV0vEs2zt6QQosiE9djYjNathE7rc3Ilt4ORoRdEvRhJbSevTihWMNSK5MzNiYb1Xn0R895a2xr2YgYaWRFcnSg5ZHfUDWeDnGHsIvi5lJHcGtzcDSfptVVDximF6gmKzPgn2gy7RkAi2AUSoEo2hu+i+YmYtjIqtQLskQviCMRn8nNzgbkyf3wmhpkBOiXLdNpiL8fytDyF341eX+bwYI5XLQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from VI0PR04MB12302.eurprd04.prod.outlook.com (2603:10a6:800:31c::9)
  by AS8PR04MB8563.eurprd04.prod.outlook.com (2603:10a6:20b:422::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Mon, 29 Jun
- 2026 11:23:22 +0000
+ 2026 11:23:26 +0000
 Received: from VI0PR04MB12302.eurprd04.prod.outlook.com
  ([fe80::d68d:e9b6:88fa:9b5b]) by VI0PR04MB12302.eurprd04.prod.outlook.com
  ([fe80::d68d:e9b6:88fa:9b5b%4]) with mapi id 15.21.0159.018; Mon, 29 Jun 2026
- 11:23:21 +0000
+ 11:23:26 +0000
 From: Ioana Ciornei <ioana.ciornei@nxp.com>
 To: andrew+netdev@lunn.ch,
 	davem@davemloft.net,
@@ -48,14 +49,16 @@ To: andrew+netdev@lunn.ch,
 	pabeni@redhat.com,
 	netdev@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v4 00/13] dpaa2-switch: add support for LAG offload
-Date: Mon, 29 Jun 2026 14:22:56 +0300
-Message-Id: <20260629112309.154328-1-ioana.ciornei@nxp.com>
+Subject: [PATCH net-next v4 02/13] dpaa2-switch: avoid holding rtnl_lock in dpaa2_switch_event_work()
+Date: Mon, 29 Jun 2026 14:22:58 +0300
+Message-Id: <20260629112309.154328-3-ioana.ciornei@nxp.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260629112309.154328-1-ioana.ciornei@nxp.com>
+References: <20260629112309.154328-1-ioana.ciornei@nxp.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: AM9P195CA0014.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:20b:21f::19) To VI0PR04MB12302.eurprd04.prod.outlook.com
+X-ClientProxiedBy: AM9P195CA0015.EURP195.PROD.OUTLOOK.COM
+ (2603:10a6:20b:21f::20) To VI0PR04MB12302.eurprd04.prod.outlook.com
  (2603:10a6:800:31c::9)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -65,197 +68,113 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: VI0PR04MB12302:EE_|AS8PR04MB8563:EE_
-X-MS-Office365-Filtering-Correlation-Id: 829e4b8d-b705-45b6-8cb0-08ded5d0d3e0
+X-MS-Office365-Filtering-Correlation-Id: b5817d77-2b50-4050-d05c-08ded5d0d6b3
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|376014|19092799006|1800799024|18002099003|11063799006|6133799003|56012099006;
+	BCL:0;ARA:13230040|366016|23010399003|376014|19092799006|1800799024|18002099003|22082099003|11063799006|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	8Y3BFGcJfJ5elgGbdY47DBa2bmeeT98eQm2lHkHpA0hfKSKS6Sx0+mNHloKJO23dI5AhyYr77uHlJ4o2erg440l8AOqT+kqfeiupf1p3jwf+5SWzMisnTLdWV1fVDYyo2P3zgPJ4chhyYm81s4yLDvGy6V15YWbseaLhJ76teNnDC5vpYv9yH1zNSygdrqokuNdxL+qZckYSW3NIX0lejs9HaSdgETeD1VuPrLcpkgfB2mocJ9KtMqWX5z14ukJNI3QlHDHxBnTujRJEGUcKRPTeQ+/G2EwU1L0GNLACd/h++j2r1Mtf68kkUGGLioUodIzb4wylVcCrVdaf4modQtNAQUTwD5iDNUem69jTfwfc7834N8xF6YhUCqhBJyJniJTkPqBMO20IiZPgI4DhEiZfc4OUiq4VCdiD1oRcYy3CeZjMa8vAKFgmZZz7tSuU8WZVXtO3qQhzZAg8za+sKrtTOmWbgIfsijNqZ9G2FXDWLmyW8XKO0qipVVQOoUXtQXHvcZ2aGLMY3sswyzIXdOElgtfiaTGb3Q8ddtlJSVc4Vtbl9i3/cV2dNR3rvBlixNsb873I+UA4bbW2p9s6M5ZZrYOeei5zJUrllOCz5KeWpBmBp98pbU9AB8aotDYZb1Tnsx51v2Dn9eJSEuStLicCIwATmUPbsA6nFSMY1RI=
+	LlSPjxidy9F29zP+cf7rDXmgoIr9GFVMBcDHQRCqQ72WgYZvzAw12R1ykydtwbQ4WjG12K7NbBpJptXYR1YhRyhVB48tr+xTZOH9vvM5SNM2qY7gtRlR3ZI3nSyrFCOYk+vMJeGBmjtmD5sWV40aPaeSLNYdrqo+Cmkb/tKLYQZJ8jBEWzjOfAp6pFQFGS07hPEFvvEpq42y0gEZ4TzB1SXnQlvN1qsXNCcVNyt8gOwI7pGAv8JwBjIMN1DWKswNTZ0vB3il7l3tJnOSjq2gjRh+lJjmcMHWITwr6D/4NNPdDxwjzy67ftGJgspzF2iEEWKYm+OP0Hj3hKqQRyasjeoLFjt0S2gGlyzrZPqPKoCzAeBM91ZG2fTowFIVc9h67pznZagXSIQgr36R1CcXQxEoSaYFE21eqzrrCvqARgsR2eUE3gmPlXpR7/6QnuUua/bInk0Ii9K5LOcJapEo8vJrfOAfT1+ixqUYRxZTa+N6xp4i+LCF74+97XkmWPOTLdjiFhdQ04l8F6ZA8ZtZ3ziScpH8yV7n9lXJiQGbYxFrkx/yjYT7M61MQTARap/jDVtl/PExAmaTKptw4Bew50LlHzG7GpTd0266ZBMGh60CmWa6iGZOY5+XKyiSAolpgOInWnFPet+Srig41P/vacNyE/N0LZeaoX6uVI/dfRY=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR04MB12302.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(19092799006)(1800799024)(18002099003)(11063799006)(6133799003)(56012099006);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR04MB12302.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(19092799006)(1800799024)(18002099003)(22082099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?9xsGKJSofGPFFuSEfjTBwzqYPA2tQfUY4FGPzZp1eycU0ILS7lPjrILB55/Z?=
- =?us-ascii?Q?0JBpkHqkNNBD0hWuBzVguK10ePhG0MCOEcHGjDY9j4/1Ad/YtzA8WR6t3Zbu?=
- =?us-ascii?Q?whfaU6W1X1egjlsslterHWcXzJjv+g6jQX9bPit5a6RJgfviPo3eHYMPPPkR?=
- =?us-ascii?Q?Wn0jSU1RxgeIzhzhOrnRrwvmkN0miAtrhuyNQX5mBm0uyaM/vkhUOCKy1UEw?=
- =?us-ascii?Q?cakO77LBjII8B+ZrmCPFtu3n+LHNeEcnBLroaUTZkapSB+WaZAXXwakydALJ?=
- =?us-ascii?Q?k/6xJCCWvFBgN9Q7mjHQE5JL4eTJgjNk23abEpw3wffER6noDKu4V3TQ3vM8?=
- =?us-ascii?Q?6vPY22eqFT/4I7WXI1ME2/JAoeQDeU5wQsb46g87qBXzpajLKkV7fw0xhSCF?=
- =?us-ascii?Q?LWRM7wNs1erXIStnx8We1CxTPkq9W0RR70CvL9oImm4aaDq/x6OxAdAqz6QU?=
- =?us-ascii?Q?r4rKslNFZjf9m21flEpCZ6fwIMfy97JEdA9d9v+2d9NBlXu+YLb9b2RqUUmD?=
- =?us-ascii?Q?pqt4EYiWwep3uK0EGYhjtI+5VOy998QNGK5xRROh0F9Ckv4DMahANsZN9ji0?=
- =?us-ascii?Q?slzUAjmZH4tQ3BimIz7Ont+ebVNDv2NHdPvc6q7V2vyWe/ZLhTExttiQTpfv?=
- =?us-ascii?Q?GC7RGz3xNxeMSumoWcmNwt3TPF6xhrVH5vn+PMTdMLo/e2/rZZ6HEZUv/QmA?=
- =?us-ascii?Q?0pYe93hCUG4z8GzTKtwR/axZIVdCD4qLnA/csoRy+0dh0+GRCS+EtU26SgBw?=
- =?us-ascii?Q?LncqaDYpeaPhDG2Zafxdop58Mue2W9cKzTtE2/uA5ey8WpbCINb+TcNnL2Sg?=
- =?us-ascii?Q?lMJgUipbBt1NEBGtgDSH54NAvN0GMTyv/ntzCvYGYVdLmQzgEdZ4V5a2G+ys?=
- =?us-ascii?Q?NjP1LXvj0QS2yKfHIDPnnPSVx9S673bgdOly58NCmABhHNqjWRBWcsnMzF6t?=
- =?us-ascii?Q?eTEprMHDIWxqxy5fJ7XoUvA/9giqGfPx1JS8YdJj5JGh1nhsu0KYzvKlWPoU?=
- =?us-ascii?Q?xwFFkhJ4a9qvfm5czJ538IwExOlUXX30dIkBj2cm+FNQj3s33Yf0zOGNzk3k?=
- =?us-ascii?Q?c6g4TJ66TgBwQbVojLJ+MlOaAzXGdY6FI1B4DiA98AixYP/sB13mkk8Rpflb?=
- =?us-ascii?Q?av+QoJGitq7yRtVDR+VAH4qPfTiGN9/+I2eYEMPcahYQo+p1Scatposwb9Lo?=
- =?us-ascii?Q?K6qITJxDN5Yd8rUAhKfVcq+sQJJ3KPWtc0UEzeKMbX0heGgDjvapwMQvxUQa?=
- =?us-ascii?Q?X1esAbwXbLI0t9odtreWMEiOBpigzpOp5NeIjTazyr5GsQYf7rhitG4ZEcAX?=
- =?us-ascii?Q?1a3GPLdRq70DcG8/nY7+iEq1S33tKkgPg/MGA3AJ5X2wRI3yaWJuXVRo3l/S?=
- =?us-ascii?Q?CB/9WmcJir5vPp/0bsQRKZtxW5XpuUoOuTEiRaOLCQoIMpsFUNTJg+B1sp7X?=
- =?us-ascii?Q?NfgmcM8vuFr0f8V6gm5U/avMPeVy+M6sqriGPWtFsqDOTWYbIIFAIavmdX9h?=
- =?us-ascii?Q?WsaYXkZ9Aszu/8rXi2Pjctww5+ujAHngW8qF2BzD5gio8Gszhf6vPtaxggZt?=
- =?us-ascii?Q?0YBq5S5xl6VEudw2Jue0panj3GO80HlurxMwnrK91jub3HVHHbloao3LjZpM?=
- =?us-ascii?Q?hwo58vKz9+havzwhZWo1Y0RAfusWERrHK297qp6B3EGDYa5GFwy2W4MfPSNd?=
- =?us-ascii?Q?9U1P1CYKcCPt9bZp0536agFfDXZN31OHBoX3hwpHiJzLPfRonhjDnb5n7QO1?=
- =?us-ascii?Q?pJ87kCeLoQ=3D=3D?=
+	=?us-ascii?Q?g3bWwrtyHGsaWzWuZPlK9HGwIGth3u+M2s4pGgKoxoFaoaU7LbaaB/nWFTYa?=
+ =?us-ascii?Q?coJVXupGv7vzMA3d38RuFpYFzWORSCq6oFNSlGXh0zqT1CvKBD7ZutR47cg9?=
+ =?us-ascii?Q?gaPLGrFg4RAFsiMmwOOKcnZ7DCh3VrvGP5Eql4TtRo8UMc8hucLDU9q0SdPv?=
+ =?us-ascii?Q?aDsSfaEsZvOyAe/GzceYbrrP3tJwqpvFg2jbZmd55B4ADcvggFm8AlD2CyTb?=
+ =?us-ascii?Q?nNwI9hZQfMvJP9sQe6enIuzX6tYNU74FcrH+AAImO2JvzY1yGX4YjVPi1JDu?=
+ =?us-ascii?Q?K3uiDtMUn9B48p1n0nIccqWT9+8vbfyzlXC17pDibNTAWNpVnNarB8I+6EPl?=
+ =?us-ascii?Q?ynlEWk/WIPoiTN8+lCdi9ZTXsxfRAkAMObNJF961FHb2r7hFSgsSxkkYhP1X?=
+ =?us-ascii?Q?zCOL8pKlanNzxibCnomAbG2k4EUYJLqQufrToMtSclU66GulanmBSfTHi5a+?=
+ =?us-ascii?Q?WXK6sHT9oGThSZeqJ0/QDKjGp8Oj0MCVRN6BhwzIxO/I477LD4QbQZx1jLu2?=
+ =?us-ascii?Q?aclkzuxGkUtrxdv5flgAWJT8Eox+SgV0JFFSVgfTDZEDpj9aRCylU9zzfuRV?=
+ =?us-ascii?Q?OlXjyxZXAWLXEqyjTagz8byoiy0lqVEITMMjHLFKFx53Nx2iA1Ot/EAT2VeI?=
+ =?us-ascii?Q?/jLNrCiJW550VCW57oNXEMBY1eMFbxoIyzyGJG0PgMuXV/held5fv9aU1R16?=
+ =?us-ascii?Q?jEEnCcjCQ1ez9+yC5/lRuXOxtJtbHDDQsdHcUTgabbgTsUgcIGDfxod0Rc34?=
+ =?us-ascii?Q?VDS2x67tPV7PAr7TSgoLiwc6IJgvbx9Wls11iKtvNOZrmQwg9YlykGif0vpd?=
+ =?us-ascii?Q?Dcz8evXyT/pr35IkBtpcEwdCSmh+HUPVDCfyHeBhS243fGdypTa/Xjzlkx3A?=
+ =?us-ascii?Q?i7dvvopZaruVUHUC5v1GSEbrQp0kduiWAxKkG6YfDZHQR+kpFXO5s3s7RLcp?=
+ =?us-ascii?Q?t+kC/6pSrKUKTD79SPcSLrdbtAdz59WmmJ+7aq9F7j/zNSvmxG6yeG6oM6P8?=
+ =?us-ascii?Q?ndGj3XlMFRBGPY3fG4ice10BIAtNwZp3szIky6WT5DAf9oznMJVlmWZIhZ2Q?=
+ =?us-ascii?Q?wg0gEWHCMxWJY9aUGMpRPKfhIlcA1CMwHJKIotCVMxWOLikkdjkEWi2+xHRg?=
+ =?us-ascii?Q?Qc4I3wadrekQ8kbD2Qv9ybuuilXEStQda2bEjFuikcnSCWWOpBj+neKF3OG0?=
+ =?us-ascii?Q?IKPe/08kGxlRRU/cHEWXt78k1LAUo73DmuqIrEZvVQhZ7x3nDxKCsYtmmliK?=
+ =?us-ascii?Q?ZyAq5yDnwoecQsLgEERdmyRxi3npe/CjQtkHueaSzIDiA3U75I85aMRqyWlh?=
+ =?us-ascii?Q?MYt4ywG/CwHQxZb7QOJa16mNdej6n/PdNT2J5w4pCyO7lHGMmDrbAU6/4lim?=
+ =?us-ascii?Q?0SJdSXKmpSd/jYXA8YA8sXbUAJGcvgjQbaP4un3Tuf+4K8qwk3LcXztjj8hZ?=
+ =?us-ascii?Q?DmQVP3cynrAIPOgJGabXWjLNkoN+oXFZ7hjX0VSEvfH+HN3mbQgidlMIO0ub?=
+ =?us-ascii?Q?rGRj9tHSDHxY44r4vuX++1ZTZs5bSPxz7nqGnO6UxJCASMM98g5sLaILm9xe?=
+ =?us-ascii?Q?Rg3dD3Af6ai0ZKusXPE9bkjCKeOiFOKM5+rg64K5crwTwlZ/KWhDDifxk2cA?=
+ =?us-ascii?Q?IkDhvCrGqDLLq4VYgDpP36zRAzvyd2xqHCaaTEfAjAfDjRDMNI0Xfod7QNnS?=
+ =?us-ascii?Q?45oD5yQoZl2i5AQn9wY2WO1X4sWV2hMDOmQT7WTEAKPDqN9n0TF/VtjpAD9P?=
+ =?us-ascii?Q?KjQ8uZM+Og=3D=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 829e4b8d-b705-45b6-8cb0-08ded5d0d3e0
+X-MS-Exchange-CrossTenant-Network-Message-Id: b5817d77-2b50-4050-d05c-08ded5d0d6b3
 X-MS-Exchange-CrossTenant-AuthSource: VI0PR04MB12302.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 11:23:21.8908
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 11:23:26.6034
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GuOA/WB2ZH0vI0h+oWsXC/PVW2v7ABZ3z5r4BQAYt7KqAej+C9BQA2DBzHS6FrdMw+fYKdaatFk9+dr07xOKFQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: CRHKwiszhcZJ5TNJ5iEza6Gb20kFtRcAfgh/49L2iDcCH9M6KF9GYBP90XEwS2itR00WXT48a6L++OCjmtZffg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8563
 
-This patch set adds support in dpaa2-switch for offloading upper bond
-devices.
+The only reason why the rtnl_lock is held in the
+dpaa2_switch_event_work() is so that there is no concurency between the
+changeupper notifier which manages the per port FDB assignment and the
+workqueue which adds / deletes addresses into that forwarding database.
 
-The first two patches remove the necessity to hold rtnl_lock during the
-event processing workqueue by ensuring that all event were processed
-before any changes in FDB layout happens.
+To avoid this kind of concurency without a rtnl_lock, flush the event
+workqueue as the last step from the pre_bridge_leave so that any
+in-flight operations targeting the current FDB are finalized before the
+bridge layout (and the per port FDB assignment) changes.
 
-Patch #3 updates the logic around choosing the FDB that should be used
-on a switch port. This is necessary since with the addition of the LAG
-offload, we need to take into account all ports which are under the same
-bridge, even though not directly.
-
-The next four patches clean up the FDB event by making them easier to
-integrate with bond devices and also add the
-dpaa2_switch_port_to_bridge_port() helper to be used in the LAG offload
-support.
-
-The 8th patch adds the necessary new APIs for the LAG configuration
-while the next one uses them, both in the prechangeupper phase and the
-changeupper one. Which ports can be part of the same LAG group is
-configurable at boot time, thus we use the prechangeupper callback in
-order to validate that a requested configuration can be offloaded or
-not.
-
-This set also extends the handling of FDBs and port objects so that they
-are handled by the driver even on an offloaded bond device.
-
+Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+---
 Changes in v4:
-- Moved and split some patches so that any preparatory work is being
-  done before the driver offloads upper bond devices.
-- Add a defensive check in dpaa2_switch_port_bond_leave() for a NULL
-port_priv->lag
-- Extend the dpaa2_switch_prevent_bridging_with_8021q_upper() function
-so that we prevent a bond device with VLAN uppers joinging a bridge.
-The restriction is related to VLAN management in terms of the FDB which
-can change upon a topology change. VLAN uppers can only be added once
-the bridge topology is setup.
-- Remove all FDB management from the bond join/leave paths. Decided to
-reconfigure the FDB only on bridge join/leave since the FDB determines
-the forwarding domain and when a bond is not bridged, from a
-configuration standpoint, the individual lowers can be viewed as
-standalone.
-- Moved here the update to the dpaa2_switch_port_to_bridge_port()
-function so that the LAG state is taken into account.
-- Add a new per LAG field - primary - which is used to keep track of the
-primary port of a LAG group instead of determining each time we need to
-use it.
-- Set 'skb->offload_fwd_mark' only when the port is under a bridge.
-- Migrate FDBs in case the primary interface of a LAG changes.
-- Use lag->primary instead of determining each time the primary
-interface of a LAG device
-- Link to v3: https://lore.kernel.org/all/20260603143623.3712024-1-ioana.ciornei@nxp.com/
+- New patch.
+---
+ drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-Changes in v3:
-- Add a check in dpsw_lag_set() for cfg->num_ifs against
-DPSW_MAX_LAG_IFS
-- Add kerneldoc for the dpsw_lag_cfg structure.
-- Fix logic in prechangeupper callback in order to not call
-dpaa2_switch_prechangeupper_sanity_checks() on !info->linking
-- Fixed up the logic in the dpaa2_switch_port_bond_join()'s error path
-so that the FDBs are cleaned-up properly and we do not end-up with FDB's
-leaked, meaning that they could have been marked as in-use but actually
-no port was using it.
-- Mark the port_priv->lag field as __rcu and use the proper accesors for
-it. This will eventually become useful in a later patch when the lag
-field will be accessed concurrently from the NAPI context and the
-join/leave paths
-- Access lag field through rtnl_dereference() so that we adapt to the
-__rcu change.
-- Check that the brport is non-NULL before calling
-switchdev_bridge_port_unoffload() on it.
-- Get hold on port_priv->ethsw_data only after we know the device is a
-dpaa2-switch one
-- Update dpaa2_switch_foreign_dev_check() so that we check if there is
-any port in the same switch as dev which offloads foreign_dev in case
-this is a bridge port.
-- Add mutex_destroy on the per LAG fdb_lock
-- Make sure that all FDB events were processed on the workqueue on the
-.remove() path.
-- Delete the refcounted entry in dpaa2_switch_lag_fdb_del() as soon as
-possible, even if the HW deletion would fail
-- Access the port_priv->lag field only through the proper rcu accessors.
-- Change the mask so that we restrict the trap only to the link local
-addresses (01:80:c2:00:00:00 to 01:80:c2:00:00:0F) instead of the entire
-reserved bridge block of addresses
-- Link to v2: https://lore.kernel.org/all/20260512131554.952971-1-ioana.ciornei@nxp.com/
-
-Changes in v2:
-- Extend dpaa2_switch_prechangeupper_sanity_checks() with
-netdev_walk_all_lower_dev() so that checks are done on all lower devices
-of a bridge, even for the lowers of a bridged bond.
-- Manage better the default VLAN on bond join
-- Clean-up the error path in dpaa2_switch_port_bond_join()
-- Call dpaa2_switch_port_bridge_leave() in case a port is leaving a bond
-which is also a bridged port
-- Update dpaa2_switch_port_bond_leave() so that in case of any failure
-the driver tries to cleanup the LAG offload configuration.
-- Call switchdev_bridge_port_unoffload() in a switch port is leaving a
-bridge bond device.
-- The rollback in dpaa2_switch_port_mdb_add() uses the newly introduced
-dpaa2_switch_port_fdb_del() helper instead of the _mc counterpart.
-- Update dpaa2_switch_foreign_dev_check() so that we check if between
-the switch port and the foreign net_device is an offloaded path. Before
-this change we also checked if the foreign_dev was offloaded or not by
-the switch port.
-- Update the switchdev_bridge_port_unoffload() by passing it the proper
-context and the notifier blocks.
-- Add dev_hold() and dev_put() calls for orig_dev
-- In case dev_mc_add() fails, remove the MDB address from HW with the
-proper function, dpaa2_switch_lag_fdb_del() or
-dpaa2_switch_port_fdb_del(), depending on the LAG offload state.
-- Fix 32bit build by using BIT_ULL
-- Take a reference to port_priv->lag instead of reading it multiple
-times.
-- Link to v1: https://lore.kernel.org/all/20260506151540.1242997-1-ioana.ciornei@nxp.com/
-
-Ioana Ciornei (13):
-  dpaa2-switch: remove unnecessary dev_mc_add/dev_mc_del calls
-  dpaa2-switch: avoid holding rtnl_lock in dpaa2_switch_event_work()
-  dpaa2-switch: extend the FDB management to cover bond scenarios
-  dpaa2-switch: create a separate dpaa2_switch_port_fdb_event() function
-  dpaa2-switch: check early if an FDB entry should be added
-  dpaa2-switch: add dpaa2_switch_port_to_bridge_port() helper
-  dpaa2-switch: consolidate unicast and multicast management
-  dpaa2-switch: add LAG configuration API
-  dpaa2-switch: add support for LAG offload
-  dpaa2-switch: offload FDBs added on an upper bond device
-  dpaa2-switch: offload port objects on an upper bond device
-  dpaa2-switch: trap all link local reserved addresses to the CPU
-  dpaa2-switch: add support for imprecise source port
-
- .../ethernet/freescale/dpaa2/dpaa2-switch.c   | 931 +++++++++++++++---
- .../ethernet/freescale/dpaa2/dpaa2-switch.h   |  42 +-
- .../net/ethernet/freescale/dpaa2/dpsw-cmd.h   |  18 +-
- drivers/net/ethernet/freescale/dpaa2/dpsw.c   |  60 ++
- drivers/net/ethernet/freescale/dpaa2/dpsw.h   |  30 +
- 5 files changed, 948 insertions(+), 133 deletions(-)
-
+diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
+index d70e6f06ac15..67c639fad0db 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
+@@ -2069,7 +2069,15 @@ static int dpaa2_switch_port_restore_rxvlan(struct net_device *vdev, int vid, vo
+ 
+ static void dpaa2_switch_port_pre_bridge_leave(struct net_device *netdev)
+ {
++	struct ethsw_port_priv *port_priv = netdev_priv(netdev);
++	struct ethsw_core *ethsw = port_priv->ethsw_data;
++
+ 	switchdev_bridge_port_unoffload(netdev, NULL, NULL, NULL);
++
++	/* Make sure that any FDB add/del operations are completed before the
++	 * bridge layout changes
++	 */
++	flush_workqueue(ethsw->workqueue);
+ }
+ 
+ static int dpaa2_switch_port_bridge_leave(struct net_device *netdev)
+@@ -2281,7 +2289,6 @@ static void dpaa2_switch_event_work(struct work_struct *work)
+ 	struct switchdev_notifier_fdb_info *fdb_info;
+ 	int err;
+ 
+-	rtnl_lock();
+ 	fdb_info = &switchdev_work->fdb_info;
+ 
+ 	switch (switchdev_work->event) {
+@@ -2310,7 +2317,6 @@ static void dpaa2_switch_event_work(struct work_struct *work)
+ 		break;
+ 	}
+ 
+-	rtnl_unlock();
+ 	kfree(switchdev_work->fdb_info.addr);
+ 	kfree(switchdev_work);
+ 	dev_put(dev);
 -- 
 2.25.1
 
