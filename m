@@ -1,60 +1,62 @@
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2804D3101BC
-	for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 18:32:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40023399365
+	for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 18:32:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782757925; cv=none; b=n5kz2IVhZhJwO5g+/I7qwxmyngpuv7JbeRm6qO6LaMVMpyPC8Q6q9Xih69g7b12nfPEBKsmHXXHt8oBwFXx/fv096rW7idN3nfuhbaVwnLQYqBB6nAIRdmBKZPOJmmOeB/gW/TsyR10J7FwZdM/R/hRDFJ4Fx9St8V2h8RUMxkM=
+	t=1782757928; cv=none; b=NgKvQPjXmONsPrQYrJLpre1s4gSCEla0vAJqyiPmT4F2s5qmpEtZhye9YQ3ojElOYfc1y8irDmhi1Tn4/YDArkJGCeUP8n0b/1Rn9wxQ6fseTKZvnYlUd1sfzBSasr34PFz3XCjoN4ebh8dWj6l+FTBYfkrZ3613VJ2uTeQEzu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782757925; c=relaxed/simple;
-	bh=wG0ZUQOIc696ujuX/vbnaF7gtzwEkgNUYCNEd8+3MC8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Yl74RK8jG00sk0tlx/1lj+KDtGJxgfZbcl/jn4DoOGlB25yKzgfpARY/Zr1BR19peLdsEUI6QqHTRoPW5ogfIkadnifeGEn8SVsM50JRCpSyCgu7aAru7A2NCsBh+HDXwaQsESnTQCSTySlwZZJSYWeWIJqc0A+hX6Y5zo00Xck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VJ/5NjEp; arc=none smtp.client-ip=209.85.215.170
+	s=arc-20240116; t=1782757928; c=relaxed/simple;
+	bh=UPPn+1hgYa+qATH6hik7amxv/H6JMMXCa8b7AvavqJU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=su0eI5IeVlvqoapk7/N+yHdS33OqYBrb2imgYKhGGcBEKJrwoVdloCB49/svQVEecSmzBFb8/TL9lBpuo6gGtpd05giOCSzqNQU+Nb50KkddG2rsKurFRKEqnlCXZoAnBQBci1N5675+07vNmoKUPBF9+oAu4d9oTQE0ue5gLiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fqVcueve; arc=none smtp.client-ip=209.85.216.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VJ/5NjEp"
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c8894387780so1571195a12.2
-        for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 11:32:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fqVcueve"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-37d70036426so1593915a91.3
+        for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 11:32:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782757923; x=1783362723; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y6swtkEPiHC3oaxv/2vbG5P1KrCA6T8m3Pul3+3QzmU=;
-        b=VJ/5NjEpc4xjlhxDsLM6WwmB/p4tU11+3MblzQ4Vly6/zdsOMFTuHsvhAyxk7MU7a2
-         RajNL1LTShkzeLlYEYjVkez/2fZr4+Cp4TK7UKgsL+is/v1RRsI19tuCgcm4jWRtEjVu
-         ARbR/yJM3TLOrBRje2oYk+xllMo9o58yG9ILCuJaYeEMFSAofJD42ZDQ7pHKz7rBUy/W
-         M5d0X5mKoyK5dJkleUl5vCcLqt1p5PKYRyrVaI95Uw8l5NnAHaXFMgiTsGI33GqwysU1
-         8DOTJi/KOZpBKB2TORzTXvFkJhYQ7dsvNYOSGV2Hc72zucwchnjMoYMV8MObv5wwxHVh
-         VGSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782757923; x=1783362723;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1782757926; x=1783362726; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Y6swtkEPiHC3oaxv/2vbG5P1KrCA6T8m3Pul3+3QzmU=;
-        b=O5q/8qqGTE1Gusy5jWVAc+KvFpczdf2ePralsc1nQr11LirryZrc9ntJpLRj8oy5NP
-         PMMqT8mF7VWrfs3UIp7ns5GA/zDz6x/QDaYAIRsFb9H0wSf2kmfy1TzVoe4Gd2rG5Mlo
-         X+2xA0EFHt63YlvezTOvGRAP8FO8dSYypcV/Lr62JRqFCF+/nFwXVc3jadGnlrAQjuCE
-         tZmq5peC7rCZJaSuIJkTm4UMRM0mU8dIIkOCexlOv/n8de1pdadPzggHXGLaz3qsMsyW
-         IEekeeZe7KAGseTrktrsqD/fNR0oM7ltVFwm74t7Tf9cH99dewfF3YL2f5w86YzuOTV+
-         9JVQ==
-X-Gm-Message-State: AOJu0Yz90OzIz7/zU7mZ1ZQarumUEW3hDOvyKp0CHjN8gXry56XLxr3S
-	qZUebQ2h+fIrXM7Z+LlAEDpQUParZtmDcT9fIRAlCmKGxhxbc/NZVN4VtbvYt0YA
-X-Gm-Gg: AfdE7ckXykb95d/MkKp4NXZMB5xMZZ8eWHLFDVAJSqakoJVFwi8ccY/Zm0+MaVy7+y/
-	9VhWiWlk1EJByXZeSu81WsFO5m2Y7QgwKFnP4wWE0pCyaUGSZ0CwB3PBX1R1h3691+d/xZX/XiA
-	Qu3ZGfqysgjfEhiaujeyp/qPLbgTnCjFHLvPInee2ikSx+hJavyMahwn7rMoYIuJTrbP3rjcFIu
-	SmW22wgfqinPY/N2vz+xzDKGo36Yq6JHsTpLDP7Ijl2w36h/lLJRWanYyHOXiLkhhWrTxFf28Bg
-	8lWzvw0cx/OkQ6OhTx6MOdu1nCqupITemCR311SEG5AqAHtNUy/z2FBSGciY4ifGNhB8JOv+7Gg
-	vGlXoTQPAvR5PwH+54mhpld62EfNppl4ZRB7DMmnfTxZT34Ej1bCrkMhv6Ej2izeTuRuFpQYfFe
-	Aj3q5AWdVwGBeY7azPqLEAz3ccT/o/ohMAsZcFhw==
-X-Received: by 2002:a05:6a21:e584:b0:3bf:80b8:9c8a with SMTP id adf61e73a8af0-3bfc505f4e6mr600604637.6.1782757923255;
-        Mon, 29 Jun 2026 11:32:03 -0700 (PDT)
+        bh=KzSkMAkqnIEt68EdPu2Crb0up7kHYZ6pDd5ncGD8zHM=;
+        b=fqVcuevebYmWiPZ3a7sPPIJyAnuIpRSm7jWTPFCYkwJH4Hcon3tX40Z0gnvprtpC8b
+         JOKZaPbe74Gdj/FP6NTIfRhYV05Q8JS176l8q4UBoKgv6MD171WsVaRuJyzbKORvp/7t
+         KbL8mmexT+ag4tZINIRA/rYrURZJ7fAbP0io0CKXqH2vJc8OEpwS0IW7VvL+WrOfm4R0
+         ye7zinO9gS7Wx9a7nKbTR7klLE0o/EkKvziVY6KXYu1lam6OQ+IE91TUEunuL9mRxDE0
+         UW0Yjyjo8C+fWIFElR1fbHP/N7aQeY3mQ3pnFM4iwdfcERLJamLshdMXkigOsY6B/zAk
+         6dbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782757926; x=1783362726;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=KzSkMAkqnIEt68EdPu2Crb0up7kHYZ6pDd5ncGD8zHM=;
+        b=exmuir2NevtD+iIg7ss/849qJRpk8KcedpB1+mEB1ZvY0EXyFijo1ojgOtfmiwamEb
+         zRQdDGlAA7xBIEYDhirsaqFsPLamDA1PWlVnbdXoNyByHKJS8nYi3Ch1r7PMbQNrv+AH
+         7DB2z/JVVEXQD7tIT/M8xl14eOIQpZnK5+ZFAyhagPLvG5F6MD20qOHrKoQzBIj3Zrrb
+         IpsWIs4obqIETxnytlnTXKDmRt/22FZCZf7fuDKkiVAETIj2zapU6GIVSF3Ycn+J+F3z
+         TAQ9clhkrTYQLuJqHzjiyPnvKkC6IFXBGSA31Ec8gionzMgVfqsliJLiGWcZNgOj3w3Q
+         jwgA==
+X-Gm-Message-State: AOJu0YysH23VxFHew0+zHwSuY2MK70nV45Lj1b56IxxMOAubV3cw652X
+	B+nuDZLjvcWVSmKXjD9BLLM7w7m/7CzIsvRrw9FioaQbBNvGcljPzx0lCf1ZSp5i
+X-Gm-Gg: AfdE7clmrAS0efqcW6GBvJZtD9vyIDFwp8rSanpdkxO2XA1gado1mpuV7RRjSK0K3W4
+	Fxg1oKemkbfS4vIKptbMF4XrMODXd5eTxRwB2Tyh/8nN2kAyP2oi2K8rVEB9TyZdDXlNZfCkd86
+	WH9Iia6w3ueoSzDqW2M+WhCm2nLvOL0rAx5F8Yl67ED2/UsRYxWGGogA/QASuEXU8oBeHk7gkAO
+	2fJn861CLRoeDN93Cv8V3SF3Wa4+KchnrH3jF+HlHyguXU/L4mJMqzFNhder9PkgaKN3kXxqM8h
+	2hD0Mdd3Jie2VLxmSV2Yc/uJ1EGCkAMSn5fO2T0iajsbVp2lTH2hqbryitW5IH+mZgGvnOcWKZt
+	MRjPi/6iOWwpdoYDyJLhoZjtlLueeTGg4TzOiBP6msmopmuzH/oq3WbbMpvvLsBEKWjYi0U4fW9
+	GRKfdd5zNgND3mC3s6upRa0nfp/EWNMIVDY2fAcSDuqLZ+ITjG
+X-Received: by 2002:a05:6a20:914c:b0:3bf:bc9a:db16 with SMTP id adf61e73a8af0-3bfc50671f8mr549804637.11.1782757926371;
+        Mon, 29 Jun 2026 11:32:06 -0700 (PDT)
 Received: from d.home.yangfl.dn42 ([2a09:bac1:76a0:d30::4cf:38])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c9bbf95aa99sm224754a12.17.2026.06.29.11.32.00
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c9bbf95aa99sm224754a12.17.2026.06.29.11.32.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Jun 2026 11:32:02 -0700 (PDT)
+        Mon, 29 Jun 2026 11:32:05 -0700 (PDT)
 From: David Yang <mmyangfl@gmail.com>
 To: netdev@vger.kernel.org
 Cc: David Yang <mmyangfl@gmail.com>,
@@ -65,10 +67,12 @@ Cc: David Yang <mmyangfl@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 0/4] net: dsa: motorcomm: Add LED support
-Date: Tue, 30 Jun 2026 02:31:31 +0800
-Message-ID: <20260629183137.541341-1-mmyangfl@gmail.com>
+Subject: [PATCH net-next v2 1/4] net: dsa: motorcomm: Move to subdirectory
+Date: Tue, 30 Jun 2026 02:31:32 +0800
+Message-ID: <20260629183137.541341-2-mmyangfl@gmail.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260629183137.541341-1-mmyangfl@gmail.com>
+References: <20260629183137.541341-1-mmyangfl@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -77,37 +81,123 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-v1: https://lore.kernel.org/r/20260618202716.2166450-1-mmyangfl@gmail.com
-  - set up polarity correctly
-  - do not set up .brightness_get() to prevent dead lock
+yt921x is already the longest single-file DSA driver, so it's time to
+split it into parts.
 
-David Yang (4):
-  net: dsa: motorcomm: Move to subdirectory
-  net: dsa: motorcomm: Split SMI module
-  net: dsa: motorcomm: Dynamically allocate port structures
-  net: dsa: motorcomm: Add LED support
-
- MAINTAINERS                                   |   2 +-
- drivers/net/dsa/Kconfig                       |  10 +-
- drivers/net/dsa/Makefile                      |   2 +-
- drivers/net/dsa/motorcomm/Kconfig             |  17 +
- drivers/net/dsa/motorcomm/Makefile            |   5 +
- .../net/dsa/{yt921x.c => motorcomm/chip.c}    | 336 ++++-------
- .../net/dsa/{yt921x.h => motorcomm/chip.h}    |  24 +-
- drivers/net/dsa/motorcomm/leds.c              | 530 ++++++++++++++++++
- drivers/net/dsa/motorcomm/leds.h              | 108 ++++
- drivers/net/dsa/motorcomm/smi.c               | 157 ++++++
- drivers/net/dsa/motorcomm/smi.h               |  88 +++
- 11 files changed, 1029 insertions(+), 250 deletions(-)
+Signed-off-by: David Yang <mmyangfl@gmail.com>
+---
+ MAINTAINERS                                    |  2 +-
+ drivers/net/dsa/Kconfig                        | 10 ++--------
+ drivers/net/dsa/Makefile                       |  2 +-
+ drivers/net/dsa/motorcomm/Kconfig              |  8 ++++++++
+ drivers/net/dsa/motorcomm/Makefile             |  3 +++
+ drivers/net/dsa/{yt921x.c => motorcomm/chip.c} |  2 +-
+ drivers/net/dsa/{yt921x.h => motorcomm/chip.h} |  0
+ 7 files changed, 16 insertions(+), 11 deletions(-)
  create mode 100644 drivers/net/dsa/motorcomm/Kconfig
  create mode 100644 drivers/net/dsa/motorcomm/Makefile
- rename drivers/net/dsa/{yt921x.c => motorcomm/chip.c} (95%)
- rename drivers/net/dsa/{yt921x.h => motorcomm/chip.h} (98%)
- create mode 100644 drivers/net/dsa/motorcomm/leds.c
- create mode 100644 drivers/net/dsa/motorcomm/leds.h
- create mode 100644 drivers/net/dsa/motorcomm/smi.c
- create mode 100644 drivers/net/dsa/motorcomm/smi.h
+ rename drivers/net/dsa/{yt921x.c => motorcomm/chip.c} (99%)
+ rename drivers/net/dsa/{yt921x.h => motorcomm/chip.h} (100%)
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 06df1171f4cf..b007f20b2763 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -18039,7 +18039,7 @@ M:	David Yang <mmyangfl@gmail.com>
+ L:	netdev@vger.kernel.org
+ S:	Maintained
+ F:	Documentation/devicetree/bindings/net/dsa/motorcomm,yt921x.yaml
+-F:	drivers/net/dsa/yt921x.*
++F:	drivers/net/dsa/motorcomm/
+ F:	net/dsa/tag_yt921x.c
+ 
+ MOXA SMARTIO/INDUSTIO/INTELLIO SERIAL CARD
+diff --git a/drivers/net/dsa/Kconfig b/drivers/net/dsa/Kconfig
+index 4ab567c5bbaf..98e9bbe47de7 100644
+--- a/drivers/net/dsa/Kconfig
++++ b/drivers/net/dsa/Kconfig
+@@ -72,6 +72,8 @@ config NET_DSA_MV88E6060
+ 
+ source "drivers/net/dsa/microchip/Kconfig"
+ 
++source "drivers/net/dsa/motorcomm/Kconfig"
++
+ source "drivers/net/dsa/mv88e6xxx/Kconfig"
+ 
+ source "drivers/net/dsa/mxl862xx/Kconfig"
+@@ -158,12 +160,4 @@ config NET_DSA_VITESSE_VSC73XX_PLATFORM
+ 	  This enables support for the Vitesse VSC7385, VSC7388, VSC7395
+ 	  and VSC7398 SparX integrated ethernet switches, connected over
+ 	  a CPU-attached address bus and work in memory-mapped I/O mode.
+-
+-config NET_DSA_YT921X
+-	tristate "Motorcomm YT9215 ethernet switch chip support"
+-	select NET_DSA_TAG_YT921X
+-	select NET_IEEE8021Q_HELPERS if DCB
+-	help
+-	  This enables support for the Motorcomm YT9215 ethernet switch
+-	  chip.
+ endmenu
+diff --git a/drivers/net/dsa/Makefile b/drivers/net/dsa/Makefile
+index d2975badffc0..138225baa4d5 100644
+--- a/drivers/net/dsa/Makefile
++++ b/drivers/net/dsa/Makefile
+@@ -14,11 +14,11 @@ obj-$(CONFIG_NET_DSA_SMSC_LAN9303_MDIO) += lan9303_mdio.o
+ obj-$(CONFIG_NET_DSA_VITESSE_VSC73XX) += vitesse-vsc73xx-core.o
+ obj-$(CONFIG_NET_DSA_VITESSE_VSC73XX_PLATFORM) += vitesse-vsc73xx-platform.o
+ obj-$(CONFIG_NET_DSA_VITESSE_VSC73XX_SPI) += vitesse-vsc73xx-spi.o
+-obj-$(CONFIG_NET_DSA_YT921X) += yt921x.o
+ obj-y				+= b53/
+ obj-y				+= hirschmann/
+ obj-y				+= lantiq/
+ obj-y				+= microchip/
++obj-y				+= motorcomm/
+ obj-y				+= mv88e6xxx/
+ obj-y				+= mxl862xx/
+ obj-y				+= netc/
+diff --git a/drivers/net/dsa/motorcomm/Kconfig b/drivers/net/dsa/motorcomm/Kconfig
+new file mode 100644
+index 000000000000..1fddd386f866
+--- /dev/null
++++ b/drivers/net/dsa/motorcomm/Kconfig
+@@ -0,0 +1,8 @@
++# SPDX-License-Identifier: ISC
++config NET_DSA_YT921X
++	tristate "Motorcomm YT9215 ethernet switch chip support"
++	select NET_DSA_TAG_YT921X
++	select NET_IEEE8021Q_HELPERS if DCB
++	help
++	  This enables support for the Motorcomm YT9215 ethernet switch
++	  chip.
+diff --git a/drivers/net/dsa/motorcomm/Makefile b/drivers/net/dsa/motorcomm/Makefile
+new file mode 100644
+index 000000000000..afd03be9fa35
+--- /dev/null
++++ b/drivers/net/dsa/motorcomm/Makefile
+@@ -0,0 +1,3 @@
++# SPDX-License-Identifier: ISC
++obj-$(CONFIG_NET_DSA_YT921X) += yt921x.o
++yt921x-objs := chip.o
+diff --git a/drivers/net/dsa/yt921x.c b/drivers/net/dsa/motorcomm/chip.c
+similarity index 99%
+rename from drivers/net/dsa/yt921x.c
+rename to drivers/net/dsa/motorcomm/chip.c
+index 159b16606f6c..f070732845eb 100644
+--- a/drivers/net/dsa/yt921x.c
++++ b/drivers/net/dsa/motorcomm/chip.c
+@@ -26,7 +26,7 @@
+ #include <net/ieee8021q.h>
+ #include <net/pkt_cls.h>
+ 
+-#include "yt921x.h"
++#include "chip.h"
+ 
+ struct yt921x_mib_desc {
+ 	unsigned int size;
+diff --git a/drivers/net/dsa/yt921x.h b/drivers/net/dsa/motorcomm/chip.h
+similarity index 100%
+rename from drivers/net/dsa/yt921x.h
+rename to drivers/net/dsa/motorcomm/chip.h
 -- 
 2.53.0
 
