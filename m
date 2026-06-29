@@ -1,115 +1,156 @@
-Received: from out-03.smtp.spacemail.com (out-03.smtp.spacemail.com [63.250.43.88])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B799237F8AD;
-	Mon, 29 Jun 2026 03:45:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.250.43.88
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CAED2D3A7C;
+	Mon, 29 Jun 2026 03:55:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782704706; cv=none; b=Dle20VHgMuMWGxY2nAqngxEgZEVNVEIA57k3sudEwmI0lEc39WGYs2F6WAquDczW/pHuD16d5ETfLZOSYprhvrJUxfB0PfXGBjh7OFIwBkIVrvXwM6n0ZGhTyOtrTPZnjjyYBLPbZppUJ+q4BrdQMdwTsdNa6JZSR+oWLef+nRA=
+	t=1782705317; cv=none; b=HLMR2ij9j8Ar7RWTaCKWGOZC9dYjuuDKz2IUknAbgYe8YTepwXVvF7QxmEdQdQbHF0oEpECtpYKFjQ5ElieMe2I4W/jnrNsCH+xBgQvmbDwE9G+derFrK2V7DAv0MJnX64jt30ySs0VyAw4/9eQKL7bgWkLP7FSVIA3SDwCiNxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782704706; c=relaxed/simple;
-	bh=M//mWQVs8UGwJdPy/VhJJVHY4HrmO9f2gE55KxpqglU=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=S5wV3CsJeeEUjHNVlyVfCD+Yg61jaT48sTvHxYPnGC70IYxpiRltlSL2f8Emm7p5uY37MXxdw8zd0lWu65PC6i3acb7TaPPTAtHiIMpBBca1eq+yUsJ8+9ilhIgaaFLnSMuX25SvOU96rNvPwCL+0kMvkx/9oNvM3loQ6GHcXtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gurudas.dev; spf=pass smtp.mailfrom=gurudas.dev; dkim=pass (2048-bit key) header.d=gurudas.dev header.i=@gurudas.dev header.b=g8g5D1EN; arc=none smtp.client-ip=63.250.43.88
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gurudas.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gurudas.dev
+	s=arc-20240116; t=1782705317; c=relaxed/simple;
+	bh=+9Gt5xbV0f6uwKj3h75aKeru0YfHJBPFQCGeKZXf2cU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Eufzna1K0BcqIFLBEf679ZSQk/90bZBehL6iPcQPF1aSP7ho8RkhHOw1yje50f1EuLDpUS/g013HDoQPYEgm1l0KA4mTOVnbXvYJ/zTOlBtlEdglI3dEwJvdC4S+SbIyuB8zITK0EOOfMTa863xRjkEVGalCLDmLB/0QmW0FirA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Pft78SEo; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mhU/07WU; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gurudas.dev header.i=@gurudas.dev header.b="g8g5D1EN"
-Received: from [192.168.1.96] (107-194-158-19.lightspeed.sntcca.sbcglobal.net [107.194.158.19])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.spacemail.com (Postfix) with ESMTPSA id 4gpX745lPmz8sb8;
-	Mon, 29 Jun 2026 03:38:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gurudas.dev;
-	s=spacemail; t=1782704306;
-	bh=9yoPMHqZhzE3iqqcnolBlcsUAlSSjRhy9gREnWpZKGs=;
-	h=From:Subject:Date:To:Cc:From;
-	b=g8g5D1ENhx0FQXYOE+JOzorI+irSq/d4W2LRj/WFMzmT6KCIBS7JXZnh9ShOgGvNZ
-	 aszSMWYS/ub/pIKYTwqrIon+1uEFqma6r0HBSn5ixt8jZHDbtLJAJAgazxD7fgzEvp
-	 kSXsX2UHXYI+HFz5zqXxa2EzMqpV4UuVs3AI/aGF93KLqj93boQneIElJUHAHncIVI
-	 3vVp7mGhu/nm8AfBxKI50mwA+0/XUsg2ZFMlSZvNy7WixAEk1oNp1h4/QwPHWDPPca
-	 V5Gwm64Bne8LdzuTHGjEOhJy+S3uOPsnvXG4IyE1GsodIRiBDNDOlIa24h9pYwadjK
-	 CKuYevZSxFVRQ==
-From: Guru Das Srinagesh <linux@gurudas.dev>
-Subject: [PATCH 0/7] rust: Use kernel style vertical imports in various
- drivers
-Date: Sun, 28 Jun 2026 20:38:14 -0700
-Message-Id: <20260628-b4-rust-vertical-imports-v1-0-98bc71d4810b@gurudas.dev>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Pft78SEo";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mhU/07WU"
+Date: Mon, 29 Jun 2026 05:55:13 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1782705313;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fphPRIfC3c7/rVG8Mt/TDc8McgZz28sFey5ZU2tWKdc=;
+	b=Pft78SEoAU9N4qr3lmpoTg0M92qy3Nft6vgej121eR9dSbMe0f8peTU3UQ5ZdZp4xb32eB
+	b7WgzU76UpqfIi0KH7Nok5zMxvDv0BWBBliu/F8F1xalkGFAYdD3oGsQzbc0O5OjAwtWCF
+	mXycnLD/Wd7oQtN0SElsTscfGpUIJ3xYAESLabeu0rfoa+vtgLN19lNYJ3atZNfWAGOetu
+	XZifQFpTfhxnNu61bjULxpRwl9PAqqmE3eXNeppbBRnouZ1TD+2oTzJkKTam5Hq6Pq/Lz1
+	Zl42CcwgABCE3nJlNBy1i0YxdmOXGkBpyzioiyLcnR307F4EAjjODdDMzVT1mA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1782705313;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fphPRIfC3c7/rVG8Mt/TDc8McgZz28sFey5ZU2tWKdc=;
+	b=mhU/07WU2k0PFYZQUZgClVivDlMZa7FcCpph6HWnRTGAFP5kbPcuuzB14gmyxBBGCv5W+f
+	6CGdzH8OyJeCbxDw==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: Thomas Gleixner <tglx@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, 
+	David Woodhouse <dwmw2@infradead.org>, Miroslav Lichvar <mlichvar@redhat.com>, 
+	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, 
+	Arthur Kiyanovski <akiyano@amazon.com>, Rodolfo Giometti <giometti@enneenne.com>, 
+	Vincent Donnefort <vdonnefort@google.com>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oliver.upton@linux.dev>, kvmarm@lists.linux.dev, Oliver Upton <oupton@kernel.org>, 
+	Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org, Takashi Iwai <tiwai@suse.com>, 
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>, Johannes Berg <johannes.berg@intel.com>, 
+	Jacob Keller <jacob.e.keller@intel.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Peter Hilber <peter.hilber@oss.qualcomm.com>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, virtualization@lists.linux.dev, linux-wireless@vger.kernel.org, 
+	linux-sound@vger.kernel.org
+Subject: Re: [patch 09/24] timekeeping: Add CLOCK_AUX support for
+ ktime_get_snapshot_id()
+Message-ID: <20260629055344-b74c43de-2a2b-4608-ae4e-ed0ac8e12fd1@linutronix.de>
+References: <20260526165826.392227559@kernel.org>
+ <20260526171223.374814973@kernel.org>
+ <20260626103359-66ab2b54-d36f-416b-94a4-3f3708dccced@linutronix.de>
+ <87echtk24a.ffs@fw13>
+ <20260626125819-d8b197fc-7671-4d12-a578-9025affc52d9@linutronix.de>
+ <87fr29ib4v.ffs@fw13>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXM0QqCQBCF4VeRuW7AFtmsV4kudD3mRKnMrCKI7
- +6alx+H869kUIHRI1tJMYvJ0CdcLxmFrurfYGmSyeXO596VXBesk0WeoVFC9WX5jYNGS4MHfHD
- F7d5Suo+KVpZ/+vk6bVP9QYhHj7ZtB0PCpC58AAAA
-X-Change-ID: 20260628-b4-rust-vertical-imports-b46ee6c2479f
-To: Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-Cc: Danilo Krummrich <dakr@kernel.org>, 
- Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Robin Murphy <robin.murphy@arm.com>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, 
- Fu Wei <wefu@redhat.com>, Michal Wilczynski <m.wilczynski@samsung.com>, 
- =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Viresh Kumar <viresh.kumar@linaro.org>, Jens Axboe <axboe@kernel.dk>, 
- FUJITA Tomonori <fujita.tomonori@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
- Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- driver-core@lists.linux.dev, linux-riscv@lists.infradead.org, 
- linux-pwm@vger.kernel.org, linux-pm@vger.kernel.org, 
- linux-block@vger.kernel.org, netdev@vger.kernel.org, 
- nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org, 
- Guru Das Srinagesh <linux@gurudas.dev>
-X-Mailer: b4 0.15.2
-X-Envelope-From: linux@gurudas.dev
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87fr29ib4v.ffs@fw13>
 
-Came across a recent commit bc58905eb07 ("samples: rust_misc_device: use
-vertical import style") and found a few more locations that could
-benefit from this cleanup. No functional changes.
+On Fri, Jun 26, 2026 at 05:17:52PM +0200, Thomas Gleixner wrote:
+> On Fri, Jun 26 2026 at 13:03, Thomas Weißschuh wrote:
+> > On Fri, Jun 26, 2026 at 12:49:41PM +0200, Thomas Gleixner wrote:
+> >> On Fri, Jun 26 2026 at 10:48, Thomas Weißschuh wrote:
+> >> > On Tue, May 26, 2026 at 07:14:13PM +0200, Thomas Gleixner wrote:
+> >> > (...)
+> >> >
+> >> >>  static inline void tk_update_aux_offs(struct timekeeper *tk, ktime_t offs)
+> >> >> @@ -1218,6 +1223,12 @@ bool ktime_get_snapshot_id(struct system
+> >> >>  		tkd = &tk_core;
+> >> >>  		offs = &tk_core.timekeeper.offs_boot;
+> >> >>  		break;
+> >> >> +	case CLOCK_AUX ... CLOCK_AUX_LAST:
+> >> >> +		tkd = aux_get_tk_data(clock_id);
+> >> >> +		if (!tkd)
+> >> >> +			return false;
+> >> >> +		offs = &tkd->timekeeper.offs_aux;
+> >> >> +		break;
+> >> >
+> >> > 'tkd' is also used to compute 'monoraw'. However 'tkr_raw' and 'tkr_mono'
+> >> > are the same for auxilary clocks, so this will compute a wrong 'monoraw'.
+> >> 
+> >> AUX clocks are independent in the first place and the MONORAW part is
+> >> the "MONORAW" related to the AUX clock itself. 
+> >> 
+> >> > Instead 'monoraw' should be computed based on 'tk_core'.
+> >> > Which then also requires the sequence locking of 'tk_core'.
+> >> 
+> >> No. From a PTP and steering point of view you want the "raw" value which
+> >> is related to the AUX clock itself and not the global one.
+> >
+> > Ack.
+> >
+> > However the kdocs call it 'CLOCK_MONOTONIC_RAW'. Can we clean this up?
+> 
+> Yes. Something like the below?
 
-Signed-off-by: Guru Das Srinagesh <linux@gurudas.dev>
----
-Guru Das Srinagesh (7):
-      samples: rust_dma: use vertical import style
-      pwm: th1520: use vertical import style
-      cpufreq: rcpufreq_dt: use vertical import style
-      block: rnull: use vertical import style
-      net: phy: ax88796b: use vertical import style
-      net: phy: qt2025: use vertical import style
-      drm/nova: use vertical import style
+Looks good, thanks.
+The corresponding structure definitions are a also affected, though.
 
- drivers/block/rnull/configfs.rs  | 20 ++++++++++++++++----
- drivers/block/rnull/rnull.rs     | 13 ++++++++++---
- drivers/cpufreq/rcpufreq_dt.rs   |  5 ++++-
- drivers/gpu/drm/nova/file.rs     |  5 ++++-
- drivers/gpu/drm/nova/gem.rs      |  6 +++++-
- drivers/net/phy/ax88796b_rust.rs |  7 ++++++-
- drivers/net/phy/qt2025.rs        | 10 ++++++++--
- drivers/pwm/pwm_th1520.rs        |  6 +++++-
- samples/rust/rust_dma.rs         |  5 ++++-
- 9 files changed, 62 insertions(+), 15 deletions(-)
----
-base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
-change-id: 20260628-b4-rust-vertical-imports-b46ee6c2479f
-
-Best regards,
---  
-Guru Das Srinagesh <linux@gurudas.dev>
-
+> Thanks,
+> 
+>         tglx
+> ---
+> --- a/kernel/time/timekeeping.c
+> +++ b/kernel/time/timekeeping.c
+> @@ -1202,10 +1202,21 @@ static inline u64 tk_clock_read_snapshot
+>  
+>  /**
+>   * ktime_get_snapshot_id -  Simultaneously snapshot a given clock ID with
+> - *			    CLOCK_MONOTONIC_RAW and the underlying
+> + *			    the corresponding monotonic raw the underlying
+>   *			    clocksource counter value.
+>   * @clock_id:		The clock ID to snapshot
+>   * @systime_snapshot:	Pointer to struct receiving the system time snapshot
+> + *
+> + * For the system time keeping clocks (REALTIME, MONOTONIC and BOOTTIME) the
+> + * monotonic raw clock is CLOCK_MONOTONIC_RAW. For AUX clocks this is the
+> + * monotonic raw clock related to the AUX clock. These AUX clock related
+> + * monotonic raw clocks have a strict linear offset to the system time
+> + * CLOCK_MONOTONIC_RAW:
+> + *
+> + *	MONOTONIC_RAW(AUX$N) = CLOCK_MONOTONIC_RAW(system) + offset(AUX$N)
+> + *
+> + * The offset is established when a AUX clock is initialized, but it is
+> + * currently not accessible.
+>   */
+>  void ktime_get_snapshot_id(clockid_t clock_id, struct system_time_snapshot *systime_snapshot)
+>  {
+> @@ -1512,6 +1523,9 @@ EXPORT_SYMBOL_GPL(ktime_real_to_base_clo
+>   * @xtstamp:		Receives simultaneously captured system and device time
+>   *
+>   * Reads a timestamp from a device and correlates it to system time
+> + *
+> + * See documentation for ktime_get_snapshot_id() for information about the raw
+> + * monotonic time stamp which is used here.
+>   */
+>  int get_device_system_crosststamp(int (*get_time_fn)
+>  				  (ktime_t *device_time,
+> 
