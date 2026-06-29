@@ -1,77 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD873590A9;
-	Mon, 29 Jun 2026 23:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871A43CF02B;
+	Mon, 29 Jun 2026 23:26:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782774964; cv=none; b=DPHTltuPm9PZYfbPF0v+8CwLpNVlAlYLIwH+2HV+onyoWXT5WCdXtgOFpoVlyfxKx3ucbjmOND1xqwYORZSnIIRgTpl+3RAQClyceE6uOE3B8cRbDQ/WCfnUtw5VjqQkJXRl6WBbNNHnG8z9im+a8K/z/TZmKglCsRKiOrdJ7XU=
+	t=1782775582; cv=none; b=qbOkCW5c/9GwGsQrRVsMnAPnQpHtW8+ijEBPPw1oR9UgOWm3w1ywJLIPPbdzVLMWoXoKhFPjPWQCiBlYYxoyDJcW8Jlil5yXkZCdVz2wP3bbx32qFBCm4tfWrPAbuPO571YrRWDV2FDEvhG/vlNdedXdm0Ukwvdb8h/Fa0lsVbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782774964; c=relaxed/simple;
-	bh=9WvbrCrBfpz1C+dfmnITbyE6Nkt2NF0B2yU96fo3yvg=;
+	s=arc-20240116; t=1782775582; c=relaxed/simple;
+	bh=6Ymxt66jECafrDULw9WAiFaejCE/Gk8aOce8Mfo8zpk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HG3qEfeyHKYg2dVdnDJTfHXa97It/NQD0hPudOQYbVCPxcD4r8LngIYmxNiKKIK9Gkq+8ehkMb6sjsoxfQWtN1N3bxyiU+RtqaHGA2Q6lFAIdrOeGeTP8vuUKQztoXkG5fH2B6oVcsXRKhF+WyE3MwbiYymDiXW6snQwFXjSqKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O2I+yRMp; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=BnGm+rg94XPGhVl4ybtrMxwXKRqPa2Bt/qwuqXKrWtt9cyNwPqmZ4zWE3Aa+wKSm9AEZV7oykGooNatA5RAXTf+7Y/BybNapwkBsD0o0Y3BH/dyeT3EXpMtrmdGxWREDFULNvPIxsM6nyexGMdlJIjpbdHxMe87oPIyVvTVojgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gRHCj5jO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O2I+yRMp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF38D1F000E9;
-	Mon, 29 Jun 2026 23:16:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gRHCj5jO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D7B31F000E9;
+	Mon, 29 Jun 2026 23:26:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782774963;
-	bh=MwyQLZ9TpvSzRB+VQf48dLfzIroZXC4gFHoxVqtwU6k=;
+	s=k20260515; t=1782775580;
+	bh=3P7Bo+K2ACW1PfU5Qo7t2Ig/w6+tpBNk9Q3FEVXsDtQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=O2I+yRMpFaBx26CCnGVgioJHFGtzKq+R0bOVsH0oasj+qz1/Qx+P30WSLoVK6Dava
-	 udbqHxG3UcgZSodQ902oHVWW3FHjNkOSl1wrmdOavciBShtML5Py6dtOjy7sfIcKEQ
-	 uLgGk9yqs87/rYDLks/3jdeEx4Q5q9N8E2v5Vq3pXXZz1MGIRHRWai2IVT01VadyB8
-	 74TzCo2ERx2JNIMZaR15l33btYCEUG5e8NTUA4SwhsxMXSkVa9VurvOUkps/m97X3L
-	 C3v8o2x+VPc2rrKoCHUtWhAxUPt0V9P7LZeXtJlkB2nL+6e3EF6iB42OfucbYu1YkN
-	 whrO7lQm85p+A==
-Date: Mon, 29 Jun 2026 16:16:00 -0700
+	b=gRHCj5jO1ecsN9W9DMSbJV1nUBv/Kspt/BW1W1VHkp/PAaiAxJBnri/hnK8tUCOh+
+	 ekVBPz2bNoBpIhBwHCefPAy+iweXBb9zV+yah61EX5vedtJUC+kf2qbugs/dy7dxvu
+	 pbI4irXFXnqitou8BqYL/54/L6JrQteXbkWv217LWtTjObH5qEgOn6n4fdGoLpA6bP
+	 lhXfhMhRAf+uWkpieEWXACDOiEdGaY1w9GybMam3MxxneI54FP44lzyYqOUtGFVYLh
+	 jkKE0MrzR3mUT40XvwdIZrA4su2bj0juAdBcSAWFxC125Djk14F7d+WNqCK94+Ij99
+	 GNQvp9EIAnm5Q==
+Date: Mon, 29 Jun 2026 16:26:19 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: Lee Jones <lee@kernel.org>, Mark Brown
- <broonie@opensource.wolfsonmicro.com>, Thierry Reding
- <thierry.reding@avionic-design.de>, Sebastian Hesselbarth
- <sebastian.hesselbarth@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Srinivas Kandagatla
- <srini@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Vinod
- Koul <vkoul@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Danilo
- Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>, Saravana Kannan
- <saravanak@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael
- Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Andi Shyti
- <andi.shyti@kernel.org>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will
- Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Doug Berger
- <opendmb@gmail.com>, Florian Fainelli <florian.fainelli@broadcom.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Ulf Hansson <ulfh@kernel.org>,
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
- <festevam@gmail.com>, Matthew Brost <matthew.brost@intel.com>, Thomas
- =?UTF-8?B?SGVsbHN0csO2bQ==?= <thomas.hellstrom@linux.intel.com>, Rodrigo
- Vivi <rodrigo.vivi@intel.com>, David Airlie <airlied@gmail.com>, Simona
- Vetter <simona@ffwll.ch>, Peter Chen <peter.chen@kernel.org>, Paul Cercueil
- <paul@crapouillou.net>, Bin Liu <b-liu@ti.com>, Philipp Zabel
- <p.zabel@pengutronix.de>, Maximilian Luz <luzmaximilian@gmail.com>, Hans de
- Goede <hansg@kernel.org>, Ilpo =?UTF-8?B?SsOkcnZpbmVu?=
- <ilpo.jarvinen@linux.intel.com>, Krzysztof Kozlowski <krzk@kernel.org>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>, brgl@kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
- driver-core@lists.linux.dev, devicetree@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org,
- iommu@lists.linux.dev, linux-pm@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, intel-xe@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-usb@vger.kernel.org,
- linux-mips@vger.kernel.org, platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH v2 13/19] net: mv643xx: use
- platform_device_set_of_node()
-Message-ID: <20260629161600.185e0eaf@kernel.org>
-In-Reply-To: <20260629-pdev-fwnode-ref-v2-13-8abe2513f96e@oss.qualcomm.com>
-References: <20260629-pdev-fwnode-ref-v2-0-8abe2513f96e@oss.qualcomm.com>
-	<20260629-pdev-fwnode-ref-v2-13-8abe2513f96e@oss.qualcomm.com>
+To: Shuhao Tan <tanshuhao@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, Shuah Khan
+ <shuah@kernel.org>, Mina Almasry <almasrymina@google.com>, Samiullah
+ Khawaja <skhawaja@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net-next v1 0/2] Reuse threaded NAPI kthread across
+ napi_del()/napi_add().
+Message-ID: <20260629162619.55297244@kernel.org>
+In-Reply-To: <20260629192029.4013794-1-tanshuhao@google.com>
+References: <20260629192029.4013794-1-tanshuhao@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,11 +50,23 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 29 Jun 2026 11:12:36 +0200 Bartosz Golaszewski wrote:
-> Ahead of reworking the reference counting logic for platform devices,
-> encapsulate the assignment of the OF node for dynamically allocated
-> platform devices with the provided helper.
+On Mon, 29 Jun 2026 12:20:25 -0700 Shuhao Tan wrote:
+> These drivers destroy and recreate queues during configuration
+> changes. If a NAPI was threaded before destruction, during the
+> creation, a new kthread will be spawned for the NAPI.
 > 
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+> Some drivers do not have this problem, e.g. netdevsim. But these
+> drivers and the drivers mentioned above will still lose kthread
+> during link flap (ndo_stop/ndo_open).
+> 
+> Because the kthreads before and after these configuration changes are
+> different, all the attributes associated with the kthread are lost.
+> These include CPU mask, priority, scheduler policy, etc.. If the
+> threaded state is preserved for a NAPI, it makes sense to want to
+> preserve the attributes of the thread as well.
 
-Acked-by: Jakub Kicinski <kuba@kernel.org>
+Send a netdev Netlink notification when NAPI is re-created and
+let the userspace re-apply the settings? Keeping a few u32s
+around is one thing but keeping a thread running and visible
+in /procfs for the lifetime of a machine feels a little bit much.
+IDK.
