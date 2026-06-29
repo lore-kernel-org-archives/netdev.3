@@ -1,157 +1,135 @@
-Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9B726ED2D
-	for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 14:59:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9D74279FC
+	for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 15:08:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782745162; cv=none; b=Bfqc0rTx89pR6a1552C/T7XFxp5lEosaamANj2brleDEz2tsmA21H5uGBLZlpfYT7EnMOpjfWH9tR5IBi4jbxqNsDYgorBAgnyedFIzj5as5PZd2HL/9zh79ZrYzZqOA9gNrPNVS7sGXKS0k85TSsgcpXB720nHSQgef3gXJ8VM=
+	t=1782745717; cv=none; b=JJ4M3MNFjHtfx35j1arxMK0T11aVGOgtpCgQVs6fB+YeduZ2TBb1NIENA3YyBmRRjKUWOVX86pPTZ+r0Dp9QLFAz3fF76CwA8ahn81znQKKlmQ11jx2q3nuhE1qozMXuTLINsvwuBpCjhNQhfsb9qrKJc+irK+jYYWyRNKyLDOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782745162; c=relaxed/simple;
-	bh=LAoZJqVfdU9+V8F5hBZtY//uWnuQHis0eN8ii8DLed0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AARZg94cby/e4b2Gp/GQRMrCIiXuxdo/ZuSs4El9BUAtSo+ahJY/DdaTcNoeSTLJ4UmgwOnAg3Hjgsl9nNKqzupCbNIXtuNqnbtiFxDjbcIOzhYENFoFqYiNAyBJaOep8ApN83MoNKG5PsoX9B2B4QpA9Q1daLK3tPdQ2M2QTQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-6a16bcd0a2aso723593eaf.0
-        for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 07:59:20 -0700 (PDT)
+	s=arc-20240116; t=1782745717; c=relaxed/simple;
+	bh=lMco64SlCp2iFk0E6dTwrSjmt/kwqJaHvhyZAbJrpBw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=lWToHzRNvBq2Rj2GJlcDr9/03TMj1Nd0MEhuRGiX1+cZ9pl9EraaQBeUygUsvC0+CQ4CUag7BiAxM+TRAFpncEI4RksZPMgXWPLDBwEVvb3xBsZYfiHmIL2tKwal9Eugnet19bYUq3cprx79ijArJxjf+MZ1DuhUZnG2VHoONiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=b5ZbIrUt; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=s4+DPnR8; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="b5ZbIrUt";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="s4+DPnR8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1782745713;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HnLlIWAqKGkYvHzL3qLHQR1QHqWY2RRH9mZcPadrEj8=;
+	b=b5ZbIrUtJ2KPwudBIEZBC+5T1uJzJV6MXH0jNRtzanYo17gfx1U1molluh9joC2z87eE2s
+	aAYoxC2kalUKGhUIpnNdnFcRfMMw3cgDTollCteWnE/qxSmKn0feKkLP/VhAXhw9kZCY/4
+	P1Zz2gM08ndW8sM37VMzL2rQcEe24hQ=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-557-9WXGQtIsOD2dfnZLc5NKDA-1; Mon, 29 Jun 2026 11:08:31 -0400
+X-MC-Unique: 9WXGQtIsOD2dfnZLc5NKDA-1
+X-Mimecast-MFC-AGG-ID: 9WXGQtIsOD2dfnZLc5NKDA_1782745711
+Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-698376ecf7cso2082637a12.2
+        for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 08:08:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1782745710; x=1783350510; darn=vger.kernel.org;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=HnLlIWAqKGkYvHzL3qLHQR1QHqWY2RRH9mZcPadrEj8=;
+        b=s4+DPnR83b0302ZQ/XbDG9FJWKm66/FR0E2Tlg9H3b/w4BTuI2Frim1fxSaFIG8ztP
+         smo+AVNGR2y9gq2sZJHoFVpRho5ocPMZPsmJwGD+xNvT806U8gZSwZr6ZYH4GHstRyi5
+         4TeBlPCHo6UuCveZkGsP1lNtqaB1F6JTyptugqFfBpo4SGbb1tCm+7Hf/Tk2QWgbIH0v
+         OrSyhPwG/r+Qivl5s0AvVzNIzlqwP+DnTHjCqR/ptzC8Tyovsb868vWwiO2YFNa9dlpS
+         yYGzOpY/vY3O8rYWWe6kd8X3R0R4gnq6Eg9T8cJag66dYR1PPvEi+ovmv7ddEGiMk71K
+         fekA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782745160; x=1783349960;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YrA9ccFaco9J2BZQ3eRpFjtGI3CKCK/xF2koXbFr26M=;
-        b=RIrNpuqESMcM6avLBCmoEmoCNPNaPbeBQDS+xreNDC9imSX9pa8kIbm42Tym9LAW1O
-         W7jxjcjzkwKaGTFSP27IBch9VNY8iYa5J6ATa2J7rQH3PhwC1CojL+uASypJ2u/241Vx
-         oSJgOuwHxtx0dEhqz8tNcmskC2BImRStV11AqTGPribMLilU37iHrJNAlJ5g2s6U9aw3
-         n80RNM2OlyZVrxaiac/Km6LYQDAp2oyMNC5MftdEclxZlfenqfTs5anhEYTNvuKeKEok
-         6gEK62YSG8m7s2kebtYikRAGXpcuXvcCHGAF3s1RqE7SZYHD3iAg/vN1Y0bM+xWZ9apr
-         hOtg==
-X-Forwarded-Encrypted: i=1; AFNElJ/ES1D9GxzTkLZC7pucv3N8LRH9t97hh+PAvpWzjVPKatxePa3SLphoRvF6Iq8H/gQqcuwxkCY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxyYo+RCvTAXBAgKkLu5tXYHK3YbtJDXpelL3h0at/qbSDQkMOH
-	L3ghtH7lhAq4vBXWIeYwKFMUegEL/h5CBdPwg+aFT63oqrE5RzJ4eyDeouOO5OKB
-X-Gm-Gg: AfdE7cmbGXdFiOKvF1AxEy4mgty2+hoLdPhO7ufGjIRwixQT+ozUG+R6/r4EIOuMlB9
-	/bgEdTOR03baj91Mc2DkmgpTeQ/eBOUwBdQGepO0t6QljG1eb68P9E47oKKRomlotootsxOkp5X
-	sQ+gJDbDE2Nuwm+kDG4nhD90P+iL2rzVb4tfNs53jifW9g3sNZuRREJ8YvYt7Szv42sqPfrtQEP
-	RTEUm/XCJhc9TSZMJc0d/TnQ1//ZfQ1iKj9uQRz7oOOcgoZa07TVUkpxCPOTqmk6KDizrPv3C1L
-	x8NICkxieD1nIJeOppjzIvhuUXhxDfUFfELVh+c6Y2LWfZoyWY5g2R2ZjOdGiD/KxCtHo8LcQLA
-	0v8uBagRdVBsCbN3a3MGupzjoPEybdI2l87q3EDcroCrr9Ie7PT3dnjIMxrN2bCsaW+T4XfDuFQ
-	SAPIQ32HCd0jVgT1w1580/ix9abnrxaJcyJsh4vn/QQctvlNKW+qjdktQyRxnM
-X-Received: by 2002:a05:6820:20b:b0:6a0:e523:99a6 with SMTP id 006d021491bc7-6a18921600dmr10284eaf.51.1782745160166;
-        Mon, 29 Jun 2026 07:59:20 -0700 (PDT)
-Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com. [209.85.161.46])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4472f0464a6sm21274411fac.15.2026.06.29.07.59.19
-        for <netdev@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Jun 2026 07:59:19 -0700 (PDT)
-Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-69dead44101so2958201eaf.3
-        for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 07:59:19 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ9p/5O4yIwMMnHWE+h7o0NfbmTuU1ZA7Ng8Wd1qg7aBACy7JkPlfPsDkSv6mRN2RqReIbgGF8E=@vger.kernel.org
-X-Received: by 2002:a05:6102:c86:b0:738:ecd7:198e with SMTP id
- ada2fe7eead31-738ecd71defmr1394925137.19.1782744721048; Mon, 29 Jun 2026
- 07:52:01 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1782745710; x=1783350510;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HnLlIWAqKGkYvHzL3qLHQR1QHqWY2RRH9mZcPadrEj8=;
+        b=L/EJHDK6V4hZpszkvUT84ReEO7mVnDY5K3GPjfe7aQe5N4qgxsNYI6dxVLgYtMP0uZ
+         5KvS6+vkb537c5XaxSoeSm9C3zEAAbp9kdsFnb/mvgLTLXEituaWakh/LDQPz8FBq0av
+         Ff3TLuowKVB5KowSHSCbno+5C4YqNpgpGNq0dJ966GCdiHWiGkSqSTBEE2023M/0YGVp
+         D54Cjumfv++Od9m8HEQ4Yvses2748DI2h3/vUvL0ff+UMBmfNIlMxPbej6GcAQ8TX+1e
+         1NyNniJcdFlihM/yhTdWyDQdhENznxcMePjtbHoXLBRqxcxLE/Enuten+V5sBCLH/rYE
+         GcRw==
+X-Forwarded-Encrypted: i=1; AHgh+Rrx0vhRRpoGFwTz4AkglaUfihqa2Tdg8mGTntYS9+zBdOA4VWhWh7T5MpIkX4EGiLWdLsyyHdM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxdET7mhhp7qNdff8VwYvVzjuT8aqW6wTSeDujia/6+qkXQ9DpQ
+	GDPCzfYUxUmfX3I+z5hJe2WMmuuVHnVfmntBhKJwAYeCc9SwRzM8709wrnNypzHMIGY4Y9Kqf3M
+	Xy9R5eTvl8fY0sHJykRxmKnxrKM+lj9jQDGONRRhlYozVy/PNdgU41HwQmQ==
+X-Gm-Gg: AfdE7cnuDGobMSjGWPbEr9obrarNvPphoU1iEbdCsXPiyC1VYV5vkdFFlI8QLP5fwe+
+	cc6iuWWx4mi/Ow3ZmUjHBuSTLHk/MI44IfF8txa1v4sh8CfY6Q2dPtmKmigbN8V4jA3oyyppx+R
+	gZs8bK9UqgrnB/WZEdV18h9mQh/4xjJXbD2Mqrg9S6xmdTTofR2Z8GNe7AuVqNTnrFpJ4bsibYY
+	/bNbwJhgAPgqQoeIj1QV/b0dSSb8IdVbws/lOaNOEmIagvLNnSo6pPc9yeCSZ7N6fXvuuZFOsdh
+	86ms3Rrxg3CRKw78lX7se3Qo2pO6FyVlgKJA1uKOGOPYa+SowAeUigjiOaUcyA09+sOqf3ORpe8
+	sMgmfcTTlgsCukm2dosu4La3cf7jqCyWUhtBdFg==
+X-Received: by 2002:a05:6402:d0e:b0:697:f70f:8238 with SMTP id 4fb4d7f45d1cf-698774b8165mr465890a12.4.1782745710468;
+        Mon, 29 Jun 2026 08:08:30 -0700 (PDT)
+X-Received: by 2002:a05:6402:d0e:b0:697:f70f:8238 with SMTP id 4fb4d7f45d1cf-698774b8165mr465847a12.4.1782745709965;
+        Mon, 29 Jun 2026 08:08:29 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk (alrua-x1.borgediget.toke.dk. [2a0c:4d80:42:443::2])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-69848e5ebc0sm3512223a12.3.2026.06.29.08.08.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Jun 2026 08:08:28 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+	id 639C280A267; Mon, 29 Jun 2026 17:08:27 +0200 (CEST)
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To: David Ahern <dsahern@kernel.org>, Avinash Duduskar
+ <avinash.duduskar@gmail.com>, ast@kernel.org, daniel@iogearbox.net,
+ andrii@kernel.org
+Cc: eddyz87@gmail.com, memxor@gmail.com, martin.lau@linux.dev,
+ song@kernel.org, yonghong.song@linux.dev, jolsa@kernel.org,
+ emil@etsalapatis.com, john.fastabend@gmail.com, sdf@fomichev.me,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, shuah@kernel.org, hawk@kernel.org,
+ yatsenko@meta.com, leon.hwang@linux.dev, kpsingh@kernel.org,
+ a.s.protopopov@gmail.com, ameryhung@gmail.com, rongtao@cestc.cn,
+ eyal.birger@gmail.com, bpf@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH bpf-next v5 1/3] bpf: Add BPF_FIB_LOOKUP_VLAN flag to
+ bpf_fib_lookup() helper
+In-Reply-To: <d820adf6-4a33-45e9-9cfa-17f11a37c9e8@kernel.org>
+References: <20260624030530.3342884-1-avinash.duduskar@gmail.com>
+ <20260624030530.3342884-2-avinash.duduskar@gmail.com>
+ <d820adf6-4a33-45e9-9cfa-17f11a37c9e8@kernel.org>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date: Mon, 29 Jun 2026 17:08:27 +0200
+Message-ID: <87se65bd04.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260629-qcom-sa8255p-emac-v11-0-1b7fb95b51f9@oss.qualcomm.com>
- <20260629-qcom-sa8255p-emac-v11-1-1b7fb95b51f9@oss.qualcomm.com>
- <CAMuHMdXen+E-Ai51aWBa_KV9W8Fz2cQPpT-FG_kQ7akhrrYa_A@mail.gmail.com> <CAMRc=Me3jaZXiXa1sFXr=8Do4sCd+XN1pKTcWC8-0j78SjCkKA@mail.gmail.com>
-In-Reply-To: <CAMRc=Me3jaZXiXa1sFXr=8Do4sCd+XN1pKTcWC8-0j78SjCkKA@mail.gmail.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 29 Jun 2026 16:51:49 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdVUBgG0EFB16OxHisbxx-sBvDKvBPNZdpyDnmBrnX4ptQ@mail.gmail.com>
-X-Gm-Features: AVVi8CdkJoaQviVQ7ltoNYHwA2g-kW32TDsBBJn2QkEKdC-zwJrV4O3to75iJ6g
-Message-ID: <CAMuHMdVUBgG0EFB16OxHisbxx-sBvDKvBPNZdpyDnmBrnX4ptQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v11 1/7] dt-bindings: phy: document the serdes
- PHY on sa8255p
-To: Bartosz Golaszewski <brgl@kernel.org>
-Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Vinod Koul <vkoul@kernel.org>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
-	Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
-	Jerome Brunet <jbrunet@baylibre.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Fabio Estevam <festevam@gmail.com>, Jan Petrous <jan.petrous@oss.nxp.com>, s32@nxp.com, 
-	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>, Romain Gantois <romain.gantois@bootlin.com>, 
-	Magnus Damm <magnus.damm@gmail.com>, Maxime Ripard <mripard@kernel.org>, 
-	Christophe Roullier <christophe.roullier@foss.st.com>, Radu Rendec <rrendec@redhat.com>, 
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, Drew Fustini <dfustini@tenstorrent.com>, 
-	linux-sunxi@lists.linux.dev, linux-amlogic@lists.infradead.org, 
-	linux-mips@vger.kernel.org, imx@lists.linux.dev, 
-	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
-	sophgo@lists.linux.dev, linux-riscv@lists.infradead.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 
-Hi Bartosz,
+David Ahern <dsahern@kernel.org> writes:
 
-On Mon, 29 Jun 2026 at 16:07, Bartosz Golaszewski <brgl@kernel.org> wrote:
-> On Mon, 29 Jun 2026 15:51:31 +0200, Geert Uytterhoeven
-> <geert@linux-m68k.org> said:
-> > On Mon, 29 Jun 2026 at 13:29, Bartosz Golaszewski
-> > <bartosz.golaszewski@oss.qualcomm.com> wrote:
-> >> Describe the SGMII/SerDes PHY present on the Qualcomm sa8255p platforms.
-> >> This is essentially the same hardware as sa8775p rev3 but the PHY is
-> >> managed by firmware over SCMI.
-> >
-> > So why can't it be reuse the DT bindings, and be compatible with
-> > qcom,sa8775p-dwmac-sgmii-phy?
-> >
-> >> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-> >
-> >> --- /dev/null
-> >> +++ b/Documentation/devicetree/bindings/phy/qcom,sa8255p-dwmac-sgmii-phy.yaml
-> >
-> >> +  power-domains:
-> >> +    maxItems: 1
-> >> +
-> >> +  power-domain-names:
-> >> +    items:
-> >> +      - const: serdes
-> >
-> >> +examples:
-> >> +  - |
-> >> +    phy@8901000 {
-> >> +        compatible = "qcom,sa8255p-dwmac-sgmii-phy";
-> >> +        reg = <0x08901000 0xe10>;
-> >> +        #phy-cells = <0>;
-> >> +        power-domains = <&scmi7_dvfs 0>;
-> >> +        power-domain-names = "serdes";
-> >
-> > Ah, this uses power-domains, while the existing bindings for
-> > qcom,sa8775p-dwmac-sgmii-phy use a clock.
-> > I guess the clock is the correct hardware description?
-> >
-> > Adding to my list of examples for backing a hardware-to-SCMI remapping
-> > driver...
-> >
+> On 6/23/26 9:05 PM, Avinash Duduskar wrote:
+>> diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
+>> index 89b36de5fdbb..e00f0392e728 100644
+>> --- a/include/uapi/linux/bpf.h
+>> +++ b/include/uapi/linux/bpf.h
+>> @@ -3532,6 +3532,29 @@ union bpf_attr {
+>>   *			Use the mark present in *params*->mark for the fib lookup.
+>>   *			This option should not be used with BPF_FIB_LOOKUP_DIRECT,
+>>   *			as it only has meaning for full lookups.
+>> + *		**BPF_FIB_LOOKUP_VLAN**
 >
-> Russell King asked me to put the PHY logic for SCMI pm domains into the PHY
-> driver instead of the MAC driver where it was previously. Instead of cramming
-> both HLOS and firmware handling into the same driver, I figured it makes more
-> sense to have a dedicated, cleaner driver as the two share very little code (if
-> any).
+> This flag should not be needed. Patches for vlan support were never
+> submitted (I have them in some old branch). Since the vlan params are
+> initialized to 0, no new flag should be needed. Besides, these are
+> output parameters.
 
-I think you are mixing up DT bindings and driver implementation?
+There's no enforcement from the kernel side of the parameters being
+zero, though? So we do need the flag for feature detection; unless we
+expect applications to do that out of band? But then we'd need a
+mechanism to do that which could be... the presence of the flag in the
+ENUM (and thus in BTF)? :)
 
-Gr{oetje,eeting}s,
+-Toke
 
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
