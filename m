@@ -1,106 +1,81 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A04C03002AB
-	for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 22:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C098E2D592D
+	for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 22:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782773211; cv=none; b=enQdiyBauLUdMQjIb9YZfB5409GKsF5J2PM+gmNnH9qCnp37yLcdS+H+N+a5IxmUIfGOFc8dvzbyxNgc5hMb2fILglFpY47Ejdi9pA9bz5kOivM49y36RcRlCsoj6wbwRf5lEGag2bLewZM5Fu5zU4IOnoJqC53qSnwI7QROueo=
+	t=1782773625; cv=none; b=PMCDM2+0yS/aGi1CKUIeirsYXJTvuU0oevtf6NWY522B3+QWMDYzxyIm5dfR9VKY4FinLSi0QPj6N8V1SMxwmKYRP8vdRkcN1oKGlMVK3DTL8gBBy2t+S27MWvDnvJt5F7EQk/Tan6Q1OlHDpgNF/I7FQ0nnNggmy56j6SEbBCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782773211; c=relaxed/simple;
-	bh=JtLxpu9fbBvtyh2aI2Eeu66+EpbwIhn4ei9Ouw7jJRM=;
+	s=arc-20240116; t=1782773625; c=relaxed/simple;
+	bh=Eimbm83VcnNh9iAyz4eSKXIS5dn85BJj6roRS8IzYgM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QNpz5HirRC0e/NEYZ/xILkIN+9rdV2gtOOH+LlRXSNluKWnFrBN7WLooq4QGAk+ge1wCIcpBGsvF6HJFK9oXf3q3pRwCRUX5P5tCZNPefu7U6tmUfGqYdyE6z9jTi0YyeoBa1JhBlHIjnVKFltFmOrjm6Ts1ZrjUp9elHozVo+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JW6xAJm9; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=FYhJsxPTBbHSF9t4LNakpuCDa94tnb84jKCAo1OFZFYMpv1SSmKTdazNpEzCa9y6rf4Ckb50xTnIuuihx98evY8kQUppnIfF9mVw8kiZZyyO+i4+Lva8hM2yAq3EJzE6qMt5yhZDAqXf5Ms9IoHh4n7k8KvcszbczI6aMAuf9mc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cLrLjUsm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JW6xAJm9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A9241F000E9;
-	Mon, 29 Jun 2026 22:46:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cLrLjUsm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F9011F000E9;
+	Mon, 29 Jun 2026 22:53:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782773210;
-	bh=swWiW2uRgQTzJsfwmUEBV2cvAQhA4pVCCEkepioqNTQ=;
+	s=k20260515; t=1782773624;
+	bh=mQm2Cpdl7FUXTMgD3IZug5m2bpmaRdES+acA5DhlVW4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=JW6xAJm94dR66SXnG/XGkDqqpwCeivuxIwxU5eMc8H5eIudx2mmp7+Rp/3p9qvYAP
-	 kPzAj9D5on/FgTpnGkWlfiXCa8EnMgEntw6l/YJlSL3O7phEyzAi3DDgaNiPiLZhoY
-	 +ZvCPevDeEcrcca3gzfwtwlXd6CnAkstFgCdSRQzqMqgGkg8f1xJrCsT1WyzuCSRgT
-	 oad+g70wYBWz4piHSh1LOOH3j7ldxuKs8Vuk7xzHkfv+jtU+QlNb3aKe4Oh9tpev7i
-	 zrfqydLT9d4kthjTLQkzdNn9lXS2UaMUaQa+KgV1z9537IArw/OfG9fgpl89J5GN9y
-	 EY9QD/XvTXYdg==
-Date: Mon, 29 Jun 2026 15:46:49 -0700
+	b=cLrLjUsmPAx7ouea3DL7B/uiISyRyGu/yohUtSjZxm+ui87QxAUY07QcQjR5/9gQK
+	 yZdMROLg5kPBQJhSdl4yqRvOfTgS+gBLjaJeZ5ER22d9U23qA9ZkSsR3fXohvIgTkW
+	 isdMP3VY97vwVLQGF+uzHGwU5EDoJxZTedQL3THu2gb5hFquDeE5L7/hPG9mDpUy3p
+	 If0rZpIHe3iJrMjpfu2RHcGFf0UW2G1fTJZphfhglXBsWb3DT6Hd2R/4lxJMCBQo4I
+	 b8L2ejeIy8pSI20BTJ8CV9yH7TJdrk3bR8sBlMuUhZ41IuzP0orlrt0/VvA69SbZpD
+	 yfZtthA7mbVXA==
+Date: Mon, 29 Jun 2026 15:53:43 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Chenguang Zhao <chenguang.zhao@linux.dev>, Chenguang Zhao
- <zhaochenguang@kylinos.cn>
-Cc: Nicolas Dichtel <nicolas.dichtel@6wind.com>, dsahern@kernel.org,
- idosch@nvidia.com, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v2] ipv6: honor per-interface proxy_ndp in
- forward and NA paths
-Message-ID: <20260629154649.1a7b7f2a@kernel.org>
-In-Reply-To: <dd26c96a-8c9b-4dc3-8eb8-a1c6a8842aab@6wind.com>
-References: <20260623085600.396401-1-zhaochenguang@kylinos.cn>
-	<20260629061831.1211922-1-chenguang.zhao@linux.dev>
-	<dd26c96a-8c9b-4dc3-8eb8-a1c6a8842aab@6wind.com>
+To: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
+Cc: "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+ "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>, "netdev@vger.kernel.org"
+ <netdev@vger.kernel.org>
+Subject: Re: [PATCH iwl-next v5 2/2] ice: implement symmetric RSS hash
+ configuration
+Message-ID: <20260629155343.7fed8291@kernel.org>
+In-Reply-To: <IA3PR11MB8986053B156CBA043045A525E5E82@IA3PR11MB8986.namprd11.prod.outlook.com>
+References: <20260626054730.1126969-1-aleksandr.loktionov@intel.com>
+	<20260626054730.1126969-3-aleksandr.loktionov@intel.com>
+	<20260626152636.1e48330f@kernel.org>
+	<IA3PR11MB8986053B156CBA043045A525E5E82@IA3PR11MB8986.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, 29 Jun 2026 15:59:00 +0200 Nicolas Dichtel wrote:
-> Le 29/06/2026 =C3=A0 08:18, Chenguang Zhao a =C3=A9crit=C2=A0:
-> > ndisc_recv_ns() has always checked both devconf_all and idev->cnf for
-> > proxy_ndp, but ip6_forward() and ndisc_recv_na() only looked at the
-> > global setting. The original commit left XXX comments in these paths
-> > likely because idev was not available there at the time; ip6_forward()
-> > now obtains idev from IP6CB(skb)->iif.
-> >=20
-> > Honor per-interface proxy_ndp in both places to match the NS path and
-> > allow setups that only enable proxy_ndp on specific interfaces.
-> >=20
-> > In ip6_forward(), idev is looked up via the ingress interface (iif) whi=
-le
-> > pneigh_lookup() uses skb->dev. For ND packets this is correct because
-> > vrf_ip6_rcv() does not modify skb->dev for neighbour discovery frames,
-> > so both refer to the ingress interface.
-> >=20
-> > Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
-> > ---
-> > v2:
-> >  Per Ido's review, the following changes were made in v2:
-> >  - Target net-next instead of net
-> >  - Drop Fixes tag
-> >  - Expand commit message: XXX comment history, idev vs skb->dev for ND =
-packets
-> >  - Fix subject prefix
-> >=20
-> > v1:
-> >  - https://lore.kernel.org/all/20260623085600.396401-1-zhaochenguang@ky=
-linos.cn/
-> >=20
-> >  net/ipv6/ip6_output.c | 4 ++--
-> >  net/ipv6/ndisc.c      | 4 ++--
-> >  2 files changed, 4 insertions(+), 4 deletions(-)
-> >=20
-> > diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-> > index 368e4fa3b43c..c4ca4a813479 100644
-> > --- a/net/ipv6/ip6_output.c
-> > +++ b/net/ipv6/ip6_output.c
-> > @@ -579,8 +579,8 @@ int ip6_forward(struct sk_buff *skb)
-> >  		return -ETIMEDOUT;
-> >  	}
-> > =20
-> > -	/* XXX: idev->cnf.proxy_ndp? */
-> > -	if (READ_ONCE(net->ipv6.devconf_all->proxy_ndp) &&
-> > +	if ((READ_ONCE(net->ipv6.devconf_all->proxy_ndp) ||
-> > +	     (idev && READ_ONCE(idev->cnf.proxy_ndp))) && =20
-> As stated by Ido, this changes a 20 years old user-visible behavior. It s=
-uddenly
-> may enable proxy NDP on a system.
-> I was thinking that this kind of change was prohibited.
+On Mon, 29 Jun 2026 14:10:08 +0000 Loktionov, Aleksandr wrote:
+> I understood on TEID; I will drop the ethtool core patch.
+> 
+> One question before respinning the ice feature patch: ice GTP RSS profiles
+> include TEID in the hardware hash fields. Since TEID is not generally
+> symmetric across UL/DL, should the driver:
+> 
+>   1. report RXH_GTP_TEID honestly and let the core reject symmetric-xor
+>      when GTP flow types are part of the preflight check;
+> 
+>   2. hide RXH_GTP_TEID while symmetric-xor is enabled, even though that
+>      misrepresents the hardware hash input;
+> 
+>   3. reject symmetric-xor for configurations where GTP profiles include
+>      TEID; or
+> 
+>   4. change/program the ice GTP profile, if possible, to exclude TEID
+>      under symmetric-xor?
+> 
+> My preference is (1) or (3), but I do not want to encode the wrong uAPI
+> semantics.
 
-Chenguang Zhao, is this a change you find useful or are you just
-acting on an AI-generated port about inconsistency in behavior?
-Could you please explain your use case / deployment scenario?
+Do you have access to any GTP experts?
+If your customers want the TEID in the symmetric hash then they
+probably know better what makes sense than me after reading about it
+for 1 minute.
+We may just need a better commit message on the first patch "TEID is
+intrinsically symmetric" is not true.
+Or maybe the driver / profiles are not doing the right thing.
+Please dig deeper.
