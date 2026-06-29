@@ -1,210 +1,259 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9464D23EA97
-	for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 13:23:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E488B403EB5;
+	Mon, 29 Jun 2026 13:26:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782739406; cv=none; b=UOR4Z8+YWzJaPi+xDn5pB1GKGSb+Y1OOgm01bmg55+leKYBuayquX/RAFBuclZvaST10WIIn8zoz4q/tqL96X4o1PHxrN58UFAQcVI67AoUABSB+lAQIxmb6SbRjAZOyXFOsMeofLh43AR+Op4cLc9r+tNKDXnn1bagp1qaGnlc=
+	t=1782739609; cv=none; b=XaIh+jDeGqeIw/ZVzWGxQoDAZ5r7S7qPGtQrdIxzojjLvbWssz9eYlmMcrqECuT3XBf/rCr/QClvr3/35noqp0QLfzNPbQNbu6ukoP0RMDaSzMZzzKUQa6YHgmw3zkbt59PJ68/66Yfvp9LU9HAKI6WSDfPcC+wOgDM3GBWjqgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782739406; c=relaxed/simple;
-	bh=jJa1vULXdD8nTb9yCBpvx7O8qwcNgz1MtHjhkOGJQGc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ovGTBUON2s6fFuhNTUaHvz+UbdG/dYqyxhBCCXyUfuZx8ClcXh6SA/tR8oxRuzhHWyDzZTJDu9wjnoKx1Yi5zVcnbTXjCbht+o3ycmCjkkllz30ze9cgrcSf7Lwtrl6Db5METQ+0c74NHEhCikD3oGIjbNEeC0HVl9OIfWgJ0YI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LFnYTSkF; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=nJmKcovO; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1782739609; c=relaxed/simple;
+	bh=3I9zyzkVdbsSVB8VOhT5PsQ+7G+zS3OZld35IU7mR88=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=aXkwQ97vaYswg//aMcXXY8ektj2kdKlCzBtXw+T5wS8Y5PYct2dbACtBAYKz4Zt5UlwYJCj714pz/mkFJhw1KxzYH1JU4MGDgBYvq0IR0qAi+sDWc2QGhTCzi7I8dnLWtTRgW1arVrSFKKrU6HZoNCu3bKGaZ+Uit9+rVaNA8fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KD4wn8FG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LFnYTSkF";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="nJmKcovO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782739403;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OGH0r9n8LKSOXIwJNJ0nZ8wggtzDvg5vMSxTltBG1AQ=;
-	b=LFnYTSkF7JhK8SfMyUn/JApZOGB2jcmSp25Z/dzFxQwKsk+PFJQGfRvyrC7cbq23d9FIHG
-	B9n02pr9HyEdxhKdVkEgHR04LqhULp7n2wl/9CcufNs9YbCNGyJyfGGnchcucRqB08fB2L
-	5Rn+GfbgzCS23oY+sE+JADCPuOhAwJ8=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-224-8Li4ucE2Pgez1hSI5uvnDg-1; Mon, 29 Jun 2026 09:23:21 -0400
-X-MC-Unique: 8Li4ucE2Pgez1hSI5uvnDg-1
-X-Mimecast-MFC-AGG-ID: 8Li4ucE2Pgez1hSI5uvnDg_1782739400
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4924583c7baso37476855e9.1
-        for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 06:23:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1782739400; x=1783344200; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=OGH0r9n8LKSOXIwJNJ0nZ8wggtzDvg5vMSxTltBG1AQ=;
-        b=nJmKcovOWRRuxN1vCoF+Zh00cg0H5C6QcapW6Pj4i7T0AKdPcwoV3ljfX0nbMRR7W9
-         CBKUrUba+0N2G0xZDKI4REEyRQAG6/Tl4bdHLPLRK/K/rvBm9Ydbxu965/WTIEIZYNXZ
-         /fTGMyWd995FvpxArHjTToWDcZiFVDFKHr3BHc38uMzRviakWT/YHx3WwYUMiB14bfGU
-         7gSM+b/YxbiEgs2lzi/GrCKpqOtXxFh1O219xLQnUhso9YmUvyHW6lCdn8Cdp4BM5IAR
-         yqZoC9J08GY5LHVd6lBYjRsM995OU8aKwt+Cq+YHuWxKskSRD5RHM0wztzLprdpk5ZAH
-         Qm2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782739400; x=1783344200;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=OGH0r9n8LKSOXIwJNJ0nZ8wggtzDvg5vMSxTltBG1AQ=;
-        b=WaFZgtdeKwr1WHwLA4AD+5NpoU2R25szY+WWA5jaLj9uEVz0n3dgdG8VcYrgusOSNx
-         b7xtcoGV+pHJqf3u7OEHzTYpvm0Lk5O0uuEuA6KR33eK+eAWwOJou25yJVD6SNaXS7y1
-         8SFrd609wF3r9n8kTLmpgYG5y/j45fUXfkonQTGYc6vpj2kjY31dEzd95DnyNa5Rv+kW
-         d1n+wLVmqQZSW14NCfau69myWsSMA97OpoDWAIseOpi3ZuJPtUYjd7YRZFOWOLwhYUXp
-         PspuMbVHHGToh8q24pAkHckJlzDzexdPc+VcYPh8FD5uXOBsUW8lenhJxuz+wv/wn8Dd
-         1uQQ==
-X-Gm-Message-State: AOJu0YwZ6cY/l5MwxPBIJV4C4gr4Nh0EYqE87yltGQBUaPRV94zAPnCO
-	mu6O9sAbHsvkv/9amNECFu4LpBaBbjCC4W4e2f2I20OgfBl8doYVsm/mfD5d1VveoJC5zNGaeFP
-	3dm1ryzv/dTgFycp/jtPGu2YIgMLmD4pz7hu/x14+bQVR93tsTew0kLCHqEKixt3esA==
-X-Gm-Gg: AfdE7cmLl7w0FhiMylOoFfs9UklCTWFsxNnmGgbpm69os7By8n0x+5pKATIUD4RzAiN
-	nK510UX3mPOn9/4Y68hmeMriyIe3NuVrlhNaFA3HvzM9pdk5tGJjoAuZ6UlvzVWyMS9gi3TLjP+
-	iZRGeObNUUohufpXzBNJN+Hy+hnGWzCGe2evlnl9h+bYY7svcX7NVPQP5u75Ll7RAOtyE9IdGUI
-	ccjcQceY0LTnkMfUb/2slSSw365xA9oBj4dx0IOYxPGs+cqjlTPGuUg8H1hI9RtWYomsN36g9+Q
-	guWKg+qAEfLkm/p85ReMPA8lQ/7Ea2hx9w05E3FD+B3aeU/PeWnfJrlOJ6+DHy5KYp5XdoeJLUA
-	RdtNMoL9wSQ==
-X-Received: by 2002:a05:600c:4fc4:b0:493:a54b:7f8f with SMTP id 5b1f17b1804b1-493a54b8051mr98736535e9.24.1782739400305;
-        Mon, 29 Jun 2026 06:23:20 -0700 (PDT)
-X-Received: by 2002:a05:600c:4fc4:b0:493:a54b:7f8f with SMTP id 5b1f17b1804b1-493a54b8051mr98735865e9.24.1782739399781;
-        Mon, 29 Jun 2026 06:23:19 -0700 (PDT)
-Received: from [192.168.2.83] ([46.175.183.46])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-492690168d5sm432857925e9.14.2026.06.29.06.23.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Jun 2026 06:23:19 -0700 (PDT)
-Message-ID: <7d21d2db-ed18-40e1-a5c2-7fc8c235805b@redhat.com>
-Date: Mon, 29 Jun 2026 15:21:03 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KD4wn8FG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F74D1F000E9;
+	Mon, 29 Jun 2026 13:26:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782739607;
+	bh=fhZO9CCgyPTpV3ZQrTdwjnuLM+E9OikVfMuSHmZTx2M=;
+	h=From:To:Cc:Subject:Date;
+	b=KD4wn8FGWGE30eCOOOA+dBSAHZGgiXwZF29kfKE4F2uQuFsP5YxhKF+kJLGZQW+xN
+	 c1FQZuucS/z/TV0fUUP3z4XSiOfaV3yT+/2dhnHni5ghGczyBnpiiVQ4ssE+H6KI6m
+	 MB5KQA2l+xKim04AISyQhaPf4EpWJZCa1m2px2f9EeLMQklyKDL02qd8dJNCvthmg8
+	 6PFfsK+SnbxyFSGpVQU5s9PrLcj+ipaSFtc1VHy+j8TWTBJDs/nEBBWvwVfu9LYai2
+	 5NMag8oZZwUnP9IBEXZ+74fbYASdIvn/nsUwGvCqlg0YWSzWL9DSAQY7zE04B/0xQI
+	 Auc5QmUPHo7UQ==
+From: Arnd Bergmann <arnd@kernel.org>
+To: linux-gpio@vger.kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	Gregory Clement <gregory.clement@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Greg Ungerer <gerg@linux-m68k.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Hauke Mehrtens <hauke@hauke-m.de>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Linus Walleij <linusw@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Dominik Brodowski <linux@dominikbrodowski.net>,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org,
+	patches@opensource.cirrus.com,
+	linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org,
+	linux-sh@vger.kernel.org,
+	linux-input@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-sunxi@lists.linux.dev,
+	linux-phy@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-sound@vger.kernel.org
+Subject: [PATCH 00/13] treewide: replace linux/gpio.h
+Date: Mon, 29 Jun 2026 15:26:20 +0200
+Message-Id: <20260629132633.1300009-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iwl-net v2 2/2] ice: preserve uplink DFLT Rx rule on
- switchdev release
-To: Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, aleksandr.loktionov@intel.com
-References: <20260622113428.2565255-3-poros@redhat.com>
- <20260623162556.1100516-2-horms@kernel.org>
-Content-Language: en-US
-From: Petr Oros <poros@redhat.com>
-In-Reply-To: <20260623162556.1100516-2-horms@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+From: Arnd Bergmann <arnd@arndb.de>
 
-On 6/23/26 18:25, Simon Horman wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> Full review at: https://sashiko.dev
-> ---
-> ice: preserve uplink DFLT Rx rule on switchdev release
->
-> This commit preserves the default Rx rule on the uplink VSI when releasing
-> the switchdev environment if the interface is in promiscuous mode. This
-> prevents the catch-all rule from being removed while the netdev flags still
-> request promiscuity.
->
->> diff --git a/drivers/net/ethernet/intel/ice/ice_eswitch.c b/drivers/net/ethernet/intel/ice/ice_eswitch.c
->> index 2e4f0969035f7..48273ef9f69dc 100644
->> --- a/drivers/net/ethernet/intel/ice/ice_eswitch.c
->> +++ b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-> [ ... ]
->> @@ -278,8 +280,16 @@ static void ice_eswitch_release_env(struct ice_pf *pf)
->>   	vlan_ops->ena_rx_filtering(uplink_vsi);
-> [Severity: High]
-> Could this lockless read of netdev->flags cause a regression due to a TOCTOU
-> race?
-Both reads key on the same live netdev->flags & IFF_PROMISC (the pruning
-read just above included); it is a single word, so no torn read, and a
-flip in the two-statement window is transient and reconciled by the next
-ice_vsi_sync_fltr() after switchdev stops. I kept the read live on purpose
-so the preserved rule and the pruning decision key on the same source.
-> The ena_rx_filtering() call eventually reaches ice_cfg_vlan_pruning(),
-> which reads uplink_vsi->netdev->flags & IFF_PROMISC locklessly to decide
-> whether to enable VLAN pruning.
->
->>   	ice_cfg_dflt_vsi(uplink_vsi->port_info, uplink_vsi->idx, false,
->>   			 ICE_FLTR_TX);
->> -	ice_cfg_dflt_vsi(uplink_vsi->port_info, uplink_vsi->idx, false,
->> -			 ICE_FLTR_RX);
->> +
->> +	/* Keep the Rx DFLT rule if the uplink is promiscuous; it must outlive
->> +	 * the session. Test the live netdev->flags, the same value
->> +	 * ena_rx_filtering() -> ice_cfg_vlan_pruning() above keys its decision
->> +	 * on, so the preserved DFLT rule and the pruning state stay consistent.
->> +	 */
->> +	if (!(uplink_vsi->netdev->flags & IFF_PROMISC))
-> ... and then the exact same flags are read locklessly again right here.
->
-> Because setup/teardown paths are protected by devl_lock rather than
-> rtnl_lock, could a concurrent dev_change_flags() holding rtnl_lock toggle
-> IFF_PROMISC between the two checks?
->
-> If IFF_PROMISC changes from 0 to 1 in this window, the code would incorrectly
-> enable VLAN pruning (seeing 0) and then incorrectly retain the DFLT_RX rule
-> (seeing 1), leaving the hardware with VLAN pruning enabled during promiscuous
-> mode.
->
-> [Severity: High]
-> Does preserving the Rx DFLT rule here cause a regression by permanently
-> breaking multicast promiscuity configuration if IFF_PROMISC was set?
-Correct, the DFLT rule is unicast only. v3 will fix this in patch 1:
-ice_set_promisc(ICE_MCAST_PROMISC_BITS) will run whenever the netdev is
-promiscuous, including when ice_is_dflt_vsi_in_use() is already true.
+The linux/gpio.h header used to be the global definition for the gpio
+interfaces, with 1100 users back in linux-3.17. In linux-7.2, only about
+130 of those remain, so this series cleans out the rest.
 
->
-> During the switchdev session, ice_remove_vsi_fltr() removes the
-> ICE_SW_LKUP_PROMISC rules. By manually preserving the DFLT rule here, any
-> future synchronization via ice_vsi_sync_fltr() will evaluate
-> !ice_is_dflt_vsi_in_use(vsi->port_info) as false:
->
-> ice_main.c:ice_vsi_sync_fltr() {
->      ...
->      if (!ice_is_dflt_vsi_in_use(vsi->port_info)) {
->          err = ice_set_dflt_vsi(vsi);
->          ...
->          err = ice_set_promisc(vsi, ICE_MCAST_PROMISC_BITS);
->      }
->      ...
-> }
->
-> Because it is skipped, ICE_MCAST_PROMISC_BITS is never configured, leaving
-> the VSI in unicast promiscuous mode but silently dropping multicast traffic
-> destined for other MAC addresses.
->
->> +		ice_cfg_dflt_vsi(uplink_vsi->port_info, uplink_vsi->idx,
->> +				 false, ICE_FLTR_RX);
->> +
->>   	ice_fltr_add_mac_and_broadcast(uplink_vsi,
->>   				       uplink_vsi->port_info->mac.perm_addr,
->>   				       ICE_FWD_TO_VSI);
-> [Severity: High]
-> This is a pre-existing issue, but does this teardown function fail to
-> synchronize hardware state for previously joined multicast groups and
-> secondary unicast addresses?
-Pre-existing (rx_mode is gated during switchdev). This patch only gates
-the DFLT Rx removal in ice_eswitch_release_env(); the multicast-promisc
-half is covered by the v3 patch 1 change above, and replaying the full
-deferred uc/mc list is a wider item left out here.
+In each subsystem, we can replace the header either with
+linux/gpio/consumer.h for users of the modern gpio descriptor interface,
+or linux/gpio/legacy.h for the few remaining users of the old number
+based interface.
 
-Petr
->
-> When entering switchdev mode, __dev_uc_unsync() and __dev_mc_unsync() clear
-> the synchronization state of OS-level MAC addresses, and
-> ice_remove_vsi_fltr() removes the actual hardware filters. While switchdev
-> runs, calls to ndo_set_rx_mode return early and do not update hardware.
->
-> When returning to legacy mode, this function restores only the primary MAC
-> and broadcast addresses, but doesn't seem to invoke netif_set_rx_mode() or
-> equivalent to resynchronize the deferred Rx filters from the netdev to the
-> hardware. Could this cause the hardware to silently drop packets for
-> previously joined groups until the interface is bounced?
->
+All patches in this series can get applied independently, so my
+preference would be for each subsystem maintainer to apply these
+directly, with the rest going into the gpio tree at some point.
 
+The final patch here obviously needs to wait for all the others
+to get merged first.
+
+      Arnd
+
+Arnd Bergmann (13):
+  ARM: replace linux/gpio.h inclusions
+  m68k/coldfire: replace linux/gpio.h inclusions
+  mips: replace linux/gpio.h inclusions
+  sh: replace linux/gpio.h inclusions
+  mfd: replace linux/gpio.h inclusions
+  [net-next] net: replace linux/gpio.h inclusions
+  ASoC: replace linux/gpio.h inclusions
+  pcmcia: replace linux/gpio.h inclusions
+  phy: replace linux/gpio.h inclusions
+  media: replace linux/gpio.h inclusions
+  Input: matrix_keyboard - replace linux/gpio.h inclusion
+  gpib: gpio: replace linux/gpio.h inclusion
+  gpiolib: remove linux/gpio.h
+
+ MAINTAINERS                                   |  1 -
+ arch/arm/mach-davinci/da850.c                 |  2 +-
+ arch/arm/mach-dove/mpp.c                      |  2 +-
+ arch/arm/mach-mv78xx0/buffalo-wxl-setup.c     |  2 +-
+ arch/arm/mach-mv78xx0/irq.c                   |  2 +-
+ arch/arm/mach-mv78xx0/mpp.c                   |  2 +-
+ arch/arm/mach-mvebu/pm.c                      |  2 +-
+ arch/arm/mach-mxs/mach-mxs.c                  |  2 +-
+ arch/arm/mach-orion5x/board-d2net.c           |  2 +-
+ arch/arm/mach-orion5x/board-rd88f5182.c       |  2 +-
+ arch/arm/mach-orion5x/dns323-setup.c          |  2 +-
+ arch/arm/mach-orion5x/irq.c                   |  2 +-
+ arch/arm/mach-orion5x/kurobox_pro-setup.c     |  2 +-
+ arch/arm/mach-orion5x/mv2120-setup.c          |  2 +-
+ arch/arm/mach-orion5x/net2big-setup.c         |  2 +-
+ .../arm/mach-orion5x/terastation_pro2-setup.c |  2 +-
+ arch/arm/mach-orion5x/ts209-setup.c           |  2 +-
+ arch/arm/mach-orion5x/ts409-setup.c           |  2 +-
+ arch/arm/mach-pxa/am200epd.c                  |  2 +-
+ arch/arm/mach-pxa/am300epd.c                  |  2 +-
+ arch/arm/mach-pxa/generic.c                   |  2 +-
+ arch/arm/mach-pxa/gumstix.c                   |  2 +-
+ arch/arm/mach-pxa/mfp-pxa2xx.c                |  2 +-
+ arch/arm/mach-pxa/pxa25x.c                    |  2 +-
+ arch/arm/mach-pxa/pxa27x.c                    |  2 +-
+ arch/arm/mach-pxa/reset.c                     |  2 +-
+ arch/arm/mach-pxa/sharpsl_pm.c                |  2 +-
+ arch/arm/mach-pxa/spitz.c                     |  2 +-
+ arch/arm/mach-pxa/spitz_pm.c                  |  2 +-
+ arch/arm/mach-s3c/dev-audio-s3c64xx.c         |  2 +-
+ arch/arm/mach-s3c/devs.c                      |  2 +-
+ arch/arm/mach-s3c/mach-crag6410.c             |  2 +-
+ arch/arm/mach-s3c/pm-gpio.c                   |  2 +-
+ arch/arm/mach-s3c/pm-s3c64xx.c                |  2 +-
+ arch/arm/mach-s3c/setup-fb-24bpp-s3c64xx.c    |  2 +-
+ arch/arm/mach-s3c/setup-i2c0-s3c64xx.c        |  2 +-
+ arch/arm/mach-s3c/setup-i2c1-s3c64xx.c        |  2 +-
+ arch/arm/mach-s3c/setup-keypad-s3c64xx.c      |  2 +-
+ arch/arm/mach-s3c/setup-sdhci-gpio-s3c64xx.c  |  2 +-
+ arch/arm/mach-s3c/setup-spi-s3c64xx.c         |  2 +-
+ arch/arm/mach-sa1100/collie.c                 |  2 +-
+ arch/arm/mach-sa1100/generic.c                |  2 +-
+ arch/arm/mach-sa1100/h3600.c                  |  2 +-
+ arch/arm/mach-sa1100/h3xxx.c                  |  2 +-
+ arch/arm/plat-orion/mpp.c                     |  2 +-
+ arch/m68k/coldfire/device.c                   |  2 +-
+ arch/m68k/include/asm/mcfgpio.h               |  2 +-
+ arch/mips/alchemy/board-xxs1500.c             |  2 +-
+ arch/mips/alchemy/devboards/db1000.c          |  2 +-
+ arch/mips/alchemy/devboards/db1200.c          |  2 +-
+ arch/mips/alchemy/devboards/db1550.c          |  2 +-
+ arch/mips/bcm47xx/workarounds.c               |  2 +-
+ arch/mips/bcm63xx/boards/board_bcm963xx.c     |  1 +
+ .../include/asm/mach-bcm63xx/board_bcm963xx.h |  2 +-
+ arch/mips/txx9/rbtx4927/setup.c               |  2 +-
+ arch/sh/boards/board-magicpanelr2.c           |  2 +-
+ arch/sh/boards/board-sh7757lcr.c              |  2 +-
+ arch/sh/boards/board-urquell.c                |  2 +-
+ arch/sh/boards/mach-ap325rxa/setup.c          |  2 +-
+ arch/sh/boards/mach-ecovec24/setup.c          |  2 +-
+ .../boards/mach-highlander/pinmux-r7785rp.c   |  2 +-
+ arch/sh/boards/mach-kfr2r09/lcd_wqvga.c       |  2 +-
+ arch/sh/boards/mach-kfr2r09/setup.c           |  2 +-
+ arch/sh/boards/mach-migor/lcd_qvga.c          |  2 +-
+ arch/sh/boards/mach-migor/setup.c             |  2 +-
+ arch/sh/boards/mach-rsk/devices-rsk7203.c     |  2 +-
+ arch/sh/boards/mach-rsk/devices-rsk7269.c     |  1 -
+ arch/sh/boards/mach-se/7724/setup.c           |  2 +-
+ .../include/mach-common/mach/magicpanelr2.h   |  2 --
+ arch/sh/kernel/cpu/sh4a/setup-shx3.c          |  2 +-
+ drivers/gpib/gpio/gpib_bitbang.c              |  2 +-
+ drivers/gpio/TODO                             |  4 +---
+ drivers/gpio/gpiolib-cdev.c                   |  2 +-
+ drivers/gpio/gpiolib-legacy.c                 |  3 +--
+ drivers/gpio/gpiolib.c                        |  2 +-
+ drivers/input/keyboard/matrix_keypad.c        |  2 +-
+ drivers/media/pci/ddbridge/ddbridge.h         |  2 +-
+ .../platform/samsung/s3c-camif/camif-core.c   |  2 +-
+ drivers/media/usb/em28xx/em28xx-dvb.c         |  2 +-
+ drivers/mfd/aat2870-core.c                    |  2 +-
+ drivers/mfd/arizona-irq.c                     |  2 +-
+ drivers/mfd/lp3943.c                          |  2 +-
+ drivers/mfd/si476x-cmd.c                      |  2 +-
+ drivers/mfd/si476x-i2c.c                      |  2 +-
+ drivers/mfd/sm501.c                           |  2 +-
+ drivers/mfd/tps6105x.c                        |  2 +-
+ drivers/mfd/tps65911-comparator.c             |  2 +-
+ drivers/mfd/wm8994-irq.c                      |  2 +-
+ drivers/net/dsa/b53/b53_priv.h                |  3 ++-
+ drivers/net/dsa/microchip/ksz8.c              |  2 +-
+ drivers/net/ethernet/allwinner/sun4i-emac.c   |  2 +-
+ .../net/ethernet/apm/xgene/xgene_enet_main.c  |  2 +-
+ .../ethernet/oki-semi/pch_gbe/pch_gbe_main.c  |  2 +-
+ drivers/net/phy/mdio_device.c                 |  2 +-
+ drivers/pcmcia/bcm63xx_pcmcia.c               |  2 +-
+ drivers/pcmcia/db1xxx_ss.c                    |  2 +-
+ drivers/pcmcia/sa1100_h3600.c                 |  2 +-
+ drivers/pcmcia/soc_common.c                   |  2 +-
+ drivers/pcmcia/xxs1500_ss.c                   |  2 +-
+ drivers/phy/broadcom/phy-bcm-ns2-usbdrd.c     |  2 +-
+ drivers/phy/rockchip/phy-rockchip-usbdp.c     |  2 +-
+ drivers/phy/ti/phy-j721e-wiz.c                |  2 +-
+ include/linux/gpio.h                          | 22 -------------------
+ include/linux/mfd/lp3943.h                    |  2 +-
+ include/linux/mfd/ti-lmu.h                    |  2 +-
+ include/linux/mfd/tps65910.h                  |  2 +-
+ include/linux/mfd/ucb1x00.h                   |  2 +-
+ sound/soc/codecs/cs42l84.c                    |  2 +-
+ sound/soc/codecs/cx2072x.c                    |  2 +-
+ sound/soc/codecs/dmic.c                       |  2 +-
+ 110 files changed, 107 insertions(+), 134 deletions(-)
+ delete mode 100644 include/linux/gpio.h
+
+-- 
+2.39.5
+
+Cc: Bartosz Golaszewski <brgl@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>
+Cc: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: Gregory Clement <gregory.clement@bootlin.com>
+Cc: Frank Li <Frank.Li@nxp.com>
+Cc: Robert Jarzmik <robert.jarzmik@free.fr>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Greg Ungerer <gerg@linux-m68k.org>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: Hauke Mehrtens <hauke@hauke-m.de>
+Cc: "Rafał Miłecki" <zajec5@gmail.com>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Linus Walleij <linusw@kernel.org>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Dominik Brodowski <linux@dominikbrodowski.net>
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-samsung-soc@vger.kernel.org
+Cc: patches@opensource.cirrus.com
+Cc: linux-m68k@lists.linux-m68k.org
+Cc: linux-mips@vger.kernel.org
+Cc: linux-sh@vger.kernel.org
+Cc: linux-gpio@vger.kernel.org
+Cc: linux-input@vger.kernel.org
+Cc: linux-media@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Cc: linux-sunxi@lists.linux.dev
+Cc: linux-phy@lists.infradead.org
+Cc: linux-rockchip@lists.infradead.org
+Cc: linux-sound@vger.kernel.org
