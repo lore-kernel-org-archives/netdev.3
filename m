@@ -1,35 +1,36 @@
 Received: from mail.ksb-soft.ru (mail.ksb-soft.ru [5.167.76.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9517D3FD946;
-	Mon, 29 Jun 2026 13:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCD21A0BF3;
+	Mon, 29 Jun 2026 13:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.167.76.63
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782738540; cv=none; b=gNdpFzTsrkjckvyo2ZUqc8lrpmfh4Q3F1p6XANgNox9p9AlsaGYtnGzAxyhEK+7Cfo8K3Pbz50eBk7LYzPWzDsQ/SD0lI8uKlFQsz47zmsK+YEpdElxl60B5wP7/kHa0wsuxWoBfiJS8rDuES1us5T7LiGb9hxu0zsS04aq/csA=
+	t=1782738587; cv=none; b=VdWocNogPMVBfHlGLQLrniM0REmGQwEJ3FoVlcF5DBZ/v/Hcre0wyKy3BQaaYFn8QpMk/4GFExiHg6IPm+mqMJ/3IcZPE9dcIVSG3GUiQB1WQT1KcLJqyyXbGw0+o5yfdH6fPmDEb/ZXUjnZsIzadPpfh650fbcoiYCSQiSXW9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782738540; c=relaxed/simple;
-	bh=7zxT35iZfYUloVfdIN1A2Tchq2YZbtpf3iKeNzj5wWM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UZDfj1QlbwW1qJt9TJ+Ke274N/5U1NBBAfVXpHf3bI18pNPTdei0YvrXNFdEveqvTP3TKUiCaODFrh850sw1V+g22a+lo3mOxaceeD1HIgDGH44opOUFpSKwdoWF/6L7f0S/iPWI71XHv65NS2VLNa1994EpXkWNeENuyN3BXkc=
+	s=arc-20240116; t=1782738587; c=relaxed/simple;
+	bh=3NOBeloPaW0UydJy1E6tJcn6s2vDMmmsShE4mwuUqCg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DoZOgGJ3aIt3tmtZQiiLXaM3gJUhTa+BCME7EflTn4QCrBs5iSfJqhabgNOLej7tm+VOsawWQV+Zk+PN8xyGVO+XLQjXQmiizQgvtSHtAgs3bUiPrDbphisvRpKYTk2AjuahwdRwUpOOhQvl5RXru31fEMjg8wpl5oYPw6PcvIU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=npc-ksb.ru; spf=pass smtp.mailfrom=npc-ksb.ru; arc=none smtp.client-ip=5.167.76.63
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=npc-ksb.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=npc-ksb.ru
 Received: from ksb-289.ksb.ksb-soft.ru (unknown [10.38.22.14])
-	by mail.ksb-soft.ru (Postfix) with ESMTPA id 4gpmnP35PQz4LJWR;
-	Mon, 29 Jun 2026 16:08:57 +0300 (MSK)
+	by mail.ksb-soft.ru (Postfix) with ESMTPA id 4gpmpH5FvHz4LKBF;
+	Mon, 29 Jun 2026 16:09:43 +0300 (MSK)
 From: Markov Gleb <markov.gi@npc-ksb.ru>
-To: Potnuri Bharat Teja <bharat@chelsio.com>
+To: Jon Maloy <jmaloy@redhat.com>
 Cc: Gleb Markov <markov.gi@npc-ksb.ru>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org (open list),
+	tipc-discussion@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
 	lvc-project@linuxtesting.org
-Subject: [PATCH net] cxgb4: Fix decode strings dump for T6 adapters
-Date: Mon, 29 Jun 2026 16:08:54 +0300
-Message-ID: <20260629130856.1168-1-markov.gi@npc-ksb.ru>
+Subject: [PATCH net] tipc: make sure bc_rcvlink is not dereferenced with NULL value
+Date: Mon, 29 Jun 2026 16:09:40 +0300
+Message-ID: <20260629130942.469-1-markov.gi@npc-ksb.ru>
 X-Mailer: git-send-email 2.52.0.windows.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -57,46 +58,47 @@ X-KLMS-AntiVirus-Status: Clean, skipped
 
 From: Gleb Markov <markov.gi@npc-ksb.ru>
 
-Depending on the value of chip_version, the correct decode set is selected.
-However, the subsequent matching with the t4 encoding type in the if-else
-block results in a reassignment, which leads to the loss of support for
-t6_decode as well as reinitializing of values t4_decode and t5_decode.
+The direct dependence of the tipc_link_is_up() value on l->bc_rcvlink is
+not explicitly specified.
 
-The component history shows that the if-else block previously used for
-this purpose, as well as the execution order, was not affected by the
-change.
-Furthermore, it is suggested by the execution order that the scenario with
-overwriting and loss of support will be implemented.
+If link is up, it is assumed that the sender and receiver have valid
+values (communication with the receiver is required for timeout
+synchronization), which is not guaranteed in this code segment.
 
-Delete the if-else block.
+Turning independent conditions into nested conditions ensures that NULL
+cannot be dereferenced at tipc_link_build_proto_msg() and allows for the
+logical structure to be fixed at the functional interaction level.
+
+Make tipc_link_build_proto_msg() call only if l->bc_rcvlink is not NULL.
 
 Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 6df397539cb0 ("cxgb4: Update correct encoding of SGE Ingress DMA States for T6 adapter")
+Fixes: 047491ea334a ("tipc: set link tolerance correctly in broadcast link")
 Signed-off-by: Gleb Markov <markov.gi@npc-ksb.ru>
 ---
- drivers/net/ethernet/chelsio/cxgb4/t4_hw.c | 8 --------
- 1 file changed, 8 deletions(-)
+ net/tipc/link.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c b/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
-index 8d719f82854a..f3e8153a7a0b 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
-@@ -6735,14 +6735,6 @@ void t4_sge_decode_idma_state(struct adapter *adapter, int state)
- 		return;
- 	}
+diff --git a/net/tipc/link.c b/net/tipc/link.c
+index 49dfc098d89b..b0a640c419c8 100644
+--- a/net/tipc/link.c
++++ b/net/tipc/link.c
+@@ -2863,10 +2863,12 @@ void tipc_link_set_tolerance(struct tipc_link *l, u32 tol,
+ 			     struct sk_buff_head *xmitq)
+ {
+ 	l->tolerance = tol;
+-	if (l->bc_rcvlink)
++	if (l->bc_rcvlink) {
+ 		l->bc_rcvlink->tolerance = tol;
+-	if (tipc_link_is_up(l))
+-		tipc_link_build_proto_msg(l, STATE_MSG, 0, 0, 0, tol, 0, xmitq);
++		if (tipc_link_is_up(l))
++			tipc_link_build_proto_msg(l, STATE_MSG,
++						  0, 0, 0, tol, 0, xmitq);
++	}
+ }
  
--	if (is_t4(adapter->params.chip)) {
--		sge_idma_decode = (const char **)t4_decode;
--		sge_idma_decode_nstates = ARRAY_SIZE(t4_decode);
--	} else {
--		sge_idma_decode = (const char **)t5_decode;
--		sge_idma_decode_nstates = ARRAY_SIZE(t5_decode);
--	}
--
- 	if (state < sge_idma_decode_nstates)
- 		CH_WARN(adapter, "idma state %s\n", sge_idma_decode[state]);
- 	else
+ void tipc_link_set_prio(struct tipc_link *l, u32 prio,
 -- 
 2.43.0
 
