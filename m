@@ -1,63 +1,71 @@
-Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.185])
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012011.outbound.protection.outlook.com [52.101.53.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8B7A3EA947
-	for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 19:42:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.121.94.185
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782762165; cv=none; b=bX9WmeEXg2xytpM2yGHfwMWi9TRav48AdcxMB+CstoYtf3VUHtkndUWN5+iG1HQ6PYaROPst1wNlhzgoH1+1JwbSdWfJ20kYOo8Ekur8JKO9fXKQCD0aR+YNbsLkpjSlowRrZ/svLmFAvppV5JikkOiLfj3ljzfIU4rUf2pYz+o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782762165; c=relaxed/simple;
-	bh=771913KNEgAmcUzG6I55O2cBXCoV58ZG5cTsyqxEKP0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=knR46hDaBeBw+woVhfR0zhMnZE5/4dI7Qd4x32gpWg4/+96tAWx2uHak+5m5By7tIl2aX94x60Nz+JkOpHhQFZ4dbquo4Y8EBONkH7oPU5aGI2Xedu8Vgfy+3JGOviNydmxoHpjzlv71rZAdqC2dCqP9gQqeI94AltKfcTd4dZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=xs4all.nl; dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b=HLQmjI2c; arc=none smtp.client-ip=195.121.94.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xs4all.nl
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D892DFF04
+	for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 20:04:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782763464; cv=fail; b=L/5K8urYeZqr2KoZ5hIhqBg2LiIXAgnfMn8tXWSIzxPwbtGD0LV/IQAlZex7yF2o5iJcbvZ4J+QLXE6iwjRo6gZsG2lE1SvRrT39Qt/GftBfKoqoFhxh9W5cn/fro3xNr1WAo9uyOwgkTSopi5RSuAurU/ycEKnxt6WFBHelxjo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782763464; c=relaxed/simple;
+	bh=ptoTFb3nMgVqkD7JDcywtZFZEG9+AbN3lFVI3LFza24=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=iTIQJrmGGOZh3Xcbg1FPco0oSImCdlTPnsqCeHLjBD5N5ocZa+bSMnxo8lmNPuyHI5tTqtMZjrahm7DPLADgVyEEAgQ92/eo1sgLDgMebDByJlNBtqiuV5jw9xnK+4YEg5IvSAzBUZk78PYFrEJp94weCGg3WU6w+YLjUyJaLto=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=zw7gXV0/; arc=fail smtp.client-ip=52.101.53.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b="HLQmjI2c"
-X-KPN-MessageId: ac195578-73f2-11f1-9e8e-005056999439
-Received: from smtp.kpnmail.nl (unknown [10.31.155.7])
-	by ewsoutbound.so.kpn.org (Halon) with ESMTPS
-	id ac195578-73f2-11f1-9e8e-005056999439;
-	Mon, 29 Jun 2026 21:42:33 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xs4all.nl; s=xs4all01;
-	h=mime-version:message-id:date:subject:to:from;
-	bh=KVLNbAqFFCG8rwDMRhT8CoQ0eu3LivfXB93/2AHA5VY=;
-	b=HLQmjI2cmifG/y9rH5mpRb0NdJvsowAfK7t8obqQpyVRhsL4O/0Sxh/bx+QEcfoFZsKV9ae8Njo57
-	 gMcurozM5v9qgBhR/Cg2xE8v40BOFa0IHKZVqpHT+G2PA2qqWu7ONw2t42BpVxGWlHrkcyI4rXFptk
-	 sl/qKTdK0Yso/PXX3hz+k8Z1c4fyXq+3nAOOLeUuIyTTZCwBkgqPrA4EFzyM4ScU4cu/qnXOhhZh0F
-	 8NaLWYc8qJIskBHnaoOf3upAC7HzKK7qCoK6DyrP+O09mRMMU1biPRADh/bHV76vZGVJaN1h0K52qs
-	 IiyyOfSbzjoEGnJJqkUFTiAUkKrU3KA==
-X-KPN-MID: 33|WIsaJIEUAEB7BvzjQuPc3Bzgwys8unxdIUOszHw7dcg7PdFo6qesJykeTxMRrNa
- jI1wiPvzd0Vp/FVjrURD/AF/PHmSOScmatQSplxwgu+w=
-X-KPN-VerifiedSender: Yes
-X-CMASSUN: 33|i//pJlOhFUi5Z1DfDdgx9RLRbAVjrqcJMejy62y1lrjdngY/uLQTObok7MBCuMk
- aSUWx+azEhxlqSmVMsfSTkw==
-Received: from daedalus.home (unknown [178.231.11.185])
-	by smtp.xs4all.nl (Halon) with ESMTPSA
-	id abd0ad6c-73f2-11f1-8076-005056998788;
-	Mon, 29 Jun 2026 21:42:33 +0200 (CEST)
-From: Jori Koolstra <jkoolstra@xs4all.nl>
-To: Christian Brauner <brauner@kernel.org>,
-	Aleksa Sarai <cyphar@cyphar.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jori Koolstra <jkoolstra@xs4all.nl>
-Subject: [PATCH net-next v3 5/5] selftest: Add tests for useful handling of LSM denials on SCM_RIGHTS
-Date: Mon, 29 Jun 2026 21:43:27 +0200
-Message-ID: <20260629194327.2270798-6-jkoolstra@xs4all.nl>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260629194327.2270798-1-jkoolstra@xs4all.nl>
-References: <20260629194327.2270798-1-jkoolstra@xs4all.nl>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="zw7gXV0/"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XGm/OgrM6wRNJ09eywbexPseatY1wuLGcPcR/1UUX6dBGG1NIpH1P7/KhuO4KiGCCkunK/qO8pOYnWtnZ7T7K8JdYnWEk8B4nMU0ckseH4C0ziZKg4eatAZpzlFN2KEzzJEFmsdrbDq1Al76y5Ier/yN5t2BbSnGpzjthbLpZGgyJnQvRsKxeIqClYjp7j0Fc61fVenFP4JWy+Xy5CAlKF7xpQQu6DlVT3MK+ItZ156bDWtRiWJTmhRngK+H1Kg+d7ANe0UdqGmGKcdZW0Fjbh7VYOvzZtu2TUJ71U8M3+zMZm2mvtuXVabyqkaAEU91Oap92HP/o1C3u+U7O7Iccw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PTNtESMNiQzOYNPoBL+IZCHvCxwjBmmZtKhLVvtV1C8=;
+ b=snGLM7TNs+3YcrSUBC59Q8CwstGr3R7CKL4weMF31tudteZZEDV7huSZKROdXp3vmnXc28q8a3Y4/l2ma50xOYnlRWNSwHJG/LaFCe9nJRzFO4DikeGfEt7bbvsIsGvLdE9X09VuKgfh62f3dJ++wGQq1NjeC6VA1XwzEP3Cusydv/zCXTL3nf9N/x3bJzHmcNC7T6jxXxkZuGpX94JFO/tn/xs+yBwC0ySLgn+YNkyh4KnQw8ktNckghMz5tSHXHDzCj652P6c5WNhU7FYBgXiIUWIcLQrwbJnq4oOzy6krNI7JMx6egWzWpUkCvMRu69O2Tr2nk+BVsJRU9brR9Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PTNtESMNiQzOYNPoBL+IZCHvCxwjBmmZtKhLVvtV1C8=;
+ b=zw7gXV0/D2pfmbMoctt1SnY9wcxlToxLCGCPivZF2zzCY0rVRD4CkMk0NDvMOtGXGiLKUcLjAHJGdzAiEKxRDRP7qvxaNy+0DOWErMXpYQhyTaZRew2iwzlwevAP5kenhUlRsP8To6BwDDW2umwwmtVB4LtiytdVvcbH/L+xrnY=
+Received: from PH7P220CA0095.NAMP220.PROD.OUTLOOK.COM (2603:10b6:510:32d::24)
+ by CY8PR12MB7562.namprd12.prod.outlook.com (2603:10b6:930:95::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Mon, 29 Jun
+ 2026 20:04:19 +0000
+Received: from SA2PEPF000015CA.namprd03.prod.outlook.com
+ (2603:10b6:510:32d:cafe::a3) by PH7P220CA0095.outlook.office365.com
+ (2603:10b6:510:32d::24) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.159.19 via Frontend Transport; Mon,
+ 29 Jun 2026 20:04:19 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SA2PEPF000015CA.mail.protection.outlook.com (10.167.241.200) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.181.6 via Frontend Transport; Mon, 29 Jun 2026 20:04:19 +0000
+Received: from amd.rund-run.pensando.io (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 29 Jun
+ 2026 15:04:18 -0500
+From: "Nikhil P. Rao" <nikhil.rao@amd.com>
+To: <netdev@vger.kernel.org>
+CC: <kuba@kernel.org>, <brett.creeley@amd.com>, <eric.joyner@amd.com>,
+	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<pabeni@redhat.com>, "Nikhil P. Rao" <nikhil.rao@amd.com>
+Subject: [PATCH net v2 2/2] pds_core: fix use-after-free on workqueue during remove
+Date: Mon, 29 Jun 2026 20:03:58 +0000
+Message-ID: <20260629200358.2626129-3-nikhil.rao@amd.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260629200358.2626129-1-nikhil.rao@amd.com>
+References: <20260629200358.2626129-1-nikhil.rao@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,652 +73,172 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PEPF000015CA:EE_|CY8PR12MB7562:EE_
+X-MS-Office365-Filtering-Correlation-Id: a7e8c838-463e-4b96-1baa-08ded6199abe
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|23010399003|376014|82310400026|1800799024|18002099003|22082099003|11063799006|56012099006|6133799003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	DWEJQqTdeed1gVxWxXfuIWzoQ/gD7Iy3I9MAO7MVaTp3A4PnHaxF0wap0RqtMLUYqiPupMx0u84N0/gQA2RYvUDZjeo9b0o//9MmAk7wQ51iSGW2tOcDnacCZBgAjI1Wvz8LzvfW1vbyPfeuHzJySW7r1WW/7GorRPQR8Wv8dL/vQmytX0tdYoaslF3jd8b3tYZDMUxOkgrq7furEL7HsNTYJ9VG44BdAZ2OyKberzqlVh+D6qrxyW4Ad6J3rAeu6G2HI+BmXbCpk6cADrNQ5hG06q/OPmnqf4SMYo7beiGOkZ1OWs7Ie9GohD9MbiyeGPxfelBKqfHw1JIOvKmqWW7QiDh05FcAVZ8dVo3SWRiu1S/nOjmuNumGq8A9GjRKPcnYkF7KDLTsLz1sGDjQviVfYkAQDd6B3AdgH/s6NBljHL0AyBRpabtKhzlWrPFrfKNLqYAXa2Oz8zwlxaGfFtd912DUyV/Rf2vocAJvP5I+T/2HZReLbaAaCdveovwcFySNtfBYnByXnyrsxCTwxz5x8thhMiTxghgvPvJJYD8xP3MwQO+NADieUZ79APLvGCzzyl9IQg7xh2RjyfumSXfh3fjSWMH59LIjU7C1r7/dl4tJOT2YudgdnHXPClYCw4YvPkV6pr1PIg/yey6+Tl1ejc97M50jjnYsKO7DHkm/w+u2cTM4dzPBHWBW8uU/uSz0YVB2m8x8FPIKil4igA==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(23010399003)(376014)(82310400026)(1800799024)(18002099003)(22082099003)(11063799006)(56012099006)(6133799003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	xP64nk4pdGCfkgCArmy7yGnvKretZaJPlcdJ1R5P0Sd62LPBzAbMpIsprcWDWQicaJwBHY9PDjNh46jqTWJ7Qw0BhpN0ZNPr7jWBjjVEXaH5c7jXMNI2A8Qe1vaKJIRYHDDTzWauqT5Ux1iPPvdpEqadGnvrZUSY+/cCyM043nwfXZQL6Z+WHh7MYj0htG4LHSPuG7IQpBF2YTmXF1vju09UQ0weqUGD3qu+EgX+0MgvgY7+TnfYQhnNy4FyQRR2hN6rli+0b1SnaM0sefdDSY3/1OJ5mxzAJKbZbLOf1SxwAWClWg/aBU3Q6jg9l4xeZSc7/eL4fTQVN/C2e3vygm+0tJu+V8T2kphBPY1cTYSH6yppplOwu46wMFLeSrMBzupbw6ZiWlUtblg/a3HDC/n3Elq2SRN94ZEfY139pUxR16PN7AHBUX8ziaKSQtre
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 20:04:19.1474
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a7e8c838-463e-4b96-1baa-08ded6199abe
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SA2PEPF000015CA.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7562
 
-Tests SCM_RIGHTS fd passing on a socket with the new socket option
-SO_RIGHTS_NOTRUNC turned on.
+In pdsc_remove(), the workqueue is destroyed before pdsc_teardown()
+is called. This ordering allows two paths to queue work on the
+destroyed workqueue:
 
-The test uses the following Smack labels:
+1. If pdsc_teardown() -> pdsc_devcmd_reset() times out, the error
+   path in pdsc_devcmd_locked() queues health_work.
 
-   "Sender"   - label for the sending process
-   "Receiver" - label for the receiving process
-   "SecretX"   - labels for the files being passed
+2. A NotifyQ event can trigger the ISR and queue work before free_irq()
+   is called in pdsc_teardown().
 
-Socket communication (Sender <-> Receiver) is always allowed.
-The tests control whether Receiver can access "SecretX"-labeled fds.
-When the LSM blocks an fd, we should see a sentinel that corresponds to
-the error returned by the LSM, such as -EACCES.
+Fix problem 1 by moving destroy_workqueue() after pdsc_teardown(),
+ensuring the workqueue exists when health_work may be queued during
+teardown.
 
-Signed-off-by: Jori Koolstra <jkoolstra@xs4all.nl>
+Fix problem 2 by adding cancel_work_sync() in pdsc_qcq_free() after
+free_irq(). This ensures no new ISR can queue work, and any
+already-queued work is drained before freeing the qcq. Work draining
+during teardown may race with intx becoming invalid, so skip returning
+interrupt credits if intx is no longer assigned.
+
+Also change pdsc_core_uninit() to free adminqcq before notifyqcq,
+since adminqcq's work accesses notifyqcq via pdsc_process_notifyq().
+This ensures notifyqcq remains valid while adminqcq's work drains.
+
+Fixes: 01ba61b55b20 ("pds_core: Add adminq processing and commands")
+Reported-by: Sashiko AI Review <sashiko-bot@kernel.org>
+Signed-off-by: Nikhil P. Rao <nikhil.rao@amd.com>
 ---
- .../testing/selftests/net/af_unix/.gitignore  |   3 +
- tools/testing/selftests/net/af_unix/Makefile  |   4 +
- .../selftests/net/af_unix/scm_rights_denial.c |  20 ++
- .../selftests/net/af_unix/scm_rights_denial.h |  38 ++++
- .../net/af_unix/scm_rights_denial.sh          | 174 ++++++++++++++++
- .../net/af_unix/scm_rights_denial_receiver.c  | 195 ++++++++++++++++++
- .../net/af_unix/scm_rights_denial_sender.c    | 126 +++++++++++
- 7 files changed, 560 insertions(+)
- create mode 100644 tools/testing/selftests/net/af_unix/scm_rights_denial.c
- create mode 100644 tools/testing/selftests/net/af_unix/scm_rights_denial.h
- create mode 100755 tools/testing/selftests/net/af_unix/scm_rights_denial.sh
- create mode 100644 tools/testing/selftests/net/af_unix/scm_rights_denial_receiver.c
- create mode 100644 tools/testing/selftests/net/af_unix/scm_rights_denial_sender.c
+ drivers/net/ethernet/amd/pds_core/adminq.c | 15 +++++++++++----
+ drivers/net/ethernet/amd/pds_core/core.c   | 14 ++++++++++----
+ drivers/net/ethernet/amd/pds_core/main.c   |  5 +++--
+ 3 files changed, 24 insertions(+), 10 deletions(-)
 
-diff --git a/tools/testing/selftests/net/af_unix/.gitignore b/tools/testing/selftests/net/af_unix/.gitignore
-index 240b26740c9e..2e14b025a6e8 100644
---- a/tools/testing/selftests/net/af_unix/.gitignore
-+++ b/tools/testing/selftests/net/af_unix/.gitignore
-@@ -3,6 +3,9 @@ msg_oob
- scm_inq
- scm_pidfd
- scm_rights
-+scm_rights_denial
-+scm_rights_denial_receiver
-+scm_rights_denial_sender
- so_peek_off
- unix_connect
- unix_connreset
-diff --git a/tools/testing/selftests/net/af_unix/Makefile b/tools/testing/selftests/net/af_unix/Makefile
-index 4c0375e28bbe..86c5588caf28 100644
---- a/tools/testing/selftests/net/af_unix/Makefile
-+++ b/tools/testing/selftests/net/af_unix/Makefile
-@@ -11,9 +11,13 @@ TEST_GEN_PROGS := \
- 	scm_inq \
- 	scm_pidfd \
- 	scm_rights \
-+	scm_rights_denial \
- 	so_peek_off \
- 	unix_connect \
- 	unix_connreset \
- # end of TEST_GEN_PROGS
+diff --git a/drivers/net/ethernet/amd/pds_core/adminq.c b/drivers/net/ethernet/amd/pds_core/adminq.c
+index 097bb092bdb8..c0d9b7e6b8c3 100644
+--- a/drivers/net/ethernet/amd/pds_core/adminq.c
++++ b/drivers/net/ethernet/amd/pds_core/adminq.c
+@@ -77,6 +77,7 @@ void pdsc_process_adminq(struct pdsc_qcq *qcq)
+ 	unsigned long irqflags;
+ 	int nq_work = 0;
+ 	int aq_work = 0;
++	int intx;
  
-+TEST_GEN_FILES := scm_rights_denial_sender scm_rights_denial_receiver
-+TEST_FILES := scm_rights_denial.sh
-+
- include ../../lib.mk
-diff --git a/tools/testing/selftests/net/af_unix/scm_rights_denial.c b/tools/testing/selftests/net/af_unix/scm_rights_denial.c
-new file mode 100644
-index 000000000000..3566f1d28b9a
---- /dev/null
-+++ b/tools/testing/selftests/net/af_unix/scm_rights_denial.c
-@@ -0,0 +1,20 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <stdlib.h>
-+#include <sys/wait.h>
-+
-+#include "kselftest_harness.h"
-+
-+TEST(scm_rights_denial)
-+{
-+	int ret = system("./scm_rights_denial.sh");
-+
-+	ASSERT_NE(-1, ret);
-+	ASSERT_TRUE(WIFEXITED(ret));
-+
-+	if (WEXITSTATUS(ret) == KSFT_SKIP)
-+		SKIP(return, "scm_rights_denial.sh prerequisites not met");
-+
-+	EXPECT_EQ(0, WEXITSTATUS(ret));
-+}
-+
-+TEST_HARNESS_MAIN
-diff --git a/tools/testing/selftests/net/af_unix/scm_rights_denial.h b/tools/testing/selftests/net/af_unix/scm_rights_denial.h
-new file mode 100644
-index 000000000000..2ecdf2b8b973
---- /dev/null
-+++ b/tools/testing/selftests/net/af_unix/scm_rights_denial.h
-@@ -0,0 +1,38 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <unistd.h>
-+#include <fcntl.h>
-+
-+#ifndef SO_RIGHTS_NOTRUNC
-+#define SO_RIGHTS_NOTRUNC 85
-+#endif
-+
-+#define CMSG_IS_SCM_RIGHTS(cmsg) ({		\
-+	typeof(cmsg) _cmsg = (cmsg);		\
-+	_cmsg &&				\
-+	_cmsg->cmsg_level == SOL_SOCKET &&	\
-+	_cmsg->cmsg_type == SCM_RIGHTS;		\
-+})
-+
-+#define MIN(a, b) ({ \
-+	typeof(a) _a = (a); \
-+	typeof(b) _b = (b); \
-+	_a < _b ? _a : _b; \
-+})
-+
-+#define MAX_FDS 10
-+
-+static inline int read_current_label(char *label, size_t size)
-+{
-+	int fd = open("/proc/self/attr/current", O_RDONLY);
-+	if (fd < 0)
-+		return fd;
-+
-+	ssize_t r = read(fd, label, size - 1);
-+	close(fd);
-+	if (r < 0)
-+		return r;
-+
-+	label[r] = '\0';
-+
-+	return 0;
-+}
-diff --git a/tools/testing/selftests/net/af_unix/scm_rights_denial.sh b/tools/testing/selftests/net/af_unix/scm_rights_denial.sh
-new file mode 100755
-index 000000000000..74cafe1dfc62
---- /dev/null
-+++ b/tools/testing/selftests/net/af_unix/scm_rights_denial.sh
-@@ -0,0 +1,174 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+
-+#
-+# scm_rights_denial.sh - Test SCM_RIGHTS fd passing using Smack LSM blocking
-+#
-+# Must be run as root on a kernel with Smack enabled (security=smack).
-+# Requires: capsh (libcap), setfattr/getfattr (attr)
-+#
-+# We use the following Smack labels:
-+#   "Sender"   - label for the sending process
-+#   "Receiver" - label for the receiving process
-+#   "SecretX"   - labels for the files being passed
-+#
-+# Socket communication (Sender <-> Receiver) is always allowed.
-+# The tests control whether Receiver can access "SecretX"-labeled fds.
-+#
-+
-+set -e
-+
-+readonly KSFT_SKIP=4
-+
-+readonly SENDER="./scm_rights_denial_sender"
-+readonly RECEIVER="./scm_rights_denial_receiver"
-+
-+readonly TESTDIR="$(mktemp -d)"
-+readonly SOCK="$TESTDIR/scm_test.sock"
-+readonly TESTFILE1="$TESTDIR/secret_1"
-+readonly TESTFILE2="$TESTDIR/secret_2"
-+
-+trap 'rm -rf "$TESTDIR"' EXIT
-+
-+run_tests() {
-+
-+	preflight
-+	setup
-+
-+	run_test "TEST 1" \
-+		"Receiver should NOT have access to Secret1." \
-+		"Receiver Secret1 ---
-+Receiver Secret2 ---" \
-+		"$TESTFILE1" \
-+		"BLOCKED"
-+
-+	run_test "TEST 2" \
-+		"Receiver should have access to Secret1." \
-+		"Receiver Secret1 r--
-+Receiver Secret2 ---" \
-+		"$TESTFILE1" \
-+		"PASSED"
-+
-+	run_test "TEST 3" \
-+		"Receiver should have access to Secret2, but NOT Secret1." \
-+		"Receiver Secret1 ---
-+Receiver Secret2 r--" \
-+		"$TESTFILE1 $TESTFILE2" \
-+		"BLOCKED PASSED"
-+}
-+
-+run_test() {
-+	local name="$1"
-+	local description="$2"
-+	local rules="$3"
-+	local files="$4"
-+	local expected="$5"
-+
-+	echo ""
-+	echo "$name: $description"
-+	echo "Rules:"
-+	echo "$rules"
-+	echo "Expected: $expected"
-+	echo ""
-+
-+	while IFS= read -r rule; do
-+		[ -n "$rule" ] && echo "$rule" > /sys/fs/smackfs/load2
-+	done <<< "$rules"
-+
-+	local output status last_line
-+	output=$(send_fds "$SOCK" $files)
-+	status=$?
-+	echo "$output"
-+	last_line=$(echo "$output" | tail -n 1 | xargs)
-+
-+	if [ "$status" -ne 0 ]; then
-+		echo "TEST FAILED: receiver returned $status"
-+		return 1
-+	fi
-+
-+	if [[ "$last_line" == "$expected" ]]; then
-+		echo "TEST PASSED: outcome was $expected as expected"
-+		return 0
-+	else
-+		echo "TEST FAILED: expected $expected, got '$last_line'"
-+		return 1
-+	fi
-+}
-+
-+setup() {
-+
-+	printf "Secret 1" > "$TESTFILE1"
-+	printf "Secret 2" > "$TESTFILE2"
-+
-+	setfattr -n security.SMACK64 -v "Secret1" "$TESTFILE1"
-+	setfattr -n security.SMACK64 -v "Secret2" "$TESTFILE2"
-+	setfattr -n security.SMACK64 -v "Tmp" /tmp
-+	setfattr -n security.SMACK64 -v "Tmp" "$TESTDIR"
-+
-+	echo "Sender	Receiver	-w-" > /sys/fs/smackfs/load2
-+	echo "Receiver	Sender		-w-" > /sys/fs/smackfs/load2
-+	echo "Sender	Tmp 		rwx" > /sys/fs/smackfs/load2
-+	echo "Receiver	Tmp		rwx" > /sys/fs/smackfs/load2
-+	echo "Sender	Secret1		r--" > /sys/fs/smackfs/load2
-+	echo "Sender	Secret2		r--" > /sys/fs/smackfs/load2
-+}
-+
-+send_fds() {
-+
-+	local sk="$1"
-+	shift
-+	local files="$*"
-+
-+	(
-+	    echo "Receiver" > /proc/self/attr/current
-+	    exec capsh --drop=cap_mac_override,cap_mac_admin -- -c "$RECEIVER $sk"
-+	) &
-+	local recv_pid=$!
-+	sleep 1
-+
-+	(
-+	    echo "Sender" > /proc/self/attr/current
-+	    exec capsh --drop=cap_mac_override,cap_mac_admin -- -c "$SENDER $sk $files"
-+	) || true
-+
-+	local recv_status=0
-+	wait "$recv_pid" || recv_status=$?
-+
-+	if [ "$recv_status" -ne 0 ]; then
-+	    echo "receiver exited with $recv_status"
-+	fi
-+	return "$recv_status"
-+}
-+
-+preflight() {
-+
-+	if [ "$(id -u)" -ne 0 ]; then
-+	    echo "SKIP: must be run as root"
-+	    exit $KSFT_SKIP
-+	fi
-+
-+	if ! grep -q smack /sys/kernel/security/lsm 2>/dev/null; then
-+	    echo "SKIP: Smack is not active"
-+	    echo "  Check: cat /sys/kernel/security/lsm"
-+	    echo "  Boot with: security=smack"
-+	    exit $KSFT_SKIP
-+	fi
-+
-+	if ! mountpoint -q /sys/fs/smackfs 2>/dev/null; then
-+	    echo "Mounting smackfs..."
-+	    mount -t smackfs smackfs /sys/fs/smackfs
-+	fi
-+
-+	if ! command -v capsh &>/dev/null; then
-+	    echo "SKIP: capsh not found (install libcap)"
-+	    exit $KSFT_SKIP
-+	fi
-+
-+	if [ ! -x "$SENDER" ] || [ ! -x "$RECEIVER" ]; then
-+	    echo "ERROR: $SENDER / $RECEIVER not built (run 'make' first)"
-+	    exit 1
-+	fi
-+
-+}
-+
-+run_tests
-diff --git a/tools/testing/selftests/net/af_unix/scm_rights_denial_receiver.c b/tools/testing/selftests/net/af_unix/scm_rights_denial_receiver.c
-new file mode 100644
-index 000000000000..2965980f96ef
---- /dev/null
-+++ b/tools/testing/selftests/net/af_unix/scm_rights_denial_receiver.c
-@@ -0,0 +1,195 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+/*
-+ * scm_rights_denial_receiver.c - Receive fds over a Unix socket via SCM_RIGHTS
-+ *
-+ * Usage: ./scm_rights_denial_receiver <socket_path>
-+ *
-+ * Listens on the given Unix socket path, accepts a connection, and
-+ * attempts to receive file descriptors via SCM_RIGHTS. Reports
-+ * whether the fds were delivered or blocked.
-+ *
-+ * Used for testing LSM (Smack) blocking of fd passing.
-+ */
-+
-+#include <sys/socket.h>
-+#include <sys/un.h>
-+#include <sys/xattr.h>
-+#include <unistd.h>
-+#include <string.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <fcntl.h>
-+
-+#include "scm_rights_denial.h"
-+
-+#define RECV_LOG(fmt, ...) printf("receiver: " fmt, ##__VA_ARGS__)
-+#define RECV_ERR(fmt, ...) fprintf(stderr, "receiver: " fmt, ##__VA_ARGS__)
-+
-+static int recv_fds(int sock, int *fds)
-+{
-+	char buf[1];
-+	char ctrl[CMSG_SPACE(MAX_FDS * sizeof(int))];
-+
-+	struct iovec iov = {
-+		.iov_base = buf,
-+		.iov_len  = sizeof(buf),
-+	};
-+	struct msghdr msg = {
-+		.msg_iov        = &iov,
-+		.msg_iovlen     = 1,
-+		.msg_control    = ctrl,
-+		.msg_controllen = sizeof(ctrl),
-+	};
-+
-+	ssize_t bytes_read = recvmsg(sock, &msg, 0);
-+	if (bytes_read < 0) {
-+		perror("receiver: recvmsg");
-+		return -1;
-+	}
-+	if (bytes_read == 0) {
-+		RECV_ERR("connection closed, no data received\n");
-+		return -1;
-+	}
-+
-+	struct cmsghdr *cmsg = CMSG_FIRSTHDR(&msg);
-+	if (!CMSG_IS_SCM_RIGHTS(cmsg)) {
-+		RECV_ERR("no SCM_RIGHTS in control message\n");
-+		return -1;
-+	}
-+
-+	int num_fd_slots = (cmsg->cmsg_len - CMSG_LEN(0)) / sizeof(int);
-+	memcpy(fds, CMSG_DATA(cmsg), num_fd_slots  * sizeof(int));
-+
-+	RECV_LOG("got %d fd slot(s):", num_fd_slots);
-+	for (int i = 0; i < num_fd_slots ; i++) {
-+		if (fds[i] < 0)
-+			printf(" %s", strerrorname_np(-fds[i]));
-+		else
-+			printf(" %d", fds[i]);
-+	}
-+	putchar('\n');
-+
-+	return num_fd_slots;
-+}
-+
-+static inline int print_current_label(void)
-+{
-+	char label[256];
-+	if (!read_current_label(label, sizeof(label))) {
-+		RECV_LOG("running with Smack label '%s'\n", label);
-+		return 0;
-+	}
-+	return -1;
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	if (argc != 2) {
-+		fprintf(stderr, "Usage: %s <socket_path>\n", argv[0]);
-+		return -1;
-+	}
-+
-+	if (print_current_label()) {
-+		RECV_ERR("cannot read process Smack label");
-+		return -1;
-+	}
-+
-+	int listen_sock = socket(AF_UNIX, SOCK_STREAM, 0);
-+	if (listen_sock < 0) {
-+		perror("receiver: socket");
-+		return -1;
-+	}
-+
-+	struct sockaddr_un addr = {};
-+	addr.sun_family = AF_UNIX;
-+	strncpy(addr.sun_path, argv[1], sizeof(addr.sun_path) - 1);
-+
-+	/* Remove any stale socket file */
-+	unlink(argv[1]);
-+
-+	if (bind(listen_sock, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
-+		perror("receiver: bind");
-+		return -1;
-+	}
-+
-+	if (listen(listen_sock, 1) < 0) {
-+		perror("receiver: listen");
-+		return -1;
-+	}
-+
-+	RECV_LOG("listening on '%s'\n", argv[1]);
-+
-+	int conn_sock = accept(listen_sock, NULL, NULL);
-+	if (conn_sock < 0) {
-+		perror("receiver: accept");
-+		return -1;
-+	}
-+
-+	RECV_LOG("connection accepted\n");
-+
-+	int one = 1;
-+	if (setsockopt(conn_sock, SOL_SOCKET, SO_RIGHTS_NOTRUNC,
-+		       &one, sizeof(one)) < 0) {
-+		perror("receiver: setsockopt(SO_RIGHTS_NOTRUNC)");
-+		goto out_sock;
-+	}
-+
-+	/* Try to receive the fds */
-+	int fds[MAX_FDS];
-+	int num_fds = recv_fds(conn_sock, fds);
-+	if (num_fds < 0)
-+		goto out_sock;
-+
-+	/* Try to use the received fds -- read and print their contents */
-+	RECV_LOG("attempting to read from received fds...\n");
-+	int i;
-+	for (i = 0; i < num_fds; ++i) {
-+		char readbuf[256];
-+
-+		if (fds[i] < 0) {
-+			RECV_LOG("fd in position %i blocked\n", i);
-+			continue;
-+		} else if (fds[i] == 0) {
-+			RECV_LOG("bad fd in position %i\n", i);
-+			goto out_recv;
-+		}
-+
-+		ssize_t n = read(fds[i], readbuf, sizeof(readbuf) - 1);
-+		if (n < 0) {
-+			perror("receiver: read from received fd");
-+			goto out_recv;
-+		}
-+
-+		readbuf[n] = '\0';
-+		RECV_LOG("read %zd bytes from fd at position %i: '%s'\n", n, i, readbuf);
-+	}
-+
-+	RECV_LOG("final result:\n");
-+	for (int j = 0; j < num_fds; ++j) {
-+		if (fds[j] < 0) {
-+			printf("BLOCKED");
-+		} else {
-+			printf("PASSED");
-+			close(fds[j]);
-+		}
-+		putchar(' ');
-+	}
-+
-+	close(conn_sock);
-+	close(listen_sock);
-+	unlink(argv[1]);
-+	return 0;
-+
-+out_recv:
-+	for (int j = 0; j < num_fds; ++j) {
-+		if (fds[j] > 0)
-+			close(fds[j]);
-+	}
-+
-+out_sock:
-+	close(conn_sock);
-+	close(listen_sock);
-+	unlink(argv[1]);
-+	return -1;
-+}
-diff --git a/tools/testing/selftests/net/af_unix/scm_rights_denial_sender.c b/tools/testing/selftests/net/af_unix/scm_rights_denial_sender.c
-new file mode 100644
-index 000000000000..9742eb25f0b5
---- /dev/null
-+++ b/tools/testing/selftests/net/af_unix/scm_rights_denial_sender.c
-@@ -0,0 +1,126 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+/*
-+ * scm_rights_denial_sender.c - Send fds over a Unix socket via SCM_RIGHTS
-+ *
-+ * Usage: ./scm_rights_denial_sender <socket_path> <file_to_send> [<file_to_send>...]
-+ *
-+ * Opens the specified files and sends their fds to a receiver connected
-+ * on the given Unix socket path. Used for testing LSM blocking of fd
-+ * passing.
-+ */
-+
-+#include <sys/socket.h>
-+#include <sys/un.h>
-+#include <unistd.h>
-+#include <string.h>
-+#include <stdio.h>
-+#include <fcntl.h>
-+
-+#include "scm_rights_denial.h"
-+
-+#define SEND_LOG(fmt, ...) fprintf(stdout, "sender: " fmt, ##__VA_ARGS__)
-+#define SEND_ERR(fmt, ...) fprintf(stderr, "sender: " fmt, ##__VA_ARGS__)
-+
-+static int send_fds(int sock, int *fds, int num_fds)
-+{
-+	if (num_fds > MAX_FDS)
-+		return -1;
-+
-+	char buf[1] = { 'X' };
-+	char ctrl[CMSG_SPACE(MAX_FDS * sizeof(int))] = { 0 };
-+
-+	struct iovec iov = {
-+		.iov_base = buf,
-+		.iov_len  = sizeof(buf),
-+	};
-+	struct msghdr msg = {
-+		.msg_iov        = &iov,
-+		.msg_iovlen     = 1,
-+		.msg_control    = ctrl,
-+		.msg_controllen = CMSG_SPACE(num_fds * sizeof(int)),
-+	};
-+
-+	struct cmsghdr *cmsg = CMSG_FIRSTHDR(&msg);
-+	cmsg->cmsg_level = SOL_SOCKET;
-+	cmsg->cmsg_type  = SCM_RIGHTS;
-+	cmsg->cmsg_len   = CMSG_LEN(num_fds * sizeof(int));
-+	memcpy(CMSG_DATA(cmsg), fds, num_fds * sizeof(int));
-+
-+	ssize_t bytes_send = sendmsg(sock, &msg, 0);
-+	if (bytes_send < 0) {
-+		perror("sender: sendmsg");
-+		return -1;
-+	}
-+
-+	return 0;
-+}
-+
-+static inline int print_current_label(void)
-+{
-+	char label[256];
-+	if (!read_current_label(label, sizeof(label))) {
-+		SEND_LOG("running with Smack label '%s'\n", label);
-+		return 0;
-+	}
-+	return -1;
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	if (argc < 3 || argc > 2 + MAX_FDS) {
-+		fprintf(stderr, "Usage: %s <socket_path> <file_to_send> [<file_to_send>...]\\n",
-+			argv[0]);
-+		fprintf(stderr, "Up to a maximum of %d files", MAX_FDS);
-+		return -1;
-+	}
-+
-+	if (print_current_label()) {
-+		SEND_ERR("cannot read process Smack label");
-+		return -1;
-+	}
-+
-+	int sock = socket(AF_UNIX, SOCK_STREAM, 0);
-+	if (sock < 0) {
-+		perror("sender: socket");
-+		return -1;
-+	}
-+
-+	struct sockaddr_un addr = {};
-+	addr.sun_family = AF_UNIX;
-+	strncpy(addr.sun_path, argv[1], sizeof(addr.sun_path) - 1);
-+
-+	if (connect(sock, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
-+		perror("sender: connect");
-+		goto out_sock;
-+	}
-+
-+	SEND_LOG("connected to '%s'\n", argv[1]);
-+
-+	int num_files = argc - 2;
-+	int fds[MAX_FDS];
-+	int i;
-+	for (i = 0; i < num_files; i++) {
-+		fds[i] = open(argv[2 + i], O_RDONLY);
-+		if (fds[i] < 0) {
-+			perror("sender: open file");
-+			goto out_opened;
-+		}
-+		SEND_LOG("opened '%s' as fd %d\n", argv[2 + i], fds[i]);
-+	}
-+
-+	if (send_fds(sock, fds, num_files) < 0)
-+		goto out_opened;
-+
-+	SEND_LOG("fds successfully sent:");
-+	for (int j = 0; j < num_files; j++)
-+		printf(" %d", fds[j]);
-+	putchar('\n');
-+
-+out_opened:
-+	for (int j = 0; j < i; j++)
-+		close(fds[j]);
-+out_sock:
-+	close(sock);
-+	return -1;
-+}
+ 	/* Don't process AdminQ when it's not up */
+ 	if (!pdsc_adminq_inc_if_up(pdsc)) {
+@@ -121,10 +122,16 @@ void pdsc_process_adminq(struct pdsc_qcq *qcq)
+ 	qcq->accum_work += aq_work;
+ 
+ credits:
+-	/* Return the interrupt credits, one for each completion */
+-	pds_core_intr_credits(&pdsc->intr_ctrl[qcq->intx],
+-			      nq_work + aq_work,
+-			      PDS_CORE_INTR_CRED_REARM);
++	/* Return the interrupt credits, one for each completion.
++	 * Use READ_ONCE to get a single consistent copy of intx since it can
++	 * be set to PDS_CORE_INTR_INDEX_NOT_ASSIGNED concurrently during
++	 * teardown, and skip the credits if so.
++	 */
++	intx = READ_ONCE(qcq->intx);
++	if (intx != PDS_CORE_INTR_INDEX_NOT_ASSIGNED)
++		pds_core_intr_credits(&pdsc->intr_ctrl[intx],
++				      nq_work + aq_work,
++				      PDS_CORE_INTR_CRED_REARM);
+ 	refcount_dec(&pdsc->adminq_refcnt);
+ }
+ 
+diff --git a/drivers/net/ethernet/amd/pds_core/core.c b/drivers/net/ethernet/amd/pds_core/core.c
+index 1074a022a52f..570c0cd7339e 100644
+--- a/drivers/net/ethernet/amd/pds_core/core.c
++++ b/drivers/net/ethernet/amd/pds_core/core.c
+@@ -110,7 +110,8 @@ static void pdsc_qcq_intr_free(struct pdsc *pdsc, struct pdsc_qcq *qcq)
+ 		return;
+ 
+ 	pdsc_intr_free(pdsc, qcq->intx);
+-	qcq->intx = PDS_CORE_INTR_INDEX_NOT_ASSIGNED;
++	/* Pairs with READ_ONCE in pdsc_process_adminq() */
++	WRITE_ONCE(qcq->intx, PDS_CORE_INTR_INDEX_NOT_ASSIGNED);
+ }
+ 
+ static int pdsc_qcq_intr_alloc(struct pdsc *pdsc, struct pdsc_qcq *qcq)
+@@ -145,6 +146,10 @@ void pdsc_qcq_free(struct pdsc *pdsc, struct pdsc_qcq *qcq)
+ 
+ 	pdsc_qcq_intr_free(pdsc, qcq);
+ 
++	/* Drain any work queued by ISR before it was freed above */
++	if (qcq->work.func)
++		cancel_work_sync(&qcq->work);
++
+ 	if (qcq->q_base)
+ 		dma_free_coherent(dev, qcq->q_size,
+ 				  qcq->q_base, qcq->q_base_pa);
+@@ -304,8 +309,11 @@ int pdsc_qcq_alloc(struct pdsc *pdsc, unsigned int type, unsigned int index,
+ 
+ static void pdsc_core_uninit(struct pdsc *pdsc)
+ {
+-	pdsc_qcq_free(pdsc, &pdsc->notifyqcq);
++	/* Free adminqcq first: its work accesses notifyqcq, so we must
++	 * disable its IRQ and drain its work before freeing notifyqcq.
++	 */
+ 	pdsc_qcq_free(pdsc, &pdsc->adminqcq);
++	pdsc_qcq_free(pdsc, &pdsc->notifyqcq);
+ 
+ 	if (pdsc->kern_dbpage) {
+ 		iounmap(pdsc->kern_dbpage);
+@@ -479,8 +487,6 @@ void pdsc_teardown(struct pdsc *pdsc, bool removing)
+ {
+ 	if (!pdsc->pdev->is_virtfn)
+ 		pdsc_devcmd_reset(pdsc);
+-	if (pdsc->adminqcq.work.func)
+-		cancel_work_sync(&pdsc->adminqcq.work);
+ 
+ 	pci_clear_master(pdsc->pdev);
+ 
+diff --git a/drivers/net/ethernet/amd/pds_core/main.c b/drivers/net/ethernet/amd/pds_core/main.c
+index 22db78343eb0..638b9c7a509d 100644
+--- a/drivers/net/ethernet/amd/pds_core/main.c
++++ b/drivers/net/ethernet/amd/pds_core/main.c
+@@ -435,8 +435,6 @@ static void pdsc_remove(struct pci_dev *pdev)
+ 		pdsc_auxbus_dev_del(pdsc, pdsc, &pdsc->padev);
+ 
+ 		timer_shutdown_sync(&pdsc->wdtimer);
+-		if (pdsc->wq)
+-			destroy_workqueue(pdsc->wq);
+ 
+ 		mutex_lock(&pdsc->config_lock);
+ 		set_bit(PDSC_S_STOPPING_DRIVER, &pdsc->state);
+@@ -444,6 +442,9 @@ static void pdsc_remove(struct pci_dev *pdev)
+ 		pdsc_stop(pdsc);
+ 		pdsc_teardown(pdsc, PDSC_TEARDOWN_REMOVING);
+ 		mutex_unlock(&pdsc->config_lock);
++
++		if (pdsc->wq)
++			destroy_workqueue(pdsc->wq);
+ 		mutex_destroy(&pdsc->config_lock);
+ 		mutex_destroy(&pdsc->devcmd_lock);
+ 
 -- 
-2.54.0
+2.43.0
 
