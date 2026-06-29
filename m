@@ -1,505 +1,92 @@
-Received: from mail-qt1-f201.google.com (mail-qt1-f201.google.com [209.85.160.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A354534A3BF
-	for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 17:32:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.201
+Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BE7C374E63;
+	Mon, 29 Jun 2026 17:39:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.175.24.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782754324; cv=none; b=e4JRybOFcmH3BD0loe8XlTgwGkNJPigDSa9wZqyy0aQws5Ra6ksjjKThoKLrFG7ujSROI2RH1hbg5lFCnB9H977p0O1gS1zdjAEfVy+2doGLaBxY1TO14L/CDUGd2M994DDEDO7Y1NgK2i14zaz8i1BQWkpaVCOXSopuH+ranh8=
+	t=1782754792; cv=none; b=Mq+5VJQkfXqTc0Z6TFXRb6VsTLm2X4wyEXQA79iFmddbT1iNQM5oKNnc1eCvxdwaujO6cdmxhUlnaMbJ0+GPHHXIC2B5CcW2Aryj78QD9xcjOnPlibdDhyG30QrOxumbv5ppr+KpVQFLl201MRgcaAmriAmBeOK3mRkSIh7qZ4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782754324; c=relaxed/simple;
-	bh=BvsyFNR58sqly7rb4QImUPP7f6q1MkkJg+k7c67/rzk=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=AEui2iF/FQQnkR73Gw/2r/gmbU6KoEzRqHJWOGNuxEaXiq/dectYM0LgFLbHsRkL5db2jRLeMhGbfMR9C2cwd9LG/UpOPsCdkTWq1rntH1Jn9EZ7VUWX5lwzwm8LArZoPgo4RzXyAb9VKY1L5vGcZclfzhUdVXTHScpzwWYCMK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hE3wkRC+; arc=none smtp.client-ip=209.85.160.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hE3wkRC+"
-Received: by mail-qt1-f201.google.com with SMTP id d75a77b69052e-51c0408254aso16894141cf.0
-        for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 10:32:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782754322; x=1783359122; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=1RMnFhQOMJTAjzT4orpWwwLHyIsXLICZbpnLS4wuwM4=;
-        b=hE3wkRC+/8fai3o////Psj11f2K9zWhwQEIwD6wcNyNACcRcPHq9tiZ50wzRiCOAA2
-         hlO08HKSw3mgz2XZgo4V1uK8/iexXs/Q8S5YcHEveiYDRk7hB9+LxSBc5Buz8Zkb+eBH
-         msYEfJL6ePLxrsXPaoxDFUMeCd/xvA0uMZRx8Sx65qSKzAUPB3yzBmPBlCEQ4tWY+aPS
-         OlAwQLuJgf+Z/WCFOiyZzf3vD89BJ/JtEpQEuriBFNyzJTLxbwFeRoEwdrphQO5rSQ3/
-         +BOi9/ULFxQpyKr7PmGunAJCcV+ZYJpRsy4qnDLpatSYvbl0A2FHjp4n5o4/6Uwmowlu
-         xk2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782754322; x=1783359122;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1RMnFhQOMJTAjzT4orpWwwLHyIsXLICZbpnLS4wuwM4=;
-        b=fhUHMBhpMZ8b6EhCVsQLOVvJ23QEqinCITS8vYRiZz/DURRw0hiy5ITRvRez+u5sWR
-         2Eanq91cL9fRa3xw4itPW1GDx2k3087DeiSt+T9nqSKsRbd7PwbYf2TnJUvxs1Iupl7I
-         fIhUT8B7jqxZysukUkODeXAcOoZS2brlcTS/prhP4cBSLWEhsnzPeXKN6hKtPqsC/ZcF
-         fBI9/Q1y92EQd0yPfV7BZ7sXW3p+NiWd8X67aBT0PLgodUeqJzhzbqxVFlCoyFmjNhlB
-         CboOZCoxefpL1/pUmUAjZ/YhghdeLpyveMmU0XgHId8kVl48yRbfXctfz5dT9rS1KTT9
-         1ABQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9fL0cgDERJuedJhNmZrLH8p0qURcugN08uekwigTrCMAh/gQ5n+GGk1OLNPL2iW6BQgXtve4E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQd1pL7p18mSkuV5KLuLCdEtYiP6ayra9FXxbCs5nCtN+2BZWP
-	loT9zmbTR/ruJ/sGtl1bkEVeMuCds/+gMWbsKsAeiXhUWmYin10LyHwuh0Oev1Zy2s8uvsPQCZO
-	wOf0d7PwTCwm4kg==
-X-Received: from qtbjb6.prod.google.com ([2002:a05:622a:7106:b0:517:72b3:d80a])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:ac8:5d12:0:b0:51a:8c86:bd2a with SMTP id d75a77b69052e-51c10df10a3mr2064501cf.31.1782754321335;
- Mon, 29 Jun 2026 10:32:01 -0700 (PDT)
-Date: Mon, 29 Jun 2026 17:32:00 +0000
+	s=arc-20240116; t=1782754792; c=relaxed/simple;
+	bh=Ej3rdP+msPj7ZdoJHeG5VaheOUmHRQHs9VfwmJSIK/c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mb0fuyFZDEjv49AU1MM8na9oIPQrfmOKtohhmQ7zMPTLvbH6U2b0jyV+vd2S07E0+DsKE50P6Hw9ZjABF4KpBDugz7l6fMVyEg4+CoTTZRkJa2Se84Uoul3eGbzr2dyeakaw2QzdcYtt/GGOXtbWniiNehQGeQSBk1CWeYjmDUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpha.franken.de; spf=pass smtp.mailfrom=alpha.franken.de; arc=none smtp.client-ip=193.175.24.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpha.franken.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alpha.franken.de
+Received: from uucp by elvis.franken.de with local-rmail (Exim 3.36 #1)
+	id 1weFd2-0005id-00; Mon, 29 Jun 2026 19:18:40 +0200
+Received: by alpha.franken.de (Postfix, from userid 1000)
+	id 94EDFC013E; Mon, 29 Jun 2026 19:16:51 +0200 (CEST)
+Date: Mon, 29 Jun 2026 19:16:51 +0200
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To: raoxu <raoxu@uniontech.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, linux-mips@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net] net: sgi: ioc3-eth: fix split TX DMA mapping lengths
+Message-ID: <akKog7-ppsYUs7z0@alpha.franken.de>
+References: <4E1486BC4536407E+20260629080623.908426-1-raoxu@uniontech.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260629173200.469953-1-edumazet@google.com>
-Subject: [PATCH v4 net-next] bonding: no longer rely on RTNL in bond_fill_info()
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>, Jay Vosburgh <jv@jvosburgh.net>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4E1486BC4536407E+20260629080623.908426-1-raoxu@uniontech.com>
 
-Add READ_ONCE()/WRITE_ONCE() annotations on port->is_enabled.
-While this field is written under bond->mode_lock protection,
-is is read without this lock being held.
+On Mon, Jun 29, 2026 at 04:06:23PM +0800, raoxu wrote:
+> From: Xu Rao <raoxu@uniontech.com>
+> 
+> When a linear skb crosses a 16 KiB boundary, ioc3_start_xmit()
+> splits it into two buffers of lengths s1 and s2.  The descriptor
+> advertises those lengths through B1CNT and B2CNT.
+> 
+> The first buffer is mapped with s1, but the second buffer is also
+> mapped with s1 even though the device is told to fetch s2 bytes from
+> it.  When the lengths differ, the DMA mapping does not cover the same
+> region as the second descriptor buffer, which can result in incorrect
+> cache maintenance or a DMA fault on implementations that enforce the
+> mapped range.
+> 
+> There is a separate mismatch in the error path.  If mapping the second
+> buffer fails, only d1 needs to be unmapped.  d1 was mapped for s1 bytes,
+> but the driver unmaps it using the full packet length.  Streaming DMA
+> mappings must be unmapped with the same size used for the corresponding
+> map operation.
+> 
+> Map the second buffer with s2 and unmap the first buffer with s1 when
+> the second mapping fails.
+> 
+> Fixes: ed870f6a7aa2 ("net: sgi: ioc3-eth: use dma-direct for dma allocations")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Xu Rao <raoxu@uniontech.com>
+> ---
+>  drivers/net/ethernet/sgi/ioc3-eth.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/sgi/ioc3-eth.c b/drivers/net/ethernet/sgi/ioc3-eth.c
+> index 3973106..261f2d3 100644
+> --- a/drivers/net/ethernet/sgi/ioc3-eth.c
+> +++ b/drivers/net/ethernet/sgi/ioc3-eth.c
+> @@ -1061,9 +1061,9 @@ static netdev_tx_t ioc3_start_xmit(struct sk_buff *skb, struct net_device *dev)
+>  		d1 = dma_map_single(ip->dma_dev, skb->data, s1, DMA_TO_DEVICE);
+>  		if (dma_mapping_error(ip->dma_dev, d1))
+>  			goto drop_packet;
+> -		d2 = dma_map_single(ip->dma_dev, (void *)b2, s1, DMA_TO_DEVICE);
+> +		d2 = dma_map_single(ip->dma_dev, (void *)b2, s2, DMA_TO_DEVICE);
+>  		if (dma_mapping_error(ip->dma_dev, d2)) {
+> -			dma_unmap_single(ip->dma_dev, d1, len, DMA_TO_DEVICE);
+> +			dma_unmap_single(ip->dma_dev, d1, s1, DMA_TO_DEVICE);
+>  			goto drop_packet;
+>  		}
+>  		desc->p1     = cpu_to_be64(ioc3_map(d1, PCI64_ATTR_PREF));
+> -- 
+> 2.47.3
 
-Change bond_fill_info() to acquire RCU and use READ_ONCE()
-to read bond->params fields that can be updated concurrently
-from sysfs/procfs/rtnetlink.
+Reviewed-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 
-Add const qualifiers to bond_uses_primary(), __agg_active_ports(),
-bond_option_active_slave_get_rcu(), bond_3ad_get_active_agg_info(),
-__bond_3ad_get_active_agg_info() helpers.
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Jay Vosburgh <jv@jvosburgh.net>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
----
-v4: addressed Sashiko/Jakub feedback
-
- drivers/net/bonding/bond_3ad.c     |  24 ++++---
- drivers/net/bonding/bond_netlink.c | 109 ++++++++++++++++-------------
- drivers/net/bonding/bond_options.c |   8 +--
- include/net/bond_3ad.h             |   4 +-
- include/net/bonding.h              |   8 +--
- 5 files changed, 85 insertions(+), 68 deletions(-)
-
-diff --git a/drivers/net/bonding/bond_3ad.c b/drivers/net/bonding/bond_3ad.c
-index acbba08dbdfada00c118bd41b89a60e60f8521e7..b8e4b4d68dd65f1381ba7c0aad84609fcfbabbef 100644
---- a/drivers/net/bonding/bond_3ad.c
-+++ b/drivers/net/bonding/bond_3ad.c
-@@ -760,14 +760,14 @@ static int __agg_usable_ports(struct aggregator *agg)
- 	return valid;
- }
- 
--static int __agg_active_ports(struct aggregator *agg)
-+static int __agg_active_ports(const struct aggregator *agg)
- {
--	struct port *port;
-+	const struct port *port;
- 	int active = 0;
- 
- 	for (port = agg->lag_ports; port;
- 	     port = port->next_port_in_aggregator) {
--		if (port->is_enabled)
-+		if (READ_ONCE(port->is_enabled))
- 			active++;
- 	}
- 
-@@ -2801,11 +2801,11 @@ void bond_3ad_handle_link_change(struct slave *slave, char link)
- 	 * some of he adaptors(ce1000.lan) report.
- 	 */
- 	if (link == BOND_LINK_UP) {
--		port->is_enabled = true;
-+		WRITE_ONCE(port->is_enabled, true);
- 		ad_update_actor_keys(port, false);
- 	} else {
- 		/* link has failed */
--		port->is_enabled = false;
-+		WRITE_ONCE(port->is_enabled, false);
- 		ad_update_actor_keys(port, true);
- 	}
- 	agg = __get_first_agg(port);
-@@ -2878,16 +2878,20 @@ int bond_3ad_set_carrier(struct bonding *bond)
-  * Returns:   0 on success
-  *          < 0 on error
-  */
--int __bond_3ad_get_active_agg_info(struct bonding *bond,
-+int __bond_3ad_get_active_agg_info(const struct bonding *bond,
- 				   struct ad_info *ad_info)
- {
--	struct aggregator *aggregator = NULL, *tmp;
-+	const struct aggregator *aggregator = NULL, *tmp;
-+	struct ad_slave_info *ad_slave_info;
-+	const struct port *port;
- 	struct list_head *iter;
- 	struct slave *slave;
--	struct port *port;
- 
- 	bond_for_each_slave_rcu(bond, slave, iter) {
--		port = &(SLAVE_AD_INFO(slave)->port);
-+		ad_slave_info = SLAVE_AD_INFO(slave);
-+		if (!ad_slave_info)
-+			continue;
-+		port = &ad_slave_info->port;
- 		tmp = rcu_dereference(port->aggregator);
- 		if (tmp && tmp->is_active) {
- 			aggregator = tmp;
-@@ -2907,7 +2911,7 @@ int __bond_3ad_get_active_agg_info(struct bonding *bond,
- 	return 0;
- }
- 
--int bond_3ad_get_active_agg_info(struct bonding *bond, struct ad_info *ad_info)
-+int bond_3ad_get_active_agg_info(const struct bonding *bond, struct ad_info *ad_info)
- {
- 	int ret;
- 
-diff --git a/drivers/net/bonding/bond_netlink.c b/drivers/net/bonding/bond_netlink.c
-index 4a11572f663d3127fb2901468939556d34df16ed..55d2f8a539d46ad825768a0fb91ffe5648028d28 100644
---- a/drivers/net/bonding/bond_netlink.c
-+++ b/drivers/net/bonding/bond_netlink.c
-@@ -686,53 +686,58 @@ static size_t bond_get_size(const struct net_device *bond_dev)
- 		0;
- }
- 
--static int bond_option_active_slave_get_ifindex(struct bonding *bond)
-+static int bond_option_active_slave_get_ifindex_rcu(const struct bonding *bond)
- {
--	const struct net_device *slave;
--	int ifindex;
-+	const struct net_device *dev = NULL;
-+	const struct slave *slave;
- 
--	rcu_read_lock();
--	slave = bond_option_active_slave_get_rcu(bond);
--	ifindex = slave ? slave->ifindex : 0;
--	rcu_read_unlock();
--	return ifindex;
-+	slave = rcu_dereference(bond->curr_active_slave);
-+	if (slave)
-+		dev = slave->dev;
-+	return dev ? dev->ifindex : 0;
- }
- 
- static int bond_fill_info(struct sk_buff *skb,
- 			  const struct net_device *bond_dev)
- {
--	struct bonding *bond = netdev_priv(bond_dev);
--	unsigned int packets_per_slave;
--	int ifindex, i, targets_added;
-+	const struct bonding *bond = netdev_priv(bond_dev);
-+	int i, targets_added, miimon, mode;
-+	const struct slave *primary;
- 	struct nlattr *targets;
--	struct slave *primary;
- 
--	if (nla_put_u8(skb, IFLA_BOND_MODE, BOND_MODE(bond)))
-+	rcu_read_lock();
-+	mode = READ_ONCE(bond->params.mode);
-+	if (nla_put_u8(skb, IFLA_BOND_MODE, mode))
- 		goto nla_put_failure;
- 
--	ifindex = bond_option_active_slave_get_ifindex(bond);
--	if (ifindex && nla_put_u32(skb, IFLA_BOND_ACTIVE_SLAVE, ifindex))
--		goto nla_put_failure;
-+	if (bond_mode_uses_primary(mode)) {
-+		int ifindex = bond_option_active_slave_get_ifindex_rcu(bond);
-+
-+		if (ifindex && nla_put_u32(skb, IFLA_BOND_ACTIVE_SLAVE, ifindex))
-+			goto nla_put_failure;
-+	}
- 
--	if (nla_put_u32(skb, IFLA_BOND_MIIMON, bond->params.miimon))
-+	miimon = READ_ONCE(bond->params.miimon);
-+	if (nla_put_u32(skb, IFLA_BOND_MIIMON, miimon))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u32(skb, IFLA_BOND_UPDELAY,
--			bond->params.updelay * bond->params.miimon))
-+			READ_ONCE(bond->params.updelay) * miimon))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u32(skb, IFLA_BOND_DOWNDELAY,
--			bond->params.downdelay * bond->params.miimon))
-+			READ_ONCE(bond->params.downdelay) * miimon))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u32(skb, IFLA_BOND_PEER_NOTIF_DELAY,
--			bond->params.peer_notif_delay * bond->params.miimon))
-+			READ_ONCE(bond->params.peer_notif_delay) * miimon))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u8(skb, IFLA_BOND_USE_CARRIER, 1))
- 		goto nla_put_failure;
- 
--	if (nla_put_u32(skb, IFLA_BOND_ARP_INTERVAL, bond->params.arp_interval))
-+	if (nla_put_u32(skb, IFLA_BOND_ARP_INTERVAL,
-+			READ_ONCE(bond->params.arp_interval)))
- 		goto nla_put_failure;
- 
- 	targets = nla_nest_start_noflag(skb, IFLA_BOND_ARP_IP_TARGET);
-@@ -741,8 +746,10 @@ static int bond_fill_info(struct sk_buff *skb,
- 
- 	targets_added = 0;
- 	for (i = 0; i < BOND_MAX_ARP_TARGETS; i++) {
--		if (bond->params.arp_targets[i]) {
--			if (nla_put_be32(skb, i, bond->params.arp_targets[i]))
-+		__be32 t = READ_ONCE(bond->params.arp_targets[i]);
-+
-+		if (t) {
-+			if (nla_put_be32(skb, i, t))
- 				goto nla_put_failure;
- 			targets_added = 1;
- 		}
-@@ -753,11 +760,12 @@ static int bond_fill_info(struct sk_buff *skb,
- 	else
- 		nla_nest_cancel(skb, targets);
- 
--	if (nla_put_u32(skb, IFLA_BOND_ARP_VALIDATE, bond->params.arp_validate))
-+	if (nla_put_u32(skb, IFLA_BOND_ARP_VALIDATE,
-+			READ_ONCE(bond->params.arp_validate)))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u32(skb, IFLA_BOND_ARP_ALL_TARGETS,
--			bond->params.arp_all_targets))
-+			READ_ONCE(bond->params.arp_all_targets)))
- 		goto nla_put_failure;
- 
- #if IS_ENABLED(CONFIG_IPV6)
-@@ -767,6 +775,9 @@ static int bond_fill_info(struct sk_buff *skb,
- 
- 	targets_added = 0;
- 	for (i = 0; i < BOND_MAX_NS_TARGETS; i++) {
-+		/* Note: IPv6 addresses can not be read in an atomic READ_ONCE() yet.
-+		 * We accept this minor race for the moment.
-+		 */
- 		if (!ipv6_addr_any(&bond->params.ns_targets[i])) {
- 			if (nla_put_in6_addr(skb, i, &bond->params.ns_targets[i]))
- 				goto nla_put_failure;
-@@ -780,97 +791,97 @@ static int bond_fill_info(struct sk_buff *skb,
- 		nla_nest_cancel(skb, targets);
- #endif
- 
--	primary = rtnl_dereference(bond->primary_slave);
-+	primary = rcu_dereference(bond->primary_slave);
- 	if (primary &&
- 	    nla_put_u32(skb, IFLA_BOND_PRIMARY, primary->dev->ifindex))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u8(skb, IFLA_BOND_PRIMARY_RESELECT,
--		       bond->params.primary_reselect))
-+		       READ_ONCE(bond->params.primary_reselect)))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u8(skb, IFLA_BOND_FAIL_OVER_MAC,
--		       bond->params.fail_over_mac))
-+		       READ_ONCE(bond->params.fail_over_mac)))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u8(skb, IFLA_BOND_XMIT_HASH_POLICY,
--		       bond->params.xmit_policy))
-+		       READ_ONCE(bond->params.xmit_policy)))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u32(skb, IFLA_BOND_RESEND_IGMP,
--			bond->params.resend_igmp))
-+			READ_ONCE(bond->params.resend_igmp)))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u8(skb, IFLA_BOND_NUM_PEER_NOTIF,
--		       bond->params.num_peer_notif))
-+		       READ_ONCE(bond->params.num_peer_notif)))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u8(skb, IFLA_BOND_ALL_SLAVES_ACTIVE,
--		       bond->params.all_slaves_active))
-+		       READ_ONCE(bond->params.all_slaves_active)))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u32(skb, IFLA_BOND_MIN_LINKS,
--			bond->params.min_links))
-+			READ_ONCE(bond->params.min_links)))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u32(skb, IFLA_BOND_LP_INTERVAL,
--			bond->params.lp_interval))
-+			READ_ONCE(bond->params.lp_interval)))
- 		goto nla_put_failure;
- 
--	packets_per_slave = bond->params.packets_per_slave;
- 	if (nla_put_u32(skb, IFLA_BOND_PACKETS_PER_SLAVE,
--			packets_per_slave))
-+			READ_ONCE(bond->params.packets_per_slave)))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u8(skb, IFLA_BOND_AD_LACP_ACTIVE,
--		       bond->params.lacp_active))
-+		       READ_ONCE(bond->params.lacp_active)))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u8(skb, IFLA_BOND_AD_LACP_RATE,
--		       bond->params.lacp_fast))
-+		       READ_ONCE(bond->params.lacp_fast)))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u8(skb, IFLA_BOND_AD_SELECT,
--		       bond->params.ad_select))
-+		       READ_ONCE(bond->params.ad_select)))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u8(skb, IFLA_BOND_TLB_DYNAMIC_LB,
--		       bond->params.tlb_dynamic_lb))
-+		       READ_ONCE(bond->params.tlb_dynamic_lb)))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u8(skb, IFLA_BOND_MISSED_MAX,
--		       bond->params.missed_max))
-+		       READ_ONCE(bond->params.missed_max)))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u8(skb, IFLA_BOND_COUPLED_CONTROL,
--		       bond->params.coupled_control))
-+		       READ_ONCE(bond->params.coupled_control)))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u8(skb, IFLA_BOND_BROADCAST_NEIGH,
--		       bond->params.broadcast_neighbor))
-+		       READ_ONCE(bond->params.broadcast_neighbor)))
- 		goto nla_put_failure;
- 
- 	if (nla_put_u8(skb, IFLA_BOND_LACP_STRICT,
--		       bond->params.lacp_strict))
-+		       READ_ONCE(bond->params.lacp_strict)))
- 		goto nla_put_failure;
- 
--	if (BOND_MODE(bond) == BOND_MODE_8023AD) {
-+	if (mode == BOND_MODE_8023AD) {
- 		struct ad_info info;
- 
- 		if (capable(CAP_NET_ADMIN)) {
- 			if (nla_put_u16(skb, IFLA_BOND_AD_ACTOR_SYS_PRIO,
--					bond->params.ad_actor_sys_prio))
-+					READ_ONCE(bond->params.ad_actor_sys_prio)))
- 				goto nla_put_failure;
- 
- 			if (nla_put_u16(skb, IFLA_BOND_AD_USER_PORT_KEY,
--					bond->params.ad_user_port_key))
-+					READ_ONCE(bond->params.ad_user_port_key)))
- 				goto nla_put_failure;
- 
-+			/* Small race here, this is a minor trade off. */
- 			if (nla_put(skb, IFLA_BOND_AD_ACTOR_SYSTEM,
- 				    ETH_ALEN, &bond->params.ad_actor_system))
- 				goto nla_put_failure;
- 		}
--		if (!bond_3ad_get_active_agg_info(bond, &info)) {
-+		if (!__bond_3ad_get_active_agg_info(bond, &info)) {
- 			struct nlattr *nest;
- 
- 			nest = nla_nest_start_noflag(skb, IFLA_BOND_AD_INFO);
-@@ -898,9 +909,11 @@ static int bond_fill_info(struct sk_buff *skb,
- 		}
- 	}
- 
-+	rcu_read_unlock();
- 	return 0;
- 
- nla_put_failure:
-+	rcu_read_unlock();
- 	return -EMSGSIZE;
- }
- 
-diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
-index e590c8dee86e1e7168e400b1321fc22c8f75b87c..36b8d89387ee5d67a51087fa2c6edd0de579ab3f 100644
---- a/drivers/net/bonding/bond_options.c
-+++ b/drivers/net/bonding/bond_options.c
-@@ -934,14 +934,14 @@ static int bond_option_mode_set(struct bonding *bond,
- 
- 	/* don't cache arp_validate between modes */
- 	WRITE_ONCE(bond->params.arp_validate, BOND_ARP_VALIDATE_NONE);
--	bond->params.mode = newval->value;
-+	WRITE_ONCE(bond->params.mode, newval->value);
- 
- 	/* When changing mode, the bond device is down, we may reduce
- 	 * the bond_bcast_neigh_enabled in bond_close() if broadcast_neighbor
- 	 * enabled in 8023ad mode. Therefore, only clear broadcast_neighbor
- 	 * to 0.
- 	 */
--	bond->params.broadcast_neighbor = 0;
-+	WRITE_ONCE(bond->params.broadcast_neighbor, 0);
- 
- 	if (bond->dev->reg_state == NETREG_REGISTERED) {
- 		bool update = false;
-@@ -1706,7 +1706,7 @@ static int bond_option_lacp_strict_set(struct bonding *bond,
- {
- 	netdev_dbg(bond->dev, "Setting LACP fallback to %s (%llu)\n",
- 		   newval->string, newval->value);
--	bond->params.lacp_strict = newval->value;
-+	WRITE_ONCE(bond->params.lacp_strict, newval->value);
- 	bond_3ad_set_carrier(bond);
- 
- 	return 0;
-@@ -1927,7 +1927,7 @@ static int bond_option_broadcast_neigh_set(struct bonding *bond,
- 	if (bond->params.broadcast_neighbor == newval->value)
- 		return 0;
- 
--	bond->params.broadcast_neighbor = newval->value;
-+	WRITE_ONCE(bond->params.broadcast_neighbor, newval->value);
- 	if (bond->dev->flags & IFF_UP) {
- 		if (bond->params.broadcast_neighbor)
- 			static_branch_inc(&bond_bcast_neigh_enabled);
-diff --git a/include/net/bond_3ad.h b/include/net/bond_3ad.h
-index 05572c19e14b7ae97d497cc9c5d97d4314eab295..ef667dff297294dc78d98701aae10c31ef09df3f 100644
---- a/include/net/bond_3ad.h
-+++ b/include/net/bond_3ad.h
-@@ -302,8 +302,8 @@ void bond_3ad_state_machine_handler(struct work_struct *);
- void bond_3ad_initiate_agg_selection(struct bonding *bond, int timeout);
- void bond_3ad_adapter_speed_duplex_changed(struct slave *slave);
- void bond_3ad_handle_link_change(struct slave *slave, char link);
--int  bond_3ad_get_active_agg_info(struct bonding *bond, struct ad_info *ad_info);
--int  __bond_3ad_get_active_agg_info(struct bonding *bond,
-+int  bond_3ad_get_active_agg_info(const struct bonding *bond, struct ad_info *ad_info);
-+int  __bond_3ad_get_active_agg_info(const struct bonding *bond,
- 				    struct ad_info *ad_info);
- int bond_3ad_lacpdu_recv(const struct sk_buff *skb, struct bonding *bond,
- 			 struct slave *slave);
-diff --git a/include/net/bonding.h b/include/net/bonding.h
-index 2c54a36a8477b98dc7a4a1f45d27f7972efecba0..598d56b1bc97063365c88dd002ec1423850e56eb 100644
---- a/include/net/bonding.h
-+++ b/include/net/bonding.h
-@@ -345,14 +345,14 @@ static inline bool bond_mode_uses_primary(int mode)
- 	       mode == BOND_MODE_ALB;
- }
- 
--static inline bool bond_uses_primary(struct bonding *bond)
-+static inline bool bond_uses_primary(const struct bonding *bond)
- {
- 	return bond_mode_uses_primary(BOND_MODE(bond));
- }
- 
--static inline struct net_device *bond_option_active_slave_get_rcu(struct bonding *bond)
-+static inline struct net_device *bond_option_active_slave_get_rcu(const struct bonding *bond)
- {
--	struct slave *slave = rcu_dereference_rtnl(bond->curr_active_slave);
-+	const struct slave *slave = rcu_dereference_rtnl(bond->curr_active_slave);
- 
- 	return bond_uses_primary(bond) && slave ? slave->dev : NULL;
- }
-@@ -703,7 +703,7 @@ void bond_setup(struct net_device *bond_dev);
- unsigned int bond_get_num_tx_queues(void);
- int bond_netlink_init(void);
- void bond_netlink_fini(void);
--struct net_device *bond_option_active_slave_get_rcu(struct bonding *bond);
-+struct net_device *bond_option_active_slave_get_rcu(const struct bonding *bond);
- const char *bond_slave_link_status(s8 link);
- struct bond_vlan_tag *bond_verify_device_path(struct net_device *start_dev,
- 					      struct net_device *end_dev,
 -- 
-2.55.0.rc0.799.gd6f94ed593-goog
-
+Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
+good idea.                                                [ RFC1925, 2.3 ]
