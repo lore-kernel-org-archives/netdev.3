@@ -1,222 +1,91 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011055.outbound.protection.outlook.com [52.101.70.55])
+Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2913737475B;
-	Mon, 29 Jun 2026 14:08:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.55
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782742133; cv=fail; b=nJ67RrbCe/p/MvPe0mST9S3vMgAGGCXJorSgiko0VEEFqgHvjc/GLYIvhRVbR+QfQ7SsxfDXpdf9IA+qAZYxFX5Uk7SH4VRjrF2j3yb0BsB/cqqcbILHSUpFQgWmYvXCBQm2sNbt1lEhJv2AFwpzqyehsLo8NInw06OtTbzTBtY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782742133; c=relaxed/simple;
-	bh=S0AZqMpzvVsp/FNTSEmwe6U12QNpPK6HmOfKhVoAQiw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=sI7o0tCcb8voUduMm/ULFLE2NWAvwEBttTKHlolzqB0m6gJ77rRDsKuuXfnBzl5wd0s5d5EuK/A3DmzQjWhZQCJLU++JBPZL6RgQfirzO5UQ4sp51bd2uhFKCu9Wg7dpI1lmds0/GF/siE1qeFAmMgiGpVT6yh7RYtKYhJs6BoA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=e84TYlzk; arc=fail smtp.client-ip=52.101.70.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="e84TYlzk"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HEnBdvWsh0XR+FbiWFsCNDST5EdwRkh/QzPdzpTQpYEq1ZKtcoVHO7Xne9skudoSBOo+QuaPgXwMXM0blISBMaIuoIYXqih1b91OuRVnkJ85e+QYHrRvsLA0jDffMUVjHvPMz13+iFhooWjFc7C3iuUfu7uej0lYIW2Oqh1hAukh+heA7uio8kFTYnpQckO7pcPx5u1U7D0YzoY2UnR+vE7e+MbtKBZjFK+/F1FULcgKUIGJWPLEwT3XIQZM3GdMlSJsOtVVvHmOmoIKriWeYDXn5n1GkQFtn+uN5UZXI6Jp22qvrTw6vaATgw8jSJr3437jt1vUfjx7Aur8Gba5Lg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oGkHZmi7vUG5yrrKmcJyWTBhTM1/o8UcugETmhubcKw=;
- b=IEPCQc7eBQU/8SRJYnVF3usUBU8ujmvH7dfreyVq1pT2gWzAJkDkQoue4ERSJgcQa3Vb+xmvjZ1UX0wD8RpVHOByKu+6DYBV9hookunNtpJ/ON0uV9h53YFBz/UKaPdniPRf3VOOu+0SX7oGxIlRa2K0nzWmq1R9tLw+l/zoRX1VulzBGfTzR2hXsV2Vefz5+v0V7yOjCS5J65C7B3Cqjj3DXQuHGb1cmHuvdMDJvITKB6A8B8eaubC+hJR5yosrRyu60RfkFlYb41saDcuPvsqZAXuTVR4cJ64rRXtEbpfy0D62j0ahmMgtnH9/l+fjI6inMFp/VFpPIcXMvNFEzg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oGkHZmi7vUG5yrrKmcJyWTBhTM1/o8UcugETmhubcKw=;
- b=e84TYlzkgshWjRCyYLNKpCb4DcSsGA13xMCUPcmLRKi1mWBAoJHUuV9WsbAaaPqIY+BbRIqRmMq7svq+QZJNAzsno8SikVkcFd3tgBDSCFr9uAUdmJ5g08UckjYeCbx9KhuAVzRVHOcTlD97o5/dMzqLvKcZBNaGjyFMKLfQ68IAtBu8ggUqZ0cbeHxU7PDNeQ5f2IMaKADs7M7CpuIAdLvOa9EsWEDgAXOE5kNfIIWfpglvSrbsawGbWaAnkckc1RePuFxlbQ+10WxJEwvaZ50vt7u9T2JlZf8HQljgsh7XWOWn6wlZMba7l92opbdpUx/WwBl/3yIW/mj9AzIXjw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by AS4PR04MB9265.eurprd04.prod.outlook.com (2603:10a6:20b:4e0::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Mon, 29 Jun
- 2026 14:08:46 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0159.007; Mon, 29 Jun 2026
- 14:08:46 +0000
-Date: Mon, 29 Jun 2026 09:08:24 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: Lee Jones <lee@kernel.org>,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	Thierry Reding <thierry.reding@avionic-design.de>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Peter Chen <peter.chen@kernel.org>,
-	Paul Cercueil <paul@crapouillou.net>, Bin Liu <b-liu@ti.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Maximilian Luz <luzmaximilian@gmail.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>, brgl@kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
-	driver-core@lists.linux.dev, devicetree@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org,
-	iommu@lists.linux.dev, linux-pm@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	linux-usb@vger.kernel.org, linux-mips@vger.kernel.org,
-	platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH v2 08/19] iommu/fsl: use platform_device_set_of_node()
-Message-ID: <akJ8WOFadekww2Ye@SMW015318>
-References: <20260629-pdev-fwnode-ref-v2-0-8abe2513f96e@oss.qualcomm.com>
- <20260629-pdev-fwnode-ref-v2-8-8abe2513f96e@oss.qualcomm.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260629-pdev-fwnode-ref-v2-8-8abe2513f96e@oss.qualcomm.com>
-X-ClientProxiedBy: PH8P221CA0035.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:510:346::28) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12ED4377EA9;
+	Mon, 29 Jun 2026 14:09:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.18.0.9
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782742149; cv=none; b=ZkwUyBhW5i/JO/LLbzyF73rm0KWbD8kzJ4buUfzfN+GOkuGaeH3um18l6xGBj5Eaj0YsAQPnp46lkKadF+7c3EJjR8OHr9Qm2OcOpNzQ4EkFX+EyGUP1fo7n5Qc6tf4OP4msVppJr+qoFUataiiP9Vam+/85rapgfy3CQZvhC18=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782742149; c=relaxed/simple;
+	bh=g9dFPNs9RCiJ30PbQ83xQiLIkKE/aoKc7Ch+A3Ps5Fg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Ha9GhqP0Hgtd3pKbOvoi+quZWFtEDEc2ohwpM+m0EjfVM2wX/2wbZqb3aRk9ixfkuQz83jzB7WjN02Dys6TON4NGH9mqjmLokOYX5Ri/BDNesjO3v6ECXv9DvCUmZPzU44V5NIUekgTUZ6r8G7UlxYg/s+XHXueN2Pdjrq3RIME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=212.18.0.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
+Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.9])
+	by mail-out.m-online.net (Postfix) with ESMTP id 4gpnxf56FLz1r5hc;
+	Mon, 29 Jun 2026 16:01:10 +0200 (CEST)
+Received: from frontend03.mail.m-online.net (unknown [192.168.6.182])
+	by mail-out.m-online.net (Postfix) with ESMTP id 4gpnxc5SYXz1r5hL;
+	Mon, 29 Jun 2026 16:01:08 +0200 (CEST)
+Received: from localhost (dynscan3.mnet-online.de [192.168.6.87])
+	by mail.m-online.net (Postfix) with ESMTP id 4gpnxb4V3wz1qqlS;
+	Mon, 29 Jun 2026 16:01:07 +0200 (CEST)
+X-Virus-Scanned: amavis at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.6.182])
+ by localhost (dynscan3.mail.m-online.net [192.168.6.87]) (amavis, port 10024)
+ with ESMTP id 0SnzNWDJyvXI; Mon, 29 Jun 2026 16:01:01 +0200 (CEST)
+X-Auth-Info: MEDGnkGkok4HHiiAHx6Yp9YpyEe4vG/D2GYhM3WXSTA4/H/l6K4jcFYiosjPmxQG
+Received: from hawking (unknown [80.255.5.134])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.mnet-online.de (Postfix) with ESMTPSA;
+	Mon, 29 Jun 2026 16:01:01 +0200 (CEST)
+From: Andreas Schwab <schwab@linux-m68k.org>
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: linux-gpio@vger.kernel.org,  Arnd Bergmann <arnd@arndb.de>,  Bartosz
+ Golaszewski <brgl@kernel.org>,  Andrew Lunn <andrew@lunn.ch>,  Sebastian
+ Hesselbarth <sebastian.hesselbarth@gmail.com>,  Gregory Clement
+ <gregory.clement@bootlin.com>,  Frank Li <Frank.Li@nxp.com>,  Robert
+ Jarzmik <robert.jarzmik@free.fr>,  Krzysztof Kozlowski <krzk@kernel.org>,
+  Greg Ungerer <gerg@linux-m68k.org>,  Thomas Bogendoerfer
+ <tsbogend@alpha.franken.de>,  Hauke Mehrtens <hauke@hauke-m.de>,
+  =?utf-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <zajec5@gmail.com>,  Yoshinori Sato
+ <ysato@users.sourceforge.jp>,
+  John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,  Linus Walleij
+ <linusw@kernel.org>,  Dmitry Torokhov <dmitry.torokhov@gmail.com>,  Jakub
+ Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,  Dominik
+ Brodowski <linux@dominikbrodowski.net>,  linux-kernel@vger.kernel.org,
+  linux-arm-kernel@lists.infradead.org,  linux-samsung-soc@vger.kernel.org,
+  patches@opensource.cirrus.com,  linux-m68k@lists.linux-m68k.org,
+  linux-mips@vger.kernel.org,  linux-sh@vger.kernel.org,
+  linux-input@vger.kernel.org,  linux-media@vger.kernel.org,
+  netdev@vger.kernel.org,  linux-sunxi@lists.linux.dev,
+  linux-phy@lists.infradead.org,  linux-rockchip@lists.infradead.org,
+  linux-sound@vger.kernel.org
+Subject: Re: [PATCH 00/13] treewide: replace linux/gpio.h
+In-Reply-To: <20260629132633.1300009-1-arnd@kernel.org> (Arnd Bergmann's
+	message of "Mon, 29 Jun 2026 15:26:20 +0200")
+References: <20260629132633.1300009-1-arnd@kernel.org>
+Date: Mon, 29 Jun 2026 16:01:00 +0200
+Message-ID: <mvmik71win7.fsf@suse.de>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AS4PR04MB9265:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8a2af774-7afd-492e-d760-08ded5e7eefc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|19092799006|7416014|376014|1800799024|23010399003|3023799007|18002099003|22082099003|4143699003|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	UYy4i62EHwPpsDxL3M03C7pPoR+CUIzJ+QZPNqwbxczlPyOzQO3s+pDcSo5yo4OrGxTyfMrHpsZiu5BGeB+/B3LaTMGdKfFFcDFDHJwwo22cbArwaJcaWUTVGySahS1zUGSLc6M/iIB7US/dqr9YT+/Ub7BBl38oSie7iPkkGYdbMAjiPO+2wcBRgQlmoPIwyvemAfyqGjE+EJ9Q8BwxHCraX12T9rw9GNZ7Dg+L635+MeFrflaWkJF500rTOqJ3dYRgq8zkcC/OqMewfaj52LllyZOF8CUaGMIGJuEea0Acqsp1CVQi3WHci94D5UniHGKbWl+hpjz8dYm0sEqyAK/G9EcEj3t7WZSbNHGMbzB5Z+seRJubGkv/H7TuTmoG2N/H+uE1CtKPeASlJ4IwL5v6UeuDD3Yo2E9UhN/AB/+s+jcEkn+RbjHvCtpyiNuwMfrPuG3vVD4vSrXoQgHhMSPU2NkwnT8O/VLkyVhYz0mB9lWf6tLmR0GR6EdI7yf6XWeHQkjQlk6OaFEnPv0r7qMpKih+eflteG9sCoUWc38wBpnknF9yUTsGv/jMFSJD4ohu17gBtDr0nR4e/E+iGZ5m7O1UzMJj76jYe79s1z11zvro0gE2okoWaGIzWnsIBtiyFoCIMPxaVccM1lyWYekZTCCnH8wfVCPYtTrn48Q=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(7416014)(376014)(1800799024)(23010399003)(3023799007)(18002099003)(22082099003)(4143699003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?kDTBGJOmwuuu5VuvAWiMwRC1BM/7B24x1Ve0ujInuqGmplnllUqug0qQy+qh?=
- =?us-ascii?Q?NJs9gQ5QsneTyl2KgRz4J4tFSLqSROqxYX3HedM4H5AghUcHaGyIOOwUjIU+?=
- =?us-ascii?Q?yoixwRZu/ogZqybhdJ5KJEnhHOEkp36lII1wvNGAN8DCSqueXBwnFvcX8EuD?=
- =?us-ascii?Q?3gLY+jrmCeFZDH9RvW0FaDJzbjLbJzeKTV9x5shtP5tLN3urxWc4hpLFcXVa?=
- =?us-ascii?Q?3smy6ZRs7mmq9z2Gbv43BL41+4cl5l0oQOJNViasw6RfhLcIvMQOPoSOYKq9?=
- =?us-ascii?Q?W1e39RgRxAb5Ck0ZR7m2xnCfVZ3F835MpCJdSx4Gpk5zcuDgXW4WnJ3UEw29?=
- =?us-ascii?Q?aii7Tlh/Ocm6i0BSpdkwoC//EXC0J3CXDlhP0XyTETyhy4aC3FcY7XqSAFyQ?=
- =?us-ascii?Q?1wemrkhuUpWI86H3fJEG5l/8dZ84R7mVz3QRNwY1lUIpwH0H+rq8RtKAlZ0u?=
- =?us-ascii?Q?GlVEkq1YEJXemTBhV06kMrS/0yVwg6H/9jII92/1ixJxQKOpJHV+yID3p/2o?=
- =?us-ascii?Q?0fSTkHv6uRiE0d3saxtqrdGIYEDJYCyUWHSQsAXCOFiBuisQEvA9v2ODcS8K?=
- =?us-ascii?Q?ezKwC7oZMOEbW037b/5CEYU0JhSnolScmwHExgvV8BfySy102i7kQNc2jh+a?=
- =?us-ascii?Q?r+KR+YH6jH/KiRtVWj2hgIuc1shbAJWaLc9dUeV+8N8js9rl+rK94g8WAhwU?=
- =?us-ascii?Q?JGQ39xUdwYNKmWWQUndgbkXJB3ue6/pZ/qRQQn0Do3ZQV+N+ObzYN5sUs4ED?=
- =?us-ascii?Q?wRM1ZEOSm4yTrH16mOq2Eo9XCawuhXh31ykU+4ICPH9c97riVBVHxTltnDyH?=
- =?us-ascii?Q?HQ86EPwa2LQJSmS1yYkzSTAgQZKBLdDxI17qSuckfj9RlUHMfdoldHJwysQ5?=
- =?us-ascii?Q?0k1gDGver1FcCyPyW3h/h0jXj3hTsmwhBhXiAluhQNbMFt42Oy0KmUsq5Qse?=
- =?us-ascii?Q?QuWaEsjjS3uEYdOLESQJ3vUTuk46PR1m719uzPlWMAiLqWGrdBGHwtTBlh8I?=
- =?us-ascii?Q?XgcJSz4CeJ+nZECC3nrFT5nDRwGFHi90zYDPt/9qTOhepZh88ZpYQo58StNx?=
- =?us-ascii?Q?X/LR9fcm9kHbJYx5JabbQjkgCLHLI24IvVPN+R95sQa/HBdRo67yoIFt0rhf?=
- =?us-ascii?Q?89Fo8eevYQFe/olIzalr4HHyiJLVSbhl68EY90q88d0XOC0qThGIiA35EkVl?=
- =?us-ascii?Q?YUHFQ/FihDTalXUhjODDiNCMj4i8VhKZBpgOzKBQGKWFb7F7fc0LmyR2hLMQ?=
- =?us-ascii?Q?BNyUuLdewKXOqhJo5O/h2uTql+NJMoW9EZU1tUheEUUQPN6Y0VHKlXC9nW8x?=
- =?us-ascii?Q?Uly2brppEBGNJfkdB9hU/eJn6y95sbXy6iUTLpxLlr8Uf4hz+6S0Sk+/kuFt?=
- =?us-ascii?Q?o6rz3UBiKaj9PX697t0mmfHy5Gpm+p3M0YrV4HwXS3AipV8Mhq6QucjJP/3X?=
- =?us-ascii?Q?ux6dBaxAmm6WjeMA/BCHLhhUq3nk6zKX/cLlrfotS2mpamWQJZ7URTfBV0a8?=
- =?us-ascii?Q?Npz+ePbQn1amP+6ybAjNkhGFbCTbL1SFZKfqkreLoZNhPS4Qse9B0XoZlaDw?=
- =?us-ascii?Q?3/ovmE9+ZbehjnLZ3rjkNF/k+TxwnsW6B51Yyd75pdECc04q2Bl4vJjt7DUe?=
- =?us-ascii?Q?/nTqC2o3BwkILtj7lN9MnG8NmRmx8YvdjHgOCI4MfTh3VbuvyhU2cEBkxNI+?=
- =?us-ascii?Q?ritBogCWKAuui/i8Zby0HHPH3/5lYRUKzv01Pzw33wvPR0s12BFC0FOOebAd?=
- =?us-ascii?Q?Z3gJ4CXUJOxTMHzz8AF8Pkjo94w6iQ3tPLBHESzf7nUiZXk7UvU9?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8a2af774-7afd-492e-d760-08ded5e7eefc
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 14:08:46.0964
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CbEzC5shI94/h5UvHFft/MVfEwJZZsbh+AI6yEocLaBpBPPrKkGnLbMH4mccbXmyyirPzjH/RKwFnr9kTec1LKA8gN+zPU698NL5EzUZh8LWMcHB7e4XtI4rdqpIUD4k
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9265
+Content-Type: text/plain
 
-On Mon, Jun 29, 2026 at 11:12:31AM +0200, Bartosz Golaszewski wrote:
-> [You don't often get email from bartosz.golaszewski@oss.qualcomm.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
->
-> Ahead of reworking the reference counting logic for platform devices,
-> encapsulate the assignment of the OF node for dynamically allocated
-> platform devices with the provided helper.
->
-> Acked-by: Robin Murphy <robin.murphy@arm.com>
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-> ---
->  drivers/iommu/fsl_pamu.c | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/iommu/fsl_pamu.c b/drivers/iommu/fsl_pamu.c
-> index 25aa477a95a95cb4fa4e132727cde0a936750ee2..012839fa0d8a27cafc6a441373f4f6da794388c1 100644
-> --- a/drivers/iommu/fsl_pamu.c
-> +++ b/drivers/iommu/fsl_pamu.c
-> @@ -973,7 +973,8 @@ static __init int fsl_pamu_init(void)
->                 ret = -ENOMEM;
->                 goto error_device_alloc;
->         }
-> -       pdev->dev.of_node = of_node_get(np);
-> +
-> +       platform_device_set_of_node(pdev, np);
->
->         ret = pamu_domain_init();
->         if (ret)
-> @@ -985,12 +986,10 @@ static __init int fsl_pamu_init(void)
->                 goto error_device_add;
->         }
->
-> +       of_node_put(np);
+On Jun 29 2026, Arnd Bergmann wrote:
 
-there are other place miss of_node_put() at error pass.
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> The linux/gpio.h header used to be the global definition for the gpio
+> interfaces, with 1100 users back in linux-3.17. In linux-7.2, only about
+> 130 of those remain, so this series cleans out the rest.
+>
+> In each subsystem, we can replace the header either with
+> linux/gpio/consumer.h for users of the modern gpio descriptor interface,
 
-Can you use auto cleanup
+A few of them already used <linux/gpio/consumer.h>, and is duplicated
+now.
 
-struct device_node *np __free(device_node) = of_find_compatible_node().
-
-Frank
->         return 0;
->
->  error_device_add:
-> -       of_node_put(pdev->dev.of_node);
-> -       pdev->dev.of_node = NULL;
-> -
->         platform_device_put(pdev);
->
->  error_device_alloc:
->
-> --
-> 2.47.3
->
->
+-- 
+Andreas Schwab, schwab@linux-m68k.org
+GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
+"And now for something completely different."
