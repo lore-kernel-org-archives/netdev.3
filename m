@@ -1,490 +1,304 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD823890EE;
-	Mon, 29 Jun 2026 07:14:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B70F73C4547
+	for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 07:18:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782717260; cv=none; b=FX3z+a2plUTSrRr7jvIJYbdsj63DY6/41cFEW5cVm4cV3rYUMZ9iQOblxbXWD0QG/4K8qRrscyW3cXZZpHy0F5kLs+YNXwC38pMkci2MOhSs4xJHvjsC1BYu1TciCdMkSBqFwVXMVQsBACgTxY3ZlhRj92DIult1z8MObl8fnwo=
+	t=1782717492; cv=none; b=cf5EyEq9udVOoO49llwgAZAtqiCaq3sW1yBZ72rPUYHS7tu0GV/G1se1w7pEnqeK0DvA8JmkZknB73silu6ZpBIjSWxCWAOJlyDrvwY/nn1RH9QWBT56bdjEhqN02yfLsTuX5MLeLhP758QopkCcZnpAjmTIIfwZOoZU7b2XUpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782717260; c=relaxed/simple;
-	bh=0j7L7Hxq3MsFCuJ6VjBx+ToB7fOY6wstm5x5J9JHAk0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HaPQSfjptwbEQ4gbu/B7Ayh4ROVX+WfVEEbRh5YaoszNRma7g8+HH6e9MRYH/3i5EWzMZB7KTXfTNWe8WvwpXyUCuemCv32B3PuQCzRMmMeXFg6iQRhdJbDfgWNxWvaZifv2WnOv/wP6yeGBx7giZrqBONXvwvCzNxSxnwMYT3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=ukZ9CwvV; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
+	s=arc-20240116; t=1782717492; c=relaxed/simple;
+	bh=blN7kUYjZ29Lu9JrwtLJvpjU1Wy8lfqujnHxweqK+8c=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MyagHCB/h5ZeF/AFb3agkak2z/MeNNUW/WBHFLUo0JHZJv8XPxUi28SAHAP32XQj7zi/S15a8s2QD1cawOGdVSJEUYmJr5N0jKlcnZm24RjwJlggYWb4vvIzA16fl8tf88oSCJSiD81NOFXnspjDC23kVOBXF3zuC1UMmlZHUcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UoKebr6L; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="ukZ9CwvV"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 65T7DgabE3509985, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
-	s=dkim; t=1782717223;
-	bh=HnkChZMSPAQP4qkH/WZqbeeUB6UNrAmk37wc1ik0i40=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=ukZ9CwvVBYwhH4TIB6aRzEHBliw3E2Mll1C6/oJP9gKyGX1DKPjvGI9fjm5noMCGp
-	 iZ4P2HmAmzsNLrJdQCvF4p5EDD3PjFXUWx4yKc/Z+GHVsnXWSeu7/srEiLXfH46cZN
-	 WRtyjS7KvZ2FPizNZmQREbFb4bfTRXYSFGBfce+YIpNOLjJlgrZxaSjQkDq+WE0k6w
-	 ThLqSYd1OYmm0Txrp5bRVLbFyTnACl4FqqX+EHzZei0Kcm1mEaB+AreKhJX+ZsVU36
-	 xWTgRORlqUiNZwCZwjRLNa+wRVkzWDChejoBdiuQzgXEUZETKUugWsuasnWC8rjEn0
-	 YS/eJ14t/NHwA==
-Received: from RS-EX-MBS4.realsil.com.cn ([172.29.17.104])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 65T7DgabE3509985
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 29 Jun 2026 15:13:42 +0800
-Received: from RS-EX-MBS2.realsil.com.cn (172.29.17.102) by
- RS-EX-MBS4.realsil.com.cn (172.29.17.104) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Mon, 29 Jun 2026 15:13:41 +0800
-Received: from 172.29.37.154 (172.29.37.152) by RS-EX-MBS2.realsil.com.cn
- (172.29.17.102) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Mon, 29 Jun 2026 15:13:41 +0800
-From: javen <javen_xu@realsil.com.cn>
-To: <hkallweit1@gmail.com>, <nic_swsd@realtek.com>, <andrew+netdev@lunn.ch>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <horms@kernel.org>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Javen Xu
-	<javen_xu@realsil.com.cn>
-Subject: [PATCH net-next v9 1/7] r8169: add support for multi irqs
-Date: Mon, 29 Jun 2026 15:13:33 +0800
-Message-ID: <20260629071339.1605-2-javen_xu@realsil.com.cn>
-X-Mailer: git-send-email 2.50.1.windows.1
-In-Reply-To: <20260629071339.1605-1-javen_xu@realsil.com.cn>
-References: <20260629071339.1605-1-javen_xu@realsil.com.cn>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UoKebr6L"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-47122683cf3so593888f8f.0
+        for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 00:18:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782717487; x=1783322287; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=BovyFstc80MYHmYyIZVG50kULX+1YfHlAuIHPTiI6jk=;
+        b=UoKebr6L7g61S2ib1/fbHXwppvTCC1ASPVOG2gTWyXjTEcnJTr1ZZ1tFbyCkBNX28I
+         ay9ZQqGMkmaKqeiUNL1Bpy+ituRDCsTu/jrTTful/YsQ2V4upAJBk1RlUzHnFE9F7iSy
+         Js1x1pW7T8syZXAMpb57x+17cn2zG3kTfBddZIGdcHwvZHOrz7jgTy3bLZSPOWXhcwaN
+         8zc6BJLiedrnyhgzyP+TwCMskBECBxC/d3Dw7oYdqOCuPPd1d84yvCVWdq6Lx6En/Rgt
+         knW2V5g7iTNkQhlBWIoSQbBRyuezOLGGLv/URcDeJtqZD8CfouiGkrVZPu4z0tPrf6Ys
+         VK0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782717487; x=1783322287;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BovyFstc80MYHmYyIZVG50kULX+1YfHlAuIHPTiI6jk=;
+        b=emp65J3++dweJDQRLMS/9Lxl89yMXD9pFkqghZCZ4Kex7flyRSlIP0/9WnmGglNwdD
+         KMX5GX2RKRPJcWNc4fsXmPF8SvYXJ0ynM0PeH7DszHGLgfAkagY4J0QjcDT+bsVukjUk
+         w4hgi4G3uxlyQVGx7aBJ/6mbg0I6msm8MkyI4MHyaL6f2Pnd6YCpxCW7RweKXnV/7UXS
+         0U+/j2ijoiW+Gfrz9TrNgeSTC33k8cq3Uj+NDpXkRVXdE4xtie8dqK6Z1s7E27aUHoCr
+         ZLWi034xnEz/jhOOqAHDT8IaSC7IQ87/az5nNPEgvpIjVK0sduc3dE5a/39hOQkaeZ92
+         dU6g==
+X-Forwarded-Encrypted: i=1; AHgh+RqpQi9D0mDmDEdQfu5bqpInTpY24AohvlBPL8bm2IjP76pxtRe3U/qeBSHeHhhE8NbXEDNJIX8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5ZW8g6iHXMxNM09Xz4aCjHppwPF9w4aqImHebP/nGgulSihwo
+	hKyK9LTBLEKDsVEbvo+16XYfuBRLeM/4kvLQqjmn/GwcR/4STr170gsS
+X-Gm-Gg: AfdE7cl4NyhfrHPRUTFvRC+NU6eltX9b8Mq+n/oFtFjEL1eEgVu73bzyV0HUv22Ou/b
+	0mSe8ahPQWTyNgvjBx3+PtMIOyMWPlfWsCSTEUzzdHXxpCDaMJCXKvK89/mmOtNHUljwUgRYN/y
+	SPVPapQkiq8Fx+pK0SlTP/0Gx44WtRwJvyk8+QfQfVKStMTBJz1A5rXsRz3qFDunTwPji8X3P8U
+	bM+bcQ7aq1vLJ0VO078HVDrLkxQxE8AauqOS6d+1+ryhi2596C7smmgT5khViZA0hIDuMlcxoT5
+	LpCmDdk+3bU3ewdPqjZIfkIdixqHuWvKen/adO2Hi3KOC1TonqqOGbrgZVDkmTFEoRu9Y3ih7WS
+	VQSzSTYenJSSF7pWnhvho/2cLoGyp7Sfg/WXE6a4E8brnyuQpS5msxzDElIqmVOcBXtGfgFkbhV
+	y6888D0z++zjVyx5ECoLmwRDiFZIi99fWCK8pcRTRU8YUD94H8PBj5gcuC39f07iDoOS0=
+X-Received: by 2002:a5d:6a48:0:b0:46d:32:3340 with SMTP id ffacd0b85a97d-46fb8d93892mr12284633f8f.36.1782717486707;
+        Mon, 29 Jun 2026 00:18:06 -0700 (PDT)
+Received: from Ansuel-XPS. (host-80-183-219-152.pool80183.interbusiness.it. [80.183.219.152])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47290ed4377sm13297042f8f.37.2026.06.29.00.18.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Jun 2026 00:18:05 -0700 (PDT)
+Message-ID: <6a421c2d.1e0bfc4f.b2eb6.06fb@mx.google.com>
+X-Google-Original-Message-ID: <akIcKbA8zsoalq-G@Ansuel-XPS.>
+Date: Mon, 29 Jun 2026 09:18:01 +0200
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, llvm@lists.linux.dev
+Subject: Re: [RFC PATCH net-next v8 03/12] net: phylink: add
+ phylink_release_pcs() to externally release a PCS
+References: <20260618125752.1223-1-ansuelsmth@gmail.com>
+ <20260618125752.1223-4-ansuelsmth@gmail.com>
+ <a271385e-302d-45c7-a1df-aebd380b427b@bootlin.com>
+ <6a3fc312.6161eb1e.3441bb.c0de@mx.google.com>
+ <178defc6-8e60-4b0b-b3b0-f0f2a4003b68@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <178defc6-8e60-4b0b-b3b0-f0f2a4003b68@bootlin.com>
 
-From: Javen Xu <javen_xu@realsil.com.cn>
+On Mon, Jun 29, 2026 at 09:04:49AM +0200, Maxime Chevallier wrote:
+> Hi Christian,
+> 
+> On 6/27/26 14:33, Christian Marangi wrote:
+> > On Thu, Jun 25, 2026 at 04:13:14PM +0200, Maxime Chevallier wrote:
+> >> Hello Christian,
+> >>
+> >> On 6/18/26 14:57, Christian Marangi wrote:
+> >>> Add phylink_release_pcs() to externally release a PCS from a phylink
+> >>> instance. This can be used to handle case when a single PCS needs to be
+> >>> removed and the phylink instance needs to be refreshed.
+> >>>
+> >>> On calling phylink_release_pcs(), the PCS will be removed from the
+> >>> phylink internal PCS list and the phylink supported_interfaces value is
+> >>> reparsed with the remaining PCS interfaces.
+> >>>
+> >>> Also a phylink resolve is triggered to handle the PCS removal.
+> >>>
+> >>> The flag force_major_config is set to make phylink resolve reconfigure
+> >>> the interface (even if it didn't change).
+> >>> This is needed to handle the special case when the current PCS used
+> >>> by phylink is removed and a major_config is needed to propagae the
+> >>> configuration change. With this option enabled we also force mac_config
+> >>> even if the PHY link is not up for the in-band case.
+> >>>
+> >>> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+> >>> ---
+> >>>  drivers/net/phy/phylink.c | 56 +++++++++++++++++++++++++++++++++++++++
+> >>>  include/linux/phylink.h   |  2 ++
+> >>>  2 files changed, 58 insertions(+)
+> >>>
+> >>> diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+> >>> index c38bcd43b8c8..064d6f5a06da 100644
+> >>> --- a/drivers/net/phy/phylink.c
+> >>> +++ b/drivers/net/phy/phylink.c
+> >>> @@ -158,6 +158,8 @@ static const phy_interface_t phylink_sfp_interface_preference[] = {
+> >>>  static DECLARE_PHY_INTERFACE_MASK(phylink_sfp_interfaces);
+> >>>  
+> >>>  static void phylink_run_resolve(struct phylink *pl);
+> >>> +static void phylink_link_down(struct phylink *pl);
+> >>> +static void phylink_pcs_disable(struct phylink_pcs *pcs);
+> >>>  
+> >>>  /**
+> >>>   * phylink_set_port_modes() - set the port type modes in the ethtool mask
+> >>> @@ -918,6 +920,60 @@ static void phylink_resolve_an_pause(struct phylink_link_state *state)
+> >>>  	}
+> >>>  }
+> >>>  
+> >>> +/**
+> >>> + * phylink_release_pcs - Removes a PCS from the phylink PCS available list
+> >>> + * @pcs: a pointer to the phylink_pcs struct to be released
+> >>> + *
+> >>> + * This function release a PCS from the phylink PCS available list if
+> >>> + * actually in use. It also refreshes the supported interfaces of the
+> >>> + * phylink instance by copying the supported interfaces from the phylink
+> >>> + * conf and merging the supported interfaces of the remaining available PCS
+> >>> + * in the list and trigger a resolve.
+> >>> + */
+> >>> +void phylink_release_pcs(struct phylink_pcs *pcs)
+> >>> +{
+> >>> +	struct phylink *pl;
+> >>> +
+> >>> +	ASSERT_RTNL();
+> >>> +
+> >>> +	pl = pcs->phylink;
+> >>> +	if (!pl)
+> >>> +		return;
+> >>> +
+> >>> +	mutex_lock(&pl->state_mutex);
+> >>> +
+> >>> +	list_del(&pcs->list);
+> >>> +	pcs->phylink = NULL;
+> >>> +
+> >>> +	/*
+> >>> +	 * Check if we are removing the PCS currently
+> >>> +	 * in use by phylink. If this is the case, tear down
+> >>> +	 * the link, force phylink resolve to reconfigure the
+> >>> +	 * interface mode, disable the current PCS and set the
+> >>> +	 * phylink PCS to NULL.
+> >>> +	 */
+> >>> +	if (pl->pcs == pcs) {
+> >>> +		phylink_link_down(pl);
+> >>> +		phylink_pcs_disable(pl->pcs);
+> >>> +
+> >>> +		pl->force_major_config = true;
+> >>> +		pl->pcs = NULL;
+> >>> +	}
+> >>> +
+> >>> +	mutex_unlock(&pl->state_mutex);
+> >>> +
+> >>> +	/* Refresh supported interfaces */
+> >>> +	phy_interface_copy(pl->supported_interfaces,
+> >>> +			   pl->config->supported_interfaces);
+> >>> +	list_for_each_entry(pcs, &pl->pcs_list, list)
+> >>> +		phy_interface_or(pl->supported_interfaces,
+> >>> +				 pl->supported_interfaces,
+> >>> +				 pcs->supported_interfaces);
+> >>
+> >> I've given more thought to that 'supported_interfaces' thing. This
+> >> patchset redefines the meaning of
+> >>
+> >>   pl->config->supported_interfaces
+> >>
+> >> Currently, it's filled by the MAC driver and means "Every interface
+> >> we can support, including the ones provided by PCSs that we can use
+> >> with this MAC".
+> >>
+> >> It now becomes "Every interface we support without needing a PCS", at
+> >> least the way I understand that.
+> >>
+> > 
+> > Wait but with the current code using the OR logic, it still follows
+> > "Every interface we can support...". The modes that needs a PCS are
+> > specificed with the pcs_interfaces mask in phylink_config.
+> 
+> you current code is correct, I was mostly concerned about the doc
+> that goes along with it :)
 
-RSS uses multi rx queues to receive packets, and each rx queue needs one
-irq and napi. So this patch adds support for multi irqs and napi here.
-Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
----
-Changes in v2:
- - remove some unused definitions, such as index, name in rtl8169_irq
- - remove array imr and isr
- - remove min_irq_nvecs and max_irq_nvecs, replaced with help function
-   get_min_irq_nvecs and get_max_irq_nvecs
- - alloc irq by flags, instead of PCI_IRQ_ALL_TYPES
+Oh yep thanks, I will update also that entry. Also maybe check the .rst
+introduced and tell me if something is confusing or badly described.
 
-Changes in v3:
- - add enum rtl_isr_version to replace macro definition
- - remove struct rtl8169_napi, use napi_struct array instead and alloc
-   memory for this array dynamically
- - remove struct rtl8169_irq
+> 
+> So in the end, we'd have something like (simplified):
+> 
+> pl->config.supported_interfaces = RGMII_xx | SGMII | 1000BaseX
+> pl->config.pcs_interfaces = SGMII | 1000BaseX
+> 
+> pcs->supported_interface = SGMII| 1000BaseX
+> 
+> correct ?
+> 
 
-Changes in v4:
- - change retval to ret in rtl8169_set_real_num_queue()
- - reverse xmas tree in rtl8169_poll() and rtl8169_interrupt()
- - remove tp->hw_supp_isr_ver
+Correct. phylink_config describing that for SGMII and 1000BaseX a PCS is
+required and the related PCS declaring support for those modes.
 
-Changes in v5:
- - rtl8169_request_irq(), when failed, only free irqs which are
-   allocated
- - remove rss_support, simplied napi init, call r8169_init_napi()
-   directly
- - remove rtl_isr_version, INTR_VEC_MAP_MASK, INTR_VEC_MAP_STATUS,
-   R8169_MAX_MSIX_VEC, rss_enable, recheck_desc_ownbit
- - rtl_software_parameter_initialize() this function will be expanded in
-   next patch, so i want to remain it here.
+Code will skip searching for a PCS for RGMII.
 
-Changes in v6:
- - Fix netpoll crash
- - Fix use-after-free during driver unload by registering a devm action
-   for netif_napi_del()
- - remove tp->irq
+> > 
+> > The late add and release operates on the phylink supported_interfaces ONLY
+> > when the MAC didn't specify support for it (by removing it as only the PCS
+> > will declare support for it)
+> > 
+> > The confusion is present because everything is validated later on
+> > major_config so those supported_interfaces are just an HINT that are later
+> > verified with get_caps and with the pcs_validate OPs.
+> > 
+> > Adding the supported_interfaces to phylink is really to keep an original
+> > reference of the value. This is to address a pattern I have notice where
+> > the MAC driver always OR the interfaces with the one supported by the PCS.
+> > (I remember it was pointed out by Russell)
+> > 
+> > But I'm more than open to discussion as this is something marginal to the
+> > whole implementation, I'm also questioning if this OR is actually useful to
+> > anything on the nth tought on this.
+> > 
+> > One thing that I notice is that parsing this early with AND might be
+> > problematic at phylink_create, but I still have to evaluate that.
+> > 
+> > My take is that would be good to have some review also on the other logic
+> > as I think I reached a point where Sashiko starts to comments on more or
+> > less unreal problem.
+> 
+> True, TBH all the fwnode part is something I'm a bit less familiar with though
+> so maybe someone else can browse through that.
+> 
+> FWIW, I've tested that whole series on a board that has "legacy" PCS board
+> that has mvpp2 and 2 possible PCSs, and it seems to work fine so no regressions
+> there :)
+> 
+> A side note with the "legacy" naming, I'd rather have it called "built-in" or
+> something like that, I don't see a clear path to porting the existing code to
+> fwnode without breaking DT compat, as it's likely we'll have to remove the PCS
+> register ranges out of the MAC's range. 
 
-Changes in v7:
- - pass NAPI as arg to rtl_rx()
- - use netif_set_real_num_queues to replace rtl8169_set_real_num_queues
- - replace rtl_software_parameter_initialize with rtl_setup_rx_params
+I think also built-in might be confusing as a SoC might have a PCS built-in
+but just as a separate device on a different register map.
 
-Changes in v8:
- - no changes
+A better description might be "externally-managed" but that is very long...
 
-Changes in v9:
- - no changes
----
- drivers/net/ethernet/realtek/r8169_main.c | 150 +++++++++++++++++-----
- 1 file changed, 121 insertions(+), 29 deletions(-)
+Also the use of fwnode and DT is just to reference them and use the normal
+helper but the implementation is liberal on custom implementation for the
+current code.
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index ec4fc21fa21f..8f3a5c50299f 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -733,7 +733,6 @@ struct rtl8169_private {
- 	struct pci_dev *pci_dev;
- 	struct net_device *dev;
- 	struct phy_device *phydev;
--	struct napi_struct napi;
- 	enum mac_version mac_version;
- 	enum rtl_dash_type dash_type;
- 	u32 cur_rx; /* Index into the Rx descriptor buffer of next Rx pkt. */
-@@ -745,10 +744,12 @@ struct rtl8169_private {
- 	dma_addr_t RxPhyAddr;
- 	struct page *Rx_databuff[NUM_RX_DESC];	/* Rx data buffers */
- 	struct ring_info tx_skb[NUM_TX_DESC];	/* Tx data buffers */
-+	struct napi_struct *rtl8169_napi;
-+	unsigned int num_rx_rings;
- 	u16 cp_cmd;
- 	u16 tx_lpi_timer;
- 	u32 irq_mask;
--	int irq;
-+	unsigned int irq_nvecs;
- 	struct clk *clk;
- 
- 	struct {
-@@ -2680,6 +2681,11 @@ static void rtl_hw_reset(struct rtl8169_private *tp)
- 	rtl_loop_wait_low(tp, &rtl_chipcmd_cond, 100, 100);
- }
- 
-+static void rtl_setup_rx_params(struct rtl8169_private *tp)
-+{
-+	tp->num_rx_rings = 1;
-+}
-+
- static void rtl_request_firmware(struct rtl8169_private *tp)
- {
- 	struct rtl_fw *rtl_fw;
-@@ -4266,9 +4272,21 @@ static void rtl8169_tx_clear(struct rtl8169_private *tp)
- 	netdev_reset_queue(tp->dev);
- }
- 
-+static void rtl8169_napi_disable(struct rtl8169_private *tp)
-+{
-+	for (int i = 0; i < tp->irq_nvecs; i++)
-+		napi_disable(&tp->rtl8169_napi[i]);
-+}
-+
-+static void rtl8169_napi_enable(struct rtl8169_private *tp)
-+{
-+	for (int i = 0; i < tp->irq_nvecs; i++)
-+		napi_enable(&tp->rtl8169_napi[i]);
-+}
-+
- static void rtl8169_cleanup(struct rtl8169_private *tp)
- {
--	napi_disable(&tp->napi);
-+	rtl8169_napi_disable(tp);
- 
- 	/* Give a racing hard_start_xmit a few cycles to complete. */
- 	synchronize_net();
-@@ -4314,7 +4332,7 @@ static void rtl_reset_work(struct rtl8169_private *tp)
- 	for (i = 0; i < NUM_RX_DESC; i++)
- 		rtl8169_mark_to_asic(tp->RxDescArray + i);
- 
--	napi_enable(&tp->napi);
-+	rtl8169_napi_enable(tp);
- 	rtl_hw_start(tp);
- }
- 
-@@ -4768,7 +4786,8 @@ static inline void rtl8169_rx_csum(struct sk_buff *skb, u32 opts1)
- 		skb_checksum_none_assert(skb);
- }
- 
--static int rtl_rx(struct net_device *dev, struct rtl8169_private *tp, int budget)
-+static int rtl_rx(struct net_device *dev, struct rtl8169_private *tp,
-+		  int budget, struct napi_struct *napi)
- {
- 	struct device *d = tp_to_dev(tp);
- 	int count;
-@@ -4820,7 +4839,7 @@ static int rtl_rx(struct net_device *dev, struct rtl8169_private *tp, int budget
- 			goto release_descriptor;
- 		}
- 
--		skb = napi_alloc_skb(&tp->napi, pkt_size);
-+		skb = napi_alloc_skb(napi, pkt_size);
- 		if (unlikely(!skb)) {
- 			dev->stats.rx_dropped++;
- 			goto release_descriptor;
-@@ -4844,7 +4863,7 @@ static int rtl_rx(struct net_device *dev, struct rtl8169_private *tp, int budget
- 		if (skb->pkt_type == PACKET_MULTICAST)
- 			dev->stats.multicast++;
- 
--		napi_gro_receive(&tp->napi, skb);
-+		napi_gro_receive(napi, skb);
- 
- 		dev_sw_netstats_rx_add(dev, pkt_size);
- release_descriptor:
-@@ -4856,8 +4875,12 @@ static int rtl_rx(struct net_device *dev, struct rtl8169_private *tp, int budget
- 
- static irqreturn_t rtl8169_interrupt(int irq, void *dev_instance)
- {
--	struct rtl8169_private *tp = dev_instance;
--	u32 status = rtl_get_events(tp);
-+	struct napi_struct *napi = dev_instance;
-+	struct rtl8169_private *tp;
-+	u32 status;
-+
-+	tp = netdev_priv(napi->dev);
-+	status = rtl_get_events(tp);
- 
- 	if ((status & 0xffff) == 0xffff || !(status & tp->irq_mask))
- 		return IRQ_NONE;
-@@ -4873,13 +4896,43 @@ static irqreturn_t rtl8169_interrupt(int irq, void *dev_instance)
- 		phy_mac_interrupt(tp->phydev);
- 
- 	rtl_irq_disable(tp);
--	napi_schedule(&tp->napi);
-+	napi_schedule(napi);
- out:
- 	rtl_ack_events(tp, status);
- 
- 	return IRQ_HANDLED;
- }
- 
-+static void rtl8169_free_irq(struct rtl8169_private *tp)
-+{
-+	for (int i = 0; i < tp->irq_nvecs; i++) {
-+		struct napi_struct *napi = &tp->rtl8169_napi[i];
-+
-+		pci_free_irq(tp->pci_dev, i, napi);
-+	}
-+}
-+
-+static int rtl8169_request_irq(struct rtl8169_private *tp)
-+{
-+	struct net_device *dev = tp->dev;
-+	struct napi_struct *napi;
-+	int i, rc;
-+
-+	for (i = 0; i < tp->irq_nvecs; i++) {
-+		napi = &tp->rtl8169_napi[i];
-+		rc = pci_request_irq(tp->pci_dev, i, rtl8169_interrupt,
-+				     NULL, napi, "%s-%d", dev->name, i);
-+		if (rc)
-+			goto free_irq;
-+	}
-+	return 0;
-+
-+free_irq:
-+	while (--i >= 0)
-+		pci_free_irq(tp->pci_dev, i, &tp->rtl8169_napi[i]);
-+	return rc;
-+}
-+
- static void rtl_task(struct work_struct *work)
- {
- 	struct rtl8169_private *tp =
-@@ -4914,13 +4967,13 @@ static void rtl_task(struct work_struct *work)
- 
- static int rtl8169_poll(struct napi_struct *napi, int budget)
- {
--	struct rtl8169_private *tp = container_of(napi, struct rtl8169_private, napi);
--	struct net_device *dev = tp->dev;
--	int work_done;
-+	struct rtl8169_private *tp = netdev_priv(napi->dev);
-+	struct net_device *dev = napi->dev;
-+	int work_done = 0;
- 
- 	rtl_tx(dev, tp, budget);
- 
--	work_done = rtl_rx(dev, tp, budget);
-+	work_done = rtl_rx(dev, tp, budget, napi);
- 
- 	if (work_done < budget && napi_complete_done(napi, work_done))
- 		rtl_irq_enable(tp);
-@@ -5035,7 +5088,7 @@ static void rtl8169_up(struct rtl8169_private *tp)
- 	phy_init_hw(tp->phydev);
- 	phy_resume(tp->phydev);
- 	rtl8169_init_phy(tp);
--	napi_enable(&tp->napi);
-+	rtl8169_napi_enable(tp);
- 	enable_work(&tp->wk.work);
- 	rtl_reset_work(tp);
- 
-@@ -5053,7 +5106,7 @@ static int rtl8169_close(struct net_device *dev)
- 	rtl8169_down(tp);
- 	rtl8169_rx_clear(tp);
- 
--	free_irq(tp->irq, tp);
-+	rtl8169_free_irq(tp);
- 
- 	phy_disconnect(tp->phydev);
- 
-@@ -5074,7 +5127,10 @@ static void rtl8169_netpoll(struct net_device *dev)
- {
- 	struct rtl8169_private *tp = netdev_priv(dev);
- 
--	rtl8169_interrupt(tp->irq, tp);
-+	for (int i = 0; i < tp->irq_nvecs; i++) {
-+		rtl8169_interrupt(pci_irq_vector(tp->pci_dev, i),
-+				  &tp->rtl8169_napi[i]);
-+	}
- }
- #endif
- 
-@@ -5082,7 +5138,6 @@ static int rtl_open(struct net_device *dev)
- {
- 	struct rtl8169_private *tp = netdev_priv(dev);
- 	struct pci_dev *pdev = tp->pci_dev;
--	unsigned long irqflags;
- 	int retval = -ENOMEM;
- 
- 	pm_runtime_get_sync(&pdev->dev);
-@@ -5107,8 +5162,7 @@ static int rtl_open(struct net_device *dev)
- 
- 	rtl_request_firmware(tp);
- 
--	irqflags = pci_dev_msi_enabled(pdev) ? IRQF_NO_THREAD : IRQF_SHARED;
--	retval = request_irq(tp->irq, rtl8169_interrupt, irqflags, dev->name, tp);
-+	retval = rtl8169_request_irq(tp);
- 	if (retval < 0)
- 		goto err_release_fw_2;
- 
-@@ -5125,7 +5179,7 @@ static int rtl_open(struct net_device *dev)
- 	return retval;
- 
- err_free_irq:
--	free_irq(tp->irq, tp);
-+	rtl8169_free_irq(tp);
- err_release_fw_2:
- 	rtl_release_firmware(tp);
- 	rtl8169_rx_clear(tp);
-@@ -5275,6 +5329,14 @@ static void rtl_shutdown(struct pci_dev *pdev)
- 		pci_prepare_to_sleep(pdev);
- }
- 
-+static void r8169_free_napi(struct rtl8169_private *tp)
-+{
-+	for (int i = 0; i < tp->irq_nvecs; i++)
-+		netif_napi_del(&tp->rtl8169_napi[i]);
-+
-+	kfree(tp->rtl8169_napi);
-+}
-+
- static void rtl_remove_one(struct pci_dev *pdev)
- {
- 	struct rtl8169_private *tp = pci_get_drvdata(pdev);
-@@ -5289,6 +5351,8 @@ static void rtl_remove_one(struct pci_dev *pdev)
- 
- 	unregister_netdev(tp->dev);
- 
-+	r8169_free_napi(tp);
-+
- 	if (tp->dash_type != RTL_DASH_NONE)
- 		rtl8168_driver_stop(tp);
- 
-@@ -5328,7 +5392,9 @@ static void rtl_set_irq_mask(struct rtl8169_private *tp)
- 
- static int rtl_alloc_irq(struct rtl8169_private *tp)
- {
-+	struct pci_dev *pdev = tp->pci_dev;
- 	unsigned int flags;
-+	int nvecs;
- 
- 	switch (tp->mac_version) {
- 	case RTL_GIGA_MAC_VER_02 ... RTL_GIGA_MAC_VER_06:
-@@ -5344,7 +5410,14 @@ static int rtl_alloc_irq(struct rtl8169_private *tp)
- 		break;
- 	}
- 
--	return pci_alloc_irq_vectors(tp->pci_dev, 1, 1, flags);
-+	nvecs = pci_alloc_irq_vectors(pdev, 1, 1, flags);
-+
-+	if (nvecs < 0)
-+		return nvecs;
-+
-+	tp->irq_nvecs = nvecs;
-+
-+	return 0;
- }
- 
- static void rtl_read_mac_address(struct rtl8169_private *tp,
-@@ -5599,6 +5672,12 @@ static bool rtl_aspm_is_safe(struct rtl8169_private *tp)
- 	return false;
- }
- 
-+static void r8169_init_napi(struct rtl8169_private *tp)
-+{
-+	for (int i = 0; i < tp->irq_nvecs; i++)
-+		netif_napi_add(tp->dev, &tp->rtl8169_napi[i], rtl8169_poll);
-+}
-+
- static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- {
- 	const struct rtl_chip_info *chip;
-@@ -5703,12 +5782,12 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 
- 	rtl_hw_reset(tp);
- 
-+	rtl_setup_rx_params(tp);
-+
- 	rc = rtl_alloc_irq(tp);
- 	if (rc < 0)
- 		return dev_err_probe(&pdev->dev, rc, "Can't allocate interrupt\n");
- 
--	tp->irq = pci_irq_vector(pdev, 0);
--
- 	INIT_WORK(&tp->wk.work, rtl_task);
- 	disable_work(&tp->wk.work);
- 
-@@ -5716,8 +5795,6 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 
- 	dev->ethtool_ops = &rtl8169_ethtool_ops;
- 
--	netif_napi_add(dev, &tp->napi, rtl8169_poll);
--
- 	dev->hw_features = NETIF_F_IP_CSUM | NETIF_F_RXCSUM |
- 			   NETIF_F_HW_VLAN_CTAG_TX | NETIF_F_HW_VLAN_CTAG_RX;
- 	dev->vlan_features = NETIF_F_SG | NETIF_F_IP_CSUM | NETIF_F_TSO;
-@@ -5778,6 +5855,10 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	if (jumbo_max)
- 		dev->max_mtu = jumbo_max;
- 
-+	rc = netif_set_real_num_queues(tp->dev, 1, tp->num_rx_rings);
-+	if (rc < 0)
-+		return dev_err_probe(&pdev->dev, rc, "set tx/rx num failure\n");
-+
- 	rtl_set_irq_mask(tp);
- 
- 	tp->counters = dmam_alloc_coherent (&pdev->dev, sizeof(*tp->counters),
-@@ -5792,9 +5873,15 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	if (rc)
- 		return rc;
- 
-+	tp->rtl8169_napi = kcalloc(tp->irq_nvecs, sizeof(struct napi_struct), GFP_KERNEL);
-+	if (!tp->rtl8169_napi)
-+		return -ENOMEM;
-+
-+	r8169_init_napi(tp);
-+
- 	rc = register_netdev(dev);
- 	if (rc)
--		return rc;
-+		goto err_free_napi;
- 
- 	if (IS_ENABLED(CONFIG_R8169_LEDS)) {
- 		if (rtl_is_8125(tp))
-@@ -5803,8 +5890,9 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 			tp->leds = rtl8168_init_leds(dev);
- 	}
- 
--	netdev_info(dev, "%s, %pM, %sXID %x, IRQ %d\n",
--		    chip->name, dev->dev_addr, ext_xid_str, xid, tp->irq);
-+	netdev_info(dev, "%s, %pM, %sXID %x, IRQ %d (%d total)\n",
-+		    chip->name, dev->dev_addr, ext_xid_str, xid,
-+		    pci_irq_vector(pdev, 0), tp->irq_nvecs);
- 
- 	if (jumbo_max)
- 		netdev_info(dev, "jumbo features [frames: %d bytes, tx checksumming: %s]\n",
-@@ -5821,6 +5909,10 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		pm_runtime_put_sync(&pdev->dev);
- 
- 	return 0;
-+
-+err_free_napi:
-+	r8169_free_napi(tp);
-+	return rc;
- }
- 
- static struct pci_driver rtl8169_pci_driver = {
+Everything is around the pcs_interface mask, num_possible_pcs and the
+fill_available_pcs.
+
+Nobody stops from implementing custom parser in fill_available_pcs and
+return a PCS pointer created directly by the MAC. (In such case late and
+release won't be needed as everything is present when phylink_create is
+called)
+
+On OpenWrt we migrated every SoC that used ""exotic"" pcs reference (Qcom,
+Realtek, MTK, Airoha) but I don't have a board that used something like the
+'pcs' property.
+
+> 
+> Thanks for this work anyway, this is great !
+> 
+> Maxime
+
 -- 
-2.43.0
-
+	Ansuel
