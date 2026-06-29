@@ -1,81 +1,79 @@
 Received: from rcdn-iport-2.cisco.com (rcdn-iport-2.cisco.com [173.37.86.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F2184779B1;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA4B477E40;
 	Mon, 29 Jun 2026 17:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.37.86.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782754031; cv=none; b=B6D6ygvfnHkJ6Mt941r1e1Zxb7WiDHRQZM8+eEWswt3ZKffxs+t1nldXyHLrnKimF2q28OAbPSAp1ttxP1n803v7e3O1dSrU1o3poxivUZliOL4aU0AA3Xbu0yhT0WlMdt306MXYaLm3TPxCNoMx961sM1ABBe6slAs4L77Ne7E=
+	t=1782754031; cv=none; b=V/VZwJuBkMjO4Hyh/FIO8AoMOF43+sns01C8HpVzdcRG/YBF/KobxC1PO2sCYsRbUU9ocr49va3bHJyldD3/wcT1qQjrfW3FWhMJxzRXT3YbII1y+FDWRJDXH3TZKsjPR0+NGTCjNYGpnkjSZOaRk3UozChl8litnfRw9FH1czI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1782754031; c=relaxed/simple;
-	bh=H3AW9moHsJftZdslVn9l+PceUi33vIQpQ/U37eNJ1WI=;
+	bh=UVy3/H0RMuEKNl5Vs6NEqyAwXoJIsI4AzdpjTFTi9yQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NW9aTPLoZAd+0+V3Tr5NxkE5QzHF/53wlpAKSTNkC2bSXQ06snW47ov/B87PYutWcft+yIzRD8EAjB7ZxBjrkb0zb3u7l3kQvSBB9TxXe82jp/jT+uvt0dxZE2F7umPz8kqHV1B+Fl1NeqfpFLBY5JJIJ7UA4AU6GqBH4PQmoKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b=UQxoTCcA; arc=none smtp.client-ip=173.37.86.73
+	 In-Reply-To:To:Cc; b=WTwbZk99TKB18D8J1xvDN8tY5vo6QZFX/ttkpojHFRHZZL6gOxBJvmPNS8qN+QR7z76Nrdp7kHUawjq9qJ+hmm93WQ8QRiYEc1sodGqQhgohwuWJnN1eLQTWmpy9NyZUOnvf7wsUBv+/mvnDSd/EV00wE2l0VfU6LIRjD0JKKq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b=ZYGRRrHG; arc=none smtp.client-ip=173.37.86.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b="UQxoTCcA"
+	dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b="ZYGRRrHG"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=cisco.com; i=@cisco.com; l=14977; q=dns/txt;
+  d=cisco.com; i=@cisco.com; l=8939; q=dns/txt;
   s=iport01; t=1782754029; x=1783963629;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=nxB0WmHTWnsH0BYJXHfOkCiasPumzG7zG5xlmDPpN10=;
-  b=UQxoTCcAHrvzArbPssCcVYZhaF3ZOsz4X3ix0VXZveQTa4Lpx6fE1fnK
-   GY0TNAocNvU6viJgPZPnBVewilQB+AmuyPdlBmm9dAHY+Q0APb/nlvqdw
-   uCQIExAeD/8MYrOS/Zy6ecGjPoUswPGm4xVJWPLnaj3Hdjcwl+E7MVyBC
-   gKmjt5TMDCduANg7YbLfONjhx+U8/IcqeZUuUSdt8QCwqAOs6KBw5R52j
-   +ixzfQAblSC1dL5wHvz6ab2zIMj9o45YjRPfPvk9yH7WhHM550m7W0X17
-   Bar7+FQ0rX436D9ndoyPOIqqhTFNd/vg3S3O75Gv3vBbPzwcVFiOvR0G3
-   g==;
-X-CSE-ConnectionGUID: hh3hODQHSLmSqKRN81Fx+w==
-X-CSE-MsgGUID: 7KOcOnRMQfqL/TUMUqpZ9Q==
-X-IPAS-Result: =?us-ascii?q?A0ADAABvqUJq/5D/Ja1aGgEBAQEBAQEBAQEDAQEBARIBA?=
- =?us-ascii?q?QEBAgIBAQEBgXwFAQEBAQsBglaBUkNJhFeIHIc3giGBFpA3jFGBfg8BAQEPU?=
- =?us-ascii?q?QQBAYUGAo1LAiY0CQ4BAgQDAgMBAQEBAQEBAQEBAQsBAQUBAQECAQcFgQ4Th?=
- =?us-ascii?q?lyGWwIBAyMEUhAlAiYCAkYQBgESgwKCdAO4dnp/M4EB3kOBZgELFAGBCi4Bh?=
- =?us-ascii?q?XCCagGBcIQGO4RBJxuBSUSBFAGCc3aEGoQEgmoEgiJ6EoQZf4tuCT+BAhwDW?=
- =?us-ascii?q?SwBVRMNCgsHBWFSMwMgCgsSEhgVAhQvDwQWMh1wDCcSLBc0WBsHBYEdgRUvB?=
- =?us-ascii?q?CGBBIR9Ix8DOX+BMHVYZhUwNYERHgqBUicDCxgNSBEsNwYOGwQ9AW4HjF0XD?=
- =?us-ascii?q?4FMcQE8HBsHFApwNgxXHRQZHCmSYxsCg2GMKYE2a4E1gRmIJZYchCeBZqAPA?=
- =?us-ascii?q?TKEBJNjNJJRmQgjo2cBGDeEaIFoPIFZMxoIGxU7gmdTGQ+Id4UzAxYczBMnM?=
- =?us-ascii?q?j0CBwIHDgMLkWgEgXkBAQ?=
-IronPort-Data: A9a23:yjjzUa2pIFE5lzI0EvbD5RNwkn2cJEfYwER7XKvMYLTBsI5bp2ABz
- WMYWjuAPqqLNmfyfop0Ydmw8UIAscKAndBiGlM53Hw8FHgiRegpqji6wuYcGwvIc6UvmWo+t
- 512huHodZ5yFjmH4E/xbtANlFEkvYmQXL3wFeXYDS54QA5gWU8JhAlq8wIDqtYAbeORXUXX5
- bsen+WFYAX7g2AuYzpNg06+gEoHUMra6WtwUmMWPZinjHeG/1EJAZQWI72GLneQauF8Au6gS
- u/f+6qy92Xf8g1FIovNfmHTKxBirhb6ZGBiu1IOM0SQqkEqSh8ajs7XAMEhhXJ/0F1lqTzeJ
- OJl7vRcQS9xVkHFdX90vxNwS0mSNoUekFPLzOTWXcG7lyX7n3XQL/pGDEFtPao0w8ZMJWR17
- N8iDmBUQADAmLfjqF67YrEEasULNsLnOsYb/3pn1zycValgSpHYSKKM7thdtNsyrpkRRrCFO
- IxDNGcpNUicC/FMEg9/5JYWh+60h2L/cD1wo1OOrq1x6G/WpOB0+OS9b4uJIYfbFK25mG7Hh
- UXN2GLDJygULfjY9Qegz2u0tL72yHaTtIU6UefQGuRRqFGa2GEWIBEfS1a+pf63lgi4Vs43A
- 0EY5y8nv6Uu3EOsSdb5Uluzp3vslh0BUdN4EOAg7gyJjK3O7G6xD24IVDNeK9orqMM7WxQuy
- 1mP2djpbRR3ubeYT3O17LqYrTqufyMSKAcqYS4CUBtA4NT5pow3pgzAQ8wlE6OviNDxXzbqz
- FiiqiUii7gNpdAE2r/9/l3dhT+o4J/TQWYICh7/RGmp6EZ9IYWifYHtsQed5vdbJ4HfRV6E1
- JQZp/WjACk1JcnlvESwrC8lRdlFO97t3OXgvGNS
-IronPort-HdrOrdr: A9a23:3Jb+xa3zn3hy59u+O9P/fwqjBEQkLtp133Aq2lEZdPWaSL39qy
- nIppUmPH7P5gr5N0tMpTntAsO9qDbnhPxICOoqUotKIjOHhILAFugLhrcKgQeQeBEWndQw6U
- 4PSdkaNPTASXV3ksr+5hC1CJIDzMnvytHQuc7ui1pgUg1ubbht9ENCCgidGlBrXwUuP+teKH
- Pl3LshmxOQPVIKc8+8Gn4JG8LHp9HNidbaRCRuPW9e1OFL5gnYkoIT1HOjr2wjbw8=
-X-Talos-CUID: 9a23:e20ZqmCFqUxZbNP6Eylnr04zNvkFSVnY927zGWnoUEh5C6LAHA==
-X-Talos-MUID: =?us-ascii?q?9a23=3AH09pqwwPsqf4QydtWnnl11lpqN2aqPuNL0sql68?=
- =?us-ascii?q?jgsedEWtMBhKglSyFE7Zyfw=3D=3D?=
+  bh=CXMacmSzG4Vh/h4v1BbunYRM6XQpMQSp/sageLt5vm4=;
+  b=ZYGRRrHG75SOlS6PN7IKKRb/LbpnBLqe2jeNjpQsHufEEh5xlEh4LoWX
+   eJ6z5BgYiL9fL1415XsysSM/yTK/Jjbe+c3EwzBimKfQ+lEPgbe1FxuHq
+   gWXqfogZymuzG2iND2UCicBzZY9qwNjbvnHh2tyCpauxFJp3H37Na684Y
+   AUXh0jYdI357qVnqhv12CgIsFSXOx/Ag1EBiaRMJuQZCZ8OhkdCzwdL1V
+   ItFhKY44RA8GYUAlHTC4VZI/BNnI2NlDtfA9aQh4P/51Vs49y0JgW4Q1f
+   zudtHwA01AxTgZ/LJYoL0xDryvmzFkdGKyqRE7ZrmDMM5pOr70WqiJ+rk
+   w==;
+X-CSE-ConnectionGUID: dmOZxBY1QuegrXWn5ueJyQ==
+X-CSE-MsgGUID: szUgtC6rTBGzm36tyeIoEg==
+X-IPAS-Result: =?us-ascii?q?A0BHAgBvqUJq/5D/Ja1aglmCV4FSQ0mEV49TgiGRTYxRF?=
+ =?us-ascii?q?IFqDwEBAQ9RBAEBhQYCjUsCJjQJDgECBAMCAwEBAQEBAQEBAQEBCwEBBQEBA?=
+ =?us-ascii?q?QIBBwWBDhOGXIZbAgEDIwQLATQSECUCJgICRhAGARKDAoJ0A7h2en8zgQGEf?=
+ =?us-ascii?q?dlGgWYBCxQBgQouhXGCagGBcIQGO4RBJxuBSUSBFYNphAUag3+CagSDHBKCS?=
+ =?us-ascii?q?I4+CT+BAhwDWSwBVRMNCgsHBWFSMwMgCgsSEhgVAhQcEw8EFjIdcAwQFxIsF?=
+ =?us-ascii?q?zRYGwcFgR2BFS8EIYEEhH0jHwM5f4EwdVhmFTA1gREeCoFSJwMLGA1IESw3B?=
+ =?us-ascii?q?g4bBD0BbgeMXRcPgUxqBz0OMBRCOTEBewUwkwsdg36OSoE1n1qEJ4FmoA8BM?=
+ =?us-ascii?q?pdnjFWGMJkII6NMElmEaIFoPIFZMxoIGxWDIlMZD44tFhzMEycyPQIHAgcOA?=
+ =?us-ascii?q?wuReYFsAQE?=
+IronPort-Data: A9a23:LcQwLK6iCHOGjBcfnrj1LAxRtPjGchMFZxGqfqrLsTDasY5as4F+v
+ mQYXmCFbPuKa2X3Ltt1Poy18UwGupTcmtdlGlRrqihmZn8b8sCt6fZ1gavT04J+CuWZESqLO
+ u1HMoGowPgcFyGa/lH2dOC98RGQ7InQLpLkEunIJyttcgFtTSYlmHpLlvUw6mJSqYDR7zil5
+ 5Wo/6UzBHf/g2QqajxOuvrawP9SlK2aVA0w7wRWic9j5Dcyp1FNZLoDKKe4KWfPQ4U8NoaSW
+ +bZwbilyXjS9hErB8nNuu6TnpoiG+O60aCm0xK6aoD66vRwjnVaPpUTaJLwXXxqZwChxLid/
+ jniWauYEm/FNoWU8AgUvoIx/ytWZcWq85efSZSzXFD6I0DuKxPRL/tS4E4eMYg/yPZdMDh36
+ PEXMgAyaE2eisCn+efuIgVsrpxLwMjDJogTvDRkiDreF/tjGc+FSKTR7tge1zA17ixMNa+BP
+ IxCNnw1MUmGOkETUrsUIMpWcOOAnXDjciZYq1K9rqss6G+Vxwt0uFToGIaFJY3WHpkNzy50o
+ Erd7Vn2HjpELuC15iiAqSywl+Lumg70Ddd6+LqQs6QCbEeo7mAaFhATfVeyv/S8jkmwR5RZJ
+ lB80icisK075kG3Ztb6WBK8rTiPuRt0c9lNGeQS6wyXzKfQpQGDCQAsRzhNctE598k7WTAny
+ HeNgtXvQzdv2JWNQHiQ8La8tz6+OSEJa2QFYEcsSQoD/smmo4wpiB/LZshsHbTzjdDvHzz0h
+ TeQo0AWgbgPgcMV/7u08EqBgD+2oJXNCAkv6W3qsnmN9Ah1YsuhIoev81WetakGJ4eCRV7Ht
+ 38B8ySD0N0z4Vi2vHTlaI0w8HuBvp5p7BW0bYZTIqQc
+IronPort-HdrOrdr: A9a23:nNzR9a6UZ55nWXKCPAPXwD7XdLJyesId70hD6qm+c20wTiX+ra
+ GTdZUguyMc5wx9ZJhNo7q90ey7MBHhHP1OjrX5Q43DYOCOggLBR72Kr7GSoAEIcBeTygcy79
+ YET4FOTPD9ElR+i9/3+02bH8ZI+qj/zImYwcrT0HtpSxhncOVb7wl/AhuGCUEefnghOXNALu
+ v62uN34xy9ZH8QcsO3QlMBX+TFupn3saiOW29/O/bigzP+9w9BL9XBYmOl4is=
+X-Talos-CUID: 9a23:RrhNjmPS6M8equ5DVCxAxl4+K5kcb3DS1kfvJRKlBER4cejA
+X-Talos-MUID: 9a23:UWRDTAR26Kb2OcNRRXT3lgxtKOw2+ZiEJ1IIyssaqsSlMgF/bmI=
 X-IronPort-Anti-Spam-Filtered: true
 X-IronPort-AV: E=Sophos;i="6.24,232,1774310400"; 
-   d="scan'208";a="487943399"
+   d="scan'208";a="487943409"
 Received: from rcdn-l-core-07.cisco.com ([173.37.255.144])
-  by rcdn-iport-2.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 29 Jun 2026 17:26:01 +0000
+  by rcdn-iport-2.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 29 Jun 2026 17:26:04 +0000
 Received: from [127.0.0.1] (unknown [10.25.130.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by rcdn-l-core-07.cisco.com (Postfix) with ESMTPS id E6A8D180000B5;
-	Mon, 29 Jun 2026 17:26:00 +0000 (GMT)
+	by rcdn-l-core-07.cisco.com (Postfix) with ESMTPS id 9D8D6180004BD;
+	Mon, 29 Jun 2026 17:26:03 +0000 (GMT)
 From: Satish Kharat <satishkh@cisco.com>
-Date: Mon, 29 Jun 2026 10:25:57 -0700
-Subject: [PATCH net-next v10 05/12] enic: add admin CQ service with MSI-X
- interrupt and workqueue polling
+Date: Mon, 29 Jun 2026 10:26:00 -0700
+Subject: [PATCH net-next v10 08/12] enic: add MBOX PF handlers for VF
+ register and capability
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,8 +81,8 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260629-enic-sriov-v2-admin-channel-v2-v10-5-62569af83417@cisco.com>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260629-enic-sriov-v2-admin-channel-v2-v10-8-62569af83417@cisco.com>
 References: <20260629-enic-sriov-v2-admin-channel-v2-v10-0-62569af83417@cisco.com>
 In-Reply-To: <20260629-enic-sriov-v2-admin-channel-v2-v10-0-62569af83417@cisco.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -93,491 +91,298 @@ To: Andrew Lunn <andrew+netdev@lunn.ch>,
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Sesidhar Baddela <sebaddel@cisco.com>, Satish Kharat <satishkh@cisco.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1782753956; l=15455;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1782753956; l=9297;
  i=satishkh@cisco.com; h=from:subject:message-id;
- bh=H3AW9moHsJftZdslVn9l+PceUi33vIQpQ/U37eNJ1WI=;
- b=AqBsSdbyltP3FwtG4e4nZYXvvL2/zY4oZRJDABf5WoJbzCHI3oIVL841mEF203gKVfHRv2LFU
- DWmTz+yn+tlA6m1jaxodzAHVUsqO6A/vj+yBNzF7oS72vTNCjorqseP
+ bh=UVy3/H0RMuEKNl5Vs6NEqyAwXoJIsI4AzdpjTFTi9yQ=;
+ b=Zh6n4Opcfkyei8IBIBv75yaINdrTLdpRyQBlTwDPChV6wRetjmGuFXqkKI3mELSZ00Q4d7hkO
+ zcoKcJNv3nDAOFdLcr2DVFT/sb2MPLrBeD9/f84Y2vpI2gI39IL4u8L
 X-Developer-Key: i=satishkh@cisco.com; a=ed25519;
  pk=4BxbLoCGvHeIMH/PbpiNVx8/2IcTjFvqcr0AD8K6WLY=
 X-Outbound-Client-TLS: ANONYMOUS;unknown [10.25.130.254];TLSv1.3;TLS_AES_256_GCM_SHA384;256
 X-Outbound-SMTP-Client: 10.25.130.254, [10.25.130.254]
 X-Outbound-Node: rcdn-l-core-07.cisco.com
 
-Add completion queue (CQ) service for the admin channel work queue
-(WQ) and receive queue (RQ), driven by a dedicated MSI-X interrupt
-and a workqueue-based CQ poller.
+Implement PF-side mailbox message processing for SR-IOV V2
+admin channel communication.
 
-The admin WQ CQ service advances the completion ring and returns the
-number of descriptors consumed.  The admin RQ CQ service does the
-same for receive completions and copies each received message into a
-preallocated buffer.  Received messages are enqueued for deferred
-dispatch by a separate work_struct so the CQ poller stays short.
+When the PF receives messages from VFs, the dispatch routes
+them to type-specific handlers:
+  - VF_CAPABILITY_REQUEST: reply with protocol version 1
+  - VF_REGISTER_REQUEST: send the register reply, mark the
+    VF registered on success, then send PF_LINK_STATE_NOTIF
+    reflecting the PF's current carrier state
+  - VF_UNREGISTER_REQUEST: mark VF unregistered, send reply
+  - PF_LINK_STATE_ACK: log errors from VF acknowledgment
 
-When the MSI-X interrupt fires, the ISR schedules the CQ poll
-work_struct.  The work handler drains all pending completions, kicks
-message dispatch if work was done, and returns credits to unmask the
-interrupt.
+Per-VF state (struct enic_vf_state) is tracked via enic->vf_state
+which will be allocated when SRIOV V2 is enabled.
 
-Log a rate-limited warning when admin RQ buffer refill fails so that
-transient memory pressure is visible without flooding the log.
+Remove the CONFIG_PCI_IOV guard from num_vfs in struct enic. The
+PF handlers reference enic->num_vfs for VF ID bounds checking in
+enic_mbox.c, which is compiled unconditionally. The field must be
+visible regardless of CONFIG_PCI_IOV to avoid build failures.
+
+Add enic_mbox_send_link_state() helper for PF-initiated link
+state notifications, also used later by ndo_set_vf_link_state.
 
 Signed-off-by: Satish Kharat <satishkh@cisco.com>
 ---
- drivers/net/ethernet/cisco/enic/enic.h       |   8 +
- drivers/net/ethernet/cisco/enic/enic_admin.c | 311 ++++++++++++++++++++++++++-
- drivers/net/ethernet/cisco/enic/enic_admin.h |  12 ++
- 3 files changed, 327 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/cisco/enic/enic.h      |   7 +-
+ drivers/net/ethernet/cisco/enic/enic_mbox.c | 190 +++++++++++++++++++++++++++-
+ drivers/net/ethernet/cisco/enic/enic_mbox.h |   1 +
+ 3 files changed, 194 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/net/ethernet/cisco/enic/enic.h b/drivers/net/ethernet/cisco/enic/enic.h
-index 398227448b37..401123e6df1d 100644
+index b009d87da4bd..d459318c46fc 100644
 --- a/drivers/net/ethernet/cisco/enic/enic.h
 +++ b/drivers/net/ethernet/cisco/enic/enic.h
-@@ -301,6 +301,14 @@ struct enic {
- 	struct vnic_rq admin_rq;
- 	struct vnic_cq admin_cq[2];
- 	struct vnic_intr admin_intr;
-+	struct work_struct admin_poll_work;
-+	unsigned int admin_intr_index;
-+	struct work_struct admin_msg_work;
-+	spinlock_t admin_msg_lock;	/* protects admin_msg_list */
-+	struct list_head admin_msg_list;
-+	unsigned int admin_msg_count;	/* current depth of admin_msg_list */
-+	void (*admin_rq_handler)(struct enic *enic, void *buf,
-+				 unsigned int len);
+@@ -256,9 +256,7 @@ struct enic {
+ 	struct enic_rx_coal rx_coalesce_setting;
+ 	u32 rx_coalesce_usecs;
+ 	u32 tx_coalesce_usecs;
+-#ifdef CONFIG_PCI_IOV
+ 	u16 num_vfs;
+-#endif
+ 	enum enic_vf_type vf_type;
+ 	unsigned int enable_count;
+ 	spinlock_t enic_api_lock;
+@@ -315,6 +313,11 @@ struct enic {
+ 	/* MBOX protocol state — mbox_lock serializes admin WQ sends */
+ 	struct mutex mbox_lock;
+ 	u64 mbox_msg_num;
++
++	/* PF: per-VF MBOX state, allocated when SRIOV V2 is enabled */
++	struct enic_vf_state {
++		bool registered;
++	} *vf_state;
  };
  
  static inline struct net_device *vnic_get_netdev(struct vnic_dev *vdev)
-diff --git a/drivers/net/ethernet/cisco/enic/enic_admin.c b/drivers/net/ethernet/cisco/enic/enic_admin.c
-index b2be42092106..6062a18043ba 100644
---- a/drivers/net/ethernet/cisco/enic/enic_admin.c
-+++ b/drivers/net/ethernet/cisco/enic/enic_admin.c
-@@ -4,6 +4,7 @@
- #include <linux/kernel.h>
- #include <linux/netdevice.h>
- #include <linux/dma-mapping.h>
-+#include <linux/interrupt.h>
- 
- #include "vnic_dev.h"
- #include "vnic_wq.h"
-@@ -15,6 +16,7 @@
- #include "enic.h"
- #include "enic_admin.h"
- #include "cq_desc.h"
-+#include "cq_enet_desc.h"
- #include "wq_enet_desc.h"
- #include "rq_enet_desc.h"
- 
-@@ -94,6 +96,254 @@ static void enic_admin_rq_drain(struct enic *enic)
- 	vnic_rq_clean(&enic->admin_rq, enic_admin_rq_buf_clean);
+diff --git a/drivers/net/ethernet/cisco/enic/enic_mbox.c b/drivers/net/ethernet/cisco/enic/enic_mbox.c
+index 3709704bee02..b6f05b03ae26 100644
+--- a/drivers/net/ethernet/cisco/enic/enic_mbox.c
++++ b/drivers/net/ethernet/cisco/enic/enic_mbox.c
+@@ -135,10 +135,183 @@ int enic_mbox_send_msg(struct enic *enic, u8 msg_type, u16 dst_vnic_id,
+ 	return err;
  }
  
-+static unsigned int enic_admin_cq_color(void *cq_desc, unsigned int desc_size)
++int enic_mbox_send_link_state(struct enic *enic, u16 vf_id, u32 link_state)
 +{
-+	u8 type_color = *((u8 *)cq_desc + desc_size - 1);
++	struct enic_mbox_pf_link_state_notif_msg notif = {};
 +
-+	return (type_color >> CQ_DESC_COLOR_SHIFT) & CQ_DESC_COLOR_MASK;
-+}
-+
-+unsigned int enic_admin_wq_cq_service(struct enic *enic)
-+{
-+	struct vnic_cq *cq = &enic->admin_cq[0];
-+	unsigned int work = 0;
-+	void *desc;
-+
-+	desc = vnic_cq_to_clean(cq);
-+	while (enic_admin_cq_color(desc, cq->ring.desc_size) !=
-+	       cq->last_color) {
-+		vnic_cq_inc_to_clean(cq);
-+		work++;
-+		desc = vnic_cq_to_clean(cq);
++	if (!enic->vf_state || vf_id >= enic->num_vfs ||
++	    !enic->vf_state[vf_id].registered) {
++		netdev_dbg(enic->netdev,
++			   "MBOX: skip link state to unregistered VF %u\n",
++			   vf_id);
++		return 0;
 +	}
 +
-+	return work;
++	notif.link_state = cpu_to_le32(link_state);
++	return enic_mbox_send_msg(enic, ENIC_MBOX_PF_LINK_STATE_NOTIF, vf_id,
++				  &notif, sizeof(notif));
 +}
 +
-+/* Upper bound on pending admin messages.  A buggy or hostile VF could flood
-+ * the PF admin channel faster than admin_msg_work drains it; cap the backlog
-+ * so a guest cannot drive the host out of memory.
-+ */
-+#define ENIC_ADMIN_MSG_MAX	256
-+
-+static void enic_admin_msg_enqueue(struct enic *enic, void *buf,
-+				   unsigned int len)
++static int enic_mbox_pf_handle_capability(struct enic *enic, void *msg,
++					  u16 vf_id, u64 msg_num)
 +{
-+	struct enic_admin_msg *msg;
++	struct enic_mbox_vf_capability_reply_msg reply = {};
 +
-+	msg = kmalloc(struct_size(msg, data, len), GFP_KERNEL);
-+	if (!msg)
-+		return;
++	reply.reply.ret_major = cpu_to_le16(0);
++	reply.version = cpu_to_le32(ENIC_MBOX_CAP_VERSION_1);
 +
-+	msg->len = len;
-+	memcpy(msg->data, buf, len);
-+
-+	spin_lock(&enic->admin_msg_lock);
-+	if (enic->admin_msg_count >= ENIC_ADMIN_MSG_MAX) {
-+		spin_unlock(&enic->admin_msg_lock);
-+		kfree(msg);
-+		if (net_ratelimit())
-+			netdev_warn(enic->netdev,
-+				    "admin msg backlog full (%u); dropping\n",
-+				    ENIC_ADMIN_MSG_MAX);
-+		return;
-+	}
-+	list_add_tail(&msg->list, &enic->admin_msg_list);
-+	enic->admin_msg_count++;
-+	spin_unlock(&enic->admin_msg_lock);
++	return enic_mbox_send_msg(enic, ENIC_MBOX_VF_CAPABILITY_REPLY, vf_id,
++				  &reply, sizeof(reply));
 +}
 +
-+unsigned int enic_admin_rq_cq_service(struct enic *enic)
++static int enic_mbox_pf_handle_register(struct enic *enic, void *msg,
++					u16 vf_id, u64 msg_num)
 +{
-+	struct vnic_cq *cq = &enic->admin_cq[1];
-+	struct vnic_rq *rq = &enic->admin_rq;
-+	struct cq_enet_rq_desc *rq_desc;
-+	struct vnic_rq_buf *buf;
-+	u16 bwf, bytes_written;
-+	unsigned int work = 0;
-+	void *desc;
-+
-+	/* The admin RQ and its CQ form a single in-order channel: firmware
-+	 * posts exactly one CQE per consumed RQ descriptor, in submission
-+	 * order.  Each CQE therefore pairs with rq->to_clean below without a
-+	 * completed_index cross-check, mirroring the in-order assumption of
-+	 * the main enic RX path.
-+	 */
-+	desc = vnic_cq_to_clean(cq);
-+	while (enic_admin_cq_color(desc, cq->ring.desc_size) !=
-+	       cq->last_color) {
-+		/* Ensure DMA descriptor fields are read after
-+		 * the color/valid check.  dma_rmb() is the
-+		 * correct barrier for DMA-written descriptors.
-+		 */
-+		dma_rmb();
-+		buf = rq->to_clean;
-+
-+		/* Decode the actual number of bytes hardware wrote into
-+		 * the RX buffer.  buf->len is the static allocation size
-+		 * (ENIC_ADMIN_BUF_SIZE) and would expose uninitialised
-+		 * heap memory beyond the real payload.  bytes_written_flags
-+		 * is at the same offset in every cq_enet_rq_desc[_32|_64]
-+		 * variant.
-+		 */
-+		rq_desc = desc;
-+		bwf = le16_to_cpu(rq_desc->bytes_written_flags);
-+		bytes_written = bwf & CQ_ENET_RQ_DESC_BYTES_WRITTEN_MASK;
-+		if (bytes_written > buf->len)
-+			goto next_desc;
-+
-+		dma_sync_single_for_cpu(&enic->pdev->dev,
-+					buf->dma_addr, buf->len,
-+					DMA_FROM_DEVICE);
-+
-+		/* Drop on hardware error indications.  Admin messages
-+		 * are internal to the VIC, not received over the wire.
-+		 * Firmware sets TRUNCATED when the message does not fit
-+		 * in the posted buffer, and FCS_OK is always set on
-+		 * healthy admin completions.
-+		 */
-+		if (bwf & CQ_ENET_RQ_DESC_FLAGS_TRUNCATED) {
-+			netdev_warn_once(enic->netdev,
-+					 "admin RQ: truncated message dropped\n");
-+			goto next_desc;
-+		}
-+		if (!(rq_desc->flags & CQ_ENET_RQ_DESC_FLAGS_FCS_OK)) {
-+			netdev_warn_once(enic->netdev,
-+					 "admin RQ: bad FCS, dropping message\n");
-+			goto next_desc;
-+		}
-+
-+		enic_admin_msg_enqueue(enic, buf->os_buf, bytes_written);
-+
-+next_desc:
-+		enic_admin_rq_buf_clean(rq, rq->to_clean);
-+		rq->to_clean = rq->to_clean->next;
-+		rq->ring.desc_avail++;
-+
-+		vnic_cq_inc_to_clean(cq);
-+		work++;
-+		desc = vnic_cq_to_clean(cq);
-+	}
-+
-+	if (enic_admin_rq_fill(enic, GFP_KERNEL) && net_ratelimit())
-+		netdev_warn(enic->netdev,
-+			    "admin RQ refill failed\n");
-+
-+	return work;
-+}
-+
-+static irqreturn_t enic_admin_isr_msix(int irq, void *data)
-+{
-+	struct enic *enic = data;
-+
-+	schedule_work(&enic->admin_poll_work);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static void enic_admin_msg_work_handler(struct work_struct *work)
-+{
-+	struct enic *enic = container_of(work, struct enic, admin_msg_work);
-+	struct enic_admin_msg *msg, *tmp;
-+	LIST_HEAD(local_list);
-+
-+	spin_lock_bh(&enic->admin_msg_lock);
-+	list_splice_init(&enic->admin_msg_list, &local_list);
-+	enic->admin_msg_count = 0;
-+	spin_unlock_bh(&enic->admin_msg_lock);
-+
-+	list_for_each_entry_safe(msg, tmp, &local_list, list) {
-+		if (enic->admin_rq_handler)
-+			enic->admin_rq_handler(enic, msg->data, msg->len);
-+		list_del(&msg->list);
-+		kfree(msg);
-+	}
-+}
-+
-+static void enic_admin_poll_work_handler(struct work_struct *work)
-+{
-+	struct enic *enic = container_of(work, struct enic, admin_poll_work);
-+	unsigned int credits;
-+	unsigned int rq_work;
-+
-+	credits = vnic_intr_credits(&enic->admin_intr);
-+
-+	rq_work = enic_admin_rq_cq_service(enic);
-+
-+	if (rq_work > 0)
-+		schedule_work(&enic->admin_msg_work);
-+
-+	vnic_intr_return_credits(&enic->admin_intr,
-+				 credits ?: 1,
-+				 1 /* unmask */, 0);
-+}
-+
-+static int enic_admin_setup_intr(struct enic *enic)
-+{
-+	unsigned int intr_index = enic->intr_count;
++	struct enic_mbox_vf_register_reply_msg reply = {};
++	u32 link_state;
 +	int err;
 +
-+	if (vnic_dev_get_intr_mode(enic->vdev) != VNIC_DEV_INTR_MODE_MSIX ||
-+	    intr_index >= enic->intr_avail)
-+		return -ENODEV;
-+
-+	/* The admin INTR uses a slot in the same RES_TYPE_INTR_CTRL
-+	 * strided array of per-vector control blocks (mask, coalescing
-+	 * timer, credit return) that the data-path IRQs occupy in BAR0.
-+	 * vnic_intr_alloc() defaults to RES_TYPE_INTR_CTRL, which is what
-+	 * we want here.
-+	 */
-+	err = vnic_intr_alloc(enic->vdev, &enic->admin_intr, intr_index);
-+	if (err) {
-+		netdev_warn(enic->netdev,
-+			    "Failed to alloc admin intr at index %u: %d\n",
-+			    intr_index, err);
-+		return err;
++	if (!enic->vf_state || vf_id >= enic->num_vfs) {
++		if (net_ratelimit())
++			netdev_warn(enic->netdev,
++				    "MBOX: register from invalid VF %u\n",
++				    vf_id);
++		return -EINVAL;
 +	}
 +
-+	enic->admin_intr_index = intr_index;
-+
-+	/* A V2 VF opens the admin channel during probe, before
-+	 * register_netdev() resolves the "eth%d" name template, so using
-+	 * netdev->name here would register the literal "eth%d-admin" in
-+	 * /proc/interrupts.  Use the already-stable PCI device name instead.
++	/* VF re-registering (e.g. guest reboot without clean unregister):
++	 * mark the previous registration inactive before accepting the new one.
 +	 */
-+	snprintf(enic->msix[intr_index].devname,
-+		 sizeof(enic->msix[intr_index].devname),
-+		 "%s-admin", pci_name(enic->pdev));
-+	enic->msix[intr_index].isr = enic_admin_isr_msix;
-+	enic->msix[intr_index].devid = enic;
-+
-+	err = request_irq(enic->msix_entry[intr_index].vector,
-+			  enic->msix[intr_index].isr, 0,
-+			  enic->msix[intr_index].devname,
-+			  enic->msix[intr_index].devid);
-+	if (err) {
-+		netdev_warn(enic->netdev,
-+			    "Failed to request admin MSI-X irq: %d\n", err);
-+		vnic_intr_free(&enic->admin_intr);
-+		return err;
++	if (enic->vf_state[vf_id].registered) {
++		netdev_dbg(enic->netdev,
++			   "MBOX: VF %u re-register, cleaning previous state\n",
++			   vf_id);
++		enic->vf_state[vf_id].registered = false;
 +	}
 +
-+	enic->msix[intr_index].requested = 1;
++	reply.reply.ret_major = cpu_to_le16(0);
++	err = enic_mbox_send_msg(enic, ENIC_MBOX_VF_REGISTER_REPLY, vf_id,
++				 &reply, sizeof(reply));
++	if (err)
++		return err;
 +
-+	netdev_dbg(enic->netdev,
-+		   "admin channel using MSI-X interrupt (index %u)\n",
-+		   intr_index);
++	enic->vf_state[vf_id].registered = true;
++	if (net_ratelimit())
++		netdev_info(enic->netdev, "VF %u registered via MBOX\n", vf_id);
 +
++	link_state = netif_carrier_ok(enic->netdev) ?
++		ENIC_MBOX_LINK_STATE_ENABLE :
++		ENIC_MBOX_LINK_STATE_DISABLE;
++	err = enic_mbox_send_link_state(enic, vf_id, link_state);
++	if (err && net_ratelimit())
++		netdev_warn(enic->netdev,
++			    "VF %u: failed to send initial link state: %d\n",
++			    vf_id, err);
++	/* Registration succeeded; initial link state notification sent
++	 * above.  Subsequent link state changes are sent from the PF
++	 * when enic_link_check() detects carrier changes.
++	 */
 +	return 0;
 +}
 +
-+static void enic_admin_teardown_intr(struct enic *enic)
++static int enic_mbox_pf_handle_unregister(struct enic *enic, void *msg,
++					  u16 vf_id, u64 msg_num)
 +{
-+	unsigned int intr_index = enic->admin_intr_index;
++	struct enic_mbox_vf_register_reply_msg reply = {};
++	int err;
 +
-+	free_irq(enic->msix_entry[intr_index].vector,
-+		 enic->msix[intr_index].devid);
-+	cancel_work_sync(&enic->admin_poll_work);
-+	enic->msix[intr_index].requested = 0;
-+}
-+
- static int enic_admin_qp_type_set(struct enic *enic, u32 enable)
- {
- 	u64 a0 = QP_TYPE_ADMIN, a1 = enable;
-@@ -173,6 +423,7 @@ static int enic_admin_alloc_resources(struct enic *enic)
- 
- static void enic_admin_free_resources(struct enic *enic)
- {
-+	vnic_intr_free(&enic->admin_intr);
- 	vnic_cq_free(&enic->admin_cq[1]);
- 	vnic_cq_free(&enic->admin_cq[0]);
- 	vnic_rq_free(&enic->admin_rq);
-@@ -181,6 +432,8 @@ static void enic_admin_free_resources(struct enic *enic)
- 
- static void enic_admin_init_resources(struct enic *enic)
- {
-+	unsigned int intr_offset = enic->admin_intr_index;
-+
- 	vnic_wq_init(&enic->admin_wq,
- 		     0, 0, 0); /* cq_index, err_intr_enable, err_intr_offset */
- 	vnic_rq_init(&enic->admin_rq,
-@@ -189,20 +442,35 @@ static void enic_admin_init_resources(struct enic *enic)
- 		     VNIC_CQ_FC_DISABLE,
- 		     VNIC_CQ_COLOR_ENABLE,
- 		     0, 0, 1, /* cq_head, cq_tail, cq_tail_color */
--		     VNIC_CQ_INTR_DISABLE,
-+		     VNIC_CQ_INTR_DISABLE, /* polled synchronously by mbox send */
- 		     VNIC_CQ_ENTRY_ENABLE,
- 		     VNIC_CQ_MSG_DISABLE,
--		     0, /* interrupt_offset */
-+		     intr_offset,
- 		     0 /* cq_message_addr */);
- 	vnic_cq_init(&enic->admin_cq[1],
- 		     VNIC_CQ_FC_DISABLE,
- 		     VNIC_CQ_COLOR_ENABLE,
- 		     0, 0, 1, /* cq_head, cq_tail, cq_tail_color */
--		     VNIC_CQ_INTR_DISABLE,
-+		     VNIC_CQ_INTR_ENABLE,
- 		     VNIC_CQ_ENTRY_ENABLE,
- 		     VNIC_CQ_MSG_DISABLE,
--		     0, /* interrupt_offset */
-+		     intr_offset,
- 		     0 /* cq_message_addr */);
-+	vnic_intr_init(&enic->admin_intr,
-+		       0, 0, 1); /* coalescing_timer, coalescing_type, mask_on_assertion */
-+}
-+
-+static void enic_admin_msg_drain(struct enic *enic)
-+{
-+	struct enic_admin_msg *msg, *tmp;
-+
-+	spin_lock_bh(&enic->admin_msg_lock);
-+	list_for_each_entry_safe(msg, tmp, &enic->admin_msg_list, list) {
-+		list_del(&msg->list);
-+		kfree(msg);
-+	}
-+	enic->admin_msg_count = 0;
-+	spin_unlock_bh(&enic->admin_msg_lock);
- }
- 
- int enic_admin_channel_open(struct enic *enic)
-@@ -220,6 +488,19 @@ int enic_admin_channel_open(struct enic *enic)
- 		return err;
- 	}
- 
-+	spin_lock_init(&enic->admin_msg_lock);
-+	INIT_LIST_HEAD(&enic->admin_msg_list);
-+	INIT_WORK(&enic->admin_msg_work, enic_admin_msg_work_handler);
-+	INIT_WORK(&enic->admin_poll_work, enic_admin_poll_work_handler);
-+
-+	err = enic_admin_setup_intr(enic);
-+	if (err) {
-+		netdev_err(enic->netdev,
-+			   "Admin channel requires MSI-X, SR-IOV unavailable: %d\n",
-+			   err);
-+		goto free_resources;
++	if (!enic->vf_state || vf_id >= enic->num_vfs) {
++		if (net_ratelimit())
++			netdev_warn(enic->netdev,
++				    "MBOX: unregister from invalid VF %u\n",
++				    vf_id);
++		return -EINVAL;
 +	}
 +
- 	enic_admin_init_resources(enic);
- 
- 	vnic_wq_enable(&enic->admin_wq);
-@@ -239,17 +520,31 @@ int enic_admin_channel_open(struct enic *enic)
- 		goto disable_queues;
- 	}
- 
-+	vnic_intr_unmask(&enic->admin_intr);
++	/* VF is unloading; clear local state regardless of whether
++	 * the reply is successfully delivered to avoid the PF treating
++	 * a dead VF as still registered.
++	 */
++	enic->vf_state[vf_id].registered = false;
 +
-+	netdev_dbg(enic->netdev,
-+		   "admin channel open: intr=%u wq_avail=%u rq_avail=%u cq0_color=%u cq1_color=%u\n",
-+		   enic->admin_intr_index,
-+		   vnic_wq_desc_avail(&enic->admin_wq),
-+		   vnic_rq_desc_avail(&enic->admin_rq),
-+		   enic->admin_cq[0].last_color,
-+		   enic->admin_cq[1].last_color);
++	reply.reply.ret_major = cpu_to_le16(0);
++	err = enic_mbox_send_msg(enic, ENIC_MBOX_VF_UNREGISTER_REPLY, vf_id,
++				 &reply, sizeof(reply));
 +
- 	enic->admin_chan_up = true;
++	if (net_ratelimit())
++		netdev_info(enic->netdev,
++			    "VF %u unregistered via MBOX\n", vf_id);
++
++	return err;
++}
++
++static void enic_mbox_pf_process_msg(struct enic *enic,
++				     struct enic_mbox_hdr *hdr, void *payload)
++{
++	u16 vf_id = le16_to_cpu(hdr->src_vnic_id);
++	u16 msg_len = le16_to_cpu(hdr->msg_len);
++	int err = 0;
++
++	if (!enic->vf_state) {
++		netdev_dbg(enic->netdev,
++			   "MBOX: PF received msg but SRIOV not active\n");
++		return;
++	}
++
++	if (vf_id >= enic->num_vfs) {
++		if (net_ratelimit())
++			netdev_warn(enic->netdev,
++				    "MBOX: PF received msg from invalid VF %u\n",
++				    vf_id);
++		return;
++	}
++
++	switch (hdr->msg_type) {
++	case ENIC_MBOX_VF_CAPABILITY_REQUEST:
++		err = enic_mbox_pf_handle_capability(enic, payload, vf_id,
++						     le64_to_cpu(hdr->msg_num));
++		break;
++	case ENIC_MBOX_VF_REGISTER_REQUEST:
++		err = enic_mbox_pf_handle_register(enic, payload, vf_id,
++						   le64_to_cpu(hdr->msg_num));
++		break;
++	case ENIC_MBOX_VF_UNREGISTER_REQUEST:
++		err = enic_mbox_pf_handle_unregister(enic, payload, vf_id,
++						     le64_to_cpu(hdr->msg_num));
++		break;
++	case ENIC_MBOX_PF_LINK_STATE_ACK: {
++		struct enic_mbox_pf_link_state_ack_msg *ack = payload;
++
++		if (msg_len < sizeof(*hdr) + sizeof(*ack))
++			break;
++		if (le16_to_cpu(ack->ack.ret_major) && net_ratelimit())
++			netdev_warn(enic->netdev,
++				    "MBOX: VF %u link state ACK error %u/%u\n",
++				    vf_id,
++				    le16_to_cpu(ack->ack.ret_major),
++				    le16_to_cpu(ack->ack.ret_minor));
++		break;
++	}
++	default:
++		netdev_dbg(enic->netdev,
++			   "MBOX: PF unhandled msg type %u from VF %u\n",
++			   hdr->msg_type, vf_id);
++		err = -EOPNOTSUPP;
++		break;
++	}
++
++	if (err && net_ratelimit())
++		netdev_warn(enic->netdev,
++			    "MBOX: PF handler for msg type %u from VF %u failed: %d\n",
++			    hdr->msg_type, vf_id, err);
++}
++
+ static void enic_mbox_recv_handler(struct enic *enic, void *buf,
+ 				   unsigned int len)
+ {
+ 	struct enic_mbox_hdr *hdr = buf;
++	void *payload;
++	u16 msg_len;
  
- 	return 0;
- 
- disable_queues:
-+	enic_admin_teardown_intr(enic);
- 	enic_admin_qp_type_set(enic, QP_DISABLE);
- 	if (vnic_wq_disable(&enic->admin_wq))
- 		netdev_warn(enic->netdev, "Failed to disable admin WQ\n");
- 	if (vnic_rq_disable(&enic->admin_rq))
- 		netdev_warn(enic->netdev, "Failed to disable admin RQ\n");
-+	cancel_work_sync(&enic->admin_msg_work);
-+	enic_admin_msg_drain(enic);
- 	enic_admin_rq_drain(enic);
-+free_resources:
- 	enic_admin_free_resources(enic);
- 	return err;
- }
-@@ -268,6 +563,13 @@ void enic_admin_channel_close(struct enic *enic)
- 	if (!enic->admin_chan_up)
+ 	if (len < sizeof(*hdr)) {
+ 		if (net_ratelimit())
+@@ -156,10 +329,23 @@ static void enic_mbox_recv_handler(struct enic *enic, void *buf,
  		return;
+ 	}
  
-+	netdev_dbg(enic->netdev, "admin channel close\n");
++	msg_len = le16_to_cpu(hdr->msg_len);
++	if (msg_len < sizeof(*hdr) || msg_len > len) {
++		if (net_ratelimit())
++			netdev_warn(enic->netdev,
++				    "MBOX: invalid msg_len %u (buf len %u)\n",
++				    msg_len, len);
++		return;
++	}
 +
-+	vnic_intr_mask(&enic->admin_intr);
-+	enic_admin_teardown_intr(enic);
-+	cancel_work_sync(&enic->admin_msg_work);
-+	enic_admin_msg_drain(enic);
+ 	netdev_dbg(enic->netdev,
+ 		   "MBOX recv: type %u from vnic %u len %u\n",
+-		   hdr->msg_type, le16_to_cpu(hdr->src_vnic_id),
+-		   le16_to_cpu(hdr->msg_len));
++		   hdr->msg_type, le16_to_cpu(hdr->src_vnic_id), msg_len);
 +
- 	enic_admin_qp_type_set(enic, QP_DISABLE);
- 
- 	err = vnic_wq_disable(&enic->admin_wq);
-@@ -283,6 +585,7 @@ void enic_admin_channel_close(struct enic *enic)
- 	enic_admin_rq_drain(enic);
- 	vnic_cq_clean(&enic->admin_cq[0]);
- 	vnic_cq_clean(&enic->admin_cq[1]);
-+	vnic_intr_clean(&enic->admin_intr);
- 	enic_admin_free_resources(enic);
- 
- 	enic->admin_chan_up = false;
-diff --git a/drivers/net/ethernet/cisco/enic/enic_admin.h b/drivers/net/ethernet/cisco/enic/enic_admin.h
-index 569aadeb9312..62c80220b0ca 100644
---- a/drivers/net/ethernet/cisco/enic/enic_admin.h
-+++ b/drivers/net/ethernet/cisco/enic/enic_admin.h
-@@ -9,7 +9,19 @@
- 
- struct enic;
- 
-+/* Wrapper for received admin messages queued for deferred processing.
-+ * The admin CQ poll work handler enqueues these; a separate work handler
-+ * processes them where sleeping (mutex, GFP_KERNEL) is safe.
-+ */
-+struct enic_admin_msg {
-+	struct list_head list;
-+	unsigned int len;
-+	u8 data[] __aligned(8);
-+};
++	payload = buf + sizeof(*hdr);
 +
- int enic_admin_channel_open(struct enic *enic);
- void enic_admin_channel_close(struct enic *enic);
-+unsigned int enic_admin_wq_cq_service(struct enic *enic);
-+unsigned int enic_admin_rq_cq_service(struct enic *enic);
++	if (enic->vf_state)
++		enic_mbox_pf_process_msg(enic, hdr, payload);
+ }
  
- #endif /* _ENIC_ADMIN_H_ */
+ void enic_mbox_init(struct enic *enic)
+diff --git a/drivers/net/ethernet/cisco/enic/enic_mbox.h b/drivers/net/ethernet/cisco/enic/enic_mbox.h
+index 73fd7f783ee2..f1de67db1273 100644
+--- a/drivers/net/ethernet/cisco/enic/enic_mbox.h
++++ b/drivers/net/ethernet/cisco/enic/enic_mbox.h
+@@ -87,5 +87,6 @@ struct enic;
+ void enic_mbox_init(struct enic *enic);
+ int enic_mbox_send_msg(struct enic *enic, u8 msg_type, u16 dst_vnic_id,
+ 		       void *payload, u16 payload_len);
++int enic_mbox_send_link_state(struct enic *enic, u16 vf_id, u32 link_state);
+ 
+ #endif /* _ENIC_MBOX_H_ */
 
 -- 
 2.43.0
