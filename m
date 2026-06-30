@@ -1,62 +1,62 @@
-Received: from mail-pj2-f1.google.com (mail-pj2-f1.google.com [74.125.227.129])
+Received: from mail-pj2-f0.google.com (mail-pj2-f0.google.com [74.125.227.128])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664243E1227
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 18:21:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9B0466B6E
+	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 18:21:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.128
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782843696; cv=none; b=QVdeSFaTmVjde/u/Qrzl6YmBy5/LLQ+6hPACBqzeVysr7PZW+p9L5mKL2Ryg6aShUxxaYbBm9bJgV2SHIjsxWw1I537XKQ3lfAsYjxpAmRjS5XkysoheT8cWBD54se0HnwxWTTxIGDqdj1gio0dAGoqgSwn700IO9p6/fLkHlf8=
+	t=1782843698; cv=none; b=NP6TcIUPoMs39gOSseqzp9BtafS643MwKCgOr6KOeDH761gWD8dqrkXU1+c/DLIz7coOBdTXsK05sd/w7P+bbf+kwZQji4jbZ8G5A0E1qPwqBLVr3Vm4UG2z14MJIW3Bsw6kcK2bPsaPx0krmMDtEy0LM90TAndek9ukXtTrQog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782843696; c=relaxed/simple;
-	bh=+Bck/AIRrSuAnBk1w2hhYEDp6AJYcc5dryvZH3onWLw=;
+	s=arc-20240116; t=1782843698; c=relaxed/simple;
+	bh=R0j/qNYveSeY8vyL0/e5npQklgus96CIbETe93stoCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yx9OkcNjS/h0rY9zXSNzN0htGdq4MHbNnConQcrAM4TeId/fIJjhaqrbUn9BxIExnpZIdnK8OesSD3W9aXT681lxSogrBzL/LW900mBSo3EG9KbxGC+qAyJSOc36ax4S/ElbaPNhVanUcWFfzC5gh7nUmob6hHCkHqHMVouDt8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CdMPGt07; arc=none smtp.client-ip=74.125.227.129
+	 MIME-Version; b=obeCDtJkoYFm7mR3XF62hDEUV59LXhzUnLNcXv/eN+hFSgEj/OtJtT4SY0a9NiIV0vghhRDMhBQMuGc3e1I4G4/L9fx3j55bFilBfRFEYrz1uHypMNxE21RWc7H7qJvQWZKygbDaOYfG9lIlZUQYvMtvsdi9jgZW+aX6AJGaF/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W+BG/mzo; arc=none smtp.client-ip=74.125.227.128
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CdMPGt07"
-Received: by mail-pj2-f1.google.com with SMTP id d9443c01a7336-2c980dac2b2so4973635ad.0
-        for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 11:21:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W+BG/mzo"
+Received: by mail-pj2-f0.google.com with SMTP id 98e67ed59e1d1-37c6c8fa1d0so113115a91.1
+        for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 11:21:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782843695; x=1783448495; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1782843697; x=1783448497; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HbiP2ZDbDEF7MxMBi2Cibr1JyKAUZE0Nd+Glad1yqDU=;
-        b=CdMPGt079y9/yCh4tjOSzYpQtgEXbukdPkD0mzCcMI4t/c185BU7CKRrWWGn61s6wq
-         5lv/k/KtZNo8jrXuccDuE7XPqD8UaoYGXVTOGwY2nQdvTpm4rWv+HDHd/XH17NAh1Q+r
-         uN+MjREbF6qjBBPWrkJ2wtxoFxhFiNi1KHoxoF7UafoZK/mcgyiCHm7/H+DOfZfzlWm+
-         CfDpCPPBNLYnexVcfkzIQulkwFXIZkqfrGRpxzVsQlN6EN5M7kmX/cV1KdxhqCPzyP0G
-         dw19iWuLYXmWdETGdEJT19iKkyL8DVJQ0At75+qXapCkPm94R5LX+M5GQSMSCChA587f
-         T14A==
+        bh=mZhuHYG8y80lULc2rLkcuyGBpLEov+tMve8Tm1aOgdM=;
+        b=W+BG/mzotfFH6UcjYoWnH/vjZMg6OJX4cjrCVxcgCKtNqN63dhd3+MmvJ4JIMQ0gNC
+         pRo2MJjDtYgGfiRjpZ4obPIY8i7estm1usVlM6h5zRL+AWUyzA4V7p4zYTw0j7scHvhj
+         iH5rcoC3lBwK913vgtHEiXI0T++W1/Un5lT9Vy2+uAihwJO6YN5nJd1eTGRJ39Bk6Yzx
+         8UrbXSDc8cSQcc4gKnLK/pYab9A7gylLy5idG5NNi/Hf84+5D4CIIj1LP0ETuXF1jQif
+         nRmmgigwSE1Uf+tFOWgVmnCpA7A9VwJf0J0Eo4iCAVW3MYmuhLpftH2SvqaS9Ab+ZLA/
+         E8XA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782843695; x=1783448495;
+        d=1e100.net; s=20251104; t=1782843697; x=1783448497;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=HbiP2ZDbDEF7MxMBi2Cibr1JyKAUZE0Nd+Glad1yqDU=;
-        b=dQcnCh0thHnanFy443I8WZgMtnOICTE1WpfVlYiZaiU42Gfsqe82O8kkk+y9sxZgB1
-         IdCeL8IWtNVNOJ5MMBbzqlP7II+MXo1GDp+SeTIzn/XXocR69jr/uXoW8pgtOsyf4rD5
-         +7iEdTRvbcThncaPxecdShBVDeX0apMZWIsE8E9OtNHdK//fTvJzxm+RFLJYQNzVTZRw
-         /BAvtq88rFLYVNZdT3wr4/s3I0J4ftcJFwf/Y06OaBweI6TIyMwftCRJS/uqhbfyQMBb
-         EMOIg8pCXPnjUAttrJpRO5E83rd2465KQK8LsOU6Kd31vs+EKNVOXhXu0uXmjYjOedd8
-         03Mw==
-X-Gm-Message-State: AOJu0Yw+8wMGgvE72XZCEWLNK76mPRMX06MaCSsHtglI2cHyKRZmfKCS
-	rP7xw0rQT20mufKDCG0LSuuHYU/OMqNCC2uQiEEgiiTlQIE5u6nkc7MP2MS1wzFC
-X-Gm-Gg: AfdE7cnmLv8ShvcbV4C3ivMzMCuTtNDWXdwAD28yvvlEyhxZUw7VajKCtHUsM22X6MY
-	bEsyqy8PH2kTD9sCk0pdjEQApQ3BgmYJu/zPJ6V/AgizwTqrEwWuAOcNXkOA50binAfDg4fJH5j
-	INKlL51/jIY/5f1KmDx5KBK8N6k6vJI8aLN/A8nbldRgEWwMmGnz5hzJHKn75U0VekrJ0rWHk22
-	l4Locak7k3WLaa27z0j6E7UlCYVJmVKD8Q9uxVdvksbBt8MdgjwINBWGwg8SbszBzDt84SNkDMj
-	n1CIomzTZxg2NexVd85J/no4yLKS7F+wbLWJMOowIMKy8PliIgEezr7yv748Z6k6yxHKR2pXNrt
-	lcjbZqTOQdbRuWYPLeOedg+c+ik5LY/TSKUlucB/bXXrGueZSDby4qvivxv/HzypzKbKbrCmTC+
-	fFj9IhZQ==
-X-Received: by 2002:a17:902:e752:b0:2c9:b396:1a55 with SMTP id d9443c01a7336-2ca2d53de86mr36706655ad.12.1782843694858;
-        Tue, 30 Jun 2026 11:21:34 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:5f::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ca37a70763sm19496125ad.12.2026.06.30.11.21.34
+        bh=mZhuHYG8y80lULc2rLkcuyGBpLEov+tMve8Tm1aOgdM=;
+        b=Zutg1dY++v7TvY8o1lX7GYOnTHSz2GECOAJ4Ua9tc1lHRxb1nP8+iJXly/juakHyKM
+         n88EIAvn34fE2r5Xx+hWXnngsrlun05yKZQ9e3hjapUGXKegkafrQAQFpldjBNxl4T8Z
+         XKUod+SQuWKmjK0IN3tu7ZhPLDSUiEUnoxN7BHbH4bDEZB/7w+yD76pA7g3vyGOCmD57
+         SBbOURXr5yD5MyFGz28J7D13a6rVW4lJ8P65wdg/EOcawJC3CiIcP755jxnD3bTXmsXw
+         YLXwAiG5r0bd8K7eCQpu24h/GrDfyJ3DFs37i1KPtaXxS1L7SFUtC8Hf2b5hSDV3SP4O
+         6tGw==
+X-Gm-Message-State: AOJu0Yy+5vvs3WZGCmuooCPkmcue4kL2BkuL3tmXBD+rGqZ2LTqeq7rj
+	x6Pk3l5JYgl4SzjRog2pEh6yhU1hoD8Jn1aToPe6MHVhv4oTRJi5/IPKAgWlgG+n
+X-Gm-Gg: AfdE7cnfaTpyozgZClKQeBEDWiZcZQfIi/+JNc+AtC6lAXgX3Y4jqfgWenT8iPMWO0T
+	Qoe3YLdTh5Cr7I1yYJmdusn5cZzgM9nJiPgUkiPxr7EZQR+y72IEaiIKYFxpCxi33vIp19BXBTn
+	ZP4uCLS1PeAhmyY8GAXUsSJY8jNanHk525unYxLAs1I6n88n38PuI6SBiULnBw/lAcmE9kfe86L
+	oY6MPo0NBw3n9Etk1TcvduwL//cWQrN+45jIcuZk25P1AEMzR9vyGxaCDArw4OPvQYpyKBkxQiY
+	9v9DxDLKKX7qH+RG/eR9robPdSk5fxTsyzdG9Ltz6w+aOsdqfS3Gp/RTC5/6p7WUwUtdnlQCFdi
+	/89Q5a3HV3BHBpdKt3GDpiw9eoI6rgcf5Pl42ztflccejlXl3ttctrrFxurMP5efOgGhR9qBCF6
+	7OuyVW
+X-Received: by 2002:a17:90b:1fc5:b0:37f:9ce2:348b with SMTP id 98e67ed59e1d1-3808c0e4f16mr1237399a91.28.1782843696658;
+        Tue, 30 Jun 2026 11:21:36 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:6::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38097dba406sm46026a91.2.2026.06.30.11.21.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jun 2026 11:21:34 -0700 (PDT)
+        Tue, 30 Jun 2026 11:21:35 -0700 (PDT)
 From: Stanislav Fomichev <sdf.kernel@gmail.com>
 X-Google-Original-From: Stanislav Fomichev <sdf@fomichev.me>
 To: netdev@vger.kernel.org
@@ -64,9 +64,9 @@ Cc: davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com
-Subject: [PATCH net-next 3/6] net: mtk_eth_soc: hold instance lock around DMA-device-swap close
-Date: Tue, 30 Jun 2026 11:21:26 -0700
-Message-ID: <20260630182129.1601784-4-sdf@fomichev.me>
+Subject: [PATCH net-next 4/6] net: rtnetlink: take instance lock inside rtnl_configure_link
+Date: Tue, 30 Jun 2026 11:21:27 -0700
+Message-ID: <20260630182129.1601784-5-sdf@fomichev.me>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260630182129.1601784-1-sdf@fomichev.me>
 References: <20260630182129.1601784-1-sdf@fomichev.me>
@@ -78,41 +78,75 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-netif_close_many will soon assert ops lock (for locked DOWN/GOING_DOWN).
-Update mtk_eth_set_dma_device to manually grab and release the ops lock.
+rtnl_configure_link calls __dev_change_flags() and __dev_notify_flags,
+both need the instance lock. rtnl_newlink_create grabs it but stacked
+devices do not. Move the lock inside rtnl_configure_link.
 
 Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
 ---
- drivers/net/ethernet/mediatek/mtk_eth_soc.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/core/rtnetlink.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-index 5d291e50a47b..fe7610c42e5d 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -26,6 +26,7 @@
- #include <linux/bitfield.h>
- #include <net/dsa.h>
- #include <net/dst_metadata.h>
-+#include <net/netdev_lock.h>
- #include <net/page_pool/helpers.h>
- #include <linux/genalloc.h>
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index 12aa3aa1688b..1b7d6f6b8b68 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -3660,14 +3660,16 @@ int rtnl_configure_link(struct net_device *dev, const struct ifinfomsg *ifm,
+ 			u32 portid, const struct nlmsghdr *nlh)
+ {
+ 	unsigned int old_flags, changed;
+-	int err;
++	int err = 0;
++
++	netdev_lock_ops(dev);
  
-@@ -5030,10 +5031,14 @@ void mtk_eth_set_dma_device(struct mtk_eth *eth, struct device *dma_dev)
- 			continue;
- 
- 		list_add_tail(&dev->close_list, &dev_list);
-+		netdev_lock_ops(dev);
+ 	old_flags = dev->flags;
+ 	if (ifm && (ifm->ifi_flags || ifm->ifi_change)) {
+ 		err = __dev_change_flags(dev, rtnl_dev_combine_flags(dev, ifm),
+ 					 NULL);
+ 		if (err < 0)
+-			return err;
++			goto out;
  	}
  
- 	netif_close_many(&dev_list, false);
+ 	changed = old_flags ^ dev->flags;
+@@ -3677,7 +3679,10 @@ int rtnl_configure_link(struct net_device *dev, const struct ifinfomsg *ifm,
+ 	}
  
-+	list_for_each_entry(dev, &dev_list, close_list)
-+		netdev_unlock_ops(dev);
+ 	__dev_notify_flags(dev, old_flags, changed, portid, nlh);
+-	return 0;
 +
- 	eth->dma_dev = dma_dev;
++out:
++	netdev_unlock_ops(dev);
++	return err;
+ }
+ EXPORT_SYMBOL(rtnl_configure_link);
  
- 	list_for_each_entry_safe(dev, tmp, &dev_list, close_list) {
+@@ -3918,22 +3923,20 @@ static int rtnl_newlink_create(struct sk_buff *skb, struct ifinfomsg *ifm,
+ 		goto out;
+ 	}
+ 
+-	netdev_lock_ops(dev);
+-
+ 	err = rtnl_configure_link(dev, ifm, portid, nlh);
+ 	if (err < 0)
+ 		goto out_unregister;
+ 	if (tb[IFLA_MASTER]) {
++		netdev_lock_ops(dev);
+ 		err = do_set_master(dev, nla_get_u32(tb[IFLA_MASTER]), extack);
++		netdev_unlock_ops(dev);
+ 		if (err)
+ 			goto out_unregister;
+ 	}
+ 
+-	netdev_unlock_ops(dev);
+ out:
+ 	return err;
+ out_unregister:
+-	netdev_unlock_ops(dev);
+ 	if (ops->newlink) {
+ 		LIST_HEAD(list_kill);
+ 
 -- 
 2.53.0-Meta
 
