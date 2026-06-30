@@ -1,102 +1,138 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E2F30FC23
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 22:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1F72405E1;
+	Tue, 30 Jun 2026 22:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782857585; cv=none; b=DyxZ16Dma9dj3I3GqtAoSP5xCIIcVeIRkdRgYUGzFuqXjgn9tbLkvDiO1BsB3BwlfIQyzER12chS0x+LTdyE8Is4UQGyw1QTOlP15R0s7xAg4EkloqJ8zFdWX9aJ+vQ/LgZT4nzXX3sQyvs9cJRdrwl1YBBa2PVaZdNsiPdtdis=
+	t=1782857814; cv=none; b=DG8uOQZfJATcpGFKRuPuqAeGm9gevou709CGWdPzarpPTp2dqnTgRbkFJW0lx978yZJimrm/jgvles7wPsJymDAQvokjbsI0lat+VxeyIq0YfwXaX/kwA1MlxwKwy5LcvOVgqDYO9M1vTfdumzxk1XHM+Ap+BfrreF6L1OU2/i4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782857585; c=relaxed/simple;
-	bh=a/lxtTDTDg9qHZ1XxJGp6GALUnxVcyilFnlyp8deNr4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CyWl+KCXt88aEw8tX/4C3H8l0gerGuAx0QHzPaV085EjGrQuLEz9VwV0rasvnhmvdXKaDFtp7DoxCxPJqxXBv7SwJVVbUUaW73P+6sFdhMe9Nt6D96IMpUHoI2b1SpXrC3UxOnEURCnshKkpPKDi1Ym7V2b0fZMwG4DVbl7eexI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PJgsHN6y; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782857814; c=relaxed/simple;
+	bh=htrANcxd20nmrILXwJpsOCDJVICGkLLOXJVouWan+x8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H4/LyJV5RhIxiyWJWc6PAWh921/dSkHW2Oj3qLsNXAWch0FQmPcOzWBWjVCQy8RyeuyVewF/3XZwvS1eFmwZop7gIV50NlvS9MHOVgcPiPB9xhqur09D1TuQxdGnlJ+S+8AzivRZ74TNylNRk+Yh2/+e6ASbjdD9xUBbRFcAnWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kMHgZF4B; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PJgsHN6y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79A4A1F00AC4
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 22:13:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kMHgZF4B"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BCA11F000E9;
+	Tue, 30 Jun 2026 22:16:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782857583;
-	bh=HM1j74yODPhJMYhAe8Gysw58b33HB8UlPnD7jYgM3wc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=PJgsHN6yFCy6uM8OzJ5er++rKVozMaAHvyDqrhtYfMPCCxrpB8AXLUA6uGg+5VklC
-	 9duGS1uMgl4p3p5uoQL7TK9MhvxKTa2dKSCMTkS2w2VwjlYEbiWAkQa2L67HL5VVVd
-	 9uvKdyQ3g4QVOBg20tia94Xcv+JC3R0uEMn+QJKcGoYACQdi1ovvRcZqMegBGiFT4p
-	 hLtNn0IurWdCmVibLCpjZx2NvYHdoGJBdwYHxHXG+WkxypEPGGiZsPFfWJoND2Kal+
-	 98zSH13AxZSGRmzDL3hBFy5vxpfe1HN4oOXaZk4ptIHXrsgqLoTMTFxyer7juhoAp7
-	 7YulToC5Pm34w==
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5aea9d606f0so4354268e87.3
-        for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 15:13:03 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RpLhJVvKZbqkdWUQQJVQYOh78f4B7l277e7JII6pHR2QjBhmAWGZQkwJiWjongvjrvdEv5KW0Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyI/ChWOZOiPWQFUjvtF49YwHwkmA7/1AokkJgwFspOlnYiPbeV
-	6ABWA0JDCjNb/KU2kkHboEee/DV1Mibv3VgkHeXsg/O8anO9a1+TwQrTH8eP752Dc3XMmAFnr8p
-	Epit3Asap/u46ZahftaMuiL9+V7eR4eE=
-X-Received: by 2002:a05:6512:1248:b0:5ae:b2cf:8204 with SMTP id
- 2adb3069b0e04-5aec10a3841mr657448e87.2.1782857582274; Tue, 30 Jun 2026
- 15:13:02 -0700 (PDT)
+	s=k20260515; t=1782857812;
+	bh=DGltGEycY+hCI/dvIu1mTklnBJ/JnDR2WIlHuuRxAUM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=kMHgZF4Brk/SBFDdKiygIwML/E2u0M6ucnpL8qOX70RwLlQsAqlL7E7rYBNrKlNz0
+	 9YnCOk0VLQHXe/WHB5xHI4RoyO9YXPWmhE+Wqh9X1ztAyAXCtKkgOHveeNm0FRk0aa
+	 NxLuQnU8iHtYKhgNSmtrQuw3o8EFtUTA4nP+kXhET1ZBZnAedK6Ya0+CaHT8SxT2Zk
+	 DfIbK40rCHUXjUBjNpZnakArNCRLTHoEC6BN8fRUDOM0TTmSApwbzbOH2x6GERet3M
+	 rGmfbFsCwEST7dHNxVHerJQJ07eQifuwPxYC11kDOxIHUF3JpIM7d3kbzBpzNgwfTQ
+	 aVfc5BYfoEQNA==
+Date: Wed, 1 Jul 2026 00:16:49 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Stanislav Fomichev <sdf.kernel@gmail.com>
+Cc: Vladimir Vdovin <deliran@verdict.gg>, bpf@vger.kernel.org,
+	netdev@vger.kernel.org, ast@kernel.org, daniel@iogearbox.net,
+	andrii@kernel.org, martin.lau@linux.dev, sdf@fomichev.me,
+	hawk@kernel.org, john.fastabend@gmail.com, kuba@kernel.org
+Subject: Re: [RFC PATCH bpf-next v1 0/7] xdp: RX checksum metadata hint and
+ checksum assertion over redirect
+Message-ID: <akRAUTAqVKkxmoVa@lore-desk>
+References: <20260630191510.81402-1-deliran@verdict.gg>
+ <akQyT2d0wNF5F5LG@devvm7509.cco0.facebook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260630092406.150587-1-manikandan.m@microchip.com> <20260630092406.150587-2-manikandan.m@microchip.com>
-In-Reply-To: <20260630092406.150587-2-manikandan.m@microchip.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Wed, 1 Jul 2026 00:12:47 +0200
-X-Gmail-Original-Message-ID: <CAD++jL=FkEfpz-LW0vmPpZ28fLfGFMWo5E479Mapz55YUxKNAQ@mail.gmail.com>
-X-Gm-Features: AVVi8CcLJOfvOFl8jmVmAP_uzLY_UWoBigmB1_kTp6EN1gm7rCEox0bV8PbTeSw
-Message-ID: <CAD++jL=FkEfpz-LW0vmPpZ28fLfGFMWo5E479Mapz55YUxKNAQ@mail.gmail.com>
-Subject: Re: [PATCH v4 1/7] dt-bindings: mtd: jedec,spi-nor: allow the SFDP to
- be exposed via NVMEM
-To: Manikandan Muralidharan <manikandan.m@microchip.com>
-Cc: pratyush@kernel.org, mwalle@kernel.org, takahiro.kuwano@infineon.com, 
-	miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, srini@kernel.org, 
-	nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com, 
-	claudiu.beznea@tuxon.dev, linux@armlinux.org.uk, richardcochran@gmail.com, 
-	arnd@arndb.de, michael@walle.cc, linux-mtd@lists.infradead.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="2QzZE0hPxBRkFxHX"
+Content-Disposition: inline
+In-Reply-To: <akQyT2d0wNF5F5LG@devvm7509.cco0.facebook.com>
+
+
+--2QzZE0hPxBRkFxHX
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi Manikandan,
+On Jun 30, Stanislav Fomichev wrote:
+> On 06/30, Vladimir Vdovin wrote:
+> > This series lets XDP programs work with the hardware RX checksum verdic=
+t:
+> > read what the NIC concluded about a packet, and carry a "the L4 checksum
+> > is correct" assertion across a redirect so the stack does not revalidate
+> > it in software.
+> >=20
+> > When an XDP program redirects a frame to a cpumap (or any other path th=
+at
+> > rebuilds an skb from an xdp_frame via __xdp_build_skb_from_frame()), the
+> > HW RX checksum status is lost and the stack revalidates the L4 checksum=
+ in
+> > software.
+> >=20
+> > Two kfuncs are added:
+> >=20
+> >  - bpf_xdp_metadata_rx_csum(): a device-bound RX-metadata hint, like the
+> >    existing rx_hash / rx_vlan_tag ones.  It reports enum xdp_csum_status
+> >    (XDP_CSUM_NONE / XDP_CSUM_VERIFIED) and is implemented for mlx5e, ice
+> >    and veth.
+> >=20
+> >  - bpf_xdp_assert_rx_csum(): a generic, non-device-bound kfunc that lets
+> >    the program assert the L4 checksum is correct.  It sets a buff flag
+> >    that rides into the xdp_frame, and __xdp_build_skb_from_frame() turns
+> >    it into skb->ip_summed =3D CHECKSUM_UNNECESSARY.  The kernel cannot
+> >    verify the assertion; the program takes responsibility, as it already
+> >    does when rewriting packet contents.
+> >=20
+> > Posted as RFC to get feedback on:
+> >=20
+> >  - whether the read hint (bpf_xdp_metadata_rx_csum() and its driver
+> >    support) belongs in this series at all.  bpf_xdp_assert_rx_csum() is
+> >    self-contained and already covers the main use case: a program that
+> >    computes or fixes the L4 checksum itself, or trusts the source, and
+> >    wants the rebuilt skb to skip software revalidation.  The read hint =
+is
+> >    an optimization for programs that did not touch the payload and only
+> >    want to relay the hardware verdict.  These could just as well be two
+> >    independent series (assert-only first);
+> >  - the kfunc naming, bpf_xdp_assert_rx_csum() in particular.
+> >=20
+> > Testing:
+> >=20
+> >  - new selftest xdp_cpumap_rx_csum drives a frame through a native-XDP
+> >    veth into a cpumap redirect and checks, via fexit on
+> >    __xdp_build_skb_from_frame(), that the rebuilt skb is
+> >    CHECKSUM_UNNECESSARY iff the program called bpf_xdp_assert_rx_csum();
+> >  - xdp_metadata calls bpf_xdp_metadata_rx_csum() over veth and checks b=
+oth
+> >    verdicts: XDP_CSUM_NONE for an AF_XDP-injected frame and
+> >    XDP_CSUM_VERIFIED for one sent through the stack.
+>=20
+> This was posted somewhat recently from Lorenzo (and had a fair bit of
+> discussion), but there haven't been a follow up:
+> https://lore.kernel.org/bpf/20260217-bpf-xdp-meta-rxcksum-v3-0-30024c50ba=
+71@kernel.org/
 
-thanks for your patch!
+Hi Vladimir and Stanislav,
 
-On Tue, Jun 30, 2026 at 11:24=E2=80=AFAM Manikandan Muralidharan
-<manikandan.m@microchip.com> wrote:
+AFAIK in my series we are just missing the drv self-test requested by Jakub.
+I have not the time to look into it yet.
+@Vladimir: if you have any free-cycles, do you agree to introduce the missi=
+ng
+ test requested by Jakub to my series? Thanks in advance.
 
-> Add an optional "sfdp" child node (compatible "jedec,sfdp") that
-> describes the SFDP as a read-only NVMEM provider via nvmem.yaml, so its
-> contents (e.g. a vendor EUI-48/EUI-64) can be read through NVMEM cells.
->
-> Signed-off-by: Manikandan Muralidharan <manikandan.m@microchip.com>
+Regards,
+Lorenzo
 
-I would expect it to follow nvmem conventions like this, notice
-compatibles specific-to-general with sfdp first:
+--2QzZE0hPxBRkFxHX
+Content-Type: application/pgp-signature; name=signature.asc
 
-sfdp {
-    /* NVMEM provided by SFDP */
-    compatible =3D "jedec,sfdp", "nvmem-cells";
-    label =3D "SFDP";
-    read-only;
-    #address-cells =3D <1>;
-    #size-cells =3D <1>;
+-----BEGIN PGP SIGNATURE-----
 
-    mac0: macaddr@0x00 {
-        reg =3D <0x00 0x06>;
-    };
-    mac1: macaddr@0x06 {
-        reg =3D <0x06 0x06>;
-    };
-};
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCakRAUQAKCRA6cBh0uS2t
+rJlfAP9EMrP2/gOvhi9eqC1JNW/IWpiF6PrNN6R2YRl24hFYlAEAz/5TB17FzPlv
+NM+ZJLjwBy9VKzOmrrIYnBhkMsAr8wM=
+=X6ts
+-----END PGP SIGNATURE-----
 
-Your example should definitely be more elaborate like this,
-just an opaque sfdp node will not suffice. Maybe a separate
-example?
-
-Yours,
-Linus Walleij
+--2QzZE0hPxBRkFxHX--
