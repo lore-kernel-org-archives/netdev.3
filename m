@@ -1,52 +1,70 @@
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6793BFE25
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 10:19:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CA6E3EAC89
+	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 10:22:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782814745; cv=none; b=hOCtiO+rwJwTAMTq4Z4/xDGV6Z/N8+ZWuChq0mC1J0QNQSKw1h4SauX+oAw5+DskCrEcyn3t56ywm/8kum8cDDMmzEnQEOvG+ou0Mksow5ofUiCm1ZzlC06TBdZLF/hsxg9Yk+ud7u3DVZYqLcvO2D26F6DIKQCbrREf33ZHwc0=
+	t=1782814935; cv=none; b=uF1YvEZu8gX+XtExtBEKV8BuqmkuSPseLXx6JkJLw4F2beRI4co2PyWkwUck0zvkUo78h4qWFEg/qgWu/QHwfrUrkhrLmxB4STBEW4UKkZUpP06kCRsoLdTaIM8wtSN7zxh7eo9g9qZynzuXImIVbwSRMNSeENwLs3iyO148BCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782814745; c=relaxed/simple;
-	bh=m2D1VAm3vHfN3u+29nWtThV6eLcY8ZfqQjnYYy8is10=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
-	 References; b=XHNUrkR4qetvVXNkNFxsc9lolS3Jrd6LA1sF+R1/ATBmv0rJ9UyNFwGPVXyRuddzaki8qKV/fwQA53W6blJoUQITdVpFz2acuYg8sTvYyUk7OdC8epkPbT1EhB4guodTxr4A7XlzXO7Fznvrky+vGp43WKvXILAOERf2grQ3Ox0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=epDwIvns; arc=none smtp.client-ip=210.118.77.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1782814935; c=relaxed/simple;
+	bh=3B4mgEkMMg1k+RH7odWpE7epbKwExfi7ZwW6SF4mnhw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fP13x6HKCLzL9+kB2BDX8bUm2sVymOdVohHNDnjZHpx/Do5WVMvN18c3PJLIHVfO0is0KrIqqy00IKBc8xvN8cUpm2lgSbJvZfGWD9lVSW6dLYP24qZdmPI8dFdlrMTwzxWweloJy7nfGgMEoJjYetOyEQq+vHVuPG6K6ShvfRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ilETqyQe; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="epDwIvns"
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260630101158euoutp02e305b9c13f2ef6d11fb4f490518f867f~91C09JGMJ1162311623euoutp02A
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 10:11:58 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260630101158euoutp02e305b9c13f2ef6d11fb4f490518f867f~91C09JGMJ1162311623euoutp02A
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1782814318;
-	bh=QXblLV/UXM0l53Sla0Cza2+eCG4M8DfzQr6z9zDQS68=;
-	h=From:To:Cc:Subject:Date:References:From;
-	b=epDwIvnsufTCO5RsoQAyQdITxCaSbW6zIIgZItA4CRmyNZqgqy+wMm87ZgBuyjXD7
-	 sYtwNZMMfXAndg3A9Tg7dYYpdq20h1uTXJH/XitAeou7F3HnyLCiXwLCq6u1mDTDiu
-	 YZnWgrqQL1ZWcn0HdeEbNqQ8m0fLJPUMgQfwUixI=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20260630101157eucas1p1b1cef0db9381391bdd9400f1d255ce49~91C0iez0R0447904479eucas1p1h;
-	Tue, 30 Jun 2026 10:11:57 +0000 (GMT)
-Received: from AMDC4843.eu.corp.samsungelectronics.net (unknown
-	[106.120.77.61]) by eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20260630101157eusmtip13d3eb59deffa0613d508577eb7b5d863~91Cz_ZCi-2068620686eusmtip1-;
-	Tue, 30 Jun 2026 10:11:57 +0000 (GMT)
-From: Jakub Raczynski <j.raczynski@samsung.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ilETqyQe"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2c95a0c0aa2so29549235ad.3
+        for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 03:22:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782814933; x=1783419733; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/t9kcr2j0sJat9b7E1mstFc45YE/VNCBoHjz8KUyS8Y=;
+        b=ilETqyQeYMMc6wd3zO9se+Y8+lxLjXTyQDc6FfgiQnmQR58T+oNy5CBfQL2zaog1mz
+         hoxBeb8WdGJANiH9vNAmrUOEBbxtRhe/568qTG4vrwuMK1xOhfAqdUWQ723Cc9K7g7aF
+         U3jCufWY/y1nkT6xH5PKyYYAHz0KUikRNRMmbnUXF8rYX6n1jI7Iev21Xfx8BvUhqyEv
+         6KMhLT6riQXecUh1P2z8WqLLa5Lk3MUzpTzDqOXN4UsmoRiWofEwzAu81KrVgKV0ErSx
+         acYf1gaU4bHCLQaX6xafuxQAGtTKxwi83bejOQuIyakxRzgd7yEazbqZASdRPEtmUhA/
+         3hkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782814933; x=1783419733;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/t9kcr2j0sJat9b7E1mstFc45YE/VNCBoHjz8KUyS8Y=;
+        b=M7uBCJP4ViMSKMtkaPSqF4Nn/MQFyOmmMAx+92IBm2Gom7APi1XaUyZVBujKNZ0JSe
+         KJMwWOCl7zr/8gwmzs2YyeXhSEqJVSPQxHLDQI2EzAHBWw105rm2tAhVh1//O9irGhiI
+         0RFnPdMH+NH1TkO2ihN5knTGEqWOVDhKjYtm7TVyVLlJ+5gWjs3ZL+hOskNJugvOT2+P
+         m0BEY7MYzlsXn3wEj5lYIRIigJF+3fc78fuoSU3wSsmAaVBYSyTZGEXpIfpyaHw4qQgR
+         uTqyo61uIQIZbMTo5WLySikd3H2swemcKls6d9gHb7esgaUY51L9EsPy5hqixrmwAUDA
+         Fs2A==
+X-Gm-Message-State: AOJu0YzTX2/wPvorr82TmSxIE70jCoLzivfMWXTvplhFaPuD00bjWy/q
+	5FGYJRIzelxKH/e4g3ct2eThpX3EOyaVG1Exk2u3zNeQCb5zRHgPXM3qsKS67r4uqYvE4A==
+X-Gm-Gg: AfdE7cmfShX+v9eCPztL65eVcTIgTVakQXj1+qe8cZZeKpJ4yJeuLw+iaiRiWODWdrn
+	wiTiX1uJRnekV3MLbxswXsdh7AfVB8yyxxQCQKSrjYjTKdn/gmf0zzc4TxCmPUNkzT0WWtQ7n6N
+	K+YiuBABSG/9KDyKIyQKevcD1CbRSMzrZjfuC/CTBrl75Hktd+8WDfgLDzvHoK+87LRFC34pLcf
+	sGxMWykZJ6apQ6NNvqhknskOCEfRRYLSwoAPaW41oCIM/apKT4BUIQwcp4UWo4urVOmkoSBKsm/
+	i6h0iQXigBb8rJ6W0rFa/H91Wbe6pdTe1ZSedahIet+l/EoBDz/dnqo9BIlMsgM2DNnEibDKMBp
+	a+p7ME0r0oSiilNnnhp4aVQcMp3NOIrURYkMnIwtI4emM3ZU2DZUhMWhjEf/QQlyca/LxMAbwpd
+	aC7Reo
+X-Received: by 2002:a17:903:234d:b0:2c9:a9c0:80b6 with SMTP id d9443c01a7336-2ca2ea10374mr23824275ad.34.1782814933036;
+        Tue, 30 Jun 2026 03:22:13 -0700 (PDT)
+Received: from houminxi ([166.0.188.190])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ca37c7456bsm10696285ad.25.2026.06.30.03.22.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jun 2026 03:22:12 -0700 (PDT)
+From: Minxi Hou <houminxi@gmail.com>
 To: netdev@vger.kernel.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
-	linux-kernel@vger.kernel.org, k.tegowski@samsung.com,
-	k.domagalski@samsung.com, Jakub Raczynski <j.raczynski@samsung.com>,
-	Yashwant Varur <yashwant.v@samsung.com>
-Subject: [PATCH net] net/stmmac: Set Rx queue page_pool to NULL when freeing
- DMA resources
-Date: Tue, 30 Jun 2026 12:09:54 +0200
-Message-Id: <20260630100953.747868-1-j.raczynski@samsung.com>
-X-Mailer: git-send-email 2.34.1
+Cc: Minxi Hou <houminxi@gmail.com>,
+	aconole@redhat.com,
+	echaudro@redhat.com,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH v2] selftests/net/openvswitch: add output truncation test
+Date: Tue, 30 Jun 2026 18:22:08 +0800
+Message-ID: <20260630102208.29140-1-houminxi@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,52 +72,108 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20260630101157eucas1p1b1cef0db9381391bdd9400f1d255ce49
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20260630101157eucas1p1b1cef0db9381391bdd9400f1d255ce49
-X-EPHeader: CA
-X-CMS-RootMailID: 20260630101157eucas1p1b1cef0db9381391bdd9400f1d255ce49
-References: <CGME20260630101157eucas1p1b1cef0db9381391bdd9400f1d255ce49@eucas1p1.samsung.com>
 
-When freeing RX descriptor resources, there is standard clearing of
-descriptor page_pool via page_pool_destroy() which does destroy
-page but does not set its pointer to NULL, which must be done by driver
-calling this function.
-It is not done in __free_dma_rx_desc_resources() when stopping interface,
-which is generally not an issue, because __alloc_dma_rx_desc_resources() does
-setup this regardless of previous state.
-But above is true assuming reinitialization is successful.
+Add test_trunc exercising the OVS_ACTION_ATTR_TRUNC action. The test
+verifies truncation in three steps: first confirm normal forwarding
+works, then apply trunc(14) which truncates packets to the Ethernet
+header and verify ping fails, then restore normal forwarding and
+verify connectivity recovers.
 
-In case of failure of page_pool_create() in __alloc_dma_rx_desc_resources(),
-all non-NULL pages will be freed, including those already cleared.
-So there is possible kernel panic due to wrong paging request at address.
+The trunc action sets OVS_CB(skb)->cutlen, causing pskb_trim at
+output time. With trunc(14) the IP payload is stripped, so the
+receiver drops the frame and ICMP echo reply is never generated.
 
-Fix this by assigning NULL to page_pool pointer on free
-
-Fixes: da5ec7f22a0f1 ("net: stmmac: refactor stmmac_init_rx_buffers for stmmac_reinit_rx_buffers")
-Signed-off-by: Yashwant Varur <yashwant.v@samsung.com>
-Signed-off-by: Jakub Raczynski <j.raczynski@samsung.com>
+Signed-off-by: Minxi Hou <houminxi@gmail.com>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ .../selftests/net/openvswitch/openvswitch.sh  | 66 +++++++++++++++++++
+ 1 file changed, 66 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 3591755ea30b..4b8f2814d3b5 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -2172,8 +2172,10 @@ static void __free_dma_rx_desc_resources(struct stmmac_priv *priv,
- 		xdp_rxq_info_unreg(&rx_q->xdp_rxq);
+diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+index 2954245129a2..fef21eb4a129 100755
+--- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
++++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+@@ -32,6 +32,7 @@ tests="
+ 	dec_ttl					ttl: dec_ttl decrements IP TTL
+ 	flow_set				flow-set: Flow modify
+ 	action_set				set: SET action rewrites fields
++	trunc					trunc: output truncation
+ 	psample					psample: Sampling packets with psample"
  
- 	kfree(rx_q->buf_pool);
--	if (rx_q->page_pool)
-+	if (rx_q->page_pool) {
- 		page_pool_destroy(rx_q->page_pool);
-+		rx_q->page_pool = NULL;
-+	}
+ info() {
+@@ -443,6 +444,71 @@ test_action_set() {
+ 	return 0
  }
  
- static void free_dma_rx_desc_resources(struct stmmac_priv *priv,
++test_trunc() {
++	sbx_add "test_trunc" || return $?
++	ovs_add_dp "test_trunc" trunctest || return 1
++
++	info "create namespaces"
++	for ns in client server; do
++		ovs_add_netns_and_veths "test_trunc" "trunctest" "$ns" \
++			"${ns:0:1}0" "${ns:0:1}1" || return 1
++	done
++
++	ip netns exec client ip addr add 10.0.0.1/24 dev c1
++	ip netns exec client ip link set c1 up
++	ip netns exec server ip addr add 10.0.0.2/24 dev s1
++	ip netns exec server ip link set s1 up
++
++	ovs_add_flow "test_trunc" trunctest \
++		'in_port(1),eth(),eth_type(0x0806),arp()' '2' || return 1
++	ovs_add_flow "test_trunc" trunctest \
++		'in_port(2),eth(),eth_type(0x0806),arp()' '1' || return 1
++
++	ovs_add_flow "test_trunc" trunctest \
++		'in_port(1),eth(),eth_type(0x0800),ipv4()' '2' || return 1
++	ovs_add_flow "test_trunc" trunctest \
++		'in_port(2),eth(),eth_type(0x0800),ipv4()' '1' || return 1
++
++	info "verify connectivity without truncation"
++	ovs_sbx "test_trunc" ip netns exec client ping -c 1 -W 2 \
++		10.0.0.2 || return 1
++
++	ovs_del_flows "test_trunc" trunctest
++	ovs_add_flow "test_trunc" trunctest \
++		'in_port(1),eth(),eth_type(0x0806),arp()' '2' || return 1
++	ovs_add_flow "test_trunc" trunctest \
++		'in_port(2),eth(),eth_type(0x0806),arp()' '1' || return 1
++
++	info "add truncated forwarding flow"
++	ovs_add_flow "test_trunc" trunctest \
++		'in_port(1),eth(),eth_type(0x0800),ipv4()' \
++		'trunc(14),2' || return 1
++	ovs_add_flow "test_trunc" trunctest \
++		'in_port(2),eth(),eth_type(0x0800),ipv4()' '1' || return 1
++
++	info "verify ping fails with truncation"
++	ovs_sbx "test_trunc" ip netns exec client ping -c 1 -W 2 \
++		10.0.0.2 >/dev/null 2>&1 \
++		&& { info "FAIL: ping should fail with trunc(14)"
++		     return 1; }
++
++	ovs_del_flows "test_trunc" trunctest
++	ovs_add_flow "test_trunc" trunctest \
++		'in_port(1),eth(),eth_type(0x0806),arp()' '2' || return 1
++	ovs_add_flow "test_trunc" trunctest \
++		'in_port(2),eth(),eth_type(0x0806),arp()' '1' || return 1
++	ovs_add_flow "test_trunc" trunctest \
++		'in_port(1),eth(),eth_type(0x0800),ipv4()' '2' || return 1
++	ovs_add_flow "test_trunc" trunctest \
++		'in_port(2),eth(),eth_type(0x0800),ipv4()' '1' || return 1
++
++	info "verify connectivity restored without truncation"
++	ovs_sbx "test_trunc" ip netns exec client ping -c 1 -W 2 \
++		10.0.0.2 || return 1
++
++	return 0
++}
++
+ # psample test
+ # - use psample to observe packets
+ test_psample() {
+
+base-commit: cef9d6804030793cf8b8796fd6936197d065dd3e
 -- 
-2.34.1
+2.54.0
 
