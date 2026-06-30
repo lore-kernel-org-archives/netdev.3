@@ -1,95 +1,216 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B171F12CDBE;
-	Tue, 30 Jun 2026 18:02:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782842541; cv=none; b=HY5uuORJQgWLnQaRoNT6A4TDhCOtXsbVR9jeZqD73iH4iNa8W37z6oGNHPPAZhOR6P/kgNoWGCr3cOdvkZAieaWmz1ttWZSv9rQMXrkqwhHpJHWZyggechlJA9ck1+ScnE7GCW4gX4oXp4+mvpNqYKrASSo09dmtEElMwZZHI0U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782842541; c=relaxed/simple;
-	bh=V16u8iU0zk+lCqlS1wIv/DHcIm7oRipJJhddV2VDekY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jbJ2hMw/+Vq/pFsMsKTj8FKzDhpW4T/fiI68JKB8snivEHVN4luFKCI0Ryz2sNRcNhDb7ONGaB7b0Kdsjd9ps7uZxjjQTAFoUGlMx5Y66YW9mGQ8pnHcAkOtFmEHgXVa5edmDf8L9ACP8f4WmgbOx5TL5RG4soRY1OyS1aJ+9Oc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bW2LtgBu; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A03523DF00C
+	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 18:18:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782843516; cv=pass; b=tNGRFh3SdGGhakJaaWgytPnkyVA6P3z7Z9iDagDlPXnuftLIXXVr6AyqHzbBXOEs424ACAWkjPTRs2zTLn6aSc5k+1eDZSS+Rq6HQlmhdZqE8wKciJccyaNJLbId+VL0RWXyeCwZZf0lFbTLECu/pRk5G/7ENBvalVbBNnDt4OE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782843516; c=relaxed/simple;
+	bh=D7pWqv9qadXnG7/eNmqv6/JPm+vTpfQ/ezdHwN6Ik7I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ib7A456k4+qNyvWLJY/r06lUyoRFm7vLFaAsdX1XEtCvcQS4gsHMiX5NsF/dL0og4vrJ5qiBInS1YQl40vzIp7UqjFFtDgmFFKaNKvGumaNHMgRr/ON+nh489KjxhIcTjURunCcWGPsWnktc4bJzuCv6NEWgN5gCGBADTYeqBDc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=U+FEk1EO; arc=pass smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bW2LtgBu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D4201F000E9;
-	Tue, 30 Jun 2026 18:02:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782842540;
-	bh=xrqqsPqaXbkExbvl7l6TbPo4VTzO9ytLt6edYlDgBT8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=bW2LtgBuXbPQAq4eiMMa8cUMnVjLuqj3Q6ugsddafkV7o5cM+0nsN+QgGxgqaE9Ke
-	 Hd2L/gR2uB4HHXsgPXibU6mlHo7TutX96zAGXa4SDB3W0MssskuFm1/Eozs7oBwvBA
-	 arL/o6a4H3Fr26i7Cxlgj1M2y63FOHzWKO/ny5MVsnEGMsX3sys6c3Cs30jcJHkO9+
-	 XRCna9Z2QOrPjFQ4omy9vh5UCxbCXgIqPfvOAEHTQtsCudlU/X2XioMfoqlzkl5rr7
-	 lEWWmTRxZJRsYFaORIATLAzNFLotlOzIx22OKAL6w1ojr3Hk3eIYpyEl3bK8vY9eJe
-	 Hrdb/XaxU/e/g==
-Date: Tue, 30 Jun 2026 13:02:19 -0500
-From: Rob Herring <robh@kernel.org>
-To: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Cc: Ulf Hansson <ulfh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Jeff Johnson <jjohnson@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
-	Rocky Liao <quic_rjliao@quicinc.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Christian Marangi <ansuelsmth@gmail.com>, linux-mmc@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-block@vger.kernel.org,
-	linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
-	linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
-	daniel@makrotopia.org, stable@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Subject: Re: [PATCH v6 1/9] block: partitions: of: Skip child nodes without
- reg property
-Message-ID: <20260630180219.GA4139943-robh@kernel.org>
-References: <20260629-block-as-nvmem-v6-0-f02513dcd46d@oss.qualcomm.com>
- <20260629-block-as-nvmem-v6-1-f02513dcd46d@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="U+FEk1EO"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-84347ad88edso4148495b3a.1
+        for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 11:18:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782843511; cv=none;
+        d=google.com; s=arc-20260327;
+        b=doggLZc633koeIQeoDY8omPAMVYZC1GOe5ZPHzE0JTpPgS47KuirPfgWsOKZhh2+7S
+         MCf44VinQR8ooCMnKYGufIcZ5r+2sw6WWS7ZcxulvJdN7JamAaQ8NDwG+Ez/kSi4pxfq
+         Ymep5MRSOGJqffAk3+rWiUXg1VQ8VgHUopvEjtFDlXTn1V7f9eIMekggUwC7u7mnX/nM
+         fx4GfsMimIicTVyebUUX7levH7xGvbLkopH9yHJUmef/IZ6LVw96HacdQgcMxW771aSk
+         aUxxpw3QAKNDvLDO5sIa6Un62iUpXnnPOswk5D5SaCAPT11qdLezAgI6X3v4l01pUAlh
+         8mpw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=jHHcQEADeEYM8NgWJTNCVWKKAnE3ygKO49DHhHbmJ18=;
+        fh=QdTTXFJdEk8eCovqHDwH/hdJDZl5nEtkCSQnE9Ewp0I=;
+        b=na6W5e+ULJ/6KK4f/YcJIKN4p7HgKhzm+7BHo1GQTYhcaxwhnZ0OOfCVw1XQXhDuGB
+         9pPccg5m24zNu/WEpjVpQ5LcejmFh6ut2/foupQX2irG8tQTsQsJwadR6bY+GkCg80Em
+         MmNUFDSxFLXV1qHMwsFCBI9PxXGiFYqElwJEHG2lCkaDisCv5GZXOuka5gAHmP8MMOci
+         cc6VWorK9e+JEO4DfFEiOsid60aINZA8eVAEU2rz4K/Rf54p1Z+QcVlhndyjDi4TZfoe
+         mYK+2ch2IiddBiq7/ZJ6mV1OueAw1pCOsmVKtnH2W/UkItmLVa5oLWy0TzrxhU4yHP/E
+         f0ag==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=asu.edu; s=google; t=1782843511; x=1783448311; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jHHcQEADeEYM8NgWJTNCVWKKAnE3ygKO49DHhHbmJ18=;
+        b=U+FEk1EORjslgWxiCYj0ayv2t1GotS7aUy5prhuna+y+J8WiDx9vGL8Cw9uuTGqkWJ
+         A3GQoA8i5K2WAjo8aLv94iApIRwmXHeGVlF34puyjvSeNBL0kaspRa25TKVg1P4lGcgE
+         TP4k3S5gclJv2kUU4fRk3M2qmpc9oplrk/ee6p63fSVEcOIHFAESktlapU2JMjOjY3xK
+         PRm1hzUSKMqPCzkgR6TtfSXSSsB5El31q5Xg92xZAFOJd4QAFQOlne/e386E0UkwbTfm
+         /4Yr79cMLyVnJmcfA1cu5ku/NtM3WsjR1FWnM1460tqj1li27osLoCtyhABWghguVCoH
+         ONGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782843511; x=1783448311;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=jHHcQEADeEYM8NgWJTNCVWKKAnE3ygKO49DHhHbmJ18=;
+        b=UWznWKINgJbm1NbiVLCSDEzkADDwjxG+kkspOQLrVO7dbJc8r1ex8GevxmBXFvXnV+
+         K7Opf9YeD3RuT5pvSePRCqWNpCZ5P7M/b9YqggBdsTSrLIRtfLfnr8FRowzSZI+7M6uP
+         UR+t6zzHgBnKI03oXm+JtLl2UKuBz4+YAIOLpXhKv7zVfgYJBwt2BUiaeadERNfqCxd4
+         I+TRuzRLAU92daEsj9ci1IX0Mqvm5Q+reTNWLJRyzQfuiIe+SdKaS9vT3DZmJpMr4xak
+         tIfHwk5/qsl5F/GM328XxW6p62BbQg6nVAnynRCCh+/m1vozXrGKl+9pi1WiwWGXpsUA
+         bN+g==
+X-Forwarded-Encrypted: i=1; AHgh+RrFZ/CQpKegasaXVx+xJDlIcRtNxny07ua+K7Ptb+6erih9drVwRAZz/1l4KnVVGFEi/vfFYGo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxi4YM5tmye8egIiCnMaWbguu8PiXNEqrA2AmFAPR7W8PDgERZ3
+	Z33NixoZ/iww9+bW0Elr678m1+z1vypeIDq3+CYun27boRl7i2CZhsBdTJBou/RRt+TDPcd+oH4
+	89w4g8o3aon2e3hFISykUaBGcfYE63GgXdOUe/iBb
+X-Gm-Gg: AfdE7ckupdMDvzKO3GtsAK8pSAbvKfbdOY5/VGq638KN9fADhpfG7LOGGPh2cJEgBz0
+	OjsH4wvKfrAyQoA9Fj6mmXoHPmRsgesA1hGHkBeFe9TCSNP3ZKX0xNs3KcqoA/NJHDjXEIG9YAK
+	br8MbqIv6K90k2CrwDBfF7Et/6QLjpMS9WLejApL6JoKfncCvJlGJjxJyWBXpjJSh9Igcx0XwGQ
+	snQBHp/Pqd5YvDZ5kS6CFrEdWdY6T1JaZFz72mv4RJV6l5W6RVXSIpPiluRuWYepcIFl+1XWu9o
+	yjlW0Dor/E7qW8MX7ZLurX2ssTu4
+X-Received: by 2002:a05:6a00:b93:b0:847:9178:f396 with SMTP id
+ d2e1a72fcca58-8479eef471emr4195023b3a.16.1782843510931; Tue, 30 Jun 2026
+ 11:18:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260629-block-as-nvmem-v6-1-f02513dcd46d@oss.qualcomm.com>
+References: <20260627014948.3049512-1-xmei5@asu.edu> <cbd7c6c1-15e9-4a9a-aaca-4cbb5bd157c7@linux.ibm.com>
+In-Reply-To: <cbd7c6c1-15e9-4a9a-aaca-4cbb5bd157c7@linux.ibm.com>
+From: Xiang Mei <xmei5@asu.edu>
+Date: Tue, 30 Jun 2026 11:18:19 -0700
+X-Gm-Features: AVVi8CcyJq-cPQIEnlscPzhDQpAH5DOCEd3nRx8zRWlCVhBcIiSkb9NH_NYuMpQ
+Message-ID: <CAPpSM+Sbro9psvZGmQ4cpm=wRMc9M-nHXxdzsgkL35hHDSCCaQ@mail.gmail.com>
+Subject: Re: [PATCH net] net/smc: fix UAF in smc_cdc_rx_handler() by pinning
+ the socket
+To: Sidraya Jayagond <sidraya@linux.ibm.com>
+Cc: "D . Wythe" <alibuda@linux.alibaba.com>, Dust Li <dust.li@linux.alibaba.com>, 
+	Wenjia Zhang <wenjia@linux.ibm.com>, Mahanta Jambigi <mjambigi@linux.ibm.com>, 
+	Tony Lu <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>, 
+	netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Hans Wippel <hwippel@linux.ibm.com>, linux-rdma@vger.kernel.org, 
+	linux-s390@vger.kernel.org, Weiming Shi <bestswngs@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 29, 2026 at 10:55:20AM +0200, Loic Poulain wrote:
-> Child nodes of a fixed-partitions node are not necessarily partition
-> entries, for example an nvmem-layout node has no reg property. The
-> current code passes a NULL reg pointer and uninitialized len to the
-> length check, which can result in a kernel panic or silent failure to
-> register any partitions.
+On Mon, Jun 29, 2026 at 10:40=E2=80=AFPM Sidraya Jayagond <sidraya@linux.ib=
+m.com> wrote:
+>
+>
+>
+> On 27/06/26 7:19 am, Xiang Mei wrote:
+> > smc_cdc_rx_handler() looks up the connection by token under the link
+> > group's conns_lock, drops the lock, and then dereferences conn and the
+> > smc_sock derived from it, ending in sock_hold(&smc->sk) inside
+> > smc_cdc_msg_recv(). No reference is held across the lock release.
+> >
+> > The only reference pinning the socket while the connection is
+> > discoverable in the link group is taken in smc_lgr_register_conn()
+> > (sock_hold) and dropped in __smc_lgr_unregister_conn() (sock_put), both
+> > under conns_lock. Once the handler drops conns_lock, a concurrent
+> > close() -> smc_release() -> smc_conn_free() -> smc_lgr_unregister_conn(=
+)
+> > can drop that reference and free the smc_sock, so the handler's later
+> > sock_hold() runs on freed memory:
+> >
+> >   WARNING: lib/refcount.c:25 at refcount_warn_saturate
+> >   Workqueue: rxe_wq do_work
+> >    refcount_warn_saturate (lib/refcount.c:25)
+> >    smc_cdc_msg_recv (net/smc/smc_cdc.c:430)
+> >    smc_cdc_rx_handler (net/smc/smc_cdc.c:502)
+> >    smc_wr_rx_tasklet_fn (net/smc/smc_wr.c:445)
+> >    tasklet_action_common (kernel/softirq.c:938)
+> >    handle_softirqs (kernel/softirq.c:622)
+> >   Kernel panic - not syncing: panic_on_warn set
+> >
+> > Only SMC-R is affected. The SMC-D receive tasklet is stopped by
+> > tasklet_kill(&conn->rx_tsklet) in smc_conn_free() before the connection
+> > is unregistered, so it cannot run concurrently with the free.
+> >
+> > Take the socket reference while still holding conns_lock, so the
+> > registration reference can no longer be the last one, and drop it once
+> > the handler is done.
+> >
+> > Fixes: d7b0e37c1ac1 ("net/smc: restructure CDC message reception")
+> > Reported-by: Weiming Shi <bestswngs@gmail.com>
+> > Assisted-by: Claude:claude-opus-4-8
+> > Signed-off-by: Xiang Mei <xmei5@asu.edu>
+> > ---
+> >  net/smc/smc_cdc.c | 12 +++++++++---
+> >  1 file changed, 9 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/net/smc/smc_cdc.c b/net/smc/smc_cdc.c
+> > index 619b3bab3824..b809139d7e87 100644
+> > --- a/net/smc/smc_cdc.c
+> > +++ b/net/smc/smc_cdc.c
+> > @@ -483,21 +483,27 @@ static void smc_cdc_rx_handler(struct ib_wc *wc, =
+void *buf)
+> >       lgr =3D smc_get_lgr(link);
+> >       read_lock_bh(&lgr->conns_lock);
+> >       conn =3D smc_lgr_find_conn(ntohl(cdc->token), lgr);
+> > +     if (conn && !conn->out_of_sync)
+> > +             sock_hold(&container_of(conn, struct smc_sock, conn)->sk)=
+;
+> > +     else
+> > +             conn =3D NULL;
+> >       read_unlock_bh(&lgr->conns_lock);
+> > -     if (!conn || conn->out_of_sync)
+> > +     if (!conn)
+> >               return;
+> >       smc =3D container_of(conn, struct smc_sock, conn);
+> >
+>
+> Fix looks correct.
+> A few nits on the implementation:
+> container_of() is called twice for the same conn. The conn =3D NULL
+> sentinel and the second post unlock check can also be dropped. Flip the
+> condition, early return inside the lock, compute smc once:
+>
+>         if (!conn || conn->out_of_sync) {
+>                 read_unlock_bh(&lgr->conns_lock);
+>                 return;
+>         }
+>         smc =3D container_of(conn, struct smc_sock, conn);
+>         sock_hold(&smc->sk);
+>         read_unlock_bh(&lgr->conns_lock);
+>
+> Also please initialize smc =3D NULL at declaration, it's not a bug now
+> since the early return guards it, just to make it refactor safe.
+>
 
-That does not sound right to me. A fixed-partitions node should only be 
-defining partitions with address ranges. I would expect a partition node 
-could be nvmem-layout, but not the whole address range. If you wanted 
-the latter, then just do:
+Thanks so much for the review!
 
-partitions {
-  ...
-};
+Both suggestions are good. v2 takes the reference under conns_lock and
+returns early inside the lock. And smc is also initialized to NULL at
+declaration.
 
-nvmem-layout {
-  ...
-};
+Will send v2.
 
-Rob
+Xiang
+
+
+> >       if (cdc->prod_flags.failover_validation) {
+> >               smc_cdc_msg_validate(smc, cdc, link);
+> > -             return;
+> > +             goto out;
+> >       }
+> >       if (smc_cdc_before(ntohs(cdc->seqno),
+> >                          conn->local_rx_ctrl.seqno))
+> >               /* received seqno is old */
+> > -             return;
+> > +             goto out;
+> >
+> >       smc_cdc_msg_recv(smc, cdc);
+> > +out:
+> > +     sock_put(&smc->sk);
+> >  }
+> >
+> >  static struct smc_wr_rx_handler smc_cdc_rx_handlers[] =3D {
+>
