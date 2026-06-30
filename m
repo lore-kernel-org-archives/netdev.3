@@ -1,75 +1,111 @@
-Received: from mail-43101.protonmail.ch (mail-43101.protonmail.ch [185.70.43.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0BE2F8E98
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 01:57:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865272264D9;
+	Tue, 30 Jun 2026 01:57:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782784646; cv=none; b=X6GSMyFGhpUt5hTnQaU/JrG5/EXSChcNSVuQ9/x9HT0aWdLjSS/TsqEXzTCZBwEndrtDvdk9pMhW8R26kNO3bmG6M/ygwSoeUObBWBMM57MtRuS7nIsW1WFdUfc3KrgcHHVoy/YGo5utt3SxQNFCX6Vdd49MN69kVQEfsSvdr/4=
+	t=1782784679; cv=none; b=TmNq9tZqR3GEu8FfLIaPlZxrszgFlTxi01PaKW5PLSZBJ4OB4vTBuiDtkNLNFCOMJzFXLkSIPnMeAs9cDS2XauYuK7yampaUGoxgPWbwGxgqzvKtthlC317qtRy78yKNyXLsKnzl+mdozAVPUD4aGcD+cDE1Tl5oy0igaROMkS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782784646; c=relaxed/simple;
-	bh=ZfoG/+QKnrfYCirFVYlyh+Zu0G4dZxrFIRndgI2AFW8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jwCOjZxfKQtrdx0b0koSM8eo5X11+A4QnWjMeTxOxckVp6y5IoK+OxrKB7aqMke2VoJwU16jDoje8AmSkw4rM0UqEUvPhKhRynF2RRsBw9NNy7Cpm8lsPuYaMMGNx80K35R3uJLNHe8vIeAeYRv8JaU/kGvBitDKfKbWTVz3wYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=NevV1SaL; arc=none smtp.client-ip=185.70.43.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1782784679; c=relaxed/simple;
+	bh=nmr8k63PP/orGw7GwsTqNPnIntMbHAyiDMyosVayUU8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=YFF7td0WfNNNVViJncjGBRlcsRo4PEJUipo6FVenZMHAspbqclzXRqYKE7qs3s7CDkl/BD7OOiO5qZqduyzCpnYAKcI/d58BrZPHdAbzrJDaA+c/XBD6gcPtTVxWyZdS/uhK+TJlH704fRaGz31yEyHvbsgTJ+jCsfsAc5+EgQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=j9OdEZjM; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="NevV1SaL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1782784633; x=1783043833;
-	bh=abt1Km3rhqF/kozSRmSM/863AzbKoF9WEhHJyA3rzFI=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=NevV1SaLMK9EaM/8nsFnFZqmVS2NBh1OjbbzFxFVfaaOGt2TJyiSfTafSqCRb/1kC
-	 ZfP4lVW08oP0eo3RQInrKxi3uafn98+8QY+w6IdzssFXST+uWCJ7nWbRxX+Z9lyF3u
-	 BvFeUc/CIqTVBY9/10ejOnclnllSYGV/py6k2bAoKU9c0/tx23FewiEiGJqACI+PCg
-	 dubck7cR7AtA09b6b6XbOzBvlc3qfcsgNWZNTzanOjdHEVaOFxWccD4YX/SFo9SIuz
-	 GxsUHbeCav/RZ81bTCyhL2+bWopMEaQGzig6aZpcMFy30JBXkJJ8wUP/v7+pYvbrCM
-	 rwjn9Swv8rdtQ==
-Date: Tue, 30 Jun 2026 01:57:10 +0000
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Alex Elder <elder@kernel.org>
-From: Esteban Urrutia <esteuwu@proton.me>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH 1/3] arm64: dts: qcom: sm8450: Add IPA support
-Message-ID: <1e151b08-5d3b-4b75-8d71-635617868285@proton.me>
-In-Reply-To: <66330ed6-826a-431e-9e8e-f2998af55168@oss.qualcomm.com>
-References: <20260622-sm8450-ipa-v1-0-532f0299f96e@proton.me> <20260622-sm8450-ipa-v1-1-532f0299f96e@proton.me> <806046b2-20ed-437e-a7e6-b3c0699f5a2d@oss.qualcomm.com> <b1f872f5-66cc-45fc-ad42-c308f8970691@proton.me> <66330ed6-826a-431e-9e8e-f2998af55168@oss.qualcomm.com>
-Feedback-ID: 147889766:user:proton
-X-Pm-Message-ID: ef11aeb475485be296f237c5a719643ca92d8730
+	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="j9OdEZjM"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 65U1vR1x94080767, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
+	s=dkim; t=1782784648;
+	bh=nmr8k63PP/orGw7GwsTqNPnIntMbHAyiDMyosVayUU8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=j9OdEZjMHrjZnsQ6Ddt9wyyC2OJu5Kc+/jzrSur06t+YhgLIxzhWuavkklAo51a1m
+	 hV8Q3aHSGek13XXp7ZQ2Q4UMuWHZFD8mw/bmh4Nnt5zLK6MHoMzYRwpETnzta1oM6y
+	 iT5Q5w8dvWaavQhk+1OKGRNAYsSQeULrqccUYrXLmfPlZ21JUWAzkWf/MRVL7I+M76
+	 Q9GaUOVTl4Hdwx2OKpLN7PCmKgKkMrLS5TMkk7C29GR5MDDGPGUwnqtkAaxvOE0ICb
+	 mqt28Kk4B6l+UBQD89w9CN1K8tEY0jEohzbQrWlJsbNjOsVZrzy9N/q2pF1gxlfQai
+	 /zyKj5M5WQZuA==
+Received: from RS-EX-MBS2.realsil.com.cn ([172.29.17.102])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 65U1vR1x94080767
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 30 Jun 2026 09:57:28 +0800
+Received: from RS-EX-MBS3.realsil.com.cn (172.29.17.103) by
+ RS-EX-MBS2.realsil.com.cn (172.29.17.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Tue, 30 Jun 2026 09:57:27 +0800
+Received: from RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) by
+ RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) with mapi id 15.02.2562.017; Tue,
+ 30 Jun 2026 09:57:27 +0800
+From: Javen <javen_xu@realsil.com.cn>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: "hkallweit1@gmail.com" <hkallweit1@gmail.com>, "nic_swsd@realtek.com"
+	<nic_swsd@realtek.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
+	<edumazet@google.com>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"horms@kernel.org" <horms@kernel.org>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH net-next v9 0/7] r8169: add RSS support for RTL8127
+Thread-Topic: [PATCH net-next v9 0/7] r8169: add RSS support for RTL8127
+Thread-Index: AQHdB5bQTMnckxFSmUe/MPSXUjLLjLZVo3yAgAC0whA=
+Date: Tue, 30 Jun 2026 01:57:27 +0000
+Message-ID: <a86ff04248c74814b470c23c09c5fe37@realsil.com.cn>
+References: <20260629071339.1605-1-javen_xu@realsil.com.cn>
+ <20260629160951.4422d10c@kernel.org>
+In-Reply-To: <20260629160951.4422d10c@kernel.org>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
 
-On 6/29/26 10:18 AM, Konrad Dybcio wrote:
-> Please alter the size of the register range that I mentioned this under,
-> as the range is wider than what you specified - the driver takes a big
-> offset from this base and accesses far outside the bounds of that range
-Just to make sure:
+>On Mon, 29 Jun 2026 15:13:32 +0800 javen wrote:
+>> This patch series adds RSS (Receive Side Scaling) support for the
+>> r8169 ethernet driver, specifically for RTL8127 (RTL_GIGA_MAC_VER_80).
+>>
+>> RSS enables packet distribution across multiple receive queues, which
+>> can significantly improve network throughput on multi-core systems by
+>> allowing parallel processing of incoming packets.
+>
+>On top of posting this too early you're also violating the limit of outsta=
+nding
+>patches. You must not have more than 15 outstanding patches.
+>_Especially_ when you struggle with the quality and need 10+ reposts :/ Th=
+e
+>reviewer bandwidth is very limited.
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8450.dtsi b/arch/arm64/boot/dts/qco=
-m/sm8450.dtsi
-index dd151a2c48ec..100daf8120ce 100644
---- a/arch/arm64/boot/dts/qcom/sm8450.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8450.dtsi
-@@ -2643,7 +2643,7 @@ ipa: ipa@3f40000 {
-                        compatible =3D "qcom,sm8450-ipa";
-=20
-                        reg =3D <0 0x3f40000 0 0x10000>,
--                             <0 0x3f50000 0 0x5000>,
-+                             <0 0x3f50000 0 0xb0000>,
-                              <0 0x3e04000 0 0xfc000>;
-                        reg-names =3D "ipa-reg",
-                                    "ipa-shared",
+Hi,
 
-Is this what you're referring to?
+Sorry about that. I understand the concern, and I apologize for the trouble
+caused by my frequent submissions. I will be more careful with the outstand=
+ing
+patch limit and avoid posting new versions too quickly in the future.
 
-Regards,
-Esteban
+Yesterday I submitted three series. For the phylink series,
 
+Link: https://lore.kernel.org/netdev/20260629060931.1006-4-javen_xu@realsil=
+.com.cn/
+
+I have received your email and I know I should resend it later.
+Apart from that, I also submitted the following two series:
+
+Link: https://lore.kernel.org/netdev/20260629064718.1349-1-javen_xu@realsil=
+.com.cn/
+Link: https://lore.kernel.org/netdev/20260629071339.1605-1-javen_xu@realsil=
+.com.cn/
+
+Could you please let me know the status of these two series? Should I keep
+waiting for review comments, or should I withdraw or resend them as well?
+
+Thanks for your time, and sorry again for the inconvenience.
+
+Best regards,
+Javen
