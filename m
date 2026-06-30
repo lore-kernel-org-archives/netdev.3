@@ -1,256 +1,168 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68A5D3F0759
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 11:41:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782819702; cv=none; b=m734bm4jX6Q5iOT8F0VG6+mVwwuWyUisvwo4iqh1kKez0OL5H+XGn1p/6h5FkVRZ/x3ygTNubCnSi66GkN3DvZwrblw3EbdQbYMZQ68aMcs9Ngz/I34nalqwBn1hLXlWO2mUBXZ1wEgm3uOf7geF+iXDcpltKLSLc8IjEGACav4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782819702; c=relaxed/simple;
-	bh=sctLDCraoqCWCHLB4nNb3QTSx7xmsvTDIgwcFQAmGiU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QEsOkGnjVTDJ48HsisZ073iBF38Q4MvRpg8Kstm9BSHr/3/6sLWOPEUq/okkBNENMQykHLdk8p9jsQuxBqH/6EzapUUT53douV0WJObLyvwgx3BBgj+qg2axMusLacwQzozvP4Kt9W3pc3IFFaLDdEZbG1l3hsohOqGXC2ijqqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DWShCo6N; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55133FFACC
+	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 11:50:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782820205; cv=pass; b=FyvKGqRsIvWa0d+uiyg6Ypb49aPUxFElHDpPbUpbl990sNEDTgO1nSofXm68UduwqJ95H5AK4DythnnTrbmz0wtIasJNVu0QUAemYlgKrFrf8M2lsOJXazd+NbpIlLSXnVmz7B6vIFk7t7vegDhBppK42hPLZigHYxohDT0KRkw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782820205; c=relaxed/simple;
+	bh=AKxGBmZoJWBXkWw87eb5Iekf1UB3fVGGAvIFgFCNLvA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gWeNADwKzoNuGFWLBKwPwsIwzgTSaoq34w938VnesRiGq5IYCdLddqKNcQ3LrczNyoxDqZNoybWGYz3w5Upjx+7UYzRHdt0sd/7SwRPvmnL2c2jBWdYrWIRC/rZrDK8AjAKxOLVfZ1ga6vBORj9fLmC3Si0Z57HaOmIUYDMj638=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=EuGK6/VL; arc=pass smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DWShCo6N"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-37e11438c66so1749675a91.3
-        for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 04:41:41 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="EuGK6/VL"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-84794e800f4so756189b3a.0
+        for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 04:50:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782820203; cv=none;
+        d=google.com; s=arc-20260327;
+        b=kNkujhwvTcnhCtO1MNrnvz1EgpdlODNo9h6mEsiUay18GTGA+7FxqRtiBabYKWVRdw
+         YgA7nssl02oq7uIgbTxhlgSS7nLNbwExX90D8WV4AJF5H3k5UTKL6BE3kdLKkAWZqxmu
+         8yxwT/QMADkkOeApcUubJ8+SONegy2XJ3+Fyo13xFFu1phBydWuVz5JkwTaEbj6MRhhq
+         HqGrIa/tsNTR7P/EIE2VUOLX1G59HZngVqf/I6vGvKZ+XRXFLuN0rgSpl8uN79MOE8ZB
+         XKL3eRlVJkvKyiJ/hVWHs3JQuaTNsmkITWBDioXcxZDRVC9yZJNa1X7VEiSBOhHCuhiU
+         O97g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=AKxGBmZoJWBXkWw87eb5Iekf1UB3fVGGAvIFgFCNLvA=;
+        fh=z2Ww3/ONHYFhHH/rtkEWWeVeD8bqw808Qvyz5K9Fozo=;
+        b=WodS4FWoLsIUZLM+wXg8ou0W6svRZNJDudmxszGYBz7lQzz/Vh4pFqjT1i/CmXyxHL
+         409X4XfLR5DJSvLncj6Zc6w9fsYz330ykCFr6yFN641WMOJjlBguOKFhV1G4CJ8tioQ3
+         +nEY/xFdTiIKhAaM6ShVqxTQlWkFZggzWmjC5HGU448XTd25x+lnaId4Xc7gGC/MpRKU
+         0qI+oKzVkVAyA5oBxxEkQ5sUHgqOn+7Ca1hI7Dfuic09Va4KZtk/PKu3jpn3mDWF4bjA
+         T8vJwj3uQ2478SuChYs9MPkT+teIpdDo6pd+D0LXCnLaKD98rcJHNfl/pl4EZdCVkFgF
+         cKgA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782819701; x=1783424501; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=TomsKHbFVKPd5mT8o3f72yj5MFefhGWYWpbgcg1BT1o=;
-        b=DWShCo6N+ZlszbZuehfCMymqitVypn0SI1J8/JJji7OMkOSEXWLet+hzEWs7JGQDnL
-         Bh9BnCWq/xWInmHGyZYahAuv/ygo92EK+iAMoQuS2qNqjt3nPbQIxnTjQGe+MUa49Ccr
-         8RKqOYxaZwFyC2ecPvMy0qXk/9EQo2hvQTDE9PHAr0pfeyp5Gs4lSlyfgDNhEviiyNHl
-         KnbRE8YOMdbWttilvtAXHMkV8u1Wzvazly2YeYY/21ItSzKAZeL2joA5xQDswuxniheN
-         I8fHu8f2Ow5TOVwj/v0/5Grz/63Prv/fI9YF5zjBaZ8URsgdAwQw9kOz3bsxzNEwBlyG
-         xTKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782819701; x=1783424501;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=mojatatu.com; s=google; t=1782820203; x=1783425003; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TomsKHbFVKPd5mT8o3f72yj5MFefhGWYWpbgcg1BT1o=;
-        b=mnATJGVupC9fKIQRZ4pIAO1O3/yLTvS1c+3kyObzXSX2ZCfY6HUoJy/Wz5lsTU9jql
-         XimW8XyBAMRUIq/Cr+FwKDDr8WDyjkKNwr8DZOjKMDrtIBCbWy066lxFNmfO1jTtL+zL
-         D5MYcsy8qs4dS1lMU45jRCPwJEG6j1RBnY0ilQl6LB8TlIo4/Is1w4tiH0q+ZGnDYidJ
-         7uzkFg4TWhkNcsjSLfvHGwr3QD8miYV2T2v6Pm/DmsBsLiAu5zz3R1B57b8NEhwVUzl5
-         eRFyPfVHTv0tZTVAD7E91iW3SElRmIpbR3I7IxV4u7khexxzeT8EHDzX806ULVmLuZd9
-         +CDw==
-X-Gm-Message-State: AOJu0Yzlm5+AmIwS80VrTwuAdr4QxYLu1K9PSThVGhKMYnA8CXVwjdpG
-	Dh1u4n6jTm2rgKFbj8l5FLp0rO3MDKP44pTeK78G6YMaqbP/oK5WMkehBmw3RJPBs/Ubfw==
-X-Gm-Gg: AfdE7ckdSd4WGB+Am8/AqZQfRjz8JZBgTkQLBwweWmF2NKp9xsdx1oWtvZx+/iQWhJa
-	arc7o4QkHX3jFrrbTrbkoy1g5a5I0sSHup+IdAdfWfHMZZBlZhKh7X/z1XFew3t4jY1AAN5gPil
-	HlUGqu4NVuWS2ONgE112wpW2tHGpDxfiu1fYuxT1P1ZBCsNew9AfumPldtv2WaJhTV/o3XR3LRi
-	DKe5I1tc3nOV8A9URIXHi02E7SXLmU3+HmOj30cHJZhN8kNwzdRVmMLjNZ50h2HX6tohGjfIRFX
-	crQYnPAoevLIMYAXkQFUtKgMDJ1tZjI/RaXzFFWxwWVjcx65VcUEIIb8F1IqtfQOM/lR98k+8MD
-	Obd4rFIa6RSge8t0kY838Fa/kIgkyEamKl0fZSueeSPWUKrRRNM+K30TUw0/GW+rIlDSJd9lvv9
-	6bszPgcKIQTJxFeolRpBcpJAxtpvlUqIwVdKQw5SKqsN/s+NCPuKS7+joHV8DfrzPfZgD94g==
-X-Received: by 2002:a17:90b:3909:b0:377:424b:59e3 with SMTP id 98e67ed59e1d1-3808c0e139dmr86914a91.24.1782819700663;
-        Tue, 30 Jun 2026 04:41:40 -0700 (PDT)
-Received: from yafangs-Air ([240e:46d:2200:5f15:f47c:a584:480b:2f57])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-380532d4563sm1578743a91.6.2026.06.30.04.41.37
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 30 Jun 2026 04:41:39 -0700 (PDT)
-From: Yafang Shao <laoar.shao@gmail.com>
-To: stephen@networkplumber.org,
-	kuniyu@google.com
-Cc: netdev@vger.kernel.org,
-	Yafang Shao <laoar.shao@gmail.com>
-Subject: [PATCH iproute2-next] ss: stop displaying dccp sockets
-Date: Tue, 30 Jun 2026 19:41:21 +0800
-Message-ID: <20260630114121.26430-1-laoar.shao@gmail.com>
-X-Mailer: git-send-email 2.50.1
+        bh=AKxGBmZoJWBXkWw87eb5Iekf1UB3fVGGAvIFgFCNLvA=;
+        b=EuGK6/VL52hgI5WdOzdbe0U4f2KyXWqkmzJowf69FFieDfbOb/a9u2Uz1npJ+uhNXY
+         aGJK1ZRaW51BJtmkJqK2dNNcJH+WFeax1wC6XweXDsgus0Ep4wonP/7tHIZ34pucbQ9r
+         yJEnweRTqNtjHps/7vOAaXaL9vu+dAVikhNT4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782820203; x=1783425003;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=AKxGBmZoJWBXkWw87eb5Iekf1UB3fVGGAvIFgFCNLvA=;
+        b=f7JrdpxMiyf83N9oFZcLrbq6yTMD3hUKikzLEpL4UGNVM3vdmVYFWEotI4p+4dHfEh
+         GItgLcfkHvvSRHrmPIxw/h5nscz4oAZ0OUgt4+7nMix1N9Gvq57xd2u6R6PtQOsAdWJ2
+         MaXDGTzBuYQqqweWG3p6q0xAahJ7LiEd2rOPdw75l4xkGXM590OdkQRYJEaN1+YUvek5
+         t6tSSN9nRJiB2KaVRT6b3vqiR4U+XfYnzlVUd23Z03VdO7K2zcG3sogIpnVjXoz7WLOc
+         CG0aogLhfvS3vi8/AJDeSUwhMKNENvrA3meRb6MoMM9omWBgVEPATTV1pgcUBZ4d6wfM
+         cSow==
+X-Gm-Message-State: AOJu0YyJZZJNkyGG63TZdT1NygWf+GYtyoM21KrxuY6PLaYPRSzrC/sF
+	aA/9QntLUGuN2A9RE1ctF8J+8NTgfBfe59vFluvKa3qigsn8++ykIsRYIZ+Mb2z/jlIQh/Bfjpm
+	WseVUBuPHWiQE8WMWHR6Kg8v1cNEmapXNBMrcG5dS
+X-Gm-Gg: AfdE7cnErJ9m83pk8tehhLWQ4wy+DY88LVvy7H7vnuojYRfMagRbAVKPCxxxBzvgDDh
+	jA6sQPL2c++gsURARw6U93znzGPCZqgv1z6d0eB57DvjnzpBsHvVB19q54qk4xceR/vN0QWCOQo
+	n9/XphxdPVtxxdVvez3zkdePMPBGPArgIxOh6wJeGgxKAf8AVug0Dnp6mjsl2EBX1YBhYC49Zzg
+	D1MkLUEdAXeb/DO+xrdA455dLU+NK5mNjJr7SVpDeN/UihPxAXh4CT7wGcEcd3XrYJvKt+FZQ==
+X-Received: by 2002:a05:6a00:14c1:b0:847:968d:b0ff with SMTP id
+ d2e1a72fcca58-8479f2a49b9mr2599684b3a.55.1782820202911; Tue, 30 Jun 2026
+ 04:50:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260628111229.669751-1-jhs@mojatatu.com> <de40b1a5-663e-43ab-9fb7-5a49f029cc4b@redhat.com>
+In-Reply-To: <de40b1a5-663e-43ab-9fb7-5a49f029cc4b@redhat.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Tue, 30 Jun 2026 07:49:50 -0400
+X-Gm-Features: AVVi8CdpQSTjeXB-bnfvF1mLqAtHVPEptxCPY-KPz-SG2z_eFlsvaBUP5s4cQzw
+Message-ID: <CAM0EoMn-6Ayjd3mxsiifDXwN1zdefx9eiRk_wWRpsuEh22LziA@mail.gmail.com>
+Subject: Re: [PATCH net v3 1/1] net/sched: sch_teql: Introduce slaves_lock to
+ avoid race condition and UAF
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, horms@kernel.org, victor@mojatatu.com, jiri@resnulli.us, 
+	security@kernel.org, zdi-disclosures@trendmicro.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-DCCP support was retired in kernel commit 2a63dd0edf38 ("net: Retire
-DCCP socket."). However, ss still attempts to query DCCP sockets via
-netlink, which triggers repeated SELinux warnings in dmesg:
+On Tue, Jun 30, 2026 at 7:15=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wro=
+te:
+>
+> On 6/28/26 1:12 PM, Jamal Hadi Salim wrote:
+> > The teql master->slaves singly linked list is not protected against
+> > multiple writes. It can be mod'ed concurently from teql_master_xmit(),
+> > teql_dequeue(), teql_init() and teql_destroy() without holding any list
+> > lock or RCU protection.
+> >
+> > zdi-disclosures@trendmicro.com has demonstrated that the qdisc is freed
+> > after an RCU grace period, but teql_master_xmit() running on another
+> > CPU can still hold a stale pointer into the list, resulting in a
+> > slab-use-after-free:
+> >
+> > BUG: KASAN: slab-use-after-free in teql_master_xmit+0xf0f/0x16b0
+> > Read of size 8 at addr ffff888013fb0440 by task poc/332
+> > Freed 512-byte region [ffff888013fb0400, ffff888013fb0600) (kmalloc-512=
+)
+> >
+> > The fix?
+> > Add a per-master slaves_lock spinlock that serializes all mutations of
+> > master->slaves and the NEXT_SLAVE() links in teql_destroy() and
+> > teql_qdisc_init(). teql_master_xmit() also takes the same slaves_lock
+> > around those updates.
+> > Annotate master->slaves and the per-slave ->next pointer with __rcu and
+> > use the appropriate RCU accessors everywhere they are touched:
+> > rcu_assign_pointer() on the writer side (under slaves_lock),
+> > rcu_dereference_protected() for the writer-side loads (also under
+> > slaves_lock), rcu_dereference_bh() for the loads in teql_master_xmit() =
+and
+> > rtnl_dereference() for the loads in teql_master_open()/teql_master_mtu(=
+),
+> > which run under RTNL.
+> > Pair this with rcu_read_lock_bh()/rcu_read_unlock_bh() around the list
+> > traversal in teql_master_xmit(), so that readers either observe a fully
+> > linked list or are deferred until the in-flight mutation completes. The=
+ two
+> > early-return paths in teql_master_xmit() are updated to release the RCU=
+-bh
+> > read-side critical section before returning, since leaving it held woul=
+d
+> > disable BH on that CPU for good.
+> >
+> > Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> > Reported-by: zdi-disclosures@trendmicro.com
+> > Tested-by: Victor Nogueira <victor@mojatatu.com>
+> > Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+>
+> Looks good, thanks!
+>
+> Please note that sashiko/gemini found a pre-existing issues which may
+> require a follow-up/separate fix:
+>
+> https://sashiko.dev/#/patchset/20260628111229.669751-1-jhs%40mojatatu.com
+>
+> (the 2nd one in the above link, IDK how to generate a direct link to a
+> specific comment)
 
-  SELinux: unrecognized netlink message: protocol=4 nlmsg_type=19 \
-    sclass=netlink_tcpdiag_socket pid=188945 comm=ss
+I just sent v4 which covered that but i will send a followup instead
+if you already applied.
 
-Stop sending DCCPDIAG_GETSOCK netlink messages to suppress these
-warnings and align ss with the kernel change.
+BTW: What is the ruling on when Sashiko finds a pre-existing issue?
+Should we address that as a separate follow-up patch? It is unclear
+what the policy is.
 
-Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>
----
- man/man8/ss.8 |  5 +++--
- misc/ss.c     | 40 ++++++++--------------------------------
- 2 files changed, 11 insertions(+), 34 deletions(-)
+This teql patch was one of the hardest to deal with in terms of
+reproduciability and the fact sashiko kept coming up with pre-existing
+issues - including the one Simon and I were discussing. Note: None of
+the pre-existing issues affected reproducibility at all although i am
+sure one of the AI-kiddies reading the sashiko reports will find a way
+to create a poc (this is why i entertain fixing them when they look
+simple enough)
 
-diff --git a/man/man8/ss.8 b/man/man8/ss.8
-index 70e0a566..37dd75a0 100644
---- a/man/man8/ss.8
-+++ b/man/man8/ss.8
-@@ -378,7 +378,8 @@ Display TCP sockets.
- Display UDP sockets.
- .TP
- .B \-d, \-\-dccp
--Display DCCP sockets.
-+[Deprecated] DCCP is no longer supported since kernel 6.16.
-+This option is ignored.
- .TP
- .B \-w, \-\-raw
- Display RAW sockets.
-@@ -411,7 +412,7 @@ supported: unix, inet, inet6, link, netlink, vsock, tipc, xdp.
- .B \-A QUERY, \-\-query=QUERY, \-\-socket=QUERY
- List of socket tables to dump, separated by commas. The following identifiers
- are understood: all, inet, tcp, udp, raw, unix, packet, netlink, unix_dgram,
--unix_stream, unix_seqpacket, packet_raw, packet_dgram, dccp, sctp, tipc,
-+unix_stream, unix_seqpacket, packet_raw, packet_dgram, sctp, tipc,
- vsock_stream, vsock_dgram, xdp, mptcp. Any item in the list may optionally be
- prefixed by an exclamation mark
- .RB ( ! )
-diff --git a/misc/ss.c b/misc/ss.c
-index 14e9f27a..dae5f282 100644
---- a/misc/ss.c
-+++ b/misc/ss.c
-@@ -195,7 +195,6 @@ static const char *dg_proto;
- enum {
- 	TCP_DB,
- 	MPTCP_DB,
--	DCCP_DB,
- 	UDP_DB,
- 	RAW_DB,
- 	UNIX_DG_DB,
-@@ -215,7 +214,7 @@ enum {
- #define PACKET_DBM ((1<<PACKET_DG_DB)|(1<<PACKET_R_DB))
- #define UNIX_DBM ((1<<UNIX_DG_DB)|(1<<UNIX_ST_DB)|(1<<UNIX_SQ_DB))
- #define ALL_DB ((1<<MAX_DB)-1)
--#define INET_L4_DBM ((1<<TCP_DB)|(1<<MPTCP_DB)|(1<<UDP_DB)|(1<<DCCP_DB)|(1<<SCTP_DB))
-+#define INET_L4_DBM ((1<<TCP_DB)|(1<<MPTCP_DB)|(1<<UDP_DB)|(1<<SCTP_DB))
- #define INET_DBM (INET_L4_DBM | (1<<RAW_DB))
- #define VSOCK_DBM ((1<<VSOCK_ST_DB)|(1<<VSOCK_DG_DB))
- 
-@@ -274,10 +273,6 @@ static const struct filter default_dbs[MAX_DB] = {
- 		.states   = SS_CONN,
- 		.families = FAMILY_MASK(AF_INET) | FAMILY_MASK(AF_INET6),
- 	},
--	[DCCP_DB] = {
--		.states   = SS_CONN,
--		.families = FAMILY_MASK(AF_INET) | FAMILY_MASK(AF_INET6),
--	},
- 	[UDP_DB] = {
- 		.states   = (1 << SS_ESTABLISHED),
- 		.families = FAMILY_MASK(AF_INET) | FAMILY_MASK(AF_INET6),
-@@ -388,13 +383,12 @@ static int filter_db_parse(struct filter *f, const char *s)
- 		int dbs[MAX_DB + 1];
- 	} db_name_tbl[] = {
- #define ENTRY(name, ...) { #name, { __VA_ARGS__, MAX_DB } }
--		ENTRY(all, UDP_DB, DCCP_DB, TCP_DB, MPTCP_DB, RAW_DB,
-+		ENTRY(all, UDP_DB, TCP_DB, MPTCP_DB, RAW_DB,
- 			   UNIX_ST_DB, UNIX_DG_DB, UNIX_SQ_DB,
- 			   PACKET_R_DB, PACKET_DG_DB, NETLINK_DB,
- 			   SCTP_DB, VSOCK_ST_DB, VSOCK_DG_DB, XDP_DB),
--		ENTRY(inet, UDP_DB, DCCP_DB, TCP_DB, MPTCP_DB, SCTP_DB, RAW_DB),
-+		ENTRY(inet, UDP_DB, TCP_DB, MPTCP_DB, SCTP_DB, RAW_DB),
- 		ENTRY(udp, UDP_DB),
--		ENTRY(dccp, DCCP_DB),
- 		ENTRY(tcp, TCP_DB),
- 		ENTRY(mptcp, MPTCP_DB),
- 		ENTRY(sctp, SCTP_DB),
-@@ -935,8 +929,6 @@ static const char *proto_name(int protocol)
- 		return "mptcp";
- 	case IPPROTO_SCTP:
- 		return "sctp";
--	case IPPROTO_DCCP:
--		return "dccp";
- 	case IPPROTO_ICMPV6:
- 		return "icmp6";
- 	}
-@@ -3897,8 +3889,6 @@ static int tcpdiag_send(int fd, int protocol, struct filter *f)
- 
- 	if (protocol == IPPROTO_TCP)
- 		req.nlh.nlmsg_type = TCPDIAG_GETSOCK;
--	else if (protocol == IPPROTO_DCCP)
--		req.nlh.nlmsg_type = DCCPDIAG_GETSOCK;
- 	else
- 		return -1;
- 
-@@ -4134,7 +4124,7 @@ static int inet_show_netlink(struct filter *f, FILE *dump_fp, int protocol)
- 
- 	/* Suppress netlink errors. Older kernels do not support extended
- 	 * protocol requests using INET_DIAG_REQ_PROTOCOL, and some protocols
--	 * may not be available in the running kernel (e.g. SCTP, DCCP).
-+	 * may not be available in the running kernel (e.g. SCTP).
- 	 * In both cases the kernel returns EINVAL which would cause
- 	 * rtnl_dump_error() to print a confusing "RTNETLINK answers" error.
- 	 */
-@@ -4309,18 +4299,6 @@ static int mptcp_show(struct filter *f)
- 	return 0;
- }
- 
--static int dccp_show(struct filter *f)
--{
--	if (!filter_af_get(f, AF_INET) && !filter_af_get(f, AF_INET6))
--		return 0;
--
--	if (!getenv("PROC_NET_DCCP") && !getenv("PROC_ROOT")
--	    && inet_show_netlink(f, NULL, IPPROTO_DCCP) == 0)
--		return 0;
--
--	return 0;
--}
--
- static int sctp_show(struct filter *f)
- {
- 	if (!filter_af_get(f, AF_INET) && !filter_af_get(f, AF_INET6))
-@@ -5779,7 +5757,7 @@ static void _usage(FILE *dest)
- "   -M, --mptcp         display only MPTCP sockets\n"
- "   -S, --sctp          display only SCTP sockets\n"
- "   -u, --udp           display only UDP sockets\n"
--"   -d, --dccp          display only DCCP sockets\n"
-+"   -d, --dccp          DCCP is no longer supported, option ignored\n"
- "   -w, --raw           display only RAW sockets\n"
- "   -x, --unix          display only Unix domain sockets\n"
- "       --tipc          display only TIPC sockets\n"
-@@ -5795,7 +5773,7 @@ static void _usage(FILE *dest)
- "       --inet-sockopt  show various inet socket options\n"
- "\n"
- "   -A, --query=QUERY, --socket=QUERY\n"
--"       QUERY := {all|inet|tcp|mptcp|udp|raw|unix|unix_dgram|unix_stream|unix_seqpacket|packet|packet_raw|packet_dgram|netlink|dccp|sctp|vsock_stream|vsock_dgram|tipc|xdp}[,QUERY]\n"
-+"       QUERY := {all|inet|tcp|mptcp|udp|raw|unix|unix_dgram|unix_stream|unix_seqpacket|packet|packet_raw|packet_dgram|netlink|sctp|vsock_stream|vsock_dgram|tipc|xdp}[,QUERY]\n"
- "\n"
- "   -D, --diag=FILE     Dump raw information about TCP sockets to FILE\n"
- "   -F, --filter=FILE   read filter information from FILE\n"
-@@ -5907,7 +5885,7 @@ static const struct option long_opts[] = {
- 	{ "threads", 0, 0, 'T' },
- 	{ "bpf", 0, 0, 'b' },
- 	{ "events", 0, 0, 'E' },
--	{ "dccp", 0, 0, 'd' },
-+	{ "dccp", 0, 0, 'd' }, /* DCCP retired, kept for compatibility */
- 	{ "tcp", 0, 0, 't' },
- 	{ "sctp", 0, 0, 'S' },
- 	{ "udp", 0, 0, 'u' },
-@@ -5997,7 +5975,7 @@ int main(int argc, char *argv[])
- 			follow_events = 1;
- 			break;
- 		case 'd':
--			filter_db_set(&current_filter, DCCP_DB, true);
-+			/* DCCP retired in kernel 6.16, kept for compatibility */
- 			break;
- 		case 't':
- 			filter_db_set(&current_filter, TCP_DB, true);
-@@ -6290,8 +6268,6 @@ int main(int argc, char *argv[])
- 		udp_show(&current_filter);
- 	if (current_filter.dbs & (1<<TCP_DB))
- 		tcp_show(&current_filter);
--	if (current_filter.dbs & (1<<DCCP_DB))
--		dccp_show(&current_filter);
- 	if (current_filter.dbs & (1<<SCTP_DB))
- 		sctp_show(&current_filter);
- 	if (current_filter.dbs & VSOCK_DBM)
--- 
-2.50.1 (Apple Git-155)
-
+cheers,
+jamal
