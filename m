@@ -1,136 +1,97 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C45C201004
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 10:11:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 195D23AA4F2
+	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 10:11:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782814289; cv=none; b=ld/NSVNaR327JkWghJrdEhDoykQ4vSJwoxshFXPySTtwdEq45+vNHWY9MwemVrYhKzk6uMlzSdrOhB82NkPN5R2Y6fDAxNEZ+voMt/sXL3pw2m/gGanZAOM28kA1ZnG6ycuaiOqSuh3Jd53jOwTTo1bYxCOOlMuLy7Q2QPl9Sus=
+	t=1782814312; cv=none; b=lQxakrz0XdjicEzYwDM5M5btNq5lbfS9119HlwnW9b9EsHYUa2khWm6TqoRNSuMlNF921AHh+ekPVUlbzhxwpOomQGRmCiCykxgAYb0ZIKAlh2ZTsajjBY1DBpwYejrovF2wVg2YuCpN53bYvKWCv7GRsDSHfs5UVJJCWa0x2nQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782814289; c=relaxed/simple;
-	bh=S7AI+YFxLu2eH+drottiu3LDKyfzmbZsb6AyqgvPOSE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Vx8H9SboWfOMnM1Rz2+5x7Iq8Hs4jEVCU1zIoe00j2zatHMZxYDcEjl7oyKEg9GFlG1HyIqNSyJpYVem1Ms+ZhBJ7cDQC0KKmxzKt3CSnlVTff81QOEAN+bwBNk4R7LsN5p8f6/Am4ZAC+f8xpOsztCYfCkGtiuzo4wIjGf3u5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=X4BeYHAO; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=IW16Uj/m; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1782814312; c=relaxed/simple;
+	bh=5dora6WCFzNxRZBdHG0qmpjH0itXr5sk7Eu1UjtSJ0A=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
+	 MIME-Version:Content-Type; b=tEf6ac5DG/va1ll2cluqoVZMGdqBvuAS20mU16hJfDF9Yrs8C61h3/mlLpS/St18KOpTF/kOJ/TxGWp3lPdnYa4OFHAbL+h3d7QQb46G8sTflbo2fQEOx5WQspY5JTD66cDgTBIVAylE+sicCy5kRjZTM2Uuk5w6ZdrI7NOjJKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hY9sLC4q; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="X4BeYHAO";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="IW16Uj/m"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782814287;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KAnQNF/BG2hzcnpQlhZdj2/19/pQbi7MYSIKu9RdeiU=;
-	b=X4BeYHAOcGmecbETh3FcjK4VBd/kA5+gl2qdyzESbdnlaKEtF2zD4YBfnMDOJyS2dfcqI5
-	K3+vwqwXqEjE+x4UgXYERcWFimAjhKHHgeSysQSC0BAGoCaCEDTq1kx+m+DW4BIadG6p0l
-	rxBcjbD4ma/IBWNYd/btDbmnCnGqi58=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-58-Bjnt-I1JOaKfPdyVB_spRw-1; Tue, 30 Jun 2026 06:11:25 -0400
-X-MC-Unique: Bjnt-I1JOaKfPdyVB_spRw-1
-X-Mimecast-MFC-AGG-ID: Bjnt-I1JOaKfPdyVB_spRw_1782814284
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-473bc66c837so1548239f8f.0
-        for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 03:11:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hY9sLC4q"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6986287534eso3449488a12.3
+        for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 03:11:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1782814284; x=1783419084; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=KAnQNF/BG2hzcnpQlhZdj2/19/pQbi7MYSIKu9RdeiU=;
-        b=IW16Uj/mgrPaWGXQz+65l4gIZRF6EwG1EIpJd6BXfxI/FfoGes+lv4y4NfHYgH9LF1
-         AiidRFtKqzxMLz1NuhxSldcOhRYBurXAtaY2Rax3MrfHvWrxvp06kB78lX4jGuyxlCQ4
-         lZ1EBOm2xD5IDndlgTISSpqfs5ZRayBNIUBrpqpldLZMLJY8DzhKTac5z9jssHS0TF4w
-         /h/3sfUkrh+pmXfvnhhXVClU3oQMKeqCji9Lv1byP9AVMpklbFrtvQ4lBg45KB9nI/JH
-         5T0x9mbmAtKlSrvuwyUexnprcF8gfh/2JC7/YZKTHBdvACJoh1WKSDlm/7Sxv969Coum
-         sF5A==
+        d=gmail.com; s=20251104; t=1782814309; x=1783419109; darn=vger.kernel.org;
+        h=mime-version:user-agent:references:message-id:date:in-reply-to
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=3IGOu/ScQ2NxC7ajyT6AZFfssZtwcd4FkydoQ//jhUI=;
+        b=hY9sLC4qW1S86yFyz0HKAw8YosbqjoIl16/2Bq/raK2rA4ntKnN4PVlujea7ZdxvnG
+         uuk/bFuHrBI+I3ElppN4bJtuzXGGmrFMbitBoq0Odk51nyBpu4+xikWzAJoVuSDk0B5Z
+         Lz+fewtjLGGSBaQn+sr4PwG4Qpl68njyAHxBGmvCThF7qPJ9fo/FAO6wVl5hFzbcRxVA
+         GJFJ51/Ljg/vhSs3WK8ZRUIOWh2f/QAmQvALqP78WZrfpkFxIzsKKFVSQJngSE7/tvlE
+         //FiooWHPkZq3PuXdnGmH7h4ecj8YgnR5cx5FwJUgkDtuMFqMq7RtR0jDtUrTwFvI21q
+         zXag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782814284; x=1783419084;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KAnQNF/BG2hzcnpQlhZdj2/19/pQbi7MYSIKu9RdeiU=;
-        b=EcrnehyRM5rrH8zckHxeDge6naavvSHWZ3iKo0UP0VUhrkXf9qCWTyBtE/Pp0KbgH5
-         b8eoUxapM+ePGoK4o6VIpCMqNw0gEALZLZ+t/icpm09ONYAUKwhgBoHNAeUwQq65eE8o
-         3fEQknKR30TaEw83y3aCCNjgH5d4j7FCwf538GEwqRUfK7LA+gUTwNsRMAvqEyEBCOBX
-         yC5KZCFOV360noOlCfi7SV4QHUtx3lb81OrTtrUjntmYOgpokHkHp+iV1ZP3pgycn56Z
-         c7O+z7EKKiAX0Xq4MgVXGOTfbp5wDOSi9lH2E0gzHCPW1x0CExKoRv2TqIApJzIuOqrr
-         0zUA==
-X-Gm-Message-State: AOJu0YztueT4MtmEtiE/rApa+EDioyP9AjMgDy3PIDMmruYSWdJWjrzP
-	JvsqBh6I4+KzfeLA8vlCe6KyYshdnIvB2SdsqEnz7xoJ4ncqlyvgQUvklB8X5R7+hPqSEm6wgg3
-	gqIMlnSLgSMxC2Kz1QvNPWQF8/St7GiBh2xMs3M8z5tM0o5C7fd596nMtUQ==
-X-Gm-Gg: AfdE7cllO+sX6TMPe2FpEK0JeJES/gtkMdhu66nivwLAO74FzVsV6Pm/cpTmv2tyRzk
-	tHS1aQDOQumYuo1L4F4YstJsw7Z7UJDjy0DUkQBrDQsKOZpeEc3iBvIbSEddshtvR0oOa0uHaTh
-	ytzI6JaWvC0H8NGs2rH1Z+DcfGwcnd2f8IycCw18Had6fojGiqIahl0TXbd1V87xFDkAj85w4Gw
-	ZAxZINkw7nnyEdgrAvYTP3XQpgNZWJZFJGFS05dkehcPW+K0o/Ot/UhwI3Dc2dGuzp3xjOX5jyo
-	Wgdp/EgDiXtI4buREu1aB/s7DKNQZ0s+XhVGmQXMa74cdBlnHpwgAE1YFVe/8SW26K+hpajxODF
-	uBdRZ++nUKI3PplkcRvjcjEbs/tlyGTWoI5VKPCRqtOCxm2RlP3hCGsJoGjB/9F+OvgUvV7Jx5+
-	fKWjXxc3GzNA==
-X-Received: by 2002:a05:6000:25e3:b0:46f:7d90:8128 with SMTP id ffacd0b85a97d-47551737cf2mr3519506f8f.14.1782814284140;
-        Tue, 30 Jun 2026 03:11:24 -0700 (PDT)
-X-Received: by 2002:a05:6000:25e3:b0:46f:7d90:8128 with SMTP id ffacd0b85a97d-47551737cf2mr3519449f8f.14.1782814283688;
-        Tue, 30 Jun 2026 03:11:23 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:5521:6b10:2eb7:f61a:75:4534? ([2a0d:3344:5521:6b10:2eb7:f61a:75:4534])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47563d194b0sm6739249f8f.1.2026.06.30.03.11.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Jun 2026 03:11:22 -0700 (PDT)
-Message-ID: <2a1c4eb4-a4ba-4fc7-9bda-6a7a8d0be2f1@redhat.com>
-Date: Tue, 30 Jun 2026 12:11:21 +0200
+        d=1e100.net; s=20251104; t=1782814309; x=1783419109;
+        h=mime-version:user-agent:references:message-id:date:in-reply-to
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=3IGOu/ScQ2NxC7ajyT6AZFfssZtwcd4FkydoQ//jhUI=;
+        b=H6m9qML13JQjQxlxyZFiyc+3Vp6iNJkFai/j12hsu85fV27dS1g/UP8stMDY5pWND5
+         lVbEUnLf3qKsScVC401bTgFj3wJ5iUA9hCZ3QBcXTpQLeQxIQ3YWlpRFiFTIcB35yf/S
+         Mc82nwiO70AIVpsZfMnkZ8cZXxRCVoSOonfDI18uCVuUXZcso7Lal2n7WiCMmi7vgk3q
+         AHL9EIW+9Xrlx5jtecxsVeX2hkIyZ32R0Xj5IlK+albZknYjQe8ArdZxhqKbwjTqsqqP
+         NMnHV94zU2XkVk9l1wfXwyuWbRlqmOCxGdgTfQ+jZijHkONvO52547plTmyWR0xIxQet
+         dTWA==
+X-Forwarded-Encrypted: i=1; AHgh+RphF1f6MrjsBDpxtj7K+yZ2Q+DnNHYiruVBDcVfpehsRvdszgewZ7qM9xTYPh11r4AdHuy+I/4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3dH/EA/rwqYd1jRMc751oW2jXqRVAkOw5aXaA4ptfKepUXxne
+	nLZ8jVVUIEAmeeLGybYfVCKosgqPzS4ZFP97usvwKX71yc4jpWe+Tv8r
+X-Gm-Gg: AfdE7cmBZR+DVC2tNSCFz532yb78PCRzg0p2F6/dmgR6cRIN85M0w/quqRIM+2nwluh
+	PqdmvU8L9RrFwPjLqczt3CqDiXOHC4w/oPgdtJLTSbnLVZtcOP02MZrjuZ6s/iGFsrd61osX3kJ
+	mcF4RsNoGNX/mZ7dWv4ifUwi5UswjjutaJwgRoaVvaTuFziEWv8eefx0IlEMH4xoA2JlJpjQfVP
+	gW4xK3qv7bhXdtaTteT0zfGiZhFS9fhRQfs/r3DRUsAbBqsP4NnC7ysBOWMt/UX0iVQq61YejiF
+	FQ9SqC3evY/+Ie8BT5LQwfCDS2hQI7+zw6YDRhSHBZ7jHdaN2O35TYkaJnrJZRBkawwnrBdmnCu
+	PY9U68G2xYVlffgKRd7VUiuPUqqhxOJeOiRxmSZ3Pc6u2M6JT/XFWA6xf4B0GBisrSuSzm+CdXB
+	oBJXrw+Q6nU1SWKO3AMe90toE=
+X-Received: by 2002:a17:907:fd89:b0:c12:6632:e7f2 with SMTP id a640c23a62f3a-c12872cd673mr139661866b.42.1782814309129;
+        Tue, 30 Jun 2026 03:11:49 -0700 (PDT)
+Received: from imac ([145.224.90.186])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1289176ee2sm98664266b.58.2026.06.30.03.11.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jun 2026 03:11:48 -0700 (PDT)
+From: Donald Hunter <donald.hunter@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net,  netdev@vger.kernel.org,  edumazet@google.com,
+  pabeni@redhat.com,  andrew+netdev@lunn.ch,  horms@kernel.org,
+  sdf@fomichev.me,  gal@nvidia.com,  jstancek@redhat.com,  ast@fiberby.net
+Subject: Re: [PATCH net-next 1/2] tools: ynl: pyynl: re-export the library
+ API from the package root
+In-Reply-To: <20260630001432.2204298-2-kuba@kernel.org>
+Date: Tue, 30 Jun 2026 09:38:17 +0100
+Message-ID: <m2o6gsctja.fsf@gmail.com>
+References: <20260630001432.2204298-1-kuba@kernel.org>
+	<20260630001432.2204298-2-kuba@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] selftests: net: make busywait timeout clock portable
-To: Nirmoy Das <nirmoyd@nvidia.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Shuah Khan <shuah@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260626144902.3214350-1-nirmoyd@nvidia.com>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20260626144902.3214350-1-nirmoyd@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On 6/26/26 4:49 PM, Nirmoy Das wrote:
-> loopy_wait() expects millisecond timestamps. However, Ubuntu Resolute
-> can use uutils date, where `date -u +%s%3N` returns seconds plus full
-> nanoseconds instead of a 3-digit millisecond field. This makes
-> busywait expire too early and can make vlan_bridge_binding.sh read a
-> stale operstate.
-> 
-> Fixes: 25ae948b4478 ("selftests/net: add lib.sh")
-> Cc: stable@vger.kernel.org # 6.8+
-> Link: https://github.com/uutils/coreutils/issues/11658
-> Signed-off-by: Nirmoy Das <nirmoyd@nvidia.com>
-> ---
->  tools/testing/selftests/net/lib.sh | 19 +++++++++++++++++--
->  1 file changed, 17 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/net/lib.sh b/tools/testing/selftests/net/lib.sh
-> index b40694573f4c7..fcaec058be6d0 100644
-> --- a/tools/testing/selftests/net/lib.sh
-> +++ b/tools/testing/selftests/net/lib.sh
-> @@ -70,12 +70,27 @@ ksft_exit_status_merge()
->  		$ksft_xfail $ksft_pass $ksft_skip $ksft_fail
->  }
->  
-> +timestamp_ms()
-> +{
-> +	local now=$(date -u +%s:%N)
+Jakub Kicinski <kuba@kernel.org> writes:
 
-shellcheck says:
+> The public classes live in pyynl.lib, so users had to spell out
+>
+>   from pyynl.lib import YnlFamily
+>
+> which I forget at least once a month. Re-export lib's API from
+> the package __init__ so that
+>
+>   from pyynl import YnlFamily
+>
+> works as well. I don't think there was a real reason not to do
+> this?
+>
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
- ^-^ SC2155 (warning): Declare and assign separately to avoid masking
-return values.
-
-/P
-
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
