@@ -1,43 +1,46 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from outbound.ci.icloud.com (ci-2005h-snip4-1.eps.apple.com [57.103.89.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9CF63019BA
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 19:15:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82BCE336EE9
+	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 19:17:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.89.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782846954; cv=none; b=OXKTsx4tievrF5Zm7UwUZ/PSweemDEaoxXicf92/LW9now1Bn1tshnfD1MqnfeZOkYwbjCWGrhTKwQI0rSSNoy34EtLs4xt9EaCerZdEiFK8CkCkAR4GjrEsFa+0jtHGlXtRBKIXfsiheaATxlkcATIXA8MIIeMghHpltep06EQ=
+	t=1782847078; cv=none; b=DFtb0HsKi+VRX1YlP+chxsjBOX3q1BAdQ3WwOh7H2RLzSazyKZyfMJ1K/zbyiiecI/3wl05SBy5yaYZW0p72s2CmGCQoj2g9MfrpMoQ5iLoTo2jBLykBxBMfMUKTD2bEEL8pPfl1Fv6CvGuZAyV5APZLx1I+mK7vtx7glzmJPKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782846954; c=relaxed/simple;
-	bh=V8iiieoM4chbcM6uxH0t+6M1my8HsWOoynsGIWvgwiI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OAAY238x5eU2B/FNjnXDwzzMtJb7hDlG9frqO5c+9YvQmLHTZlEfEY1/oW33W3IJF+LYw4bGadKjoLFFmMhEN/U1VnQ71rJkVMPvM7SUjIUinPbSk/DxPABjI8LGAZSrnRGvgkxTZDjYIGyuRUetGqP+GLi3B/r8qGGzxSpix2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OXfeWnlw; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782847078; c=relaxed/simple;
+	bh=YeOE+rswRgmUNwL9mmMtmfe4KaxcCM4iLBIQrDr6lQ0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dyM4bYQmxASyHLvsAnE5abRl03VN5u3a/IGVkxnzcj6Vu6FS5JTVQoRHI97UsKTkQmk3HYOFvoBk1FrcRoSNfznscrlpVasH31aBkwiVyw4vGcWM+fdQeE1OWiGeUISFQbJQT8z3EJWousd3/NkpGhrODJkrO052Ih+skP/gREE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=verdict.gg; spf=pass smtp.mailfrom=verdict.gg; dkim=pass (2048-bit key) header.d=verdict.gg header.i=@verdict.gg header.b=jYtZzFfK; arc=none smtp.client-ip=57.103.89.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=verdict.gg
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=verdict.gg
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OXfeWnlw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 930CE1F000E9;
-	Tue, 30 Jun 2026 19:15:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782846953;
-	bh=apooQY66Tp01aRQkf67rYoR7AtFFMg8jb2Oxmu13TRA=;
-	h=From:To:Cc:Subject:Date;
-	b=OXfeWnlwb4UU8geO9/jHtxr/gfH/RHd5xgFN4nZjVAZih2ij+3Trgao2E0ZrujRln
-	 Kzyy/w7tfieZedgek2qBFO0JTW6ODkmlxCsDKqmDlXPntyRniTKgsvTk7Pf+IN6+fF
-	 +MNwELlkYNyhtcNfmfiCpzVGrBOXV2eUgpkSt49eddqipOTYAzVxzt86IZoAe34XzZ
-	 dlZMfPRWOri0U5wNfm8KmmVFOEJuH+kE3YSlRAu+uwdTFgFnjzCCJevHw1dWT7IiC+
-	 jHK72bXolab9Fpf9LrumjBZ3zQd2YQvwHPN8w00Fw5B+D6etb/AvnT7VOY1H+VKHYJ
-	 5XOob7aaY7RIQ==
-From: Chuck Lever <cel@kernel.org>
-To: john.fastabend@gmail.com,
-	kuba@kernel.org,
-	sd@queasysnail.net
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
+	dkim=pass (2048-bit key) header.d=verdict.gg header.i=@verdict.gg header.b="jYtZzFfK"
+Received: from outbound.ci.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-central-1k-10-percent-2 (Postfix) with ESMTPS id 4FD5A18015E9;
+	Tue, 30 Jun 2026 19:17:52 +0000 (UTC)
+X-ICL-RepId: 019f19f7-676b-7c54-9d1d-29648253593a
+X-ICL-Out-Info: HUtFAUMHWwJACUgBTUQeDx5WFlZNRAJCTQhICkMGWQJeCEABQwVdEhVdRVcIWwJAEVc4RQhFD1sTTVZUChcNVk1PHUEJXghGXl4fEx9UVgNBGRBWAVhWXQVNGlwYWQ8cE1BWWg5bBEcUFxtcABcbRgIEIwJfAEUCXglWATAXD1ZNTx1BCV4IRl5eHxMAXg8PTAtIAVsHXQFACEECWAZbHEgITANfGlofFFwUWh9WBXIGXApXBFQfHBdeRhMZThtXTVoNQBlYBm0UVhVSBFk=
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=verdict.gg; s=sig1; t=1782847074; x=1785439074; bh=xJAfS5Jo3Txg9JzD25eVYgRDgS6FkP2PRBB07PROM2s=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=jYtZzFfKjbiTOLuaNmi3/Kjdw5v2bOzHNBoqQPcV3NxkFDtXyvNbrYm7BbSBGZEJxX2q9i3J7VW6Mo7JZoe80A7pHzUd/icbIc1I8rJnG4B0vUli4lya1a8oaUncSrLfhffcbUvkjf7XWorNd82uRfFDs2U6MmfxepmgaPNqrbNILKhw+NpelpCp1T9OYin+nuvk4kunztjuetdRiu7w4JC2M+K2TZqkNpnHMBfsGWItLohhoHLWPMJW1z4BDlYJNH+NMhNsW/TSNXo7BdAjERIW841sxa6w04qdOMqXs8uuP0L6LOS5BR885gCOI1GZTHS5j1KLc+5amx13x0J5vw==
+mail-alias-created-date: 1621344842221
+Received: from DelNac.mail.msk (unknown [17.57.156.36])
+	by p00-icloudmta-asmtp-us-central-1k-10-percent-2 (Postfix) with ESMTPSA id 7373818015E1;
+	Tue, 30 Jun 2026 19:17:49 +0000 (UTC)
+From: Vladimir Vdovin <deliran@verdict.gg>
+To: bpf@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH net] net/tls: Consume empty data records in tls_sw_read_sock()
-Date: Tue, 30 Jun 2026 15:15:51 -0400
-Message-ID: <20260630191551.875664-1-cel@kernel.org>
-X-Mailer: git-send-email 2.54.0
+Cc: ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	martin.lau@linux.dev,
+	sdf@fomichev.me,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	kuba@kernel.org,
+	Vladimir Vdovin <deliran@verdict.gg>
+Subject: [RFC PATCH bpf-next v1 0/7] xdp: RX checksum metadata hint and checksum assertion over redirect
+Date: Tue, 30 Jun 2026 22:15:03 +0300
+Message-ID: <20260630191510.81402-1-deliran@verdict.gg>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,51 +48,90 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjMwMDE4NiBTYWx0ZWRfXxFkQPyif8IcY
+ G0HRERC0dp/mNW7NCTc5vSzzbnOIJZlMgc5QhEOiEwBZOQ+0BudzZeC8oK3j0d/WcKiYdFn8ykl
+ lcFapCyAJ30WGg2+7fAJx4iRrBdl1zNlKPFv4HsBDn+EJRDKLGr+bUAeUChZKrZVZ524vg6a736
+ mG2M6tINnFIJw562fK03uZW3fe+Hme0C9y+n15Cwq54wQmev4wJDw8X1+Gd7dKiRyW10byvPnNe
+ ku+EjvBsdr5X6D2qo/BjrGN3dsrKDD5Z2NZk3pYnyGpHQ5wxxLPWBremakuyeS7DM+HtCCNkhGd
+ PbaAux/iOKJ5qfu7EfB
+X-Proofpoint-GUID: NIOaQnsFpPjjsL_HnU7jPzjgasVlEOAT
+X-Proofpoint-ORIG-GUID: NIOaQnsFpPjjsL_HnU7jPzjgasVlEOAT
 
-A peer may send a zero-length TLS application_data record; TLS 1.3
-explicitly permits these as a traffic-analysis countermeasure (RFC
-8446, Section 5.1). After decryption such a record has full_len ==
-0. tls_sw_read_sock() hands it to the read_actor, which has no
-payload to consume and returns zero. The loop treats a zero return
-as backpressure (used <= 0), requeues the skb at the head of
-rx_list, and stops. rx_list is serviced head-first on the next
-call, so the empty record is dequeued, fails the same way, and is
-requeued again; every later record on the connection is blocked
-behind it.
+This series lets XDP programs work with the hardware RX checksum verdict:
+read what the NIC concluded about a packet, and carry a "the L4 checksum
+is correct" assertion across a redirect so the stack does not revalidate
+it in software.
 
-tls_sw_recvmsg() does not stall on this: a zero-length data record
-copies nothing and falls through to consume_skb(). Mirror that in
-the read_sock() path by recognizing an empty data record before
-the actor runs, consuming it, and continuing.
+When an XDP program redirects a frame to a cpumap (or any other path that
+rebuilds an skb from an xdp_frame via __xdp_build_skb_from_frame()), the
+HW RX checksum status is lost and the stack revalidates the L4 checksum in
+software.
 
-Fixes: 662fbcec32f4 ("net/tls: implement ->read_sock()")
-Signed-off-by: Chuck Lever <cel@kernel.org>
----
- net/tls/tls_sw.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+Two kfuncs are added:
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 9324e4ed20a3..d4afc90fd796 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -2115,6 +2115,17 @@ int tls_sw_read_sock(struct sock *sk, read_descriptor_t *desc,
- 			goto read_sock_requeue;
- 		}
- 
-+		/* An empty data record (legal in TLS 1.3) gives a zero
-+		 * read_actor return, indistinguishable from the consumer
-+		 * stalling; the used <= 0 path would requeue it at the
-+		 * head of rx_list and block all later records. Consume it
-+		 * here instead.
-+		 */
-+		if (rxm->full_len == 0) {
-+			consume_skb(skb);
-+			continue;
-+		}
-+
- 		used = read_actor(desc, skb, rxm->offset, rxm->full_len);
- 		if (used <= 0) {
- 			if (!copied)
+ - bpf_xdp_metadata_rx_csum(): a device-bound RX-metadata hint, like the
+   existing rx_hash / rx_vlan_tag ones.  It reports enum xdp_csum_status
+   (XDP_CSUM_NONE / XDP_CSUM_VERIFIED) and is implemented for mlx5e, ice
+   and veth.
+
+ - bpf_xdp_assert_rx_csum(): a generic, non-device-bound kfunc that lets
+   the program assert the L4 checksum is correct.  It sets a buff flag
+   that rides into the xdp_frame, and __xdp_build_skb_from_frame() turns
+   it into skb->ip_summed = CHECKSUM_UNNECESSARY.  The kernel cannot
+   verify the assertion; the program takes responsibility, as it already
+   does when rewriting packet contents.
+
+Posted as RFC to get feedback on:
+
+ - whether the read hint (bpf_xdp_metadata_rx_csum() and its driver
+   support) belongs in this series at all.  bpf_xdp_assert_rx_csum() is
+   self-contained and already covers the main use case: a program that
+   computes or fixes the L4 checksum itself, or trusts the source, and
+   wants the rebuilt skb to skip software revalidation.  The read hint is
+   an optimization for programs that did not touch the payload and only
+   want to relay the hardware verdict.  These could just as well be two
+   independent series (assert-only first);
+ - the kfunc naming, bpf_xdp_assert_rx_csum() in particular.
+
+Testing:
+
+ - new selftest xdp_cpumap_rx_csum drives a frame through a native-XDP
+   veth into a cpumap redirect and checks, via fexit on
+   __xdp_build_skb_from_frame(), that the rebuilt skb is
+   CHECKSUM_UNNECESSARY iff the program called bpf_xdp_assert_rx_csum();
+ - xdp_metadata calls bpf_xdp_metadata_rx_csum() over veth and checks both
+   verdicts: XDP_CSUM_NONE for an AF_XDP-injected frame and
+   XDP_CSUM_VERIFIED for one sent through the stack.
+
+Vladimir Vdovin (7):
+  xdp: let XDP programs assert the RX checksum over redirect
+  selftests/bpf: add test for bpf_xdp_assert_rx_csum over cpumap
+  xdp: add bpf_xdp_metadata_rx_csum() RX metadata kfunc
+  net/mlx5e: support the rx_csum XDP metadata hint
+  ice: support the rx_csum XDP metadata hint
+  veth: support the rx_csum XDP metadata hint
+  selftests/bpf: cover bpf_xdp_metadata_rx_csum in xdp_metadata
+
+ Documentation/netlink/specs/netdev.yaml       |   5 +
+ drivers/net/ethernet/intel/ice/ice_txrx_lib.c |  32 ++++
+ .../net/ethernet/mellanox/mlx5/core/en/xdp.c  |  23 +++
+ drivers/net/veth.c                            |  23 +++
+ include/net/xdp.h                             |  23 +++
+ include/uapi/linux/netdev.h                   |   3 +
+ net/core/xdp.c                                |  73 ++++++++-
+ tools/include/uapi/linux/netdev.h             |   3 +
+ .../bpf/prog_tests/xdp_cpumap_rx_csum.c       | 150 ++++++++++++++++++
+ .../selftests/bpf/prog_tests/xdp_metadata.c   |  10 ++
+ .../selftests/bpf/progs/bpf_tracing_net.h     |   1 +
+ .../bpf/progs/test_xdp_cpumap_rx_csum.c       |  51 ++++++
+ .../selftests/bpf/progs/xdp_metadata.c        |   9 ++
+ tools/testing/selftests/bpf/xdp_metadata.h    |   8 +
+ 14 files changed, 412 insertions(+), 2 deletions(-)
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/xdp_cpumap_rx_csum.c
+ create mode 100644 tools/testing/selftests/bpf/progs/test_xdp_cpumap_rx_csum.c
+
+
+base-commit: f456c1922c49e6be5ce407ddb74a6e61af5b65cf
 -- 
-2.54.0
+2.47.0
 
