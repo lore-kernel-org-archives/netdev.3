@@ -1,493 +1,240 @@
-Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FFB13B18A;
-	Tue, 30 Jun 2026 03:32:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782790359; cv=none; b=P8s3XkBZhWg7XaLgLfkAAskP9aBO8urOLnXub661b3C04jKl31zgI8R5qFca3g34HgSXLvgii53sKPz9VrLVmXnPyW4uNpbV7443GfeZpkfSNifniv3+mjLAT+8zp+rpMklsLPb2C71ovlX72tgSfP63oDH0ZifxjJvNb3Q7VVY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782790359; c=relaxed/simple;
-	bh=RsNPdydwiZjjehbQOn6ntpUtlV774pyoizI4zNMHdg0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=cB6N5QGXlzOpWNOvyHoPACzcHuh1UU8qndlrzoOGunDOvm5Q3Jk15h4cz30e8GXejCGZ/St90TqBiuqdpb6EdlchZBfU60it6xB+ias4bRFtwsvt8LRZQdtD6WhTulDFdDAOhTix21OqNAhUvptoEDCODF6iL3U+DKOKyAT0Rwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=O+O3SI3e; arc=none smtp.client-ip=203.29.241.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF1E219A8A
+	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 03:44:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782791069; cv=fail; b=SP3uEuhVXP/fZU5mrt53Pns9SUsxnS3nlbuSXn9mENfISSr6S9f4Wl7+1399R64BR0NpiVO1sZGGGMwaQt/pjD0YAJQNAroWxNqXrHf5I9/olkXtyEQ5EE0kvgbmKSn7JywPxqwlxRbjqS7YUWd1BJpYdemsREg+6OlJFJHkQf0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782791069; c=relaxed/simple;
+	bh=YIx4erVzuVBi3DpLICYRmyqx6YAtIGBrgyXQ7beGI48=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=EmT3t/tleWMzysEO/4pUQ2LbXqB2lV+TxkFkXggyTGyfS8yljoPpHOiBfcTHD+gR0sOkvznDXfuCIsSWBbeDRCnSMxGKbW05LVeBgEsPzsZEaPVOY1uvfObCkbQUTMo3sLp7ZHrTyP8k/vIKZdQBbUweRZNi+GkZ+JcgrpFq66s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MDlQtDe7; arc=fail smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="O+O3SI3e"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1782789746;
-	bh=KYxfn+Lm/xaMlwg8CSTJ/RlIU6WuxqHccpEUCs+AXK8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=O+O3SI3eghA2ySjEJE7Onoh9rJ/srkVF04Jrkn2wedpQF+qjcJJaysRl+AGsj7yse
-	 fYXryoyAI2fBEw1brNrqJzKtd9pW7f3GTdzrzrCO10rOBZRwqVF+mpsv2RvzJxBeiM
-	 Q2pKYyi7zbZlgRVf/6zh7mVz9iP0R0qQN/5GbxVhyRvp3mcD3sM+cKskPO4uABq0wr
-	 8MBoXtxNo0Bvwx6VBumer0Q5UmnzXK3qtp2a1xA0qsCbJ6qGpnxFktvZgxmgO3d8Xj
-	 FVQ36oIb21zh2iba/ND6mT8np6uf0L9cSl9eKn6ju+GiIDO9vdeRT8WbQkKwz1DSRO
-	 QYSQzZVuRhLSQ==
-Received: by codeconstruct.com.au (Postfix, from userid 10000)
-	id 99705660EF; Tue, 30 Jun 2026 11:22:26 +0800 (AWST)
-From: Jeremy Kerr <jk@codeconstruct.com.au>
-Date: Tue, 30 Jun 2026 11:21:24 +0800
-Subject: [PATCH net-next 03/12] net: mctp: usblib: Move RX transfer
- processing to a new mctp-usblib
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MDlQtDe7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782791068; x=1814327068;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=YIx4erVzuVBi3DpLICYRmyqx6YAtIGBrgyXQ7beGI48=;
+  b=MDlQtDe7N3gr6MgfqpBIB92cf7PABu++r3t6McS/oLOZQiSqtb1A2mTl
+   kF1cXbLiV583ImI1POZfw9uddSYeIHiwUXrcWHmt/epaxMHFJYo4tXpnS
+   RNcoj2J1RF15djKLQVPmK0/Y0lv4a6z7C5Jax2MwYv2sd5goGJCXKcUWe
+   u19IZ11PsiK/zsQk6/AVXMuPb+T1MfwYsdhoyrKx4fGGUzxrW0E7p/tb/
+   S+NhFXrrEcP0nzbCzAx58TST86yRT7eX639XewzGBWWHrQ/jfQSeiohRK
+   sx5zFJOBIuH74cdoDuPK1ykCoi9CaOC7xz4gmHSh87A+U3UwnKzrfB1Bu
+   g==;
+X-CSE-ConnectionGUID: KOVc3IhnQf6FBbKwxY+dDg==
+X-CSE-MsgGUID: TG0ir6FXQEShdhEdhUwg+g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11832"; a="71019703"
+X-IronPort-AV: E=Sophos;i="6.24,233,1774335600"; 
+   d="scan'208";a="71019703"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2026 20:44:27 -0700
+X-CSE-ConnectionGUID: pbNs4EW8RKCvhBc4Y7P1Jw==
+X-CSE-MsgGUID: ELA7+t/wTvSZfZ0CF1HcHQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,233,1774335600"; 
+   d="scan'208";a="249503568"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2026 20:44:27 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Mon, 29 Jun 2026 20:44:26 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Frontend Transport; Mon, 29 Jun 2026 20:44:26 -0700
+Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.71) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Mon, 29 Jun 2026 20:44:26 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=zAlYmmjXbonwTphayH4PW4ADPHeQJyjmjSAwXYCxJyXaEZB6fHRakNJcUdPZY3JVwZGcosTwzez4oC7H3Byht/lP7SoJh1E4dlXExu4EUap4UNRX8JvUKUUYD20MaRkPGv/qHGGTo8w6HRmVYMyj86Si0+NbDXaUh1tdzjP1qRmlhP3/qxVprUSm4MB2DMjvnmL25jvVOpekKc54sjd+CiHZ0xsKekfRwt3lIJHpw8nWDqUJAhGSKZWeWrU8LsVTHwlFt9+oFHwx2Z0mLzQYTo8DIecYszsQODe+XwRzcfiMWaeDIABOo+WFvtcjoPOeZxfAAY24ldf9ucef/PUuow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wk/HdwV7XLjnYwYfAzi35SWsecUob7hElr0UYoi8W6I=;
+ b=RD6GYQMYq6XGWtlm3iQ66hOoH4PUDszFNKxEHSZXbaroJuRfYG/AeTgDYXsmR6eXKut/pp3SRZYJKjFK6TvHoWgYzzYTaaQb00Zwl7fUiMkH0l4VSpDK5eDKXwz8yDzsQ0ONOnJrDB4w9vGt/d54V3WBy/CmRa3qPJEuLfr+eHpHPb9SDHF6bIav5WjI6/LywgSnN6A/GcWAlWVb7IJDC7CtojSJ8yAT78Wo1I6PKYI+MTRTTK2o/f9SDzsXMAIUonvjO4HUXw1V5uICjC7KGUfWyQrhe20mXOgDoLEOCarwT+46Wwb4XQk6GoggzGUZehioOWftltPOVPi5JRJhig==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CH3PR11MB8496.namprd11.prod.outlook.com (2603:10b6:610:1ba::22)
+ by SA3PR11MB7626.namprd11.prod.outlook.com (2603:10b6:806:307::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.17; Tue, 30 Jun
+ 2026 03:44:15 +0000
+Received: from CH3PR11MB8496.namprd11.prod.outlook.com
+ ([fe80::5627:e3a5:cb26:b555]) by CH3PR11MB8496.namprd11.prod.outlook.com
+ ([fe80::5627:e3a5:cb26:b555%4]) with mapi id 15.21.0159.018; Tue, 30 Jun 2026
+ 03:44:15 +0000
+Message-ID: <263433ed-bd6d-4adc-9c8d-5ab77312993d@intel.com>
+Date: Tue, 30 Jun 2026 05:43:49 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v1] ice: use dev_err_probe in all appropriate
+ places in ice_probe()
+To: Rongguang Wei <clementwei90@163.com>, <intel-wired-lan@lists.osuosl.org>
+CC: <anthony.l.nguyen@intel.com>, <andrew+netdev@lunn.ch>,
+	<netdev@vger.kernel.org>, Rongguang Wei <weirongguang@kylinos.cn>
+References: <20260630032537.42605-1-clementwei90@163.com>
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Content-Language: en-US
+In-Reply-To: <20260630032537.42605-1-clementwei90@163.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: DUZPR01CA0096.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:4bb::19) To LV3PR11MB8508.namprd11.prod.outlook.com
+ (2603:10b6:408:1b4::8)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260630-dev-mctp-usb-1-1-v1-3-86a311fc67b7@codeconstruct.com.au>
-References: <20260630-dev-mctp-usb-1-1-v1-0-86a311fc67b7@codeconstruct.com.au>
-In-Reply-To: <20260630-dev-mctp-usb-1-1-v1-0-86a311fc67b7@codeconstruct.com.au>
-To: Matt Johnston <matt@codeconstruct.com.au>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: netdev@vger.kernel.org, linux-usb@vger.kernel.org
-X-Mailer: b4 0.16-dev
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR11MB8496:EE_|SA3PR11MB7626:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7c422489-9689-49a7-b660-08ded659d0e7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|23010399003|22082099003|18002099003|5023799004|56012099006|11063799006|6133799003;
+X-Microsoft-Antispam-Message-Info: KX4s6RmbutdbbMVLYm8Qc9NOFUKcYnY5KbvDHk61IWcfdCLzNDKKzBA2de+6vrgJsV8nL55U+xnCzBbP/8aWxMgu4iRU/xh2XRyzquzfkvtvJRNGecWdKt29T7CGgu/aZ7epDBzpkn3E5FFd1ZA3jAH0HhInPbbSRHg0VJPwCz5wEgyfxZ0i3u8IdNZs+3NBhBcn5AyT0MFWdLz960N8j61t2j4uUpLUpq63MY47yyWnlkOx59Q1BNaC7v/d3V2/jLu2t18W8FRIpj4KJDB+7QfF2pqq+HEJUAGBXSsrvrHyFmvSqMVf63LKPj/GUz5OWyDgqXSdOfXMOnvieUcLZUUDFxWqWGD55SmufQAkfcK6Z4+4HR6DIldh3AOP9hHZ5H+zI01Ch/oxLpuufkEmFRUCC+bkY5Ni+tIOVwgqj8lYI1d6JIPHBhDIiPq3D4gvuN50mzMZsiOLk76ys6ciZZixbtHAkQdT7PWNKXuZOfeMBrFKbWKIskhJuuclWPBzsE5Aci6qfnj7ldH2Ei9dJXQbiA9AmG7ks5cnacmchlfFe7uxk5v41I4hxsLydvHrsDv/thAjy7JM6Zs/yc5k7X5GCCAv04xG5ELkVNyJ6cZkWedZOI2qmEBICNYyt3YKwsEnjPlfjzu+h7c6bmzyPkDrCknJYiDPZOF2yhGnXEI=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8496.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(22082099003)(18002099003)(5023799004)(56012099006)(11063799006)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QmxKU0RvcFJ5eVFLbG03VUx5SmFyZFdNUGcvbmdyd2VpVkorY2NBbHBnT2Rr?=
+ =?utf-8?B?bm5abmUvZVN0QjJldG9jMUhLbWdMaGdKMmlQeHh6b3M0R0Fpd3N6MGhJZkJX?=
+ =?utf-8?B?dW9LTUlZOERoKzhHMFBqY3Y4eWlEMThVNGNuSnNjTGVQMFI1cm9PYWlrcWM0?=
+ =?utf-8?B?aU5PZGZNMjRBWVVldnIzemJsdS9lRjd5MzNWZmI4Y1NzY3lVMWE5VGV6OGJr?=
+ =?utf-8?B?M1lGYjA0UEQzc1lacGh0bitVYmtVSk9BVzFFMGJmOEgyWjR2ZjRtVFp3SGM2?=
+ =?utf-8?B?MjR1ZE5Ockc3dVhtZW12Z2twUFdoYlQwb1JzUGlQM05UWGNicElzaEw0NWtB?=
+ =?utf-8?B?WElhZ0RPbTU0ZnFqbXFZZWprdGVNOW4vcDBhenlNSXlKcWprMXZVbHBWT2xY?=
+ =?utf-8?B?WEtCalUzUytZTFVjb3NuLzBia1QwV2FjMkZKdWZJQ2I5dlFFLytvczg4bmxx?=
+ =?utf-8?B?Yy82V3NzbFY5UDRZd2RkTktjOW5oS3ltS3JRUjRlbUllS0JxVEdjTUVoem9v?=
+ =?utf-8?B?SUlRMlpWL1hjQkgrTDBFUWF0NDM5STZzWkJRYnUxeXNmM2N5ZDVjcU02cjQy?=
+ =?utf-8?B?Tk1ZOHYzeUNNdENjbEkwQTNzblNTOUtPUSt6NDBCYUxHWXVpMTRudDRsNjJL?=
+ =?utf-8?B?YXFiSFFXRDZkQ1pteEptZEFtRURkVUhXaTZwZzJHNy9LMExPTUJYMUhCanZj?=
+ =?utf-8?B?WDlLOUxvYUhZYUY5ZGk2VHNEWWZkU0syZFh5ME9yeVd6RHgwUWF2ZUErU2NT?=
+ =?utf-8?B?TE5MeDd3MU9lN1NyRzFjUTR6NlROTi9rbHZ0Y3h5aFpIQ1M5OXVDOHloWFRQ?=
+ =?utf-8?B?aEU4ak5vNDlNaGtmRS8xMjJETWlTNzlpM2dUUGdKUnFxbGZSc0V2WEpPL2Ex?=
+ =?utf-8?B?TEdNdldyM3psenNZK2RXMmp3Z3ZnNVA3N0JZUUhZMTIyT1BkaXNZajVjT1dr?=
+ =?utf-8?B?QzlCSUV3S3UycUN1OVZiRDRFeUc1aEdsUkxSdWU1a1VhWXByakhoVzZFbE9B?=
+ =?utf-8?B?SFBuN3VZRzJwUHRQcG90SHpvSUpJM0JVM1pDNWNNRDNnemY5RTRZOXk1QjFl?=
+ =?utf-8?B?UTRiV3NPcXV4bEg1cXlSOWtWUkVXQXhFVGVCZnJUU2FsRmYzMENXRmQvZ1hI?=
+ =?utf-8?B?VDAwWUJkRk0vcnEydVdwaGtTSlFvY3oxNlNjUmNkbGdQc3AxVi9NSHgrTmlm?=
+ =?utf-8?B?bENRZWdSZENwMFdLMXQrTnA3MU9acER0MnVDdkFxMngzbDljbExRaUhlNGZi?=
+ =?utf-8?B?L1BQNUxKTDBVU3dMZ1RnMjlNeElVaklTc3R3KzBQUkM5ZUVwOHhIQ1FSTnNs?=
+ =?utf-8?B?dFRyOGJUd3dydWhsSlVhbXdQQU5Jb1Z5RHhubEtwUFJWckRndmVuU0hieTh5?=
+ =?utf-8?B?NHNDZFlwR1l5c09KTm9KOTRHanI0eHluR1pNcDNUQlpvWFUyeFQrUUE2eUhL?=
+ =?utf-8?B?M1ZHNTV3MDFURVhhcUUrTFBxeDl2cmt1TVgrbElEaC9OTkRkM0hPRmoyQUZW?=
+ =?utf-8?B?dDJUUXhrdDZYaW11MGNnQXB1TjE2Q3hITkV5Z3JHcGlCTlk5TjBGenhHaDdD?=
+ =?utf-8?B?QlFNd3FSL3VvWWFnNUpSQVAvMEVlNXBGbUlXVjhFb3J4bDc0MzllVE95a2tv?=
+ =?utf-8?B?NnR4YlowckoxNVM0ZytFS1hDRGZxUDlMRHFCR3lFT2FMY0pqOWRrdFdIYk9z?=
+ =?utf-8?B?WCtYTmhDSW5QblFsRDN5cGRJaWM3Y1JuS2pHdE4yV010VFdndzgvUG9hNDEr?=
+ =?utf-8?B?bnRma0x6NGpBUTk4d1VtM2FkZ0RoOEdjQTF6OHdDSEpMSEdValp4ekZoQ04r?=
+ =?utf-8?B?ZEUyd2hxWGtJUkt2NzB0ZURaN0RaMUtyUjI1cnNTNEt2L1duQ2JHYjkvenlF?=
+ =?utf-8?B?d1JVUmRROWd0WDZFWWExbjQyNjhVcDVwSVMvOHZrcEtVWitkQTZLRUlHazU1?=
+ =?utf-8?B?VlZsNmNhdUtZZzBKbk1ZZDNtOFdwVUhKbmRrUUUwNDJ1V3o0a0FjZWxCQVFl?=
+ =?utf-8?B?TVA2c0ZHc3BCU0pSSXBOL3VlZmtjZy9TRUcxUThsaXBoQWd5eGduc1RYZTFV?=
+ =?utf-8?B?eTduZ1VpaHhDZjBlUis4TG55Vm5pdFpuYVhteGpFWDgxYVNZcWhCdHdEdmxN?=
+ =?utf-8?B?NnhwNjYycGduT1VyRUVlSjFKM04wSGtZQzFQaHZCSmFYRU1WWXR1b2NwNmxT?=
+ =?utf-8?B?QTIvTjdjaWQrMjRBR3doVStOc2pBcWVQdFpnSUJCRkFmSWJPOGYycW9pRVEv?=
+ =?utf-8?B?MG5teWRraUJwYWljT21WZlUvS2d2NTZpYlVrd0swaGg0VTFhajZ1eUxMRHFi?=
+ =?utf-8?B?R21oOFJIajdHelpHRmlZREFmRk9UUGhzK1RpT0FOaS85eVVzdERsVGdCUEVO?=
+ =?utf-8?Q?fGrvXReUamrol0E4=3D?=
+X-Exchange-RoutingPolicyChecked: aZtZY+xmZbwwteNhXFQfo5ZcsHvdCA2VAeSC7FbJCGcz9wWZwlC/RqCwbjZJwNQ27Lvi1WicDGrbBYf1ziD1/s41dSGr+LFzTzleq6Pz0xgfsZXJPxSwir7jDL3Hn14wDkn317Pi7GHp5Binwfb2aBwDoqoJBA2C5gRdBFFPHjNtF1+OXLFxkMAfqv7BE0u+I/T5vEyKChaU6171qLYxrvnK+vZDi/Muh7BgvaJpegXbh7yLSSl0mKktzDd7pC1wUNq4j4JEAdsLp6jkUS21zBJyeG4WKh+CZsWgGKHntlqWMz71ONuAHeswlVRTnOhjpb5UfxyoIcRSitLUDNSSPg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7c422489-9689-49a7-b660-08ded659d0e7
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8508.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2026 03:44:15.6219
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nAC7npIAqCtap1PKzuwBny8x1adaPkJYs+kUXYqW2i0WP4VW8aFrB7HPulY2EZHAS8e/fXozOHN5+Sf02fvMq2fFKqldl8uRfz3djbljFpQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR11MB7626
+X-OriginatorOrg: intel.com
 
-The processing of USB receive transfers is common to both sides of a
-MCTP over USB transport. In order to support a future gadget driver,
-move the current host-side driver into a new common file, mctp-usblib.
+On 6/30/26 05:25, Rongguang Wei wrote:
+> From: Rongguang Wei <weirongguang@kylinos.cn>
+> 
+> Use dev_err_probe() can conveniently combines printing
 
-This currently handles the submit-complete-packetise process of the
-receive path of the USB transport. We'll add transmit handling in an
-upcoming change.
+s/combines/combine/
+you could also wrap at 75 chars, to have better formatting.
 
-Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
----
- drivers/net/mctp/Kconfig       |  11 +++
- drivers/net/mctp/Makefile      |   1 +
- drivers/net/mctp/mctp-usb.c    | 100 +++++-------------------
- drivers/net/mctp/mctp-usblib.c | 167 +++++++++++++++++++++++++++++++++++++++++
- include/linux/usb/mctp-usb.h   |  26 +++++++
- 5 files changed, 225 insertions(+), 80 deletions(-)
+> an error message with returning the errno and also
+> simplify the code.
+> 
+> Signed-off-by: Rongguang Wei <weirongguang@kylinos.cn>
 
-diff --git a/drivers/net/mctp/Kconfig b/drivers/net/mctp/Kconfig
-index cf325ab0b1ef..a564a792801d 100644
---- a/drivers/net/mctp/Kconfig
-+++ b/drivers/net/mctp/Kconfig
-@@ -47,9 +47,20 @@ config MCTP_TRANSPORT_I3C
- 	  A MCTP protocol network device is created for each I3C bus
- 	  having a "mctp-controller" devicetree property.
- 
-+config MCTP_TRANSPORT_USBLIB
-+	tristate "MCTP over USB common library"
-+	depends on USB
-+	help
-+	  Common protocol handling functions for MCTP-over-USB transport
-+	  implementations, suitable for use in either host- or gadget-side
-+	  transport driver
-+
-+	  This will be automatically enabled by the transport driver.
-+
- config MCTP_TRANSPORT_USB
- 	tristate "MCTP USB transport"
- 	depends on USB
-+	select MCTP_TRANSPORT_USBLIB
- 	help
- 	  Provides a driver to access MCTP devices over USB transport,
- 	  defined by DMTF specification DSP0283.
-diff --git a/drivers/net/mctp/Makefile b/drivers/net/mctp/Makefile
-index c36006849a1e..c870b62d3f1c 100644
---- a/drivers/net/mctp/Makefile
-+++ b/drivers/net/mctp/Makefile
-@@ -2,3 +2,4 @@ obj-$(CONFIG_MCTP_SERIAL) += mctp-serial.o
- obj-$(CONFIG_MCTP_TRANSPORT_I2C) += mctp-i2c.o
- obj-$(CONFIG_MCTP_TRANSPORT_I3C) += mctp-i3c.o
- obj-$(CONFIG_MCTP_TRANSPORT_USB) += mctp-usb.o
-+obj-$(CONFIG_MCTP_TRANSPORT_USBLIB) += mctp-usblib.o
-diff --git a/drivers/net/mctp/mctp-usb.c b/drivers/net/mctp/mctp-usb.c
-index c6e36b63e87a..531b7c994afb 100644
---- a/drivers/net/mctp/mctp-usb.c
-+++ b/drivers/net/mctp/mctp-usb.c
-@@ -28,6 +28,8 @@ struct mctp_usb {
- 	u8 ep_in;
- 	u8 ep_out;
- 
-+	struct mctp_usblib_rx rx;
-+
- 	struct urb *tx_urb;
- 	struct urb *rx_urb;
- 
-@@ -125,24 +127,23 @@ static const unsigned long RX_RETRY_DELAY = HZ / 4;
- static int mctp_usb_rx_queue(struct mctp_usb *mctp_usb, gfp_t gfp)
- {
- 	unsigned long flags;
--	struct sk_buff *skb;
-+	size_t len;
-+	void *buf;
- 	int rc;
- 
--	skb = __netdev_alloc_skb(mctp_usb->netdev, MCTP_USB_1_0_XFER_SIZE, gfp);
--	if (!skb) {
--		rc = -ENOMEM;
-+	rc = mctp_usblib_rx_prepare(mctp_usb->netdev, &mctp_usb->rx,
-+				    &buf, &len, gfp);
-+	if (rc)
- 		goto err_retry;
--	}
- 
- 	usb_fill_bulk_urb(mctp_usb->rx_urb, mctp_usb->usbdev,
- 			  usb_rcvbulkpipe(mctp_usb->usbdev, mctp_usb->ep_in),
--			  skb->data, MCTP_USB_1_0_XFER_SIZE,
--			  mctp_usb_in_complete, skb);
-+			  buf, len, mctp_usb_in_complete, mctp_usb);
- 
- 	rc = usb_submit_urb(mctp_usb->rx_urb, gfp);
- 	if (rc) {
- 		netdev_dbg(mctp_usb->netdev, "rx urb submit failure: %d\n", rc);
--		kfree_skb(skb);
-+		mctp_usblib_rx_cancel(&mctp_usb->rx);
- 		if (rc == -ENOMEM)
- 			goto err_retry;
- 	}
-@@ -159,92 +160,27 @@ static int mctp_usb_rx_queue(struct mctp_usb *mctp_usb, gfp_t gfp)
- 
- static void mctp_usb_in_complete(struct urb *urb)
- {
--	struct sk_buff *skb = urb->context;
--	struct net_device *netdev = skb->dev;
--	struct mctp_usb *mctp_usb = netdev_priv(netdev);
--	struct mctp_skb_cb *cb;
--	unsigned int len;
-+	struct mctp_usb *mctp_usb = urb->context;
-+	struct net_device *netdev = mctp_usb->netdev;
- 	int status;
- 
- 	status = urb->status;
- 
- 	switch (status) {
-+	default:
-+		netdev_dbg(netdev, "unexpected rx urb status: %d\n", status);
-+		fallthrough;
- 	case -ENOENT:
- 	case -ECONNRESET:
- 	case -ESHUTDOWN:
- 	case -EPROTO:
--		kfree_skb(skb);
-+		mctp_usblib_rx_cancel(&mctp_usb->rx);
- 		return;
- 	case 0:
- 		break;
--	default:
--		netdev_dbg(netdev, "unexpected rx urb status: %d\n", status);
--		kfree_skb(skb);
--		return;
- 	}
- 
--	len = urb->actual_length;
--	__skb_put(skb, len);
--
--	while (skb) {
--		struct sk_buff *skb2 = NULL;
--		struct mctp_usb_hdr *hdr;
--		u8 pkt_len; /* length of MCTP packet, no USB header */
--
--		skb_reset_mac_header(skb);
--		hdr = skb_pull_data(skb, sizeof(*hdr));
--		if (!hdr)
--			break;
--
--		if (be16_to_cpu(hdr->id) != MCTP_USB_DMTF_ID) {
--			netdev_dbg(netdev, "rx: invalid id %04x\n",
--				   be16_to_cpu(hdr->id));
--			break;
--		}
--
--		if (hdr->len <
--		    sizeof(struct mctp_hdr) + sizeof(struct mctp_usb_hdr)) {
--			netdev_dbg(netdev, "rx: short packet (hdr) %d\n",
--				   hdr->len);
--			break;
--		}
--
--		/* we know we have at least sizeof(struct mctp_usb_hdr) here */
--		pkt_len = hdr->len - sizeof(struct mctp_usb_hdr);
--		if (pkt_len > skb->len) {
--			netdev_dbg(netdev,
--				   "rx: short packet (xfer) %d, actual %d\n",
--				   hdr->len, skb->len);
--			break;
--		}
--
--		if (pkt_len < skb->len) {
--			/* more packets may follow - clone to a new
--			 * skb to use on the next iteration
--			 */
--			skb2 = skb_clone(skb, GFP_ATOMIC);
--			if (skb2) {
--				if (!skb_pull(skb2, pkt_len)) {
--					kfree_skb(skb2);
--					skb2 = NULL;
--				}
--			}
--			skb_trim(skb, pkt_len);
--		}
--
--		dev_dstats_rx_add(netdev, skb->len);
--
--		skb->protocol = htons(ETH_P_MCTP);
--		skb_reset_network_header(skb);
--		cb = __mctp_cb(skb);
--		cb->halen = 0;
--		netif_rx(skb);
--
--		skb = skb2;
--	}
--
--	if (skb)
--		kfree_skb(skb);
-+	mctp_usblib_rx_complete(netdev, &mctp_usb->rx, urb->actual_length);
- 
- 	mctp_usb_rx_queue(mctp_usb, GFP_ATOMIC);
- }
-@@ -341,6 +277,8 @@ static int mctp_usb_probe(struct usb_interface *intf,
- 	spin_lock_init(&dev->rx_lock);
- 	usb_set_intfdata(intf, dev);
- 
-+	mctp_usblib_rx_init(&dev->rx);
-+
- 	dev->ep_in = ep_in->bEndpointAddress;
- 	dev->ep_out = ep_out->bEndpointAddress;
- 
-@@ -362,6 +300,7 @@ static int mctp_usb_probe(struct usb_interface *intf,
- err_free_urbs:
- 	usb_free_urb(dev->tx_urb);
- 	usb_free_urb(dev->rx_urb);
-+	mctp_usblib_rx_fini(&dev->rx);
- 	free_netdev(netdev);
- 	return rc;
- }
-@@ -371,6 +310,7 @@ static void mctp_usb_disconnect(struct usb_interface *intf)
- 	struct mctp_usb *dev = usb_get_intfdata(intf);
- 
- 	mctp_unregister_netdev(dev->netdev);
-+	mctp_usblib_rx_fini(&dev->rx);
- 	usb_free_urb(dev->tx_urb);
- 	usb_free_urb(dev->rx_urb);
- 	free_netdev(dev->netdev);
-diff --git a/drivers/net/mctp/mctp-usblib.c b/drivers/net/mctp/mctp-usblib.c
-new file mode 100644
-index 000000000000..9b86eb4310ce
---- /dev/null
-+++ b/drivers/net/mctp/mctp-usblib.c
-@@ -0,0 +1,167 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * mctp-usblib.c - MCTP-over-USB (DMTF DSP0283) transport helper library
-+ *
-+ * DSP0283 is available at:
-+ * https://www.dmtf.org/sites/default/files/standards/documents/DSP0283_1.0.1.pdf
-+ *
-+ * Copyright (C) 2024-2026 Code Construct Pty Ltd
-+ */
-+
-+#include <linux/netdevice.h>
-+#include <linux/skbuff.h>
-+#include <linux/usb/mctp-usb.h>
-+#include <net/mctp.h>
-+
-+void mctp_usblib_rx_init(struct mctp_usblib_rx *rx)
-+{
-+	memset(rx, 0, sizeof(*rx));
-+}
-+EXPORT_SYMBOL_GPL(mctp_usblib_rx_init);
-+
-+void mctp_usblib_rx_fini(struct mctp_usblib_rx *rx)
-+{
-+	kfree_skb(rx->skb);
-+}
-+EXPORT_SYMBOL_GPL(mctp_usblib_rx_fini);
-+
-+/*
-+ * Prepare a transfer buffer for future completion; *bufp and *lenp will
-+ * be populated on success.
-+ */
-+int mctp_usblib_rx_prepare(struct net_device *netdev,
-+			   struct mctp_usblib_rx *rx,
-+			   void **bufp, size_t *lenp, gfp_t gfp)
-+{
-+	const unsigned int len = MCTP_USB_1_0_XFER_SIZE;
-+	struct sk_buff *skb;
-+
-+	skb = __netdev_alloc_skb(netdev, len, gfp);
-+	if (!skb)
-+		return -ENOMEM;
-+
-+	rx->skb = skb;
-+
-+	*bufp = skb_tail_pointer(skb);
-+	*lenp = skb_tailroom(skb);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(mctp_usblib_rx_prepare);
-+
-+static void mctp_usblib_rx(struct net_device *netdev, struct sk_buff *skb)
-+{
-+	struct pcpu_dstats *dstats = this_cpu_ptr(netdev->dstats);
-+	struct mctp_skb_cb *cb;
-+	unsigned long flags;
-+
-+	/* we're called from an URB completion handler, and cannot assume local
-+	 * irqs are always disabled
-+	 */
-+	flags = u64_stats_update_begin_irqsave(&dstats->syncp);
-+	u64_stats_inc(&dstats->rx_packets);
-+	u64_stats_add(&dstats->rx_bytes, skb->len + sizeof(struct mctp_usb_hdr));
-+	u64_stats_update_end_irqrestore(&dstats->syncp, flags);
-+
-+	skb_reset_mac_header(skb);
-+	skb->protocol = htons(ETH_P_MCTP);
-+	skb_reset_network_header(skb);
-+	cb = __mctp_cb(skb);
-+	cb->halen = 0;
-+	netif_rx(skb);
-+}
-+
-+/*
-+ * Receive a USB completion of @len bytes of incoming data. We will then split
-+ * this into packets and netif_rx() each. Intended to be called in atomic
-+ * contexts - ie., URB completion.
-+ *
-+ * Assumes @netdev uses dstats.
-+ */
-+int mctp_usblib_rx_complete(struct net_device *netdev,
-+			    struct mctp_usblib_rx *rx, size_t len)
-+{
-+	struct sk_buff *skb = rx->skb;
-+	int rc = 0;
-+
-+	__skb_put(skb, len);
-+
-+	while (skb) {
-+		struct sk_buff *skb2 = NULL;
-+		struct mctp_usb_hdr *hdr;
-+		/* length of MCTP packet, no USB header */
-+		u8 pkt_len;
-+
-+		skb_reset_mac_header(skb);
-+		hdr = skb_pull_data(skb, sizeof(*hdr));
-+		if (!hdr) {
-+			rc = -ENOMSG;
-+			break;
-+		}
-+
-+		if (be16_to_cpu(hdr->id) != MCTP_USB_DMTF_ID) {
-+			netdev_dbg(netdev, "rx: invalid id %04x\n",
-+				   be16_to_cpu(hdr->id));
-+			rc = -EPROTO;
-+			break;
-+		}
-+
-+		if (hdr->len <
-+		    sizeof(struct mctp_hdr) + sizeof(struct mctp_usb_hdr)) {
-+			netdev_dbg(netdev, "rx: short packet (hdr) %d\n",
-+				   hdr->len);
-+			rc = -EPROTO;
-+			break;
-+		}
-+
-+		/* we know we have at least sizeof(struct mctp_usb_hdr) here */
-+		pkt_len = hdr->len - sizeof(struct mctp_usb_hdr);
-+		if (pkt_len > skb->len) {
-+			rc = -EPROTO;
-+			netdev_dbg(netdev,
-+				   "rx: short packet (xfer) %d, actual %d\n",
-+				   hdr->len, skb->len);
-+			break;
-+		}
-+
-+		if (pkt_len < skb->len) {
-+			/* more packets may follow - clone to a new
-+			 * skb to use on the next iteration
-+			 */
-+			skb2 = skb_clone(skb, GFP_ATOMIC);
-+			if (skb2) {
-+				if (!skb_pull(skb2, pkt_len)) {
-+					dev_kfree_skb_any(skb2);
-+					skb2 = NULL;
-+				}
-+			}
-+			skb_trim(skb, pkt_len);
-+		}
-+
-+		mctp_usblib_rx(netdev, skb);
-+		skb = skb2;
-+	}
-+
-+	if (skb)
-+		dev_kfree_skb_any(skb);
-+
-+	rx->skb = NULL;
-+
-+	return rc;
-+}
-+EXPORT_SYMBOL_GPL(mctp_usblib_rx_complete);
-+
-+/*
-+ * Cancel a rx context; subsequent prepare/complete calls will not be a
-+ * continuation of any data already received.
-+ */
-+void mctp_usblib_rx_cancel(struct mctp_usblib_rx *rx)
-+{
-+	dev_kfree_skb_any(rx->skb);
-+	rx->skb = NULL;
-+}
-+EXPORT_SYMBOL_GPL(mctp_usblib_rx_cancel);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_AUTHOR("Jeremy Kerr <jk@codeconstruct.com.au>");
-+MODULE_DESCRIPTION("MCTP USB transport library");
-diff --git a/include/linux/usb/mctp-usb.h b/include/linux/usb/mctp-usb.h
-index 2bece8afd1c7..595e6af16dd0 100644
---- a/include/linux/usb/mctp-usb.h
-+++ b/include/linux/usb/mctp-usb.h
-@@ -13,6 +13,8 @@
- #ifndef __LINUX_USB_MCTP_USB_H
- #define __LINUX_USB_MCTP_USB_H
- 
-+#include <linux/netdevice.h>
-+#include <linux/skbuff.h>
- #include <linux/types.h>
- 
- struct mctp_usb_hdr {
-@@ -29,4 +31,28 @@ struct mctp_usb_hdr {
- #define MCTP_USB_1_0_MTU_MAX	(MCTP_USB_1_0_PKTLEN_MAX - sizeof(struct mctp_usb_hdr))
- #define MCTP_USB_DMTF_ID	0x1ab4
- 
-+/* mctp-usblib */
-+
-+/*
-+ * RX handle: drivers will typically create one on init, which persists for
-+ * the life of the driver. The same handle is used for progressive
-+ * prepare -> complete operations (for each incoming USB transfer), which
-+ * result in netif_rx()-ing the MCTP packets received
-+ */
-+struct mctp_usblib_rx {
-+	struct sk_buff *skb;
-+};
-+
-+void mctp_usblib_rx_init(struct mctp_usblib_rx *rx);
-+void mctp_usblib_rx_fini(struct mctp_usblib_rx *rx);
-+
-+int mctp_usblib_rx_prepare(struct net_device *netdev,
-+			   struct mctp_usblib_rx *rx,
-+			   void **bufp, size_t *lenp, gfp_t gfp);
-+
-+int mctp_usblib_rx_complete(struct net_device *netdev,
-+			    struct mctp_usblib_rx *rx, size_t len);
-+
-+void mctp_usblib_rx_cancel(struct mctp_usblib_rx *rx);
-+
- #endif /*  __LINUX_USB_MCTP_USB_H */
+thank you,
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 
--- 
-2.47.3
+> ---
+>   drivers/net/ethernet/intel/ice/ice_main.c | 24 ++++++++---------------
+>   1 file changed, 8 insertions(+), 16 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+> index e2fbe111f849..81959eaec708 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_main.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_main.c
+> @@ -5167,10 +5167,8 @@ ice_probe(struct pci_dev *pdev, const struct pci_device_id __always_unused *ent)
+>   	struct ice_hw *hw;
+>   	int err;
+>   
+> -	if (pdev->is_virtfn) {
+> -		dev_err(dev, "can't probe a virtual function\n");
+> -		return -EINVAL;
+> -	}
+> +	if (pdev->is_virtfn)
+> +		return dev_err_probe(dev, -EINVAL, "can't probe a virtual function\n");
+>   
+>   	/* when under a kdump kernel initiate a reset before enabling the
+>   	 * device in order to clear out any pending DMA transactions. These
+> @@ -5194,10 +5192,8 @@ ice_probe(struct pci_dev *pdev, const struct pci_device_id __always_unused *ent)
+>   		return err;
+>   
+>   	err = pcim_iomap_regions(pdev, BIT(ICE_BAR0), dev_driver_string(dev));
+> -	if (err) {
+> -		dev_err(dev, "BAR0 I/O map error %d\n", err);
+> -		return err;
+> -	}
+> +	if (err)
+> +		return dev_err_probe(dev, err, "BAR0 I/O map error %d\n", err);
+>   
+>   	pf = ice_allocate_pf(dev);
+>   	if (!pf)
+> @@ -5208,10 +5204,8 @@ ice_probe(struct pci_dev *pdev, const struct pci_device_id __always_unused *ent)
+>   
+>   	/* set up for high or low DMA */
+>   	err = dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64));
+> -	if (err) {
+> -		dev_err(dev, "DMA configuration failed: 0x%x\n", err);
+> -		return err;
+> -	}
+> +	if (err)
+> +		return dev_err_probe(dev, err, "DMA configuration failed: 0x%x\n", err);
+>   
+>   	pci_set_master(pdev);
+>   	pf->pdev = pdev;
+> @@ -5246,10 +5240,8 @@ ice_probe(struct pci_dev *pdev, const struct pci_device_id __always_unused *ent)
+>   		return ice_probe_recovery_mode(pf);
+>   
+>   	err = ice_init_hw(hw);
+> -	if (err) {
+> -		dev_err(dev, "ice_init_hw failed: %d\n", err);
+> -		return err;
+> -	}
+> +	if (err)
+> +		return dev_err_probe(dev, err, "ice_init_hw failed: %d\n", err);
+>   
+>   	ice_init_dev_hw(pf);
+>   
 
