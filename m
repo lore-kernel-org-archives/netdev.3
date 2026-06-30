@@ -1,68 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4F3371CF4
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 15:25:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CFE41E1E12;
+	Tue, 30 Jun 2026 15:25:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782833110; cv=none; b=j2PNBOoTJq/rQg27J3w+MSBoFiP1K4MAM3wBaT7URffsNZy7FXu+Mu7E1/SwV/wWeV3E14LVuM6zZJJxqNZS3Z9ZPjyJuBLD2avaWsmaIMfunZdHMw69w/Iya6OWFGKWsFEITUY3eTS167TZKVBJbSFKrMS6ZJZAu4IC03iQZxI=
+	t=1782833151; cv=none; b=k7Oa+n8ITeiHlKUxl1qaZ6eySl+6S3g9qV/O7leyUHLmV4FwnQavbs8vKXmMw3wGWj3gudgTdw9uR2oE4/fgPJZjxHesUCObpbyP05q18AdloIdaIjdaEqwVhe7/ua4CidO66onbnBPhAFXqlDTDx3m/ZQ8fO8NPj2R3c1D0EFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782833110; c=relaxed/simple;
-	bh=/Xr3mJY2YX9Pv8+HY63KWc65qLJGHcEpnZbGJQu5Nws=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=uX5YuAyfjTzNDbaFJVQo97DWo1ZFGGq4kYD1MMlxsfYhuJT8QHHGXEQHU/+8Ekv+3rCk+89wzV71H0sElCza/NsifLxmCL4rOSZD4wgME6y50t/T8ZHAJThfrAJUcSVxlx0C6vBMIT1S9vIl15Z/J5Uj38eIr4HwOuge/2Lvva8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W6u4nN9z; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782833151; c=relaxed/simple;
+	bh=8a4ySrCqBZoZgZUvcFOaG0obPwn0zLHi3GWJzeWfVn8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u0+AIhn+v5ajBJN4HHdRLXA6Vw+i+j9SkGrTbfneBmAOgyz0RlZP7v5jcKLfGQc9CoyYOMCf1Ry7tKvviSOOO/AHlzqsq1V/NvEuLQFfvPXxddqWOK3fpXnG1RNUBv9lNydPI5I72xZ99oAW4czF0t5+SRRLLqAlJeyfKFwRwAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=u8YI+Vb2; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W6u4nN9z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B4AF1F000E9
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 15:25:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782833108;
-	bh=VFqtrGwvT83GQsSUwVKl1j3l2jtS4zEWULwdCTKY038=;
-	h=Date:From:To:Subject;
-	b=W6u4nN9zPKhVBgfyINFsm3iWEhh/nu3HfEvhyfC2PUQT/yPywyWsqIK2/8f2lM4ID
-	 8d0f2UbnIiAlsP7+ZmlYf44NhcAN5IXZp6qemSHsDQSMOeOSXu/TnPP8EMsujvmKB5
-	 3e+xxTJ3iwBVMZuUnANmznHtqDJZpYAn+7sVWdsF3W7WJxbDwriMoK/GNLT0gbdAFi
-	 DTh9iX3yl8G/5vs+8I29LFJxgkAySpDjtTaoSoJsjZD+Z4JTuzXP5fknCZ7IPqRE56
-	 nB2WFp8FBym///PhDmazICKj2NWr4CFugcnlYrMbrnG0KJvQFbFQnjRzC5zaJoNKOq
-	 scgkf8BlyVdgw==
-Date: Tue, 30 Jun 2026 08:25:07 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: netdev@vger.kernel.org
-Subject: [ANN] netdev foundation TSC meeting notes - Jun 30th
-Message-ID: <20260630082507.6109b0ca@kernel.org>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="u8YI+Vb2"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=DmD+OzcP3hxAXs0Zz1yHPXf2Fl6f2W68HIV2dY8Fuvo=; b=u8
+	YI+Vb20Zu09I/rIon96W7/QgPk4U+ZkBc/rYUj1VeEInlWZZ9zvHkyrlBBNVyPdsPoWLosuzvd2sO
+	LlYNxr4IPV1a65A3sDas4YfkHmAOGmsdVWlzhds6kElu/PZfs9ganbPwKe/AnLhPV5BbcCY4BYCjG
+	D41n0/HJS9Z2seg=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1weaL4-00A0Yx-C3; Tue, 30 Jun 2026 17:25:30 +0200
+Date: Tue, 30 Jun 2026 17:25:30 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: "Nazle Asmade, Muhammad Nazim Amirul" <muhammad.nazim.amirul.nazle.asmade@altera.com>
+Cc: "dinguyen@kernel.org" <dinguyen@kernel.org>,
+	"maxime.chevallier@bootlin.com" <maxime.chevallier@bootlin.com>,
+	"rmk+kernel@armlinux.org.uk" <rmk+kernel@armlinux.org.uk>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"robh@kernel.org" <robh@kernel.org>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2/3] arm64: dts: socfpga: agilex5: Add SoCDK TSN Config2
+ board
+Message-ID: <e4cf8d95-0467-4bdc-8e19-228ced3a8bbc@lunn.ch>
+References: <20260630133108.27244-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
+ <20260630133108.27244-3-muhammad.nazim.amirul.nazle.asmade@altera.com>
+ <edf84080-a5e0-478c-9977-af2376cb71c5@lunn.ch>
+ <347c50ed-234a-4f29-b63a-1e0010c6b09d@altera.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <347c50ed-234a-4f29-b63a-1e0010c6b09d@altera.com>
 
-Present: Eric, Jakub, Johannes, Kuniyuki, Simon, Willem, Paolo
+On Tue, Jun 30, 2026 at 02:39:50PM +0000, Nazle Asmade, Muhammad Nazim Amirul wrote:
+> On 30/6/2026 9:58 pm, Andrew Lunn wrote:
+> >> + * gmac1 is the TSN port. The MAC operates in GMII mode internally
+> >> + * while the PHY-side interface is RGMII, so mac-mode and phy-mode differ.
+> >> + */
+> >> +&gmac1 {
+> >> +	status = "okay";
+> >> +	phy-mode = "rgmii"; /* TX/RX clock delays provided by Agilex5 I/O hardware */
+> > Could you provide more details about this. I want to understand the
+> > big picture.
+> > 
+> > Normally we talk about the PCB providing the delays. This sounds like
+> > it is the FPGA? So i need convincing this is correct.
+> Hi Andrew,
+> 
+> Thanks for your quick review and yes, it is the FPGA — specifically a 
+> soft IP block in the FPGA fabric that implements the RGMII clock delays 
+> and is configured before Linux boots via the FPGA bitstream. The driver 
+> must not add additional delays on top.
 
-Academic Research program
-  - Revised with:
-    - Limit of USD 50k/grant
-    - Simon as email contact (happy for an alias to be created instead)
-  - Contacted board for funding approval, expect them to meet in
-    coming weeks to discuss 
+So it depends on how the converter block is described, but ....
 
-Netconf: 
- - on the first day of Netdev 0x1A. 13th July
- - Have room for ~20 people
- - Finalizing invites today / tomorrow
- - Driver upstreaming challenges, some drivers reaching v50
-   - May be more suitable for a broader discussion / driver BoF?
- - Foundation sponsorship for a meal
-   - Double check what netdev.conf has planned
+From a big picture, MAC and PHY pair, it is the MAC which
+implements the delays.
 
-Logo
- - Some delay in paperwork due to the complexity of it
- - Now aiming for LPC rather than Netdev
- - Comments on the draft sheet
-   - Mesh in the background would be good to represent networking
-   - Yes on tux, otherwise the logs are generic, but need a distinct one
-   - A voting sheeting to grade the suggestions to be circulated
+https://elixir.bootlin.com/linux/v6.15/source/Documentation/devicetree/bindings/net/ethernet-controller.yaml#L346
 
-Wireless CI running on netdev foundation infra
+# There are a small number of cases where the MAC has hard coded
+# delays which cannot be disabled. The 'phy-mode' only describes the
+# PCB.  The inability to disable the delays in the MAC does not change
+# the meaning of 'phy-mode'. It does however mean that a 'phy-mode' of
+# 'rgmii' is now invalid, it cannot be supported, since both the PCB
+# and the MAC and PHY adding delays cannot result in a functional
+# link. Thus the MAC should report a fatal error for any modes which
+# cannot be supported. When the MAC implements the delay, it must
+# ensure that the PHY does not also implement the same delay. So it
+# must modify the phy-mode it passes to the PHY, removing the delay it
+# has added. Failure to remove the delay will result in a
+# non-functioning link.
+
+    Andrew
+
+---
+pw-bot: cr
