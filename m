@@ -1,60 +1,33 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CA6B40D598;
-	Tue, 30 Jun 2026 05:40:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E2DF3DFC62;
+	Tue, 30 Jun 2026 05:43:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782798019; cv=none; b=V4YtD/6w7n7/g+wet4qftE74JuZBl9GJ+sO3IXvWH1t85WKubiWC8Dw+qv9PsJtvKHoyMDHeycBVzPfF3ChrA7JZqLEf+3VFO2xq3O+clRa8MFD8rka3OztCbHqibGla+TE6zJo+nA73z5HgOmanUHytmYfhUTrcferop8nyLnM=
+	t=1782798184; cv=none; b=ilCg2DFCybm3IZr6twgrdz3EAU01HPq/KWhAVfTlVUHv/XGtlnLkgFsrC/dMV9ZTiaHoXxERsmP2njwg4rQPuQyt7LbL6EBoGgqUeexynkZmfLCY8T/dfP1Bi3QbavqQokqqJWWMf1YJO6TLe+XBvs/1k853kzDxOoD1ICU1TAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782798019; c=relaxed/simple;
-	bh=vXWDosCj/bEpPUnhj+dIL4/zCzKTAtO8MdXAxsdqyk0=;
+	s=arc-20240116; t=1782798184; c=relaxed/simple;
+	bh=tEEuT4CIyRD62q1uJ0Hh4ARuooiWtwdiF0w2YbEVei8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p2i1dkSx0/W3eJtQHpv2B23TeWHsZ2eNa5clGxapfuF75sHYYguDzmVhsYCdsMfxwDUMGeYs/yoaQZNcBQOecV2yrl1jXo4L+JDculTbiWukunFRYv2lUXX92bjoBy7y92TzBH4A8vzxyaVIpnAkJp8W6LcolkZ23SxWh8oHnK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=OTkQjakl; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	 In-Reply-To:Content-Type; b=PvG1mO1kP3cOd8uL6NLnxuDZy5ve0+40U+xkKbOBsx/gVDJqTR+SQaCNgj9aFRSmVYigiHm6d/L2SasqUQFwu7NvIDooNnX7RQoPP2OmCR/gyCTBefm1b04OapYgo/E8VjwhkYgQXlnXmJATPqk1TxkqC0jPtXqbWT93k8yAKS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lpt+CfYR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="OTkQjakl"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65U1J48s604813;
-	Tue, 30 Jun 2026 05:40:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=g4PshD
-	nQGifGrRZWPS7WQ55Vlrc1WQWCSGimRfux+Vw=; b=OTkQjaklbaRk/p1z3p4EBX
-	rEcTrzHkqI22eAqVCC9x7bAwvTfrfSLCNrqO/w6+W7nM0urElYDWujeznkNUpQhg
-	BgBbWpY61ET4A4FMp2Y7R9FP0zvh4tVwZMBxt+jvmOMkZD3xfFiybEAvJQTzIVlN
-	gatHdeKEUceI7W/suiafvT7nu7GN7gDp9M4HdpW18bG7CNVOC3SkgBh0FTeQNAl4
-	Xw2P0AZOpkP6GvmxvQWs/AeaPz/YL0RlwrmJKtImv58Bc7xiJtAf/KXl3d47bVng
-	sncykt88PFwH7cbOKjUgcF/fgggF0uw0COEyiRX6tfdX8DzI/8tnSHnr7rfb7rWA
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f26n5n029-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jun 2026 05:40:00 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65U4nio9001655;
-	Tue, 30 Jun 2026 05:39:59 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4f2s7w0sg9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jun 2026 05:39:59 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65U5dtfw39977312
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 30 Jun 2026 05:39:55 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 50B3E20043;
-	Tue, 30 Jun 2026 05:39:55 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4C2C120040;
-	Tue, 30 Jun 2026 05:39:52 +0000 (GMT)
-Received: from [9.123.14.166] (unknown [9.123.14.166])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 30 Jun 2026 05:39:52 +0000 (GMT)
-Message-ID: <cbd7c6c1-15e9-4a9a-aaca-4cbb5bd157c7@linux.ibm.com>
-Date: Tue, 30 Jun 2026 11:09:51 +0530
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lpt+CfYR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A289E1F000E9;
+	Tue, 30 Jun 2026 05:42:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782798183;
+	bh=igxwWpzlFSopf+el4O8TcHKJCfMcOLCTi+hDs6e1D+Q=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=lpt+CfYRk3Q99LpJlwFxgTN9RsRnY/igkojf9nPokh5MzHw2L/Rd0ry+lKFWEA7YR
+	 4Dxc3bjWtLs1ulYOpcKOhQHS2VD07EP9h3zD4+S4OO6CsoYOqOUh9//cSIMfjO/GYP
+	 w8V2nNCpf+OvIisd7iT//Y3rhZQIHgNV2Ihif4C2beREDT2iqrLNXvaK/Mmar6+sgO
+	 5JbF+bLh59RAXxFeUtYhGqdhI/As66DJW49vyCfOPmF5Y6sfL5kffgvUNYtx3Yl4Jj
+	 tojaWUW3L38ftWUqjHIbhbB3iPwS5U6Uy/+oqjJ/3AhYyyM2qsvWuhBzcG7lsnc0vM
+	 spNRjylVEiQNg==
+Message-ID: <3246b02a-cf54-4777-a238-207925a2dfcd@kernel.org>
+Date: Tue, 30 Jun 2026 07:42:51 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,148 +35,127 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net/smc: fix UAF in smc_cdc_rx_handler() by pinning
- the socket
-To: Xiang Mei <xmei5@asu.edu>, "D . Wythe" <alibuda@linux.alibaba.com>,
-        Dust Li <dust.li@linux.alibaba.com>,
-        Wenjia Zhang <wenjia@linux.ibm.com>,
-        Mahanta Jambigi <mjambigi@linux.ibm.com>,
-        Tony Lu
- <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>,
-        netdev@vger.kernel.org
-Cc: "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Hans Wippel <hwippel@linux.ibm.com>, linux-rdma@vger.kernel.org,
-        linux-s390@vger.kernel.org, Weiming Shi <bestswngs@gmail.com>
-References: <20260627014948.3049512-1-xmei5@asu.edu>
+Subject: Re: [PATCH net-deletions] net: remove ax25 and amateur radio
+ (hamradio) subsystem
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, corbet@lwn.net,
+ skhan@linuxfoundation.org, federico.vaga@vaga.pv.it,
+ carlos.bilbao@kernel.org, avadhut.naik@amd.com, alexs@kernel.org,
+ si.yanteng@linux.dev, dzm91@hust.edu.cn, 2023002089@link.tyut.edu.cn,
+ tsbogend@alpha.franken.de, dsahern@kernel.org, jani.nikula@intel.com,
+ mchehab+huawei@kernel.org, gregkh@linuxfoundation.org, tytso@mit.edu,
+ herbert@gondor.apana.org.au, ebiggers@kernel.org, johannes.berg@intel.com,
+ geert@linux-m68k.org, pablo@netfilter.org, tglx@kernel.org,
+ mashiro.chen@mailbox.org, mingo@kernel.org, dqfext@gmail.com,
+ jreuter@yaina.de, sdf@fomichev.me, pkshih@realtek.com,
+ enelsonmoore@gmail.com, mkl@pengutronix.de, toke@toke.dk, kees@kernel.org,
+ crossd@gmail.com, jlayton@kernel.org, wangliang74@huawei.com,
+ aha310510@gmail.com, takamitz@amazon.co.jp, kuniyu@google.com,
+ linux-doc@vger.kernel.org, linux-mips@vger.kernel.org
+References: <20260421021824.1293976-1-kuba@kernel.org>
+ <0883a8e0-e8b4-4f22-bfc6-dd4a0fcf8b7a@kernel.org>
+ <8458cf47-43f3-4328-bc6a-9aac31f1acf4@kernel.org>
+ <20260629152930.4c2131ed@kernel.org>
 Content-Language: en-US
-From: Sidraya Jayagond <sidraya@linux.ibm.com>
-In-Reply-To: <20260627014948.3049512-1-xmei5@asu.edu>
-Content-Type: text/plain; charset=UTF-8
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <20260629152930.4c2131ed@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjMwMDA0MiBTYWx0ZWRfX7Qg5o8zlCcqK
- gMbnofeOYwNdtkRyIt+Bd750yQpENOG5p9zJsuVWqBvBo3fHEsJS+/9mS6Zn7qYHnQxTwCLkYZL
- gFFWulMtp7eWklDU3uRqf5RgIW5FYuwiNun+55LsLL/AUaAsw7rnfuAbuIYCxv+mZCc7gjKQYFe
- oZO8qEHFf/s9wqsvxDZTWtbQ7tHb3RjJBpSn+rSVS+88u/GkzjvA0JKuvqzmc5F4AxCzKMrfMGD
- 1U+fud83XCEdELa2Fe+c6iS8zu6Mv+e+bstdVciDNuIrzuv9pN2w+L2yRRgf96qz1vLho+cLrcV
- t0aL+lZv1sWvpUzBXfwN9SHyS76N+WMbF35mniV9wGhaxNCp982oNwgsKXZdcem0rZvstkYssfL
- cGqcOlzFRmAXG/yVgV4YEqbUe9TCdWM/cPoMyCYyJBl77uwnVVO2mjGmZOiMDtXxQTvhY+xA3L4
- 9hHXlhD8wrc6zNO5RAg==
-X-Authority-Analysis: v=2.4 cv=V45NF+ni c=1 sm=1 tr=0 ts=6a4356b1 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=pGLkceISAAAA:8
- a=zYt0pC7vdrQuDdVn6b0A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: H4ZC4TtX4_rnk-MdkAhlh3HOr1V24ivu
-X-Proofpoint-GUID: l6QIz4z4VmTzOEOFTHl13FicSHXCeDhu
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjMwMDA0MiBTYWx0ZWRfX/NhcRf+etnto
- yjDY7b1QTMkVU81m0C03CXhj7kGc4c75NpUIC2cDvaEIQqmZvMiN43wpr/qS6e2YEFhrs3KxZ3B
- DEoReDldggsJ3vINicU4azrX/qk4wm8=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-30_01,2026-06-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 spamscore=0 suspectscore=0 lowpriorityscore=0 priorityscore=1501
- adultscore=0 clxscore=1015 impostorscore=0 malwarescore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606300042
 
-
-
-On 27/06/26 7:19 am, Xiang Mei wrote:
-> smc_cdc_rx_handler() looks up the connection by token under the link
-> group's conns_lock, drops the lock, and then dereferences conn and the
-> smc_sock derived from it, ending in sock_hold(&smc->sk) inside
-> smc_cdc_msg_recv(). No reference is held across the lock release.
+On 30. 06. 26, 0:29, Jakub Kicinski wrote:
+> On Mon, 29 Jun 2026 07:24:51 +0200 Jiri Slaby wrote:
+>> And net-tools are broken by the uapi/linux/rose.h removal:
+>>     rose.c:39:10: fatal error: linux/rose.h: No such file or directory
+>> at:
+>> https://github.com/ecki/net-tools/blob/2ab3c5efdb5c220bc9a649fded56c361136bff1a/lib/rose.c#L39
 > 
-> The only reference pinning the socket while the connection is
-> discoverable in the link group is taken in smc_lgr_register_conn()
-> (sock_hold) and dropped in __smc_lgr_unregister_conn() (sock_put), both
-> under conns_lock. Once the handler drops conns_lock, a concurrent
-> close() -> smc_release() -> smc_conn_free() -> smc_lgr_unregister_conn()
-> can drop that reference and free the smc_sock, so the handler's later
-> sock_hold() runs on freed memory:
-> 
->   WARNING: lib/refcount.c:25 at refcount_warn_saturate
->   Workqueue: rxe_wq do_work
->    refcount_warn_saturate (lib/refcount.c:25)
->    smc_cdc_msg_recv (net/smc/smc_cdc.c:430)
->    smc_cdc_rx_handler (net/smc/smc_cdc.c:502)
->    smc_wr_rx_tasklet_fn (net/smc/smc_wr.c:445)
->    tasklet_action_common (kernel/softirq.c:938)
->    handle_softirqs (kernel/softirq.c:622)
->   Kernel panic - not syncing: panic_on_warn set
-> 
-> Only SMC-R is affected. The SMC-D receive tasklet is stopped by
-> tasklet_kill(&conn->rx_tsklet) in smc_conn_free() before the connection
-> is unregistered, so it cannot run concurrently with the free.
-> 
-> Take the socket reference while still holding conns_lock, so the
-> registration reference can no longer be the last one, and drop it once
-> the handler is done.
-> 
-> Fixes: d7b0e37c1ac1 ("net/smc: restructure CDC message reception")
-> Reported-by: Weiming Shi <bestswngs@gmail.com>
-> Assisted-by: Claude:claude-opus-4-8
-> Signed-off-by: Xiang Mei <xmei5@asu.edu>
-> ---
->  net/smc/smc_cdc.c | 12 +++++++++---
->  1 file changed, 9 insertions(+), 3 deletions(-)
-> 
-> diff --git a/net/smc/smc_cdc.c b/net/smc/smc_cdc.c
-> index 619b3bab3824..b809139d7e87 100644
-> --- a/net/smc/smc_cdc.c
-> +++ b/net/smc/smc_cdc.c
-> @@ -483,21 +483,27 @@ static void smc_cdc_rx_handler(struct ib_wc *wc, void *buf)
->  	lgr = smc_get_lgr(link);
->  	read_lock_bh(&lgr->conns_lock);
->  	conn = smc_lgr_find_conn(ntohl(cdc->token), lgr);
-> +	if (conn && !conn->out_of_sync)
-> +		sock_hold(&container_of(conn, struct smc_sock, conn)->sk);
-> +	else
-> +		conn = NULL;
->  	read_unlock_bh(&lgr->conns_lock);
-> -	if (!conn || conn->out_of_sync)
-> +	if (!conn)
->  		return;
->  	smc = container_of(conn, struct smc_sock, conn);
->  
+> Looks like the code for rose is already well separated from the rest.
+> Should we just ask net-tools to delete it? Or do you feel strongly
+> about restoring the now-defunct header?
 
-Fix looks correct.
-A few nits on the implementation:
-container_of() is called twice for the same conn. The conn = NULL
-sentinel and the second post unlock check can also be dropped. Flip the
-condition, early return inside the lock, compute smc once:
+No strong opinion from me. net-tools are easy to fix.
 
-	if (!conn || conn->out_of_sync) {
-		read_unlock_bh(&lgr->conns_lock);
-		return;
-	}
-	smc = container_of(conn, struct smc_sock, conn);
-	sock_hold(&smc->sk);
-	read_unlock_bh(&lgr->conns_lock);
+The builds of LLVMs (versions 15 to 21 at least) are broken nonetheless. 
+They are easy to fix as well -- by backporting the fix from main or 22. 
+(15--21 are likely unmaintained upstream already, but still 
+used/required widely).
 
-Also please initialize smc = NULL at declaration, it's not a bug now
-since the early return guards it, just to make it refactor safe.
+$ osc whatdependson openSUSE:Factory llvm19 standard x86_64
+llvm19 :
+       MozillaThunderbird
+       firefox-esr
+       ghc
+       gtkd
+       ldc
+       lfortran
+       python-PyMuPDF
+       redumper
+       tilix
+       zig0.14
 
->  	if (cdc->prod_flags.failover_validation) {
->  		smc_cdc_msg_validate(smc, cdc, link);
-> -		return;
-> +		goto out;
->  	}
->  	if (smc_cdc_before(ntohs(cdc->seqno),
->  			   conn->local_rx_ctrl.seqno))
->  		/* received seqno is old */
-> -		return;
-> +		goto out;
->  
->  	smc_cdc_msg_recv(smc, cdc);
-> +out:
-> +	sock_put(&smc->sk);
->  }
->  
->  static struct smc_wr_rx_handler smc_cdc_rx_handlers[] = {
+$ osc whatdependson openSUSE:Factory llvm21 standard x86_64
+llvm21 :
+       OpenImageDenoise
+       chromium
+       embree
+       ispc
+       leechcraft
+       python-PyMuPDF
+       python314
+       python314:base
+       python314:doc
+       python315
+       python315:base
+       python315:doc
+       rpcs3
+       rust-keylime
+       zig0.16
 
+
+thanks,
+-- 
+js
+suse labs
