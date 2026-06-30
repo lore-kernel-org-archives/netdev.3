@@ -1,33 +1,33 @@
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C6242315B
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 14:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 111B342316D
+	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 14:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782828395; cv=none; b=Q8a7XgoQGbuGcNYcUM/acFJPM6iZBZuGBChs/e+E9rHpR9mHsc4EH+LSYi6wlm+goXZVpUOWIqDGPeQO67GorXVWHlFnFEZXS9XeLh96OccyuNa9qzBydQPl+tQI0aar3UyY9Y5JZVnD3SttFBjT1oQxRw+3qtjVJEPF1+Mc+KQ=
+	t=1782828396; cv=none; b=GudHHShHqGQsH7CFDd4F/ycU3jlDMkR5RoKsIXpvKKcgNhoVxOsr7tnNSoLvdGP3k4hacTzyG6ByY/Ofdz5bOleQQm7xJQ2jAjQ5TtLfMPWwqKVS/hm1yX8Cy1yeJhkvrPten6ibLrNTms18hy4yPoO3nYibZm360I0/txYZGKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782828395; c=relaxed/simple;
-	bh=14QvQuPU3r/Pnnir66JlCfeCcZnK0TLCee/Ktbgfd5U=;
+	s=arc-20240116; t=1782828396; c=relaxed/simple;
+	bh=AGYnK8Y229cy2pULgFBWan1ATTD5fF6JHa5iBdp/dZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LKMhDq5PIjyjo/eStBPCukH7RcarpYOEFhOe+eGxa41Zu4qbZoS/W/MVJlPuQqIl9vxyaUj2sO9qbgTcMsld9dXrlI+/xoqFRfX709OClyhXgG1OmbWC4xGEQnh2EAlLgC1ckRyPLl+t8BCYnl9XpKACwHdtiAe9cJ5BCYRgOUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=F1SjhFgo; arc=none smtp.client-ip=23.88.38.48
+	 MIME-Version; b=jsgaT8YYWKQr7ZUJalaUMYAo0FOOWRSj0rxIydH+ZegrEExXMfhEAj2q+Qwyq1cTPhRSYNaLT0heMWe3vjFrAjQqAsB4URP2d+cpCIcM/9PoNtkK56uwuhIa4mE5S0E/x8EPAm0kSde6ATI5ORO4k758DtwZOt7JmRHdxGsHzUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=R78WvwtA; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="F1SjhFgo"
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="R78WvwtA"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
 	s=09092022; t=1782828392;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=q3ZGFfO0pQVo955cy4QHxZ8eqU7mZNLw3Z/Xfs0q5Gs=;
-	b=F1SjhFgorajQuLw1hBE/7t6k8QR1AH1GMD1zBCegXqAddqVw20wPiQ0s1cZENV+mdzuavJ
-	pzFCBWFAJtgNnk+aZJcXzHHMFW+/QiX4VMlYsTiGLrv6V0wwBqsoqJMtrFxazHOcRU8Med
-	41WHxV6P+Lcb9hV6HK0Bx6OL4TG1cxfzeO/T1cHDQxzBkjSSAUd7LT1JmqnY6lSs5QAOtk
-	PKPQ23+dDEKx4VZVGGnDqc0dZpk5EVJ6J3ShD41t7dEZLa61Orrsaiy2vSYIqdKfr7KOlK
-	6lqYEMnpqcLPYXbJFU8Tuh38IfgaCtLobqMDICvH0TCJ06QXNQa2v2VTyC9Fhg==
+	bh=OE7kaThEXzmWHJ+vL8/Sll0PpMgBMOG7wZO9WyyOoi0=;
+	b=R78WvwtAhpCvWYI04JrJvK9a/3wQdA/xlEyEfxVDslavU/7H2wCDgFVkAN2AheZ/uanrQX
+	yzHgTGr+/LMKDIHBZI1ZRNweenkZhHy82D7KPke+hT4q1a0fT/UG+Z0K0Jxy1kijgBHj0X
+	6MY4uWrCw7/s+C3zh4OKtDUrJ6+9qijtkyZHVvrTHkU4KoL6FVrbsoCIN+m0Fuu+st6bCL
+	OlxrmNImdhkq4JL4sm+IOP/C20iTAFlNZTrIiXBbMIvCFc9hwDkx4bYMs+E+95YxnSwUz6
+	3Igq4U5uT84QUFCdpQuQuvXDWJJLah6WEDDbKBeM0H2DNeA4EYdlvnmpoE7aGw==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -38,9 +38,9 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	b.a.t.m.a.n@lists.open-mesh.org,
 	Sven Eckelmann <sven@narfation.org>,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net-next 10/15] batman-adv: tvlv: extract tvlv header iterator
-Date: Tue, 30 Jun 2026 16:06:18 +0200
-Message-ID: <20260630140623.88431-11-sw@simonwunderlich.de>
+Subject: [PATCH net-next 11/15] batman-adv: tp_meter: simplify unordered ack calculation
+Date: Tue, 30 Jun 2026 16:06:19 +0200
+Message-ID: <20260630140623.88431-12-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260630140623.88431-1-sw@simonwunderlich.de>
 References: <20260630140623.88431-1-sw@simonwunderlich.de>
@@ -54,140 +54,37 @@ Content-Transfer-Encoding: 8bit
 
 From: Sven Eckelmann <sven@narfation.org>
 
-batadv_tvlv_containers_contain() and batadv_tvlv_containers_process() are
-using the same code to iterate through the TVLV containers. To simplify the
-code, extract the shared portions of both functions.
+When batadv_tp_ack_unordered() goes through the list of unacked sequence
+numbers and checks for now closed gaps, it is first calculating a delta of
+the sequence numbers which could be acked. Just to revert this calculation
+in the next steps to the sequence number which would be ackable.
+
+Skip the delta step and directly work with the sequence numbers.
 
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- net/batman-adv/tvlv.c | 86 +++++++++++++++++++++++++------------------
- 1 file changed, 51 insertions(+), 35 deletions(-)
+ net/batman-adv/tp_meter.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/batman-adv/tvlv.c b/net/batman-adv/tvlv.c
-index 1c9fb21985f6a..49bf2ed9ecdc3 100644
---- a/net/batman-adv/tvlv.c
-+++ b/net/batman-adv/tvlv.c
-@@ -442,6 +442,54 @@ static int batadv_tvlv_call_handler(struct batadv_priv *bat_priv,
- 	return NET_RX_SUCCESS;
- }
+diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
+index c2eea7dbc4883..b7fee6e55f032 100644
+--- a/net/batman-adv/tp_meter.c
++++ b/net/batman-adv/tp_meter.c
+@@ -1493,10 +1493,10 @@ static void batadv_tp_ack_unordered(struct batadv_tp_receiver *tp_vars)
+ 		if (batadv_seq_before(tp_vars->last_recv, un->seqno))
+ 			break;
  
-+/**
-+ * batadv_tvlv_hdr_next() - move a tvlv buffer cursor to the next container
-+ * @tvlv_value: cursor into the tvlv buffer, advanced past the returned
-+ *  container's content on success
-+ * @tvlv_value_len: remaining length of the tvlv buffer, reduced by the returned
-+ *  container's size on success
-+ *
-+ * Parses a single container header at the current cursor position and, if a
-+ * complete container is available, advances the cursor and remaining length
-+ * past it. The returned header stays valid; its content is located at
-+ * (returned header + 1) and is ntohs(hdr->len) bytes long.
-+ *
-+ * Return: pointer to the next tvlv container header, or NULL if no further
-+ * complete container is present in the buffer.
-+ */
-+static struct batadv_tvlv_hdr *batadv_tvlv_hdr_next(void **tvlv_value, u16 *tvlv_value_len)
-+{
-+	struct batadv_tvlv_hdr *tvlv_hdr;
-+	u16 tvlv_value_cont_len;
-+	void *tvlv_value_cont;
-+	u16 tvlv_len;
-+
-+	tvlv_value_cont = *tvlv_value;
-+	tvlv_len = *tvlv_value_len;
-+
-+	if (tvlv_len < sizeof(*tvlv_hdr))
-+		return NULL;
-+
-+	tvlv_hdr = tvlv_value_cont;
-+	tvlv_value_cont_len = ntohs(tvlv_hdr->len);
-+	tvlv_value_cont = tvlv_hdr + 1;
-+	tvlv_len -= sizeof(*tvlv_hdr);
-+
-+	if (tvlv_value_cont_len > tvlv_len)
-+		return NULL;
-+
-+	/* the next tvlv header is accessed assuming (at least) 2-byte
-+	 * alignment, so it must start at an even offset.
-+	 */
-+	if (tvlv_value_cont_len & 1)
-+		return NULL;
-+
-+	*tvlv_value = (u8 *)tvlv_value_cont + tvlv_value_cont_len;
-+	*tvlv_value_len = tvlv_len - tvlv_value_cont_len;
-+
-+	return tvlv_hdr;
-+}
-+
- /**
-  * batadv_tvlv_containers_contain() - check if a tvlv buffer holds a container
-  * @tvlv_value: tvlv content
-@@ -457,28 +505,10 @@ static bool batadv_tvlv_containers_contain(void *tvlv_value,
- 					   u8 version)
- {
- 	struct batadv_tvlv_hdr *tvlv_hdr;
--	u16 tvlv_value_cont_len;
--
--	while (tvlv_value_len >= sizeof(*tvlv_hdr)) {
--		tvlv_hdr = tvlv_value;
--		tvlv_value_cont_len = ntohs(tvlv_hdr->len);
--		tvlv_value = tvlv_hdr + 1;
--		tvlv_value_len -= sizeof(*tvlv_hdr);
--
--		if (tvlv_value_cont_len > tvlv_value_len)
--			break;
--
--		/* the next tvlv header is accessed assuming (at least) 2-byte
--		 * alignment, so it must start at an even offset.
--		 */
--		if (tvlv_value_cont_len & 1)
--			break;
+-		to_ack = un->seqno + un->len - tp_vars->last_recv;
++		to_ack = un->seqno + un->len;
  
-+	while ((tvlv_hdr = batadv_tvlv_hdr_next(&tvlv_value, &tvlv_value_len))) {
- 		if (tvlv_hdr->type == type && tvlv_hdr->version == version)
- 			return true;
--
--		tvlv_value = (u8 *)tvlv_value + tvlv_value_cont_len;
--		tvlv_value_len -= tvlv_value_cont_len;
- 	}
+-		if (batadv_seq_before(tp_vars->last_recv, un->seqno + un->len))
+-			tp_vars->last_recv += to_ack;
++		if (batadv_seq_before(tp_vars->last_recv, to_ack))
++			tp_vars->last_recv = to_ack;
  
- 	return false;
-@@ -511,20 +541,8 @@ int batadv_tvlv_containers_process(struct batadv_priv *bat_priv,
- 	u8 cifnotfound = BATADV_TVLV_HANDLER_OGM_CIFNOTFND;
- 	int ret = NET_RX_SUCCESS;
- 
--	while (tvlv_value_len >= sizeof(*tvlv_hdr)) {
--		tvlv_hdr = tvlv_value;
-+	while ((tvlv_hdr = batadv_tvlv_hdr_next(&tvlv_value, &tvlv_value_len))) {
- 		tvlv_value_cont_len = ntohs(tvlv_hdr->len);
--		tvlv_value = tvlv_hdr + 1;
--		tvlv_value_len -= sizeof(*tvlv_hdr);
--
--		if (tvlv_value_cont_len > tvlv_value_len)
--			break;
--
--		/* the next tvlv header is accessed assuming (at least) 2-byte
--		 * alignment, so it must start at an even offset.
--		 */
--		if (tvlv_value_cont_len & 1)
--			break;
- 
- 		tvlv_handler = batadv_tvlv_handler_get(bat_priv,
- 						       tvlv_hdr->type,
-@@ -532,11 +550,9 @@ int batadv_tvlv_containers_process(struct batadv_priv *bat_priv,
- 
- 		ret |= batadv_tvlv_call_handler(bat_priv, tvlv_handler,
- 						packet_type, orig_node, skb,
--						tvlv_value,
-+						tvlv_hdr + 1,
- 						tvlv_value_cont_len);
- 		batadv_tvlv_handler_put(tvlv_handler);
--		tvlv_value = (u8 *)tvlv_value + tvlv_value_cont_len;
--		tvlv_value_len -= tvlv_value_cont_len;
- 	}
- 
- 	if (packet_type != BATADV_IV_OGM &&
+ 		list_del(&un->list);
+ 		kfree(un);
 -- 
 2.47.3
 
