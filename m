@@ -1,22 +1,22 @@
 Received: from mail.eswincomputing.com (mail.eswincomputing.com [123.124.195.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 899573BB9ED;
-	Tue, 30 Jun 2026 06:34:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB1C3E2ADA;
+	Tue, 30 Jun 2026 06:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.124.195.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782801301; cv=none; b=u1O8DMd9kkqaSx2YjczarSPD2Fh1vaQMHve9W46IBErChQfei17T1zvFS7iTu/kRquZ2oFr5P7U4bESsb8i85se0/N+xL+NFEOc0Wdjt8OHd8fjYgEuNK6ih+Jra+qk9gO5JDBwfRYQ+fYDkz6VUOWRV0ZIoo38XBNwRUe+wvtM=
+	t=1782801312; cv=none; b=QUSTCcZP6Ko4w/a0JOYTcmpzeXg4/EYxdl38mem0OvsXANaC5Y6FKTNq3uwTmPI/sH/uKNSoKZqh8AKjXY5sJpMdplscRMLVsdXvBlY33NPexFwtpwXSYY0wFs8s+qHgNNJtIA2KobZ4XWVtw8a9lqw8bNL5tEj/sNz0uB3F7wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782801301; c=relaxed/simple;
-	bh=zcDLvFoIL+J5iw+vCGGYynKfs0y4rgGXyTOWjT/5rIs=;
+	s=arc-20240116; t=1782801312; c=relaxed/simple;
+	bh=OTVU+rdJb2KBQm1QmtPkD3S2s0CLYXrWKqcI/SQKTLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EddZk0i3yc/3uKyAtMMihONyF9iCZgXtlBjaGGQ9it8j6iff2u6RXDa6mu/14W2yxoyTg8yv8H8FDdkgzKQ5q6eZsRLEpJHTVF8mrFdC2mmNJrf8Yak5hpfzYHVJJnxodWsldhTg8CXIWfXeNkcYc3wip839BTSD352upUdMSjM=
+	 MIME-Version; b=UedlwxW35mymvkSdZfiN3caFkbRLPE0cnz7dl8197yF+17oWmJXAtljPFpVTACjlwX/uqw7SYSugEar4yB3tRmcS8m2Qao11Jv2GbUqJwhqbnHj8B/IvaiSTJBcdgY6kuauLGj+hPr/PY34Hdnn86IMzJ1fVRJdgPDMySNicwfw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=eswincomputing.com; spf=pass smtp.mailfrom=eswincomputing.com; arc=none smtp.client-ip=123.124.195.78
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=eswincomputing.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=eswincomputing.com
 Received: from E0004057DT.eswin.cn (unknown [10.11.96.26])
-	by app2 (Coremail) with SMTP id TQJkCgDn_aB2Y0NqbhwwAA--.35584S2;
-	Tue, 30 Jun 2026 14:34:32 +0800 (CST)
+	by app2 (Coremail) with SMTP id TQJkCgA3S56IY0NqcRwwAA--.53065S2;
+	Tue, 30 Jun 2026 14:34:49 +0800 (CST)
 From: lizhi2@eswincomputing.com
 To: devicetree@vger.kernel.org,
 	andrew+netdev@lunn.ch,
@@ -48,11 +48,10 @@ Cc: ningyu@eswincomputing.com,
 	horms@kernel.org,
 	lee@kernel.org,
 	wens@kernel.org,
-	Zhi Li <lizhi2@eswincomputing.com>,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: [PATCH net-next v9 5/6] dt-bindings: mfd: syscon: add ESWIN EIC7700 compatible
-Date: Tue, 30 Jun 2026 14:34:26 +0800
-Message-ID: <20260630063427.1209-1-lizhi2@eswincomputing.com>
+	Zhi Li <lizhi2@eswincomputing.com>
+Subject: [PATCH net-next v9 6/6] riscv: dts: eswin: eic7700-hifive-premier-p550: enable Ethernet controller
+Date: Tue, 30 Jun 2026 14:34:45 +0800
+Message-ID: <20260630063445.1226-1-lizhi2@eswincomputing.com>
 X-Mailer: git-send-email 2.52.0.windows.1
 In-Reply-To: <20260630063123.1118-1-lizhi2@eswincomputing.com>
 References: <20260630063123.1118-1-lizhi2@eswincomputing.com>
@@ -63,11 +62,11 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:TQJkCgDn_aB2Y0NqbhwwAA--.35584S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Zr4fAF4DGFW8Zw4xAFW5ZFb_yoW8Gr1kpa
-	yUAFWqqFnYvF1fG3s5Ka4Fkr1xu3Z7ua1UKFnYyFW7W3Z8G39rXryakrn8X3WUCayIkFW5
-	WrW3Kr95GasFyr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBC14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+X-CM-TRANSID:TQJkCgA3S56IY0NqcRwwAA--.53065S2
+X-Coremail-Antispam: 1UD129KBjvJXoW3Jw4xJF43WFyUKF4DXF43ZFb_yoWfGryUpa
+	13urZ3Jr4kZFWSvw4jvF40yFZrGa1kKFykurnrtFy8Jw1v9FnYkw1jqry5XF1DZrWrXw13
+	XFnrJ34IyF1Iy3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBG14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
 	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
 	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
 	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
@@ -76,15 +75,16 @@ X-Coremail-Antispam: 1UD129KBjvJXoW7Zr4fAF4DGFW8Zw4xAFW5ZFb_yoW8Gr1kpa
 	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
 	Y2ka0xkIwI1lw4CEc2x0rVAKj4xxMxkF7I0En4kS14v26r4a6rW5MxkIecxEwVCm-wCF04
 	k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18
-	MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Wrv_Gr1UMIIYrxkI7VAKI4
-	8JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4UJVWx
-	Jr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0x
-	vEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjTRNBMKDUUUU
+	MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr4
+	1lIxAIcVC0I7IYx2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4U
+	JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcV
+	C2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x0pRQ6p9UUUUU=
 X-CM-SenderInfo: xol2xx2s6h245lqf0zpsxwx03jof0z/
 
 From: Zhi Li <lizhi2@eswincomputing.com>
 
-Document ESWIN EIC7700 SoC compatible for syscon registers.
+Enable the on-board Gigabit Ethernet controller on the
+HiFive Premier P550 development board.
 
 This patch is included only to provide the DTS context for reviewing the
 binding and driver changes in this series.
@@ -92,32 +92,404 @@ binding and driver changes in this series.
 The upstream DTS series will be submitted separately after the binding
 and driver changes are finalized.
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Zhi Li <lizhi2@eswincomputing.com>
 ---
- Documentation/devicetree/bindings/mfd/syscon.yaml | 2 ++
- 1 file changed, 2 insertions(+)
+ .../dts/eswin/eic7700-hifive-premier-p550.dts | 240 ++++++++++++++++++
+ arch/riscv/boot/dts/eswin/eic7700.dtsi        | 105 ++++++++
+ 2 files changed, 345 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/mfd/syscon.yaml b/Documentation/devicetree/bindings/mfd/syscon.yaml
-index e22867088063..7d3365601249 100644
---- a/Documentation/devicetree/bindings/mfd/syscon.yaml
-+++ b/Documentation/devicetree/bindings/mfd/syscon.yaml
-@@ -62,6 +62,7 @@ select:
-           - cirrus,ep7209-syscon3
-           - cnxt,cx92755-uc
-           - econet,en751221-chip-scu
-+          - eswin,eic7700-syscfg
-           - freecom,fsg-cs2-system-controller
-           - fsl,imx93-aonmix-ns-syscfg
-           - fsl,imx93-wakeupmix-syscfg
-@@ -175,6 +176,7 @@ properties:
-               - cirrus,ep7209-syscon3
-               - cnxt,cx92755-uc
-               - econet,en751221-chip-scu
-+              - eswin,eic7700-syscfg
-               - freecom,fsg-cs2-system-controller
-               - fsl,imx93-aonmix-ns-syscfg
-               - fsl,imx93-wakeupmix-syscfg
+diff --git a/arch/riscv/boot/dts/eswin/eic7700-hifive-premier-p550.dts b/arch/riscv/boot/dts/eswin/eic7700-hifive-premier-p550.dts
+index 131ed1fc6b2e..9d37bafdd1b2 100644
+--- a/arch/riscv/boot/dts/eswin/eic7700-hifive-premier-p550.dts
++++ b/arch/riscv/boot/dts/eswin/eic7700-hifive-premier-p550.dts
+@@ -13,11 +13,251 @@ / {
+ 
+ 	aliases {
+ 		serial0 = &uart0;
++		ethernet0 = &gmac0;
++		ethernet1 = &gmac1;
+ 	};
+ 
+ 	chosen {
+ 		stdout-path = "serial0:115200n8";
+ 	};
++
++	vcc_1v8: regulator-1v8 {
++		 compatible = "regulator-fixed";
++		 regulator-name = "vcc1v8";
++		 regulator-always-on;
++		 regulator-boot-on;
++		 regulator-min-microvolt = <1800000>;
++		 regulator-max-microvolt = <1800000>;
++	 };
++};
++
++&xtal {
++	clock-frequency = <24000000>;
++	clock-output-names = "xtal24m";
++};
++
++&pinctrl {
++	status = "okay";
++	vrgmii-supply = <&vcc_1v8>;
++
++	pinctrl_gpio0: gpio0-grp {
++		gpio0-pins {
++			pins = "gpio0";
++			function = "gpio";
++			input-enable;
++			bias-disable;
++		};
++	};
++
++	pinctrl_gpio5: gpio5-grp {
++		gpio5-pins {
++			pins = "gpio5";
++			function = "gpio";
++			input-enable;
++			bias-disable;
++		};
++	};
++
++	pinctrl_gpio11: gpio11-grp {
++		gpio11-pins {
++			pins = "gpio11";
++			function = "gpio";
++			input-enable;
++			bias-disable;
++		};
++	};
++
++	pinctrl_gpio14: gpio14-grp {
++		gpio14-pins {
++			pins = "mode_set1";
++			function = "gpio";
++			input-disable;
++			bias-pull-up;
++		};
++	};
++
++	pinctrl_gpio15: gpio15-grp {
++		gpio15-pins {
++			pins = "mode_set2";
++			function = "gpio";
++			input-enable;
++			bias-disable;
++		};
++	};
++
++	pinctrl_gpio28: gpio28-grp {
++		gpio28-pins {
++			pins = "gpio28";
++			function = "gpio";
++			input-enable;
++			bias-disable;
++		};
++	};
++
++	pinctrl_gpio43: gpio43-grp {
++		gpio43-pins {
++			pins = "usb1_pwren";
++			function = "gpio";
++			input-disable;
++			bias-disable;
++		};
++	};
++
++	pinctrl_gpio71: gpio71-grp {
++		gpio71-pins {
++			pins = "mipi_csi0_xhs";
++			function = "gpio";
++			input-disable;
++			bias-pull-up;
++		};
++	};
++
++	pinctrl_gpio74: gpio74-grp {
++		gpio74-pins {
++			pins = "mipi_csi1_xhs";
++			function = "gpio";
++			input-disable;
++			bias-pull-up;
++		};
++	};
++
++	pinctrl_gpio76: gpio76-grp {
++		gpio76-pins {
++			pins = "mipi_csi2_xvs";
++			function = "gpio";
++			input-disable;
++			bias-disable;
++		};
++	};
++
++	pinctrl_gpio77: gpio77-grp {
++		gpio77-pins {
++			pins = "mipi_csi2_xhs";
++			function = "gpio";
++			input-disable;
++			bias-pull-up;
++		};
++	};
++
++	pinctrl_gpio79: gpio79-grp {
++		gpio79-pins {
++			pins = "mipi_csi3_xvs";
++			function = "gpio";
++			input-disable;
++			bias-disable;
++		};
++	};
++
++	pinctrl_gpio80: gpio80-grp {
++		gpio80-pins {
++			pins = "mipi_csi3_xhs";
++			function = "gpio";
++			input-disable;
++			bias-pull-up;
++		};
++	};
++
++	pinctrl_gpio82: gpio82-grp {
++		gpio82-pins {
++			pins = "mipi_csi4_xvs";
++			function = "gpio";
++			input-disable;
++			bias-pull-up;
++		};
++	};
++
++	pinctrl_gpio84: gpio84-grp {
++		gpio84-pins {
++			pins = "mipi_csi4_mclk";
++			function = "gpio";
++			input-disable;
++			bias-disable;
++		};
++	};
++
++	pinctrl_gpio85: gpio85-grp {
++		gpio85-pins {
++			pins = "mipi_csi5_xvs";
++			function = "gpio";
++			input-disable;
++			bias-pull-up;
++		};
++	};
++
++	pinctrl_gpio94: gpio94-grp {
++		gpio94-pins {
++			pins = "s_mode";
++			function = "gpio";
++			input-disable;
++			bias-disable;
++		};
++	};
++
++	pinctrl_gpio106: gpio106-grp {
++		gpio106-pins {
++			pins = "gpio106";
++			function = "gpio";
++			input-disable;
++			bias-disable;
++		};
++	};
++
++	pinctrl_gpio111: gpio111-grp {
++		gpio111-pins {
++			pins = "gpio111";
++			function = "gpio";
++			input-disable;
++			bias-disable;
++		};
++	};
++};
++
++&gmac0 {
++	phy-handle = <&gmac0_phy0>;
++	phy-mode = "rgmii-id";
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_gpio106>;
++	rx-internal-delay-ps = <20>;
++	tx-internal-delay-ps = <100>;
++	status = "okay";
++};
++
++&gmac0_mdio {
++	gmac0_phy0: ethernet-phy@0 {
++		compatible = "ethernet-phy-id001c.c916";
++		reg = <0>;
++		reset-gpios = <&gpioD 10 GPIO_ACTIVE_LOW>;
++		reset-assert-us = <10000>;
++		reset-deassert-us = <80000>;
++	};
++};
++
++&gmac1 {
++	phy-handle = <&gmac1_phy0>;
++	/*
++	 * The MAC silicon unconditionally introduces an ~2 ns TX clock-to-data
++	 * skew (MAC-side TX internal delay). The PHY provides the standard
++	 * ~2 ns RX internal delay. The driver additionally inverts the RX
++	 * clock at 1000 Mb/s to correct a silicon RX sampling timing issue.
++	 * phy-mode is "rgmii-id": TX delay from the MAC silicon, RX delay
++	 * from the PHY.
++	 */
++	phy-mode = "rgmii-id";
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_gpio111>;
++	rx-internal-delay-ps = <200>;
++	tx-internal-delay-ps = <2200>;
++	status = "okay";
++};
++
++&gmac1_mdio {
++	gmac1_phy0: ethernet-phy@0 {
++		compatible = "ethernet-phy-id001c.c916";
++		reg = <0>;
++		reset-gpios = <&gpioD 15 GPIO_ACTIVE_LOW>;
++		reset-assert-us = <10000>;
++		reset-deassert-us = <80000>;
++	};
+ };
+ 
+ &uart0 {
+diff --git a/arch/riscv/boot/dts/eswin/eic7700.dtsi b/arch/riscv/boot/dts/eswin/eic7700.dtsi
+index c3ed93008bca..041ecc5cb007 100644
+--- a/arch/riscv/boot/dts/eswin/eic7700.dtsi
++++ b/arch/riscv/boot/dts/eswin/eic7700.dtsi
+@@ -5,6 +5,9 @@
+ 
+ /dts-v1/;
+ 
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/reset/eswin,eic7700-reset.h>
++
+ / {
+ 	#address-cells = <2>;
+ 	#size-cells = <2>;
+@@ -202,6 +205,11 @@ pmu {
+ 				<0x00000000 0x0000000f 0xfffffffc 0x000000ff 0x00000078>;
+ 	};
+ 
++	xtal: clock-24m {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++	};
++
+ 	soc {
+ 		compatible = "simple-bus";
+ 		ranges;
+@@ -245,6 +253,85 @@ plic: interrupt-controller@c000000 {
+ 			#interrupt-cells = <1>;
+ 		};
+ 
++		hsp: bus@0 {
++			compatible = "simple-pm-bus";
++			ranges = <0x0 0x50400000 0x0 0x50400000 0x0 0xa0000>;
++			clocks = <&clk 171>;
++			#address-cells = <2>;
++			#size-cells = <2>;
++
++			hsp_sp_csr: hsp-sp-top-csr@50440000 {
++				compatible = "eswin,eic7700-syscfg", "syscon";
++				reg = <0x0 0x50440000 0x0 0x2000>;
++			};
++
++			gmac0: ethernet@50400000 {
++				compatible = "eswin,eic7700-qos-eth",
++					     "snps,dwmac-5.20";
++				reg = <0x0 0x50400000 0x0 0x10000>;
++				interrupts = <61>;
++				interrupt-names = "macirq";
++				clocks = <&clk 186>,
++					 <&clk 171>,
++					 <&clk 40>,
++					 <&clk 193>;
++				clock-names = "axi", "cfg", "stmmaceth", "tx";
++				resets = <&reset EIC7700_RESET_HSP_ETH0_ARST>;
++				reset-names = "stmmaceth";
++				eswin,hsp-sp-csr = <&hsp_sp_csr 0x100 0x108 0x118 0x114 0x11c>;
++				snps,aal;
++				snps,fixed-burst;
++				snps,tso;
++				snps,axi-config = <&stmmac_axi_setup_gmac0>;
++				status = "disabled";
++
++				gmac0_mdio: mdio {
++					compatible = "snps,dwmac-mdio";
++					#address-cells = <1>;
++					#size-cells = <0>;
++				};
++
++				stmmac_axi_setup_gmac0: stmmac-axi-config {
++					snps,blen = <0 0 0 0 16 8 4>;
++					snps,rd_osr_lmt = <2>;
++					snps,wr_osr_lmt = <2>;
++				};
++			};
++
++			gmac1: ethernet@50410000 {
++				compatible = "eswin,eic7700-qos-eth-clk-inversion",
++					     "snps,dwmac-5.20";
++				reg = <0x0 0x50410000 0x0 0x10000>;
++				interrupts = <70>;
++				interrupt-names = "macirq";
++				clocks = <&clk 186>,
++					 <&clk 171>,
++					 <&clk 40>,
++					 <&clk 194>;
++				clock-names = "axi", "cfg", "stmmaceth", "tx";
++				resets = <&reset EIC7700_RESET_HSP_ETH1_ARST>;
++				reset-names = "stmmaceth";
++				eswin,hsp-sp-csr = <&hsp_sp_csr 0x200 0x208 0x218 0x214 0x21c>;
++				snps,aal;
++				snps,fixed-burst;
++				snps,tso;
++				snps,axi-config = <&stmmac_axi_setup_gmac1>;
++				status = "disabled";
++
++				gmac1_mdio: mdio {
++					compatible = "snps,dwmac-mdio";
++					#address-cells = <1>;
++					#size-cells = <0>;
++				};
++
++				stmmac_axi_setup_gmac1: stmmac-axi-config {
++					snps,blen = <0 0 0 0 16 8 4>;
++					snps,rd_osr_lmt = <2>;
++					snps,wr_osr_lmt = <2>;
++				};
++			};
++		};
++
+ 		uart0: serial@50900000 {
+ 			compatible = "snps,dw-apb-uart";
+ 			reg = <0x0 0x50900000 0x0 0x10000>;
+@@ -341,5 +428,23 @@ gpioD: gpio-port@3 {
+ 				#gpio-cells = <2>;
+ 			};
+ 		};
++
++		pinctrl: pinctrl@51600080 {
++			compatible = "eswin,eic7700-pinctrl";
++			reg = <0x0 0x51600080 0x0 0x1fff80>;
++		};
++
++		clk: clock-controller@51828000 {
++			compatible = "eswin,eic7700-clock";
++			reg = <0x0 0x51828000 0x0 0x300>;
++			clocks = <&xtal>;
++			#clock-cells = <1>;
++		};
++
++		reset: reset-controller@51828300 {
++			compatible = "eswin,eic7700-reset";
++			reg = <0x0 0x51828300 0x0 0x200>;
++			#reset-cells = <1>;
++		};
+ 	};
+ };
 -- 
 2.25.1
 
