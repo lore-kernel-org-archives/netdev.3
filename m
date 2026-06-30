@@ -1,61 +1,316 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out28-52.mail.aliyun.com (out28-52.mail.aliyun.com [115.124.28.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C9B23FC41;
-	Tue, 30 Jun 2026 01:12:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50EF526F288;
+	Tue, 30 Jun 2026 01:13:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782781950; cv=none; b=N+WWY5JMumriqQIUjol8yoPv7d97EcoiehbLXmL0f28sJRsV1SFQbj0qJL9Jt7mO9MWbRJ1THDI4EmE/OqRlUztBBlhLDnl+XQlFQx+6ThN9zH/LpkxGzh6qhOssOAUBWEo7jMvQjRQRbwAX2SLODULvEFSkdBpmMz7JkDZ2D8s=
+	t=1782781989; cv=none; b=VqkzfR0rym1uuaP5R78NbhIO55Nqr/HumAEWspp78tKUFjPDuwbOQ7y6rzS35BkyusvQtIQDNPm3utP4p3DN6t1/ghFG8OOa4y147GI/sYZyipfNO3/etnHXYNmdixuftviR1GxKToQcsgFdiI1NcyNQoHAcGrXZDkBoONPjPLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782781950; c=relaxed/simple;
-	bh=ZDJsIauFNP4VSQlcawu7htBZBnjncVxamZAfeCrOtrQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PEQV/kmFb8adIYM5AAOET2loZN2ycXAEqvtPJyRCDqzvCXYdc44mj0dtU7ILF4xnvhTidzT+inWw68fdfpKa1dfp+5vuK9CYgie/mWJlTH+aC+y/0TKsSwxLSIridnCLC3fd+7ZLWj4W/gVs344Y2eYsHwkOWzU34dt3LNbrEuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hKBIQYHy; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hKBIQYHy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D8E51F000E9;
-	Tue, 30 Jun 2026 01:12:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782781949;
-	bh=f4KG/X8MV7QZrgKJunvYu/eMHjk3xLJnP6aj383Xw5Y=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=hKBIQYHy9ClqCroiLhVPj/iYZ9jX+pmLL3fkbu4rZTRY36gntSHQrWj8lZiI+Rvif
-	 5Fz3prlNEe6Wr6dnpFtVMFjuDzUcQSXAftL4fdj8P21ooE08n2vQTmX5pRuzHfeL1W
-	 XwmNSJfJICCCktG0kna7FsdFKktj22DuRF4rXEEMfC44Z8bSGQAbNF/j2A/dohrn23
-	 ZdItA1jPk0MU9gqGaERIDOQyr4L3z3m/h/twdJaJvGEncmMpSDbS8PqIKdxVcLbMob
-	 wpYrjAq+eTSjAQcjE/6VfzTIZd86aUFMimvUlbO3FJSDMY5yhSyfI+/usYW8ryxL8z
-	 sY7d2RY7WLpyQ==
-Date: Mon, 29 Jun 2026 18:12:27 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: David Carlier <devnexen@gmail.com>
-Cc: danishanwar@ti.com, rogerq@kernel.org, andrew+netdev@lunn.ch,
- netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, horms@kernel.org, m-malladi@ti.com, hawk@kernel.org,
- john.fastabend@gmail.com, sdf@fomichev.me, ast@kernel.org,
- daniel@iogearbox.net, bpf@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH net v3] net: ti: icssg-prueth: fix XDP_TX from the
- AF_XDP zero-copy RX path
-Message-ID: <20260629181227.4418d953@kernel.org>
-In-Reply-To: <20260625063121.24746-1-devnexen@gmail.com>
-References: <20260625063121.24746-1-devnexen@gmail.com>
+	s=arc-20240116; t=1782781989; c=relaxed/simple;
+	bh=y01fqQKJJ7EiIGNCOKhL8iIegHghlx4Gfm4tk34M1Nc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Bp9k/BkboBnXsX8ZVZUqqIQ5TaBF+WMnFSUJ5+ue0eP12C2/hr6ZAElnxB4ofQ6QfEoezMeOKtXEoEmdWFI/ub4huURnkLBK3bwfmLb5gnz9uaDrFFT6xwW11GL99GELbTwXoU3/xEDGzPWp4nKT6plAQZJUK65LWjcK9JRHnN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=115.124.28.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06712908|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.00724422-0.00055961-0.992196;FP=16894548243514023442|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033045220102;MF=illusion.wang@nebula-matrix.com;NM=1;PH=DS;RN=18;RT=18;SR=0;TI=SMTPD_---.i91QN4t_1782781652;
+Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.i91QN4t_1782781652 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Tue, 30 Jun 2026 09:07:33 +0800
+From: "illusion.wang" <illusion.wang@nebula-matrix.com>
+To: dimon.zhao@nebula-matrix.com,
+	illusion.wang@nebula-matrix.com,
+	alvin.wang@nebula-matrix.com,
+	sam.chen@nebula-matrix.com,
+	netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	corbet@lwn.net,
+	kuba@kernel.org,
+	horms@kernel.org,
+	linux-doc@vger.kernel.org,
+	pabeni@redhat.com,
+	vadim.fedorenko@linux.dev,
+	lukas.bulwahn@redhat.com,
+	edumazet@google.com,
+	enelsonmoore@gmail.com,
+	skhan@linuxfoundation.org,
+	hkallweit1@gmail.com,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v20 net-next 09/10] net/nebula-matrix: add common/ctrl dev init/remove operation
+Date: Tue, 30 Jun 2026 09:07:11 +0800
+Message-ID: <20260630010718.4346-10-illusion.wang@nebula-matrix.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260630010718.4346-1-illusion.wang@nebula-matrix.com>
+References: <20260630010718.4346-1-illusion.wang@nebula-matrix.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, 25 Jun 2026 07:31:21 +0100 David Carlier wrote:
-> +	PRUETH_SWDATA_XDPF_TX,
+From: illusion wang <illusion.wang@nebula-matrix.com>
 
-Sorry for the naming nit on v3 but XDPF_TX is ambiguous, I spent
-a bunch of time digging thru the driver. It should really be called
-XDPF_LOCAL or some such to indicate that the frame originates locally.
-XDPF_TX is ambiguous.
+This patch adds nbl_dev_setup_common_dev and nbl_dev_setup_ctrl_dev
+helpers, plus matching teardown paths, and wires them into
+nbl_dev_init / nbl_dev_remove.
+
+Common Device Setup: nbl_dev_setup_common_dev configures mailbox queues,
+registers cleanup tasks, and initializes MSI-X interrupt counters.
+It also populates the parent nbl_common_info struct (vsi_id, eth_num,
+eth_id, logic_eth_id) via the dispatch ops.
+
+Control Device Setup (optional): nbl_dev_setup_ctrl_dev initializes
+the chip and configures the mailbox channel qinfo.
+
+Signed-off-by: illusion wang <illusion.wang@nebula-matrix.com>
+---
+ .../nebula-matrix/nbl/nbl_core/nbl_dev.c      | 170 ++++++++++++++++++
+ .../nebula-matrix/nbl/nbl_core/nbl_dev.h      |  31 ++++
+ 2 files changed, 201 insertions(+)
+
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
+index 5deb21e35f8e..8feae561d0f1 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
+@@ -6,6 +6,158 @@
+ #include <linux/pci.h>
+ #include "nbl_dev.h"
+ 
++static void nbl_dev_init_msix_cnt(struct nbl_dev_mgt *dev_mgt)
++{
++	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
++	struct nbl_msix_info *msix_info = &dev_common->msix_info;
++
++	msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num = 1;
++}
++
++/* ----------  Channel config  ---------- */
++static void nbl_dev_setup_chan_qinfo(struct nbl_dev_mgt *dev_mgt, u8 chan_type)
++{
++	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
++	struct nbl_channel_mgt *priv = dev_mgt->chan_ops_tbl->priv;
++
++	if (!chan_ops->check_queue_exist(priv, chan_type))
++		return;
++
++	chan_ops->cfg_chan_qinfo_map_table(priv);
++}
++
++static int nbl_dev_setup_chan_queue(struct nbl_dev_mgt *dev_mgt, u8 chan_type)
++{
++	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
++	struct nbl_channel_mgt *priv = dev_mgt->chan_ops_tbl->priv;
++	int ret = 0;
++
++	if (chan_ops->check_queue_exist(priv, chan_type))
++		ret = chan_ops->setup_queue(priv, chan_type);
++
++	return ret;
++}
++
++static int nbl_dev_remove_chan_queue(struct nbl_dev_mgt *dev_mgt, u8 chan_type)
++{
++	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
++	struct nbl_channel_mgt *priv = dev_mgt->chan_ops_tbl->priv;
++	int ret = 0;
++
++	if (chan_ops->check_queue_exist(priv, chan_type))
++		ret = chan_ops->teardown_queue(priv, chan_type);
++
++	return ret;
++}
++
++static void nbl_dev_register_chan_task(struct nbl_dev_mgt *dev_mgt,
++				       u8 chan_type, struct work_struct *task)
++{
++	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
++
++	if (chan_ops->check_queue_exist(dev_mgt->chan_ops_tbl->priv, chan_type))
++		chan_ops->register_chan_task(dev_mgt->chan_ops_tbl->priv,
++					     chan_type, task);
++}
++
++/* ----------  Tasks config  ---------- */
++static void nbl_dev_clean_mailbox_task(struct work_struct *work)
++{
++	struct nbl_dev_common *common_dev =
++		container_of(work, struct nbl_dev_common, clean_mbx_task);
++	struct nbl_dev_mgt *dev_mgt = common_dev->dev_mgt;
++	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
++
++	chan_ops->clean_queue_subtask(dev_mgt->chan_ops_tbl->priv,
++				      NBL_CHAN_TYPE_MAILBOX);
++}
++
++/* ----------  Dev init process  ---------- */
++static int nbl_dev_setup_common_dev(struct nbl_adapter *adapter)
++{
++	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
++	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
++	struct nbl_dispatch_mgt *priv = dev_mgt->disp_ops_tbl->priv;
++	struct nbl_common_info *common = dev_mgt->common;
++	struct nbl_dev_common *common_dev;
++	int ret;
++
++	common_dev = devm_kzalloc(&adapter->pdev->dev, sizeof(*common_dev),
++				  GFP_KERNEL);
++	if (!common_dev)
++		return -ENOMEM;
++	common_dev->dev_mgt = dev_mgt;
++
++	ret = nbl_dev_setup_chan_queue(dev_mgt, NBL_CHAN_TYPE_MAILBOX);
++	if (ret)
++		return ret;
++
++	INIT_WORK(&common_dev->clean_mbx_task, nbl_dev_clean_mailbox_task);
++	ret = disp_ops->get_vsi_id(priv, NBL_VSI_DATA, &common->vsi_id);
++	if (ret)
++		goto err_cleanup;
++	ret = disp_ops->get_eth_id(priv, common->vsi_id, &common->eth_num,
++			     &common->eth_id, &common->logic_eth_id);
++	if (ret)
++		goto err_cleanup;
++	nbl_dev_register_chan_task(dev_mgt, NBL_CHAN_TYPE_MAILBOX,
++				   &common_dev->clean_mbx_task);
++
++	dev_mgt->common_dev = common_dev;
++	nbl_dev_init_msix_cnt(dev_mgt);
++
++	return 0;
++err_cleanup:
++	nbl_dev_remove_chan_queue(dev_mgt, NBL_CHAN_TYPE_MAILBOX);
++	return ret;
++}
++
++static void nbl_dev_remove_common_dev(struct nbl_adapter *adapter)
++{
++	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
++	struct nbl_dev_common *common_dev = dev_mgt->common_dev;
++
++	if (!common_dev)
++		return;
++	nbl_dev_register_chan_task(dev_mgt, NBL_CHAN_TYPE_MAILBOX, NULL);
++	cancel_work_sync(&common_dev->clean_mbx_task);
++	nbl_dev_remove_chan_queue(dev_mgt, NBL_CHAN_TYPE_MAILBOX);
++}
++
++static int nbl_dev_setup_ctrl_dev(struct nbl_adapter *adapter)
++{
++	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
++	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
++	int ret;
++
++	ret = disp_ops->init_chip_module(dev_mgt->disp_ops_tbl->priv);
++	if (ret)
++		return ret;
++
++	nbl_dev_setup_chan_qinfo(dev_mgt, NBL_CHAN_TYPE_MAILBOX);
++
++	return 0;
++}
++
++/*
++ * This is intentional.  The qinfo registers are managed by the chip
++ * firmware, not by the driver.  Setting driver status to false is the
++ * designed teardown mechanism — it notifies the firmware, which then
++ * performs its own cleanup of all per-PF state including the qinfo
++ * registers.
++ * An inverse helper would duplicate work that the firmware already
++ * does, and would add error-path complexity for no benefit.  We keep
++ * the deinit path minimal and rely on the firmware cleanup for
++ * correctness, including in abnormal reset scenarios.
++ */
++static void nbl_dev_remove_ctrl_dev(struct nbl_adapter *adapter)
++{
++	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
++	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
++
++	disp_ops->deinit_chip_module(dev_mgt->disp_ops_tbl->priv);
++}
++
+ static struct nbl_dev_mgt *nbl_dev_setup_dev_mgt(struct nbl_common_info *common)
+ {
+ 	struct nbl_dev_mgt *dev_mgt;
+@@ -38,11 +190,29 @@ int nbl_dev_init(struct nbl_adapter *adapter)
+ 	dev_mgt->chan_ops_tbl = chan_ops_tbl;
+ 	adapter->core.dev_mgt = dev_mgt;
+ 
++	ret = nbl_dev_setup_common_dev(adapter);
++	if (ret)
++		return ret;
++
++	if (common->has_ctrl) {
++		ret = nbl_dev_setup_ctrl_dev(adapter);
++		if (ret)
++			goto setup_ctrl_dev_fail;
++	}
++
+ 	return 0;
++setup_ctrl_dev_fail:
++	nbl_dev_remove_common_dev(adapter);
++	return ret;
+ }
+ 
+ void nbl_dev_remove(struct nbl_adapter *adapter)
+ {
++	struct nbl_common_info *common = &adapter->common;
++
++	if (common->has_ctrl)
++		nbl_dev_remove_ctrl_dev(adapter);
++	nbl_dev_remove_common_dev(adapter);
+ }
+ 
+ /* ----------  Dev start process  ---------- */
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.h
+index 9b71092b99a0..b51c8a4424c5 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.h
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.h
+@@ -18,10 +18,41 @@
+ #include "../nbl_include/nbl_def_common.h"
+ #include "../nbl_core.h"
+ 
++#define NBL_STRING_NAME_LEN			32
++
++enum nbl_msix_serv_type {
++	/* virtio_dev has a config vector_id, and the vector_id need is 0 */
++	NBL_MSIX_VIRTIO_TYPE = 0,
++	NBL_MSIX_NET_TYPE,
++	NBL_MSIX_MAILBOX_TYPE,
++	NBL_MSIX_TYPE_MAX
++};
++
++struct nbl_msix_serv_info {
++	char irq_name[NBL_STRING_NAME_LEN];
++	u16 num;
++	u16 base_vector_id;
++	/* true: hw report msix, hw need to mask actively */
++	bool hw_self_mask_en;
++};
++
++struct nbl_msix_info {
++	struct nbl_msix_serv_info serv_info[NBL_MSIX_TYPE_MAX];
++};
++
++struct nbl_dev_common {
++	struct nbl_dev_mgt *dev_mgt;
++	struct nbl_msix_info msix_info;
++	char mailbox_name[NBL_STRING_NAME_LEN];
++	/* for ctrl-dev/net-dev mailbox recv msg */
++	struct work_struct clean_mbx_task;
++};
++
+ struct nbl_dev_mgt {
+ 	struct nbl_common_info *common;
+ 	struct nbl_dispatch_ops_tbl *disp_ops_tbl;
+ 	struct nbl_channel_ops_tbl *chan_ops_tbl;
++	struct nbl_dev_common *common_dev;
+ };
+ 
+ #endif
 -- 
-pw-bot: cr
+2.47.3
+
