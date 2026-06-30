@@ -1,94 +1,115 @@
-Received: from stargate.chelsio.com (unknown [12.32.117.8])
+Received: from out162-62-57-137.mail.qq.com (out162-62-57-137.mail.qq.com [162.62.57.137])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8636B2D0C82;
-	Tue, 30 Jun 2026 08:41:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=12.32.117.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9062D8DDF
+	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 08:41:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.137
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782808916; cv=none; b=aJbCM9w+n85uLI3X58JSntmV4cT1er8j9Mm0RsVF+cgJwvIqIGJ9AAbqdmGJcysp0S2Y8CmPjZSeJ+p/7Px7oKhdoy8pBH2nAvlm3sgY86pz7ANTZN9J6nnziUo7wPUlmHMXPpT4ErYNIPR19vdRcDlCCrkDCbQhA87sosHj/gA=
+	t=1782808927; cv=none; b=dFJKI5DnxkPAuQnzgQN8S6oja2BKw3FwuGkMzl58Eoqc8Z1Ufrs5AxrKAPoGAnFoeWGMcm+a7wNj0lLCyULefpI5w6ZW4sMJTqdcHLHxURIDVlBmdTffDlAEUWvxg43EkbV7wv1RW++Es2pptayctBIYO62OenOi/YUTfB09eFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782808916; c=relaxed/simple;
-	bh=87u65cYfvDzYnS7FJ4gbEX79iiGZMqB5TqN9Adkcvrs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Phv4FUxVjF4ip+/izntER2QaWzMWZacjS1sgihuxnnIP7XSV80rhrM462ZjcvRlZmBEFYjZ8Rxd1bQBwT+pbmzBScUR9oBgquDSeAxaB6UhP8W53ajeSBWK5N4b1VBUDV0ALeIf3BWj7531YuUAjTsA4gpP/A3yEEASwj09RcO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=chelsio.com; spf=pass smtp.mailfrom=chelsio.com; arc=none smtp.client-ip=12.32.117.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=chelsio.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chelsio.com
-Received: from localhost (bharat.asicdesigners.com [10.193.191.32])
-	by stargate.chelsio.com (8.14.7/8.14.7) with ESMTP id 65U8ZU57017800;
-	Tue, 30 Jun 2026 01:35:32 -0700
-Date: Tue, 30 Jun 2026 14:05:20 +0530
-From: Potnuri Bharat Teja <bharat@chelsio.com>
-To: Markov Gleb <markov.gi@npc-ksb.ru>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        "lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>
-Subject: Re: [PATCH net] cxgb4: Fix decode strings dump for T6 adapters
-Message-ID: <akN/yC11CPSPV0Kv@chelsio.com>
-References: <20260629130856.1168-1-markov.gi@npc-ksb.ru>
+	s=arc-20240116; t=1782808927; c=relaxed/simple;
+	bh=ZfX+WUlidGt3MD9RKL56uLQHVqdQY9yPw3YfZBPiEmw=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version; b=Kbv+e9dIy2YJWufnae1of8bWHK2sibtO2OyzSYTmOXMFuKQbb3bDR9edVJxRr7cQDQFgkCOrHDP/5p0K0kCAF1lR4wOXE5CmXKQvVtst+l2C+upEpUVgchJcXKGXXOeZP6ZqSA742GDaPw+PPrKTvWkxs0xNYPS7u0ZflYhqwEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=f/UhJW1O; arc=none smtp.client-ip=162.62.57.137
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="f/UhJW1O"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1782808912; bh=PgRWuavyvpcMX6a1mtBTkd77HNcfXSkaUDGACw6U90c=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=f/UhJW1OAGKo3j7rkLAdm5+QtQ9alnIt/PUBTKkjG8FizMidQMgERc9N+S4+DR48J
+	 mlI4zp+28fEvZoFMnkLbpAANSRug0dPXfiH5sirvpgQKlH3NgPct6/dCzYvQcFqacJ
+	 fF/6WWoODJ/8PuNnHsXO1goatrbQPvxFlE1lDMig=
+Received: from lxu-ped-host.. ([111.198.231.89])
+	by newxmesmtplogicsvrszb51-0.qq.com (NewEsmtp) with SMTP
+	id A70A549F; Tue, 30 Jun 2026 16:41:48 +0800
+X-QQ-mid: xmsmtpt1782808908tg9sujbui
+Message-ID: <tencent_C4C3064909A16EDCAEDB0C8767D886D01206@qq.com>
+X-QQ-XMAILINFO: OVFdYp27KdlJKjm/DmkFv2Zcms1KQYsBE/KFXP5xNItufkG88nBulvvPq39P0y
+	 ZZ5FzOPXrTsJZiV28EKON9rArzcCq3ZRv7qoiVDQ2ARMRH9RLvOuF7spsBzyAlBVWh3OZ7h1i1Dt
+	 ekefuTX+GiCYntHA4SZENZ76AlsCmILx2k3PPV/ySXCnMqSS7fhzpbnK/KgoW9IKhxaqVIaOHBst
+	 Hf50O8ZQEjkhBqXeUz8H1lsYVwFGPKRp1OkWAfQ6zI2w2O+OqsauVHNOJwOmbmtNOtwp++v3MFiT
+	 EegC5f8zENP3viKP1/oRNxY8y4xOHfgSdkxGS4MOpEGwV8GjjUQuAvgO0pY4WvOjenzvTtqZo4kr
+	 BRpoG99aExz7JK6jOgDTMEO+ynhn4lwZQQ1+ooq30GePYXZMw8ML6uPnCEs0tZpP1bouVEGdVgQ9
+	 d+AHHrw/uPUmFe9NedxzWfmDUOWUYUc1igCit1ZylOcTDrX3Ce4aAr39qbuHBUiS+dcOyTFqOGJU
+	 q7v/jgZzpRrGfXAh2lGTTaTezeCLywlUDK/aS1YojpY820EAV3Hmd20Omun3+kv+glJzvlU/J/iB
+	 8KS87AX9EapvR8Q1m8/sJaImnDutYRqN7qSM12162jju0QyYQXOxwQGDrbCwQmQ73TWzu9FWc7Ld
+	 140zx9Fx745alcEUbNUY4BNWdIhWu8NpHDeWvdG7b/oYVA8tPq7rGTJQOqSshE1fwacEnHGUI/lF
+	 kgRZVuKylrEhkC04l7uS59De7aZf1uqE3NvNlkBw2k84Bj4oEdIfo0MbK9nUJyuY6nJWrPqlqegb
+	 Xr4Bej+xa22qAHDlIqThIxzEyFfLuFi6lEDQ1kz3AjF9bhXINzemUGR8OnlcxCstXQXCcuOKRc9P
+	 WUnhK5SkB+156JnO/9bCOWcff1OZwFBn36nVZYfxnsFc+ER5saG6ScZNMAdhYEyaAUZ99L0tS9cB
+	 y5HgiZ8mTb81IZ8zZimQ86JEyk4Fz2xB5XdYYE3uIIwZF8ApR/OG5D4tsKmqIrYHWZiIwrRmwfG3
+	 TfF4cJ3gvJevyddGCE
+X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
+From: Edward Adam Davis <eadavis@qq.com>
+To: syzbot+fd7e415d891073b83e1f@syzkaller.appspotmail.com
+Cc: andrii@kernel.org,
+	ast@kernel.org,
+	bpf@vger.kernel.org,
+	daniel@iogearbox.net,
+	eddyz87@gmail.com,
+	emil@etsalapatis.com,
+	jolsa@kernel.org,
+	linux-kernel@vger.kernel.org,
+	martin.lau@linux.dev,
+	memxor@gmail.com,
+	netdev@vger.kernel.org,
+	song@kernel.org,
+	syzkaller-bugs@googlegroups.com,
+	yonghong.song@linux.dev
+Subject: [PATCH] bpf: Fix smp_processor_id() call trace for preemptible kernels
+Date: Tue, 30 Jun 2026 16:41:49 +0800
+X-OQ-MSGID: <20260630084148.938854-2-eadavis@qq.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <6a436023.b42ede87.8e801.0003.GAE@google.com>
+References: <6a436023.b42ede87.8e801.0003.GAE@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260629130856.1168-1-markov.gi@npc-ksb.ru>
+Content-Transfer-Encoding: 8bit
 
-On Monday, June 06/29/26, 2026 at 18:38:54 +0530, Markov Gleb wrote:
-> From: Gleb Markov <markov.gi@npc-ksb.ru>
-> 
-> Depending on the value of chip_version, the correct decode set is selected.
-> However, the subsequent matching with the t4 encoding type in the if-else
-> block results in a reassignment, which leads to the loss of support for
-> t6_decode as well as reinitializing of values t4_decode and t5_decode.
-> 
-> The component history shows that the if-else block previously used for
-> this purpose, as well as the execution order, was not affected by the
-> change.
-> Furthermore, it is suggested by the execution order that the scenario with
-> overwriting and loss of support will be implemented.
-> 
-> Delete the if-else block.
-> 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> 
-> Fixes: 6df397539cb0 ("cxgb4: Update correct encoding of SGE Ingress DMA States for T6 adapter")
-> Signed-off-by: Gleb Markov <markov.gi@npc-ksb.ru>
-> ---
+bpf_mem_cache_free_rcu() maybe called in preemptible context, this
+will trigger the below warning message:
 
-Thank you, This redundant code can be removed.
+BUG: using smp_processor_id() in preemptible [00000000] code: syz.0.17/5820
+caller is bpf_mem_cache_free_rcu+0x48/0xc0 kernel/bpf/memalloc.c:954
+Call Trace:
+ check_preemption_disabled+0xd3/0xe0 lib/smp_processor_id.c:47
+ bpf_mem_cache_free_rcu+0x48/0xc0 kernel/bpf/memalloc.c:954
+ rhtab_delete_elem+0x185a/0x1b30 kernel/bpf/hashtab.c:2969
+ __rhtab_map_lookup_and_delete_batch+0x935/0xcb0 kernel/bpf/hashtab.c:3349
+ bpf_map_do_batch+0x445/0x630 kernel/bpf/syscall.c:-1
+ __sys_bpf+0x906/0xd90 kernel/bpf/syscall.c:-1
 
-Reviewed-by: Potnuri Bharat Teja <bharat@chelsio.com>
+this_cpu_ptr() calls smp_processor_id() in a preemptible context.
+Fix by using per_cpu_ptr() with raw_smp_processor_id() instead.
 
->  drivers/net/ethernet/chelsio/cxgb4/t4_hw.c | 8 --------
->  1 file changed, 8 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c b/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
-> index 8d719f82854a..f3e8153a7a0b 100644
-> --- a/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
-> +++ b/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
-> @@ -6735,14 +6735,6 @@ void t4_sge_decode_idma_state(struct adapter *adapter, int state)
->  		return;
->  	}
->  
-> -	if (is_t4(adapter->params.chip)) {
-> -		sge_idma_decode = (const char **)t4_decode;
-> -		sge_idma_decode_nstates = ARRAY_SIZE(t4_decode);
-> -	} else {
-> -		sge_idma_decode = (const char **)t5_decode;
-> -		sge_idma_decode_nstates = ARRAY_SIZE(t5_decode);
-> -	}
-> -
->  	if (state < sge_idma_decode_nstates)
->  		CH_WARN(adapter, "idma state %s\n", sge_idma_decode[state]);
->  	else
-> -- 
-> 2.43.0
-> 
-> 
+Fixes: 5af6807bdb10 ("bpf: Introduce bpf_mem_free_rcu() similar to kfree_rcu().")
+Reported-by: syzbot+fd7e415d891073b83e1f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=fd7e415d891073b83e1f
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+---
+ kernel/bpf/memalloc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/kernel/bpf/memalloc.c b/kernel/bpf/memalloc.c
+index bd45dda9dc35..151d9c8183bc 100644
+--- a/kernel/bpf/memalloc.c
++++ b/kernel/bpf/memalloc.c
+@@ -957,7 +957,7 @@ void notrace bpf_mem_cache_free_rcu(struct bpf_mem_alloc *ma, void *ptr)
+ 	if (!ptr)
+ 		return;
+ 
+-	unit_free_rcu(this_cpu_ptr(ma->cache), ptr);
++	unit_free_rcu(per_cpu_ptr(ma->cache, raw_smp_processor_id()), ptr);
+ }
+ 
+ /* Directly does a kfree() without putting 'ptr' back to the free_llist
+-- 
+2.43.0
+
