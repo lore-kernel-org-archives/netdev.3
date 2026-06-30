@@ -1,102 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A833E5A14
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 07:53:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782806032; cv=none; b=tftiQfdl/KstM48rWtvQuqj121R7F3eVCvZ8tbciLvB0tD/1M89tTtFVpZHI3BiIAH5ibj7D9CaQNoSkmlfxJWvI/s39cu3Mp54O6f8KxCwf7Wh+oKEAkbGuT7sl7AOQeSvuSk8VQdsNc5PrXPU5Qn9BOKHf6hZA9jqWkiZGlz8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782806032; c=relaxed/simple;
-	bh=DKWuHMD8ADL0zKU3qzM6I+0+Ls324mTKAtUCV8uTQCo=;
-	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NdZMoucfwnyDXz4HGoQFxNV6F5edRlogrVHMgdPIMdTX8mncRQpFS+d48pzi/wVNuvgtkL/bqJEtkvH+OaZe5qiLf6iKcsTKa4MaIn15vsq0RTg9KAYpV/elm4sASVVzYhRJRvTSA06HaFZZ5CXK7hVhvKNio7d7qeyoTp3FKsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SzEeikn2; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A4A53E44E0
+	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 07:56:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782806162; cv=pass; b=dpnsGcFEuXI66o+aRAhdTEWR7G0KdzVEAs6zVgkw5PU9vEqtPlepLpKQgSQWanu/aJBjn2PvczI0KiAJVsVjqv5ZTvnKJZ8l98IjGI+0cyJiGKvRKOizoFa5E63l12lHyy8bEfYe+D6Be45QgGgN/EAz+0LEiJkR0QYGzVuTxSo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782806162; c=relaxed/simple;
+	bh=QAerbXdwrDWs3hFNEsGuJmdY7vbNL33qF7H9iN70uy8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iBF82MIFUJzldx7+J9dRlR7LPwCTg9zItAe9Wictae62aRFGB4cqmasjvec13b72LyIRGsPxpQG3o1RSk6xxHPCf12mfdc63hMknjW5mtf08SoemjFDxmSiv04ru2oQo7QhrkM60ekLMVOWeqBCrouur01VkaxZ3PDBPQ4otIqU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iFhXqO8a; arc=pass smtp.client-ip=209.85.160.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SzEeikn2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A0011F01562
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 07:53:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782806030;
-	bh=QLk1TuOjiNPuCpTV4xCdDTaOjHQTK3QruyZKcZY7x1Q=;
-	h=From:In-Reply-To:References:Date:Subject:To:Cc;
-	b=SzEeikn298ntM12mqrr6eeAuWBznUx8HGeKI8OO6J1rAXqZe+DG8eH3kpdxS2Qwc/
-	 BEgTe/7fHp8h71X6sCGG3fIihS5C6QKcHYkMaNYrgPUk3rcaSPmJDnw8ZoM5yrlTQE
-	 KvW3inqTRly1yX4cupxJ6KIIy4QWzwTYakuwLMqpuMM/p2OaqREIyxEYDMqln50mnE
-	 C1NSCn+lHyKd79yClTWWWIpGeXloq0qHFR7J5NJc/x4YvTZ2+1E8CMWE8qqPT9V+G8
-	 G9xFlM4DvUB/S9Qvyumv8uzp49Hn1jyEjfrRcGIK8Lu7u5c1SmS6vDV9TdRuWHIBZh
-	 32YpQJymIWJ5Q==
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-39b19e7d6fcso8747051fa.1
-        for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 00:53:50 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RrQ4eFe8UYTjyGZ8CNdgetiNABlk5GnH1N1g9npX3UWsaueBn7wDUkysTPjlaQ9v2qBVg/cMdU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy81bSkHPucKlYe9H89gUUKZ2Yppx3c41JIeJ1e+KnTSBNnrZCh
-	Hx58oonywaCn/7htO+jIBhk2og4zhMuagGho18yDvi6eNpPBmI7hxeoRc1Bsjec3z/87Oj26Kis
-	jyvnIwWuZbuOMnV5E/NH2z+n1628pfVAAWW8jFaSVmg==
-X-Received: by 2002:a05:651c:2203:b0:39b:d0:e992 with SMTP id
- 38308e7fff4ca-39b1da26188mr5158341fa.4.1782806029201; Tue, 30 Jun 2026
- 00:53:49 -0700 (PDT)
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 30 Jun 2026 00:53:46 -0700
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 30 Jun 2026 00:53:46 -0700
-From: Bartosz Golaszewski <brgl@kernel.org>
-In-Reply-To: <20260629132633.1300009-1-arnd@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iFhXqO8a"
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-51c01c79467so181931cf.0
+        for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 00:56:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782806160; cv=none;
+        d=google.com; s=arc-20260327;
+        b=su97IBUiY0qc4ClDhzx6KisqOcd50GPy4AZSE6KUh4rf7bomEaIO3AcSIqUjgz3tFP
+         WSTv+/QK8OAV7CrhowW3NP5vpa6XvnWPb55zcLml7Olk9Enj/QIRyqfdVmDJDe3oAnhJ
+         Cq9yHlQgirhqin19Xcysxdwkl81RMKXJGJDSXHxcGZw9Cpw+pPaoW9cZGW/0ZKDyJynx
+         0pXT3UDIRVFbq2/aN9DlXLZNlaKjkxa4R2Lq0+8S3LYlB59qAMikSsyUZAWplBieXI8p
+         s5B7MFgglIB5oz97qiraswB55dNTM+m1Z5JIhtkcarOgkrtrKq6L19KDls/3/nvEtoOU
+         Gh/A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=QAerbXdwrDWs3hFNEsGuJmdY7vbNL33qF7H9iN70uy8=;
+        fh=WkXesB1xmzgXjO7Yp7q6//5rcqTYPWI2iji9T0jvyPk=;
+        b=e/LN5DYANvCLEUuIJr9UtlsEwwmLnaDN39vgEHovnm7yeT8R0U48Whvjn4kSU0f0I9
+         7uJtzmkC1r/KKjuYFM/UJZfiF7ql6TLczYhrrAzHFGPXrcQ7nDhJqOaahz1Xz5mUHqhZ
+         +kHFprZOUlmeZ2IR93QbaOo+nnG9ERUhMV/zmm7QPPJOeMcqrZUxS7HDveVUI6Jm5hBw
+         jv5XcY9pO65rdgLkjxwIWlJwR+YbBHP+jritYrxzdUEtLK58gnMn2YWBAyfzEignXu3I
+         eVWapW7E5+U4s1jA7aeaKrMZAKYPLQ1J4JdrizCLqnHf8uVNTOTFJbBuYG3aj84vD6t/
+         MHoQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782806160; x=1783410960; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=QAerbXdwrDWs3hFNEsGuJmdY7vbNL33qF7H9iN70uy8=;
+        b=iFhXqO8auzNfce3pyrznJE8+IqrE3pN6HPzhpst5ntpc2xFL7W1cNKnRcZtyJbodYE
+         0Reb05oba3bHv1Ln6Xlql0+YmkePlwWIQxCD7ImR23A/hoLfhonl5JKT+glt/c0OXdcp
+         jZ6IHyYm57WFMLS6RVN38NkOZNO13Dbrk4AZVGSjUW3Qcvxaavwb40Gn0Ar8gqF9SfIh
+         2JuoU+3yG0f5NI3tFdq86hBO22yeZy4Vof1jWktd4xja+y04DJ96SmT8lXUCzHaRUTZZ
+         k3fLDcTSp239GmoXd4uyV05W9pS5dOQWpzGTp3o0F6aYzQ79kM5/SqrmSe1gBX8WWTqh
+         apAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782806160; x=1783410960;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=QAerbXdwrDWs3hFNEsGuJmdY7vbNL33qF7H9iN70uy8=;
+        b=TMpe8Q7b9KAAJ0S6R9PNWWMFUBK3V5wd1gAO+iwNSJKitI9O40RGamuJU+pSWQWstx
+         slIRtk+92WyG6i/h58L5VRXyakXBC1YvGUMxWaq+Hf5kfdxBTS0diEwmbRHonaMFUxRJ
+         2gxtB9uZ003Y3s+P8bmy4BWMOlg23QXyv4FxQgbPgY9ffjrenc03smxb/vjo7nM8E82x
+         lbkBTZonUYX3L43iIHVK+rnTrgeF+P2c/rwPvd6daeGGJv28FzkoxN3Uzgf768UHRBBb
+         svvdNrGDsOVQ7ukys1VYxS4yF1uCGa3MR0+2U4GZ4lqXi+yshvcc32YIWj7F0SN9aeqE
+         +HZg==
+X-Forwarded-Encrypted: i=1; AFNElJ9MFywMDeqAYLBL4NpIwkrxoNf0eep9IjYXK1FsWrcZ0snh7yOPIt0U1ZJQRVxXqqQ849YV7MY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyhChOABvkwu3IZcDTkr9bKABwLMZ0urb8mMnw5c6WFv/cBlMor
+	GND4+zfTBaamujNf2anbpytKgBZCoTwywWDSl6D34QRYrUmN9pKfZDsPPIeSSCHc+rdDVMB7V4G
+	gXDUzZIv5A7kVxwpEkYfjCLeHCwT6999Q62DTkpyJ
+X-Gm-Gg: AfdE7cl32jmJ8f+9e8I+DVzAmTXfI0f5YZhaT+rCnaOoI18EyiytpzwgYc05m2fpqZI
+	D6de0wiZYqCg2TYQirb90soxcGabSXZCPUi71ls8NcSIlOxDDD2YXYlz8fRujzP2n/BsU7Qy+FX
+	GLPJSxKHdKhyjOVdxtAUDSK5whvpVm6NgiXVnBx1ZVNU6NfNJ3e1e3gcQlr0Yq77T+TkeB8MM/h
+	k5zIr8eYtEXpnIYBYFHxtyIqYbsHYBadJyunL8oR9tQ8TPyFB0mRZ2L/e36x6EfjQgvYL+pM3k1
+	hdgLNlgBCa2xekzUzSPxDOQHXbLbehTgqCH2R40nEv68Z+vwCt/YZawlL3bv1yA=
+X-Received: by 2002:a05:622a:30a:b0:51c:523:9540 with SMTP id
+ d75a77b69052e-51c13d3e9dcmr5462341cf.18.1782806160058; Tue, 30 Jun 2026
+ 00:56:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260629132633.1300009-1-arnd@kernel.org>
-Date: Tue, 30 Jun 2026 00:53:46 -0700
-X-Gmail-Original-Message-ID: <CAMRc=McnpZK+XeMcVfrBeh8SWa44UsVSJD0GJ1pXYhiFqzdpaQ@mail.gmail.com>
-X-Gm-Features: AVVi8CcPrvp2PMd39-Ep5NDuNXP5lZT9A5toOBbKSjeAVmB0_7rIggX2JLATmJ0
-Message-ID: <CAMRc=McnpZK+XeMcVfrBeh8SWa44UsVSJD0GJ1pXYhiFqzdpaQ@mail.gmail.com>
-Subject: Re: [PATCH 00/13] treewide: replace linux/gpio.h
-To: Arnd Bergmann <arnd@kernel.org>
-Cc: linux-gpio@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, 
-	Bartosz Golaszewski <brgl@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, 
-	Gregory Clement <gregory.clement@bootlin.com>, Frank Li <Frank.Li@nxp.com>, 
-	Robert Jarzmik <robert.jarzmik@free.fr>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	Greg Ungerer <gerg@linux-m68k.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	Hauke Mehrtens <hauke@hauke-m.de>, =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>, 
-	Yoshinori Sato <ysato@users.sourceforge.jp>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Linus Walleij <linusw@kernel.org>, 
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Dominik Brodowski <linux@dominikbrodowski.net>, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-samsung-soc@vger.kernel.org, patches@opensource.cirrus.com, 
-	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
-	linux-sh@vger.kernel.org, linux-input@vger.kernel.org, 
-	linux-media@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-sunxi@lists.linux.dev, linux-phy@lists.infradead.org, 
-	linux-rockchip@lists.infradead.org, linux-sound@vger.kernel.org
+References: <20260630022325.1556638-1-yuyanghuang@google.com> <PH0PR11MB590210EC36E866B973378054F0F72@PH0PR11MB5902.namprd11.prod.outlook.com>
+In-Reply-To: <PH0PR11MB590210EC36E866B973378054F0F72@PH0PR11MB5902.namprd11.prod.outlook.com>
+From: Yuyang Huang <yuyanghuang@google.com>
+Date: Tue, 30 Jun 2026 16:55:22 +0900
+X-Gm-Features: AVVi8CebDA0SWSw60Mh8rFPDNlM4i-UKbbWuKoH7Xr8ui1YcMavpRx-8bzvSoG4
+Message-ID: <CADXeF1EyFJ1RaJqJC8UB=rn5Jd5GLU-2WxrvpW_buRg3O3LMYA@mail.gmail.com>
+Subject: Re: [PATCH net-next v2] ipv4: igmp: remove multicast group from hash
+ table on device destruction
+To: "Jagielski, Jedrzej" <jedrzej.jagielski@intel.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Cong Wang <xiyou.wangcong@gmail.com>, 
+	David Ahern <dsahern@kernel.org>, Eric Dumazet <edumazet@google.com>, 
+	Ido Schimmel <idosch@nvidia.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 29 Jun 2026 15:26:20 +0200, Arnd Bergmann <arnd@kernel.org> said:
-> From: Arnd Bergmann <arnd@arndb.de>
+> Hi,
 >
-> The linux/gpio.h header used to be the global definition for the gpio
-> interfaces, with 1100 users back in linux-3.17. In linux-7.2, only about
-> 130 of those remain, so this series cleans out the rest.
+> why sending this to net-next not to net if that's a bug fix?
 >
-> In each subsystem, we can replace the header either with
-> linux/gpio/consumer.h for users of the modern gpio descriptor interface,
-> or linux/gpio/legacy.h for the few remaining users of the old number
-> based interface.
+> In the v1 thread it was said
+> >This is a long-standing bug, not a recent regression.
 >
-> All patches in this series can get applied independently, so my
-> preference would be for each subsystem maintainer to apply these
-> directly, with the rest going into the gpio tree at some point.
->
-> The final patch here obviously needs to wait for all the others
-> to get merged first.
->
->       Arnd
+> so why do not cc stable kernel to get rid of this bug from
+> stable kernels in such case?
 
-Thanks for doing this Arnd!
-
-For the series:
-
-Acked-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Thanks for the advise, will send this patch to stable kernel.
