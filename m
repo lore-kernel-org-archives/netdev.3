@@ -1,157 +1,129 @@
-Received: from outbound.ci.icloud.com (ci-2003a-snip4-5.eps.apple.com [57.103.91.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f205.google.com (mail-oi1-f205.google.com [209.85.167.205])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBF663D9035
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 19:18:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.91.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A845D282F1E
+	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 19:33:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782847096; cv=none; b=pS7WC1B1OrCXngKMGukZFpVVPwa4gAedvqisFmTJzPSMcc+CnL6UVyHjIcVamTJYckVsFdia8B89jfteeQGO+4FxRDnz69C+1X/kjplA9PnLk6rPc+sCbCVS8E2+Sq4KAdoXKbX50+Ui9+5bhZZ6G7CBmTg7OVCguSki2dQeosw=
+	t=1782848006; cv=none; b=EZ4P2Zv5GygdqCC8zZBpINl0l7Kj0zeH6TIW+BedTKnsDDJ3AyZ99OiMFdscF8FefKFZd8v2Jt5U7dZRWCbBroPSZEDDqaA+84pCHxT0jsygveQLcTiGKOBGkWkSSE+4EVZyqkMFMuozWa1p9ED82gO4lmQs5stUKVOVobvHVXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782847096; c=relaxed/simple;
-	bh=bzxFy41sPH7fJd071OWXb6j48wdQSl7USCsOB++sLSk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oRsaYLmzcjLoRMYxpAMdNpUfFpXiJxqpds1Qxj/dRm2HlHGYdS2P2P7EklhWUeq4sYCCjR1BLGXvBns9eoi6hqN5sBSDWmEmFuI4Vyv5LQxSU1xRwTZwN2iO/WIfnMojts1dA6el9puShknad75onF8m+b6UjcAD1CuBuicoTPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=verdict.gg; spf=pass smtp.mailfrom=verdict.gg; dkim=pass (2048-bit key) header.d=verdict.gg header.i=@verdict.gg header.b=gjImPDZM; arc=none smtp.client-ip=57.103.91.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=verdict.gg
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=verdict.gg
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=verdict.gg header.i=@verdict.gg header.b="gjImPDZM"
-Received: from outbound.ci.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-central-1k-10-percent-2 (Postfix) with ESMTPS id 4BF2E18015FF;
-	Tue, 30 Jun 2026 19:18:09 +0000 (UTC)
-X-ICL-RepId: 019f19f7-aa3d-708d-92a6-6423bd0acea5
-X-ICL-Out-Info: HUtFAUMHWwJACUgBTUQeDx5WFlZNRAJCTQhICkMGWQJeCEABQwVdEhVdRVcIWwJAEVc4RQhFD1sTTVZUChcNVk1PHUEJXghGXl4fEx9UVgNBGRBWAVhWXQVNGlwYWQ8cE1BWWg5bBEcUFxtcABcbRgIEIwJfAEUCXglWATAXD1ZNTx1BCV4IRl5eHxMAXg8PTAtIAVsHXQFACEECWAZbHEgITANfGlMfFFwUWh9WBXIGXApXBFQfHBdeRhMZThtXTVoNQBlYBm0UVhVSBFk=
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=verdict.gg; s=sig1; t=1782847092; x=1785439092; bh=MlH8EI0NXkS41fcAP+/C6cjXncTfe7i2j/oK54dy168=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=gjImPDZMnR0eiFhM8rvRXjw4xYG7Jyf/9JRDWjhBDuxTtHkQq1DAiyyadBFi2kS9RZ+K4TIZzbM+R+RygTnQyx6nF+tPRdrTG5TxsyeDMzybQpibVh1X0e1lJaN+GBgX+3cZtSvqEIwxMbrUNSFr2dTNN1xWxqtma5k/LTMGQ2XGpTtvkdW4AE8YvKf2uEwM5s6jmhhSyUq7KmpjD/OmaR/ih8xwz4VL+p+WlMr4hgVTAMalAczoF0UzHz3rQh0zf5XNHQItEp9mQhwpZbyAisbU8djeieFL8ow6Eqqt1r0SM513TxgrUTkoNnLdTq4Ub/PjtULAmB8QArL/CpY7gw==
-mail-alias-created-date: 1621344842221
-Received: from DelNac.mail.msk (unknown [17.57.156.36])
-	by p00-icloudmta-asmtp-us-central-1k-10-percent-2 (Postfix) with ESMTPSA id 7E48218015DC;
-	Tue, 30 Jun 2026 19:18:06 +0000 (UTC)
-From: Vladimir Vdovin <deliran@verdict.gg>
-To: bpf@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	martin.lau@linux.dev,
-	sdf@fomichev.me,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	kuba@kernel.org,
-	Vladimir Vdovin <deliran@verdict.gg>
-Subject: [RFC PATCH bpf-next v1 7/7] selftests/bpf: cover bpf_xdp_metadata_rx_csum in xdp_metadata
-Date: Tue, 30 Jun 2026 22:15:10 +0300
-Message-ID: <20260630191510.81402-8-deliran@verdict.gg>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20260630191510.81402-1-deliran@verdict.gg>
-References: <20260630191510.81402-1-deliran@verdict.gg>
+	s=arc-20240116; t=1782848006; c=relaxed/simple;
+	bh=TJg+PTJkYd9/0ku8b/CRQqtSDTsx14fZLzROWdCDbYE=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=duqtARDXTzGNGZxrtlEK66VGGlJN9/N1O6Nxo1pp2OksqrR49IA3jeBbcIxo61sQ4n7UV6LqBlUxxPwwuvxzyL/5uusoNgf3TQIgqguYBinRjDsy4o4bhyNUJu/nff8Zb4CcTetg3/2Qd9FKRyM30k5erX1YGC6SzjIQhEZ+kMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f205.google.com with SMTP id 5614622812f47-49601a1b80cso209635b6e.1
+        for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 12:33:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782848004; x=1783452804;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=D+rWZ8k73TMV9DNYwCNJH7ZdxXY5ZdbASYCz+2kmGPs=;
+        b=DSTU22pLohpyyjzsPg9YVm5sf+Ad5YpcdmdqRzDMj3Q5OIvoffxLmW04vLHPo3+ggI
+         i3xPs4evF6AlZRd9vv8f/hRvRFMRIhcG/5KsB3+JDTQTPbjInEMDyOSQDojWHJ9a/miS
+         otmisJJbgtusxKdConKCvBBe7IIevigDwGsNIsM6lHYFox7ToBn/AOfAham9hcXeCnv+
+         7+EVizPewXL0pmgOyDIO8DdOOEd/DiLrGfyCNKdCFz9DmTXqXoGKrqDdN71Tmt0EHfOR
+         14Mrk+n+FSIolxWASCG9IHXvfT1pMIaMczdSspFbWpozHoNmbrYq3w/gYCKBTBCqB2BB
+         Amww==
+X-Forwarded-Encrypted: i=1; AFNElJ8CO/mljKEQpgH/87qbW+fG+poP/NVnlrQgHmHoI1FXPk/4dexFjfN32aSraKrb/lrg4r1sYZY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxCuHPM0JkGxgjhvsVXgXPsoLN+zk2mwkVceb8A8BTZxJmZZFdv
+	X3xZOlKmEE37+Lg3mnZeGV26siEon5PhYSY9m0NRzHriS+S8YHCsapx7RnQ5hhYMLAs9RBdbH8J
+	2S+agY14ia1GHX2sToxk57RSStZg40bhHSpVlG5j0+qtjwCdEwydkg6FlR1Y=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjMwMDE4NiBTYWx0ZWRfX/EamM9QkAXmh
- c6vwdpZQ8tNevkl2WwFDaqN5FtZc32efUxVMpq8eaKmCFiUJL4Ic9dPnH0v++OeUSVJYzOkAvll
- l8jyEa1qKp09dXchU8Rw40zUwSrUGdc/szmBdl802AvtBY8chCGZ8i+fGcAbwnODUALAOQzOt3T
- XObQkzYq76XwnMZv2Q88/Ax7+1joCfsmQ5IPyQG0tZ2TPqevhiZJTyduiHo1hgLCtvMkDIllelb
- pdajCj5YfNMNXMc7fxbjN2ia0hx26lt/vSrTkjxoSM4Dp3yP1aetWi0uQUuziGas9JAyfxoQQLw
- HGMqBYEFTS4V4Y0Avzm
-X-Proofpoint-GUID: Vro55lTvrxDexyUZhVxXDOSWRg7RsG4A
-X-Proofpoint-ORIG-GUID: Vro55lTvrxDexyUZhVxXDOSWRg7RsG4A
+X-Received: by 2002:a05:6808:87d1:b0:485:5f3f:bd1b with SMTP id
+ 5614622812f47-495fd49fef3mr1320558b6e.3.1782848003808; Tue, 30 Jun 2026
+ 12:33:23 -0700 (PDT)
+Date: Tue, 30 Jun 2026 12:33:23 -0700
+In-Reply-To: <6a00f268.170a0220.1c0296.021c.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a441a03.b42ede87.8e801.0009.GAE@google.com>
+Subject: Re: [syzbot] [wireless?] WARNING in mac80211_hwsim_tx (2)
+From: syzbot <syzbot+435fdb053cf98bfa5778@syzkaller.appspotmail.com>
+To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Call bpf_xdp_metadata_rx_csum() in the xdp_metadata program and export the
-status to userspace.  veth surfaces skb->ip_summed: a frame injected via
-AF_XDP carries no checksum context (XDP_CSUM_NONE), while one sent through
-the stack is CHECKSUM_PARTIAL (XDP_CSUM_VERIFIED).  Assert each.
+syzbot has found a reproducer for the following issue on:
 
-Signed-off-by: Vladimir Vdovin <deliran@verdict.gg>
+HEAD commit:    dc59e4fea9d8 Linux 7.2-rc1
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=12f58032580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=3c3d59be33cf7e9a
+dashboard link: https://syzkaller.appspot.com/bug?extid=435fdb053cf98bfa5778
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=13a73289580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=135db61e580000
+
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-dc59e4fe.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/9ee1f0ea24f2/vmlinux-dc59e4fe.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/729e963a1370/bzImage-dc59e4fe.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+435fdb053cf98bfa5778@syzkaller.appspotmail.com
+
+mac80211_hwsim hwsim5 wlan1: entered allmulticast mode
+------------[ cut here ]------------
+hwsim_get_chanwidth(bw) > hwsim_get_chanwidth(confbw)
+WARNING: drivers/net/wireless/virtual/mac80211_hwsim_main.c:2248 at mac80211_hwsim_tx+0x1ab4/0x2500 drivers/net/wireless/virtual/mac80211_hwsim_main.c:2248, CPU#0: syz.0.17/5510
+Modules linked in:
+CPU: 0 UID: 0 PID: 5510 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:mac80211_hwsim_tx+0x1ab4/0x2500 drivers/net/wireless/virtual/mac80211_hwsim_main.c:2248
+Code: c6 05 da 65 07 09 01 48 c7 c7 e0 74 7a 8c be 6b 08 00 00 48 c7 c2 20 76 7a 8c e8 a7 d6 8c fa e9 ff ee ff ff e8 7d eb b0 fa 90 <0f> 0b 90 49 bc 00 00 00 00 00 fc ff df e9 dd fe ff ff e8 65 eb b0
+RSP: 0018:ffffc9000278efe0 EFLAGS: 00010293
+RAX: ffffffff87158693 RBX: 0000000000000000 RCX: ffff888000ad8000
+RDX: 0000000000000000 RSI: 0000000000000014 RDI: 00000000000000a0
+RBP: ffffc9000278f170 R08: ffff888000ad8000 R09: 000000000000000e
+R10: 000000000000000d R11: 0000000000000000 R12: 0000000000000014
+R13: ffff8880120b3cb0 R14: 00000000000000a0 R15: 0000000000000030
+FS:  000055559073c500(0000) GS:ffff88808c815000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00005562391e0138 CR3: 0000000012ea1000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ drv_tx net/mac80211/driver-ops.h:38 [inline]
+ ieee80211_tx_frags+0x3df/0x890 net/mac80211/tx.c:1746
+ __ieee80211_tx+0x267/0x580 net/mac80211/tx.c:1801
+ ieee80211_tx+0x312/0x4b0 net/mac80211/tx.c:1984
+ ieee80211_monitor_start_xmit+0xb33/0x1280 net/mac80211/tx.c:2479
+ __netdev_start_xmit include/linux/netdevice.h:5400 [inline]
+ netdev_start_xmit include/linux/netdevice.h:5409 [inline]
+ xmit_one net/core/dev.c:3889 [inline]
+ dev_hard_start_xmit+0x2cd/0x830 net/core/dev.c:3905
+ __dev_queue_xmit+0x1435/0x37f0 net/core/dev.c:4872
+ packet_snd net/packet/af_packet.c:3082 [inline]
+ packet_sendmsg+0x3d95/0x5040 net/packet/af_packet.c:3114
+ sock_sendmsg_nosec+0x13a/0x180 net/socket.c:775
+ __sock_sendmsg net/socket.c:790 [inline]
+ __sys_sendto+0x408/0x5a0 net/socket.c:2252
+ __do_sys_sendto net/socket.c:2259 [inline]
+ __se_sys_sendto net/socket.c:2255 [inline]
+ __x64_sys_sendto+0xde/0x100 net/socket.c:2255
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fc04219ce59
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffcb766be38 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 00007fc042415fa0 RCX: 00007fc04219ce59
+RDX: 0000000000000030 RSI: 0000200000000640 RDI: 0000000000000008
+RBP: 00007fc042232e6f R08: 0000200000000380 R09: 0000000000000014
+R10: 0000000004000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fc042415fac R14: 00007fc042415fa0 R15: 00007fc042415fa0
+ </TASK>
+
+
 ---
- tools/testing/selftests/bpf/prog_tests/xdp_metadata.c | 10 ++++++++++
- tools/testing/selftests/bpf/progs/xdp_metadata.c      |  9 +++++++++
- tools/testing/selftests/bpf/xdp_metadata.h            |  8 ++++++++
- 3 files changed, 27 insertions(+)
-
-diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_metadata.c b/tools/testing/selftests/bpf/prog_tests/xdp_metadata.c
-index 5c31054ad4a4..77f55696eb78 100644
---- a/tools/testing/selftests/bpf/prog_tests/xdp_metadata.c
-+++ b/tools/testing/selftests/bpf/prog_tests/xdp_metadata.c
-@@ -310,6 +310,16 @@ static int verify_xsk_metadata(struct xsk *xsk, bool sent_from_af_xdp)
- 	if (!ASSERT_NEQ(meta->rx_hash, 0, "rx_hash"))
- 		return -1;
- 
-+	/* veth surfaces the checksum verdict from skb->ip_summed.  A packet
-+	 * injected via AF_XDP carries no checksum context and is CHECKSUM_NONE,
-+	 * while one sent through the stack is CHECKSUM_PARTIAL and reads back as
-+	 * verified.
-+	 */
-+	if (!ASSERT_EQ(meta->rx_csum_status,
-+		       sent_from_af_xdp ? XDP_META_CSUM_NONE : XDP_META_CSUM_VERIFIED,
-+		       "rx_csum_status"))
-+		return -1;
-+
- 	if (!sent_from_af_xdp) {
- 		if (!ASSERT_NEQ(meta->rx_hash_type & XDP_RSS_TYPE_L4, 0, "rx_hash_type"))
- 			return -1;
-diff --git a/tools/testing/selftests/bpf/progs/xdp_metadata.c b/tools/testing/selftests/bpf/progs/xdp_metadata.c
-index 09bb8a038d52..0089c6c5a2e4 100644
---- a/tools/testing/selftests/bpf/progs/xdp_metadata.c
-+++ b/tools/testing/selftests/bpf/progs/xdp_metadata.c
-@@ -33,6 +33,8 @@ extern int bpf_xdp_metadata_rx_hash(const struct xdp_md *ctx, __u32 *hash,
- extern int bpf_xdp_metadata_rx_vlan_tag(const struct xdp_md *ctx,
- 					__be16 *vlan_proto,
- 					__u16 *vlan_tci) __ksym;
-+extern int bpf_xdp_metadata_rx_csum(const struct xdp_md *ctx,
-+				    enum xdp_csum_status *csum_status) __ksym;
- 
- SEC("xdp")
- int rx(struct xdp_md *ctx)
-@@ -43,6 +45,7 @@ int rx(struct xdp_md *ctx)
- 	struct udphdr *udp = NULL;
- 	struct iphdr *iph = NULL;
- 	struct xdp_meta *meta;
-+	enum xdp_csum_status csum_status;
- 	u64 timestamp = -1;
- 	int ret;
- 
-@@ -99,6 +102,12 @@ int rx(struct xdp_md *ctx)
- 	bpf_xdp_metadata_rx_vlan_tag(ctx, &meta->rx_vlan_proto,
- 				     &meta->rx_vlan_tci);
- 
-+	ret = bpf_xdp_metadata_rx_csum(ctx, &csum_status);
-+	if (ret < 0)
-+		meta->rx_csum_err = ret;
-+	else
-+		meta->rx_csum_status = csum_status;
-+
- 	return bpf_redirect_map(&xsk, ctx->rx_queue_index, XDP_PASS);
- }
- 
-diff --git a/tools/testing/selftests/bpf/xdp_metadata.h b/tools/testing/selftests/bpf/xdp_metadata.h
-index 87318ad1117a..ba1b2902b371 100644
---- a/tools/testing/selftests/bpf/xdp_metadata.h
-+++ b/tools/testing/selftests/bpf/xdp_metadata.h
-@@ -30,6 +30,10 @@ enum xdp_meta_field {
- 	XDP_META_FIELD_VLAN_TAG	= BIT(2),
- };
- 
-+/* Mirror of enum xdp_csum_status (include/net/xdp.h) for userspace asserts. */
-+#define XDP_META_CSUM_NONE	0
-+#define XDP_META_CSUM_VERIFIED	1
-+
- struct xdp_meta {
- 	union {
- 		__u64 rx_timestamp;
-@@ -48,5 +52,9 @@ struct xdp_meta {
- 		};
- 		__s32 rx_vlan_tag_err;
- 	};
-+	union {
-+		__u32 rx_csum_status;
-+		__s32 rx_csum_err;
-+	};
- 	enum xdp_meta_field hint_valid;
- };
--- 
-2.47.0
-
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
