@@ -1,30 +1,64 @@
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64AB432A3D7;
-	Tue, 30 Jun 2026 05:16:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09F135B62C
+	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 05:20:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782796612; cv=none; b=p0sxlKXDwqkhHYlx8y0w9rDqJJ/b+X9uzKdtwpK8fPC5qLyzCrrnRVOGFQzaW6BEeCOmtfqUE+ZGq5X7OP/PI7Su6XDZ7ErQSyse1qjNop/MetO+mCHUTAZEVVqGELVVC9OdSzxBm2wd6cWFQZEXyKDnJ0DASuX//PvOsvSOjXc=
+	t=1782796821; cv=none; b=LfriUtZjgWMw50M25yYDsvEky06TEPO0lWCopE01oC0BZqTs1TURqkAZyKKoRy4r9i9dFoO/nyxKy6OKnJctEusVHmCm9+NBlzHkvDFbytzrzEk2efQraYot8M+1RG20d7NgrtElOsIr598pu5ngrvjGE/2kOoy6tLS4ipL82z0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782796612; c=relaxed/simple;
-	bh=wrI2NdcJ5fFbuVZ1pzUuda1VQkh21nFSHNZ8FCUTZCo=;
+	s=arc-20240116; t=1782796821; c=relaxed/simple;
+	bh=Kr/YG75jknEBGygfbdZbiLsmWOHsghWO/YAbsUOCBnA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tyQo44iO0u73+7Tq5iP+aaWvicIyvmXRWF30KmNA2+AKZDaT1HKgPfiADHWT1ajFKABCOOoiodQW6cFiqLeOHW56W00lw/lF9CERbeeSCX9QqCWvDqgnuFcAw8uhzZYX2HjW0CkPewfBhiGsKOSNo41QSNivviJyS7w9av51MVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
-Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
-	id 8D3E960D0F; Tue, 30 Jun 2026 07:16:48 +0200 (CEST)
-Date: Tue, 30 Jun 2026 07:16:48 +0200
-From: Florian Westphal <fw@strlen.de>
-To: Zhixing Chen <running910@gmail.com>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Phil Sutter <phil@nwl.cc>,
-	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH nf] netfilter: ip6t_ah: validate AH header length
-Message-ID: <akNRQFx9fmi2DK0w@strlen.de>
-References: <20260618125848.93550-1-running910@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=YYHFyiypilYlWz5cdYpk7ddWlrmFQHsrFxXPvAJ7KE+CUCAJdj8/47urksEFi1pngQUgProgCNamp4Z8CaOOSESnU6/tcRO0QzZ7+yOnCN+w4CgUjRPTKBYx8evYQo+9p7RyhrzkmT6Josl0N4tPps45YYSaaFwqqd3assJc790=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=isEtJ/Sx; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="isEtJ/Sx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782796821; x=1814332821;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Kr/YG75jknEBGygfbdZbiLsmWOHsghWO/YAbsUOCBnA=;
+  b=isEtJ/SxG2viFRDptx17SepD3Rb2J9PvUbI+lBZi10lVAaV1pv2JKiet
+   tdTBp6eUVZ+RQWe/XPBV7qXechVbTZyD3/lq9b1lBfZkPhVV42RXKl00h
+   CF6QEYA1E3YSNH7d/XUYNI/tNGXU0Qqc0V9uGA7bWZwXagb8TQlR5VtRx
+   tFRSf/Wvhfl+OA7831WVjlB+qtn/s/933N4XHmjS1x4s3ejcYm4HUGpyI
+   tf0vi83KMi1vpikHlK8tfs6lkRj8ibnrUgmAirqoVgKYQ4NsnrJLB91hi
+   WyHydtrrEZiLR8J2oh/bYAPixbbpDWpZP2if2UI6V7nC3W0w6n+UjQgZI
+   w==;
+X-CSE-ConnectionGUID: a+iC/NXVRFGrPd6XwKpQ1w==
+X-CSE-MsgGUID: XWUO+aQkRXKrx6nR2LyW0w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11832"; a="94883790"
+X-IronPort-AV: E=Sophos;i="6.24,233,1774335600"; 
+   d="scan'208";a="94883790"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2026 22:20:20 -0700
+X-CSE-ConnectionGUID: t9Hv/DrSRa6tVdNCttLtrQ==
+X-CSE-MsgGUID: UHByy7OvTc6B1DVHvZlakg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,233,1774335600"; 
+   d="scan'208";a="252305245"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2026 22:20:16 -0700
+Date: Tue, 30 Jun 2026 07:20:13 +0200
+From: Raag Jadav <raag.jadav@intel.com>
+To: Riana Tauro <riana.tauro@intel.com>
+Cc: intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	netdev@vger.kernel.org, aravind.iddamsetty@linux.intel.com,
+	anshuman.gupta@intel.com, rodrigo.vivi@intel.com,
+	joonas.lahtinen@linux.intel.com, kuba@kernel.org,
+	simona.vetter@ffwll.ch, airlied@gmail.com, pratik.bari@intel.com,
+	joshua.santosh.ranjan@intel.com, ashwin.kumar.kulkarni@intel.com,
+	shubham.kumar@intel.com, ravi.kishore.koppuravuri@intel.com,
+	maarten.lankhorst@linux.intel.com, mallesh.koujalagi@intel.com,
+	soham.purkait@intel.com
+Subject: Re: [PATCH v3 3/3] drm/xe/xe_ras: Add error-event support for CRI
+Message-ID: <akNSDXcXa0mtwR5r@black.igk.intel.com>
+References: <20260622101716.3313496-5-riana.tauro@intel.com>
+ <20260622101716.3313496-8-riana.tauro@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -33,27 +67,56 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260618125848.93550-1-running910@gmail.com>
+In-Reply-To: <20260622101716.3313496-8-riana.tauro@intel.com>
 
-Zhixing Chen <running910@gmail.com> wrote:
-> ip6t_ah checks that the fixed AH header is present, then uses hdrlen to
-> derive the advertised AH header length for matching.
+On Mon, Jun 22, 2026 at 03:47:20PM +0530, Riana Tauro wrote:
+> Add error-event support for Correctable errors in CRI.
+> error-event is reported to  userspace for all errors that crossed
+> threshold on receiving an interrupt for correctable errors.
+
+...
+
+> +static void ras_send_error_event(struct xe_device *xe, u8 severity, u8 component)
+> +{
+> +	u8 drm_severity, drm_component;
+> +	u32 value;
+> +	int ret;
+> +
+> +	drm_severity = xe_to_drm_ras_severity(severity);
+> +	if (drm_severity == DRM_XE_RAS_ERR_SEV_MAX)
+> +		return;
+> +
+> +	drm_component = xe_to_drm_ras_component(component);
+> +	if (drm_component == DRM_XE_RAS_ERR_COMP_MAX)
+> +		return;
+> +
+> +	ret = xe_ras_get_counter(xe, severity, component, &value);
+> +	if (ret)
+> +		return;
+> +
+> +	xe_drm_ras_event(xe, drm_component, drm_severity, value, GFP_KERNEL);
+> +}
+> +
+>  void xe_ras_counter_threshold_crossed(struct xe_device *xe,
+>  				      struct xe_sysctrl_event_response *response)
+>  {
+> @@ -152,6 +203,8 @@ void xe_ras_counter_threshold_crossed(struct xe_device *xe,
+>  		severity = errors[id].common.severity;
+>  		component = errors[id].common.component;
+>  
+> +		ras_send_error_event(xe, severity, component);
+
+We already have error-value as part of the event, so this looks like
+a lot of redundant duplicate events if threshold is set high enough.
+I'm wondering if we use a local variable as a bitmap for components
+(which we set here) and only send event for_each_set_bit() after the
+loop?
+
+Raag
+
+>  		xe_warn(xe, "[RAS]: %s %s detected\n",
+>  			comp_to_str(component), sev_to_str(severity));
+>  	}
+> -- 
+> 2.47.1
 > 
-> Return false if the skb does not contain the advertised AH header length.
-> This avoids matching AH headers whose advertised length is not present in
-> the skb.
-> 
-> Signed-off-by: Zhixing Chen <running910@gmail.com>
-> ---
-> 
-> I noticed ip6t_hbh and ip6t_rt already do this advertised-length check
-> for their IPv6 extension headers, so this keeps ip6t_ah in line with
-> those matches.
-
-Could you make a v2 that addresses
-
-https://sashiko.dev/#/patchset/20260618125848.93550-1-running910%40gmail.com
-?
-
-We should not return false in matches for malformed packets without
-also setting ->hotdrop = true.
