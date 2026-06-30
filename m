@@ -1,117 +1,184 @@
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C4D382383
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 14:07:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 955F4374A07
+	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 14:10:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782828474; cv=none; b=DggTGhBQDXaUxaLUXiXj150e++GAoCUsltH3d5IVFF9LwnETQg2cFA/VHxV5AO5CCHS+4UXoLT7n4lHL2AlBGJwE3lQVqfdeNmSQgGuL39LEnr3KFe4v4df6w+5X6uyprs71NQupZ6LqCNAS+fdrnspdL3ycQ5SwQvWBmcJBwYU=
+	t=1782828618; cv=none; b=ssxH7YFA5biEMaMgZtVJFOcWtPvj0/M6OCGlHX+l0yECyfw+hNBB3d4OBlPH6tNkCR2t1Rks9FDJHen0pRJEQjJT8cYV52Jsu/VvOwW3BOrJSBNe1KQYDiDJ7YJudZFlDWVZy+gUBJQmizr05B5xZtB1KLayU9isVQFiG0YTsQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782828474; c=relaxed/simple;
-	bh=R6PE3q4l5whDdU7yCMJ15ug5N5A00uM6KUFUVpMb5bM=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OUMSr35MPVTeKsTtqAoxEak6BB3flCJUgdDh082AnHhICaE5UQIo4D3z+yal7gnC5IeVzhP08roMVj4UjMKpjkw4vWloyClk/j1Lpa+9rNSbmEmqlQv9NK/0uyehsase6tUqcnkXe+BV/K6SEZxxtkBOy3xz+hREjcHh1/ftwj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=SLOE4wyY; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+	s=arc-20240116; t=1782828618; c=relaxed/simple;
+	bh=/wypLRgPYUhUm8w1lzxMnTMb4D5cfhEnCejHG8k/hTQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=D3wkuYvEyIOTDaSl0mxBe56E8SJMOUoyia5FEgTXUMhEuTdBqO1+czcVTg2lKt61dXYDZ6Ko3v1trpLp9loc97C1H+IAtuWAr55Ux3njMDG7PmaKk/yJHpXxUADjpB+CXMFmnrNN5V6TlutgU+4ddAxsPNWa1ac5L+oZ2uWMAUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=h20HlIjE; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Bl03F6d7; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="SLOE4wyY"
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id A30ED20841;
-	Tue, 30 Jun 2026 16:01:53 +0200 (CEST)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id RQRziuo3PxHb; Tue, 30 Jun 2026 16:01:53 +0200 (CEST)
-Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 105FA2074F;
-	Tue, 30 Jun 2026 16:01:53 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 105FA2074F
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1782828113;
-	bh=4mju3TDWtg7VRyny+ZF2/UdWSqoec2zEKN+0dwI+wOo=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
-	b=SLOE4wyY9LUURs1q2fkxlgbBPlrpMUgmRegHLT99AgPgTzEODqgJWbpexhIaZXULA
-	 QzutOeuo+Yrx7HaiiwkDFXxFj2VcBe08qs+U+6jNKfNfL1pNpH9CAc77gEel+sSuuQ
-	 QKdeAJa9FYZmiYZsdVGzWJSnPGoiaPSBEmw0crRkkEvWzt5IbGYYyfeuNqysQDHteu
-	 LT/mYcEO2VRmq4d4uC2X8kvFwirOGopV8vGKt9lmM93U6tJhtTDWb8X4MQjQCm5mBP
-	 OZ1K53LurHZJUGZeNMDslmgMQTlnD0Ezkux5TpfarkA6LI4DBAAH/TvP1X1dw/nbik
-	 BKxpFAIWKW2tw==
-Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Tue, 30 Jun
- 2026 16:01:52 +0200
-Received: (nullmailer pid 1131885 invoked by uid 1000);
-	Tue, 30 Jun 2026 14:01:52 -0000
-Date: Tue, 30 Jun 2026 16:01:52 +0200
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: Petr Wozniak <petr.wozniak@gmail.com>
-CC: <netdev@vger.kernel.org>, <sd@queasysnail.net>,
-	<herbert@gondor.apana.org.au>, <kuba@kernel.org>, <horms@kernel.org>,
-	<pabeni@redhat.com>, <edumazet@google.com>, <davem@davemloft.net>
-Subject: Re: [PATCH net v5 0/2] xfrm: fix async crypto (-EINPROGRESS)
- handling in validate_xmit_xfrm()
-Message-ID: <akPMUICkNLVwrGPl@secunet.com>
-References: <20260603064659.3867-1-petr.wozniak@gmail.com>
- <20260621100327.40203-1-petr.wozniak@gmail.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="h20HlIjE";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Bl03F6d7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1782828616;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BFDdj7mBxvpQB1df0Zv0Bo5GXWFLdAHUl/QXNj3kRfg=;
+	b=h20HlIjEA7NbHjBvLt5zLS77HyuASx+0uZNN9MY8Y/XCJHUPLW+G7nHBl3L6Jr0h6+HeF3
+	2eR+S1E+qCLGMPF3PjJeHeP+sNykM2a0rJeL9oWuyJ8X2s+gOMOv3VF/CAzc28rDMJleWg
+	qBOASnAr/IprFsyllt9/3iQ+NoySknM=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-75-xD4EZ8xoOkyjMzAQLEDG4A-1; Tue, 30 Jun 2026 10:10:14 -0400
+X-MC-Unique: xD4EZ8xoOkyjMzAQLEDG4A-1
+X-Mimecast-MFC-AGG-ID: xD4EZ8xoOkyjMzAQLEDG4A_1782828613
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49244130073so38238235e9.1
+        for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 07:10:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1782828613; x=1783433413; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=BFDdj7mBxvpQB1df0Zv0Bo5GXWFLdAHUl/QXNj3kRfg=;
+        b=Bl03F6d75Sadz8/djnBa62uP7Zk3opI7XIZ5LYa8InPxAFyyAnO2zXPKXJHI9nFkmQ
+         Kt3yVNELD2EVtg4S3Wn73Ducfr2ILcI+l2XIPqLf6OHN+GLQViLE7Cy6vnCm0w1JD9yS
+         ux9XM9Ub2HTbD6X7LDCAd8mF093VYJrct9wJngklVBmYn9Lom90Y4rIDtlxzP1FZvvof
+         +MSvv/avG5f/at6EJMYBHSp73j5fv3l18daWOv7oIvlFr4YYajm7OPXjwmgRG5ML2eyB
+         IXna10V/+v+1K+T8dmdpLrydyOfXO+7yiQVaieEogFYZADc5yzQdF3nz6HA0e+3R/6Pf
+         AUmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782828613; x=1783433413;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BFDdj7mBxvpQB1df0Zv0Bo5GXWFLdAHUl/QXNj3kRfg=;
+        b=CQxDT7VPmw4+IHOs+IIxupaCnC7NKYbZBg+KCFp+3yodGI/6ptCJ3uAQTNiCS8a2C1
+         uQy0AAGK2pEan6TgAhSjlrq2cR+2jnEuj0kO88oUYxIXLQcuRiR5wABFqLuxckUXFIHS
+         LJU+Ie+Be0itD9w8pDbdUgt6tYJEaO3Ls89pz39SbyJY6WcCqSQlHDQ8gXlnxpufovQG
+         iCF0iaq0z1lPZCRvRJHJ1MMCG9Z5PSuLU0OL0cMoJSAsHJbrt7icPEucrBAlESmHowfk
+         nMyEtfHurpbavEB49+7KXArlSSpx6Xmm8rI8ELOqr++JgHWIPGcsCvqRYBG8qJFxJ0o2
+         /Iug==
+X-Gm-Message-State: AOJu0Yw8KuoP6z/SJO934JpEMa+NA26uSFdtftymeYbW1f+dMyo0Dx0L
+	FiEtFeMyZ3K/N9uYSeazFlbh1dEG774gGJFAt8qX0ltCN8X33GUvGhbBHegXnj3tGV+PtNYvDy+
+	L9pvp+ss/76T0HXD96oXxysLKT7GFnxmWxnY/xZcp+wkmZis0cGgrgFfL8w==
+X-Gm-Gg: AfdE7cm/EOlgQ5f8tms6V+PHoNUPim00q8ZQ4T34/fSdJM4PhjISlxYseKd+aKWeKoz
+	u1j1AP44mChUkH9duXzn1LhL+ZoFsWij25NM0G2KHcPkHd2s5M5NfCCItWq1hgOv0I0cV59uk+l
+	Ur5zt1bdtaM92DIIAa6ZctK1coNBNCneFcZMJZJYYRoxBeo7R+zvF1If4WhVxOc9K2MwdQXFboc
+	HsuP9kUPhcGITLlVGyriKGlqQkBSLncxWBhWHqMA3dSwp2RQWVOOONL8UHPSmBQQz/fCy0nsKPZ
+	yZVUdXiZzhSM2Y+OqoKXIHhCAxIj4C3UXW/MKDPPtNjbJ+UF/LnAYL9lqT6JlDtBNUlNIaaJTwi
+	aokZvOwrL3UfCtuSUCri2rO67Jz66cupIP3s3j2OCe36lovK8VyR6q4Miuu5dj/vICjJMLCwuQb
+	wXvurQVeegpA==
+X-Received: by 2002:a05:600c:4747:b0:490:a1dc:e542 with SMTP id 5b1f17b1804b1-493b827db4dmr55140245e9.6.1782828612894;
+        Tue, 30 Jun 2026 07:10:12 -0700 (PDT)
+X-Received: by 2002:a05:600c:4747:b0:490:a1dc:e542 with SMTP id 5b1f17b1804b1-493b827db4dmr55139705e9.6.1782828612365;
+        Tue, 30 Jun 2026 07:10:12 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:5521:6b10:2eb7:f61a:75:4534? ([2a0d:3344:5521:6b10:2eb7:f61a:75:4534])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493b8c79baasm74104705e9.7.2026.06.30.07.10.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Jun 2026 07:10:11 -0700 (PDT)
+Message-ID: <3dab7c8e-aed3-41f2-97e0-558c7a82f925@redhat.com>
+Date: Tue, 30 Jun 2026 16:10:09 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260621100327.40203-1-petr.wozniak@gmail.com>
-X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-01.secunet.de
- (10.32.0.171)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3 1/1] net/sched: sch_teql: Introduce slaves_lock to
+ avoid race condition and UAF
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, horms@kernel.org, victor@mojatatu.com, jiri@resnulli.us,
+ security@kernel.org, zdi-disclosures@trendmicro.com, stable@vger.kernel.org
+References: <20260628111229.669751-1-jhs@mojatatu.com>
+ <de40b1a5-663e-43ab-9fb7-5a49f029cc4b@redhat.com>
+ <CAM0EoMn-6Ayjd3mxsiifDXwN1zdefx9eiRk_wWRpsuEh22LziA@mail.gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <CAM0EoMn-6Ayjd3mxsiifDXwN1zdefx9eiRk_wWRpsuEh22LziA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Sun, Jun 21, 2026 at 12:03:25PM +0200, Petr Wozniak wrote:
-> This series fixes how the async crypto path (-EINPROGRESS from ->xmit())
-> is handled in validate_xmit_xfrm() and its callers.
+On 6/30/26 1:49 PM, Jamal Hadi Salim wrote:
+> On Tue, Jun 30, 2026 at 7:15 AM Paolo Abeni <pabeni@redhat.com> wrote:
+>> On 6/28/26 1:12 PM, Jamal Hadi Salim wrote:
+>>> The teql master->slaves singly linked list is not protected against
+>>> multiple writes. It can be mod'ed concurently from teql_master_xmit(),
+>>> teql_dequeue(), teql_init() and teql_destroy() without holding any list
+>>> lock or RCU protection.
+>>>
+>>> zdi-disclosures@trendmicro.com has demonstrated that the qdisc is freed
+>>> after an RCU grace period, but teql_master_xmit() running on another
+>>> CPU can still hold a stale pointer into the list, resulting in a
+>>> slab-use-after-free:
+>>>
+>>> BUG: KASAN: slab-use-after-free in teql_master_xmit+0xf0f/0x16b0
+>>> Read of size 8 at addr ffff888013fb0440 by task poc/332
+>>> Freed 512-byte region [ffff888013fb0400, ffff888013fb0600) (kmalloc-512)
+>>>
+>>> The fix?
+>>> Add a per-master slaves_lock spinlock that serializes all mutations of
+>>> master->slaves and the NEXT_SLAVE() links in teql_destroy() and
+>>> teql_qdisc_init(). teql_master_xmit() also takes the same slaves_lock
+>>> around those updates.
+>>> Annotate master->slaves and the per-slave ->next pointer with __rcu and
+>>> use the appropriate RCU accessors everywhere they are touched:
+>>> rcu_assign_pointer() on the writer side (under slaves_lock),
+>>> rcu_dereference_protected() for the writer-side loads (also under
+>>> slaves_lock), rcu_dereference_bh() for the loads in teql_master_xmit() and
+>>> rtnl_dereference() for the loads in teql_master_open()/teql_master_mtu(),
+>>> which run under RTNL.
+>>> Pair this with rcu_read_lock_bh()/rcu_read_unlock_bh() around the list
+>>> traversal in teql_master_xmit(), so that readers either observe a fully
+>>> linked list or are deferred until the in-flight mutation completes. The two
+>>> early-return paths in teql_master_xmit() are updated to release the RCU-bh
+>>> read-side critical section before returning, since leaving it held would
+>>> disable BH on that CPU for good.
+>>>
+>>> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+>>> Reported-by: zdi-disclosures@trendmicro.com
+>>> Tested-by: Victor Nogueira <victor@mojatatu.com>
+>>> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+>>
+>> Looks good, thanks!
+>>
+>> Please note that sashiko/gemini found a pre-existing issues which may
+>> require a follow-up/separate fix:
+>>
+>> https://sashiko.dev/#/patchset/20260628111229.669751-1-jhs%40mojatatu.com
+>>
+>> (the 2nd one in the above link, IDK how to generate a direct link to a
+>> specific comment)
 > 
-> Patch 1 (previously sent on its own, v1-v4) makes validate_xmit_xfrm()
-> return ERR_PTR(-EINPROGRESS) instead of NULL when a packet is stolen by
-> async crypto, so __dev_queue_xmit() can tell it apart from a real drop
-> and stop reporting -ENOMEM on noqueue/bridge interfaces.  v5 also covers
-> the GSO segment loop, as Sabrina pointed out.
-> 
-> Patch 2 fixes a use-after-free found while looking at that GSO loop:
-> validate_xmit_xfrm() unlinks async-stolen segments but never updates the
-> list head ->prev, which validate_xmit_skb_list() later dereferences.
-> 
-> Changes in v5:
->  - 1/2: also propagate ERR_PTR(-EINPROGRESS) from the GSO segment loop
->    (the 2nd ->xmit() call); v4 only handled the single-skb path.  Restore
->    the blank line in validate_xmit_skb_list().  Add the missing
->    maintainers to Cc. (Sabrina Dubroca)
->  - 2/2: new patch -- fix the stale skb->prev use-after-free (also flagged
->    by Sashiko)
-> 
-> Changes in v4:
->  - Drop bool stolen tracking and the ERR_PTR return in
->    validate_xmit_skb_list(); use IS_ERR_OR_NULL() so stolen skbs are
->    silently skipped (Sabrina Dubroca)
->  - Drop ERR_PTR(-EINPROGRESS) handling in __dev_direct_xmit() (Sabrina Dubroca)
->  - Move validate_xmit_skb() return-value comment above the function
->    (Sabrina Dubroca)
-> 
-> Changes in v3:
->  - validate_xmit_skb_list(): set stolen=true only for -EINPROGRESS
->    (Sabrina Dubroca)
-> 
-> Changes in v2:
->  - Reset rc to NET_XMIT_SUCCESS only when PTR_ERR(skb) == -EINPROGRESS
->    (Sabrina Dubroca)
-> 
-> Petr Wozniak (2):
->   xfrm: propagate -EINPROGRESS from validate_xmit_xfrm()
->   xfrm: fix stale skb->prev after async crypto steals a GSO segment
-> 
->  net/core/dev.c         | 10 ++++++++--
->  net/xfrm/xfrm_device.c | 12 ++++++++++--
->  2 files changed, 18 insertions(+), 4 deletions(-)
+> I just sent v4 which covered that but i will send a followup instead
+> if you already applied.
 
-Series applied, thanks a lot!
+The PW bot is went on vacation and no 'patch applied' notification is
+reaching the ML; v3 is already applied.
+
+> BTW: What is the ruling on when Sashiko finds a pre-existing issue?
+> Should we address that as a separate follow-up patch? It is unclear
+> what the policy is.
+
+The general guidance is that pre-existing issues should be addressed
+separately.
+
+> This teql patch was one of the hardest to deal with in terms of
+> reproduciability and the fact sashiko kept coming up with pre-existing
+> issues - including the one Simon and I were discussing. Note: None of
+> the pre-existing issues affected reproducibility at all although i am
+> sure one of the AI-kiddies reading the sashiko reports will find a way
+> to create a poc (this is why i entertain fixing them when they look
+> simple enough)
+Not an ideal situation both ways (which is increasingly the case).
+
+Addressing incrementally pre-existing issues can lead to an huge/endless
+number of iterations when touching some unfortunate area (4 is _not_ a
+big number ;) delaying the actual fix indefinitely.
+
+/P
+
+
