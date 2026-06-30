@@ -1,33 +1,33 @@
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A61EB423A67
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 14:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08CD383C85
+	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 14:06:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782828397; cv=none; b=C4pHp1IneFhaEC3gsMqLblX4f2nD+FygPcH3wUQmEOiCfbePM6Mwehhn4zb4zEGRbJX7dyMSjZyOhEKIWrGHx1IU+cMMRo3+VZaq4WaP8IAcxklJd2BGRIxnENlVlEAFlqq6YcnAIOILUBopWM/Vg09BMB+y1LMKlKC4uBxewpM=
+	t=1782828398; cv=none; b=OAiSKGR0YGXBhGLjcDpDpPHcj0hrQBB2IXE06CtC3BeAqSFOtw7T9MfhNuSqzwJ2RSnSPgzxeEJ6z+HcrCPgoz4sre+5pLCNlJ+czFP0gXImDRl4AytCGgAU9uREKEb7MmRFRmRmg6OE7FUSPerU/0cMTnbtSqTdk76v6UtcX/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782828397; c=relaxed/simple;
-	bh=IVtcpeQulDhFoeyAMRykIR3X5DIGKu3rvKvIsf3NF5I=;
+	s=arc-20240116; t=1782828398; c=relaxed/simple;
+	bh=uXIFe/uzTMVHMNViPLdEFbZOLswkX8e+/IztQEcpYOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RRVguQmAz8V4Gj/5sxEBnCluyBeYEaIFwvXwIFNsuIWQ6wDgE5hpSKLH53R1e5miBnAJsm/xtBzcanUV3fwWgC0YXM8ivKqblvBCxr6ffClKWtW4uAb3RYA0eFKePXGjo4mRLRK3rTVgmeR3mjxgZeRfxfh5n4CvrJNA/TBwwRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=YssNSfpm; arc=none smtp.client-ip=23.88.38.48
+	 MIME-Version; b=NsfpMU7VnK1lDpZ96kes6aKASKznwXd/QEr3TjJhgKTlUmZTuFscd6FV1SH+Js/bOsqrlxsH1IdeHyXRfwnyYfE3Dg5bHasMXKMaPaibOUyhhulljryhYwUoQVMXIxVl7kfS2XVyZ1mppRQOGT2qGomVvpp6c6f5VAHSIV6KgTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=qdPZ2eil; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="YssNSfpm"
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="qdPZ2eil"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1782828393;
+	s=09092022; t=1782828394;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MhcjqQ6KyMCxsM73KgBkuwr+9k/iTAvcQoxVAttOCz8=;
-	b=YssNSfpmia3UchCW5sl0I7q6j8NZf3LT2shv9134oX7cACrSLYBYQ76SHltA6bn9rrE/Yr
-	S2b3SN9MxKYr0DtbWPTMigIeiyUVxF0tRShw9Kw99s/eGoaoW8NY0f7xQNWsU1+4sDkTvS
-	uC8gQrDIqo1rpVwrHxU3VRREqRCAgNj8vfHPplEsmALAC3dzrVqpDlZsTS21wR+yu6x707
-	cA4tFXyf77NhMZaDc0UR8G+aXyX4B+kbP2Gb1ldNgOzd8vPLxBpe4/HBhUBhawf4A/doXX
-	sMTKjpA9hbcXM0jYTmNK6Bzk3YUH7uSbjSsdSXMsDoxs4tzRJWqwSSgLE+zHgQ==
+	bh=FzCjWzxPf+rT6MJjI3OB0RLIvAemy3SqIq2nFw9BYZQ=;
+	b=qdPZ2eilYd36XOZnTFmPQp4sVzBR6we9y7v5dhE6p1bBk+tCUSChH60ST3EMkmn4bwUKzF
+	vgt2fgiMVvWHGMxHIfxWMFDDX8Y0Eep6cttIr/H9UOPQI6BTiTCYvY68TJksphYvQnHief
+	0Fmtfjm8Dporxmnt51lKSQl6ZApx+NXEjHHycSwSGStMfYWY85wir6mLHCpKRLw7nbI8WW
+	XivHJYYdLaHfNSEzau4A3QLNoxCPuy5rlvhxz6x1A/sOFiWsq0flEkL6kieg6vgiKpPCdZ
+	NG0oL39g/JewXb/jWcxIoZTE9xx/JkYZCSewCDzAnG2+J+KiEix9GjjWn/dnKg==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -38,9 +38,9 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	b.a.t.m.a.n@lists.open-mesh.org,
 	Sven Eckelmann <sven@narfation.org>,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net-next 12/15] batman-adv: tp_meter: combine adjacent/overlapping unacked entries
-Date: Tue, 30 Jun 2026 16:06:20 +0200
-Message-ID: <20260630140623.88431-13-sw@simonwunderlich.de>
+Subject: [PATCH net-next 14/15] batman-adv: tp_meter: adjust name of receiver lock
+Date: Tue, 30 Jun 2026 16:06:22 +0200
+Message-ID: <20260630140623.88431-15-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260630140623.88431-1-sw@simonwunderlich.de>
 References: <20260630140623.88431-1-sw@simonwunderlich.de>
@@ -54,128 +54,122 @@ Content-Transfer-Encoding: 8bit
 
 From: Sven Eckelmann <sven@narfation.org>
 
-Right at the point when the receiver gets the first packet with a seqno gap
-(due to some packet loss/reordering), entries in the unacked list are
-created. They are (besides direct seqno matches) are not combined. A lot
-more then necessary entries are therefore created. Not for each gap but for
-each packet.
-
-This increases the memory consumption and management overhead. But it is
-trivial to handle overlapping or adjacent sequence number ranges during the
-insert. Only the handling of closed gaps by a new packets requires an extra
-step after the insert.
+The lock used to protect the receiver from reading/writing in parallel to
+ack sequence number relevant data was still called unacked_lock. But it is
+no longer only about the unacked_list. Use a broader term to reflect this.
 
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- net/batman-adv/tp_meter.c | 61 +++++++++++++++++++++++++++++++++------
- net/batman-adv/types.h    |  2 +-
- 2 files changed, 53 insertions(+), 10 deletions(-)
+ net/batman-adv/tp_meter.c | 20 ++++++++++----------
+ net/batman-adv/types.h    |  4 ++--
+ 2 files changed, 12 insertions(+), 12 deletions(-)
 
 diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index b7fee6e55f032..5cc719c81ea0b 100644
+index f18ce360839d3..ffd3171d4b992 100644
 --- a/net/batman-adv/tp_meter.c
 +++ b/net/batman-adv/tp_meter.c
-@@ -1406,6 +1406,7 @@ static bool batadv_tp_handle_out_of_order(struct batadv_tp_receiver *tp_vars,
- 	__must_hold(&tp_vars->common.unacked_lock)
+@@ -1252,13 +1252,13 @@ static void batadv_tp_receiver_release(struct kref *ref)
+ 	/* lock should not be needed because this object is now out of any
+ 	 * context!
+ 	 */
+-	spin_lock_bh(&tp_vars->unacked_lock);
++	spin_lock_bh(&tp_vars->ack_seqno_lock);
+ 	list_for_each_entry_safe(un, safe, &tp_vars->unacked_list, list) {
+ 		list_del(&un->list);
+ 		kfree(un);
+ 		tp_vars->unacked_count--;
+ 	}
+-	spin_unlock_bh(&tp_vars->unacked_lock);
++	spin_unlock_bh(&tp_vars->ack_seqno_lock);
+ 
+ 	kfree_rcu(tp_vars, common.rcu);
+ }
+@@ -1316,13 +1316,13 @@ static void batadv_tp_receiver_shutdown(struct timer_list *t)
+ 	if (batadv_tp_list_detach(&tp_vars->common))
+ 		batadv_tp_receiver_put(tp_vars);
+ 
+-	spin_lock_bh(&tp_vars->unacked_lock);
++	spin_lock_bh(&tp_vars->ack_seqno_lock);
+ 	list_for_each_entry_safe(un, safe, &tp_vars->unacked_list, list) {
+ 		list_del(&un->list);
+ 		kfree(un);
+ 		tp_vars->unacked_count--;
+ 	}
+-	spin_unlock_bh(&tp_vars->unacked_lock);
++	spin_unlock_bh(&tp_vars->ack_seqno_lock);
+ 
+ 	/* drop reference of timer */
+ 	if (WARN_ON(atomic_xchg(&tp_vars->receiving, 0) != 1))
+@@ -1415,7 +1415,7 @@ static int batadv_tp_send_ack(struct batadv_priv *bat_priv, const u8 *dst,
+  */
+ static bool batadv_tp_handle_out_of_order(struct batadv_tp_receiver *tp_vars,
+ 					  u32 seqno, u32 payload_len)
+-	__must_hold(&tp_vars->unacked_lock)
++	__must_hold(&tp_vars->ack_seqno_lock)
  {
  	struct batadv_tp_unacked *un, *new;
-+	struct batadv_tp_unacked *safe;
- 	bool added = false;
+ 	struct batadv_tp_unacked *safe;
+@@ -1532,7 +1532,7 @@ static bool batadv_tp_handle_out_of_order(struct batadv_tp_receiver *tp_vars,
+  * @tp_vars: the private data of the current TP meter session
+  */
+ static void batadv_tp_ack_unordered(struct batadv_tp_receiver *tp_vars)
+-	__must_hold(&tp_vars->unacked_lock)
++	__must_hold(&tp_vars->ack_seqno_lock)
+ {
+ 	struct batadv_tp_unacked *un, *safe;
+ 	u32 to_ack;
+@@ -1602,7 +1602,7 @@ batadv_tp_init_recv(struct batadv_priv *bat_priv,
+ 	tp_vars->common.bat_priv = bat_priv;
+ 	kref_init(&tp_vars->common.refcount);
  
- 	new = kmalloc_obj(*new, GFP_ATOMIC);
-@@ -1430,20 +1431,46 @@ static bool batadv_tp_handle_out_of_order(struct batadv_tp_receiver *tp_vars,
- 	 * seqno than all the others already stored.
- 	 */
- 	list_for_each_entry_reverse(un, &tp_vars->common.unacked_list, list) {
--		/* check for duplicates */
--		if (new->seqno == un->seqno) {
--			if (new->len > un->len)
--				un->len = new->len;
-+		/* look for the right position - an un which is smaller */
-+		if (batadv_seq_before(new->seqno, un->seqno))
-+			continue;
-+
-+		/* smaller/equal seqno was found but they might be directly
-+		 * after another or overlapping. keep only a single entry
-+		 *
-+		 * It is already known that:
-+		 *
-+		 *	un->seqno <= new->seqno
-+		 *
-+		 * When establishing that:
-+		 *
-+		 *	new->seqno <= un->seqno + un->len
-+		 *
-+		 * Then it is not necessary to add a new entry because the
-+		 * smaller/equal seqno of un might already contain the new
-+		 * received packet or we only add new data directly after
-+		 * the end of un. The latter can be identified using:
-+		 *
-+		 *	un->seqno + un->len <= new->seqno + new->len
-+		 */
-+		if (!batadv_seq_before(un->seqno + un->len, new->seqno)) {
-+			/* new data directly after un? */
-+			if (!batadv_seq_before(new->seqno + new->len,
-+					       un->seqno + un->len))
-+				un->len = new->seqno + new->len - un->seqno;
-+
-+			/* un now represents both old un + new */
- 			kfree(new);
- 			added = true;
-+
-+			/* un has to be used to check if the gap to the next
-+			 * seqno range was closed
-+			 */
-+			new = un;
- 			break;
- 		}
+-	spin_lock_init(&tp_vars->unacked_lock);
++	spin_lock_init(&tp_vars->ack_seqno_lock);
+ 	INIT_LIST_HEAD(&tp_vars->unacked_list);
+ 	tp_vars->unacked_count = 0;
  
--		/* look for the right position */
--		if (batadv_seq_before(new->seqno, un->seqno))
--			continue;
--
--		/* as soon as an entry having a bigger seqno is found, the new
-+		/* as soon as an entry having a smaller seqno is found, the new
- 		 * one is attached _after_ it. In this way the list is kept in
- 		 * ascending order
- 		 */
-@@ -1459,6 +1486,22 @@ static bool batadv_tp_handle_out_of_order(struct batadv_tp_receiver *tp_vars,
- 		tp_vars->common.unacked_count++;
+@@ -1664,7 +1664,7 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
+ 		WRITE_ONCE(tp_vars->last_recv_time, jiffies);
  	}
  
-+	/* check if new filled the gap to the next list entries */
-+	un = new;
-+	list_for_each_entry_safe_continue(un, safe, &tp_vars->common.unacked_list, list) {
-+		if (batadv_seq_before(new->seqno + new->len, un->seqno))
-+			break;
-+
-+		/* next entry is overlapping or adjacent - combine both */
-+		if (batadv_seq_before(new->seqno + new->len,
-+				      un->seqno + un->len))
-+			new->len = un->seqno + un->len - new->seqno;
-+
-+		list_del(&un->list);
-+		kfree(un);
-+		tp_vars->common.unacked_count--;
-+	}
-+
- 	/* remove the last (biggest) unacked seqno when list is too large */
- 	if (tp_vars->common.unacked_count > BATADV_TP_MAX_UNACKED) {
- 		un = list_last_entry(&tp_vars->common.unacked_list,
+-	spin_lock_bh(&tp_vars->unacked_lock);
++	spin_lock_bh(&tp_vars->ack_seqno_lock);
+ 
+ 	/* if the packet is a duplicate, it may be the case that an ACK has been
+ 	 * lost. Resend the ACK
+@@ -1680,7 +1680,7 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
+ 		 * not been enqueued correctly
+ 		 */
+ 		if (!batadv_tp_handle_out_of_order(tp_vars, seqno, payload_len)) {
+-			spin_unlock_bh(&tp_vars->unacked_lock);
++			spin_unlock_bh(&tp_vars->ack_seqno_lock);
+ 			goto out;
+ 		}
+ 
+@@ -1696,7 +1696,7 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
+ 
+ send_ack:
+ 	to_ack = tp_vars->last_recv;
+-	spin_unlock_bh(&tp_vars->unacked_lock);
++	spin_unlock_bh(&tp_vars->ack_seqno_lock);
+ 
+ 	/* send the ACK. If the received packet was out of order, the ACK that
+ 	 * is going to be sent is a duplicate (the sender will count them and
 diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
-index e1463a029e835..c2ab00d8ef160 100644
+index c194d8069774c..cd12755d21f35 100644
 --- a/net/batman-adv/types.h
 +++ b/net/batman-adv/types.h
-@@ -1332,7 +1332,7 @@ struct batadv_tp_unacked {
- 	u32 seqno;
+@@ -1474,8 +1474,8 @@ struct batadv_tp_receiver {
+ 	/** @unacked_list: list of unacked packets (meta-info only) */
+ 	struct list_head unacked_list;
  
- 	/** @len: length of the packet */
--	u16 len;
-+	u32 len;
+-	/** @unacked_lock: protect unacked_list + &batadv_tp_receiver.last_recv */
+-	spinlock_t unacked_lock;
++	/** @ack_seqno_lock: protect unacked_list + &batadv_tp_receiver.last_recv */
++	spinlock_t ack_seqno_lock;
  
- 	/** @list: list node for &batadv_tp_vars_common.unacked_list */
- 	struct list_head list;
+ 	/** @unacked_count: number of unacked entries */
+ 	size_t unacked_count;
 -- 
 2.47.3
 
