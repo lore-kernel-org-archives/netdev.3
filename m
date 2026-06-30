@@ -1,78 +1,110 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D47F29C327
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 22:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592E040D574;
+	Tue, 30 Jun 2026 22:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782858452; cv=none; b=IWCh2gqGFZyGgi293duKXtIvIX+Rbc1ZLx9cYZKVGVBpe+0EepHe/Ld5wEccOR8Y3DSM2jRMYA1kvhSzaj+3eAWLFb38X+1gVEmOhRYR6eyfZBh5XNW59qJlfypts+yWONo4YN0dKfyxxVrLLpnYBZ+DDiwbio5+zXa2GpTZuR8=
+	t=1782859377; cv=none; b=qM77HRUBQpoKm83jHKnM3w5DlThJtxb3RkLgywyCjSHoKq5Nluh9UCc4l3KrvLuRZkHUv1fZYjMahay6Vw5u6I+FgbYZ11vwyWEoPllYQuUv6vOoGin/9PpiMJG5eyxHQMigePFYWG7JHxn9VjEQZ75Eksc7kATApeSv+wslYsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782858452; c=relaxed/simple;
-	bh=TTcVu3N5A2qxImNE8jx0tO9sA0vxx21QZu6VSH0wmU4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XL+Ga00LgMq/n1j65GGqimUD58Ek5u+CnHTPQT9B9PvyrsdQ4x2wze3tQwZH3wE5AslTkEIIXvyt5IZOPdLL+l+AJMMwZ1NlqY5YTgjWmBLtQVTx9BvNifCsxTFUuhQ5mgAJs/vMfWlNLP7ZFMzPOKRsoMQ1jhsgwd8X7ZWSm+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a3nZipE5; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782859377; c=relaxed/simple;
+	bh=luNVmqhdNWNPyAJ0G9onacvp8OC3uiAo1Jp3h3h/H7w=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oA7pu7kivJd8JJcJeGxrO8iugGiUdvaDbruJdwcaNvBw+cPbZmtjrCtujNNQP3AVYxbDKYCN+lFxOsqzoaLBHfFp3Ws/XWJSMzZfvKUUumAoLrvO55u1v9jzxE2mlk5J3Zohgn0A82Jfffo4C2cwYevI6GLNFMBr1laSDFvJZhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QiGzyGF6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a3nZipE5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64A761F0155D
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 22:27:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QiGzyGF6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F10471F000E9;
+	Tue, 30 Jun 2026 22:42:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782858450;
-	bh=TTcVu3N5A2qxImNE8jx0tO9sA0vxx21QZu6VSH0wmU4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=a3nZipE5rJA5y3N4Pt43hJP+a36yVR5xrcMfyXU20kSXL/EMJ9K0p232l6Wre9wwp
-	 XZGaTAaW+es9sgk2ARLIAXeZYTEfZEKo5NkLTX00wcwnR0btmfhuX2qmDgsgRcXS/Q
-	 BaQDKyMcLqkohVenN5e9fDl+zIbBLwde996RnNIGz3h3eKEQE15LGapkSZsv9IMD0m
-	 Iqoina2XyIvqZEumLIqhlDlgyvjWqtUVlH/1DwkhbLX9mv9yy2rvdW7YtvW9bGvLLU
-	 x9VHYe8+Vd4Yjn/Rs6RW4nQMcWgQ6Jl5XlPCKLmcmP5L7dbjrZpWPH2Edj+0omjQhI
-	 Ur0N2LFTC6dYA==
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-39af87c4589so33491fa.2
-        for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 15:27:30 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RrwrzYGp4dBwtzgb97TbVcNzcpIVkIlCI9Qbp20Kbfk7JFv36ehsslM1pJ+vbqHfUTtfiVVoro=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx3Su+OCyuUwD5FxKXXvqSKODQuZHeWlQN7xbcJeTzuRZNNOexf
-	eASmFyW0yXFqhw/HmREygua/qL5GvdHR+QWysiuJNz9Bj1tj1S3SnVmfGfVi39neFt4bix1X4lD
-	EdhMiTFua57c62Kxk6RupOgn1HVrVG0c=
-X-Received: by 2002:ac2:4bd0:0:b0:5ae:a2b5:3ae3 with SMTP id
- 2adb3069b0e04-5aebdbb32bdmr1526007e87.29.1782858449161; Tue, 30 Jun 2026
- 15:27:29 -0700 (PDT)
+	s=k20260515; t=1782859376;
+	bh=kGD5WRMQdZ0R+3egv71JkQENkPVVjj9qHKXmH1pqyNM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=QiGzyGF6P7Iuj+S3oUqZ8t96qYBQszc+u7XoKV1SPrGYJG73TtkADOMrh7VfonEpT
+	 KgCYhOUEUjIeSm7r5IzOcxZKnFe+zzdPqzcY7aaBU4NwV1lWkMZGX3NH5S4ndXDsq2
+	 yaFLhDtlc+ZhQ6t7Ibha5528oMpD/bsvtRWc6uQ7iwvnuqPt+6S2NkDNxJ/g9VTFkZ
+	 LypyibTSbTu0nEb53RpRH4YqReCXtqtklKyC8TVwMjcUToJl1HRU2upqIm+LHxYTkW
+	 6zC3tSz30EKthKaIUx+BT1YmMmUnmb9vY7h+8jApw/e81R+1KFtLPvbAOOFfJ6+Nb6
+	 qHmUICs7XUcQw==
+Date: Tue, 30 Jun 2026 15:42:55 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: "Tianchu Chen" <tianchu.chen@linux.dev>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, linux-usb@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH] net: usb: cx82310_eth: stop parsing reboot marker as
+ packet
+Message-ID: <20260630154255.2954c33a@kernel.org>
+In-Reply-To: <e87b8ecf4bbcf87635d144508bf35377dd5397b3@linux.dev>
+References: <700e16e9523d7f1299b00df75b13a3c66b6e517b@linux.dev>
+	<20260629174458.6ebf647d@kernel.org>
+	<e87b8ecf4bbcf87635d144508bf35377dd5397b3@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260630092406.150587-1-manikandan.m@microchip.com> <20260630092406.150587-6-manikandan.m@microchip.com>
-In-Reply-To: <20260630092406.150587-6-manikandan.m@microchip.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Wed, 1 Jul 2026 00:27:17 +0200
-X-Gmail-Original-Message-ID: <CAD++jLmURCUfQNoTgLeTRtxfoWxgyPcmHv6rJpmB1gXWFL+NGA@mail.gmail.com>
-X-Gm-Features: AVVi8CfX0Qclfl00TlhG9NPtI9hB9ExKc-14XAFH9ZzPrWiRzE1N9YyLdRCBq80
-Message-ID: <CAD++jLmURCUfQNoTgLeTRtxfoWxgyPcmHv6rJpmB1gXWFL+NGA@mail.gmail.com>
-Subject: Re: [PATCH v4 5/7] ARM: dts: microchip: sama5d27_wlsom1: use
- fixed-partitions for QSPI flash
-To: Manikandan Muralidharan <manikandan.m@microchip.com>
-Cc: pratyush@kernel.org, mwalle@kernel.org, takahiro.kuwano@infineon.com, 
-	miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, srini@kernel.org, 
-	nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com, 
-	claudiu.beznea@tuxon.dev, linux@armlinux.org.uk, richardcochran@gmail.com, 
-	arnd@arndb.de, michael@walle.cc, linux-mtd@lists.infradead.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jun 30, 2026 at 11:26=E2=80=AFAM Manikandan Muralidharan
-<manikandan.m@microchip.com> wrote:
+On Tue, 30 Jun 2026 10:30:53 +0000 Tianchu Chen wrote:
+> June 30, 2026 at 8:44 AM, "Jakub Kicinski" <kuba@kernel.org mailto:kuba@kernel.org?to=%22Jakub%20Kicinski%22%20%3Ckuba%40kernel.org%3E > wrote:
+> > On Thu, 25 Jun 2026 15:32:04 +0000 Tianchu Chen wrote:
+> > > From: Tianchu Chen <flynnnchen@tencent.com>
+> > >  
+> > >  Discovered by Atuin - Automated Vulnerability Discovery Engine.
+> > >  
+> > >  cx82310_rx_fixup() treats an RX length of 0xffff as a device reboot
+> > >  marker and schedules work to re-enable ethernet mode, but then continues
+> > >  processing the marker as a normal packet length. This is an out-of-bounds
+> > >  heap write controlled by the usb device.
+> > >   
+> > Where? Can you be more specific in the commit message? At a glance 
+> > the accesses seem to be bound-checked with skb->len.
+> > -- 
+> > pw-bot: cr
+> >  
+> 
+> 
+> The "len > skb->len" check bounds the source read, but the overflow is on the
+> destination buffer.
+> 
+> The buggy path is:
+> 
+> 	if (len == 0xffff) {
+> 		netdev_info(dev->net, "router was rebooted, re-enabling ethernet mode");
+> 		schedule_work(&priv->reenable_work);
+> 		/* <- BUG: missing return; 0xffff bypasses the oversized-length reject */
+> 	} else if (len > CX82310_MTU) {
+> 		netdev_err(dev->net, "RX packet too long: %d B\n", len);
+> 		return 0;
+> 	}
+> 	if (len > skb->len) {
+> 		dev->partial_len = skb->len; // skb->len is bounded by the USB transfer size (4K)
+> 		dev->partial_rem = len - skb->len;
+> 		memcpy((void *)dev->partial_data, skb->data,
+> 		       dev->partial_len); /* <- TRIGGER: can copy 4K bytes into 1516-byte partial_data */
 
-> Move the QSPI flash partitions under a "partitions" node with the
-> "fixed-partitions" compatible, as required by the current MTD partition
-> binding, instead of declaring them as direct children of the flash node.
-> No functional change.
->
-> Signed-off-by: Manikandan Muralidharan <manikandan.m@microchip.com>
+If skb->len (== dev->partial_len) is not bound-checked to the size
+of dev->partial_data - aren't there more paths that could hit this
+overflow? Are you fixing the right thing?
 
-Reviewed-by: Linus Walleij <linusw@kernel.org>
+> ...
+> ...
+> 	}
+> 
+> For normal oversized lengths, the len > CX82310_MTU branch rejects
+> before this copy. But 0xffff is special-cased and falls through. With a
+> 4096-byte RX URB, after the 2-byte length header is pulled, skb->len can
+> be 4094, while partial_data is allocated as dev->hard_mtu
+> (CX82310_MTU + 2, 1516 bytes).
+> 
+> So the source read is bounded by skb->len; the destination write is not.
+> 
+> I am happy to send a v2 with this spelled out more clearly in the commit message
+> if needed.
+> 
+> Best regards,
+> Tianchu Chen
+> 
 
-Yours,
-Linus Walleij
