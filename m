@@ -1,85 +1,434 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E1A47404E
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 13:53:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78BF283FD9;
+	Tue, 30 Jun 2026 13:57:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.222
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782827601; cv=none; b=i+KDPW0sst+fR9tfaGrTYBczEm+c5Vufo/weeN2cDb6BMI75dzqslLKyLwyvzn0KRvl3073G0DnDVCNRrXqHNRgDHjSi3jrb+WGAfqqosgHScbfRWcxsJth8tJ8lN/0ruJL8GmYiBJfowRHVjLp0OPemzPfKHp8PWP+lH/0opmY=
+	t=1782827869; cv=none; b=pDFas1AEfuOslAgJ/2/UV856cmC9v7VSjQocY3bj8v9pIf8XJyolzm4n354ajeUw8r28IwH4wMhZ14oTf48PJDJ3h1r+/J/fSknbbWoaPVYjyxxGLDLtmJ5Hve5iGALTI/W8pLJUoyioXz9Cczr2+BqJeAEHWvOgnRNLzleq/bA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782827601; c=relaxed/simple;
-	bh=dEd5nwAKspQ/mB2Z45yUvjUY4qf3KL23pOzfxLrJJn4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eAQf0MgPNSRE0Unm3d3G1KcoJx1G/zbZ29QLhaz7atUGNAHg20qQEnJ5xxUxj91u76eNvb21I+5rKJJRrExfStUQReGDc6n/fCZYcvka64/KImZlx9fRSmbWp41ISi1lwaBnHZpiNnUESIWKP0wuu4WocOrBJ4+gaSxxvWszs2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=D9wSGRVy; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1782827869; c=relaxed/simple;
+	bh=bH51/Q+iOUjJiNvz6xoWiMrE4J0oG1BuWWDDBtt9dPw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gNfOgMb8gzvIy/tswZ+UFKnjmt1ci6jQdybwF7OBDwlSO6MkawFvWD8IzJEZLW9QTEikan0ZHe4s2XQKyJpwodDKO5K4cT7w1cxoTi/tFGQ5nnAUJGGfnWc8vmKsOPG4/m5OGMTKqL8VBWpvwlVDc8M1e58JKDUMYbZ2W3CxobE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=dGKDy5Nc; arc=none smtp.client-ip=113.46.200.222
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="D9wSGRVy"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 159B01A0D64;
-	Tue, 30 Jun 2026 13:53:18 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id D366E6025A;
-	Tue, 30 Jun 2026 13:53:17 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 497B2106F1F70;
-	Tue, 30 Jun 2026 15:53:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1782827596; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=RhTaGTqXn+vEjpea1Rvo2RPETqMhHuTMxdNXRudSe/o=;
-	b=D9wSGRVypx8zxy3QgxOSR130crVvBYKWZNsLuy/RRFjJLeBg3BQdLPUaFDY/5R0BEEX9b/
-	5A498attBVzR2DG8XO4BBKQhrgBmpkrufZKVvC17sTbYl25xqGrwVMva8scfhu1g5eo3en
-	bKFmtNpANcqA/VRIGpxxTH/VCWjJL7xFzq4LhFyPwkXz61w8AQ64UJTt54okI1zw2yC75g
-	F1oDoH6AdfPL3JSbHuMapXSt20ZBqstdc1hWTxEbPCvi5NU8atITi4occfoghLZTVDBFDL
-	see8UI6kPDopLHpL55kTSDUp3FS+dxAhszlwDryseybhNk13Kvdp0Neyz/GkJA==
-Message-ID: <563ac947-0c5d-47ee-aedc-66baf4d32648@bootlin.com>
-Date: Tue, 30 Jun 2026 15:53:10 +0200
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="dGKDy5Nc"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=eeukvJX5KwCSVly2WekvpKMZdG6t6xhN9pFndw03sqc=;
+	b=dGKDy5NcgnL/4/HGaru8tW2ZRCPs03skRH2nTlBAtEZ5+RnsgLu/b1INCZmW2mnt4iYwyjAwq
+	SRmS3n4cS8X9t6up+x9h0rKcE6tme9oCFDSbrgxSkpf9oMmnXdgBHtfwUI8lOjmaa7OIW8dmfYj
+	AAX63hwExQw96YGLzcbOxIw=
+Received: from mail.maildlp.com (unknown [172.19.163.214])
+	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4gqPFH3RBkzLmGv;
+	Tue, 30 Jun 2026 21:31:47 +0800 (CST)
+Received: from kwepemo500018.china.huawei.com (unknown [7.202.195.199])
+	by mail.maildlp.com (Postfix) with ESMTPS id A22D14057C;
+	Tue, 30 Jun 2026 21:40:56 +0800 (CST)
+Received: from localhost.huawei.com (10.90.31.46) by
+ kwepemo500018.china.huawei.com (7.202.195.199) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Tue, 30 Jun 2026 21:40:55 +0800
+From: Jijie Shao <shaojijie@huawei.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
+CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
+	<chenhao418@huawei.com>, <yangshuaisong@h-partners.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<shaojijie@huawei.com>
+Subject: [PATCH RESEND net-next] net: hns3: add support to query/set TX pfc_prevention_tout for ethtool with RX prevention disabled
+Date: Tue, 30 Jun 2026 21:40:43 +0800
+Message-ID: <20260630134043.1532431-1-shaojijie@huawei.com>
+X-Mailer: git-send-email 2.33.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] arm64: dts/net: stmmac: Add Agilex5 SoCDK TSN Config2
- board support
-To: muhammad.nazim.amirul.nazle.asmade@altera.com, dinguyen@kernel.org
-Cc: rmk+kernel@armlinux.org.uk, krzk+dt@kernel.org, conor+dt@kernel.org,
- robh@kernel.org, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, andrew+netdev@lunn.ch, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260630133108.27244-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20260630133108.27244-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemo500018.china.huawei.com (7.202.195.199)
 
-Hi,
+From: Hao Chen <chenhao418@huawei.com>
 
-On 6/30/26 15:31, muhammad.nazim.amirul.nazle.asmade@altera.com wrote:
-> From: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
-> 
-> The Intel SoCFPGA Agilex5 SoCDK TSN Config2 board uses a dual-port
-> Ethernet setup where gmac1 (TSN port) operates with different MAC-side
-> and PHY-side interface modes: GMII internally in the MAC, and RGMII
-> towards the PHY.
+Add ethtool support to query and configure the PFC (Priority Flow Control)
+storm prevention timeout. When TX continuously sends PFC frames, the peer
+end is suppressed from sending packets. If this persists, a PFC frame storm
+may occur.
 
-There's the same behaviour on Gen5, e.g. CycloneV where we have the
-"EMAC splitter". Based on wether or not we have that splitter in DT,
-we override the INTF_SEL bits to set GMII as the MAC output, the splitter
-converting that to RGMII/SGMII.
+This feature allows configuring a timeout to prevent such storms.
 
-Is there something similar on this AgileX5 version by any chance, for
-which we could reuse the logic ?
+Signed-off-by: Hao Chen <chenhao418@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+---
+ drivers/net/ethernet/hisilicon/hns3/hnae3.h   |  14 ++
+ .../hns3/hns3_common/hclge_comm_cmd.h         |   3 +
+ .../ethernet/hisilicon/hns3/hns3_ethtool.c    |  12 ++
+ .../hisilicon/hns3/hns3pf/hclge_cmd.h         |   9 +
+ .../hisilicon/hns3/hns3pf/hclge_main.c        | 172 ++++++++++++++++++
+ .../hisilicon/hns3/hns3pf/hclge_main.h        |   7 +
+ 6 files changed, 217 insertions(+)
 
-I know that on CycloneV you also need to adjust that GMII -> RGMII/SGMII
-splitter whenever the speed changes, is that different on agileX5 ? have
-you tested 10/100Mbps ?
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hnae3.h b/drivers/net/ethernet/hisilicon/hns3/hnae3.h
+index a8798eecd9fb..4286af9239b0 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hnae3.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hnae3.h
+@@ -602,6 +602,10 @@ typedef int (*read_func)(struct seq_file *s, void *data);
+  *   Config wake on lan
+  * dbg_get_read_func
+  *   Return the read func for debugfs seq file
++ * set_pfc_prevention_tout
++ *   Set PFC storm prevention timeout
++ * get_pfc_prevention_tout
++ *   Get PFC storm prevention timeout
+  */
+ struct hnae3_ae_ops {
+ 	int (*init_ae_dev)(struct hnae3_ae_dev *ae_dev);
+@@ -810,6 +814,8 @@ struct hnae3_ae_ops {
+ 	int (*hwtstamp_set)(struct hnae3_handle *handle,
+ 			    struct kernel_hwtstamp_config *config,
+ 			    struct netlink_ext_ack *extack);
++	int (*set_pfc_prevention_tout)(struct hnae3_handle *handle, u16 times);
++	int (*get_pfc_prevention_tout)(struct hnae3_handle *handle, u16 *times);
+ };
+ 
+ struct hnae3_dcb_ops {
+@@ -891,6 +897,14 @@ struct hnae3_roce_private_info {
+ 	unsigned long state;
+ };
+ 
++struct hnae3_pfc_storm_para {
++	u32 dir;
++	u32 enable;
++	u32 period_ms;
++	u32 times;
++	u32 recovery_period_ms;
++};
++
+ #define HNAE3_SUPPORT_APP_LOOPBACK    BIT(0)
+ #define HNAE3_SUPPORT_PHY_LOOPBACK    BIT(1)
+ #define HNAE3_SUPPORT_SERDES_SERIAL_LOOPBACK	BIT(2)
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.h b/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.h
+index 2c2a2f1e0d7a..6dde07dde1e8 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.h
+@@ -314,6 +314,9 @@ enum hclge_opcode_type {
+ 
+ 	/* Query link diagnosis info command */
+ 	HCLGE_OPC_QUERY_LINK_DIAGNOSIS	= 0x702A,
++
++	/* Config pause storm param command */
++	HCLGE_OPC_CFG_PAUSE_STORM_PARA = 0x7019,
+ };
+ 
+ enum hclge_comm_cmd_return_status {
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
+index 442f15476af3..e7318f236315 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
+@@ -1895,6 +1895,12 @@ static int hns3_get_tunable(struct net_device *netdev,
+ 	case ETHTOOL_TX_COPYBREAK_BUF_SIZE:
+ 		*(u32 *)data = h->kinfo.tx_spare_buf_size;
+ 		break;
++	case ETHTOOL_PFC_PREVENTION_TOUT:
++		if (!h->ae_algo->ops->get_pfc_prevention_tout)
++			return -EOPNOTSUPP;
++
++		ret = h->ae_algo->ops->get_pfc_prevention_tout(h, (u16 *)data);
++		break;
+ 	default:
+ 		ret = -EOPNOTSUPP;
+ 		break;
+@@ -2020,6 +2026,12 @@ static int hns3_set_tunable(struct net_device *netdev,
+ 			netdev_info(netdev, "the active tx spare buf size is %u, due to page order\n",
+ 				    priv->ring->tx_spare->len);
+ 
++		break;
++	case ETHTOOL_PFC_PREVENTION_TOUT:
++		if (!h->ae_algo->ops->set_pfc_prevention_tout)
++			return -EOPNOTSUPP;
++
++		ret = h->ae_algo->ops->set_pfc_prevention_tout(h, *(u16 *)data);
+ 		break;
+ 	default:
+ 		ret = -EOPNOTSUPP;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h
+index 4ce92ddefcde..1c029dc32ab8 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h
+@@ -890,6 +890,15 @@ struct hclge_query_wol_supported_cmd {
+ 	u8 rsv[20];
+ };
+ 
++struct hclge_pfc_storm_para_cmd {
++	__le32 dir;
++	__le32 enable;
++	__le32 period_ms;
++	__le32 times;
++	__le32 recovery_period_ms;
++	__le32 rsv;
++};
++
+ struct hclge_hw;
+ int hclge_cmd_send(struct hclge_hw *hw, struct hclge_desc *desc, int num);
+ #endif
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index fc8587c80813..a08d8a35aef9 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -3524,6 +3524,122 @@ static int hclge_set_vf_link_state(struct hnae3_handle *handle, int vf,
+ 	return ret;
+ }
+ 
++static int hclge_set_pfc_storm_para(struct hclge_dev *hdev,
++				    struct hnae3_pfc_storm_para *para)
++{
++	struct hclge_pfc_storm_para_cmd *para_cmd;
++	struct hclge_desc desc;
++	int ret;
++
++	if (hdev->ae_dev->dev_version < HNAE3_DEVICE_VERSION_V3)
++		return -EOPNOTSUPP;
++
++	hclge_cmd_setup_basic_desc(&desc, HCLGE_OPC_CFG_PAUSE_STORM_PARA,
++				   false);
++	para_cmd = (struct hclge_pfc_storm_para_cmd *)desc.data;
++	para_cmd->dir = cpu_to_le32(para->dir);
++	para_cmd->enable = cpu_to_le32(para->enable);
++	para_cmd->period_ms = cpu_to_le32(para->period_ms);
++	para_cmd->times = cpu_to_le32(para->times);
++	para_cmd->recovery_period_ms = cpu_to_le32(para->recovery_period_ms);
++
++	ret = hclge_cmd_send(&hdev->hw, &desc, 1);
++	if (ret)
++		dev_err(&hdev->pdev->dev,
++			"failed to set pfc storm para, ret = %d\n", ret);
++	return ret;
++}
++
++static int hclge_get_pfc_storm_para(struct hclge_dev *hdev,
++				    struct hnae3_pfc_storm_para *para)
++{
++	struct hclge_pfc_storm_para_cmd *para_cmd;
++	struct hclge_desc desc;
++	int ret;
++
++	if (hdev->ae_dev->dev_version < HNAE3_DEVICE_VERSION_V3)
++		return -EOPNOTSUPP;
++
++	hclge_cmd_setup_basic_desc(&desc, HCLGE_OPC_CFG_PAUSE_STORM_PARA, true);
++	para_cmd = (struct hclge_pfc_storm_para_cmd *)desc.data;
++	para_cmd->dir = cpu_to_le32(para->dir);
++	ret = hclge_cmd_send(&hdev->hw, &desc, 1);
++	if (ret) {
++		dev_err(&hdev->pdev->dev,
++			"failed to get pfc storm para, ret = %d\n", ret);
++		return ret;
++	}
++
++	para->enable = le32_to_cpu(para_cmd->enable);
++	para->period_ms = le32_to_cpu(para_cmd->period_ms);
++	para->times = le32_to_cpu(para_cmd->times);
++	para->recovery_period_ms = le32_to_cpu(para_cmd->recovery_period_ms);
++
++	return 0;
++}
++
++static int hclge_enable_pfc_storm_prevent(struct hclge_dev *hdev,
++					  int dir, bool enable)
++{
++	struct hnae3_pfc_storm_para para = {0};
++	int ret;
++
++	para.dir = dir;
++	ret = hclge_get_pfc_storm_para(hdev, &para);
++	if (ret)
++		return ret;
++
++	para.enable = enable;
++	return hclge_set_pfc_storm_para(hdev, &para);
++}
++
++static int hclge_set_pfc_prevention_tout(struct hnae3_handle *h, u16 times)
++{
++	struct hclge_vport *vport = hclge_get_vport(h);
++	struct hclge_dev *hdev = vport->back;
++	struct hnae3_pfc_storm_para para;
++	int ret;
++
++	if (times > HCLGE_MAX_PFC_PREVENTION_TOUT) {
++		dev_err(&hdev->pdev->dev,
++			"times %u should be no more than %u!\n",
++			times, HCLGE_MAX_PFC_PREVENTION_TOUT);
++		return -EINVAL;
++	}
++
++	para.dir = HCLGE_DIR_TX;
++	ret = hclge_get_pfc_storm_para(hdev, &para);
++	if (ret)
++		return ret;
++
++	para.enable = times ? 1 : 0;
++	para.times = (u32)times;
++	ret = hclge_set_pfc_storm_para(hdev, &para);
++	if (ret)
++		return ret;
++
++	hdev->pfc_prevention_tout = times;
++
++	return 0;
++}
++
++static int hclge_get_pfc_prevention_tout(struct hnae3_handle *h, u16 *times)
++{
++	struct hclge_vport *vport = hclge_get_vport(h);
++	struct hclge_dev *hdev = vport->back;
++	struct hnae3_pfc_storm_para para;
++	int ret;
++
++	para.dir = HCLGE_DIR_TX;
++	ret = hclge_get_pfc_storm_para(hdev, &para);
++	if (ret)
++		return ret;
++
++	*times = para.enable ? (u16)para.times : 0;
++
++	return 0;
++}
++
+ static void hclge_set_reset_pending(struct hclge_dev *hdev,
+ 				    enum hnae3_reset_type reset_type)
+ {
+@@ -4317,6 +4433,26 @@ static int hclge_reset_prepare(struct hclge_dev *hdev)
+ 	return hclge_reset_prepare_wait(hdev);
+ }
+ 
++static void hclge_restore_pfc_storm_prevention_tout(struct hclge_dev *hdev)
++{
++	struct hnae3_handle *handle = &hdev->vport[0].nic;
++	int ret;
++
++	ret = hclge_enable_pfc_storm_prevent(hdev, HCLGE_DIR_RX, false);
++	if (ret == -EOPNOTSUPP)
++		return;
++	else if (ret)
++		dev_warn(&hdev->pdev->dev,
++			 "failed to disable rx pfc storm prevent, ret = %d\n",
++			 ret);
++
++	ret = hclge_set_pfc_prevention_tout(handle, hdev->pfc_prevention_tout);
++	if (ret)
++		dev_warn(&hdev->pdev->dev,
++			 "failed to set tx pfc storm prevent, ret = %d\n",
++			 ret);
++}
++
+ static int hclge_reset_rebuild(struct hclge_dev *hdev)
+ {
+ 	int ret;
+@@ -9278,6 +9414,32 @@ static int hclge_init_wol(struct hclge_dev *hdev)
+ 	return hclge_update_wol(hdev);
+ }
+ 
++static void hclge_init_pfc_prevention_tout(struct hclge_dev *hdev)
++{
++	struct hnae3_handle *handle = &hdev->vport[0].nic;
++	u16 times;
++	int ret;
++
++	ret = hclge_enable_pfc_storm_prevent(hdev, HCLGE_DIR_RX, false);
++	if (ret == -EOPNOTSUPP)
++		return;
++	else if (ret)
++		dev_warn(&hdev->pdev->dev,
++			 "failed to disable rx pfc storm prevent, ret = %d\n",
++			 ret);
++
++	ret = hclge_get_pfc_prevention_tout(handle, &times);
++	if (ret) {
++		dev_warn(&hdev->pdev->dev,
++			 "failed to get tx pfc prevention timeout, ret = %d\n",
++			 ret);
++		times = HCLGE_DEFAULT_PFC_PREVENTION_TOUT;
++	}
++
++	hdev->pfc_prevention_tout = times;
++	hdev->pfc_prevention_tout_default = times;
++}
++
+ static void hclge_get_wol(struct hnae3_handle *handle,
+ 			  struct ethtool_wolinfo *wol)
+ {
+@@ -9547,6 +9709,8 @@ static int hclge_init_ae_dev(struct hnae3_ae_dev *ae_dev)
+ 		dev_warn(&pdev->dev,
+ 			 "failed to wake on lan init, ret = %d\n", ret);
+ 
++	hclge_init_pfc_prevention_tout(hdev);
++
+ 	ret = hclge_devlink_init(hdev);
+ 	if (ret)
+ 		goto err_ptp_uninit;
+@@ -9946,6 +10110,8 @@ static int hclge_reset_ae_dev(struct hnae3_ae_dev *ae_dev)
+ 		dev_warn(&pdev->dev,
+ 			 "failed to update wol config, ret = %d\n", ret);
+ 
++	hclge_restore_pfc_storm_prevention_tout(hdev);
++
+ 	dev_info(&pdev->dev, "Reset done, %s driver initialization finished.\n",
+ 		 HCLGE_DRIVER_NAME);
+ 
+@@ -9977,6 +10143,10 @@ static void hclge_uninit_ae_dev(struct hnae3_ae_dev *ae_dev)
+ 	hclge_config_nic_hw_error(hdev, false);
+ 	hclge_config_rocee_ras_interrupt(hdev, false);
+ 
++	/* Restore hw default values for the next initialization */
++	hclge_set_pfc_prevention_tout(&hdev->vport->nic,
++				      hdev->pfc_prevention_tout_default);
++
+ 	hclge_comm_cmd_uninit(hdev->ae_dev, &hdev->hw.hw);
+ 	hclge_misc_irq_uninit(hdev);
+ 	hclge_devlink_uninit(hdev);
+@@ -10539,6 +10709,8 @@ static const struct hnae3_ae_ops hclge_ops = {
+ 	.set_wol = hclge_set_wol,
+ 	.hwtstamp_get = hclge_ptp_get_cfg,
+ 	.hwtstamp_set = hclge_ptp_set_cfg,
++	.set_pfc_prevention_tout = hclge_set_pfc_prevention_tout,
++	.get_pfc_prevention_tout = hclge_get_pfc_prevention_tout,
+ };
+ 
+ static struct hnae3_ae_algo ae_algo = {
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h
+index 7419481422c3..0cee8947f6b4 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h
+@@ -346,6 +346,11 @@ enum hclge_link_fail_code {
+ #define HCLGE_LINK_STATUS_DOWN 0
+ #define HCLGE_LINK_STATUS_UP   1
+ 
++#define HCLGE_DIR_RX 0
++#define HCLGE_DIR_TX 1
++#define HCLGE_MAX_PFC_PREVENTION_TOUT		2000
++#define HCLGE_DEFAULT_PFC_PREVENTION_TOUT	1000
++
+ #define HCLGE_PG_NUM		4
+ #define HCLGE_SCH_MODE_SP	0
+ #define HCLGE_SCH_MODE_DWRR	1
+@@ -898,6 +903,8 @@ struct hclge_dev {
+ 	u16 vf_rss_size_max;		/* HW defined VF max RSS task queue */
+ 	u16 pf_rss_size_max;		/* HW defined PF max RSS task queue */
+ 	u32 tx_spare_buf_size;		/* HW defined TX spare buffer size */
++	u16 pfc_prevention_tout;	/* User config, restored after reset */
++	u16 pfc_prevention_tout_default; /* HW default, to avoid stale state */
+ 
+ 	u16 fdir_pf_filter_count; /* Num of guaranteed filters for this PF */
+ 	u16 num_alloc_vport;		/* Num vports this driver supports */
 
-Thanks,
+base-commit: cef9d6804030793cf8b8796fd6936197d065dd3e
+-- 
+2.33.0
 
-Maxime
