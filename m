@@ -1,199 +1,97 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50B353EDE70
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 12:21:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02B73EF652;
+	Tue, 30 Jun 2026 12:24:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782822105; cv=none; b=I/oEVaSQnapOHxaH8B7QCeMUDtvkUHlkuINnSqS2uK+7eQf7JmQ9LmKQvoUjqgB+WoJRDc2tqfvleDPMKLpIYK5QjLvbNs8rJuDr/GovLYsIZoHwWat/IdvGW2QgLiFvvfHaRosig0azTkV3WDp7XLjqWcYrYndBqxoCLdYoclk=
+	t=1782822278; cv=none; b=UsN7gXLHAw3qN3jwPRrHx6xrMxqKcMO1M//XkON6WoUW22WwVppHEdn705kX5Ni7egOFxqiOBqW3Hy23iUCC/cP0SjQqXGEIPDgllH1ryxFubifmkxOsVaM8GxqUdOn2Z6Uvqhy+3oD8yozUKFXWNFI4WD0V3p6nTKYyFYBMkq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782822105; c=relaxed/simple;
-	bh=ZBhs34ZISK9bRi/rf/JPGKWEECowkqkQOjuTBR4fNCA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Go2L1MUGGYNmVvB7EXIJ2cGgJC0ua+Qu8G8du/bL9uTfIqZy6VX4iZ6JwB7G4RJjdCILFwrxnBeRA4GY2VGgrjjSTg1HAXhXNHWHM3z0osZF+NC8NJ8xlK3Nb0/ZnZdX5cPLXJzZKAR3NkOzS+ocJlXLMXHB/WpgRROgz+LNkoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=IQK1lL4o; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ODmWO7k5; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1782822278; c=relaxed/simple;
+	bh=O6+X9QTUzXhwCOUIBraPDNwO+JprxI33iNH1ljFEotI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VBrvwRav6JrRVnIyCL9Q+f6uEX/yCETuPdbsORTBM52fKqDPf7wy6OpmEzjxagsyRGvRuPEE35oNMqm7Baw3SaqF/YYWhxblcIXWRCeW+nTc4rLhlTQlb0tK3KO3fIGojyjXu3b8Y4cA5H2UlxZUiSu/aoLmMRLfr5/JzVtvu04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=DWYr8mqN; arc=none smtp.client-ip=117.135.210.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="IQK1lL4o";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="ODmWO7k5"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65U9n2XT1602961
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 12:21:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	OKA9ni/VKYiyOGZbetdw2GUFM0Wy/xcP3QxXwwJdhrk=; b=IQK1lL4oceipm8Q4
-	wpDe0abCYCvbADeNXWX3gj3hyHy7jURTho8WgTcNP0wxHt9iM42a5wd1u/4ra8hi
-	slQfbSxApQbzQkn8/8rw/U5Aie8gnKbUeQo73GyfSHmrz/dWJU0L41C2pCOKK+Ux
-	eQKjyqY08FHK7bPN2E46E1JCFGqBqISg00TgsLFx+NiEjiPYYH01FCuafv6/DTcr
-	zI2JXzR4UsSaslUZH89nqjJ+CIcWpYI258CT3uYhXgutcWX1OsKtcX3nMdwRsr1c
-	6alJGvFylNA96g1H5P+qcJH/bFmFX/4BL4uCgiQv9zSHsVRPKJgbUp3dwNymm30A
-	1zcuIQ==
-Received: from mail-ua1-f72.google.com (mail-ua1-f72.google.com [209.85.222.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f4avprufd-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 12:21:42 +0000 (GMT)
-Received: by mail-ua1-f72.google.com with SMTP id a1e0cc1a2514c-9692c7b2054so92194241.0
-        for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 05:21:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1782822102; x=1783426902; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=OKA9ni/VKYiyOGZbetdw2GUFM0Wy/xcP3QxXwwJdhrk=;
-        b=ODmWO7k5d35aQmY+TNpaXyJPMoIQtPsOLkR4UQCAidVsK+plGEyVZEn7yz2Je7nDcj
-         GNVuaQ7hMovEktvOXFO+twpb/yMkfkBWeRNs4iNSxKv4oyUkQZhTQ9HSJji1Xt7LrfxF
-         ZQvVbitc55+tKdVEPOuoxG+9D7VtcHn+fgtIjFG4qh12fDJA/DUAyWMC0YpngDFIQ7yi
-         ohKaeJNu4qhum9fsXvMiWTG294u9ziGQSUderrF3uiU5AArUWMb4wEvhb4Bnq46jEPLc
-         TLdIMK8xDY3dYPblrYf0TdeMvsNGWSl9RhizjpvY1Y6qylvJFhw7+Y2Uk7PEa/5jj1ZK
-         qk7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782822102; x=1783426902;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=OKA9ni/VKYiyOGZbetdw2GUFM0Wy/xcP3QxXwwJdhrk=;
-        b=slpdEGXk6tYoK4NhohPpoYrtB1B3GvEQkOnwtmdKQa3Z0Y0ynG+GTbwQI0gxA/NZ6J
-         kUuD6lldZGgbOtjHHlmo30EIRJPsEKb+13rQRitjU9FdX3C0guoFrr9dn7oTItH3Qx22
-         aEFviTbV0iKEBl2qwVhcQnwrq5Bv9knUtNcq3bwqxsOVRkc25lK4AlTHuaKMdgZMukZO
-         ISG+ih6lksqXdoUqSO1KA4NaHXFWPntHQLbaS3X0dGEeHNKCGoC8XlEqZAq+9CMKnetz
-         12ihLBSiO6EZhq811CT4OhKZmC/TIJ2tu0QXB5dYn1FEn0C4a+RPRsw2f2G3/7CBdsMU
-         nEHw==
-X-Forwarded-Encrypted: i=1; AHgh+Rp065Z/yZIY8KWq3bPPZVWuOvFaa1LQuRbao5ZpqPi2Yr3f8ml1OeINOeEJGpqMd9wA4IPPMMQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwhMn+HsouyXcmNL0l9pJIA/MrrqGvAr5Lz+gIZ/W5UvdJuiepp
-	D4ETf7VHageYCwMfG2UuZfrO72zHTzCe/ahV2v4ASG3E0urhCHq25dSJf+zdiX84ldF5/ThAQ0Z
-	h7z1LuNMoN7zQxWmw9VKBuXu4FRXbXttm5XJvlvlEXvFa2HDqMAvw54TgHTs=
-X-Gm-Gg: AfdE7ck4oc4wDxRmLSJvAGi93xP7vmHaUt7t1wK8nHB00KguQEwPHHnzE7a96cnG/KU
-	wfKJ+hftOskq8I/oh3YA7Vmmnv+9o+TZKHMZJb/CcuNSmw0EzvnGMbYQEUYEbRySDdUeTAiYiXC
-	g+cLFL5wrCC5Jq2w/yZFRFtkLhVQupoNe6XZFdBUTsFOvDc4WSadxPgKZYS9Y3CJjmMUOvACWbn
-	LMeHO+/nD4yxKERhaEp+1uogXG+dVdFRzc5pZA5HKuPCkMA2GLKXmJ0k/2T8ZccXDrZwDpw3GGP
-	ZYbTWwrC+aR9mlDWNzUTJsPcL25SUycSi59G6c4W//pwQNDRyFFdc4kFHcOGv0iS0LeO9haUsZL
-	44YQ3zJIpJsKfaXGtqgXr1J/BrLUNqyOi1yU=
-X-Received: by 2002:a05:6102:5986:b0:739:b7cc:3ce7 with SMTP id ada2fe7eead31-73a3934de72mr535070137.7.1782822101835;
-        Tue, 30 Jun 2026 05:21:41 -0700 (PDT)
-X-Received: by 2002:a05:6102:5986:b0:739:b7cc:3ce7 with SMTP id ada2fe7eead31-73a3934de72mr535050137.7.1782822101431;
-        Tue, 30 Jun 2026 05:21:41 -0700 (PDT)
-Received: from [192.168.120.170] ([178.235.128.140])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6987c9503f5sm1104309a12.20.2026.06.30.05.21.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Jun 2026 05:21:40 -0700 (PDT)
-Message-ID: <bd4080da-0c15-4142-aca0-21bdeaf9eb33@oss.qualcomm.com>
-Date: Tue, 30 Jun 2026 14:21:36 +0200
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="DWYr8mqN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=YX
+	Y6r1fk7y28Yf2otFgDxIkz3YePwaCXOV/6Sk9Zb8A=; b=DWYr8mqNzeRwf5CBS6
+	4cPw2qaWIhGzbhGbUQ7ZzT1p9qEFLh0KjvH5dVAcIWOVVXTPkXB3izr9tS8hq5KQ
+	zIS5AnKplYTBQipd4RFo8fWwg1NkDOVu7gv4DydOoUd2+gf+pfMekDWj3mgFSOhZ
+	KuyjElQ4+e8CgCkdEE5dMWq44=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wD3V29UtUNqEXipGw--.149S2;
+	Tue, 30 Jun 2026 20:23:48 +0800 (CST)
+From: Lei Huang <huanglei814@163.com>
+To: dsahern@kernel.org,
+	idosch@nvidia.com
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Lei Huang <huanglei@kylinos.cn>
+Subject: [PATCH] net: ipv4: fix TOCTOU race in __ip_do_redirect
+Date: Tue, 30 Jun 2026 20:23:33 +0800
+Message-Id: <20260630122333.935406-1-huanglei814@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 01/14] firmware: qcom: Add a generic PAS service
-To: Sumit Garg <sumit.garg@kernel.org>, andersson@kernel.org
-Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        freedreno@lists.freedesktop.org, linux-media@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        ath12k@lists.infradead.org, linux-remoteproc@vger.kernel.org,
-        konradybcio@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-        conor+dt@kernel.org, robin.clark@oss.qualcomm.com, sean@poorly.run,
-        akhilpo@oss.qualcomm.com, lumag@kernel.org, abhinav.kumar@linux.dev,
-        jesszhan0024@gmail.com, marijn.suijten@somainline.org,
-        airlied@gmail.com, simona@ffwll.ch, vikash.garodia@oss.qualcomm.com,
-        bod@kernel.org, mchehab@kernel.org, elder@kernel.org,
-        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, jjohnson@kernel.org,
-        mathieu.poirier@linaro.org, trilokkumar.soni@oss.qualcomm.com,
-        mukesh.ojha@oss.qualcomm.com, pavan.kondeti@oss.qualcomm.com,
-        jorge.ramirez@oss.qualcomm.com, tonyh@qti.qualcomm.com,
-        vignesh.viswanathan@oss.qualcomm.com,
-        srinivas.kandagatla@oss.qualcomm.com,
-        amirreza.zarrabi@oss.qualcomm.com, jens.wiklander@linaro.org,
-        op-tee@lists.trustedfirmware.org, apurupa@qti.qualcomm.com,
-        skare@qti.qualcomm.com, linux-kernel@vger.kernel.org,
-        Sumit Garg <sumit.garg@oss.qualcomm.com>,
-        Harshal Dev <harshal.dev@oss.qualcomm.com>
-References: <20260626133440.692849-1-sumit.garg@kernel.org>
- <20260626133440.692849-2-sumit.garg@kernel.org>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20260626133440.692849-2-sumit.garg@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: yR73L6ngn54LFnqbGw342ylRhm4tDUzG
-X-Authority-Analysis: v=2.4 cv=KqJ9H2WN c=1 sm=1 tr=0 ts=6a43b4d6 cx=c_pps
- a=ULNsgckmlI/WJG3HAyAuOQ==:117 a=PRfkaYvzSr8QmIIGAkY2Sg==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
- a=EUspDBNiAAAA:8 a=DWWpLck2SfFL7czMIZ0A:9 a=QEXdDO2ut3YA:10
- a=1WsBpfsz9X-RYQiigVTh:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjMwMDExNCBTYWx0ZWRfX0GjQArw242Mo
- Rq9mpTig4B5PfA07QyUbadSxEzTAo0oxe/QbpozjN1IhQ9CoKPkmD7JqZoXMSUwLc2ZXirgQUj5
- EmfhL/onREVlUTaxP4RhG7E3Dz91f3Cfkrhrt/lxo1Yyr3oyhobPkJesED91C3MJlJYhIUqldih
- wCn/4URhCML+KX7mw4arwqCg8hxYi/KYtKlQtPnx71SubIh7fD8PPFxAqOl/1kMHPBjK34OcPx7
- 9ZnoBGHag517zkt4qY6SbivEmpOi5UMAeyRSwvni9wqsedD9m9EUKGUzcOavUT0TCL/v3O6NIAJ
- APrlwYGnQex6auAZeFuzitE59M2J6bT8cqIeqsr0tWoqjupUrAuJAFTSZnlQk88CFucGlLXneIT
- hD8DpSzf3deafKfpuT3MCqmiCA8z6mGhK/rqZDM9VDW1SshR8PlXKhQDjpp9ogfNbahqWpAXF5Y
- W+mFwPb2Q6FsiimxtMA==
-X-Proofpoint-ORIG-GUID: yR73L6ngn54LFnqbGw342ylRhm4tDUzG
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjMwMDExNCBTYWx0ZWRfX84A/bmmlNEPj
- pcsrcA0OfV9jxBkRQiaM4tpUq3nAEDpIxNT7Clx/xdbKOw8TPwtm3ztB17ow2jxWETzEfoKcqq6
- tPmrK1c1uKQco5gDIkPjaUxeqJH1XSM=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-30_03,2026-06-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 adultscore=0 clxscore=1015 suspectscore=0 spamscore=0
- phishscore=0 bulkscore=0 impostorscore=0 priorityscore=1501 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606300114
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3V29UtUNqEXipGw--.149S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Cry7XF4xWw47ArWDCr45ZFb_yoW8WryrpF
+	WFk348Wr45WF1Uuws5A3W2yrySga18trZrCr4vkwsxtrn5JrnagF9xJryYvFyYvrWfur42
+	qr1jvr4DAFWDGaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UD739UUUUU=
+X-CM-SenderInfo: xkxd0wxohlmiqu6rljoofrz/xtbC8xTt5GpDtVR97AAA33
 
-On 6/26/26 3:34 PM, Sumit Garg wrote:
-> From: Sumit Garg <sumit.garg@oss.qualcomm.com>
-> 
-> Qcom platforms has the legacy of using non-standard SCM calls
-> splintered over the various kernel drivers. These SCM calls aren't
-> compliant with the standard SMC calling conventions which is a
-> prerequisite to enable migration to the FF-A specifications from Arm.
-> 
-> OP-TEE as an alternative trusted OS to Qualcomm TEE (QTEE) can't
-> support these non-standard SCM calls. And even for newer architectures
-> using S-EL2 with Hafnium support, QTEE won't be able to support SCM
-> calls either with FF-A requirements coming in. And with both OP-TEE
-> and QTEE drivers well integrated in the TEE subsystem, it makes further
-> sense to reuse the TEE bus client drivers infrastructure.
-> 
-> The added benefit of TEE bus infrastructure is that there is support
-> for discoverable/enumerable services. With that client drivers don't
-> have to manually invoke a special SCM call to know the service status.
-> 
-> So enable the generic Peripheral Authentication Service (PAS) provided
-> by the firmware. It acts as the common layer with different TZ
-> backends plugged in whether it's an SCM implementation or a proper
-> TEE bus based PAS service implementation.
-> 
-> Reviewed-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-> Tested-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com> # Lemans
-> Reviewed-by: Harshal Dev <harshal.dev@oss.qualcomm.com>
-> Tested-by: Vignesh Viswanathan <vignesh.viswanathan@oss.qualcomm.com> # IPQ9650
-> Signed-off-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
-> ---
+From: Lei Huang <huanglei@kylinos.cn>
 
-[...]
+fib_lookup() internally acquires and releases rcu_read_lock and always uses
+FIB_LOOKUP_NOREF (no refcount on fib_info). After it returns, res (a local
+struct fib_result on the stack) has its nhc field pointing into the
+fib_info internal nexthop array, but RCU protection is already dropped.
+A concurrent route deletion can free the fib_info via kfree_rcu, making
+res.nhc a stale pointer. Subsequent FIB_RES_NHC(res) reads this stale value
+and update_or_create_fnhe() dereferences it, causing UAF.
 
-> +struct qcom_pas_context {
-> +	struct device *dev;
-> +	u32 pas_id;
-> +	phys_addr_t mem_phys;
-> +	size_t mem_size;
-> +	void *ptr;
-> +	dma_addr_t phys;
-> +	ssize_t size;
-> +	bool use_tzmem;
-> +};
+Fix by wrap the entire fib_lookup + FIB_RES_NHC + update_or_create_fnhe
+region in an explicit rcu_read_lock/unlock to keep the fib_info alive
+throughout the critical section.
 
-Redefining this instead of moving the definition (this is a cross-
-subsystem merge anyway) makes things more difficult, as there are
-patches from another team touching this struct.. hopefully no kaboom..
+Signed-off-by: Lei Huang <huanglei@kylinos.cn>
+---
+ net/ipv4/route.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Konrad
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 3f3de5164d6e..86f4b6325050 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -793,6 +793,7 @@ static void __ip_do_redirect(struct rtable *rt, struct sk_buff *skb, struct flow
+ 		if (!(READ_ONCE(n->nud_state) & NUD_VALID)) {
+ 			neigh_event_send(n, NULL);
+ 		} else {
++			rcu_read_lock();
+ 			if (fib_lookup(net, fl4, &res, 0) == 0) {
+ 				struct fib_nh_common *nhc;
+ 
+@@ -802,6 +803,7 @@ static void __ip_do_redirect(struct rtable *rt, struct sk_buff *skb, struct flow
+ 						0, false,
+ 						jiffies + ip_rt_gc_timeout);
+ 			}
++			rcu_read_unlock();
+ 			if (kill_route)
+ 				WRITE_ONCE(rt->dst.obsolete, DST_OBSOLETE_KILL);
+ 			call_netevent_notifiers(NETEVENT_NEIGH_UPDATE, n);
+-- 
+2.25.1
+
