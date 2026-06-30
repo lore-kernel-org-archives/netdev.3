@@ -1,153 +1,134 @@
-Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E1C2451047
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 16:19:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D94703E3D96
+	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 16:24:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.51
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782836350; cv=pass; b=Qp/tP6JU5ozwilZzcp4YKgf7nRVlcWibtqUbEipE9T2+xfQ3LPnR4X/PAoP2zLG9pEkE+FN1neymzAPpWUn/PxGhWMZzpa7oSDO4S9VR3EocwifYjNdAzFTqn+b85GWxUl12p74b22bOsxljaGhkXBRff8mNdSrWkzZjMDzqyVs=
+	t=1782836648; cv=pass; b=dJ6GqkC7cLLfHBgibXOhlO8d5ZY0ydM8qMNy2RNaRIoDnfYyxJhfg/be/rGx5tuPE4eWSK08v7hOWc2wvVFzNUq5C/hAuNEi4T2MlkdjSjCwtaDTp6lPPi48wVobZHZU5eVmLLJqSk1YHkGl4NDlA4O5Vwb258ZKloWksfdGHT8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782836350; c=relaxed/simple;
-	bh=f/+MyDfnaeuI7CogaxN3dIMBY5/0RM7R9hdpQjkqoaQ=;
+	s=arc-20240116; t=1782836648; c=relaxed/simple;
+	bh=FSGgdSi0nGmUA5A3/9tv+BeLzD127JNG30JyrlcNsT8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=e0aMEDOY5zw7SaAVx8VngSqiVKkx5binozIOERxsekwI0Z4gy1drS5nTxFqbCDpTMZ0zOm4pH5WqXs4Dgxh5d1/wYadMzeJedbSjW0izYGWGMWaOIb0CF0ctQSIaSfbWpiSOZBImXcnPq7fSF+Ox5QeEw64daxURzhITPFMP8uE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hdH3oFZa; arc=pass smtp.client-ip=74.125.82.43
+	 To:Cc:Content-Type; b=CQNdA/NPEVWTB18diROHrta97nlASn4qL9v/pknyrUPAT5B7vaBlA4ytfgbOxYhoibbRwI3SRBtGw24F97yj6VwlzzD/25RG/f4oVVl3jEqn9Wfgfoh/mtqMmFXwKcmX21XX+JLG0yZ1tGSrB3BJB63zkC4ETO+30v+8XL8J9xs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=P7mTi9Zy; arc=pass smtp.client-ip=74.125.82.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hdH3oFZa"
-Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-139a5f4ca15so5747792c88.1
-        for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 09:19:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782836347; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="P7mTi9Zy"
+Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-13b2d7dc8d1so1376306c88.1
+        for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 09:24:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782836646; cv=none;
         d=google.com; s=arc-20260327;
-        b=l4mAMKQgSG1LCFHh+lkbaFBzItkmJH8VFQjTi2RIfDOu11g+nztwqmp/2VOLNvx9MF
-         NmYOHe9hI/CSsC7njiFqCMwBnC1DB/xJ8i7rovqPYvu5O5DkR1ulBarDPDyucrzoUuFY
-         R8m/J3zSoiROZGg3enc/aKqYhcKq0wvCjUpDUcTAY7wJDlNuHdb5gh1kLbOf7+daZZES
-         IWR+ebqB7wjYPUDceNHasY39uRgcX7u4omFpnt53QqD5lOOjFcytWJFqa2+HvujfcTmV
-         y852HL2gNCdRd4k7k5eUhlN8yVFrDzpic8ofvUeQsFS7rsKuHSiYODCXfLnQ3RGRAnKA
-         YpuA==
+        b=Of+EchtSS7hFjJSRf1MS5xTQqWLMVIzID58pbV8jwO2W0cSUVogKnBw7oUTjqQKEwc
+         LII1cnFTlCv38ANFrmhf96lvZGimrMihCNo1qkmtg3pHOsGcYGQdO5jlUyhDoI+WV0f5
+         W6xEC9vyfLToxcBkuutpB/WlBHTgxlISWF5fd1LtdOakirvOkHsdXisEziqWsE5959JG
+         +giOfXeaYAjregjQ2/pMaJQrk+lE8hfbyy/+8lV4+PLf964T6dJBZeLs7G4ZhTwfpyd8
+         UDa3APatDYaZ6HVilMP9IzJt20rTXNYmfQ22TcxMxD+KMtVtg3oq9POLrQEbhmOK3CFN
+         l3NA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=FmnZQ0z2vLXoLibFoyOKx5KfiNn7WrdOlM9j302Dwv0=;
-        fh=xXtz9sjm0cYL2WR9hLy5fF1QyGOvQ0zb1M1QjyFJydA=;
-        b=pV0J7d0ZNezY2x8zLJklDqJQDvBFx0WNQ0g9nUnkRBT7CAkrqHQ+Lh8VRn6d9Rfitz
-         sXb+5WcMhmNgrQ9ZIYNIGAMWiPe+PIVFNIPE9PPuZ/H0ALAlIYkfTbSvkk7TO8pstLad
-         YwDyrVGcyfARoBo5xQtuY13VTLJivMsMUIoX+5apg3ZbmGlZyAVnGvUVVUPI2rrl5qFV
-         DyXRBpjl8/L4XVvqalcspKyzN9Ro30wAySJgTsmd3glvRXGJ8YZaB+FLIjqyVJLQPJ87
-         0PfzrwKeluNLL81KZIDZ9ozTTQIMB6ZdIy3HMFhQQjX8PStr9yTnxe5dRBJafcBzEmS0
-         eEiQ==;
+        bh=GM+dTTSKLoTXlWRUSA7edb0GWK7rzbACYvRC3T4yKNk=;
+        fh=Lx2H2EHojw9lTznErkIPSGBNy9CezoCRrwzj2+zqx3M=;
+        b=GkuG1Wf3M3Lhd98XrpdI2e6I3pb3a4mWni7DXoxMfidhPxZmyv/0cpcWPzIpF3Kn8v
+         jV2/HERNytFNj9ujTjdQPde0i4xZswk5KHyWWl1RjhhqpFT2VWrA43O5J8QvoXPviVm+
+         dfVtszNJ7bUGABuiaPkoBcOPtiMnekSk7oTn3n4miJ6CLpPrgvrVCi8YfHz7OuFhSGhM
+         hSOV7RK+vIGZVMcdWxcTNBqXpIrPAw2pwSjom9w8WPYg3CNFW+MuLWiTgf6ozbUFeI2u
+         M0iLh2mRkuSvgOl2jWXc+PH6iCvpIL1NKsXHsAgJwdB0X/HybcyjtZVlLrkdidrSiED9
+         wvgw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782836347; x=1783441147; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1782836646; x=1783441446; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FmnZQ0z2vLXoLibFoyOKx5KfiNn7WrdOlM9j302Dwv0=;
-        b=hdH3oFZadb5aVCZDHspdVB+floXDVazdlU/UzwLYjKTeMiOnvmRlgz43APilz52RQ6
-         eS77Y7kcZRwS8MX5qTPLHEb+gMFiORfx+zfEKWghJlQ+Jxl3kQkQYMlWV8igxGJBcu6j
-         Qzd6OU3lUrVB9PbyvALD6notCzMNaZKuFKCjtVqwunhRf6IkhT16PeF2gUXjdHHd+lKY
-         DG2IGpjQ595fdmV7KyRajXJy82GVA1skoxOOl6kqjmdvw/8nyr+iMshVpuKGKV4j3NNJ
-         7S0qZEROoHwVCA8vLi6YEGo3X5XLjXtz2DukymP7NE1IYXepfA6NjLjPgCiUTfUJIlyp
-         tTZQ==
+        bh=GM+dTTSKLoTXlWRUSA7edb0GWK7rzbACYvRC3T4yKNk=;
+        b=P7mTi9Zyl6+yfYPFMlvsYAZjMuvx+EJkMWAQI6WrSAI3P44/zTjCbszVGAEF3hzc9e
+         lPh4WU3j05VhpEi3kbDmDI5g5raFRVxRPiMBm67mWFIQvR9KxrTx2IkQyIE1cgP6txzD
+         TTda/VYdeN+FgyRPMzJdsSSMKKY1xavKX8zQxP6pWG2gXhfOKYnOsf1siIsxIQokWcPR
+         j6PHRXJcCT816VwWch/VAsbgT2t2q2LDmshdgw78yRVXS+2MhwM5D87dikVxxxHrs3VY
+         Uuq9DcVzneucQV4O0IKraj1sAP5VjlG6OmhF5JWaj9se3ny4hbTITwQIaziqJ8F+ndTk
+         siJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782836347; x=1783441147;
+        d=1e100.net; s=20251104; t=1782836646; x=1783441446;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=FmnZQ0z2vLXoLibFoyOKx5KfiNn7WrdOlM9j302Dwv0=;
-        b=WLPeTzN5RukdFw3r2xnOteQge2q/cgk5ko+crXHPE1vpVbEiHS7zUKPv5QkAWF56OR
-         y6hdLRg6OOVeUYUmfh2d+oElD4BOCGfSoI9gKM2GyCKVhKuGq8yhZMnUCJT0CTmWfep3
-         qXnr6x+L0gO1CfQt9oK0lVmFSpjHK+gcIfRQ/3wBDLeMtBzjTqnT2HDm0KVSgUw9oM0Q
-         atjrTRTsgXrNg0AIpyPOdxzutdwotFuErL5NTi7QE51yjLMH2dvowghq9YDrxYcXC0tg
-         JSLq36Cv1U5Sbygt54fLZteaJ7EfxEc+6vD6/R7Hw6WgjOvgDqzrm5vNbtXT84KBedJD
-         A65g==
-X-Forwarded-Encrypted: i=1; AFNElJ8mLbKeGklwM4i9dTw1619czdOMKU1LfeZ5cAAWwHxJNNsMS3qYZiI+soEjjMRxEebYkhC5oCw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyb/aMEC4PdDoK7PG/qHh6sHCPeIvt6Jow+sQ6WEGdUNNxXm97A
-	dWDeMIn+KnrHlVd9XKX1LSKQ0ToXR+jl2Tjoo7DQhjl//xbBp9GOW8zJsd4aaIbj+QjPX74ViIf
-	x45AXMhKt8qk4oFCjPP1p5yUA8ZeJdcXftIlp6QuK
-X-Gm-Gg: AfdE7cl6ZebBbn8oueZ6D6Q/1DJidF1ohS+Kq45tGwgUH3QX1emDQ1l+AGHWO5m88tB
-	rSWBUyzVDChMwV6vnZmr53l3MHV8hFSP0miyY21PPMM2c6Mm+nVKYHcaFHHR/wxwYJwamCCfXlp
-	THB3xuBUfh5ffg/moh+LVu+sW460VqJYlhadNlOEzoKTa56VzC9oU5pnf/vKYmuD9MNTHvnBDaI
-	gb1v1P5O7sQw7W1rtQEPy+M7ODoQT7RhB9UfMihWX7sBMRGNlvzfWUdG19gk4r/LxI5GFYGgXuc
-	N0HDT7vjv2agrRPr5ZE4tSJA0n3TbhSfo/TAXpCunX9vw4OqK63FF8VQWdBaD6ta1MGGfwThCOX
-	KtzYiBAa27UuEuUoE1ptF/i5ObTA1yNQohvhxoA==
-X-Received: by 2002:a05:7022:4595:b0:139:ed59:4b86 with SMTP id
- a92af1059eb24-13b2a1bf1bbmr2364497c88.42.1782836346356; Tue, 30 Jun 2026
- 09:19:06 -0700 (PDT)
+        bh=GM+dTTSKLoTXlWRUSA7edb0GWK7rzbACYvRC3T4yKNk=;
+        b=Y0HPvJdsI2ZNguC/Ti4f1pfHWO+vEha6rLzBvdhJrg2/f7jz3KVFkMSPikOe4bAMXp
+         iQnjaMkEs6tiTlO3EE6g0ENyH7BG1V8gQN1SsO1DyRH6JfZPsMuEjcaUDQH3sf1outW7
+         qg49eRgEVuDCs3svQpdlPVDFDTr2V08WXz1UfqJ446WRbyUCAIMp/kXxImV+Jw0OTKlL
+         JYrKJGXJO37EA7IDfh3+5Nnrb8SQpo+0Z+a9hLKDQx8iE7tYa4cKZFuZUd7qoZE2LtY2
+         5pgz2GPpqywLwSO64mgvGAhSlXgqVVup9LEPC15y/QXSEUxJRcdzQOBuOZt0RGEbNMOm
+         gn1g==
+X-Forwarded-Encrypted: i=1; AFNElJ96jWS0q4tAVY3jPHopdMs5f8vh0WriYgErH3U6pSErY8iwFNtdqZ2pu9u6q8HTYVvcxgModzk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5/hx6LHuqKBG48h8q5+Cs237Q58UwZdWE2ByByIZrfGa78DDP
+	uCVc7aa0z1P7rcYAe9u9lWhpSSK8AyrfR0/TWU1aSPnzw6i4xOt1bJ3c/+GxPNZc9a0yB0SyD0v
+	b/0gujqN3XiZNf17OgG1IoB7YuaAD8ucyT1v1/SWn
+X-Gm-Gg: AfdE7cnmg8TI6V7F93dtlJvFousdY0M5Vv4trEsBU5TosSq9YiscADJ3Zs7/fwfhHoz
+	NLL9+ZGzOvOwAMuXojO/1rpss/wg73NGtgKsduI8JJZQUYnji5aV1i4I2t6988RAjb1ZOboqTgx
+	s3i+Qd4aPXiNcaqy9s0WxwMnhaxL8uET3r/OadaBjq+KkpbhjKpYemSviLV8UP05thqPkxPaaML
+	V5EMUzLVpmUKP8/yrdV7UQXg3HERjwf1ZLvzqCqLtDayluM/P0GlGWfumQFxeNK2poX8G6ZnyKL
+	oCOKirkZDS4pvsxQCuGv0oZu1uA70YVNxGat+5VrAJskiTv2dMtJaqA0YotP6nNmbSjgIP+cYwM
+	wozqatylJaBFrzgbAdYOM36fBjBT/hLEMsq2Oxw==
+X-Received: by 2002:a05:7022:6192:b0:138:4f8f:e2f3 with SMTP id
+ a92af1059eb24-13b2a1ac4f7mr3103245c88.32.1782836645150; Tue, 30 Jun 2026
+ 09:24:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260629194327.2270798-1-jkoolstra@xs4all.nl> <20260629194327.2270798-5-jkoolstra@xs4all.nl>
-In-Reply-To: <20260629194327.2270798-5-jkoolstra@xs4all.nl>
+References: <20260629194327.2270798-1-jkoolstra@xs4all.nl> <20260629194327.2270798-6-jkoolstra@xs4all.nl>
+ <20260630071701.6b583d1e@kernel.org> <1957659940.3537950.1782830112890@kpc.webmail.kpnmail.nl>
+In-Reply-To: <1957659940.3537950.1782830112890@kpc.webmail.kpnmail.nl>
 From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Tue, 30 Jun 2026 09:18:55 -0700
-X-Gm-Features: AVVi8CfwyMBPNQ0tPm3h1L9ozwd_nr1YcpkmcBZ_aBP6o8OPTJkBnWkD5vIy6-A
-Message-ID: <CAAVpQUBFFzVvsdJ+JytvUukRinN29+J0uZQKZbxLy01m7VeeKg@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 4/5] net: af_unix: replace copy_from_sockptr()
- with copy_safe_from_sockptr()
+Date: Tue, 30 Jun 2026 09:23:53 -0700
+X-Gm-Features: AVVi8CcZ9CVHSUJiGG-FPzfXUKqW9ybqtqzrGjbGkhBXBvz6rHYirwPIu6CdUNI
+Message-ID: <CAAVpQUDn5Pt1TwfEs=-Uy4Khr=+r43AMCzTw2si_49e0oDAb5g@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 5/5] selftest: Add tests for useful handling
+ of LSM denials on SCM_RIGHTS
 To: Jori Koolstra <jkoolstra@xs4all.nl>
-Cc: Christian Brauner <brauner@kernel.org>, Aleksa Sarai <cyphar@cyphar.com>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+Cc: Jakub Kicinski <kuba@kernel.org>, Christian Brauner <brauner@kernel.org>, 
+	Aleksa Sarai <cyphar@cyphar.com>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
 	netdev@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 29, 2026 at 12:42=E2=80=AFPM Jori Koolstra <jkoolstra@xs4all.nl=
-> wrote:
+On Tue, Jun 30, 2026 at 7:35=E2=80=AFAM Jori Koolstra <jkoolstra@xs4all.nl>=
+ wrote:
 >
-> Replace deprecated call to copy_from_sockptr() with
-> copy_safe_from_sockptr().
 >
-> Signed-off-by: Jori Koolstra <jkoolstra@xs4all.nl>
-> ---
->  net/unix/af_unix.c | 9 ++++-----
->  1 file changed, 4 insertions(+), 5 deletions(-)
+> > Op 30-06-2026 16:17 CEST schreef Jakub Kicinski <kuba@kernel.org>:
+> >
+> >
+> > On Mon, 29 Jun 2026 21:43:27 +0200 Jori Koolstra wrote:
+> > > The test uses the following Smack labels:
+> > >
+> > >    "Sender"   - label for the sending process
+> > >    "Receiver" - label for the receiving process
+> > >    "SecretX"   - labels for the files being passed
+> >
+> > Not sure this test belongs in net/
+> > 99.9% of people running this test do not use Smack.
+> > At the very least you need to use XFAIL instead of SKIP
+> > we use skip for problems with the env which are fixable,
+> > like a command missing.
 >
-> diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-> index 83274ce18e06..07a0b07cd65f 100644
-> --- a/net/unix/af_unix.c
-> +++ b/net/unix/af_unix.c
-> @@ -933,6 +933,7 @@ static int unix_setsockopt(struct socket *sock, int l=
-evel, int optname,
->  {
->         struct unix_sock *u =3D unix_sk(sock->sk);
->         struct sock *sk =3D sock->sk;
-> +       int error;
->         int val;
+> Ah, right, because you can only use one of these LSMs at a time?
+> I mean one of AppArmour, SELinux, Smack, TOMOYO.
 >
->         if (level !=3D SOL_SOCKET)
-> @@ -941,11 +942,9 @@ static int unix_setsockopt(struct socket *sock, int =
-level, int optname,
->         if (!unix_custom_sockopt(optname))
->                 return sock_setsockopt(sock, level, optname, optval, optl=
-en);
+> I just need some LSM to trigger the reject of security_file_receive()
+> and Smack was the easiest to get going. The series is totally agnostic
+> to the used LSM. I am fine with moving the tests elsewhere or porting
+> them to SELinux if that is really necessary. We could also drop them
+> altogether.
 >
-> -       if (optlen !=3D sizeof(int))
-> -               return -EINVAL;
-> -
-> -       if (copy_from_sockptr(&val, optval, sizeof(val)))
-> -               return -EFAULT;
-> +       error =3D copy_safe_from_sockptr(&val, sizeof(val), optval, optle=
-n);
+> What do you propose?
 
-Currently, only int is allowed, but this change unnecessarily loosens
-the validation.
-
-Please keep copy_from_sockptr() as is.
-
-
-> +       if (error)
-> +               return error;
->
->         switch (optname) {
->         case SO_INQ:
-> --
-> 2.54.0
->
+Maybe tools/testing/selftests/lsm ?
