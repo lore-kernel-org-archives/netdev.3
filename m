@@ -1,170 +1,102 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010064.outbound.protection.outlook.com [52.101.69.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 872553EB813;
-	Tue, 30 Jun 2026 07:50:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.64
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782805804; cv=fail; b=gahXjiEA++eeSOzk3gn+skzPh4UxrH6y88H1yWPztIU7GrjXvYOmHaIwbnWFyf6GoTgi5YvGVAb3Mx1ur+5md3pgaJo1/pot7kZPJUTe5qVgBYwudEpjJODBhAAcvfrMgnzgYyilkNZgatkOyfD1KfdbivhG2EL3aEhxEP7Ftv4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782805804; c=relaxed/simple;
-	bh=xs5XQR4GCTJgSYpvY0nM42qJl1+P3JkQUA1R73tXpik=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=aV0cYeX15QIY2dkkBXcsZZbN/JlQZc3EfAgT64K58cPgVdWQBRYhotcmYKMb683p90nSynqtcJAtaqqzxXbgaKme9mbwCLtCubUv6zouZ0eJEzCtijNp7tZ/YlndevmpWvxjQFA4InWu8R87d9+S+tJFREZBEhp7zEBZWG4hnoU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=EBySJ7DE; arc=fail smtp.client-ip=52.101.69.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A833E5A14
+	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 07:53:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782806032; cv=none; b=tftiQfdl/KstM48rWtvQuqj121R7F3eVCvZ8tbciLvB0tD/1M89tTtFVpZHI3BiIAH5ibj7D9CaQNoSkmlfxJWvI/s39cu3Mp54O6f8KxCwf7Wh+oKEAkbGuT7sl7AOQeSvuSk8VQdsNc5PrXPU5Qn9BOKHf6hZA9jqWkiZGlz8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782806032; c=relaxed/simple;
+	bh=DKWuHMD8ADL0zKU3qzM6I+0+Ls324mTKAtUCV8uTQCo=;
+	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NdZMoucfwnyDXz4HGoQFxNV6F5edRlogrVHMgdPIMdTX8mncRQpFS+d48pzi/wVNuvgtkL/bqJEtkvH+OaZe5qiLf6iKcsTKa4MaIn15vsq0RTg9KAYpV/elm4sASVVzYhRJRvTSA06HaFZZ5CXK7hVhvKNio7d7qeyoTp3FKsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SzEeikn2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="EBySJ7DE"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=x8egj2QRV4tNoiKVLCV8+CvqGRt1QEofIiy0kiFdSaxS8+ocXRBHPhikCZxJho0n1uOl4IJ9th+6o/yULw7MowzKFi+umpthNSXKaxI5khDOxIvH7kSYJW4ZKKP9lJHQA2L3jCqA6KeaT/eSKHnvHZ99jXd/Wllm/ny3O507Kx7eVMPVGv/b0FKipL086fulbEmFs5J7Ir7wQ4ka8Rme1ShpIyvDP9w7Z8k9L3oVIApQ7qekmfQkm2VGAgtDMBuoELZx+Aus60uRu1GOUTCwrl9/2TBEFyT3UcZ5ZSLWwEGeIpDUZbRB9eUrSovu8/jCSDA4VPKBRFYo9S0RMzy5aw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fV8Ikb13ip2x5qNT/bfhYmUDt+DWXX5h4YDEVsNj9z8=;
- b=FtE5jStyu3BgBj1LkqVOrhe6HYRavq3g/jJE6d5ay3zlJ/YMUobO8yYFEF9yxg/UxgqIKOi0yNU47FcGqCQeZGNnWcO/VX9KtJ2KJsI32rr0KjPbs0Rh3HVnoryeKy7r6YfYtSV35D6/J/ySEii9tVTEK9TMIan6SdTq6/O2A6Jw9LUmq3FeDtI1ZakeDLd/p2lR2AVYXWsWYE4X2bWd1XiSTaNvAfEj5HJrEtmsl/nHiU6EdVDt9rY5QdoryaROMqXw0j7oh+9vZPmPcDpmimdQe3LQnby8takhtN1U5vo9w4+IH3kkbUdStVSS4sWHqqJUnU3ZE84HylE6n5dWcg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fV8Ikb13ip2x5qNT/bfhYmUDt+DWXX5h4YDEVsNj9z8=;
- b=EBySJ7DEc5jntHOj2twJGZf5gYFvQal2zlO1z6xyU2Sw1Ma4wBKEpji5rq13y4dhikcIMXd+lvEA2EMRDMSvVpo9Olxir9N3dPmzpYQVux89wSIXfOYYgU2RfLvvWcL1XM67y5hjjvQU/PyDhyYAWXDNEH750OtwlSo2Z2bF2fXeTsG6+7ykZjHGw7lKDd1DtXMjDO/pX2ZlccJkHrPt6JASGYEU9fOFLLZw9ASI/O4KewiKPl4gYMW72CB09ij0qWz8wpu6xL09t+ctBF65zRhh0K/yf4dLEXJBS+sAF4ZMQYRTXYBq2OfV9SDQOSf8JwVX01G+cyhsOdLALlb+sg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22)
- by DUZPR04MB9918.eurprd04.prod.outlook.com (2603:10a6:10:4db::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.18; Tue, 30 Jun
- 2026 07:50:00 +0000
-Received: from VE1PR04MB7216.eurprd04.prod.outlook.com
- ([fe80::a9a5:cf83:dbe8:1f74]) by VE1PR04MB7216.eurprd04.prod.outlook.com
- ([fe80::a9a5:cf83:dbe8:1f74%3]) with mapi id 15.21.0159.018; Tue, 30 Jun 2026
- 07:50:00 +0000
-From: wei.fang@oss.nxp.com
-To: claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux@armlinux.org.uk,
-	wei.fang@nxp.com,
-	chleroy@kernel.org
-Cc: imx@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH net-next 14/14] net: enetc: use kzalloc_flex() for enetc_psfp_gate allocation
-Date: Tue, 30 Jun 2026 15:20:36 +0800
-Message-Id: <20260630072036.382761-15-wei.fang@oss.nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260630072036.382761-1-wei.fang@oss.nxp.com>
-References: <20260630072036.382761-1-wei.fang@oss.nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2PR02CA0053.apcprd02.prod.outlook.com
- (2603:1096:4:196::16) To VE1PR04MB7216.eurprd04.prod.outlook.com
- (2603:10a6:800:1b0::22)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SzEeikn2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A0011F01562
+	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 07:53:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782806030;
+	bh=QLk1TuOjiNPuCpTV4xCdDTaOjHQTK3QruyZKcZY7x1Q=;
+	h=From:In-Reply-To:References:Date:Subject:To:Cc;
+	b=SzEeikn298ntM12mqrr6eeAuWBznUx8HGeKI8OO6J1rAXqZe+DG8eH3kpdxS2Qwc/
+	 BEgTe/7fHp8h71X6sCGG3fIihS5C6QKcHYkMaNYrgPUk3rcaSPmJDnw8ZoM5yrlTQE
+	 KvW3inqTRly1yX4cupxJ6KIIy4QWzwTYakuwLMqpuMM/p2OaqREIyxEYDMqln50mnE
+	 C1NSCn+lHyKd79yClTWWWIpGeXloq0qHFR7J5NJc/x4YvTZ2+1E8CMWE8qqPT9V+G8
+	 G9xFlM4DvUB/S9Qvyumv8uzp49Hn1jyEjfrRcGIK8Lu7u5c1SmS6vDV9TdRuWHIBZh
+	 32YpQJymIWJ5Q==
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-39b19e7d6fcso8747051fa.1
+        for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 00:53:50 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RrQ4eFe8UYTjyGZ8CNdgetiNABlk5GnH1N1g9npX3UWsaueBn7wDUkysTPjlaQ9v2qBVg/cMdU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy81bSkHPucKlYe9H89gUUKZ2Yppx3c41JIeJ1e+KnTSBNnrZCh
+	Hx58oonywaCn/7htO+jIBhk2og4zhMuagGho18yDvi6eNpPBmI7hxeoRc1Bsjec3z/87Oj26Kis
+	jyvnIwWuZbuOMnV5E/NH2z+n1628pfVAAWW8jFaSVmg==
+X-Received: by 2002:a05:651c:2203:b0:39b:d0:e992 with SMTP id
+ 38308e7fff4ca-39b1da26188mr5158341fa.4.1782806029201; Tue, 30 Jun 2026
+ 00:53:49 -0700 (PDT)
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 30 Jun 2026 00:53:46 -0700
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 30 Jun 2026 00:53:46 -0700
+From: Bartosz Golaszewski <brgl@kernel.org>
+In-Reply-To: <20260629132633.1300009-1-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VE1PR04MB7216:EE_|DUZPR04MB9918:EE_
-X-MS-Office365-Filtering-Correlation-Id: 003567c8-053d-4759-4cf2-08ded67c2fe1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|23010399003|376014|19092799006|1800799024|366016|921020|22082099003|18002099003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	nGN/ZmFzd8noCPaRjRP0ngr5fHdGttfEcRLktAzddnS3QTBkcrx78+pag509qfJTi1CQRaxmhEpkaXA5xfZBVvMf6ZrVdgcEuzw8jL4Glq4aNz7kBdXjgGxoOSDOiZ9IPt55gMf3DCzXH4EN5+JYEygNDjoh4eDkZApNgQSxwgarJP7zzaU4DAODQWwGBIlOU0WezL9zc3EUjYohTNzYNASORxi0JgIJyWwy0+aEY66pIXHr9wqdBuvub/CsE/YlBtkwXxj1X5gSO7XXEjlpKn8ib9LDk7u1blSJl7aWTq5x/xu+vEb7U63+jFA6X7i54kp3cmWHmYjaO/If9kHZqnSoAIvTbdRkBAP+7+r/lr4wDaFNXun+2pcLhG8gSPKHjnpbAdsSFpMqqvW4N4dMBAIu4pqz40NDjVNvLyHjVSX0esSD+rKAnYT1Jp3q32sJJpcFbGTulhbr9MVMvUZJRmKJPeMRgzBUs320/EIvAXr/1/vVZ60ESHyJz2RTVq6BSmgueEMCq1kw8+p2u7lcsPVPxZeRxpCct1OhtgpgLvwhG+rinrGA3wW5oG+pJERT/9llbHfEO07peZlbqPqDhxJ7yd71GcZrN6NuzAxtQ+Jn8sr+Z+u1iSImPOAfYVN45fnSWopwAuKAZiyBU2wYNE2ZbTYJ+93hYy0KL874S2DFf8Gg+3ijxHSt+7/ZTO/4Vo8L+JhTuOZvVehn6LXqGQ==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB7216.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(376014)(19092799006)(1800799024)(366016)(921020)(22082099003)(18002099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?yahuWumKpUJSe2TY/Fp914e1k49u6AGktApLBR8yo82HKDFECJq5HXnNxpxi?=
- =?us-ascii?Q?GX5Z4ciZPCoZ6+HBNfnJCRRRkUfs1nuqX2D1IafNknHa4OxgJZ5YI7/DwIbh?=
- =?us-ascii?Q?eSJ9bYdyBHkKtnbg6P0gXPNMKvl1kvJ3Vr7uWZ77PwOddxZFR9sXb2oTO9AB?=
- =?us-ascii?Q?8fP6K2CoQ9996nW28Hu/xE84g+KVwP4WjKoX+U+ZfiKXu/eRJQiL9G771Rac?=
- =?us-ascii?Q?Qi28SE7YrqzUemP6uCK929m8dxF2CjFi0Vh6BjcAmDvXNXPCKqIngZmMNsR6?=
- =?us-ascii?Q?tS4/WVnlRRrOZxePkCMolwxiBA6nHYrOBWbn3WG7naKRx+bVWziLsKDicezN?=
- =?us-ascii?Q?iLi6kKzaXUY/1gOHiw4WLD5Clv2dHIPF+XDdQCLgXpdJVo8YmMKHigaczCd0?=
- =?us-ascii?Q?l9K5l61tTaUv1KQmu8T6rsUMXpTPYwmtWeMjxC2rAws+j2VOAzUGaV3U2t1h?=
- =?us-ascii?Q?be4FN8zVEj+9IPASvDdOihz9sRgSRJ1dkVxxgu5Pvem1OVX426oZJEcv9Knu?=
- =?us-ascii?Q?wZYPFl1eo9VQ9Bw4xfUqJTSCYRocjYUaPhPPGJO0TzSvDJWlNGhIhX7Su+i2?=
- =?us-ascii?Q?H+4wLoxvb764PzPbCuyml3xlC8UHylEqcjJ4yGb9rTHH2dK2GYgfpPvQrF6h?=
- =?us-ascii?Q?6s6ZRs/lgyBjr8Hgag/dr77YgcG7pkQTwei13ohO66fcy67llTuLzuMnN9RJ?=
- =?us-ascii?Q?lGqEW7Zqshk33B3NfxlL/Ah4NaL9y7Qh9ePST2A/B++TaVXUfgQvEIwetygj?=
- =?us-ascii?Q?wOnDhGPo45m4HP35L6BcOzRthdnbiDCKw9k+Th6T947QLyNQ+hNjnMupkdoX?=
- =?us-ascii?Q?+4YljG5bzkNf0qqoxqaGpxzHIfrvGFdhNrBJGE+SRin4icrV0+p1jcCsashB?=
- =?us-ascii?Q?iGKBmtl43up8s/hUB5TqsVT/lfFiQmxz+nzzN27CfdyXyuOde9N32cJr+06d?=
- =?us-ascii?Q?4kGQh9Q511PJMK5yRJyVaP5mgqCtJaRrh7OawRwjFelVUom63vDVaZNdYdIS?=
- =?us-ascii?Q?SFeKt1qd/g8bv6DtP1WBFC3Ugr+muj8JiaDtinjqh+MHl6RnnYGEq0QFbOCX?=
- =?us-ascii?Q?+rkKI+5iByRShD41DyGw1VwLotB9mnMdiauXep3xAxmKLQi0WJGtIvjyMeTQ?=
- =?us-ascii?Q?ML4M641HVYIIlQYLDBjV3KBc5jLhz81MlSCurL4X2mJG0CNs8EE7jTnySP17?=
- =?us-ascii?Q?sFTlGornZU7kPbkFU8xE7NG/GY2mDrKrFqBhAaS+SpweQcqCCtfj1uhvRTQV?=
- =?us-ascii?Q?aaTyC9gloasBjrZe53KjQnl5DtRYb8AxXPRUK7O2uWexMrL+OccQ8XiEZAxd?=
- =?us-ascii?Q?KH7TKuWLuQycZ9JfL3YYfzUJ661oWsc5hzbmwZZeuHgYHJBL9Sfi0hO9Mr9o?=
- =?us-ascii?Q?oUecXvUSRRRsKNg3NFPjqNAprsKcDqM+m1XrCyc0M+zPuRmaiWA4VhCKljM6?=
- =?us-ascii?Q?CmxMixsGS+1DZMfu4p4Reci4onCsXz0yIneaujm/xN9BzCfNy49hS8Lv6oeK?=
- =?us-ascii?Q?DMg7mRciZdjCizS/ioaatwXS4yJk1nUy4A9MPD8mjSclcozwJRyWSnzWLRPI?=
- =?us-ascii?Q?z8m6jGI5M/9WghMjFzjD1m+mZMKKjTHz1Bd5XKbEZ+XAvdhm4TRvWpqy+1R9?=
- =?us-ascii?Q?/fGucIW1WEItpjJiMATrHIZvPHeCfVP8uHCWnPBKc54hgG+MDoO1dosjJ6SI?=
- =?us-ascii?Q?D1tPmpL+2Ndf3lFUeWx3wDuplL673nBgHViJn7mTYo1sUeMIIYiwUug/HF5p?=
- =?us-ascii?Q?5LKSBMCPtOVAHjfnJs6HZLRdL/z6TIN8+yFp4bodlHQaTFIvx1Jg?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 003567c8-053d-4759-4cf2-08ded67c2fe1
-X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB7216.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2026 07:50:00.2568
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: r4L4cq04jC4uZy9hFCPPlkP3QYIntqAylZ6CVUW/k8KNHVFql3GZrdI5MWIWSMgjtgsGjdsks7Wiu4tCBxwCl5ElKIQNykJ2nJuhUcfbeELlzuZZLjXnH8ZCCubglVLt
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DUZPR04MB9918
+References: <20260629132633.1300009-1-arnd@kernel.org>
+Date: Tue, 30 Jun 2026 00:53:46 -0700
+X-Gmail-Original-Message-ID: <CAMRc=McnpZK+XeMcVfrBeh8SWa44UsVSJD0GJ1pXYhiFqzdpaQ@mail.gmail.com>
+X-Gm-Features: AVVi8CcPrvp2PMd39-Ep5NDuNXP5lZT9A5toOBbKSjeAVmB0_7rIggX2JLATmJ0
+Message-ID: <CAMRc=McnpZK+XeMcVfrBeh8SWa44UsVSJD0GJ1pXYhiFqzdpaQ@mail.gmail.com>
+Subject: Re: [PATCH 00/13] treewide: replace linux/gpio.h
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: linux-gpio@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, 
+	Bartosz Golaszewski <brgl@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, 
+	Gregory Clement <gregory.clement@bootlin.com>, Frank Li <Frank.Li@nxp.com>, 
+	Robert Jarzmik <robert.jarzmik@free.fr>, Krzysztof Kozlowski <krzk@kernel.org>, 
+	Greg Ungerer <gerg@linux-m68k.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	Hauke Mehrtens <hauke@hauke-m.de>, =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>, 
+	Yoshinori Sato <ysato@users.sourceforge.jp>, 
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Linus Walleij <linusw@kernel.org>, 
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Dominik Brodowski <linux@dominikbrodowski.net>, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-samsung-soc@vger.kernel.org, patches@opensource.cirrus.com, 
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
+	linux-sh@vger.kernel.org, linux-input@vger.kernel.org, 
+	linux-media@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-sunxi@lists.linux.dev, linux-phy@lists.infradead.org, 
+	linux-rockchip@lists.infradead.org, linux-sound@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: Wei Fang <wei.fang@nxp.com>
+On Mon, 29 Jun 2026 15:26:20 +0200, Arnd Bergmann <arnd@kernel.org> said:
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> The linux/gpio.h header used to be the global definition for the gpio
+> interfaces, with 1100 users back in linux-3.17. In linux-7.2, only about
+> 130 of those remain, so this series cleans out the rest.
+>
+> In each subsystem, we can replace the header either with
+> linux/gpio/consumer.h for users of the modern gpio descriptor interface,
+> or linux/gpio/legacy.h for the few remaining users of the old number
+> based interface.
+>
+> All patches in this series can get applied independently, so my
+> preference would be for each subsystem maintainer to apply these
+> directly, with the rest going into the gpio tree at some point.
+>
+> The final patch here obviously needs to wait for all the others
+> to get merged first.
+>
+>       Arnd
 
-Replace the open-coded struct_size() + kzalloc() pattern with the
-kzalloc_flex() helper when allocating struct enetc_psfp_gate. This
-removes the intermediate entries_size local variable and makes the
-allocation site more concise.
+Thanks for doing this Arnd!
 
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
----
- drivers/net/ethernet/freescale/enetc/enetc_qos.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+For the series:
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_qos.c b/drivers/net/ethernet/freescale/enetc/enetc_qos.c
-index 7b17bca24f26..2aa0fcaafcd2 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_qos.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_qos.c
-@@ -1135,7 +1135,6 @@ static int enetc_psfp_parse_clsflower(struct enetc_ndev_priv *priv,
- 	struct flow_action_entry *entry;
- 	struct action_gate_entry *e;
- 	u8 sfi_overwrite = 0;
--	int entries_size;
- 	int i, err;
- 
- 	if (f->common.chain_index >= priv->psfp_cap.max_streamid) {
-@@ -1242,8 +1241,7 @@ static int enetc_psfp_parse_clsflower(struct enetc_ndev_priv *priv,
- 		goto free_filter;
- 	}
- 
--	entries_size = struct_size(sgi, entries, entryg->gate.num_entries);
--	sgi = kzalloc(entries_size, GFP_KERNEL);
-+	sgi = kzalloc_flex(*sgi, entries, entryg->gate.num_entries);
- 	if (!sgi) {
- 		err = -ENOMEM;
- 		goto free_filter;
--- 
-2.34.1
-
+Acked-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
