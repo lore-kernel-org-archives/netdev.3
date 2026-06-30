@@ -1,129 +1,100 @@
-Received: from mail-pj2-f2.google.com (mail-pj2-f2.google.com [74.125.227.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CFA0202F71
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 21:18:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C996326F288
+	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 21:40:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782854308; cv=none; b=iQznDtvgpHOc5lKek9yTnq7ReKMah8idZf7xYuOQOlhY1z1LbMNvrVpVEAlWdEwck5xzbp1m1dhie2Z5YOdI+GSfEWdM3pB4XOP7j13dkjoIt3Lbgb/xMsrDOAHGYmnHZMMO3UaKYm5Nr9qAP9GrJgceYcUuR+Ov10P6W7WHLUI=
+	t=1782855609; cv=none; b=GqjY6t8+zIzJzn6izuTCh5bZU8/9Ex2/8jncNavWLDnwN/zHVmMkUGSBmjPCiHHBjGHrMAyfXcuHiwf/iYqvHZU6K0WIoyu2OpIK+emcz0LI84I12NNGZTzI4yFXkWYQBnb4ULvLs6P53ze6cmlApnI5Nb1SgoTAXKfbK5eZHPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782854308; c=relaxed/simple;
-	bh=fcmANZ004Q0lNW7yrfpsdAerR3yiHCf/824ByPXnnIg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fXe0dgLDzWI4cHwP2vh5T1c8I+dDEMG2FFqvEkzsutEK/qG5ZEt14Dh95zAu3aI4+O0pWkV21D19nLMOKnk7r88qTjNkkhlFQgodSWxM2Qo8EQqUltZpTQ/+vjD+OX4vBYITahy6bhtJh5OZ6UNGHbJB/kbEGcwhPnuaBEXZOYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ya0nPVOj; arc=none smtp.client-ip=74.125.227.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1782855609; c=relaxed/simple;
+	bh=La2xNvf/TCB9nBGYKaS8YDOIJOCNSEjb9+oJx13QQCM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mI3hA1st3n3wX2clCo1Ez09ElUGlI6vMzG3iHA62YggQNfuxeE9cInNpQf51nt72dTefxae8feCccbVRJjw7jzi0D36vVjgkErtDOC+C8IP7iGXvLFdj99kGchM8VVPEQBuenxYyoCLqOCJqUhtCOT3NARffZNDAl4UrcfpPoAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hvKTMsSL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ya0nPVOj"
-Received: by mail-pj2-f2.google.com with SMTP id 98e67ed59e1d1-37ffca5d434so489a91.0
-        for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 14:18:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782854307; x=1783459107; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2r2hvWyxJvr9jrBQHVSlf0QNgNk9jJsPhFYeRiWKWmI=;
-        b=Ya0nPVOj4inlsFXwboOIrQiikl9v1N1LdUlTYyNIbi74K/8ni4kyw5WxoRtIJHsV+Z
-         E2wiDRaxD2VcV2QCIreliQyALK3zxQ3IsY9hkoQrwiKJ5XLjYyu8wG7zoNBVK3WpO/Oh
-         cruVXTy2zjrdzMgP6HfdmAtER4350QMEquX19d9wU5Eu9SWe1igsuFCIxpsWUY6s021a
-         KO9pVRrO3yIkmjHSUNLUcBCjDjGVa3/n8P4djmHK+eBNyfif6WSyqhZU4sg5o/V2stHR
-         fSM1kTkilcYCkHByAFM5ENxyGHC7o8QrfjoJy9h5iYzjaEHtbGaLNlMfWFq0YnS7LsQO
-         MjKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782854307; x=1783459107;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2r2hvWyxJvr9jrBQHVSlf0QNgNk9jJsPhFYeRiWKWmI=;
-        b=geZxPrN15iHOzdUmFCBUkg5XgCn2FOTU+NqVL0IAqf952sDLq0vzMNx8qMbBvaNYZP
-         3G4lcf9VFtmQVtjPLMCcH6BNryv9gPwNcf8OukBIzUi9u+7g8uj1sFM3WvUDLVN1LZVT
-         RA8lgrCU6BBuFUL6GrlSqsSKbDoCACbxjZZKfJhOX/IuMQxMqdiB51twe7tXMcRyqgQ/
-         2zKXngfgbhZJg9RFc6PNAS9qlVaYRrPeLYvUGRZ1MnwfTMb0BIMiTOfLbMLnIT42nEDd
-         WJHw4MaNNjE+fgYpgI/Ei9PkMb/mztKqhj04CbjzgsgKVPDcHp6rfM97Mgjj3zW+EKY2
-         io5w==
-X-Forwarded-Encrypted: i=1; AHgh+Rr2tW6Uo4xeqDV0v8W8TkpSYHVeaRwC3zHorURgkgTvtumZolaOglGWb/n7IRmX7U+ZfeqwQyI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzPz/NqDZ3QJ8ysfnJhU8a8f1TXKCRFrRPZ8KZQWhYpQkZbQXCG
-	aVo5nJF5aZxtcgmZ8fAv5/gKmVS26fRFRspSngHeXPbQp4pS/yJWLRYN
-X-Gm-Gg: AfdE7cnfpV+rvhi+3bkSUtu1jQnyIji8k8yaYakSIf+OlfBWROiS4kcvmMYnkNEnbEQ
-	kxZN+JASHfjWIwmAVlVPL0KizQhZKCmOm/ELuWkSs7kvtClkxd3B3ZnfcFqpD9JWEncbYahKSvT
-	GcPKi/WCkuRJsloSfvfP3C3bp+nEz1a3XKP4MbFde35QfgbnGadmwT9pJCP4PJwtbRcgFHXlsaY
-	0dvjvWW07d46up1qEJAW/LTqJwH5GPW7UZqU/Oi9ik1/fFcjQZNR5+DlJVpBrlU5Y1yggGROi+6
-	5KI+KOu71MUOPBuuRhqrvMs+mg7ZeDWH1F9jLZWowFPirAcP+YSpM8qWOc0pr2jNXDcYqzMD4bx
-	hgkSwQEpizWYM+9ER+PtvZQ/3JJMsVG1NVeWb66WFvrJqHKfG6TRa5xIQRilvTLVbc095mu99Jd
-	Mjxd9nKw==
-X-Received: by 2002:a17:90b:55cc:b0:37d:a52a:ff12 with SMTP id 98e67ed59e1d1-38068b9afabmr2435095a91.10.1782854306807;
-        Tue, 30 Jun 2026 14:18:26 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:74::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38095d8c8cdsm597450a91.7.2026.06.30.14.18.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jun 2026 14:18:26 -0700 (PDT)
-Date: Tue, 30 Jun 2026 14:18:22 -0700
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: Vladimir Vdovin <deliran@verdict.gg>
-Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, ast@kernel.org, 
-	daniel@iogearbox.net, andrii@kernel.org, martin.lau@linux.dev, sdf@fomichev.me, 
-	hawk@kernel.org, john.fastabend@gmail.com, kuba@kernel.org, lorenzo@kernel.org
-Subject: Re: [RFC PATCH bpf-next v1 0/7] xdp: RX checksum metadata hint and
- checksum assertion over redirect
-Message-ID: <akQyT2d0wNF5F5LG@devvm7509.cco0.facebook.com>
-References: <20260630191510.81402-1-deliran@verdict.gg>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hvKTMsSL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 881421F0155C
+	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 21:40:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782855606;
+	bh=La2xNvf/TCB9nBGYKaS8YDOIJOCNSEjb9+oJx13QQCM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=hvKTMsSLWpQ7iwnKPdGvgwo9HJsX1KaQ0ubrkEyF6jRtv6mdeKaQvRSrk8mJbQzxW
+	 ig6k3MT8xKA+lTAcOlkAAOJcWdXKrFmGykfXLZNsJrC4ZUwxYU8idfhr4PDNNRiJQl
+	 dL4jtvbz1PpTkasUpdlMtraBeP+0Obg7Sy1MnUWXzAfKz9u+WjtyjvDJMWkxSdE48F
+	 JlrnDpUpZ2kdUZnpGkFx0rw7VpM4s3JAFfKvDSckb101eyILjgH9sF32uBzeJUlAqw
+	 rc0o03G7Elsp6K6Z1gVl7D5Bnr8tmbDdWDEdfx3fznr2bRRsBeoZllbucPhSQwYNf0
+	 zkw1ib+Apn52w==
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5aeb2bc82ccso3526976e87.2
+        for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 14:40:06 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RpJSzO67CfoHmPec/4YQ0ZY5i+/mr9jiSp2fe2zCULjGAPK9pXMKtxbE2TB24m6oMFoeRBLOKU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZsY9WsOW3hCYxFrk0NaqIDFWBhKjFqNnedb7E6aO98v6duae0
+	R099ZEo1yCssaoUhWQ3J82E3I5ESV0UUp8rIbuauNA3VT4Uv1tIFhGBoDs5S7MRVMNcigmFi3WD
+	9NMH5K3+p3uAxH6UXYZBkAm8brCGMTb8=
+X-Received: by 2002:a05:6512:3d19:b0:5ae:b604:4c9 with SMTP id
+ 2adb3069b0e04-5aebdbc9489mr1240118e87.65.1782855605213; Tue, 30 Jun 2026
+ 14:40:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260630191510.81402-1-deliran@verdict.gg>
+References: <20260629132633.1300009-1-arnd@kernel.org>
+In-Reply-To: <20260629132633.1300009-1-arnd@kernel.org>
+From: Linus Walleij <linusw@kernel.org>
+Date: Tue, 30 Jun 2026 23:39:50 +0200
+X-Gmail-Original-Message-ID: <CAD++jLkpTa4hxNRscbiFFKZTM28ThuJMo1f3SX96LheC8L5BEQ@mail.gmail.com>
+X-Gm-Features: AVVi8CfBoAND9VanduyO4lm3tElbURSYx2nmpdkO8PSRH7aiVql7RmWg2jM4Qb0
+Message-ID: <CAD++jLkpTa4hxNRscbiFFKZTM28ThuJMo1f3SX96LheC8L5BEQ@mail.gmail.com>
+Subject: Re: [PATCH 00/13] treewide: replace linux/gpio.h
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: linux-gpio@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, 
+	Bartosz Golaszewski <brgl@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, 
+	Gregory Clement <gregory.clement@bootlin.com>, Frank Li <Frank.Li@nxp.com>, 
+	Robert Jarzmik <robert.jarzmik@free.fr>, Krzysztof Kozlowski <krzk@kernel.org>, 
+	Greg Ungerer <gerg@linux-m68k.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	Hauke Mehrtens <hauke@hauke-m.de>, =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>, 
+	Yoshinori Sato <ysato@users.sourceforge.jp>, 
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Dominik Brodowski <linux@dominikbrodowski.net>, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
+	patches@opensource.cirrus.com, linux-m68k@lists.linux-m68k.org, 
+	linux-mips@vger.kernel.org, linux-sh@vger.kernel.org, 
+	linux-input@vger.kernel.org, linux-media@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-sunxi@lists.linux.dev, 
+	linux-phy@lists.infradead.org, linux-rockchip@lists.infradead.org, 
+	linux-sound@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 06/30, Vladimir Vdovin wrote:
-> This series lets XDP programs work with the hardware RX checksum verdict:
-> read what the NIC concluded about a packet, and carry a "the L4 checksum
-> is correct" assertion across a redirect so the stack does not revalidate
-> it in software.
-> 
-> When an XDP program redirects a frame to a cpumap (or any other path that
-> rebuilds an skb from an xdp_frame via __xdp_build_skb_from_frame()), the
-> HW RX checksum status is lost and the stack revalidates the L4 checksum in
-> software.
-> 
-> Two kfuncs are added:
-> 
->  - bpf_xdp_metadata_rx_csum(): a device-bound RX-metadata hint, like the
->    existing rx_hash / rx_vlan_tag ones.  It reports enum xdp_csum_status
->    (XDP_CSUM_NONE / XDP_CSUM_VERIFIED) and is implemented for mlx5e, ice
->    and veth.
-> 
->  - bpf_xdp_assert_rx_csum(): a generic, non-device-bound kfunc that lets
->    the program assert the L4 checksum is correct.  It sets a buff flag
->    that rides into the xdp_frame, and __xdp_build_skb_from_frame() turns
->    it into skb->ip_summed = CHECKSUM_UNNECESSARY.  The kernel cannot
->    verify the assertion; the program takes responsibility, as it already
->    does when rewriting packet contents.
-> 
-> Posted as RFC to get feedback on:
-> 
->  - whether the read hint (bpf_xdp_metadata_rx_csum() and its driver
->    support) belongs in this series at all.  bpf_xdp_assert_rx_csum() is
->    self-contained and already covers the main use case: a program that
->    computes or fixes the L4 checksum itself, or trusts the source, and
->    wants the rebuilt skb to skip software revalidation.  The read hint is
->    an optimization for programs that did not touch the payload and only
->    want to relay the hardware verdict.  These could just as well be two
->    independent series (assert-only first);
->  - the kfunc naming, bpf_xdp_assert_rx_csum() in particular.
-> 
-> Testing:
-> 
->  - new selftest xdp_cpumap_rx_csum drives a frame through a native-XDP
->    veth into a cpumap redirect and checks, via fexit on
->    __xdp_build_skb_from_frame(), that the rebuilt skb is
->    CHECKSUM_UNNECESSARY iff the program called bpf_xdp_assert_rx_csum();
->  - xdp_metadata calls bpf_xdp_metadata_rx_csum() over veth and checks both
->    verdicts: XDP_CSUM_NONE for an AF_XDP-injected frame and
->    XDP_CSUM_VERIFIED for one sent through the stack.
+On Mon, Jun 29, 2026 at 3:26=E2=80=AFPM Arnd Bergmann <arnd@kernel.org> wro=
+te:
 
-This was posted somewhat recently from Lorenzo (and had a fair bit of
-discussion), but there haven't been a follow up:
-https://lore.kernel.org/bpf/20260217-bpf-xdp-meta-rxcksum-v3-0-30024c50ba71@kernel.org/
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> The linux/gpio.h header used to be the global definition for the gpio
+> interfaces, with 1100 users back in linux-3.17. In linux-7.2, only about
+> 130 of those remain, so this series cleans out the rest.
+>
+> In each subsystem, we can replace the header either with
+> linux/gpio/consumer.h for users of the modern gpio descriptor interface,
+> or linux/gpio/legacy.h for the few remaining users of the old number
+> based interface.
+>
+> All patches in this series can get applied independently, so my
+> preference would be for each subsystem maintainer to apply these
+> directly, with the rest going into the gpio tree at some point.
+>
+> The final patch here obviously needs to wait for all the others
+> to get merged first.
+
+This is helpful.
+The series:
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+
+Yours,
+Linus Walleij
