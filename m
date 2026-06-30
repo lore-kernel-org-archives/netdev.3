@@ -1,203 +1,174 @@
-Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011066.outbound.protection.outlook.com [52.101.52.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDACA37B3FE;
-	Tue, 30 Jun 2026 03:22:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782789759; cv=none; b=GXhEewiN3kKytPvnLB88lRZFvQkjF6ZEzQO1R817HMoTvkmhhOiQ4pSLgsbBG+MURHLwQHPdqsF7fvJ76DWVIQ5xNpAVTGQlxQdOFU6yu7/doQjQg29OdO4ekXdqd0u+aINMNajwejlBFZ38xkjx9Qu5pGN38U3X9plP+Dlb2dA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782789759; c=relaxed/simple;
-	bh=1tqCYrfxlkiW0Yvx6XadNQzRu9uqIA914m5QF6m2MCM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=EN6Lr1qd9iYJc9/tbbajir/DQsUSEKqFteDb5H8MIca92l04ZPvLIbwuTKsv+6gdEX2HerA3MbhQAk/Cc1sWi6blaYnYiMc3p/RiOiySzuSzKvPIg/RHhvdx5NIDQLJoX11t+pIyF/kE3h9QVG3G4QMSOVUNoNGAXHoR6gLZz7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=WTqpN32J; arc=none smtp.client-ip=203.29.241.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E042A2367DF;
+	Tue, 30 Jun 2026 03:24:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.66
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782789882; cv=fail; b=UUqtmUI7WPjKy8imXsSD47S42A2h7sHb+3NVKCTDK96L4heC2TzNS3R3ZMt7YTolZjrZHpnuyKb0kL0qPJsDt31O0SPpX6xqHyBBJsbSBC01jLpXha9jdONuUo2H1ayikHYNzIJACcttoPwUavy5mhWEOJGVOF3NRHFxgj4k0ks=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782789882; c=relaxed/simple;
+	bh=iwdkGBdjXWMZkQ1PqvhzWXHMoWrU/wyti10T0N0go3E=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=YRGeEpc6ttHO0IAUQ3C7AmsvriWKh+I4MEgdB7ECgITOLF1/jBwmqhjnAvtz0+IilYMZbi/1eaO41VpDz7IRmihUbNB3EItK4MbYtW08n+yQXIASE/jL7B4cIdH6qeDTyudAsURkvC+RHsRcxw/B9MPojJxdIaX9Nn0TMRW/Dko=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=S9QU0xqO; arc=fail smtp.client-ip=52.101.52.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="WTqpN32J"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1782789748;
-	bh=NCOo+o5/Qa83/RFOxQME+CtTWm5U7Ue1c/eJJIr5LFg=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=WTqpN32JlQfx1ePNXY+cfMhvFsl9hfqSB5Qv7kzZDQMh2lx7b6s+1zplmBPi/5G+n
-	 BW17PgA1EcA43jhw+FXeV+aWtRgZO1lIiON99lDK+yZtGmVmEayZtIU/13h1bcXZTA
-	 DT+YdwoGd/3WNqYeC3pOC5+olOcMa5ZZt+ArPI/IluNxzg6Uj+l2vT3F/ENsGV3eJn
-	 ESeBfKp3uMCAjT88nkoCY62bddegFfiTEh9aqF6/IW13rtDlxN6K4Uex/lXclC9Uuv
-	 QopQEgpUDkv9fmeP2hdttNHAhfeKc7pCW4snQSTJk92pcAJeNdZRqa1CB7JwGUvIY+
-	 ZQ3igcLKFGjYQ==
-Received: by codeconstruct.com.au (Postfix, from userid 10000)
-	id 5A17B660F5; Tue, 30 Jun 2026 11:22:28 +0800 (AWST)
-From: Jeremy Kerr <jk@codeconstruct.com.au>
-Date: Tue, 30 Jun 2026 11:21:30 +0800
-Subject: [PATCH net-next 09/12] net: mctp: usblib: Implement transmit-side
- packet spanning
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="S9QU0xqO"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Fiss+yHyb0qMq6oZSvquJxtWkSAL98XYh0j9fvM/pOD+qjEcUn+nLwiNTGkIdaswZm8aHFrhXiG9qQAdIyNEiIiMmP45QlZsHe5Mmb5vMx4+HCqfUcEP4Wd+Q4RF6K5HPBrhMwa4/mq+NEKtxnDkZvtNkiToHTzo2PHOB8wTrayGFyG8Bnw1N2dWvu1kBYBJnq5/ejwkd2s4dr3brd0hmMSf4YrnWpXV4cbnbf5jQtmYfUPps1q3P/3UvAmydSzKXWlQV0E1aH4PmJZNtxhq1MluMDeIxqr4OC2OUeikzgF9/iuLB9VOpAvxoXtG/Gsm2/ENPb2BQjM2sTNL/dqjNA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=iwdkGBdjXWMZkQ1PqvhzWXHMoWrU/wyti10T0N0go3E=;
+ b=lQ8QYD9VzcTzO/cgQX3H4qRXUidz1bQZrDBeu8k2MM0rwCYP0Nx/bF/0KKnHd2nBuRJb8lhDfaMFsMqTccpHqNiQgpX3x68XUso0bga/eFoNabLeulOXYjJ3JCdKBygL3W91myoxv7qumf5NyIoRiNutpYRDB1OqPgda+gF2G4FyVMKcrX8/81U/Aom/IxXM/dOPDWWy+xEN8dk1WI2AGojOTx4aDzwXgtTD7BdmOjDCyuDAuu0ZuRi9Z1H40uqqos9qAdcQIuRkk8If7TnRxSA8AwDEiE5GKXsutgrl20MlYJ3jbnycVlQvvLC9x2OXygJDi41AqrROwdDYD6ww3A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microchip.com; dmarc=pass action=none
+ header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microchip.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=iwdkGBdjXWMZkQ1PqvhzWXHMoWrU/wyti10T0N0go3E=;
+ b=S9QU0xqO4IklMb+Zzgvx/B+P786PJdo0wnce3fHtZwX0HapqpOYkRk6tB+5W7CCEkk95lxK8NgMKYH0kJAWHRhwq/K/Q3opl5thRDbztvK3qNTtWdfDNT8LUzg0478z40n6imTFl9C7iVshAw7m2zWOOsBhrD0xZ+SxktXU61xK7wMhmIt/SwdWy2IMJ0uQXSlDxq3UrQJf7z7vS9mNzkFFmflWvvgOFkalZls57kq94bM97S+SfZ+zcCxzR4RUfF7L2b7cAdr6bha3/h7Qz94Ro7zh4yi55mStcxDH7GFh5OL0USnTqZ6WF18wX7zef8m0ld55a4P7JUDjwWqEgCQ==
+Received: from SA1PR11MB8278.namprd11.prod.outlook.com (2603:10b6:806:25b::19)
+ by IA3PR11MB8918.namprd11.prod.outlook.com (2603:10b6:208:57c::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Tue, 30 Jun
+ 2026 03:24:38 +0000
+Received: from SA1PR11MB8278.namprd11.prod.outlook.com
+ ([fe80::3a83:d243:3600:8ecf]) by SA1PR11MB8278.namprd11.prod.outlook.com
+ ([fe80::3a83:d243:3600:8ecf%4]) with mapi id 15.21.0159.013; Tue, 30 Jun 2026
+ 03:24:37 +0000
+From: <Parthiban.Veerasooran@microchip.com>
+To: <Selvamani.Rajagopal@onsemi.com>
+CC: <andrew@lunn.ch>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <Conor.Dooley@microchip.com>,
+	<devicetree@vger.kernel.org>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
+	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
+	<Pier.Beruto@onsemi.com>
+Subject: Re: [PATCH net v5 1/4] net: ethernet: oa_tc6: Interrupt is active
+ low, level triggered.
+Thread-Topic: [PATCH net v5 1/4] net: ethernet: oa_tc6: Interrupt is active
+ low, level triggered.
+Thread-Index:
+ AQHc+e0XZNEa+AKE3E6e8zsz3KcUMrZAt0IAgAMKGgCABla3gIABk9YAgAAH9ACAA5akgIAALl2AgAACmYCABxCiAA==
+Date: Tue, 30 Jun 2026 03:24:37 +0000
+Message-ID: <d15eaa01-3312-420f-a34a-d810710e5b12@microchip.com>
+References: <20260611-level-trigger-v5-0-4533a9e85ce2@onsemi.com>
+ <20260611-level-trigger-v5-1-4533a9e85ce2@onsemi.com>
+ <7c89df6b-32ac-46c8-8400-945879037f2e@microchip.com>
+ <CYYPR02MB9828CD98EEEB9B218A940E4483E32@CYYPR02MB9828.namprd02.prod.outlook.com>
+ <CYYPR02MB9828A1434E6339A6CFCCA74283EF2@CYYPR02MB9828.namprd02.prod.outlook.com>
+ <64f4f30e-a987-4289-b36a-1acc977a6764@microchip.com>
+ <CYYPR02MB9828E1167750AEA090EC60CD83EE2@CYYPR02MB9828.namprd02.prod.outlook.com>
+ <f127837f-e08f-48e0-a3a9-906e1d61d6bb@microchip.com>
+ <CYYPR02MB982836BC273D09FD3BDE623583EC2@CYYPR02MB9828.namprd02.prod.outlook.com>
+ <CYYPR02MB98285BD6A2639E0B01AE407183EC2@CYYPR02MB9828.namprd02.prod.outlook.com>
+In-Reply-To:
+ <CYYPR02MB98285BD6A2639E0B01AE407183EC2@CYYPR02MB9828.namprd02.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Mozilla Thunderbird
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microchip.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SA1PR11MB8278:EE_|IA3PR11MB8918:EE_
+x-ms-office365-filtering-correlation-id: 09812376-9f07-4079-f846-08ded6571d6e
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|23010399003|366016|7416014|376014|1800799024|38070700021|18002099003|22082099003|11063799006|4143699003|56012099006;
+x-microsoft-antispam-message-info:
+ nGTibxWU7KCLxBtvMgihyJBrdeBtpCA/AbNcdgnPuXHnipwbiVspaVd6QuZhykHo9KLpjTFGuJBXLz89eGo+eQLAvz+u6eTYi/83Al1WBciW/YUUFAl2q3ANuuqXphQ6MTrMta/Vo/Cv4MnklYxXgHWf8IMs87t87UqHf/A2jAkSnJzvaj10/dvF0qP+D3EjYPnv0p6s4a8Lqdw0Jh0VFwI0s2E6NsbdtPIEVWBR7BD0pbXhAMPiPweX9ls0ZbNWUPbgelYmIxsXD2F9H0u1aVKeN4UHKClxr8KbG9G/qOmyXVWxDLhaKK+IHdgFpJTlZO33uJ+ist3C4Flm8z/fhKD75UZW9/VwVZ0DHJZMhOB+pvxdHsCYBJ7oliW3LK6F94hpMBdHZI9wBwjAyElsKaXJaHV7tXnqThig3O/wlP9qnQTH3kFYlp3Ca8Qc2U6byQ9QMTfdal4T+Yjp2DtVKyYwsUdNnO3ERd3gEAST0nMd7V8BmcJG8NkmaEF5nuMBVXO9fdgJKxwXrDJCXOWlh7KA/RiUZmM3iwcTN+OVekhxIu29qMcMRWt1IMUkxaELRWNCjM497i+LShGw1WsxIuCAbm93oozEowbmxDtlCmK9Tpa3kq/ZZi23eZ3PCS5BdSNQM45H9Xtx8dNFsl58HXxqAdsaQ7c4NHwSJ/5s8X4h2+O698kRM1rYY6w318+NbvU5+UJaIPS6IcKcfvUMv6mq6gtpPlgORtkzWUBke8c=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR11MB8278.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(7416014)(376014)(1800799024)(38070700021)(18002099003)(22082099003)(11063799006)(4143699003)(56012099006);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?VlJCd2VvTC9Selp6enpucTc5UEE2aGhHRjN0d2tadExDOTlTWmRxdzZhcFE3?=
+ =?utf-8?B?ZE9mNndRUm5OVHEvZEhGVStoLzJIK2V3YXV3MWV1SUMvZjAvNk5lMkwrcysy?=
+ =?utf-8?B?SjRONytST1J2MElhUGtjTEl0a1p1MHFZeXFaeE5yS2pvOGNuaHBvQ1QvNHpZ?=
+ =?utf-8?B?K2dWREl6eTZSV0N5anIzN2x3YVVBVmVBMWk0OW5sY2pIYlN4V0JPWU9RSStK?=
+ =?utf-8?B?WVdEbFJRSGVtTGdUNHhlMFllaHJPVi9KL2JtUFA0M3FERFBIOENpNzVlNGJJ?=
+ =?utf-8?B?a0F2RmxTNUdXQ1RTalBkUFVOdDJWV2h6T0hhWU9GVjZwbDI0dmtDTFcwdmda?=
+ =?utf-8?B?b1gwanpGUXJYOWNjaHpiVkV6RGFXWmh4aWRjSldpSmMrOWNIVWRIYU05ZllV?=
+ =?utf-8?B?OFN3eC9XNGZ1Q0duS3FPMEVKTEg0dWMxUlNuT24vREF4L3Jac1hacVR0dGNu?=
+ =?utf-8?B?T1BjZUs5ZXREVzBUbkJLQ2xsbHpvcGV4SlZpQVZieW56QUtTU1RTcXlSUU94?=
+ =?utf-8?B?ZWgrUkljcmdKMWE2QzVWOXM0UExTL0pRWmgzMnpOdk5HL1IrMEkrMFVxdFJj?=
+ =?utf-8?B?ZlZIUWRwN3drQm1XSWkrVVBUQlNVcGp4a2habmVMaGNjcExnOWhGdHlUaXBw?=
+ =?utf-8?B?SUgzbXFSNDI0ZDJLZC96NmhkTktrQXdyck5kN1FUaFllZWZRWjlWeFo0cWVG?=
+ =?utf-8?B?Tk1DTVVpR0hzVU95WlBoZ0NiTldBNk51ZDlaa3pONVJUdE1CdkxZSUdxbitz?=
+ =?utf-8?B?R25EWlpwRVEyeVA1c0hPYnVub09RcU4rTXl2dHZBWEt2MnQrWFJqSE1VTDBF?=
+ =?utf-8?B?ejVIMm83a1p6TkxkdWsrVTMvWGRSU0U2UDk3ZXlpc0RGc2VVbUQvUGR1Qis2?=
+ =?utf-8?B?SzZ3K2poMUlDZk5NVjVmNGlSUWI4L0VQTTFzWFlkdjBZSXA4K0M3NFc5V0FO?=
+ =?utf-8?B?Q3Q0UkROdjc0VmRtcjBuMDNxRURHQ1J5ZkEyeC9QV2c4eStXbmdaV1NUckZ0?=
+ =?utf-8?B?eEhvUWcra3E4TGFid0lTNHcwNm9MVGNBMlpnR3pwWnV5YnpIWC9oS255enp0?=
+ =?utf-8?B?dUg1YVE0dTZhdGF2QWNKUEEzaHFxMHJMaUQzWUovcDRKRkFvOXdhMEZ5a1Q2?=
+ =?utf-8?B?YlljZWJWK0xObS9ucUlTQ3J5a0FlWS9HWHlacEtkcDR3aGQ4Vmkzck5KVXUz?=
+ =?utf-8?B?cXVMa1ZURmJFY0tUekhIaW5hL3dvUGwyNHpOMCtxQzFiME1hNDM2bnBkRGo5?=
+ =?utf-8?B?Tkg1QkZxT3U0ZTVqRC9ON0NnckpuVkdtazh6K0dsZ0hGMk9xc0FOTkUzNVpW?=
+ =?utf-8?B?KzkvRVVqbHIyYUFyaUlYMzlHaFh2cGszMWFWWHA3Vnp3cEltQXNkQmN4S25u?=
+ =?utf-8?B?MjE2bXVvbzRzNWdwOHV3Vkd1Syt6Wnk0T1ZqU3VoSHp1eVpHUGJBQVp1QWRK?=
+ =?utf-8?B?TWdvR3I1ME4yWmNjNUlUL2c5SlRFdjhNRGowWVRPWE5aSmc4dmFHWlBzbVRq?=
+ =?utf-8?B?YmVqNGVNYlVISnp2R29oa2tRUXZQSDl6dWZlNi9lOUNJeCt6Y3ZQR0JLZFdm?=
+ =?utf-8?B?YnpDa2ZVWDBxOTFReVBpc3d4bXJ5VTl0UmxEclRXSDA1YjF1ZkdadjQ4b2hQ?=
+ =?utf-8?B?RVlrR0J4QXZCdFhCL3ExeDVVNVl5UGltdUdkK3Fwc3VUZFlWWHJ1OEw5Z2JD?=
+ =?utf-8?B?K1VuaGdZUElTcUR1eEhpZ3o4NTNoclRpV0lLa0RsWFNTVjdpZGlsdFkvNURY?=
+ =?utf-8?B?bGJUSzdWS0FPZzFML3h1cnRmZTJsZFl0Q3dac0R1QzNIMjBqamtXTWhvOWlm?=
+ =?utf-8?B?WW03QXdlbGpLbEo5dTloUG51aHlaZis3UGQ1MURYcG12SG9mQXd5V3FyNlFV?=
+ =?utf-8?B?MVJwcW5NWGFqNWpUWHdZYzNGODY1eEc4TjBxanc2N1I5ZE1CWHU0YW05NDNz?=
+ =?utf-8?B?dW1wZnF0cXI3WVB2SmtNMzJtc3hwaU43aUhhNlVWdWwvY0hQN29BNnlkZTd1?=
+ =?utf-8?B?cGZZUDR6MERLRFo5akd0aTk0dzJ3U05LWklUbjRBOVpsVlVVejJsTUFWUFc3?=
+ =?utf-8?B?dU9VMS9GUnEremROM1dKSE9Tcld3Q3BRMjczQkY4U2xUUi9HN3Y1ck1JQ2xJ?=
+ =?utf-8?B?Q0p0UWJHalpmY20vTnkrb0dSVGZNVEtNUWtxRkExdjZhcnBWQWFxRFdJZnBk?=
+ =?utf-8?B?K0Z2NlZRNjhURjd6M3pQZVZwZTB6a3Y0NzhsOE02TzJLT1NJRzR6Q2taVm8w?=
+ =?utf-8?B?cGhESkUxYkZtcmkzSUQ2OTdHeHoxcUJPRnpYZ3lKbjU2NDVMRzJnQWhtTzRQ?=
+ =?utf-8?B?Y3VTaS9xazRjR3pTU0RxQ2N4OHlkdXdvV2ozajZUYnh6ZjNzRlAvU25UWmVo?=
+ =?utf-8?Q?x190WeLWS372O0PU=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <2036C218F42F8841ADA51BCA5C5ABB93@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260630-dev-mctp-usb-1-1-v1-9-86a311fc67b7@codeconstruct.com.au>
-References: <20260630-dev-mctp-usb-1-1-v1-0-86a311fc67b7@codeconstruct.com.au>
-In-Reply-To: <20260630-dev-mctp-usb-1-1-v1-0-86a311fc67b7@codeconstruct.com.au>
-To: Matt Johnston <matt@codeconstruct.com.au>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: netdev@vger.kernel.org, linux-usb@vger.kernel.org
-X-Mailer: b4 0.16-dev
+X-OriginatorOrg: microchip.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB8278.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 09812376-9f07-4079-f846-08ded6571d6e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jun 2026 03:24:37.7114
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: m0306PTD9FDZDrSuklDO9axOYmHB1qnlb9Dis/Kt5fCF/wSv30o1IbGJvy0ZdNin8PqDWzaF0zvGNVMAGYI36MsNXTWi1TqMDCqW0a8nyxbAV2RMzxjWngJHKuJjgoq+
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR11MB8918
 
-Add support for packet spanning as defined in DSP0283 v1.1.
-
-With the existing v1.0 implementation of multi-packet transfers, all we
-need here is to adjust the buffer sizes to suit v1.1.
-
-Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
----
- drivers/net/mctp/mctp-usb.c    |  2 +-
- drivers/net/mctp/mctp-usblib.c | 28 +++++++++++++++++++---------
- include/linux/usb/mctp-usb.h   |  4 +++-
- 3 files changed, 23 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/net/mctp/mctp-usb.c b/drivers/net/mctp/mctp-usb.c
-index c89588741855..91109ad17d1c 100644
---- a/drivers/net/mctp/mctp-usb.c
-+++ b/drivers/net/mctp/mctp-usb.c
-@@ -276,7 +276,7 @@ static int mctp_usb_probe(struct usb_interface *intf,
- 	usb_set_intfdata(intf, dev);
- 
- 	mctp_usblib_rx_init(&dev->rx, false);
--	mctp_usblib_tx_init(&dev->tx, &tx_ops, dev);
-+	mctp_usblib_tx_init(&dev->tx, &tx_ops, dev, false);
- 	init_usb_anchor(&dev->tx_anchor);
- 
- 	dev->ep_in = ep_in->bEndpointAddress;
-diff --git a/drivers/net/mctp/mctp-usblib.c b/drivers/net/mctp/mctp-usblib.c
-index a1649f24d937..dbc056bfd627 100644
---- a/drivers/net/mctp/mctp-usblib.c
-+++ b/drivers/net/mctp/mctp-usblib.c
-@@ -206,7 +206,7 @@ EXPORT_SYMBOL_GPL(mctp_usblib_rx_cancel);
- struct mctp_usblib_tx_ctx {
- 	struct mctp_usblib_tx *tx;
- 	struct sk_buff_head skbs;
--	unsigned int len;
-+	unsigned int buf_len, len;
- 	enum mctp_usblib_tx_buf_type {
- 		TX_SINGLE,
- 		TX_FLAT,
-@@ -216,18 +216,19 @@ struct mctp_usblib_tx_ctx {
- 
- void mctp_usblib_tx_init(struct mctp_usblib_tx *tx,
- 			 const struct mctp_usblib_tx_ops *ops,
--			 void *priv)
-+			 void *priv, bool span)
- {
- 	memset(tx, 0, sizeof(*tx));
- 	tx->ops = *ops;
- 	tx->priv = priv;
-+	tx->span = span;
- 	spin_lock_init(&tx->lock);
- }
- EXPORT_SYMBOL_GPL(mctp_usblib_tx_init);
- 
- static int mctp_usblib_tx_avail(struct mctp_usblib_tx_ctx *ctx)
- {
--	return ctx->buf_type == TX_SINGLE ? 0 : MCTP_USB_1_0_XFER_SIZE - ctx->len;
-+	return ctx->buf_type == TX_SINGLE ? 0 : ctx->buf_len - ctx->len;
- }
- 
- static bool mctp_usblib_tx_should_send(struct mctp_usblib_tx_ctx *ctx)
-@@ -310,6 +311,12 @@ void mctp_usblib_tx_fini(struct mctp_usblib_tx *tx)
- }
- EXPORT_SYMBOL_GPL(mctp_usblib_tx_fini);
- 
-+/* Max size of a spanned TX. Since we allocate a separate span buffer, limit
-+ * the tx-time allocations to 4k. Larger packets will be sent as single
-+ * transfers.
-+ */
-+static const unsigned int TX_SPAN_MAX = 4096 - sizeof(struct mctp_usblib_tx_ctx);
-+
- static struct mctp_usblib_tx_ctx *
- mctp_usblib_tx_ctx_create(struct mctp_usblib_tx *tx, struct sk_buff *skb,
- 			  bool single)
-@@ -318,11 +325,11 @@ mctp_usblib_tx_ctx_create(struct mctp_usblib_tx *tx, struct sk_buff *skb,
- 	struct mctp_usblib_tx_ctx *ctx;
- 	size_t sz = 0;
- 
--	if (single) {
-+	if (single || skb->len > TX_SPAN_MAX) {
- 		type = TX_SINGLE;
- 	} else {
- 		type = TX_FLAT;
--		sz = MCTP_USB_1_0_XFER_SIZE;
-+		sz = tx->span ? TX_SPAN_MAX : MCTP_USB_1_0_XFER_SIZE;
- 	}
- 
- 	ctx = kzalloc_flex(*ctx, buf, sz, GFP_ATOMIC);
-@@ -331,6 +338,7 @@ mctp_usblib_tx_ctx_create(struct mctp_usblib_tx *tx, struct sk_buff *skb,
- 
- 	ctx->tx = tx;
- 	ctx->buf_type = type;
-+	ctx->buf_len = sz;
- 	ctx->len += skb->len;
- 	skb_queue_head_init(&ctx->skbs);
- 	__skb_queue_tail(&ctx->skbs, skb);
-@@ -381,14 +389,16 @@ void mctp_usblib_tx_send_complete(struct mctp_usblib_tx_ctx *tx_ctx,
- EXPORT_SYMBOL_GPL(mctp_usblib_tx_send_complete);
- 
- /* Prepare a skb for push() */
--static int mctp_usblib_tx_skb_prepare(struct sk_buff *skb)
-+static int mctp_usblib_tx_skb_prepare(struct sk_buff *skb, bool span)
- {
-+	unsigned long plen, max_len;
- 	struct mctp_usb_hdr *hdr;
--	unsigned long plen;
- 	int rc;
- 
-+	max_len = span ? MCTP_USB_1_1_PKTLEN_MAX : MCTP_USB_1_0_PKTLEN_MAX;
-+
- 	plen = skb->len;
--	if (plen + sizeof(*hdr) > MCTP_USB_1_0_PKTLEN_MAX)
-+	if (plen + sizeof(*hdr) > max_len)
- 		return -EMSGSIZE;
- 
- 	rc = skb_cow_head(skb, sizeof(*hdr));
-@@ -420,7 +430,7 @@ int mctp_usblib_tx_push(struct net_device *dev,
- 	unsigned long flags;
- 	int try = 1, rc;
- 
--	rc = mctp_usblib_tx_skb_prepare(skb);
-+	rc = mctp_usblib_tx_skb_prepare(skb, tx->span);
- 	if (rc) {
- 		mctp_usblib_tx_stats_single_drop(dev);
- 		kfree_skb(skb);
-diff --git a/include/linux/usb/mctp-usb.h b/include/linux/usb/mctp-usb.h
-index 00c538a8e211..61fb36f34525 100644
---- a/include/linux/usb/mctp-usb.h
-+++ b/include/linux/usb/mctp-usb.h
-@@ -84,6 +84,7 @@ struct mctp_usblib_tx_ops {
- struct mctp_usblib_tx {
- 	struct mctp_usblib_tx_ops ops;
- 	void *priv;
-+	bool span;
- 	/* protects access to cur_ctx */
- 	spinlock_t lock;
- 	/* context to which we are adding packets, cleared on send */
-@@ -91,7 +92,8 @@ struct mctp_usblib_tx {
- };
- 
- void mctp_usblib_tx_init(struct mctp_usblib_tx *tx,
--			 const struct mctp_usblib_tx_ops *ops, void *priv);
-+			 const struct mctp_usblib_tx_ops *ops, void *priv,
-+			 bool span);
- void mctp_usblib_tx_fini(struct mctp_usblib_tx *tx);
- 
- void *mctp_usblib_tx_ctx_priv(struct mctp_usblib_tx_ctx *tx_ctx);
-
--- 
-2.47.3
-
+SGkgU2VsdmFtYW5pLA0KDQpPbiAyNS8wNi8yNiA5OjAxIHBtLCBTZWx2YW1hbmkgUmFqYWdvcGFs
+IHdyb3RlOg0KPiBFWFRFUk5BTCBFTUFJTDogRG8gbm90IGNsaWNrIGxpbmtzIG9yIG9wZW4gYXR0
+YWNobWVudHMgdW5sZXNzIHlvdSBrbm93IHRoZSBjb250ZW50IGlzIHNhZmUNCj4gDQo+IFBhcnRo
+aWJhbiwNCj4gDQo+IExldCBtZSBrbm93IGlmIHlvdSBwcmVmZXIgdXBkYXRpbmcgdGhlIHBhdGNo
+c2V0LiBJIGNlcnRhaW5seSBwcmVmZXIgYWRkaW5nIGEgTlVMTCBjaGVjaw0KPiBJbiBvYV90YzZf
+dXBkYXRlX3J4X3NrYiBmdW5jdGlvbi4NClNvcnJ5IGZvciB0aGUgZGVsYXllZCByZXNwb25zZS4g
+SSBzZWUgeW91IGFscmVhZHkgc2hhcmVkIHRoZSBwYXRjaGVzIGZvciANCnRoZSBmaXhlcy4gVG9k
+YXkgSSB3aWxsIHRlc3QgdGhlIGJlbG93IHBhdGNoIHNlcmllcyBhbmQgc2hhcmUgdGhlIA0KZmVl
+ZGJhY2sgQVNBUC4NCg0KaHR0cHM6Ly9wYXRjaHdvcmsua2VybmVsLm9yZy9wcm9qZWN0L25ldGRl
+dmJwZi9wYXRjaC8yMDI2MDYyNi1maXgtcmFjZS1jb25kaXRpb24tYW5kLWNyYXNoLXYyLTEtYjZj
+NWMxMGU2MDRmQG9uc2VtaS5jb20vDQoNCkJlc3QgcmVnYXJkcywNClBhcnRoaWJhbiBWDQo+IA0K
+PiANCj4+DQo+PiBSb290IGNhdXNlIHNlZW1zIHRvIGJlIHNhbWUuIFdoZW4gb2FfdGM2X3VwZGF0
+ZV9yeF9za2IgZnVuY3Rpb24gaXMgY2FsbGVkLCB0YzYtDQo+Pj4gcnhfc2tiDQo+PiBzZWVtcyB0
+byBiZSBOVUxMLCB3aGljaCBtYXkgbWVhbiwgY29udHJvbGxlciBzZWVtcyB0byBiZSBub3QgZ2V0
+dGluZyBzdGFydA0KPj4NCj4+IEkgaGF2ZSBhIHRoZW9yeS4gTG9vayBhdCBsaW5lICM5MzMuIFdl
+IGhhdmUgdGhlIGZvbGxvd2luZyBjb21tZW50LiBJIGFtIHN1cmUgdGhpcyBjb3VsZA0KPj4gYmUg
+dHJ1ZQ0KPj4gZm9yIHRoZSBjYWxsIHRvIG9hX3RjNl9wcmNzX3J4X2ZyYW1lX2VuZCBhdCBsaW5l
+ICM5MjYgb3Igb2FfdGM2X3ByY3Nfb25nb2luZ19yeF9mcmFtZQ0KPj4gYXQgbGluZSAjOTUwLg0K
+Pj4gICAgICAgICAgICAgICAgIC8qIEFmdGVyIHJ4IGJ1ZmZlciBvdmVyZmxvdyBlcnJvciByZWNl
+aXZlZCwgdGhlcmUgbWlnaHQgYmUgYQ0KPj4gICAgICAgICAgICAgICAgICAgKiBwb3NzaWJpbGl0
+eSBvZiBnZXR0aW5nIGFuIGVuZCB2YWxpZCBvZiBhIHByZXZpb3VzbHkNCj4+ICAgICAgICAgICAg
+ICAgICAgICogaW5jb21wbGV0ZSByeCBmcmFtZSBhbG9uZyB3aXRoIHRoZSBuZXcgcnggZnJhbWUg
+c3RhcnQgdmFsaWQuDQo+PiAgICAgICAgICAgICAgICAgICAqLw0KPj4NCj4gDQoNCg==
