@@ -1,76 +1,32 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 080B4396587
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 04:51:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD133E168B;
+	Tue, 30 Jun 2026 04:53:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782795093; cv=none; b=BV8/0ObC9Tji1wk3ILC8yi7YkQZe8V2jl9a+EyOssca8PQPwfr03VZG62HNYmKIMVvTlrFBqDdWol/EAeBm77uPqEsVxZi8O5v/PAuMIK+JAbQvwQErjjKMhx8dZ4Karg2wSDB+DNhzPxoIaawh89f4LbyJ4vPElbIJHAtIhRs0=
+	t=1782795197; cv=none; b=E4O15FO1EZ/GyRvseKD918xnZ6rlzXEE2chmmcRw1E9iG4Hp9gMysFVsqelzYsasuvq45HPR/2fQqYq22NRFxeDo7lJ3p8ixwucNZ0fQfyH0AXoWIWm7veOG3QgFwN2xWWigrwJfa0W7i0It2rUSW/wO/GUaEj2ttpMdeO1365M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782795093; c=relaxed/simple;
-	bh=PujPPfMdGmHyDlkNHdLKC9VmWX14ZBNcw0Eb/Lc1ai0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cSz6+He6KFmSE9fmLIagbGVp0c4n5hSAPb58IaqEgRPz43+GvQ/P0VMUsl34V5Q6MPkfn686hDt/SZL2vPkXl20h4XqipwrT8jYyOzRPYc1bXohxPBiG5S6iGc+Qrr9Ht9NlPJNvfP2yh88vLNZvxTGh4g7jyerP/0/e3f0/MH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=BYFT93R8; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="BYFT93R8"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2c9878bbe88so814955ad.0
-        for <netdev@vger.kernel.org>; Mon, 29 Jun 2026 21:51:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=asu.edu; s=google; t=1782795091; x=1783399891; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=u8majgDhsjuju8MljyfR5KkPklBqvXm945cQmfmoHoI=;
-        b=BYFT93R8cqXRrt4Tr2VnKuOTaKLAsNSar8WFvL0LeWzqIBWxJLfSRz2Vn2R5sps4al
-         mJUTGwWQ4mnlGor9AAic9Vt4BYbH3/0j2xmaSA4H6hhJk+Ak5YTPND2FhKehk7yhb3kK
-         3n7qzoAumf2/mn6w8y6RRM2dF/AgnotRgn18zs4NNnyWYh4AQqMLpp8cZWLfKAtZahKx
-         DoDdC1iCTzNCAmj4xAlDyV/w5xpmmZT0zRhj8tCey0ieUi4xxSFyCV50vxZpNHZVWXle
-         04lHlhx0ycNbnTkpE1z1LP9xpt6jyWdhrYb9JHxTq2Xy/m8fCv0pTK3fYKRPNudjb9mR
-         wylw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782795091; x=1783399891;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=u8majgDhsjuju8MljyfR5KkPklBqvXm945cQmfmoHoI=;
-        b=AsMn2n7veb/oE7ObBHhekP8qgfTh6z6kh+7oG5JtcwEf1S0lOg46FloXzW2rgs94JD
-         QB7r+EdGG1hfgAcVpstbaRZTDZ47a3YrMwbWXpLwF1FUqsfrRVnIaEIF+6iYXaaPbbMO
-         tCHitExbMKv80gLOykJ47S15EB+GQSUe+7xvF68TF/78dCnoaKoSBcNXQct8mYs+u+oa
-         spg3BM9p/wwXH0AzBZbEwzztZPdx74zUZ4O9Y8WjY/jHkdxH0H8qqUeC+b1WHP7gn/Hv
-         kHUFmwQqAMxDuAvu/YXO4GolLlOfY1gng1hcpyLbFhO3Foc9cF6xY5fKM3zBUHX7yrWB
-         2hgA==
-X-Forwarded-Encrypted: i=1; AHgh+RrRfsu2ywjNiKyTwSH8vugeS66Wd3G3TSwLeweFbS0tn37WECU7TMv9OkyVC2736Z/QRhoP4IY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxdls8ZuB6JJYeFOYFIITNfBRVa+I61CvNRJHsj3hRxz9F+C6rS
-	lDwFz54zGZTPPw8InbRCgXo1Tu1gvBjYEleoNM9k9ax0D0Zo2P0DYGAp2ZChxCRZcg==
-X-Gm-Gg: AfdE7cnrPzQjr0UCww9TUM3LuCI3BBVSCXVi+m82CbuZkjsUhJap8UzObzck8R1UjtZ
-	JwK/bkL4I0Higu/cspG1Btrctjn/irh40H6sUUDmu8jStwCpwA7utwek7tcyhRX6901fsPXwf2I
-	aoBlrboDPXBxgKkSs4lJA1LmsoGGj1JywmmSCGK/sabt3eT2Xb4g6B404jZP1IFe3LqkPPAaQRC
-	mvBgw1g8I/I26icqBt4S53PXW/XEqXP0FjMdPhFNShjze2kXwP8U/RksQHghRIG0uOzOdY0ckfn
-	wLS4zSBNvc6uDDv40v0j2sIRMNHA60mRfegy4fq1aJxJU6LjQOuEPoWe9+qkdbzAr+kR43vkZRw
-	QGlaVMVm6VCRgCn+YPJtTL6J/MbPhi/EyLEMSKeePWuj2Syquv4t3VZwt+Pe6lSW9aTREH/qccS
-	Rcl9X1rQp5
-X-Received: by 2002:a17:902:dac6:b0:2ca:feb:2aae with SMTP id d9443c01a7336-2ca44a1c9abmr2328505ad.21.1782795091214;
-        Mon, 29 Jun 2026 21:51:31 -0700 (PDT)
-Received: from p1.. ([2601:600:a402:c8a0:2cee:3f13:b030:dfb4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ca382acd0csm4972415ad.62.2026.06.29.21.51.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Jun 2026 21:51:30 -0700 (PDT)
-From: Xiang Mei <xmei5@asu.edu>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
+	s=arc-20240116; t=1782795197; c=relaxed/simple;
+	bh=5UnfadnHLJtCaYlOWYkcFQ2OpmmxJREZEKnWJotc7TE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ALQ3CgeTM4T1Tr7xCwhO2+DzjwV0KIZLJd3RZrG5eqWl07vgk8Fp9u8QfuGp4c6WfEwHvTYhAEU04nkKOXfoA8DvZjHcGcUA6IsZtICEWKb2lOy+N7E8xXPxzMCqpMOfbfBVWrF/Zb0MukYZaONQtADgujCHScqjiJ3VG4rqIMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=Chamillionaire.breakpoint.cc; arc=none smtp.client-ip=91.216.245.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=Chamillionaire.breakpoint.cc
+Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
+	id 0BCF86032C; Tue, 30 Jun 2026 06:53:13 +0200 (CEST)
+From: Florian Westphal <fw@strlen.de>
+To: <netdev@vger.kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-usb@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Weiming Shi <bestswngs@gmail.com>,
-	Xiang Mei <xmei5@asu.edu>
-Subject: [PATCH net v2] net: usb: net1080: validate packet_len before pad-byte access in rx_fixup
-Date: Mon, 29 Jun 2026 21:51:21 -0700
-Message-ID: <20260630045121.1565324-1-xmei5@asu.edu>
-X-Mailer: git-send-email 2.43.0
+	<netfilter-devel@vger.kernel.org>,
+	pablo@netfilter.org
+Subject: [PATCH net 0/9] netfilter: updates for net
+Date: Tue, 30 Jun 2026 06:52:34 +0200
+Message-ID: <20260630045243.2657-1-fw@strlen.de>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,49 +35,98 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-For an even packet_len, net1080_rx_fixup() reads the pad byte at
-skb->data[packet_len] before the skb->len != packet_len check further
-down, and packet_len is only bounded against NC_MAX_PACKET. A malicious
-NetChip 1080 device can send a short frame advertising a large even
-packet_len (e.g. 0x4000), so the pad-byte read lands past the end of the
-skb:
+Hi,
 
-  BUG: KASAN: slab-out-of-bounds in net1080_rx_fixup
-  Read of size 1 at addr ffff8880106c83c6 by task ksoftirqd/0/14
-   ...
-   net1080_rx_fixup (drivers/net/usb/net1080.c:384)
-   usbnet_bh (drivers/net/usb/usbnet.c:1589)
-   process_one_work (kernel/workqueue.c:3322)
-   bh_worker (kernel/workqueue.c:3708)
-   tasklet_action (kernel/softirq.c:965)
-   handle_softirqs (kernel/softirq.c:622)
-   ...
+The following patchset contains Netfilter fixes for *net*.
+Due to bug volume the plan is to make a second *net* pull request
+this Friday.
 
-Reject the frame when packet_len >= skb->len before reading.
+1) Zero nf_conntrack_expect at allocation to prevent uninitialized data
+leaks to userspace. Add missing exp->dir initialization.
 
-Fixes: 904813cd8a0b ("[PATCH] USB: usbnet (4/9) module for net1080 cables")
-Reported-by: Weiming Shi <bestswngs@gmail.com>
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
----
-v2: merge two validations into one
+2) Prevent out-of-bounds writes in nft_set_pipapo caused by inconsistent
+clones during allocation failures.  Fail operations if the clone enters an
+error state.  This was a day-0 bug.
 
- drivers/net/usb/net1080.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+3) Fix use-after-free race between ipset dump and array resizing. Protect
+array pointer access with rcu_read_lock().  From Xiang Mei. Bug existed
+since v4.20.
 
-diff --git a/drivers/net/usb/net1080.c b/drivers/net/usb/net1080.c
-index 5d4a1fd2b524..19f6e1222d93 100644
---- a/drivers/net/usb/net1080.c
-+++ b/drivers/net/usb/net1080.c
-@@ -381,7 +381,7 @@ static int net1080_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
- 	skb_trim(skb, skb->len - sizeof *trailer);
- 
- 	if ((packet_len & 0x01) == 0) {
--		if (skb->data [packet_len] != PAD_BYTE) {
-+		if (packet_len >= skb->len || skb->data[packet_len] != PAD_BYTE) {
- 			dev->net->stats.rx_frame_errors++;
- 			netdev_dbg(dev->net, "bad pad\n");
- 			return 0;
+4) Validate skb_dst() exists before access in nf_conntrack_sip.
+This Prevent crash when called from tc ingress or openvswitch.
+From Pablo Neira Ayuso.  Bug added in 4.3 when ovs gained support
+for conntrack helpers.
+
+5) Cap the maximum number of expectations to NF_CT_EXPECT_MAX_CNT during
+userspace helper policy updates.  Also from Pablo.
+
+6) Prevent NULL pointer dereference in nft_fib on netdev egress hooks. Add
+nft_fib_netdev_validate() to restrict fib expressions to appropriate
+netdev hooks. Restrict nft_fib_validate() to IPv4, IPv6, and INET
+protocols.  From Theodor Arsenij Larionov-Trichkine.
+Bug was exposed in v5.16 when egress hooks got added.
+
+7) Restrict nfnetlink_queue writes to network headers. Validate IP/IPv6
+header length and disable extension headers or IP option modifications.
+Disable bridge modification for now, its unlikely anyone is using this.
+
+8) Restrict arbitrary writes to link-layer and network headers in nftables.
+Prevent link-layer modifications from spilling into network headers.
+Prevent writes to IP version and length fields.
+
+9) Restrict L3 checksum update offset to IPv4. Else csum offset can be
+used to munge arbitrary header offsets, rendering the previous change moot.
+
+These three patches are follow-ups to a 7.1 change that disabled
+header rewrite ability in unprivileged network namespaces.
+unprivileged netns support is not yet enabled again here.
+
+Please, pull these changes from:
+The following changes since commit 1398b1014909618f65ff6bcebcb2ee5ccd44fdc0:
+
+  MAINTAINERS: Update Jason Wang's email address (2026-06-29 19:09:00 -0700)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git tags/nf-26-06-30
+
+for you to fetch changes up to e2c4a0c805f7be21c8288e8562145a6691e11559:
+
+  netfilter: nftables: restrict checkum update offset (2026-06-30 06:37:12 +0200)
+
+----------------------------------------------------------------
+netfilter pull request nf-26-06-30
+----------------------------------------------------------------
+
+Florian Westphal (5):
+  netfilter: nf_conntrack_expect: zero at allocation time
+  netfilter: nft_set_pipapo: don't leak bad clone into future transaction
+  netfilter: nfnetlink_queue: restrict writes to network header
+  netfilter: nftables: restrict linklayer and network header writes
+  netfilter: nftables: restrict checkum update offset
+
+Pablo Neira Ayuso (2):
+  netfilter: nf_conntrack_sip: validate skb_dst() before accessing it
+  netfilter: nfnetlink_cthelper: cap to maximum number of expectation per master
+
+Theodor Arsenij Larionov-Trichkine (1):
+  netfilter: nft_fib: reject fib expression on the netdev egress hook
+
+Xiang Mei (1):
+  netfilter: ipset: fix race between dump and ip_set_list resize
+
+ net/netfilter/ipset/ip_set_core.c    |   8 +-
+ net/netfilter/nf_conntrack_expect.c  |   3 +-
+ net/netfilter/nf_conntrack_netlink.c |  11 +-
+ net/netfilter/nf_conntrack_sip.c     |   7 +-
+ net/netfilter/nfnetlink_cthelper.c   |   2 +
+ net/netfilter/nfnetlink_queue.c      | 170 +++++++++++++++++
+ net/netfilter/nft_fib.c              |   9 +
+ net/netfilter/nft_fib_netdev.c       |  29 ++-
+ net/netfilter/nft_payload.c          | 270 +++++++++++++++++++++++++++
+ net/netfilter/nft_set_pipapo.c       |  34 +++-
+ net/netfilter/nft_set_pipapo.h       |   8 +
+ 11 files changed, 531 insertions(+), 20 deletions(-)
+
 -- 
-2.43.0
-
+2.53.0
