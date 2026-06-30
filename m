@@ -1,57 +1,53 @@
-Received: from bg1.exmail.qq.com (bg1.exmail.qq.com [114.132.62.65])
+Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7F52DB7B9
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 03:11:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.132.62.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E5902690D5;
+	Tue, 30 Jun 2026 03:15:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782789110; cv=none; b=r1erlajQ5O/6YcZ+bDk27yz4vEpnvYlMMDxxgKkGBZFqHH/56SjQ1Z7ic+ofmm6pH78J5lBaazXZtbG7ZsjJ4UegqAQoyJravszpnJxDzgWd1HRW6CQ2JBSdEN4jNoPvbdLVlHxazoMKO66dj+fBZgNKIcymALmSboJaGRltmzM=
+	t=1782789335; cv=none; b=VlzmhgSo+kf2TC9xYi+vj8UaYtXYtxKc99+4AqrEfYIWxvIb09Kc/MqXPMTQk7BFFvkyt8cczau7rxHygBZqK/v83QBxFiF0WsVs3ayRkw0G2MNbrbLB4iWfchAxASL9a7Iho0srvhrzR1QGnMcaX9Cb/BRAOjU+0DWXKFEFlsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782789110; c=relaxed/simple;
-	bh=JFQg45+q3dw9svhIeTmg63aTk8xERABJHQz/CooYhdY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=HH389qIGnvx+UcNNGDhUMTJXIGg7cU6X5sa/tEn3DKiBZPFeZuKhBr6qWxQ2c6bqYniSbPMkCCUX72bKcu0qy6OuRkcju2sKUnfTs5Il9P1NpPAIog3504SXaU8X4OIhEKU2uufHxBqUywBURBhpHqAukFrr16qGBcRUn9UVhYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=114.132.62.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: zesmtpgz8t1782789042te46d0d77
-X-QQ-Originating-IP: 9LDgzlpSFfEE1NAq8sKt/lm2msZyb/0bYKSPNsTIkM4=
-Received: from lap-jiawenwu.trustnetic.com ( [36.24.190.76])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 30 Jun 2026 11:10:39 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 5209489280864309932
-EX-QQ-RecipientCnt: 22
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: netdev@vger.kernel.org
-Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Breno Leitao <leitao@debian.org>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>,
-	Rongguang Wei <weirongguang@kylinos.cn>,
-	Fabio Baltieri <fabio.baltieri@gmail.com>,
-	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next v8 3/5] net: wangxun: add reinit parameter to wx->do_reset callback
-Date: Tue, 30 Jun 2026 11:10:14 +0800
-Message-Id: <20260630031016.19820-4-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.21.0.windows.1
-In-Reply-To: <20260630031016.19820-1-jiawenwu@trustnetic.com>
-References: <20260630031016.19820-1-jiawenwu@trustnetic.com>
+	s=arc-20240116; t=1782789335; c=relaxed/simple;
+	bh=rlPcbuDju8eHLm7pwmya3VnZKoG1GXFDKuiyvAZppxw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rmVq0GGxoCaCH/Ge7YSlJAsjTtjpVcZvcRfrhdxTBXjMBHkHYuB3k0RkWoK/ZzGTo0X5ILPjtDvJBPSQ7tZghkGkVe91L2p+VFgB9MwrlQxLh7ANVn3d5TC5WfkGBaIawurl8vx6s28mO5fZmdJgv8QOF8g80PE7l4XArnH/23A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Uy0OPvjc; arc=none smtp.client-ip=115.124.30.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="Uy0OPvjc"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1782789330; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=1vNycxCuhzcuJXMoTNLp2cYo3/8A9ikPwob8Yjq0Vq0=;
+	b=Uy0OPvjc/0HNeJz669SBQGOEbwhQeZqxEXjOyzxVvCG+UR824Dv8aTC6wYLbmkUG0wxm2tQAK6veu+96iqgS03pNuPHfLma6dvtN7rogBKToNMyLUpvLu0H/1gXruKsxEq6rkZ8aFLStKR6JmP8na81O97CV1jP/d11SZlyDi8k=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=guwen@linux.alibaba.com;NM=1;PH=DS;RN=19;SR=0;TI=SMTPD_---0X5zdNCi_1782789320;
+Received: from localhost(mailfrom:guwen@linux.alibaba.com fp:SMTPD_---0X5zdNCi_1782789320 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 30 Jun 2026 11:15:29 +0800
+From: Wen Gu <guwen@linux.alibaba.com>
+To: richardcochran@gmail.com,
+	dwmw2@infradead.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: svens@linux.ibm.com,
+	nick.shi@broadcom.com,
+	ajay.kaher@broadcom.com,
+	alexey.makhalov@broadcom.com,
+	bcm-kernel-feedback-list@broadcom.com,
+	linux-s390@vger.kernel.org,
+	xuanzhuo@linux.alibaba.com,
+	dust.li@linux.alibaba.com,
+	mani@kernel.org,
+	imran.shaik@oss.qualcomm.com
+Subject: [PATCH v3 0/2] ptp: split non-host-disciplined PHC drivers into a dedicated subdirectory
+Date: Tue, 30 Jun 2026 11:15:17 +0800
+Message-Id: <20260630031519.23072-1-guwen@linux.alibaba.com>
+X-Mailer: git-send-email 2.32.0.3.g01195cf9f
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,167 +55,124 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: OC+Fi6GG+SdXHr9/Ph7EeGT5RVEtORv6sYjnz8FTVKZjftdnhoCRR+hs
-	z+DvGffanTCTuNt/wI+H/wMG8eHYTmFti3dh+quUWMrXTasLin49enm/s+jHIhhwuFxdF8G
-	hWEHTCdKwSEhfS6w499T7HED8oc9cV4g1kv09tJEegh9AJWQWlWMttDdbE0hc+gSy5y89TS
-	TJ0FofwU4kDIG8P+UIqTrnhHq5UB3AxT7r5/+KuZYLNuc3J+eyFYwBj3js90stDvjr5A71B
-	oVWWS6BtFQnMMaYgPEZ/6VMeSl0CZ0BZ67zr7CuVA3rGEKFwpEKZFum4/G0MhQuGy757toz
-	hYt2dzHN3dGHkOi8HfdWAaQGjxwirEPL0Ev0gmNs6wq0GCA+jB1tM3tmo4i8R1GliQrXYRG
-	Eec67wRT5id+vbSnz8dldk7RPOwz19tPbseSjcd+TAi2bwX9kOgWjNHiz5EZj4NKdBG9i5Z
-	P+kY9VpaQhLcrbZ5+m+sr9jESQGO3gHltIPuXDZTUshuXjqSrm4tsOBJCpHM7qBrSLrjbaM
-	NM7V6tiI4Gv/Capqv/ymqMs7YEo57F/15XA6TiwA34N41ZYc9EKyaSphwYoL1a6hwbxhsfk
-	ssQ7HuikAFnvWS2QdRFKFsaxzxFLQUeQKi7zwwsGP/XNTJvFfMAd6vSwcA/9kyeQR4F4xvP
-	e/1APzwPyMsRD2Kz6bsa8OLPOA4JfyLm/iGRbCpREDGAuRelHRrJb6e8xp+oe5+uHMMVFVd
-	uDLnirMfNmeE98CG6XwE9hGTochtiYyyA6ho2ZDjZ+TI8yYdbRPCszidXJvuWKGKFhm8WeR
-	G081a2qqrJobDLasJxQ3nX/8lbwSUBfzKrtFG6hrNSeQq/Wcy5vI9iJiiky2J6oOuPbg+jb
-	xu0rW4ppdRC8u1eVIdADpefo8V7bmx43j+dMVD8UQGxuOUsRV7oinL26ekKkynOXTRChAW/
-	/0KzOhhmXuCIsQDaTIsRwzlB8clFKvTn1bqtNDyH2PjeCx9QFS5W5w3VW7Qjl0d3TZyoJp2
-	/u5wfNNeX2AfjAoCr8gzGaFwgx+DbBgGivA5sxyY+So3cphvHHbwMUw3fUlrYHUsnm1ZrcR
-	BhI5rsFJzOU
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
-X-QQ-RECHKSPAM: 0
 
-To implement a simple hardware reset without tearing down the network
-interface state, introduce a boolean 'reinit' parameter to wx->do_reset
-callback.
+Hi all,
 
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
----
- drivers/net/ethernet/wangxun/libwx/wx_err.c     | 2 +-
- drivers/net/ethernet/wangxun/libwx/wx_ethtool.c | 2 +-
- drivers/net/ethernet/wangxun/libwx/wx_lib.c     | 4 ++--
- drivers/net/ethernet/wangxun/libwx/wx_type.h    | 2 +-
- drivers/net/ethernet/wangxun/ngbe/ngbe_main.c   | 4 ++--
- drivers/net/ethernet/wangxun/ngbe/ngbe_type.h   | 2 +-
- drivers/net/ethernet/wangxun/txgbe/txgbe_main.c | 4 ++--
- drivers/net/ethernet/wangxun/txgbe/txgbe_type.h | 2 +-
- 8 files changed, 11 insertions(+), 11 deletions(-)
+This series follows the discussion in RFC [1-2], v1 [3] and v2 [4].
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_err.c b/drivers/net/ethernet/wangxun/libwx/wx_err.c
-index b6e2d16d4a16..ee27f96735dc 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_err.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_err.c
-@@ -16,7 +16,7 @@ static void wx_pf_reset_subtask(struct wx *wx)
- 
- 	wx_warn(wx, "Reset adapter.\n");
- 	if (wx->do_reset)
--		wx->do_reset(wx->netdev);
-+		wx->do_reset(wx->netdev, true);
- }
- 
- static void wx_reset_task(struct work_struct *work)
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-index 5df971aca9e3..d1356ff5d69b 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-@@ -395,7 +395,7 @@ static void wx_update_rsc(struct wx *wx)
- 
- 	/* reset the device to apply the new RSC setting */
- 	if (need_reset && wx->do_reset)
--		wx->do_reset(netdev);
-+		wx->do_reset(netdev, true);
- }
- 
- int wx_set_coalesce(struct net_device *netdev,
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-index da4d9e229c9e..e5a45356ba00 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-@@ -3148,7 +3148,7 @@ int wx_set_features(struct net_device *netdev, netdev_features_t features)
- 	netdev->features = features;
- 
- 	if (changed & NETIF_F_HW_VLAN_CTAG_RX && wx->do_reset)
--		wx->do_reset(netdev);
-+		wx->do_reset(netdev, true);
- 	else if (changed & (NETIF_F_HW_VLAN_CTAG_RX | NETIF_F_HW_VLAN_CTAG_FILTER))
- 		wx_set_rx_mode(netdev);
- 
-@@ -3198,7 +3198,7 @@ int wx_set_features(struct net_device *netdev, netdev_features_t features)
- 
- out:
- 	if (need_reset && wx->do_reset)
--		wx->do_reset(netdev);
-+		wx->do_reset(netdev, true);
- 
- 	return 0;
- }
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-index 75d74ca2e259..a8b4e84787f4 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-@@ -1408,7 +1408,7 @@ struct wx {
- 	void (*atr)(struct wx_ring *ring, struct wx_tx_buffer *first, u8 ptype);
- 	void (*configure_fdir)(struct wx *wx);
- 	int (*setup_tc)(struct net_device *netdev, u8 tc);
--	void (*do_reset)(struct net_device *netdev);
-+	void (*do_reset)(struct net_device *netdev, bool reinit);
- 	int (*ptp_setup_sdp)(struct wx *wx);
- 	void (*set_num_queues)(struct wx *wx);
- 
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-index 996c48da52d7..92895f503511 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-@@ -633,11 +633,11 @@ static void ngbe_reinit_locked(struct wx *wx)
- 	mutex_unlock(&wx->reset_lock);
- }
- 
--void ngbe_do_reset(struct net_device *netdev)
-+void ngbe_do_reset(struct net_device *netdev, bool reinit)
- {
- 	struct wx *wx = netdev_priv(netdev);
- 
--	if (netif_running(netdev))
-+	if (netif_running(netdev) && reinit)
- 		ngbe_reinit_locked(wx);
- 	else
- 		ngbe_reset(wx);
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
-index 4f648f272c08..c9233dc7ae50 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
-@@ -125,6 +125,6 @@ extern char ngbe_driver_name[];
- void ngbe_down(struct wx *wx);
- void ngbe_up(struct wx *wx);
- int ngbe_setup_tc(struct net_device *dev, u8 tc);
--void ngbe_do_reset(struct net_device *netdev);
-+void ngbe_do_reset(struct net_device *netdev, bool reinit);
- 
- #endif /* _NGBE_TYPE_H_ */
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-index b1615f82a265..a8773712cff8 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-@@ -610,11 +610,11 @@ static void txgbe_reinit_locked(struct wx *wx)
- 	mutex_unlock(&wx->reset_lock);
- }
- 
--void txgbe_do_reset(struct net_device *netdev)
-+void txgbe_do_reset(struct net_device *netdev, bool reinit)
- {
- 	struct wx *wx = netdev_priv(netdev);
- 
--	if (netif_running(netdev))
-+	if (netif_running(netdev) && reinit)
- 		txgbe_reinit_locked(wx);
- 	else
- 		txgbe_reset(wx);
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-index 877234e3fdc2..3e93a3f309c1 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-@@ -313,7 +313,7 @@ extern char txgbe_driver_name[];
- void txgbe_down(struct wx *wx);
- void txgbe_up(struct wx *wx);
- int txgbe_setup_tc(struct net_device *dev, u8 tc);
--void txgbe_do_reset(struct net_device *netdev);
-+void txgbe_do_reset(struct net_device *netdev, bool reinit);
- 
- #define DECLARE_PHY_INTERFACE_MASK_ZERO(name) \
- 	unsigned long name[PHY_INTERFACE_MODE_MAX] = { 0, }
+
+# Background
+
+The PTP Hardware Clock (PHC) interface (/dev/ptpX and the standard PTP_*
+ioctls) is used by two distinct classes of drivers in drivers/ptp/:
+host-disciplined PHC drivers whose frequency and phase are adjusted by
+the host's time synchronization stack, and non-host-disciplined PHC
+drivers that expose an external precision time reference and are
+read-only. Several non-host-disciplined PHC drivers already exist in
+the kernel [5-9], and more are expected to appear [10-11].
+
+During review of incoming non-host-disciplined PHC drivers, concerns
+were raised that they may not be a good fit for the netdev maintainership
+model [12], where all PTP/PHC drivers are currently maintained. This
+leaves an unclear upstream home and maintainership model for this class
+of drivers.
+
+
+# Proposal
+
+This series makes the separation explicit by reorganizing the drivers/ptp/
+layout into the following groups:
+
+  - drivers/ptp/          : PTP core infrastructure and host-disciplined
+                            PHC drivers.
+
+  - drivers/ptp/emulated/ : non-host-disciplined PHC drivers that expose
+                            precision time from hypervisors, platforms,
+                            or firmware. These clocks are read-only and
+                            not adjusted by the host.
+
+Patch 1 performs the directory reorganization: move drivers and split
+Kconfig/Makefiles accordingly, without intended functional changes.
+
+Patch 2 updates MAINTAINERS to match the new layout and adds a
+dedicated entry for drivers/ptp/emulated/.
+
+No userspace ABI changes are intended; this is a refactor and maintenance
+metadata update only.
+
+
+# Changes since v2:
+
+- List David Woodhouse as the sole maintainer (M:) of emulated PTP
+  drivers as suggested by Jakub. Wen Gu and Xuan Zhuo are listed as
+  reviewers (R:).
+
+- Updated the T: field to use David's tree:
+  git://git.infradead.org/linux-ptp.git
+
+- Reworded commit messages to clarify the distinction between the two
+  groups as host-disciplined vs. read-only (devices that purport to know
+  real time better than the host).
+
+
+# Changes since v1:
+
+- List David Woodhouse as the maintainer of emulated PTP drivers.
+
+- Adjust the directory layout: instead of creating both ieee1588/ and
+  emulated/ subdirectories, keep the network-oriented drivers in the
+  main drivers/ptp/ directory and only split out the emulated drivers.
+
+
+# Changes since RFC v2:
+
+- Keep ptp_ocp under the network-oriented PTP drivers as suggested
+  by Jakub.
+
+
+Thanks for any input.
+
+Regards.
+
+[1] https://lore.kernel.org/all/0afe19db-9c7f-4228-9fc2-f7b34c4bc227@linux.alibaba.com/
+[2] https://lore.kernel.org/all/20260227081934.96865-1-guwen@linux.alibaba.com/
+[3] https://lore.kernel.org/all/20260318073330.115808-1-guwen@linux.alibaba.com/
+[4] https://lore.kernel.org/all/20260407104802.34429-1-guwen@linux.alibaba.com/
+[5] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=a0e136d436ded817c0aade72efdefa56a00b4e5e
+[6] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=7d10001e20e46ad6ad95622164686bc2cbfc9802
+[7] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=2d7de7a3010d713fb89b7ba99e6fdc14475ad106
+[8] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=3716a49a81ba19dda7202633a68b28564ba95eb5
+[9] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=9a17125a18f9ae1e1233a8e2d919059445b9d6fd
+[10] https://lore.kernel.org/netdev/20251030121314.56729-1-guwen@linux.alibaba.com/
+[11] https://lore.kernel.org/mhi/20250818-tsc_time_sync-v1-0-2747710693ba@oss.qualcomm.com/
+[12] https://lore.kernel.org/netdev/20251127083610.6b66a728@kernel.org/
+
+Wen Gu (2):
+  ptp: move non-host-disciplined clock drivers into a dedicated
+    subdirectory
+  MAINTAINERS: update PTP maintainer entries after directory split
+
+ MAINTAINERS                                 | 21 +++++--
+ drivers/ptp/Kconfig                         | 55 +------------------
+ drivers/ptp/Makefile                        | 11 ++--
+ drivers/ptp/emulated/Kconfig                | 61 +++++++++++++++++++++
+ drivers/ptp/emulated/Makefile               | 11 ++++
+ drivers/ptp/{ => emulated}/ptp_kvm_arm.c    |  0
+ drivers/ptp/{ => emulated}/ptp_kvm_common.c |  0
+ drivers/ptp/{ => emulated}/ptp_kvm_x86.c    |  0
+ drivers/ptp/{ => emulated}/ptp_s390.c       |  0
+ drivers/ptp/{ => emulated}/ptp_vmclock.c    |  0
+ drivers/ptp/{ => emulated}/ptp_vmw.c        |  0
+ 11 files changed, 94 insertions(+), 65 deletions(-)
+ create mode 100644 drivers/ptp/emulated/Kconfig
+ create mode 100644 drivers/ptp/emulated/Makefile
+ rename drivers/ptp/{ => emulated}/ptp_kvm_arm.c (100%)
+ rename drivers/ptp/{ => emulated}/ptp_kvm_common.c (100%)
+ rename drivers/ptp/{ => emulated}/ptp_kvm_x86.c (100%)
+ rename drivers/ptp/{ => emulated}/ptp_s390.c (100%)
+ rename drivers/ptp/{ => emulated}/ptp_vmclock.c (100%)
+ rename drivers/ptp/{ => emulated}/ptp_vmw.c (100%)
+
 -- 
-2.51.0
+2.43.5
 
