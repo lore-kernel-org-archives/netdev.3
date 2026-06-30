@@ -1,190 +1,166 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F080340DFBB
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 12:44:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6871E40E8D8
+	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 12:45:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782823463; cv=none; b=ZX/V0nm3yeLvkzsXdGr7JbD6Amz3SRo5iL4mg6OU14PHDcfKR8p2KlStEKtPp89GUKnBQmKJ5iPZRuDt6jcFALrNEOiejeDV8ESxKlyJaXLGwbSglKHTZIHf+UaLC2SrFTOS4KusrkYgHK0fIYS1RScsgkoVkejJaAm1f3K2Y/Y=
+	t=1782823557; cv=none; b=rkZNYQNehqE0e5nw383uxsEuq2t59CHCnFhmouNrBmCN31CgjV9OPZfoXv983d2aj7kd29tmFWZLj76/MINIrcyyCe3YRGn5umLmhgQVBoWw8CBRE3tOyJapxn7vU+oM1SM/QpgOjnI7sJGhVod5+WRvG7MMvf4Pf+R6y8rS3A4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782823463; c=relaxed/simple;
-	bh=5NyZE/pdk1UUcfMYTWurDSt/bJg+fnkkgCBYJNkdRJ0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UFnKHXWTJYbpdEoY2WYloQqTEHujAmxnkL8TUTAIOha/4kfUahL0TdYBH8MxzIEsN3NQ9l7dHVAPY2o5CU+KJxCtZaTBz4aJrzNEPGbmX2MJ4ixFqtsrmGAPzNZaApNVFHOlDvFR/fbD6XnM4k0VdMiuTtBHCmUEKINHwniHBlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=b6o5P/f4; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=L1mHIhpD; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1782823557; c=relaxed/simple;
+	bh=rnqTc9VcuxQmrucqXv/X4rxwWBjO4aintFdu4oYQwos=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=F4Qje/I9OGhdUeL7qf0+GBzqwmjV0gwPnc056g8CFJpT+r6uHImaDCtK6FIF4Dxq/YS12M37WQBTjnPPECwfNMlAHh3sg75VTdpOfPOww5bRnyFaYxooxgisHhSYElzYZ75iOmHaZSz9B+KoKgVUgaKkOtYu2qiMIhe1WjuTdfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JaPIdxH6; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=GjgA53JE; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="b6o5P/f4";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="L1mHIhpD"
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65U9mxeb1605154
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 12:44:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	gD9g9o3wLVxWkvqZBA0nQ7MO4qU/Lgf8nSjItSG4AmU=; b=b6o5P/f4dub0N+sh
-	VloUIC5/nznDnJpdi25/JuyuvwG2UEzSJKKvywHK0tZrtZT9KUZ/5rxDpzkAbK35
-	dsnM/t9aZuxSxU2dRGIZe6jSc+AjUnNQpE9yweYJ2AHh3rx+0/GCQrqKHV9iLFJd
-	l0GX/TT5eBf9LEmr4iI2JoKQon7GYA3eQBuKb73gMscfC3mX6KuyV7kA0Qrm0VgR
-	Sx/9IGVhVELkU+ss5iFzAVhFhfcrFPin/yM2k3woV5wD5lCojLKYMgWCTLttw8p6
-	JC+Z5uAr7lpj3dOpru9IIxbKchWQWwxRHb/JJjqzOKMn80zS9LHcEIdrMlIPnKRX
-	7BmsvQ==
-Received: from mail-vs1-f72.google.com (mail-vs1-f72.google.com [209.85.217.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f43vfjptu-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 12:44:19 +0000 (GMT)
-Received: by mail-vs1-f72.google.com with SMTP id ada2fe7eead31-7376ea4bcccso81712137.2
-        for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 05:44:19 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JaPIdxH6";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="GjgA53JE"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1782823555;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9xE5wahl+eqalpRYfV0fnyzHdxALUWLBp0RetJPvoas=;
+	b=JaPIdxH62TmbcFmcKDr3zI6riSzqBULhGp0rvTKjXe09gTN/fODNhzN+2pEZAVz+b9eniz
+	REPoi1CaM5jW6e+NS8aTegZDLpUU1rTZXMnyQWa1cKt8lBmI4/Pn9xqByb2P11RP0jiV0N
+	JekKZ6EfeSuawTqDHmxxMqvvJa1iCmQ=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-436-DI7RUeXhO0Ku199yqOlqiA-1; Tue, 30 Jun 2026 08:45:53 -0400
+X-MC-Unique: DI7RUeXhO0Ku199yqOlqiA-1
+X-Mimecast-MFC-AGG-ID: DI7RUeXhO0Ku199yqOlqiA_1782823552
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-493bd52dae6so1974285e9.0
+        for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 05:45:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1782823458; x=1783428258; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gD9g9o3wLVxWkvqZBA0nQ7MO4qU/Lgf8nSjItSG4AmU=;
-        b=L1mHIhpDJyhyAD5WK+a/yfWPlCboP2MsfJZ5XTrUE+Bm8mHjciwfwjw/VytDe4TJeI
-         lHSP5+Wb5h+WsX7ilaX9GOhD5UP7vnr3VQ9aB50Tm+oqc1Fqw3cQNF1GjQg396Udgi1y
-         a0yvDOnl8TxejxLGH/lzvDgfWZoqk/AHbMfFFLTsDVaIPpYTSrvgFTAmqKO9nBJXu1C6
-         XMGmVpqeJBZp15/cFMzoe8ZIS/eeR7R4SNRTJQ6r5O3m0yhnCoW2avQfHwMj0sbaIriR
-         gPQTOgn2uqYH74IbT/wkMlYVvFIe4MWMg5L8DZB393Nf/LXkKhufRp64BV9C1YC+AuGO
-         BC4Q==
+        d=redhat.com; s=google; t=1782823552; x=1783428352; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=9xE5wahl+eqalpRYfV0fnyzHdxALUWLBp0RetJPvoas=;
+        b=GjgA53JEaOxRxXvEbWfsLIh911fN+VQiRIkSEYvjTE2X8Vj8w2T58/KUOigDNP3oV3
+         1epjt84uggneblWryK+nNIagp+6pxuEjBRW9oqIJq9cZEmDozsvBT1g/m2iyc8tKuD3w
+         m4lZ3QSK26RiNmXNjZhAFnPMarYsG1NzDG/vCfs9z8Q8Kkntbb5/TI3JJM08/mR8WCCB
+         K8YIaaa7JYmLV62Ptqtdd5DtiZM1Rciu9A5C0JrxvsUTlJ7nzjPUuvkZJwinulqBkfAC
+         bQ/pFvV25CNriBBN0xtBwmYlkWxUyrmg15OXoYDUnFymWhyM/J5JeKTT0RpTsQafJhss
+         F9qg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782823458; x=1783428258;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=gD9g9o3wLVxWkvqZBA0nQ7MO4qU/Lgf8nSjItSG4AmU=;
-        b=hyI+8bcZTQ6k4tsExoqQEjaYteQVtsMNpIL7vIs+667uEBNZM094Iw8ItU3MEu8Tsi
-         RB5pGIBk+qJAVHJASq8t0JiKa30THofhz6m3dlXSG4fckGY/kjWcaVmdoW6gTiG8407T
-         Fe68hU1anoKHRaEW4S8B9YbI6rJJ5xSqsW9n1bVkHtIM1g2LzeiIuP8nuzu17blyJxZD
-         ZQeUjqgQTzJJjQkuZ8iveHuPlO/3vQFY+N5R+ClPJr0TPKAHGTkigpuquOYxIb8giKyd
-         MSgBHkTXmUKhMi9y+XQWUhIrHok9tY1iPhOfHurK4Dc2/W9kHEgkGhyl4DTe7sinp3nw
-         6jgw==
-X-Forwarded-Encrypted: i=1; AHgh+RplsyRY6r7HGfspThPeaPdbD4z+7hx3gvAOzVidkarqJGHxMUvV+MiF9obmGdqhljWT9VEgT48=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyrEoZztDyJiYgSf0VSwr4u3bFZrvwoB4PMRENsHJceNGHIB4IZ
-	5BwFkWTqSvkzN4rPSsFUVeSbuQ6xlKLHhzj1LHciZTPp5F4a/qj4u/pjuuDlw2Z01iExtNcod5n
-	8VfwBVkP1o+z7rqHijpg2c9Gkyj+Ui14PZN/RlKZVnVWpGRKuoTnG7lVrntQ=
-X-Gm-Gg: AfdE7clHcuT68NMfl2LK4pWEXvQ7hBFjjNoaO0QnnfFMA77ENRXl2LTOGcS/CULjPbB
-	IZNcylB6O3B9mpi+/3ktyM7m9ohtJgSCsd/32dNg0kG36mcjgvppscFPWyke/xnNQcQ+8v3FMeg
-	5rWaZGIYrPNyP2ET1UGFIJfL/CQzhrDawKvB6z0ly95QShO3CSyPm703xdQBY3NvSv98UwpWwcd
-	ejVovh0aNmdwN5RPxJWrN5nAAhb0WgLCrE5FRpUaYrt4xnALD/TlIuYlrPAziuoegQKMkRJAD9j
-	RiYG9irNKc2Vr8GDCUuiDMulkAYfFhKvPbNZwpjKRrvb5nZeR6txaTonv5oHycYfRqkVCPfGVc7
-	zpTgrb7eykapc4SNmfAnSi70C5iM6QXUt4aM=
-X-Received: by 2002:a05:6102:8082:b0:631:25ab:8bbe with SMTP id ada2fe7eead31-73a38a37b21mr524330137.5.1782823458294;
-        Tue, 30 Jun 2026 05:44:18 -0700 (PDT)
-X-Received: by 2002:a05:6102:8082:b0:631:25ab:8bbe with SMTP id ada2fe7eead31-73a38a37b21mr524326137.5.1782823457846;
-        Tue, 30 Jun 2026 05:44:17 -0700 (PDT)
-Received: from [192.168.120.170] ([178.235.128.140])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6987c950732sm1117239a12.22.2026.06.30.05.44.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Jun 2026 05:44:17 -0700 (PDT)
-Message-ID: <ae6518f8-bba9-41fe-a97f-de6001319c0d@oss.qualcomm.com>
-Date: Tue, 30 Jun 2026 14:44:11 +0200
+        d=1e100.net; s=20251104; t=1782823552; x=1783428352;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9xE5wahl+eqalpRYfV0fnyzHdxALUWLBp0RetJPvoas=;
+        b=fnjyGDV3SQXunRlkYs8yN97i5NGEoUmWR/U+OpRrUFqWA+wH/bZS2PRnj5R9wonpW+
+         DqJ/v+ojIrp2B7F68crx3mSXKLXHsdPx/zoyUJbHLwZAZ4+Rln/K036IoK73YnouCd4h
+         A2T9TuWSEzIUuNwQdvLd4ZAmqJ8vzWT6CQLP8E69B7pShrL+BhBOFEK9hme2B35k93vb
+         WhCMay3u+eoAHWkWld2R8vN7OV7FwtZ/Z+jSNAYd0CnInbb3wFWcG7NSQ1h0fN41+ck7
+         J8KliDU0YKM+Z/l2FnUie5/NxyGT45q2XhOaiKPeOD7aSuCKYTcKgeUCsGQ3qx+GDUS4
+         3kNA==
+X-Forwarded-Encrypted: i=1; AFNElJ8gu2dNBF8stY8SJp1gvdxypAjkLHxjrGSS5FsdXsHkBpUM98q4XvEzuBwvVreyiWMssApwjlQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzgP74dF0hwHKFQc1RpIDUqBQ0T+mv6GaD7kHRi20JmBdYxC7Wj
+	nNg8hskvpCOhwlti8VDX2vN8vuSIvpDr0hWIRSxdDtGL0QX7Nvr7Ro8ZtZD4C91Ty0UJTwmP93r
+	vkwVphBb7cjx9lj3A3qOERX37ajvkwcyWYRfaYWYseO55lxVSqoy1vaqGcQ==
+X-Gm-Gg: AfdE7cnPq4BM5AoYzHj8KefH4N1j+okQCx/09aFoc/RpN1PKtqdogfowD8rejmpWoe2
+	6HHyB5MEyWqI+RWIYlf4AjD3xDO3z+73VeD0302IQRLhlHHUdZyhZiugIFgo4ErssekjrOu+mVg
+	X0Y/c2RcyktAjNCLLUTKavpTtzNtXf5D6E6jj7EQc6K7M5U8Dk/Q27fco3eOIn+NGl1NoZULbgD
+	FnoaDbkrVhXA/3AkzZko+B8d/TXN/VaEg5DaGCqIrXSUW7+azI0FeI4xL5dbbY18F9AqCCnRxgR
+	XkuQW5BEseyu5v9YomehcdOW7L4myttSbSVWGQ4MJt7kRI2UaYipwsvqJGjTU3UFsVRgYhu1zcL
+	uUjjOAlS0yDaTzFKvprLu89TuvS/IbnVc1GXhSBsD8zvRucQRVkjgzCEBxFq2
+X-Received: by 2002:a05:600c:a086:b0:490:b0e0:3de2 with SMTP id 5b1f17b1804b1-493bda874famr6557625e9.33.1782823552458;
+        Tue, 30 Jun 2026 05:45:52 -0700 (PDT)
+X-Received: by 2002:a05:600c:a086:b0:490:b0e0:3de2 with SMTP id 5b1f17b1804b1-493bda874famr6556975e9.33.1782823551880;
+        Tue, 30 Jun 2026 05:45:51 -0700 (PDT)
+Received: from sgarzare-redhat (host-79-34-22-35.business.telecomitalia.it. [79.34.22.35])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493bb1bf712sm30233055e9.2.2026.06.30.05.45.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jun 2026 05:45:51 -0700 (PDT)
+Date: Tue, 30 Jun 2026 14:45:46 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev, netdev@vger.kernel.org, mst@redhat.com, stefanha@redhat.com, 
+	dongli.zhang@oracle.com, maciej.szmigiero@oracle.com, bchaney@akamai.com, 
+	mark.kanda@oracle.com, ptikhomirov@virtuozzo.com, den@openvz.org
+Subject: Re: [PATCH v3 3/4] vhost/vsock: re-scan TX virtqueue on device start
+Message-ID: <akO5DNoEsjukV5az@sgarzare-redhat>
+References: <20260625155416.480669-1-andrey.drobyshev@virtuozzo.com>
+ <20260625155416.480669-4-andrey.drobyshev@virtuozzo.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 12/14] wifi: ath12k: Switch to generic PAS TZ APIs
-To: Sumit Garg <sumit.garg@kernel.org>, andersson@kernel.org
-Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        freedreno@lists.freedesktop.org, linux-media@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        ath12k@lists.infradead.org, linux-remoteproc@vger.kernel.org,
-        konradybcio@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-        conor+dt@kernel.org, robin.clark@oss.qualcomm.com, sean@poorly.run,
-        akhilpo@oss.qualcomm.com, lumag@kernel.org, abhinav.kumar@linux.dev,
-        jesszhan0024@gmail.com, marijn.suijten@somainline.org,
-        airlied@gmail.com, simona@ffwll.ch, vikash.garodia@oss.qualcomm.com,
-        bod@kernel.org, mchehab@kernel.org, elder@kernel.org,
-        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, jjohnson@kernel.org,
-        mathieu.poirier@linaro.org, trilokkumar.soni@oss.qualcomm.com,
-        mukesh.ojha@oss.qualcomm.com, pavan.kondeti@oss.qualcomm.com,
-        jorge.ramirez@oss.qualcomm.com, tonyh@qti.qualcomm.com,
-        vignesh.viswanathan@oss.qualcomm.com,
-        srinivas.kandagatla@oss.qualcomm.com,
-        amirreza.zarrabi@oss.qualcomm.com, jens.wiklander@linaro.org,
-        op-tee@lists.trustedfirmware.org, apurupa@qti.qualcomm.com,
-        skare@qti.qualcomm.com, linux-kernel@vger.kernel.org,
-        Sumit Garg <sumit.garg@oss.qualcomm.com>
-References: <20260626133440.692849-1-sumit.garg@kernel.org>
- <20260626133440.692849-13-sumit.garg@kernel.org>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20260626133440.692849-13-sumit.garg@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: oj9Ut9Rf7gKdKRATnBFx8tIAZEq51h8j
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjMwMDExOCBTYWx0ZWRfX+zgj1/+gR7qQ
- Kafp5WTWMxM5xtOHYF5utsMrkiMVxMpNcjF8VZa0qMRA3NCJytrrphCZ4CEV0wsAUvjWA7D8ahG
- Kwzu3rkOfKDafD3mtdlKw96pwfTqhg7io3SfP9Yz5ryEmiBzMQAgvLQL9i3RQN+UvaoNE8tTqE5
- 7IsXXuLgNA5gwq7J7XkPascEmdHNguFU/7ZYSj0Fd8Zsk2Vdedfk/j4UHp1sJX/Wj3GLOZxOXvh
- n28VnZ+nIY0LIw6yNKjVgxx3enQAITdU+pvhwC/TA9lFkPum7YNFVYTlF8P2M9YGx/st4mB1LZt
- eVplh2wP4uhROKWz/1969wIyXDeU7bkcJa8qPIcSkwm5zozqEf3dkl1NzNvlpoe2l1kOjp5ln4Y
- Q6uFN/rBA8jr97eOIY5Kk6Y5z8tBj3MbalN/jmGKEW5TrMkV7FIqp8mo9FTMr+ruUbbPJ6zZabW
- 8fJ2drAd6QQ5OCrA7Ng==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjMwMDExOCBTYWx0ZWRfX0uJkaI8vWR4f
- ZN+oH8FF/w0u4lYX8yqnNl+CGYYaSK1niu900z5B/uD5zJsWauZXPOPoYuwZs5Sp1Jhmq4GHiTa
- QVohuwAAT867sk5X1+WO0M8lSOMCYiI=
-X-Proofpoint-GUID: oj9Ut9Rf7gKdKRATnBFx8tIAZEq51h8j
-X-Authority-Analysis: v=2.4 cv=PcXPQChd c=1 sm=1 tr=0 ts=6a43ba23 cx=c_pps
- a=DUEm7b3gzWu7BqY5nP7+9g==:117 a=PRfkaYvzSr8QmIIGAkY2Sg==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
- a=EUspDBNiAAAA:8 a=VwQbUJbxAAAA:8 a=AoAzlOJtnLSqI_VYGEMA:9 a=QEXdDO2ut3YA:10
- a=-aSRE8QhW-JAV6biHavz:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-30_03,2026-06-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 spamscore=0 clxscore=1015 impostorscore=0 bulkscore=0
- adultscore=0 priorityscore=1501 malwarescore=0 lowpriorityscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2606300118
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260625155416.480669-4-andrey.drobyshev@virtuozzo.com>
 
-On 6/26/26 3:34 PM, Sumit Garg wrote:
-> From: Sumit Garg <sumit.garg@oss.qualcomm.com>
-> 
-> Switch ath12k client driver over to generic PAS TZ APIs. Generic PAS TZ
-> service allows to support multiple TZ implementation backends like QTEE
-> based SCM PAS service, OP-TEE based PAS service and any further future TZ
-> backend service.
-> 
-> Acked-by: Jeff Johnson <jjohnson@kernel.org>
-> Signed-off-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
-> ---
->  drivers/net/wireless/ath/ath12k/Kconfig |  2 +-
->  drivers/net/wireless/ath/ath12k/ahb.c   | 10 +++++-----
->  2 files changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath12k/Kconfig b/drivers/net/wireless/ath/ath12k/Kconfig
-> index 4a2b240f967a..0d5d1c55bfc1 100644
-> --- a/drivers/net/wireless/ath/ath12k/Kconfig
-> +++ b/drivers/net/wireless/ath/ath12k/Kconfig
-> @@ -18,7 +18,7 @@ config ATH12K_AHB
->  	bool "Qualcomm ath12k AHB support"
->  	depends on ATH12K && REMOTEPROC
->  	select QCOM_MDT_LOADER
-> -	select QCOM_SCM
-> +	select QCOM_PAS
+On Thu, Jun 25, 2026 at 06:54:15PM +0300, Andrey Drobyshev wrote:
+>During QEMU CPR live-update (and VHOST_RESET_OWNER in general) the guest
+>keeps running while the host drops and later re-attaches vhost backends.
+>If the guest adds a buffer to the TX virtqueue (guest->host) and kicks
+>while the backend is temporarily NULL (between vhost_vsock_drop_backends()
+>and the next vhost_vsock_start()), then the kick is delivered to the
+>vhost worker, handle_tx_kick() sees a NULL backend and returns, and the
+>kick signal is consumed.  The buffer is then left in the ring.
+>
+>Then upon device start vhost_vsock_start() only re-kicks the RX send
+>worker, never the TX VQ, so the buffer is processed only if the guest
+>happens to kick again.  But if the guest itself is now waiting for data
+>from the host, it will never kick TX VQ again, and we end up in a
+>deadlock.
+>
+>The issue itself is pre-existing, but it only manifests during a brief
 
-"eeh"
+Why "brief"? I mean, there's no limit, and the user process could stay
+there forever, right?
 
-[...]
+>pause caused by VHOST_RESET_OWNER.  Namely, the deadlock is reproduced
 
-> -		ret = qcom_scm_pas_shutdown(pasid);
-> +		ret = qcom_pas_shutdown(pasid);
->  		if (ret)
-> -			ath12k_err(ab, "scm pas shutdown failed for userPD%d\n",
-> -				   ab_ahb->userpd_id);
-> +			ath12k_err(ab, "pas shutdown failed for userPD%d: %d\n",
+Again, please make it clear that VHOST_RESET_OWNER support will come
+later, so this is in prepartion for it.
 
-"PAS" - it's an acronym
+>during active host->guest socat data transfer under multiple consecutive
+>CPR live-update's.
+>
+>To fix this, in vhost_vsock_start(), after kicking the RX send worker, also
+>queue the TX vq poll so any buffers the guest enqueued while we were paused
+>get scanned.
+>
+>Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+>Reviewed-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+>---
+> drivers/vhost/vsock.c | 7 +++++++
+> 1 file changed, 7 insertions(+)
+>
+>diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
+>index bec6bcfd885f..81d4f7209719 100644
+>--- a/drivers/vhost/vsock.c
+>+++ b/drivers/vhost/vsock.c
+>@@ -646,6 +646,13 @@ static int vhost_vsock_start(struct vhost_vsock *vsock)
+> 	 */
+> 	vhost_vq_work_queue(&vsock->vqs[VSOCK_VQ_RX], &vsock->send_pkt_work);
+>
+>+	/*
+>+	 * Some packets might've also been queued in TX VQ.  That is the case
+>+	 * during the brief device pause caused by VHOST_RESET_OWNER.  Re-scan
 
-Konrad
+Ditto about "brief", I don't think is adding anything.
+
+BTW the code LGTM.
+
+Thanks,
+Stefano
+
+>+	 * the TX VQ here, mirroring the RX send-worker kick above.
+>+	 */
+>+	vhost_poll_queue(&vsock->vqs[VSOCK_VQ_TX].poll);
+>+
+> 	mutex_unlock(&vsock->dev.mutex);
+> 	return 0;
+>
+>-- 
+>2.47.1
+>
+
