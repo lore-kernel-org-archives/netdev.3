@@ -1,142 +1,171 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E068233958;
-	Tue, 30 Jun 2026 22:09:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02EE2329C48
+	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 22:09:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782857397; cv=none; b=OLUjOiX7YwSbStLoDIUYBhJYN3YTAYabK7UqjF4UGuLWiGn2kC5OPUUa8ca9W5XykA8P4JljHz2lrIf00WvR1t6VL+qn7N1C9cvqjy2EArGiTDR0YaSiCFFkhfU0v4sSCWdE4oWuNBEvdwMtJuzaC02E/MYwFw2l7OC1scYwf0I=
+	t=1782857400; cv=none; b=BIsP8CL9PlPGFq1BBkitcNn309aYZIsnbBxPtF0ce3GR01A+PJQAnK2C5LE4P7K4filGSSzCHuYl8j8Ykv01nEtqEnOt4HYBRxEoz5Am5Vw2HPproqHWyGYC8ihS9noFTN5eWeK+artLmvvzN7innXJXinlttLiC8mCWmsaiyoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782857397; c=relaxed/simple;
-	bh=E7XbFqPtX8oY5xQ4JTaTzCT5F3nO7FI2AGSrk/3nF8c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ez1T2/TUtJa3wPlWjQfV45Mk3Iv9edtLzmiJCJns/Cz69ebgZP9Dr3LnAcpIFGPJz7DjI9MrwpD4Y8C1uFtt8X85BLbiO4S79OALFkTTT3jmUa6/oGwMoEhNehudY1FEZ4P0hVT0fHpXEB2NcOY4iQ2LGDXQd/Td5eT8UAxUkYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Gmq94SnA; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1782857400; c=relaxed/simple;
+	bh=lka07Gr3l2JawsdDoDkCfszFn1o8HA7+GaDRSGzKdLY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PZoZy9oPGWW9w7Vn+N7w/codJB1cT65gKc/2Yi+DooGsqBEeWg1sYqS9TRggfAQoNwnP19ztDEpzEkuK8T9HgAFYs40mxUz/yRyuEvmnmdC2Caftej5JzeR6SXlrHSw7AS28+E7r8+wFRUTOHnCJto7NdhGIGF3mb0EPH+yXfa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=UVVUyqEg; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=NRJsyDRg; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Gmq94SnA"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=5Mx3yAYryVx2HMKoybiqMF1I096DhHL2HkocxlL6IyY=; b=Gmq94SnAnGJWfGZbUzk9Ala5Zd
-	JXg0VhXTbQnP17uRg1uw2IlmOJ7IhhgtI4RalvtkUJe4/PhLybGMgANRSrn/ClSdBy294PVtYYHDC
-	ZhJCnsXI7U/rR+6sXo79oRglqsHpFELHyZdh8Bz60yc/PF0rlU4OuMkeohYHFzF693Cc=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wegeJ-00A3De-6l; Wed, 01 Jul 2026 00:09:47 +0200
-Date: Wed, 1 Jul 2026 00:09:47 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: javen <javen_xu@realsil.com.cn>
-Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	freddy_gu@realsil.com.cn, nb@tipi-net.de, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, daniel@makrotopia.org,
-	vladimir.oltean@nxp.com, nic_swsd@realtek.com
-Subject: Re: [PATCH net-next v7 4/4] net: phy: realtek: load firmware for
- RTL8261C_CG
-Message-ID: <1ac195f7-29c2-45a3-84a9-cfc5366aee6f@lunn.ch>
-References: <20260629064718.1349-1-javen_xu@realsil.com.cn>
- <20260629064718.1349-5-javen_xu@realsil.com.cn>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="UVVUyqEg";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="NRJsyDRg"
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65UJDp9w2838598
+	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 22:09:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	71yptdqayaVFzpJtAQzWI+qpR5NfHXrkWbz9ikn7Ryc=; b=UVVUyqEgI3aai44H
+	QkYs6h4Sk/6/uPO94ctKOtJjj3n5+wTduu75T3lBINHDzCPeXdCe/LLgdz4BiIIA
+	I6FCYJGuW6rbqCzG+PqGMHpMb6xjJcmfkHJt1PYgP/kntODh+X0VaaTTgDbDdP/t
+	5mK6QuZEI5QJqRhPc//Uvx2PsEtojBE3Wf5jUoCGbxwxji82ZKuqfAGOBqi/CtJM
+	MHsN9S66aTzRxKSc9r6r3jxLGT72P0S66dSuzw/gjfRycE/zeF8d/az8b9/+BxqX
+	uSr2XsXere5zlNsaYwMjPVwz06xYAC/u+oMsdfeWvyWqnAZBEcPGno6XGT0scTZD
+	4sRW/w==
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f4hbd1g51-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 22:09:58 +0000 (GMT)
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-92e61b38eddso485399485a.2
+        for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 15:09:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1782857397; x=1783462197; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=71yptdqayaVFzpJtAQzWI+qpR5NfHXrkWbz9ikn7Ryc=;
+        b=NRJsyDRgz9XcsskDy1TCStajobjEVNxjDA4Y9JZ5YMTLcBi9FjUItPsUngOQEBg+Ve
+         qCRCHUiUpd9V35DZ7oUeLzju31vveARTtZe9HrVhQDCcAJcPYuvJiG46Hv0aZK4TUEAd
+         LjXYOD5BGZmYIA39/qF/kHDQRYxv4Ui7o9c1BLhA8bCMd8MCeNNEwUoVW3nW1QOL8HOE
+         uRPOEvPot4OpwEeJOWmsxnHopCwAs4RQgWaTZCne0w0DuiZRruYr26BbTeTaohBkIYr2
+         bvNdMnDKPbiyjlCms1hLacLCibEbq0ywkqfYCG58x374QsjTl+HiMPLbYJR9NlMCknbf
+         2fVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782857397; x=1783462197;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=71yptdqayaVFzpJtAQzWI+qpR5NfHXrkWbz9ikn7Ryc=;
+        b=T8H1GX5TQjXW4/M192bhO86oY4oFx4FuMAXLDh5863KQ0xERSjJVRpVAp5HyHdBJwl
+         LBxeOOYiQJZfKCJO5OM1iutemUuACzsmvj+DtbXl6YCPmpE8BBQoKXu7t5/UjQWyDaP5
+         pmsWTZwqcvNpOmc9JeMCqPvAKs4kcf19ZKdKgNvDTxERBZn/O/zCnShoY5cyuxf1yR6V
+         eoHHeCfX3KeDlSr0bg37B8x9uRrKjA3p8cIf9Ie1VGrDm3i/OQBEd4/l3mZRquaxbc5J
+         4uGNtzqJ01TZn/ic7oB3+qohk0p3EuyaT+WsMYx2Egi3XIZinKCQ34VAi9UtbQN28xVI
+         Hcew==
+X-Forwarded-Encrypted: i=1; AFNElJ+GDRVoWmQLaMaYCBKczySo0FQuB88cyuV3ajbP+iE/C3/4k5Edhlf8B7ou7UFL0laAyU3E6tA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9BrJvwbYrdfKjDeHylVjpmOSb/YYNLV48mSzU1pOQwkm6iGY5
+	cye6Ga6ySEh7xAR/lRmFh1Ms3g32hAb/wCnB6JNTMZDHAuuxsKXBTYMmbGQ2jmA/IUEjcU7p/KD
+	lWQIi9pmaDyZ90ZNYOEOHJo9enkUPELRWF8PBKu64gMe1h6tRUczVODqBvYA=
+X-Gm-Gg: AfdE7cmCVRd7k5I3Q3vTcE01w3SLtJCxE8j7y58Aq4LyBtUv8pESWVcI6gPRjNCBQBc
+	IqxGwAzB+RZIE8Kx+HR4q2asNaFtkw/NV2+0wWyuuTElzQACJczETUjoFgYEvSdnObmszf0Xxth
+	kDqbSgqTdm9UlY1iKepI3OH7SqU+o8DaDvdHduC54c2YK5hkqH3N8porhUs8ZwOg4GI3HhjjYyH
+	KT+z3fQIGnuIekejJcSIkASn1kbWcpJqsulVtSs6wBDnY4VTzPmdnK9BqeYWUa066DivoZ6uSWH
+	YLHn+W9+h9d//YOdIl0EXQBOrwhXWoHkh01fKOYgt5HwVkY5jtvY6RWhrSIARrgNTK4DD2quhwE
+	G+oQCJIf6uL4iqgVwKjJKUZQpDlDchLSmNJF0R6FQRxhHXDwliQDqmYPjcRgf3w==
+X-Received: by 2002:a05:620a:468c:b0:92b:6805:918a with SMTP id af79cd13be357-92e6d926a2cmr434241485a.66.1782857397376;
+        Tue, 30 Jun 2026 15:09:57 -0700 (PDT)
+X-Received: by 2002:a05:620a:468c:b0:92b:6805:918a with SMTP id af79cd13be357-92e6d926a2cmr434238085a.66.1782857396955;
+        Tue, 30 Jun 2026 15:09:56 -0700 (PDT)
+Received: from [192.168.69.212] (88-187-86-199.subs.proxad.net. [88.187.86.199])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47563d195b3sm11865243f8f.8.2026.06.30.15.09.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Jun 2026 15:09:56 -0700 (PDT)
+Message-ID: <caa30078-9dd0-4f07-a206-2dcbd2ba09a1@oss.qualcomm.com>
+Date: Wed, 1 Jul 2026 00:09:54 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260629064718.1349-5-javen_xu@realsil.com.cn>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 13/13] gpiolib: remove linux/gpio.h
+Content-Language: en-US
+To: Arnd Bergmann <arnd@kernel.org>, linux-gpio@vger.kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>, Bartosz Golaszewski <brgl@kernel.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Frank Li <Frank.Li@nxp.com>, Robert Jarzmik <robert.jarzmik@free.fr>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?=
+ <zajec5@gmail.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Linus Walleij <linusw@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, patches@opensource.cirrus.com,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-media@vger.kernel.org, netdev@vger.kernel.org,
+        linux-sunxi@lists.linux.dev, linux-phy@lists.infradead.org,
+        linux-rockchip@lists.infradead.org, linux-sound@vger.kernel.org
+References: <20260629132633.1300009-1-arnd@kernel.org>
+ <20260629132633.1300009-14-arnd@kernel.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>
+In-Reply-To: <20260629132633.1300009-14-arnd@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjMwMDIxNiBTYWx0ZWRfX65LjLdQGKUnO
+ QcZ6BEfYo2zL4Hpr4fRqBFU5mF35hJPHFnMymzi2q6i5QDzXVqbAyBn0qAM58XQrzV8Lczrxdxd
+ Fs84s0zJiNjEaJB8bFhyt0T6gBdb6fY=
+X-Authority-Analysis: v=2.4 cv=MpJiLWae c=1 sm=1 tr=0 ts=6a443eb6 cx=c_pps
+ a=HLyN3IcIa5EE8TELMZ618Q==:117 a=4s3hRJSeHn4rkQlkrse1kQ==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=M51BFTxLslgA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22
+ a=EUspDBNiAAAA:8 a=1tSEMpTH9XP_W59IOagA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=bTQJ7kPSJx9SKPbeHEYW:22
+X-Proofpoint-ORIG-GUID: 8S3gY0s_e1z5c_iU1ziirDrhTq6Q92n0
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjMwMDIxNiBTYWx0ZWRfX/nqzlSR/LyFr
+ +cO10I0arcRykcpsioL3o/o4G4Wg1mdeJ6t1+Ub+UADxnntijmOLD883p4HVMg9mq5oDTA6qbr/
+ wJJ6bU9Ci6XvqFksVRvrEIXcxQzmBsYILO8zaRpbsAaqSG51gzT5RBvLxSKSsXFodZfcvpc38nd
+ inZh3dhIHlT5JnUtQvlqyW5VEE38imFliai+ZyNnl3jImBPg9Oht65bbB6n7iustgGp/S0SAwwy
+ frp11A7ue30GYk61BXRlWTpgwOwqYpnrauGQ0ekMcGT2Tgk3pQq4mkFmxYPgdPCAU9t9/X5ArDR
+ RO6wmvfjGuuEAZhB7EkhySVNArjAZbo+JRWOZ7BaYLppZVTkXfBWgeaFi4VTvDMnBBT0YgactBJ
+ XTWk432fw3iFq/2ACBuYW6m1X+eVfs3euvrP1h1mBf0PjhylImsbEhBkRt5/FAYAt9PgEIqDVmt
+ sVbuEThdXoJPBABfOuQ==
+X-Proofpoint-GUID: 8S3gY0s_e1z5c_iU1ziirDrhTq6Q92n0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-30_05,2026-06-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 priorityscore=1501 clxscore=1011 impostorscore=0
+ phishscore=0 adultscore=0 malwarescore=0 bulkscore=0 spamscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2606300216
 
-On Mon, Jun 29, 2026 at 02:47:18PM +0800, javen wrote:
-> From: Javen Xu <javen_xu@realsil.com.cn>
+On 29/6/26 15:26, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
 > 
-> This patch adds support for loading firmware. Download some parameters
-> for RTL8261C_CG.
+> After all other drivers have converted to linux/gpio/consumer.h
+> or linux/gpio/legacy.h, remove the final leftover bits here.
 > 
-> Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 > ---
-> Changes in v2:
->  - remove __pack, struct rtl8261x_fw_header and rtl8261x_fw_entry will not pad
->  - reverse xmas tree for some definition
->  - add explanation on rtl_phy_write_mmd_bits()
-> 
-> Changes in v3:
->  - add struct rtl8261x_priv
-> 
-> Changes in v4:
->  - add struct device *dev
-> 
-> Changes in v5:
->  - no changes
-> 
-> Changes in v6:
->  - replace rtl_phy_write_mmd_bits with phy_modify_mmd, keep mdio lock
->  - check msb and lsb at the beginning of rtl8261x_fw_execute_entry()
->  - add comments on rtl8261x_config_init()
-> 
-> Changes in v7:
->  - no changes
-> ---
->  drivers/net/phy/realtek/realtek_main.c | 220 +++++++++++++++++++++++++
->  1 file changed, 220 insertions(+)
-> 
-> diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
-> index ef3700894ebf..bf7bc19fb44c 100644
-> --- a/drivers/net/phy/realtek/realtek_main.c
-> +++ b/drivers/net/phy/realtek/realtek_main.c
-> @@ -8,7 +8,9 @@
->   * Copyright (c) 2004 Freescale Semiconductor, Inc.
->   */
->  #include <linux/bitops.h>
-> +#include <linux/crc32.h>
->  #include <linux/ethtool_netlink.h>
-> +#include <linux/firmware.h>
->  #include <linux/of.h>
->  #include <linux/phy.h>
->  #include <linux/pm_wakeirq.h>
-> @@ -281,6 +283,42 @@
->  					 RTL8261X_INT_ALDPS_CHG | \
->  					 RTL8261X_INT_JABBER)
->  
-> +#define FW_MAIN_MAGIC			0x52544C38
-> +#define FW_SUB_MAGIC_8261C		0x32363143
-> +#define RTL8261X_POLL_TIMEOUT_MS	100
-> +
-> +#define RTL8261C_CE_FW_NAME	"rtl_nic/rtl8261c.bin"
-> +MODULE_FIRMWARE(RTL8261C_CE_FW_NAME);
-> +
-> +enum rtl8261x_fw_op {
-> +	OP_WRITE = 0x00,	/* Write */
-> +	OP_POLL  = 0x02,	/* Polling */
-> +};
-> +
-> +struct rtl8261x_fw_header {
-> +	__le32 main_magic;	/* Main magic number 0x52544C38 ("RTL8") */
-> +	__le32 sub_magic;	/* Sub magic number */
-> +	__le16 version_major;	/* Major version */
-> +	__le16 version_minor;	/* Minor version */
-> +	__le16 num_entries;	/* Number of entries */
-> +	__le16 reserved;	/* Reserved */
-> +	__le32 crc32;		/* CRC32 checksum */
-> +};
-> +
-> +struct rtl8261x_fw_entry {
-> +	__u8  type;		/* Operation type (OP_*) */
-> +	__u8  dev;		/* MMD device */
-> +	__le16 addr;		/* Register address */
-> +	__u8  msb;		/* MSB bit position */
-> +	__u8  lsb;		/* LSB bit position */
-> +	__le16 value;		/* Value to write/compare */
-> +	__le16 timeout_ms;	/* Poll timeout in milliseconds */
-> +	__u8  poll_set;		/* Poll for set (1) or clear (0) */
-> +	__u8  reserved;		/* Reserved */
-> +};
+>   MAINTAINERS                   |  1 -
+>   drivers/gpio/TODO             |  4 +---
+>   drivers/gpio/gpiolib-cdev.c   |  2 +-
+>   drivers/gpio/gpiolib-legacy.c |  3 +--
+>   drivers/gpio/gpiolib.c        |  2 +-
+>   include/linux/gpio.h          | 22 ----------------------
+>   6 files changed, 4 insertions(+), 30 deletions(-)
+>   delete mode 100644 include/linux/gpio.h
 
-Are there other devices which need firmware download? Do they use the
-same header? I'm just wondering if this will be reused by other
-devices?
-
-	Andrew
+Reviewed-by: Philippe Mathieu-Daudé <philmd@oss.qualcomm.com>
