@@ -1,111 +1,134 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865272264D9;
-	Tue, 30 Jun 2026 01:57:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3428D4F5E0;
+	Tue, 30 Jun 2026 02:01:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782784679; cv=none; b=TmNq9tZqR3GEu8FfLIaPlZxrszgFlTxi01PaKW5PLSZBJ4OB4vTBuiDtkNLNFCOMJzFXLkSIPnMeAs9cDS2XauYuK7yampaUGoxgPWbwGxgqzvKtthlC317qtRy78yKNyXLsKnzl+mdozAVPUD4aGcD+cDE1Tl5oy0igaROMkS0=
+	t=1782784890; cv=none; b=DcX/hc9lxnsnM95r/1s2TXTxwQPAAmHwCq1IHEf2DaxvBjfmYE8G3EjQnbEf10dcXJeeILv7e/T1X3Xv3JrUR+PMK8hhCddjstypF2IMepVPQkx57f9o/8+/vPhC3nuj+SyAvjeb+hD1c6N+rggCKmC+nUYfGanIrTq09vVD5dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782784679; c=relaxed/simple;
-	bh=nmr8k63PP/orGw7GwsTqNPnIntMbHAyiDMyosVayUU8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=YFF7td0WfNNNVViJncjGBRlcsRo4PEJUipo6FVenZMHAspbqclzXRqYKE7qs3s7CDkl/BD7OOiO5qZqduyzCpnYAKcI/d58BrZPHdAbzrJDaA+c/XBD6gcPtTVxWyZdS/uhK+TJlH704fRaGz31yEyHvbsgTJ+jCsfsAc5+EgQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=j9OdEZjM; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
+	s=arc-20240116; t=1782784890; c=relaxed/simple;
+	bh=tzypmFDl0YNPcpQEV97HM/rbOeIqiQ5TFabZSZnarUo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=F3Wdc3lc45L9c3xKix2HC+t8kDkKUk38Jj5CHWbvzV0w39LQMBm7D5pJhVO9GwdIs+6SC52afyoYJP9SUYmpcYn29gRiU1EjRqaNNw1bzgQlf7vH6eulMp3v/wHxplYSG4525Fd1nZROa7sTr3ckiFYhFZo5VR2SpeMunoEXADo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AryREGq0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="j9OdEZjM"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 65U1vR1x94080767, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
-	s=dkim; t=1782784648;
-	bh=nmr8k63PP/orGw7GwsTqNPnIntMbHAyiDMyosVayUU8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=j9OdEZjMHrjZnsQ6Ddt9wyyC2OJu5Kc+/jzrSur06t+YhgLIxzhWuavkklAo51a1m
-	 hV8Q3aHSGek13XXp7ZQ2Q4UMuWHZFD8mw/bmh4Nnt5zLK6MHoMzYRwpETnzta1oM6y
-	 iT5Q5w8dvWaavQhk+1OKGRNAYsSQeULrqccUYrXLmfPlZ21JUWAzkWf/MRVL7I+M76
-	 Q9GaUOVTl4Hdwx2OKpLN7PCmKgKkMrLS5TMkk7C29GR5MDDGPGUwnqtkAaxvOE0ICb
-	 mqt28Kk4B6l+UBQD89w9CN1K8tEY0jEohzbQrWlJsbNjOsVZrzy9N/q2pF1gxlfQai
-	 /zyKj5M5WQZuA==
-Received: from RS-EX-MBS2.realsil.com.cn ([172.29.17.102])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 65U1vR1x94080767
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 30 Jun 2026 09:57:28 +0800
-Received: from RS-EX-MBS3.realsil.com.cn (172.29.17.103) by
- RS-EX-MBS2.realsil.com.cn (172.29.17.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Tue, 30 Jun 2026 09:57:27 +0800
-Received: from RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) by
- RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) with mapi id 15.02.2562.017; Tue,
- 30 Jun 2026 09:57:27 +0800
-From: Javen <javen_xu@realsil.com.cn>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: "hkallweit1@gmail.com" <hkallweit1@gmail.com>, "nic_swsd@realtek.com"
-	<nic_swsd@realtek.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
-	<edumazet@google.com>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"horms@kernel.org" <horms@kernel.org>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH net-next v9 0/7] r8169: add RSS support for RTL8127
-Thread-Topic: [PATCH net-next v9 0/7] r8169: add RSS support for RTL8127
-Thread-Index: AQHdB5bQTMnckxFSmUe/MPSXUjLLjLZVo3yAgAC0whA=
-Date: Tue, 30 Jun 2026 01:57:27 +0000
-Message-ID: <a86ff04248c74814b470c23c09c5fe37@realsil.com.cn>
-References: <20260629071339.1605-1-javen_xu@realsil.com.cn>
- <20260629160951.4422d10c@kernel.org>
-In-Reply-To: <20260629160951.4422d10c@kernel.org>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AryREGq0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35AA01F000E9;
+	Tue, 30 Jun 2026 02:01:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782784888;
+	bh=vbLm8zeSg2B82QSXmAm4VAXoD2wb5ZfhgLmumIQWL4E=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=AryREGq0BX8yf4ZQQnZmmOouju4cdQK8Uqp4pGbWy3paECqE6zuVmsaOQ8/GuYSyH
+	 WEDmhOiPCC4HDkukEQIZfhtIw9UgwsEOLWJcSPYOubItCkaEo1vvbz8r7wXH3+rcGs
+	 AuvnOhWXBEKPHyZW0qx4GhWgcqta+7QNkAf/zr5ZJnGT8fPC1rhpLdAWtQz4a3sZtB
+	 S6XESbG/oboH3hNjtXxsNtl2In8SJNeCaaQHAcuF67vSw6pfepbat0FAv+aIu+ZE/E
+	 gRN7OeVVZ3RSeiNceJehsTyxfeqI2qzejZ4HwY6TGdGPQGGw3gDosCaDwR6pl7lgiK
+	 NLCcEB1VFkGiw==
+From: Jakub Kicinski <kuba@kernel.org>
+To: justinlai0215@realtek.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	stable@vger.kernel.org,
+	horms@kernel.org,
+	richardcochran@gmail.com,
+	david.laight.linux@gmail.com,
+	aleksander.lobakin@intel.com,
+	pkshih@realtek.com,
+	larry.chiu@realtek.com
+Subject: Re: [PATCH net v4] rtase: Workaround for TX hang caused by short UDP packets entering hardware PTP parsing
+Date: Mon, 29 Jun 2026 19:01:26 -0700
+Message-ID: <20260630020126.2366786-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260626044539.37753-1-justinlai0215@realtek.com>
+References: <20260626044539.37753-1-justinlai0215@realtek.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
->On Mon, 29 Jun 2026 15:13:32 +0800 javen wrote:
->> This patch series adds RSS (Receive Side Scaling) support for the
->> r8169 ethernet driver, specifically for RTL8127 (RTL_GIGA_MAC_VER_80).
->>
->> RSS enables packet distribution across multiple receive queues, which
->> can significantly improve network throughput on multi-core systems by
->> allowing parallel processing of incoming packets.
->
->On top of posting this too early you're also violating the limit of outsta=
-nding
->patches. You must not have more than 15 outstanding patches.
->_Especially_ when you struggle with the quality and need 10+ reposts :/ Th=
-e
->reviewer bandwidth is very limited.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+    rtase: Workaround for TX hang caused by short UDP packets entering hardware PTP parsing
 
-Hi,
+This commit attempts to work around a hardware TX hang caused by out-of-bounds
+reads during PTP parsing. It introduces logic to pad short UDP packets to a
+minimum transport data length before transmission.
 
-Sorry about that. I understand the concern, and I apologize for the trouble
-caused by my frequent submissions. I will be more careful with the outstand=
-ing
-patch limit and avoid posting new versions too quickly in the future.
+> diff --git a/drivers/net/ethernet/realtek/rtase/rtase_main.c b/drivers/net/ethernet/realtek/rtase/rtase_main.c
+> index 255667775f0e8..944ffe71b2d07 100644
+> --- a/drivers/net/ethernet/realtek/rtase/rtase_main.c
+> +++ b/drivers/net/ethernet/realtek/rtase/rtase_main.c
+[ ... ]
+> +static bool rtase_get_udp_offset(struct sk_buff *skb, u32 *udp_offset)
+> +{
+> +	struct ipv6hdr *i6h, _i6h;
+> +	struct iphdr *ih, _ih;
+> +	__be16 proto;
+> +	u32 no;
+> +
+> +	if (!rtase_get_l3_proto(skb, &proto, &no))
+> +		return false;
+> +
+> +	switch (proto) {
+> +	case htons(ETH_P_IP):
+> +		ih = skb_header_pointer(skb, no, sizeof(_ih), &_ih);
+> +		if (!ih)
+> +			return false;
 
-Yesterday I submitted three series. For the phylink series,
+[Severity: High]
+Does this skip the padding workaround if the IP header itself is truncated?
 
-Link: https://lore.kernel.org/netdev/20260629060931.1006-4-javen_xu@realsil=
-.com.cn/
+If the packet is shorter than the IP header (e.g., less than 34 bytes),
+skb_header_pointer() will return false. This causes rtase_skb_pad() to
+return true, allowing the packet to skip padding. Could this small unpadded
+packet still trigger the hardware parser and cause the TX hang?
 
-I have received your email and I know I should resend it later.
-Apart from that, I also submitted the following two series:
+[ ... ]
+> +static bool rtase_skb_pad(struct sk_buff *skb)
+> +{
+> +	__be16 *dest, _dest;
+> +	u32 trans_data_len;
+> +	u32 udp_offset;
+> +	u16 dest_port;
+> +	u32 pad_len;
+> +
+> +	if (!rtase_get_udp_offset(skb, &udp_offset))
+> +		return true;
+> +
+> +	if (udp_offset > skb->len)
+> +		return false;
+> +
+> +	trans_data_len = skb->len - udp_offset;
+> +	if (trans_data_len < offsetof(struct udphdr, len) ||
+> +	    trans_data_len >= RTASE_MIN_PAD_LEN)
+> +		return true;
 
-Link: https://lore.kernel.org/netdev/20260629064718.1349-1-javen_xu@realsil=
-.com.cn/
-Link: https://lore.kernel.org/netdev/20260629071339.1605-1-javen_xu@realsil=
-.com.cn/
+[Severity: High]
+Can an attacker bypass the workaround if the transport payload is very small?
 
-Could you please let me know the status of these two series? Should I keep
-waiting for review comments, or should I withdraw or resend them as well?
+By returning true when trans_data_len is less than
+offsetof(struct udphdr, len) (which is 4 bytes), the packet is passed to
+the hardware unpadded.
 
-Thanks for your time, and sorry again for the inconvenience.
+If an attacker sends an IPv4 non-initial fragment with a very small payload,
+the hardware parser might identify the fragment as UDP and attempt to read the
+destination port at offset 2 from the payload. If this out-of-bounds read
+hits residual uninitialized memory in the TX FIFO containing PTP port values
+(319 or 320), the hardware could incorrectly classify it as a PTP packet,
+continue parsing out of bounds, and trigger the TX hang.
 
-Best regards,
-Javen
+> +
+> +	dest = skb_header_pointer(skb,
+-- 
+pw-bot: cr
