@@ -1,46 +1,47 @@
 Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010066.outbound.protection.outlook.com [52.101.201.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8CA3408617;
-	Tue, 30 Jun 2026 11:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279E3409617;
+	Tue, 30 Jun 2026 11:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.66
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782820594; cv=fail; b=IM/iI3hJrCQL4iYaT58jNIU5Gr1w9jjKhXvi8R0pedfpZUmTCl5zX1DEcHuJojEhNhKkF8cqnUur0L+AcrSs8/TRGN6gWoVO+ePQYZnQrb4SsP/rGkBAxBjVfkJ4u2sW/lrvJMXEpdE1B5teHRkM5stB9MLTyU2mUWYf6RF5P+I=
+	t=1782820595; cv=fail; b=Azt2odmkuuw+wk7WZTxgYLi9xGEbKHhpdb8dAch4q0OzBMEYb3zjSFLZKPUYFve0Lbjia8wF5TQ/ol8gvntT9zbq53qd8BjSFx5bm7OYi1mhEVqNAXlByUGWc52zomu5ScWI8pDaJIVA4d5rIOCkx3tUqlDCBMFQF3LDQq4BSl4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782820594; c=relaxed/simple;
-	bh=+4yol1rh02CzC8V5s8NwIRiT+vWQnQMmPgCpJwimOjo=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=lvWBh7cT81phbiDda03AjNd7+SbVtABy+cHnJdelfjqI0i1ReWmJxqYu7Y6vPtOz5/8EuAPVrHdtv57SYPR/G/7Ain1CDiL1+w4yaVKjpvBB22W/KcNtHY/XH1TWAmK+ccnqJsZwXJMemWGnk8gdliNO6liFzDVbX4o8hNMuwA8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com; spf=pass smtp.mailfrom=altera.com; dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b=GPjt22m6; arc=fail smtp.client-ip=52.101.201.66
+	s=arc-20240116; t=1782820595; c=relaxed/simple;
+	bh=puOrLbmmjXHZ5WFNunGVeEuTt9p5pHZcTS8jeegP6lQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=XGWy1imLuoCVyvfL4V89EM9F+olE3cEbvq+2rgpmdk2+pJzhBg9JoAcG10ln2j8NBGKeergba57kotOcZbzKpJUtFP21D+YXZtlPbruk1qK8N6B0hO1bwmZfZXop3ta6+e0+jGHucHDdyCqbR5CI8RNaZtSND78fQu4U0ZOw26c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com; spf=pass smtp.mailfrom=altera.com; dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b=MngUT7eX; arc=fail smtp.client-ip=52.101.201.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altera.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b="GPjt22m6"
+	dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b="MngUT7eX"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=c1ffWw5WC7qoHIWMkkrBXIt74cCQHiB0nTcMMfOJrXt+5Ggf9eoL7fDcrLSW7vphxWEDpvPmlKa8ojx80DTgs+GGHCpePSU405cFn0+iRNXOk/9AVzZy/c1Y6MldO6JLKP82SQZ78wD3JoFsIofs4iA/3YNfKXYaTQ7zjq5nmEGI2G0fSOXsu7ZcrjQJF/r27jB4kotgFm+W+LpqhLZXN2b/9aukdQSyMZqDLYxzy81dnaFVhI7Cs+jkNLYIq73XrSS9m0Tr2Jge1bCcuSKHLh8LhvSblewEYqeBGXCvmyi5EkCmqpCz29Njxs+UTTfBTxRKSGjlEWcbQaQYL2xPMA==
+ b=fUDvuf65mtQYKwqhQZKkGMXkfXU9oqs+qTTAAm9lWJZwYQIfTqRNrB7Z7IMrJd02igJ2GUOYqNBKsTDrR1OyChTAuLo477ZnKNYDZEvkz8VWRBOrnu28VeH7QrHJYxpEty4DfjHFrE2IhVhTXKEiOjRLYDnA6rfuy20Iyh78pFUoUJ443q8HJdr/cZAeTOpLYhlRBD9poKIRZgyfMf5vjuF5pGUVS6q1NZTwviRMbhU93en3tt4F5xHIZPL/t45Zhn0GWZd7Kkf3l/0SpPwpX6mDGGd5s7IiOEBYiwpTLDzRwRcROhI6hqpy0fiyLl0gbYFrPO2eWXG63cMz0LttoA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3hYB7yA8RpTvdbuW0obSHGKU8LebNS+LMT7nAF6kC6g=;
- b=scXNY/ao2eSSknThsrOkI+5pSqlUt3mdSekvLr08fzE8zPcubNe3LzOziN9qQFwBkZDKNrsgnMldmQXdaeVFQVMAfxwyB9PToMYzTzI/0j7Kgqun9FS9R42yAmOEdTktG5BdzwMBonr3Q2nczNgKDUkVdKhD2oREstZmwiHaXJxuMV+dreYL2aVz/6I5g91IJZt5CW1ve+UJfFuzBTV/46gRhPJH0ERg80ZR6IR+myBqD9XQ9rECKeHSj9ep6L0mZjeMMj2jBEB0aRUchka1BV9IpbPPUEq26mmnLbDmHGLKR5fB9MyxrzdtaKGOhQyq1kTOn+i/PTYMcOzSUaOcOA==
+ bh=KKtSciYlV8JovYOti5iISY/o1zGHOPNcY3PJ5Tj/A0A=;
+ b=rfO9OYjaVma6+KubDJByCE4lG/X3mmT6rCkuixUk6jlf/qDe9nkblbj2kj9OEDpq+ymkmmRw5u5YZ7CtfmOU87lMvcnAhjFDs95z7aaf/XiAewk2kflx5a0Ah3jnWR3CIywnU0elSEZkprvu54q8j+sPDu6wML+BXTGgLD4ab14/NzAC4o7491Q2A602gFv7FaGwdXmlCBGv5X0S93iZdzX5kMF5bLpG/MkYqRrQybyXHYEdRpZP+XUd2HS+Rdp23sym2qHeenxzBv9GB89UYdmAXQb6YFE2SYXvOmo2SPT4s8z5chU7lq1uq6C4cmg1VuDuj6QscTFQincRwAMJbQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=altera.com; dmarc=pass action=none header.from=altera.com;
  dkim=pass header.d=altera.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=altera.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3hYB7yA8RpTvdbuW0obSHGKU8LebNS+LMT7nAF6kC6g=;
- b=GPjt22m6pz15bAW8Btl54urZbT5uYyZ3Io3GGjY+22TkksM41nK96Uk3eXghTAYLufvFr+EoR7KIav6KuSUb/d3gEH4AG8tc3Px7wmEQx2ZFXhMvlkriXoJ3EffbCd2IPr+Vlr5DDs/lJx3FMsLsAR2YSkWF7tove7ZLIqmU80hDWzliSuvfEtPYp67sSruPVAa/6JW6Zq4kxqiLv0SOdO1wul9J6zo/FwH65JFzZ+SayrWPHvhKOqRvFgSwE1c4UjBXpOoceKthONPg2rIk+5y0dZj/JdWSHMWTVCuqPspnGKYjCe0hoAco44bVCoEq7O1HTI4TxjQD/fxHqgYRow==
+ bh=KKtSciYlV8JovYOti5iISY/o1zGHOPNcY3PJ5Tj/A0A=;
+ b=MngUT7eXRh2T7U52H5/5qHGdYo+VCwBPsRHTFUDVOGfnBOKIh6UFd8vLveB6vzbV2KDO11hy712bUumTFfRNhAb2tiTdW4fymf9uIA20YjQAWMi7Oc/tVWSLmekvGplCRfyGCtD655d9lSRYP8077BOD10gGevy6zFCLb8+pD+lyqOFR8rlAknpEiXsu+oCK0pBjQt5Xly7KAP0X8emecPWSV0WEakB/ddxlCKmtE28eN+SnNnviKIX43s1ub5QHfHdMHf7cDxTW+uv26U9ulZaQVUVTfwMks1FvmfCnby+aVec7I+Biu6fi1YyYPhiryEMQTBzsEiqBgtcs+rLi6A==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=altera.com;
 Received: from SJ0PR03MB6964.namprd03.prod.outlook.com (2603:10b6:a03:432::18)
  by BY5PR03MB4919.namprd03.prod.outlook.com (2603:10b6:a03:1ef::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Tue, 30 Jun
- 2026 11:56:25 +0000
+ 2026 11:56:26 +0000
 Received: from SJ0PR03MB6964.namprd03.prod.outlook.com
  ([fe80::b965:bfa8:58fb:e775]) by SJ0PR03MB6964.namprd03.prod.outlook.com
  ([fe80::b965:bfa8:58fb:e775%4]) with mapi id 15.21.0159.018; Tue, 30 Jun 2026
- 11:56:24 +0000
+ 11:56:26 +0000
 From: muhammad.nazim.amirul.nazle.asmade@altera.com
 To: netdev@vger.kernel.org
 Cc: andrew+netdev@lunn.ch,
@@ -52,10 +53,12 @@ Cc: andrew+netdev@lunn.ch,
 	maxime.chevallier@bootlin.com,
 	Jose.Abreu@synopsys.com,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 0/3] net: stmmac: L3/L4 filter bug fixes
-Date: Tue, 30 Jun 2026 04:56:19 -0700
-Message-ID: <20260630115622.9426-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
+Subject: [PATCH v3 2/3] net: stmmac: fix l3l4 filter rejecting unsupported offload requests
+Date: Tue, 30 Jun 2026 04:56:21 -0700
+Message-ID: <20260630115622.9426-3-muhammad.nazim.amirul.nazle.asmade@altera.com>
 X-Mailer: git-send-email 2.43.7
+In-Reply-To: <20260630115622.9426-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
+References: <20260630115622.9426-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: SJ0P220CA0012.NAMP220.PROD.OUTLOOK.COM
@@ -69,108 +72,166 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: SJ0PR03MB6964:EE_|BY5PR03MB4919:EE_
-X-MS-Office365-Filtering-Correlation-Id: 501424a5-a3f0-495e-0f88-08ded69e9c10
+X-MS-Office365-Filtering-Correlation-Id: eec709b2-5e9d-4934-79af-08ded69e9ca9
 X-MS-Exchange-AtpMessageProperties: SA
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|376014|7416014|1800799024|18002099003|55112099003|56012099006|3023799007|11063799006|6133799003;
+	BCL:0;ARA:13230040|366016|23010399003|376014|7416014|1800799024|22082099003|18002099003|55112099003|56012099006|3023799007|11063799006|6133799003;
 X-Microsoft-Antispam-Message-Info:
-	X/NJHXGxlW0S9soPPo1KeLuelvMD3Pb5FqNOiLgdMSlo/zUY5aiktxIS0S/OXI/xngaqmrrs/oHQhtYn9XfFn4372YcrWHHFkjnkDs+Lt0gN2oWk9M+hbRWhyQ5IVejOiLAw/LgU+/UXPsEecP/7mGhpy54arlUcaFF2Qihs9w+Zdn0wTY02tbWak+P/LLV7Bn8EhX9WSZD4YB5ntAzO3meGubGCKCArompSga42EbzicxooN8LEpOBIH82ephevCqsmy0x7RHECtG6ZbiKsABWZR9TNW9U1iHj4flduI5WC3K4fPM2IRMbS6n/uJQ9ezMf0I5e2uLThiPd6l9G0lxC15E9tUizYb8mkvgne9insQq1ZtxqGVUj0xywxBkXkkPViNf3VeJiu7UsDG+5boG6vrK0V9MlXwO3O7WdvSNj3d0gaGlTAXxQHNLndVuJlBuSLDNpHL738lXdlJZZjVwCMzwFlU1M+slw9xBp06bNPplA7nZNT8+OSMSh1JFZVx9LpvTWpp3Tlni8tiyHhhqjB2AVmTlGevw0454WuUYSI3Fkn3PaP0KIOHCmt4/1wybNsnm996ZZnH9Ss4ARfsUfuFl+TlkEQVbn/CvDjnqvLs4s6Jy2PnYa11f7Ooe4a0kJ+lykqmyZ7aTbi6HrdenO1fwfBmahYN6DuALPTrx4=
+	K+/Hn/RzdaEWtTbJA+wqmuSkKwVJUyG5j15H4cnTFBaWlA7j30g2M7SA2wHR5bDPlmv5BOD7yEddtM+qC+98SqkBZbWZ5cPYUEpyLnqyIbYLPpc2cHimYCi2n8TUWVN0peVKEELNgR1tadOEKDn63tAetEmxtMEkPbYOF6pFPFI4+k/inuP02ct9Q4fKIP8o+W/IaI/PjmntCtML8U2u4F/xnftzyprPBxIbvPxXqGO9ckb9tX1bcBzVaHBxYPYf2VWCrOdEkuzJusvfdPltuFj7x0VaztR0VXayJ1oMTQ9NJXRxJk6oVsjOJUqBem5VYfBVgh2r6kYIo01rwciMTxPSaQ0WSPQGBwvnj8exw55QBVkXFkZ7rRl1cRQ5JQnUi0kEB2Ra5B0s369hMaxqlNmETjRMLJvFO+RFILCOSzuAGObTam34CczVZOQpaAV3oq7qMhiNDIo7q6jjn5mVgO/QxZY47agqSwnDhjwvd/j7WNtNt3o+SHC0eC8+XX/VfBVRTcA6FJnjwA6s9PJtF3Bzd5THuZSw8X3csf787Jp8QmK0jpsPRygtbQqTsUG2axQEVFTVBpyHPJ0MEkXJji1JfF6+JmOWBTd1c8fHDy6wOOaLE33aDBZ6bS1IG+5mZB1IXrS/H/3NqiA+g2wpoTb5B8eyReiVDTa+0YPvQPE=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR03MB6964.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(7416014)(1800799024)(18002099003)(55112099003)(56012099006)(3023799007)(11063799006)(6133799003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR03MB6964.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(7416014)(1800799024)(22082099003)(18002099003)(55112099003)(56012099006)(3023799007)(11063799006)(6133799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?iYli8k2uY26mNCiA45uQo0cw9sufFlLByBv5P7vv7NIVFkqzQhlo56DOjfyX?=
- =?us-ascii?Q?R4JPqLsSXEt9eCksY2DL+UI2Rs1VPWAQBmzGbMwa2my9XEvvNAhaPVXMn338?=
- =?us-ascii?Q?zO0g8f1ZIX8aP9Nr0oyU18KTB8lTDfydejv/msBZmiu1b5h83fY60UJ+Q2ol?=
- =?us-ascii?Q?hU/3jcnSibfUZG8v4JuC6CsYIBkXJFQskfA9eNIMialwJQz8A8lcsNiZ+n+n?=
- =?us-ascii?Q?IDwfvPEouwMgG3pHyBzoP1F9zvMZ9P2weuynh9jlktDnmgltWb+2qesrhrak?=
- =?us-ascii?Q?h/EYX3sWbcT8I/4d7fZ4vlbMR4aJmtqbh38GY+XIG0EN7sE07AwwsC8+XI69?=
- =?us-ascii?Q?nuF8q+uRInd4Wzg87u359604LmnjH12QW3f6mynFtOeQMbTbQ+SwkVxAlO37?=
- =?us-ascii?Q?1qC1rUI/wohdMN6B6nBc3O0v9kGm9dTW7Piu1xz6trVGnnlxvZ4vz1/ITh5T?=
- =?us-ascii?Q?UpV0E5JC7Pz5BPZUw7IzVlvA4kTngXINq4o46qrQDeawgX/FVn9fei5eLhe2?=
- =?us-ascii?Q?K5iXUBRsjbPvqqlfcjLuZsVAf6B0H2LSmp7vBzz6oztGD5GRToqdlvX5ir3X?=
- =?us-ascii?Q?NbhUqB0focKNuv42B+B+qTNfuXLN0o/wddQ4ZZC+6PjwdptX8wIRxGA9wzib?=
- =?us-ascii?Q?eJWhAxI3ONBkSFVqtXooC2PsUtY2ay/34pyfH3iicoOVgj2TzOPKMihceK0K?=
- =?us-ascii?Q?KfbviZrJDIzZbgyzN70+Rd5W+/T5ZPIJ3b3P95WeNOeiJePgGdBMMSV7+l7Y?=
- =?us-ascii?Q?VFSC5YjrQPDH93veziz7KSSm30avTYjC2d3v3JkBh2gXdzXN+R8Hh88QzsVj?=
- =?us-ascii?Q?3n1YyFltZqqA4yxVyChbysJLAkcSg2HUOQIYgZxgPmqegLqri6kF/U+wopjo?=
- =?us-ascii?Q?nr74tc/Ix0mGOgJasFghNfcq/ble7k1J9OCmVamOiQS93n1qsAKM+tJNgIUH?=
- =?us-ascii?Q?pNs30gr4hRC7bEPd8wRZA+CWJFfULiulGSZj4l3RNPp/NYAtXwwvEGNtpRe0?=
- =?us-ascii?Q?sP3798xHwLfBT8d9iRdkeNsaG20K4Vzk/SPKL9MTXZEHAKjwqetlT+NCJFHF?=
- =?us-ascii?Q?TIdQxUinwq33JCE3QGxU1+si5rF0IIv/HS2+ybWNXeZ/NfAQSJvccbSKqAMp?=
- =?us-ascii?Q?yUlsqa5mOZgC2hnT+thY9dd/5t47F2CtodWNKXvVw/9/Qt6pIuLdK9/9bGMO?=
- =?us-ascii?Q?kZ0YvoaFNd1G3BmusMHq1QT86Wh0dZ80vUl86gfM/0mhlHy5fV6yJvXBGHeU?=
- =?us-ascii?Q?ZcE1SHkcqNWgmXZHCSyJgxSrw0azpoo7rY+6Y7xAoZq/202SZRLW+97+q/Ed?=
- =?us-ascii?Q?KVfAc37fd8LBbwIfKvW4I2oH0CS3zd9SFmJtelDC00vpBxJw7aiz1pYHmqTz?=
- =?us-ascii?Q?3Mku011IGphc4b04ydsyDga0f5MKGixDiutrYY7JC3kqMbbX4kwtSblmSomE?=
- =?us-ascii?Q?9TXk0tBerCItv5H1hvan0L+9/vPAKqJO7jD3e+zGB2WSXlUBG6WQ0nl6nFLX?=
- =?us-ascii?Q?RB/iBBJCHQtdVWmFIr8/ORppLXWIfndmVRNiySZROrA2BifibzJFi5aurqeB?=
- =?us-ascii?Q?aQmjXd2RtJApdwl7hlUXGMJtdHhyE+lHdkno9gpzcKm/K8EH5wlaqdMGieME?=
- =?us-ascii?Q?RqXi8zj5d6fufgTVDMQ+V2xI8LQZ/bZk43Hu/BCOdNXpy8V5iUH0G568+bg3?=
- =?us-ascii?Q?N75bjwLgdI1X5ROBnqCtLONGfuqLzXJvVrIAU2St3ejs3ViLvhiaXfVUcucU?=
- =?us-ascii?Q?QE5XJ+Nt04wc9pACRmx6oaWg5pM5oOVKBI3C+S0j9hNXzOE+L92c7BfvDtXL?=
-X-MS-Exchange-AntiSpam-MessageData-1: fPCj7T0hSe43kg==
+	=?us-ascii?Q?G9WVWKHSpaObnLmcP3OGqCcrnGyLo0T2EOq8fJnra3AydFsnUgwv9XTC6qYx?=
+ =?us-ascii?Q?a4R7KzIgxXCQrwe9TVTSOARapj/Qn9oO911BaL/N+dNU5WUFCVYqI8j6b7Vz?=
+ =?us-ascii?Q?lOydtoIcHWtKs1QiGOUl/AGAxnT0CilaJ2ZTEMJyPD8HMCYy4K2lB17qXdzr?=
+ =?us-ascii?Q?WchyZlKvGAEdjAlsJjz6ALe1g9eo6QhqDP18WfStVWkqTSIqILsGjJD8/SHN?=
+ =?us-ascii?Q?hLUEmQB9qiTv58m9cRNvODJk6g3aJy2oVFB2ydu2APdZil0w+DkIBxfPb7pO?=
+ =?us-ascii?Q?p9JtD7cgpBvG7ZtYXL9s5Vkl2iLusNABObt7sb0D4GnrwHmtLwzvyGjJQWtk?=
+ =?us-ascii?Q?juvHWo4mgkYfBtPtXqLt8M5FIJ7k2mBWejYrC0Cvb2Ng6wd7qHFshqPfxocj?=
+ =?us-ascii?Q?WDZBdsffwStTBZ5WUj26O7cqSW/2w50L3iFoq26gcKhVeIFcrFnPIkyuuffI?=
+ =?us-ascii?Q?gHp6FW4IPRQ40HHNa137Waz53j3o9RxPt67KtMkVjLSmoSTwa4lYHuLLwJJr?=
+ =?us-ascii?Q?BqinVzFCIkJFpQqLBZ4fAE5gPNHMAlineQigOuea5ba0lWBBmFHj3MvRoyJA?=
+ =?us-ascii?Q?qpH8DXZrsHg94K2ItL26LIkjxsvCJS17Rdh9U954pa3/dypmbysPoR/Fy54o?=
+ =?us-ascii?Q?eYkgz8ha6uGrqdLCoQoPpQjtUHPS5jLvZ7X+LbYnem/Fm4BcBzUE0kDN/awy?=
+ =?us-ascii?Q?2Clmp4bxRuQt1hzpNTdOT7n8xETukkjLeyEgdtkhPAlcNeWAMTNyLIwrrfIy?=
+ =?us-ascii?Q?6IniKY5x2S9DNES/P47qMLkoJunW8qWALPqd6135wN9H2YQArRzF0gvPK5nK?=
+ =?us-ascii?Q?reLcqBMwnV3W6chrBI3mn4vNx6o4vTl35YCKQPhcdZZJEDI5oa+JVGSYw2LG?=
+ =?us-ascii?Q?3YM7t5aB064N/PzhtgQMz4G3vhrZt1cd+D1V4+lKHK+3MxmHdclW0h1dEkPp?=
+ =?us-ascii?Q?DB0dHrphSIA9OEG+nxDy+Eg/Yl/wEaGzKXMpIJqhPqz/nCtMNfoLjtJYLRjE?=
+ =?us-ascii?Q?wqPa5Xu/CGBf9HxoKGwozkPUwFuvKyhk01A/Sf4dZ9mhrLgsd1k6H9B4SsnQ?=
+ =?us-ascii?Q?KASbFMinaRIUEiMz4RjOTg5IvyymDFhZZsK5u0rTa3Ak6yO+BXat2076fBQC?=
+ =?us-ascii?Q?ZvRAqsuh4+F/VkHSiwKlRyImNhuB92ZS45emn5N3NAoI11Gv971rPWNgXGpq?=
+ =?us-ascii?Q?83GcM2MqroQrxU/EjyrD3yNlQF5dTbMId7eNj0QzN1y4KGMb7D+6Up6sxITb?=
+ =?us-ascii?Q?iQ7xJipoHR0b1sXi284jIT4lhQ8LYbOrRrevywd8zc0hjpW87mbpK9kgU2jw?=
+ =?us-ascii?Q?9DyDHCNb1Icyq1jTb9fypjhX7wBAE2TqHb0tAXIZBRwBW0hcIS4l48jtO4zl?=
+ =?us-ascii?Q?chiF044AxtZbrDRIa/dMXIKhzSl9MpIBnMrT8T5kbyQ25T4Ldx1QpPUe1cnG?=
+ =?us-ascii?Q?Rsxco5jI2vHIo+5lgWRQbNEFb1v/A4H/L1cTP5XMJDeMuJ2rh0wo2pge2TiV?=
+ =?us-ascii?Q?hfMoM+OHE92ZiPOPYJmk83QVULDJ3xwdMQ/WMLH76KqeN2oNqFYfcZfqzARC?=
+ =?us-ascii?Q?J0NSJHlHMtvfUXPX6J9zIZcsbm0G6QitYihBv+hlZHi6bIEhexwclAZqm804?=
+ =?us-ascii?Q?gjr1eXekILHFjfeL3ea3GUthIh4C49Z20QHrjGKEo4uorI8Py0TlLrjeXhvi?=
+ =?us-ascii?Q?YugplmkNUlhFpmXxxPqp+8Nj5T4bTmteUYViMpPxtpB4v6SrJ84zgF6FjxKw?=
+ =?us-ascii?Q?VQD7e1lt9O0DwkLCMER52UcpouEZlFx/iu2BLeuzJbG44IG7vH/yP0jrOXB7?=
+X-MS-Exchange-AntiSpam-MessageData-1: ZSp9NLDwcHC0PQ==
 X-OriginatorOrg: altera.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 501424a5-a3f0-495e-0f88-08ded69e9c10
+X-MS-Exchange-CrossTenant-Network-Message-Id: eec709b2-5e9d-4934-79af-08ded69e9ca9
 X-MS-Exchange-CrossTenant-AuthSource: SJ0PR03MB6964.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2026 11:56:24.7025
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2026 11:56:25.6571
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: fbd72e03-d4a5-4110-adce-614d51f2077a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qNm2a6FPNcVfZoqqgsrCk+1Fi7qRGwWvYaiSqcudDMcS8DuKp6fIulH9C2a/j54j6Gu/9rsSVN7P2o4Ox7ZT0cNYUK1nlwBF+DEhcrdlo2q/VfHL6/HD5TrztT6fnXLEDVJSbQ4KEIN2xQW3gQKlAg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: MJBOa7mGHJt6CLniQNgST5eKTCMswO+u/YXqOIuwOya+g656xEVJxTXdkLMt3Z5N6Cvt8FXqRyNgXHd93byyQf1yxr9V4wtVPjGgrBml0M+m+GZIL2EsJaKv7B1+txAfKPsRjIAc2QbJOSWNJdfAIA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR03MB4919
 
 From: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
 
-This series fixes three bugs in the stmmac L3/L4 TC flower filter
-implementation for the XGMAC2 core. All three patches target net.
+The basic flow parser in tc_add_basic_flow() does not validate match
+keys before proceeding. Unsupported offload configurations such as
+partial protocol masks, non-IPv4 network proto, or non-TCP/UDP transport
+proto are silently accepted instead of returning -EOPNOTSUPP.
 
-The L3/L4 filter match count statistics patch (originally patch 4/4)
-has been split out and will be sent separately against net-next per
-Andrew Lunn's review of v1.
+Add validation to return -EOPNOTSUPP early for:
+- No network or transport proto present in the key
+- Partial protocol mask (only full mask supported)
+- Network proto is not IPv4
+- Transport proto is not TCP or UDP
 
-Patch 1 fixes a register corruption bug in the L4 filter port configuration.
-The XGMAC_L4_ADDR register holds both source and destination port match
-values in a single register. The original code overwrites the entire register
-when setting either field, silently erasing the other. This is fixed by
-using a read-modify-write sequence.
+Each rejection includes an extack message so the user knows which part
+of the match is unsupported.
 
-Patch 2 fixes the basic flow match parser to properly reject unsupported
-offload requests with -EOPNOTSUPP instead of silently accepting them.
-Unsupported cases include partial protocol masks, non-IPv4 network proto,
-and non-TCP/UDP transport proto. Extack messages are now included so users
-know exactly which part of the match is unsupported. The -EOPNOTSUPP is
-also now returned directly instead of using break, which was silently
-discarding the error on FLOW_CLS_REPLACE operations.
+Also propagate -EOPNOTSUPP from tc_add_basic_flow() in tc_add_flow()
+by returning it directly rather than using break. The break was silently
+discarding the error for FLOW_CLS_REPLACE operations where entry->in_use
+is already true, causing tc_add_flow() to return 0 (success) for
+unsupported replace requests.
 
-Patch 3 fixes a stale action bug on filter deletion. When a filter entry
-with a drop action is deleted, the action field was not reset, causing
-it to persist and potentially affect subsequent filter configurations.
-
-All three patches fix the original L3/L4 filter implementation introduced in
-425eabddaf0f ("net: stmmac: Implement L3/L4 Filters using TC Flower").
-
+Fixes: 425eabddaf0f ("net: stmmac: Implement L3/L4 Filters using TC Flower")
+Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
+Signed-off-by: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
+---
 Changes in v3:
-- Patch 2: add extack messages to each -EOPNOTSUPP return (Jakub Kicinski)
-- Patch 2: return -EOPNOTSUPP directly instead of break to avoid silently
+- Add extack messages to each -EOPNOTSUPP return so users know which
+  part of the match is unsupported (Jakub Kicinski)
+- Return -EOPNOTSUPP directly instead of break to avoid silently
   reporting success on unsupported FLOW_CLS_REPLACE (Sashiko review)
+- Patches 1/3 and 3/3 are unchanged from v2
 
 Changes in v2:
-- Split patch 4/4 (ethtool stats) out to net-next per Andrew Lunn's review
+- No changes
 
-Nazim Amirul (3):
-  net: stmmac: xgmac: fix l4 filter port overwrite on register update
-  net: stmmac: fix l3l4 filter rejecting unsupported offload requests
-  net: stmmac: reset residual action in L3L4 filters on delete
+---
+ .../net/ethernet/stmicro/stmmac/stmmac_tc.c   | 34 +++++++++++++++++++
+ 1 file changed, 34 insertions(+)
 
- .../ethernet/stmicro/stmmac/dwxgmac2_core.c   | 28 +++++++++++--------
- .../net/ethernet/stmicro/stmmac/stmmac_tc.c   | 35 +++++++++++++++++++
- 2 files changed, 49 insertions(+), 12 deletions(-)
-
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+index d78652718599..14cabe76e53e 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+@@ -446,6 +446,7 @@ static int tc_parse_flow_actions(struct stmmac_priv *priv,
+ }
+ 
+ #define ETHER_TYPE_FULL_MASK	cpu_to_be16(~0)
++#define IP_PROTO_FULL_MASK	0xFF
+ 
+ static int tc_add_basic_flow(struct stmmac_priv *priv,
+ 			     struct flow_cls_offload *cls,
+@@ -461,6 +462,33 @@ static int tc_add_basic_flow(struct stmmac_priv *priv,
+ 
+ 	flow_rule_match_basic(rule, &match);
+ 
++	/* Both network proto and transport proto not present in the key */
++	if (!match.mask || !(match.mask->n_proto || match.mask->ip_proto)) {
++		NL_SET_ERR_MSG_MOD(cls->common.extack,
++				   "filter must specify network or transport protocol");
++		return -EOPNOTSUPP;
++	}
++
++	/* If the proto is present in the key and is not full mask */
++	if ((match.mask->n_proto && match.mask->n_proto != ETHER_TYPE_FULL_MASK) ||
++	    (match.mask->ip_proto && match.mask->ip_proto != IP_PROTO_FULL_MASK)) {
++		NL_SET_ERR_MSG_MOD(cls->common.extack,
++				   "only full protocol mask is supported");
++		return -EOPNOTSUPP;
++	}
++
++	/* Network proto is present in the key and is not IPv4 */
++	if (match.mask->n_proto && match.key->n_proto != cpu_to_be16(ETH_P_IP)) {
++		NL_SET_ERR_MSG_MOD(cls->common.extack,
++				   "only IPv4 network protocol is supported");
++		return -EOPNOTSUPP;
++	}
++
++	/* Transport proto is present in the key and is not TCP or UDP */
++	if (match.mask->ip_proto &&
++	    match.key->ip_proto != IPPROTO_TCP &&
++	    match.key->ip_proto != IPPROTO_UDP) {
++		NL_SET_ERR_MSG_MOD(cls->common.extack,
++				   "only TCP and UDP transport protocols are supported");
++		return -EOPNOTSUPP;
++	}
++
+ 	entry->ip_proto = match.key->ip_proto;
+ 	return 0;
+ }
+@@ -598,11 +626,7 @@ static int tc_add_flow(struct stmmac_priv *priv,
+ 		ret = tc_flow_parsers[i].fn(priv, cls, entry);
+ 		if (!ret)
+ 			entry->in_use = true;
+-		else if (ret == -EOPNOTSUPP)
+-			/* The basic flow parser will return EOPNOTSUPP, if a
+-			 * requested offload not fully supported by the hw. And
+-			 * in that case fail early.
+-			 */
+-			break;
++		else if (ret == -EOPNOTSUPP)
++			return ret;
+ 	}
+ 
+ 	if (!entry->in_use)
 -- 
 2.43.7
 
