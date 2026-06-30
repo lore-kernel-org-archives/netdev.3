@@ -1,140 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3461721CC51
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 22:25:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A2F231E858;
+	Tue, 30 Jun 2026 22:25:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782858335; cv=none; b=s0psYGtq033tNur79oMYphHmx5JP8lfmhetsbh2D66JXIvYY/bd02wbEj86pz8x6u33XQgPeLo4s7RiimwI3IatDKZwXzAUgo7sGNzOT4Nb08EsNwT/ntQyujsUrUgVNROPo31aX0CSLGCbDlghulmMxFg1Fu77F51rt7PPLXqQ=
+	t=1782858356; cv=none; b=Xv4Wz06OAJ6zqMB3ErJTXBrickUHu0raUyB431nYJ5Ht9i+VA2scPQs6l76s5GaR13m363fkLvRdzFPs90VvElI3BC/7HW1x6GGkIjNd4ZBg+Eh++zgt9/GOx89UC/27OiToHQ/JO0mRJsgXY0TqIcRaMSE+HEdmmM9wkl85hIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782858335; c=relaxed/simple;
-	bh=vLhbE10te/VPBBt6ZQDRVIhxWYhikKNLXZOkJFDsW+s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sTM5iBNvbnoNNdvqbe4V6Q2eVlFR7yamsDiq3YCCsmAHEiZzIdXd5yovchFAo37SQzLhGgPlp8UBy1vPrH1WwgFPlA0/yJUrzV2XXMNJwiTt0M/YuTWO9rsMUjMPp3IvVQbVX8TzcrqNNCNmbYQPMVUeDm5aAdS+7+AZbfU5pT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VO7G2t1F; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782858356; c=relaxed/simple;
+	bh=UJt3xwA9OUv4ytsi5gs6gUeLW/uZReGQZ4GZ32yz594=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oromQtQROpNw3EPzArdcOZCx5BMfnOK+YIme6xlxc8aeb4TrltrwnqbRr9/PEqsR/f+MYVP0tEZgnoB6hmjwhPHhkfHVrdbGOhwEeFt8W1orwl2hfHQy/RA8V8e402pagC3FUWt9YpIeMIiQdrJJaJA9qaVBOQA4ZM1PUxoDeaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=aEquCaiF; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VO7G2t1F"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D43C01F00ADE
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 22:25:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782858332;
-	bh=lJSNchfWEyMduAfk7UjM53bR+D02Dxe2C6sVldFvt8E=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=VO7G2t1Fop7D33uO3A+qYFU4/l49qMz4/fv7261otOP5CpUOFZac93RTf5iLSqCqr
-	 e/eln6tInnaYZvtLwA6lA74onbV4Oa9fKZcxZQOG1AAbpxy2m+OeDcfmDH+nJLq4QI
-	 zQFyjZP5nygLQQ1ZNMPk/DMTusm4KdUWG7lIlzdhcurKcO8og80hyqQmTMGfPHBVZr
-	 oSTiTUDs2eM5DEo8XzJu8uMABRjNNbKy5dMR3QVfzqHZt1q6Y70ZDSezEsGF31qIqS
-	 /f8aNeCj5iiqzEcKMWD7AplC9VBa7hffu7TKGV3vZd6IFM+ligf7Hy0CkmkWcMpRzE
-	 iAcMdmOt3tK0Q==
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5aeb91c003eso2726933e87.3
-        for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 15:25:32 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RomrmFsrxx1yCFLKB3qUxImODc513nzO+AyPnL3wsjBZ0D4C4TI7K3PJmpTJl5oNXEMlJ1RuYw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyfZAuTO+MtaBg3+33ZDisSoabW/cbVMukGCoFqAEnddY576/8Y
-	U+QQB7l8xfJGgh9rT3u8c0F5pfakaHRg75gmI8+HwUUz98x7v+JZyynCWJXbQAOHToxVLmT3bnP
-	YIa1DsQ9WNvw0YdBIpEtLTwGo5xEq2qU=
-X-Received: by 2002:ac2:4bca:0:b0:5ae:bce4:b696 with SMTP id
- 2adb3069b0e04-5aebdb8913amr1285650e87.15.1782858331615; Tue, 30 Jun 2026
- 15:25:31 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="aEquCaiF"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=z3bXcgl09qRXn2GfBaT6Bogy4+hSBh+lv7mb+1qzP9o=; b=aEquCaiFDaxhq+XbRwXbXA5oSr
+	fbTpT+hhwB8PHbmjF975lvoA2oBmrCXO72hP5KyQbtR6JqHWinzqWC4xuNWuhlz1n5M0X0dZC/HO2
+	h0LJd7EN7SRSbcOo+7RajVeyFzD3ry5MX0tOtbEvFV0WdqEnTpmhDr/FqeaB12x8kpr8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wegto-00A3LE-Q3; Wed, 01 Jul 2026 00:25:48 +0200
+Date: Wed, 1 Jul 2026 00:25:48 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: David Yang <mmyangfl@gmail.com>
+Cc: netdev@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 4/4] net: dsa: motorcomm: Add LED support
+Message-ID: <a1a943de-b184-408b-86a9-196490a7ff8c@lunn.ch>
+References: <20260629183137.541341-1-mmyangfl@gmail.com>
+ <20260629183137.541341-5-mmyangfl@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260630092406.150587-1-manikandan.m@microchip.com> <20260630092406.150587-4-manikandan.m@microchip.com>
-In-Reply-To: <20260630092406.150587-4-manikandan.m@microchip.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Wed, 1 Jul 2026 00:25:19 +0200
-X-Gmail-Original-Message-ID: <CAD++jLk9Vw6tv+S0jno80g1cQNOJ8UH=E_XKEnXdbdKB6QMWJg@mail.gmail.com>
-X-Gm-Features: AVVi8CeKBUAk9hYd7-xedVdQUq3OtUOkiZl_3QiYFyIqzcOrLBrHLUbSYsRIb2A
-Message-ID: <CAD++jLk9Vw6tv+S0jno80g1cQNOJ8UH=E_XKEnXdbdKB6QMWJg@mail.gmail.com>
-Subject: Re: [PATCH v4 3/7] mtd: spi-nor: sfdp: expose the SFDP as a read-only
- NVMEM device
-To: Manikandan Muralidharan <manikandan.m@microchip.com>
-Cc: pratyush@kernel.org, mwalle@kernel.org, takahiro.kuwano@infineon.com, 
-	miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, srini@kernel.org, 
-	nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com, 
-	claudiu.beznea@tuxon.dev, linux@armlinux.org.uk, richardcochran@gmail.com, 
-	arnd@arndb.de, michael@walle.cc, linux-mtd@lists.infradead.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260629183137.541341-5-mmyangfl@gmail.com>
 
-Hi Manikandan,
+> +	duty_req = YT921X_LED_DUTY(on > off ? off : on, cycle_req);
+> +	for (unsigned int i = ARRAY_SIZE(dutys) - 1;; i--)
+> +		if (i <= 0 || duty_req >= (dutys[i - 1] + dutys[i]) / 2) {
+> +			duty = dutys[i];
+> +			break;
+> +		}
 
-thanks for your patch!
+The ;; got the looking at this, since it is unusual.
 
-On Tue, Jun 30, 2026 at 11:25=E2=80=AFAM Manikandan Muralidharan
-<manikandan.m@microchip.com> wrote:
+i is an unsigned int, so it can never be < 0. The test should be just
+i == 0.
 
-> Register the cached SFDP as a read-only NVMEM device rooted at the
-> flash's "sfdp" child node, exposing it in on-flash byte order. This lets
-> NVMEM cells reference any SFDP data: a fixed-layout for parameters at a
-> known offset, or an nvmem-layout parser for vendor data whose location
-> must be discovered at runtime. The device is only registered when an
-> "sfdp" node is present in the device tree.
-
-It seems the existing serial NOR driver core already reads out the SFDP
-and stores it in  nor->sfdp->dwords, right?
-
-This should be mentioned in the commit so we know when the stuff
-is actually read in from the flash memory.
-
->
-> Signed-off-by: Manikandan Muralidharan <manikandan.m@microchip.com>
-(...)
-
-> @@ -3204,6 +3204,11 @@ static int spi_nor_init_params(struct spi_nor *nor=
-)
->                 spi_nor_init_params_deprecated(nor);
->         }
->
-> +       /* Expose the SFDP as an NVMEM device. */
-
-Add "if and only if the flash has an SFDP"
-
-> +static int spi_nor_sfdp_nvmem_read(void *priv, unsigned int offset,
-> +                                  void *val, size_t bytes)
-
-Name it _reg_read() to mirror the nvmem prototype.
-
-> +/**
-> + * spi_nor_register_sfdp_nvmem() - expose the SFDP as a read-only NVMEM =
-device
-> + * @nor:       pointer to a 'struct spi_nor'
-> + *
-> + * Expose the whole SFDP, in on-flash byte order, as a read-only NVMEM d=
-evice
-> + * rooted at the flash's "sfdp" child node. This lets generic (fixed-lay=
-out) or
-> + * vendor (nvmem-layout) cells reference any SFDP data. The device is on=
-ly
-> + * registered when an "sfdp" node is described in the device tree.
-> + *
-> + * Return: 0 on success or if there is nothing to do, -errno otherwise.
-> + */
-> +int spi_nor_register_sfdp_nvmem(struct spi_nor *nor)
+> +static int
+> +yt921x_led_blink_set(struct yt921x_priv *priv, int port, int group,
+> +		     unsigned long *onp, unsigned long *offp)
 > +{
-> +       struct device *dev =3D nor->dev;
-> +       struct nvmem_config config =3D { };
-> +       struct nvmem_device *nvmem;
-> +       struct device_node *np;
-> +       int ret;
+> +	struct yt921x_port *pp = priv->ports[port];
+> +	struct yt921x_led *led;
+> +	unsigned short cycle;
+> +	unsigned short duty;
+> +	bool change_cycle;
+> +	bool change_duty;
+> +	bool use_cycle;
+> +	u32 ctrl;
+> +	u32 mask;
+> +	u32 val;
+> +	int res;
 > +
-> +       if (!nor->sfdp)
-> +               return 0;
-> +
-> +       np =3D of_get_child_by_name(dev_of_node(dev), "sfdp");
-> +       if (!np)
-> +               return 0;
+> +	if (!pp)
+> +		return -ENODEV;
 
-If this node name is required to be named like that it has to be
-enforced in the schema.
+I really do dislike all the tests.
 
-I would instead check all the nodes (for_each_available_child)
-for the right compatible "jedec,sfdp".
+Are LEDs created if pp is NULL?
 
-Yours,
-Linus Walleij
+Please don't use defensive programming, understand the logic of the
+code and decide if this can happen. If it can, then yes, have the
+test. If however yt921x_leds_setup() has this test, and will never
+create and register LEDs with the LED code if pp is NULL, you don't
+need any of these tests. Please look at every instance of such tests
+and really consider, can it happen?
+
+	Andrew
