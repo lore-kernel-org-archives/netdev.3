@@ -1,136 +1,114 @@
-Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62A41C84D7
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 08:35:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.178
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782808515; cv=pass; b=YpRQEDW9MznOFAqG9R2qSI8iAVBjTQUnaanPsf0tOilnctsj7pctvVHuV5lzE2TEFA3QwH1O9PKLscL+cZJK5kPQjsDVL0iEFHABxU/wQIby6Cq5xsxNCMipxx5RlImKLkNcH9dx3qLbNOjSnBI/ErIq2kVqYLUWf0rkIw2etX0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782808515; c=relaxed/simple;
-	bh=12uAIaSCl7tiswRNJqqBaN64Jz/2PQBPhlMgm7mCoFk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=a2R7e6QzsYiVQ4J1APg8THHdgEYZ+I/RthBDqp6/D+/s3dNEkg3mejJA/HpI/HcQg4JsESgm0+qTiSd2fvulHcSjdmU9rDvsaeuMMB3v4sJdEraeYgf9QkPBhQj1JTNvyggz3evoj8VYUIBt4h9PoqRMh15ZPVB49oCd3WuTEYI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P4QDKeSM; arc=pass smtp.client-ip=74.125.82.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D9B19067C;
+	Tue, 30 Jun 2026 08:37:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782808634; cv=none; b=eWS60Epfl+WxZdvy7S8fzm/2hkiSbe3UOvSPfLSYMrJZMVpTDnPDZbBbe80Snt7qRKG4Imbtw6Kb9AxXkikxNmiD43khFaMe5qZXi2w+MdEOlaRDGGZ5C93vgk0o50LzRQvAede1WWkfOC2s45DjoGSBAefhEmDgGAOWXNki/js=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782808634; c=relaxed/simple;
+	bh=aooLG63bV4zknygq7xk22oDT4j7FegkFgEwk2Un2eec=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nx+4oZTmhbUZO2dyoZgU174G+Q+nJvw0kph2DQRZkRJC0PpJefQ85KG9cQLIqXUpnK+sW4pn37a0pDtUoVBUQ0KiaMxsnsixa1JAgZ/8cKoMWR9po8b69PvS+LunSC5ScIzZRY6HeMmCR7aKfNqclfcdt1kbXYAcBOUaIbiIcSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Wbfs4TxI; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P4QDKeSM"
-Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-30caa24aeb4so353246eec.1
-        for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 01:35:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782808514; cv=none;
-        d=google.com; s=arc-20260327;
-        b=SlPrlaIUNdGoSJCYFrXpAm7styz+clFqRGYqtZWjs10GqfkVfytZA9MZNDoanyakH5
-         l/+8UrCPzTYZaflOYDLmWC11DVhwPy1fxuHXlEgHRx+1mKTZK/rKT9BWo3X1zLkwKdPf
-         5hXPKHujbt4Uc1b1yfAtXL1NC77EMn7mBiLwJJhXJv4dlQPqVj+RvDTBtB7Ykko32T0v
-         hwr8Z73/bKrk4Lqx/3dHnSQJ7kZ6LS64PGkFbYAHnL3REtLC0a+nsZKRht9FzsHsKFjd
-         AG+pdZntFmcOeRn4Of6964iCFEh1B8CZDlilmP3GkB3aFyAYpSPZPjhur2QoelXGoLF4
-         aHxg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=2h4fg+PROtgYOgPDGjwjg1prtaKYRf+MRnb5H8GnFAw=;
-        fh=3D1Z2GTjl1nKko0RaKepCZlLKyv1Sb+DtcvMvG+EjzY=;
-        b=Go8pap/5A0CGCvKNDPf7ujfoSl9cIt/VPKl9FRP+IEM9r8or7aNsAraHOc/sc0iWPk
-         O8kBbG0M/3u0ftocL2E5F8nB2VcZ5MBUJvB+nDae9jyf4Kq/zzINgaY0b5J/u6Gdah7a
-         k0eTkTOvNj72P1WptG38kF/3BeoG7TFTDjp9Ij3iWusB8p0I9OqioIR1XZP+Mr3zXN0H
-         IM3jVLuk9W9RpANdLUGqq8cYudAW63GIdCNprvNtV50ImiI+xgOJihvpXBVHW+A0g7t1
-         lrnmNWIA6jewO2dm00KL0KwyQfZ/E6sDso4IPFHgEszJ+0+DvD/HjuV3gyMT/Auu4GeY
-         8ORA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782808514; x=1783413314; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=2h4fg+PROtgYOgPDGjwjg1prtaKYRf+MRnb5H8GnFAw=;
-        b=P4QDKeSMKLnfVsDrpWCuEmR+fde0eSYT8JQqFhe7xLiugA+IX+ZEepZDsU6I5Ie6jm
-         EtCDCgp7ZUpLvZdZ9CeeHs1gUu0FxMROHIvFtqAoQDLzY4WLKVd+sF0mn1+zSJcaOOg7
-         ivbtAQ3UbteWlBQOZntGY9QsskxDj5hlMxFvEVEvo4HBZvZsK14n0N8BCitTpGtn20mb
-         QA2/hDVc2OLBIH9W3JVORw9oy7kYaxNwQxRz/mq6Pak487EKo1e1i7J5CyPThcjxMTpL
-         uBwhyWHKVQUOpS4s/mkDiT5cs0YZI553d1UZiED4mLQC2v3AAQ2O+HmyAr+DDIx3cXgg
-         pdPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782808514; x=1783413314;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2h4fg+PROtgYOgPDGjwjg1prtaKYRf+MRnb5H8GnFAw=;
-        b=qs+kX8UnLSE03MK1SQUYf6Taa2/6pOWfPJtOFu2E5ag4K0dWAzT6sQfr+TcW1EqcIC
-         rhFXZtrwKqn8Gs4UUYbo4wVKSlPeU8GzXwQaxBcxa0dMa71o3JPCJ5+P+ikoAAE2ze4p
-         ITkVE8/BhRd/tU1CiNiuSbI+TO+IKs80gSkRHEYm3DGk6DiIdGyu6ZLFm23RUPtow9XQ
-         JgIQe/s5TQPtQw974EXL9YEHj1sRetNSzBu4UJAMm2+Bjpu8J1YU5iTUosUnKYr5gC57
-         78xhw7VZO6Ts0u/3UHKwmdwql/fRLSgWYOKd8DrzXNbqMns4noZAM3jE36b3EeaUjKzX
-         HcVg==
-X-Forwarded-Encrypted: i=1; AHgh+RorIvu2MbmvENXZ6SkvHuXQ3vXrxGrqvDpXRVFeTn5pzhLctQ6qOCkJyioAnIiD3dt+F9IRipo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAsWZNjHVsuflVQdkLVpC3rqYgb2jzCXMLOgAzR2Sax9i7KmTf
-	WyB+oXBRnCy1TEZpYvoO8z98BfQYsjKNmjwqDE+VGdoJ+GVOsWnsjYNF7PhL4855Q3slY0CMOW9
-	Y1ImWDxgmcsA8jmVp43dmnJ3hN8pttaw=
-X-Gm-Gg: AfdE7clSVuIkIPfnaDy2n1/c+pw+4pTQq/AWWtPj8jYPphpxKHc8y6mvvrsQG3wze/n
-	UiliN+Uw5KVyROHu1COHRGD6SDn3eleJNlskTaEDjsXz5tzfCUxvKy2CDN3hu50glzHtThaNMFB
-	Eu7Pz05m1jPTGW0uWWgrUOIr1avLlRqvH5mV7iwqCOBPWomP6TJiO2G5LYE2wx2lL68ES4ze7kL
-	XnahhlwLD9cRcZpzyylxSd214BXITWw02CwjJ1qBV25nLKTp82eepczFhpZzwzQLSYZVcirt8Cd
-	AzcZIu4b6crUaBQAmZDlHicRf9fi9lRscakbtfciH1vUGshIvCEelnyAWd9UsIiDNWzS1WeQJmx
-	chxtRD8+AnK/g
-X-Received: by 2002:a05:7300:6ca1:b0:30e:dda8:e0ba with SMTP id
- 5a478bee46e88-30ee150954cmr1003565eec.6.1782808513710; Tue, 30 Jun 2026
- 01:35:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Wbfs4TxI"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 6403E4E40B94;
+	Tue, 30 Jun 2026 08:37:09 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 2F9A160233;
+	Tue, 30 Jun 2026 08:37:09 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 77EC2106F1C74;
+	Tue, 30 Jun 2026 10:37:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1782808628; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=fd/QA6acfgIrDHgg6VpbFw+QypozMGr8wd9fRrr3/8Q=;
+	b=Wbfs4TxI74pThMevE/iwEHtgj27864fo5QxSfoWLoOsGVI9u8NDKPR6j4KnxsiEZsW1KBJ
+	mlVGDH993x+KgcgiAi3XEnUEgnEUcrY0X4KyJSRWx/WAOg117a0d0qZzF5Dk1yPvNA5tNp
+	RIZqAMPsLpLiWq4ZgfgoefLZZDN1pH+yKPkGC5eluWuWwVlP7jEFmQewnaO2A+sx62Rrid
+	kVzXMpfnBNaEbYFrPY4X51Mq7nEN3u8XJJm/kZ+F5e/dAY2YqxHJ7/8zpqUg+G6hi4ippT
+	vdkSbEe8DGir749qvy0+x/rztAfCPMPVL/PwTyXHBzybeJj/C0uMJcmIMTvG3A==
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	thomas.petazzoni@bootlin.com
+Subject: [PATCH net-next] net: phylink: Drop references to the .validate() method in comments
+Date: Tue, 30 Jun 2026 10:37:00 +0200
+Message-ID: <20260630083700.2041915-1-maxime.chevallier@bootlin.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260628-b4-rust-vertical-imports-v1-0-98bc71d4810b@gurudas.dev>
- <20260628-b4-rust-vertical-imports-v1-3-98bc71d4810b@gurudas.dev> <f0ed588a-6cfb-4079-a2fe-7c14f1b42727@oss.qualcomm.com>
-In-Reply-To: <f0ed588a-6cfb-4079-a2fe-7c14f1b42727@oss.qualcomm.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 30 Jun 2026 10:35:00 +0200
-X-Gm-Features: AVVi8CdhtqV-BYuDJ7-_rhOqSdDxdGUExu9BuuQ1x0bjmiH_24JXcG_HI6rxurs
-Message-ID: <CANiq72=SQK7pd-fj+4MOb=E6=R-DHCcLcuCvN=us2E5o7Rcy2A@mail.gmail.com>
-Subject: Re: [PATCH 3/7] cpufreq: rcpufreq_dt: use vertical import style
-To: Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>
-Cc: Guru Das Srinagesh <linux@gurudas.dev>, Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>, 
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Robin Murphy <robin.murphy@arm.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
-	Michal Wilczynski <m.wilczynski@samsung.com>, =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Jens Axboe <axboe@kernel.dk>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, driver-core@lists.linux.dev, 
-	linux-riscv@lists.infradead.org, linux-pwm@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linux-block@vger.kernel.org, netdev@vger.kernel.org, 
-	nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Mon, Jun 29, 2026 at 2:43=E2=80=AFPM Zhongqiu Han
-<zhongqiu.han@oss.qualcomm.com> wrote:
->
-> If the preferred style is to place each imported item on its own line,
-> shouldn't imports such as
->
->      cpu, cpufreq,
->
-> be formatted similarly as well?
+The phylink_mac_ops '.validate()' has been removed in:
 
-Indeed, good eyes.
+commit da5f6b80ad64 ("net: phylink: remove .validate() method")
 
-To do what we want, `rustfmt` needs the `//` at the end of that level
-too (in the future, it will be without the `//`), i.e. the patch
-probably passes `rustfmtcheck`, but it still needs to split that line
-and add the other `//`.
+There are still a few comments around in phylink that references that,
+related to the ports fields as well as the Pause configuration. Let's
+drop these references and update the comments related to Pause handling.
 
-Cheers,
-Miguel
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+---
+ drivers/net/phy/phylink.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+index 087ac63f9193..59dfe35afa54 100644
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -153,8 +153,7 @@ static DECLARE_PHY_INTERFACE_MASK(phylink_sfp_interfaces);
+  * phylink_set_port_modes() - set the port type modes in the ethtool mask
+  * @mask: ethtool link mode mask
+  *
+- * Sets all the port type modes in the ethtool mask.  MAC drivers should
+- * use this in their 'validate' callback.
++ * Sets all the port type modes in the ethtool mask.
+  */
+ void phylink_set_port_modes(unsigned long *mask)
+ {
+@@ -2095,9 +2094,9 @@ static int phylink_bringup_phy(struct phylink *pl, struct phy_device *phy,
+ 	/*
+ 	 * This is the new way of dealing with flow control for PHYs,
+ 	 * as described by Timur Tabi in commit 529ed1275263 ("net: phy:
+-	 * phy drivers should not set SUPPORTED_[Asym_]Pause") except
+-	 * using our validate call to the MAC, we rely upon the MAC
+-	 * clearing the bits from both supported and advertising fields.
++	 * phy drivers should not set SUPPORTED_[Asym_]Pause"). MAC drivers
++	 * set their support using the MAC_SYM_PAUSE and MAC_ASYM_PAUSE
++	 * capabilities and must NOT change the phy's pause settings directly.
+ 	 */
+ 	phy_support_asym_pause(phy);
+ 
+@@ -3931,9 +3930,9 @@ static int phylink_sfp_connect_phy(void *upstream, struct phy_device *phy)
+ 	/*
+ 	 * This is the new way of dealing with flow control for PHYs,
+ 	 * as described by Timur Tabi in commit 529ed1275263 ("net: phy:
+-	 * phy drivers should not set SUPPORTED_[Asym_]Pause") except
+-	 * using our validate call to the MAC, we rely upon the MAC
+-	 * clearing the bits from both supported and advertising fields.
++	 * phy drivers should not set SUPPORTED_[Asym_]Pause"). MAC drivers
++	 * set their support using the MAC_SYM_PAUSE and MAC_ASYM_PAUSE
++	 * capabilities and must NOT change the phy's pause settings directly.
+ 	 */
+ 	phy_support_asym_pause(phy);
+ 
+-- 
+2.54.0
+
