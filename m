@@ -1,155 +1,203 @@
-Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
+Received: from smtpbgau2.qq.com (smtpbgau2.qq.com [54.206.34.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932203C8194;
-	Tue, 30 Jun 2026 03:09:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=183.62.165.209
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B2425742F
+	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 03:11:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.34.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782788996; cv=none; b=JeI6hZwMKgSy+EwM/9fq2L5lYYOArSi8oR9Vc9NCRuzsy9XAPPXCrq7Wu9uRhAJRRqKlS+6/VgASYELqck8s9VNAEM8hrIpphWpCN9JNsH+UsIZYJKJ6LZBi31W8NnYAnxSYc46DHptx3YLXeq5LfyHcP6TEFxvTRg23Z2AxGlI=
+	t=1782789088; cv=none; b=OV3qDMh3y1L1iPY4JZL5E2YYgmu0a9NpIxHriAKLllz+R1tifo9mB9Jf0163g4IT15pBcIJA5pkhfXb1jZlNLiDzqcnDBNu4FwiJ5lVA2VNQcLFfMnBfCEKKK/Cvb3z0jR491gs6RehD1sOcWZqmvzWiWpgVbG1fuGFcquKIHjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782788996; c=relaxed/simple;
-	bh=38HIykl4ZOs1/rvnvDCFJZX9X6oWINCTD7eLmWLpzbg=;
-	h=Message-ID:Date:Mime-Version:From:To:Cc:Subject:Content-Type; b=Kyeou0hFhvRHcQ6lHaUOk1SJRbf4fo7voUfEMF9hQ33JYprz8uK5jisv0OeHCRaH505ap5nCZHsNyAfzDVvqJdjQz5b32VxT/ikLiVbEf4vTGSZltk0IoSvMyQ+wHAQpOICzg5dQLb/bay9nH1dXZAPzDB2pNGRZAHt6SONxyPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=183.62.165.209
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxct.zte.com.cn (FangMail) with ESMTPS id 4gq7Rc6ZvGz57HRy;
-	Tue, 30 Jun 2026 11:09:48 +0800 (CST)
-Received: from njy2app04.zte.com.cn ([10.40.12.64])
-	by mse-fl1.zte.com.cn with SMTP id 65U39bM8020307;
-	Tue, 30 Jun 2026 11:09:37 +0800 (+08)
-	(envelope-from han.junyang@zte.com.cn)
-Received: from mapi (njy2app03[null])
-	by mapi (Zmail) with MAPI id mid204;
-	Tue, 30 Jun 2026 11:09:38 +0800 (CST)
-X-Zmail-TransId: 2afb6a433372b05-02d10
-X-Mailer: Zmail v1.0
-Message-ID: <20260630110938458LNr_yEOENGtjGuNRow3RL@zte.com.cn>
-Date: Tue, 30 Jun 2026 11:09:38 +0800 (CST)
+	s=arc-20240116; t=1782789088; c=relaxed/simple;
+	bh=6AFo5vxslIwLJHmQAwxTHn5JObBYSyWZatqARdMMw2o=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=sH4vXzBBbb5c7qYgISBX8GM6TMaYBQVy1c9towNF0M9MZCWVCDm5KARHu1du3lUp/Pf5fHg9b0raqBAZ1Gv+H536srRl6Lw5X4SV4wowvMpvnZRqGIVr4Ko/HQH9qjV4bTuMzQdnk38cEu547/rXqKVtv0Uj+p9RSKHnhPFwDCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.206.34.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: zesmtpgz8t1782789035t41e87c53
+X-QQ-Originating-IP: 9b9OZYErz+T/7doDIquKIFNXO+Df55w0rajOXo2eYx0=
+Received: from lap-jiawenwu.trustnetic.com ( [36.24.190.76])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 30 Jun 2026 11:10:32 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 14681940318599943677
+EX-QQ-RecipientCnt: 22
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: netdev@vger.kernel.org
+Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>,
+	Rongguang Wei <weirongguang@kylinos.cn>,
+	Fabio Baltieri <fabio.baltieri@gmail.com>,
+	Jiawen Wu <jiawenwu@trustnetic.com>
+Subject: [PATCH net-next v8 1/5] net: ngbe: implement libwx reset ops
+Date: Tue, 30 Jun 2026 11:10:12 +0800
+Message-Id: <20260630031016.19820-2-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.21.0.windows.1
+In-Reply-To: <20260630031016.19820-1-jiawenwu@trustnetic.com>
+References: <20260630031016.19820-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-From: <han.junyang@zte.com.cn>
-To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>
-Cc: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <han.junyang@zte.com.cn>, <ran.ming@zte.com.cn>,
-        <han.chengfei@zte.com.cn>, <zhang.yanze@zte.com.cn>
-Subject: =?UTF-8?B?W1BBVENIIG5ldC1uZXh0IHY3IDAvMl0gQWRkIFpURSBEaW5nSGFpIEV0aGVybmV0IFBGIGRyaXZlcg==?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 65U39bM8020307
-X-TLS: YES
-X-ENVELOPE-SENDER: han.junyang@zte.com.cn
-X-SOURCE-IP: 10.5.228.132 unknown Tue, 30 Jun 2026 11:09:48 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A43337C.000/4gq7Rc6ZvGz57HRy
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: MjqaYNLY8QZGAuSvXXcZndUvmpZwhtF5Ngam9z5DqaLVRMByXHeVueNw
+	Wg71+XaJRhWj925Yu9pJvd0fM0mIrqX9ceBPa8vSFrHKe6m7O9EV7mcqQ2NgFedblfbTJW4
+	xHL2CBv1gJNyLl585Ks9fBBipa9JZSQfTYopvabckeCS+l+143pFON1h1/3/swO0vfH8+9c
+	URuDr1x/VuWiTmURBozVstFda/X3istzbcEGBb5Jgsyh3oP/aVGUsp5PiIfppeWLl+DcUBR
+	ImgWX4UpeG237mpn4vyL0LOq3VVTbNzTy0TmcYZpaDiM4gVJz/MA98+1WoqSS9OgP9zbYWj
+	BUOFaCloRMSr0NySqhyydVsDGnF9azOOOeSYPRVttX0tSeaUX67aHdS7vRJWonBl8BsQvm1
+	B+2oDxtdmLmjRWIdilaPQlZO+CAbHyt8H+MmotkOciY606mOYZhjf/vl2bx7u6CMQncJGqC
+	mLhoIOgVOwkNZuLM9TK2b0KpIJyxN+J0rf2lCFW3C91428vtdyRGxnDBzvUoVf4L5/jXU0W
+	Wx0bCCe+ikVsT5b6n7l71fc9UmHWjZltirq6b7JDUwT5gWo4ExaGKn+X+i8E4QHMYFsTqnT
+	YeOXXz4uaxrZNdGn8sibcrr3V/umFO+/4aUKC5K4tWtwz/QyVQVMLPLyVavEzsRtHA1tfjS
+	H40gmqW8iEIHK8iht3A2br2EUSzlrljdvM/yKHvxBkB+sX7yomCF2c3kvou89AfwSq+pyy4
+	cNTCX5cysgzMuzpW+5B6E3D3nOHcFbZQ9FCQe3abXbed4fPbPs14WhEoUlcY6i7dQ2t3+tL
+	12WUOP+LI15+rJdnU0D5qPKtlw9ROIgfe/ELr9M+t9IZ5oYy2XHczL3wGTr8WUkKIrPBUnE
+	YX4SV8ZqkoQqXACwGlFhSqQPVZuv+VxDGb4lP6zGUqFZ5FUwyCJUTtctVoslHVoRjy3elf3
+	BSEwqqALlu7yTEblZKCR+inQleUIW2pHRCL1utLKKy0V/QAx6ipQrnv9QbKmLkEvBUR80XY
+	dgAbbB6JlVnzJEgsZqe8V1QmQx+hyp84NPb0bG1R1W9Heg/qZnbJ0IVmuDwp8BTenSgtfcr
+	g==
+X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
+X-QQ-RECHKSPAM: 0
 
-From: Junyang Han <han.junyang@zte.com.cn>
+Implement wx->do_reset() for library module calling.
 
-This series adds initial support for the ZTE DingHai Ethernet controller,
-a high-performance PCIe Ethernet device supporting SR-IOV, hardware
-offloading, and advanced virtualization features.
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+---
+ .../net/ethernet/wangxun/ngbe/ngbe_ethtool.c  |  1 -
+ drivers/net/ethernet/wangxun/ngbe/ngbe_main.c | 37 ++++++++++++++++++-
+ drivers/net/ethernet/wangxun/ngbe/ngbe_type.h |  1 +
+ 3 files changed, 36 insertions(+), 3 deletions(-)
 
-Changes from v6:
-- Clean up PCI device ID table (drop `, 0`, use `{ }` sentinel)
-- Move dh_core_alloc_priv/dh_core_free_priv from header to .c,
-  they don't need to be `static inline`
-- Use `if (!x)` and drop the "%i, x" dev_err() messages in
-  common/notify cfg init.
-
-Changes from v5:
-- Drop dev_info() log spam.
-- Propagate the real error code from dh_pf_pci_init() in
-  dh_pf_probe() instead of hard-coding -ENOMEM.
-- Register devlink only after dh_pf_pci_init() succeeds, and
-  in dh_pf_remove()/dh_pf_shutdown() unregister devlink
-  before tearing down PCI/mutex/priv.
-- Drop the "dh_dev->priv = NULL" assignment from
-  dh_core_free_priv().
-
-Changes from v4:
-- Fix sparse warning: add __iomem annotation to priv pointer
-- Fix Clang format warning
-- Use "dinghai:" as patch subject prefix
-- Ensure proper patch threading
-
-Note: Sent manually due to temporary git send-email unavailability
-in our environment. Will use git send-email or b4 for future
-submissions. Apologies for any inconvenience.
-
-Changes from v3:
-- Merged patches 1 and 2: 
-  Combined initial framework with logging infrastructure
-  for better code organization and reduced patch count. This was done because
-  the logging infrastructure now uses Linux's built-in dev_err(), dev_info(),
-  dev_warn(), etc. macros instead of a custom logging system.
-- Removed unnecessary variable initialization: 
-  Fixed "don't initialise variables".
-- Fixed variable declaration order: 
-  Applied "Reverse Christmas tree" ordering with variables
-  declared from longest to shortest line length.
-- Code quality improvements:
-  Fixed all checkpatch.pl issues (alignment, formatting, etc.).
-
-Changes from v2:
-- Address maintainer feedback from v2 review:
-  * Remove meaningless initialization
-  * Change dh_pf_pci_table to static const for better encapsulation
-  * Simplify MODULE_DESCRIPTION for brevity
-- Coding style improvements:
-  * Ensure all lines are within 80-column limit
-  * Use kernel types (u32/u8) consistently throughout
-  * Improve code readability with better formatting
-
-
-Changes from v1 (addressing feedback from AndrewLunn):
-- Update copyright years to 2022-2026
-- Remove DRV_VERSION, MODULE_VERSION and related boilerplate
-- Fix MODULE_AUTHOR to use person with email address
-- Use module_pci_driver() instead of manual init/exit
-- Remove empty suspend/resume callbacks
-- Replace char priv[] flexible array with void *priv + kzalloc
-- Switch logging from printk wrappers to dev_*() based macros
-- Remove dh_helper.h and dh_log.c, simplify to dh_log.h only
-- Fix variable declaration ordering (reverse Christmas tree)
-- Remove unnecessary NULL check in remove and pf_dev=NULL in probe
-- Fix indentation and remove unnecessary type casts
-- Use kernel idiomatic "if (ret)" style
-
-This is the initial submission and only includes the PF (Physical Function)
-driver. The VF (Virtual Function) driver will be submitted separately.
-
-Junyang Han (2):
-  dinghai: add ZTE network driver support
-  dinghai: add hardware register access and PCI capability scanning
-
- MAINTAINERS                                 |   6 +
- drivers/net/ethernet/Kconfig                |   1 +
- drivers/net/ethernet/Makefile               |   1 +
- drivers/net/ethernet/zte/Kconfig            |  20 +
- drivers/net/ethernet/zte/Makefile           |   6 +
- drivers/net/ethernet/zte/dinghai/Kconfig    |  34 ++
- drivers/net/ethernet/zte/dinghai/Makefile   |  10 +
- drivers/net/ethernet/zte/dinghai/dh_queue.h |  71 +++
- drivers/net/ethernet/zte/dinghai/en_pf.c    | 635 ++++++++++++++++++++
- drivers/net/ethernet/zte/dinghai/en_pf.h    | 118 ++++
- 10 files changed, 902 insertions(+)
- create mode 100644 drivers/net/ethernet/zte/Kconfig
- create mode 100644 drivers/net/ethernet/zte/Makefile
- create mode 100644 drivers/net/ethernet/zte/dinghai/Kconfig
- create mode 100644 drivers/net/ethernet/zte/dinghai/Makefile
- create mode 100644 drivers/net/ethernet/zte/dinghai/dh_queue.h
- create mode 100644 drivers/net/ethernet/zte/dinghai/en_pf.c
- create mode 100644 drivers/net/ethernet/zte/dinghai/en_pf.h
-
+diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_ethtool.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_ethtool.c
+index b2e191982803..1960f7154151 100644
+--- a/drivers/net/ethernet/wangxun/ngbe/ngbe_ethtool.c
++++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_ethtool.c
+@@ -59,7 +59,6 @@ static int ngbe_set_ringparam(struct net_device *netdev,
+ 	wx_set_ring(wx, new_tx_count, new_rx_count, temp_ring);
+ 	kvfree(temp_ring);
+ 
+-	wx_configure(wx);
+ 	ngbe_up(wx);
+ 
+ clear_reset:
+diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+index a16221995909..bbbec9b43bc2 100644
+--- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
++++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+@@ -133,6 +133,7 @@ static int ngbe_sw_init(struct wx *wx)
+ 
+ 	wx->mbx.size = WX_VXMAILBOX_SIZE;
+ 	wx->setup_tc = ngbe_setup_tc;
++	wx->do_reset = ngbe_do_reset;
+ 	set_bit(0, &wx->fwd_bitmask);
+ 
+ 	return 0;
+@@ -423,7 +424,7 @@ void ngbe_down(struct wx *wx)
+ 	wx_clean_all_rx_rings(wx);
+ }
+ 
+-void ngbe_up(struct wx *wx)
++static void ngbe_up_complete(struct wx *wx)
+ {
+ 	wx_configure_vectors(wx);
+ 
+@@ -490,7 +491,7 @@ static int ngbe_open(struct net_device *netdev)
+ 
+ 	wx_ptp_init(wx);
+ 
+-	ngbe_up(wx);
++	ngbe_up_complete(wx);
+ 
+ 	return 0;
+ err_dis_phy:
+@@ -503,6 +504,12 @@ static int ngbe_open(struct net_device *netdev)
+ 	return err;
+ }
+ 
++void ngbe_up(struct wx *wx)
++{
++	wx_configure(wx);
++	ngbe_up_complete(wx);
++}
++
+ /**
+  * ngbe_close - Disables a network interface
+  * @netdev: network interface device structure
+@@ -590,6 +597,8 @@ int ngbe_setup_tc(struct net_device *dev, u8 tc)
+ 	 */
+ 	if (netif_running(dev))
+ 		ngbe_close(dev);
++	else
++		ngbe_reset(wx);
+ 
+ 	wx_clear_interrupt_scheme(wx);
+ 
+@@ -606,6 +615,30 @@ int ngbe_setup_tc(struct net_device *dev, u8 tc)
+ 	return 0;
+ }
+ 
++static void ngbe_reinit_locked(struct wx *wx)
++{
++	netif_trans_update(wx->netdev);
++
++	mutex_lock(&wx->reset_lock);
++	set_bit(WX_STATE_RESETTING, wx->state);
++
++	ngbe_down(wx);
++	ngbe_up(wx);
++
++	clear_bit(WX_STATE_RESETTING, wx->state);
++	mutex_unlock(&wx->reset_lock);
++}
++
++void ngbe_do_reset(struct net_device *netdev)
++{
++	struct wx *wx = netdev_priv(netdev);
++
++	if (netif_running(netdev))
++		ngbe_reinit_locked(wx);
++	else
++		ngbe_reset(wx);
++}
++
+ static const struct net_device_ops ngbe_netdev_ops = {
+ 	.ndo_open               = ngbe_open,
+ 	.ndo_stop               = ngbe_close,
+diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
+index 7077a0da4c98..4f648f272c08 100644
+--- a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
++++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
+@@ -125,5 +125,6 @@ extern char ngbe_driver_name[];
+ void ngbe_down(struct wx *wx);
+ void ngbe_up(struct wx *wx);
+ int ngbe_setup_tc(struct net_device *dev, u8 tc);
++void ngbe_do_reset(struct net_device *netdev);
+ 
+ #endif /* _NGBE_TYPE_H_ */
 -- 
-2.27.0
+2.51.0
+
