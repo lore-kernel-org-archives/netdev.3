@@ -1,37 +1,37 @@
 Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD86336AB4D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDACA37B3FE;
 	Tue, 30 Jun 2026 03:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782789759; cv=none; b=Z/CKZ7DOp5lSoJx1wfjBRllfWRx9pdirW6bgd45lKIRBOh6D8kIQRSA6Fd6fhOYG6G62R3eknYII/ddS0oaXcxSPkNtHxgIlTdtPUZ+6gB8yNAie74njCWJpi3pL0w2Qsks0axvmIM0lyIzZbBvk8ooN00YwEknWu63AKofdJSc=
+	t=1782789759; cv=none; b=GXhEewiN3kKytPvnLB88lRZFvQkjF6ZEzQO1R817HMoTvkmhhOiQ4pSLgsbBG+MURHLwQHPdqsF7fvJ76DWVIQ5xNpAVTGQlxQdOFU6yu7/doQjQg29OdO4ekXdqd0u+aINMNajwejlBFZ38xkjx9Qu5pGN38U3X9plP+Dlb2dA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1782789759; c=relaxed/simple;
-	bh=GrphSALXPY3hqGjYd/RXdbMGhyPOM0ZO6Nu4zHRn/UY=;
+	bh=1tqCYrfxlkiW0Yvx6XadNQzRu9uqIA914m5QF6m2MCM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Ex4jbSz+RaOndPUVvVvZMW4M6v0zwqOj5Wp/vGV82u1uTMRo1eFRU24SF3V00s2Tm8s5ePdVLbF4hUfMM746A1hIFow+4muCuHygWF9MCPwLAOu4Mk6/ivLmhcM5k7BsFJt9dBFTSFSmPwlkbIdmIEXOTyK5ONgE2Kue/DZsm2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=Uw9eqRFt; arc=none smtp.client-ip=203.29.241.158
+	 In-Reply-To:To:Cc; b=EN6Lr1qd9iYJc9/tbbajir/DQsUSEKqFteDb5H8MIca92l04ZPvLIbwuTKsv+6gdEX2HerA3MbhQAk/Cc1sWi6blaYnYiMc3p/RiOiySzuSzKvPIg/RHhvdx5NIDQLJoX11t+pIyF/kE3h9QVG3G4QMSOVUNoNGAXHoR6gLZz7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=WTqpN32J; arc=none smtp.client-ip=203.29.241.158
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="Uw9eqRFt"
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="WTqpN32J"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1782789747;
-	bh=8Rh+COseJwVbf0Udu1Sv/zt4AsKsA23GjBE0/9zhItQ=;
+	d=codeconstruct.com.au; s=2022a; t=1782789748;
+	bh=NCOo+o5/Qa83/RFOxQME+CtTWm5U7Ue1c/eJJIr5LFg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Uw9eqRFt6Bj5T+IGqBHjgofizy1l8o3W4F2dAghFivUYPT417thFfJmSUeJmWnzQL
-	 q73Mv/U4sTlxK2hOp4yGAfjfiftNo+WwSsOZvvodkLN41lVOBryYBXIeLdeMNQB4Z0
-	 z0W07fjqkyNs9vtmtj7t/wRJFCXxsAO+q46JQ6EeqKs04Hbyo6jk4zyRLUz5P6U2iY
-	 vpbDrDontnxtSqZ1h9OpA9tYFe/WOU0S+YZuCeaNRQC7MUQG+uIMZaYUFSd2/Wiz36
-	 agcLvtP31dTonvuj4hlKhvjWzexWBWU+y02crQjvOz6nvC4kgF2VXX8Nj0TsrR6D/c
-	 /fpXDPrNHGWEQ==
+	b=WTqpN32JlQfx1ePNXY+cfMhvFsl9hfqSB5Qv7kzZDQMh2lx7b6s+1zplmBPi/5G+n
+	 BW17PgA1EcA43jhw+FXeV+aWtRgZO1lIiON99lDK+yZtGmVmEayZtIU/13h1bcXZTA
+	 DT+YdwoGd/3WNqYeC3pOC5+olOcMa5ZZt+ArPI/IluNxzg6Uj+l2vT3F/ENsGV3eJn
+	 ESeBfKp3uMCAjT88nkoCY62bddegFfiTEh9aqF6/IW13rtDlxN6K4Uex/lXclC9Uuv
+	 QopQEgpUDkv9fmeP2hdttNHAhfeKc7pCW4snQSTJk92pcAJeNdZRqa1CB7JwGUvIY+
+	 ZQ3igcLKFGjYQ==
 Received: by codeconstruct.com.au (Postfix, from userid 10000)
-	id CD86A660F3; Tue, 30 Jun 2026 11:22:27 +0800 (AWST)
+	id 5A17B660F5; Tue, 30 Jun 2026 11:22:28 +0800 (AWST)
 From: Jeremy Kerr <jk@codeconstruct.com.au>
-Date: Tue, 30 Jun 2026 11:21:28 +0800
-Subject: [PATCH net-next 07/12] net: mctp: usb: Accommodate DSP0283 v1.1
- header format
+Date: Tue, 30 Jun 2026 11:21:30 +0800
+Subject: [PATCH net-next 09/12] net: mctp: usblib: Implement transmit-side
+ packet spanning
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,7 +40,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260630-dev-mctp-usb-1-1-v1-7-86a311fc67b7@codeconstruct.com.au>
+Message-Id: <20260630-dev-mctp-usb-1-1-v1-9-86a311fc67b7@codeconstruct.com.au>
 References: <20260630-dev-mctp-usb-1-1-v1-0-86a311fc67b7@codeconstruct.com.au>
 In-Reply-To: <20260630-dev-mctp-usb-1-1-v1-0-86a311fc67b7@codeconstruct.com.au>
 To: Matt Johnston <matt@codeconstruct.com.au>, 
@@ -51,103 +51,152 @@ To: Matt Johnston <matt@codeconstruct.com.au>,
 Cc: netdev@vger.kernel.org, linux-usb@vger.kernel.org
 X-Mailer: b4 0.16-dev
 
-In the v1.1 update to DSP0283, we have a larger header field, of 13 bits
-rather than 8.
+Add support for packet spanning as defined in DSP0283 v1.1.
 
-In order to accommodate this, in preparation for proper v1.1 support,
-expand our struct mctp_usb_hdr's len field to a u16, and endian-convert
-when necessary. Because we don't yet support spanning mode, we will
-never receive or transmit with the top 5 bits set, so we always mask
-out anyway.
-
-This allows for a future change where we allow spanning mode with
->512-byte transfers.
+With the existing v1.0 implementation of multi-packet transfers, all we
+need here is to adjust the buffer sizes to suit v1.1.
 
 Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
 ---
- drivers/net/mctp/mctp-usblib.c | 12 +++++++-----
- include/linux/usb/mctp-usb.h   | 11 ++++++++---
- 2 files changed, 15 insertions(+), 8 deletions(-)
+ drivers/net/mctp/mctp-usb.c    |  2 +-
+ drivers/net/mctp/mctp-usblib.c | 28 +++++++++++++++++++---------
+ include/linux/usb/mctp-usb.h   |  4 +++-
+ 3 files changed, 23 insertions(+), 11 deletions(-)
 
+diff --git a/drivers/net/mctp/mctp-usb.c b/drivers/net/mctp/mctp-usb.c
+index c89588741855..91109ad17d1c 100644
+--- a/drivers/net/mctp/mctp-usb.c
++++ b/drivers/net/mctp/mctp-usb.c
+@@ -276,7 +276,7 @@ static int mctp_usb_probe(struct usb_interface *intf,
+ 	usb_set_intfdata(intf, dev);
+ 
+ 	mctp_usblib_rx_init(&dev->rx, false);
+-	mctp_usblib_tx_init(&dev->tx, &tx_ops, dev);
++	mctp_usblib_tx_init(&dev->tx, &tx_ops, dev, false);
+ 	init_usb_anchor(&dev->tx_anchor);
+ 
+ 	dev->ep_in = ep_in->bEndpointAddress;
 diff --git a/drivers/net/mctp/mctp-usblib.c b/drivers/net/mctp/mctp-usblib.c
-index a8491ec04df3..acfae6d32390 100644
+index a1649f24d937..dbc056bfd627 100644
 --- a/drivers/net/mctp/mctp-usblib.c
 +++ b/drivers/net/mctp/mctp-usblib.c
-@@ -89,6 +89,7 @@ int mctp_usblib_rx_complete(struct net_device *netdev,
- 	while (skb) {
- 		struct sk_buff *skb2 = NULL;
- 		struct mctp_usb_hdr *hdr;
-+		u16 hdr_len;
- 		/* length of MCTP packet, no USB header */
- 		u8 pkt_len;
+@@ -206,7 +206,7 @@ EXPORT_SYMBOL_GPL(mctp_usblib_rx_cancel);
+ struct mctp_usblib_tx_ctx {
+ 	struct mctp_usblib_tx *tx;
+ 	struct sk_buff_head skbs;
+-	unsigned int len;
++	unsigned int buf_len, len;
+ 	enum mctp_usblib_tx_buf_type {
+ 		TX_SINGLE,
+ 		TX_FLAT,
+@@ -216,18 +216,19 @@ struct mctp_usblib_tx_ctx {
  
-@@ -106,7 +107,9 @@ int mctp_usblib_rx_complete(struct net_device *netdev,
- 			break;
- 		}
- 
--		if (hdr->len <
-+		hdr_len = be16_to_cpu(hdr->len) & MCTP_USB_1_0_PKTLEN_MAX;
-+
-+		if (hdr_len <
- 		    sizeof(struct mctp_hdr) + sizeof(struct mctp_usb_hdr)) {
- 			netdev_dbg(netdev, "rx: short packet (hdr) %d\n",
- 				   hdr->len);
-@@ -115,12 +118,12 @@ int mctp_usblib_rx_complete(struct net_device *netdev,
- 		}
- 
- 		/* we know we have at least sizeof(struct mctp_usb_hdr) here */
--		pkt_len = hdr->len - sizeof(struct mctp_usb_hdr);
-+		pkt_len = hdr_len - sizeof(struct mctp_usb_hdr);
- 		if (pkt_len > skb->len) {
- 			rc = -EPROTO;
- 			netdev_dbg(netdev,
- 				   "rx: short packet (xfer) %d, actual %d\n",
--				   hdr->len, skb->len);
-+				   hdr_len, skb->len);
- 			break;
- 		}
- 
-@@ -360,8 +363,7 @@ static int mctp_usblib_tx_skb_prepare(struct sk_buff *skb)
- 		return -ENOMEM;
- 
- 	hdr->id = cpu_to_be16(MCTP_USB_DMTF_ID);
--	hdr->rsvd = 0;
--	hdr->len = plen + sizeof(*hdr);
-+	hdr->len = cpu_to_be16(plen + sizeof(*hdr));
- 
- 	return 0;
+ void mctp_usblib_tx_init(struct mctp_usblib_tx *tx,
+ 			 const struct mctp_usblib_tx_ops *ops,
+-			 void *priv)
++			 void *priv, bool span)
+ {
+ 	memset(tx, 0, sizeof(*tx));
+ 	tx->ops = *ops;
+ 	tx->priv = priv;
++	tx->span = span;
+ 	spin_lock_init(&tx->lock);
  }
+ EXPORT_SYMBOL_GPL(mctp_usblib_tx_init);
+ 
+ static int mctp_usblib_tx_avail(struct mctp_usblib_tx_ctx *ctx)
+ {
+-	return ctx->buf_type == TX_SINGLE ? 0 : MCTP_USB_1_0_XFER_SIZE - ctx->len;
++	return ctx->buf_type == TX_SINGLE ? 0 : ctx->buf_len - ctx->len;
+ }
+ 
+ static bool mctp_usblib_tx_should_send(struct mctp_usblib_tx_ctx *ctx)
+@@ -310,6 +311,12 @@ void mctp_usblib_tx_fini(struct mctp_usblib_tx *tx)
+ }
+ EXPORT_SYMBOL_GPL(mctp_usblib_tx_fini);
+ 
++/* Max size of a spanned TX. Since we allocate a separate span buffer, limit
++ * the tx-time allocations to 4k. Larger packets will be sent as single
++ * transfers.
++ */
++static const unsigned int TX_SPAN_MAX = 4096 - sizeof(struct mctp_usblib_tx_ctx);
++
+ static struct mctp_usblib_tx_ctx *
+ mctp_usblib_tx_ctx_create(struct mctp_usblib_tx *tx, struct sk_buff *skb,
+ 			  bool single)
+@@ -318,11 +325,11 @@ mctp_usblib_tx_ctx_create(struct mctp_usblib_tx *tx, struct sk_buff *skb,
+ 	struct mctp_usblib_tx_ctx *ctx;
+ 	size_t sz = 0;
+ 
+-	if (single) {
++	if (single || skb->len > TX_SPAN_MAX) {
+ 		type = TX_SINGLE;
+ 	} else {
+ 		type = TX_FLAT;
+-		sz = MCTP_USB_1_0_XFER_SIZE;
++		sz = tx->span ? TX_SPAN_MAX : MCTP_USB_1_0_XFER_SIZE;
+ 	}
+ 
+ 	ctx = kzalloc_flex(*ctx, buf, sz, GFP_ATOMIC);
+@@ -331,6 +338,7 @@ mctp_usblib_tx_ctx_create(struct mctp_usblib_tx *tx, struct sk_buff *skb,
+ 
+ 	ctx->tx = tx;
+ 	ctx->buf_type = type;
++	ctx->buf_len = sz;
+ 	ctx->len += skb->len;
+ 	skb_queue_head_init(&ctx->skbs);
+ 	__skb_queue_tail(&ctx->skbs, skb);
+@@ -381,14 +389,16 @@ void mctp_usblib_tx_send_complete(struct mctp_usblib_tx_ctx *tx_ctx,
+ EXPORT_SYMBOL_GPL(mctp_usblib_tx_send_complete);
+ 
+ /* Prepare a skb for push() */
+-static int mctp_usblib_tx_skb_prepare(struct sk_buff *skb)
++static int mctp_usblib_tx_skb_prepare(struct sk_buff *skb, bool span)
+ {
++	unsigned long plen, max_len;
+ 	struct mctp_usb_hdr *hdr;
+-	unsigned long plen;
+ 	int rc;
+ 
++	max_len = span ? MCTP_USB_1_1_PKTLEN_MAX : MCTP_USB_1_0_PKTLEN_MAX;
++
+ 	plen = skb->len;
+-	if (plen + sizeof(*hdr) > MCTP_USB_1_0_PKTLEN_MAX)
++	if (plen + sizeof(*hdr) > max_len)
+ 		return -EMSGSIZE;
+ 
+ 	rc = skb_cow_head(skb, sizeof(*hdr));
+@@ -420,7 +430,7 @@ int mctp_usblib_tx_push(struct net_device *dev,
+ 	unsigned long flags;
+ 	int try = 1, rc;
+ 
+-	rc = mctp_usblib_tx_skb_prepare(skb);
++	rc = mctp_usblib_tx_skb_prepare(skb, tx->span);
+ 	if (rc) {
+ 		mctp_usblib_tx_stats_single_drop(dev);
+ 		kfree_skb(skb);
 diff --git a/include/linux/usb/mctp-usb.h b/include/linux/usb/mctp-usb.h
-index 56a4aef1f7d0..47561f2471e5 100644
+index 00c538a8e211..61fb36f34525 100644
 --- a/include/linux/usb/mctp-usb.h
 +++ b/include/linux/usb/mctp-usb.h
-@@ -2,7 +2,7 @@
- /*
-  * mctp-usb.h - MCTP USB transport binding: common definitions,
-  * based on DMTF0283 specification:
-- * https://www.dmtf.org/sites/default/files/standards/documents/DSP0283_1.0.1.pdf
-+ * https://www.dmtf.org/sites/default/files/standards/documents/DSP0283_1.1.0.pdf
-  *
-  * These are protocol-level definitions, that may be shared between host
-  * and gadget drivers.
-@@ -17,10 +17,15 @@
- #include <linux/skbuff.h>
- #include <linux/types.h>
+@@ -84,6 +84,7 @@ struct mctp_usblib_tx_ops {
+ struct mctp_usblib_tx {
+ 	struct mctp_usblib_tx_ops ops;
+ 	void *priv;
++	bool span;
+ 	/* protects access to cur_ctx */
+ 	spinlock_t lock;
+ 	/* context to which we are adding packets, cleared on send */
+@@ -91,7 +92,8 @@ struct mctp_usblib_tx {
+ };
  
-+/*
-+ * MCTP-over-USB transport header. DSP0283 v1.0 has an 8-bit length field
-+ * (preceded by 8 reserved bits), v1.1 has a 13-bit length field (preceded by
-+ * 3 reserved bits). We use a be16 for our length to handle the larger v1.1
-+ * representation, and mask as appropriate.
-+ */
- struct mctp_usb_hdr {
- 	__be16	id;
--	u8	rsvd;
--	u8	len;
-+	__be16	len;
- } __packed;
+ void mctp_usblib_tx_init(struct mctp_usblib_tx *tx,
+-			 const struct mctp_usblib_tx_ops *ops, void *priv);
++			 const struct mctp_usblib_tx_ops *ops, void *priv,
++			 bool span);
+ void mctp_usblib_tx_fini(struct mctp_usblib_tx *tx);
  
- /* max transfer size for DSP0283 v1.0 */
+ void *mctp_usblib_tx_ctx_priv(struct mctp_usblib_tx_ctx *tx_ctx);
 
 -- 
 2.47.3
