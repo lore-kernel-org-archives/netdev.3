@@ -1,121 +1,96 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B90B1FC8
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 03:26:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C1B389104;
+	Tue, 30 Jun 2026 03:27:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782789983; cv=none; b=Sx+eBWIj5uyjCUUePEZlvbrstAIAUsZe1kzzjFNM7exlZUiJ4gBwiUIVmuZCedAqntqplRDX0T7xuQ6tPoooyGmoYgugaF+lnluVVeAXILxRwOknvVKtIb+YxU0btRoaRxJXxwv377z+/qbgZVB/AiVLBf5/a8lowmvhG7Jf6B4=
+	t=1782790057; cv=none; b=QOjnUdD2JGENL9Nj2JcaDP6pJudCIM2n4dOR8HcELDRpk1R+Q6YWSrDnFEddsx9EYDSBRvaWw1QqJQslgivU27sM1+0Of39aW7NcF47Wms3z0UdwgvVXRIk8F5ec9bJBD1KbK9EPVOqWO1cP8uvaw+EYixe7raYwlHENwJZlOsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782789983; c=relaxed/simple;
-	bh=hm6o1/v6vLr/T+6ikCfkLuR5N/woSO7/x6eA+2IVqs0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mMfWF+CXMwWisKIqVAs0lWwZ8RU8FA+1/EzhscQTaF4TYsrSYJBnyYpqpqMqUgm08xjPM1uvCv/qRTFfpELZai1uyJsLGGjoZam+02uWlWLQlmbbhhVjQp5QfRNFU6y9gkhm/2S7qtFI1MN31f5XKr+AINDtFC+gRLV5cETuxMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=hBGaOmjb; arc=none smtp.client-ip=117.135.210.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1782790057; c=relaxed/simple;
+	bh=LQZc4rIna5P6w5GjBtRUSMmbad/eKzzcgHBBcPUi+a8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=FASfgPawkT5HsDDj2SV6pvBeyQS/lwjfsN0lMgNKj3Yy4MZrSXChGm6+oZz1Td4Rft/8evupJ8rTeYM/2Co3v2+RwOzJrBJ5xuraYefbbhE3IJLOOIaH2wG+On8ZjEGrsHvuuaw9EC5TMx+msmt6J7ZwL93FJ1e1B4Dp3oqAQgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=JEKzISGh; arc=none smtp.client-ip=203.29.241.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="hBGaOmjb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=/S
-	wNmCMjTxoLdqZnFpSJjNUEAyiVEzWIN9TdiRidF4U=; b=hBGaOmjbj7N6Dr/ioC
-	r+1TQ0YrYoKS3e2LsbPSMhMxIQwtv3w5AsEnnreGabPHTuc2GuSRyrJiUum6ELLW
-	24yjn3y7d5kFUpj1j1jZhiTjlr6IvgLHCSP6KBU6HdLbSZdtjC4Otkr4olLyEHxa
-	fsbVZmKV2tgea0o+ES6ncQZrg=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wBHShoyN0Nq1ZWKFw--.30162S2;
-	Tue, 30 Jun 2026 11:25:42 +0800 (CST)
-From: Rongguang Wei <clementwei90@163.com>
-To: netdev@vger.kernel.org,
-	intel-wired-lan@lists.osuosl.org
-Cc: anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch,
-	Rongguang Wei <weirongguang@kylinos.cn>
-Subject: [PATCH net-next v1] ice: use dev_err_probe in all appropriate places in ice_probe()
-Date: Tue, 30 Jun 2026 11:25:37 +0800
-Message-Id: <20260630032537.42605-1-clementwei90@163.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="JEKzISGh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=codeconstruct.com.au; s=2022a; t=1782789746;
+	bh=3vAgljkxOZKzaYntzYofEQoz0xcOMVn5Ns3RtQoLP38=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=JEKzISGhof3gJ4P7425DUPS8yfPUhtlTFcne/K2MpQBfya34/iguoOjnSx+yTVn51
+	 n6p9hznA1FgTQdkJbU6uRr0o/j0g4HwzkVhBkuDojD03KAv9uaWmjzqUKQpEmXIpTH
+	 Ii60PvJA88kMobaiIE6/kjaQ/l2SmDvs5GfWjx4F1f7xlHl5B3HFOeUPAeFdoqtf4h
+	 6IzT+pqcxHqR0A+iNuNSNYpvvwY0tv29ra6RegNsVCLoavQstOi5odqoN/9NV+dbmz
+	 wsYScY45eJIsXOZj45DaX3M++9/yZCa3jrUuhLJTZ9j7B1mDbYeHJWZVeN0yz+rKh+
+	 FESWfetoiYEMg==
+Received: by codeconstruct.com.au (Postfix, from userid 10000)
+	id 52733660ED; Tue, 30 Jun 2026 11:22:26 +0800 (AWST)
+From: Jeremy Kerr <jk@codeconstruct.com.au>
+Date: Tue, 30 Jun 2026 11:21:23 +0800
+Subject: [PATCH net-next 02/12] net: mctp: usb: Use packet-length max for
+ maximum packet-size check
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wBHShoyN0Nq1ZWKFw--.30162S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7KF1rGrW3uFyfZrWUZrWUArb_yoW8Kr1DpF
-	WDAFy5Cr1kGr45W395WF4qyr9xK3ykta45KFWDA3Z2vrn8Ar4ktr9FyF4S9ryrJFZ3Kay3
-	XF1jvFWUCF4xXaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jnhL8UUUUU=
-X-CM-SenderInfo: 5fohzv5qwzvxizq6il2tof0z/xtbC4hZGsWpDNzYhwAAA3K
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260630-dev-mctp-usb-1-1-v1-2-86a311fc67b7@codeconstruct.com.au>
+References: <20260630-dev-mctp-usb-1-1-v1-0-86a311fc67b7@codeconstruct.com.au>
+In-Reply-To: <20260630-dev-mctp-usb-1-1-v1-0-86a311fc67b7@codeconstruct.com.au>
+To: Matt Johnston <matt@codeconstruct.com.au>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: netdev@vger.kernel.org, linux-usb@vger.kernel.org
+X-Mailer: b4 0.16-dev
 
-From: Rongguang Wei <weirongguang@kylinos.cn>
+The max packet size is smaller than the max transfer size, as we only
+have a u8 length field in the transport header.
 
-Use dev_err_probe() can conveniently combines printing
-an error message with returning the errno and also
-simplify the code.
+Add a define for the maximum representable length, and use that for our
+check. Use this for the MTU maximum calculation too.
 
-Signed-off-by: Rongguang Wei <weirongguang@kylinos.cn>
+Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c | 24 ++++++++---------------
- 1 file changed, 8 insertions(+), 16 deletions(-)
+ drivers/net/mctp/mctp-usb.c  | 2 +-
+ include/linux/usb/mctp-usb.h | 3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index e2fbe111f849..81959eaec708 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -5167,10 +5167,8 @@ ice_probe(struct pci_dev *pdev, const struct pci_device_id __always_unused *ent)
- 	struct ice_hw *hw;
- 	int err;
+diff --git a/drivers/net/mctp/mctp-usb.c b/drivers/net/mctp/mctp-usb.c
+index 545eff06322c..c6e36b63e87a 100644
+--- a/drivers/net/mctp/mctp-usb.c
++++ b/drivers/net/mctp/mctp-usb.c
+@@ -76,7 +76,7 @@ static netdev_tx_t mctp_usb_start_xmit(struct sk_buff *skb,
  
--	if (pdev->is_virtfn) {
--		dev_err(dev, "can't probe a virtual function\n");
--		return -EINVAL;
--	}
-+	if (pdev->is_virtfn)
-+		return dev_err_probe(dev, -EINVAL, "can't probe a virtual function\n");
+ 	plen = skb->len;
  
- 	/* when under a kdump kernel initiate a reset before enabling the
- 	 * device in order to clear out any pending DMA transactions. These
-@@ -5194,10 +5192,8 @@ ice_probe(struct pci_dev *pdev, const struct pci_device_id __always_unused *ent)
- 		return err;
+-	if (plen + sizeof(*hdr) > MCTP_USB_1_0_XFER_SIZE)
++	if (plen + sizeof(*hdr) > MCTP_USB_1_0_PKTLEN_MAX)
+ 		goto err_drop;
  
- 	err = pcim_iomap_regions(pdev, BIT(ICE_BAR0), dev_driver_string(dev));
--	if (err) {
--		dev_err(dev, "BAR0 I/O map error %d\n", err);
--		return err;
--	}
-+	if (err)
-+		return dev_err_probe(dev, err, "BAR0 I/O map error %d\n", err);
+ 	rc = skb_cow_head(skb, sizeof(*hdr));
+diff --git a/include/linux/usb/mctp-usb.h b/include/linux/usb/mctp-usb.h
+index 47e2e3931d63..2bece8afd1c7 100644
+--- a/include/linux/usb/mctp-usb.h
++++ b/include/linux/usb/mctp-usb.h
+@@ -25,7 +25,8 @@ struct mctp_usb_hdr {
+ #define MCTP_USB_1_0_XFER_SIZE	512
+ #define MCTP_USB_BTU		68
+ #define MCTP_USB_MTU_MIN	MCTP_USB_BTU
+-#define MCTP_USB_1_0_MTU_MAX	(U8_MAX - sizeof(struct mctp_usb_hdr))
++#define MCTP_USB_1_0_PKTLEN_MAX	U8_MAX
++#define MCTP_USB_1_0_MTU_MAX	(MCTP_USB_1_0_PKTLEN_MAX - sizeof(struct mctp_usb_hdr))
+ #define MCTP_USB_DMTF_ID	0x1ab4
  
- 	pf = ice_allocate_pf(dev);
- 	if (!pf)
-@@ -5208,10 +5204,8 @@ ice_probe(struct pci_dev *pdev, const struct pci_device_id __always_unused *ent)
- 
- 	/* set up for high or low DMA */
- 	err = dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64));
--	if (err) {
--		dev_err(dev, "DMA configuration failed: 0x%x\n", err);
--		return err;
--	}
-+	if (err)
-+		return dev_err_probe(dev, err, "DMA configuration failed: 0x%x\n", err);
- 
- 	pci_set_master(pdev);
- 	pf->pdev = pdev;
-@@ -5246,10 +5240,8 @@ ice_probe(struct pci_dev *pdev, const struct pci_device_id __always_unused *ent)
- 		return ice_probe_recovery_mode(pf);
- 
- 	err = ice_init_hw(hw);
--	if (err) {
--		dev_err(dev, "ice_init_hw failed: %d\n", err);
--		return err;
--	}
-+	if (err)
-+		return dev_err_probe(dev, err, "ice_init_hw failed: %d\n", err);
- 
- 	ice_init_dev_hw(pf);
- 
+ #endif /*  __LINUX_USB_MCTP_USB_H */
+
 -- 
-2.25.1
+2.47.3
 
