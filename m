@@ -1,71 +1,90 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE66E2F549F;
-	Tue, 30 Jun 2026 13:48:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3090366052;
+	Tue, 30 Jun 2026 13:50:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782827313; cv=none; b=OO32DOhX0IrNTP1qzD5m7dmGc0nQ/zDnFZqGrxawikXgxiPhOM6ipsTgI5Wm+yH/Jv4nwSOuOmEOmMLnGmYsoPbFCuoXX+MYcIFXap7ve2RKUcP6YRgcbQS0oSl2Sp3Lxb3R/406Pjk7pBteodUWEhWKKFj4K9ClJCDBro+i1IQ=
+	t=1782827414; cv=none; b=AM7Lg9MftamFpsvOiDHrqImlrSBsTt8m4UW0ocWzR0BDmhUyC4BzTqvCjW3yc2LtK9DQOWAURbrkgfxZBs0xp9Y9WSigICLs8X5ftR0EjllYspYB4XIM97st/higI3nHDtiy+PiPKd6mHwldh8H98+9pcYMNl7P/39olm5ofgnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782827313; c=relaxed/simple;
-	bh=TonebF7Ag32GOyOJMqqlwc8e8lXlquoAPTTINlV2joc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PbVRethvFU2CfHe37nB/lq94QgbQArrz8b494eojdCVhJZEK+px4k5/sf0WNhL0xLDR/iQANLIKcl+wM072RQK+FnmvKJlVUxs2iUwfpQeF1XkBdVUPOVcpYlUs/oJARckgjjl/hlBP+gkwybMKQKCTASBljaCA6Q+O5B2RIuiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=D0LTzYUY; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1782827414; c=relaxed/simple;
+	bh=0waat0bcc64myjOjt1ucKwriB7oQE5aosJTDY2Mu3n4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WV0xjiFR4JAW1q2o+zewMIpVzbGhR9HfCNroLhIxSmyiW81pQNOl7HCK/Y6lxXIoBDTx5CwBRZlEHmyU/FsrDvWEUOHCNIPLDpoyPJA91yT6ALxq3d+vaoQFZTJJfjFD5h6c8boCL+hzfpAf6XCpJ9rIieptZpTHSg4YivePQZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=gSGup5cP; arc=none smtp.client-ip=23.88.38.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="D0LTzYUY"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=/wA5uNWt6gB7JZ5iwu/IO6wZKMVB6pWC14dthf5YOGA=; b=D0LTzYUYJSQhbOHlkEmQgOV1Pr
-	rFAitysvqjixjc/kDLrZXlv16PJ7VZwrjSPFeycp5i2syZJwkCsmeuPAknZFP/nK6T827x/e5WKsy
-	GvD3efgA2XwrWhtWRz+kl63THBUOoX3TEJQbMDywpcoySg4Pdpv32s537s3LWSlQm+zg=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1weYot-009z3M-FY; Tue, 30 Jun 2026 15:48:11 +0200
-Date: Tue, 30 Jun 2026 15:48:11 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Yousef Alhouseen <alhouseenyousef@gmail.com>
-Cc: Petko Manolov <petkan@nucleusys.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="gSGup5cP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
+	s=09092022; t=1782827072;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SOjchQvhacxvYrMble3BHRhvtECYrwp0WDh1TmLB26c=;
+	b=gSGup5cPIGZra0Xv5mvac2TW7IAkfBMTTDmKokVrMFVTdIcQX4RTZQB4da1DRBJk69tbNw
+	OmXD0uvyEiF3ZcmlgHScJd8qtLwGlnTk+R4JgIrJ3GNybfVJKxBVedtauHfaMAA+aXFcGC
+	iF+MzJyAZm4oq9VyYtAcv/PgWiUhnCUdZhlNN86N6c9ZLH/QBMUicyeRpqa+GxMlTPdIV4
+	Bo9fc1Fp3QYFkUKi8WpRu522oW3xrXHb2TrHreFhdcwwzVqcmwEj4TrTpfyaU4xKX+9WqV
+	XGj59EcKqkbDY/b3aZxRO2q19+2j7DTTD869zlUBGfj2NI9Kl49bcBvF3mNxhw==
+From: Simon Wunderlich <sw@simonwunderlich.de>
+To: netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-usb@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+9db6c624635564ad813c@syzkaller.appspotmail.com
-Subject: Re: [PATCH net-next v4] net: usb: rtl8150: handle link status read
- failures
-Message-ID: <355409c6-0b52-4dd5-9b0f-bdb72159ade4@lunn.ch>
-References: <20260630101216.10365-1-alhouseenyousef@gmail.com>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	b.a.t.m.a.n@lists.open-mesh.org,
+	Sven Eckelmann <sven@narfation.org>,
+	stable@vger.kernel.org,
+	Sashiko <sashiko-bot@kernel.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH net 1/6] batman-adv: retrieve ethhdr after potential skb realloc on RX
+Date: Tue, 30 Jun 2026 15:44:25 +0200
+Message-ID: <20260630134430.85786-2-sw@simonwunderlich.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260630134430.85786-1-sw@simonwunderlich.de>
+References: <20260630134430.85786-1-sw@simonwunderlich.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260630101216.10365-1-alhouseenyousef@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jun 30, 2026 at 12:12:16PM +0200, Yousef Alhouseen wrote:
-> set_carrier() ignores the result of the USB control transfer and tests
-> the stack variable supplied as its receive buffer. If the device rejects
-> or aborts the request, that variable remains uninitialized and the driver
-> chooses an arbitrary carrier state.
-> 
-> Leave the existing carrier state unchanged when the link status cannot be
-> read. A transient USB error should not be treated as link loss.
-> 
-> Reported-by: syzbot+9db6c624635564ad813c@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=9db6c624635564ad813c
-> Suggested-by: Petko Manolov <petkan@nucleusys.com>
-> Signed-off-by: Yousef Alhouseen <alhouseenyousef@gmail.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+pskb_may_pull() in batadv_interface_rx() could reallocate the buffer behind
+the skb. Variables which were pointing to the old buffer need to be
+reassigned to avoid an use-after-free.
 
-    Andrew
+This was done correctly for the VLAN header but missed for the ethernet
+header which is later used for the TT and AP isolation handling.
+
+Cc: stable@vger.kernel.org
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Fixes: c6c8fea29769 ("net: Add batman-adv meshing protocol")
+Fixes: c78296665c3d ("batman-adv: Check skb size before using encapsulated ETH+VLAN header")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+---
+ net/batman-adv/mesh-interface.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/net/batman-adv/mesh-interface.c b/net/batman-adv/mesh-interface.c
+index 44026810b99ce..511f70e0706a7 100644
+--- a/net/batman-adv/mesh-interface.c
++++ b/net/batman-adv/mesh-interface.c
+@@ -434,6 +434,7 @@ void batadv_interface_rx(struct net_device *mesh_iface,
+ 		if (!pskb_may_pull(skb, VLAN_ETH_HLEN))
+ 			goto dropped;
+ 
++		ethhdr = eth_hdr(skb);
+ 		vhdr = skb_vlan_eth_hdr(skb);
+ 
+ 		/* drop batman-in-batman packets to prevent loops */
+-- 
+2.47.3
+
