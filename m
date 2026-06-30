@@ -1,70 +1,89 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18A343DA27
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 14:54:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22BD543D4E3
+	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 14:54:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782831265; cv=none; b=ZO/3ZeRV1ddS39+YLBWYgpq31NpEHFi90ooedy+x4kePmE82hXSlWDUu+GswR+ACoa5usm/26+1gyrY4wPia+uDPymHknB5tbAyQsY2PTxARGP0X8Cd6BqrkK/FKQnqNchAp8FawRDQKxtU01N7bTHP4rb5lT6JRgiI7N78k6DY=
+	t=1782831266; cv=none; b=fUWxdxn5vbzd2rTB7I7v9oH0s4RSZVoA6Jh7L8ukZOc68FuibEH6mUtQko+Qq69Diba6YwHmUMAoqeWqb30onX12eenA7D8yCwT8gdFeey78N4q+x+YrOXcB5p4qNW84iTr6JSTa9Dpvy/WdJxNqgacpUU9DRDt1me3Mx/Xt3aE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782831265; c=relaxed/simple;
-	bh=c0UlIyPzVoS38lOqKuNemaPiDL0OuUcyCHqPIE6Dv2g=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Ys3rdgkNtUg6Fu3aSSLWfS8+a3RiP2fG/qVHduQRFzmtYMA2fL2WvL/OJwT4me/2JSxjeh89+8jgh0ZHYpQ6A4gp7hD5ZJh/n5KnAhYik2jNxA6XZSJX0R8SxeHuRseVw9rAAFupLg6HGfkKDcseVaRWgWgzeOxM9Hpv+grGb+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=l6Cqv/qG; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1782831266; c=relaxed/simple;
+	bh=mvMluMulz8TsazPI0k8zL2aMZtsqN5Gi7GN9fqtNkKE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DrIomC7hnagJxNa28ffwFT9kMVAuIfuv4gSiQ4YW0Z54miJfXkCfpa4kZ+T5xWCE2FwOx6yNHqISSAi23hEB3K7XNc/XhLZAlTNTziodmkNvgB4iE873DnxNZzrIeJnyfg/2u2xFEetFAEPX2QW/mhQP70Wdbfq30oGlGDN3z30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zo5H2nrT; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="l6Cqv/qG"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65UEIfOk2171848;
-	Tue, 30 Jun 2026 14:54:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=cQrIpqT0bGUKwqhkD
-	Nycoj7YMDQ9fXIeDCvrzwtwXyI=; b=l6Cqv/qG0lG9gW9JEDdlvcFrWpG3hYXEE
-	xhufDCa+b6fESWgWBPRrGc9QlKAC+x09VVBBWq/RiCTo3P5z5wm7LmOSiqMAF6cW
-	K/98oxoHzLEx7MR/ayQYmxRaOAu9aua7mHSDbuLxu2YKu77rijhl25ANbD3EXhxM
-	BkW3UjWXs5+8XTGLP/QmfBbhHBG05MJLKIcFrwQ8JtpYW3u5rYpOB6nr7AM5E5K5
-	TYP2wlKPbrVdvwk8AudFdWNxa8STptgxKWHx1bPWolYgMbhBcRcmChjvAqtoqAtg
-	EjRoCb3sQ8DHtVult/OqSIIQ4RIFFMB5f5fbO6nMi+uYsrGmCuJUg==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f26q9y59u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jun 2026 14:54:11 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65UEnflg000654;
-	Tue, 30 Jun 2026 14:54:10 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4f2tbhapmu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jun 2026 14:54:10 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65UEs9dg66584862
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 30 Jun 2026 14:54:09 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5BDBA58054;
-	Tue, 30 Jun 2026 14:54:09 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 096425805F;
-	Tue, 30 Jun 2026 14:54:08 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.61.117.151])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 30 Jun 2026 14:54:07 +0000 (GMT)
-From: Mingming Cao <mmc@linux.ibm.com>
-To: netdev@vger.kernel.org
-Cc: horms@kernel.org, bjking1@linux.ibm.com, haren@linux.ibm.com,
-        ricklind@linux.ibm.com, mmc@linux.ibm.com, kuba@kernel.org,
-        edumazet@google.com, pabeni@redhat.com, linuxppc-dev@lists.ozlabs.org,
-        maddy@linux.ibm.com, mpe@ellerman.id.au,
-        Dave Marquardt <davemarq@linux.ibm.com>
-Subject: [PATCH v1 14/18] ibmveth: Expose per-queue buffer pool details via sysfs
-Date: Tue, 30 Jun 2026 07:53:21 -0700
-Message-Id: <b37a38adc270f2d49c19d733ef663435a60f5748.1782758799.git.mmc@linux.ibm.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <cover.1782758799.git.mmc@linux.ibm.com>
-References: <cover.1782758799.git.mmc@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zo5H2nrT"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-37fcae0ecb3so1622803a91.3
+        for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 07:54:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782831264; x=1783436064; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=px0Wcp6VhD6xZWRvmlTtSAYT6tdeg+tqH+zTVPz9ZEg=;
+        b=Zo5H2nrTXqjMYGMdJPP50uZUExrQFXD75XRkt7ocVE6oac4J4tN2zkkf9h8s5ty3oK
+         xcKO3yH5g6VpqT92aZgPdQ81KxtbW4Mc86s9h75HzFqRZkmIgX7HZLdyqWf9kaDI+QRy
+         kslQlRdZIQY3AKaPbViHeYasYakmEJEpXzy+LAFPMXfLVgDphgMbu53cncAWEbPLiV6p
+         3zBglHAqZA9vq2XSUBos1c+YGOixmSDBe6USxnDxmsq99x4wOSbjTrCXvBdMxnUF4zyg
+         B8W8uXwQN+YJoMIW65UdV8fZQ39SMHU16WOSJW8apPnUwg1YxFLg0ePJLOOZBYNjUsMp
+         CzNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782831264; x=1783436064;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=px0Wcp6VhD6xZWRvmlTtSAYT6tdeg+tqH+zTVPz9ZEg=;
+        b=PoI4BS0bDgaFKxSksReLCcahdHNcc5+SmN3a98KwOsT1JKlhu8qTn7/i8bg6ZgOZct
+         Cm6KUsAVfBBaYDEA+U3rPRP5yx471CegbZZ9FP9e+3Am8Y0tuQqGtsFjjKEaZtlVSMns
+         +TojzDt706CNTBvkViYBOA3p55HEdnpmhvBCv6bTouKZzX3eXAHU1CZethZYSNF/HU3o
+         ufEsLuGC4MBDg8dkfGwcG9SgvNtEolQb5U+b2IHGyucMwiSXCSgfNPbgPReU6Z8kY081
+         XkzFfupoyVPyUcCbr/5ZF/fXp3mTioLQzllAijJmM/3vUrtxEp1YK1ygI3Bb8l+ijq6I
+         7GxQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoeDpdNIKkQQ3vGUT3wNFuYgivbTuHBgHhXwZG1sPgJwlSU7vTHvCxGQjkeUYS46O97ToIgUDY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/J1MP9is7n9gGj6Wc05K+2hrvx7V69drbuTyUAMPIj78D/BfP
+	o11b9Qoq+pTj4rCdytzET9bF7ZKKXoaffrJ3fCjHrtRoMTHeM+XryFJp
+X-Gm-Gg: AfdE7cnb41CtVZUNppHmLkGBWSMsOJRs7l6GtCGZcOIX3cs3t6zJVkAUYpDQO+6qmac
+	9ogqSwiCtFHFEyJy+G9piLi3L47/FaQsH11q0bwg5OmAfR5tVnwKT56KJ+DAa+sH+lDYA+INqFl
+	S9LFgTtVfooCHyQ1u7J0M7AL8qD/T+NFrVcUWsDDYBwrY2pFSnQfK88IeC2kC5h/5V/i08sH+h+
+	FW902JJNbpEcGkv6NMunAIQtWpuajRJgzQMdKbSYkUlaLJ/+5r1BiBFGiJv1oCkbSNFyxB8LN8B
+	XuYTEyuZai9qjdMQIG5Kz3eIc4jOKutveutwFNTmfzt8t6JwKAPPZ7w2MCN0x4qrHwoxqFhBmOd
+	c0F/ISYxHEJ/e0+tak59EJJm4t2Bmf8TAJz7T+Sk29tgmyOQSf8oy2xVzOD8y4x6lF+97JNbRVd
+	n7pe5EXJwGRPxsGsQwNt0Mxf+JxjFO/7ixYBDKXDg5fphsIs15fi7V6StdfdI5IA==
+X-Received: by 2002:a17:90b:3c08:b0:368:78da:803 with SMTP id 98e67ed59e1d1-38052583a4emr2912925a91.12.1782831264127;
+        Tue, 30 Jun 2026 07:54:24 -0700 (PDT)
+Received: from cps-manycore-1.. ([147.46.174.222])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38095b684basm20122a91.1.2026.06.30.07.54.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jun 2026 07:54:23 -0700 (PDT)
+From: Sechang Lim <rhkrqnwk98@gmail.com>
+To: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Shuah Khan <shuah@kernel.org>
+Cc: Martin KaFai Lau <martin.lau@linux.dev>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Varun R Mallya <varunrmallya@gmail.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH bpf-next v4 0/2] bpf, sockmap: disallow sockmap mutation from tc, xdp, socket_filter and flow_dissector
+Date: Tue, 30 Jun 2026 14:54:04 +0000
+Message-ID: <20260630145410.3648099-1-rhkrqnwk98@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -72,128 +91,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjMwMDEzOSBTYWx0ZWRfX9RmYcCue209R
- mW1i2BONPAweRXFx0bcxob9HKqpOROAbHQFdhL8ApN4JxhBnJfmmWhtLii1JeDvLqL8gLA/Avby
- KKyDEZKlL4dKAn8v6jHbQ7NZnoZDf3OCJCyCrOeFF3h5BUjZDKxiE1+SdZ9VKZaJilRuL8V8h7+
- O59Bc6jV1zUPw3OdTessRL9kPESyCDXy9xyWbUXkEOU4TYZStQaVITNScKJq7Z0nw0kHuXj1WFz
- D0puh9nxEqGI6tlrWcjKoGhvmh0WJZeFEEwmCCkpPwdGVNV0r1v0CyxRMueya6b2/YErIGnkOv6
- YiVFCo+QFDmgpovvoqgHbnQoSl1bwdv00FPwmHL2Qop/cSys8g7vi4XPemZVII6/SWCguhJaUbt
- nxS2kbgzmZ41LTbKRFTrj6ls/pGhZ2yYG/16RuMZzE9uw1z7b8lfwOfgR5rKiFYQvK8pkTVcrhi
- DmVkOFB/2r+B5+/GpEw==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjMwMDEzOSBTYWx0ZWRfX9rR25HYmADxN
- CWqy7MmW66XnyXPsfe1gHzDHb4+vwvjnYXepuMuGZNUSdqTMv0aecUfaitq32biCPsr071cb8Jm
- Vx3LT27QwuLUFhQOV+ZL1Q9UV3tmkgs=
-X-Proofpoint-GUID: 0SIOoVwqVZdtBMP2YQQpIxFmi3DQL2AO
-X-Proofpoint-ORIG-GUID: kVLAOIC9FrxUzpURkfNgTt5Dmn0gSRQZ
-X-Authority-Analysis: v=2.4 cv=WZ88rUhX c=1 sm=1 tr=0 ts=6a43d893 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8 a=Pa5pnD676arj_S7OnbYA:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-30_04,2026-06-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0 phishscore=0 clxscore=1015 bulkscore=0
- impostorscore=0 priorityscore=1501 lowpriorityscore=0 suspectscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2606300139
 
-Add a read-only buffer_pools sysfs attribute under the VIO device that
-lists size, buff_size, active, and available for every RX queue and
-pool: runtime per-queue buffer pressure during MQ operation. ethtool -S
-pool%d_* (previous patch) reports queue-0 static probe geometry only;
-sysfs is the right place for dynamic per-queue pool state at scale.
+A tc, xdp, socket_filter or flow_dissector program updating or deleting
+a sockmap deadlocks on stab->lock vs sk_callback_lock and has no reason
+to. Patch 1 disallows it in may_update_sockmap(); patch 2 drops the
+selftests that exercised it.
 
-Signed-off-by: Mingming Cao <mmc@linux.ibm.com>
-Reviewed-by: Dave Marquardt <davemarq@linux.ibm.com>
----
- drivers/net/ethernet/ibm/ibmveth.c | 56 ++++++++++++++++++++++++++++++
- 1 file changed, 56 insertions(+)
+v4:
+ - also drop BPF_PROG_TYPE_SOCKET_FILTER (John Fastabend)
 
-diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-index 4e3f49b6346f..ecc472ee8f71 100644
---- a/drivers/net/ethernet/ibm/ibmveth.c
-+++ b/drivers/net/ethernet/ibm/ibmveth.c
-@@ -2896,6 +2896,52 @@ static const struct net_device_ops ibmveth_netdev_ops = {
- #endif
- };
- 
-+static const struct attribute_group ibmveth_attr_group;
-+
-+static ssize_t buffer_pools_show(struct device *dev,
-+				 struct device_attribute *attr,
-+				 char *buf)
-+{
-+	struct net_device *netdev = dev_get_drvdata(dev);
-+	struct ibmveth_adapter *adapter = netdev_priv(netdev);
-+	int len = 0;
-+	int i, j;
-+
-+	len += scnprintf(buf + len, PAGE_SIZE - len,
-+			 "Queue  Pool  Size  BuffSize  Active  Available\n");
-+	len += scnprintf(buf + len, PAGE_SIZE - len,
-+			 "-----  ----  ----  --------  ------  ---------\n");
-+
-+	for (i = 0; i < adapter->num_rx_queues; i++) {
-+		for (j = 0; j < IBMVETH_NUM_BUFF_POOLS; j++) {
-+			struct ibmveth_buff_pool *pool =
-+				&adapter->rx_buff_pool[i][j];
-+
-+			len += scnprintf(buf + len, PAGE_SIZE - len,
-+					 "%5d  %4d  %4u  %8u  %6d  %9d\n",
-+					 i, j, pool->size, pool->buff_size,
-+					 pool->active,
-+					 atomic_read(&pool->available));
-+
-+			if (len >= PAGE_SIZE - 100)
-+				goto out;
-+		}
-+	}
-+
-+out:
-+	return len;
-+}
-+static DEVICE_ATTR_RO(buffer_pools);
-+
-+static struct attribute *ibmveth_attrs[] = {
-+	&dev_attr_buffer_pools.attr,
-+	NULL,
-+};
-+
-+static const struct attribute_group ibmveth_attr_group = {
-+	.attrs = ibmveth_attrs,
-+};
-+
- static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
- {
- 	int rc, i, mac_len;
-@@ -3056,6 +3102,14 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
- 
- 	netdev_dbg(netdev, "registered\n");
- 
-+	rc = sysfs_create_group(&dev->dev.kobj, &ibmveth_attr_group);
-+	if (rc) {
-+		netdev_err(netdev, "failed to create sysfs attributes rc=%d\n", rc);
-+		unregister_netdev(netdev);
-+		free_netdev(netdev);
-+		return rc;
-+	}
-+
- 	return 0;
- }
- 
-@@ -3067,6 +3121,8 @@ static void ibmveth_remove(struct vio_dev *dev)
- 
- 	cancel_work_sync(&adapter->work);
- 
-+	sysfs_remove_group(&dev->dev.kobj, &ibmveth_attr_group);
-+
- 	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++)
- 		kobject_put(&adapter->rx_buff_pool[0][i].kobj);
- 
+v3:
+ - https://lore.kernel.org/all/20260629172704.1302218-1-rhkrqnwk98@gmail.com/
+
+v2:
+ - https://lore.kernel.org/all/20260620034632.2308-1-rhkrqnwk98@gmail.com/
+
+v1:
+ - https://lore.kernel.org/all/20260616091153.2966617-1-rhkrqnwk98@gmail.com/
+
+Sechang Lim (2):
+  bpf, sockmap: disallow update and delete from tc, xdp, socket_filter
+    and flow_dissector
+  selftests/bpf: drop tc/xdp/flow_dissector/socket_filter sockmap
+    mutation tests
+
+ kernel/bpf/verifier.c                         |  5 --
+ .../selftests/bpf/prog_tests/fexit_bpf2bpf.c  | 13 -----
+ .../selftests/bpf/prog_tests/sockmap_basic.c  | 52 -------------------
+ .../bpf/progs/freplace_cls_redirect.c         | 34 ------------
+ .../selftests/bpf/progs/test_sockmap_update.c | 48 -----------------
+ .../bpf/progs/verifier_sockmap_mutate.c       | 12 ++---
+ 6 files changed, 6 insertions(+), 158 deletions(-)
+ delete mode 100644 tools/testing/selftests/bpf/progs/freplace_cls_redirect.c
+ delete mode 100644 tools/testing/selftests/bpf/progs/test_sockmap_update.c
+
 -- 
-2.39.3 (Apple Git-146)
+2.43.0
 
