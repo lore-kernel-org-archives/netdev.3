@@ -1,217 +1,117 @@
-Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D210426689
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 14:06:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C4D382383
+	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 14:07:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782828398; cv=none; b=s79XAF+f73vUFu96iBIhKP+AW89hIQOSibBCz5mU+6IDzCAZvLEjl7ynNWZCL3tlZY4zORBhnAaY2332g1l57txQ1Fc9wJuhDnh3TkpTKhu77vi9MhozDVQ5ro004/390a+vdOFyW1Q7R7ZBY9XSMkY5ZBZzeTHAKX8fuLDq6mE=
+	t=1782828474; cv=none; b=DggTGhBQDXaUxaLUXiXj150e++GAoCUsltH3d5IVFF9LwnETQg2cFA/VHxV5AO5CCHS+4UXoLT7n4lHL2AlBGJwE3lQVqfdeNmSQgGuL39LEnr3KFe4v4df6w+5X6uyprs71NQupZ6LqCNAS+fdrnspdL3ycQ5SwQvWBmcJBwYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782828398; c=relaxed/simple;
-	bh=Q4SPLV33loiEjhUATj5WSg/i9CaMKzBVi8hMH8x4Eqo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kTy/O8XKAaueejPd83kONMXZbrq+ThyJP4gvtYOOcXwwweJR2Hw9S9YHqCHINGzcj8+t7Obt+UYZzq/yIhoaWoYAqvCfVBmeas9SkB62BfeQjEvC2iGsrrw8lkro47loX5E9W9tsVQQ9JQKsu/vl/Gxgi44iwGONPNwo/+G2IB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=F6hpwTmy; arc=none smtp.client-ip=23.88.38.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
+	s=arc-20240116; t=1782828474; c=relaxed/simple;
+	bh=R6PE3q4l5whDdU7yCMJ15ug5N5A00uM6KUFUVpMb5bM=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OUMSr35MPVTeKsTtqAoxEak6BB3flCJUgdDh082AnHhICaE5UQIo4D3z+yal7gnC5IeVzhP08roMVj4UjMKpjkw4vWloyClk/j1Lpa+9rNSbmEmqlQv9NK/0uyehsase6tUqcnkXe+BV/K6SEZxxtkBOy3xz+hREjcHh1/ftwj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=SLOE4wyY; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="F6hpwTmy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1782828395;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aTEJtpajRVR1xlAcD16Paemh1ljeVO533G4fz7VgnPI=;
-	b=F6hpwTmypsiDwCIokCMHp0WgVCgt864zdfUmB7xYBBrfosdGUyOKAUZ/I4ketNKXquo4lH
-	NadtepDvONS7FQwV8fIpBsmHbKwIqvpn4C1YRIRrQe9LY3YbWGN+tl2Vhi0mgojNCEHGHq
-	uVFKbYcPNKIhFEv4k6PjN4m7YXGkl3+hDsuUS4UDztMCn/vPCqrqOSbiNdoiYr5fR9w72d
-	D5SGaUpnfkD79JDXLV8ivb+zRegiVYW3xe8U1H5NVzSHrgj9+VZP5CH5Qrt5WYAj5GJhxl
-	1Lg1DkF5Prau1Fi9yYyVpjB2Zh4114B9Mi8vZSIOgFTSLKvY0Q88TV9GqkJNQQ==
-From: Simon Wunderlich <sw@simonwunderlich.de>
-To: netdev@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	b.a.t.m.a.n@lists.open-mesh.org,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net-next 15/15] batman-adv: tp_meter: delay allocation of unacked entry
-Date: Tue, 30 Jun 2026 16:06:23 +0200
-Message-ID: <20260630140623.88431-16-sw@simonwunderlich.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260630140623.88431-1-sw@simonwunderlich.de>
-References: <20260630140623.88431-1-sw@simonwunderlich.de>
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="SLOE4wyY"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id A30ED20841;
+	Tue, 30 Jun 2026 16:01:53 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id RQRziuo3PxHb; Tue, 30 Jun 2026 16:01:53 +0200 (CEST)
+Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id 105FA2074F;
+	Tue, 30 Jun 2026 16:01:53 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 105FA2074F
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1782828113;
+	bh=4mju3TDWtg7VRyny+ZF2/UdWSqoec2zEKN+0dwI+wOo=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
+	b=SLOE4wyY9LUURs1q2fkxlgbBPlrpMUgmRegHLT99AgPgTzEODqgJWbpexhIaZXULA
+	 QzutOeuo+Yrx7HaiiwkDFXxFj2VcBe08qs+U+6jNKfNfL1pNpH9CAc77gEel+sSuuQ
+	 QKdeAJa9FYZmiYZsdVGzWJSnPGoiaPSBEmw0crRkkEvWzt5IbGYYyfeuNqysQDHteu
+	 LT/mYcEO2VRmq4d4uC2X8kvFwirOGopV8vGKt9lmM93U6tJhtTDWb8X4MQjQCm5mBP
+	 OZ1K53LurHZJUGZeNMDslmgMQTlnD0Ezkux5TpfarkA6LI4DBAAH/TvP1X1dw/nbik
+	 BKxpFAIWKW2tw==
+Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Tue, 30 Jun
+ 2026 16:01:52 +0200
+Received: (nullmailer pid 1131885 invoked by uid 1000);
+	Tue, 30 Jun 2026 14:01:52 -0000
+Date: Tue, 30 Jun 2026 16:01:52 +0200
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: Petr Wozniak <petr.wozniak@gmail.com>
+CC: <netdev@vger.kernel.org>, <sd@queasysnail.net>,
+	<herbert@gondor.apana.org.au>, <kuba@kernel.org>, <horms@kernel.org>,
+	<pabeni@redhat.com>, <edumazet@google.com>, <davem@davemloft.net>
+Subject: Re: [PATCH net v5 0/2] xfrm: fix async crypto (-EINPROGRESS)
+ handling in validate_xmit_xfrm()
+Message-ID: <akPMUICkNLVwrGPl@secunet.com>
+References: <20260603064659.3867-1-petr.wozniak@gmail.com>
+ <20260621100327.40203-1-petr.wozniak@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260621100327.40203-1-petr.wozniak@gmail.com>
+X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-01.secunet.de
+ (10.32.0.171)
 
-From: Sven Eckelmann <sven@narfation.org>
+On Sun, Jun 21, 2026 at 12:03:25PM +0200, Petr Wozniak wrote:
+> This series fixes how the async crypto path (-EINPROGRESS from ->xmit())
+> is handled in validate_xmit_xfrm() and its callers.
+> 
+> Patch 1 (previously sent on its own, v1-v4) makes validate_xmit_xfrm()
+> return ERR_PTR(-EINPROGRESS) instead of NULL when a packet is stolen by
+> async crypto, so __dev_queue_xmit() can tell it apart from a real drop
+> and stop reporting -ENOMEM on noqueue/bridge interfaces.  v5 also covers
+> the GSO segment loop, as Sabrina pointed out.
+> 
+> Patch 2 fixes a use-after-free found while looking at that GSO loop:
+> validate_xmit_xfrm() unlinks async-stolen segments but never updates the
+> list head ->prev, which validate_xmit_skb_list() later dereferences.
+> 
+> Changes in v5:
+>  - 1/2: also propagate ERR_PTR(-EINPROGRESS) from the GSO segment loop
+>    (the 2nd ->xmit() call); v4 only handled the single-skb path.  Restore
+>    the blank line in validate_xmit_skb_list().  Add the missing
+>    maintainers to Cc. (Sabrina Dubroca)
+>  - 2/2: new patch -- fix the stale skb->prev use-after-free (also flagged
+>    by Sashiko)
+> 
+> Changes in v4:
+>  - Drop bool stolen tracking and the ERR_PTR return in
+>    validate_xmit_skb_list(); use IS_ERR_OR_NULL() so stolen skbs are
+>    silently skipped (Sabrina Dubroca)
+>  - Drop ERR_PTR(-EINPROGRESS) handling in __dev_direct_xmit() (Sabrina Dubroca)
+>  - Move validate_xmit_skb() return-value comment above the function
+>    (Sabrina Dubroca)
+> 
+> Changes in v3:
+>  - validate_xmit_skb_list(): set stolen=true only for -EINPROGRESS
+>    (Sabrina Dubroca)
+> 
+> Changes in v2:
+>  - Reset rc to NET_XMIT_SUCCESS only when PTR_ERR(skb) == -EINPROGRESS
+>    (Sabrina Dubroca)
+> 
+> Petr Wozniak (2):
+>   xfrm: propagate -EINPROGRESS from validate_xmit_xfrm()
+>   xfrm: fix stale skb->prev after async crypto steals a GSO segment
+> 
+>  net/core/dev.c         | 10 ++++++++--
+>  net/xfrm/xfrm_device.c | 12 ++++++++++--
+>  2 files changed, 18 insertions(+), 4 deletions(-)
 
-When batadv_tp_handle_out_of_order() searches the already existing list of
-unacked packets, it can often find an entry to merge with. In this case, it
-would be a waste of time and resources to allocate a batadv_tp_unacked
-which is then immediately freed again.
-
-Instead, search first through the list. Only when no mergeable entry could
-be found, it is necessary to record the place to allocate+store the new
-entry.
-
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
----
- net/batman-adv/tp_meter.c | 88 ++++++++++++++++++---------------------
- 1 file changed, 41 insertions(+), 47 deletions(-)
-
-diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index ffd3171d4b992..00467aa79de9d 100644
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -1417,26 +1417,15 @@ static bool batadv_tp_handle_out_of_order(struct batadv_tp_receiver *tp_vars,
- 					  u32 seqno, u32 payload_len)
- 	__must_hold(&tp_vars->ack_seqno_lock)
- {
--	struct batadv_tp_unacked *un, *new;
-+	struct list_head *pos = &tp_vars->unacked_list;
-+	struct batadv_tp_unacked *new = NULL;
-+	u32 end_seqno = seqno + payload_len;
- 	struct batadv_tp_unacked *safe;
--	bool added = false;
--
--	new = kmalloc_obj(*new, GFP_ATOMIC);
--	if (unlikely(!new))
--		return false;
--
--	new->seqno = seqno;
--	new->len = payload_len;
--
--	/* if the list is empty immediately attach this new object */
--	if (list_empty(&tp_vars->unacked_list)) {
--		list_add(&new->list, &tp_vars->unacked_list);
--		tp_vars->unacked_count++;
--		return true;
--	}
-+	struct batadv_tp_unacked *un;
- 
--	/* otherwise loop over the list and either drop the packet because this
--	 * is a duplicate or store it at the right position.
-+	/* loop over the list to find either an existing entry which the new
-+	 * seqno range can be merged with or the position at which a new entry
-+	 * has to be inserted.
- 	 *
- 	 * The iteration is done in the reverse way because it is likely that
- 	 * the last received packet (the one being processed now) has a bigger
-@@ -1444,7 +1433,7 @@ static bool batadv_tp_handle_out_of_order(struct batadv_tp_receiver *tp_vars,
- 	 */
- 	list_for_each_entry_reverse(un, &tp_vars->unacked_list, list) {
- 		/* look for the right position - an un which is smaller */
--		if (batadv_seq_before(new->seqno, un->seqno))
-+		if (batadv_seq_before(seqno, un->seqno))
- 			continue;
- 
- 		/* smaller/equal seqno was found but they might be directly
-@@ -1452,62 +1441,67 @@ static bool batadv_tp_handle_out_of_order(struct batadv_tp_receiver *tp_vars,
- 		 *
- 		 * It is already known that:
- 		 *
--		 *	un->seqno <= new->seqno
-+		 *	un->seqno <= seqno
- 		 *
- 		 * When establishing that:
- 		 *
--		 *	new->seqno <= un->seqno + un->len
-+		 *	seqno <= un->seqno + un->len
- 		 *
- 		 * Then it is not necessary to add a new entry because the
- 		 * smaller/equal seqno of un might already contain the new
- 		 * received packet or we only add new data directly after
- 		 * the end of un. The latter can be identified using:
- 		 *
--		 *	un->seqno + un->len <= new->seqno + new->len
-+		 *	un->seqno + un->len <= end_seqno
- 		 */
--		if (!batadv_seq_before(un->seqno + un->len, new->seqno)) {
-+		if (!batadv_seq_before(un->seqno + un->len, seqno)) {
- 			/* new data directly after un? */
--			if (!batadv_seq_before(new->seqno + new->len,
--					       un->seqno + un->len))
--				un->len = new->seqno + new->len - un->seqno;
-+			if (!batadv_seq_before(end_seqno, un->seqno + un->len))
-+				un->len = end_seqno - un->seqno;
- 
--			/* un now represents both old un + new */
--			kfree(new);
--			added = true;
--
--			/* un has to be used to check if the gap to the next
--			 * seqno range was closed
-+			/* un now represents both old un + new range and has to
-+			 * be used to check if the gap to the next seqno range
-+			 * was closed
- 			 */
- 			new = un;
--			break;
-+		} else {
-+			/* as soon as an entry having a smaller seqno is found,
-+			 * the new one is attached _after_ it. In this way the
-+			 * list is kept in ascending order
-+			 */
-+			pos = &un->list;
- 		}
- 
--		/* as soon as an entry having a smaller seqno is found, the new
--		 * one is attached _after_ it. In this way the list is kept in
--		 * ascending order
--		 */
--		list_add(&new->list, &un->list);
--		added = true;
--		tp_vars->unacked_count++;
- 		break;
- 	}
- 
--	/* received packet with smallest seqno out of order; add it to front */
--	if (!added) {
--		list_add(&new->list, &tp_vars->unacked_list);
-+	/* no entry to merge with was found; insert a new one after the entry
-+	 * with the next smaller seqno (or at the front of the list when the
-+	 * new seqno is the smallest or the list is empty)
-+	 */
-+	if (!new) {
-+		new = kmalloc_obj(*new, GFP_ATOMIC);
-+		if (unlikely(!new))
-+			return false;
-+
-+		new->seqno = seqno;
-+		new->len = payload_len;
-+
-+		list_add(&new->list, pos);
- 		tp_vars->unacked_count++;
- 	}
- 
- 	/* check if new filled the gap to the next list entries */
- 	un = new;
- 	list_for_each_entry_safe_continue(un, safe, &tp_vars->unacked_list, list) {
--		if (batadv_seq_before(new->seqno + new->len, un->seqno))
-+		if (batadv_seq_before(end_seqno, un->seqno))
- 			break;
- 
- 		/* next entry is overlapping or adjacent - combine both */
--		if (batadv_seq_before(new->seqno + new->len,
--				      un->seqno + un->len))
--			new->len = un->seqno + un->len - new->seqno;
-+		if (batadv_seq_before(end_seqno, un->seqno + un->len)) {
-+			end_seqno = un->seqno + un->len;
-+			new->len = end_seqno - new->seqno;
-+		}
- 
- 		list_del(&un->list);
- 		kfree(un);
--- 
-2.47.3
-
+Series applied, thanks a lot!
