@@ -1,47 +1,46 @@
 Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010066.outbound.protection.outlook.com [52.101.201.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6068A40757B;
-	Tue, 30 Jun 2026 11:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8CA3408617;
+	Tue, 30 Jun 2026 11:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.66
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782820592; cv=fail; b=JsTsi4rnTkTpqrBg6+bPxU2W5yfts2CNUETl4dJId7jXyKOyhYNJukCYLb4Uq7GcmXtYVZ6Nzu0ZR8/7VmHcH4qJ8M6i72TGWP09Rk09/X9tSXrg4uf9ZZHsyXpL1BL2Kq1loGwrOgruSTNWAvHb6EWoHLaYToteTJoiB6TS0zY=
+	t=1782820594; cv=fail; b=IM/iI3hJrCQL4iYaT58jNIU5Gr1w9jjKhXvi8R0pedfpZUmTCl5zX1DEcHuJojEhNhKkF8cqnUur0L+AcrSs8/TRGN6gWoVO+ePQYZnQrb4SsP/rGkBAxBjVfkJ4u2sW/lrvJMXEpdE1B5teHRkM5stB9MLTyU2mUWYf6RF5P+I=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782820592; c=relaxed/simple;
-	bh=v9dxslsTPqb3WtvX0rHFQRbfj3DDkbQiXwf6feW8Nbw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=esTQTalMZmjjNxUolvZ8g+U46CezXyVIUnxUIogksXAJ3qQlmoWYRxQuKGmiiWzoAUYVi+8v0UJlCPjhF46kPZNFP16xKLztmTVxLrcBnef+mIUSmAfjLuRFE33W08M38y8DdAKYiAVJJAA0BAKgLdsTKIHGYovByzIYwq4o6E4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com; spf=pass smtp.mailfrom=altera.com; dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b=TAGk+D/f; arc=fail smtp.client-ip=52.101.201.66
+	s=arc-20240116; t=1782820594; c=relaxed/simple;
+	bh=+4yol1rh02CzC8V5s8NwIRiT+vWQnQMmPgCpJwimOjo=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=lvWBh7cT81phbiDda03AjNd7+SbVtABy+cHnJdelfjqI0i1ReWmJxqYu7Y6vPtOz5/8EuAPVrHdtv57SYPR/G/7Ain1CDiL1+w4yaVKjpvBB22W/KcNtHY/XH1TWAmK+ccnqJsZwXJMemWGnk8gdliNO6liFzDVbX4o8hNMuwA8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com; spf=pass smtp.mailfrom=altera.com; dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b=GPjt22m6; arc=fail smtp.client-ip=52.101.201.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altera.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b="TAGk+D/f"
+	dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b="GPjt22m6"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rklN7kztGFawkgWoy98lpnGtNR51vI3W7CRd5urdGJREWkqW8sFMFnBFH6P5cMrOhbBhCDpOfcAGFKbgW9A9khCGswCb79fHckVgUjihfKRfWbMT7ABlTkVgHdo1ddTF5PuYLinon5cwW4RIRmgfLHNZOUr5G6UfsdcN7LaK647Rvf09jzvzv9lI8XgW8N0tUQ4DZFDf6Z898OA4UlzRCJh+XEQhhKwACSKeZij4xfxH8Tkv2VxTAK3WB7T6NYEdoDNNxPvUwZp+8D7lpkFnxcnjzs7BG+9+4y22rvlh+Yg80j6rwphyzxj9PlpqiHveNSeB8RjWBWaNjx2sTfH5fg==
+ b=c1ffWw5WC7qoHIWMkkrBXIt74cCQHiB0nTcMMfOJrXt+5Ggf9eoL7fDcrLSW7vphxWEDpvPmlKa8ojx80DTgs+GGHCpePSU405cFn0+iRNXOk/9AVzZy/c1Y6MldO6JLKP82SQZ78wD3JoFsIofs4iA/3YNfKXYaTQ7zjq5nmEGI2G0fSOXsu7ZcrjQJF/r27jB4kotgFm+W+LpqhLZXN2b/9aukdQSyMZqDLYxzy81dnaFVhI7Cs+jkNLYIq73XrSS9m0Tr2Jge1bCcuSKHLh8LhvSblewEYqeBGXCvmyi5EkCmqpCz29Njxs+UTTfBTxRKSGjlEWcbQaQYL2xPMA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=flVCSC3XhnE/xZQW47yl0FUFr3syt3vux5Zpr+2qRc8=;
- b=yP+oNdpX1DIySSP8ar3VqfBBwVv5XdrSbjPaIBLY3ACr2j9Sn0YhuCHGFMOLaiUwZeSOvABNA8bbv0H16W7hH+ES/WkkIcW3AD+IF9LlqPnQaJvmOMVzrvl/oSO1mkJaLqhD+wgfXVaOG5NbXyRhPhKTcYdbnPF7YHNFuBgUouDzsX95qKECoNMAWOINbWJX0h2bEKqJvmhX4bjjyygyCdolJ5cmIOqMidpegRXFiU9WJYM/6LA10mx+ICNu6mSef4CsnEctvWhEuSBGiedthSVQQFKnMqdAzNBFrHejSaI82Nuwo9cqb+2M16YCjd6PxOAzS7LxWQs/P4xmgSgPCw==
+ bh=3hYB7yA8RpTvdbuW0obSHGKU8LebNS+LMT7nAF6kC6g=;
+ b=scXNY/ao2eSSknThsrOkI+5pSqlUt3mdSekvLr08fzE8zPcubNe3LzOziN9qQFwBkZDKNrsgnMldmQXdaeVFQVMAfxwyB9PToMYzTzI/0j7Kgqun9FS9R42yAmOEdTktG5BdzwMBonr3Q2nczNgKDUkVdKhD2oREstZmwiHaXJxuMV+dreYL2aVz/6I5g91IJZt5CW1ve+UJfFuzBTV/46gRhPJH0ERg80ZR6IR+myBqD9XQ9rECKeHSj9ep6L0mZjeMMj2jBEB0aRUchka1BV9IpbPPUEq26mmnLbDmHGLKR5fB9MyxrzdtaKGOhQyq1kTOn+i/PTYMcOzSUaOcOA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=altera.com; dmarc=pass action=none header.from=altera.com;
  dkim=pass header.d=altera.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=altera.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=flVCSC3XhnE/xZQW47yl0FUFr3syt3vux5Zpr+2qRc8=;
- b=TAGk+D/f4DT4ilVQgUdZKCKlNHkPyCgcWSh4zsgHk9ExHY+nhLRQwB8AP7ypR7r0ygHS6z2ASKL3eTuqa/KCS7ksMIMShOFOwq/N6Sys9wkhU6CxMG6yNh4xl71+3d2XOM1TzezDcwp2wLD+GkN1rmZolUUsHGAJyctkLTr1L9ajPIuhht4DZosCb0NQ+jMsGRWF5Wg3gvCehCnCcbFnQ6AtEY352vjyrZHDYOFqp7CXQmr62kR0vUQRcU86YQsoApav4yIKYKWBMz1RERebkA1WCjNwOmQ5K1lEaRf3rwE6vmP4tqsX6NGEU3uRGKtx8ClDi4yTqHx1L9YWNy5J8A==
+ bh=3hYB7yA8RpTvdbuW0obSHGKU8LebNS+LMT7nAF6kC6g=;
+ b=GPjt22m6pz15bAW8Btl54urZbT5uYyZ3Io3GGjY+22TkksM41nK96Uk3eXghTAYLufvFr+EoR7KIav6KuSUb/d3gEH4AG8tc3Px7wmEQx2ZFXhMvlkriXoJ3EffbCd2IPr+Vlr5DDs/lJx3FMsLsAR2YSkWF7tove7ZLIqmU80hDWzliSuvfEtPYp67sSruPVAa/6JW6Zq4kxqiLv0SOdO1wul9J6zo/FwH65JFzZ+SayrWPHvhKOqRvFgSwE1c4UjBXpOoceKthONPg2rIk+5y0dZj/JdWSHMWTVCuqPspnGKYjCe0hoAco44bVCoEq7O1HTI4TxjQD/fxHqgYRow==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=altera.com;
 Received: from SJ0PR03MB6964.namprd03.prod.outlook.com (2603:10b6:a03:432::18)
  by BY5PR03MB4919.namprd03.prod.outlook.com (2603:10b6:a03:1ef::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Tue, 30 Jun
- 2026 11:56:26 +0000
+ 2026 11:56:25 +0000
 Received: from SJ0PR03MB6964.namprd03.prod.outlook.com
  ([fe80::b965:bfa8:58fb:e775]) by SJ0PR03MB6964.namprd03.prod.outlook.com
  ([fe80::b965:bfa8:58fb:e775%4]) with mapi id 15.21.0159.018; Tue, 30 Jun 2026
- 11:56:26 +0000
+ 11:56:24 +0000
 From: muhammad.nazim.amirul.nazle.asmade@altera.com
 To: netdev@vger.kernel.org
 Cc: andrew+netdev@lunn.ch,
@@ -53,12 +52,10 @@ Cc: andrew+netdev@lunn.ch,
 	maxime.chevallier@bootlin.com,
 	Jose.Abreu@synopsys.com,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 3/3] net: stmmac: reset residual action in L3L4 filters on delete
-Date: Tue, 30 Jun 2026 04:56:22 -0700
-Message-ID: <20260630115622.9426-4-muhammad.nazim.amirul.nazle.asmade@altera.com>
+Subject: [PATCH v3 0/3] net: stmmac: L3/L4 filter bug fixes
+Date: Tue, 30 Jun 2026 04:56:19 -0700
+Message-ID: <20260630115622.9426-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
 X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20260630115622.9426-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
-References: <20260630115622.9426-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: SJ0P220CA0012.NAMP220.PROD.OUTLOOK.COM
@@ -72,89 +69,108 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: SJ0PR03MB6964:EE_|BY5PR03MB4919:EE_
-X-MS-Office365-Filtering-Correlation-Id: eb0e00b4-f1eb-4436-a35d-08ded69e9d05
+X-MS-Office365-Filtering-Correlation-Id: 501424a5-a3f0-495e-0f88-08ded69e9c10
 X-MS-Exchange-AtpMessageProperties: SA
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|376014|7416014|1800799024|22082099003|18002099003|55112099003|56012099006|11063799006|6133799003;
+	BCL:0;ARA:13230040|366016|23010399003|376014|7416014|1800799024|18002099003|55112099003|56012099006|3023799007|11063799006|6133799003;
 X-Microsoft-Antispam-Message-Info:
-	Nl5bN09h0QD4lFxTA9Cs/+my1+DANRi+Wg1HpXtKYIWcUs5keG5Mi9lmWBcNVYRZO7uTFDrxpBtw7aQzDkmc9VHLwE/M35aQQVT1YsAMYbNUcgIQelCuczKToSH/bWh2J1ijIt3KhQKDB9ZJZdnyXoJrem4CBBmZSt0q/V22Q0ORq8TpGoO/Bfdc/gc4LDgGLgHb8i3bCjuJBNHIfKNOxALg/4MuTxWYXOkVX6OPUdZHqiMFxRAMmTkTYOJXw++kDITiXUNX6WMpfR4MS/a3/0unvOiD88NE1lZCTc2cyetATFIq3LGfZITIBQGH2hOvBz8tRpGz1xIPOnvp/CJSj9IO9pQBwOZ7Nvw7g/4CnBxUNTeFThanVtks52oH8+CAvvLH/1DH6oPpKpKi0wLFNIxr2ML0vE96lxmQqxwycdEk75IzOxIT+KC08P6MFQWqjs6AI8AWhcHvUT22V2K7ufGKlsMuIlQvS8tIXcCFsBje7l7JJmwva57wiW60DM32X52pGvC/2Flfgm1ISONGpSGjftJ85IBJmyr1nrUCBIBLFuJ3Aq4X82w9IAjRvwwBkxD94bOaRNCdVtATJmuzB5KpJXrZRrZs5V2siB6wPF1XIUOU51wVfM23eEAnv4zuZdvmQUcOW6t3XsWuJ4ZUSpP2QgvJBQMcUXrJ/fYsREI=
+	X/NJHXGxlW0S9soPPo1KeLuelvMD3Pb5FqNOiLgdMSlo/zUY5aiktxIS0S/OXI/xngaqmrrs/oHQhtYn9XfFn4372YcrWHHFkjnkDs+Lt0gN2oWk9M+hbRWhyQ5IVejOiLAw/LgU+/UXPsEecP/7mGhpy54arlUcaFF2Qihs9w+Zdn0wTY02tbWak+P/LLV7Bn8EhX9WSZD4YB5ntAzO3meGubGCKCArompSga42EbzicxooN8LEpOBIH82ephevCqsmy0x7RHECtG6ZbiKsABWZR9TNW9U1iHj4flduI5WC3K4fPM2IRMbS6n/uJQ9ezMf0I5e2uLThiPd6l9G0lxC15E9tUizYb8mkvgne9insQq1ZtxqGVUj0xywxBkXkkPViNf3VeJiu7UsDG+5boG6vrK0V9MlXwO3O7WdvSNj3d0gaGlTAXxQHNLndVuJlBuSLDNpHL738lXdlJZZjVwCMzwFlU1M+slw9xBp06bNPplA7nZNT8+OSMSh1JFZVx9LpvTWpp3Tlni8tiyHhhqjB2AVmTlGevw0454WuUYSI3Fkn3PaP0KIOHCmt4/1wybNsnm996ZZnH9Ss4ARfsUfuFl+TlkEQVbn/CvDjnqvLs4s6Jy2PnYa11f7Ooe4a0kJ+lykqmyZ7aTbi6HrdenO1fwfBmahYN6DuALPTrx4=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR03MB6964.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(7416014)(1800799024)(22082099003)(18002099003)(55112099003)(56012099006)(11063799006)(6133799003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR03MB6964.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(7416014)(1800799024)(18002099003)(55112099003)(56012099006)(3023799007)(11063799006)(6133799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?UBUTibrsIYrNLYhsK+NUHKkz/O4VvenJrjo1f/QMOl0mV6BjJ0mUn3cgmTw9?=
- =?us-ascii?Q?qnYohMPSbMaxo7yZLCVmdnLftd9aLNiDZ/WNvQ3iJd8iIL2ISf/00bYKNDff?=
- =?us-ascii?Q?U9Xp5zshmCSRzTauoWWAMzb09Tj210Jqd6SvJjbPwaiYwsOsnYE1LaD8ivAi?=
- =?us-ascii?Q?pm0nMZZZr/ZrqHYwJct6qDh0MuYESoxIBffqmj7WT23ILE3D79PUefCbExxO?=
- =?us-ascii?Q?jKEu6zrWyS1930SUBD75lIbnqdiBY7x/JdqDSBXvsz42hww2ihisYGllDwNV?=
- =?us-ascii?Q?Hbf0jHt4SmXxiPgYltiy3TpTZJQYuifdcpplpY1hM5/r5UKi+gqbmja1mASe?=
- =?us-ascii?Q?pj5wCn0chSzFZhSR5EhmBUiPc0T8of4LvgEq2Cud7QS7pjVr/UVxCSQgboz8?=
- =?us-ascii?Q?8zNgYiI37PND3I4MQr+qJ2fIjKOKAWlIFNBtqhtQ/m1jTst0D23lY2tpxBwc?=
- =?us-ascii?Q?r22QSrunn/I6pzc+fIhYSOHe7FFLjvbDIAdyHKVC6qoXDQ62g3/dpzpAavrB?=
- =?us-ascii?Q?7u1TOvTPhLxgnwDrW5F1SfktuhNYLkOvL4nzkP4fc6rs5L1S74ZdGKgSNOJw?=
- =?us-ascii?Q?DfJ+rgvBDL4hbLq76xKr2ItXgMMcBeLbkYcRHNNOUqF7eI1rj0Pv3xM2V71E?=
- =?us-ascii?Q?sm5Maa1FFna1PG7mNdh/wieL/80zjM3VZPH/bOBL4LGKPjaIbBVHYnTCJsNL?=
- =?us-ascii?Q?ko4ya9M8zHrbrPaXHv7jcGkuiqsu/qhTXEvfJWvky6xmHC+masMGLLeqosAv?=
- =?us-ascii?Q?Hl1i008gKLrjBMADKOP897FCziUpoMzLaLjRszb2MgeIj7QmJKcESNGHRmp7?=
- =?us-ascii?Q?CAIvseWMrlG2pIOb9+5PG0/iWHZ0vgkCjbPtOHtbrS8/SYj3Db7JOUXCO//L?=
- =?us-ascii?Q?MO1hvxkG6uocvCQqRKyjT0enLxf/Ixgl2ojDem6h7+YWv0LUO0703O25m3nP?=
- =?us-ascii?Q?H1CljwrccEFanASnZAxCi4CIm4FLpvMWoYbno/t1j3qFAmFtYoMxcGdWkNXK?=
- =?us-ascii?Q?Pp7pHTvuzbB7csc7F82oYtCmNtp0d5zUijB5eeTOlR2IJNpB3nekUXNasRMQ?=
- =?us-ascii?Q?wWQLSTdieI5ycVeqeMcI3OY8ZaXWwu5sZkNlOudXLp4lQISLe2+dJOcxWYZh?=
- =?us-ascii?Q?J+5B8kdY8bHjkaxQbzhVlDH0j5qANyjSvNXBHoSdS9EQ7E/mAlyfNkkXLuQ1?=
- =?us-ascii?Q?AhepSdhwSov5xaSjpqINQdRdatJbVZRT6rt/wcXcs05U4uTZgerBunzRl5kg?=
- =?us-ascii?Q?agPIavAnX2Lp7nsxQ1YwXQfUyjOG9V9EU8ral+AgfoXlmWJXGsBZaCjcH+1G?=
- =?us-ascii?Q?uKhL52dVvTN8LmlRudEr4xC8TOSUavuuuSFleJtnkZaUTPZw8RqmTczZkI1d?=
- =?us-ascii?Q?qRTTNpws90QMD2bQZKeaicztiocCyLBPgX9F0pfJH8jMmKK6eEEMd+d9hbfg?=
- =?us-ascii?Q?9+p3O5LAXkCysQuCfrNCRhs7rZwaPapa/iftk7On86lEShnkaF6NNcRJcpHs?=
- =?us-ascii?Q?3fEtJ0Iv8WrMnVOoPgykZ89azW7ghvVzC/Uo856A9v3XjDez48v9IwP5c+qJ?=
- =?us-ascii?Q?fsYqvANiZSTuSWLcXO9tQycENZgPkaRaOIoUqCuFoJi0IIZ3qe5bfSrXUd7v?=
- =?us-ascii?Q?/REUHC3wV6h6/0jB8YNu3RvYP8wqNOokUccDznRfGvxVD5CeoPXNz1o/92FN?=
- =?us-ascii?Q?8qGOaYVd5BQOxyNE5xP3E/3BFhcPMWyquOfN3KVrKNbeMaTBKsZ26t1Ndc0b?=
- =?us-ascii?Q?PJj7EY7lMKC9Z7zDKL/fLcwUUC0w6L+5VFMHDsJ6FYxBjX+eagmcLW2PXs9R?=
-X-MS-Exchange-AntiSpam-MessageData-1: pMF6TwFKvjqkcw==
+	=?us-ascii?Q?iYli8k2uY26mNCiA45uQo0cw9sufFlLByBv5P7vv7NIVFkqzQhlo56DOjfyX?=
+ =?us-ascii?Q?R4JPqLsSXEt9eCksY2DL+UI2Rs1VPWAQBmzGbMwa2my9XEvvNAhaPVXMn338?=
+ =?us-ascii?Q?zO0g8f1ZIX8aP9Nr0oyU18KTB8lTDfydejv/msBZmiu1b5h83fY60UJ+Q2ol?=
+ =?us-ascii?Q?hU/3jcnSibfUZG8v4JuC6CsYIBkXJFQskfA9eNIMialwJQz8A8lcsNiZ+n+n?=
+ =?us-ascii?Q?IDwfvPEouwMgG3pHyBzoP1F9zvMZ9P2weuynh9jlktDnmgltWb+2qesrhrak?=
+ =?us-ascii?Q?h/EYX3sWbcT8I/4d7fZ4vlbMR4aJmtqbh38GY+XIG0EN7sE07AwwsC8+XI69?=
+ =?us-ascii?Q?nuF8q+uRInd4Wzg87u359604LmnjH12QW3f6mynFtOeQMbTbQ+SwkVxAlO37?=
+ =?us-ascii?Q?1qC1rUI/wohdMN6B6nBc3O0v9kGm9dTW7Piu1xz6trVGnnlxvZ4vz1/ITh5T?=
+ =?us-ascii?Q?UpV0E5JC7Pz5BPZUw7IzVlvA4kTngXINq4o46qrQDeawgX/FVn9fei5eLhe2?=
+ =?us-ascii?Q?K5iXUBRsjbPvqqlfcjLuZsVAf6B0H2LSmp7vBzz6oztGD5GRToqdlvX5ir3X?=
+ =?us-ascii?Q?NbhUqB0focKNuv42B+B+qTNfuXLN0o/wddQ4ZZC+6PjwdptX8wIRxGA9wzib?=
+ =?us-ascii?Q?eJWhAxI3ONBkSFVqtXooC2PsUtY2ay/34pyfH3iicoOVgj2TzOPKMihceK0K?=
+ =?us-ascii?Q?KfbviZrJDIzZbgyzN70+Rd5W+/T5ZPIJ3b3P95WeNOeiJePgGdBMMSV7+l7Y?=
+ =?us-ascii?Q?VFSC5YjrQPDH93veziz7KSSm30avTYjC2d3v3JkBh2gXdzXN+R8Hh88QzsVj?=
+ =?us-ascii?Q?3n1YyFltZqqA4yxVyChbysJLAkcSg2HUOQIYgZxgPmqegLqri6kF/U+wopjo?=
+ =?us-ascii?Q?nr74tc/Ix0mGOgJasFghNfcq/ble7k1J9OCmVamOiQS93n1qsAKM+tJNgIUH?=
+ =?us-ascii?Q?pNs30gr4hRC7bEPd8wRZA+CWJFfULiulGSZj4l3RNPp/NYAtXwwvEGNtpRe0?=
+ =?us-ascii?Q?sP3798xHwLfBT8d9iRdkeNsaG20K4Vzk/SPKL9MTXZEHAKjwqetlT+NCJFHF?=
+ =?us-ascii?Q?TIdQxUinwq33JCE3QGxU1+si5rF0IIv/HS2+ybWNXeZ/NfAQSJvccbSKqAMp?=
+ =?us-ascii?Q?yUlsqa5mOZgC2hnT+thY9dd/5t47F2CtodWNKXvVw/9/Qt6pIuLdK9/9bGMO?=
+ =?us-ascii?Q?kZ0YvoaFNd1G3BmusMHq1QT86Wh0dZ80vUl86gfM/0mhlHy5fV6yJvXBGHeU?=
+ =?us-ascii?Q?ZcE1SHkcqNWgmXZHCSyJgxSrw0azpoo7rY+6Y7xAoZq/202SZRLW+97+q/Ed?=
+ =?us-ascii?Q?KVfAc37fd8LBbwIfKvW4I2oH0CS3zd9SFmJtelDC00vpBxJw7aiz1pYHmqTz?=
+ =?us-ascii?Q?3Mku011IGphc4b04ydsyDga0f5MKGixDiutrYY7JC3kqMbbX4kwtSblmSomE?=
+ =?us-ascii?Q?9TXk0tBerCItv5H1hvan0L+9/vPAKqJO7jD3e+zGB2WSXlUBG6WQ0nl6nFLX?=
+ =?us-ascii?Q?RB/iBBJCHQtdVWmFIr8/ORppLXWIfndmVRNiySZROrA2BifibzJFi5aurqeB?=
+ =?us-ascii?Q?aQmjXd2RtJApdwl7hlUXGMJtdHhyE+lHdkno9gpzcKm/K8EH5wlaqdMGieME?=
+ =?us-ascii?Q?RqXi8zj5d6fufgTVDMQ+V2xI8LQZ/bZk43Hu/BCOdNXpy8V5iUH0G568+bg3?=
+ =?us-ascii?Q?N75bjwLgdI1X5ROBnqCtLONGfuqLzXJvVrIAU2St3ejs3ViLvhiaXfVUcucU?=
+ =?us-ascii?Q?QE5XJ+Nt04wc9pACRmx6oaWg5pM5oOVKBI3C+S0j9hNXzOE+L92c7BfvDtXL?=
+X-MS-Exchange-AntiSpam-MessageData-1: fPCj7T0hSe43kg==
 X-OriginatorOrg: altera.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: eb0e00b4-f1eb-4436-a35d-08ded69e9d05
+X-MS-Exchange-CrossTenant-Network-Message-Id: 501424a5-a3f0-495e-0f88-08ded69e9c10
 X-MS-Exchange-CrossTenant-AuthSource: SJ0PR03MB6964.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2026 11:56:26.2351
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2026 11:56:24.7025
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: fbd72e03-d4a5-4110-adce-614d51f2077a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4jrNBFx63vdQXB7qPjH3iqGPYoA1t+v3XA4TP3HfU7hbCDePaILKYGtu5ELH5Iq37v6nNe3d09YA8V/iNwy4BCE2k5kPEzdvUeDYU0ioK3/su8d6wdVTN0ijxe7oVcc3faZypmOs8Q0JpwgGe5Zclw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: qNm2a6FPNcVfZoqqgsrCk+1Fi7qRGwWvYaiSqcudDMcS8DuKp6fIulH9C2a/j54j6Gu/9rsSVN7P2o4Ox7ZT0cNYUK1nlwBF+DEhcrdlo2q/VfHL6/HD5TrztT6fnXLEDVJSbQ4KEIN2xQW3gQKlAg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR03MB4919
 
 From: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
 
-When deleting an L3/L4 flower filter entry, the action field is not
-reset. If a filter was previously configured with a drop action, that
-action may persist and affect subsequent filter configurations
-unintentionally.
+This series fixes three bugs in the stmmac L3/L4 TC flower filter
+implementation for the XGMAC2 core. All three patches target net.
 
-Clear the action field when the filter entry is deleted.
+The L3/L4 filter match count statistics patch (originally patch 4/4)
+has been split out and will be sent separately against net-next per
+Andrew Lunn's review of v1.
 
-Fixes: 425eabddaf0f ("net: stmmac: Implement L3/L4 Filters using TC Flower")
-Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
-Signed-off-by: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
----
- drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c | 1 +
- 1 file changed, 1 insertion(+)
+Patch 1 fixes a register corruption bug in the L4 filter port configuration.
+The XGMAC_L4_ADDR register holds both source and destination port match
+values in a single register. The original code overwrites the entire register
+when setting either field, silently erasing the other. This is fixed by
+using a read-modify-write sequence.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-index 869f84756ca5..4f9758eeb86f 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-@@ -653,6 +653,7 @@ static int tc_del_flow(struct stmmac_priv *priv,
- 	entry->in_use = false;
- 	entry->cookie = 0;
- 	entry->is_l4 = false;
-+	entry->action = 0;
- 	return ret;
- }
- 
+Patch 2 fixes the basic flow match parser to properly reject unsupported
+offload requests with -EOPNOTSUPP instead of silently accepting them.
+Unsupported cases include partial protocol masks, non-IPv4 network proto,
+and non-TCP/UDP transport proto. Extack messages are now included so users
+know exactly which part of the match is unsupported. The -EOPNOTSUPP is
+also now returned directly instead of using break, which was silently
+discarding the error on FLOW_CLS_REPLACE operations.
+
+Patch 3 fixes a stale action bug on filter deletion. When a filter entry
+with a drop action is deleted, the action field was not reset, causing
+it to persist and potentially affect subsequent filter configurations.
+
+All three patches fix the original L3/L4 filter implementation introduced in
+425eabddaf0f ("net: stmmac: Implement L3/L4 Filters using TC Flower").
+
+Changes in v3:
+- Patch 2: add extack messages to each -EOPNOTSUPP return (Jakub Kicinski)
+- Patch 2: return -EOPNOTSUPP directly instead of break to avoid silently
+  reporting success on unsupported FLOW_CLS_REPLACE (Sashiko review)
+
+Changes in v2:
+- Split patch 4/4 (ethtool stats) out to net-next per Andrew Lunn's review
+
+Nazim Amirul (3):
+  net: stmmac: xgmac: fix l4 filter port overwrite on register update
+  net: stmmac: fix l3l4 filter rejecting unsupported offload requests
+  net: stmmac: reset residual action in L3L4 filters on delete
+
+ .../ethernet/stmicro/stmmac/dwxgmac2_core.c   | 28 +++++++++++--------
+ .../net/ethernet/stmicro/stmmac/stmmac_tc.c   | 35 +++++++++++++++++++
+ 2 files changed, 49 insertions(+), 12 deletions(-)
+
 -- 
 2.43.7
 
