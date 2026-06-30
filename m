@@ -1,70 +1,93 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3791743DA25
-	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 14:54:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 231003D0932
+	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 14:54:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782831271; cv=none; b=B3+TfTfiPpsYJgEMHMBHF4gChtcewSNhH8XmPcAKfh0/NyAviugrfvs5+D3cVCuj7d87JTnDIMk5q1qTImvlaqpYl+8xPyoR2iPNDgJyQTiJUueymR7RxROiWiXdY1dzqtj25Y+WqfDjvcD9s0Vvrhz5GrFqx2WDJlv0HwwZ1rY=
+	t=1782831272; cv=none; b=nJbP028F1xU3g6CVGZ3I/ddEf7Y2k2r+1mqNu65BK6KkIj4705fIDcDB+gkTEoG+c8x31QDqd64huMiSqCyM13SMQON1i7qRNApIt3HJnNqC5E+DArMypo84KpvoccjCITRHj5Uc3s3Dx/2DSgPOe5l3PWjnA6i2FaNQbA10cYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782831271; c=relaxed/simple;
-	bh=+0qL4Nq5XDgLiyYoRDkp7UFQ3SNvan6mgj0/ffp++aA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=K9pSSxFiZch6/F7B9IKxWPvnQXW+4HIZmf7FdhFvWSvCfqrd1XvzxfDYTXXKt2oQovPqrS58wW97zEYLAXjkmAPEAmXSmnK6lR9rFXs2ZQQ3Oe6OSd8sS6HIDpb7oziAMPuQt4154MFdzO9HbLHT7tmN0eZrlG+5FAeMAtMzNq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=GFXfOUZu; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1782831272; c=relaxed/simple;
+	bh=pl4s/6iqG4iSWxDnqowahuLLtVqCMT3nY7wajXCTXiA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=SsOF0/u7qi3/6ySmhPKy5xpwlC1IpqWiBWFiwYSxJIm94Fcn6L33gwDMWLF7LR7VXEydRW2u4CsX0LGzSBNjGThNbd/sepjZj2KEulZj/GpQOzD3nyviO7vcoPf+Np5v2HA2j/suVZNY9FNClKh9w+SAZPrmjoVdeJZiQZe8Gzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=o6hsTLBS; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="GFXfOUZu"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65UEIRb52171487;
-	Tue, 30 Jun 2026 14:54:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=eth5XrNWWBh4tENkm
-	fKvSNGeeLnYMF2x3/+7Xl0TsYk=; b=GFXfOUZu/Hoy19eUmg1wq/TLe5igcwiJR
-	wp0rlXVCxso7GcPFG+1mtdb4NvBu0u4dfEvl5YqutJuBXqM9zmymVhQMBBnH3oRu
-	tkWICx3M2MqvO/JkkT089bHJoAs4Nl+rKIpsdUdTivAKrXB1EyApL/73Hz8Dmhzx
-	ftc4V0hhCmnIT3j580Bf6mlNb6LwWz0EPdMZHf9zEpznHZbwikdz2MfM4taK7JEA
-	MNBWECnr8hqqt1qYMHNZE6EoAnhpq0Fk7z8cqqENv6Lc05C85B7jmRWcoJi9vOS0
-	HCOzLh6GJNokMBP9TBX82jwDIYml/t9yalOxOi/dWML89QUXHHkuQ==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f26q9y5bj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jun 2026 14:54:16 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65UEnqTG025898;
-	Tue, 30 Jun 2026 14:54:15 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4f2u2gaku5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jun 2026 14:54:15 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65UEsDw534079362
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 30 Jun 2026 14:54:13 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B9D155805A;
-	Tue, 30 Jun 2026 14:54:13 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6E11E5805D;
-	Tue, 30 Jun 2026 14:54:12 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.61.117.151])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 30 Jun 2026 14:54:12 +0000 (GMT)
-From: Mingming Cao <mmc@linux.ibm.com>
-To: netdev@vger.kernel.org
-Cc: horms@kernel.org, bjking1@linux.ibm.com, haren@linux.ibm.com,
-        ricklind@linux.ibm.com, mmc@linux.ibm.com, kuba@kernel.org,
-        edumazet@google.com, pabeni@redhat.com, linuxppc-dev@lists.ozlabs.org,
-        maddy@linux.ibm.com, mpe@ellerman.id.au,
-        Dave Marquardt <davemarq@linux.ibm.com>
-Subject: [PATCH v1 16/18] ibmveth: Implement incremental MQ RX queue resize
-Date: Tue, 30 Jun 2026 07:53:23 -0700
-Message-Id: <f2aa676604b63b7e2c4797da911e9bc8dc2e83ab.1782758799.git.mmc@linux.ibm.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <cover.1782758799.git.mmc@linux.ibm.com>
-References: <cover.1782758799.git.mmc@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="o6hsTLBS"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-37f72212544so4358801a91.0
+        for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 07:54:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782831270; x=1783436070; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ggz9EBjbp7saeRSZLMYqE+cKP+mv7VKgG7WqG3xg4y4=;
+        b=o6hsTLBSx4Kr7qQlWoowecnZW6X34nK5jfp9LxOj2H9xf/5ikM9Ck4wytu0PbO368G
+         nEvftZ+DcoZmYuPU0Vw6S3JSUz9FhEQ/+FxIVJJtGyyeWR+a2SisTQhar99oqDBhPTw0
+         w/RTr/Wt70COEN0raSChw0gRDXFPp5X/WUE+I8lH7bL+Zdwzk+fbo+1eTYO6N2dKrjPz
+         6Yk1iKbQWOaEB2Tmniea0LPJkgZmM4XEXNTdZ87Ds8CQCjU1sieT6s+3x1VI1HNd5SLI
+         xJDdaRv9unuEoXXrNKB7zMhVZDLwlbWVqfkLq833AmNo2tKGkKgNiRpv56RlUUimva2T
+         UbXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782831270; x=1783436070;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Ggz9EBjbp7saeRSZLMYqE+cKP+mv7VKgG7WqG3xg4y4=;
+        b=r8GvdaCbVg29wP0DDeB3rgIIvOdpZ61gyQhpoY0UUM24sm7+UROVE//QACpnRkDQbU
+         tN82Fxc2rPP1lROPZDhDRNSj4GnDpDkVaXQmmNlNsXuz4mbtjzTTdo/5DBUDhjVbAD0W
+         VMDSNtRU+R2i4QPnlUcwWR/6JBj90QlbQFAYcq1pmbk7h9FBYlbDtOOolmJfl6bA6BsT
+         xdKLbSvwa7my2OfTO9MynE3ZSPm+yai3W2DAUjmKfsc/7enoh/+RErrBJ36e3fKrJsWt
+         fBmYVc9f1sPtJyIOCpL39S7fLYgdo4WPIUaZf0CJ3jcRY9/dnGO4dxQFhegxrVKwWwEf
+         8WZQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqKfmjS0PpqhCxIfQ7B7QZxES3kccEiTKV7s0m+JylU/CnQXcVhidurO1ib36ucZDphwCcK1dE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxy57KbaNmHyFa+hKjAnhHx1wI5H07CpchAwH4kL3EiwjjkqjnM
+	/fUZ43IUGeP6fzxIj75TCOp74Alp5DQihfEH//6UpEqmg9vCYsXWwcYj
+X-Gm-Gg: AfdE7cniVOD+PadMZ1499mkmNBH2iXvgqtmOix+CilSeQwAFP9z054aKZcXOcR/y6yn
+	UjD8uhAeQ2iPqYW21Y84QtBt68dvqv0s6aN4jKrZPkHMJ56Hn2o/7A+oe8pq9uiB9IiPEdiyJY3
+	HfFIQw8SW/2+amxQMVjXVEndc3vYUf20pC29SLqOJvFrGKr3QrTKankVZOCr1u4ash06KeWOWFl
+	IUzIc3x/KrkpRWyijvBvUQEnWNXvw7tPbrcr7ME4QaTAud+AFG4QEccBLa4UeR3AMnLPXOFo/iQ
+	IKu5uul6kgTwqji40c0rEQuhaTKTv87+HambGeJHoSz0KVoQz3ryJfCqFh2oLVKe+ZOoXhwvyYt
+	6XyGNFicYRVW1yv4pN7G8itMgQV+wAqIbgG0NtF13c7ZHB8Lsqfbg6wYaZU5PTxr2KPWp5aZZpb
+	mVrqMTiCLD7+kwtf14ySjxPti6hOBfSFUQ/DR3EK1gJaXplOkH+XI=
+X-Received: by 2002:a17:90b:3dce:b0:37f:9ce1:cdb1 with SMTP id 98e67ed59e1d1-3808c1035e3mr705579a91.31.1782831270257;
+        Tue, 30 Jun 2026 07:54:30 -0700 (PDT)
+Received: from cps-manycore-1.. ([147.46.174.222])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38095b684basm20122a91.1.2026.06.30.07.54.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jun 2026 07:54:29 -0700 (PDT)
+From: Sechang Lim <rhkrqnwk98@gmail.com>
+To: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Shuah Khan <shuah@kernel.org>
+Cc: Martin KaFai Lau <martin.lau@linux.dev>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Varun R Mallya <varunrmallya@gmail.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH bpf-next v4 1/2] bpf, sockmap: disallow update and delete from tc, xdp, socket_filter and flow_dissector
+Date: Tue, 30 Jun 2026 14:54:05 +0000
+Message-ID: <20260630145410.3648099-2-rhkrqnwk98@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260630145410.3648099-1-rhkrqnwk98@gmail.com>
+References: <20260630145410.3648099-1-rhkrqnwk98@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -72,286 +95,85 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjMwMDEzOSBTYWx0ZWRfX/5mv07b53fb1
- lKtfoxOWdI6s8iI3otUtjFpMUVgy/Xo121SAmmzj8nBjFBQndqP+fAhpS/MqwfD/yNpfJRrSUU5
- QizwR7T2kGBJ9kQuzb2GZKwO860SYfgN0fDHkgj15f/qjyL+NdAE5muRZtUVIC0dE0p7ekF+9vW
- Z3+4XnnLpBcMs7tbr9ltUqea4LhjZ/ujLEOhj2n42oboN91xlYxRiyg6DI8sokuey3fiNw3yIpI
- QPCQXXl9O5+3E5ZTCaA5S6IDFz7Kwk9NvjjIZ/dSd2IO+I5w0sahftYMVEucfdhewQUubSjmGJa
- eb+XzAO4ByZ3zgfVK8xCS61DefARCT2bYUQ+hxqelYCnGmhD1PeqlDBy5yEa91H7wxdgsvXE8XW
- nvzSmrUe2aHSwRgt1mJ10UXPF4g3/DS99JHjQVr07RprxuXbTkVzjumA5fev+XZk0acErl30BHR
- th2oqHmk389r+iPHtlA==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjMwMDEzOSBTYWx0ZWRfX5SkQuhCfGZC1
- Aj9sDy638oXZrgIZfnwjgDwTk5/J+ciHdaZlph+Y+eDj5n34vfWK/jboYli2eZz+xCY6zJyvJ/c
- IrcXj5IJwvbXSixvZWM5GnIJRZAo+rg=
-X-Proofpoint-GUID: QvBD2HiIMFNXtVuMOQPXz5jBBI5CrObc
-X-Proofpoint-ORIG-GUID: ih4IrxeHx9hx8a3AWX_mRaavV7LeOBSg
-X-Authority-Analysis: v=2.4 cv=WZ88rUhX c=1 sm=1 tr=0 ts=6a43d898 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8 a=l_etWYYMc1M-NAxKRdsA:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-30_04,2026-06-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0 phishscore=0 clxscore=1015 bulkscore=0
- impostorscore=0 priorityscore=1501 lowpriorityscore=0 suspectscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2606300139
 
-Add ibmveth_resize_rx_queues_incremental() to grow or shrink
-adapter->num_rx_queues while the netdev stays up.
+sock_map_update_common() and __sock_map_delete() hold stab->lock and call
+sock_map_unref() -> sock_map_del_link(), which takes sk_callback_lock for
+write. That gives the order stab->lock -> sk_callback_lock.
 
-Scale-up, per new queue index:
-  alloc RX resources and per-queue pools
-  register subordinate queue with PHYP
-  request_irq(), then ibmveth_enable_irq(), then napi_enable
-  update num_rx_queues, replenish new queues
-  netif_set_real_num_rx_queues()
+The reverse order comes from the SK_SKB stream parser.
+sk_psock_strp_data_ready() holds sk_callback_lock for read, and after the
+verdict tcp_bpf_strp_read_sock() acks the consumed data inline via
+__tcp_cleanup_rbuf(). The ACK goes out egress, where a sched_cls program
+deletes from the sockmap and takes stab->lock:
 
-Scale-down disables NAPI on excess queues, drains pending buffers,
-disables PHYP IRQ delivery and waits for in-flight handlers with
-synchronize_irq() before lowering num_rx_queues, then tears down
-IRQ/PHYP/memory.
+  WARNING: possible circular locking dependency detected
+  ------------------------------------------------------
+  syz.9.8824 is trying to acquire lock:
+  (&stab->lock){+.-.}-{3:3}, at: __sock_map_delete net/core/sock_map.c:421
+  but task is already holding lock:
+  (clock-AF_INET){++.-}-{3:3}, at: sk_psock_strp_data_ready net/core/skmsg.c:1173
 
-Reject out-of-range new_count. On scale-down netif failure, re-enable
-NAPI on queues not yet torn down. Refresh VIO CMO entitlement after a
-successful resize when FW_FEATURE_CMO is enabled.
+  -> #1 (clock-AF_INET){++.-}-{3:3}:
+         _raw_write_lock_bh
+         sock_map_del_link net/core/sock_map.c:167
+         sock_map_unref net/core/sock_map.c:184
+         sock_map_update_common net/core/sock_map.c:509
+         sock_map_update_elem_sys net/core/sock_map.c:588
+         map_update_elem kernel/bpf/syscall.c:1805
 
-Scale-up rollback mirrors scale-down: drain posted buffers and wait for
-in-flight handlers before deregistering with PHYP.
+  -> #0 (&stab->lock){+.-.}-{3:3}:
+         _raw_spin_lock_bh
+         __sock_map_delete net/core/sock_map.c:421
+         sock_map_delete_elem net/core/sock_map.c:452
+         bpf_prog_06044d24140080b6
+         tcx_run net/core/dev.c:4451
+         sch_handle_egress net/core/dev.c:4541
+         __dev_queue_xmit net/core/dev.c:4808
+         ...
+         tcp_bpf_strp_read_sock net/ipv4/tcp_bpf.c:701
+         strp_data_ready net/strparser/strparser.c:402
+         sk_psock_strp_data_ready net/core/skmsg.c:1174
+         tcp_data_queue net/ipv4/tcp_input.c:5661
 
-In replenish_task(), skip queues with queue_index >= num_rx_queues and
-require pool->free_map before replenishing so in-flight handlers avoid
-queues being torn down without clearing probe-time pool->active on free.
+  Possible unsafe locking scenario:
 
-Queue 0 is never removed here. Scale-up failure unwinds only queues
-added in this call. ethtool -L wiring is next.
+         CPU0                    CPU1
+         ----                    ----
+    rlock(clock-AF_INET);
+                                 lock(&stab->lock);
+                                 lock(clock-AF_INET);
+    lock(&stab->lock);
 
-Signed-off-by: Mingming Cao <mmc@linux.ibm.com>
-Reviewed-by: Dave Marquardt <davemarq@linux.ibm.com>
+   *** DEADLOCK ***
+
+A tc, xdp, socket_filter or flow_dissector program has no reason to
+update or delete a sockmap, and redirect does not go through here. Drop
+them from may_update_sockmap() so the verifier rejects it. It also
+closes the matching sockhash inversion.
+
+Suggested-by: John Fastabend <john.fastabend@gmail.com>
+Signed-off-by: Sechang Lim <rhkrqnwk98@gmail.com>
 ---
- drivers/net/ethernet/ibm/ibmveth.c | 183 ++++++++++++++++++++++++++++-
- 1 file changed, 178 insertions(+), 5 deletions(-)
+ kernel/bpf/verifier.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-index cd0acd1715da..ac4d89a66a8d 100644
---- a/drivers/net/ethernet/ibm/ibmveth.c
-+++ b/drivers/net/ethernet/ibm/ibmveth.c
-@@ -945,18 +945,22 @@ static void ibmveth_replenish_task(struct ibmveth_adapter *adapter,
- 	unsigned long flags;
- 	int i;
- 
--	if (queue_index >= adapter->num_rx_queues)
--		return;
--
- 	adapter->replenish_task_cycles++;
- 
-+	if (queue_index >= adapter->num_rx_queues) {
-+		netdev_dbg(adapter->netdev,
-+			   "Skipping replenish for freed queue %d (num_queues=%d)\n",
-+			   queue_index, adapter->num_rx_queues);
-+		return;
-+	}
-+
- 	spin_lock_irqsave(&rxq->replenish_lock, flags);
- 
- 	for (i = (IBMVETH_NUM_BUFF_POOLS - 1); i >= 0; i--) {
- 		struct ibmveth_buff_pool *pool =
- 			&adapter->rx_buff_pool[queue_index][i];
- 
--		if (pool->active &&
-+		if (pool->active && pool->free_map &&
- 		    (atomic_read(&pool->available) < pool->threshold))
- 			ibmveth_replenish_buffer_pool(adapter, pool,
- 						      queue_index);
-@@ -1682,7 +1686,7 @@ ibmveth_register_single_rx_queue(struct ibmveth_adapter *adapter,
-  * the IRQ mapping for subordinate queues. Queue 0 is freed only through
-  * ibmveth_free_all_queues() (H_FREE_LOGICAL_LAN).
-  */
--static void __maybe_unused
-+static void
- ibmveth_deregister_single_rx_queue(struct ibmveth_adapter *adapter,
- 				   int queue_idx)
- {
-@@ -1714,6 +1718,175 @@ ibmveth_deregister_single_rx_queue(struct ibmveth_adapter *adapter,
- 	netdev_dbg(adapter->netdev, "Deregistered queue %d\n", queue_idx);
- }
- 
-+/**
-+ * ibmveth_resize_rx_queues_incremental - Resize RX queue count incrementally
-+ * @adapter: ibmveth adapter structure
-+ * @new_count: Target number of RX queues
-+ * @rxq_entries: Number of entries per RX queue
-+ *
-+ * Adds or removes RX queues without tearing down the entire adapter.
-+ * Active queues continue receiving during scale-up; scale-down drains
-+ * excess queues before deregistering them with the hypervisor.
-+ *
-+ * Return: 0 on success, negative error code on failure
-+ */
-+static int
-+ibmveth_resize_rx_queues_incremental(struct ibmveth_adapter *adapter,
-+				     int new_count, int rxq_entries)
-+{
-+	struct net_device *netdev = adapter->netdev;
-+	u64 mac_address = ether_addr_to_u64(netdev->dev_addr);
-+	int old_count = adapter->num_rx_queues;
-+	int failed_queue;
-+	int rc, i;
-+
-+	if (old_count == new_count) {
-+		netdev_dbg(netdev, "RX queue count unchanged (%d), nothing to do\n",
-+			   old_count);
-+		return 0;
-+	}
-+
-+	if (new_count < 1 || new_count > IBMVETH_MAX_RX_QUEUES) {
-+		netdev_err(netdev, "Invalid RX queue count %d (must be 1-%d)\n",
-+			   new_count, IBMVETH_MAX_RX_QUEUES);
-+		return -EINVAL;
-+	}
-+
-+	netdev_info(netdev, "Incrementally resizing RX queues: %d to %d\n",
-+		    old_count, new_count);
-+
-+	if (new_count > old_count) {
-+		netdev_dbg(netdev, "Scale-up: adding queues %d-%d\n",
-+			   old_count, new_count - 1);
-+
-+		for (i = old_count; i < new_count; i++) {
-+			rc = ibmveth_alloc_single_rx_queue(adapter, i, rxq_entries);
-+			if (rc) {
-+				netdev_err(netdev, "Failed to allocate queue %d: %d\n",
-+					   i, rc);
-+				goto cleanup_new_queues;
-+			}
-+
-+			rc = ibmveth_register_single_rx_queue(adapter, i,
-+							      mac_address);
-+			if (rc) {
-+				netdev_err(netdev, "Failed to register queue %d: %d\n",
-+					   i, rc);
-+				ibmveth_free_single_rx_queue(adapter, i);
-+				goto cleanup_new_queues;
-+			}
-+
-+			rc = ibmveth_setup_single_rx_interrupt(adapter, i);
-+			if (rc) {
-+				netdev_err(netdev,
-+					   "Failed to setup IRQ for queue %d: %d\n",
-+					   i, rc);
-+				ibmveth_deregister_single_rx_queue(adapter, i);
-+				ibmveth_free_single_rx_queue(adapter, i);
-+				goto cleanup_new_queues;
-+			}
-+
-+			rc = ibmveth_enable_irq(adapter, i);
-+			if (rc) {
-+				netdev_err(netdev,
-+					   "Failed to enable IRQ for queue %d: %d\n",
-+					   i, rc);
-+				ibmveth_cleanup_single_rx_interrupt(adapter, i);
-+				ibmveth_deregister_single_rx_queue(adapter, i);
-+				ibmveth_free_single_rx_queue(adapter, i);
-+				goto cleanup_new_queues;
-+			}
-+
-+			napi_enable(&adapter->napi[i]);
-+		}
-+
-+		adapter->num_rx_queues = new_count;
-+
-+		for (i = old_count; i < new_count; i++)
-+			ibmveth_replenish_task(adapter, i);
-+
-+		rc = netif_set_real_num_rx_queues(netdev, new_count);
-+		if (rc) {
-+			netdev_err(netdev, "Failed to set real RX queues to %d: %d\n",
-+				   new_count, rc);
-+			goto cleanup_new_queues;
-+		}
-+	} else {
-+		netdev_dbg(netdev, "Scale-down: removing queues %d-%d\n",
-+			   new_count, old_count - 1);
-+
-+		for (i = new_count; i < old_count; i++)
-+			napi_disable(&adapter->napi[i]);
-+
-+		for (i = new_count; i < old_count; i++)
-+			ibmveth_drain_rx_queue(adapter, i);
-+
-+		synchronize_net();
-+
-+		rc = netif_set_real_num_rx_queues(netdev, new_count);
-+		if (rc) {
-+			netdev_err(netdev, "Failed to set real RX queues to %d: %d\n",
-+				   new_count, rc);
-+			for (i = new_count; i < old_count; i++)
-+				napi_enable(&adapter->napi[i]);
-+			return rc;
-+		}
-+
-+		/* Disable hypervisor interrupts and wait for handlers to complete
-+		 * before updating num_rx_queues.
-+		 */
-+		for (i = new_count; i < old_count; i++) {
-+			ibmveth_disable_irq(adapter, i);
-+			synchronize_irq(adapter->queue_irq[i]);
-+		}
-+
-+		adapter->num_rx_queues = new_count;
-+
-+		for (i = new_count; i < old_count; i++) {
-+			ibmveth_cleanup_single_rx_interrupt(adapter, i);
-+			ibmveth_deregister_single_rx_queue(adapter, i);
-+			ibmveth_free_single_rx_queue(adapter, i);
-+		}
-+	}
-+
-+	netdev_info(netdev, "Successfully resized to %d RX queues (incremental)\n",
-+		    adapter->num_rx_queues);
-+
-+	if (firmware_has_feature(FW_FEATURE_CMO))
-+		vio_cmo_set_dev_desired(adapter->vdev,
-+					ibmveth_get_desired_dma(adapter->vdev));
-+
-+	return 0;
-+
-+cleanup_new_queues:
-+	failed_queue = i;
-+	netdev_err(netdev,
-+		   "Scale-up failed at queue %d, cleaning up queues %d-%d\n",
-+		   failed_queue, old_count, failed_queue - 1);
-+	for (i = old_count; i < failed_queue; i++)
-+		napi_disable(&adapter->napi[i]);
-+
-+	for (i = old_count; i < failed_queue; i++)
-+		ibmveth_drain_rx_queue(adapter, i);
-+
-+	synchronize_net();
-+
-+	for (i = old_count; i < failed_queue; i++) {
-+		ibmveth_disable_irq(adapter, i);
-+		synchronize_irq(adapter->queue_irq[i]);
-+	}
-+
-+	for (i = old_count; i < failed_queue; i++) {
-+		ibmveth_cleanup_single_rx_interrupt(adapter, i);
-+		ibmveth_deregister_single_rx_queue(adapter, i);
-+		ibmveth_free_single_rx_queue(adapter, i);
-+	}
-+	adapter->num_rx_queues = old_count;
-+	netdev_warn(netdev, "Keeping %d queues after scale-up failure\n",
-+		    old_count);
-+	return rc;
-+}
-+
- /**
-  * ibmveth_free_all_queues - Free all RX queues at once
-  * @adapter: ibmveth adapter structure
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 25aea4271cd0..83ea3b33ff67 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -8488,12 +8488,7 @@ static bool may_update_sockmap(struct bpf_verifier_env *env, int func_id)
+ 		if (func_id == BPF_FUNC_map_delete_elem)
+ 			return true;
+ 		break;
+-	case BPF_PROG_TYPE_SOCKET_FILTER:
+-	case BPF_PROG_TYPE_SCHED_CLS:
+-	case BPF_PROG_TYPE_SCHED_ACT:
+-	case BPF_PROG_TYPE_XDP:
+ 	case BPF_PROG_TYPE_SK_REUSEPORT:
+-	case BPF_PROG_TYPE_FLOW_DISSECTOR:
+ 	case BPF_PROG_TYPE_SK_LOOKUP:
+ 		return true;
+ 	default:
 -- 
-2.39.3 (Apple Git-146)
+2.43.0
 
