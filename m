@@ -1,65 +1,71 @@
-Received: from szelinsky.de (szelinsky.de [85.214.127.56])
+Received: from out203-205-221-236.mail.qq.com (out203-205-221-236.mail.qq.com [203.205.221.236])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370AE3ED11B;
-	Tue, 30 Jun 2026 09:11:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.127.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85F213EB0F6
+	for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 09:12:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.236
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782810710; cv=none; b=VJBWb+vy11weeX+u8JqMB6o05kog3xsizzblOee0LmWSYC59dGl9mIp6mMelJXukDoBxeAUQM5mlhYgAYkCKt9eAVbqZ/nRyNyJdcCT5lLYFXbRm3GthXDMA8NHgz06xCycbmZ7Sn/mkhMj+OQST/dwFUKOoLJLLUeNYA4vcTxo=
+	t=1782810781; cv=none; b=HJd86dB0JymI23xOJKoFWvJhzGzlrJYvS0ndisoB+Kkp2lreJ6T1Le7S2eOy2JyZ6G854E+9reiUFA4s6f/fZFa5pgIIieCGLYDytFLLqg4XkwpOdub9ffIQFwdGwtnGomJPyAZvHhhUzMSp5pl+O+oTqo5cyT7/WVr7/Isvp+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782810710; c=relaxed/simple;
-	bh=Xa/8+x3fbN/3+Jk52j6knMgpA06QVo/ahFSa00X/hN0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I5qilBdUY4tdPIlLvz/x6s77Ql4uDG5P/qS70KGWqaIXdbIzhZhBq/Yku1z0JYfQRPYkSKF/KCqLasyQcS2rZ1yKbj/SJskbDYgDTrVuPwbZvWeR0o7NtggvY6NWmlYrflte6PLdisHA4oK9x3P+J8ZxIm6DeRXxmnVWFdwSyPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=Voj/my/G; arc=none smtp.client-ip=85.214.127.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
+	s=arc-20240116; t=1782810781; c=relaxed/simple;
+	bh=kySt2e1rfj7LptBox57g7w5ICPrmxbvLWzxRFUNeSIk=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version; b=Td6L7VZVRDYKgyndECbAcDKc7FbP2lB77j8Ua+MCg8ArkxMIsFKNzf4stKpRV3PQtj3yvxl7IWTIMCJsbV1DAHEo9vddksMlPEjlAfyW2L/yEAlEQ780gv3qBdwkwOY2uHIQL0CYBqqaumlVh4yBN1x1oDvi3V1lmpsutiYzfK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=eLMLjOw9; arc=none smtp.client-ip=203.205.221.236
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="Voj/my/G"
-Received: from localhost (localhost [127.0.0.1])
-	by szelinsky.de (Postfix) with ESMTP id E94CEE838E1;
-	Tue, 30 Jun 2026 11:11:41 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
-	s=mail; t=1782810701;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=n8STXjNlKV0wvUn+1PYv95+ojGlTOJB8a3/kKnQWGP4=;
-	b=Voj/my/GxRjwHkTglEAWrI01+QgHUKlySugH45hDlwzDDZ9AcXswhuOjhZ5YC9vVId+pLD
-	XRYqPrUnFeeIyWv7KSJiEQ9u59zMdLaM0CTllLvQMo9sVTZiMdnnRix7gXinry/Q0C9Eg6
-	Ya7y7QqQ3adYZqE2IxJrc3PFSROgAby155GJA0Q0exW7Inqs2JiDC9lPjgZJDqujbpXHnL
-	pGha5mJq4oXy1e4Opjxq/GGfgqQqBND7ZacRL7Lahc5Acf4fzLmF1tBC3DPaeHlKRa1g2s
-	pRd96CxjIxUPaij9++f+5/SFdHa+OAxUhUoU8ranQjWe9LS09p2J/c3ua8AlFg==
-X-Virus-Scanned: Debian amavis at szelinsky.de
-Received: from szelinsky.de ([127.0.0.1])
- by localhost (szelinsky.de [127.0.0.1]) (amavis, port 10025) with ESMTP
- id AvI9st0DCOLX; Tue, 30 Jun 2026 11:11:41 +0200 (CEST)
-Received: from p14sgen5.. (unknown [91.25.97.186])
-	by szelinsky.de (Postfix) with ESMTPSA;
-	Tue, 30 Jun 2026 11:11:41 +0200 (CEST)
-From: Carlo Szelinsky <github@szelinsky.de>
-To: Oleksij Rempel <o.rempel@pengutronix.de>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Corey Leavitt <corey@leavitt.info>,
-	Jonas Jelonek <jelonek.jonas@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="eLMLjOw9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1782810771; bh=1dfi7biA1sGA59UN+588jwNbvleUJ44ok6h9LBwNWnQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=eLMLjOw9BtVwLzyGRzJArQOxUH90D3ZB6VLA/p0qQUsC/Bo27oXGruxKXYANx83Or
+	 iY3MmDx5P8RTFpJlqvsP0ZQ07y+IBb3o6KbN+5dHqtPuGOw2ur8R3xGRQW33iv1h8b
+	 4RqBQ01uBe/GyxRZ5iK3yCSNn/wSo9zwUPrAqh1s=
+Received: from lxu-ped-host.. ([111.198.231.89])
+	by newxmesmtplogicsvrszc56-0.qq.com (NewEsmtp) with SMTP
+	id 2E201616; Tue, 30 Jun 2026 17:11:34 +0800
+X-QQ-mid: xmsmtpt1782810694t6vhyvnda
+Message-ID: <tencent_45066D89AD6EF9AED34CA567FA46CA52C606@qq.com>
+X-QQ-XMAILINFO: OZZSS56D9fAjxnsilrLdrNDiNIRRjgkkepro8vxPt12NBctPvNYFwCeu81DM9Z
+	 OfV9p6l/T41Jd7iuk/0sCvJQp27jU2a8CqX+dbCRmFWqGdxu+EEQZ7Gk/Cy44shP0EY5lPVZoZsg
+	 RFQ811puuNOmncYOKpncYqU/JwF8Ue9RIV26QJZCXvJywPog5kzprRTKcagiwtitp9GFnMFF8z9t
+	 h7w4NWkt/POpJZylA3b9sfRSlDUHR/vuJxrYENwD1yJ5AiYi+XJ4L75UJLZYBgyqGusmN7ajLlCW
+	 9NFj9zHo/XHVAM9ifgBGbcV+ccU/E0N7ihtM4+Lp5GbqqWtjViujRPi5Y63R11szcpGvCTJRiwkD
+	 6AUBajf7g16xLSnWyOpIYM2EAr0S7RQhIKK6ATOA9s5UgU3jv5PDZmdE7gsTDZNiOlnxYQjtkCj2
+	 97Xa/k+UfZvtFLLZLZMjtOaNFW5QzqYlS5mPpvg02rbpvtuCtb+tEF1zD2qi3dP+lVL5Cbe9zEhE
+	 wveQsB403beKq0POyjCojG3k/BOsFbX1UdWKePkSYqRtp4CmpU1zJWgVh7qfVOwMYGWAbLxs8FD5
+	 Q/+pN7MdZtvkqN8Uo9DZrBZorS2st0JEArCr93+un1raqkMAm3h7CTxVGWfAjfKSWN8Z5ZdMe1tc
+	 MbWkNbDrDk8+1/8Ym78hvkm3h3Jia8BRDj5docEiLxwl61qZdvPUfm4zQuvfWwN0Q46HsRwxyNpn
+	 HZQMCKTHaE7zXWO/1ph8+/79fu0Gc0CtlND9QzPNE9lzuBWiqjN3bkCujGPE0sOSr/8fIobtQuaA
+	 rL/c8paAMIVVptF02XVSEr1oY81Ab/PC3Jun55jNC9DZkuifWxRv58UbfLJ+cejVWYOqD+5UCtvy
+	 f1ImAa15F0cNqwm8GMuYv7lNkDWxto5R3zvXi3cCPLXp4zkx7DOPsIdOxtqDKSmPAjB2ej69Edvc
+	 5N17TF5nSxzg9M4FDGwmgneHMHLOX+5BQhU6u4xfybG/+9FsHip+ukJJWZz+Y8/hkmu08AFTVUXv
+	 95VN6HYt64DzETfL1I7GdlAbO0DQDMcShe97JLS31So/nlglm89spHRfvsH62SFGqnMlDUZ+ulWY
+	 9yVaYr
+X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
+From: Edward Adam Davis <eadavis@qq.com>
+To: sashiko-bot@kernel.org
+Cc: andrii@kernel.org,
+	ast@kernel.org,
+	bpf@vger.kernel.org,
+	daniel@iogearbox.net,
+	eddyz87@gmail.com,
+	emil@etsalapatis.com,
+	jolsa@kernel.org,
 	linux-kernel@vger.kernel.org,
-	Carlo Szelinsky <github@szelinsky.de>
-Subject: [PATCH net-next v4 2/3] net: pse-pd: fire lifecycle events on controller register/unregister
-Date: Tue, 30 Jun 2026 11:11:24 +0200
-Message-ID: <20260630091125.3162481-3-github@szelinsky.de>
+	martin.lau@linux.dev,
+	memxor@gmail.com,
+	netdev@vger.kernel.org,
+	song@kernel.org,
+	syzkaller-bugs@googlegroups.com,
+	yonghong.song@linux.dev
+Subject: [PATCH v2] bpf: Fix smp_processor_id() call trace for preemptible kernels
+Date: Tue, 30 Jun 2026 17:11:33 +0800
+X-OQ-MSGID: <20260630091132.941145-2-eadavis@qq.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260630091125.3162481-1-github@szelinsky.de>
-References: <20260630091125.3162481-1-github@szelinsky.de>
+In-Reply-To: <20260630084910.D5C3A1F000E9@smtp.kernel.org>
+References: <20260630084910.D5C3A1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,50 +74,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Corey Leavitt <corey@leavitt.info>
+bpf_mem_cache_free_rcu() maybe called in preemptible context, this
+will trigger the below warning message:
 
-Hook the newly-introduced pse_controller_notifier chain so that
-pse_controller_register() fires PSE_REGISTERED after the controller
-has been added to pse_controller_list (i.e. is now resolvable by
-of_pse_control_get()), and pse_controller_unregister() fires
-PSE_UNREGISTERED before the controller is removed from the list
-(while it is still valid to dereference from a subscriber's
-pse_control pointer targeting it).
+BUG: using smp_processor_id() in preemptible [00000000] code: syz.0.17/5820
+caller is bpf_mem_cache_free_rcu+0x48/0xc0 kernel/bpf/memalloc.c:954
+Call Trace:
+ check_preemption_disabled+0xd3/0xe0 lib/smp_processor_id.c:47
+ bpf_mem_cache_free_rcu+0x48/0xc0 kernel/bpf/memalloc.c:954
+ rhtab_delete_elem+0x185a/0x1b30 kernel/bpf/hashtab.c:2969
+ __rhtab_map_lookup_and_delete_batch+0x935/0xcb0 kernel/bpf/hashtab.c:3349
+ bpf_map_do_batch+0x445/0x630 kernel/bpf/syscall.c:-1
+ __sys_bpf+0x906/0xd90 kernel/bpf/syscall.c:-1
 
-With no subscribers yet, this is observably a no-op. A later change
-wires the phy subsystem in as the first subscriber.
+this_cpu_ptr() access needs to be guarded against preemption.
 
-Signed-off-by: Corey Leavitt <corey@leavitt.info>
-Signed-off-by: Carlo Szelinsky <github@szelinsky.de>
-Tested-by: Jonas Jelonek <jelonek.jonas@gmail.com>
+Fixes: 5af6807bdb10 ("bpf: Introduce bpf_mem_free_rcu() similar to kfree_rcu().")
+Reported-by: syzbot+fd7e415d891073b83e1f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=fd7e415d891073b83e1f
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
 ---
- drivers/net/pse-pd/pse_core.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+v1 -> v2: using guard against preemption
 
-diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
-index 3c4d09f1d6e4..0190fac33c78 100644
---- a/drivers/net/pse-pd/pse_core.c
-+++ b/drivers/net/pse-pd/pse_core.c
-@@ -1138,6 +1138,9 @@ int pse_controller_register(struct pse_controller_dev *pcdev)
- 	list_add(&pcdev->list, &pse_controller_list);
- 	mutex_unlock(&pse_list_mutex);
+ kernel/bpf/memalloc.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/kernel/bpf/memalloc.c b/kernel/bpf/memalloc.c
+index bd45dda9dc35..1d7ddfc1c9d1 100644
+--- a/kernel/bpf/memalloc.c
++++ b/kernel/bpf/memalloc.c
+@@ -957,7 +957,9 @@ void notrace bpf_mem_cache_free_rcu(struct bpf_mem_alloc *ma, void *ptr)
+ 	if (!ptr)
+ 		return;
  
-+	blocking_notifier_call_chain(&pse_controller_notifier,
-+				     PSE_REGISTERED, pcdev);
-+
- 	return 0;
++	get_cpu();
+ 	unit_free_rcu(this_cpu_ptr(ma->cache), ptr);
++	put_cpu();
  }
- EXPORT_SYMBOL_GPL(pse_controller_register);
-@@ -1148,6 +1151,9 @@ EXPORT_SYMBOL_GPL(pse_controller_register);
-  */
- void pse_controller_unregister(struct pse_controller_dev *pcdev)
- {
-+	blocking_notifier_call_chain(&pse_controller_notifier,
-+				     PSE_UNREGISTERED, pcdev);
-+
- 	pse_flush_pw_ds(pcdev);
- 	pse_release_pis(pcdev);
- 	if (pcdev->irq)
+ 
+ /* Directly does a kfree() without putting 'ptr' back to the free_llist
 -- 
 2.43.0
 
