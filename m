@@ -1,364 +1,168 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 829C548164B;
-	Wed,  1 Jul 2026 13:00:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66EF129C328;
+	Wed,  1 Jul 2026 13:09:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782910860; cv=none; b=F5IZU1HEhcvIM73wnHtLXVsuasiuTd6NzI+fB/jfiDHKA2acXhAWL1aNEgRmPlpu3Vy2uUOjPJRPYNPtUg6daQ5oGWzXY5kXd4HZh2ALEg17YFy2THa/hJuazJXxDG4PHVdvDt3g6w84JdY+rDWpZKL8z6PbAO2rArSRkivRVzE=
+	t=1782911362; cv=none; b=bI0knEYmBo1MQP1gfmsWcIXJhfESM1vhFxfCelQu9mrlccKfD3suBe4PeeVJz+C7ezaXt+tpNz1U361B27vSyjySUai3Pe0t/4z7zqEWVQN4Yr/6DVdFNnGNGcsTirVt6QCBVSmTSCTDkzr9YDllb5p0KfiOhT5wFirVmVZL5k4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782910860; c=relaxed/simple;
-	bh=jrfeDeAYI4PeIcAHdKAxLe/qciJp/ZOV/NO64erWuaU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZpI+3XO4sJLbOuitoBpRkIH3TCmNieol9hwnfZRNrlaTA2vofDNpmCpjbHP65MNaMmxQY/l9iv+DT/ZVXuMQ3sOgmLBqhDelsc8KIdkXu82xUPSE7KEcxKdasSmA94kPsQno+wiDqHFqiPXwkYr44LMRAnU0CZoBrEm4Ssd6u/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=V2fwaHXL; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1782911362; c=relaxed/simple;
+	bh=sVPulzg6dvlJF0TztIyU5HRPH5yAypF4/PhM3TE790I=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=CR5VZCwH2HucykgINij9Pz16g4jVdYCHNZAYQ58qpInHsYPUHZF+7Uw4/VeikCMEn/J1j8QB/W4lfSeu6itr+rQXRNGUwmeVbAweYgQ8BBXUEVoIDJ3YqQCz5v3ml0R3Mpve0DTgd1xkLWITYIuusYgmLGlgGy2wkO57XwCEQlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GGldDWVY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="V2fwaHXL"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=+vR0SW1+eyWPXaVk+CC4uUvnEvWM2saEgGCA33XbCIQ=; b=V2fwaHXLUyj1lFe1lLtKNltn0e
-	vTDNrNOnwFegcMfmS0vEI/KwxDm6TrcwYn+J42sHjlgtjuNymupbg6kjOyJbtFESJqXwa4QcFIx3m
-	c00OSjkg1RTJNbLcFildMTIn0Ksqfk5SGeEdcEfQyLPjKoDMoAKgIAboCM/5Sl1VeXVA=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1weuYZ-00AAV3-PZ; Wed, 01 Jul 2026 15:00:47 +0200
-Date: Wed, 1 Jul 2026 15:00:47 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: javen <javen_xu@realsil.com.cn>
-Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	freddy_gu@realsil.com.cn, nb@tipi-net.de, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, daniel@makrotopia.org,
-	vladimir.oltean@nxp.com, nic_swsd@realtek.com
-Subject: Re: [PATCH net-next v7 4/4] net: phy: realtek: load firmware for
- RTL8261C_CG
-Message-ID: <98213191-594d-4e26-beeb-fd9b9a838b64@lunn.ch>
-References: <20260629064718.1349-1-javen_xu@realsil.com.cn>
- <20260629064718.1349-5-javen_xu@realsil.com.cn>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GGldDWVY"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id EDD15C2BCB8;
+	Wed,  1 Jul 2026 13:09:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1782911362;
+	bh=sVPulzg6dvlJF0TztIyU5HRPH5yAypF4/PhM3TE790I=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=GGldDWVYO1543Zcet4g43Gelxq3yXzEUBc9UA6LaQCFhUBBQy1xojutHOdyksqbz8
+	 MuxCLaXXnaE0S6bt3ftF88Dvog82rL/NrHIDKd0/wHZTAoHjsPJsEreR9xYCpQGIL9
+	 qY9T5hSfYrNBXxFczP903JTP4NN9mAxXupgvftYCHZdGU/Xt6M8BkRPum0VasLWRQR
+	 NJteu2+90RyI7O26hBJFpKfSf05iYj6ygtePWKIjFqPSeclBqBuCiVB5O7mJeIdP2m
+	 lD3kZnTrlvnx/XrMtGsG5TeVjTg/vhJ13lSxXFF4o8IdtuF0EgSEt8XlZdrIPIBAE6
+	 MzF8jEslOIU0Q==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E48C3C43458;
+	Wed,  1 Jul 2026 13:09:21 +0000 (UTC)
+From: Enrico Pozzobon via B4 Relay <devnull+enrico.pozzobon.dissecto.com@kernel.org>
+Date: Wed, 01 Jul 2026 15:09:17 +0200
+Subject: [PATCH net v2] net: usb: lan78xx: disable VLAN filter in
+ promiscuous mode
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260629064718.1349-5-javen_xu@realsil.com.cn>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260701-lan78xx-vlan-promisc-v2-1-fe3b18066728@dissecto.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22NQQ6CMBBFr0JmbU1pDVRX3sOwKGUqNdKSDjYYw
+ t0tsHU3f/L/ewsQRocEt2KBiMmRCz4HcSrA9No/kbkuZxBcVLwSkr21r9U8s5QPNsYwODJMSW2
+ Vvihdo4E8HSNaN+/YB3icoDme9GlfaKYNuNV6R1OI312eyr18eCT/70klK5ltLbdXLttO2Xvni
+ DIxnE0YoFnX9Qc2Xx2z0gAAAA==
+X-Change-ID: 20260623-lan78xx-vlan-promisc-83af8a48a7ec
+To: Thangaraj Samynathan <Thangaraj.S@microchip.com>, 
+ Rengarajan Sundararajan <Rengarajan.S@microchip.com>, 
+ UNGLinuxDriver@microchip.com, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Woojung.Huh@microchip.com
+Cc: netdev@vger.kernel.org, linux-usb@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Enrico Pozzobon <enrico.pozzobon@dissecto.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3269;
+ i=enrico.pozzobon@dissecto.com; h=from:subject:message-id;
+ bh=rGcMhaGh8vx4flQNrrguekcQBVNvDJ+Fjwh146Hf4xE=;
+ b=owGbwMvMwMX4ocx1yy5WiZWMp9WSGLJcBes6Ff5trmPR/SewrJa5WaaFryTmc/KtZ24fUv6xq
+ q3cVLWlk9GYhYGRi0FWTJHl52eBq7P6ssoWmx7UghnEygQyhYGLUwAmIt7MwXBkZ9s+3pLnph2X
+ Z+c6tt6+Ei1ixXH62os0vdozEZXPP8w4IBG+8kjqVqXWMFmrF69NtNLYbKanbN+8pUD5TMzxo8r
+ HK45n3zgT3n3pwpaUh16STy5b2DqwqBzgF37dZlL2bs1S8R15tQZuoaYWGnl+E1tfTOqO6dd0L4
+ z8V6Epm8Tx8kemwskz7MkPZu/frSBrKrBQ+pxTie8dls4ffso5zRd1Sgvil7xosVCYK3RaVHVfy
+ 1m9G4Jz5q1nvWvVxirzwTI96+P2lAdFa3ViJMIlGwqq++rWdVnkHnc+q8Cv9kvBYL96rd3GTym/
+ /5+O8d1skCNcIG3I9F505vwLEVnuj091+s7pO6R5sE4YAA==
+X-Developer-Key: i=enrico.pozzobon@dissecto.com; a=openpgp;
+ fpr=53D697CA0B11F68C9552A59DA3D0B3A0924EA5BB
+X-Endpoint-Received: by B4 Relay for enrico.pozzobon@dissecto.com/default
+ with auth_id=836
+X-Original-From: Enrico Pozzobon <enrico.pozzobon@dissecto.com>
+Reply-To: enrico.pozzobon@dissecto.com
 
-On Mon, Jun 29, 2026 at 02:47:18PM +0800, javen wrote:
-> From: Javen Xu <javen_xu@realsil.com.cn>
-> 
-> This patch adds support for loading firmware. Download some parameters
-> for RTL8261C_CG.
-> 
-> Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
-> ---
-> Changes in v2:
->  - remove __pack, struct rtl8261x_fw_header and rtl8261x_fw_entry will not pad
->  - reverse xmas tree for some definition
->  - add explanation on rtl_phy_write_mmd_bits()
-> 
-> Changes in v3:
->  - add struct rtl8261x_priv
-> 
-> Changes in v4:
->  - add struct device *dev
-> 
-> Changes in v5:
->  - no changes
-> 
-> Changes in v6:
->  - replace rtl_phy_write_mmd_bits with phy_modify_mmd, keep mdio lock
->  - check msb and lsb at the beginning of rtl8261x_fw_execute_entry()
->  - add comments on rtl8261x_config_init()
-> 
-> Changes in v7:
->  - no changes
-> ---
->  drivers/net/phy/realtek/realtek_main.c | 220 +++++++++++++++++++++++++
->  1 file changed, 220 insertions(+)
-> 
-> diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
-> index ef3700894ebf..bf7bc19fb44c 100644
-> --- a/drivers/net/phy/realtek/realtek_main.c
-> +++ b/drivers/net/phy/realtek/realtek_main.c
-> @@ -8,7 +8,9 @@
->   * Copyright (c) 2004 Freescale Semiconductor, Inc.
->   */
->  #include <linux/bitops.h>
-> +#include <linux/crc32.h>
->  #include <linux/ethtool_netlink.h>
-> +#include <linux/firmware.h>
->  #include <linux/of.h>
->  #include <linux/phy.h>
->  #include <linux/pm_wakeirq.h>
-> @@ -281,6 +283,42 @@
->  					 RTL8261X_INT_ALDPS_CHG | \
->  					 RTL8261X_INT_JABBER)
->  
-> +#define FW_MAIN_MAGIC			0x52544C38
-> +#define FW_SUB_MAGIC_8261C		0x32363143
-> +#define RTL8261X_POLL_TIMEOUT_MS	100
-> +
-> +#define RTL8261C_CE_FW_NAME	"rtl_nic/rtl8261c.bin"
-> +MODULE_FIRMWARE(RTL8261C_CE_FW_NAME);
-> +
-> +enum rtl8261x_fw_op {
-> +	OP_WRITE = 0x00,	/* Write */
-> +	OP_POLL  = 0x02,	/* Polling */
-> +};
-> +
-> +struct rtl8261x_fw_header {
-> +	__le32 main_magic;	/* Main magic number 0x52544C38 ("RTL8") */
-> +	__le32 sub_magic;	/* Sub magic number */
-> +	__le16 version_major;	/* Major version */
-> +	__le16 version_minor;	/* Minor version */
-> +	__le16 num_entries;	/* Number of entries */
-> +	__le16 reserved;	/* Reserved */
-> +	__le32 crc32;		/* CRC32 checksum */
-> +};
-> +
-> +struct rtl8261x_fw_entry {
-> +	__u8  type;		/* Operation type (OP_*) */
-> +	__u8  dev;		/* MMD device */
-> +	__le16 addr;		/* Register address */
-> +	__u8  msb;		/* MSB bit position */
-> +	__u8  lsb;		/* LSB bit position */
-> +	__le16 value;		/* Value to write/compare */
-> +	__le16 timeout_ms;	/* Poll timeout in milliseconds */
-> +	__u8  poll_set;		/* Poll for set (1) or clear (0) */
-> +	__u8  reserved;		/* Reserved */
-> +};
-> +
-> +#define FW_HEADER_SIZE		sizeof(struct rtl8261x_fw_header)
-> +#define FW_ENTRY_SIZE		sizeof(struct rtl8261x_fw_entry)
->  
->  /* RTL8211E and RTL8211F support up to three LEDs */
->  #define RTL8211x_LED_COUNT			3
-> @@ -300,6 +338,11 @@ struct rtl821x_priv {
->  	u16 iner;
->  };
->  
-> +struct rtl8261x_priv {
-> +	const char *fw_name;
-> +	bool fw_loaded;
-> +};
-> +
->  static int rtl821x_read_page(struct phy_device *phydev)
->  {
->  	return __phy_read(phydev, RTL821x_PAGE_SELECT);
-> @@ -342,8 +385,16 @@ static int rtl821x_modify_ext_page(struct phy_device *phydev, u16 ext_page,
->  
->  static int rtl8261x_probe(struct phy_device *phydev)
->  {
-> +	struct device *dev = &phydev->mdio.dev;
-> +	struct rtl8261x_priv *priv;
->  	int sub_phy_id, ret;
->  
-> +	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-> +	if (!priv)
-> +		return -ENOMEM;
-> +
-> +	phydev->priv = priv;
-> +
->  	ret = phy_write_mmd(phydev, MDIO_MMD_VEND2, RTL8261X_EXT_ADDR_REG,
->  			    RTL_8261X_SUB_PHY_ID_ADDR);
->  	if (ret < 0)
-> @@ -357,6 +408,7 @@ static int rtl8261x_probe(struct phy_device *phydev)
->  
->  	switch (sub_phy_id) {
->  	case RTL8261C_CE_MODEL:
-> +		priv->fw_name = RTL8261C_CE_FW_NAME;
->  		phydev_info(phydev, "RTL8261C detected (sub_id 0x%02x)\n", sub_phy_id);
->  		break;
->  
-> @@ -407,6 +459,153 @@ static int rtl8261x_read_status(struct phy_device *phydev)
->  	return 0;
->  }
->  
-> +static int rtl8261x_verify_firmware(struct phy_device *phydev, const struct firmware *fw)
-> +{
-> +	const struct rtl8261x_fw_header *hdr;
-> +	u32 main_magic, sub_magic;
-> +	u32 calc_crc, file_crc;
-> +	size_t data_len;
-> +	u16 num_entries;
-> +
-> +	if (fw->size < FW_HEADER_SIZE) {
-> +		phydev_err(phydev, "Firmware too small: %zu bytes\n", fw->size);
-> +		return -EINVAL;
-> +	}
-> +
-> +	hdr = (const struct rtl8261x_fw_header *)fw->data;
-> +
-> +	main_magic = le32_to_cpu(hdr->main_magic);
-> +	if (main_magic != FW_MAIN_MAGIC) {
-> +		phydev_err(phydev, "Invalid firmware magic: 0x%08x\n", main_magic);
-> +		return -EINVAL;
-> +	}
-> +
-> +	sub_magic = le32_to_cpu(hdr->sub_magic);
-> +	if (sub_magic != FW_SUB_MAGIC_8261C) {
-> +		phydev_err(phydev, "Invalid sub magic: 0x%08x\n", sub_magic);
-> +		return -EINVAL;
-> +	}
-> +
-> +	num_entries = le16_to_cpu(hdr->num_entries);
-> +	data_len = num_entries * FW_ENTRY_SIZE;
-> +
-> +	if (fw->size != sizeof(*hdr) + data_len) {
-> +		phydev_err(phydev, "Firmware size mismatch\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	calc_crc = crc32(~0, fw->data + FW_HEADER_SIZE, data_len) ^ ~0;
-> +	file_crc = le32_to_cpu(hdr->crc32);
-> +
-> +	if (calc_crc != file_crc) {
-> +		phydev_err(phydev, "CRC32 mismatch: calculated=0x%08x file=0x%08x\n",
-> +			   calc_crc, file_crc);
-> +		return -EINVAL;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int rtl8261x_fw_execute_entry(struct phy_device *phydev,
-> +				     const struct rtl8261x_fw_entry *entry)
-> +{
-> +	u16 addr, value, timeout_ms;
-> +	u8 dev, msb, lsb, poll_set;
-> +	u32 bits, expect_val;
-> +	int ret = 0;
-> +	int val;
-> +
-> +	dev = entry->dev;
-> +	addr = le16_to_cpu(entry->addr);
-> +	msb = entry->msb;
-> +	lsb = entry->lsb;
-> +	value = le16_to_cpu(entry->value);
-> +	timeout_ms = le16_to_cpu(entry->timeout_ms);
-> +	poll_set = entry->poll_set;
-> +
-> +	if (timeout_ms == 0)
-> +		timeout_ms = RTL8261X_POLL_TIMEOUT_MS;
-> +
-> +	if (msb > 15 || lsb > msb) {
-> +		phydev_err(phydev, "Invalid firmware bits: msb=%d, lsb=%d\n", msb, lsb);
-> +		return -EINVAL;
-> +	}
-> +
-> +	switch (entry->type) {
-> +	case OP_WRITE:
-> +		ret = phy_modify_mmd(phydev, dev, addr,
-> +				     GENMASK(msb, lsb), (value << lsb) & GENMASK(msb, lsb));
-> +		if (ret) {
-> +			phydev_err(phydev, "WRITE failed: dev=%d addr=0x%04x\n", dev, addr);
-> +			return ret;
+From: Enrico Pozzobon <enrico.pozzobon@dissecto.com>
 
-Here you have a return on error.
+The hardware VLAN filter (RFE_CTL_VLAN_FILTER_) drops VLAN-tagged frames
+whose VID has not been registered via lan78xx_vlan_rx_add_vid(). It is
+left enabled in promiscuous mode, so packet capture (e.g. tcpdump or
+Wireshark) does not see tagged frames for unregistered VIDs.
 
-> +		}
-> +		break;
-> +
-> +	case OP_POLL: {
-> +		bits = GENMASK(msb, lsb);
-> +		expect_val = (value << lsb) & bits;
-> +
-> +		if (poll_set)
-> +			ret = phy_read_mmd_poll_timeout(phydev, dev, addr, val,
-> +							(val & bits) == expect_val,
-> +							1000, timeout_ms * 1000, false);
-> +		else
-> +			ret = phy_read_mmd_poll_timeout(phydev, dev, addr, val,
-> +							(val & bits) != expect_val,
-> +							1000, timeout_ms * 1000, false);
-> +		if (ret)
-> +			phydev_err(phydev, "POLL timeout: dev=%d addr=0x%04x\n",
-> +				   dev, addr);
-> +		break;
+Clear the filter while the interface is promiscuous and restore it from
+NETIF_F_HW_VLAN_CTAG_FILTER otherwise. Enforce the same condition in
+lan78xx_set_features() so netdev_update_features() cannot re-enable the
+filter while promiscuous.
 
-Here you don't. It would be better if the code was consistent.
+Fixes: 55d7de9de6c3 ("Microchip's LAN7800 family USB 2/3 to 10/100/1000 Ethernet device driver")
+Signed-off-by: Enrico Pozzobon <enrico.pozzobon@dissecto.com>
+---
+Currently, on microchip lan7801, enabling promiscuous mode does not
+result in VLAN tagged packets being captured. This patch fixes this,
+forcing the RFE_CTL_VLAN_FILTER_ flag to be off when promiscuous mode is
+enabled.
+---
+Changes in v2:
+- moved VLAN filter logic into lan78xx_update_vlan_filter()
+- Link to v1: https://patch.msgid.link/20260630-lan78xx-vlan-promisc-v1-1-fbf0f903bd8f@dissecto.com
 
-> +	}
-> +	default:
-> +		phydev_err(phydev, "Unknown firmware operation: %d\n", entry->type);
-> +		ret = -EINVAL;
-> +		break;
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +static int rtl8261x_fw_load(struct phy_device *phydev)
-> +{
-> +	struct rtl8261x_priv *priv = phydev->priv;
-> +	const struct rtl8261x_fw_entry *entry;
-> +	const struct rtl8261x_fw_header *hdr;
-> +	const struct firmware *fw;
-> +	int ret, i;
-> +
-> +	if (!priv->fw_name)
-> +		return 0;
-> +
-> +	ret = request_firmware(&fw, priv->fw_name, &phydev->mdio.dev);
-> +	if (ret) {
-> +		phydev_err(phydev, "Failed to load firmware %s: %d\n", priv->fw_name, ret);
-> +		return ret;
-> +	}
-> +
-> +	ret = rtl8261x_verify_firmware(phydev, fw);
-> +	if (ret)
-> +		goto release_fw;
-> +
-> +	hdr = (const struct rtl8261x_fw_header *)fw->data;
-> +
-> +	entry = (const struct rtl8261x_fw_entry *)(fw->data + FW_HEADER_SIZE);
-> +	for (i = 0; i < le16_to_cpu(hdr->num_entries); i++, entry++) {
-> +		ret = rtl8261x_fw_execute_entry(phydev, entry);
-> +		if (ret) {
-> +			phydev_err(phydev, "Entry %d failed: %d\n", i, ret);
-> +			goto release_fw;
-> +		}
-> +	}
-> +
-> +	priv->fw_loaded = true;
-> +
-> +release_fw:
-> +	release_firmware(fw);
-> +	return ret;
-> +}
-> +
->  static int rtl8261x_config_intr(struct phy_device *phydev)
->  {
->  	int ret;
-> @@ -484,6 +683,26 @@ static int rtl8261x_config_aneg(struct phy_device *phydev)
->  	return 0;
->  }
->  
-> +static int rtl8261x_config_init(struct phy_device *phydev)
-> +{
-> +	struct rtl8261x_priv *priv = phydev->priv;
-> +	int ret = 0;
-> +
-> +	/* The firmware parameters are preserved across IEEE soft resets and
-> +	 * suspend/resume cycles. Reloading is only necessary after a power
-> +	 * cycle or hard reset.
-> +	 */
-> +	if (priv->fw_name && !priv->fw_loaded) {
-> +		ret = rtl8261x_fw_load(phydev);
-> +		if (ret) {
-> +			phydev_err(phydev, "Firmware loading failed: %d\n", ret);
+To: Thangaraj Samynathan <Thangaraj.S@microchip.com>
+To: Rengarajan Sundararajan <Rengarajan.S@microchip.com>
+To: UNGLinuxDriver@microchip.com
+To: Andrew Lunn <andrew+netdev@lunn.ch>
+To: "David S. Miller" <davem@davemloft.net>
+To: Eric Dumazet <edumazet@google.com>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+To: Woojung.Huh@microchip.com
+Cc: netdev@vger.kernel.org
+Cc: linux-usb@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+---
+ drivers/net/usb/lan78xx.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-It seems pretty verbose when things go wrong. Do you need an error
-message at every level?
-
-    Andrew
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index c4cebacabcb5..cb782d81d84f 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -1499,6 +1499,17 @@ static void lan78xx_deferred_multicast_write(struct work_struct *param)
+ 	return;
+ }
+ 
++static void lan78xx_update_vlan_filter(struct lan78xx_priv *pdata,
++				       struct net_device *netdev,
++				       netdev_features_t features)
++{
++	if ((features & NETIF_F_HW_VLAN_CTAG_FILTER) &&
++	    !(netdev->flags & IFF_PROMISC))
++		pdata->rfe_ctl |= RFE_CTL_VLAN_FILTER_;
++	else
++		pdata->rfe_ctl &= ~RFE_CTL_VLAN_FILTER_;
++}
++
+ static void lan78xx_set_multicast(struct net_device *netdev)
+ {
+ 	struct lan78xx_net *dev = netdev_priv(netdev);
+@@ -1533,6 +1544,8 @@ static void lan78xx_set_multicast(struct net_device *netdev)
+ 		}
+ 	}
+ 
++	lan78xx_update_vlan_filter(pdata, dev->net, dev->net->features);
++
+ 	if (netdev_mc_count(dev->net)) {
+ 		struct netdev_hw_addr *ha;
+ 		int i;
+@@ -3074,10 +3087,7 @@ static int lan78xx_set_features(struct net_device *netdev,
+ 	else
+ 		pdata->rfe_ctl &= ~RFE_CTL_VLAN_STRIP_;
+ 
+-	if (features & NETIF_F_HW_VLAN_CTAG_FILTER)
+-		pdata->rfe_ctl |= RFE_CTL_VLAN_FILTER_;
+-	else
+-		pdata->rfe_ctl &= ~RFE_CTL_VLAN_FILTER_;
++	lan78xx_update_vlan_filter(pdata, netdev, features);
+ 
+ 	spin_unlock_irqrestore(&pdata->rfe_ctl_lock, flags);
+ 
 
 ---
-pw-bot: cr
+base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+change-id: 20260623-lan78xx-vlan-promisc-83af8a48a7ec
+
+Best regards,
+--  
+Enrico Pozzobon <enrico.pozzobon@dissecto.com>
+
+
