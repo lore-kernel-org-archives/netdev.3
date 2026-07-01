@@ -1,40 +1,42 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6605549251E
-	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 15:59:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10308360EFF
+	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 15:59:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782921562; cv=none; b=Bu+ucDhh+s0ncxqhQ2Flp36X3Qgl5T1GL8ATx9Y4/vjYu8CD273+/GXiplavNMvFeZlcRdQasttJk7vvTgZBCkfBl64xGArtoNrv7nCXSA1F8O9is16TMjebFRg3bH8sYVXywLVv104X4DBDHvsq7Cm9nChyJb1ja8eGuGyXo3M=
+	t=1782921563; cv=none; b=jfvBv6Oh3UDHoabXm5bvosxDK6eNUpudlnpO+eA8mVMebyFrsf/Cb6PgvRG1glisCYgnhLaNpnF7oRv9K6mz4m6zNb/ZLL/5v6IJtNR5Q5WZgq/bSOvENcD0K5WWbkgncV0FgVTBBKumMGOV6eHu4cJs0o8hasFXtiZGvgIzQVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782921562; c=relaxed/simple;
-	bh=prPFly5ezm3C1Dvts+psV9mCn00GZ3shOaavLauKZkc=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=rfDvjYrzad0lxY9xCnO04b5DYffSIXXYi2SAUh9BdPIuJ5nJpfzLvOwew5gm4y9cTYZyT+/m9SjJwZ90J4KwAWd8fAhUm/iDigeedumH6HKH+yB11Dxq2yao/ggIis85HFpJOAbb+7mbC5q+2PdpqwQBfZcDzSL26hG86VTuNvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=jGH2Q3wn; arc=none smtp.client-ip=185.171.202.116
+	s=arc-20240116; t=1782921563; c=relaxed/simple;
+	bh=osmeVGJ32ILQamU8HACuA0jdDt/DkUYYJa/KKs9G7Ik=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=CNdv2vk90+mqQ1+P0pCR5tETl2i2kGuAyBtVa8oH3w+rpY8zPXihIvIuqDt2OQZAPJcntDAcpGp4witgtfFcsj+eFgVFaHAifHeDkkUIKLtpbpmWYirMr/HKdLUUSWXjxk+KHuM3J0D+LFB7hELMlV8+GXDjQfqd0yBE2/Omxfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=kzMZvGUa; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="jGH2Q3wn"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="kzMZvGUa"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 26063C4FECB;
-	Wed,  1 Jul 2026 15:59:24 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id DA8F31A0DB9;
+	Wed,  1 Jul 2026 15:59:20 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 1331960288;
-	Wed,  1 Jul 2026 15:59:13 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BEE71104C967E;
-	Wed,  1 Jul 2026 17:59:06 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id AD31C60288;
+	Wed,  1 Jul 2026 15:59:20 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6DEE5104C967E;
+	Wed,  1 Jul 2026 17:59:17 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1782921551; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=pqPkWt3NjnuYgtecTC80VCR92378sKkmYJAPWo/XleM=;
-	b=jGH2Q3wnl07s+ox9GFLyeLfJfNcZp+ZTRb+XMbkpltj6lYFGwrLtWYyt6n/SO+8WdFGcYs
-	xlo1U500XBt8kwpnNlBf5J6P7yj7cki72oCPuS3FJx56ohAIFLjLhd1IUN0SQJaiCPKPbH
-	52lHRZYO9pa273qEWAvYLPZjAVqKJnQi7FV+SDx/Xyky07EJpWae1IwYa95V0P/DMw7wcK
-	g+wnMNEER3i3oA87hj0a6Eil6pkuX+YqDJNtyhIrQXxSofrB7qWwG9o5otV31Mrdk8F4El
-	lnm6VnvnxVu4XoasFK6TtmQVZDtWpmcN3rk6cuYd0aH4V/vXecuEvW0cHhEVUA==
+	t=1782921559; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=PmznCJlv2fJYMkSf3vBgdPmAhcjSl/EDCYmh5PKLpic=;
+	b=kzMZvGUaWt2HgHyo1zClrrS9ZSoQPwgX9YQJkxA5aeqgUcYvXkpgffzeDNCyefi7oEiEao
+	CL9xp8unli7qWH5Z/G1S5/PAhS0oMYpBnevyhs535M1BUIG5Yg7z1ZW2y6TLEygMxTSPO8
+	pzRWHDjspZ0IDwiZkS/VIOqPMpYuFq+USogz4eWQ0G9cI+bnXOkJO8hdfvRnZoruOAE/AK
+	FbTO+DgeHWkhS4Fx+zFGOlN4SoOv5uoB6+heiAvc3BBfBgauE8iPcd8bIaSUq0XrOtnJ3q
+	8puIrVQUfCdUL8uZpoRKO/XiOh1nCWdwTIrlhSJoyiR84SrBxaYlWVb9FEnxDA==
 From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Subject: [PATCH net-next v3 00/15] net: macb: implement context swapping
-Date: Wed, 01 Jul 2026 17:59:03 +0200
-Message-Id: <20260701-macb-context-v3-0-00268d5b1502@bootlin.com>
+Date: Wed, 01 Jul 2026 17:59:06 +0200
+Subject: [PATCH net-next v3 03/15] net: macb: unify variable naming
+ convention in at91ether functions
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -43,11 +45,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22Nyw7CIBREf6VhLeZCX6kr/8O44GkxFgwgqWn67
- 1LcqHE5mTlnFhSUNyqgQ7Ugr5IJxtkc6l2FxMjsRWEjc0YUaAcNEDwxwbFwNqo5Yi5BME2hIY1
- EGbl7pc1cdCdkVcQ2r9D53YQHvyoRN9u2HU2Izj/LcyKF+H+SCAY8tAOIlvGe9vTInYs3Y/fCT
- UWe6AdO4AenGWe6HnRPZAO8+8bXdX0BKEm7vwUBAAA=
-X-Change-ID: 20260401-macb-context-bd0caf20414d
+Message-Id: <20260701-macb-context-v3-3-00268d5b1502@bootlin.com>
+References: <20260701-macb-context-v3-0-00268d5b1502@bootlin.com>
+In-Reply-To: <20260701-macb-context-v3-0-00268d5b1502@bootlin.com>
 To: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, 
  Conor Dooley <conor.dooley@microchip.com>, 
  Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -68,130 +68,377 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
 X-Mailer: b4 0.15.2
 X-Last-TLS-Session-Version: TLSv1.3
 
-MACB has a pretty primitive approach to buffer management. They are all
-stored in `struct macb *bp`. On operations that require buffer realloc
-(set_ringparam & change_mtu at the moment), the only option is to close
-the interface, change our global state and re-open the interface.
+Follow MACB naming convention throughout on two aspects:
+ - Always name `struct macb *bp` rather than `lp`.
+ - Always name `struct macb_queue *queue` rather than `q`.
 
-Two issues:
-- It doesn't fly on memory pressured systems; we free our precious
-  buffers and don't manage to reallocate fully, meaning our machine
-  just lost its network access.
-- Anecdotally, it is pretty slow because it implies a full PHY reinit.
-
-Instead, we shall:
- - allocate a new context (including buffers) first
- - if it fails, early return without any impact to the interface
- - stop interface
- - update global state (bp, netdev, etc)
- - pass newly allocated buffer pointers to the hardware
- - start interface
- - free old context
-
-This is what we implement here. Both .set_ringparam() and
-.ndo_change_mtu() are covered by this series. In the future,
-at least .set_channels() [0], XDP [1] and XSK [2] would benefit.
-
-The change is super intrusive so conflicts will be major. Sorry!
-
-Thanks,
-Have a nice day,
-Théo
-
-[0]: https://lore.kernel.org/netdev/20260317-macb-set-channels-v4-0-1bd4f4ffcfca@bootlin.com/
-[1]: https://lore.kernel.org/netdev/20260323221047.2749577-1-pvalerio@redhat.com/
-[2]: https://lore.kernel.org/netdev/20260304-macb-xsk-v1-0-ba2ebe2bdaa3@bootlin.com/
+The latter is to reserve `q` for queue indexes.
 
 Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
 ---
-Changes in v3:
-- Use `const struct macb_info *info` instead of bare `u32 caps` as
-  helper arguments, for type safety.
-- macb_interrupt(): the pre-lock readl(ISR) to detect spurious
-  interrupts is only done if CLEAR_ON_WRITE.
-- Don't forget allocating context in at91ether_open().
-- swap:
-  - Refuse swap for EMAC HW; it would crash because codepaths are so
-    different.
-  - Grab new bp->mac_cfg_lock to serialise with phylink MAC callbacks.
-    We cannot rely on phydev->lock because it isn't present in the SFP
-    or fixed-link cases. We also want to avoid phylink_stop() which
-    triggers a slow PHY retrain.
-- swap start:
-  - We used to do disable-irqs-and-hw then drain-all-bh-features, but
-    then HW might be raced against. Instead we disable-irqs then
-    drain-all-bh then disable-hw which means at disable-hw step no BH
-    context can be active.
-  - Use macb_halt_tx() helper to properly stop HW.
-  - Disable BH features before netif_tx_disable() call to avoid queue
-    wakeup races.
-  - Use macb_queue_isr_clear() helper instead of manual if-then-writel.
-- swap end:
-  - Grab bp->lock for the hardware reinit sequence composed of DMACFG
-    and NCR writes.
-  - Drop now useless EMAC check (we refuse EMAC HW before swapping).
-- nits:
-  - New patch to rename macb_{alloc,free}_consistent() which don't only
-    allocate consistent buffers since a long time ago.
-  - Fix the start_xmit verbose netdev_vdbg() format string from %hu to %u
-    because the queue index type changed.
-  - Strong commit reword from "unify `struct macb *` naming convention"
-    to "unify variable naming convention in at91ether functions" which
-    was underselling the changes.
-- Rebase upon latest net-next/main (1c664ec4b9ea).
-- Link to v2: https://patch.msgid.link/20260410-macb-context-v2-0-af39f71d40b6@bootlin.com
+ drivers/net/ethernet/cadence/macb_main.c | 176 ++++++++++++++++---------------
+ 1 file changed, 91 insertions(+), 85 deletions(-)
 
-Changes in v2:
-- Patch "add subset of `struct macb` to `struct macb_context`" was
-  messed up. It contained much more than what the name implied. Split
-  into three commits (I caused trouble by rebase reordering).
-- Fix tieoff; V1 allocated it without initialisation.
-- Fix NULL pointer dereference on context in mab_get_regs() and
-  macb_get_ringparam() when interface is offline.
-- Patch "unify device pointer naming convention":
-  - Fix build issue when CONFIG_NETCONSOLE=y.
-  - Rename `struct net_device *dev` to `netdev` in macb.h.
-  - Rename `struct phy_device *phy` to `phydev` in macb_main.c.
-- On swap, call netdev_tx_reset_queue() to reset all DQL counters.
-- At end of swap, add missing kfree(old_ctx).
-- During HW disabling in swap, grab bp->lock to protect against IRQ
-  handler.
-- On swap, cancel the three BH features MACB has:
-  bp->hresp_err_bh_work, bp->tx_lpi_work and queue->tx_error_task.
-- On swap, call macb_configure_dma() which writes buffer size to
-  hardware registers. This is important because the change_mtu codepath
-  changes the buffer size.
-- Rebase onto latest net-next/main (58dd34dbd5b0) & resolve conflicts.
-- Link to v1: https://patch.msgid.link/20260401-macb-context-v1-0-9590c5ab7272@bootlin.com
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index 7d75cf625556..86c0e9ccbfce 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -4946,71 +4946,72 @@ static const struct macb_usrio_config at91_default_usrio = {
+ 
+ static struct sifive_fu540_macb_mgmt *mgmt;
+ 
+-static int at91ether_alloc_coherent(struct macb *lp)
++static int at91ether_alloc_coherent(struct macb *bp)
+ {
+-	struct macb_queue *q = &lp->queues[0];
++	struct macb_queue *queue = &bp->queues[0];
+ 
+-	q->rx_ring = dma_alloc_coherent(&lp->pdev->dev,
+-					 (AT91ETHER_MAX_RX_DESCR *
+-					  macb_dma_desc_get_size(lp)),
+-					 &q->rx_ring_dma, GFP_KERNEL);
+-	if (!q->rx_ring)
++	queue->rx_ring = dma_alloc_coherent(&bp->pdev->dev,
++					    (AT91ETHER_MAX_RX_DESCR *
++					     macb_dma_desc_get_size(bp)),
++					    &queue->rx_ring_dma, GFP_KERNEL);
++	if (!queue->rx_ring)
+ 		return -ENOMEM;
+ 
+-	q->rx_buffers = dma_alloc_coherent(&lp->pdev->dev,
+-					    AT91ETHER_MAX_RX_DESCR *
+-					    AT91ETHER_MAX_RBUFF_SZ,
+-					    &q->rx_buffers_dma, GFP_KERNEL);
+-	if (!q->rx_buffers) {
+-		dma_free_coherent(&lp->pdev->dev,
++	queue->rx_buffers = dma_alloc_coherent(&bp->pdev->dev,
++					       AT91ETHER_MAX_RX_DESCR *
++					       AT91ETHER_MAX_RBUFF_SZ,
++					       &queue->rx_buffers_dma,
++					       GFP_KERNEL);
++	if (!queue->rx_buffers) {
++		dma_free_coherent(&bp->pdev->dev,
+ 				  AT91ETHER_MAX_RX_DESCR *
+-				  macb_dma_desc_get_size(lp),
+-				  q->rx_ring, q->rx_ring_dma);
+-		q->rx_ring = NULL;
++				  macb_dma_desc_get_size(bp),
++				  queue->rx_ring, queue->rx_ring_dma);
++		queue->rx_ring = NULL;
+ 		return -ENOMEM;
+ 	}
+ 
+ 	return 0;
+ }
+ 
+-static void at91ether_free_coherent(struct macb *lp)
++static void at91ether_free_coherent(struct macb *bp)
+ {
+-	struct macb_queue *q = &lp->queues[0];
++	struct macb_queue *queue = &bp->queues[0];
+ 
+-	if (q->rx_ring) {
+-		dma_free_coherent(&lp->pdev->dev,
++	if (queue->rx_ring) {
++		dma_free_coherent(&bp->pdev->dev,
+ 				  AT91ETHER_MAX_RX_DESCR *
+-				  macb_dma_desc_get_size(lp),
+-				  q->rx_ring, q->rx_ring_dma);
+-		q->rx_ring = NULL;
++				  macb_dma_desc_get_size(bp),
++				  queue->rx_ring, queue->rx_ring_dma);
++		queue->rx_ring = NULL;
+ 	}
+ 
+-	if (q->rx_buffers) {
+-		dma_free_coherent(&lp->pdev->dev,
++	if (queue->rx_buffers) {
++		dma_free_coherent(&bp->pdev->dev,
+ 				  AT91ETHER_MAX_RX_DESCR *
+ 				  AT91ETHER_MAX_RBUFF_SZ,
+-				  q->rx_buffers, q->rx_buffers_dma);
+-		q->rx_buffers = NULL;
++				  queue->rx_buffers, queue->rx_buffers_dma);
++		queue->rx_buffers = NULL;
+ 	}
+ }
+ 
+ /* Initialize and start the Receiver and Transmit subsystems */
+-static int at91ether_start(struct macb *lp)
++static int at91ether_start(struct macb *bp)
+ {
+-	struct macb_queue *q = &lp->queues[0];
++	struct macb_queue *queue = &bp->queues[0];
+ 	struct macb_dma_desc *desc;
+ 	dma_addr_t addr;
+ 	u32 ctl;
+ 	int i, ret;
+ 
+-	ret = at91ether_alloc_coherent(lp);
++	ret = at91ether_alloc_coherent(bp);
+ 	if (ret)
+ 		return ret;
+ 
+-	addr = q->rx_buffers_dma;
++	addr = queue->rx_buffers_dma;
+ 	for (i = 0; i < AT91ETHER_MAX_RX_DESCR; i++) {
+-		desc = macb_rx_desc(q, i);
+-		macb_set_addr(lp, desc, addr);
++		desc = macb_rx_desc(queue, i);
++		macb_set_addr(bp, desc, addr);
+ 		desc->ctrl = 0;
+ 		addr += AT91ETHER_MAX_RBUFF_SZ;
+ 	}
+@@ -5019,17 +5020,17 @@ static int at91ether_start(struct macb *lp)
+ 	desc->addr |= MACB_BIT(RX_WRAP);
+ 
+ 	/* Reset buffer index */
+-	q->rx_tail = 0;
++	queue->rx_tail = 0;
+ 
+ 	/* Program address of descriptor list in Rx Buffer Queue register */
+-	macb_writel(lp, RBQP, q->rx_ring_dma);
++	macb_writel(bp, RBQP, queue->rx_ring_dma);
+ 
+ 	/* Enable Receive and Transmit */
+-	ctl = macb_readl(lp, NCR);
+-	macb_writel(lp, NCR, ctl | MACB_BIT(RE) | MACB_BIT(TE));
++	ctl = macb_readl(bp, NCR);
++	macb_writel(bp, NCR, ctl | MACB_BIT(RE) | MACB_BIT(TE));
+ 
+ 	/* Enable MAC interrupts */
+-	macb_writel(lp, IER, MACB_BIT(RCOMP)	|
++	macb_writel(bp, IER, MACB_BIT(RCOMP)	|
+ 			     MACB_BIT(RXUBR)	|
+ 			     MACB_BIT(ISR_TUND)	|
+ 			     MACB_BIT(ISR_RLE)	|
+@@ -5040,12 +5041,12 @@ static int at91ether_start(struct macb *lp)
+ 	return 0;
+ }
+ 
+-static void at91ether_stop(struct macb *lp)
++static void at91ether_stop(struct macb *bp)
+ {
+ 	u32 ctl;
+ 
+ 	/* Disable MAC interrupts */
+-	macb_writel(lp, IDR, MACB_BIT(RCOMP)	|
++	macb_writel(bp, IDR, MACB_BIT(RCOMP)	|
+ 			     MACB_BIT(RXUBR)	|
+ 			     MACB_BIT(ISR_TUND)	|
+ 			     MACB_BIT(ISR_RLE)	|
+@@ -5054,35 +5055,35 @@ static void at91ether_stop(struct macb *lp)
+ 			     MACB_BIT(HRESP));
+ 
+ 	/* Disable Receiver and Transmitter */
+-	ctl = macb_readl(lp, NCR);
+-	macb_writel(lp, NCR, ctl & ~(MACB_BIT(TE) | MACB_BIT(RE)));
++	ctl = macb_readl(bp, NCR);
++	macb_writel(bp, NCR, ctl & ~(MACB_BIT(TE) | MACB_BIT(RE)));
+ 
+ 	/* Free resources. */
+-	at91ether_free_coherent(lp);
++	at91ether_free_coherent(bp);
+ }
+ 
+ /* Open the ethernet interface */
+ static int at91ether_open(struct net_device *netdev)
+ {
+-	struct macb *lp = netdev_priv(netdev);
++	struct macb *bp = netdev_priv(netdev);
+ 	u32 ctl;
+ 	int ret;
+ 
+-	ret = pm_runtime_resume_and_get(&lp->pdev->dev);
++	ret = pm_runtime_resume_and_get(&bp->pdev->dev);
+ 	if (ret < 0)
+ 		return ret;
+ 
+ 	/* Clear internal statistics */
+-	ctl = macb_readl(lp, NCR);
+-	macb_writel(lp, NCR, ctl | MACB_BIT(CLRSTAT));
++	ctl = macb_readl(bp, NCR);
++	macb_writel(bp, NCR, ctl | MACB_BIT(CLRSTAT));
+ 
+-	macb_set_hwaddr(lp);
++	macb_set_hwaddr(bp);
+ 
+-	ret = at91ether_start(lp);
++	ret = at91ether_start(bp);
+ 	if (ret)
+ 		goto pm_exit;
+ 
+-	ret = macb_phylink_connect(lp);
++	ret = macb_phylink_connect(bp);
+ 	if (ret)
+ 		goto stop;
+ 
+@@ -5091,25 +5092,25 @@ static int at91ether_open(struct net_device *netdev)
+ 	return 0;
+ 
+ stop:
+-	at91ether_stop(lp);
++	at91ether_stop(bp);
+ pm_exit:
+-	pm_runtime_put_sync(&lp->pdev->dev);
++	pm_runtime_put_sync(&bp->pdev->dev);
+ 	return ret;
+ }
+ 
+ /* Close the interface */
+ static int at91ether_close(struct net_device *netdev)
+ {
+-	struct macb *lp = netdev_priv(netdev);
++	struct macb *bp = netdev_priv(netdev);
+ 
+ 	netif_stop_queue(netdev);
+ 
+-	phylink_stop(lp->phylink);
+-	phylink_disconnect_phy(lp->phylink);
++	phylink_stop(bp->phylink);
++	phylink_disconnect_phy(bp->phylink);
+ 
+-	at91ether_stop(lp);
++	at91ether_stop(bp);
+ 
+-	pm_runtime_put(&lp->pdev->dev);
++	pm_runtime_put(&bp->pdev->dev);
+ 
+ 	return 0;
+ }
+@@ -5118,19 +5119,21 @@ static int at91ether_close(struct net_device *netdev)
+ static netdev_tx_t at91ether_start_xmit(struct sk_buff *skb,
+ 					struct net_device *netdev)
+ {
+-	struct macb *lp = netdev_priv(netdev);
++	struct macb *bp = netdev_priv(netdev);
++	struct device *dev = &bp->pdev->dev;
+ 
+-	if (macb_readl(lp, TSR) & MACB_BIT(RM9200_BNQ)) {
++	if (macb_readl(bp, TSR) & MACB_BIT(RM9200_BNQ)) {
+ 		int desc = 0;
+ 
+ 		netif_stop_queue(netdev);
+ 
+ 		/* Store packet information (to free when Tx completed) */
+-		lp->rm9200_txq[desc].skb = skb;
+-		lp->rm9200_txq[desc].size = skb->len;
+-		lp->rm9200_txq[desc].mapping = dma_map_single(&lp->pdev->dev, skb->data,
+-							      skb->len, DMA_TO_DEVICE);
+-		if (dma_mapping_error(&lp->pdev->dev, lp->rm9200_txq[desc].mapping)) {
++		bp->rm9200_txq[desc].skb = skb;
++		bp->rm9200_txq[desc].size = skb->len;
++		bp->rm9200_txq[desc].mapping = dma_map_single(dev, skb->data,
++							      skb->len,
++							      DMA_TO_DEVICE);
++		if (dma_mapping_error(dev, bp->rm9200_txq[desc].mapping)) {
+ 			dev_kfree_skb_any(skb);
+ 			netdev->stats.tx_dropped++;
+ 			netdev_err(netdev, "%s: DMA mapping error\n", __func__);
+@@ -5138,9 +5141,9 @@ static netdev_tx_t at91ether_start_xmit(struct sk_buff *skb,
+ 		}
+ 
+ 		/* Set address of the data in the Transmit Address register */
+-		macb_writel(lp, TAR, lp->rm9200_txq[desc].mapping);
++		macb_writel(bp, TAR, bp->rm9200_txq[desc].mapping);
+ 		/* Set length of the packet in the Transmit Control register */
+-		macb_writel(lp, TCR, skb->len);
++		macb_writel(bp, TCR, skb->len);
+ 
+ 	} else {
+ 		netdev_err(netdev, "%s called, but device is busy!\n",
+@@ -5156,16 +5159,17 @@ static netdev_tx_t at91ether_start_xmit(struct sk_buff *skb,
+  */
+ static void at91ether_rx(struct net_device *netdev)
+ {
+-	struct macb *lp = netdev_priv(netdev);
+-	struct macb_queue *q = &lp->queues[0];
++	struct macb *bp = netdev_priv(netdev);
++	struct macb_queue *queue = &bp->queues[0];
+ 	struct macb_dma_desc *desc;
+ 	unsigned char *p_recv;
+ 	struct sk_buff *skb;
+ 	unsigned int pktlen;
+ 
+-	desc = macb_rx_desc(q, q->rx_tail);
++	desc = macb_rx_desc(queue, queue->rx_tail);
+ 	while (desc->addr & MACB_BIT(RX_USED)) {
+-		p_recv = q->rx_buffers + q->rx_tail * AT91ETHER_MAX_RBUFF_SZ;
++		p_recv = queue->rx_buffers +
++			 queue->rx_tail * AT91ETHER_MAX_RBUFF_SZ;
+ 		pktlen = MACB_BF(RX_FRMLEN, desc->ctrl);
+ 		skb = netdev_alloc_skb(netdev, pktlen + 2);
+ 		if (skb) {
+@@ -5187,12 +5191,12 @@ static void at91ether_rx(struct net_device *netdev)
+ 		desc->addr &= ~MACB_BIT(RX_USED);
+ 
+ 		/* wrap after last buffer */
+-		if (q->rx_tail == AT91ETHER_MAX_RX_DESCR - 1)
+-			q->rx_tail = 0;
++		if (queue->rx_tail == AT91ETHER_MAX_RX_DESCR - 1)
++			queue->rx_tail = 0;
+ 		else
+-			q->rx_tail++;
++			queue->rx_tail++;
+ 
+-		desc = macb_rx_desc(q, q->rx_tail);
++		desc = macb_rx_desc(queue, queue->rx_tail);
+ 	}
+ }
+ 
+@@ -5200,14 +5204,14 @@ static void at91ether_rx(struct net_device *netdev)
+ static irqreturn_t at91ether_interrupt(int irq, void *dev_id)
+ {
+ 	struct net_device *netdev = dev_id;
+-	struct macb *lp = netdev_priv(netdev);
++	struct macb *bp = netdev_priv(netdev);
+ 	u32 intstatus, ctl;
+ 	unsigned int desc;
+ 
+ 	/* MAC Interrupt Status register indicates what interrupts are pending.
+ 	 * It is automatically cleared once read.
+ 	 */
+-	intstatus = macb_readl(lp, ISR);
++	intstatus = macb_readl(bp, ISR);
+ 
+ 	/* Receive complete */
+ 	if (intstatus & MACB_BIT(RCOMP))
+@@ -5220,23 +5224,25 @@ static irqreturn_t at91ether_interrupt(int irq, void *dev_id)
+ 			netdev->stats.tx_errors++;
+ 
+ 		desc = 0;
+-		if (lp->rm9200_txq[desc].skb) {
+-			dev_consume_skb_irq(lp->rm9200_txq[desc].skb);
+-			lp->rm9200_txq[desc].skb = NULL;
+-			dma_unmap_single(&lp->pdev->dev, lp->rm9200_txq[desc].mapping,
+-					 lp->rm9200_txq[desc].size, DMA_TO_DEVICE);
++		if (bp->rm9200_txq[desc].skb) {
++			dev_consume_skb_irq(bp->rm9200_txq[desc].skb);
++			bp->rm9200_txq[desc].skb = NULL;
++			dma_unmap_single(&bp->pdev->dev,
++					 bp->rm9200_txq[desc].mapping,
++					 bp->rm9200_txq[desc].size,
++					 DMA_TO_DEVICE);
+ 			netdev->stats.tx_packets++;
+-			netdev->stats.tx_bytes += lp->rm9200_txq[desc].size;
++			netdev->stats.tx_bytes += bp->rm9200_txq[desc].size;
+ 		}
+ 		netif_wake_queue(netdev);
+ 	}
+ 
+ 	/* Work-around for EMAC Errata section 41.3.1 */
+ 	if (intstatus & MACB_BIT(RXUBR)) {
+-		ctl = macb_readl(lp, NCR);
+-		macb_writel(lp, NCR, ctl & ~MACB_BIT(RE));
++		ctl = macb_readl(bp, NCR);
++		macb_writel(bp, NCR, ctl & ~MACB_BIT(RE));
+ 		wmb();
+-		macb_writel(lp, NCR, ctl | MACB_BIT(RE));
++		macb_writel(bp, NCR, ctl | MACB_BIT(RE));
+ 	}
+ 
+ 	if (intstatus & MACB_BIT(ISR_ROVR))
 
----
-Théo Lebrun (15):
-      net: macb: drop "consistent" from alloc/free function names
-      net: macb: unify device pointer naming convention
-      net: macb: unify variable naming convention in at91ether functions
-      net: macb: unify queue index variable naming convention and types
-      net: macb: enforce reverse christmas tree (RCT) convention
-      net: macb: allocate tieoff descriptor once across device lifetime
-      net: macb: introduce macb_context struct for buffer management
-      net: macb: avoid macb_init_rx_buffer_size() modifying state
-      net: macb: make `struct macb` subset reachable from macb_context struct
-      net: macb: change caps helpers signatures
-      net: macb: change function signatures to take contexts
-      net: macb: introduce macb_context_alloc() helper
-      net: macb: re-read ISR inside IRQ handler locked section
-      net: macb: use context swapping in .set_ringparam()
-      net: macb: use context swapping in .ndo_change_mtu()
-
- drivers/net/ethernet/cadence/macb.h      |  127 +-
- drivers/net/ethernet/cadence/macb_main.c | 1849 +++++++++++++++++-------------
- drivers/net/ethernet/cadence/macb_pci.c  |   46 +-
- drivers/net/ethernet/cadence/macb_ptp.c  |   26 +-
- 4 files changed, 1199 insertions(+), 849 deletions(-)
----
-base-commit: 64e6f7613459a9b344fb09a129584435b281088b
-change-id: 20260401-macb-context-bd0caf20414d
-
-Best regards,
---  
-Théo Lebrun <theo.lebrun@bootlin.com>
+-- 
+2.55.0
 
