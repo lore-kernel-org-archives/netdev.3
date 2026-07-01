@@ -1,133 +1,174 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011037.outbound.protection.outlook.com [40.107.130.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E563A48D5
-	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 08:16:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782893783; cv=none; b=KdHkgYosNa4lajZLYcD7WHoy2JQa9CaOvmt1m15dz2opDqCkwqjdBj7bnOjWKn8oowDUBY7+bBqPSO94J1PbUmYnNi7AkupySEkuYG3GA9+KQFFQ4uOupNu2bjaNUmw2qt1DLsIKnq4xA64ukuZxziwzgBX6HhQVk2PIUFDi5Kc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558743D9030;
+	Wed,  1 Jul 2026 08:16:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782893783; cv=fail; b=ZFeltJKIHKCnNgE4jVDVyjckaQycHY4+7UKFaHsNYW8x9M95WnTNZD1H+EzVP4aqhgdQtZZY20VN3UupPlRJy4mh3oMnqnuMjrEl1TWPGbleFhWB4prJpk5AVQhmudkEWmbPDUSRxrwnOy+N56/vbhvnqYA9zww2eMRfLPXvAJs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1782893783; c=relaxed/simple;
-	bh=177yDnaR9yPvT58j2LfyrOVRkGL76Chc8Mj0N3D33Xc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gPZHp9js776OZGfblarN2tH2nEUW0xMXggFkGo8SbcJVWiGPNkZa/jvcdm9pRMsjTNEWhX+OEWlsrQN4LI+Rj/JJ8kZ+ckC4w4xK9CA6BsBx2YEML6Dg3CgLb4GruTjSqFJxea7sCm785myxxLA9k7oE6KxW3fioGiIclz4YFe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kjIp1lIa; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	bh=wRv9jvXbNr7xHcRboerJ1wYxzGSbfGSodZuxos9J7K8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=uxSOZV60XJnJaxGI7Skpbi9H+QLePZw4UE4RcpqwBW3OO3tczf4pQTE0CUp4GyeCIbf6sLnrJdPw37vZFjWFXcVIi3OxIpll7SLhBz7dEFeqhraeyPAmbkjD4tLFyWPCy0tmOXavcZvmIBr55NSKP9bk6wFqdhmC/SYtgWDGiLU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=bw9ptL9O; arc=fail smtp.client-ip=40.107.130.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kjIp1lIa"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-37defb2f231so167806a91.2
-        for <netdev@vger.kernel.org>; Wed, 01 Jul 2026 01:16:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782893781; x=1783498581; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Sw4CMyJ7o4eJHTpqYUHzkvZXiVgvqV7kRPHSd5Gk6d4=;
-        b=kjIp1lIazDuiSy4r9tE2SA+CRp3loAP/8OzXrA9ebpQLgXWhvIiGuFFlsi1jhPeVPh
-         /SVjNircpn5yDOEdmN6KzF+N5He6tXsf2UsBCPysDETpqp/jNsp61IviJs9ArjsR9alb
-         a3wsuzLAyZ5+WihmeIqRXAUSfg4faNaAlVrhrjI9JlGMtN8Z4RSQLc9R9+Kv9Fo/rSmp
-         0gGy3uIjYNuOVztTp1mSnoZORyMB4dVL/j4gxcUZSsSJoTrw8kP7hwkEc2noZIKI2c02
-         D2QHw7VAppYcFoxiAyS9SVPtm/JTlPcsE43ObLajDznagMl+87+7lVCi3v0GTvcPMDUq
-         ST8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782893781; x=1783498581;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Sw4CMyJ7o4eJHTpqYUHzkvZXiVgvqV7kRPHSd5Gk6d4=;
-        b=O2qRc0y+PqFNYhiJOUU3zMAVPxcoozgGSLqy0oWQS+O9AGc0+Q/PaeRs0LvL+DlUCb
-         FPgUbQgiMfh4EPZnROtYmxcIGqBTTp9O8FU2fUxF9uOPsamxn7tTCEv7cpZ66PBL0SvL
-         XeyjQI3WkA5QFkfBz6KrX0JYXjcgLt9DY6kEVcHZRdcVcEydPKHvLhiUuM4/OQH4SsBo
-         aZj7XTN7fDEeL43U9WxGhboINqoPSBKRmeS9YW9aM/9XVNx5zCE+QnfeyEwpRc5zJDgg
-         kOFVq09gFdaHAwVIDK8Eu4Td9J34kh93ElGd5LJ3kWPZ8zIySQv/n+6eoeDuvHSaQawq
-         idUg==
-X-Gm-Message-State: AOJu0YzwnF1xQAJOLz62kwFNuF+ZiEEoKdkEztZRbzLyuVHGRu5xrT6/
-	7wvKkKbgCBMfS5Lb55PSjFugpjF4ZqxJoxsbn4cqutNaPrXwUTEkYTOR7+Erou/K
-X-Gm-Gg: AfdE7clRS/EE+pG6f5laS199hqQ9EXGDgCGD52e0tlwUV+LDi8M1bHoPMmMN7Wfr0CB
-	X70O+TnxHyFz9JkxWB4zPx28XbYdh1syW1u6AdDmoiRh8NRwRMhzq3sd9/NWT7Io5M5d8nm91vD
-	NEJAeVkRO8wVMVS5afT3FIpaOxBPFk++N6pitbfaPcL8Fm+ZmD393+WEQxVEaPK+vVxArqx7g0M
-	x5SOAvGpx7dscM67ueCbQYWk1E+NHZGuegro3qinGHqvHhGF0dpLXPF3HY5/iWp/djd8V5wI3Hg
-	jCDlbS60Yjxdlm6I7TU4s7kA11p8cGCgYQb8d8D4JMZFXf9WwcUkDoHOzZjU8kWVvCrFF8WtJBv
-	UO/ygnOp2auQlu4s4tTdlEywBlJVgjitH6VKm8J9IYPAbUYZAnqKEwVZghYbZRYQ3P/K8EOAWwj
-	EWMNVgDdhjfDpbXe2/iBBDVNRvfN8=
-X-Received: by 2002:a17:90b:3dcf:b0:37e:1ff4:44c0 with SMTP id 98e67ed59e1d1-380aa0f4adbmr625565a91.12.1782893781227;
-        Wed, 01 Jul 2026 01:16:21 -0700 (PDT)
-Received: from amd.com ([165.204.156.251])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3809641c894sm1364627a91.11.2026.07.01.01.16.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Jul 2026 01:16:20 -0700 (PDT)
-From: Paritosh Potukuchi <paritoshpotukuchi@gmail.com>
-X-Google-Original-From: Paritosh Potukuchi <paritosh.potukuchi@amd.com>
-To: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Paritosh Potukuchi <paritosh.potukuchi@amd.com>,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH v2 2/2] bonding: reuse neigh_setup from slave neigh_parms
-Date: Wed,  1 Jul 2026 08:16:00 +0000
-Message-ID: <20260701081602.3185086-3-paritosh.potukuchi@amd.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260701081602.3185086-1-paritosh.potukuchi@amd.com>
-References: <20260701081602.3185086-1-paritosh.potukuchi@amd.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="bw9ptL9O"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MThs95ddQ+eQfdsP93hwSnJRKnXZjKEeTBfzv0/huSESrKWh/I+INyruO83iES+MSLxz1m8QZSn/aAPbYsPOPwgWiR8a1aXCs7mbV+ePKvTvb3F3iJ+7pI51KchzOatg0R7H2Yfx20VQkLCJo5yseQJr2Z+53Q8I+X8vhJ64XtCIiqcVTQ5FSo5oN45vCpmrl3mt48lODMh3mD0EgOUswuT/75Rf6m4p4z0qB2EDI87mSCkQbi3gKHE1YjravcCRnLFyXccbIphVZrSHIFvS3RNd3LOUrfy0ch7nMkGP4smnOhgbt7eq9c0AAoczgPXIWn2gROwZUtTUPmoshzskOg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EBnyzgt0WlnpLIpzR06eGr2OpORuf9+SqnRt01DjpSY=;
+ b=m28PHk+8H1vGIfWn5h8VkhsNnjajd2hrPT2RC82mM3IyoafLgPdEJgbHUVw7JKVqwgjo1D8lrjZv73Rqt9qKZyqjZQMNGsVFuzg3S+ipov6AKWUtivV93Ao8juQnzLAxme8M8yYxv6XS3N6eD6x2uAGJvS/bM2wDYVYPU5simcNiMzDXlK/e1ao8s++v++cxaMkvyu/Nnr9mE+WBQhQkaHzL2AQ2C3EtqUqWJ6zkAfQMedaQOoi7Ncx8ghj2M4/Uq/vjQICqRiLo/wDXsnIIKDuXP2qGoDYxYWk9uobss1qZenJFrh21lMgrNT6h0c62rWiQK9wuHCNYcvs/T7j2bw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EBnyzgt0WlnpLIpzR06eGr2OpORuf9+SqnRt01DjpSY=;
+ b=bw9ptL9Op/W1eIxXgIR3UN9HjbcW0gD/oMave/tBcPDKmSStsOe4DdsOSRRL7fmsp9EOJFEV5eeR+tuiePM/btSYv+8PC5xnxmXyWBdj+6NngdW+LUjFmgM3lr2hbKPeXDjjB57qDk/EG0vXBqMy0b3HOPhBDEPX6BxCtYHj1/X70LQ+vhWw8gPPuDNC6Vpx4EGX7zJoQqcgPLNcOiGh2OFtKD4R7GjM2UD8UQj9LnWRPNMpsTtVjpGNyGyWIOXoNVOiU/cOs1Gl67oGrU1SaDWxesELUMrnMA2mqnz/sEdSVK+dydvW9sfxwvbB8l8+W15z+z+YLBxd8v1m3juxdg==
+Received: from GV2PR04MB12213.eurprd04.prod.outlook.com
+ (2603:10a6:150:336::11) by GVXPR04MB10270.eurprd04.prod.outlook.com
+ (2603:10a6:150:1c0::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Wed, 1 Jul 2026
+ 08:16:13 +0000
+Received: from GV2PR04MB12213.eurprd04.prod.outlook.com
+ ([fe80::52ff:eacf:430f:494]) by GV2PR04MB12213.eurprd04.prod.outlook.com
+ ([fe80::52ff:eacf:430f:494%4]) with mapi id 15.21.0159.018; Wed, 1 Jul 2026
+ 08:16:13 +0000
+From: Clark Wang <xiaoning.wang@nxp.com>
+To: Breno Leitao <leitao@debian.org>, "Clark Wang (OSS)"
+	<xiaoning.wang@oss.nxp.com>
+CC: "Frank.Sae@motor-comm.com" <Frank.Sae@motor-comm.com>, "andrew@lunn.ch"
+	<andrew@lunn.ch>, "hkallweit1@gmail.com" <hkallweit1@gmail.com>,
+	"linux@armlinux.org.uk" <linux@armlinux.org.uk>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: RE: [PATCH net] net: phy: motorcomm: read EEE abilities in
+ yt8521_get_features()
+Thread-Topic: [PATCH net] net: phy: motorcomm: read EEE abilities in
+ yt8521_get_features()
+Thread-Index: AQHdCS9Kh6EXypCdTUSz62mUjSw8ybZYUCuAgAAAPRA=
+Date: Wed, 1 Jul 2026 08:16:13 +0000
+Message-ID:
+ <GV2PR04MB12213F4758648CD71F5D5B3B7F3F62@GV2PR04MB12213.eurprd04.prod.outlook.com>
+References: <20260701075730.133707-1-xiaoning.wang@oss.nxp.com>
+ <akTLmyF0r70Jyn9m@gmail.com>
+In-Reply-To: <akTLmyF0r70Jyn9m@gmail.com>
+Accept-Language: en-US, zh-CN
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: GV2PR04MB12213:EE_|GVXPR04MB10270:EE_
+x-ms-office365-filtering-correlation-id: dfb731c8-bc4e-4012-65d7-08ded74903fc
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|23010399003|1800799024|19092799006|376014|7416014|366016|38070700021|22082099003|18002099003|4143699003|11063799006|56012099006;
+x-microsoft-antispam-message-info:
+ iTlVjZw0DBu+CIRTnCYMKCQxG6JFD9P1l2DvYzG3fy4mC47Xdx2p8NGZvP0q8cJ4fn8EEDL/sd1JfwWcHiqDwhxaDN5zFyi6JkLUs5n5OIFQnzLZyOPIExDFN1Wyt/nN9oaeZ8WbTwdPmWMI6a04yYQu2Lkem1vgTtRTHWF8kPyRhQw6sb0h0h/8YDBNkf4yRe55US/3P0y7O67ZPFmbxERVjbg0n9friNP/TgzrQuyweThdMHLg6JQKLwBOHbNlU8YXg+0+8Fs0GBUOE+UDXFZ0CCDGHPlndenMb0yrZuOHfmRCFHnXAp6GU+zWxgdHsON5sQipym0a4YZHm4QxKOdBcW9gEUbXgoSyXziVUn1oRMOf+yOk8OBfG25/B+78Hf7c5pJo73jJ/aYd75Ba1mQmfX3KU7FHWU8YNYrCAU8eHBHIbWBaw5pQAbhU7SiozhdTmsyXl94/QsUJP4BQD14RCq/1vEmHo1ZD8tCy5NHcLjBfMDOFDc4M2ULWu30FGKsotVpcS+iqNfEJfYwv0hKL7ktoBVrMkBxrwDFzgg+aWhAwc2IVsdNWrPQTi08MI/5npNJGPJkMtg6SIwe/CPI282lWP4vnbRjEUJCJV3PYNSxFolLJRV0/D5HRBtmLHHcfKx3s1kWRRHaThVD+fwgrMuqyqslNzlT8lllqwvwP3zLw0+mveCrN160Zqyfd16YXBhZnFRkqcX5Ek5tw2R0/8TVDzFXc+FdZiLjs3NQ=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB12213.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(19092799006)(376014)(7416014)(366016)(38070700021)(22082099003)(18002099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?tZt7RKrjrQFgjbNuSPCyo3Q4SNm47JH9HGPQ68WSpjQNIXtuD/h2YfTpgIhq?=
+ =?us-ascii?Q?bSayqmzUVuIacFivcWRs3ostth2wCNH8N9TqfU/A+GWgFwZVVCr+jTppamYN?=
+ =?us-ascii?Q?kTAQbfIJ5d71DhumbW4GEYubW3CKw8TTLX7DGxC1AIm9+/52tN264cwEQeP3?=
+ =?us-ascii?Q?3FZFvKB6RrkHYl7Yg+GkEwPTf7sdwYXhAz8jt4JDrKaXJaZiJmtd/MuKnY5V?=
+ =?us-ascii?Q?Mu5plF6b+zLZooON8JEaV4ZAgPN8899Z52xkKJm7KwvrRIdt7ozT/INYBwpP?=
+ =?us-ascii?Q?YHWVf+kz18ZLG+ApO8Bv2jLVTHmwhBjRokabV30UagNp5EacnMS2LznLJyOB?=
+ =?us-ascii?Q?PGZYgvsMUoil5715Fh2GPr3qmq4TkOy1FDVKP3hqwOYLD8StzYrhO5zVIzxF?=
+ =?us-ascii?Q?3yi2ehSKI5qfi3ckRkAK/tmm07Ei+a4QZLNNiRX2RHAGmPIW3S1VERImNEXY?=
+ =?us-ascii?Q?u4R1dPqqC6qS+ErHYdm1rWt46fPKxh/kXG2kdx3H2yP/l4r/qrnV+CsqvM8F?=
+ =?us-ascii?Q?ybpIhkHGRLI27mDcB43Ou5UA2Rthn5MRE30Wi29/HnYbP0EDzmYvaQ8yR7N/?=
+ =?us-ascii?Q?2P6R6UJjHdHJ+n1CFP9F/YJf4AEGEWsYiMYaCskTgdSZGqC9lw+4WlsielEY?=
+ =?us-ascii?Q?fcSnVUnda22yIcDojuPt+8aW/tsNKaG/5ev7ySPdYUy2zw+cXYaPMHdu/19S?=
+ =?us-ascii?Q?dNuNMLjtGXYqQIeBRXimdEBjV3oGt/zZoKACPzIJUTFM17Uheb4ZPspn18G0?=
+ =?us-ascii?Q?5c6e3vPBxX0rHEcw5/uupCsCt0zueppsBmkzLzcSzHUAkZufsuyE/v6I9h1z?=
+ =?us-ascii?Q?wTXR5D1qjmG8UQzKUzuuDvMSoSi4he8vI1bAnQsMt5MbQvKGaJDAgC33RhBg?=
+ =?us-ascii?Q?wh630O4iC/Z0tMz0K+/dBTNRt9ybt/xCqEcieMXFnXXF2ugTufYrnSXfBmQe?=
+ =?us-ascii?Q?ALLT5ZYsy+OL08wiW5gNJVhvbGqIKRUigK39HOgWLUDKii68vOlNgbHAGTTw?=
+ =?us-ascii?Q?3h5cV+mZSin6+2Ho7yDm3OWc8i3GSWUZIraAN7/ezlAG3M88b7UDWm4lWAtY?=
+ =?us-ascii?Q?FaSaxqhAj8+xuAVZap8WwG54okhMtaRsNusSs6WXnmcyeDpH4136JMXaLLhT?=
+ =?us-ascii?Q?vK3PzfgCj45Uej9PDt70Zh3VWIxhekEeukJZ8TcYWyhRWcZigN0wFhW5/K9u?=
+ =?us-ascii?Q?q/rzP049sFV4XWnGtZXIedFZ6SijiP3UlJEepPTIFrSowW8YqxwLlNs+WEu1?=
+ =?us-ascii?Q?zVplAqcM6UyHm+xxiUsCfaVmiIA3uh8brCKuVUMdYzvtyOSAX/yUu7Yao2tE?=
+ =?us-ascii?Q?t19gTGFkhMHtVKxsJqzunidW+sqVDyffz6pAMhARMkaSURwwUXc38KH6HaNP?=
+ =?us-ascii?Q?TTbKsIZh5Km5XidAPaTBgK9Z9VodGCpPxtQdas9IZlQj2nlphXKz7prkssOq?=
+ =?us-ascii?Q?5JGG5MQjPh4ggtUvYSux9nDm2lnJsYk/yN2z9eW1hP+ymcAwVrFLYikG/gwD?=
+ =?us-ascii?Q?wFNA6iNLMEQIuDmoCweiGtvwnZK4cz7o8uJhMUjopkn3KckPf6r4n2M6F0SU?=
+ =?us-ascii?Q?BginQ+bYGe/GxJuuIe+vklXp9mFS9P5h1vB8Uuxv2uA9nZWnmBlST/I7hqVU?=
+ =?us-ascii?Q?Cdzn1khBhNuN/Oa/iTgRidJetYelpmFhxm4+7Y2CiIEPY3q4kkiQrD5jr2w7?=
+ =?us-ascii?Q?8C/UGdpoJYd5XWOgxvZltbShva2V8jbBxODMOP/Uu9XjhH+zZascDuOILzM+?=
+ =?us-ascii?Q?8o1+EpVoug=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB12213.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dfb731c8-bc4e-4012-65d7-08ded74903fc
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Jul 2026 08:16:13.2172
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: mOdO5ogWcqwHVN7854OXUhXe5O31gKRXTLmsbNwd+su+LnZuCgnlOw6LMVVdD2W9hgJEm7Z+vpfMtVTWjDSiUg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10270
 
-bond_neigh_init() currently relies on the slave device's
-ndo_neigh_setup() callback to obtain a neigh_setup() handler.
+> > In phy_probe(), genphy_c45_read_eee_abilities() is only called when a
+> > driver uses phydrv->features. Drivers that implement .get_features are
+> > responsible for reading the EEE abilities themselves.
+> >
+> > yt8521_get_features() does not do this, so phydev->supported_eee stays
+> > empty for YT8521/YT8531S and "ethtool --show-eee" reports "EEE status:
+> > not supported", even though the PHY has the standard EEE capability
+> > registers.
+> >
+> > Call genphy_c45_read_eee_abilities() at the end of
+> > yt8521_get_features() to populate supported_eee.
+> >
+> > Fixes: 70479a40954c ("net: phy: Add driver for Motorcomm yt8521
+> > gigabit ethernet phy")
+> > Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+> > ---
+> >  drivers/net/phy/motorcomm.c | 3 +++
+> >  1 file changed, 3 insertions(+)
+> >
+> > diff --git a/drivers/net/phy/motorcomm.c
+> b/drivers/net/phy/motorcomm.c
+> > index b49897500a59..46efa3406841 100644
+> > --- a/drivers/net/phy/motorcomm.c
+> > +++ b/drivers/net/phy/motorcomm.c
+> > @@ -2439,6 +2439,9 @@ static int yt8521_get_features(struct phy_device
+> *phydev)
+> >  		/* add fiber's features to phydev->supported */
+> >  		yt8521_prepare_fiber_features(phydev, phydev->supported);
+> >  	}
+> > +
+> > +	genphy_c45_read_eee_abilities(phydev);
+>=20
+> Don't you want to return error if genphy_c45_read_eee_abilities() fails?
 
-When an initialized neigh_parms instance already exists for the
-slave device, reuse the neigh_setup() callback stored in it instead
-of invoking ndo_neigh_setup() again.
-
-If no neigh_parms instance is found, or no neigh_setup() callback is
-present, retain the existing ndo_neigh_setup() fallback path.
-
-This avoids unnecessary ndo_neigh_setup() invocations while preserving
-existing behaviour.
-
-Signed-off-by: Paritosh Potukuchi <paritosh.potukuchi@amd.com>
----
- drivers/net/bonding/bond_main.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index e044fc733b8c..d2e4dae4e97c 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -4719,7 +4719,7 @@ static int bond_neigh_init(struct neighbour *n)
- {
- 	struct bonding *bond = netdev_priv(n->dev);
- 	const struct net_device_ops *slave_ops;
--	struct neigh_parms parms;
-+	struct neigh_parms parms, *p;
- 	struct slave *slave;
- 	int ret = 0;
- 
-@@ -4727,6 +4727,14 @@ static int bond_neigh_init(struct neighbour *n)
- 	slave = bond_first_slave_rcu(bond);
- 	if (!slave)
- 		goto out;
-+
-+	p = neigh_parms_lookup_dev(n->tbl, slave->dev);
-+
-+	if (p && p->neigh_setup) {
-+		ret = p->neigh_setup(n);
-+		goto out;
-+	}
-+
- 	slave_ops = slave->dev->netdev_ops;
- 	if (!slave_ops->ndo_neigh_setup)
- 		goto out;
--- 
-2.43.0
+EEE is an optional functionality, and the call in genphy_read_abilities() h=
+as the following comment. Therefore, I do not return its error here either.
+"
+	/* This is optional functionality. If not supported, we may get an error
+	 * which should be ignored.
+	 */
+"
 
