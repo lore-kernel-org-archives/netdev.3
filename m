@@ -1,262 +1,143 @@
-Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC76A3EAC74
-	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 10:02:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.59.177.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776783921DC;
+	Wed,  1 Jul 2026 10:04:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782900164; cv=none; b=OdAQshfZ+Fw3Lq0RqAJmvnhqQhrL72EPU6Ps8g2cMmqhk+fTiulCIymPkx16gE63H/Uqc+4+HHd+Zc6QpJ87KgBSmCYpOOC3XcGwxJIvRPNKjc4oLVr3F3MGcxZTEer/HCl/O1FKaO0ZgPQFgga1YxZshB//L1pVA3FPbotIseE=
+	t=1782900251; cv=none; b=ET+fhoxklICeeqktnkAOLnvY0s0z5LgQD8iVsO7BD0yedUlK49nXeGQNcpFQFWZ2lAnAz5kIvNcegu1pUghKdHZajrFteX/HgMoX8UgVllKBzi8L33nVWMracnSY5tQucBhCwAWvhFildv1/4+AA2E6cWzXXXlSg/1KPWehbFPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782900164; c=relaxed/simple;
-	bh=PhAGNmSo69Z2m6XNhnVOoP106UEeayX8JsvFki6CVo8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=rGCtPaowFGH8HZZCX2y1qqGBTgUMGEEK5bYw3Goj7K6S+GzpVUc6VbgNBhhdoGdRPeFbLpO8J7c0ANfG1PkqiiwHW+cERoUJtIOQt0hC/6iqGCcCmvtuaKQMtAJnrt+QDqqRC118IdSjtBFmHYrlPLxR+dWXKIGWah/Em/6+CWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=52.59.177.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
-X-QQ-mid: zesmtpgz4t1782900115t6266496b
-X-QQ-Originating-IP: k3+kHaNuopit1xeUx9ilhiZiyVIhS5MsqvSuU80dS1w=
-Received: from localhost.localdomain ( [36.24.190.76])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 01 Jul 2026 18:01:54 +0800 (CST)
-X-QQ-SSF: 0001000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 16115072362845468618
-EX-QQ-RecipientCnt: 7
-From: Mengyuan Lou <mengyuanlou@net-swift.com>
-To: netdev@vger.kernel.org
-Cc: jiawenwu@trustnetic.com,
-	duanqiangwen@net-swift.com,
-	horms@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	Mengyuan Lou <mengyuanlou@net-swift.com>
-Subject: [PATCH net-next v6 1/3] net: libwx: add support for set_ringparam in wx_ethtool_ops_vf
-Date: Wed,  1 Jul 2026 18:01:43 +0800
-Message-Id: <20260701100145.23738-2-mengyuanlou@net-swift.com>
-X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20260701100145.23738-1-mengyuanlou@net-swift.com>
-References: <20260701100145.23738-1-mengyuanlou@net-swift.com>
+	s=arc-20240116; t=1782900251; c=relaxed/simple;
+	bh=LVaroLwSaEIBs/G5Lnk+N6jwRSDQX02r3wTcYNHvDd8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gk8RnzThTS6VyEVGkqFmq/0BNoRUPaE7rCHSzeMS+X3Sts6U8UQeLIGK/++x31v3/GCOCVMjuTXON2dHja/sznblY9P4UCcJuJ3FItpZp8DREcfFxCY08W4h3dqWhC17SFGROzrtSC0icJkMaLHiPdVqaGONVsI1yilpitq6JG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=szZmprIo; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="szZmprIo"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id F0407C79AB1;
+	Wed,  1 Jul 2026 10:04:19 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 1325A60288;
+	Wed,  1 Jul 2026 10:04:09 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5AD54104C9A80;
+	Wed,  1 Jul 2026 12:04:06 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1782900248; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=rS3XJGlccH+dLXbiW6ODSZ7p0h3tz4Kqf5bCznH1MNo=;
+	b=szZmprIodXQOQ7GtfxI63myhYLZzmv6n6+oXrtRBCkyN9mMkFV+hmR3MC4iGk5olV6+OkP
+	FzTiB99e7yITq0LBkkONbRISKrixM6g6j2bZjwnUt7oS06BaZgTHvF3q1o8unEmpOLgPnQ
+	AyXQN2Nq/My40o+Y5bcm/3aPRpNzZvNus+/dJhtbAFe+biZAoFV4BRwsCfp95hHKVwz7BK
+	btWD0B4W6JDEokWQoCkFqZMnuZZcI8YRToUDpldJulJW28+PqgMROp1xFUUlyc0KLcgpWQ
+	CMBiARhROgTmarALkP9gdE9nHxT2Ghg22cYz5g2fTyZGmhI5cQ9xG0k49olnKg==
+Message-ID: <587499ee-d87e-4056-8d2a-8fda2ef3f0f1@bootlin.com>
+Date: Wed, 1 Jul 2026 12:04:05 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:net-swift.com:qybglogicsvrgz:qybglogicsvrgz5b-1
-X-QQ-XMAILINFO: N/qyVNBeLtyyPPz2yZXZYAf/vGueTDXJQILe5Wd/y6jpMwH9GemYtUXo
-	p1M0i+Bbd9ftR2vFgk2jrbNbXjkVHTWbpUHH7Oa2ZSwEKF3lE4xJX2KcOeQkHcjEOaNutgD
-	UolJkmn7WepLaQJd3UwAyLpEm52JreWb1aD4M7W8eDRoC7zLEMiuQE9N/j4gCwC+3cgVQ/R
-	hTMEPYb7W9f/KO75WQZ4mbDUyiq4fPXy7mQQf7fC5Eotk/HkMTbzyQeoUy+vPn7ARaGpxD8
-	cb+hswghe5nFVQkAqaHriWK93GXGS5UgkRhQhHv4p1K3c9NNy1K8fz8YdnmBRu1HkZxcolt
-	HMjRSGTuupeo3wicmTmbM5XDOW7ZZBUTdGdJBfa73CcfYVsn6HFcp0FJKdSwo5lmFmXoZ+3
-	AjKKKk+1MtVCkWRI2Z0aPV05lW29NmXQRjkhkTDCh+M7zjOqh7iMPxg1nwHZ8SU/Wb16p1g
-	Q44D3zdirM0lrU/tjC7RmxJgPvSEMjyikrJ3Aycu4rX7Xa3dRres6Ut0c7bUA3757zCc/XY
-	IoAdfxVPfhtLiG7YpO4ImJ47EWOPqyDFKJRePaADUZiSy7HVXEGSRvbWW9LucLZGVYmlPWz
-	aY2Myct5j0OFrQKoi+D7CGSw6kmMQp/NOWsh3v8ZNWJYaLKsvtNmzLCIO+b+lmG5hUsVvSi
-	QMfyqKy9s+IB+NWV1L9EjTqDwMl2jNWiK2f+j//0Q+2HY07zX1Xd9oc9G/vCoQVk6I7mGfp
-	lFZBoLDqRx8DRyoPE+WJiuR3E7axJbTA7bGvecX8P0OZM8ZPinfH8DpWz8GBMSI9c8oQDv1
-	8K5nIcCPa8IYCPEvLq53bZFv+3J7LoQZWYCCUK5yOwN9go7XqhQdjKdMaRJJQpvtJ86H9rU
-	WB4t78lGMA/IZq0U65eDUYClLsEbOGgMvNx7pbBtAqzQQCCxBcnVytnb/GqwWn4yB/2z4Tt
-	96napc4W6hF+ONzdyVVLwnpxYJ59eWjjsK79bgR7W2/fBxNuqEJKw2TKmnhLscZ9k1W4tBl
-	CYjmktyi6Yl4xjxQvYndg5QoFW60y5NKM+sOroZw2sAzqO13Wf9ZIV3yEYrEczbUBDAiSoo
-	kTXGN+xwh2avQjx0m5dDlNWA62O7jndUtq9Mjq3buUT9s019ZjIG4/1bc1zyTLzicNIEPkW
-	8wlXJZn1W9CcrFDYp6Cucfvywg==
-X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
-X-QQ-RECHKSPAM: 0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/9] ax88179_178a: Add support for ethtool pause parameter
+ configuration
+To: Birger Koblitz <mail@birger-koblitz.de>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260701-ax88179a-v1-0-13685df67515@birger-koblitz.de>
+ <20260701-ax88179a-v1-5-13685df67515@birger-koblitz.de>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260701-ax88179a-v1-5-13685df67515@birger-koblitz.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Add support for the set_ringparam in wx_ethtool_ops_vf,
-which is used to set ring sizes for ngbevf and txgbevf.
+Hi
 
-Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
----
- .../net/ethernet/wangxun/libwx/wx_ethtool.c   | 61 +++++++++++++++++++
- drivers/net/ethernet/wangxun/libwx/wx_lib.c   |  9 +--
- drivers/net/ethernet/wangxun/libwx/wx_lib.h   |  4 +-
- .../net/ethernet/wangxun/libwx/wx_vf_common.c |  4 +-
- .../net/ethernet/wangxun/libwx/wx_vf_common.h |  2 +
- 5 files changed, 72 insertions(+), 8 deletions(-)
+On 7/1/26 07:42, Birger Koblitz wrote:
+> The AX179A-based chips support pause parameter configuration.
+> Make it available through ethtool ops.
+> 
+> Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
+> ---
+>  drivers/net/usb/ax88179_178a.c | 67 ++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 67 insertions(+)
+> 
+> diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
+> index 16528d873e804fde5dcc27659048882eee1c3eaa..586c049c6f7422a853aeae5e9372ead3a6d106c5 100644
+> --- a/drivers/net/usb/ax88179_178a.c
+> +++ b/drivers/net/usb/ax88179_178a.c
+> @@ -956,6 +956,71 @@ static int ax88179_set_link_ksettings(struct net_device *net,
+>  	return mii_ethtool_set_link_ksettings(&dev->mii, cmd);
+>  }
+>  
+> +static void ax88179a_get_pauseparam(struct net_device *net, struct ethtool_pauseparam *pause)
+> +{
+> +	struct usbnet *dev = netdev_priv(net);
+> +	struct ax88179_data *data;
+> +	u16 bmcr, lcladv, rmtadv;
+> +	u8 cap;
+> +
+> +	data = dev->driver_priv;
+> +
+> +	if (data->chip_version < AX_VERSION_AX88179A)
+> +		return;
+> +
+> +	bmcr = ax88179_mdio_read(net, dev->mii.phy_id, MII_BMCR);
+> +	lcladv = ax88179_mdio_read(net, dev->mii.phy_id, MII_ADVERTISE);
+> +	rmtadv = ax88179_mdio_read(net, dev->mii.phy_id, MII_LPA);
+> +
+> +	if (!(bmcr & BMCR_ANENABLE)) {
+> +		pause->autoneg = 0;
+> +		pause->rx_pause = 0;
+> +		pause->tx_pause = 0;
+> +		return;
+> +	}
+> +
+> +	pause->autoneg = 1;
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-index 5df971aca9e3..eae038df6875 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-@@ -9,6 +9,7 @@
- #include "wx_ethtool.h"
- #include "wx_hw.h"
- #include "wx_lib.h"
-+#include "wx_vf_common.h"
- 
- struct wx_stats {
- 	char stat_string[ETH_GSTRING_LEN];
-@@ -775,6 +776,65 @@ static int wx_get_link_ksettings_vf(struct net_device *netdev,
- 	return 0;
- }
- 
-+static int wx_set_ringparam_vf(struct net_device *netdev,
-+			       struct ethtool_ringparam *ring,
-+			       struct kernel_ethtool_ringparam *kernel_ring,
-+			       struct netlink_ext_ack *extack)
-+{
-+	struct wx *wx = netdev_priv(netdev);
-+	u32 new_rx_count, new_tx_count;
-+	struct wx_ring *temp_ring;
-+	int i, err = 0;
-+
-+	new_tx_count = clamp_t(u32, ring->tx_pending, WX_MIN_TXD, WX_MAX_TXD);
-+	new_tx_count = ALIGN(new_tx_count, WX_REQ_TX_DESCRIPTOR_MULTIPLE);
-+
-+	new_rx_count = clamp_t(u32, ring->rx_pending, WX_MIN_RXD, WX_MAX_RXD);
-+	new_rx_count = ALIGN(new_rx_count, WX_REQ_RX_DESCRIPTOR_MULTIPLE);
-+
-+	if (new_tx_count == wx->tx_ring_count &&
-+	    new_rx_count == wx->rx_ring_count)
-+		return 0;
-+
-+	mutex_lock(&wx->reset_lock);
-+	set_bit(WX_STATE_RESETTING, wx->state);
-+
-+	if (!netif_running(wx->netdev)) {
-+		for (i = 0; i < wx->num_tx_queues; i++)
-+			wx->tx_ring[i]->count = new_tx_count;
-+		for (i = 0; i < wx->num_rx_queues; i++)
-+			wx->rx_ring[i]->count = new_rx_count;
-+		wx->tx_ring_count = new_tx_count;
-+		wx->rx_ring_count = new_rx_count;
-+
-+		goto clear_reset;
-+	}
-+
-+	/* allocate temporary buffer to store rings in */
-+	i = max_t(int, wx->num_tx_queues, wx->num_rx_queues);
-+	temp_ring = kvmalloc_objs(struct wx_ring, i);
-+	if (!temp_ring) {
-+		err = -ENOMEM;
-+		goto clear_reset;
-+	}
-+
-+	wxvf_down(wx);
-+	/* wx_set_ring() may partially apply changes before
-+	 * returning an error. The error indicates that not all
-+	 * requested ring parameters could be configured.
-+	 */
-+	err = wx_set_ring(wx, new_tx_count, new_rx_count, temp_ring);
-+	if (err)
-+		wx_err(wx, "failed to set ring parameters: %d", err);
-+	wx_configure_vf(wx);
-+	wxvf_up_complete(wx);
-+	kvfree(temp_ring);
-+clear_reset:
-+	clear_bit(WX_STATE_RESETTING, wx->state);
-+	mutex_unlock(&wx->reset_lock);
-+	return err;
-+}
-+
- static const struct ethtool_ops wx_ethtool_ops_vf = {
- 	.supported_coalesce_params = ETHTOOL_COALESCE_USECS |
- 				     ETHTOOL_COALESCE_TX_MAX_FRAMES_IRQ |
-@@ -782,6 +842,7 @@ static const struct ethtool_ops wx_ethtool_ops_vf = {
- 	.get_drvinfo		= wx_get_drvinfo,
- 	.get_link		= ethtool_op_get_link,
- 	.get_ringparam		= wx_get_ringparam,
-+	.set_ringparam		= wx_set_ringparam_vf,
- 	.get_msglevel		= wx_get_msglevel,
- 	.get_coalesce		= wx_get_coalesce,
- 	.get_ts_info		= ethtool_op_get_ts_info,
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-index d042567b8128..2e5dba88d04a 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-@@ -3248,8 +3248,8 @@ netdev_features_t wx_features_check(struct sk_buff *skb,
- }
- EXPORT_SYMBOL(wx_features_check);
- 
--void wx_set_ring(struct wx *wx, u32 new_tx_count,
--		 u32 new_rx_count, struct wx_ring *temp_ring)
-+int wx_set_ring(struct wx *wx, u32 new_tx_count,
-+		u32 new_rx_count, struct wx_ring *temp_ring)
- {
- 	int i, err = 0;
- 
-@@ -3271,7 +3271,7 @@ void wx_set_ring(struct wx *wx, u32 new_tx_count,
- 					i--;
- 					wx_free_tx_resources(&temp_ring[i]);
- 				}
--				return;
-+				return err;
- 			}
- 		}
- 
-@@ -3299,7 +3299,7 @@ void wx_set_ring(struct wx *wx, u32 new_tx_count,
- 					i--;
- 					wx_free_rx_resources(&temp_ring[i]);
- 				}
--				return;
-+				return err;
- 			}
- 		}
- 
-@@ -3311,6 +3311,7 @@ void wx_set_ring(struct wx *wx, u32 new_tx_count,
- 
- 		wx->rx_ring_count = new_rx_count;
- 	}
-+	return 0;
- }
- EXPORT_SYMBOL(wx_set_ring);
- 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.h b/drivers/net/ethernet/wangxun/libwx/wx_lib.h
-index aed6ea8cf0d6..bc671786978e 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_lib.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.h
-@@ -36,8 +36,8 @@ netdev_features_t wx_fix_features(struct net_device *netdev,
- netdev_features_t wx_features_check(struct sk_buff *skb,
- 				    struct net_device *netdev,
- 				    netdev_features_t features);
--void wx_set_ring(struct wx *wx, u32 new_tx_count,
--		 u32 new_rx_count, struct wx_ring *temp_ring);
-+int wx_set_ring(struct wx *wx, u32 new_tx_count,
-+		u32 new_rx_count, struct wx_ring *temp_ring);
- void wx_service_event_schedule(struct wx *wx);
- void wx_service_event_complete(struct wx *wx);
- void wx_service_timer(struct timer_list *t);
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
-index 0d2db8d38cd5..26de78e9a69e 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
-@@ -269,7 +269,7 @@ static void wxvf_irq_enable(struct wx *wx)
- 	wr32(wx, WX_VXIMC, wx->eims_enable_mask);
- }
- 
--static void wxvf_up_complete(struct wx *wx)
-+void wxvf_up_complete(struct wx *wx)
- {
- 	/* Always set the carrier off */
- 	netif_carrier_off(wx->netdev);
-@@ -324,7 +324,7 @@ int wxvf_open(struct net_device *netdev)
- }
- EXPORT_SYMBOL(wxvf_open);
- 
--static void wxvf_down(struct wx *wx)
-+void wxvf_down(struct wx *wx)
- {
- 	struct net_device *netdev = wx->netdev;
- 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.h b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.h
-index cbbb1b178cb2..d45d5d8ac3ab 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.h
-@@ -15,7 +15,9 @@ void wx_set_rx_mode_vf(struct net_device *netdev);
- void wx_configure_vf(struct wx *wx);
- int wx_set_mac_vf(struct net_device *netdev, void *p);
- void wxvf_watchdog_update_link(struct wx *wx);
-+void wxvf_up_complete(struct wx *wx);
- int wxvf_open(struct net_device *netdev);
-+void wxvf_down(struct wx *wx);
- int wxvf_close(struct net_device *netdev);
- void wxvf_init_service(struct wx *wx);
- 
--- 
-2.30.1
+pause autoneg is not the same as link-wide autoneg. If link autoneg is disabled,
+you have to keep track on how pause autoneg was configured by user, so that this
+can be re-applied when link aneg gets re-enabled.
 
+The best way to have this correct is to use phylink, but for that you'd need to
+have a proper PHY driver instead of using the mii_ API here.
+
+> +
+> +	cap = mii_resolve_flowctrl_fdx(lcladv, rmtadv);
+> +
+> +	if (cap & FLOW_CTRL_RX)
+> +		pause->rx_pause = 1;
+> +
+> +	if (cap & FLOW_CTRL_TX)
+> +		pause->tx_pause = 1;
+> +}
+> +
+> +static int ax88179a_set_pauseparam(struct net_device *net, struct ethtool_pauseparam *pause)
+> +{
+> +	struct usbnet *dev = netdev_priv(net);
+> +	struct ax88179_data *data;
+> +	u16 old, new1, bmcr;
+> +	u8 cap = 0;
+> +
+> +	data = dev->driver_priv;
+> +
+> +	if (data->chip_version < AX_VERSION_AX88179A)
+> +		return -EOPNOTSUPP;
+> +
+> +	bmcr = ax88179_mdio_read(net, dev->mii.phy_id, MII_BMCR);
+> +	if (pause->autoneg && !(bmcr & BMCR_ANENABLE))
+> +		return -EINVAL;
+
+As I said, pause autoneg can be on while linke autoneg is off. of course, the
+device doesn't advertise pause, but the driver needs to keep track of what's
+the pause aneg flag.
+
+Maxime
