@@ -1,213 +1,256 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5096426D16
-	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 11:02:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91DB543CEDD
+	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 11:02:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782903722; cv=none; b=D2d8eQzo+KH72iNc9FvFK1JBD4PhA9JVgnuwjBlSQlbgCBVR8ylZfN/bkY9vYX7IGNpW7DzBxUTcO/tdCNEmkYKK3JLPg15A9C48KMaraMO2l0AtZsMgAJYNtdqpD/1VS+Q5ua5KOYsylDIbVrvmx/b2NMZCDBYdDE78cM4zSS4=
+	t=1782903782; cv=none; b=R4dLw8wbNUJzrS9DpF7rEmyKTCu7a6zluOXMm4Yr/AyU7RcS6XIhyvb8EnFBOTz8YHI1PmaWDWzVu7UusY7SsMGkSffidX42q2nAo6Mfhu2lZ7cv5x+jkmMHCGko7tJrV9ON+oLE1DJqhmjEkW8VzIM9ubymtBkYvnfMqAXZ5xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782903722; c=relaxed/simple;
-	bh=Br8s1Od3JEOL8qZORdm4eG395Bw56pWcnLaBfgp/wGM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FnrTbtXMjKmo3HCDCb7MWxV/6Zib/5wKuOQ13gSaezkXXhXTcDXrBwGBLyhlXdsNpdeVG+4cmcyCgN9CEpTEUR9o2sU8bOLcx6dLDS+/n9QmAbRk11xbrogKdttNktnI8EMTiv1i5ew7VaGi39rTOTk3dGBG9zUh4IGD/uoIMH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ElGUKYke; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=NJ86M/Py; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1782903782; c=relaxed/simple;
+	bh=fRGiZtTZwPpQ+e62B55nkzc896Y8lcB1tI5y3I/MMEM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=a+2c2OYXyB318gCF1/+zYsvM0v7+maDsixzNODHNdQOvfXNH5eJxfD/vZR12M7f0J00wwq+7A/MFUJht/YpIcyevIRfdbTmbk4x6BoLf+c72nVckNgbPUT2Fi7xEJn4SMW1ZPcpPoqVkUV2M+LysbAxoCuXG3Q7bT93t/+CL35k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iUykXe56; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=iVlhmPBb; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ElGUKYke";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="NJ86M/Py"
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 661A8UJw680776
-	for <netdev@vger.kernel.org>; Wed, 1 Jul 2026 11:02:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	VxGUWVh7XlY2oaLv4zshgCYnYU/gzVpwiXufl467KvU=; b=ElGUKYkeMmxIkgOz
-	thIHzWjBi816QcqEqbreeIRMyIZU+6rVG+rebZE9G66w0v2luGay9FWAi2p11+1b
-	WamPKZU6YNqu7ehEZvQLIGFOubMPljNHBV6TpY9kaACuypXi8Tws1YrI7JRqy8fv
-	/6poc5jXITgCRmlN4UxleWMjee9AhxwgIFQia+bLF2p52rMPRZzlNMD0jtzleArO
-	QPMnxD96dfuxWEZRWaUJJKBAiWutTS2hZg4RH8cER7WZY+ny5Mh/FPfQU0YASFbQ
-	QLPI+AisWhheOktOthSyv7cWpKLU0IzeZfN9AUvYqC1zqfwKOtZAN14rBvDkutKP
-	bTNfPA==
-Received: from mail-vs1-f69.google.com (mail-vs1-f69.google.com [209.85.217.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f4k3skt54-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Wed, 01 Jul 2026 11:02:00 +0000 (GMT)
-Received: by mail-vs1-f69.google.com with SMTP id ada2fe7eead31-737ddaf8c57so15369137.0
-        for <netdev@vger.kernel.org>; Wed, 01 Jul 2026 04:02:00 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iUykXe56";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="iVlhmPBb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1782903777;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NnOYvPIZlJQwQJ6FFCiD44nqFh2+p0us6zgjeQu6Qjg=;
+	b=iUykXe56zNUpFB+ZoWZxAEAo30PSeOfIpjp0AMVaLOKvIPryW/nzW3Ejt6dLsq9fm6j25u
+	hW3XR16aN/2fi9qnAOqH/4RLQU4xQuWEjTPVAfOkU9tqsHKka/6SFi/fZgyctaxgNFzFTA
+	3A/LGBrlYTcvPwkjbD1tVLKCwWOBmqU=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-449-zpMgncJxPsCUAnZm8YEhvA-1; Wed, 01 Jul 2026 07:02:54 -0400
+X-MC-Unique: zpMgncJxPsCUAnZm8YEhvA-1
+X-Mimecast-MFC-AGG-ID: zpMgncJxPsCUAnZm8YEhvA_1782903773
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-475e540a0ffso351538f8f.3
+        for <netdev@vger.kernel.org>; Wed, 01 Jul 2026 04:02:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1782903720; x=1783508520; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VxGUWVh7XlY2oaLv4zshgCYnYU/gzVpwiXufl467KvU=;
-        b=NJ86M/PywGH353GBtBowoRzMKI3udNfy2UyMYJveHrxx4CX3JO7HVCAXZtsc/SyWQT
-         wY5h4ODE1vUunQoPy73EEw6PC+P700Aq5zvMLBTar3/HwheXr/fp2cZJkQPa6V7/NyXK
-         SDVuoEELaXP3AxHg4InRmMl08Bd1luMdZYyr1DYJwUzISYF/hqVEVAdluOn14113CHso
-         U68aJtQ+rWieoVbTRUpHaWGp7gvJ1//4+9uPVa5fiuKEfrbgdcr6EyQKlgtGI95ftUdu
-         10Z3cWAz5qgSZhASLXsP7EQef4kmz2aiaud9QuSJwW6mW1G+WcbpUF7JIkwCBgYgaBMM
-         c6dQ==
+        d=redhat.com; s=google; t=1782903773; x=1783508573; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NnOYvPIZlJQwQJ6FFCiD44nqFh2+p0us6zgjeQu6Qjg=;
+        b=iVlhmPBb+7k3Oe8KP9Kuo4PtvFA/amoJy/Roa6Li2TUU85OxztmbFdgUYhvobwqSMf
+         dfI3UoYJ4Ni/uLB6V8RfQ3kyECcKr+TC717efOlkGT7bSIEKtYvlVKneF9I4oGBv2Haf
+         jOJsz9lIRQ2M2lVV8X3LIV9t76TqCHQTOFNTIt801FEYriIAKIZ3FnHE4PMupeVCb+Eq
+         NdwuzoaCYfyecxr+KaNRPYdx1XL8DMZNeCZhWB5+tlvlW8rnm8t6meEKG1RZiK/q6ZL0
+         CqWuVLrPPWMyDQRY4HnmUKwk9+zou93XO/SV/7uaY1xVWmFIkyiDYVNmTLJed2CTYzT0
+         9F1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782903720; x=1783508520;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=VxGUWVh7XlY2oaLv4zshgCYnYU/gzVpwiXufl467KvU=;
-        b=mZBDhC5QN5e5qUCzOBiqQIo7IGLpSXOHjmDkhz/vm6NIm1YO9IB0S1G+iI8VfYwHK+
-         K9vUjl5ip4pINNiQZB3XDxHKo2idkFxTc/Y6tULQ0eqybeVirYzUL9zINu5mK0NPw119
-         jV/98+GwmzyF/8axObtrIzGv1oEW8KRWmilx1KZwscMzA9e9dbNZtbbvnDkbNMdcvaMM
-         lDC4iteYtz/ue6hlJKlaF0wjzpdtUUOYBtWQ+jpPW/NzQhr9kB4Hem9WCWIOgrnu/zYu
-         dKCivJWl4CeAiT13tmIMNOXD7G3xSm/gWSRULzU9d76LRdKt6EihF/DiPHCBWfv1nj80
-         8gUQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoLlhyz31araa37cD3WpnwmroOaUOzU8o1+4gXQX00hVud+O1X0YtJ7CR/g21UWskhhs/SpHf8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjKosbt+5G2ECKc2fR5eegaoqL24Suv2R9EVPiRypBybfIRUVR
-	DaInwd+Sw1+RnC+37CT9vm9dJFZYg1+f8rdGlKki4fTzr93KrNT7nJRFNWUXcvhrfItKP6+tVQN
-	fmJf+W8nDWs6qqlxDa4E6wPbH31Kw7cKoG/Qwkd4K1hgxpVpxEp8i16hXvAY=
-X-Gm-Gg: AfdE7cmXLz/RqcTOJI6oAdCVIJTQ3ew3N7q3OdiCwnm4+8VnBHqgoJ1JpB9HfAvfUjm
-	x+NbQPusvyDXTe7ayZp3Fv9qJ1vnerXwsajlpv06JRFMO4BA3qcBwcEH6kxhesIP9xeAHX3zGGC
-	JfxImwU+0MyzRuwtcgMwgPIOLK5NylEGpqA1OBYdXO5bTWPkgZOynaxP/RaBcVRQDvPSsJc6l0T
-	M5jJM62qV/YnxA064CWSNjsQE9H+rXxMdF86Ubs67vGV2hyA/y3NCE5seC6XSlkIOxCRXhJq7uE
-	qviU6mdRzvaqMWr93j6AEh4d74ECenRGAxCAUcNXmTz0WL0WPD7Q0JWr2xOF+NQ2oLPp37aklDD
-	IShN32VL2oRcl3c0w/EyVRG+Nw638vHKQ+2c=
-X-Received: by 2002:a05:6102:3e0b:b0:739:5c3d:605b with SMTP id ada2fe7eead31-73da8836a74mr86227137.1.1782903719623;
-        Wed, 01 Jul 2026 04:01:59 -0700 (PDT)
-X-Received: by 2002:a05:6102:3e0b:b0:739:5c3d:605b with SMTP id ada2fe7eead31-73da8836a74mr86169137.1.1782903719140;
-        Wed, 01 Jul 2026 04:01:59 -0700 (PDT)
-Received: from [192.168.120.170] ([178.235.128.140])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c128917536csm257546366b.56.2026.07.01.04.01.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 01 Jul 2026 04:01:58 -0700 (PDT)
-Message-ID: <c93b47af-e291-4a6a-ae4b-cc46f25c422b@oss.qualcomm.com>
-Date: Wed, 1 Jul 2026 13:01:52 +0200
+        d=1e100.net; s=20251104; t=1782903773; x=1783508573;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=NnOYvPIZlJQwQJ6FFCiD44nqFh2+p0us6zgjeQu6Qjg=;
+        b=ACuDI9rE1zBhSlqPeBTpC3nKppyTumPBjX4xGpD8SCfKZIGIB1SSb1QFYyKZaVPv8j
+         shQjz0a5wlExaFZrazHpAaKcErqmkGQ8rEaVMp/bNsL+5ylnhOPBjjl7uBzptso0/mk2
+         oMtcafXA98fySrU5ns0GjqtmxYjJZDAhyUlxJI0APPAZJZ59daM4OUu90Uj57fJ5Ees7
+         V28HFSbRmfzaMXkHRu/HsCJMSdMcu4U+5tgQwYHhKa2JaHJRLGCKhgNWlQTDtbFvzFFB
+         TlSJp15VY+ait0av7qTgLCf7Ep6/TuNAJDs93bQBWKSTMKc2TRbAu7nTbKH2KIxoGN6g
+         x7CQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+Z92FmXV0m2+ssNd9VdYCYwvmq8vYFBWX/Nm+qPDnbWY1vbBSND0Ct5LuzT4ktRfhyMBHoEwA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxdPv97alZXH0CyL6SCkDk9fdntV5InYbKF9F02kw7Pfx3lLsls
+	LNqrnTZfaqOAjyIU3QKlmIlAoFdIBH/7qwuKBePUxW7IHvZj0K3OxhyZt+mgnkusQAzEdXqSjTB
+	COxo4A8XD39r0INpq0YxOnD/VdgX65HTz0obzeE8hjWeBuJeLjHHt5ME7dw==
+X-Gm-Gg: AfdE7ckWHrb6WS4MosiY3HEzZq0zOYziv/ffwVV7jNTSGh55Ijy6+Jsui4nh24rhHdG
+	brqaCfU7YwzzGA6WIieVNS7eVgxwsgCixEwlX1KqbyIXcUBgeJ2FlfgYUpfMLTRmaIqXL3YyCN0
+	OqdwZTc1T73Ih6d6DdjM2PBRzkspWz684WBdulVlQqrwfHXSKO8VDtocWVz0z95F/btde5T9Cxp
+	gt9grGzifigbhRRxbsu+hIVYFflkLgjiSuZAgzbdZXwIMO7fiHx8CTD7v6qUUNCRmjdnXQSXeV7
+	r4eHxuP12yawpUvvS6DkFn0PY4RuC6Ou8nhEqMbYg8yOcvKbwDeP71VYSD1Es3QTq99uXwzEwWb
+	+63hxHgCKQoPINwBnLA5LcV6bPYIRWRvUkqTfug==
+X-Received: by 2002:a05:600c:5297:b0:493:a5da:e5d2 with SMTP id 5b1f17b1804b1-493c2b93614mr16386055e9.26.1782903772803;
+        Wed, 01 Jul 2026 04:02:52 -0700 (PDT)
+X-Received: by 2002:a05:600c:5297:b0:493:a5da:e5d2 with SMTP id 5b1f17b1804b1-493c2b93614mr16385385e9.26.1782903772259;
+        Wed, 01 Jul 2026 04:02:52 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk (alrua-x1.borgediget.toke.dk. [2a0c:4d80:42:443::2])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493be4d8f5asm99969285e9.8.2026.07.01.04.02.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Jul 2026 04:02:51 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+	id 9C78480A7F7; Wed, 01 Jul 2026 13:02:50 +0200 (CEST)
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To: David Ahern <dsahern@kernel.org>, Avinash Duduskar
+ <avinash.duduskar@gmail.com>, ast@kernel.org, daniel@iogearbox.net,
+ andrii@kernel.org
+Cc: eddyz87@gmail.com, memxor@gmail.com, martin.lau@linux.dev,
+ song@kernel.org, yonghong.song@linux.dev, jolsa@kernel.org,
+ emil@etsalapatis.com, john.fastabend@gmail.com, sdf@fomichev.me,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, shuah@kernel.org, hawk@kernel.org,
+ yatsenko@meta.com, leon.hwang@linux.dev, kpsingh@kernel.org,
+ a.s.protopopov@gmail.com, ameryhung@gmail.com, rongtao@cestc.cn,
+ eyal.birger@gmail.com, bpf@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH bpf-next v5 1/3] bpf: Add BPF_FIB_LOOKUP_VLAN flag to
+ bpf_fib_lookup() helper
+In-Reply-To: <916191fc-2e10-4449-b82b-c086d90283ae@kernel.org>
+References: <20260624030530.3342884-1-avinash.duduskar@gmail.com>
+ <20260624030530.3342884-2-avinash.duduskar@gmail.com>
+ <d820adf6-4a33-45e9-9cfa-17f11a37c9e8@kernel.org> <87se65bd04.fsf@toke.dk>
+ <2ffa32dd-5c88-488a-aa23-deef13465eb9@kernel.org> <87echobb5h.fsf@toke.dk>
+ <cf25f667-1095-4f84-98ff-bf4662d3faa8@kernel.org> <874iik2ew4.fsf@toke.dk>
+ <916191fc-2e10-4449-b82b-c086d90283ae@kernel.org>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date: Wed, 01 Jul 2026 13:02:50 +0200
+Message-ID: <87y0fv0y79.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 10/14] media: qcom: Pass proper PAS ID to
- set_remote_state API
-To: Sumit Garg <sumit.garg@kernel.org>
-Cc: andersson@kernel.org, linux-arm-msm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-        linux-media@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-        linux-remoteproc@vger.kernel.org, konradybcio@kernel.org,
-        robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-        robin.clark@oss.qualcomm.com, sean@poorly.run,
-        akhilpo@oss.qualcomm.com, lumag@kernel.org, abhinav.kumar@linux.dev,
-        jesszhan0024@gmail.com, marijn.suijten@somainline.org,
-        airlied@gmail.com, simona@ffwll.ch, vikash.garodia@oss.qualcomm.com,
-        bod@kernel.org, mchehab@kernel.org, elder@kernel.org,
-        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, jjohnson@kernel.org,
-        mathieu.poirier@linaro.org, trilokkumar.soni@oss.qualcomm.com,
-        mukesh.ojha@oss.qualcomm.com, pavan.kondeti@oss.qualcomm.com,
-        jorge.ramirez@oss.qualcomm.com, tonyh@qti.qualcomm.com,
-        vignesh.viswanathan@oss.qualcomm.com,
-        srinivas.kandagatla@oss.qualcomm.com,
-        amirreza.zarrabi@oss.qualcomm.com, jens.wiklander@linaro.org,
-        op-tee@lists.trustedfirmware.org, apurupa@qti.qualcomm.com,
-        skare@qti.qualcomm.com, linux-kernel@vger.kernel.org,
-        Sumit Garg <sumit.garg@oss.qualcomm.com>
-References: <20260626133440.692849-1-sumit.garg@kernel.org>
- <20260626133440.692849-11-sumit.garg@kernel.org>
- <c251430d-2184-4ecc-8d05-9cb47533e5ec@oss.qualcomm.com>
- <akTFZgKBQYQUYxx4@sumit-xelite>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <akTFZgKBQYQUYxx4@sumit-xelite>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: 2tPgZzYMU5E_cbFZXzo4MzIKiC47aR8q
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzAxMDExNSBTYWx0ZWRfX9bl4VsFs6/gJ
- 5vIx+E7Qxq9+xxL+B3+1T9dRm1pX2JYR74pWO7bqfCFb4NWmo3HvoWDJIbdsCVQs0FAQuY2O8Cg
- f6pD1oim3gA+dKLNskh0/tAH9wNco9ehTBpUibrZqVlu5AmyOTIKT8rrJ+5JBEcJhc04ziH6BBB
- uRHOKiK5SeI1tt3B5bwDLZqWJXczokyMDvhX2HwBkAiN4kFvaxlHsuqsFqvQ8jbQCuVTrvJTjHO
- K8BW38g+ZN4I3W6WL0ZM7MA+PJHwaZDyy6QchcuACFYf0oj/yVQ2J3f5H5gXvV2n4l/lxBwPNKR
- 3F3wa9mncK5/tmfl1SOQJNCAFhEZBzI9+2N5hTcZcmoU5+MXkP2OxGllo7ypx9G6OEW26AaOko+
- cAUqaEaB847/Hc/vr9oFJih9UFXE+ZaFGA1fVrusxFQjN0R39UhKRYy8JtwmxtKkZGIdUujnvJS
- PPomkoPVV7xW7sIOKWQ==
-X-Proofpoint-ORIG-GUID: 2tPgZzYMU5E_cbFZXzo4MzIKiC47aR8q
-X-Authority-Analysis: v=2.4 cv=Ff4HAp+6 c=1 sm=1 tr=0 ts=6a44f3a8 cx=c_pps
- a=5HAIKLe1ejAbszaTRHs9Ug==:117 a=PRfkaYvzSr8QmIIGAkY2Sg==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22
- a=EUspDBNiAAAA:8 a=uyZSW4wqkseYk8rkHTIA:9 a=QEXdDO2ut3YA:10
- a=gYDTvv6II1OnSo0itH1n:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzAxMDExNSBTYWx0ZWRfXy7dQD0D7Ridk
- hIaCaz/GUyQ1RKKhGRxzqWhyXEziQsxmSVhJNkKnflDvv6Er2Ml0bSCDhPX9uOwx2J2/JpOdr/M
- SA+fe9Llv+WmYoUJRtg+vYiHBopA/3Y=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-07-01_03,2026-06-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 priorityscore=1501 impostorscore=0 phishscore=0 clxscore=1015
- lowpriorityscore=0 malwarescore=0 spamscore=0 adultscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607010115
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 7/1/26 9:44 AM, Sumit Garg wrote:
-> On Tue, Jun 30, 2026 at 02:42:25PM +0200, Konrad Dybcio wrote:
->> On 6/26/26 3:34 PM, Sumit Garg wrote:
->>> From: Sumit Garg <sumit.garg@oss.qualcomm.com>
+David Ahern <dsahern@kernel.org> writes:
+
+> On 6/30/26 10:04 AM, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
+>> David Ahern <dsahern@kernel.org> writes:
+>>=20
+>>> On 6/30/26 4:00 AM, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
+>>>>> It does not make sense to require a flag to get lookup output. vlan
+>>>>> proto of 0 is not valid, so it is a clear indication that the vlan
+>>>>> output parameters were not set during the lookup.
+>>>>
+>>>> Okay, so we could just unconditionally set the VLAN fields, but if we
+>>>> start rewriting the ifindex that would be a change of the existing
+>>>> behaviour that could break existing applications, no?
 >>>
->>> As per testing the SCM backend just ignores it while OP-TEE makes
->>> use of it to for proper book keeping purpose.
+>>> Consistently dealing with upper devices is one of the reasons I never
+>>> sent patches for vlan support.
 >>>
->>> Reviewed-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
->>> Tested-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com> # Lemans
->>> Reviewed-by: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
->>> Signed-off-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
->>> ---
->>>  drivers/media/platform/qcom/iris/iris_firmware.c | 2 +-
->>>  drivers/media/platform/qcom/venus/firmware.c     | 2 +-
->>>  2 files changed, 2 insertions(+), 2 deletions(-)
+>>> xdp support is at the driver layer for real (physical) devices. The fib
+>>> lookup is going to return the vlan device index - a virtual device.
+>>> Support for xdp should not be propagated to virtual devices; it goes
+>>> against the intent of xdp. Any trip down this path will have to decide
+>>> how to handle vlan-in-vlan use cases. Where is the line drawn for fast
+>>> networking?
+>>=20
+>> Right, which is why we need building blocks that makes it possible for
+>> XDP programs to do the right thing in the BPF code :)
+>>=20
+>> A helper that resolves the parent could be used for stacked VLANs as
+>> well (just calling the helper multiple times).
+>>=20
+>>>> Specifically, if an XDP application has a table of the interfaces it
+>>>> forwards between, today they'd get a VLAN interface ifindex, which wou=
+ld
+>>>> not be in that table, and the application would return XDP_PASS. Where=
+as
+>>>> if we change the ifindex and populate the VLAN tag, suddenly the
+>>>> interface would be in the table, but because the application doesn't
+>>>> read the returned VLAN tag, it will end up sending packets out without
+>>>> tagging them, leading to broken forwarding.
 >>>
->>> diff --git a/drivers/media/platform/qcom/iris/iris_firmware.c b/drivers/media/platform/qcom/iris/iris_firmware.c
->>> index ea9654dd679e..d2e7ba4f37e3 100644
->>> --- a/drivers/media/platform/qcom/iris/iris_firmware.c
->>> +++ b/drivers/media/platform/qcom/iris/iris_firmware.c
->>> @@ -110,5 +110,5 @@ int iris_fw_unload(struct iris_core *core)
->>>  
->>>  int iris_set_hw_state(struct iris_core *core, bool resume)
->>>  {
->>> -	return qcom_pas_set_remote_state(resume, 0);
->>> +	return qcom_pas_set_remote_state(resume, IRIS_PAS_ID);
->>>  }
->>> diff --git a/drivers/media/platform/qcom/venus/firmware.c b/drivers/media/platform/qcom/venus/firmware.c
->>> index 3a38ff985822..3c0727ea137d 100644
->>> --- a/drivers/media/platform/qcom/venus/firmware.c
->>> +++ b/drivers/media/platform/qcom/venus/firmware.c
->>> @@ -59,7 +59,7 @@ int venus_set_hw_state(struct venus_core *core, bool resume)
->>>  	int ret;
->>>  
->>>  	if (core->use_tz) {
->>> -		ret = qcom_pas_set_remote_state(resume, 0);
->>> +		ret = qcom_pas_set_remote_state(resume, VENUS_PAS_ID);
->>
->> This should not be in the middle of a mildly related series..
->> The PAS IDs should be centralized into a single header. And the
->> name of the driver shouldn't be part of the define. I would guesstimate
->> that on the secure side it's probably called VPU or VIDEO
-> 
-> I agree with your comments, this is something I would also like to
-> consolidate on OP-TEE side as well: see discussion here [1].
-> 
-> However, the patch itself was needed to do book keeping on OP-TEE side
-> but I can drop it since anyhow the video isn't functional yet in
-> upstream dependent on the proper IOMMU support.
+>>> I have not followed developments over the past few years. Does XDP have
+>>> support for vlan acceleration in the Tx path now? You really want that
+>>> to deal with vlans and not replicating s/w processing in ebpf.
+>>=20
+>> It does not, no. There's TX metadata for AF_XDP, but VLAN support is not
+>> in there (see include/uapi/linux/if_xdp.h).
+>>=20
+>> Doesn't mean software VLAN handling can't be useful, though; there are
+>> use cases other than the very high end where XDP can speed things up
+>> even if it has to write a VLAN tag or two...
+>>=20
+>>>> So if we don't want the flag, we'd need some other mechanism to resolve
+>>>> the parent ifindex, AFAICT? Maybe a xdp_get_parent_ifindex() kfunc, sa=
+y?
+>>>> That could also be made generic for other stacked interface types, I
+>>>> suppose.
+>>>>
+>>>> WDYT?
+>>>
+>>> dealing with stacked devices is hard :-)
+>>>
+>>> What is the return is a bond device or a vlan on a bond device?
+>>=20
+>> Well, bond devices have XDP support, so you can just redirect to those :)
+>>=20
+>> But yeah, each type of stacked device would need to pass different
+>> information through to the XDP program, and the program would need to
+>> support those. Building a single XDP program that supports all of them
+>> will require quite a bit of code, and would probably not perform super
+>> well. But most deployments have distinct subsets of features they need,
+>> so this does not have to be a blocker, IMO?
+>>=20
+>
+> Seems to me the fib_lookup for xdp needs to return the bottom device,
+> not the vlan device, for forwarding to work. That's why I added the
+> fields to the struct. That allows the program to push the vlan header if
+> required. My preference (dream?) was that Tx path had support to tell
+> the redirect the vlan and h/w added it on send.
 
-For this patch.. I think QCTZ may be ignoring the argument so it
-may not matter.. on a second thought you already have it reviewed
-and it's already a cross-subsys merge so might as well pull it in,
-worst case scenario it'll revert cleanly
+Sure, returning the bottom device index with the VLAN tag makes sense,
+and that's basically what this series does (but bails out on stacked
+VLANs). However, that's not what the helper does today, which is why the
+flag is there, to opt-in to the new behaviour. I don't think we can just
+change the ifindex without breaking existing applications (as noted
+up-thread).
 
-Once this lands, please move all PAS defines to.. hmm.. qcom_pas.h
-sounds like a good candidate?
+> But really, once stacked devices come into play, I just wanted to make
+> sure thought is given to different use cases. As you know the lookup
+> struct if hard bound to 64B and it is trying to cover a lot of use cases.
 
-Konrad
+Agreed, I don't think we can handle stacked devices in this helper. But
+we could split it out into a new one. Something like:
+
+struct lower_device_info {
+	enum device_type type;
+	struct {
+		__be16	h_vlan_proto;
+		__be16	h_vlan_TCI;
+	} vlan;
+        /* add other types here */
+};
+
+int xdp_get_lower_device(int ifindex, struct lower_device_info *info);
+
+called like:
+
+int xdp_program(struct xdp_md *ctx)
+{
+        struct lower_device_info dev_info =3D {};
+	int ifindex, ret;
+
+        ifindex =3D find_destination(ctx); /* does fib lookup, or something=
+ else */
+
+        while ((ret =3D xdp_get_lower_device_info(ifindex, &dev_info)) > 0)=
+ {
+        	if (dev_info.type =3D=3D VLAN) {
+                      	push_vlan_tag(ctx, &dev_info.vlan);
+                        ifindex =3D ret;
+                } else {
+                	return XDP_PASS; /* we only handle VLAN devices */
+                }
+        }
+
+        return bpf_redirect(ifindex, 0);
+}
+
+
+With a helper like this, we obviously don't strictly speaking need to
+change the fib lookup helper at all. However, for the single-tagged VLAN
+case, I think supporting it directly in the fib lookup could still have
+value, as an optimisation: it saves an extra call for resolving the
+ifindex, and the fields are already there. So I think my preference
+would be to merge this series as-is, and then follow up with a new kfunc
+to handle the stacked case. But we could also just drop this series and
+go straight to the new kfunc.
+
+WDYT?
+
+-Toke
+
