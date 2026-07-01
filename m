@@ -1,54 +1,54 @@
 Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C65203B5854
-	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 21:43:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00CEF3BB11D
+	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 21:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782942230; cv=none; b=K4jJvfS6EAH1SMLujyA6SK3GqofhQftN7RlPGyp//AK7+TVTzxk8mGuqH3GjVl43TyeHIGwp76zhb+UYvE4LG/tFO9bZLCM3vg8TFdrhsuojDvUd8UKjDhNiqrxH5OrTffhECPABqXAW+p/NXWt0UvDcYw2ZZwzlGd1zrPwtjGk=
+	t=1782942233; cv=none; b=aAcDL7wHFLYCiok9rgJk2Q1Q8yyz2VfdMtO1PVsYlO1X60GBSKy1mS6/2VFp1pSroJzMi5qBons4qpn+HvxkwpK1jfN2JD6MCx2Jc7juO3ELB3urhLbDE+aoY1cyvaqsDMMFO66u76hSgBkOSAEW6AW1yzlxPvU0oVEVjEIBiFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782942230; c=relaxed/simple;
-	bh=O/kDYBX4hwxPfnqXPuuVIyu3fN1YOOFmpR95YLyF0rs=;
+	s=arc-20240116; t=1782942233; c=relaxed/simple;
+	bh=m+26+mhYbngzVvwljCrfF+totBfayLKfacbQ4yJyHyo=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=RC678UeQ25oIs4DLOBQfd5e/eW85DDjpRZWnFooNlJpDqI94K54mH/Qrb/bth4LmN+TMLHaiJ6mtaY1NxCCQJnqiSz+8p4ihhbak/5VvuRcY6fdxfK9vptt/Deypvm99JA9GOiwARMzgfkE8nbXtjrlMSoaHkW2mquE4NpjgJLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dtwkVH3/; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=SmMzgFqwvN1Sz1136DeXAT3xx4fHUVgC5H+Jptb7QuKJ4fxST9VsnbVup22vGynZB9LMUo/euDklAN+t7vNQOwcVZwdOUtlOrxrRpIBWzC6cQqOsTJZ8pilv62wxymUzYYy2YYvTXoo8Uq/mo7GCEZmFIvjvVePnEBVlJs6PI00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uXz9zro5; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dtwkVH3/"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2c82843005eso14868195ad.1
-        for <netdev@vger.kernel.org>; Wed, 01 Jul 2026 14:43:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uXz9zro5"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2c80be91ea3so22194545ad.1
+        for <netdev@vger.kernel.org>; Wed, 01 Jul 2026 14:43:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782942228; x=1783547028; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1782942230; x=1783547030; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BXRrqIrrIJVBrBWa0Ccyc+qAlQpIKuEVIV9AmMqga8c=;
-        b=dtwkVH3/jx5Kdkb+HX80maKQhq9b2A4gexpBaRw2d3U+dcZr2FR5XYTVFMxIMIcFho
-         szhns5EQgGi25Mza8xQH4yWPbuW9uZINgsMJKdOhcMJ33X391+OwYsUN2L/a9LnHh2Sw
-         x2o7VCduZUJ/Pz+LouLNkx/PlxN0ijNoLKTyFGnJtoMU8lS7M3WjBD4q8u1lGdW/Urmf
-         vZa0WycIGWSPxgFY6QykQcUu/DqR2OJKb1hXkSC7OHiz1mTSNm0kuJjDtu2XokYcdCzm
-         OoZuZdUvU+LwkMmxaq8HV/6oHY+CGjxFODr9zvWiDbicotZ0p11HggUWNYYSbRDR8yB2
-         3jbQ==
+        bh=Am3hdWBm3fjQqJl/GcjuCawMjEOMQ9wJEeWwevCk0Yk=;
+        b=uXz9zro5QamqqJXPgCDqgXQCr0VvrFsyHBIW6tx5nfT/+fpLNNnwb9hpRlutduJjAg
+         RUSFf82fcSDTJ8eQFSoX06Ct2cSWmuQqnaaJnncv02WNb41VGFme5FLT6bpEbtIMPfLm
+         IVj+L1eCxUXvpfr1qKIOes6LJUCR6FwFRzAlfD3ECQ6ogEbCXpLMEavLr8cFTmwddxGg
+         kaYqTV8V7++qv0p2ckMAl7Z/YLWLH3YtXyGMht7tkvkJLFneuyWw+twiABmOMVgqoxjZ
+         Ropjfp4dGB7YpShQobGBxdmRkL5z5zHC67gZO0aFmz0VBTJSLgLfOUhSL3lNoTwMFcVP
+         k9sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782942228; x=1783547028;
+        d=1e100.net; s=20251104; t=1782942230; x=1783547030;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BXRrqIrrIJVBrBWa0Ccyc+qAlQpIKuEVIV9AmMqga8c=;
-        b=F/DbwPYXOsQdmRbXoDY8FqjsWDfT9Ryd09u1YFjOP4QsIR+AOixGZHOyfWi8bb4VHl
-         heWDsuywW1WG+kVlPo4wfGW3KFfpT6PFs3mq3u6p8kAaX9Vd7QYDS3uKnqbo1GqR/kEi
-         CzFN3K5PkGrxkOpM6mv2E89mgTHSJEvGL6AG7+dKKf91H7DQpcYOjQNs2J5yKtblvwGg
-         7yAva5Fd1dZm1668jM8fRpnUnxv26MWnDAxYlymCADLaFnIpwwHpNysyx43iPLtBJnnj
-         qe4+cLFVaU1lEkHkWJSYiR0TOcP0FVv7MqpjmUoOgy8fSXiscA74blmLqmGL08/lonKT
-         /a+w==
-X-Forwarded-Encrypted: i=1; AHgh+Ro+2IP82o/87ZkYet2wDFAc4dPwRYAsxCMNAJCIlaf0+319Ltr2fZV5JkrPqFjfPMkSXsf/VL0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwlVd/mGfod6M6lVA6Y9VJut/dd7ZPu50hCQoPBVKxt+m8zvuae
-	oDJWP3LydRXP/ZB92+II2mjS2ipXZkiki1eVMZyiEQqCc4I1SjLHxkCA0twPQtLDMfocCnJA3ag
-	ykBAhzQ==
-X-Received: from plbjg6.prod.google.com ([2002:a17:903:26c6:b0:2c7:e8d4:d218])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e5ca:b0:2c9:97a9:209b
- with SMTP id d9443c01a7336-2ca91242f83mr20972465ad.47.1782942227859; Wed, 01
- Jul 2026 14:43:47 -0700 (PDT)
-Date: Wed,  1 Jul 2026 21:41:44 +0000
+        bh=Am3hdWBm3fjQqJl/GcjuCawMjEOMQ9wJEeWwevCk0Yk=;
+        b=SQhz5vwUz04Gko/5jx+kvD4ilZmWq235SY37vRELOVQzGbKTxUNmFAXT2HqKU97qCo
+         ZiXku/uX3oLn45WV6V9dxvMNzIl2UhPwPNA4wNkaYU4xSJspMCK2+CrGCsp9ThTVjaMm
+         AGO1o4ik0ajfE5MFt8jSlbEFuD9lKVmYm8DTQjAJRAeM20hF20tPq3/ckgXVI6m0ngC2
+         /iOyzVu/wQ8RXTpjFYDK2IbuvsrfZOXMJyjuUPvw7fkuDzXaiF6A5ucEUHLzkmxbcQRu
+         2KtgCrrN9n7txdWaNPLAzn1gntZarW25jkpgkNbnEPzIqDfWLOgP2ewEJenahqSsyGbq
+         50tA==
+X-Forwarded-Encrypted: i=1; AFNElJ8xXd1FPszAIdpsiJKxaNv97HRO3YMMBgNnfMOZV0HfROgKpssH4CbH73zjZqw380eMY8y+CBo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwX8ZOPgEeKFE727oP++jRItZaa3Ce4CmouuZl2qfcRA4/KPBfQ
+	8eT0dliyVPYUXU8mzq9wVjigQx4pJsz3o9LyMw+TRTKJtEVMa9Y/+zY4ThvJrHoDvpnGRav5an6
+	jmhVCQQ==
+X-Received: from pggh23.prod.google.com ([2002:a63:c017:0:b0:c8b:2f5f:81a4])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6300:2211:b0:3b4:65ac:e2e3
+ with SMTP id adf61e73a8af0-3bfed11e0d6mr3946154637.5.1782942229507; Wed, 01
+ Jul 2026 14:43:49 -0700 (PDT)
+Date: Wed,  1 Jul 2026 21:41:46 +0000
 In-Reply-To: <20260701214334.266991-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -58,8 +58,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260701214334.266991-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260701214334.266991-7-kuniyu@google.com>
-Subject: [PATCH v1 net-next 06/14] net: Add per-netns netdev unregistration infra.
+Message-ID: <20260701214334.266991-9-kuniyu@google.com>
+Subject: [PATCH v1 net-next 08/14] veth: Support per-netns device unregistration.
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>
@@ -67,274 +67,162 @@ Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
 	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-When we need to unregister a netdev in a different netns, we will
-delegate its unregistration to per-netns work.
+Currently, veth_dellink() unregisters both local and peer devices
+synchronously under RTNL.
 
-There are three types of such cross-netns devices:
+Once RTNL is removed, it can be called concurrently from different
+netns.
 
-  1. Paired devices (e.g., netkit, veth, vxcan)
-     -> Unregistering one device also deletes its peer, which
-        may reside in another netns.
+Let's use xchg() and unregister_netdevice_queue_net() to support
+per-netns device unregistration.
 
-  2. Tunnel devices (e.g., bareudp, geneve, etc)
-     -> Destroying a netns removes devices in another netns if
-        their backend sockets reside in the dying netns
+This way, each device is queued for destruction only once by
+the winner of the race.
 
-  3. Stacked devices (e.g., ipvlan, macvlan, etc)
-     -> Removing the lower device also removes multiple upper
-        devices, each of which may reside in different namespaces.
+Note that the extra netdev_hold() ensures that @peer obtained by
+the first xchg() is not freed during the subsequent access to
+netdev_priv(peer).  The 2nd xchg() overwrites @dev to balance
+the refcount.
 
-In these cases, we will use unregister_netdevice_queue_net() to
-queue such potential cross-netns devices for destruction.
+Tested:
 
-unregister_netdevice_queue_net() takes net and dev.  If dev resides
-in the net, it simply calls unregister_netdevice_queue().
+1. Create two veth pairs (veth1-2, veth3-4) between two netns
+   (ns1 & ns2).
 
-If dev_net(dev) is different from the net, it enqueues the device
-to dev_net(dev)->dev_unreg_head and schedules the per-netns work.
+  # ip netns add ns1
+  # ip netns add ns2
+  # ip -n ns1 link add veth1 type veth peer veth2 netns ns2
+  # ip -n ns1 link add veth3 type veth peer veth4 netns ns2
 
-When __rtnl_net_unlock() is called from the per-netns work (or another
-thread already holding the lock), unregister_netdevice_many_net()
-collects the queued devices and calls unregister_netdevice_many()
-to perform the actual unregistration.
+2. Run bpftrace to check if the same process does NOT
+   unregister the paired veth devices
 
-During netns dismantle, rtnl_net_flush_workqueue() is called at the
-end of default_device_exit_batch() to ensure that cross-netns
-devices in the other alive netns are unregistered.
+  # bpftrace -e '#include <linux/netdevice.h>
+  kprobe:free_netdev {
+      $dev = (struct net_device *)arg0;
+      printf("PID: %d | DEV: %s%s\n", pid, $dev->name, kstack());
+  }'
 
-Once RTNL is removed, a device could be moved to another netns while
-being queued to net->dev_unreg_head.
+3. Remove veth2 in ns2 and check bpftrace output
 
-__dev_change_net_namespace() handles this race by acquiring
-net->dev_unreg_lock of both the old and new netns after dev_set_net()
-and moving the device between their dev_unreg_head lists.
+  # ip -n ns2 link del veth2
 
-Since dev_set_net() and unregister_netdevice_queue_net() are
-synchronised by netdev_lock(), the device is either queued to the
-old netns's dev_unreg_head and then moved, or queued directly to
-the new netns.
+  PID: 2194 | DEV: veth2
+          free_netdev+5
+          netdev_run_todo+4798
+          rtnl_dellink+1507
+          rtnetlink_rcv_msg+1791
+  ...
+  PID: 448 | DEV: veth1
+          free_netdev+5
+          netdev_run_todo+4798
+          process_scheduled_works+2538
+  ...
 
-Note that unregister_netdevice_move_net() does not need to call
-rtnl_net_queue_work() because __dev_change_net_namespace() is
-(supposed to be) called with rtnl_net_lock().  (Not all callers
-hold it yet, but the race does not happen until all callers
-are converted and RTNL is removed.)
+4. Remove ns2 (thus veth4) and check bpftrace output
+
+  # ip netns del ns2
+
+  PID: 571 | DEV: veth4
+          free_netdev+5
+          netdev_run_todo+4798
+          default_device_exit_batch+2271
+          ops_undo_list+993
+          cleanup_net+1122
+          process_scheduled_works+2538
+  ...
+  PID: 441 | DEV: veth3
+          free_netdev+5
+          netdev_run_todo+4798
+          process_scheduled_works+2538
+  ...
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
- include/linux/netdevice.h   | 16 +++++++
- include/net/net_namespace.h |  2 +
- net/core/dev.c              | 85 +++++++++++++++++++++++++++++++++++++
- net/core/net_namespace.c    |  2 +
- net/core/rtnetlink.c        |  4 ++
- 5 files changed, 109 insertions(+)
+ drivers/net/veth.c | 34 +++++++++++++++++++++-------------
+ 1 file changed, 21 insertions(+), 13 deletions(-)
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 9981d637f8b5..53454db3611a 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -2241,6 +2241,9 @@ struct net_device {
- 	struct list_head	dev_list;
- 	struct list_head	napi_list;
- 	struct list_head	unreg_list;
-+#ifdef CONFIG_DEBUG_NET_SMALL_RTNL
-+	struct list_head	unreg_list_net;
-+#endif
- 	struct list_head	close_list;
- 	struct list_head	ptype_all;
+diff --git a/drivers/net/veth.c b/drivers/net/veth.c
+index 1c5142149175..8170bf33ccf9 100644
+--- a/drivers/net/veth.c
++++ b/drivers/net/veth.c
+@@ -77,6 +77,7 @@ struct veth_priv {
+ 	struct bpf_prog		*_xdp_prog;
+ 	struct veth_rq		*rq;
+ 	unsigned int		requested_headroom;
++	netdevice_tracker	peer_tracker;
+ };
  
-@@ -3472,6 +3475,19 @@ static inline void unregister_netdevice(struct net_device *dev)
- 	unregister_netdevice_queue(dev, NULL);
- }
+ struct veth_xdp_tx_bq {
+@@ -1901,15 +1902,17 @@ static int veth_newlink(struct net_device *dev,
  
-+#ifdef CONFIG_DEBUG_NET_SMALL_RTNL
-+void unregister_netdevice_queue_net(struct net *net, struct net_device *dev,
-+				    struct list_head *head);
-+void unregister_netdevice_many_net(struct net *net);
-+#else
-+static inline void unregister_netdevice_queue_net(struct net *net,
-+						  struct net_device *dev,
-+						  struct list_head *head)
-+{
-+	unregister_netdevice_queue(dev, head);
-+}
-+#endif
-+
- int netdev_refcnt_read(const struct net_device *dev);
- void free_netdev(struct net_device *dev);
+ 	priv = netdev_priv(dev);
+ 	rcu_assign_pointer(priv->peer, peer);
++	netdev_hold(peer, &priv->peer_tracker, GFP_KERNEL);
+ 	err = veth_init_queues(dev, tb);
+ 	if (err)
+ 		goto err_queues;
  
-diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
-index a989019af5f7..501af1999fe8 100644
---- a/include/net/net_namespace.h
-+++ b/include/net/net_namespace.h
-@@ -198,6 +198,8 @@ struct net {
- 	/* Move to a better place when the config guard is removed. */
- 	struct mutex		rtnl_mutex;
- 	struct work_struct	rtnl_work;
-+	struct list_head	dev_unreg_head;
-+	spinlock_t		dev_unreg_lock;
- #endif
- #if IS_ENABLED(CONFIG_VSOCKETS)
- 	struct netns_vsock	vsock;
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 48818a194fa5..0f0bf65f5bf9 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -12092,6 +12092,9 @@ struct net_device *alloc_netdev_mqs(int sizeof_priv, const char *name,
+ 	priv = netdev_priv(peer);
+ 	rcu_assign_pointer(priv->peer, dev);
++	netdev_hold(dev, &priv->peer_tracker, GFP_KERNEL);
+ 	err = veth_init_queues(peer, tb);
+ 	if (err)
+-		goto err_queues;
++		goto err_peer_queues;
  
- 	INIT_LIST_HEAD(&dev->napi_list);
- 	INIT_LIST_HEAD(&dev->unreg_list);
-+#ifdef CONFIG_DEBUG_NET_SMALL_RTNL
-+	INIT_LIST_HEAD(&dev->unreg_list_net);
-+#endif
- 	INIT_LIST_HEAD(&dev->close_list);
- 	INIT_LIST_HEAD(&dev->link_watch_list);
- 	INIT_LIST_HEAD(&dev->adj_list.upper);
-@@ -12485,6 +12488,16 @@ void unregister_netdevice_many_notify(struct list_head *head,
- 	synchronize_net();
+ 	veth_disable_gro(dev);
+ 	/* update XDP supported features */
+@@ -1918,7 +1921,11 @@ static int veth_newlink(struct net_device *dev,
  
- 	list_for_each_entry(dev, head, unreg_list) {
-+#ifdef CONFIG_DEBUG_NET_SMALL_RTNL
-+		struct net *net = dev_net(dev);
-+
-+		/* spin_lock() can be moved outside of the loop
-+		 * once the per-netns RTNL conversion completes.
-+		 */
-+		spin_lock(&net->dev_unreg_lock);
-+		list_del(&dev->unreg_list_net);
-+		spin_unlock(&net->dev_unreg_lock);
-+#endif
- 		netdev_put(dev, &dev->dev_registered_tracker);
- 		net_set_todo(dev);
- 		cnt++;
-@@ -12507,6 +12520,72 @@ void unregister_netdevice_many(struct list_head *head)
- }
- EXPORT_SYMBOL(unregister_netdevice_many);
+ 	return 0;
  
-+#ifdef CONFIG_DEBUG_NET_SMALL_RTNL
-+void unregister_netdevice_queue_net(struct net *net, struct net_device *dev,
-+				    struct list_head *head)
-+{
-+	netdev_lock(dev);
-+
-+	if (net_eq(dev_net(dev), net)) {
-+		netdev_unlock(dev);
-+		unregister_netdevice_queue(dev, head);
-+		return;
-+	}
-+
-+	net = dev_net(dev);
-+
-+	spin_lock(&net->dev_unreg_lock);
-+
-+	DEBUG_NET_WARN_ON_ONCE(!list_empty(&dev->unreg_list_net));
-+	list_add_tail(&dev->unreg_list_net, &net->dev_unreg_head);
-+	rtnl_net_queue_work(net);
-+
-+	spin_unlock(&net->dev_unreg_lock);
-+
-+	netdev_unlock(dev);
-+}
-+EXPORT_SYMBOL(unregister_netdevice_queue_net);
-+
-+static void unregister_netdevice_move_net(struct net *net_old,
-+					  struct net *net,
-+					  struct net_device *dev)
-+{
-+	if (net_old > net) {
-+		spin_lock(&net->dev_unreg_lock);
-+		spin_lock(&net_old->dev_unreg_lock);
-+	} else {
-+		spin_lock(&net_old->dev_unreg_lock);
-+		spin_lock(&net->dev_unreg_lock);
-+	}
-+
-+	if (!list_empty(&dev->unreg_list_net)) {
-+		list_del(&dev->unreg_list_net);
-+		list_add_tail(&dev->unreg_list_net, &net->dev_unreg_head);
-+	}
-+
-+	spin_unlock(&net_old->dev_unreg_lock);
-+	spin_unlock(&net->dev_unreg_lock);
-+}
-+
-+void unregister_netdevice_many_net(struct net *net)
-+{
-+	struct net_device *dev, *tmp;
-+	LIST_HEAD(unreg_head_net);
-+	LIST_HEAD(unreg_head);
-+
-+	spin_lock(&net->dev_unreg_lock);
-+	list_splice_init(&net->dev_unreg_head, &unreg_head_net);
-+	spin_unlock(&net->dev_unreg_lock);
-+
-+	list_for_each_entry_safe(dev, tmp, &unreg_head_net, unreg_list_net) {
-+		list_del_init(&dev->unreg_list_net);
-+		list_add_tail(&dev->unreg_list, &unreg_head);
-+	}
-+
-+	unregister_netdevice_many(&unreg_head);
-+}
-+#endif
-+
- /**
-  *	unregister_netdev - remove device from the kernel
-  *	@dev: device
-@@ -12663,6 +12742,10 @@ int __dev_change_net_namespace(struct net_device *dev, struct net *net,
- 	netdev_unlock(dev);
- 	dev->ifindex = new_ifindex;
++err_peer_queues:
++	netdev_put(dev, &priv->peer_tracker);
++	priv = netdev_priv(dev);
+ err_queues:
++	netdev_put(peer, &priv->peer_tracker);
+ 	unregister_netdevice(dev);
+ err_register_dev:
+ 	/* nothing to do */
+@@ -1933,24 +1940,25 @@ static int veth_newlink(struct net_device *dev,
  
-+#ifdef CONFIG_DEBUG_NET_SMALL_RTNL
-+	unregister_netdevice_move_net(net_old, net, dev);
-+#endif
-+
- 	if (new_name[0]) {
- 		/* Rename the netdev to prepared name */
- 		write_seqlock_bh(&netdev_rename_lock);
-@@ -13105,6 +13188,8 @@ static void __net_exit default_device_exit_batch(struct list_head *net_list)
- 	}
- 	unregister_netdevice_many(&dev_kill_list);
- 	rtnl_unlock();
-+
-+	rtnl_net_flush_workqueue();
- }
- 
- static struct pernet_operations __net_initdata default_device_ops = {
-diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
-index d1aeff9de580..578b48cf5318 100644
---- a/net/core/net_namespace.c
-+++ b/net/core/net_namespace.c
-@@ -423,6 +423,8 @@ static __net_init int preinit_net(struct net *net, struct user_namespace *user_n
- 	mutex_init(&net->rtnl_mutex);
- 	lock_set_cmp_fn(&net->rtnl_mutex, rtnl_net_lock_cmp_fn, NULL);
- 	INIT_WORK(&net->rtnl_work, rtnl_net_work_func);
-+	INIT_LIST_HEAD(&net->dev_unreg_head);
-+	spin_lock_init(&net->dev_unreg_lock);
- #endif
- 
- 	INIT_LIST_HEAD(&net->ptype_all);
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index 7959519e7375..544498d3c325 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -197,6 +197,7 @@ void __rtnl_net_unlock(struct net *net)
+ static void veth_dellink(struct net_device *dev, struct list_head *head)
  {
- 	ASSERT_RTNL();
+-	struct veth_priv *priv;
++	netdevice_tracker *peer_tracker;
+ 	struct net_device *peer;
++	struct veth_priv *priv;
  
-+	unregister_netdevice_many_net(net);
- 	mutex_unlock(&net->rtnl_mutex);
- }
- EXPORT_SYMBOL(__rtnl_net_unlock);
-@@ -290,6 +291,9 @@ void rtnl_net_work_func(struct work_struct *work)
- {
- 	struct net *net = container_of(work, struct net, rtnl_work);
- 
-+	if (list_empty(&net->dev_unreg_head))
+ 	priv = netdev_priv(dev);
+-	peer = rtnl_dereference(priv->peer);
++	peer_tracker = &priv->peer_tracker;
++	peer = unrcu_pointer(xchg(&priv->peer, NULL));
++	if (!peer)
 +		return;
+ 
+-	/* Note : dellink() is called from default_device_exit_batch(),
+-	 * before a rcu_synchronize() point. The devices are guaranteed
+-	 * not being freed before one RCU grace period.
+-	 */
+-	RCU_INIT_POINTER(priv->peer, NULL);
+ 	unregister_netdevice_queue(dev, head);
+ 
+-	if (peer) {
+-		priv = netdev_priv(peer);
+-		RCU_INIT_POINTER(priv->peer, NULL);
+-		unregister_netdevice_queue(peer, head);
+-	}
++	priv = netdev_priv(peer);
++	dev = unrcu_pointer(xchg(&priv->peer, NULL));
++	if (dev)
++		unregister_netdevice_queue_net(dev_net(dev), peer, head);
 +
- 	rtnl_net_lock(net);
- 	rtnl_net_unlock(net);
++	netdev_put(peer, peer_tracker);
++	netdev_put(dev, &priv->peer_tracker);
  }
+ 
+ static const struct nla_policy veth_policy[VETH_INFO_MAX + 1] = {
 -- 
 2.55.0.rc0.799.gd6f94ed593-goog
 
