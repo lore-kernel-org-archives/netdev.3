@@ -1,84 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C948B219FC;
-	Wed,  1 Jul 2026 00:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485A7EEB3;
+	Wed,  1 Jul 2026 00:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782865238; cv=none; b=a8gjReFo99C988Y7P+3vz9rFdwFa+iHGyCXzrvZTeCBXqrvNebQUD5RRhu31Fd7qve7CzQN+q+OJkux8TZFxfAYjWFiEiKCyAOdgVaxFhNmPww2Z0m4z5YX79Gynvu6iGB/pExmvZcFAWQgF8QQM0xb2g0n7maydoDUFTsxAUXU=
+	t=1782865330; cv=none; b=IMolk5xrdYmfXZUKuKD0orRSVx6swTnECl57grvICB3w9gfa9ZceXU+Ditvhz1HPKq//Y5zBpaZYtmVTFsnRIBdHNMAyREt5VpAJT2t0/Ia6aJPZVvjOsuYvth8YxYekZ8OqN9i0aLTS6NijmXb4m4kQ+1GSy6W/rd0X6hkr1ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782865238; c=relaxed/simple;
-	bh=+MtWZEI7sL4Gq/hiLtL10JPVTljMjqSYfZ8RhHj2i3k=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=JBHFiPTUnQ3bKAXsKrsoVc1AMFIDRO9DVUryU/VwJCPfIzMXF4w78FHNVqrpqnpyFmk6X1fg3wvR0+mHVAOZ796aKn+HFcidJfzn10z1zQNpYKLfhfvKCOkAevANcsvxOFXkwJYEulQI26G0F5PACgnymfJ1LFao6eyWcfN9zIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ObWHs0AG; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782865330; c=relaxed/simple;
+	bh=mMcchdAlNizDIwsEX0g6yqVDmYD8+EbSdd0zY93Oyko=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=S9dtq+Up+jYDTNFB5cBq0O+E0VsxJ7OFjzzvSV6NkshJQWHqny1XGe/W3qRzfcgByfHQQmEzyeDxHeeqZNRxuZmRy9jn13bYyPcbpTt3wqtW2jVE4uPXbBvqf3bK68eE/otRNlwEo4TvvuL1kAMAVibwXrBuXCn9FHVx4rI8S3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jz+PeIS9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ObWHs0AG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BF351F000E9;
-	Wed,  1 Jul 2026 00:20:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jz+PeIS9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81BC91F000E9;
+	Wed,  1 Jul 2026 00:22:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782865237;
-	bh=8ha5HOs0BA1n/WIGjOEKvG8bb7gqGwHOZP3aqkyKxe4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=ObWHs0AG8s9kpOgHRWK6ESc/Pm1UJVfCjGwmckBw7pxuL9P4uE++5mu4UN8CE/ujB
-	 37wH0opS9tu0xMY7e7dMWLVVSVfkN1tK2ueCJstgmPvRM52SXUVKKEr7sSctDeam32
-	 d6JyPDDba3eCyv4jJhDqaH8OCzfWM8I1hIenA6xyGo410u/OsR9i95dpt6yz+9vNvm
-	 cTI0QD7OHPh1hz86ElUdmGqZnKvf5XFecmEXbQcbE4P1ao2z5SwsnDuTVZdHUNH0Iv
-	 9bpbtL/o1gytGPrYv0BNMp4HDWoyNzLt8YSJ2SLswadCuOXbweJORIWDVbSgnZTYog
-	 OLtKUA4BmRBDA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93B2F393A963;
-	Wed,  1 Jul 2026 00:20:22 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1782865328;
+	bh=TNFRPzXso8ICJqumC1/giinDXhjIml62iLi01mXW94Q=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=jz+PeIS9qJcT/vKWBLlHAbZMwtiFCKpo0Fjvz54AIZ5P/mdPWgAJKCd3dw69/9n9a
+	 rpmRPNPSpyfcp4kHAHHe8MU/ciSvWLz03FyX6AQWpfUs4mhlKaUJgpViADnpYR16LW
+	 6WbGIVSJqOPsrrd5aO1dtI5RCg8zMl5jjDt55zlAdS3OWa5PFfe+vRfj6AASfR3RCf
+	 mrvrkdhkWLqVY/cQ250YyfywlUlAyp8UXIwppVq097xxNZUbnOQfZD5Z6PoJs5PnwZ
+	 g320UgFBeqavlHPutxMaAnIRKDFamWVTEWOUATH5nehzkY0mYNdlwo+QrJyPdwNScS
+	 Tx2ytJ4jlXhqA==
+Date: Tue, 30 Jun 2026 17:22:07 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Yuho Choi <dbgh9129@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Kory Maincent <kory.maincent@bootlin.com>, Zilin Guan
+ <zilin@seu.edu.cn>, Uwe Kleine-Koenig <u.kleine-koenig@baylibre.com>, Vadim
+ Fedorenko <vadim.fedorenko@linux.dev>, Marco Crivellari
+ <marco.crivellari@suse.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2] net/liquidio: drop cached VF pci_dev LUT and
+ resolve VF for FLR on request
+Message-ID: <20260630172207.0002f3e6@kernel.org>
+In-Reply-To: <20260629141656.1769227-1-dbgh9129@gmail.com>
+References: <20260629141656.1769227-1-dbgh9129@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: sgi: ioc3-eth: unregister netdev before freeing
- DMA
- rings
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178286522113.349616.415560228684093854.git-patchwork-notify@kernel.org>
-Date: Wed, 01 Jul 2026 00:20:21 +0000
-References: <40CD736C4911C181+20260629085053.964383-1-raoxu@uniontech.com>
-In-Reply-To: <40CD736C4911C181+20260629085053.964383-1-raoxu@uniontech.com>
-To: Xu Rao <raoxu@uniontech.com>
-Cc: tsbogend@alpha.franken.de, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- linux-mips@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Mon, 29 Jun 2026 10:16:56 -0400 Yuho Choi wrote:
+> Xgene PCI probe by using port->dev->of_node directly.
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon, 29 Jun 2026 16:50:53 +0800 you wrote:
-> From: Xu Rao <raoxu@uniontech.com>
-> 
-> ioc3eth_remove() frees the coherent RX and TX descriptor rings before
-> unregistering the netdev. If the interface is running,
-> unregister_netdev() invokes ioc3_close() through ndo_stop.
-> 
-> ioc3_close() stops the device and then calls ioc3_free_rx_bufs() and
-> ioc3_clean_tx_ring(). Both cleanup functions access descriptors in the
-> rings, so the current ordering causes CPU accesses to freed coherent
-> memory. Until ioc3_stop() disables RX and TX DMA, the device may also
-> continue using the freed ring addresses.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net] net: sgi: ioc3-eth: unregister netdev before freeing DMA rings
-    https://git.kernel.org/netdev/net-next/c/18a28f3e107e
-
-You are awesome, thank you!
+sashiko points out that this is not part of this patch (or driver?)
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
