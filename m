@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1F254F5E0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2DC37263B
 	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 02:17:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782872275; cv=none; b=BZuWmhZ9beBOj/r4vZV1HZMJrjNbxQuIPWJRIRvTwhRDtkVWmoj+jySfg20wRoHmHeJBdHUvFFptWuclxVIb4QiztH24R+XhJhmr/rQ4+gLkRBnvut5ll0Gbws5mMRPu8t6CaMbtSVHbXPJ9U3lBCqks7ANn4QgqU2AsmeXq9a8=
+	t=1782872275; cv=none; b=IbEHjVZPY7k5cuJTOYyWT5jDccTeok4mtKgEFNtZ59JyEpoJi6jXgcOCVOkvDhshTlg6NEGKKLFl4UsjNhNPSkiDKR8pMx4kUYVe5ZEWeVlHfohoJXLJmXr0JrooPP0H68dSaWYCUPKmwznHvI9nxeKTQh7O7fviA1JYONAHM9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1782872275; c=relaxed/simple;
-	bh=bFtN0DWrXaFyPLIRYkrIGmbHXEqS6FcrVitKqdHAnAE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HG2/9bMQ7drQozoFDewzPXoYhw3eoA1byg43WhffLZHQIlwA6RSdS2swQrLhKJLW3UTu8d5Jina2SUEmeFDTWMyvUJmQ+DLQWHsZG1PrZLR/3xKA75991c8zXB0g8KY8w4doWNAleed93p6eGOkahmeZU9IxlcjWGks54ukqNNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HyzoFKnv; arc=none smtp.client-ip=100.103.45.18
+	bh=3fRmPQKteOOiOxEbZeHv6la9gP4hfmfJPqu7KAj7ZgY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=psIzHwN0X8JWohzCELy1yiIfq4wkl9Teq9YWZwrxRkdkpPfA2QoPp+AnsmRIoT0KwcSXiAXity/+O/qJBgvJEjOgN4tFyGbbnF8wBaVo2UGRipMCysmNs2KYqh2595t3RbSfd098ociwnYft+VAgLQKUEEOA/WophIa81rp92GQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IvadXRa0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HyzoFKnv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F11C91F000E9;
-	Wed,  1 Jul 2026 02:17:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IvadXRa0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75E2A1F00A3A;
+	Wed,  1 Jul 2026 02:17:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1782872274;
-	bh=WD1pSiuoNdirDu25cNdEAcwleSuUFFdYBJzEtd35hIY=;
-	h=From:To:Cc:Subject:Date;
-	b=HyzoFKnv1R/880XmZMM3E20+wTdQpIg+j0w9CVq+id3mt8b3GMAy/jKrsPvFvX984
-	 ezxaeUNr85QCE6PIYPHgmUSL0reGUBssGCknPjy2vK5JZhWHUgJOA17y/QmLKwPpPm
-	 9O/GLguzatgZj2gtJftp+xBGUR7yauEMglmJE4ghPcIH00l4F8jF5KhpnwcEnVBlyK
-	 RiT8T9/z+RGZzV7uNz4wC8nu0fY9RYzOYuugd6AQyM+kwy7oTktxjqvzQTtcBW4wzs
-	 6GFHJbfMQ8p6Nznl1miqdRueCHKNPccCOhZjflnDEJPZvwYyCZfmoYJZf/BgRT4AqM
-	 g0OLdzMWD4U0w==
+	bh=Xke1GweU36y3e1sZ2CtkJ23FtWzM+P/iIj4KDN1At6w=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=IvadXRa0En3IJq0xoia8PpqI3kVVUmtPLCDJhlo8JKl/VzPt+i+nEstfQZ7+d6D+K
+	 pxSVm1o2KtP5U/NYj1IcecGNdnPpNuN3K44Vbg+lhUnGQDgH2lbbmuplDV5K/XYn2a
+	 BE5esi7TL/2iijLbIwegfJsVZIgNeMFZyShJp77ZiHk/BJfZRLA5nFZVxKs2JFPbU1
+	 Cb1hrTy34ojcTqpHSNjQAvElG271z7o2p7SKX5r1gvAj94nlrvutOIXLicsCPeqROx
+	 1X7U/Ytq0JA7dl4Tftq6fIczS59vg/0jVu/YD1fM6Aog4sLeaBy5Gyy+mgWhsAmPka
+	 CBmWXT9djNH6w==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -38,10 +39,12 @@ Cc: netdev@vger.kernel.org,
 	jstancek@redhat.com,
 	ast@fiberby.net,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next v2 0/2] tools: ynl: pyynl: pull the --family resolution logic into the lib
-Date: Tue, 30 Jun 2026 19:17:49 -0700
-Message-ID: <20260701021751.3234681-1-kuba@kernel.org>
+Subject: [PATCH net-next v2 1/2] tools: ynl: pyynl: re-export the library API from the package root
+Date: Tue, 30 Jun 2026 19:17:50 -0700
+Message-ID: <20260701021751.3234681-2-kuba@kernel.org>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260701021751.3234681-1-kuba@kernel.org>
+References: <20260701021751.3234681-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,45 +53,39 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When packaging YNL as a system level utility we added a --family
-argument which auto-resolves the full spec path from a well known
-path in /usr/share. Spelling out full YAML spec files is at this
-point only done in-tree, for example in the selftests which need
-the very latest YAML. But the selftests have their own wrapping
-classes for each family so test authors aren't really bothered
-by having to spell the paths out.
+The public classes live in pyynl.lib, so users had to spell out
 
-Afford the same ease of use to the Python library users.
-Move the path resolution from the CLI code to the library.
-This simplifies the pyynl use by a lot:
+  from pyynl.lib import YnlFamily
+
+which I forget at least once a month. Re-export lib's API from
+the package __init__ so that
 
   from pyynl import YnlFamily
 
-  ynl = YnlFamily(family="netdev")
+works as well. I don't think there was a real reason not to do
+this?
 
-Unless I'm missing a trick, resolving the /usr/share path
-is hard enough for most users to lean towards shelling out
-to ynl CLI with --output-json, which is sad.
+Acked-by: Jan Stancek <jstancek@redhat.com>
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+ tools/net/ynl/pyynl/__init__.py | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-v2:
- - fix the ethtool script (Donald)
- - fix --family=X --validate (Clashiko)              
-v1: https://lore.kernel.org/20260630001432.2204298-3-kuba@kernel.org
-
-Jakub Kicinski (2):
-  tools: ynl: pyynl: re-export the library API from the package root
-  tools: ynl: pyynl: pull the --family resolution logic into the lib
-
- tools/net/ynl/pyynl/__init__.py     |  9 +++++
- tools/net/ynl/pyynl/cli.py          | 56 +++++++----------------------
- tools/net/ynl/pyynl/lib/__init__.py |  3 +-
- tools/net/ynl/pyynl/lib/nlspec.py   | 22 ++++++++++--
- tools/net/ynl/pyynl/lib/specdir.py  | 51 ++++++++++++++++++++++++++
- tools/net/ynl/pyynl/lib/ynl.py      | 19 ++++++++--
- tools/net/ynl/tests/ethtool.py      |  7 +---
- 7 files changed, 111 insertions(+), 56 deletions(-)
- create mode 100644 tools/net/ynl/pyynl/lib/specdir.py
-
+diff --git a/tools/net/ynl/pyynl/__init__.py b/tools/net/ynl/pyynl/__init__.py
+index e69de29bb2d1..d8f59c132ab7 100644
+--- a/tools/net/ynl/pyynl/__init__.py
++++ b/tools/net/ynl/pyynl/__init__.py
+@@ -0,0 +1,9 @@
++# SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
++
++""" Python YNL (YAML Netlink) library. """
++
++# Re-export the public library API so it can be imported straight from the
++# package, e.g. `from pyynl import YnlFamily`.
++# pylint: disable=wildcard-import,unused-wildcard-import
++from .lib import *
++from .lib import __all__
 -- 
 2.54.0
 
