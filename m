@@ -1,90 +1,125 @@
-Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com [209.85.161.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B584B8DEB
-	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 12:32:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88319481FAD;
+	Wed,  1 Jul 2026 12:44:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782909147; cv=none; b=gMvW+h6EiC2Q33/6k6BBwuuAjcPS6SxAZ35x5VqQAm6fFNHjusu2X3q69qAgNi0ucMmHG+5xWlPctOV7u+Tv70dOGZ2oyAYCRRcUkfGtnUKX04+CTu6sYZdSgWnTAnZJnF/qKN4RxZdcTWZc5AV0kwKKZjkz5s2YCvfH4dTvWRo=
+	t=1782909894; cv=none; b=DLKRErBSJm77JH+bi3DQF21gR8WYx+/hDHWG6iNtJgJ82dAeHFrCe8Nh5/3K2O29P0ZxCWfR4tm/G2oewHnhyceJlvIYhMDXyO+EDcx7LpqKutrMVRuKaA+WM1o4oSHZZwx22nrEvzzMYipaoG4ST1J4cap7ow8qPK+fxDuKYgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782909147; c=relaxed/simple;
-	bh=C8ae2Wn3IRIgHe995KPxuL6o13/FdExud3bMgQz6wD4=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=mE/BEhvNJeMySVBxpv/vv2SfXOAv9BHhqAuWTkaJMwp3CHRKuDw/6KXaCd3orBKHOFIjx2Is2XaUAAoQACAMk/qOSQCkbsyu2a+PlhIE5SRTf02o8/5lYKQzwlPZCrmXvDj9IJ+MBdpcpOaAh8x2KlgXrc0+h3VWT5BcDlXml6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f69.google.com with SMTP id 006d021491bc7-6a180a73049so647046eaf.0
-        for <netdev@vger.kernel.org>; Wed, 01 Jul 2026 05:32:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782909144; x=1783513944;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=me+E3q06UL+WArmFrq+65FdWO4Z3IexCPtt0ELwjlkE=;
-        b=LvarieJ3lhY8DhPQTtxSXkBcgRAXRG91AXBqV2CtH4S/hWV6Wdk+z6RUSM3xHrDHxb
-         Ym+LH4nSCAHP6VaPGE1xsi8+UrNuWj9pai3WL9X1mUQFauikZ2HhCPcPlcForv3e/VY6
-         RkgNFnRs7c+MnasWui3S3TiEwZD6kvZVRf6rqxsJDTLMDIs3+hEPlapaeN59xBzuJXby
-         LdRstlHpEn+aU5z8vcXMLR97VclVI/0w2nFAyLBSyWRY7tRf6eBByKl6szpKzPStxQQZ
-         7vtJu0TBXI46zfzAA+cHKCHtqeiuxG84DfXP4lqyuDtz4b5FU70uB5s5ShGdqOgYAtFG
-         Nh5A==
-X-Forwarded-Encrypted: i=1; AFNElJ+CyzbSkZITrZtDo4Dya/tdX+brOg0Qgl/9ZVdhltEqFaQ6AhrUJXsE0yjtbgboofNvChOZTIs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxiVx8xqyiUsatucn9JTbRgKaqjuW16VuRNsYYhHt77umpmjvkW
-	wYP/+9lDGYNxywGLlTEJoREXT+gElN23LM5svFUAbicu//iX+YB9dc62ExOu3tTtla04dxImG1c
-	APcQSZh20FC8cv8HRbLenWgb8eZq95ATPDlrGIfiZxHwBhZ9v/FP719AIcfc=
+	s=arc-20240116; t=1782909894; c=relaxed/simple;
+	bh=Yr3lik8JzUo69MwblyRdg2QtwNYxJKp6ok3TZ7g+abQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XMJaKmyId7gTWEJQpB/JlNqM7CaCNxSE6+Fhy0mnDDrPk9jLoRcRyeDGDtXnFHzfiJcgqFCFkC2SpUr96vZmDVQxbRIl1zAOCybeoH+MEWKnqM5fuuEAVZ/Pki29YieswM4lyYT+3kNc61UrToFqU3eYPJz3fY7yIrmUE24g930=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=F9hqdLH2; arc=none smtp.client-ip=45.254.49.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="F9hqdLH2"
+Received: from PC-202605011814.localdomain (unknown [222.191.246.242])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 448185dde;
+	Wed, 1 Jul 2026 20:39:30 +0800 (GMT+08:00)
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+To: pablo@netfilter.org,
+	laforge@gnumonks.org
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	osmocom-net-gprs@lists.osmocom.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	runyu.xiao@seu.edu.cn,
+	jianhao.xu@seu.edu.cn
+Subject: [PATCH net-next] gtp: annotate PDP lookups under RTNL
+Date: Wed,  1 Jul 2026 20:39:25 +0800
+Message-Id: <20260701123925.3193089-1-runyu.xiao@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:1c8e:b0:6a1:9a59:5c5f with SMTP id
- 006d021491bc7-6a309b372b9mr715415eaf.46.1782909144391; Wed, 01 Jul 2026
- 05:32:24 -0700 (PDT)
-Date: Wed, 01 Jul 2026 05:32:24 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a4508d8.52c20a74.1f8b39.0002.GAE@google.com>
-Subject: [syzbot] Monthly netfilter report (Jul 2026)
-From: syzbot <syzbot+list936a506377afb7f1a7a7@syzkaller.appspotmail.com>
-To: fw@strlen.de, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	netfilter-devel@vger.kernel.org, pablo@netfilter.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9f1db10d6403a1kunm755b42b019ca6d
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCQk5IVk4YQhgfTk8aSkgfGlYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUlVSkJKVUlPTVVJT0lZV1kWGg8SFR0UWUFZT0tIVUpLSE
+	pPSExVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=F9hqdLH2D2YW9qW4SNiPxmaIE/EPlWiVfD4Sssq/Jiry2EfD8ptvrCHPE6nCqWt16HCInKvi4xJ9QXZf/DiNQ/e5mMg0HCAQUW5vXnHcpd/lrUNXzNmdgy6xh03HxjzX0xeFSsdlQDvXVFv7wFGiI+YhugcBu4rPPnVAzX4cGwE=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=BYssoUQdOZAvOiOsJT1JwJbdyewbrrCK1EtSJORyWoc=;
+	h=date:mime-version:subject:message-id:from;
 
-Hello netfilter maintainers/developers,
+The GTP PDP lookup helpers are shared by RCU-protected data and report
+paths and RTNL-protected control paths such as gtp_genl_new_pdp(). The
+helpers walk RCU hlists, but they do not currently pass the RTNL
+condition for the control-path lookups.
 
-This is a 31-day syzbot report for the netfilter subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/netfilter
+Pass lockdep_rtnl_is_held() to the PDP hlist iterators. Existing
+RCU-reader callers remain valid because the RCU-list macros also accept
+an active RCU read-side section; the added condition only documents the
+non-RCU protection already used by RTNL control paths.
 
-During the period, 0 new issues were detected and 0 were fixed.
-In total, 11 issues are still open and 198 have already been fixed.
-There are also 3 low-priority issues.
+This was found by our static analysis tool and then manually reviewed
+against the current tree. The dynamic triage evidence is a
+target-matched CONFIG_PROVE_RCU_LIST warning; the change is limited
+to documenting the existing protection contract.
 
-Some of the still happening issues:
+This is a lockdep annotation cleanup. It does not change PDP lifetime or
+hash updates.
 
-Ref Crashes Repro Title
-<1> 1759    Yes   INFO: task hung in addrconf_dad_work (5)
-                  https://syzkaller.appspot.com/bug?extid=82ccd564344eeaa5427d
-<2> 703     Yes   INFO: rcu detected stall in addrconf_rs_timer (6)
-                  https://syzkaller.appspot.com/bug?extid=fecf8bd19c1f78edb255
-<3> 137     Yes   INFO: rcu detected stall in NF_HOOK (2)
-                  https://syzkaller.appspot.com/bug?extid=34c2df040c6cfa15fdfe
-<4> 124     Yes   INFO: rcu detected stall in br_handle_frame (6)
-                  https://syzkaller.appspot.com/bug?extid=f8850bc3986562f79619
-<5> 78      No    INFO: task hung in nfnetlink_rcv_msg (5)
-                  https://syzkaller.appspot.com/bug?extid=c4b20b80ee6a7a2f5012
-<6> 2       No    WARNING in nf_conntrack_cleanup_net_list (2)
-                  https://syzkaller.appspot.com/bug?extid=122256c3e2bf6ec9f928
-
+Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ drivers/net/gtp.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
+diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
+index 5cb59d72bc82..b94073c55f17 100644
+--- a/drivers/net/gtp.c
++++ b/drivers/net/gtp.c
+@@ -151,7 +151,8 @@ static struct pdp_ctx *gtp0_pdp_find(struct gtp_dev *gtp, u64 tid, u16 family)
+ 
+ 	head = &gtp->tid_hash[gtp0_hashfn(tid) % gtp->hash_size];
+ 
+-	hlist_for_each_entry_rcu(pdp, head, hlist_tid) {
++	hlist_for_each_entry_rcu(pdp, head, hlist_tid,
++				 lockdep_rtnl_is_held()) {
+ 		if (pdp->af == family &&
+ 		    pdp->gtp_version == GTP_V0 &&
+ 		    pdp->u.v0.tid == tid)
+@@ -168,7 +169,8 @@ static struct pdp_ctx *gtp1_pdp_find(struct gtp_dev *gtp, u32 tid, u16 family)
+ 
+ 	head = &gtp->tid_hash[gtp1u_hashfn(tid) % gtp->hash_size];
+ 
+-	hlist_for_each_entry_rcu(pdp, head, hlist_tid) {
++	hlist_for_each_entry_rcu(pdp, head, hlist_tid,
++				 lockdep_rtnl_is_held()) {
+ 		if (pdp->af == family &&
+ 		    pdp->gtp_version == GTP_V1 &&
+ 		    pdp->u.v1.i_tei == tid)
+@@ -185,7 +187,8 @@ static struct pdp_ctx *ipv4_pdp_find(struct gtp_dev *gtp, __be32 ms_addr)
+ 
+ 	head = &gtp->addr_hash[ipv4_hashfn(ms_addr) % gtp->hash_size];
+ 
+-	hlist_for_each_entry_rcu(pdp, head, hlist_addr) {
++	hlist_for_each_entry_rcu(pdp, head, hlist_addr,
++				 lockdep_rtnl_is_held()) {
+ 		if (pdp->af == AF_INET &&
+ 		    pdp->ms.addr.s_addr == ms_addr)
+ 			return pdp;
+@@ -220,7 +223,8 @@ static struct pdp_ctx *ipv6_pdp_find(struct gtp_dev *gtp,
+ 
+ 	head = &gtp->addr_hash[ipv6_hashfn(ms_addr) % gtp->hash_size];
+ 
+-	hlist_for_each_entry_rcu(pdp, head, hlist_addr) {
++	hlist_for_each_entry_rcu(pdp, head, hlist_addr,
++				 lockdep_rtnl_is_held()) {
+ 		if (pdp->af == AF_INET6 &&
+ 		    ipv6_pdp_addr_equal(&pdp->ms.addr6, ms_addr))
+ 			return pdp;
+-- 
+2.34.1
 
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
