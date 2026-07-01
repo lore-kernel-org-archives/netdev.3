@@ -1,68 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC9CB640
-	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 00:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C05125AA;
+	Wed,  1 Jul 2026 00:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782864618; cv=none; b=gU6QQLh2MnD4n40cc8tuun07I24IoEBnacf6rYHSG+eGII+jmBrfdVurli2PFDhSnPv0Ge/kAce1BCljokOH1XIA4CCaNwhNaDqyWXIpSpPbbW9vV0HFEiCq6t1WITboAkQeaZJkj+B6+h+3E7k/MlltG2GjtGMXtGmKD9WLFtQ=
+	t=1782864623; cv=none; b=E6KKpS2k6+eiaWSVDX+50CFcOd6fQtbDIn8OPZ2/8sOQM/QAe2lHik3JqFoNo0tlwBMnxAcMC4YxKKBJp/ZKiEL6CDlYepOF9oQBsTd/9Rnw4auQWSWwDHnpY14yHLp9amfhBZ36FucndS7Sxp8oBWdImBctLwYT6D637+9Xd1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782864618; c=relaxed/simple;
-	bh=3CWakuO+Zl8i+W35j2Fcoa23621kOC2Ej8UGhjq9J6k=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T0OwIDgA3si2ereMrUoXcJQTvvhpnv59/fYJhya0wTmsTHdg1S8xbXRtIzajhLO2odpVV6inr5aSVgXg/KIxauzy/TSdyQ5+6jjeSJlFfTd0V76KuutE1csvO3z7MLeYMAsLq4yLqN3faYlfTEGk/rmTZOvYSCa5h923ArjQHYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T5mSqD8m; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782864623; c=relaxed/simple;
+	bh=9ZH4Ff2UgFsKkmK5tefRkwwzer7+c9WXPQlxLKvyGZQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=b+XJ4WTeNSNJRl6wyCGjpQm1jaW+53tJgVQ8sBrM9otNPs8DDoRpUg+Lr4pO3nQFhJ8H2YbDMl3SiaGzL3HBzFoJMfgjhc53xStkeDbXyGxA6HkzPxaphXNKwFSwsi1a8XSR7aC7p1Dnua3ygeQljRi85vwaZoVWJFDm8zxoq5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R7qVBkmX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T5mSqD8m"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB3341F000E9;
-	Wed,  1 Jul 2026 00:10:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R7qVBkmX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA1941F000E9;
+	Wed,  1 Jul 2026 00:10:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782864617;
-	bh=4MzL+D21zhdUHYpaJKr5W49AaOCxW0dEPvXX3kHVLO8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=T5mSqD8m6wYBahC/KMspAj0QXfGibItNDYURwUbxKk/uB4KyW/rVdQGMTBvFKk0i9
-	 lDRygXYMIl3ulvcF1Q8G3z8QjJPGvikZ1n2pMKwrs46wVNNSIA5cgHGktx8oEKCRiS
-	 oz1zrAqIWxJcBGAT2xbHWJwKI4uuZvQilgk0R9pw6dylEXBG3okqy4899TF0UQ+YF+
-	 DZViLsK83X4v4EhsLQCkH59Ixb5ImCMtp6+A7pdUGsWRlF5Knl+kV706/hbfMzuBgx
-	 F93cNSRN7COqcsGACSUhXgd7+6O7Z8SVzY8XyulGgEFe+/bXG9kh6aWSMhWe+Sv/ti
-	 n/j0XTnxhufoQ==
-Date: Tue, 30 Jun 2026 17:10:16 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Ren Wei <n05ec@lzu.edu.cn>
-Cc: netdev@vger.kernel.org, jhs@mojatatu.com, jiri@resnulli.us,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- horms@kernel.org, peilin.ye@bytedance.com, cong.wang@bytedance.com,
- gnault@redhat.com, yuantan098@gmail.com, yifanwucs@gmail.com,
- tomapufckgml@gmail.com, zcliangcn@gmail.com, bird@lzu.edu.cn,
- bronzed_45_vested@icloud.com
-Subject: Re: [PATCH net 1/2] net/sched: act_skbmod: require an Ethernet
- header for MAC rewrites
-Message-ID: <20260630171016.11c02dec@kernel.org>
-In-Reply-To: <3ab4a04fbab887238facc1792e02c33fd68190f7.1782548651.git.bronzed_45_vested@icloud.com>
-References: <cover.1782548651.git.bronzed_45_vested@icloud.com>
-	<3ab4a04fbab887238facc1792e02c33fd68190f7.1782548651.git.bronzed_45_vested@icloud.com>
+	s=k20260515; t=1782864621;
+	bh=5eK2h5zT0huQPCIKoKHlO4e6xJbMU/UtAu/ACXXiick=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=R7qVBkmXs0a8nkFpQBsqm+vimuROR/Wv7uAZbYkF/r6m0W1QJ7N7cpf8nJ2GhIdFG
+	 6vpw2JqNz1weUgdpYx+FTkrmR6FiOFYVOIYnzc/kettUTVe8APMR/i/vHktoHxkZxQ
+	 sznuuaYZb29jVbdnlaiOLuIsbN7YfFk95vvY4w7BT9S5XTy7POEKH5J/BS0OwFBwAK
+	 jQIwIz+lO+g+/eBHgtencZx5IlkthjKhWBbzN7JOhDM749xUyvK5EPsufcqF0JrnD2
+	 5lXB0yiR0XOT+SfyN5MBCnvi+LRJEZYYmY0oidR0Q0klIQRhDMy2P23DfTVPMuUx8N
+	 H1QoSSuqFYUlQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0C1B393A963;
+	Wed,  1 Jul 2026 00:10:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] sctp: fix addr_wq_timer race in sctp_free_addr_wq()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178286460539.344657.15416227618301274929.git-patchwork-notify@kernel.org>
+Date: Wed, 01 Jul 2026 00:10:05 +0000
+References: 
+ <5dc95f295bdb5c3f60e880dd9aa5112dc5c071cc.1782757874.git.lucien.xin@gmail.com>
+In-Reply-To: 
+ <5dc95f295bdb5c3f60e880dd9aa5112dc5c071cc.1782757874.git.lucien.xin@gmail.com>
+To: Xin Long <lucien.xin@gmail.com>
+Cc: netdev@vger.kernel.org, linux-sctp@vger.kernel.org, davem@davemloft.net,
+ kuba@kernel.org, edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+ marcelo.leitner@gmail.com, ebiederm@xmission.com
 
-On Mon, 29 Jun 2026 10:46:03 +0800 Ren Wei wrote:
-> Cc: stable@vger.kernel.org
-> Reported-by: Yuan Tan <yuantan098@gmail.com>
-> Reported-by: Yifan Wu <yifanwucs@gmail.com>
-> Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-> Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
-> Reported-by: Xin Liu <bird@lzu.edu.cn>
-> Assisted-by: Codex:GPT-5.4
-> Signed-off-by: Wyatt Feng <bronzed_45_vested@icloud.com>
-> Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Hello:
 
-Let's do away with the 5 reported-by tags? You can use a tag for your
-tool or your team, it doesn't have to be a person. Look at sashiko or
-syzbot reported-by tags.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Mon, 29 Jun 2026 14:31:14 -0400 you wrote:
+> sctp_free_addr_wq() previously removed addr_wq_timer using timer_delete()
+> while holding addr_wq_lock. However, timer_delete() does not guarantee that
+> a currently running timer handler has completed.
+> 
+> This allows a race with sctp_addr_wq_timeout_handler(), where the handler
+> may still run after addr_waitq has been freed, acquire addr_wq_lock, and
+> access freed memory, leading to a use-after-free.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net] sctp: fix addr_wq_timer race in sctp_free_addr_wq()
+    https://git.kernel.org/netdev/net/c/976c19de0f22
+
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
