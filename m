@@ -1,175 +1,123 @@
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE721A0BF3
-	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 03:25:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42FCC190473
+	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 03:32:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782876320; cv=none; b=P19MXctMmvvxh8bg/AkkdMoJqwBVMhHG2LD8YqsEHz7d4RUW6G69LWi7q3PD7Ul7DDfhmuuLjlaNcaqcMNBRUlLvXEIVxB3vTfrpT+877pVfXEKmjS05iJQYm06/hQVii09pJR2NxWjRinY2iHRQZYG2LcyrpfzcxYtXWR6ldDc=
+	t=1782876740; cv=none; b=SRS9Pmpu+OeM4kQz82Lyww9i6lrJRGKWJCmFKPtIru6Mib0ubNlS4b/WUSjP2RkLS/DQFiughVmokjwbkKrOHb0HViR2CuuwYUeSmhCSkBZKkmipIJsxNrP9wIDRuPEvSgIr3idihAwh+SH76w48aZrI1GNSaeGobNJhtDswbtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782876320; c=relaxed/simple;
-	bh=v/+DavR8tRBmPogGEbRLyoYwByy7clgvstIgjdG2E7M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oJWpuGLOoRwoXPEGuaHe5E+F3NzjyOvrF2KVETikE2chRao3lYbJW7564LOUsGdzNDtJQkwRi6rUhFMoQ+PfyqNks+ngy3/uO0bsISVRE2jfJkkyEM4EbhJk5YnGJksF9eGczPXVFW+WRsPoSL0+SbidDmcIuJ71gNRZSXJdzPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=tyPrKojf; arc=none smtp.client-ip=91.218.175.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1782876740; c=relaxed/simple;
+	bh=qBSfS5ti60FG+DjWbyR/Dcw5pWUGlJGzrHzvvTePmOQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PB6aP8fAbcQTmhPk3WwDAy/sjTZql4ihcBLZXkxLBuq3kdbYypoTUuY7w3UxhePor5QPhFZ622ECLaMdy1drc23o9YLZn808CgUp7KpF4NRrtUNTq29p6lAwIAkMGVJ8pi2DOjjINb9LT77sHJTEUOnag0x6c9j/fKsTQ3MZhc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GNRixS33; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="tyPrKojf"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782876316;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=5NAHIWlyEWl1hlg6uEH0Z3tmc81TasF279IcSkQr1qc=;
-	b=tyPrKojfAZh2s3UZst1vhJjj6fIf9WlOAVp8EVR6zKt04IgiK4Wi1rI97PIR3JC4wfrD77
-	PlH1VipRks9MKq83uSt6gc3G6RzTc5JlUbl0C/Wj6ZbQqecl1/U8H+/FFII4N9VB7Mpghz
-	IVlNyB/O9BsCRMG9t2fFdm00/vhWEG0=
-From: xuanqiang.luo@linux.dev
-To: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>
-Cc: Simon Horman <horms@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-Subject: [PATCH net-next v2] ipv4: hold a consistent view of rt->dst.dev under RCU
-Date: Wed,  1 Jul 2026 11:24:34 +0800
-Message-ID: <20260701032434.17500-1-xuanqiang.luo@linux.dev>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GNRixS33"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-847aebc56b6so74410b3a.3
+        for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 20:32:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782876738; x=1783481538; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=7rHsqq/2Rjpg7iDyb+HiQP78fOmnxJA+oi3DFoeFiPE=;
+        b=GNRixS33GxedekDFKPN4YxioT9Y0m0lIv3MmSpUtrdTS2uV6JdE3OslTrHOfpD+RTe
+         vj4FaT9l7CQG5g3B4t1YJ0pPAxESCOjO2zcojTro15eaCsaRnK4I9pG65LIHvXX2C2Lz
+         2474HiMLABef/sUaKrHWPPC3K1K9uLgiCUhsbli1l/lYDfqNdtqYmuv2GzHUW1kw5/CI
+         OlI8vC1PHHKqWww2gSH6Q3kGKdJ7nKQrlsgoNk8CfchAklUmVfUiedyVbi3bz8XbGn/Q
+         uYfpXIYxmgzkm4BfSVFQ126jr7R296KVygAg8ZYyCCDYzokf5e4LlOnRzSTNjvQYnnUt
+         z3vg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782876738; x=1783481538;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7rHsqq/2Rjpg7iDyb+HiQP78fOmnxJA+oi3DFoeFiPE=;
+        b=ekOPcUInHanD/NsI99A7TyYq6HdantNXSzT8dJLv1bS7B03NMyaF2rrepqqgn6+kkW
+         nN8Mdycsx3aNIojVj2HxWegN2SMbycmHHTd3GB+//DpT1mFrvaatTv0IZqkRqfounZRq
+         yTJb/MD+CkrrMStA47ptu2A6hiMAYI0WtB3vZTkeOg8JnStTx//dqpi4Wrdj3GkdNQ4r
+         FWSvc0iiC5UHPK1Rp6J8CCmvpj3nb82NQdwdhYp5d/vCn7JgL0WFr2h6PKjVl4Fk6ZX6
+         ZYI4MMAsRO7D1zB4/7Dpw7P6PEeXBm/597iGOrWjZqlGV/Ek3C7JU8WhlwmqZhhl9cl4
+         QtPA==
+X-Gm-Message-State: AOJu0Yye7KDfDj1eXBW3+BqvxWwJtotpCwCg1uVQwxGw0C82B+nl2Xwi
+	zOSvyGg3skPSC+1lUuo8fQfT9BuAE5ZYU2DEgcUkJj11Ovqt8RKmfPcV
+X-Gm-Gg: AfdE7cnV5o2qXwivIPPs6BYBiBAqjHISvjBlW+gqtfeAMMkL4SFNBMu/xEXCxFCRD3g
+	cT5FjdTbnDC6G5XEoIpNk/4nws42e8XEu0PGsUHUqhsYRmAK/0HbRtPyfbK04aoCNO4DPvU+eiM
+	pFzpL0QyBWSatIWNx0WVb/AeoQVw2/a4yQRk/EWmeiUemhaONvRZ0YTNSrqWg2DGXu52I92xU0m
+	3dr9U5BEXEuDfVEYZu6L3g7qN0jzSTUHwdv7WUy0EBYNLE1aJ5jp3yrtbtO+YUdkTLh3yW+CNo+
+	Vw+Cx7bjuto4m2pVK11zT1srDioGpZKNIs5fEtCKjTCv0rgDaoxhh7pGcQYeE93PcRwDu6gYdx1
+	TpsWZixgHzKkuJ7h5sCdTd53HwAbRs1/ZRyeJFsI7yZNAMj3PxwPsiplsZl9sGx+0RHKCNqX/nc
+	4f/GqHacTe9nxxWiH7E9QfOQ235gFYfb1f/G3sIw5bWjUtCRdI
+X-Received: by 2002:a05:6a00:2e85:b0:847:80c8:dfdb with SMTP id d2e1a72fcca58-847adf29971mr2996454b3a.55.1782876738352;
+        Tue, 30 Jun 2026 20:32:18 -0700 (PDT)
+Received: from localhost.localdomain ([43.132.141.25])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8479fff4c7csm3162757b3a.16.2026.06.30.20.32.16
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 30 Jun 2026 20:32:17 -0700 (PDT)
+From: Chen YanJun <635381823cyj@gmail.com>
+To: steffen.klassert@secunet.com,
+	herbert@gondor.apana.org.au,
+	davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	moomichen@tencent.com
+Subject: [PATCH v2] xfrm: iptfs: propagate SKBFL_SHARED_FRAG in iptfs_skb_add_frags()
+Date: Wed,  1 Jul 2026 11:31:52 +0800
+Message-ID: <20260701033152.29222-1-635381823cyj@gmail.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+From: Chen YanJun <moomichen@tencent.com>
 
-rt_flush_dev() walks the per-CPU uncached route list and rewrites
-rt->dst.dev in-place to blackhole_netdev under spin_lock_bh().
-This lock does not exclude RCU readers, which may load rt->dst.dev
-multiple times within a single rcu_read_lock() region.
+When iptfs_skb_add_frags() copies frag references from the source
+frag walk into a new SKB, it increments the page reference count via
+__skb_frag_ref() but does not propagate SKBFL_SHARED_FRAG to the
+destination SKB's skb_shinfo->flags.
 
-ip_rt_send_redirect() is a typical example: it reads rt->dst.dev
-three times to obtain in_dev, the L3 master ifindex, and net.
-A concurrent device unregistration can repoint rt->dst.dev to
-blackhole_netdev between those reads, making the reader combine
-state from two different net_devices — for instance, an in_dev
-from the real device but a netns and peer lookup from the blackhole
-device.  ip_rt_get_source() has the same problem: it reads
-rt->dst.dev four times to obtain the output ifindex, the netns,
-and the source address, so a concurrent flush can cause the source
-selection to mix state from different devices.
+If the source SKB carries shared frags (e.g. from a page-pool backed
+receive path), the new inner SKB will appear to ESP as having privately
+owned frags.  A subsequent esp_input() call for a nested transport-mode
+SA then takes the no-COW fast path and decrypts in place, writing over
+pages that are still referenced by the outer IPTFS SKB.  This causes
+kernel-visible memory corruption and can trigger a panic.
 
-Take a single dst_dev_rcu() snapshot of rt->dst.dev at the start
-of each affected RCU reader and use that snapshot throughout, so
-concurrent flushes cannot cause mid-function inconsistency.
-Publish the in-place write in rt_flush_dev() with rcu_assign_pointer()
-to match the readers.
+All other frag-transfer helpers in the kernel (skb_try_coalesce,
+skb_gro_receive, __pskb_copy_fclone, skb_shift, skb_segment) correctly
+propagate SKBFL_SHARED_FRAG; align iptfs_skb_add_frags() with this
+convention by setting the flag inside the loop immediately after
+__skb_frag_ref() and nr_frags++, so every exit path that attaches a frag
+unconditionally propagates SKBFL_SHARED_FRAG.
 
-Fixes: caacf05e5ad1a ("ipv4: Properly purge netdev references on uncached routes.")
-Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+Fixes: 5f2b6a909574 ("xfrm: iptfs: add skb-fragment sharing code")
+Signed-off-by: Chen YanJun <moomichen@tencent.com>
+
 ---
-v2:
-- Use dst_dev_rcu() and dev_net_rcu() for the RCU readers.
-- Use rcu_assign_pointer() when publishing the uncached route device
-  replacement.
-- Slightly adjust the commit message wording because this issue was found
-  by inspection, not from an observed user-visible failure.
+v2: move SKBFL_SHARED_FRAG assignment inside the loop, immediately after
+    __skb_frag_ref()/nr_frags++, to also cover the early-return path
+    that fires when the requested length is satisfied mid-frag (pointed
+    out by maintainer review of v1).
+---
+ net/xfrm/xfrm_iptfs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-v1: https://lore.kernel.org/all/20260630094250.29386-1-xuanqiang.luo@linux.dev/
-
- net/ipv4/route.c | 29 +++++++++++++++++------------
- 1 file changed, 17 insertions(+), 12 deletions(-)
-
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 3f3de5164d6e5..57f38467e6d0c 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -873,6 +873,7 @@ static void ipv4_negative_advice(struct sock *sk,
- void ip_rt_send_redirect(struct sk_buff *skb)
- {
- 	struct rtable *rt = skb_rtable(skb);
-+	struct net_device *dev;
- 	struct in_device *in_dev;
- 	struct inet_peer *peer;
- 	struct net *net;
-@@ -880,15 +881,16 @@ void ip_rt_send_redirect(struct sk_buff *skb)
- 	int vif;
+diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
+index ad810d1f97c0..597aedeac26e 100644
+--- a/net/xfrm/xfrm_iptfs.c
++++ b/net/xfrm/xfrm_iptfs.c
+@@ -480,6 +480,7 @@ static int iptfs_skb_add_frags(struct sk_buff *skb,
+ 		}
+ 		__skb_frag_ref(tofrag);
+ 		shinfo->nr_frags++;
++		shinfo->flags |= SKBFL_SHARED_FRAG;
  
- 	rcu_read_lock();
--	in_dev = __in_dev_get_rcu(rt->dst.dev);
-+	dev = dst_dev_rcu(&rt->dst);
-+	in_dev = __in_dev_get_rcu(dev);
- 	if (!in_dev || !IN_DEV_TX_REDIRECTS(in_dev)) {
- 		rcu_read_unlock();
- 		return;
- 	}
- 	log_martians = IN_DEV_LOG_MARTIANS(in_dev);
--	vif = l3mdev_master_ifindex_rcu(rt->dst.dev);
-+	vif = l3mdev_master_ifindex_rcu(dev);
- 
--	net = dev_net(rt->dst.dev);
-+	net = dev_net_rcu(dev);
- 	peer = inet_getpeer_v4(net->ipv4.peers, ip_hdr(skb)->saddr, vif);
- 	if (!peer) {
- 		rcu_read_unlock();
-@@ -1287,29 +1289,32 @@ void ip_rt_get_source(u8 *addr, struct sk_buff *skb, struct rtable *rt)
- {
- 	__be32 src;
- 
--	if (rt_is_output_route(rt))
-+	rcu_read_lock();
-+	if (rt_is_output_route(rt)) {
- 		src = ip_hdr(skb)->saddr;
--	else {
-+	} else {
- 		struct fib_result res;
- 		struct iphdr *iph = ip_hdr(skb);
-+		struct net_device *dev = dst_dev_rcu(&rt->dst);
-+		struct net *net = dev_net_rcu(dev);
- 		struct flowi4 fl4 = {
- 			.daddr = iph->daddr,
- 			.saddr = iph->saddr,
- 			.flowi4_dscp = ip4h_dscp(iph),
--			.flowi4_oif = rt->dst.dev->ifindex,
-+			.flowi4_oif = dev->ifindex,
- 			.flowi4_iif = skb->dev->ifindex,
- 			.flowi4_mark = skb->mark,
- 		};
- 
--		rcu_read_lock();
--		if (fib_lookup(dev_net(rt->dst.dev), &fl4, &res, 0) == 0)
--			src = fib_result_prefsrc(dev_net(rt->dst.dev), &res);
-+		if (fib_lookup(net, &fl4, &res, 0) == 0)
-+			src = fib_result_prefsrc(net, &res);
- 		else
--			src = inet_select_addr(rt->dst.dev,
-+			src = inet_select_addr(dev,
- 					       rt_nexthop(rt, iph->daddr),
- 					       RT_SCOPE_UNIVERSE);
--		rcu_read_unlock();
- 	}
-+	rcu_read_unlock();
-+
- 	memcpy(addr, &src, 4);
- }
- 
-@@ -1565,7 +1570,7 @@ void rt_flush_dev(struct net_device *dev)
- 		list_for_each_entry_safe(rt, safe, &ul->head, dst.rt_uncached) {
- 			if (rt->dst.dev != dev)
- 				continue;
--			rt->dst.dev = blackhole_netdev;
-+			rcu_assign_pointer(rt->dst.dev_rcu, blackhole_netdev);
- 			netdev_ref_replace(dev, blackhole_netdev,
- 					   &rt->dst.dev_tracker, GFP_ATOMIC);
- 			list_del_init(&rt->dst.rt_uncached);
+ 		/* see if we are done */
+ 		fraglen = tofrag->len;
 -- 
-2.43.0
+2.47.0
+
