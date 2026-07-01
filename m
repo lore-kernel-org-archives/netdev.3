@@ -1,178 +1,97 @@
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10AA736167E
-	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 01:54:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2A5312803
+	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 01:55:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782870883; cv=none; b=MkR1CUdBMKUmcsxx2te9yJ7BhOE6iQ88qTu1DUQjYSouX+Q2C21CsFZEvD7CRvwALVGjdfd3/zL0aILVRKBurJLVQR3ujx1jlpwKiXEj94nl16T5Vfn8HIBYzBNypaOIRMUnif3lHxkjEpi27d7Osnfa3922MrMaLipIWwJk1g0=
+	t=1782870909; cv=none; b=Ze5ocZhGc6jPCJhNH/L2X69XomY/FvvoTv5xrvjADSGEs0+9UjBHuz4HEPQD/lo/YfmoIxVwe8+j6/mQHvxiMD9/Mt0mXTEeMaKg6cl2CnJHFxwLLmbEl7WrxwhOeNLkDES8ZD28u/vt4Af8ehTC2pfwxQbHhOebOJCNmHHJPWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782870883; c=relaxed/simple;
-	bh=oPFoD+Gy41Us98atv6JBSNlzcvWGF8SfRZGdEZUx3VE=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=WrclMTWM6eQA9VSoZafDSiXacOKgqY8wqj4ybhI5PohyK1DtgmqFlnkYRNZcLNCsuUUDTKkhO9NbdknYBaTD/UzvVzNvOHgOKcRcsMwuyuhngKL+Qi468zJIKUhkIwy25EzmC5Ji5UMJu9MaoFStFtWvX0aqqHxOyBTVUMU/NEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vf3zTw9i; arc=none smtp.client-ip=209.85.128.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1782870909; c=relaxed/simple;
+	bh=mHEBBP/KXteyO6IVeGK/C2idhxEocIMuY5ZMjxuEpKM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qCaTIrmLwDk48mTxEYG+okpquJ8Fycibh1Bg/8oKEYaftEoQ1flx1kyf5MA9PJpw+DyJ+smgKS9zMakygyurEayh9e/P3s1hN3XdCCfsBvp6g1OH6wRWV33iG6VExYy5X/hC8vDId+hsv1cFFi+pYrnLOc6xsgnuoEPM7hf/zCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b=s84JHP5B; arc=none smtp.client-ip=74.125.82.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vf3zTw9i"
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-80cebd41372so1500027b3.3
-        for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 18:54:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b="s84JHP5B"
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-30bc871ecdfso204992eec.1
+        for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 18:55:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782870879; x=1783475679; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RMNxjGCrCOaavy8c2KM0YXIXOn6JcV1cFAWmlEIqhtE=;
-        b=Vf3zTw9ih7sQUf1Y8jk/3l8VZVD5WU8zCynVee6uxAXBo6VWMz5k2OP3aYwrFs/l4+
-         T2OVZ+ytSQmjcw8S4JM7BJR63cUpCnyKaRYoFpIA0KS1/Cfk8dB9F1N+1g26Tg37kzbI
-         4YEScdIhukwc7bYPeDlDljRrYmcrxODsF40s0o6S6XribOELQTTZ51CFIbU5/rofbQ0o
-         8TMFzJXm1ZdMETuWGJiYjOqrRPnzghkYC7YBvtN3TJjBTm77FMbxuP2OCiHY1r8bBppd
-         3yM6vy7qr1607EFZWlEih/uAW5DdKB8EVoEN/oYW6LT+3vrubzdDfY/N8QzcWVejnvHd
-         xEhg==
+        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1782870907; x=1783475707; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=QO3aOW4H/4F5gl6xB/4I/6DGAJwcp3oGlNdm7Xpql6U=;
+        b=s84JHP5B6wjXoevQD0bH7uG8tarxdh4P/nt/sYuU+ais6DXSG7V4wjE8BDpLAGqpPl
+         nfvneG6CP/O23zJps5IrlwyObNGmduGoGb6ImnTf+y6e4NZNFffFzlG+AxXfeg588cWO
+         qOqmbPQyopL/WBp/bw6IJ6z03YLm+XPbhOoLcRUN4cFuwCdJcf3SUaULsL/DUH/j9JBg
+         mQDDL2acHiQcSB1HnKDM3xy7S1qSfdYTYYD/oYO1pgk3YPLryPKBDbWB7eYAmwotbbct
+         gN13MpTlBML7zsetE36DjmmWyI+Lg4RmJE2z5RlWzhMCCZW5Z0F6ObIXm3Uj1TE9NMsc
+         gVSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782870879; x=1783475679;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RMNxjGCrCOaavy8c2KM0YXIXOn6JcV1cFAWmlEIqhtE=;
-        b=FTpapd65Wq35VCQBzARCTjgHhzJiDpwV48I8ivoBNzr6ffaUfjtHQQrJQGc549++AX
-         CalyabqCC9xjZhRToxTBmQyyEavBGZwqBVMJtNECUMV5XchrT6U9SErNNLYq9NfV15ST
-         ozzfPNkWY+8UEbZYPhRxUBQKaXXYxMrS49ICQnFHpm0mPINuRvYYuo4BoovUSgQmPtQv
-         u0HoT/YL6+zpaYDMWCMxj/7ib14cMUK/QKBbsgMinD31b7A3nQIFs7KGmy9TdIifsONL
-         g6iBUOaTDbcDw1DT0D5uYyGnUgcfog6fiY3w2u4A0Qoe60amBYpLjJl3n85OFXKTiV/H
-         UVuQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rr1gql7cjF9CGfhn0qik4VBBvpYJgWGo81tgvLTIfu8DgUE7Chc/Obwe2sT7CHOhFqqqjFyNKY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YygkYJeOjc4Da/EwdWlC2FMhmxFWqfUtjUJueqWgVRFfLnsjy53
-	co4MAefq1a/6MGkkpvH4JUNnNwEBCn5dFU+NRPpNxvSaAzxfwl+66rKBoFf8sw==
-X-Gm-Gg: AfdE7ck0XRs2RhpnHYvxwy/v98NdluELrMcZjJ1YAeNIdU1TkYLXKDP7lnKmLX199uU
-	oYIexGOGLI68m4+jl1d1B5WBvucr4loCKy0P6Yu0Ygx0tIebiwLpADXUFUAmUiCXWUAiZWUHSYw
-	0VZHoMuwveViFUfr3LEblZaGlMQZ+UALuAbExtPPkvu0lnXExHIsDzbg9oxPwtq6ZezHMul3Ldn
-	unmW3/TeZSuaGV6wAVeyg/G7zVeO/ZusPF0XmeZfaRoGckPkn4cc/XM4TiuXD7VrLeIgIFu2l6N
-	JAYG1c5PkukLYsCx6gWtwwLKadqlaLKz96WRbI8Q0fCo8CuvnocVL/96Zw9VvizCYiBGACt2pln
-	/AwVjZ4J5f3RN7GfN4CA12hT9OMqG1s0Im0g09KY5uvpiDonh/JXRR1QUcHJqrtCWbLRXzmx+2m
-	LmX4EyAy+WziP916bYOKlngwGbky5mNTPKxuyd2JAo5EEwY8GunFND2cjUhpEzJ4LWMCth87z6K
-	XSI
-X-Received: by 2002:a05:690c:9c09:b0:80c:85c6:898f with SMTP id 00721157ae682-81204145786mr27480377b3.62.1782870878859;
-        Tue, 30 Jun 2026 18:54:38 -0700 (PDT)
-Received: from gmail.com (172.235.85.34.bc.googleusercontent.com. [34.85.235.172])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8128ae35a73sm2498767b3.17.2026.06.30.18.54.38
+        d=1e100.net; s=20251104; t=1782870907; x=1783475707;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=QO3aOW4H/4F5gl6xB/4I/6DGAJwcp3oGlNdm7Xpql6U=;
+        b=lOzucRAp8zvRKi05n1OZxZw22NprFPclpMD9cv6EoPAeRN5h2AbkR/40JTr+172WmU
+         DU08uHEKAZuCnZkXlmDujbkpGBv2tf4ju2+bWaAe6yXW4hPVRZpLyBe4HfOsNILnLsCi
+         8ap8XPxAQYKnrGbSRwY/6JZ7oJpWFq4sYkmg2aPSvhOTETLtLgdtc1bS5IVSpvav8rBl
+         9g8xjzM3hme74MktN03NxFdwrEakelWbi8wmaGQcPUxDSCu22HMNY+Wcof/g1HAYLQQZ
+         RK7E4Dot0iGOVS9qiRn7toiXcjTx91BzLMQ60+W4M3kagAUHVjHuwP6psdB/hMu9m05n
+         C9hQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoftBYAiptgT0SdwsyD9jjFPQa9t/hW2SmfexHvdxdanoH6mbtlWG1F9BesLS4IztWx+Y1XKBM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPQ3mq2huF7G0QI6rUEieWnmuHAHoH4+Nvp3TZpf9IwZx8y3SF
+	1ogFBsBW7ycEwSh71vT2tq26PhXbyI3lTw4Ptxs/lZkLwNcZ9aBPg/qKgXZfSNcY2BE=
+X-Gm-Gg: AfdE7cls/bjyV9ZSWyW1I6EOyi9Mb44Uvq4tu0xowuREhTUl50/t3B8yOe25eBtWv3O
+	5nRSgGq5UpLPWNML+kFXMeVG3PRQzsMCqx2Pl9GJy2brkTBjIIhp9HXDt2TQ6egDoiJQcSgpvdd
+	ck6zqMehS8Eupi/UdZX97mkeTuPArGVarlf+w4raH/5ysHqLWI3e8268dYnEy5Gk6Dy1PcYyido
+	vWYK7Vuk1dUfqIOFeQMNGMxFJ0e58U5dAm2vGvR6FErKiL4ZoIZYJMiovS0wdbQyekOI2gyizy6
+	eCyTuVLhqhspUdVQ8kyaIKj5WZws3zuDvnZRnsZidIqtDcqgCDotcQEkdNj4cPFnx9/DVG/UL7b
+	N4UK58VM1u9C0cy6oMM88UE923n8db4/6h+6BEma6k54qq7dmg872tOtFIYCyCieliB3SLEUFMe
+	w2L46yQyvC2ndDzxXGc+rB5J+E5zpwsJeBzh8vvoVyiV/E8wtcmvH2WQ==
+X-Received: by 2002:a05:693c:41d3:20b0:30e:e6d0:e306 with SMTP id 5a478bee46e88-30ee6d0eb34mr2759962eec.5.1782870906815;
+        Tue, 30 Jun 2026 18:55:06 -0700 (PDT)
+Received: from phoenix.local (204-195-96-226.wavecable.com. [204.195.96.226])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30ee3170ee7sm12527351eec.14.2026.06.30.18.55.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jun 2026 18:54:38 -0700 (PDT)
-Date: Tue, 30 Jun 2026 21:54:37 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Shiming Cheng <shiming.cheng@mediatek.com>, 
- netdev@vger.kernel.org, 
- davem@davemloft.net, 
- edumazet@google.com, 
- kuba@kernel.org, 
- pabeni@redhat.com, 
- horms@kernel.org, 
- matthias.bgg@gmail.com, 
- angelogioacchino.delregno@collabora.com, 
- willemb@google.com, 
- imv4bel@gmail.com, 
- alice@isovalent.com, 
- eilaimemedsnaimel@gmail.com, 
- sd@queasysnail.net, 
- steffen.klassert@secunet.com
-Cc: lena.wang@mediatek.com, 
- stable@vger.kernel.org, 
- Shiming Cheng <shiming.cheng@mediatek.com>
-Message-ID: <willemdebruijn.kernel.257d168c38ada@gmail.com>
-In-Reply-To: <20260626084451.27699-1-shiming.cheng@mediatek.com>
-References: <20260626084451.27699-1-shiming.cheng@mediatek.com>
-Subject: Re: [PATCH v2] Subject: [PATCH] net: gro: fix double aggregation of
- flush-marked skbs
+        Tue, 30 Jun 2026 18:55:06 -0700 (PDT)
+Date: Tue, 30 Jun 2026 18:55:03 -0700
+From: Stephen Hemminger <stephen@networkplumber.org>
+To: Yafang Shao <laoar.shao@gmail.com>
+Cc: kuniyu@google.com, netdev@vger.kernel.org
+Subject: Re: [PATCH iproute2-next] ss: stop displaying dccp sockets
+Message-ID: <20260630185503.41541ebf@phoenix.local>
+In-Reply-To: <20260630114121.26430-1-laoar.shao@gmail.com>
+References: <20260630114121.26430-1-laoar.shao@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
+On Tue, 30 Jun 2026 19:41:21 +0800
+Yafang Shao <laoar.shao@gmail.com> wrote:
 
-Thanks for the fix.
-
-There is something weird with your subject lines:
-
-     [PATCH v2] Subject: [PATCH] net: 
-
-> The new skb_gro_receive_list() function is missing a critical safety check
-> present in the legacy skb_gro_receive() path.
-
-, as of commit 0ab03f353d36 ("net-gro: Fix GRO flush when receiving a
-GSO packet.").
-
-Please add a comment referring to this commit, as it well explains the
-need for the flush.
-
-> Specifically, it does not
-> validate NAPI_GRO_CB(skb)->flush before allowing packet aggregation.
-> This allows already-GRO'd packets with existing frag_list to be
-> re-aggregated into a new GRO session, corrupting the frag_list chain
-> structure. When skb_segment() attempts to unpack these malformed packets,
-> it encounters invalid state and triggers a kernel panic.
+> DCCP support was retired in kernel commit 2a63dd0edf38 ("net: Retire
+> DCCP socket."). However, ss still attempts to query DCCP sockets via
+> netlink, which triggers repeated SELinux warnings in dmesg:
 > 
-> Scenario (Tethering/Device forwarding):
->   1. Driver: Generated aggregated packet P1 via LRO with frag_list
->   2. Dev A: Receives aggregated fraglist packet and flush flag set
->   3. Dev A: Re-enters GRO, skb_gro_receive_list() is called
->   4. Missing flush check allows re-aggregation despite flush flag
->   5. Frag_list chain becomes corrupted (loops or dangling refs)
->   6. Dev B: TX path calls skb_segment(), crashes on corrupted frag_list
+>   SELinux: unrecognized netlink message: protocol=4 nlmsg_type=19 \
+>     sclass=netlink_tcpdiag_socket pid=188945 comm=ss
 > 
-> Root cause in skb_segment():
->   The check at line ~4891:
->     if (hsize <= 0 && i >= nfrags && skb_headlen(list_skb) &&
->         (skb_headlen(list_skb) == len || sg)) {
+> Stop sending DCCPDIAG_GETSOCK netlink messages to suppress these
+> warnings and align ss with the kernel change.
 > 
->   When frag_list is corrupted by double aggregation, when list_skb is
->   a NULL pointer from skb->next, skb_headlen(list_skb) dereference
->   NULL/corrupted pointers occurs.
-> 
-> Call Trace:
->  skb_headlen(NULL skb)
->  skb_segment
->  tcp_gso_segment
->  tcp4_gso_segment
->  inet_gso_segment
->  skb_mac_gso_segment
->  __skb_gso_segment
->  skb_gso_segment
->  validate_xmit_skb
->  validate_xmit_skb_list
->  sch_direct_xmit
->  qdisc_restart
->  __qdisc_run
->  qdisc_run
->  net_tx_action
-> 
-> Fix: Add NAPI_GRO_CB(skb)->flush validation to the early-return check in
-> skb_gro_receive_list(), matching the defensive programming pattern of
-> skb_gro_receive().
-> 
-> Fixes: 9dc2c3cd6c11 ("net: add fraglist GRO/GSO support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Shiming Cheng <shiming.cheng@mediatek.com>
+> Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+> Cc: Kuniyuki Iwashima <kuniyu@google.com>
 > ---
->  net/core/gro.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/core/gro.c b/net/core/gro.c
-> index 35f2f708f010..076247c1e662 100644
-> --- a/net/core/gro.c
-> +++ b/net/core/gro.c
-> @@ -229,7 +229,8 @@ int skb_gro_receive(struct sk_buff *p, struct sk_buff *skb)
->  
->  int skb_gro_receive_list(struct sk_buff *p, struct sk_buff *skb)
->  {
-> -	if (unlikely(p->len + skb->len >= 65536))
-> +	if (unlikely(p->len + skb->len >= 65536 ||
-> +		     NAPI_GRO_CB(skb)->flush))
->  		return -E2BIG;
->  
->  	if (!pskb_may_pull(skb, skb_gro_offset(skb))) {
+
+Please just completely purge dccp. Remove all vestiages from usage and man page.
+Leave no ghosts behind. We purged decnet in the past. 
