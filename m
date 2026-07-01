@@ -1,110 +1,100 @@
-Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E5A2BCF4C;
-	Wed,  1 Jul 2026 15:27:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D17892BCF4C;
+	Wed,  1 Jul 2026 15:31:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782919677; cv=none; b=bDM5ctf4NSVLaUHDj6ScyqlsG3QOap1ZTr7ZTojWmVsBus2JUWRWZ03lvQlBoUoy/rCiUnDUW1z9Mqd1ydpnQbfoVKo0pOOuW6xAlbGf7DqlCdsd99DSYZJjxTObt+nLWNsF4ECv3zVwDE4caftojjO8jlrgPeEJCm8Sh4BP9UQ=
+	t=1782919920; cv=none; b=oyAtEqoL0DfHI9FTHeGOdO4JDFuZ+ZerbnCVbkCuTNwU7pdKZ74JFTmp7KfKofsV1kfNUrWbuu4VB1ogMzPsZpbt4DvuCaYMKEMAlZFncNa/R9xWaebZh2NqlXvWfkJbxPwG63A0TrctMJmbC+TK6HwrgwMCk5x9sv9M2oxgj28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782919677; c=relaxed/simple;
-	bh=BIks32NyeNYiR1vXtphC6SFmZlzo8SAFZrDa4IRWaPY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MRoAYMlksrzeUqE+M7WKiA+zwjibRPmWqPVYFT6UQvFx02oA+//zRSIbYHK9HAY/fpZEDAJM1PKJwgrL7Fjh3lAN6R6U+/pEg2oDlMRN7jx1AYcZIn/SI3Tks3WtmGmPg6NJi7MPMvREbDYhbkLqWPH30/p/zy1IJiTZZuRjAHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=QP2XmeYD; arc=none smtp.client-ip=45.254.49.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+	s=arc-20240116; t=1782919920; c=relaxed/simple;
+	bh=bsHkWhmSkDsG3oqGlKhSSDNE7xRPYEaMsNYqqPV5vi0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fGsbFnQI0biq6IzcejumokrYDDwD/6wXc783V2h27SVsN4QL6VIcXPMNgziROHIFw99o2sfQml3NLrvBnwqYXKSV/xTJseQvngIyltRnySwFNQok4xqSO+/9+kNZwdhSRuiw5CSVjn6dK28y9eujDSdibR3PuMwswc6LZG1guSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ForHa2zc; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Yxarkfhc; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="QP2XmeYD"
-Received: from PC-202605011814.localdomain (unknown [222.191.246.242])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 44856e38e;
-	Wed, 1 Jul 2026 23:22:41 +0800 (GMT+08:00)
-From: Runyu Xiao <runyu.xiao@seu.edu.cn>
-To: David Heidelberg <david@ixit.cz>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>,
-	Christophe Ricard <christophe.ricard@gmail.com>,
-	Samuel Ortiz <sameo@linux.intel.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Runyu Xiao <runyu.xiao@seu.edu.cn>,
-	Jianhao Xu <jianhao.xu@seu.edu.cn>
-Subject: [PATCH net v2] nfc: st-nci: align frame buffers for typed length load
-Date: Wed,  1 Jul 2026 23:22:32 +0800
-Message-Id: <20260701152232.1472647-1-runyu.xiao@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ForHa2zc";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Yxarkfhc"
+Date: Wed, 1 Jul 2026 17:31:54 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1782919916;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bsHkWhmSkDsG3oqGlKhSSDNE7xRPYEaMsNYqqPV5vi0=;
+	b=ForHa2zcTmyUo0NV17RYDMzuFMMEm+LyJtdYFeTm9s7E0cAEVlo623vHcwdu9Ot1NFdmj0
+	SrDiQ7uqSnp1SAkcZjLSJsEiit3w9sDAwyX/opS7WDn3HA4gKEwD5GKicHAqviC9C2TGXR
+	HdPQQqSCBZb/Q0IX2tWaRjF9FzXV6X+FLisEeWPU4BLOXhKgnv/xbQ0vHRchbYKML+3Fqv
+	EWwwE9xosigvGnED+hOD7sygLx/ro+ZZEFVF4/aaQu4ExpaYyjXIjFVUXVuYxP0ky0iGGX
+	b7SKe6GNBsnEG70VWTN+wZMEwwlxAN439aPTCP/oH/fvtSWC7YETJS3DqAcojA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1782919916;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bsHkWhmSkDsG3oqGlKhSSDNE7xRPYEaMsNYqqPV5vi0=;
+	b=Yxarkfhc7yYk2weoKQYOe679AGIbI4iJVdhSqBujP7ll1wXxG2G2SpG8BronG5TcteS+J9
+	PZ0YyNWe8dMbV1Bg==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Peter Zijlstra <peterz@infradead.org>,
+	Vlad Poenaru <vlad.wing@gmail.com>
+Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+	sched-ext@lists.linux.dev, netdev@vger.kernel.org,
+	"David S . Miller" <davem@davemloft.net>,
+	Andrea Righi <arighi@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Arnd Bergmann <arnd@arndb.de>, Ben Segall <bsegall@google.com>,
+	Breno Leitao <leitao@debian.org>,
+	Changwoo Min <changwoo@igalia.com>,
+	David Vernet <void@manifault.com>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Eric Dumazet <edumazet@google.com>, Ingo Molnar <mingo@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	John Ogness <john.ogness@linutronix.de>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Paolo Abeni <pabeni@redhat.com>, Petr Mladek <pmladek@suse.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Simon Horman <horms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>, Tejun Heo <tj@kernel.org>,
+	Vincent Guittot <vincent.guittot@linaro.org>
+Subject: Re: [PATCH 0/2] sched: Introduce and use deferred WARNs in sched
+Message-ID: <20260701153154.a-n6eXNF@linutronix.de>
+References: <20260623142650.265721-1-bigeasy@linutronix.de>
+ <20260624093329.GZ48970@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9f1e46732803a1kunm8b5db53e1a2a64
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCSRkYVkIYSx5KTxhITxkfS1YeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUlVSkJKVUlPTVVJT0lZV1kWGg8SFR0UWUFZT0tIVUpLSE
-	pPSExVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=QP2XmeYDJgnWgqBzc5kCO7Xl4AovQf+/9bNLy/bD/rdZNb4KmkNGegZQIw/LbgSSv87hlgMdzBrCr+oYqsMXHu2A647YNe7z8HE2tOh73I3JYzmrCdXgQY/8cU8MmeWCVpX5S8lcGXONHafTT9dbUXcq9SBaHv4+bwcmZuqoRts=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
-	bh=kgAf2jenqnAj58cSiKRQgakUcXefBmNh1nduDmw/HZQ=;
-	h=date:mime-version:subject:message-id:from;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20260624093329.GZ48970@noisy.programming.kicks-ass.net>
 
-The ST NCI I2C and SPI transports parse a frame length from bytes
-received from the controller. Both paths read the frame header into a
-local u8 buffer and then cast buf + 2 to __be16 * before converting it
-from big endian.
+On 2026-06-24 11:33:29 [+0200], Peter Zijlstra wrote:
+> So I really don't see why we should do this. This has been a 'problem'
+> forever, and printk() is actually being fixed.
 
-Align the local frame buffers to 2 bytes so that buf + 2 is also
-2-byte aligned before the __be16 load. This keeps the existing parser
-logic while making the alignment requirement explicit for the typed
-length access.
+I just prepared v2 and apparently missed this. So let me postpone it=E2=80=
+=A6
 
-This issue was detected by our static analysis tool and confirmed by
-manual audit. UBSAN alignment validation of the same access shape,
-be16_to_cpu(*(__be16 *)(buf + 2)), reports a misaligned-access load of
-type '__be16' when the byte buffer does not provide that alignment.
+A user triggered a warning under the rq lock so it is not a theoretical
+problem which happens during development. printk is fixed it is just the
+console driver that are lagging behind. The 8250 is probably the role
+model that everyone is waiting for and once it becomes a NBCON it is no
+longer affected by the "deferred" requirement here.
+The problem was reproduced on netconsole which is a NBCON, too.
 
-Fixes: 35630df68d60 ("NFC: st21nfcb: Add driver for STMicroelectronics ST21NFCB NFC chip")
-Fixes: 2bc4d4f8c8f3 ("nfc: st-nci: Add spi phy support for st21nfcb")
-Cc: stable@vger.kernel.org
-Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
----
-Changes in v2:
-- Follow David's feedback and align the local I2C/SPI frame buffers
-  instead of switching the length load to get_unaligned_be16().
-- Use the original st21nfcb I2C driver commit in the I2C Fixes tag.
+So we just ignore the problem because it is well known? I was hoping for
+some duct tape until we have NBCON and threaded-legacy consoles.
 
- drivers/nfc/st-nci/i2c.c | 2 +-
- drivers/nfc/st-nci/spi.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Vlad: Were you doing something special to trigger the warning in
+question or did it randomly trigger?
 
-diff --git a/drivers/nfc/st-nci/i2c.c b/drivers/nfc/st-nci/i2c.c
-index 9ae839a6f5cc..b7e208dd5a18 100644
---- a/drivers/nfc/st-nci/i2c.c
-+++ b/drivers/nfc/st-nci/i2c.c
-@@ -108,7 +108,7 @@ static int st_nci_i2c_read(struct st_nci_i2c_phy *phy,
- {
- 	int r;
- 	u8 len;
--	u8 buf[ST_NCI_I2C_MAX_SIZE];
-+	u8 buf[ST_NCI_I2C_MAX_SIZE] __aligned(2);
- 	struct i2c_client *client = phy->i2c_dev;
- 
- 	r = i2c_master_recv(client, buf, ST_NCI_I2C_MIN_SIZE);
-diff --git a/drivers/nfc/st-nci/spi.c b/drivers/nfc/st-nci/spi.c
-index 169eacc0a32a..74b4ac39f65b 100644
---- a/drivers/nfc/st-nci/spi.c
-+++ b/drivers/nfc/st-nci/spi.c
-@@ -119,7 +119,7 @@ static int st_nci_spi_read(struct st_nci_spi_phy *phy,
- {
- 	int r;
- 	u8 len;
--	u8 buf[ST_NCI_SPI_MAX_SIZE];
-+	u8 buf[ST_NCI_SPI_MAX_SIZE] __aligned(2);
- 	struct spi_device *dev = phy->spi_dev;
- 	struct spi_transfer spi_xfer = {
- 		.rx_buf = buf,
--- 
-2.34.1
-
+Sebastian
