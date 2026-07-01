@@ -1,143 +1,154 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776783921DC;
-	Wed,  1 Jul 2026 10:04:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A443EAC74
+	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 10:10:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782900251; cv=none; b=ET+fhoxklICeeqktnkAOLnvY0s0z5LgQD8iVsO7BD0yedUlK49nXeGQNcpFQFWZ2lAnAz5kIvNcegu1pUghKdHZajrFteX/HgMoX8UgVllKBzi8L33nVWMracnSY5tQucBhCwAWvhFildv1/4+AA2E6cWzXXXlSg/1KPWehbFPo=
+	t=1782900624; cv=none; b=s8lcMZ0ELLcK0M2yRX6Lv46tBiRVRLiJXIWrj4D1Di8IbAeqTtQbH3EOhmX6rVeoyC9k77pKFT/VpMsSMfsr3QEhP52rqmB5ImT8g7nRIxSaJKnwJcPbcp3468kbWedLm4sGjSEytfBZd72OWXzrMaIQTSsLhZ8EotjT4N3tIyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782900251; c=relaxed/simple;
-	bh=LVaroLwSaEIBs/G5Lnk+N6jwRSDQX02r3wTcYNHvDd8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gk8RnzThTS6VyEVGkqFmq/0BNoRUPaE7rCHSzeMS+X3Sts6U8UQeLIGK/++x31v3/GCOCVMjuTXON2dHja/sznblY9P4UCcJuJ3FItpZp8DREcfFxCY08W4h3dqWhC17SFGROzrtSC0icJkMaLHiPdVqaGONVsI1yilpitq6JG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=szZmprIo; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1782900624; c=relaxed/simple;
+	bh=jmfvhgrtNdU3m6gyAhjUPNDiaPo9cS3sSJZSuYijSs0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UFGjp97art7Zu1caWNX9ZQ6hqBmrBtORo5ffCbOPqYeeI85yCrW8w29me52C+U3nlxWD+FDQA8wItdILhg0oKyxZfy3vUG1+I8KQI677Gi/cT0G0gAXls+GEul/kk8jl5EQVXHQAhYmmK7WFXJfQzuRdl6mvI01mGrxP3psiMo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VLnGmvdY; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="szZmprIo"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id F0407C79AB1;
-	Wed,  1 Jul 2026 10:04:19 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 1325A60288;
-	Wed,  1 Jul 2026 10:04:09 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5AD54104C9A80;
-	Wed,  1 Jul 2026 12:04:06 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1782900248; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=rS3XJGlccH+dLXbiW6ODSZ7p0h3tz4Kqf5bCznH1MNo=;
-	b=szZmprIodXQOQ7GtfxI63myhYLZzmv6n6+oXrtRBCkyN9mMkFV+hmR3MC4iGk5olV6+OkP
-	FzTiB99e7yITq0LBkkONbRISKrixM6g6j2bZjwnUt7oS06BaZgTHvF3q1o8unEmpOLgPnQ
-	AyXQN2Nq/My40o+Y5bcm/3aPRpNzZvNus+/dJhtbAFe+biZAoFV4BRwsCfp95hHKVwz7BK
-	btWD0B4W6JDEokWQoCkFqZMnuZZcI8YRToUDpldJulJW28+PqgMROp1xFUUlyc0KLcgpWQ
-	CMBiARhROgTmarALkP9gdE9nHxT2Ghg22cYz5g2fTyZGmhI5cQ9xG0k49olnKg==
-Message-ID: <587499ee-d87e-4056-8d2a-8fda2ef3f0f1@bootlin.com>
-Date: Wed, 1 Jul 2026 12:04:05 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VLnGmvdY"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-37defb2f231so209763a91.2
+        for <netdev@vger.kernel.org>; Wed, 01 Jul 2026 03:10:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782900622; x=1783505422; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=EGOpzjLwG2qHNqnpr9AH3FOmYtQjFdDLV2ovZbwXKfA=;
+        b=VLnGmvdY198P6jHJUGoQJ6UdHfJYYYnLBt1fjR6fM7rHc+t0flxxszs0kJ8I4/q8lP
+         P6nRGq/HcbdHD0l04gDtyU7sLifMcnUWY585ONlowNmyshqjRa0Sb+yEHhPeCQKTkEnY
+         hDIBC1N0zihbE3zNHJrh0m2Vc91Z4Pg8llO1IPJrXu85ryRRuLQsBkJhmWn0+IeN0Rcx
+         Cp9kU4OTQBPWT2JgxoHFdHb/9qMSSl/gokBJVR4KzKXh+jbumZl2O8wIf7AX8560mg71
+         1cxvpqj/YExQtFGYvK+oAvz2c7N7LM5323aF5+/dFioylcX9O5dZzsmdXZyzCVaeZCIA
+         iLmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782900622; x=1783505422;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EGOpzjLwG2qHNqnpr9AH3FOmYtQjFdDLV2ovZbwXKfA=;
+        b=F9be706DuvsIvnU44Mci2If35cNT5v+dzn7T/LO8lnQXbQN6Sl8BfOc5+KiXfeun5u
+         DVRBkIin+T0lTv2p7QbkIj1op+DAK3y0pB9t57VKMoQF4Dpxso7bOwPnXVV09efbNpyn
+         1Or+IsNW8poD0EhTdOfrpeFtJQKaWtvoTQUcH+N9AtAkuUd6yj6wfokWxML6JBunBLyH
+         ar1cV7yBPXn54vw72UgBGyg730Z17zdcu34AN8wklVwynMGxSqCiXiJahumbJ1/plHPo
+         DV2QDZyOo+LVwysDuE37k9I/KVIGToXmKcnRiaMRtuLWQR+Y9Op3AIU8/H99PsQlY9rL
+         sbgw==
+X-Forwarded-Encrypted: i=1; AHgh+RrjtvfIgZPv9Hx6UvVnWoHw9l8Ve034M04ovooFloKb07MkhIxY5Kkz/22PegPPlyZMPooCrUc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7/IFHezuH5JLw6XieI+G+RgTC/YI4nsuDYBwO8XkJuOmcmAfP
+	UnY5bRH5bF3yNUCv0wrXvgIw9s5axAL9MpbxHpWcaoAGCdVQkNutngwn
+X-Gm-Gg: AfdE7cmHQRKwzj154cTw6uq+tJ/yVSbINplfUzg1jG9Kf6y71Sy9f1kVIIUuoi3+0WR
+	+OD6nfOTBKRBAH/c+umj8QR72caobNqDoeD3xttRv6ZaKSxyXU7LkrU4tIMt9qxREkGDzqohW5O
+	2KxPRAVm5fqc3VsNzKk+NZ2FMagD80ZmJzHVNgqXYPbg37CCowyt/f+LABZ6JKpFybs0lrj6eb3
+	/GTjGWHPA3FNHJu/H/HWvgWQBP0Psapex+MzTu5NH6LhCuQqd+lhc2ynDEs6Yj+CkhRUNE/gKY9
+	fKqzHGtj+6G+hsteCRnV07IIpns5UMS1lFpUmE3721Y/ite8HlCN/eLLGWSNyEhssRDarOyn3TM
+	+YMd7keUJOLJiAqP/XHIWGLFL/VYeF845ddAk9OwU634hc8k0MTe4bW0QnfkH7yHM7Tocqcgaps
+	DHY7Y/WXi2355ce8wrbLAd
+X-Received: by 2002:a17:90a:d44b:b0:37c:7090:821b with SMTP id 98e67ed59e1d1-380aa0f436amr880037a91.10.1782900622075;
+        Wed, 01 Jul 2026 03:10:22 -0700 (PDT)
+Received: from c79ofce.localdomain ([204.3.140.65])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38095d6666esm1559442a91.6.2026.07.01.03.10.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Jul 2026 03:10:21 -0700 (PDT)
+From: Zhixing Chen <running910@gmail.com>
+To: Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: Phil Sutter <phil@nwl.cc>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	Zhixing Chen <running910@gmail.com>
+Subject: [PATCH nf v2] netfilter: ip6tables: mark malformed IPv6 extension headers for hotdrop
+Date: Wed,  1 Jul 2026 18:09:30 +0800
+Message-Id: <20260701100930.2855-1-running910@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/9] ax88179_178a: Add support for ethtool pause parameter
- configuration
-To: Birger Koblitz <mail@birger-koblitz.de>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260701-ax88179a-v1-0-13685df67515@birger-koblitz.de>
- <20260701-ax88179a-v1-5-13685df67515@birger-koblitz.de>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20260701-ax88179a-v1-5-13685df67515@birger-koblitz.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-Hi
+The ah, hbh and rt matches check that the fixed extension header is
+present, then use the header length field to derive the advertised
+extension header length for matching.
 
-On 7/1/26 07:42, Birger Koblitz wrote:
-> The AX179A-based chips support pause parameter configuration.
-> Make it available through ethtool ops.
-> 
-> Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
-> ---
->  drivers/net/usb/ax88179_178a.c | 67 ++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 67 insertions(+)
-> 
-> diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
-> index 16528d873e804fde5dcc27659048882eee1c3eaa..586c049c6f7422a853aeae5e9372ead3a6d106c5 100644
-> --- a/drivers/net/usb/ax88179_178a.c
-> +++ b/drivers/net/usb/ax88179_178a.c
-> @@ -956,6 +956,71 @@ static int ax88179_set_link_ksettings(struct net_device *net,
->  	return mii_ethtool_set_link_ksettings(&dev->mii, cmd);
->  }
->  
-> +static void ax88179a_get_pauseparam(struct net_device *net, struct ethtool_pauseparam *pause)
-> +{
-> +	struct usbnet *dev = netdev_priv(net);
-> +	struct ax88179_data *data;
-> +	u16 bmcr, lcladv, rmtadv;
-> +	u8 cap;
-> +
-> +	data = dev->driver_priv;
-> +
-> +	if (data->chip_version < AX_VERSION_AX88179A)
-> +		return;
-> +
-> +	bmcr = ax88179_mdio_read(net, dev->mii.phy_id, MII_BMCR);
-> +	lcladv = ax88179_mdio_read(net, dev->mii.phy_id, MII_ADVERTISE);
-> +	rmtadv = ax88179_mdio_read(net, dev->mii.phy_id, MII_LPA);
-> +
-> +	if (!(bmcr & BMCR_ANENABLE)) {
-> +		pause->autoneg = 0;
-> +		pause->rx_pause = 0;
-> +		pause->tx_pause = 0;
-> +		return;
-> +	}
-> +
-> +	pause->autoneg = 1;
+For the ah match, add the missing advertised-length check. For hbh
+and rt, update the existing advertised-length checks. In all three
+cases, set hotdrop to true before returning false when the advertised
+extension header length exceeds the available skb data.
 
-pause autoneg is not the same as link-wide autoneg. If link autoneg is disabled,
-you have to keep track on how pause autoneg was configured by user, so that this
-can be re-applied when link aneg gets re-enabled.
+Returning false treats the packet as a rule mismatch. Set hotdrop to
+true and drop malformed packets so they cannot bypass rules intended
+to drop packets with these IPv6 extension headers.
 
-The best way to have this correct is to use phylink, but for that you'd need to
-have a proper PHY driver instead of using the mii_ API here.
+Signed-off-by: Zhixing Chen <running910@gmail.com>
+---
 
-> +
-> +	cap = mii_resolve_flowctrl_fdx(lcladv, rmtadv);
-> +
-> +	if (cap & FLOW_CTRL_RX)
-> +		pause->rx_pause = 1;
-> +
-> +	if (cap & FLOW_CTRL_TX)
-> +		pause->tx_pause = 1;
-> +}
-> +
-> +static int ax88179a_set_pauseparam(struct net_device *net, struct ethtool_pauseparam *pause)
-> +{
-> +	struct usbnet *dev = netdev_priv(net);
-> +	struct ax88179_data *data;
-> +	u16 old, new1, bmcr;
-> +	u8 cap = 0;
-> +
-> +	data = dev->driver_priv;
-> +
-> +	if (data->chip_version < AX_VERSION_AX88179A)
-> +		return -EOPNOTSUPP;
-> +
-> +	bmcr = ax88179_mdio_read(net, dev->mii.phy_id, MII_BMCR);
-> +	if (pause->autoneg && !(bmcr & BMCR_ANENABLE))
-> +		return -EINVAL;
+Changes in v2:
+- Set hotdrop to true before returning false for malformed packets.
+- Apply the same handling to hbh and rt matches.
 
-As I said, pause autoneg can be on while linke autoneg is off. of course, the
-device doesn't advertise pause, but the driver needs to keep track of what's
-the pause aneg flag.
+v1: https://lore.kernel.org/netfilter-devel/20260618125848.93550-1-running910@gmail.com/T/
 
-Maxime
+---
+ net/ipv6/netfilter/ip6t_ah.c  | 5 +++++
+ net/ipv6/netfilter/ip6t_hbh.c | 1 +
+ net/ipv6/netfilter/ip6t_rt.c  | 1 +
+ 3 files changed, 7 insertions(+)
+
+diff --git a/net/ipv6/netfilter/ip6t_ah.c b/net/ipv6/netfilter/ip6t_ah.c
+index 70da2f2ce064..1258783ed876 100644
+--- a/net/ipv6/netfilter/ip6t_ah.c
++++ b/net/ipv6/netfilter/ip6t_ah.c
+@@ -56,6 +56,11 @@ static bool ah_mt6(const struct sk_buff *skb, struct xt_action_param *par)
+ 	}
+ 
+ 	hdrlen = ipv6_authlen(ah);
++	if (skb->len - ptr < hdrlen) {
++		/* Packet smaller than its length field */
++		par->hotdrop = true;
++		return false;
++	}
+ 
+ 	pr_debug("IPv6 AH LEN %u %u ", hdrlen, ah->hdrlen);
+ 	pr_debug("RES %04X ", ah->reserved);
+diff --git a/net/ipv6/netfilter/ip6t_hbh.c b/net/ipv6/netfilter/ip6t_hbh.c
+index 450dd53846a2..6d1a5d2026a6 100644
+--- a/net/ipv6/netfilter/ip6t_hbh.c
++++ b/net/ipv6/netfilter/ip6t_hbh.c
+@@ -75,6 +75,7 @@ hbh_mt6(const struct sk_buff *skb, struct xt_action_param *par)
+ 	hdrlen = ipv6_optlen(oh);
+ 	if (skb->len - ptr < hdrlen) {
+ 		/* Packet smaller than it's length field */
++		par->hotdrop = true;
+ 		return false;
+ 	}
+ 
+diff --git a/net/ipv6/netfilter/ip6t_rt.c b/net/ipv6/netfilter/ip6t_rt.c
+index 5561bd9cea81..e28caca759f3 100644
+--- a/net/ipv6/netfilter/ip6t_rt.c
++++ b/net/ipv6/netfilter/ip6t_rt.c
+@@ -57,6 +57,7 @@ static bool rt_mt6(const struct sk_buff *skb, struct xt_action_param *par)
+ 	hdrlen = ipv6_optlen(rh);
+ 	if (skb->len - ptr < hdrlen) {
+ 		/* Pcket smaller than its length field */
++		par->hotdrop = true;
+ 		return false;
+ 	}
+ 
+-- 
+2.34.1
+
