@@ -1,115 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8EFF3368BA;
-	Wed,  1 Jul 2026 00:00:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BAE840D589
+	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 00:07:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782864031; cv=none; b=kAmhrsAfXa2uhnckYz5DNAchoVcC3xbZzLhkn6nxhmDPK6bBDWEXxfUFe0ZDA47Heq8kqNbOLRsdcUc7xTbVtpsJSkrIQ/06q+SfbotZ/FDDfkYp52qMRAYdU404cIIPotnJqgaDhpmxqbC07i8hpbnr7Ey1epy98vAZl6tegTI=
+	t=1782864463; cv=none; b=d6xF/H+cPGVfm5C7+tMYGtVgxy2gTJ3nU0CZZYEu8r3JbTPZPgY8SxJ/HnpgHtU4GZIQVXZQxKFPDKfrlpKKnlDaN6WPUwzoLhgfghD2E6z6B2fBaEWnV0iSUGnnwUuorG+nTYUrjXFYwKxYI/eXnryjWDCBn94ezZ0RXUHtlHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782864031; c=relaxed/simple;
-	bh=aDd6xnbNXHwGM13+mfbTZqc1/QPJzS5RFcPsKU4bTP0=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ON6lalgqWpigkeE+34eEtYwKoVpDjGEUwiMsQRde93WjmswqazBCrM1J4s+KxX+dd3BGVI0ohp0yBXBq93Bof4kdff6g57vS78uAfBt91dTUu0HIs3A7fCNN8d+LrSdz6mvMCeyUjLAAkOjm00+L39weykoIsAzKOversISGP0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D2aridIB; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782864463; c=relaxed/simple;
+	bh=lC+k+6mNle6sj5AuGdZt4d9WTpneeUI+q286W11Koso=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hr+6bGHyecTCiHJz8GGvIQYMwgJ1AzBksxEACVWGn4aLA+Udo5TsEBSos7uj1t+EzefilT4MKoelapXDJeQ1lQRISbvTwDA70tY4EPP5HbBzlzlc7/gJI5ljBqYL0DF5bZ91x24ig8kmMG+T12NuDxewRi07whdecvEb6Z1us5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OGxc+NpG; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D2aridIB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A0A91F000E9;
-	Wed,  1 Jul 2026 00:00:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782864029;
-	bh=/q/M4iftPwXwOXkuB442nTPnYH/p2eAZGJdhwDTouz8=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=D2aridIB3ZeNJJR3QUrliEur8twz15o6NHQ3r4VfEqZ4ETR7iR4Pcmpw5QOls9KWg
-	 ltdTxZYZRZUW7G04XshPf1tQrDKzMzGzkUSCpoRrq01HHBFl6KI1ZNg+A0EihUDQ85
-	 Nn9/j5cFtBd93A8542gMmvRvLNPhVlsZlGm/unA5oSqjRfx0Sssw6SyErZ08s5sS0r
-	 wdXiV9NryfEhhimef0etZQj0seb/z8TTI9ZjY0OFngTzUGWG5UiWq5EZlaVgH5tvzo
-	 7uagUhv9ei4cRcZc7VrB0c2q7hSjQx6n5p1nbz8XvvSHDY8gNuo7YLSf228yTJeONP
-	 M3PWol6eIbbXA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 939E5393A963;
-	Wed,  1 Jul 2026 00:00:14 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OGxc+NpG"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-36b9d265355so62649a91.2
+        for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 17:07:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782864461; x=1783469261; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=NRsFNTp0mbWr+vlnr7zhHF/IOCJEISt4xOaBSTIIlKc=;
+        b=OGxc+NpGOmU5VBQR4YX7pojFZaMLGpqNMFoHHLKnEJR+aBWkcOJodtXepu6Px17Fai
+         9zmaKf/MO3UruBNl+wrcOMTl+ng5o4RrsJBwhHZRiQ6yy+v3QrO+/JPFykYLnSyj0w0y
+         PZOqSs5yuCoD24xfI1bd93ASt0ZzsvyL7e8Nmu4r3BE0y0uruswAk0Af3QeECDcMuDjg
+         vCmrrCevNijsTNHS6+dTfGRNj2n6F1p+kDrg6Ejct6MtdSJGhUSbIqgO6XJLcll0z9tv
+         LJRNowaZEdavi+2NE7KpNG8ASh9Wt4wk21Ftn5SCfm1gb33UTW35VTATHngmZihmHyfL
+         8+2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782864461; x=1783469261;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=NRsFNTp0mbWr+vlnr7zhHF/IOCJEISt4xOaBSTIIlKc=;
+        b=g59XHCaczkhMYgIC+c0ZS/wNOc7s1KorJak8ZqFSD1QKA3ke6SE90YBaN6yryLXK4I
+         q8Uk0o2Lj0+kbhfvahvKqEDRJ6fWde34cBTb/blZrjP9w8b0dD64RZFlxTFHKrzFPxYr
+         /kuF6wfJZdRFhhAg9Uvll/BU3FbTIj+iR0U+hEc08+hmJA8iY3oygLMCKPnHgjWsAZ3y
+         1WstgiWbApih8HAsP8BlJwdXCFUgTnImy5SB2q4NuD+G+xRVRDFASttAl4DVb2fFWoaI
+         CmXjezt4qZ/WXrYrOf03pr9Wb2vQFPoW/7RmzCNPndnf8ihbTvXmTQElRqL7Uvjrb6Y2
+         gOJA==
+X-Forwarded-Encrypted: i=1; AHgh+Rr/ZtGiKi0ihG76MXIz0YZpmaF8aMB5aXSvxfy+VXSmfN7OyIP23mDccsbeduUmMNTEy/SqnzU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxuMnpykwom1wlRcif82pt79B2VvQFF9Hlele7/3K5nXBGbCSu9
+	AWKdmYIcr+ji6KKDqCLyPrrk+sKti6QihYY7jGe+6e2O0/HoBVR/ey9K
+X-Gm-Gg: AfdE7ckz+2JvKEjFBu5q3xKclqTQiotRr+LE/pge5pf+EF6NAB2RkcfLjLdyu6lMvr/
+	+aXu6iKMPZ9lzHctug0C31oNCR4u/T/8AKJAaHoNpWTvW+UI4j7Z4wgEEf0/SiWt9Plycqkqncd
+	R/2FVsBtd4MVzFnphqDRER53/5ngBcjHb0kQzZTSrLi5T90FmcILYyouL4f64NJa8Y0iABiCKEK
+	Z/9jQWOlin3/T4j39WvPnzy/psDpF145fvW4dv9ScTaXof3P5ZxsL4bfpLKsnhE0+Jc0QwPd5Xj
+	tI8uweE7YD145j33S8oLpdhaRK8EGE7JCkZZqWERRadNvZCCpNcrl700FwMpnN19ELL7NQ9Hwrz
+	/XauLMgjdvtZpEZiI03tDH1nu1bhnkoUC+zRkaN3s2JulibtBLBC+NV4YCfEtrnNxye0VyYrMuy
+	EKBZ95K89ovg==
+X-Received: by 2002:a17:90b:3944:b0:37f:7210:ccd7 with SMTP id 98e67ed59e1d1-3805272a521mr4755526a91.20.1782864461559;
+        Tue, 30 Jun 2026 17:07:41 -0700 (PDT)
+Received: from john-p8 ([98.97.43.89])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38095ea2e2dsm737009a91.16.2026.06.30.17.07.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jun 2026 17:07:40 -0700 (PDT)
+Date: Tue, 30 Jun 2026 17:07:38 -0700
+From: John Fastabend <john.fastabend@gmail.com>
+To: Sechang Lim <rhkrqnwk98@gmail.com>
+Cc: Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+	Emil Tsalapatis <emil@etsalapatis.com>, Stanislav Fomichev <sdf@fomichev.me>, 
+	Jiayuan Chen <jiayuan.chen@linux.dev>, Varun R Mallya <varunrmallya@gmail.com>, 
+	Ihor Solodrai <ihor.solodrai@linux.dev>, bpf@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH bpf-next v4 1/2] bpf, sockmap: disallow update and delete
+ from tc, xdp, socket_filter and flow_dissector
+Message-ID: <akRZ_e7DJh2aP-2i@john-p8>
+References: <20260630145410.3648099-1-rhkrqnwk98@gmail.com>
+ <20260630145410.3648099-2-rhkrqnwk98@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 00/13] treewide: replace linux/gpio.h
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178286401313.341356.16335263979724856348.git-patchwork-notify@kernel.org>
-Date: Wed, 01 Jul 2026 00:00:13 +0000
-References: <20260629132633.1300009-1-arnd@kernel.org>
-In-Reply-To: <20260629132633.1300009-1-arnd@kernel.org>
-To: Arnd Bergmann <arnd@kernel.org>
-Cc: linux-gpio@vger.kernel.org, arnd@arndb.de, brgl@kernel.org,
- andrew@lunn.ch, sebastian.hesselbarth@gmail.com, gregory.clement@bootlin.com,
- Frank.Li@nxp.com, robert.jarzmik@free.fr, krzk@kernel.org,
- gerg@linux-m68k.org, tsbogend@alpha.franken.de, hauke@hauke-m.de,
- zajec5@gmail.com, ysato@users.sourceforge.jp, glaubitz@physik.fu-berlin.de,
- linusw@kernel.org, dmitry.torokhov@gmail.com, kuba@kernel.org,
- pabeni@redhat.com, linux@dominikbrodowski.net, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org,
- patches@opensource.cirrus.com, linux-m68k@lists.linux-m68k.org,
- linux-mips@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-input@vger.kernel.org, linux-media@vger.kernel.org,
- netdev@vger.kernel.org, linux-sunxi@lists.linux.dev,
- linux-phy@lists.infradead.org, linux-rockchip@lists.infradead.org,
- linux-sound@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260630145410.3648099-2-rhkrqnwk98@gmail.com>
 
-Hello:
+On Tue, Jun 30, 2026 at 02:54:05PM +0000, Sechang Lim wrote:
+>sock_map_update_common() and __sock_map_delete() hold stab->lock and call
+>sock_map_unref() -> sock_map_del_link(), which takes sk_callback_lock for
+>write. That gives the order stab->lock -> sk_callback_lock.
+>
+>The reverse order comes from the SK_SKB stream parser.
+>sk_psock_strp_data_ready() holds sk_callback_lock for read, and after the
+>verdict tcp_bpf_strp_read_sock() acks the consumed data inline via
+>__tcp_cleanup_rbuf(). The ACK goes out egress, where a sched_cls program
+>deletes from the sockmap and takes stab->lock:
+>
+>  WARNING: possible circular locking dependency detected
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+[...]
 
-On Mon, 29 Jun 2026 15:26:20 +0200 you wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> The linux/gpio.h header used to be the global definition for the gpio
-> interfaces, with 1100 users back in linux-3.17. In linux-7.2, only about
-> 130 of those remain, so this series cleans out the rest.
-> 
-> In each subsystem, we can replace the header either with
-> linux/gpio/consumer.h for users of the modern gpio descriptor interface,
-> or linux/gpio/legacy.h for the few remaining users of the old number
-> based interface.
-> 
-> [...]
+>A tc, xdp, socket_filter or flow_dissector program has no reason to
+>update or delete a sockmap, and redirect does not go through here. Drop
+>them from may_update_sockmap() so the verifier rejects it. It also
+>closes the matching sockhash inversion.
+>
+>Suggested-by: John Fastabend <john.fastabend@gmail.com>
+>Signed-off-by: Sechang Lim <rhkrqnwk98@gmail.com>
+>---
 
-Here is the summary with links:
-  - [01/13] ARM: replace linux/gpio.h inclusions
-    (no matching commit)
-  - [02/13] m68k/coldfire: replace linux/gpio.h inclusions
-    (no matching commit)
-  - [03/13] mips: replace linux/gpio.h inclusions
-    (no matching commit)
-  - [04/13] sh: replace linux/gpio.h inclusions
-    (no matching commit)
-  - [05/13] mfd: replace linux/gpio.h inclusions
-    (no matching commit)
-  - [06/13,net-next] net: replace linux/gpio.h inclusions
-    https://git.kernel.org/netdev/net-next/c/a53d1872f2be
-  - [07/13] ASoC: replace linux/gpio.h inclusions
-    (no matching commit)
-  - [08/13] pcmcia: replace linux/gpio.h inclusions
-    (no matching commit)
-  - [09/13] phy: replace linux/gpio.h inclusions
-    (no matching commit)
-  - [10/13] media: replace linux/gpio.h inclusions
-    (no matching commit)
-  - [11/13] Input: matrix_keyboard - replace linux/gpio.h inclusion
-    (no matching commit)
-  - [12/13] gpib: gpio: replace linux/gpio.h inclusion
-    (no matching commit)
-  - [13/13] gpiolib: remove linux/gpio.h
-    (no matching commit)
+Great lets get this merged and we will separately fix the sockops
+issue reported by the bots.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Reviewed-by: John Fastabend <john.fastabend@gmail.com>
