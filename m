@@ -1,64 +1,48 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3993B48A2A8
-	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 12:45:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF8248A2C0;
+	Wed,  1 Jul 2026 12:45:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782909946; cv=none; b=aRxy/w5DlZZVQGwoqc0afnEz/2shzZJeg0tW/GRhHeGnFrXXZO470HAH4bVgRV5zlu3KPMT3/vus6RAkMFIxgdGrQ/3TbcFg0rivU7piXPOGsdEiajiHj72x1EcsDLjc8+AyxYJK71crOsS6NEEvUim2ekpx1U+LAdqy/mL8NXQ=
+	t=1782909950; cv=none; b=SiSusq8U8odu386u/AaDs09n8EsaMncE78RLM2NjkFCsB9HMJJ8UQYrLlBDl+zh5IULPFtkeSeFX5tpW000yo8lZ7ge3XSaY0vNKnA2Br+pOPUB8qZXec9il7VxxzvVXF84EkXnrGrxRbhiBeDfz9isP2pOTbFJnROCUPvntRMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782909946; c=relaxed/simple;
-	bh=6DOTZZLMzhI/ndLqAd1UjHACb2Zu5h/9HaOuowLGsRs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dJS34EzHSTbzNl+DRSdUKBIUnOr94YQ7wxH3/4vz0WYfSxrHnGfzfYMtNb7L4QP2Bxqo8GbvUMhdIr5H5Xd8g76oxiDKPMQgM9CLAtFtGZEIX1JcBMwkOejQVi7ylayL5Fr+zlCsZT4Xtaew7g8oLpswi6JQdOxCsk2nSqj8viY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lx9DO/6X; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1782909950; c=relaxed/simple;
+	bh=etax08IrxHyS7AiI+VfRaPR4iQAJGxOw2wmFePh5tdo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BT0HSM5d8DJ4mKycx6jkIwPinez6j1hCAaiqy7PLYkZMtqtes5LfsDcd0qgdfPf2zEfQMJeJzrN5VapgZNzafjYLWiDK2x7FFa+Agg5fA4E5FiMyPZtvJsXELShAOiJal7wFZtxFeAN5u6HT7TfNPjdD5u5yGwKCAqfNdaYf5lQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=B95keWCI; arc=none smtp.client-ip=45.254.49.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lx9DO/6X"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782909945; x=1814445945;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=6DOTZZLMzhI/ndLqAd1UjHACb2Zu5h/9HaOuowLGsRs=;
-  b=lx9DO/6XNHdx9hXUXDulkDOY7tvCcGCp9k5LfZ+Q5GGtQ+2YH/16+s+e
-   TeVgpFHsITKF/lm43KmD1dBO5cqRGbiiuW0MnpY1WPkVXjeb9k9Z63/rX
-   zPhs+FNvWpOmD9jXndt10Fgam/NfkE7+FNMLjA79ap+7HtAGDbHXMTdK8
-   aUAbat7p0crU0bzfUjW21mMqdmzHAID9TwSyYuRgBoQs90TvSmeiZ+UDR
-   QunTQF/L7eImhYfqtN18Goe6MsyGeaC4kUVw+rm3JhU1o8c9bqLjIJHsf
-   Yg+kS7ovw5ucyMH1Qq0DTJEmTkCnBj9mRlKzQPIFKu355++iC1sr7rLfh
-   A==;
-X-CSE-ConnectionGUID: BnJAebY9Tr+9raHI/Pel+A==
-X-CSE-MsgGUID: FChPBH5NRcibLCnnCA/6tA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11833"; a="83839262"
-X-IronPort-AV: E=Sophos;i="6.25,141,1779174000"; 
-   d="scan'208";a="83839262"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2026 05:45:45 -0700
-X-CSE-ConnectionGUID: uR70C+L6S1aR6XAgUC5DqQ==
-X-CSE-MsgGUID: O7S0kl4sTTGoM9R8J1lOKA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,141,1779174000"; 
-   d="scan'208";a="276864956"
-Received: from boxer.igk.intel.com ([10.102.20.173])
-  by fmviesa001.fm.intel.com with ESMTP; 01 Jul 2026 05:45:43 -0700
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	magnus.karlsson@intel.com,
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="B95keWCI"
+Received: from PC-202605011814.localdomain (unknown [221.228.238.82])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 448185dfd;
+	Wed, 1 Jul 2026 20:40:34 +0800 (GMT+08:00)
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+To: borisp@nvidia.com,
+	saeedm@nvidia.com,
+	leon@kernel.org,
+	tariqt@nvidia.com,
+	mbloch@nvidia.com
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
+	sd@queasysnail.net,
+	dtatulea@nvidia.com,
+	cjubran@nvidia.com,
 	horms@kernel.org,
-	przemyslaw.kitszel@intel.com,
-	jacob.e.keller@intel.com,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Subject: [PATCH v5 net 7/7] i40e: keep q_vectors array in sync with channel count changes
-Date: Wed,  1 Jul 2026 14:45:24 +0200
-Message-Id: <20260701124524.13644-8-maciej.fijalkowski@intel.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20260701124524.13644-1-maciej.fijalkowski@intel.com>
-References: <20260701124524.13644-1-maciej.fijalkowski@intel.com>
+	jianbol@nvidia.com,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	runyu.xiao@seu.edu.cn,
+	jianhao.xu@seu.edu.cn
+Subject: [PATCH net-next] net/mlx5e: MACsec: annotate context list traversals
+Date: Wed,  1 Jul 2026 20:40:30 +0800
+Message-Id: <20260701124030.3208833-1-runyu.xiao@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -66,243 +50,132 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9f1db2082c03a1kunm39a5032119cafd
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZTB8ZVk5MSkxISEJOS0hPQlYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUpVSUlDVUlIQ1VDSVlXWRYaDxIVHRRZQVlPS0hVSktISk
+	9ITFVKS0tVSkJLS1kG
+DKIM-Signature: a=rsa-sha256;
+	b=B95keWCIdztnQ4neFAQ+mhCHswHGsL1tO1GVGxALWbF7XVdMj7V1ud1P3bdobvl2WQYVJ6DS9PfW/dl4EJAv4nMqa9fLV3x1kBMVnLhG4vIZ21D2+LHtEo8aS04XM4QMiBaywmK1kaSpw0lQE4ixlv+Djn2jCJdzRFbs8hbBGq4=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=d4tdyGU+MiaIXHvHOftM6m6FeoJkbFM5l+zIrOJOj+U=;
+	h=date:mime-version:subject:message-id:from;
 
-For the main VSI, i40e_set_num_rings_in_vsi() always derives
-num_q_vectors from pf->num_lan_msix. At the same time, ethtool -L stores
-the user requested channel count in vsi->req_queue_pairs and the queue
-setup path uses that value for the effective number of queue pairs.
+The MACsec offload control paths take macsec->lock before looking up
+MACsec device and RX SC contexts. The lookup helpers walk RCU lists, but
+the iterators do not currently pass the mutex condition, so
+CONFIG_PROVE_RCU_LIST cannot see the existing writer/control-path
+protection.
 
-This leaves queue and vector counts out of sync after shrinking channel
-count via ethtool -L. The active queue configuration is reduced, but the
-VSI still keeps the full PF-sized q_vector topology.
+Pass lockdep_is_held(&macsec->lock) to the list iterators in the MACsec
+lookup helpers. The RX SC helper does not otherwise need the MACsec
+context, so pass it in only to express the existing lockdep condition.
 
-That mismatch breaks reconfiguration flows which rely on vector/NAPI
-state matching the effective channel configuration. In particular,
-toggling /sys/class/net/<dev>/threaded after reducing the channel count
-can hang, and later channel-count changes can fail because VSI reinit
-does not rebuild q_vectors to match the new vector count.
+This was found by our static analysis tool and then manually reviewed
+against the current tree. The dynamic triage evidence is a
+target-matched CONFIG_PROVE_RCU_LIST warning; the change is limited
+to documenting the existing protection contract.
 
-Fix this by making the main VSI num_q_vectors follow the effective
-requested channel count, capped by the available MSI-X vectors. Update
-i40e_vsi_reinit_setup() to rebuild q_vectors during VSI reinit so the
-vector topology is refreshed together with the ring arrays when channel
-count changes.
+This is a lockdep annotation cleanup. It does not change MACsec context
+lifetime or list updates.
 
-Keep alloc_queue_pairs unchanged and based on pf->num_lan_qps so the VSI
-retains its full queue capacity. Also do not touch irq_pile when
-rebuilding vectors.
-
-Selftest napi_threaded.py was originally used when Jakub reported hang
-on /sys/class/net/<dev>/threaded toggle. In order to make it pass on
-i40e, use persistent NAPI configuration for q_vector NAPIs so NAPI
-identity and threaded settings survive q_vector reallocation across
-channel-count changes. This is achieved by using netif_napi_add_config()
-when configuring q_vectors.
-
-$ export NETIF=ens259f1np1
-$ sudo -E env PATH="$PATH" ./tools/testing/selftests/drivers/net/napi_threaded.py
-TAP version 13
-1..3
-ok 1 napi_threaded.napi_init
-ok 2 napi_threaded.change_num_queues
-ok 3 napi_threaded.enable_dev_threaded_disable_napi_threaded
-Totals: pass:3 fail:0 xfail:0 xpass:0 skip:0 error:0
-
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Closes: https://lore.kernel.org/intel-wired-lan/20260316133100.6054a11f@kernel.org/
-Fixes: d2a69fefd756 ("i40e: Fix changing previously set num_queue_pairs for PFs")
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c | 69 +++++++++++++--------
- 1 file changed, 44 insertions(+), 25 deletions(-)
+ .../mellanox/mlx5/core/en_accel/macsec.c      | 23 +++++++++++--------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index a9ec53cfd905..8a23bd99bd12 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -11406,10 +11406,14 @@ static void i40e_service_timer(struct timer_list *t)
- static int i40e_set_num_rings_in_vsi(struct i40e_vsi *vsi)
- {
- 	struct i40e_pf *pf = vsi->back;
-+	u16 qps;
- 
- 	switch (vsi->type) {
- 	case I40E_VSI_MAIN:
- 		vsi->alloc_queue_pairs = pf->num_lan_qps;
-+		qps = vsi->req_queue_pairs ?
-+		      min(vsi->req_queue_pairs, pf->num_lan_qps) :
-+		      pf->num_lan_qps;
- 		if (!vsi->num_tx_desc)
- 			vsi->num_tx_desc = ALIGN(I40E_DEFAULT_NUM_DESCRIPTORS,
- 						 I40E_REQ_DESCRIPTOR_MULTIPLE);
-@@ -11417,7 +11421,7 @@ static int i40e_set_num_rings_in_vsi(struct i40e_vsi *vsi)
- 			vsi->num_rx_desc = ALIGN(I40E_DEFAULT_NUM_DESCRIPTORS,
- 						 I40E_REQ_DESCRIPTOR_MULTIPLE);
- 		if (test_bit(I40E_FLAG_MSIX_ENA, pf->flags))
--			vsi->num_q_vectors = pf->num_lan_msix;
-+			vsi->num_q_vectors = clamp(qps, 1, pf->num_lan_msix);
- 		else
- 			vsi->num_q_vectors = 1;
- 
-@@ -11469,12 +11473,11 @@ static int i40e_set_num_rings_in_vsi(struct i40e_vsi *vsi)
- /**
-  * i40e_vsi_alloc_arrays - Allocate queue and vector pointer arrays for the vsi
-  * @vsi: VSI pointer
-- * @alloc_qvectors: a bool to specify if q_vectors need to be allocated.
-  *
-  * On error: returns error code (negative)
-  * On success: returns 0
-  **/
--static int i40e_vsi_alloc_arrays(struct i40e_vsi *vsi, bool alloc_qvectors)
-+static int i40e_vsi_alloc_arrays(struct i40e_vsi *vsi)
- {
- 	struct i40e_ring **next_rings;
- 	int size;
-@@ -11493,19 +11496,20 @@ static int i40e_vsi_alloc_arrays(struct i40e_vsi *vsi, bool alloc_qvectors)
- 	}
- 	vsi->rx_rings = next_rings;
- 
--	if (alloc_qvectors) {
--		/* allocate memory for q_vector pointers */
--		size = sizeof(struct i40e_q_vector *) * vsi->num_q_vectors;
--		vsi->q_vectors = kzalloc(size, GFP_KERNEL);
--		if (!vsi->q_vectors) {
--			ret = -ENOMEM;
--			goto err_vectors;
--		}
-+	/* allocate memory for q_vector pointers */
-+	size = sizeof(struct i40e_q_vector *) * vsi->num_q_vectors;
-+	vsi->q_vectors = kzalloc(size, GFP_KERNEL);
-+	if (!vsi->q_vectors) {
-+		ret = -ENOMEM;
-+		goto err_vectors;
- 	}
- 	return ret;
- 
- err_vectors:
- 	kfree(vsi->tx_rings);
-+	vsi->tx_rings = NULL;
-+	vsi->rx_rings = NULL;
-+	vsi->xdp_rings = NULL;
- 	return ret;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
+index 528b04d4de41..3028e327e36d 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
+@@ -405,11 +405,13 @@ static int mlx5e_macsec_init_sa(struct macsec_context *ctx,
  }
  
-@@ -11578,7 +11582,7 @@ static int i40e_vsi_mem_alloc(struct i40e_pf *pf, enum i40e_vsi_type type)
- 	if (ret)
- 		goto err_rings;
- 
--	ret = i40e_vsi_alloc_arrays(vsi, true);
-+	ret = i40e_vsi_alloc_arrays(vsi);
- 	if (ret)
- 		goto err_rings;
- 
-@@ -11603,18 +11607,15 @@ static int i40e_vsi_mem_alloc(struct i40e_pf *pf, enum i40e_vsi_type type)
- /**
-  * i40e_vsi_free_arrays - Free queue and vector pointer arrays for the VSI
-  * @vsi: VSI pointer
-- * @free_qvectors: a bool to specify if q_vectors need to be freed.
-  *
-  * On error: returns error code (negative)
-  * On success: returns 0
-  **/
--static void i40e_vsi_free_arrays(struct i40e_vsi *vsi, bool free_qvectors)
-+static void i40e_vsi_free_arrays(struct i40e_vsi *vsi)
+ static struct mlx5e_macsec_rx_sc *
+-mlx5e_macsec_get_rx_sc_from_sc_list(const struct list_head *list, sci_t sci)
++mlx5e_macsec_get_rx_sc_from_sc_list(struct mlx5e_macsec *macsec,
++				    const struct list_head *list, sci_t sci)
  {
- 	/* free the ring and vector containers */
--	if (free_qvectors) {
--		kfree(vsi->q_vectors);
--		vsi->q_vectors = NULL;
--	}
-+	kfree(vsi->q_vectors);
-+	vsi->q_vectors = NULL;
- 	kfree(vsi->tx_rings);
- 	vsi->tx_rings = NULL;
- 	vsi->rx_rings = NULL;
-@@ -11674,7 +11675,7 @@ static int i40e_vsi_clear(struct i40e_vsi *vsi)
- 	i40e_put_lump(pf->irq_pile, vsi->base_vector, vsi->idx);
+ 	struct mlx5e_macsec_rx_sc *iter;
  
- 	bitmap_free(vsi->af_xdp_zc_qps);
--	i40e_vsi_free_arrays(vsi, true);
-+	i40e_vsi_free_arrays(vsi);
- 	i40e_clear_rss_config_user(vsi);
+-	list_for_each_entry_rcu(iter, list, rx_sc_list_element) {
++	list_for_each_entry_rcu(iter, list, rx_sc_list_element,
++				lockdep_is_held(&macsec->lock)) {
+ 		if (iter->sci == sci)
+ 			return iter;
+ 	}
+@@ -473,14 +475,15 @@ static bool mlx5e_macsec_secy_features_validate(struct macsec_context *ctx)
+ }
  
- 	pf->vsi[vsi->idx] = NULL;
-@@ -12048,7 +12049,8 @@ static int i40e_vsi_alloc_q_vector(struct i40e_vsi *vsi, int v_idx)
- 	cpumask_copy(&q_vector->affinity_mask, cpu_possible_mask);
- 
- 	if (vsi->netdev)
--		netif_napi_add(vsi->netdev, &q_vector->napi, i40e_napi_poll);
-+		netif_napi_add_config(vsi->netdev, &q_vector->napi,
-+				      i40e_napi_poll, v_idx);
- 
- 	/* tie q_vector and vsi together */
- 	vsi->q_vectors[v_idx] = q_vector;
-@@ -14203,8 +14205,9 @@ int i40e_vsi_release(struct i40e_vsi *vsi)
-  **/
- static int i40e_vsi_setup_vectors(struct i40e_vsi *vsi)
+ static struct mlx5e_macsec_device *
+-mlx5e_macsec_get_macsec_device_context(const struct mlx5e_macsec *macsec,
++mlx5e_macsec_get_macsec_device_context(struct mlx5e_macsec *macsec,
+ 				       const struct macsec_context *ctx)
  {
--	int ret = -ENOENT;
- 	struct i40e_pf *pf = vsi->back;
-+	bool reuse_irq_lump = false;
-+	int ret = -ENOENT;
+ 	struct mlx5e_macsec_device *iter;
+ 	const struct list_head *list;
  
- 	if (vsi->q_vectors[0]) {
- 		dev_info(&pf->pdev->dev, "VSI %d has existing q_vectors\n",
-@@ -14212,7 +14215,10 @@ static int i40e_vsi_setup_vectors(struct i40e_vsi *vsi)
- 		return -EEXIST;
+ 	list = &macsec->macsec_device_list_head;
+-	list_for_each_entry_rcu(iter, list, macsec_device_list_element) {
++	list_for_each_entry_rcu(iter, list, macsec_device_list_element,
++				lockdep_is_held(&macsec->lock)) {
+ 		if (iter->netdev == ctx->secy->netdev)
+ 			return iter;
+ 	}
+@@ -692,7 +695,7 @@ static int mlx5e_macsec_add_rxsc(struct macsec_context *ctx)
  	}
  
--	if (vsi->base_vector) {
-+	if (vsi->type == I40E_VSI_MAIN && vsi->base_vector)
-+		reuse_irq_lump = true;
-+
-+	if (vsi->base_vector && !reuse_irq_lump) {
- 		dev_info(&pf->pdev->dev, "VSI %d has non-zero base vector %d\n",
- 			 vsi->seid, vsi->base_vector);
- 		return -EEXIST;
-@@ -14232,6 +14238,10 @@ static int i40e_vsi_setup_vectors(struct i40e_vsi *vsi)
- 	*/
- 	if (!test_bit(I40E_FLAG_MSIX_ENA, pf->flags))
- 		return ret;
-+
-+	if (reuse_irq_lump)
-+		return ret;
-+
- 	if (vsi->num_q_vectors)
- 		vsi->base_vector = i40e_get_lump(pf, pf->irq_pile,
- 						 vsi->num_q_vectors, vsi->idx);
-@@ -14271,11 +14281,20 @@ static struct i40e_vsi *i40e_vsi_reinit_setup(struct i40e_vsi *vsi,
- 	pf = vsi->back;
- 
- 	i40e_put_lump(pf->qp_pile, vsi->base_queue, vsi->idx);
-+	i40e_vsi_free_q_vectors(vsi);
- 	i40e_vsi_clear_rings(vsi);
-+	i40e_vsi_free_arrays(vsi);
- 
--	i40e_vsi_free_arrays(vsi, false);
- 	i40e_set_num_rings_in_vsi(vsi);
--	ret = i40e_vsi_alloc_arrays(vsi, false);
-+	ret = i40e_vsi_alloc_arrays(vsi);
-+	if (ret)
-+		goto err_netdev;
-+
-+	/* Rebuild q_vectors during VSI reinit because the effective channel
-+	 * count may change num_q_vectors. Keep vector topology aligned with the
-+	 * queue configuration after ethtool's .set_channels() callback.
-+	 */
-+	ret = i40e_vsi_setup_vectors(vsi);
- 	if (ret)
- 		goto err_netdev;
- 
-@@ -14287,7 +14306,7 @@ static struct i40e_vsi *i40e_vsi_reinit_setup(struct i40e_vsi *vsi,
- 		dev_info(&pf->pdev->dev,
- 			 "failed to get tracking for %d queues for VSI %d err %d\n",
- 			 alloc_queue_pairs, vsi->seid, ret);
--		goto err_netdev;
-+		goto err_rings;
+ 	rx_sc_list = &macsec_device->macsec_rx_sc_list_head;
+-	rx_sc = mlx5e_macsec_get_rx_sc_from_sc_list(rx_sc_list, ctx_rx_sc->sci);
++	rx_sc = mlx5e_macsec_get_rx_sc_from_sc_list(macsec, rx_sc_list, ctx_rx_sc->sci);
+ 	if (rx_sc) {
+ 		netdev_err(ctx->netdev, "MACsec offload: rx_sc (sci %lld) already exists\n",
+ 			   ctx_rx_sc->sci);
+@@ -775,7 +778,7 @@ static int mlx5e_macsec_upd_rxsc(struct macsec_context *ctx)
  	}
- 	vsi->base_queue = ret;
  
+ 	list = &macsec_device->macsec_rx_sc_list_head;
+-	rx_sc = mlx5e_macsec_get_rx_sc_from_sc_list(list, ctx_rx_sc->sci);
++	rx_sc = mlx5e_macsec_get_rx_sc_from_sc_list(macsec, list, ctx_rx_sc->sci);
+ 	if (!rx_sc) {
+ 		err = -EINVAL;
+ 		goto out;
+@@ -853,7 +856,7 @@ static int mlx5e_macsec_del_rxsc(struct macsec_context *ctx)
+ 	}
+ 
+ 	list = &macsec_device->macsec_rx_sc_list_head;
+-	rx_sc = mlx5e_macsec_get_rx_sc_from_sc_list(list, ctx->rx_sc->sci);
++	rx_sc = mlx5e_macsec_get_rx_sc_from_sc_list(macsec, list, ctx->rx_sc->sci);
+ 	if (!rx_sc) {
+ 		netdev_err(ctx->netdev,
+ 			   "MACsec offload rx_sc sci %lld doesn't exist\n",
+@@ -894,7 +897,7 @@ static int mlx5e_macsec_add_rxsa(struct macsec_context *ctx)
+ 	}
+ 
+ 	list = &macsec_device->macsec_rx_sc_list_head;
+-	rx_sc = mlx5e_macsec_get_rx_sc_from_sc_list(list, sci);
++	rx_sc = mlx5e_macsec_get_rx_sc_from_sc_list(macsec, list, sci);
+ 	if (!rx_sc) {
+ 		netdev_err(ctx->netdev,
+ 			   "MACsec offload rx_sc sci %lld doesn't exist\n",
+@@ -978,7 +981,7 @@ static int mlx5e_macsec_upd_rxsa(struct macsec_context *ctx)
+ 	}
+ 
+ 	list = &macsec_device->macsec_rx_sc_list_head;
+-	rx_sc = mlx5e_macsec_get_rx_sc_from_sc_list(list, sci);
++	rx_sc = mlx5e_macsec_get_rx_sc_from_sc_list(macsec, list, sci);
+ 	if (!rx_sc) {
+ 		netdev_err(ctx->netdev,
+ 			   "MACsec offload rx_sc sci %lld doesn't exist\n",
+@@ -1035,7 +1038,7 @@ static int mlx5e_macsec_del_rxsa(struct macsec_context *ctx)
+ 	}
+ 
+ 	list = &macsec_device->macsec_rx_sc_list_head;
+-	rx_sc = mlx5e_macsec_get_rx_sc_from_sc_list(list, sci);
++	rx_sc = mlx5e_macsec_get_rx_sc_from_sc_list(macsec, list, sci);
+ 	if (!rx_sc) {
+ 		netdev_err(ctx->netdev,
+ 			   "MACsec offload rx_sc sci %lld doesn't exist\n",
 -- 
-2.43.0
+2.34.1
 
