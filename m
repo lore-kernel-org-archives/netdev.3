@@ -1,54 +1,54 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C4D3B5854
-	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 21:43:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA6513B71B0
+	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 21:43:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782942233; cv=none; b=p4sf/IoC3bGMdUybpU1gWmEVp0ZFeoaXlxWjenaSE6RzQl+e2AFRGrtIeC3hD5NThsjuSASXB5aiqrhmBVsQ6E8NQdQkDDZ9b8KiJsKTZ92U1y3OWIgtaGEbKTMvrvTsH2YzXwuwdkFnPPw1tdDe0LXb9Uex5VIpvCwdj2IVIg0=
+	t=1782942233; cv=none; b=c5kQWTH+cRUi7rMAwNMdu4kxEkl1NfvfpbgPWjOgEoNcIRazuSn4Mafx11zGP6XHliXryPdGy9zO5sh/MoXn1qID7x1c4FmXImK3pJOH1S+BsyzevljfF4RWhzCGihQDer6z9XAVxlvhGxBF+EttHF4PlPbwhzSwmLpppo774Z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1782942233; c=relaxed/simple;
-	bh=nv/k+xLrZ+J99caVonP7y5vrNLctECzZPSVB6oubxVQ=;
+	bh=oK8xxkQnpnHq0m/s/zrNetzfWm7EIpU5z186OjqOneg=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=B3OHDMbfHP3pSRzAywVAbZJm41DDFoFrSqOLR89h9RW2MjAmeYhaTLVKNTgTxGDqZMQqInHWrYugl0R031xDeJSOTbXb99SFq/5mLuTHOvjHAw2Ec62DRrXXD3aeALyyqGI2XkmTgpCO2QTCLwvxCV8QKnswKoC5P4kxWqw0UO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sY5cApmm; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=qE+vr+obUPU9+XcoycWHamcYrMEeyOG1hGP3OxmYo7DGyAapmqz713f6QoU0Fx7RvT4SsSOnxhPEWrqrg7ZSvXsmO6Ihw04v3ddbsFCV7kqFVmRhbpXUiD33Eu0UzkYhfmkLK5x4wKOhL+aD+9sxp7nh9qBDqUeymf0PSG8p4mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VxeKqIxa; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sY5cApmm"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2c804e38c65so21297285ad.2
-        for <netdev@vger.kernel.org>; Wed, 01 Jul 2026 14:43:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VxeKqIxa"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c9a700dc0eso9838095ad.1
+        for <netdev@vger.kernel.org>; Wed, 01 Jul 2026 14:43:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782942231; x=1783547031; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1782942229; x=1783547029; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=R9ie3bzKgeyYiuFvUKcNeHB0MegGvZ6/Yth4SJ9PFQc=;
-        b=sY5cApmmqVdV9mbuF/1bZNmsr8ofUSyO5nxcQWGGINu6FeGb4w8kvFLxazIW0wplYG
-         6EBvkddlEH3WIgZkDfRCyAgkzMQdJbb9P7k1jevsaoEymkflvtrTC9Rbdx293/DFG6eo
-         YMPFy0Dwf/EZnLnExDDDzirPKj8qkcqWCfyWMTQMQ8M4+dKoLzsQMw2ZRt3tW2Uw3OEm
-         KBWv5XzMlppB/jhmkqi7ZcNtRQmj23Zkqm68CbfLICPDG8eyY88wphTASvDVYmvBtUYT
-         67SNW5S5ixBqPViYj3uMYueSm2pB+QTkqVWrneHmZoTNceKGLw8SJ0X1MduJG0k9FotZ
-         GZrg==
+        bh=qv+hwxHDJ92PQDTj0TRrJSI+bQcW2pH3TZcVqKUE80s=;
+        b=VxeKqIxa0ObW5y8/1J6Tjd6tIWeGnASmTyfcDM33Ed/Z+gbV0N6ZbssutNQUfrMxK+
+         dQMh9v4NaK9K9GPIZ0XhsNjbh7PrN3gTHxmWI68f5f2KYLaczUM8rZhdQUUKH/YOm9eV
+         eq0FJ3Oa6g0PxcAKuKXF/ldcUxtpRmrtNQ2eVDh9nG0n/ekOr2LGbd8/aU2hheDkyGC/
+         80kphUlSRIOsPyNPP8YwK+xht2XC3XSG0Q6UvDBpxTTtA2khXirRRbTCRmpYEq2kkYRF
+         /E5fyP3IM8uN7r0UnvlXPJzlTxe27aYMvWgRwGjJ0vfilrIcr4VR7s2kp3cHmkxTlPK9
+         KMOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782942231; x=1783547031;
+        d=1e100.net; s=20251104; t=1782942229; x=1783547029;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=R9ie3bzKgeyYiuFvUKcNeHB0MegGvZ6/Yth4SJ9PFQc=;
-        b=RbK/d/1AG6DXnG7sxI9wG+H43BNcgGKiZUmIajIHHGqlE7L4oOcpIyB64AbkTB9XM5
-         TUarkHhUxtBF22nPNp3LKH8DWi8jtXRmSnphUOlXP6TWKvQJ+Wd/MUntKE1YTfaPDcEH
-         wY6Jlj5acP9IdkKFUwkW2wpZ5Ot72qL7IeQJkBxFB1XI1WE2oHj5Ahbp7fIwCpXhp6q6
-         L5T6Nbf76XfpHVdaX8UZq1F5t58273rWIidDxbz+KMlWdZ4wUWWyBZYTBzzpsJNS7vvz
-         RCL8HIU5CoRmQgh1ilIdm4/RU3ojSZtN6tP7wl5+1XlpiWdifBSEsbXavyp2/I9Pucmu
-         PRkA==
-X-Forwarded-Encrypted: i=1; AHgh+RodnpfoU0jdgmLSalR7ECeiG6zsTSEbACQryBiCZ3IGsUGoP8y1j8KFAIR3zVsGHd5aGdtkVAw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzlkJ71qOsSIOpvyzlq/ACL65WyK8BetuQ9FtpqDRvAMm6yOIFO
-	E9inQZBlXfxtoOyds3VtGKiIC+1x/OYHRs5Eq/krbcXXj3GFkwN5vkUVQ13+H0mOg1kx+GWBbB2
-	V7rK9Fw==
-X-Received: from plpl11.prod.google.com ([2002:a17:903:3dcb:b0:2b0:46bd:4fe5])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:240a:b0:2c6:c9de:cd0e
- with SMTP id d9443c01a7336-2ca7e75afccmr37696925ad.23.1782942231139; Wed, 01
- Jul 2026 14:43:51 -0700 (PDT)
-Date: Wed,  1 Jul 2026 21:41:48 +0000
+        bh=qv+hwxHDJ92PQDTj0TRrJSI+bQcW2pH3TZcVqKUE80s=;
+        b=c7ydx5YUgq3Cxo6WER6ZgZe3pj7Mw9uwbztxX7ScTS40mjFCJ0os5Bxm1VA3rR8WVV
+         Zm5ZDVxqZ77ROZtHQsxZmtQ7A0MllRsTyNB/UwMyXXJEQh4KabfdKnmu9Glm/0Nrhb3C
+         Jnj2/AThfgUBk/0xCjEgytpS/HfOUuISmNwYuh7hJIk5QT+Hj7Iva8jlW67At7XY1f+9
+         SbQ49UxVNoP7o//PrjrBAJBrf1Fl66bth+rZmYFUCh4R6pZUtkzGqlxVkTechwPdWAtv
+         8XAHNMdB2FDeqevpP6tMqC7GsIGkE+ilemfyrxSlTH1BmqzDIon/v0sWt2aQA6MFJpTw
+         dQNQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rr2M1jPsxd5MqD1M9I36aMz6/duyuSeFHmB2jGnda5wNhFQi4iwLX0HSMgo+/sKgh43NXBKugs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxRRzSAgY5eQhnTsxycTYaz4hJpzpWkxxEzgtdE2W++MIiUHdut
+	qS1lF8c0pc4C+cYsUDVy6Mm9nVqhpKTQNCIAs5hAT95Gy737NDgYec9UF2QstiI/1IcDio3J4dq
+	eoTsVkA==
+X-Received: from plqu8.prod.google.com ([2002:a17:902:a608:b0:2ca:6d6d:5267])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3883:b0:2c9:97a7:b1ec
+ with SMTP id d9443c01a7336-2ca7e9348f2mr37136415ad.43.1782942228683; Wed, 01
+ Jul 2026 14:43:48 -0700 (PDT)
+Date: Wed,  1 Jul 2026 21:41:45 +0000
 In-Reply-To: <20260701214334.266991-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -58,8 +58,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260701214334.266991-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260701214334.266991-11-kuniyu@google.com>
-Subject: [PATCH v1 net-next 10/14] bareudp: Support per-netns netdev unregistration.
+Message-ID: <20260701214334.266991-8-kuniyu@google.com>
+Subject: [PATCH v1 net-next 07/14] net: Call unregister_netdevice_many() per netns.
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>
@@ -67,135 +67,139 @@ Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
 	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-bareudp_exit_rtnl_net() iterates bareudp devices whose sockets
-are in the dying netns and queues them for destruction.
+For per-netns device unregistration, the list passed to
+unregister_netdevice_many() must contain devices from a single
+netns only (once all callers are converted).
 
-So the devices may reside in different netns.
+Let's move collected devices in the following functions to
+net->dev_unreg_head and let __rtnl_net_unlock() pass them to
+unregister_netdevice_many().
 
-Let's use unregister_netdevice_queue_net() to support per-netns
-device unregistration.
+  * default_device_exit_batch()
+  * ops_exit_rtnl_list()
+  * __rtnl_kill_links()
 
-list_del() is changed to list_del_init() to avoid queueing the
-same device twice.
+This allows incremental conversion of each driver to support
+per-netns device unregistration without affecting the normal
+kernel where CONFIG_DEBUG_NET_SMALL_RTNL is disabled.
 
-Even after bareudp_exit_rtnl_net() queues a cross-netns bareudp
-device, bareudp_dellink() could be called concurrently for it
-(once RTNL is removed).  In such a case, __rtnl_net_unlock() will
-perform the unregistration.
-
-Note that bareudp uses register_pernet_subsys() instead of _device(),
-so default_device_exit_batch() guarantees that the async per-netns
-works are flushed before ->exit().
-
-Tested:
-
-1. Create bareudp device across two netns.
-
-  # ip netns add ns1
-  # ip netns add ns2
-  # ip -n ns1 link add bareudp0 link-netns ns2 type bareudp \
-    dstport 9292 ethertype ipv4
-
-2. Run bpftrace to check that bareudp_uninit() is called between
-   ->exit_rtnl() and ->exit().
-
-  # bpftrace -e '#include <linux/netdevice.h>
-  kprobe:bareudp_uninit {
-      $dev = (struct net_device *)arg0;
-      printf("PID: %d | DEV: %s%s\n", pid, $dev->name, kstack());
-  }
-  kprobe:bareudp_exit_rtnl_net,
-  kprobe:bareudp_exit_net {
-      printf("PID: %d%s\n", pid, kstack());
-  }'
-
-3. Remove the netns where the bareudp socket resides
-
-  # ip netns del ns2
-
-Now, we can see bareudp0 is unregistered by per-netns work
-instead of cleanup_net() and it finishes before ->exit() to
-avoid WARN_ON_ONCE(!list_empty(&gn->sock_list)) there.
-
-  PID: 576
-          bareudp_exit_rtnl_net+5
-          ops_undo_list+702
-          cleanup_net+1122
-          process_scheduled_works+2538
-  ...
-  PID: 470 | DEV: bareudp0
-          bareudp_uninit+5
-          unregister_netdevice_many_notify+7129
-          unregister_netdevice_many_net+1050
-          rtnl_net_work_func+136
-          process_scheduled_works+2538
-  ...
-  PID: 576
-          bareudp_exit_net+5
-          ops_undo_list+1064
-          cleanup_net+1122
-          process_scheduled_works+2538
+Note that this change unbatches synchronize_rcu() etc in
+unregister_netdevice_many(), but we can later split it into
+multiple stages to batch them again.
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
- drivers/net/bareudp.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ include/linux/netdevice.h |  6 ++++++
+ net/core/dev.c            | 27 +++++++++++++++++++++++++++
+ net/core/net_namespace.c  |  1 +
+ net/core/rtnetlink.c      |  6 +++++-
+ 4 files changed, 39 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/bareudp.c b/drivers/net/bareudp.c
-index 7dedf4867e7b..c3b5ed52d877 100644
---- a/drivers/net/bareudp.c
-+++ b/drivers/net/bareudp.c
-@@ -701,12 +701,13 @@ static int bareudp_link_config(struct net_device *dev,
- 	return 0;
- }
- 
--static void __bareudp_dellink(struct net_device *dev, struct list_head *head)
-+static void __bareudp_dellink(struct net *net, struct net_device *dev,
-+			      struct list_head *head)
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 53454db3611a..0cd26fb59806 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -3479,6 +3479,7 @@ static inline void unregister_netdevice(struct net_device *dev)
+ void unregister_netdevice_queue_net(struct net *net, struct net_device *dev,
+ 				    struct list_head *head);
+ void unregister_netdevice_many_net(struct net *net);
++void unregister_netdevice_queue_many_net(struct net *net, struct list_head *head);
+ #else
+ static inline void unregister_netdevice_queue_net(struct net *net,
+ 						  struct net_device *dev,
+@@ -3486,6 +3487,11 @@ static inline void unregister_netdevice_queue_net(struct net *net,
  {
- 	struct bareudp_dev *bareudp = netdev_priv(dev);
- 
--	list_del(&bareudp->next);
--	unregister_netdevice_queue(dev, head);
-+	list_del_init(&bareudp->next);
-+	unregister_netdevice_queue_net(net, dev, head);
+ 	unregister_netdevice_queue(dev, head);
  }
- 
- static void bareudp_dellink(struct net_device *dev, struct list_head *head)
-@@ -717,7 +718,8 @@ static void bareudp_dellink(struct net_device *dev, struct list_head *head)
- 	bn = net_generic(bareudp->net, bareudp_net_id);
- 
- 	mutex_lock(&bn->lock);
--	__bareudp_dellink(dev, head);
-+	if (!list_empty(&bareudp->next))
-+		__bareudp_dellink(dev_net(dev), dev, head);
- 	mutex_unlock(&bn->lock);
- }
- 
-@@ -811,14 +813,22 @@ static void __net_exit bareudp_exit_rtnl_net(struct net *net,
- 	mutex_lock(&bn->lock);
- 
- 	list_for_each_entry_safe(bareudp, next, &bn->bareudp_list, next)
--		__bareudp_dellink(bareudp->dev, dev_kill_list);
-+		__bareudp_dellink(net, bareudp->dev, dev_kill_list);
- 
- 	mutex_unlock(&bn->lock);
- }
- 
-+static void __net_exit bareudp_exit_net(struct net *net)
-+{
-+	struct bareudp_net *bn = net_generic(net, bareudp_net_id);
 +
-+	WARN_ON_ONCE(!list_empty(&bn->bareudp_list));
++static inline void unregister_netdevice_queue_many_net(struct net *net,
++						       struct list_head *head)
++{
++}
+ #endif
+ 
+ int netdev_refcnt_read(const struct net_device *dev);
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 0f0bf65f5bf9..57fb4741d0ac 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -12546,6 +12546,28 @@ void unregister_netdevice_queue_net(struct net *net, struct net_device *dev,
+ }
+ EXPORT_SYMBOL(unregister_netdevice_queue_net);
+ 
++void unregister_netdevice_queue_many_net(struct net *net, struct list_head *head)
++{
++	struct net_device *dev, *tmp;
++
++	spin_lock(&net->dev_unreg_lock);
++	list_for_each_entry_safe(dev, tmp, head, unreg_list) {
++		/* Once all cross-netns unregister_netdevice_queue() is
++		 * converted to _net() (or for debugging), remove this check.
++		 */
++		if (!net_eq(dev_net(dev), net))
++			continue;
++
++		DEBUG_NET_WARN_ONCE(!net_eq(dev_net(dev), net),
++				    "%s was unregistered from a different netns.\n",
++				    dev->name);
++
++		list_del_init(&dev->unreg_list);
++		list_move_tail(&dev->unreg_list_net, &net->dev_unreg_head);
++	}
++	spin_unlock(&net->dev_unreg_lock);
 +}
 +
- static struct pernet_operations bareudp_net_ops = {
- 	.init = bareudp_init_net,
- 	.exit_rtnl = bareudp_exit_rtnl_net,
-+	.exit = bareudp_exit_net,
- 	.id   = &bareudp_net_id,
- 	.size = sizeof(struct bareudp_net),
- };
+ static void unregister_netdevice_move_net(struct net *net_old,
+ 					  struct net *net,
+ 					  struct net_device *dev)
+@@ -13179,12 +13201,17 @@ static void __net_exit default_device_exit_batch(struct list_head *net_list)
+ 	__rtnl_net_unlock(&init_net);
+ 
+ 	list_for_each_entry(net, net_list, exit_list) {
++		__rtnl_net_lock(net);
++
+ 		for_each_netdev_reverse(net, dev) {
+ 			if (dev->rtnl_link_ops && dev->rtnl_link_ops->dellink)
+ 				dev->rtnl_link_ops->dellink(dev, &dev_kill_list);
+ 			else
+ 				unregister_netdevice_queue(dev, &dev_kill_list);
+ 		}
++
++		unregister_netdevice_queue_many_net(net, &dev_kill_list);
++		__rtnl_net_unlock(net);
+ 	}
+ 	unregister_netdevice_many(&dev_kill_list);
+ 	rtnl_unlock();
+diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
+index 578b48cf5318..a91d2b58aadd 100644
+--- a/net/core/net_namespace.c
++++ b/net/core/net_namespace.c
+@@ -181,6 +181,7 @@ static void ops_exit_rtnl_list(const struct list_head *ops_list,
+ 				ops->exit_rtnl(net, &dev_kill_list);
+ 		}
+ 
++		unregister_netdevice_queue_many_net(net, &dev_kill_list);
+ 		__rtnl_net_unlock(net);
+ 	}
+ 
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index 544498d3c325..b129f793d851 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -714,8 +714,12 @@ void rtnl_link_unregister(struct rtnl_link_ops *ops)
+ 	down_write(&pernet_ops_rwsem);
+ 	rtnl_lock_unregistering_all();
+ 
+-	for_each_net(net)
++	for_each_net(net) {
++		__rtnl_net_lock(net);
+ 		__rtnl_kill_links(net, ops, &dev_kill_list);
++		unregister_netdevice_queue_many_net(net, &dev_kill_list);
++		__rtnl_net_unlock(net);
++	}
+ 
+ 	unregister_netdevice_many(&dev_kill_list);
+ 
 -- 
 2.55.0.rc0.799.gd6f94ed593-goog
 
