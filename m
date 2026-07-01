@@ -1,305 +1,135 @@
-Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1F6A376A11
-	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 16:34:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A546374A0B;
+	Wed,  1 Jul 2026 16:36:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782923688; cv=none; b=YwPJhEcocsNkBdESaQTPxIiyooe9zGjNAIP3MPbn3Vj9cKGw7Y5mI+DrR4E4ph3vS+4ySiEgancFg05ynOszjWLS8KHmc8RXmFlSUtzavOlsjeUNxsZw7tPz5rYoXPl5lmaAFDmm8NwrWqF8r9hrTYcPfBrGB/stBt2x+vQkdHM=
+	t=1782923768; cv=none; b=BY14KLwZO1AsTK1G8YwblDkdWxNmUMd2bSNYRMn80eirRN0390gUUqFTSGg6yQbeszfoYZRusdwGPBJ4h5FFmocePWb9xwy/fGoeTmr3LJ3wZdNnyJLSk6+BRGTam6R1Lia5Y7EtJ5BBDUD/Ly4DKPZTOckABKOsnAstwzj7s+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782923688; c=relaxed/simple;
-	bh=IgxZJkAX83JEoUd7zhGT0HcnVVm/OyxbDgl2DsEOM60=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Rjnj/gkQyFYQYOf4/leIL6QWGKvaIj8yndyU8NHDESSop5XX3dGl50b5YVBMTmCeyLwohzklu80acXdBpQLzzMyi5RDp1JpkaZNAW0AflWaQpClpF7FO3OLU5QSk9CKdKcbiCKPgUNieUJLkC3Ig5oK1SjG7CktzbPeWJtpkrOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VF7TYWZE; arc=none smtp.client-ip=209.85.210.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1782923768; c=relaxed/simple;
+	bh=dGqjQNYHP3AKe7QVSruy5pq6XjGy/UjGWXch8I2wCqI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gkqnSGcNrW6uF/ZPBQwUr144WjVF7zQX5Gy3iA2xXGKr0ulN30QWWGy7CDOJelwrJRsZkiNDXxbzEjgjJ21mKQzJxp1LlGj5hue+xENdnFn3JGoBN5gsMp5DwxhCTrjGCTfwwzLy2sEjeby8gYSpuGA+O4WormyORikoPrjfDVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=hIMhVLbn; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Vh7it3+N; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VF7TYWZE"
-Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7e9ccbb7aa3so670872a34.1
-        for <netdev@vger.kernel.org>; Wed, 01 Jul 2026 09:34:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782923683; x=1783528483; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=1aq9FrQ86evQJPeL1WihgSaD08JDHC1d1jP4T/r4tmg=;
-        b=VF7TYWZEJtU6xvbF+N5I18va+RpqBL5W9T8utPvXEVC2XCAy+yl8Hqs+DyusYprh6/
-         oS5zCXsbtb1yQCnCNNyPbFoijcq2wiCeV+oVDfFUBVnIfRKhnLYmLFWCTjE5SKHFUfMc
-         ag8e7gx6ozqOf0NzfFGZix2ZFVZAnBcp9K33zMDW+Pyzdv6bR1n999XzawPZ3LLTPxyh
-         tvMyivJLY7K6QYGyU6/cQ0p7z8YBo0PHz46qTuvphTNTgFV46GnkwBdruB2HN+1V8oXv
-         /dSEcOw+t6F34jewZQEQ01skUi2QER/unrWUx+IGVt46r/a2XUzsQT6cozu9EEDGDnt4
-         w8Pg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782923683; x=1783528483;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1aq9FrQ86evQJPeL1WihgSaD08JDHC1d1jP4T/r4tmg=;
-        b=feZU/XmeHqHrUGcCUtTD3sxDwbT+m6XjKpq6OwX60rDiU/A+3lqs7agv9eDeuQkn9F
-         MrajifOpkX4Da0CDE/8nLZGxhWBtZNPNZZjyxCGb1FX9YkDq0BgIEOlBzZ+nmZfyHYBq
-         wUUBXjWFjL01NlTQ73xV0GG1CjQtgRb6j6I6mRkVHhhLDTu9toXhClQIM/uWWgQ0Hkju
-         wSn1Q1DtQoGdaDdgEy8Q26i8ZkIXk9F4iHLUir+dU/mBcvjA2dQLSQcrL+m5NskhLzRc
-         Q+pHKSitiGy1lB4OsxR8w77Qv7LTPAiua/3S/OEJg6utuUQj4Fovq9+uhPmYMqcYLgLM
-         5M/A==
-X-Gm-Message-State: AOJu0Yy/CCXWDqeue+5GxppM7hZPWVWajnyJmKKAlwc7rhH4jg5zHDnr
-	Pfuo4IkC3rcBRSyKMvzPiVo2xqm+nuTsIUqPqH7OFo+d5rbAenbRDoYw
-X-Gm-Gg: AfdE7cmUvYdmHUMWLZB/l3ni+0qlWgg5t47nP7fIsVvB4HkWHcihyVQb4qy7Kq70w1P
-	fEu/Vk986a10X/UZQYwJcDr/q2Eqoa2r92muCRlpFhz8hJ8ZaUYiN534nBMYcQ6MRzLv481hp9b
-	N53A8jTNlCJzs1eEvOgv1FItG887ntXen436C5VpxyF0Nvq0/0yr5Sm76EXpbcCkjQLl9j3aZmw
-	bW8leiZuZNY9OK4gnJt5WrYUZJbLHBqNY+SkB3UVG7AOLGL3Z3aA8D/2Dm7kdOFvQ1HzdRcuoNz
-	dUZKJTbpXovWb3YlFNrSgHhW9NUKYp5ExnWt9bPGkU6VqsShtABu9A4nkud28G+RLA2j7p5Z/fx
-	nphFaXkthCy1/UYudZJi+Ipx4Z3279e0AbTogIUv35aAcAIHFpRMKrgtu2ynxmxEOffW3XVh6XR
-	NbyrzsVW+xuGZp7U44Ef/1b73e/Ax1kZRzWA==
-X-Received: by 2002:a05:6830:3784:b0:7e9:c2d8:1789 with SMTP id 46e09a7af769-7eb504be755mr1070845a34.18.1782923683262;
-        Wed, 01 Jul 2026 09:34:43 -0700 (PDT)
-Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:50::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7eb542d017csm410999a34.8.2026.07.01.09.34.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Jul 2026 09:34:42 -0700 (PDT)
-Date: Wed, 1 Jul 2026 09:34:35 -0700
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: netdev@vger.kernel.org, Jason Wang <jasowang@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>, kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>,
-	linux-kernel@vger.kernel.org, Stefan Hajnoczi <stefanha@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	stable@vger.kernel.org, Brien Oberstein <brienpub@gmail.com>
-Subject: Re: [PATCH net 1/2] vsock/virtio: collapse receive queue under
- memory pressure
-Message-ID: <akVBmydgSd0Eb46/@devvm29614.prn0.facebook.com>
-References: <20260626134823.206676-1-sgarzare@redhat.com>
- <20260626134823.206676-2-sgarzare@redhat.com>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hIMhVLbn";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Vh7it3+N"
+From: Nam Cao <namcao@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1782923762;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5H2RMSAKmJoGY+DThXDisriGJ1Qn+QePthjBOB1RimY=;
+	b=hIMhVLbnIB1PefXMfbm/EMOg6mKFIdrxotbTAq78FklFXkHvLDKnnSOxQGjheeBqoF+MSB
+	/RJ4wpAY1LpNxpoVDRXbyAs+pN3f1cAQwzgMMKni2TlSK1vj0Hf1dCEaqh/FXpK06yjGge
+	EVdlksNkeovxiIEjUmifPEL7CE39QBFn9C/gdeGWpqqez/TC05uqc4TFrOUVcvZq4VIwAC
+	XONzSq5r1p+4yRorHSk41mnvX3+zTgTa/HfRu8YLmF/NWUA2wdGJRCY6Y3/6lB536zhmiK
+	3iwPrJExYb5vG2NpdnKKYxqPRDJseAPMvUbZXy5Qp38rtXYFUye0bggCE0pAUw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1782923762;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5H2RMSAKmJoGY+DThXDisriGJ1Qn+QePthjBOB1RimY=;
+	b=Vh7it3+NUYTxkGM8g0mUS+gepqlrvG5Vqbdg+e9N/H7WDBq8zzK8W14/7+nVpp0qR29B8g
+	o6XJBK9itxGbjWCA==
+To: Kuniyuki Iwashima <kuniyu@google.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Cc: Nam Cao <namcao@linutronix.de>
+Subject: [PATCH 1/2] af_unix: Do not wait for garbage collector in sendmsg()
+Date: Wed,  1 Jul 2026 18:35:53 +0200
+Message-ID: <e663a83195f3d9f6d7ad4907c37ae3e45c151062.1782922354.git.namcao@linutronix.de>
+In-Reply-To: <cover.1782922354.git.namcao@linutronix.de>
+References: <cover.1782922354.git.namcao@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260626134823.206676-2-sgarzare@redhat.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jun 26, 2026 at 03:48:22PM +0200, Stefano Garzarella wrote:
-> From: Stefano Garzarella <sgarzare@redhat.com>
-> 
-> When many small packets accumulate in the receive queue, the skb overhead
-> can exceed buf_alloc even while the payload is within bounds. This causes
-> virtio_transport_inc_rx_pkt() to reject packets, leading to connection
-> resets during large transfers under backpressure.
-> 
-> The issue was reported by Brien, who has a reproducer, but it is also
-> easily reproducible with iperf-vsock [1] using a small packet size:
-> 
->   iperf3 --vsock -c $CID -l 129
-> 
-> which fails immediately without this patch but with commit 059b7dbd20a6
-> ("vsock/virtio: fix potential unbounded skb queue").
-> 
-> Inspired by TCP's tcp_collapse() which solves a similar problem, add
-> virtio_transport_collapse_rx_queue() that walks the receive queue and
-> re-copies data into compact linear skbs to reduce the overhead.
-> 
-> The collapse is triggered from virtio_transport_recv_enqueue() when
-> virtio_transport_inc_rx_pkt() fails. A pre-scan counts the eligible bytes
-> to size each allocation precisely, avoiding waste for isolated small
-> packets. Partially consumed skbs are kept as-is to preserve
-> buf_used/fwd_cnt accounting, EOM-marked skbs to maintain SEQPACKET
-> message boundaries, and skbs already larger than the collapse target
-> because they already have a good data-to-overhead ratio.
-> 
-> [1] https://github.com/stefano-garzarella/iperf-vsock
-> 
-> Fixes: 059b7dbd20a6 ("vsock/virtio: fix potential unbounded skb queue")
-> Cc: stable@vger.kernel.org
-> Reported-by: Brien Oberstein <brienpub@gmail.com>
-> Closes: https://lore.kernel.org/netdev/618701dd023e$063de350$12b9a9f0$@gmail.com/
-> Tested-by: Brien Oberstein <brienpub@gmail.com>
-> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-> ---
->  net/vmw_vsock/virtio_transport_common.c | 148 +++++++++++++++++++++++-
->  1 file changed, 146 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-> index 09475007165b..304ea424995d 100644
-> --- a/net/vmw_vsock/virtio_transport_common.c
-> +++ b/net/vmw_vsock/virtio_transport_common.c
-> @@ -420,6 +420,137 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
->  	return ret;
->  }
->  
-> +static bool virtio_transport_can_collapse(struct sk_buff *skb,
-> +					  unsigned int size)
-> +{
-> +	/* skbs that are partially consumed, mark a SEQPACKET message boundary,
-> +	 * or are already large enough should not be collapsed: they either
-> +	 * need special accounting, carry protocol state, or already have a
-> +	 * good data-to-overhead ratio.
-> +	 */
-> +	if (VIRTIO_VSOCK_SKB_CB(skb)->offset)
-> +		return false;
-> +	if (le32_to_cpu(virtio_vsock_hdr(skb)->flags) & VIRTIO_VSOCK_SEQ_EOM)
-> +		return false;
-> +	if (skb->len >= size)
-> +		return false;
-> +	return true;
-> +}
-> +
-> +/* Iterate through the packets in the queue starting from the current skb to
-> + * count the number of bytes we can collapse.
-> + */
-> +static unsigned int
-> +virtio_transport_collapse_size(struct sk_buff *skb,
-> +			       struct sk_buff_head *queue,
-> +			       unsigned int max_size)
-> +{
-> +	unsigned int target = skb->len - VIRTIO_VSOCK_SKB_CB(skb)->offset;
-> +
-> +	while ((skb = skb_peek_next(skb, queue)) &&
-> +	       virtio_transport_can_collapse(skb, max_size)) {
-> +		unsigned int len = skb->len - VIRTIO_VSOCK_SKB_CB(skb)->offset;
-> +
-> +		if (len > max_size - target)
-> +			return target;
-> +
-> +		target += len;
-> +	}
-> +
-> +	return target;
-> +}
-> +
-> +/* Called under lock_sock when skb overhead exceeds the budget. */
-> +static void virtio_transport_collapse_rx_queue(struct virtio_vsock_sock *vvs)
-> +{
-> +	/* Use the same linear allocation threshold as virtio_vsock_alloc_skb()
-> +	 * to avoid adding pressure on the page allocator.
-> +	 */
-> +	unsigned int collapse_max = SKB_MAX_ORDER(VIRTIO_VSOCK_SKB_HEADROOM,
-> +						  PAGE_ALLOC_COSTLY_ORDER);
-> +	struct sk_buff *skb, *next_skb, *new_skb = NULL;
-> +	struct sk_buff_head new_queue;
-> +
-> +	__skb_queue_head_init(&new_queue);
-> +
-> +	skb_queue_walk_safe(&vvs->rx_queue, skb, next_skb) {
-> +		struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
-> +		u32 src_off = VIRTIO_VSOCK_SKB_CB(skb)->offset;
-> +		u32 src_len = skb->len - src_off;
-> +		bool keep = false;
-> +
-> +		if (!virtio_transport_can_collapse(skb, collapse_max)) {
-> +			/* Finalize pending collapsed skb to preserve packet
-> +			 * ordering.
-> +			 */
-> +			if (new_skb) {
-> +				__skb_queue_tail(&new_queue, new_skb);
-> +				new_skb = NULL;
-> +			}
-> +			keep = true;
-> +			goto next;
-> +		}
-> +
-> +		/* Finalize if this packet won't fit in the remaining tailroom,
-> +		 * so we can allocate a right-sized new_skb.
-> +		 */
-> +		if (new_skb && src_len > skb_tailroom(new_skb)) {
-> +			__skb_queue_tail(&new_queue, new_skb);
-> +			new_skb = NULL;
-> +		}
-> +
-> +		if (!new_skb) {
-> +			unsigned int alloc_size;
-> +
-> +			alloc_size = virtio_transport_collapse_size(skb, &vvs->rx_queue,
-> +								    collapse_max);
-> +
-> +			/* Only this skb's data is eligible, nothing to merge
-> +			 * with. Keep as-is.
-> +			 */
-> +			if (alloc_size <= src_len) {
-> +				keep = true;
-> +				goto next;
-> +			}
-> +
-> +			new_skb = virtio_vsock_alloc_linear_skb(alloc_size +
-> +					VIRTIO_VSOCK_SKB_HEADROOM, GFP_KERNEL);
-> +			if (!new_skb)
-> +				goto out;
-> +
-> +			memcpy(virtio_vsock_hdr(new_skb), hdr,
-> +			       sizeof(struct virtio_vsock_hdr));
-> +			virtio_vsock_hdr(new_skb)->len = 0;
-> +		}
-> +
-> +		/* Cannot fail since src_off/src_len are within bounds, but if
-> +		 * it does, discard new_skb to avoid queuing corrupted data.
-> +		 */
-> +		if (WARN_ON_ONCE(skb_copy_bits(skb, src_off,
-> +					       skb_put(new_skb, src_len),
-> +					       src_len))) {
-> +			kfree_skb(new_skb);
-> +			new_skb = NULL;
-> +			goto out;
-> +		}
-> +
-> +		le32_add_cpu(&virtio_vsock_hdr(new_skb)->len, src_len);
-> +		virtio_vsock_hdr(new_skb)->flags |= hdr->flags;
-> +
-> +next:
-> +		__skb_unlink(skb, &vvs->rx_queue);
-> +		if (keep)
-> +			__skb_queue_tail(&new_queue, skb);
-> +		else
-> +			consume_skb(skb);
-> +	}
-> +out:
-> +	if (new_skb)
-> +		__skb_queue_tail(&new_queue, new_skb);
-> +
-> +	skb_queue_splice(&new_queue, &vvs->rx_queue);
+AF_UNIX sockets' sendmsg() schedules and blocks on the garbage collector if
+user has too many inflight unix sockets. This causes real-time issues, as
+high priority processes who do need to send lots of unix sockets get
+blocked by the garbage collector which runs as workqueue, causing a
+priority inversion scenario.
 
-I think the new skbs will also need skb_set_owner_sk_safe(skb, sk)
-when adding to rx_queue?
+The reason for blocking on garbage collector goes back to 2008, when
+it was reported that "Local/unprivileged users can cause soft lockups
+and take out system processes by triggering the OOM killer":
+https://bugzilla.redhat.com/show_bug.cgi?id=3D470201
 
-Best,
-Bobby
+The soft lockup was because a process can keep queueing AF_UNIX sockets to
+another process that is exiting. Back in 2008, the garbage collector was
+run synchronously by the exiting process, therefore keep queueing AF_UNIX
+sockets blocks that process from exiting.
 
-> +}
-> +
->  static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
->  					u32 len)
->  {
-> @@ -1363,8 +1494,21 @@ virtio_transport_recv_enqueue(struct vsock_sock *vsk,
->  	spin_lock_bh(&vvs->rx_lock);
->  
->  	can_enqueue = virtio_transport_inc_rx_pkt(vvs, len);
-> -	if (!can_enqueue)
-> -		goto out;
-> +	if (!can_enqueue) {
-> +		/* Try to collapse the receive queue to reduce skb overhead and
-> +		 * make room for this packet.
-> +		 * Unlock rx_lock since the collapse may sleep or, in any case,
-> +		 * take some time to collapse the skbs, but this is safe, since
-> +		 * sk_lock is held by caller so no one else can enqueue or
-> +		 * dequeue.
-> +		 */
-> +		spin_unlock_bh(&vvs->rx_lock);
-> +		virtio_transport_collapse_rx_queue(vvs);
-> +		spin_lock_bh(&vvs->rx_lock);
-> +		can_enqueue = virtio_transport_inc_rx_pkt(vvs, len);
-> +		if (!can_enqueue)
-> +			goto out;
-> +	}
->  
->  	if (le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SEQ_EOM)
->  		vvs->msg_count++;
-> -- 
-> 2.54.0
-> 
-> 
+The solution to that issue was forcing sendmsg() to wait for ongoing
+garbage collector.
+
+The OOM killer issue was brought up again in 2010:
+https://lore.kernel.org/lkml/AANLkTi=3DQ967xpX0KLMwX-=3D_4_1AKO5wjHEuJ1TrNj=
+Cj9@mail.gmail.com/
+
+To resolve that report, beside blocking on the garbage collector, sendmsg()
+also schedules the garbage collector if the number of inflight AF_UNIX
+sockets in the system is too high.
+
+Then in 2015, once again, the OOM killer problem was brought up:
+https://lore.kernel.org/lkml/20151228141435.GA13351@1wt.eu/
+
+That time, the issue was resolved by disallowing a user from having more
+inflight AF_UNIX sockets than their RLIMIT_NOFILE. That was done by commit
+712f4aad406b ("unix: properly account for FDs passed over unix sockets")
+and commit 415e3d3e90ce ("unix: correctly track in-flight fds in sending
+process user_struct").
+
+Now, sendmsg() does not have to block on the garbage collector anymore,
+because:
+
+  - The OOM killer issue has already been addressed by checking
+    RLIMIT_NOFILE.
+
+  - The soft lockup issue is no longer relevant, because the garbage
+    collector now runs asynchronously since commit d9f21b361333 ("af_unix:
+    Try to run GC async.")
+
+Therefore, remove that to prevent priority inversion. Running all the
+reproducers from the mentioned bug reports after this patch, no problem is
+observed.
+
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+---
+ net/unix/garbage.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/net/unix/garbage.c b/net/unix/garbage.c
+index 0783555e2526..f180c59b3da9 100644
+--- a/net/unix/garbage.c
++++ b/net/unix/garbage.c
+@@ -300,8 +300,6 @@ int unix_prepare_fpl(struct scm_fp_list *fpl)
+ 	if (!fpl->edges)
+ 		goto err;
+=20
+-	unix_schedule_gc(fpl->user);
+-
+ 	return 0;
+=20
+ err:
+--=20
+2.47.3
+
