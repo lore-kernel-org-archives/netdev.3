@@ -1,83 +1,154 @@
-Received: from trager.us (trager.us [52.5.81.116])
+Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AA1935E1D7
-	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 23:28:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.5.81.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CC9B39A7F6;
+	Wed,  1 Jul 2026 23:29:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782948507; cv=none; b=tG7HcrYKlJq7H0OgwZI/UWtiTe7yYpbS1xoZeSqTeSdu2q0pl2hgXRoUlpAIC1lCZ48cnDHJ78YYz0kfKxVUPspen6r1pSBBVW0TZAUo1NAxlPoqzdeDh6SzgU2ffEI0hbzSVJFx8QIO5Mu345SuxWGiBLT51lXAM10JwRxlSzw=
+	t=1782948553; cv=none; b=EEPkO8B0IoLOD+N7tvcss5akT2Iqy4IArh16uRHHYOGQJ6UIJECBhAvvfSarrvDlkTflaOFRja+4PI/A+xbdhel7ligF7jG90rcwHmkkT3EzKYhbORHtv2vWf4sqcwYBGySDxdJErToOINTO43ugDVexynbDVxRujUFWsEwRC3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782948507; c=relaxed/simple;
-	bh=oqYUQJaboN2B+M2hHb1WLYzzf/roWuKN3WyTx66Li1E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=F78ZtC8Q/VsT4IHhWxtfVb2KYKpiWnrwNgsmpspfIMXZ5lL9y2/wFQNnkArjmEnCCQzSpUwiX0T1mQOv4ePWOPLgkeb2GZxWn5sDmxP6GAD6HnheBp+T+rMwbYGIJI+haKvvb56La4MLNxHFaSzBqHDjvsPurqCB6PYFVuoyb28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=trager.us; spf=pass smtp.mailfrom=trager.us; arc=none smtp.client-ip=52.5.81.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=trager.us
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trager.us
-Received: from c-73-254-161-40.hsd1.wa.comcast.net ([73.254.161.40] helo=[192.168.1.226])
-	by trager.us with esmtpsa (TLSv1.3:TLS_AES_128_GCM_SHA256:128)
-	(Exim 4.92.3)
-	(envelope-from <lee@trager.us>)
-	id 1wf4Lu-0003gJ-Fo; Wed, 01 Jul 2026 23:28:22 +0000
-Message-ID: <705f6fcb-e0e2-4898-bf83-78c38f32f505@trager.us>
-Date: Wed, 1 Jul 2026 16:28:15 -0700
+	s=arc-20240116; t=1782948553; c=relaxed/simple;
+	bh=R+PDzFKU62NfCaCLr8ElinIvVbuWnFq0dWlVthEw3r8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=ZGozuYTPaNus9wuJSi5rmsohye/BiFovRQihVVRQA8M741MLmjwA38Vnu9hMKsD1KdZyIEyx+89fuTUv2o9ZYVP6DsOGk6ncvPpEDw9LybFosx3jIaZ+eslGl9SSzSHZgTAbOcPwfrx6D88rxrPsaCi/rl6PzonNqrfOZjd93RY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=UBVquths; arc=none smtp.client-ip=185.226.149.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="UBVquths"
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1wf4MZ-00APZW-AR; Thu, 02 Jul 2026 01:29:03 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector2; h=Cc:To:In-Reply-To:References:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
+	bh=JY6vyu4ew/YbvfbysQ3sEbAPWeh/UANUY1m4KLaXAW4=; b=UBVquthszWp+2JcebPNIWIzfyu
+	uvqEW7Gphm2d1Sy8KBkPudXu00OBywmWr9ZbmMz1tZmXmyqbByJ6bK/4UV6aH5CYX+LTyUcW6c1Mp
+	ZQ6f9D6blyBRRq0WPkgU3TUaWNjOZ8Xb71Qw5kZBG9BLczyEez22/G+l7C9TN4lvy5vMd40u/kGM5
+	VpT2RH96LV7d7MfjDPgw4zBxg9m9Mi0uKZS/K523mdCnHwJ9wbdPbpvPFnYAe32rqGG9y+aDP/IBc
+	9FiO9IRHqGrpS8p8TkCFKWhPWeSJPnaPW/KNUcEhSPw7uDtQzomsga7Y7qULKg0JkpIaB6cZ9eGVS
+	zOZZRK1Q==;
+Received: from [10.9.9.73] (helo=submission02.runbox)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1wf4MY-0005GM-Ku; Thu, 02 Jul 2026 01:29:02 +0200
+Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.95)
+	id 1wf4MR-00467f-0f;
+	Thu, 02 Jul 2026 01:28:55 +0200
+From: Michal Luczaj <mhal@rbox.co>
+Date: Thu, 02 Jul 2026 01:28:21 +0200
+Subject: [PATCH bpf v3 3/4] selftests/bpf: Adapt sockmap update error
+ handling
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Ethtool : PRBS feature
-To: Andrew Lunn <andrew@lunn.ch>,
- "Srinivasan, Vijay" <vijay.srinivasan@intel.com>
-Cc: "Das, Shubham" <shubham.das@intel.com>,
- Alexander Duyck <alexander.duyck@gmail.com>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "mkubecek@suse.cz" <mkubecek@suse.cz>,
- "D H, Siddaraju" <siddaraju.dh@intel.com>,
- "Chintalapalle, Balaji" <balaji.chintalapalle@intel.com>,
- "Lindberg, Magnus" <magnus.k.lindberg@ericsson.com>,
- "niklas.damberg@ericsson.com" <niklas.damberg@ericsson.com>,
- "Wirandi, Jonas" <jonas.wirandi@ericsson.com>
-References: <5f22c491-b816-421e-a531-bf87a07fea70@lunn.ch>
- <08f1b0c2-2b09-4c30-b95a-02959d409a03@trager.us>
- <38359a70-ebc7-49c5-bae5-0d3d7bf82fac@lunn.ch>
- <CAKgT0Ufpp+AVrW4raMw=_PEWQdu+dkp+9xhrt1se2G7=CS83iA@mail.gmail.com>
- <SN7PR11MB810921E7DA70DB3F6FD1C41DFFE82@SN7PR11MB8109.namprd11.prod.outlook.com>
- <6e905826-779a-456d-a37d-7602a37ab6d7@lunn.ch>
- <SN7PR11MB81098D82A7B377E0AC439979FFF62@SN7PR11MB8109.namprd11.prod.outlook.com>
- <cb7921f5-cc9a-49fe-9561-cac903cf611e@lunn.ch>
- <BL3PR11MB63854B0A4AA33A718D474C6588F62@BL3PR11MB6385.namprd11.prod.outlook.com>
- <BL3PR11MB6385517EECD04C783E9DC42488F62@BL3PR11MB6385.namprd11.prod.outlook.com>
- <26d44b09-d72c-4e23-84a6-3d0ea4a521ef@lunn.ch>
-Content-Language: en-US
-From: Lee Trager <lee@trager.us>
-In-Reply-To: <26d44b09-d72c-4e23-84a6-3d0ea4a521ef@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260702-sockmap-lookup-udp-leak-v3-3-ff8de8782468@rbox.co>
+References: <20260702-sockmap-lookup-udp-leak-v3-0-ff8de8782468@rbox.co>
+In-Reply-To: <20260702-sockmap-lookup-udp-leak-v3-0-ff8de8782468@rbox.co>
+To: Alexei Starovoitov <ast@kernel.org>, 
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+ Eduard Zingerman <eddyz87@gmail.com>, 
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+ Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+ Emil Tsalapatis <emil@etsalapatis.com>, Shuah Khan <shuah@kernel.org>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ Jakub Sitnicki <jakub@cloudflare.com>, 
+ Jiayuan Chen <jiayuan.chen@linux.dev>, Eric Dumazet <edumazet@google.com>, 
+ Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+ Willem de Bruijn <willemb@google.com>, 
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+ Simon Horman <horms@kernel.org>, Cong Wang <cong.wang@bytedance.com>
+Cc: Michal Luczaj <mhal@rbox.co>, bpf@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ netdev@vger.kernel.org
+X-Mailer: b4 0.15.2
 
-On 7/1/26 3:02 PM, Andrew Lunn wrote:
+Update sockmap_listen to accommodate the recent change in sockmap that
+rejects unbound UDP sockets.
 
-> On Wed, Jul 01, 2026 at 09:38:08PM +0000, Srinivasan, Vijay wrote:
->> Hi Andrew,
->> I think there is a disconnect here.
-> Which proves my point. The specification is not sufficient if you have
-> to keep correcting me.
->
-> The kAPI should be understandable by somebody who has a general
-> networking background. Please write a specification with that
-> assumption in mind. Don't assume the reader is a test engineer who has
-> used PRBS for half his life. Assume it is a brand new test engineer
-> who is hearing PRBS for the first time. That is what most engineers on
-> the netdev list are. Me included.
+TCP: Reject unbound and bound (unless established or listening).
+UDP: Accept only bound sockets.
 
-I think part of the disconnect is that PRBS testing is a signal 
-integrity test, not a network test. In this case the phy happens to be 
-Ethernet but it could just as easily be PCIE or USB. That is why it was 
-heavily suggested to me at netdev 0x19 that this should be done on the 
-generic phy layer, not netdev.
+While at it, migrate to ASSERT_* and enforce reverse xmas tree.
 
-Lee
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+---
+ .../selftests/bpf/prog_tests/sockmap_listen.c       | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
+
+diff --git a/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c b/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c
+index cc0c68bab907..b87118aab7c4 100644
+--- a/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c
++++ b/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c
+@@ -53,8 +53,8 @@ static void test_insert_opened(struct test_sockmap_listen *skel __always_unused,
+ 			       int family, int sotype, int mapfd)
+ {
+ 	u32 key = 0;
+-	u64 value;
+ 	int err, s;
++	u64 value;
+ 
+ 	s = xsocket(family, sotype, 0);
+ 	if (s == -1)
+@@ -63,11 +63,8 @@ static void test_insert_opened(struct test_sockmap_listen *skel __always_unused,
+ 	errno = 0;
+ 	value = s;
+ 	err = bpf_map_update_elem(mapfd, &key, &value, BPF_NOEXIST);
+-	if (sotype == SOCK_STREAM) {
+-		if (!err || errno != EOPNOTSUPP)
+-			FAIL_ERRNO("map_update: expected EOPNOTSUPP");
+-	} else if (err)
+-		FAIL_ERRNO("map_update: expected success");
++	ASSERT_ERR(err, "map_update");
++	ASSERT_EQ(errno, EOPNOTSUPP, "errno");
+ 	xclose(s);
+ }
+ 
+@@ -77,8 +74,8 @@ static void test_insert_bound(struct test_sockmap_listen *skel __always_unused,
+ 	struct sockaddr_storage addr;
+ 	socklen_t len = 0;
+ 	u32 key = 0;
+-	u64 value;
+ 	int err, s;
++	u64 value;
+ 
+ 	init_addr_loopback(family, &addr, &len);
+ 
+@@ -93,8 +90,12 @@ static void test_insert_bound(struct test_sockmap_listen *skel __always_unused,
+ 	errno = 0;
+ 	value = s;
+ 	err = bpf_map_update_elem(mapfd, &key, &value, BPF_NOEXIST);
+-	if (!err || errno != EOPNOTSUPP)
+-		FAIL_ERRNO("map_update: expected EOPNOTSUPP");
++	if (sotype == SOCK_STREAM) {
++		ASSERT_ERR(err, "map_update");
++		ASSERT_EQ(errno, EOPNOTSUPP, "errno");
++	} else if (err) {
++		ASSERT_OK(err, "map_update");
++	}
+ close:
+ 	xclose(s);
+ }
+@@ -1289,7 +1290,7 @@ static void test_ops(struct test_sockmap_listen *skel, struct bpf_map *map,
+ 		/* insert */
+ 		TEST(test_insert_invalid),
+ 		TEST(test_insert_opened),
+-		TEST(test_insert_bound, SOCK_STREAM),
++		TEST(test_insert_bound),
+ 		TEST(test_insert),
+ 		/* delete */
+ 		TEST(test_delete_after_insert),
+
+-- 
+2.54.0
 
