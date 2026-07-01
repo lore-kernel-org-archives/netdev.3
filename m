@@ -1,181 +1,108 @@
-Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF8248A2C0;
-	Wed,  1 Jul 2026 12:45:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C1C48097B;
+	Wed,  1 Jul 2026 12:47:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782909950; cv=none; b=SiSusq8U8odu386u/AaDs09n8EsaMncE78RLM2NjkFCsB9HMJJ8UQYrLlBDl+zh5IULPFtkeSeFX5tpW000yo8lZ7ge3XSaY0vNKnA2Br+pOPUB8qZXec9il7VxxzvVXF84EkXnrGrxRbhiBeDfz9isP2pOTbFJnROCUPvntRMc=
+	t=1782910081; cv=none; b=RhM1hpVXJkY6LBTOZskMvSjYYLf0E24fUDNDYHmYg5NTv4R/uGeVepc55tMBexUumcUl2JYv/EYac1WdDr174XQGb4MRhG5BqzKK8ZjBIDkazl8AuzquCxVqDXxDebZxb1xLyyLKNYxeF38AXHBVOmaJPcds6ReM8WiHTZf+7j8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782909950; c=relaxed/simple;
-	bh=etax08IrxHyS7AiI+VfRaPR4iQAJGxOw2wmFePh5tdo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BT0HSM5d8DJ4mKycx6jkIwPinez6j1hCAaiqy7PLYkZMtqtes5LfsDcd0qgdfPf2zEfQMJeJzrN5VapgZNzafjYLWiDK2x7FFa+Agg5fA4E5FiMyPZtvJsXELShAOiJal7wFZtxFeAN5u6HT7TfNPjdD5u5yGwKCAqfNdaYf5lQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=B95keWCI; arc=none smtp.client-ip=45.254.49.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+	s=arc-20240116; t=1782910081; c=relaxed/simple;
+	bh=CqASPK2DpOZ3vcTRgJZ6g6iWSFf2OOIi3rCnd9twhrY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=t3OQ1YnlDUiZ1v3r6FdNEZ0mQmLCxykj6iA9MLKzyOm5OdUd2H6+NjQ1n7yTX5Ugp0Q4KUUghG+El2fktRLcYo8gQltz15slPytE1rdWwNuaF4WHvqI2UhFGZINhxVOyEKCx2cgCqBkCrCFRq8e3j7Ixmx9B5bMpwE61DR3T2Fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=04AB/X5R; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="B95keWCI"
-Received: from PC-202605011814.localdomain (unknown [221.228.238.82])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 448185dfd;
-	Wed, 1 Jul 2026 20:40:34 +0800 (GMT+08:00)
-From: Runyu Xiao <runyu.xiao@seu.edu.cn>
-To: borisp@nvidia.com,
-	saeedm@nvidia.com,
-	leon@kernel.org,
-	tariqt@nvidia.com,
-	mbloch@nvidia.com
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	sd@queasysnail.net,
-	dtatulea@nvidia.com,
-	cjubran@nvidia.com,
-	horms@kernel.org,
-	jianbol@nvidia.com,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	runyu.xiao@seu.edu.cn,
-	jianhao.xu@seu.edu.cn
-Subject: [PATCH net-next] net/mlx5e: MACsec: annotate context list traversals
-Date: Wed,  1 Jul 2026 20:40:30 +0800
-Message-Id: <20260701124030.3208833-1-runyu.xiao@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="04AB/X5R"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=6wRKSXChsr77WPNeKS78AynfZLFETLZw16rerEeWi/o=; b=04
+	AB/X5RnPsqzGgx1YccBerkuxPYKjwwo+gB/hs3d37IkMLuDJMzh//bklmlN1Xj69rwO+Rk3cu7u6x
+	KuSWMsJv507OOHmA6VtUYdAC025fpud8QZxcZ1Cc6+/E90SUVJ6ZqizLcMyd7Qcl0IE/SLf4iD/cS
+	jx/BkoPXUIHe25I=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1weuLx-00AALT-D6; Wed, 01 Jul 2026 14:47:45 +0200
+Date: Wed, 1 Jul 2026 14:47:45 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: "Nazle Asmade, Muhammad Nazim Amirul" <muhammad.nazim.amirul.nazle.asmade@altera.com>
+Cc: "dinguyen@kernel.org" <dinguyen@kernel.org>,
+	"maxime.chevallier@bootlin.com" <maxime.chevallier@bootlin.com>,
+	"rmk+kernel@armlinux.org.uk" <rmk+kernel@armlinux.org.uk>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"robh@kernel.org" <robh@kernel.org>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2/3] arm64: dts: socfpga: agilex5: Add SoCDK TSN Config2
+ board
+Message-ID: <d70a6795-e1a2-43e2-b523-0fc668324674@lunn.ch>
+References: <20260630133108.27244-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
+ <20260630133108.27244-3-muhammad.nazim.amirul.nazle.asmade@altera.com>
+ <edf84080-a5e0-478c-9977-af2376cb71c5@lunn.ch>
+ <347c50ed-234a-4f29-b63a-1e0010c6b09d@altera.com>
+ <e4cf8d95-0467-4bdc-8e19-228ced3a8bbc@lunn.ch>
+ <5a0c962e-1af0-4d6a-b871-d8a0b0197ff5@altera.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9f1db2082c03a1kunm39a5032119cafd
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZTB8ZVk5MSkxISEJOS0hPQlYeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUpVSUlDVUlIQ1VDSVlXWRYaDxIVHRRZQVlPS0hVSktISk
-	9ITFVKS0tVSkJLS1kG
-DKIM-Signature: a=rsa-sha256;
-	b=B95keWCIdztnQ4neFAQ+mhCHswHGsL1tO1GVGxALWbF7XVdMj7V1ud1P3bdobvl2WQYVJ6DS9PfW/dl4EJAv4nMqa9fLV3x1kBMVnLhG4vIZ21D2+LHtEo8aS04XM4QMiBaywmK1kaSpw0lQE4ixlv+Djn2jCJdzRFbs8hbBGq4=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
-	bh=d4tdyGU+MiaIXHvHOftM6m6FeoJkbFM5l+zIrOJOj+U=;
-	h=date:mime-version:subject:message-id:from;
+In-Reply-To: <5a0c962e-1af0-4d6a-b871-d8a0b0197ff5@altera.com>
 
-The MACsec offload control paths take macsec->lock before looking up
-MACsec device and RX SC contexts. The lookup helpers walk RCU lists, but
-the iterators do not currently pass the mutex condition, so
-CONFIG_PROVE_RCU_LIST cannot see the existing writer/control-path
-protection.
+> > # There are a small number of cases where the MAC has hard coded
+> > # delays which cannot be disabled. The 'phy-mode' only describes the
+> > # PCB.  The inability to disable the delays in the MAC does not change
+> > # the meaning of 'phy-mode'. It does however mean that a 'phy-mode' of
+> > # 'rgmii' is now invalid, it cannot be supported, since both the PCB
+> > # and the MAC and PHY adding delays cannot result in a functional
+> > # link. Thus the MAC should report a fatal error for any modes which
+> > # cannot be supported. When the MAC implements the delay, it must
+> > # ensure that the PHY does not also implement the same delay. So it
+> > # must modify the phy-mode it passes to the PHY, removing the delay it
+> > # has added. Failure to remove the delay will result in a
+> > # non-functioning link.
+> >
+> >      Andrew
+> >
+> > ---
+> > pw-bot: cr
+> Hi Andrew,
+> 
+> The delays are provided by the FPGA GMII-to-RGMII converter soft IP,
+> which is hardcoded in the FPGA bitstream and cannot be disabled or
+> modified from the driver side.
+> 
+> Using phy-mode = "rgmii" is intentional here — it prevents the PHY from
+> adding its own internal delays on top, since the FPGA converter already
+> provides the full required delay. This is consistent with how all other
+> Agilex5 SoCDK board variants are described, as seen in commit
+> c5637e5ceb4b ("arm64: dts: socfpga: agilex5: Fix phy-mode to rgmii as HW
+> provides clock delay") already in Dinh Nguyen's tree, which applies the
+> same rationale across all Agilex5 boards.
 
-Pass lockdep_is_held(&macsec->lock) to the list iterators in the MACsec
-lookup helpers. The RX SC helper does not otherwise need the MACsec
-context, so pass it in only to express the existing lockdep condition.
+I've become more insistent that designs get this correct. So i don't
+care too much about past systems. Many vendors are having to fix up
+their drivers and DT in order to make new boards consistent.
 
-This was found by our static analysis tool and then manually reviewed
-against the current tree. The dynamic triage evidence is a
-target-matched CONFIG_PROVE_RCU_LIST warning; the change is limited
-to documenting the existing protection contract.
+You can look at your system as the FPGA being the MAC, and the PHY is
+the PHY. The PCB is not providing the delay, the MAC is. This exactly
+fits the description above.
 
-This is a lockdep annotation cleanup. It does not change MACsec context
-lifetime or list updates.
-
-Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
----
- .../mellanox/mlx5/core/en_accel/macsec.c      | 23 +++++++++++--------
- 1 file changed, 13 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
-index 528b04d4de41..3028e327e36d 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
-@@ -405,11 +405,13 @@ static int mlx5e_macsec_init_sa(struct macsec_context *ctx,
- }
- 
- static struct mlx5e_macsec_rx_sc *
--mlx5e_macsec_get_rx_sc_from_sc_list(const struct list_head *list, sci_t sci)
-+mlx5e_macsec_get_rx_sc_from_sc_list(struct mlx5e_macsec *macsec,
-+				    const struct list_head *list, sci_t sci)
- {
- 	struct mlx5e_macsec_rx_sc *iter;
- 
--	list_for_each_entry_rcu(iter, list, rx_sc_list_element) {
-+	list_for_each_entry_rcu(iter, list, rx_sc_list_element,
-+				lockdep_is_held(&macsec->lock)) {
- 		if (iter->sci == sci)
- 			return iter;
- 	}
-@@ -473,14 +475,15 @@ static bool mlx5e_macsec_secy_features_validate(struct macsec_context *ctx)
- }
- 
- static struct mlx5e_macsec_device *
--mlx5e_macsec_get_macsec_device_context(const struct mlx5e_macsec *macsec,
-+mlx5e_macsec_get_macsec_device_context(struct mlx5e_macsec *macsec,
- 				       const struct macsec_context *ctx)
- {
- 	struct mlx5e_macsec_device *iter;
- 	const struct list_head *list;
- 
- 	list = &macsec->macsec_device_list_head;
--	list_for_each_entry_rcu(iter, list, macsec_device_list_element) {
-+	list_for_each_entry_rcu(iter, list, macsec_device_list_element,
-+				lockdep_is_held(&macsec->lock)) {
- 		if (iter->netdev == ctx->secy->netdev)
- 			return iter;
- 	}
-@@ -692,7 +695,7 @@ static int mlx5e_macsec_add_rxsc(struct macsec_context *ctx)
- 	}
- 
- 	rx_sc_list = &macsec_device->macsec_rx_sc_list_head;
--	rx_sc = mlx5e_macsec_get_rx_sc_from_sc_list(rx_sc_list, ctx_rx_sc->sci);
-+	rx_sc = mlx5e_macsec_get_rx_sc_from_sc_list(macsec, rx_sc_list, ctx_rx_sc->sci);
- 	if (rx_sc) {
- 		netdev_err(ctx->netdev, "MACsec offload: rx_sc (sci %lld) already exists\n",
- 			   ctx_rx_sc->sci);
-@@ -775,7 +778,7 @@ static int mlx5e_macsec_upd_rxsc(struct macsec_context *ctx)
- 	}
- 
- 	list = &macsec_device->macsec_rx_sc_list_head;
--	rx_sc = mlx5e_macsec_get_rx_sc_from_sc_list(list, ctx_rx_sc->sci);
-+	rx_sc = mlx5e_macsec_get_rx_sc_from_sc_list(macsec, list, ctx_rx_sc->sci);
- 	if (!rx_sc) {
- 		err = -EINVAL;
- 		goto out;
-@@ -853,7 +856,7 @@ static int mlx5e_macsec_del_rxsc(struct macsec_context *ctx)
- 	}
- 
- 	list = &macsec_device->macsec_rx_sc_list_head;
--	rx_sc = mlx5e_macsec_get_rx_sc_from_sc_list(list, ctx->rx_sc->sci);
-+	rx_sc = mlx5e_macsec_get_rx_sc_from_sc_list(macsec, list, ctx->rx_sc->sci);
- 	if (!rx_sc) {
- 		netdev_err(ctx->netdev,
- 			   "MACsec offload rx_sc sci %lld doesn't exist\n",
-@@ -894,7 +897,7 @@ static int mlx5e_macsec_add_rxsa(struct macsec_context *ctx)
- 	}
- 
- 	list = &macsec_device->macsec_rx_sc_list_head;
--	rx_sc = mlx5e_macsec_get_rx_sc_from_sc_list(list, sci);
-+	rx_sc = mlx5e_macsec_get_rx_sc_from_sc_list(macsec, list, sci);
- 	if (!rx_sc) {
- 		netdev_err(ctx->netdev,
- 			   "MACsec offload rx_sc sci %lld doesn't exist\n",
-@@ -978,7 +981,7 @@ static int mlx5e_macsec_upd_rxsa(struct macsec_context *ctx)
- 	}
- 
- 	list = &macsec_device->macsec_rx_sc_list_head;
--	rx_sc = mlx5e_macsec_get_rx_sc_from_sc_list(list, sci);
-+	rx_sc = mlx5e_macsec_get_rx_sc_from_sc_list(macsec, list, sci);
- 	if (!rx_sc) {
- 		netdev_err(ctx->netdev,
- 			   "MACsec offload rx_sc sci %lld doesn't exist\n",
-@@ -1035,7 +1038,7 @@ static int mlx5e_macsec_del_rxsa(struct macsec_context *ctx)
- 	}
- 
- 	list = &macsec_device->macsec_rx_sc_list_head;
--	rx_sc = mlx5e_macsec_get_rx_sc_from_sc_list(list, sci);
-+	rx_sc = mlx5e_macsec_get_rx_sc_from_sc_list(macsec, list, sci);
- 	if (!rx_sc) {
- 		netdev_err(ctx->netdev,
- 			   "MACsec offload rx_sc sci %lld doesn't exist\n",
--- 
-2.34.1
-
+     Andrew
