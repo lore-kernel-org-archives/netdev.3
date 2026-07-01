@@ -1,68 +1,119 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF2F391E51;
-	Wed,  1 Jul 2026 18:41:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782931310; cv=none; b=Y3k00EniC6YalyjUoMpI8x6goSQLfMZFUlhy7u+akHgmEsN6k3QKDo/TvMqybKUr06Ez2uuXak7C7+2Kee83mAvX6wZfVv4BepAena1v1zIWX7ILW3Qac5+lyAofjwYgEafYfn5C/GIwfcEJ8gtbOe76gbWMSRyEtrPbmFHHBkw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782931310; c=relaxed/simple;
-	bh=fWQvVlHdtvTnBbU3mH406//UiA1TLCHxPt3hSDQR95o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XVG2R37G/HrTdSTjS+uSLQcu/wNwLIndKfw9eJ94Sdo2Keht9zAbLuUKpX6NYx1ZGMUXySiWRjAdvbOz3KHbi4/BoqUwoVEQR5MoF/kN8hNJre6s29lV6uQg2iXL5fz0IGtweDybKP3shlCmAz/JCR6WXjty5HWDsPN0eX+pwIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=2rnr7tfR; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15E639F19F
+	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 18:53:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782932011; cv=pass; b=oY7SboiBHahlPA6PPC/DfzMdZdeYdVvCPgFE6kiwIY9gXgJp71F+OhkJGzPuQKbFXehrjAWSH1RhCIWWq4xoLi72VGBrrTMUkmWmYSd6JKlaVetmhZTJJP1uTYpVnrd/fhDnm+dlpeO4E2kgfAETa+YSDqMW6LLtMH0BrHtl/YU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782932011; c=relaxed/simple;
+	bh=H/aIKbCL+2IFonNeWBah0r+NuQqayuH9uK7OeGzGDhE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KKp1uECYRcL9D6WAdEZRWhoIz4iwWPRKoTmQAkEl9uCKEwxv89wXDh+pT1c5/0j9L5t9eevj9T2wrBZuetFfunvMC2zcaW+kxSXjYTfW85bSdSAQm4Mk11MYH318bsd2d0UJJu3THK6BXVAwVCPcJG45QJScgTWZ4XI5Y+rav+Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=C+FhZm/s; arc=pass smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="2rnr7tfR"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=OagXRuNl2G1lDqHet7J7RIKmiUkCcPy54Z5NexpB9NA=; b=2rnr7tfRYcYSJEYvlFWR6/SjKI
-	UsmdlOQHAmkJqT20AXJg7LAZw6D7vjUgDIM1FRiw7Ov7DzXdiEhd6eiAgWUr1zBVql4yoD10PCmz2
-	VlVfmunufoHCwg9q5G8jgGh8/+0l+Cx5IiMH5HhlHiZJN2Prui4QzWml9tyli3Ach1bc=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wezsR-00AE2E-Mv; Wed, 01 Jul 2026 20:41:39 +0200
-Date: Wed, 1 Jul 2026 20:41:39 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Birger Koblitz <mail@birger-koblitz.de>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-usb@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5/9] ax88179_178a: Add support for ethtool pause
- parameter configuration
-Message-ID: <d4825084-f450-4951-bf26-79b8e4db8e8c@lunn.ch>
-References: <20260701-ax88179a-v1-0-13685df67515@birger-koblitz.de>
- <20260701-ax88179a-v1-5-13685df67515@birger-koblitz.de>
- <587499ee-d87e-4056-8d2a-8fda2ef3f0f1@bootlin.com>
- <947860cc-de6e-48b8-804b-e27f27b2f82c@lunn.ch>
- <d2edb164-91c8-40e4-a104-db690609cb57@birger-koblitz.de>
- <46553470-9be3-4ae0-824d-ae85441c920d@lunn.ch>
- <3cc16d45-7b6d-4fb0-8a7b-d6b4d53ab036@birger-koblitz.de>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="C+FhZm/s"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-493bed621acso83795e9.0
+        for <netdev@vger.kernel.org>; Wed, 01 Jul 2026 11:53:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782932008; cv=none;
+        d=google.com; s=arc-20260327;
+        b=sZHpsXctZ7LjMj/RCuZ1QRFKanhqTJkQM8l/QeO8kJOjhcugVqVJFf0K6te3lY5qWU
+         V/CwsoKiJaIeF6YfFj/69qhWB0z3iAfeDYDel38x/HBXnB8glInF1EVqrIRSR1fBawJU
+         HjeRz25tGjFWNIuCwsCaFobQ1xlvbfouuDSu2+Y7G30XbEUb9p1RySAEdb5SZC4WWE+f
+         Y5/rN+S/0SLMbMRA0JqLxw1H7KrOp/6f2LAPJk5+W6J62slRIfaXw9JKcwydmmbtNzsZ
+         rgtNzx6pPciP0EsQBnUSMyUqtJCUUrGb9pOTlWVowzHhzLa6RkFiacUAIWYmf2CBGHCN
+         fS6Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=H/aIKbCL+2IFonNeWBah0r+NuQqayuH9uK7OeGzGDhE=;
+        fh=c+MToWmRe1cLc4ZCRXxzN3oOkTb3MiE8Ix3C/w8mXv0=;
+        b=Hcx9TqKprd0AsyPOtiMDUipEfGS8xgopYaUiGq1xLzYyXM2W+Ie/8me8eEOmXOSXNL
+         T1LFkLcH7eEVxGVmxMLbTKCXvcljdM10kn1UsrI9wZ1gCY9uICMMUBl7mSSwNQlH08nX
+         TqIFDLbXrwqfPge3sYPlkzlFBPs4IfXun033plQUTG8miCuntKp4quNeVV0ryLETKBa/
+         KpA7JQ5BCKdhPIDQ2z5EZKLnK3ldqOth/hs1BoRHDxnpgQBBwri5dLgsv7rbn0kzHP/v
+         XWKMJszFJJKWF//wdIlxvOt6xRVbLmsaMrp/EVjjQI2mTW1//60VOzONw5WdI94G4TAH
+         yDRQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782932008; x=1783536808; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=H/aIKbCL+2IFonNeWBah0r+NuQqayuH9uK7OeGzGDhE=;
+        b=C+FhZm/sDu3GUp4bC5TqcMGKjddW8eSQJplmgr3gWh/oA6HT2H3Sbzbd1PdnWx/Ldz
+         7kFy9oQtdmlZgXSMz3XbxUv1AlYPe6ApGHQzeV3OMSku2GiY+hLjS0le5Xn2abg0ir4K
+         EkURVa95OgERswqcs+CtdezlzPyD3P5DgFopT40L34ASks2HuajkrlhjzPsgQf6eltqg
+         mDwHyYFbE57qrhYh0ba6Lo6OZTkMqQBvDFml/Zutls/h5rh064CzabJ2jkx3ndjM7VVi
+         QhSNO8rHRx4NMA3YnYQGtIKJu7G9c70QUziBeDuoOxdNu7KAHMgG0gyr9m2Raocbu0m7
+         1zBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782932008; x=1783536808;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=H/aIKbCL+2IFonNeWBah0r+NuQqayuH9uK7OeGzGDhE=;
+        b=d8Hb8WDpTq37b2eZweMRyI0z0oOUjMh4CQSQz8xfGvjNEh1yoGlGkwk4F40Sfox6/Q
+         qWgg77bMvnlAzNCHS5j84l7xBdza/BOhMwgi4mT597FMztfBSnKo6M7df7uA8rcLYbcd
+         /GonaIPV6MtDjge5a5Hh+/sgRANQB15QKyutLd9dk8J+xUAXyez94X8ARrGArUs4jcV9
+         sY61XANjgHx7F9EwkeWTVRBVRpvt+l0/PhtA4aqtP9XAB7+okeFyDo+wNayBp04APOA5
+         W8tYmB3akhugPKwveeNivL3AaujheyaR9nFOskjLiCAZHa+Uigqyh8ZPsjNlJAnYLGNy
+         s12w==
+X-Forwarded-Encrypted: i=1; AFNElJ89l9IP3yedVX8LK4jKfET3XynAftomZx/YyEVipQR++2wcIapQw+D/9a04CNVI0v7sg0r2Tw0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCPfnJRwFYWK5m7vQIqIz83eIglanbAIvaQ36TTIuK/MZjbAQH
+	IU4/tyvP236I9NUp0wIrTl65cRaIQhP9OxktgVrVXShlnXUug+4SWLxplwTsKhxe1HQS3DH7rQF
+	xt4Rzm9dUppkXDf3cIPvB4qHnNcY9qFqjKAP08dQqZIamtnGgr97T4QRNrzY=
+X-Gm-Gg: AfdE7clenZSJps9qM1xqKQ3fxRj9BkWdu2bjkUYXuJUgWWyHGz0aWZyZVQuUyUtWpAg
+	lBEzbd4eizxaINTFx7DJWwq0wWuv7fG7UiL9ritc3Io3aMOMVWlDxi8BwgerhpbR/15WnVV8sIf
+	sJyTSZFQVf3uMdyGEcfoA984oXGuZW/YEE5rj0gxHHCZC+iv2D/fvQ7ZboPuhtFKDm9ZJXb7jMg
+	ZcA1VwGg8+cLqXXARqnaFJmcV8lcHE0BGIKKSULjtQSNCCzUEiq3SQSTC6qRAnNb2DPvGJFJYnS
+	gc5vByiFe7cN5NXpNyQAX/sW8PdCww==
+X-Received: by 2002:a05:600c:4c23:b0:493:b169:784d with SMTP id
+ 5b1f17b1804b1-493c0bca5fdmr869295e9.8.1782932007620; Wed, 01 Jul 2026
+ 11:53:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3cc16d45-7b6d-4fb0-8a7b-d6b4d53ab036@birger-koblitz.de>
+References: <20260625181557.1086105-1-tjmercier@google.com> <20260626180941.45158025@kernel.org>
+In-Reply-To: <20260626180941.45158025@kernel.org>
+From: "T.J. Mercier" <tjmercier@google.com>
+Date: Wed, 1 Jul 2026 11:53:15 -0700
+X-Gm-Features: AVVi8CdF5Yb3z_aT9Z2kMSch_xL019u4GW2x7IgXTq3gEFLOWfvUzwhUO6mpfb4
+Message-ID: <CABdmKX2oG9m316hiJpSXbujrT3vgE5hUpzH_WHfjNxBJ1_+BdA@mail.gmail.com>
+Subject: Re: [PATCH] selftests: Open /dev/udmabuf O_RDONLY
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: kraxel@redhat.com, vivek.kasireddy@intel.com, 
+	Shuah Khan <shuah@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> So, I will give phylink a try and send a new patch version out. I am a
-> bit worried because the PHYs are real divas, getting them to survive
-> a suspend/resume cycle was a bit like herding fleas:
+On Fri, Jun 26, 2026 at 6:09=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
+>
+> On Thu, 25 Jun 2026 11:15:55 -0700 T.J. Mercier wrote:
+> > Write permissions on the /dev/udmabuf device file are not required to
+> > issue ioctls and allocate udmabufs. Applications should be opening this
+> > file as O_RDONLY. The BPF dmabuf_iter selftest already does this. [1]
+> >
+> > Remove the write access mode from the drivers/dma-buf/udmabuf.c and
+> > drivers/net/hw/ncdevmem.c selftests.
+>
+> You need to explain "why", too. Why change it if it clearly
+> worked for everyone running this test until now.
+> --
+> pw-bot: cr
 
-It might be having PHY drivers helps, since it is the PHY drivers
-problem to handle suspend/resume. The code is then cleanly separated
-between drivers, and one should not effect the other.
-
-	Andrew
+Principle of least privilege. Folks use or point to these selftests as
+examples, and then wonder why O_RDWR doesn't work on systems where
+write permissions are not available on /dev/udmabuf.
