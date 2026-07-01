@@ -1,213 +1,109 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E3873F7A95
-	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 09:44:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E242BF002
+	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 09:46:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782899101; cv=none; b=FuURn/pXTUWOUY8FSlVOvmH+9S5PmytUJBbCjUkk9FZPKuYV3HZ1Z5y7K2c20NSFkwIKzIL9b7Nks476JNLmaT2CVqLut/aBZ7KyGef0kkrFYjprc+Nyb6y7IiK97UxJkTZwyR+zn5vm30U2sVey+jK6DYO174QdUaD5eNMJkoU=
+	t=1782899199; cv=none; b=VyUsJFsQJ/6Q3TxnbO7gSHZi3liuKryN2t0AmTvYoYx0QLpiXA/XPzuEUqztRUPxeZmOQdIO81wydfH01Eoc+HJd9T6A0h3JFUlLLGUvQmf39Y/Lj8tWg3XAIjnM3CnRziunICCB+sp/flCopchQNvLObAk/gFJuwaCmYh8Yrrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782899101; c=relaxed/simple;
-	bh=R9hFtEKgYS471ndT+08iOQmnZI/274Kw2I1LXOyop3Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NEP0ce6ZOnRAnmMB1CAXnwwcNzJKf7tnGhjuGamu3dEZT+XTmVZa2f+0KaTs1MtvoK7tf8bjvO2Kk2JdN72D0VW7Z/qawOyCmfrJ46g3pqPdf1CXcGdqvTmr514u+9nZTFc6XkiJ9v3yywQoIJX/TQq+CN/8EZNDhZwF1ah1SsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XACDvwdp; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1782899199; c=relaxed/simple;
+	bh=vCoOznSWPURg4yd28otHJD5Hejut/G7m2STloIQAukw=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
+	 MIME-Version:Content-Type; b=jRahvhvSiMc27xvhdrEBwPR2GbeO0+A5LI+p+CwNOm7CGuqsvWcPwB7+NrCNuYpGMRMDrheOdXa/y8tVnqpGPivgf/3STgbmfctcNPLGnuRHZhNKOuWqEvO1p2n0eDnQJMXt8OBaxCooMWmCJSlToJlPv/Wfoudi7snyX6a8C+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JlCLvuCY; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XACDvwdp"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782899100; x=1814435100;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=R9hFtEKgYS471ndT+08iOQmnZI/274Kw2I1LXOyop3Y=;
-  b=XACDvwdpwm5Pt5s+tUNUp/YCBdK80EHI0aWxqX+EjqsH+KawDi6qO1av
-   0xiH70ZTQmNOjZKB3hYLoEonAPEriFoQ+C9DCqMnc6MRbPNcF6gsEm4jI
-   eOiCl0uPpIDNN+60K9SJkS6OzYxvkrRakvt4EoCK7357mZi6P/z3OTQ95
-   UXQTY8L7BJRBOheIN21oQ4fX6rzdWuN1J1acuBQfMha8xoBg2F2ipMBJY
-   B3aofkV+n6c/7xXxTR06Pjo2C68rJ0HJm9BPGiXKm82skA7t1m8WpzZ9B
-   pFVkSvk4LvMu3q5BW/i1xsNyeDR/GdcPGu880g3FRdHBQYkZoGnc34Y7w
-   w==;
-X-CSE-ConnectionGUID: ZTjQhHo1TSC2mZbyMBt2aA==
-X-CSE-MsgGUID: V/aQ+e03QyyO6olqbhHzMA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11833"; a="94781521"
-X-IronPort-AV: E=Sophos;i="6.24,235,1774335600"; 
-   d="scan'208";a="94781521"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2026 02:45:00 -0700
-X-CSE-ConnectionGUID: h+SKyAf4Sgysm53Tfai9Zw==
-X-CSE-MsgGUID: ViEjRa2ISH6GFxpvtHxWgw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,235,1774335600"; 
-   d="scan'208";a="248541521"
-Received: from rtauro-desk.iind.intel.com ([10.190.238.50])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2026 02:44:52 -0700
-From: Riana Tauro <riana.tauro@intel.com>
-To: intel-xe@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	netdev@vger.kernel.org
-Cc: aravind.iddamsetty@linux.intel.com,
-	anshuman.gupta@intel.com,
-	rodrigo.vivi@intel.com,
-	joonas.lahtinen@linux.intel.com,
-	kuba@kernel.org,
-	simona.vetter@ffwll.ch,
-	airlied@gmail.com,
-	pratik.bari@intel.com,
-	joshua.santosh.ranjan@intel.com,
-	ashwin.kumar.kulkarni@intel.com,
-	shubham.kumar@intel.com,
-	ravi.kishore.koppuravuri@intel.com,
-	raag.jadav@intel.com,
-	maarten.lankhorst@linux.intel.com,
-	mallesh.koujalagi@intel.com,
-	soham.purkait@intel.com,
-	Riana Tauro <riana.tauro@intel.com>,
-	Michal Wajdeczko <michal.wajdeczko@intel.com>
-Subject: [PATCH v4 3/3] drm/xe/xe_ras: Add error-event support for CRI
-Date: Wed,  1 Jul 2026 15:14:13 +0530
-Message-ID: <20260701094409.129131-8-riana.tauro@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20260701094409.129131-5-riana.tauro@intel.com>
-References: <20260701094409.129131-5-riana.tauro@intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JlCLvuCY"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-471eeac43bfso332524f8f.3
+        for <netdev@vger.kernel.org>; Wed, 01 Jul 2026 02:46:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782899195; x=1783503995; darn=vger.kernel.org;
+        h=mime-version:user-agent:references:message-id:date:in-reply-to
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=bED0bR0Txi9RX1bhktE9AX/5A+umXJPx22u+Dfhnmr0=;
+        b=JlCLvuCYi8e7iAxv9dnQd92j/7RoD9UDR+/2s66r3GZFUdseiGrFYNBhY1BMlaEFAN
+         cthidkY0nwANt5SGH0pZR4U54EbLPJVGwkYeZzHVcQ5OkSv9MfYaLidcUOQA8cs0XFid
+         tdeUzT6roVfVrbzoVYfcWnIUKPbr0ZFUHVFjYjG3nw6Wf1K3VAIzVwDdsf0R5brmfUuU
+         nzsTw2dCocIELUmafh3GfJ9Dptw53A0ojpZ5Lg5IZDWzH5ef8a6rLwOQQSh4kMEazmc8
+         CzoXDv53dQhHtPkG7mqvaU5rR1OV8QrKsXlb0ItJERUuHvgu04Ow5Qmv4/XjXDGedGHo
+         TELw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782899195; x=1783503995;
+        h=mime-version:user-agent:references:message-id:date:in-reply-to
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=bED0bR0Txi9RX1bhktE9AX/5A+umXJPx22u+Dfhnmr0=;
+        b=nRvN9be3g+39LSuUpUBMAoxqTZgfLvsNUiRetRF5vMWvnyW5szR1Ii5R2lSdMaywp7
+         0J6b8kva3BRci7HqNvvWQzePCrHZeS0eYlO86JulC3PBCjbAjstAE/IgdpckQxEJzKCW
+         CQxqYVrN38BGB+UsXeDn/VY87TGX8fQMfbKMd8adJKxfhlQeSoithrilPIz5+7aCqPdj
+         WiDcq0bg/n+uI8xdItiHOKlUXjcAHA5RqvfAxVC3lWHswIs5oqljerd08JfuwV6QfeuQ
+         /AwYW1pWm/AiLnp7+yUdVmt/UfcKQGCcNHCDZhk8sPMJ5ZgBC8awIgEvXcZkCxP7FQ3p
+         6vtA==
+X-Forwarded-Encrypted: i=1; AHgh+RqqFnwOCgV2LA42ft5GAlC7zVbchuCTBzSPw3kCsFaY9EtH/gCwnGxLxaumxRPoH3vfDioHLcs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yythm+CjJCOQJnfwKvaj+Ji2bCMwMhAthlaJ+qMmFjv2XItX8/Z
+	C3oirVcIYInFv0bPK/U1DX5H5N2nL3cOWUdHgtHmpes/q2M6yaGOQvLg
+X-Gm-Gg: AfdE7cn4/2t55oE3Ms/FxOyDcdbRPMK5qZ90McVcu/y24TNRSGa0qpbVap8xk8hmP7b
+	Xec2+TlnicCPWv99ofe5qRqTTvbC9Iwhi0qBVcNqY6WZvtqhPHOQoeuu57Ye+EpgC++jHAQuBrL
+	8iBFGQiEtseoXdd2huKzGAbwY/8PU3reU4NbxC+6kEM8buz/h+DjFI9S6vNnj3bop7clqw4LjFx
+	0RDM6GUDpLmVNuGnDQY39fKE5Ddmc9CYQC69LUhk6tL3dZ7uP3XGX4aQrvrlpVHQHlmwxxSd7VV
+	gNEMLW0z1P7M8453nviJqVaZaG58FQy4PzrGFsXZPBOX1tZnGpCRSk4KqUxp8Sh9oG6rXM/+mxm
+	KgafZVzRpKsmDBoYKleffADExtz69V+Ko9xi4WbKscHg5SBBwrkWZBV9CR0dgUwQ1KCdkGWc8Zt
+	SW8I2MUuEA4i2FIPbgCsQuCQE=
+X-Received: by 2002:a05:6000:2406:b0:45e:f684:7347 with SMTP id ffacd0b85a97d-47757e577f6mr1700597f8f.12.1782899194992;
+        Wed, 01 Jul 2026 02:46:34 -0700 (PDT)
+Received: from imac ([145.224.90.186])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4756636cf1asm16937437f8f.18.2026.07.01.02.46.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Jul 2026 02:46:34 -0700 (PDT)
+From: Donald Hunter <donald.hunter@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net,  netdev@vger.kernel.org,  edumazet@google.com,
+  pabeni@redhat.com,  andrew+netdev@lunn.ch,  horms@kernel.org,
+  sdf@fomichev.me,  gal@nvidia.com,  jstancek@redhat.com,  ast@fiberby.net
+Subject: Re: [PATCH net-next v2 2/2] tools: ynl: pyynl: pull the --family
+ resolution logic into the lib
+In-Reply-To: <20260701021751.3234681-3-kuba@kernel.org>
+Date: Wed, 01 Jul 2026 10:46:27 +0100
+Message-ID: <m27bnfcaa4.fsf@gmail.com>
+References: <20260701021751.3234681-1-kuba@kernel.org>
+	<20260701021751.3234681-3-kuba@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Add error-event support for Correctable errors in CRI. Report an error
-event to userspace for every component that has crossed the threshold on
-receiving an interrupt.
+Jakub Kicinski <kuba@kernel.org> writes:
 
-Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Signed-off-by: Riana Tauro <riana.tauro@intel.com>
----
-v2: add warns for unexpected values from system controller (Michal)
-    send an event at most once per component for each interrupt (Raag)
-    use correct parameters for get_counter (Sashiko)
----
- drivers/gpu/drm/xe/xe_ras.c | 75 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 75 insertions(+)
+> When packaging YNL as a system level utility we added a --family
+> argument which auto-resolves the full spec path from a well known
+> path in /usr/share. Spelling out full YAML spec files is at this
+> point only done in-tree, for example in the selftests which need
+> the very latest YAML. But the selftests have their own wrapping
+> classes for each family so test authors aren't really bothered
+> by having to spell the paths out.
+>
+> Afford the same ease of use to the Python library users.
+> Move the path resolution from the CLI code to the library.
+> This simplifies the pyynl use by a lot:
+>
+>   from pyynl import YnlFamily
+>
+>   ynl = YnlFamily(family="netdev")
+>
+> Unless I'm missing a trick, resolving the /usr/share path
+> is hard enough for most users to lean towards shelling out
+> to ynl CLI with --output-json, which is sad.
+>
+> The ethtool script can now use family= instead of
+> resolving the path (the helpers are removed from cli.py
+> so this isn't just a cleanup).
+>
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-diff --git a/drivers/gpu/drm/xe/xe_ras.c b/drivers/gpu/drm/xe/xe_ras.c
-index 44f4e1a3455b..b71d51285954 100644
---- a/drivers/gpu/drm/xe/xe_ras.c
-+++ b/drivers/gpu/drm/xe/xe_ras.c
-@@ -77,6 +77,18 @@ static u8 drm_to_xe_ras_severity(u8 severity)
- 	}
- }
- 
-+static u8 xe_to_drm_ras_severity(u8 severity)
-+{
-+	switch (severity) {
-+	case XE_RAS_SEV_CORRECTABLE:
-+		return DRM_XE_RAS_ERR_SEV_CORRECTABLE;
-+	case XE_RAS_SEV_UNCORRECTABLE:
-+		return DRM_XE_RAS_ERR_SEV_UNCORRECTABLE;
-+	default:
-+		return DRM_XE_RAS_ERR_SEV_MAX;
-+	}
-+}
-+
- static u8 drm_to_xe_ras_component(u8 component)
- {
- 	switch (component) {
-@@ -95,6 +107,24 @@ static u8 drm_to_xe_ras_component(u8 component)
- 	}
- }
- 
-+static u8 xe_to_drm_ras_component(u8 component)
-+{
-+	switch (component) {
-+	case XE_RAS_COMP_DEVICE_MEMORY:
-+		return DRM_XE_RAS_ERR_COMP_DEVICE_MEMORY;
-+	case XE_RAS_COMP_CORE_COMPUTE:
-+		return DRM_XE_RAS_ERR_COMP_CORE_COMPUTE;
-+	case XE_RAS_COMP_PCIE:
-+		return DRM_XE_RAS_ERR_COMP_PCIE;
-+	case XE_RAS_COMP_FABRIC:
-+		return DRM_XE_RAS_ERR_COMP_FABRIC;
-+	case XE_RAS_COMP_SOC_INTERNAL:
-+		return DRM_XE_RAS_ERR_COMP_SOC_INTERNAL;
-+	default:
-+		return DRM_XE_RAS_ERR_COMP_MAX;
-+	}
-+}
-+
- static int ras_status_to_errno(u32 status)
- {
- 	switch (status) {
-@@ -131,14 +161,41 @@ static inline const char *comp_to_str(u8 component)
- 	return xe_ras_components[component];
- }
- 
-+static void ras_send_error_event(struct xe_device *xe, u8 severity, u8 component)
-+{
-+	u8 drm_severity, drm_component;
-+	u32 value;
-+	int ret;
-+
-+	drm_severity = xe_to_drm_ras_severity(severity);
-+	if (drm_severity == DRM_XE_RAS_ERR_SEV_MAX) {
-+		xe_warn(xe, "sysctrl: unexpected severity %u\n", severity);
-+		return;
-+	}
-+
-+	drm_component = xe_to_drm_ras_component(component);
-+	if (drm_component == DRM_XE_RAS_ERR_COMP_MAX) {
-+		xe_warn(xe, "sysctrl: unexpected component %u\n", component);
-+		return;
-+	}
-+
-+	ret = xe_ras_get_counter(xe, drm_severity, drm_component, &value);
-+	if (ret)
-+		return;
-+
-+	xe_drm_ras_event(xe, drm_component, drm_severity, value, GFP_KERNEL);
-+}
-+
- void xe_ras_counter_threshold_crossed(struct xe_device *xe,
- 				      struct xe_sysctrl_event_response *response)
- {
- 	struct xe_ras_threshold_crossed *pending = (void *)&response->data;
- 	struct xe_ras_error_class *errors = pending->counters;
- 	u32 id, ncounters = pending->ncounters;
-+	u8 sent = 0;
- 
- 	BUILD_BUG_ON(sizeof(response->data) < sizeof(*pending));
-+	BUILD_BUG_ON(XE_RAS_COMP_MAX > (BITS_PER_BYTE * sizeof(sent)));
- 	xe_device_assert_mem_access(xe);
- 
- 	if (!ncounters || ncounters > XE_RAS_NUM_COUNTERS)
-@@ -154,6 +211,24 @@ void xe_ras_counter_threshold_crossed(struct xe_device *xe,
- 
- 		xe_warn(xe, "[RAS]: %s %s detected\n",
- 			comp_to_str(component), sev_to_str(severity));
-+
-+		if (severity != XE_RAS_SEV_CORRECTABLE) {
-+			xe_warn(xe, "sysctrl: unexpected severity %s (%u)\n", sev_to_str(severity),
-+				severity);
-+			continue;
-+		}
-+
-+		if (component >= XE_RAS_COMP_MAX) {
-+			xe_warn(xe, "sysctrl: unexpected component %u\n", component);
-+			continue;
-+		}
-+
-+		/* Send event once per component */
-+		if (sent & BIT(component))
-+			continue;
-+		sent |= BIT(component);
-+
-+		ras_send_error_event(xe, severity, component);
- 	}
- }
- 
--- 
-2.47.1
-
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
