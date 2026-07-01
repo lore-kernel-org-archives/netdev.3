@@ -1,118 +1,167 @@
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E882222CC
-	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 06:47:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.181
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782888445; cv=pass; b=lsUQniXtJL5FQnVexR5Ny2Dcwc6WkQRfuvF9H4hg1NBEozIx9nXHQtXdYtvwN7/oND582Bccfkec/AhqKCPhalT3jkYB9GNHzQfb0ctj7WSbmPUOETkuQ5vuwC/iQUo88rXln1ajEU+Vdb4VethJ187wVGOuiV6QMo7/NwyjN34=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782888445; c=relaxed/simple;
-	bh=yHfnDNKQ+eMSXbU6aaouLG3JaLqu3chs+ORRJoRjSbA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JkQDAyz+O30WPfffTpPQSLciLAfL6owakdI2T2K1E20TppbD/ccj5AJy3MnS1Ge45gppUYd+iognHB1fNPPqrgkYM38NqE99+uVEUPed6Yk1FmN0xhsDuxw8E2X9f+SXcbPJwAfvs7aqIEBJSlWdY569NUgeA4QC9Dmwx0W/sK8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=akLdPfqH; arc=pass smtp.client-ip=209.85.160.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89CFB394464;
+	Wed,  1 Jul 2026 06:49:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782888600; cv=none; b=brwM1rW7h6bM/yO/4CIAbH6yAqJzVMZVhaGokrT8RU2knnRii/M3FiBXRKGLXXQpEFXhAi1k1/GAUgqEVY86juQQ8PSgaSSlsqYv2y3YQ1GBHSRb4020YLgs/tiGCRwl9j4CxZCvJs8mCHvXhtPH2qAdNpF9vPC/BNVolIKO62Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782888600; c=relaxed/simple;
+	bh=2FjNShPuvMhSCa8aCIVcHDUXE7fQvQOTF5pqcEUnxNE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=trJzwLl1oHX/960nHrOae9e5OnJGRJJ5zgVLWwl+O8vc9JpqmLTYsDORtsVO0tGkuYqedE1loH83FJRTAHyVSl3k946OQBtvjH6MVGTCJzlLTmMsYgNHa7Zub+DyXFRB9xlVd1b3lgd7T+LqO4fUfndLYjwypzEMSlN3aAU3vYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dsZjbIHy; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="akLdPfqH"
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-516d0db9372so2314551cf.2
-        for <netdev@vger.kernel.org>; Tue, 30 Jun 2026 23:47:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782888443; cv=none;
-        d=google.com; s=arc-20260327;
-        b=YMuPYCFgtGJy5/I4i1Gk+1R3peQFpKye1LC18v3BeNbcOpSGfXxdaxs8OZhdblf+/B
-         c17OZF9LPdCoicjl9CerSOyCE8XtDor04N2fTtdn+Iu+baDCiQebe8id8NLYnXwlGlqa
-         h+nt7dODuS4fgUL48NUi4DnTjMZRm6DEldhB/uuQUmnlA2E9DCvhCCwMJmzosFyNrX0I
-         Psv9Zue+CgR+nBsrpvmfmUt2aYmdYBX9X9h8pnTBv7njbxMas5pKafTpOUxDN34oRdWm
-         3QAEmQZm902O61cO0/2zPxLawP84FLD6bcHFrNOFA2jdluCjpgv1OdkZ/vAjfMywgTDD
-         hncw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=yHfnDNKQ+eMSXbU6aaouLG3JaLqu3chs+ORRJoRjSbA=;
-        fh=LAp9DfTpiUz48XdKAKCLqB4DhzlZAVYAzdZiDou30LI=;
-        b=kf+Fe66Y+bSGqcj/XCgYop2aVWpVR9fp078LKIA4W+ipEGmEhbAupshltAGDifqaKq
-         nVcVqnBMe+9NZcM7r8ngxk3Axde2kDQHPfahu7qGGqqCGOYkpx+LJchG+JNuxFGiw5+9
-         zB5+QSnuOOYYGjnArHvsaDtPLg4cCZCrCd7m7I37PgkmS25tmkA3ErXXDzuE76wGako+
-         bZiMlLjHp9cU1Umx/Q5mKkniMD3Awhg7evD34seaRqX8BopNMvHTHJQQnWW8uP/xyi26
-         cj+J1X3lIBGYDyT3Z2oHctYZhGtJM2T9uldG9tNMijYHa4E8tnTRkwwUjX169xSeLxPz
-         bBvQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782888443; x=1783493243; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=yHfnDNKQ+eMSXbU6aaouLG3JaLqu3chs+ORRJoRjSbA=;
-        b=akLdPfqHpgBQc35JmxmKE56LCLbgSNjhFZ3Rh3JHaeK39wQkX7/n5RDcTOTw7n4Wg0
-         xO4jvmgtxtXfE3zsBWK+O/NEApL9XTT7ukNuwoh64aIMFUYYGZ4rZKqapQtuu1A9lwi6
-         zNF62F8ohzXx//Yb6ThjB8HwdbrtME3xQx7/+Rxphy2ZDkk3rCplsSylZ5JmLHXn0rE/
-         TDqbmdnH505XVbdFgTN/gvvPZRklTO/QtX3eVGkw0uy9wPVZH3sS09OW1rzsjBg0fgOv
-         whA6483o4+n3K5dCYaVoB1y4Gwr9qD0y9ItP5MvjYsCpkgEWsmR+hcCuuSgsPzsaejLx
-         MBoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782888443; x=1783493243;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yHfnDNKQ+eMSXbU6aaouLG3JaLqu3chs+ORRJoRjSbA=;
-        b=KMN9DvwEfQE8ZHkMx0iI2TWl/4sSm3HXr04HzCuHfuDDbWZSAMAP2E4jX2TbmzUPdM
-         t3t4f/ONIHvnNI+62zwDIMgxAU0WbvfmnrNvpzG445UVbWMMcKTJfGkPdWJdILiL7NIY
-         TyodV/QMt+P0UvGgsfntrIPOygJPbvB7NJ2kawUh+SIC7/10u8wwHGtJZKY5tI6bQf5n
-         FeMHuE7GzE986NDqplfgLRNn2p3NOBJmrDZzlj6ruqQu/WaYazMSwK02TibigBvXEnU2
-         zxqDBDxvBDasSfZta7LpST6JOMU31G4lUQKuXYr3PcDJJUbNAfwCXWgS5gCeZk2NBr8C
-         BqUQ==
-X-Gm-Message-State: AOJu0YzutnagbYQQdrzjIi23LuKQQqP/898ufuZ+NE+N6/tVg6Xjsl7Y
-	WmIE9IqZZzFgHqFLLotzg2Z6nfXcSKFmv4SLUH7mdt3cCZb3+Ktoboeg9NuVnFFhIHK21fbpnbM
-	aueHSh8FE26AghOFF6V3B8MUIf65+qbSXwK2nsKdD
-X-Gm-Gg: AfdE7cnZZcoyXgRUytb0rebBXkEnucstRp1K79Ep2yr9EvtEPuu/0xnzdx45xdINtQi
-	rImdaORkl5cjAxajA/wzFIEVKecXHwLdBhzqHHpyW1XS7n6iL8MPXeLMiGRtTdqT8aTzgIteG9+
-	gNPbe37c1IuaW0++X2r1Y9iWrY8i6bgapL4+cCLr3QD77OjbEzyrtutKVLVPPgieniWpLfgyTgN
-	OGcD5J3O4w+qlDoI0gIwWwoK0FD0gzRXQLuT8wt1/8E4fXZUJ8xEViRO85H2CzHUi226ANssVTC
-	nCh+7BX/v5BQ5ek8kUdr+f16J2OFDfN2JAWqr5XzetpJDrX92lSFAvVHrU/W04uMRgd/mv4FwRg
-	7yk4df61fYQ==
-X-Received: by 2002:ac8:5f09:0:b0:51c:ff8:cd4c with SMTP id
- d75a77b69052e-51c26b62cb1mr4083111cf.72.1782888442345; Tue, 30 Jun 2026
- 23:47:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dsZjbIHy"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id DE6F71A0DA4;
+	Wed,  1 Jul 2026 06:49:54 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 9DDDD60288;
+	Wed,  1 Jul 2026 06:49:54 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 456F2104C998E;
+	Wed,  1 Jul 2026 08:49:47 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1782888593; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=mVeRRJJSZeObgGNAULymnreJVn5f+SfTJtLSNLvtxrU=;
+	b=dsZjbIHyHqKbtNQgFtTpEmSmyzCKQ7Bqkrs+wIv64J3pAN2yA9llX5SJd2drVb0BFDtWcP
+	D0x2IIDqvmtxF2dXJOnh7ebPykzEBIhHaBoWMDOr+zjssqu7hPKgQtUpVGPObByHIkurYm
+	U11hDLemXrwlJCfWuL9kouozaGqSifrJh2k1rmKFMF2paiBOjgyXU1NFFo4P5R1hK0c+s+
+	2twCQoDUUG0MBesiqroBqWoPI5lm2WmogR2uZr3zYcwF+sx1NFeDBdqCcmi65KTdiIob2p
+	y86oqdjnFwakf0YdGy2B7sRrQnMjUX1ROvtm5gbnwQyz5Drewewdak8EDhj9WA==
+Message-ID: <7d33f825-01a8-48bf-930a-5b1db80d8ee5@bootlin.com>
+Date: Wed, 1 Jul 2026 08:49:45 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260701022617.53171-1-q.h.hack.winter@gmail.com>
-In-Reply-To: <20260701022617.53171-1-q.h.hack.winter@gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 30 Jun 2026 23:47:10 -0700
-X-Gm-Features: AVVi8CddaaeyyM2qct7DPnVaW0hbLhXtbQ99cmq0p_vwz3JEcEwcJVnt7NyOt3k
-Message-ID: <CANn89i+==hgjac7VoHtcFpm+M5DQc7U1xkmyeWvwRfnR066Yxw@mail.gmail.com>
-Subject: Re: [PATCH net] gue: validate REMCSUM private option length
-To: Qihang <q.h.hack.winter@gmail.com>
-Cc: netdev@vger.kernel.org, kuba@kernel.org, davem@davemloft.net, 
-	pabeni@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] net: stmmac: dwmac-socfpga: Add mac-mode DT property
+ support
+To: muhammad.nazim.amirul.nazle.asmade@altera.com, dinguyen@kernel.org
+Cc: rmk+kernel@armlinux.org.uk, krzk+dt@kernel.org, conor+dt@kernel.org,
+ robh@kernel.org, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260630133108.27244-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
+ <20260630133108.27244-4-muhammad.nazim.amirul.nazle.asmade@altera.com>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20260630133108.27244-4-muhammad.nazim.amirul.nazle.asmade@altera.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, Jun 30, 2026 at 7:27=E2=80=AFPM Qihang <q.h.hack.winter@gmail.com> =
-wrote:
->
-> GUE private flags can indicate that remote checksum offload metadata is
-> present. The private flags field itself is accounted for by
-> guehdr_flags_len(), but guehdr_priv_flags_len() currently returns 0 even
-> when GUE_PFLAG_REMCSUM is set.
->
-> This lets a packet with only the private flags field pass
-> validate_gue_flags(), after which gue_remcsum() and gue_gro_remcsum()
-> read the missing REMCSUM start/offset fields from the following bytes.
->
-> Account for GUE_PLEN_REMCSUM when GUE_PFLAG_REMCSUM is present so that
-> malformed packets are rejected during option validation.
->
-> Fixes: c1aa8347e73e ("gue: Protocol constants for remote checksum offload=
-")
-> Signed-off-by: Qihang <q.h.hack.winter@gmail.com>
+Hi,
+
+On 6/30/26 15:31, muhammad.nazim.amirul.nazle.asmade@altera.com wrote:
+> From: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
+> 
+> Russell King's commit de696c63c1dc ("net: stmmac: socfpga: convert to
+> use phy_interface") replaced mac_interface with phy_interface in
+> socfpga_get_plat_phymode(), noting that no upstream DTS files set the
+> "mac-mode" property, making the two values identical.
+> 
+> The Agilex5 SoCDK TSN Config2 board is an exception: its gmac1 TSN
+> port uses GMII internally in the MAC while the PHY-side interface is
+> RGMII, so mac-mode and phy-mode differ. Without restoring mac_interface
+> support, the MAC is configured with RGMII instead of GMII, causing
+> connectivity failures on this board.
+> 
+> Add socfpga_of_get_mac_mode() to read the optional "mac-mode" DT
+> property and store it in a new mac_interface field. When the property
+> is absent, mac_interface falls back to phy_interface, preserving
+> the existing behaviour for all other boards.
+
+After our discussions, indeed mac-mode seems to be the way to go, however
+I have some remarks on how it's handled right now.
+
+> 
+> Fixes: de696c63c1dc ("net: stmmac: socfpga: convert to use phy_interface")
+> Signed-off-by: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
 > ---
+>  .../ethernet/stmicro/stmmac/dwmac-socfpga.c   | 23 ++++++++++++++++++-
+>  1 file changed, 22 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
+> index 1d7f0a57d288..6a6837c4a414 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
+> @@ -69,12 +69,30 @@ struct socfpga_dwmac {
+>  	void __iomem *tse_pcs_base;
+>  	void __iomem *sgmii_adapter_base;
+>  	bool f2h_ptp_ref_clk;
+> +	phy_interface_t mac_interface;
+>  	const struct socfpga_dwmac_ops *ops;
+>  };
+>  
+> +static int socfpga_of_get_mac_mode(struct device_node *np)
+> +{
+> +	const char *pm;
+> +	int err, i;
+> +
+> +	err = of_property_read_string(np, "mac-mode", &pm);
+> +	if (err < 0)
+> +		return err;
+> +
+> +	for (i = 0; i < PHY_INTERFACE_MODE_MAX; i++) {
+> +		if (!strcasecmp(pm, phy_modes(i)))
+> +			return i;
+> +	}
+> +
+> +	return -ENODEV;
+> +}
+> +
+>  static phy_interface_t socfpga_get_plat_phymode(struct socfpga_dwmac *dwmac)
+>  {
+> -	return dwmac->plat_dat->phy_interface;
+> +	return dwmac->mac_interface;
+>  }
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+Taking a look at the logic in socfpga_gen{5|10}_set_phy_mode(), we have :
+
+  phy_interface_t phymode = socfpga_get_plat_phymode(dwmac);
+  u32 val;
+
+  socfpga_set_phy_mode_common(phymode, &val)
+
+  if (dwmac->splitter_base)
+	  val = SYSMGR_EMACGRP_CTRL_PHYSEL_ENUM_GMII_MII;
+
+[...]
+
+  if (phymode == PHY_INTERFACE_MODE_SGMII)
+	  socfpga_sgmii_config(dwmac, true);
+
+
+
+With this new patch, we now have 2 different ways of handling this
+converter block (splitter presence, and mac-mode presence in DT)
+
+Can you unify this a bit ?
+
+One thing could be adding a helper to get the macmode such as
+socfpga_get_plat_macmode()
+
+I think we should move the splitter handling before calling 
+socfpga_get_plat_macmode() :
+
+ if (dwmac->splitter_base)
+   	dwmav->mac_interface = PHY_INTERFACE_MODE_GMII
+
+We'd get the intf_sel value based on the macmode, and also calls to
+helpers such as socfpga_sgmii_config(phymode, xxx) need the actual
+phymode as a parameter, not the macmode.
+
+Thanks :)
+
+Maxime
+
+
