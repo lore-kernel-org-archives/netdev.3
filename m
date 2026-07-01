@@ -1,166 +1,95 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15C903E0C75;
-	Wed,  1 Jul 2026 12:52:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A13FD48A2B9;
+	Wed,  1 Jul 2026 12:55:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782910343; cv=none; b=qwWFkuyKeRHAVpdk7fqgBQGce3e7ssdSY8744YY+pob/LU2bskc2iBNDaKFWd16dkYoSJC9dwww4GRpsJBvLjkMK8kru26ig/FEPbn5eA85CUhU7RE+pIM6Rgm/2lr3hkuodEffwRcQ+/XGZwkYC3Vtol8aPbT7r98PUqlIwA+4=
+	t=1782910549; cv=none; b=UG9p6EEHgv4Kn0c+iPxB62DGzjM65M47IIDiUF7Qk4LdTc1OkYR4A9M5cZ5trkImyClXDEYipdsV1qKB7o3EA7QsgnfEqOozasozcKgzlnzCUQu0QArPijXpNuUXRJzSta1HKao9oiA287/HiwgboICMQS1s27w+vbX5Uh7XK/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782910343; c=relaxed/simple;
-	bh=7hoqZw8gsVMfAofuJcYWp0E3vtrEdG2pjlapqWtFwyQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T3M/AzcdE29h17JeWyWNabJcTgYtY0/WyWJvedbFw2lbsHIcZX1vuRAkz3bSkzjq3M/K1pDmLxi6ayrWKAnl33ifPtVY4yLOU7brxAiMESQePG5BhtC1Th8atz9ZNEA9HsVYZMArmPg2LLxwEvp8jP9EqI3VZUzIpXW/kMFFc+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=z+D4x2mG; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1782910549; c=relaxed/simple;
+	bh=rqbGOV+zFwjsCWTfkTsylFl9kSxt68LqyNgLXCtmgXo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YAd+mDQbj+XWwPCHbZ7gDmSwdRM4ucrh6IwDSnz3SRHaPHh9RYJasUWF8pF7sewNjWy45XN8H6JbTCUOy8I6lDJplDVN+MNZakeCaUGlkDB7sA7xb88h+vGHWK+0Tu/ualDAIcM8xgABR6L0+NNW9nZ09AQCwb+eEbe6pz4PbZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=kSZiLWFB; arc=none smtp.client-ip=45.254.49.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="z+D4x2mG"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=MhS0SGh3C2hhdExW2aB+oeJNZvenZv6woq8kraPMVTQ=; b=z+D4x2mGh71AnmUwekGDPP2J4G
-	N5RwVekBH/Xq5SZEnG/Ohdx3gQ2KCuVWHEMV/CVk7gUFZ2cL4jsn4Jcz2xtqDcSmrvWtQt9pUZogE
-	eVoYMBZkHJ+urxJKN5PAY9KrUeMdKIcf0Yg61e/a6vjfpMx2GNFuy6/JcBocHTIar5Ik=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1weuQB-00AAOf-7p; Wed, 01 Jul 2026 14:52:07 +0200
-Date: Wed, 1 Jul 2026 14:52:07 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Javen <javen_xu@realsil.com.cn>
-Cc: "hkallweit1@gmail.com" <hkallweit1@gmail.com>,
-	"linux@armlinux.org.uk" <linux@armlinux.org.uk>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	=?utf-8?B?6aG+5pmT5Yab?= <freddy_gu@realsil.com.cn>,
-	"nb@tipi-net.de" <nb@tipi-net.de>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"daniel@makrotopia.org" <daniel@makrotopia.org>,
-	"vladimir.oltean@nxp.com" <vladimir.oltean@nxp.com>,
-	"nic_swsd@realtek.com" <nic_swsd@realtek.com>
-Subject: Re: [PATCH net-next v7 4/4] net: phy: realtek: load firmware for
- RTL8261C_CG
-Message-ID: <6aae96fd-2033-40f8-a99e-0f641067e88e@lunn.ch>
-References: <20260629064718.1349-1-javen_xu@realsil.com.cn>
- <20260629064718.1349-5-javen_xu@realsil.com.cn>
- <1ac195f7-29c2-45a3-84a9-cfc5366aee6f@lunn.ch>
- <00ed7993f38d4597a8c20f71bc7da58e@realsil.com.cn>
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="kSZiLWFB"
+Received: from PC-202605011814.localdomain (unknown [221.228.238.82])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 448185df9;
+	Wed, 1 Jul 2026 20:40:24 +0800 (GMT+08:00)
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+To: subash.a.kasiviswanathan@oss.qualcomm.com,
+	sean.tranchetti@oss.qualcomm.com
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	runyu.xiao@seu.edu.cn,
+	jianhao.xu@seu.edu.cn
+Subject: [PATCH net-next] net: rmnet: annotate endpoint lookup under RTNL
+Date: Wed,  1 Jul 2026 20:40:17 +0800
+Message-Id: <20260701124017.3205729-1-runyu.xiao@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <00ed7993f38d4597a8c20f71bc7da58e@realsil.com.cn>
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9f1db1dfe203a1kunmbdba2e9d19cadd
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaTxpCVktOSkpLHUxCQklIQlYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUpVSUlDVUlIQ1VDSVlXWRYaDxIVHRRZQVlPS0hVSktISk
+	9ITFVKS0tVSkJLS1kG
+DKIM-Signature: a=rsa-sha256;
+	b=kSZiLWFBo9vdcwmrR4pFwF32iqTJQQuyu1ftuT+IgrVQbgfJmW1gOT5HCQyRNfk73wnTH/XVGSji0IGv2fmhYDGC4bYaV04W6sMigGSKpaP9SosF2Cp60aT0QfGdUkVaRGvTI4XD20BnmMgONx34cJ3G5SPTUCF6JXHJ1y/laQ8=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=ut43vNK8UwYJ8GztmCx9g9JySLt93tJWdcReSElT5Wk=;
+	h=date:mime-version:subject:message-id:from;
 
-On Wed, Jul 01, 2026 at 03:12:34AM +0000, Javen wrote:
-> >
-> >On Mon, Jun 29, 2026 at 02:47:18PM +0800, javen wrote:
-> >> From: Javen Xu <javen_xu@realsil.com.cn>
-> >>
-> >> This patch adds support for loading firmware. Download some parameters
-> >> for RTL8261C_CG.
-> >>
-> >> Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
-> >> ---
-> >> Changes in v2:
-> >>  - remove __pack, struct rtl8261x_fw_header and rtl8261x_fw_entry will
-> >> not pad
-> >>  - reverse xmas tree for some definition
-> >>  - add explanation on rtl_phy_write_mmd_bits()
-> >>
-> >> Changes in v3:
-> >>  - add struct rtl8261x_priv
-> >>
-> >> Changes in v4:
-> >>  - add struct device *dev
-> >>
-> >> Changes in v5:
-> >>  - no changes
-> >>
-> >> Changes in v6:
-> >>  - replace rtl_phy_write_mmd_bits with phy_modify_mmd, keep mdio lock
-> >>  - check msb and lsb at the beginning of rtl8261x_fw_execute_entry()
-> >>  - add comments on rtl8261x_config_init()
-> >>
-> >> Changes in v7:
-> >>  - no changes
-> >> ---
-> >>  drivers/net/phy/realtek/realtek_main.c | 220
-> >> +++++++++++++++++++++++++
-> >>  1 file changed, 220 insertions(+)
-> >>
-> >> diff --git a/drivers/net/phy/realtek/realtek_main.c
-> >> b/drivers/net/phy/realtek/realtek_main.c
-> >> index ef3700894ebf..bf7bc19fb44c 100644
-> >> --- a/drivers/net/phy/realtek/realtek_main.c
-> >> +++ b/drivers/net/phy/realtek/realtek_main.c
-> >> @@ -8,7 +8,9 @@
-> >>   * Copyright (c) 2004 Freescale Semiconductor, Inc.
-> >>   */
-> >>  #include <linux/bitops.h>
-> >> +#include <linux/crc32.h>
-> >>  #include <linux/ethtool_netlink.h>
-> >> +#include <linux/firmware.h>
-> >>  #include <linux/of.h>
-> >>  #include <linux/phy.h>
-> >>  #include <linux/pm_wakeirq.h>
-> >> @@ -281,6 +283,42 @@
-> >>                                        RTL8261X_INT_ALDPS_CHG | \
-> >>                                        RTL8261X_INT_JABBER)
-> >>
-> >> +#define FW_MAIN_MAGIC                        0x52544C38
-> >> +#define FW_SUB_MAGIC_8261C           0x32363143
-> >> +#define RTL8261X_POLL_TIMEOUT_MS     100
-> >> +
-> >> +#define RTL8261C_CE_FW_NAME  "rtl_nic/rtl8261c.bin"
-> >> +MODULE_FIRMWARE(RTL8261C_CE_FW_NAME);
-> >> +
-> >> +enum rtl8261x_fw_op {
-> >> +     OP_WRITE = 0x00,        /* Write */
-> >> +     OP_POLL  = 0x02,        /* Polling */
-> >> +};
-> >> +
-> >> +struct rtl8261x_fw_header {
-> >> +     __le32 main_magic;      /* Main magic number 0x52544C38 ("RTL8") */
-> >> +     __le32 sub_magic;       /* Sub magic number */
-> >> +     __le16 version_major;   /* Major version */
-> >> +     __le16 version_minor;   /* Minor version */
-> >> +     __le16 num_entries;     /* Number of entries */
-> >> +     __le16 reserved;        /* Reserved */
-> >> +     __le32 crc32;           /* CRC32 checksum */
-> >> +};
-> >> +
-> >> +struct rtl8261x_fw_entry {
-> >> +     __u8  type;             /* Operation type (OP_*) */
-> >> +     __u8  dev;              /* MMD device */
-> >> +     __le16 addr;            /* Register address */
-> >> +     __u8  msb;              /* MSB bit position */
-> >> +     __u8  lsb;              /* LSB bit position */
-> >> +     __le16 value;           /* Value to write/compare */
-> >> +     __le16 timeout_ms;      /* Poll timeout in milliseconds */
-> >> +     __u8  poll_set;         /* Poll for set (1) or clear (0) */
-> >> +     __u8  reserved;         /* Reserved */
-> >> +};
-> >
-> >Are there other devices which need firmware download? Do they use the
-> >same header? I'm just wondering if this will be reused by other devices?
-> >
-> Hi Andrew,
-> 
-> Currently, RTL8261C is the only device which needs this firmware download flow.
-> 
-> Future Realtek PHY ICs which require firmware download are expected to use the same firmware format, so
-> the current header/entry definition is intended to be reusable.
+rmnet_get_endpoint() is shared by packet receive paths and
+RTNL-protected control paths. The receive paths already run under RCU/BH
+context through the RX handler, while the control paths reach
+rmnet_get_endpoint() after obtaining the rmnet port with
+rmnet_get_port_rtnl().
 
-If this is going to be re-used, then O.K. I was asking because it is
-more complex than it needs to be for just one PHY.
+The helper walks port->muxed_ep[] with hlist_for_each_entry_rcu(). Pass
+lockdep_rtnl_is_held() as the non-RCU protection condition so
+CONFIG_PROVE_RCU_LIST can see the RTNL-protected control-path calls
+while preserving the existing RCU-reader behavior for data paths.
 
-     Andrew
+This was found by our static analysis tool and then manually reviewed
+against the current tree. The dynamic triage evidence is a
+target-matched CONFIG_PROVE_RCU_LIST warning; the change is limited
+to documenting the existing protection contract.
+
+This is a lockdep annotation cleanup. It does not change endpoint
+lifetime or hash updates.
+
+Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+---
+ drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c b/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
+index ba8763cac9d9..977fb80d8bf8 100644
+--- a/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
++++ b/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
+@@ -423,7 +423,8 @@ struct rmnet_endpoint *rmnet_get_endpoint(struct rmnet_port *port, u8 mux_id)
+ {
+ 	struct rmnet_endpoint *ep;
+ 
+-	hlist_for_each_entry_rcu(ep, &port->muxed_ep[mux_id], hlnode) {
++	hlist_for_each_entry_rcu(ep, &port->muxed_ep[mux_id], hlnode,
++				 lockdep_rtnl_is_held()) {
+ 		if (ep->mux_id == mux_id)
+ 			return ep;
+ 	}
+-- 
+2.34.1
+
