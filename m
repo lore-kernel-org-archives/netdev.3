@@ -1,361 +1,167 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010021.outbound.protection.outlook.com [52.101.193.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61766368D72;
-	Wed,  1 Jul 2026 03:14:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782875664; cv=none; b=s+7Cz7h4iSanjEq9w50fYE+C9TgpbEyBMluMaWKKPyg1aI8lt9oOTCMNa1m32K5FkezaTvuiv6y/94nScOz7W/L9Gafm16U0Z6cqLinFwX5y1S5AFOKsiWXE0SzBstGcHTAfdi4FsiXCYCGi5bHusqSpOavzZAAnMRdZoLaTJPM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782875664; c=relaxed/simple;
-	bh=a+nedxxNnu7GxfHRXngUuSdz8TW77MkWJTEkwFgF/Uk=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tzjkLqeb+y5pVvVYRyeNK/w1AHeh0D9Y5tVajjy8k7rIU/1uCL8zp+f2XTRcsCjC6E5kFJZZIrsb5nULJySVPXnJkEqdw4dBy5Fkxti2my+ThNlvdfvcmOdGrwFrP9S0foPe5B7HxAjBmKlyp/HvsM5x2bFXUX9qpxEjtzgmHsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=TzKjfVaS; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F6DB2628D;
+	Wed,  1 Jul 2026 03:17:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.21
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782875873; cv=fail; b=PnLz8zAmS5/wej/bqTRVc2F+bisQLQEkORGU6jq32Su0q79kjAMLV19wjHe1UCd/TR7X5H3LxBC3FyXyWU766VedLSy9laifmS5vm5DPlgV3y1bd3AcPnPTiTn2J5CKQH9+t1Sf5xT5qrbkwMyhdNpHzSsvgerLSJJjCKFZ1l0s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782875873; c=relaxed/simple;
+	bh=cRg6YwgP0IBjafluwQefWP9gqiDfA57ZcytAt/7DpkI=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=vFxr5mXc0tCwFyHyr6ceE9J0o22j6u3mGjrPC6D08LUs6HZ5ncktDNmHNWyy71oUcupgv99SK/VVo2y/qV+3dtwu2WIBNTKBy9RdhYXTaaMspvleykcWbmWMNU4bOmBO/SFEZSHyyWzHImkfyOKJ1lKQSZjmcumJ5Y2cF/Dq8ws=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com; spf=pass smtp.mailfrom=altera.com; dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b=hqgovt8y; arc=fail smtp.client-ip=52.101.193.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altera.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="TzKjfVaS"
-Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6612vch22243937;
-	Tue, 30 Jun 2026 20:14:15 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=x
-	nASGrXjHeTpKVyVsPbK24wYI6v0F8Oz/4jhJPZUmOI=; b=TzKjfVaS68ay8fbQ0
-	CMwMfQwpFduo4YWZ0RqmYd1mDL63OFAt2rp2RDPtsM1Fc5Jzl7Gs9YgkEn0rpMVl
-	q8t3Mob6bJFDiBMtQhAeepk+SeuqtJSWdtvEUe0ScuzORwxn2CriCq2pH/cuzujT
-	q0UHR1zL7ZviKklYFJnS+4ZTc3ElxIBqR/ESVMziTgzblyANgBBX7Elx5sSBOB/d
-	L/Xyz3VnW3PRQPHVGBRcdgO0+HfVLHqnjjhuTBzx0ROm0z5RLUFj84MZWIsWnI+n
-	HYL2hV8Zg9Tie9vE5l3CVJijr3BwvN6XSv2DvkET2NMvhEKOA/EguH0TocoY3cDr
-	RF4mg==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4f2e1hcjxh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jun 2026 20:14:14 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Tue, 30 Jun 2026 20:14:14 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Tue, 30 Jun 2026 20:14:14 -0700
-Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id DFFDB3F7059;
-	Tue, 30 Jun 2026 20:14:10 -0700 (PDT)
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <stephen@networkplumber.org>, <dsahern@kernel.org>, <kuba@kernel.org>,
-        <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
-CC: <rkannoth@marvell.com>, <andrew+netdev@lunn.ch>, <edumazet@google.com>,
-        <pabeni@redhat.com>, <jiri@resnulli.us>
-Subject: [PATCH iproute2-next v3 2/2] devlink: support u64-array values in devlink param show/set
-Date: Wed, 1 Jul 2026 08:43:59 +0530
-Message-ID: <20260701031359.839221-3-rkannoth@marvell.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260701031359.839221-1-rkannoth@marvell.com>
-References: <20260701031359.839221-1-rkannoth@marvell.com>
+	dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b="hqgovt8y"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=prbRkQr3ayulSY/LkQpmdN7sr/0YQNYwOHGG+EBjFlu9S24LWTyF6ncIHWUcE8C1VHUXDeH6HHBJ1u0mH6xbBnlRwLAZcrFI02KM9QHk0pKHexRDtoad3b37CxdvupLDE6n6mv/5PlK3JQ/+nRnNLRD3ZQQHiCApRHar8IdqvV9H3aaX7zd3Snl5mQR9qqhJT52ngEGUQ3F0yN3tHQiNwzvvQtKyg4H4zyh1RT7yWRQwgXtubDYccZWQXGj/+3IHUmnW+660maJIRrOnf8fcYZFwEXQ9j4XJWl8wDGTbcWyAcwxGLCfTrbiYYpCIYW8oPAwS8AaY1axGRBNQSCh/CA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dNDd+3crtArV4qJ9hQ45PWQJWDET7BQkIelN49qwE8s=;
+ b=p4O4OHdUURWp4j+UeaqgPY4v2aRaWHWFZo5vKeDK5/YmU+MI9vs19rgIDttCNva1j6/IABL3breB5prR6dy7rkZ0fWFGgeW2TAsKMTjhjzjEABUI98Z5mq6R3CMg4SHdBLw6TsPUv0jwa6yPCBC1heMQsAb2cbWBz0YJSdn5H954lQ8O459/+T2k6wvPmUXc6cSDakoqIXURFJeoHsxogQ/diyx67sjn7jBLaOcjSU58Wx3QDaz+U9wYyk4c95cvB+ALyo/RBiYABoBYc1Svr6kOZ2tinVdAaNMZeDNrBo5+s4dPcdY/ZRwtV/fqld6jf2Tf+lHdMlBBDIiWHV0J4g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=altera.com; dmarc=pass action=none header.from=altera.com;
+ dkim=pass header.d=altera.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=altera.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dNDd+3crtArV4qJ9hQ45PWQJWDET7BQkIelN49qwE8s=;
+ b=hqgovt8yzWq00crx+d8/2ygTkKy1Egv+a/8KIIb2Be+DepsdrblBQONYBNRFIPZ96TGgcLMPDZdBQs9ojsnxJszHAvQZKKG+uDEXVk4mHu+PhQnlS87NXwUkmEBg1btYhFf3o10R+RF0LR0YNR10Enm/BZ7h7MzT5p0QjnqtLLelyMBwYZgykW1MYEJskgtxH2mgkDUkLnY4vEC20DJS5wEN4QynCXz5CE1R5eRkW7bphCD704F42mX9e+/oTlnztp2XVr+ZR0YSMNUnM2Rvtr4Ya7TsraoCG0N5s3HH+ZFEe/wLnejJ7OcFPrgWsJQZb1OgrYvHyUk8R/Wn40p4mQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=altera.com;
+Received: from SJ0PR03MB6964.namprd03.prod.outlook.com (2603:10b6:a03:432::18)
+ by PH8PR03MB989112.namprd03.prod.outlook.com (2603:10b6:510:3a9::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.18; Wed, 1 Jul
+ 2026 03:17:49 +0000
+Received: from SJ0PR03MB6964.namprd03.prod.outlook.com
+ ([fe80::b965:bfa8:58fb:e775]) by SJ0PR03MB6964.namprd03.prod.outlook.com
+ ([fe80::b965:bfa8:58fb:e775%4]) with mapi id 15.21.0181.008; Wed, 1 Jul 2026
+ 03:17:49 +0000
+From: muhammad.nazim.amirul.nazle.asmade@altera.com
+To: linux@armlinux.org.uk,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] net: phylink: reject unsupported speed/duplex in ksettings_set() with PHY
+Date: Tue, 30 Jun 2026 20:17:46 -0700
+Message-ID: <20260701031746.23448-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
+X-Mailer: git-send-email 2.43.7
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR13CA0082.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c4::27) To SJ0PR03MB6964.namprd03.prod.outlook.com
+ (2603:10b6:a03:432::18)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: Z7L3exMwfeadsBudE7P4MfUAyqXofxmB
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzAxMDAzMSBTYWx0ZWRfX63IQldMyVQ30
- AVwc7ptEHtHi4zOGvn9bQja9k5oD7bw8C15TmKFDQZe77VlQvXTpXs7IyIezqUW2+ecnUi26loW
- pthUdhIPXfh/NOHgxqsVSY9/EyvGDz0=
-X-Authority-Analysis: v=2.4 cv=e802j6p/ c=1 sm=1 tr=0 ts=6a448606 cx=c_pps
- a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
- a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=QXcCYyLzdtTjyudCfB6f:22 a=M5GUcnROAAAA:8 a=EA5XVCQfNfiMJzDliX8A:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-GUID: Z7L3exMwfeadsBudE7P4MfUAyqXofxmB
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzAxMDAzMSBTYWx0ZWRfXwpROk/7ZE9W2
- jhmM7dc0oOBO0kW4ayaGEdzryp0WhT4l+WrZ6NnV1JVHoNhf4Kfp76H2dtoUeaITAQlUsYqlbCa
- 1LhrRLGO3Ws6u0hDU1t1oUNvYStpGNhj7dBrAdMVjrMX8fbDCws4PQ4cYGnEUuZzMDzQYJHNBOH
- LmhkiJhpud1t7+1LQVlkyvguzT6SpB+sx5kjLimjcjlNVpaWw3/PdmI2P8MOQBGfTPTQCwMKSGR
- LCSKTEp8wnQw8S99c1GPaiujNc0dXnxLl/evYUaWRh051GFKVe0MYZ5h6HbR7UIOPf8w/vpsSnL
- 8ydHQni4PR4+mZPHzv0rSC5UdUpCd55t03HXyzdc+NQL8ck/9amiBE9jDXnVScUV0asBvAeK72A
- lsco/LTrYvLLNEUyZf8C47l8qUFtcuztTQbCdQb6O59y/lWaTZuuJcI64PvHTmPU6J/QRc9P95X
- WTdWPi7/F46L2nj7ygQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-07-01_01,2026-06-26_01,2025-10-01_01
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ0PR03MB6964:EE_|PH8PR03MB989112:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9b25b2c2-0e98-4e13-e447-08ded71f5400
+X-MS-Exchange-AtpMessageProperties: SA
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|23010399003|1800799024|55112099003|6133799003|56012099006|11063799006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	Pa0ASjw9NDdN3dX9aAYM7G1glZp3Jdkd/bBMP2mLObhggaPLWE86vIi+r4NhYoQej1fVJEqYWFyWaNFtsun94Km21PkKsHD/FKSj1MjWLlEq+uHbEizURIq5gDW6oEfYI0G5QnOSQqbQzI076fgliGZ7ErGVE8SgRQOMkNfWC6cp84v/lHTslnnzFYEAYeMV8iB38kPfKDXIQoMSA7241jp1uLa60P32hJCtT/mftbeSYqyiAtTTRayrkU+dEik5jO6dGpWfCOsbhpiZMxtXVc6lij/EdL7jfXd9m8jAarqqXkIwNKq+YmkeYpxOU2lZckxFw4t+hfubn1juJ6hF7J1bc0l9mZ53xZnlocixEzhIwtiOXYzlf04UiMXntVpREt243aSzcjHJ6/aLgyWG9D2Z2p+5Iqb6zbqlWYGBneiuUz097iB/HsBwqcfzeLeBbw3IkZst5EC5uHAyvYNLVMbLZol1+pX+habzUfo0OHm7XFcGtcwyQGm7Ht6w4gKkG/kPCoKkASAI1avQBkFzYpQXUF+jSOFxDXpdFPpn+6rx60f0r/pi0sjjLjegqK3W3+Y61Z/r+jero0T18JcdBFTR6AcnjOryJbImHK2/z2l7IMkGUIcr9kqHfxFmVJdgnFmF1byuB3hlptNQhCOSXwGrrLIWQtd+zuLcyR7ikRE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR03MB6964.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(23010399003)(1800799024)(55112099003)(6133799003)(56012099006)(11063799006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?9gn6Wgih/cL7OdPvBnbOWSZEW/2bvpiieaf1l/XH/jgWvJ5PMKQtyQeHmIpX?=
+ =?us-ascii?Q?E+PxZTfD4vqMBH6mz2McIdDNO8ccbFOHpImnhlQjJvJuMKP05YbGEdwSNKi2?=
+ =?us-ascii?Q?QHcupLzAw41JsH9gUsmJMGArH0DKMiGkttRrGm5lhZIGCwHYuiDqW6LOPRHS?=
+ =?us-ascii?Q?YiH3csnYumAAJqtOIbnh/EEb9c7a3J4ipq2E2fmZLM96pG/VP9L7S5JuomDZ?=
+ =?us-ascii?Q?JViocrrJQGapVTud4Wp7sP/oqGaR1MNBkxd5guUqY00prId2Hi1v5PkehGmm?=
+ =?us-ascii?Q?t90pcC5htzjnjqz03E87ad49mCn26ymMk5BXsnPS1Q8ukbmN3mn1NLsKUkRw?=
+ =?us-ascii?Q?Yqx0ujnuECGAXIcVbq1UVefmc3lsOhLWiNQ/uQyWc/iCOPjm0VVaS8oxchh1?=
+ =?us-ascii?Q?bdczKSx9CYMvlTrb0zvUFlLoQPUT5d2ojmOAZKEjRwPXkBl36U65pSrF9myz?=
+ =?us-ascii?Q?om6U/uPNdfwasi9zSNRsQtgMqkh8J5uJxt0K+OZhQY2T0B159SQ6CkvdRwk9?=
+ =?us-ascii?Q?dSstSi5u4ScK+MW/yYMjRFqsjC5Ct8Ox0Mu3KeOwhodiJQOjsCF4U+AR99I2?=
+ =?us-ascii?Q?ixZIStbbK7iKtpH7cdaDR9Vvn1taTlckli7Cd3TBsTrPF+zXpLKhV4M0K+Py?=
+ =?us-ascii?Q?Ls2WIwaF2HppHomkC0T0J6hd3ivvORsSvIZILlV9zn+8ys3kcVEGRw5xIMTz?=
+ =?us-ascii?Q?9b5qjWNQspFXxaHkKez6b5ytbcQN0Xjc8Lpb6lMY/yxkIVi3RZN7IqqILi5V?=
+ =?us-ascii?Q?68ijgSuy91TrdB65GSL7bxRt3I1oz/8zukk5+g6HuP4GtI4RglKvcTlgUnLQ?=
+ =?us-ascii?Q?H/kAoO9qZ251vExeKhMlIGaCkOFB1IrwC+acs3wM9qp0bTU762H0tLhFhkhr?=
+ =?us-ascii?Q?zd0spECWn0h2Emf0MMXgbniKisNBxWo+9XaHPgs5NAtX+Iom9UcdQnK2Fnko?=
+ =?us-ascii?Q?+TfUwTwpNauHL+sglVZeiArOJcA+Rsu8Y4E1GmjfC+CrUJU0KKcUriSjOcVK?=
+ =?us-ascii?Q?7B2JoFNC4VWIVuL8UBo+3xIDnZluoEIB4eYhX766lKAOU7wenHpRc+lWx54z?=
+ =?us-ascii?Q?NYY6ma71fXXoR3xLgtreYTa8Q+T/iHYdG/BHCiCP715IRhMmsBUDXCWF1iYs?=
+ =?us-ascii?Q?pXGqFPjpp66svvv8whCb7SRRsgCC+X+A9wQahONvkzxPixCgH+zwY3KSIE65?=
+ =?us-ascii?Q?8HDG56Ar6mh0igMZC+4vPSClXHYn7az/EC84YwTIlyHP0V0iwMIBu8qLq1fp?=
+ =?us-ascii?Q?Wi1XrnE6ll9TZkD0HFaggBVw47tTZhpNjb4DaYFplHLJNHJ9t7S81hzBp37x?=
+ =?us-ascii?Q?+27sulxUjB4B9G9jmvG6HsOxRVxBWiVKIg3cA6GlqDpE8shH/Mkf6YAQdCU2?=
+ =?us-ascii?Q?e3KhCaJQ5TnJ2HEyQtT3R98oZ5SnH/HRRPC7Qzt304ZB8avgE1gAi3e/SWp+?=
+ =?us-ascii?Q?uRjmyZVYGSSCUUhDz7pqyIZgcU26wgKFOwvZrU1yxyI/dbcZaWKRKTkO0js/?=
+ =?us-ascii?Q?//A8gHWnZRLHDLSPfoxVGFwlzjqLmq0i4PeoC94uXSlunNc2Moj+mc0rGcWx?=
+ =?us-ascii?Q?gD9GExobaJUczB49Qu50ckLfP8KNZmuqYTwDHS/vNUZqZSYwcb+dYArbZB3O?=
+ =?us-ascii?Q?SIIPHlUkjbnZnBkfzLBqFR/HRSZz7SMKYjrD1v6iqQFdMc+otLCvjg2StB6e?=
+ =?us-ascii?Q?wZwbCPllmmOKmaRN8mQ2S5QB4G3eAV9HBGsA4dTSgwgIbYJOla4uGSUX57La?=
+ =?us-ascii?Q?i46Wp5Q4mbnDJLUYtzS4B5neTMwQyiKJ529edYIKsT+Qal4m0VZNYVfFpYEb?=
+X-MS-Exchange-AntiSpam-MessageData-1: 9ljlM+fLezetFQ==
+X-OriginatorOrg: altera.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9b25b2c2-0e98-4e13-e447-08ded71f5400
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR03MB6964.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jul 2026 03:17:49.0792
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: fbd72e03-d4a5-4110-adce-614d51f2077a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0YH9pBklWbf7csDzjBVjuY0LFCYmOgUbbMFEWp+v75WohkgZXIlk40GGPlbDO+7KwnjfqrxBYW9rSmf9g1sY1xdZsD7GYiCjcGeuU9a0EdUaLUWsIkYTB3gXnERpKJm7nIR5vgpOz+mh1EiipCLrzw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR03MB989112
 
-Add support for DEVLINK_VAR_ATTR_TYPE_U64_ARRAY parameters that carry
-multiple DEVLINK_ATTR_PARAM_VALUE_DATA attributes. Parse and display
-u64 array values in param show, and accept space- or comma-separated
-u64 values in devlink and port param set commands.
+From: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
 
-  - Show search order
+When using ethtool to change speed and duplex on a phylink-managed
+interface with a PHY attached, the requested speed/duplex combination
+is not validated against the MAC's supported capabilities before being
+passed down to the PHY layer.
 
-  devlink dev param show pci/0002:01:00.0 name npc_srch_order
-  pci/0002:01:00.0:
-    name npc_srch_order type driver-specific
-      values:
-        cmode runtime value  value  0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31
+commit df0acdc59b09 ("net: phylink: fix ksettings_set() ethtool call")
+and commit 03c44a21d033 ("net: phylink: actually fix ksettings_set()
+ethtool call") introduced masking of the PHY advertising modes against
+pl->supported, but did not add an explicit check that the requested
+speed/duplex itself is within the MAC's capability set.
 
-   - Set search order
+The AUTONEG_DISABLE path in the non-PHY case already uses
+phy_caps_lookup() to validate speed/duplex against pl->supported.
+Extend the same validation to the pl->phydev path so that ethtool
+requests for unsupported speed/duplex combinations are rejected with
+-EINVAL before reaching the PHY layer.
 
-   devlink dev param set pci/0002:01:00.0 name npc_srch_order value 31,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,\
-		22,23,24,25,26,27,28,29,30  cmode runtime
-
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+Signed-off-by: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
 ---
- devlink/devlink.c | 157 ++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 153 insertions(+), 4 deletions(-)
+ drivers/net/phy/phylink.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/devlink/devlink.c b/devlink/devlink.c
-index 803ea5d7..c6566937 100644
---- a/devlink/devlink.c
-+++ b/devlink/devlink.c
-@@ -3515,13 +3515,116 @@ static const struct param_val_conv param_val_conv[] = {
- };
+diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+index 087ac63f9193..22f9bbd381bd 100644
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -2989,6 +2989,10 @@ int phylink_ethtool_ksettings_set(struct phylink *pl,
+ 	if (pl->phydev) {
+ 		struct ethtool_link_ksettings phy_kset = *kset;
  
- #define PARAM_VAL_CONV_LEN ARRAY_SIZE(param_val_conv)
-+#define DEVLINK_PARAM_MAX_ARRAY_SIZE 32
-+
-+struct devlink_param_u64_array {
-+	uint64_t size;
-+	uint64_t val[DEVLINK_PARAM_MAX_ARRAY_SIZE];
-+};
-+
-+static int param_value_nested_u64_attr_cb(const struct nlattr *attr, void *data)
-+{
-+	struct devlink_param_u64_array *arr = data;
-+	unsigned int len;
-+
-+	if (mnl_attr_get_type(attr) != DEVLINK_ATTR_PARAM_VALUE_DATA)
-+		return MNL_CB_OK;
-+
-+	if (arr->size >= DEVLINK_PARAM_MAX_ARRAY_SIZE)
-+		return MNL_CB_ERROR;
-+
-+	len = mnl_attr_get_payload_len(attr);
-+	if (len == sizeof(uint32_t))
-+		arr->val[arr->size++] = mnl_attr_get_u32(attr);
-+	else if (len == sizeof(uint64_t))
-+		arr->val[arr->size++] = mnl_attr_get_u64(attr);
-+	else
-+		return MNL_CB_ERROR;
-+
-+	return MNL_CB_OK;
-+}
-+
-+static int param_value_u64_array_fill(struct nlattr *nl,
-+				      struct devlink_param_u64_array *arr)
-+{
-+	int err;
-+
-+	arr->size = 0;
-+	err = mnl_attr_parse_nested(nl, param_value_nested_u64_attr_cb, arr);
-+	if (err != MNL_CB_OK)
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+
-+static bool param_value_u64_array_equal(const struct devlink_param_u64_array *a,
-+					const struct devlink_param_u64_array *b)
-+{
-+	uint64_t i;
-+
-+	if (a->size != b->size)
-+		return false;
-+
-+	for (i = 0; i < a->size; i++) {
-+		if (a->val[i] != b->val[i])
-+			return false;
-+	}
-+
-+	return true;
-+}
-+
-+static int param_value_u64_array_put_from_str(struct nlmsghdr *nlh,
-+					      const char *param_value,
-+					      const struct devlink_param_u64_array *cur)
-+{
-+	struct devlink_param_u64_array new_arr = {};
-+	char *copy, *token, *saveptr = NULL;
-+	char delim[] = " ,";
-+	uint64_t val;
-+	int err, i;
-+
-+	copy = strdup(param_value);
-+	if (!copy)
-+		return -ENOMEM;
-+
-+	token = strtok_r(copy, delim, &saveptr);
-+	while (token) {
-+		if (new_arr.size >= DEVLINK_PARAM_MAX_ARRAY_SIZE) {
-+			free(copy);
-+			pr_err("Too many array elements (max %d)\n",
-+			       DEVLINK_PARAM_MAX_ARRAY_SIZE);
++		if (!phy_caps_lookup(kset->base.speed, kset->base.duplex,
++				     pl->supported, true))
 +			return -EINVAL;
-+		}
-+		err = get_u64((__u64 *)&val, token, 10);
-+		if (err) {
-+			free(copy);
-+			pr_err("Value \"%s\" is not a number or not within range\n",
-+			       token);
-+			return err;
-+		}
-+		new_arr.val[new_arr.size++] = val;
-+		token = strtok_r(NULL, delim, &saveptr);
-+	}
-+	free(copy);
 +
-+	/* Check current and new values. If both are equal, bail out */
-+	if (cur && param_value_u64_array_equal(&new_arr, cur))
-+		return 1;
-+
-+	for (i = 0; i < new_arr.size; i++)
-+		mnl_attr_put_u64(nlh, DEVLINK_ATTR_PARAM_VALUE_DATA, new_arr.val[i]);
-+
-+	return 0;
-+}
- 
- static int pr_out_param_value_print(const char *nla_name, int nla_type,
- 				     struct nlattr *val_attr, bool conv_exists,
--				     const char *label, bool flag_as_u8)
-+				     const char *label, bool flag_as_u8, struct nlattr *nl)
- {
-+	struct devlink_param_u64_array u64_arr = { };
- 	const char *vstr;
--	int err;
-+	char buffer[1024];
-+	int err, cnt = 0;
- 
- 	print_string(PRINT_FP, NULL, " %s ", label);
- 
-@@ -3582,6 +3685,20 @@ static int pr_out_param_value_print(const char *nla_name, int nla_type,
- 		else
- 			print_bool(PRINT_ANY, label, "%s", val_attr);
- 		break;
-+	case DEVLINK_VAR_ATTR_TYPE_U64_ARRAY:
-+		err = param_value_u64_array_fill(flag_as_u8 ? val_attr : nl, &u64_arr);
-+		if (err)
-+			return err;
-+
-+		for (uint64_t i = 0; i < u64_arr.size; i++) {
-+			if (i)
-+				cnt += snprintf(buffer + cnt, sizeof(buffer) - cnt, " ");
-+			cnt += snprintf(buffer + cnt, sizeof(buffer) - cnt,
-+					"%" PRIu64, u64_arr.val[i]);
-+		}
-+
-+		print_string(PRINT_ANY, label, "%s", buffer);
-+		break;
- 	}
- 
- 	return 0;
-@@ -3601,6 +3718,7 @@ static void pr_out_param_value(struct dl *dl, const char *nla_name,
- 
- 	if (!nla_value[DEVLINK_ATTR_PARAM_VALUE_CMODE] ||
- 	    (nla_type != MNL_TYPE_FLAG &&
-+	     nla_type != DEVLINK_VAR_ATTR_TYPE_U64_ARRAY &&
- 	     !nla_value[DEVLINK_ATTR_PARAM_VALUE_DATA]))
- 		return;
- 
-@@ -3614,14 +3732,14 @@ static void pr_out_param_value(struct dl *dl, const char *nla_name,
- 					    nla_name);
- 
- 	err = pr_out_param_value_print(nla_name, nla_type, val_attr,
--				       conv_exists, "value", false);
-+				       conv_exists, "value", false, nl);
- 	if (err)
- 		return;
- 
- 	val_attr = nla_value[DEVLINK_ATTR_PARAM_VALUE_DEFAULT];
- 	if (val_attr) {
- 		err = pr_out_param_value_print(nla_name, nla_type, val_attr,
--					       conv_exists, "default", true);
-+					       conv_exists, "default", true, nl);
- 		if (err)
- 			return;
- 	}
-@@ -3704,6 +3822,7 @@ struct param_ctx {
- 		uint64_t vu64;
- 		const char *vstr;
- 		bool vbool;
-+		struct devlink_param_u64_array u64arr;
- 	} value;
- };
- 
-@@ -3745,6 +3864,7 @@ static int cmd_dev_param_set_cb(const struct nlmsghdr *nlh, void *data)
- 
- 		if (!nla_value[DEVLINK_ATTR_PARAM_VALUE_CMODE] ||
- 		    (nla_type != MNL_TYPE_FLAG &&
-+		     nla_type != DEVLINK_VAR_ATTR_TYPE_U64_ARRAY &&
- 		     !nla_value[DEVLINK_ATTR_PARAM_VALUE_DATA]))
- 			return MNL_CB_ERROR;
- 
-@@ -3771,6 +3891,12 @@ static int cmd_dev_param_set_cb(const struct nlmsghdr *nlh, void *data)
- 			case DEVLINK_VAR_ATTR_TYPE_FLAG:
- 				ctx->value.vbool = val_attr ? true : false;
- 				break;
-+			case DEVLINK_VAR_ATTR_TYPE_U64_ARRAY:
-+				err = param_value_u64_array_fill(param_value_attr,
-+								 &ctx->value.u64arr);
-+				if (err)
-+					return MNL_CB_ERROR;
-+				break;
- 			}
- 			break;
- 		}
-@@ -3923,6 +4049,14 @@ static int cmd_dev_param_set(struct dl *dl)
- 		if (!strcmp(dl->opts.param_value, ctx.value.vstr))
- 			return 0;
- 		break;
-+	case DEVLINK_VAR_ATTR_TYPE_U64_ARRAY:
-+		err = param_value_u64_array_put_from_str(nlh, dl->opts.param_value,
-+							 &ctx.value.u64arr);
-+		if (err == 1)
-+			return 0;
-+		if (err)
-+			return err;
-+		break;
- 	default:
- 		printf("Value type not supported\n");
- 		return -ENOTSUP;
-@@ -5369,6 +5503,7 @@ static int cmd_port_param_set_cb(const struct nlmsghdr *nlh, void *data)
- 
- 		if (!nla_value[DEVLINK_ATTR_PARAM_VALUE_CMODE] ||
- 		    (nla_type != MNL_TYPE_FLAG &&
-+		     nla_type != DEVLINK_VAR_ATTR_TYPE_U64_ARRAY &&
- 		     !nla_value[DEVLINK_ATTR_PARAM_VALUE_DATA]))
- 			return MNL_CB_ERROR;
- 
-@@ -5391,6 +5526,12 @@ static int cmd_port_param_set_cb(const struct nlmsghdr *nlh, void *data)
- 			case MNL_TYPE_FLAG:
- 				ctx->value.vbool = val_attr ? true : false;
- 				break;
-+			case DEVLINK_VAR_ATTR_TYPE_U64_ARRAY:
-+				err = param_value_u64_array_fill(param_value_attr,
-+								 &ctx->value.u64arr);
-+				if (err)
-+					return MNL_CB_ERROR;
-+				break;
- 			}
- 			break;
- 		}
-@@ -5519,6 +5660,14 @@ static int cmd_port_param_set(struct dl *dl)
- 		if (!strcmp(dl->opts.param_value, ctx.value.vstr))
- 			return 0;
- 		break;
-+	case DEVLINK_VAR_ATTR_TYPE_U64_ARRAY:
-+		err = param_value_u64_array_put_from_str(nlh, dl->opts.param_value,
-+							 &ctx.value.u64arr);
-+		if (err == 1)
-+			return 0;
-+		if (err)
-+			return err;
-+		break;
- 	default:
- 		printf("Value type not supported\n");
- 		return -ENOTSUP;
+ 		linkmode_and(phy_kset.link_modes.advertising,
+ 			     phy_kset.link_modes.advertising,
+ 			     pl->supported);
 -- 
-2.43.0
+2.43.7
 
