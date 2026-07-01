@@ -1,77 +1,57 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D280B3B3BED
-	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 07:22:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 817FA2BE056
+	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 07:25:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.92.39.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782890531; cv=none; b=ocIJOiuUuOstogmUVaGqM9aQUEERNi0ZfH7xbsIgAWmVprdxTsW9M8SRR2Ii1ZgvGAElfo/VLlGnDMmvvCP8QVARsfj7r2rir2JzRD/SbC1SQDZIbAlP0Kr4JoilXmL/J9Esefh6lZ5RsWNGHG7TpRAtpoJJ8aNevaQKcJcnXTQ=
+	t=1782890717; cv=none; b=kg3SyQsvnx4RS0OriYAgRV8ewedhdKO+sjwPWNhXAW0jjlFgAft/A95bgMrroNR1L6XSHQA9FdM6c1vrkmZg7IbpR9O3hREhLEqO93p7DAV5rJm31eW5pJeuteyCQw4/Sy/hFiUsm1FsDNKWZY+PI1laVthaN0f958bqKaQ8L7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782890531; c=relaxed/simple;
-	bh=F7gC6fVxJoLAxCWWLELzCs+HUH91dTqEh3Z1id9LBDs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BmLZn1kUPGSULOwWQjfgi2ANTqCi/fnHILE7KH8zfSgP9H2zEGlHsKkLHEVvagavYhkAF0U8v3g2EEzB8BbadaFhGi+boQ4JDE4DZaVkrv3D/SGKVkFVjt6TDOLkXYRNf1PYCpfFMRTquEr2H6ZP2gIisx9FypB5MvEqz1rJUwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eiVNJkwx; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eiVNJkwx"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-472055b0efaso163626f8f.2
-        for <netdev@vger.kernel.org>; Wed, 01 Jul 2026 00:22:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782890528; x=1783495328; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Yx2Ui+I3a67SiXGJxnNEBspO8LQYZ6ERw4bXMcU/KlQ=;
-        b=eiVNJkwxAlLEhOiTXdOSQq1LZHvSsqb+g4W6Awfz2iWSCmQ6h3jG0i869WKumtKFSx
-         QZ/cvkJVyUkbpONPgcQmYkIL4JluMy1cwijBTxcEEJAFkGUZhYj5mex3SOlhoe4a4xx4
-         U0HU2Hy5qKLV7PWk3OBy6oA0SQwpttx5t/4Pibtxi92BMC6CkcrTBnj2XYCih+kkNc4q
-         KhTZ+RdAXyL7TgS9Iaix1b/EYYEmEUijd/NXKMWmNjZXbq8JeLJjlSyUUuXotjqLHDOU
-         Ez3Ik64TpCfgblgFZnjN5GTvQuSEPuxfa/M16hwVkf7bg6meniodWbPZobaLgQ7yCCvk
-         DuqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782890528; x=1783495328;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Yx2Ui+I3a67SiXGJxnNEBspO8LQYZ6ERw4bXMcU/KlQ=;
-        b=rJBm2/ei88rug1ujZTe6YIBQTT1Ya66IcUfiUbrK05B2JGWHoqvu087MSV+LvnlskA
-         DOIhe4vDZc4Pib+wVBTJQmCuWk5OUw+YAUcn4HME45hfX1UwmK76KIEOgUDDcB5KPrQT
-         KX/kSUe7AVKK2EvVG2BUkzSXJgeXhZOKmVSvK4g7qlY4X4Fn5DmCCl99pb1IjC0x6MdW
-         6RspSzx8Kp+l0wBugFfU34MNOEnXP6urHs5rFRCipZfYit5TSRunfsEg7Lt/OfT3QBWS
-         p3C7gSiOyrkNGgX2v4jiyRXRndorPgGdatg6oYIOtldNdNLLIc6LVfa/QekKtTTZwGe3
-         qhiQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rpgg/U1dEkhMBrkr6GYgPBqwnUNl/C+pnLdLo/9mNrxCOsLQOaLrOznl1jj8c7TMa5V+LxYpt4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywnnfl3dsSgdc0RpWuHRJMcFIEawX+VNA4gTDVt/7Rk9nxLARuE
-	1QfHKgMSZMHWdRnS0w8VgOUz5WjcSD1SO0PuzDRfr0WV/TFiBH5kFfIO
-X-Gm-Gg: AfdE7cnV4/AUkS89u4GfeRQNU287i+uwcBCXqKoaIvTuilV/fQiAjKeFGS6NY90UgL8
-	+VgnFe69+dC6NKdzl5GAnwFf6mSlHwE+aGCOTGjFfQMzFCZzblZL2Mhrwru9/IDeeSJhkjgTgfO
-	BQIJoszCcXKI9feqmhgONdHbw62OlcDHySP+vGqte32QSWjyC0lEqiQi0zzRwVcB4ijswVWZkU/
-	8r8hTCwCzqceUZzHcosvKV+LDgQbybPIo/UP7CGqQu0I+YBtn+pZi//bLJ6zdJlwTq5seAWx2Uj
-	FPx+xxQRQ5q6yUG5bN++BpeOk2YKNp4pWfP8T1TLOzOtfwu8C5XnWgxG5SDgnCwmyq4XnGCgwe2
-	QvCy8kzG4YSWAywx7qc15D7cXpLGGsuz2Bo6DOSaes66qTR05ITUd4cRHVbHmoPFU1TyKD4ngMa
-	LW67bfJ/VfQoC3RUi+SjCORkLBOSTUhkOS7zFr7R7gwRw5wg3XRw==
-X-Received: by 2002:a05:6000:27c9:20b0:460:70ff:fe14 with SMTP id ffacd0b85a97d-47759754d50mr461355f8f.42.1782890527971;
-        Wed, 01 Jul 2026 00:22:07 -0700 (PDT)
-Received: from fedora.advaoptical.com ([82.166.23.19])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47560effc81sm14534095f8f.0.2026.07.01.00.22.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Jul 2026 00:22:07 -0700 (PDT)
-From: Sagi Maimon <maimon.sagi@gmail.com>
-To: jonathan.lemon@gmail.com,
-	vadim.fedorenko@linux.dev,
-	richardcochran@gmail.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Sagi Maimon <maimon.sagi@gmail.com>
-Subject: [PATCH v3] ptp: ocp: add CPLD ISP support for ADVA TimeCard
-Date: Wed,  1 Jul 2026 10:22:03 +0300
-Message-ID: <20260701072203.4321-1-maimon.sagi@gmail.com>
-X-Mailer: git-send-email 2.47.0
+	s=arc-20240116; t=1782890717; c=relaxed/simple;
+	bh=z5PEI+grCL3G4pZLPznMdaIvMnTgFGxQ9MjdI3mqsHs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=aw89OF/B7QtdFhJSVATkL7w0DDUy64+EDu+N1rt2P/UbSB9oVqpbKWLwZZ9nL/H775XoydTHHW6jCUu404dz6pKNJt/Ew19SV+67PBOf6ttPnxaG2YYGkPxPRbVoZfGvPnEVWQaqIhMGg5Rd0iGebnyfhmiTqUi7/8xbt59es48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.92.39.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: esmtpsz18t1782890661tbe7fd503
+X-QQ-Originating-IP: PQq9asKWDD3kMAsn07XJ00BdlH4X42rHmxUyO5BKg+Y=
+Received: from lap-jiawenwu.trustnetic.com ( [36.24.190.76])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Wed, 01 Jul 2026 15:24:17 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 6191442446175970656
+EX-QQ-RecipientCnt: 22
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: netdev@vger.kernel.org
+Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	Rongguang Wei <weirongguang@kylinos.cn>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>,
+	Fabio Baltieri <fabio.baltieri@gmail.com>,
+	Jiawen Wu <jiawenwu@trustnetic.com>
+Subject: [PATCH net-next v9 2/5] net: wangxun: add Tx timeout process
+Date: Wed,  1 Jul 2026 15:23:54 +0800
+Message-Id: <20260701072357.33984-3-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.21.0.windows.1
+In-Reply-To: <20260701072357.33984-1-jiawenwu@trustnetic.com>
+References: <20260701072357.33984-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,253 +59,588 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: MWdgP8+gtiFRySKGhgj0+PxsUEI0qADxSbcd5ktegAWLtqLNjvZfHk0p
+	hwB23tq/HhZhbU9+OBPH1SRn3My/NPSBfWYQFVneEUB5EKQE1ddjXHiURToq/y60CHZpev/
+	9I7rZ2s+X38xa/c2ctjOzulPeTSQwnTnjhwVKhiisholNC5mzYsOhxGNReqtlQD8FAMctO6
+	S1ve0e5CGDTgi13f6Qh1s1I9vxSeDeZWTWy6kQ7k+/9ABN7jm1f9iogVsFtzaH7yXH6+Nau
+	BsjTulQFujqXQi3s8U1zi0ixWzeEV9WyK+61TR9QQpGB/WK+hSWUpgjXtfu3yUjoFl5jEV+
+	ooO4HVpGzK8NNC1kO24Duk+TLTiSpVudM6YH0sz2o0hzD8WL06cXj9WuAjJv0JW2gE7fOxi
+	2cp45zzuJrX9RfpGc6udK2nnRdEI28tAnXLtko3FSCA35QDTeu6AYmluoFRuacyqICQ2Ql6
+	jJjK080nef+vUNmT8n97UsIXSkQN2l/PlgU2WAgoG7ytvhD8UZ+hDlUZRmORrHJtsUJ62yw
+	3y1q5alPELtwPqyBYBdVQ920LHtOjHC4RNdVzGWgOP2wWwq6uDN7Qu9rYWa9+IbPpc2OM+y
+	noLXo31qv1PKBUEEZbcl68/bmGfOsuBRJm+oyOsA7PrDe8ABbqWn+EhKEjTG1DShkTUqxeI
+	ASbPMcoJekfQFypOnGCL7MOlBza+/fFPenI6kK71LhqXqwqa6E9qesZ3X/gjQdxa9A46U/i
+	X1fSzqXkvHENOkzBrlP9vdGDpR408ifD3DZvGbk+HNJu0DdvJdebbLbKSISpvzKk4LQgdX7
+	4XSC60B/+IZ4cTDEZtc+BTXzNhHIuo28GzF6aaMM6ROzKr8Ibhat8/dWlDfHIPxhANz6jnv
+	2GjNnNGCjCrqYT3Fw5rNKg8y8kVgxS6DgycerANu92Wxpi10/aV54LGl8tnWCOH6ZXHHk7Q
+	14x3OYRqXwRPxm6qFyNjfQPP6EPeKPztywXTKeuuYFo7qSOO7QXL2GZum+Qdz0maR8YfPsU
+	vobOidww8g5brSv+kQKKg+zZgApPEWZLjZD81SGRuAlgnrGVFrtZPDqHnV+H2OkGnYpIlL5
+	IsBRm+7HR4iqMDGz9POngI=
+X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
+X-QQ-RECHKSPAM: 0
 
-The ADVA TimeCard uses a Lattice MachXO3 CPLD that is programmed over
-I2C using in-system programming (ISP).
+Implement .ndo_tx_timeout to handle Tx side timeout event. When a Tx
+timeout event occur, it will trigger driver into reset process. And
+allocate a separate work queue for reset process.
 
-The CPLD is connected to a secondary I2C bus controlled by the onboard
-MicroBlaze. Add support for taking ownership of this bus and exposing
-the required interfaces through sysfs, allowing userspace tools to
-perform CPLD programming.
+The WX_HANG_CHECK_ARMED bit is set to indicate a potential hang. It will
+be cleared if a pause frame is received to avoid false hang detection
+caused by pause frames.
 
-To limit the scope of this functionality, sysfs-based I2C access is
-available only on ADVA TimeCard boards and only for the CPLD-related
-I2C slave addresses used during ISP.
-
-Add sysfs support to:
-  - control ownership of the secondary I2C bus
-  - access the CPLD-related I2C slave addresses required for ISP
-
-Signed-off-by: Sagi Maimon <maimon.sagi@gmail.com>
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
 ---
+ drivers/net/ethernet/wangxun/libwx/Makefile   |   2 +-
+ drivers/net/ethernet/wangxun/libwx/wx_err.c   | 175 ++++++++++++++++++
+ drivers/net/ethernet/wangxun/libwx/wx_err.h   |  16 ++
+ drivers/net/ethernet/wangxun/libwx/wx_hw.c    |  17 +-
+ drivers/net/ethernet/wangxun/libwx/wx_lib.c   |  37 ++++
+ drivers/net/ethernet/wangxun/libwx/wx_type.h  |  19 +-
+ drivers/net/ethernet/wangxun/ngbe/ngbe_main.c |  14 ++
+ .../net/ethernet/wangxun/txgbe/txgbe_main.c   |  14 ++
+ 8 files changed, 289 insertions(+), 5 deletions(-)
+ create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_err.c
+ create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_err.h
 
-Addressed comments from:
- - Vadim Fedorenko : https://lore.kernel.org/all/c6aff5f7-e087-4bd9-b159-7adeb82e19f4@linux.dev/
-
-Changes since version 2:
- - Allow I2C access via sysfs only on ADVA TimeCard boards.
- - Allow access only to the ADVA TimeCard-specific I2C slave
-   addresses.
-   
- drivers/ptp/ptp_ocp.c | 180 +++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 179 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
-index 35e911f1ad78..86c341ea4062 100644
---- a/drivers/ptp/ptp_ocp.c
-+++ b/drivers/ptp/ptp_ocp.c
-@@ -416,6 +416,10 @@ struct ptp_ocp {
- 	dpll_tracker tracker;
- 	int signals_nr;
- 	int freq_in_nr;
-+	/* cpld_i2c_xfer sysfs (adva_x1) */
-+	struct mutex		tap_i2c_lock;
-+	u8			tap_i2c_rsp[21]; /* [status, read_data...] */
-+	size_t			tap_i2c_rsp_len;
- };
+diff --git a/drivers/net/ethernet/wangxun/libwx/Makefile b/drivers/net/ethernet/wangxun/libwx/Makefile
+index a71b0ad77de3..c8724bb129aa 100644
+--- a/drivers/net/ethernet/wangxun/libwx/Makefile
++++ b/drivers/net/ethernet/wangxun/libwx/Makefile
+@@ -4,5 +4,5 @@
  
- #define OCP_REQ_TIMESTAMP	BIT(0)
-@@ -3188,6 +3192,8 @@ ptp_ocp_adva_board_init(struct ptp_ocp *bp, struct ocp_resource *r)
- 	ptp_ocp_nmea_out_init(bp);
- 	ptp_ocp_signal_init(bp);
+ obj-$(CONFIG_LIBWX) += libwx.o
  
-+	mutex_init(&bp->tap_i2c_lock);
+-libwx-objs := wx_hw.o wx_lib.o wx_ethtool.o wx_ptp.o wx_mbx.o wx_sriov.o
++libwx-objs := wx_hw.o wx_lib.o wx_ethtool.o wx_ptp.o wx_mbx.o wx_sriov.o wx_err.o
+ libwx-objs += wx_vf.o wx_vf_lib.o wx_vf_common.o
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_err.c b/drivers/net/ethernet/wangxun/libwx/wx_err.c
+new file mode 100644
+index 000000000000..b6e2d16d4a16
+--- /dev/null
++++ b/drivers/net/ethernet/wangxun/libwx/wx_err.c
+@@ -0,0 +1,175 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright (c) 2015 - 2026 Beijing WangXun Technology Co., Ltd. */
++/* Copyright (c) 1999 - 2026 Intel Corporation. */
 +
- 	err = ptp_ocp_attr_group_add(bp, info->attr_groups);
- 	if (err)
- 		return err;
-@@ -4224,6 +4230,171 @@ static const struct ocp_attr_group art_timecard_groups[] = {
- 	{ },
- };
- 
-+static ssize_t
-+i2c_bus_ctrl_show(struct device *dev, struct device_attribute *attr, char *buf)
++#include <linux/netdevice.h>
++#include <linux/pci.h>
++
++#include "wx_type.h"
++#include "wx_lib.h"
++#include "wx_err.h"
++
++static void wx_pf_reset_subtask(struct wx *wx)
 +{
-+	struct ptp_ocp *bp = dev_get_drvdata(dev);
++	if (!test_and_clear_bit(WX_FLAG_NEED_PF_RESET, wx->flags))
++		return;
 +
-+	if (!bp->pps_select)
-+		return -ENODEV;
-+	return sysfs_emit(buf, "0x%08x\n",
-+			  ioread32(&bp->pps_select->__pad1));
++	wx_warn(wx, "Reset adapter.\n");
++	if (wx->do_reset)
++		wx->do_reset(wx->netdev);
 +}
 +
-+static ssize_t
-+i2c_bus_ctrl_store(struct device *dev, struct device_attribute *attr,
-+		   const char *buf, size_t count)
++static void wx_reset_task(struct work_struct *work)
 +{
-+	struct ptp_ocp *bp = dev_get_drvdata(dev);
-+	u32 val;
++	struct wx *wx = container_of(work, struct wx, reset_task);
 +
-+	if (!bp->pps_select)
-+		return -ENODEV;
-+	if (kstrtou32(buf, 0, &val))
-+		return -EINVAL;
-+	iowrite32(val, &bp->pps_select->__pad1);
-+	return count;
++	rtnl_lock();
++
++	if (test_bit(WX_STATE_DOWN, wx->state) ||
++	    test_bit(WX_STATE_RESETTING, wx->state))
++		goto out;
++
++	wx_pf_reset_subtask(wx);
++
++out:
++	rtnl_unlock();
 +}
 +
-+static DEVICE_ATTR_RW(i2c_bus_ctrl);
++void wx_check_err_subtask(struct wx *wx)
++{
++	if (test_bit(WX_FLAG_NEED_PF_RESET, wx->flags))
++		queue_work(wx->reset_wq, &wx->reset_task);
++}
++EXPORT_SYMBOL(wx_check_err_subtask);
 +
++int wx_init_err_task(struct wx *wx)
++{
++	wx->reset_wq = alloc_workqueue("%s_reset_wq_%x", WQ_UNBOUND | WQ_HIGHPRI,
++				       1, wx->driver_name, pci_dev_id(wx->pdev));
++	if (!wx->reset_wq) {
++		wx_err(wx, "Failed to create wx_reset_wq workqueue\n");
++		return -ENOMEM;
++	}
++
++	INIT_WORK(&wx->reset_task, wx_reset_task);
++	return 0;
++}
++EXPORT_SYMBOL(wx_init_err_task);
++
++static bool wx_ring_tx_pending(struct wx *wx)
++{
++	int i;
++
++	for (i = 0; i < wx->num_tx_queues; i++) {
++		struct wx_ring *tx_ring = wx->tx_ring[i];
++
++		if (tx_ring->next_to_use != tx_ring->next_to_clean)
++			return true;
++	}
++
++	return false;
++}
++
++static bool wx_vf_tx_pending(struct wx *wx)
++{
++	struct wx_ring_feature *vmdq = &wx->ring_feature[RING_F_VMDQ];
++	u32 q_per_pool = __ALIGN_MASK(1, ~vmdq->mask);
++	u32 i, j;
++
++	if (!wx->num_vfs)
++		return false;
++
++	for (i = 0; i < wx->num_vfs; i++) {
++		for (j = 0; j < q_per_pool; j++) {
++			u32 h, t;
++
++			h = rd32(wx, WX_PX_TR_RP_PV(q_per_pool, i, j));
++			t = rd32(wx, WX_PX_TR_WP_PV(q_per_pool, i, j));
++
++			if (h != t)
++				return true;
++		}
++	}
++
++	return false;
++}
++
++static void wx_watchdog_flush_tx(struct wx *wx)
++{
++	if (!netif_running(wx->netdev))
++		return;
++	if (netif_carrier_ok(wx->netdev))
++		return;
++
++	if (wx_ring_tx_pending(wx) || wx_vf_tx_pending(wx)) {
++		/* We've lost link, so the controller stops DMA,
++		 * but we've got queued Tx work that's never going
++		 * to get done, so reset controller to flush Tx.
++		 * (Do the reset outside of interrupt context).
++		 */
++		wx_warn(wx, "initiating reset due to lost link with pending Tx work\n");
++		set_bit(WX_FLAG_NEED_PF_RESET, wx->flags);
++	}
++}
++
++static void wx_detect_tx_hang(struct wx *wx)
++{
++	int i;
++
++	/* If we're down or resetting, just bail */
++	if (!netif_running(wx->netdev) ||
++	    test_bit(WX_STATE_RESETTING, wx->state))
++		return;
++
++	/* Force detection of hung controller */
++	if (netif_carrier_ok(wx->netdev)) {
++		for (i = 0; i < wx->num_tx_queues; i++)
++			set_bit(WX_TX_DETECT_HANG, wx->tx_ring[i]->state);
++	}
++}
++
++void wx_check_hang_subtask(struct wx *wx)
++{
++	if (test_bit(WX_STATE_DOWN, wx->state) ||
++	    test_bit(WX_STATE_RESETTING, wx->state))
++		return;
++
++	wx_watchdog_flush_tx(wx);
++	wx_detect_tx_hang(wx);
++}
++EXPORT_SYMBOL(wx_check_hang_subtask);
++
++static void wx_tx_timeout_reset(struct wx *wx)
++{
++	if (test_bit(WX_STATE_DOWN, wx->state))
++		return;
++
++	set_bit(WX_FLAG_NEED_PF_RESET, wx->flags);
++	wx_warn(wx, "initiating reset due to tx timeout\n");
++	wx_service_event_schedule(wx);
++}
++
++void wx_tx_timeout(struct net_device *netdev, unsigned int __always_unused txqueue)
++{
++	struct wx *wx = netdev_priv(netdev);
++
++	wx_tx_timeout_reset(wx);
++}
++EXPORT_SYMBOL(wx_tx_timeout);
++
++void wx_handle_tx_hang(struct wx_ring *tx_ring, unsigned int next)
++{
++	struct wx *wx = netdev_priv(tx_ring->netdev);
++
++	wx_warn(wx,
++		"Detected Tx Unit Hang: Queue %d, TDH %x, TDT %x, ntu %x, ntc %x, ntc.time_stamp %lx, jiffies %lx\n",
++		tx_ring->queue_index,
++		rd32(wx, WX_PX_TR_RP(tx_ring->reg_idx)),
++		rd32(wx, WX_PX_TR_WP(tx_ring->reg_idx)),
++		tx_ring->next_to_use, next,
++		tx_ring->tx_buffer_info[next].time_stamp, jiffies);
++
++	netif_stop_subqueue(tx_ring->netdev, tx_ring->queue_index);
++
++	wx_tx_timeout_reset(wx);
++}
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_err.h b/drivers/net/ethernet/wangxun/libwx/wx_err.h
+new file mode 100644
+index 000000000000..1eed13e48095
+--- /dev/null
++++ b/drivers/net/ethernet/wangxun/libwx/wx_err.h
+@@ -0,0 +1,16 @@
++/* SPDX-License-Identifier: GPL-2.0 */
 +/*
-+ * cpld_i2c_xfer - sysfs binary I2C passthrough for adva_x1 TAP CPLD.
-+ *
-+ * write: [addr][write_len][read_len][flags][write_data...]
-+ *   flags bit 0: I2C_M_NOSTART on the read segment
-+ * read:  [status][read_data...]
-+ *   status 0 = success, else positive errno
-+ *
-+ * Only addresses 0x40 (CPLD) and 0x74 (mux) are permitted.
++ * WangXun Gigabit PCI Express Linux driver
++ * Copyright (c) 2015 - 2026 Beijing WangXun Technology Co., Ltd.
 + */
-+#define TAP_I2C_ALLOWED_ADDRS_NUM  2
-+static const u8 tap_i2c_allowed_addrs[TAP_I2C_ALLOWED_ADDRS_NUM] = {
-+	0x40, /* CPLD */
-+	0x74, /* mux  */
-+};
 +
-+#define TAP_I2C_REQ_HDR_LEN   4
-+#define TAP_I2C_MAX_WRITE_LEN 67
-+#define TAP_I2C_MAX_READ_LEN  20
-+#define TAP_I2C_FLAG_NOSTART  BIT(0)
++#ifndef _WX_ERR_H_
++#define _WX_ERR_H_
 +
-+static int
-+ptp_ocp_tap_i2c_find_adapter(struct device *dev, void *data)
++void wx_check_err_subtask(struct wx *wx);
++int wx_init_err_task(struct wx *wx);
++void wx_check_hang_subtask(struct wx *wx);
++void wx_tx_timeout(struct net_device *netdev, unsigned int txqueue);
++void wx_handle_tx_hang(struct wx_ring *tx_ring, unsigned int next);
++
++#endif /* _WX_ERR_H_ */
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+index 260e14d5d541..122c4952d203 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+@@ -1932,6 +1932,7 @@ static void wx_configure_tx_ring(struct wx *wx,
+ 	else
+ 		ring->atr_sample_rate = 0;
+ 
++	bitmap_zero(ring->state, WX_RING_STATE_NBITS);
+ 	/* reinitialize tx_buffer_info */
+ 	memset(ring->tx_buffer_info, 0,
+ 	       sizeof(struct wx_tx_buffer) * ring->count);
+@@ -2851,16 +2852,26 @@ EXPORT_SYMBOL(wx_fc_enable);
+ static void wx_update_xoff_rx_lfc(struct wx *wx)
+ {
+ 	struct wx_hw_stats *hwstats = &wx->stats;
++	u64 data;
++	int i;
+ 
+ 	if (wx->fc.mode != wx_fc_full &&
+ 	    wx->fc.mode != wx_fc_rx_pause)
+ 		return;
+ 
+ 	if (wx->mac.type >= wx_mac_aml)
+-		hwstats->lxoffrxc += rd32_wrap(wx, WX_MAC_LXOFFRXC_AML,
+-					       &wx->last_stats.lxoffrxc);
++		data = rd32_wrap(wx, WX_MAC_LXOFFRXC_AML,
++				 &wx->last_stats.lxoffrxc);
+ 	else
+-		hwstats->lxoffrxc += rd64(wx, WX_MAC_LXOFFRXC);
++		data = rd64(wx, WX_MAC_LXOFFRXC);
++	hwstats->lxoffrxc += data;
++
++	/* refill credits (no tx hang) if we received xoff */
++	if (!data)
++		return;
++
++	for (i = 0; i < wx->num_tx_queues; i++)
++		clear_bit(WX_HANG_CHECK_ARMED, wx->tx_ring[i]->state);
+ }
+ 
+ /**
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+index d042567b8128..da4d9e229c9e 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+@@ -14,6 +14,7 @@
+ 
+ #include "wx_type.h"
+ #include "wx_lib.h"
++#include "wx_err.h"
+ #include "wx_ptp.h"
+ #include "wx_hw.h"
+ #include "wx_vf_lib.h"
+@@ -742,6 +743,37 @@ static struct netdev_queue *wx_txring_txq(const struct wx_ring *ring)
+ 	return netdev_get_tx_queue(ring->netdev, ring->queue_index);
+ }
+ 
++static u32 wx_get_tx_pending(struct wx_ring *ring)
 +{
-+	struct i2c_adapter **adap = data;
++	unsigned int head, tail;
 +
-+	*adap = i2c_verify_adapter(dev);
-+	return (*adap) ? 1 : 0;
++	head = ring->next_to_clean;
++	tail = ring->next_to_use;
++
++	return ((head <= tail) ? tail : tail + ring->count) - head;
 +}
 +
-+static ssize_t
-+ptp_ocp_cpld_i2c_write(struct file *file, struct kobject *kobj,
-+		       const struct bin_attribute *attr,
-+		       char *buf, loff_t off, size_t count)
++static bool wx_check_tx_hang(struct wx_ring *ring)
 +{
-+	struct ptp_ocp *bp = dev_get_drvdata(kobj_to_dev(kobj));
-+	const u8 *req = (const u8 *)buf;
-+	u8 addr, write_len, read_len, flags;
-+	struct i2c_adapter *adap = NULL;
-+	struct i2c_msg msgs[2];
-+	u8 rdbuf[TAP_I2C_MAX_READ_LEN];
-+	int nmsgs, ret, i;
++	u32 tx_done_old = ring->tx_stats.tx_done_old;
++	u32 tx_pending = wx_get_tx_pending(ring);
++	u32 tx_done = ring->stats.packets;
 +
-+	if (count < TAP_I2C_REQ_HDR_LEN || count > TAP_I2C_REQ_HDR_LEN + TAP_I2C_MAX_WRITE_LEN)
-+		return -EINVAL;
++	if (!test_and_clear_bit(WX_TX_DETECT_HANG, ring->state))
++		return false;
 +
-+	addr      = req[0];
-+	write_len = req[1];
-+	read_len  = req[2];
-+	flags     = req[3];
++	if (tx_done_old == tx_done && tx_pending)
++		/* make sure it is true for two checks in a row */
++		return test_and_set_bit(WX_HANG_CHECK_ARMED, ring->state);
 +
-+	/* Validate */
-+	for (i = 0; i < TAP_I2C_ALLOWED_ADDRS_NUM; i++)
-+		if (addr == tap_i2c_allowed_addrs[i])
-+			break;
-+	if (i == TAP_I2C_ALLOWED_ADDRS_NUM)
-+		return -EPERM;
++	/* update completed stats and continue */
++	ring->tx_stats.tx_done_old = tx_done;
++	/* reset the countdown */
++	clear_bit(WX_HANG_CHECK_ARMED, ring->state);
 +
-+	if (write_len > TAP_I2C_MAX_WRITE_LEN)
-+		return -EINVAL;
-+	if (read_len > TAP_I2C_MAX_READ_LEN)
-+		return -EINVAL;
-+	if (write_len + TAP_I2C_REQ_HDR_LEN > count)
-+		return -EINVAL;
-+	if (write_len == 0 && read_len == 0)
-+		return -EINVAL;
-+
-+	if (!bp->i2c_ctrl)
-+		return -ENODEV;
-+	device_for_each_child(&bp->i2c_ctrl->dev, &adap,
-+			      ptp_ocp_tap_i2c_find_adapter);
-+	if (!adap)
-+		return -ENODEV;
-+
-+	nmsgs = 0;
-+	if (write_len > 0) {
-+		msgs[nmsgs].addr  = addr;
-+		msgs[nmsgs].flags = 0;
-+		msgs[nmsgs].len   = write_len;
-+		msgs[nmsgs].buf   = (u8 *)req + TAP_I2C_REQ_HDR_LEN;
-+		nmsgs++;
-+	}
-+	if (read_len > 0) {
-+		u16 rd_flags = I2C_M_RD;
-+
-+		if (flags & TAP_I2C_FLAG_NOSTART)
-+			rd_flags |= I2C_M_NOSTART;
-+		msgs[nmsgs].addr  = addr;
-+		msgs[nmsgs].flags = rd_flags;
-+		msgs[nmsgs].len   = read_len;
-+		msgs[nmsgs].buf   = rdbuf;
-+		nmsgs++;
-+	}
-+
-+	ret = i2c_transfer(adap, msgs, nmsgs);
-+
-+	mutex_lock(&bp->tap_i2c_lock);
-+	if (ret == nmsgs) {
-+		bp->tap_i2c_rsp[0] = 0;
-+		if (read_len > 0)
-+			memcpy(&bp->tap_i2c_rsp[1], rdbuf, read_len);
-+		bp->tap_i2c_rsp_len = 1 + read_len;
-+		ret = count;
-+	} else {
-+		bp->tap_i2c_rsp[0]  = (u8)(ret < 0 ? -ret : EIO);
-+		bp->tap_i2c_rsp_len = 1;
-+		ret = (ret < 0) ? ret : -EIO;
-+	}
-+	mutex_unlock(&bp->tap_i2c_lock);
-+
-+	return ret;
++	return false;
 +}
 +
-+static ssize_t
-+ptp_ocp_cpld_i2c_read(struct file *file, struct kobject *kobj,
-+		      const struct bin_attribute *attr,
-+		      char *buf, loff_t off, size_t count)
-+{
-+	struct ptp_ocp *bp = dev_get_drvdata(kobj_to_dev(kobj));
-+	ssize_t ret;
+ /**
+  * wx_clean_tx_irq - Reclaim resources after transmit completes
+  * @q_vector: structure containing interrupt and ring information
+@@ -866,6 +898,11 @@ static bool wx_clean_tx_irq(struct wx_q_vector *q_vector,
+ 	netdev_tx_completed_queue(wx_txring_txq(tx_ring),
+ 				  total_packets, total_bytes);
+ 
++	if (wx_check_tx_hang(tx_ring)) {
++		wx_handle_tx_hang(tx_ring, i);
++		return true;
++	}
 +
-+	if (off > 0)
-+		return 0;
+ #define TX_WAKE_THRESHOLD (DESC_NEEDED * 2)
+ 	if (unlikely(total_packets && netif_carrier_ok(tx_ring->netdev) &&
+ 		     (wx_desc_unused(tx_ring) >= TX_WAKE_THRESHOLD))) {
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+index c7befe4cdfe9..75d74ca2e259 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
++++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+@@ -450,6 +450,11 @@ enum WX_MSCA_CMD_value {
+ #define WX_PX_TR_CFG_THRE_SHIFT      8
+ #define WX_PX_TR_CFG_HEAD_WB         BIT(27)
+ 
++#define WX_PX_TR_RP_PV(q_per_pool, vf_number, vf_q_index) \
++		(WX_PX_TR_RP((q_per_pool) * (vf_number) + (vf_q_index)))
++#define WX_PX_TR_WP_PV(q_per_pool, vf_number, vf_q_index) \
++		(WX_PX_TR_WP((q_per_pool) * (vf_number) + (vf_q_index)))
 +
-+	mutex_lock(&bp->tap_i2c_lock);
-+	ret = min(count, bp->tap_i2c_rsp_len);
-+	memcpy(buf, bp->tap_i2c_rsp, ret);
-+	mutex_unlock(&bp->tap_i2c_lock);
-+	return ret;
-+}
-+
-+static const struct bin_attribute tap_i2c_bin_attr = {
-+	.attr  = { .name = "cpld_i2c_xfer", .mode = 0600 },
-+	.write = ptp_ocp_cpld_i2c_write,
-+	.read  = ptp_ocp_cpld_i2c_read,
-+};
-+
- static struct attribute *adva_timecard_attrs[] = {
- 	&dev_attr_serialnum.attr,
- 	&dev_attr_gnss_sync.attr,
-@@ -4272,11 +4443,18 @@ static struct attribute *adva_timecard_x1_attrs[] = {
- 	&dev_attr_ts_window_adjust.attr,
- 	&dev_attr_utc_tai_offset.attr,
- 	&dev_attr_tod_correction.attr,
-+	&dev_attr_i2c_bus_ctrl.attr,
-+	NULL,
-+};
-+
-+static const struct bin_attribute *const bin_adva_x1_timecard_attrs[] = {
-+	&tap_i2c_bin_attr,
- 	NULL,
+ /* Receive DMA Registers */
+ #define WX_PX_RR_BAL(_i)             (0x01000 + ((_i) * 0x40))
+ #define WX_PX_RR_BAH(_i)             (0x01004 + ((_i) * 0x40))
+@@ -1039,6 +1044,7 @@ struct wx_queue_stats {
+ struct wx_tx_queue_stats {
+ 	u64 restart_queue;
+ 	u64 tx_busy;
++	u32 tx_done_old;
  };
  
- static const struct attribute_group adva_timecard_x1_group = {
--	.attrs = adva_timecard_x1_attrs,
-+	.attrs     = adva_timecard_x1_attrs,
-+	.bin_attrs = bin_adva_x1_timecard_attrs,
+ struct wx_rx_queue_stats {
+@@ -1054,6 +1060,12 @@ struct wx_rx_queue_stats {
+ #define wx_for_each_ring(posm, headm) \
+ 	for (posm = (headm).ring; posm; posm = posm->next)
+ 
++enum wx_ring_state {
++	WX_TX_DETECT_HANG,
++	WX_HANG_CHECK_ARMED,
++	WX_RING_STATE_NBITS
++};
++
+ struct wx_ring_container {
+ 	struct wx_ring *ring;           /* pointer to linked list of rings */
+ 	unsigned int total_bytes;       /* total bytes processed this int */
+@@ -1073,6 +1085,7 @@ struct wx_ring {
+ 		struct wx_tx_buffer *tx_buffer_info;
+ 		struct wx_rx_buffer *rx_buffer_info;
+ 	};
++	DECLARE_BITMAP(state, WX_RING_STATE_NBITS);
+ 	u8 __iomem *tail;
+ 	dma_addr_t dma;                 /* phys. address of descriptor ring */
+ 	dma_addr_t headwb_dma;
+@@ -1274,6 +1287,7 @@ enum wx_pf_flags {
+ 	WX_FLAG_NEED_DO_RESET,
+ 	WX_FLAG_RX_MERGE_ENABLED,
+ 	WX_FLAG_TXHEAD_WB_ENABLED,
++	WX_FLAG_NEED_PF_RESET,
+ 	WX_PF_FLAGS_NBITS               /* must be last */
  };
  
- static const struct ocp_attr_group adva_timecard_x1_groups[] = {
+@@ -1422,6 +1436,8 @@ struct wx {
+ 
+ 	struct timer_list service_timer;
+ 	struct work_struct service_task;
++	struct work_struct reset_task;
++	struct workqueue_struct *reset_wq;
+ 	struct mutex reset_lock; /* mutex for reset */
+ };
+ 
+@@ -1504,7 +1520,8 @@ rd32_wrap(struct wx *wx, u32 reg, u32 *last)
+ 
+ #define wx_err(wx, fmt, arg...) \
+ 	dev_err(&(wx)->pdev->dev, fmt, ##arg)
+-
++#define wx_warn(wx, fmt, arg...) \
++	dev_warn(&(wx)->pdev->dev, fmt, ##arg)
+ #define wx_dbg(wx, fmt, arg...) \
+ 	dev_dbg(&(wx)->pdev->dev, fmt, ##arg)
+ 
+diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+index bbbec9b43bc2..996c48da52d7 100644
+--- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
++++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+@@ -14,6 +14,7 @@
+ #include "../libwx/wx_type.h"
+ #include "../libwx/wx_hw.h"
+ #include "../libwx/wx_lib.h"
++#include "../libwx/wx_err.h"
+ #include "../libwx/wx_ptp.h"
+ #include "../libwx/wx_mbx.h"
+ #include "../libwx/wx_sriov.h"
+@@ -148,6 +149,8 @@ static void ngbe_service_task(struct work_struct *work)
+ 	struct wx *wx = container_of(work, struct wx, service_task);
+ 
+ 	wx_update_stats(wx);
++	wx_check_hang_subtask(wx);
++	wx_check_err_subtask(wx);
+ 
+ 	wx_service_event_complete(wx);
+ }
+@@ -393,6 +396,7 @@ static void ngbe_disable_device(struct wx *wx)
+ 	netif_tx_stop_all_queues(netdev);
+ 	netif_tx_disable(netdev);
+ 
++	clear_bit(WX_FLAG_NEED_PF_RESET, wx->flags);
+ 	timer_delete_sync(&wx->service_timer);
+ 	cancel_work_sync(&wx->service_task);
+ 
+@@ -644,6 +648,7 @@ static const struct net_device_ops ngbe_netdev_ops = {
+ 	.ndo_stop               = ngbe_close,
+ 	.ndo_change_mtu         = wx_change_mtu,
+ 	.ndo_start_xmit         = wx_xmit_frame,
++	.ndo_tx_timeout         = wx_tx_timeout,
+ 	.ndo_set_rx_mode        = wx_set_rx_mode,
+ 	.ndo_set_features       = wx_set_features,
+ 	.ndo_fix_features       = wx_fix_features,
+@@ -733,6 +738,7 @@ static int ngbe_probe(struct pci_dev *pdev,
+ 	wx->driver_name = ngbe_driver_name;
+ 	ngbe_set_ethtool_ops(netdev);
+ 	netdev->netdev_ops = &ngbe_netdev_ops;
++	netdev->watchdog_timeo = 5 * HZ;
+ 
+ 	netdev->features = NETIF_F_SG | NETIF_F_IP_CSUM |
+ 			   NETIF_F_TSO | NETIF_F_TSO6 |
+@@ -829,6 +835,10 @@ static int ngbe_probe(struct pci_dev *pdev,
+ 	eth_hw_addr_set(netdev, wx->mac.perm_addr);
+ 	wx_mac_set_default_filter(wx, wx->mac.perm_addr);
+ 
++	err = wx_init_err_task(wx);
++	if (err)
++		goto err_free_mac_table;
++
+ 	ngbe_init_service(wx);
+ 
+ 	err = wx_init_interrupt_scheme(wx);
+@@ -856,6 +866,8 @@ static int ngbe_probe(struct pci_dev *pdev,
+ err_cancel_service:
+ 	timer_delete_sync(&wx->service_timer);
+ 	cancel_work_sync(&wx->service_task);
++	cancel_work_sync(&wx->reset_task);
++	destroy_workqueue(wx->reset_wq);
+ err_free_mac_table:
+ 	kfree(wx->rss_key);
+ 	kfree(wx->mac_table);
+@@ -887,6 +899,8 @@ static void ngbe_remove(struct pci_dev *pdev)
+ 
+ 	timer_shutdown_sync(&wx->service_timer);
+ 	cancel_work_sync(&wx->service_task);
++	cancel_work_sync(&wx->reset_task);
++	destroy_workqueue(wx->reset_wq);
+ 
+ 	phylink_destroy(wx->phylink);
+ 	pci_release_selected_regions(pdev,
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+index 20c5a295c6c2..b1615f82a265 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+@@ -14,6 +14,7 @@
+ 
+ #include "../libwx/wx_type.h"
+ #include "../libwx/wx_lib.h"
++#include "../libwx/wx_err.h"
+ #include "../libwx/wx_ptp.h"
+ #include "../libwx/wx_hw.h"
+ #include "../libwx/wx_mbx.h"
+@@ -123,6 +124,8 @@ static void txgbe_service_task(struct work_struct *work)
+ 	txgbe_module_detection_subtask(wx);
+ 	txgbe_link_config_subtask(wx);
+ 	wx_update_stats(wx);
++	wx_check_hang_subtask(wx);
++	wx_check_err_subtask(wx);
+ 
+ 	wx_service_event_complete(wx);
+ }
+@@ -224,6 +227,7 @@ static void txgbe_disable_device(struct wx *wx)
+ 	wx_irq_disable(wx);
+ 	wx_napi_disable_all(wx);
+ 
++	clear_bit(WX_FLAG_NEED_PF_RESET, wx->flags);
+ 	timer_delete_sync(&wx->service_timer);
+ 	cancel_work_sync(&wx->service_task);
+ 
+@@ -654,6 +658,7 @@ static const struct net_device_ops txgbe_netdev_ops = {
+ 	.ndo_stop               = txgbe_close,
+ 	.ndo_change_mtu         = wx_change_mtu,
+ 	.ndo_start_xmit         = wx_xmit_frame,
++	.ndo_tx_timeout         = wx_tx_timeout,
+ 	.ndo_set_rx_mode        = wx_set_rx_mode,
+ 	.ndo_set_features       = wx_set_features,
+ 	.ndo_fix_features       = wx_fix_features,
+@@ -745,6 +750,7 @@ static int txgbe_probe(struct pci_dev *pdev,
+ 	wx->driver_name = txgbe_driver_name;
+ 	txgbe_set_ethtool_ops(netdev);
+ 	netdev->netdev_ops = &txgbe_netdev_ops;
++	netdev->watchdog_timeo = 5 * HZ;
+ 	netdev->udp_tunnel_nic_info = &txgbe_udp_tunnels;
+ 
+ 	/* setup the private structure */
+@@ -814,6 +820,10 @@ static int txgbe_probe(struct pci_dev *pdev,
+ 	eth_hw_addr_set(netdev, wx->mac.perm_addr);
+ 	wx_mac_set_default_filter(wx, wx->mac.perm_addr);
+ 
++	err = wx_init_err_task(wx);
++	if (err)
++		goto err_free_mac_table;
++
+ 	txgbe_init_service(wx);
+ 
+ 	err = wx_init_interrupt_scheme(wx);
+@@ -916,6 +926,8 @@ static int txgbe_probe(struct pci_dev *pdev,
+ err_cancel_service:
+ 	timer_delete_sync(&wx->service_timer);
+ 	cancel_work_sync(&wx->service_task);
++	cancel_work_sync(&wx->reset_task);
++	destroy_workqueue(wx->reset_wq);
+ err_free_mac_table:
+ 	kfree(wx->rss_key);
+ 	kfree(wx->mac_table);
+@@ -948,6 +960,8 @@ static void txgbe_remove(struct pci_dev *pdev)
+ 
+ 	timer_shutdown_sync(&wx->service_timer);
+ 	cancel_work_sync(&wx->service_task);
++	cancel_work_sync(&wx->reset_task);
++	destroy_workqueue(wx->reset_wq);
+ 
+ 	txgbe_remove_phy(txgbe);
+ 	wx_free_isb_resources(wx);
 -- 
-2.47.0
+2.51.0
 
