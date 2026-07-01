@@ -1,913 +1,144 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7399E49251A
-	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 15:56:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34EE43546EF;
+	Wed,  1 Jul 2026 15:59:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782921420; cv=none; b=YI+FSAfdhaIPmgFEGpRiqhNB1LPJLryR1xETsL8dL+XQxs5jLLihRtUoL81FhsBjNti7vq5psL535jPtOARBxWbXveXEknh+m5SsAsMj5jIJTV7ev9Y8xmBwakPZ2OU3RfLSNzrEv2N50AKuHHOdjpm+AGwzugswfwtzZ6SBiVo=
+	t=1782921558; cv=none; b=VWUPEFaB0K/8zbn0ZS/M9oaqp/hzXa1cUfIyu3lq8AwY84uq2Kf8kBOD8nol+YyQEMOn7kElKjaoJXqMSZYUdfnMCFR4OHNmhUOuZqsvxqKI3pSjDpxo6iqHltJdXWG2l2IgkuRxHnNBWkkSXwo2t6aSyAc6rLFPlNmbWJ+vARY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782921420; c=relaxed/simple;
-	bh=qTvq+V+9CLj3q0N02MKugbIwOJuJPNlDqO0l8cnhWJ0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Htdfks97aMSSnSt7w5TytIBbUSqiwwxk1O8qvryin8s1Otw5VcH9KTp/YnWI4ROmniGZpam564fJTwB6C6S84WKbw5BImYUlqRWh/c052z3OiU3EbJcBmhZoYvKgoqk0XIi/Vyd/4fAWOG9dLf9NxmKnWAuoadGUELy+qvk58Yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=s8NbT75j; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1782921558; c=relaxed/simple;
+	bh=EVVHUEAGMBiAkNXRvqQ0md7sIb4G+gir1ZkuPwyWUxc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=QyY7C1ru8NFeTk1woVWw0glBKZTMoES6qWRXLDwHNW5z/Txhp5qwJ/xw/Fbvm8tl6yzW0lFnm3cZHTIcVXx6iV78jzC47zHsC037y1LFBDmL1M6G7OW5TfI0cyiqhvC03/f46nI54lN92EWzjZGaWrS3FlvUsRDcZ5423LA8+pY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Yhd/Brw+; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="s8NbT75j"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-37df416c44bso446113a91.2
-        for <netdev@vger.kernel.org>; Wed, 01 Jul 2026 08:56:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782921418; x=1783526218; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=312xIsbujvWfEBOFyaOu9bT02UMyOGSUqFGvUG0dBTI=;
-        b=s8NbT75j35AxpkSzKns3LCSM+eQ5KBCPCmOE5Q5Em0xGZD6o1JCpIuF729D2p0QAs0
-         JKiTgXWl8NksCX7n95A6NXrsFi4tlNjK5uIFXIhirdP3jfKxxn4fnjAB2KILOzRR3KG2
-         CiwrZcnjhwcrpaplYx8G3sWZiPZA5ZuBLsQx1pM0fFUZ5EFxSsgpoRKhhcjp7U5MlNrw
-         GzdzxM5O2U1+/ZtFFAkRav4n2AjIPVCbR4Eop2YIZA+Y1wY4SE9zVPr4N+DO/sMlUIeR
-         8RzuWm0cG/HvwcdXQPrIY7yXGdc1n6LfljDml48e/KPv2QFE7qhSlX2Djh/+B/AMoTb4
-         jgLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782921418; x=1783526218;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=312xIsbujvWfEBOFyaOu9bT02UMyOGSUqFGvUG0dBTI=;
-        b=mExC102nQpHZ87EJrycxKdZljfbax1d9935kp+8JRHtd0Z56BQU1GNKc06TvHsyEgM
-         R4s9A5FeKdptCrmP62b/LyEAG4r1SwxbTreB6FGie5c63PD5QhVcFHLrOKl6dHMFfDTq
-         3cjJcpNQ/N/abgFvMjglX7ikazQoynfrhfbDsOWBqxekCgeg/SyXSSR5I/X+6T0P477E
-         m2C5Md1i5HkWz9ci6GlX+SnA2veN7LTm7q6ge2lbKZQ2L9LGB8MchTdtWdDLBUEmqFvD
-         avIDCk3aytVoqxHhkBNo3rl+Kvx7Q4IkHj9nlNYFkLS75iy5uzql+nY5jW7cJx3kUCrP
-         GBKw==
-X-Gm-Message-State: AOJu0YwIFO/AQr/MstrMCY3uAy9FEMRXVr8bn2JAhW+lLk1LNq9ufJl9
-	sd9BDkJl1HGk5irL3ym36EMrxM2B7u6aFfNciXzX3CxiUG27GGVKgaknPIS4aRci
-X-Gm-Gg: AfdE7cmLrcKYXLUHSsjT/N0As4fAMc4lhbasi5HC97YRD6oXWmmxhgI1OI0kwzNkbdm
-	SQD5HvkBkaVW51twEWsNXKAYH2OACdzojk+WB1394j9p1albDQ3acHHwMpX3BQr2/Xw0eqbkA7U
-	97R8AndP0DqR2UIpxsiQ8azmz7utLapgQAXSi1brePLrv4NcOOVlNBxAcLOv6bxD8qW8ErHChO7
-	K7T6QGAiaHhUxP/iJ/0G7MItkHyJDjBqAGcq7FnnzNxySjOX6B6+JvmtBzao6fwZ6IfDSQP52XN
-	l1DcK8pvlS1kqFndJ5X2F36SRBfGHDzwDXGVQp0+ph6OS/e5o+uf8f1YA0ZAhpXs2BreIwJFskX
-	C3nCC2Xyr/9oYTObpJT2CcNc+zYnBMmZOPRGujraDNFGKrotqCWRXfVQK03n26H03nIndrH/YT3
-	/cqrjRRFxP0GU+uDwcvZSjRnXSYvD9P67ZJtN17w==
-X-Received: by 2002:a17:90b:17c5:b0:37e:10d1:c05b with SMTP id 98e67ed59e1d1-380baa6b5bfmr1424032a91.22.1782921417424;
-        Wed, 01 Jul 2026 08:56:57 -0700 (PDT)
-Received: from d.home.yangfl.dn42 ([2a09:bac1:76a0:d30::4cf:38])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-380ce0cb40dsm142785a91.13.2026.07.01.08.56.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Jul 2026 08:56:57 -0700 (PDT)
-From: David Yang <mmyangfl@gmail.com>
-To: netdev@vger.kernel.org
-Cc: David Yang <mmyangfl@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v3 3/3] net: dsa: motorcomm: Add LED support
-Date: Wed,  1 Jul 2026 23:54:06 +0800
-Message-ID: <20260701155519.273212-4-mmyangfl@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260701155519.273212-1-mmyangfl@gmail.com>
-References: <20260701155519.273212-1-mmyangfl@gmail.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Yhd/Brw+"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id DAD681A0DB9;
+	Wed,  1 Jul 2026 15:59:15 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id AF1F460288;
+	Wed,  1 Jul 2026 15:59:15 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 41DD9104C967F;
+	Wed,  1 Jul 2026 17:59:12 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1782921554; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=IrhSpt2aptNeyN+BmWYKYU3AotvUPsK1MLmZ8vMBUas=;
+	b=Yhd/Brw+qzMOk/ThPDQ8kuuedq7tNCiVB/g4QuEjKc2Hy79tKEwatAdwgK2RQ6ibECCCvr
+	iyEU8+O7VkygKevmkF9rKRI8nSoChxgpHQUA/uZJtfga6/f6CMR/6o+EZ2HNtufaeTUgAS
+	w9KvO4S4XhDSQxKMSow5E0Ti5+ZytCyC4jkaBu4LTW0lM61znQUNa0AKNlMYpv0OpcvfGg
+	+VraXv61xwa8GFfgmRlckA39eibnCctfuEW2+58mEv5hqEJoAet2Bd3/J5nzQ5wS9u2eV2
+	hJJX2BQfs0QggWq9csfMlrlS8uPT/HxiA3vhN3CMIpvHXBJK15zMctbQ/nRikw==
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Date: Wed, 01 Jul 2026 17:59:04 +0200
+Subject: [PATCH net-next v3 01/15] net: macb: drop "consistent" from
+ alloc/free function names
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+Message-Id: <20260701-macb-context-v3-1-00268d5b1502@bootlin.com>
+References: <20260701-macb-context-v3-0-00268d5b1502@bootlin.com>
+In-Reply-To: <20260701-macb-context-v3-0-00268d5b1502@bootlin.com>
+To: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, 
+ Conor Dooley <conor.dooley@microchip.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ Paolo Valerio <pvalerio@redhat.com>, Nicolai Buchwitz <nb@tipi-net.de>, 
+ Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, 
+ Gregory CLEMENT <gregory.clement@bootlin.com>, 
+ =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>, 
+ Tawfik Bayouk <tawfik.bayouk@mobileye.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>
+X-Mailer: b4 0.15.2
+X-Last-TLS-Session-Version: TLSv1.3
 
-LEDs can be described in the device tree using the same format as qca8k.
-Each port can configure up to 3 LEDs.
+Since commit 4df95131ea80 ("net/macb: change RX path for GEM") those
+functions have not been only allocating or freeing consistent memory
+mappings.
 
-Currently, only parallel mode and strict 1:1 mapping are supported.
+Rename from macb_alloc_consistent() to macb_alloc() and
+       from macb_free_consistent()  to macb_free().
 
-Signed-off-by: David Yang <mmyangfl@gmail.com>
+Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
 ---
- drivers/net/dsa/motorcomm/Kconfig  |   9 +
- drivers/net/dsa/motorcomm/Makefile |   1 +
- drivers/net/dsa/motorcomm/chip.c   |   9 +-
- drivers/net/dsa/motorcomm/chip.h   |  14 +-
- drivers/net/dsa/motorcomm/leds.c   | 586 +++++++++++++++++++++++++++++
- drivers/net/dsa/motorcomm/leds.h   | 118 ++++++
- 6 files changed, 734 insertions(+), 3 deletions(-)
- create mode 100644 drivers/net/dsa/motorcomm/leds.c
- create mode 100644 drivers/net/dsa/motorcomm/leds.h
+ drivers/net/ethernet/cadence/macb_main.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/dsa/motorcomm/Kconfig b/drivers/net/dsa/motorcomm/Kconfig
-index 1fddd386f866..3438e0b14361 100644
---- a/drivers/net/dsa/motorcomm/Kconfig
-+++ b/drivers/net/dsa/motorcomm/Kconfig
-@@ -6,3 +6,12 @@ config NET_DSA_YT921X
- 	help
- 	  This enables support for the Motorcomm YT9215 ethernet switch
- 	  chip.
-+
-+config NET_DSA_YT921X_LEDS
-+	bool "LED support for Motorcomm YT9215"
-+	default y
-+	depends on NET_DSA_YT921X
-+	depends on LEDS_CLASS=y || LEDS_CLASS=NET_DSA_YT921X
-+	help
-+	  This enables support for controlling the LEDs attached to the
-+	  Motorcomm YT9215 switch chips.
-diff --git a/drivers/net/dsa/motorcomm/Makefile b/drivers/net/dsa/motorcomm/Makefile
-index 6cea5313a444..5a63db0029ff 100644
---- a/drivers/net/dsa/motorcomm/Makefile
-+++ b/drivers/net/dsa/motorcomm/Makefile
-@@ -1,4 +1,5 @@
- # SPDX-License-Identifier: ISC
- obj-$(CONFIG_NET_DSA_YT921X) += yt921x.o
- yt921x-objs := chip.o
-+yt921x-$(CONFIG_NET_DSA_YT921X_LEDS) += leds.o
- yt921x-objs += smi.o
-diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
-index 6dee25b6754a..a3512136383b 100644
---- a/drivers/net/dsa/motorcomm/chip.c
-+++ b/drivers/net/dsa/motorcomm/chip.c
-@@ -26,6 +26,7 @@
- #include <net/pkt_cls.h>
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index fd282a1700fb..d677a93b9d72 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -2646,7 +2646,7 @@ static unsigned int macb_rx_ring_size_per_queue(struct macb *bp)
+ 	return macb_dma_desc_get_size(bp) * bp->rx_ring_size + bp->rx_bd_rd_prefetch;
+ }
  
- #include "chip.h"
-+#include "leds.h"
- #include "smi.h"
- 
- struct yt921x_mib_desc {
-@@ -151,8 +152,6 @@ static const struct yt921x_info yt921x_infos[] = {
- 	{}
- };
- 
--#define YT921X_NAME	"yt921x"
--
- #define YT921X_VID_UNWARE	4095
- 
- /* The interval should be small enough to avoid overflow of 32bit MIBs.
-@@ -4581,6 +4580,12 @@ static int yt921x_dsa_setup(struct dsa_switch *ds)
- 	if (res)
- 		return res;
- 
-+#if IS_ENABLED(CONFIG_NET_DSA_YT921X_LEDS)
-+	res = yt921x_leds_setup(priv);
-+	if (res)
-+		dev_warn(dev, "Failed to setup LEDs: %d\n", res);
-+#endif
-+
+-static void macb_free_consistent(struct macb *bp)
++static void macb_free(struct macb *bp)
+ {
+ 	struct device *dev = &bp->pdev->dev;
+ 	struct macb_queue *queue;
+@@ -2711,7 +2711,7 @@ static int macb_alloc_rx_buffers(struct macb *bp)
  	return 0;
  }
  
-diff --git a/drivers/net/dsa/motorcomm/chip.h b/drivers/net/dsa/motorcomm/chip.h
-index 555046526669..6570ae5902ad 100644
---- a/drivers/net/dsa/motorcomm/chip.h
-+++ b/drivers/net/dsa/motorcomm/chip.h
-@@ -850,8 +850,13 @@ enum yt921x_fdb_entry_status {
- #define YT921X_ACL_NUM		(YT921X_ACL_BLK_NUM * YT921X_ACL_ENT_PER_BLK)
- #define YT921X_UDF_NUM		8
+-static int macb_alloc_consistent(struct macb *bp)
++static int macb_alloc(struct macb *bp)
+ {
+ 	struct device *dev = &bp->pdev->dev;
+ 	dma_addr_t tx_dma, rx_dma;
+@@ -2769,7 +2769,7 @@ static int macb_alloc_consistent(struct macb *bp)
+ 	return 0;
  
-+#define YT921X_LED_GROUP_NUM	3
-+
- /* 8 internal + 2 external + 1 mcu */
--#define YT921X_PORT_NUM			11
-+#define YT921X_PORT_NUM		11
-+#define YT921X_PORT_MCU		10
-+
-+#define YT921X_NAME	"yt921x"
+ out_err:
+-	macb_free_consistent(bp);
++	macb_free(bp);
+ 	return -ENOMEM;
+ }
  
- #define yt921x_port_is_internal(port) ((port) < 8)
- #define yt921x_port_is_external(port) (8 <= (port) && (port) < 9)
-@@ -938,6 +943,13 @@ struct yt921x_port {
- 	struct yt921x_mib mib;
- 	u64 rx_frames;
- 	u64 tx_frames;
-+
-+#if IS_ENABLED(CONFIG_NET_DSA_YT921X_LEDS)
-+	unsigned char led_duty;
-+	unsigned short led_cycle;
-+
-+	struct yt921x_led *leds[YT921X_LED_GROUP_NUM];
-+#endif
- };
+@@ -3157,7 +3157,7 @@ static int macb_open(struct net_device *dev)
+ 	/* RX buffers initialization */
+ 	macb_init_rx_buffer_size(bp, bufsz);
  
- struct yt921x_reg_ops {
-diff --git a/drivers/net/dsa/motorcomm/leds.c b/drivers/net/dsa/motorcomm/leds.c
-new file mode 100644
-index 000000000000..5f470cd0abb1
---- /dev/null
-+++ b/drivers/net/dsa/motorcomm/leds.c
-@@ -0,0 +1,586 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Copyright (c) 2026 David Yang
-+ */
-+
-+#include <linux/uleds.h>
-+
-+#include "chip.h"
-+#include "leds.h"
-+#include "smi.h"
-+
-+#define to_yt921x_led(led_cdev) \
-+	container_of_const((led_cdev), struct yt921x_led, cdev)
-+#define to_yt921x_port(led) ((led)->port)
-+#define to_yt921x_priv(pp) \
-+	((void *)((pp) - (pp)->index) - offsetof(struct yt921x_priv, ports))
-+#define to_device(priv) ((priv)->ds.dev)
-+
-+static u32 yt921x_led_regaddr(struct yt921x_priv *priv, int port, int group)
-+{
-+	switch (group) {
-+	case 0:
-+	default:
-+		return YT921X_LED0_PORTn(port);
-+	case 1:
-+		return YT921X_LED1_PORTn(port);
-+	case 2:
-+		return YT921X_LED2_PORTn(port);
-+	}
-+}
-+
-+static int
-+yt921x_led_force_get(struct yt921x_priv *priv, int port, int group, bool *onp)
-+{
-+	u32 val;
-+	int res;
-+
-+	res = yt921x_reg_read(priv, YT921X_LED2_PORTn(port), &val);
-+	if (res)
-+		return res;
-+
-+	*onp = (val & YT921X_LED2_PORT_FORCEn_M(group)) ==
-+	       YT921X_LED2_PORT_FORCEn_ON(group);
-+	return 0;
-+}
-+
-+static int
-+yt921x_led_force_set(struct yt921x_priv *priv, int port, int group, bool on)
-+{
-+	struct yt921x_port *pp = &priv->ports[port];
-+	struct yt921x_led *led = pp->leds[group];
-+	u32 ctrl;
-+	u32 mask;
-+
-+	led->use_cycle = false;
-+	led->use_duty = false;
-+
-+	mask = YT921X_LED2_PORT_FORCEn_M(group);
-+	ctrl = on ? YT921X_LED2_PORT_FORCEn_ON(group) :
-+	       YT921X_LED2_PORT_FORCEn_OFF(group);
-+	return yt921x_reg_update_bits(priv, YT921X_LED2_PORTn(port), mask,
-+				      ctrl);
-+}
-+
-+static int
-+yt921x_led_blink_select(const struct yt921x_priv *priv, unsigned long on,
-+			unsigned long off, unsigned short *cyclep,
-+			unsigned char *dutyp)
-+{
-+	static const unsigned char dutys[] = {
-+		YT921X_LED_DUTY(1, 6),
-+		YT921X_LED_DUTY(1, 4),
-+		YT921X_LED_DUTY(1, 3),
-+		YT921X_LED_DUTY(1, 2),
-+	};
-+	unsigned int cycle_upper;
-+	unsigned int cycle_req;
-+	unsigned int duty_req;
-+	unsigned int cycle;
-+	unsigned int duty;
-+
-+	cycle = YT921X_LED_BLINK_MAX;
-+	cycle_upper = cycle * 11585 / 8192 + 1;  /* M_SQRT2 * cycle */
-+	if (check_add_overflow(on, off, &cycle_req) || cycle_req >= cycle_upper)
-+		return -EOPNOTSUPP;
-+
-+	for (; cycle > YT921X_LED_BLINK_MIN; cycle_upper >>= 1, cycle >>= 1)
-+		if (cycle_req >= cycle_upper >> 1)
-+			break;
-+
-+	duty_req = DIV_ROUND_CLOSEST(YT921X_LED_DUTY_DENOM *
-+				     (on > off ? off : on), cycle_req);
-+	for (unsigned int i = ARRAY_SIZE(dutys) - 1;; i--)
-+		if (i == 0 || duty_req >= (dutys[i - 1] + dutys[i]) / 2) {
-+			duty = dutys[i];
-+			break;
-+		}
-+	if (on > off)
-+		duty = YT921X_LED_DUTY_DENOM - duty;
-+
-+	*cyclep = cycle;
-+	*dutyp = duty;
-+	return 0;
-+}
-+
-+static int
-+yt921x_led_blink_set(struct yt921x_priv *priv, int port, int group,
-+		     unsigned long *onp, unsigned long *offp)
-+{
-+	struct yt921x_port *pp = &priv->ports[port];
-+	struct yt921x_led *led = pp->leds[group];
-+	unsigned short cycle;
-+	unsigned char duty;
-+	bool use_cycle;
-+	u32 ctrl;
-+	u32 mask;
-+	u32 val;
-+	int res;
-+
-+	if (!*onp && !*offp) {
-+		cycle = YT921X_LED_BLINK_DEF;
-+		duty = YT921X_LED_DUTY(1, 2);
-+		for (unsigned int i = 0; i < YT921X_LED_GROUP_NUM; i++)
-+			if (i != group && pp->leds[i] &&
-+			    pp->leds[i]->use_duty) {
-+				duty = pp->led_duty;
-+				break;
-+			}
-+
-+		use_cycle = false;
-+	} else {
-+		bool change_cycle;
-+		bool change_duty;
-+
-+		res = yt921x_led_blink_select(priv, *onp, *offp, &cycle, &duty);
-+		if (res)
-+			return res;
-+
-+		use_cycle = cycle < YT921X_LED_BLINK_DEF;
-+		change_cycle = use_cycle && cycle != pp->led_cycle;
-+		change_duty = duty != pp->led_duty;
-+		if (change_cycle || change_duty)
-+			for (unsigned int i = 0; i < YT921X_LED_GROUP_NUM;
-+			     i++) {
-+				if (i == group || !pp->leds[i])
-+					continue;
-+				if ((change_cycle && pp->leds[i]->use_cycle) ||
-+				    (change_duty && pp->leds[i]->use_duty))
-+					return -EOPNOTSUPP;
-+			}
-+	}
-+
-+	/* The chip seems to jam a while if changing duty directly */
-+	res = yt921x_reg_read(priv, YT921X_LED2_PORTn(port), &val);
-+	if (res)
-+		return res;
-+
-+	ctrl = val & ~YT921X_LED2_PORT_FORCEn_M(group);
-+	ctrl |= YT921X_LED2_PORT_FORCEn_DONTCARE(group);
-+	if (val != ctrl) {
-+		res = yt921x_reg_write(priv, YT921X_LED2_PORTn(port), ctrl);
-+		if (res)
-+			return res;
-+	}
-+
-+	mask = YT921X_LED1_PORT_BLINK_DUTY_M | YT921X_LED1_PORT_BLINK_DUTY_COMP;
-+	switch (duty >= YT921X_LED_DUTY(1, 2) ? duty :
-+		YT921X_LED_DUTY_DENOM - duty) {
-+	default:
-+		duty = YT921X_LED_DUTY(1, 2);
-+		fallthrough;
-+	case YT921X_LED_DUTY(1, 2):
-+		ctrl = YT921X_LED1_PORT_BLINK_DUTY_1_2;
-+		break;
-+	case YT921X_LED_DUTY(2, 3):
-+		ctrl = YT921X_LED1_PORT_BLINK_DUTY_2_3;
-+		break;
-+	case YT921X_LED_DUTY(3, 4):
-+		ctrl = YT921X_LED1_PORT_BLINK_DUTY_3_4;
-+		break;
-+	case YT921X_LED_DUTY(5, 6):
-+		ctrl = YT921X_LED1_PORT_BLINK_DUTY_5_6;
-+		break;
-+	}
-+	if (duty < YT921X_LED_DUTY(1, 2))
-+		ctrl |= YT921X_LED1_PORT_BLINK_DUTY_COMP;
-+	if (use_cycle) {
-+		mask |= YT921X_LED1_PORT_OTHER_BLINK_M;
-+		ctrl |= YT921X_LED1_PORT_OTHER_BLINK(9 - __fls(cycle));
-+	}
-+	res = yt921x_reg_update_bits(priv, YT921X_LED1_PORTn(port), mask, ctrl);
-+	if (res)
-+		return res;
-+
-+	ctrl = val & ~(YT921X_LED2_PORT_FORCEn_M(group) |
-+		       YT921X_LED2_PORT_FORCE_BLINKn_M(group));
-+	ctrl |= YT921X_LED2_PORT_FORCEn_BLINK(group);
-+	if (use_cycle)
-+		ctrl |= YT921X_LED2_PORT_FORCE_BLINKn_OTHER(group);
-+	else
-+		ctrl |= YT921X_LED2_PORT_FORCE_BLINKn(group, __fls(cycle) - 9);
-+	res = yt921x_reg_write(priv, YT921X_LED2_PORTn(port), ctrl);
-+	if (res)
-+		return res;
-+
-+	led->use_cycle = use_cycle;
-+	if (use_cycle)
-+		pp->led_cycle = cycle;
-+	led->use_duty = true;
-+	pp->led_duty = duty;
-+
-+	*onp = DIV_ROUND_CLOSEST(duty * cycle, YT921X_LED_DUTY_DENOM);
-+	*offp = cycle - *onp;
-+	return 0;
-+}
-+
-+static const u32 yt921x_led_trigger_maps[__TRIGGER_NETDEV_MAX] = {
-+	[TRIGGER_NETDEV_LINK]		= YT921X_LEDx_PORT_ACT_DUPLEX_HALF |
-+					  YT921X_LEDx_PORT_ACT_DUPLEX_FULL,
-+	[TRIGGER_NETDEV_LINK_10]	= YT921X_LEDx_PORT_ACT_10M,
-+	[TRIGGER_NETDEV_LINK_100]	= YT921X_LEDx_PORT_ACT_100M,
-+	[TRIGGER_NETDEV_LINK_1000]	= YT921X_LEDx_PORT_ACT_1000M,
-+	[TRIGGER_NETDEV_HALF_DUPLEX]	= YT921X_LEDx_PORT_ACT_DUPLEX_HALF,
-+	[TRIGGER_NETDEV_FULL_DUPLEX]	= YT921X_LEDx_PORT_ACT_DUPLEX_FULL,
-+	[TRIGGER_NETDEV_TX]		= YT921X_LEDx_PORT_ACT_TX,
-+	[TRIGGER_NETDEV_RX]		= YT921X_LEDx_PORT_ACT_RX,
-+};
-+
-+static bool
-+yt921x_led_trigger_is_supported(const struct yt921x_priv *priv, int port,
-+				int group, unsigned long flags)
-+{
-+	unsigned int i;
-+
-+	for_each_set_bit(i, &flags, __TRIGGER_NETDEV_MAX)
-+		if (!yt921x_led_trigger_maps[i])
-+			return false;
-+
-+	return true;
-+}
-+
-+static int
-+yt921x_led_trigger_get(struct yt921x_priv *priv, int port, int group,
-+		       unsigned long *flagsp)
-+{
-+	u32 addr;
-+	u32 val;
-+	int res;
-+
-+	addr = yt921x_led_regaddr(priv, port, group);
-+	res = yt921x_reg_read(priv, addr, &val);
-+	if (res)
-+		return res;
-+
-+	*flagsp = 0;
-+	for (unsigned int i = 0; i < __TRIGGER_NETDEV_MAX; i++)
-+		if ((val & yt921x_led_trigger_maps[i]) ==
-+		    yt921x_led_trigger_maps[i])
-+			*flagsp |= BIT(i);
-+
-+	return 0;
-+}
-+
-+static int
-+yt921x_led_trigger_set(struct yt921x_priv *priv, int port, int group,
-+		       unsigned long flags)
-+{
-+	struct yt921x_port *pp = &priv->ports[port];
-+	struct yt921x_led *led = pp->leds[group];
-+	unsigned int i;
-+	u32 addr;
-+	u32 ctrl;
-+	u32 mask;
-+	int res;
-+
-+	ctrl = 0;
-+	for_each_set_bit(i, &flags, __TRIGGER_NETDEV_MAX) {
-+		if (!yt921x_led_trigger_maps[i])
-+			return -EOPNOTSUPP;
-+
-+		ctrl |= yt921x_led_trigger_maps[i];
-+	}
-+
-+	led->use_cycle = false;
-+	led->use_duty = false;
-+
-+	mask = !group ? YT921X_LED0_PORT_ACT_M : YT921X_LEDx_PORT_ACT_M;
-+	if (group == 2) {
-+		mask |= YT921X_LED2_PORT_FORCEn_M(group);
-+		ctrl |= YT921X_LED2_PORT_FORCEn_DONTCARE(group);
-+	}
-+	addr = yt921x_led_regaddr(priv, port, group);
-+	res = yt921x_reg_update_bits(priv, addr, mask, ctrl);
-+	if (res)
-+		return res;
-+
-+	if (group != 2) {
-+		mask = YT921X_LED2_PORT_FORCEn_M(group);
-+		ctrl = YT921X_LED2_PORT_FORCEn_DONTCARE(group);
-+		res = yt921x_reg_update_bits(priv, YT921X_LED2_PORTn(port),
-+					     mask, ctrl);
-+		if (res)
-+			return res;
-+	}
-+
-+	return 0;
-+}
-+
-+static int
-+yt921x_cled_brightness_set_blocking(struct led_classdev *led_cdev,
-+				    enum led_brightness brightness)
-+{
-+	struct yt921x_led *led = to_yt921x_led(led_cdev);
-+	struct yt921x_port *pp = to_yt921x_port(led);
-+	struct yt921x_priv *priv = to_yt921x_priv(pp);
-+	int res;
-+
-+	mutex_lock(&priv->reg_lock);
-+	res = yt921x_led_force_set(priv, pp->index, led->group, brightness);
-+	mutex_unlock(&priv->reg_lock);
-+
-+	return res;
-+}
-+
-+static int
-+yt921x_cled_blink_set(struct led_classdev *led_cdev, unsigned long *delay_on,
-+		      unsigned long *delay_off)
-+{
-+	struct yt921x_led *led = to_yt921x_led(led_cdev);
-+	struct yt921x_port *pp = to_yt921x_port(led);
-+	struct yt921x_priv *priv = to_yt921x_priv(pp);
-+	int res;
-+
-+	mutex_lock(&priv->reg_lock);
-+	res = yt921x_led_blink_set(priv, pp->index, led->group, delay_on,
-+				   delay_off);
-+	mutex_unlock(&priv->reg_lock);
-+
-+	return res;
-+}
-+
-+static struct device * __maybe_unused
-+yt921x_cled_hw_control_get_device(struct led_classdev *led_cdev)
-+{
-+	struct yt921x_led *led = to_yt921x_led(led_cdev);
-+	struct yt921x_port *pp = to_yt921x_port(led);
-+	struct yt921x_priv *priv = to_yt921x_priv(pp);
-+	struct dsa_port *dp;
-+
-+	dp = dsa_to_port(&priv->ds, pp->index);
-+	if (!dp || !dp->user)
-+		return NULL;
-+	return &dp->user->dev;
-+}
-+
-+static int __maybe_unused
-+yt921x_cled_hw_control_is_supported(struct led_classdev *led_cdev,
-+				    unsigned long flags)
-+{
-+	struct yt921x_led *led = to_yt921x_led(led_cdev);
-+	struct yt921x_port *pp = to_yt921x_port(led);
-+	struct yt921x_priv *priv = to_yt921x_priv(pp);
-+
-+	if (yt921x_led_trigger_is_supported(priv, pp->index, led->group, flags))
-+		return 0;
-+	return -EOPNOTSUPP;
-+}
-+
-+static int __maybe_unused
-+yt921x_cled_hw_control_get(struct led_classdev *led_cdev, unsigned long *flagsp)
-+{
-+	struct yt921x_led *led = to_yt921x_led(led_cdev);
-+	struct yt921x_port *pp = to_yt921x_port(led);
-+	struct yt921x_priv *priv = to_yt921x_priv(pp);
-+	int res;
-+
-+	mutex_lock(&priv->reg_lock);
-+	res = yt921x_led_trigger_get(priv, pp->index, led->group, flagsp);
-+	mutex_unlock(&priv->reg_lock);
-+
-+	return res;
-+}
-+
-+static int __maybe_unused
-+yt921x_cled_hw_control_set(struct led_classdev *led_cdev, unsigned long flags)
-+{
-+	struct yt921x_led *led = to_yt921x_led(led_cdev);
-+	struct yt921x_port *pp = to_yt921x_port(led);
-+	struct yt921x_priv *priv = to_yt921x_priv(pp);
-+	int res;
-+
-+	mutex_lock(&priv->reg_lock);
-+	res = yt921x_led_trigger_set(priv, pp->index, led->group, flags);
-+	mutex_unlock(&priv->reg_lock);
-+
-+	return res;
-+}
-+
-+static int
-+yt921x_led_setup(struct yt921x_priv *priv, int port,
-+		 struct fwnode_handle *fwnode, u32 *invp)
-+{
-+	struct yt921x_port *pp = &priv->ports[port];
-+	struct device *dev = to_device(priv);
-+	struct led_init_data init_data;
-+	struct led_classdev *led_cdev;
-+	char name[LED_MAX_NAME_SIZE];
-+	enum led_default_state state;
-+	struct yt921x_led *led;
-+	u32 group;
-+	bool on;
-+	int res;
-+
-+	if (port == YT921X_PORT_MCU) {
-+		dev_err(dev, "No LEDs for port %d\n", port);
-+		return -ENODEV;
-+	}
-+
-+	res = fwnode_property_read_u32(fwnode, "reg", &group);
-+	if (res)
-+		return res;
-+	if (group >= YT921X_LED_GROUP_NUM) {
-+		dev_err(dev, "Invalid LED reg %u for port %d\n", group, port);
-+		return -EINVAL;
-+	}
-+
-+	state = led_init_default_state_get(fwnode);
-+	mutex_lock(&priv->reg_lock);
-+	switch (state) {
-+	case LEDS_DEFSTATE_OFF:
-+	case LEDS_DEFSTATE_ON:
-+		on = state != LEDS_DEFSTATE_OFF;
-+		res = yt921x_led_force_set(priv, port, group, on);
-+		break;
-+	case LEDS_DEFSTATE_KEEP:
-+		res = yt921x_led_force_get(priv, port, group, &on);
-+		break;
-+	}
-+	mutex_unlock(&priv->reg_lock);
-+	if (res)
-+		return res;
-+
-+	led = devm_kzalloc(dev, sizeof(*led), GFP_KERNEL);
-+	if (!led)
-+		return -ENOMEM;
-+	pp->leds[group] = led;
-+
-+	led->port = pp;
-+	led->group = group;
-+
-+	led_cdev = &led->cdev;
-+	led_cdev->brightness = on;
-+	led_cdev->max_brightness = 1;
-+	led_cdev->flags = LED_RETAIN_AT_SHUTDOWN;
-+	led_cdev->brightness_set_blocking = yt921x_cled_brightness_set_blocking;
-+	led_cdev->blink_set = yt921x_cled_blink_set;
-+#ifdef CONFIG_LEDS_TRIGGERS
-+	led_cdev->hw_control_trigger = "netdev";
-+	led_cdev->hw_control_get_device = yt921x_cled_hw_control_get_device;
-+	led_cdev->hw_control_is_supported = yt921x_cled_hw_control_is_supported;
-+	led_cdev->hw_control_get = yt921x_cled_hw_control_get;
-+	led_cdev->hw_control_set = yt921x_cled_hw_control_set;
-+#endif
-+
-+	snprintf(name, sizeof(name), YT921X_NAME "-%u:%02d:%02u",
-+		 priv->ds.index, port, group);
-+	init_data = (typeof(init_data)){
-+		.fwnode = fwnode,
-+		.devicename = name,
-+		.devname_mandatory = true,
-+	};
-+	res = devm_led_classdev_register_ext(dev, led_cdev, &init_data);
-+	if (res) {
-+		devm_kfree(dev, led);
-+		pp->leds[group] = NULL;
-+		return res;
-+	}
-+
-+	if (fwnode_property_read_bool(fwnode, "active-high"))
-+		*invp |= YT921X_LED_PAR_INV_INVnm(group, port);
-+	return 0;
-+}
-+
-+static void yt921x_leds_teardown(struct yt921x_priv *priv)
-+{
-+	struct device *dev = to_device(priv);
-+	u32 mask;
-+	int res;
-+
-+	for (int port = 0; port < YT921X_PORT_NUM; port++) {
-+		struct yt921x_port *pp = &priv->ports[port];
-+
-+		for (int group = 0; group < YT921X_LED_GROUP_NUM; group++) {
-+			struct yt921x_led *led = pp->leds[group];
-+
-+			if (!led)
-+				continue;
-+
-+			devm_led_classdev_unregister(dev, &led->cdev);
-+			devm_kfree(dev, led);
-+			pp->leds[group] = NULL;
-+		}
-+	}
-+
-+	mutex_lock(&priv->reg_lock);
-+
-+	res = yt921x_reg_write(priv, YT921X_LED_PAR_PORTS, 0);
-+	if (res)
-+		goto end;
-+
-+	mask = YT921X_LED_CTRL_PORT_NUM_M | YT921X_LED_CTRL_EN;
-+	res = yt921x_reg_clear_bits(priv, YT921X_LED_CTRL, mask);
-+
-+end:
-+	mutex_unlock(&priv->reg_lock);
-+
-+	if (res)
-+		dev_err(dev, "Failed to teardown LEDs: %d\n", res);
-+}
-+
-+int yt921x_leds_setup(struct yt921x_priv *priv)
-+{
-+	struct dsa_switch *ds = &priv->ds;
-+	struct dsa_port *dp;
-+	u32 ports_mask;
-+	u32 ctrl;
-+	u32 mask;
-+	u32 inv;
-+	int res;
-+
-+	inv = 0;
-+	ports_mask = 0;
-+	dsa_switch_for_each_port(dp, ds) {
-+		struct device_node *leds_np;
-+
-+		if (!dp->dn)
-+			continue;
-+
-+		leds_np = of_get_child_by_name(dp->dn, "leds");
-+		if (!leds_np)
-+			continue;
-+
-+		for_each_child_of_node_scoped(leds_np, led_np) {
-+			res = yt921x_led_setup(priv, dp->index,
-+					       of_fwnode_handle(led_np), &inv);
-+			if (res)
-+				break;
-+
-+			ports_mask |= BIT(dp->index);
-+		}
-+
-+		of_node_put(leds_np);
-+		if (res)
-+			goto err;
-+	}
-+
-+	mutex_lock(&priv->reg_lock);
-+
-+	mask = YT921X_LED_CTRL_MODE_M | YT921X_LED_CTRL_PORT_NUM_M |
-+	       YT921X_LED_CTRL_EN;
-+	ctrl = YT921X_LED_CTRL_MODE_PARALLEL;
-+	if (ports_mask)
-+		ctrl |= YT921X_LED_CTRL_PORT_NUM(YT921X_PORT_NUM - 1) |
-+			YT921X_LED_CTRL_EN;
-+	res = yt921x_reg_update_bits(priv, YT921X_LED_CTRL, mask, ctrl);
-+	if (res)
-+		goto end;
-+
-+	res = yt921x_reg_write(priv, YT921X_LED_PAR_PORTS, ports_mask);
-+	if (res)
-+		goto end;
-+
-+	/* Inversion is internal - force on will give low logic.
-+	 * In the rest of the file, treat LEDs as if active-low.
-+	 */
-+	if (ports_mask)
-+		res = yt921x_reg_write(priv, YT921X_LED_PAR_INV, inv);
-+
-+end:
-+	mutex_unlock(&priv->reg_lock);
-+
-+	if (res && ports_mask)
-+err:
-+		yt921x_leds_teardown(priv);
-+	return res;
-+}
-diff --git a/drivers/net/dsa/motorcomm/leds.h b/drivers/net/dsa/motorcomm/leds.h
-new file mode 100644
-index 000000000000..1464c2c560c2
---- /dev/null
-+++ b/drivers/net/dsa/motorcomm/leds.h
-@@ -0,0 +1,118 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * Copyright (c) 2026 David Yang
-+ */
-+
-+#ifndef _YT_LEDS_H
-+#define _YT_LEDS_H
-+
-+#include <linux/bitfield.h>
-+#include <linux/bits.h>
-+#include <linux/kconfig.h>
-+#include <linux/leds.h>
-+
-+#define YT921X_LED_CTRL			0xd0000
-+#define  YT921X_LED_CTRL_EN			BIT(21)
-+#define  YT921X_LED_CTRL_LOOPDETECT_BLINK_M	GENMASK(20, 19)	/* cycle = 512 * x ms */
-+#define   YT921X_LED_CTRL_LOOPDETECT_BLINK(x)		FIELD_PREP(YT921X_LED_CTRL_LOOPDETECT_BLINK_M, (x))
-+#define  YT921X_LED_CTRL_PORT_NUM_M		GENMASK(16, 13)
-+#define   YT921X_LED_CTRL_PORT_NUM(x)			FIELD_PREP(YT921X_LED_CTRL_PORT_NUM_M, (x))
-+#define  YT921X_LED_CTRL_MODE_M			GENMASK(1, 0)
-+#define   YT921X_LED_CTRL_MODE(x)			FIELD_PREP(YT921X_LED_CTRL_MODE_M, (x))
-+#define   YT921X_LED_CTRL_MODE_PARALLEL			YT921X_LED_CTRL_MODE(0)
-+#define   YT921X_LED_CTRL_MODE_SERIAL			YT921X_LED_CTRL_MODE(2)
-+#define YT921X_LED0_PORTn(port)		(0xd0004 + 4 * (port))
-+#define  YT921X_LED0_PORT_ACT_M			GENMASK(17, 0)
-+#define  YT921X_LED0_PORT_ACT_LINK_TRY_DIS	BIT(17)
-+#define  YT921X_LED0_PORT_ACT_COLLISION_BLINK_INDI	BIT(16)
-+#define YT921X_LED1_PORTn(port)		(0xd0040 + 4 * (port))
-+#define  YT921X_LED1_PORT_OTHER_BLINK_M		GENMASK(31, 30)	/* cycle = 512 >> x ms */
-+#define   YT921X_LED1_PORT_OTHER_BLINK(x)		FIELD_PREP(YT921X_LED1_PORT_OTHER_BLINK_M, (x))
-+#define  YT921X_LED1_PORT_EEE_BLINK_M		GENMASK(29, 28)	/* cycle = 512 >> x ms */
-+#define   YT921X_LED1_PORT_EEE_BLINK(x)			FIELD_PREP(YT921X_LED1_PORT_EEE_BLINK_M, (x))
-+#define  YT921X_LED1_PORT_BLINK_DUTY_COMP	BIT(27)
-+#define  YT921X_LED1_PORT_BLINK_DUTY_M		GENMASK(26, 25)
-+#define   YT921X_LED1_PORT_BLINK_DUTY(x)		FIELD_PREP(YT921X_LED1_PORT_BLINK_DUTY_M, (x))
-+#define   YT921X_LED1_PORT_BLINK_DUTY_1_2		YT921X_LED1_PORT_BLINK_DUTY(0)
-+#define   YT921X_LED1_PORT_BLINK_DUTY_2_3		YT921X_LED1_PORT_BLINK_DUTY(1)
-+#define   YT921X_LED1_PORT_BLINK_DUTY_3_4		YT921X_LED1_PORT_BLINK_DUTY(2)
-+#define   YT921X_LED1_PORT_BLINK_DUTY_5_6		YT921X_LED1_PORT_BLINK_DUTY(3)
-+#define YT921X_LED2_PORTn(port)		(0xd0080 + 4 * (port))
-+#define  YT921X_LED2_PORT_FORCEn_M(grp)		GENMASK(4 * (grp) + 19, 4 * (grp) + 18)
-+#define   YT921X_LED2_PORT_FORCEn(grp, x)		((x) << (4 * (grp) + 18))
-+#define   YT921X_LED2_PORT_FORCEn_DONTCARE(grp)		YT921X_LED2_PORT_FORCEn(grp, 0)
-+#define   YT921X_LED2_PORT_FORCEn_BLINK(grp)		YT921X_LED2_PORT_FORCEn(grp, 1)
-+#define   YT921X_LED2_PORT_FORCEn_ON(grp)		YT921X_LED2_PORT_FORCEn(grp, 2)
-+#define   YT921X_LED2_PORT_FORCEn_OFF(grp)		YT921X_LED2_PORT_FORCEn(grp, 3)
-+#define  YT921X_LED2_PORT_FORCE_BLINKn_M(grp)	GENMASK(4 * (grp) + 17, 4 * (grp) + 16)	/* cycle = 512 << x ms */
-+#define   YT921X_LED2_PORT_FORCE_BLINKn(grp, x)		((x) << (4 * (grp) + 16))
-+#define   YT921X_LED2_PORT_FORCE_BLINKn_OTHER(grp)	YT921X_LED2_PORT_FORCE_BLINKn(grp, 3)
-+#define  YT921X_LEDx_PORT_ACT_M			GENMASK(15, 0)
-+#define  YT921X_LEDx_PORT_ACT_EEE_BLINK		BIT(15)
-+#define  YT921X_LEDx_PORT_ACT_LOOPDETECT_BLINK	BIT(14)
-+#define  YT921X_LEDx_PORT_ACT_ACTIVE_BLINK	BIT(13)
-+#define  YT921X_LEDx_PORT_ACT_DUPLEX_FULL	BIT(12)
-+#define  YT921X_LEDx_PORT_ACT_DUPLEX_HALF	BIT(11)
-+#define  YT921X_LEDx_PORT_ACT_TX_BLINK		BIT(10)
-+#define  YT921X_LEDx_PORT_ACT_RX_BLINK		BIT(9)
-+#define  YT921X_LEDx_PORT_ACT_TX		BIT(8)
-+#define  YT921X_LEDx_PORT_ACT_RX		BIT(7)
-+#define  YT921X_LEDx_PORT_ACT_1000M		BIT(6)
-+#define  YT921X_LEDx_PORT_ACT_100M		BIT(5)
-+#define  YT921X_LEDx_PORT_ACT_10M		BIT(4)
-+#define  YT921X_LEDx_PORT_ACT_COLLISION_BLINK	BIT(3)
-+#define  YT921X_LEDx_PORT_ACT_1000M_BLINK	BIT(2)
-+#define  YT921X_LEDx_PORT_ACT_100M_BLINK	BIT(1)
-+#define  YT921X_LEDx_PORT_ACT_10M_BLINK		BIT(0)
-+#define YT921X_LED_SER_CTRL		0xd0100
-+#define  YT921X_LED_SER_CTRL_EN			GENMASK(25, 24)
-+#define  YT921X_LED_SER_CTRL_ACTIVE_LOW		BIT(4)
-+#define  YT921X_LED_SER_CTRL_LED_NUM_M		GENMASK(1, 0)	/* #led - 1 */
-+#define   YT921X_LED_SER_CTRL_LED_NUM(x)		FIELD_PREP(YT921X_LED_SER_CTRL_LED_NUM_M, (x))
-+#define YT921X_LED_SER_MAPnm(grp, port)	(0xd0104 + 8 * (2 - (grp)) + 4 * ((port) / 5))
-+#define  YT921X_LED_SER_MAP_DSTn_PORT_M(port)	GENMASK(6 * ((port) % 5) + 5, 6 * ((port) % 5) + 2)
-+#define   YT921X_LED_SER_MAP_DSTn_PORT(port, x)		((x) << (6 * ((port) % 5) + 2))
-+#define  YT921X_LED_SER_MAP_DSTn_LED_M(port)	GENMASK(6 * ((port) % 5) + 1, 6 * ((port) % 5))
-+#define   YT921X_LED_SER_MAP_DSTn_LED(port, x)		((x) << (6 * ((port) % 5)))
-+#define YT921X_LED_PAR_PORTS		0xd01c4
-+#define YT921X_LED_PAR_INV		0xd01c8
-+#define  YT921X_LED_PAR_INV_INVnm(grp, port)	BIT(10 * (grp) + (port))
-+#define YT921X_LED_PAR_MAPn(port)	(0xd01d0 + 4 * (port))
-+#define  YT921X_LED_PAR_MAP_DSTn_PORT_M(grp)	GENMASK(6 * (grp) + 5, 6 * (grp) + 2)
-+#define   YT921X_LED_PAR_MAP_DSTn_PORT(grp, x)		((x) << (6 * (grp) + 2))
-+#define  YT921X_LED_PAR_MAP_DSTn_LED_M(grp)	GENMASK(6 * (grp) + 1, 6 * (grp))
-+#define   YT921X_LED_PAR_MAP_DSTn_LED(grp, x)		((x) << (6 * (grp)))
-+
-+#define YT921X_LED_BLINK_MIN	64
-+#define YT921X_LED_BLINK_DEF	512
-+#define YT921X_LED_BLINK_MAX	2048
-+
-+/* 2 * lcm(2, 3, 4, 6) */
-+#define YT921X_LED_DUTY_DENOM		24
-+#define YT921X_LED_DUTY(nom, denom)	(YT921X_LED_DUTY_DENOM * (nom) / (denom))
-+
-+struct yt921x_priv;
-+
-+struct yt921x_led {
-+	struct led_classdev cdev;
-+	struct yt921x_port *port;
-+	unsigned char group;
-+
-+	bool use_cycle:1;
-+	bool use_duty:1;
-+};
-+
-+#if IS_ENABLED(CONFIG_NET_DSA_YT921X_LEDS)
-+
-+int yt921x_leds_setup(struct yt921x_priv *priv);
-+
-+#else
-+
-+static inline int yt921x_leds_setup(struct yt921x_priv *priv)
-+{
-+	return 0;
-+}
-+
-+#endif
-+
-+#endif
+-	err = macb_alloc_consistent(bp);
++	err = macb_alloc(bp);
+ 	if (err) {
+ 		netdev_err(dev, "Unable to allocate DMA memory (error %d)\n",
+ 			   err);
+@@ -3202,7 +3202,7 @@ static int macb_open(struct net_device *dev)
+ 		napi_disable(&queue->napi_rx);
+ 		napi_disable(&queue->napi_tx);
+ 	}
+-	macb_free_consistent(bp);
++	macb_free(bp);
+ pm_exit:
+ 	pm_runtime_put_sync(&bp->pdev->dev);
+ 	return err;
+@@ -3235,7 +3235,7 @@ static int macb_close(struct net_device *dev)
+ 	netif_carrier_off(dev);
+ 	spin_unlock_irqrestore(&bp->lock, flags);
+ 
+-	macb_free_consistent(bp);
++	macb_free(bp);
+ 
+ 	if (bp->ptp_info)
+ 		bp->ptp_info->ptp_remove(dev);
+
 -- 
-2.53.0
+2.55.0
 
