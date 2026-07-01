@@ -1,137 +1,164 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 132173624B3;
-	Wed,  1 Jul 2026 05:37:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6786370AE5;
+	Wed,  1 Jul 2026 05:43:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782884228; cv=none; b=NqUy+ma3iu6JnsFWhDNPSkuSZZsSB6HxZw5/1lNEhFA/BttjOwXlSFkjaAfWriMMNnWOkMvLcG0pD165Me2r2jpdNiBJgsXUq/AA8zMZcvi07PsEcld3ncQGs3nVg+p+/2LR8GypTxipBHR42v4uNpW036TMGbst62T+oRbeK6U=
+	t=1782884581; cv=none; b=gf2QB7qPCi7Apf5vQQvtEYzHKtbx/XWDvo05qXm7kEu7HzpF5FycmmLLzHjQiyV2yL/oqho8oEnroj2Pwp4GM8SNLjO9ZKMXE2iVWRecYAtyo404tgsiF1yOqIUkpCqm5DLi3nyIUIDm2gVnv73gXQAzJ+A8GN/tPY7nBGrU92Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782884228; c=relaxed/simple;
-	bh=32HqC6YK7qwV+gA/FX6GsxiHJbXny44ENICuqdqO7JU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RcVU393VS/mG8ATAm9IaWh4k01YvUP305QZq/SqKKtF21dDRW9NFVY6NnLpcCf2ms1Ga5KmfZsrtUEfu9b0T5hockqu68geTUQfFaKmJMMukkyMvikpYsJiqpXinYU+07Z3PhNl3PULbGSaJ0hMXIesDhZ93S9TkYj3nRpNsb7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cvu3oWYo; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782884581; c=relaxed/simple;
+	bh=TgCrp6HpTZUr8v23z17ZA8xkBRhAvSC2Xx1dLNOpdCQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=G9CngxePsHIZXLTm3TncE5dGIrWg5T0zv96U+4y3raJPiRxeRsdo9F1r9qJYnKo0ggdXKs9j7+11hcXyXcXtbnK+BREfjnAYQU2mXEkb0BoTmoJxtr0v0rmklTFnP0sbkgTwOGeoEiTwaPmybxoEdUW2ByNW5QNSf53PqTJPxnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=lZ3p43k3; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=AzcOo9CG; arc=none smtp.client-ip=23.88.97.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cvu3oWYo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EE451F000E9;
-	Wed,  1 Jul 2026 05:36:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782884226;
-	bh=AxpIkGUR3B/YQ+use+jlgeTg1Rp3sEV28YNx2zBhiBo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=cvu3oWYo7MvnOYf+fng4McUfNgKTxtvvPTsKPCovTBnop/zsHeV+5xoq0S0wGuQZo
-	 NDZ/50FVKK/c7equFbh2mTBsm3B29ywpsQc7MUicYWLPOHp8ftk9d9ou6Zv0h4vwHa
-	 ugxgIZwqihSxbLQza8Y2Nn5x9szQNgH9/m5QPvQqhqn3FzhFRIfZfYWnjNOof6axQ1
-	 2x/nCi1CTOmOHj9Qw8wI7wirCSVR4hautUVK6XcunMFvOL2XkSU1vdll90oJhAKJQJ
-	 cEJNcPPoUNVKPx85p8uZdSen2xELIsFevFn4unA0DyKIxqgE8XgZ71e8f/yYhQLTLT
-	 mJp/klMAcBY8A==
-Date: Wed, 1 Jul 2026 11:06:49 +0530
-From: Sumit Garg <sumit.garg@kernel.org>
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Cc: andersson@kernel.org, linux-arm-msm@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-	linux-media@vger.kernel.org, netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-	linux-remoteproc@vger.kernel.org, konradybcio@kernel.org,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	robin.clark@oss.qualcomm.com, sean@poorly.run,
-	akhilpo@oss.qualcomm.com, lumag@kernel.org, abhinav.kumar@linux.dev,
-	jesszhan0024@gmail.com, marijn.suijten@somainline.org,
-	airlied@gmail.com, simona@ffwll.ch, vikash.garodia@oss.qualcomm.com,
-	bod@kernel.org, mchehab@kernel.org, elder@kernel.org,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, jjohnson@kernel.org,
-	mathieu.poirier@linaro.org, trilokkumar.soni@oss.qualcomm.com,
-	mukesh.ojha@oss.qualcomm.com, pavan.kondeti@oss.qualcomm.com,
-	jorge.ramirez@oss.qualcomm.com, tonyh@qti.qualcomm.com,
-	vignesh.viswanathan@oss.qualcomm.com,
-	srinivas.kandagatla@oss.qualcomm.com,
-	amirreza.zarrabi@oss.qualcomm.com, jens.wiklander@linaro.org,
-	op-tee@lists.trustedfirmware.org, apurupa@qti.qualcomm.com,
-	skare@qti.qualcomm.com, linux-kernel@vger.kernel.org,
-	Sumit Garg <sumit.garg@oss.qualcomm.com>
-Subject: Re: [PATCH v8 07/14] remoteproc: qcom: Select QCOM_PAS generic
- service
-Message-ID: <akSncWwMc9tntyD4@sumit-xelite>
-References: <20260626133440.692849-1-sumit.garg@kernel.org>
- <20260626133440.692849-8-sumit.garg@kernel.org>
- <64e425ab-dddc-4221-81d3-3283e2961bea@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="lZ3p43k3";
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="AzcOo9CG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1782884576;
+	bh=TgCrp6HpTZUr8v23z17ZA8xkBRhAvSC2Xx1dLNOpdCQ=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=lZ3p43k3s5LGPA8MlFEbbObpNqOUWH5Zzty2/Wt+yc1g5BiSTpvDJANFu8Bk2OmYJ
+	 BxNC1256atR+iyA8mIEzQ/mcghuoZo1cGeOr9gH7JHIaonEnpGFFBmGPo0/u/VgEmm
+	 Jjf6y8uWK+PJOcMo29iGG5i9u+z0rWIXvGP85937jF1v7L+YH/osMhHL4dk4Xvd/ov
+	 eiTUK57r2PQSjjvo2hwsI8hSXAgeKSlKXhhsz+Ca475fDHq8298ZxLyaphXqIFNlCJ
+	 tDwvOam34dtkMdyx4XtEQ4lyosnTFDPRvNY0YeGYpAM/6kZ6j/cgSGnAk2KEVEowpH
+	 urZdmhV/Bj8TQ==
+Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
+	id 27C9549362; Wed,  1 Jul 2026 05:42:56 +0000 (UTC)
+X-Spam-Level: 
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1782884571;
+	bh=TgCrp6HpTZUr8v23z17ZA8xkBRhAvSC2Xx1dLNOpdCQ=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=AzcOo9CGzcL922VHy3hCiWQvieVZqk5fMwkN+eNAxZJ8H30v3HXYQ1du9Ffyou4uR
+	 Gt48lYBCDDZCrgxOj5D//cygFa5Mp78NNGJTRz/VwlKVsk3CXpq14LSh36gHKspaYO
+	 cPWb2wBQ3W7dU5VKcXJCiyzOmKCkoLuorJKsIEJDr0y3E/3Ae36U+v0jEV4/Cw5mtj
+	 esj5Rp5+K8NZJNcg6jcmu7mvy3vNGs7uL+TlNcOBXetQDD8vcrBkRp7rT+5bxuCa3Q
+	 rz70lE8kQlXIWvOm+DQfAq/IehM2DdhIUCcievRXCq7dCpUglfvkbeEFqGa2NNAFfD
+	 0Fr4bElP0ZD4A==
+Received: from DebianDesktop.lan (p200300c69f1c3c0000000000000001c8.dip0.t-ipconnect.de [IPv6:2003:c6:9f1c:3c00::1c8])
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 857CA492B4;
+	Wed,  1 Jul 2026 05:42:51 +0000 (UTC)
+From: Birger Koblitz <mail@birger-koblitz.de>
+Date: Wed, 01 Jul 2026 07:42:51 +0200
+Subject: [PATCH 5/9] ax88179_178a: Add support for ethtool pause parameter
+ configuration
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <64e425ab-dddc-4221-81d3-3283e2961bea@oss.qualcomm.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260701-ax88179a-v1-5-13685df67515@birger-koblitz.de>
+References: <20260701-ax88179a-v1-0-13685df67515@birger-koblitz.de>
+In-Reply-To: <20260701-ax88179a-v1-0-13685df67515@birger-koblitz.de>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Birger Koblitz <mail@birger-koblitz.de>
+X-Mailer: b4 0.14.2
 
-Hi Konrad,
+The AX179A-based chips support pause parameter configuration.
+Make it available through ethtool ops.
 
-On Tue, Jun 30, 2026 at 02:37:59PM +0200, Konrad Dybcio wrote:
-> On 6/26/26 3:34 PM, Sumit Garg wrote:
-> > From: Sumit Garg <sumit.garg@oss.qualcomm.com>
-> > 
-> > Select PAS generic service driver to enable support for multiple PAS
-> > backends like OP-TEE in addition to SCM.
-> > 
-> > Tested-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com> # Lemans
-> > Tested-by: Vignesh Viswanathan <vignesh.viswanathan@oss.qualcomm.com> # IPQ9650
-> > Signed-off-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
-> > ---
-> >  drivers/remoteproc/Kconfig | 4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/remoteproc/Kconfig b/drivers/remoteproc/Kconfig
-> > index c521c744e7db..65befdbfa5f7 100644
-> > --- a/drivers/remoteproc/Kconfig
-> > +++ b/drivers/remoteproc/Kconfig
-> > @@ -210,6 +210,7 @@ config QCOM_Q6V5_MSS
-> >  	select QCOM_Q6V5_COMMON
-> >  	select QCOM_RPROC_COMMON
-> >  	select QCOM_SCM
-> > +	select QCOM_PAS
-> 
-> This is a NOP, SCM already requires QCOM_PAS
+Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
+---
+ drivers/net/usb/ax88179_178a.c | 67 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 67 insertions(+)
 
-That's true but I think we should rather have explicit modules
-dependencies whose APIs are being used by their clients. QCOM_SCM is a
-special module in this case exporting direct SCM calls apart from being
-the backend for the PAS service.
+diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
+index 16528d873e804fde5dcc27659048882eee1c3eaa..586c049c6f7422a853aeae5e9372ead3a6d106c5 100644
+--- a/drivers/net/usb/ax88179_178a.c
++++ b/drivers/net/usb/ax88179_178a.c
+@@ -956,6 +956,71 @@ static int ax88179_set_link_ksettings(struct net_device *net,
+ 	return mii_ethtool_set_link_ksettings(&dev->mii, cmd);
+ }
+ 
++static void ax88179a_get_pauseparam(struct net_device *net, struct ethtool_pauseparam *pause)
++{
++	struct usbnet *dev = netdev_priv(net);
++	struct ax88179_data *data;
++	u16 bmcr, lcladv, rmtadv;
++	u8 cap;
++
++	data = dev->driver_priv;
++
++	if (data->chip_version < AX_VERSION_AX88179A)
++		return;
++
++	bmcr = ax88179_mdio_read(net, dev->mii.phy_id, MII_BMCR);
++	lcladv = ax88179_mdio_read(net, dev->mii.phy_id, MII_ADVERTISE);
++	rmtadv = ax88179_mdio_read(net, dev->mii.phy_id, MII_LPA);
++
++	if (!(bmcr & BMCR_ANENABLE)) {
++		pause->autoneg = 0;
++		pause->rx_pause = 0;
++		pause->tx_pause = 0;
++		return;
++	}
++
++	pause->autoneg = 1;
++
++	cap = mii_resolve_flowctrl_fdx(lcladv, rmtadv);
++
++	if (cap & FLOW_CTRL_RX)
++		pause->rx_pause = 1;
++
++	if (cap & FLOW_CTRL_TX)
++		pause->tx_pause = 1;
++}
++
++static int ax88179a_set_pauseparam(struct net_device *net, struct ethtool_pauseparam *pause)
++{
++	struct usbnet *dev = netdev_priv(net);
++	struct ax88179_data *data;
++	u16 old, new1, bmcr;
++	u8 cap = 0;
++
++	data = dev->driver_priv;
++
++	if (data->chip_version < AX_VERSION_AX88179A)
++		return -EOPNOTSUPP;
++
++	bmcr = ax88179_mdio_read(net, dev->mii.phy_id, MII_BMCR);
++	if (pause->autoneg && !(bmcr & BMCR_ANENABLE))
++		return -EINVAL;
++
++	if (pause->rx_pause)
++		cap |= FLOW_CTRL_RX;
++
++	if (pause->tx_pause)
++		cap |= FLOW_CTRL_TX;
++
++	old = ax88179_mdio_read(net, dev->mii.phy_id, MII_ADVERTISE);
++	new1 = (old & ~(ADVERTISE_PAUSE_CAP | ADVERTISE_PAUSE_ASYM)) |
++		mii_advertise_flowctrl(cap);
++	if (old != new1)
++		ax88179_mdio_write(net, dev->mii.phy_id, MII_ADVERTISE, new1);
++
++	return mii_nway_restart(&dev->mii);
++}
++
+ static int
+ ax88179_ethtool_get_eee(struct usbnet *dev, struct ethtool_keee *data)
+ {
+@@ -1130,6 +1195,8 @@ static const struct ethtool_ops ax88179_ethtool_ops = {
+ 	.nway_reset		= usbnet_nway_reset,
+ 	.get_link_ksettings	= ax88179_get_link_ksettings,
+ 	.set_link_ksettings	= ax88179_set_link_ksettings,
++	.get_pauseparam		= ax88179a_get_pauseparam,
++	.set_pauseparam		= ax88179a_set_pauseparam,
+ 	.get_ts_info		= ethtool_op_get_ts_info,
+ };
+ 
 
-I would prefer explicit dependencies but let me know if you feel
-strongly otherwise.
+-- 
+2.47.3
 
-> 
-> >  	help
-> >  	  Say y here to support the Qualcomm self-authenticating modem
-> >  	  subsystem based on Hexagon V5. The TrustZone based system is
-> > @@ -230,6 +231,7 @@ config QCOM_Q6V5_PAS
-> >  	select QCOM_Q6V5_COMMON
-> >  	select QCOM_RPROC_COMMON
-> >  	select QCOM_SCM
-> > +	select QCOM_PAS
-> 
-> Likewise
-> 
-> >  	help
-> >  	  Say y here to support the TrustZone based Peripheral Image Loader for
-> >  	  the Qualcomm remote processors. This is commonly used to control
-> > @@ -282,7 +284,7 @@ config QCOM_WCNSS_PIL
-> >  	select QCOM_MDT_LOADER
-> >  	select QCOM_PIL_INFO
-> >  	select QCOM_RPROC_COMMON
-> > -	select QCOM_SCM
-> > +	select QCOM_PAS
-> 
-> This is OK
-> 
-> _however_
-> 
-> It leads to a situation where no back-ends can be enabled
-
-The TEE backend is enabled by default if ARCH_QCOM is enabled, if you
-agree then we can similarly enable SCM backend too.
-
--Sumit
