@@ -1,97 +1,95 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059DC3A785A
-	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 22:11:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7453A6411
+	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 22:14:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.45
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782943883; cv=pass; b=Ue1T/FM5IsIvEWZRfEuz1oruLKdintTQ1nb29n2Apm2H1TxtLNSavpfGEjrvvJ+XTTd4GbAuicFLYPE4jzrojdq/fCLF5sVLmZ6UgyqQZTTN0B3yKqWO9fd4xgwxa8MgecndXNxHUrRCUfUS532isOWlMTW2TzV/FJf6MzeJwrQ=
+	t=1782944068; cv=pass; b=jxRufovc+60Od0+X4lOBDvfXZeVKYphamQwMmUjAyiRBN0NUpC/YV9KGBOss8pC69nYdXuT2xEvrcHEZ1dNobVHEoAg5ATJaEbJQISVyTKRP8U52smnaE02NS4SgbfTmAOaH40p3Aa4OkHhRJHJ8ti1ikkv/4TirtFPzl7mODCE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782943883; c=relaxed/simple;
-	bh=Y1j1bpvmGP5+35l9oEg4Q67wsrvK7fTLzrmgfB/FeK4=;
+	s=arc-20240116; t=1782944068; c=relaxed/simple;
+	bh=9LjznsPm4SlUVd3KyUW7TfpnMRpfZadRiTB9bvXYEcw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=S6V7kypWKumn9ZgURAI1NDtk4xgl/IMF21O+UBy6sUw+yVPQoqc3LdqBotS5uZvJ+Gl1mIy5gW8e4RDU7UqtW2Lh2cCxZiP8SAAnHTrVbE36rMX8H0ubh4gO0QqqokGVizV8rVoz55IUbAfGpdjrND3MDBZI9xxv3TqeswpAKRc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lv4aBDMj; arc=pass smtp.client-ip=209.85.208.43
+	 To:Cc:Content-Type; b=Ei+Su3h1kftk0ttOnDq3T7OfPzDjwMVNaIt7G9QMxN9+ZVl4eYUDVrYwi9EEgX9G3nsOVOg3cJgFzfMQtuGfziqkkRTd3mzYyXaQbx63t5nq5th3EOySx0lnioMsHzEvPQ4FIGoWc6a+wzUTHYJLUuti7eqdmjNGvaLlJrQGB5A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RWvo8frp; arc=pass smtp.client-ip=209.85.208.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lv4aBDMj"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-697cee2eb6dso1061442a12.0
-        for <netdev@vger.kernel.org>; Wed, 01 Jul 2026 15:11:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782943879; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RWvo8frp"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-697ce8cfe65so2103606a12.3
+        for <netdev@vger.kernel.org>; Wed, 01 Jul 2026 15:14:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782944065; cv=none;
         d=google.com; s=arc-20260327;
-        b=DLUB3ZxsYtSEELomVz8HrahIeK2plBBpAsPyjP0hLcXEzhsseleyq6fILM4UsDqdWx
-         TSIxHWIdlH58xexm+yLt38bA6B9zVUIwE49om4SiLjKXbxPvjiMMds6JF/sJbCDtDGUY
-         Oh+qnkjiiUE/ekFEWrwZzwzv+46Ff46zljtBi+NjKK2y3BUT4haZajKOh+TZxWi1fwTD
-         QbmsbbyGDMGhbIW2K0lV3jLMNqZD6CITO0LiO1kq+9BvhCTtDS9X1EPzUKg/Kkusbtgk
-         b3P5oGF7FjoU6RzAdgTGNpT3i7+uFCCGRmUds0jIKOtzkmgH+AYf8sc40512pmd8ABTV
-         khJQ==
+        b=J5unc7cvgYnLfm42tB4kW1sqkAU6DcT+VqdJ0Xqu/PqB6zD2zlNlpiSAzX7pr4pnDT
+         d/ZztSBiPUKJiIQrZT77/LxoGKlujXyE8fmR+C3x10G1tnKTbITJD1R57B/rtCgag/Oj
+         kWoYt4y8Li89A+psdiyFhImgL+n0vfEr0meQxNHoD+oPYMvttEnb5aU2aXriQMmYKjn/
+         BCgxhW2ZdwuaAQrhc1KD6tEAtI/JYHs1ZojHvV7kKscNbgWjDqhBhnkPoDq/CCAxBDS3
+         B0i/PK/eYgI6MFTqsmVww3sNCDc27QD045W306ldAERUE85hBsap6hDPrnBJ3z+jJ56P
+         aUkA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=mpSAZT8hP6uCJbYSVbjAf+76xNY/Ff4h2/wHxdlMB6I=;
-        fh=gg5jFdsLDNc8WNla/X7dyb+OjoASzSgNc+FRQgCB8WU=;
-        b=IkDqY4G8kweMPzPVB4Th2OtGWcQEFJyWOdl8WCC4G3z1LiQq3cbjBVCNl7uyp/pPOR
-         ol6ZfAtBxgYvjlxI1PR2k49MLVEKTrME+maAhv0Q+HZDHJrkldxPcTxwscm2st98Wrey
-         HRf+Ri534rw/ehsknI3ErhiW2/di//KtQoRBwNkpJQv4epYACVPdi9R1zQ24fuR/+WUg
-         umdQLV+sNAaXC822MQUNfvmjIcpUDEPWt2ldbWd1/ZDbPBYs4G3mhpizuKt3kCFkgu9r
-         dtfRsPeXW7CF6Ao9BbzG9rEzhg1/LTCNAv8uFPH0fw01TQEl33StNSK9mjicJzHa/tmA
-         xnFA==;
+        bh=6tJMm8pjeN1npzA3k7JqmvYhhfH3Iv6sGcCtY9C+w58=;
+        fh=5H2Bu6KWt4hCHs4awdWzOSdHMtDz8wP9vtex26FM7v0=;
+        b=sovxaga0Rlk41koYJprZuuehVzK7sDccdN4L+4reO7fn8Koln/rQPYE/yjDxUpIRUe
+         hGS0CACNDuwkowzkun2bNT8a+9AiZKzMtehC4ZX34v53qlkwqAy/NU3IAM91s1hs77ke
+         4kK4kZgpXfNC1a6HguBJj03HvXrDlWmR7/f7K8lXrf6n3JS9NsP3cUcwM+mvXL88pNL4
+         AbZbhu9t2C7Md0tqXCUCfPBmYa16zoBRA2UR2+pCZEAPwUU8FHuCYkjRccms1kz8F1Ta
+         HUlfS9Rjr/ef3SzT7jEOIkRkgHKHeqr7mp3TfsFNmQ5Hyzi07gNAp47EfTAB262yfsXx
+         XQuA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782943879; x=1783548679; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=mpSAZT8hP6uCJbYSVbjAf+76xNY/Ff4h2/wHxdlMB6I=;
-        b=lv4aBDMjkeg7Oe6lmQ90fsYZsRF5nZambL6kJAWHxz6IZNHVWdygusk+aw9+hQMIhC
-         tK9S4LLs1sSAJ+SBi0CcMHnSd+ibg8ClcdX0k89xcxvKdJdz6HKDPhloNU1xC3PgVHna
-         vE1hPkRR1996uU6wPjNLV5Qyy8MXkck+PWhZf6QfBjDEC3YeMyyIIMfcwB1ArRq5kA7s
-         DHLkLJG7mIupyqK4Mzz+OKTE8VLIGQhi5VV1j8mj0d5pZ9spqHsEiyZnrd/SNDZJlZMt
-         0s5j3AM3vPiWlzGuZZlI2qQ5AcLpJMfHUdSm7MNHcoDYVJoVHRKcDcZkv2fiWFQ54Sku
-         vVFw==
+        d=google.com; s=20251104; t=1782944065; x=1783548865; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6tJMm8pjeN1npzA3k7JqmvYhhfH3Iv6sGcCtY9C+w58=;
+        b=RWvo8frp8rHaQ+oHHQmHGJAwksDCPnz9Bz3iGi2QhGNrdFIZsVtoAVwxgwOYH1RnWu
+         waVPXlOWuSdxrvPvwkhRzP6/2h3bMXCIC5lhSUV0JAW/huxMTHjdxNz6mQNHWOuHUNie
+         x0/+daJ2F9zdRscqX7K5wZ7wfTJl6vfpRQTQRWjbWIA6S3ZBebRc+s///C76Qaw2uU26
+         EYMrhBRqqcCsT4WZQL45q+TiJYYY6XFCJlzegjklISwyT8vkZ6SqvcucRVTnys2dFA4k
+         kRbv766akyOWo1FRu1cpExsE/gSBQnJoPbyWjQQ2FNQf3z6HInG3ZWfCLVyrwpdJyJz3
+         4E/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782943879; x=1783548679;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mpSAZT8hP6uCJbYSVbjAf+76xNY/Ff4h2/wHxdlMB6I=;
-        b=h9ugnyzZH7NFQhc6nlFrl+BdKB3vUgD3vzpAlIyg8ZpTeN8UuiiZjFNXcZj/MPBjDA
-         DbP+Wh1a4Mbs0xA21KBirrD1MgIWTZu01qjQ1Q6ZNI11PXWEUq3J3luNBZS2vpPKBpT7
-         kohbPUpUdbucLCWMEa28MjZzi6XDzV/xi7MXt1Xp8lf1a2MYaHOyBoaWQKg7WzQ9evR+
-         DV0AvXBGkecgvd+DqdV2NrSk2KFR5Uy2Zo9nrtmmTi9wHRyI9qDYKgDaNRueEVBS7Gjh
-         gQEDP0FBgHZ79AbIXOVLs57SJDvxvlLbzon1HnLVA3Y2YWSWqdNPJICEP1LFluwtAsHr
-         Glgw==
-X-Forwarded-Encrypted: i=1; AHgh+Rp0aqYAdpiUvJDRPAbLNgEgYewB90mOBoQt90chnfsG/ZNPWBMvH9ZfpYtRg3qSS2fCJ46/j0A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSvPplPa7688lZStn0xPaU2BRrcOpZOfOxqKmA2obvC8OuMzpJ
-	0ER91ngowqFHzC3sCIvS/b9kG2gh7PQBfeR6Quw1lrd0tyIdZDmg8tMnT9K0Ojjwzgm8YttCN3R
-	5QT6qIuxHQjOqdxbNAlnpGEUaELm6fUIY+dN+kTb9
-X-Gm-Gg: AfdE7cksoU50S95L67I/8OIAPmxoIZhaA047ZaLQ0vxfy0oqnKOlX5eBkt6csAjqsZv
-	twBZ2JnHj361JWp3+KYn8Fzr3dxOWPwc1vexXMBfbQ2QoeNIrN6bWBFA0Bdcm29hYWXil16mSjR
-	D4QNCF/NhVC7TLqvC9o6Lfj8oDjeyrm/YetC+2Zt16M+8u7QRe7Y7jaCNJ9PxiDf7ZPc9CNVldz
-	c5lxlCDSfog7mTapbticQQTCHugKYI3kD5fRm+PfzcG5UIfLXl5YaGMINJOjjPgHbjulzVw9Z2S
-	F/+LCLQceV11C/0PeJlECRVk5ewtj3SrQvZPt/OODpDXioD1UiLoq/rwe3TdYrXRrXQgYpPpUs2
-	OU2od28s9oMCw4quLc9D+fBUMLuxiS7rvyCLWQzAhOw==
-X-Received: by 2002:a05:6402:1946:b0:698:81ab:c506 with SMTP id
- 4fb4d7f45d1cf-698a2cf943dmr973293a12.39.1782943878647; Wed, 01 Jul 2026
- 15:11:18 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1782944065; x=1783548865;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=6tJMm8pjeN1npzA3k7JqmvYhhfH3Iv6sGcCtY9C+w58=;
+        b=czg10f06Hh7PTHIdov3JbBoDKE0ZebqLeC6k3eFmAYUJUQ54j+oGtqvkQRU1gZ5s4v
+         1lAfVxTTXcRNyluqEgmtUb/WCdzRusX0a0NzyjuefNsXhguMtOdOI9HYCMk/abeBpZ0y
+         tPA7+11i4whcEntcFX14iJjNlzQnJkeErxYrpeCou4H7oT65+wxapjfd95JM3K6sRuO+
+         l6aHidA/VVIYaguYGquBw8gRxZvimusuFO0Rk4FySsa0YWkKggN8hwXxmduS7yePU2y0
+         MDYB9InKWSpWXbcxbgczclBtExAcBQPAsUWQvWxi+4JS+q4UUJpWGVbJi53kWPQH5US4
+         LmTg==
+X-Forwarded-Encrypted: i=1; AHgh+RoKSJR3LWeY1F51wmkB8LbGBZjG+2CifNyv7u2S5jwmAO/aieFf+Wqtm0ZSdt5u8p3x8B1qppU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9132cZKa6bQOOFycX5YsI4zceDKHCiwbXKHCoW3S2GGkvFj36
+	/5uTVa2LJjo9b9gN0S7o3xQQ7F/vWBSleiZP5YUxVV91Id6JvkZPiWgjJvSZH9S0twZYqsl8TUs
+	BW7x6pK97UqExAigexzxshNIH2NGlpRX+t57YSC1w
+X-Gm-Gg: AfdE7ckM5KmomIPKFY4ey9EL8oqrTV7p+FQs9esPodzpDRRYxQrcZSRHiswW1Hq/wtX
+	ATYifQnC7R9WAjjnnpika1GshVMvxI0WpsOBjkRFeBUh8q7Ye8HQaRB92mRqwYEm03vcmppBoFU
+	q8Le04Y7BsTeGnQuLH+mrhSeRNwDcGQ24qVNX4UF9RduzDQtJ7dViD93QOVvnFyEEYdjrj6lPFI
+	EtSYORkAU1ln+y3GRyekYl2ZF2UqV4Qd6pEEOPYVSly+OEmYdk8He9QS9SPHM8Ci0q8/D8LuvS4
+	iOhuOtqzUrJXi8mK7+70+xZ+JJ6u6wcKNfqWRF+M9ezhjvtLU2nwSfnLY29RFouXm/BRJGSjawB
+	yzbQr22tnAOiCPzcH9OtrwUgR3UnuBgPiF+OGyEJ7Tw==
+X-Received: by 2002:a05:6402:35d4:b0:697:be0e:4b72 with SMTP id
+ 4fb4d7f45d1cf-6989f2ec718mr1706177a12.1.1782944065189; Wed, 01 Jul 2026
+ 15:14:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260701082214.2974946-1-edumazet@google.com> <20260701082214.2974946-2-edumazet@google.com>
- <cbdc27c1-0fa9-4e4a-96ee-82309b58414c@blackwall.org>
-In-Reply-To: <cbdc27c1-0fa9-4e4a-96ee-82309b58414c@blackwall.org>
+References: <20260701082214.2974946-1-edumazet@google.com> <20260701082214.2974946-3-edumazet@google.com>
+ <3f70661e-539a-4157-9e5f-1ee94a720519@blackwall.org>
+In-Reply-To: <3f70661e-539a-4157-9e5f-1ee94a720519@blackwall.org>
 From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Wed, 1 Jul 2026 15:11:04 -0700
-X-Gm-Features: AVVi8CeV6Nm6Uw284HdjdVedLb593_YDJMzp9mKmBneSLnL0VEDI-8BZtHLI4Xw
-Message-ID: <CAAVpQUCK8a91w4wMY-COXDGRVvGYM1KAKz8e8WD49+CMf_Fc2g@mail.gmail.com>
-Subject: Re: [PATCH net-next 1/2] macvlan: annotate data-races around
- vlan->mode and vlan->flags
+Date: Wed, 1 Jul 2026 15:14:11 -0700
+X-Gm-Features: AVVi8CdngDweFELt6BJqrVpj67inCDDKWn3TJgBvq4Nxt7XP3BH-FbqUVIEB2aQ
+Message-ID: <CAAVpQUAQBrd9gH_EavP2DytLaheGFfAuAwZNS-jUWjy58Hxp1A@mail.gmail.com>
+Subject: Re: [PATCH net-next 2/2] macvlan: no longer rely on RTNL in macvlan_fill_info()
 To: Nikolay Aleksandrov <razor@blackwall.org>
 Cc: Eric Dumazet <edumazet@google.com>, "David S . Miller" <davem@davemloft.net>, 
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
@@ -99,21 +97,57 @@ Cc: Eric Dumazet <edumazet@google.com>, "David S . Miller" <davem@davemloft.net>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 1, 2026 at 5:09=E2=80=AFAM Nikolay Aleksandrov <razor@blackwall=
+On Wed, Jul 1, 2026 at 5:12=E2=80=AFAM Nikolay Aleksandrov <razor@blackwall=
 .org> wrote:
 >
 > On 01/07/2026 11:22, Eric Dumazet wrote:
-> > Both fields can be changed in macvlan_changelink() while being read
-> > locklessly.
+> > Add READ_ONCE()/WRITE_ONCE() annotations on vlan->mode, vlan->flags,
+> > vlan->bc_queue_len_req and port->bc_cutoff.
 > >
-> > Add READ_ONCE()/WRITE_ONCE() annotations.
+> > Fill IFLA_MACVLAN_MACADDR_DATA nested attribute and compute
+> > on the fly the precise number of elements we put in it,
+> > to fill an accurate IFLA_MACVLAN_MACADDR_COUNT attribute
+> > as some user space applications could depend on its value
+> > and the attributes order.
 > >
 > > Signed-off-by: Eric Dumazet <edumazet@google.com>
 > > ---
-> >   drivers/net/macvlan.c | 38 +++++++++++++++++++++-----------------
-> >   1 file changed, 21 insertions(+), 17 deletions(-)
+> >   drivers/net/macvlan.c | 71 +++++++++++++++++++++++++++++-------------=
+-
+> >   1 file changed, 48 insertions(+), 23 deletions(-)
 > >
 >
+> The snippet that sets macaddr_count gave me pause. :)
 > Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
 
+same here :p
+
 Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+
+
+>
+> [snip]
+> > +
+> > +     if (READ_ONCE(vlan->macaddr_count) > 0) {
+> >               nest =3D nla_nest_start_noflag(skb, IFLA_MACVLAN_MACADDR_=
+DATA);
+> >               if (nest =3D=3D NULL)
+> >                       goto nla_put_failure;
+> >
+> >               for (i =3D 0; i < MACVLAN_HASH_SIZE; i++) {
+> > -                     if (macvlan_fill_info_macaddr(skb, vlan, i))
+> > +                     cnt =3D macvlan_fill_info_macaddr(skb, vlan, i);
+> > +                     if (cnt < 0)
+> >                               goto nla_put_failure;
+> > +                     macaddr_count +=3D cnt;
+> >               }
+> > -             nla_nest_end(skb, nest);
+> > +             if (!macaddr_count)
+> > +                     nla_nest_cancel(skb, nest);
+> > +             else if (nla_nest_end_safe(skb, nest) < 0)
+> > +                     goto nla_put_failure;
+> >       }
+> > -     if (nla_put_u32(skb, IFLA_MACVLAN_BC_QUEUE_LEN, vlan->bc_queue_le=
+n_req))
+> > +     *(u32 *)nla_data(attr) =3D macaddr_count;
+> > +
