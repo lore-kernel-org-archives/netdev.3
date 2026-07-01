@@ -1,31 +1,52 @@
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897F7224AF2;
-	Wed,  1 Jul 2026 19:31:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 850814252BF;
+	Wed,  1 Jul 2026 19:33:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782934314; cv=none; b=d2yfVGLekPq7kmrBJz5hs4RnCwTSUuBu7wDbxz16AjPx7waorZwKchqgozoht1TMkYQE6Wk32pQkaEJYeRpLL4/QaUS/mPL3iKZGbQpwiaSCzmaVAkG6ZADqJnLyDtJ//PsknM9dYfpTGzCagNwe+38fpucN4wd41rGBARI3s8E=
+	t=1782934395; cv=none; b=CcOPCwhwutJNWg/8uxMwrCiLrbQPkNcy2by2y5/gE3DCdtOon9QRTsR3RjiZLkKDg65N4DeLpQATNktHwTfjcXrSa1UxiGObZENh+c/pQJox2NmS81GX/Zd5R9p9n3XTcOk3rIu7DmnhIunLGibUzd/iDFdzZvwpDjPre8w8eMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782934314; c=relaxed/simple;
-	bh=mLzcRSnztu80B3fI2V8y3dsoxit704VRlvjta6+On38=;
+	s=arc-20240116; t=1782934395; c=relaxed/simple;
+	bh=VgWJ83UthhnAvdr5Eoj2uXpaRt7ZDKNwQ8no4cpjcqU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NIiaGtgH21D9+rMlObLAX90F6V3CYoyCEvkHA4CZaG7Ahvqi6mznRL0nntjsqkwj9IzLFwEdWykDl7G3TLs3Jx7BmzNKi6WzkMj0p7i7DQuwD4wBiS4jBdJaPqT+UyaszSHD64ONtpTb4K6OO7imtoOzbm3pm2ZVl/E7RNVEm9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
-Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
-	id 1EB2060543; Wed, 01 Jul 2026 21:31:45 +0200 (CEST)
-Date: Wed, 1 Jul 2026 21:31:39 +0200
-From: Florian Westphal <fw@strlen.de>
-To: Melbin K Mathew <mlbnkm1@gmail.com>
-Cc: pablo@netfilter.org, netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH nf] netfilter: nft_set_rbtree: reject interval-end get
- for open intervals
-Message-ID: <akVrG9sRqSDPbkXb@strlen.de>
-References: <20260630155507.92815-1-mlbnkm1@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=UH7iYlg3uBG2191prMMv7XeStmmEmJ+kRav5dqev6oVUyl370U7zpejvJSyYM8kJgAj6tJtmYVNs6NeQEuV2cTX5pnQiTbZb1rmFSpKwBccyTGarJvW4mgyRoPmeoUHxjo2x0/UbXCUKVe7DOOpKSpIkwMFQIAKmW/FYvvkICAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MhLYFGI/; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MhLYFGI/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB78F1F00ACF;
+	Wed,  1 Jul 2026 19:33:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782934393;
+	bh=y4PTITJeaNIkozE3meEc+/LOStBuvpZ1F0k6rTLYgIc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MhLYFGI/EzKuP0AVdYS4aO1EMqKxNLXd2UtHw+U00joiFOhrJAEyjvIl0cvJ6T6Qg
+	 fW5ng+J7F6CL6oYjPneYixOL0SNKMctoP/Q2wnskcH0qzocOhKL93CfIH1NJlFQvaI
+	 E9Mfg4QqkMhtKDhW2CxtmLPxDJQvJ19SOn5+5NJUZ4xgajSqShtMk2Q40EUfwf2CGi
+	 jeOK6uIld3FhNMt6Az2A5lj0hPSwl0M0Fpti4OPF49D9Nyq9bPYBXBvUmEeZoz2sF6
+	 lgHBrjryZeYyqieAhnFf60lYg8NPtmjrFnD66oSKqaK6hF0Y+GgiBlCF3EsUG7zL2M
+	 ekVorbgfO2pMg==
+Date: Wed, 1 Jul 2026 14:33:11 -0500
+From: Rob Herring <robh@kernel.org>
+To: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+Cc: Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Chun-Jie Chen <chun-jie.chen@mediatek.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Edward-JW Yang <edward-jw.yang@mediatek.com>,
+	Richard Cochran <richardcochran@gmail.com>, kernel@collabora.com,
+	linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
+Subject: Re: [PATCH 02/15] dt-bindings: clock: mediatek: regroup MT8188
+ dt-bindings into MT8186
+Message-ID: <20260701193311.GA1402559-robh@kernel.org>
+References: <20260701-mt8189-clocks-system-base-v1-0-2b048feea50a@collabora.com>
+ <20260701-mt8189-clocks-system-base-v1-2-2b048feea50a@collabora.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -34,85 +55,31 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260630155507.92815-1-mlbnkm1@gmail.com>
+In-Reply-To: <20260701-mt8189-clocks-system-base-v1-2-2b048feea50a@collabora.com>
 
-Melbin K Mathew <mlbnkm1@gmail.com> wrote:
-> nft_rbtree_get() uses the interval endpoint selected by
-> nft_array_get_cmp(). For NFT_SET_ELEM_INTERVAL_END requests, the function
-> uses interval->to to recover struct nft_rbtree_elem.
+On Wed, Jul 01, 2026 at 03:11:07PM +0200, Louis-Alexis Eyraud wrote:
+> Regroup the MT8188 clock and system clock dt-bindings into MT8186 ones
+> to ease maintainability and have common files for several currently
+> supported SoC or new future ones, that have the same kind of clock
+> controller design.
 > 
-> Open-ended intervals can have a NULL end endpoint. In that case,
-> nft_array_get_cmp() treats the missing endpoint as b = -1, which can
-> still match an interval-end query. Avoid deriving an element pointer
-> from a NULL endpoint and report the element as not found instead.
-> 
-> Return -ENOENT for interval-end requests against open-ended intervals.
-> 
-> Fixes: 2aa34191f06f ("netfilter: nft_set_rbtree: use binary search array in get command")
-> Signed-off-by: Melbin K Mathew <mlbnkm1@gmail.com>
-> ---
-> Notes:
->   A reduced userspace model confirms the comparator returns match for a
->   NULL-ended interval when NFT_SET_ELEM_INTERVAL_END is set, and that
->   container_of(NULL, ext) produces a garbage pointer (UBSAN fires).
-> 
->   I have not reproduced an end-to-end crash through normal nft CLI usage.
->   An instrumented WARN in this branch did not fire during interval-set
->   tests with nft add/get/list. The patch is a defensive fix for the NULL
->   endpoint case.
-> 
->   Tested on 7.2-rc1 with KASAN and UBSAN enabled. Function tracing
->   confirms nft_rbtree_get() is reached via nft get element. The added
->   guard returns -ENOENT for a NULL interval endpoint in the instrumented
->   test case.
-> ---
->  net/netfilter/nft_set_rbtree.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
-> index 018bbb6df4..024a2cd3a6 100644
-> --- a/net/netfilter/nft_set_rbtree.c
-> +++ b/net/netfilter/nft_set_rbtree.c
-> @@ -184,10 +184,13 @@ nft_rbtree_get(const struct net *net, const struct nft_set *set,
->  	if (!interval || nft_set_elem_expired(interval->from))
->  		return ERR_PTR(-ENOENT);
->  
-> -	if (flags & NFT_SET_ELEM_INTERVAL_END)
-> +	if (flags & NFT_SET_ELEM_INTERVAL_END) {
-> +		if (!interval->to)
-> +			return ERR_PTR(-ENOENT);
->  		rbe = container_of(interval->to, struct nft_rbtree_elem, ext);
-> -	else
-> +	} else {
->  		rbe = container_of(interval->from, struct nft_rbtree_elem, ext);
-> +	}
+> Note:
+> The `#clock-cells` property is a required property for all compatibles
+> declared in MT8188 clock and system clock dt-bindings but not in MT8186
+> ones.
+> To avoid ABI breakage, conditional blocks to check this requirement
+> for MT8188 compatibles are added, rather than enforcing it for MT8186
+> compatibles.
 
-Hmm, I don't think the query should have returned a match in the first
-place, i.e. we should have left via (!interval || ... condition.
+If the existing DTs are just wrong, then I would just make #clock-cells 
+required. But please update the .dts files so the warnings don't grow.
 
-Pablo, could you please have a look?
+The grouping I would do here is:
 
-I suspect we want something like this:
+- clock controller only
+- reset controller only
+- both clock and reset controller
 
-diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
---- a/net/netfilter/nft_set_rbtree.c
-+++ b/net/netfilter/nft_set_rbtree.c
-@@ -150,10 +150,12 @@ static int nft_array_get_cmp(const void *pkey, const void *entry)
- 		b = memcmp(ctx->key, nft_set_ext_key(interval->to), ctx->klen);
- 
- 	if (a >= 0) {
--		if (ctx->flags & NFT_SET_ELEM_INTERVAL_END && b <= 0)
--			return 0;
--		else if (b < 0)
-+		if (ctx->flags & NFT_SET_ELEM_INTERVAL_END && b <= 0) {
-+			if (interval->to)
-+				return 0;
-+		} else if (b < 0) {
- 			return 0;
-+		}
- 	}
- 
- 	if (a < 0)
+That should avoid any if/then schemas.
 
-When userspace asks for end interval, but we have an open interval,
-then cmp callback shouldn't indicate a match.
+Rob
