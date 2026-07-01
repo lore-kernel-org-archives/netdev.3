@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9DB2D063E;
-	Wed,  1 Jul 2026 13:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2CF127B353;
+	Wed,  1 Jul 2026 13:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782914261; cv=none; b=ElDbLKxKTkckoaIG1iCBTbeaOmXTS4MO4kgmjhYO9G7+Mg+r7Ze6vh8nmjBz52LbLjvg344Fn9NN1YbTarurhwMCiT8XuJuMeuGcCsjrNmFv00/cG0JblbqATqsv0Fopb8xM5HtkyXjP42KIdQrogtSCCAbwObiTgFrZnNK1SLg=
+	t=1782914356; cv=none; b=lCZz2t6kmisiOnWOSD2bFC8eIHU8Wruj5kM8K21eWfhVDoRenuvzPm/jRgx0EdtNdUREma1Q/kPpNCtGnho7Mz3JA+1JGuLVEZ0ud+96UwVh0GrjFJoEMCdoVBJHr072wC10VGbutCqQO6FKnEsoEY8K6cd/ln+ed9EPs867atA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782914261; c=relaxed/simple;
-	bh=ppZhTeXg9gmO+8PaxwWk0ZxukXOZQZ0VH6QiMrC0kyw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=YUymWs+sJ+WjxECfF4f12cyU0KRNCEvAp8q7IOrvQU04A7Yg1scf86E7PfUREtLZnwrLtbWyHXXBNtaEDOjQ6pVNaipl7bL051IKkQu3oPMHUz9dGRoT6ZN/jFNJ8QBkPRbX6q62FY5TBePSF5NRqto6Tyj3w75j8qHw7S0cmn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JjiUo+I1; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782914356; c=relaxed/simple;
+	bh=b2o/Gm9lcosREEItsHlflwLY3iaZob3hfsur+AmRd4U=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=WYEkNjVHvciW6VZ5qLIbes1Qtx4va9zeDO4+88Fnp5ErNWogyD2iExMrcBoXjngty+7NGbBk1xSQSaSTkWQaGEaJKiA2h0YxmF+htXmPwfAOXIBU9EXvlw+sNs06KPI3dmFfpCIj/NtWz4rLVeN+y/JGqqZVpEd0INLCrjxpgwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vlm+1lqn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JjiUo+I1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB66B1F00A3A;
-	Wed,  1 Jul 2026 13:57:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vlm+1lqn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14DD11F000E9;
+	Wed,  1 Jul 2026 13:59:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782914260;
-	bh=qVNG6A0QrvVc3Q5VGETu2ZNN6OFwwV/HGShrasBWJk4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=JjiUo+I1MUHxEgU3cQbZI86Y6WHaDCOxBbtbySGtgnRUKHqnTTFt5JN/+yZbEvPqb
-	 BhROnNLTi+nMcez+8v1Nto6/1KuUqnMd3qAXMJe2sqM8PayfcKz0sjU9kLPVgKUl7g
-	 zvtzpJwqFk+YJo/2kc6qaz+Cr8TE47gB8TD7KbFle63Z/yJvJeh61z7zwar0G+jPIp
-	 bVXz0dHzWlX0v/ImjFLGHVpGMuKGgVPJyGugLUOiKm34jrgQaMQyUftl0SDvVjkXbb
-	 4wdni/3VNT2ldqBHT7XKnGSXy7AZ0k0+OLvP1JJn8yHLXktr+nMzN81mcn1K3TyjPH
-	 ayilUm7MHnf9A==
+	s=k20260515; t=1782914355;
+	bh=LpfnkoRQ/FIEnyqT9WtrevlR/4ONd3yok9y5wj54j9M=;
+	h=From:Subject:Date:To:Cc;
+	b=Vlm+1lqnw0+3/DGTRCUIaNB1c1zYGlJAGjdv2/E5QfdeDDPjsHdM1kPXDdHsF5YGN
+	 3x+fE/ceoDxA2tEV8/6vz4ccOiZvAE/g9lTu2ggMVY1LIdW3rhPgzy/P4cP/22X4BB
+	 e933TZn2T+RhdEai0fwPXAXP4mxuvEnuJzpZf1423uKckJhVeWxNLhNyPKFFLugtpO
+	 ibOOET9A4lUzyeY0V052OdR+CYiehh/YbhQXoMUgjvT6n8e6TkvedxIdZ2xmNyoGyM
+	 6CYy+C1j1qyNX5QZjxiIaInB2gjnLS2PpWBJqFvMmZS3sqI03ko3i7uEC6tFbztQqh
+	 BEVYL8FVMTU4w==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Wed, 01 Jul 2026 16:57:21 +0300
-Subject: [PATCH 4/4] sfc: use kmalloc() to allocate logging buffer
+Subject: [PATCH 0/4] drivers/net: replace __get_free_pages() with kmalloc()
+Date: Wed, 01 Jul 2026 16:59:09 +0300
+Message-Id: <20260701-b4-drivers-wireless-v1-0-60264cdf2efe@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,86 +37,77 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260701-b4-drivers-ethernet-v1-4-58776615db6e@kernel.org>
-References: <20260701-b4-drivers-ethernet-v1-0-58776615db6e@kernel.org>
-In-Reply-To: <20260701-b4-drivers-ethernet-v1-0-58776615db6e@kernel.org>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Manish Chopra <manishc@marvell.com>, 
- Paolo Abeni <pabeni@redhat.com>
-Cc: Edward Cree <ecree.xilinx@gmail.com>, 
- Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
- Sudarsana Kalluru <skalluru@marvell.com>, 
- Tony Nguyen <anthony.l.nguyen@intel.com>, Mike Rapoport <rppt@kernel.org>, 
- intel-wired-lan@lists.osuosl.org, linux-kernel@vger.kernel.org, 
- linux-mm@kvack.org, linux-net-drivers@amd.com, netdev@vger.kernel.org
+X-B4-Tracking: v=1; b=H4sIAC0dRWoC/yXMwQrCMBAE0F8pe3YhxjSgvyIesunWrkiU3VqF0
+ n830eMbZmYFYxU2OHUrKC9i8igV+10HeUrlyihDNXjno4sHhxRwUFlYDd+ifGcz7P0x9D6MiUK
+ Eunwqj/L5vZ4vf9uLbpzndtUalIyRNJU8tagRtu0LbS7gOI4AAAA=
+X-Change-ID: 20260630-b4-drivers-wireless-5294524fab46
+To: Johannes Berg <johannes.berg@intel.com>
+Cc: Brian Norris <briannorris@chromium.org>, 
+ Francesco Dolcini <francesco@dolcini.it>, Jakub Kicinski <kuba@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, b43-dev@lists.infradead.org, 
+ libertas-dev@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-mm@kvack.org, linux-wireless@vger.kernel.org, netdev@vger.kernel.org
 X-Mailer: b4 0.16-dev
 
-efx_mcdi_init() allocates a logging buffer for MCDI firmware
-communication diagnostics.
+This is a (small) part of larger work of replacing page allocator calls
+with kmalloc.
 
-This buffer can be allocated with kmalloc() as there's nothing special
-about it to go directly to the page allocator.
+My initial intention a few month ago was to remove ugly casts [1], but then
+willy pointed out that Linus objected to something like this [2] and it
+looks like more than a decade old technical debt.
 
-kmalloc() provides a better API that does not require ugly casts and
-kfree() does not need to know the size of the freed object.
+Largely, anything that doesn't need struct page (or a memdesc in the
+future) should just use kmalloc() or kvmalloc() to allocate memory.
+kmalloc() guarantees alignment, physical contiguity and working
+virt_to_phys() and beside nicer API that returns void * on alloc and
+doesn't require to know the allocation size on free, kmalloc() provides
+better debugging capabilities than page allocator.
 
-Performance difference between kmalloc() and __get_free_pages() is not
-measurable as both allocators take an object/page from a per-CPU list for
-fast path allocations.
+Another thing is that touching these allocation sites gives the reviewers
+opportunity to see if a PAGE_SIZE buffer is actually needed or maybe
+another size is appropriate.
 
-For the slow path the performance is anyway determined by the amount of
-reclaim involved rather than by what allocator is used.
+For larger allocations that don't need physically contiguous memory
+kvmalloc() can be a better option that __get_free_pages() because under
+memory pressure it's is easier to allocate several order-0 pages than a
+physically contiguous chunk with the same number of pages.
 
-Replace use of __get_free_page() with kmalloc() and free_page() with
-kfree().
+And last, but not least, removing needless calls to page allocator should
+help with memdesc (aka project folio) conversion. There will be way less
+places to audit to see if the user was actually using struct page.
 
-Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Also in git:
+https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git gfp-to-kmalloc/drivers-net-wireless
+
+[1] https://lore.kernel.org/all/20251018093002.3660549-1-rppt@kernel.org/
+[2] https://lore.kernel.org/all/CA+55aFwp4iy4rtX2gE2WjBGFL=NxMVnoFeHqYa2j1dYOMMGqxg@mail.gmail.com/
+
 ---
- drivers/net/ethernet/sfc/mcdi.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+Changes in v2:
+- split out wireless drivers from a larger set 
+- use kzalloc() instead of kmalloc() + memset in b43legacy
 
-diff --git a/drivers/net/ethernet/sfc/mcdi.c b/drivers/net/ethernet/sfc/mcdi.c
-index e65db9b70724..b806d3d90c42 100644
---- a/drivers/net/ethernet/sfc/mcdi.c
-+++ b/drivers/net/ethernet/sfc/mcdi.c
-@@ -7,6 +7,7 @@
- #include <linux/delay.h>
- #include <linux/moduleparam.h>
- #include <linux/atomic.h>
-+#include <linux/slab.h>
- #include "net_driver.h"
- #include "nic.h"
- #include "io.h"
-@@ -71,7 +72,7 @@ int efx_mcdi_init(struct efx_nic *efx)
- 	mcdi->efx = efx;
- #ifdef CONFIG_SFC_MCDI_LOGGING
- 	/* consuming code assumes buffer is page-sized */
--	mcdi->logging_buffer = (char *)__get_free_page(GFP_KERNEL);
-+	mcdi->logging_buffer = kmalloc(PAGE_SIZE, GFP_KERNEL);
- 	if (!mcdi->logging_buffer)
- 		goto fail1;
- 	mcdi->logging_enabled = mcdi_logging_default;
-@@ -112,7 +113,7 @@ int efx_mcdi_init(struct efx_nic *efx)
- 	return 0;
- fail2:
- #ifdef CONFIG_SFC_MCDI_LOGGING
--	free_page((unsigned long)mcdi->logging_buffer);
-+	kfree(mcdi->logging_buffer);
- fail1:
- #endif
- 	kfree(efx->mcdi);
-@@ -138,7 +139,7 @@ void efx_mcdi_fini(struct efx_nic *efx)
- 		return;
- 
- #ifdef CONFIG_SFC_MCDI_LOGGING
--	free_page((unsigned long)efx->mcdi->iface.logging_buffer);
-+	kfree(efx->mcdi->iface.logging_buffer);
- #endif
- 
- 	kfree(efx->mcdi);
+v1: https://patch.msgid.link/20260630-b4-drivers-net-v1-0-672162a91f37@kernel.org
 
--- 
-2.53.0
+---
+Mike Rapoport (Microsoft) (4):
+      b43, b43legacy: debugfs: use kzalloc() to allocate formatting buffers
+      libertas: debugfs: use kzalloc() to allocate formatting buffers
+      mwifiex: debugfs: use kzalloc() to allocate formatting buffers
+      wlcore: allocate aggregation and firmware log buffers with kzalloc()
+
+ drivers/net/wireless/broadcom/b43/debugfs.c       | 12 ++---
+ drivers/net/wireless/broadcom/b43legacy/debugfs.c | 12 ++---
+ drivers/net/wireless/marvell/libertas/debugfs.c   | 39 ++++++--------
+ drivers/net/wireless/marvell/mwifiex/debugfs.c    | 62 ++++++++++-------------
+ drivers/net/wireless/ti/wlcore/main.c             | 14 +++--
+ 5 files changed, 59 insertions(+), 80 deletions(-)
+---
+base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+change-id: 20260630-b4-drivers-wireless-5294524fab46
+
+Best regards,
+--  
+Sincerely yours,
+Mike.
 
