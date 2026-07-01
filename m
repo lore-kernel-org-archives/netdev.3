@@ -1,275 +1,307 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8E24921B2
-	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 13:36:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=205.220.180.131
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782912985; cv=pass; b=a0hN/ewwidOXkQOC04/EnT+tHylOfPq6DPZZ0V/3pgBu0EXrX9ZLxWGO/+jS2eg/HuweCwy2QueOP1R13JTV0USiKBmeGz4RrI/IBKIXON+BfBJ45QMU84/CfezLNZkYLWozVc9ksF8jkUTkP2LrE/ERFD9YxkrBKuYwJKRw2KU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782912985; c=relaxed/simple;
-	bh=N+n/R/mlFs2wkRiMkBtopMW3wGbtfZ47UIAhPinzCC0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZMx9Vyv0W36hzfjfHgyBH/y5tsJwcBlGvKzy8TA90TlXXKnCAtuqR+SrBXs6n4Fhid83J0AxkALF3oELgMF9qOmvU4cUT9itCWQ/gQpOS/8vDmqcV9yKgzSWOleFiOPm+KD2iugXepmtsvrIAK7dT9LNPqTyRQQVoFaWrsfBo24=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=D0TYYJLh; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=HRVwUj6T; arc=pass smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26C0B492503
+	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 13:36:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782912987; cv=none; b=V4au7z1JHZgmf9vJZq24eHZs7Wfymhyx2qPBDwQTr2OgmQ7Ps48h0TnQT5gUgIASl8ErtGECHQmePl538aXwH8OKi2fhxzfZfx848MjN39F5eabCEsYOuJmQlC3DmrSZLDMFE515Si/wmubC+7XT37Q/OWEJoEStVG78CEtSq4o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782912987; c=relaxed/simple;
+	bh=/Baz92m2YBxeVYvKqKRtf6TuV4deaCLYzdQRRK+gMUU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=l8SrqU8SiF9K7DVf6ohTPvh4wXdarCJPsaiTCY/IopM+T9+XKkxlsQPXDwkzHrVJmuGdRN6+vrZa7T5EUvIXMn8MuoPjs5Krr0iefX9G8FZDbTloEkKIRrWhVxZ5ScHPknSWh9oDaBJp5vkNJakgEOwLDatGdbicCRJO68Z8CoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fuWiiEbV; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="D0TYYJLh";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="HRVwUj6T"
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 661A8qi1744716
-	for <netdev@vger.kernel.org>; Wed, 1 Jul 2026 13:36:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	ViDlik4RCW62sl/RLk3cKzJ5UtFbYqrOCQjRpG10ly0=; b=D0TYYJLhf1Zwu2jk
-	spVTvuXD1DtrAeoeC2o9zHuxnGi5L2oNStqdVlMFzAka42qve3FCqsZ0imRiSjGS
-	wY7ttgiTuQozDBsloMvMWMZ7rH/qOR9G1lDsmLiF7+3AQRgTZm29mCqmNwGw2zKN
-	vUeqWlghwM2RkTREn3uRhASvg6bSZRMNTxyjChtRcJbcOyj43Bn47PrPRgooNtem
-	izYRe/87MwRcAlgJr+M4KcqpvbGLoJprSrbUKhtWlVLLmIPX48qaTHAE596YlbJv
-	Qs74Yv6HObEi99FocjmPI1rDGZPAdejjSZRzvLFUsQfNCiXq1CiD5iYcCYaKTrC8
-	PAdhXw==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f4x0thr94-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Wed, 01 Jul 2026 13:36:20 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-92e68cb7a3eso137176485a.2
-        for <netdev@vger.kernel.org>; Wed, 01 Jul 2026 06:36:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782912980; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kzN0TbQTh721Yf7pOEDT6RurrZWRM4r37U6lZ3h9bkkRePS4ImbvXO9baOzqhJXCQs
-         BmYsdP3sgCiKlmJETvJLGaCexrpfCLi92q7x3XbKPDUnZtj2espArKuzoW6CIGBxeDFD
-         n7QpnpLIRudPlRkDI+JDYRxkdTmp6g5P+XV8hs92jmu/hFq5xQuVe36iOxX7eOGp80im
-         Q4Fpcq9Qn9ab7/Coy3JkzLBISmyNu3U+70iEXCnGB70YlY35zuI5XJ1VLtQHFKevTyKG
-         1gEOboB/EsuYxREiCot2inQpGqUQ5oFnHeWE8YjFIfY/+Ns5FbOhmkzhr7DTZFTAliO2
-         6zRg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ViDlik4RCW62sl/RLk3cKzJ5UtFbYqrOCQjRpG10ly0=;
-        fh=iQd5pN2XnA82MQTYuyc3RByrWUKFPvuvpOpEe0Vq4ow=;
-        b=JLXKhDVLXzLUWtt+AWqf0wGKpqL1tO0f/2dflniIFnqHMSP3C3as/zv+omjHk4nseu
-         Sgb1muAVVxzDdS4cK5u2MDaRNxMe+KzsRoLpN45fB7z9pU65g0fU4XBIS1hDGBH0Bsae
-         SsaBSIt+czoe7VD7SFE9mXyEfRac8IN+3kxsV8g0Fq/8N3a17fwDMyMpG5kxZO9S/FWA
-         9X2NCYFUi9l3A18BaZK3W2IohzA5bWtTWnfsGveVUqfTmdWaGJNqqtzGnz/hqz/RKqsV
-         P9Rpv4ukBT8Pnfu2l0H/jYvFbTlLshqWy2pGlWv95pGb1wLFynPYqF/qfglMdCgqlijf
-         SWTg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1782912980; x=1783517780; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ViDlik4RCW62sl/RLk3cKzJ5UtFbYqrOCQjRpG10ly0=;
-        b=HRVwUj6T1WFzJgHooPCenbepuTuv74haEPIpemts0maavAE/jfQGfddDr1uo7W6DGh
-         eZO0TVkEOlJ4qdgSnxOxgrjvn2LIEM80ctQtYFg3FgZSUteksjeaJszZZpr3Hm+uhe2X
-         Ho2Lhbpx9CoYLh39bsXkraMGTKzjfyxPcI4HRAoQekY5WsYRCzzUd0JZ6RToG2p5aAPV
-         NSri4rD9n3MlGC/Kb206UAvoXv4W7eOO6hqFO9Bn5/041IIrMop8QXhpZlPMbkgqMI57
-         gSIoZ/rDnFVKSPMv5MA1Ugvi2JasMTR/clxSCdpuAoOF10eHQR/1H/15zr9xLsOTrMXQ
-         K8CQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782912980; x=1783517780;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ViDlik4RCW62sl/RLk3cKzJ5UtFbYqrOCQjRpG10ly0=;
-        b=pDOm2V3jtgnlMOCHR0maQgK5qa9X1Kx+X/lD8qorIpLvF93lsJLXBRXQwZqPcdIHlZ
-         ioXvApH6mjwPPsiQ+MZecFi7XnURBAJElz3zXpPfqWGro2LwuFRGFbP0eiJxVkUxHnmw
-         3DJi/dibD+Ss7K1Nws435TlyfyHEu8553gj87fQMrSUW7aT3poOSKRTWgGn8SnAQyLGz
-         qjlsCUU+W69hbELD5hCSzpQ3KK6U/fyTFZ5B7Bw+FfPfPa5ymp6UK+PlxVYH4VldnAI7
-         rJIx/S52dAwRqQ8bvs+Z828EL5I5Jd7U54c2q26d9ZHmTRRlHKKcP5BTLbQdphC/xsyW
-         tVPA==
-X-Forwarded-Encrypted: i=1; AFNElJ+eExdJ/ZgSB7rVUiwt5WoHR72VNlNfvIe9OTuCJmLs/9AfsOYxWQ7N1lY1WUPLWVXKnP0Up0k=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2fMLOG+ezktDWEM/QdxrTFHHARucHA5MAX8NP4i8+JKSPNLAT
-	zCoeWQXM08Nls5y1sAwPg3pK7Q8z+75v9Phb4X7ebJk8JXQa+ev4YSf8tcw199jxBes/9zh0q2R
-	69graM7cTJaPodHOwtdMWPUWhS/CBG5kVL6VuaZyL5HFTxwBowq37+iDuUstVvzyKYopXgZqCav
-	HbxO6fJpuE+e8aZj/6jaJxdgpBjhpug3fxSA==
-X-Gm-Gg: AfdE7ckMV9s385ZIf7Af8ate2BU6okOr48GcvODHi6kcIlsSg9kBK29pk5l6Neu9Twn
-	aHkfOb5fFNfQQvuDZHeDn7035BPMK0eHB5hNnvjg8RxN17nJDyBgpYsxRSObQq63sVYxQ5ELfnS
-	EGrVdAAcdPBhRH7UDko1PlVeh799zxuUkfiY5MBYKD79guUnoYwPiVQi2AZW34+dhwSVCYzMoqq
-	xPcdUrZ/3WhGDfT0IcBy0NqB9/8nT1TwX9ICC4ncmMwqLRYJxoHiFFzKcIHUSNlmdHfBKzv2YKC
-	naBVUn9/dA==
-X-Received: by 2002:a05:620a:28d3:b0:92b:6805:91be with SMTP id af79cd13be357-92e7853d109mr199458285a.70.1782912946779;
-        Wed, 01 Jul 2026 06:35:46 -0700 (PDT)
-X-Received: by 2002:a05:620a:28d3:b0:92b:6805:91be with SMTP id
- af79cd13be357-92e7853d109mr199161785a.70.1782912918609; Wed, 01 Jul 2026
- 06:35:18 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fuWiiEbV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1782912981;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=evzkY3YGf4YJJC7YMd3NRNo5nQ0F0rinUPW0d4GugcU=;
+	b=fuWiiEbVTEKXKrIPwEkglpXrJfmshtLgBMLMe91ZR1Sod/iUTgLiR1d2p1CCaHW/COLyqI
+	+sJ3lNhen0yKPDY9xuCrV1A32Cth1f/BvCDQvUDEVlOiRpDtHJgaGgDNODM5P4sr6eh/bi
+	gu/DsptRIijsrTcEoh3WOwCKnwkDL/U=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-642-O2za4V6nMB62QdVa6aFdlg-1; Wed,
+ 01 Jul 2026 09:36:17 -0400
+X-MC-Unique: O2za4V6nMB62QdVa6aFdlg-1
+X-Mimecast-MFC-AGG-ID: O2za4V6nMB62QdVa6aFdlg_1782912975
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C1E221933E8D;
+	Wed,  1 Jul 2026 13:36:14 +0000 (UTC)
+Received: from ShadowPeak.redhat.com (unknown [10.44.49.212])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D218B180074B;
+	Wed,  1 Jul 2026 13:36:09 +0000 (UTC)
+From: Petr Oros <poros@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Petr Oros <poros@redhat.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Ivan Vecera <ivecera@redhat.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Alice Michael <alice.michael@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>,
+	Marcin Szycik <marcin.szycik@linux.intel.com>,
+	intel-wired-lan@lists.osuosl.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH iwl-net v3 1/2] ice: skip per-VLAN promisc rules when default VSI Rx rule is set
+Date: Wed,  1 Jul 2026 15:36:00 +0200
+Message-ID: <20260701133601.2118382-2-poros@redhat.com>
+In-Reply-To: <20260701133601.2118382-1-poros@redhat.com>
+References: <20260701133601.2118382-1-poros@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260629-block-as-nvmem-v6-0-f02513dcd46d@oss.qualcomm.com>
- <20260629-block-as-nvmem-v6-1-f02513dcd46d@oss.qualcomm.com>
- <20260630180219.GA4139943-robh@kernel.org> <CAFEp6-163adAq8-H_pCzGnq+Fo4jpyKGs6Jv25j3fSpZg3COjQ@mail.gmail.com>
- <CAL_JsqKFjk-mdaAAOzNB6rFiJbw5gd4eDpRBLQL-4q+uJKnp3g@mail.gmail.com>
-In-Reply-To: <CAL_JsqKFjk-mdaAAOzNB6rFiJbw5gd4eDpRBLQL-4q+uJKnp3g@mail.gmail.com>
-From: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Date: Wed, 1 Jul 2026 15:35:07 +0200
-X-Gm-Features: AVVi8CfNT2AJJTgPBXfFVJQmZjW_-a9Isbc3rycVEtJcwbZkpqGBU1gJZohgDaU
-Message-ID: <CAFEp6-20FXTOKQ6EPuR8OUDkqE4JXcUbXaFy7kRFt4fzszPQCA@mail.gmail.com>
-Subject: Re: [PATCH v6 1/9] block: partitions: of: Skip child nodes without
- reg property
-To: Rob Herring <robh@kernel.org>
-Cc: Ulf Hansson <ulfh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Jens Axboe <axboe@kernel.dk>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Jeff Johnson <jjohnson@kernel.org>,
-        Bartosz Golaszewski <brgl@kernel.org>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
-        Rocky Liao <quic_rjliao@quicinc.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Srinivas Kandagatla <srini@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Saravana Kannan <saravanak@kernel.org>,
-        Christian Marangi <ansuelsmth@gmail.com>, linux-mmc@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
-        linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
-        daniel@makrotopia.org, stable@vger.kernel.org,
-        Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-GUID: G9S55efMmyGP5WztaKgtw-8Gae2vBJWh
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzAxMDE0MiBTYWx0ZWRfX30F0BFQfQ2MG
- okB5Nwv23Y8CfiwjWNEcOaU7eqqV8+7JkkjjWTzbKxcI7jADwrmOwWayypERejhJhove9AUpnT6
- KjYgd9/m+FIUDz/qIAi1a4AD+BheE+E=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzAxMDE0MiBTYWx0ZWRfX3Hm1mAjbbx8C
- F2CwZ/B/dPBNFB671kIireEjfOlq+PUjI/jq+jMq5ibO7sq5JMEiT/eLD+e27vjIf36h4O7yy4i
- zcpZcME6L8DmoooJnYxTYAE7d525N47FSRn0eXdmdQNSUVqzfXn0s/zNourKyev40gTZyvlD0hO
- HPnGdYUR7Ty3CAgjxpGsQPpWobbffRpO9NxxLunJmLpv6Cj+6q1IslUfE+qXC4zu27DBNyuuDHH
- fmegqOxXEDjh9/NSjb2eiLWu3UAdBOtDQ8KaUcv9qHC3pqcsRpblqvxAuiLCilNZ1W5iqvKV+kj
- vvIHUKt2aXa1uAefK68uJUV/+CVky7CvEVyiRH4cRy5drQ8CXh8D2KjqYQUWdOJyY2huq17wUcq
- 7ukCVz26CV6a9fyzBja8vFT7Q28WKhq97fZs/US3rKr4BsxtssQkZrSl6NpBReeg6XHse6bUwF2
- ELjV9vtSbmje+bFBc9A==
-X-Authority-Analysis: v=2.4 cv=T5+8ifKQ c=1 sm=1 tr=0 ts=6a4517d4 cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10
- a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
- a=gowsoOTTUOVcmtlkKump:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
- a=bM2Xkg4KEcMkddnjsM8A:9 a=QEXdDO2ut3YA:10 a=bTQJ7kPSJx9SKPbeHEYW:22
-X-Proofpoint-ORIG-GUID: G9S55efMmyGP5WztaKgtw-8Gae2vBJWh
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-07-01_03,2026-06-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 spamscore=0 adultscore=0 lowpriorityscore=0 phishscore=0
- bulkscore=0 clxscore=1015 priorityscore=1501 malwarescore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607010142
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On Tue, Jun 30, 2026 at 11:46=E2=80=AFPM Rob Herring <robh@kernel.org> wrot=
-e:
->
-> On Tue, Jun 30, 2026 at 2:59=E2=80=AFPM Loic Poulain
-> <loic.poulain@oss.qualcomm.com> wrote:
-> >
-> > Hi Rob,
-> >
-> > On Tue, Jun 30, 2026 at 8:02=E2=80=AFPM Rob Herring <robh@kernel.org> w=
-rote:
-> > >
-> > > On Mon, Jun 29, 2026 at 10:55:20AM +0200, Loic Poulain wrote:
-> > > > Child nodes of a fixed-partitions node are not necessarily partitio=
-n
-> > > > entries, for example an nvmem-layout node has no reg property. The
-> > > > current code passes a NULL reg pointer and uninitialized len to the
-> > > > length check, which can result in a kernel panic or silent failure =
-to
-> > > > register any partitions.
-> > >
-> > > That does not sound right to me. A fixed-partitions node should only =
-be
-> > > defining partitions with address ranges. I would expect a partition n=
-ode
-> > > could be nvmem-layout, but not the whole address range. If you wanted
-> > > the latter, then just do:
-> > >
-> > > partitions {
-> > >   ...
-> > > };
-> > >
-> > > nvmem-layout {
-> > >   ...
-> > > };
-> >
-> > In our case, the nvmem-layout needs to be associated with a specific
-> > eMMC hardware partition, nvmem cells can be a simple sub-range within
-> > the global eMMC, each hardware partition (boot0, boot1, user...)
-> > having its own address spaces.
-> >
-> > That said, your point about not abusing fixed-partitions is valid. I
-> > initially dropped the compatible =3D "fixed-partitions" from the
-> > partitions-boot1 node when it only carries an nvmem-layout and no
-> > actual partition entries, making it a plain named container node. But
-> > it's a bit fragile if we want to support both nvmem-layout and
-> > fixed-partitions.
-> >
-> > Regarding your expectation of a partition node being a nvmem-layout,
-> > do you mean that the nvmem-layout should live under a fixed-partitions
-> > node? Something along these lines:
-> >
-> > partitions-boot1 {
-> >       compatible =3D "fixed-partitions";
-> >       #address-cells =3D <1>;
-> >       #size-cells =3D <1>;
-> >
-> >       nvmem@4400 {
->
-> partition@4400
->
-> >           reg =3D <0x4400 0x1000>;
-> >
-> >           nvmem-layout {
-> >               compatible =3D "fixed-layout";
-> >               #address-cells =3D <1>;
-> >               #size-cells =3D <1>;
-> >
-> >               wifi_mac_addr: mac-addr@0 {
-> >                   compatible =3D "mac-base";
-> >                   reg =3D <0x0 0x6>;
-> >                   #nvmem-cell-cells =3D <1>;
-> >               };
-> >       [...]
->
-> Either this or replacing "fixed-partitions" with "fixed-layout" if you
-> want to make the whole boot1 partition nvmem-layout looks like the
-> right way to me.
+When an ice port in a vlan-filtering bridge goes promiscuous (typical for
+bond slaves), the driver installs a per-VLAN ICE_SW_LKUP_PROMISC_VLAN rule
+for every VID on top of the broad ICE_SW_LKUP_DFLT VSI Rx rule. Each rule
+consumes one of the ~32K Flow Lookup Unit (FLU) entries the device shares
+across PFs, so a wide trunk (vid 2-4094) over several PFs overruns the
+pool: firmware rejects further Add Switch Rules with ENOSPC (AQ 0x10) and
+the DFLT Rx rule itself fails to install:
 
-Well, now I think both approaches make sense. We should support a
-fixed-layout on the entire hw-part/block, while also allowing it
-within individual logical partitions.
-Support for the former would only require a small rework/addition in
-this series (to have the hw boot partition a fixed-layout) . The
-latter could come in a follow-up series, as it would require some
-additional fwnode logic.
+  ice 0000:5c:00.1: Failed to set VSI 14 as the default forwarding
+                    VSI, error -5
+  ice 0000:5c:00.1 ens1f1: Error -5 setting default VSI 14 Rx rule
 
->
-> > That makes some sense, this would require extra work for the
-> > emmc/block layer to also associate fwnodes with logical partitions,
-> > not just the whole disk/hw (hw part), Is that the direction you'd like
-> > us to go?
->
-> Yes.
->
-> > Also, Note that regardless of which approach we settle on, this
-> > specific fix/patch remains necessary to validate the partition node
-> > and prevent NULL-deref.
->
-> Fair enough, though the reasoning for it would be different and
-> perhaps should give a warning.
+Once a switch context is overrun the retries can also come back as ENOENT
+(AQ 0x2), which has misled triage toward a perceived recipe binding defect
+rather than a capacity issue.
 
-Sure.
+The DFLT rule already catches every packet on the port regardless of VLAN
+tag, so the per-VLAN promisc expansion is redundant while it is installed.
+Skip it at the two sites that drive it, ice_set_promisc() and
+ice_vlan_rx_add_vid(), keyed on ice_is_vsi_dflt_vsi() rather than the
+netdev IFF_PROMISC flag so a failed or LAG-suppressed DFLT install still
+falls back to the per-VLAN rules.
 
-Thanks,
-Loic
+IFF_ALLMULTI and IFF_PROMISC can reach ice_vsi_sync_fltr() in separate
+passes (a bridge join sets them through separate calls), so the allmulti
+pass may expand the per-VID rules before the DFLT rule exists. Drop those
+now-redundant rules right after ice_set_dflt_vsi() installs the DFLT rule;
+ice_vsi_exit_dflt_promisc() reinstates them when promisc is cleared.
+
+ice_vsi_sync_fltr() subscribed multicast promiscuity only inside the
+"default VSI not yet in use" branch, so a promiscuous VSI that finds the
+default VSI rule already present (owned by another VSI, or preserved
+across a switchdev session) ended up in unicast promisc with no multicast
+subscription. Issue ice_set_promisc(ICE_MCAST_PROMISC_BITS) whenever the
+netdev is promiscuous; it is idempotent and returns 0 if the rule is
+already present.
+
+Fixes: 1273f89578f2 ("ice: Fix broken IFF_ALLMULTI handling")
+Signed-off-by: Petr Oros <poros@redhat.com>
+---
+v3:
+- Dropped the two vid=0 ICE_SW_LKUP_PROMISC <-> ICE_SW_LKUP_PROMISC_VLAN
+  recipe-swap guards in ice_vlan_rx_add_vid() and ice_vlan_rx_kill_vid();
+  each swap is net-zero and guarding the demote stranded the vid=0 rule
+  in ICE_SW_LKUP_PROMISC_VLAN when the last VLAN was removed under the
+  DFLT rule. Reported by review.
+- Drop the now-redundant per-VID multicast promisc rules right after
+  ice_set_dflt_vsi(). A bridge join raises IFF_ALLMULTI and IFF_PROMISC
+  in separate sync passes, so the allmulti pass expands the per-VID rules
+  before the DFLT rule exists; the cleanup keeps them from lingering and
+  exhausting the FLU pool. ice_vsi_exit_dflt_promisc() reinstates them on
+  promisc off. Reported by review.
+- Issue ice_set_promisc(ICE_MCAST_PROMISC_BITS) whenever the netdev is
+  promiscuous, not only when this VSI installs the default VSI rule, so
+  multicast promisc is not lost when the rule is already in use (owned by
+  another VSI, or preserved across a switchdev session). Reported by
+  review.
+- Hoisted the combined VLAN promisc mask in ice_clear_promisc() into a
+  local for alignment. Dropped Aleksandr's Reviewed-by since the code
+  changed.
+
+v2: https://lore.kernel.org/all/20260622113428.2565255-2-poros@redhat.com/
+v1: https://lore.kernel.org/all/89efbea9831175e6f57e9fe8557f7a0e48e050b7.1781786935.git.poros@redhat.com/
+---
+ drivers/net/ethernet/intel/ice/ice_main.c | 111 ++++++++++++++++++----
+ 1 file changed, 90 insertions(+), 21 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index b43d420ece99ca..a84de6cf6eb078 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -274,7 +274,8 @@ static int ice_set_promisc(struct ice_vsi *vsi, u8 promisc_m)
+ 	if (vsi->type != ICE_VSI_PF)
+ 		return 0;
+ 
+-	if (ice_vsi_has_non_zero_vlans(vsi)) {
++	/* skip per-VID expansion; the DFLT Rx rule already covers every VID */
++	if (ice_vsi_has_non_zero_vlans(vsi) && !ice_is_vsi_dflt_vsi(vsi)) {
+ 		promisc_m |= (ICE_PROMISC_VLAN_RX | ICE_PROMISC_VLAN_TX);
+ 		status = ice_fltr_set_vlan_vsi_promisc(&vsi->back->hw, vsi,
+ 						       promisc_m);
+@@ -304,9 +305,20 @@ static int ice_clear_promisc(struct ice_vsi *vsi, u8 promisc_m)
+ 		return 0;
+ 
+ 	if (ice_vsi_has_non_zero_vlans(vsi)) {
+-		promisc_m |= (ICE_PROMISC_VLAN_RX | ICE_PROMISC_VLAN_TX);
++		u8 vlan_promisc_m = promisc_m | ICE_PROMISC_VLAN_RX |
++				    ICE_PROMISC_VLAN_TX;
++		int vid0_status;
++
++		/* set time used either recipe (per-VID PROMISC_VLAN, or vid=0
++		 * PROMISC via the ice_set_promisc() else branch), so clear
++		 * both; clearing an absent rule succeeds
++		 */
+ 		status = ice_fltr_clear_vlan_vsi_promisc(&vsi->back->hw, vsi,
+-							 promisc_m);
++							 vlan_promisc_m);
++		vid0_status = ice_fltr_clear_vsi_promisc(&vsi->back->hw,
++							 vsi->idx, promisc_m, 0);
++		if (!status)
++			status = vid0_status;
+ 	} else {
+ 		status = ice_fltr_clear_vsi_promisc(&vsi->back->hw, vsi->idx,
+ 						    promisc_m, 0);
+@@ -317,6 +329,59 @@ static int ice_clear_promisc(struct ice_vsi *vsi, u8 promisc_m)
+ 	return status;
+ }
+ 
++/**
++ * ice_vsi_exit_dflt_promisc - drop the default VSI Rx rule on promisc off
++ * @vsi: the VSI leaving promiscuous mode
++ *
++ * For an IFF_ALLMULTI VSI with VLANs the per-VID multicast rules are
++ * reinstated before the default rule is cleared so coverage never lapses;
++ * the then redundant vid=0 rule is dropped best-effort. The callees log
++ * their own failures, so error returns are not re-logged here.
++ *
++ * Return: 0 on success, negative on error with the default rule left in place.
++ */
++static int ice_vsi_exit_dflt_promisc(struct ice_vsi *vsi)
++{
++	struct ice_vsi_vlan_ops *vlan_ops = ice_get_compat_vsi_vlan_ops(vsi);
++	struct net_device *netdev = vsi->netdev;
++	struct ice_hw *hw = &vsi->back->hw;
++	bool restore_mc;
++	int err;
++
++	restore_mc = (vsi->current_netdev_flags & IFF_ALLMULTI) &&
++		     ice_vsi_has_non_zero_vlans(vsi);
++
++	if (restore_mc) {
++		err = ice_fltr_set_vlan_vsi_promisc(hw, vsi,
++						    ICE_MCAST_VLAN_PROMISC_BITS);
++		if (err && err != -EEXIST)
++			return err;
++	}
++
++	err = ice_clear_dflt_vsi(vsi);
++	if (err)
++		return err;
++
++	if (netdev->features & NETIF_F_HW_VLAN_CTAG_FILTER)
++		vlan_ops->ena_rx_filtering(vsi);
++
++	if (restore_mc)
++		ice_fltr_clear_vsi_promisc(hw, vsi->idx, ICE_MCAST_PROMISC_BITS,
++					   0);
++
++	return 0;
++}
++
++/* Drop the per-VID multicast promisc rules, redundant once the default
++ * VSI Rx rule covers every VID. A no-op when the VSI has no VLANs.
++ */
++static void ice_vsi_clear_vlan_mc_promisc(struct ice_vsi *vsi)
++{
++	if (ice_vsi_has_non_zero_vlans(vsi))
++		ice_fltr_clear_vlan_vsi_promisc(&vsi->back->hw, vsi,
++						ICE_MCAST_VLAN_PROMISC_BITS);
++}
++
+ /**
+  * ice_vsi_sync_fltr - Update the VSI filter list to the HW
+  * @vsi: ptr to the VSI
+@@ -429,30 +494,35 @@ static int ice_vsi_sync_fltr(struct ice_vsi *vsi)
+ 				err = 0;
+ 				vlan_ops->dis_rx_filtering(vsi);
+ 
+-				/* promiscuous mode implies allmulticast so
+-				 * that VSIs that are in promiscuous mode are
+-				 * subscribed to multicast packets coming to
+-				 * the port
++				/* DFLT now covers every VID; drop the per-VID
++				 * multicast promisc rules a prior IFF_ALLMULTI
++				 * pass may have installed (separate passes on a
++				 * bridge join) so they do not linger and exhaust
++				 * the FLU pool. exit_dflt_promisc() reinstates
++				 * them on promisc off.
+ 				 */
+-				err = ice_set_promisc(vsi,
+-						      ICE_MCAST_PROMISC_BITS);
+-				if (err)
+-					goto out_promisc;
++				ice_vsi_clear_vlan_mc_promisc(vsi);
+ 			}
++
++			/* Promiscuous mode implies allmulticast. Subscribe
++			 * the VSI to all multicast even when the default VSI
++			 * rule is already in use and the block above is
++			 * skipped (it may be owned by another VSI, or
++			 * preserved across a switchdev session); the unicast
++			 * catch-all does not cover the multicast subscription.
++			 */
++			err = ice_set_promisc(vsi, ICE_MCAST_PROMISC_BITS);
++			if (err)
++				goto out_promisc;
+ 		} else {
+ 			/* Clear Rx filter to remove traffic from wire */
+ 			if (ice_is_vsi_dflt_vsi(vsi)) {
+-				err = ice_clear_dflt_vsi(vsi);
++				err = ice_vsi_exit_dflt_promisc(vsi);
+ 				if (err) {
+-					netdev_err(netdev, "Error %d clearing default VSI %i Rx rule\n",
+-						   err, vsi->vsi_num);
+ 					vsi->current_netdev_flags |=
+ 						IFF_PROMISC;
+ 					goto out_promisc;
+ 				}
+-				if (vsi->netdev->features &
+-				    NETIF_F_HW_VLAN_CTAG_FILTER)
+-					vlan_ops->ena_rx_filtering(vsi);
+ 			}
+ 
+ 			/* disable allmulti here, but only if allmulti is not
+@@ -3676,10 +3746,9 @@ int ice_vlan_rx_add_vid(struct net_device *netdev, __be16 proto, u16 vid)
+ 	while (test_and_set_bit(ICE_CFG_BUSY, vsi->state))
+ 		usleep_range(1000, 2000);
+ 
+-	/* Add multicast promisc rule for the VLAN ID to be added if
+-	 * all-multicast is currently enabled.
+-	 */
+-	if (vsi->current_netdev_flags & IFF_ALLMULTI) {
++	/* skip the per-VID rule when the DFLT Rx rule already covers this VID */
++	if ((vsi->current_netdev_flags & IFF_ALLMULTI) &&
++	    !ice_is_vsi_dflt_vsi(vsi)) {
+ 		ret = ice_fltr_set_vsi_promisc(&vsi->back->hw, vsi->idx,
+ 					       ICE_MCAST_VLAN_PROMISC_BITS,
+ 					       vid);
+-- 
+2.54.0
+
