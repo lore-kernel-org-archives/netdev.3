@@ -1,53 +1,53 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0E9330D43;
-	Wed,  1 Jul 2026 14:29:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B2F934A3AB;
+	Wed,  1 Jul 2026 14:32:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782916179; cv=none; b=HOZdHEqBKxaCDGYZ/yf05OWPgJoG7ZUkkHKsFyhftSI18gNk5p9BALaIDijiCE5tTo74iIQLnBO6EArqiyogC/1gnZtbE8abEAnoLi2kzvrGpPpihsZPPeAbWvogOzCR1ZHVvexhl2sGoWTA9cKnE+vqPPvfSQHOt/zvCjjTFgA=
+	t=1782916380; cv=none; b=uklO0VR0NcYVLQ7O+l4hfm5M3uaFoFbZJ5Gb6Ct6nX+c/L2JhgCyfQ3wn8G3M2vRnz0XrojDvvTC8Ht1GMm+s9B+tDS6ZN+67w/SdxY9Eu26wo18FzSS27DJLhk240dezC+cmICchquACUv3A7UIBDO1QbYmgYYPz6Ra7sWn/is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782916179; c=relaxed/simple;
-	bh=e9zG2J/6CtdG9sjGYRXm1SrI6+g1Ut9XvKMQhA1bYmI=;
+	s=arc-20240116; t=1782916380; c=relaxed/simple;
+	bh=iwW0yaAypSyo6hwff9OUVhDwHVYyHZ51Ck+6K7RqP68=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JbnJj4dfTDyZ2ZIZRbJo05bq7wwuGXNNXC9Iq4c48OfurYe47xTcCw3ExRlJEkOVEhrCO4wdGxsrlkDm2OZUg5jE4DrzEpDvNj2V1Otb8UsAc++1Hi/g9ncbiev8slCchaU/pcyBrsAS3fiuJ9tQXAGN/+n5MwkFQEaGUdfuIx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Yg7NZpNh; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=SPUMyf/EFOgL2YD7QqO5Mpph4i7otDKLmyFBFZQruLG27xzfj4ugGGiOX/09a4t714CTgORRteCDjgcBmhP3hWxe0z68ZRFj+Fg+SrwZAed1zIB30ON64Oq8y9R+096IqsjN2oRtzFCWeSEQVbozd4H9IdMu7+jiLp1GTYw1kO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=imXC22Hj; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Yg7NZpNh"
-Received: by linux.microsoft.com (Postfix, from userid 1204)
-	id 6968F20B7166; Wed,  1 Jul 2026 07:29:37 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 6968F20B7166
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1782916177;
-	bh=TuyXNNDkjGNekj9kasMP1vdYOegRSZ1Lu0MTl3ivfaI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Yg7NZpNhaMOocVoelqZdHjJCxfd5hjS25T7nWNlCwzs1y5cgpyXjbPY6Xm1zySWOo
-	 AGmfgQmaaVX/xd4Y8fQ//w/DkYHAnqM8T5WRPjB5kWmq26PcxtuW4pZMRrB4aQ3yKP
-	 P711eBRlyu/iRbBcM5k7AYT6kqrUFVymte/yljL0=
-Date: Wed, 1 Jul 2026 07:29:37 -0700
-From: Dipayaan Roy <dipayanroy@linux.microsoft.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
-	decui@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, pabeni@redhat.com, leon@kernel.org,
-	longli@microsoft.com, kotaranov@microsoft.com, horms@kernel.org,
-	shradhagupta@linux.microsoft.com, ssengar@linux.microsoft.com,
-	ernis@linux.microsoft.com, shirazsaleem@microsoft.com,
-	linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
-	stephen@networkplumber.org, jacob.e.keller@intel.com,
-	dipayanroy@microsoft.com, leitao@debian.org, kees@kernel.org,
-	john.fastabend@gmail.com, hawk@kernel.org, bpf@vger.kernel.org,
-	daniel@iogearbox.net, ast@kernel.org, sdf@fomichev.me,
-	yury.norov@gmail.com, pavan.chebbi@broadcom.com
-Subject: Re: [PATCH net-next v10 0/2] net: mana: add ethtool private flag for
- full-page RX buffers
-Message-ID: <akUkUQodHuxZFUZV@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <20260602202801.1873742-1-dipayanroy@linux.microsoft.com>
- <ajBRwYftEol8IE49@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
- <20260615134247.0bd7e16e@kernel.org>
- <ajCXIpDVaVcUcQwd@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
- <20260615173314.677c33a8@kernel.org>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="imXC22Hj"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=DSlKJeVPx0TZyfKvWqzdvEvnU87xuN/vChHfrWxBrfs=; b=imXC22HjhlOkc9h4b18XVYlGGW
+	O4dhAyf+be6Xme2EZyOOcVPmU8/NlC6Hz2MXsL3viBKs19fkysVtCab9ZvJLpYynNorsE0btcBHHW
+	SRZQzOATxGtiywnlc+EmaenzaDoGf+Z1nfquitPstqZd5w+fzj5At043GykggATUg7t4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wevzV-00ABKo-CO; Wed, 01 Jul 2026 16:32:41 +0200
+Date: Wed, 1 Jul 2026 16:32:41 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Clark Wang <xiaoning.wang@nxp.com>
+Cc: Breno Leitao <leitao@debian.org>,
+	"Clark Wang (OSS)" <xiaoning.wang@oss.nxp.com>,
+	"Frank.Sae@motor-comm.com" <Frank.Sae@motor-comm.com>,
+	"hkallweit1@gmail.com" <hkallweit1@gmail.com>,
+	"linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: Re: [PATCH net] net: phy: motorcomm: read EEE abilities in
+ yt8521_get_features()
+Message-ID: <677882ca-16cb-4fd7-86d9-b00d62147bf9@lunn.ch>
+References: <20260701075730.133707-1-xiaoning.wang@oss.nxp.com>
+ <akTLmyF0r70Jyn9m@gmail.com>
+ <GV2PR04MB12213F4758648CD71F5D5B3B7F3F62@GV2PR04MB12213.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,38 +56,52 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260615173314.677c33a8@kernel.org>
+In-Reply-To: <GV2PR04MB12213F4758648CD71F5D5B3B7F3F62@GV2PR04MB12213.eurprd04.prod.outlook.com>
 
-On Mon, Jun 15, 2026 at 05:33:14PM -0700, Jakub Kicinski wrote:
-> On Mon, 15 Jun 2026 17:21:54 -0700 Dipayaan Roy wrote:
-> > On Mon, Jun 15, 2026 at 01:42:47PM -0700, Jakub Kicinski wrote:
-> > > On Mon, 15 Jun 2026 12:25:53 -0700 Dipayaan Roy wrote:  
-> > > > Just a gentle ping on this series. The approach was agreed upon, and it
-> > > > has picked up a few Reviewed-by tags as well.
-> > > > 
-> > > > Please let me know if you need anything else from me, or if I should
-> > > > resend it to collect the tags.  
-> > > 
-> > > Don't recall now what the exact sequence was but pretty sure this 
-> > > no longer applied after some other mana series was merged.  
+On Wed, Jul 01, 2026 at 08:16:13AM +0000, Clark Wang wrote:
+> > > In phy_probe(), genphy_c45_read_eee_abilities() is only called when a
+> > > driver uses phydrv->features. Drivers that implement .get_features are
+> > > responsible for reading the EEE abilities themselves.
+> > >
+> > > yt8521_get_features() does not do this, so phydev->supported_eee stays
+> > > empty for YT8521/YT8531S and "ethtool --show-eee" reports "EEE status:
+> > > not supported", even though the PHY has the standard EEE capability
+> > > registers.
+> > >
+> > > Call genphy_c45_read_eee_abilities() at the end of
+> > > yt8521_get_features() to populate supported_eee.
+> > >
+> > > Fixes: 70479a40954c ("net: phy: Add driver for Motorcomm yt8521
+> > > gigabit ethernet phy")
+> > > Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+> > > ---
+> > >  drivers/net/phy/motorcomm.c | 3 +++
+> > >  1 file changed, 3 insertions(+)
+> > >
+> > > diff --git a/drivers/net/phy/motorcomm.c
+> > b/drivers/net/phy/motorcomm.c
+> > > index b49897500a59..46efa3406841 100644
+> > > --- a/drivers/net/phy/motorcomm.c
+> > > +++ b/drivers/net/phy/motorcomm.c
+> > > @@ -2439,6 +2439,9 @@ static int yt8521_get_features(struct phy_device
+> > *phydev)
+> > >  		/* add fiber's features to phydev->supported */
+> > >  		yt8521_prepare_fiber_features(phydev, phydev->supported);
+> > >  	}
+> > > +
+> > > +	genphy_c45_read_eee_abilities(phydev);
 > > 
-> > I see, the net-next is closed now, I will rebase and resend this
-> > once it opens on June 29th.
+> > Don't you want to return error if genphy_c45_read_eee_abilities() fails?
 > 
-> Sorry for not flagging this sooner, IDK how it escaped the reply.
-> Maybe some mix of Jake's comments plus it not being applicable 
-> later.
-> 
-> Not to deflect blame but y'all should coordinate better, the "no longer
-> applies" situation happens in mana a lot more often than with other
-> drivers :(
+> EEE is an optional functionality, and the call in genphy_read_abilities() has the following comment. Therefore, I do not return its error here either.
+> "
+> 	/* This is optional functionality. If not supported, we may get an error
+> 	 * which should be ignored.
+> 	 */
+> "
 
-Hi Jakub,
+This conversation then raises the question, should this be a void
+function?
 
-I have rebased and sent a v11:
-https://lore.kernel.org/all/20260701141808.461554-1-dipayanroy@linux.microsoft.com/
+	Andrew
 
-Thank you for all the support.
-
-Regards
-Dipayaan Roy
