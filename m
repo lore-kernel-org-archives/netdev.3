@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CB08284B29;
-	Wed,  1 Jul 2026 00:00:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E582E762C;
+	Wed,  1 Jul 2026 00:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782864023; cv=none; b=Lz+UPAUupt7nipgN4NHpRirV0e8xvB7/KKpghwi3cGx4+FHOcOVEjmHuOFu4olKWmO5BjvaYkHtHb8+4lepxxAhJ6tBMxYqAMVM/INpz6h7PDMpIkcOqltS6679Waabk1QyJxXLoewfBXaTlp3LLZlbu6Ygud2fKvAR7XIh0y1w=
+	t=1782864029; cv=none; b=EFkYvgDyaXxGwtiHQk/cl6Ebm7XW++xjfvVYFL3XlGgtpa5EQofYCpmZf6xbcIbwKcU0PMBP/k3hPomGazPSOEH4EHQ6yZK2l6alR2RHDxVuDoaXk0vBMwRJiWO97dJPuRgYJ4LLDhGVrH5JkS9RO0PlFWkH2TUk0wBh+9XXba0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782864023; c=relaxed/simple;
-	bh=cl3Iat4nUIW3kY20Flk8kF90PyH0SDbaQoW4rPAYJx0=;
+	s=arc-20240116; t=1782864029; c=relaxed/simple;
+	bh=k32ehnz4IuXU6wPQSqwRpQPB9rqHt1M/h5JJM/2w0CE=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ihwrMNeKZw/XIT+gE1o3VoN+lL8GlfwTEN0Iy7hckbA99zWK8Y9jPZVtXjnS9AQCY6KjjR/jLjrkqg0Mxkp5CVC+a8l284XSXx/eLNJ0P1L/APxTDGUTxWIcQLeC/f2HluP0FapcwBjIUPITgsikPEO2ZTE8evBFra6P0mcq78E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HGVFGx93; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=SGqNFdISK0alMBIubeaVBeLaPjzHaeJeJZoqSfYBtJ2ktpVJKeq4Ooa2H1rDP3aBccM48uOt4wXF+Me8OSqRYYWBjloQuyRE9Pa0V8G/Zg+qMSbpIh4f9b+Cv1UYGvDIJUt3YIgN03RWDlhNxSw34f+EB0gwDukghLBt/UrnguI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ddur2im8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HGVFGx93"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 110A11F00A3A;
-	Wed,  1 Jul 2026 00:00:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ddur2im8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14FF01F000E9;
+	Wed,  1 Jul 2026 00:00:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782864022;
-	bh=LShLHA0wxK2eW4t/XdclT0v1hf8/BEGAbO795ip3YEg=;
+	s=k20260515; t=1782864028;
+	bh=gRzYk816UJfDAJRIIcceXJ6zh52SBooRr0jxl3yODms=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=HGVFGx93YPWO2GmYsvGZrVHOuhN8EsSEQlbKFZwG7GlecgBfCQUIMFY46f7H0bwob
-	 Rm53bv/6MMhBU4geKOFlyng3LHaEjcCqegFRMXGuBr5Dhy9CoP0vaFYNHmAScleJz3
-	 rf82NFh5+iDAx4l72Myqc4qkLKe4hT32GO7aVyvdFPKaL6HfKLafA2lUCkdPvkEKoo
-	 IwEs6bPpkJNfX5EQhGvXkrmv1+wLyDj1SEPHIhuGZ7ng3Ku62dy7gFt3jeRce7lkDa
-	 Z77xQFR11XMxs2/0624UKNtM2yjhbIiNGBHg4gN0RzxB3Cvnh3IpJC7f4/fVAqPGHT
-	 ZfCjW8hz0sQBg==
+	b=ddur2im8Fok2dWxq3wl1S7oT7NPHPtg/NYxVA1DmzbFBVpRad3N1yUSnh5YqHjNOL
+	 lhEUUP5kozRstYx5TyfaGQHeM2w7YWnG/lUelj9E2V9fG1W8agdcZsi+j6XSeGEysd
+	 LYJ69p6uLyduLjtjCb1KmDswym7/mOnrLfcjqSHCe+hZlcJ0nVfSZg4AvYeG350mUq
+	 LFy7TyyH8/1rG9mbEk8Q6kUSJrqyFY5jOru31CMBTR5hu4CksJy/tIRAMQJrd5WbJP
+	 BTdEs1VSrKyIREgKJ1YxHVPqQrMiFZuTU4nX9GRAPrv3YEMTMQchPGGTjc1rbBbs//
+	 mij2gOfnBqvRg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19664393A963;
-	Wed,  1 Jul 2026 00:00:07 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198D4393A963;
+	Wed,  1 Jul 2026 00:00:13 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,45 +37,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] selftests: net: bump default cmd() timeout to 20
- seconds
+Subject: Re: [PATCH v3 net-next] selftests/xsk: Preserve UMEM view in
+ BIDIRECTIONAL test
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178286400564.341356.9563391960804788182.git-patchwork-notify@kernel.org>
-Date: Wed, 01 Jul 2026 00:00:05 +0000
-References: <20260629233348.2145841-1-kuba@kernel.org>
-In-Reply-To: <20260629233348.2145841-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, shuah@kernel.org,
- petrm@nvidia.com, leitao@debian.org, dw@davidwei.uk, noren@nvidia.com,
- gal@nvidia.com, linux-kselftest@vger.kernel.org
+ <178286401163.341356.4009907939641685478.git-patchwork-notify@kernel.org>
+Date: Wed, 01 Jul 2026 00:00:11 +0000
+References: <20260629191221.2700-1-maciej.fijalkowski@intel.com>
+In-Reply-To: <20260629191221.2700-1-maciej.fijalkowski@intel.com>
+To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, magnus.karlsson@intel.com,
+ stfomichev@gmail.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ tushar.vyavahare@intel.com, kerneljasonxing@gmail.com
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 29 Jun 2026 16:33:48 -0700 you wrote:
-> We always used 5 sec as the default command timeout. But soon after
-> it was introduced, David effectively made us ignore the timeout
-> (it was passed to process.communicate() as the wrong argument).
-> Gal recently fixed that, but turns out the 5 sec is not enough
-> for a lot of tests and setups. The fix regressed regressions.
+On Mon, 29 Jun 2026 21:12:21 +0200 you wrote:
+> The UMEM state refactor made __send_pkts() use xsk->umem for Tx
+> address generation. At the same time, the shared-UMEM Tx setup copies the
+> Rx UMEM state into a Tx-local state object and resets base_addr and
+> next_buffer before configuring the Tx socket.
 > 
-> In particular running reconfig commands (e.g. XDP attach) on mlx5
-> with 32 rings and 9k MTU, on a heavily-debug-enabled kernel takes
-> more than 5 sec. The XDP installation command will time out after
-> 5 sec but since the sleeps in the kernel are non interruptible
-> the command finishes anyway, leaving the XDP program attached,
-> but with non-zero exit code. defer()ed cleanups are not installed,
-> breaking the environment for subsequent tests.
+> Passing that Tx-local object to xsk_configure() makes xsk->umem point to
+> the zero-based Tx allocator state. This breaks the BIDIRECTIONAL test once
+> the roles are switched: the same socket is then used for Rx validation, but
+> received descriptors from the other logical UMEM half are checked against
+> base_addr == 0. With the new UMEM bounds check, a valid address such as
+> base_addr + XDP_PACKET_HEADROOM is rejected as being outside the UMEM
+> window.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] selftests: net: bump default cmd() timeout to 20 seconds
-    https://git.kernel.org/netdev/net/c/57bb59ab6fa3
+  - [v3,net-next] selftests/xsk: Preserve UMEM view in BIDIRECTIONAL test
+    https://git.kernel.org/netdev/net-next/c/333289d1690d
 
 You are awesome, thank you!
 -- 
