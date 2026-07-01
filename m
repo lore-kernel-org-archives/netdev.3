@@ -1,208 +1,121 @@
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010065.outbound.protection.outlook.com [52.101.56.65])
+Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90DA6431E58;
-	Wed,  1 Jul 2026 19:34:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.65
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782934483; cv=fail; b=iYdEf+nPCKgo/zEteeUxu4SaEKdFUQaZTyX3joJL0QZbykztoMvWKfhjEHdZUfXFEWISKIn0gYhvgYnZCBzmwgr+vWWeFAuIe4z3Hm5V/kX7lRjQSn8hwL1T8+eYrF009sqVQ2LlBa+rlPDsAP/Xuec9XDfkflEiC7zSbOxHTE8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782934483; c=relaxed/simple;
-	bh=K22a+HUE6K96iH/3TM41ZNdUpFH0cln27jfzpO2gSec=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=BrnjVyEohTaAhaPQTkWeUw30ofdDm4iFtmMe0Ys7DHQ7XbbwUZyRhUuAnB50v46al/GeMdepGtdMhVKgMJKmLjySGcWOEB4Nm2wBJ7uitxL28CC5MLEK+Q5xvIyAi/vXrNvinBSmzSKA0y/0B+N8kC+LekJ0gJoOeRXG3twLjXo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=VGs6QfqQ; arc=fail smtp.client-ip=52.101.56.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 564C0423F7A;
+	Wed,  1 Jul 2026 19:42:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782934940; cv=none; b=fmMWkMPKwpvt8Y+gfcesAM1pgqwuWX5FxY6W4jrE8zanRI91l+1YWp9MZD8YURTDugKSbZwO1ECwnJoHMJSuoYrGKNd0HrqyX92CM/1MAX1+lAVuSP78lTufxTbUHTiviqQs/iYM3C3fUCgiecuYhhjzYubIBipMU43dH9onaPY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782934940; c=relaxed/simple;
+	bh=duvUiJra6H1sq6gOYlnLjNAg1Sfl3oKcL1JFeqAltT0=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=TSP6yF5sUQSAJWJZ9jrdvpXHP0drTWYvEz2sFny1QPwoWW3nemdx3zSshLAy6bQnN4s1b5JZie3hdj9netfWhekiU4XtXwq7I5PMcqGpIWFIKioGfhCDhvZoDeuEOOqr9tAHpJNEQEIKj5bV+GBOMV2DZC9onWSg4Ad3fHuGarc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=johnericson.me; spf=pass smtp.mailfrom=johnericson.me; dkim=pass (2048-bit key) header.d=johnericson.me header.i=@johnericson.me header.b=aOOuf8X4; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=FSfv9d0v; arc=none smtp.client-ip=103.168.172.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=johnericson.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=johnericson.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="VGs6QfqQ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ocqIhhXR6aRy8wZEMQ5v0THsuKgZg3nk7jH9sVc9p2xoq+51faHvo+VHvt6tFnOr3n6f9F7JIpnZUOcE2pmwRuz3O504R4PModpRGDgsJ9762xMuPyMOIihEHe5klhteRd4WGpH0INLKAWWOYE3Tz0qReMoit94xfj+7u4TRcow6F0/g+sKGr/b/c/fBYI7PmVnWY28Nq31M0lMaioz9OeyZeEWN8H/LK1FdrD00wLPkXObFCkj48+hnrrA4Tl/YHxcNeLAT7+MeuytM572cTcgfMgE6/hHxLIyznsm7/Rbj+lmMvqYZjrKC4R3gdRqhwW+Yl9I4HRKtCajARhlafA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0rADsiBZSkpYyPJhkP/oytoG1xdgcFn2QRbNkV5A7yM=;
- b=BokEu67POXq4WWB7NSkSc6kK/vsMQpqX+E3HdH1vEzX66gsHPsfDVIeVb4WEFrWLlWvtwu/xiMsvnovBnGGgr/W0O9xNletUOdImiqbQlZAtmewri5v6r/N52lgrZthF13Egl07NWm9zU/QK+FOMXMNE9M322pXz9EP4dGZXA+Dw8O5r5pg/LSRokeWaMAMy8oCV3CjJcVdAVF1o3ut1MtNZM2Xbht3r2PyS7sO4Cm62aZtfLAO8gwUYHpjZVvWauGvEAXDppCAsuyiirnDW67195L6Gf7ngfRSwe7yhtHRhhyddQLJbV8XFb/QB5JdNd97fto5szCGI86QhMbnNvQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0rADsiBZSkpYyPJhkP/oytoG1xdgcFn2QRbNkV5A7yM=;
- b=VGs6QfqQG0Yi8nROqZDYYTG5LMOguuVb7As9Rq/Bzu2hscu8qD5qcTFPhBbQyoDDL2Tm0xarPy0sESgfqNr6CcgbD1bZ6JgvVIB8gVansGdaA52e0OCrO2WAFx/L5uq7FXreYvh1wUGQrr6XHRwooMm11oVNSuDWmp6WifhE1THlIMA/3pYHHPuZUdJIChvRlczwE2rfHHFDK6pDCCuY2UuYQeuCjVDSgQziopzMLHavx7K2Lg9qi3DegDlRwUP1YlfzM+91pxSe4HXrC/3VYsJFkqoYr8EvRScAw5hV7lFUHgzUNa9I8CfBS3RNwe4KZlhG/CqneZeWqY1afNzWCg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MW6PR12MB7086.namprd12.prod.outlook.com (2603:10b6:303:238::20)
- by PH7PR12MB9073.namprd12.prod.outlook.com (2603:10b6:510:2eb::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Wed, 1 Jul 2026
- 19:34:30 +0000
-Received: from MW6PR12MB7086.namprd12.prod.outlook.com
- ([fe80::4eb8:7fcb:fe8d:e95e]) by MW6PR12MB7086.namprd12.prod.outlook.com
- ([fe80::4eb8:7fcb:fe8d:e95e%6]) with mapi id 15.21.0181.008; Wed, 1 Jul 2026
- 19:34:27 +0000
-Message-ID: <210e28c3-07d2-4370-a44d-9db561da3cc5@nvidia.com>
-Date: Wed, 1 Jul 2026 22:34:23 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] selftests: net: bump default cmd() timeout to 20
- seconds
-To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
-Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
- andrew+netdev@lunn.ch, horms@kernel.org, shuah@kernel.org, petrm@nvidia.com,
- leitao@debian.org, dw@davidwei.uk, noren@nvidia.com, gal@nvidia.com,
- linux-kselftest@vger.kernel.org
-References: <20260629233348.2145841-1-kuba@kernel.org>
-Content-Language: en-US
-From: Tariq Toukan <tariqt@nvidia.com>
-In-Reply-To: <20260629233348.2145841-1-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TL2P290CA0022.ISRP290.PROD.OUTLOOK.COM (2603:1096:950:3::6)
- To MW6PR12MB7086.namprd12.prod.outlook.com (2603:10b6:303:238::20)
+	dkim=pass (2048-bit key) header.d=johnericson.me header.i=@johnericson.me header.b="aOOuf8X4";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="FSfv9d0v"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 1BE201400181;
+	Wed,  1 Jul 2026 15:42:18 -0400 (EDT)
+Received: from phl-imap-16 ([10.202.2.88])
+  by phl-compute-05.internal (MEProxy); Wed, 01 Jul 2026 15:42:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=johnericson.me;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm3;
+	 t=1782934938; x=1783021338; bh=duvUiJra6H1sq6gOYlnLjNAg1Sfl3oKc
+	L1JFeqAltT0=; b=aOOuf8X4xJIDQD4w2sETh9g2ftGWMPoPk+yb+53cAdN7DZUm
+	i/i3gV1UyttJG81U54VrtBFEXCeP/HabgzI4PRGzq6Jqfx9cKHlennpw2uTdT4IT
+	OGPSlSqOodbQKEaFmRz2CSebrpuBTkmKzOwi+UsRPPpCXVVYKR3IK2AsyAjnqCLC
+	jOpscOcoDZwx3xmNWjHrnmSS+Ye/DjKTl/prKCXF1kOx3z172SwWQJmixkFhmx0g
+	oFceT1Q/a5oEDISnKImKZUmukVzHAr33YIL9sFFfzCKut9YaML4CAtrfmR/C7XjK
+	3hVXuUS+586bpAXjTZIhNuzv7NBnqsmYgw0+Jw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1782934938; x=
+	1783021338; bh=duvUiJra6H1sq6gOYlnLjNAg1Sfl3oKcL1JFeqAltT0=; b=F
+	Sfv9d0vof2r896tQSZsEnEAwKnFRINQoAfDHoDdS1oqzHcs21XMAmRSBPcODqt79
+	UAQsdEEIlt65SQmzWubBKh3eXiX11VcI8331T01qmRPDEv0M9VIZd9C9JdDjphhl
+	vVAcDQBP3Ho5tAmXtQTOt5jBTmWilfQIe2jpjAiB3XdNInu9DkiS9kXd96n2D7Av
+	0HasrbO668ETHIXBG/dD+SNajH5y0fCsc9B/z8aDosn0v6YekKZGZp6/eqSK9Ezp
+	VIHDorO55fd5PQcKT4WIYi2HC8RinjRCaWOrOstkwc6pT+tDwbktSpp7CPB04WCc
+	Q1GE+jUcrRg5k9fORQ5UA==
+X-ME-Sender: <xms:mW1Fal4k1KHH97RX8qQmRD707dVYxGTPPdsMcAqRduAXG2JKWuBkhA>
+    <xme:mW1FatvDNmZoxN0KotHC3L18qsIXMlYivtgKP0r6r2Rmw8hJlyE8D9GuZBWPEK_US
+    EzlwYLy7fKIetvmDfe5Rsw-SNl6Ij21-mB1I_GLa-L51eu-45uBRIM>
+X-ME-Proxy-Cause: dmFkZTEcQge4w4sBHRY0uHSPe4IFqDnYUN2Tns4osA1e7ov62RU/KtjrvaM/pG/pfRNw5U
+    9WgqleVx9+5kW2MWfNtTOhIY6ozhR/yri1GZMGHT9RAZG0Dp7IxrZjPZrLmo9skv+k1ZU/
+    bZHEXxMZh3llrfZFP29O3onIDj8fE9HtzeAVz2DOMzQZJkkZ9JbZSs+bL86ngQH7LM56e2
+    WLm5uo7kJxlc8BffnXb6JvjrPRq/tNV0ttrLL9f9lgJVlKx54JitZLT45Xprpx4Mfdq2Ua
+    f8vAKz8PK0Alh4g0KP3E1+tGGU4qp243bGcy5AkqIg+vA/afTVEqR93dy04qfcB1ZEPGjr
+    nVGrEnCRBQQblRSci2vjCaIYk9M2C52Gz+6/tcPZqTPxeHs8ib/PFj8qw+ilatRn7fQwd7
+    jOqzaU+XhldTw8Ov3t2I0c10gVefLzDJVCHnJ34gZWuXvn54EbfyggUJ8bx5ouzGtAYHS/
+    6BaClM9QNcvEIyGVs2YvXWOZM0tIxK7t6bBCVgrB2gD91mOjDIZJa5Fj5QtCn+C35S/n5D
+    a5NpXv2KFEgyP6qxnOoZz9RagJmCPaeW5d+je+gHj8iFFSKCZAjBeoccbjmLLwnCJBNHmG
+    jf0uJKOKRDALpZZivamcTUYC/6+4LCfkYKIlAB0HHHIT4LvMC2fsuHlFI4GQ
+X-ME-Proxy: <xmx:mW1FajgBIYJJcrof1bvDAIK7luF2Y5644tyXiLd_lZp4_JSE2gAUcw>
+    <xmx:mW1FaqE0ExHQfrGTEVDKuFa66fe0LcY2J8oXikK7Hzx6vUYLgPYMbg>
+    <xmx:mW1Fai9qvBz2fCVNLsREC4VWre72CBrhi76rEx0nredBSEaqCbbVEg>
+    <xmx:mW1FahxrXLe9K15wLkuUmeaLxn-Z1kfWfGaZ4fm80yydlJbUPgaPbg>
+    <xmx:mm1Faoq77LztJFOGEvGAKKFNYIkMbHCHpq56SxMB5--K5Rh7Q_a87cfp>
+Feedback-ID: ieb4144f1:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 9C4512CC0083; Wed,  1 Jul 2026 15:42:17 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW6PR12MB7086:EE_|PH7PR12MB9073:EE_
-X-MS-Office365-Filtering-Correlation-Id: 34e15ad9-e64b-4649-ce86-08ded7a7c39c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|7416014|1800799024|376014|3023799007|5023799004|18002099003|22082099003|11063799006|56012099006|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	GxMO57GRNIJBVWx/14qm6dw9ZwUydoJSBqHZe1foCmBk4piSVtCcX5hOLE8JBuARDUCkS0oJ/PYF6N6OtwnJsyje3xEa+PIzqNFAqStnTXciOE4qNZsKx/6LtwlSDSov2ahjWBW6XkpeSrVMBKTIUzf9Cj/9HlhkhwpTfcujtvObgiSpXoEGWcDvYzGJiN204h49f8a5cOKfjAhuDvPtK7hEtzGDTZj+l85febHD75epmdUxTrLEa44HOCKPuFs1diSVVuSDqoOrahlJHgADpFmTXdO+EWQxqW33gsNHCXya2WT1uWtgjTYUyl3div1qu5vfZjQxqbSHaFpFKG2EQnF7HxXEF3ByfvUzK9+u5feSiUfl5X1Me3OZ0uOPJv4fYQ6u42gd1f/LoL2/8ExyQj1ODM+w9Jk6vjfLlsE4htq6wkrwEoi1JY++8kHZpxgEOKyEg7AJgSbIssLVQmnEtG0PsKDvqlviEyRR6fDzvs2E/16o8gnSxEZ+6xCzzRe3WMaw3eT7vH+e4z5EOuuWpyO/6KdEGYjRG+HbINIXe6Wk1G/ZTSC1kwjCv4M2JK/Hm0mK7oGJuEE3bfaADFbSyv5A2GlWEdINC5Y8m/QeO2YnnLpEAXMoBTBA8bGoizY1Io0rlUao5/HeM5omcBJaMQMkF5hkjSjFREN5Sg+/t1Y=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW6PR12MB7086.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(7416014)(1800799024)(376014)(3023799007)(5023799004)(18002099003)(22082099003)(11063799006)(56012099006)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QWZnVklVNHJrL0VPZjBQRjdCQ3NkdUNXQXVtdVkzNExjM0RHNVFMRG1MQkxY?=
- =?utf-8?B?cER1ZFV6M3pkK012U1JSS3V5M2ZCTkU4YTVOVVlJakZ4Wjd5eFp1anlVb1lx?=
- =?utf-8?B?UkpiTXA2MnZWZVpsRVI3NnhtbWJXUzY0M3ludERkUkpNeTJoWXZNL3NwSmlm?=
- =?utf-8?B?Z1RFWUxxU1pSNGdFa0xXazE4Yi9WdyszOW5vcXlWVjU3enhJdmVtZ0NaK2l5?=
- =?utf-8?B?NlArVXptbllQNExUUkNXNzBWTTBWdTBHSWlmdFNsSzZPMDhTNVNvNjJlMHNr?=
- =?utf-8?B?NERmR0pKd3J3OE5sVHZqeTByRTFOWjFCOEZXczlXTjRpejhOMzV0Zndib2pR?=
- =?utf-8?B?QjVqVHFLUlpwR09IVGx3ZDBoRVpSNjBrckZmSVBMcGM1S3Fmek9hZE9Eckpm?=
- =?utf-8?B?bHdQcG9ZbVJpaDJCSmNaQXJtMEMxYVBDOCtzM2ZwWGswMmxGMmJPaFR3czNB?=
- =?utf-8?B?Skd0RkhON05yMmh4cU9rMmtTM0hJdzFsK081TDIvR1NnZXBQd0VudWRmY0lM?=
- =?utf-8?B?UTlVYys2cWIvNDlvOERQUTZ0UittRmZ3NDFJK2h0MzVSY1FlOVVvb2h5M2g1?=
- =?utf-8?B?MlN3ckJNNFhzNU01TytXMEkxMlprTUphMEJuZ1RKc2RWU2R0N2RheDVFc0VI?=
- =?utf-8?B?bFJVTVNUaHhFVGZTM3RpL3NjbmVNdThGdU51RElEL0ZXaHk4K1p1MjYvVWlk?=
- =?utf-8?B?all6SEZ6d1pNMTdoejRDR0R4aVkxVkQ3b0RheFU1YXd4QVFCZUQwZXI2by80?=
- =?utf-8?B?VTdIaGd0TU1XNEp2c1I4QjFDK0U4UUwyM29SdGh0b2doUEJSMCt1YVJjSE1y?=
- =?utf-8?B?K3VkL0dzcGlKWEV3a0dUUFdGR2gxZ0lXZXZRMzFHbk5LbTIvSGpobzJpT3Ry?=
- =?utf-8?B?UDFBcFFVdlplOUlxRUlvdzBlQlhqUExZVXVXZ21aTWRmQVJQTkRVRWdTZnpr?=
- =?utf-8?B?U0ZlQ29aQ3Y0MURPK3ZnTGNQWWdOcDgzTmp5NXh6UVR3KzVOWVliV2pZZ0tt?=
- =?utf-8?B?R3A0ajg2aFU1VzdRTUJzUnJuRVJzWVBtYm00NDV1NHNoSWNmNzB5L2FkNEwz?=
- =?utf-8?B?dEo4T1JGYzIwMjBoZHF1R0U5TmIrL1M1V1pmb2xvZklzUDFTampaNm53RW5G?=
- =?utf-8?B?SHRydndNdWpIc0lpYnh0d2xpdnVJNWIzZmR1dzNiU1BMUmRQa2piV3M2Mkhm?=
- =?utf-8?B?aFFKMkFmWURlWG01NDlhVmlNYXlnb0NQaldkK01MQWY2N3RIZW91ZUhocklj?=
- =?utf-8?B?WkJTVG5JdGcvZUpsQzEyMGxKVG56TFNlTGdSTnRqTHBjREEzRmVXeG1XLytQ?=
- =?utf-8?B?dFFEaFNLN2VUWVpFcFkwNlc4WWpjYjZjZ1MvYjVZd0dJb2JHbmV4YnJpTkl4?=
- =?utf-8?B?cU44T05tUUhnR0FHWWhUclN0ZmlPRmxRZHU2MDRQY1lnS0FSNkE3QUx3VWlJ?=
- =?utf-8?B?MTlsSUFGWjhhVFBmcEZtTjhPalNMdys5OEtNOGtkb3ArKzl3bzVPQlc3b1Nt?=
- =?utf-8?B?UUY0QTIvVndEd2FJUzh3YWFIck5yaTBBSUJ6Y3lPLzJJTWE3Slp6Z0orc2Q1?=
- =?utf-8?B?UUx4STJ3bC9STEpLZUhOeldXZ2dLdC9KNjVsSjl6dWcxZWlXcHdtck9HclRH?=
- =?utf-8?B?eXNVaEFGdFh6cHRrNzc2QXdleUkvOEU2Y0U4aC9YRCs2Zyt0blcwREZRcHhY?=
- =?utf-8?B?U0JqSkJJWDc3V3NLbGpZbFlkMW9sQXBwaU1XNmZqSmtpOVEzQ0JocUZmbDFV?=
- =?utf-8?B?MmlSRU1NdXlSZVR2NjcvM0NYRjJ0RitrSDlRWG1EVHNzakVZSldpNStkajUw?=
- =?utf-8?B?aDJHZFk0OTArQmJYTk5RVTFNTlZ5SXBXRThMMUZ1U1kraG9mV1gxZUNpcDV6?=
- =?utf-8?B?WU5KNXl0M3JQRmdqbjhBZVFiaTQ1STJCSDZpanBtM0dVdmJqN2F4UmQ2QzZu?=
- =?utf-8?B?TjM4NWxzMExnbDhuV0p4WW14RFlOYkpXSWhZUkp1S2pOV2NBT1oyeVZYSVNM?=
- =?utf-8?B?OVRVb1N1cy9UcjJ1aWg5NTFVdmJYZnZjMW5uY0xPSmpuQVNYblVOTi8zSERa?=
- =?utf-8?B?eHJMYm8xN1E4Nm14NXFoeFVUTXU0ZGp2dzRCZmZ3UVZINEhaTzlUUDRIQVFB?=
- =?utf-8?B?akJIS2gwSTJtVWhwZHJpb1pvQi9lTU9RNG00U1BuaHZJQ1lTMFFycFFTd3lQ?=
- =?utf-8?B?MHBPaE4zSjRDV1ZnclBqOStlanJtV0dPemVYN0dEalhrUXdDM0JvdTk5c0lR?=
- =?utf-8?B?ZnRWeTArREVvbWRPd29oZUhvZkk4TFJ5RDQ1WjJrZXpsSENmODZadWZjKzkv?=
- =?utf-8?B?d2FjUHJXMmZtS2hhRmhmMjY5RkhiSEJZdjlKT2x0ZisrcGpkaVlKZz09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 34e15ad9-e64b-4649-ce86-08ded7a7c39c
-X-MS-Exchange-CrossTenant-AuthSource: MW6PR12MB7086.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jul 2026 19:34:27.8010
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gdHLV04m49I5/KfW+uoauh7rV7i90s6uYya78wM+6o7ZoTiBgmxW2MhV+Kc+YFTp895QNxEyDijQMMXzbnhIvg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB9073
+X-ThreadId: Aqzxz9K-cSE-
+Date: Wed, 01 Jul 2026 15:41:39 -0400
+From: "John Ericson" <mail@johnericson.me>
+To: "Cong Wang" <cwang@multikernel.io>
+Cc: "Li Chen" <me@linux.beauty>, "Andy Lutomirski" <luto@kernel.org>,
+ "Christian Brauner" <brauner@kernel.org>, "Jens Axboe" <axboe@kernel.dk>,
+ "network dev" <netdev@vger.kernel.org>,
+ linux-fsdevel <linux-fsdevel@vger.kernel.org>
+Message-Id: <d0999427-dc53-4f8b-8026-c7d97cb31cae@app.fastmail.com>
+In-Reply-To: <e396ce86-ec84-4189-9da2-98af7cfa6c41@app.fastmail.com>
+References: <b1af80fc-a57c-408d-bdfe-fa6bae26eaca@app.fastmail.com>
+ <aicbyQIC2qEveNd-@pop-os.localdomain>
+ <455281ec-3ee1-4f27-989b-c239f0690d8b@app.fastmail.com>
+ <aixU_RccxS_BKhgX@pop-os.localdomain>
+ <66eb8227-85b6-4684-a4fa-e3e17ac2fa45@app.fastmail.com>
+ <e396ce86-ec84-4189-9da2-98af7cfa6c41@app.fastmail.com>
+Subject: Re: [RFC] connectat()/bindat() or an alternative design
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+
+Two small addendums to my previous email:
+
+First, I linked these two unresponded-to emails for prior art in the
+opening email of the thread:
+
+> https://lore.kernel.org/netdev/4FCF171B.8000207@parallels.com/
+> https://lore.kernel.org/all/CAEnbY+co6YLXANfeMnfBOBs8Ba_Sbdqz0Ahm8RzAhRF7MrxL4Q@mail.gmail.com/
+
+Since then, I found one more:
+
+https://lore.kernel.org/all/20120815161141.7598.16682.stgit@localhost.localdomain/#t
+
+which is an actual patch by the same person that wrote the first linked
+email, with replies. Hopefully that is useful.
 
 
+Second, it occurred to me that regarding
 
-On 30/06/2026 2:33, Jakub Kicinski wrote:
-> We always used 5 sec as the default command timeout. But soon after
-> it was introduced, David effectively made us ignore the timeout
-> (it was passed to process.communicate() as the wrong argument).
-> Gal recently fixed that, but turns out the 5 sec is not enough
-> for a lot of tests and setups. The fix regressed regressions.
-> 
-> In particular running reconfig commands (e.g. XDP attach) on mlx5
-> with 32 rings and 9k MTU, on a heavily-debug-enabled kernel takes
-> more than 5 sec. The XDP installation command will time out after
-> 5 sec but since the sleeps in the kernel are non interruptible
-> the command finishes anyway, leaving the XDP program attached,
-> but with non-zero exit code. defer()ed cleanups are not installed,
-> breaking the environment for subsequent tests.
-> 
+> (Maybe `bind_unix_anon` should furthermore `listen` right away on
+> `lfd` too?)
 
-Hi Jakub,
+a useful thing to first decide is whether `bind_unix_anon` is
+helpful and/or should be allowed for `SOCK_DGRAM`.
 
-We've improved the performance of configuration change operations over 
-the past 2 years. We have more patches to be submitted soon, in addition 
-to planned ones.
-
-I'd be glad if you could share some details about the NIC and FW version 
-for which you hit this 5sec timeout.
-
-Patch LGTM.
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-
-Thanks.
-
-> Since "install XDP" is a pretty normal command a "point fix"
-> does not seem appropriate. 32 rings is a fairly reasonable
-> config, too, so we should just increase the timeout to 20 sec.
-> 
-> There's no real reason behind the value of 20.
-> 
-> Fixes: 1cf270424218 ("net: selftest: add test for netdev netlink queue-get API")
-> Fixes: f0bd19316663 ("selftests: net: fix timeout passed as positional argument to communicate()")
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
-> CC: shuah@kernel.org
-> CC: petrm@nvidia.com
-> CC: leitao@debian.org
-> CC: dw@davidwei.uk
-> CC: noren@nvidia.com
-> CC: gal@nvidia.com
-> CC: linux-kselftest@vger.kernel.org
-> ---
->   tools/testing/selftests/net/lib/py/utils.py | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/net/lib/py/utils.py b/tools/testing/selftests/net/lib/py/utils.py
-> index 308c91833239..9b40049e2dbb 100644
-> --- a/tools/testing/selftests/net/lib/py/utils.py
-> +++ b/tools/testing/selftests/net/lib/py/utils.py
-> @@ -44,7 +44,7 @@ import time
->       Use bkg() instead to run a command in the background.
->       """
->       def __init__(self, comm, shell=None, fail=True, expect_fail=False, ns=None,
-> -                 background=False, host=None, timeout=5, ksft_ready=None,
-> +                 background=False, host=None, timeout=20, ksft_ready=None,
->                    ksft_wait=None):
->           if ns:
->               if hasattr(ns, 'user_ns_path'):
-> @@ -113,7 +113,7 @@ import time
->   
->           return stdout, stderr
->   
-> -    def process(self, terminate=True, fail=None, expect_fail=False, timeout=5):
-> +    def process(self, terminate=True, fail=None, expect_fail=False, timeout=20):
->           if fail is None:
->               fail = not terminate
->   
-
+John
