@@ -1,133 +1,129 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1548376497;
-	Wed,  1 Jul 2026 16:36:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD10C376BE4
+	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 16:42:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782923768; cv=none; b=O6+P5DCPgR/rc+KT3ZhYZ5bsM7AACHC0Dbwi0S6Az1YRZPiMTFmNN1mo/Ij0PCefY7jwIaDGfqt5Iz/vSJpzdXmCpGlzsZaoXNaH0GMft8DaSRD0wVfMHGTdziCY/kxJBMxBy/GlLn0zsTAji3IkZ996rNSi7j5PSZxdKnLqr2s=
+	t=1782924152; cv=none; b=g+wnAOdg8CR+tFRnE1rsWd6nz4yqlgJz9VrHa3KVpJfFCkWAGOzyFCFYu0e6nugQTAhXKUu08KNzQfKWJrvwLsV5pIMHZVj38uMhWAy4XHE05AM51zVEhfNLr+k28c8STckEXaqAeCj1H3xSh5zCzEwqx2ygm34GXh68fgRB5Ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782923768; c=relaxed/simple;
-	bh=LtZorQCC1Q1RYWrb7kd+YV0ztZUF6kqN7X9u7clnLB8=;
+	s=arc-20240116; t=1782924152; c=relaxed/simple;
+	bh=d9ZiF7LjaiiY1OZofmWsgVZV2t94SKMbzoBzxGqUi88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K1DdMKuSONr5ZPXWISwLh5tupkDSkS7FyUGnYx6wW8SS+4BTyCtHbYdFqZU5L6Rv6TKJIHLDEbo9bKjHkSOYj15O6YvHrslye0+y/A8LyGZ8PufN/XJ+YBSm0wVvU6VRy/8j4mxQ2ydGsZOB/l0zvqnxO+q117Zb1kfbdExwywA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cFjXXlOc; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MhTy3XKh; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	 MIME-Version; b=KBfrAaemc8p9ioTs95z99TgTRRMsSOJIIWPz75gtyuoBklCi7UJGBVLGqIYIK+/sPjwH0aCTdUlWmmtwQ12XmjOeRhHQzknlZBZX+CFXOrDjNe0IkNfqhvgVhd/24wzNj94K4wjqmfIQOEDjLY4lu1oE/9zpIKQBhYD/AJvDv9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZSTGIew2; arc=none smtp.client-ip=209.85.128.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cFjXXlOc";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MhTy3XKh"
-From: Nam Cao <namcao@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1782923763;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HpPxfHjNVp/v6IB8DNtSUfTsO1JBv2zEZ0/vIk7YYIw=;
-	b=cFjXXlOcbo1GW/Y8p350NcjyVVnKNBjCpGjd4nH2n4yVsh0y/9/PUQgmrsqleYV+XQhwVO
-	4TVqLerTf6ywqnYsdwMg/D6toYyiXFojLMqJ2MyYnnGqqNHjJtS71ET6BErxtA08t9Ec1J
-	WXLNhBrxlYWeVWGs4y0z0QRvAtjqhh9mhDceINe/ARAsBibXTYJSoEjt6jOFAVHNOWzJlV
-	SVtdXYEqlr3DABe9CmEOe7oEKiJFFqrveIAPIX0y/KfkAgkneSw0GeikW/L2/WPkTf2krF
-	3cu5RRKHj9HFrhf6SGt8kIgq+sin7MOr+6dlrlxplS5oe2T1t+BjvAgWvSBs8Q==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1782923763;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HpPxfHjNVp/v6IB8DNtSUfTsO1JBv2zEZ0/vIk7YYIw=;
-	b=MhTy3XKhl0H3mGsbdJveUCLYj4N7WIA0lYI20FEMq3hmrh7nlyCBuIUSQ/wFKyOO6QASBo
-	mzHxHrufYIy35dBw==
-To: Kuniyuki Iwashima <kuniyu@google.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZSTGIew2"
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-80e4455b9a3so12876697b3.1
+        for <netdev@vger.kernel.org>; Wed, 01 Jul 2026 09:42:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782924150; x=1783528950; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HUTIvVd7hXVFaVubObi/HnQ0CBjtLgoeqk9bLxy6OA4=;
+        b=ZSTGIew275uqpmk0BEhIxaJsx7WtTwHZ7Ty+OwzZBbP0Bm6R4kc9d3qmUMdEDjP8s8
+         5BuliDbXsffYVavapIaqoFTq72zweZw9RDwzH+ijFoU9ndBjQIxdNBemMlxCQwkfKrdn
+         f3AxrXsqMm9Di0mT56nKEv/zm/yTy1e8tYeTxVx2T9xwRwvPtjehnJL4g0FiRVpC2Siq
+         hlbGhxm39ETzbZxQIOIRYBXHXVGsGaMlOiUI+0x5094PQGAUReqqe0vnkgUyHZWKI1jx
+         ApLlTLguAApRmNvyVz48bEpY3oBWQH6Lr9RAxGqPwmbyf48f3xVOn8bQERxcWFF3+yCm
+         aS7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782924150; x=1783528950;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=HUTIvVd7hXVFaVubObi/HnQ0CBjtLgoeqk9bLxy6OA4=;
+        b=dVchtGm9OqX/z2ex9I4BKx4VrlbinoVs2lE7Fsx5bQn1dUNHEgoSO24GydiO1c/8vN
+         3zCECE1/fwBW7NxzESC5YfXtmamj7Aze5x3agHsU6/+dEo7kZPEy2De4v3i4xz8eD63F
+         DuHfZcsQl1Ge3kCBmXws0M80E312xqXjrRKMlhirZ2i+LErdyywc1X/rgC9YPaKF9ao2
+         R2kliyNQK8aEpcoYd9oUXiwRWm/uo3+P04zBD8B8HrRexbMpoim3GY7ldp0ca76d3+sz
+         msuzTGK7d3wkdOOsDABeb/XO562o3NIHkD3ct5E71KQvYmnUWecx+NJ15JBb44W9ArzS
+         P1eA==
+X-Forwarded-Encrypted: i=1; AHgh+RogkMRh0I3s16xMYKGvcPGoLlFZu5m5FcBG4dNwuI/b3yWp9oD9lk9+zkeoyUA5Bqou8dnioqw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYzIf1kr3PgWsPLBOdecHnfAG56nqDO++Z9H/BTyiBrbXqMNgB
+	NlhlaE0c6UXvGfciGRLLUspaO0qb2Nj6NF49tFPO0B80ONbD5ME0UFZ/
+X-Gm-Gg: AfdE7ckiarygXPeSCmCOF+9yWHj3ADb+ZxTYBzPyTeS9pYR7/ZYu0F3oBU1zk7lFxsF
+	y9s2ARTHICFxeylmtJKt4Pl0YqoOH+GIIShLz820483otQ2hfX640qDvqptWyqG6m+ZLR6NWBNR
+	+V+/3Ixt2dMlL/KwCJl0U7xwaLqrMAqCAfeSltqJj+oSxESCZVEtUaETp7IwAXT/TDXJE8KAg8K
+	5YER7N5xvRY5ytHe0rQ0bZQ+R9D+WoZzc3ZMUuidPosAEeMFN1n1+UgXMomQCFKh6ND7GWM/krl
+	52SyuXozCxuIQFPqKA3sAh9x/48g2o4qILdKO3SCP0/v0Y6ua0Ts32AofXujLWEWIWJODRH3hEZ
+	HhfarAmWxfa2PoMVbJ3jUThE1W19PdxqrnaCyTz1DEhEvpTNqZhWoKDf+OCX2PF0XxkGNm4afzJ
+	xIO8MJ14TxO/Cu5y+UKfZ6C1svZg==
+X-Received: by 2002:a05:690c:734a:b0:80c:85c6:8987 with SMTP id 00721157ae682-8138b95e350mr17913177b3.70.1782924149728;
+        Wed, 01 Jul 2026 09:42:29 -0700 (PDT)
+Received: from Dev-Null-MSI ([2a0d:3344:52ac:a808:98a4:4381:be45:536f])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-81448cd06a1sm2213857b3.21.2026.07.01.09.42.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Jul 2026 09:42:29 -0700 (PDT)
+From: Yousef Alhouseen <alhouseenyousef@gmail.com>
+To: alex.aring@gmail.com,
+	stefan@datenfreihafen.org,
+	miquel.raynal@bootlin.com
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	marcel@holtmann.org,
+	kuniyu@google.com,
+	linux-wpan@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev
-Cc: Nam Cao <namcao@linutronix.de>
-Subject: [PATCH 2/2] af_unix: Clean up unix_schedule_gc()
-Date: Wed,  1 Jul 2026 18:35:54 +0200
-Message-ID: <8e1eda7344d490498839bf99b906968b66512de9.1782922354.git.namcao@linutronix.de>
-In-Reply-To: <cover.1782922354.git.namcao@linutronix.de>
-References: <cover.1782922354.git.namcao@linutronix.de>
+	stable@vger.kernel.org,
+	syzbot+36256deb69a588e9290e@syzkaller.appspotmail.com,
+	Yousef Alhouseen <alhouseenyousef@gmail.com>
+Subject: [PATCH net v2] mac802154: remove interfaces with RCU list deletion
+Date: Wed,  1 Jul 2026 18:42:22 +0200
+Message-ID: <20260701164222.9094-1-alhouseenyousef@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260630211808.50440-1-alhouseenyousef@gmail.com>
+References: <20260630211808.50440-1-alhouseenyousef@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-The only caller of unix_schedule_gc() passes NULL as an argument. Therefore
-simplify by deleting the parameter.
+Queue wake, stop, and disable paths walk local->interfaces under RCU.
+The bulk hardware teardown path removes entries with list_del(), so an
+asynchronous transmit completion can follow a poisoned list node in
+ieee802154_wake_queue().
 
-Signed-off-by: Nam Cao <namcao@linutronix.de>
+Use list_del_rcu() as in the single-interface removal path. The following
+unregister_netdevice() waits for in-flight RCU readers before freeing the
+netdevice, so no separate grace-period wait is needed.
+
+Fixes: 592dfbfc72f5 ("mac820154: move interface unregistration into iface")
+Reported-by: syzbot+36256deb69a588e9290e@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=36256deb69a588e9290e
+Cc: stable@vger.kernel.org
+Signed-off-by: Yousef Alhouseen <alhouseenyousef@gmail.com>
 ---
- net/unix/af_unix.c |  2 +-
- net/unix/af_unix.h |  2 +-
- net/unix/garbage.c | 14 +-------------
- 3 files changed, 3 insertions(+), 15 deletions(-)
+Changes in v2:
+- Drop the redundant synchronize_rcu() noted by Kuniyuki Iwashima.
+- Clarify that unregister_netdevice() supplies the required RCU wait.
+- Narrow the subject and commit message to the list deletion bug.
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index f7a9d55eee8a..759db734a866 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -733,7 +733,7 @@ static void unix_release_sock(struct sock *sk, int embr=
-ion)
-=20
- 	/* ---- Socket is dead now and most probably destroyed ---- */
-=20
--	unix_schedule_gc(NULL);
-+	unix_schedule_gc();
- }
-=20
- struct unix_peercred {
-diff --git a/net/unix/af_unix.h b/net/unix/af_unix.h
-index 8119dbeef3a3..600d56fdcde4 100644
---- a/net/unix/af_unix.h
-+++ b/net/unix/af_unix.h
-@@ -30,7 +30,7 @@ void unix_update_edges(struct unix_sock *receiver);
- int unix_prepare_fpl(struct scm_fp_list *fpl);
- void unix_destroy_fpl(struct scm_fp_list *fpl);
- void unix_peek_fpl(struct scm_fp_list *fpl);
--void unix_schedule_gc(struct user_struct *user);
-+void unix_schedule_gc(void);
-=20
- /* SOCK_DIAG */
- long unix_inq_len(struct sock *sk);
-diff --git a/net/unix/garbage.c b/net/unix/garbage.c
-index f180c59b3da9..d46aeb9d2051 100644
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -635,23 +635,11 @@ static void unix_gc(struct work_struct *work)
-=20
- static DECLARE_WORK(unix_gc_work, unix_gc);
-=20
--#define UNIX_INFLIGHT_SANE_USER		(SCM_MAX_FD * 8)
--
--void unix_schedule_gc(struct user_struct *user)
-+void unix_schedule_gc(void)
- {
- 	if (READ_ONCE(unix_graph_state) =3D=3D UNIX_GRAPH_NOT_CYCLIC)
- 		return;
-=20
--	/* Penalise users who want to send AF_UNIX sockets
--	 * but whose sockets have not been received yet.
--	 */
--	if (user &&
--	    READ_ONCE(user->unix_inflight) < UNIX_INFLIGHT_SANE_USER)
--		return;
--
- 	if (!READ_ONCE(gc_in_progress))
- 		queue_work(system_dfl_wq, &unix_gc_work);
--
--	if (user && READ_ONCE(unix_graph_cyclic_sccs))
--		flush_work(&unix_gc_work);
- }
---=20
-2.47.3
+ net/mac802154/iface.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/net/mac802154/iface.c b/net/mac802154/iface.c
+index 000be60d9580..b823720630e7 100644
+--- a/net/mac802154/iface.c
++++ b/net/mac802154/iface.c
+@@ -703,7 +703,7 @@ void ieee802154_remove_interfaces(struct ieee802154_local *local)
+ 
+ 	mutex_lock(&local->iflist_mtx);
+ 	list_for_each_entry_safe(sdata, tmp, &local->interfaces, list) {
+-		list_del(&sdata->list);
++		list_del_rcu(&sdata->list);
+ 
+ 		unregister_netdevice(sdata->dev);
+ 	}
+-- 
+2.55.0
