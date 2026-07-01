@@ -1,140 +1,106 @@
-Received: from flow-a5-smtp.messagingengine.com (flow-a5-smtp.messagingengine.com [103.168.172.140])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A63279798;
-	Wed,  1 Jul 2026 16:23:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291E2366816;
+	Wed,  1 Jul 2026 16:24:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782923014; cv=none; b=trWir/lSTqtQeyWfPpCbchP172BQKOZPAFVpuYQybDqsBoZMuPu12Amy+ke+GHPhVgJYk86skDdfVEgDK2UMA970XBOtFR450NIrhZLokycJCHXFErmmw18FKKGZs+6WQ5mP0AKfHnT6lSJ8tlqRUpQ4oWKv1akYAVd0Bnl/V1c=
+	t=1782923067; cv=none; b=RokDcQq4CdTo3l9l72E1Euabb4BFYB+X2MbL2nbuWcBITFb/DGwVGTES1TVBc47UxFUym/63QkpzS5mLtclheHdP9NYOz/daVkDgyDEocyJrk42tTGxqRaXZhgqQ1xe3t2GJrSDhRabVAwC3wUlTv58nQ4sGSuQew9K1hGkOu4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782923014; c=relaxed/simple;
-	bh=x10C5v/pkDN5JEhi5Z90muc7qgtwdJDaeB1HgP/pcHo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WLE2f4foDbPNJrRJ3j6Y5sklUTbtFfW2UFV3FIDfBU2E9ubS9lWKw2O8PrzmcDccpv/yqpmuYlZbwNGmwwe7zqklCNgtJdRMkpQp8R8SjNhBN/+DuEacmCo2q8RZCwfo5DRHGo2zgihpzwZ5vmXi/HQAbbHPdJvUBoogokRbq8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com; spf=pass smtp.mailfrom=fastmail.com; dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b=pgzXdUaP; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=cLxJZnyt; arc=none smtp.client-ip=103.168.172.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.com
+	s=arc-20240116; t=1782923067; c=relaxed/simple;
+	bh=PkQmqwbgSjT5aMMiQj1i8sYD8hdwFPcTFD7ghp7SVAM=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=DyIv7L+Snne8kHwgBU4gvnTgtmUQ5jU5qCOrLj8ChSLzXu6g0bVhCFwcpO8tHEJwXHL6+26lxJHcqfVHoalG8+Y9bz+47QgRr6j5GLcjnX2WUSGhqQpPTojEWjxOe2j6RL8yKyNPxQtR9cqfv7qLr3lYdXbSUXm9pPc+vO6N1Lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SwtQnZ96; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b="pgzXdUaP";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="cLxJZnyt"
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailflow.phl.internal (Postfix) with ESMTP id BA85013803FA;
-	Wed,  1 Jul 2026 12:23:31 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-09.internal (MEProxy); Wed, 01 Jul 2026 12:23:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.com; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1782923011;
-	 x=1782926611; bh=bIIdkaiZyLJ8dGaBsy+pOB1LtJlZqvLnI/SY4kK7MsE=; b=
-	pgzXdUaPLJ59bm5PICdUUbPY4QKNEAuIenH4eOEV6jc0vrgkONRWWwsIQKAhsZd3
-	90fZFVaF0+7dET/zgxPwjp2nF3EFcGJ8cHHJ676NnMPtOJ45I0snDn3B3GgNyTA4
-	MAIbJ9bPUPXanAa7GO+vL26wYF5t6FfOHYL6TsK5zUZYQIqSTOcEWv6RMmT329zC
-	JzCX8JupRxOg7kgHFeOlg4/K2lF4DOiS3mx3g3h3Q/0tSCbRQjJ4HutKmukVWycA
-	6DQxaEoySrFPpg3Ady70qQGJETOMBYoe0gHyvSZAcLjEaXb9VCB+wRFHWZkJFzkU
-	5/wy2vRiX5FhqafaDpuzSg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1782923011; x=
-	1782926611; bh=bIIdkaiZyLJ8dGaBsy+pOB1LtJlZqvLnI/SY4kK7MsE=; b=c
-	LxJZnytS/Tsv+E6zFyJz2sDFARGejdBa+611xVW6J4K8ExVcQQ7821+Z4Md4vKNe
-	yY/0FEH3bfXpC1UV98oA9x+SbsEyrUyUhN3IcPmRQu+cpSDLX5Hc5Sdp7bLb7SKE
-	F79fANlOZRzUgTFZqVlPN+CRkzMVKaE4XRahebYiB8B8pjs8KlUnx1XQd0L8xA6V
-	4ltzH1zzwUYNtn/9JiF/gUogelwMkEvDAu1Ebdw4B1F9nFY37E761quF89Pf7f9u
-	URwiMP59+vqsN2KWvhGPJchxSJ0ftsHzcndfAdTTMc8vucP4q/fIJVPVdfgaTw3/
-	2JW0NyobZfPSCmpursITA==
-X-ME-Sender: <xms:Az9FanA6nZdvvh80sryBZc0yAwO-d8RWxYUgm4bVAFswfvcrF2BBfQ>
-    <xme:Az9Fanifm0Tn4oHnl5x7ulmY0aa_TuNOWYlb4O8pU1wAWbH7gEtbmE_dxqIM5jFuY
-    9Ktwk5EcXEaJFbEesT_Vv43ZMmdTDtSfW-KJ2spKkxdPiDumKWgiA>
-X-ME-Received: <xmr:Az9FapNEZ0KoUHXrNDSbn6CFdfMRFCa48AC8dLPAN1fqtxMVnBeNfSbutoZum6az9A>
-X-ME-Proxy-Cause: dmFkZTE4zoAaZe8L2+jvZaacThwtfnpMPC6LLvbRLosiLXdN5TxmBr60aNb8A08/c4yk10
-    rCva1N2EQrNvsd+TFvLDW12DsF4qfnYXGB+3XNnrCiHAr72tANSXf99ZHOSryWtQ4mpg9u
-    FQ1neFOoU6VFX3cb2SR4lwTNkqVM3HAoWu8mHUzjv6hWxlYrg1bllFJMuvCm2KwbjOeHdr
-    en5TZcFEf5lWtcngTgtA+JUlrs3qe5KsFaFg+qUU0N5o9yxOqnydem7SNHsZOKJVpLNNKD
-    uf2q/MpwAUHpZfj0UjqgVy4aS5NXqW3DRtp9MVJna1NNgBuZU2KW32CnAuQ0/abf7bLAci
-    p8ttWjRHa2xaStm7lJf/ZANB2+tIGvZ4Pnn2LXaVUpjS4c00q9wHb964z1d6TtZzMq3K/c
-    3ov6ezT2MmjtoLgK1QMBP3qe9+vBy9n6tEZCsR5bObwWxBHjyqprfMt2AyScy0Q88wIfYV
-    J7EkHzfZqUX9ZIfUKey4b78TgR5r+0xMWIk6P3B5xH4Vv/Ae06f86Jey5kDSe6XPUcewh0
-    0gH7Amom3VgvBGgmz0fdJWbxTgRHfAkM95fgrSxvV4NW5+4F9Uvt7bcofOt3Vtgs5Rkt5K
-    PvCFRpCY7HcTRxJpwhyOWJ5q1tdop90NA7kGokl6d/viQCmxRo4PABs579sw
-X-ME-Proxy: <xmx:Az9Fan9C0J-o1xbpeh1PuSyYeR1ZSOT1ZXfwMXl9OlFhKxOF51IuCg>
-    <xmx:Az9Faqe6QRktZSkJ-_OtikT0gbokATpQZYHSel46uqxwLx4GCVWCnA>
-    <xmx:Az9FamxjVuXg80nBscT5k3vRAfKjAKCLOfuHVidNe4FxFHTa8oSyUw>
-    <xmx:Az9FavIxyRlDTayDd1tayuy8lNAwV674R8sK4hkoPebJlKJd7siOyA>
-    <xmx:Az9FakW0d48ptBsfSbrFxNY0HsifCMXqeio4jMF6Y5qqJpMSGK1o5TJP>
-Feedback-ID: i9dce4b48:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 1 Jul 2026 12:23:29 -0400 (EDT)
-Message-ID: <fe22e7b2-4cf9-4816-a513-5dfa9d3bf84f@fastmail.com>
-Date: Wed, 1 Jul 2026 19:23:27 +0300
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SwtQnZ96"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90A061F000E9;
+	Wed,  1 Jul 2026 16:24:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782923065;
+	bh=dQbBlkNyShZgl6jx6OlwULDQXonRARNTYcAllSQ/B9U=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject;
+	b=SwtQnZ96zoZhDDv5bku1HcaOWLPPGhIElTYWLAl7g5ozDyFVuHrDxlCKsxe2tnFK1
+	 84055kA9AfD+vRLgMAx/eq68Bl0h9UTkkY3GDMYVFrt8cQZsrB89h2ETyEuxbobAGg
+	 bTVJz6mmEuAnTH0Z9MKTNzsnN54hwblnw4ewbCAIA6O/tllnvzKpX3UqQjgGjBMdAH
+	 +hikVObjG2l4s3QR1I2P2VtTHWhI+YYD9WBgAwtBn5slQrY845Db3sJx73xcdIm57l
+	 prk40ttbIjtqy8jNtkoBXaQQlkWYWoXV+YDTCWLk8dThdnyvXprJX9y06zxh3sOTxX
+	 MjRr1bENc8HaQ==
+Date: Wed, 01 Jul 2026 11:24:24 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] qede: Prevent possible snprintf() truncation by bounding
- %s string format
-To: Breno Leitao <leitao@debian.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- "open list:QLOGIC QL4xxx ETHERNET DRIVER" <netdev@vger.kernel.org>,
- open list <linux-kernel@vger.kernel.org>
-References: <20260701144713.197557-1-barant@fastmail.com>
- <akUw_GsNELK4NKTN@gmail.com>
-Content-Language: en-US
-From: Baran TUna <barant@fastmail.com>
-In-Reply-To: <akUw_GsNELK4NKTN@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: linux-kernel@vger.kernel.org, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ Chun-Jie Chen <chun-jie.chen@mediatek.com>, netdev@vger.kernel.org, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Brian Masney <bmasney@redhat.com>, Philipp Zabel <p.zabel@pengutronix.de>, 
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ Stephen Boyd <sboyd@kernel.org>, linux-mediatek@lists.infradead.org, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, kernel@collabora.com, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Edward-JW Yang <edward-jw.yang@mediatek.com>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ Conor Dooley <conor+dt@kernel.org>, linux-clk@vger.kernel.org
+To: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+In-Reply-To: <20260701-mt8189-clocks-system-base-v1-2-2b048feea50a@collabora.com>
+References: <20260701-mt8189-clocks-system-base-v1-0-2b048feea50a@collabora.com>
+ <20260701-mt8189-clocks-system-base-v1-2-2b048feea50a@collabora.com>
+Message-Id: <178292306474.849869.14658483953316030995.robh@kernel.org>
+Subject: Re: [PATCH 02/15] dt-bindings: clock: mediatek: regroup MT8188
+ dt-bindings into MT8186
 
-The current solution is pretty arbitrary.
 
-Numbers are coming from a simple calculation, to make sure output always 
-fits.
+On Wed, 01 Jul 2026 15:11:07 +0200, Louis-Alexis Eyraud wrote:
+> Regroup the MT8188 clock and system clock dt-bindings into MT8186 ones
+> to ease maintainability and have common files for several currently
+> supported SoC or new future ones, that have the same kind of clock
+> controller design.
+> 
+> Note:
+> The `#clock-cells` property is a required property for all compatibles
+> declared in MT8188 clock and system clock dt-bindings but not in MT8186
+> ones.
+> To avoid ABI breakage, conditional blocks to check this requirement
+> for MT8188 compatibles are added, rather than enforcing it for MT8186
+> compatibles.
+> 
+> Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+> ---
+>  .../bindings/clock/mediatek,mt8186-clock.yaml      | 82 ++++++++++++++++++-
+>  .../bindings/clock/mediatek,mt8186-sys-clock.yaml  | 20 ++++-
+>  .../bindings/clock/mediatek,mt8188-clock.yaml      | 93 ----------------------
+>  .../bindings/clock/mediatek,mt8188-sys-clock.yaml  | 58 --------------
+>  4 files changed, 100 insertions(+), 153 deletions(-)
+> 
 
+My bot found errors running 'make dt_binding_check' on your patch:
 
-I will take a further look and send a patch if there is a more 
-generalized solution.
+yamllint warnings/errors:
+./Documentation/devicetree/bindings/clock/mediatek,mt8186-clock.yaml:62:1: [warning] too many blank lines (2 > 1) (empty-lines)
 
-On 7/1/26 6:27 PM, Breno Leitao wrote:
-> On Wed, Jul 01, 2026 at 05:47:11PM +0300, Baran Tuna wrote:
->> GCC warning shows that formatted strings may
->> exceed the fixed-size destination buffers.
->>
->> Bounding the %s string format
->> so the maximum formatted output always fits.
->>
->> This eliminates the -Wformat-truncation warning.
->>
->> Signed-off-by: Baran Tuna <barant@fastmail.com>
->> ---
->>   drivers/net/ethernet/qlogic/qede/qede_ethtool.c | 8 ++++----
->>   1 file changed, 4 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/net/ethernet/qlogic/qede/qede_ethtool.c b/drivers/net/ethernet/qlogic/qede/qede_ethtool.c
->> index 647f30a16a94..5428f53150a0 100644
->> --- a/drivers/net/ethernet/qlogic/qede/qede_ethtool.c
->> +++ b/drivers/net/ethernet/qlogic/qede/qede_ethtool.c
->> @@ -618,10 +618,10 @@ static void qede_get_drvinfo(struct net_device *ndev,
->>   	if ((strlen(storm) + strlen("[storm]")) <
->>   	    sizeof(info->version))
->>   		snprintf(info->version, sizeof(info->version),
->> -			 "[storm %s]", storm);
->> +			 "[storm %.16s]", storm);
-> Where is this 16 coming from?
->
-> Also, isn't the if above checking for no overflow? I.e,
-> we got here only if strlen(storm) + strlen("[storm]") < sizeof(info->version))
->
-> For whoever else is reviwewing this, this the buffers:
->
-> 	#define ETHTOOL_FWVERS_LEN      32
->          char    version[32];
-> 	char storm[ETHTOOL_FWVERS_LEN];
->
+dtschema/dtc warnings/errors:
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.kernel.org/project/devicetree/patch/20260701-mt8189-clocks-system-base-v1-2-2b048feea50a@collabora.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
+
