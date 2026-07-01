@@ -1,129 +1,168 @@
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C13FA421F12;
-	Wed,  1 Jul 2026 15:06:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C253A3E2ACC
+	for <netdev@vger.kernel.org>; Wed,  1 Jul 2026 15:07:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782918384; cv=none; b=SZTtCaacJfF2yqVkJWyTOvnRVXVYS6xyx7i2CpouB0SV/3kxsL8q9upGvDU8GyfVHwd9pdhAUqRUB2PXyb2xO8a73c/FoAT3yY/JRmQZqOtIjo/0knHVFiUqUOg6eu5PNY+Y61gmjq1QHT7BJ22hK9VGnBLqm4Gr0PwD43if418=
+	t=1782918428; cv=none; b=O6QxUsQck0eoEZy/sL6pWa2TyHQYIAeankJkeD0/jZnuGwkLdwTLJZ1zNaspcfHaF53JMxlTgSGDSnBpbW8hRXd9YdpTE4dA7Rxly1OeY3gohPRlGYmFttYGadkljw6GVKHS2PnWJPZZeB04RYIgX33m7WYdrfERztYvg/2EFkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782918384; c=relaxed/simple;
-	bh=7iK4BGNHJy0tB94tmLVRjvi1Oe1FniGBRLtTBxRpX9I=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=AOtI4OI2prGXRxMpFF/LwUjvJqICEcnpJrIoRgSQdKTke0cMBJt/dYJRp+N6mBk0hYmlk7mJPQRTONZBk/j1RHS/qqQpOsABs+1eN24QUqbGztmPut3KDr6fDrqnDw3s8reFnOBJ8iMExW+sUUjPa4zeigwyWxu0HGWvovz1MjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=pcd0PeJh; arc=none smtp.client-ip=80.241.56.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1782918428; c=relaxed/simple;
+	bh=MlAL4YFJQb5WgJokZCXKg2SDJZI5irVDi2XwniEutjo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=b/iJaAVF6DYDcxD5G7tUBeWNBUPx7yj6C8sjueM+ICJu0qinNgLDyBqPpSXS3o0qEQrmvK584TxW/BU63K9TjRJFBJUmJL/HKRDH0U0VBjoUmqSXgKDKHYxdt3dFV2+pTDUCxTqHQjSnHBstZeniAqXo6Hitpw7B/25GEsy3CgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NvQyJvd+; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=iUjmDA9E; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="pcd0PeJh"
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4gr3Hr4RnZz9tCX;
-	Wed,  1 Jul 2026 17:06:16 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1782918376;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NvQyJvd+";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="iUjmDA9E"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1782918421;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7iK4BGNHJy0tB94tmLVRjvi1Oe1FniGBRLtTBxRpX9I=;
-	b=pcd0PeJh7Iv8r/KVTFH5oFdA/lvvSyvuvKi3if55cztI2n/XSqmRdnZKteH85HKKVV85yU
-	j9HVmz2EWbdR6s0CcET0z1vhIRn4hJ25bjWnCJwEuRpc0w/NW+iGM63mTUN/npapcFcSR/
-	fvTXXtkA/gTpkwn7ezESk2MSMTKfcqmvoICSsIiJierSEvXB9xwtVzbElgLSVNcJv+Ritx
-	B8K9i27AJIekT+XY6QmKpjCphMf9LuJwlimFmayP7Cy6geBGJUxhP+KSpU8c/IrGtSWTsI
-	iKUJjdFVYMmR+verObzbMA+hWZMieIpK2Ln1S3xxLh3nAIF0DvnMe971s5Fifw==
-Message-ID: <f6ce9878f3528dd026e6ca8ff56ac773a264e476.camel@mailbox.org>
-Subject: Re: [PATCH v2 02/19] driver core: platform: provide
- platform_device_set_of_node()
-From: Manuel Ebner <manuelebner@mailbox.org>
-To: Bartosz Golaszewski <brgl@kernel.org>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org, 
-	driver-core@lists.linux.dev, devicetree@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org,
- iommu@lists.linux.dev, 	linux-pm@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, intel-xe@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, linux-usb@vger.kernel.org, 
-	linux-mips@vger.kernel.org, platform-driver-x86@vger.kernel.org, Bartosz
- Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, Lee Jones
- <lee@kernel.org>, Thierry Reding	 <thierry.reding@avionic-design.de>,
- Sebastian Hesselbarth	 <sebastian.hesselbarth@gmail.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>,  "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Srinivas Kandagatla <srini@kernel.org>, Greg
- Kroah-Hartman	 <gregkh@linuxfoundation.org>, Vinod Koul <vkoul@kernel.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich
- <dakr@kernel.org>, Rob Herring <robh@kernel.org>,  Saravana Kannan
- <saravanak@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael
- Ellerman	 <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Andi Shyti
- <andi.shyti@kernel.org>, Andy Shevchenko	
- <andriy.shevchenko@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will
- Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Doug Berger
- <opendmb@gmail.com>,  Florian Fainelli <florian.fainelli@broadcom.com>,
- Broadcom internal kernel review list	
- <bcm-kernel-feedback-list@broadcom.com>, Ulf Hansson <ulfh@kernel.org>, 
- Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team	 <kernel@pengutronix.de>, Fabio Estevam
- <festevam@gmail.com>, Matthew Brost	 <matthew.brost@intel.com>, Thomas
- =?ISO-8859-1?Q?Hellstr=F6m?=	 <thomas.hellstrom@linux.intel.com>, Rodrigo
- Vivi <rodrigo.vivi@intel.com>,  David Airlie <airlied@gmail.com>, Simona
- Vetter <simona@ffwll.ch>, Peter Chen <peter.chen@kernel.org>,  Paul
- Cercueil <paul@crapouillou.net>, Bin Liu <b-liu@ti.com>, Philipp Zabel
- <p.zabel@pengutronix.de>,  Maximilian Luz <luzmaximilian@gmail.com>, Hans
- de Goede <hansg@kernel.org>, Ilpo =?ISO-8859-1?Q?J=E4rvinen?=	
- <ilpo.jarvinen@linux.intel.com>, Krzysztof Kozlowski <krzk@kernel.org>, 
- Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Date: Wed, 01 Jul 2026 17:05:49 +0200
-In-Reply-To: <CAMRc=MdQURjypSn+QjSDJfEiOMC8bbEZmZLgjpt=EquAM1Q1pw@mail.gmail.com>
-References: <20260629-pdev-fwnode-ref-v2-0-8abe2513f96e@oss.qualcomm.com>
-		 <20260629-pdev-fwnode-ref-v2-2-8abe2513f96e@oss.qualcomm.com>
-	 <263f58b418a27a2339fc2478f93234e0208b0ad9.camel@mailbox.org>
-	 <CAMRc=MdQURjypSn+QjSDJfEiOMC8bbEZmZLgjpt=EquAM1Q1pw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	bh=bvN/HWu6feZiSqpgq6zatsR6VU+a8BcYwNOqKxB1Zk0=;
+	b=NvQyJvd+/m5LMCuekWFzwtSoiRq+lX7i2Q0oCR3fNkbWLd/hoE2+7ptdg0Pk8sdwuCnn8J
+	rdKmGJ3K9ep1AwkBMOrHgIGIDe/Cn/14WrekprTXKOuwDW/hmxcgjGgK3iZKRV+8JsNSkg
+	QHYbME1prVGM7mar6FUTd7VuhAP53UU=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-465-n5Ts9BpEMuWAEnvuJ4seVw-1; Wed, 01 Jul 2026 11:07:00 -0400
+X-MC-Unique: n5Ts9BpEMuWAEnvuJ4seVw-1
+X-Mimecast-MFC-AGG-ID: n5Ts9BpEMuWAEnvuJ4seVw_1782918419
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-493a7fa8481so14581385e9.1
+        for <netdev@vger.kernel.org>; Wed, 01 Jul 2026 08:06:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1782918419; x=1783523219; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=bvN/HWu6feZiSqpgq6zatsR6VU+a8BcYwNOqKxB1Zk0=;
+        b=iUjmDA9EfVDEqM8cnP2E/cCaN3w0yMshWPUoHmniXmOx+AJIj/MriziV+76uD43GXm
+         rprJf2w3uJeY+ZG1QDPCD0J/BvOUmlkoyvNN0AtZyZnpViLEDDepFFWBrSz11MANl+gt
+         bygsXtRVQFtoP2VxifRfDNbCLHYszeAX+VOGGTxudpQPdtkHxPS0pYn3/A2WgwX+M7Se
+         3z9PcMwK/fBkzcoYlOHcp+Hou9UvlMvBZumpbqZiMvHkn9sbZfOLMtN//SEaWNsuqduJ
+         ddPHiQpoy0RwZrvgz7WmHh1a1nNoNbsdUu1cj4NDOdL62+O38mGhzbKzfvek4SmzQCMs
+         C6vw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782918419; x=1783523219;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bvN/HWu6feZiSqpgq6zatsR6VU+a8BcYwNOqKxB1Zk0=;
+        b=olYvRzApODesfDRlRAfZPP4fKkMGM7DadCiYOuomVfuj4I5HRHK9AxvkYQ7KMAmtqK
+         Ywz4O/Sa53/7BIUeifZUagq7uN3/iPn20QvzV7AsMkvRwEmmBX9F7S6wX7Q65fCS7QSq
+         WGqmkkP+ES0BHWcNPl3EsX0qzEcPWLqXxTMo33sIrPDVk8HqvxlC7GsPoFAQ/+4P+Ed8
+         XWdck60ojrAzLHKs+bdRFsizFz/D7ntbOwgdZmAtN/giMMQO+SNkWEJIa7NaWDY3uoqG
+         E9od964kAPOpqlRdSO1CTLVxBAcAAjJY6GHpJqKkKYQKuRYnNmOZC+gR4K22AjQQ/w8C
+         KZUA==
+X-Forwarded-Encrypted: i=1; AFNElJ9iq5Z8Aw1B0/Ti0xeejX0IZW5Bo0bHzuf0WFq82xFSA6PPgNfQiq7Vw9jgWuYHsQt9XtcjJw8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz5eIhYs3rhlYzjOZ5VvrtIGIYUruCf5hkMGI6XQCi7n2kOlIXH
+	F65IKFxiGUWmMkCIRs1mP3PUkVF2MM/YtWTwGLF5niIU84JazXMuuLptPv5L7iX0ojKRyup3MIG
+	anKfunrVg9yEeQ4ZQfZtrL3oDrCbpxyWapQF0fFQbPim+o1oNQXzOsREC1Q==
+X-Gm-Gg: AfdE7cksT28dUfCYurDTLenRAvo6mgdX17VGk/IHoX/TjazReHoLWlLXmtKdqVzwoUl
+	lQZwpF6nP4qrDLYrOGlHq3DkCbmoEwJcKlkmVsvCkgAlPfAnXaWPnFKGiY3NqQSh7VldS2b/rJj
+	rvXubVBqHbpLCxhcKldo62Tzdx3lR5uA79IfEtaU16rzv+MT+pQIYoJ0+n2fODgByFkHE0gwPCx
+	eWRjknmtB2b5Ig+0JCZxIwFJeur04QIrHuuDz2q4PdAQzrlIjAAnFBiLdHSeoWirCCEiWZ30PnR
+	qVzhqnnoV4NzvIKRUA7IjZUKaGg7Hx7fMAEXLNr235VZgS5pcVDArd1tBIe6Xkcj2YOq7bZUB/N
+	3v4bcpy/SicMXpY3DZJu9TiT+qcF+N6tUOtjZ6bN2X/0usdDy/gqhZdHNu/+kW3lNdH9MkfzIc1
+	HRJS2r9ypnhg==
+X-Received: by 2002:a05:600c:4eca:b0:490:b26c:64ad with SMTP id 5b1f17b1804b1-493c231e27dmr28474555e9.5.1782918418753;
+        Wed, 01 Jul 2026 08:06:58 -0700 (PDT)
+X-Received: by 2002:a05:600c:4eca:b0:490:b26c:64ad with SMTP id 5b1f17b1804b1-493c231e27dmr28473915e9.5.1782918418306;
+        Wed, 01 Jul 2026 08:06:58 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:5521:6b10:2eb7:f61a:75:4534? ([2a0d:3344:5521:6b10:2eb7:f61a:75:4534])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493be81df2asm159515325e9.12.2026.07.01.08.06.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 01 Jul 2026 08:06:57 -0700 (PDT)
+Message-ID: <e1f8aec9-751b-4a51-ab09-ca3c37522e30@redhat.com>
+Date: Wed, 1 Jul 2026 17:06:56 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MBO-RS-META: 37tty84b1zxogwptawjudbroswqcnaqn
-X-MBO-RS-ID: 0ac2dd9424902710d49
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: fman: guard IRQ handlers against pre-init interrupt
+To: ZhaoJinming <zhaojinming@uniontech.com>, horms@kernel.org,
+ andrew@lunn.ch, madalin.bucur@nxp.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ sean.anderson@linux.dev
+References: <20260629084529.3709393-1-zhaojinming@uniontech.com>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20260629084529.3709393-1-zhaojinming@uniontech.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, 2026-06-30 at 09:22 -0400, Bartosz Golaszewski wrote:
-> On Tue, 30 Jun 2026 13:37:54 +0200, Manuel Ebner <manuelebner@mailbox.org=
-> said:
-> > On Mon, 2026-06-29 at 11:12 +0200, Bartosz Golaszewski wrote:
-> > > [...]
-> > >=20
-> > > +/**
-> > > + * platform_device_set_of_node - assign an OF node to device
-> > > + * @pdev: platform device to add the node for
-> > > + * @np: new device node
-> > > + *
-> > > + * Assign an OF node to this platform device. Internally keep track =
-of the
-> > > + * reference count. Devices created with platform_device_alloc() mus=
-t use this
-> > > + * function instead of assigning the node manually.
-> >=20
-> > Doesn't it make sense to add a remark to the kernel doc of platform_dev=
-ice_alloc()?
-> >=20
-> > Thanks
-> > =C2=A0Manuel
-> >=20
-> > > =C2=A0[...]
-> >=20
->=20
-> Sure, will do in the next iteration.
+On 6/29/26 10:45 AM, ZhaoJinming wrote:
+> read_dts_node() registers shared interrupt handlers via
+> devm_request_irq() with fman as the dev_id, passing it to fman_irq()
+> and fman_err_irq(). At registration time, fman is only partially
+> initialized -- kzalloc_obj() zero-initializes all fields, so
+> fman->cfg and fman->fpm_regs are NULL.
+> 
+> The handlers guard against incomplete initialization via:
+> 
+>     if (!is_init_done(fman->cfg))
+>         return IRQ_NONE;
+> 
+> However, is_init_done(NULL) returns true (intended to indicate that
+> fman_init() has completed and cfg has been freed). This means when
+> cfg is NULL before fman_config() allocates it, the guard does not
+> take effect:
+> 
+>     is_init_done(NULL)  -> returns true
+>     !true            -> false
+>     guard skipped     -> proceeds to dereference NULL fpm_regs
+> 
+> If another device on the same shared IRQ line fires during the window
+> between devm_request_irq() and fman_init(), the handler accesses
+> NULL fman->fpm_regs via ioread32be(), causing a crash. The window
+> includes of_platform_populate() which can be slow.
+> 
+> Add an irq_ready flag to struct fman that is set to true only after
+> fman_init() completes in fman_probe(). Check this flag at the start
+> of fman_irq() and fman_err_irq() before any register access.
+> 
+> Use READ_ONCE()/WRITE_ONCE() for the flag accesses since it is a
+> cross-context shared variable written in process context and read
+> in interrupt context.
+> 
+> This issue was identified in code review during the discussion of a
+> separate IRQF_SHARED UAF fix patch:
+> https://lore.kernel.org/netdev/20260626162323.GE1310988@horms.kernel.org/
+> 
+> Signed-off-by: ZhaoJinming <zhaojinming@uniontech.com>
+> ---
+>  drivers/net/ethernet/freescale/fman/fman.c | 5 +++++
+>  drivers/net/ethernet/freescale/fman/fman.h | 1 +
+>  2 files changed, 6 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/freescale/fman/fman.c b/drivers/net/ethernet/freescale/fman/fman.c
+> index 013273a2de32..f14cb02d85a4 100644
+> --- a/drivers/net/ethernet/freescale/fman/fman.c
+> +++ b/drivers/net/ethernet/freescale/fman/fman.c
+> @@ -2510,6 +2510,8 @@ static irqreturn_t fman_err_irq(int irq, void *handle)
+>  	struct fman_fpm_regs __iomem *fpm_rg;
+>  	irqreturn_t single_ret, ret = IRQ_NONE;
+>  
+> +	if (!READ_ONCE(fman->irq_ready))
+> +		return IRQ_NONE;
 
-then you can add
-Reviewed-by: Manuel Ebner <manuelebner@mailbox.org>
+Sashiko noted that on weakly ordered arch this could not be enough:
 
- Manuel
->=20
-> Bart
+https://sashiko.dev/#/patchset/20260629084529.3709393-1-zhaojinming%40uniontech.com
+
+Also I have the feeling this is papering over the real issue. Why
+initializing the irq when the driver is not yet ready? Why don't move
+IRQ initialization later?
+
+/P
+
