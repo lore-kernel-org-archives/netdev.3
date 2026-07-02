@@ -1,79 +1,134 @@
-Received: from mail-m3292.qiye.163.com (mail-m3292.qiye.163.com [220.197.32.92])
+Received: from tpecef21.compal.com (exmail3.compal.com [59.120.207.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D52390995
-	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 08:27:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C4434DCD6;
+	Thu,  2 Jul 2026 08:27:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=59.120.207.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782980841; cv=none; b=WBYA9ps5tnvJprTqfvGJCueAUjwofGUjUm8NJDfgNDiNiLC5eTcfWkZIH+nBG/sumNH4R1JOkrQ1v/Q65amaxb/drVTLrYi0ygPl1fMVRljdYzFdlYEuZCra+V255yGma6t/zMSEB5AItUqo1Je57u+HqIrxvNiTEqidTbafiyM=
+	t=1782980870; cv=none; b=oh3SgDWD56Udi6XFPKnTcxeMzMMQC5uSCs1B52Da3hWv1XzQgB0EUuiRWONi/nUyoeT4tjr7J0zWLBN4wc7PDSj98aoSbxt6lR8ZEwuT6mFfz0FjwALisdZ6lXUi9xh12NALm0H1rZ/qxKHrDlcuNAU5akXDjUsqyjm10opPY50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782980841; c=relaxed/simple;
-	bh=bPYyaPMVGXJ6fi2007K/Cro/FnneDqwZ1yi13CzKCrw=;
-	h=Content-Type:Message-ID:To:Cc:Subject:References:MIME-Version:
-	 From:Date; b=VEJGpKh+BXad2VBL1WX4umOlXvG+dItmW0L1DEF0wmhmK2wAAm4AeKZXpPh1R3lItOSP/x0ia1jvi1GRxM0AIHaW5LmWCpwLuAzJwB2muEC9rROXzVT3qObD99ndoU1bbIF9mU/IBPtgNrCfs0LqixIPMJ2D7qPIlc0lhcUH+SI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=gqP9UK8s; arc=none smtp.client-ip=220.197.32.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="gqP9UK8s"
-Content-Type: text/plain; charset="UTF-8"
+	s=arc-20240116; t=1782980870; c=relaxed/simple;
+	bh=+VWsVZmbh6VuQAbEeJ8YTelqhXj03on95jXTEwbtnYA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=myvmJxv586zk4IG1Vr1RB19YuCOs6x/oyiV5ihIroPC0JdnueBDJBX1Tsma1da1agO/vkxP0IqAm2jGQqaZHwV1IwEu/wg/wvguqna5ZIsBWh3pnqHud2ui5XRV6JXot79TO15zz7UZXG2UQIGSrVlzBYYroPvOE4gfyivq313k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=compal.com; spf=pass smtp.mailfrom=compal.com; arc=none smtp.client-ip=59.120.207.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=compal.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=compal.com
+X-UUID: e11a089475ef11f1b2470fb4f881575f-20260702
+X-CID-CACHE: Type:Local,Time:202607021627+08,HitQuantity:2
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.15,REQID:2df641c6-292d-45cf-9644-de51683a4a20,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:e276073,CLOUDID:1d90e5ee-6085-4bd7-b32c-8f3a894d1f02,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102|110|111|836|865|888|
+	898,TC:-5,Content:-10|0|15|50|99,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:ni
+	l,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE
+	:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: e11a089475ef11f1b2470fb4f881575f-20260702
+Received: from sdmg11.sdbg.compal.com [(10.113.168.9)] by tpecef21.compal.com
+	(envelope-from <jackbb_wu@compal.com>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1220226109; Thu, 02 Jul 2026 16:27:35 +0800
+X-UUID: ddd763a275ef11f1b328fd8a884f4420-20260702
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.15,REQID:b2a0e46e-e1e5-4259-8371-f8e83357b9e0,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:e276073,CLOUDID:031aa614-ea64-44d4-98db-4e1fb89955a3,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102|110|111|836|865|888|
+	898,TC:-5,Content:-10|0|15|50|99,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:ni
+	l,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE
+	:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: ddd763a275ef11f1b328fd8a884f4420-20260702
+Received: from sdbmbx11.tpe.compalcomm.com [(10.113.2.135)] by sdmg11.sdbg.compal.com
+	(envelope-from <jackbb_wu@compal.com>)
+	(Compal Mail Service with TLSv1.2 ECDHE-RSA-AES128-SHA 128/128)
+	with ESMTP id 117347440; Thu, 02 Jul 2026 16:27:30 +0800
+Received: from SDBMBX13.tpe.compalcomm.com (10.113.2.137) by
+ SDBMBX11.tpe.compalcomm.com (10.113.2.135) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
+ Thu, 2 Jul 2026 16:27:26 +0800
+Received: from SDBMBX13.tpe.compalcomm.com ([fe80::7d1b:448d:4d95:51b0]) by
+ SDBMBX13.tpe.compalcomm.com ([fe80::7d1b:448d:4d95:51b0%11]) with mapi id
+ 15.02.2562.029; Thu, 2 Jul 2026 16:27:26 +0800
+From: "Wu. JackBB (GSM)" <JackBB_Wu@compal.com>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: Loic Poulain <loic.poulain@oss.qualcomm.com>, Sergey Ryazanov
+	<ryazanov.s.a@gmail.com>, Johannes Berg <johannes@sipsolutions.net>, "Andrew
+ Lunn" <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Wen-Zhi Huang <wen-zhi.huang@mediatek.com>, Shi-Wei Yeh
+	<shi-wei.yeh@mediatek.com>, Minano Tseng <Minano.tseng@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
+	<angelogioacchino.delregno@collabora.com>, Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-mediatek@lists.infradead.org"
+	<linux-mediatek@lists.infradead.org>, "linux-doc@vger.kernel.org"
+	<linux-doc@vger.kernel.org>
+Subject: RE: [External Mail] Re: [PATCH v3 2/7] net: wwan: t9xx: Add control
+ plane transaction layer
+Thread-Topic: [External Mail] Re: [PATCH v3 2/7] net: wwan: t9xx: Add control
+ plane transaction layer
+Thread-Index: AQHdA/KoG0AzoVDQmky5mWyAxH40ubZVI4cU///wpwCABNxa7A==
+Date: Thu, 2 Jul 2026 08:27:26 +0000
+Message-ID: <4ec081f8df234cc584702abc67213965@compal.com>
+References: <20260624-t9xx_driver_v1-v3-0-73ff03f60c48@compal.com>
+ <20260624-t9xx_driver_v1-v3-2-73ff03f60c48@compal.com>
+ <2a90ae6b-2b6d-4340-b557-915252cc3488@lunn.ch>
+ <49939d4d682f4c1fb359973ea2cdbd00@compal.com>,<92b1e341-31a1-4f60-80d5-ccf8f742a38a@lunn.ch>
+In-Reply-To: <92b1e341-31a1-4f60-80d5-ccf8f742a38a@lunn.ch>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-tm-as-product-ver: SMEX-14.0.0.3239-9.1.2019-30042.005
+x-tm-as-result: No-10--5.111600-8.000000
+x-tmase-matchedrid: gIzQ6PxOy4Muv++HU7VXryRFbfQbCufdN0X64jGy2db7+pncqRJfy2XQ
+	7TcqkNINvK3gdx4WruG6C02CoqNlCtDVjrCAjJafEUw76ALZYKnyQ6dAmPdzEpASM5lkTKECkJf
+	KQELyHYjhPhXQAUtd7cnIJXNwrshOgwp9EiT9SDbPEeDcxvUDjCh3g1nRJyiyojKyNVmXOrudJP
+	a/3VyousENhGSOVOW5y5giTPlFHEONYN8w7dbL+QJmkj1SAkweoli4ZoiOHT8g4pZYxslhbbNke
+	EYGbJYuHRsWxVXWBJXNhPz9cgqi3YYt/R+Zd8q9feQQQBikYjzCCiz194l71g==
+x-tm-as-user-approved-sender: No
+x-tm-as-user-blocked-sender: No
+x-tmase-result: 10--5.111600-8.000000
+x-tmase-version: SMEX-14.0.0.3239-9.1.2019-30042.005
+x-tm-snts-smtp: 35A964323CE21EEFA67078F12AC4479D3B511B04E44653D239E22F5B0E2FD6072000:8
+Content-Type: text/plain; charset="big5"
 Content-Transfer-Encoding: base64
-Message-ID: <AIIAMAAiKrVMQaBAPYx42arb.3.1782978704726.Hmail.220255722@seu.edu.cn>
-To: Sidraya Jayagond  <sidraya@linux.ibm.com>
-Cc: "D. Wythe" <alibuda@linux.alibaba.com>, Dust Li <dust.li@linux.alibaba.com>, 
-	Wenjia Zhang <wenjia@linux.ibm.com>, 
-	"David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, 
-	Mahanta Jambigi <mjambigi@linux.ibm.com>, 
-	Tony Lu <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>, 
-	Simon Horman <horms@kernel.org>, 
-	Karsten Graul <kgraul@linux.ibm.com>, 
-	linux-rdma <linux-rdma@vger.kernel.org>, 
-	linux-s390 <linux-s390@vger.kernel.org>, 
-	netdev <netdev@vger.kernel.org>, 
-	linux-kernel <linux-kernel@vger.kernel.org>, 
-	"jianhao.xu" <jianhao.xu@seu.edu.cn>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCBuZXRdIG5ldC9zbWM6IGF2b2lkIHJlY3Vyc2l2ZSBza19jYWxsYmFja19sb2NrIGluIGxpc3RlbiBkYXRhX3JlYWR5?=
-X-Priority: 3
-X-Mailer: HMail Webmail Server V2.0 Copyright (c) 2016-163.com Sirius_WEB_WIN_1.64.1
-References: <20260617152855.1039151-1-runyu.xiao@seu.edu.cn> <17c1cbac-de30-4372-8c24-2acd755f503e@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Received: from 220255722@seu.edu.cn( [223.112.146.162] ) by ajax-webmail ( [127.0.0.1] ) ; Thu, 2 Jul 2026 15:51:44 +0800 (GMT+08:00)
-From: Runyu Xiao <runyu.xiao@seu.edu.cn>
-Date: Thu, 2 Jul 2026 15:51:44 +0800 (GMT+08:00)
-X-HM-Tid: 0a9f21cf9b6e02f2kunmd5c2bf791f8cd
-X-HM-MType: 1
-X-HM-NTES-SC: AL0_4z5B86Wr4Tz9jdMF+bhXMTUS6Y2fHkyPT6dc03QDwVaZPGiA09TnwhbhTj
-	hLfuFZO94YXwX6xgvkjGVFFRKj5ODenkkczLo6qxkp6YADE5oPA+xgWdLLpCC0H84TwWSeGl6Gxd
-	wNb5mLKCAhELViFYBc6UsltRrkd4duOKE4a1o=
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCTB5LVh0aSUofSkkeSkIaTlYVFA
-	kWGhdVEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUhVSkpJVUpPTVVKTUlZV1kWGg8SFR0UWUFZT0tIVU
-	pLSEpOT0xVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=gqP9UK8sz6mSaQSXwWUvX5IW1dCvOoLuzHheLSdx278rR0VZCmzeKQ+tZi/RiuVNKIzYmjvsiiKh3E2yVV1wA+FSjJRGHDbuUfYllhYz2Q+GWTO0qCqt/NhfA/mCQxFWWVdm+uvaLslyTHTIUaWGAPHcSoatnnArMxAxOhY6g+s=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
-	bh=bPYyaPMVGXJ6fi2007K/Cro/FnneDqwZ1yi13CzKCrw=;
-	h=date:mime-version:subject:message-id:from;
 
-SGkgU2lkcmF5YSwKCk9uIFRodSwgSnVuIDI1LCAyMDI2IGF0IDAyOjAyOjI1UE0gKzA1MzAsIFNp
-ZHJheWEgSmF5YWdvbmQgd3JvdGU6CiZndDsgSW4gc21jX2Nsb3NlX2FjdGl2ZSgpLCB0aGUgVENQ
-IHNvY2tldCByZW1haW5zIGluIFRDUF9MSVNURU4gc3RhdGUgd2hpbGUKJmd0OyBob2xkaW5nIHdy
-aXRlX2xvY2tfYmgoJmFtcDtzbWMtJmd0O2NsY3NvY2stJmd0O3NrLSZndDtza19jYWxsYmFja19s
-b2NrKTsuIFRoZSBwYXRjaCdzCiZndDsgc3RhdGUgY2hlY2sgd291bGQgcGFzcyBkdXJpbmcgdGhp
-cyB3aW5kb3csIG5vdCBwcmV2ZW50aW5nIHRoZSByZWN1cnNpdmUKJmd0OyBsb2NrIHNjZW5hcmlv
-LgomZ3Q7IEl0J3MgdW5jbGVhciB3aGV0aGVyIGl0IGZ1bGx5IHByZXZlbnRzIHRoZSByZWN1cnNp
-dmUgbG9ja2luZyBzY2VuYXJpbwomZ3Q7IGRlc2NyaWJlZCBpbiB0aGUgY29tbWl0IG1lc3NhZ2Ug
-Zm9yIHRoZSBzcGVjaWZpYyBjb2RlIHBhdGggaW4KJmd0OyBzbWNfY2xvc2VfYWN0aXZlKCkuCiZn
-dDsgQ291bGQgeW91IGNvbWUgdXAgd2l0aCBleGFjdCBkZWFkbG9jayBzY2VuYXJpbyBhbmQgaG93
-IHRoZSBwYXRjaAomZ3Q7IGFkZHJlc3NlcyBpdD8KCllvdSBhcmUgcmlnaHQuIEkgZG8gbm90IGhh
-dmUgYSBjb25maXJtZWQgY3VycmVudCBtYWlubGluZSBjYWxsIGNoYWluIHdoZXJlCnRoZSBjYWxs
-YmFjayBpcyBpbnZva2VkIHVuZGVyIHNrX2NhbGxiYWNrX2xvY2ssIGFuZCB0aGUgVENQX0xJU1RF
-TiBjaGVjawpkb2VzIG5vdCBjb3ZlciB0aGUgc21jX2Nsb3NlX2FjdGl2ZSgpIHdpbmRvdyB5b3Ug
-cG9pbnRlZCBvdXQuCgpJIHdpbGwgZHJvcCB0aGlzIHBhdGNoIGZvciBub3cuIFRoYW5rcyBmb3Ig
-cmV2aWV3aW5nIGl0LgoKUnVueXU=
+SGkgQW5kcmV3LA0KDQo+ID4gbXRrX2Rldl9hbGxvYy9tdGtfZGV2X2ZyZWUgYXJlIHBhaXJlZCB3
+cmFwcGVycyBzbyB0aGUgY2FsbGVyDQo+ID4gZG9lc24ndCBuZWVkIHRvIGtub3cgdGhlIHVuZGVy
+bHlpbmcgYWxsb2NhdGlvbiBtZWNoYW5pc20uDQo+ID4gVGhlIGRldm1fa2ZyZWUgaXMgc3RpbGwg
+Y2FsbGVkIGluc2lkZSBtdGtfZGV2X2ZyZWUuDQo+DQo+IFR3byBkaWZmZXJlbnQgaXNzdWVzIGhl
+cmU6DQo+DQo+IDEpIElmIHlvdSBkb24ndCB3YW50IHRvIHVzZSBkZXZtXywgZG9uJ3QgdXNlIGRl
+dm1fIGZyb20gdGhlDQo+IGJlZ2lubmluZy4gQSBwYXRjaCBzaG91bGQgbm90IGNoYW5nZSBob3cg
+YSBwcmV2aW91cyBwYXRjaCB3b3Jrcywgc2luY2UNCj4geW91IGFyZSB3YXN0aW5nIHJldmlld2Vy
+IHRpbWUgcmV2aWV3aW5nIGNvZGUgd2hpY2ggeW91IGxhdGVyIGNoYW5nZS4NCj4NCj4gMikgRG8g
+eW91IHVuZGVyc3RhbmQgd2hhdCBkZXZtXyBhY3R1YWxseSBkb2VzPyBTaW5jZSB5b3UgdXNlDQo+
+IGRldm1fZnJlZSgpIGkgZG9uJ3QgdGhpbmsgeW91IGFjdHVhbGx5IHVuZGVyc3RhbmQgd2hhdCBk
+ZXZtXyBpcyBhbGwNCj4gYWJvdXQuDQoNClRoYW5rIHlvdSBmb3IgdGhlIGV4cGxhbmF0aW9uLiBZ
+b3UgYXJlIHJpZ2h0Lg0KDQp3ZSB3aWxsIHJlbW92ZSB0aGUgbXRrX2Rldl9hbGxvYy9tdGtfZGV2
+X2ZyZWUgd3JhcHBlcnMgYW5kIHVzZQ0KZGV2bV9remFsbG9jIGRpcmVjdGx5IGZyb20gdGhlIGJl
+Z2lubmluZy4NCg0KV2Ugd2lsbCBhbHNvIHJlbW92ZSBhbGwgdW5uZWNlc3NhcnkgZGV2bV9rZnJl
+ZSgpIGNhbGxzIGZyb20gcHJvYmUNCmVycm9yIHBhdGhzIGFuZCByZW1vdmUgcGF0aHMsIGtlZXBp
+bmcgdGhlbSBvbmx5IHdoZXJlIHJlc291cmNlcw0KYXJlIGZyZWVkIGFuZCByZS1hbGxvY2F0ZWQg
+YXQgcnVudGltZSAoZS5nLiwgQ0xETUEgcXVldWUgbGlmZWN5Y2xlDQpkdXJpbmcgbW9kZW0gcmVz
+ZXQgY3ljbGVzKS4NCg0KVGhhbmtzLg0KDQpKYWNrIFd1
