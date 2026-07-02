@@ -1,216 +1,110 @@
-Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A61332DF717;
-	Thu,  2 Jul 2026 02:55:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.223
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339FF2EEE76;
+	Thu,  2 Jul 2026 03:00:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782960940; cv=none; b=rICbzpdZvLkGvJExkFD7uyPUVwxs6cVbL5hWCMsPhYOnWlm9EAuKtBpwGBIvmWeAbSouoGtwN8D1h8C5hoLTxOPpstGHEEpS6dLAh8Rn9o3L5zlEYCVPgpngoRp9A0mnT7IK6BHg4xD/5OXdbOnhBrNuCSUh31OPrjvcnEYaeHU=
+	t=1782961222; cv=none; b=AnEaNSunRdnTM+Pd5PX8pa58cM4y9/bDGq3D/dorc4prFB/sZ7X0gb4aW9yNS3FgOxAjosfEVyndCAScOtylx5jq4MXMC2H3OhvUYSYI77OiJvrP9AqrQ3yTRyK29s5tifO3MpDhUTNcw7CfWJh0/Y/sG1YJ5W7sjkTdpZPZip4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782960940; c=relaxed/simple;
-	bh=FHDJ6S0cme9NFQlijE1zY8pDFCRpU2a8tTQEaGDGWIQ=;
-	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=KhjHZj8w9G9RRaht1aaDfswPchqsTTzKql/nNoLeuirhmsV6+yHBEPnDFt4SBpGiniA6RTWeVoo4zH1bl1zPCVKcAKvsYwHbYQqkyirK9fN9/g348wD1HBCs95DYFMWIE3UicD9elZoDB0VmAgJPkb8PLAvW0CcvkkS/v9aZV7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=32wH6hhG; arc=none smtp.client-ip=113.46.200.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="32wH6hhG"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=Z/IC9QfT5yS2aAq8dSyLYn2dEGe7oIq6qCnw/Wv2xv8=;
-	b=32wH6hhG+7AriEN4q1uh5ZqPFaebKmU91Fi+7g5dU1IPwGPOtYDdWoEBVLoWjLWs/0POit6nu
-	JU2YD75n1dCGBzl4WJS2mwewyLp7v5555OEpJw8czpb4LphGZmHfBJfqFE/S7oUABYQbj5fEOws
-	jRDf9aMqcwUMA1/bseujL64=
-Received: from mail.maildlp.com (unknown [172.19.162.92])
-	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4grLqX435YzmVW1;
-	Thu,  2 Jul 2026 10:46:16 +0800 (CST)
-Received: from kwepemj100016.china.huawei.com (unknown [7.202.194.10])
-	by mail.maildlp.com (Postfix) with ESMTPS id D87A640590;
-	Thu,  2 Jul 2026 10:55:26 +0800 (CST)
-Received: from [10.174.177.15] (10.174.177.15) by
- kwepemj100016.china.huawei.com (7.202.194.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Thu, 2 Jul 2026 10:55:23 +0800
-Message-ID: <d1e9d389-affa-4d12-aaf7-3fcf3218966c@huawei.com>
-Date: Thu, 2 Jul 2026 10:55:21 +0800
+	s=arc-20240116; t=1782961222; c=relaxed/simple;
+	bh=g15jO8VNdK351026C0xI0bHACJ/m2cgS+Z9xQ9CJXIk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=G+2atBb/+BRqh26K/ECuhTJFLU7tqmA58ZMfdIByUZ4L4wPI/APjES9TYfrosU3/zmEl+2dRkGeg4Jq6Os9ZFWWwGXcI+jEjYE7mQ/NrvT1+mOVbPgkbIHxwphGXhOcXvzJRKmNIfqoaXGpAqWzUh9qC13w/CgxdkDStHUaU4ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 24974c1875c211f1aa26b74ffac11d73-20260702
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_TXT, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_DIGIT_LEN
+	HR_FROM_NAME, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
+	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
+	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_EXISTED
+	SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:d9ff5e0b-6a3b-4b29-931f-b4dd1f964ab5,IP:15,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:15
+X-CID-INFO: VERSION:1.3.12,REQID:d9ff5e0b-6a3b-4b29-931f-b4dd1f964ab5,IP:15,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:15
+X-CID-META: VersionHash:e7bac3a,CLOUDID:179c91b6ccdaecc00aa813affe488696,BulkI
+	D:260702105828YKMYMX0G,BulkQuantity:1,Recheck:0,SF:17|19|38|66|78|102|127|
+	850|865|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk
+	:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,B
+	RE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 24974c1875c211f1aa26b74ffac11d73-20260702
+X-User: wangyan01@kylinos.cn
+Received: from localhost.localdomain [(116.128.244.171)] by mailgw.kylinos.cn
+	(envelope-from <wangyan01@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 1813944472; Thu, 02 Jul 2026 11:00:12 +0800
+From: Wang Yan <wangyan01@kylinos.cn>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	shuah@kernel.org
+Cc: horms@kernel.org,
+	lixiaoyan@google.com,
+	netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wang Yan <wangyan01@kylinos.cn>
+Subject: [PATCH] selftests/net: fix EVP_MD_CTX leak in tcp_mmap
+Date: Thu,  2 Jul 2026 10:59:49 +0800
+Message-Id: <20260702025949.442523-1-wangyan01@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-CC: <mawupeng1@huawei.com>, <virtualization@lists.linux.dev>,
-	<kvm@vger.kernel.org>, <netdev@vger.kernel.org>
-Subject: Re: [syzbot] Monthly virt report (Jun 2026)
-To: <syzbot+listbf7b8eeeb8dda31d6de1@syzkaller.appspotmail.com>,
-	<linux-kernel@vger.kernel.org>, <syzkaller-bugs@googlegroups.com>,
-	<virtualization@lists.linux.dev>, <mst@redhat.com>, <jasowang@redhat.com>,
-	<xuanzhuo@linux.alibaba.com>, <eperezma@redhat.com>, <stefanha@redhat.com>,
-	<sgarzare@redhat.com>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>
-References: <6a3c3ed6.80e5668d.5d0ef.0001.GAE@google.com>
-From: mawupeng <mawupeng1@huawei.com>
-In-Reply-To: <6a3c3ed6.80e5668d.5d0ef.0001.GAE@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemj100016.china.huawei.com (7.202.194.10)
 
+In tcp_mmap.c, both child_thread() and main() allocate an EVP_MD_CTX
+via EVP_MD_CTX_new() when integrity checking is enabled, but neither
+function releases the context.  child_thread() misses the free in its
+common cleanup block, and main() returns without freeing the context.
 
+This results in a SHA256 context leak on every run that uses the
+‑i (integrity) option.  Add the missing EVP_MD_CTX_free() calls to
+the appropriate cleanup paths to fix the leak.
 
-On 周四 2026-6-25 04:32, syzbot wrote:
-> Hello virt maintainers/developers,
-> 
-> This is a 31-day syzbot report for the virt subsystem.
-> All related reports/information can be found at:
-> https://syzkaller.appspot.com/upstream/s/virt
-> 
-> During the period, 0 new issues were detected and 0 were fixed.
-> In total, 5 issues are still open and 61 have already been fixed.
-> There are also 2 low-priority issues.
-> 
-> Some of the still happening issues:
-> 
-> Ref Crashes Repro Title
-> <1> 24      No    WARNING: refcount bug in call_timer_fn (4)
->                   https://syzkaller.appspot.com/bug?extid=07dcf509f4c013e25dc5
-> <2> 3       Yes   memory leak in __vsock_create (2)
->                   https://syzkaller.appspot.com/bug?extid=1b2c9c4a0f8708082678
+Fixes: 5c5945dc695c ("selftests/net: Add SHA256 computation over data sent in tcp_mmap")
+Signed-off-by: Wang Yan <wangyan01@kylinos.cn>
+---
+ tools/testing/selftests/net/tcp_mmap.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Hi,
-
-This is regarding the still-open "memory leak in __vsock_create (2)"
-bug (#2 in the monthly virt report, extid 1b2c9c4a0f8708082678):
-  https://syzkaller.appspot.com/bug?extid=1b2c9c4a0f8708082678
-
-I spent some time analyzing the root cause and the previous fix
-attempt; below is a summary and a direction that tested out.
-
-== Root cause ==
-
-The leaked object is the child socket created by
-virtio_transport_recv_listen() via __vsock_create() — exactly the
-allocation site kmemleak points at. The reason it never gets freed is
-in the accept() error path, not in the allocation itself.
-
-When vsock_accept() dequeues a child but the listener carries an error
-(listener->sk_err, e.g. set by a failed connect() issued on the socket
-before listen()), it sets vconnected->rejected = true, skips
-sock_graft(), drops the dequeue reference and *relies on
-vsock_pending_work()* to clean the child up.
-
-The catch: vsock_pending_work() is never scheduled on the transports
-involved here. It is only ever scheduled by vmci_transport
-(vmci_transport.c:1130); virtio_transport and vsock_loopback never
-schedule it. So the rejected child sits with an unreleased initial
-reference (the one from sk_alloc()) plus the connected-table
-reference, vsock_sk_destruct() is never reached, and the cascade —
-child socket, struct cred, virtio transport, SELinux blob — all leak.
-
-The earlier commit 3a5cc90a4d17 ("vsock/virtio: remove socket from
-connected/bound list on shutdown") adds an unconditional
-vsock_remove_sock() in virtio_transport_recv_connected() when a
-SHUTDOWN arrives, which drops the connected-table reference for a
-child that later receives a SHUTDOWN; but it does not release the
-sk_alloc() reference. So the leak is not really a regression
-introduced there — rejected children have never been cleaned up on
-transports that don't schedule pending_work. 3a5cc90a4d17 mainly
-changes whether kmemleak can see the leak: on v6.6 it can (the
-cascade shows up), on mainline the smaller struct sock layout leaves a
-residual pointer inside the child that kmemleak counts as a reachable
-reference, so mainline kmemleak stays silent even though
-create/destruct accounting confirms the child never reaches
-vsock_sk_destruct().
-
-== Why the previous attempt didn't land ==
-
-Divya's patch [1] tried to fix it by re-locking the parent listener
-inside virtio_transport_recv_listen() and re-checking the shutdown
-state under that lock before vsock_enqueue_accept(). That re-locks an
-already-held lock — virtio_transport_recv_pkt() holds lock_sock(sk)
-across the call into recv_listen() — and syzbot ci immediately flagged
-"possible recursive locking" [2]. So it was backed out and the bug
-stayed open.
-
-== A direction that tests out ==
-
-Instead of re-locking in the receive path, handle the cleanup directly
-in vsock_accept(): on reject, instead of setting vconnected->rejected
-and relying on pending_work, explicitly release the child's references
-there:
-
-    if (err) {
-        vsock_remove_connected(vconnected);  /* connected-table ref */
-        connected->sk_state = TCP_CLOSE;
-        sock_put(connected);                  /* enqueue_accept ref  */
-    } else {
-        sock_graft(connected, newsock);
-    }
-    ...
-    sock_put(connected);  /* the existing, common put — sk_alloc ref */
-
-This drops exactly the three references the child holds at dequeue
-time (sk_alloc + __vsock_insert_connected + vsock_enqueue_accept),
-lets refcount reach zero and vsock_sk_destruct() run. The `rejected`
-flag and its pending_work handling can then be removed. The receive
-path is not touched, so there is no re-locking and no deadlock.
-
-I verified this on ARM64 QEMU. On linux v6.6.y (where kmemleak can
-see the leak) with the syzbot reproducer:
-  - before: 6 creates / 4 destructs (2 leaked); kmemleak reports the
-    cascade;
-  - after:  6 creates / 6 destructs (0 leaked); kmemleak clean;
-  - 50-iter normal server and 50-iter same-port-reconnect tests both
-    pass 50/50 with zero leaks, no double-put warnings.
-On mainline, kmemleak stays silent (see above) but create/destruct
-accounting confirms the same leak before the fix; the fix is
-code-identical across v6.6.y and mainline (same recv_listen/accept
-paths).
-
-I'm not subscribed to follow the list at full volume; happy to send a
-formal patch (with the af_vsock.h / pending_work changes folded in)
-if the direction looks right to the maintainers.
-
-== Trigger, for completeness ==
-
-The reproducer's atypical-but-legal sequence is what sets
-listener->sk_err: a socket is connect()ed (leaving sk_err set, since
-vsock_connect() only clears it at the start of a new connect) and then
-turned into a listener:
-
-    fd = socket(AF_VSOCK, SOCK_STREAM, 0);
-    bind(fd, ...);
-    connect(fd, &(VMADDR_CID_LOCAL, ...));   /* leaves sk_err set */
-    listen(fd, 5);
-    /* a peer connects to fd; the child created is later rejected */
-    accept4(fd, ...);
-
-Standard servers (listen before any connect on the same fd) don't hit
-it, which is why this went ~2.5 years between the offending commit and
-the syzbot report.
-
-[1] https://lore.kernel.org/all/20260605191922.12720-1-divyakm@unc.edu/
-[2] https://ci.syzbot.org/series/76f40e62-5a21-46d4-a636-10f0ec9c5040
-
-Thanks.
-
-
-> <3> 3913    Yes   INFO: rcu detected stall in do_idle
->                   https://syzkaller.appspot.com/bug?extid=385468161961cee80c31
-> 
-> ---
-> This report is generated by a bot. It may contain errors.
-> See https://goo.gl/tpsmEJ for more information about syzbot.
-> syzbot engineers can be reached at syzkaller@googlegroups.com.
-> 
-> To disable reminders for individual bugs, reply with the following command:
-> #syz set <Ref> no-reminders
-> 
-> To change bug's subsystems, reply with:
-> #syz set <Ref> subsystems: new-subsystem
-> 
-> You may send multiple commands in a single email message.
+diff --git a/tools/testing/selftests/net/tcp_mmap.c b/tools/testing/selftests/net/tcp_mmap.c
+index 4fcce5150850..2544ae35d07a 100644
+--- a/tools/testing/selftests/net/tcp_mmap.c
++++ b/tools/testing/selftests/net/tcp_mmap.c
+@@ -313,6 +313,8 @@ void *child_thread(void *arg)
+ 				tcp_info_get_rcv_mss(fd));
+ 	}
+ error:
++	if (ctx)
++		EVP_MD_CTX_free(ctx);
+ 	munmap(buffer, buffer_sz);
+ 	close(fd);
+ 	if (zflg)
+@@ -606,6 +608,8 @@ int main(int argc, char *argv[])
+ 		EVP_DigestFinal_ex(ctx, digest, &digest_len);
+ 		send(fd, digest, (size_t)SHA256_DIGEST_LENGTH, 0);
+ 	}
++	if (ctx)
++		EVP_MD_CTX_free(ctx);
+ 	close(fd);
+ 	munmap(buffer, buffer_sz);
+ 	return 0;
+-- 
+2.25.1
 
