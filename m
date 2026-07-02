@@ -1,141 +1,108 @@
-Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f1.google.com (mail-pz2-f1.google.com [74.125.228.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B5443C196B
-	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 22:30:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6B23C5550
+	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 22:41:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783031466; cv=none; b=akUMtfGYxhWAy6yWZXyyhKeTovhZ6AMzm9kGNEFRxbQUaIXBhky39vHYO6hP85GrblpvqQHHXmKTxOsVx42sqiaBAolYHc3baNpzHRTQwkurJF1v36BzX3cr0NLWqOEZXK3d7TV6jgW44d6Eurc/StB3SQ8VjKC5VtuDm68kr4g=
+	t=1783032117; cv=none; b=Ozz+Q4/WPIyQ1AMJuQ+ll+F2sR2ChLvZi0o5f+KVvAx/xEEbZB/whIKZKgKRQlrLbyX2tmRPLGNlmsbSQelOvqAZNhZnGt9lNcV6mXNXGuk1i2zqrx/eSmYXJvNy37c9+iIQdR5vuH3wXNDH0AXclZHRNRBJRYc0ym5oZGqHt50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783031466; c=relaxed/simple;
-	bh=zjJRlyMPqYkkzf2sX+4CDQKaI/eahG3+8u3eAkAj3Nc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KObFPHFAolBN5y4I+3JdB9ogq8cJXdXvvTP1pOIr0iZPWi3empChjMb1/P/MCdx+/9QSMs9xpeKkA8Aag0xomQ5szzScIo6Dxi+GWJ31zkaGDlSvv6KyGrMmeV/kl0Ph9MeN26Ls7WjWWPwYWeVayyuUQwRW+AXqWCtmxJsUkrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=sMlWBhJg; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Aeb2Tr4W; arc=none smtp.client-ip=202.12.124.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	s=arc-20240116; t=1783032117; c=relaxed/simple;
+	bh=2Ar/mW5Y5VgDOgKTlgwEKyY0xuG8RrEyry6lC5D6q8I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=a3WaR1v6gr6p87E69EMi91ls3/ckLjpS9lsf2XaL0Gwgc5YxvmmrWw4zF5nb+CrrgaDDoujcTjIaShZnHc1GHQ3gnVKHwfScgYycF5ghkwCktGDPP4MhZIElEuHRUR7JM5451qxrZC40LDVFUJhQ4JVe/jcfN7M9KrksKkEO6nU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jaaMr1iq; arc=none smtp.client-ip=74.125.228.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="sMlWBhJg";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Aeb2Tr4W"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id E0ED87A011E;
-	Thu,  2 Jul 2026 18:30:50 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Thu, 02 Jul 2026 18:30:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1783031450; x=
-	1783117850; bh=4HPa8Lg3Uy1GV1K58y9Bs1t4DixOxuUTq7dc1oDREPo=; b=s
-	MlWBhJg7JNbjpm9pcIL3mqULj+snhA3lZjjvmOoSTEMVJmwGboHFCXR0DtSbRT+K
-	SmKRuNHJZH7sQqut9EAlnS4zS8xjkLdHZKuyPzyPYNsXDsH8k2Wy7pJDR0fswjfV
-	So34pAaRKND8HybHATllwAXY4Xr+Q6L5xCT1cext4SMwIGuqKlSx8AbzfjGMrjv5
-	gVPMVF4zzfksyU3+P5Fmo/QPXjfmcm7M00GlF6UZ+XBBmziw2YtaWyLJtz5VI3wI
-	oOclgP17ChcIBrt91TNjUQQ+ebuv7zA2jFKfiuxtfRpi0lrJM+SgCA05ie1lygbS
-	Sv8WFtJNuHdpoHHblM2mQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1783031450; x=1783117850; bh=4HPa8Lg3Uy1GV1K58y9Bs1t4DixOxuUTq7d
-	c1oDREPo=; b=Aeb2Tr4WvMyGRIUR1FXj2M88+JIiMAYZrw08ueJ19/lExqGW1o8
-	afnolF/BJhnCfR2rwlE+1KUHvuEPR27OFlT+svtpFiael//cBA7Fu2qskD6/bAGr
-	sfO0vYYXZ5x+TaOhkzg3qbbUwMe9He2Bzt0q1B4IPJrOG1BB3deGp6wNsf+bF0WI
-	IHjnrBev4GrOGWB+Fw91t6dE9+jbd02xEqjm6dvMZmVffrnkIht89Tk2VqviwALq
-	8c68vPgTUhCt9CyGjxNGN28aHXY7nGKAwuKjj7dkXlNMDEF/d2n8EF5EvyAEp6rB
-	JSXnrLsX4XV/8X17e3Jov9KRzDMKsKSgKog==
-X-ME-Sender: <xms:muZGaqNW6_y3TWL_fWpdGFnLI7xlCQ5s0gZWbijMoBO41b4T0L9OeA>
-    <xme:muZGarg1AovWletUzyTW2ShqslJmyG4X_UUA7c3703rOaUGMR-OmQCF-JqyJYjY_D
-    eRdb-V0VCZvgf1qERmgllLVrdSRFyLP3qtIoNX5kSgQR6QGqomdD3w->
-X-ME-Received: <xmr:muZGak4E8sjaEhn2Fe1Y0gbX78h7mRQug81yqmuz9RR7kBJ0tRFrLBreCZE>
-X-ME-Proxy-Cause: dmFkZTGxib75otGYDAE+7LTjVTMUvh7YtIOlwdsQbM96+W5ha/uoGsbJG5P05AOUHE9RBu
-    L8IQG6YR96aZvWsk5aVetl/sVLlt3HdDJnqaP/T5p42DPWJcPXx9iltbuifU+9tloLYca8
-    XDnx978dSkVq5Mm83bLTf3+BEtuCqzNYCJOzOQfgfN9HCv/u1gpIDx68eZJWD33ojCy69y
-    cgojgCTWB3N97ynajkxOo41fvPi6DpTdEBiCQ+FTjxCN7wPIJdyqsDwRs313/aNZ8lInLr
-    j3MxzWEqLTg9NVr13ZQti68QG75MoCQS8aHWvN7DPwMvfEloe2pLneBrTPrOR8ONNr2nF3
-    z0CSmLWf409s1YPsw/43Z+KtlpusasLB7P68wFcUQ3Oklsvj21Y9LTwgzN0OvgK5U1ArH+
-    /wP/g6ka8AgQ1OvVYu2/0q8EmZjS0VS7S2T+QIDhh5xvX1QqAdsUmbBJQn0UAhVO3kRJEI
-    ChEmAIm8n2huLyNn1SmejBdGSRhEG+WEq3xUoZuB3WJueJvqu/ggl+2MMEnW9KKfwss5gh
-    ySADr4gDGtS64pksVLt7uT1bDIUuQc4Goo8fqBRYQAUR1yz9q+BNp9w5su04sSeO3tXr+e
-    JWBiD1xcVSxbKi4AFhBre1NCS/d16wf2QGhSjzG9cCvge5ez5dTUAAlXVEWA
-X-ME-Proxy: <xmx:muZGaq2eXqjnUOENOUJvK5Mxc878yxWHN2USIPSMIdvPtWhdewanBQ>
-    <xmx:muZGanst1YG-XZpQuMFxulq2Emr1-g36B0_tTj85EeKTCMVL9yBGdg>
-    <xmx:muZGao6VpndAgZunrOu-utkHaPCYfODVMc-_URg3t0xpNtR6oxdxjg>
-    <xmx:muZGarc9Omh3efYX2gzFLHiDPhzXDJBOPyddjAiKUoEGhjbVw88tzw>
-    <xmx:muZGavehnMJ5TON_Yd_naVjQLd53hskGS5Z7rftJ_DbPkH6x7t_txQTO>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 2 Jul 2026 18:30:49 -0400 (EDT)
-Date: Fri, 3 Jul 2026 00:30:47 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org,
-	eric.dumazet@gmail.com, Andrew Lunn <andrew+netdev@lunn.ch>
-Subject: Re: [PATCH net-next] macsec: no longer rely on RTNL in
- macsec_fill_info()
-Message-ID: <akbml3DkpQJuVYZd@krikkit>
-References: <20260701094341.3218199-1-edumazet@google.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jaaMr1iq"
+Received: by mail-pz2-f1.google.com with SMTP id 41be03b00d2f7-ca00ea47337so82474a12.0
+        for <netdev@vger.kernel.org>; Thu, 02 Jul 2026 15:41:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783032112; x=1783636912; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=RLS+PGgTZx0teeb0doa9Yv/49/wXqR6ear68kfo8xTc=;
+        b=jaaMr1iqh8ebszkHRdJriwA6FUQG4bdwNYmG9EfaCeADj+/tbehR0FRslGC4Fgp3Ha
+         nO4zNYrPpDqz5z/f/cFRi/EVCaiz6V9ljCpgxup590im4WXS1yHiIxXUcekexomJdwmW
+         kM1XyH5B5JlthDZ595K7KBJ7mp5a3529toc2Sk3WyAhQAoSSq0Novdpx8hcpRtGJwOBt
+         c06pn8zGDnrXWKlkQhw3i9ZFgeZa3Y9PbWRv13Ru2qHHqDHJVaB2wDql+BykU6o7jR7g
+         Q6PaKAyytDucuGcAxG2GoRuWkH+r/4ky0tkotqVwYEwIebbGLrttS2si/5W82Q6L/6xn
+         R2Gw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783032112; x=1783636912;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=RLS+PGgTZx0teeb0doa9Yv/49/wXqR6ear68kfo8xTc=;
+        b=D1/W4KU3RznTe7BaCnedwibrMv2qa1flUO+fZdCtjfaUEzu+MPmMCCq7EhFW6tWXXY
+         iJQmLbE1iVjqKPWYNU1z4SO3N9txJBl+pvUdfL7Jn7X7NbLXJOGROVK/+B4rCCkrWp0q
+         OL5ImxP/0QIriEP/OyKyTB9VdJFCPU2B9ceCbxzi13YA4jXHcCWL+22zBPRpBhhyaGMJ
+         rmGXKXvYQuS8rb0Xcx5ZRe1r8BxRhR3Nqd00qkAfo4lCk/iHFd8GJTWcvEvWqbR5Urr/
+         x9UYj/w8nBu6yBYvSrjRchUYWZ0XYHHGaRLFOyq/c/q7g/1/EqA1yLr5pen38ByAKLk4
+         hVZA==
+X-Gm-Message-State: AOJu0Yzsn3HQ1KIFwmCZMz6BQtr2W6aRxeeUPbx755ZAAlThHdX27nvD
+	k1n/8Ql/M1rt+ea45yn9kAUWYFfCHgJst2PbJdvjXgwwg3Zm0YeZYItwAkMXj0w0
+X-Gm-Gg: AfdE7cl/7bWXTVg2aEeAhEtaz/iQQJJMipRCVL8aNaBG1PBAqRkv6T3Zml4HwJYMqZ+
+	VPVv7K92n7Ouh6ex60UB9vZz2if5KMGY3Vdc8Rkb8eEGUAK4ViB01t82ggCwx0b0TT6u35SbTWP
+	2c8qRLZe/wCBbjzqpTjOCehxrFV4CMQUtyXQjfcmlhQVwMoDLmGnOBYlb3ZCxSrM1YLvKk1dUFE
+	KDJluQBV9opuhXuf3F0riqGr0MINPFz3ygaQdWgyxbT0mIvzYW19hhn3a/BmqLcaP5+nhRMM/60
+	Y59/GzjRbmXgLjLWf/FU1zipidtJJcwT1gOEE+Ep0Fp6SI68hh0y97MXuHZPU7LZ29tk0kvHSqo
+	nH0U5l0SNoitq3aAiDOrEfvwigIowYfDG6O3z7hsGdWonoWQkiR+UOe9J4M8K8F+luG4R0f92CK
+	JVATpb4Q==
+X-Received: by 2002:a05:6a20:2589:b0:3b4:8300:7019 with SMTP id adf61e73a8af0-3bff40dd9e9mr7955899637.18.1783032112491;
+        Thu, 02 Jul 2026 15:41:52 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:44::])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c9e91b07646sm1713773a12.16.2026.07.02.15.41.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Jul 2026 15:41:52 -0700 (PDT)
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+X-Google-Original-From: Stanislav Fomichev <sdf@fomichev.me>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Subject: [PATCH net-next v2 1/6] net: hold instance lock around NETDEV_DOWN/GOING_DOWN
+Date: Thu,  2 Jul 2026 15:41:45 -0700
+Message-ID: <20260702224150.3730033-2-sdf@fomichev.me>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260702224150.3730033-1-sdf@fomichev.me>
+References: <20260702224150.3730033-1-sdf@fomichev.me>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260701094341.3218199-1-edumazet@google.com>
+Content-Transfer-Encoding: 8bit
 
-2026-07-01, 09:43:41 +0000, Eric Dumazet wrote:
-> Add READ_ONCE()/WRITE_ONCE() annotations on fields that can be
-> changed concurrently in macsec_changelink() and macsec_update_offload():
-> 
-> - secy->key_len
-> - secy->xpn
+Mirror what call_netdevice_register_net_notifiers does but for the
+teardown. Cover only DOWN and GOING_DOWN. UNREGISTER is still unlocked
+because of the SW devices using dev_xxx methods.
 
-Those can't be changed, macsec_changelink() rejects
-IFLA_MACSEC_CIPHER_SUITE (as well as IFLA_MACSEC_ICV_LEN and
-IFLA_MACSEC_SCI) and key_len/xpn are fully linked to the cipher suite.
+Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+---
+ net/core/dev.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-But I don't mind the extra READ/WRITE_ONCE if you don't want to
-resend.
-
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-
-> - tx_sc->encoding_sa
-> - tx_sc->encrypt
-> - secy->protect_frames
-> - tx_sc->send_sci
-> - tx_sc->end_station
-> - tx_sc->scb
-> - secy->replay_protect
-> - secy->validate_frames
-> - secy->replay_window
-> - macsec->offload
-> 
-> This allows macsec_fill_info() to run locklessly without RTNL.
-
-And at some point, the whole datapath probably needs some READ_ONCE()
-sprinkled for those fields, too.
-
-
-> @@ -3928,13 +3929,14 @@ static int macsec_changelink_common(struct net_device *dev,
->  	}
->  
->  	if (data[IFLA_MACSEC_WINDOW]) {
-> -		secy->replay_window = nla_get_u32(data[IFLA_MACSEC_WINDOW]);
-> +		u32 replay_window = nla_get_u32(data[IFLA_MACSEC_WINDOW]);
->  
->  		/* IEEE 802.1AEbw-2013 10.7.8 - maximum replay window
->  		 * for XPN cipher suites */
->  		if (secy->xpn &&
-> -		    secy->replay_window > MACSEC_XPN_MAX_REPLAY_WINDOW)
-> +		    replay_window > MACSEC_XPN_MAX_REPLAY_WINDOW)
-
-nit: no longer > 80 chars
-
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 4b3d5cfdf6e0..9d49493f4fb5 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -1912,9 +1912,11 @@ static void call_netdevice_unregister_notifiers(struct notifier_block *nb,
+ 						struct net_device *dev)
+ {
+ 	if (dev->flags & IFF_UP) {
++		netdev_lock_ops(dev);
+ 		call_netdevice_notifier(nb, NETDEV_GOING_DOWN,
+ 					dev);
+ 		call_netdevice_notifier(nb, NETDEV_DOWN, dev);
++		netdev_unlock_ops(dev);
+ 	}
+ 	call_netdevice_notifier(nb, NETDEV_UNREGISTER, dev);
+ }
 -- 
-Sabrina
+2.53.0-Meta
+
