@@ -1,128 +1,106 @@
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 465FD3C0A04;
-	Thu,  2 Jul 2026 10:51:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0056C3EDE4D
+	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 10:52:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782989466; cv=none; b=GXG2XlNCBf+11UF2ngb7bnsH1J0WGsUKcxyt/tltIJlF67NmSdX291eali4RkJFEwzMVqu3RHQ9AYKRS0fQjqssxzc+lo/tr98uDsalvFb3Zsy6pcVsXLUqqv2GZscTlMlIHlY8P4vj/CeE3rWB+cbtvm+Fs6xR6GMRsrBamFvc=
+	t=1782989561; cv=none; b=k1XaL5F/vKiNMWKhXs5Tz25a2h2cxZTwrcWCFCJJK3a8F9535/ftnVn5undJqbp95vJt5rBhxABqa9Yp8zfE3ZlAV4lJjnI4Yimcx1KDcdIFwPHuLSmJOdHTk8c7YaGQ6tSkjVqOq1JedMsS6O+8MmT9HzfunPeSuVU5VbbLbqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782989466; c=relaxed/simple;
-	bh=yXz8pA0a7Rye/dDiFDNiR2tC9kLLnoX0kp2s/xXTkdg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C7Myj6AIj9uA85stWwZ3eX0/XRzee6qmxeNbn7WUHJi9b5q8/4U5NbL0toUk9aetvLryMroXY+Su8Bgjn0F5PDvBwax9zUPITXnryajbP0VAVvZEqxLTPBFL/uuJopJcCYfe3fUqgVRdbzJXLvRrduBSUTK7/s9WAH2mvbW+1bQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=Chamillionaire.breakpoint.cc; arc=none smtp.client-ip=91.216.245.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=Chamillionaire.breakpoint.cc
-Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
-	id D16CD606B9; Thu, 02 Jul 2026 12:51:03 +0200 (CEST)
-From: Florian Westphal <fw@strlen.de>
-To: <netdev@vger.kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	<netfilter-devel@vger.kernel.org>,
-	pablo@netfilter.org
-Subject: [PATCH net-next 12/12] netfilter: nft_ct: support expectation creation for natted flows
-Date: Thu,  2 Jul 2026 12:50:03 +0200
-Message-ID: <20260702105003.13550-13-fw@strlen.de>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260702105003.13550-1-fw@strlen.de>
-References: <20260702105003.13550-1-fw@strlen.de>
+	s=arc-20240116; t=1782989561; c=relaxed/simple;
+	bh=7rT3np+eTVic+AGR8HfNTj3tMq5UqYOzy5X3Ylc6UOc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ePp//F5aa8aEh4nv3IblPz4AY/WAYwMnZsccp7kYBSnync3bUQ9Ktygoa3BP8Li9k9ZvKOG7p7GfQJatJQoBVrpDbtD6udv/0WG7qei6mJS2MfifCfbKiLEadjLa7QPtuFCmk9GCfUQvImks64xgMnYQgGXK20fBDTdWzsQt4gE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=DsoWddnP; arc=none smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="DsoWddnP"
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c126553552dso230334066b.1
+        for <netdev@vger.kernel.org>; Thu, 02 Jul 2026 03:52:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1782989558; x=1783594358; darn=vger.kernel.org;
+        h=mime-version:message-id:date:user-agent:references:in-reply-to
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=7rT3np+eTVic+AGR8HfNTj3tMq5UqYOzy5X3Ylc6UOc=;
+        b=DsoWddnPLORJX50bGQIzSvkSCZs4ChUh7edzQZAYeXJf/uV5TQJAoepEYm0CegibaC
+         tKmmdUvYq9o++MnE2mW8dekLZytuN30Pijfczi63OasWLgrgV6yXrH0Ne4wAFgvn5gJe
+         GnPNireYmU0O65qDZJGso0gmGVHcwJ5bg1tRIKkSDUf9J3Y2/GaaRqKJp53TovX286h2
+         jI0yICsxqVcNUh8N6cTn7BzGi9Xd4b508G4iiVSlcO4YIqaaHPd8G/mIi15F5SuadqDt
+         pYlpVlzy3Yf7GaWW1+mgY43lxhbhAgQ52nkxao1hxigN4OKy0f3oss9AXcggJlc/4/ac
+         1lgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782989558; x=1783594358;
+        h=mime-version:message-id:date:user-agent:references:in-reply-to
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=7rT3np+eTVic+AGR8HfNTj3tMq5UqYOzy5X3Ylc6UOc=;
+        b=iQMrpFaCq7yfQYjMxfHBcjkcJ+cUbfh/tPC7+R4r8GHW5SvOaUf2NQk0YOD/nvc562
+         1XjX3LJ2b6MJD1VjndXFEhjYAKfKd0OkGrEnAp7oKxUpGN5I3NQYuKBvjCS3/VXtXdQl
+         gOZdoWsrCInyLVY/SQY3fk5ARXdsSMwKbGqmhZz7FAfb1OHlDyrAtg9UCDeI3ysUCdHD
+         Ij2BOnUnqiysgRHDL1XW27ylq5e1oktNIV8uQTHhVPLZ07Mxq9uK7l4TEaifjHsUPZYe
+         KaaMlkBy+H/wuKG/d6sakHveuJxVgpEzaTJxCA+xDim6Uamr9E//2rQ0ISMU+Vtl5yWR
+         CEqA==
+X-Forwarded-Encrypted: i=1; AHgh+Rov9HLb5VR9BEx//WcoaqB/UVyzFMsgwJ+8bzn8lcUi7gPspMn+Ln2aWCncwg8jzQiDp4zjT48=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPW1+r+d69mvCq9H5gVKQpwUdCGTTY9EG01d8TviPoPjbnpJ+I
+	o7k9jXsD2iyWo/9P5JndCha04YUB+Wt3lrV++yczjLiR4rrqXqyAbyhdggE0U/Lj33E=
+X-Gm-Gg: AfdE7cl17bhMH2mOBM2xwZPvJNc6IldoQaNZKLFyNjgbXWuyI4OxVYA9vzpREx3GDo+
+	GiUn83R1vd5+KIzaxgBbXOGCW757NtmVDhrjfRvIfWpuHLLrusPflXkiDoFhNlUAyzZ8MXPjALS
+	IrEn/4nKKptA/7H97WpR8jxVlI0hto1BKhnOkXDBWrkdXxkGxLsvJXwx1OE6a/gbeZIXvWuoXbM
+	UpWfLz4YqYqysATCU87F4m+OR+xmxv+7tdri/7IawyxRI2Cpn01nVTTpEr5a8YitS+NmuBUocjT
+	1uYIJnIdEPmThTFBNloJbRS92J83C4GAxp27KDLzkLdYxf3dWF8lc+9lCo3O9RRroXK/day4Swa
+	V7m8qNsL8VnpklhefImFmuEkdeQPbNE3m4pyqk395C4WQPr6EfEov91RcjLj7UzucSGqlPrXSTe
+	6LrU1bxnvzw9dhdsw=
+X-Received: by 2002:a17:906:ba84:b0:c12:a417:30ad with SMTP id a640c23a62f3a-c12a9d386d1mr240239066b.7.1782989558379;
+        Thu, 02 Jul 2026 03:52:38 -0700 (PDT)
+Received: from cloudflare.com ([104.28.21.182])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c12b62f5c52sm110937966b.58.2026.07.02.03.52.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Jul 2026 03:52:37 -0700 (PDT)
+From: Jakub Sitnicki <jakub@cloudflare.com>
+To: Michal Luczaj <mhal@rbox.co>
+Cc: Alexei Starovoitov <ast@kernel.org>,  Daniel Borkmann
+ <daniel@iogearbox.net>,  Andrii Nakryiko <andrii@kernel.org>,  Eduard
+ Zingerman <eddyz87@gmail.com>,  Kumar Kartikeya Dwivedi
+ <memxor@gmail.com>,  Martin KaFai Lau <martin.lau@linux.dev>,  Song Liu
+ <song@kernel.org>,  Yonghong Song <yonghong.song@linux.dev>,  Jiri Olsa
+ <jolsa@kernel.org>,  Emil Tsalapatis <emil@etsalapatis.com>,  Shuah Khan
+ <shuah@kernel.org>,  John Fastabend <john.fastabend@gmail.com>,  Jiayuan
+ Chen <jiayuan.chen@linux.dev>,  Eric Dumazet <edumazet@google.com>,
+  Kuniyuki Iwashima <kuniyu@google.com>,  Paolo Abeni <pabeni@redhat.com>,
+  Willem de Bruijn <willemb@google.com>,  "David S. Miller"
+ <davem@davemloft.net>,  Jakub Kicinski <kuba@kernel.org>,  Simon Horman
+ <horms@kernel.org>,  Cong Wang <cong.wang@bytedance.com>,
+  bpf@vger.kernel.org,  linux-kselftest@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  netdev@vger.kernel.org
+Subject: Re: [PATCH bpf v3 3/4] selftests/bpf: Adapt sockmap update error
+ handling
+In-Reply-To: <20260702-sockmap-lookup-udp-leak-v3-3-ff8de8782468@rbox.co>
+	(Michal Luczaj's message of "Thu, 02 Jul 2026 01:28:21 +0200")
+References: <20260702-sockmap-lookup-udp-leak-v3-0-ff8de8782468@rbox.co>
+	<20260702-sockmap-lookup-udp-leak-v3-3-ff8de8782468@rbox.co>
+User-Agent: mu4e 1.14.1; emacs 30.2
+Date: Thu, 02 Jul 2026 12:52:37 +0200
+Message-ID: <8733y13bpm.fsf@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-This feature only works for connections originating from the host
-and only if there no source address rewrite.
+On Thu, Jul 02, 2026 at 01:28 AM +02, Michal Luczaj wrote:
+> Update sockmap_listen to accommodate the recent change in sockmap that
+> rejects unbound UDP sockets.
+>
+> TCP: Reject unbound and bound (unless established or listening).
+> UDP: Accept only bound sockets.
+>
+> While at it, migrate to ASSERT_* and enforce reverse xmas tree.
+>
+> Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+> Signed-off-by: Michal Luczaj <mhal@rbox.co>
+> ---
 
-Add the needed nat glue to have the expectation follow the original
-nat binding.
-
-Signed-off-by: Florian Westphal <fw@strlen.de>
----
- net/netfilter/nft_ct.c | 35 +++++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
-
-diff --git a/net/netfilter/nft_ct.c b/net/netfilter/nft_ct.c
-index 03a88c77e0f0..358b9287e12e 100644
---- a/net/netfilter/nft_ct.c
-+++ b/net/netfilter/nft_ct.c
-@@ -1297,6 +1297,17 @@ static int nft_ct_expect_obj_dump(struct sk_buff *skb,
- 	return 0;
- }
- 
-+#if IS_ENABLED(CONFIG_NF_NAT)
-+static void nft_ct_nat_follow_master(struct nf_conn *ct, struct nf_conntrack_expect *this)
-+{
-+	const struct nf_ct_helper_expectfn *expfn;
-+
-+	expfn = nf_ct_helper_expectfn_find_by_name("nat-follow-master");
-+	if (expfn)
-+		expfn->expectfn(ct, this);
-+}
-+#endif
-+
- static void nft_ct_expect_obj_eval(struct nft_object *obj,
- 				   struct nft_regs *regs,
- 				   const struct nft_pktinfo *pkt)
-@@ -1342,6 +1353,13 @@ static void nft_ct_expect_obj_eval(struct nft_object *obj,
- 		          priv->l4proto, NULL, &priv->dport);
- 	exp->timeout += priv->timeout;
- 
-+#if IS_ENABLED(CONFIG_NF_NAT)
-+	if (ct->status & IPS_NAT_MASK) {
-+		exp->saved_proto.tcp.port = priv->dport;
-+		exp->dir = !dir;
-+		exp->expectfn = nft_ct_nat_follow_master;
-+	}
-+#endif
- 	if (nf_ct_expect_related(exp, 0) != 0)
- 		regs->verdict.code = NF_DROP;
- 
-@@ -1375,6 +1393,13 @@ static struct nft_object_type nft_ct_expect_obj_type __read_mostly = {
- 	.owner		= THIS_MODULE,
- };
- 
-+#if IS_ENABLED(CONFIG_NF_NAT)
-+static struct nf_ct_helper_expectfn nft_ct_nat __read_mostly = {
-+	.name = "nft_ct-follow-master",
-+	.expectfn = nft_ct_nat_follow_master,
-+};
-+#endif
-+
- static int __init nft_ct_module_init(void)
- {
- 	int err;
-@@ -1400,6 +1425,9 @@ static int __init nft_ct_module_init(void)
- 	err = nft_register_obj(&nft_ct_timeout_obj_type);
- 	if (err < 0)
- 		goto err4;
-+#endif
-+#if IS_ENABLED(CONFIG_NF_NAT)
-+	nf_ct_helper_expectfn_register(&nft_ct_nat);
- #endif
- 	return 0;
- 
-@@ -1425,6 +1453,13 @@ static void __exit nft_ct_module_exit(void)
- 	nft_unregister_obj(&nft_ct_helper_obj_type);
- 	nft_unregister_expr(&nft_notrack_type);
- 	nft_unregister_expr(&nft_ct_type);
-+
-+#if IS_ENABLED(CONFIG_NF_NAT)
-+	nf_ct_helper_expectfn_unregister(&nft_ct_nat);
-+	synchronize_rcu();
-+	nf_ct_helper_expectfn_destroy(&nft_ct_nat);
-+	synchronize_rcu();
-+#endif
- }
- 
- module_init(nft_ct_module_init);
--- 
-2.54.0
-
+Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
