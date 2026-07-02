@@ -1,62 +1,62 @@
-Received: from mail-pj2-f1.google.com (mail-pj2-f1.google.com [74.125.227.129])
+Received: from mail-pj2-f2.google.com (mail-pj2-f2.google.com [74.125.227.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50CEC3CFF68
-	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 22:41:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF83A3D332B
+	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 22:41:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783032120; cv=none; b=FcItpRCN/lXI6wLUfk3dSKpBEf9/EebKrKdocvalC8tL2zhsu9IbC4xISD5EzgrQUCk+gvPMZllHUuOx8jdRXjvM8eflZej3XqRiYCJn0xwUN19m4cCBofVZl5/cPiGJgxnIteP8Jn//VfQsiowWEZQ7/E0r+v80H0X6MJJlDrc=
+	t=1783032121; cv=none; b=cv7TFFNUZP8kjDGNwyGOSjra8RtayvqSGdr8er5MD7y+oZjnIIVqee0QSNO4c8WEJnQHUmfEPCC00odep3XvF08QolI0TAzmKPk6BhCjJiOfDanBEMzNIxgpNUTCibqBlE1/jlEYVUfYFoSZnQyvZ/lqYgbokeYH6bBWmRuxm7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783032120; c=relaxed/simple;
-	bh=gVRvszlKjC051AeWdIy0Pxn+2sjC6Uwq/oT9l7DyrWA=;
+	s=arc-20240116; t=1783032121; c=relaxed/simple;
+	bh=VGn/FZ4DxFBzmOwuxViO2XXzhRDLgCNWGc0DjnZKhug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qgrj+fTDGiqY/JqraRBCfA26Bq1IlpKYXSgDkNITUNJGTSqf8rmxCPj+wycGJc4CE9OehZJ28vd+PjJvh3w/6IUse4oYimEfSdkD1gQx38MEOmYsJQWw/XQWly5VNhbkHQbtlRAveZWL0UdEDIRaVLvmnOJmkTR2EkG6DnDIpDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=je7Am6hs; arc=none smtp.client-ip=74.125.227.129
+	 MIME-Version; b=FtgT5EJqhRo0OC2JZFnvyG2wPy6LebXLBsycmBE4pmyIXHiJCy9/a9j+//tnw4hg5tDoFW6yso55NzkwGKMWA/n7h+eKAXkUko76oPVYfZD/FYbUhbYljjI6v1sXiZy6UHQJJP5x1oMBPsJ3syxfGOspnTKLVkeCzGq4QJdNglU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RpDoEVoH; arc=none smtp.client-ip=74.125.227.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="je7Am6hs"
-Received: by mail-pj2-f1.google.com with SMTP id d9443c01a7336-2cac634f921so2147695ad.0
-        for <netdev@vger.kernel.org>; Thu, 02 Jul 2026 15:41:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RpDoEVoH"
+Received: by mail-pj2-f2.google.com with SMTP id d9443c01a7336-2c9dc2dafeaso9333385ad.0
+        for <netdev@vger.kernel.org>; Thu, 02 Jul 2026 15:41:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783032116; x=1783636916; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1783032117; x=1783636917; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZkbORPm7iZJ0a/v7NZ/ujLdsQdGoEPvg/+GU5QgGmcU=;
-        b=je7Am6hs3ZDNF69y2jD62IIWyAvHDms/02p3OznNrFr69cxz1uZ+romB/l0KZBvT2X
-         qzst3tx5PUOc/fqObjdx/QyZxMq8c0IcJZKGTVwLUKyMHwSsS3S+NL1rn7K3CGUz/Jgq
-         LrtgYVGcx7GQPil07g792+F8DDPadtQR9mLxJP3mriH+nMVl8W6FZ8a4CsqNyZhWZDZU
-         aEQ2bL4j8ZGfjxmMKIUS/h+IAXRFuekd7DPXEOoMuoJp20K9JRRLYY2fzOkq/Asd9b+E
-         ElzIAZbI6ujyoICLKEib7UNHwxS3TaLXYTDCeCNSJoNM9wxmEB9KwTVE/D+7WEqOnr9s
-         rCZA==
+         :message-id:reply-to:content-type;
+        bh=U8Q3pzjelt/1WF+Qy/0h3ZAikUKaGYEjLPL9xAA8IEE=;
+        b=RpDoEVoHlGQf+efMLGT2IEw5QvgzDacpSOgqTxOtjoqnTlBh71FbS/Jvvs0rXdb6L1
+         RmrVrvsbvgTQKX/zl7PWgf7rs4qeyV57FjzQiklrc4/f3DF4aa7vXljV4/oeUwf99RpV
+         CuIdz3JwrWJNTcyWwYaRtu43VaW9p4Ynv+shnA7Xe9AkEE2RytdxkK+ZZbLCzZckI2gk
+         3I1pu+MjXHBNO1ntedLLlr5ix+yQIdGNSLEfhWKqeN59LPl1cDWzRzrCVOvw3Aoc2tkf
+         sEBtdCruSGyj9SrG1SUk3a0A4NhJlsY9N3inoaNelWstUeDdMIuxcZOz9U8FbqMTa/Qm
+         pLPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783032116; x=1783636916;
+        d=1e100.net; s=20251104; t=1783032117; x=1783636917;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ZkbORPm7iZJ0a/v7NZ/ujLdsQdGoEPvg/+GU5QgGmcU=;
-        b=DaGYzxvL86F5L/HvE890GIhX/Pns/j2otVFrMbgTlGfI4Jjq5v4w0k8fnm4IgwFfT6
-         qE380hAeGINQlo5pzOMNhzxMbZlx/QgKYzKfIYh0DjdPyNHXQnw8i1e1WbbXgdHZtWzD
-         lgykjYhg7XB8Zqlcgs82irZUtXx3SA65mcSp16nzF6GvYF6Cx9LUT9eUp0ITwJJRss0/
-         QIqfi2WhA1hAZ2brxyqsSqCNngjbR/cQX9iWFxb3qbsG243AJDMz2P6tJuoJ2FMCaGJ1
-         ciyP4CIV5Ncs7SzdzgdSLo36L6ekrSeCqOqfHiXr/wYHQrRnlrxZXqWQf/nWeS0/nrdY
-         Skzw==
-X-Gm-Message-State: AOJu0Yxk+Uu1XPGY2k27Cl7Nc7pVvgBh30Ww/iftWxYQh7hDOYwseKtR
-	BLAsRfYra/l3mOe46UUViMD+jvcs4Y2swG4KRMTuJNwSb0e845OWjklCkRm4BDCo
-X-Gm-Gg: AfdE7cknxF7bu8r5hsk79wILT4yo1/q+hahJEou67vh6CG7JumPF5jo1u9gdk/1aOBd
-	ZuaEFs+eTgLsQNwJYMcLlfq9v6ii1ko0mILd9t5NmALN071cMBVW9n4GgGm/0YsoQkeOO4m1jzX
-	MrnXgwHSr6JA3DHT0KMMaTDCuSsEUnwo5OYaSo9sV2rGmV8CU6GoLBZhoHk4kUfrhfI62A/AT21
-	VWmDWvoIYhjBeYUZCrOMHuuLmcarFTVDvuZJ+xm8cPbKMJp91c/f6yGjDNAIszsiP/OAIltB9Db
-	Ww2GzvmQNFzTN80mmaiChS80CVer6BdCrzq2jt9wtJvLrJlNc02/GRW2Yhwdt8bAznfgomkSPGT
-	4LbnSNCeaBo4K0KDYz0B8io0Bq0xP67fv78QjtN1MhW4XDQxFDPCvqSPOghVjxVLzSJRgYt3ZsW
-	ugqhZMFA==
-X-Received: by 2002:a05:6a20:94cf:b0:3b3:1c7b:ff7 with SMTP id adf61e73a8af0-3bfed47e012mr9186089637.46.1783032116021;
-        Thu, 02 Jul 2026 15:41:56 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:59::])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c9e926a4294sm1831204a12.26.2026.07.02.15.41.55
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=U8Q3pzjelt/1WF+Qy/0h3ZAikUKaGYEjLPL9xAA8IEE=;
+        b=Bx+i2XaRRPrN034kqVb5WrFiOlB4xCTQPcElb6Zy61Md+m/uugZVKFmnm8jt2UGG0o
+         T7Yp4w6aG/7Sdowl77Kd/+jOArZJRI/NdTd4CJFZaCF2sFaKc8yY9bOz6qTwdDMesrCC
+         vjAM3BMUivw5CfpVFCae2AnV0bbMXv2QOJLvjXHuzzSrNXimDYN6HYNdvxJZU4VXVC3j
+         U6rpWpnojtRbtkYGWIpFkGjBwg28tiI0pj/CjFxMtHhgZIx50ooO9QzwexAYXmkPpW4i
+         IcqznnoQ4fy93WEQfqWINVXiVUNlKfxFBWMKmtIq2bUs6iMspV8bgdJ46pDUq2STmvCN
+         PzkA==
+X-Gm-Message-State: AOJu0YyIZVdv18FPl2WyfSW955ql2x2aa5p+3Myi+2uIy872yndZfrxt
+	ti1ckAcUugU9NkEuc670yn+HMgszjHV8L36bjJJMF3Ku5fCS9+adaEnA1zVXbHjy
+X-Gm-Gg: AfdE7cmnj0r+hPkPy3WSWbmQncqWfL3TgoQ5pIHU+fozG2H+Fu4AQznF2FzLOeKnDPl
+	4jbslXPSjtqRNWRA0lwWgaD/1wsDI4MoOouDVPDTGqZPi+9cGl8DyxR3vfDWPofxPSoCVh4BNvM
+	J/WaGp3lrSLyiFjTsnhe7r8OT8ZTSWUpINbC6Dit3HTHkn9OxL9zFssRUu5cL5VojQALS41G+QX
+	6Ai+BlaJwodgOOvF0wx8IJPfTBc6BEKYoOrnFD8PqC3KfoqpT1gS/uKq22WBwKaOChzyh48itR5
+	U4qbNcoQ8ySq8ugzR3aE7Sl6REagUVKQJ5F7lcn1TDh6awLbhWITRLYnGtEu3UK2S5IklF+k6WQ
+	R7ww9m/Q9TZHYVD6NOHIqaPm6gxkzKE+Mum1Sj9mXYPg/fj2ElqH29kzgSytpHXJoZYI712nepz
+	Ce3s29
+X-Received: by 2002:a17:902:d4c7:b0:2c9:97a7:3276 with SMTP id d9443c01a7336-2ca7e89a620mr91739115ad.39.1783032117088;
+        Thu, 02 Jul 2026 15:41:57 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:4::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ca9a9cd0dcsm19484465ad.38.2026.07.02.15.41.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jul 2026 15:41:55 -0700 (PDT)
+        Thu, 02 Jul 2026 15:41:56 -0700 (PDT)
 From: Stanislav Fomichev <sdf.kernel@gmail.com>
 X-Google-Original-From: Stanislav Fomichev <sdf@fomichev.me>
 To: netdev@vger.kernel.org
@@ -64,9 +64,9 @@ Cc: davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com
-Subject: [PATCH net-next v2 5/6] net: require instance lock for NETDEV_DOWN/GOING_DOWN notifiers
-Date: Thu,  2 Jul 2026 15:41:49 -0700
-Message-ID: <20260702224150.3730033-6-sdf@fomichev.me>
+Subject: [PATCH net-next v2 6/6] net: document NETDEV_UNREGISTER unlocked rationale
+Date: Thu,  2 Jul 2026 15:41:50 -0700
+Message-ID: <20260702224150.3730033-7-sdf@fomichev.me>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260702224150.3730033-1-sdf@fomichev.me>
 References: <20260702224150.3730033-1-sdf@fomichev.me>
@@ -78,72 +78,31 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Sprinkle a few asserts about ops lock: netif_close_many and __dev_notify_flags
-should now consistently run under the lock
+The lock-state table marks UNREGISTER as unlocked without saying
+why. Add a short note that many handlers release the lowers via
+dev_close().
 
 Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
 ---
- Documentation/networking/netdevices.rst | 2 ++
- net/core/dev.c                          | 3 +++
- net/core/lock_debug.c                   | 4 ++--
- 3 files changed, 7 insertions(+), 2 deletions(-)
+ Documentation/networking/netdevices.rst | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/Documentation/networking/netdevices.rst b/Documentation/networking/netdevices.rst
-index d2a238f8cc8b..1bb68a73bb67 100644
+index 1bb68a73bb67..c8b15f6926ed 100644
 --- a/Documentation/networking/netdevices.rst
 +++ b/Documentation/networking/netdevices.rst
-@@ -421,6 +421,8 @@ For devices with locked ops, currently only the following notifiers are
- * ``NETDEV_CHANGENAME``
- * ``NETDEV_REGISTER``
- * ``NETDEV_UP``
-+* ``NETDEV_DOWN``
-+* ``NETDEV_GOING_DOWN``
- 
+@@ -427,6 +427,11 @@ For devices with locked ops, currently only the following notifiers are
  The following notifiers are running without the lock:
  * ``NETDEV_UNREGISTER``
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 9d49493f4fb5..714d05283500 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -1802,6 +1802,7 @@ void netif_close_many(struct list_head *head, bool unlink)
- 	__dev_close_many(head);
  
- 	list_for_each_entry_safe(dev, tmp, head, close_list) {
-+		netdev_assert_locked_ops_compat(dev);
- 		rtmsg_ifinfo(RTM_NEWLINK, dev, IFF_UP | IFF_RUNNING, GFP_KERNEL, 0, NULL);
- 		call_netdevice_notifiers(NETDEV_DOWN, dev);
- 		if (unlink)
-@@ -9787,6 +9788,8 @@ void __dev_notify_flags(struct net_device *dev, unsigned int old_flags,
- {
- 	unsigned int changes = dev->flags ^ old_flags;
- 
-+	netdev_assert_locked_ops_compat(dev);
++Many SW devices (uppers) catch their lower's ``NETDEV_UNREGISTER``
++events and may interact with them via ``dev_*()`` handlers, which take
++the instance lock. Until we convert these devices to ``netif_*()`` variants,
++``NETDEV_UNREGISTER`` stays unlocked.
 +
- 	if (gchanges)
- 		rtmsg_ifinfo(RTM_NEWLINK, dev, gchanges, GFP_ATOMIC, portid, nlh);
- 
-diff --git a/net/core/lock_debug.c b/net/core/lock_debug.c
-index 8a81c5430705..abc4c00728b1 100644
---- a/net/core/lock_debug.c
-+++ b/net/core/lock_debug.c
-@@ -24,15 +24,15 @@ int netdev_debug_event(struct notifier_block *nb, unsigned long event,
- 	case NETDEV_CHANGE:
- 	case NETDEV_REGISTER:
- 	case NETDEV_UP:
-+	case NETDEV_DOWN:
-+	case NETDEV_GOING_DOWN:
- 		netdev_assert_locked_ops_compat(dev);
- 		fallthrough;
--	case NETDEV_DOWN:
- 	case NETDEV_REBOOT:
- 	case NETDEV_UNREGISTER:
- 	case NETDEV_CHANGEMTU:
- 	case NETDEV_CHANGEADDR:
- 	case NETDEV_PRE_CHANGEADDR:
--	case NETDEV_GOING_DOWN:
- 	case NETDEV_FEAT_CHANGE:
- 	case NETDEV_BONDING_FAILOVER:
- 	case NETDEV_PRE_UP:
+ There are no clear expectations for the remaining notifiers. Notifiers not on
+ the list may run with or without the instance lock, potentially even invoking
+ the same notifier type with and without the lock from different code paths.
 -- 
 2.53.0-Meta
 
