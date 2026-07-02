@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6BB414DC4
-	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 14:49:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D291414DEA
+	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 14:49:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783003786; cv=none; b=TrtJHgjQS8hLwrMp+GyPzOqj9FLnEcJy9csA8afMHL5SQClDLckkw+GJkiA8WE2g0Pl8xVDlszKcqOAnywgUH2u3KQCyc4HKMzBAauR7/x2KwW47hZOJN23fjmVGz8kxO6w9ZLnrngtHShNQxj4+tpTOSlhU/lyodypZ6Rkd7DI=
+	t=1783003793; cv=none; b=uwkslxEyAw1A64JeKIlNolNwOJ+NmWf8LZN/2wQVm2APYqrATEV8fTiHr0TnszO9ZN014BBbtM1Gbte8WFppX9fYKzbUmZ8ydMRczj9E3G92nC2SMk0wPrgHc+nO3zEDQmU5wmhqj87uDzUsBwb07hw0EiPgCBGifOh8nq10D5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783003786; c=relaxed/simple;
-	bh=xyALdxjU1TW9/Ki7zm9C1YzWa0+d5DiMlT8No6I9Mes=;
+	s=arc-20240116; t=1783003793; c=relaxed/simple;
+	bh=lfRskE+YRnqtqdpCtTOGCCnWlY2GzqI6qA0GePi2nRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Br5DIe7OtXFBnFAIh2XvbnDKCmfO46vH05ujaQupo931fMMzNHFoHRJwnAEtcJTK7f7+CguzXKu1pqxY76X5yon5W9rWPRXjF5+bgoRUHy3Au6Szz4CLBfN+iGBHbXoxMpwsu31QZFJ4KD+GrteMXNjiy1IIANtk07AfbMlO/HU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=S/W7cuUe; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=Xuz9LVEmSGNmk+mDjlCjxtIrW8IzbGUAqJaWaeojy1W9OPgg85AiGr6QlFPle+t3zcv/diXhLXXWPl6Bc4XtAcCoYFVDDrC+bm/PK0HS1KL19pQqMaHq7P5vo4kdeX007mcqdIDgBKurE+aWMp/TWq+/PrFnq84h8stnNK6kEh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=H2fVbg16; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="S/W7cuUe"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="H2fVbg16"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783003784;
+	s=mimecast20190719; t=1783003791;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=BOWCDRxNUNYjz7orMFcedmQGQ2BN2L8e1lJ1KDGIQsg=;
-	b=S/W7cuUeIvIYrAYOS8P+W5yIE+Nm9xUS2m+0aCb1CWuE7/ALUfYCRrfPkufqthL9zxawa4
-	owWDDzfW7bMSuvp4x7cnqqaEeCyT1+ygoKjuk5aGtc7tIdy9kKSU49Ydq+nkvXEAEgVvmI
-	MqZtLC/kIrK4chhQHEpWUChTMXH3ChY=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=U0/radJfCsllQNVFMfHEfZb/6sJawuKCmHEmfori6k8=;
+	b=H2fVbg16MfoaslSbkISElXtZGBODMJIolT7RaRp/KfvU81+ukBHkHIZVFCAzsBaLgJxqO6
+	TketwTMG423X/rXg0T5C5AxLZN1sj5n5AZGs+zjx57nqcfiJW5gd+0DwqFRvGzyjrD5D+W
+	d40aG9WXjXENZRMf7xXy2acoGj7jGyM=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-208-Ce-fp6PNMNiIunAPNfHXbQ-1; Thu,
- 02 Jul 2026 10:49:40 -0400
-X-MC-Unique: Ce-fp6PNMNiIunAPNfHXbQ-1
-X-Mimecast-MFC-AGG-ID: Ce-fp6PNMNiIunAPNfHXbQ_1783003776
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-507-lE7P8e2pPv6KaEmTCdFdWQ-1; Thu,
+ 02 Jul 2026 10:49:44 -0400
+X-MC-Unique: lE7P8e2pPv6KaEmTCdFdWQ-1
+X-Mimecast-MFC-AGG-ID: lE7P8e2pPv6KaEmTCdFdWQ_1783003782
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8B15A18333A3;
-	Thu,  2 Jul 2026 14:49:36 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A6BFD19792F0;
+	Thu,  2 Jul 2026 14:49:41 +0000 (UTC)
 Received: from warthog.procyon.org.com (unknown [10.44.33.159])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 165FE1800605;
-	Thu,  2 Jul 2026 14:49:32 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 31BD0180056E;
+	Thu,  2 Jul 2026 14:49:37 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: netdev@vger.kernel.org
 Cc: David Howells <dhowells@redhat.com>,
@@ -53,10 +53,11 @@ Cc: David Howells <dhowells@redhat.com>,
 	Simon Horman <horms@kernel.org>,
 	linux-afs@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	Jeffrey Altman <jaltman@auristor.com>
-Subject: [PATCH net 2/4] rxrpc: Fix sendmsg to not return an error if last packet queued
-Date: Thu,  2 Jul 2026 15:49:16 +0100
-Message-ID: <20260702144919.172295-3-dhowells@redhat.com>
+	Jeffrey Altman <jaltman@auristor.com>,
+	stable@kernel.org
+Subject: [PATCH net 3/4] afs: Fix UAF when sending a message
+Date: Thu,  2 Jul 2026 15:49:17 +0100
+Message-ID: <20260702144919.172295-4-dhowells@redhat.com>
 In-Reply-To: <20260702144919.172295-1-dhowells@redhat.com>
 References: <20260702144919.172295-1-dhowells@redhat.com>
 Precedence: bulk
@@ -68,17 +69,32 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-Fix AF_RXRPC sendmsg() so that it doesn't return an error if it has
-successfully queued the last packet of a call, but the call has seen to
-have completed after it did that.  Rather, leave it to recvmsg() to report
-the completion (which it will do anyway).
+In afs_make_call(), there's a race with async call reception and
+destruction.  If a call is dispatched that doesn't have call->write_iter
+set (used to specify the data content for FS.StoreData), then the first
+rxrpc_kernel_send_data() will not set MSG_MORE in the msghdr.
 
-The problem with trying to report the error twice is that the caller may
-try to clean up the dead call twice.
+Once rxrpc_send_data() queues the last request packet, the response could
+come in at any time and cause the call to be completed and put.  However,
+afs_make_call() will look at the call again to see it ->write_iter should
+be handled - something it's only allowed to do if it has its own ref on the
+call.  Whilst this is the case for synchronous calls, it isn't true for
+async calls such as FS.FetchData.
 
-Fixes: d41b3f5b9688 ("rxrpc: Wrap accesses to get call state to put the barrier in one place")
+generic/650 plays games with randomly taking CPUs offline, and can
+interject a significant delay such that the call is deallocated before
+afs_make_call() gets to check call->write_iter - and a UAF ensues (caught
+by KASAN).
+
+   BUG: KASAN: slab-use-after-free in afs_make_call+0x1c90/0x2210 [kafs]
+   Read of size 8 at addr ffff888035e050e8 by task fsstress/1409
+
+Fix this by caching the call->write_iter and call->debug_id so that neither
+variable needs to be accessed after the first send.
+
+Fixes: eddf51f2bb2c ("afs: Make {Y,}FS.FetchData an asynchronous operation")
+Reported-by: Marc Dionne <marc.dionne@auristor.com>
 Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
 cc: Jeffrey Altman <jaltman@auristor.com>
 cc: Eric Dumazet <edumazet@google.com>
 cc: "David S. Miller" <davem@davemloft.net>
@@ -86,38 +102,81 @@ cc: Jakub Kicinski <kuba@kernel.org>
 cc: Paolo Abeni <pabeni@redhat.com>
 cc: Simon Horman <horms@kernel.org>
 cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
 ---
- net/rxrpc/sendmsg.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ fs/afs/rxrpc.c             | 12 ++++++++----
+ include/trace/events/afs.h |  6 +++---
+ 2 files changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/net/rxrpc/sendmsg.c b/net/rxrpc/sendmsg.c
-index ed2c9a51005a..4c754f78ece9 100644
---- a/net/rxrpc/sendmsg.c
-+++ b/net/rxrpc/sendmsg.c
-@@ -453,9 +453,6 @@ static int rxrpc_send_data(struct rxrpc_sock *rx,
+diff --git a/fs/afs/rxrpc.c b/fs/afs/rxrpc.c
+index d82916657a3d..05fcb9b6adde 100644
+--- a/fs/afs/rxrpc.c
++++ b/fs/afs/rxrpc.c
+@@ -347,7 +347,9 @@ void afs_make_call(struct afs_call *call, gfp_t gfp)
+ 	struct rxrpc_call *rxcall;
+ 	struct msghdr msg;
+ 	struct kvec iov[1];
++	unsigned int debug_id = call->debug_id;
+ 	size_t len;
++	bool write_iter = call->write_iter;
+ 	s64 tx_total_len;
+ 	int ret;
  
- success:
- 	ret = copied;
--	if (rxrpc_call_is_complete(call) &&
--	    call->error < 0)
--		ret = call->error;
- out:
- 	call->tx_pending = txb;
- 	_leave(" = %d", ret);
-@@ -467,8 +464,14 @@ static int rxrpc_send_data(struct rxrpc_sock *rx,
- 	return call->error;
+@@ -410,7 +412,7 @@ void afs_make_call(struct afs_call *call, gfp_t gfp)
+ 	iov_iter_kvec(&msg.msg_iter, ITER_SOURCE, iov, 1, call->request_size);
+ 	msg.msg_control		= NULL;
+ 	msg.msg_controllen	= 0;
+-	msg.msg_flags		= MSG_WAITALL | (call->write_iter ? MSG_MORE : 0);
++	msg.msg_flags		= MSG_WAITALL | (write_iter ? MSG_MORE : 0);
  
- maybe_error:
--	if (copied)
-+	if (copied) {
-+		if (rxrpc_call_is_complete(call) &&
-+		    call->error < 0) {
-+			ret = call->error;
-+			goto out;
-+		}
- 		goto success;
-+	}
- 	goto out;
+ 	ret = rxrpc_kernel_send_data(call->net->socket, rxcall,
+ 				     &msg, call->request_size,
+@@ -418,7 +420,9 @@ void afs_make_call(struct afs_call *call, gfp_t gfp)
+ 	if (ret < 0)
+ 		goto error_do_abort;
  
- efault:
+-	if (call->write_iter) {
++	/* We lost our ref on call if MSG_MORE was set. */
++
++	if (write_iter) {
+ 		msg.msg_iter = *call->write_iter;
+ 		msg.msg_flags &= ~MSG_MORE;
+ 		trace_afs_send_data(call, &msg);
+@@ -427,9 +431,9 @@ void afs_make_call(struct afs_call *call, gfp_t gfp)
+ 					     call->rxcall, &msg,
+ 					     iov_iter_count(&msg.msg_iter),
+ 					     afs_notify_end_request_tx);
+-		*call->write_iter = msg.msg_iter;
++		/* We lost our ref on call. */
+ 
+-		trace_afs_sent_data(call, &msg, ret);
++		trace_afs_sent_data(debug_id, &msg, ret);
+ 		if (ret < 0)
+ 			goto error_do_abort;
+ 	}
+diff --git a/include/trace/events/afs.h b/include/trace/events/afs.h
+index 1b3c48b5591d..cf7218efb861 100644
+--- a/include/trace/events/afs.h
++++ b/include/trace/events/afs.h
+@@ -937,9 +937,9 @@ TRACE_EVENT(afs_send_data,
+ 	    );
+ 
+ TRACE_EVENT(afs_sent_data,
+-	    TP_PROTO(struct afs_call *call, struct msghdr *msg, int ret),
++	    TP_PROTO(unsigned int call_debug_id, struct msghdr *msg, int ret),
+ 
+-	    TP_ARGS(call, msg, ret),
++	    TP_ARGS(call_debug_id, msg, ret),
+ 
+ 	    TP_STRUCT__entry(
+ 		    __field(unsigned int,		call)
+@@ -949,7 +949,7 @@ TRACE_EVENT(afs_sent_data,
+ 			     ),
+ 
+ 	    TP_fast_assign(
+-		    __entry->call = call->debug_id;
++		    __entry->call = call_debug_id;
+ 		    __entry->ret = ret;
+ 		    __entry->offset = msg->msg_iter.xarray_start + msg->msg_iter.iov_offset;
+ 		    __entry->count = iov_iter_count(&msg->msg_iter);
 
