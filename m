@@ -1,116 +1,101 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ED95346E54
-	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 10:31:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1C84357CE1
+	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 10:36:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782988310; cv=none; b=t8gO2kPPZdgt423iEdikPLX7icw+uGNuXKW1iEYPgPnNDgHdT5CA25UvKfupaakYwojk5zdZPQJgKVKOYZfPGCafjdQZpVZ80y+m8KmVZXyQd/RNqEdxLTflsZneDHjWD8qCepu3BjoAJM9qzkQqtb9hZHEsqIsvExbqi7KNkAs=
+	t=1782988566; cv=none; b=D5pY3hMe5EuINEO7CoL3/f1L+anAIW52tfhrB3xKytWf/UDYyww9Z1SYT1x3MTb6UpzkD1+fKzubyUxsLJnLgynFaSahvgyHy+ydHcijLQtCrUnilppxnOzK8A0t0hgOTb1dgeZAQjY7mv93mMoSc+RCICGqmqwZEM9700GQcE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782988310; c=relaxed/simple;
-	bh=ZIn43INLbi+LDQ+Jho+E7TvyEDjesltuVNzl70tMzXI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qFYbV/PF0DNlrFS2To4xPKRmj05wb/TVfWZwNpxhozhw3a/pnAzjfRxMe50LHNc1gnHRm51kTX3JZ3mgbi8QVxqEfCJY+MWf70UmkNHhkN0sxdiZ/SSUswHUIGOpQSUGWIfHvbZwNHioprsgSPyc55kV5A6e82wAcyT3jmHaB2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ex0LboEa; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=QUm/UZC1; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0nNK6jVq; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=1OWps0PR; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1782988566; c=relaxed/simple;
+	bh=u78F4QdlrR7C1BYI5zDtdJCtyxUfspZXfPNBzuyN/eM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=iuhmWuMXapUKoXsC57Z9J60BHTE/WBJMxjVb0OQFiLq8exOzSMSMgUHT+kJIOf3lYQt0cQ22YEcL6/B1WJvCVF0XkuWOcCP6NPwp8WKmwmqs8rU3im4v6LEmvsMhHmChG+5Co6v0WXeLTgQ81Fdm6lp3H+2pX1AyuVJNgy1ig7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=NOKtO6Ls; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ex0LboEa";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="QUm/UZC1";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="0nNK6jVq";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="1OWps0PR"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id CBF177413D;
-	Thu,  2 Jul 2026 10:31:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782988308; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZIn43INLbi+LDQ+Jho+E7TvyEDjesltuVNzl70tMzXI=;
-	b=ex0LboEa8fFnAEv0LlWTtFnatYcXb12UGzPYE8RM0RFub6EzMyi6RGWN+ASBSLwsWmyem8
-	egJmmxESX74VD8hiknkNpZyUAffVxWUet7CSy0KgWaRlT0hjOrJLEGC7EyDJFXaD1bNV0r
-	JZMVQN6xdDtNviD5y7ePhJfiB88aSfs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782988308;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZIn43INLbi+LDQ+Jho+E7TvyEDjesltuVNzl70tMzXI=;
-	b=QUm/UZC149yJeiIYvETGPmY5UYxOQ7xdQ0/WK9YuFlBFkl3o1gCN7rtgSUkKkTgE88n5pL
-	laDIwAqAMucp8eBQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782988306; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZIn43INLbi+LDQ+Jho+E7TvyEDjesltuVNzl70tMzXI=;
-	b=0nNK6jVqThlA/eO3avNstwKg3CyN0nK4aiqiwwF3lvpEtddK/2LGQtA7xmqzqIn2pkYwFD
-	lmfrP38MRPWTmS6iXcfq7sbUaEDhnxoMBAdsEicEH0FT8ZB+dBWPNhSqHoDNoPrENCailp
-	w5ki8zFLX5w0Iv5Ay8oQ5SqrUS6Qbv0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782988306;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZIn43INLbi+LDQ+Jho+E7TvyEDjesltuVNzl70tMzXI=;
-	b=1OWps0PRdWwT2QFYrjMkvaR4O0jAX/EnbjSyJmqeU0fTSMPKYIuxrdagVsjcEJqfjdxEU9
-	OcQl+H2T/CU3W7CQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A2C6E779AA;
-	Thu,  2 Jul 2026 10:31:46 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Xj3KJBI+RmqXPAAAD6G6ig
-	(envelope-from <iluceno@suse.de>); Thu, 02 Jul 2026 10:31:46 +0000
-Date: Thu, 2 Jul 2026 12:31:45 +0200
-From: Ismael Luceno <iluceno@suse.de>
-To: linux-kernel@vger.kernel.org
-Cc: "open list:IPVS" <netdev@vger.kernel.org>,
-	"open list:IPVS" <lvs-devel@vger.kernel.org>,
-	"open list:NETFILTER" <netfilter-devel@vger.kernel.org>,
-	"open list:NETFILTER" <coreteam@netfilter.org>
-Subject: Re: [PATCH v2 nf-next] ipvs: Move defense_work and est_reload_work
- to system_dfl_long_wq
-Message-ID: <akY-CMqFSLVgK8hG@pirotess>
-References: <20260702101100.24256-2-iluceno@suse.de>
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="NOKtO6Ls"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c12758e75afso261339266b.1
+        for <netdev@vger.kernel.org>; Thu, 02 Jul 2026 03:36:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1782988559; x=1783593359; darn=vger.kernel.org;
+        h=content-type:mime-version:message-id:date:user-agent:references
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=u78F4QdlrR7C1BYI5zDtdJCtyxUfspZXfPNBzuyN/eM=;
+        b=NOKtO6LsvoIK3dwQteCncaPJ+g6OcppeqhO2+Xa7XrRrDnbeZvy5DdHH2UutfGIVCr
+         S/qkYU3bKmUr2e32gAzY1EhNJD8B1nrnHdcCz6BEJ1cC3R4fjw7FpukTx86ePzDS0BaC
+         buJ0EfBWH4I4bGQKG07nN8TzsvEgrmylGq9sqUt0AfEgTX8OAMM0b/F7QMtZeCvjPWb8
+         RDXgFFbgwrYUPQnNlgkipCiSMg/+5h3Y1DBUcKl3wG5ILjHi7di+v5NwxvmiCUWE8OCE
+         Kr5Nt6+UAcMs3o0pbMx7lWiXQAiJgcyuiWJl64+r/UifjbmQCzoUtnuK+4n4jV6bSlRg
+         71Tg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782988559; x=1783593359;
+        h=content-type:mime-version:message-id:date:user-agent:references
+         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=u78F4QdlrR7C1BYI5zDtdJCtyxUfspZXfPNBzuyN/eM=;
+        b=O1FYhsX9DLSBQzyTW7ZWCjQLxgIyAIjAoM91TdEm2VhQyHanxx9+4Sn4y10ephY09u
+         u0nj0hEHFLHm8jHq+/iycqr/YEs7EzcMZ4ku7MduriAN1Ylzz8zY1gc0zMKf9Yq//epU
+         Brb5ZR8aQIoTPpf+RxCJ5zFPl73FKuK9Sgh0JwyJO0GgiAIenFy0d+UuX+ND37su5mI7
+         IUrTkPlcg11Fd5hvkYoff++24rHGEZdjLDR4FnFUJavboq4mrfmEiyFpVr7X/CVKwjjV
+         zE9dLh1emgN+OE/zHnrbYeLo2R7OWJX0DMIQbWz2KXPNh9yJqPY0BChMGfd8VM8Y54Xi
+         z/VA==
+X-Forwarded-Encrypted: i=1; AHgh+RqO062Hky8DRMKLMRDfpuUiVU4erfMItLxjsZiajE6rV/cG16asB+rncB+GigPOyOt3dw1rS3I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzgpoGkqJ9XIy9fd7b7jNuaKmw0JFQOQlcgsE9F7RI2akjMbLGe
+	Ib04AzZwQAvRFjegMSxwF/a/lQOpi42YbObSwLRp98XBpcxzSqG40nMT9blB6ueZUbI=
+X-Gm-Gg: AfdE7cllaoYzG0OxYJV6+8GcVRbRL/yNgN8CAbkMT1JcPEwUhuOI0riQay5SkEUdHWG
+	JHaK87U6ozrjOOTNJPgmEU7wxkNSxz66Gr9EGu6sSPNOTkT3mEcHBBBfTYITXVgBMKHyW/0vaqc
+	QVi5OGDwAKzGEvcT/C1DWBO61/iW13jj5EP1UKbulsorijClBaTR3DDtPIHAFTSX2ZzteOhK+Kz
+	KFawcsPXZtonHqo78ekLGc7lXPjsqO0yHhB2Ikvx4RU5ePZjbf38ArAjjyMsRh2B06Sz68guTIv
+	Oay6MItctHayH+owcZXNnME7c74X+gA1ToOyM0l8T1cByx6JfQtiaGzQiby2tcJHQOazssdlzZ/
+	cvis3LldoV93RysdWjWq7wkDjgwMW2V39N9wZ7ZbgXl1CPnxMZq43tVpA7oiyy3yAt/X5joJTh0
+	5aIwMYdyudre4NSao=
+X-Received: by 2002:a17:906:44f:b0:c12:4f19:fad5 with SMTP id a640c23a62f3a-c12ae77c901mr167169566b.59.1782988559046;
+        Thu, 02 Jul 2026 03:35:59 -0700 (PDT)
+Received: from cloudflare.com ([104.28.21.182])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c12b62907ffsm107708366b.40.2026.07.02.03.35.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Jul 2026 03:35:58 -0700 (PDT)
+From: Jakub Sitnicki <jakub@cloudflare.com>
+To: Michal Luczaj <mhal@rbox.co>
+Cc: Alexei Starovoitov <ast@kernel.org>,  Daniel Borkmann
+ <daniel@iogearbox.net>,  Andrii Nakryiko <andrii@kernel.org>,  Eduard
+ Zingerman <eddyz87@gmail.com>,  Kumar Kartikeya Dwivedi
+ <memxor@gmail.com>,  Martin KaFai Lau <martin.lau@linux.dev>,  Song Liu
+ <song@kernel.org>,  Yonghong Song <yonghong.song@linux.dev>,  Jiri Olsa
+ <jolsa@kernel.org>,  Emil Tsalapatis <emil@etsalapatis.com>,  Shuah Khan
+ <shuah@kernel.org>,  John Fastabend <john.fastabend@gmail.com>,  Jiayuan
+ Chen <jiayuan.chen@linux.dev>,  Eric Dumazet <edumazet@google.com>,
+  Kuniyuki Iwashima <kuniyu@google.com>,  Paolo Abeni <pabeni@redhat.com>,
+  Willem de Bruijn <willemb@google.com>,  "David S. Miller"
+ <davem@davemloft.net>,  Jakub Kicinski <kuba@kernel.org>,  Simon Horman
+ <horms@kernel.org>,  Cong Wang <cong.wang@bytedance.com>,
+  bpf@vger.kernel.org,  linux-kselftest@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  netdev@vger.kernel.org
+Subject: Re: [PATCH bpf v3 1/4] selftests/bpf: Ensure UDP sockets are bound
+In-Reply-To: <20260702-sockmap-lookup-udp-leak-v3-1-ff8de8782468@rbox.co>
+	(Michal Luczaj's message of "Thu, 02 Jul 2026 01:28:19 +0200")
+References: <20260702-sockmap-lookup-udp-leak-v3-0-ff8de8782468@rbox.co>
+	<20260702-sockmap-lookup-udp-leak-v3-1-ff8de8782468@rbox.co>
+User-Agent: mu4e 1.14.1; emacs 30.2
+Date: Thu, 02 Jul 2026 12:35:57 +0200
+Message-ID: <878q7t3che.fsf@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260702101100.24256-2-iluceno@suse.de>
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-2.76 / 50.00];
-	BAYES_HAM(-3.00)[99.98%];
-	HFILTER_URL_ONLY(1.03)[0.46666666666667];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.19)[-0.945];
-	MIME_GOOD(-0.10)[text/plain];
-	ARC_NA(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
-X-Spam-Level: 
-X-Spam-Score: -2.76
+Content-Type: text/plain
 
-Link: https://lore.kernel.org/all/20260317140100.24993-2-iluceno@suse.de/
+On Thu, Jul 02, 2026 at 01:28 AM +02, Michal Luczaj wrote:
+> Update sockmap_basic tests to bind sockets before they are used. This
+> accommodates the recent change in sockmap that rejects unbound UDP sockets.
+>
+> Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+> Signed-off-by: Michal Luczaj <mhal@rbox.co>
+> ---
+
+Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
