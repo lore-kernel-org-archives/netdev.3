@@ -1,108 +1,155 @@
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A123386579
-	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 19:19:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9726C38C412
+	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 19:29:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783019952; cv=none; b=CH7VEjksV82wiv6VEfp8qSW7+uwA11LXsb2+O3O8i6JzDJXx7iyXIqdIQQe+Rm7CYePhR5rIkj+EOPcm0PS6vzlMMQwlth8wroBVJ1zHu4RzLYCL9/IncVd2zwf98HjTMwP+0M23HSTb+VN2ZsqSxkaTO9EH9QS2HhA4Vy9cG4Q=
+	t=1783020578; cv=none; b=KFYocRi6Y7J5lGcbzB3p3uw+eGY04POXfmAVFhkykW3GIQfgH6PdyJ1RIshlgzIFNLCOetvqCa8v70j9qwKgOkWd575Q5/UzZhMCG6lGMIYRHy5q59TeNaNaI+A3R25a9nnO2rReGH81gskndq1+HPAQi+kFd6ZrcWDj2vj26Us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783019952; c=relaxed/simple;
-	bh=BXFEv4+ZyyVGIZZ2caJJocv825e7NCyvtXtm/toI+Ok=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y64DtXgZ1ePEZTV3Y2siaJMKQLJ0+aKmE35IwTS5Pi0jA+ckP/0AzuGOU9lm7yh09bZSgg3/0ApvlBIRjWnCjzSUxV9OxGk1N0CG7utCqCLLVadbz8KkSz3y1ACpirlgd8hBLeVnlb2yOrS+v8hqDGGsQxp15FeYVzCG/hft0jU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
-Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
-	id 65D9460218; Thu, 02 Jul 2026 21:19:07 +0200 (CEST)
-Date: Thu, 2 Jul 2026 21:19:03 +0200
-From: Florian Westphal <fw@strlen.de>
-To: "Xiang Mei (Microsoft)" <xmei5@asu.edu>
-Cc: steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
-	davem@davemloft.net, netdev@vger.kernel.org, horms@kernel.org,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	AutonomousCodeSecurity@microsoft.com, tgopinath@linux.microsoft.com,
-	kys@microsoft.com
-Subject: Re: [PATCH ipsec] xfrm: policy: use hlist_del_init_rcu in
- xfrm_hash_rebuild to avoid bydst poison
-Message-ID: <aka5pwAGGI56QrrS@strlen.de>
-References: <20260702185805.615241-1-xmei5@asu.edu>
+	s=arc-20240116; t=1783020578; c=relaxed/simple;
+	bh=UdMJM06ebK67YQ2Mnbs0Jp1/l3ZNaXIh/MKaQ3oYKr4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jkHbb8V/ZcZgLRECAPDqohfEJ2DODgUUlySVvhiQclBRmiveoaN2yj5kP+HqqRG7t+3d4PP9MwPtEeE8lBVHy2u2qt64EPzKmNdKRi39w7mPtwcG1X4kqifSTas8Gf6aA3Cqz12GIPASeFsbvqUYSqswtom+IGzR5XsfQ6UNkuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MOnhQbf1; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MOnhQbf1"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-476d8e647e9so1987543f8f.0
+        for <netdev@vger.kernel.org>; Thu, 02 Jul 2026 12:29:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783020575; x=1783625375; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=zAwDyBfy9pmItaLqNOcnGFdZ3qhtmyuBm6fxfzFEds4=;
+        b=MOnhQbf1/CqJFRSRzJybl3CWwBroY7cPKOcHx4jCNrtLqHUMyB6ujxtqzQhD4Q4xDh
+         sudlR5oq3V72pp9i+NAt6O2GCCUkUdhSrA3AGe12ObYoXHPiguj9xOgRJ7m17BoLLkVO
+         /F+TD0qhA47QA4NF3Ziw/3TsbzePPCk6tDNX0VYltyakCRYMVig7jUAwZIE67tCxWvvJ
+         3VcdZMQyB793F7+xbGrSL3cMFnO/qVVWUDYuSYjeUTb6CdXMPPSFVHr1Xy1gJXBG1/fM
+         4/MGvCAXEPHeGMgK84h+38rMddq9Ozuv6Y2ITiznjFl7luuxkSUkr9A9HGWRPzREg024
+         In1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783020575; x=1783625375;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zAwDyBfy9pmItaLqNOcnGFdZ3qhtmyuBm6fxfzFEds4=;
+        b=YXIOBc3bBkTiPRLp4JAts7T4pdAo137PBg2hy6kwFC6EMC6AA+QzcZKWoZwsJNwbaN
+         Rc+BKFO5ynsDapBs9/tDDbBU5VdQ+acwZYuESqM05FPfMv7N0OXJyeLR4rphD8mlcAWO
+         GFras9/htOTc62cUXquU2UbpNirkwpFl0Y7G0cAUowXlx2fHV1WdwvkJATE+9u3bLrsn
+         BLZoNnbHWMrRCiv5yEe9QcBk6eN5ZxUDrnMrh+57QcCxOwBI9O1UR1Z05n1WagR6du2r
+         SPoY51gCS6FsJGBudtp06D5G87PwBPJaTXh5ammEDJjOwpBiUap8EsA8dlWivcxH34tr
+         vojQ==
+X-Gm-Message-State: AOJu0YyVyfIMkUzrk76mESh813pA+OxP4XMAezTJg+XbrO40kF6fOA89
+	6qoHqbmLR3R8YUvcWR8S1hZbCqp3EdOqTdow7yLRXQCd+Eagkh3vxhah
+X-Gm-Gg: AfdE7cngDPJ0WRJsoAdi3KraQ/E9QUhr1cL38r9GPW/zQrVWPBt4sFiN+xQrJYwbvg7
+	n8ERUWT8sl5R0geJOSpYF8Ishp+A07Xq2Py/Lmio1XdNrJRS/5a9Aqm5uKGzaFhKNytZZR9OOz2
+	8EWLW8nyBasRLe5Vp9LpP/0HG0KzRuyn86F69+fOmhVbCg2Lt0xZqVPtPbUJ+Q+cLcy+Kns2ZwE
+	b2SaD/Minvejuve0NKe0aSFEutBF+Z/2mwV+UEYPLnjNUTnpiIVkQ0pN7DZzkXsQ5V8UNGGsZUF
+	1quXZzUHK5i6U9CWOzDiIdJRX3BN9cF5VGU0AiMzFfHYuUijoVX02ZYzx6GEg+lcm1R4fa3QWKk
+	K/uWonOIbf0doFgzst+Va8gostJQ0emA/Skpg77fMyWTTEGgqjFe+ZQ05MJEKnWyQUGcOKiBpKZ
+	gh+wB0ThR1b13s1KFRUK/Mf1HMuyha6PuxNddPRqQbe0yvfpxe0cJH3TXglOW+KOhyrPo+nk9bC
+	6NoXRzJ
+X-Received: by 2002:adf:ea82:0:b0:475:a4ae:e630 with SMTP id ffacd0b85a97d-4775be03177mr9148509f8f.37.1783020574993;
+        Thu, 02 Jul 2026 12:29:34 -0700 (PDT)
+Received: from [10.128.11.240] (195-23-151-163.net.novis.pt. [195.23.151.163])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-477db3db964sm11113317f8f.8.2026.07.02.12.29.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 02 Jul 2026 12:29:33 -0700 (PDT)
+Sender: Julian Braha <julian.braha@gmail.com>
+Message-ID: <d6a56d05-0c6f-49a5-9281-1194b62ab86e@gmail.com>
+Date: Thu, 2 Jul 2026 20:29:32 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260702185805.615241-1-xmei5@asu.edu>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v6 12/15] onsemi: s2500: Add driver support for
+ TS2500 MAC-PHY
+To: Selvamani.Rajagopal@onsemi.com, Andrew Lunn <andrew@lunn.ch>,
+ Piergiorgio Beruto <pier.beruto@onsemi.com>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Russell King
+ <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
+ Richard Cochran <richardcochran@gmail.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Simon Horman <horms@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
+ Jerry Ray <jerry.ray@microchip.com>
+References: <20260629-s2500-mac-phy-support-v6-0-18ce79500371@onsemi.com>
+ <20260629-s2500-mac-phy-support-v6-12-18ce79500371@onsemi.com>
+Content-Language: en-US
+From: Julian Braha <julianbraha@gmail.com>
+In-Reply-To: <20260629-s2500-mac-phy-support-v6-12-18ce79500371@onsemi.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Xiang Mei (Microsoft) <xmei5@asu.edu> wrote:
-> xfrm_hash_rebuild() unlinks each policy from its bydst chain with
-> hlist_del_rcu() and re-inserts it. For an inexact policy the re-insert goes
-> through xfrm_policy_inexact_insert(), which can fail on a GFP_ATOMIC
-> allocation; on failure the error path only WARN_ONCE()s and continues, so the
-> policy is left with a poisoned bydst node (LIST_POISON2). The next rebuild
-> calls hlist_del_rcu() on that node again, dereferences the poison, and takes a
-> general protection fault.
-> 
-> Use hlist_del_init_rcu() instead, so a failed-reinsert node is left unhashed
-> (pprev == NULL) rather than poisoned. The next rebuild's hlist_del_init_rcu()
-> is then a no-op for it, and the non-failing case is unchanged.
-> 
-> The reinsert allocation is GFP_ATOMIC (it runs under xfrm_policy_lock), so in
-> practice this is only reached under memory pressure; the crash below was
-> reproduced deterministically by forcing that allocation to fail with fault
-> injection (failslab).
-> 
-> Crash:
->   Oops: general protection fault, probably for non-canonical address
->   0xfbd59c0000000024: 0000 [#1] SMP KASAN NOPTI
->   KASAN: maybe wild-memory-access in range [0xdead000000000120-0xdead000000000127]
->   ...
->   Workqueue: events xfrm_hash_rebuild
->   RIP: 0010:xfrm_hash_rebuild+0x5b3/0x1190
->   RAX: dead000000000122   (LIST_POISON2 + offset)
->   ...
->   Call Trace:
->    hlist_del_rcu (include/linux/rculist.h:599)
->    xfrm_hash_rebuild (net/xfrm/xfrm_policy.c:1365)
->    process_one_work (kernel/workqueue.c:3322)
->    worker_thread (kernel/workqueue.c:3486)
->    kthread (kernel/kthread.c:436)
->    ret_from_fork (arch/x86/kernel/process.c:158)
->    ret_from_fork_asm (arch/x86/entry/entry_64.S:245)
->    ...
->   Kernel panic - not syncing: Fatal exception in interrupt
-> 
-> Fixes: 563d5ca93e88 ("xfrm: switch migrate to xfrm_policy_lookup_bytype")
-> Reported-by: AutonomousCodeSecurity@microsoft.com
-> Signed-off-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
-> ---
->  net/xfrm/xfrm_policy.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-> index 7ef861a0e823..2612a405542b 100644
-> --- a/net/xfrm/xfrm_policy.c
-> +++ b/net/xfrm/xfrm_policy.c
-> @@ -1362,7 +1362,7 @@ static void xfrm_hash_rebuild(struct work_struct *work)
->  		if (xfrm_policy_is_dead_or_sk(policy))
->  			continue;
->  
-> -		hlist_del_rcu(&policy->bydst);
-> +		hlist_del_init_rcu(&policy->bydst);
+Hi Selvamani,
 
-This patch is dubious.  I looks to me as if it papers over the
-actual bug.
+On 6/29/26 18:23, Selvamani Rajagopal via B4 Relay wrote:
+> +if NET_VENDOR_ONSEMI
+> +
+> +source "drivers/net/ethernet/onsemi/s2500/Kconfig"
+> +
+> +endif # NET_VENDOR_ONSEMI
+> +
+> diff --git a/drivers/net/ethernet/onsemi/Makefile b/drivers/net/ethernet/onsemi/Makefile
+> new file mode 100644
+> index 000000000000..f3d4eb154313
+> --- /dev/null
+> +++ b/drivers/net/ethernet/onsemi/Makefile
+> @@ -0,0 +1,7 @@
+> +# SPDX-License-Identifier: GPL-2.0-only
+> +#
+> +# Makefile for the onsemi network device drivers.
+> +#
+> +
+> +obj-$(CONFIG_S2500_MACPHY) += s2500/
+> +
+> diff --git a/drivers/net/ethernet/onsemi/s2500/Kconfig b/drivers/net/ethernet/onsemi/s2500/Kconfig
+> new file mode 100644
+> index 000000000000..f2e8d5d1429d
+> --- /dev/null
+> +++ b/drivers/net/ethernet/onsemi/s2500/Kconfig
+> @@ -0,0 +1,21 @@
+> +# SPDX-License-Identifier: GPL-2.0-only
+> +#
+> +# onsemi S2500 Driver Support
+> +#
+> +
+> +if NET_VENDOR_ONSEMI
+> +
+> +config S2500_MACPHY
+> +	tristate "S2500 support"
+> +	depends on SPI
+> +	select NCN26000_PHY
+> +	select OA_TC6
+> +	help
+> +	  Support for the onsemi TS2500 MACPHY Ethernet chip.
+> +	  It works under the framework that conform to OPEN Alliance
+> +	  10BASE-T1x Serial Interface specification.
+> +
+> +	  To compile this driver as a module, choose M here. The module will be
+> +	  called s2500.
+> +
+> +endif # NET_VENDOR_ONSEMI
 
-Why is there a memory allocation error?
+S2500_MACPHY still has that duplicate dependency from being inside two
+of these:
+'if NET_VENDOR_ONSEMI..endif'
 
-The first loop -- before unlink -- is supposed to preallocate the new
-bins and chain heads.
+And I already pointed it out on v5:
+https://lore.kernel.org/all/90f84945-e83f-40a8-8d9e-a477c45579e9@gmail.com/
 
-This is also why there is a WARN. No memory allocations are supposed to
-occur after the hlist_del_rcu(), there is supposed to be a guarantee
-that the insertion succeeds.
+:(
 
+- Julian Braha
