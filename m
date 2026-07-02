@@ -1,111 +1,166 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A463546E4
-	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 08:40:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50AA83EC2F8;
+	Thu,  2 Jul 2026 08:46:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782981661; cv=none; b=awNVfVXjEzrvrxe4QvrWTVrw/GCt7lo12ycC25TOukUkCb1zca2KFOREaYgPsSytbSBqdYFG/lrz27Aoacb+mZChv0nv0/N7wL9QZ0oLF6dIPLs0TKPNGaqh5m9l3ZkFFMAQ9BaDx27VnbCcVtASnPcnGvFpGGZSnDTSYOzzO84=
+	t=1782981968; cv=none; b=AdoXTTK+a+48PDXfHSuH0IX0OxbBPxbNR/JA6tyFQ6IzvngRwdpg+5t8qSqfSMLZW+oPdtXwuxoasPTsmjsVd4rEUqeoQXeqXBZa0iE0eMe4CCMA96e/QrGvg1qEYCtmioZWXrY79udOaUcZZPk6alxcP8nsFbUsW3O6LR9Z248=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782981661; c=relaxed/simple;
-	bh=xz5pggjjq1veE9NlAkCV8Chw4rKP1Msm9Fqu54kxLfE=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=mzVBP4h3SfSLQFsbnmVbrhJ8AaWKRTegFK+L4W1ZC/F3Amqtb1tWGjRAUpYgx2IRDcOlXtTikmXQaVYgP0SigKnEDztf/lNro1vKeW8zktE7XwOkNukgdqZnxkhR6nL63SgKjgoQzpP4WWTV/O9I7ayIc4MFoxm/wTTvamXiR14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=erLP9qVF; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782981968; c=relaxed/simple;
+	bh=2ny8V9pHFxRFcjHGeKUUazvPQRZL9gVeCXjgGusNNwk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Nzj/RqL1F3frnGdStd1Oh39jpX63rsLvyHjHB3J4i2aC3Jjlz9xM3dIOqpi16+ZINfjJ4VsOPN1+e73ipqoBE2TvGlxgyUWD4x9ZVAPicq56Y5r2sBILE7IimnJqw7AJ4rJkJV5xXpVZ6l0ttHgmXHyVRB485K09FXZWqVmEVi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=kt9C4ymv; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=fKG2+iN6; arc=none smtp.client-ip=202.12.124.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="erLP9qVF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D390B1F00A3A;
-	Thu,  2 Jul 2026 08:40:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782981659;
-	bh=rlECEzGVBnRQcX1PJHlOlcimtBsMPxut6cTFhxNIhiU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=erLP9qVFeoBKHxbL5S7+0GXPVVPi5R49WQM/bQe7BGucsZeYJHSIwc775V9xTS0R+
-	 7XJBgRHKLvByjqT5507N6HqkIjNazNm7Kvf2DUIjuuW0uHWVvmi8o6xOw4Ms6r2i9A
-	 JkipjPf2QxfmpN7YZExKSQ0MPYVL46OG/WvkQdKxsI3E9a68Sk4SxwB/e3vlxREcPy
-	 3bQK3G/E4e/bzUADxS+xEiZNO/v9evCWmajFbbunWQjVyboDAizqr9LMZE1fE/zdPD
-	 dnBh6a9eZGWsvNAThX8HmB0pS3DMLgEtGZ00O7KyZn524+suXM4pqtDLqAI8T0RVSj
-	 1FXzKgKN0QEGg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1983C3926664;
-	Thu,  2 Jul 2026 08:40:44 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="kt9C4ymv";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="fKG2+iN6"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.stl.internal (Postfix) with ESMTP id E65E51D00115;
+	Thu,  2 Jul 2026 04:46:03 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Thu, 02 Jul 2026 04:46:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1782981963;
+	 x=1783068363; bh=qPbEkvbSQ9M/zT2/WjgXMdML4p0u+/D/eLKyD0UTemA=; b=
+	kt9C4ymv0e3xqolPMI/99ofUvnsrX1iWSEPAF94HtTTLx51AXn0TWQ71kkBRBi90
+	KYRrfovsjhsyYnbw0jrWZpF7gNSBHaYL1VHn1r8nIJkJ3uvmZXq+nxT3gx+LeSGm
+	lcIMWXJoRg4Oh6ZeMWMLXMZwxW3v41n7rOonw2Ekhzy8Fj3PB1mwib3sUIFI47oX
+	XgPSGkRiVzmBpa1ym6xuPYJV8QB6LxTpyG+kny+rylRUqPl+Gzv/kiuxLRQM/ccq
+	/ohj9ZM8x7C85PIRi8ycXgOX6oLk/o9pqynHy8QDKzYbQFhu4oWAEAfn2xTprIp4
+	7tBFMjP0xhHRG6KYo/l3fQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1782981963; x=
+	1783068363; bh=qPbEkvbSQ9M/zT2/WjgXMdML4p0u+/D/eLKyD0UTemA=; b=f
+	KG2+iN6wvkvjtVBbTiSdY2hfqcZtemrOlxmD9/zqCvAxTtbbgz1pzQrZZDpoM3e0
+	mO3gzU7B1Xig60o43kSr28NUWnGdysHyRaod6cGRG9leSWEDTMeM5glaWZhpfR+y
+	0agni8+MI/W8xGtWP8vLPR75nFuwmkAcE5Z3SsOHXzWyZ4SxH7ZOa5amUzmaf8cx
+	UZUwEPX5yuMumhRWb/8sOBBDU6+5B8JQTvn6/t1/OeNcv3J4ccAJ4D+YgxQWNoxL
+	fHqObr7VCODToiQc/imSBWqFYFSRE9+THmDlnyNXJmPTKXDP+u2WnSq4/stezlIV
+	uroMV9XvD+KrE8z+D9Few==
+X-ME-Sender: <xms:SyVGamtTcA799OrdPQzlgYptCwoCnPbeRFxpNe9E0KIHaEj3tHHI3g>
+    <xme:SyVGap_k76AgNTpdSsqc21iiFsxDp3ahxIUtpWuE7_ZxpjENcX5ffSJB1YaiGyIFX
+    efjmcK9EAQ77DmWViK0WKNj7iK8O-eDAubOuejY2Wyk6pedwvJ9NJ4>
+X-ME-Received: <xmr:SyVGaolNGyiQ_OMNq2Ve40shh5GZNgd9Y0PMapLQUNgaXFnOYfXj23nVwgZW_J5aWVVbMGfwS01gw1cypObwHseuzHVkzks>
+X-ME-Proxy-Cause: dmFkZTGUvYukco99tdyEf6Pig8Ia48ABtTUDTTrIlD90kcgg2VUB44vCc6AZmcmLkkhRXw
+    JXPz1Xm1crDBMvLAcvBPZjULP/0up2fiwsGfDjG9S5iZLQvn0nkJgrh5JwYpBaUO5DO01q
+    O1txjYZEMeJ8JGF8riIQ3rTZLAi7kv+p+HUqr/Z1ywAyg+ICN5TbfC7+0kZi463r0H4l5W
+    fttkMkm4X7+1JpYMGGpfZ3Aftm59zij5cfGx7sdIgPtY/ay6+8uI/L78JIHxA8iqdwXt/J
+    y40Va4tt0L4+ErGK9lzpcHt2MXqnyhhP6lIRaL0YWrSqMJZFFClouXzI2PuMzcT3bsieQa
+    EmtR35bUt9QEJhVEnTvmnzRTZBNXQAASSm6X3ZMhW8HVs3Nrq/4QvKRoMb93yrZROUdt8d
+    xNQRNxUGzK4hYrbMW74gvlmIYSYpbGzbc/RAfcl/zuJdOOkb6KsZeFrnNG9XUBgVy3uv8n
+    zEjqTt6qvtUlJzTQ8nMwgJMZAm2zOIMcAQKNZ8f38pvghD02SN4nR1FggJvmp18YBI26Rb
+    kSGXcjvywe/A7Q+r8lo91DvIL/ynZ3ExPMZnc5OFqYLlFKnSMK4gmDC4Zr9U7hUMJsuon3
+    1fQfCAbOSDccLI2MpK1Yx9NKHWL9SwVP7qI/4vAmlaygjDXhRkRsT2p7FegQ
+X-ME-Proxy: <xmx:SyVGahNl-7QZRHt-aQEgA3Q5VMBTioya7YL98YhLuMh1MkxmPWWn_A>
+    <xmx:SyVGavJYXGOGgn0Ro1vrEdBwfV6ErKkxUB9BC1JhW_zz0nf405cHUg>
+    <xmx:SyVGakHJi129A08anRdFGYxe7d89Z3cGylneavctGQ1D-gEPnNT9TQ>
+    <xmx:SyVGaoAc7i_uP2WpZ1tC7Pb8sWXs4LTAdqwlcPtrOAFj02JKuT33Vw>
+    <xmx:SyVGaiJmspg1L7U_j9ZbJku9BfTiaPNtA_Adbx_ItKjSPekx5BiLLhUi>
+Feedback-ID: i80c9496c:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 2 Jul 2026 04:46:02 -0400 (EDT)
+Date: Thu, 2 Jul 2026 10:46:01 +0200
+From: Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
+To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"DavidS. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v3 2/3] ptp: Add driver for R-Car Gen4
+Message-ID: <20260702084601.GB3906710@ragnatech.se>
+References: <20260701090607.1108208-1-niklas.soderlund+renesas@ragnatech.se>
+ <20260701090607.1108208-3-niklas.soderlund+renesas@ragnatech.se>
+ <89720193-e8ad-4bb3-b6d2-3253413b18ab@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 01/15] batman-adv: create hardif only for netdevs
- that are part of a mesh
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178298164263.1523446.6187059831704914179.git-patchwork-notify@kernel.org>
-Date: Thu, 02 Jul 2026 08:40:42 +0000
-References: <20260630140623.88431-2-sw@simonwunderlich.de>
-In-Reply-To: <20260630140623.88431-2-sw@simonwunderlich.de>
-To: Simon Wunderlich <sw@simonwunderlich.de>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- b.a.t.m.a.n@lists.open-mesh.org, neocturne@universe-factory.net,
- sven@narfation.org
+In-Reply-To: <89720193-e8ad-4bb3-b6d2-3253413b18ab@linux.dev>
 
-Hello:
+Hi Vadim,
 
-This series was applied to netdev/net-next.git (main)
-by Sven Eckelmann <sven@narfation.org>:
+Thanks for your feedback.
 
-On Tue, 30 Jun 2026 16:06:09 +0200 you wrote:
-> From: Nora Schiffer <neocturne@universe-factory.net>
-> 
-> batman-adv is using netdev notifiers to create a hard_iface struct for
-> every Ethernet-like netdev in the system. These hardifs are tracked in a
-> global linked list, which results in a few performance issues:
-> 
-> Lookups in this list are O(n) in the total number of netdevs. As a
-> hardif is looked up when a netdev is removed, this also takes O(n) in
-> the number of netdevs, and removing n netdevs may take O(n^2). This
-> slowdown will always happen when the batman-adv module is loaded, no
-> mesh needs to be active.
+On 2026-07-01 22:47:16 +0100, Vadim Fedorenko wrote:
+> On 01/07/2026 10:06, Niklas SÃ¶derlund wrote:
+> > Add driver for the gPTP timer found on R-Car Gen4 devices. The timer is
+> > system-wide and shared by different Ethernet devices on each Gen4
+> > platform. The operation of the timer is however not completely in
+> > depended of the systems Ethernet devices.
+> > 
+> >    - On R-Car S4 is gated by the RSWITCH Ethernet module clock.
+> > 
+> >    - On R-Car V4H is gated by the RTSN Ethernet module clock.
+> > 
+> >    - On R-Car V4M is gated by its own module clock, the system have
+> >      neither RTSN or RSWITCH device. But the module clock is the same as
+> >      RTSN on V4H and the documentation referees to it as tsn (EtherTSN).
+> > 
+> > The gPTP device do have its own register space on all three platforms.
+> > But on S4 and V4H it will share its clock and reset property with
+> > RSWITCH or RTSN, respectively.
+> > 
+> > Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 > 
 > [...]
+> 
+> > +static int ptp_rcar_gen4_adjfine(struct ptp_clock_info *ptp, long scaled_ppm)
+> > +{
+> > +	struct ptp_rcar_gen4_priv *priv = ptp_to_priv(ptp);
+> > +	s64 addend = priv->default_addend;
+> > +	bool neg_adj = scaled_ppm < 0;
+> > +	unsigned long flags;
+> > +	s64 diff;
+> > +
+> > +	if (neg_adj)
+> > +		scaled_ppm = -scaled_ppm;
+> > +	diff = div_s64(addend * scaled_ppm_to_ppb(scaled_ppm), NSEC_PER_SEC);
+> > +	addend = neg_adj ? addend - diff : addend + diff;
+> > +
+> > +	spin_lock_irqsave(&priv->lock, flags);
+> > +	iowrite32(addend, priv->base + PTPTIVC0_REG);
+> 
+> how are you so sure that addend will always fit into s32? It looks like
+> it may go over in some cases, no?
 
-Here is the summary with links:
-  - [net-next,01/15] batman-adv: create hardif only for netdevs that are part of a mesh
-    https://git.kernel.org/netdev/net-next/c/fcba102e0e4a
-  - [net-next,02/15] batman-adv: remove global hardif list
-    https://git.kernel.org/netdev/net-next/c/49e9de6e124f
-  - [net-next,03/15] batman-adv: make hard_iface->mesh_iface immutable
-    https://git.kernel.org/netdev/net-next/c/f846e779532e
-  - [net-next,04/15] batman-adv: remove BATADV_IF_NOT_IN_USE hardif state
-    https://git.kernel.org/netdev/net-next/c/48ea7b6b7b94
-  - [net-next,05/15] batman-adv: move hardif generation counter into batadv_priv
-    https://git.kernel.org/netdev/net-next/c/cbda6a6cf2a5
-  - [net-next,06/15] batman-adv: drop unneeded goto and initialization from batadv_hardif_disable_interface()
-    https://git.kernel.org/netdev/net-next/c/2b429dbc50b4
-  - [net-next,07/15] batman-adv: drop NULL check for immutable hardif->mesh_iface
-    https://git.kernel.org/netdev/net-next/c/b58c36b804f4
-  - [net-next,08/15] Revert "batman-adv: v: stop OGMv2 on disabled interface"
-    https://git.kernel.org/netdev/net-next/c/5fa5f64fc018
-  - [net-next,09/15] batman-adv: iv: drop migration check for batadv_hard_iface
-    https://git.kernel.org/netdev/net-next/c/ba2d97e8736e
-  - [net-next,10/15] batman-adv: tvlv: extract tvlv header iterator
-    https://git.kernel.org/netdev/net-next/c/278e5890704c
-  - [net-next,11/15] batman-adv: tp_meter: simplify unordered ack calculation
-    https://git.kernel.org/netdev/net-next/c/71b7987ec001
-  - [net-next,12/15] batman-adv: tp_meter: combine adjacent/overlapping unacked entries
-    https://git.kernel.org/netdev/net-next/c/936a1c10cece
-  - [net-next,13/15] batman-adv: tp_meter: keep unacked list for receivers
-    https://git.kernel.org/netdev/net-next/c/3bbb8b94217a
-  - [net-next,14/15] batman-adv: tp_meter: adjust name of receiver lock
-    https://git.kernel.org/netdev/net-next/c/6cd45ef4dfa5
-  - [net-next,15/15] batman-adv: tp_meter: delay allocation of unacked entry
-    https://git.kernel.org/netdev/net-next/c/247691642fd4
+Indeed, if the adjustment is more then 32ns per tick it will go over. 
+The register is defined as,
 
-You are awesome, thank you!
+        /* Default timer increment in ns.
+         * bit[31:27] - integer
+         * bit[26:0]  - decimal
+
+I will add a check for this clamping the value before writing it to the 
+register.
+
+> 
+> > +	spin_unlock_irqrestore(&priv->lock, flags);
+> > +
+> > +	return 0;
+> > +}
+> 
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Kind Regards,
+Niklas Söderlund
