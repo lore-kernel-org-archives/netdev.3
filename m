@@ -1,64 +1,77 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD95394498;
-	Thu,  2 Jul 2026 18:20:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C62E3A9638;
+	Thu,  2 Jul 2026 18:26:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783016442; cv=none; b=ajBPkAVf/tZYvXWcGNVVuiTzi5A5Jz7+fFGLlraCzwBdN+Nh3HxXdj9YTZGMuw6YFsjjQQB0bZuW+oHIOhjBBbNaQcArpcPHDzfZ4gxokRVUirySwtKR4mNm0dUBOg5AWoFJItAIFdfooL3gVtIWRxwSdNmLuqwdVgrhkeo/SQQ=
+	t=1783016804; cv=none; b=B7uT7yyTHLoy65o2maq/U3sYAC9WJR9SfkdWR3x3ceXaObuvjKGrMRxJTbUJykcRr5lYDFKSNMHURqX1LiXR/+1XNve/16jk+pg71UVHTM6M/9lchuKoUfbg0lNaG+8GHH48/ARDzkE+lVYLVKKb+o55fWI17exn4+0W6mZaLmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783016442; c=relaxed/simple;
-	bh=91jc66yMeek53KPFh6DGIhBOa0ELu2KmG93LYgjexCE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jA88NWHeh8XOLik9yAWnx6AbjoW9iMpoJmCu50oMXHl1INDBrQT+YsR41Z4q2/c5QRtz/sWcqFzokm8p1rfKKQ4y9yFzi5GUUzgQT6hwWPj4RfFYBBed3aoVvSseQIhUPblIIgnIkivFR0DTkm3Jmg5RcTx+X2cm9rzvv1jNuZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=QiXYEmg4; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1783016804; c=relaxed/simple;
+	bh=lSUFzsE7mplyxqUi4aeaKIQaZI131WHBeCE0MkbU4WA=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=gQT2kmdibDFx35ejsSkFGWkBix6unC/boyN2dsBuOL1cBKfdWxomY3wX07kwnsyediuZWngU03v4vRNdRC/F3nNUUdON8dhzRmPy2h3q3c+DSXypR9Z3qKZzovou1g5n55sqOyeF+6kvc3555ZhQvHXWR1oFrFzKmSw04B/rsS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=mWkU9T2r; arc=none smtp.client-ip=80.241.56.161
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="QiXYEmg4"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=+rc1xoFCVIUImmkJDdnce5cImNd0dBvklLwA/wqnt64=; b=QiXYEmg4vp5/sSVyYaI63rBIjr
-	E3CiyYgwp/A/CAepwBzXr51dnGKl6GJvHNWW8cQOiI5FvneftG8pGRcJezelYT7xhfqv8kwQJB0zL
-	O2TUSjhBD2smKFCHTz1kq8vUCgR0xK3XVZ0d3TPlkacUkHX/fXedjWrVaEHL7DZN7/5s=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wfM1a-00APvN-GX; Thu, 02 Jul 2026 20:20:34 +0200
-Date: Thu, 2 Jul 2026 20:20:34 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Oliver Neukum <oneukum@suse.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, shaoxul@foxmail.com,
-	netdev@vger.kernel.org, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 1/4] net: usb: move updating filter and status
- from cdc to usbnet
-Message-ID: <c88d827e-f365-4a58-badc-051a9379e64c@lunn.ch>
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="mWkU9T2r"
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4grlhb48c7z9tyx;
+	Thu,  2 Jul 2026 20:26:39 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1783016799;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lSUFzsE7mplyxqUi4aeaKIQaZI131WHBeCE0MkbU4WA=;
+	b=mWkU9T2rLnuYlk04/KIhVLpIlQDcVlV59YSh2X2VcSKCQVsL/VYn1dh9Gvi8g5QU8+iJt1
+	smIf3ISRSzLo8JH0Fhkl/G31BgmK7R9gLFklGdMMtB/OSQJUj47yv7WzBXqq4ijdxl6zoQ
+	Xe4lmLGS5/Q1m9qG94ehQEDSewftcKwCV3p1e/lxpJhUrPkEk0+0q1j9dGfVbs2M72KivZ
+	++0HWzylphfIy9UXcx2SkkXA4Pg6DxpArdmCOUydLelvSx42izJcDHH22gdpU+GnLNbP3B
+	zsYRR0jzaeN58DqtVcs01KO9ESasUZZwBjL3S8GIDBdX81KCRQmsJNQDRfQigA==
+Message-ID: <7f05292b2d95d75dbb30c076bdfa2f42829ba191.camel@mailbox.org>
+Subject: Re: [PATCH net-next 0/4] net: usb: move exported code to usbnet
+From: Manuel Ebner <manuelebner@mailbox.org>
+To: Oliver Neukum <oneukum@suse.com>, andrew+netdev@lunn.ch, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, 	shaoxul@foxmail.com, netdev@vger.kernel.org,
+ linux-usb@vger.kernel.org, 	linux-kernel@vger.kernel.org
+Date: Thu, 02 Jul 2026 20:26:34 +0200
+In-Reply-To: <20260702143142.890654-1-oneukum@suse.com>
 References: <20260702143142.890654-1-oneukum@suse.com>
- <20260702143142.890654-2-oneukum@suse.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260702143142.890654-2-oneukum@suse.com>
+X-MBO-RS-META: wy76t9hcbi3coe5jn3sgm7gf9tgnzndk
+X-MBO-RS-ID: 2761a2d186326e98263
 
-On Thu, Jul 02, 2026 at 04:25:30PM +0200, Oliver Neukum wrote:
-> These helpers are used by multiple drivers and do not depend
-> on the rest of cdc. Leavin them in a cdc driver means that
+Hallo,
 
-leaving.
+On Thu, 2026-07-02 at 16:25 +0200, Oliver Neukum wrote:
 
-> more drivers are loaded just for infrastructure, not hardware
-> support.
+I know this mail doesn't matter much, but i can't leave it as is.
+> Some drivers are reusing common code originating in other drivers.
 
-Can there also be changes to Kconfig removing the dependency on
-cdc_ether for some drivers? They now only depend on usbnet?
+Some drivers are using code from other drivers.
 
-	  Andrew
+> This means that two drivers need to be loaded for one device.
+> Also maintainability is reduced if changes in one driver affect
+> another driver.
+> Shift common code to usbnet.
+
+You can add my=20
+Reviewed-by: Manuel Ebner <manuelebner@mailbox.org>
+to the series.
+
+Thanks
+ Manuel
