@@ -1,128 +1,141 @@
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD87973463
-	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 00:08:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0472431E53
+	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 00:32:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782950935; cv=none; b=f7ZyUvbAApLN7S1RvwMx3iwszZ/U5CuunGQIz7R99f97yT1zFITsBgTvGLcrXfJSl7irzk0CeCvK0+CBivbegBee5EGGENKDaBSAbMMkVMHj2lF0zPa5H0iR755wEaP/bkkAVMOJfC4xZDheczNjQRcwzmEbeSkhj6VPY0T2R+I=
+	t=1782952371; cv=none; b=los3xUunwhGKb9ozMqFycnqmntro2pHS/Jrdo9LPB8Np6r5EfIMGAAI/OAAQUwkZqjRnQyuYTKb6n92bN7l5mL19/lE+ubMANs4+YCk14I6TJ/FgJHaO6J8UnBb6/bPlbuHk4/NVgH8IzQvbE0wzKTBm+M/ltnmoqa96KKVkq6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782950935; c=relaxed/simple;
-	bh=5RAkGAO4xDoQj10Cr5SKmISeeEGKMnLGXAAFJEra/5E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RAzlEMqMWsFX+TJpjUedJ3BE/Am93lmxeBOf0wCiz7DJUGvUdkyJm3S92zAR4jhgVOjHVd5+mKH2xbCt7CYW+NLT5xSOrh2HCkYh5xW0Np6jdV72WnXvHOEiomtH7c26WMA1L+RecHwiiydG80uMr0fQjeWeMW5XxugwK6duIug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=N4sKMH+O; arc=none smtp.client-ip=209.85.160.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
+	s=arc-20240116; t=1782952371; c=relaxed/simple;
+	bh=ZBTgJRyElLAV59IGOck7+OH6JWbiBqiaTdW/BhDr0d4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bCf4QfF2mDtfmP4MaGpQPjSU1G5LBhytMMRBhG4DcnpD9nq+5FNXBZKDc+Om/VYyBhdkJoeI18ZGJONfgOVq6lrv+/LjsaC3JE57gql3G5zLeEoiTBfeKJ7UdSGgyQ9CQeRkm+clF1Fy/aRWmd6BLsSvKAPFNNAxsF49HOpoKnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=multikernel.io; spf=pass smtp.mailfrom=multikernel.io; dkim=pass (2048-bit key) header.d=multikernel-io.20251104.gappssmtp.com header.i=@multikernel-io.20251104.gappssmtp.com header.b=h1OAPnv5; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=multikernel.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=multikernel.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="N4sKMH+O"
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-51c2c8f43aaso3959071cf.1
-        for <netdev@vger.kernel.org>; Wed, 01 Jul 2026 17:08:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=multikernel-io.20251104.gappssmtp.com header.i=@multikernel-io.20251104.gappssmtp.com header.b="h1OAPnv5"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-8478cc93299so851223b3a.2
+        for <netdev@vger.kernel.org>; Wed, 01 Jul 2026 17:32:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=trailofbits.com; s=google; t=1782950933; x=1783555733; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=cuxDLRMlHGpmhBCSI7O3vt6aIkiR+j43OrPR52n2sNY=;
-        b=N4sKMH+Oh8ga8qcSIQAIL2vxBlrzPiYyWnl6b3Zq3TUQE07YCCPOBDkmfE4qmfh7Hi
-         rL8YSg7X0Nue6A1F6Oovwn48oHu0RaQGN2vbb1vr7fdX5wUkkTliskPywxMA5Om9wqvS
-         yZIT9WL0AfVJNgXR9StRWZmujHrpNl0sIQ6xC0PqFA8y33EBS9Z/+dPuZBD6lU0wM3QV
-         AYC73eDNKvvRcxaoyr6yVe7Ppow1DCDTBQg2IipyBb/f7tgeAbRokaSQd1CqdgokNE8R
-         kmFq83gbUrKudi84+0RthN/z32pY2ks046ITuNTIdG04obNOx9E+GAjz+4Zd0gqOHwAk
-         eTBQ==
+        d=multikernel-io.20251104.gappssmtp.com; s=20251104; t=1782952370; x=1783557170; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=plRvvCAVCrtrhVtrKnejJX+wc0oLNwNwI+sUKQl+JQk=;
+        b=h1OAPnv5+SVOwqZlquwgXVQDeshQDv2zfkJxmERm9agFMyXgzj79QUTvKrZ9w1EMNx
+         KtDMNnIPquaagubDieUYiihQ79BHJNoPIrCZf89Su1ILznulLJX9rArCILHrK0wwZurh
+         j7BHs+YaNRFHrcMPMD8sGyC8xae0xMZzHozDUzfJnfs0b2f818lmV4z59x+dzWHAqXpV
+         ZcgJTWrP5LDqfbVxZqNm0qT9u02J10AhCZowFCk3Reqd7IstZhaDdFPXghTQQVgtj792
+         vFVcLjkWL/izemgZV2tGEkNn2qMV2XsTCEXHxzlDowYLeTHYgQl06vXmysvzw+UUiSxU
+         aaHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782950933; x=1783555733;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cuxDLRMlHGpmhBCSI7O3vt6aIkiR+j43OrPR52n2sNY=;
-        b=VN4YSAGECQue1PwipnywnFk3n4eer5BrT2ad1+sxaQmSOVoUotMeOQ48zYCJHMXbK9
-         sC+FTGSqWOzAxA1g9Vt1kK/ss1bxECQsTVTDi0PhtDxugXkarzcFp+6MbC9O8KAOi+wW
-         7Xkj/hAkz6fs8rwCqsrZnJK9ZGMZeuDuEZBMEGRNDagYhozE4fMTH/vPtRNMO+cfgAM7
-         An/Ii6AZ+XnG5+ToJ+r0hua+xyUNFdmeFVqkoV4M3V9xiIMNLLRwRKzBpxkcU0M0Nhg1
-         1nLVX1zIAvmeqgdYOc5rW+OxCjikoVsBnio9WDx5UTbyRl8+xm/T6H08C1DGAZXV0yoC
-         fxjQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+t9CbrQRmAlQfuRc5oZOD0we2ckh2D8wT0z6eiK1xFFqlbHFW2ln+qJLgzLQsDys++4Oa60Us=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBigY3H6Q1bl+YPzzm4YEpCoyTcj/n4txfV0A7cj0YeyyYvqe+
-	qpfb21R+RfMmbqIb4xVqPpGtkvAOHsIfr2VIQ+Xfrmeb+feY8q2I4x7ovGp/c5ZiD80=
-X-Gm-Gg: AfdE7clAQdFh4TNbAE0xHaRxn9FAzmmop5bKx+Xc9zXcXXBaayahXju0d/4kuASsfXm
-	09l/ElVUmrLvUINOdLR4TDdodUuFE6UMmEWDQeJf7fbEjVXGvS81KpFQvDHcEeEzmR403z9cQPk
-	6FAFb6k5zz0XnYsA6aJOrUrwAKcccjcUMWT5pjruTLTfnqjXDg1AqfzsjKlzIJSNbK20R4443hO
-	lmz9vS4dzQTmjK7zxDr9/DIoF1ZKGDtnWllma9ecqN81W58q7M10a/slL/YExFvtGEkyKr+ma7r
-	BPQ4OwISOF6lldmPYqOe/mubmQj5jS2pYlKZklVU+SD7V+LtjCyzelGJsz4uaHesGTQiuSmshIu
-	TxVvCyokwFJhV6nsnZYmlFPsrpd1nmcrbyB4oVrv1ERvwtrqCe3Ic/JuQLAiuRSxiMD6Mju3wVU
-	dlz1yI9/05YGkZGn1g
-X-Received: by 2002:a05:622a:558d:b0:51c:478:32a1 with SMTP id d75a77b69052e-51c26a61f79mr48748921cf.18.1782950932695;
-        Wed, 01 Jul 2026 17:08:52 -0700 (PDT)
-Received: from localhost ([161.35.96.86])
-        by smtp.gmail.com with UTF8SMTPSA id d75a77b69052e-51c30b130d0sm3628021cf.9.2026.07.01.17.08.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 01 Jul 2026 17:08:51 -0700 (PDT)
-From: Samuel Moelius <sam.moelius@trailofbits.com>
-To: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-Cc: Samuel Moelius <sam.moelius@trailofbits.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	cake@lists.bufferbloat.net (moderated list:CAKE QDISC),
-	netdev@vger.kernel.org (open list:TC subsystem),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v3] net/sched: cake: reject overhead values that underflow length
-Date: Thu,  2 Jul 2026 00:07:59 +0000
-Message-ID: <20260702000758.297407.e5c888d9d99d.cake-overhead-underflow@trailofbits.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20251104; t=1782952370; x=1783557170;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=plRvvCAVCrtrhVtrKnejJX+wc0oLNwNwI+sUKQl+JQk=;
+        b=aOugeCcjmtIrm2PCUUjMcHSuM9CWG85rVTuH5aYTGNSAQjGhWGE27T7uR8c++Avj1z
+         4zJs+TBuKm0lOw3jg5Oqoarxvrl5d1nfTdBMH5OQTtvNokwKPKiwo80sIgISe44q6qNB
+         s4D6f8vri3HJuIPBIQmIDELHLzhZrfVPeGsOLRD6Ijag32VVURbP4LlxgYtTWzlXLFpG
+         nNRtcRFKd5UFigo5XwF8y7mISk0FEl2G/MNY89KZn43Xh/7HOsxkFWudaCT1/sGRY+bi
+         EulHrWlscmgQZ125WRQfYKnpiSH4qDhjRLCPcgyscDIWX4UzwADX7UgmA1rzX49w2uEY
+         gfgg==
+X-Forwarded-Encrypted: i=1; AFNElJ80r92aDsOuSOMr0B2oXOe9slxOQ4HsPMw8In7NA8ilzP9bVE0v3ZyUVnly1PO3G3gN0NDFaCo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZOEftdN3Mw1My8Jx2VLduVy88knObCP5asVEhLN7cx4wKu8Qe
+	pQruXCauwnbBnd1zWnNW80NhuiejeYDeU4glt6SpqtRYlTaASHDDWNjtcVLnuYoCYik=
+X-Gm-Gg: AfdE7cnTGOtHNM3MaGAaYKvtTmel4gXKyKRSKu2/BDHl/yvOQ9M4EL0/gWmmza7PObe
+	DFuI+/wlme39yG/CkEsCULaxIKhlPO+nqCi77STKKjcH6s07+vn1F/KvDBXPnHnwX9xTp6k2HD7
+	F3Qx2QvVcK7hhvfPFWMonWse5BQutn+qt0Wj+BNRt4Q9zuA0uqRN/o7D6G17JuDvR/RrVTrh6Nj
+	LrS29045aRxr+aFtWgF/rY14RYQL/zJgSwn5qS4NgzEuP1Q6atPKPqX1iw9se8TLwxfPP8IEDq4
+	s5Ga+Cl0rIS9TZGhvdjLpq0qS5izKklkmmG/nBn6RtJFN8TVw/LCrErDfY+nxzYcU1x/QnX3ytc
+	wuVM3yJW7xHvtQ4KK/K897iGBZx5kxrqdAzDbdmm8l4lobz6CcTw+N9dGYLT9vZPaGjfK5GEHcl
+	mst+kXKO1dlSiXCsqRVTamJJhyeddPVTMW1AA4pS4dyjg=
+X-Received: by 2002:a05:6a21:50c:b0:3bf:d1f9:b1df with SMTP id adf61e73a8af0-3bfed4c4cfbmr4014145637.54.1782952369783;
+        Wed, 01 Jul 2026 17:32:49 -0700 (PDT)
+Received: from localhost ([129.210.115.107])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30f0bbdc4eesm2793830eec.24.2026.07.01.17.32.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Jul 2026 17:32:48 -0700 (PDT)
+Date: Wed, 1 Jul 2026 17:32:46 -0700
+From: Cong Wang <cwang@multikernel.io>
+To: John Ericson <mail@johnericson.me>
+Cc: Li Chen <me@linux.beauty>, Andy Lutomirski <luto@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>, network dev <netdev@vger.kernel.org>,
+	linux-fsdevel <linux-fsdevel@vger.kernel.org>
+Subject: Re: [RFC] connectat()/bindat() or an alternative design
+Message-ID: <akWxrjOl4Up02Bvq@pop-os.localdomain>
+References: <b1af80fc-a57c-408d-bdfe-fa6bae26eaca@app.fastmail.com>
+ <aicbyQIC2qEveNd-@pop-os.localdomain>
+ <455281ec-3ee1-4f27-989b-c239f0690d8b@app.fastmail.com>
+ <aixU_RccxS_BKhgX@pop-os.localdomain>
+ <66eb8227-85b6-4684-a4fa-e3e17ac2fa45@app.fastmail.com>
+ <e396ce86-ec84-4189-9da2-98af7cfa6c41@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e396ce86-ec84-4189-9da2-98af7cfa6c41@app.fastmail.com>
 
-CAKE accepts signed overhead values and stores them in an s16, but the
-adjusted packet length calculation uses unsigned arithmetic.  A negative
-effective length can therefore wrap to a large value.
+On Tue, Jun 30, 2026 at 04:22:25PM -0400, John Ericson wrote:
+> I'm bumping this and adding new recipients again in light of the
+> discussion happening elsewhere in
+> <https://lore.kernel.org/all/a49ce818-f38d-41b0-bbf7-80b8aad998b1@app.fastmail.com/>.
+> I don't want to count my chickens before they are hatched, but it is
+> looking to me like a consensus in that thread is building around the
+> ability to opt into intentionally empty/unusable root and working
+> directories (at least with nullfs, maybe but less likely with other
+> mechanisms instead).
+> 
+> That new functionality concretizes the motivation for what I am
+> proposing in this thread: in such a world, there is little to no point
+> binding listening sockets in the file system, because the containing
+> directory would have to be conveyed by file descriptor anyways --- might
+> as well just directly convey the socket to connect to by file
+> descriptor. Likewise, abstract sockets are not appealing, because the
+> abstract socket namespace is either too coarse-grained (leaking info in
+> the same way root/cwd would), or too cumbersome to keep it from leaking.
+> 
+> To recap (with some slight changes, like renames), my latest proposal (a
+> new version, not either of the two variations in the original email) is
+> new syscalls `bind_unix_anon` and `connectat`, supporting a workflow
+> like this:
+> 
+>     /* server */
+>     int lfd = socket(AF_UNIX, SOCK_STREAM | SOCK_CLOEXEC, 0);
+>     int addrfd = bind_unix_anon(
+>             lfd,
+>             /*flags, for the future*/0);
+>     listen(lfd, 64);
+> 
+>     /* client, handed `addrfd` */
+>     int cfd = socket(AF_UNIX, SOCK_STREAM | SOCK_CLOEXEC, 0);
+>     connectat(addrfd, cfd, AT_EMPTY_PATH);
+> 
+> Or, more radically, `bind_unix_anon` and `connectat` could let one skip
+> the initial `socket` calls by returning those new sockets directly:
 
-Such configurations make rate accounting depend on integer wraparound
-rather than on the packet size userspace intended to model.  A static
-netlink lower bound is not enough because packets reaching CAKE can be
-smaller than any reasonable manual-overhead allowance.
+Hm? Why not just setsockopt()? Something like:
 
-Fold the signed overhead adjustment into the existing datapath MPU clamp
-so negative adjusted lengths are clamped before link-layer framing
-adjustments.
+struct unix_lookup_ctx {
+    int dirfd;
+    __u64 resolve_flags;   /* RESOLVE_BENEATH, RESOLVE_NO_SYMLINKS, etc. */
+    __u64 op_flags;        /* maybe future */
+};
 
-Fixes: a729b7f0bd5b ("sch_cake: Add overhead compensation support to the rate shaper")
-Assisted-by: Codex:gpt-5.5-cyber-preview
-Signed-off-by: Samuel Moelius <sam.moelius@trailofbits.com>
----
-Changes in v3:
-  - Adjust how check is performed
-  - Resend with v3 suffix
-Changes in v2:
-  - Add fixes tag
+setsockopt(fd, SOL_UNIX, UNIX_NEXT_LOOKUP,
+           &ctx, sizeof(ctx));
 
- net/sched/sch_cake.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+bind(fd, (struct sockaddr *)&addr, addrlen);
+/* or connect(fd, ...) */
 
-diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-index a3c185505afc..f78f8e950776 100644
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -1389,10 +1389,7 @@ static u32 cake_calc_overhead(struct cake_sched_data *qd, u32 len, u32 off)
- 	if (qd->min_netlen > len)
- 		WRITE_ONCE(qd->min_netlen, len);
- 
--	len += q->rate_overhead;
--
--	if (len < q->rate_mpu)
--		len = q->rate_mpu;
-+	len = max((s32)len + q->rate_overhead, (s32)q->rate_mpu);
- 
- 	if (q->atm_mode == CAKE_ATM_ATM) {
- 		len += 47;
--- 
-2.43.0
 
+Zero new syscall is needed.
+
+Regards,
+Cong
