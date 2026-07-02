@@ -1,112 +1,184 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE83E367F2F;
-	Thu,  2 Jul 2026 08:59:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EDA646AF04
+	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 09:07:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782982784; cv=none; b=OYKgmPGTF547KWv3W5YWpO3p8Tf2G0eh/e/SEQJKYcQn+lDWq5Fq4SGSQwfsYNLtnFn95DcpoLGaWlkwRuL/b+6zLJbobAesc1bRfLJQ5T2FK5AcuzVSP1ufwcrF+U7iTuHrxeNzNndscc8r7u2B+W649eIqxHVmLjl4WE1Ph2o=
+	t=1782983261; cv=none; b=CRSDx/ATiwVdHrOmjGgkshl+nVjsa0v3PP1eq2AAOM3jNd1DLpA3c9KS6QJ9f4dsIQPElX+tRIwFLTUNgGX8IDXU/qnv6aDzRdgXxeBEJWDyOx2Kur3uTqR7ivW7i0/5svDyt57f51lhDxu8ly80Lpp+4j0ztpd7ueluryDYLUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782982784; c=relaxed/simple;
-	bh=gYLTkBsJEUClTNfXhPkNzHUVAl7MUmlSeasGQSngDn4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QMtUccKUjg3wG6mjtj3n7KEo2ZYvC9VLCf1mXLOcJDw9kbjzDuimkHuxFhihn70SCr77COjdZKOwA62hwgfiutFE61w4aOv+zjgyCMxIq61OJ6QBtc61oIxlNd0HzFODYkh3bbXHY8PldtBWWhY6B4vHdODEWIgo1Kac/x5foRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PisJ7vjl; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1782983261; c=relaxed/simple;
+	bh=2ICHkoIZExT5+DfhgH3R3nAeUnI9QwO+AxV3uVd/HyQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=bwC8W0ReEPZWFDSHrDm0S74DBfGn+ccNT6oUmz7w5Iex7aWU0kHkI78np+YcsWRXRK5XBk54MkFI7H1+acGtgnm4jdS+6kI2N+oz4xIASGLRZxRfXyGj4tUP/mmaDrjjFe+k3RP5KAU9mIur8C7FBE8iVwtokzpA31wqv/Ja+MM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ZQw8V2xN; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PisJ7vjl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782982783; x=1814518783;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=gYLTkBsJEUClTNfXhPkNzHUVAl7MUmlSeasGQSngDn4=;
-  b=PisJ7vjlwiWLBlSkdnkDw6wV3LlsKjYcdxuDEpLY8EoFIzK4QVMb4k73
-   zr5Ir3cjijjjjqk47iNDCsSDg0Dc5LJBETMUOH0mxLmikcR9e8kGUrDqI
-   7T3LSSZl6Wrgg5mOGckHamKxZOxybMktX0ASzthPp8+Rg+rCeQkzspxp/
-   ON43gWsZhAVYCk4ZHXLyxTmD4O9x/F+J3vHgbeOzcI4lKxdjJhTPNvoY+
-   Uss7++GvmPdS6T4Vm/XSyLRvEg1K1tBIlogqQX8OYf6u7J6t9Q46/Te1O
-   6JmnPlRXhu3zceWEWN2i1ZPiNyaNDXbDxvSjD8jZK4S2lfR6w6zphY6Gc
-   A==;
-X-CSE-ConnectionGUID: YQKrb66CQyC3o2SSeLGkcA==
-X-CSE-MsgGUID: 6+t08cZhSYutIJKE6GHvNQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11834"; a="83861764"
-X-IronPort-AV: E=Sophos;i="6.25,143,1779174000"; 
-   d="scan'208";a="83861764"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2026 01:59:42 -0700
-X-CSE-ConnectionGUID: YjT0r9y3SOWMz/XZRomMBw==
-X-CSE-MsgGUID: ZStAWpo+QtOOnZ714iy4cA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,143,1779174000"; 
-   d="scan'208";a="257146674"
-Received: from ettammin-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.244.213])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2026 01:59:33 -0700
-Date: Thu, 2 Jul 2026 11:59:30 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
-	mkalderon@marvell.com, zyjzyj2000@gmail.com, sagi@grimberg.me,
-	mgurtovoy@nvidia.com, haris.iqbal@ionos.com, jinpu.wang@ionos.com,
-	bvanassche@acm.org, kbusch@kernel.org, Jens Axboe <axboe@kernel.dk>,
-	Christoph Hellwig <hch@lst.de>, kch@nvidia.com, smfrench@gmail.com,
-	linkinjeon@kernel.org, metze@samba.org, tom@talpey.com,
-	trondmy@kernel.org, anna@kernel.org, chuck.lever@oracle.com,
-	jlayton@kernel.org, neil@brown.name, okorniev@redhat.com,
-	Dai.Ngo@oracle.com, achender@kernel.org, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, kees@kernel.org, markzhang@nvidia.com,
-	ebadger@purestorage.com, linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org, target-devel@vger.kernel.org,
-	linux-nvme@lists.infradead.org, linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org, linux-nfs@vger.kernel.org,
-	netdev@vger.kernel.org, rds-devel@oss.oracle.com,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [PATCH rdma-next v8] RDMA: Change capability fields in
- ib_device_attr from int to u32
-Message-ID: <akYocsiHWdH8Tncq@ashevche-desk.local>
-References: <20260619203107.606359-1-ernis@linux.microsoft.com>
- <akX/P/0TiSQ38YdS@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ZQw8V2xN"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 34AE61A0DD5;
+	Thu,  2 Jul 2026 09:07:38 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 0554D5FF03;
+	Thu,  2 Jul 2026 09:07:38 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 588E0104C9625;
+	Thu,  2 Jul 2026 11:07:35 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1782983257; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=YCaaC8VkSZj6CdeXIhHw9RxFfHRZQBodVxt7Thd9TzI=;
+	b=ZQw8V2xN2+dTueRlq/58GAkGMjhbrPsEGtcAxe1qu6RKPqdmVUSx2B3u0jrsvSA4aK/cNU
+	6sNWr3p8UasMvIod6pAViZhllUB2nV9cWu5Z7sU9pnvc3UJc+y7Ulja+sslrZIPRh/wfGE
+	kCOU7MXuPTyPTs9vHOY6JOBa5eAHdKWufFFvwujPV0LRM4L5j2GBzOjx1YMGrmRb3sFqBp
+	Qa6y3sxwHOEq+m/QE3lpbCDrApWsdGd+76b8ERToPe3AUMdQUZJfK2r/oYNRpbgLTCIIEU
+	BMYpYQEkPRNSSm93T/20NVFZ8fCJDv/kSs9L/2mprJZxqOXf2EJn1lnU+yC32g==
+From: Bastien Curutchet <bastien.curutchet@bootlin.com>
+Date: Thu, 02 Jul 2026 11:07:23 +0200
+Subject: [PATCH net-next 01/10] net: dsa: microchip: split
+ ksz8_change_mtu()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <akX/P/0TiSQ38YdS@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260702-clean-ksz-4th-v1-1-93441e695fa4@bootlin.com>
+References: <20260702-clean-ksz-4th-v1-0-93441e695fa4@bootlin.com>
+In-Reply-To: <20260702-clean-ksz-4th-v1-0-93441e695fa4@bootlin.com>
+To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
+ Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Russell King <linux@armlinux.org.uk>
+Cc: Pascal Eberhard <pascal.eberhard@se.com>, 
+ =?utf-8?q?Miqu=C3=A8l_Raynal?= <miquel.raynal@bootlin.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>, 
+ Vladimir Oltean <vladimir.oltean@nxp.com>
+X-Mailer: b4 0.14.3
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Wed, Jul 01, 2026 at 11:03:43PM -0700, Erni Sri Satya Vennela wrote:
-> On Fri, Jun 19, 2026 at 01:30:39PM -0700, Erni Sri Satya Vennela wrote:
-> > The capability counter fields in struct ib_device_attr are declared
-> > as signed int, but these values are inherently non-negative. Drivers
-> > maintain their cached caps as u32 and assign them directly into these
-> > int fields; if a cap exceeds INT_MAX the implicit narrowing yields a
-> > negative value visible to the IB core.
-> > 
-> > Change the signed int capability fields to u32 to match the
-> > underlying nature of the data. Also update consumers across the IB
-> > core, ULPs, NVMe-oF target, RDS, and NFS/RDMA so the new u32 values
-> > are not forced back through signed int or u8 via min()/min_t() or
-> > narrowing local variables.
-> 
-> Just a friendly follow-up on this patch. The Sashiko review mentioned a
-> low-priority item, and I'd appreciate any guidance on whether the change
-> is needed.
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-As I read this it needs to be fixed, the problem is that there is
-a potential of a weird case (not sure they are IRL) when somebody can use
-INT_MIN (in representation of signed number) to actually mean 0x80000000
-size.
+Even among the ksz8 family, there are big differences in the MTU change
+procedure between KSZ87xx and KSZ88xx (KSZ8463 is like KSZ88xx here).
 
-> https://sashiko.dev/#/patchset/20260619203107.606359-1-ernis%40linux.microsoft.com
+Since we have 3 separate dsa_switch_ops for what constitutes "KSZ8", we
+can split those procedures into separate functions.
+
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
+---
+ drivers/net/dsa/microchip/ksz8.c | 49 ++++++++++++++++------------------------
+ 1 file changed, 19 insertions(+), 30 deletions(-)
+
+diff --git a/drivers/net/dsa/microchip/ksz8.c b/drivers/net/dsa/microchip/ksz8.c
+index 586916570a84..c351179f6a60 100644
+--- a/drivers/net/dsa/microchip/ksz8.c
++++ b/drivers/net/dsa/microchip/ksz8.c
+@@ -158,10 +158,17 @@ static int ksz8_reset_switch(struct ksz_device *dev)
+ 	return 0;
+ }
+ 
+-static int ksz8863_change_mtu(struct ksz_device *dev, int frame_size)
++static int ksz88xx_change_mtu(struct dsa_switch *ds, int port, int mtu)
+ {
++	struct ksz_device *dev = ds->priv;
++	int frame_size;
+ 	u8 ctrl2 = 0;
+ 
++	if (!dsa_is_cpu_port(dev->ds, port))
++		return 0;
++
++	frame_size = mtu + VLAN_ETH_HLEN + ETH_FCS_LEN;
++
+ 	if (frame_size <= KSZ8_LEGAL_PACKET_SIZE)
+ 		ctrl2 |= KSZ8863_LEGAL_PACKET_ENABLE;
+ 	else if (frame_size > KSZ8863_NORMAL_PACKET_SIZE)
+@@ -171,11 +178,18 @@ static int ksz8863_change_mtu(struct ksz_device *dev, int frame_size)
+ 			KSZ8863_HUGE_PACKET_ENABLE, ctrl2);
+ }
+ 
+-static int ksz8795_change_mtu(struct ksz_device *dev, int frame_size)
++static int ksz87xx_change_mtu(struct dsa_switch *ds, int port, int mtu)
+ {
++	struct ksz_device *dev = ds->priv;
+ 	u8 ctrl1 = 0, ctrl2 = 0;
++	u16 frame_size;
+ 	int ret;
+ 
++	if (!dsa_is_cpu_port(dev->ds, port))
++		return 0;
++
++	frame_size = mtu + VLAN_ETH_HLEN + ETH_FCS_LEN;
++
+ 	if (frame_size > KSZ8_LEGAL_PACKET_SIZE)
+ 		ctrl2 |= SW_LEGAL_PACKET_DISABLE;
+ 	if (frame_size > KSZ8863_NORMAL_PACKET_SIZE)
+@@ -188,31 +202,6 @@ static int ksz8795_change_mtu(struct ksz_device *dev, int frame_size)
+ 	return ksz_rmw8(dev, REG_SW_CTRL_2, SW_LEGAL_PACKET_DISABLE, ctrl2);
+ }
+ 
+-static int ksz8_change_mtu(struct dsa_switch *ds, int port, int mtu)
+-{
+-	struct ksz_device *dev = ds->priv;
+-	u16 frame_size;
+-
+-	if (!dsa_is_cpu_port(dev->ds, port))
+-		return 0;
+-
+-	frame_size = mtu + VLAN_ETH_HLEN + ETH_FCS_LEN;
+-
+-	switch (dev->chip_id) {
+-	case KSZ8795_CHIP_ID:
+-	case KSZ8794_CHIP_ID:
+-	case KSZ8765_CHIP_ID:
+-		return ksz8795_change_mtu(dev, frame_size);
+-	case KSZ8463_CHIP_ID:
+-	case KSZ88X3_CHIP_ID:
+-	case KSZ8864_CHIP_ID:
+-	case KSZ8895_CHIP_ID:
+-		return ksz8863_change_mtu(dev, frame_size);
+-	}
+-
+-	return -EOPNOTSUPP;
+-}
+-
+ static int ksz8_port_queue_split(struct ksz_device *dev, int port, int queues)
+ {
+ 	u8 mask_4q, mask_2q;
+@@ -2551,7 +2540,7 @@ const struct dsa_switch_ops ksz8463_switch_ops = {
+ 	.port_mirror_del	= ksz8_port_mirror_del,
+ 	.get_stats64		= ksz_get_stats64,
+ 	.get_pause_stats	= ksz_get_pause_stats,
+-	.port_change_mtu	= ksz8_change_mtu,
++	.port_change_mtu	= ksz88xx_change_mtu,
+ 	.port_max_mtu		= ksz_max_mtu,
+ 	.suspend		= ksz_suspend,
+ 	.resume			= ksz_resume,
+@@ -2601,7 +2590,7 @@ const struct dsa_switch_ops ksz87xx_switch_ops = {
+ 	.port_mirror_del	= ksz8_port_mirror_del,
+ 	.get_stats64		= ksz_get_stats64,
+ 	.get_pause_stats	= ksz_get_pause_stats,
+-	.port_change_mtu	= ksz8_change_mtu,
++	.port_change_mtu	= ksz87xx_change_mtu,
+ 	.port_max_mtu		= ksz_max_mtu,
+ 	.suspend		= ksz_suspend,
+ 	.resume			= ksz_resume,
+@@ -2652,7 +2641,7 @@ const struct dsa_switch_ops ksz88xx_switch_ops = {
+ 	.port_mirror_del	= ksz8_port_mirror_del,
+ 	.get_stats64		= ksz_get_stats64,
+ 	.get_pause_stats	= ksz_get_pause_stats,
+-	.port_change_mtu	= ksz8_change_mtu,
++	.port_change_mtu	= ksz88xx_change_mtu,
+ 	.port_max_mtu		= ksz_max_mtu,
+ 	.get_wol		= ksz_get_wol,
+ 	.set_wol		= ksz_set_wol,
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.54.0
 
