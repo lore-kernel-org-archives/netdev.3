@@ -1,60 +1,62 @@
-Received: from mail-pj2-f1.google.com (mail-pj2-f1.google.com [74.125.227.129])
+Received: from mail-pz2-f1.google.com (mail-pz2-f1.google.com [74.125.228.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A3F63C457F
-	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 22:41:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579631A3AB0
+	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 22:41:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783032117; cv=none; b=ji7A/y4Yq0UqQSGnNOAPLk5mkeGOSVsXx+Xw5Qwn540v1Qj2gyVNv8UrvTFSk+2Y9xNGRtCmPKM3lMlzxCzmHgJ6p4iD4f4SF95G0igx/3+xCsSVId3yKl7wVD2gO8o5Tiuw0mrcUtR2VaFg2HwK/X8PPhb3ojYtQbIycZE38B8=
+	t=1783032119; cv=none; b=QG4KCDZgPISRPibK8Erfn3wm3Z/hmbZ8J9aBWyTtfgQFHdeldabod6spFsSTqSj/+j6DLC8kFi2hbFD6Hib7jwdPl8YyS8cSPzVigpQiy+lTD+Nv3N3Z3FlpnNwZbmnmucL3oztVZDT92aiLOtijjjr8Li0c/A767Fe5RyilKiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783032117; c=relaxed/simple;
-	bh=HrDtplRMa9V8eMXomYI+fBuxfuy0EazJVlaS3xycGuA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HQtfasgqqyc2QIGS7rUYqZeF9tAPLB/H6adDCFAIR10cpaadsiAzQGpgIsdST7f/jYNz7/W9De3zduRUTxJNytEvic534h05CwXELwUGo0b1qM9+IbG7YmO7s+zvPue5S+JMRSzO1pmK9p3ZxTxSIl829JRhrHCUchfPmLsPAQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AAPnXvh6; arc=none smtp.client-ip=74.125.227.129
+	s=arc-20240116; t=1783032119; c=relaxed/simple;
+	bh=R0j/qNYveSeY8vyL0/e5npQklgus96CIbETe93stoCQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ImOjU5fzfZBihCErNH1Zi5OL1hV82bRdzvXpZJC+ehmPBWOyp1jXavoC9Tsrzsv0gT1LYGLTGrDljnOkdZ6EQNe51pmGKf30m5JbfU/b50WdHhx+PKZeAul7jrCLOx+lUtgz44HaHo3eB2Thq4khHADOoLJhowyEQAzUzJim294=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NeTiiQm0; arc=none smtp.client-ip=74.125.228.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AAPnXvh6"
-Received: by mail-pj2-f1.google.com with SMTP id d9443c01a7336-2c980dac2b2so8314985ad.0
-        for <netdev@vger.kernel.org>; Thu, 02 Jul 2026 15:41:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NeTiiQm0"
+Received: by mail-pz2-f1.google.com with SMTP id 41be03b00d2f7-ca00ea47337so82487a12.0
+        for <netdev@vger.kernel.org>; Thu, 02 Jul 2026 15:41:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783032112; x=1783636912; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=QILYk3lKizbi5zWvXR64kuMnop1KjYg5qUDCPNRdT0M=;
-        b=AAPnXvh6ZEHm/0AIsZD3/wTtCrcyPMm2YUCP5it4qZHkBwbtWJNKB68MwkdCFWPyQl
-         YTkOVLyW5OKlxm5ZMO6oozAOheQJG7y4Fc+4u0MozdMBMmNJkU84FDauy3rAcQgavRhT
-         5FTRNlwAFNwcJJUSOVHu/RDIH0zBEHwbaBlv6QfkAKFQOzUP+WeWYqD0HBiO+bW6UI8j
-         iAHr51NbTY+Co+U8jZlPVuVhX1pF80x7U5awEDNO6Dyw8QiEOvIw8XixpFFIpvW2RFyv
-         7UTjX6Ec8LNsppM/WKWUHTVsfU0N9H7Qqh5dhPsPTDfmsk62vjO4NjjXfRQ1p+R0S8Tx
-         O6ZQ==
+        d=gmail.com; s=20251104; t=1783032115; x=1783636915; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=mZhuHYG8y80lULc2rLkcuyGBpLEov+tMve8Tm1aOgdM=;
+        b=NeTiiQm0iKSV1DQwy8xf4OrDLdbx8EzBT9m8yftJlaWxK2HQDyrxMrMKfUZC7NpwwB
+         rjSyqs2LW7F7JFRk++7pR15GNbj6zWDpFk/V0cHvvoB/88IrCx5Y47NT7t2N5rhTywWg
+         I67JUZpkYYCw/+nBqii7xAzXwZohHPFW8AxVdepnEs3Xf2/jnJ7tTJ9cp03MV10rloZJ
+         BcWsm8Hr8oXv9zPC8gh05HFabXrhqlTuSk0HVCG8fSQ40q2L2mICn61X4It7gNwWFAAb
+         y9r6F6MaXWPcG/vSVXY8j/KZSuhRzTxRSXvqJSrmHYbc1FJ1XjU2kKOFw+5dQbsjgN8/
+         lN0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783032112; x=1783636912;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QILYk3lKizbi5zWvXR64kuMnop1KjYg5qUDCPNRdT0M=;
-        b=JZxPtRjcGby1p+Dg0/onJAxZ0rLlAsZl7TWKl0wKflJtrtURkw+ZK0RzFJSYItvyrV
-         oRV3J6LSpNkC/5h8FWYva/9ZdKmGyDa95NcTavqKZ72HAPMrlNoUmbr4Yc1ynel4ug9S
-         eDds1zqv/rkvzKHVsAf5+32GeRYOYc5Lok9pceoBx9Jlo7hapJMQ3NyjYgMTmCXDHzkE
-         k/sZQ5f674bpBcpHtZnUEeihUiLKV1fZ8q+vA3Z5oZdaXY0YqTCaGc/dRdWUjHgvAQJP
-         0mw6STl65Url+d1T/kgnIL69cHA1DVikl1sSmVuw98rQ+VK90lef5ICBM2A9qZQCldkN
-         yO0Q==
-X-Gm-Message-State: AOJu0Yy/YjciE0hjCF70A+8lPswvRPyJarltMKjoRhGRdyFiyq+W+a6Y
-	sJMAj99U2+kjXbpoukzj0VzXjSDuCH2BwpNAsiiexNRUwrFsMmXYiIq07W69AzxU
-X-Gm-Gg: AfdE7ckSf8Ly4WhnpBKj5eMaxZjFgaCO19Cc5pOcBPfQ/okcQCrgzgpR/EWvdZI8ExQ
-	6cCnzHNpKZC/E/TwmgB9zP2RSrsZ3PeUnQsjc7TTZbfb9eUbA5Vx1rrY8KV94Azuf/npm13Cgtn
-	RNLdrKkCX+Al9PMxRmc3Y/gl4wjVAJthaMKqFNJBnPb/cnKhT2jnOli88CL7cAyWti1WQFOHla5
-	6c8U89UR9YrDdaGAzPF4oqtsJ1XBRlAO+p6CCwiU0MbOJSqCIEvQlv67fnRNw/BwsztQyonub0w
-	D5stWoLzFYlMD7qLDi5OgrKhnKFDDAN5MC5lnRRXpDDMlbwtZlt+PAnRkMi1ELuPkc50/YzgTdo
-	68HCi2Y28mUxDXBW7lXNVpbyw+ab08KCH/dBznizU0TsIszTnIZAEGHtCgvVKYFKAqhXPnW6fM5
-	pipZXG
-X-Received: by 2002:a17:903:46cd:b0:2c9:97a8:8c17 with SMTP id d9443c01a7336-2ca7e8c6253mr87482765ad.42.1783032111663;
-        Thu, 02 Jul 2026 15:41:51 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:6::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cad1bb05e0sm2006225ad.54.2026.07.02.15.41.51
+        d=1e100.net; s=20251104; t=1783032115; x=1783636915;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=mZhuHYG8y80lULc2rLkcuyGBpLEov+tMve8Tm1aOgdM=;
+        b=CEHJRw53Ippc6HAnH3NJ1DO9yFHTfJkLq07d4t9UaVqbZszqSmC+C7ndM3+nFda2ZS
+         kaMnUMmR0cbfbOejSy0YuUp+VcYGVc/c0U9NvkuUFSmg+K6B/FJpRle0lU7F8ldcHbWT
+         Lh2vMCdfpMX6hMxOjUwcc3wXaqgVK4bzddTv7WdugjNcF01Lz+VYHDiLBzWx0AJYpWvc
+         h4/mC2svzl47rCWHmXKQgj/D7e/Yn8iwZs4TYX5K2q/FKu+z/dF5vEW1dqjXD5EJF3Wq
+         V/4YD2k69WlZD4detdBl/3zIRoOVXe8tVzFKPWe07JyKUfxECL1JP1BN22rHIQ9igxOa
+         EYKw==
+X-Gm-Message-State: AOJu0YykeZHw1x93bLvOGkJg0NLzvNnYmmuyM10DIMo8cJFOwB6N9brR
+	yUVP8ZdIvEpLTcNL5qfAzc+/xEuT7UVj+lI4YVYBy5IplPwNIjEqwhkvMHcpRiVx
+X-Gm-Gg: AfdE7clqv1IE04nmrcwknhK4JmkwnxwlUJaSno/mpJC4mqIuqrOCH/sCDjw3+paU8Fp
+	7qbD+bzrZaa80X9lT/l4oDuXULVsQGELs+glq448mE4Qt1I7YXpwS7nPaMTPLE8YiipzOa5pivh
+	XErUCuCDXSPmSrpCtKSoHyQbgG67yFI6msRW8iuF5UiaD8dqQ/HNRTjikFremYQfZ6BhcgzgXDW
+	DPxTTrLkqMbdAZVQOw7HhHwVjU5KyXTFU2HE65NJwFXcvXtfocyZCqKStoyT1XQkSVbXElbZnxA
+	o5B2aZbZqG/EfWsbZ62byBRnHMAOjd6hJ3RPPvXhakGgCAYGoOgvtmrAxs1umu4rXcV6EMOYiB5
+	dXxc+lA6j89OHatDFg+CKLvgrAH72Zi3LT8BazvbDEJl9hIjuRWg9jmr2+sqauAAVk/7xAVWdbg
+	fHgQ0Yf6cUBQk9HURN
+X-Received: by 2002:a05:6a00:3902:b0:845:d285:3b6e with SMTP id d2e1a72fcca58-847c5208e29mr6591848b3a.58.1783032115126;
+        Thu, 02 Jul 2026 15:41:55 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:4b::])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c9e8f1ddd7fsm1823013a12.8.2026.07.02.15.41.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jul 2026 15:41:51 -0700 (PDT)
+        Thu, 02 Jul 2026 15:41:54 -0700 (PDT)
 From: Stanislav Fomichev <sdf.kernel@gmail.com>
 X-Google-Original-From: Stanislav Fomichev <sdf@fomichev.me>
 To: netdev@vger.kernel.org
@@ -62,10 +64,12 @@ Cc: davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com
-Subject: [PATCH net-next v2 0/6] net: hold instance lock around NETDEV_DOWN and NETDEV_GOING_DOWN
-Date: Thu,  2 Jul 2026 15:41:44 -0700
-Message-ID: <20260702224150.3730033-1-sdf@fomichev.me>
+Subject: [PATCH net-next v2 4/6] net: rtnetlink: take instance lock inside rtnl_configure_link
+Date: Thu,  2 Jul 2026 15:41:48 -0700
+Message-ID: <20260702224150.3730033-5-sdf@fomichev.me>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260702224150.3730033-1-sdf@fomichev.me>
+References: <20260702224150.3730033-1-sdf@fomichev.me>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -74,31 +78,75 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-NETDEV_UP and NETDEV_REGISTER already run under the per-device
-instance lock. The teardown side does not. Make it symmetric so
-ops-locked drivers can rely on the lock being held in both
-directions.
+rtnl_configure_link calls __dev_change_flags() and __dev_notify_flags,
+both need the instance lock. rtnl_newlink_create grabs it but stacked
+devices do not. Move the lock inside rtnl_configure_link.
 
-v2:
-- reword NETDEV_UNREGISTER unlocked rationale (Jakub)
+Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+---
+ net/core/rtnetlink.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-Stanislav Fomichev (6):
-  net: hold instance lock around NETDEV_DOWN/GOING_DOWN
-  net: dsa: hold instance lock on close-on-shutdown paths
-  net: mtk_eth_soc: hold instance lock around DMA-device-swap close
-  net: rtnetlink: take instance lock inside rtnl_configure_link
-  net: require instance lock for NETDEV_DOWN/GOING_DOWN notifiers
-  net: document NETDEV_UNREGISTER unlocked rationale
-
- Documentation/networking/netdevices.rst     |  7 +++++++
- drivers/net/ethernet/mediatek/mtk_eth_soc.c |  5 +++++
- net/core/dev.c                              |  5 +++++
- net/core/lock_debug.c                       |  4 ++--
- net/core/rtnetlink.c                        | 17 ++++++++++-------
- net/dsa/dsa.c                               | 20 +++++++++++++++++---
- net/dsa/user.c                              | 19 +++++++++++++++++--
- 7 files changed, 63 insertions(+), 14 deletions(-)
-
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index 12aa3aa1688b..1b7d6f6b8b68 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -3660,14 +3660,16 @@ int rtnl_configure_link(struct net_device *dev, const struct ifinfomsg *ifm,
+ 			u32 portid, const struct nlmsghdr *nlh)
+ {
+ 	unsigned int old_flags, changed;
+-	int err;
++	int err = 0;
++
++	netdev_lock_ops(dev);
+ 
+ 	old_flags = dev->flags;
+ 	if (ifm && (ifm->ifi_flags || ifm->ifi_change)) {
+ 		err = __dev_change_flags(dev, rtnl_dev_combine_flags(dev, ifm),
+ 					 NULL);
+ 		if (err < 0)
+-			return err;
++			goto out;
+ 	}
+ 
+ 	changed = old_flags ^ dev->flags;
+@@ -3677,7 +3679,10 @@ int rtnl_configure_link(struct net_device *dev, const struct ifinfomsg *ifm,
+ 	}
+ 
+ 	__dev_notify_flags(dev, old_flags, changed, portid, nlh);
+-	return 0;
++
++out:
++	netdev_unlock_ops(dev);
++	return err;
+ }
+ EXPORT_SYMBOL(rtnl_configure_link);
+ 
+@@ -3918,22 +3923,20 @@ static int rtnl_newlink_create(struct sk_buff *skb, struct ifinfomsg *ifm,
+ 		goto out;
+ 	}
+ 
+-	netdev_lock_ops(dev);
+-
+ 	err = rtnl_configure_link(dev, ifm, portid, nlh);
+ 	if (err < 0)
+ 		goto out_unregister;
+ 	if (tb[IFLA_MASTER]) {
++		netdev_lock_ops(dev);
+ 		err = do_set_master(dev, nla_get_u32(tb[IFLA_MASTER]), extack);
++		netdev_unlock_ops(dev);
+ 		if (err)
+ 			goto out_unregister;
+ 	}
+ 
+-	netdev_unlock_ops(dev);
+ out:
+ 	return err;
+ out_unregister:
+-	netdev_unlock_ops(dev);
+ 	if (ops->newlink) {
+ 		LIST_HEAD(list_kill);
+ 
 -- 
 2.53.0-Meta
 
