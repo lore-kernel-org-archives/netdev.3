@@ -1,117 +1,76 @@
-Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 227EA31F98B
-	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 17:10:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8F52E2DD2
+	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 17:12:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783012226; cv=none; b=aPS98is+xSEQzT2aOKOZNZMbwK4KqdaUyeC2ArttW4b3qc4kpzCDeCVnSdl7SkwmJoibWFzku6XlhBr2QS18W5RtE9i7rLxl3KpnA6H8EtDXLdTcL6yuHz3U9xP8Qr5xW7YisoZEAOkVY4t/r1ws5rwsMIYmESXr6ZyhoqOv9fo=
+	t=1783012326; cv=none; b=p3ypcLgrpH45dJn8STmt2wDGUn4ONbQjVJtCpHQaBcn2uIFofCawnc2CajZjzTW+95AYDVNt5eYLNi94RSeKZqsimsJaFCQInt29TJQSkGusnO+mQiTpM7iZL1j/Q+PG/CjnucgXGsndpqFr6OoPHEbJzc6kwFwDsmzgAZUa3yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783012226; c=relaxed/simple;
-	bh=ZACK+Wxf4gf4Bv0H2VF868lUB/6WpdvSpaEj4a+bI0k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mcw0mCfZMzWmD2G3QW+bPVgBke5oFuEqKlqxmfRtzk0EM/AvcVPa7VoKpHj6e56U3JVRmswrowxoPt7MAYYoLS4wj1e2FwCQS3Q+jvJxW9ALn+ZRdhZRPYxrTgRMTItsTJSLB23YhzMFZ2JSujPmKwYFrn5bVpXmDCrbaWferq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aoABn74j; arc=none smtp.client-ip=74.125.224.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1783012326; c=relaxed/simple;
+	bh=of+IMlpL/ueIYjyYjfkeQwS01D5npHn3fFrdzcOeoxA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XSXVnu85GbrXEnu8i9niah9dIIXh4pXW1eBD4rt0HENxDSnSGAWO6exA+aTzAzNNLW+DOAA81vt6BCOzKB4/RjyipNxKgey44oVjN3nfARMd14AgT/OS6H04pMObNogHbkTDdgTmMJa7cYEE7EtmFGlJ97whEITBNJ7ZAZWLLUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=qZtCO5ww; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aoABn74j"
-Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-664ae993e4bso1673783d50.0
-        for <netdev@vger.kernel.org>; Thu, 02 Jul 2026 10:10:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783012224; x=1783617024; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZACK+Wxf4gf4Bv0H2VF868lUB/6WpdvSpaEj4a+bI0k=;
-        b=aoABn74jmc6ri5jbKOTOoCpt9z0X40s/ceqaIhyaC0p9NOqRHV6wNqaz/Iji2dQD7c
-         UZepj02NWtBjQSNdaPRJl5QpCjhtBkdztn5f50zSTQrFbnlcOe5lDUpO7CaSPuzCQuKO
-         C3FTuWuNpp5oxuvn7kmIkhw6F/uU7E55tLsCC4RMNWk1njx2vA5+6UnhxGpwViOj2/Qz
-         ctni57tMsinTf7tEWCnFxDsHdSSuIuDak/geZ8OJfQhLfQJgIaIArsFSEuBvWT2exCHe
-         iMWWZCV3LDe9QKbvbtuebSeq/t8mJnJXzHk1SoTJUIWN4hWDYwiSALTcoudINlInuLv4
-         R+NQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783012224; x=1783617024;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ZACK+Wxf4gf4Bv0H2VF868lUB/6WpdvSpaEj4a+bI0k=;
-        b=q2n/UPnE61+Ab/9tVX1nmfF7gnmUjeDaECWueEdtq8+qBRjJnQuXdKLhV0o+/86Ik1
-         llJfWyVSIhSaPD6Q9fo6EJPcDRfN3TmtkPLactv0VoDgy1/mF33/WIa8qMSwXkrxKyZ4
-         rnLBbt4ocq+rWmfpQHHEHG6CwhQtsQ2NeZnVD7/Qda41Wt66AY6hHaekTg/YvyHAjmXD
-         2jGouWFsAot4w9Q0yCUs6AeMdW+49xgz7ZkUod5NmoKFbLByYr50AtjzAD3o4lpZqFbq
-         eNj9QIwTRLEZ6v3pC2YL2hi2LxqO4xpEaSNIWj3nPPfYYR0yjPgnNmywcHh9olLo+7+3
-         WVJg==
-X-Forwarded-Encrypted: i=1; AHgh+RqxsYL2Npqidgxq+yrAyYVVN2MV/6+83LPiY4qXLOHCaKt9hJRhBYEHEkUJOhtzOEqUmS1LVPk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YynPHa8NeCpydd9iC/j0+GeNG6P6SfT+dstVLmW1KMXrQO4sfjW
-	qyFXxegiKYK8Q6UrlqaVnBVeQxdmpIhgUmwi62I6Af9q8RY6iP/FLB31
-X-Gm-Gg: AfdE7cm7+RKOEc3g2R4zZNMqLs3xzZY1LIo3jiCrVWOuiFsx7deToQikFDdDXJ2lJw1
-	nPJ12IAQ4uKm2tBzOvJOGHHMq/YLAXZzpdo3JCL2Qzm0JqcPKyorKmAfecSQGWT+fsz6BzNp826
-	ISnDzjxY47vvCKvNDk4fIAHjM79ZaEX3vzSt825prLKonDdDmqG0uaQqS5o7SdkGgc7P22GSeqd
-	BTji4vQlU2nTcqpvf4KHkzyfpELQN7XbuQoGfQkUCX1MnSf1rvGx1TY3N4Rp7tuAB0Yx7AmWoUh
-	veRhT9t255GsnfupXmfca+iAR+fXZVtL1EXn/p0PbsMzRSxThECuC7AHTaCfkF3iZjMEYasj1Gr
-	PVZzcS3DL1sCP30H8rffMp1VargnNnj1FDtrZ9dpn7cbQPbg8xQhr+LHLQ09Fa/Jk1gfIqrSfPC
-	gB2ej0TFUxzf/zFZgVDgkky0WodTP09hSyVzTy/KniW0N92ztqDehQhFsTBsYe
-X-Received: by 2002:a05:690e:2447:b0:664:f562:1fa5 with SMTP id 956f58d0204a3-66636ba95e5mr448218d50.46.1783012223973;
-        Thu, 02 Jul 2026 10:10:23 -0700 (PDT)
-Received: from AMD.home.local (dhcp-9-244-8-156.gobrightspeed.net. [9.244.8.156])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66624021a75sm1354880d50.11.2026.07.02.10.10.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jul 2026 10:10:23 -0700 (PDT)
-From: Enzo Adriano <enzo.adriano.code@gmail.com>
-To: Junhui Liu <junhui.liu@pigmoral.tech>
-Cc: Andre Przywara <andre.przywara@arm.com>,
-	Brian Masney <bmasney@redhat.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Richard Cochran <richardcochran@gmail.com>,
-	linux-clk@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-sunxi@lists.linux.dev,
-	linux-riscv@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC 4/8] clk: sunxi-ng: a733: Add PLL clocks support
-Date: Thu,  2 Jul 2026 13:10:20 -0400
-Message-ID: <20260702171020.836546-1-enzo.adriano.code@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260310-a733-clk-v1-4-36b4e9b24457@pigmoral.tech>
-References: <20260310-a733-clk-v1-4-36b4e9b24457@pigmoral.tech>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="qZtCO5ww"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=4kYkWk7jJTX5/rLh389qM70iGgCvsYRDdhOQSw+Cpp0=; b=qZtCO5wwC9pY2Ql3t2EyCjzQgF
+	8lR3jDAW7r6hzfu2tMvRoFDDig4k3Vrrk/Ma0kxpM4oJ9jvwe2TXuqddbmhGRxbHafNVm7G9ydUS/
+	MwNU/7cWO/ygSLFZls86N/eLRYnqwCUa2/YWWLsLaxojco36tOGXjV1dinzqjj2J4N0k=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wfKx1-00APCb-Ik; Thu, 02 Jul 2026 19:11:47 +0200
+Date: Thu, 2 Jul 2026 19:11:47 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Siddaraju DH <siddaraju.dh@intel.com>
+Cc: Michal Kubecek <mkubecek@suse.cz>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>, kuba@kernel.org,
+	netdev@vger.kernel.org, Shubham Das <Shubham.Das@intel.com>,
+	Balaji Chintalapalle <balaji.chintalapalle@intel.com>,
+	Vijay Srinivasan <vijay.srinivasan@intel.com>,
+	Magnus Lindberg <magnus.k.lindberg@ericsson.com>,
+	Niklas Damberg <niklas.damberg@ericsson.com>,
+	Jonas Wirandi <jonas.wirandi@ericsson.com>,
+	Siddaraju DH <siddarajudh@gmail.com>
+Subject: Re: [PATCH net-next] ethtool: link 10000baseCR to SFF-8431,
+ Appendix-E SFP+ DA
+Message-ID: <e9349915-df99-4d93-bb2b-f17686266a38@lunn.ch>
+References: <20260702145326.1024800-1-siddaraju.dh@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260702145326.1024800-1-siddaraju.dh@intel.com>
 
-Hi Junhui,
+On Thu, Jul 02, 2026 at 08:23:26PM +0530, Siddaraju DH wrote:
+> Add comment to clarify the physical media 10000baseCR follows.
+> 
+> 10000baseCR does not correspond to any IEEE 802.3 *base-CR PMD.
+> It has no autonegotiation, no link training, and no mandatory FEC.
+> The industry standard for this media type is SFF-8431 Appendix-E
+> Direct Attach cable, also known as 10G_SFI_DA.
+> 
+> This change follows the conversation from netdev mail thread with
+> subject: "the confusing 10000base_CR. Shouldn't it be 10000_SFI_DA?"
 
-Register check for the PLLs against the public A733 User Manual V0.92:
-13 of the 14 PLL control registers match the manual's offsets
-(PLL_DDR 0x0020 through PLL_DE 0x02E0, section 4.1.6.1 onwards).
+Please add a link to lore, it makes it a lot easier to get to the
+discussion.
 
-The one exception is pll-ref at 0x0000: the manual's CCU register list
-starts at 0x0020 (PLL_DDR), so the PLL_REF control register is not in
-the public V0.92 document. It does match the vendor kernel's CCU
-(SUN60IW2_PLL_REF_CTRL_REG 0x0000), so a short provenance note near the
-definition might help future readers, same as for the other
-vendor-sourced entries discussed in this thread. For what it's worth,
-on a Radxa Cubie A7S (26 MHz DCXO) we can confirm at runtime that
-pll-ref produces the normalized 24 MHz reference with the hosc-side
-clocks reading 26 MHz, so the modeling demonstrably works on hardware.
+Link: https://lore.kernel.org/r/[Message-ID]
 
-Thanks,
-Enzo
+    Andrew
+
+---
+pw-bot: cr
+ 
