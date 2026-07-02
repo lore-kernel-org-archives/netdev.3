@@ -1,203 +1,62 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5800D4C0437
-	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 14:09:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.7
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783001386; cv=fail; b=NecFyTySAKodWSqplSYqYu28Iygi89nU4GGkwpdE+SDOawEsW5yLpy5FJ8OTc5WHVnpnQLdZoW15TNTDSAQHEO4jtkNigPJ6iHEAPuyi381/k5QOIphNjBsRgIm/VNkxqdLpgHVQBYU+iIuvVCm01W6IfJFjqZ0/8MUJ2K8qV/Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783001386; c=relaxed/simple;
-	bh=kW9+m6grfUzJskBK2HLBhu/ucrY2rJ9YXA7WnLCXWVQ=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=nPnEohpJRd9pGnA+uJ5htOu6ojMrzBxUH90VtfIJBYX4s34A1voBxbpwyKZaDFeICFI/J6zT3PQ/iNS1MP0iqUAOlAbqqwI0BxzguSXb64mCRuAuJuPo65f6bPVu8LNnp0KjL8J5YznCdmwRG5W/2n5rEQRKhZpdiHvwtd/Ypl8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VLlR6Cvw; arc=fail smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27AED4CA264;
+	Thu,  2 Jul 2026 14:13:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783001642; cv=none; b=sNyM3bc7n6souV9blghRJYUehvFjViU8k8vUEV1yTobTF8Or6lk5gK2qUnnxEcL3neiyq1w115HV12K+XxghB/b5OQtbpzDnCuCBT9V7e2CRXIcLw5ZsIZYOGiEb+lF4O1PiQx/YvlPqB3OyEt52UFWqnHSQnA+58FKZ5eJoQSk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783001642; c=relaxed/simple;
+	bh=R98QZzYpDR41aXFD47w3kHfUzVNIU5IUGG2s/zcV2As=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ovgUKMegcYSoxWNA+n+rewnIk0iKwEdlBohw4LWTVjSg5bIro99fV+ZPWr5xrGG6rEeyUqFZD3aNffyOH9TZ6MfcwGWI+qrC3gX2tiiwkykqxE6zDYO1H7AdipfovFVD85vJyeaoslFax0ZVSGXrqoYUVn8rcP/a7ouY77ozONs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yaCzakvI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VLlR6Cvw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783001385; x=1814537385;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=kW9+m6grfUzJskBK2HLBhu/ucrY2rJ9YXA7WnLCXWVQ=;
-  b=VLlR6CvwjUkOwTGpIk1FL91ea4EyhVeEewy1PmvELsSq8Em5SjgpuMSm
-   qcnVqbQbPlwTYYWQqFCPUIppn0RWBBg7IdkoqREueQ9ju02qNUGTsct9n
-   cNSxlmh8WO1Qd/yKpIxexAyLhpquRaImrra3oVomRZY4yClWgvz2jqquj
-   r4fZerjlu4x7bJdjNJA7elBEGe2DZtFvnq+Emuy5gLg3XSfipDXat+Xyi
-   i8/eJp8cJRlx1Td0k+g24gqdX4doNT3C0DwGXQkeknuyjS7Z/082jbL5/
-   NCiKmDg8Qmgw3+KeOHTp3AggdnkeoilvyX5eMyqKWQSauYSnBWxdHLvg3
-   Q==;
-X-CSE-ConnectionGUID: zTK0eFSPS5WxMlzdGDJ9AQ==
-X-CSE-MsgGUID: xGkwiK5DRLOSvjf//CYzww==
-X-IronPort-AV: E=McAfee;i="6800,10657,11835"; a="109305878"
-X-IronPort-AV: E=Sophos;i="6.25,143,1779174000"; 
-   d="scan'208";a="109305878"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2026 07:09:45 -0700
-X-CSE-ConnectionGUID: hCg0CXcTT/u/5po+GpRjvA==
-X-CSE-MsgGUID: hFbFWcHSSdy8W6CX/4JHYQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,143,1779174000"; 
-   d="scan'208";a="249523697"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2026 07:09:44 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Thu, 2 Jul 2026 07:09:44 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Thu, 2 Jul 2026 07:09:44 -0700
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.61)
- by edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Thu, 2 Jul 2026 07:09:44 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=a7FHhMV+Xhwp2d0AvYyXqYhlV1KXMA2y7Wwe1q16Zg9Mk5WNxIDb8D/pMg5wyemm0vZNRQ9Dnz+R7pUYRDrLzyoqpErMrs+w4fNpF+1Jix/fhTA7tLh4RBJUvvXuPSmaP6pbIXDjxqjzLehqkBN9SPlG6Od9boX1OVT29JD+ezlDNQCU+D07v3v4kR96VBX/xLJc6GvPHOeVG4+im4+eB0VQOoIjJJixndrdY7KzpldAkmM0yo7yuaA1sAa7Pwl/fxZQAOrWWClW5s6KEp37gNVzH6FWpCuvCMWaj+IyuOArKq8rMkCt8C7g1EyVwFVkLWEEEyEdyM5LvRSx4FvlPQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ORYaRwCHgLgIuAKigiJNggJfGrTafulNDlye8ZO6FIg=;
- b=rA+BML1Bxhd2xANzouazXyU86yw+v8LeEOj2Y5Fz0ymh/MlOA7RroKuhELSLhoJth75qUi8BoXbO89rchrk8zU6AIFd+hKPGMPKu2qTDN89OLMEFw7xOrCJhL/b5K077BuTmeyAFxEHoctEHfr3FDGB90zRmZMSy8bNnxY706UiqZV+ODTbUGIDRpwiDEq6ny8sFSLhUziK+5vqa5WxrWNLK7PkfZtnZHu4A4DgDazKROnFH22lCo3o6tgdd8erWj9fLfptVcy27Ry3dRgXN7JmYrde86gYDXhCuyAPSQNSE2VcMOquu4xhBPNnKKC7al6Ryrm+hNnuA/EoeNuf0OA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from LV3PR11MB8508.namprd11.prod.outlook.com (2603:10b6:408:1b4::8)
- by SN4PR11MB9941.namprd11.prod.outlook.com (2603:10b6:806:4ff::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Thu, 2 Jul 2026
- 14:09:41 +0000
-Received: from LV3PR11MB8508.namprd11.prod.outlook.com
- ([fe80::a1e8:1786:e5d1:8e51]) by LV3PR11MB8508.namprd11.prod.outlook.com
- ([fe80::a1e8:1786:e5d1:8e51%5]) with mapi id 15.21.0181.008; Thu, 2 Jul 2026
- 14:09:41 +0000
-Message-ID: <fb6b1528-058b-4bc5-b97a-ca2c844e0608@intel.com>
-Date: Thu, 2 Jul 2026 16:12:06 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iwl-net 2/2] ice: fix stats array overflow via proper
- realloc
-To: <intel-wired-lan@lists.osuosl.org>, Michal Schmidt <mschmidt@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>
-CC: <netdev@vger.kernel.org>, Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, "Jedrzej
- Jagielski" <jedrzej.jagielski@intel.com>, Piotr Kwapulinski
-	<piotr.kwapulinski@intel.com>
-References: <20260701104141.9740-1-przemyslaw.kitszel@intel.com>
- <20260701104141.9740-2-przemyslaw.kitszel@intel.com>
-From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Content-Language: en-US
-In-Reply-To: <20260701104141.9740-2-przemyslaw.kitszel@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: VIUP296CA0088.AUTP296.PROD.OUTLOOK.COM
- (2603:10a6:800:35c::12) To LV3PR11MB8508.namprd11.prod.outlook.com
- (2603:10b6:408:1b4::8)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yaCzakvI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BCDB1F000E9;
+	Thu,  2 Jul 2026 14:13:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1783001632;
+	bh=22NrB53quUcL92USbBtWlF+xpexlIHtl2vYI1OOtmKE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=yaCzakvI2ONHSQhFmcWi+I3WBUkfJSvEKMpe6DJ5uj8d45bflUf/FCSZVKjGlq6T9
+	 zHEc+fukuaOhNBr6ZSk/G0hvYQuZQ19gOpx1j8sSuI8OsVy0sBsQ88zOjp2CnNUvDt
+	 44CAMBARDqaXB82rV1ZP1CjWaI7fmif+nnrtZeQA=
+Date: Thu, 2 Jul 2026 16:14:03 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Maximilian Heyne <mheyne@amazon.de>
+Cc: stable@vger.kernel.org, Wolfgang Grandegger <wg@grandegger.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	"Eric W. Biederman" <ebiederm@aristanetworks.com>,
+	linux-can@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6.6.y] net: add missing ns_capable check for peer netns
+Message-ID: <2026070244-trustable-cresting-2d80@gregkh>
+References: <20260617-sprain-dye-86c242ac@mheyne-amazon>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR11MB8508:EE_|SN4PR11MB9941:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0255fe1d-b71e-4ec4-2710-08ded8438f5c
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|22082099003|18002099003|11063799006|4143699003|56012099006;
-X-Microsoft-Antispam-Message-Info: kvRxprSkb0O7yqcoaZDHCE4aAxVZ7zKWE+UHkNZJc977L/tYaiMCCDuaQPPWNi6bei5gcQpMqtD5vCKGqM+5PztuJ/vkdGJUFqRr07pRTFkWGv7JRcyG+n8GBbW7DZ1hpwmpc3CY1vKdmFc2cx2QGw3Y6BcXgTLAeR3K9ZawOPpFvz/xOrm/WZzLYSkr/M4+lax6rmUFNt+QHeDR4u2xlc0BQFFdwIJ6hvFNLhlhxGGCtwZhCuEYRi/r4PmGQ2JEth7fHw1Cm2kQJKFme3h+VPJmaEhgFvocQVXu0EIbglDlrhGsZC1zP1UfrRh0WzmNH7WHz5FMlYq3LTQqRWLtVcxNOG4mPFpw0+AshZwPt90yhBY4zrTcBcCakEMv7viFVTWKveMFOPCVD4T58IHISunUGdbgqQq6+8QqyupiOrJ5araibMw5RE0tJ21MxLkU2CepP4OuvHuNKq7sLddgZSC5G4/lLt0ZMtW8hLN/1/qq4Pol7QzAQBlCo4x35bAmsBvBqfjhMIPuwdzJYg8+O+Tj3sBd82UUQDjsjGWFqjmT6QsmY6/wLE6Wd0+9f407pmo9qsN1/08hcc/newdPYrgbVdvpg9AWoxo9j/46jnY=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR11MB8508.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(22082099003)(18002099003)(11063799006)(4143699003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eEpqcFZZTzd4Y2J3MmtFbERqcmZkYnJib0pXUUlSM3B6OUg3NytxQVRZT2c0?=
- =?utf-8?B?OWxGRjJRVkg1OWhqc1RobFF3OXhGaTR6d0NmeFBRMVNMbjlNUTF1TC9UU3Yx?=
- =?utf-8?B?VS80OHovdnJCdnRaVWQ0bjgxMFE0TlNyaCt3NnhIeVgyTVp4bEszK21LNmVz?=
- =?utf-8?B?b0UvRXJBeG9BZXJzdjRUUVlZVVM0cDZYWFRJbUJLUDk0N3ptaGh3WXdaNDNY?=
- =?utf-8?B?anYxSXpJc0x2MTJkVnJleFlyazhnN0RNTzRoc0xvVGJhOEV3c2RRQ0l4TWM1?=
- =?utf-8?B?QVlwYTNyNXp6ZUFEbFlCaUdpT1hJSXl4eWNnTGtkYTNzZzZMZDFqak1WdXJY?=
- =?utf-8?B?Ynp2bXZaNWlJMFBldjhRQ2p1bjhnZEZPQ29LdWZLU2g4MWNyakFSVlJ2c2hM?=
- =?utf-8?B?M2hOS0EydHVpREJrOUdET1A3WkU1S29uV1NBNjh3d0RmMTlRalJ3c1hPS29Z?=
- =?utf-8?B?dXFCSXY4Qzh6UEQvSUx2ZVRMMGNVOEZjNC9XS253T0F0OFBKdXlwN2ZwS2N0?=
- =?utf-8?B?ZkZBUzlDcmdsVmJPSFloZURqcDJ4Nk9NOCtxeWxHUVVZWEZHRGFRdzFWaE5M?=
- =?utf-8?B?ZnI5dHhjMlFid3N3NG5iZWRmUWduQ0M3NVlKbzFEa3J1NW9PbjVLTWZTTWx4?=
- =?utf-8?B?M3kwdlNRMDVBN21yTUc4MXhxSkhTU203eUk5ZS9jTlc1bG9oczFEY0RhZiti?=
- =?utf-8?B?RnlMQmhoNUsrVm84YmxiM2lpNUVYYnIvNUt2amF1RFJxVG1pMDNMUkZHbGMx?=
- =?utf-8?B?eHNSdWtHYUFSQ2t6QlR1dnc2R3kreXRNdCtESlVrRm5sSHdZWUxjQU44bkNK?=
- =?utf-8?B?eHQ5T0VsN2JPTG5TMFpsaWE5UGovUS9HRzFhUEx1RkpTT2VNOWFqUkhFVEVj?=
- =?utf-8?B?QUgxWkZGbysvdHVFejZLWUY0R1lTZ0JVTFozK0lBYmxVT1BmaFZ3VGZmYU5o?=
- =?utf-8?B?YzZKK1hMTndaUkxoRjlFN2YyRUpvaXhQNk5RWUQ5d09XQjY5ZWNGK09oYlZ3?=
- =?utf-8?B?Ym9sVStVM2JnLzl5aTdOVnRnMTdqK2lzZ3R1VnQ3VTdGRnpDanRkTVF4eHRa?=
- =?utf-8?B?cDBPQlEvb0E1VEE4VS9TSlVqem81QzQrbGV4OVNhdlcrUyt6aGpLdmlrSklk?=
- =?utf-8?B?OFBOcEJ5OUVuL2lYdEpLcG5mZDlEc1ZPY1phTkhFQjFkdmI4NE5BSXhWQVdS?=
- =?utf-8?B?TFNkbjVpR1lNcjVtNWhROEFadFAxYUduZnNkQzdURDZGV2xRd1ZNTzhZZTNv?=
- =?utf-8?B?R2w1YTRtdkl4cmhTbVVzWnZnU3M2TnlnbVJrb1VTQkRXdVF4N2ttMDRoMEJS?=
- =?utf-8?B?cHJKUklvcUUvLzY1Sk1IcTlLVElYbzlTeXhydU9OZG5FaVl0eDVBang3UUhC?=
- =?utf-8?B?Y05XT1NoV1lmemk5SU1WK3FtdzczY0dsaFZBNnNCdHR1WnY0eUFQQkY0YThz?=
- =?utf-8?B?alVKSVhlVzBaOGtsVlJOaEllMWFlb0NySkdhVzV1eXd4TDhmRVFzWWtIVVlS?=
- =?utf-8?B?VG9XZVVUNityRXlqd01jT0xSOVVFeTBjUDluOE5pVkIyRmdRa2JweTlxd0tN?=
- =?utf-8?B?akt3REUwTXpCNGNWNnczL2VlTS95T0NhTUNvNGJpY0tmT3NqRFlYU0dYRkd0?=
- =?utf-8?B?OCtQVXVGRExFZnZaRzdxN1k0K3lab204N3RyNGZRR3NEV2IxWVRDcE9PV0Jm?=
- =?utf-8?B?cnVaTzlVaFd4NmRMZy9uMEVSZ2RqdVZiMEVPVUFlMmxDR1kvYVJiRitUeXU5?=
- =?utf-8?B?R0VPSTJCVTFzK2ZMWWNLajVEWUxjQU9TNEFNSGlkRXN6anhwMEJqazYwdU83?=
- =?utf-8?B?YlZsRk90aDVVcDZJYmIxelV5MzlMMWtxSUdoeDdIdThVaHJlUndHZWpCamVD?=
- =?utf-8?B?aHlBdENxVW9HWHd3eFlSdE4zUVlWVkpkYldNVnpmcm9kYkFOZU5UYlA0R29I?=
- =?utf-8?B?Z2toNWx0bHZUc1RTRElkcGJLQ0pyUGxNSlpkUU5yODdUODNVQ3BCK3B2T28y?=
- =?utf-8?B?ZlBneEtVNGgwZnZzZlNaWE9rN2VnNkpOZ0Z2WmpFT2JYZUhIbWdWZkx6NHdD?=
- =?utf-8?B?eUpJUFVlVHlPUGp3RFRRSDhNcncvUFJTa3ZneFdQK2dQREpvMGVUVGpvelpT?=
- =?utf-8?B?RS9hdU9NUHIvdmx0RnZyM3daYVptR3UrYzc5ekt2NkdFUHpZN0diQS9VNjlY?=
- =?utf-8?B?K0M1dllLbDhRVnhnS3ZtcU9kcEgwQnQ2U2xDVCthbFVmNE9ZRFZQQlpucEpC?=
- =?utf-8?B?dFg1aDBETGNBTjNsdlp1S2NITExYSnVSMmpQaXNUOEQ2dllHK0YrbUdRcHN4?=
- =?utf-8?B?UVZTVWpKc3hFeVpyYzdkOHZtdkFFa1FiUExqZEtTTmozQ25iSzl5dU1tdjVZ?=
- =?utf-8?Q?TRXx97uZAOJsA4hQ=3D?=
-X-Exchange-RoutingPolicyChecked: FRHSb1At3I7uHzSuUoGZdM0FsKf5TDrDpZjd10LQnoHx1YEiESJlSnvNr2FB7aohqwTVF6W+/hloWbBAzw/j04j4HQO4XXtotpVlQKfIvdlkO+d4OxmDGLIFDD09TR+1aKk91imMFj31c0owBQyFP++2SLt2thIWgGyeIFPa9Ww5SEULVt3Oi5lXVX5FscMgvWZsefGjDcms/vryVO1kiT4GcJ+T+7RrVIvLPSuuulDDxaVFbq9ud4MQHhF28+SpABs4UON4+Q298n8YjW6DhiYQz4riyd+rgWmxYxsf3W+GGi2rJCI72O/JCdDbd4V+FhL46UG5PPi9tOR8QHfxQQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0255fe1d-b71e-4ec4-2710-08ded8438f5c
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8508.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jul 2026 14:09:41.5763
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Gn17s89LUJC4UAlhOy0tVtCjafwdZXn7jKwz/Tqhk1xHS5gFwixmbrB05CpZZliIYK/VuraQoSg0W+WEOY2U2+0k05M3JtlmHT62VHjltQA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN4PR11MB9941
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260617-sprain-dye-86c242ac@mheyne-amazon>
 
+On Wed, Jun 17, 2026 at 08:26:39AM +0000, Maximilian Heyne wrote:
+> The upstream commit 7b735ef81286 ("rtnetlink: add missing
+> netlink_ns_capable() check for peer netns") doesn't apply on older
+> stable kernels due to refactoring. Therefore, this patch is an attempt
+> to implement the same capability check just directly in the respective
+> interface types.
 
->   /**
->    * ice_vsi_alloc_def - set default values for already allocated VSI
->    * @vsi: ptr to VSI
-> @@ -2319,7 +2274,17 @@ static int ice_vsi_realloc_stat_arrays(struct ice_vsi *vsi)
->   	u16 prev_txq = vsi->alloc_txq;
->   	u16 prev_rxq = vsi->alloc_rxq;
->   
-> +	if (vsi->type == ICE_VSI_CHNL)
-> +		return 0;
-> +
->   	vsi_stat = pf->vsi_stats[vsi->idx];
-> +	if (!vsi_stat) {
-> +		vsi_stat = kzalloc_obj(*vsi_stat);
-> +		if (!vsi_stat)
-> +			return -ENOMEM;
-> +
-> +		pf->vsi_stats[vsi->idx] = vsi_stat;
-> +	}
+Why not just take the upstream commits instead?  That's simpler over
+time than a one-off patch.
 
-sashiko [1] points out that if there will be allocation error
-later we will end up with, say, vsi_stat->tx_ring_stats == NULL,
-but ice_vsi_free_stats() will try to dereference it
+thanks,
 
-will post v2 with a fix
-
-[1] 
-https://sashiko.dev/#/patchset/20260701104141.9740-1-przemyslaw.kitszel%40intel.com
-
->   
->   	if (req_txq < prev_txq) {
->   		for (int i = req_txq; i < prev_txq; i++) {
-
+greg k-h
