@@ -1,54 +1,77 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C3633D4F0;
-	Thu,  2 Jul 2026 16:46:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C285131AAAF
+	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 16:49:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010801; cv=none; b=SW+23JxI7ZneslKmtlF88Hhlp/NjKuzV+bVymx+0beSrJolQDQlUX+7W2qH2flMmq91SQi8Y/uXm9T7g4wkGW8u00SRdYpdyOxwMLbznCBZkhN/KrpuqppJXC4ivcc9j96OioSVNUmgeZNnjbpltzY3VpigSMeEOWlaSXrnD468=
+	t=1783010994; cv=none; b=ekM2l2ylNOo3Q0p/KReJlaeXdTYx24x1fHkutqVI4sfRCXkFlQPOmOvKqerT3eCsmlOd5ORrGFHM8+gNvmzSv/n3yRt6q7y0XtnQaVGpaKVvIEZCxKP5ztphPtHwxxt2JT/eyhmDtwTRkHF5/xeY2dGdkCL2Fc9u93YY+EE+uzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010801; c=relaxed/simple;
-	bh=iuTg+r2aJb+oRyO/DoJzogbNTbF2ttFca0LZWep7glg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M+dHySEwnYHM0LPL8ZqBueXdCLeKZY0xLbr5/t1j097DQNOGpkEl7xPKs8rJ8v0UkiGNEfUvfVpXPupEI3HzEyB2HBNm8ElljOky+/JEDHdBJd180c6fV/vdXZZYMU5Pv0m4dI3o0CWfyQuCFz5ytsZZ0dZM5/k8GjDpMCLeYps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+NF5mtb; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783010994; c=relaxed/simple;
+	bh=sPgWrTCY+vkZ4Gu64MngNcsm8uvJ0Nl9FCs6LietbxA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KMhDeyGMmxj/o20IooMhh5kcTVOrrfdh6oMA6JN0XA2Mm+0cSrFTUm742vTTDfE58ytIQ+ANZNDFXb8/mcZkptoNXT06pGhjrzW1LCeraM/77isGZArTfdo4HRqx/wzTC4r472VA4ROb1HShfoZQcTQp73eIX6RuglV2Q9gDg2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=le4km5A/; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u+NF5mtb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D25291F000E9;
-	Thu,  2 Jul 2026 16:46:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010800;
-	bh=UM0pK7gwBmjJaw0CK9vEfDTNkC2XC4JEI2BTkGaTyfw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=u+NF5mtbKT1zcDglTmqIXncfUjP4HdQ2dbt5QyGFTfgLX/4fXPeTwlFfs3WWAFREL
-	 p80ZJfP86Cpq6/8W0Cp13pToS/zFvG2lBvHI1gaJVI3n3LiPWsjK+84iXfZ0SxckOP
-	 0mhSCtKnsNK4OYgLuapM4suIKrP+jaeZx5nXcZ0w=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Eric Dumazet <edumazet@google.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="le4km5A/"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-380d9481551so1124044a91.0
+        for <netdev@vger.kernel.org>; Thu, 02 Jul 2026 09:49:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783010992; x=1783615792; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=UL82nmL+ZYrOnxFf3+CmZbPnfwIy2jc8o3jqsy8jewg=;
+        b=le4km5A/8/51mcYXEVTq/Ouz6bMupBaJnrZCTiDx89qgevg9edtFPB5x7EoKquyQaF
+         PXBmo5FxLqNLjkVI2cKGs8HYScDHB9iZFSppA8GYUFEh2ao2QXp9uWKz0sZOaBJ8VlUA
+         vLrmPg/nb2+GAsQN9RCL63SQRkYNmXbB73LxPZe9DLg1f3slQWPP4lv2AJyNheeaERhX
+         he07ftx+lDb2g5l13eVgVpAVXd9d+EXX9+iJ2c9t+uvgw8JRmRyLVLvzqTO7a2PxCmzM
+         MCUsco0iQhlrnYa53pwBVbVvf3g7TzSEuYM1ZwnPJk6f6QDi0Lnxbzq5n6v8tqo43XJO
+         xvTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783010992; x=1783615792;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=UL82nmL+ZYrOnxFf3+CmZbPnfwIy2jc8o3jqsy8jewg=;
+        b=o9Vg0FpUjxycnSrgsvg3CF+R9T9PcrM6NuZ1MUWt1jwbn+s+5S/XkxZaK0y2c2QAZq
+         wAx09qr+TyRMYe//HI1vab1SttAxTCFdyYT0+ygoBqOVA3TjuBMLYIYJkSCFiTl6Fyvh
+         4TM7k7QceUKdpGJEUuV4TxtemPxydQ1UHKBpPZ+fchSCOR5cIQn6Jfq4wzxaqAU030fT
+         NuPSa6DeUUBCKH9fQBEcaldnTZ1ILu/vYe1PYCQs0pjleGYuV0iHk0ZP2rjz+fYsDMhx
+         qCKLhWoKOKGBBZq+XQDTEYBDbvNQK+gq9r1J7/QagEZRRMiBn2EIU40ypxQrURACINSC
+         P7HQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpnfUU3cC42VX2XbynuPhc8zY/ybqk5hmhUBy3Vddfw/36RVSphp0UclbY4EHIpCD27P20/L5w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwagS8HIBZrBUIRFNLNQyKHkdJ/IcQmtmsC7TXMLCa0kCoRxVvP
+	7NOo+Kn/4uPxnb7dE5vye35daRFN7NOtKpQKaqOuiDT+WY5PmXE2/Afp
+X-Gm-Gg: AfdE7cn0H1XG71UIxdfS0IAKK5viG1xwNK1n1B1tHvn02jlXF4Df9QQ8CX9BWqZNRjC
+	0YQYKiEn/mglG82B/pZsg0IrtgnU78JrlqCkzl95AsL9VR0G2vT7HLfmh8ZuZSYqyJEXuyAVDz8
+	A0ztdershrxFOZ83R3FGv4Zc47WF7DDosGHJjL6lWOiVmXMGtj+RKxp/ZKcIcJ7cGxjlRSI607q
+	Wx/DFjMuZay+4ksgCrDfQLBZEf1xUVd+/WneBm+ovkM2SbLWJP1xQhIqVd4CknKfEQBcNcoPowU
+	u9DcphQDeQkHZ/XL26Wgec07I8TZugfpcWEJPP1pOoAwjDkovwuVeCnASGpvU2NUibyCgSa6icB
+	oIUqGTPKwADoGh5L7YpFlmXBrvx8kzd618q8bCyueEs1fG9Ben664g6zKony+ajBLVdbL0qqFkA
+	GzWy8/Pwn+C8uhsVxO
+X-Received: by 2002:a17:90b:3f8c:b0:381:854:dba4 with SMTP id 98e67ed59e1d1-3810854e536mr1296176a91.20.1783010991890;
+        Thu, 02 Jul 2026 09:49:51 -0700 (PDT)
+Received: from localhost ([2620:10d:c090:500::369e])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30f0bb80f5csm16318471eec.15.2026.07.02.09.49.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Jul 2026 09:49:51 -0700 (PDT)
+From: Zinc Lim <limzhineng2@gmail.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
+	Shuah Khan <shuah@kernel.org>
+Cc: zinclim@meta.com,
+	Zinc Lim <limzhineng2@gmail.com>,
 	netdev@vger.kernel.org,
-	stable@kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 040/175] rxrpc: Fix the ACK parser to extract the SACK table for parsing
-Date: Thu,  2 Jul 2026 18:19:01 +0200
-Message-ID: <20260702155116.642120945@linuxfoundation.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155115.766838875@linuxfoundation.org>
-References: <20260702155115.766838875@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next] selftests: drv-net: rss_ctx: Add retries to test_rss_context_overlap to reduce flakes
+Date: Thu,  2 Jul 2026 09:49:31 -0700
+Message-ID: <20260702164932.2832916-1-limzhineng2@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,74 +80,50 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+Similar to commit 690043b95c18 ("selftests: drv-net: rss: Add
+retries to test_rss_key_indir to reduce flakes"), implement the
+retry mechanism for test_rss_context_overlap. This gives the test
+more attempts to distribute the flow evenly, as the chance of
+flow skewing to one queue is high.
 
-------------------
+Example failures:
 
-From: David Howells <dhowells@redhat.com>
+ # Check failed 5288 < 7000 traffic on main context (1/2): [2727, 2561, 8961, 6648]
+not ok 1 rss_ctx.test_rss_context_overlap
 
-[ Upstream commit 333b6d5bb9f87827ac2639c737bf9613dbae7253 ]
+ # Check failed 6710 < 7000 traffic on main context (2/2): [9280, 5217, 5358, 1352]
+not ok 1 rss_ctx.test_rss_context_overlap
 
-Fix modification of the received skbuff in rxrpc_input_soft_acks() and a
-potential incorrect access of the buffer in a fragmented UDP packet (the
-packet would probably have to be deliberately pre-generated as fragmented)
-when AF_RXRPC tries to extract the contents of the SACK table by copying
-out the contents of the SACK table into a buffer before attempting to parse
+Ran test_rss_context_overlap and test_rss_context_overlap2
+over 1,000 consecutive runs with no failures.
 
-AF_RXRPC assumes that it can just call skb_condense() and then validly
-access the SACK table from skb->data and that it will be a flat buffer -
-but skb_condense() can silently fail to do anything under some
-circumstances.
-
-Note that whilst rxrpc_input_soft_acks() should be able to parse extended
-ACKs, the rest of AF_RXRPC doesn't currently support that.
-
-Further, there's then no need to call skb_condense() in rxrpc_input_ack(),
-so don't.
-
-Fixes: d57a3a151660 ("rxrpc: Save last ACK's SACK table rather than marking txbufs")
-Reported-by: Michael Bommarito <michael.bommarito@gmail.com>
-Link: https://lore.kernel.org/r/20260513180907.2061972-1-michael.bommarito@gmail.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Eric Dumazet <edumazet@google.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: netdev@vger.kernel.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/105362.1780573560@warthog.procyon.org.uk
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Zinc Lim <limzhineng2@gmail.com>
 ---
- net/rxrpc/input.c |   13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ tools/testing/selftests/drivers/net/hw/rss_ctx.py | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/net/rxrpc/input.c
-+++ b/net/rxrpc/input.c
-@@ -781,7 +781,18 @@ static void rxrpc_input_soft_acks(struct
- 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
- 	unsigned int i, old_nacks = 0;
- 	rxrpc_seq_t lowest_nak = seq + sp->nr_acks;
--	u8 *acks = skb->data + sizeof(struct rxrpc_wire_header) + sizeof(struct rxrpc_ackpacket);
-+	u8 sack[256] __aligned(sizeof(unsigned long));
-+	u8 *acks = sack;
-+
-+	/* Extract the SACK table into a flat buffer rather than accessing it
-+	 * directly through skb->data, which is not guaranteed to be linear for
-+	 * a fragmented packet (skb_condense() can silently fail to linearise
-+	 * it).
-+	 */
-+	if (skb_copy_bits(skb,
-+			  sizeof(struct rxrpc_wire_header) + sizeof(struct rxrpc_ackpacket),
-+			  sack, umin(sp->nr_acks, sizeof(sack))) < 0)
-+		return;
+diff --git a/tools/testing/selftests/drivers/net/hw/rss_ctx.py b/tools/testing/selftests/drivers/net/hw/rss_ctx.py
+index f36f76d6ca59..5b25fa89c629 100755
+--- a/tools/testing/selftests/drivers/net/hw/rss_ctx.py
++++ b/tools/testing/selftests/drivers/net/hw/rss_ctx.py
+@@ -651,9 +651,14 @@ def test_rss_context_overlap(cfg, other_ctx=0):
+         ntuple = defer(ethtool, f"-N {cfg.ifname} delete {ntuple_id}")
  
- 	for (i = 0; i < sp->nr_acks; i++) {
- 		if (acks[i] == RXRPC_ACK_TYPE_ACK) {
-
+     # Test the main context
+-    cnts = _get_rx_cnts(cfg)
+-    GenerateTraffic(cfg, port=port).wait_pkts_and_stop(20000)
+-    cnts = _get_rx_cnts(cfg, prev=cnts)
++    attempts = 3
++    for attempt in range(attempts):
++        cnts = _get_rx_cnts(cfg)
++        GenerateTraffic(cfg, port=port).wait_pkts_and_stop(20000)
++        cnts = _get_rx_cnts(cfg, prev=cnts)
++        if sum(cnts[:2]) >= 7000 and sum(cnts[2:4]) >= 7000:
++            break
++        ksft_pr(f"Skewed queue distribution, attempt {attempt + 1}/{attempts}: " + str(cnts))
+ 
+     ksft_ge(sum(cnts[ :4]), 20000, "traffic on main context: " + str(cnts))
+     ksft_ge(sum(cnts[ :2]),  7000, "traffic on main context (1/2): " + str(cnts))
+-- 
+2.53.0-Meta
 
