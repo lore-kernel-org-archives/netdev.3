@@ -1,263 +1,116 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EAA830E82D
-	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 15:28:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40144353A63;
+	Thu,  2 Jul 2026 15:33:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783006129; cv=none; b=MAnVUTgUxqLOM6bFu9RUVNArdKBdirFgCSvQw9QoWktuQ43mi6X4faPxUmTHG7HfBhfRNRt4hljIMYbjH7y1yBhlyjhykmF6ZkT1Wht3kwZk1PNJ6wJMAsA8eVHpPyJJjy7WyieuuF+7vxyu24erB0PYMbz+LScHSxsLxwyZn3E=
+	t=1783006439; cv=none; b=HtMNBBoPYWEJa5s17E0QrvbhpPIhqmbO0Nej75kbpO9ZZL10ffNSH0z0AJw0QHqBuqchdy+VjQ8wQFUdwUTfeBfwE/NxWlZHVD6UBDPzVmC/qiq/+INCD05rNxQzlxZORcB2ZsvYFzwguKjQ8B96GbZwkJdjmFcNE2QHkMV/Ee8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783006129; c=relaxed/simple;
-	bh=dYXESmoZyq6+W/erTtepBlbqYIfMAToFJFCgX3m7wrc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Tfp/tq5yGN0sYb0qak67My/swrZjOXZIAai/r4+sSz9wAU/EpDv2gYzLZEAkE8pGa0pXccjmTEXs9DzF/rfC/bW1LiR4loQVPvpVv7axoJMUsDBM57bH1GIwIbx2YwCidOLblYXB7AkIpm8zhlj3xf/1MzFEKj3gdE6rcEubQOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jvD+HDCJ; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1783006439; c=relaxed/simple;
+	bh=8J7w6KtvUb8J1E7AFJuEuF9F19XQEBruHwij1pMuyQA=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=AXmlVpxyvx0ip8f3ulfvpOpMd0nU6DdGoKR3+WpjNPBq2hIqlU5dPa0+gRL2pJ99Ed6p72IFPJVzNbvHh7yPrtXv7CD7kbh3Ahe8RTNvfr0ysNjJb8FCa2rqS3F/HfdJJYdwkZCXmKJxDBXr5KraRSdLb/R3DVGaQiKiC1SP9aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QtkK/2ff; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jvD+HDCJ"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2ca7aaa4b85so15030285ad.3
-        for <netdev@vger.kernel.org>; Thu, 02 Jul 2026 08:28:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783006127; x=1783610927; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=nX55HcCIgXeNDSs6UhoDWW9a/lSkFkcblQdBU0BYucI=;
-        b=jvD+HDCJGczKv8ZM9jkgbyYuxM03yIhPpFsU4G2dvNJx1mvPTtnbm8rUj7lDsRW0H+
-         0MyQTYYqQVljo9zK7QdhFSP3mX0ev1g7o6+BXXIIct0khnNc4GxWI/W/jzhfxkQvdumA
-         6dMl68Q3WDFA/qftxnOsv4F48Ha+O3qX5TaEgIXfmAcGjtwHc+fZI2W0RuZCwRcUnPJU
-         dbqseeEcXfwuJqH9fSHY7ej0vBXrd3+LL6KfsjEZxSsG38Y5wJNY/fCseq6MEM+itM+A
-         2iY4+drpCBic0uP59lvm8j2ksvoVgvcDhaUljS2YvTVYEo5cGZJ2e9DS1Xp0K3SYxzWf
-         MmNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783006127; x=1783610927;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=nX55HcCIgXeNDSs6UhoDWW9a/lSkFkcblQdBU0BYucI=;
-        b=Xs56YpMFYVIxMfDl/WPdgDru3EhSBpjDGaRrmcGjuPuOHGm7rIVDLoA4mP70MDJ+vM
-         fZnWSsb0ZdmTaNnigDRCuk82upsRDKa+PuerGgbXKV1VsEXl7K3yq5fPoVdZTCDH37De
-         bHEeErOLI81aAIrhPCKkwHqt6vjeJfBvCj5Ni4tc2qLsR+OI64NZ92A84f2L/dWNxkUi
-         RU4RBxF+eOhQCXSIeO4py8qzrtudVXlzkV/jTXAK8ZtrUQ+WeM5rLv8DR/qflRYfnQ5j
-         B6Hmv/oX0F5KSCucYF0+ovdtleHIfMfP0iu8ssHdBmbXTsJ8VZhoL5yrH5X53Bv2G63/
-         NqTg==
-X-Forwarded-Encrypted: i=1; AHgh+RrDQQO7k6kc/GZAaQ45wysaDv79goVUHJWXo3ho8P7ajw1G3dSNsurYMFQcZk7QFbVtGOmQxWY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YweU067cC0BJUQ3yg7Hv5FxceNoaBRhitNiOP1onOUxr32NDcqe
-	SqLG6+QiXBmB5zRIYHfXCIwpT0A6+MMYzA2PoUHVns8j3LhlwwM3/P9o
-X-Gm-Gg: AfdE7cmyi7f98GOTmTT7hqX8oGCH9P7PwZtqwGyyZIGH+CM1wr0D7JMA/oR6+FXf87n
-	Vph/c2QHm1fMttuOsMOMrkKsLNI1xV7+VL/4oBlhvACVzWtVA9g1v4b1noqVsnb/Rivz8hRGZCs
-	QKl9mUkxiHEOzdAEWFqjFLUbUh646KfzG+Wt/w5A/hdtCLE5wESWCH3E1ZOk4UKxjCN4IbqOHDG
-	pMAN5q9nUK0+/X4lACkMiQ3WpPKKm9KBg73B1IS0yKsvIM2+Z/YKSvoLr/M1JkgCdwNxfxaJIPw
-	uPze4ELteUFMlh2BnPdbsSu7Zya2hT2vemU6Ibb4m9hdq/ENWFdauVftW8AVrxjwPnZooKkU904
-	3VUXBFtL2DPN7tKARXK8MAP6WAw4xWdAEAO+XYW2zLr4mKSsIwhntCLHQjIG9+kkGvNcuE9Zxft
-	myudeLNSG5eWTxJGiCeJf8J+ugm5I=
-X-Received: by 2002:a17:903:37d0:b0:2ca:660:b1d with SMTP id d9443c01a7336-2ca9114dfddmr56931265ad.11.1783006126637;
-        Thu, 02 Jul 2026 08:28:46 -0700 (PDT)
-Received: from localhost.localdomain ([202.8.105.115])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ca9a9d0393sm15561675ad.42.2026.07.02.08.28.40
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 02 Jul 2026 08:28:45 -0700 (PDT)
-From: Jemmy Wong <jemmywong512@gmail.com>
-To: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QtkK/2ff"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E62C41F000E9;
+	Thu,  2 Jul 2026 15:33:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783006437;
+	bh=51rouF56EmU1j9L8gb1If6ofMiucZZpjzo+NCXwNTJw=;
+	h=Date:From:To:Cc:Subject;
+	b=QtkK/2ffNtrEZJFd/RL+k7BkglsnSrZMu4Ab9zAfyDzxoRt9EYyKBUpc0Mz1+Q5v3
+	 Ng/ApS9bP44iUSP4e/Ty+xu5pEGJ+SV6mgbly9LA8Qk01uIA3RceGiLSMRAjEYM5c4
+	 vuJWX0j0pCMAED4QXGE30pd/Bx4D09/3y+QqfX32wYV0nhFansq8QojwPJ2Pcbs69V
+	 9wkSJ2vK/9L+IaXrmcGGU43oT58PuUik1F04lb+l3nUHa1INZhF1G0t7urSypJ2Q0R
+	 32xWBXHgkWvAkY3eYI8r3zBSKscG4nOsxmhpbPBQqgUZe7yNrP/aCn8+vAj6gPs9as
+	 5nEjUkZKSXHgQ==
+Date: Thu, 2 Jul 2026 16:33:53 +0100
+From: Mark Brown <broonie@kernel.org>
+To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org
-Cc: Simon Horman <horms@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Stanislav Fomichev <sdf.kernel@gmail.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Krishna Kumar <krikku@gmail.com>,
-	Jemmy Wong <jemmywong512@gmail.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] net/rps: consolidate RPS dispatch into netif_rps() helpers
-Date: Thu,  2 Jul 2026 23:28:30 +0800
-Message-ID: <20260702152830.39065-1-jemmywong512@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	Networking <netdev@vger.kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>,
+	David Christensen <drc@linux.ibm.com>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Next Mailing List <linux-next@vger.kernel.org>,
+	Matthew Wilcox <willy@infradead.org>
+Subject: linux-next: manual merge of the net-next tree with the vfs-brauner
+ tree
+Message-ID: <akaE4dbtwZthgqJc@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ifnVYB9nS3UqU3Vx"
+Content-Disposition: inline
 
-From: "Jemmy Wong" <jemmywong512@gmail.com>
 
-The RPS steering logic in netif_rx_internal(), netif_receive_skb_internal()
-and netif_receive_skb_list_internal() was open-coded three times, each with
-its own #ifdef CONFIG_RPS block and manual rcu_read_lock()/unlock() pairs.
+--ifnVYB9nS3UqU3Vx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Factor it into two helpers, netif_rps() for the single-skb path and
-netif_rps_list() for the list path, and switch the callers to
-guard(rcu)/scoped_guard(rcu). A new internal NET_RX_UNHANDLED sentinel lets
-a helper report "RPS did not take this skb" so the caller falls back to the
-local enqueue / __netif_receive_skb() path; it never escapes to callers.
+Hi all,
 
-netif_rps_list() keeps the early static_branch_unlikely(&rps_needed) bail
-out so the list is not needlessly walked and re-spliced when RPS is
-compiled in but disabled.
+Today's linux-next merge of the net-next tree got a conflict in:
 
-No functional change intended.
+  MAINTAINERS
 
-Signed-off-by: Jemmy Wong <jemmywong512@gmail.com>
----
- include/linux/netdevice.h |  5 ++-
- net/core/dev.c            | 94 +++++++++++++++++++--------------------
- 2 files changed, 48 insertions(+), 51 deletions(-)
+between commit:
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 9981d637f8b5..c265b78082e3 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -93,8 +93,9 @@ void netdev_set_default_ethtool_ops(struct net_device *dev,
- void netdev_sw_irq_coalesce_default_on(struct net_device *dev);
+  969076f31bf63 ("efs: Remove EFS")
 
- /* Backlog congestion levels */
--#define NET_RX_SUCCESS		0	/* keep 'em coming, baby */
--#define NET_RX_DROP		1	/* packet dropped */
-+#define NET_RX_UNHANDLED	-1
-+#define NET_RX_SUCCESS		0
-+#define NET_RX_DROP		1
+=66rom the vfs-brauner tree and commit:
 
- #define MAX_NEST_DEV 8
+  eb56577ae9a5a ("ehea: remove the ehea driver")
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 4b3d5cfdf6e0..259f8c8e5657 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -5426,6 +5426,38 @@ static int enqueue_to_backlog(struct sk_buff *skb, int cpu,
- 	return NET_RX_DROP;
- }
+=66rom the net-next tree.
 
-+static inline int netif_rps(struct sk_buff *skb)
-+{
-+#ifdef CONFIG_RPS
-+	if (static_branch_unlikely(&rps_needed)) {
-+		struct rps_dev_flow voidflow, *rflow = &voidflow;
-+		int cpu = get_rps_cpu(skb->dev, skb, &rflow);
-+
-+		if (cpu >= 0)
-+			return enqueue_to_backlog(skb, cpu, &rflow->last_qtail);
-+	}
-+#endif
-+	return NET_RX_UNHANDLED;
-+}
-+
-+static inline void netif_rps_list(struct list_head *head)
-+{
-+#ifdef CONFIG_RPS
-+	struct sk_buff *skb, *next;
-+	LIST_HEAD(undo_list);
-+
-+	if (!static_branch_unlikely(&rps_needed))
-+		return;
-+
-+	list_for_each_entry_safe(skb, next, head, list) {
-+		skb_list_del_init(skb);
-+		if (netif_rps(skb) == NET_RX_UNHANDLED)
-+			list_add_tail(&skb->list, &undo_list);
-+	}
-+	list_splice_init(&undo_list, head);
-+#endif
-+}
-+
- static struct netdev_rx_queue *netif_get_rxqueue(struct sk_buff *skb)
- {
- 	struct net_device *dev = skb->dev;
-@@ -5695,33 +5727,20 @@ EXPORT_SYMBOL_GPL(do_xdp_generic);
+I fixed it up (see below) and can carry the fix as necessary. This
+is now fixed as far as linux-next is concerned, but any non trivial
+conflicts should be mentioned to your upstream maintainer when your tree
+is submitted for merging.  You may also want to consider cooperating
+with the maintainer of the conflicting tree to minimise any particularly
+complex conflicts.
 
- static int netif_rx_internal(struct sk_buff *skb)
- {
--	int ret;
-+	int ret = NET_RX_UNHANDLED;
-+	unsigned int qtail;
-
- 	net_timestamp_check(READ_ONCE(net_hotdata.tstamp_prequeue), skb);
-
- 	trace_netif_rx(skb);
-
--#ifdef CONFIG_RPS
--	if (static_branch_unlikely(&rps_needed)) {
--		struct rps_dev_flow voidflow, *rflow = &voidflow;
--		int cpu;
--
--		rcu_read_lock();
--
--		cpu = get_rps_cpu(skb->dev, skb, &rflow);
--		if (cpu < 0)
--			cpu = smp_processor_id();
-+	scoped_guard(rcu)
-+		ret = netif_rps(skb);
-+	if (ret != NET_RX_UNHANDLED)
-+		return ret;
-
--		ret = enqueue_to_backlog(skb, cpu, &rflow->last_qtail);
-+	ret = enqueue_to_backlog(skb, smp_processor_id(), &qtail);
-
--		rcu_read_unlock();
--	} else
--#endif
--	{
--		unsigned int qtail;
--
--		ret = enqueue_to_backlog(skb, smp_processor_id(), &qtail);
--	}
- 	return ret;
- }
-
-@@ -6389,21 +6408,12 @@ static int netif_receive_skb_internal(struct sk_buff *skb)
- 	if (skb_defer_rx_timestamp(skb))
- 		return NET_RX_SUCCESS;
-
--	rcu_read_lock();
--#ifdef CONFIG_RPS
--	if (static_branch_unlikely(&rps_needed)) {
--		struct rps_dev_flow voidflow, *rflow = &voidflow;
--		int cpu = get_rps_cpu(skb->dev, skb, &rflow);
-+	guard(rcu)();
-+	ret = netif_rps(skb);
-+	if (ret != NET_RX_UNHANDLED)
-+		return ret;
-
--		if (cpu >= 0) {
--			ret = enqueue_to_backlog(skb, cpu, &rflow->last_qtail);
--			rcu_read_unlock();
--			return ret;
--		}
--	}
--#endif
- 	ret = __netif_receive_skb(skb);
--	rcu_read_unlock();
- 	return ret;
- }
-
-@@ -6421,23 +6431,9 @@ void netif_receive_skb_list_internal(struct list_head *head)
- 	}
- 	list_splice_init(&sublist, head);
-
--	rcu_read_lock();
--#ifdef CONFIG_RPS
--	if (static_branch_unlikely(&rps_needed)) {
--		list_for_each_entry_safe(skb, next, head, list) {
--			struct rps_dev_flow voidflow, *rflow = &voidflow;
--			int cpu = get_rps_cpu(skb->dev, skb, &rflow);
--
--			if (cpu >= 0) {
--				/* Will be handled, remove from list */
--				skb_list_del_init(skb);
--				enqueue_to_backlog(skb, cpu, &rflow->last_qtail);
--			}
--		}
--	}
--#endif
-+	guard(rcu)();
-+	netif_rps_list(head);
- 	__netif_receive_skb_list(head);
--	rcu_read_unlock();
- }
-
- /**
+diff --cc MAINTAINERS
+index 801a4809b918a,ee4ee7b8e9470..0000000000000
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@@ -9495,11 -9493,11 +9495,6 @@@ L:	linux-fbdev@vger.kernel.or
+  S:	Maintained
+  F:	drivers/video/fbdev/efifb.c
+ =20
+- EHEA (IBM pSeries eHEA 10Gb ethernet adapter) DRIVER
+- L:	netdev@vger.kernel.org
+ -EFS FILESYSTEM
+--S:	Orphan
+- F:	drivers/net/ethernet/ibm/ehea/
+ -W:	http://aeschi.ch.eu.org/efs/
+ -F:	fs/efs/
 --
-2.25.1
+  ELM327 CAN NETWORK DRIVER
+  M:	Max Staudt <max@enpas.org>
+  L:	linux-can@vger.kernel.org
+
+--ifnVYB9nS3UqU3Vx
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmpGhOAACgkQJNaLcl1U
+h9AwDAgAhD92WOcGeyi+KeFhancmA8auGHar+qpwCDfZkJFTgIuggEKbGA0jkcum
+4YrhDI1QqySzpxs58wiutqF/mU4BUl8pjcQfXQzuKcgqHWH+lG4LCe3uVjQ34L+4
+dqjKb6kGtt8ZnltOVuWQHcUfZWYmyK5fa2Q/IZuMyzgiJRAPKNK3gu7QTMVz7drl
+YS526zmQjWB+L4XAH51aQiiGHHp9arvmtvtpGYTSNhu3Wsj/3lwUgiFmABBs2Oi2
+NXghZO3+HIOIw3+BmiF0cED927o+y2sEudnjY6XxT01vVxJNEUC7vIY+2EIYoN3y
+D2HB8pgPxWHe//VY7htjlJ8ILrETAQ==
+=UVzZ
+-----END PGP SIGNATURE-----
+
+--ifnVYB9nS3UqU3Vx--
