@@ -1,209 +1,185 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 794F13C0A1B
-	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 10:10:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E5D3C1F26
+	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 10:11:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782987055; cv=none; b=una/u/TFqZ3B8/V/7EQ3wTtTSpTCxlkzyZyDtZrrhOTOdRgyHk5xttj1ybAYtJJxWaRdGgVudJZihCoYCVFXIqFwDD5DF+mfvyv6GIQbEidI9CGCq5rlXlrzevH3bFgH3Xs8+3OyEBzC3cWr5ILvfS2GNc2i0QMVM3Tqg0HFcCs=
+	t=1782987071; cv=none; b=BCHbQdwqpzj9mEFGhaDDNRWJ9p933jWTiG6uEV/ZcEKP4TUcQ2mthuQNlDH66vywVvhopefZBo/Prz3emDvaGZr2cYInhgHwbTd/NyUJQ6f7C1+gXN3jhGfaZLKp8Z5Cg2BqHL1lavFX8AgzLpWI6n+CNzgI6eHvSt1oHoeofHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782987055; c=relaxed/simple;
-	bh=fBCPbCEt6IRbt++TcIaQzKwqQquUr/Ojx7GQcVJ78RY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FV5YyRCC450oaMS6eKT7SxZw8rH/+WrYUZnvaRH0DFen8r+SBIadDYXwawQUNdwEPoV5UNDqZaIZ8qS7OyFPQeDq4qY7xPFHBxheyjqvr1P+jMVWFwYSPodU+6LD1TzpvEq+civhhZA/Oekw1mRJe+Vts6JX82OOrF3u7qWzjsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YaethcaP; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1782987071; c=relaxed/simple;
+	bh=ikk1fuxsPajwPBSmiBJUt4APtxDWqqLCg+u79Heljkc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=W+V0IG7CqiZxCVAf/VLmtYfAvw5/w7Qsr5KFXc2NFMJ5gtAZltmeR2ok6nLdHy52SfqaNNDpTTG0QnXxdlxhHFYcqn/FPuEMpADyjgN7551YRqhkqhYWbJlyHsUL3mElyG5t+/hqSj59M8tpAWiumTiJ9VLM3+YFkuqHEKziNsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Ne+i796L; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=B1FeCalO; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=f6hBD1pY; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=4Bt5iqpv; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YaethcaP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782987053;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6XQvYBxzq9cA9EnRdG58KTop6kEZAUb/md9ghFS7/9s=;
-	b=YaethcaPRZ8UBq0V2TjyVTd3VScuUWZ7/IZWsAb1tvkKZR1lcnIBYoVmZQL+8NFmzdSWoU
-	4eDR8xu6eNE0PTGmJU22RRIm2mmtH2qgisUAc4DNjLIgGKZbpwQX7yd66U2OvWXEnsnAfd
-	uDzchuVghrZiHE7oE2DR2UJizn0OOmM=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-582-3pywi8uFM5ecYwVKJwpHbQ-1; Thu,
- 02 Jul 2026 06:10:50 -0400
-X-MC-Unique: 3pywi8uFM5ecYwVKJwpHbQ-1
-X-Mimecast-MFC-AGG-ID: 3pywi8uFM5ecYwVKJwpHbQ_1782987049
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Ne+i796L";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="B1FeCalO";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="f6hBD1pY";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="4Bt5iqpv"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B368E1944D20;
-	Thu,  2 Jul 2026 10:10:48 +0000 (UTC)
-Received: from gerbillo.redhat.com (unknown [10.44.48.252])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8E53536F09;
-	Thu,  2 Jul 2026 10:10:45 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
-To: jk@codeconstruct.com.au
-Cc: matt@codeconstruct.com.au,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	gregkh@linuxfoundation.org,
-	netdev@vger.kernel.org,
-	linux-usb@vger.kernel.org
-Subject: Re: [PATCH net-next 04/12] net: mctp: usblib: Move TX transfer processing to mctp-usblib
-Date: Thu,  2 Jul 2026 12:10:35 +0200
-Message-ID: <20260702101041.139249-1-pabeni@redhat.com>
-In-Reply-To: <20260630-dev-mctp-usb-1-1-v1-4-86a311fc67b7@codeconstruct.com.au>
-References: <20260630-dev-mctp-usb-1-1-v1-4-86a311fc67b7@codeconstruct.com.au>
+	by smtp-out2.suse.de (Postfix) with ESMTPS id EEABE75AE7;
+	Thu,  2 Jul 2026 10:11:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1782987068; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=nwBam1Mu5tQiZpwXSkkzPWsysU7mQvcSyfKYuwaMZd8=;
+	b=Ne+i796LZxQiRrOGulhlPmiw3LFuySz+/aExN+R5Yakfyk9X1qQzcstlEOtXQQKMg2wF7a
+	Ck1VLzdL7SyF8Zl1QPHJhxIQYo6YfoNLjiS1jIXF96F13yjjECX7StKltDo4sN1tCltnhM
+	MQi/VMigwn54stRloYOUTFnz8zR0xBw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1782987068;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=nwBam1Mu5tQiZpwXSkkzPWsysU7mQvcSyfKYuwaMZd8=;
+	b=B1FeCalOc0PYgDrQeoi5JtvQ39tnhqLI3dHAS/N2GtuvlCj0XwlI/eVkDldluzFjcdHaHY
+	duXgtMkxno+32GCg==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1782987067; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=nwBam1Mu5tQiZpwXSkkzPWsysU7mQvcSyfKYuwaMZd8=;
+	b=f6hBD1pY+0qf2IPSp614iwiEXww+cGK+6iFAqwPaq5r12xEobVCUpPDoFSdeJ69hVL4biE
+	mFlsUu7uuSgFWTf2RHbV4p5XlKWSjL/rC2wfg7cMxlk/G/WGK90Kkw261HliAkoJJ1sYj+
+	BtEnNW41Cuc2WtngaTtIdwoMXmyTcvQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1782987067;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=nwBam1Mu5tQiZpwXSkkzPWsysU7mQvcSyfKYuwaMZd8=;
+	b=4Bt5iqpvWkLSScfEvyNV6xR0a5W3dNuCjzn8ZFq/ybEzFQPMaHW1letMuWTAVHloBpdyzJ
+	MDDazEK+wBEsZMBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C2B54779AA;
+	Thu,  2 Jul 2026 10:11:07 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id b6c0LDs5RmpZJwAAD6G6ig
+	(envelope-from <iluceno@suse.de>); Thu, 02 Jul 2026 10:11:07 +0000
+From: Ismael Luceno <iluceno@suse.de>
+To: linux-kernel@vger.kernel.org
+Cc: Ismael Luceno <iluceno@suse.de>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	Tejun Heo <tj@kernel.org>,
+	Simon Horman <horms@verge.net.au>,
+	Julian Anastasov <ja@ssi.bg>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org (open list:IPVS),
+	lvs-devel@vger.kernel.org (open list:IPVS),
+	netfilter-devel@vger.kernel.org (open list:NETFILTER),
+	coreteam@netfilter.org (open list:NETFILTER)
+Subject: [PATCH v2 nf-next] ipvs: Move defense_work and est_reload_work to system_dfl_long_wq
+Date: Thu,  2 Jul 2026 12:10:50 +0200
+Message-ID: <20260702101100.24256-2-iluceno@suse.de>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
+X-Spam-Flag: NO
+X-Spam-Score: -2.80
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_ALL(0.00)[]
+X-Spam-Level: 
 
-From: AI Reviewer <ai@example.com>
+Under synflood conditions binding these handlers to system_long_wq may
+pin them to a saturated CPU.
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/
+We've observed improved throughtput on a DPDK/VPP application with this
+change, which we attribute to the reduced context switching.
+
+Neither handler has per-CPU data dependencies nor cache locality
+requirements that would prevent this change.
+
+Signed-off-by: Ismael Luceno <iluceno@suse.de>
 ---
-net: mctp: usblib: Move TX transfer processing to mctp-usblib
+CC: Marco Crivellari <marco.crivellari@suse.com>
+CC: Tejun Heo <tj@kernel.org>
 
-This change moves the TX path from mctp-usb into the mctp-usblib helper
-by splitting it into push, send, and complete steps so future packed
-transfers can carry multiple MCTP packets per USB transfer. The current
-implementation keeps a 1:1 mapping between packets and transfers, with no
-tx context persisting beyond a single send.
+Changes since v1:
+* Rebased on nf-next
+* Reworded commit message
 
-> diff --git a/drivers/net/mctp/mctp-usb.c b/drivers/net/mctp/mctp-usb.c
-> index 531b7c994afb..385350792dd4 100644
-> --- a/drivers/net/mctp/mctp-usb.c
-> +++ b/drivers/net/mctp/mctp-usb.c
-> @@ -29,90 +29,82 @@ struct mctp_usb {
+ net/netfilter/ipvs/ip_vs_ctl.c | 6 +++---
+ net/netfilter/ipvs/ip_vs_est.c | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-[ ... ]
-
-> @@ -220,7 +212,12 @@ static int mctp_usb_stop(struct net_device *dev)
->  	flush_delayed_work(&mctp_usb->rx_retry_work);
->  
->  	usb_kill_urb(mctp_usb->rx_urb);
-> +
-> +	spin_lock_irqsave(&mctp_usb->tx_lock, flags);
->  	usb_kill_urb(mctp_usb->tx_urb);
-> +	spin_unlock_irqrestore(&mctp_usb->tx_lock, flags);
-
-[Critical]
-Can usb_kill_urb() safely be called from under spin_lock_irqsave()?
-
-usb_kill_urb() starts with might_sleep() and then blocks on
-wait_event(usb_kill_urb_queue, urb->use_count == 0):
-
-drivers/usb/core/urb.c:usb_kill_urb() {
-    might_sleep();
-    ...
-    wait_event(usb_kill_urb_queue, atomic_read(&urb->use_count) == 0);
-    ...
-}
-
-With CONFIG_DEBUG_ATOMIC_SLEEP, would this trigger a
-"sleeping function called from invalid context" splat because tx_lock
-is held with IRQs disabled?
-
-There also appears to be a nested-lock concern with the URB completion
-handler taking the same tx_lock:
-
-mctp_usb_out_complete() {
-    ...
-    spin_lock_irqsave(&mctp_usb->tx_lock, flags);
-    mctp_usb->tx_urb = NULL;
-    spin_unlock_irqrestore(&mctp_usb->tx_lock, flags);
-    ...
-}
-
-The HCD giveback path needs to run the completion before urb->use_count
-drops to zero. If the completion is waiting for tx_lock held by the
-caller of usb_kill_urb(), and usb_kill_urb() is itself waiting for
-use_count to drop, can this deadlock?
-
-The next patch in the series ("net: mctp: usb: Allow for multiple urb
-submissions from a packet tx", 5cf1f88ce49a) appears to remove this
-lock-wrapped usb_kill_urb() in favour of usb_kill_anchored_urbs()
-called outside the lock — should the fix be folded into this patch
-instead?
-
-> +
-> +	mctp_usblib_tx_cancel(&mctp_usb->tx, dev);
->  
->  	return 0;
->  }
-
-[ ... ]
-
-> diff --git a/drivers/net/mctp/mctp-usblib.c b/drivers/net/mctp/mctp-usblib.c
-> index 9b86eb4310ce..56eca496bbe4 100644
-> --- a/drivers/net/mctp/mctp-usblib.c
-> +++ b/drivers/net/mctp/mctp-usblib.c
-> @@ -162,6 +162,186 @@ void mctp_usblib_rx_cancel(struct mctp_usblib_rx *rx)
-
-[ ... ]
-
-> +/*
-> + * Completion for the ->send() op. This will update netdev stats and
-> + * free the tx context.
-> + *
-> + * Likely called from (atomic) URB completion context.
-> + */
-> +void mctp_usblib_tx_send_complete(struct mctp_usblib_tx_ctx *tx_ctx,
-> +				  struct net_device *dev, bool ok)
-> +{
-> +	mctp_usblib_tx_ctx_free(tx_ctx);
-> +}
-> +EXPORT_SYMBOL_GPL(mctp_usblib_tx_send_complete);
-
-[High]
-Does the body of mctp_usblib_tx_send_complete() match the comment
-above it?
-
-The comment says "This will update netdev stats and free the tx
-context", and the function takes dev and ok parameters, but the body
-only calls mctp_usblib_tx_ctx_free(tx_ctx) and never invokes
-mctp_usblib_tx_stats_update().
-
-Prior to this patch, mctp_usb_out_complete() updated counters for both
-success and failure:
-
-    case 0:
-        dev_dstats_tx_add(netdev, skb->len);
-        ...
-    case -ENOENT:
-    case -ECONNRESET:
-    case -ESHUTDOWN:
-    case -EPROTO:
-        dev_dstats_tx_dropped(netdev);
-        ...
-
-After this patch, mctp_usb_out_complete() defers stats to
-mctp_usblib_tx_send_complete(), which does not touch them. The only
-caller of mctp_usblib_tx_stats_update() is the synchronous push()
-failure path. Does this mean tx_packets, tx_bytes and the URB-failure
-tx_drops counters are no longer incremented for any successful or
-asynchronously-failed transmit?
-
-Was the intent to call mctp_usblib_tx_stats_update(tx_ctx, dev, ok)
-here before freeing the context?
-
-> +
-> +/* Prepare a skb for push() */
-> +static int mctp_usblib_tx_skb_prepare(struct sk_buff *skb)
-
-[ ... ]
--- 
-This is an AI-generated review.
-
+diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
+index bcf40b8c41cf..d7e669efab4d 100644
+--- a/net/netfilter/ipvs/ip_vs_ctl.c
++++ b/net/netfilter/ipvs/ip_vs_ctl.c
+@@ -235,7 +235,7 @@ #define DEFENSE_TIMER_PERIOD	1*HZ
+ 	update_defense_level(ipvs);
+ 	if (atomic_read(&ipvs->dropentry))
+ 		ip_vs_random_dropentry(ipvs);
+-	queue_delayed_work(system_long_wq, &ipvs->defense_work,
++	queue_delayed_work(system_dfl_long_wq, &ipvs->defense_work,
+ 			   DEFENSE_TIMER_PERIOD);
+ }
+ #endif
+@@ -290,7 +290,7 @@ #define DEFENSE_TIMER_PERIOD	1*HZ
+ 	atomic_set(&ipvs->est_genid_done, genid);
+ 
+ 	if (repeat)
+-		queue_delayed_work(system_long_wq, &ipvs->est_reload_work,
++		queue_delayed_work(system_dfl_long_wq, &ipvs->est_reload_work,
+ 				   delay);
+ 
+ unlock:
+@@ -5126,7 +5126,7 @@ do_ip_vs_get_ctl(struct sock *sk, int cmd, void __user *user, int *len)
+ 		goto err;
+ 
+ 	/* Schedule defense work */
+-	queue_delayed_work(system_long_wq, &ipvs->defense_work,
++	queue_delayed_work(system_dfl_long_wq, &ipvs->defense_work,
+ 			   DEFENSE_TIMER_PERIOD);
+ 
+ 	return 0;
+diff --git a/net/netfilter/ipvs/ip_vs_est.c b/net/netfilter/ipvs/ip_vs_est.c
+index ab09f5182951..78964aa861e9 100644
+--- a/net/netfilter/ipvs/ip_vs_est.c
++++ b/net/netfilter/ipvs/ip_vs_est.c
+@@ -243,7 +243,7 @@ #define pr_fmt(fmt) "IPVS: " fmt
+ 	/* Bump the kthread configuration genid if stopping is requested */
+ 	if (restart)
+ 		atomic_inc(&ipvs->est_genid);
+-	queue_delayed_work(system_long_wq, &ipvs->est_reload_work, 0);
++	queue_delayed_work(system_dfl_long_wq, &ipvs->est_reload_work, 0);
+ }
+ 
+ /* Start kthread task with current configuration */
