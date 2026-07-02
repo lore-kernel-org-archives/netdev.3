@@ -1,78 +1,35 @@
-Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CED447AF66
-	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 09:09:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 352883B52FA;
+	Thu,  2 Jul 2026 09:10:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782983358; cv=none; b=r2AALssDWr9AkXEUiD/4vi1ybNdJ1dRvego8Ek0ARWRJ1fAHtVnwHEkc1KIe9NrF+j+0i7+tiyxHU6Z++W98WF1/8a40t8aFQ2N/ZaJko0hu6z/sjp9SMJVvmki/itMSruufADANG0k/QsSL22XrCCQHysSFG5ji/vOeL2hVF9E=
+	t=1782983424; cv=none; b=fMuGaK8MNsKj+bUiTEXwKYSIGcXicOD0jEH3Y+OTXwj+kkCo9P//K6dzOdLepoSI7sgggOpV2LksOH69ehbg8YbHcO8eTm7a8SUyy9xgQWmtgR6iXINkslm1igknv09ONr9iAfXYUbpoRNWcOA0/XGr7whbNxkYknRizjsCvANQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782983358; c=relaxed/simple;
-	bh=X8BM8CFdrVr64i5oR/ogrqx0u/nHaSGxTJtuTfxxlCs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FOtd8oCaboeSymW7+sLZ3m0IZGVMSni/NSHlRhmi6h1XqUcRZxKJv3/FEna+FpTnAMXJ8bw/Q0eNK448ofh3gKj/yx/tmwKcwR3FWTMxwRmnYsaRqihgk2wZDXFfvMqfOp1u2Uoghw8sCNgSO4TELXp1KvyD2GhJSwi7YWXjk8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CGW8nOdr; arc=none smtp.client-ip=74.125.224.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1782983424; c=relaxed/simple;
+	bh=f0HIP3us4SwozEp0bJcD/ng4r23uDIDIXGDEEW2IdFw=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Nwiy37H45FbhTxSaCWvC/TySJlqhIVjxM9gvd48bmQNxXSj8gsAMatD4rVrI5PcJrHXMLbsucqL3tfH9nmZQxsINe5LCY/YzjhEvGTHntzQs6O+RQETQsBZUYQRNNVtVa7o5vZyrptciDFuSP3z+M+48C3IHJdK9Lpzx67e7n6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fFWMmVpC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CGW8nOdr"
-Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-664b05d408bso1447225d50.1
-        for <netdev@vger.kernel.org>; Thu, 02 Jul 2026 02:09:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782983355; x=1783588155; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=VyfsxJg+kjzT4zTmiCCR7ZMxnpzzdi+ueWMGl0wz2n0=;
-        b=CGW8nOdrNkl5R9l5ocBfKVrULkoa1PCL7fFWTBpOFIpF8jRFG3ecIG9h9VQkshfbHt
-         VW+xr1xiBuManQLIvQUx0psc6YJennW8Q9XVCZkyeeAre+44TCySgg4Vo49QyLCgDlRS
-         jcb3e6DKSoSY9FToWRxz10zUwluDAx8/rYXLdMgKYF952S1Bpyzz0EEZw3ihR6UN/EiP
-         A0e580izNddzHEqTddancua21f1vF3QxIzPSweSd7kpc3sC0MZh+U/JjTg8yQblXG8Z6
-         H5KXnQyGVRClmjRgRY2KrzGb+emW+FhffxUJIYOGfATNck0OnBBTxilSssA+CbPtVEE9
-         4+uQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782983355; x=1783588155;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VyfsxJg+kjzT4zTmiCCR7ZMxnpzzdi+ueWMGl0wz2n0=;
-        b=EB2Dn0KnF7Ji/uFTuV0OLLlmfwvIx8mk0WueP5BupfWBEFTQuzXD3NytwD+iLTaKH9
-         XYQ9R6hdh8CiBgR0vw7i+/ypGaBAkdsBMV5/KXlpcK5w4a6pGlGerpFZ/CBzb8M9UZLx
-         8oA6n6q7nZ5tAK6rS1zMMG/bfvAvpX6vzIWEkDsjnk4KKsyf39LiBJW8py7yuRqaWM+l
-         +hoKpKAtRL1yt+WwNN2KR4v4uiOM/KNiqHx965bg5wfWU7RMWNFaVwFAtvAM0Bchk/vn
-         +qMpRmvfEMRxpNAopZ0GLFXQ2wXFkEps3DXk6K6yJ5l2U3Chy9f6dAdG6zjnw01tu7Iw
-         9uJw==
-X-Gm-Message-State: AOJu0YxYHzwgk5XOUztho450ROho04zq8NtzDOy9r/muBrLp0h3jYD2J
-	yw9IUOuR3TM5HRLv1G+ZkcjPbKpca8mhEb7M7M68VvEphCE991LpFI1TYLYnYxjR/MA=
-X-Gm-Gg: AfdE7cnkl5gjzKjLnDyQYx10EdWv5wvJ4wj0xseMEjnPd/zPN2ATQvZ0/gIFlWqSgMX
-	H7XyeY/x5DKNn+VUE+DdavYfV/0n2IEgyrhwCimgjRtv3Fh/TU+cwoKymiiUs20PPYWCwwAY6cC
-	/GZSRX8sILDut9ykah7PD75O0IQbMDn6YgyfXnSSX6j1YDiOdjaYEVxi+hf1BrY05rbQYGJ6YfQ
-	Db9+85g8TqCDOJZQL4BzI2T2tv9veWo7Pcx+O3FPgzAq6+cW8h9AW2vCEYI2u2UwHLjhqn01kQp
-	G5aqMynMoBvljOE/obtozIEBs2ekcCe9C3qq/2i10WnFe31XtnlY37HbhF6G7aNbCidh59vqHY5
-	fpAHSRgI60JmXdG967r4JdQI1rV0zf/R0u/ybo4JhO4QcrXq8AmTEHLDdgOPcDhcgAQxa0QkoFC
-	qWkuXirUWlL7w0hQ==
-X-Received: by 2002:a53:ac83:0:b0:664:d671:bff4 with SMTP id 956f58d0204a3-665915ae8e7mr4442469d50.4.1782983355137;
-        Thu, 02 Jul 2026 02:09:15 -0700 (PDT)
-Received: from houminxi ([61.170.226.21])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66624026c3asm837487d50.13.2026.07.02.02.09.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jul 2026 02:09:14 -0700 (PDT)
-From: Minxi Hou <houminxi@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Minxi Hou <houminxi@gmail.com>,
-	aconole@redhat.com,
-	echaudro@redhat.com,
-	i.maximets@ovn.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	shuah@kernel.org,
-	dev@openvswitch.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH net-next] selftests/net/openvswitch: add SCTP flow key test
-Date: Thu,  2 Jul 2026 05:09:08 -0400
-Message-ID: <20260702090908.1253688-1-houminxi@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fFWMmVpC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3EE81F00A3D;
+	Thu,  2 Jul 2026 09:10:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782983422;
+	bh=Rs9tTgl5fyFLDqt1jibTXsWudB6xaSrmbkriQUZVpWY=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=fFWMmVpCL9pj3uETKXxJ/vRkWx70UXN9E0XzGIdB3XirLY14URJi2rAgBJARFIkIH
+	 UF4M8YFa4CmM5H3W9G5/xAgH7Fdpbz364/QnW1nbetuUBSngzKRj/thg64COdEF8Z2
+	 d+84aa9LK0xhnzmEW2L1pHyiiS8vv2SPrgt+B/6mJ+3aCQhnxjxl6rjju61OpZ1MId
+	 rgGyd9Czc7ug0mBGsC9bTwDsY5D0/nwKGWIfabGpgE0k8UPZMhHppcRDBovc2BsjNO
+	 1iSfAvv7jVTczs75Ac74Q/e7f8pYP4ssyEV1/TOj1sZWuGq5no/Lhzoxa4xFrapLhR
+	 i28FSSG1/r/rA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19B5B3926665;
+	Thu,  2 Jul 2026 09:10:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -80,152 +37,44 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v4] net: usb: rtl8150: handle link status read
+ failures
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178298340589.1537313.17929196143531791690.git-patchwork-notify@kernel.org>
+Date: Thu, 02 Jul 2026 09:10:05 +0000
+References: <20260630101216.10365-1-alhouseenyousef@gmail.com>
+In-Reply-To: <20260630101216.10365-1-alhouseenyousef@gmail.com>
+To: Yousef Alhouseen <alhouseenyousef@gmail.com>
+Cc: petkan@nucleusys.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ syzbot+9db6c624635564ad813c@syzkaller.appspotmail.com
 
-Register OVS_KEY_ATTR_SCTP in the flow key parser so that sctp()
-can be used in flow specifications. The ovs_key_sctp class already
-exists (with src/dst fields matching the TCP/UDP siblings) but was
-not wired into the parser, so the token was silently dropped and the
-kernel rejected the flow.
+Hello:
 
-Add test_sctp_connect_v4 exercising the SCTP flow key with
-port-specific matching: sctp(dst=4443) for client-to-server and
-sctp(src=4443) for server-to-client, mirroring the SCTP four-way
-handshake direction. The test verifies connectivity with flows
-installed, confirms failure after flow removal, then reinstalls
-and verifies recovery.
+This patch was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-Signed-off-by: Minxi Hou <houminxi@gmail.com>
----
- .../selftests/net/openvswitch/openvswitch.sh  | 92 +++++++++++++++++++
- .../selftests/net/openvswitch/ovs-dpctl.py    |  5 +
- 2 files changed, 97 insertions(+)
+On Tue, 30 Jun 2026 12:12:16 +0200 you wrote:
+> set_carrier() ignores the result of the USB control transfer and tests
+> the stack variable supplied as its receive buffer. If the device rejects
+> or aborts the request, that variable remains uninitialized and the driver
+> chooses an arbitrary carrier state.
+> 
+> Leave the existing carrier state unchanged when the link status cannot be
+> read. A transient USB error should not be treated as link loss.
+> 
+> [...]
 
-diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh b/tools/testing/selftests/net/openvswitch/openvswitch.sh
-index 2954245129a2..dd4d0b3bcc23 100755
---- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
-+++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
-@@ -32,6 +32,7 @@ tests="
- 	dec_ttl					ttl: dec_ttl decrements IP TTL
- 	flow_set				flow-set: Flow modify
- 	action_set				set: SET action rewrites fields
-+	sctp_connect_v4				sctp: SCTP flow key matching
- 	psample					psample: Sampling packets with psample"
- 
- info() {
-@@ -443,6 +444,97 @@ test_action_set() {
- 	return 0
- }
- 
-+# sctp_connect_v4 test
-+# - sctp(dst=4443) matches client-to-server INIT
-+# - sctp(src=4443) matches server-to-client INIT-ACK
-+# - remove flows and verify connection fails, reinstall and recover
-+test_sctp_connect_v4() {
-+	local t="test_sctp_connect_v4"
-+
-+	which ncat >/dev/null 2>&1 || return $ksft_skip
-+	modprobe -q sctp 2>/dev/null || return $ksft_skip
-+
-+	sbx_add "$t" || return $?
-+	ovs_add_dp "$t" sctp4 || return 1
-+
-+	info "create namespaces"
-+	for ns in client server; do
-+		ovs_add_netns_and_veths "$t" "sctp4" "$ns" \
-+		    "${ns:0:1}0" "${ns:0:1}1" || return 1
-+	done
-+
-+	ip netns exec client ip addr add 172.31.110.10/24 dev c1
-+	ip netns exec client ip link set c1 up
-+	ip netns exec server ip addr add 172.31.110.20/24 dev s1
-+	ip netns exec server ip link set s1 up
-+
-+	# ARP forwarding
-+	ovs_add_flow "$t" sctp4 \
-+	    'in_port(1),eth(),eth_type(0x0806),arp()' \
-+	    '2' || return 1
-+	ovs_add_flow "$t" sctp4 \
-+	    'in_port(2),eth(),eth_type(0x0806),arp()' \
-+	    '1' || return 1
-+
-+	# SCTP port matching: dst for request, src for reply
-+	ovs_add_flow "$t" sctp4 \
-+	    'in_port(1),eth(),eth_type(0x0800),ipv4(proto=132),sctp(dst=4443)' \
-+	    '2' || return 1
-+	ovs_add_flow "$t" sctp4 \
-+	    'in_port(2),eth(),eth_type(0x0800),ipv4(proto=132),sctp(src=4443)' \
-+	    '1' || return 1
-+
-+	echo "server" | \
-+		ovs_netns_spawn_daemon "$t" "server" \
-+				ncat --sctp -l 172.31.110.20 -vn 4443
-+	sleep 0.1
-+
-+	info "verify SCTP association with port-keyed flows"
-+	ovs_sbx "$t" ip netns exec client \
-+	    ncat --sctp -i 1 -zv 172.31.110.20 4443 \
-+	    || return 1
-+
-+	ovs_del_flows "$t" sctp4
-+
-+	info "verify connection fails without flows"
-+	ovs_add_flow "$t" sctp4 \
-+	    'in_port(1),eth(),eth_type(0x0806),arp()' \
-+	    '2' || return 1
-+	ovs_add_flow "$t" sctp4 \
-+	    'in_port(2),eth(),eth_type(0x0806),arp()' \
-+	    '1' || return 1
-+
-+	echo "server2" | \
-+		ovs_netns_spawn_daemon "$t" "server" \
-+				ncat --sctp -l 172.31.110.20 -vn 4443
-+	sleep 0.1
-+
-+	ovs_sbx "$t" ip netns exec client \
-+	    ncat --sctp -w 2 -zv 172.31.110.20 4443 \
-+	    >/dev/null 2>&1 \
-+	    && { info "FAIL: connection should fail without flows"
-+	         return 1; }
-+
-+	info "reinstall flows and verify recovery"
-+	ovs_add_flow "$t" sctp4 \
-+	    'in_port(1),eth(),eth_type(0x0800),ipv4(proto=132),sctp(dst=4443)' \
-+	    '2' || return 1
-+	ovs_add_flow "$t" sctp4 \
-+	    'in_port(2),eth(),eth_type(0x0800),ipv4(proto=132),sctp(src=4443)' \
-+	    '1' || return 1
-+
-+	echo "server3" | \
-+		ovs_netns_spawn_daemon "$t" "server" \
-+				ncat --sctp -l 172.31.110.20 -vn 4443
-+	sleep 0.1
-+
-+	ovs_sbx "$t" ip netns exec client \
-+	    ncat --sctp -i 1 -zv 172.31.110.20 4443 \
-+	    || return 1
-+
-+	return 0
-+}
-+
- # psample test
- # - use psample to observe packets
- test_psample() {
-diff --git a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-index e1ecfad2c03e..7cfc29ec7e59 100644
---- a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-+++ b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-@@ -1982,6 +1982,11 @@ class ovskey(nla):
-                 "icmp",
-                 ovskey.ovs_key_icmp,
-             ),
-+            (
-+                "OVS_KEY_ATTR_SCTP",
-+                "sctp",
-+                ovskey.ovs_key_sctp,
-+            ),
-             (
-                 "OVS_KEY_ATTR_TCP_FLAGS",
-                 "tcp_flags",
+Here is the summary with links:
+  - [net-next,v4] net: usb: rtl8150: handle link status read failures
+    https://git.kernel.org/netdev/net-next/c/8c9c5b9a6896
+
+You are awesome, thank you!
 -- 
-2.54.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
