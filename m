@@ -1,111 +1,120 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 372A935F179
-	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 18:05:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7743E32937A
+	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 18:05:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783015526; cv=none; b=nr7PURKyyjq3So23lujV4ANqkwvowCM/n6CoiA+Q41YXkqXquPunMZnoPJIzZEea6kjQ0d5MNsywW5oP6WjmB1NI7RmveMkJHBbahx2xRiEBomMLupGeNKqW1xp41TLQqFQ8CDNLi5hzTZEHnmI7Y9mlAMuiE1sLTN7lFVoXlIw=
+	t=1783015524; cv=none; b=EoaYOl+lveInZ5WcMM/UC7LcfqIfGcihym7pZDPfVlVXpIDJGHeW/OWukHbSTpJnm2ZRyQ67fQWa/vgivlTaRRye5rmbgNKVnCAvWRfrOFuU/pIOhRbA/jr7QRcnRTXW36TswUdNgU7xRmZQLo1R0RZzc5IZ4UohlOxwtPCLWI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783015526; c=relaxed/simple;
-	bh=eXe6gHrIdzx3AbyH6byQKRn33eQMYZps1YSv6k53jyI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qL6+wFTdhrO3uCSyefVlpt7sNjOFCS1HR7Q7uT9lfCsIumz8+niRzFuge4/A0/deLaB4PHSYhZbQ8e4AUV+tDTfdf5x+dMizCZJQKbo1UFE6PJKmK5/7BZg1ecRgHP77N+7bXLbORGVNccNxE395WiJTHaFFeFx5+kvod9ISADQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aZnIiu6C; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1783015524; c=relaxed/simple;
+	bh=ay6NJKkDQizb5EQ1lM5X3BJfLV8jZQnbR96BcuA03dY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mMG0XC9ygKFuoD4yf01fdLeICDXxsmxHcltalm3WdYjGD/wE4pCeMqDuIsrXC8H9SefApltaIfS7BkfLKaGtTIjzAfeeDJHF+Aa0UzWKYAUjY/efnYnxBLzPXqmawQKXB5qRyqr3OHoPi6NhZknoXiRTjH5MvTEXxB3jXt2G2IE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=NFYfDvoQ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=oKror4K3; arc=none smtp.client-ip=202.12.124.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aZnIiu6C"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-847a69ba83dso1265140b3a.2
-        for <netdev@vger.kernel.org>; Thu, 02 Jul 2026 11:05:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783015524; x=1783620324; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ngrWeAFGWZKAuNlc7TaCDTTI9bO1M1TDbhwW7lrz4r4=;
-        b=aZnIiu6CNcmCglYWhOCt2CMKuCKNv+GjcbVlbFL9L0Yb1V251gxgpYfRcBxtf7f/32
-         MEC1oQjd3ZyGIyPMGYYzkYLB6BqdLGHXbCA3c5fCLdvQDK0lFfoPZIdX/xElxqGe1GBA
-         yBeJ0MneHgFHU3RiQqh1+AJSB8AWO6sBOZ5VhsEW44yAEGyTpj9u5agEe59AAXcg/hV0
-         GHXQC1CY0BSpFlxrdJzkAVughLy/PG6sw4DRep37QOSax5qy/pdbQxacdGAPl3u/Ezgw
-         +2xKQeLercrDW+tMvORwRD7/e8y1Fhg5ad+bBwxyMf811oTC2nLbK2G8dEwbND9llT98
-         WPgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783015524; x=1783620324;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ngrWeAFGWZKAuNlc7TaCDTTI9bO1M1TDbhwW7lrz4r4=;
-        b=h1ozUrth95HyWLp4FNya7srvgiXqZN8xNS42caOzS5fkO2edsmPX5734vuH/pARgWS
-         JByhTizeHiNgjjm62Dpkeqqg1430CnAzhiov5jaoZ7S7zwmRGCCd3C+kE+F4gkBLo8Pa
-         2RJMR0uD97E/D5DKlPgzB640ztkl61mAdudWlc4tWOjP23KZKov6vnc6JDhIeqWwyGo1
-         ko0ce5DIChtAy5hvQrHVhVBYdOfIeQfbb05/2gG6AlGj70jOuok3sjWVMkk/7NBR0WLy
-         xhZa2obG49mS3vj/oZ2AT60oYz7MqK4HT2AcuIdrEwLOZQz8ykfu01jIw/J2im0ZmQ8y
-         fuMQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8w6t64TVmKQOTbZU76z66h1jt1MxA5c0tm8TdGMHkn3P8mtQRHvMfLblKhrNRepMzKHnu6HRk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywz2/6jsUJLMdhCf/iCeDfFAZ3v1bRKoG4Hjur9+zqXxkKu7Wh+
-	MsQAP0q6Q5NgTOqH/fC0YDiQRrwte0AkYQEDSVcHIHG3x8AoGKBDox60
-X-Gm-Gg: AfdE7cm4WfhxDEcAO2i6OOw/z2hhrJli7YNZiuLIIFox5sqn+yTRDY3VYWuy9jELrKv
-	aHj5PKCX4NkIAwCsV6daisLKt2klv7dzDTwkC+RMIWo5LjDdV62ZSde/LGPRaEVmkNbO0H+OhoH
-	Pe032JVDXQ0ISybNZmM8VoytFAcILkWYHkMiW7B0iP9ZMfCA8tqBaDdAneVpSe7EMkKSSiFnv2Y
-	AxD08pEjaWewNCZ++NVIGtbU4dLAfhooaTM1HzfCUZ2OoB5bmpiKETeKvrxq6QgcZnil5X5S4CS
-	levta+ATe6tSPAA4AGfNcxLJ78bHiOHi6D0su7OPDRarLua9if7wCJCsmwRbUfcoa5evo2J7AMT
-	SvJH0qySyK7zTFlFwGetOagBkb67eAMRS1Kix/IfRw+GJYodzIBhW4UsBm7ghrhrffkcJM5dhHc
-	dlL5aH1R0b+jS+LlkSIvswrfbPRush6UloVoRIZwc2l28sthhC
-X-Received: by 2002:a05:6a00:cc9:b0:845:e23f:108 with SMTP id d2e1a72fcca58-847c088ec3fmr6916190b3a.42.1783015524252;
-        Thu, 02 Jul 2026 11:05:24 -0700 (PDT)
-Received: from csl-conti-dell7858.ntu.edu.sg ([155.69.195.57])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847cb78d69csm1701877b3a.25.2026.07.02.11.05.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jul 2026 11:05:23 -0700 (PDT)
-From: Maoyi Xie <maoyixie.tju@gmail.com>
-To: Veerasenareddy Burru <vburru@marvell.com>,
-	Sathesh Edara <sedara@marvell.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2 0/2] octeon_ep, octeon_ep_vf: fix skb frags overflow in the RX path
-Date: Fri,  3 Jul 2026 02:05:16 +0800
-Message-Id: <20260702180518.2013324-1-maoyixie.tju@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="NFYfDvoQ";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="oKror4K3"
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfout.stl.internal (Postfix) with ESMTP id 967861D00086;
+	Thu,  2 Jul 2026 14:05:20 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Thu, 02 Jul 2026 14:05:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1783015520; x=
+	1783101920; bh=VQ37vJ23hrjvK+nRNASQiJ26vFguBJ/W07YUaAa5YI4=; b=N
+	FYfDvoQiyLzx2Wpl68G/u3FwwE7kCCvuvpFHE33FvqboFh2rVWWdKKrVCNtlZcAl
+	xrOPk1aiObkEPaAGwBKscsQPLggwDX0hfbdURVaxffdLrCpG5KXqVmt8BPAiF216
+	zj6la47jyU0xZEE1AG6s2CqaRXv2W3AtZ/jGWlOQsdwgUsEnIuR9AGzxAI0drYSp
+	mpQKYVwmxx/5ia9qOFRmRQ7bFraLSlDyw5rv8I2T1RSbyThIQ14sBfxXKvkQf59w
+	hvAUbgXdpZDzR9Wm3tQ5qkNZJCi3VoulTDi2K7iAOd/TI6d7u0jw2B+3DH6o9WkL
+	XMar0SBasw4zr5enMQR+Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1783015520; x=1783101920; bh=VQ37vJ23hrjvK+nRNASQiJ26vFguBJ/W07Y
+	UaAa5YI4=; b=oKror4K3HD876y4/6iaJ2uZDX6mkBjUmWZO5HK7+IuHItgDobbv
+	dObJfsCCBtv+Qguu8ALfs0uXTiu/X/2JHMZcvhKh8UiGEW1DTTcB7KGEzuWAcbap
+	ktZTGV9JRN9oS0FsGWOb+snlPZUDpAVntJHYtD33iuDKCsCZPRH+JM64PDz/w62S
+	j8iPGtoc9ABrEuy3raN3/dlOpAVAZ4ROaGOFP1TtcXkbzINhXx4CS44yp7MS5OvO
+	RDch7H5fl3dv8Vg7af4OuuzMsicwQt2aGNJ1/p/VyUuQcBDUbYxH7+/OVkTPWNE3
+	LE5bKdOxgTcOW6IDTpdHGxK6EBAVTqUkVjQ==
+X-ME-Sender: <xms:YKhGaoNNdppjSLHcjHETwOkSP0YM_hciefvpDL80d7OhbMSsqFLvvA>
+    <xme:YKhGauCtL6uH2N4cne4HQiu_TrjK7_U0MKUqBKi99ZK7-vh_-SbBWD8SpYotcvjY0
+    Hx3UEgxgjjW2T6jtcISkrNV2JbaocxTVgy65d4DXmOdGc_20tNN-ng>
+X-ME-Received: <xmr:YKhGalcGkdcMsOoC0TpgziiTCR7Xe0aVXZo7dSA8xBCyPKCfFekFvIs2ewM>
+X-ME-Proxy-Cause: dmFkZTE56gm/OCh4BAfqn5/e91qV1mIatQrhMrwmRutGnFI9cE+etz40wLwftfzG6YFwQV
+    QXtcgqpEG2UDB1bDzbXDSPvNYfn081NQ69Acn5fiPIHhfy2Ygr1CAhi3BM2fqjU0rfv906
+    dpbJesBnwSw0OsCjSu3rfME7QnqnAQfySO+nYe52WEgmXEUJXEvwI/9CBYxeJbDGA4+blB
+    RGrZ5Tuk8sSKVtGZnMNCafsN2gUjUiORcNU/FylVLK0P3x04nLVjLKqZV8sKKcaNr0IKbH
+    kkcEWeknXOrlNJU5D71MeONuPwyv8cpp/m719I5SubbS+K4C+jZHPvz9TbdF+Cupx9qgR3
+    hS3+YCuq/vaNeRhew2+egnd1ZNwi1iih3heX1E10mb5pw0QG7CIh1CGw8J0gl/d/nzZelj
+    4hQlFsbECwgzFLmlFVKOaZ3A9wivUp7cx3MNniBH7y3OKDOqaP+Pu3OYlYs4/pXpJilybz
+    Iej8PwMvpgf7F6D8d1N7VYC/WlBDfwEpFsaciTb+HXyTaqHflsVE9pX9cXffyTQpFlPwER
+    pB3/AAxqvR7y1jEoMqoSjo5UFTKHTeYa+WuE1DwYO0hEbtSvr9YmUkkz9AS16RlS2z95Lw
+    eexDB68zGs6eyuEtdyJp0A0SYSFeCy+27pGizUzyoYSJ0ZuOqZGl/KNL22xg
+X-ME-Proxy: <xmx:YKhGatP6jtPn2e3lhxOwH62cTwyLNl8y8wfjETPCWCbc-eB39egWvg>
+    <xmx:YKhGalLs_OXHwRWpRhwovIakA5lhjG73Fa8WE_ZtWebET21iUAJkPw>
+    <xmx:YKhGatJIUgGeKSTTfDl_vzuxc13y0aT6VPHKylnHVMoWQoqqaax4YA>
+    <xmx:YKhGav790D39VzHbtO-h-XFmdn4u4IWO5SUi4Ya3V8o2Da6hZVLgZA>
+    <xmx:YKhGagdGUqP7l_fXwZdz6GGVMtjSJOXjZiikxzqtKu1Fs-S14DpUuW2Q>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 2 Jul 2026 14:05:19 -0400 (EDT)
+Date: Thu, 2 Jul 2026 20:05:17 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Chuck Lever <cel@kernel.org>
+Cc: john.fastabend@gmail.com, kuba@kernel.org, davem@davemloft.net,
+	edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH net] net/tls: Consume empty data records in
+ tls_sw_read_sock()
+Message-ID: <akaoXcfamBp8_mYe@krikkit>
+References: <20260630191551.875664-1-cel@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260630191551.875664-1-cel@kernel.org>
 
-Both octeon_ep and octeon_ep_vf build an skb for a multi-buffer RX packet
-by adding one fragment per buffer_size chunk of a device-reported length.
-Neither bounds the count against MAX_SKB_FRAGS. A long packet yields about
-18 fragments, one past the default MAX_SKB_FRAGS of 17, so
-skb_add_rx_frag() writes past shinfo->frags[].
+2026-06-30, 15:15:51 -0400, Chuck Lever wrote:
+> A peer may send a zero-length TLS application_data record; TLS 1.3
+> explicitly permits these as a traffic-analysis countermeasure (RFC
+> 8446, Section 5.1). After decryption such a record has full_len ==
+> 0. tls_sw_read_sock() hands it to the read_actor, which has no
+> payload to consume and returns zero. The loop treats a zero return
+> as backpressure (used <= 0), requeues the skb at the head of
+> rx_list, and stops. rx_list is serviced head-first on the next
+> call, so the empty record is dequeued, fails the same way, and is
+> requeued again; every later record on the connection is blocked
+> behind it.
+> 
+> tls_sw_recvmsg() does not stall on this: a zero-length data record
+> copies nothing and falls through to consume_skb(). Mirror that in
+> the read_sock() path by recognizing an empty data record before
+> the actor runs, consuming it, and continuing.
+> 
+> Fixes: 662fbcec32f4 ("net/tls: implement ->read_sock()")
+> Signed-off-by: Chuck Lever <cel@kernel.org>
+> ---
+>  net/tls/tls_sw.c | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
 
-Each driver now checks the fragment count before it builds the skb and
-drops a packet that would not fit.
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
 
-v2:
- - move the check before (napi_)build_skb() so the driver does not build an
-   skb only to free it, per Maciej Fijalkowski.
- - the frag count check uses the same u16 length the fragment loop uses.
-The repeated linear/non-linear code in octeon_ep_vf that Maciej noted is a
-separate cleanup, left for net-next to keep this fix minimal.
-
-v1: https://lore.kernel.org/r/20260701112825.1653044-1-maoyixie.tju@gmail.com
-
-
-Maoyi Xie (2):
-  octeon_ep: fix skb frags overflow in the RX path
-  octeon_ep_vf: fix skb frags overflow in the RX path
-
- .../net/ethernet/marvell/octeon_ep/octep_rx.c |  9 +++++++++
- .../marvell/octeon_ep_vf/octep_vf_rx.c        | 20 +++++++++++++++++++
- 2 files changed, 29 insertions(+)
+I think tls_sw_splice_read() suffers from a similar issue (returning 0
+even though more data may be available). Sashiko agrees, and also
+found a few more pre-existing issues.
 
 -- 
-2.34.1
-
+Sabrina
