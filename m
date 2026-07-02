@@ -1,45 +1,44 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB8E2E54B6;
-	Thu,  2 Jul 2026 20:42:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D801433E74;
+	Thu,  2 Jul 2026 20:43:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783024941; cv=none; b=ooaLKB1l0YBjmVT0wkrhFyXsKv+NrjHIo2Vfl9FDSKWPMlIFaSj+J0j/U7j8CzggIvWtgCRfOw8hU6tDkXz/ulBHSGOEKgkIdvQMm4zO031tmxAxGmtvTDPeOWwT/ntls0PAUsrrw2KEg4NZqZVMu6sjFOw2xg29WaJylGCnK98=
+	t=1783024992; cv=none; b=k7C118m1TequN+N30F5dh4MeBJTCqROoM4PLuw0FiI7vmBszN5eG7ZYvFA5+dqERpMs75rl3uS4ewVW+htnw96Y1Ykx2CDqR5s8m6n4wyk48uVtMR8EF8tG7816xmqHOP0nJvJBfLUVTggf9e9ywSrs74aBs+3iki9w2uh0dCPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783024941; c=relaxed/simple;
-	bh=0K7O3V1Ye6c8TkK4J5fKCXasvKhmf6Q3+0dtbjAOAlU=;
+	s=arc-20240116; t=1783024992; c=relaxed/simple;
+	bh=2z9E1TaermI6oB6YCmVVw6+0GKLKmoenV71vgTpEZPY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Kcs/lpZo9EzJt8g8i2UtrHCMUffeV9U7MNYh4liOvgMbh9ntFW3XvG9je/JQtK0kp4Zdt4niD/GE0EisjihsHtK4u1+IOHg/jOc7uW3vRtKv6t4ZXGkdKVKaf6kaS98iYr2Po7YCwHglOFdtD7lkWO8XVoiv57KRwnIvWTcru6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=bR216o8Q; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=h0UzkbYQIcpWOjUiwBGh6YpwMM1Ba1CTTUlqDxTGp0QHcT9PxU1hJXmtWmeN0+7QfO+yxfnCckRCsExpCkUVa/ck5CALurBlRpoNQK0lgM6DTaLhDG5WB5SPUC0aVs39t4Cb3lzLS6NkHWHTj3C3ZzBJphnrlGRQA7lK9yIe7dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=KIn0SrjD; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="bR216o8Q"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="KIn0SrjD"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=nEh/4Jq/1g2wOt5TMRZMIQ6WyzWLCqNZKJvNkdPsiRE=; b=bR216o8QbXJ3gzhf773vs6to3f
-	/4MorbeElKkQWRWJYDACbzAe+fWhqFhy66+NXFMbt/Wp2TO328PBp1iqpyjfbPCu6Si5/RxCgH1Cm
-	nKbTq/OspEqfLD+RCsKIJxBTcnG2m2g4iUgV1svPoz4uUaClikt/W4DIr1qrNeyV60JQ=;
+	bh=0XnzerovzKYsbDQGBTbWNWVrTwreF16VtzdO22UwIsE=; b=KIn0SrjDx9KCuzPPsEBmJiGrzy
+	QZp6u/nKSNBTK3WhDzpm3MIsg48inh3lIL8JnMfTp5Q6qoBAdYHR2JDdY6kwtPbFwrPHpt5onCT/U
+	0utU269xOOYV+QTHoE4n/oeOpFEjhw5xh2QOyWKjnDZquWiwxN+a/sMLJh2yOx7ZbHG4=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1wfOEZ-00AR6L-LF; Thu, 02 Jul 2026 22:42:07 +0200
-Date: Thu, 2 Jul 2026 22:42:07 +0200
+	id 1wfOFV-00AR77-1n; Thu, 02 Jul 2026 22:43:05 +0200
+Date: Thu, 2 Jul 2026 22:43:05 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: ZhaoJinming <zhaojinming@uniontech.com>
-Cc: pabeni@redhat.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, horms@kernel.org, kuba@kernel.org,
-	linux-kernel@vger.kernel.org, madalin.bucur@nxp.com,
-	netdev@vger.kernel.org, sean.anderson@linux.dev
-Subject: Re: [PATCH v2 1/2] net: fman: move IRQ registration after init to
- prevent NULL deref and UAF
-Message-ID: <19877366-38df-4598-9892-3b295a5238f1@lunn.ch>
-References: <e1f8aec9-751b-4a51-ab09-ca3c37522e30@redhat.com>
- <20260702092815.1206704-1-zhaojinming@uniontech.com>
- <20260702092815.1206704-2-zhaojinming@uniontech.com>
+To: Rosen Penev <rosenp@gmail.com>
+Cc: netdev@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCHv2 net-next] net: dsa: qca8k: fall back to ethernet-ports
+ node name for LEDs
+Message-ID: <c34ea180-dd91-4ed7-a3fc-49dd66381a40@lunn.ch>
+References: <20260630015137.1591152-1-rosenp@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,21 +47,18 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260702092815.1206704-2-zhaojinming@uniontech.com>
+In-Reply-To: <20260630015137.1591152-1-rosenp@gmail.com>
 
-On Thu, Jul 02, 2026 at 05:28:15PM +0800, ZhaoJinming wrote:
-> read_dts_node() registers shared interrupt handlers via
-> devm_request_irq() with fman as dev_id. Two bugs exist in the
-> current code:
+On Mon, Jun 29, 2026 at 06:51:37PM -0700, Rosen Penev wrote:
+> The device tree binding allows both "ports" and "ethernet-ports" as
+> the container node name.  Try "ethernet-ports" when "ports" is absent
+> so that newer DTBs with the preferred name work.
+> 
+> This matches the handling already present in qca8k-8xxx.c
+> 
+> Assisted-by: opencode:big-pickle
+> Signed-off-by: Rosen Penev <rosenp@gmail.com>
 
-Please start a new thread with a new version of the patch. The CI
-system just thinks this is part of the discussion, not something it
-must test.
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-Please also read:
-
-https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
-
-and set the Subject: line correctly, etc.
-
-     Andrew
+    Andrew
