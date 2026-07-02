@@ -1,104 +1,100 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bregans-1.gladserv.net (bregans-1.gladserv.net [185.128.211.58])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393F33CA4B6
-	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 11:01:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0012E8B82;
+	Thu,  2 Jul 2026 11:08:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.211.58
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782990110; cv=none; b=mgM4ELy3w1Fnyr+YOxtSg9z9wint2ZkMaPNk1pkoFmCHG/SS2dFIcfqjCgj9QP4ckgrNkcvygTpaQT2OW4DJ6QjgA4LOyRglJ/Zyo9WU5kIH+qHRsX7K34E1SM8cdkWAXyImTUa2vqyQXpGrt8VAQQ7EKRf3RRHybFo2QuQUv8o=
+	t=1782990485; cv=none; b=A7+l78aLHAqWKbB5iHkDmrX2nT3t8Wf3Ju0vCxfU7QZpBgZkWEyOrcKDtMp78ZohrjAf6PlcwNpl6tlZdplYXa9tBxYcdOSA6QTQ2sIbUMKobpdGEBzjkv8EWJHrHDheb9IkF2iDdFL3OdwLaI/CIHF+U+MtBWGRxUvI7AgS0Cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782990110; c=relaxed/simple;
-	bh=LwEPgX1FY6tnbKgNNa9uz7DXSwqHQTt/mWky3yxefIA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=tsZtXEe/CSjn75q2BNOujmoCiECCdcdoMeia5eFcp6+Kw+OrWRdlz/wlZUmEWiVgQGbjghZXfPD+T77ejXuHNi5Apo4KVZLknyu0/MvVp3jvk2NGm/tMqV2XKUF6KnQtvE+w0ieQ5cbSvGbhvmdSH03MSxYmUJx3mQu4tdjXp5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=dsKrAud1; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="dsKrAud1"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c128cc012b4so69950766b.1
-        for <netdev@vger.kernel.org>; Thu, 02 Jul 2026 04:01:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1782990105; x=1783594905; darn=vger.kernel.org;
-        h=mime-version:message-id:date:user-agent:references:in-reply-to
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=LwEPgX1FY6tnbKgNNa9uz7DXSwqHQTt/mWky3yxefIA=;
-        b=dsKrAud1JIb9c4yWvHtVsMPm3dVUF8ZpguWPMx6ePTrx/iaXTI80WLLbHZzUce0yR5
-         Vgzbzh9FRB2/FkaPXoHNspLFbdw3kuG5mMJVRG4H+T6oyq2qgNd/FOFNCJQbjaEFGgpa
-         LOfkPpese5ABd9E7Hd4Rn4wQxthQZaFGZQhs5pgsovBBol+5knfxn2fwFOWyVmiQP714
-         kk6RKP9Nq+gUY9b8HyKnmNbMXUIQAijpLnVJqO6+8szCMOBjFp+nAD+H1GzD9QBIvdW0
-         cOX3NjJfZphGB+H6wxfzpMr9F96JkrpW2D49ewAabZdW0wcozQQrgR/xniHwb/FZSDDc
-         /uzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782990105; x=1783594905;
-        h=mime-version:message-id:date:user-agent:references:in-reply-to
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=LwEPgX1FY6tnbKgNNa9uz7DXSwqHQTt/mWky3yxefIA=;
-        b=lQqSLmyNkLCTTmWW/do52zwgbceYoF7A79AJXeT4NNeQI1pC7DgMgMQTQtB9O1PJD0
-         sKe1hE19Y/h/ciaGBhsZu3otdhSlnMo+eiRzhQgtUG6AlME718N+1GYkr8/mBhpbh+1K
-         QupXVp4cPggCus/EAXcXmseA2KGNROGQZZ7hZjs5VU/xMqrEQRJQIoJltC1DWm+Mg0Vc
-         pBVcRIhoe1jVBCXWyoZXcJlhm9ter+v+Fus94czDlcE7gaK74a8renjX6rkpyHWYvPS2
-         BjImZmdxecnaBi0Cuk9ePtG3lH5UWSv/ZQq6h2cDqXOCrwPQTeefhAs3azH0jfMTYTGv
-         kx+A==
-X-Forwarded-Encrypted: i=1; AHgh+RpoVGHhHI98H+y3MFox21CpDgm+kSfThv/vojEz3htFPFsx5yKqKO+PCKfC8SfD2n0qBoFyiyw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOEQcbHXLT/8cOezIwbV7QzCFW4tk/1WTZTjXPBd2jB2YH6xSm
-	BQoCNohlFD9yGEMYEnSRyor3l6yuVo0whEWJUMUpAk5ukOh2laqZ3dNnyMNb/P/K6SA=
-X-Gm-Gg: AfdE7clUTE1D3Q5zEV5bG8KGgNNemlxFWM+SMbQNuzS5qAa3MXgVdphjOtnnrSfz7+5
-	Qgg38flA1ytaznieGMQrHbP6OxJD/QcsDV2dkcl0ZHkCRdEuFJML4tSRGQgFDgbVR5QMTOHeWzK
-	XOHPnxoOELx2h7QBymN0zwPaGIxbishYbC+gHgSAPP2o/2YDO/+neTQJJuewESMgSdrHf/vBijr
-	l+jvwzBZpOLOeztUSqvBC9IS4Sa654P3cjOD8pdh6ZQ/zHhKkudxFifmcsIagHNVq2XYrfRb6sb
-	mqMyikfGJ34q6eGjO1Qtl1Zi/IzqrUqdzQgmjD2kY+ZGAFzwhwKW3Tk7lVbO5O2Y5Cu0K/CG7CB
-	BMhYolthm3YCc7y0G2ZL6zIyvSH3qe2aGcnKA2w9FcBs+54BulziJkMFYEvLYbqOqSHbqgR1oS/
-	wYl93XrWFlC6eEgWY=
-X-Received: by 2002:a17:907:3f1e:b0:c12:7b4f:cd5c with SMTP id a640c23a62f3a-c12a7b4b3f9mr274460366b.19.1782990105568;
-        Thu, 02 Jul 2026 04:01:45 -0700 (PDT)
-Received: from cloudflare.com ([104.28.21.182])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c12b60f5e1asm108533566b.27.2026.07.02.04.01.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jul 2026 04:01:45 -0700 (PDT)
-From: Jakub Sitnicki <jakub@cloudflare.com>
-To: Michal Luczaj <mhal@rbox.co>
-Cc: Alexei Starovoitov <ast@kernel.org>,  Daniel Borkmann
- <daniel@iogearbox.net>,  Andrii Nakryiko <andrii@kernel.org>,  Eduard
- Zingerman <eddyz87@gmail.com>,  Kumar Kartikeya Dwivedi
- <memxor@gmail.com>,  Martin KaFai Lau <martin.lau@linux.dev>,  Song Liu
- <song@kernel.org>,  Yonghong Song <yonghong.song@linux.dev>,  Jiri Olsa
- <jolsa@kernel.org>,  Emil Tsalapatis <emil@etsalapatis.com>,  Shuah Khan
- <shuah@kernel.org>,  John Fastabend <john.fastabend@gmail.com>,  Jiayuan
- Chen <jiayuan.chen@linux.dev>,  Eric Dumazet <edumazet@google.com>,
-  Kuniyuki Iwashima <kuniyu@google.com>,  Paolo Abeni <pabeni@redhat.com>,
-  Willem de Bruijn <willemb@google.com>,  "David S. Miller"
- <davem@davemloft.net>,  Jakub Kicinski <kuba@kernel.org>,  Simon Horman
- <horms@kernel.org>,  Cong Wang <cong.wang@bytedance.com>,
-  bpf@vger.kernel.org,  linux-kselftest@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  netdev@vger.kernel.org
-Subject: Re: [PATCH bpf v3 4/4] selftests/bpf: Fail unbound UDP on sockmap
- update
-In-Reply-To: <20260702-sockmap-lookup-udp-leak-v3-4-ff8de8782468@rbox.co>
-	(Michal Luczaj's message of "Thu, 02 Jul 2026 01:28:22 +0200")
-References: <20260702-sockmap-lookup-udp-leak-v3-0-ff8de8782468@rbox.co>
-	<20260702-sockmap-lookup-udp-leak-v3-4-ff8de8782468@rbox.co>
-User-Agent: mu4e 1.14.1; emacs 30.2
-Date: Thu, 02 Jul 2026 13:01:44 +0200
-Message-ID: <87wlvd1wpz.fsf@cloudflare.com>
+	s=arc-20240116; t=1782990485; c=relaxed/simple;
+	bh=NtwljrLY6p2ZueS5jksY4cMrkYyHa7GgXF7EIKbYhZk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aFnPrg1Za2yanCf6b4pa+xzbYkB6LNx2PIKrBjPaa7hFjbCNwXNKJoYwgPiqOoCyXWZcHEw3rs++4Nr3eVExTkpHjqrmqMSXBB8axCVJVM1S3bXJ4BHMyi1mCBIkHcuhv4W5c05Bn8+UmFnfM6tl+7mrDD6UG/ruzMDXVS/zYBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.211.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
+Date: Thu, 2 Jul 2026 13:07:47 +0200
+From: Brett Sheffield <bacs@librecast.net>
+To: Simon Schippers <simon.schippers@tu-dortmund.de>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, regressions@lists.linux.dev,
+	netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+	Tim Gebauer <tim.gebauer@tu-dortmund.de>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [REGRESSION][BISECTED] tun/tap & vhost-net: multi-threaded
+ network performance
+Message-ID: <akZGg96-Xu9VeGrw@karahi.librecast.net>
+References: <akVnoOYQOrt8k-Gu@karahi.librecast.net>
+ <20260701165359-mutt-send-email-mst@kernel.org>
+ <ef33f0a7-f0b7-4bc4-9263-10d2b480d717@tu-dortmund.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ef33f0a7-f0b7-4bc4-9263-10d2b480d717@tu-dortmund.de>
 
-On Thu, Jul 02, 2026 at 01:28 AM +02, Michal Luczaj wrote:
-> sockmap now rejects unbound UDP sockets. Adjust test_maps. While at it,
-> check socket()'s return value.
->
-> This effectively reverts commit c39aa2159974 ("bpf, selftests: Fix
-> test_maps now that sockmap supports UDP").
->
-> Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-> Signed-off-by: Michal Luczaj <mhal@rbox.co>
-> ---
+On 2026-07-02 09:24, Simon Schippers wrote:
+> On 7/1/26 22:56, Michael S. Tsirkin wrote:
+> > On Wed, Jul 01, 2026 at 09:16:48PM +0200, Brett Sheffield wrote:
+> >> TL;DR - Commit 1d6e569b7d0c0b2736636749e4be0a27f3cefcb3 causes
+> >> significant performance regressions with TAP interfaces and multithreaded
+> >> network code. Please revert.
+> >>
+> >>
+> >> Librecast is an IPv6 multicast library. One of the tests (0055) fails under
+> >> Linux 7.2-rc1. The test performs data synchronization over IPv6 multicast using a TAP
+> >> interface. This test has run successfully on every stable, LTS and mainline RC
+> >> released in the past year. Every kernel with my Tested-by has run this test.
+> >>
+> >> There have been a bunch of changes to MLDv2 so I started bisecting there, but
+> >> the culprit is actually 1d6e569b7d0c0b2736636749e4be0a27f3cefcb3 "tun/tap &
+> >> vhost-net: avoid ptr_ring tail-drop when a qdisc is present"
+> >>
+> >> Reverting this commit fixes the test.
+> >>
+> >> To eliminate my code and any multicast weirdness, I ran tests with iperf3
+> >> comparing the same host running 7.2-rc1 both with and without 1d6e569b7d0
+> >> reverted.
+> 
+> Thank you very much for your bisect!
+> 
+> As the author, I am sorry for that regression!
 
-Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
+No worries. That's why we test :-)
+
+> > - does it help to increase the tun queue size?
+> 
+> I agree, this would be great to know.
+> 
+> However, even then we must act. I am considering IFF_BACKPRESSURE
+> as a feature flag, defaulting to off. It would just enable/disable
+> the stopping logic in tun_net_xmit() and the waking logic
+> in __tun_wake_queue(). If disabled, it would result in the same logic
+> as before.
+> 
+> I could provide such a patch as [net] material.
+
+I'm going to make myself a strong cup of tea and dig into it a bit more here and
+will let you know if I find anything worth reporting.
+
+If you need me to try re-testing with specific settings or test a patch I'm
+happy to do so.
+
+Cheers,
+
+
+Brett
+-- 
+Brett Sheffield (he/him)
+Librecast - Decentralising the Internet with Multicast
+https://librecast.net/
+https://blog.brettsheffield.com/
