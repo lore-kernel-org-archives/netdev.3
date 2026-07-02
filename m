@@ -1,132 +1,104 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246C93C2BBA;
-	Thu,  2 Jul 2026 10:54:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393F33CA4B6
+	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 11:01:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782989669; cv=none; b=FUZjQjDIU6Ho/CE24Ck/DyOd5PsCJvv041c/aVK7NDoILYRkLLXc62Anhrx0+A482h0b3Ft56alWrXmf+MW+yOUtBinedDDcM8nOjvGTNPPKCUraZAlS93F5VTYCzBzyJzxRYcqbSX/niSNzjnK2Zi3dNT2T2+Oy9GJGqR0d60s=
+	t=1782990110; cv=none; b=mgM4ELy3w1Fnyr+YOxtSg9z9wint2ZkMaPNk1pkoFmCHG/SS2dFIcfqjCgj9QP4ckgrNkcvygTpaQT2OW4DJ6QjgA4LOyRglJ/Zyo9WU5kIH+qHRsX7K34E1SM8cdkWAXyImTUa2vqyQXpGrt8VAQQ7EKRf3RRHybFo2QuQUv8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782989669; c=relaxed/simple;
-	bh=SQaFlu2/+vnHwsMGbND9PirtCqaj2Vyqceq89Mu6Q4s=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=raOJIIIxYuRWZzqNIHIwiO75+CnoJK1EESrEmUFCmu9D84my7Xsh42VDpN3O8cdATq67YRIGsozdQlOFH8v7+Zj+WD/foSQZODJYtBMMhHaAauRGWKVQLvCAsRwtpcCWg/GmO9E+diazZH2tBtzMMiaSNCJBEme/P2nwRZkGlU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=YQ/oMU9g; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1782990110; c=relaxed/simple;
+	bh=LwEPgX1FY6tnbKgNNa9uz7DXSwqHQTt/mWky3yxefIA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=tsZtXEe/CSjn75q2BNOujmoCiECCdcdoMeia5eFcp6+Kw+OrWRdlz/wlZUmEWiVgQGbjghZXfPD+T77ejXuHNi5Apo4KVZLknyu0/MvVp3jvk2NGm/tMqV2XKUF6KnQtvE+w0ieQ5cbSvGbhvmdSH03MSxYmUJx3mQu4tdjXp5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=dsKrAud1; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="YQ/oMU9g"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A2CF7A47CA;
-	Thu,  2 Jul 2026 12:54:24 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1782989665; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=PLWQjlPt3Zj1Xo0h1ky6h63PhE9ufnEXlxieZ+G+DQ8=;
-	b=YQ/oMU9g3Jk6fBb5DiDCK7zjEBJ1Vke26zHGIYPOMM9rfLFAg8IGE93JZkN2gr4zAcJXcp
-	0F6fDpKGtn3AO5FpSxXUG/HR7eOPb++RuTjPUOvc81bSXPF6+TR2mTNjRWki13ycuXZO5c
-	fjDCXLdhK+gVLvwvUNyhJVu+rNbCyO6yJ9s7JPJ3Cx3FKXyjRR5aRIs595PMdnSde2DhaQ
-	GsQaCrxqM/ipFyABq9TVocjwWznpmMSN/yUpjTyKyTNuBSxWZxDJ+skmQBaRmRMCNdSkrn
-	ecNld3ErvMRnaqQRMCthwKDpyAkQ6/SQ+/vtF3QhTU+6Pt4fmv8kl5Vv+lT3nw==
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="dsKrAud1"
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c128cc012b4so69950766b.1
+        for <netdev@vger.kernel.org>; Thu, 02 Jul 2026 04:01:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1782990105; x=1783594905; darn=vger.kernel.org;
+        h=mime-version:message-id:date:user-agent:references:in-reply-to
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LwEPgX1FY6tnbKgNNa9uz7DXSwqHQTt/mWky3yxefIA=;
+        b=dsKrAud1JIb9c4yWvHtVsMPm3dVUF8ZpguWPMx6ePTrx/iaXTI80WLLbHZzUce0yR5
+         Vgzbzh9FRB2/FkaPXoHNspLFbdw3kuG5mMJVRG4H+T6oyq2qgNd/FOFNCJQbjaEFGgpa
+         LOfkPpese5ABd9E7Hd4Rn4wQxthQZaFGZQhs5pgsovBBol+5knfxn2fwFOWyVmiQP714
+         kk6RKP9Nq+gUY9b8HyKnmNbMXUIQAijpLnVJqO6+8szCMOBjFp+nAD+H1GzD9QBIvdW0
+         cOX3NjJfZphGB+H6wxfzpMr9F96JkrpW2D49ewAabZdW0wcozQQrgR/xniHwb/FZSDDc
+         /uzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782990105; x=1783594905;
+        h=mime-version:message-id:date:user-agent:references:in-reply-to
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=LwEPgX1FY6tnbKgNNa9uz7DXSwqHQTt/mWky3yxefIA=;
+        b=lQqSLmyNkLCTTmWW/do52zwgbceYoF7A79AJXeT4NNeQI1pC7DgMgMQTQtB9O1PJD0
+         sKe1hE19Y/h/ciaGBhsZu3otdhSlnMo+eiRzhQgtUG6AlME718N+1GYkr8/mBhpbh+1K
+         QupXVp4cPggCus/EAXcXmseA2KGNROGQZZ7hZjs5VU/xMqrEQRJQIoJltC1DWm+Mg0Vc
+         pBVcRIhoe1jVBCXWyoZXcJlhm9ter+v+Fus94czDlcE7gaK74a8renjX6rkpyHWYvPS2
+         BjImZmdxecnaBi0Cuk9ePtG3lH5UWSv/ZQq6h2cDqXOCrwPQTeefhAs3azH0jfMTYTGv
+         kx+A==
+X-Forwarded-Encrypted: i=1; AHgh+RpoVGHhHI98H+y3MFox21CpDgm+kSfThv/vojEz3htFPFsx5yKqKO+PCKfC8SfD2n0qBoFyiyw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOEQcbHXLT/8cOezIwbV7QzCFW4tk/1WTZTjXPBd2jB2YH6xSm
+	BQoCNohlFD9yGEMYEnSRyor3l6yuVo0whEWJUMUpAk5ukOh2laqZ3dNnyMNb/P/K6SA=
+X-Gm-Gg: AfdE7clUTE1D3Q5zEV5bG8KGgNNemlxFWM+SMbQNuzS5qAa3MXgVdphjOtnnrSfz7+5
+	Qgg38flA1ytaznieGMQrHbP6OxJD/QcsDV2dkcl0ZHkCRdEuFJML4tSRGQgFDgbVR5QMTOHeWzK
+	XOHPnxoOELx2h7QBymN0zwPaGIxbishYbC+gHgSAPP2o/2YDO/+neTQJJuewESMgSdrHf/vBijr
+	l+jvwzBZpOLOeztUSqvBC9IS4Sa654P3cjOD8pdh6ZQ/zHhKkudxFifmcsIagHNVq2XYrfRb6sb
+	mqMyikfGJ34q6eGjO1Qtl1Zi/IzqrUqdzQgmjD2kY+ZGAFzwhwKW3Tk7lVbO5O2Y5Cu0K/CG7CB
+	BMhYolthm3YCc7y0G2ZL6zIyvSH3qe2aGcnKA2w9FcBs+54BulziJkMFYEvLYbqOqSHbqgR1oS/
+	wYl93XrWFlC6eEgWY=
+X-Received: by 2002:a17:907:3f1e:b0:c12:7b4f:cd5c with SMTP id a640c23a62f3a-c12a7b4b3f9mr274460366b.19.1782990105568;
+        Thu, 02 Jul 2026 04:01:45 -0700 (PDT)
+Received: from cloudflare.com ([104.28.21.182])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c12b60f5e1asm108533566b.27.2026.07.02.04.01.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Jul 2026 04:01:45 -0700 (PDT)
+From: Jakub Sitnicki <jakub@cloudflare.com>
+To: Michal Luczaj <mhal@rbox.co>
+Cc: Alexei Starovoitov <ast@kernel.org>,  Daniel Borkmann
+ <daniel@iogearbox.net>,  Andrii Nakryiko <andrii@kernel.org>,  Eduard
+ Zingerman <eddyz87@gmail.com>,  Kumar Kartikeya Dwivedi
+ <memxor@gmail.com>,  Martin KaFai Lau <martin.lau@linux.dev>,  Song Liu
+ <song@kernel.org>,  Yonghong Song <yonghong.song@linux.dev>,  Jiri Olsa
+ <jolsa@kernel.org>,  Emil Tsalapatis <emil@etsalapatis.com>,  Shuah Khan
+ <shuah@kernel.org>,  John Fastabend <john.fastabend@gmail.com>,  Jiayuan
+ Chen <jiayuan.chen@linux.dev>,  Eric Dumazet <edumazet@google.com>,
+  Kuniyuki Iwashima <kuniyu@google.com>,  Paolo Abeni <pabeni@redhat.com>,
+  Willem de Bruijn <willemb@google.com>,  "David S. Miller"
+ <davem@davemloft.net>,  Jakub Kicinski <kuba@kernel.org>,  Simon Horman
+ <horms@kernel.org>,  Cong Wang <cong.wang@bytedance.com>,
+  bpf@vger.kernel.org,  linux-kselftest@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  netdev@vger.kernel.org
+Subject: Re: [PATCH bpf v3 4/4] selftests/bpf: Fail unbound UDP on sockmap
+ update
+In-Reply-To: <20260702-sockmap-lookup-udp-leak-v3-4-ff8de8782468@rbox.co>
+	(Michal Luczaj's message of "Thu, 02 Jul 2026 01:28:22 +0200")
+References: <20260702-sockmap-lookup-udp-leak-v3-0-ff8de8782468@rbox.co>
+	<20260702-sockmap-lookup-udp-leak-v3-4-ff8de8782468@rbox.co>
+User-Agent: mu4e 1.14.1; emacs 30.2
+Date: Thu, 02 Jul 2026 13:01:44 +0200
+Message-ID: <87wlvd1wpz.fsf@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 02 Jul 2026 12:54:24 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: =?UTF-8?Q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Cc: Conor Dooley <conor.dooley@microchip.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>, Russell
- King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Nicolas Ferre <nicolas.ferre@microchip.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Paolo Valerio
- <pvalerio@redhat.com>, Vladimir Kondratiev
- <vladimir.kondratiev@mobileye.com>, Gregory CLEMENT
- <gregory.clement@bootlin.com>, =?UTF-8?Q?Beno=C3=AEt_Monin?=
- <benoit.monin@bootlin.com>, Tawfik Bayouk <tawfik.bayouk@mobileye.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Maxime Chevallier
- <maxime.chevallier@bootlin.com>
-Subject: Re: [PATCH net-next v3 06/15] net: macb: allocate tieoff descriptor
- once across device lifetime
-In-Reply-To: <20260701-macb-context-v3-6-00268d5b1502@bootlin.com>
-References: <20260701-macb-context-v3-0-00268d5b1502@bootlin.com>
- <20260701-macb-context-v3-6-00268d5b1502@bootlin.com>
-Message-ID: <6e449ee7d40ec885e8a53fa18fe70e86@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain
 
-Hi Théo
-
-On 1.7.2026 17:59, Théo Lebrun wrote:
-> The tieoff descriptor is a RX DMA descriptor ring of size one. It gets
-> configured onto queues for Wake-on-LAN during system-wide suspend when
-> hardware does not support disabling individual queues
-> (MACB_CAPS_QUEUE_DISABLE).
-> 
-> MACB/GEM driver allocates it alongside the main RX ring
-> inside macb_alloc() at open. Free is done by macb_free() at close.
-> 
-> Change to allocate once at probe and free on probe failure or device
-> removal. This makes the tieoff descriptor lifetime much longer,
-> avoiding repeating coherent buffer allocation on each open/close cycle.
-> 
-> Main benefit: we dissociate its lifetime from the main ring's lifetime.
-> That way there is less work to be doing on resources (re)alloc. This
-> currently happens on close/open, but will soon also happen on context
-> swap operations (set_ringparam, change_mtu, set_channels, etc).
-> 
-> Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+On Thu, Jul 02, 2026 at 01:28 AM +02, Michal Luczaj wrote:
+> sockmap now rejects unbound UDP sockets. Adjust test_maps. While at it,
+> check socket()'s return value.
+>
+> This effectively reverts commit c39aa2159974 ("bpf, selftests: Fix
+> test_maps now that sockmap supports UDP").
+>
+> Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+> Signed-off-by: Michal Luczaj <mhal@rbox.co>
 > ---
->  drivers/net/ethernet/cadence/macb_main.c | 75 
-> +++++++++++++++++---------------
->  1 file changed, 41 insertions(+), 34 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/cadence/macb_main.c 
-> b/drivers/net/ethernet/cadence/macb_main.c
-> index 8b52122bc134..951a7f080225 100644
-> --- a/drivers/net/ethernet/cadence/macb_main.c
-> +++ b/drivers/net/ethernet/cadence/macb_main.c
 
-> [...]
-
->  static void macb_init_rings(struct macb *bp)
-> @@ -2832,8 +2801,6 @@ static void macb_init_rings(struct macb *bp)
->  	bp->queues[0].tx_head = 0;
->  	bp->queues[0].tx_tail = 0;
->  	desc->ctrl |= MACB_BIT(TX_WRAP);
-> -
-> -	macb_init_tieoff(bp);
->  }
-> 
->  static void macb_reset_hw(struct macb *bp)
-> @@ -5518,6 +5485,38 @@ static int eyeq5_init(struct platform_device 
-> *pdev)
->  	return ret;
->  }
-> 
-> +static int macb_alloc_tieoff(struct macb *bp)
-> +{
-> +	/* Tieoff is a workaround in case HW cannot disable queues, for PM. 
-> */
-> +	if (bp->caps & MACB_CAPS_QUEUE_DISABLE)
-> +		return 0;
-
-Before, the tieoff was allocated in macb_alloc(), which the at91ether 
-path
-never called. Now it's allocated from macb_probe() for all variants, 
-gated only
-on MACB_CAPS_QUEUE_DISABLE, so EMAC gets a coherent descriptor it never 
-uses.
-
-Add MACB_CAPS_MACB_IS_EMAC to the if statement?
-
-> [...]
-
-Thanks
-Nicolai
+Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
