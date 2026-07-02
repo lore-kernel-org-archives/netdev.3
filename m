@@ -1,79 +1,79 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-m3292.qiye.163.com (mail-m3292.qiye.163.com [220.197.32.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 984D92C21E8;
-	Thu,  2 Jul 2026 08:20:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D52390995
+	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 08:27:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782980448; cv=none; b=mra1ZCNEWFUlhqxlFUmqCfBAg8azvSvHa6Al8qvU8v5TSyCmWPe0s9w7F8nnwny3RzH/mzpjmPQm8T0evfXhVx1+8BW54TqsUoD7NwOAttTXnUOGnhK3BBhG9z4lxGEHhKJUTs1r/SkvZYcp71TerSw4TVV7aGXmkBjEzAiuO1o=
+	t=1782980841; cv=none; b=WBYA9ps5tnvJprTqfvGJCueAUjwofGUjUm8NJDfgNDiNiLC5eTcfWkZIH+nBG/sumNH4R1JOkrQ1v/Q65amaxb/drVTLrYi0ygPl1fMVRljdYzFdlYEuZCra+V255yGma6t/zMSEB5AItUqo1Je57u+HqIrxvNiTEqidTbafiyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782980448; c=relaxed/simple;
-	bh=yDvw98/8GopwCa56MQDQl3AokEFX4GmszEqJtDBNyGY=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=BydZhczKcL9s5U8R6UAJHeymPtQph+F8cn01Bau3lxtN+lO7byXV0CYa39ExN9KjCTFFEKluL+UljyFUuQZImO5CtN/aeecEsv49SQdP/4IK0nId2lnoRnopfqnKN4nDCadQGnaRk6G32sQJTHP4BMuOxCoPLTXU4uzcHLMswSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jLHzQyWq; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782980841; c=relaxed/simple;
+	bh=bPYyaPMVGXJ6fi2007K/Cro/FnneDqwZ1yi13CzKCrw=;
+	h=Content-Type:Message-ID:To:Cc:Subject:References:MIME-Version:
+	 From:Date; b=VEJGpKh+BXad2VBL1WX4umOlXvG+dItmW0L1DEF0wmhmK2wAAm4AeKZXpPh1R3lItOSP/x0ia1jvi1GRxM0AIHaW5LmWCpwLuAzJwB2muEC9rROXzVT3qObD99ndoU1bbIF9mU/IBPtgNrCfs0LqixIPMJ2D7qPIlc0lhcUH+SI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=gqP9UK8s; arc=none smtp.client-ip=220.197.32.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jLHzQyWq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 588F51F000E9;
-	Thu,  2 Jul 2026 08:20:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782980447;
-	bh=Tr9cXC0OCwfJzYHZUk1OPi/rA+dVy0Z7JJiTxU+68ok=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=jLHzQyWqKPybHSvUztisKZbEsvRDJp6AEZPGC0Rr5TvNANY+LRsWTfrSoDye31QYN
-	 v8eF9GtOa9YX+qmyrn/IUJFcNngdfs5sZZjG/CDSvtHLfE/fkZvsvmzeVtYlE4csUK
-	 PRxIOd0M9e3IxbeyZlkwab7LjLeBvsavnVOD4dUWnqEhkCGE2dwyUSgxBkthGClH3O
-	 rLkhyQYMVLAwZ7WzWjYd6aKRICr1Ce+cbk8ZokYg7NdfZhNGPKbncPu7XUGGCEudTM
-	 RWy3+uZaObeepovRLNMPc5gVA57byEJ8L80jRfvzzmYYmpDtelFGAR1fz8JuZEG0yu
-	 bioo2HmcfyFRA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93B283926655;
-	Thu,  2 Jul 2026 08:20:31 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="gqP9UK8s"
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+Message-ID: <AIIAMAAiKrVMQaBAPYx42arb.3.1782978704726.Hmail.220255722@seu.edu.cn>
+To: Sidraya Jayagond  <sidraya@linux.ibm.com>
+Cc: "D. Wythe" <alibuda@linux.alibaba.com>, Dust Li <dust.li@linux.alibaba.com>, 
+	Wenjia Zhang <wenjia@linux.ibm.com>, 
+	"David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, 
+	Mahanta Jambigi <mjambigi@linux.ibm.com>, 
+	Tony Lu <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>, 
+	Simon Horman <horms@kernel.org>, 
+	Karsten Graul <kgraul@linux.ibm.com>, 
+	linux-rdma <linux-rdma@vger.kernel.org>, 
+	linux-s390 <linux-s390@vger.kernel.org>, 
+	netdev <netdev@vger.kernel.org>, 
+	linux-kernel <linux-kernel@vger.kernel.org>, 
+	"jianhao.xu" <jianhao.xu@seu.edu.cn>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCBuZXRdIG5ldC9zbWM6IGF2b2lkIHJlY3Vyc2l2ZSBza19jYWxsYmFja19sb2NrIGluIGxpc3RlbiBkYXRhX3JlYWR5?=
+X-Priority: 3
+X-Mailer: HMail Webmail Server V2.0 Copyright (c) 2016-163.com Sirius_WEB_WIN_1.64.1
+References: <20260617152855.1039151-1-runyu.xiao@seu.edu.cn> <17c1cbac-de30-4372-8c24-2acd755f503e@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: phylink: Drop references to the .validate()
- method in comments
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178298043013.1512795.2607486084440200164.git-patchwork-notify@kernel.org>
-Date: Thu, 02 Jul 2026 08:20:30 +0000
-References: <20260630083700.2041915-1-maxime.chevallier@bootlin.com>
-In-Reply-To: <20260630083700.2041915-1-maxime.chevallier@bootlin.com>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, linux@armlinux.org.uk,
- hkallweit1@gmail.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- thomas.petazzoni@bootlin.com
+Received: from 220255722@seu.edu.cn( [223.112.146.162] ) by ajax-webmail ( [127.0.0.1] ) ; Thu, 2 Jul 2026 15:51:44 +0800 (GMT+08:00)
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+Date: Thu, 2 Jul 2026 15:51:44 +0800 (GMT+08:00)
+X-HM-Tid: 0a9f21cf9b6e02f2kunmd5c2bf791f8cd
+X-HM-MType: 1
+X-HM-NTES-SC: AL0_4z5B86Wr4Tz9jdMF+bhXMTUS6Y2fHkyPT6dc03QDwVaZPGiA09TnwhbhTj
+	hLfuFZO94YXwX6xgvkjGVFFRKj5ODenkkczLo6qxkp6YADE5oPA+xgWdLLpCC0H84TwWSeGl6Gxd
+	wNb5mLKCAhELViFYBc6UsltRrkd4duOKE4a1o=
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCTB5LVh0aSUofSkkeSkIaTlYVFA
+	kWGhdVEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUhVSkpJVUpPTVVKTUlZV1kWGg8SFR0UWUFZT0tIVU
+	pLSEpOT0xVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=gqP9UK8sz6mSaQSXwWUvX5IW1dCvOoLuzHheLSdx278rR0VZCmzeKQ+tZi/RiuVNKIzYmjvsiiKh3E2yVV1wA+FSjJRGHDbuUfYllhYz2Q+GWTO0qCqt/NhfA/mCQxFWWVdm+uvaLslyTHTIUaWGAPHcSoatnnArMxAxOhY6g+s=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=bPYyaPMVGXJ6fi2007K/Cro/FnneDqwZ1yi13CzKCrw=;
+	h=date:mime-version:subject:message-id:from;
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Tue, 30 Jun 2026 10:37:00 +0200 you wrote:
-> The phylink_mac_ops '.validate()' has been removed in:
-> 
-> commit da5f6b80ad64 ("net: phylink: remove .validate() method")
-> 
-> There are still a few comments around in phylink that references that,
-> related to the ports fields as well as the Pause configuration. Let's
-> drop these references and update the comments related to Pause handling.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next] net: phylink: Drop references to the .validate() method in comments
-    https://git.kernel.org/netdev/net-next/c/7693eadcbb8c
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+SGkgU2lkcmF5YSwKCk9uIFRodSwgSnVuIDI1LCAyMDI2IGF0IDAyOjAyOjI1UE0gKzA1MzAsIFNp
+ZHJheWEgSmF5YWdvbmQgd3JvdGU6CiZndDsgSW4gc21jX2Nsb3NlX2FjdGl2ZSgpLCB0aGUgVENQ
+IHNvY2tldCByZW1haW5zIGluIFRDUF9MSVNURU4gc3RhdGUgd2hpbGUKJmd0OyBob2xkaW5nIHdy
+aXRlX2xvY2tfYmgoJmFtcDtzbWMtJmd0O2NsY3NvY2stJmd0O3NrLSZndDtza19jYWxsYmFja19s
+b2NrKTsuIFRoZSBwYXRjaCdzCiZndDsgc3RhdGUgY2hlY2sgd291bGQgcGFzcyBkdXJpbmcgdGhp
+cyB3aW5kb3csIG5vdCBwcmV2ZW50aW5nIHRoZSByZWN1cnNpdmUKJmd0OyBsb2NrIHNjZW5hcmlv
+LgomZ3Q7IEl0J3MgdW5jbGVhciB3aGV0aGVyIGl0IGZ1bGx5IHByZXZlbnRzIHRoZSByZWN1cnNp
+dmUgbG9ja2luZyBzY2VuYXJpbwomZ3Q7IGRlc2NyaWJlZCBpbiB0aGUgY29tbWl0IG1lc3NhZ2Ug
+Zm9yIHRoZSBzcGVjaWZpYyBjb2RlIHBhdGggaW4KJmd0OyBzbWNfY2xvc2VfYWN0aXZlKCkuCiZn
+dDsgQ291bGQgeW91IGNvbWUgdXAgd2l0aCBleGFjdCBkZWFkbG9jayBzY2VuYXJpbyBhbmQgaG93
+IHRoZSBwYXRjaAomZ3Q7IGFkZHJlc3NlcyBpdD8KCllvdSBhcmUgcmlnaHQuIEkgZG8gbm90IGhh
+dmUgYSBjb25maXJtZWQgY3VycmVudCBtYWlubGluZSBjYWxsIGNoYWluIHdoZXJlCnRoZSBjYWxs
+YmFjayBpcyBpbnZva2VkIHVuZGVyIHNrX2NhbGxiYWNrX2xvY2ssIGFuZCB0aGUgVENQX0xJU1RF
+TiBjaGVjawpkb2VzIG5vdCBjb3ZlciB0aGUgc21jX2Nsb3NlX2FjdGl2ZSgpIHdpbmRvdyB5b3Ug
+cG9pbnRlZCBvdXQuCgpJIHdpbGwgZHJvcCB0aGlzIHBhdGNoIGZvciBub3cuIFRoYW5rcyBmb3Ig
+cmV2aWV3aW5nIGl0LgoKUnVueXU=
