@@ -1,63 +1,63 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9814B39A079
-	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 18:05:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAC143A718D
+	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 18:05:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783015530; cv=none; b=dASc1pRSrgE+RTn4B71tX/Vi8CYRCoLk6xQXSmWSREXDTlbaWsL5wmGCFe4NsldSwPro8+ZGFvMcOJ1OEs3E0JzOc4YOPSbFLa5AUOsdsa45rQ/BSVaj0qVufS0KJZD67RgrDAeAcnIX3CL14rQIsJrVnaqLx8RLs+zRgU5ACns=
+	t=1783015533; cv=none; b=D99UwLKB+CkusLLMgfAScSNUyx7Uhh+v1lMoEhQ0jiXAU5h/7tgkJRLIhf25xpgeL48qKmAgt+GuO/WuqSP9gXCCjJHKVqdjIBckLLoMGP2dSr/OFaFo9vtirp2+ySCktlSQOVHA3AoERxsx1R8uyjJhKRfXZciPFsyHAr6mmf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783015530; c=relaxed/simple;
-	bh=CpF/+ZkhfLaqd+Qm00Pw9dFR1GigXcDjVgN3qQ1kJPI=;
+	s=arc-20240116; t=1783015533; c=relaxed/simple;
+	bh=JIoUXlQepeQ3/b8j3T/tXuyELWs+N9uk25RZYtoDjXc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=d29R/MayVuf8EJ8dsvu9ROQ+uxRiM77IBLofK1s3+dfp49ZJPHdQW9sNYfNSH0aKz0WuWwsLPngO3Pb39G0yFOsOMZpu919QsYXuUbKDyovco08+cw4w2XNer4iDSn1eo6Dsa00YgkE2vXK9WDv0YeiM+C3dN6slSMM9fevX17c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ObD/bg8p; arc=none smtp.client-ip=209.85.210.173
+	 MIME-Version; b=BKVEdgVq88VTAqYl29JvmfhWqKHzWh+Pu++NPmu6edAWquk4+SFFNCsneOeVIuYK8v/Vj2POkhhiiMBBUnZ65Eej9XcUu4R4Y2eBMNGPSspPD/06EWDW94oaj96spTAtmeRddBzb2yo5yooBlEbASFAi0pEr+IIWup/zcQ8R77Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bz03Fj8z; arc=none smtp.client-ip=209.85.210.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ObD/bg8p"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-845e363246aso1967126b3a.1
-        for <netdev@vger.kernel.org>; Thu, 02 Jul 2026 11:05:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bz03Fj8z"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-845537740ddso1547215b3a.0
+        for <netdev@vger.kernel.org>; Thu, 02 Jul 2026 11:05:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783015528; x=1783620328; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1783015531; x=1783620331; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jTjUs2y9goRcZj8GKlJQUGr0p6xKvzwQaEafBMRd3lo=;
-        b=ObD/bg8p9bFWU61fEkUCX2uJ4me158v9ITALNnZ5GG7HLKjP2g2YumTURXfT0/cY42
-         cFNe+xKBkG0LGO7ZOEKK8ns8gQ5/k40OfuJ00M0v3RIw29gNlSSKRLyQg2L1xWm6sE5B
-         tyKC+Q4QDSh8RQqSfUU2jMGmeybpfkwZC9Asc6gWytao47xB5P07O5mCja/A6R3ZrdxB
-         acYKpqzvpC9FAApCVZledyB3BIJ/713bx055eiJUzFxNfcq4L5Mr5omrp4NVNpAvTf6B
-         FBHi6EdrH5aO1AOkZZiNHRWumQaAKqoYXCb1dlt1y3/csKyV/Kx5pbwhXVqzp7NuO9g8
-         RBzw==
+         :message-id:reply-to:content-type;
+        bh=Y3UiQpQDKH2c9n6CLAsdUQpOpJU3f54iB9ppdD3l/0g=;
+        b=bz03Fj8zevfStxZJ1fBqtVHAxcHXFCLFCunJjMRC16w31mnBFK8T1gA6+BdSGSqZ6B
+         Qo+llQm13WJTWujA0VaefXCNSzQvxWq0laKBTSDUcqv2JEb4mx88DYlwycmWq7IykRvD
+         QfhcAQCDXHQVl386NZjArOoYpzGAtbd7DT3odUrPrtlB9Vu0RNQz9+HV1yYTOqqZ5yMI
+         KxbQYkUKL/rgOQb3yZQyuRbW8ypQwxV9wjEJA7mo5FxD7W/VtrZMl8ycsou9lcvchrCK
+         ciUCcxefAu8lVbcevqM5wHvqhtiRRM4DWyPQdo9ZaoNyx0sjVtWDrtDeUvx3PHDOu+BE
+         sB6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783015528; x=1783620328;
+        d=1e100.net; s=20251104; t=1783015531; x=1783620331;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=jTjUs2y9goRcZj8GKlJQUGr0p6xKvzwQaEafBMRd3lo=;
-        b=klZZkAuzYQC5wfAWiUmVoJkZql3i8adGbNBotSgYxuduIXSsgg2aD2Lk8h7Bomno3M
-         DhsDs2CfaZO4URFLls07dbOHAdkd6hZUIcq8MZOQz4qengCrz6lS4gJ1QS4UUrmhIrit
-         eGkWqh5VVrylpDhkJFgOTGfXUxMxLGkYLzXUvlbp8eL3WFLy2NPIkCVx69rtYHzTUd6a
-         sRQ8JanP3PyG67SLrKWUfYfOm5aNCVQTtnDjhJvm+fY6O+Bm0UEn/W0CaZLp58d7XwJc
-         HTO4OGtVEwrlwnWTg1ZzjO/5B8Q6RJL4QEZHuZFjyCdVb3WGtts+M0Mn6xXplUZ2IA8/
-         Ep3w==
-X-Forwarded-Encrypted: i=1; AHgh+Rq8Xa7gyPKMm4CrT+VIl4Dp7Iwe5OnF5mfS2JJ8Z45M2cbDhoVLHXYfo9PESJhAv+rOzn2yTVE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyoj8xW2sEkSWIGgILcnixLdkFDAFVfxCw2+/t5oOjtcwgzf3sN
-	9WMgvDxF8NaS3wrGBSS8Y+3esCWDAsC9pRmtribNnAtgF0s6VBavckqT
-X-Gm-Gg: AfdE7cnrdma24dd4lCvBe6pxmPwiTFKuu23clsEQFqufQTe1tMFCeg6u2qLj0wHl27o
-	PkWMKGlpaP/L4mnIvfSVLZnpMwPoxGllh42TLgKMKH3rnBYwVFBstoDqn9Xd8jYEpRbINl5zd4/
-	Um+FS58IiOXV/meGdh5oOGu2qlk52isZuWiiAP+aKg8RQj7iK66Zt8eVK5OLYf1Em2fAZGGI16b
-	a2SLG/Kj5VVQ5DcpaRrIbSPkC78z3UcvmlPY4hLkG8pw6SruhTssF/feO6x8X1DBh7t96XQ/Klw
-	fgBvtxjoZcl3xODbIcC2ZZfZffXRypr7AWxmSrT7zIeIw82JD9eAZj5tWD6hDirtPeijU8ooyRP
-	7cLwkS7tPz3M/ivdkpBHCl1c9T9mW8/xex3Evz61IVYvmRW+O5jR/fgNpbG87kwLrrM/99XMgMq
-	UptJfN4cehaGzkS8mR5P/C+nJpfyk3StGYUVwMcw==
-X-Received: by 2002:a05:6a00:2a0e:b0:847:8d2d:712f with SMTP id d2e1a72fcca58-847c0678924mr7094180b3a.10.1783015527818;
-        Thu, 02 Jul 2026 11:05:27 -0700 (PDT)
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Y3UiQpQDKH2c9n6CLAsdUQpOpJU3f54iB9ppdD3l/0g=;
+        b=e8iOB7C2xvULM8kvhFnhosMCybmW46AD9S0WJS1RFj8Se5z4DWlKFZVjDBKYqfosOS
+         1ZKWDG5y7emYBppa23DKFU3n2rUMWVkToB4bVNScodJWHB0lhcAqoZICym870E64olk1
+         x3eCje/AzUPHllZdz9BGF3KyisHHqN0bWrGeFjT/vV/mJK5/yCX3/arl+B1COfZ1FERR
+         WLLvO+1Krqq68nDhjEcs82X6V4PBnIYNIdRqDv0xH9HNcyfgB73224ohIi96j7SKeUSm
+         UCMfGZUQN4rl5PW/Ra37birNrU6GbxvnUt+y3ClVudQELf2s+qnGCIPCwl3XW/qRBSez
+         iGgQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+C1Gt5aBFyJab+3S6eXennqUJt3yFShwff8TgN2njyZyXPvkrnwYaIgdvt1z+WCA3Tlzff6NI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw05YZBmdUCpf1OMunIB9NQAy7y3d3CvlyRJlxBDrw2Y+zgTfZL
+	VfGx0pVfTW3Jr7cDG1V6Se3kGzPNZAf9lGKrJUCIc1foahidSHgN68s2
+X-Gm-Gg: AfdE7clu53QIV1UZOSrkJ9hhWndcc8hZugAH2GQdVb8cV3EiVj+MJYWevwEa83mZwH1
+	2LqTFs/GVfwCQIv6cxad8IluMWepTUs7kbLoyydC8PXTYubqy5TC/u3XVK8Xu8JxKtcLvPpExEr
+	11lZjHe1JYm1a6U5ofCf00jqQSdAYQsb6zjzbYGESew4d8bD90E1x7ubeM1QrTUJbyh36eZpJXL
+	RY+YVbUyNS7YmdtxYDdZIIRuEaJLCv6uwHcVLivksZN5GgKaTIx+YtN5wg+TG/8jSYLJ7SiKo3p
+	++uDCZqtz22lkzSmgvk+hyXishpQMq9LFE1YGnnDU77/5rI9fLCUlXEmaauEB5EyZm5yUtXezmc
+	relPs+qxWBjE+6JKK+betG8PrIOGUhdql0WYDLVCNXLmDJYdzn/J4dnaSWK6DGEACa9coTwpvdb
+	o3/yMt5zvEVJeL4ixMib/imrrS6jTlB7BIouiR9w==
+X-Received: by 2002:a05:6a00:b8f:b0:845:dfef:75b8 with SMTP id d2e1a72fcca58-847c5036146mr6187409b3a.15.1783015530795;
+        Thu, 02 Jul 2026 11:05:30 -0700 (PDT)
 Received: from csl-conti-dell7858.ntu.edu.sg ([155.69.195.57])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847cb78d69csm1701877b3a.25.2026.07.02.11.05.24
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847cb78d69csm1701877b3a.25.2026.07.02.11.05.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jul 2026 11:05:27 -0700 (PDT)
+        Thu, 02 Jul 2026 11:05:30 -0700 (PDT)
 From: Maoyi Xie <maoyixie.tju@gmail.com>
 To: Veerasenareddy Burru <vburru@marvell.com>,
 	Sathesh Edara <sedara@marvell.com>
@@ -69,9 +69,9 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2 1/2] octeon_ep: fix skb frags overflow in the RX path
-Date: Fri,  3 Jul 2026 02:05:17 +0800
-Message-Id: <20260702180518.2013324-2-maoyixie.tju@gmail.com>
+Subject: [PATCH net v2 2/2] octeon_ep_vf: fix skb frags overflow in the RX path
+Date: Fri,  3 Jul 2026 02:05:18 +0800
+Message-Id: <20260702180518.2013324-3-maoyixie.tju@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260702180518.2013324-1-maoyixie.tju@gmail.com>
 References: <20260702180518.2013324-1-maoyixie.tju@gmail.com>
@@ -83,59 +83,56 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-__octep_oq_process_rx() builds an skb for a multi-buffer packet by adding
-one fragment per buffer_size chunk:
+__octep_vf_oq_process_rx() has the same unbounded fragment loop as the PF
+driver. buff_info->len comes from the device response header, and one
+fragment is added per buffer_size chunk with no check against
+MAX_SKB_FRAGS. A long packet yields about 18 fragments, one past the
+default MAX_SKB_FRAGS of 17, so skb_add_rx_frag() writes past
+shinfo->frags[].
 
-	data_len = buff_info->len - oq->max_single_buffer_size;
-	while (data_len) {
-		...
-		skb_add_rx_frag(skb, shinfo->nr_frags, buff_info->page, 0,
-				buff_info->len, buff_info->len);
-		...
-	}
+The fragment count is now checked before napi_build_skb(). A packet that
+needs more fragments than the skb can hold is dropped. Its descriptors are
+drained the same way the build_skb failure path does.
 
-buff_info->len comes from the device response header
-(be64_to_cpu(resp_hw->length)). Nothing bounds the fragment count against
-MAX_SKB_FRAGS. data_len can be close to 65535. buffer_size defaults to
-about 3776 on 4K pages, so a full packet yields about 18 fragments. That
-is one more than the default MAX_SKB_FRAGS of 17, so skb_add_rx_frag()
-writes past shinfo->frags[].
-
-The fragment count is now checked before build_skb(). A packet that needs
-more fragments than the skb can hold is dropped. octep_oq_drop_rx()
-consumes its descriptors like the build_skb failure path. The same class
-was fixed in other RX paths, including commit 5ffcb7b890f6 ("net: atlantic:
-fix fragment overflow handling in RX path") and commit f0813bcd2d9d ("net:
-wwan: t7xx: fix potential skb->frags overflow in RX path").
-
-Fixes: 37d79d059606 ("octeon_ep: add Tx/Rx processing and interrupt support")
+Fixes: 1cd3b407977c ("octeon_ep_vf: add Tx/Rx processing and interrupt support")
 Co-developed-by: Kaixuan Li <kaixuan.li@ntu.edu.sg>
 Signed-off-by: Kaixuan Li <kaixuan.li@ntu.edu.sg>
 Signed-off-by: Maoyi Xie <maoyixie.tju@gmail.com>
 ---
- drivers/net/ethernet/marvell/octeon_ep/octep_rx.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ .../marvell/octeon_ep_vf/octep_vf_rx.c        | 20 +++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c b/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c
-index e6ebc7e44a..bdbed58c7b 100644
---- a/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c
-@@ -453,6 +453,15 @@ static int __octep_oq_process_rx(struct octep_device *oct,
+diff --git a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c
+index d982474082..7af6a80671 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c
++++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c
+@@ -431,6 +431,26 @@ static int __octep_vf_oq_process_rx(struct octep_vf_device *oct,
+ 			struct skb_shared_info *shinfo;
+ 			u16 data_len;
  
- 		octep_oq_next_pkt(oq, buff_info, &read_idx, &desc_used);
- 
-+		if (buff_info->len > oq->max_single_buffer_size) {
-+			u16 data_len = buff_info->len - oq->max_single_buffer_size;
-+
++			data_len = buff_info->len - oq->max_single_buffer_size;
 +			if (DIV_ROUND_UP(data_len, oq->buffer_size) > MAX_SKB_FRAGS) {
-+				octep_oq_drop_rx(oq, buff_info, &read_idx, &desc_used);
++				desc_used++;
++				read_idx = octep_vf_oq_next_idx(oq, read_idx);
++				while (data_len) {
++					dma_unmap_page(oq->dev, oq->desc_ring[read_idx].buffer_ptr,
++						       PAGE_SIZE, DMA_FROM_DEVICE);
++					buff_info = (struct octep_vf_rx_buffer *)
++						    &oq->buff_info[read_idx];
++					buff_info->page = NULL;
++					if (data_len < oq->buffer_size)
++						data_len = 0;
++					else
++						data_len -= oq->buffer_size;
++					desc_used++;
++					read_idx = octep_vf_oq_next_idx(oq, read_idx);
++				}
 +				continue;
 +			}
-+		}
 +
- 		skb = build_skb((void *)resp_hw, PAGE_SIZE);
- 		if (!skb) {
- 			octep_oq_drop_rx(oq, buff_info,
+ 			skb = napi_build_skb((void *)resp_hw, PAGE_SIZE);
+ 			if (!skb) {
+ 				oq->stats->alloc_failures++;
 -- 
 2.34.1
 
