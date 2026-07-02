@@ -1,169 +1,351 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F72425CC3
-	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 12:47:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782996423; cv=pass; b=ry9/PNzmWepWSPgLZ9IGCZOkma2RLuZ4YxIUnoCRDWKof0VMgNBijBEBdHfKDgHOnzrxhJ1HdirMvWcEiiXgwla83H9qvDYL9V/uw3HlD0X+hi3Ywpqtq3DljIXXiTv9w9bSCYmiJYZrzj4Y2iTi4gqiyRVeaKcW4SA+FhjZCWY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782996423; c=relaxed/simple;
-	bh=oNckSp1C/TB12p42yk8TUfLXS/YDIbgZNDslJOayYZE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=e7Pb8LSJWEJUHDsGytH0xQCbMaaVyo5e9x5p24p0f1RMaPUg/RFDDBlvHce92PGyefYpiKOWU1haA3Zo+9oyb0F2aytGdBAA9P8XkVaqDwta1nfbvZjpEU+1oJqIf53uRCPCFyYOLeyOqkDEqO+3z6Tbrdi0rvgV1xq6bTrfDmM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OGSf3pvA; arc=pass smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677663988EB
+	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 12:54:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782996898; cv=none; b=ITCYmLVw5JszboxN/muslTTDB6pb6ctOGyP3jwjFLT06mnKevoSip8k5cznFEIxxgp+MIAwBvnO/NxX/MuQT7Ve+CX4H7qCPbvF2syIdbCMuZN4PV8iHan1wNcAlltmCdoelzQSp+/+6EDfx2bTQ+43CE8ex1Dpuc+EaYYRz9/w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782996898; c=relaxed/simple;
+	bh=nNc9cggZwtVjXdqOo2gnWsd/LVnCIuT3JM46I/VtXuc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jVR7b1EHzg8sWaXXSRw0Kpn6Id1PB0mHgHbsnFdkWeawxy5YQQkoGYePdFq0320A6vAa+UoUzytYHAKM+BbA16tkUgMGbdLTaM3ReeAutUwSzdjScjEK9dIarIFKM2IVjS83J4RMOweEPVg7BUb0xlwa162UODH3/3uAceanC5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gJYBGvdm; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OGSf3pvA"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-69532288224so3364060a12.0
-        for <netdev@vger.kernel.org>; Thu, 02 Jul 2026 05:47:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782996419; cv=none;
-        d=google.com; s=arc-20260327;
-        b=T2+CsJMwyygKq+Ij2Io6DNZ566aK5GzOFxAYccBfhxt5dvDGNAkgzOci7RdpRoZzuc
-         vNMDOGYub3An9PVcB0VUBIRPlXhrPUxb/7EeVt477mbH1ky6Bxr2unEqEdnLzkYHxB2+
-         gazVgkbsaJQoPThqHsThdnLDgfw39wOd0GUr5PIQObWmyRUFWZdPXBZb1HEHyJB5Bp1g
-         zl0wd0JO01L+SUKUS2M67/BK9h8/GTp0815LzgT6Tb9UWNWq84L7Ow5y1N70x0+oYo8p
-         JGSfi2C5vGwA0NpG3iYMTVHB369m1tWo+Ly6h8MkLRnEgiPmHa8WKDCDmBvQQL+qlNkq
-         N1OQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=210HKleKgbmFKKFSqfRC++HOJhEM15Vlg9VXrqpCJ6A=;
-        fh=GwuTX6ZCL2aqGWc8Qe/2tAG20Wahww7n8tBlO/5JDWM=;
-        b=nb/QchHVTUQhCeMjQWZTmuIsXJCROZBMpqqxGWWvrDtVS/ehMgP/ZTAn5ykyFTiqM3
-         scwng+GYCsDEAL5wFF45GI5wKCFyk+tO5cNb0y3WiJdu/nm54AMywGl7rjKRHVAn4SOr
-         utEDT7Q7Ctdg9fZ7OrP2H3Fx4LNnrzTnA4kaoHNQlP4AuWy2wauVhP7myFzk57hpgfeX
-         jbIVBzMfhXobJmBm7+8ESLLjTIh69jY2Yyg4/n5NtELIRwoCFnr21pGwwBYOzWIvLqXm
-         8CmKhtKfzShidKS+6mXDIjOOPTzR3CPBa+YB0Qq9rbCdQn3Wf5O+zZGiQKb8O/lchLD7
-         lVUA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1782996419; x=1783601219; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=210HKleKgbmFKKFSqfRC++HOJhEM15Vlg9VXrqpCJ6A=;
-        b=OGSf3pvAfDCo/V8/DLpcvstiZ/O4yTF2dUdmcfLLtHBGexjBgka30990f3A8qcHTxJ
-         qoxy4cIqycg2kJAV8SvAEP1n4Pyk9JJ7sLDcPwphZuOSdBuZNjnoAQWOXhFRsMAYbjMk
-         Y8klX6PaAhmM5VZp7aLxZwbzHrirR9mnREYXDDZendu7UhN/AC17l2BLFUaJ/rYdZ2gQ
-         rEM0bmvBKFlprmi80+nFPEnEiFnPQodDNjX94WJkibPud7mlfruF5INplFaRDOjtwHNa
-         Ys1N8sUk9xKMlmUtB06B5i2bGSYUGEhX+i0FF26Nm8Y+pSW/1R30K/Evz/w5bq9h//o5
-         LEFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782996419; x=1783601219;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=210HKleKgbmFKKFSqfRC++HOJhEM15Vlg9VXrqpCJ6A=;
-        b=oPJJTzkmhSqktD9zhyUD/O+oC0VS+OTbtaR1mlhoJPdIlGyL2cb2o8E5dKLw/DZxDd
-         ZYJnC/qxhiUdmqSsPW+psD2NnUDRhISqWbtfiq62Ywl09KXJDZ6CjPtoL1cSQUb7ZMpE
-         +ebgxsu1vmP8WLGQHeZ3XpSh+jUeoZbV1VzyPF4HJPKUCvRbQdDQEmfpdyc/mHToV8Uu
-         bYjRVKJEgzTkG4nLIHcMMMn6NV2q/R1igEt1ZIb9rRPuDaePPDNnZzimYEk/bRfgZfz7
-         a6E/TYdAlfF/mzcOGE9/zIPveeColuiLzJaDZzp58klkoTnH3ZhAKV7o/Lfxj0ldrH7U
-         Xvcw==
-X-Forwarded-Encrypted: i=1; AHgh+Rr1ZOKLE06aN6FM12FIeUQDhiCVdiQLNYig9Jjto9VBCIwPDvW8nlgEGlaCRLesMs0xGLo/WPs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyOvMeHDBXc3CrPkNRA/fg4DoVOgXzuuYbVZN4v709J9QUtdrmN
-	c9uNnIt50KE66GIrgPN9ynIwVX3TNa7LDNLuMyqH1FXhMcIvd3vQofiaLhgX4Lf35TkH8YbGI9J
-	0IRb9CXj/dMXwgjhE+IEzMkvydULPMTRzWKqC/zU2ag==
-X-Gm-Gg: AfdE7cnynAuF2da3rHoIyDtUgAJGXq4JFdLgRaLTsiVjbP+FzW3+byBQKn//YlRrcbA
-	WV0l7943oGSWuIKyAYlMedsfS84RtOngK5z2FaVCtlkN0ZxTmznVF8WzHM99CdC7e9Z8P1MwK5u
-	4dlb3s3HZZTaUft/QGxAXR+gEFDgMPaGyBR07yYELm8oekbW8OBxLNcM8HI4lPlxgjfRLGUNO5f
-	pRYEPCZmHifCUmMyO6DTfPc+po5H2jWysw60TE+yeeM29bRD+UX4+EOJNkepNXSBN3oBtwLeBKm
-	cSszFqaNpW2GCqFZAFWBtofTig==
-X-Received: by 2002:a17:906:d0da:b0:c12:64c6:bd7 with SMTP id
- a640c23a62f3a-c12a9e053e3mr203835966b.21.1782996418879; Thu, 02 Jul 2026
- 05:46:58 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gJYBGvdm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1782996895;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=IN2t2nRqVD6QEa5IBbLgfDxjgbPqcfeUJtD+Q3/cX1Q=;
+	b=gJYBGvdmRCsFwCVoE+U9FmIoArwfgU90r+m+NRK/5KMV3MX1YvTIphtGU9AK6lWseKbFJh
+	V7CAR2jkzb3EeR9txSbiiZfAaXXIcxnvNu8tfmg9+NQFQZ3KfV2Lltq+Omff5kkUv3uzJK
+	uMPANEVQsHBhAaOfjrKd5P/TwJSRKmc=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-664-dRc42YmbOqqa5I2B1cR0mw-1; Thu,
+ 02 Jul 2026 08:54:52 -0400
+X-MC-Unique: dRc42YmbOqqa5I2B1cR0mw-1
+X-Mimecast-MFC-AGG-ID: dRc42YmbOqqa5I2B1cR0mw_1782996891
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2686E1944CF9;
+	Thu,  2 Jul 2026 12:54:51 +0000 (UTC)
+Received: from gerbillo.redhat.com (unknown [10.44.48.252])
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 434A336F04;
+	Thu,  2 Jul 2026 12:54:48 +0000 (UTC)
+From: Paolo Abeni <pabeni@redhat.com>
+To: torvalds@linux-foundation.org
+Cc: kuba@kernel.org,
+	davem@davemloft.net,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] Networking for v7.2-rc2
+Date: Thu,  2 Jul 2026 14:54:44 +0200
+Message-ID: <20260702125444.230438-1-pabeni@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260203161917.1666696-1-vincent.guittot@linaro.org> <akZcpgDSjAg6gcok@lsv051416.swis.nl-cdc01.nxp.com>
-In-Reply-To: <akZcpgDSjAg6gcok@lsv051416.swis.nl-cdc01.nxp.com>
-From: Vincent Guittot <vincent.guittot@linaro.org>
-Date: Thu, 2 Jul 2026 14:46:47 +0200
-X-Gm-Features: AVVi8CfnsNCvDc67RDsUnObGKCXWxD40T6JSCY5QNMiAlpanyxUGcJsCLPpkpdE
-Message-ID: <CAKfTPtDT5NiFcgozfxec0vBi4663fhnNdQGRdGpF6VwpKSJU-g@mail.gmail.com>
-Subject: Re: [PATCH 0/4 v2] Serdes: s32g: Add support for serdes subsystem
-To: Jan Petrous <jan.petrous@oss.nxp.com>
-Cc: vkoul@kernel.org, neil.armstrong@linaro.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, ciprianmarian.costea@oss.nxp.com, s32@nxp.com, 
-	p.zabel@pengutronix.de, linux@armlinux.org.uk, ghennadi.procopciuc@nxp.com, 
-	Ionut.Vicovan@nxp.com, linux-phy@lists.infradead.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, 
-	horms@kernel.org, Frank.li@nxp.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-On Thu, 2 Jul 2026 at 14:42, Jan Petrous <jan.petrous@oss.nxp.com> wrote:
->
-> On Tue, Feb 03, 2026 at 05:19:13PM +0100, Vincent Guittot wrote:
-> > s32g SoC family includes 2 serdes subsystems which are made of one PCIe
-> > controller, 2 XPCS and a shared Phy. The Phy got 2 lanes that can be
-> > configured to output PCIe lanes and/or SGMII.
-> >
-> > Implement PCIe phy and XPCS support.
-> >
-> > Change since v1:
-> > - Fix compile_test
-> > - Use devm_reset_control_get_exclusive()
-> > - Fix s32g_serdes_phy_set_mode_ext()
-> > - Manage devm_clk_bulk_get_all() returns 0
-> > - Fix s32g_serdes_parse_lanes() error management
-> > - Move xpcs filein drivers/net/pcs/
-> > - Add pcs_inband_caps()
-> > - Fix functions in phylink_pcs_ops
-> > - Fix MAINTAINERS
-> >
-> >
-> > Vincent Guittot (4):
-> >   dt-bindings: serdes: s32g: Add NXP serdes subsystem
-> >   phy: s32g: Add serdes subsystem phy
-> >   phy: s32g: Add serdes xpcs subsystem
-> >   MAINTAINERS: Add MAINTAINER for NXP S32G Serdes driver
-> >
-> >  .../bindings/phy/nxp,s32g-serdes.yaml         |  154 +++
-> >  MAINTAINERS                                   |   10 +
-> >  drivers/net/pcs/Makefile                      |    1 +
-> >  drivers/net/pcs/pcs-nxp-s32g-xpcs.c           | 1006 +++++++++++++++++
-> >  drivers/phy/freescale/Kconfig                 |   10 +
-> >  drivers/phy/freescale/Makefile                |    1 +
-> >  drivers/phy/freescale/phy-nxp-s32g-serdes.c   |  953 ++++++++++++++++
-> >  include/linux/pcs/pcs-nxp-s32g-xpcs.h         |   50 +
-> >  8 files changed, 2185 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/phy/nxp,s32g-serdes.yaml
-> >  create mode 100644 drivers/net/pcs/pcs-nxp-s32g-xpcs.c
-> >  create mode 100644 drivers/phy/freescale/phy-nxp-s32g-serdes.c
-> >  create mode 100644 include/linux/pcs/pcs-nxp-s32g-xpcs.h
-> >
-> > --
-> > 2.43.0
-> >
->
-> Hi Vincent, all,
-> I'm taking over the S32G SerDes/XPCS upstreaming. The effort has moved in-house
-> at NXP and I'll be carrying it forward, continuing from this v2 rather than
-> restarting from zero.
->
-> Vincent, thanks for the v1->v2 groundwork. I'll keep your authorship on the
-> patches that originate from your series (Co-developed-by plus your
-> Signed-off-by) and build on top; I'll send you v3 off-list first, as you
-> offered.
->
-> A v3 is in preparation and will come as an RFC, with the v2 review comments
-> addressed.
->
-> Vincent, if you're OK with the handoff, a short ack here would help make the
-> transition visible to the reviewers.
+Hi Linus!
 
-Ack
+The following changes since commit 805185b7c7a1069e407b6f7b3bc98e44d415f484:
 
-Thanks
-Vincent
+  Merge tag 'net-7.2-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2026-06-25 12:25:36 -0700)
 
->
-> Thanks.
-> /Jan
->
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git net-7.2-rc2
+
+for you to fetch changes up to d8e8b85a85fe21954d303db68034aac4639df88d:
+
+  Merge tag 'batadv-net-pullrequest-20260630' of https://git.open-mesh.org/batadv (2026-07-02 10:34:06 +0200)
+
+----------------------------------------------------------------
+Including fixes from netfilter and batman-adv.
+
+Current release - new code bugs:
+
+  - netfilter: cthelper: cap to maximum number of expectation per master
+
+Previous releases - regressions:
+
+  - netpoll: fix a use-after-free on shutdown path
+
+  - tcp: restore RCU grace period in tcp_ao_destroy_sock
+
+  - ipv6: fix NULL deref in fib6_walk_continiue() on multi-batch dump
+
+  - batman-adv: dat: ensure accessible eth_hdr proto field
+
+  - eth: virtio_net: disable cb when NAPI is busy-polled
+
+  - eth: lan743x: Initialize eth_syslock spinlock before use
+
+Previous releases - always broken:
+
+  - netfilter:
+    - nft_set_pipapo: don't leak bad clone into future transaction
+
+  - sched:
+    - sch_teql: Introduce slaves_lock to avoid race condition and UAF
+    - replace direct dequeue call with peek and qdisc_dequeue_peeked
+
+  - sctp: add INIT verification after cookie unpacking
+
+  - tipc: fix out-of-bounds read in broadcast Gap ACK blocks
+
+  - seg6: validate SRH length before reading fixed fields
+
+  - eth: mlx5e: fix use-after-free of metadata_dst on RX SC delete
+
+  - eth: enetc: check the number of BDs needed for xdp_frame
+
+  - eth: fbnic: don't cache shinfo across skb realloc
+
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+
+----------------------------------------------------------------
+Andrea Righi (1):
+      net: lan743x: Initialize eth_syslock spinlock before use
+
+Breno Leitao (1):
+      netpoll: fix a use-after-free on shutdown path
+
+Bryam Vargas (2):
+      net/sched: sch_taprio: Replace direct dequeue call with peek and qdisc_dequeue_peeked
+      net/sched: sch_multiq: Replace direct dequeue call with peek and qdisc_dequeue_peeked
+
+Corey Leavitt (1):
+      net: pse-pd: scope pse_control regulator handle to kref lifetime
+
+Dawei Feng (1):
+      net/mlx5: HWS, fix matcher leak on resize target setup failure
+
+Dmitry Safonov (1):
+      tcp: Decrement tcp_md5_needed static branch
+
+Doruk Tan Ozturk (1):
+      net/mlx5e: macsec: fix use-after-free of metadata_dst on RX SC delete
+
+Florian Westphal (5):
+      netfilter: nf_conntrack_expect: zero at allocation time
+      netfilter: nft_set_pipapo: don't leak bad clone into future transaction
+      netfilter: nfnetlink_queue: restrict writes to network header
+      netfilter: nftables: restrict linklayer and network header writes
+      netfilter: nftables: restrict checkum update offset
+
+Gleb Markov (1):
+      cxgb4: Fix decode strings dump for T6 adapters
+
+Haoxiang Li (3):
+      net: ipa: fix SMEM state handle leaks in SMP2P init
+      net: liquidio: fix BAR resource leak on PF number failure
+      fsl/fman: Free init resources on KeyGen failure in fman_init()
+
+Ido Schimmel (1):
+      bridge: stp: Fix a potential use-after-free when deleting a bridge
+
+Jakub Kicinski (6):
+      Merge branch 'net-sched-finish-the-qdisc_dequeue_peeked-conversion-taprio-multiq'
+      eth: fbnic: don't cache shinfo across skb realloc
+      Merge branch 'tcp-tcp-ao-connect-fixes'
+      Merge branch 'net-phy-sfp-fix-mii_bus-leak-and-revert-rollball-bridge-probe'
+      selftests: net: bump default cmd() timeout to 20 seconds
+      selftests: drv-net: tso: don't touch dangerous feature bits
+
+Jamal Hadi Salim (1):
+      net/sched: sch_teql: Introduce slaves_lock to avoid race condition and UAF
+
+Jason Wang (1):
+      MAINTAINERS: Update Jason Wang's email address
+
+Jiawen Wu (1):
+      net: libwx: fix VMDQ mask for 1-queue mode
+
+Linus Walleij (1):
+      net: dsa: Fix skb ownership in taggers
+
+Longjun Tang (1):
+      virtio_net: disable cb when NAPI is busy-polled
+
+Lorenzo Bianconi (2):
+      net: airoha: dma map xmit frags with skb_frag_dma_map()
+      net: airoha: fix max receive size configuration
+
+Maoyi Xie (1):
+      net: wwan: iosm: bound device offsets in the MUX downlink decoder
+
+Matvey Kovalev (1):
+      qede: fix out-of-bounds check for cqe->len_list[]
+
+Michael Bommarito (2):
+      tcp: restore RCU grace period in tcp_ao_destroy_sock
+      tcp: defer md5sig_info kfree past RCU grace period in tcp_connect
+
+Nuoqi Gui (1):
+      seg6: validate SRH length before reading fixed fields
+
+Pablo Neira Ayuso (2):
+      netfilter: nf_conntrack_sip: validate skb_dst() before accessing it
+      netfilter: nfnetlink_cthelper: cap to maximum number of expectation per master
+
+Paolo Abeni (2):
+      Merge tag 'nf-26-06-30' of https://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf
+      Merge tag 'batadv-net-pullrequest-20260630' of https://git.open-mesh.org/batadv
+
+Pengfei Zhang (1):
+      ipv6: fib6: fix NULL deref in fib6_walk_continue() on multi-batch dump
+
+Petr Wozniak (2):
+      net: phy: sfp: free mii_bus in sfp_i2c_mdiobus_destroy
+      Revert "net: phy: sfp: probe for RollBall I2C-to-MDIO bridge in mdio-i2c"
+
+Ratheesh Kannoth (1):
+      MAINTAINERS: Update Marvell octeontx2 driver maintainers
+
+Rosen Penev (1):
+      net: gianfar: dispose irq mappings on probe failure and device removal
+
+Samuel Moelius (2):
+      net/sched: dualpi2: clear stale classification on filter miss
+      net/sched: hhf: clear heavy-hitter state on reset
+
+Samuel Page (1):
+      tipc: fix out-of-bounds read in broadcast Gap ACK blocks
+
+Sechang Lim (1):
+      net/sched: act_bpf: use rcu_dereference_bh() to read the filter
+
+Sven Eckelmann (6):
+      batman-adv: retrieve ethhdr after potential skb realloc on RX
+      batman-adv: access unicast_ttvn skb->data only after skb realloc
+      batman-adv: gw: acquire ethernet header only after skb realloc
+      batman-adv: dat: acquire ARP hw source only after skb realloc
+      batman-adv: bla: reacquire gw address after skb realloc
+      batman-adv: dat: ensure accessible eth_hdr proto field
+
+Theodor Arsenij Larionov-Trichkine (1):
+      netfilter: nft_fib: reject fib expression on the netdev egress hook
+
+Wei Fang (1):
+      net: enetc: check the number of BDs needed for xdp_frame
+
+Xiang Mei (2):
+      usbnet: gl620a: fix out-of-bounds read in genelink_rx_fixup()
+      netfilter: ipset: fix race between dump and ip_set_list resize
+
+Xin Long (2):
+      sctp: add INIT verification after cookie unpacking
+      sctp: fix addr_wq_timer race in sctp_free_addr_wq()
+
+Yousef Alhouseen (2):
+      sctp: fix SCTP_RESET_STREAMS stream list length limit
+      netdevsim: remove ethtool debugfs files before freeing netdev
+
+ .mailmap                                           |   1 +
+ MAINTAINERS                                        |  19 +-
+ drivers/net/ethernet/airoha/airoha_eth.c           | 129 +++++-----
+ drivers/net/ethernet/airoha/airoha_eth.h           |   9 +
+ drivers/net/ethernet/airoha/airoha_ppe.c           |  39 ++-
+ drivers/net/ethernet/airoha/airoha_regs.h          |   9 +-
+ .../ethernet/cavium/liquidio/cn23xx_pf_device.c    |  18 +-
+ drivers/net/ethernet/chelsio/cxgb4/t4_hw.c         |   8 -
+ drivers/net/ethernet/freescale/enetc/enetc.c       |   7 +
+ drivers/net/ethernet/freescale/fman/fman.c         |   4 +-
+ drivers/net/ethernet/freescale/gianfar.c           |  16 +-
+ .../ethernet/mellanox/mlx5/core/en_accel/macsec.c  |  47 ++--
+ .../ethernet/mellanox/mlx5/core/steering/hws/bwc.c |   1 +
+ drivers/net/ethernet/meta/fbnic/fbnic_txrx.c       |  11 +-
+ drivers/net/ethernet/microchip/lan743x_main.c      |   2 +-
+ drivers/net/ethernet/qlogic/qede/qede_fp.c         |   4 +-
+ drivers/net/ethernet/wangxun/libwx/wx_lib.c        |   1 +
+ drivers/net/ethernet/wangxun/libwx/wx_type.h       |   1 +
+ drivers/net/ipa/ipa_smp2p.c                        |  30 ++-
+ drivers/net/mdio/mdio-i2c.c                        |  59 +----
+ drivers/net/netdevsim/ethtool.c                    |   6 +
+ drivers/net/netdevsim/netdev.c                     |   2 +
+ drivers/net/netdevsim/netdevsim.h                  |   2 +
+ drivers/net/phy/sfp.c                              |  15 +-
+ drivers/net/pse-pd/pse_core.c                      |   6 +-
+ drivers/net/usb/gl620a.c                           |   6 +-
+ drivers/net/virtio_net.c                           |   3 +
+ drivers/net/wwan/iosm/iosm_ipc_mux_codec.c         |  40 ++-
+ include/net/tcp_ao.h                               |   1 +
+ net/batman-adv/distributed-arp-table.c             |  28 ++-
+ net/batman-adv/gateway_client.c                    |   3 +-
+ net/batman-adv/main.c                              |   3 +
+ net/batman-adv/mesh-interface.c                    |   1 +
+ net/batman-adv/routing.c                           |   3 +-
+ net/bridge/br_if.c                                 |   3 +
+ net/bridge/br_stp.c                                |   3 +-
+ net/core/netpoll.c                                 |   9 +-
+ net/dsa/tag.c                                      |  12 +-
+ net/dsa/tag_ar9331.c                               |  10 +-
+ net/dsa/tag_brcm.c                                 |  39 +--
+ net/dsa/tag_dsa.c                                  |  15 +-
+ net/dsa/tag_gswip.c                                |   8 +-
+ net/dsa/tag_hellcreek.c                            |   9 +-
+ net/dsa/tag_ksz.c                                  |  44 +++-
+ net/dsa/tag_lan9303.c                              |   2 +
+ net/dsa/tag_mtk.c                                  |   8 +-
+ net/dsa/tag_mxl-gsw1xx.c                           |   3 +
+ net/dsa/tag_mxl862xx.c                             |   3 +
+ net/dsa/tag_netc.c                                 |  18 +-
+ net/dsa/tag_ocelot.c                               |   4 +-
+ net/dsa/tag_ocelot_8021q.c                         |  20 +-
+ net/dsa/tag_qca.c                                  |  14 +-
+ net/dsa/tag_rtl4_a.c                               |   8 +-
+ net/dsa/tag_rtl8_4.c                               |  24 +-
+ net/dsa/tag_rzn1_a5psw.c                           |   8 +-
+ net/dsa/tag_sja1105.c                              |  42 ++--
+ net/dsa/tag_trailer.c                              |  16 +-
+ net/dsa/tag_vsc73xx_8021q.c                        |   1 +
+ net/dsa/tag_xrs700x.c                              |  12 +-
+ net/dsa/tag_yt921x.c                               |   7 +-
+ net/dsa/user.c                                     |   7 +-
+ net/ipv4/tcp_ao.c                                  |   5 +-
+ net/ipv4/tcp_ipv4.c                                |   4 +-
+ net/ipv4/tcp_output.c                              |   8 +-
+ net/ipv6/ip6_fib.c                                 |  17 +-
+ net/ipv6/seg6.c                                    |   3 +
+ net/netfilter/ipset/ip_set_core.c                  |   8 +-
+ net/netfilter/nf_conntrack_expect.c                |   3 +-
+ net/netfilter/nf_conntrack_netlink.c               |  11 +-
+ net/netfilter/nf_conntrack_sip.c                   |   7 +-
+ net/netfilter/nfnetlink_cthelper.c                 |   2 +
+ net/netfilter/nfnetlink_queue.c                    | 170 +++++++++++++
+ net/netfilter/nft_fib.c                            |   9 +
+ net/netfilter/nft_fib_netdev.c                     |  29 ++-
+ net/netfilter/nft_payload.c                        | 270 +++++++++++++++++++++
+ net/netfilter/nft_set_pipapo.c                     |  34 ++-
+ net/netfilter/nft_set_pipapo.h                     |   8 +
+ net/sched/act_bpf.c                                |   2 +-
+ net/sched/sch_dualpi2.c                            |   6 +-
+ net/sched/sch_hhf.c                                |  27 +++
+ net/sched/sch_multiq.c                             |   2 +-
+ net/sched/sch_taprio.c                             |   2 +-
+ net/sched/sch_teql.c                               | 125 +++++++---
+ net/sctp/protocol.c                                |   3 +-
+ net/sctp/sm_make_chunk.c                           |   5 +-
+ net/sctp/sm_statefuns.c                            |  36 ++-
+ net/sctp/socket.c                                  |   9 +-
+ net/tipc/bcast.c                                   |  22 +-
+ net/tipc/bcast.h                                   |   2 +-
+ net/tipc/node.c                                    |  15 +-
+ tools/testing/selftests/drivers/net/hw/tso.py      |  16 +-
+ tools/testing/selftests/net/lib/py/utils.py        |   4 +-
+ 92 files changed, 1292 insertions(+), 455 deletions(-)
+
