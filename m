@@ -1,253 +1,183 @@
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C883C7E0B
-	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 07:50:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C8C3D170B
+	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 07:52:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782978657; cv=none; b=hMn/DxTXaNLNSOTr1i34mEyQ4ZD6w6NvTvxlUkTD5NUnfdRK+4MmDXNK0T4XJKJh/BwGeZsl5HTrjJ7TPudvXCyRKhIfdTimhFy++BY42BjvWv9rfcjxZM5u+ydjj7vAS4yBrI7FEQ7qcB+kn8sn6BQLHz5SasyDq64eCdVa1Gs=
+	t=1782978760; cv=none; b=gGuxyJ26sM+ak8DryffyQwFKYiJsQtoHa+dQ5NXC/9eSndD7af1/jOJffoHmgC0Jx/WKwFdIJngYO4SjHcy0JKDnRZEEQoV2voZlWhPpALUwOXVhTlFeDi268IksGnxJRS1YSbVTjQP7wUZZeb4bWVUdBLGFaA0gY0WWH6GCvJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782978657; c=relaxed/simple;
-	bh=LPKKzLAxEoXPH5mOcbq24gwcNHHJ3iPYqHxz0xV9nWU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=br98kAtTFzLt/N5GZ/IcSW3sstZVeWlnBFAiKcC4AEIpBG2WDza0lhXXn4OCJZWoPwQmtdHX3gk6FEiKNN4lAMqyZ/g+27L0g7lMedSlFszvTXHrqPnr7p4hH+9vDCYfv0KqREE0JhSrvgebPsr6ti/7KbruqDo4/kSwbfjssXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OM+roVe9; arc=none smtp.client-ip=209.85.128.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1782978760; c=relaxed/simple;
+	bh=tkTbs5WEomVgmghemsBWZ8vvMtlIsS90pwefFFYS67o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DHRvzdw6eIbSzsdnMWdX6X3Q9Um27EXlpE5AJK4O0EojSn4rSf+13rfESOZLh/1wU+rBzKTXJpkNU86CBbwbJjCYFKyDPpoyxx0XsMQN+m3+C7NfjdDMKz8i+YlQpXJsuHTkyRESso7LUQM/1F3P5hzRGTcFfbj00jaV4h0RIfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=LGzO9brO; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OM+roVe9"
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-8143d904b01so8659327b3.3
-        for <netdev@vger.kernel.org>; Thu, 02 Jul 2026 00:50:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="LGzO9brO"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-472326ca506so1089101f8f.2
+        for <netdev@vger.kernel.org>; Thu, 02 Jul 2026 00:52:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782978652; x=1783583452; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=LnSLH8TarCnofbwejfF0AMt0gJL72Ru2Rk6q84rX6ps=;
-        b=OM+roVe9de9Mg6L10BfPWL+CzGN7eq4VB9nTmOa6iQ8AWJ/CRYMMQBFonxZP3G8404
-         OrLy7OcYGosH/tcmdQ7NyztsayQP4YOp3WO+trqZ4MzPn65MdrYkzmNOEnXtb4wVYy7Y
-         KQ1DZ2xscXpEF2syhr+Z60AL3FVvpTFqjIAYrsqdLmEgGaWbY3lnOPBaVI6s2DJAQoEm
-         YU709uJk7a6ySXpmoeweMPbYpd1FbrRK8GE984TuqOcczJ3J3QIWSDAxEos9mnYkw0jo
-         MxY7yHa9RwIPDi3Ayp7MKtY+IrJhWRXl+sfipSWp3xZ5ZK2KbZt7xc98YjGQpNlCI37T
-         kBWA==
+        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1782978748; x=1783583548; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=kESoQxWQJP4S+fDdlEQZkP18r4Y5za67xWurR8NPaGI=;
+        b=LGzO9brOLsAmggJcjv2mpsSISA3wkiKChF1hBC3mjlzBxpToiPRqxUzAJg3u9PxWn+
+         MjJufWTFv3xlPnBH6C9Wf5RtZEeovjxJLea8QpAILr/Y9JZq+9/VzEsYUa3JWf6eY/qT
+         eS6IU2T/yluuO1KvWcDr+N5zNvXe3cO4C8XuS/DKDtbI9a3lUoEx3gFjjAYR5rNJIRGj
+         LEqpaaMf9EV/eCU4pP94N2bc3oPHvkFuv/hsw5tyGqI5Vs//XxC+xHfePBZ3oxyn06T+
+         e1aQhaKzoF7MlUjDEvskQG+XS5e7Kduz4VbzEEVUh7ou3sUSNSNclz4WZNw4OWBLTngP
+         SSnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782978652; x=1783583452;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LnSLH8TarCnofbwejfF0AMt0gJL72Ru2Rk6q84rX6ps=;
-        b=RI991u7PYHdHKXLbWDdwVfSh922SBPmRH9fmshx9LHISXODmCB1BGjUE6TLLMpcGOK
-         Kximy6ZKJ+goSraag+LMc2R5R+Ev8Dhv1kRwnwpvk7M/D++p1eSCQJBm2jfshRsMu3Y/
-         Vvh9yNlLevg8vQINcxezGmXUp2RCO4pfSmbsg0p0rYn3K2GX+a5TGHdf11mVTSK8av+C
-         QFHiFsEK0WzdEWe3VYhcDJ+xal54fihjJIg2HG872P/MUvHg+4tBo8rnXhytKADVgXO8
-         BBGbE4vSk7z8AOB8pKm2FBGq5iwfh8x8GUxyqvRBA7mD3wv70UUSTg7VydxsUyOYee7q
-         PYgg==
-X-Gm-Message-State: AOJu0YzV8dugw/i1mGcDRb2QlT0WK5Khuk20JpAM4n7sOgx7GC8jU30G
-	OoCzgf365EfRtICeuXaTs7UQVPnhaqnM9TbDAcWZHMGvswwMHLiyzmxYVbdMqu4KuP8JtQ==
-X-Gm-Gg: AfdE7clK3WkDshDGjnAGA8ZHhCK2/x74CFb+sfO3PBI7/KALS2G72rTSV7BKAoa1rP2
-	GNbLEXiQQi6c12x5WOUhEZ/JZco976U/41HUKVsWPlC1Zul3DINpXSF7bb/c4urm6FkLz5sbdEm
-	+1UEzs5bd1K/1cJqYUMd6qdQJRD4PA31+jUzGY0EpyiRjiklZaKBk9YXnfBAJ/QRtQcQoiifERt
-	YZrq1/tMx5gnpQIps3k1oFPm9kBxOl9AIxHbxI53rcGGh4KSaYeXwQ5QwkUfVAWOMTiFuoHmqH6
-	l7tTLstxsEZchkprd7wzL0k32U1n0pBqEzu+mV8Y6I/nurkaUgfAw6eKdtVAvOrXTckPU5D3FpD
-	f86sK5xyy7iIbk6BVi743zWByTGE1Vf12aJJsiHBBGIG60of0rhK6y5bD7Qe4LcBEpiFQPAJmTJ
-	v5einA
-X-Received: by 2002:a05:690c:6201:b0:80c:aff6:9d47 with SMTP id 00721157ae682-812e8dfa5e7mr54752167b3.4.1782978652164;
-        Thu, 02 Jul 2026 00:50:52 -0700 (PDT)
-Received: from houminxi ([23.133.88.228])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8144b049939sm9451747b3.32.2026.07.02.00.50.46
+        d=1e100.net; s=20251104; t=1782978748; x=1783583548;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kESoQxWQJP4S+fDdlEQZkP18r4Y5za67xWurR8NPaGI=;
+        b=Hpl2QVhvx+//Byruetsliw5QKQIciPrT+3RNMA7XhPasWE2MslQUhYEI1G/dedmInx
+         sNYrQvsytrLpzGgUYFZ41aL1n6kcU2SSPKEwcGrqOEICa2X9Ay/PgxYJ2tIn0dgN8Kqf
+         FiFQCZdpEqsHMcr+yNaYmcVEHt6MaiVAKfcQjGCP2FnDiis0FQ7N80HrzTu2sfFq7uWv
+         LxA6Z6eS431CmRri04Vfonyx9hAeA8YMOFY4Kol28/bjwjh0JjYYnuS/6OEmJ6sI0cv0
+         ZJY99XeE+UuLuMeOCebIVgL+M67i5yC7CKIdf0/+DPsyxuMAbHEzrhaOW4DyrU+RquuB
+         9hug==
+X-Forwarded-Encrypted: i=1; AHgh+Ro2p37peWytYDjsKDh1uMhb7EBtYJ63/Z6BarAF4HJkZQJeH9lh5Pw4ziulR/dm0Uv6fRhfVXg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxK1Zvj/bmBXlGocBZNDYOL6LGbhdR9TTtQYZRBSZPm32z1xbf5
+	9AXINKo+PapvGF9mXB/yyaNi1aOUfX9umBrsXpeaDIrV2vaNiegJWBVml7nCYW6vgGA=
+X-Gm-Gg: AfdE7ckcm77pI6oCghv/Ri+zFRB+UzcVky395fUKhvJWHdnPB61vDoKSavi8Z8jYjTP
+	5VX/yAK1wPKRo9B2RIRMf9GQVLevP0R045CradNSYW8CwnhDYrCK+tnxzg5HirGT2RQHUfybHuF
+	Xp0TRmkB7W8sw3k14LQI2gkBP2Uq9nUIQG5F5n+8VesNQseAPB+ODRZ5Op9UrrEyM67gS1Iocah
+	bCMpD5ush/kfaU08xtwS9EawphPTDsUdOG2kvpImIr2jHcuVAuqAWFgVE5MzCtV4IDv3oiX8GVh
+	DiHLdjwQpx8wUY+HgcblqHVyMG9U28VWof3iYS9FKSsisX/PPoHvGL28I1Q9f3j66F55nNzmDLx
+	XVUtVw71RA5SXBy4QlGLOuj+uSppP0V04WR9Hrh96BbG99RHAJbyqfNVST+xSl4B16HrwP+cl4d
+	cPo79n9bg5XvBN4YSBD0fZAjco0fwfKwhW
+X-Received: by 2002:a05:6000:4687:b0:475:e015:c2a with SMTP id ffacd0b85a97d-47757e57e6cmr5234114f8f.8.1782978747939;
+        Thu, 02 Jul 2026 00:52:27 -0700 (PDT)
+Received: from localhost ([140.209.217.212])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-477dd94cb64sm6592524f8f.23.2026.07.02.00.52.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jul 2026 00:50:51 -0700 (PDT)
-From: Minxi Hou <houminxi@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Minxi Hou <houminxi@gmail.com>,
-	aconole@redhat.com,
-	echaudro@redhat.com,
-	i.maximets@ovn.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	shuah@kernel.org,
-	dev@openvswitch.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH net-next v4] selftests/net/openvswitch: add ICMPv6 echo type match test
-Date: Thu,  2 Jul 2026 03:50:44 -0400
-Message-ID: <20260702075044.1176798-1-houminxi@gmail.com>
-X-Mailer: git-send-email 2.54.0
+        Thu, 02 Jul 2026 00:52:27 -0700 (PDT)
+Date: Thu, 2 Jul 2026 09:52:25 +0200
+From: Jiri Pirko <jiri@resnulli.us>
+To: Mark Bloch <mbloch@nvidia.com>
+Cc: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
+	Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, netdev@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH net-next V4 4/6] devlink: Apply eswitch mode boot defaults
+Message-ID: <akYX4pMrDTnxa6yK@FV6GYCPJ69>
+References: <20260629182102.245150-1-mbloch@nvidia.com>
+ <20260629182102.245150-5-mbloch@nvidia.com>
+ <akThPmvUHvCMT2cp@FV6GYCPJ69>
+ <1d4ca929-82b8-4891-9058-1451bf71a660@nvidia.com>
+ <akUfXyKioGNAO_iB@FV6GYCPJ69>
+ <ecaeeef0-c463-4f10-885a-02ad2d648be0@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ecaeeef0-c463-4f10-885a-02ad2d648be0@nvidia.com>
 
-Register OVS_KEY_ATTR_ICMPV6 in the flow key parser so that
-icmpv6(type=...) can be used in flow specifications. Without this
-registration the parser silently drops the token and the kernel
-rejects the flow with EINVAL because the expected ICMPv6 key
-attribute is missing.
+Wed, Jul 01, 2026 at 07:42:57PM +0200, mbloch@nvidia.com wrote:
+>
+>
+>On 01/07/2026 17:09, Jiri Pirko wrote:
+>> Wed, Jul 01, 2026 at 02:57:21PM +0200, mbloch@nvidia.com wrote:
+>>>
+>>>
+>>> On 01/07/2026 12:48, Jiri Pirko wrote:
+>>>> Mon, Jun 29, 2026 at 08:20:59PM +0200, mbloch@nvidia.com wrote:
+>>>>> Apply parsed devlink_eswitch_mode= defaults after devlink registration
+>>>>> and after successful reload.
+>>>>>
+>>>>> devl_register() may still be called before the device is ready for an
+>>>>
+>>>> How so? I would assume that driver calls devl_register only after
+>>>> everything is up and running and ready. If not, isn't it a bug?
+>>>>
+>>>
+>>> You would think so :)
+>>>
+>>> Some drivers, mlx5 included, call devl_register() while holding the
+>>> devlink instance lock and then finish setting up state before releasing
+>>> the lock.
+>>>
+>>> In v3 I tried to enforce exactly that model, move devl_register() to
+>>> be the last thing the driver does. Jakub pushed back on making that a
+>>> general rule. So in v4 I changed the approach. devl_register() only
+>>> schedules the work, and the actual eswitch mode change can run only
+>>> after the driver releases the devlink lock.
+>> 
+>> Wouldn't it make sense to use a completion instead of loop-reschedule of
+>> delayed work?
+>
+>Just to make sure I understand the suggestion, this would mean that the
+>work waits until the devlink lock holder drops the lock, and devl_unlock()
+>would signal it, something like:
+>
+>void devl_unlock(struct devlink *devlink)
+>{
+>	ool complete_apply = devlink->default_esw_mode_apply_pending;
+>
+>	mutex_unlock(&devlink->lock);
+>
+>	if (complete_apply)
+>		complete(&devlink->default_esw_mode_apply_ready);
+>}
+>
+>That would avoid the retry loop, but it also means the queued work 
+>sleeps until the driver drops devl_lock. It does keep one worker
+>blocked per pending instance and adds this default-esw-mode signalling to
+>the generic devl_unlock() path.
+>
+>The delayed retry was meant to avoid a sleeping worker and keep the
+>instances independent. If one devlink instance is still locked, we just
+>try it again later while other instances can progress.
+>
+>If you prefer the completion approach I can switch to it, but I don't see
+>it as simpler overall.
 
-While here, add convert_int() to the ovs_key_ipv6 and ovs_key_icmp
-fields_map entries so that specifying a field value produces the
-correct wildcard mask. The IPv6 flow label uses convert_int(20) to
-produce a 20-bit mask (0x000FFFFF), matching the kernel constraint in
-flow_netlink.c that rejects masks with bits 20-31 set; byte-wide
-fields use convert_int(8). The ipv4 counterpart already does this via
-convert_int(); the ipv6 and icmp classes were simply missing the fifth
-tuple element. Existing callers that pass empty parentheses are
-unaffected because convert_int("") returns (0, 0).
+Yeah, I don't have preference. I was just wondering. Feel free to leave
+it as is.
 
-Add test_icmpv6 exercising the ICMPv6 echo flow key. The test uses
-static neighbour entries with nud permanent to prevent racy NDP, then
-verifies in three steps: install icmpv6(type=128) and
-icmpv6(type=129) flows and confirm ping works, remove the flows and
-confirm ping fails, reinstall and confirm recovery.
+Maybe, instead of "complete", you can schedule with "0" delay in
+devl_unlock? Well, it does not really need to be delayed work, right?
+The only single schedule may be done from devl_unlock. That would help
+to eliminate the rescheduling. Am I missing something?
 
-Signed-off-by: Minxi Hou <houminxi@gmail.com>
----
- .../selftests/net/openvswitch/openvswitch.sh  | 70 +++++++++++++++++++
- .../selftests/net/openvswitch/ovs-dpctl.py    | 26 +++++--
- 2 files changed, 89 insertions(+), 7 deletions(-)
 
-diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh b/tools/testing/selftests/net/openvswitch/openvswitch.sh
-index 2954245129a2..f88cefa71559 100755
---- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
-+++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
-@@ -32,6 +32,7 @@ tests="
- 	dec_ttl					ttl: dec_ttl decrements IP TTL
- 	flow_set				flow-set: Flow modify
- 	action_set				set: SET action rewrites fields
-+	icmpv6					icmpv6: ICMPv6 echo type match
- 	psample					psample: Sampling packets with psample"
- 
- info() {
-@@ -443,6 +444,75 @@ test_action_set() {
- 	return 0
- }
- 
-+# icmpv6 test
-+# - static neighbours to bypass NDP (nud permanent)
-+# - icmpv6(type=128) echo request, icmpv6(type=129) echo reply
-+# - remove flows and verify ping fails, reinstall and recover
-+test_icmpv6() {
-+	local t="test_icmpv6"
-+	local v6="eth_type(0x86dd),ipv6(proto=58)"
-+
-+	sbx_add "$t" || return $?
-+	ovs_add_dp "$t" icmpv6 || return 1
-+
-+	info "create namespaces"
-+	for ns in client server; do
-+		ovs_add_netns_and_veths "$t" "icmpv6" \
-+		    "$ns" "${ns:0:1}0" "${ns:0:1}1" || return 1
-+	done
-+
-+	ip netns exec client ip addr add fd00::1/64 dev c1 nodad
-+	ip netns exec client ip link set c1 up
-+	ip netns exec server ip addr add fd00::2/64 dev s1 nodad
-+	ip netns exec server ip link set s1 up
-+
-+	local cl_mac sl_mac
-+	cl_mac=$(ip netns exec client ip link show c1 \
-+	    | awk '/link\/ether/ {print $2}')
-+	[ -z "$cl_mac" ] && \
-+	    { info "failed to get c1 hwaddr"; return 1; }
-+	sl_mac=$(ip netns exec server ip link show s1 \
-+	    | awk '/link\/ether/ {print $2}')
-+	[ -z "$sl_mac" ] && \
-+	    { info "failed to get s1 hwaddr"; return 1; }
-+	ip netns exec client ip -6 neigh add fd00::2 \
-+	    lladdr "$sl_mac" nud permanent dev c1 || return 1
-+	ip netns exec server ip -6 neigh add fd00::1 \
-+	    lladdr "$cl_mac" nud permanent dev s1 || return 1
-+
-+	ovs_add_flow "$t" icmpv6 \
-+	    "in_port(1),eth(),$v6,icmpv6(type=128)" \
-+	    '2' || return 1
-+	ovs_add_flow "$t" icmpv6 \
-+	    "in_port(2),eth(),$v6,icmpv6(type=129)" \
-+	    '1' || return 1
-+
-+	info "verify ICMPv6 echo with type-specific flows"
-+	ovs_sbx "$t" ip netns exec client \
-+	    ping -6 -c 1 -W 2 fd00::2 || return 1
-+
-+	ovs_del_flows "$t" icmpv6
-+
-+	info "verify ping fails without echo flows"
-+	ovs_sbx "$t" ip netns exec client \
-+	    ping -6 -c 1 -W 2 fd00::2 >/dev/null 2>&1 \
-+	    && { info "ping should fail without flows"
-+	         return 1; }
-+
-+	ovs_add_flow "$t" icmpv6 \
-+	    "in_port(1),eth(),$v6,icmpv6(type=128)" \
-+	    '2' || return 1
-+	ovs_add_flow "$t" icmpv6 \
-+	    "in_port(2),eth(),$v6,icmpv6(type=129)" \
-+	    '1' || return 1
-+
-+	info "verify connectivity restored"
-+	ovs_sbx "$t" ip netns exec client \
-+	    ping -6 -c 1 -W 2 fd00::2 || return 1
-+
-+	return 0
-+}
-+
- # psample test
- # - use psample to observe packets
- test_psample() {
-diff --git a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-index e1ecfad2c03e..f3edd198223f 100644
---- a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-+++ b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-@@ -1255,11 +1255,16 @@ class ovskey(nla):
-                 lambda x: ipaddress.IPv6Address(x).packed if x else 0,
-                 convert_ipv6,
-             ),
--            ("label", "label", "%d", lambda x: int(x) if x else 0),
--            ("proto", "proto", "%d", lambda x: int(x) if x else 0),
--            ("tclass", "tclass", "%d", lambda x: int(x) if x else 0),
--            ("hlimit", "hlimit", "%d", lambda x: int(x) if x else 0),
--            ("frag", "frag", "%d", lambda x: int(x) if x else 0),
-+            ("label", "label", "%d", lambda x: int(x) if x else 0,
-+                convert_int(20)),
-+            ("proto", "proto", "%d", lambda x: int(x) if x else 0,
-+                convert_int(8)),
-+            ("tclass", "tclass", "%d", lambda x: int(x) if x else 0,
-+                convert_int(8)),
-+            ("hlimit", "hlimit", "%d", lambda x: int(x) if x else 0,
-+                convert_int(8)),
-+            ("frag", "frag", "%d", lambda x: int(x) if x else 0,
-+                convert_int(8)),
-         )
- 
-         def __init__(
-@@ -1344,8 +1349,10 @@ class ovskey(nla):
-         )
- 
-         fields_map = (
--            ("type", "type", "%d", lambda x: int(x) if x else 0),
--            ("code", "code", "%d", lambda x: int(x) if x else 0),
-+            ("type", "type", "%d", lambda x: int(x) if x else 0,
-+                convert_int(8)),
-+            ("code", "code", "%d", lambda x: int(x) if x else 0,
-+                convert_int(8)),
-         )
- 
-         def __init__(
-@@ -1982,6 +1989,11 @@ class ovskey(nla):
-                 "icmp",
-                 ovskey.ovs_key_icmp,
-             ),
-+            (
-+                "OVS_KEY_ATTR_ICMPV6",
-+                "icmpv6",
-+                ovskey.ovs_key_icmpv6,
-+            ),
-             (
-                 "OVS_KEY_ATTR_TCP_FLAGS",
-                 "tcp_flags",
--- 
-2.54.0
-
+>
+>Mark
+>
+>> 
+>>>
+>>> Mark
+>>>
+>>>>
+>>>>> eswitch mode change, so keep a per-devlink delayed work item and pending
+>>>>> flag for the registration path. Registration queues the work, and the
+>>>>> worker tries to take the devlink instance lock.
+>>>>>
+>>>>> If the lock is busy, the worker requeues itself with a delay.
+>>>>>
+>>>>> For successful reloads that performed DRIVER_REINIT, devlink_reload()
+>>>>> already holds the devlink instance lock and the driver has completed
+>>>>> reload_up(). Clear pending work and apply the default directly from the
+>>>>> reload path instead of queueing work.
+>>>>>
+>>>>> If a user sets eswitch mode through netlink before the pending
+>>>>> registration work runs, clear the pending flag so the queued default does
+>>>>> not override that user request. Cancel pending default apply work when
+>>>>> freeing the devlink instance.
+>>>>
+>>>> These AI generated code descriptive messages are generally not very
+>>>> useful :(
+>>>>
+>>>
+>
