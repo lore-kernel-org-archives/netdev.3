@@ -1,146 +1,139 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F2AD33B6D1;
-	Thu,  2 Jul 2026 16:38:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783010302; cv=none; b=P4/Naewz8msp8/ZcHSoooE8ovpmAZWMBGMYzq/ygtSmdqdoH/6hdFXrb3qStDWHUp/9P5Er/XdsREXx6ll4dM+S5Xm1NJfYcxcHvkw5HdGxl4NSBwZpsMN3J1DsJms6sbK0W0VFMuZA5ESJ38OlQHtqMCPOa3NmkqBW7wPGK1Vo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783010302; c=relaxed/simple;
-	bh=YbkMwQXx1OlomRdJyOYIG0eztRSycrAl4dbTUXUEekQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZHZWw1uNogj2JFedD6KGcPTd3Qu/euVk8x8jE66vWySkHZasDs0QZTHg4QlZiuUAG6k6XfjP4K5hGmDAPal6ocTeI+2sCADv7cd7OC7VHf9dOhzcHM7wCWVI872WwQbafRfDTFSoewwWA6lUok94DQOZLgSTS4tojPhU0TsAE9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EM3nv1+f; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63C12344D8C
+	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 16:39:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783010353; cv=pass; b=mPx2n2p5d4UHSVtmeCB+KZuiOEktfOTzypV70Y9frPcQSWi97HsWKfso/qjB+046+/IPwEky1wQaYvFK5KJDYmY4QPNREtA8KFwbBa+pzbmg38vQeQeIhN2VMdirwGWbWbEROybEh36R3241L4iOM4RxBOthf83qQ2ApHNYPiKQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783010353; c=relaxed/simple;
+	bh=kOZ8synxEF/3k4EYSZuoWFK5xyfsCIntb32ef8ucf3k=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=hMQC6ZyEoUjeTUEt4aww/FkVevXzqA88/fOdGtSQRrEvEYO/g4fnD/MI7RaeNQDcm6mYEGnRtxdsIK5CTfjPpvVuXUJpXRsiLcdwNlR5Be3H0GdUlRtg9OA8ut1Mfo/V2Mr+Kltym1TI/Yb8kIPPM0B8jOwW4AZ5X5jHdrY1f64=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZdqqvMX1; arc=pass smtp.client-ip=209.85.215.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EM3nv1+f"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BAA31F000E9;
-	Thu,  2 Jul 2026 16:38:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783010301;
-	bh=PtyvGxEYI8TFaymocx5DWgYaitw+9gSKjwsASF8ZahI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EM3nv1+fJUISf+D7qqcqkrUIp1dyuUh76etWuiTIWqvs+SCoQhp+SX2iMMYYYqbkj
-	 Yclaxk/SaNG0uBdgdAP9Ar+BXUm18X18/yYznCzlniJewqGV1akmZkMVjN+DbKVCHg
-	 80dpTeUnZiCH5BzGnp+zoCsH0J2CG0IeGFW78VDU=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	netdev@vger.kernel.org,
-	stable@kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 055/204] rxrpc: Fix the ACK parser to extract the SACK table for parsing
-Date: Thu,  2 Jul 2026 18:18:32 +0200
-Message-ID: <20260702155119.813722666@linuxfoundation.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702155118.667618796@linuxfoundation.org>
-References: <20260702155118.667618796@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZdqqvMX1"
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-c9e607d81fcso817217a12.2
+        for <netdev@vger.kernel.org>; Thu, 02 Jul 2026 09:39:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783010352; cv=none;
+        d=google.com; s=arc-20260327;
+        b=jdc/ffqbpJY93/UVv8G9JClX9UJVUJsUI6+vByCnR44SU3tdiYN2BMGp+SQbR4T3xz
+         KmuIRFUYMrkA/oQhQs7jAM1+dIDWFAqu8rEqWmb2pJj2z4w4aASY2xximqyDpG2m8Uhy
+         EFsqwSkHgYwJRtQairFpfPiBO+2U4L6hWETXHv+xt8iBSOVSSNjm0VDH5BQ+4C9n/BuV
+         DEvZycuE9SY9JYGtAlvmhP7kFbC91G0oAtI3NF+Sc9QdxIsTnQGbNTfpuiJ2uqp6x+rl
+         qmcB6GPzYbYvHIkcC4V2GIncGUFabYFDHyvM3/YU7+02ypCzHkgJiwn2vi2TDgx+msSX
+         u2FQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=HFGik6+4OsATJQFBbFq4zeNGr+l450c3fMwz9itVayQ=;
+        fh=LA4LcAFJW1hdgErMl9J5PiNYKwHmwZGVLMslXPNJDxI=;
+        b=BGOpUNz9Z0j0z/ho/fVsP2lLk5T+043YcJQLFbaVWmg2iwK7TCxpkJtqsVAZmrB+Pr
+         RE1VxnvQma8QIbI5cfPEtMoYr6x+akz7qtWTXcYW1iMxsLkUPhNKyVqLVKFjhoXs0RKu
+         sWrU8fP85Co3y9MGQpKAyGpzmcMtL/G/uShb2A6fLVApEJMS1j0DmlhEtsYuUBcCwPSZ
+         9GYEg8ohk3mQFzeqHHsm0GTrIPa/fy32DvesnPIBE867M3WM7G2HLMUsdV4m6qyoXN5J
+         sVLXmiLXAU+iWpmpsUlBLGHqwGwUuaUfgElddumeMyX1/rXvIH0pYE+3fDDa9NAOgujE
+         OylA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783010352; x=1783615152; darn=vger.kernel.org;
+        h=content-type:to:subject:message-id:date:from:mime-version:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=HFGik6+4OsATJQFBbFq4zeNGr+l450c3fMwz9itVayQ=;
+        b=ZdqqvMX1k7CcPYyRt2hWpU+h7WSDpkBEB4mhJ1OEJFG891v8wcrJe01IQOCwdrzRia
+         FVGYOGeDArSn1ySn4uV6aN6HpyCdwnkf8JirlSTk3RlLwNxrMrKuv82T+/KWkaDm5kHm
+         gKd9wP/l9cDtmHQBlutjoOdnwYLEDiqvQznFOu5Isrst3bquEl/EtoYdNzi7JAcrLsO2
+         cRne0wXr4Su2TtxzMY/QFeNf1onfspTFhTNypdEQVB4W6nbCa242rXhBvq1uDAedmtAG
+         JsbmZX1dPsQ3hKMrIwcKC7zqKpKuMTDUaUsEFmqHREiF7rSxiPanHLvLbqoQBjo7dHlZ
+         I1+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783010352; x=1783615152;
+        h=content-type:to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=HFGik6+4OsATJQFBbFq4zeNGr+l450c3fMwz9itVayQ=;
+        b=EWL/1cCdzldlmLFu2Y8nsQLn1rGyxw4JUaL9y4JTLG5BM48Sq58atYzq7/fvXxrNcp
+         qk9zMG9b3Dz2vf5DlHoj4wH0rQeW8qU5cta4PpK5cnS6KfMmkzdm/GCxPF8oZQxrhj5h
+         qzy4wx1sn8YoNY1CWdNxmnTnRE/r+KtY936FlQqclRTLJkfR9gAupFGHbRLL/jSEust5
+         v13MJU7pJ0rxhtxRtxD9p2nxbTuwDNn+DNV5w0EcepjkqwugPr3xZcBT1sTqJw0dVl49
+         9r3AnmLUn7y5ikICH1eNOjgmd5sUxvsMKPvQ3uBOKNE1shIvyNn7qIFZQMMtJUDfgmKI
+         5zFQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8H+hy8ohcnRsB9OJS7CO2kG/S7hczjKGJL2BJoxywxj3cQGVU1zoBGZCgwhYHpjMhP5ix9h+s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwX7n92ih/5km84Dp9xa/AK4bgoEGnbc65Q8vB/NLkg5ijCLtc8
+	xk+MGINUhLs7COQ7x8jLhva7PAlmV/7g4Y8Wava/rmDA9w7m50ap7QQ/QcGOHipoTWL1hq/DSKQ
+	Bt8KGHwEL19lDmEDL5bv1CprPH9YGAd0=
+X-Gm-Gg: AfdE7cm0DdTdvScCK3rXhpdxcOsn8ykv7/PaKCZpURv3dz31IOGidIxeYbKKDNfuhOZ
+	kE4uoGsshifZHFvk/aqhk+WySsseclIICQXrzmp8aDEDqcOwTyM+sCIs9jIKpe4wjSXaL6vZdw8
+	BiymDyvLPee+LtV+pd0Xl3uIP0xmaMHe4WwTBlOQ8oSK9DCzSofFmAHkfOL2dkcsxZMZVFk+h8J
+	7wQ4USw2iZ0TrfVhGt5sz8OkpGMWgl3TVI5W1zVNmkXjEQE+/0/Ed0DDV3RggfqFMvDmvd35xuW
+	jgum2tLmbg18szeUMPIOnnNU8dLfGMaymJ2ldsPRc9Lcq+GPe0Mtbw/XaYVNbfG77Bh+lOuMs4V
+	KY1VHY7PxhAbnuCWAK7FERNs+
+X-Received: by 2002:a05:6a20:549d:b0:39f:2dd0:65d5 with SMTP id
+ adf61e73a8af0-3bff4222b55mr7906831637.39.1783010351482; Thu, 02 Jul 2026
+ 09:39:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Thu, 2 Jul 2026 09:39:00 -0700
+X-Gm-Features: AVVi8CeLgejTui-Kppz8NKnSDw3ifQGD3gc9ZGh2g-tg_Ec2Wak7dGPaK2nnMCY
+Message-ID: <CAADnVQKsM8iOGO3ZL3LgbWigOBBMrGbTYZ_k_Ktz=+cVkvRLXg@mail.gmail.com>
+Subject: [ANN] Summer vacations and "Won't Fix" bugs
+To: bpf <bpf@vger.kernel.org>, Network Development <netdev@vger.kernel.org>, 
+	LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+Hi Everyone,
 
-------------------
+The summer is upon us and many BPF maintainers are going to take very
+long vacations "surprisingly" at the same time during July and August.
 
-From: David Howells <dhowells@redhat.com>
+As signs on freeways say: "Expect delays" in patch processing and
+please don't spam few overloaded maintainers and reviewers.
 
-[ Upstream commit 333b6d5bb9f87827ac2639c737bf9613dbae7253 ]
+We see a lot of AI generated patches where human took AI generated bug
+finding, AI produced a patch and human sent it to the list without
+much thinking since AI "bug" sounded real and AI "patch" looked legit.
+This is not cool. It doesn't move the BPF project forward. It's a
+wheel spin and a noise in the long run. 3 out of 4 such patches are
+wrong. They consume maintainer's time and distract from real bugs and
+features. Don't be the one who spreads AI slop. Submitters must
+review such patches first. Use another LLM to review it and ask "Does
+this need to be fixed?" If it's a race condition and the reproducer
+requires adding mdelay() to the kernel the chances of hitting such a
+bug are the same as HW crashing due to cosmic rays. Typical solar
+flares cause more kernel crashes in the datacenter than these bugs.
+These are "Won't Fix" bugs.
 
-Fix modification of the received skbuff in rxrpc_input_soft_acks() and a
-potential incorrect access of the buffer in a fragmented UDP packet (the
-packet would probably have to be deliberately pre-generated as fragmented)
-when AF_RXRPC tries to extract the contents of the SACK table by copying
-out the contents of the SACK table into a buffer before attempting to parse
+Similarly a patch to fix a "bug" without a reproducer is going to be
+ignored, because it's a sign that AI couldn't craft a reproducer and
+description of the "bug" is a hallucination. No matter how plausible
+it sounds.
 
-AF_RXRPC assumes that it can just call skb_condense() and then validly
-access the SACK table from skb->data and that it will be a flat buffer -
-but skb_condense() can silently fail to do anything under some
-circumstances.
+We see newcomers sending such AI slop to multiple subsystems at the
+same time (netdev, bpf, etc). It's a red flag and a sign that the
+submitter has no depth in either area. They are merely forwarding AI
+to the list. Such patches are the lowest priority and might be
+ignored.
 
-Note that whilst rxrpc_input_soft_acks() should be able to parse extended
-ACKs, the rest of AF_RXRPC doesn't currently support that.
+Landing 100 patches to fix 100 never-in-real-life bugs is not a
+success story. Lines-of-code and number-of-patches-landed is not a
+metric that businesses evaluate employees over. Expect more "Won't Fix".
+Maintainers are not going to help you increase these pointless metrics.
 
-Further, there's then no need to call skb_condense() in rxrpc_input_ack(),
-so don't.
+Also developers who sent 10+ patches are no longer occasional
+contributors they _must_ review other patches.  See
+https://lore.kernel.org/bpf/CAADnVQ+TKKptnNB25V3=bcdybh5G6c2DyW2sYtXvyRaVnPN8MA@mail.gmail.com/
+"As a prerequisite for merging a patch, the submitting developer is
+expected to complete a comprehensive review of another developer's
+patch of comparable scope and complexity."
 
-Fixes: d57a3a151660 ("rxrpc: Save last ACK's SACK table rather than marking txbufs")
-Reported-by: Michael Bommarito <michael.bommarito@gmail.com>
-Link: https://lore.kernel.org/r/20260513180907.2061972-1-michael.bommarito@gmail.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Eric Dumazet <edumazet@google.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: netdev@vger.kernel.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/105362.1780573560@warthog.procyon.org.uk
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- net/rxrpc/input.c |   21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+If you don't review other patches and merely forward AI to the list
+expect that your patches will be ignored.
 
---- a/net/rxrpc/input.c
-+++ b/net/rxrpc/input.c
-@@ -775,9 +775,23 @@ static void rxrpc_input_soft_acks(struct
- 				  rxrpc_seq_t since)
- {
- 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
--	unsigned int i, old_nacks = 0;
-+	unsigned int i, old_nacks = 0, nsack;
- 	rxrpc_seq_t lowest_nak = seq + sp->ack.nr_acks;
--	u8 *acks = skb->data + sizeof(struct rxrpc_wire_header) + sizeof(struct rxrpc_ackpacket);
-+	u8 sack[256] __aligned(sizeof(unsigned long));
-+	u8 *acks = sack;
-+
-+	/* AF_RXRPC assumes that it can access the SACK table directly from
-+	 * skb->data as a flat buffer, but the skb may be non-linear (e.g. a
-+	 * fragmented UDP packet) and skb_condense() can silently fail to
-+	 * linearise it.  Copy the SACK table out into a local buffer before
-+	 * parsing it.
-+	 */
-+	memset(sack, 0, sizeof(sack));
-+	nsack = umin(sp->ack.nr_acks, 256);
-+	if (skb_copy_bits(skb,
-+			  sizeof(struct rxrpc_wire_header) + sizeof(struct rxrpc_ackpacket),
-+			  sack, nsack) < 0)
-+		return;
- 
- 	for (i = 0; i < sp->ack.nr_acks; i++) {
- 		if (acks[i] == RXRPC_ACK_TYPE_ACK) {
-@@ -934,9 +948,6 @@ static void rxrpc_input_ack(struct rxrpc
- 	    skb_copy_bits(skb, ioffset, &trailer, sizeof(trailer)) < 0)
- 		return rxrpc_proto_abort(call, 0, rxrpc_badmsg_short_ack_trailer);
- 
--	if (nr_acks > 0)
--		skb_condense(skb);
--
- 	if (call->cong_last_nack) {
- 		since = rxrpc_input_check_prev_ack(call, &summary, first_soft_ack);
- 		rxrpc_free_skb(call->cong_last_nack, rxrpc_skb_put_last_nack);
-
-
+Have a great summer.
