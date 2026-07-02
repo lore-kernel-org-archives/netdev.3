@@ -1,147 +1,247 @@
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012033.outbound.protection.outlook.com [52.101.66.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D25D03112C0;
-	Thu,  2 Jul 2026 03:26:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782962769; cv=none; b=GBmYfbGxcFBeSEYgBS96ITrD5px294zKJ/pER70J29C3kOyOIPX6B+JTKea35+Z/pBDwZmC8wCsu2B0sJ3gSImbgZ5al957TTyR8kieMotf1zfuYo7ldf5chjotV16JsYZlpMkZ+npoRaySXyeQbN4a8oNC2VoKteIfjh2pZmq8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782962769; c=relaxed/simple;
-	bh=NV6w2JoWpHy3zUvSnRVVQfp87R8d0tS1Fyzs+r8chJc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=M0Nh6nhSDTkN/pyKKG2ufdXhA2rtuW6n1Dj898KwzXz9ssqwYTpSW8m9QCd2CCEb7IjFyFsZO3KQV+5MA1w75u9p4MNgJlxGYoFZXcrjjx5JjDnXwAJ37jitvbi3luEL9w8r/0+CU857bV5XMQfQFTLcU0eG+0L/bI3KFYSfT+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=mhmMEvun; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E5ED3126B2;
+	Thu,  2 Jul 2026 03:26:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.33
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782962771; cv=fail; b=ombTxHH5eX7wDcZeL3KCjTx46nuQlBKbanuWJZ+HFJaAgt0FzqWgFpaZPBmMoYCHzSAkVdP5SoZhJFmb0Wk6Wt99gqjGrIBrzjB/IFka0QinKnh2isG+Ds6NU99+i3+LY+Y4aFlmD7xUDJrkcIpQxV6lwY12LRwDLXot5djUL5o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782962771; c=relaxed/simple;
+	bh=VWvw5zFTRXTwOBWTHi4YeHz8tuBMs6r/kTY7Mrd5akY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=bgZsB5CSVG+nHtfGtjWh152UXeGGIhdNYCJVYvE3UtJ4rEERnWX5vw97hxPXSBHM5fL1KXHIS3MU5W0l6yNWwQbT4EiHH2jxL2kElZZKveixLV4BEV223xQ5oXG3K9/i+2yzhb9+BZ1WjLgT68xmcvWOl+/KLf0fjogdY361oOk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=CuHWU0vN; arc=fail smtp.client-ip=52.101.66.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="mhmMEvun"
-X-UUID: be7013d075c511f1b1788b6acf885367-20260702
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=lLC3Ud+TVrFH8KiBacdMlSzjHyCVWCIy8gKSFh5QxrA=;
-	b=mhmMEvunyZ1r91peMgk6mmttb45tFYL65CHidmH95ZO8yhbPcHck3+hzeqZeZlxFzZqNkDMznS5JSd/YE+aVhnJfIS3g7HAQmq1pfDFWZ8TGGx2haAkfBh8R1eQb+Fn546eDwu+kRQoR0YD2JmU3XCvJcFL4LNBcAxXc6jib92Y=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.17,REQID:b0e678f1-d0ed-4d07-952b-82784d172ce6,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:d497b38,CLOUDID:5c06e581-6310-4e6b-a6b1-aca20d98ed8b,B
-	ulkID:nil,BulkQuantity:0,SF:102|836|865|888|898,TC:-5,Content:0|15|50|99,E
-	DM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0,OSA:0,
-	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: be7013d075c511f1b1788b6acf885367-20260702
-Received: from mtkmbs11n1.mediatek.inc [(172.21.101.185)] by mailgw01.mediatek.com
-	(envelope-from <shiming.cheng@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 322319382; Thu, 02 Jul 2026 11:25:58 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- MTKMBS09N2.mediatek.inc (172.21.101.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Thu, 2 Jul 2026 11:25:57 +0800
-Received: from mbjsdccf07.gcn.mediatek.inc (10.15.20.246) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.2562.29 via Frontend Transport; Thu, 2 Jul 2026 11:25:56 +0800
-From: Shiming Cheng <shiming.cheng@mediatek.com>
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <horms@kernel.org>, <matthias.bgg@gmail.com>,
-	<angelogioacchino.delregno@collabora.com>, <willemb@google.com>,
-	<daniel.zahka@gmail.com>, <alice@isovalent.com>, <sd@queasysnail.net>,
-	<eilaimemedsnaimel@gmail.com>, <imv4bel@gmail.com>, <nbd@nbd.name>,
-	<dsahern@kernel.org>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-mediatek@lists.infradead.org>
-CC: <stable@vger.kernel.org>, <lena.wang@mediatek.com>,
-	<shiming.cheng@mediatek.com>
-Subject: [PATCH v4] net: gro: fix double aggregation of flush-marked skbs
-Date: Thu, 2 Jul 2026 11:25:15 +0800
-Message-ID: <20260702032535.23754-1-shiming.cheng@mediatek.com>
-X-Mailer: git-send-email 2.45.2
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="CuHWU0vN"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MIhjUIek06JMHE+s7j294oh1tTnFKA9CHY9K7YGzDbjbIos6XTaKIKHoRrozrivIOzJTxnJOa3WggnQc4FEKwarKQpr/TWWEbUHWLRzo2J1aVuhcXbleqDTIaTLz+X9CuGHxv28v55zTBym07N1wsp2l6VEKEQbjKD8X7zL2HIXn4Mc9mMUbDha6g+qrklUEjpkHGYyEfrfUwhDXMRfI1X4RT+2pIzTYzTWUWWwyrBbOHI1LtWV4vfKjV8zAbRKLfoLu2tir3MF+L8e57mWBoJM1+/ZjNlsCW/vmBFZ2J6Z5pzZ8yE6vi36F6YlJ64x1687e/JAERb/7Ia62btu7Tg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Gk15mS+pO4+D9IvQpnvHtyxfkR43dr6DcsxgqroyM4I=;
+ b=sswMrivtdKOAUk1FKA3WQv6XgaycAWqiUpmY43WEG1u67GVCU+Xsqk9BdivuIBCHsMQCKxIcnpZOduR74sfSCLKx7rhHfDk4l8hUM2gDwB0qaYJsEh23rxiAwgmiE95wj0FUis70fOiQ7+FWpY73LbzImOA6MTHVSsiYTC989aXyHjhg71f7TACVjVxgt+R8bRDHcbsPAC59y6+2f2TWarBfGxLcf6Y6vCTylrzhsy2Z+JYIgqjA19wg12pz39540jxxxfPLsgHW0ko9CDixkIzYrJEZs0Oo9c5BSfMkmtB8K4V7X8yLhj5lYKmIAuvvdyjqa45+RpYo0JHQRoAhng==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Gk15mS+pO4+D9IvQpnvHtyxfkR43dr6DcsxgqroyM4I=;
+ b=CuHWU0vNoSY2cmYvhyzvN0l16K3gyBdhsS7OVhPQvxg0dZqp4sO7EhzQXO+1kJBpzChX6KxhjHYw1yk4w+9GJnygBouYVc3jfH+7QTllnoJB0f2+s+2sgTeN+PH91lpZbCZ5zs45p4weL7hPiykzehgrYl8UV3tChCnx9FUewlAzYshTQ+FsAowDDmk7fIJ7xS3VcX/Hbim5ssYf2Wk9HHW8jCNWj6Ar9kPBQ+fCp744h0xu78tuotSqJCrSlfG73AIvSygguH/LZYUtDhH9tGEK0NFwLsZRPxMnLcT/3M1f8CTZCVQZD/9njZ5i/kTNGnEvV5vOqlVcX21OZx0dAQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22)
+ by GVXPR04MB10248.eurprd04.prod.outlook.com (2603:10a6:150:1c1::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Thu, 2 Jul 2026
+ 03:26:05 +0000
+Received: from VE1PR04MB7216.eurprd04.prod.outlook.com
+ ([fe80::a9a5:cf83:dbe8:1f74]) by VE1PR04MB7216.eurprd04.prod.outlook.com
+ ([fe80::a9a5:cf83:dbe8:1f74%3]) with mapi id 15.21.0181.009; Thu, 2 Jul 2026
+ 03:26:05 +0000
+From: wei.fang@oss.nxp.com
+To: claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux@armlinux.org.uk,
+	wei.fang@nxp.com,
+	chleroy@kernel.org
+Cc: imx@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v2 net-next 08/14] net: enetc: remove invalid code from enetc4_pl_mac_link_up()
+Date: Thu,  2 Jul 2026 10:57:08 +0800
+Message-Id: <20260702025714.456233-9-wei.fang@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260702025714.456233-1-wei.fang@oss.nxp.com>
+References: <20260702025714.456233-1-wei.fang@oss.nxp.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MA0PR01CA0015.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:80::7) To VE1PR04MB7216.eurprd04.prod.outlook.com
+ (2603:10a6:800:1b0::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VE1PR04MB7216:EE_|GVXPR04MB10248:EE_
+X-MS-Office365-Filtering-Correlation-Id: db959a9f-540d-491b-d807-08ded7e9a65e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|23010399003|7416014|376014|1800799024|366016|3023799007|921020|56012099006|11063799006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	Gq9zzBvMCo2shwF62ipPi/Mr/I9gxA+LoNC0CH9lAvWg+z6eKx6BxXAfSmYX79pJ9sWrHlPMQ+26n/8KXzXkv+mdoWJzaWonefWqw6YGSTg4euCzgp3zIZ/znfizi0ff4kfRAry5MZhBzFavRxWCfQDtti7cxt9TDUSBQKRgWVmPxbjYBTOE2aZbOriMAYzD/hk29PjSaxWi7/876KXqJdBq+8Xvu2oXZiB0a3MwEJOxEIwhB3IkPwNWCxz3SZZ0/qKexaLGUyUtkmAwgIvZQ1DwFRgm7+uGkoTuJo/dfice2R9tvYFySRGPsharYIvS5QkWbpQEKznO1zrb636OKe5knC7BsiN+Q0uracF3MZH+LtWpwIupfcbCBo3nSgg55Z22pqECPyWow9KBSsZsLcui9pm7j6H8o3KX/7lxkMalcQSFIVeIMI01l/oI7D7aE3pdz5gL4IIY9vbEIWs+74uedCx41aH98UxlVHhOCI9ZF/FS6l+r+D5oEi0RMq4ZRqy/6XrRLR5rSjBBT2FnuNIap+543L3r3BCF/RSlu64NYr8SGuR7WZ8bOoLvYyB+V6JrEMJVUZwEpIydXaIw4aWwZkhTaHRx6iLWyeDrtMtOsJtTiLzAC0mRZllx7Ry2vq9L5yObQmkXP31GkteKFFwyz/2JpCO0P901UzuUodvtU/ZnqAudBmG8beUQ9IoPojI/FrXeKLviPuSH3ub5SQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB7216.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(23010399003)(7416014)(376014)(1800799024)(366016)(3023799007)(921020)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?xoFsBzG7zv0HqKBXmesEIxV9FhnWcTnalEMgYQPVbtX2t1xPGWSy2nJkFMP6?=
+ =?us-ascii?Q?LSwOQlFujRfxHuw31GadncL2wUIUgIWLzWF9P1ut7pdEPx7yT192fBljwDKv?=
+ =?us-ascii?Q?F2U9hLPQvLCcROCVKl+0q2KmKdypYzxG0cF+DrL85YXocw8MnX2zY6ofkj4r?=
+ =?us-ascii?Q?jh5AYC067uwSnC29G2KAA2q9ixEn7+UrzsKVRFL8Jx3izd1ijCUerKcCRdJe?=
+ =?us-ascii?Q?wxsAIPrfd/zjy31zupABk5SQC2qEf2gZVR7pMj13rMDJmejpnEa2V5dJajbV?=
+ =?us-ascii?Q?OODtA/Mg82L42hjT9tmTFv7nozOaO46U+sbMUgraYp63/4LO7jsA49vKX9SG?=
+ =?us-ascii?Q?B4RE6okKcX/rubPeMP20IJ+1cgyz7CcgnJuhKL+LxF1yjtg5nnuY2zHB3DeG?=
+ =?us-ascii?Q?ZbTHcTb7a/JflxctQFuNLvuEEQb9gW5SssIEGuil3fZZy/dXeeIOIwlLoftD?=
+ =?us-ascii?Q?bjgoGA5oqrPkuxpAb4Qb8zDWtPB2uwXltYPh6aw0yCVKprEU1zxorqYkcLAO?=
+ =?us-ascii?Q?ZFXP1B3Nfuls8wiDg0Z2GPE1uL/DYoFDk01G5YZCub24B+MR4AbxP7wNFoTt?=
+ =?us-ascii?Q?wL8wtWAmYbILtNGilW1xCixidQUjr2VwjzS6k+pfVRabg1ULg5+OVGHtZGaz?=
+ =?us-ascii?Q?ESzwt7tOEgtddZpFymbWnU66fmV0I8UJvcNXHKTE01c9zF03kjLj7nI3/YoL?=
+ =?us-ascii?Q?BNrZJDO9SpPBoHGlCX07YmUOKePLWA0NCpLBSqftCjrYK70n7woxutozETQS?=
+ =?us-ascii?Q?8tr569rQo8NDZys4CjRk3ODpVftGlyqkQtS6fQPDDlpa9QP3eyVjLN+u9q1Y?=
+ =?us-ascii?Q?Hh4k0u1U/dD7xEXzsghWI8tGYtYN6LmJsWhe5cojfWWbM78XiZYyzaoE2kzv?=
+ =?us-ascii?Q?3L2ClRYGMLPIascT85Etn0jHcbLN8qEzNjgXhC4faMhZQBr97Lsb+wPDgt1G?=
+ =?us-ascii?Q?XABKcKL8vQMkQ+/vJZzlsNursxI0rOPmpLYqRNWV5MIEvjI605lQcO4xwh8C?=
+ =?us-ascii?Q?pxMKhHb+wvzlvLrAXQqeWDgL+BZKxC0zGQWndOd/VJTdq0bHRJTxZe1PtCxg?=
+ =?us-ascii?Q?KKm85a1/UVpKsgp3tcszX9eYiv9np77mE/9oxBQJMTO0Z1Yiq/FKP6tZapAh?=
+ =?us-ascii?Q?tm58FI4pSV6bC2V4bqeHyVpB83vRdBOKDhKpGXOk/NDCkIslkpSygDtnj1Xi?=
+ =?us-ascii?Q?G4ZObc08cnQtpOE7BNZI0Aezq6KtOwZa0folCsDa2rRxuIZeytuE8Bxfmdgc?=
+ =?us-ascii?Q?Cxl+nyEdTJKiFo8r3q/yz6vH421USfivyxBnJTdfGAxHEmfQsrfDcYFTrl1W?=
+ =?us-ascii?Q?y9DkFP+XPg1mn3+7E6ADzuMFY7H06hWVxy1w+9k6xkpYOZt5+GGIzVogIwxz?=
+ =?us-ascii?Q?sXPwogu9IVO9LtkqclPvLxJpyXPI8gqlywUFXv+sSxm0stDEkHXlWZzstFq7?=
+ =?us-ascii?Q?qwwUcYeQSABi18Et+67QjQ2RNau4tCE1CRD0jD6jY1Yrd8azGE5rXIT3/MCY?=
+ =?us-ascii?Q?HXsn4gIlMLcqWyGV6ZCTZAugepu9J0IFBwAXKMKml2Cj1Ji3O5dTxUOYjbgy?=
+ =?us-ascii?Q?p4pMhZ2/yeIk7oAdWtUUe96eQR6wfMgDixRw7EZl+UJrQUrnx2DQiIyI/ubH?=
+ =?us-ascii?Q?hwD9DyqKoxUC9b84mY7SmI7iX0mnjLLudAkp50yrYf5Ztj4cclLb/340rnr2?=
+ =?us-ascii?Q?N60nFKPY4AHxlwjMfDEYd16R5/HyR+T97R+T63UosoxXfhx6tGIXohIyHubB?=
+ =?us-ascii?Q?B0ieMofDx/9KhfDIi9IsswJaTOXTlAQBPty/03trc6mvB8NZ0t5L?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: db959a9f-540d-491b-d807-08ded7e9a65e
+X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB7216.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jul 2026 03:26:05.2984
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FgmHHQLEslAqkAIU0nXL48poD5GLi9zFVhPfR1nKVSGCJSzEzlrb0IlzAjbrj++AHFwxvq4VjF6rHYY+qXggiI9S3vUseqmid+qBB6na3/HhhD67EgPD7PQHP5jM6QCv
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10248
 
-The new skb_gro_receive_list() function is missing a critical safety check
-present in the legacy skb_gro_receive() path. Specifically, it does not
-validate NAPI_GRO_CB(skb)->flush before allowing packet aggregation.
+From: Wei Fang <wei.fang@nxp.com>
 
-This allows already-GRO'd packets with existing frag_list to be
-re-aggregated into a new GRO session, corrupting the frag_list chain
-structure. When skb_segment() attempts to unpack these malformed packets,
-it encounters invalid state and triggers a kernel panic.
+When adding phylink MAC operations support to the NETC switch driver,
+Russell King pointed out several pieces of invalid logic in the
+.mac_link_up() implementation (see [1] and [2]):
 
-Scenario (Tethering/Device forwarding):
-  1. Driver: Generated aggregated packet P1 via LRO with frag_list
-  2. Dev A: Receives aggregated fraglist packet and flush flag set
-  3. Dev A: Re-enters GRO, skb_gro_receive_list() is called
-  4. Missing flush check allows re-aggregation despite flush flag
-  5. Frag_list chain becomes corrupted (loops or dangling refs)
-  6. Dev B: TX path calls skb_segment(), crashes on corrupted frag_list
+1) Half-duplex backpressure is not supported by the kernel, Ethernet
+   relies on packet dropping for congestion management.
 
-Root cause in skb_segment():
-  The check at line ~4891:
-    if (hsize <= 0 && i >= nfrags && skb_headlen(list_skb) &&
-        (skb_headlen(list_skb) == len || sg)) {
+2) phylink_autoneg_inband() is unnecessary, as RGMII in-band status is
+   not supported.
 
-  When frag_list is corrupted by double aggregation, when list_skb is
-  a NULL pointer from skb->next, skb_headlen(list_skb) dereference
-  NULL/corrupted pointers occurs.
+3) TX and RX pause are disabled in half-duplex mode, so there is no
+   need to override them in .mac_link_up().
 
-Call Trace:
- skb_headlen(NULL skb)
- skb_segment
- tcp_gso_segment
- tcp4_gso_segment
- inet_gso_segment
- skb_mac_gso_segment
- __skb_gso_segment
- skb_gso_segment
- validate_xmit_skb
- validate_xmit_skb_list
- sch_direct_xmit
- qdisc_restart
- __qdisc_run
- qdisc_run
- net_tx_action
+The same invalid logic is also present in enetc4_pl_mac_link_up(), so
+remove the invalid code from it.
 
-Fix: Add NAPI_GRO_CB(skb)->flush validation to the early-return check in
-skb_gro_receive_list(), matching the defensive programming pattern of
-skb_gro_receive().
-
-Fixes: 8928756d53d5 ("net: move skb_gro_receive_list from udp to core")
-Cc: stable@vger.kernel.org
-Signed-off-by: Shiming Cheng <shiming.cheng@mediatek.com>
+Link: https://lore.kernel.org/imx/acEIQqI-_oyCym8O@shell.armlinux.org.uk/ # 1
+Link: https://lore.kernel.org/imx/acEFwqmAvWls_9Ef@shell.armlinux.org.uk/ # 2
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
 ---
- net/core/gro.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ .../net/ethernet/freescale/enetc/enetc4_hw.h  |  1 -
+ .../net/ethernet/freescale/enetc/enetc4_pf.c  | 35 +------------------
+ 2 files changed, 1 insertion(+), 35 deletions(-)
 
-diff --git a/net/core/gro.c b/net/core/gro.c
-index 35f2f708f010..b1573d98f3a5 100644
---- a/net/core/gro.c
-+++ b/net/core/gro.c
-@@ -229,7 +229,14 @@ int skb_gro_receive(struct sk_buff *p, struct sk_buff *skb)
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_hw.h b/drivers/net/ethernet/freescale/enetc/enetc4_hw.h
+index dea1fd0b8175..7a3ccc94b036 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc4_hw.h
++++ b/drivers/net/ethernet/freescale/enetc/enetc4_hw.h
+@@ -198,7 +198,6 @@
+ #define  PM_CMD_CFG_CNT_FRM_EN		BIT(13)
+ #define  PM_CMD_CFG_TXP			BIT(15)
+ #define  PM_CMD_CFG_SEND_IDLE		BIT(16)
+-#define  PM_CMD_CFG_HD_FCEN		BIT(18)
+ #define  PM_CMD_CFG_SFD			BIT(21)
+ #define  PM_CMD_CFG_TX_FLUSH		BIT(22)
+ #define  PM_CMD_CFG_TX_LOWP_EN		BIT(23)
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+index db7bad2c3cbd..a77ef62672c7 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+@@ -588,11 +588,6 @@ static void enetc4_mac_config(struct enetc_pf *pf, unsigned int mode,
+ 	case PHY_INTERFACE_MODE_RGMII_RXID:
+ 	case PHY_INTERFACE_MODE_RGMII_TXID:
+ 		val |= IFMODE_RGMII;
+-		/* We need to enable auto-negotiation for the MAC
+-		 * if its RGMII interface support In-Band status.
+-		 */
+-		if (phylink_autoneg_inband(mode))
+-			val |= PM_IF_MODE_ENA;
+ 		break;
+ 	case PHY_INTERFACE_MODE_RMII:
+ 		val |= IFMODE_RMII;
+@@ -690,22 +685,6 @@ static void enetc4_set_rmii_mac(struct enetc_pf *pf, int speed, int duplex)
+ 	enetc_port_mac_wr(si, ENETC4_PM_IF_MODE(0), val);
+ }
  
- int skb_gro_receive_list(struct sk_buff *p, struct sk_buff *skb)
+-static void enetc4_set_hd_flow_control(struct enetc_pf *pf, bool enable)
+-{
+-	struct enetc_si *si = pf->si;
+-	u32 old_val, val;
+-
+-	if (!pf->caps.half_duplex)
+-		return;
+-
+-	old_val = enetc_port_mac_rd(si, ENETC4_PM_CMD_CFG(0));
+-	val = u32_replace_bits(old_val, enable ? 1 : 0, PM_CMD_CFG_HD_FCEN);
+-	if (val == old_val)
+-		return;
+-
+-	enetc_port_mac_wr(si, ENETC4_PM_CMD_CFG(0), val);
+-}
+-
+ static void enetc4_set_rx_pause(struct enetc_pf *pf, bool rx_pause)
  {
--	if (unlikely(p->len + skb->len >= 65536))
-+	/*
-+	 * Packets marked with NAPI_GRO_CB(skb)->flush have already gone
-+	 * through GRO/LRO processing and must not be aggregated again.
-+	 * Re-entering frag_list GRO may corrupt the frag_list chain and
-+	 * later crash during GSO segmentaiont.
-+	 */
-+	if (unlikely(p->len + skb->len >= 65536 ||
-+		     NAPI_GRO_CB(skb)->flush))
- 		return -E2BIG;
+ 	struct enetc_si *si = pf->si;
+@@ -881,13 +860,11 @@ static void enetc4_pl_mac_link_up(struct phylink_config *config,
+ 	struct enetc_pf *pf = phylink_to_enetc_pf(config);
+ 	struct enetc_si *si = pf->si;
+ 	struct enetc_ndev_priv *priv;
+-	bool hd_fc = false;
  
- 	if (!pskb_may_pull(skb, skb_gro_offset(skb))) {
+ 	priv = netdev_priv(si->ndev);
+ 	enetc4_set_port_speed(priv, speed);
+ 
+-	if (!phylink_autoneg_inband(mode) &&
+-	    phy_interface_mode_is_rgmii(interface))
++	if (phy_interface_mode_is_rgmii(interface))
+ 		enetc4_set_rgmii_mac(pf, speed, duplex);
+ 
+ 	if (interface == PHY_INTERFACE_MODE_RMII)
+@@ -899,18 +876,8 @@ static void enetc4_pl_mac_link_up(struct phylink_config *config,
+ 		 */
+ 		if (priv->active_offloads & ENETC_F_QBU)
+ 			tx_pause = false;
+-	} else { /* DUPLEX_HALF */
+-		if (tx_pause || rx_pause)
+-			hd_fc = true;
+-
+-		/* As per 802.3 annex 31B, PAUSE frames are only supported
+-		 * when the link is configured for full duplex operation.
+-		 */
+-		tx_pause = false;
+-		rx_pause = false;
+ 	}
+ 
+-	enetc4_set_hd_flow_control(pf, hd_fc);
+ 	enetc4_set_tx_pause(pf, priv->num_rx_rings, tx_pause);
+ 	enetc4_set_rx_pause(pf, rx_pause);
+ 	enetc4_mac_tx_enable(pf);
 -- 
-2.45.2
+2.34.1
 
