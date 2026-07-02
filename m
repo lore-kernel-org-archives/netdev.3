@@ -1,118 +1,100 @@
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042E83A59B1;
-	Thu,  2 Jul 2026 18:27:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE0B34D93B
+	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 18:55:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783016829; cv=none; b=CacJnOnM6UCSlBpAOCJIC0lp4G+KjviA2k8XaesFc5paBruyHrWaGg4tc1APGCnuIGMtCUqxV6ehaSLSBM1gzKcvmrm0LEG9WXUwT/rRFWDekU/f5ExmEHjt/abYqDRdri0HRAAU2msD+JzShJRx01OYqaQTYczFaz2Gu9xFCmw=
+	t=1783018543; cv=none; b=ex7wsyF4zzsNLDWZkb6o+AxUB0cxhy3+PfpWTBdNQpPL6OLTJLgtdeFTWkVXP4caE9w1nhKiQimd96coziXBRAtYlDWKOs0SdS+sE27MkbB7WXU9fBSSBx/coCmgukQipaqG4d0n/PWXgEtyiMoBNH6HgfBM1nIgTlCxBwxxQqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783016829; c=relaxed/simple;
-	bh=NeMrv1nWkBCLLNUEg54JNV8fu8oY4LOMjJiLTxtpX8c=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=P3YeIJnqI8DVENW8pEucDOCl/dhLbs0ZHKMcVFAynARihW0/lIXw755Kp9hcOHmNGC1QzCcNPvZqSXc74xkvhv+4ECl+HWqdlCneFT0maARnyxgU0Z0OerNbX+54RG4cCC8TuEmKl+dsTKUqgE6qG4AdHNkHb4ij/u8BxXMcmFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=FwJfTHwE; arc=none smtp.client-ip=80.241.56.161
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1783018543; c=relaxed/simple;
+	bh=NQtSnHOqKribaHMloH4q3ORqVR1Jdel9GdNDJFaJ9nM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bc4GNpmuJ76C1KaFiux5nJ+HIsm8Qtmgni35fOfRe+5O18cr4r9OrBvx9bnLuFvukHEbSlMm53PxPYsojawg+YvXV/l+04v9SxOWozfAYluczN31DI+QtPEGMYb52gPcQrFNfwKNJ9IGopsBEYKABvs9QzCsCJD2pfe7EGJO9Z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VJ0Okgkl; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="FwJfTHwE"
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4grlXH0tTbz9tx6;
-	Thu,  2 Jul 2026 20:19:27 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1783016367;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=384tUyVKGcuexzJQm/Gbh8Apy/SFEokWG8t45DtqO9k=;
-	b=FwJfTHwEggHqrODTUm9G5yRboHU/FWJxCiiGONmd96NlrhJBbXgNMrQu1iNOagteulFpWo
-	n1iIHjQN204RzY1VpjjIaX/Xo8hslqOlag4iGn9ZjDmI8Pet9LSF0wBTVWi34NIRChgsFW
-	H3gkSdR8P2Vlidxev5ZPM/vkKEgJjBXVuZuvg1PATNdBG66urfMNO2LqL2foUxSRTvMCRy
-	hYo6okX3fE3pKUTkyispai+z4TKUD5UhU9lqnjmI2Ov3JWaaljLStpNRLQ6w2uO9t+/iBY
-	/OBT3vG6FbvaLpNqJN9hEETQvuzcyQkuje8I8bHJlnYGLT4WT4bzn16j4ghfUw==
-Message-ID: <ebfe837b7d4ef61442822105c3d71ca306106c14.camel@mailbox.org>
-Subject: Re: [PATCH net-next 2/4] net: usb: centralize
- usbnet_cdc_zte_rx_fixup in usbnet
-From: Manuel Ebner <manuelebner@mailbox.org>
-To: Oliver Neukum <oneukum@suse.com>, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, 	shaoxul@foxmail.com, netdev@vger.kernel.org,
- linux-usb@vger.kernel.org, 	linux-kernel@vger.kernel.org
-Date: Thu, 02 Jul 2026 20:19:21 +0200
-In-Reply-To: <20260702143142.890654-3-oneukum@suse.com>
-References: <20260702143142.890654-1-oneukum@suse.com>
-	 <20260702143142.890654-3-oneukum@suse.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VJ0Okgkl"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-474560436c3so1984155f8f.0
+        for <netdev@vger.kernel.org>; Thu, 02 Jul 2026 11:55:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783018541; x=1783623341; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=yFPjV8jYTAv1A7ukJs6vQvdxSZpBv41upHQ98f41JsE=;
+        b=VJ0OkgklUGUA3rSqwD0M18bs3komamNlWNMKoUEadJfNMt0r5YIRAHrgXvu+5ogJ++
+         FeyQf5/oORrCMC77yir9zvWqkXvV6nR1foSgooXAjZ7uOYQrHfq/M6rkPiSll6d0j4tf
+         oozOsQ1JKks/Ny0TlNwca7VLsNJONzmBzkpXhRLipZSFaTAHhh+yvo4lyY44PDAtAHr9
+         dGpzAHw7q1iZ13eVogPchxUDeupr7w7W5puGTtZDeGCIEd+7RAmv2M43vzj/DBZv8Yof
+         eFFRm2r0s/XdVhaNPz8WcDXvzIO8AmhzexMQ4PKQaHdcWeiCQjl35cQqGLG8VJ9zNLOK
+         4bjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783018541; x=1783623341;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yFPjV8jYTAv1A7ukJs6vQvdxSZpBv41upHQ98f41JsE=;
+        b=E4WLLZuj8DvpUTO1VurIjcK3l9SUaGVr+eXpL0UJctXUqoynR45H+FuvdMyIcqzNKP
+         WXjYfKgSe1fIQlg9Rqz5vcrtYRGnHbnnAwl+NMbdPDnWeAmWjNBzdx7BNCMmhs5GdM7D
+         ge3tzHJ0oHOFDv63FPXkHctV9QGS7CKVZX6/J0MP1eMoleLxymgjsrb90jbN8VCjU1LL
+         kF28au+F2x73RWgz6hhtQ5dcNETkPiWzr/R+F5sdibCj3StxIK3BvB8TtcmWUszzZKXd
+         V+TRf1jSi4f+x6kgOhIHh7huYLmwQUA98l8isS/aucdMjUlqFjW8MJ9TJ5YTwdbYUFuJ
+         7GUg==
+X-Forwarded-Encrypted: i=1; AHgh+RoAuQ/euoP4o74Ggx6sNo25eOAlDdDksCQCb6Asuq2O4RUNOa1hmQF+X8D1cDrXAUwFF6nuOuQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/h39WV6l5ircmfohN3wwewKUc22Qc31SevmeHGOzmXoVOc2VW
+	uvngO6l5RccfkeA1cGz09MT2B1fLkTn7G6xcZED/bfz/ZXAVBNRPv633
+X-Gm-Gg: AfdE7cm1pP3ETby08c4HEsnbl/epbkQfNqdJvSgd7wf6Qly3cK6J2ox1sjTl2OqFrWL
+	SlZ4d1xKJNJ+Y6PzU+LVYXxZFgMpHwS763GdJoZsIyCfsYDXEJUuIQbQ01OfbpBotAR3ze9ck3x
+	vytJrzQeALK2RMVcDJhMM/z/YzMGnN7G2cHUjKGTYDoTyiKk2y5wycl4B06zgJSGwIbkSAYAqeK
+	2wf0Ql91+Leb2Ge3ZAsJO6yUayiwlW5krpMotnEhQF0j3B254+xCf2kso+wKsjBE6ctUJEhYPBs
+	ZYX8GGbqa701iLBKj4e4rgXwL8fYQM1gBHk4Yc19/IZa2uk2xAiKuFsXf/mUrQh1cg96R3cn2xY
+	T0MhOEsDuKtyJ7moqWuVckleq2q4xCR2OORTnxz4fJz+zNBO5UDlKNoZYHuaV/+QuyOnvo8rRB/
+	0VqG2kqRXy7eLhqw1HYDB0Okr7uIOwssdDC0wRrypY+z6ufSbQSoIEXwuV5G8XR9gvtQ+yTMECV
+	wK1BjpPWSNmAFd4G+k=
+X-Received: by 2002:a05:6000:200d:b0:472:c96c:eeb with SMTP id ffacd0b85a97d-477abfe6d8fmr9677027f8f.0.1783018540774;
+        Thu, 02 Jul 2026 11:55:40 -0700 (PDT)
+Received: from [10.128.11.240] (195-23-151-163.net.novis.pt. [195.23.151.163])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-477dd94c9b5sm11637009f8f.20.2026.07.02.11.55.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 02 Jul 2026 11:55:40 -0700 (PDT)
+Sender: Julian Braha <julian.braha@gmail.com>
+Message-ID: <1fdd92f2-d968-4080-af57-7d144be80a33@gmail.com>
+Date: Thu, 2 Jul 2026 19:55:39 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MBO-RS-META: yojdsnwtbuix6fubd8wh6scysfssof5k
-X-MBO-RS-ID: d1d3bf10343cb94ada5
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 3/9] octeontx2-pf: switch: Add pf files hierarchy
+To: Ratheesh Kannoth <rkannoth@marvell.com>, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, sgoutham@marvell.com
+References: <20260630024715.4124281-1-rkannoth@marvell.com>
+ <20260630024715.4124281-4-rkannoth@marvell.com>
+Content-Language: en-US
+From: Julian Braha <julianbraha@gmail.com>
+In-Reply-To: <20260630024715.4124281-4-rkannoth@marvell.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, 2026-07-02 at 16:25 +0200, Oliver Neukum wrote:
-> This helper is used by multiple drivers using usbnet.
-> It is better to be provided by usbnet than one of them.
->=20
-> Signed-off-by: Oliver Neukum <oneukum@suse.com>
-> ---
-> =C2=A0drivers/net/usb/cdc_ether.c | 19 -------------------
-> =C2=A0drivers/net/usb/usbnet.c=C2=A0=C2=A0=C2=A0 | 19 +++++++++++++++++++
-> =C2=A02 files changed, 19 insertions(+), 19 deletions(-)
->=20
-> ...
->=20
-> diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-> index 5544af1f4aa5..7beea6d0e731 100644
-> --- a/drivers/net/usb/usbnet.c
-> +++ b/drivers/net/usb/usbnet.c
-> @@ -2347,6 +2347,25 @@ void usbnet_cdc_status(struct usbnet *dev, struct =
-urb *urb)
-> =C2=A0	}
-> =C2=A0}
-> =C2=A0EXPORT_SYMBOL_GPL(usbnet_cdc_status);
-> +
-> +/* Make sure packets have correct destination MAC address
-   /*=C2=A0
-    * Make sure packets have the correct destination MAC address
-> + *
-> + * A firmware bug observed on some devices (ZTE MF823/831/910) is that t=
-he
-> + * device sends packets with a static, bogus, random MAC address (event =
-if
+Hi Ratheesh,
 
- (even if the device ...
+On 6/30/26 03:47, Ratheesh Kannoth wrote:
+> +config OCTEONTX_SWITCH
+> +	tristate "Marvell OcteonTX2 switch driver"
+> +	select OCTEONTX2_MBOX
+> +	select NET_DEVLINK
+> +	default n
+> +	select PAGE_POOL
+> +	depends on (64BIT && COMPILE_TEST) || ARM64
+> +	depends on OCTEONTX2_PF
 
-> + * device MAC address has been updated). Always set MAC address to that =
-of the
-> + * device.
+Could you keep the 'select's together (move the 'default')?
 
-Always set the MAC address to the one of your device.
-
-Thanks
- Manuel
-
-> + * device.
-> + */
-> +int usbnet_cdc_zte_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
-> +{
-> +	if (skb->len < ETH_HLEN || !(skb->data[0] & 0x02))
-> +		return 1;
-> +
-> +	skb_reset_mac_header(skb);
-> +	ether_addr_copy(eth_hdr(skb)->h_dest, dev->net->dev_addr);
-> +
-> +	return 1;
-> +}
-> +EXPORT_SYMBOL_GPL(usbnet_cdc_zte_rx_fixup);
-> =C2=A0/*-----------------------------------------------------------------=
---------*/
-> =C2=A0
-> =C2=A0static int __init usbnet_init(void)
+- Julian Braha
