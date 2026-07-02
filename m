@@ -1,120 +1,234 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E58803E16A4
-	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 10:46:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A22D5390608;
+	Thu,  2 Jul 2026 10:48:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782989202; cv=none; b=WSwmrK7Y/qJQqTtUHFzyIdDngfVv+YNllthcNAVmz+2+GX6xJ5ghf+U6UPtTPzkUFE41JbMbIvQjt0d2Q+nPWxRR0O6uCpFja+gAwjLtwSkWf+yMbn8h6T+ss0fsfyyCMXKcZ/BPzQJNIsAOYu0gO9c7kqjq3YZrttjVlLS78yU=
+	t=1782989323; cv=none; b=CGHXiTiGM87sqKeExuNKSLX7DZheIC5MsSPSE8Bz+CBFGILUbtKd1dphobJcN5hSEHUQV2UIkTeVztKdqHUeWtJzVegGL14PU6sBno+FLXN6xM6s9w6q+JBPNziHUarq7dBrqRcesu1GBpmnckaX6xvcE/dgPL1nbYL/Jst8In8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782989202; c=relaxed/simple;
-	bh=h8ZpqOaUWtsuS4VnVEmZYwH5Jowx/XUHQyg5IY4lRTw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tCCkki57xBA+4CMlVcu/8cVrhLpLyvU+rUwHWLGtEYbJHKFtzsLEP/MOQM/n/nEwsjTRJVYvGZDvic9h3TqlfqdsIxlEBOyffNZbaZdRaAu04ic4/3ZLMhRQTs15sYFB5cwnOZRI5h/YhU06C5muyOX0b6oCw7QLzAFs3rv0UTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=P6NMXKNs; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=a7mtvYwp; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1782989323; c=relaxed/simple;
+	bh=Sp68GZrBGbgyvHBbJLWBh3hY+MVXgdcZAzg3rsONWsw=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=T7yFBIXYvrRMik8Fu7kNFCXHNiBoBIl76KqdRxvbd61BWcXENQT0bDbRVL9D7tzSropq6l+wtQmIaTvBYFKvblivorrCz3dGB8L16U9uGOXDYYTa4qiIBljQhsXxceKgtZTDdX9IHULpHEo0JDTb7QbO/oQZ5ppuFsgsKXXvV3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=Te/jtcnb; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="P6NMXKNs";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="a7mtvYwp"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782989199;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Y8+ItG+n5SavQTNo04OoG8HTpK2q0wv+Unc0gqZ6yGw=;
-	b=P6NMXKNsz663nHc2OiMZOdnVA1WzodjJ1+tgjIyvAvsvhB81KwykGXmHQy8Rm7LbnzmZJj
-	k+D/Njy6Nrj6RCf3wGi6fY3N+ZsLCr56fiGec6aNF9FKHjlyYWj+Lf5hvt6EMe4cBA56Br
-	WZljKIRV6ZIZ35pG+qiHkMk03mHHUXs=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-191-5bOWc_8bMH65-9oCEBxoYw-1; Thu, 02 Jul 2026 06:46:38 -0400
-X-MC-Unique: 5bOWc_8bMH65-9oCEBxoYw-1
-X-Mimecast-MFC-AGG-ID: 5bOWc_8bMH65-9oCEBxoYw_1782989197
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-c126fae5f46so80234666b.3
-        for <netdev@vger.kernel.org>; Thu, 02 Jul 2026 03:46:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1782989197; x=1783593997; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Y8+ItG+n5SavQTNo04OoG8HTpK2q0wv+Unc0gqZ6yGw=;
-        b=a7mtvYwpfoZrUQ1CWhsncvnQ7EMl0nKyfAMdr+hU8pzT/DZ5/SI1cvodWFTaIoAWO2
-         rK0NSQA4YtSO9mRJHLzOmSEAAVFpOMAN5AVUVj/M29M1RUPvfTHHIugwliXMq9GK+clT
-         tcIJO+WHWm36QOpTLukaneeQag3SFWT97UQuqNsZ3ISlb6RrSKh0M+nGeSwkAEe7UzHn
-         284xD0ExUfrn5T/9yhykQ2NMQK0aNMy7nwL0SqgSEfY91wy2uuQ4JA8jqemAQuBSJPmE
-         iXICrmhtHd0AdVKl9XKVNIBbjvsDVk4GAOe5i70ARxVtcqKnYg++Vpo/D4gdRY0FxLsp
-         Hefg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782989197; x=1783593997;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Y8+ItG+n5SavQTNo04OoG8HTpK2q0wv+Unc0gqZ6yGw=;
-        b=DEOc3I4t99YG5Xj/vCp6hrcNyIP6MX92dbiOLDe3KlcZIOE984ncoHGKhMQxnUCa8S
-         pYM2l4nhCbZDwB12TkjsSWD4+A0d1EB0FXX9X36qPZAODttq+sfwSeDTHGBz/CLOyUzU
-         Gc7k6tNxy/liUoJSrizmeKHP2ONiKTfF26uDUV0sH+nLO+bE1eKdRt+61kmIn5zSRbeH
-         1nFwlnbdRW9LUB6b8FGhrLDPtsAuNMy796F7/6Qx+o/okyvvuyGHSXW9peWxAwmiJAs/
-         bgVrf58YHErueFJoWkXJ+YU/8ewwCMkdvo2QVrwumdMxT5rVYYIKlic/9puxDUBRNLS1
-         5GGg==
-X-Forwarded-Encrypted: i=1; AHgh+Rr00YoBv6bDPrIkedeNbalJLXjZlBQs+4ZygTfqF+TtXyxi7ywuiKG8zTXdSv5I0RZUI1geHqg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwjwEC8jTLVrueVmwR9xERYCZXXfx4n0lxf0TY4SFfOLCUHx52L
-	8BjKXm/iVHhkJwXA4hma4i3d3M2K7pz49dYE8uzHfULvnCtAmuQPXoLGaCQX1pD6Tc+0/O4MvXm
-	pPKkUp9g3DSUtDPEqW9CvJ5mIB6pcMrvZvy+zKG4U5jJAJDX/5qnQvP8V4Q==
-X-Gm-Gg: AfdE7cniyGjXrUiGwxvKijzV6YTzFfERfKFIYvlEG5EGeA+gD8JKsyjbWCnQ70nsPEs
-	cauvzAm0bR+LwjvXj5fsc5gvnLmz0CJtEUboC59tl02HFGELA0jJKt2iqF+mKrs7myQAHy+lht+
-	YdNi/jSyIPc1R5p1DkOaVdNZJo+cR1/0XnVAeh0JmXmoy+a63xm8UlwKH5d3HiXhjeKXrgozMYS
-	vJYGAwWlCMi3udD6JtSdySY4l3aR+IGS8Ufjb/LS/xIewiiyPN0MoLN85Lna+vDTpoBtk1omEWc
-	UlUNTypEQe1zQJKz7xi3cQS6e3rof8rsKIxkRSZNdDzyc+qioaJtyvwZ7fkqfl4J+Md4fryjkGv
-	1+0K3Fp56C+77WVUjbZZsoZigsEPCETQeoPT42pvr8Zi0hLCvpDNmztNPj1HhxbN5owl6CeBxNc
-	Nkgz6k9REUog==
-X-Received: by 2002:a17:906:818:b0:c12:4ad1:3ec0 with SMTP id a640c23a62f3a-c12aa1f505emr185058966b.54.1782989197355;
-        Thu, 02 Jul 2026 03:46:37 -0700 (PDT)
-X-Received: by 2002:a17:906:818:b0:c12:4ad1:3ec0 with SMTP id a640c23a62f3a-c12aa1f505emr185057566b.54.1782989196922;
-        Thu, 02 Jul 2026 03:46:36 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:5521:6b10:2eb7:f61a:75:4534? ([2a0d:3344:5521:6b10:2eb7:f61a:75:4534])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c12b62c779dsm108378566b.53.2026.07.02.03.46.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 02 Jul 2026 03:46:36 -0700 (PDT)
-Message-ID: <2551da86-63d6-4873-93e5-266f29935156@redhat.com>
-Date: Thu, 2 Jul 2026 12:46:34 +0200
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="Te/jtcnb"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 90444A47C9;
+	Thu,  2 Jul 2026 12:48:37 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1782989319; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=sjHeEbjoAzrBSvffXbMvr5nbFm9GTwQ0lFY1pEbU+es=;
+	b=Te/jtcnbmsMUJqu7b77pmRTDiHhASlroo4CnvPpo/F9hhmjcaO7rhwqzvcnsAGYlqqWXxy
+	7nSmh/L53pJetMG7WXZTgGyn595nH3K5sg0Wf5Eu6C6cYIT4pCNQ03W+LU1+cc0902nnxl
+	TyXq//9HQ54J12JXIy6FlPbl64vvwDiSSIWfTOTWeXjTpMOMCPCCUHNlDzmYleCGE8sz4C
+	sxmwbQV3ufnRbxnInV8VifwdMU1m7n3t39Sm5fJjgcD1vBTasqPy/9p0q/+/4AweKnIbZU
+	52Li89gHlEcE9+RCSgnJqsTWbf93wKYgy0ZXvvsogvTKctAuE13h8y76g/ZVdw==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/10] net: emac: mal: replace busy-wait in
- mal_poll_disable with wait_event
-To: Rosen Penev <rosenp@gmail.com>, netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, open list <linux-kernel@vger.kernel.org>
-References: <20260630041634.284127-1-rosenp@gmail.com>
- <20260630041634.284127-6-rosenp@gmail.com>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20260630041634.284127-6-rosenp@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Thu, 02 Jul 2026 12:48:37 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: =?UTF-8?Q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Cc: Conor Dooley <conor.dooley@microchip.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>, Russell
+ King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Paolo Valerio
+ <pvalerio@redhat.com>, Vladimir Kondratiev
+ <vladimir.kondratiev@mobileye.com>, Gregory CLEMENT
+ <gregory.clement@bootlin.com>, =?UTF-8?Q?Beno=C3=AEt_Monin?=
+ <benoit.monin@bootlin.com>, Tawfik Bayouk <tawfik.bayouk@mobileye.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Maxime Chevallier
+ <maxime.chevallier@bootlin.com>
+Subject: Re: [PATCH net-next v3 05/15] net: macb: enforce reverse christmas
+ tree (RCT) convention
+In-Reply-To: <20260701-macb-context-v3-5-00268d5b1502@bootlin.com>
+References: <20260701-macb-context-v3-0-00268d5b1502@bootlin.com>
+ <20260701-macb-context-v3-5-00268d5b1502@bootlin.com>
+Message-ID: <fb720848271f0d95b455c0ad1f97c41d@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 6/30/26 6:16 AM, Rosen Penev wrote:
-> @@ -371,8 +373,8 @@ static irqreturn_t mal_int(int irq, void *dev_instance)
->  void mal_poll_disable(struct mal_instance *mal, struct mal_commac *commac)
+On 1.7.2026 17:59, Théo Lebrun wrote:
+> Enforce the reverse christmas tree convention in those functions:
+> 
+>    macb_tx_error_task()
+>    gem_rx_refill()
+>    gem_rx()
+>    macb_rx_frame()
+>    macb_init_rx_ring()
+>    macb_rx()
+>    macb_rx_pending()
+>    macb_start_xmit()
+> 
+> The goal is to minimise unrelated diff in future patches.
+> 
+> In macb_tx_error_task(), we fold the assignment into the declaration
+> statement.
+> 
+> Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+> ---
+>  drivers/net/ethernet/cadence/macb_main.c | 61 
+> ++++++++++++++++----------------
+>  1 file changed, 30 insertions(+), 31 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/cadence/macb_main.c 
+> b/drivers/net/ethernet/cadence/macb_main.c
+> index 3b75797381b6..8b52122bc134 100644
+> --- a/drivers/net/ethernet/cadence/macb_main.c
+> +++ b/drivers/net/ethernet/cadence/macb_main.c
+> @@ -1254,20 +1254,19 @@ static dma_addr_t macb_get_addr(struct macb 
+> *bp, struct macb_dma_desc *desc)
+> 
+>  static void macb_tx_error_task(struct work_struct *work)
 >  {
->  	/* Spinlock-type semantics: only one caller disable poll at a time */
-> -	while (test_and_set_bit(MAL_COMMAC_POLL_DISABLED, &commac->flags))
-> -		msleep(1);
-> +	wait_event(commac->poll_wait,
-> +		   !test_and_set_bit(MAL_COMMAC_POLL_DISABLED, &commac->flags));
+> -	struct macb_queue	*queue = container_of(work, struct macb_queue,
+> -						      tx_error_task);
+> -	bool			halt_timeout = false;
+> -	struct macb		*bp = queue->bp;
+> -	unsigned int		q;
+> -	u32			packets = 0;
+> -	u32			bytes = 0;
+> -	struct macb_tx_skb	*tx_skb;
+> -	struct macb_dma_desc	*desc;
+> -	struct sk_buff		*skb;
+> -	unsigned int		tail;
+> -	unsigned long		flags;
+> +	struct macb_queue *queue = container_of(work, struct macb_queue,
+> +						tx_error_task);
+> +	unsigned int q = queue - queue->bp->queues;
+> +	struct macb *bp = queue->bp;
+> +	struct macb_tx_skb *tx_skb;
+> +	struct macb_dma_desc *desc;
+> +	bool halt_timeout = false;
+> +	struct sk_buff *skb;
+> +	unsigned long flags;
+> +	unsigned int tail;
+> +	u32 packets = 0;
+> +	u32 bytes = 0;
+> 
+> -	q = queue - bp->queues;
+>  	netdev_vdbg(bp->netdev, "macb_tx_error_task: q = %u, t = %u, h = 
+> %u\n",
+>  		    q, queue->tx_tail, queue->tx_head);
+> 
+> @@ -1487,11 +1486,11 @@ static int macb_tx_complete(struct macb_queue 
+> *queue, int budget)
+> 
+>  static void gem_rx_refill(struct macb_queue *queue)
+>  {
+> -	unsigned int		entry;
+> -	struct sk_buff		*skb;
+> -	dma_addr_t		paddr;
+>  	struct macb *bp = queue->bp;
+>  	struct macb_dma_desc *desc;
+> +	struct sk_buff *skb;
+> +	unsigned int entry;
+> +	dma_addr_t paddr;
+> 
+>  	while (CIRC_SPACE(queue->rx_prepared_head, queue->rx_tail,
+>  			bp->rx_ring_size) > 0) {
+> @@ -1584,11 +1583,11 @@ static int gem_rx(struct macb_queue *queue, 
+> struct napi_struct *napi,
+>  		  int budget)
+>  {
+>  	struct macb *bp = queue->bp;
+> -	unsigned int		len;
+> -	unsigned int		entry;
+> -	struct sk_buff		*skb;
+> -	struct macb_dma_desc	*desc;
+> -	int			count = 0;
+> +	struct macb_dma_desc *desc;
+> +	struct sk_buff *skb;
+> +	unsigned int entry;
+> +	unsigned int len;
+> +	int count = 0;
+> 
+>  	while (count < budget) {
+>  		u32 ctrl;
+> @@ -1674,12 +1673,12 @@ static int gem_rx(struct macb_queue *queue, 
+> struct napi_struct *napi,
+>  static int macb_rx_frame(struct macb_queue *queue, struct napi_struct 
+> *napi,
+>  			 unsigned int first_frag, unsigned int last_frag)
+>  {
+> -	unsigned int len;
+> -	unsigned int frag;
+> +	struct macb *bp = queue->bp;
+> +	struct macb_dma_desc *desc;
+>  	unsigned int offset;
+>  	struct sk_buff *skb;
+> -	struct macb_dma_desc *desc;
+> -	struct macb *bp = queue->bp;
+> +	unsigned int frag;
+> +	unsigned int len;
+> 
+>  	desc = macb_rx_desc(queue, last_frag);
+>  	len = desc->ctrl & bp->rx_frm_len_mask;
+> @@ -1755,9 +1754,9 @@ static int macb_rx_frame(struct macb_queue 
+> *queue, struct napi_struct *napi,
+> 
+>  static inline void macb_init_rx_ring(struct macb_queue *queue)
+>  {
+> +	struct macb_dma_desc *desc = NULL;
+>  	struct macb *bp = queue->bp;
+>  	dma_addr_t addr;
+> -	struct macb_dma_desc *desc = NULL;
+>  	int i;
+> 
+>  	addr = queue->rx_buffers_dma;
+> @@ -1776,9 +1775,9 @@ static int macb_rx(struct macb_queue *queue, 
+> struct napi_struct *napi,
+>  {
+>  	struct macb *bp = queue->bp;
+>  	bool reset_rx_queue = false;
+> -	int received = 0;
+> -	unsigned int tail;
+>  	int first_frag = -1;
+> +	unsigned int tail;
+> +	int received = 0;
+> 
+>  	for (tail = queue->rx_tail; budget > 0; tail++) {
+>  		struct macb_dma_desc *desc = macb_rx_desc(queue, tail);
+> @@ -1853,8 +1852,8 @@ static int macb_rx(struct macb_queue *queue, 
+> struct napi_struct *napi,
+>  static bool macb_rx_pending(struct macb_queue *queue)
+>  {
+>  	struct macb *bp = queue->bp;
+> -	unsigned int		entry;
+> -	struct macb_dma_desc	*desc;
+> +	struct macb_dma_desc *desc;
+> +	unsigned int entry;
+> 
+>  	entry = macb_rx_ring_wrap(bp, queue->rx_tail);
+>  	desc = macb_rx_desc(queue, entry);
+> @@ -2474,10 +2473,10 @@ static netdev_tx_t macb_start_xmit(struct 
+> sk_buff *skb,
+>  	unsigned int q = skb_get_queue_mapping(skb);
+>  	unsigned int desc_cnt, nr_frags, frag_size, f;
+>  	struct macb_queue *queue = &bp->queues[q];
+> +	netdev_tx_t ret = NETDEV_TX_OK;
+>  	unsigned int hdrlen;
+>  	unsigned long flags;
+>  	bool is_lso;
+> -	netdev_tx_t ret = NETDEV_TX_OK;
+> 
+>  	if (macb_clear_csum(skb)) {
+>  		dev_kfree_skb_any(skb);
 
-The above looks dangerous to me. IDK which is the expected latency here,
-but unconditionally spinning without any obvious upper bound and no
-reschedule does not look good.
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 
-/P
-
+Thanks
+Nicolai
