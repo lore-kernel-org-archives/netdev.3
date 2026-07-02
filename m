@@ -1,184 +1,92 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F294E3792
-	for <netdev@vger.kernel.org>; Thu,  2 Jul 2026 14:32:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA3147DFB4;
+	Thu,  2 Jul 2026 14:35:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783002749; cv=none; b=WkqxN1aBL1CEtkL+3VlGbgRc3iiwl56wLHKvR/YnRNc6d2jPdVNhp2Z4Bz3P8O2ILa5+xNU4qg0TBypcoL4DxYqhRi+uofOZ5oxItABWgY4l2ALojo6yx1ku1LF3vjYlJsQhSMsT7KCvz5vX6I72Ky0i972sWQomBrDKVrWirV4=
+	t=1783002943; cv=none; b=MSZdHTBHONPLceqzy/NNHvtnZvXZB0JztpYRQ95s0irCSFCcoI/eKMhK+S/yekLH5jku2KQ/cRYf+BnNLuyTtPEUQrxRjJJAltiE4JpUhHFfKRBX3aQDoha3CyPIYvCfc9MCdQhkacUQaMPevto4L3SCjsYdomdTAVvzEmNDYgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783002749; c=relaxed/simple;
-	bh=p5LEF0TpeuJUKX9WSanvmmAQejWqAwoFRjpWjPdXn3s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Clzac1JMdhRiSC4GlaQSPotFiFOAUbKJNBSv8kSm5ARqSYmiUiYgqDSJn1zA3kHhbYdaoUBp3b41LL/f8R+Ww75ExoA4Shk+k6Hxls5Ix8JTFkZ6zW4sj9/ea8ANTv2Pnz6rV3nWN7X14A8nMKyqiEO9tqAUQ78khBeN5zSS9kU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=G0eei6P5; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=G0eei6P5; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1783002943; c=relaxed/simple;
+	bh=OChXG95dXklADOHWHO2RUZcCF9PIoKQeA5FlqfWEq6Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MBAfFKtVONFqdchCnUpt0q1YJxI/jA+180Wvkk44hXor1Z4C7SxWeYOyP74AVpa9aLvvc2+3k9mC62yo/Opg1++jkYvDJ9mcSgyglD+6Xo98tqmUuGw9e73o3xd/c6xG/hB8shZ4TiR4OiHeSNa/zny/xbKCkjvntzIvmIGb75c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mEQ4xkni; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="G0eei6P5";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="G0eei6P5"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 0972F75DB9;
-	Thu,  2 Jul 2026 14:31:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1783002709; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Enu0+TkL5+FOi84prkYHDpdzqlXme7u+bi/VxlIaI6M=;
-	b=G0eei6P534pl2JlQdhqV2KYe6Q44BNp6VHV6cnQ9Jzqi5c+8CP/sWcCykfsNWBkK1CKbpx
-	6vsXg7k6bOTkIhMoe9KaxhLiTm9lvUPkf9Lcm8JuQcr2CBTLeh7jVhMTDdW7N5Hu2M6cE/
-	l2lPkbOch4+zGwNG6h33kqiMXUrzZI4=
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1783002709; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Enu0+TkL5+FOi84prkYHDpdzqlXme7u+bi/VxlIaI6M=;
-	b=G0eei6P534pl2JlQdhqV2KYe6Q44BNp6VHV6cnQ9Jzqi5c+8CP/sWcCykfsNWBkK1CKbpx
-	6vsXg7k6bOTkIhMoe9KaxhLiTm9lvUPkf9Lcm8JuQcr2CBTLeh7jVhMTDdW7N5Hu2M6cE/
-	l2lPkbOch4+zGwNG6h33kqiMXUrzZI4=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C40DD779AA;
-	Thu,  2 Jul 2026 14:31:48 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 8GfdLlR2Rmr0MwAAD6G6ig
-	(envelope-from <oneukum@suse.com>); Thu, 02 Jul 2026 14:31:48 +0000
-From: Oliver Neukum <oneukum@suse.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	shaoxul@foxmail.com,
-	netdev@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH net-next 4/4] net: usb: use cdc_state in struct usbnet
-Date: Thu,  2 Jul 2026 16:25:33 +0200
-Message-ID: <20260702143142.890654-5-oneukum@suse.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260702143142.890654-1-oneukum@suse.com>
-References: <20260702143142.890654-1-oneukum@suse.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mEQ4xkni"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9276F1F000E9;
+	Thu,  2 Jul 2026 14:35:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783002941;
+	bh=wH9rv6AxNmdVYoJg0T3cBY47n1twfT656Q2yRzOY/xI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=mEQ4xknizAwN9m9BBuGqodJtOesHR1ePpcgaFcVl6YLkUgpkmhQNwKJYORN0RL5aF
+	 Zap7xy7QCA5EX2jc+RjnYkBghVkLQf0NjvYHMD4tLjcHgYHcH8XBZ+HsZOAjvFrxmh
+	 A/TqLdLqF5kjtdjg7m4aGrJMbqzRP9MlAgaskdofaJoNtgjsRuB5ABSs6Xx0x9Jzko
+	 DMSkjzLGGfKy4hDC9e7AjonGgU4uifZFcqqvZwprngUIFYE9iWHd4LTH6JGEUGLNIQ
+	 h6QrGBZQ/H80taGOJwizJrsrEzSuVqY0v9sjHpJnOe+cO/eIpPsxu73DhapD9oPms5
+	 2khvfGU+SZc5w==
+Date: Thu, 2 Jul 2026 17:35:34 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Manish Chopra <manishc@marvell.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Edward Cree <ecree.xilinx@gmail.com>,
+	Sudarsana Kalluru <skalluru@marvell.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	intel-wired-lan@lists.osuosl.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-net-drivers@amd.com,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH 1/4] bnx2x: use kzalloc() to allocate mac filtering list
+Message-ID: <akZ3NuRLZ4YjFGGv@kernel.org>
+References: <20260701-b4-drivers-ethernet-v1-0-58776615db6e@kernel.org>
+ <20260701-b4-drivers-ethernet-v1-1-58776615db6e@kernel.org>
+ <02237688-9532-4fd0-8494-a7bb524ca4f2@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -5.30
-X-Spamd-Result: default: False [-5.30 / 50.00];
-	REPLY(-4.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	TAGGED_RCPT(0.00)[netdev];
-	FROM_EQ_ENVFROM(0.00)[];
-	FREEMAIL_TO(0.00)[lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,foxmail.com,vger.kernel.org];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.com:email,suse.com:mid];
-	RCVD_COUNT_TWO(0.00)[2];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[foxmail.com]
-X-Spam-Level: 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <02237688-9532-4fd0-8494-a7bb524ca4f2@intel.com>
 
-Remove private copies as now a central state can be used.
+On Thu, Jul 02, 2026 at 03:52:13PM +0200, Przemek Kitszel wrote:
+> 
+> > @@ -2713,8 +2714,7 @@ static int bnx2x_mcast_enqueue_cmd(struct bnx2x *bp,
+> >   				total_elems = BNX2X_MCAST_BINS_NUM;
+> >   		}
+> >   		while (total_elems > 0) {
+> > -			elem_group = (struct bnx2x_mcast_elem_group *)
+> > -				     __get_free_page(GFP_ATOMIC | __GFP_ZERO);
+> > +			elem_group = kzalloc(PAGE_SIZE, GFP_ATOMIC);
+> 
+> what is the current rule of thumb for kzalloc vs kvzalloc size under
+> GFP_ATOMIC?
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
----
- drivers/net/usb/cdc_ether.c  | 9 +++------
- drivers/net/usb/rndis_host.c | 6 +++---
- 2 files changed, 6 insertions(+), 9 deletions(-)
+kvzalloc() with GFP_ATOMIC is kzalloc():
 
-diff --git a/drivers/net/usb/cdc_ether.c b/drivers/net/usb/cdc_ether.c
-index e688fb99c61d..76ad4ffa950a 100644
---- a/drivers/net/usb/cdc_ether.c
-+++ b/drivers/net/usb/cdc_ether.c
-@@ -85,7 +85,7 @@ int usbnet_generic_cdc_bind(struct usbnet *dev, struct usb_interface *intf)
- 	u8				*buf = intf->cur_altsetting->extra;
- 	int				len = intf->cur_altsetting->extralen;
- 	struct usb_interface_descriptor	*d;
--	struct cdc_state		*info = (void *) &dev->data;
-+	struct cdc_state		*info = &dev->cdc;
- 	int				status = -ENODEV;
- 	int				rndis;
- 	bool				android_rndis_quirk = false;
-@@ -336,7 +336,7 @@ EXPORT_SYMBOL_GPL(usbnet_ether_cdc_bind);
+	/*
+	 * vmalloc uses GFP_KERNEL for some internal allocations (e.g page tables)
+	 * so the given set of flags has to be compatible.
+	 */
+	if ((flags & GFP_KERNEL) != GFP_KERNEL)
+		return kmalloc_node(size, flags, node);
+
+so it's only physically contiguous allocations.
+
  
- void usbnet_cdc_unbind(struct usbnet *dev, struct usb_interface *intf)
- {
--	struct cdc_state		*info = (void *) &dev->data;
-+	struct cdc_state		*info = &dev->cdc;
- 	struct usb_driver		*driver = driver_of(intf);
- 
- 	/* combined interface - nothing  to do */
-@@ -374,10 +374,7 @@ EXPORT_SYMBOL_GPL(usbnet_cdc_unbind);
- int usbnet_cdc_bind(struct usbnet *dev, struct usb_interface *intf)
- {
- 	int				status;
--	struct cdc_state		*info = (void *) &dev->data;
--
--	BUILD_BUG_ON((sizeof(((struct usbnet *)0)->data)
--			< sizeof(struct cdc_state)));
-+	struct cdc_state		*info = &dev->cdc;
- 
- 	status = usbnet_ether_cdc_bind(dev, intf);
- 	if (status < 0)
-diff --git a/drivers/net/usb/rndis_host.c b/drivers/net/usb/rndis_host.c
-index 5e39d05a2d7b..d539654687c3 100644
---- a/drivers/net/usb/rndis_host.c
-+++ b/drivers/net/usb/rndis_host.c
-@@ -57,7 +57,7 @@ EXPORT_SYMBOL_GPL(rndis_status);
- static void rndis_msg_indicate(struct usbnet *dev, struct rndis_indicate *msg,
- 				int buflen)
- {
--	struct cdc_state *info = (void *)&dev->data;
-+	struct cdc_state *info = &dev->cdc;
- 	struct device *udev = &info->control->dev;
- 
- 	if (dev->driver_info->indication) {
-@@ -90,7 +90,7 @@ static void rndis_msg_indicate(struct usbnet *dev, struct rndis_indicate *msg,
-  */
- int rndis_command(struct usbnet *dev, struct rndis_msg_hdr *buf, int buflen)
- {
--	struct cdc_state	*info = (void *) &dev->data;
-+	struct cdc_state	*info = &dev->cdc;
- 	struct usb_cdc_notification notification;
- 	int			master_ifnum;
- 	int			retval;
-@@ -290,7 +290,7 @@ generic_rndis_bind(struct usbnet *dev, struct usb_interface *intf, int flags)
- {
- 	int			retval;
- 	struct net_device	*net = dev->net;
--	struct cdc_state	*info = (void *) &dev->data;
-+	struct cdc_state	*info = &dev->cdc;
- 	union {
- 		void			*buf;
- 		struct rndis_msg_hdr	*header;
+> >   			if (!elem_group) {
+> >   				bnx2x_free_groups(&new_cmd->group_head);
+> >   				kfree(new_cmd);
+> > 
+> 
+
 -- 
-2.54.0
-
+Sincerely yours,
+Mike.
