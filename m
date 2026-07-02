@@ -1,169 +1,64 @@
-Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A47631C695;
-	Thu,  2 Jul 2026 18:17:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD95394498;
+	Thu,  2 Jul 2026 18:20:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783016273; cv=none; b=VUUOcRdmA+C6n5pwR15UjI2jthQJu7z/1X2yIHWMZM+xOyYrsU5BNsVz0APZbwhafwy6isg+HFB27XlvP95pEXNTG/gjC68st5/MzfMX4zhmG/7Pfy/An8XCAv9FZHOadrXY9mc8yQ6mUHeriJ++h+1qE6Sq7i5tarqivxXptrM=
+	t=1783016442; cv=none; b=ajBPkAVf/tZYvXWcGNVVuiTzi5A5Jz7+fFGLlraCzwBdN+Nh3HxXdj9YTZGMuw6YFsjjQQB0bZuW+oHIOhjBBbNaQcArpcPHDzfZ4gxokRVUirySwtKR4mNm0dUBOg5AWoFJItAIFdfooL3gVtIWRxwSdNmLuqwdVgrhkeo/SQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783016273; c=relaxed/simple;
-	bh=VNiPHKbY+7ZcRzPkrxitR5jeoQEWzsnXA3gR7fEZbtw=;
-	h=From:To:cc:Subject:In-reply-to:References:MIME-Version:
-	 Content-Type:Date:Message-ID; b=bLNaA1nANmUnpr7gvp4lhj3Cvi0EPODu+Ir7uGIuizmyJQzxHn8rGU16/tBD/GT78bIAJk+4fYHlNHA+zKfryCg1KR/TylnIkud9O8R9MdlnpFudmwlp3220m+E+Xf44DWb88htXThtRWJiqr5avr5zIYCZXlAfTib3q4mq+e4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net; spf=pass smtp.mailfrom=jvosburgh.net; dkim=pass (2048-bit key) header.d=jvosburgh.net header.i=@jvosburgh.net header.b=bc/aG25I; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=e+gUvmVO; arc=none smtp.client-ip=202.12.124.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jvosburgh.net
+	s=arc-20240116; t=1783016442; c=relaxed/simple;
+	bh=91jc66yMeek53KPFh6DGIhBOa0ELu2KmG93LYgjexCE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jA88NWHeh8XOLik9yAWnx6AbjoW9iMpoJmCu50oMXHl1INDBrQT+YsR41Z4q2/c5QRtz/sWcqFzokm8p1rfKKQ4y9yFzi5GUUzgQT6hwWPj4RfFYBBed3aoVvSseQIhUPblIIgnIkivFR0DTkm3Jmg5RcTx+X2cm9rzvv1jNuZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=QiXYEmg4; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jvosburgh.net header.i=@jvosburgh.net header.b="bc/aG25I";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="e+gUvmVO"
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfout.stl.internal (Postfix) with ESMTP id DFAC91D000F7;
-	Thu,  2 Jul 2026 14:17:50 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Thu, 02 Jul 2026 14:17:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jvosburgh.net;
-	 h=cc:cc:content-id:content-type:content-type:date:date:from
-	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1783016270; x=
-	1783102670; bh=YVY6BUlsPF9I2q2TM3dbextXrdXPIAas80uysxwDYag=; b=b
-	c/aG25I8bGenpnyjG3yxEw1HzF+PGNX1fR772xAbgWkl/mhkhYczBPReDVmEq77S
-	/4r+hRGNrdJUAfeEJx1/yrG2nzFTjrWBlxFxPxkq0U5/vgSOfE/OSOvfR/Por3c8
-	5DdnPfP8LGbsmTunxtAYWN5vPD01/1qi3ZtA/c8GIZkrYB8eBRRDZo+h4M5Sz5TM
-	Rxeiviqeahlua/bNcoEVeFE1Px6B3PpiqM1OGIjaB/S5C+t1a8RXtTv85BJkFtmU
-	PVM/Rg8USx1NInd9hYLKuPTj5/OPMYzGSJJWsbLP/lier5CP7Zw0BuF8YN8d06Kt
-	1vD334u4NYp/pAnkulBTw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-id:content-type
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm2; t=1783016270; x=1783102670; bh=Y
-	VY6BUlsPF9I2q2TM3dbextXrdXPIAas80uysxwDYag=; b=e+gUvmVODkcUoti/w
-	u8L+8oePr/zL14v2hEmb8cwoMMK9rEcfvymn72Zr5YykL9nt1Lp7tQ2yyvdsz/Bs
-	jQmAdctwDqvHcplhOkTINcv34JKiKS3RkiMwScr1J7kKLzky2p10zujr/GT2bG5B
-	G0UHBIzHUONyst+q5sDl+NeIGrkhaFC95hDfrtsLhnpmgQJQuA2OuMCqXUXKFsP9
-	0bKYjrIgSz807jGW4d4iWvZ6Y0MpM5PxTOrCE5hGs8VQFFzOnnr0x8ATcsHpznYO
-	LLTBKAB6eF8re+rkP+TPGUbiiX1uTegAaixDiGSikUQeHyPy9ut6Dg+hrTP0Jy89
-	OWAFw==
-X-ME-Sender: <xms:TqtGarYiy1Zy2wfwxRrmWCL5cjDIcQvnfKEihgeMCpE2XRGFsayXNg>
-    <xme:TqtGaoNZlSJtWEhHzxly65KDPm7Y8Ax-eEnTyichOd7JZo5LoPqbIIReOwFEqSUHL
-    M_u1JebL-pCyaSXMFs72tzDAt5idvunNWVd29REZrcl5T7wShVYbUs>
-X-ME-Received: <xmr:TqtGaoYECLR15D0NGNLbfjQ8UH9pUSOfSVKELJsXzOzKhnVvD-QMFFgYsu2g6ytSDZellQ>
-X-ME-Proxy-Cause: dmFkZTF4/cIK9Acjb8w71YMkf9mzYkJM0oE6xaNluclDjGLz3QVvcM1Gr7rAdK5Y+x8Zis
-    75nnWiPH2lbPXhr4RUJ2RgbbKKwkBa13RFwzAwYd4oaZlzp6rSwvWynstgLQaL36nHyAar
-    KcOdhaUuutxHAGDi6JemTTEGaRPOuUMcqJlrPdIE4IgXEo+Y+YO45wZ+ttpjehoPeCFCw1
-    VtxKfJdXTiN6DO44SbMCnGsYsdW1GAzl39hk3Nwaxf65sL/D+Y/RfV8gtWlJU0nhSbm4lq
-    a5pNufmR9pST4lonDmRlqohmF+nja5SyYnUqynm3fjoZONd1hZ5DsB10YTA3DtNQcw6otX
-    IB7muEo2sxdYPBOuxck+bgv8x0MbwMmzmmcWihKZhLFOwboSfPkUhxazZEPfe+ZUEfCiPQ
-    3uJigwIi1aH2caZg8AociavbTN4qT0DQ4/kkTAtUixAqhdGEgzywJsAqrsukaPyw1DuNRQ
-    jiVV7h7kG0vewTgnTEOR/H6orkdTkberyN2ZnoluaMp5xwbvEocEidK0rgFwpLgKMqZ09+
-    feEAS2H15Br2ywNE01+MAlJtjumc+4LF4JZVHNEpdrQuZa2PE95UQXH8DFXv1NBI1KVR0a
-    R4PU1WMysod8dN1DPSNo3ePZCfIXUwOgxGJ+ADwWNjUob6EbvZwCoqPmuFMA
-X-ME-Proxy: <xmx:TqtGau2emInibYahfStzJqkaXULs-DRExC3EwYaZZrxRANmJr2hqBg>
-    <xmx:TqtGamesK0V0cDMwyxxIfiao2yEfO8Zk1gc7nb6fwViYY2ESpMS5rA>
-    <xmx:TqtGanHYnQzeGCwHcRCta7-k8W9hFDXKHETW5iPY_207EdIsRUkBlw>
-    <xmx:TqtGav1A6Vi3AdJX8PapkCSIRYqRIpbe1t2ot8Za-SRARfoesDf93Q>
-    <xmx:TqtGam6IOnETit517iAvUqnACv2etKoYPT05FqOPcfzOaZCXcwpBv2n9>
-Feedback-ID: i53714940:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 2 Jul 2026 14:17:50 -0400 (EDT)
-Received: by famine.localdomain (Postfix, from userid 1000)
-	id 1EA089FC68; Thu,  2 Jul 2026 11:17:49 -0700 (PDT)
-Received: from famine (localhost [127.0.0.1])
-	by famine.localdomain (Postfix) with ESMTP id 1BD5B9FB76;
-	Thu,  2 Jul 2026 11:17:49 -0700 (PDT)
-From: Jay Vosburgh <jv@jvosburgh.net>
-To: Paritosh Potukuchi <paritoshpotukuchi@gmail.com>
-cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-    paritosh.potukuchi@amd.com
-Subject: Re: [RFC net-next] bonding: Retry updating slave MAC after a failure
-In-reply-to: 
- <CAMfiSebUf6rbHu4bVL-5vCFRs5cafiEeiNDpX3eQRdxKuRgGeQ@mail.gmail.com>
-References: <20260630150937.3508222-1-paritosh.potukuchi@amd.com>
- <2001256.1782860341@famine>
- <CAMfiSebUf6rbHu4bVL-5vCFRs5cafiEeiNDpX3eQRdxKuRgGeQ@mail.gmail.com>
-Comments: In-reply-to Paritosh Potukuchi <paritoshpotukuchi@gmail.com>
-   message dated "Wed, 01 Jul 2026 13:11:53 +0530."
-X-Mailer: MH-E 8.6+git; nmh 1.8+dev; Emacs 29.3
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="QiXYEmg4"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=+rc1xoFCVIUImmkJDdnce5cImNd0dBvklLwA/wqnt64=; b=QiXYEmg4vp5/sSVyYaI63rBIjr
+	E3CiyYgwp/A/CAepwBzXr51dnGKl6GJvHNWW8cQOiI5FvneftG8pGRcJezelYT7xhfqv8kwQJB0zL
+	O2TUSjhBD2smKFCHTz1kq8vUCgR0xK3XVZ0d3TPlkacUkHX/fXedjWrVaEHL7DZN7/5s=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wfM1a-00APvN-GX; Thu, 02 Jul 2026 20:20:34 +0200
+Date: Thu, 2 Jul 2026 20:20:34 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Oliver Neukum <oneukum@suse.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, shaoxul@foxmail.com,
+	netdev@vger.kernel.org, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 1/4] net: usb: move updating filter and status
+ from cdc to usbnet
+Message-ID: <c88d827e-f365-4a58-badc-051a9379e64c@lunn.ch>
+References: <20260702143142.890654-1-oneukum@suse.com>
+ <20260702143142.890654-2-oneukum@suse.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2083935.1783016269.1@famine>
-Date: Thu, 02 Jul 2026 11:17:49 -0700
-Message-ID: <2083936.1783016269@famine>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260702143142.890654-2-oneukum@suse.com>
 
-Paritosh Potukuchi <paritoshpotukuchi@gmail.com> wrote:
+On Thu, Jul 02, 2026 at 04:25:30PM +0200, Oliver Neukum wrote:
+> These helpers are used by multiple drivers and do not depend
+> on the rest of cdc. Leavin them in a cdc driver means that
 
->> I think the proper thing to do is remove this comment block and
->make no other changes.
->
->  > This comment dates to sometime before git, when it was common
->for network device drivers to lack the ability to change the MAC while
->the interface is up.  To the best of my knowledge, that isn't a issue
->today.
->
->Sure Jay. That makes sense. Should I go ahead and post a patch 
->removing this comment?
+leaving.
 
-	Yes, please do so.
+> more drivers are loaded just for infrastructure, not hardware
+> support.
 
-	-J
+Can there also be changes to Kconfig removing the dependency on
+cdc_ether for some drivers? They now only depend on usbnet?
 
->  -Paritosh
->
->On Wed, 1 Jul 2026 at 04:29, Jay Vosburgh <jv@jvosburgh.net> wrote:
->
->    Paritosh Potukuchi <paritoshpotukuchi@gmail.com> wrote:
->
->    >I came across this TODO in bond_set_mac_address() :
->    >
->    >        /* TODO: consider downing the slave
->    >         * and retry ?
->    >         * User should expect communications
->    >         * breakage anyway until ARP finish
->    >         * updating, so...
->    >         */
->    >
->    >Currently, if the dev_set_mac_address() fails on a slave, we go
->    >ahead and unwind the bond and its slaves.
->    >
->    >As the TODO suggests, one possible solution is to try setting
->    >the MAC again, after putting down the interface. This is because some
->    >drivers may reject changing the MAC when the device is UP.
->    >
->    >The solution I am proposing is as follows:
->    >
->    >dev_set_mac_address on the slave
->    >        - If this fails, temporarily stop the slave - ndo_stop
->    >                - If stop fails, unwind
->    >        - call dev_set_mac_address() on the slave
->    >                - If this fails, unwind
->    >        - Bring up the slave by calling ndo_open
->    >                - If this fails, unwind
->    >If dev_set_mac_address on slave passes, we go to the next slave
->    >
->    >
->    >Before working on a patch, I wanted to get feedback on whether
->    >this interpretation of the TODO makes sense and whether there
->    >are concerns with temporarily stopping and restarting a slave
->    >during bond_set_mac_address().
->
->            I think the proper thing to do is remove this comment block
->    and
->    make no other changes.
->
->            This comment dates to sometime before git, when it was common
->    for network device drivers to lack the ability to change the MAC while
->    the interface is up.  To the best of my knowledge, that isn't a issue
->    today.
->
->            -J
->
-
----
-	-Jay Vosburgh, jv@jvosburgh.net
+	  Andrew
