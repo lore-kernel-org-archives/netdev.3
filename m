@@ -1,78 +1,80 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E10C286D4D;
-	Fri,  3 Jul 2026 16:39:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF6263033DF
+	for <netdev@vger.kernel.org>; Fri,  3 Jul 2026 16:40:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783096743; cv=none; b=E8GMVl5jUH70jmJKho8iJiFcD8y6d1fajzVzU1w+sGIPT3IpSs9AhGrouFbAbSgfw3dsozcFC5giKiTPPho1s6wynpQu/dhj2Ok+BkbGmBmIvNq/1omwM0jcuRULFhauwUlpYsKUT1MrkM+Uho6SCjKbJxAt3CPFv3rtdYPJp+U=
+	t=1783096827; cv=none; b=QPIcxzVhT2wFkHjVQdMr1YIcs2J59qQ1H+dXJeLmMjYIjydcap/+Y3S4kUMRg62netu7QeyqTBjufEgltmYgTBlMoSvFnhwUKvRiU9+PO52fxwBPUg1vtN4cnjYmCm3Z/yrRdJH/aQiDIcaoHP/A2dFB0UsUTxKhZKZPsiqI310=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783096743; c=relaxed/simple;
-	bh=5DVVBtTOW0yr5qDqr84mGeBE9GlwwdKdtKIQ4DEOBLc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uA9En/sNgBjeVMVN9+v8jBqOfC16xFJ1ekOxTvTaYbBmYGDfDSCf0RfzAbWVh+ogqQpgZY8+ugqv0BUntwAhUbl2W3oNIvQ37rwE8W5Fp2BA1LWozXAsjFH89Fb8+ZesUCHAPvuJZUMYG37PrDQd+V8sS95Zuw9dAPHwNPBIAkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=rstkdL9C; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1783096827; c=relaxed/simple;
+	bh=JRe/fXX3hHnmsPEa+Eh1u5NiKPt28j7YwFJJbjUZWGQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=SQHHUhb6qkoblWlYXl6I/b5iMPPYHNcoAtRGZAfcAM+kupmp7fNT9dRqgfnrhT2b7vnAqYsu3j4e8QNRoq5YeadSZ73SP3Ul5EeRGCuK53M6fpywIWhjKGgSXOFLOh5349Rkc+1bHD2DKS4puv0+dfGHtae/Vta7flRH++KOiGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hv8LWde+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="rstkdL9C"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=cOUbwEcbUl3Tbzt6eGApLmbeUlwF/FWkHZ2MGvOerL4=; b=rstkdL9COsd4gO3sCjGnPktLkf
-	pVSuBjoTLGb0FQt8q7bZyAUqQI4OkYaDtfiThk543MM9Zv3MB1g5iPE9N36ZYmNyuHfryOUujYY35
-	tLQwxT65h8QmyS9R8I22xXTWrO+3RTZ4Fni9NvH2H65H94Mi5yq9zbZUbWmm6pmfIbYo=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wfgul-00AZoE-6r; Fri, 03 Jul 2026 18:38:55 +0200
-Date: Fri, 3 Jul 2026 18:38:55 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Rosen Penev <rosenp@gmail.com>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net] net: emac: mal: replace devm_request_irq with
- request_irq to fix probe error race
-Message-ID: <fa4fa65e-1635-4313-a5e0-56a5208272e2@lunn.ch>
-References: <20260702235045.1326384-1-rosenp@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hv8LWde+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F2071F00AC4;
+	Fri,  3 Jul 2026 16:40:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783096826;
+	bh=NTTCEFx3mCgZ7kWN2D7+RmXDQbdyw8zW01Cw/ECRemg=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=hv8LWde+poIQ4eHAiAEeOEwtLpN3LCvtM2luR2gOwTsjZ4pf6re6WEZcnXm6yT8dV
+	 TubvVHZQweMWgwjiix8M1W0d8O4ygefyrxhWehzG99EAEgBw5pn6QzFU24xfLy5zeV
+	 Km+JPET/bGef99m4txo+SdBq5RJ6Ly5V7nCC0rf62DGrs28WAaIzkcCDGpa7qs4dbs
+	 +H4e92KoO2qLWWTVgvchBl0JSewcpo4oMFql4ZxM23U++W/axAYDrfuwlbogdv0hHt
+	 87b5kmZnOvF1z+7oI6de01KEXfK1sNfMgmlSG9pkdTmqHg4FH80PAJwCZdixY+n1B1
+	 94vH6MALUsNXw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19A053939356;
+	Fri,  3 Jul 2026 16:40:10 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260702235045.1326384-1-rosenp@gmail.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next 0/2] macvlan: RTNL-less macvlan_fill_info()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178309680863.3234711.6167695440715149504.git-patchwork-notify@kernel.org>
+Date: Fri, 03 Jul 2026 16:40:08 +0000
+References: <20260701082214.2974946-1-edumazet@google.com>
+In-Reply-To: <20260701082214.2974946-1-edumazet@google.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ kuniyu@google.com, netdev@vger.kernel.org, eric.dumazet@gmail.com
 
-On Thu, Jul 02, 2026 at 04:50:45PM -0700, Rosen Penev wrote:
-> devm_request_irq() is a managed resource: the IRQ is not freed until
-> devres_release_all() runs after the probe function returns.  In the
-> probe error path, free_netdev(mal->dummy_dev) and dcr_unmap() execute
-> while the IRQ is still live.  If the shared IRQ fires during cleanup,
-> the handler accesses unmapped DCR registers (crash) or the already-
-> freed dummy_dev (use-after-free).
+Hello:
+
+This series was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Wed,  1 Jul 2026 08:22:12 +0000 you wrote:
+> This series removes the RTNL lock dependency from macvlan_fill_info(),
+> allowing it to run under RCU read lock.
 > 
-> Switch to plain request_irq() with per-IRQ error labels that tear down
-> only the IRQs that were successfully registered, and add the matching
-> free_irq() calls in mal_remove().
+> The first patch annotates data races on 'mode' and 'flags' fields which
+> are accessed locklessly in the RX/TX paths.
 > 
-> Fixes: 14f59154ff0b ("net: ibm: emac: mal: use devm for request_irq")
-> Assisted-by: opencode:big-pickle
-> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> The second patch transitions macvlan_fill_info() to RCU, adding necessary
+> annotations for other fields and handling concurrent updates to the MAC
+> address list by computing the count dynamically.
+> 
+> [...]
 
-You seemed to of sent the same patch within 24 hours. Please don't do
-that.
+Here is the summary with links:
+  - [net-next,1/2] macvlan: annotate data-races around vlan->mode and vlan->flags
+    https://git.kernel.org/netdev/net-next/c/ed37710d6c67
+  - [net-next,2/2] macvlan: no longer rely on RTNL in macvlan_fill_info()
+    https://git.kernel.org/netdev/net-next/c/6d728e7e286b
 
-https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Send a self NACK to the broken version, wait 24 hours, and send v2.
 
-    Andrew
-
----
-pw-bot: cr
