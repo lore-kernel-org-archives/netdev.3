@@ -1,87 +1,68 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57FE83B3C1F
-	for <netdev@vger.kernel.org>; Fri,  3 Jul 2026 10:13:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E83F3B47F0
+	for <netdev@vger.kernel.org>; Fri,  3 Jul 2026 10:16:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783073605; cv=none; b=NDORsoYXWXv/yQbYXailgMPitbCm0twSRBepX0XAftPwB51FSHMpHJY2MwJZ3nMlJMzAm+i7GpT+0rRaEyrcSludjdF0KTX7hvNnvyz+LPt8FbysWvH75WEdCm2KozjaF81ttvdprafe6ea+Q5kl8jJ+Vy6zLYIhmey+qvXhlZE=
+	t=1783073784; cv=none; b=Q2eCm2sBfXyz1mo/WyGYVxpeJTECnhaJS83j6jPi7FdkFdd4H0VvXe1rttApKvCOTu6LFphocVABp8P9yNA2CX1XAef4O3zOnNjXgnmB76YXNeXLP0SD+yJZIp2yiDzVBWIC+bgp/9XJJm+uCOp5gI8fjAjEbElWiFMzPQ/mNnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783073605; c=relaxed/simple;
-	bh=g6NO/hgtUlkK66EiSlUQVymWJtmwBVpJQ3HhUlxuYQ8=;
+	s=arc-20240116; t=1783073784; c=relaxed/simple;
+	bh=3GRubamd8c/lHAxEWGx9EZ3mJAcdA7pvo8/S2YUqvXw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Zwvn35uGqAYD6ti0m0m5TzE6ksfHNCmwYgAOq/3WlB7cCC2ZdJsMgXZQEZ+Y2O/AvxPbRdYZ496OOunt9f2ztB/Bir+xE7DNpqmlvHVSLcWUb2cBjnkXQp5NKX+LO/+KHffcdrzIM26lY6jD5i9gtVyDCicd9iivdjsMcTr/ydE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=dqgTkWJ6; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=cWNSbDhw; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	 In-Reply-To:Content-Type; b=ifmduIsQS5zbyPot3LAPMs2bN9c6vx7kPaProH26pWAaYckIagw7rPeCaPrb0EwyXJRbadfUJ7SmEgAOuYEkfD82wVs4tcLLMXZfqYvmV8ftzPBvxns0A1H9LISvxFrgk+yPjZTqSOP/44mNTy1gjlErt4PSc9UJBjRtWMeaw/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=JDTjjL7C; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="dqgTkWJ6";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="cWNSbDhw"
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 663684G43053363
-	for <netdev@vger.kernel.org>; Fri, 3 Jul 2026 10:13:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	6csOGuNQZW/8zcTpE9Z1FJS10bTlappWn1DYBCQO9LM=; b=dqgTkWJ6AwlZAOOG
-	TZJpLI93qT8q5TY9jfKapyiPNDC9hTYfBrkRhQfXHKwLBwG2xzEy/g1PYCJBcaUU
-	CTJYs9XdM10N1GTv0P4KQnQNQoOdn5DVhLhrTSUVE03KWI9HQEgv4/Jv6jOVsiyY
-	4c1b2PrtQ9oMKYL/tAlxRh6TcM94/lIi+GmwRMAsIiH5dwgA/CK3fkX5PbnZTw0b
-	OBpxzzyj5fCK8w7NNtHeRjrO/9tTtK1oC9IZdWvprYULOQOdVLu0aXf5uHpMdJuv
-	9iTAKxyFVHLl0aDagEWjv/nIz/7L+TqQPjLRV8ArqCu6K537da52zC9trXoYOpYy
-	To389A==
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com [209.85.219.70])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f67j00wex-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Fri, 03 Jul 2026 10:13:22 +0000 (GMT)
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-8ef4a54f86fso1038656d6.0
-        for <netdev@vger.kernel.org>; Fri, 03 Jul 2026 03:13:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="JDTjjL7C"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-472055b0efaso287740f8f.2
+        for <netdev@vger.kernel.org>; Fri, 03 Jul 2026 03:16:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1783073601; x=1783678401; darn=vger.kernel.org;
+        d=suse.com; s=google; t=1783073782; x=1783678582; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=6csOGuNQZW/8zcTpE9Z1FJS10bTlappWn1DYBCQO9LM=;
-        b=cWNSbDhwoqcgJdGu4xBtgZCRrKJicFu7XfWq7e+gTVEVcmxt3ipgZDbcd6Yy8B7kWw
-         Ktn+NvQNUC0hsPYZu6CwkhpEWZN1RKCbljfEiMVVsJNI7TpCbRbsrAF6kEmEhzN/yrF5
-         nx8k6qSvIjEqfhjS+R70KP9Ytooc707SZXuFNgs5I49hM1vR7P5xR+tJ/kytdn3A4JjA
-         dJnRor46KZhYeih5mpDG44DNG6Kgatcoy/oFIg02N70USx0f/HLghmI0UfZ4JQFRT3vT
-         ZPYWchCOCLjqooApe+FU2CeCvnYyhp2pc/QMAhQY0oQWb6iIq/fnpgQw/oIg0ewPA1lM
-         XxCw==
+        bh=TgYxzP4S3yg5Ik0kspfuMX+5NxuodFksLhrI6YPSMK8=;
+        b=JDTjjL7Cn4wMv/TZpFWGRryM9C/pOLw7DlwEuzVNZuM+EJL1f/UvGAR0CcYKaBxHyN
+         csYl+DIE7lXSLQMd3F98LwCKvFI0DXZqf0h2n2ZdLNc92DfThmf86/7Za2Za5ibW7Y4G
+         2v2g4WbqiXHf3Zcc346guWeJG4S7I0pbzU5fdnFJ0xK/dlyQKJvnHsLNdGgQwHG8sHaW
+         7XRmCmKSyyH7T0os/cQjUn5o4N9oXJB+t+1fo/pcmD42iCKhu+Uqya/ky44SBtgzJCbI
+         XN+LkmuUQJbC08JOWv75UUTzkeHrAvaeQGRKiXNRZ65BkPA97aI5nKVMgKaA7CuYrEiq
+         gYyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783073601; x=1783678401;
+        d=1e100.net; s=20251104; t=1783073782; x=1783678582;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=6csOGuNQZW/8zcTpE9Z1FJS10bTlappWn1DYBCQO9LM=;
-        b=RCv9C4WbMzeP6NhxX3zN/cB34hm8ubqFXFf6xsI/+XxBuShGGiSxKkVAKpM5upsK0P
-         7BNBSu22y2MKrB9HPe1s/Cpuezrefdm8EPrCmAM91J+8KvdRlT017wVEzZYeTHc210gG
-         smJqraadFCST74IUhWUE6/35yWxm+ZaReyFI6M4j1sKygznnzg/wHNXdK16fOV0SjQ91
-         1fQAzuxKtWOUzMKJZDs3YOV1d0G1hC8104b3o7mjjrVo766sgrbc1VQ7D7ydWHfg9sV4
-         9VuiA1BCCbXX2mDttgRiLaA5YC2obWrey94ZBykFxWdf5cW4KE3wN/lWz3s7QPMGd/X8
-         J9LA==
-X-Forwarded-Encrypted: i=1; AHgh+Rrm3bVo6tjkWQNq5A40FDH1L5ZvKqc9q5GRrGIauLIR1bli1xMnvHViwhY4NSJdPLr0RrN6okk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxiyTwJj8XSIUoaGhIDEQitt881+oBeglSl2Dh6OgUv6j4pAaDO
-	/n6HdLd71yr4fSVBGHjGFeWd/guZ0xFnO0BUSLYhE1TkGpe/5ENiqsQDDaq37fz5fE/nloVqv3D
-	RQleGbtgsN5mcWZLs1plkWkyCcsn5V9jnNQYmXjjpj0aYDyL5vMPkAlqHFQ4=
-X-Gm-Gg: AfdE7clp26LFP3PFNjQns0+l2FIeuszKipA9g+XXoh1JT7PEO0UROG0tRgaWEWA4uw0
-	/mJ9b9YUIqsLdaIWfCdlJXDsP/WP1rUnbmA7wzepyaF9bFfi0kZbNQy2Xr/xHZ0Cy8ynlZ6RwDc
-	uLq0agXxznTWATyqZrnvIMmiA3GZCVbR6sRpFPfIQm7eBqjuWjnqoOIdKHYyjznU5oyMqOWTLEu
-	Rh1TdsxSGFXv6iHWBcTo3rR/WqLPMUKhU1qnJnqkkV7nU418TCT03BdZQ1zFbDR5wTBA19547Gb
-	brifsz6F9Z+Sv2Ni6sVAdNCQrJWf5GWFINU+PebWvFiQvYtgjUFp5CNZuIVFMG8JYZS95TU2ktC
-	cfdW+VE/bD+yLfDs6+2nrH+yrN1erkj9gPCc=
-X-Received: by 2002:a05:6214:cc8:b0:8ed:a980:6b27 with SMTP id 6a1803df08f44-8f3c854777cmr86121516d6.8.1783073601141;
-        Fri, 03 Jul 2026 03:13:21 -0700 (PDT)
-X-Received: by 2002:a05:6214:cc8:b0:8ed:a980:6b27 with SMTP id 6a1803df08f44-8f3c854777cmr86120726d6.8.1783073600643;
-        Fri, 03 Jul 2026 03:13:20 -0700 (PDT)
-Received: from [192.168.120.193] ([178.235.128.140])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-698ad119406sm2158642a12.21.2026.07.03.03.13.14
+        bh=TgYxzP4S3yg5Ik0kspfuMX+5NxuodFksLhrI6YPSMK8=;
+        b=Q6sXl45qzhKt7ir5EKI8QYxk785+v+jm1wJRo8/T3o7EkNfARUm2FCoZOiNooN/oRG
+         tWWBhsRQs2MYnHhXk6+xLkMpHoVek2w7NLttbYIF9RTIEJNLeDp4AZJzeLb0Gd5e5dPu
+         JXnzgpSTSkH6A2fClBLc18fCZ/TsKSzCgH9HTuVw+3rLjSs7HnxbHXjOZhqs4l9epf71
+         WamYVcNI/th1srM0J1ogt8ie8z4ruuMdX+08wQZNRIv+XXFZtPPX+rO2yqKZKX8VJm4e
+         ZhODSTtgBwx5IhSWHy+7OLZ3oV3uDzNKpkAf/kAaOXIgu2rU2nyd2V5QCHQpxuH+MCPu
+         8jcA==
+X-Forwarded-Encrypted: i=1; AHgh+Rp3t1/23uaY9ttHyO7MKvgO6ltZVnnd2F7MsOVTIgiGnMPx8H5wLiNyYz1pR/L7NAUe9gPmTLo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVQU2QHg/pOAxvkpvDjUKgKScebabYU9cxpyTQQzBe2GOm/JuQ
+	jaYAocD3Zl3VQqieXmr3uwec5AgkZgfkmcn1YmwrDQ3rtW6ntcM6proYQPnHPMDfNMp8UT2RJlk
+	SKqDj
+X-Gm-Gg: AfdE7ckL4DzzspBi0SA5+Zrss1iJOh3toRjixCQtZq2B/FQVauLpel9PKHnerKeY+vj
+	CMN3SzBS3Z6dKQOP/kGWKQK8EhcWGXCuzu1xuGr1sGNwjwi/f8EwUuWCAAkXioNtlCBK3DsNBsh
+	9CQBR8nJBQIucz2qf19gpKDDvZ3Xlr6HJoORkgjk5IMhNS7infkVyRbESeaS9c5ewBQsUmxU8SD
+	jW8NCu0a6aXuUgzZf+2y3OXK9vs0JkBLrZwoCN3kpd+JUuI2BQplK3V5nskrw9h4XGNLhbI3HPh
+	NownOH6Gt6zcWR4tOF78H9kRKfDgvDWQHqiheg4j6Ow/h8UO5ZTSAJ2No8epgz9BbENHZSdH2d8
+	3Vc+v+UZeCZ4uIGWeuhttzeOaSCLy9CwQPZqidp0taYgpg+WJWfK95Y10cACnUZBCuD5PE96MqZ
+	W8gj8omVggR8kMxAl4JpGvHmiwEimHOIh1DFoqV2qMkc+/G/zBOFgPM6dbGmDARtXUXw==
+X-Received: by 2002:a05:6000:310a:b0:475:5e4b:588c with SMTP id ffacd0b85a97d-477573b7cdcmr14057641f8f.1.1783073781856;
+        Fri, 03 Jul 2026 03:16:21 -0700 (PDT)
+Received: from ?IPV6:2001:a61:134e:e801:4abc:8076:7fbf:d0bc? ([2001:a61:134e:e801:4abc:8076:7fbf:d0bc])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-477db3dbc75sm17654391f8f.5.2026.07.03.03.16.20
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 Jul 2026 03:13:19 -0700 (PDT)
-Message-ID: <827c4b64-1881-4630-bb08-f9e2d97cd32e@oss.qualcomm.com>
-Date: Fri, 3 Jul 2026 12:13:13 +0200
+        Fri, 03 Jul 2026 03:16:21 -0700 (PDT)
+Message-ID: <c3d3c7a0-5d47-4e73-a46b-2fd610f4cd59@suse.com>
+Date: Fri, 3 Jul 2026 12:16:20 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -89,122 +70,36 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v11 1/7] dt-bindings: phy: document the serdes
- PHY on sa8255p
-To: Geert Uytterhoeven <geert@linux-m68k.org>,
-        Bartosz Golaszewski <brgl@kernel.org>
-Cc: Vinod Koul <vkoul@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-        Chen-Yu Tsai <wens@kernel.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>, Shawn Guo <shawnguo@kernel.org>,
-        Fabio Estevam <festevam@gmail.com>,
-        Jan Petrous <jan.petrous@oss.nxp.com>, s32@nxp.com,
-        Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
-        Romain Gantois <romain.gantois@bootlin.com>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Christophe Roullier <christophe.roullier@foss.st.com>,
-        Radu Rendec <rrendec@redhat.com>, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org,
-        Drew Fustini
- <dfustini@tenstorrent.com>, linux-sunxi@lists.linux.dev,
-        linux-amlogic@lists.infradead.org, linux-mips@vger.kernel.org,
-        imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
-        linux-rockchip@lists.infradead.org, sophgo@lists.linux.dev,
-        linux-riscv@lists.infradead.org,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-References: <20260629-qcom-sa8255p-emac-v11-0-1b7fb95b51f9@oss.qualcomm.com>
- <20260629-qcom-sa8255p-emac-v11-1-1b7fb95b51f9@oss.qualcomm.com>
- <CAMuHMdXen+E-Ai51aWBa_KV9W8Fz2cQPpT-FG_kQ7akhrrYa_A@mail.gmail.com>
- <CAMRc=Me3jaZXiXa1sFXr=8Do4sCd+XN1pKTcWC8-0j78SjCkKA@mail.gmail.com>
- <CAMuHMdVUBgG0EFB16OxHisbxx-sBvDKvBPNZdpyDnmBrnX4ptQ@mail.gmail.com>
- <akOZFIowVvprnAMf@vaman>
- <CAMRc=MfBcOhbj=ETxy2Xz9o_nyzykrEhKAc3jYi6V5_jMZEE3Q@mail.gmail.com>
- <CAMuHMdXNG=C=XcioQUEN1M7cQgKhO0AxUyg5X+TWb2rQ3-H3fw@mail.gmail.com>
+Subject: Re: [PATCH net-next 0/4] net: usb: move exported code to usbnet
+To: Andrew Lunn <andrew@lunn.ch>, Oliver Neukum <oneukum@suse.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, shaoxul@foxmail.com,
+ netdev@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260702143142.890654-1-oneukum@suse.com>
+ <ea92d680-39f6-4dde-b558-4008ffbee587@lunn.ch>
 Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <CAMuHMdXNG=C=XcioQUEN1M7cQgKhO0AxUyg5X+TWb2rQ3-H3fw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+From: Oliver Neukum <oneukum@suse.com>
+In-Reply-To: <ea92d680-39f6-4dde-b558-4008ffbee587@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: Ci8zvDk1VdFQrN7DDCyi4eim7N1BReDF
-X-Proofpoint-ORIG-GUID: Ci8zvDk1VdFQrN7DDCyi4eim7N1BReDF
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzAzMDA5OCBTYWx0ZWRfX2nFKwaWSG0DQ
- Ht7npGM7HmjBKTfbd5nIAn6EDoSDdKwJMRs1yRR5HbCP6DQ9OmZCyyqTpDK+L7jyXK2hJgzdNA0
- G1e4gOZWRBBwTpisnXanOPuO5JnLX/U=
-X-Authority-Analysis: v=2.4 cv=Yuc/gYYX c=1 sm=1 tr=0 ts=6a478b42 cx=c_pps
- a=oc9J++0uMp73DTRD5QyR2A==:117 a=PRfkaYvzSr8QmIIGAkY2Sg==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22
- a=VwQbUJbxAAAA:8 a=lwt6xitBv4dyHUtHhEkA:9 a=QEXdDO2ut3YA:10
- a=iYH6xdkBrDN1Jqds4HTS:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzAzMDA5OCBTYWx0ZWRfXzIsyaz2iicpF
- Mvmc8Meza3nIphkogWXk32UurHmJRzWF4zASdVc6uQbKz6Y6i7/1Pb9vvNuzhP+X2pGtb4XWj/0
- Ldf2U2JkNhqRmu/FEhPMztNA5t2A/6NJyi+jFZgPH21A688UwgBT43UAklBeO2gL+dCSICFtDtT
- Zo6FpY667eKqWiZiV+R9FAX3vmRKUL0fBiiAtfu1ybquBDGbFOPbNIInOZ7Agrsor8Do/unRnuT
- yJSU/r9/Yw+u08rw595zQFdwcRPX9CogPlOmtUvEc5jWGetmyQud1qmVQtUhg9Yq5v7Bq8lezfq
- gcAlow76STwDGYemDkSMGKGNJZO/fQyaFRiO/LLPv/vco3gxYnC++ij6KeYqF1sghsBHNlGOc4u
- Zq0LMS6odNpC2mhn0lkzIsqdFQPVka14CfU/dOBMrJtnltdzf1InHmmDHuCOmfzy0e+jWR9CKhc
- 4oaU7IFa/rIGISWdaYQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-07-03_02,2026-06-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 malwarescore=0 impostorscore=0 suspectscore=0 phishscore=0
- bulkscore=0 clxscore=1015 adultscore=0 priorityscore=1501 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607030098
 
-On 7/2/26 11:16 AM, Geert Uytterhoeven wrote:
-> Hi Bartosz,
+On 02.07.26 20:15, Andrew Lunn wrote:
+> On Thu, Jul 02, 2026 at 04:25:29PM +0200, Oliver Neukum wrote:
+>> Some drivers are reusing common code originating in other drivers.
+>> This means that two drivers need to be loaded for one device.
 > 
-> On Thu, 2 Jul 2026 at 11:12, Bartosz Golaszewski <brgl@kernel.org> wrote:
->> On Tue, 30 Jun 2026 12:23:16 +0200, Vinod Koul <vkoul@kernel.org> said:
->>> On 29-06-26, 16:51, Geert Uytterhoeven wrote:
->>>>> Russell King asked me to put the PHY logic for SCMI pm domains into the PHY
->>>>> driver instead of the MAC driver where it was previously. Instead of cramming
->>>>> both HLOS and firmware handling into the same driver, I figured it makes more
->>>>> sense to have a dedicated, cleaner driver as the two share very little code (if
->>>>> any).
->>>>
->>>> I think you are mixing up DT bindings and driver implementation?
->>>
->>> Should the bindings change if we have different driver and firmware
->>> implementations? Isn't binding supposed to be agnostic of
->>> implementations..?
->>
->> I've thought about it some more and I believe this question is philosophical in
->> nature.
->>
->> sa8775p and sa8255p are *the same* hardware. I can flash different firmware on
->> the same Lemans Ride board and it becomes one or the other. Yet they are not
->> described by the same DTS and the bindings differ as well. I don't see why we
->> wouldn't allow the same approach for the this PHY.
->>
->> We treat it as different HW variant when it's managed by firmware - just like
->> we do with the rest of the SoC.
+> Maybe consider using 'framework' or 'library', rather than driver,
+> when referring to the shared code?
 > 
-> DT describes hardware, not software policy.
+> I tend to think of a driver as the leaf node which probes based on
+> enumeration of a bus. But usbnet.c itself is never probed.
 
-DT describes hardware, to the extent that it's accessible by the OS
+Yes, I also think of a leaf node when a "driver" is referred to.
+That is the very point. Currently you need _two_ drivers and
+usbnet for some devices.
+Should I reformulate? If so, how exactly?
 
-In this case, lemans-bare-metal and lemans-auto are essentially 2
-separate platforms because the way we can interface with the hardware
-is so vastly different
+	Regards
+		Oliver
 
-Konrad
