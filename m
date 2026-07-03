@@ -1,86 +1,120 @@
-Received: from h8.fbrelay.privateemail.com (h8.fbrelay.privateemail.com [162.0.218.231])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C806346FA0;
-	Fri,  3 Jul 2026 20:35:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.0.218.231
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F2F348C4B;
+	Fri,  3 Jul 2026 20:37:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783110931; cv=none; b=kM+fIA2fmQIeH8ISddsnt/bPP3mVdW1vfTKlARLWfB7kZ3BmmWvpDhCFkx6x+widSPyku5tgnLJRwwCDSWObYHhk5iufiruX7V7tJpulC3uijAsq4Ny99Oh7USbQMjbx7R9/tO4/bIQ9lUQkmqdsV4edkDdVWqH8bjoajCN0HGA=
+	t=1783111064; cv=none; b=jfeWUybPNCxxswrgQysLrBSZXgeiuHI5ybrutj1QCCOvzKkRDoVWH1wVUznju+pxagdwUgwdui8EzB95NxzzIag3H+djV2TERyGhdJ3DSgaCQxLIrMEEtkEX7pBZn/UVibDaWj8/Z9uMN0Pb8XsUkB8g6LZ+qqby+ovvw+SyzGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783110931; c=relaxed/simple;
-	bh=UTlCBVva1207VYobcU/wMQX8vMFYMo1s5bO+OZW/kD8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NemebIb5gParMRQiP4wkYQYSuBOrQsMJYijskvZxGir+/hF7S0ToH+Ab/5i+urxOUW7q9ucot3HHD6n0W4PR58Wgwf60X4zmMwb1HvxYimOlOOftHaM/DzTqwDNLJ8TcCOc4+sWFIzBk94ar2erT279ivSEE4MbiFU73/YlSa7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=catcrafts.net; spf=pass smtp.mailfrom=catcrafts.net; arc=none smtp.client-ip=162.0.218.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=catcrafts.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=catcrafts.net
-Received: from MTA-14-3.privateemail.com (mta-14-1.privateemail.com [198.54.122.108])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by h7.fbrelay.privateemail.com (Postfix) with ESMTPSA id 4gsQJS37Ppz2xDR;
-	Fri,  3 Jul 2026 16:26:32 -0400 (EDT)
-Received: from mail.privateemail.com (K8S-PROD-WORKER-02 [87.215.145.39])
-	by mta-14.privateemail.com (Postfix) with ESMTPA id 4gsQJ02STWz3hhTD;
-	Fri,  3 Jul 2026 16:26:08 -0400 (EDT)
-From: Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: David Heidelberg <david@ixit.cz>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	oe-linux-nfc@lists.linux.dev,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>
-Subject: [PATCH net-next 0/2] nfc: s3fwrn5: support the S3NRN4V variant
-Date: Fri,  3 Jul 2026 22:25:59 +0200
-Message-ID: <20260703202601.78563-1-jorijnvdgraaf@catcrafts.net>
-X-Mailer: git-send-email 2.55.0
+	s=arc-20240116; t=1783111064; c=relaxed/simple;
+	bh=Gu/0HMyu/VRKn+7s9pXyNtz7xFiVrICskxvLGDADA4o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=huKVvWxZT9tiHpYiWGB9bz9bvfKxfOE7HOB4rdMBpB4du9SSFN2cKXOkl0lrmHTAVkSfZQaolfW9PbNXOIZ2yNsvI9juJ45pX5Nif2PaPWhUAQbM4jUY2VJ7N4j6vjcRJl6oD6G4u82WGzuYWrVmrsm171n7h1ilcEoPOekzSTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=kDtPeHY8; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="kDtPeHY8"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=XRM9uENndVb9k8FDKtQxbN4i2xsVS7kwtcnJa3qVais=; b=kDtPeHY8J/uTFtszkVtL01Knah
+	g5VSNO5X+1KNoDB+WgXIRri+0noH6dBNaO+UXcQ+LY4UiZqPSa7mRQxy9TjWdPs5NQ7lIQztkNzGO
+	10UnuIxvz0IQk/fF517RGoXOBv3blU1xF2tgn11z1fA5mS7v/voSubZhS71Mj+4oU7sc=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wfkde-00AbYr-9b; Fri, 03 Jul 2026 22:37:30 +0200
+Date: Fri, 3 Jul 2026 22:37:30 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: javen <javen_xu@realsil.com.cn>
+Cc: hkallweit1@gmail.com, nic_swsd@realtek.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v4 2/6] r8169: add support for phylink
+Message-ID: <e9cadf1a-94f3-45e8-9b59-22082ee5c2da@lunn.ch>
+References: <20260703092459.1124-1-javen_xu@realsil.com.cn>
+ <20260703092459.1124-3-javen_xu@realsil.com.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260703092459.1124-3-javen_xu@realsil.com.cn>
 
-This adds support for the Samsung S3NRN4V, an S3FWRN5-family NFC
-controller found e.g. on the Fairphone 6 (SM7635), to the s3fwrn5
-driver.
+> +	if (jumbo) {
+> +		if (!tp->jumbo_pause_saved) {
+> +			struct ethtool_link_ksettings cmd = {};
+> +			bool adv_pause, adv_asym;
+> +
+> +			phylink_ethtool_get_pauseparam(tp->phylink, &tp->saved_pause);
+> +			if (tp->saved_pause.autoneg) {
+> +				phylink_ethtool_ksettings_get(tp->phylink, &cmd);
+> +				adv_pause = ethtool_link_ksettings_test_link_mode(&cmd,
+> +										  advertising,
+> +										  Pause);
+> +				adv_asym  = ethtool_link_ksettings_test_link_mode(&cmd,
+> +										  advertising,
+> +										  Asym_Pause);
+> +				if (adv_pause && !adv_asym) {
+> +					tp->saved_pause.rx_pause = 1;
+> +					tp->saved_pause.tx_pause = 1;
 
-The S3NRN4V differs from the already-supported parts in three ways: it
-ships with working firmware behind a bootloader protocol the driver
-does not implement (so firmware download is skipped), it loads its RF
-registers through a different proprietary command (DUAL_OPTION), and it
-gates its reference clock through a CLK_REQ line that the driver must
-service for the chip to be able to generate the 13.56 MHz poll carrier.
+This does not look correct. Pause is negotiated. In order to determine
+how to program the MAC you need to look at what the local side is
+advertising, and what the link peer is advertising. I don't see
+anything here about lp_.
 
-Patch 1 adds the compatible and the clk-req-gpios property to the
-binding; patch 2 implements the variant in the driver.
+I forget what the issues is. Is it something like, if you are using a
+normal MTU, pause is supported? But with jumbo MTU it is not?
 
-Tested on a Fairphone 6 running a mainline kernel: reader mode polls
-and reads ISO 14443-4 tags reliably, both from a fresh boot and across
-driver reloads. Existing S3FWRN5/S3FWRN82 setups are unaffected.
+For this to work correctly, i would expect a change of MTU to trigger
+a new autoneg, with the local advertisement changed. That might
+require changes in phylink, since it does not expect this sort of
+thing.
 
-Jorijn van der Graaf (2):
-  dt-bindings: net: nfc: samsung,s3fwrn5: add S3NRN4V and clk-req-gpios
-  nfc: s3fwrn5: support the S3NRN4V variant
+> @@ -5288,6 +5326,8 @@ static void rtl_remove_one(struct pci_dev *pdev)
+>  		r8169_remove_leds(tp->leds);
+>  
+>  	unregister_netdev(tp->dev);
+> +	if (tp->phylink)
+> +		phylink_destroy(tp->phylink);
 
- .../bindings/net/nfc/samsung,s3fwrn5.yaml     |  23 +++-
- drivers/nfc/s3fwrn5/core.c                    |  40 +++++-
- drivers/nfc/s3fwrn5/i2c.c                     | 114 ++++++++++++++++--
- drivers/nfc/s3fwrn5/nci.c                     | 111 ++++++++++++++++-
- drivers/nfc/s3fwrn5/nci.h                     |  32 ++++-
- drivers/nfc/s3fwrn5/s3fwrn5.h                 |  14 ++-
- drivers/nfc/s3fwrn5/uart.c                    |   2 +-
- 7 files changed, 321 insertions(+), 15 deletions(-)
 
-base-commit: 805185b7c7a1069e407b6f7b3bc98e44d415f484
--- 
-2.55.0
+I've not looked in detail, but is tp->phylink optional? I would expect
+the probe to fail if it could not create it.
 
+> +static int rtl_mac_enable_tx_lpi(struct phylink_config *config, u32 timer, bool tx_clk_stop)
+> +{
+> +	struct rtl8169_private *tp = container_of(config, struct rtl8169_private, phylink_config);
+> +
+> +	if (!rtl_supports_eee(tp))
+> +		return -EOPNOTSUPP;
+
+Can that happen? You should only be telling phylink EEE is supported
+if EEE is actually supported.
+
+> +static int rtl_init_phylink(struct rtl8169_private *tp)
+> +{
+> +	struct phylink *pl;
+> +	phy_interface_t phy_mode;
+> +
+> +	tp->phylink_config.dev = &tp->dev->dev;
+> +	tp->phylink_config.type = PHYLINK_NETDEV;
+> +	tp->phylink_config.mac_managed_pm = true;
+> +	tp->phylink_config.lpi_capabilities = rtl8169_get_lpi_caps(tp);
+> +	tp->phylink_config.mac_capabilities |= MAC_ASYM_PAUSE | MAC_SYM_PAUSE;
+> +
+> +	if (tp->sfp_mode) {
+> +		phy_mode = PHY_INTERFACE_MODE_INTERNAL;
+> +		tp->phylink_config.mac_capabilities |= MAC_10000FD;
+
+Only 10G? Is it not possible to slow down to 1G for a 1G SFP?
+
+	Andrew
