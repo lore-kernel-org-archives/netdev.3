@@ -1,98 +1,122 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1143E3B71A6;
-	Fri,  3 Jul 2026 10:58:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A44D43A7582
+	for <netdev@vger.kernel.org>; Fri,  3 Jul 2026 11:02:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783076330; cv=none; b=fICRNBwynurslbYzZAEnjXqjKZZ9L/BneX4tUF11JFn3P2EK4kNPbU6VZc2xJSkdAt7Z3P28sNB4PGy2P2uJUuhbOuASQg6OycY7jhXfcUIrkQRNvXXjRWK+P2utCR/JuBtnvvo7+b8jGsu68aqVCXK5vPEtaUoMs9r5oxfS/4Y=
+	t=1783076558; cv=none; b=K49ELEAYPqew59oNQWsHHavOz+tx4P8znu92zQysLzBmzJ0EEX6cgvF1GNfC5Dh8cHtCpZecwa12+mrfjzT8B81vsQ8KGmSbjv2vhFXo5phiS2k66WBYj4xyuiXZSMI+xBgzcKtVFU1epgh9TIZzD3qna31UrsnMseW74LxU4Yw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783076330; c=relaxed/simple;
-	bh=WKztYfUtYrSMu4Ej2zz70U0Lx8hwzhCWc55iHPpQtAc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vk/qyFvm1H78hRODyjH2FOCMZpXoKPUp0CB6Vng3VzxSJjUmzAgwlfCSS2iDG/c8+PJdhI0OzlD7/YU5dtG/faEd3sxJdTP+Uk1HPA0YWlEFtnQYa98G9zIyjAKv9cPHWl3ckY04ECRzRY8to+d733bmg6xuohYASyFn7OqqXC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DsECINif; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1783076558; c=relaxed/simple;
+	bh=TGEuF42PDykQ9EjGMEr2FOOzgezsc2JoIq5jewYchZI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=OOkIcTJA42UZPoq/nSm8Wo6XdrXbGeozX/hWGpYvUaEWEsBdP7OXW6uZNSHryyJ+6VDhqNMOo2VzZjD/toqlCWGWbhsGSMvSiXEUgepu7ITGjS3BGSaAXcUoG1GEj0uLhyTjjF4K+r89Ez+PWEIy+KKq6Y6bppvE5kTDUT2Svh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LCStCaPn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DsECINif"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783076328; x=1814612328;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=WKztYfUtYrSMu4Ej2zz70U0Lx8hwzhCWc55iHPpQtAc=;
-  b=DsECINifunT7K8/DR4ggd3j+Fkr+ph2NdC+q/d46T+AYBl59fmeELgxD
-   xZH9U3TNtjgjR17tmedc6j7VvLC6lrF+skzLvhAnOEbFvpxypRcrafmA2
-   9dFWL34KF0usQyDb4uR3mC2f9tGT3ltwPhok5/G+8CSuNNCRmOCeNjJwe
-   j9pEasOYK8Pjn11JvzcL8a3JmFtAPtU+vdeGgtouAIjiMVT2taijfTJky
-   9T7Ho7rEa8WGmTWtQF9lyOy4fH8I2fov2/rYlgnynKjPpzmOe2yRx5/7K
-   J3Jfn31QtaDsnMNiT9YQovwRLZSlOGqEUyiK2MipR6Ex4NrCVH8o8RuCL
-   A==;
-X-CSE-ConnectionGUID: KVEF5U+tQ9+lqyN6JH3Lgg==
-X-CSE-MsgGUID: U8eRDE2CTPC7FyNT/ppXHA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11835"; a="86377353"
-X-IronPort-AV: E=Sophos;i="6.25,145,1779174000"; 
-   d="scan'208";a="86377353"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2026 03:58:46 -0700
-X-CSE-ConnectionGUID: Zfja6slBTMGIuGRH8qgqkQ==
-X-CSE-MsgGUID: igGjEnQtTmS+eQHkuTQdkQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,145,1779174000"; 
-   d="scan'208";a="291228523"
-Received: from lkp-server02.sh.intel.com (HELO ea128546eb3d) ([10.239.97.151])
-  by orviesa001.jf.intel.com with ESMTP; 03 Jul 2026 03:58:42 -0700
-Received: from kbuild by ea128546eb3d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wfbbT-00000000C1n-0ERm;
-	Fri, 03 Jul 2026 10:58:39 +0000
-Date: Fri, 3 Jul 2026 18:58:35 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ren Wei <enjou1224z@gmail.com>, netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com
-Cc: oe-kbuild-all@lists.linux.dev, achender@kernel.org, davem@davemloft.net,
-	edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
-	andy.grover@oracle.com, yuantan098@gmail.com, yifanwucs@gmail.com,
-	tomapufckgml@gmail.com, zcliangcn@gmail.com,
-	dstsmallbird@foxmail.com, bronzed_45_vested@icloud.com,
-	enjou1224z@gmail.com
-Subject: Re: [PATCH net 1/1] net: rds: reject oversized TCP receive messages
-Message-ID: <202607031832.sftbLQWx-lkp@intel.com>
-References: <c83365078ea649d7ab2d9c198a445469bffb2550.1782850818.git.bronzed_45_vested@icloud.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LCStCaPn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C79C1F000E9;
+	Fri,  3 Jul 2026 11:02:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783076556;
+	bh=VWY2Crs2joWjAQwhRFf+Tu4H97AY31GvwuXuYsgMjIs=;
+	h=From:Date:Subject:To:Cc;
+	b=LCStCaPn43su3iXeUQzmDLqFuQZ4oM0kJD2nJAu3aU0wVEKqYwevTzcilprZaa6cr
+	 H3xX63A8ilzSfrH/+mjCbQZ48UmflToCkPX//KbVdJM22GnWJoPY4VSJ20ynhvHLE5
+	 pYBkH0LoFs6KlytUbhi7HqPqGKoUS1ah4eclgRroLt3i3LpPdRjdTP5cF4iwSTDBfj
+	 V8ofktig5E80kpRPUDiuOsZ6vaWt1I5yFMc3twWuFpkHUy0NTv09y44N5tYTj5fjBM
+	 WyE//yoFUu7gS2wfIlGgWIbibF3EqCmiO5Lvsxkv/JKJO0/y9RPqp/mDwP/Sk7E3OQ
+	 anBQVc9KC1Muw==
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+Date: Fri, 03 Jul 2026 13:02:17 +0200
+Subject: [PATCH net-next] net: airoha: add preliminary support to configure
+ tx hw QoS queue during flowtable offloading
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c83365078ea649d7ab2d9c198a445469bffb2550.1782850818.git.bronzed_45_vested@icloud.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260703-airoha-hw-qos-queue-stub-v1-1-ef253ffdd093@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQ7CIBBG4as0s3YSCsaKVzEuUP/KbMAyoE2a3
+ l3i8lu8t5GiCJQuw0YFH1HJqWM8DPSIIb3A8uwma+zJTMZxkJJj4PjlJSsvDQ2std3ZOz+NR+f
+ 8bM/U83fBLOt/faWEyglrpdu+/wAEbzSbdAAAAA==
+X-Change-ID: 20260703-airoha-hw-qos-queue-stub-939714339f28
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, netdev@vger.kernel.org, 
+ Lorenzo Bianconi <lorenzo@kernel.org>
+X-Mailer: b4 0.14.3
 
-Hi Ren,
+Add the plumbing to program the AIROHA_FOE_QID field in the PPE FOE
+entry with a per-flow priority value during flowtable offload. This
+allows the hardware to steer offloaded flows to a specific QoS queue
+on the egress QDMA block for traffic forwarded between two interfaces
+via hardware acceleration, bypassing the kernel forwarding path.
+The priority parameter is currently always zero because netfilter does
+not yet provide a mechanism to pass the skb priority field to the
+flowtable offload driver. Once that support is added in the netfilter
+subsystem, the driver will be able to extract the priority from the
+flow rule and map it to the appropriate hardware queue.
 
-kernel test robot noticed the following build errors:
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/ethernet/airoha/airoha_ppe.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-[auto build test ERROR on net/main]
+diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ethernet/airoha/airoha_ppe.c
+index e7c78293002a..fdb973fc779c 100644
+--- a/drivers/net/ethernet/airoha/airoha_ppe.c
++++ b/drivers/net/ethernet/airoha/airoha_ppe.c
+@@ -331,7 +331,7 @@ static int airoha_ppe_foe_entry_prepare(struct airoha_eth *eth,
+ 					struct airoha_foe_entry *hwe,
+ 					struct net_device *netdev, int type,
+ 					struct airoha_flow_data *data,
+-					int l4proto)
++					int l4proto, u8 priority)
+ {
+ 	u32 qdata = FIELD_PREP(AIROHA_FOE_SHAPER_ID, 0x7f), ports_pad, val;
+ 	int wlan_etype = -EINVAL, dsa_port = airoha_get_dsa_port(&netdev);
+@@ -386,7 +386,9 @@ static int airoha_ppe_foe_entry_prepare(struct airoha_eth *eth,
+ 			 */
+ 			channel = dsa_port >= 0 ? dsa_port : port->id;
+ 			channel = channel % AIROHA_NUM_QOS_CHANNELS;
+-			qdata |= FIELD_PREP(AIROHA_FOE_CHANNEL, channel);
++			priority = priority % AIROHA_NUM_QOS_QUEUES;
++			qdata |= FIELD_PREP(AIROHA_FOE_CHANNEL, channel) |
++				 FIELD_PREP(AIROHA_FOE_QID, priority);
+ 
+ 			val |= FIELD_PREP(AIROHA_FOE_IB2_PSE_PORT, pse_port) |
+ 			       AIROHA_FOE_IB2_PSE_QOS;
+@@ -1079,10 +1081,10 @@ static int airoha_ppe_flow_offload_replace(struct airoha_eth *eth,
+ 	struct airoha_flow_data data = {};
+ 	struct net_device *odev = NULL;
+ 	struct flow_action_entry *act;
++	u8 l4proto = 0, priority = 0;
+ 	struct airoha_foe_entry hwe;
+ 	int err, i, offload_type;
+ 	u16 addr_type = 0;
+-	u8 l4proto = 0;
+ 
+ 	if (rhashtable_lookup(&eth->flow_table, &f->cookie,
+ 			      airoha_flow_table_params))
+@@ -1177,7 +1179,7 @@ static int airoha_ppe_flow_offload_replace(struct airoha_eth *eth,
+ 		return -EINVAL;
+ 
+ 	err = airoha_ppe_foe_entry_prepare(eth, &hwe, odev, offload_type,
+-					   &data, l4proto);
++					   &data, l4proto, priority);
+ 	if (err)
+ 		return err;
+ 
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ren-Wei/net-rds-reject-oversized-TCP-receive-messages/20260703-135123
-base:   net/main
-patch link:    https://lore.kernel.org/r/c83365078ea649d7ab2d9c198a445469bffb2550.1782850818.git.bronzed_45_vested%40icloud.com
-patch subject: [PATCH net 1/1] net: rds: reject oversized TCP receive messages
-config: x86_64-buildonly-randconfig-006-20260703 (https://download.01.org/0day-ci/archive/20260703/202607031832.sftbLQWx-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260703/202607031832.sftbLQWx-lkp@intel.com/reproduce)
+---
+base-commit: 9507d09b2b8fc775652f5c5670028daa9d83a2bd
+change-id: 20260703-airoha-hw-qos-queue-stub-939714339f28
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202607031832.sftbLQWx-lkp@intel.com/
+Best regards,
+-- 
+Lorenzo Bianconi <lorenzo@kernel.org>
 
-All errors (new ones prefixed by >>, old ones prefixed by <<):
-
->> ERROR: modpost: "__rds_conn_path_error" [net/rds/rds_tcp.ko] undefined!
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
