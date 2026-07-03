@@ -1,81 +1,81 @@
 Received: from rcdn-iport-8.cisco.com (rcdn-iport-8.cisco.com [173.37.86.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A9F247291;
-	Fri,  3 Jul 2026 18:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 020CB31353C;
+	Fri,  3 Jul 2026 18:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.37.86.79
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783102165; cv=none; b=SQuUG3j/0rj4rtvGg9rMrrsq4D8hq9egCPZAg+neQrhhXjVGDyluOPmttK5WgNFGcJOyxskF22Qoin+376ylZJYylKUWQqZtst0LbDx1qm8Us8EFNUjQIMaCfVt41OJLSWZtbIWU0qnvPiQaRJk48VQBWMgyUjg2QDKluvGaIhk=
+	t=1783102167; cv=none; b=iO24B9FEufs9QoW8+BK8GlgBbeO2NYtm61CarJK5Aa1aZBYL6OhjKLkd/F/JxkWOwK8ZhdPX9ZZRfjAuC2b+6SPkYM2A5C9Yp3l0nuVmGW3O7+j9wJNlsZAoXKHBW3LIbLYCpAOymU4FRB5VZTOTxQTPuWuoYivEMt2KtldmMcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783102165; c=relaxed/simple;
-	bh=UVy3/H0RMuEKNl5Vs6NEqyAwXoJIsI4AzdpjTFTi9yQ=;
+	s=arc-20240116; t=1783102167; c=relaxed/simple;
+	bh=FdWRKYYtk0FuUUegGgtNhjQIkPVlYiHEZ4/j6/h3dCk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=jgvSuO76JfHxqJKVN6l3J948qvmx+3wx5Xv2pWJssxiaMgwAbn5c/291svuXGGnehM2/608FxqEqKzAKlcq8wbWZDDXRRvU7vhWoqQd5WaGOWAxe4BvpcdUcxH569N5ZiGvdx4zijhV1mPpB96ye30IRqnBk0Nr3egfY4MSDZ6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b=RPZFUpkt; arc=none smtp.client-ip=173.37.86.79
+	 In-Reply-To:To:Cc; b=Pj91er26SsGaBVPhLWCZEADAjQskNViM1bIbWJ16uKI8puX7/bsZ3zYU8s/azscr1hapRj0t3YfP9mmDiR6ohTZXnaNgjUXxsI0Iw0mE9LgU+9xB0VsWh+7mzAWSYwMBlGGebeqONfE66CZGESWJLNDesXaQXfL/5A/K13OX9dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b=MpkZQ+AT; arc=none smtp.client-ip=173.37.86.79
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b="RPZFUpkt"
+	dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b="MpkZQ+AT"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=cisco.com; i=@cisco.com; l=8939; q=dns/txt;
-  s=iport01; t=1783102164; x=1784311764;
+  d=cisco.com; i=@cisco.com; l=6579; q=dns/txt;
+  s=iport01; t=1783102166; x=1784311766;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=CXMacmSzG4Vh/h4v1BbunYRM6XQpMQSp/sageLt5vm4=;
-  b=RPZFUpktKyBNlpsRUp32JfqNFKDlaltF3cNsR+NFcgxYwvvvA6buQmNf
-   cRSRQHeZQDiFwpNUXbo2mGJ2ueO1Gc7hPj30KyLceN93vM+COfM0rOGJ+
-   aRJn4YlpVjxgSqA307bQ3brWS9qMSK9K7DfHEUXD1OtyHeMBQtZAKltLd
-   x7hpz/IKTWC7tGL0auqO5iO6Xf9xXCV16L9ro/F+8GZPLMVuJ1yD1rais
-   wMspo/IAquZ6f+qsTyjWDKww2FlKXqBBWkLnplr3hv21ULkPpzMP/PGZZ
-   K5LzGfo3rS4TItyFI3drb4X7QrFVPPsSJTYzm6LMSzZJSkXNbwhBJ50vj
-   Q==;
-X-CSE-ConnectionGUID: lRJ2xc+iSjCESqgG5jRG2w==
-X-CSE-MsgGUID: 2p9p1DqSSWW/ZrTX5M/F8Q==
-X-IPAS-Result: =?us-ascii?q?A0BHAgBN+kdq/5P/Ja1aglmCV4FSQ0mEV49TgiGRTYxRF?=
- =?us-ascii?q?IFqDwEBAQ9RBAEBhQYCjUsCJjQJDgECBAMCAwEBAQEBAQEBAQEBCwEBBQEBA?=
- =?us-ascii?q?QIBBwWBDhOGXIZbAgEDIwQLATQSECUCJgICRhAGARKDAoJ0A7wKen8zgQGEf?=
- =?us-ascii?q?dlGgWYBCxQBgQouhXGCagGBcIQGO4RBJxuBSUSBFYNphAUag3+CagSDHBKCS?=
- =?us-ascii?q?I5XCT+BAhwDWSwBVRMNCgsHBWFSMwMgCgsSEhgVAhQcEw8EFjIdcAwQFxIsF?=
- =?us-ascii?q?zRYGwcFgR2BFTEEIYEEhHkjHwM5f4EwdUp5M4ECARIeCoFSgSYDCxgNSBEsN?=
- =?us-ascii?q?wYOGwQ9AW4HjQAXD4FMagc9DjAUQjkxAXsFMJMLHYN+jkqBNZ9ahCeBZqAPA?=
- =?us-ascii?q?TKXZ4xVhjCZCCOjTBJZhGiBaDyBWTMaCBsVgyJTGQ+OLRYc0h4nMj0CBwIHD?=
- =?us-ascii?q?gMLkXmBbAEB?=
-IronPort-Data: A9a23:RL/qWaBTHKHmmRVW/+niw5YqxClBgxIJ4kV8jS/XYbTApDok1zMAn
- 2EdCmqBMvuLNGf8edonaN+/9UoAu8PQyoNiOVdlrnsFo1CmBibm6XV1Cm+qYkt+++WaFBoPA
- /02M4eGdIZvCCeA+n9BC5C5xVFkz6aEW7HgP+DNPyF1VGdMRTwo4f5Zs7ZRbrVA357jXmthh
- fuo+5eBYAD9gGYuWo4pw/vrRC1H7ayaVAww5jTSVdgT1HfCmn8cCo4oJK3ZBxPQXolOE+emc
- P3Ixbe/83mx109F5gSNy+uTnuUiG9Y+DCDW4pZkc/HKbitq+kTe5p0G2M80Mi+7vdkmc+dZk
- 72hvbToIesg0zaldO41C3G0GAkmVUFKFSOuzXWX6aSuI0P6n3TEx89MVlE9fowj+M1aOnhB2
- qEaEh9XcUXW7w626OrTpuhEnM8vKozveYgYoHwllGmfBvc9SpeFSKLPjTNa9G5v3YYVQrCEO
- pdfMGYwBPjDS0Un1lM/E5sinfyohXnXeDxDo1XTrq0yi4TW5FAgjuGwYIaIKrRmQ+0PhheA/
- 07fxF/GPVYoLuCvlB/C3CKV07qncSTTHdh6+KeD3vJjnlCW7mAaFhATUVy1vb+/h1LWc99TN
- kkd6Ccyhac180OvQ5/2WBjQiH2ZtBc0WNdKFeA+rgaXxcL86gCVHGUbDThMdNArqucyWDosk
- FSJ9/vxDDZitry9U3+R9r6I6zi1PEA9KW4EeD9BTgYf5dTniJ88gwiJTdt5FqOxyNrvFlnYx
- T2WoCUgr6scgNRN1Kih+13DxTW2qfD0ohUd/A7bWCehqwh+foPgPtTu4lnA5vEGJ4GcJrWcg
- EU5dwGlxLhmJfmweOalGo3hwJnBCy65DQDh
-IronPort-HdrOrdr: A9a23:rueWs65D+HBORn7TDwPXwD7XdLJyesId70hD6qm+c20wTiX+ra
- GTdZUguyMc5wx9ZJhNo7q90ey7MBHhHP1OjrX5Q43DYOCOggLBR72Kr7GSoAEIcBeTygcy79
- YET4FOTPD9ElR+i9/3+02bH8ZI+qj/zImYwcrT0HtpSxhncOVb7wl/AhuGCUEefnghOXNALu
- v62uN34xy9ZH8QcsO3QlMBX+TFupn3saiOW29/O/bigzP+9w9BL9XBYmOl4is=
-X-Talos-CUID: =?us-ascii?q?9a23=3A/2eS2GpcM4v8ReMV4U0zScnmUcQfUCfNxzTRGE2?=
- =?us-ascii?q?TJF1wR5LIS2W/orwxxg=3D=3D?=
-X-Talos-MUID: =?us-ascii?q?9a23=3ABzz/rw7zRF5ysAy6jtYrmzymxowy+/W2UWwUqq4?=
- =?us-ascii?q?5hI62LxBAZhLaomSOF9o=3D?=
+  bh=r7xz+wdOM2LeRCY3jPvIhQ2Pkga6rs6A23prvlcG3s0=;
+  b=MpkZQ+ATSNQqfyV+abRIqZWzaArwfkpM8qM7GahorrlLpVYFbfiVXWgY
+   njzaLiy/nC4fETAQidX+cQ0vxLwvY6PDI2H8IVcT5vrU6w7VM7IBe/ybK
+   vnPxHGg1h/muHZpitQo6xto/86XYTZmW+9ti373wF9bky5Ne914wv2lI3
+   vOvgALdLc3mpAzK/NY49+iMGUnOAy605cgSwqLpfqC4FcUPnPdXCI8hz4
+   5KtCH2WvemW9WR2piYgQPmPrQJYCbat1V+XqStfEzm7osE6K+5FkPenbs
+   Npeqni0O5ez7nG3mY5o07z47zPFXvoqIxSqYsxi/PcKNsR6IV7fp7FC+U
+   w==;
+X-CSE-ConnectionGUID: nY9JYPKWS0ChhHmyS1lI7Q==
+X-CSE-MsgGUID: uqAkR2pjTrGr2m464X2gWg==
+X-IPAS-Result: =?us-ascii?q?A0D8AgBN+kdq/5P/Ja1aHgEBCxIMggULgleBUkNJhFePU?=
+ =?us-ascii?q?4Ihnh4UgWoPAQEBD1EEAQGFBgKNSwImNgcOAQIEAwIDAQEBAQEBAQEBAQELA?=
+ =?us-ascii?q?QEFAQEBAgEHBYEOE4ZchlsCAQMjBFIQJQImAgJGEAYBEoMCgnQDvAp6fzOBA?=
+ =?us-ascii?q?d5DgWYBCxQBgQouhXGCagGBcIQGO4RBJxuBSUSBFYNphCqDdIJqBIMcEpEfC?=
+ =?us-ascii?q?T+BAhwDWSwBVRMNCgsHBWFSMwMgCgsSEhgVAhQcEw8EFjIdcAwnEiwXNFgbB?=
+ =?us-ascii?q?wWBHYEVMQQhgQSEeSMfAzl/gTB1SnkzgQIBEh4KgVKBJgMLGA1IESw3Bg4bB?=
+ =?us-ascii?q?D0BbgeNABcPgUxxATwdNBRoMw6BZh+SRBGDbY1fa4E1n1qEJ4FmoA8BMpdnk?=
+ =?us-ascii?q?wWZCCOkN4RogW8GL4FZMxoIGxWDIlMZD44tFhzSHicyPQEBBwIHDgMLgWiRf?=
+ =?us-ascii?q?QEB?=
+IronPort-Data: A9a23:ecjbWaLOMalAsxSKFE+REZQlxSXFcZb7ZxGr2PjKsXjdYENS3mBSz
+ 2AZUDvQaK6IazH9et0kPYi/9RhSscTXzYVhSlYd+CA2RRqmiyZq6fd1j6vUF3nPRiEWZBs/t
+ 63yUvGZcoZsCCSa/kvxWlTYhSEU/bmSQbbhA/LzNCl0RAt1IA8skhsLd9QR2uaEuvDnRVnQ0
+ T/Oi5eHYgH9hGYvajh8B5+r8XuDgtyj4Fv0gXRmDRx7lAe2v2UYCpsZOZawIxPQKqFIHvS3T
+ vr017qw+GXU5X8FUrtJRZ6iLyXm6paLVeS/oiI+t5qK23CulQRuukoPD8fwXG8M49m/c3+d/
+ /0W3XC4YV9B0qQhA43xWTEAe811FfUuFLMqvRFTvOTLp3AqfUcAzN1oPRAUDLU7xd0vKmFO1
+ fkJE2kJT0+60rfeLLKTEoGAh+w5J8XteYdasXZ6wHSAVbAtQIvIROPB4towMDUY358VW62BI
+ ZBENHw2MEuojx5nYj/7DLollfupnXn8cxVTqUmeouw85G27IAlZjOmzaYeFJ4TXLSlTtluBj
+ 2H8pXz7Pgs1LoaalWTZwiijueCayEsXX6pXTtVU7MVCjFSNy2k7BBQIWF6/pvelzEizR7p3J
+ kAJ/yM8oLQa+0usQd3wGRa/pRasvQMWUvJTHvc85QXLzbDbiy6QAGQeQyECbtE6uMIobTg30
+ FnPlNOBLSRmurCTSFqH+7uUpC/0Mi8QRUcGZCkZXU4G7sPlrYUbkB3CVJBgHbSzg9mzHiv/q
+ xiMoTQyiqs7k8EGzeO48ErBjjbqoYLGJjPZ/S3NVW6jqwc8b4m/asnxsR7Q7O1LK8CSSVzpU
+ GU4pvVyJdsmVfml/BFhis1SdF11z55p6AHhvGM=
+IronPort-HdrOrdr: A9a23:9laY2aABb8m4qEPlHela55DYdb4zR+YMi2TDGXoBLSC9Ffb4qy
+ nOppomPHDP5Qr5NEtLpTnEAtjjfZq+z/FICPcqXYtKNTOO0ACVxcNZnOjfKlbbdxEWmNQtsJ
+ tIQuxSBML9CF5igd2/wgWpeuxQueWvweSEifjTynF1QRovUaFv6A9lFh2We3cGIjWufaBJc6
+ a0145guyeqf2gRY4CQA3kIWPWGmvjw/aiWGSLvw3UcmXOzZfTC0s+ALySl
+X-Talos-CUID: =?us-ascii?q?9a23=3AdGNzP2hs8xvOfr3WE3c2treZqTJudEyM7kboAHC?=
+ =?us-ascii?q?DUU1pSJ2QWGTJ/II7qp87?=
+X-Talos-MUID: =?us-ascii?q?9a23=3A5hrTbg6s99Yoa+w4bTKEXHGCxox1+o2tMhoVk6k?=
+ =?us-ascii?q?clNPeMHAuZwfHgwu4F9o=3D?=
 X-IronPort-Anti-Spam-Filtered: true
 X-IronPort-AV: E=Sophos;i="6.25,145,1779148800"; 
-   d="scan'208";a="496158458"
+   d="scan'208";a="496158505"
 Received: from rcdn-l-core-10.cisco.com ([173.37.255.147])
-  by rcdn-iport-8.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 03 Jul 2026 18:09:01 +0000
+  by rcdn-iport-8.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 03 Jul 2026 18:09:04 +0000
 Received: from [127.0.0.1] (unknown [10.25.130.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by rcdn-l-core-10.cisco.com (Postfix) with ESMTPS id C1A76180008AC;
-	Fri,  3 Jul 2026 18:09:00 +0000 (GMT)
+	by rcdn-l-core-10.cisco.com (Postfix) with ESMTPS id E550F180008AC;
+	Fri,  3 Jul 2026 18:09:03 +0000 (GMT)
 From: Satish Kharat <satishkh@cisco.com>
-Date: Fri, 03 Jul 2026 11:08:57 -0700
-Subject: [PATCH net-next v11 08/12] enic: add MBOX PF handlers for VF
- register and capability
+Date: Fri, 03 Jul 2026 11:09:01 -0700
+Subject: [PATCH net-next v11 12/12] enic: re-establish V2 VF admin channel
+ and PF registration after reset
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,8 +83,8 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260703-enic-sriov-v2-admin-channel-v2-v11-8-5b739f1fe9e5@cisco.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260703-enic-sriov-v2-admin-channel-v2-v11-12-5b739f1fe9e5@cisco.com>
 References: <20260703-enic-sriov-v2-admin-channel-v2-v11-0-5b739f1fe9e5@cisco.com>
 In-Reply-To: <20260703-enic-sriov-v2-admin-channel-v2-v11-0-5b739f1fe9e5@cisco.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -93,298 +93,184 @@ To: Andrew Lunn <andrew+netdev@lunn.ch>,
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Sesidhar Baddela <sebaddel@cisco.com>, Satish Kharat <satishkh@cisco.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783102134; l=9297;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783102134; l=6769;
  i=satishkh@cisco.com; h=from:subject:message-id;
- bh=UVy3/H0RMuEKNl5Vs6NEqyAwXoJIsI4AzdpjTFTi9yQ=;
- b=q68ELivdQNSx6vA1PGeAM7J1wjuKxCjS+bBO1IHfmqjDbUyKwZmDIT1O2HsOZwXa6l7+S2Wxd
- 0dELI8fWD6XBs2V6a1iewxhqoaIX7x013Z5zn5/Dtp+tGXClXytaUDt
+ bh=FdWRKYYtk0FuUUegGgtNhjQIkPVlYiHEZ4/j6/h3dCk=;
+ b=pbzGV22FbyLgzcmY+XKE3XVzVCXGp453SNRyaBsYGhUj1t0i0Zjn3/uvqGDHBP9hF4yKW5oVq
+ APiI7xZCH5TAI+X79NX6n17d+1S/ey3MpxX8GB5jPTEUqp43Dkk6kpr
 X-Developer-Key: i=satishkh@cisco.com; a=ed25519;
  pk=4BxbLoCGvHeIMH/PbpiNVx8/2IcTjFvqcr0AD8K6WLY=
 X-Outbound-Client-TLS: ANONYMOUS;unknown [10.25.130.254];TLSv1.3;TLS_AES_256_GCM_SHA384;256
 X-Outbound-SMTP-Client: 10.25.130.254, [10.25.130.254]
 X-Outbound-Node: rcdn-l-core-10.cisco.com
 
-Implement PF-side mailbox message processing for SR-IOV V2
-admin channel communication.
+The reset paths (enic_reset/enic_tx_hang_reset) tore down and re-opened
+the V2 admin/MBOX channel only for the PF: the close/reopen was gated on
+enic_sriov_enabled() && vf_type == ENIC_VF_TYPE_V2, which is never true on
+a VF (vf_type is set only on the PF; VFs are identified by
+enic_is_sriov_vf_v2()).  A VF-initiated reset therefore left the VF admin
+QP wiped by the reset but never re-opened, and the VF never re-registered
+with the PF, so VF<->PF MBOX traffic (link state, MAC, packet filter)
+stopped working until the VF was re-probed.
 
-When the PF receives messages from VFs, the dispatch routes
-them to type-specific handlers:
-  - VF_CAPABILITY_REQUEST: reply with protocol version 1
-  - VF_REGISTER_REQUEST: send the register reply, mark the
-    VF registered on success, then send PF_LINK_STATE_NOTIF
-    reflecting the PF's current carrier state
-  - VF_UNREGISTER_REQUEST: mark VF unregistered, send reply
-  - PF_LINK_STATE_ACK: log errors from VF acknowledgment
-
-Per-VF state (struct enic_vf_state) is tracked via enic->vf_state
-which will be allocated when SRIOV V2 is enabled.
-
-Remove the CONFIG_PCI_IOV guard from num_vfs in struct enic. The
-PF handlers reference enic->num_vfs for VF ID bounds checking in
-enic_mbox.c, which is compiled unconditionally. The field must be
-visible regardless of CONFIG_PCI_IOV to avoid build failures.
-
-Add enic_mbox_send_link_state() helper for PF-initiated link
-state notifications, also used later by ndo_set_vf_link_state.
+Factor the decision into enic_has_admin_chan() (true for a V2 PF while
+SR-IOV is enabled and for every V2 VF) and the reopen sequence into
+enic_admin_chan_reopen().  For a VF the helper additionally re-runs the
+probe-time handshake (enic_mbox_vf_capability_check() +
+enic_mbox_vf_register()) so the PF learns about the VF again; for a PF it
+re-pushes the current link state as before.
 
 Signed-off-by: Satish Kharat <satishkh@cisco.com>
 ---
- drivers/net/ethernet/cisco/enic/enic.h      |   7 +-
- drivers/net/ethernet/cisco/enic/enic_mbox.c | 190 +++++++++++++++++++++++++++-
- drivers/net/ethernet/cisco/enic/enic_mbox.h |   1 +
- 3 files changed, 194 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/cisco/enic/enic_main.c | 105 +++++++++++++++++-----------
+ 1 file changed, 65 insertions(+), 40 deletions(-)
 
-diff --git a/drivers/net/ethernet/cisco/enic/enic.h b/drivers/net/ethernet/cisco/enic/enic.h
-index b009d87da4bd..d459318c46fc 100644
---- a/drivers/net/ethernet/cisco/enic/enic.h
-+++ b/drivers/net/ethernet/cisco/enic/enic.h
-@@ -256,9 +256,7 @@ struct enic {
- 	struct enic_rx_coal rx_coalesce_setting;
- 	u32 rx_coalesce_usecs;
- 	u32 tx_coalesce_usecs;
--#ifdef CONFIG_PCI_IOV
- 	u16 num_vfs;
--#endif
- 	enum enic_vf_type vf_type;
- 	unsigned int enable_count;
- 	spinlock_t enic_api_lock;
-@@ -315,6 +313,11 @@ struct enic {
- 	/* MBOX protocol state — mbox_lock serializes admin WQ sends */
- 	struct mutex mbox_lock;
- 	u64 mbox_msg_num;
-+
-+	/* PF: per-VF MBOX state, allocated when SRIOV V2 is enabled */
-+	struct enic_vf_state {
-+		bool registered;
-+	} *vf_state;
- };
- 
- static inline struct net_device *vnic_get_netdev(struct vnic_dev *vdev)
-diff --git a/drivers/net/ethernet/cisco/enic/enic_mbox.c b/drivers/net/ethernet/cisco/enic/enic_mbox.c
-index 3709704bee02..b6f05b03ae26 100644
---- a/drivers/net/ethernet/cisco/enic/enic_mbox.c
-+++ b/drivers/net/ethernet/cisco/enic/enic_mbox.c
-@@ -135,10 +135,183 @@ int enic_mbox_send_msg(struct enic *enic, u8 msg_type, u16 dst_vnic_id,
- 	return err;
+diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
+index 99c06a049800..be3ae0a57af3 100644
+--- a/drivers/net/ethernet/cisco/enic/enic_main.c
++++ b/drivers/net/ethernet/cisco/enic/enic_main.c
+@@ -2171,6 +2171,57 @@ static void enic_set_api_busy(struct enic *enic, bool busy)
+ 	spin_unlock(&enic->enic_api_lock);
  }
  
-+int enic_mbox_send_link_state(struct enic *enic, u16 vf_id, u32 link_state)
++/* The admin/MBOX channel exists on a V2 PF while SR-IOV is enabled and on
++ * every V2 VF.  A reset wipes the admin WQ/RQ/CQ, so such devices must tear
++ * the channel down before the reset and re-establish it afterwards.
++ */
++static bool enic_has_admin_chan(struct enic *enic)
 +{
-+	struct enic_mbox_pf_link_state_notif_msg notif = {};
-+
-+	if (!enic->vf_state || vf_id >= enic->num_vfs ||
-+	    !enic->vf_state[vf_id].registered) {
-+		netdev_dbg(enic->netdev,
-+			   "MBOX: skip link state to unregistered VF %u\n",
-+			   vf_id);
-+		return 0;
-+	}
-+
-+	notif.link_state = cpu_to_le32(link_state);
-+	return enic_mbox_send_msg(enic, ENIC_MBOX_PF_LINK_STATE_NOTIF, vf_id,
-+				  &notif, sizeof(notif));
++	return enic_is_sriov_vf_v2(enic) ||
++	       (enic_sriov_enabled(enic) && enic->vf_type == ENIC_VF_TYPE_V2);
 +}
 +
-+static int enic_mbox_pf_handle_capability(struct enic *enic, void *msg,
-+					  u16 vf_id, u64 msg_num)
++/* Re-establish the admin/MBOX channel after a reset has re-created the data
++ * path.  Mirrors the relevant part of the probe / SR-IOV-enable sequence:
++ * reopen the channel and reinitialise MBOX, then for a VF re-run the PF
++ * handshake (its admin QP and PF-side registration were torn down by the
++ * reset), or for a PF re-push the current link state to registered VFs.
++ */
++static void enic_admin_chan_reopen(struct enic *enic)
 +{
-+	struct enic_mbox_vf_capability_reply_msg reply = {};
-+
-+	reply.reply.ret_major = cpu_to_le16(0);
-+	reply.version = cpu_to_le32(ENIC_MBOX_CAP_VERSION_1);
-+
-+	return enic_mbox_send_msg(enic, ENIC_MBOX_VF_CAPABILITY_REPLY, vf_id,
-+				  &reply, sizeof(reply));
-+}
-+
-+static int enic_mbox_pf_handle_register(struct enic *enic, void *msg,
-+					u16 vf_id, u64 msg_num)
-+{
-+	struct enic_mbox_vf_register_reply_msg reply = {};
-+	u32 link_state;
 +	int err;
 +
-+	if (!enic->vf_state || vf_id >= enic->num_vfs) {
-+		if (net_ratelimit())
-+			netdev_warn(enic->netdev,
-+				    "MBOX: register from invalid VF %u\n",
-+				    vf_id);
-+		return -EINVAL;
-+	}
-+
-+	/* VF re-registering (e.g. guest reboot without clean unregister):
-+	 * mark the previous registration inactive before accepting the new one.
-+	 */
-+	if (enic->vf_state[vf_id].registered) {
-+		netdev_dbg(enic->netdev,
-+			   "MBOX: VF %u re-register, cleaning previous state\n",
-+			   vf_id);
-+		enic->vf_state[vf_id].registered = false;
-+	}
-+
-+	reply.reply.ret_major = cpu_to_le16(0);
-+	err = enic_mbox_send_msg(enic, ENIC_MBOX_VF_REGISTER_REPLY, vf_id,
-+				 &reply, sizeof(reply));
-+	if (err)
-+		return err;
-+
-+	enic->vf_state[vf_id].registered = true;
-+	if (net_ratelimit())
-+		netdev_info(enic->netdev, "VF %u registered via MBOX\n", vf_id);
-+
-+	link_state = netif_carrier_ok(enic->netdev) ?
-+		ENIC_MBOX_LINK_STATE_ENABLE :
-+		ENIC_MBOX_LINK_STATE_DISABLE;
-+	err = enic_mbox_send_link_state(enic, vf_id, link_state);
-+	if (err && net_ratelimit())
-+		netdev_warn(enic->netdev,
-+			    "VF %u: failed to send initial link state: %d\n",
-+			    vf_id, err);
-+	/* Registration succeeded; initial link state notification sent
-+	 * above.  Subsequent link state changes are sent from the PF
-+	 * when enic_link_check() detects carrier changes.
-+	 */
-+	return 0;
-+}
-+
-+static int enic_mbox_pf_handle_unregister(struct enic *enic, void *msg,
-+					  u16 vf_id, u64 msg_num)
-+{
-+	struct enic_mbox_vf_register_reply_msg reply = {};
-+	int err;
-+
-+	if (!enic->vf_state || vf_id >= enic->num_vfs) {
-+		if (net_ratelimit())
-+			netdev_warn(enic->netdev,
-+				    "MBOX: unregister from invalid VF %u\n",
-+				    vf_id);
-+		return -EINVAL;
-+	}
-+
-+	/* VF is unloading; clear local state regardless of whether
-+	 * the reply is successfully delivered to avoid the PF treating
-+	 * a dead VF as still registered.
-+	 */
-+	enic->vf_state[vf_id].registered = false;
-+
-+	reply.reply.ret_major = cpu_to_le16(0);
-+	err = enic_mbox_send_msg(enic, ENIC_MBOX_VF_UNREGISTER_REPLY, vf_id,
-+				 &reply, sizeof(reply));
-+
-+	if (net_ratelimit())
-+		netdev_info(enic->netdev,
-+			    "VF %u unregistered via MBOX\n", vf_id);
-+
-+	return err;
-+}
-+
-+static void enic_mbox_pf_process_msg(struct enic *enic,
-+				     struct enic_mbox_hdr *hdr, void *payload)
-+{
-+	u16 vf_id = le16_to_cpu(hdr->src_vnic_id);
-+	u16 msg_len = le16_to_cpu(hdr->msg_len);
-+	int err = 0;
-+
-+	if (!enic->vf_state) {
-+		netdev_dbg(enic->netdev,
-+			   "MBOX: PF received msg but SRIOV not active\n");
++	err = enic_admin_channel_open(enic);
++	if (err) {
++		netdev_err(enic->netdev,
++			   "admin channel reopen after reset failed: %d\n", err);
 +		return;
 +	}
 +
-+	if (vf_id >= enic->num_vfs) {
-+		if (net_ratelimit())
-+			netdev_warn(enic->netdev,
-+				    "MBOX: PF received msg from invalid VF %u\n",
-+				    vf_id);
-+		return;
-+	}
++	enic_mbox_init(enic);
 +
-+	switch (hdr->msg_type) {
-+	case ENIC_MBOX_VF_CAPABILITY_REQUEST:
-+		err = enic_mbox_pf_handle_capability(enic, payload, vf_id,
-+						     le64_to_cpu(hdr->msg_num));
-+		break;
-+	case ENIC_MBOX_VF_REGISTER_REQUEST:
-+		err = enic_mbox_pf_handle_register(enic, payload, vf_id,
-+						   le64_to_cpu(hdr->msg_num));
-+		break;
-+	case ENIC_MBOX_VF_UNREGISTER_REQUEST:
-+		err = enic_mbox_pf_handle_unregister(enic, payload, vf_id,
-+						     le64_to_cpu(hdr->msg_num));
-+		break;
-+	case ENIC_MBOX_PF_LINK_STATE_ACK: {
-+		struct enic_mbox_pf_link_state_ack_msg *ack = payload;
-+
-+		if (msg_len < sizeof(*hdr) + sizeof(*ack))
-+			break;
-+		if (le16_to_cpu(ack->ack.ret_major) && net_ratelimit())
-+			netdev_warn(enic->netdev,
-+				    "MBOX: VF %u link state ACK error %u/%u\n",
-+				    vf_id,
-+				    le16_to_cpu(ack->ack.ret_major),
-+				    le16_to_cpu(ack->ack.ret_minor));
-+		break;
++	if (enic_is_sriov_vf_v2(enic)) {
++		err = enic_mbox_vf_capability_check(enic);
++		if (err) {
++			netdev_err(enic->netdev,
++				   "MBOX capability check after reset failed: %d\n",
++				   err);
++			return;
++		}
++		err = enic_mbox_vf_register(enic);
++		if (err)
++			netdev_err(enic->netdev,
++				   "MBOX VF re-registration after reset failed: %d\n",
++				   err);
++	} else {
++		/* The link came back up during enic_open() above while MBOX
++		 * sends were still disabled (channel not yet reopened), so that
++		 * link-notify was dropped.  Re-push current link state now.
++		 */
++		schedule_work(&enic->link_notify_work);
 +	}
-+	default:
-+		netdev_dbg(enic->netdev,
-+			   "MBOX: PF unhandled msg type %u from VF %u\n",
-+			   hdr->msg_type, vf_id);
-+		err = -EOPNOTSUPP;
-+		break;
-+	}
-+
-+	if (err && net_ratelimit())
-+		netdev_warn(enic->netdev,
-+			    "MBOX: PF handler for msg type %u from VF %u failed: %d\n",
-+			    hdr->msg_type, vf_id, err);
 +}
 +
- static void enic_mbox_recv_handler(struct enic *enic, void *buf,
- 				   unsigned int len)
+ static void enic_reset(struct work_struct *work)
  {
- 	struct enic_mbox_hdr *hdr = buf;
-+	void *payload;
-+	u16 msg_len;
+ 	struct enic *enic = container_of(work, struct enic, reset);
+@@ -2189,8 +2240,7 @@ static void enic_reset(struct work_struct *work)
+ 	 * DMAs from the about-to-be-reset rings) and frees the admin resources
+ 	 * so they are cleanly re-allocated afterwards.
+ 	 */
+-	if (enic_sriov_enabled(enic) &&
+-	    enic->vf_type == ENIC_VF_TYPE_V2)
++	if (enic_has_admin_chan(enic))
+ 		enic_admin_channel_close(enic);
  
- 	if (len < sizeof(*hdr)) {
- 		if (net_ratelimit())
-@@ -156,10 +329,23 @@ static void enic_mbox_recv_handler(struct enic *enic, void *buf,
- 		return;
- 	}
+ 	enic_stop(enic->netdev);
+@@ -2204,25 +2254,13 @@ static void enic_reset(struct work_struct *work)
  
-+	msg_len = le16_to_cpu(hdr->msg_len);
-+	if (msg_len < sizeof(*hdr) || msg_len > len) {
-+		if (net_ratelimit())
-+			netdev_warn(enic->netdev,
-+				    "MBOX: invalid msg_len %u (buf len %u)\n",
-+				    msg_len, len);
-+		return;
-+	}
-+
- 	netdev_dbg(enic->netdev,
- 		   "MBOX recv: type %u from vnic %u len %u\n",
--		   hdr->msg_type, le16_to_cpu(hdr->src_vnic_id),
--		   le16_to_cpu(hdr->msg_len));
-+		   hdr->msg_type, le16_to_cpu(hdr->src_vnic_id), msg_len);
-+
-+	payload = buf + sizeof(*hdr);
-+
-+	if (enic->vf_state)
-+		enic_mbox_pf_process_msg(enic, hdr, payload);
- }
+ 	enic_open(enic->netdev);
  
- void enic_mbox_init(struct enic *enic)
-diff --git a/drivers/net/ethernet/cisco/enic/enic_mbox.h b/drivers/net/ethernet/cisco/enic/enic_mbox.h
-index 73fd7f783ee2..f1de67db1273 100644
---- a/drivers/net/ethernet/cisco/enic/enic_mbox.h
-+++ b/drivers/net/ethernet/cisco/enic/enic_mbox.h
-@@ -87,5 +87,6 @@ struct enic;
- void enic_mbox_init(struct enic *enic);
- int enic_mbox_send_msg(struct enic *enic, u8 msg_type, u16 dst_vnic_id,
- 		       void *payload, u16 payload_len);
-+int enic_mbox_send_link_state(struct enic *enic, u16 vf_id, u32 link_state);
+-	/* Re-establish the admin/MBOX channel after the data path is back up,
+-	 * mirroring the SR-IOV enable path (channel open + mbox init).  The
+-	 * channel was fully torn down by enic_admin_channel_close() above.
++	/* Re-establish the admin/MBOX channel after the data path is back up.
++	 * It was fully torn down by enic_admin_channel_close() above;
++	 * enic_admin_chan_reopen() reopens it and, for a PF re-pushes link
++	 * state, or for a VF re-runs the probe-time PF handshake.
+ 	 */
+-	if (enic_sriov_enabled(enic) &&
+-	    enic->vf_type == ENIC_VF_TYPE_V2) {
+-		if (enic_admin_channel_open(enic)) {
+-			netdev_err(enic->netdev,
+-				   "admin channel reopen after reset failed\n");
+-		} else {
+-			enic_mbox_init(enic);
+-			/* The link came back up during enic_open() above
+-			 * while MBOX sends were still disabled (channel not
+-			 * yet reopened), so that link-notify was dropped.
+-			 * Re-push current link state to registered VFs now.
+-			 */
+-			schedule_work(&enic->link_notify_work);
+-		}
+-	}
++	if (enic_has_admin_chan(enic))
++		enic_admin_chan_reopen(enic);
  
- #endif /* _ENIC_MBOX_H_ */
+ 	/* Allow infiniband to fiddle with the device again */
+ 	enic_set_api_busy(enic, false);
+@@ -2245,8 +2283,7 @@ static void enic_tx_hang_reset(struct work_struct *work)
+ 	 * the same reason as the soft reset path: stop the admin QP and free
+ 	 * the admin resources before the hardware queues are wiped.
+ 	 */
+-	if (enic_sriov_enabled(enic) &&
+-	    enic->vf_type == ENIC_VF_TYPE_V2)
++	if (enic_has_admin_chan(enic))
+ 		enic_admin_channel_close(enic);
+ 
+ 	enic_dev_hang_notify(enic);
+@@ -2261,25 +2298,13 @@ static void enic_tx_hang_reset(struct work_struct *work)
+ 
+ 	enic_open(enic->netdev);
+ 
+-	/* Re-establish the admin/MBOX channel after the data path is back up,
+-	 * mirroring the SR-IOV enable path (channel open + mbox init).  The
+-	 * channel was fully torn down by enic_admin_channel_close() above.
++	/* Re-establish the admin/MBOX channel after the data path is back up.
++	 * It was fully torn down by enic_admin_channel_close() above;
++	 * enic_admin_chan_reopen() reopens it and, for a PF re-pushes link
++	 * state, or for a VF re-runs the probe-time PF handshake.
+ 	 */
+-	if (enic_sriov_enabled(enic) &&
+-	    enic->vf_type == ENIC_VF_TYPE_V2) {
+-		if (enic_admin_channel_open(enic)) {
+-			netdev_err(enic->netdev,
+-				   "admin channel reopen after reset failed\n");
+-		} else {
+-			enic_mbox_init(enic);
+-			/* The link came back up during enic_open() above
+-			 * while MBOX sends were still disabled (channel not
+-			 * yet reopened), so that link-notify was dropped.
+-			 * Re-push current link state to registered VFs now.
+-			 */
+-			schedule_work(&enic->link_notify_work);
+-		}
+-	}
++	if (enic_has_admin_chan(enic))
++		enic_admin_chan_reopen(enic);
+ 
+ 	/* Allow infiniband to fiddle with the device again */
+ 	enic_set_api_busy(enic, false);
 
 -- 
 2.43.0
