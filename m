@@ -1,126 +1,66 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from mail-m49202.qiye.163.com (mail-m49202.qiye.163.com [45.254.49.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 228DB253340;
-	Fri,  3 Jul 2026 03:24:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 802403148DA
+	for <netdev@vger.kernel.org>; Fri,  3 Jul 2026 03:34:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783049095; cv=none; b=Gp0cElEWxciUh31We7el+/u+vfFha3IiJ2uWVMoO55kls+4ZQ7cbfG0EAZgqycyRrezjpgOwPqxCriTY1VW6AAz9mBfnj/Q02rBqbHbCG+/1Bf5gJakqyycsWk8kwso6i/n6IRMkstj8Ei54uMjy5qi4eJipbYYezFi2dWWl5f0=
+	t=1783049673; cv=none; b=uhD5MmNz6KL/CDVcvuRBAuIL7Ewj7cVeLXMwLcVHxb8Fm+/EJWYAnd9fSVM5PtCcts03VfITFX8fztdj2OR8G0vlylNbfePmy0aJ8cL5yOwSvNEgPgxDIZi6SKkz+qqjerBsHHC3VRTbnhehSIDc+/qgXc+p2f2EUn097yqQJds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783049095; c=relaxed/simple;
-	bh=CNajv3EoPl0wz3cOXsyZNSRUzSKpJ1jsRGcW8Qgrqqs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BOZ67m++zaMX3TsP1J/2EYOuSGAEqOFTyUcCQB5B4rj3ZBfq5xQ4G4dDgtCeSHhcSD7C/O6ceQZxCkAoNzF0pkW2mYBQ6iE2lvFQojwmxRhMnTWUKEAGdeu/E1Al3BeZHQcJmKqJ+kiBRZkh66p7QErrDk6mQwI70bhRqvxJivA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au; spf=pass smtp.mailfrom=gandalf.ozlabs.org; dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b=UiZQpKMD; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.dropbear.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gandalf.ozlabs.org
+	s=arc-20240116; t=1783049673; c=relaxed/simple;
+	bh=gEY9FBlfW2ywiPB1a5DMZW3Mfmw2DyFww1nU2GoqSKg=;
+	h=Content-Type:Message-ID:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:From:Date; b=BJD6eUuw3BByJTw7IF1cMRf0l5qmIbtqvBB/xiuYGc0y4v2yi0AlhOm/Oo2g6WxTxv5OMJwOEEQGvYgyu8W1o9US/N3T/BQpEASw6Dq3v8nojY8HudrUsmtBQ9qgj5N37OAEnFxlKzf2uYQCKFz7Hf+39Ugct4w1ShACbBv7tXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=W0r4AdVf; arc=none smtp.client-ip=45.254.49.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.b="UiZQpKMD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=gibson.dropbear.id.au; s=202606; t=1783049080;
-	bh=i97xl//wIbQ1VuAZlAyelUsusGL+BZXHQ/1wUz9fKfw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UiZQpKMD6JI/My/WTntiBDHRhpCqhC3zCV6l35tReghfKBYsJ4ysFdJ0Bvbd/gJ7r
-	 cKLLTYDSLNhQrqPimpo+Gbj1JmFpgUg7cQEDYoPZg6qSGhZoyaLjpSNREizGKjPv5w
-	 qFYDjA1b+3CpXix52RXKfdLgaZC5gGdoXdHY+aNpfhRKrAP0RfbOYX2Tle6OZ7eD5n
-	 JNCvj0uDsYdq34GBnpdlEA4Uiuvw0WoQwI6UgtO/6OTX+VsTKdQWGY9GkdOoqATcyn
-	 JNbdT8d+4fR+6md5+pJqDXFfUoKK1wO2K52k2Ufzlfw6yby/6oXkPXyV84EbmRRHEh
-	 g9/keY6sUx4BA==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
-	id 4grzdN0ZhXz4xSR; Fri, 03 Jul 2026 13:24:40 +1000 (AEST)
-Date: Fri, 3 Jul 2026 13:06:40 +1000
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Rosen Penev <rosenp@gmail.com>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Jeff Garzik <jeff@garzik.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net] net: emac: mal: fix W1C write race in ICINTSTAT
- clearing
-Message-ID: <akcnQEiJYfAtPqN1@zatzit>
-References: <20260702234923.1320412-1-rosenp@gmail.com>
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="W0r4AdVf"
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+Message-ID: <ADMAawDfKsBQ6nOp56VEcaqc.3.1783049345624.Hmail.220255722@seu.edu.cn>
+To: Elad Nachman  <enachman@marvell.com>
+Cc: Taras Chornyi <taras.chornyi@plvision.eu>, 
+	andrew+netdev <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, 
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"jianhao.xu@seu.edu.cn" <jianhao.xu@seu.edu.cn>
+Subject: =?UTF-8?B?UmU6IFtFWFRFUk5BTF0gUXVlc3Rpb246IHByZXN0ZXJhOiBjbGFyaWZ5IGV2ZW50IGhhbmRsZXIgUkNVLWxpc3QgY29udHJhY3Q=?=
+X-Priority: 3
+X-Mailer: HMail Webmail Server V2.0 Copyright (c) 2016-163.com Sirius_WEB_WIN_1.64.1
+In-Reply-To: <BN9PR18MB42518A2E98E06D2AED326816DBE92@BN9PR18MB4251.namprd18.prod.outlook.com>
+References: <20260627135002.4060912-1-runyu.xiao@seu.edu.cn> <BN9PR18MB42518A2E98E06D2AED326816DBE92@BN9PR18MB4251.namprd18.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20260702234923.1320412-1-rosenp@gmail.com>
+Received: from 220255722@seu.edu.cn( [223.112.146.162] ) by ajax-webmail ( [127.0.0.1] ) ; Fri, 3 Jul 2026 11:29:05 +0800 (GMT+08:00)
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+Date: Fri, 3 Jul 2026 11:29:05 +0800 (GMT+08:00)
+X-HM-Tid: 0a9f2604c57d02f2kunmab500afb1abc
+X-HM-MType: 1
+X-HM-NTES-SC: AL0_4z5B86Wr4Tz9jdMF+bhXMTUS6Y2fHkyPT6dc03QDwVaZPGiA09TnwhbhTj
+	hLfuFZO94YXwX6xgvkjGVFFRKj5GfO5Omku9T/6BrnRlHEXAyMQMJfF4WZB3hWdN6nWl6ZY8J2Cs
+	02iQ+9uR8DWRwtKuQZPniMBORckwb8scA9D0Y=
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZSB5PVk9LSE9PSU9PTUNOHVYVFA
+	kWGhdVEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUhVSkpJVUpPTVVKTUlZV1kWGg8SFR0UWUFZT0tIVU
+	pLSEtPQ0hVSktLVUpCWQY+
+DKIM-Signature: a=rsa-sha256;
+	b=W0r4AdVfgtzDJkSg4jBdkfcpPyTXcI9RNHCivibbp+Mggf/CYXJ7fhq4bHnMlhDuX2fIj7hIKC8qJOj5+e2DglX+N+xOta5FzMs3bcmIwjErBUmLxa0WWw6l/X6Ts1O+JZpyCvSIbFFsGPkIim7gNX1fL+nA8816c4XJcJTT6+w=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
+	bh=gEY9FBlfW2ywiPB1a5DMZW3Mfmw2DyFww1nU2GoqSKg=;
+	h=date:mime-version:subject:message-id:from;
 
-On Thu, Jul 02, 2026 at 04:49:23PM -0700, Rosen Penev wrote:
-> The ICINTSTAT register is write-1-to-clear (W1C).  The read-modify-write
-> pattern in both mal_txeob() and mal_rxeob() can lose interrupts: if a bit
-> that should not be cleared is already asserted when mfdcri() reads the
-> register, it is included in the read value, retained by the bitwise OR, a=
-nd
-> then written back as 1 - inadvertently clearing a pending but unhandled
-> interrupt.
->=20
-> Fix by writing only the specific bit to clear (ICINTSTAT_ICTX for TXEOB,
-> ICINTSTAT_ICRX for RXEOB).  W1C semantics guarantee that writing 0 to the
-> other bits has no effect.
-
-Wow, it's a long time since I thought about the MAL.
-
-> Fixes: 1d3bb996481e ("Device tree aware EMAC driver")
-
-This doesn't appear correct.  The lines in question were added by
-fbcc4bacee30c ("ibm_newemac: MAL support for PowerPC 405EZ")
-
-> Assisted-by: opencode:big-pickle
-> Signed-off-by: Rosen Penev <rosenp@gmail.com>
-
-Assuming ICINTSTAT is indeed a W1C register (or "read/clear" as I
-believe they were termed in the 405 documentation) the change looks
-correct.  However, I no longer have access to the documentation that
-would let me verify that.  I would absolutely not trust an LLM to know
-if that's the case, since it's a fairly arbitrary and specific detail
-of an obscure CPU.  That said, that the previous code has an | rather
-than &~ and presumably at least somewhat worked does suggest it's
-read/clear rather than plain read/write.
-
-> ---
->  drivers/net/ethernet/ibm/emac/mal.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/ibm/emac/mal.c b/drivers/net/ethernet/i=
-bm/emac/mal.c
-> index 4025bc36ae16..eab7a487bf08 100644
-> --- a/drivers/net/ethernet/ibm/emac/mal.c
-> +++ b/drivers/net/ethernet/ibm/emac/mal.c
-> @@ -282,8 +282,7 @@ static irqreturn_t mal_txeob(int irq, void *dev_insta=
-nce)
-> =20
->  #ifdef CONFIG_PPC_DCR_NATIVE
->  	if (mal_has_feature(mal, MAL_FTR_CLEAR_ICINTSTAT))
-> -		mtdcri(SDR0, DCRN_SDR_ICINTSTAT,
-> -				(mfdcri(SDR0, DCRN_SDR_ICINTSTAT) | ICINTSTAT_ICTX));
-> +		mtdcri(SDR0, DCRN_SDR_ICINTSTAT, ICINTSTAT_ICTX);
->  #endif
-> =20
->  	return IRQ_HANDLED;
-> @@ -302,8 +301,7 @@ static irqreturn_t mal_rxeob(int irq, void *dev_insta=
-nce)
-> =20
->  #ifdef CONFIG_PPC_DCR_NATIVE
->  	if (mal_has_feature(mal, MAL_FTR_CLEAR_ICINTSTAT))
-> -		mtdcri(SDR0, DCRN_SDR_ICINTSTAT,
-> -				(mfdcri(SDR0, DCRN_SDR_ICINTSTAT) | ICINTSTAT_ICRX));
-> +		mtdcri(SDR0, DCRN_SDR_ICINTSTAT, ICINTSTAT_ICRX);
->  #endif
-> =20
->  	return IRQ_HANDLED;
-> --=20
-> 2.55.0
->=20
-
---=20
-David Gibson (he or they)	| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you, not the other way
-				| around.
-http://www.ozlabs.org/~dgibson
+SGkgRWxhZCwKCk9uIE1vbiwgMjkgSnVuIDIwMjYsIEVsYWQgd3JvdGU6CiZndDsgSSB0aGluayB1
+bmxlc3MgcHJvdmVuIG90aGVyd2lzZSBkb2N1bWVudGF0aW9uIChwZXIgIzQpIGlzIGVub3VnaC4K
+ClRoYW5rcyBmb3IgdGhlIGNsYXJpZmljYXRpb24uCgpVbmRlcnN0b29kLiBCYXNlZCBvbiB5b3Vy
+IGZlZWRiYWNrLCBJIHdpbGwgdHJlYXQgdGhpcyBhcyBhbiBpbnRlbmRlZAppbml0L2Zpbmktb3Jk
+ZXJlZCByZWdpc3RyYXRpb24gY29udHJhY3QgKCM0KSwgYW5kIEkgd2lsbCBub3QgcHVyc3VlIGEK
+cGF0Y2ggZm9yIGl0IHVubGVzcyBJIGNhbiBjb21lIGJhY2sgd2l0aCBzdHJvbmdlciBldmlkZW5j
+ZSB0aGF0IHRoZQpjdXJyZW50IGNvbnRyYWN0IGlzIGluc3VmZmljaWVudC4KClRoYW5rcywKUnVu
+eXUKCg==
