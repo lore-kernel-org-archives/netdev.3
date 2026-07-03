@@ -1,201 +1,72 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013006.outbound.protection.outlook.com [52.101.72.6])
+Received: from mail-m3288.qiye.163.com (mail-m3288.qiye.163.com [220.197.32.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 301BE2F25F0;
-	Fri,  3 Jul 2026 03:03:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.6
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783047797; cv=fail; b=iXgM7lDuKHsxc2usHxeAySXxXD7WgzK5uIzXSv+XG2HO0x96jgUTNyLtGBbZsmrTflWo0GRGkg3uIOn3+Mz2mmrejcv/gEBs5PbDgvla+NGx6BiPD+FB3LQ1ROppQDXFKRaUDXgC6CMd8pANMjwbkpEEOkyaH6Lz5G9qXiDdMLY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783047797; c=relaxed/simple;
-	bh=uH0YhEH5TPYpbuMlMwgKQRQrvzDxSPI0EDNrjI5L1No=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=VGcDIiiNGQh7uIC5O5R8eBKm7kewUZYJXAsSCQ+BuH9J3gHRx5LhNPOWiWYUGOwYzgtj2O1ZOMlS80269J9MgC3NX8ngVYkZynxnRl22AiaklqLvjmg/fKZaCNHZV1r7kZWe3BlTScA5zvYyvAqGOM9Dy5Pd7fQrZH3DTN85YDI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=gZCNRmKY; arc=fail smtp.client-ip=52.101.72.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B55D2F7F1C
+	for <netdev@vger.kernel.org>; Fri,  3 Jul 2026 03:22:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.88
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783048968; cv=none; b=WVN7ycws8Vbt8MjKEKfYJybe4bQsID+l1Qc+LFEoCxvuwhW/xIlQ0SMAbIXR9AAF1VN3rCe8sJ4Umh3litymbwzSrGsGJeudkzpL8yiJaOVr8LopqOCna0a5FN259rEbFuClobEE3hEVdZyucXnejhdAP8VxnA9uTxyHLbibknc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783048968; c=relaxed/simple;
+	bh=IaLWZHJSWr7x6ofT8f/ukg8ugiR+wODDsKMWKABs44I=;
+	h=Content-Type:Message-ID:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:From:Date; b=LU/OuX1PtnMkCh74wpW3pXQNWVpnhl1dX3HNoqs5BZYbYLAw7G2I/+xYQy44UHnnTjNUJxus6rTgTl3dIwV/e6Lc1d6jqLxwcbhYX1UQvBMV8+eEIryDmo2yhizi3oPaFID/p5Coc7PcQhoMjCwTTvHqvT/CzjvLjrzV5V0Rnyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=WKEHJ1Na; arc=none smtp.client-ip=220.197.32.88
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="gZCNRmKY"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xjcz+jdwGOM5nglXv/X7QEDUmdoXai3L9MVqRYPUcEAGKS4JNF4HAJWp9Z23rnFAlLadN/GfroPuoHjz4vQdmuTqQzumnieHofez76dIiynZefp32IroECaOWKxQNa8OQaQSw3zgxZ7sXDOQ5rzkhkOytVX6++eGXuI2hUQOkyrnnWs11n1C/juEYTNPgXGjFx9JkEYwk7I2V0gHuloh+d7qHnRhChMWqxtxzHdvayyZWLC3kOJ1BZTQ9MCehWynf+MiI7989qrD4BZ0IRMG45mtISUA43Gui0KKTcGzsSYl6K/YTkgyi9l6E0aYTp4eHIDcSpPjRakLGkpASgLPOQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WJ6DIqeoaRU7Hxv9fhJp4sR24eQofwp34G+2ExJx/qk=;
- b=aP9FClduVXYTuQM2YWDU+9Pe3Ft4oXZPBIVUB/UJn/4kJoPlV7z9Xe8FC9nq64WLxjfnK+w/X7SGUf4M+Ip7nmsomqHi6Ptlx+2fMy8DqTZiLmVAc8sk9vng+SqDBV8Aa1e+aAVuC//annYzJDyxhdlnkljCCi/65YsiqeJW5xRTXRcVjUjMNNkjSUANZ349md1FpB08JsxfYWbNn9S6V/wMWRtfh8z1gxy54FK8rH2G6lUY2wbbXcezk6dKR/WkBx8grvywcKshL/zFs9zcOSVr3jzmpL2EcaWEWO44KReY0jY2SwbGQM9f7qc2YTdWhsirWMWnlE4F7PmqzWRaBw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WJ6DIqeoaRU7Hxv9fhJp4sR24eQofwp34G+2ExJx/qk=;
- b=gZCNRmKYbXrvGNqWBCcn50ReQ79Z5nep0vavFNALz9cYogWCSG0LgMZp11AqXWCSJPMgHdWN2gP/JIMBz4WrwhEGCUu/SYqjtyIbkAIH3tMopHKf0/GRmZ0cCE3x+qFMFOrNCLb5P+aVYi3mmUESopXM5ML4p0rc7r+n4HjIWBeo5Sf9GpxPp/ZVhVnqN2mKXs94sA4Wk7yT/q8jhIwEfEnn3ixb9ZtDvRTyEWhDWxV+1rFaYuIXXgbRAR60YVhb6fW1sC5oW7lV7i0LNKBg2JmE3Igh0RBOOfqqLFsfHZCzAV3eqOEXcJbAqvaLMR2mEaH7UAnSjVvuts1YEqrOLw==
-Received: from GV2PR04MB12213.eurprd04.prod.outlook.com
- (2603:10a6:150:336::11) by PAXPR04MB8206.eurprd04.prod.outlook.com
- (2603:10a6:102:1cb::12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.11; Fri, 3 Jul
- 2026 03:03:10 +0000
-Received: from GV2PR04MB12213.eurprd04.prod.outlook.com
- ([fe80::52ff:eacf:430f:494]) by GV2PR04MB12213.eurprd04.prod.outlook.com
- ([fe80::52ff:eacf:430f:494%4]) with mapi id 15.21.0159.018; Fri, 3 Jul 2026
- 03:03:10 +0000
-From: Clark Wang <xiaoning.wang@nxp.com>
-To: Andrew Lunn <andrew@lunn.ch>, Breno Leitao <leitao@debian.org>
-CC: "Clark Wang (OSS)" <xiaoning.wang@oss.nxp.com>, "Frank.Sae@motor-comm.com"
-	<Frank.Sae@motor-comm.com>, "hkallweit1@gmail.com" <hkallweit1@gmail.com>,
-	"linux@armlinux.org.uk" <linux@armlinux.org.uk>, "davem@davemloft.net"
-	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: RE: [PATCH net] net: phy: motorcomm: read EEE abilities in
- yt8521_get_features()
-Thread-Topic: [PATCH net] net: phy: motorcomm: read EEE abilities in
- yt8521_get_features()
-Thread-Index: AQHdCS9Kh6EXypCdTUSz62mUjSw8ybZYUCuAgAAAPRCAAGorgIACXYLA
-Date: Fri, 3 Jul 2026 03:03:10 +0000
-Message-ID:
- <GV2PR04MB12213049BA728917B95133052F3F42@GV2PR04MB12213.eurprd04.prod.outlook.com>
-References: <20260701075730.133707-1-xiaoning.wang@oss.nxp.com>
- <akTLmyF0r70Jyn9m@gmail.com>
- <GV2PR04MB12213F4758648CD71F5D5B3B7F3F62@GV2PR04MB12213.eurprd04.prod.outlook.com>
- <677882ca-16cb-4fd7-86d9-b00d62147bf9@lunn.ch>
-In-Reply-To: <677882ca-16cb-4fd7-86d9-b00d62147bf9@lunn.ch>
-Accept-Language: en-US, zh-CN
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: GV2PR04MB12213:EE_|PAXPR04MB8206:EE_
-x-ms-office365-filtering-correlation-id: d3e16a68-71b7-46b7-d38f-08ded8af9d4e
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|23010399003|7416014|366016|376014|1800799024|19092799006|38070700021|56012099006|11063799006|4143699003|22082099003|18002099003;
-x-microsoft-antispam-message-info:
- P77Zg2L0gegkyT+Och/rqt74myf9ITlcDcJH6vFyPulmxbJKPB9Bpb+f/qz9sHUddJUONAE5lrcU5W6rGBeZWJL3RxDtIX/ZikogOojUuGGgmlXI2e1dqyBdBIVS8fLtTsjkyuilyyc4EmX2OjxedGgNIhqUZOmT5hV/b/4ZJD66jbyaIQvFXp3u+BnXFr62bccFbdxiCxQTE/t0kMP01IhfsU/FSGGii3N8qO38RxCPzenjQLuOKGzBS8cbFm68ID4h1Z752diWZ0EEPELgo/PnCwjU14GI/54PqN21ggPqbgQx+Wo8NiEqz/FDnJS8ICNSTaxy7IV7/LkYxoMFYS9rDe2Ge5p0oOcFL9KqjaaqdaNILV+6Vti3M9eLXJ/BK1AhvEEiv0EqEmUE+B7W28wt9zaxedPmylt5UeXRN1LCgJJZARK8H5aVTAiDoKHTyyi+zXkF7wS9UjKDhtEncZXpFNzV6Fn+xZO1gt7tQR8roauVBdvDGo3fhU+rAtie63atJwe/RqzX2v96VBcbAWRGA/YRP1qrjMiUPelJoQ7ned2zilHG5fycgXeUBUrB8E93NMxHP/C6k6+k/y1OWX8K0Gb5nMlFR1e7JX8RM324G/2S0CQuggHZhVOG8EPvDCYGx6b9HTHldUW7mBlRmEraqkzruQ2Xwm+zKj5VYDU4+ztHmQ7hNx9GP1EVvlN7JD152SmfIJSU4Iq/QCJBs435x2JUDUqE+3xWt7fx2dY=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB12213.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(366016)(376014)(1800799024)(19092799006)(38070700021)(56012099006)(11063799006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?vXtVRPxXrId+Lf70VKagTRduXeZsDeP0Oilt2zLf4o92NawK9NaS6MiZbjtA?=
- =?us-ascii?Q?D7RcRAOSRZ8R+OztotW/0i9XnZvwFANmq5c/F37JQ0XpuI/UzvxNCuqwBq0/?=
- =?us-ascii?Q?UurQowkt07brbo4sCnGILTPoTOTUHC4sby1e1avkbyBS0a4npNvyDx3JxUQp?=
- =?us-ascii?Q?7KsanTsaOKqCwL7UJfHVoLuO+zLyUEjslDeMF9juXkHfkHc7W4WDPiJjd7Md?=
- =?us-ascii?Q?5PDGRZAunwEHoWz29CsDXXuwt9qvjQT3RM1Z1SnBNbJESnG2A8nosWMieVzT?=
- =?us-ascii?Q?lHriUlI+8N+0QpZrzPChXMTOEBt7ZAPbu94cegRVoilpAMcMDP0wg8zoDMQX?=
- =?us-ascii?Q?RSpdXxOZIN4LMaa/QVS2YenXj03sA2cUG8j62foKgAiBIbxNXbVgpS7uWfy7?=
- =?us-ascii?Q?9f+WdvjqO1eVnkTGGOqcgBg1/FsrlngVQLK1ocDqXipDe2LdOhfWG0Yi3sxr?=
- =?us-ascii?Q?Y+gwGGUDkiE/dhJiqxPbqNNQa446mO3h/rvpBKZkherRHH3icn12LHa5m0ro?=
- =?us-ascii?Q?l8z7Fg6Ts2NgVwznvGIwaTrr1qRZSRSQYtFVM+gDy+qk9DhLokEF6GclMdGQ?=
- =?us-ascii?Q?xTMAY7GEke1vswShGxT64bReWZG68CNHTDAaAsnBftSCzWGq1dHeequqcPTq?=
- =?us-ascii?Q?0k56oPhC6kMVJ+0li+GAT/hwDwBmMk6/SOD4CDUcR3wCnr9/YRaa9So2NuZj?=
- =?us-ascii?Q?Gx93I6utaD1hpOXBtdj/umDgPan9AD1qBAmZAFDmDmidTXcl+4ygyNIhyFn4?=
- =?us-ascii?Q?6vYfPz43UwXTDFv+fCbEzhjWHtWXdDZOTpuNiOOuqOKQ4clzn0lPC3J/X7/9?=
- =?us-ascii?Q?89/xy+nrBk3KbxqxIUPpliSiO7TUtmFkPlSp6He/5ZhT8iaL15IF+slS+yno?=
- =?us-ascii?Q?Zo90kS0F4goT3E/4CfiiTFZOWR/KiL1BK+bQ6uGHNV5gj6dUBCckXWzqTAHq?=
- =?us-ascii?Q?x8Fj83Nb060emdfve0B9CYBtRyUsNd2Fctpa7IBVWoymGV0lMMOAbqx+6Zwq?=
- =?us-ascii?Q?QLK+ckHL2faX9Zs/kXv/zexHY0rq/3ets+TbTtHefwWiZPBFrZ8+Aoqf4JoE?=
- =?us-ascii?Q?LStD52hc9tdS1Z1VUO39ciKD8i34fFd9079kG/gE8oD6i8QsPbLQg1Hfz2jU?=
- =?us-ascii?Q?/Nu77AsaUQdRvMIbOfTwEEOnf8O7MZHu7kDUzsYZJQmW9SaTp4oqrSVbNPl1?=
- =?us-ascii?Q?V3QbTvCI4+V+FORnbB8dDRWf9/StaMuaC8O0A702x8lvcaVzewAbeh5nbaCU?=
- =?us-ascii?Q?FUsdU4afWUkpwHlCbm/+uXmyq+Hya0pssUpAOyQJLoP72OVFXfhtNPN9+CAL?=
- =?us-ascii?Q?XgazEgbRDKonKLovCr1xHd5NLA5BMvZm1wfQuznAgYkHcE6g49y2EqyoBVPi?=
- =?us-ascii?Q?o+r0jxZn6Ad0gBHx6rIej7FPeLGyZf38PBDpSVa0FOLUqS7GqEyW3NunQ5P8?=
- =?us-ascii?Q?rm/ragaiPowrwu1ft7+ovbI04t6r/v66Ym1qMvXbT4xSh9qW2g7EiZnuHAEc?=
- =?us-ascii?Q?p/5r+xM3KCmBWOqKp6fTYQlCDTVsYH2VakNdaLDrC4vl1zNUB+95VHQ7aeqI?=
- =?us-ascii?Q?0B527tpwuSxyqrgBZo2bBc+vy+c5ee0/Nu4kL4vsA1B/Tcl67dK0nh5TRe/S?=
- =?us-ascii?Q?x7M9mbDDE5v1+jTPAMs+kovCWtM70jFth0iXeihG2o0GGt82heZjJyLWe6T5?=
- =?us-ascii?Q?Ea6gRnts3LXdyo1UcQBdpmgzNIcOMBimtW/IxkcfU9R37cgrxSISWzLbNSfz?=
- =?us-ascii?Q?Q9M9uWSP7g=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="WKEHJ1Na"
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+Message-ID: <AL*AMQBXKrBQu-oL24*L4apF.3.1783048649409.Hmail.220255722@seu.edu.cn>
+To: Jakub Kicinski  <kuba@kernel.org>
+Cc: Breno Leitao <leitao@debian.org>, davem <davem@davemloft.net>, 
+	edumazet <edumazet@google.com>, pabeni <pabeni@redhat.com>, 
+	horms <horms@kernel.org>, sashal <sashal@kernel.org>, 
+	bigeasy <bigeasy@linutronix.de>, netdev <netdev@vger.kernel.org>, 
+	linux-kernel <linux-kernel@vger.kernel.org>, 
+	"jianhao.xu" <jianhao.xu@seu.edu.cn>
+Subject: =?UTF-8?B?UmU6IFtSRkMgUEFUQ0ggbmV0LW5leHRdIG5ldHBvbGw6IGhvbGQgUkNVIHdoaWxlIHdhbGtpbmcgbmFwaV9saXN0?=
+X-Priority: 3
+X-Mailer: HMail Webmail Server V2.0 Copyright (c) 2016-163.com Sirius_WEB_WIN_1.64.1
+In-Reply-To: <20260629155833.1b1c2c26@kernel.org>
+References: <20260627101228.1191586-1-runyu.xiao@seu.edu.cn>	<20260627142105.29f1322c@kernel.org>	<AFEAtADoKs22QyipHhKwe4op.3.1782623057057.Hmail.220255722@seu.edu.cn>	<akJSi1g0F2k9a3cs@gmail.com> <20260629155833.1b1c2c26@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB12213.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d3e16a68-71b7-46b7-d38f-08ded8af9d4e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Jul 2026 03:03:10.3024
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: qhVc3PZ/elOWEo0kGfQTdNH+Aa/b00TDPhNO0TtkgNCsFG3S7rTe1dpMBVTh7/zBTlP7/nc8pOls9LqIppfD0A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8206
+Received: from 220255722@seu.edu.cn( [49.76.25.93] ) by ajax-webmail ( [127.0.0.1] ) ; Fri, 3 Jul 2026 11:17:29 +0800 (GMT+08:00)
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+Date: Fri, 3 Jul 2026 11:17:29 +0800 (GMT+08:00)
+X-HM-Tid: 0a9f25fa2a2e02f2kunmac93f42c1985
+X-HM-MType: 1
+X-HM-NTES-SC: AL0_4z5B86Wr4Tz9jdMF+bhXMR3tWPmxBik09n1c1SEFUj2le1z3lyvjBYCCEg
+	u3Pqm2XyVOnWNrtddGkF2jLxJpG2fwDKSuSBURfnb9ivkHaJlqs+U0JofCOKUgY2GKZJpINrsERV
+	gWJjaDNh8br1sDPmbzzYpzW4Oz+VMBBucUjSE=
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaTEIeVkIaS08ZSENMHk1DT1YVFA
+	kWGhdVEwETFhoSFyQUDg9ZV1kYEgtZQVlPQlVMTVVJTlVCSFlXWRYaDxIVHRRZQVlPS0hVSktISk
+	5PTFVKS0tVSkJLS1kG
+DKIM-Signature: a=rsa-sha256;
+	b=WKEHJ1NaXoBzO/zP+08w1kHh5+1aFsC+rQDjo88PS//y6+g1Egm84MhR2NsTmHkSZ4WHiS0so+r1pIwdfF3pqo3a6BOaLgbvSJXg9akIaxbCJqHCUObzwVSDfDTi8MaJiM5kaYBU0rvDp/SH9AJ3jfNKnEQTHRgl+qtECT8LL1k=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
+	bh=IaLWZHJSWr7x6ofT8f/ukg8ugiR+wODDsKMWKABs44I=;
+	h=date:mime-version:subject:message-id:from;
 
-> > > > In phy_probe(), genphy_c45_read_eee_abilities() is only called
-> > > > when a driver uses phydrv->features. Drivers that implement
-> > > > .get_features are responsible for reading the EEE abilities themsel=
-ves.
-> > > >
-> > > > yt8521_get_features() does not do this, so phydev->supported_eee
-> > > > stays empty for YT8521/YT8531S and "ethtool --show-eee" reports
-> "EEE status:
-> > > > not supported", even though the PHY has the standard EEE
-> > > > capability registers.
-> > > >
-> > > > Call genphy_c45_read_eee_abilities() at the end of
-> > > > yt8521_get_features() to populate supported_eee.
-> > > >
-> > > > Fixes: 70479a40954c ("net: phy: Add driver for Motorcomm yt8521
-> > > > gigabit ethernet phy")
-> > > > Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-> > > > ---
-> > > >  drivers/net/phy/motorcomm.c | 3 +++
-> > > >  1 file changed, 3 insertions(+)
-> > > >
-> > > > diff --git a/drivers/net/phy/motorcomm.c
-> > > b/drivers/net/phy/motorcomm.c
-> > > > index b49897500a59..46efa3406841 100644
-> > > > --- a/drivers/net/phy/motorcomm.c
-> > > > +++ b/drivers/net/phy/motorcomm.c
-> > > > @@ -2439,6 +2439,9 @@ static int yt8521_get_features(struct
-> > > > phy_device
-> > > *phydev)
-> > > >  		/* add fiber's features to phydev->supported */
-> > > >  		yt8521_prepare_fiber_features(phydev, phydev->supported);
-> > > >  	}
-> > > > +
-> > > > +	genphy_c45_read_eee_abilities(phydev);
-> > >
-> > > Don't you want to return error if genphy_c45_read_eee_abilities() fai=
-ls?
-> >
-> > EEE is an optional functionality, and the call in genphy_read_abilities=
-() has
-> the following comment. Therefore, I do not return its error here either.
-> > "
-> > 	/* This is optional functionality. If not supported, we may get an err=
-or
-> > 	 * which should be ignored.
-> > 	 */
-> > "
->=20
-> This conversation then raises the question, should this be a void functio=
-n?
->=20
-
-Hi Andrew and Breno,
-
-On second thought, I think it should stay int. The "ignore errors" rational=
-e
-in phy_device.c applies to the generic path where the PHY may not have EEE
-registers at all. But if this function is called within a specific PHY driv=
-er which
-we have already confirmed its support for EEE, need to handle the potential
-MDIO bus errors.
-
-If there's no problem. I'll send a v2 that changes the call to:
-
-	return ret ? : genphy_c45_read_eee_abilities(phydev);
-
-Thanks!
-Clark
+SGkgSmFrdWIsIEJyZW5vLAoKT24gTW9uLCAyOSBKdW4gMjAyNiAxNTo1ODozMyAtMDcwMCBKYWt1
+YiBLaWNpbnNraSB3cm90ZToKJmd0OyBZZXMsIGxpa2UgQnJlbm8gc2F5cywgd2UgbmVlZCBhbiBp
+bi1rZXJuZWwgcGF0aCB0aGF0IGNhbiB0cmlnZ2VyIHRoZQomZ3Q7IGlzc3VlLiBPdXQtb2YtdHJl
+ZSByZXByb2R1Y2VycyBjYW4gYmUgdXNlZnVsIHRvIHZhbGlkYXRlIHRoZSBmaXgsIGJ1dAomZ3Q7
+IHRoZXkgYXJlIG5vdCB1c2VmdWwgdG8gcHJvdmUgdGhhdCBhIHByb2JsZW0gYWN0dWFsbHkgZXhp
+c3RzLgomZ3Q7CiZndDsgV2UgdHJ5IHRvIGF2b2lkIGRlZmVuc2l2ZSBwcm9ncmFtbWluZyBpbiB0
+aGUga2VybmVsLgoKVW5kZXJzdG9vZCwgdGhhbmtzIGZvciB0aGUgY2xhcmlmaWNhdGlvbi4KClRo
+ZSBvdXQtb2YtdHJlZSByZXByb2R1Y2VyIHdhcyBvbmx5IG1lYW50IGZvciBvdXIgaW50ZXJuYWwK
+Q09ORklHX1BST1ZFX1JDVV9MSVNUIHRyaWFnZSwgbm90IGFzIHByb29mIHRoYXQgdGhlIHVwc3Ry
+ZWFtIG5ldHBvbGwKcGF0aCBpcyBidWdneS4KCkFmdGVyIHlvdXIgZmVlZGJhY2ssIEkgcmV0ZXN0
+ZWQgdGhpcyBvbiBsYXRlc3QgbmV0LW5leHQgd2l0aCBhIHJlYWwKaW4ta2VybmVsIG5ldGNvbnNv
+bGUgcGF0aC4gSW4gdGhhdCBzZXR1cCBJIGNvdWxkIGhpdApuZXRwb2xsX3NlbmRfdWRwKCksIG5l
+dHBvbGxfc2VuZF9za2IoKSwgYW5kIG5ldHBvbGxfcG9sbF9kZXYoKSwgYnV0IEkKY291bGQgbm90
+IHJlcHJvZHVjZSB0aGUgUFJPVkVfUkNVX0xJU1Qgd2FybmluZyBvbiB0aGUgcmVhbCBwYXRoLgoK
+R2l2ZW4gdGhhdCByZXN1bHQsIEkgYW0gbm90IGdvaW5nIHRvIGNvbnRpbnVlIHRoaXMgUkZDIGlu
+IGl0cyBjdXJyZW50CmZvcm0uCgpUaGFua3MsClJ1bnl1
