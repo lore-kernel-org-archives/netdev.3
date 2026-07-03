@@ -1,70 +1,83 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA573C8C7C
-	for <netdev@vger.kernel.org>; Fri,  3 Jul 2026 11:38:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFCF3161A4;
+	Fri,  3 Jul 2026 11:39:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783078722; cv=none; b=WJv3piP3fcDLFSarG8v8T7nOoTdxEFExcXmb22CJXVTQdzuzSWIMyczrGxCe0y2NlU1tEtb/L0jhZHkx8xaJkqKVfSxy6mmYPr2a4Nhxor6eOmwFbywLNo/WIEMtmPTn6btCRGpst4oP67b607iDNa/lFXUoPtHvLaJYh09nOk8=
+	t=1783078792; cv=none; b=NW4i+74gv9Yc1aT2rhBN0YMThY0oCrDy+JiqGuJy9xb5s26XN57RTayULEiali7fezDw2oBoTCYi5t5E7mfA55f3fKQLPnQTY7Vs5zx3qAfeaHhMZ9yNwIyr573no1XidmpwrMuNFXqGpwZxzJvNyhtW28BwZegXVf42esuLReM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783078722; c=relaxed/simple;
-	bh=F7h0usnQsuGtJCv5kXjbol3+qgJKG2AiZozjGMxt9gg=;
+	s=arc-20240116; t=1783078792; c=relaxed/simple;
+	bh=S1It7wXISZWNqATHabTkAXedhal9JKLCbcizLpjvrwA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=upqYD7JBAKCG+P7pPnIxZxN/ED08TR+PvC5pPElmuPZPX7jPhNmxRQVBrlMPFGiFUBlkZU/nL4TyawQg0rcOBFCwOJIOhnc1fLn4NA4ETyXs/A0/ouhP1siw4oWA8vEjN5v69QNYtZvP+n7ih0QGw8B84mVUI8KQemT0LuCOv6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=OQcirJKd; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=QZvW68jnl3NX/i/2J+eUl/X6lShpwSEDkv8qAx78VRprgYIdwCJ4f/+ztyDyzoMXKU0lSzrV019jFBHvJaecSUhJB5hpATAPOPvXpNb60J+xRF1Dp1t2GsWXwrsluA5sqcLYc8SaXhi/mP9We34WMsZMANODClIbZnQq1RaJ0aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m6L9MwKP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="OQcirJKd"
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 813A560579;
-	Fri,  3 Jul 2026 13:38:39 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1783078719;
-	bh=A3WsYqXQKspJYG5FBmk1Usbg+qmRCujBeq0O7Jg5Vso=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OQcirJKdxHB+cJhwRFuU65a/jVa5is+Q2U6rYe7ey6NwM+l/1QM3aZNtKlf4KD2fm
-	 MeWhfvpo6epJ0AZPZ6EwqNo+SbvbBPGg899GK2oiZRnW8nP6R2gtoND15vjVUgLgMv
-	 do64JD8cNYRYBKf98zNBt6IA/E0Ky8/WmXAN1eMiPZjHqPcFKDKWDGpf6Yjrx6t4ne
-	 +V73zGXYFcIPgOugZclimvMXNODYGh1JyWNDMSwNaDTudUYInuurNKFdfOJFWCJvn+
-	 50BRAxX4XC/XAG1p5h7z8DixrvHc8Mve3ArJQH49aBOXE6g2/DFiRJn+wXhL/4RokQ
-	 j2mQXHEHSQ+ww==
-Date: Fri, 3 Jul 2026 13:38:36 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Zhixing Chen <running910@gmail.com>
-Cc: Harald Welte <laforge@gnumonks.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m6L9MwKP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A7031F000E9;
+	Fri,  3 Jul 2026 11:39:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783078791;
+	bh=S1It7wXISZWNqATHabTkAXedhal9JKLCbcizLpjvrwA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=m6L9MwKPZGyGk4U2Vo6XXl3Dmz+pa7iur4GmBtpL7WHRCKvh61H/b1izOgUt6Jq5w
+	 7budTF1jQQyt6v6+uVb9+LsK/rRdZlDd8YiJobmqg/SBVuyPhdwHw85/drZkDHOPKe
+	 V5dg0W524bkmWtIFrGeB/nvr24jjJGskaH0UiH57qQowqn4qDvglDoiZVcXrkt5fLg
+	 5F7NpIJem7yrXaMSh9sLUhnGG+xWsUVaCP2JxMZOZrh1L491mLD7PSH5/FOD4mI59t
+	 z53k3txY7xIZ0u/r/jhEErE48XIQgI6PETxGIPaIEo/PSxjvIJ0J6BHo1HMXfVnF74
+	 Xz/M8tqvaaeeg==
+Date: Fri, 3 Jul 2026 12:39:46 +0100
+From: Conor Dooley <conor@kernel.org>
+To: =?iso-8859-1?Q?Th=E9o?= Lebrun <theo.lebrun@bootlin.com>
+Cc: Conor Dooley <conor.dooley@microchip.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	osmocom-net-gprs@lists.osmocom.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net v2] gtp: parse extension headers before reading inner
- protocol
-Message-ID: <akefPJ5cCrsZcpRw@chamomile>
-References: <20260703093708.18141-1-running910@gmail.com>
+	Richard Cochran <richardcochran@gmail.com>,
+	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Paolo Valerio <pvalerio@redhat.com>,
+	Nicolai Buchwitz <nb@tipi-net.de>,
+	Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
+	=?iso-8859-1?Q?Beno=EEt?= Monin <benoit.monin@bootlin.com>,
+	Tawfik Bayouk <tawfik.bayouk@mobileye.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>
+Subject: Re: [PATCH net-next v3 07/15] net: macb: introduce macb_context
+ struct for buffer management
+Message-ID: <20260703-graves-lining-0f70eb19b5b2@spud>
+References: <20260701-macb-context-v3-0-00268d5b1502@bootlin.com>
+ <20260701-macb-context-v3-7-00268d5b1502@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="GomScrFh91EL25F5"
 Content-Disposition: inline
-In-Reply-To: <20260703093708.18141-1-running910@gmail.com>
+In-Reply-To: <20260701-macb-context-v3-7-00268d5b1502@bootlin.com>
 
-On Fri, Jul 03, 2026 at 05:37:08PM +0800, Zhixing Chen wrote:
-> GTPv1-U packets may carry a chain of extension headers before the inner
-> IP packet. The receive path already parses and skips these extension
-> headers, but it currently reads the inner protocol before doing so.
-> 
-> As a result, the first extension header byte is interpreted as the inner
-> IP version. Packets with extension headers are then dropped before PDP
-> lookup.
-> 
-> Parse the extension header chain before calling gtp_inner_proto(), so the
-> inner protocol is read from the actual inner IP header.
-> 
-> Fixes: c75fc0b9e5be ("gtp: identify tunnel via GTP device + GTP version + TEID + family")
-> Signed-off-by: Zhixing Chen <running910@gmail.com>
+--GomScrFh91EL25F5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+
+--GomScrFh91EL25F5
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCakefgQAKCRB4tDGHoIJi
+0jxhAQCEnysqyCo8iNgbzq5T8LUSA1A8RVaS/aD0AhR64Cyh7AEAwmPfkz3tonbz
+hthzlEr88AePE80OsRtGAkxEnWacQgQ=
+=vzF/
+-----END PGP SIGNATURE-----
+
+--GomScrFh91EL25F5--
