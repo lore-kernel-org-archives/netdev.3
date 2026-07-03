@@ -1,85 +1,78 @@
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 091D432AAA0
-	for <netdev@vger.kernel.org>; Fri,  3 Jul 2026 04:51:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9EFB32E743
+	for <netdev@vger.kernel.org>; Fri,  3 Jul 2026 05:01:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783054299; cv=none; b=a4oD2aur73B5W65NSrS3/stDhiuFbtbplfuRWYz2G631uy6pnDAUeGRs5yAmgHC31B3cDJ949vVoNDCcI2trQngEfM2gq7ZalrFUwQI4R76SeV4nqlHV5gEKLt68zMaoRgQmoD2V/o6Bzr0tzb8KyWSmWW+PJNzzCQQWzXqzaLs=
+	t=1783054872; cv=none; b=bi9cqMj6amh6MRMUs5g4zsPASzgImiquvnP86d579fV7lz7J85JAx6F5mxhb4CbL/+fmgDhPwag1cBwfOBFSDNIV87oqtabKFVHNN10c0KeqUygUVVUjhV63twK/OFQQcRTGSRO4rsNP3QFKdfGHtHiMUwWKyfLUS2lVxQEQn80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783054299; c=relaxed/simple;
-	bh=2iRP72x2mSftqmGmXZJMv5jLBQGTfZOb65AvOqE3su4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fbKlugTRbjrQNvgiVK+Z55xNvdWLalOXTTP1sOQnCSEn+TgIhQOhrw+I71zcM/ZbAC0jl9QyVFhS+A6ZqFAx8L72f7dwKFzLGGEdPgI3i//Tv8iSUnEcF5cIYVDsVUIpFIbEokjnp1nEWH02zbqXKe8J+51KQU7z8cuoeSDMSqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z6h6enFZ; arc=none smtp.client-ip=209.85.215.182
+	s=arc-20240116; t=1783054872; c=relaxed/simple;
+	bh=lvsRQxYA/4Aj86xF+a0ZvMPMqRuKaUvNmA8BkrGGf8Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l0uEmspaMkowUjGKoUTptnOx48IBVhzh7b3mmBG4VzhUgB1EnxpjwyrUksq0+2m+cZr2bM65XKCFsPd7QGJ+WTc8ILO7Ge8dNPXn3ZkyemmzmUHsR5jazfAaziwA3aCGQwE6vmEt+6XlSRrqUWZd5ZqYjV+/ZY5yWeKNSNN71TM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nD6UmefJ; arc=none smtp.client-ip=209.85.219.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z6h6enFZ"
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-c9a20f70263so116874a12.1
-        for <netdev@vger.kernel.org>; Thu, 02 Jul 2026 21:51:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nD6UmefJ"
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-8f2509d6becso1428506d6.2
+        for <netdev@vger.kernel.org>; Thu, 02 Jul 2026 22:01:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783054289; x=1783659089; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xs4q6Awdw+1WsQdVj2MS9r8yavqNppIDcymWk9Cxfpo=;
-        b=Z6h6enFZmqHr0ZmViqJdt+4UakR0mQRimcs1vSpgubMo6t5JR+yyKo2LOAhf0+mBq8
-         32JdwpshDKNL3cGcZMiJfzHk5Gyv9KrVexB/zMc8wWuRCa0cbCXBHd+2Oc53UXxqw3w+
-         vFA3O9zcmXBOeTYizB+hfw8eIWNrF+79D92KMqaY5ZN3kHSv7rCGg+m+Jaa1I2bSgUey
-         FtjFsbI1SWtZPewyElQAovcUnrR7+TK3FUJoa3WHihOs6r9NRxZhid95jqgmAc9Do429
-         GiEseq5QI9PdT7Jl7HW2h5EDqqnOH7RYKcuTVw/TFmCgGJDT59e+0goAgAmmZBSnqfxh
-         R6QA==
+        d=gmail.com; s=20251104; t=1783054859; x=1783659659; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZXaOhXKFNzha/+UZgRF1nlZyqJvtz4uRe3j6zG6TsZY=;
+        b=nD6UmefJX+ukBfZgrRQVNuIIKVu7R4jhETCefk0whkbHzLpJBA11/qkqfk6hrR/ZEp
+         fn+1/olJv2LMlyXsrdeVB07lCSbZraxLVXUN9tEG9Tr6At2zt3X0wvpKcrmrWchdhCOC
+         M+yR79V7uShAWj/PJ3EolzYDCx4Ylty5U7K6Awkb5ZtSmputLSY8ZMhFf07ZJBmwhHNA
+         WwZgOAJ0oY0zrW1LzGpV+OLbJSNRBN7WpWQ2azlDnt89bgkQokQ48CNkGW3eZL+iRexI
+         CWb+MoJYq11TxSKwITt3i4JF30Sg2/LWROqS1dks8enfp2rfQmvL7sPVzKxdcxFdgy4c
+         tGZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783054289; x=1783659089;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=xs4q6Awdw+1WsQdVj2MS9r8yavqNppIDcymWk9Cxfpo=;
-        b=IV8WkvngnMCQezRkg3fIXVVcCRbXM25r7R0MFwCokjxxZY1QoTHIvh1d0MmWOJlae2
-         8DKAZFD5zNkOsrpu8YZXe4GNh57tRoZx5JmsUMQ8aIjPkcSLbaw/pecw+72E+rGOvJ1e
-         c8ecQFpCCU8nYWivQRDqFvXEDaWXaikFk0170b6t21aLOTpAIAUlwzyOxGLLQRPQUil3
-         1iXjNplutMyvC5AQDPEW6nLq5ZWaK+y+aAMFfs9C9OpmuWDVDxmYNqpegM8xjIbnBr0G
-         Dbi7dwijMe9w/rJaTrG4aXD1K/I/fqCp3+rxAgqzMNTsTh95KeQ+u0OsDf0jLr/GPgQN
-         YY8w==
-X-Gm-Message-State: AOJu0Yw6wVJ3DFTOreABXS4r+9jAvp68llvWyaqrgv577RcmqE3lesSW
-	OhIhxhehyv6mZWCK6A7HouI7ZhgL3d3c1pjwa3H9yMzYJ9bF0XJaYox9sK66ZaOY
-X-Gm-Gg: AfdE7cnF/uENIzUmMzaeKRBa2BUFAJjkGIt6xW5irJrg8hcU6JBkL5pIJsdAxhO3ATi
-	bpqk42MwGAfumDBZOyZOvw7KpRSWJE/PAPx1FZIsCNhkx/HKtBYsrULbgxsFMyQPR5BFsnq5ci5
-	tjWaMcHp0Ik/e0iTdRTlt4gaYRG0woJtHtyceONaL+zPZK5OtUd6hAD2FxCm+LUbnIRO0/yMBJP
-	QsKqVAxLQiIe6uRGGoTARwLiEJpoMuh7QufYHUu5fRn8AbSg5C2+ITbZd1tCEWpbpJKvZQwvjUO
-	fpiiPsax8i/BkPiWYimrh8vI5+EvzHFQAF0o86ZWmEG2/7H+vJ5G5pcp6/PO4drSjPzVXvdV1GM
-	vhOw9rj0TRaZWW6wDA+RFgyWdmESUfOlvBedUX5LkwqpbmKtSu/g3EyB/X9dpM2ou3OQgH6Y9HY
-	S7bR7LdnwyfC588giHuS7trudK4noO
-X-Received: by 2002:a05:6a20:3ca1:b0:3bf:6c27:387 with SMTP id adf61e73a8af0-3c01ca9b18dmr2890221637.25.1783054289352;
-        Thu, 02 Jul 2026 21:51:29 -0700 (PDT)
-Received: from enjou-Legion-Y7000P-2019 ([165.232.167.5])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c9e920d7ffasm2027837a12.22.2026.07.02.21.51.24
+        d=1e100.net; s=20251104; t=1783054859; x=1783659659;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZXaOhXKFNzha/+UZgRF1nlZyqJvtz4uRe3j6zG6TsZY=;
+        b=FIeDi5EM649oZ//MLjsf7HaHemF9Ho3azqfoo5w9tFJU03lR2dXSXZWlx5Z8QYdKns
+         DuhCF0foU3EifnAyUQKslP10BWZciW6FPRfiBXIocPUVCbyV3z4DBxT8N4prE3Bph+Eb
+         JkIhAtSiRB7fhC3qns9iA/gLnH9h4346049sMs3edo6TnJdLJq/pzXEAD5rdYnw70Sbf
+         cJ9Ei3EK6IfKN8HKwnduttG5jPvvm/scdY4knaqt4l9zI0Xa4jBZyvtxyIn/jYFEZOp3
+         yYIR/OjKR1foISKnj7Y6Os2zakXQzO4zH8Iwq0dY8767tc+dEqCr2xY6OMdBC61v+6sc
+         stow==
+X-Forwarded-Encrypted: i=1; AHgh+Roor+UZXSgttecl0qpD6qOU+VaXXABdLqRSnEpb6eIGak0/i4K6dwSMOuJv9cn0S6tEUSIY76E=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy2hnvg9JwoczCS60csOme6goBvSqiLYpH/QLKefjCpf+ujph+U
+	iGnYCkfeMV2FHFch1JVeS8W+IwMMIQwLdW+x+z8o6QPq/RtSrEX873wa
+X-Gm-Gg: AfdE7cl7r2LWn8NOK6IfiuuA4x0sPv75W7SlP1kOUWDedo19zgNLVy7j0ittPpCRAWk
+	eUYHNwcSdaEoXBttuVVy3snhePTmkeXsDxyiSIu13tDd2T+i9BOcBQENVsuKCTTZNNYh3t4IFU8
+	g2ldRDgRwqjgEjleLb+knNDvKkzIVn3NhlHaq1rlGlGkQUt5wPQToV7B0r9Se2KZCswO+Kbsjp3
+	onYx/uuTLVDfbm9sUNKNfxA5U0HCJFHwSrSfweg15gW4WBK7LLz1UhziTrZ6l1cvPFF9gi7N9Ey
+	XxiQf9xzOEUYXvcNtm52vLW8gb72Kjf5hmsFHd5c3pjZcUOgWLaycG+hwh0qKaBJdO3vSYKROc5
+	zB/BYPA7kSfJdRSwNMwWydoAf+eWfSwWzbBFj85rlL7yuYdA4t0NLzac8nXON7OYe47gsGPoZq4
+	xcV7f6GPMrojjDpFH5sP/CMKwdwI9HJRoru5vLJEJfB8fFQdu0h1iJ+MrA3ByCE4n3gZiBug/Lu
+	laRfVAzM0mX7tjfkDJBKSS8Bg==
+X-Received: by 2002:a05:6214:588f:b0:8e9:f5de:d636 with SMTP id 6a1803df08f44-8f3c9cb3057mr119943406d6.55.1783054858547;
+        Thu, 02 Jul 2026 22:00:58 -0700 (PDT)
+Received: from i4-gl-tmk5904.ad.psu.edu ([130.203.156.186])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8f46e27d54asm46420096d6.3.2026.07.02.22.00.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jul 2026 21:51:28 -0700 (PDT)
-From: Ren Wei <enjou1224z@gmail.com>
-To: netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	rds-devel@oss.oracle.com
-Cc: achender@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	andy.grover@oracle.com,
-	yuantan098@gmail.com,
-	yifanwucs@gmail.com,
-	tomapufckgml@gmail.com,
-	zcliangcn@gmail.com,
-	dstsmallbird@foxmail.com,
-	bronzed_45_vested@icloud.com,
-	enjou1224z@gmail.com
-Subject: [PATCH net 1/1] net: rds: reject oversized TCP receive messages
-Date: Fri,  3 Jul 2026 12:51:09 +0800
-Message-ID: <c83365078ea649d7ab2d9c198a445469bffb2550.1782850818.git.bronzed_45_vested@icloud.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1782850818.git.bronzed_45_vested@icloud.com>
-References: <cover.1782850818.git.bronzed_45_vested@icloud.com>
+        Thu, 02 Jul 2026 22:00:57 -0700 (PDT)
+From: Yuho Choi <dbgh9129@gmail.com>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yuho Choi <dbgh9129@gmail.com>
+Subject: [PATCH v1] idpf: Fix mailbox IRQ name leak on request failure
+Date: Fri,  3 Jul 2026 01:00:53 -0400
+Message-ID: <20260703050053.120851-1-dbgh9129@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -88,68 +81,31 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Wyatt Feng <bronzed_45_vested@icloud.com>
+idpf_mb_intr_req_irq() allocates the mailbox IRQ name before calling
+request_irq(). On success, the name is released later through
+kfree(free_irq()), but request_irq() failure returns without freeing it.
 
-RDS/TCP trusts the wire h_len value once the 48-byte RDS header has
-been assembled. A peer can advertise a length larger than
-RDS_MAX_MSG_SIZE and force unbounded receive-side reassembly growth by
-streaming payload into ti_skb_list until memory is exhausted.
+Free the allocated name on the request_irq() failure path.
 
-Validate h_len against the existing RDS_MAX_MSG_SIZE limit before any
-payload is queued. If the header is oversized, tear down the partial
-incoming message, stop tcp_read_sock() immediately, and drop the
-connection as a protocol error.
-
-This keeps the sender-side and receiver-side message size contract
-consistent and fixes the resource exhaustion bug in the TCP receive
-path.
-
-Fixes: 70041088e3b9 ("RDS: Add TCP transport to RDS")
-Cc: stable@vger.kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Reported-by: Xin Liu <dstsmallbird@foxmail.com>
-Assisted-by: Codex:GPT-5.4
-Signed-off-by: Wyatt Feng <bronzed_45_vested@icloud.com>
-Reviewed-by: Ren Wei <enjou1224z@gmail.com>
+Fixes: 4930fbf419a7 ("idpf: add core init and interrupt request")
+Signed-off-by: Yuho Choi <dbgh9129@gmail.com>
 ---
- net/rds/tcp_recv.c | 21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/idpf/idpf_lib.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/rds/tcp_recv.c b/net/rds/tcp_recv.c
-index ffe843ca219c..2044b8551b4f 100644
---- a/net/rds/tcp_recv.c
-+++ b/net/rds/tcp_recv.c
-@@ -205,9 +205,26 @@ static int rds_tcp_data_recv(read_descriptor_t *desc, struct sk_buff *skb,
- 			offset += to_copy;
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+index cf966fe6c759..bb81e620c5c8 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+@@ -139,7 +139,7 @@ static int idpf_mb_intr_req_irq(struct idpf_adapter *adapter)
+ 	if (err) {
+ 		dev_err(&adapter->pdev->dev,
+ 			"IRQ request for mailbox failed, error: %d\n", err);
+-
++		kfree(name);
+ 		return err;
+ 	}
  
- 			if (tc->t_tinc_hdr_rem == 0) {
-+				u32 h_len;
-+
-+				h_len = be32_to_cpu(tinc->ti_inc.i_hdr.h_len);
-+				if (h_len > RDS_MAX_MSG_SIZE) {
-+					tc->t_tinc_hdr_rem = sizeof(struct rds_header);
-+					tc->t_tinc_data_rem = 0;
-+					tc->t_tinc = NULL;
-+					rds_inc_put(&tinc->ti_inc);
-+					tinc = NULL;
-+					desc->count = 0;
-+					desc->error = -EMSGSIZE;
-+					rds_conn_path_error(cp,
-+						"incoming message too large: %u bytes\n",
-+						h_len);
-+					left = 0;
-+					goto out;
-+				}
-+
- 				/* could be 0 for a 0 len message */
--				tc->t_tinc_data_rem =
--					be32_to_cpu(tinc->ti_inc.i_hdr.h_len);
-+				tc->t_tinc_data_rem = h_len;
- 				tinc->ti_inc.i_rx_lat_trace[RDS_MSG_RX_START] =
- 					local_clock();
- 			}
 -- 
-2.47.3
+2.43.0
+
