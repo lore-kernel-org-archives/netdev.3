@@ -1,78 +1,110 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A71AB3D45EA
-	for <netdev@vger.kernel.org>; Fri,  3 Jul 2026 14:10:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E77A3D3338;
+	Fri,  3 Jul 2026 14:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783087824; cv=none; b=l+lqLA2rrnnsyiFeBsvLgGJP7ZgEpzBraOLibGS3K0GvyGevzG4T3oJXugNdD9ddy4J9nDZQ0BSDpHU2XzjsNBe6b5NxzCpWipWw6c/6De3eTEUOWXlnHOQm3UdtPqTgz/JZ5ok+RUXN+QAn71GP5M49x2tBnZayAk9WTNZA5zg=
+	t=1783087872; cv=none; b=dT8V/Rx9oKhUolsSadQntlSILeEknB4VdgDZIeMUF4Ki5niT4elff9buO8g6+j7t0GeVcvGmO2VPnYko0eUwmXooUCfWRAv4XkpYnvjmIlo+HCSeAr1NO2nxFdKfwLbFM2WaTVaBhmHXWnxwpT03uKTRTnDFptBUQp6zMZAIQMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783087824; c=relaxed/simple;
-	bh=ESesChFs0+r6Yzgs8TNi3liAsuiO+QAXmlZj9cyXKtk=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=oyH1esE7AAQ1PvaB1SXg+jj5fDUAdc5wMsk1JKBdO0MrRcVpZtfO8UuvhxSMH2XsUDU6WqFjz384ZzOz6CrCChIqqCPTH+kFL81Fk5hk5I9D8bvpWUvXMoK1yXC1Xz6MYfgFYYrM/oN9cCKQhUL9s5A98N1hivSTW7Lfhl9bCMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Asmky+5v; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783087872; c=relaxed/simple;
+	bh=fUYIhcgTsd08cQCxhii/tR9hzAIPf9Za63MDebhQsWE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=enIlub8Sl37rhZGWkttVv/teOTKGrFdf6EEUU32FZafhb+s1B7j/JjfaPlBq0vTecNITmaOi95V4QWlBmfpSHscFlfXG94oTO9XB6ckny10Z+r+oqfuU2E3yAVOTmCULTNLIC4NiGRKViWnXroyYSK6RQSFiTAUqsMkUxjAbO/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nP3sDrQW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Asmky+5v"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82FE41F000E9;
-	Fri,  3 Jul 2026 14:10:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nP3sDrQW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5A1F1F000E9;
+	Fri,  3 Jul 2026 14:11:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783087823;
-	bh=ShI3Falo4wUukzF3/zGmd5dxZLFd6IswkKgqGLZof64=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Asmky+5vy+Lly7jxreQHNoIOuQk9P9SjZFQPZEWP8msG3uxVc0eC38W0oGitk9ECd
-	 cuopHKBCnZuDH2nqRdYP/emfuxhkrRTg8XlOP0GuGYejL/lef7I+IEfa4Bm3qWmG4v
-	 URSG135cmu6mvXtN6EGB0LmspOTj5C6ne0L4wmeY+wuyqVD9tLpf9EnVf0lwt6y009
-	 Zro47sSMvvveZ1DYA3DoVu5Xn+XKULST6cglRT7nhevw0+qKWSRXtq0Zs96f+4WdnS
-	 UsKX8C7fMnnkNSIllZgjJvBr9DpF0/x4ZKPzZiTrpsXDOgMnAFOOJ29w0OBHNbq2qZ
-	 ese305ELwUVdA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1993C3938EB9;
-	Fri,  3 Jul 2026 14:10:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1783087871;
+	bh=9WmCg5KQV9+WEylsXDnXXYCT0wE60z9FdM4u/lEjPoI=;
+	h=From:Subject:Date:To:Cc;
+	b=nP3sDrQWQDE9IxZvNZP/QSicRHCHwVfF/BHyUOXaVCRxjIB5jCBDwzYibyoRXToph
+	 ldcEvnrCdsK8xa+goiRypyrUmgLvnDG96E44OskJ70GILGZeM89jODKVsGl7H0wYvM
+	 Db9xx55VsF1LViL4+9QD1AEwd2T8zM16+ID4ABI0XQ+yr9/1i6RpusfrtO8sEhQk7q
+	 xYfHlms8n9O6RAcjQKSuGGILsXQ+WIP2LmkeSVGO0cvrcdxC9cHCD0NxUz5PiH1QvK
+	 b3kr+lC+5BvBq3Fb90R46T4oxXoVjIDgBwjsC1DkmhlIZy3lJdHf0ntwsFehZps12w
+	 dXEkAtB0rr2DA==
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+Subject: [PATCH nf-next v4 0/6] Add IPv4 over IPv6 and SIT flowtable SW
+ acceleration
+Date: Fri, 03 Jul 2026 16:10:35 +0200
+Message-Id: <20260703-b4-flowtable-sw-accel-ip6ip-v4-0-00398cd12382@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net/sched: sch_teql: move rcu_read_lock()/spin_lock()
- from _bh variants
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178308780564.2728910.11131487731747143438.git-patchwork-notify@kernel.org>
-Date: Fri, 03 Jul 2026 14:10:05 +0000
-References: <20260630150922.238714-1-jhs@mojatatu.com>
-In-Reply-To: <20260630150922.238714-1-jhs@mojatatu.com>
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, jiri@resnulli.us,
- victor@mojatatu.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/43OQQrCMBQE0KtI1n5JftLEuPIe4iKmPxosaUlKV
+ aR3N3SlCOJyGHgzT1YoRypst3qyTFMssU81qPWK+YtLZ4LY1syQo+YNb+CkIHT9bXSnjqDcwHl
+ PHcRBxwGM4IJL5VuhDKvCkCnE+6IfWAqQ6D6yYy0usYx9fiyrk1jqvwYmARys89J67y05u79ST
+ tRt+nxe4AnfMf0bw4opaUOr0BjU9IXJN0yK35isWKMdblEHiebz2TzPLz7XmRVqAQAA
+X-Change-ID: 20260505-b4-flowtable-sw-accel-ip6ip-7101034cd147
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Felix Fietkau <nbd@nbd.name>, Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, 
+ Ido Schimmel <idosch@nvidia.com>, Pablo Neira Ayuso <pablo@netfilter.org>, 
+ Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>, 
+ Shuah Khan <shuah@kernel.org>, Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, netdev@vger.kernel.org, 
+ netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
+ linux-kselftest@vger.kernel.org
+X-Mailer: b4 0.14.3
 
-Hello:
+Similar to IPIP and IP6I6 tunnels, introduce sw acceleration for IPv4 over
+IPv6 and SIT tunnels in the netfilter flowtable infrastructure.
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+---
+Changes in v4:
+- Rebase on top of nf-next and fixed conflicts.
+- Link to v3: https://lore.kernel.org/r/20260531-b4-flowtable-sw-accel-ip6ip-v3-0-56a2826f3279@kernel.org
 
-On Tue, 30 Jun 2026 11:09:22 -0400 you wrote:
-> This is a followup based on sashiko comments [1] on commit e5b811fe7931
-> ("net/sched: sch_teql: Introduce slaves_lock to avoid race condition and UAF")
-> 
-> Use plain rcu_read_lock()/spin_lock() in teql_master_xmit() instead of the
-> _bh variants, since ndo_start_xmit is already invoked with BH disabled
-> by the core stack and the _bh primitives can warn in_hardirq() when xmit
-> is reached through netpoll or a softirq xmit path with hard IRQs disabled.
-> 
-> [...]
+Changes in v3:
+- Drop nf_flow_tunnel_v4_push and nf_flow_tunnel_v6_push routines
+- Rebase on top of net-next tree.
+- Link to v2: https://lore.kernel.org/r/20260506-b4-flowtable-sw-accel-ip6ip-v2-0-439fd427726e@kernel.org
 
-Here is the summary with links:
-  - [net] net/sched: sch_teql: move rcu_read_lock()/spin_lock() from _bh variants
-    https://git.kernel.org/netdev/net/c/6301f6a34ed8
+Changes in v2:
+- Fix MTU check in nf_flow_offload_forward() and in
+  nf_flow_offload_ipv6_forward()
+- Add SIT sw acceleration support
+- Link to v1: https://lore.kernel.org/r/20260505-b4-flowtable-sw-accel-ip6ip-v1-0-9ac39ccc9ea9@kernel.org
 
-You are awesome, thank you!
+---
+Lorenzo Bianconi (6):
+      net: netfilter: Add ether_type to net_device_path_ctx
+      net: netfilter: Add encap_proto to flow_offload_tunnel
+      net: netfilter: Add IPv4 over IPv6 tunnel flowtable acceleration
+      selftests: netfilter: nft_flowtable.sh: Add IPv4 over IPv6 flowtable selftest
+      net: netfilter: Add SIT tunnel flowtable acceleration
+      selftests: netfilter: nft_flowtable.sh: Add SIT flowtable selftest
+
+ drivers/net/ethernet/airoha/airoha_ppe.c           |  13 +-
+ drivers/net/ethernet/mediatek/mtk_ppe_offload.c    |  13 +-
+ include/linux/netdevice.h                          |   5 +-
+ include/net/netfilter/nf_flow_table.h              |   1 +
+ net/core/dev.c                                     |   6 +-
+ net/ipv4/ipip.c                                    |   1 +
+ net/ipv6/ip6_tunnel.c                              |   6 +-
+ net/ipv6/sit.c                                     |  26 ++
+ net/netfilter/nf_flow_table_core.c                 |  16 +-
+ net/netfilter/nf_flow_table_ip.c                   | 397 +++++++++++++--------
+ net/netfilter/nf_flow_table_path.c                 |  20 +-
+ tools/testing/selftests/net/netfilter/config       |   1 +
+ .../selftests/net/netfilter/nft_flowtable.sh       |  78 +++-
+ 13 files changed, 402 insertions(+), 181 deletions(-)
+---
+base-commit: 6fb33632323a396c9dc2bb9bea483e013e547d57
+change-id: 20260505-b4-flowtable-sw-accel-ip6ip-7101034cd147
+
+Best regards,
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Lorenzo Bianconi <lorenzo@kernel.org>
 
