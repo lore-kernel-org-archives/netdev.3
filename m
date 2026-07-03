@@ -1,169 +1,94 @@
-Received: from us.padl.com (us.padl.com [216.154.215.154])
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09463349AE0;
-	Fri,  3 Jul 2026 07:26:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.154.215.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09EB348C55;
+	Fri,  3 Jul 2026 07:27:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783063617; cv=none; b=q/eb3FHd6XS85XiBpFzphuBcguGnqJTEoSJSSQvmq8bOTG+QiT57HL4n/mv2Mu1i16fv7jiF2cbCBfdoGusmcwnuJoYhvik8tvDyNZPkoiy39qEVXt+/Wi0GeGfXcJdgh+Kg04UgKehNGZSkTMCoGkyYOJf+ZozzwK2B77XbWZE=
+	t=1783063666; cv=none; b=KD/f/akkkaOhFjedo8/Q6HH8h4Yg7G4RpYNS0KBOnGKT97ggiJXMJfyFYaSifQBKLLLrAc7cQGFixvD1mO9c3EJ2lwJ8qvDIV3/81A00QX8ddI/syMqGjSt3nPPscRho581eQNcgp2fGsshl/jDCz7Dt/eObGah5ZQFe+LrvbwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783063617; c=relaxed/simple;
-	bh=JYoPO7ChmXYe3qF5MzDL1kag86vwPT7ZEI+o+JZ/sw0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=cMyzbl5fGwfkyzDsoCRoXh630zj80ubNj7EOItT/f/Y9OZP+TKzMtQMzihw/hH8hk7ZNaJakFjeLSpDccaM6b+DjjYCn4/UqGvaHGMaYXHd2HuVnfNX+TTaovNJa1mTdlOJexlSmUQHcYJH1yeEDCIiJf0wFxAlZHMDnGyruC58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=1XCUPWpV; arc=none smtp.client-ip=216.154.215.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=padl.com
+	s=arc-20240116; t=1783063666; c=relaxed/simple;
+	bh=Ol2r02z849sHO076/l5rhr6sDWIOhUOJQgfcHd2d/Ig=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uYFB1SU+usID316waVhxXWCexjus1LDkMhWhrEUmvhYjhWKQIiFXKgVTZXBRoGjaeja0G6cBoH+bXfnXNp5jzrtiQP5rwkt9eu8PgHMLRMMRiMBsPxRsLP0dzWZWchO4vVpE0YFyjwdFTscjkj+ye5FBz4ZD1UQQqj3VARp2djA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=wxnTB1je; arc=none smtp.client-ip=95.215.58.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="1XCUPWpV"
-Received: from [127.0.1.1] (border.lukktone.com [139.130.100.52])
-	by us.padl.com (Postfix) with ESMTPSA id 30EAF60C04;
-	Fri,  3 Jul 2026 03:26:50 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=padl.com; s=default;
-	t=1783063614; bh=lWE8CYW4KX/1B+EEE6sYZhC+xxA4cyLphddW4iM4wB0=;
-	h=From:Date:Subject:To:Cc:From;
-	b=1XCUPWpVahTWoi0VNqnPCy40g1HstAA9v2wZZm1PrCsB9h1gjDKcllJ3O8SCA+gm+
-	 eKz/gDEuPamvXfxqvChQ3kRoLZ9OP26IBdGp7vYYygpUCEECwGqwqQUC/AUHtTaTKz
-	 h2IqjL6JW0kuTplkKFjyC/X7GGux3oBgFSvESmmqebsJag+P4df7wdwFror+082kT4
-	 i6j+KdBHyhA6tyExfXdR0kkiBSSqu+efQz23twRWpnUCA/RFG9PPUn9qxbHdEyEYkj
-	 KK5aZ8RVBSNZ7OQRqbyFVsPHirCRH+13dUOnV4V4ClM6nbO4vc9P21ohsRg33YvW/i
-	 sv4QPUY5HyPSg==
-From: Luke Howard <lukeh@padl.com>
-Date: Fri, 03 Jul 2026 17:26:43 +1000
-Subject: [PATCH RFC net-next] net: dsa: mv88e6xxx: honor resolved flow
- control in mac_link_up
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="wxnTB1je"
+Message-ID: <de2616b3-6edf-4255-ba77-0674e225ab27@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783063661;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XYPGG7oSyvpEIFDIsiAE2WqgUhJkjiEWYW22I8750Tc=;
+	b=wxnTB1jeUQocK9BJWSWnjlsQalb4qukGei3yxMDTzYi/kReANBZ5285tIel93bEksGwYwQ
+	eJ4Z5DVLh0u9YcH6KUJMPB72vge4kJMe4XJEuqDiHMjcQjQWxlmDl6i0VUUV5KDsWzq0e9
+	vdLYeL7a+o95A2opkTviuEFAOZx976g=
+Date: Fri, 3 Jul 2026 15:27:00 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Subject: Re: [PATCH net v2] ppp: defer channel free to an RCU grace period to
+ fix pppol2tp RX UAF
+To: Norbert Szetei <norbert@doyensec.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Breno Leitao <leitao@debian.org>, Taegu Ha <hataegu0826@gmail.com>,
+ Kees Cook <kees@kernel.org>, linux-ppp@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Guillaume Nault <gnault@redhat.com>,
+ netdev@vger.kernel.org
+References: <D9C0245B-608B-4884-8A09-F55BA4A9F948@doyensec.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qingfang Deng <qingfang.deng@linux.dev>
+In-Reply-To: <D9C0245B-608B-4884-8A09-F55BA4A9F948@doyensec.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260703-mv88e6xxx-flow-control-v1-1-5e7e2f577b93@padl.com>
-X-B4-Tracking: v=1; b=H4sIADJkR2oC/yWMQQrCMBBFr1Jm7UCSYlvcCh7ArXRR40QjdSJJb
- AdK726qy/f57y2QKHpKcKgWiDT55AMX0LsK7GPgO6G/FQajTKNapfE1dR01IoJuDDPawDmGEe3
- gqDb13rTaQJHfkZyXX/gC59Nx25gyMkmG/n9In+uTbN7ysK5ffuhp/osAAAA=
-X-Change-ID: 20260701-mv88e6xxx-flow-control-cafe32352712
-To: Vladimir Oltean <olteanv@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Vivien Didelot <vivien.didelot@gmail.com>, 
- Gregory CLEMENT <gregory.clement@bootlin.com>, Andrew Lunn <andrew@lunn.ch>
-Cc: Cedric Jehasse <cedric.jehasse@gmail.com>, 
- Kieran Tyrrell <kieran@sienda.com>, Max Holtmann <mh@rme-audio.de>, 
- Max Hunter <max@huntershome.org>, 
- Christoph Mellauner <christoph.mellauner@joyned.at>, 
- Simon Gapp <simon.gapp@gapp-audio.com>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Luke Howard <lukeh@padl.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783063610; l=3874;
- i=lukeh@padl.com; s=20260701; h=from:subject:message-id;
- bh=JYoPO7ChmXYe3qF5MzDL1kag86vwPT7ZEI+o+JZ/sw0=;
- b=p4x9cRF5M6q6m3Lqh0lIcrPpseCIDdm28y3EPFu+9MATNgkjxn5Oe9hc2FgXZX5Wa/hzzRYxx
- H7LBZXP40LmAmIV3xnPvirYELNwcZj7mCiLoGMNh35ZQACCswnRv7dy
-X-Developer-Key: i=lukeh@padl.com; a=ed25519;
- pk=D6YgUnH9/OzSZsduYm9XDbvXn1IHDwKwI1hLTsKNRLw=
+X-Migadu-Flow: FLOW_OUT
 
-Program the pause status resolved by phylink into the Port MAC
-Control register when forcing the link up, and return flow control
-to hardware resolution when forcing the link down, mirroring the
-existing treatment of speed and duplex.
+Hi,
 
-Flow control is programmed before port_sync_link() so that the
-port's MAC control is not modified while the link is forced up.
-The MAC has a single flow control enable covering both directions;
-as the driver only advertises MAC_SYM_PAUSE, rx_pause and tx_pause
-are always equal here.
+On 2026/7/2 2:12, Norbert Szetei wrote:
+> +/* Purge after the grace period: a late ppp_input() may still queue an
+> + * skb on pch->file.rq before the last RCU reader drains.
+> + */
+> +static void ppp_release_channel_free(struct rcu_head *rcu)
+> +{
+> +	struct channel *pch = container_of(rcu, struct channel, rcu);
+> +
+> +	skb_queue_purge(&pch->file.xq);
+> +	skb_queue_purge(&pch->file.rq);
+> +	kfree(pch);
+> +}
+> +
+>   /*
+>    * Drop a reference to a ppp channel and free its memory if the refcount reaches
+>    * zero.
+> @@ -3581,9 +3594,7 @@ static void ppp_release_channel(struct channel *pch)
+>   		pr_err("ppp: destroying undead channel %p !\n", pch);
+>   		return;
+>   	}
+> -	skb_queue_purge(&pch->file.xq);
+> -	skb_queue_purge(&pch->file.rq);
+> -	kfree(pch);
+> +	call_rcu(&pch->rcu, ppp_release_channel_free);
+>   }
+>   
+>   static void __exit ppp_cleanup(void)
 
-A fixed-link port whose device tree node lacks the "pause" property
-now has flow control explicitly disabled while the link is forced
-up, rather than being left at the chip's default.
+AI-review found an issue: 
+https://sashiko.dev/#/patchset/D9C0245B-608B-4884-8A09-F55BA4A9F948%40doyensec.com
 
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Luke Howard <lukeh@padl.com>
----
- drivers/net/dsa/mv88e6xxx/chip.c |  9 +++++++++
- drivers/net/dsa/mv88e6xxx/port.c | 20 ++++++++++++++++++++
- drivers/net/dsa/mv88e6xxx/port.h |  2 ++
- 3 files changed, 31 insertions(+)
+An rcu_barrier() call is needed at the end of ppp_cleanup().
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index 80b877c74513d..73c28bf2bf3cb 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -974,6 +974,10 @@ static void mv88e6xxx_mac_link_down(struct phylink_config *config,
- 	     mode == MLO_AN_FIXED) && ops->port_sync_link)
- 		err = ops->port_sync_link(chip, port, mode, false);
- 
-+	if (!err)
-+		err = mv88e6xxx_port_set_force_flow_ctl(chip, port, false,
-+							false);
-+
- 	if (!err && ops->port_set_speed_duplex)
- 		err = ops->port_set_speed_duplex(chip, port, SPEED_UNFORCED,
- 						 DUPLEX_UNFORCED);
-@@ -1012,6 +1016,11 @@ static void mv88e6xxx_mac_link_up(struct phylink_config *config,
- 				goto error;
- 		}
- 
-+		err = mv88e6xxx_port_set_force_flow_ctl(chip, port, true,
-+							rx_pause);
-+		if (err)
-+			goto error;
-+
- 		if (ops->port_sync_link)
- 			err = ops->port_sync_link(chip, port, mode, true);
- 	}
-diff --git a/drivers/net/dsa/mv88e6xxx/port.c b/drivers/net/dsa/mv88e6xxx/port.c
-index ea1fab71968a0..7ee802cf3412c 100644
---- a/drivers/net/dsa/mv88e6xxx/port.c
-+++ b/drivers/net/dsa/mv88e6xxx/port.c
-@@ -182,6 +182,26 @@ int mv88e6xxx_port_set_link(struct mv88e6xxx_chip *chip, int port, int link)
- 	return 0;
- }
- 
-+int mv88e6xxx_port_set_force_flow_ctl(struct mv88e6xxx_chip *chip, int port,
-+				      bool force, bool value)
-+{
-+	u16 reg;
-+	int err;
-+
-+	err = mv88e6xxx_port_read(chip, port, MV88E6XXX_PORT_MAC_CTL, &reg);
-+	if (err)
-+		return err;
-+
-+	reg &= ~(MV88E6XXX_PORT_MAC_CTL_FORCE_FC | MV88E6XXX_PORT_MAC_CTL_FC);
-+	if (force) {
-+		reg |= MV88E6XXX_PORT_MAC_CTL_FORCE_FC;
-+		if (value)
-+			reg |= MV88E6XXX_PORT_MAC_CTL_FC;
-+	}
-+
-+	return mv88e6xxx_port_write(chip, port, MV88E6XXX_PORT_MAC_CTL, reg);
-+}
-+
- int mv88e6xxx_port_sync_link(struct mv88e6xxx_chip *chip, int port, unsigned int mode, bool isup)
- {
- 	const struct mv88e6xxx_ops *ops = chip->info->ops;
-diff --git a/drivers/net/dsa/mv88e6xxx/port.h b/drivers/net/dsa/mv88e6xxx/port.h
-index 5b6cde9f7406f..f98df6351f5b7 100644
---- a/drivers/net/dsa/mv88e6xxx/port.h
-+++ b/drivers/net/dsa/mv88e6xxx/port.h
-@@ -485,6 +485,8 @@ int mv88e6390_port_set_rgmii_delay(struct mv88e6xxx_chip *chip, int port,
- 				   phy_interface_t mode);
- 
- int mv88e6xxx_port_set_link(struct mv88e6xxx_chip *chip, int port, int link);
-+int mv88e6xxx_port_set_force_flow_ctl(struct mv88e6xxx_chip *chip, int port,
-+				      bool force, bool value);
- 
- int mv88e6xxx_port_sync_link(struct mv88e6xxx_chip *chip, int port, unsigned int mode, bool isup);
- int mv88e6185_port_sync_link(struct mv88e6xxx_chip *chip, int port, unsigned int mode, bool isup);
+Regards,
 
----
-base-commit: 2bb62a85aff6d4c14a62a476dfabaada3c1cc014
-change-id: 20260701-mv88e6xxx-flow-control-cafe32352712
-
-Best regards,
---  
-Luke Howard <lukeh@padl.com>
+Qingfang
 
