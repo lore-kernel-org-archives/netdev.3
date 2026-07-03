@@ -1,64 +1,100 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9DC2D5937;
-	Fri,  3 Jul 2026 16:31:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 888282D5937;
+	Fri,  3 Jul 2026 16:32:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783096265; cv=none; b=rdW+M9RxCKPZEXSMbswtVELTPaa4SZtG2A8rAlECxrTeuLhBEritlnJgqBtP9xN7FeXoHMGuHypp560Dy6legrdKQFgJI+hVvxC2OythsllVsdsa1djnwprrEnICON94Iea8ftdXk1/J5jZCkGyyQoDkixf61Ds8ZN87g9mXeDo=
+	t=1783096339; cv=none; b=Y5Zyj32ZF2xKutPSnoXx/VDHlHv9u+/6YX5CgKYFFQ4xqnOvN5U46M2MJ/mZMET0ShGmC6MnG3fnfFhH3EqLVsQF4LCSChkUKbopwIyXdnfr/m/oBojq0WW/4qHGfjP+0GVAap54ls0xrWYOkkuF+5ODCBDt8bAriQLW2STlHl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783096265; c=relaxed/simple;
-	bh=15WN/V86a7VYxUbV+qagA+LK0E9ugBgtu+O30/NFkKk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Tz24zKacroinWbrGiwyoxw8dkhPNqLh599qOIOpaASLFX9O82R+iBFbx+6frFF7F5IrwK601JqX79O/PtqLnIM6UA7uEeNqY2IrqfVygtzwxcQvIDKFnNj3Oz5HzWSjc8r7CM7cpV0rwhykaHiDd2tksSMjQ9JDYzCOKexVI734=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=JBS1jnIS; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1783096339; c=relaxed/simple;
+	bh=pFq7qXlGoKSF9E+1OFt+CR/1KmxFtBay4rL6A+5TbvM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=EAz2rOL02UJuWIAmXbbE91Iu+8mme8b5EA9i7IvNAMdnb9CX+uHUzgSfXssQmvowkH3Q0kV3vZmEOXfvrHgA3L5TT28lEehQaOlCqxgmtWQYY2dGvZ5j/f6hj2ro72X2OknsPwdvwEMzR89670Wx+RiBsSUJjfHfk/kMOttrTmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=C2wkDCKY; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="JBS1jnIS"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=etnKuiaGnlG3JOwXFfNRNf+6mlZGHxP3FTCIlaWThvA=; b=JBS1jnISTaaR5l/KtgR6bAxO2o
-	H1OcbjFCXm09oKSeKUzlYKj5WlR6rkapsEadgCuFuKbPcYMn83FohkUT4de5A1NS3DomNjJ0ZBZEE
-	pasaFJvhydT75vnIBpjLqB9zH/iIS5G4yWALABHn55nhXjwtRs9HzkK/I6vKmFln6eTA=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wfgms-00AZjH-MB; Fri, 03 Jul 2026 18:30:46 +0200
-Date: Fri, 3 Jul 2026 18:30:46 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: javen <javen_xu@realsil.com.cn>
-Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	freddy_gu@realsil.com.cn, nb@tipi-net.de,
-	maxime.chevallier@bootlin.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, daniel@makrotopia.org,
-	vladimir.oltean@nxp.com
-Subject: Re: [PATCH net-next v9 4/4] net: phy: realtek: load firmware for
- RTL8261C_CG
-Message-ID: <2aa4ad89-c906-4b06-b449-15d08196de26@lunn.ch>
-References: <20260703071330.1707-1-javen_xu@realsil.com.cn>
- <20260703071330.1707-5-javen_xu@realsil.com.cn>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="C2wkDCKY"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id EC1511A0E0E;
+	Fri,  3 Jul 2026 16:32:14 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id AE5EB60300;
+	Fri,  3 Jul 2026 16:32:14 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6DE46102F0D61;
+	Fri,  3 Jul 2026 18:32:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1783096333; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=RLDscj7WzG84K9lSPYBqKCc45pcOPXuAsdlAYE6GaCE=;
+	b=C2wkDCKYpR9mki7vl7MiNfHDxhacdAO8ppWqQ3C8BS4rLqa/MWXJP5Lscdkk3KMouDqEmQ
+	eJUWL0c292xTl7OZ2fW05WnsqNEz5RK1HO8OGxwNFsRvc+vLBHtPRcP12nCmkyi6uLoiES
+	EdN02l8R6Zy1eTI8CaITQHGjzQTE9BBQGcFskNpuop+mDzFeKAhKOd2FfGpyq7jaQrwHH5
+	Q2PZFd9fF6tjvnxjQAb62VEcvtFkDGRuZPZBCEc7M+x25vK60D5AVp5B732wwzRy+QSlyJ
+	5Q3jqjEy4H8cpLLSjslGGnYvwedWO0xgP8Mf9IKhRgzPRUB8NKS7Ze+yGuvlbw==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260703071330.1707-5-javen_xu@realsil.com.cn>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 03 Jul 2026 18:32:08 +0200
+Message-Id: <DJP2W90JJK0G.1DBR4RMJKJO2Z@bootlin.com>
+Subject: Re: [PATCH net-next v3 01/15] net: macb: drop "consistent" from
+ alloc/free function names
+Cc: "Conor Dooley" <conor.dooley@microchip.com>, "Andrew Lunn"
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>, "Richard Cochran" <richardcochran@gmail.com>,
+ "Russell King" <linux@armlinux.org.uk>, <netdev@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Nicolas Ferre"
+ <nicolas.ferre@microchip.com>, "Claudiu Beznea" <claudiu.beznea@tuxon.dev>,
+ "Paolo Valerio" <pvalerio@redhat.com>, "Nicolai Buchwitz" <nb@tipi-net.de>,
+ "Vladimir Kondratiev" <vladimir.kondratiev@mobileye.com>, "Gregory CLEMENT"
+ <gregory.clement@bootlin.com>, =?utf-8?q?Beno=C3=AEt_Monin?=
+ <benoit.monin@bootlin.com>, "Tawfik Bayouk" <tawfik.bayouk@mobileye.com>,
+ "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Maxime Chevallier"
+ <maxime.chevallier@bootlin.com>
+To: "Conor Dooley" <conor@kernel.org>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260701-macb-context-v3-0-00268d5b1502@bootlin.com>
+ <20260701-macb-context-v3-1-00268d5b1502@bootlin.com>
+ <20260703-stucco-broadly-d9393f789868@spud>
+In-Reply-To: <20260703-stucco-broadly-d9393f789868@spud>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, Jul 03, 2026 at 03:13:30PM +0800, javen wrote:
-> From: Javen Xu <javen_xu@realsil.com.cn>
-> 
-> This patch adds support for loading firmware. Download some parameters
-> for RTL8261C_CG.
-> 
-> Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
+Hello Conor,
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+On Fri Jul 3, 2026 at 1:28 PM CEST, Conor Dooley wrote:
+> On Wed, Jul 01, 2026 at 05:59:04PM +0200, Th=C3=A9o Lebrun wrote:
+>> Since commit 4df95131ea80 ("net/macb: change RX path for GEM") those
+>> functions have not been only allocating or freeing consistent memory
+>> mappings.
+>>=20
+>> Rename from macb_alloc_consistent() to macb_alloc() and
+>>        from macb_free_consistent()  to macb_free().
+>
+> What does "consistent" even mean? Is it intended to be analogous to
+> coherent?
 
-    Andrew
+That's my guess. We used to have pci_alloc_consistent(), being an alias
+to dma_alloc_coherent().
+
+This alias has been present since forever (since Git):
+
+   git show 1da177e4c3f4:include/asm-generic/pci-dma-compat.h
+
+The alias got removed in commit 7968778914e5 ("PCI: Remove the
+deprecated "pci-dma-compat.h" API", 2022-03-09).
+
+Thanks,
+
+--
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
