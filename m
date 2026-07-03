@@ -1,497 +1,113 @@
-Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E58B370AFB;
-	Fri,  3 Jul 2026 05:48:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD68A285CB3;
+	Fri,  3 Jul 2026 05:53:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783057708; cv=none; b=oJX1fNlq7+vq9iuI+zmL5olvrjLuTQf3qEiYhJn9WMsani/0CQOCWfXOT8dfbVwtgCvfrdDbJ1eA0FcNsrHghlAh5tX5fOcR5TxalV/cCYpDI6RQ5GkyRnp9QAmiZ5CwlNYvOIIEpsbUlvMNAW/g9Ph1Ue0fgmb3w74nOorjGOM=
+	t=1783058034; cv=none; b=o3gxx0/Q0oOUvmKLt3sZ+kjXEEIyWlRnqiqdjom6uahVcjsJMsoNlf5UsiFm0NQAA5lMRT9yAh3PavzfuR8VCuCaTa1KuT4YBofIBbMUiFjL8w800TzNb/+K8yAW5Cylc1R+yQF3sfraK/Q9JLDYshLYOhYCMmtckSFnKD8m/Bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783057708; c=relaxed/simple;
-	bh=TwZTBAQgTjOS0ESdNKNh3XEYz6XD1IX1I+JeD5VRPOo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=I+eQQt3y45p58IybMG1556F9u34hwQcFkYBhXB/vWFQnZ0GeV9l4uaVJokgx8gK2oBF4X7epk0rlhrEsauV/PUM3gBvDHPeJV7U8GuqjYqolBsiYns4AFVY0Q01eYgiDjGRmD+fu1vD8VvWwxVueiH4tF3wUAu5ptFafB1ZPMmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=ImB3wbrP; arc=none smtp.client-ip=203.29.241.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+	s=arc-20240116; t=1783058034; c=relaxed/simple;
+	bh=gA+ohpEGOnnmWlMVdE7Hf5DmX580TNPRdJTBWNA/H40=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ZiCPWEe7l/Tj36xPLUzIDTN+G3tzWB/HCatQocxPCOPIqKvl9a1xeoT3ffMVZ/zEI/JcjVczjlaYI/4xQ4tavCTcZDqBARJ8kIpc61MwlUtv9s4jlx3rymky+i7mCQxGAH+c885FiIFwSPvwP/f4K9MR6R1T/WJxpr/Lv1EUhCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KrI4skxM; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cju51aBC; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="ImB3wbrP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1783057672;
-	bh=2Y6q0pcXQ0GbTXsBMm3bOYhvy7L4LJz/70KxBbcmFk4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=ImB3wbrPltEo560SmoyH0hHTnNKOjLckGRzLTFfK+N6zWeV705pAbW0yTlj8inPD1
-	 ly2OyWz944TmGm/JHDF1T6KGXdu1dKXC3hWkTzCKzZUW/hkDW1ENbbdyygDDjZw1Bm
-	 RHucgNiFIRB9Q3MOYvUAEoyxnX5lz/0V2q4M1Pr/1FmLRXZn/OGYYpbmvUi0z/Lo5z
-	 7xZZDoGwuzLO5jMPAgiMcWcKOHF7zdKVk/MjYL9ccREx7kTLeAw2QVVi0WdFMsCwD+
-	 ydkv1soz0PzztXOAQXd3yD4bC0nOhte9lTBY8Z6pxikat2RBe4BdxY4v6rqX1o6Bca
-	 rI3V2SsJQYS5A==
-Received: by codeconstruct.com.au (Postfix, from userid 10000)
-	id B596166295; Fri,  3 Jul 2026 13:47:52 +0800 (AWST)
-From: Jeremy Kerr <jk@codeconstruct.com.au>
-Date: Fri, 03 Jul 2026 13:47:30 +0800
-Subject: [PATCH net-next v2 10/12] net: mctp: usblib: Add initial kunit
- tests
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KrI4skxM";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cju51aBC"
+From: Nam Cao <namcao@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1783058030;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CrTTbM/MoRg1HsY6OQkPKeGxlPQ5We1d3Cm/DFl3UGM=;
+	b=KrI4skxMxTZ5bBQqRl8ooZsbyFfkzyx7GwK4QDUq7wxU9LPWxbf3QqcJh/fJaVWvFJNG36
+	8QPreHG1abi4++wQDCwc5OziccH0dk7yUV9ignlzvhBTXJxpfTIzo19hYQf+NHOyjTF215
+	oOcF1hu0dIS0aGcxB2khIfmJdmOnxbcpNtAneRFkpo5ukuOhYsh8e1weaFctzKUJVGzfkk
+	hYIxecB6/ZomxyM5vsmEc8tUl2WzD9KXPcVVL0GjVLcY8hefi8DXrHc2w3SNSjaKt+A9+V
+	1kDo9vb9/jyX1+r6Zrc9WLWmhGgnaWCdQw3UciWjw1r1sG7No7/ygt8QRL5lYw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1783058030;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CrTTbM/MoRg1HsY6OQkPKeGxlPQ5We1d3Cm/DFl3UGM=;
+	b=cju51aBCxPfqAvl1nBObWLPvCTEz4j8Y+yLjPRSoWoMDK5ZmsRGe4LVSylX8WL+CX3P1jY
+	vOF4P9uJLTo5jeBA==
+To: sashiko-reviews@lists.linux.dev, Kuniyuki Iwashima <kuniyu@google.com>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev
+Cc: linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] af_unix: Do not wait for garbage collector in
+ sendmsg()
+In-Reply-To: <20260702163608.0207A1F00A3A@smtp.kernel.org>
+References: <cover.1782922354.git.namcao@linutronix.de>
+ <e663a83195f3d9f6d7ad4907c37ae3e45c151062.1782922354.git.namcao@linutronix.de>
+ <20260702163608.0207A1F00A3A@smtp.kernel.org>
+Date: Fri, 03 Jul 2026 07:53:48 +0200
+Message-ID: <87mrw8sjo3.fsf@yellow.woof>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260703-dev-mctp-usb-1-1-v2-10-60367b861b33@codeconstruct.com.au>
-References: <20260703-dev-mctp-usb-1-1-v2-0-60367b861b33@codeconstruct.com.au>
-In-Reply-To: <20260703-dev-mctp-usb-1-1-v2-0-60367b861b33@codeconstruct.com.au>
-To: Matt Johnston <matt@codeconstruct.com.au>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: netdev@vger.kernel.org, linux-usb@vger.kernel.org
-X-Mailer: b4 0.16-dev
+Content-Type: text/plain
 
-Add some initial tests for the usblib receive path, where we're
-extracting MCTP packets from incoming USB transfer data.
+sashiko-bot@kernel.org writes:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [High] Garbage collector is no longer scheduled when creating new inflight FDs, leading to permanent cycle accumulation and -ETOOMANYREFS failures in isolated environments.
+> --
+>
+> commit 506189bd29f8ad56f5d9e51f3e0216203ebad5ec
+> Author: Nam Cao <namcao@linutronix.de>
+>
+> af_unix: Do not wait for garbage collector in sendmsg()
+>
+> This patch removes the garbage collector scheduling and waiting from the
+> sendmsg() path for AF_UNIX sockets. It aims to prevent priority inversion
+> by relying on RLIMIT_NOFILE limits and asynchronous garbage collection.
+>
+>> diff --git a/net/unix/garbage.c b/net/unix/garbage.c
+>> index 0783555e25266..f180c59b3da9d 100644
+>> --- a/net/unix/garbage.c
+>> +++ b/net/unix/garbage.c
+>> @@ -300,8 +300,6 @@ int unix_prepare_fpl(struct scm_fp_list *fpl)
+>>  	if (!fpl->edges)
+>>  		goto err;
+>>  
+>> -	unix_schedule_gc(fpl->user);
+>> -
+>
+> [Severity: High]
+> Does this removal prevent the garbage collector from running when a process
+> creates isolated socket cycles?
+>
+> If a process continuously creates socket cycles (e.g., passing FDs to each
+> other) and closes its local FDs, the sockets reference each other in their
+> receive queues, so their file reference counts will not reach zero.
+>
+> Because the refcounts do not drop to zero, unix_release_sock() is never
+> triggered. By removing unix_schedule_gc() from unix_prepare_fpl() here,
+> unix_release_sock() is left as the only trigger for garbage collection.
+>
+> This could allow the inflight count to accumulate indefinitely until it
+> hits RLIMIT_NOFILE, causing subsequent sendmsg() calls to fail with
+> -ETOOMANYREFS and permanently leaking the network namespace unless an
+> unrelated AF_UNIX socket is closed system-wide.
 
-Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
----
-v2:
- - account for KUNIT_ASSERT-based exits; do cleanup through kunit_action
-   facilities.
- - fix off-by-one in packet count duing skb length checks, in case we
-   ended up with more skbs than expected
- - perform route updates under rntl lock
----
- drivers/net/mctp/Kconfig            |   5 +
- drivers/net/mctp/mctp-usblib-test.c | 389 ++++++++++++++++++++++++++++++++++++
- drivers/net/mctp/mctp-usblib.c      |   4 +
- 3 files changed, 398 insertions(+)
+Sashiko found a valid issue here. But this is a pre-existing issue. It
+is not introduced in this patch.
 
-diff --git a/drivers/net/mctp/Kconfig b/drivers/net/mctp/Kconfig
-index a564a792801d..c40ac9c665b7 100644
---- a/drivers/net/mctp/Kconfig
-+++ b/drivers/net/mctp/Kconfig
-@@ -57,6 +57,11 @@ config MCTP_TRANSPORT_USBLIB
- 
- 	  This will be automatically enabled by the transport driver.
- 
-+config MCTP_TRANSPORT_USBLIB_TEST
-+        bool "MCTP usblib tests" if !KUNIT_ALL_TESTS
-+        depends on MCTP_TRANSPORT_USBLIB=y && KUNIT=y
-+        default KUNIT_ALL_TESTS
-+
- config MCTP_TRANSPORT_USB
- 	tristate "MCTP USB transport"
- 	depends on USB
-diff --git a/drivers/net/mctp/mctp-usblib-test.c b/drivers/net/mctp/mctp-usblib-test.c
-new file mode 100644
-index 000000000000..17aec83e59e3
---- /dev/null
-+++ b/drivers/net/mctp/mctp-usblib-test.c
-@@ -0,0 +1,389 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * mctp-usblib-test.c - MCTP-over-USB (DMTF DSP0283) transport helper library,
-+ * unit test definitions.
-+ *
-+ * Copyright (C) 2026 Code Construct Pty Ltd
-+ */
-+
-+#include <uapi/linux/netdevice.h>
-+#include <linux/netdevice.h>
-+#include <kunit/test.h>
-+#include <linux/if_arp.h>
-+#include <net/mctp.h>
-+#include <net/mctpdevice.h>
-+#include <linux/usb/mctp-usb.h>
-+
-+struct mctp_usblib_test_dev {
-+	struct net_device *ndev;
-+	struct mctp_dev *mdev;
-+	struct sk_buff_head rx_pkts;
-+};
-+
-+struct mctp_usblib_test_ctx {
-+	struct mctp_usblib_test_dev *dev;
-+	struct mctp_route rt;
-+};
-+
-+static netdev_tx_t mctp_usblib_dev_tx(struct sk_buff *skb,
-+				      struct net_device *ndev)
-+{
-+	/* we don't track any TXed packets at present */
-+	kfree_skb(skb);
-+	return NETDEV_TX_OK;
-+}
-+
-+static const struct net_device_ops mctp_test_netdev_ops = {
-+	.ndo_start_xmit = mctp_usblib_dev_tx,
-+};
-+
-+static const mctp_eid_t local_eid = 8;
-+
-+static void mctp_usblib_dev_setup(struct net_device *ndev)
-+{
-+	ndev->type = ARPHRD_MCTP;
-+	ndev->mtu = 8192;
-+	ndev->flags = IFF_NOARP;
-+	ndev->netdev_ops = &mctp_test_netdev_ops;
-+	ndev->needs_free_netdev = true;
-+	ndev->pcpu_stat_type = NETDEV_PCPU_STAT_DSTATS;
-+}
-+
-+static void mctp_usblib_test_dev_action(void *data)
-+{
-+	struct mctp_usblib_test_dev *dev = data;
-+
-+	skb_queue_purge(&dev->rx_pkts);
-+	if (dev->mdev)
-+		mctp_dev_put(dev->mdev);
-+	unregister_netdev(dev->ndev);
-+}
-+
-+static struct mctp_usblib_test_dev *
-+mctp_usblib_test_create_dev(struct kunit *test)
-+{
-+	struct mctp_usblib_test_dev *dev;
-+	struct net_device *ndev;
-+	int rc;
-+
-+	ndev = alloc_netdev(sizeof(*dev), "mctptest%d", NET_NAME_ENUM,
-+			    mctp_usblib_dev_setup);
-+	if (!ndev)
-+		return NULL;
-+
-+	dev = netdev_priv(ndev);
-+	dev->ndev = ndev;
-+	skb_queue_head_init(&dev->rx_pkts);
-+
-+	rc = register_netdev(ndev);
-+	if (rc) {
-+		free_netdev(ndev);
-+		return NULL;
-+	}
-+
-+	rc = kunit_add_action_or_reset(test, mctp_usblib_test_dev_action, dev);
-+	if (rc)
-+		return NULL;
-+
-+	rcu_read_lock();
-+	dev->mdev = __mctp_dev_get(ndev);
-+	if (dev->mdev)
-+		dev->mdev->net = mctp_default_net(dev_net(ndev));
-+	rcu_read_unlock();
-+
-+	if (!dev->mdev)
-+		return NULL;
-+
-+	rtnl_lock();
-+	rc = dev_open(ndev, NULL);
-+	rtnl_unlock();
-+	if (rc)
-+		return NULL;
-+
-+	return dev;
-+}
-+
-+static int mctp_usblib_test_dst_output(struct mctp_dst *dst,
-+				       struct sk_buff *skb)
-+{
-+	struct mctp_usblib_test_dev *dev = netdev_priv(skb->dev);
-+
-+	skb_queue_tail(&dev->rx_pkts, skb);
-+
-+	return 0;
-+}
-+
-+static void mctp_usblib_test_fini_action(void *data)
-+{
-+	struct mctp_usblib_test_ctx *ctx = data;
-+
-+	/* The device will have been destroyed, so ->rt will be unlinked.
-+	 * Just ensure that the refcount is as expected.
-+	 */
-+	KUNIT_ASSERT_TRUE(current->kunit_test,
-+			  refcount_dec_and_test(&ctx->rt.refs));
-+
-+	kfree(ctx);
-+}
-+
-+static struct mctp_usblib_test_ctx *mctp_usblib_test_init(struct kunit *test)
-+{
-+	struct mctp_usblib_test_ctx *ctx;
-+	struct mctp_route *rt;
-+	int rc;
-+
-+	ctx = kzalloc_obj(*ctx);
-+	KUNIT_ASSERT_NOT_NULL(test, ctx);
-+
-+	INIT_LIST_HEAD(&ctx->rt.list);
-+
-+	rc = kunit_add_action_or_reset(test, mctp_usblib_test_fini_action, ctx);
-+	KUNIT_ASSERT_EQ(test, rc, 0);
-+
-+	ctx->dev = mctp_usblib_test_create_dev(test);
-+	KUNIT_ASSERT_NOT_NULL(test, ctx->dev);
-+
-+	rt = &ctx->rt;
-+	refcount_set(&rt->refs, 1);
-+
-+	rt->min = local_eid;
-+	rt->max = local_eid;
-+	rt->dst_type = MCTP_ROUTE_DIRECT;
-+	rt->type = RTN_LOCAL;
-+	rt->dev = ctx->dev->mdev;
-+	rt->output = mctp_usblib_test_dst_output;
-+
-+	rtnl_lock();
-+	list_add_rcu(&ctx->rt.list, &init_net.mctp.routes);
-+	refcount_inc(&rt->refs);
-+	rtnl_unlock();
-+
-+	return ctx;
-+}
-+
-+/* Init a MCTP-over-USB packet within a buffer. @len is the length of the
-+ * buffer to write, @payload_len is the reported size of the MCTP-over-USB
-+ * packet.
-+ */
-+static void mctp_usblib_test_init_pkt(void *data, size_t len,
-+				      size_t payload_len)
-+{
-+	struct {
-+		struct mctp_usb_hdr usb;
-+		struct mctp_hdr mctp;
-+	} hdr;
-+
-+	hdr.usb.id = cpu_to_be16(MCTP_USB_DMTF_ID);
-+	hdr.usb.len = cpu_to_be16(payload_len);
-+	hdr.mctp.ver = 1;
-+	hdr.mctp.dest = local_eid;
-+	hdr.mctp.src = 0;
-+	hdr.mctp.flags_seq_tag = 0;
-+
-+	memcpy(data, &hdr, min(len, sizeof(hdr)));
-+	if (len > sizeof(hdr))
-+		memset(data + sizeof(hdr), 0, len - sizeof(hdr));
-+}
-+
-+static void action_rx_fini(void *data)
-+{
-+	struct mctp_usblib_rx *rx = data;
-+
-+	mctp_usblib_rx_fini(rx);
-+	kfree(rx);
-+}
-+
-+static struct mctp_usblib_rx *
-+mctp_usblib_test_rx_init(struct kunit *test, bool span)
-+{
-+	struct mctp_usblib_rx *rx;
-+	int rc;
-+
-+	rx = kzalloc_obj(*rx);
-+	if (rx) {
-+		rc = kunit_add_action_or_reset(test, action_rx_fini, rx);
-+		KUNIT_ASSERT_EQ(test, rc, 0);
-+	}
-+	KUNIT_ASSERT_NOT_NULL(test, rx);
-+	mctp_usblib_rx_init(rx, span);
-+
-+	return rx;
-+}
-+
-+/* Single packet, starting on a transfer boundary, contained entirely within
-+ * the transfer
-+ */
-+static void mctp_usblib_test_rx_single(struct kunit *test)
-+{
-+	struct mctp_usblib_test_dev *dev;
-+	struct mctp_usblib_test_ctx *ctx;
-+	struct mctp_usblib_rx *rx;
-+	struct sk_buff *skb;
-+	size_t len;
-+	void *buf;
-+	int rc;
-+
-+	ctx = mctp_usblib_test_init(test);
-+	dev = ctx->dev;
-+
-+	rx = mctp_usblib_test_rx_init(test, true);
-+
-+	rc = mctp_usblib_rx_prepare(dev->ndev, rx, &buf, &len, GFP_KERNEL);
-+	KUNIT_ASSERT_EQ(test, rc, 0);
-+
-+	mctp_usblib_test_init_pkt(buf, 8, 8);
-+
-+	rc = mctp_usblib_rx_complete(dev->ndev, rx, 8);
-+	KUNIT_ASSERT_EQ(test, rc, 0);
-+
-+	skb = __skb_dequeue(&dev->rx_pkts);
-+	KUNIT_EXPECT_NOT_NULL(test, skb);
-+	if (skb)
-+		KUNIT_EXPECT_EQ(test, skb->len, 4);
-+	kfree_skb(skb);
-+}
-+
-+struct mctp_usblib_test_pkt_span {
-+	const char *name;
-+	size_t n_pkts;
-+	size_t pkts[6];
-+	size_t n_xfers;
-+	size_t xfers[6];
-+};
-+
-+static void
-+mctp_usblib_test_pkt_span_to_desc(const struct mctp_usblib_test_pkt_span *t,
-+				  char *desc)
-+{
-+	strscpy(desc, t->name, KUNIT_PARAM_DESC_SIZE);
-+}
-+
-+static void
-+mctp_usblib_test_pkt_span_validate(struct kunit *test,
-+				   const struct mctp_usblib_test_pkt_span *span,
-+				   size_t *len)
-+{
-+	size_t pkt_len = 0, xfer_len = 0;
-+	unsigned int i;
-+
-+	for (i = 0; i < span->n_pkts; i++) {
-+		KUNIT_ASSERT_GE_MSG(test, span->pkts[i], 8,
-+				    "pkt[%d] len too small (%zd) for %s",
-+				    i, span->pkts[i], span->name);
-+		pkt_len += span->pkts[i];
-+	}
-+
-+	for (i = 0; i < span->n_xfers; i++)
-+		xfer_len += span->xfers[i];
-+
-+	KUNIT_ASSERT_EQ_MSG(test, pkt_len, xfer_len,
-+			    "invalid pkt_len (%zd) != xfer_len (%zd) for %s",
-+			    pkt_len, xfer_len, span->name);
-+
-+	*len = pkt_len;
-+}
-+
-+static void mctp_usblib_test_rx_pkt_span(struct kunit *test)
-+{
-+	const struct mctp_usblib_test_pkt_span *pkt_span = test->param_value;
-+	size_t len, xfer_len, off, xfer_off;
-+	struct mctp_usblib_test_dev *dev;
-+	struct mctp_usblib_test_ctx *ctx;
-+	struct mctp_usblib_rx *rx;
-+	unsigned int i;
-+	u8 *pktbuf;
-+	void *buf;
-+	int rc;
-+
-+	mctp_usblib_test_pkt_span_validate(test, pkt_span, &len);
-+	pktbuf = kunit_kmalloc_array(test, 1, len, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, pktbuf);
-+
-+	/* lay out packets */
-+	for (off = 0, i = 0; i < pkt_span->n_pkts; i++) {
-+		len = pkt_span->pkts[i];
-+		mctp_usblib_test_init_pkt(pktbuf + off, len, len);
-+		off += len;
-+	}
-+
-+	ctx = mctp_usblib_test_init(test);
-+	dev = ctx->dev;
-+
-+	rx = mctp_usblib_test_rx_init(test, true);
-+
-+	/* feed transfers */
-+	for (off = 0, xfer_off = 0, i = 0; i < pkt_span->n_xfers;) {
-+		xfer_len = pkt_span->xfers[i] - xfer_off;
-+		rc = mctp_usblib_rx_prepare(dev->ndev, rx, &buf, &len,
-+					    GFP_KERNEL);
-+		KUNIT_ASSERT_EQ(test, rc, 0);
-+
-+		len = min(len, xfer_len);
-+		memcpy(buf, pktbuf + off, len);
-+
-+		if (len == xfer_len) {
-+			/* whole/end xfer, proceed to next */
-+			xfer_off = 0;
-+			i++;
-+		} else {
-+			/* partial */
-+			xfer_off += len;
-+		}
-+
-+		rc = mctp_usblib_rx_complete(dev->ndev, rx, len);
-+		KUNIT_ASSERT_EQ(test, rc, 0);
-+		off += len;
-+	}
-+
-+	/* check received packets */
-+	KUNIT_EXPECT_EQ(test, dev->rx_pkts.qlen, pkt_span->n_pkts);
-+	for (i = 0; ; i++) {
-+		struct sk_buff *skb = __skb_dequeue(&dev->rx_pkts);
-+
-+		if (!skb)
-+			break;
-+
-+		if (i < pkt_span->n_pkts)
-+			KUNIT_EXPECT_EQ(test, skb->len, pkt_span->pkts[i] - 4);
-+
-+		kfree_skb(skb);
-+	}
-+}
-+
-+static const struct mctp_usblib_test_pkt_span mctp_usblib_test_pkt_spans[] = {
-+	/* One packet completely within a transfer */
-+	{ "1p1x-complete", 1, { 8 }, 1, { 8 } },
-+	/* Two small packets combined within one transfer */
-+	{ "2p1x-combined", 2, { 8, 8 }, 1, { 16 } },
-+	/* A packet split over two transfers, at the MCTP payload */
-+	{ "1p2x-split-payload", 1, { 16 }, 2, { 8, 8 } },
-+	/* A packet split over two transfers, at the USB transport header */
-+	{ "1p2x-split-usbhdr", 1, { 16 }, 2, { 2, 14 } },
-+	/* A packet split over two transfers, at the MCTP header */
-+	{ "1p2x-split-mctphdr", 1, { 16 }, 2, { 6, 10 } },
-+	/* Single packet split over 3 transfers, middle entirely continuation */
-+	{ "1p3x-split", 1, { 12 }, 3, { 4, 4, 4 } },
-+	/* Max-sized single transfer */
-+	{ "1p1x-large", 1, { 8191 }, 1, { 8191 } },
-+	/* Two large packets, split at the worst-case for allocation, with a
-+	 * single byte continuing the span
-+	 */
-+	{ "2p2x-large-split", 2, { 8190, 8190 }, 2, { 8191, 8189 } },
-+};
-+
-+KUNIT_ARRAY_PARAM(mctp_usblib_test_rx_pkt_span, mctp_usblib_test_pkt_spans,
-+		  mctp_usblib_test_pkt_span_to_desc);
-+
-+static struct kunit_case mctp_usblib_test_cases[] = {
-+	KUNIT_CASE(mctp_usblib_test_rx_single),
-+	KUNIT_CASE_PARAM(mctp_usblib_test_rx_pkt_span,
-+			 mctp_usblib_test_rx_pkt_span_gen_params),
-+	{}
-+};
-+
-+static struct kunit_suite mctp_usblib_test_suite = {
-+	.name = "mctp-usblib",
-+	.test_cases = mctp_usblib_test_cases,
-+};
-+
-+kunit_test_suite(mctp_usblib_test_suite);
-diff --git a/drivers/net/mctp/mctp-usblib.c b/drivers/net/mctp/mctp-usblib.c
-index d9d08c59028e..79245294fd21 100644
---- a/drivers/net/mctp/mctp-usblib.c
-+++ b/drivers/net/mctp/mctp-usblib.c
-@@ -583,3 +583,7 @@ EXPORT_SYMBOL_GPL(mctp_usblib_tx_cancel);
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Jeremy Kerr <jk@codeconstruct.com.au>");
- MODULE_DESCRIPTION("MCTP USB transport library");
-+
-+#if IS_ENABLED(CONFIG_MCTP_TRANSPORT_USBLIB_TEST)
-+#include "mctp-usblib-test.c"
-+#endif
+unix_schedule_gc() does not actually schedule the garbage collector
+unless user's inflight unix socket count exceeds UNIX_INFLIGHT_SANE_USER
+(2024). So user can already accumulate up to 2023 inflight socket counts
+without the garbage collector running until unix_release_sock() is called.
 
--- 
-2.47.3
-
+Nam
