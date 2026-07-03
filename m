@@ -1,114 +1,104 @@
-Received: from szelinsky.de (szelinsky.de [85.214.127.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D2291A6835;
-	Fri,  3 Jul 2026 21:07:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.127.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E6D1A6835
+	for <netdev@vger.kernel.org>; Fri,  3 Jul 2026 21:07:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783112835; cv=none; b=fwVnNLPqg/AeFP6K3iACXPNC7cYDp4OvgI8QEtdyxP0rIqKvgItsF950DJacFCX2mcMM8W54qUSfs/foeHTZP/FERjoMCLho54yUeIsxksuzMeI8hCuMO3FV8PsQk8eYEQNZqzZRLlsvDnsnwvpqrr82FQnaJZiigUw1w3Gu/QQ=
+	t=1783112879; cv=none; b=dwWPnu2ocEAXQV+sG0l64N+kn/uf2KLQESTSWE+/IWGpY3TEBdAtDbtTC/tPTBCkHW0tRLT78Evljnwi7bq83Er3Q0dTJRAA0LcR5gxJ/1gtIxMz+JYyu2UJ0KXU87dXHR/qGX+9a2dsK8X/ZcLTijz1es84JkquJvM5sZFESCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783112835; c=relaxed/simple;
-	bh=6Mb/5Sypu6E/ZiOsb1JdxqLJhirbFsKR/gwQDmZOFMI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PkvUcCjnHXrkbrkj4mwBkZ4JlNT2ybCgHrgU6BSyFQhEWEo+sjzLsYLaamh9qBJZJhVixb6J2YtSAiiOu9UWu3nkpaiiJdLX6OQkkErrAZc/jh0qKUAjbeujczikFUL1bPV+O8uCDZHB/+rsVRV6AfhQV6gvS46jgmjkQPhiLZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=TFLXXZaS; arc=none smtp.client-ip=85.214.127.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
+	s=arc-20240116; t=1783112879; c=relaxed/simple;
+	bh=1sorKBRD2b4m1rJXgJXcaK0DhH6ZZ6Qfw05mMzzjleQ=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=s/5ymL7Z3xmtCqhG8uncdJLFfwAGrR2mzqqRgel3Ds6ZIMQOFrlTcQ1QWYZjX52uWX9+QxSEU+li5y+o2geuevP4QQ9N26EMz5fgU+RmSU06gD0TJuIjqPjY/xjr7t3f6cHLZHho1aQX5IlM5h3qvZQEin2cTf/ucDuuJ98ELgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ISyLy6f6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="TFLXXZaS"
-Received: from localhost (localhost [127.0.0.1])
-	by szelinsky.de (Postfix) with ESMTP id DA615E83A30;
-	Fri, 03 Jul 2026 23:07:05 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
-	s=mail; t=1783112825;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ir5B0QRGK3HXwOvCc8TrvXpYHnIhWl7QYZS6Kqo90c8=;
-	b=TFLXXZaSoZ1UZt7FMiv4aepP049a1+QCJBVHp5AQLzwHFPV5FrDRA5A2ANZAubdDvJ/3Aq
-	F0mDh6PBND4TmGFCmNJmT5J1k+8TWMNO2mocz9dPLgOY8kYhO55DSgUq7Fpc94Zn4E1AA7
-	E4AdFCDTApmNT1Jt8uslkZfs1idxBjlCs2UogXyRHjYO4l0dlYaLDz+2dblJuVnFYMnFvk
-	p2t6qvNjwzOMRbXkFmtZX7jfKs/VbA88aKX3oxtkqXfcxvCvvXmMiWlb8UAdVk8VWjYW84
-	2fhZcm+7mW0U57KIw5sTzI8IX1S7Tg/yYKlmkQDQWEhy7lTAHC1FI+3mNMDt/w==
-X-Virus-Scanned: Debian amavis at szelinsky.de
-Received: from szelinsky.de ([127.0.0.1])
- by localhost (szelinsky.de [127.0.0.1]) (amavis, port 10025) with ESMTP
- id eb4NlK7Q6ZAX; Fri,  3 Jul 2026 23:07:05 +0200 (CEST)
-Received: from p14sgen5.lan (p5784dea5.dip0.t-ipconnect.de [87.132.222.165])
-	by szelinsky.de (Postfix) with ESMTPSA;
-	Fri, 03 Jul 2026 23:07:04 +0200 (CEST)
-From: Carlo Szelinsky <github@szelinsky.de>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Corey Leavitt <corey@leavitt.info>,
-	Jonas Jelonek <jelonek.jonas@gmail.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Carlo Szelinsky <github@szelinsky.de>
-Subject: Re: [PATCH net-next v4 3/3] net: phy: own phydev->psec via PSE notifier and remove fwnode_mdio hook
-Date: Fri,  3 Jul 2026 23:06:51 +0200
-Message-ID: <20260703210651.63197-1-github@szelinsky.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260703071025.100797-1-pabeni@redhat.com>
-References: <20260703071025.100797-1-pabeni@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ISyLy6f6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C72641F00A3A
+	for <netdev@vger.kernel.org>; Fri,  3 Jul 2026 21:07:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783112877;
+	bh=ZCQzVRq7RDq/oObpqUf5q9jdWP4fyXfNyYa/7bjpj2w=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=ISyLy6f6j4T8s3E3v2S1rZuoEk67yFa8VtsetjFdYNVBAjaD459ZfKMtztfILD4qP
+	 zsvwt+UZQkbgYlqHM29yAYs35n6lswrNhiSV57pkuAhPde3TrrN4Ki2VwoY195T9TV
+	 iGDivlQSxY4VgTNNY/3qPp5R65cAhZAtcE9WprYkpG9rzDrm7p402Rw7mdqITULW3/
+	 E+F4qaGWX2tBEe6VpUPHMB+QR/yGRBl59oelkPBDPYfqdw4XkDASd5RolMY21QJpMG
+	 DYXZTIgqM2RJRPrU2LzQJBuaeSrl8esEWbKqm0zkjTpxXRj/Z2m72x9Oq8MQu4YFeX
+	 QpZZzmAAVP9FQ==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id AC5BCF40068;
+	Fri,  3 Jul 2026 17:07:56 -0400 (EDT)
+Received: from phl-imap-15 ([10.202.2.104])
+  by phl-compute-10.internal (MEProxy); Fri, 03 Jul 2026 17:07:56 -0400
+X-ME-Sender: <xms:rCRIaofL7Uf6IinzwndAXyuRLT5x737cvWd_wPXxdj_ki8DqUXgLXg>
+    <xme:rCRIalDGHdPHFsNwLrBX1P32WL9FUqXidcAx52CXKiUC2LEcQ4bmdvH_nUS7k4J1t
+    r-LPgm24mDhGQ23c5I5YLbYFeFhanWzGr4UyZR3RGSeypgg25wbQRco>
+X-ME-Proxy-Cause: dmFkZTEex9BRYtMeXlxNvYMgkqN6XM/B5Tw6NdpXSdPZDEwjpMhFx+vUFIMWeA+Fra8G3L
+    ExwANTmIc5unmAAwxv8dOp4azozzMO9cmOnjC/x7vwxLt8TzjlRYggO1M00aNey+FfQpbH
+    yz4vqqNDowZLUDPEWOmnlgFAL5ugLadDsb8kI3+4dppRg2mcxSBY29+yAjzqddPlOIk4Or
+    kaeN81CO2CFOt4HFPxv2Ebo8QfGtVW6nMXXjoj53yxP6kGsaxKYugnKYGAv9Ri6MPAG1M4
+    oQRRXJKL4zD5uTyVAfaEhghZ9F5N3loMf1zJJBPwadNg/6YKF/20U++tlEtfGXaW5p/nqZ
+    rPvUZO3mF+IZbrLhEhA7cgxnijN6itJIP5prLzHZ09bqUrIy4cR+kE70y4xXMK9DywEEiL
+    Fm+1kcCZ8lRYAkv23eNuqY9soboRjdQYZBuLPtMMYjEm0r+i2c9sbL89oNZ6i2J3JVjksF
+    LElLyJJrIMqwCnLBNHzYOGessyMNkybbAniSYmWDB9ASfvF5+n6K9Alsv7px+8r9j7T6Ac
+    cIaDVRVEiw/tMJQ56FFBbCwY9NnIeeKGJYMAFoPFXEsH0LETXupxeWfMgJ5tFi6dwQiOVi
+    w870eWcWUJPlbZhot//vYuf6gvoLq3BaObwCMjt+lGlOLiW/9qpVGQYPtT0g
+X-ME-Proxy: <xmx:rCRIalxilOHAdtlN1EUqDVy14FxLe-oRPnxscssWVgbZNg0PN9FIBw>
+    <xmx:rCRIavSmRUYTCZOgDiEHtMEwcED50I3Y2rKTG6vv4rfS9xwWmYruUw>
+    <xmx:rCRIal_c1Sgj-EyyMHKx_sSfZJdT_CkxtQpEgwbPKMamwvXhXXxsBw>
+    <xmx:rCRIalssWPFUY-KWhDMCkRkvMzEDXUU9wsZIxjvlfDgRA3jBBYh6XA>
+    <xmx:rCRIalP1C0seIlI4GVM0OR8oGOSbcosjmDOzKWldyEGzanjAL3hc1fIU>
+Feedback-ID: ifa6e4810:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 8E6EC780AB5; Fri,  3 Jul 2026 17:07:56 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-ThreadId: AZOB0wyakXwF
+Date: Fri, 03 Jul 2026 17:07:36 -0400
+From: "Chuck Lever" <cel@kernel.org>
+To: "Sabrina Dubroca" <sd@queasysnail.net>
+Cc: john.fastabend@gmail.com, "Jakub Kicinski" <kuba@kernel.org>,
+ davem@davemloft.net, edumazet@google.com, "Paolo Abeni" <pabeni@redhat.com>,
+ "Simon Horman" <horms@kernel.org>, netdev@vger.kernel.org
+Message-Id: <7103d652-1e36-48af-98ce-4849bafbf7f2@app.fastmail.com>
+In-Reply-To: <akbdFcQP7oTp_n3s@krikkit>
+References: <20260630191551.875664-1-cel@kernel.org>
+ <akaoXcfamBp8_mYe@krikkit>
+ <0a03d16e-d4ce-422d-9492-3e31d910d8e5@app.fastmail.com>
+ <akbdFcQP7oTp_n3s@krikkit>
+Subject: Re: [PATCH net] net/tls: Consume empty data records in tls_sw_read_sock()
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-Hi Paolo,
 
-Thanks, I traced this and I think the review is right.
+On Thu, Jul 2, 2026, at 5:50 PM, Sabrina Dubroca wrote:
+> 2026-07-02, 15:52:49 -0400, Chuck Lever wrote:
+>> On Thu, Jul 2, 2026, at 2:05 PM, Sabrina Dubroca wrote:
 
-A phy that has been device_del()'d but is still pinned (an attached
-netdev holds a get_device() from phy_attach_direct()) is off the
-mdio_bus_type klist, so the PSE_UNREGISTERED walk (bus_for_each_dev)
-does not see it and phy_pse_detach_one() never clears its phydev->psec.
-When it is finally released, after pse_release_pis() has already freed
-pcdev->pi, __pse_control_release() reads pcdev->pi[] and pcdev->owner
--> use-after-free. So the commit message is wrong for the off-klist
-case: bus_for_each_dev() only defers the release for phys it can still
-reach.
+>> > Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+>> >
+>> > I think tls_sw_splice_read() suffers from a similar issue (returning 0
+>> > even though more data may be available). Sashiko agrees, and also
+>> > found a few more pre-existing issues.
+>> 
+>> Do you want a v2 series with those issues addressed?
+>
+> I'd be ok with this patch going in on its own, and the other issues
+> being addressed separately. If you have time to look into those,
+> that'd be great.
 
-A few questions so I fix it the right way:
+While I'm waiting for this patch to matriculate from net
+into net-next (as it is a pre-requisite for supporting
+TLS Alerts for in-kernel TLS consumers), I've started
+looking at the Sashiko findings. I might drop finding #3
+because it doesn't seem to be easily reachable in the
+current code base. The other two seem straightforward.
 
-1. The trigger I can see is unbinding the MDIO bus while a netdev still
-   has the phy attached (mdiobus_unregister -> phy_device_remove ->
-   device_del, and the phy stays alive on the netdev's reference), and
-   then the PSE controller unbinds. Is that the path you have in mind,
-   or is there an easier one I am missing?
-
-2. On keeping pse_control_put() in phy_device_remove(): wouldn't that
-   bring back the reason it was moved out? phy_device_remove() and the
-   walk's phy_pse_detach_one() would both touch phydev->psec, and
-   serializing them means taking rtnl in phy_device_remove() - which
-   the sfp caller already holds, so it would deadlock. Did you mean a
-   plain put there, or something narrower?
-
-3. Simon raised the same psec-vs-pcdev lifetime on the net regulator
-   patch [1] and suggested either draining the references on unregister
-   or having pse_control hold a refcount on pcdev. This series does the
-   drain, which (as you show) misses off-klist phys. Would having
-   pse_control pin pcdev; so pcdev->pi and pcdev->owner cannot be
-   freed while any pse_control is still out... be the direction you
-   prefer? That makes the deferred put safe no matter what the klist
-   walk sees.
-
-I'll send a v5 once the direction is clear.
-
-Thanks,
-Carlo
-
-[1] https://lore.kernel.org/netdev/20260624151251.1137250-1-horms@kernel.org/
+-- 
+Chuck Lever
