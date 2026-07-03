@@ -1,87 +1,126 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C5CE2D6E5A;
-	Fri,  3 Jul 2026 16:37:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 123A5301486
+	for <netdev@vger.kernel.org>; Fri,  3 Jul 2026 16:37:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783096633; cv=none; b=Fv77UqAc1zIn7ZbX0tV+yCqzzVDH9Yi7BNn6fV/pWVFqxHVPiJebH+cG7FLUE50LaAolwIfB9uq96koX8h52b6zGysHiwsOX8p51g/9wnjxCkATrRInDGEWL+J+9tlkIWUx1KVZD0Y0FC9JqhPxVRo6MveZUPgSzpX788fyu5jA=
+	t=1783096673; cv=none; b=Ki2ZG/dKogxvoJHsCOFDPurnB/PNpQYmvP6fwMyMUL3IWYwNGk17SeuiXG4eglj2cnwzWgJ0taQpDqE1qfYq16d86nll/XOCeWmYrywXTGacLK8rJU4l3UtIkH/VK1ztbzq/rG4pKniaK4UShx/rdRApNg7ZzabjcJDoCyhM86g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783096633; c=relaxed/simple;
-	bh=KxfPhjPFhReMVWNPeenydaELfDtLChm7M44+DEKl6+g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bEeDul3FxP24rPBUT334AXY0JPu9qAf4gfv+XlNcA+NT3ZV6gtxpFf676XSSi9WkNgrfbSoyy/l0B6x0/PIJQY/hFpfVnd02ORZpXxbLDX7gazPnRVqbxYsuAfbJaVgDDoxzhNhuw44TZk7RobSiXRWdz1H8fATRcPh52rh5Zuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=kFSwk4DT; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1783096673; c=relaxed/simple;
+	bh=rvTGz4LGpj64vmtUCByDEmmEVxFtHAKgKCZFNyO3Rd4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BWMgrgrx3yV6XFM6CtsPtk5I8Iop04i8YYkP23KFXPKNpIyBzHUKBsW2dXemEnrndQMVndxu3+XNPS+H63lyDXfiSIU3RNhtNGJY3TjokgiNnYYXpB0jQrzNd6by5dhZAe2yFcr9m85sXEo4ezNoLd0HDj+jYwEuPCTTuazidp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EglXRgHc; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=GLuF2cc6; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="kFSwk4DT"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=hmUlKrsXOGhOBBr628gJIn4v+9qb1yvV83sBQpdAcHc=; b=kFSwk4DTw4+gfIrH6tewSvXnSw
-	Yz48PKw6lXxWGIAJPkCYagfkVvpBYYbHB/WQKzov2EyOoXvINyvasmDeo5DR25S/gy3leIWuE/V6L
-	euuuFMEW9Cfm4tnktjUSP0J9yReBsA1ykCv24lx1WAH7biAaKP/Ix+nBiNKNL1XJYiYg=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wfgsk-00AZm5-Q4; Fri, 03 Jul 2026 18:36:50 +0200
-Date: Fri, 3 Jul 2026 18:36:50 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: David Gibson <david@gibson.dropbear.id.au>
-Cc: Rosen Penev <rosenp@gmail.com>, netdev@vger.kernel.org,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Jeff Garzik <jeff@garzik.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net] net: emac: mal: fix W1C write race in ICINTSTAT
- clearing
-Message-ID: <3a9bdad9-3755-4efd-8de4-a3ce3ff30b69@lunn.ch>
-References: <20260702234923.1320412-1-rosenp@gmail.com>
- <akcnQEiJYfAtPqN1@zatzit>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EglXRgHc";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="GLuF2cc6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783096669;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tcx1EKzkvkabWkcySDgIRTWl705sfc5nfabQik0GNdE=;
+	b=EglXRgHc3fv0xfgH6AaZiAEbPHEs4Ng6WD4QZUCurXnEpMCHN2hp7fHCU5gUlydKZBdqt9
+	QgNwhEJbaX84N+KrRy0jmmVA/M3AbTxCvU4LghBTG0Wemqo1hGcOo2RAzeFcsTbCcpQwFP
+	9xwGraRhFO/Q2mtwnvzqrrMbUPPAIig=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-141-KmWHj42kPSyreF7TVO7tDA-1; Fri, 03 Jul 2026 12:37:48 -0400
+X-MC-Unique: KmWHj42kPSyreF7TVO7tDA-1
+X-Mimecast-MFC-AGG-ID: KmWHj42kPSyreF7TVO7tDA_1783096667
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4925bf70f5bso6903755e9.1
+        for <netdev@vger.kernel.org>; Fri, 03 Jul 2026 09:37:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1783096667; x=1783701467; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=tcx1EKzkvkabWkcySDgIRTWl705sfc5nfabQik0GNdE=;
+        b=GLuF2cc6ClIiuj7vUP20gbZwwzUEY01lzB6Snovb9N49YkEQlnYd3KNwblJhEmnTLV
+         sCRNO9xl4dASKYcMJtNalt0CgU4vOc67+0jJrTntRB7MkGbcYBqYhzP43v7x+cGSkAOt
+         wwSimfvH1Z9rIzZuMALnmwZrlyRmNptan53mxLR1NrXoGx1JgJgvWExjKKOHZEsBIvBI
+         0M2spKyCMye9v04tEysbxCgHJdhdolwqnTMIEsg10WmPirQjbYW3dfpqBism37mY4Oua
+         oECyKX+RLTeEARRoZRw4gGPRBAwO1u+99B+GMNgSJGp2d+gkYK9/MJ/XBQ5Zh0EKJRgQ
+         eIWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783096667; x=1783701467;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=tcx1EKzkvkabWkcySDgIRTWl705sfc5nfabQik0GNdE=;
+        b=LXt76JAXkophNNR3cjGlnRQ9ncKRwlTgSPClH/x0M+/mU3qgKX6QtlafMSsJLHSnE8
+         rtWtaXVf+GAJKzLQJELrl275alMkQxpDuCQDkOpztRnc++NBaGfQl9DJ2FzL4Wm8edXE
+         w8ASOKBJ09CtJ/5tSux4Hl/P0BKPA6Hp6gC/Oj1CIK1HBrI/Pr/l5N9yNNbRZtKSHAXC
+         WAnYeN3m4Os52LT/OVylm1vFKaUi36Rje56rubtYZekNabppni97QQWfAptAkIc18nHy
+         qbKwhb32rLEtXxFgpa3oS/UEMpvf2XvQwhOL43lo/YauuzOyLDPsV2mecLLMH6qLYiIJ
+         1+uw==
+X-Gm-Message-State: AOJu0YyS3+uK/tnUKmLv9b+eH3oPRH6qNrfLKcMUGt40qlzHZ/XQ4Flw
+	Qi9hxeQGszQWh7AEwATGaTkGHlBG0vRRzf+vj4ZZtwDxZzZBYm8QqLp1+FAZkNp/Pb5//sowHBr
+	7+VhBQqJqRiH402g07xGBJheHAmW131F/Z75pxTEHmwOOzBa/9TOSrr750nfc9ssCjw==
+X-Gm-Gg: AfdE7clf0Nz5XGE65t/Z/BIJlUyZAE10oDj15AuLj7pzYgi34LYb3ctVmzJgq53KYFK
+	lJt9FqRXFk0VhpUJPZuwjkErC8jyb3FbRZix+h1mFmDxkDVDR/jSbxja8Sh2oDMaWWWjKR6k7uT
+	5vbYtVqDburt8Tjajuu89tjn5pMvZYdXjEeaKEK6gOfFXw9r8epaiD/5QEgJ8VzT9d0B2pwC5bJ
+	tO8MclBVPTuj4+OT7lvnLGpLqusHGuVsWQR8rrSVW6ivxMkv7xbQaZ1qt6t+DpWx7/oTEmYA14O
+	LVCQSOcybmJY/tfC7KRsB4MHIn5zK7VN4M3Pr/JRj1TDw69dLtPRcjphCGFiVo5VGqri2buDk+F
+	wXG6TI+K8z5MvlUqdnneaYgm6SEdU5odaT79zof7A1cVd8hGh8Z9V+ejzkCfw8C96VLheN/2cGi
+	9Q62frOoe0RA==
+X-Received: by 2002:a05:600c:8010:b0:493:bb2e:11a5 with SMTP id 5b1f17b1804b1-493d11d7e1emr680935e9.15.1783096667286;
+        Fri, 03 Jul 2026 09:37:47 -0700 (PDT)
+X-Received: by 2002:a05:600c:8010:b0:493:bb2e:11a5 with SMTP id 5b1f17b1804b1-493d11d7e1emr680685e9.15.1783096666873;
+        Fri, 03 Jul 2026 09:37:46 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:5521:6b10:2eb7:f61a:75:4534? ([2a0d:3344:5521:6b10:2eb7:f61a:75:4534])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493ccd9d620sm66148315e9.1.2026.07.03.09.37.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 03 Jul 2026 09:37:46 -0700 (PDT)
+Message-ID: <e3f99de6-cf19-451f-8175-50fa30012f7f@redhat.com>
+Date: Fri, 3 Jul 2026 18:37:44 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <akcnQEiJYfAtPqN1@zatzit>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] selftests/tc-testing: Add tests that force multiq and
+ taprio to enqueue to child's gso_skb
+To: Victor Nogueira <victor@mojatatu.com>
+Cc: netdev@vger.kernel.org, hexlabsecurity@proton.me, pctammela@mojatatu.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, jhs@mojatatu.com,
+ jiri@resnulli.us
+References: <20260630153651.249752-1-victor@mojatatu.com>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20260630153651.249752-1-victor@mojatatu.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jul 03, 2026 at 01:06:40PM +1000, David Gibson wrote:
-> On Thu, Jul 02, 2026 at 04:49:23PM -0700, Rosen Penev wrote:
-> > The ICINTSTAT register is write-1-to-clear (W1C).  The read-modify-write
-> > pattern in both mal_txeob() and mal_rxeob() can lose interrupts: if a bit
-> > that should not be cleared is already asserted when mfdcri() reads the
-> > register, it is included in the read value, retained by the bitwise OR, and
-> > then written back as 1 - inadvertently clearing a pending but unhandled
-> > interrupt.
-> > 
-> > Fix by writing only the specific bit to clear (ICINTSTAT_ICTX for TXEOB,
-> > ICINTSTAT_ICRX for RXEOB).  W1C semantics guarantee that writing 0 to the
-> > other bits has no effect.
+On 6/30/26 5:36 PM, Victor Nogueira wrote:
+> Add test cases to reproduce scenarios fixed recently [1] where
+> multiqueue and taprio forced their children into enqueueing an skb to
+> gso_skb (during peek), but failed to dequeue from gso_skb because they
+> called the child's dequeue callback directly. This causes a desync in the
+> child's qlen/backlog and results in an eventual null-ptr-deref (with a
+> qfq or dualpi2 child).
 > 
-> Wow, it's a long time since I thought about the MAL.
+> Test cases are the following:
 > 
-> > Fixes: 1d3bb996481e ("Device tree aware EMAC driver")
+> - Force multiq to dequeue from its child's gso_skb with qfq leaf (fb6c)
+> - Force multiq to dequeue from its child's gso_skb with dualpi2 leaf (1922)
+> - Force taprio to dequeue from its child's gso_skb with qfq leaf (476f)
+> - Force taprio to dequeue from its child's gso_skb with dualpi2 leaf (0235)
 > 
-> This doesn't appear correct.  The lines in question were added by
-> fbcc4bacee30c ("ibm_newemac: MAL support for PowerPC 405EZ")
+> [1] https://lore.kernel.org/netdev/20260625-b4-disp-31bcb279-v1-0-85c40b83c529@proton.me/
 > 
-> > Assisted-by: opencode:big-pickle
-> > Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> 
-> Assuming ICINTSTAT is indeed a W1C register (or "read/clear" as I
-> believe they were termed in the 405 documentation) the change looks
-> correct.  However, I no longer have access to the documentation that
-> would let me verify that.  I would absolutely not trust an LLM to know
-> if that's the case, since it's a fairly arbitrary and specific detail
-> of an obscure CPU.
+> Signed-off-by: Victor Nogueira <victor@mojatatu.com>
 
-I agree. If this is pure LLM, we need some form of verification.
+Since the fix has been propagated to net-next, this is net-next
+material, right? no need to repost, just ack/nack, thanks!
 
-  Andrew
+/P
+
