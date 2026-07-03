@@ -1,83 +1,96 @@
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9925736A37F
-	for <netdev@vger.kernel.org>; Fri,  3 Jul 2026 05:47:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18972369D63;
+	Fri,  3 Jul 2026 05:48:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783057655; cv=none; b=ORJNAox7H5ZskXypiNR8PCtOtmK7azahzRFreAK6SA81nDPsA7oga7rQ35ATNxrCBF1/oxZUZfc/CRD56qG4adlYbQLlTKjfeDsttBXJ1I35NW71wb6YDvijRwz7+KsE3cpgK4YvUmikZXrtYr4KkaXm7ZZCC5r5C8afp8+KFT4=
+	t=1783057689; cv=none; b=F7LkP91Y8dmiBQrf9ECp1Vx0Rpy6BmfSZ66A6P2VQgcK7MBNtGQlteu5q7oj+YzFNInJRTOO9L4mTUnnjWYINqMaroVPxAtVc5+5YYA9F2riOy416zlRkkXWYrieotCThtm4k/y8EoxsHKnGZv9BBpZ21ehEj1y2y6ntKWZrQ2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783057655; c=relaxed/simple;
-	bh=jxAEDOXDu90dcfT6Q0xSXK/pKc8Cnuh8gxIq8c7fVFo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hgBjzWc5u45Uq07ATfs05Qxq4DOFVuElF/+0HwnaL7pdqmgST/aNccgTsodp1JGadapYhqnfdnnvcVX4+BCSWYwyFTlWlrrnaEnbhzXxdBZUz1wupamwGLGumaDH7KBeWS/RUqUZI/XuCG5uLKiLr7bpXYjH3n/NnfKS/ySMqp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
-Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
-	id 1BF2160491; Fri, 03 Jul 2026 07:47:20 +0200 (CEST)
-Date: Fri, 3 Jul 2026 07:47:19 +0200
-From: Florian Westphal <fw@strlen.de>
-To: "Xiang Mei (Microsoft)" <xmei5@asu.edu>
-Cc: steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
-	davem@davemloft.net, netdev@vger.kernel.org, horms@kernel.org,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	AutonomousCodeSecurity@microsoft.com, tgopinath@linux.microsoft.com,
-	kys@microsoft.com
-Subject: Re: [PATCH ipsec v2] xfrm: policy: preallocate inexact bins before
- xfrm_hash_rebuild reinsert
-Message-ID: <akdM501yK5_mk1th@strlen.de>
-References: <20260703051932.966884-1-xmei5@asu.edu>
+	s=arc-20240116; t=1783057689; c=relaxed/simple;
+	bh=LQZc4rIna5P6w5GjBtRUSMmbad/eKzzcgHBBcPUi+a8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=FZs1/QU4EHSle4Q2opJIbYNUQiRBMs+1tx4Z4hNpF7Cw1qMwk4K1DnXe0BWeG+qZ1ocaBG3R5YLwEPJ6pr3xV3eQ1kdMrtrkbUN19nPavwD+iGnEBNPYOjcZwHJDkP4vx/31jk7nyVPnBx+le7GA13LIt9DdcJ+0I0LzznVVfow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=iM//2fm0; arc=none smtp.client-ip=203.29.241.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="iM//2fm0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=codeconstruct.com.au; s=2022a; t=1783057670;
+	bh=3vAgljkxOZKzaYntzYofEQoz0xcOMVn5Ns3RtQoLP38=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=iM//2fm0Hby4xanoisrXHGgfLJ8rdTLTJi2Vz04L8g6w87GFucs36e1/MH+kWjz71
+	 6qyCPLjBIA1b0Msyxv7hI9enhw9jbe5oTTWxuYKYAu3yNEBKi6XV9TB7uNGNGva4EW
+	 l4JdByfOBYI2KXJJ3lxfeb5v79IhrcWkqg1XqG2iL6d/WBTeUWxFk4D4Jc8W8KUrRF
+	 JuTRb8H0vDNx/BsrT+GnYfzqXf5vfB+hB5vKdY/kSwkzFUzhBJjXI4xahR1YSEaGyJ
+	 CeyA1Xu4+xZ5vTkpozBm9zmZzU0REYAopTkdvYf5rnZVK8N+OcUIirggFDdx8tPoXV
+	 Sx/U57PV3G0KQ==
+Received: by codeconstruct.com.au (Postfix, from userid 10000)
+	id 5279B6628A; Fri,  3 Jul 2026 13:47:50 +0800 (AWST)
+From: Jeremy Kerr <jk@codeconstruct.com.au>
+Date: Fri, 03 Jul 2026 13:47:22 +0800
+Subject: [PATCH net-next v2 02/12] net: mctp: usb: Use packet-length max
+ for maximum packet-size check
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260703051932.966884-1-xmei5@asu.edu>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260703-dev-mctp-usb-1-1-v2-2-60367b861b33@codeconstruct.com.au>
+References: <20260703-dev-mctp-usb-1-1-v2-0-60367b861b33@codeconstruct.com.au>
+In-Reply-To: <20260703-dev-mctp-usb-1-1-v2-0-60367b861b33@codeconstruct.com.au>
+To: Matt Johnston <matt@codeconstruct.com.au>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: netdev@vger.kernel.org, linux-usb@vger.kernel.org
+X-Mailer: b4 0.16-dev
 
-Xiang Mei (Microsoft) <xmei5@asu.edu> wrote:
-> xfrm_hash_rebuild()'s first loop preallocates the bins/chains the reinsert
-> loop needs, so the reinsert (after hlist_del_rcu()) cannot allocate or
-> fail. But its guard is inverted: it skips policies with prefixlen <
-> threshold and preallocates for the rest.
-> 
-> prefixlen < threshold is exactly when policy_hash_bysel() returns NULL and
-> the reinsert takes the allocating xfrm_policy_inexact_insert() path. So the
-> loop preallocates for the exact policies (which never allocate) and skips
-> the inexact ones, whose bin/node is then allocated GFP_ATOMIC during
-> reinsert. On failure the error path only WARN_ONCE()s and continues,
-> leaving a poisoned bydst node; the next rebuild's hlist_del_rcu()
-> dereferences LIST_POISON2 and takes a GPF. Reachable under memory pressure,
-> deterministic via failslab.
-> 
-> Invert the guard so preallocation covers exactly the reinserted policies;
-> the reinsert then allocates nothing and cannot fail.
-> 
-> Crash:
->   Oops: general protection fault, probably for non-canonical address
->   0xfbd59c0000000024: 0000 [#1] SMP KASAN NOPTI
->   KASAN: maybe wild-memory-access in range [0xdead...]
->   ...
->   Workqueue: events xfrm_hash_rebuild
->   RIP: 0010:xfrm_hash_rebuild+0x5b3/0x1190
->   RAX: dead000000000122   (LIST_POISON2 + offset)
->   ...
->   Call Trace:
->    hlist_del_rcu (include/linux/rculist.h:599)
->    xfrm_hash_rebuild (net/xfrm/xfrm_policy.c:1365)
->    process_one_work (kernel/workqueue.c:3322)
->    worker_thread (kernel/workqueue.c:3486)
->    kthread (kernel/kthread.c:436)
->    ret_from_fork (arch/x86/kernel/process.c:158)
->    ret_from_fork_asm (arch/x86/entry/entry_64.S:245)
->    ...
->   Kernel panic - not syncing: Fatal exception in interrupt
-> 
-> Fixes: 24969facd704 ("xfrm: policy: store inexact policies in an rhashtable")
-> Reported-by: AutonomousCodeSecurity@microsoft.com
-> Signed-off-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
+The max packet size is smaller than the max transfer size, as we only
+have a u8 length field in the transport header.
 
-Reviewed-by: Florian Westphal <fw@strlen.de>
+Add a define for the maximum representable length, and use that for our
+check. Use this for the MTU maximum calculation too.
+
+Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
+---
+ drivers/net/mctp/mctp-usb.c  | 2 +-
+ include/linux/usb/mctp-usb.h | 3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/mctp/mctp-usb.c b/drivers/net/mctp/mctp-usb.c
+index 545eff06322c..c6e36b63e87a 100644
+--- a/drivers/net/mctp/mctp-usb.c
++++ b/drivers/net/mctp/mctp-usb.c
+@@ -76,7 +76,7 @@ static netdev_tx_t mctp_usb_start_xmit(struct sk_buff *skb,
+ 
+ 	plen = skb->len;
+ 
+-	if (plen + sizeof(*hdr) > MCTP_USB_1_0_XFER_SIZE)
++	if (plen + sizeof(*hdr) > MCTP_USB_1_0_PKTLEN_MAX)
+ 		goto err_drop;
+ 
+ 	rc = skb_cow_head(skb, sizeof(*hdr));
+diff --git a/include/linux/usb/mctp-usb.h b/include/linux/usb/mctp-usb.h
+index 47e2e3931d63..2bece8afd1c7 100644
+--- a/include/linux/usb/mctp-usb.h
++++ b/include/linux/usb/mctp-usb.h
+@@ -25,7 +25,8 @@ struct mctp_usb_hdr {
+ #define MCTP_USB_1_0_XFER_SIZE	512
+ #define MCTP_USB_BTU		68
+ #define MCTP_USB_MTU_MIN	MCTP_USB_BTU
+-#define MCTP_USB_1_0_MTU_MAX	(U8_MAX - sizeof(struct mctp_usb_hdr))
++#define MCTP_USB_1_0_PKTLEN_MAX	U8_MAX
++#define MCTP_USB_1_0_MTU_MAX	(MCTP_USB_1_0_PKTLEN_MAX - sizeof(struct mctp_usb_hdr))
+ #define MCTP_USB_DMTF_ID	0x1ab4
+ 
+ #endif /*  __LINUX_USB_MCTP_USB_H */
+
+-- 
+2.47.3
+
