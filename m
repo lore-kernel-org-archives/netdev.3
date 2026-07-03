@@ -1,37 +1,37 @@
 Received: from us.padl.com (us.padl.com [216.154.215.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB05369D60;
-	Fri,  3 Jul 2026 07:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12C9D368D7F;
+	Fri,  3 Jul 2026 07:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.154.215.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783063857; cv=none; b=HIz8BlXi2OLyUGa92kP2l3xYd8hNc9YG3PmGmg7xDdBLxsZdJOcnfn5ac91aK8bdsMbAbtlFar8CS9MLa5Znt3bGBnAXldcptdFNK06sHwbp1UfwrQj2NiV381rNsNbbuDeVbyrPe9UNopv/kuCJVz9cV5Tz9AoQ2ofhWxmORDA=
+	t=1783063863; cv=none; b=LgBP2f8wwVvdyNwknUk7nBMOgwsfYBnNYnobX2AhE+5xznjjsMtCGhd5Z7G7yaeDiSWRldsjI+WGph5c046f41jwYu/m+DdVHS4aNC2nwrv+db3BXWUy8zIVghFRze8h+piMAlpGfW4dUXOUHQ2G3C/ThCeHAIBKKhheTj/c8uQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783063857; c=relaxed/simple;
-	bh=ovyurjG5Af4dSGQqwANd/N2HAEQP8hL2zwreWbrkuCE=;
+	s=arc-20240116; t=1783063863; c=relaxed/simple;
+	bh=7IzCvZKhRaQ1tfzZMWleKT3BzIxFTtHaP20ZnDDCjuI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=lonDLgvjOT1wVvReZA+Pfv9mOp1qePNQOiqqGr7Hb5Q30tsIHq3HCvJPsg5lHsVQb39oEsrFp1F7i2xUWx7u5xsYACiigqBv9VNI3sZ1V4yG13JOhWethxGkq7aCqZfDJnLDNfYdTv9LCjFadxNtitj0L/0X8i9nKzZKPDyCChk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=hDKMB1Tr; arc=none smtp.client-ip=216.154.215.154
+	 In-Reply-To:To:Cc; b=NwTQZkN1VZ7itgca8vGm+Y/mAtXFtTU4Ab8HjgDXkfNOYcT5Spo7EOMpXGs31HJNGMfuRDs5MVnKhlR8FKzKeHk+jvk2QwLIWexvnIxNVOqGg7m3k3J03/pUr+g8qxB+MkO/Ei5kIpTZLM5O13MmlRo1VRiWrHcyOCUsNoqjRbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=0xGj+Ytm; arc=none smtp.client-ip=216.154.215.154
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=padl.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="hDKMB1Tr"
+	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="0xGj+Ytm"
 Received: from [127.0.1.1] (border.lukktone.com [139.130.100.52])
-	by us.padl.com (Postfix) with ESMTPSA id 31F8460C04;
-	Fri,  3 Jul 2026 03:30:43 -0400 (EDT)
+	by us.padl.com (Postfix) with ESMTPSA id 85E7B60C1E;
+	Fri,  3 Jul 2026 03:30:54 -0400 (EDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=padl.com; s=default;
-	t=1783063848; bh=V1YGnPdzqVCc+/hn5n6vQES3Xulkk+/WuQATHNv8S6M=;
+	t=1783063859; bh=E9/34/2dakZpafmdHYwrjiSTCpfibWXLDSM4VO7yCSM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=hDKMB1TrvcIhDj9XXqAGAuql/+mCBiEqYdtYP8s8AJTO+s3k64GgQSC1bSMNeYDf5
-	 N5g0WnAFha1k41b/7eL0rlv9MDo1CVQPh6Pn8SaX+LT4coroNn2XGifg/7jx8aMHT7
-	 k8BLEmpiNH1Bc0TID0wexuN58TjllrDEmRyoBWsKggM2dSaFAQsbvooqDf/pAry5qd
-	 vgoFdL0Rz1kbGEQdMkooWTMStzQoemxpFvawMKhRBtJSBEV1uQIEY2I72uWKSMrVe2
-	 J2xNy51x+L/7U/sAKsBa9Ao6aYyPZJISQ5AWXqN0DPgcO1EqUq1vtFfOUDmgOI0rFh
-	 FWrvuXduVhiBA==
+	b=0xGj+YtmKxzcC1nP4Dd1pkRsydrnQy7DO/nm0hdzywFf5zBIfzFKeOoHgLrElXVwB
+	 6K6R12VQh6pH8kr6h0ByUtz5ztSvBvl5L2SIECItmcX7I+mFMLzHzFgC5Xgn9zboPz
+	 tZXWFzJRQgyZoVsM6/ol+RjQSyltPQLd+jXdJP2QqAgU5P96vC09Rsnu4xHA5NfhDc
+	 5dBQNPQP8BLJF2sI+BVvGUl97IFcN1UmNR2KUfOobVe3tomKgSnbzPUX6sPuW0X725
+	 Qh6NR51lo/CtL4Fe/4+A9iolWON9/LvS5KO3xBDDKOHU5FoSzQfzhbdv1t7FExMaBr
+	 7nNwfAKN2iH4A==
 From: Luke Howard <lukeh@padl.com>
-Date: Fri, 03 Jul 2026 17:30:22 +1000
-Subject: [PATCH net-next 03/12] net: dsa: qca8k: dsa_inband_request: More
- normal return values
+Date: Fri, 03 Jul 2026 17:30:24 +1000
+Subject: [PATCH net-next 05/12] net: dsa: qca8k: Move request sequence
+ number handling into core
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,7 +40,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260703-net-next-dsa-rmu-v1-3-a03febf20bb4@padl.com>
+Message-Id: <20260703-net-next-dsa-rmu-v1-5-a03febf20bb4@padl.com>
 References: <20260703-net-next-dsa-rmu-v1-0-a03febf20bb4@padl.com>
 In-Reply-To: <20260703-net-next-dsa-rmu-v1-0-a03febf20bb4@padl.com>
 To: Vladimir Oltean <olteanv@gmail.com>, 
@@ -59,131 +59,225 @@ Cc: Cedric Jehasse <cedric.jehasse@gmail.com>,
  Mattias Forsblad <mattias.forsblad@gmail.com>, netdev@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Luke Howard <lukeh@padl.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783063828; l=3441;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783063828; l=7538;
  i=lukeh@padl.com; s=20260701; h=from:subject:message-id;
- bh=4hJW/v9iy+jFTxTyrW/XW4pVWuQX19j05FKV+U29JRM=;
- b=HnIwMHiq1nrVk/590BSixkGddDRhNp3R9sJSfOWzffX6iZ1DQPWj7npGTgDRBrdnY6Zo1uiMo
- qu5YmQ3A0PJBMA7RVqo252s/Ujo3r6Wm85KQAdEU4wka6Fb06pX18iI
+ bh=UkBkklUMplRFlOcjd6gKayQMemqa1w/l+6/UA3HMpp4=;
+ b=/MSa+L9CmeML6hbiPkKtb2qq6Mm9ssHYdzvI+OuhyA97BEvRmUC00xe5fnWXvZYlAWO2P6wVZ
+ 8pueWKnVp6JBzhS+0kaSVjIQ9WYGGdL1PIHMDN40bjJq1I/dB1mRWRa
 X-Developer-Key: i=lukeh@padl.com; a=ed25519;
  pk=D6YgUnH9/OzSZsduYm9XDbvXn1IHDwKwI1hLTsKNRLw=
 
 From: Andrew Lunn <andrew@lunn.ch>
 
-wait_for_completion_timeout() has unusual return values. If it times
-out, it returns 0, and on success it returns the number of remaining
-jiffies for the timeout.
+Each request/reply frame is likely to have a sequence number so that
+request and the reply can be matched together. Move this sequence
+number into the inband structure. The driver must provide a helper to
+insert the sequence number into the skb, and the core will perform the
+increment.
 
-For the use case here, the remaining time is not needed. All that is
-really interesting is, it succeeded and returns 0, or a timeout.
-Massage the return value to fit this, and modify the callers to the
-more usual pattern of ret < 0 is an error.
-
-Sending the clear message is expected to fail, so don't check the
-return value, and add a comment about this.
+To allow different devices to have different size sequence numbers, a
+mask is provided. This can be used for example to reduce the u32
+sequence number down to a u8.
 
 Signed-off-by: Andrew Lunn <andrew@lunn.ch>
 ---
-v2
-Remove check on the clear message.
-wait_for_completion_timeout() does not return negative values
----
- drivers/net/dsa/qca/qca8k-8xxx.c | 24 +++++++++++-------------
- net/dsa/dsa.c                    |  6 +++++-
- 2 files changed, 16 insertions(+), 14 deletions(-)
+ drivers/net/dsa/qca/qca8k-8xxx.c | 29 +++++++++--------------------
+ drivers/net/dsa/qca/qca8k.h      |  1 -
+ include/net/dsa.h                |  6 +++++-
+ net/dsa/dsa.c                    | 16 +++++++++++++++-
+ 4 files changed, 29 insertions(+), 23 deletions(-)
 
 diff --git a/drivers/net/dsa/qca/qca8k-8xxx.c b/drivers/net/dsa/qca/qca8k-8xxx.c
-index 4da6094552f1e..b0cbe72c15b4c 100644
+index 3b3fe96016176..fc5070402188e 100644
 --- a/drivers/net/dsa/qca/qca8k-8xxx.c
 +++ b/drivers/net/dsa/qca/qca8k-8xxx.c
-@@ -348,8 +348,8 @@ static int qca8k_read_eth(struct qca8k_priv *priv, u32 reg, u32 *val, int len)
+@@ -186,7 +186,8 @@ static void qca8k_rw_reg_ack_handler(struct dsa_switch *ds, struct sk_buff *skb)
+ 	len *= sizeof(u16);
  
- 	mutex_unlock(&mgmt_eth_data->mutex);
+ 	/* Make sure the seq match the requested packet. If not, drop. */
+-	if (get_unaligned_le32(&mgmt_ethhdr->seq) != mgmt_eth_data->seq)
++	if (get_unaligned_le32(&mgmt_ethhdr->seq) !=
++	    dsa_inband_seqno(&mgmt_eth_data->inband))
+ 		return;
  
--	if (ret <= 0)
--		return -ETIMEDOUT;
-+	if (ret)
-+		return ret;
+ 	if (cmd == MDIO_READ) {
+@@ -332,12 +333,10 @@ static int qca8k_read_eth(struct qca8k_priv *priv, u32 reg, u32 *val, int len)
  
- 	if (!ack)
- 		return -EINVAL;
-@@ -392,8 +392,8 @@ static int qca8k_write_eth(struct qca8k_priv *priv, u32 reg, u32 *val, int len)
+ 	skb->dev = priv->mgmt_conduit;
  
- 	mutex_unlock(&mgmt_eth_data->mutex);
- 
--	if (ret <= 0)
--		return -ETIMEDOUT;
-+	if (ret)
-+		return ret;
- 
- 	if (!ack)
- 		return -EINVAL;
-@@ -596,8 +596,8 @@ qca8k_phy_eth_busy_wait(struct qca8k_mgmt_eth_data *mgmt_eth_data,
- 
- 	ack = mgmt_eth_data->ack;
- 
--	if (ret <= 0)
--		return -ETIMEDOUT;
-+	if (ret)
-+		return ret;
- 
- 	if (!ack)
- 		return -EINVAL;
-@@ -694,8 +694,7 @@ qca8k_phy_eth_command(struct qca8k_priv *priv, bool read, int phy,
- 
- 	ack = mgmt_eth_data->ack;
- 
--	if (ret <= 0) {
--		ret = -ETIMEDOUT;
-+	if (ret) {
- 		kfree_skb(read_skb);
- 		goto exit;
- 	}
-@@ -727,10 +726,8 @@ qca8k_phy_eth_command(struct qca8k_priv *priv, bool read, int phy,
- 
- 		ack = mgmt_eth_data->ack;
- 
--		if (ret <= 0) {
--			ret = -ETIMEDOUT;
-+		if (ret)
- 			goto exit;
--		}
- 
- 		if (!ack) {
- 			ret = -EINVAL;
-@@ -747,8 +744,9 @@ qca8k_phy_eth_command(struct qca8k_priv *priv, bool read, int phy,
- 	qca8k_mdio_header_fill_seq_num(clear_skb, mgmt_eth_data->seq);
+-	/* Increment seq_num and set it in the mdio pkt */
+-	mgmt_eth_data->seq++;
+-	qca8k_mdio_header_fill_seq_num(skb, mgmt_eth_data->seq);
  	mgmt_eth_data->ack = false;
  
--	dsa_inband_wait_for_completion(&mgmt_eth_data->inband,
--				       QCA8K_ETHERNET_TIMEOUT);
-+	/* This is expected to fail sometimes, so don't check return value. */
-+	dsa_inband_request(&mgmt_eth_data->inband, clear_skb,
-+			   QCA8K_ETHERNET_TIMEOUT);
+ 	ret = dsa_inband_request(&mgmt_eth_data->inband, skb,
++				 qca8k_mdio_header_fill_seq_num,
+ 				 QCA8K_ETHERNET_TIMEOUT);
+ 
+ 	*val = mgmt_eth_data->data[0];
+@@ -380,12 +379,10 @@ static int qca8k_write_eth(struct qca8k_priv *priv, u32 reg, u32 *val, int len)
+ 
+ 	skb->dev = priv->mgmt_conduit;
+ 
+-	/* Increment seq_num and set it in the mdio pkt */
+-	mgmt_eth_data->seq++;
+-	qca8k_mdio_header_fill_seq_num(skb, mgmt_eth_data->seq);
+ 	mgmt_eth_data->ack = false;
+ 
+ 	ret = dsa_inband_request(&mgmt_eth_data->inband, skb,
++				 qca8k_mdio_header_fill_seq_num,
+ 				 QCA8K_ETHERNET_TIMEOUT);
+ 
+ 	ack = mgmt_eth_data->ack;
+@@ -586,12 +583,10 @@ qca8k_phy_eth_busy_wait(struct qca8k_mgmt_eth_data *mgmt_eth_data,
+ 	if (!skb)
+ 		return -ENOMEM;
+ 
+-	/* Increment seq_num and set it in the copy pkt */
+-	mgmt_eth_data->seq++;
+-	qca8k_mdio_header_fill_seq_num(skb, mgmt_eth_data->seq);
+ 	mgmt_eth_data->ack = false;
+ 
+ 	ret = dsa_inband_request(&mgmt_eth_data->inband, skb,
++				 qca8k_mdio_header_fill_seq_num,
+ 				 QCA8K_ETHERNET_TIMEOUT);
+ 
+ 	ack = mgmt_eth_data->ack;
+@@ -684,12 +679,10 @@ qca8k_phy_eth_command(struct qca8k_priv *priv, bool read, int phy,
+ 	clear_skb->dev = mgmt_conduit;
+ 	write_skb->dev = mgmt_conduit;
+ 
+-	/* Increment seq_num and set it in the write pkt */
+-	mgmt_eth_data->seq++;
+-	qca8k_mdio_header_fill_seq_num(write_skb, mgmt_eth_data->seq);
+ 	mgmt_eth_data->ack = false;
+ 
+ 	ret = dsa_inband_request(&mgmt_eth_data->inband, write_skb,
++				 qca8k_mdio_header_fill_seq_num,
+ 				 QCA8K_ETHERNET_TIMEOUT);
+ 
+ 	ack = mgmt_eth_data->ack;
+@@ -716,12 +709,10 @@ qca8k_phy_eth_command(struct qca8k_priv *priv, bool read, int phy,
+ 	}
+ 
+ 	if (read) {
+-		/* Increment seq_num and set it in the read pkt */
+-		mgmt_eth_data->seq++;
+-		qca8k_mdio_header_fill_seq_num(read_skb, mgmt_eth_data->seq);
+ 		mgmt_eth_data->ack = false;
+ 
+ 		ret = dsa_inband_request(&mgmt_eth_data->inband, read_skb,
++					 qca8k_mdio_header_fill_seq_num,
+ 					 QCA8K_ETHERNET_TIMEOUT);
+ 
+ 		ack = mgmt_eth_data->ack;
+@@ -739,13 +730,11 @@ qca8k_phy_eth_command(struct qca8k_priv *priv, bool read, int phy,
+ 		kfree_skb(read_skb);
+ 	}
+ exit:
+-	/* Increment seq_num and set it in the clear pkt */
+-	mgmt_eth_data->seq++;
+-	qca8k_mdio_header_fill_seq_num(clear_skb, mgmt_eth_data->seq);
+ 	mgmt_eth_data->ack = false;
+ 
+ 	/* This is expected to fail sometimes, so don't check return value. */
+ 	dsa_inband_request(&mgmt_eth_data->inband, clear_skb,
++			   qca8k_mdio_header_fill_seq_num,
+ 			   QCA8K_ETHERNET_TIMEOUT);
  
  	mutex_unlock(&mgmt_eth_data->mutex);
- 	mutex_unlock(&priv->bus->mdio_lock);
+@@ -2080,7 +2069,7 @@ qca8k_sw_probe(struct mdio_device *mdiodev)
+ 		return -ENOMEM;
+ 
+ 	mutex_init(&priv->mgmt_eth_data.mutex);
+-	dsa_inband_init(&priv->mgmt_eth_data.inband);
++	dsa_inband_init(&priv->mgmt_eth_data.inband, U32_MAX);
+ 
+ 	mutex_init(&priv->mib_eth_data.mutex);
+ 	init_completion(&priv->mib_eth_data.rw_done);
+diff --git a/drivers/net/dsa/qca/qca8k.h b/drivers/net/dsa/qca/qca8k.h
+index 938f2c9ff0cac..1054ba1c7e590 100644
+--- a/drivers/net/dsa/qca/qca8k.h
++++ b/drivers/net/dsa/qca/qca8k.h
+@@ -395,7 +395,6 @@ struct qca8k_mgmt_eth_data {
+ 	struct dsa_inband inband;
+ 	struct mutex mutex; /* Enforce one mdio read/write at time */
+ 	bool ack;
+-	u32 seq;
+ 	u32 data[4];
+ };
+ 
+diff --git a/include/net/dsa.h b/include/net/dsa.h
+index 6b5aeb99ec3bb..cdf2487397c2b 100644
+--- a/include/net/dsa.h
++++ b/include/net/dsa.h
+@@ -1353,13 +1353,17 @@ int dsa_port_simple_hsr_leave(struct dsa_switch *ds, int port,
+  */
+ struct dsa_inband {
+ 	struct completion completion;
++	u32 seqno;
++	u32 seqno_mask;
+ };
+ 
+-void dsa_inband_init(struct dsa_inband *inband);
++void dsa_inband_init(struct dsa_inband *inband, u32 seqno_mask);
+ void dsa_inband_complete(struct dsa_inband *inband);
+ int dsa_inband_request(struct dsa_inband *inband, struct sk_buff *skb,
++		       void (*insert_seqno)(struct sk_buff *skb, u32 seqno),
+ 		       int timeout_ms);
+ int dsa_inband_wait_for_completion(struct dsa_inband *inband, int timeout_ms);
++u32 dsa_inband_seqno(struct dsa_inband *inband);
+ 
+ /* Keep inline for faster access in hot path */
+ static inline bool netdev_uses_dsa(const struct net_device *dev)
 diff --git a/net/dsa/dsa.c b/net/dsa/dsa.c
-index 534e391fac7b5..f6ae11b06b4ab 100644
+index f6ae11b06b4ab..98a75ee08f011 100644
 --- a/net/dsa/dsa.c
 +++ b/net/dsa/dsa.c
-@@ -1878,12 +1878,16 @@ int dsa_inband_request(struct dsa_inband *inband, struct sk_buff *skb,
+@@ -1834,9 +1834,11 @@ int dsa_port_simple_hsr_leave(struct dsa_switch *ds, int port,
+ }
+ EXPORT_SYMBOL_GPL(dsa_port_simple_hsr_leave);
+ 
+-void dsa_inband_init(struct dsa_inband *inband)
++void dsa_inband_init(struct dsa_inband *inband, u32 seqno_mask)
+ {
+ 	init_completion(&inband->completion);
++	inband->seqno_mask = seqno_mask;
++	inband->seqno = 0;
+ }
+ EXPORT_SYMBOL_GPL(dsa_inband_init);
+ 
+@@ -1875,11 +1877,17 @@ EXPORT_SYMBOL_GPL(dsa_inband_wait_for_completion);
+  * be reinitialised before the skb is queued, to avoid races.
+  */
+ int dsa_inband_request(struct dsa_inband *inband, struct sk_buff *skb,
++		       void (*insert_seqno)(struct sk_buff *skb, u32 seqno),
  		       int timeout_ms)
  {
  	unsigned long jiffies = msecs_to_jiffies(timeout_ms);
-+	int ret;
+ 	int ret;
  
++	if (insert_seqno) {
++		WRITE_ONCE(inband->seqno, inband->seqno + 1);
++		insert_seqno(skb, inband->seqno & inband->seqno_mask);
++	}
++
  	reinit_completion(&inband->completion);
  
  	dev_queue_xmit(skb);
- 
--	return wait_for_completion_timeout(&inband->completion, jiffies);
-+	ret = wait_for_completion_timeout(&inband->completion, jiffies);
-+	if (ret == 0)
-+		return -ETIMEDOUT;
-+	return 0;
+@@ -1891,6 +1899,12 @@ int dsa_inband_request(struct dsa_inband *inband, struct sk_buff *skb,
  }
  EXPORT_SYMBOL_GPL(dsa_inband_request);
  
++u32 dsa_inband_seqno(struct dsa_inband *inband)
++{
++	return READ_ONCE(inband->seqno) & inband->seqno_mask;
++}
++EXPORT_SYMBOL_GPL(dsa_inband_seqno);
++
+ static const struct dsa_stubs __dsa_stubs = {
+ 	.conduit_hwtstamp_validate = __dsa_conduit_hwtstamp_validate,
+ };
 
 -- 
 2.43.0
