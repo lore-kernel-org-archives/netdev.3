@@ -1,37 +1,37 @@
 Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19DC336A37F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19EA336F418;
 	Fri,  3 Jul 2026 05:48:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783057690; cv=none; b=ABEJLb5mkHT/rRAeAfmSF1lQlnypkaeMa4ytMrnCI9zANPIyhH1bbN2hF77LV2Bq7u9ICMlFgGnGkNemXevsNb4GD2OrfoKPGejSHl04NGsqDAtecHK9zXGW6g3uVxhzTbSWwBtv8mH00eTyLwV2B6tOSXRJ0RVR1qaBDHEU1cM=
+	t=1783057693; cv=none; b=dXqsCHcmAG2ZOIXe0k31dfGaK3qlfMoS3AWsiCUcU/YAJA2lgtAsMqk13vJd1n/Xtq4UtpSYJyRnDTj/IHBjFnRAJaMErjG2VTlQl4AhUa2h8ZwRdalFs0xWFOLetGJ/GA1Hcej4BwbkvHRnVQwWbdF3K1Mu38LbSKalPzCmRs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783057690; c=relaxed/simple;
-	bh=D5Tn7XSFgByn7QwJJG/6rIf0djjid49NJAyfwKWss0g=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=MV2BW7tLTmzL6ATtRupORoeJMFIOaOs1B6KjGfbCnzMDABiXhyDIH7PffpqK11zfKXy5hw0Di0De7zh1N8IPnikiQdY3jJlYvK7SJq9epEqqEKJ8dj0LfECopD3qNEX3aa5A8IYurfH55+O0+SJ/30RSRaehNye1rrpOecrGNuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=aTjcfCWg; arc=none smtp.client-ip=203.29.241.158
+	s=arc-20240116; t=1783057693; c=relaxed/simple;
+	bh=qRbc8+w99auoO0J8/3pNdw+i2Gj/c7MYi74mUD/g2L4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=upQ2D2ajAR9LhJJ1SPgkhXmPYVt2DDR6uHWQ+oTpt53KnV7uWCfnI7FgeoGsYcQhX5i++UtlWxDjmlrDx2Oc5Of4BPrfzk6U4igyVE9yoaE+AdkMkbd/pjD/jZOfUhrN6JpBpZu2T6NL1qnE3NRU4DeAmb5TmtTYac5puTWj504=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=PXj3G793; arc=none smtp.client-ip=203.29.241.158
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="aTjcfCWg"
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="PXj3G793"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1783057669;
-	bh=VM6lGt+VL7PBeCZIokU43y2WhkC1SDBJ5mIOBu9HVy4=;
-	h=From:Subject:Date:To:Cc;
-	b=aTjcfCWgnbBNA+UULIUyf5cZtRtRn9zVIgpCLr6dh6aMeC4IDJuRn0sW7OkdgLq82
-	 Z6GaUmgrPVZXcJY7NZDXNzkweOuH0EQlmScCPOVDxEleLcv/PxKVVKVxlIuwC11tzv
-	 YZsI3Z5/cByUx2wDv764dhrqYn/S8kWkb8OHxF6EfAQ7c8oil8/8iK+z44cDOVESCL
-	 Fru/UIJIJvfi/VnsCwR+PmYizeXTAIFxQx8xDf1U7dvo6TnJauYAOUQ3HmgFUGyH92
-	 AlnZfuhfJ5ee2yPfHx+5aymB6Wp1xTFDkaD0U6mqZqE52yInKwKPP4q7bcW3VhSRlq
-	 FU4DBfnxP5avA==
+	d=codeconstruct.com.au; s=2022a; t=1783057670;
+	bh=m0HY8aTZIEhfqnOI9l6369QZuShLvZkK9xV7qcjL29A=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=PXj3G793mxZAcW6KiOzYGIdcZO17rMba3SlwW1jIWw9mIFn80NR7esBmen92J+PVZ
+	 Vjlf8HbdMiiJn81mRb+lg+zOzdRLMmmP9Ok2jJ3oN/Bc/Qg7Xk5Jjc8GtNIcRTqdL4
+	 ID0EG+XN/lQSApHHznJzj0BECWTY5Z5daXDYZdGE1OcoRxkPzC8s7KDT8d6CMcaJyJ
+	 eIyuOx3VyHI/PfG0gNrvBwAKXVLWMYcUtbxrvfVzJsH+Tj9KFMotY8v+I9U41MR9ju
+	 6Pd/8JcEyfwmRpcty7oNxJOSv1iC25TBWEHQ2FEYFv6iwo94fM5x0S03MN5enBh1bf
+	 cY5VRfy25Osaw==
 Received: by codeconstruct.com.au (Postfix, from userid 10000)
-	id C324D660CA; Fri,  3 Jul 2026 13:47:49 +0800 (AWST)
+	id EBD3B6628D; Fri,  3 Jul 2026 13:47:50 +0800 (AWST)
 From: Jeremy Kerr <jk@codeconstruct.com.au>
-Subject: [PATCH net-next v2 00/12] net: mctp: usb: Add support for
- MCTP-over-USB v1.1
-Date: Fri, 03 Jul 2026 13:47:20 +0800
-Message-Id: <20260703-dev-mctp-usb-1-1-v2-0-60367b861b33@codeconstruct.com.au>
+Date: Fri, 03 Jul 2026 13:47:24 +0800
+Subject: [PATCH net-next v2 04/12] net: mctp: usblib: Move TX transfer
+ processing to mctp-usblib
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,11 +40,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAOhMR2oC/2WOzQ6CMBCEX4Xs2ZIWsBBPvofhUNpFakKL/SEYw
- rtbwJvZ02RnvpkVPDqNHm7ZCg5n7bU1SRSXDOQgzBOJVklDQQtOOa2IwpmMMkwk+o6wdLxXzbU
- SipXYQIpNDnu9HMgHGAzE4BKgPT8+di+UYSf+vA7fMbWGM7DbBu2DdZ9j0swOzNle0v/2mRFKG
- i5KxnrJ666+S6tQWuODizLk0o65iNBu2/YFBoM8MewAAAA=
-X-Change-ID: 20260604-dev-mctp-usb-1-1-6fd854ad13e8
+Message-Id: <20260703-dev-mctp-usb-1-1-v2-4-60367b861b33@codeconstruct.com.au>
+References: <20260703-dev-mctp-usb-1-1-v2-0-60367b861b33@codeconstruct.com.au>
+In-Reply-To: <20260703-dev-mctp-usb-1-1-v2-0-60367b861b33@codeconstruct.com.au>
 To: Matt Johnston <matt@codeconstruct.com.au>, 
  Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
@@ -53,83 +51,517 @@ To: Matt Johnston <matt@codeconstruct.com.au>,
 Cc: netdev@vger.kernel.org, linux-usb@vger.kernel.org
 X-Mailer: b4 0.16-dev
 
-Version 1.1.0 of DSP0283 (MCTP over USB transport binding) has been
-released, this patch series updates our current v1.0.1 support for the
-changes in v1.1.x.
+With the RX processing in mctp-usblib, add TX processing alongside.
 
-The major change in v1.1 is the introduction of "packet spanning" mode,
-where a single MCTP packet may be split over multiple USB packets
-(themselves forming a single USB bulk transfer). This relaxes the
-requirement for USB high-speed mode, as we can now send MCTP packets
-contained over multiple 64-byte full-speed USB bulk transfers, and gives
-us an increase in the maximum MCTP packet size - we now have 13 bits of
-packet length (previously 8) in the transport header.
+To accommodate packed transfers in DSP0283, where a transfer may contain
+multiple MCTP packets, we move to a split process for the transmit API:
 
-Handling packet spanning introduces some complexity in the transmit and
-receive paths, as we lose some constraints on where packet boundaries
-may correspond to USB transfer boundaries, and may need to retain state
-across separate transfers. To contain this complexity, we introduce a
-new library for the transfer packing- and unpacking implementations,
-"mctp-usblib". The host driver is a consumer of this library, and a
-future gadget driver can use the same implementations. We can now also
-implement tests on the API boundary of the library.
+ * push: create a new transmit context, and add a skb to it.
 
-The series implements an incremental shift to mctp-usblib, then
-implements packet spanning mode in the new library. We have a few
-changes to prepare for this, in altering a few constants and
-behaviours as v1.0-specific. Once packet spanning is implemented in
-mctp-usblib, we enable it in the host-side driver.
+ * send: callback to the driver implementation to send the (possibly
+   multi-packet) USB transfer
 
-To: Matt Johnston <matt@codeconstruct.com.au>
-To: Andrew Lunn <andrew+netdev@lunn.ch>
-To: "David S. Miller" <davem@davemloft.net>
-To: Eric Dumazet <edumazet@google.com>
-To: Jakub Kicinski <kuba@kernel.org>
-To: Paolo Abeni <pabeni@redhat.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: netdev@vger.kernel.org
-Cc: linux-usb@vger.kernel.org
+ * complete: update skb accounting and release the tx context
+
+The actual multi-packet transfer implementation will be added in the
+next change; no tx context persists beyond the single send at present.
+
+While we're here, fix an inconsistency between tx and rx stats: both
+should not include the transport header.
+
 Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
 
-Changes in v2:
-- address sashiko reviews:
-  - rx mac_header correction
-  - rx/tx stats fixes
-  - limit non-spanned packets (where we have no ZLP) to max size
-  - handle transient rx urb error status
-  - set skb_drop_reasons
-  - kunit early-exit cleanups, take rntl lock where needed
-- rework tx_qmem locking and anchor handling (we don't need to unanchor
-  on completion)
-- Link to v1: https://patch.msgid.link/20260630-dev-mctp-usb-1-1-v1-0-86a311fc67b7@codeconstruct.com.au
-
 ---
-Jeremy Kerr (12):
-      net: mctp: usb: Include version indicator in max packet size defines
-      net: mctp: usb: Use packet-length max for maximum packet-size check
-      net: mctp: usblib: Move RX transfer processing to a new mctp-usblib
-      net: mctp: usblib: Move TX transfer processing to mctp-usblib
-      net: mctp: usb: Allow for multiple urb submissions from a packet tx
-      net: mctp: usblib: Add support for multi-packet transmit
-      net: mctp: usb: Accommodate DSP0283 v1.1 header format
-      net: mctp: usblib: Implement receive-side packet spanning
-      net: mctp: usblib: Implement transmit-side packet spanning
-      net: mctp: usblib: Add initial kunit tests
-      net: mctp: usb: enable v1.1 packet spanning
-      net: mctp: usb: Allow multiple urbs in flight
-
- drivers/net/mctp/Kconfig            |  16 +
- drivers/net/mctp/Makefile           |   1 +
- drivers/net/mctp/mctp-usb.c         | 276 ++++++++---------
- drivers/net/mctp/mctp-usblib-test.c | 389 ++++++++++++++++++++++++
- drivers/net/mctp/mctp-usblib.c      | 589 ++++++++++++++++++++++++++++++++++++
- include/linux/usb/mctp-usb.h        |  91 +++++-
- 6 files changed, 1207 insertions(+), 155 deletions(-)
+v2:
+  - make tx stats consistent with rx stats
+  - reinstate missing tx_stats_update in tx_send_complete
+  - don't usb_kill_urb() with the tx lock held
+  - implement skb_drop_reasons
 ---
-base-commit: b85966adbf5de0668a815c6e3527f87e0c387fb4
-change-id: 20260604-dev-mctp-usb-1-1-6fd854ad13e8
+ drivers/net/mctp/mctp-usb.c    | 130 +++++++++++++-------------
+ drivers/net/mctp/mctp-usblib.c | 203 +++++++++++++++++++++++++++++++++++++++++
+ include/linux/usb/mctp-usb.h   |  39 ++++++++
+ 3 files changed, 308 insertions(+), 64 deletions(-)
 
-Best regards,
---  
-Jeremy Kerr <jk@codeconstruct.com.au>
+diff --git a/drivers/net/mctp/mctp-usb.c b/drivers/net/mctp/mctp-usb.c
+index cfecf1e4b98b..0eacad18cb73 100644
+--- a/drivers/net/mctp/mctp-usb.c
++++ b/drivers/net/mctp/mctp-usb.c
+@@ -29,90 +29,82 @@ struct mctp_usb {
+ 	u8 ep_out;
+ 
+ 	struct mctp_usblib_rx rx;
+-
+-	struct urb *tx_urb;
+ 	struct urb *rx_urb;
+ 
+ 	/* enforces atomic access to rx_stopped and requeuing the retry work */
+ 	spinlock_t rx_lock;
+ 	bool rx_stopped;
+ 	struct delayed_work rx_retry_work;
++
++	struct mctp_usblib_tx tx;
++	/* protects tx_urb */
++	spinlock_t tx_lock;
++	struct urb *tx_urb;
+ };
+ 
+ static void mctp_usb_out_complete(struct urb *urb)
+ {
+-	struct sk_buff *skb = urb->context;
+-	struct net_device *netdev = skb->dev;
+-	int status;
++	struct mctp_usblib_tx_ctx *tx_ctx = urb->context;
++	struct mctp_usb *mctp_usb = mctp_usblib_tx_ctx_priv(tx_ctx);
++	struct net_device *netdev = mctp_usb->netdev;
++	unsigned long flags;
+ 
+-	status = urb->status;
++	mctp_usblib_tx_send_complete(tx_ctx, netdev, urb->status == 0);
+ 
+-	switch (status) {
+-	case -ENOENT:
+-	case -ECONNRESET:
+-	case -ESHUTDOWN:
+-	case -EPROTO:
+-		dev_dstats_tx_dropped(netdev);
+-		break;
+-	case 0:
+-		dev_dstats_tx_add(netdev, skb->len);
+-		netif_wake_queue(netdev);
+-		consume_skb(skb);
+-		return;
+-	default:
+-		netdev_dbg(netdev, "unexpected tx urb status: %d\n", status);
+-		dev_dstats_tx_dropped(netdev);
+-	}
++	spin_lock_irqsave(&mctp_usb->tx_lock, flags);
++	mctp_usb->tx_urb = NULL;
++	spin_unlock_irqrestore(&mctp_usb->tx_lock, flags);
+ 
+-	kfree_skb(skb);
++	usb_free_urb(urb);
++
++	netif_wake_queue(netdev);
+ }
+ 
+-static netdev_tx_t mctp_usb_start_xmit(struct sk_buff *skb,
+-				       struct net_device *dev)
++static int mctp_usb_tx_send(struct mctp_usblib_tx_ctx *tx_ctx,
++			    void *data, size_t len)
+ {
+-	struct mctp_usb *mctp_usb = netdev_priv(dev);
+-	struct mctp_usb_hdr *hdr;
+-	unsigned int plen;
++	struct mctp_usb *mctp_usb = mctp_usblib_tx_ctx_priv(tx_ctx);
++	unsigned long flags;
+ 	struct urb *urb;
+ 	int rc;
+ 
+-	plen = skb->len;
+-
+-	if (plen + sizeof(*hdr) > MCTP_USB_1_0_PKTLEN_MAX)
+-		goto err_drop;
+-
+-	rc = skb_cow_head(skb, sizeof(*hdr));
+-	if (rc)
+-		goto err_drop;
+-
+-	hdr = skb_push(skb, sizeof(*hdr));
+-	if (!hdr)
+-		goto err_drop;
+-
+-	hdr->id = cpu_to_be16(MCTP_USB_DMTF_ID);
+-	hdr->rsvd = 0;
+-	hdr->len = plen + sizeof(*hdr);
+-
+-	urb = mctp_usb->tx_urb;
++	urb = usb_alloc_urb(0, GFP_ATOMIC);
++	if (!urb)
++		return -ENOMEM;
+ 
+ 	usb_fill_bulk_urb(urb, mctp_usb->usbdev,
+ 			  usb_sndbulkpipe(mctp_usb->usbdev, mctp_usb->ep_out),
+-			  skb->data, skb->len,
+-			  mctp_usb_out_complete, skb);
++			  data, len, mctp_usb_out_complete, tx_ctx);
+ 
+-	/* Stops TX queue first to prevent race condition with URB complete */
+-	netif_stop_queue(dev);
++	netif_stop_queue(mctp_usb->netdev);
++
++	spin_lock_irqsave(&mctp_usb->tx_lock, flags);
+ 	rc = usb_submit_urb(urb, GFP_ATOMIC);
++	if (!rc)
++		mctp_usb->tx_urb = urb;
++	spin_unlock_irqrestore(&mctp_usb->tx_lock, flags);
++
+ 	if (rc) {
+-		netif_wake_queue(dev);
+-		goto err_drop;
++		netdev_dbg(mctp_usb->netdev, "TX urb submit failed, %d\n", rc);
++		usb_free_urb(urb);
++		netif_start_queue(mctp_usb->netdev);
+ 	}
+ 
+-	return NETDEV_TX_OK;
++	return rc;
++}
++
++static const struct mctp_usblib_tx_ops tx_ops = {
++	.send = mctp_usb_tx_send,
++};
++
++static netdev_tx_t mctp_usb_start_xmit(struct sk_buff *skb,
++				       struct net_device *dev)
++{
++	struct mctp_usb *mctp_usb = netdev_priv(dev);
++	bool more = netdev_xmit_more();
++
++	mctp_usblib_tx_push(dev, &mctp_usb->tx, skb, more);
+ 
+-err_drop:
+-	dev_dstats_tx_dropped(dev);
+-	kfree_skb(skb);
+ 	return NETDEV_TX_OK;
+ }
+ 
+@@ -215,6 +207,7 @@ static int mctp_usb_open(struct net_device *dev)
+ static int mctp_usb_stop(struct net_device *dev)
+ {
+ 	struct mctp_usb *mctp_usb = netdev_priv(dev);
++	struct urb *tx_urb = NULL;
+ 	unsigned long flags;
+ 
+ 	netif_stop_queue(dev);
+@@ -228,7 +221,14 @@ static int mctp_usb_stop(struct net_device *dev)
+ 	flush_delayed_work(&mctp_usb->rx_retry_work);
+ 
+ 	usb_kill_urb(mctp_usb->rx_urb);
+-	usb_kill_urb(mctp_usb->tx_urb);
++
++	spin_lock_irqsave(&mctp_usb->tx_lock, flags);
++	swap(mctp_usb->tx_urb, tx_urb);
++	spin_unlock_irqrestore(&mctp_usb->tx_lock, flags);
++
++	usb_kill_urb(tx_urb);
++
++	mctp_usblib_tx_cancel(&mctp_usb->tx, dev, SKB_DROP_REASON_DEV_READY);
+ 
+ 	return 0;
+ }
+@@ -283,31 +283,33 @@ static int mctp_usb_probe(struct usb_interface *intf,
+ 	dev->usbdev = interface_to_usbdev(intf);
+ 	dev->intf = intf;
+ 	spin_lock_init(&dev->rx_lock);
++	spin_lock_init(&dev->tx_lock);
+ 	usb_set_intfdata(intf, dev);
+ 
+ 	mctp_usblib_rx_init(&dev->rx);
++	mctp_usblib_tx_init(&dev->tx, &tx_ops, dev);
+ 
+ 	dev->ep_in = ep_in->bEndpointAddress;
+ 	dev->ep_out = ep_out->bEndpointAddress;
+ 
+-	dev->tx_urb = usb_alloc_urb(0, GFP_KERNEL);
+ 	dev->rx_urb = usb_alloc_urb(0, GFP_KERNEL);
+-	if (!dev->tx_urb || !dev->rx_urb) {
++	if (!dev->rx_urb) {
+ 		rc = -ENOMEM;
+-		goto err_free_urbs;
++		goto err_fini_rxtx;
+ 	}
+ 
+ 	INIT_DELAYED_WORK(&dev->rx_retry_work, mctp_usb_rx_retry_work);
+ 
+ 	rc = mctp_register_netdev(netdev, NULL, MCTP_PHYS_BINDING_USB);
+ 	if (rc)
+-		goto err_free_urbs;
++		goto err_free_urb;
+ 
+ 	return 0;
+ 
+-err_free_urbs:
+-	usb_free_urb(dev->tx_urb);
++err_free_urb:
+ 	usb_free_urb(dev->rx_urb);
++err_fini_rxtx:
++	mctp_usblib_tx_fini(&dev->tx);
+ 	mctp_usblib_rx_fini(&dev->rx);
+ 	free_netdev(netdev);
+ 	return rc;
+@@ -319,7 +321,7 @@ static void mctp_usb_disconnect(struct usb_interface *intf)
+ 
+ 	mctp_unregister_netdev(dev->netdev);
+ 	mctp_usblib_rx_fini(&dev->rx);
+-	usb_free_urb(dev->tx_urb);
++	mctp_usblib_tx_fini(&dev->tx);
+ 	usb_free_urb(dev->rx_urb);
+ 	free_netdev(dev->netdev);
+ }
+diff --git a/drivers/net/mctp/mctp-usblib.c b/drivers/net/mctp/mctp-usblib.c
+index 875644de1780..f55c82e03bc1 100644
+--- a/drivers/net/mctp/mctp-usblib.c
++++ b/drivers/net/mctp/mctp-usblib.c
+@@ -161,6 +161,209 @@ void mctp_usblib_rx_cancel(struct mctp_usblib_rx *rx)
+ }
+ EXPORT_SYMBOL_GPL(mctp_usblib_rx_cancel);
+ 
++/* transmit context: encapsulates one transfer */
++struct mctp_usblib_tx_ctx {
++	struct mctp_usblib_tx *tx;
++	struct sk_buff *skb;
++	unsigned int len;
++	enum mctp_usblib_tx_buf_type {
++		TX_SINGLE,
++	} buf_type;
++};
++
++void mctp_usblib_tx_init(struct mctp_usblib_tx *tx,
++			 const struct mctp_usblib_tx_ops *ops,
++			 void *priv)
++{
++	memset(tx, 0, sizeof(*tx));
++	tx->ops = *ops;
++	tx->priv = priv;
++}
++EXPORT_SYMBOL_GPL(mctp_usblib_tx_init);
++
++void mctp_usblib_tx_fini(struct mctp_usblib_tx *tx)
++{
++}
++EXPORT_SYMBOL_GPL(mctp_usblib_tx_fini);
++
++void *mctp_usblib_tx_ctx_priv(struct mctp_usblib_tx_ctx *tx_ctx)
++{
++	return tx_ctx->tx->priv;
++}
++EXPORT_SYMBOL_GPL(mctp_usblib_tx_ctx_priv);
++
++static struct mctp_usblib_tx_ctx *
++mctp_usblib_tx_ctx_create(struct mctp_usblib_tx *tx, struct sk_buff *skb)
++{
++	struct mctp_usblib_tx_ctx *ctx;
++
++	ctx = kzalloc_obj(*ctx, GFP_ATOMIC);
++	if (!ctx)
++		return NULL;
++
++	ctx->tx = tx;
++	ctx->buf_type = TX_SINGLE;
++	ctx->skb = skb;
++	ctx->len += skb->len;
++
++	return ctx;
++}
++
++static int mctp_usblib_tx_send(struct mctp_usblib_tx_ctx *ctx)
++{
++	struct mctp_usblib_tx *tx = ctx->tx;
++	void *buf = ctx->skb->data;
++
++	return tx->ops.send(ctx, buf, ctx->len);
++}
++
++static void mctp_usblib_tx_ctx_free(struct mctp_usblib_tx_ctx *ctx,
++				    enum skb_drop_reason reason)
++{
++	if (ctx)
++		dev_kfree_skb_any_reason(ctx->skb, reason);
++	kfree(ctx);
++}
++
++static void mctp_usblib_tx_stats_update(struct mctp_usblib_tx_ctx *ctx,
++					struct net_device *dev,
++					bool ok)
++{
++	struct pcpu_dstats *dstats = get_cpu_ptr(dev->dstats);
++	unsigned long flags;
++
++	flags = u64_stats_update_begin_irqsave(&dstats->syncp);
++	if (ok) {
++		/* Only include the network-layer data in tx stats; we know
++		 * that there is a 4-byte header pushed to all skbs in
++		 * tx_skb_prepare()
++		 */
++		s64 len = ctx->len - sizeof(struct mctp_usb_hdr);
++
++		u64_stats_inc(&dstats->tx_packets);
++		u64_stats_add(&dstats->tx_bytes, len);
++	} else {
++		u64_stats_inc(&dstats->tx_drops);
++	}
++	u64_stats_update_end_irqrestore(&dstats->syncp, flags);
++	put_cpu_ptr(dev->dstats);
++}
++
++static void mctp_usblib_tx_stats_single_drop(struct net_device *dev)
++{
++	struct pcpu_dstats *dstats = get_cpu_ptr(dev->dstats);
++	unsigned long flags;
++
++	flags = u64_stats_update_begin_irqsave(&dstats->syncp);
++	u64_stats_inc(&dstats->tx_drops);
++	u64_stats_update_end_irqrestore(&dstats->syncp, flags);
++	put_cpu_ptr(dev->dstats);
++}
++
++/*
++ * Completion for the ->send() op. This will update netdev stats and
++ * free the tx context.
++ *
++ * Likely called from (atomic) URB completion context.
++ */
++void mctp_usblib_tx_send_complete(struct mctp_usblib_tx_ctx *tx_ctx,
++				  struct net_device *dev, bool ok)
++{
++	enum skb_drop_reason reason =
++		ok ? SKB_CONSUMED : SKB_DROP_REASON_NOT_SPECIFIED;
++
++	mctp_usblib_tx_stats_update(tx_ctx, dev, ok);
++	mctp_usblib_tx_ctx_free(tx_ctx, reason);
++}
++EXPORT_SYMBOL_GPL(mctp_usblib_tx_send_complete);
++
++/* Prepare a skb for push()
++ *
++ * On error, populates @reason.
++ */
++static int mctp_usblib_tx_skb_prepare(struct sk_buff *skb,
++				      enum skb_drop_reason *reason)
++{
++	struct mctp_usb_hdr *hdr;
++	unsigned long plen;
++	int rc;
++
++	plen = skb->len;
++	if (plen + sizeof(*hdr) > MCTP_USB_1_0_PKTLEN_MAX) {
++		*reason = SKB_DROP_REASON_PKT_TOO_BIG;
++		return -EMSGSIZE;
++	}
++
++	rc = skb_cow_head(skb, sizeof(*hdr));
++	if (rc) {
++		*reason = SKB_DROP_REASON_NOMEM;
++		return rc;
++	}
++
++	hdr = skb_push(skb, sizeof(*hdr));
++	if (!hdr) {
++		*reason = SKB_DROP_REASON_NOMEM;
++		return -ENOMEM;
++	}
++
++	hdr->id = cpu_to_be16(MCTP_USB_DMTF_ID);
++	hdr->rsvd = 0;
++	hdr->len = plen + sizeof(*hdr);
++
++	return 0;
++}
++
++/*
++ * Push a new skb to the transfer. At present, no send must be in progress,
++ * as we only handle single-packet USB transfers.
++ *
++ * Takes ownership of @skb, including on error.
++ */
++int mctp_usblib_tx_push(struct net_device *dev,
++			struct mctp_usblib_tx *tx,
++			struct sk_buff *skb, bool more)
++{
++	enum skb_drop_reason reason = SKB_DROP_REASON_NOT_SPECIFIED;
++	struct mctp_usblib_tx_ctx *ctx;
++	int rc;
++
++	if (!skb)
++		return 0;
++
++	rc = mctp_usblib_tx_skb_prepare(skb, &reason);
++	if (rc)
++		goto err_drop_single;
++
++	ctx = mctp_usblib_tx_ctx_create(tx, skb);
++	if (!ctx) {
++		rc = -ENOMEM;
++		reason = SKB_DROP_REASON_NOMEM;
++		goto err_drop_single;
++	}
++
++	rc = mctp_usblib_tx_send(ctx);
++	if (rc) {
++		mctp_usblib_tx_stats_update(ctx, dev, false);
++		mctp_usblib_tx_ctx_free(ctx, reason);
++	}
++
++	return rc;
++
++err_drop_single:
++	mctp_usblib_tx_stats_single_drop(dev);
++	kfree_skb_reason(skb, reason);
++	return rc;
++}
++EXPORT_SYMBOL_GPL(mctp_usblib_tx_push);
++
++/* Cancel a tx: any un-sent context is released. */
++void mctp_usblib_tx_cancel(struct mctp_usblib_tx *tx, struct net_device *dev,
++			   enum skb_drop_reason reason)
++{
++	/* nothing to do at present, no ctx is persistent */
++}
++EXPORT_SYMBOL_GPL(mctp_usblib_tx_cancel);
++
+ MODULE_LICENSE("GPL");
+ MODULE_AUTHOR("Jeremy Kerr <jk@codeconstruct.com.au>");
+ MODULE_DESCRIPTION("MCTP USB transport library");
+diff --git a/include/linux/usb/mctp-usb.h b/include/linux/usb/mctp-usb.h
+index 595e6af16dd0..76f9d8879254 100644
+--- a/include/linux/usb/mctp-usb.h
++++ b/include/linux/usb/mctp-usb.h
+@@ -55,4 +55,43 @@ int mctp_usblib_rx_complete(struct net_device *netdev,
+ 
+ void mctp_usblib_rx_cancel(struct mctp_usblib_rx *rx);
+ 
++/*
++ * TX handle: created by mctp_usblib_tx_push() during the tx path, and
++ * may persist across multiple packet transmits.
++ *
++ * Currently though, there is a 1:1 mapping between packets and transfers, so
++ * the tx context will be cleared over each transmit. This will change in
++ * future.
++ */
++struct mctp_usblib_tx_ctx;
++
++struct mctp_usblib_tx_ops {
++	/* Start a USB TX for @data. On returning success, the implementation
++	 * must arrange for mctp_usblib_tx_send_complete() to be called at some
++	 * later point (eg., on urb completion).
++	 */
++	int (*send)(struct mctp_usblib_tx_ctx *tx_ctx, void *data, size_t len);
++};
++
++struct mctp_usblib_tx {
++	struct mctp_usblib_tx_ops ops;
++	void *priv;
++};
++
++void mctp_usblib_tx_init(struct mctp_usblib_tx *tx,
++			 const struct mctp_usblib_tx_ops *ops, void *priv);
++void mctp_usblib_tx_fini(struct mctp_usblib_tx *tx);
++
++void *mctp_usblib_tx_ctx_priv(struct mctp_usblib_tx_ctx *tx_ctx);
++
++int mctp_usblib_tx_push(struct net_device *dev,
++			struct mctp_usblib_tx *tx,
++			struct sk_buff *skb, bool more);
++
++void mctp_usblib_tx_send_complete(struct mctp_usblib_tx_ctx *tx_ctx,
++				  struct net_device *dev, bool ok);
++
++void mctp_usblib_tx_cancel(struct mctp_usblib_tx *tx, struct net_device *dev,
++			   enum skb_drop_reason reason);
++
+ #endif /*  __LINUX_USB_MCTP_USB_H */
+
+-- 
+2.47.3
 
