@@ -1,49 +1,96 @@
-Received: from mout-b-210.mailbox.org (mout-b-210.mailbox.org [195.10.208.40])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f228.google.com (mail-pl1-f228.google.com [209.85.214.228])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5035D3C37B6
-	for <netdev@vger.kernel.org>; Fri,  3 Jul 2026 11:20:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.10.208.40
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2EA93C4565
+	for <netdev@vger.kernel.org>; Fri,  3 Jul 2026 11:24:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783077652; cv=none; b=PugqUEs1r00lEgjaS235i7Rc8gkDzkFejBZQBtk4kiLjdLzYo68gLhS8GOcoqcGE9uy3z5jsyb4lItJliBqP+s4SKN4MIB0OC8FD6kQ2Z64pTpDL/AR7HSD4x5rm65ndYTJfXFfPK8CWnLr6fTEp2+ctLMY3YInxlwPef5+H54U=
+	t=1783077889; cv=none; b=Zg4/4xnS/XsR1HkEwFpa/yCFBSm8W9eVxDbDCOGPq2S6AvI4MKI6CNkQGnqWeuOwcJ4ll+aUPkRtg5Eq8Tzmoe4h3H7Nlr2rlZjX1DNTGqnCVMqtNfjPyXpW3G/yqdHnSRfYiAsUs04fTd7eYnKFXVo+SDTL3mvRYNkzRlyD8vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783077652; c=relaxed/simple;
-	bh=GtujlxPuKkxRp6HfRKed4T8eNS+sJK80GlFoQ6BuwmU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y63b56xQia1NgP+AAPv5spDJJ7VNIhGp1Jj0uGSi/vI4sFnDk1sdE1KmUe4X+v1S7KlBM/G/WLcnrACDMiGhcWU3O3VbVzfEJNlS7MYRR4A6YxLz+h/7E6t4aqh69gFC7bwnShvKWlDbLxk5xZi84jpfPGjEtzRJ+Z6S4NbWYog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com; spf=pass smtp.mailfrom=mandelbit.com; dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b=RFK9Dp92; arc=none smtp.client-ip=195.10.208.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
+	s=arc-20240116; t=1783077889; c=relaxed/simple;
+	bh=3ldA4M0ZTPsb3yz4u1wjM4GAhweNrsJXz2su1RdMmZ0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VrCBYFU0e7EYbDcGVxYbdgkt5rZeA5Hqt57Ji1WgiZvUlMKZq13xLQ8UqWt1w0MyD5bXTwdbI3bKcMEAyLTKMjN/fZbKolapTGGY+s6lTNX4UA9lDLgvoHSolG2lVfe0HU+28GtWraTSAhPJMl8LPwMbsziBGl98GOtToXZu3Qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=NlP8WBuN; arc=none smtp.client-ip=209.85.214.228
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b="RFK9Dp92"
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA512)
-	(No client certificate requested)
-	by mout-b-210.mailbox.org (Postfix) with ESMTPS id 4gsB3W5FpNzMm8j;
-	Fri, 03 Jul 2026 13:14:31 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
-	s=MBO0001; t=1783077271;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Ss5zSXqejQDi5pGR58kMHpCrewg4Ecncif24+GSgfN8=;
-	b=RFK9Dp92Ro3SJai8AydUQW19byL4SWiMwelHgc3Z7av4sZRcC+WgzMXolm0MCkphvTssKP
-	ETSOV5Z47i4Or7ouUb6wazW//98U1RvccTA+kJffOFQ0iH5d7KoF+udNaZLZQwrih01EZm
-	LgCmLRYHwxsf2T2+Rx8uMYlTwukORdiHxUGet71xlmr3U69qjm5dFsG0Sp/22k32XYkg0b
-	WoPSETl0UF3jIlx9HfXE/PXprxzIBSkqcHZPgKTqKjOPdMYfPIh7XeCZ0k0+6qb9GQfKgh
-	j802O7oWdzi4YYFgiG+LysMomUp5tiNRDDt6c2x3oehEaqeIB4DJOw6ELPD2QQ==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=none;
-	spf=pass (outgoing_mbo_mout: domain of marco@mandelbit.com designates 2001:67c:2050:b231:465::2 as permitted sender) smtp.mailfrom=marco@mandelbit.com
-From: Marco Baffo <marco@mandelbit.com>
-To: netdev@vger.kernel.org
-Cc: David Ahern <dsahern@kernel.org>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Antonio Quartulli <antonio@openvpn.net>,
-	Marco Baffo <marco@mandelbit.com>
-Subject: [PATCH iproute2-next] ip: add OVPN device mode support
-Date: Fri,  3 Jul 2026 13:14:19 +0200
-Message-ID: <20260703111419.842059-1-marco@mandelbit.com>
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="NlP8WBuN"
+Received: by mail-pl1-f228.google.com with SMTP id d9443c01a7336-2c6b67d5fa1so4091695ad.2
+        for <netdev@vger.kernel.org>; Fri, 03 Jul 2026 04:24:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783077881; x=1783682681;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TmNFWGnLyAB8YGdW9Dzd3teB761dU5G/TuuiXhJ4Ikc=;
+        b=kdZkcg8G3dqSJLeHPMGAhbh82h74Cvdhpd7qLA1ot/B7Zsk5D/Qqh1WkoWsmWcQJuR
+         0HAwxkTLXhgl0IAJLrPja6FM+d/Eqvegd6QWqq9Hkvk0Cfg+bgkllTCQQeuRXfK/oRR8
+         yq5bgJ7nQictyXrATjcsmqHOMH07Yu/7VqspvxKW4pl2c1dLqrjSV2ckGaLYPujiS60R
+         HOePWJIvvt225JOsGiTejhzBRs5ItLHT7UKMUDmTqI+r8SOhh2v3GJsD/fe6pfj4I6+A
+         8U8hsFgMxEGpo1nWZTIdC5ubagXhbaoOPRpwXQRjhLtnjRcfap/ukk7U3FzsMnbWnnRR
+         LqUw==
+X-Forwarded-Encrypted: i=1; AHgh+Rp10Gno+HhEvcXsH9X9briNNPhkeOdvP1HfrXB081zVjk++4eAiiGMn0OQgPfYrz8ans1qIZus=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8zPCi6zQlbdM4dSfNNGi8JTnqQySVwJ8I9T3EGGt2hv4B7yOm
+	HEqB8912mqLjVL4lg2X08aDzfJ7UTuHEyEwU/z63umaTFj3FXQhe0wxrdJV88Ja0/Y+WsUVRUVz
+	EKvewCcwTJN4GXdtgaHwllNl40frz75er32RuQXZ0S8mnBR25k0BGujCPHhP1iwlEnTD9YxTH+y
+	erQfguk/dvib+647A4zcObM1CHOZmOzHwd2/axgy5Osbm4uFlWQ2d/BZwcdWsgFVHsviVZHsbY1
+	gJwtytJ7ndt
+X-Gm-Gg: AfdE7cnOmrchRZ2bD2Bvp9Uty81M7KJ+w6fPjFYTCtMPwx9A8Ic92zaPzXCl20YVhl3
+	/rW42bZ3L6rSc6Z+xqHg7En4nMEaqs6HkbS0boX/Mh8pMIjfBpY9RlxqmFr4jib+TOD3ZDgdMrG
+	HdLYJcrFXAErSzwwWFmuBOV1Vj87JdqOkLHGkWbt0hGC+DDRmXKCsl+Z2IoTilGDM49H3aKxAw/
+	PQKun80H51ND/Ldo/VBROv1gjlmdzDoZEqtx1NAZJAVkgqYicxz+pu1Z/5jecpHzd+koh4O2tXf
+	3IAtEsBso9tbG+zK7o63TFl1DsyGCKafboU9bW6jO4IuCmjJtyEDhBfMI417kSx42ps5SXXJQIU
+	gUHulIZMsyETm0ch1NrRl26Nt5/H+DLz9ETse1qhljv6Nyw4T/m+gCCOwuLMoAawdkqEeIh+6N9
+	7670wSlLMC0cIkGEb+3r2ZqDocRk0E5iAMel/FtbZN+iVQDvU=
+X-Received: by 2002:a17:902:d48b:b0:2c6:beeb:d7db with SMTP id d9443c01a7336-2ca7e73acc1mr109894975ad.16.1783077880433;
+        Fri, 03 Jul 2026 04:24:40 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-102.dlp.protect.broadcom.com. [144.49.247.102])
+        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2cad76ed27esm1227445ad.51.2026.07.03.04.24.40
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 03 Jul 2026 04:24:40 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-92d1cae5939so50517985a.0
+        for <netdev@vger.kernel.org>; Fri, 03 Jul 2026 04:24:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1783077879; x=1783682679; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TmNFWGnLyAB8YGdW9Dzd3teB761dU5G/TuuiXhJ4Ikc=;
+        b=NlP8WBuNnlF2e+yHmu+4WsBg+KnRzUcaQBFzMt8m8v/Le2KxkGnSFX/EfOtCdPfFME
+         dWqIn3XLi2gcZE70D/hNxTUhR6rCva7nzEjsjDPuD5HWtDJzUymVzKuT6vojqZdUnaQQ
+         hWMhyXaaXDz7WrydWwMvEWX93b1Nl2URiH0qU=
+X-Forwarded-Encrypted: i=1; AFNElJ/DjQjWVo5O88Qe0Qnm++2o/tS9PMQO8nnfi/Vy5KgpOvWf5RFYRTKEBJYbb6/1AGFXtf5zibA=@vger.kernel.org
+X-Received: by 2002:a05:620a:4892:b0:92b:67e6:8ab2 with SMTP id af79cd13be357-92e7850600cmr1377207285a.60.1783077878955;
+        Fri, 03 Jul 2026 04:24:38 -0700 (PDT)
+X-Received: by 2002:a05:620a:4892:b0:92b:67e6:8ab2 with SMTP id af79cd13be357-92e7850600cmr1377203285a.60.1783077878469;
+        Fri, 03 Jul 2026 04:24:38 -0700 (PDT)
+Received: from lvnvda4076.lvn.broadcom.net ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-92e90cfdefasm138100285a.47.2026.07.03.04.24.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Jul 2026 04:24:37 -0700 (PDT)
+From: Kiran Kella <kiran.kella@broadcom.com>
+To: daniel.zahka@gmail.com,
+	kuba@kernel.org,
+	willemdebruijn.kernel@gmail.com
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	weibunny@fb.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	jayakrishnan.udayavarma@broadcom.com,
+	ajit.khaparde@broadcom.com,
+	akhilesh.samineni@broadcom.com,
+	Kiran Kella <kiran.kella@broadcom.com>,
+	Vikas Gupta <vikas.gupta@broadcom.com>,
+	Bhargava Marreddy <bhargava.marreddy@broadcom.com>
+Subject: [PATCH net] psp: fix NULL genl_sock deref race with concurrent netns teardown
+Date: Fri,  3 Jul 2026 04:24:31 -0700
+Message-ID: <20260703112431.2860506-1-kiran.kella@broadcom.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,188 +98,110 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4gsB3W5FpNzMm8j
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-Allow selecting point-to-point or multi-peer mode when creating an
-OVPN device.
+The race occurs between network namespace removal and PSP device
+unregistration.  When a netns is deleted while a PSP device associated
+with that netns is concurrently being removed, psp_dev_unregister()
+triggers psp_nl_notify_dev() to send a device change notification.
+Concurrently, cleanup_net() running in the netns workqueue calls
+genl_pernet_exit(), which sets net->genl_sock to NULL. If
+genl_pernet_exit() wins the race, two sites in psp_nl_multicast_per_ns()
+then dereference the NULL socket and crash:
 
-Signed-off-by: Marco Baffo <marco@mandelbit.com>
+CPU 0 (netns teardown)       CPU 1 (PSP device unregister)
+======================       =============================
+cleanup_net [workqueue]
+  genl_pernet_exit()         psp_dev_unregister()
+    net->genl_sock = NULL      psp_nl_notify_dev()
+                                 psp_nl_multicast_per_ns()
+                                   build_ntf()
+                                     -> netlink_has_listeners(NULL)
+                                     /* crash */
+                                   genlmsg_multicast_netns()
+                                     -> nlmsg_multicast_filtered(NULL)
+                                     /* crash */
+
+Both the main_net path (derived from psd->main_netdev) and each
+assoc_net entry in psd->assoc_dev_list are affected.
+
+Fix by replacing the bare dev_net() calls with maybe_get_net().
+maybe_get_net() returns NULL if the namespace is already dying.
+Holding the reference ensures genl_sock remains valid across both the
+build_ntf() and genlmsg_multicast_netns() calls.
+
+Fixes: 00c94ca2b99e ("psp: base PSP device support")
+Fixes: 06c2dce2d0f6 ("psp: add new netlink cmd for dev-assoc and dev-disassoc")
+Signed-off-by: Kiran Kella <kiran.kella@broadcom.com>
+Reviewed-by: Ajit Khaparde <ajit.khaparde@broadcom.com>
+Reviewed-by: Vikas Gupta <vikas.gupta@broadcom.com>
+Reviewed-by: Bhargava Marreddy <bhargava.marreddy@broadcom.com>
 ---
- ip/Makefile           |  2 +-
- ip/iplink.c           |  2 +-
- ip/iplink_ovpn.c      | 87 +++++++++++++++++++++++++++++++++++++++++++
- man/man8/ip-link.8.in | 24 ++++++++++++
- 4 files changed, 113 insertions(+), 2 deletions(-)
- create mode 100644 ip/iplink_ovpn.c
+ net/psp/psp_nl.c | 33 +++++++++++++++++++++------------
+ 1 file changed, 21 insertions(+), 12 deletions(-)
 
-diff --git a/ip/Makefile b/ip/Makefile
-index 3535ba78..978f6841 100644
---- a/ip/Makefile
-+++ b/ip/Makefile
-@@ -13,7 +13,7 @@ IPOBJ=ip.o ipaddress.o ipaddrlabel.o iproute.o iprule.o ipnetns.o \
-     ipvrf.o iplink_xstats.o ipseg6.o iplink_netdevsim.o iplink_rmnet.o \
-     ipnexthop.o ipmptcp.o iplink_bareudp.o iplink_wwan.o ipioam6.o \
-     iplink_amt.o iplink_batadv.o iplink_gtp.o iplink_virt_wifi.o \
--    iplink_netkit.o ipstats.o
-+    iplink_netkit.o ipstats.o iplink_ovpn.o
+diff --git a/net/psp/psp_nl.c b/net/psp/psp_nl.c
+index 9610d8c456ff..24ab626a9e8a 100644
+--- a/net/psp/psp_nl.c
++++ b/net/psp/psp_nl.c
+@@ -62,36 +62,45 @@ psp_nl_multicast_per_ns(struct psp_dev *psd, unsigned int group,
+ 	struct net *main_net;
+ 	struct sk_buff *ntf;
  
- RTMONOBJ=rtmon.o
- 
-diff --git a/ip/iplink.c b/ip/iplink.c
-index 3f0b46c9..c6aee8b6 100644
---- a/ip/iplink.c
-+++ b/ip/iplink.c
-@@ -42,7 +42,7 @@ void iplink_types_usage(void)
- 		"          ifb | ip6erspan | ip6gre | ip6gretap | ip6tnl |\n"
- 		"          ipip | ipoib | ipvlan | ipvtap |\n"
- 		"          macsec | macvlan | macvtap | netdevsim |\n"
--		"          netkit | nlmon | pfcp | rmnet | sit | team | team_slave |\n"
-+		"          netkit | nlmon | ovpn | pfcp | rmnet | sit | team | team_slave |\n"
- 		"          vcan | veth | vlan | vrf | vti | vxcan | vxlan | wwan |\n"
- 		"          xfrm | virt_wifi }\n");
- }
-diff --git a/ip/iplink_ovpn.c b/ip/iplink_ovpn.c
-new file mode 100644
-index 00000000..08e59526
---- /dev/null
-+++ b/ip/iplink_ovpn.c
-@@ -0,0 +1,87 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * iplink_ovpn.c	OpenVPN DCO device support
-+ *
-+ * Author: Marco Baffo <marco@mandelbit.com>
-+ *
-+ */
-+
-+#include <stdio.h>
-+#include <string.h>
-+#include <linux/if_link.h>
-+
-+#include "utils.h"
-+#include "ip_common.h"
-+
-+static void print_explain(FILE *f)
-+{
-+	fprintf(f,
-+		"Usage: ... ovpn [ mode { p2p | mp } ]\n"
-+		"\n"
-+		"MODE := p2p | mp\n"
-+		"(p2p is the default if mode is not specified)\n");
-+}
-+
-+static int ovpn_parse_opt(struct link_util *lu, int argc, char **argv,
-+			  struct nlmsghdr *n)
-+{
-+	while (argc > 0) {
-+		if (matches(*argv, "mode") == 0) {
-+			__u8 mode;
-+
-+			NEXT_ARG();
-+			if (strcmp(*argv, "p2p") == 0)
-+				mode = OVPN_MODE_P2P;
-+			else if (strcmp(*argv, "mp") == 0)
-+				mode = OVPN_MODE_MP;
-+			else {
-+				fprintf(stderr,
-+					"Error: argument of \"mode\" must be either \"p2p\" or \"mp\"\n");
-+				return -1;
-+			}
-+			addattr8(n, 1024, IFLA_OVPN_MODE, mode);
-+		} else if (matches(*argv, "help") == 0) {
-+			print_explain(stderr);
-+			return -1;
-+		} else {
-+			fprintf(stderr, "ovpn: unknown option \"%s\"?\n", *argv);
-+			print_explain(stderr);
-+			return -1;
-+		}
-+		argc--;
-+		argv++;
-+	}
-+
-+	return 0;
-+}
-+
-+static void ovpn_print_opt(struct link_util *lu, FILE *f, struct rtattr *tb[])
-+{
-+	__u8 value;
-+
-+	if (!tb || !tb[IFLA_OVPN_MODE] ||
-+	    RTA_PAYLOAD(tb[IFLA_OVPN_MODE]) < sizeof(value))
+-	main_net = dev_net(psd->main_netdev);
++	main_net = maybe_get_net(dev_net(psd->main_netdev));
++	if (!main_net)
 +		return;
 +
-+	value = rta_getattr_u8(tb[IFLA_OVPN_MODE]);
-+
-+	const char *mode =
-+		value == OVPN_MODE_P2P ? "p2p" :
-+	    value == OVPN_MODE_MP ? "mp" : "unknown";
-+
-+	print_string(PRINT_ANY, "mode", "mode %s ", mode);
-+}
-+
-+static void ovpn_print_help(struct link_util *lu, int argc, char **argv,
-+			    FILE *f)
-+{
-+	print_explain(f);
-+}
-+
-+struct link_util ovpn_link_util = {
-+	.id		= "ovpn",
-+	.maxattr	= IFLA_OVPN_MAX,
-+	.parse_opt	= ovpn_parse_opt,
-+	.print_opt	= ovpn_print_opt,
-+	.print_help	= ovpn_print_help,
-+};
-diff --git a/man/man8/ip-link.8.in b/man/man8/ip-link.8.in
-index fc7f0248..d54d2fbc 100644
---- a/man/man8/ip-link.8.in
-+++ b/man/man8/ip-link.8.in
-@@ -287,6 +287,7 @@ ip-link \- network device configuration
- .BR netdevsim " |"
- .BR netkit " |"
- .BR nlmon " |"
-+.BR ovpn " |"
- .BR pfcp " |"
- .BR rmnet " |"
- .BR sit " |"
-@@ -430,6 +431,9 @@ Link types:
- .BR nlmon
- - Netlink monitoring device
- .sp
-+.BR ovpn
-+- OpenVPN Data Channel Offload device
-+.sp
- .BR pfcp
- - Packet Forwarding Control Protocol device
- .sp
-@@ -1349,6 +1353,26 @@ the following additional arguments are supported:
- .BI  mode " MODE "
- - specifies the mode (datagram or connected) to use.
+ 	xa_init(&sent_nets);
  
-+.TP
-+OVPN Type Support
-+For a link of type
-+.I OVPN
-+the following additional arguments are supported:
-+
-+.BI "ip link add " DEVICE
-+.BR "type ovpn " [ " mode " "{ " p2p " | " mp " }" " ]"
-+
-+.in +8
-+.sp
-+.BR mode " { " p2p " | " mp " }"
-+- selects the OpenVPN device mode. The default,
-+.BR p2p ,
-+creates a point-to-point device for a single peer. The
-+.B mp
-+mode creates a multi-peer device.
-+
-+.in -8
-+
- .TP
- ERSPAN Type Support
- For a link of type
+ 	list_for_each_entry(entry, &psd->assoc_dev_list, dev_list) {
+ 		struct net *assoc_net = dev_net(entry->assoc_dev);
++		struct net *net;
+ 		int ret;
+ 
+ 		if (net_eq(assoc_net, main_net))
+ 			continue;
+ 
+-		ret = xa_insert(&sent_nets, (unsigned long)assoc_net, assoc_net,
+-				GFP_KERNEL);
+-		if (ret == -EBUSY)
++		net = maybe_get_net(assoc_net);
++		if (!net)
+ 			continue;
+ 
+-		ntf = build_ntf(psd, assoc_net, ctx);
+-		if (!ntf)
++		ret = xa_insert(&sent_nets, (unsigned long)assoc_net, assoc_net,
++				GFP_KERNEL);
++		if (ret == -EBUSY) {
++			put_net(net);
+ 			continue;
++		}
+ 
+-		genlmsg_multicast_netns(&psp_nl_family, assoc_net, ntf, 0,
+-					group, GFP_KERNEL);
++		ntf = build_ntf(psd, net, ctx);
++		if (ntf)
++			genlmsg_multicast_netns(&psp_nl_family, net, ntf, 0,
++						group, GFP_KERNEL);
++		put_net(net);
+ 	}
+ 	xa_destroy(&sent_nets);
+ 
+ 	/* Send to main device netns */
+ 	ntf = build_ntf(psd, main_net, ctx);
+-	if (!ntf)
+-		return;
+-	genlmsg_multicast_netns(&psp_nl_family, main_net, ntf, 0, group,
+-				GFP_KERNEL);
++	if (ntf)
++		genlmsg_multicast_netns(&psp_nl_family, main_net, ntf, 0, group,
++					GFP_KERNEL);
++	put_net(main_net);
+ }
+ 
+ static struct sk_buff *psp_nl_clone_ntf(struct psp_dev *psd, struct net *net,
 -- 
-2.43.0
+2.54.0
 
