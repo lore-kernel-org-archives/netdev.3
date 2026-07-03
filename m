@@ -1,54 +1,54 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE5B128816
-	for <netdev@vger.kernel.org>; Fri,  3 Jul 2026 00:10:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4BE5478D
+	for <netdev@vger.kernel.org>; Fri,  3 Jul 2026 00:10:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783037416; cv=none; b=a5xnMCS7wrGlhQpkU37RXUa2CeJ51D+RzOvXWT9EeFQEohsQzsBLNjmyNmJYFnoQN2ad9SImmOSuKcMsYT6NF6k5ARMBBQgEbcjKBY/MS+jpKrcsGNumE5znT4g8SmvwAOv2vQTMRsQGv9ZwPbRdKFAzUAdMGQJ8s4/3RSorLBk=
+	t=1783037417; cv=none; b=Er3IE09eBG3QTnIDsBWYdWDqlFwjrtbnV/+r3K+3f2Y/2wmYsjHrAsOA6fZ7BZRas1IsE7gzgrfccUrGzOq3c2W05f68XaQA1krLdelAnzIl+0kOYGEyq8h1AQGSk5+7W5D2lmTus4O0FgCr4Qy4A7zZdL6+ceVWbLsD1DFpq+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783037416; c=relaxed/simple;
-	bh=X7ktUp4xHKu+AYmxibtJRYJGmeDgJ4e44TyO5B/TaUc=;
+	s=arc-20240116; t=1783037417; c=relaxed/simple;
+	bh=pnJEz2QMgw9cN6VgdMZfdtWI2Yh+zoyCaCsqtMOzc/A=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=WieOHlUEOWIZ7ifOvY4VxUqIvy+kfe2H/wrlorW0T7h6WVZ6JWJ+kdSPIh344NSevpY4DXZTN5clAH6lykEVM7Pu7D/55gsKUL5J+gE8gfqdd26br3PEkNsQwhnjwomPW57hz2oM2hz1SzF2O9x2hauw7bvhHlkQbdHgh0m74j8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bdluCieV; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=t3Sx7mewe0kgBO7MkIStoZEiOis4o8WU1Nhj+7qUCtP/AsfP1qQ98kgBqDhZaA79z1rG1fF1C2WlXI3iBkIMTv38WTst9OvU+UeTdsmuM1wSLOU8lkhyDwFCSvixAmVW0h3iGYvY4HYs8UIm9Jmkf8tgYdhk6akX0kOe7X5ox5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CQUP60Wh; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bdluCieV"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c860544c077so4651358a12.3
-        for <netdev@vger.kernel.org>; Thu, 02 Jul 2026 17:10:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CQUP60Wh"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-847c3a12ce8so2268531b3a.1
+        for <netdev@vger.kernel.org>; Thu, 02 Jul 2026 17:10:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20251104; t=1783037415; x=1783642215; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GFVgptdL2qPrx3QMqtbeTtbwPOeCrgHocJ7ApqP2mUE=;
-        b=bdluCieVCD0OaItqhSsU04L+rVxxKVNLjmkDRsR82EK7sjz29YCpXufUYZUfHUqObR
-         GFJNxCvofIyLH+d4IZA/n9CDFrO9vIoNPkLEPQBmKc5vgbbWulR/r+6x3Fs9V8Q4cUGq
-         vf5hnRmBRlMR6SKM0tZrySMwH/MWrbLOoJYf4nhpNtvfhN6qGnzMhBwDoP4OGJ4vW5iw
-         Ou9yUbEkWAyhFAIH0iclxqZ6BdeY5LhqLJMaSFejOWueAv7L33fJUhPypujsq98g22W2
-         ywL9unxNprYwfpGK/Bgl2rTj6VO5Tsu6Km5W9GZZTR7FfKiicS7905pYdCI10Zz+prYg
-         0xsg==
+        bh=iFHPOwnfS0RTxLbSafbHe36q2pu48/NBNi/jujPA5Tg=;
+        b=CQUP60WhACgjvsrPBjJxQgMZDhF668tx94NHyYLK6wGN3qdD+4C0KSYlV+yeKfolHh
+         89x6LqM1+Z5NZMlQEl5PApehKsj57NMkzYvfw1h3PAyyAyEdSJcnSSZerOrj3MHM64rw
+         TChgtjkq3cGTeXqI1baGRvmwOKpvy8TsF1sgI1orNbtvw8MTr+fAMVGZmld8Z44dTZWp
+         8ypueC+8+3CRnsFHrpOCyrWP+oA0E1nVB27VefiK1xrT+C4M5ycz8yAiLD6XogaOSFfD
+         XdUkbnaZC+2q5p4waTPivmniOV1NafrPjnns8rjFqPJt2edE1b1FaNuZJHd54JSQ+ITo
+         KROg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1783037415; x=1783642215;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GFVgptdL2qPrx3QMqtbeTtbwPOeCrgHocJ7ApqP2mUE=;
-        b=fXz95DvNwJgLg7Y4tCBTfJ8CEVO5uHM79OO8rrHk5PrZ/41yKdGSFtG/be3tQsEfZs
-         3U+6D/Sar8BG/TXHglO0Uwx+jAc+M6hiaa6bi9QJq/IEXK8Rh4ZSZIZcY+tjNyC1Yw6J
-         AFY/6mnVwOVDn0P0Qun4/bjHjZ4phPxiW2gAx6/ayrrPKb4/MUlAKwbQJpXxOcJTryDY
-         a1ExNZ9s+5GrWi71ribcaAOylNBiU8impPuyZdIJ0Vn8AZQ1WfxXryFozLYrYsftK/l/
-         OJb9enPKBzs9ck46KxeNlPYEpKSauHbTbejLJTEOIl9RhRDDZQ8tTZ/11eLah5g1pGRI
-         1aog==
-X-Forwarded-Encrypted: i=1; AHgh+RqGwFA++Ql5TanRlG05H8ecJVnSwu6lTHKUuDHZQrO+kRLdO8rBSCEHiaetXV7bgLrqj76Xdno=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOXGyYoriQSV9XMbTVgT8u/XvQZU4g+Z+3IzOI/6zdWcAiJQea
-	oJUTn2pSsJc9yyk6JLTrJAUX8FwfZNUpZMYS9UHtw/wF/ptmi9R9nVbMYuGclJVpsWovJjg2GyR
-	rvDNOjA==
-X-Received: from plkp8.prod.google.com ([2002:a17:902:6b88:b0:2c7:ebed:f6e8])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:234c:b0:2c0:b6c7:2271
- with SMTP id d9443c01a7336-2ca911121e5mr76433925ad.4.1783037414476; Thu, 02
- Jul 2026 17:10:14 -0700 (PDT)
-Date: Fri,  3 Jul 2026 00:09:15 +0000
+        bh=iFHPOwnfS0RTxLbSafbHe36q2pu48/NBNi/jujPA5Tg=;
+        b=YG9T1dtUODEcrQfZZYzp/Psk43C7ELaZK04cjb8KrbDTJT0JXhn6tg3CKtZ2f2dTpD
+         YLyPEypt/x0qaTC0UaXBH/WLeF9QI09tRLSRnA19xIg+LFBIpvbQvq+83rQ3XUJArhr5
+         y5AtFdo4y6MnH4PNC2cdeZ5w2+inYV4uC2/7leAm7/evKOmn/Kv9Z7Xvc3SolQB3NuiQ
+         tu9K0KOSu9v8SVZuuzYM6mfPDxcctLCst+dAbKMO6MGYJczn0LYmVsSFaJzuvgW8qG+v
+         p1eJfkSi6qSYmjtdj4rrTL5vnMS/YXEFzeMZmz3PJKE4dAg7Sc1uIReGn8/K8riopbmB
+         6qhQ==
+X-Forwarded-Encrypted: i=1; AFNElJ85A80L9QHg9VT4YBQuURr8UaeGNDpkivkoeRL3omjaVUYrHYQ2HMXRwuVaVRRfbalAHuH33L0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyhzaSxE3FRLd8UT82kZupRIrrBpmaANCx2VYTvNEQmgsb3oRQx
+	T0t5qSn/aa6jywiJm6nqfNs8Or9xDTMCSaA5YX8EFAaNlcjtRD9kRhzsbxRQD363vqFlXAPiB3U
+	z3Asrrw==
+X-Received: from pgcv24.prod.google.com ([2002:a05:6a02:5318:b0:c9a:c533:8316])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:7a96:b0:3b1:a9ce:507e
+ with SMTP id adf61e73a8af0-3bfed3e5ee8mr8945827637.32.1783037415246; Thu, 02
+ Jul 2026 17:10:15 -0700 (PDT)
+Date: Fri,  3 Jul 2026 00:09:16 +0000
 In-Reply-To: <20260703001009.1572444-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -58,8 +58,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260703001009.1572444-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260703001009.1572444-5-kuniyu@google.com>
-Subject: [PATCH v2 net-next 04/14] net: Wrap default_device_exit_net() with __rtnl_net_lock().
+Message-ID: <20260703001009.1572444-6-kuniyu@google.com>
+Subject: [PATCH v2 net-next 05/14] net: Hold __rtnl_net_lock() in netdev_wait_allrefs_any().
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>
@@ -67,49 +67,39 @@ Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
 	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-default_device_exit_net() could call dev_change_net_namespace()
-to move devices from a dying netns to init_net.
+Currently, netdev_run_todo() processes pending devices from multiple
+namespaces in a batch.
 
-Let's hold the two netns __rtnl_net_lock() around it.
+To expand the per-netns RTNL coverage for NETDEV_UNREGISTER, let's
+acquire __rtnl_net_lock() in netdev_wait_allrefs_any().
+
+Note that netdev_run_todo() itself will need to be namespacified
+before RTNL is removed.
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
- net/core/dev.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ net/core/dev.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/net/core/dev.c b/net/core/dev.c
-index 4b3d5cfdf6e0..c477c4f84ed9 100644
+index c477c4f84ed9..48818a194fa5 100644
 --- a/net/core/dev.c
 +++ b/net/core/dev.c
-@@ -13034,7 +13034,7 @@ static void __net_exit default_device_exit_net(struct net *net)
- 	 * Push all migratable network devices back to the
- 	 * initial network namespace
- 	 */
--	ASSERT_RTNL();
-+
- 	for_each_netdev_safe(net, dev, aux) {
- 		int err;
- 		char fb_name[IFNAMSIZ];
-@@ -13077,11 +13077,19 @@ static void __net_exit default_device_exit_batch(struct list_head *net_list)
- 	LIST_HEAD(dev_kill_list);
+@@ -11608,8 +11608,13 @@ static struct net_device *netdev_wait_allrefs_any(struct list_head *list)
+ 			rtnl_lock();
  
- 	rtnl_lock();
+ 			/* Rebroadcast unregister notification */
+-			list_for_each_entry(dev, list, todo_list)
++			list_for_each_entry(dev, list, todo_list) {
++				struct net *net = dev_net(dev);
 +
-+	__rtnl_net_lock(&init_net);
-+
- 	list_for_each_entry(net, net_list, exit_list) {
-+		__rtnl_net_lock(net);
- 		default_device_exit_net(net);
-+		__rtnl_net_unlock(net);
-+
- 		cond_resched();
- 	}
++				__rtnl_net_lock(net);
+ 				call_netdevice_notifiers(NETDEV_UNREGISTER, dev);
++				__rtnl_net_unlock(net);
++			}
  
-+	__rtnl_net_unlock(&init_net);
-+
- 	list_for_each_entry(net, net_list, exit_list) {
- 		for_each_netdev_reverse(net, dev) {
- 			if (dev->rtnl_link_ops && dev->rtnl_link_ops->dellink)
+ 			__rtnl_unlock();
+ 			rcu_barrier();
 -- 
 2.55.0.rc0.799.gd6f94ed593-goog
 
