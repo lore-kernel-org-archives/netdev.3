@@ -1,171 +1,80 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013021.outbound.protection.outlook.com [52.101.72.21])
+Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE963D9520;
-	Fri,  3 Jul 2026 10:43:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.21
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783075419; cv=fail; b=cUUnLEtJ+jNuLOWs2nLk20NpN6ljnmVnSul+8rfmuDdDHwleO0Xoxm350Fv0u7fG6YT98tW3Xix3ZyK9TDY3VenInUvOK5h611eVvvXKeb5ZkT/gLxoIvPZF28u9CsYMp1Ehpbj7aq8VUsYm4w6kdT6zxtPMEm9q98gHDD82HlY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783075419; c=relaxed/simple;
-	bh=xs5XQR4GCTJgSYpvY0nM42qJl1+P3JkQUA1R73tXpik=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=I6gcPIFt/PQv2fm0BMHUafabo8pB9ohgO1j8Dkqvg3ho3D/W69U1oO0lGm8zYQ8+kQzCjWG5kjT2NUlSqMN0kMM1yIgZdQpg+DmbGsrJ1cPCLz3Vj9hjKvYmdF+fFxNfaw0uTY0dIphbiY3y3XUjktzswTEifmLg0R3fFd8LCKs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=m/5VkBrQ; arc=fail smtp.client-ip=52.101.72.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C933D9520;
+	Fri,  3 Jul 2026 10:44:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783075479; cv=none; b=hQkwnhjapV7taRAuSdAfiLSxpF5kuPdtwKqWDDQmaWZdf6+SuyJNxrBTwjqgw8Awx5Q3xyfwfJ12RnDcgZN9BX5ZC7YzVlFs6BK+she3nfr5vyVWGT1fc1AP+8U+dxynUj0UhXFysfFr74DSSUWDR4O8I3X8RrOfUiGbqATs5wQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783075479; c=relaxed/simple;
+	bh=XnxoIlVwr9J3rE7etf3DG7iiZqvV3ZVvgQqIrj4dN14=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HEYbazPooAA2VbwdfnZ1SXr9wLunEJI8g4CIPdXYDc+6qgN4rqJWmR5/byrWvQuRdyYfzOv0K2FnkF4fQ/jp3MftOK1Cg4/w5D4+mdO0emqu3VI2ZeUoAFamIQ1YHKLUZZvMDyOhlgo/6H4SvW7os13x7LjgPA5BrenCYuS0DAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b=Z8mODJ3v; arc=none smtp.client-ip=129.217.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="m/5VkBrQ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=I3Y42OHWsc8TecQaN7SEOlP2qqrZgK+40W394XAl8THBwosHDBrCuwGwjAOUrdJf57S+AFerLag+CyqtOUu8ShPaUgYZr88RPJaneanHbH7lIuEXY/hrZge/Na9HF0NHkEQuM5tDVbNdYmRNYjdrOy8mJzeDWIQiF300foJPP+5lT8+u/YXEwTgUEZMKncsbnaC4iOmRH879HMmNVW00iHYUVPYrEKs5Urg5wIiU+B7YPK6njpiCqQEtxAceXb2Gh2gcZfFSklxxoftnLE1Ikj/k+SNkPMcwByjcVMUe6dHLItBznB6Z0KIK3QtlBdKViSv9TNrw4hds0annj2bD1Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fV8Ikb13ip2x5qNT/bfhYmUDt+DWXX5h4YDEVsNj9z8=;
- b=huZNjO4KoJTwNdR8OrjbySGUDGdYGlybjvCKiPrOqvmwbeXHCXaDNd3p+TyobSPVT+DO8HTwOVm+iZwaFnEyuwgdDZG8mVIaxlr+twU4uP5I3FKMm2fhmXZvIHUzVeR5ol7yQDz0EmaIF2sjQbqLSN1apKlEKp2m+g8yvn+QRP1QnDJqpTkjyl8QjLT2ayn+6mJjEPClmhwlft7i2kSD/j0RieQiMmYqMBTM+aYhAyLmC0hwaHRHNglWZxzz3l942hRIbJ3n3UJ0MvLqVNETa4BJ4CYeOb9dbve+RtWBYBfvwKOyOGt0TVSPEt14hhw7+V6x6hL2Pcrxm81jCtgpnQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fV8Ikb13ip2x5qNT/bfhYmUDt+DWXX5h4YDEVsNj9z8=;
- b=m/5VkBrQz3Q/WMltlDKVKirakV+SqVULsvBwBlLSKMNq32OnFH/UmvD2aW83J8MZf9izPXCL41B+lNgNqhNl0TdONHsPpvqKIpyjAu45R+w+EZ+friC1j+Y39onQo4R7u8NNIphdcgxcKyQdkjez3QiXa7qQoyvT4kFVmY6gFh5JUx9zgD87SedH9RvDWAhvd4LugZF4rEJUrE3pPfBKdLxQQ4X6POp4Ut6MFOIvjohuTyUzQuecxGzK/Ws+o05a5JTcp9ySBsXU/UDtqTmxs7o2XSzVIy8olzk//fqAALN5zZzf3j/L1v4NX3tQJ9pwchfKWybtayzPWrnAh3+9Lg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22)
- by PA1PR04MB10867.eurprd04.prod.outlook.com (2603:10a6:102:483::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.10; Fri, 3 Jul
- 2026 10:43:35 +0000
-Received: from VE1PR04MB7216.eurprd04.prod.outlook.com
- ([fe80::a9a5:cf83:dbe8:1f74]) by VE1PR04MB7216.eurprd04.prod.outlook.com
- ([fe80::a9a5:cf83:dbe8:1f74%3]) with mapi id 15.21.0181.010; Fri, 3 Jul 2026
- 10:43:35 +0000
-From: wei.fang@oss.nxp.com
-To: claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux@armlinux.org.uk,
-	wei.fang@nxp.com,
-	chleroy@kernel.org,
-	maxime.chevallier@bootlin.com
-Cc: imx@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v3 net-next 14/14] net: enetc: use kzalloc_flex() for enetc_psfp_gate allocation
-Date: Fri,  3 Jul 2026 18:13:28 +0800
-Message-Id: <20260703101328.550714-15-wei.fang@oss.nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260703101328.550714-1-wei.fang@oss.nxp.com>
-References: <20260703101328.550714-1-wei.fang@oss.nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MA5P287CA0053.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1d3::18) To VE1PR04MB7216.eurprd04.prod.outlook.com
- (2603:10a6:800:1b0::22)
+	dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b="Z8mODJ3v"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tu-dortmund.de;
+	s=unimail; t=1783075279;
+	bh=qctwS9LPST2/33+gavfp9uKFDcxocIgaWfG6gvJZ2CM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Z8mODJ3vew8ISCrnXa3eXTetlCZc4xBF8FSQ1qPgQyn3Fb4c1/4sk3Au0bUu+7Anc
+	 2FXZxL8TQ+tkGKfCWEvTsAxIKshd6XWREyKa4uE5m57D945kwRZPC6b8KRIRORRmp2
+	 oaRXnp0rQoddd/bL6jD827WscgeVFZ8f29Q3YszE=
+Received: from [129.217.186.105] ([129.217.186.105])
+	(authenticated bits=0)
+	by unimail.uni-dortmund.de (8.19.0.2/8.19.0.2) with ESMTPSA id 663AfJMl029086
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 3 Jul 2026 12:41:19 +0200 (CEST)
+Message-ID: <a1bae349-61a1-4c65-a531-179850576642@tu-dortmund.de>
+Date: Fri, 3 Jul 2026 12:41:19 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VE1PR04MB7216:EE_|PA1PR04MB10867:EE_
-X-MS-Office365-Filtering-Correlation-Id: fa8f8369-812d-4221-cc48-08ded8efeecd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|7416014|376014|19092799006|1800799024|366016|921020|56012099006|11063799006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	EzbrwlY9csZdmW1L1dEX1rop6loTKTVgOI/mysZckvW9h2AI92c0XsY7z344bgZQq6XKp5Lk/xx2c0QdEBxFZnQ8mNuse6HULiphItmbVxnArLlb8oisHQSFpk1/WBULrshH4eX5YmVhnhEtVfgZYyam7V/Jofd1t7ESCgy3dydCFNONjf5tNnr+f7VyVMnUgrFJj1ar0XAXwYutYzVFaQCR7S28kMbzcKr/oxmtJyia1Logs28DSCxqPYjJLOgP2MXMcIhjlGP4yIqrgDSa80IpoYIK5noTDNx2+DhPp0B2I9n6Z+XBchtiWPTmDEkiSv/M1feHm4M5Jjur3iq59crtSLKGyPlnH06NzejWR5eiLL2OTEv/tzW99UDor0/l2RPHxcERztC+shlKg8cii6FlJ1Q7AXde0lQxt1P8GqCYoawjBOuswI8nXJMbIFRMtlD9LF6FbZdkcUOGyiFR29zbiFyC90xUdpFTzbCelPM5pp58mJpTgcoUpg2If7oKQ2OSnU3UXHn+hEN4lEwYc6KyKXqrW9HbEFXtn1F9YStA/5JDZGAwlsjjtfNj0qjUEOPH85HNPaFSeBhJb6kcg34sieGCa+ituJUc+bn0D2b4gUEheQ5deJ7xdC/5uNeOYVDsWUx00e67qLJINWklU2VMF8aUC4TEHHk/FF+zJpQ4FwquFhX8XYFTcJ9p40pP5IzWUPyRCNT51v2157jNRg==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB7216.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(19092799006)(1800799024)(366016)(921020)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?rQuEFqUhfoK5gW0+53razjDcGvTh8JVBySTZ/BLEx2zkrsAUbWgZspPKuufO?=
- =?us-ascii?Q?RQdKoev30YfQ8rB2rzGtASEgjA9jMUXf2bVFTM5ME+I3hDplIVa3MOT8L+nv?=
- =?us-ascii?Q?LV/eMfMa18gw5t7mp55LVpsSha0do10O5FMb+CmcyWFdhzr4qkfpmBf/Y9sb?=
- =?us-ascii?Q?3wdv7H+uCE7bj4kBUrgEVaEYGdDrD9fcqynRyhDre0DAiKNIXgNJ8/MJSU3/?=
- =?us-ascii?Q?/JMuO5OT7dPvuW0H6BuM+NsS8rSY6vBwmfu3vKwZyJOhU+d2mt2qVgLE/EHs?=
- =?us-ascii?Q?B0vRH0udfRbnGg3z++ly3NKApV3fr4nEQftPK7qE++QKo8QRqS7gZvJDNCcj?=
- =?us-ascii?Q?3i0x0IOKHd2BAGn8jWAiPt0eSr8FUfIF1RX9qDsqcdxrLODQ1GHvp9brGJdj?=
- =?us-ascii?Q?6uc2+fokc9F7qcK9kuu1pJE9k1SOCIRVZg74omNp0n2NkJ5Wgl+zcG0Zyh97?=
- =?us-ascii?Q?cOsq1m0aK9GYVKqrgvPgOjPnYr+uhPV7x0AQtPDJl94ecmi234FfBDLhrYlQ?=
- =?us-ascii?Q?sHGAF1Vr4GCPoZ44B34LFj3EnBHxbcaEsvEp06CbW3GuT+bfl8OjA9Np8rXC?=
- =?us-ascii?Q?Zot+HkTaopgfLGGr+40GMMCS4QPE5yhg9xkA5O0o/rNU/VLkt4tyhKQiID9V?=
- =?us-ascii?Q?DVp2XIOs8FYClZC3OOrwVMMgLCS4OSmBZYO35ca59ZR23SsX+kYS0pYzQJ7r?=
- =?us-ascii?Q?tKMzmZa5VHuCKtz/uNCQavtS7nmptB+pcGSfSajDKSljDzSlERw0rT3HM4kR?=
- =?us-ascii?Q?fSI4KV0wXHU7PX2tS+KFMIpNr7LPs6LYLw55/aHhPOoiNNqxh8s8EcVka5oe?=
- =?us-ascii?Q?+Jyy6OhxshG43fqye+ahYO0OJum8h1u8kNo6sv2lkuuPfJLjcMpNrbxsOCp9?=
- =?us-ascii?Q?EHeXPi8W4cdgUpLQBO3Kj6py+BmsLnX8IzAMM65VMhUv2DEtjlN95+41CEsQ?=
- =?us-ascii?Q?b1YewQM7poq/nn4XnpSPtXFfLDDGz7gQPlCNq8hqVLmT8w9wYGQuqxoeuveQ?=
- =?us-ascii?Q?4opOYHUR9WS/i5Seoa4zjTTrJuPCQVnSk7bxuGRKOKojeNfgeG+r8PmwpBpW?=
- =?us-ascii?Q?EMWMAwBqag4WcLXJ3O6dNnrZIrc2i2U98Jqzc69zfJefPFwYg/NQzFxiqosY?=
- =?us-ascii?Q?yJd98r65Wguj9JebrpYaY+EjLmsytr9zHcy3thmc/DG4BCVwUMewEZmeYE6g?=
- =?us-ascii?Q?CgOROcYOJrfbjJG/zT0JfcgYe2ip61R1xorEAnmSO0BkCJfbeIFxyBRVbiSu?=
- =?us-ascii?Q?oi8zZAybl8un4o46UTVlFDBx6YU7vaioa/k7n4egDMu7rOY+fNvstUBtb21q?=
- =?us-ascii?Q?d0am9vkkWOD1L8yQ9QXX7if9CKluv4Cx+dzcnHrkizhv6bg/ql5V28uahdWY?=
- =?us-ascii?Q?NrtVgg1QygeFvsosSBCOgis6uxDtz/dQPVOIwp+4Qtct4Js8jryMnuupLnND?=
- =?us-ascii?Q?fnynF9RAq10aj9BhH/Wmfpgru8QgtP8MbgQM1y7dkSaJgjjP30Lwj46i2lRU?=
- =?us-ascii?Q?gz6MYGe/pVekWtXkwNrVNaqI2oOFX4G3mxgyGF7edzWc56Qb4bO8HoVOKd75?=
- =?us-ascii?Q?Wrqs2nGcZN8jgxZo+SEt0dbI5c4UPg5y1w5jaFHUDA6IRvnMLPYkwwkZYyqb?=
- =?us-ascii?Q?c25/2YWVqSc+spk5QXMOGJA4dWd1v94K2jyfC1vQ40F/luMjA1SBw4QzccTx?=
- =?us-ascii?Q?CMYQ+L+zNVundBBNVKDe3AaULsnAai1gdjOPQbtsnued1dJfV6cLq1vSTG5G?=
- =?us-ascii?Q?p9YOe/9XOO430x4HnCd01c1DhXX+M12JBAJqvBgmXIwA3OhtOoCl?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fa8f8369-812d-4221-cc48-08ded8efeecd
-X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB7216.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jul 2026 10:43:34.9682
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: P4ZbzMIoZ5TPYTW4IGqdY8s2aEtW+XeMQRGqBvdPutJrw7hkdlXqSdlmkT7BY2Wyo0x2lO8U1vO0XPuJzaHwb9JMfY3oGHka0HAxyOK87iaJ9+PQu6ctv6MJDAVriI+u
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10867
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION][BISECTED] tun/tap & vhost-net: multi-threaded
+ network performance
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Jakub Kicinski <kuba@kernel.org>,
+        Tim Gebauer
+ <tim.gebauer@tu-dortmund.de>,
+        Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+        Jason Wang <jasowang@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+        linux-kernel@vger.kernel.org, Brett Sheffield <bacs@librecast.net>,
+        regressions@lists.linux.dev, netdev@vger.kernel.org
+References: <akVnoOYQOrt8k-Gu@karahi.librecast.net>
+Content-Language: en-US
+From: Simon Schippers <simon.schippers@tu-dortmund.de>
+In-Reply-To: <akVnoOYQOrt8k-Gu@karahi.librecast.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Wei Fang <wei.fang@nxp.com>
+On 7/1/26 21:16, Brett Sheffield wrote:
+> TL;DR - Commit 1d6e569b7d0c0b2736636749e4be0a27f3cefcb3 causes
+> significant performance regressions with TAP interfaces and multithreaded
+> network code. Please revert.
 
-Replace the open-coded struct_size() + kzalloc() pattern with the
-kzalloc_flex() helper when allocating struct enetc_psfp_gate. This
-removes the intermediate entries_size local variable and makes the
-allocation site more concise.
+Micheal, I am convinced that netdev_tx_stop_queue() and
+netdev_tx_wake_queue() are too slow. The communication between the CPUs
+is just too slow. We already spent *a lot* of time speeding it up, the
+patchset was only merged at v12...
 
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
----
- drivers/net/ethernet/freescale/enetc/enetc_qos.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+Yes, I would *love* to have qdisc backpressure on by default but I do
+not see how anything could speed it up.
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_qos.c b/drivers/net/ethernet/freescale/enetc/enetc_qos.c
-index 7b17bca24f26..2aa0fcaafcd2 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_qos.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_qos.c
-@@ -1135,7 +1135,6 @@ static int enetc_psfp_parse_clsflower(struct enetc_ndev_priv *priv,
- 	struct flow_action_entry *entry;
- 	struct action_gate_entry *e;
- 	u8 sfi_overwrite = 0;
--	int entries_size;
- 	int i, err;
- 
- 	if (f->common.chain_index >= priv->psfp_cap.max_streamid) {
-@@ -1242,8 +1241,7 @@ static int enetc_psfp_parse_clsflower(struct enetc_ndev_priv *priv,
- 		goto free_filter;
- 	}
- 
--	entries_size = struct_size(sgi, entries, entryg->gate.num_entries);
--	sgi = kzalloc(entries_size, GFP_KERNEL);
-+	sgi = kzalloc_flex(*sgi, entries, entryg->gate.num_entries);
- 	if (!sgi) {
- 		err = -ENOMEM;
- 		goto free_filter;
--- 
-2.34.1
+
+*Is there any issue if we introduce IFF_BACKPRESSURE?*
+I implemented it and it is a simple patch that only executes the
+stopping / waking  if ((tun->flags & IFF_BACKPRESSURE)).
+I could submit that to [net] very soon.
+
+Thank you,
+Simon
 
