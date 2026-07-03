@@ -1,113 +1,96 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD68A285CB3;
-	Fri,  3 Jul 2026 05:53:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF9F35F5ED;
+	Fri,  3 Jul 2026 05:59:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783058034; cv=none; b=o3gxx0/Q0oOUvmKLt3sZ+kjXEEIyWlRnqiqdjom6uahVcjsJMsoNlf5UsiFm0NQAA5lMRT9yAh3PavzfuR8VCuCaTa1KuT4YBofIBbMUiFjL8w800TzNb/+K8yAW5Cylc1R+yQF3sfraK/Q9JLDYshLYOhYCMmtckSFnKD8m/Bc=
+	t=1783058357; cv=none; b=H3HigKQAtSD5vAKgtCgL/DRChFAVTEnmcJhgQdcbl/jzEMcSGfBfphigx5vvOLZ7bSVgqnPDiXnMtV/YvddPpR0qMaRFPn2d/j08ecZ6vMnAmIO3aHvGxqM+s5txh/epbq6Q+pqKiHZ73l0gANlbjKVVXlJUxrT5uoCm3z8gqpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783058034; c=relaxed/simple;
-	bh=gA+ohpEGOnnmWlMVdE7Hf5DmX580TNPRdJTBWNA/H40=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ZiCPWEe7l/Tj36xPLUzIDTN+G3tzWB/HCatQocxPCOPIqKvl9a1xeoT3ffMVZ/zEI/JcjVczjlaYI/4xQ4tavCTcZDqBARJ8kIpc61MwlUtv9s4jlx3rymky+i7mCQxGAH+c885FiIFwSPvwP/f4K9MR6R1T/WJxpr/Lv1EUhCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KrI4skxM; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cju51aBC; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1783058357; c=relaxed/simple;
+	bh=gC0f4IpEEmutBRidcW3TU9mOjFrozAoFQinDjEihXLk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=M4Vtf1yYJbP4i6KFcINn2kkIWgFALCNi0cbopTLtDCMQ7fDIZbdd4w4cZRMmG0yv4ECvLvPfpnjmDXUlWS1c0ioqH5wFiXl9TCkIWObLbu378IuPlBLRbnoz5q+BlpWgMxs0lixsiaPeiqfAuhV1UGfYoO8EHNuSCSgi3UzQEbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=nK7H1bsT; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KrI4skxM";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cju51aBC"
-From: Nam Cao <namcao@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1783058030;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CrTTbM/MoRg1HsY6OQkPKeGxlPQ5We1d3Cm/DFl3UGM=;
-	b=KrI4skxMxTZ5bBQqRl8ooZsbyFfkzyx7GwK4QDUq7wxU9LPWxbf3QqcJh/fJaVWvFJNG36
-	8QPreHG1abi4++wQDCwc5OziccH0dk7yUV9ignlzvhBTXJxpfTIzo19hYQf+NHOyjTF215
-	oOcF1hu0dIS0aGcxB2khIfmJdmOnxbcpNtAneRFkpo5ukuOhYsh8e1weaFctzKUJVGzfkk
-	hYIxecB6/ZomxyM5vsmEc8tUl2WzD9KXPcVVL0GjVLcY8hefi8DXrHc2w3SNSjaKt+A9+V
-	1kDo9vb9/jyX1+r6Zrc9WLWmhGgnaWCdQw3UciWjw1r1sG7No7/ygt8QRL5lYw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1783058030;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CrTTbM/MoRg1HsY6OQkPKeGxlPQ5We1d3Cm/DFl3UGM=;
-	b=cju51aBCxPfqAvl1nBObWLPvCTEz4j8Y+yLjPRSoWoMDK5ZmsRGe4LVSylX8WL+CX3P1jY
-	vOF4P9uJLTo5jeBA==
-To: sashiko-reviews@lists.linux.dev, Kuniyuki Iwashima <kuniyu@google.com>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev
-Cc: linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] af_unix: Do not wait for garbage collector in
- sendmsg()
-In-Reply-To: <20260702163608.0207A1F00A3A@smtp.kernel.org>
-References: <cover.1782922354.git.namcao@linutronix.de>
- <e663a83195f3d9f6d7ad4907c37ae3e45c151062.1782922354.git.namcao@linutronix.de>
- <20260702163608.0207A1F00A3A@smtp.kernel.org>
-Date: Fri, 03 Jul 2026 07:53:48 +0200
-Message-ID: <87mrw8sjo3.fsf@yellow.woof>
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="nK7H1bsT"
+Received: by linux.microsoft.com (Postfix, from userid 1173)
+	id EAEDD20B716C; Thu,  2 Jul 2026 22:59:07 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com EAEDD20B716C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1783058347;
+	bh=YiywiaC4VnDfvSGNTu0J2NjCWbP9RvWAv+silBhR3io=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nK7H1bsTOvgTzOeO8031IWUUbWeDCb8M0VGxhZhfYl8l9O0m9T3ckRukJcIUBWmxy
+	 0i2ZRCut3ROW/57Ckt/bRf4ZENFlE1EtJSj6JUTLvObYyintLzJbwLMFZQqZz/40l9
+	 czKWP2W6o19LfU9ENtVCjFPn2ZhljOJtjNn/MafA=
+Date: Thu, 2 Jul 2026 22:59:07 -0700
+From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+	mkalderon@marvell.com, zyjzyj2000@gmail.com, sagi@grimberg.me,
+	mgurtovoy@nvidia.com, haris.iqbal@ionos.com, jinpu.wang@ionos.com,
+	bvanassche@acm.org, kbusch@kernel.org, Jens Axboe <axboe@kernel.dk>,
+	Christoph Hellwig <hch@lst.de>, kch@nvidia.com, smfrench@gmail.com,
+	linkinjeon@kernel.org, metze@samba.org, tom@talpey.com,
+	trondmy@kernel.org, anna@kernel.org, chuck.lever@oracle.com,
+	jlayton@kernel.org, neil@brown.name, okorniev@redhat.com,
+	Dai.Ngo@oracle.com, achender@kernel.org, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, kees@kernel.org, markzhang@nvidia.com,
+	ebadger@purestorage.com, linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org, target-devel@vger.kernel.org,
+	linux-nvme@lists.infradead.org, linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org, linux-nfs@vger.kernel.org,
+	netdev@vger.kernel.org, rds-devel@oss.oracle.com,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: Re: [PATCH rdma-next v8] RDMA: Change capability fields in
+ ib_device_attr from int to u32
+Message-ID: <akdPqz9L8/IPLqml@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <20260619203107.606359-1-ernis@linux.microsoft.com>
+ <akX/P/0TiSQ38YdS@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+ <akYocsiHWdH8Tncq@ashevche-desk.local>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <akYocsiHWdH8Tncq@ashevche-desk.local>
 
-sashiko-bot@kernel.org writes:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [High] Garbage collector is no longer scheduled when creating new inflight FDs, leading to permanent cycle accumulation and -ETOOMANYREFS failures in isolated environments.
-> --
->
-> commit 506189bd29f8ad56f5d9e51f3e0216203ebad5ec
-> Author: Nam Cao <namcao@linutronix.de>
->
-> af_unix: Do not wait for garbage collector in sendmsg()
->
-> This patch removes the garbage collector scheduling and waiting from the
-> sendmsg() path for AF_UNIX sockets. It aims to prevent priority inversion
-> by relying on RLIMIT_NOFILE limits and asynchronous garbage collection.
->
->> diff --git a/net/unix/garbage.c b/net/unix/garbage.c
->> index 0783555e25266..f180c59b3da9d 100644
->> --- a/net/unix/garbage.c
->> +++ b/net/unix/garbage.c
->> @@ -300,8 +300,6 @@ int unix_prepare_fpl(struct scm_fp_list *fpl)
->>  	if (!fpl->edges)
->>  		goto err;
->>  
->> -	unix_schedule_gc(fpl->user);
->> -
->
-> [Severity: High]
-> Does this removal prevent the garbage collector from running when a process
-> creates isolated socket cycles?
->
-> If a process continuously creates socket cycles (e.g., passing FDs to each
-> other) and closes its local FDs, the sockets reference each other in their
-> receive queues, so their file reference counts will not reach zero.
->
-> Because the refcounts do not drop to zero, unix_release_sock() is never
-> triggered. By removing unix_schedule_gc() from unix_prepare_fpl() here,
-> unix_release_sock() is left as the only trigger for garbage collection.
->
-> This could allow the inflight count to accumulate indefinitely until it
-> hits RLIMIT_NOFILE, causing subsequent sendmsg() calls to fail with
-> -ETOOMANYREFS and permanently leaking the network namespace unless an
-> unrelated AF_UNIX socket is closed system-wide.
+On Thu, Jul 02, 2026 at 11:59:30AM +0300, Andy Shevchenko wrote:
+> On Wed, Jul 01, 2026 at 11:03:43PM -0700, Erni Sri Satya Vennela wrote:
+> > On Fri, Jun 19, 2026 at 01:30:39PM -0700, Erni Sri Satya Vennela wrote:
+> > > The capability counter fields in struct ib_device_attr are declared
+> > > as signed int, but these values are inherently non-negative. Drivers
+> > > maintain their cached caps as u32 and assign them directly into these
+> > > int fields; if a cap exceeds INT_MAX the implicit narrowing yields a
+> > > negative value visible to the IB core.
+> > > 
+> > > Change the signed int capability fields to u32 to match the
+> > > underlying nature of the data. Also update consumers across the IB
+> > > core, ULPs, NVMe-oF target, RDS, and NFS/RDMA so the new u32 values
+> > > are not forced back through signed int or u8 via min()/min_t() or
+> > > narrowing local variables.
+> > 
+> > Just a friendly follow-up on this patch. The Sashiko review mentioned a
+> > low-priority item, and I'd appreciate any guidance on whether the change
+> > is needed.
+> 
+> As I read this it needs to be fixed, the problem is that there is
+> a potential of a weird case (not sure they are IRL) when somebody can use
+> INT_MIN (in representation of signed number) to actually mean 0x80000000
+> size.
+> 
+> > https://sashiko.dev/#/patchset/20260619203107.606359-1-ernis%40linux.microsoft.com
+> 
+> -- 
+> With Best Regards,
+> Andy Shevchenko
+> 
+Thankyou for the confirmation, Andy.
+I'll add this change in the next version.
 
-Sashiko found a valid issue here. But this is a pre-existing issue. It
-is not introduced in this patch.
-
-unix_schedule_gc() does not actually schedule the garbage collector
-unless user's inflight unix socket count exceeds UNIX_INFLIGHT_SANE_USER
-(2024). So user can already accumulate up to 2023 inflight socket counts
-without the garbage collector running until unix_release_sock() is called.
-
-Nam
+- Vennela
