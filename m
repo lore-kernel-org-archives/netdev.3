@@ -1,37 +1,37 @@
 Received: from us.padl.com (us.padl.com [216.154.215.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98762379C46;
-	Fri,  3 Jul 2026 07:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE1A370ACD;
+	Fri,  3 Jul 2026 07:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.154.215.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783064869; cv=none; b=XFEhi4n6nnx2UFT4uH6td4bvRoHqLG8StwD2zzvrbI1RqIZ//1XsB8Ej/CAH8m9h5iKkvPHSQ5SCewLNRktwyWAZQ+YeXRvYKsa3K8cyQCGtBDZAW9B9FN6/8JRSG0IbAwpHisrNk4QkwAzzX/g9uCTPyi0Apt6ksEsobGdxRtA=
+	t=1783064873; cv=none; b=csL5A3iLwwLjPlzzcLtvccRCRqrrzG6DHdXgPzcf4PsigMIQU1YLlZIg8uWcc1n2LRWvCEWStZWr44YIaB9oYA0GSmz7J8rQEfBF5sNyfXnsPja78v1YB+DoyKSKKOL/a3mt/sjDgsjXuK4FvJ251liB/Ti7DTWfO9h4piYWbWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783064869; c=relaxed/simple;
-	bh=gg7sZKNi8J0S1o4A3nkTM7ucIjyFpFGgHNsSA9Lsy5Q=;
+	s=arc-20240116; t=1783064873; c=relaxed/simple;
+	bh=JYnxmNvnYqhGSdwMLK8oOIlK/aGv1u6novLaSFIFapw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=IprVnQqrMJkMmvPXAbTEnZgaxQVT7ge5CGTWcaFYQf+FGwcsbqQFCy4LdR1OMTN7YeNv3JmWY2ct6j6UhXhBrBMfHHAkDuBwrWZKGTpOEbRBckH3viQuFu0/7ccLolCXWb8jJCmmGxmPJevu2OyDdVypN1htljy3nxgthLHko1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=fPtfSKoj; arc=none smtp.client-ip=216.154.215.154
+	 In-Reply-To:To:Cc; b=tq0jQkIm4+XEvivcGWf6AtfaTMy43Abk9GETB9lFXjImwBzuWZfF5vvtVlEYLmqxP+8zZfdJ8J/XZe0OOhjg0AiqFGcFurkdta92OV6zKOjjesDFn3gNk4c505EzE6JYZ2hsrvAAwMvtuRQjIVhOk36fqSIS6UjJIHp+CUkyJj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=UmiWZeSO; arc=none smtp.client-ip=216.154.215.154
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=padl.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="fPtfSKoj"
+	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="UmiWZeSO"
 Received: from [127.0.1.1] (border.lukktone.com [139.130.100.52])
-	by us.padl.com (Postfix) with ESMTPSA id A3B1360C0B;
-	Fri,  3 Jul 2026 03:47:42 -0400 (EDT)
+	by us.padl.com (Postfix) with ESMTPSA id 373D660C04;
+	Fri,  3 Jul 2026 03:47:47 -0400 (EDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=padl.com; s=default;
-	t=1783064866; bh=/x+od2qSec+JKpC2fTu8kMQUpWLeQCnxIOFn4eM+m2w=;
+	t=1783064871; bh=ar982RBJ2nzWFY1F+G96iIk7kopMb43rBsnBWxaJCKA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=fPtfSKoj7msJit/dY3EGKseUY5sHXfMo8ZXg9eOXWQziEaAofcGgf6Q51KsmndQkG
-	 9Zpw70ss+P4DGol4/P/FjrxJX/WOi0QDDBeD3rPdEdPbPbDjphVu+3uK4ojzdntyc8
-	 FyiBL9J+RzGIb/AB2gIxKnf+rd+oPAeDI+jM12KSbDIggdG3sntoKxiORhdc5BpKhj
-	 hljCi3OxQ3zT0s15m4W1+MmWK3rIekeFUtlmD8i2T87ALiZPmz8mpmEeTjZl4upz7a
-	 lJhQ1N+lwRqStX0js2RO9EgKEtxa853V/20x34D/0P3pz7Crv1GNI0TYX/nuJ0Qy5g
-	 IPuIrVtzTQxFA==
+	b=UmiWZeSORGLIWe6iHG0ISDL0wEh7ufhaR7MPzJDtKBocby6PzycnRXZIypMVSUQOX
+	 U1y12L273szBuUVWwLU8viZ+OWgz1imY+B/wGneURhjh/n8DZAoFy/K7E47nnhOKX/
+	 mDt/fQi2rlyPU6cQ5Lv6w5gcAy4syfkNlUk73vHiMkoBezoqiQtQb7EAZkRwuzVOrZ
+	 AGd+UZZ4gKBTiU9xS3fjCe1Ez/z1jmSwNm6QGheUD6Jag42qijJdVqJ9FnFy3G9CNf
+	 FNS7n/TmBgm0MVmO/Rb9IEJMPsH/3YO+JrjxRbh8CZbz+XZ6O8XYGyVOjYyuWJOjaR
+	 jcSBV3PRRg5dg==
 From: Luke Howard <lukeh@padl.com>
-Date: Fri, 03 Jul 2026 17:46:48 +1000
-Subject: [PATCH net-next 14/17] net: dsa: mv88e6xxx: Time RMU operations
- and disable if slow
+Date: Fri, 03 Jul 2026 17:46:49 +1000
+Subject: [PATCH net-next 15/17] net: dsa: mv88e6xxx: cancel PTP polling
+ work on .shutdown
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,7 +40,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260703-net-next-mv88e6xxx-rmu-v1-14-991a27d78bca@padl.com>
+Message-Id: <20260703-net-next-mv88e6xxx-rmu-v1-15-991a27d78bca@padl.com>
 References: <20260703-net-next-mv88e6xxx-rmu-v1-0-991a27d78bca@padl.com>
 In-Reply-To: <20260703-net-next-mv88e6xxx-rmu-v1-0-991a27d78bca@padl.com>
 To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
@@ -56,187 +56,106 @@ Cc: Cedric Jehasse <cedric.jehasse@gmail.com>,
  Mattias Forsblad <mattias.forsblad@gmail.com>, netdev@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Luke Howard <lukeh@padl.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783064798; l=5597;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783064798; l=3643;
  i=lukeh@padl.com; s=20260701; h=from:subject:message-id;
- bh=m0LK2G8pOTQuHUBc/C3G7JO2AS75KtAV9LnGPCVk2gU=;
- b=TSU0VltFan6mJZaeqzpVdN0PF7w7NcCOhAJ3LJgAGRoQTo88kk5fJEjBOD/34mbyuTo1elZC0
- seABTx3+Pr1AsIi8QfXsrokfY8S73Vxpm/F23WWy6FsI5NDRBKmyvcx
+ bh=JYnxmNvnYqhGSdwMLK8oOIlK/aGv1u6novLaSFIFapw=;
+ b=5QJNh0eNpw4KPaTMa44uud0VQrupsL0OZeSEm5y7eyY3GhjbcxBn1ggOi0IBDXOHQxAE4gcL6
+ mhRsYhPZTbiD+5hyKnVIqiHhbhWaJHzVKufWuxENmQP+KjgaUzzVJx6
 X-Developer-Key: i=lukeh@padl.com; a=ed25519;
  pk=D6YgUnH9/OzSZsduYm9XDbvXn1IHDwKwI1hLTsKNRLw=
 
-From: Andrew Lunn <andrew@lunn.ch>
+DSA core's dsa_switch_shutdown() only closes CPU port conduits and
+unlinks DSA uppers; it does not invoke ds->ops->teardown(). On
+.shutdown (reboot), the chip's mv88e6xxx_teardown() therefore never
+runs, and the PTP overflow / TAI event delayed works are not
+cancelled. They continue to fire as the conduit netdev is torn down
+by its own driver, racing the teardown and crashing in the RMU
+request path when conduit->dev_addr is released.
 
-MII access to the switch generally has consistent latency. Sending and
-receiving frames on the other hand has a big variance in
-latency. Receiver interrupt coalescence can result in delays of
-100us. As a result, the RMU can be slower than MDIO.
+Factor the work cancellation out of mv88e6xxx_ptp_free() into a new
+mv88e6xxx_ptp_shutdown() helper that leaves the PTP clock registered,
+and call it from mv88e6xxx_shutdown_common() before
+dsa_switch_shutdown(). mv88e6xxx_ptp_free() now calls the helper
+itself, so the regular .remove path is unchanged.
 
-Measure the latency of the first 16 read requests performed using the
-RMU, and compare it to the latency on an MDIO read. If the RMU is
-slower than MDIO, do not use if for single register reads, writes and
-waiting for bits to be set. Do however use it for retrieving MIB
-values since a single RMU requests replaces a large number of MIDO
-transactions.
-
-Testing on ZII Devel C, which uses a FEC, and Marvel 370RD using
-mvneta has show RMU is slower than MDIO. ZII RAP however, makes use of
-bit banging MDIO and an IGB. IGB by default has a short interrupt
-coalesce period, making RMU much faster than bit banging, by around 20
-times.
-
-Signed-off-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Luke Howard <lukeh@padl.com>
 ---
- drivers/net/dsa/mv88e6xxx/chip.h |  6 +++++
- drivers/net/dsa/mv88e6xxx/rmu.c  | 58 ++++++++++++++++++++++++++++++++++++----
- 2 files changed, 59 insertions(+), 5 deletions(-)
+ drivers/net/dsa/mv88e6xxx/chip.c |  6 ++++++
+ drivers/net/dsa/mv88e6xxx/ptp.c  | 14 ++++++++++++--
+ drivers/net/dsa/mv88e6xxx/ptp.h  |  5 +++++
+ 3 files changed, 23 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.h b/drivers/net/dsa/mv88e6xxx/chip.h
-index 7e483ba8c58d9..fdc87d02469b5 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.h
-+++ b/drivers/net/dsa/mv88e6xxx/chip.h
-@@ -355,6 +355,8 @@ enum mv88e6xxx_rmu_state {
- 	 */
- };
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index 531a59093ef97..3d92c59de7b5f 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -7543,6 +7543,12 @@ static void mv88e6xxx_shutdown(struct mdio_device *mdiodev)
+ 	if (!ds)
+ 		return;
  
-+#define MV88E6XXX_RMU_IS_SLOW	BIT(0)
++	/* DSA core does not call ->teardown on .shutdown, so stop PTP
++	 * polling here before the conduit goes away. Otherwise the work
++	 * can race teardown and dereference a stale conduit->dev_addr.
++	 */
++	mv88e6xxx_ptp_shutdown(ds->priv);
 +
- struct mv88e6xxx_chip {
- 	const struct mv88e6xxx_info *info;
+ 	dsa_switch_shutdown(ds);
  
-@@ -471,6 +473,10 @@ struct mv88e6xxx_chip {
- 	struct net_device *rmu_conduit;
- 	struct dsa_inband rmu_inband;
- 	enum mv88e6xxx_rmu_state rmu_state;
-+	u8 rmu_flags;
-+	ktime_t rmu_read_latencies[16];
-+	u32 rmu_samples;
-+	ktime_t smi_read_latency;
- };
- 
- #define TCAM_MATCH_SIZE 96
-diff --git a/drivers/net/dsa/mv88e6xxx/rmu.c b/drivers/net/dsa/mv88e6xxx/rmu.c
-index 88b02030a774f..5660372f41ad7 100644
---- a/drivers/net/dsa/mv88e6xxx/rmu.c
-+++ b/drivers/net/dsa/mv88e6xxx/rmu.c
-@@ -221,7 +221,8 @@ int mv88e6xxx_rmu_write(struct mv88e6xxx_chip *chip, int addr, int reg, u16 val)
- 	int resp_len;
- 	int ret = -1;
- 
--	if (chip->rmu_state == MV88E6XXX_RMU_DISABLED)
-+	if (chip->rmu_state == MV88E6XXX_RMU_DISABLED ||
-+	    (chip->rmu_flags & MV88E6XXX_RMU_IS_SLOW))
- 		return -EOPNOTSUPP;
- 
- 	resp_len = sizeof(resp);
-@@ -249,6 +250,33 @@ int mv88e6xxx_rmu_write(struct mv88e6xxx_chip *chip, int addr, int reg, u16 val)
+ 	dev_set_drvdata(&mdiodev->dev, NULL);
+diff --git a/drivers/net/dsa/mv88e6xxx/ptp.c b/drivers/net/dsa/mv88e6xxx/ptp.c
+index f7603573d3a98..f6ce3232d10ff 100644
+--- a/drivers/net/dsa/mv88e6xxx/ptp.c
++++ b/drivers/net/dsa/mv88e6xxx/ptp.c
+@@ -551,14 +551,24 @@ int mv88e6xxx_ptp_setup(struct mv88e6xxx_chip *chip)
  	return 0;
  }
  
-+static void mv88e6xxx_rmu_read_latency(struct mv88e6xxx_chip *chip,
-+				       ktime_t latency)
-+{
-+	ktime_t average = 0;
-+	int i;
-+
-+	if (chip->rmu_samples >= ARRAY_SIZE(chip->rmu_read_latencies))
-+		return;
-+
-+	chip->rmu_read_latencies[chip->rmu_samples++] = latency;
-+
-+	if (chip->rmu_samples == ARRAY_SIZE(chip->rmu_read_latencies)) {
-+		for (i = 0; i < ARRAY_SIZE(chip->rmu_read_latencies); i++)
-+			average += chip->rmu_read_latencies[i];
-+		average = average / ARRAY_SIZE(chip->rmu_read_latencies);
-+
-+		dev_dbg(chip->dev, "RMU %lldus, smi %lldus\n",
-+			div_u64(average, 1000),
-+			div_u64(chip->smi_read_latency, 1000));
-+
-+		if (chip->smi_read_latency < average)
-+			chip->rmu_flags |= MV88E6XXX_RMU_IS_SLOW;
-+
-+		chip->rmu_samples = U32_MAX;
+-/* This must never be called holding the register lock */
+-void mv88e6xxx_ptp_free(struct mv88e6xxx_chip *chip)
++/* Cancel any pending PTP polling work. Safe to call from .shutdown
++ * paths where the PTP clock itself stays registered.
++ * This must never be called holding the register lock.
++ */
++void mv88e6xxx_ptp_shutdown(struct mv88e6xxx_chip *chip)
+ {
+ 	if (chip->ptp_clock) {
+ 		cancel_delayed_work_sync(&chip->overflow_work);
+ 		if (chip->info->ops->ptp_ops->event_work)
+ 			cancel_delayed_work_sync(&chip->tai_event_work);
 +	}
 +}
-+
- int mv88e6xxx_rmu_read(struct mv88e6xxx_chip *chip, int addr, int reg,
- 		       u16 *val)
- {
-@@ -263,11 +291,15 @@ int mv88e6xxx_rmu_read(struct mv88e6xxx_chip *chip, int addr, int reg,
- 	};
- 	struct mv88e6xxx_rmu_rw_resp resp;
- 	int resp_len;
--	int ret = -1;
-+	ktime_t start;
-+	int ret;
  
--	if (chip->rmu_state == MV88E6XXX_RMU_DISABLED)
-+	if (chip->rmu_state == MV88E6XXX_RMU_DISABLED ||
-+	    (chip->rmu_flags & MV88E6XXX_RMU_IS_SLOW))
- 		return -EOPNOTSUPP;
- 
-+	start = ktime_get();
-+
- 	resp_len = sizeof(resp);
- 	ret = mv88e6xxx_rmu_request(chip, req, sizeof(req),
- 				    &resp, resp_len,
-@@ -290,6 +322,8 @@ int mv88e6xxx_rmu_read(struct mv88e6xxx_chip *chip, int addr, int reg,
- 		return -EPROTO;
++/* This must never be called holding the register lock */
++void mv88e6xxx_ptp_free(struct mv88e6xxx_chip *chip)
++{
++	if (chip->ptp_clock) {
++		mv88e6xxx_ptp_shutdown(chip);
+ 		ptp_clock_unregister(chip->ptp_clock);
+ 		chip->ptp_clock = NULL;
  	}
+diff --git a/drivers/net/dsa/mv88e6xxx/ptp.h b/drivers/net/dsa/mv88e6xxx/ptp.h
+index 95bdddb0bf39f..90031b05d2514 100644
+--- a/drivers/net/dsa/mv88e6xxx/ptp.h
++++ b/drivers/net/dsa/mv88e6xxx/ptp.h
+@@ -68,6 +68,7 @@
  
-+	mv88e6xxx_rmu_read_latency(chip, ktime_get() - start);
-+
- 	*val = ntohs(resp.value);
+ int mv88e6xxx_ptp_setup(struct mv88e6xxx_chip *chip);
+ void mv88e6xxx_ptp_free(struct mv88e6xxx_chip *chip);
++void mv88e6xxx_ptp_shutdown(struct mv88e6xxx_chip *chip);
  
- 	return 0;
-@@ -312,7 +346,8 @@ int mv88e6xxx_rmu_wait_bit(struct mv88e6xxx_chip *chip, int addr, int reg,
- 	int resp_len;
- 	int ret = -1;
- 
--	if (chip->rmu_state == MV88E6XXX_RMU_DISABLED)
-+	if (chip->rmu_state == MV88E6XXX_RMU_DISABLED ||
-+	    (chip->rmu_flags & MV88E6XXX_RMU_IS_SLOW))
- 		return -EOPNOTSUPP;
- 
- 	resp_len = sizeof(resp);
-@@ -389,8 +424,10 @@ void mv88e6xxx_rmu_conduit_state_change(struct dsa_switch *ds,
+ #define ptp_to_chip(ptp) container_of(ptp, struct mv88e6xxx_chip,	\
+ 				      ptp_clock_info)
+@@ -87,6 +88,10 @@ static inline void mv88e6xxx_ptp_free(struct mv88e6xxx_chip *chip)
  {
- 	struct dsa_port *cpu_dp = conduit->dsa_ptr;
- 	struct mv88e6xxx_chip *chip = ds->priv;
-+	ktime_t start;
- 	int port;
- 	int ret;
-+	u16 id;
+ }
  
- 	port = dsa_towards_port(ds, cpu_dp->ds->index, cpu_dp->index);
- 
-@@ -414,13 +451,24 @@ void mv88e6xxx_rmu_conduit_state_change(struct dsa_switch *ds,
- 		if (ret < 0) {
- 			dev_err(chip->dev, "RMU: initialization check failed %pe",
- 				ERR_PTR(ret));
--			goto out;
-+			goto out_disable;
- 		}
++static inline void mv88e6xxx_ptp_shutdown(struct mv88e6xxx_chip *chip)
++{
++}
 +
-+		start = ktime_get();
-+		ret = mv88e6xxx_port_read(chip, 0, MV88E6XXX_PORT_SWITCH_ID,
-+					  &id);
-+		if (ret < 0) {
-+			dev_err(chip->dev, "RMU: SMI latency read failed %pe",
-+				ERR_PTR(ret));
-+			goto out_disable;
-+		}
-+		chip->smi_read_latency = ktime_get() - start;
- 		chip->rmu_state = MV88E6XXX_RMU_ENABLED;
- 
- 		dev_info(chip->dev, "RMU: enabled on port %d via conduit device %s",
- 			 port, chip->rmu_conduit->name);
- 	} else {
-+out_disable:
- 		if (chip->info->ops->rmu_disable)
- 			chip->info->ops->rmu_disable(chip);
- 
+ static const struct mv88e6xxx_ptp_ops mv88e6165_ptp_ops = {};
+ static const struct mv88e6xxx_ptp_ops mv88e6352_ptp_ops = {};
+ static const struct mv88e6xxx_ptp_ops mv88e6390_ptp_ops = {};
 
 -- 
 2.43.0
