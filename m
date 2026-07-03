@@ -1,37 +1,37 @@
 Received: from us.padl.com (us.padl.com [216.154.215.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB6F138398D;
-	Fri,  3 Jul 2026 06:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00AB338398D;
+	Fri,  3 Jul 2026 06:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.154.215.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783061180; cv=none; b=oHywGkBHOBmN8fUGYcKNboAEFlI5CDJ45m9JMTrD1tIv/ZVupXTbWgtP8EdxU3Hk7e+YTgPtCdqitT5VsqQNrB7KpoWrHPBsdBWIwERFlolX79YHFp5DNXpL0tuPpstfj5UR7bFCjWQO4uY7zVWJDld4saybGJaX/rHojPHVqxk=
+	t=1783061185; cv=none; b=dxAUhogyS2092xI5EWDSEL2vjr8kGtSIxk5xfYvsW6X/zee2STjrefOQU/nVSyAM5ZmAa1YRQqnYpfivip9gVVnxt9w0IYd0mVPwBBqyeOe9L/IYJrpzZC7SKF9nrwc/K106V0B8yNxbJvqvFFiQlmdJgOypc1dU4oDfg+ontQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783061180; c=relaxed/simple;
-	bh=6lFxQ0h9OVxTsgI5bvBbt3kmfE1MGi2yxaDnVrhRRpI=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=gIs5XuRxb6LjRDbofdX1OBAB8ct/kJSmR/pZxnAVCzwOvZNRBauBsJL8hJ59MS5nKPZpIcOzp0/RQpA+Mp0JmcGdwR3kbU7v85a+fcBAL3ulmLKdWSthdvVv0MtX4mdv+Yr9p2vaEt4bCkMHC2UCtxX46fuTFsNgsvVS4ksDuB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=QfTUVtAa; arc=none smtp.client-ip=216.154.215.154
+	s=arc-20240116; t=1783061185; c=relaxed/simple;
+	bh=lVMLpC6PPID8dVPcq3+KoLvn5UTUJ1wVNfpw1i5dx34=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=tzekrA4fJMr8Mv1PInZn5xLH9dbReUqJRLeXLdDqZegnhbhlZQuTC8MQ44/MBcIAeuwaSftluHB3uNF9oc/V1aGoBtMiryb6pP9+Zqkqk5Kep6CfXYb99TLk7/XIPbRf5S2QtcUfsnRW6ss0DR5mzv3K37iDCC/Gr1UF0rR86j8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=PjoYfXDA; arc=none smtp.client-ip=216.154.215.154
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=padl.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="QfTUVtAa"
+	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="PjoYfXDA"
 Received: from [127.0.1.1] (border.lukktone.com [139.130.100.52])
-	by us.padl.com (Postfix) with ESMTPSA id 2412C60C1E;
-	Fri,  3 Jul 2026 02:46:13 -0400 (EDT)
+	by us.padl.com (Postfix) with ESMTPSA id 5221A60C0B;
+	Fri,  3 Jul 2026 02:46:18 -0400 (EDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=padl.com; s=default;
-	t=1783061177; bh=nyhGbijbZrs3Zozee4fmjBVYlju+40VlE9rXtEOwt0M=;
-	h=From:Subject:Date:To:Cc:From;
-	b=QfTUVtAaLdgron8yzlIo6C5JYdhxQ+eOMVGEQfRERodzaAxdEcmuB2VMzww8I0odS
-	 /0MSOh2xim9zETt4WVr/4d54/5J97E5KKdnHYskOVrhuxochrEQlevZkhVi9vX/Nvx
-	 LYQ1zOnJMTp3xDafBvFSN0cGVUjHAbYh1g5WvLf1Zyfcl2I7lnkmjUvQkxIg9p41Ij
-	 ll34N9RXWcxzTf0GRsAyeMQqQn1dEcEeio+kSL8W7eyHIHTptTcLKPWEEdbO+v2j5u
-	 2vtftu+usLnGYesDXlysDFvMGNbTuBB0P8iFn4IO5gfVfJEhEAf0OJI4+ldof2ajBW
-	 HTfUpvGXeUbNw==
+	t=1783061182; bh=RwPGv6YavcGnRUpbTjjpJDd62VFAjmhuN5ATawZpa5E=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=PjoYfXDAW3FdTsrmmM6ewrl4icDOlqkGKIWpXxOvdKBq/czLbte4jIazBbSzUU5bt
+	 D0w1j0tefPQxQPeOZRjdr8/nlEeUPGknl6pyPIwtLUThiNaDH+NsAhtLxcWhfum8tm
+	 g1l3mly9cJU2YMCw9SkWO1dcMn6KSqTtuMODUEwDEXP/PRUCW1IzitL+Oz72nL3PGH
+	 cUbXV/Iwl76CJi5S9hoK5hl33qjVw+PzQmzyGVVLaMY0ZTLrbVbT7Gc76V4FZTP+6U
+	 A/7hynrBwbGPyZC4agqXFqIvEMs4JqHaChbQGP5oiEHzzrdVd2+YOhFbnMnkEbkExh
+	 osHwFpfG7SelQ==
 From: Luke Howard <lukeh@padl.com>
-Subject: [PATCH net-next 0/2] net: dsa: mv88e6xxx: add support for DCB DSCP
- config
-Date: Fri, 03 Jul 2026 16:46:05 +1000
-Message-Id: <20260703-mv88e6xxx-dscp-prio-map-v1-0-250e0ebcce83@padl.com>
+Date: Fri, 03 Jul 2026 16:46:06 +1000
+Subject: [PATCH net-next 1/2] net: dsa: mv88e6xxx: add support for DCB DSCP
+ app
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,12 +40,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIALBaR2oC/22Oy27DIBBFf8ViXSTexvxKlQXgoaWSbQrEQory7
- yGJU2XR5dXMOfdeUIEcoSAzXFCGPZa4rT3QjwH5b7t+AY5zz4gRpogiI152rUG11vBcfMIpxw0
- vNmEWQMzaEUsnjzqdMoTYHuZPtELFK7SKTs9LObsf8PUuPn4z/J57eT2Av24zPJoFJ/gleZvgX
- cGMMkrV5K1V2uwjel9+0Irw/+j02i9HyTo/Tkw5s9O7wtkC2G/LEqsZuHUOOGGcCkEDDc5xTiR
- MWgovleVCSWKD5Oh0vd4AYVUnFlIBAAA=
-X-Change-ID: 20260607-mv88e6xxx-dscp-prio-map-2fe4d8b0a19c
+Message-Id: <20260703-mv88e6xxx-dscp-prio-map-v1-1-250e0ebcce83@padl.com>
+References: <20260703-mv88e6xxx-dscp-prio-map-v1-0-250e0ebcce83@padl.com>
+In-Reply-To: <20260703-mv88e6xxx-dscp-prio-map-v1-0-250e0ebcce83@padl.com>
 To: Vladimir Oltean <olteanv@gmail.com>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -58,41 +55,468 @@ Cc: Cedric Jehasse <cedric.jehasse@gmail.com>,
  Simon Gapp <simon.gapp@gapp-audio.com>, netdev@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Luke Howard <lukeh@padl.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783061173; l=1206;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783061173; l=15473;
  i=lukeh@padl.com; s=20260701; h=from:subject:message-id;
- bh=6lFxQ0h9OVxTsgI5bvBbt3kmfE1MGi2yxaDnVrhRRpI=;
- b=AkOLm/uWa+RPzTEnE2pOo2TLtAGIbjlG0BFrjyio3/QL8uHGL8Pkp1sUZiB8kY6+3EPVpFpLQ
- NU7MLqZh6MTDdPoLCUsAe8Z2qcIEndp+7b01cvLk1YBQQBbzsWGt/HJ
+ bh=lVMLpC6PPID8dVPcq3+KoLvn5UTUJ1wVNfpw1i5dx34=;
+ b=cBZBQGdJ+USiVDKJi7x4+MxTzyMlk6RuYJX+2c91cD1BFdVET2g2zhDCluOCHDVzhBMSFou07
+ oi50MvkcfPqBBLNn42imX5Ugxp2SoOXmuyjO928O3mtkznYgB3fYpGm
 X-Developer-Key: i=lukeh@padl.com; a=ed25519;
  pk=D6YgUnH9/OzSZsduYm9XDbvXn1IHDwKwI1hLTsKNRLw=
 
-Add the DCB DSCP and apptrust applications for configuring DSCP to
-queue mappings.
+Implement {get,add,del}_dscp_prio for Marvell switches that support it.
+On switches that do not support setting the QPri independently of FPri,
+FPri is set to the default for the DSCP value.
 
+On 6352-class switches the DSCP-to-QPri mapping is a global table with no
+per-entry "unmapped" state: every DSCP is always mapped, so the DCB app
+table comes up fully populated and deleting an entry restores its
+reset-default QPri rather than removing it.
+
+Assisted-by: Claude:claude-opus-4-8
 Signed-off-by: Luke Howard <lukeh@padl.com>
 ---
-Luke Howard (2):
-      net: dsa: mv88e6xxx: add support for DCB DSCP app
-      net: dsa: mv88e6xxx: add support for DCB apptrust app
-
- drivers/net/dsa/mv88e6xxx/chip.c    |   8 +
- drivers/net/dsa/mv88e6xxx/chip.h    |  20 ++
- drivers/net/dsa/mv88e6xxx/dcb.c     | 406 ++++++++++++++++++++++++++++++++++++
- drivers/net/dsa/mv88e6xxx/dcb.h     |  11 +
+ drivers/net/dsa/mv88e6xxx/chip.c    |   6 +
+ drivers/net/dsa/mv88e6xxx/chip.h    |  14 ++
+ drivers/net/dsa/mv88e6xxx/dcb.c     | 294 ++++++++++++++++++++++++++++++++++++
+ drivers/net/dsa/mv88e6xxx/dcb.h     |   6 +
  drivers/net/dsa/mv88e6xxx/global1.h |   8 +
- drivers/net/dsa/mv88e6xxx/port.h    |  10 +
- 6 files changed, 463 insertions(+)
----
-base-commit: 3abbe30231441f1fbb3305e9854c56a34650af53
-change-id: 20260607-mv88e6xxx-dscp-prio-map-2fe4d8b0a19c
-prerequisite-change-id: 20260430-net-next-mv88e6xxx-cbs-2121169caa68:v7
-prerequisite-patch-id: 8ad59c43368d4639e0cabcc59a7f6e487560d3f7
-prerequisite-patch-id: 22f1cda311b1826bd4151fc7d4cdf3d87ca519ed
-prerequisite-change-id: 20260603-net-next-mv88e6xxx-pcp-prio-5752caa7926b:v1
-prerequisite-patch-id: f324a0334ef91256d6f09562d978e9d6c32b7f3c
-prerequisite-patch-id: 79c2b056ae68846b5e2950b9738cb83e73d2710e
+ drivers/net/dsa/mv88e6xxx/port.h    |  10 ++
+ 6 files changed, 338 insertions(+)
 
-Best regards,
---  
-Luke Howard <lukeh@padl.com>
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index cefe6be2f0ce9..3bdf8c7b36612 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -7434,6 +7434,9 @@ static const struct dsa_switch_ops mv88e6xxx_switch_ops = {
+ 	.port_get_pcp_prio	= mv88e6xxx_port_get_pcp_prio,
+ 	.port_add_pcp_prio	= mv88e6xxx_port_add_pcp_prio,
+ 	.port_del_pcp_prio	= mv88e6xxx_port_del_pcp_prio,
++	.port_get_dscp_prio	= mv88e6xxx_port_get_dscp_prio,
++	.port_add_dscp_prio	= mv88e6xxx_port_add_dscp_prio,
++	.port_del_dscp_prio	= mv88e6xxx_port_del_dscp_prio,
+ 	.port_setup_tc		= mv88e6xxx_port_setup_tc,
+ 	.cls_flower_add		= mv88e6xxx_cls_flower_add,
+ 	.cls_flower_del         = mv88e6xxx_cls_flower_del,
+@@ -7471,6 +7474,9 @@ static int mv88e6xxx_register_switch(struct mv88e6xxx_chip *chip)
+ 	ds->pcp_prio_mapping_is_global = dcb_ops &&
+ 					 dcb_ops->global_get_pcp_prio;
+ 
++	ds->dscp_prio_mapping_is_global = dcb_ops &&
++					  dcb_ops->global_get_dscp_prio;
++
+ 	/* Some chips support up to 32, but that requires enabling the
+ 	 * 5-bit port mode, which we do not support. 640k^W16 ought to
+ 	 * be enough for anyone.
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.h b/drivers/net/dsa/mv88e6xxx/chip.h
+index 8c4e8b4890907..d6265e925574f 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.h
++++ b/drivers/net/dsa/mv88e6xxx/chip.h
+@@ -794,6 +794,20 @@ struct mv88e6xxx_dcb_ops {
+ 				 u8 pcp);
+ 	int (*port_set_pcp_prio)(struct mv88e6xxx_chip *chip, int port,
+ 				 u8 pcp, u8 prio);
++
++	/* Get/set the chip's global DSCP to queue priority (QPri) mapping */
++	int (*global_get_dscp_prio)(struct mv88e6xxx_chip *chip, u8 dscp);
++	int (*global_set_dscp_prio)(struct mv88e6xxx_chip *chip, u8 dscp,
++				    u8 prio);
++	int (*global_del_dscp_prio)(struct mv88e6xxx_chip *chip, u8 dscp);
++
++	/* Get/set a port's DSCP to queue priority (QPri) mapping */
++	int (*port_get_dscp_prio)(struct mv88e6xxx_chip *chip, int port,
++				  u8 dscp);
++	int (*port_set_dscp_prio)(struct mv88e6xxx_chip *chip, int port,
++				  u8 dscp, u8 prio);
++	int (*port_del_dscp_prio)(struct mv88e6xxx_chip *chip, int port,
++				  u8 dscp);
+ };
+ 
+ struct mv88e6xxx_ptp_ops {
+diff --git a/drivers/net/dsa/mv88e6xxx/dcb.c b/drivers/net/dsa/mv88e6xxx/dcb.c
+index 0a3099cdf3882..c26f43b27f09e 100644
+--- a/drivers/net/dsa/mv88e6xxx/dcb.c
++++ b/drivers/net/dsa/mv88e6xxx/dcb.c
+@@ -1,6 +1,10 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ // Copyright (c) 2026 Luminex Network Intelligence
+ 
++#include <linux/bitfield.h>
++
++#include <net/dscp.h>
++
+ #include "chip.h"
+ #include "dcb.h"
+ #include "global1.h"
+@@ -134,19 +138,201 @@ static int mv88e6393x_port_set_pcp_prio(struct mv88e6xxx_chip *chip, int port,
+ 	return mv88e639x_port_set_pcp_prio(chip, port, pcp, prio, true);
+ }
+ 
++/* The DCB priority maps the DSCP to an egress queue priority (QPri); the frame
++ * priority (FPri) is left untouched.  These chips always map every DSCP, so
++ * there is no per-entry "unmapped" state on the global (6352) table: deleting
++ * an entry restores its reset-default QPri rather than removing it.
++ */
++
++/* G1 offset 0x19 is the IP Mapping Table only on these families; elsewhere it is
++ * the Core Tag Type register, so report DSCP mapping as unsupported there.
++ */
++static bool mv88e6352_has_ip_pri_map(struct mv88e6xxx_chip *chip)
++{
++	switch (chip->info->family) {
++	case MV88E6XXX_FAMILY_6320:
++	case MV88E6XXX_FAMILY_6341:
++	case MV88E6XXX_FAMILY_6352:
++		return true;
++	default:
++		return false;
++	}
++}
++
++static int mv88e6352_get_dscp_prio(struct mv88e6xxx_chip *chip, u8 dscp)
++{
++	u16 val;
++	int err;
++
++	if (!mv88e6352_has_ip_pri_map(chip))
++		return -EOPNOTSUPP;
++
++	if (dscp >= DSCP_MAX)
++		return -EINVAL;
++
++	/* load the table pointer (Update clear), then read the entry back */
++	err = mv88e6xxx_g1_write(chip, MV88E6352_G1_IP_PRI_MAP,
++				 FIELD_PREP(MV88E6352_G1_IP_PRI_MAP_PTR_MASK,
++					    dscp));
++	if (err)
++		return err;
++
++	err = mv88e6xxx_g1_read(chip, MV88E6352_G1_IP_PRI_MAP, &val);
++	if (err)
++		return err;
++
++	return FIELD_GET(MV88E6352_G1_IP_PRI_MAP_QPRI_MASK, val);
++}
++
++/* Update only the QPri of a DSCP entry, preserving the global UseIpFPri bit and
++ * the per-entry FPri so the frame priority handling is left untouched.
++ */
++static int mv88e6352_write_dscp_qpri(struct mv88e6xxx_chip *chip, u8 dscp,
++				     u8 prio)
++{
++	u16 val;
++	int err;
++
++	/* load the table pointer (Update clear), then read the entry back */
++	err = mv88e6xxx_g1_write(chip, MV88E6352_G1_IP_PRI_MAP,
++				 FIELD_PREP(MV88E6352_G1_IP_PRI_MAP_PTR_MASK,
++					    dscp));
++	if (err)
++		return err;
++
++	err = mv88e6xxx_g1_read(chip, MV88E6352_G1_IP_PRI_MAP, &val);
++	if (err)
++		return err;
++
++	val &= ~(MV88E6352_G1_IP_PRI_MAP_PTR_MASK |
++		 MV88E6352_G1_IP_PRI_MAP_QPRI_MASK);
++	val |= MV88E6352_G1_IP_PRI_MAP_UPDATE |
++	       FIELD_PREP(MV88E6352_G1_IP_PRI_MAP_PTR_MASK, dscp) |
++	       FIELD_PREP(MV88E6352_G1_IP_PRI_MAP_QPRI_MASK, prio);
++
++	return mv88e6xxx_g1_write(chip, MV88E6352_G1_IP_PRI_MAP, val);
++}
++
++static int mv88e6352_set_dscp_prio(struct mv88e6xxx_chip *chip, u8 dscp,
++				   u8 prio)
++{
++	if (!mv88e6352_has_ip_pri_map(chip))
++		return -EOPNOTSUPP;
++
++	if (dscp >= DSCP_MAX)
++		return -EINVAL;
++
++	/* QPri range as for the PCP-to-priority mapping */
++	if (prio >= 4)
++		return -EINVAL;
++
++	return mv88e6352_write_dscp_qpri(chip, dscp, prio);
++}
++
++static int mv88e6352_del_dscp_prio(struct mv88e6xxx_chip *chip, u8 dscp)
++{
++	if (!mv88e6352_has_ip_pri_map(chip))
++		return -EOPNOTSUPP;
++
++	if (dscp >= DSCP_MAX)
++		return -EINVAL;
++
++	/* No per-entry disable exists, so restore the reset-default QPri, which
++	 * is the top two DSCP bits (DSCP >> 4: 0x00-0x0f->0, 0x10-0x1f->1,
++	 * 0x20-0x2f->2, 0x30-0x3f->3).
++	 */
++	return mv88e6352_write_dscp_qpri(chip, dscp, dscp >> 4);
++}
++
++static int mv88e6390_port_get_dscp_prio(struct mv88e6xxx_chip *chip, int port,
++					u8 dscp)
++{
++	u16 val;
++	int err;
++
++	if (dscp >= DSCP_MAX)
++		return -EINVAL;
++
++	/* load the table pointer (Update clear), then read the entry back */
++	err = mv88e6xxx_port_write(chip, port, MV88E6390_PORT_IP_PRI_MAP,
++				   FIELD_PREP(MV88E6390_PORT_IP_PRI_MAP_PTR_MASK,
++					      dscp));
++	if (err)
++		return err;
++
++	err = mv88e6xxx_port_read(chip, port, MV88E6390_PORT_IP_PRI_MAP, &val);
++	if (err)
++		return err;
++
++	if (val & MV88E6390_PORT_IP_PRI_MAP_DIS_IP_QPRI)
++		return -EOPNOTSUPP;
++
++	return FIELD_GET(MV88E6390_PORT_IP_PRI_MAP_QPRI_MASK, val);
++}
++
++static int mv88e6390_port_set_dscp_prio(struct mv88e6xxx_chip *chip, int port,
++					u8 dscp, u8 prio)
++{
++	if (dscp >= DSCP_MAX)
++		return -EINVAL;
++
++	/* QPri range as for the PCP-to-priority mapping */
++	if (prio >= 8)
++		return -EINVAL;
++
++	/* This write defines the whole entry: enable and set the QPri, disable
++	 * the FPri override so frame priority is left unchanged, and leave
++	 * IP_YELLOW clear.  The entry is owned solely by this API, so a blind
++	 * write is sufficient and no read-modify-write is needed.
++	 */
++	return mv88e6xxx_port_write(chip, port, MV88E6390_PORT_IP_PRI_MAP,
++				   MV88E6390_PORT_IP_PRI_MAP_UPDATE |
++				   MV88E6390_PORT_IP_PRI_MAP_DIS_IP_FPRI |
++				   FIELD_PREP(MV88E6390_PORT_IP_PRI_MAP_PTR_MASK,
++					      dscp) |
++				   FIELD_PREP(MV88E6390_PORT_IP_PRI_MAP_QPRI_MASK,
++					      prio));
++}
++
++static int mv88e6390_port_del_dscp_prio(struct mv88e6xxx_chip *chip, int port,
++					u8 dscp)
++{
++	if (dscp >= DSCP_MAX)
++		return -EINVAL;
++
++	/* Disable both the QPri and FPri overrides so the DSCP falls back to the
++	 * port default; get_dscp_prio then reports the entry as removed.
++	 */
++	return mv88e6xxx_port_write(chip, port, MV88E6390_PORT_IP_PRI_MAP,
++				   MV88E6390_PORT_IP_PRI_MAP_UPDATE |
++				   MV88E6390_PORT_IP_PRI_MAP_DIS_IP_QPRI |
++				   MV88E6390_PORT_IP_PRI_MAP_DIS_IP_FPRI |
++				   FIELD_PREP(MV88E6390_PORT_IP_PRI_MAP_PTR_MASK,
++					      dscp));
++}
++
+ const struct mv88e6xxx_dcb_ops mv88e6352_dcb_ops = {
+ 	.global_get_pcp_prio = mv88e6352_get_pcp_prio,
+ 	.global_set_pcp_prio = mv88e6352_set_pcp_prio,
++	.global_get_dscp_prio = mv88e6352_get_dscp_prio,
++	.global_set_dscp_prio = mv88e6352_set_dscp_prio,
++	.global_del_dscp_prio = mv88e6352_del_dscp_prio,
+ };
+ 
+ const struct mv88e6xxx_dcb_ops mv88e6390_dcb_ops = {
+ 	.port_get_pcp_prio = mv88e6390_port_get_pcp_prio,
+ 	.port_set_pcp_prio = mv88e6390_port_set_pcp_prio,
++	.port_get_dscp_prio = mv88e6390_port_get_dscp_prio,
++	.port_set_dscp_prio = mv88e6390_port_set_dscp_prio,
++	.port_del_dscp_prio = mv88e6390_port_del_dscp_prio,
+ };
+ 
+ const struct mv88e6xxx_dcb_ops mv88e6393x_dcb_ops = {
+ 	.port_get_pcp_prio = mv88e6393x_port_get_pcp_prio,
+ 	.port_set_pcp_prio = mv88e6393x_port_set_pcp_prio,
++	.port_get_dscp_prio = mv88e6390_port_get_dscp_prio,
++	.port_set_dscp_prio = mv88e6390_port_set_dscp_prio,
++	.port_del_dscp_prio = mv88e6390_port_del_dscp_prio,
+ };
+ 
+ static int mv88e6xxx_dcb_get_pcp_prio(struct mv88e6xxx_chip *chip, int port,
+@@ -227,3 +413,111 @@ int mv88e6xxx_port_del_pcp_prio(struct dsa_switch *ds, int port, u8 pcp,
+ 	mv88e6xxx_reg_unlock(chip);
+ 	return err;
+ }
++
++static int mv88e6xxx_dcb_get_dscp_prio(struct mv88e6xxx_chip *chip, int port,
++				       u8 dscp)
++{
++	const struct mv88e6xxx_dcb_ops *dcb_ops = chip->info->ops->dcb_ops;
++
++	if (!dcb_ops)
++		return -EOPNOTSUPP;
++
++	if (dcb_ops->port_get_dscp_prio)
++		return dcb_ops->port_get_dscp_prio(chip, port, dscp);
++
++	if (dcb_ops->global_get_dscp_prio)
++		return dcb_ops->global_get_dscp_prio(chip, dscp);
++
++	return -EOPNOTSUPP;
++}
++
++static int mv88e6xxx_dcb_set_dscp_prio(struct mv88e6xxx_chip *chip, int port,
++				       u8 dscp, u8 prio)
++{
++	const struct mv88e6xxx_dcb_ops *dcb_ops = chip->info->ops->dcb_ops;
++
++	if (!dcb_ops)
++		return -EOPNOTSUPP;
++
++	if (dcb_ops->port_set_dscp_prio)
++		return dcb_ops->port_set_dscp_prio(chip, port, dscp, prio);
++
++	if (dcb_ops->global_set_dscp_prio)
++		return dcb_ops->global_set_dscp_prio(chip, dscp, prio);
++
++	return -EOPNOTSUPP;
++}
++
++static int mv88e6xxx_dcb_del_dscp_prio(struct mv88e6xxx_chip *chip, int port,
++				       u8 dscp)
++{
++	const struct mv88e6xxx_dcb_ops *dcb_ops = chip->info->ops->dcb_ops;
++
++	if (!dcb_ops)
++		return -EOPNOTSUPP;
++
++	if (dcb_ops->port_del_dscp_prio)
++		return dcb_ops->port_del_dscp_prio(chip, port, dscp);
++
++	if (dcb_ops->global_del_dscp_prio)
++		return dcb_ops->global_del_dscp_prio(chip, dscp);
++
++	return -EOPNOTSUPP;
++}
++
++int mv88e6xxx_port_get_dscp_prio(struct dsa_switch *ds, int port, u8 dscp)
++{
++	struct mv88e6xxx_chip *chip = ds->priv;
++	int err;
++
++	mv88e6xxx_reg_lock(chip);
++	err = mv88e6xxx_dcb_get_dscp_prio(chip, port, dscp);
++	mv88e6xxx_reg_unlock(chip);
++
++	return err;
++}
++
++int mv88e6xxx_port_add_dscp_prio(struct dsa_switch *ds, int port, u8 dscp,
++				 u8 prio)
++{
++	struct mv88e6xxx_chip *chip = ds->priv;
++	int err;
++
++	if (prio >= IEEE_8021Q_MAX_PRIORITIES)
++		return -EINVAL;
++
++	mv88e6xxx_reg_lock(chip);
++	err = mv88e6xxx_dcb_set_dscp_prio(chip, port, dscp, prio);
++	mv88e6xxx_reg_unlock(chip);
++
++	return err;
++}
++
++int mv88e6xxx_port_del_dscp_prio(struct dsa_switch *ds, int port, u8 dscp,
++				 u8 prio)
++{
++	struct mv88e6xxx_chip *chip = ds->priv;
++	int err;
++
++	mv88e6xxx_reg_lock(chip);
++
++	err = mv88e6xxx_dcb_get_dscp_prio(chip, port, dscp);
++	if (err == -EOPNOTSUPP) {
++		/* No explicit mapping for this DSCP, so nothing to remove */
++		err = 0;
++		goto unlock;
++	}
++	if (err < 0)
++		goto unlock;
++	if (err != prio) {
++		/* Mapping was changed in the meantime; leave it alone */
++		err = 0;
++		goto unlock;
++	}
++
++	err = mv88e6xxx_dcb_del_dscp_prio(chip, port, dscp);
++
++unlock:
++	mv88e6xxx_reg_unlock(chip);
++	return err;
++}
+diff --git a/drivers/net/dsa/mv88e6xxx/dcb.h b/drivers/net/dsa/mv88e6xxx/dcb.h
+index 7a2124ec23ba9..e1cf92bbd8729 100644
+--- a/drivers/net/dsa/mv88e6xxx/dcb.h
++++ b/drivers/net/dsa/mv88e6xxx/dcb.h
+@@ -18,4 +18,10 @@ int mv88e6xxx_port_add_pcp_prio(struct dsa_switch *ds, int port, u8 pcp,
+ int mv88e6xxx_port_del_pcp_prio(struct dsa_switch *ds, int port, u8 pcp,
+ 				u8 prio);
+ 
++int mv88e6xxx_port_get_dscp_prio(struct dsa_switch *ds, int port, u8 dscp);
++int mv88e6xxx_port_add_dscp_prio(struct dsa_switch *ds, int port, u8 dscp,
++				 u8 prio);
++int mv88e6xxx_port_del_dscp_prio(struct dsa_switch *ds, int port, u8 dscp,
++				 u8 prio);
++
+ #endif /* _MV88E6XXX_DCB_H_ */
+diff --git a/drivers/net/dsa/mv88e6xxx/global1.h b/drivers/net/dsa/mv88e6xxx/global1.h
+index 3dbb7a1b8fe11..fdc9795fa5c6d 100644
+--- a/drivers/net/dsa/mv88e6xxx/global1.h
++++ b/drivers/net/dsa/mv88e6xxx/global1.h
+@@ -195,6 +195,14 @@
+ /* Offset 0x19: Core Tag Type */
+ #define MV88E6185_G1_CORE_TAG_TYPE	0x19
+ 
++/* Offset 0x19: IP Mapping Table (6172/6176/6240/6320/6341/6352) */
++#define MV88E6352_G1_IP_PRI_MAP			0x19
++#define MV88E6352_G1_IP_PRI_MAP_UPDATE		0x8000
++#define MV88E6352_G1_IP_PRI_MAP_USE_IP_FPRI	0x4000
++#define MV88E6352_G1_IP_PRI_MAP_PTR_MASK	0x3f00
++#define MV88E6352_G1_IP_PRI_MAP_FPRI_MASK	0x0070
++#define MV88E6352_G1_IP_PRI_MAP_QPRI_MASK	0x0003
++
+ /* Offset 0x1A: Monitor Control */
+ #define MV88E6185_G1_MONITOR_CTL			0x1a
+ #define MV88E6185_G1_MONITOR_CTL_INGRESS_DEST_MASK	0xf000
+diff --git a/drivers/net/dsa/mv88e6xxx/port.h b/drivers/net/dsa/mv88e6xxx/port.h
+index 56143fa534c16..230a99f404606 100644
+--- a/drivers/net/dsa/mv88e6xxx/port.h
++++ b/drivers/net/dsa/mv88e6xxx/port.h
+@@ -448,6 +448,16 @@
+ /* Control for Special LED (Index 0x7 of LED Control on Port 2) */
+ #define MV88E6XXX_PORT_LED_CONTROL_0x07_P2_PTP_ACT		0 /* bits 6:0 PTP Activity */
+ 
++/* Offset 0x17: IP Priority Mapping Table */
++#define MV88E6390_PORT_IP_PRI_MAP			0x17
++#define MV88E6390_PORT_IP_PRI_MAP_UPDATE		BIT(15)
++#define MV88E6390_PORT_IP_PRI_MAP_PTR_MASK		GENMASK(14, 9)
++#define MV88E6390_PORT_IP_PRI_MAP_IP_YELLOW		BIT(8)
++#define MV88E6390_PORT_IP_PRI_MAP_DIS_IP_QPRI		BIT(7)
++#define MV88E6390_PORT_IP_PRI_MAP_QPRI_MASK		GENMASK(6, 4)
++#define MV88E6390_PORT_IP_PRI_MAP_DIS_IP_FPRI		BIT(3)
++#define MV88E6390_PORT_IP_PRI_MAP_FPRI_MASK		GENMASK(2, 0)
++
+ /* Offset 0x18: IEEE Priority Mapping Table */
+ #define MV88E6390_PORT_IEEE_PRIO_MAP_TABLE			0x18
+ #define MV88E6390_PORT_IEEE_PRIO_MAP_TABLE_UPDATE		0x8000
+
+-- 
+2.43.0
 
