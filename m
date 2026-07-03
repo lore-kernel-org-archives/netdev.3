@@ -1,37 +1,37 @@
 Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 181E735E1B7;
-	Fri,  3 Jul 2026 05:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A523438BE;
+	Fri,  3 Jul 2026 05:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783057702; cv=none; b=NUEono0zcY0R+tKv/ncPa5xFCQqzd+RPNhYNuthx1C8RnUPCWEv/v9PFdfZoZpjSIy5FofaBaQdPCA8fGQR6gt/kxoFjWnYoLq3Z/tgYDlpVRZ/w85pw3wCcz/RBeCgZ85a4YMtHJgh24r/+V10QOf9wxObBAZpiyIkULbrzNtc=
+	t=1783057704; cv=none; b=V+Ti0kP0eumjW76vKT0ENVK1EzIU5VZKCg7N6pU7G8Ix6IrPIJ99a87w++tQXyzEmGTnWH4PITb2LCFBQuFVEtefoF25l7g0zBhhhSIFYaa17FGNQ9E9l1v7WNr94ZGXxlQxs/a3cp5dmJDyMsd6LsAjKYEP9MBoNUQ+V0y30NU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783057702; c=relaxed/simple;
-	bh=K851gNEITtFaAxcORmnEZC/WY2rm5DEHjArwghQT8JE=;
+	s=arc-20240116; t=1783057704; c=relaxed/simple;
+	bh=NtrhcWohIWlXJ6At2k/Q/bRnv2ZDXq6yLRvVEeRHAUw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Y8gVXw3dycpBcFHfcBJM7RrToKc82F1xzle5JxiWr3ZMwOFPX6ulFSUFnIVLah1oeKiVpMlwlGGY1KqjjN3hWBX5B8asQGNenovDfd0ZQs2kpS/WjZseXrftdq4UoXCCh5xC6iFrA08wH+SS2pfVE9NfkhuFLiYm74g8WQygS8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=Rt/iZmW0; arc=none smtp.client-ip=203.29.241.158
+	 In-Reply-To:To:Cc; b=PrUukoHs0QOOdnkqVefaTgz9Kz17X2YhX/EhrTj7jNA/VyM0YqAadfsZXwn/AR3bLysIXT0l4T6J2cLnIhq+10HRzsUZbjNHFYDIjiNANCCDQkozI/QDbz3Q86Rm+ygupQq6pTeM4YVtsJnhRC8E4N3M/QqFIKiHsXKrYovQRuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=PsI7ZzcU; arc=none smtp.client-ip=203.29.241.158
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="Rt/iZmW0"
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="PsI7ZzcU"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=codeconstruct.com.au; s=2022a; t=1783057671;
-	bh=ULn2MEcJXkygWXqN9l6+zVXb+hapyjT6Ixtac5v47ZE=;
+	bh=ctIJwdcmDl5qK+LKxSUjzEp3wWWAsR8nsw+cLXZEXOQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Rt/iZmW0bINjYJs2aKYb08KTTkCaNyWOkTor9E+lR4ywZ+LaE39ECqJIQABfLLOOg
-	 o2AzfUm2bkAcnNKj7qIdLnMDMvKWtmH14AttajuFACRXSc0A6/dZVda9Y7jRGpBWln
-	 TGjKWkomf4kdMqdP+Dk0ZpKn+wEGOshog5lIjqSZFKcvs/Sy9uZUUm3ahgE9IZR5sC
-	 ahcOMgzuONZd2FGRIKIuqNfo+hp1mcpd7GGpTAQGjgGmkjatTp6DWQUJGA7cIKszde
-	 E12/9pge1I608ZxnCRZ34HDK+wUPj3Wxv804+cDAYbxGXCqcD2JchKXL2yxFEoHfBF
-	 qUEiWUuSlDwdQ==
+	b=PsI7ZzcUu5Q/GsnW5JF1N8V+6/iIa0ZQqyx1mXs02euXYs6saONdHTHRzOijR1xHI
+	 1QWJHafG/9oCIzB8MQMKO0bgP++wIYB4u1/Bs4jlTsi6SBCOfB14yVWSy5XoNq98Ie
+	 UhYDLQd3ahCiI7lHJdmm9m6J6LlZNNQnY3x3TkE1RIO6j3iktey1hQCUnOKME5WoCC
+	 FYxwz62DeKY01aiBmqpKVxNo2R5PBxRgZqaCd9S2axuzmrrqcKoP10EPYGrWJxc6Z+
+	 Y0fzseQavyVCPoCoTyQrDZ88XmjXACwVpstUryfemLvGaXKubj1Qpt1yf6hS8OSgOP
+	 t4gmgHCqt8H8Q==
 Received: by codeconstruct.com.au (Postfix, from userid 10000)
-	id 8A0BF66290; Fri,  3 Jul 2026 13:47:51 +0800 (AWST)
+	id 42C636628E; Fri,  3 Jul 2026 13:47:51 +0800 (AWST)
 From: Jeremy Kerr <jk@codeconstruct.com.au>
-Date: Fri, 03 Jul 2026 13:47:26 +0800
-Subject: [PATCH net-next v2 06/12] net: mctp: usblib: Add support for
- multi-packet transmit
+Date: Fri, 03 Jul 2026 13:47:25 +0800
+Subject: [PATCH net-next v2 05/12] net: mctp: usb: Allow for multiple urb
+ submissions from a packet tx
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,7 +40,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260703-dev-mctp-usb-1-1-v2-6-60367b861b33@codeconstruct.com.au>
+Message-Id: <20260703-dev-mctp-usb-1-1-v2-5-60367b861b33@codeconstruct.com.au>
 References: <20260703-dev-mctp-usb-1-1-v2-0-60367b861b33@codeconstruct.com.au>
 In-Reply-To: <20260703-dev-mctp-usb-1-1-v2-0-60367b861b33@codeconstruct.com.au>
 To: Matt Johnston <matt@codeconstruct.com.au>, 
@@ -51,386 +51,118 @@ To: Matt Johnston <matt@codeconstruct.com.au>,
 Cc: netdev@vger.kernel.org, linux-usb@vger.kernel.org
 X-Mailer: b4 0.16-dev
 
-The MCTP over USB spec allows us to pack multiple packets in one
-transfer. Given the packet max length is 255, and the transfer max
-length is 512, we can typically include two full-size packets per
-urb submission.
+We currently assume that one packet tx (ie., a mctp_usblib_tx_push())
+will result in zero or one calls to the ->send() op, and so zero or one
+urb submissions.
 
-To do this, we allow a struct mctp_usb_tx to persist a tx_ctx,
-representing the ongoing context for a transmit. If possible, a TX skb
-will be queued to the context and the send deferred until the context is
-full, or the device queue reports no more packets.
+However, in order to support multi-packet transfers in future (and later,
+packet-spanning mode), we may have up to two: one flushing an existing
+transmit (if we could not append to that), and one for the new packet
+(if we are not expecting to add more packets to the new transfer).
 
-This typically requires a linear buffer for the 512-byte TX, which we
-allocate along with the TX context.
+Remove the assumption that we have a single tx urb in flight, by
+tracking the tx urb with a usb_anchor rather than a single urb pointer.
 
 Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
 ---
 v2:
- - expand on tx_should_send logic, rather than the hardcoded 68 value.
- - don't increment ctx->len (from zero) on ctx_create(), set explicitly
- - add skb_drop_reasons
+ - adjust tx_anchor handling; the urb is unanchored before completion,
+   so we don't need to unanchor explicitly. We can now rely on the
+   anchor's own lock for serialisation
 ---
- drivers/net/mctp/mctp-usblib.c | 251 +++++++++++++++++++++++++++++++++--------
- include/linux/usb/mctp-usb.h   |   4 +
- 2 files changed, 209 insertions(+), 46 deletions(-)
+ drivers/net/mctp/mctp-usb.c | 27 ++++++---------------------
+ 1 file changed, 6 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/net/mctp/mctp-usblib.c b/drivers/net/mctp/mctp-usblib.c
-index f55c82e03bc1..f2221dbc1019 100644
---- a/drivers/net/mctp/mctp-usblib.c
-+++ b/drivers/net/mctp/mctp-usblib.c
-@@ -164,11 +164,13 @@ EXPORT_SYMBOL_GPL(mctp_usblib_rx_cancel);
- /* transmit context: encapsulates one transfer */
- struct mctp_usblib_tx_ctx {
- 	struct mctp_usblib_tx *tx;
--	struct sk_buff *skb;
-+	struct sk_buff_head skbs;
- 	unsigned int len;
- 	enum mctp_usblib_tx_buf_type {
- 		TX_SINGLE,
-+		TX_FLAT,
- 	} buf_type;
-+	u8 buf[] ____cacheline_aligned;
+diff --git a/drivers/net/mctp/mctp-usb.c b/drivers/net/mctp/mctp-usb.c
+index 0eacad18cb73..e26ddeac9c73 100644
+--- a/drivers/net/mctp/mctp-usb.c
++++ b/drivers/net/mctp/mctp-usb.c
+@@ -37,9 +37,7 @@ struct mctp_usb {
+ 	struct delayed_work rx_retry_work;
+ 
+ 	struct mctp_usblib_tx tx;
+-	/* protects tx_urb */
+-	spinlock_t tx_lock;
+-	struct urb *tx_urb;
++	struct usb_anchor tx_anchor;
  };
  
- void mctp_usblib_tx_init(struct mctp_usblib_tx *tx,
-@@ -178,53 +180,129 @@ void mctp_usblib_tx_init(struct mctp_usblib_tx *tx,
- 	memset(tx, 0, sizeof(*tx));
- 	tx->ops = *ops;
- 	tx->priv = priv;
-+	spin_lock_init(&tx->lock);
- }
- EXPORT_SYMBOL_GPL(mctp_usblib_tx_init);
+ static void mctp_usb_out_complete(struct urb *urb)
+@@ -47,14 +45,9 @@ static void mctp_usb_out_complete(struct urb *urb)
+ 	struct mctp_usblib_tx_ctx *tx_ctx = urb->context;
+ 	struct mctp_usb *mctp_usb = mctp_usblib_tx_ctx_priv(tx_ctx);
+ 	struct net_device *netdev = mctp_usb->netdev;
+-	unsigned long flags;
  
--void mctp_usblib_tx_fini(struct mctp_usblib_tx *tx)
-+static int mctp_usblib_tx_avail(struct mctp_usblib_tx_ctx *ctx)
- {
-+	return ctx->buf_type == TX_SINGLE ? 0 : MCTP_USB_1_0_XFER_SIZE - ctx->len;
- }
--EXPORT_SYMBOL_GPL(mctp_usblib_tx_fini);
+ 	mctp_usblib_tx_send_complete(tx_ctx, netdev, urb->status == 0);
  
--void *mctp_usblib_tx_ctx_priv(struct mctp_usblib_tx_ctx *tx_ctx)
-+static bool mctp_usblib_tx_should_send(struct mctp_usblib_tx_ctx *ctx)
- {
--	return tx_ctx->tx->priv;
-+	/* Use the baseline length (ie, BTU) as an approximate
-+	 * "reasonably-sized" packet we could expect. If there is
-+	 * insufficient capacity for that, then send.
-+	 */
-+	const size_t pkt_len = MCTP_USB_BTU + sizeof(struct mctp_usb_hdr);
-+
-+	return mctp_usblib_tx_avail(ctx) < pkt_len;
- }
--EXPORT_SYMBOL_GPL(mctp_usblib_tx_ctx_priv);
- 
--static struct mctp_usblib_tx_ctx *
--mctp_usblib_tx_ctx_create(struct mctp_usblib_tx *tx, struct sk_buff *skb)
-+/*
-+ * Returns zero on success, non-zero on failure - indicating that the new skb
-+ * could not be appended. So, errors reported here to the TX path will result
-+ * in the TX being transmitted.
-+ */
-+static int mctp_usblib_tx_append(struct mctp_usblib_tx_ctx *ctx,
-+				 struct sk_buff *skb)
- {
--	struct mctp_usblib_tx_ctx *ctx;
-+	if (ctx->buf_type == TX_SINGLE)
-+		return -EINVAL;
- 
--	ctx = kzalloc_obj(*ctx, GFP_ATOMIC);
--	if (!ctx)
--		return NULL;
-+	if (mctp_usblib_tx_avail(ctx) < skb->len)
-+		return -ENOBUFS;
-+
-+	__skb_queue_tail(&ctx->skbs, skb);
- 
--	ctx->tx = tx;
--	ctx->buf_type = TX_SINGLE;
--	ctx->skb = skb;
- 	ctx->len += skb->len;
- 
--	return ctx;
-+	return 0;
- }
- 
- static int mctp_usblib_tx_send(struct mctp_usblib_tx_ctx *ctx)
- {
--	struct mctp_usblib_tx *tx = ctx->tx;
--	void *buf = ctx->skb->data;
-+	void *buf;
- 
--	return tx->ops.send(ctx, buf, ctx->len);
-+	/* If we have a qlen of 1, we only ended up packing a single skb,
-+	 * despite allocating for multiple. Skip the copy and send directly
-+	 * from the skb data.
-+	 */
-+	if (ctx->buf_type == TX_SINGLE || ctx->skbs.qlen == 1) {
-+		buf = ctx->skbs.next->data;
-+
-+	} else if (ctx->buf_type == TX_FLAT) {
-+		struct sk_buff *skb;
-+		size_t pos = 0;
-+
-+		skb_queue_walk(&ctx->skbs, skb) {
-+			skb_copy_bits(skb, 0, ctx->buf + pos, skb->len);
-+			pos += skb->len;
-+		}
-+
-+		buf = ctx->buf;
-+	} else {
-+		return -EINVAL;
-+	}
-+
-+	return ctx->tx->ops.send(ctx, buf, ctx->len);
- }
- 
- static void mctp_usblib_tx_ctx_free(struct mctp_usblib_tx_ctx *ctx,
- 				    enum skb_drop_reason reason)
- {
--	if (ctx)
--		dev_kfree_skb_any_reason(ctx->skb, reason);
-+	struct sk_buff *skb;
-+
-+	if (!ctx)
-+		return;
-+
-+	while ((skb = __skb_dequeue(&ctx->skbs)) != NULL)
-+		dev_kfree_skb_any_reason(skb, reason);
- 	kfree(ctx);
- }
- 
-+void *mctp_usblib_tx_ctx_priv(struct mctp_usblib_tx_ctx *tx_ctx)
-+{
-+	return tx_ctx->tx->priv;
-+}
-+EXPORT_SYMBOL_GPL(mctp_usblib_tx_ctx_priv);
-+
-+/* caller must ensure the tx & completion path is quiesced */
-+void mctp_usblib_tx_fini(struct mctp_usblib_tx *tx)
-+{
-+	mctp_usblib_tx_ctx_free(tx->cur_ctx, SKB_DROP_REASON_NOT_SPECIFIED);
-+}
-+EXPORT_SYMBOL_GPL(mctp_usblib_tx_fini);
-+
-+static struct mctp_usblib_tx_ctx *
-+mctp_usblib_tx_ctx_create(struct mctp_usblib_tx *tx, struct sk_buff *skb,
-+			  bool single)
-+{
-+	enum mctp_usblib_tx_buf_type type;
-+	struct mctp_usblib_tx_ctx *ctx;
-+	size_t sz = 0;
-+
-+	if (single) {
-+		type = TX_SINGLE;
-+	} else {
-+		type = TX_FLAT;
-+		sz = MCTP_USB_1_0_XFER_SIZE;
-+	}
-+
-+	ctx = kzalloc_flex(*ctx, buf, sz, GFP_ATOMIC);
-+	if (!ctx)
-+		return NULL;
-+
-+	ctx->tx = tx;
-+	ctx->buf_type = type;
-+	ctx->len = skb->len;
-+	skb_queue_head_init(&ctx->skbs);
-+	__skb_queue_tail(&ctx->skbs, skb);
-+
-+	return ctx;
-+}
-+
- static void mctp_usblib_tx_stats_update(struct mctp_usblib_tx_ctx *ctx,
- 					struct net_device *dev,
- 					bool ok)
-@@ -238,12 +316,13 @@ static void mctp_usblib_tx_stats_update(struct mctp_usblib_tx_ctx *ctx,
- 		 * that there is a 4-byte header pushed to all skbs in
- 		 * tx_skb_prepare()
- 		 */
--		s64 len = ctx->len - sizeof(struct mctp_usb_hdr);
-+		u64 n = ctx->skbs.qlen;
-+		s64 len = ctx->len - (n * sizeof(struct mctp_usb_hdr));
- 
--		u64_stats_inc(&dstats->tx_packets);
-+		u64_stats_add(&dstats->tx_packets, n);
- 		u64_stats_add(&dstats->tx_bytes, len);
- 	} else {
--		u64_stats_inc(&dstats->tx_drops);
-+		u64_stats_add(&dstats->tx_drops, ctx->skbs.qlen);
- 	}
- 	u64_stats_update_end_irqrestore(&dstats->syncp, flags);
- 	put_cpu_ptr(dev->dstats);
-@@ -314,8 +393,8 @@ static int mctp_usblib_tx_skb_prepare(struct sk_buff *skb,
- }
- 
- /*
-- * Push a new skb to the transfer. At present, no send must be in progress,
-- * as we only handle single-packet USB transfers.
-+ * Push a new skb to the transfer. May result in zero or more calls to
-+ * ops->send().
-  *
-  * Takes ownership of @skb, including on error.
-  */
-@@ -324,35 +403,104 @@ int mctp_usblib_tx_push(struct net_device *dev,
- 			struct sk_buff *skb, bool more)
- {
- 	enum skb_drop_reason reason = SKB_DROP_REASON_NOT_SPECIFIED;
--	struct mctp_usblib_tx_ctx *ctx;
--	int rc;
-+	struct mctp_usblib_tx_ctx *ctx, *send_ctx = NULL;
-+	const int max_tries = 3;
-+	unsigned long flags;
-+	int try = 1, rc;
-+
-+	rc = mctp_usblib_tx_skb_prepare(skb, &reason);
-+	if (rc) {
-+		mctp_usblib_tx_stats_single_drop(dev);
-+		kfree_skb_reason(skb, reason);
-+		/* we may still need to proceed, in case an existing ctx
-+		 * is now sendable (ie.: !more).
-+		 */
-+		skb = NULL;
-+	}
-+
-+retry:
-+	/* Try and queue to the current context. We exit this critical section
-+	 * with a few bits of state:
-+	 *  - send_ctx: indicating a prior context that needs to be sent
-+	 *  - skb: indicating that a skb still needs to be queued/sent
-+	 */
-+	spin_lock_irqsave(&tx->lock, flags);
-+	ctx = tx->cur_ctx;
-+	if (ctx) {
-+		if (skb) {
-+			rc = mctp_usblib_tx_append(ctx, skb);
-+			if (rc) {
-+				/* can't append to the pending tx - detach for
-+				 * sending, and we'll create a new tx below.
-+				 */
-+				swap(tx->cur_ctx, send_ctx);
-+			} else {
-+				/* we have queued */
-+				skb = NULL;
-+				if (!more || mctp_usblib_tx_should_send(ctx))
-+					swap(tx->cur_ctx, send_ctx);
-+			}
-+		} else if (!more) {
-+			swap(tx->cur_ctx, send_ctx);
-+		}
-+	}
-+	spin_unlock_irqrestore(&tx->lock, flags);
-+
-+	if (send_ctx) {
-+		rc = mctp_usblib_tx_send(send_ctx);
-+		if (rc) {
-+			mctp_usblib_tx_stats_update(send_ctx, dev, false);
-+			mctp_usblib_tx_ctx_free(send_ctx, reason);
-+		}
-+		send_ctx = NULL;
-+	}
- 
-+	/* we have either queued, or the prepare failed; nothing more to do */
- 	if (!skb)
- 		return 0;
- 
--	rc = mctp_usblib_tx_skb_prepare(skb, &reason);
--	if (rc)
--		goto err_drop_single;
+-	spin_lock_irqsave(&mctp_usb->tx_lock, flags);
+-	mctp_usb->tx_urb = NULL;
+-	spin_unlock_irqrestore(&mctp_usb->tx_lock, flags);
 -
--	ctx = mctp_usblib_tx_ctx_create(tx, skb);
-+	ctx = mctp_usblib_tx_ctx_create(tx, skb, !more);
- 	if (!ctx) {
--		rc = -ENOMEM;
--		reason = SKB_DROP_REASON_NOMEM;
--		goto err_drop_single;
-+		netdev_dbg(dev, "TX context create failed\n");
-+		mctp_usblib_tx_stats_single_drop(dev);
-+		kfree_skb(skb);
-+		return -ENOMEM;
- 	}
+ 	usb_free_urb(urb);
  
--	rc = mctp_usblib_tx_send(ctx);
--	if (rc) {
--		mctp_usblib_tx_stats_update(ctx, dev, false);
--		mctp_usblib_tx_ctx_free(ctx, reason);
-+	/* if we're ready to send now, no need to enqueue */
-+	if (!more || mctp_usblib_tx_should_send(ctx)) {
-+		rc = mctp_usblib_tx_send(ctx);
-+		if (rc) {
-+			mctp_usblib_tx_stats_update(ctx, dev, false);
-+			mctp_usblib_tx_ctx_free(ctx, reason);
-+		}
-+		return 0;
- 	}
- 
--	return rc;
-+	spin_lock_irqsave(&tx->lock, flags);
-+	if (!tx->cur_ctx) {
-+		tx->cur_ctx = ctx;
-+		ctx = NULL;
-+	}
-+	spin_unlock_irqrestore(&tx->lock, flags);
- 
--err_drop_single:
--	mctp_usblib_tx_stats_single_drop(dev);
--	kfree_skb_reason(skb, reason);
--	return rc;
-+	/* we may have lost the race with a concurrent tx; shouldn't happen, as
-+	 * ndo_start_xmit should be serialised over one queue, but try again
-+	 * from the top, as we may be able to queue the skb to that context.
-+	 */
-+	if (ctx) {
-+		/* unlink the new (sole) skb, we don't want it freed with ctx */
-+		__skb_queue_head_init(&ctx->skbs);
-+		mctp_usblib_tx_ctx_free(ctx, reason);
-+		if (++try > max_tries) {
-+			kfree_skb(skb);
-+			mctp_usblib_tx_stats_single_drop(dev);
-+			return -EBUSY;
-+		}
-+		goto retry;
-+	}
-+
-+	return 0;
- }
- EXPORT_SYMBOL_GPL(mctp_usblib_tx_push);
- 
-@@ -360,7 +508,18 @@ EXPORT_SYMBOL_GPL(mctp_usblib_tx_push);
- void mctp_usblib_tx_cancel(struct mctp_usblib_tx *tx, struct net_device *dev,
- 			   enum skb_drop_reason reason)
+ 	netif_wake_queue(netdev);
+@@ -64,7 +57,6 @@ static int mctp_usb_tx_send(struct mctp_usblib_tx_ctx *tx_ctx,
+ 			    void *data, size_t len)
  {
--	/* nothing to do at present, no ctx is persistent */
-+	struct mctp_usblib_tx_ctx *ctx = NULL;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&tx->lock, flags);
-+	swap(tx->cur_ctx, ctx);
-+	spin_unlock_irqrestore(&tx->lock, flags);
-+
-+	if (!ctx)
-+		return;
-+
-+	mctp_usblib_tx_stats_update(ctx, dev, false);
-+	mctp_usblib_tx_ctx_free(ctx, reason);
- }
- EXPORT_SYMBOL_GPL(mctp_usblib_tx_cancel);
+ 	struct mctp_usb *mctp_usb = mctp_usblib_tx_ctx_priv(tx_ctx);
+-	unsigned long flags;
+ 	struct urb *urb;
+ 	int rc;
  
-diff --git a/include/linux/usb/mctp-usb.h b/include/linux/usb/mctp-usb.h
-index 76f9d8879254..9d9b1f5eee5c 100644
---- a/include/linux/usb/mctp-usb.h
-+++ b/include/linux/usb/mctp-usb.h
-@@ -76,6 +76,10 @@ struct mctp_usblib_tx_ops {
- struct mctp_usblib_tx {
- 	struct mctp_usblib_tx_ops ops;
- 	void *priv;
-+	/* protects access to cur_ctx */
-+	spinlock_t lock;
-+	/* context to which we are adding packets, cleared on send */
-+	struct mctp_usblib_tx_ctx *cur_ctx;
- };
+@@ -78,14 +70,12 @@ static int mctp_usb_tx_send(struct mctp_usblib_tx_ctx *tx_ctx,
  
- void mctp_usblib_tx_init(struct mctp_usblib_tx *tx,
+ 	netif_stop_queue(mctp_usb->netdev);
+ 
+-	spin_lock_irqsave(&mctp_usb->tx_lock, flags);
+-	rc = usb_submit_urb(urb, GFP_ATOMIC);
+-	if (!rc)
+-		mctp_usb->tx_urb = urb;
+-	spin_unlock_irqrestore(&mctp_usb->tx_lock, flags);
++	usb_anchor_urb(urb, &mctp_usb->tx_anchor);
+ 
++	rc = usb_submit_urb(urb, GFP_ATOMIC);
+ 	if (rc) {
+ 		netdev_dbg(mctp_usb->netdev, "TX urb submit failed, %d\n", rc);
++		usb_unanchor_urb(urb);
+ 		usb_free_urb(urb);
+ 		netif_start_queue(mctp_usb->netdev);
+ 	}
+@@ -207,7 +197,6 @@ static int mctp_usb_open(struct net_device *dev)
+ static int mctp_usb_stop(struct net_device *dev)
+ {
+ 	struct mctp_usb *mctp_usb = netdev_priv(dev);
+-	struct urb *tx_urb = NULL;
+ 	unsigned long flags;
+ 
+ 	netif_stop_queue(dev);
+@@ -222,11 +211,7 @@ static int mctp_usb_stop(struct net_device *dev)
+ 
+ 	usb_kill_urb(mctp_usb->rx_urb);
+ 
+-	spin_lock_irqsave(&mctp_usb->tx_lock, flags);
+-	swap(mctp_usb->tx_urb, tx_urb);
+-	spin_unlock_irqrestore(&mctp_usb->tx_lock, flags);
+-
+-	usb_kill_urb(tx_urb);
++	usb_kill_anchored_urbs(&mctp_usb->tx_anchor);
+ 
+ 	mctp_usblib_tx_cancel(&mctp_usb->tx, dev, SKB_DROP_REASON_DEV_READY);
+ 
+@@ -283,11 +268,11 @@ static int mctp_usb_probe(struct usb_interface *intf,
+ 	dev->usbdev = interface_to_usbdev(intf);
+ 	dev->intf = intf;
+ 	spin_lock_init(&dev->rx_lock);
+-	spin_lock_init(&dev->tx_lock);
+ 	usb_set_intfdata(intf, dev);
+ 
+ 	mctp_usblib_rx_init(&dev->rx);
+ 	mctp_usblib_tx_init(&dev->tx, &tx_ops, dev);
++	init_usb_anchor(&dev->tx_anchor);
+ 
+ 	dev->ep_in = ep_in->bEndpointAddress;
+ 	dev->ep_out = ep_out->bEndpointAddress;
 
 -- 
 2.47.3
