@@ -1,126 +1,78 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 123A5301486
-	for <netdev@vger.kernel.org>; Fri,  3 Jul 2026 16:37:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E10C286D4D;
+	Fri,  3 Jul 2026 16:39:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783096673; cv=none; b=Ki2ZG/dKogxvoJHsCOFDPurnB/PNpQYmvP6fwMyMUL3IWYwNGk17SeuiXG4eglj2cnwzWgJ0taQpDqE1qfYq16d86nll/XOCeWmYrywXTGacLK8rJU4l3UtIkH/VK1ztbzq/rG4pKniaK4UShx/rdRApNg7ZzabjcJDoCyhM86g=
+	t=1783096743; cv=none; b=E8GMVl5jUH70jmJKho8iJiFcD8y6d1fajzVzU1w+sGIPT3IpSs9AhGrouFbAbSgfw3dsozcFC5giKiTPPho1s6wynpQu/dhj2Ok+BkbGmBmIvNq/1omwM0jcuRULFhauwUlpYsKUT1MrkM+Uho6SCjKbJxAt3CPFv3rtdYPJp+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783096673; c=relaxed/simple;
-	bh=rvTGz4LGpj64vmtUCByDEmmEVxFtHAKgKCZFNyO3Rd4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BWMgrgrx3yV6XFM6CtsPtk5I8Iop04i8YYkP23KFXPKNpIyBzHUKBsW2dXemEnrndQMVndxu3+XNPS+H63lyDXfiSIU3RNhtNGJY3TjokgiNnYYXpB0jQrzNd6by5dhZAe2yFcr9m85sXEo4ezNoLd0HDj+jYwEuPCTTuazidp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EglXRgHc; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=GLuF2cc6; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1783096743; c=relaxed/simple;
+	bh=5DVVBtTOW0yr5qDqr84mGeBE9GlwwdKdtKIQ4DEOBLc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uA9En/sNgBjeVMVN9+v8jBqOfC16xFJ1ekOxTvTaYbBmYGDfDSCf0RfzAbWVh+ogqQpgZY8+ugqv0BUntwAhUbl2W3oNIvQ37rwE8W5Fp2BA1LWozXAsjFH89Fb8+ZesUCHAPvuJZUMYG37PrDQd+V8sS95Zuw9dAPHwNPBIAkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=rstkdL9C; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EglXRgHc";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="GLuF2cc6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783096669;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tcx1EKzkvkabWkcySDgIRTWl705sfc5nfabQik0GNdE=;
-	b=EglXRgHc3fv0xfgH6AaZiAEbPHEs4Ng6WD4QZUCurXnEpMCHN2hp7fHCU5gUlydKZBdqt9
-	QgNwhEJbaX84N+KrRy0jmmVA/M3AbTxCvU4LghBTG0Wemqo1hGcOo2RAzeFcsTbCcpQwFP
-	9xwGraRhFO/Q2mtwnvzqrrMbUPPAIig=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-141-KmWHj42kPSyreF7TVO7tDA-1; Fri, 03 Jul 2026 12:37:48 -0400
-X-MC-Unique: KmWHj42kPSyreF7TVO7tDA-1
-X-Mimecast-MFC-AGG-ID: KmWHj42kPSyreF7TVO7tDA_1783096667
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4925bf70f5bso6903755e9.1
-        for <netdev@vger.kernel.org>; Fri, 03 Jul 2026 09:37:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1783096667; x=1783701467; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=tcx1EKzkvkabWkcySDgIRTWl705sfc5nfabQik0GNdE=;
-        b=GLuF2cc6ClIiuj7vUP20gbZwwzUEY01lzB6Snovb9N49YkEQlnYd3KNwblJhEmnTLV
-         sCRNO9xl4dASKYcMJtNalt0CgU4vOc67+0jJrTntRB7MkGbcYBqYhzP43v7x+cGSkAOt
-         wwSimfvH1Z9rIzZuMALnmwZrlyRmNptan53mxLR1NrXoGx1JgJgvWExjKKOHZEsBIvBI
-         0M2spKyCMye9v04tEysbxCgHJdhdolwqnTMIEsg10WmPirQjbYW3dfpqBism37mY4Oua
-         oECyKX+RLTeEARRoZRw4gGPRBAwO1u+99B+GMNgSJGp2d+gkYK9/MJ/XBQ5Zh0EKJRgQ
-         eIWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783096667; x=1783701467;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=tcx1EKzkvkabWkcySDgIRTWl705sfc5nfabQik0GNdE=;
-        b=LXt76JAXkophNNR3cjGlnRQ9ncKRwlTgSPClH/x0M+/mU3qgKX6QtlafMSsJLHSnE8
-         rtWtaXVf+GAJKzLQJELrl275alMkQxpDuCQDkOpztRnc++NBaGfQl9DJ2FzL4Wm8edXE
-         w8ASOKBJ09CtJ/5tSux4Hl/P0BKPA6Hp6gC/Oj1CIK1HBrI/Pr/l5N9yNNbRZtKSHAXC
-         WAnYeN3m4Os52LT/OVylm1vFKaUi36Rje56rubtYZekNabppni97QQWfAptAkIc18nHy
-         qbKwhb32rLEtXxFgpa3oS/UEMpvf2XvQwhOL43lo/YauuzOyLDPsV2mecLLMH6qLYiIJ
-         1+uw==
-X-Gm-Message-State: AOJu0YyS3+uK/tnUKmLv9b+eH3oPRH6qNrfLKcMUGt40qlzHZ/XQ4Flw
-	Qi9hxeQGszQWh7AEwATGaTkGHlBG0vRRzf+vj4ZZtwDxZzZBYm8QqLp1+FAZkNp/Pb5//sowHBr
-	7+VhBQqJqRiH402g07xGBJheHAmW131F/Z75pxTEHmwOOzBa/9TOSrr750nfc9ssCjw==
-X-Gm-Gg: AfdE7clf0Nz5XGE65t/Z/BIJlUyZAE10oDj15AuLj7pzYgi34LYb3ctVmzJgq53KYFK
-	lJt9FqRXFk0VhpUJPZuwjkErC8jyb3FbRZix+h1mFmDxkDVDR/jSbxja8Sh2oDMaWWWjKR6k7uT
-	5vbYtVqDburt8Tjajuu89tjn5pMvZYdXjEeaKEK6gOfFXw9r8epaiD/5QEgJ8VzT9d0B2pwC5bJ
-	tO8MclBVPTuj4+OT7lvnLGpLqusHGuVsWQR8rrSVW6ivxMkv7xbQaZ1qt6t+DpWx7/oTEmYA14O
-	LVCQSOcybmJY/tfC7KRsB4MHIn5zK7VN4M3Pr/JRj1TDw69dLtPRcjphCGFiVo5VGqri2buDk+F
-	wXG6TI+K8z5MvlUqdnneaYgm6SEdU5odaT79zof7A1cVd8hGh8Z9V+ejzkCfw8C96VLheN/2cGi
-	9Q62frOoe0RA==
-X-Received: by 2002:a05:600c:8010:b0:493:bb2e:11a5 with SMTP id 5b1f17b1804b1-493d11d7e1emr680935e9.15.1783096667286;
-        Fri, 03 Jul 2026 09:37:47 -0700 (PDT)
-X-Received: by 2002:a05:600c:8010:b0:493:bb2e:11a5 with SMTP id 5b1f17b1804b1-493d11d7e1emr680685e9.15.1783096666873;
-        Fri, 03 Jul 2026 09:37:46 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:5521:6b10:2eb7:f61a:75:4534? ([2a0d:3344:5521:6b10:2eb7:f61a:75:4534])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493ccd9d620sm66148315e9.1.2026.07.03.09.37.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 Jul 2026 09:37:46 -0700 (PDT)
-Message-ID: <e3f99de6-cf19-451f-8175-50fa30012f7f@redhat.com>
-Date: Fri, 3 Jul 2026 18:37:44 +0200
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="rstkdL9C"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=cOUbwEcbUl3Tbzt6eGApLmbeUlwF/FWkHZ2MGvOerL4=; b=rstkdL9COsd4gO3sCjGnPktLkf
+	pVSuBjoTLGb0FQt8q7bZyAUqQI4OkYaDtfiThk543MM9Zv3MB1g5iPE9N36ZYmNyuHfryOUujYY35
+	tLQwxT65h8QmyS9R8I22xXTWrO+3RTZ4Fni9NvH2H65H94Mi5yq9zbZUbWmm6pmfIbYo=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wfgul-00AZoE-6r; Fri, 03 Jul 2026 18:38:55 +0200
+Date: Fri, 3 Jul 2026 18:38:55 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Rosen Penev <rosenp@gmail.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net] net: emac: mal: replace devm_request_irq with
+ request_irq to fix probe error race
+Message-ID: <fa4fa65e-1635-4313-a5e0-56a5208272e2@lunn.ch>
+References: <20260702235045.1326384-1-rosenp@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] selftests/tc-testing: Add tests that force multiq and
- taprio to enqueue to child's gso_skb
-To: Victor Nogueira <victor@mojatatu.com>
-Cc: netdev@vger.kernel.org, hexlabsecurity@proton.me, pctammela@mojatatu.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, jhs@mojatatu.com,
- jiri@resnulli.us
-References: <20260630153651.249752-1-victor@mojatatu.com>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20260630153651.249752-1-victor@mojatatu.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260702235045.1326384-1-rosenp@gmail.com>
 
-On 6/30/26 5:36 PM, Victor Nogueira wrote:
-> Add test cases to reproduce scenarios fixed recently [1] where
-> multiqueue and taprio forced their children into enqueueing an skb to
-> gso_skb (during peek), but failed to dequeue from gso_skb because they
-> called the child's dequeue callback directly. This causes a desync in the
-> child's qlen/backlog and results in an eventual null-ptr-deref (with a
-> qfq or dualpi2 child).
+On Thu, Jul 02, 2026 at 04:50:45PM -0700, Rosen Penev wrote:
+> devm_request_irq() is a managed resource: the IRQ is not freed until
+> devres_release_all() runs after the probe function returns.  In the
+> probe error path, free_netdev(mal->dummy_dev) and dcr_unmap() execute
+> while the IRQ is still live.  If the shared IRQ fires during cleanup,
+> the handler accesses unmapped DCR registers (crash) or the already-
+> freed dummy_dev (use-after-free).
 > 
-> Test cases are the following:
+> Switch to plain request_irq() with per-IRQ error labels that tear down
+> only the IRQs that were successfully registered, and add the matching
+> free_irq() calls in mal_remove().
 > 
-> - Force multiq to dequeue from its child's gso_skb with qfq leaf (fb6c)
-> - Force multiq to dequeue from its child's gso_skb with dualpi2 leaf (1922)
-> - Force taprio to dequeue from its child's gso_skb with qfq leaf (476f)
-> - Force taprio to dequeue from its child's gso_skb with dualpi2 leaf (0235)
-> 
-> [1] https://lore.kernel.org/netdev/20260625-b4-disp-31bcb279-v1-0-85c40b83c529@proton.me/
-> 
-> Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+> Fixes: 14f59154ff0b ("net: ibm: emac: mal: use devm for request_irq")
+> Assisted-by: opencode:big-pickle
+> Signed-off-by: Rosen Penev <rosenp@gmail.com>
 
-Since the fix has been propagated to net-next, this is net-next
-material, right? no need to repost, just ack/nack, thanks!
+You seemed to of sent the same patch within 24 hours. Please don't do
+that.
 
-/P
+https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
 
+Send a self NACK to the broken version, wait 24 hours, and send v2.
+
+    Andrew
+
+---
+pw-bot: cr
