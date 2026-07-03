@@ -1,129 +1,346 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us.padl.com (us.padl.com [216.154.215.154])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBDB2380FD1
-	for <netdev@vger.kernel.org>; Fri,  3 Jul 2026 06:41:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC17237DEA4;
+	Fri,  3 Jul 2026 06:42:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.154.215.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783060872; cv=none; b=qZuuLgCCBvMKtihK/jBLLy2VQlyI1dxFmc5EuOIiPhw33U2bQqa8qlyo0mkSpMHdLRT5A/Usu+PgAFo5zBKSqmwzxSKQIHH4KH3z3bzBiDTpy2iAwmFa3vonDZKmOQZ2v+tetydpbo75Umq4scXE227/VsE+GGQiBO1qq375nnE=
+	t=1783060945; cv=none; b=OFY+XLmtpVGGrEglU31Fr3bRe1ppBGBtoHh7ltlJdaCo1blELLVbcfsi4e52J3hbQbBBxBXb8PQcjtjMf5l6Z3j0M/oUugitVQq9yf+hYmR2qejgbK49j3le7uxYZvaKYzqfaY/Rhn+MOo8muVmwHMWY/zc9qpKeExxo98ikUgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783060872; c=relaxed/simple;
-	bh=++q6XaBXe7wgaCVoeq3lcGF1qzvDfgWiiemhywD8qaM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=B1eGHu1SvVtZmimXO8QtEi2D86vlW6gV3bqu9Y0Glt38EU+4Q84zwlHWXJ1kGRB9cfZudi75HELwp1uUUV+rdXk9e0dmKwP+TwBxq9cAdLsikiltDVZTaAwdek0+ZDgsJukTun2d3rbAjshL58pViI77r3nddSyNg8dp5iGGprs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LUBrOwzz; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	s=arc-20240116; t=1783060945; c=relaxed/simple;
+	bh=yqyUQkVEkUXCbHFZIAKgdiaARCwoJcRB6O9eG0PCG5E=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=kIi6NQNUxR9551utkihguQT6KTojpYycWQQWgb575Lhu8+Rp7VMW/TLB8+axfrhgI491g376lPGl4CiJT/K22rmSLNubvQKGwUtP8AJrvhKwhYwA3SDahWbYMD153RstFwbr1X2RuA4Ck4i9am2+KAjrJEGnRrTLfCeChRx9YoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=SHITKHDu; arc=none smtp.client-ip=216.154.215.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=padl.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LUBrOwzz"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c8894570b58so237659a12.3
-        for <netdev@vger.kernel.org>; Thu, 02 Jul 2026 23:41:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783060870; x=1783665670; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=B1HmvWkxk6N+YA53uVqd5+yjqIl+LiU06WsEqplBXZ8=;
-        b=LUBrOwzzhwxn868rkk8fwSK/drOyQrH7jcLNxS4oep4FYH7VoTu7sggVu52dZPXTBQ
-         FOUIPRhSQadEqEjY+wOW4WfTL5dAMfRt/quXIcF/YqRe/MujUxyDIygBV+sR/D3ZePe2
-         O+bU69xLKj4gJKAqQyjUxwcHtHHbppwYx24PMphZS7KPq49yi3/loDpE0f2WR+UFANct
-         iuhM8xs7y44Km/cZgjRyTpZ2OUWAfeEXxAPSIn6kWdEe8Am+TfpV5A9rZli5JK09CDJ2
-         viiMPAO1mm5s7zGxPU3oLALCDW9Gimr55c+up4mehmwOvZjYPJ5OQ/utItB3gEJtWzl6
-         pwtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783060870; x=1783665670;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=B1HmvWkxk6N+YA53uVqd5+yjqIl+LiU06WsEqplBXZ8=;
-        b=YFGZCuSASikyocWNJWY3xMoJ3j0J3WwM3mWdL3+NLDX0l9uK+q6Pq2pEDOiOAV+B+5
-         CTfplyUiFxLq0UmoM5/czCe5ZWLdBKzwaXCbA57NTQd8JcuVrscGo7dbppawQC+8IyFS
-         qmlk1FM03ajul07wUsnf3z8xBjH/AXkl3KyUNgLmWDi2Wjowxk77VpYENl+FU6NFCT4j
-         b0k3rR0PwmK2iRjXNAsmk6NNf3dv1+nH0vuMm3oy5P4yAVeZPTvGs7KrtR9alZnPRD/U
-         RsFcaH+wTwMBj4MpXbKApVvxlKyiGjH8WapMVRjz3+zI63C7+Seqt0GT9y8Zzj7X9Wu8
-         ycYA==
-X-Forwarded-Encrypted: i=1; AFNElJ+oqutQAjccU3CiAmxGP7eIKnADvbYg7brX8ZKNz46mPCgfwy6IIN8jzNNeOOqDb2yNbVVBbGM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyOJKG+fICO4LxeEYV/IuhgDVW+H6weFFf2xQUFjcP6loP9Mwkt
-	2GAD2OSZ8kr7hg8nqwK2K2HP8zWcZ7yrjydsYPZoA3bVv28ERdMqeG3OmDhTlmhkGArYR7Cl+qs
-	M1tCELg==
-X-Received: from pgbfm10.prod.google.com ([2002:a05:6a02:498a:b0:c9e:28e0:16dd])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6a26:b0:3bf:a698:ce4d
- with SMTP id adf61e73a8af0-3bff42ef857mr9796827637.54.1783060869774; Thu, 02
- Jul 2026 23:41:09 -0700 (PDT)
-Date: Fri,  3 Jul 2026 06:38:52 +0000
-In-Reply-To: <20260701081602.3185086-3-paritosh.potukuchi@amd.com>
+	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="SHITKHDu"
+Received: from [127.0.1.1] (border.lukktone.com [139.130.100.52])
+	by us.padl.com (Postfix) with ESMTPSA id ACD3960D44;
+	Fri,  3 Jul 2026 02:42:14 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=padl.com; s=default;
+	t=1783060938; bh=WkTdTgDIxMxX0wIXRMFAOqBPNT0QOgcQbLaOk2TSZWA=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=SHITKHDu6dG75FzPSUffQItp1rFARAWzsZD79dgpNlctMXGy+X/u0icnmc5G5IaP5
+	 dUOlBNv/ac8e+MyYaIVCq251KEUvGdmq/c5pOaf04n+c/Yldzi8pkK+bqFDgK8VXfD
+	 4ZDIjTI7MEyFm2K1lAGtVuOZwgDpmSc+QcBjj2eIhPzvrtd0eBZwebIWk9A82YN6go
+	 M0HAlxt9Ym6h/BJwMaU5dbjM78lbbLQ0O2ClWCWzKhw9lc8pOdIPLGO7qhCkEacw79
+	 ramoc+qedLxmGozVkKCUEJ8PHrgX0toC8nnJMpxTsoQhHNWgdxCz5noNi9PqNFbIZX
+	 4c2QmG2ZTsRGA==
+From: Luke Howard <lukeh@padl.com>
+Date: Fri, 03 Jul 2026 16:41:59 +1000
+Subject: [PATCH net-next 2/2] net: dsa: mv88e6xxx: embedded PTP timestamp
+ support
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260701081602.3185086-3-paritosh.potukuchi@amd.com>
-X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260703064109.1836070-1-kuniyu@google.com>
-Subject: Re: [PATCH v2 2/2] bonding: reuse neigh_setup from slave neigh_parms
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: paritoshpotukuchi@gmail.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
-	jv@jvosburgh.net, kuba@kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, pabeni@redhat.com, paritosh.potukuchi@amd.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260703-mv88e6xxx-ptp-fixes-v1-2-0138581889a9@padl.com>
+References: <20260703-mv88e6xxx-ptp-fixes-v1-0-0138581889a9@padl.com>
+In-Reply-To: <20260703-mv88e6xxx-ptp-fixes-v1-0-0138581889a9@padl.com>
+To: Vladimir Oltean <olteanv@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Vivien Didelot <vivien.didelot@gmail.com>, 
+ Gregory CLEMENT <gregory.clement@bootlin.com>, Andrew Lunn <andrew@lunn.ch>, 
+ Richard Cochran <richardcochran@gmail.com>
+Cc: Cedric Jehasse <cedric.jehasse@gmail.com>, 
+ Kieran Tyrrell <kieran@sienda.com>, Max Holtmann <mh@rme-audio.deA>, 
+ Max Hunter <max@huntershome.org>, 
+ Christoph Mellauner <christoph.mellauner@joyned.at>, 
+ Simon Gapp <simon.gapp@gapp-audio.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Luke Howard <lukeh@padl.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783060925; l=9937;
+ i=lukeh@padl.com; s=20260701; h=from:subject:message-id;
+ bh=yqyUQkVEkUXCbHFZIAKgdiaARCwoJcRB6O9eG0PCG5E=;
+ b=0CtGgPhSt/IcmvL9DmJJxYP3rVDZsm4r8oEShKGMRiLvRVPb2qRoCofFOMEwK0QwZw5tAaK2k
+ yKT0FciHRKvCXJOv9RgDdKPwEFR6GMR30dzwgBxRoaDUuBfEetP6pAy
+X-Developer-Key: i=lukeh@padl.com; a=ed25519;
+ pk=D6YgUnH9/OzSZsduYm9XDbvXn1IHDwKwI1hLTsKNRLw=
 
-From: Paritosh Potukuchi <paritoshpotukuchi@gmail.com>
-Date: Wed,  1 Jul 2026 08:16:00 +0000
-> bond_neigh_init() currently relies on the slave device's
-> ndo_neigh_setup() callback to obtain a neigh_setup() handler.
-> 
-> When an initialized neigh_parms instance already exists for the
-> slave device, reuse the neigh_setup() callback stored in it instead
-> of invoking ndo_neigh_setup() again.
-> 
-> If no neigh_parms instance is found, or no neigh_setup() callback is
-> present, retain the existing ndo_neigh_setup() fallback path.
-> 
-> This avoids unnecessary ndo_neigh_setup() invocations while preserving
-> existing behaviour.
-> 
-> Signed-off-by: Paritosh Potukuchi <paritosh.potukuchi@amd.com>
-> ---
->  drivers/net/bonding/bond_main.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-> index e044fc733b8c..d2e4dae4e97c 100644
-> --- a/drivers/net/bonding/bond_main.c
-> +++ b/drivers/net/bonding/bond_main.c
-> @@ -4719,7 +4719,7 @@ static int bond_neigh_init(struct neighbour *n)
->  {
->  	struct bonding *bond = netdev_priv(n->dev);
->  	const struct net_device_ops *slave_ops;
-> -	struct neigh_parms parms;
-> +	struct neigh_parms parms, *p;
->  	struct slave *slave;
->  	int ret = 0;
->  
-> @@ -4727,6 +4727,14 @@ static int bond_neigh_init(struct neighbour *n)
->  	slave = bond_first_slave_rcu(bond);
->  	if (!slave)
->  		goto out;
-> +
-> +	p = neigh_parms_lookup_dev(n->tbl, slave->dev);
+mv88e6xxx switches can support embedding PTP timestamps directly
+in the frame, either as a trailer or at a configurable offset
+(typically the reserved bytes in the PTP header).
 
-This introduces O(n) list traversal while it can be done
-with fixed costs (3 dereferences + 1 call).
+Add support for this on the 88E6341 and 88E6352 switches, being
+those on which I was able to verify this. Other switch chips may
+also work. The arrival timestamp offsets are relative to the PTP
+common header and will work for both L2 and L3 PTP packets; the
+respective headers are skipped by the number of bytes set in the
+ETJump and IPJump registers, which are initialized to sensible
+defaults and are VLAN tag-aware.
 
-Since neigh_table is global (arp_tbl or nd_tbl), the O(n)
-list traversal could take longer and rather de-optimise.
+(Note: the 6352 datasheet incorrectly states that ETJump and
+IPJump are initialized to zero. They are initialized to 12 and
+2 respectively; this is corrected in the 6341 data sheet.)
 
+Signed-off-by: Luke Howard <lukeh@padl.com>
+---
+ drivers/net/dsa/mv88e6xxx/chip.c     |   3 +
+ drivers/net/dsa/mv88e6xxx/chip.h     |   8 +++
+ drivers/net/dsa/mv88e6xxx/hwtstamp.c | 122 +++++++++++++++++++++++++++++++----
+ drivers/net/dsa/mv88e6xxx/hwtstamp.h |  14 ++++
+ 4 files changed, 135 insertions(+), 12 deletions(-)
 
-> +
-> +	if (p && p->neigh_setup) {
-> +		ret = p->neigh_setup(n);
-> +		goto out;
-> +	}
-> +
->  	slave_ops = slave->dev->netdev_ops;
->  	if (!slave_ops->ndo_neigh_setup)
->  		goto out;
-> -- 
-> 2.43.0
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index 80b877c74513d..c3277c1f3d785 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -28,6 +28,7 @@
+ #include <linux/of_mdio.h>
+ #include <linux/platform_data/mv88e6xxx.h>
+ #include <linux/property.h>
++#include <linux/ptp_classify.h>
+ #include <linux/netdevice.h>
+ #include <linux/gpio/consumer.h>
+ #include <linux/phylink.h>
+@@ -6370,6 +6371,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.edsa_support = MV88E6XXX_EDSA_SUPPORTED,
+ 		.ptp_support = true,
+ 		.ops = &mv88e6341_ops,
++		.arr_ts_mode = offsetof(struct ptp_header, reserved2),
+ 	},
+ 
+ 	[MV88E6350] = {
+@@ -6447,6 +6449,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.edsa_support = MV88E6XXX_EDSA_SUPPORTED,
+ 		.ptp_support = true,
+ 		.ops = &mv88e6352_ops,
++		.arr_ts_mode = offsetof(struct ptp_header, reserved2),
+ 	},
+ 	[MV88E6361] = {
+ 		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6361,
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.h b/drivers/net/dsa/mv88e6xxx/chip.h
+index e966e7c4cc5de..b6a90eba81c43 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.h
++++ b/drivers/net/dsa/mv88e6xxx/chip.h
+@@ -180,6 +180,14 @@ struct mv88e6xxx_info {
+ 	 * port 0, 1 means internal PHYs range starts at port 1, etc
+ 	 */
+ 	unsigned int internal_phys_offset;
++
++	/* Arrival Time Stamp Mode (ArrTSMode); see the ArrTSMode encoding in
++	 * hwtstamp.h. Zero (the default) leaves arrival time stamps in the
++	 * switch registers; non-zero embeds them in the frame, either appended
++	 * as a trailer or overwritten at that byte offset past the start of the
++	 * PTP common header.
++	 */
++	unsigned int arr_ts_mode;
+ };
+ 
+ struct mv88e6xxx_atu_entry {
+diff --git a/drivers/net/dsa/mv88e6xxx/hwtstamp.c b/drivers/net/dsa/mv88e6xxx/hwtstamp.c
+index 57ff77496864f..341a9e33021d7 100644
+--- a/drivers/net/dsa/mv88e6xxx/hwtstamp.c
++++ b/drivers/net/dsa/mv88e6xxx/hwtstamp.c
+@@ -8,6 +8,8 @@
+  *      Erik Hons <erik.hons@ni.com>
+  *      Brandon Streiff <brandon.streiff@ni.com>
+  *      Dane Wagner <dane.wagner@ni.com>
++ *
++ * Copyright (c) 2025 PADL Software Pty Ltd
+  */
+ 
+ #include "chip.h"
+@@ -15,6 +17,7 @@
+ #include "hwtstamp.h"
+ #include "ptp.h"
+ #include <linux/ptp_classify.h>
++#include <linux/unaligned.h>
+ 
+ #define SKB_PTP_TYPE(__skb) (*(unsigned int *)((__skb)->cb))
+ 
+@@ -245,6 +248,63 @@ static int seq_match(struct sk_buff *skb, u16 ts_seqid)
+ 	return ts_seqid == ntohs(hdr->sequence_id);
+ }
+ 
++static bool parse_embedded_ts(unsigned int arr_ts_mode,
++			      struct sk_buff *skb, u64 *ns)
++{
++	struct ptp_header *hdr;
++
++	*ns = 0;
++
++	/* APPEND means the switch appended the time stamp as a 4-byte trailer
++	 * (not all switches support this). Any other non-zero value is the byte
++	 * offset past the start of the PTP common header at which the switch
++	 * overwrote the time stamp in place (e.g. the reserved header bytes).
++	 */
++	if (arr_ts_mode == MV88E6XXX_PTP_ARR_TS_MODE_APPEND && skb->len >= 4) {
++		*ns = (u64)get_unaligned_be32(&skb->data[skb->len - 4]);
++		skb_trim(skb, skb->len - 4);
++	} else if (arr_ts_mode + 4 <= sizeof(*hdr)) {
++		hdr = ptp_parse_header(skb, SKB_PTP_TYPE(skb));
++		if (!hdr)
++			return false;
++
++		*ns = (u64)get_unaligned_be32((u8 *)hdr + arr_ts_mode);
++		memset((u8 *)hdr + arr_ts_mode, 0, 4);
++	} else {
++		return false;
++	}
++
++	return true;
++}
++
++static void mv88e6xxx_get_rxts_embedded(struct mv88e6xxx_chip *chip,
++					struct mv88e6xxx_port_hwtstamp *ps,
++					struct sk_buff *skb)
++{
++	struct sk_buff_head *rxq = &ps->rx_queue;
++	struct skb_shared_hwtstamps *shwt;
++	struct sk_buff_head received;
++	unsigned long flags;
++	u64 ns;
++
++	__skb_queue_head_init(&received);
++	spin_lock_irqsave(&rxq->lock, flags);
++	skb_queue_splice_tail_init(rxq, &received);
++	spin_unlock_irqrestore(&rxq->lock, flags);
++
++	for ( ; skb; skb = __skb_dequeue(&received)) {
++		if (parse_embedded_ts(chip->info->arr_ts_mode, skb, &ns)) {
++			mv88e6xxx_reg_lock(chip);
++			ns = timecounter_cyc2time(&chip->tstamp_tc, ns);
++			mv88e6xxx_reg_unlock(chip);
++			shwt = skb_hwtstamps(skb);
++			memset(shwt, 0, sizeof(*shwt));
++			shwt->hwtstamp = ns_to_ktime(ns);
++		}
++		netif_rx(skb);
++	}
++}
++
+ static void mv88e6xxx_get_rxts(struct mv88e6xxx_chip *chip,
+ 			       struct mv88e6xxx_port_hwtstamp *ps,
+ 			       struct sk_buff *skb, u16 reg,
+@@ -307,8 +367,21 @@ static void mv88e6xxx_rxtstamp_work(struct mv88e6xxx_chip *chip,
+ 	const struct mv88e6xxx_ptp_ops *ptp_ops = chip->info->ops->ptp_ops;
+ 	struct sk_buff *skb;
+ 
+-	skb = skb_dequeue(&ps->rx_queue);
++	if (chip->info->arr_ts_mode) {
++		/* If arr_ts_mode is set, the timestamps are embedded in the
++		 * frames so a register read is not required. We still need a
++		 * work queue rather than processing inline because
++		 * timecounter_cyc2time() takes the global mutex and this
++		 * cannot be called from mv88e6xxx_port_rxtstamp().
++		 */
++		skb = skb_dequeue(&ps->rx_queue);
++		if (skb)
++			mv88e6xxx_get_rxts_embedded(chip, ps, skb);
+ 
++		return;
++	}
++
++	skb = skb_dequeue(&ps->rx_queue);
+ 	if (skb)
+ 		mv88e6xxx_get_rxts(chip, ps, skb, ptp_ops->arr0_sts_reg,
+ 				   &ps->rx_queue);
+@@ -350,7 +423,7 @@ bool mv88e6xxx_port_rxtstamp(struct dsa_switch *ds, int port,
+ 
+ 	SKB_PTP_TYPE(skb) = type;
+ 
+-	if (is_pdelay_msg(hdr))
++	if (!chip->info->arr_ts_mode && is_pdelay_msg(hdr))
+ 		skb_queue_tail(&ps->rx_queue2, skb);
+ 	else
+ 		skb_queue_tail(&ps->rx_queue, skb);
+@@ -530,14 +603,37 @@ int mv88e6165_global_enable(struct mv88e6xxx_chip *chip)
+ 
+ int mv88e6352_hwtstamp_port_disable(struct mv88e6xxx_chip *chip, int port)
+ {
+-	return mv88e6xxx_port_ptp_write(chip, port, MV88E6XXX_PORT_PTP_CFG0,
+-					MV88E6XXX_PORT_PTP_CFG0_DISABLE_PTP);
++	int err;
++
++	err = mv88e6xxx_port_ptp_write(chip, port, MV88E6XXX_PORT_PTP_CFG0,
++				       MV88E6XXX_PORT_PTP_CFG0_DISABLE_PTP);
++	if (err)
++		return err;
++
++	err = mv88e6xxx_port_ptp_write(chip, port, MV88E6XXX_PORT_PTP_CFG2, 0);
++	if (err)
++		return err;
++
++	return 0;
+ }
+ 
+ int mv88e6352_hwtstamp_port_enable(struct mv88e6xxx_chip *chip, int port)
+ {
+-	return mv88e6xxx_port_ptp_write(chip, port, MV88E6XXX_PORT_PTP_CFG0,
+-					MV88E6XXX_PORT_PTP_CFG0_DISABLE_TSPEC_MATCH);
++	int err;
++
++	if (chip->info->arr_ts_mode) {
++		err = mv88e6xxx_port_ptp_write(chip, port, MV88E6XXX_PORT_PTP_CFG2,
++					       chip->info->arr_ts_mode << 8);
++		if (err)
++			return err;
++	}
++
++	err = mv88e6xxx_port_ptp_write(chip, port, MV88E6XXX_PORT_PTP_CFG0,
++				       MV88E6XXX_PORT_PTP_CFG0_DISABLE_TSPEC_MATCH);
++	if (err)
++		return err;
++
++	return 0;
+ }
+ 
+ static int mv88e6xxx_hwtstamp_port_setup(struct mv88e6xxx_chip *chip, int port)
+@@ -591,12 +687,14 @@ int mv88e6xxx_hwtstamp_setup(struct mv88e6xxx_chip *chip)
+ 	if (err)
+ 		return err;
+ 
+-	/* Use ARRIVAL1 for peer delay messages. */
+-	err = mv88e6xxx_ptp_write(chip, MV88E6XXX_PTP_TS_ARRIVAL_PTR,
+-				  MV88E6XXX_PTP_MSGTYPE_PDLAY_REQ |
+-				  MV88E6XXX_PTP_MSGTYPE_PDLAY_RES);
+-	if (err)
+-		return err;
++	if (!chip->info->arr_ts_mode) {
++		/* Use ARRIVAL1 for peer delay messages. */
++		err = mv88e6xxx_ptp_write(chip, MV88E6XXX_PTP_TS_ARRIVAL_PTR,
++					  MV88E6XXX_PTP_MSGTYPE_PDLAY_REQ |
++					  MV88E6XXX_PTP_MSGTYPE_PDLAY_RES);
++		if (err)
++			return err;
++	}
+ 
+ 	/* 88E6341 devices default to timestamping at the PHY, but this has
+ 	 * a hardware issue that results in unreliable timestamps. Force
+diff --git a/drivers/net/dsa/mv88e6xxx/hwtstamp.h b/drivers/net/dsa/mv88e6xxx/hwtstamp.h
+index c359821d5a6ea..c25f53923e768 100644
+--- a/drivers/net/dsa/mv88e6xxx/hwtstamp.h
++++ b/drivers/net/dsa/mv88e6xxx/hwtstamp.h
+@@ -68,6 +68,20 @@
+ #define MV88E6XXX_PORT_PTP_CFG2_DEP_IRQ_EN		0x0002
+ #define MV88E6XXX_PORT_PTP_CFG2_ARR_IRQ_EN		0x0001
+ 
++/* Arrival Time Stamp Mode (ArrTSMode), CFG2 bits [15:8]: configures how the
++ * switch embeds the arrival time stamp (PTPArr0Time) into enabled PTP event
++ * frames.
++ *   0x00        frame modification disabled (time stamp read from registers)
++ *   0x01        append the 4-byte time stamp at the end of the frame,
++ *               growing the frame by four bytes
++ *   0x04..0xEF  overwrite the 4-byte time stamp in place, that many bytes past
++ *               the start of the PTP common header, without growing the frame
++ *               (offsetof(struct ptp_header, reserved2) targets the reserved
++ *               bytes of the header)
++ *   others      reserved
++ */
++#define MV88E6XXX_PTP_ARR_TS_MODE_APPEND		0x01
++
+ /* Offset 0x03: PTP LED Configuration */
+ #define MV88E6XXX_PORT_PTP_LED_CFG	0x03
+ 
+
+-- 
+2.43.0
+
