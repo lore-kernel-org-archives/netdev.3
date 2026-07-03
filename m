@@ -1,146 +1,238 @@
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-b-210.mailbox.org (mout-b-210.mailbox.org [195.10.208.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96B3136A36A
-	for <netdev@vger.kernel.org>; Fri,  3 Jul 2026 11:19:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783077587; cv=pass; b=HQu3npQQA75sFPEgr3GrfIKTeNP1v4y52HhgAWB2ig/HBg9dk0BwvyGUI3HlTRdppD3R0tILL7LaYx43cp6BBs+MszAGbP/MAGx0ESO0NkdUebuCX8pRA8wq2IUZrqwgVGWB/9RZjzxJ0eGEstRGRmXEbUqZHGRuWjSq/4dKF5Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783077587; c=relaxed/simple;
-	bh=tne/IiURknu/rHjBvSNsBcmdMgimIOJxTGUJSZf6l74=;
-	h=In-Reply-To:References:MIME-Version:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mTbLkAZORcUbBpjURUQG+NxYcR3D665oi9t5/6Ak1t6niRL27CcbOc5iz/QZlcaSklCaO/WiRcKb/smkKcq3mODGRfDG4aRUOouqOHaOsej8W3GQEiBabEGWn3J6KzWWA19snspOWtOWmrxE2Mk/50DNXF7R01TIxwpI62+/5sQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JTDZ1FAy; arc=pass smtp.client-ip=209.85.128.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5035D3C37B6
+	for <netdev@vger.kernel.org>; Fri,  3 Jul 2026 11:20:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.10.208.40
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783077652; cv=none; b=PugqUEs1r00lEgjaS235i7Rc8gkDzkFejBZQBtk4kiLjdLzYo68gLhS8GOcoqcGE9uy3z5jsyb4lItJliBqP+s4SKN4MIB0OC8FD6kQ2Z64pTpDL/AR7HSD4x5rm65ndYTJfXFfPK8CWnLr6fTEp2+ctLMY3YInxlwPef5+H54U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783077652; c=relaxed/simple;
+	bh=GtujlxPuKkxRp6HfRKed4T8eNS+sJK80GlFoQ6BuwmU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y63b56xQia1NgP+AAPv5spDJJ7VNIhGp1Jj0uGSi/vI4sFnDk1sdE1KmUe4X+v1S7KlBM/G/WLcnrACDMiGhcWU3O3VbVzfEJNlS7MYRR4A6YxLz+h/7E6t4aqh69gFC7bwnShvKWlDbLxk5xZi84jpfPGjEtzRJ+Z6S4NbWYog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com; spf=pass smtp.mailfrom=mandelbit.com; dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b=RFK9Dp92; arc=none smtp.client-ip=195.10.208.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JTDZ1FAy"
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-80e24970f1dso3415237b3.0
-        for <netdev@vger.kernel.org>; Fri, 03 Jul 2026 04:19:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783077584; cv=none;
-        d=google.com; s=arc-20260327;
-        b=hCI+ItY/73yp0Q2MK9jFuLSz9gNqveU+zYA61w+kCPUQFiZOshGOD9y762Gc4+g0D9
-         AuTe6KYSheTE+vsRG0IlyQ6v1klEp7uG6DSKDsoKZlp9gdG1HtJWzpzP1QqGBfc74Q7K
-         EW77gWuX5yxJAntnpFwgn1tA64oAPrAfQdy6tMycuMTxJLvCVtzpw4ryo7txjcO9/Luc
-         BtEjU5rd1cX7sX/qM49zMuQjxbandFzms07WnN2HSVqKNf0gHr6dcXzm4TAVRQ8Cv7ym
-         8PvoZ7NpZZ2IWZKgtKONNyOFZ+XIXzk/VbQfMCik0Ho2bAHc3uoNC98sKu4yp3Hz/aGY
-         sWQA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:references:in-reply-to:dkim-signature;
-        bh=tne/IiURknu/rHjBvSNsBcmdMgimIOJxTGUJSZf6l74=;
-        fh=o7KEBBCCTfLaATSW4ArJ7+32f00LsKadOlbvtxNY120=;
-        b=gclpOaMTbAdZPRyazbJnArCyRYzv+SWHpL5CUU3wJtjJEnqW0GU9+NZjIhImdzFr7z
-         tSrJ3VEXSAVtjrChHFcmk9oEms9q8x50AkxrkoC8QzCZBhtAF7QzCjcVofDcRBEGr/62
-         PrxGQBA1Wd0hAJGA/TLi60gT/VhFpEPxOM+IkLbaG4A/kEQ1n3iHoCYWg0vbAXeJ3IYZ
-         edYvLIVj5G9psg6VXQSF7eYhFckDMP2C5SoD51Ci6nosLynwu8gZi+Yqv8VJ2KTtHSEB
-         w340xGCLdLsirbg0ulEaKV1ZyNS9rfVkVbP2FmrEitTXA5ufTBJYWzN7zxivvJd2hoPA
-         hmEQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783077584; x=1783682384; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:mime-version:references:in-reply-to:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=tne/IiURknu/rHjBvSNsBcmdMgimIOJxTGUJSZf6l74=;
-        b=JTDZ1FAy0nlpJMAUJk4fkIaePwrfF8e7uiKGYwEQQc6VQ9EjRyMHgZyG8rCDATz50G
-         AASt8bINGeFULCGM3bF5Uq7GquZ783w9NHJ/iryn/OqkOsK/YbPF8d1MaWiserKBEfU5
-         PphJ6xcZGvykbwfxUg2c2oTNoOxIAwHlZBCi1PWzaydsPj2iOi6xMLwUlfi55d5sh39f
-         iQ1YbbMEdCLOJ+OzWfNWWK+tv2VjSEdgMZ/CE3C6GUFkJ5GC9geumnyRsPNkm5myGJ7D
-         vzYlGpg3IRpuCvOMReRkHyPo92gSv/AKGOlfAMObDAdKf/UL8NLAwM/8rRxm/AmT3gQg
-         kVZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783077584; x=1783682384;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:mime-version:references:in-reply-to:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tne/IiURknu/rHjBvSNsBcmdMgimIOJxTGUJSZf6l74=;
-        b=UcEGbEzTdBuihPFoYnOvqPKESuc7qR7nhRx1ocN4MyY0ttle+6HSBMJnyS22g3EeIq
-         EG8yG4aD87RXg2R3iwbVEST/t+/3lAROAqN8MEX66nvFsK1HRVyIP7pzvZJIIPzG0P0l
-         FRwOdXJR7EXqIwmajSqYSeVb8Nbt8APCtLy6aUgzGirJdELyTz20XC2bwTZAHL9afeEo
-         lvSkClaKHah5sVyFlQgff54BCNcRLA81WEHhiW9y9Sk3ZuP8Kz0qfDiG9Ybi9UwjJwQF
-         pVaNSMfyfA00iyxh3hqHNNsV9HwL8O+VN2eS2GH8CLH/kpk0YksGd/Oh3C5hxaCDyqjS
-         Ymxw==
-X-Forwarded-Encrypted: i=1; AHgh+RoBSovEEFy4eONvhoFji1RJ+oajlV1IF3cwX3oj2ZcH7L+devikD+tdq7QL0HoL2h9qwprKSY4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwA6N+k5jgvwplAYKaZDHy3dZ4lAt0XCD4eb47wGywx2Vi2Q1/O
-	F1T58EV58INRG5EKoX3V7QvkGOI5V+I7P9G/QkLQHotEyb+ahQ9S0gocKfjdZhvdYDsKV+J80LS
-	2SWHxCnCUrVv+xtdCM2Y+s8XIF1SOUAE=
-X-Gm-Gg: AfdE7cngK8OysDFS07kmgNrk6hNXgoJgmBR0EYYDFTEIUMlJWS6Np5udblhtQoxI3q4
-	fhR7T9xK/tkKo4B5ekiabW2mWjvT5MobPcUh7TqKkkWutHjUlGGS6X5k/nkvbOWKk4zaroh82Rm
-	cz3JG78IMr4ef0qh7sVMzDLKNUB909j0HLnmn4HEh++EiUp8sa1BHYpXgs/7xgXTaOczwyf1Ky7
-	omi9YhysrVC13/bRUolefQMVTNjxtiJA9gQt2rkjDyKK7assD8CQJL9ozIivze5CAAwgrF3Tw==
-X-Received: by 2002:a05:690c:7307:b0:80c:85e5:8749 with SMTP id
- 00721157ae682-8138b1721b7mr93282977b3.71.1783077584023; Fri, 03 Jul 2026
- 04:19:44 -0700 (PDT)
-Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
- Fri, 3 Jul 2026 04:19:43 -0700
-Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
- Fri, 3 Jul 2026 04:19:42 -0700
-In-Reply-To: <877bncnx25.fsf@bootlin.com>
-References: <20260627235805.17310-1-alhouseenyousef@gmail.com> <877bncnx25.fsf@bootlin.com>
+	dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b="RFK9Dp92"
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA512)
+	(No client certificate requested)
+	by mout-b-210.mailbox.org (Postfix) with ESMTPS id 4gsB3W5FpNzMm8j;
+	Fri, 03 Jul 2026 13:14:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
+	s=MBO0001; t=1783077271;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Ss5zSXqejQDi5pGR58kMHpCrewg4Ecncif24+GSgfN8=;
+	b=RFK9Dp92Ro3SJai8AydUQW19byL4SWiMwelHgc3Z7av4sZRcC+WgzMXolm0MCkphvTssKP
+	ETSOV5Z47i4Or7ouUb6wazW//98U1RvccTA+kJffOFQ0iH5d7KoF+udNaZLZQwrih01EZm
+	LgCmLRYHwxsf2T2+Rx8uMYlTwukORdiHxUGet71xlmr3U69qjm5dFsG0Sp/22k32XYkg0b
+	WoPSETl0UF3jIlx9HfXE/PXprxzIBSkqcHZPgKTqKjOPdMYfPIh7XeCZ0k0+6qb9GQfKgh
+	j802O7oWdzi4YYFgiG+LysMomUp5tiNRDDt6c2x3oehEaqeIB4DJOw6ELPD2QQ==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=none;
+	spf=pass (outgoing_mbo_mout: domain of marco@mandelbit.com designates 2001:67c:2050:b231:465::2 as permitted sender) smtp.mailfrom=marco@mandelbit.com
+From: Marco Baffo <marco@mandelbit.com>
+To: netdev@vger.kernel.org
+Cc: David Ahern <dsahern@kernel.org>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Antonio Quartulli <antonio@openvpn.net>,
+	Marco Baffo <marco@mandelbit.com>
+Subject: [PATCH iproute2-next] ip: add OVPN device mode support
+Date: Fri,  3 Jul 2026 13:14:19 +0200
+Message-ID: <20260703111419.842059-1-marco@mandelbit.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Yousef Alhouseen <alhouseenyousef@gmail.com>
-Date: Fri, 3 Jul 2026 04:19:42 -0700
-X-Gm-Features: AVVi8CcoY5btWDQlEBKCdQnuzHazbJEJeoWIsXdznqL3lACOC9I6h18j1gdrN64
-Message-ID: <CAMuQ4bWf+o_ZDMXn1tTw30veo-30Mt9XZehT8BPErJ30Kx_95A@mail.gmail.com>
-Subject: Re: [PATCH net] ieee802154: hwsim: free PIB after unregistering hardware
-To: miquel.raynal@bootlin.com
-Cc: alex.aring@gmail.com, stefan@datenfreihafen.org, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	linux-wpan@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	syzbot+4707bb8a43a42fca2b97@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4gsB3W5FpNzMm8j
 
-Hello Miquel,
+Allow selecting point-to-point or multi-peer mode when creating an
+OVPN device.
 
-After ieee802154_unregister_hw() returns, the driver callbacks that
-can replace phy->pib have been quiesced, and hwsim_del() has exclusive
-ownership of the final teardown. The pointer is no longer being
-fetched inside an RCU read-side critical section, so rcu_dereference()
-is not appropriate there.
+Signed-off-by: Marco Baffo <marco@mandelbit.com>
+---
+ ip/Makefile           |  2 +-
+ ip/iplink.c           |  2 +-
+ ip/iplink_ovpn.c      | 87 +++++++++++++++++++++++++++++++++++++++++++
+ man/man8/ip-link.8.in | 24 ++++++++++++
+ 4 files changed, 113 insertions(+), 2 deletions(-)
+ create mode 100644 ip/iplink_ovpn.c
 
-rcu_dereference_protected(phy->pib, 1) expresses that there can no
-longer be a concurrent updater at that point; the protection condition
-is the completed unregister rather than a locally held lock. The value
-is only fetched so the final object can be passed to kfree_rcu().
+diff --git a/ip/Makefile b/ip/Makefile
+index 3535ba78..978f6841 100644
+--- a/ip/Makefile
++++ b/ip/Makefile
+@@ -13,7 +13,7 @@ IPOBJ=ip.o ipaddress.o ipaddrlabel.o iproute.o iprule.o ipnetns.o \
+     ipvrf.o iplink_xstats.o ipseg6.o iplink_netdevsim.o iplink_rmnet.o \
+     ipnexthop.o ipmptcp.o iplink_bareudp.o iplink_wwan.o ipioam6.o \
+     iplink_amt.o iplink_batadv.o iplink_gtp.o iplink_virt_wifi.o \
+-    iplink_netkit.o ipstats.o
++    iplink_netkit.o ipstats.o iplink_ovpn.o
+ 
+ RTMONOBJ=rtmon.o
+ 
+diff --git a/ip/iplink.c b/ip/iplink.c
+index 3f0b46c9..c6aee8b6 100644
+--- a/ip/iplink.c
++++ b/ip/iplink.c
+@@ -42,7 +42,7 @@ void iplink_types_usage(void)
+ 		"          ifb | ip6erspan | ip6gre | ip6gretap | ip6tnl |\n"
+ 		"          ipip | ipoib | ipvlan | ipvtap |\n"
+ 		"          macsec | macvlan | macvtap | netdevsim |\n"
+-		"          netkit | nlmon | pfcp | rmnet | sit | team | team_slave |\n"
++		"          netkit | nlmon | ovpn | pfcp | rmnet | sit | team | team_slave |\n"
+ 		"          vcan | veth | vlan | vrf | vti | vxcan | vxlan | wwan |\n"
+ 		"          xfrm | virt_wifi }\n");
+ }
+diff --git a/ip/iplink_ovpn.c b/ip/iplink_ovpn.c
+new file mode 100644
+index 00000000..08e59526
+--- /dev/null
++++ b/ip/iplink_ovpn.c
+@@ -0,0 +1,87 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * iplink_ovpn.c	OpenVPN DCO device support
++ *
++ * Author: Marco Baffo <marco@mandelbit.com>
++ *
++ */
++
++#include <stdio.h>
++#include <string.h>
++#include <linux/if_link.h>
++
++#include "utils.h"
++#include "ip_common.h"
++
++static void print_explain(FILE *f)
++{
++	fprintf(f,
++		"Usage: ... ovpn [ mode { p2p | mp } ]\n"
++		"\n"
++		"MODE := p2p | mp\n"
++		"(p2p is the default if mode is not specified)\n");
++}
++
++static int ovpn_parse_opt(struct link_util *lu, int argc, char **argv,
++			  struct nlmsghdr *n)
++{
++	while (argc > 0) {
++		if (matches(*argv, "mode") == 0) {
++			__u8 mode;
++
++			NEXT_ARG();
++			if (strcmp(*argv, "p2p") == 0)
++				mode = OVPN_MODE_P2P;
++			else if (strcmp(*argv, "mp") == 0)
++				mode = OVPN_MODE_MP;
++			else {
++				fprintf(stderr,
++					"Error: argument of \"mode\" must be either \"p2p\" or \"mp\"\n");
++				return -1;
++			}
++			addattr8(n, 1024, IFLA_OVPN_MODE, mode);
++		} else if (matches(*argv, "help") == 0) {
++			print_explain(stderr);
++			return -1;
++		} else {
++			fprintf(stderr, "ovpn: unknown option \"%s\"?\n", *argv);
++			print_explain(stderr);
++			return -1;
++		}
++		argc--;
++		argv++;
++	}
++
++	return 0;
++}
++
++static void ovpn_print_opt(struct link_util *lu, FILE *f, struct rtattr *tb[])
++{
++	__u8 value;
++
++	if (!tb || !tb[IFLA_OVPN_MODE] ||
++	    RTA_PAYLOAD(tb[IFLA_OVPN_MODE]) < sizeof(value))
++		return;
++
++	value = rta_getattr_u8(tb[IFLA_OVPN_MODE]);
++
++	const char *mode =
++		value == OVPN_MODE_P2P ? "p2p" :
++	    value == OVPN_MODE_MP ? "mp" : "unknown";
++
++	print_string(PRINT_ANY, "mode", "mode %s ", mode);
++}
++
++static void ovpn_print_help(struct link_util *lu, int argc, char **argv,
++			    FILE *f)
++{
++	print_explain(f);
++}
++
++struct link_util ovpn_link_util = {
++	.id		= "ovpn",
++	.maxattr	= IFLA_OVPN_MAX,
++	.parse_opt	= ovpn_parse_opt,
++	.print_opt	= ovpn_print_opt,
++	.print_help	= ovpn_print_help,
++};
+diff --git a/man/man8/ip-link.8.in b/man/man8/ip-link.8.in
+index fc7f0248..d54d2fbc 100644
+--- a/man/man8/ip-link.8.in
++++ b/man/man8/ip-link.8.in
+@@ -287,6 +287,7 @@ ip-link \- network device configuration
+ .BR netdevsim " |"
+ .BR netkit " |"
+ .BR nlmon " |"
++.BR ovpn " |"
+ .BR pfcp " |"
+ .BR rmnet " |"
+ .BR sit " |"
+@@ -430,6 +431,9 @@ Link types:
+ .BR nlmon
+ - Netlink monitoring device
+ .sp
++.BR ovpn
++- OpenVPN Data Channel Offload device
++.sp
+ .BR pfcp
+ - Packet Forwarding Control Protocol device
+ .sp
+@@ -1349,6 +1353,26 @@ the following additional arguments are supported:
+ .BI  mode " MODE "
+ - specifies the mode (datagram or connected) to use.
+ 
++.TP
++OVPN Type Support
++For a link of type
++.I OVPN
++the following additional arguments are supported:
++
++.BI "ip link add " DEVICE
++.BR "type ovpn " [ " mode " "{ " p2p " | " mp " }" " ]"
++
++.in +8
++.sp
++.BR mode " { " p2p " | " mp " }"
++- selects the OpenVPN device mode. The default,
++.BR p2p ,
++creates a point-to-point device for a single peer. The
++.B mp
++mode creates a multi-peer device.
++
++.in -8
++
+ .TP
+ ERSPAN Type Support
+ For a link of type
+-- 
+2.43.0
 
-rcu_access_pointer() would also be sufficient for that limited use if
-you prefer it, and I can use that spelling in a v2.
-
-Thanks,
-Yousef
-
-On Fri, 03 Jul 2026 13:15:46 +0200, Miquel Raynal
-<miquel.raynal@bootlin.com> wrote:
-> Hello Yousef,
->
-> > @@ -1004,12 +1004,11 @@ static void hwsim_del(struct hwsim_phy *phy)
-> > list_del_rcu(&e->list);
-> > hwsim_free_edge(e);
-> > }
-> > - pib =3D rcu_dereference(phy->pib);
-> > rcu_read_unlock();
-> >
-> > - kfree_rcu(pib, rcu);
-> > -
-> > ieee802154_unregister_hw(phy->hw);
-> > + pib =3D rcu_dereference_protected(phy->pib, 1);
-> > + kfree_rcu(pib, rcu);
-> > ieee802154_free_hw(phy->hw);
-> > }
->
-> Would you mind justifying the choice for the _protected() version,
-> please?
->
-> Thanks,
-> Miqu=C3=A8l
