@@ -1,37 +1,37 @@
 Received: from us.padl.com (us.padl.com [216.154.215.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE1A370ACD;
-	Fri,  3 Jul 2026 07:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEC90370ACD;
+	Fri,  3 Jul 2026 07:47:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.154.215.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783064873; cv=none; b=csL5A3iLwwLjPlzzcLtvccRCRqrrzG6DHdXgPzcf4PsigMIQU1YLlZIg8uWcc1n2LRWvCEWStZWr44YIaB9oYA0GSmz7J8rQEfBF5sNyfXnsPja78v1YB+DoyKSKKOL/a3mt/sjDgsjXuK4FvJ251liB/Ti7DTWfO9h4piYWbWE=
+	t=1783064877; cv=none; b=Wz4tcS5Qt/Kd30hcoKjjZ23L36QEkoUKPLwNX9fy7aF6yy9QzBIpohQEhjqGpUSU0nGAeBluoJzOEcOK4jmGebXW3HVNP+ZhXoXTy6c+M67lsYD8IU6uWSmwoAY2ueP5T0pvFbmxEiLLxSyQQdZusrtugesOS0kLed1kcfstn2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783064873; c=relaxed/simple;
-	bh=JYnxmNvnYqhGSdwMLK8oOIlK/aGv1u6novLaSFIFapw=;
+	s=arc-20240116; t=1783064877; c=relaxed/simple;
+	bh=GmijxIf1JZsLeDnYRvQ3vzJbiSe6WsGGDf2U0VCNQ+I=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=tq0jQkIm4+XEvivcGWf6AtfaTMy43Abk9GETB9lFXjImwBzuWZfF5vvtVlEYLmqxP+8zZfdJ8J/XZe0OOhjg0AiqFGcFurkdta92OV6zKOjjesDFn3gNk4c505EzE6JYZ2hsrvAAwMvtuRQjIVhOk36fqSIS6UjJIHp+CUkyJj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=UmiWZeSO; arc=none smtp.client-ip=216.154.215.154
+	 In-Reply-To:To:Cc; b=Y5K7tmDRJnfgxO8zKZFrVxrp5hZTlReOp+L3QJ6Ol8gIHl7bj8pxDxDc1oLWpUO+p4FwRQ3PbmBHaKJt40eH8+0Fn7Qr8ofy3JJtkeqRr2I0z9cSpi1wDCIZl35S9tTCd2Oq2Pk+wXOjB1fEtOcET5soum7WdqtR73bupHikAw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=OAvAw9Jk; arc=none smtp.client-ip=216.154.215.154
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=padl.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="UmiWZeSO"
+	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="OAvAw9Jk"
 Received: from [127.0.1.1] (border.lukktone.com [139.130.100.52])
-	by us.padl.com (Postfix) with ESMTPSA id 373D660C04;
-	Fri,  3 Jul 2026 03:47:47 -0400 (EDT)
+	by us.padl.com (Postfix) with ESMTPSA id BF50160C0B;
+	Fri,  3 Jul 2026 03:47:51 -0400 (EDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=padl.com; s=default;
-	t=1783064871; bh=ar982RBJ2nzWFY1F+G96iIk7kopMb43rBsnBWxaJCKA=;
+	t=1783064875; bh=2R42+sSKqQiPgnGVDasAndv1FXCuG7A99qjgPXJOtV0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=UmiWZeSORGLIWe6iHG0ISDL0wEh7ufhaR7MPzJDtKBocby6PzycnRXZIypMVSUQOX
-	 U1y12L273szBuUVWwLU8viZ+OWgz1imY+B/wGneURhjh/n8DZAoFy/K7E47nnhOKX/
-	 mDt/fQi2rlyPU6cQ5Lv6w5gcAy4syfkNlUk73vHiMkoBezoqiQtQb7EAZkRwuzVOrZ
-	 AGd+UZZ4gKBTiU9xS3fjCe1Ez/z1jmSwNm6QGheUD6Jag42qijJdVqJ9FnFy3G9CNf
-	 FNS7n/TmBgm0MVmO/Rb9IEJMPsH/3YO+JrjxRbh8CZbz+XZ6O8XYGyVOjYyuWJOjaR
-	 jcSBV3PRRg5dg==
+	b=OAvAw9Jkx16wlx6gd2YRP5rB79fHYaLUMfMgrE166DCSRpoTHOlVRgQUyPbNuARYZ
+	 pLAJTnTq9KLTug66bCAQ2kbiM6TIsehl1FpM6Yx5fnAlRXb9LTtutudn7qcOBFLMS9
+	 YDhuaPmD9b+KUj9yd94d5CHwS6alEn+swPRGeqp8UKpQRebnFJlkCujwMhVuQXiftI
+	 bkG4L7v5tENMGc2DCCI0FttaRxbeEmGxjhP7jiz3p2amPzia0tP4KKUjNS5LF3VBly
+	 Doy5vGMa9Td/d7r7JWKdrZ5fRbgrJ7QCHtU66UZ92zS75DCy8CM414BThbbca1x6LC
+	 YN5Xbfb//WMag==
 From: Luke Howard <lukeh@padl.com>
-Date: Fri, 03 Jul 2026 17:46:49 +1000
-Subject: [PATCH net-next 15/17] net: dsa: mv88e6xxx: cancel PTP polling
- work on .shutdown
+Date: Fri, 03 Jul 2026 17:46:50 +1000
+Subject: [PATCH net-next 16/17] net: dsa: mv88e6xxx: size ATU snapshot
+ buffer and region by num_macs
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,7 +40,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260703-net-next-mv88e6xxx-rmu-v1-15-991a27d78bca@padl.com>
+Message-Id: <20260703-net-next-mv88e6xxx-rmu-v1-16-991a27d78bca@padl.com>
 References: <20260703-net-next-mv88e6xxx-rmu-v1-0-991a27d78bca@padl.com>
 In-Reply-To: <20260703-net-next-mv88e6xxx-rmu-v1-0-991a27d78bca@padl.com>
 To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
@@ -56,106 +56,47 @@ Cc: Cedric Jehasse <cedric.jehasse@gmail.com>,
  Mattias Forsblad <mattias.forsblad@gmail.com>, netdev@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Luke Howard <lukeh@padl.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783064798; l=3643;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783064798; l=1295;
  i=lukeh@padl.com; s=20260701; h=from:subject:message-id;
- bh=JYnxmNvnYqhGSdwMLK8oOIlK/aGv1u6novLaSFIFapw=;
- b=5QJNh0eNpw4KPaTMa44uud0VQrupsL0OZeSEm5y7eyY3GhjbcxBn1ggOi0IBDXOHQxAE4gcL6
- mhRsYhPZTbiD+5hyKnVIqiHhbhWaJHzVKufWuxENmQP+KjgaUzzVJx6
+ bh=GmijxIf1JZsLeDnYRvQ3vzJbiSe6WsGGDf2U0VCNQ+I=;
+ b=0WmFw5kjBUFkrHjOvnt2odgquLtpvic0t1HkkdFwsdpei/I4k6742DJoTGGLDTk1OtAHT5Qzt
+ I2/7Quf3ZrLAAFTAKjiVEVu2qrRB7lBwW7Fd5PNAMAE7dLnspA1z+He
 X-Developer-Key: i=lukeh@padl.com; a=ed25519;
  pk=D6YgUnH9/OzSZsduYm9XDbvXn1IHDwKwI1hLTsKNRLw=
 
-DSA core's dsa_switch_shutdown() only closes CPU port conduits and
-unlinks DSA uppers; it does not invoke ds->ops->teardown(). On
-.shutdown (reboot), the chip's mv88e6xxx_teardown() therefore never
-runs, and the PTP overflow / TAI event delayed works are not
-cancelled. They continue to fire as the conduit netdev is torn down
-by its own driver, racing the teardown and crashing in the RMU
-request path when conduit->dev_addr is released.
+The ATU devlink region and its snapshot buffer are both sized by the
+number of forwarding databases, but the ATU can hold up to
+mv88e6xxx_num_macs() entries (which is 8192 on the 6352 series).
 
-Factor the work cancellation out of mv88e6xxx_ptp_free() into a new
-mv88e6xxx_ptp_shutdown() helper that leaves the PTP clock registered,
-and call it from mv88e6xxx_shutdown_common() before
-dsa_switch_shutdown(). mv88e6xxx_ptp_free() now calls the helper
-itself, so the regular .remove path is unchanged.
-
+Fixes: bfb255428966 ("net: dsa: mv88e6xxx: Add devlink regions")
+Assisted-by: Claude:claude-opus-4-8
 Signed-off-by: Luke Howard <lukeh@padl.com>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c |  6 ++++++
- drivers/net/dsa/mv88e6xxx/ptp.c  | 14 ++++++++++++--
- drivers/net/dsa/mv88e6xxx/ptp.h  |  5 +++++
- 3 files changed, 23 insertions(+), 2 deletions(-)
+ drivers/net/dsa/mv88e6xxx/devlink.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index 531a59093ef97..3d92c59de7b5f 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -7543,6 +7543,12 @@ static void mv88e6xxx_shutdown(struct mdio_device *mdiodev)
- 	if (!ds)
- 		return;
+diff --git a/drivers/net/dsa/mv88e6xxx/devlink.c b/drivers/net/dsa/mv88e6xxx/devlink.c
+index 6f034841883c6..6d7da381f9f38 100644
+--- a/drivers/net/dsa/mv88e6xxx/devlink.c
++++ b/drivers/net/dsa/mv88e6xxx/devlink.c
+@@ -380,7 +380,7 @@ static int mv88e6xxx_region_atu_snapshot(struct devlink *dl,
+ 	int fid = -1, err = 0, count = 0;
  
-+	/* DSA core does not call ->teardown on .shutdown, so stop PTP
-+	 * polling here before the conduit goes away. Otherwise the work
-+	 * can race teardown and dereference a stale conduit->dev_addr.
-+	 */
-+	mv88e6xxx_ptp_shutdown(ds->priv);
-+
- 	dsa_switch_shutdown(ds);
+ 	table = kzalloc_objs(struct mv88e6xxx_devlink_atu_entry,
+-			     mv88e6xxx_num_databases(chip));
++			     mv88e6xxx_num_macs(chip));
+ 	if (!table)
+ 		return -ENOMEM;
  
- 	dev_set_drvdata(&mdiodev->dev, NULL);
-diff --git a/drivers/net/dsa/mv88e6xxx/ptp.c b/drivers/net/dsa/mv88e6xxx/ptp.c
-index f7603573d3a98..f6ce3232d10ff 100644
---- a/drivers/net/dsa/mv88e6xxx/ptp.c
-+++ b/drivers/net/dsa/mv88e6xxx/ptp.c
-@@ -551,14 +551,24 @@ int mv88e6xxx_ptp_setup(struct mv88e6xxx_chip *chip)
- 	return 0;
- }
+@@ -776,7 +776,7 @@ int mv88e6xxx_setup_devlink_regions_global(struct dsa_switch *ds)
  
--/* This must never be called holding the register lock */
--void mv88e6xxx_ptp_free(struct mv88e6xxx_chip *chip)
-+/* Cancel any pending PTP polling work. Safe to call from .shutdown
-+ * paths where the PTP clock itself stays registered.
-+ * This must never be called holding the register lock.
-+ */
-+void mv88e6xxx_ptp_shutdown(struct mv88e6xxx_chip *chip)
- {
- 	if (chip->ptp_clock) {
- 		cancel_delayed_work_sync(&chip->overflow_work);
- 		if (chip->info->ops->ptp_ops->event_work)
- 			cancel_delayed_work_sync(&chip->tai_event_work);
-+	}
-+}
- 
-+/* This must never be called holding the register lock */
-+void mv88e6xxx_ptp_free(struct mv88e6xxx_chip *chip)
-+{
-+	if (chip->ptp_clock) {
-+		mv88e6xxx_ptp_shutdown(chip);
- 		ptp_clock_unregister(chip->ptp_clock);
- 		chip->ptp_clock = NULL;
- 	}
-diff --git a/drivers/net/dsa/mv88e6xxx/ptp.h b/drivers/net/dsa/mv88e6xxx/ptp.h
-index 95bdddb0bf39f..90031b05d2514 100644
---- a/drivers/net/dsa/mv88e6xxx/ptp.h
-+++ b/drivers/net/dsa/mv88e6xxx/ptp.h
-@@ -68,6 +68,7 @@
- 
- int mv88e6xxx_ptp_setup(struct mv88e6xxx_chip *chip);
- void mv88e6xxx_ptp_free(struct mv88e6xxx_chip *chip);
-+void mv88e6xxx_ptp_shutdown(struct mv88e6xxx_chip *chip);
- 
- #define ptp_to_chip(ptp) container_of(ptp, struct mv88e6xxx_chip,	\
- 				      ptp_clock_info)
-@@ -87,6 +88,10 @@ static inline void mv88e6xxx_ptp_free(struct mv88e6xxx_chip *chip)
- {
- }
- 
-+static inline void mv88e6xxx_ptp_shutdown(struct mv88e6xxx_chip *chip)
-+{
-+}
-+
- static const struct mv88e6xxx_ptp_ops mv88e6165_ptp_ops = {};
- static const struct mv88e6xxx_ptp_ops mv88e6352_ptp_ops = {};
- static const struct mv88e6xxx_ptp_ops mv88e6390_ptp_ops = {};
+ 		switch (i) {
+ 		case MV88E6XXX_REGION_ATU:
+-			size = mv88e6xxx_num_databases(chip) *
++			size = mv88e6xxx_num_macs(chip) *
+ 				sizeof(struct mv88e6xxx_devlink_atu_entry);
+ 			break;
+ 		case MV88E6XXX_REGION_VTU:
 
 -- 
 2.43.0
