@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 591013D7D70;
-	Fri,  3 Jul 2026 13:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B253D6470;
+	Fri,  3 Jul 2026 13:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783084680; cv=none; b=kC/HiUSjdxw6037vr+509IEhNhhbkf8e9qJnW5CwzZ2QSr/BBhRfV0GTRHjiArk5bD+NxF0jb+f8xLymMYmCpOfryTlxtP/5cJCGuGbd7QrZdmqlJJ708kd92gQ5TVUYQJQ3MYRI6YYRkXn2dkvW9xvz3PkKxKW3k39fWLwBdxg=
+	t=1783084684; cv=none; b=GePoaYAmdtZmVFzwG0CrEYyuPkZ4iNsn81qNkpw3epo9kGQeQaFcQA1KqE2zM4trYh5qytmVSyN/1RnSBDj78T2s2dYaoWUo0FUPXFkkPIkNwajPMGOPpkE/6CCQ5aiJRMTKEl3mH8aufhIM9q1kl3Ex96OgLHXVrr8dGqRWoZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783084680; c=relaxed/simple;
-	bh=da84PVDC//s0n3UnC3+7q8M9U4D54VfmLDm787Mpq/Y=;
+	s=arc-20240116; t=1783084684; c=relaxed/simple;
+	bh=6W21t04zsig41ZGK4yP5vmdeiSeuqMAWNJ/8tz/1jF0=;
 	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id; b=hjIu29W5cXOXtZfV6puqtVhxzZV3+7C0rmBS2js0xwvP/oOVeAaX5Pc9VZdMoFmKbgHEozHizOGkd1BHig7TSBKHMgl4AxiCOU8+jrG3H24uoNHCzCN8KjOdRPCe3Pz+++NXynoWUpbtQCVDlQDSwKGEdQYSoTot/7awpLFUaQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XQVcQHFY; arc=none smtp.client-ip=100.103.45.18
+	 References:Date:Message-Id; b=dhLMZoz+En60f0HXizAjQkuUa868XHE86QsTzbpEpODphELsFxJUMr8yXiBOZ54e2LRVJUr9EM1BfRtRf5xFlO7qtn1u94R7UHZ1XOr4Lsjkpn+OUcO0yBeTQaXAyKM63BrBAMlRHAfFz9nrT5sFb/Q2kBwBV/K9UjBfd3az+w0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eSxTZz2t; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XQVcQHFY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FA301F00A3A;
-	Fri,  3 Jul 2026 13:17:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eSxTZz2t"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B29CB1F000E9;
+	Fri,  3 Jul 2026 13:17:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783084679;
-	bh=9+XNhS6iqV+STX9Ukxgu0+z6kCX6i5FaXvdEcuOwMDg=;
+	s=k20260515; t=1783084682;
+	bh=4uzDfoTwkfdbFHkCUQ1tshn8zcfMCx855BQAs0GpqXw=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=XQVcQHFYAgSkPmof7wzu4su5pcs8TUlRYRcpZ5omL+SE3tJQj37YepFhfBn9MPNDL
-	 pMlXqUPaZsoYifnXHI/V8ABj2z9BxoeqIO6Ne9B0FCX3hJbg9K5N/BX3f+/eUDa1WZ
-	 pjbYMm531OXVqkLsArSHfl1x86vspT7hI29leoQu9896Z5jbXg0/Zq5LeIPIaa7mte
-	 Adv7XGlc6vtK9HjqoUU/4LqstOHfktTTMyuBxXHETWVKFdDV6mR+jFO9bYH4i7Hi6g
-	 ZGn42x0eVpOIF2JGsvIOIjnd6s5D3Xn7Ho2RwkRF0LYX+OoX3Ik7eHXyYJ5xhikj7u
-	 MDIVdzlV4wT0w==
+	b=eSxTZz2tETgzCCPZR7nAkwKRL3WdbxS1Eij5f/SQeD1puzmaMpa3AnxcSk+PkMYSc
+	 va31yRhgj6fo3vhhqiIoj8byX+cG7nSsgWDTqZieRE2+TvpLCnGbpHDvs8dVoVr8lk
+	 7wQ3vTr7ZlYVH4REPgeq2g3N9VobPBdH2M7CfhjPijyWodk50oXrym2JnfUvmO+9sy
+	 tQQNkPKqwLdKV6xNtJ0hTQ0wLCEf/7ksAcBmlFtGtv0zD51aBVANaIXOyetLqMl8jW
+	 pIxLek2mvLOPkbw8EZ3nVnG9QU6RAmcpzAOX1gGUmtM6D+dAbB3Sy/r3s1prrnMLoW
+	 0JGfsRGVdH/0A==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -34,8 +34,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH net v2 2/3] selftests/net/af_unix: test listen()
- rejects wrong socket states
+Subject: Re: [PATCH net-next v2 3/3] af_unix: Clean up error handling in
+ unix_listen()
 From: Christian Brauner <brauner@kernel.org>
 To: John Ericson <John.Ericson@Obsidian.Systems>
 Cc: "David S . Miller" <davem@davemloft.net>, 
@@ -46,34 +46,27 @@ Cc: "David S . Miller" <davem@davemloft.net>,
  David Rheinsberg <david@readahead.eu>, Cong Wang <cwang@multikernel.io>, 
  Sergei Zimmerman <sergei@zimmerman.foo>, netdev@vger.kernel.org, 
  linux-kernel@vger.kernel.org
-In-Reply-To: <20260703081416.2583118-2-John.Ericson@Obsidian.Systems>
+In-Reply-To: <20260703081416.2583118-3-John.Ericson@Obsidian.Systems>
 References: <20260703081416.2583118-1-John.Ericson@Obsidian.Systems>
- <20260703081416.2583118-2-John.Ericson@Obsidian.Systems>
+ <20260703081416.2583118-3-John.Ericson@Obsidian.Systems>
 Date: Fri, 03 Jul 2026 15:17:46 +0200
-Message-Id: <20260703-zugmaschine-roden-tagwerk-383588cf7da1@brauner>
+Message-Id: <20260703-nachzahlen-plagt-tierwelt-38485ce22091@brauner>
 X-Mailer: b4 0.16-dev-4217c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=907; i=brauner@kernel.org;
- h=from:subject:message-id; bh=da84PVDC//s0n3UnC3+7q8M9U4D54VfmLDm787Mpq/Y=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS5b2tYnfl43pGM6Iini49453SxcgY3Cix0nqTCuddYv
- 2NtCYtnRykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwETq5zP8s/3pujB7meGrf61S
- eduYJKZJTMgOLdTfKLH4DZMCX9/Xcoa/wq1GDKbLHzCE3ZbisW7Q5nRdwv577R2D6WaLUqRfOs7
- nBQA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=516; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=6W21t04zsig41ZGK4yP5vmdeiSeuqMAWNJ/8tz/1jF0=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS5b2uI1vNsTb7z4bwQ59udnq9jTD4+33P6z7nDugw5Y
+ jNmMUeKdJSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAExk2TlGhv/1KQq/jpm1dRzl
+ V/iqvY3vztkTk8O1jcXmr929x/f9xLOMDLNeP9yiF2vwekWUuo39Rj6NZeL1mU/X1/WKpfdzbT2
+ xnh8A
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 
-> Add a regression test for the `unix_listen()` state check. The key case
-> is `listen()` on a bound socket that has already been connected: it is
-> no longer in `TCP_CLOSE` or `TCP_LISTEN`, so it must fail with `EINVAL`.
-> A `prepare_peercred()` call slipped in ahead of that check once left
-> `err` at 0 and made `listen()` silently succeed there instead; this
-> guards against a repeat.
+> To avoid the sort of bug that was just fixed going forward, switch to a
+> style where `err = -E...;` instead happens right before the `goto`.
+> (`err = other_function(...);` is not changed.) Then there is no
+> spooky-action-at-a-distance between the `err` initialization and the
+> `goto`, something which is easier to slip by code review.
 > 
-> The neighbouring outcomes are covered too so they cannot regress the
-> same way: a bound socket in `TCP_CLOSE` listens fine, re-`listen()`ing a
-> socket already in `TCP_LISTEN` is allowed, and an unbound socket fails
-> with `EINVAL`.
-> 
-> Fixes: fd0a109a0f6b ("net, pidfs: prepare for handing out pidfds for reaped sk->sk_peer_pid")
 > Signed-off-by: John Ericson <mail@johnericson.me>
 
 Reviewed-by: Christian Brauner (Amutable) <brauner@kernel.org>
