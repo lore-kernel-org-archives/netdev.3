@@ -1,104 +1,88 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E6D1A6835
-	for <netdev@vger.kernel.org>; Fri,  3 Jul 2026 21:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 157B72C9D
+	for <netdev@vger.kernel.org>; Fri,  3 Jul 2026 21:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783112879; cv=none; b=dwWPnu2ocEAXQV+sG0l64N+kn/uf2KLQESTSWE+/IWGpY3TEBdAtDbtTC/tPTBCkHW0tRLT78Evljnwi7bq83Er3Q0dTJRAA0LcR5gxJ/1gtIxMz+JYyu2UJ0KXU87dXHR/qGX+9a2dsK8X/ZcLTijz1es84JkquJvM5sZFESCs=
+	t=1783113468; cv=none; b=G6pvRbhR3ZApRAQuiO2j//fp3ya4UOc+NJapQDhrl4Yz0EjGVJBtYw6JJ6TTjce7agzBBfHDxxVffSMeCCqdJfE+Gk/cyPxQOGOCuhMwQR4CgS0kAhZlS0sw08caOCXiY8lwMdp4Z8u9SjV90F6/5hj33lLauhQv+BdztP+QpGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783112879; c=relaxed/simple;
-	bh=1sorKBRD2b4m1rJXgJXcaK0DhH6ZZ6Qfw05mMzzjleQ=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=s/5ymL7Z3xmtCqhG8uncdJLFfwAGrR2mzqqRgel3Ds6ZIMQOFrlTcQ1QWYZjX52uWX9+QxSEU+li5y+o2geuevP4QQ9N26EMz5fgU+RmSU06gD0TJuIjqPjY/xjr7t3f6cHLZHho1aQX5IlM5h3qvZQEin2cTf/ucDuuJ98ELgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ISyLy6f6; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783113468; c=relaxed/simple;
+	bh=cxH+BTBTRmQuUneq6tqcGHlgzBxLbzGrkbD/WpVSQVw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RaOHmOiHvKvejUbY3SLdNnpwsXvuDDXppMMDtuJpLD1S59kFtrDU7thcJK7JbvG2wNUnEIb41pF3LWxCbEXWfE/pEZQWwdbeSfB9cixaZFKOojCHKjLCkMOnlWi3rUmbek+ino33Jpz8+zBFB84dvmOR8WsAT/8J+B1uEknudNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SEpQEVt0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ISyLy6f6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C72641F00A3A
-	for <netdev@vger.kernel.org>; Fri,  3 Jul 2026 21:07:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SEpQEVt0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F0CB1F00ACF
+	for <netdev@vger.kernel.org>; Fri,  3 Jul 2026 21:17:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783112877;
-	bh=ZCQzVRq7RDq/oObpqUf5q9jdWP4fyXfNyYa/7bjpj2w=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=ISyLy6f6j4T8s3E3v2S1rZuoEk67yFa8VtsetjFdYNVBAjaD459ZfKMtztfILD4qP
-	 zsvwt+UZQkbgYlqHM29yAYs35n6lswrNhiSV57pkuAhPde3TrrN4Ki2VwoY195T9TV
-	 iGDivlQSxY4VgTNNY/3qPp5R65cAhZAtcE9WprYkpG9rzDrm7p402Rw7mdqITULW3/
-	 E+F4qaGWX2tBEe6VpUPHMB+QR/yGRBl59oelkPBDPYfqdw4XkDASd5RolMY21QJpMG
-	 DYXZTIgqM2RJRPrU2LzQJBuaeSrl8esEWbKqm0zkjTpxXRj/Z2m72x9Oq8MQu4YFeX
-	 QpZZzmAAVP9FQ==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id AC5BCF40068;
-	Fri,  3 Jul 2026 17:07:56 -0400 (EDT)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Fri, 03 Jul 2026 17:07:56 -0400
-X-ME-Sender: <xms:rCRIaofL7Uf6IinzwndAXyuRLT5x737cvWd_wPXxdj_ki8DqUXgLXg>
-    <xme:rCRIalDGHdPHFsNwLrBX1P32WL9FUqXidcAx52CXKiUC2LEcQ4bmdvH_nUS7k4J1t
-    r-LPgm24mDhGQ23c5I5YLbYFeFhanWzGr4UyZR3RGSeypgg25wbQRco>
-X-ME-Proxy-Cause: dmFkZTEex9BRYtMeXlxNvYMgkqN6XM/B5Tw6NdpXSdPZDEwjpMhFx+vUFIMWeA+Fra8G3L
-    ExwANTmIc5unmAAwxv8dOp4azozzMO9cmOnjC/x7vwxLt8TzjlRYggO1M00aNey+FfQpbH
-    yz4vqqNDowZLUDPEWOmnlgFAL5ugLadDsb8kI3+4dppRg2mcxSBY29+yAjzqddPlOIk4Or
-    kaeN81CO2CFOt4HFPxv2Ebo8QfGtVW6nMXXjoj53yxP6kGsaxKYugnKYGAv9Ri6MPAG1M4
-    oQRRXJKL4zD5uTyVAfaEhghZ9F5N3loMf1zJJBPwadNg/6YKF/20U++tlEtfGXaW5p/nqZ
-    rPvUZO3mF+IZbrLhEhA7cgxnijN6itJIP5prLzHZ09bqUrIy4cR+kE70y4xXMK9DywEEiL
-    Fm+1kcCZ8lRYAkv23eNuqY9soboRjdQYZBuLPtMMYjEm0r+i2c9sbL89oNZ6i2J3JVjksF
-    LElLyJJrIMqwCnLBNHzYOGessyMNkybbAniSYmWDB9ASfvF5+n6K9Alsv7px+8r9j7T6Ac
-    cIaDVRVEiw/tMJQ56FFBbCwY9NnIeeKGJYMAFoPFXEsH0LETXupxeWfMgJ5tFi6dwQiOVi
-    w870eWcWUJPlbZhot//vYuf6gvoLq3BaObwCMjt+lGlOLiW/9qpVGQYPtT0g
-X-ME-Proxy: <xmx:rCRIalxilOHAdtlN1EUqDVy14FxLe-oRPnxscssWVgbZNg0PN9FIBw>
-    <xmx:rCRIavSmRUYTCZOgDiEHtMEwcED50I3Y2rKTG6vv4rfS9xwWmYruUw>
-    <xmx:rCRIal_c1Sgj-EyyMHKx_sSfZJdT_CkxtQpEgwbPKMamwvXhXXxsBw>
-    <xmx:rCRIalssWPFUY-KWhDMCkRkvMzEDXUU9wsZIxjvlfDgRA3jBBYh6XA>
-    <xmx:rCRIalP1C0seIlI4GVM0OR8oGOSbcosjmDOzKWldyEGzanjAL3hc1fIU>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 8E6EC780AB5; Fri,  3 Jul 2026 17:07:56 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=k20260515; t=1783113466;
+	bh=+Lait6gbz/FbEdb+mYKNtx+v8Sn1QYR1kRy6k7AV5sI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=SEpQEVt0hNr3Ej1rbSb3nnTQhA60ZGczgUvrXainyeW5E/P0AqgwHkb1xsLReDaq6
+	 mnrygGhB7ZY3K8Qfyn6insn0d+GogSwa5DTStmNK5YYraSs4znq4poLzX0m8TM6qzy
+	 Mc7zofTziI+XR3TUhfNrofJqTKCv3rSM381nADJwuBSWT4bir3qiRa8dezyDzQpEmy
+	 IFy9znx69Djq4U8wBi7CTU0sbvlWw3YDsKy2eC6xiZf73SSfYoOpI0IW84+SHwMKAl
+	 Q9tvsR3AxHwD6oU4kFH0N2rozANOzI6549o+OkSLcwSIq2B1aP3sjh9jAowG1wcN6I
+	 6xRTD376wtG1w==
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5aeb36ed873so720500e87.0
+        for <netdev@vger.kernel.org>; Fri, 03 Jul 2026 14:17:46 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rrwz4k9FiTfaa9gGEyEnkfvbV8bCP7PmVBB7/aAxJfDzFARreBlTnwYcBpvSvr2M0fqlYK3Zvo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyjLtYmVB5oqdHJe3mwgbt9RolSmVAOI16TwNUUCOMUTH9EUOl7
+	8m1zIJmjA92eri1ZOA6tNHArAclJjlHf4fyy8CPDjVgu7M/X43EvIwmPt3irMNp0s6SVYQv1I8w
+	k5ycMaBl82bAD71lthVoK59pDUZUnwVI=
+X-Received: by 2002:a05:6512:1394:b0:5ae:b78c:da1 with SMTP id
+ 2adb3069b0e04-5aed5096946mr157240e87.28.1783113465400; Fri, 03 Jul 2026
+ 14:17:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AZOB0wyakXwF
-Date: Fri, 03 Jul 2026 17:07:36 -0400
-From: "Chuck Lever" <cel@kernel.org>
-To: "Sabrina Dubroca" <sd@queasysnail.net>
-Cc: john.fastabend@gmail.com, "Jakub Kicinski" <kuba@kernel.org>,
- davem@davemloft.net, edumazet@google.com, "Paolo Abeni" <pabeni@redhat.com>,
- "Simon Horman" <horms@kernel.org>, netdev@vger.kernel.org
-Message-Id: <7103d652-1e36-48af-98ce-4849bafbf7f2@app.fastmail.com>
-In-Reply-To: <akbdFcQP7oTp_n3s@krikkit>
-References: <20260630191551.875664-1-cel@kernel.org>
- <akaoXcfamBp8_mYe@krikkit>
- <0a03d16e-d4ce-422d-9492-3e31d910d8e5@app.fastmail.com>
- <akbdFcQP7oTp_n3s@krikkit>
-Subject: Re: [PATCH net] net/tls: Consume empty data records in tls_sw_read_sock()
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+References: <20260630-rtl8366rb-improvements-v2-0-05eb9d6a37f5@kernel.org>
+ <20260630-rtl8366rb-improvements-v2-2-05eb9d6a37f5@kernel.org> <CAJq09z77GUn+wksbHNjHpPsrLLgU_yqo7V=M+XY-h1AKQE+WAQ@mail.gmail.com>
+In-Reply-To: <CAJq09z77GUn+wksbHNjHpPsrLLgU_yqo7V=M+XY-h1AKQE+WAQ@mail.gmail.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Fri, 3 Jul 2026 23:17:32 +0200
+X-Gmail-Original-Message-ID: <CAD++jLk_OP+sv7NU5D+b639WZp=zHFmLRifUzpTa_9yC0bGtQQ@mail.gmail.com>
+X-Gm-Features: AVVi8Cdn4nZ8jIK4SgsXMZFumqQQWnmMpWVf7b8jK6RHQqcTAI5wFQ8eILy9oQ8
+Message-ID: <CAD++jLk_OP+sv7NU5D+b639WZp=zHFmLRifUzpTa_9yC0bGtQQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 2/5] net: dsa: realtek: rtl8366rb: Switch to
+ generic port_bridge* handlers
+To: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+Cc: =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>, 
+	Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Fri, Jul 3, 2026 at 3:24=E2=80=AFPM Luiz Angelo Daros de Luca
+<luizluca@gmail.com> wrote:
 
-On Thu, Jul 2, 2026, at 5:50 PM, Sabrina Dubroca wrote:
-> 2026-07-02, 15:52:49 -0400, Chuck Lever wrote:
->> On Thu, Jul 2, 2026, at 2:05 PM, Sabrina Dubroca wrote:
-
->> > Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
->> >
->> > I think tls_sw_splice_read() suffers from a similar issue (returning 0
->> > even though more data may be available). Sashiko agrees, and also
->> > found a few more pre-existing issues.
->> 
->> Do you want a v2 series with those issues addressed?
+> > +static int rtl8366rb_port_set_isolation(struct realtek_priv *priv, int=
+ port,
+> > +                                       u32 mask)
+> > +{
+> > +       /* Bit 0 enables isolation so set this if we enable isolation
+> > +        * any of the ports an clear it if we disable on all of them.
+> > +        */
+> > +       if (mask)
+> > +               mask =3D RTL8366RB_PORT_ISO_PORTS(mask) | RTL8366RB_POR=
+T_ISO_EN;
+> > +
+> > +       return regmap_write(priv->map, RTL8366RB_PORT_ISO(port),
+> > +                           mask);
+> > +}
 >
-> I'd be ok with this patch going in on its own, and the other issues
-> being addressed separately. If you have time to look into those,
-> that'd be great.
+> As sashiko pointed out, set_insolation(...,0) actually disables it
+> instead of completely isolating it.
+> I would unconditionally isolate the ports as we will never need to disabl=
+e it.
 
-While I'm waiting for this patch to matriculate from net
-into net-next (as it is a pre-requisite for supporting
-TLS Alerts for in-kernel TLS consumers), I've started
-looking at the Sashiko findings. I might drop finding #3
-because it doesn't seem to be easily reachable in the
-current code base. The other two seem straightforward.
+Yeah, I'm working on a follow-up patch to fix this!
 
--- 
-Chuck Lever
+Thanks,
+Linus Walleij
