@@ -1,238 +1,122 @@
-Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
+Received: from us.padl.com (us.padl.com [216.154.215.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F7B36E468;
-	Fri,  3 Jul 2026 07:46:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558DC36D9E9;
+	Fri,  3 Jul 2026 07:46:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.154.215.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783064802; cv=none; b=ioZ1aBW0cWLc7ommlRuJqomv54RKrgvNpDhR8mBKXihKWyn+Js5OyiFcJxbZVGjaoZngXGIg+CR/zyMm8rSMrykzDZMjkqfRGYc0vZwpHx/uuvlJ9ri/vgd0MtChjl44QcYMq8mtTw+b0U5uOiT1rgL5iGdA+UD9VMnfokUf8dU=
+	t=1783064805; cv=none; b=IiwyrVxf2LS369+xYU7mWLVDRS3XVf4J2e0Aeo3pn03XQ3VJRTnL5Jfpd1LpsnamUFn+ETDsphoVQWkTDIaEtwGwvs99kf4BT3IRoV50f8kSOXVxUYbZV6beQHN/XRW619vaOi0lpEVwOXSFvVCaAMKji059EaB9uCCFAMxVQFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783064802; c=relaxed/simple;
-	bh=d7oLPLtQYwgvRw4qBbsUUPu8B6Yu2gHwA8CAh47ThBc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=etUJ4uCt45b5qB+aci+/M0LZOEJn2O0Faki9V0U81/k9+IGT4cEPFHm+J+p4ujmgicKESaBLOsHM1Ee/Inx+AsNLH58H0Pf9VvpuzACHVZ2iF+ULwhSp98Z+umuaowIYu9FGNdIWOL0//sZ2bVVe+p9hIRAOq/YRAL7YRNiwPoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=XIZSBJMm; arc=none smtp.client-ip=18.194.254.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+	s=arc-20240116; t=1783064805; c=relaxed/simple;
+	bh=E/n71tfBeXMreQ5j5FcVNbsmMGH4GRHm8HlUFHurLTM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=F/Q16Mb+oG2DFN8+rFLUB3Ccvj33xkKnFzkgn+1BiMMS7WiIQJXDZTNStGw/O3FPSPJH+JRkuFhwnuQmc3NIzIoXjQWvz8H1LVrhjR+4weUBvo1yy5mIaByYxeGibGGMU+wfPNjb9K6PQzOzuK7QwkpjAFkDeZU5RrO4NLO7c0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=AKet1qXo; arc=none smtp.client-ip=216.154.215.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=padl.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="XIZSBJMm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1783064642;
-	bh=IHXiw1vw+tco75KB3ut3dtVWWa+09qTyCy0asDDMIg0=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=XIZSBJMmMquUaI9HhIMU80zNsrLLwoHAAnGQa00XsbbSEpF/Y8OmMnZfI78g2jBpM
-	 OFXDb+cO7ax+h6SlM5zY90pbytrzEtkUCbIRjQZm0ke1jAulT6SO5BZGz7MP70gS+4
-	 lzGBSOwkJ528E4p81nS8LbZ5xnZLd4ukaN9tvneY=
-X-QQ-mid: zesmtpsz5t1783064624t81cc6e06
-X-QQ-Originating-IP: Wa9IQjMV5FXNVwJsiopFkX4+XMkbnoA+qcH4qh7whvE=
-Received: from localhost.localdomain ( [124.126.19.250])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 03 Jul 2026 15:43:39 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 9081740018991067111
-EX-QQ-RecipientCnt: 11
-From: ZhaoJinming <zhaojinming@uniontech.com>
-To: madalin.bucur@nxp.com,
-	sean.anderson@linux.dev
-Cc: netdev@vger.kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	igal.liberman@freescale.com,
-	linux-kernel@vger.kernel.org,
-	ZhaoJinming <zhaojinming@uniontech.com>
-Subject: [PATCH net v2 2/2] net: fman: add error cleanup path in fman_probe
-Date: Fri,  3 Jul 2026 15:43:24 +0800
-Message-Id: <20260703074324.907294-2-zhaojinming@uniontech.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20260703074324.907294-1-zhaojinming@uniontech.com>
-References: <20260703074324.907294-1-zhaojinming@uniontech.com>
+	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="AKet1qXo"
+Received: from [127.0.1.1] (border.lukktone.com [139.130.100.52])
+	by us.padl.com (Postfix) with ESMTPSA id D068160C04;
+	Fri,  3 Jul 2026 03:46:38 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=padl.com; s=default;
+	t=1783064803; bh=bSeScTgkF1wlE04uhDKWHgET2Y222X2hoz1k9Bxl6kg=;
+	h=From:Subject:Date:To:Cc:From;
+	b=AKet1qXoExQwhVMIEeUFfeFS0xbfwQf37LI4d9BykDcbKPFPVImqH5a5c4z+8dXyU
+	 MGficMyAl5If+8WGitzsi7J77s7UQYjbw7gZ+gaaHxTLNGNjbMbxPNOVvVUeDPbzhY
+	 WgCwg9nlw41X9WPE/YHCJGHzBSSQczHYd9feCzOHjEzhJQnf8PycjBq/U0jj7o23bt
+	 u9pEOOzpcYH7ji2G4gCJ2S3LN2iz6lorjquGtpuRmTiog0IqFNTJiqhuMkMEDsAqfn
+	 n3jovkhMHdGnOb7uaFwCff5+KmPJG5ABCKo2C5LinVu1/Ln9YMpqIvh5RdcTSYYai5
+	 bE+bX87zbpuzA==
+From: Luke Howard <lukeh@padl.com>
+Subject: [PATCH net-next 00/17] net: dsa: mv88e6xxx: support for Remote
+ Management Unit
+Date: Fri, 03 Jul 2026 17:46:34 +1000
+Message-Id: <20260703-net-next-mv88e6xxx-rmu-v1-0-991a27d78bca@padl.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
-X-QQ-XMAILINFO: MrL15gPbNc8s9MPEPLQ8Zgigy27YNTEE9IYzBI1uDIYTYXVcnzCyCkvM
-	Wg6v+EyD9GcYMDvkCVxAs7iub1m13H7HTZiPDYLOGUQM3Bs3YyDonbVyNwTiXLEyrS3RQn6
-	4gmc9MiiGXDX2PcTmN98q6hlGJf9F5W3B4is9eRef3xcCwhgRKXj27Q83cmOVX5SOaHRjsq
-	Z+XaWWUiINTqMm/4l1LB90IUl5BSIhYliSQneeP8fqaMOgstnBbcTteKCu168b0ziayTnkH
-	UJ76ROEFz5KxYvJdwXrS7s7n95c/31Qxh+JBmPDBKZwv1r1ynG/IvLcbwjVm0jiXs6i8p6m
-	jrSyWhMMPaMMb5B1mEOQVzghDjJc4AvMJn+XgC5h5brkn3QThdNQHSubRl4192pBVU2iY/a
-	z9J3s4PLqnnENkwQaJ+6BEPlzn/+xGjAelNspcpyKT44ovvsQlDKabz7ZkH1xpxb7Fu8p/Y
-	VK1vEHK1ZHcpduG3zfMqHV2eOnJO/cqwiUzLQ+H5XoKmcI+fgpqxuLWn9GKCcj+Bv9Sagot
-	JhapBDbLXZ6WWmDDZDEkLGdQbdygg/XI8YlBxJZy7x6fsNXjNqXelzdRvL8GqoJeQfqqXsA
-	OHa3YHaGcbIfyJNGrN1cPFsJMcNp24Kg9tHv4ewJ5ZOMt7MvWxkKI/saFbljJj0/dQeVIEo
-	bxo/OnEqYIyCzr0EqmUzmM+RvfF7mocD1Xx5JRpOFxLq/XIbpKFRcO6wltY9NTu+nWuwU7K
-	QG0Z1+haLiUQnJlCYIBGeB5W55v+u8Be8+ajiVYoT8Pv4H/UUPLJcSG700LWEmwwUy4XEx0
-	D2MJf1mHSzKYDtv7WQQ7uWkcnQCBWBgsH6LcgXavnJ5/iNvxWXulDQC7z31smXxnfTCOjtg
-	7bsC+hVD/h9nk3daLmKpYAhB8MSrQJRSZw24FluCidY3T8AS4PMiUNwJW8xFLqB58n15cwR
-	pMys9HvRWvk9vBOOLcduU+aF7FcEiJAxRZb4EICe5EZjCwl1B/hFK9zvK1tvZy6KQyfXn7R
-	fEO62uK8CPQpKesMZWAk2DHadKiwWTPYtANkrRv6q1oO9ddn/tXD09AnIKf1VSmH1cEvZrC
-	+XFYoPTUEUv
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANpoR2oC/zWMQQrCMBBFr1Jm7UASMQavIi7a9KsjNEqSloHSu
+ xsVF3/x+Ly3UkEWFDp1K2UsUuSZGthdR/HepxtYxsbkjPPG2z0n1DatPC0hwKsq52lmNw72GNw
+ BEYaa/Mq4in7DZ/o7dPk9ZR4eiPXTpW17A1RH3GaEAAAA
+X-Change-ID: 20260613-net-next-mv88e6xxx-rmu-2db17825ece0
+To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Russell King <linux@armlinux.org.uk>, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ Florian Fainelli <f.fainelli@gmail.com>
+Cc: Cedric Jehasse <cedric.jehasse@gmail.com>, 
+ Max Holtmann <mh@rme-audio.de>, Max Hunter <max@huntershome.org>, 
+ Kieran Tyrrell <kieran@sienda.com>, 
+ Ryan Wilkins <Ryan.Wilkins@telosalliance.com>, 
+ Mattias Forsblad <mattias.forsblad@gmail.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Luke Howard <lukeh@padl.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783064798; l=2446;
+ i=lukeh@padl.com; s=20260701; h=from:subject:message-id;
+ bh=E/n71tfBeXMreQ5j5FcVNbsmMGH4GRHm8HlUFHurLTM=;
+ b=302qDTqv0UAb2iVuN0F74rHpNRwaq7hGZkrv8TkWWPqMUNfRQBFshgwGPOjJ+kOB0yFNfidGr
+ oWAw85yr9uFArfOu+O3rFZpuOT2rv7EGcS3K0C0To+YCs+OjvAxhDdn
+X-Developer-Key: i=lukeh@padl.com; a=ed25519;
+ pk=D6YgUnH9/OzSZsduYm9XDbvXn1IHDwKwI1hLTsKNRLw=
 
-fman_init() and devm_request_irq() failure paths in fman_probe()
-do not free fman and its sub-resources (keygen, muram allocations,
-state, cfg), causing memory leaks on probe failure.
+This patch set shephards a series of commits made by Andrew Lunn
+and others to support remotely managing Marvell switches over
+Ethernet (as opposed to MDIO) using the Remote Management Unit
+(RMU).
 
-Add fman_muram_finish() to properly tear down a MURAM partition
-(gen_pool_destroy + iounmap + kfree), complementing the existing
-fman_muram_init().
+This is the second of four patch sets: the remaining two add
+support for remote management when MDIO is unavailable.
 
-Add fman_free_resources() that releases all fman sub-resources
-in the correct order:
-- devm_free_irq() for any already-registered IRQ handlers
-- kfree(fman->keygen)
-- free_init_resources() for MURAM CAM/FIFO allocations
-- kfree(fman->cfg)
-- fman_muram_finish(fman->muram) for the MURAM management object
-- kfree(fman->state)
-- kfree(fman)
-
-Use two goto labels in fman_probe():
-- err_irq: main IRQ registered but err_irq failed -- free main IRQ
-  then fall through to release resources
-- err_no_irq: no IRQ registered -- just release resources
-
-The IRQ handlers must be explicitly freed before kfree(fman) to
-avoid a window where a shared-IRQ spurious firing could dereference
-the freed dev_id.
-
-Note: fman_config() is not changed -- it already frees fman
-internally on all its error paths, so fman_probe() must not touch
-fman after fman_config() fails.
-
-v2:
-- add explicit devm_free_irq() before kfree(fman) to eliminate
-  a potential UAF window on the cleanup path
-- add fman_muram_finish() for complete MURAM teardown
-- add kfree(fman->cfg) to release config structure
-
-Fixes: 414fd46e7762 ("fsl/fman: Add FMan support")
-Signed-off-by: ZhaoJinming <zhaojinming@uniontech.com>
+Signed-off-by: Luke Howard <lukeh@padl.com>
 ---
- drivers/net/ethernet/freescale/fman/fman.c    | 31 +++++++++++++++++--
- .../net/ethernet/freescale/fman/fman_muram.c  | 15 +++++++++
- .../net/ethernet/freescale/fman/fman_muram.h  |  2 ++
- 3 files changed, 45 insertions(+), 3 deletions(-)
+Andrew Lunn (11):
+      net: dsa: tag_dsa: Add helper to add DSA header to RMU frame
+      net: dsa: mv88e6xxx: Add conduit state change handler
+      net: dsa: mv88e6xxx: Remove mv88e6xxx_rmu_setup()
+      net: dsa: mv88e6xxx: Add connect_tag_protocol handler
+      net: dsa: mv88e6xxx: Add sanity check of received RMU frame
+      net: dsa: mv88e6xxx: Get Product ID when enabling RMU
+      net: dsa: mv88e6xxx: Add RMU register read/write/wait for bit
+      net: dsa: mv88e6xxx: Move available stats into info structure
+      net: dsa: mv88e6xxx: Centralise common statistics check
+      net: dsa: mv88e6xxx: Get some MIB stats via the RMU
+      net: dsa: mv88e6xxx: Time RMU operations and disable if slow
 
-diff --git a/drivers/net/ethernet/freescale/fman/fman.c b/drivers/net/ethernet/freescale/fman/fman.c
-index 6947f3bc7c87..752c0df0e17c 100644
---- a/drivers/net/ethernet/freescale/fman/fman.c
-+++ b/drivers/net/ethernet/freescale/fman/fman.c
-@@ -2806,6 +2806,24 @@ static struct fman *read_dts_node(struct platform_device *of_dev)
- 	return ERR_PTR(err);
- }
- 
-+static void fman_free_resources(struct fman *fman, struct device *dev,
-+				bool irq_registered)
-+{
-+	/* Free IRQs first while fman is still valid */
-+	if (irq_registered) {
-+		if (fman->dts_params.err_irq != 0)
-+			devm_free_irq(dev, fman->dts_params.err_irq, fman);
-+		devm_free_irq(dev, fman->dts_params.irq, fman);
-+	}
-+
-+	kfree(fman->keygen);
-+	free_init_resources(fman);
-+	kfree(fman->cfg);
-+	fman_muram_finish(fman->muram);
-+	kfree(fman->state);
-+	kfree(fman);
-+}
-+
- static int fman_probe(struct platform_device *of_dev)
- {
- 	struct fman *fman;
-@@ -2821,12 +2839,13 @@ static int fman_probe(struct platform_device *of_dev)
- 	err = fman_config(fman);
- 	if (err) {
- 		dev_err(dev, "%s: FMan config failed\n", __func__);
-+		/* fman_config() frees fman internally on all error paths */
- 		return -EINVAL;
- 	}
- 
- 	if (fman_init(fman) != 0) {
- 		dev_err(dev, "%s: FMan init failed\n", __func__);
--		return -EINVAL;
-+		goto err_no_irq;
- 	}
- 
- 	/* Register IRQ handlers only after initialization is complete.
-@@ -2844,7 +2863,7 @@ static int fman_probe(struct platform_device *of_dev)
- 	if (err < 0) {
- 		dev_err(dev, "%s: irq %d allocation failed (error = %d)\n",
- 			__func__, fman->dts_params.irq, err);
--		return err;
-+		goto err_no_irq;
- 	}
- 
- 	if (fman->dts_params.err_irq != 0) {
-@@ -2854,7 +2873,7 @@ static int fman_probe(struct platform_device *of_dev)
- 		if (err < 0) {
- 			dev_err(dev, "%s: irq %d allocation failed (error = %d)\n",
- 				__func__, fman->dts_params.err_irq, err);
--			return err;
-+			goto err_irq;
- 		}
- 	}
- 
-@@ -2883,6 +2902,12 @@ static int fman_probe(struct platform_device *of_dev)
- 	dev_dbg(dev, "FMan%d probed\n", fman->dts_params.id);
- 
- 	return 0;
-+
-+err_irq:
-+	devm_free_irq(dev, fman->dts_params.irq, fman);
-+err_no_irq:
-+	fman_free_resources(fman, dev, false);
-+	return err ?: -EINVAL;
- }
- 
- static const struct of_device_id fman_match[] = {
-diff --git a/drivers/net/ethernet/freescale/fman/fman_muram.c b/drivers/net/ethernet/freescale/fman/fman_muram.c
-index 6ac7c2b0cb19..6c2b4f7a02b8 100644
---- a/drivers/net/ethernet/freescale/fman/fman_muram.c
-+++ b/drivers/net/ethernet/freescale/fman/fman_muram.c
-@@ -129,3 +129,18 @@ void fman_muram_free_mem(struct muram_info *muram, unsigned long offset,
- 
- 	gen_pool_free(muram->pool, addr, size);
- }
-+
-+/**
-+ * fman_muram_finish
-+ * @muram:	FM-MURAM module pointer.
-+ *
-+ * Frees all resources associated with a MURAM partition.
-+ */
-+void fman_muram_finish(struct muram_info *muram)
-+{
-+	if (!muram)
-+		return;
-+	iounmap(muram->vbase);
-+	gen_pool_destroy(muram->pool);
-+	kfree(muram);
-+}
-diff --git a/drivers/net/ethernet/freescale/fman/fman_muram.h b/drivers/net/ethernet/freescale/fman/fman_muram.h
-index 3643af61bae2..a5cb544c0f08 100644
---- a/drivers/net/ethernet/freescale/fman/fman_muram.h
-+++ b/drivers/net/ethernet/freescale/fman/fman_muram.h
-@@ -23,4 +23,6 @@ unsigned long fman_muram_alloc(struct muram_info *muram, size_t size);
- void fman_muram_free_mem(struct muram_info *muram, unsigned long offset,
- 			 size_t size);
- 
-+void fman_muram_finish(struct muram_info *muram);
-+
- #endif /* __FM_MURAM_EXT */
--- 
-2.20.1
+Luke Howard (4):
+      net: dsa: mv88e6xxx: use lockdep_assert_held() if CONFIG_LOCKDEP
+      net: dsa: mv88e6xxx: cancel PTP polling work on .shutdown
+      net: dsa: mv88e6xxx: size ATU snapshot buffer and region by num_macs
+      net: dsa: mv88e6xxx: RMU DUMP_ATU support in devlink
+
+Mattias Forsblad (2):
+      net: dsa: mv88e6xxx: Introduce Marvell dsa tagger data operation.
+      net: dsa: mv88e6xxx: Add RMU enable/disable for select switches.
+
+ drivers/net/dsa/mv88e6xxx/Makefile  |   1 +
+ drivers/net/dsa/mv88e6xxx/chip.c    |  92 ++++--
+ drivers/net/dsa/mv88e6xxx/chip.h    |  35 +++
+ drivers/net/dsa/mv88e6xxx/devlink.c |  71 +++--
+ drivers/net/dsa/mv88e6xxx/global1.c |  64 ++++
+ drivers/net/dsa/mv88e6xxx/global1.h |   3 +
+ drivers/net/dsa/mv88e6xxx/global2.c |   1 +
+ drivers/net/dsa/mv88e6xxx/ptp.c     |  14 +-
+ drivers/net/dsa/mv88e6xxx/ptp.h     |   5 +
+ drivers/net/dsa/mv88e6xxx/rmu.c     | 611 ++++++++++++++++++++++++++++++++++++
+ drivers/net/dsa/mv88e6xxx/rmu.h     | 145 +++++++++
+ include/linux/dsa/mv88e6xxx.h       |  11 +
+ net/dsa/tag_dsa.c                   |  67 +++-
+ 13 files changed, 1073 insertions(+), 47 deletions(-)
+---
+base-commit: 165539241e210db8e962479c3c5072372576b618
+change-id: 20260613-net-next-mv88e6xxx-rmu-2db17825ece0
+
+Best regards,
+--  
+Luke Howard <lukeh@padl.com>
 
