@@ -1,150 +1,106 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51FA032E729;
-	Fri,  3 Jul 2026 13:12:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783084332; cv=none; b=r2UAJ5l511HG9gGgxiLkdRzPWRMDmQgrjnxnHYBP3/GYmh3IK+LAGwlLdmy4N6fbXh5CAkjf+ddrnEhyFBA50BVkbdrKlhw6o2hiP4fNpK/vdL4UbQLoOWtEcZ2NMz8HzdHcvIeQyjyEhx/YMzsprHDLiitjb0HFCIZ0eWRXSak=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783084332; c=relaxed/simple;
-	bh=Z/2Hnfc9GB/OzugUkItSrufn1TDkO6pWeaSjkfUWplU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A4pjAYVQctKWq+SAi6/khYVTL0Q5BsfMPCQyWFvAtQX6Lu4SClXui/YfhBKSjOGkbb6KF/g38GMnT84kpWwe6cVD/JZuKHvt4auQPLCVLbh+XOUf9qkSi5Htc1IxvOKu1Td9vuW3NC48W4UWHD9O5YrO0jQLbrB7sj3+TfW5Bp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=zyOXNe7e; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A64C37C916
+	for <netdev@vger.kernel.org>; Fri,  3 Jul 2026 13:13:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783084427; cv=pass; b=GAIoUtAMFZ12aMctxPAEzZGLILVC9Qgh4dG9z7FycUFwIUJrn2pqoE4zPrNvQFKmI94laArhKOsEJU+zpLuZEW+ailoU46Do50MJuLpcGSfq6fYjWaBK1F/zLRrJGaBig29MEuS5jihg0/3m9inOYvKrLT/3Z00QwijC4jboTDk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783084427; c=relaxed/simple;
+	bh=IuEretd9v3mZ+fYukt5hJT3lAR1DloYAF06eI95YIWU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=V3OEZRVDLOXy+LJyhEd5iB6wpMuNJ+IyWoBV2OsqfLXCNFoyk/BrxfEL9ipyQgVW/KgjNeyDAQw+OfhA6z+w/zX/yx8a6wRi/HdVyH/TmEVwCacS2JVqdmj14H/1k3/nFTYnIfWRkDe6+UWAamEQI8EkOIJ6kkI+kxrAW/dUrk0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ALFEw0l+; arc=pass smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="zyOXNe7e"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=Y2MPRqkyRTH14QDFfn7C5hyRL84ni46rfcjThNuG8gw=; b=zy
-	OXNe7enBL7WJDeN2aiPcHmlb5eLtMLuRE/p5xz5u3N3rebEjIzZ3X5gBn9Jejpb3BQxiFtJY5vzN9
-	nSl14zAnUCJz7XSx+u7QqMftzrzkCRGlbWerphQYl1Um8wFA/2fGuPXEHa+bX/2L21aBSX++LsnkE
-	8sZbOQC4HlAXbB8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wfdgW-00AYBV-MI; Fri, 03 Jul 2026 15:12:00 +0200
-Date: Fri, 3 Jul 2026 15:12:00 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: "Nazle Asmade, Muhammad Nazim Amirul" <muhammad.nazim.amirul.nazle.asmade@altera.com>
-Cc: "dinguyen@kernel.org" <dinguyen@kernel.org>,
-	"maxime.chevallier@bootlin.com" <maxime.chevallier@bootlin.com>,
-	"rmk+kernel@armlinux.org.uk" <rmk+kernel@armlinux.org.uk>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>,
-	"robh@kernel.org" <robh@kernel.org>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/3] arm64: dts: socfpga: agilex5: Add SoCDK TSN Config2
- board
-Message-ID: <bf7c6343-e0c0-47bd-a857-0f1881fc8659@lunn.ch>
-References: <20260630133108.27244-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
- <20260630133108.27244-3-muhammad.nazim.amirul.nazle.asmade@altera.com>
- <edf84080-a5e0-478c-9977-af2376cb71c5@lunn.ch>
- <347c50ed-234a-4f29-b63a-1e0010c6b09d@altera.com>
- <e4cf8d95-0467-4bdc-8e19-228ced3a8bbc@lunn.ch>
- <5a0c962e-1af0-4d6a-b871-d8a0b0197ff5@altera.com>
- <d70a6795-e1a2-43e2-b523-0fc668324674@lunn.ch>
- <b8ca3bd8-af8f-43e7-904c-1ac45512296b@altera.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ALFEw0l+"
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-698c0ff45b5so1874361a12.1
+        for <netdev@vger.kernel.org>; Fri, 03 Jul 2026 06:13:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783084425; cv=none;
+        d=google.com; s=arc-20260327;
+        b=cwzXiwfUO+VdMnm3g17I4Y209KywQZQ1WLZIZhn+3aKtECmLEBeIXM84SGyVbRsdOF
+         WOihjMAuRvWEXez89NbogNwRBOdcqqluhQJMJ25oJr5hdapZv0BHmf5f9gKM81pIP6XW
+         Jm04WjsMxpnMOH5VDij1a3DvsBtF9592vJuPJvjScpHzELAdBGp6y+6AEzFZ2ub6QlPy
+         3nELqq9qNsnePB2SiIgVRVRp2fhddZq7ZEmFTTCeMvMWBN88HlvY3yC3/MFzvJzW9P8y
+         7E0Ye7Z3DrZ530b0dIX1HAzy72fAy7m8TCNLaoLp73ukSHHD4r4LovvEVU0c6IZyzP58
+         8BcQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=IuEretd9v3mZ+fYukt5hJT3lAR1DloYAF06eI95YIWU=;
+        fh=9sNp3ZOcXiKtXbaUXvuIERjaRF9xrHpSG5UhQ55XEHo=;
+        b=hPgwrbuf+G5o3Owvd8jlohA/x+bHhKTndo9a6XhlBOE+IOQ0vFZIGuBpWBz7Bb6QU3
+         eDBFkGbjib9dYAlZ3iRcHzvG4RaKr3XG+X3PT2Xzmdu9ImQ4x6/ssuBDGX9wtnWdJL0n
+         S7xGoKxyzHMV6iVDn2RJya9XuODihfIBWX2swlzw6SZfyJXGdt4X3RrBPmRSTBrhYEky
+         DGOFJWAQuYMXu44QhpRwovd0LBrpj+A05ZP6Yubesl5ZHuubSo1tbZZqBV1/LxhdvcYN
+         yjUsGZ+hFFw7miH8d6O5bNy6bj/q28qjUEPRen20pdQQXRoXaSxDY9d3NW0DlIR98UDj
+         kiIw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783084425; x=1783689225; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=IuEretd9v3mZ+fYukt5hJT3lAR1DloYAF06eI95YIWU=;
+        b=ALFEw0l+jUZsRUgvrhg/LjVNQ76rzxq84feyFUf9IWgsGt93B5wk5w7/W6P/+/+3HS
+         Ok5Y2ov38wyHgZGXxTMXuXtAyel+GGOiz0NFJMKM4yyEC71f0Mr0+hqVIZZDlDNjdgkk
+         24StFPLg0tZS3167KZRbqcrcI1rrpRros7LVXE6eKguCm9IOA+AcE9KqaEWGKjpZehe1
+         KF8xD765M1YeW3wJKS6WutWldWYaTysvGV4U6RC1YsfuXGJlx6ss8PpLW5laAooM7elM
+         jr2Q07a4xQnEcP3s1sDkPKnTTDCxQmJeGRgtc/73Hh8jBUbvyIbQbuxdzfzazGEH0MEC
+         uTQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783084425; x=1783689225;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IuEretd9v3mZ+fYukt5hJT3lAR1DloYAF06eI95YIWU=;
+        b=ruqF56/4XBYeizxhY8eK7dWCnhWRnM6+Ly06syDgBModXgyQb51SPtRhzrmn5APTwc
+         wbwYleiAs8AFCWWvGqZ+dh+Zn0cgAEokQXA0I+/VygeI8tL9ipoqkgVOWsbdKz6PKDKm
+         Ob0g6mtCIiBfQGuV28v0bzHAuXUaS+8KV1ySWrZX56lY3wMnHBUNrB0q0kdM7jl2V1nn
+         9h8M2xQqV93a9HIt2AGKOjsvgKNeUKCoytn4G0mhuh409YtS6n8bXf7vL/hAoPyyo8g7
+         u3e7+FGzig8KJC/7hfBcL4lHOz3ohOnoNLSnxpqppuWOvcOh3y3lbbaf/wRAmkfwbCme
+         5nXA==
+X-Forwarded-Encrypted: i=1; AHgh+RrFepO3FGUJ6ZanB/dunsCgl0FwUYhEoH1zQ/ak3k7sBkvAWxFFUoxKQUeivbN3XL5egDZTeVg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqxC9smDRQd0zaiBULFlPEe4DM1lAsmOjHCVwZhBEvn08eCIbu
+	Tx3l3c8HoV6KZRFLWe/OUGw8j1Vie5SmqRUCnCqjueXILXVZ1H+cYlntRJ/xGLWEbrNKT4C2sCy
+	JHtH9daCcCIvyuSuoYNV1jxOlm7eN6d4=
+X-Gm-Gg: AfdE7cn1i+3ure9ovZ/xuDLg1lu7nS6m2Q7NGSU+8Vmy8r2gqQVoH4jR4wKuZ8eTnia
+	koorbH3okt0PUL8RfHIQDR/Th+eVcOlNNk4JRVINboAR+x+ajWLGY3nYg2kVNEftQb9iXlFDsyO
+	162YORfhKZgbuvvLFSPGZ58SKOCRlfKYMjnNSJdJBmqdnvBfS7rc+Jn+HMNoqyIflssP/0sLjmz
+	rbCVfwpa7YFgDdKJ9v5X/vTJ4G4CgqE07LfZ4EndOYjBnk0Fzv9FRMcyXKWVKLK68XPL3T2ZtQ7
+	HnC2FFw6
+X-Received: by 2002:a17:907:9307:b0:c12:686d:f673 with SMTP id
+ a640c23a62f3a-c12c9f71a74mr218109866b.30.1783084424549; Fri, 03 Jul 2026
+ 06:13:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <b8ca3bd8-af8f-43e7-904c-1ac45512296b@altera.com>
+References: <20260630-rtl8366rb-improvements-v2-0-05eb9d6a37f5@kernel.org> <20260630-rtl8366rb-improvements-v2-1-05eb9d6a37f5@kernel.org>
+In-Reply-To: <20260630-rtl8366rb-improvements-v2-1-05eb9d6a37f5@kernel.org>
+From: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+Date: Fri, 3 Jul 2026 10:13:31 -0300
+X-Gm-Features: AVVi8CcPe-POJN4Xg3Q8oz5MxstsmX4xNQAukMrn22DtoWgR4JZMuKbrdlJMukY
+Message-ID: <CAJq09z4X-+wNtFaCTKFnfvn9bpTjLU8y=drd1gDnWjyhr04ppw@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 1/5] net: dsa: realtek: rtl83xx: Make learning
+ optional in join/leave
+To: Linus Walleij <linusw@kernel.org>
+Cc: =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>, 
+	Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-> >> The delays are provided by the FPGA GMII-to-RGMII converter soft IP,
-> >> which is hardcoded in the FPGA bitstream and cannot be disabled or
-> >> modified from the driver side.
-> >>
-> >> Using phy-mode = "rgmii" is intentional here — it prevents the PHY from
-> >> adding its own internal delays on top, since the FPGA converter already
-> >> provides the full required delay. This is consistent with how all other
-> >> Agilex5 SoCDK board variants are described, as seen in commit
-> >> c5637e5ceb4b ("arm64: dts: socfpga: agilex5: Fix phy-mode to rgmii as HW
-> >> provides clock delay") already in Dinh Nguyen's tree, which applies the
-> >> same rationale across all Agilex5 boards.
-> > 
-> > I've become more insistent that designs get this correct. So i don't
-> > care too much about past systems. Many vendors are having to fix up
-> > their drivers and DT in order to make new boards consistent.
-> > 
-> > You can look at your system as the FPGA being the MAC, and the PHY is
-> > the PHY. The PCB is not providing the delay, the MAC is. This exactly
-> > fits the description above.
-> > 
-> >       Andrew
-> Hi Andrew,
-> 
-> Thank you for the clarification. We agree with your framework in 
-> principle, but would like to explain why phy-mode = "rgmii" is the 
-> appropriate description for this specific case.
+> Mostly to make it possible to add rtl83xx support piece by piece,
+> make the port learning callback optional in rtl83xx_port_bridge_join()
+> and rtl83xx_port_bridge_leave().
+>
+> Signed-off-by: Linus Walleij <linusw@kernel.org>
 
-So you want to be different to every other system? Please extend the
-text in that document to say that this device is special and has a
-different definition of phy-mode to all other systems.
+I know it was already merged. Anyway
 
-> After getting more information from hw team, for Agilex specific device, 
-> the RGMII timing delays on this board are provided by an FPGA delay 
-> chain (Input/Output Delay Chain primitives in the FPGA fabric). The 
-> reason for using the FPGA rather than the PHY is that the Marvell PHY on 
-> this board only supports 0ns or 2ns delay steps — too coarse to meet the 
-> RGMII timing requirements. The FPGA delay chain provides up to 63 steps 
-> of ~0.1ns precision, which the hardware team has tuned at design time to 
-> achieve correct signal timing.
-
-As the text says, fine tuning is different. You can have fine tuning,
-in both the MAC or PHY, while using either rgmii or rgmii-id.
-
-Also, you cannot fine tune just the MAC, tuning needs to take into
-account the PCB design, the length of the clock and data tracks on the
-PCB. You can however take into account the difference in timing within
-the FPGA.
-
-Or does your FPGA team produce a different bitstream per board design,
-after some sort of calibration in order to determine what the PCB
-characteristics are?
-
-This however opens up a new possibility. It does sound like you can
-produce a new bitstream with the delays set to just the tuning delay,
-not the 2ns + tuning? You need to decide if this is simpler than
-changing the MAC driver to mask the phy-mode.
-
-> Changing to phy-mode = "rgmii-id" and having 
-> the driver strip the delay before passing to the PHY would produce the 
-> same hardware behaviour (PHY adds zero delay), but would add driver 
-> complexity with no practical benefit, and would misrepresent the FPGA 
-> delay as a driver-managed MAC delay when it is actually a fixed, 
-> board-level hardware calibration.
-
-Look at the wording again. It does not say it is driver managed.
-
-# There are a small number of cases where the MAC has hard coded
-# delays which cannot be disabled.
-
-This exactly fits your situation.
-
-> Could you advise if you still prefer the rgmii-id approach given this 
-> constraint?
-
-rgmii-id is the correct value for your PCB design. Please follow what
-the text says.
-
-	Andrew
-
-	
+Reviewed-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
