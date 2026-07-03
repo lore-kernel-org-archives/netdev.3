@@ -1,70 +1,75 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52C2B2367D9;
-	Fri,  3 Jul 2026 01:41:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F08531A6807
+	for <netdev@vger.kernel.org>; Fri,  3 Jul 2026 02:24:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.36.163.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783042904; cv=none; b=b8djcF4sKMq/L+08fHQGUFK0zNx6BBXEntgSFI4oKlZAXHsrTG3FqngU2DZRJh1Q+ccZi4HhnQal6fYurvQHFFFOolX2gUN8KGVaTKOuovRDOHNlPTipDe+xgPIZ85v3uYLyIj558lXr2BOV7wrf5vOfUduHSdvQjhxh0eQNiuA=
+	t=1783045465; cv=none; b=nhNuCBi6O4ddSqYwjMx+kWz7KYppw+ED6kduixJKVnSyP/Q9M3jyMU65WJyTNNddto15p2IRZN8oFcts0lbHcYCUD2UFQYeJMAEfzRrIhJDR+vMz9jfozQKqN2jTgSB3kcSqK7zp06Scx3puSMRHQx8RZLtzN6eFCnF2NGFciMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783042904; c=relaxed/simple;
-	bh=/W3D+rzoWkPh7MCbp4ijewyi6WoKPug+vKhz+GCY9eQ=;
+	s=arc-20240116; t=1783045465; c=relaxed/simple;
+	bh=ldjRhuoUmm96yhd/jzbgrACvM+ER+HM+o73q4Xiahzg=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=HxnZqjcgYbFSeDGLBEUeqCgO/RV/iCy0rtRPMC+I1bTIQB306UENNopfNooq7Wno2dt1wfwZ3SV8Xtr9IwN1fUK/SiwsHiotUloXbNVihckIGJxf0WKRUyRjTCAJgN9sGKIAItU/JMjmO3sqxdM0gCFisMmOrTvGx0wwSMOP+bA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=wilf81Gu; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
+	 Content-Type:MIME-Version; b=ul07ATo9K8bLN7I4vnBjT4qCkn+js67xkYJlNmaO8mDN8zJeNFIZvuduqX5T1MRtJtTKWFEVjMMBCIW98BMhAz7vkNHvPePRuS1YedcNPuekMredFDGYdmBDGS1aIX4FhnT1dDam2cHIYANxhaam0OT/qRyaJcltswRwHrngyJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=gdKnmIlw; arc=none smtp.client-ip=202.36.163.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="wilf81Gu"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6631eKtyD2342106, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
-	s=dkim; t=1783042821;
-	bh=/W3D+rzoWkPh7MCbp4ijewyi6WoKPug+vKhz+GCY9eQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=wilf81GufY2gqMi/U6EJTJ+r/0gorKKj3PSUxbEwWgST98aft1z78ewJxstyuTtky
-	 sE40G32GYApbXIgqU72YfKE5AKym7UAvordc/NsRi7TpnuZ7l3AqCHDaZrV5ULxUUl
-	 rXGz5dGrpvYAP43o8P8zh71mh+rVG9lMRW9AdE3bQX7BwHmCODkO0TyiD/Um5J8X2y
-	 NDeY272vq5bUWYtw6QBmtoPA4IXdzNxQVXxBsrTQv3ZvKgBEew8RGSxKKSgFB9gLDy
-	 dkac3hDxAsVLt5Di4XJ74Vhu1lBQeNjhWOQfPYOYzwBzXcgf2ntGO0dpF6R5QLtEq8
-	 ei/4nX2u710+A==
-Received: from RS-EX-MBS3.realsil.com.cn ([172.29.17.103])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 6631eKtyD2342106
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 3 Jul 2026 09:40:20 +0800
-Received: from RS-EX-MBS3.realsil.com.cn (172.29.17.103) by
- RS-EX-MBS3.realsil.com.cn (172.29.17.103) with Microsoft SMTP Server
+	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="gdKnmIlw"
+Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id B54DB2C05BD;
+	Fri,  3 Jul 2026 14:24:20 +1200 (NZST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+	s=mail181024; t=1783045460;
+	bh=ldjRhuoUmm96yhd/jzbgrACvM+ER+HM+o73q4Xiahzg=;
+	h=From:To:CC:Subject:Date:References:In-Reply-To:From;
+	b=gdKnmIlwWZQYJ08pUg4dtT4lXXeBM4NpFQ6xiRYjRXFeUvniXrMm4GSupAY4GXmPW
+	 JBmPo+iI6f0y6tG3t6wVWWTRg5cHn8qLEJ+8sntARAzkWL5Ag4Y7z9SA5+xkXJFk1g
+	 aZPjjFbkLc/uCF7M2XvFb2YAnLLnSWppTXkJ8V9RXRB4qFDKssFQm5cyP7P4F2IF6V
+	 RPHUp5sKmsNUJUZA03HEni43cj3+CwkIvuITWWIXHPytmDMcUCDo6gz8X8xX4gQfTV
+	 7lKXIURN2qg1FJlTZbXtlH7uzVKp++wCnJATYyIPGcDjdhSNmV/lPYtKLp/bMp+PgH
+	 m/nVDLLpkwrAw==
+Received: from svr-chch-ex2.atlnz.lc (Not Verified[2001:df5:b000:bc8::76]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
+	id <B6a471d540001>; Fri, 03 Jul 2026 14:24:20 +1200
+Received: from svr-chch-ex2.atlnz.lc (2001:df5:b000:bc8::76) by
+ svr-chch-ex2.atlnz.lc (2001:df5:b000:bc8::76) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Fri, 3 Jul 2026 09:40:20 +0800
-Received: from RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) by
- RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) with mapi id 15.02.2562.017; Fri,
- 3 Jul 2026 09:40:19 +0800
-From: Javen <javen_xu@realsil.com.cn>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>, "andrew@lunn.ch"
-	<andrew@lunn.ch>, "hkallweit1@gmail.com" <hkallweit1@gmail.com>,
-	"linux@armlinux.org.uk" <linux@armlinux.org.uk>, "davem@davemloft.net"
-	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	=?utf-8?B?6aG+5pmT5Yab?= <freddy_gu@realsil.com.cn>, "nb@tipi-net.de"
-	<nb@tipi-net.de>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"daniel@makrotopia.org" <daniel@makrotopia.org>, "vladimir.oltean@nxp.com"
-	<vladimir.oltean@nxp.com>
-Subject: RE: [PATCH net-next v8 1/4] net: phy: c45: add
- genphy_c45_soft_reset()
-Thread-Topic: [PATCH net-next v8 1/4] net: phy: c45: add
- genphy_c45_soft_reset()
-Thread-Index: AQHdCdG4ScNNhh5l/kmL0Bh2hiJ4m7ZZnj8AgAFntcA=
-Date: Fri, 3 Jul 2026 01:40:19 +0000
-Message-ID: <31db813874d04c49866c6353bbf0e0c7@realsil.com.cn>
-References: <20260702032020.589-1-javen_xu@realsil.com.cn>
- <20260702032020.589-2-javen_xu@realsil.com.cn>
- <9f777a53-f38e-4730-b95f-25f53cdaafc7@bootlin.com>
-In-Reply-To: <9f777a53-f38e-4730-b95f-25f53cdaafc7@bootlin.com>
-Accept-Language: zh-CN, en-US
+ 15.2.1748.39; Fri, 3 Jul 2026 14:24:20 +1200
+Received: from svr-chch-ex2.atlnz.lc ([fe80::a9eb:c9b7:8b52:9567]) by
+ svr-chch-ex2.atlnz.lc ([fe80::a9eb:c9b7:8b52:9567%15]) with mapi id
+ 15.02.1748.039; Fri, 3 Jul 2026 14:24:20 +1200
+From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
+To: Andrew Lunn <andrew@lunn.ch>, Markus Stockhausen
+	<markus.stockhausen@gmx.de>
+CC: "hkallweit1@gmail.com" <hkallweit1@gmail.com>, "linux@armlinux.org.uk"
+	<linux@armlinux.org.uk>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "daniel@makrotopia.org"
+	<daniel@makrotopia.org>, "robh@kernel.org" <robh@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org"
+	<conor+dt@kernel.org>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>
+Subject: Re: [PATCH net-next v2 4/8] net: mdio: realtek-rtl9300: Configure
+ hardware polling during probing
+Thread-Topic: [PATCH net-next v2 4/8] net: mdio: realtek-rtl9300: Configure
+ hardware polling during probing
+Thread-Index: AQHdB9tQksraRZWC3EWnRbR6FKjf47ZU8muAgAVazwA=
+Date: Fri, 3 Jul 2026 02:24:20 +0000
+Message-ID: <eac9d8d1-0ebe-403f-9823-c676058cd9bb@alliedtelesis.co.nz>
+References: <20260629152336.2239826-1-markus.stockhausen@gmx.de>
+ <20260629152336.2239826-5-markus.stockhausen@gmx.de>
+ <6f0a60b2-5083-46c5-aae4-3197d66007da@lunn.ch>
+In-Reply-To: <6f0a60b2-5083-46c5-aae4-3197d66007da@lunn.ch>
+Accept-Language: en-NZ, en-US
 Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
 Content-Type: text/plain; charset="utf-8"
+Content-ID: <A9B1A5ABFEF3034F873806BA723D5B57@alliedtelesis.co.nz>
 Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -72,47 +77,17 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-SEG-SpamProfiler-Analysis: v=2.4 cv=TI3mSEla c=1 sm=1 tr=0 ts=6a471d54 a=Xf/6aR1Nyvzi7BryhOrcLQ==:117 a=xqWC_Br6kY4A:10 a=drD7vYo3kbIA:10 a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=5hFCTVTI1vfZqTqBIt8A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-SEG-SpamProfiler-Score: 0
 
-Pg0KPkhpIEphdmVuLA0KPg0KPk9uIDcvMi8yNiAwNToyMCwgamF2ZW4gd3JvdGU6DQo+PiBGcm9t
-OiBKYXZlbiBYdSA8amF2ZW5feHVAcmVhbHNpbC5jb20uY24+DQo+Pg0KPj4gQWRkIGEgZ2VuZXJp
-YyBDbGF1c2UgNDUgc29mdHdhcmUgcmVzZXQgaGVscGVyLiBUaGUgaGVscGVyIHNldHMgdGhlDQo+
-PiByZXNldCBiaXQgaW4gdGhlIFBNQS9QTUQgY29udHJvbCByZWdpc3RlciBhbmQgd2FpdHMgdW50
-aWwgdGhlIGJpdCBpcw0KPj4gY2xlYXJlZCBieSBoYXJkd2FyZS4NCj4+DQo+PiBSZXZpZXdlZC1i
-eTogTmljb2xhaSBCdWNod2l0eiA8bmJAdGlwaS1uZXQuZGU+DQo+PiBTaWduZWQtb2ZmLWJ5OiBK
-YXZlbiBYdSA8amF2ZW5feHVAcmVhbHNpbC5jb20uY24+DQo+PiAtLS0NCj4+IENoYW5nZXMgaW4g
-djI6DQo+PiAgLSBubyBjaGFuZ2VzLCBuZXcgZmlsZQ0KPj4NCj4+IENoYW5nZXMgaW4gdjM6DQo+
-PiAgLSByZS1vcmRlciBmdW5jdGlvbiBhY2NvcmRpbmcgdG8gdGhlIG9yZGVyIGluIHBoeS1jNDUu
-Yw0KPj4NCj4+IENoYW5nZXMgaW4gdjQ6DQo+PiAgLSBubyBjaGFuZ2VzDQo+Pg0KPj4gQ2hhbmdl
-cyBpbiB2NToNCj4+ICAtIG5vIGNoYW5nZXMNCj4+DQo+PiBDaGFuZ2VzIGluIHY2Og0KPj4gIC0g
-aW5jcmVhc2UgdGltZW91dCB0byA2MDBtcw0KPj4NCj4+IENoYW5nZXMgaW4gdjc6DQo+PiAgLSBu
-byBjaGFuZ2VzDQo+Pg0KPj4gQ2hhbmdlcyBpbiB2ODoNCj4+ICAtIG5vIGNoYW5nZXMNCj4+IC0t
-LQ0KPj4gIGRyaXZlcnMvbmV0L3BoeS9waHktYzQ1LmMgfCAyMiArKysrKysrKysrKysrKysrKysr
-KysrDQo+PiAgaW5jbHVkZS9saW51eC9waHkuaCAgICAgICB8ICAxICsNCj4+ICAyIGZpbGVzIGNo
-YW5nZWQsIDIzIGluc2VydGlvbnMoKykNCj4+DQo+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQv
-cGh5L3BoeS1jNDUuYyBiL2RyaXZlcnMvbmV0L3BoeS9waHktYzQ1LmMNCj4+IGluZGV4IDEyNjk1
-MTc0MTQyOC4uNjBkMDQ0MTU2YTgzIDEwMDY0NA0KPj4gLS0tIGEvZHJpdmVycy9uZXQvcGh5L3Bo
-eS1jNDUuYw0KPj4gKysrIGIvZHJpdmVycy9uZXQvcGh5L3BoeS1jNDUuYw0KPj4gQEAgLTM4NCw2
-ICszODQsMjggQEAgaW50IGdlbnBoeV9jNDVfY2hlY2tfYW5kX3Jlc3RhcnRfYW5lZyhzdHJ1Y3QN
-Cj4+IHBoeV9kZXZpY2UgKnBoeWRldiwgYm9vbCByZXN0YXJ0KSAgfQ0KPj4gRVhQT1JUX1NZTUJP
-TF9HUEwoZ2VucGh5X2M0NV9jaGVja19hbmRfcmVzdGFydF9hbmVnKTsNCj4+DQo+PiArLyoqDQo+
-PiArICogZ2VucGh5X2M0NV9zb2Z0X3Jlc2V0IC0gc29mdHdhcmUgcmVzZXQgdGhlIFBIWSB2aWEg
-Q2xhdXNlIDQ1DQo+PiArUE1BL1BNRCBjb250cm9sIHJlZ2lzdGVyDQo+PiArICogQHBoeWRldjog
-dGFyZ2V0IHBoeV9kZXZpY2Ugc3RydWN0DQo+PiArICoNCj4+ICsgKiBSZXR1cm46IDAgb24gc3Vj
-Y2VzcywgbmVnYXRpdmUgZXJybm8gb24gZmFpbHVyZS4NCj4+ICsgKi8NCj4+ICtpbnQgZ2VucGh5
-X2M0NV9zb2Z0X3Jlc2V0KHN0cnVjdCBwaHlfZGV2aWNlICpwaHlkZXYpIHsNCj4+ICsgICAgIGlu
-dCByZXQsIHZhbDsNCj4+ICsNCj4+ICsgICAgIHJldCA9IHBoeV9zZXRfYml0c19tbWQocGh5ZGV2
-LCBNRElPX01NRF9QTUFQTUQsIE1ESU9fQ1RSTDEsDQo+PiArICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgIE1ESU9fQ1RSTDFfUkVTRVQpOw0KPj4gKyAgICAgaWYgKHJldCA8IDApDQo+PiArICAg
-ICAgICAgICAgIHJldHVybiByZXQ7DQo+PiArDQo+PiArICAgICByZXR1cm4gcGh5X3JlYWRfbW1k
-X3BvbGxfdGltZW91dChwaHlkZXYsIE1ESU9fTU1EX1BNQVBNRCwNCj4+ICsgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIE1ESU9fQ1RSTDEsIHZhbCwNCj4+ICsgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICEodmFsICYgTURJT19DVFJMMV9SRVNFVCksDQo+
-PiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA1MDAwLCA2MDAwMDAsIHRy
-dWUpOyB9DQo+PiArRVhQT1JUX1NZTUJPTF9HUEwoZ2VucGh5X2M0NV9zb2Z0X3Jlc2V0KTsNCj4N
-Cj5DYW4geW91IG5hbWUgaXQgZ2VucGh5X2M0NV9wbWFfc29mdF9yZXNldCgpIGluc3RlYWQgPyBU
-aGF0J3MgdGhlIGNvbW1vbg0KPm5hbWluZyBwYXR0ZXJuIGZvciBDNDUgZ2VuZXJpYyBoZWxwZXJz
-IHRhcmdldHRpbmcgdGhlIFBNQVBNRCBNTUQuDQo+DQo+VGhpcyB3aWxsIGF2b2lkIHNvbWUgY29u
-ZnVzaW9uIGFzIHNvbWUgaW4tdHJlZSBkcml2ZXJzIGFsc28gY29uZmlndXJlIHRoZQ0KPk1ESU9f
-Q1RSTDFfUkVTRVQgcmVnaXN0ZXIsIGJ1dCBmcm9tIHRoZSBQSFlYUyBvciBQQ1MgTU1Ecy4NCj4N
-Cg0KU3VyZS4gVGhhbmtzIGZvciByZXZpZXcuDQoNCkJScywNCkphdmVuDQoNCj5UaGFua3MsDQo+
-DQo+TWF4aW1lDQo+DQo+Pg0K
+DQpPbiAzMC8wNi8yMDI2IDA0OjM4LCBBbmRyZXcgTHVubiB3cm90ZToNCj4+ICtzdGF0aWMgaW50
+IG90dG9fZW1kaW9fbm90aWZ5X3BoeV9hdHRhY2goc3RydWN0IHBoeV9kZXZpY2UgKnBoeWRldikN
+Cj4+ICt7DQo+PiArCXN0cnVjdCBvdHRvX2VtZGlvX3ByaXYgKnByaXYgPSBvdHRvX2VtZGlvX2J1
+c190b19wcml2KHBoeWRldi0+bWRpby5idXMpOw0KPj4gKwlpbnQgcG9ydCA9IG90dG9fZW1kaW9f
+cGh5X3RvX3BvcnQocGh5ZGV2LT5tZGlvLmJ1cywgcGh5ZGV2LT5tZGlvLmFkZHIpOw0KPj4gKwlp
+bnQgcmV0Ow0KPj4gKw0KPj4gKwlpZiAocG9ydCA8IDApDQo+PiArCQlyZXR1cm4gcG9ydDsNCj4g
+SGVyZSBzZWVtcyBsaWtlIGEgZ29vZCBwbGFjZSB0byBjaGVjayB0aGUgUEhZIGlzIGEgcmVhbHRl
+ayBQSFksIGFuZA0KPiByZXR1cm4gLUVOT0RFViBpZiBub3QuIFRoYXQgc2hvdWxkIGNhdXNlIHBo
+eV9hdHRhY2hfZGlyZWN0KCkgdG8gZmFpbCwNCj4gbWFraW5nIGl0IGltcG9zc2libGUgdG8gY29u
+ZmlndXJlIHRoZSBwb3J0IHVwLg0KSSBkbyBrbm93IG9mIGF0IGxlYXN0IG9uZSBib2FyZCAoWnl4
+ZWwgWEdTMTIxMCkgdGhhdCB1c2VzIGEgUlRMOTN4eCBhbmQgDQphIEFRUiBQSFku
