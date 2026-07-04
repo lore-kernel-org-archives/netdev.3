@@ -1,56 +1,54 @@
-Received: from mail-qv1-f73.google.com (mail-qv1-f73.google.com [209.85.219.73])
+Received: from mail-qt1-f201.google.com (mail-qt1-f201.google.com [209.85.160.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2CC0322749
-	for <netdev@vger.kernel.org>; Sat,  4 Jul 2026 19:43:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 804FB3242B2
+	for <netdev@vger.kernel.org>; Sat,  4 Jul 2026 19:43:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783194233; cv=none; b=WzWq+hic4gILpdEMk63G1zxou6UWqrX+2ok9Rz8hNSpESOYgE6kOYtxnu+sub7S/af9w9myCbtq3TbHVnvN0fogOR1kp//6Nwwwz+1qg/cmnLFfFNH+5F6AmoKkkOD6Fr1b8wV6RDBFVcqGIBWp42U2UC9HXBE9WxOg84oy28mM=
+	t=1783194235; cv=none; b=ulbDql4cIQG5zOWFDW24/nlsG5i/QhRGm/C/JWgdkif3daPjJj5Ig5m8gb6LpG/9A/IYlJZiCtMqAicWHF8uWf60YrBNICnWUZFft3I9fFFrJiCfQUt5ycfbpH25VubKrm1QmwCjjBzZbWC+REpol9y5qjdtwGZi6RqpnMIEA9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783194233; c=relaxed/simple;
-	bh=8qkaK9CJewoSBHJsNGqdS9I798dwSpqf9f5A6hyIKWw=;
+	s=arc-20240116; t=1783194235; c=relaxed/simple;
+	bh=PhbAHeLF9WWjvlrTJwBVC2zp0lkSlQj7I6RfJxoy99E=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=CW4XXbDiw+8pqu2mdLLiGwiFpeyTzZmiNUtUBOdCZqbxwjwU7S4fU5kKnrwYs2NnWWVUEpgTKveJkbMv9bTLCV1NU/EzFPySk06NQjwRKz4ZLFjOB6cNIn5QFGUl/9gK7hwOpLpLefkIzubQzNpLo/yoKXaXaHsfxRbj8+/wR/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ihGEask2; arc=none smtp.client-ip=209.85.219.73
+	 To:Cc:Content-Type; b=Ow5/tChZZD+anTfjkqZMxAy5fBy7N7QHdSNtdqLBPesigLS4Ej7vIzpW59CoHl103pxLVv93FYITxFkT0LeFlYKfgC1WL8uNAHyTTxSP2ChFSMYwukHrVoOlAyK8Hf3K/DZfXF1V+QddKyuRh1c8sPsk1UoUizSPEgFLMSgGvEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=R2iHtmiC; arc=none smtp.client-ip=209.85.160.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ihGEask2"
-Received: by mail-qv1-f73.google.com with SMTP id 6a1803df08f44-8dd6a429cb6so20257946d6.2
-        for <netdev@vger.kernel.org>; Sat, 04 Jul 2026 12:43:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="R2iHtmiC"
+Received: by mail-qt1-f201.google.com with SMTP id d75a77b69052e-517e054fe07so31927401cf.1
+        for <netdev@vger.kernel.org>; Sat, 04 Jul 2026 12:43:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783194231; x=1783799031; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VOkxqmtWVMJorKeOZAzUaMm6nv2RJ475cStWQHNl+sc=;
-        b=ihGEask2AB681R5jpEjCBXA3Hkwv0lZg2nDJCrbKt2p+5tEksRBk62J9X6WggDG48J
-         x8m4xhHqGUC4u3hh+btNqV4fXuJVJqdYotbjK8FcMfd5mZpJGGm4ZKG5pfUTt5DTiMYK
-         yALgB2ISV2OIh/d4bFXsR4fRa+datO8wTN+9dW/s+XXfeNzIOjqGhzrROsTOjOrwqBvg
-         szpxRPZ+goOc5bspKN5q5oeN2DMTquxXG/CJbvQPllwElDpjIRbbIb8Mk+2mJG6xCyqY
-         5KmHYBpUKuXn34ZG1iGOBpiERkSHW7z9h/WIDovQTYHDhyVJcrjqMiQBPBsRXxAcmeA7
-         8fnw==
+        d=google.com; s=20251104; t=1783194232; x=1783799032; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4Nevsi9HlhNgyPsyGPnoBdnU4xXQeLqEGFUgWrsmPTM=;
+        b=R2iHtmiCDthUiS5YX3KIp8g1pbxakaap2a8mi31MFWiFKlHXxMDHJNRl3jIU2fjYDa
+         iL3NWrJ+CcAvuSVlcfkcklOSiWpWiWzjVtkFITDnS7dHM/fZZPQkII/L/0dEkrEVXhLN
+         WfKmi2s+02mWg78LJw1gZfsCDVIE61sbabPJytQXcQl685lS3thpuD+gJdeKu569r955
+         QBjGMGtRBO2Z8oB8dljXKZZvQMsxzhVVjP9kSJli4tjLeMBHl0wlGgYx2BpitgWyT5q8
+         /H3wnDXYsRE3dlH93++Gb/4xNrH6zWyy8pR40LDltB68pbOJJqfAMISaeydr6sMjGN5W
+         N0gA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783194231; x=1783799031;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=VOkxqmtWVMJorKeOZAzUaMm6nv2RJ475cStWQHNl+sc=;
-        b=dHmXpAAYzohLlzUKvSRv67JdMJaIDqBN0heoofJqMq8rml74Dv4cPP/BL6xanRYbLz
-         N5Bp8C1qCnbkfRtKrGcowmksV4yBGjg9wl6WTEXhTcnxVfMi65Qxtyg7hmle74KVb2Sa
-         f/FMIoI0xcuOTT8wRlJfcmC65w+Wp1sNatTCUDeWCHy9wyo1Ca4C4KjJJffjLVxjIXrn
-         0YCgoJWdvfwyRk59jJeZix4tl4HFqKU3P+ijVwNcUd25o8JImZ0MKA+3t9zT9MiA0ZVl
-         vYWzOsirxWzli1JhCckyr0pNehSgsyvGMxjKc6X35Z/bwSVfWB8Dg7PECumu+/lz8CaS
-         3vkQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpY5AbNMKvt0t5EjlsTsEwnHWU4D8KnVpdbGAFx4kWdXekqJKSqbiMjz9kMKg+qwOwwNd1f+xs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyT8jLBNC0ZLOXnLQX0oypFSsVujWlTEbMBHQy2ubfJdY4N0rbr
-	umKG27CL6KxG3vbg9UWhGmnHPpedI+GMd1QBoL7vsDjKBCI5Jz64zNsPfKh8KSsOjDZIjZP+T2H
-	aV8FqqzloLzB3Sg==
-X-Received: from qvoa16.prod.google.com ([2002:a0c:e910:0:b0:8e9:229a:7b3b])
+        d=1e100.net; s=20251104; t=1783194232; x=1783799032;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4Nevsi9HlhNgyPsyGPnoBdnU4xXQeLqEGFUgWrsmPTM=;
+        b=GqZp/epRCNRdXlG00eYBULVw+fg0U2zT5UoDOQrDuDlfjhcWXq4G1ckofHX+4fXE+v
+         F4E/0JopA9Fzxha1b/focnSBafhM4RSB3Dn9bk932PAxlzzq874+whb3CK4VKpgX+qtw
+         LSmjVTO6bDHvojgRu4Y4mXRWuS9Ue0stcUOqcu7d0JB6ih1W6a302yDqOF+iEhhaQcY9
+         Kjb67xpLgbdN6OypYWPpZeY9wIbsf2yrITHIjaLURIUShYmODC398LJw2FzYxRFw9PON
+         6FR0lUhfPQmRTaIxbQXh17TNsf3xRwEdminR67RIMIMDbM9BPY4T+E7DMh/FJ2G5D3N0
+         2pRQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/pKSFt+QxgDqT0pEwDTsS9SlnGgujNrkB2WJcQGeUGvKdugJucb6GMlnpJfSq7sa5AFJRKVWA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2LQfA9w8JQ3caO7jc1FUOuasU4Pk0ikBqEAlovkM/FUNWf/Km
+	195qg7RORnzWsM75btktEUfAxkhZsYZmtgJEPvPMh1xW4lxLsDoQh9d5sWiaUwbLkbxNS0BqRF6
+	l8AI4fpSYnZaG8w==
+X-Received: from qtkf18.prod.google.com ([2002:ac8:7f12:0:b0:51c:779:41db])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6214:ac5:b0:8ef:b2f4:c686 with SMTP id 6a1803df08f44-8f74a9f4b37mr69358506d6.13.1783194230674;
- Sat, 04 Jul 2026 12:43:50 -0700 (PDT)
-Date: Sat,  4 Jul 2026 19:43:44 +0000
+ 2002:ac8:5810:0:b0:516:e10f:7140 with SMTP id d75a77b69052e-51c4c38bea9mr62925231cf.35.1783194232248;
+ Sat, 04 Jul 2026 12:43:52 -0700 (PDT)
+Date: Sat,  4 Jul 2026 19:43:45 +0000
 In-Reply-To: <20260704194346.4065071-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,97 +58,158 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260704194346.4065071-1-edumazet@google.com>
 X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260704194346.4065071-2-edumazet@google.com>
-Subject: [PATCH net 1/3] ipv4: igmp: Fix potential UAF in igmp_gq_start_timer()
+Message-ID: <20260704194346.4065071-3-edumazet@google.com>
+Subject: [PATCH net 2/3] ipv6: mcast: Fix potential UAF in MLD delayed work
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
 Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
 	Ido Schimmel <idosch@nvidia.com>, David Ahern <dsahern@kernel.org>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>, 
-	Zero Day Initiative <zdi-disclosures@trendmicro.com>
+	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-A race condition exists between device teardown (inetdev_destroy) and
-incoming IGMP query processing (igmp_rcv), leading to a Use-After-Free
-in the IGMP timer callback.
+A race condition exists between device teardown and incoming MLD query
+processing, leading to a Use-After-Free in the MLD delayed work.
 
-During device destruction, inetdev_destroy() drops the primary reference
-to in_device, which can drop its refcount to 0. The actual freeing of
-in_device memory is deferred via RCU (using call_rcu()).
+During device destruction, the primary reference to inet6_dev is dropped,
+which can drop its refcount to 0. The actual freeing of inet6_dev memory
+is deferred via RCU.
 
-Concurrently, igmp_rcv() runs under RCU read lock and obtains the
-in_device pointer. Because the memory is RCU-protected, CPU-0 can safely
-dereference in_device even if its refcount has hit 0.
+Concurrently, the packet receive path runs under RCU read lock and obtains
+the inet6_dev pointer. Because the memory is RCU-protected, CPU-0 can
+safely dereference inet6_dev even if its refcount has hit 0.
 
-However, if CPU-0 calls igmp_gq_start_timer() and re-arms the timer, it
-attempts to acquire a reference using in_dev_hold(). This increments the
+However, if CPU-0 calls igmp6_event_query() and schedules delayed work, it
+attempts to acquire a reference using in6_dev_hold(). This increments the
 refcount from 0 to 1, triggering a "refcount_t: addition on 0" warning.
-Since the in_device memory is still scheduled to be freed after the RCU
-grace period (as the free callback does not check the refcount again),
-the device is freed while the timer is still armed. When the timer
-expires, it accesses the freed memory, causing a kernel panic.
+Since the inet6_dev memory is still scheduled to be freed after the RCU
+grace period, the device is freed while the work is still scheduled.
+When the work runs, it accesses the freed memory, causing a kernel panic.
 
 Fix this by using refcount_inc_not_zero() (via a new helper
-in_dev_hold_safe()) to prevent acquiring a reference if the device is
-already being destroyed. If the refcount is 0, we do not arm the timer.
-
-A similar issue in IPv6 MLD is fixed in a subsequent patch.
+in6_dev_hold_safe()) to prevent acquiring a reference if the device is
+already being destroyed. If the refcount is 0, we do not schedule the work.
 
 Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Zero Day Initiative <zdi-disclosures@trendmicro.com>
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
- include/linux/inetdevice.h |  5 +++++
- net/ipv4/igmp.c            | 14 +++++++++-----
- 2 files changed, 14 insertions(+), 5 deletions(-)
+ include/net/addrconf.h |  5 +++++
+ net/ipv6/mcast.c       | 38 ++++++++++++++++++++++++++++----------
+ 2 files changed, 33 insertions(+), 10 deletions(-)
 
-diff --git a/include/linux/inetdevice.h b/include/linux/inetdevice.h
-index dccbeb25f70141982160c776f3cc727296def2b7..6032eea2539a60d0476d85667bda3bfcad8f1425 100644
---- a/include/linux/inetdevice.h
-+++ b/include/linux/inetdevice.h
-@@ -293,6 +293,11 @@ static inline void in_dev_put(struct in_device *idev)
- #define __in_dev_put(idev)  refcount_dec(&(idev)->refcnt)
- #define in_dev_hold(idev)   refcount_inc(&(idev)->refcnt)
+diff --git a/include/net/addrconf.h b/include/net/addrconf.h
+index 539bbbe54b14e8108ff7304d7a08bc605655cc31..8ced27a8229b6e0580f934be2223676cc123307b 100644
+--- a/include/net/addrconf.h
++++ b/include/net/addrconf.h
+@@ -446,6 +446,11 @@ static inline void in6_dev_hold(struct inet6_dev *idev)
+ 	refcount_inc(&idev->refcnt);
+ }
  
-+static inline bool in_dev_hold_safe(struct in_device *idev)
++static inline bool in6_dev_hold_safe(struct inet6_dev *idev)
 +{
 +	return refcount_inc_not_zero(&idev->refcnt);
 +}
 +
- #endif /* __KERNEL__ */
- 
- static __inline__ __be32 inet_make_mask(int logmask)
-diff --git a/net/ipv4/igmp.c b/net/ipv4/igmp.c
-index b6337a47c1418589bf8ef31e00fd98b6187f5271..f5f9763895641bf86bfcf9fd7fd7b06012fa4ece 100644
---- a/net/ipv4/igmp.c
-+++ b/net/ipv4/igmp.c
-@@ -248,16 +248,20 @@ static void igmp_gq_start_timer(struct in_device *in_dev)
- 		return;
- 
- 	in_dev->mr_gq_running = 1;
--	if (!mod_timer(&in_dev->mr_gq_timer, exp))
--		in_dev_hold(in_dev);
-+	if (in_dev_hold_safe(in_dev)) {
-+		if (mod_timer(&in_dev->mr_gq_timer, exp))
-+			in_dev_put(in_dev);
-+	}
- }
- 
- static void igmp_ifc_start_timer(struct in_device *in_dev, int delay)
+ /* called with rcu_read_lock held */
+ static inline bool ip6_ignore_linkdown(const struct net_device *dev)
  {
--	int tv = get_random_u32_below(delay);
-+	if (in_dev_hold_safe(in_dev)) {
-+		int tv = get_random_u32_below(delay);
+diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
+index 04b811b3be978e36b0fd4ecd8312313d73ed2ed9..7c3f739cf7638452f311c64331c89253361b34f9 100644
+--- a/net/ipv6/mcast.c
++++ b/net/ipv6/mcast.c
+@@ -1083,8 +1083,10 @@ static void mld_gq_start_work(struct inet6_dev *idev)
+ 	mc_assert_locked(idev);
  
--	if (!mod_timer(&in_dev->mr_ifc_timer, jiffies+tv+2))
--		in_dev_hold(in_dev);
-+		if (mod_timer(&in_dev->mr_ifc_timer, jiffies + tv + 2))
-+			in_dev_put(in_dev);
+ 	idev->mc_gq_running = 1;
+-	if (!mod_delayed_work(mld_wq, &idev->mc_gq_work, tv + 2))
+-		in6_dev_hold(idev);
++	if (in6_dev_hold_safe(idev)) {
++		if (mod_delayed_work(mld_wq, &idev->mc_gq_work, tv + 2))
++			in6_dev_put(idev);
 +	}
  }
  
- static void igmp_mod_timer(struct ip_mc_list *im, int max_delay)
+ static void mld_gq_stop_work(struct inet6_dev *idev)
+@@ -1102,8 +1104,10 @@ static void mld_ifc_start_work(struct inet6_dev *idev, unsigned long delay)
+ 
+ 	mc_assert_locked(idev);
+ 
+-	if (!mod_delayed_work(mld_wq, &idev->mc_ifc_work, tv + 2))
+-		in6_dev_hold(idev);
++	if (in6_dev_hold_safe(idev)) {
++		if (mod_delayed_work(mld_wq, &idev->mc_ifc_work, tv + 2))
++			in6_dev_put(idev);
++	}
+ }
+ 
+ static void mld_ifc_stop_work(struct inet6_dev *idev)
+@@ -1121,8 +1125,10 @@ static void mld_dad_start_work(struct inet6_dev *idev, unsigned long delay)
+ 
+ 	mc_assert_locked(idev);
+ 
+-	if (!mod_delayed_work(mld_wq, &idev->mc_dad_work, tv + 2))
+-		in6_dev_hold(idev);
++	if (in6_dev_hold_safe(idev)) {
++		if (mod_delayed_work(mld_wq, &idev->mc_dad_work, tv + 2))
++			in6_dev_put(idev);
++	}
+ }
+ 
+ static void mld_dad_stop_work(struct inet6_dev *idev)
+@@ -1395,6 +1401,7 @@ static void mld_process_v2(struct inet6_dev *idev, struct mld2_query *mld,
+ void igmp6_event_query(struct sk_buff *skb)
+ {
+ 	struct inet6_dev *idev = __in6_dev_get(skb->dev);
++	bool put = false;
+ 
+ 	if (!idev || idev->dead)
+ 		goto out;
+@@ -1402,11 +1409,16 @@ void igmp6_event_query(struct sk_buff *skb)
+ 	spin_lock_bh(&idev->mc_query_lock);
+ 	if (skb_queue_len(&idev->mc_query_queue) < MLD_MAX_SKBS) {
+ 		__skb_queue_tail(&idev->mc_query_queue, skb);
+-		if (!mod_delayed_work(mld_wq, &idev->mc_query_work, 0))
+-			in6_dev_hold(idev);
++		if (in6_dev_hold_safe(idev)) {
++			if (mod_delayed_work(mld_wq, &idev->mc_query_work, 0))
++				put = true;
++		}
+ 		skb = NULL;
+ 	}
+ 	spin_unlock_bh(&idev->mc_query_lock);
++
++	if (put)
++		in6_dev_put(idev);
+ out:
+ 	kfree_skb(skb);
+ }
+@@ -1570,6 +1582,7 @@ static void mld_query_work(struct work_struct *work)
+ void igmp6_event_report(struct sk_buff *skb)
+ {
+ 	struct inet6_dev *idev = __in6_dev_get(skb->dev);
++	bool put = false;
+ 
+ 	if (!idev || idev->dead)
+ 		goto out;
+@@ -1577,11 +1590,16 @@ void igmp6_event_report(struct sk_buff *skb)
+ 	spin_lock_bh(&idev->mc_report_lock);
+ 	if (skb_queue_len(&idev->mc_report_queue) < MLD_MAX_SKBS) {
+ 		__skb_queue_tail(&idev->mc_report_queue, skb);
+-		if (!mod_delayed_work(mld_wq, &idev->mc_report_work, 0))
+-			in6_dev_hold(idev);
++		if (in6_dev_hold_safe(idev)) {
++			if (mod_delayed_work(mld_wq, &idev->mc_report_work, 0))
++				put = true;
++		}
+ 		skb = NULL;
+ 	}
+ 	spin_unlock_bh(&idev->mc_report_lock);
++
++	if (put)
++		in6_dev_put(idev);
+ out:
+ 	kfree_skb(skb);
+ }
 -- 
 2.55.0.rc0.799.gd6f94ed593-goog
 
