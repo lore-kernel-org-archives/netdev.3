@@ -1,69 +1,80 @@
-Received: from bregans-1.gladserv.net (bregans-1.gladserv.net [185.128.211.58])
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E0E3A8759;
-	Sat,  4 Jul 2026 11:59:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.211.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335B034EEF7
+	for <netdev@vger.kernel.org>; Sat,  4 Jul 2026 12:11:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783166362; cv=none; b=ls6lsifEtVnvjIY1sqd+6xwNfvTSjDaqKhN+qMCLSRg9OITUldzoAIls0+UaZ2CFlvC8g2F4kXwzt4SDueO974S9ZfFBmn54nbMbBqJq86v6TpYVbFcHqFGgy8dELBYAqBv4c4FlY0OHvaOCocWOUr5w/g3MTh6Hg944XMgdeAo=
+	t=1783167078; cv=none; b=OzA9qNfWxEYV73FTe8FxMffW1YHgys0tEQvNoWhn1dqjpS3pfhkWtumX+aDSTqBpS49dCk3ngYDh5kJBwTbaUHcSxB9FcWDVw7mN1GK2eK6Ioo/o57LB4ylbKSxGZyLezV/fsV2PP4Ky4rgfj/43GxQPJoddLSPuFiPXGo7wfno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783166362; c=relaxed/simple;
-	bh=ZGQ5T5hVMk4bVsB0AhSWuwmKNhetB0SBNETEJC3CzXc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OLnfFfNZYesde+VJJx+qhw6bhu48P9UzRdBK02js3FSL4HCGfcvaohutBvtHCD6FaRicaJj20ZSBIvUcajJrGcCfVlqvh9y67/PT1GKrsGOZJ1eMBMsYyvS1ESl1JkclQmEkHpxlWjfDiRO3OkYTD/CqS+Y5xGAGHt2/YV2NKfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.211.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
-Date: Sat, 4 Jul 2026 13:58:52 +0200
-From: Brett Sheffield <brett@librecast.net>
-To: Simon Schippers <simon.schippers@tu-dortmund.de>
-Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	"Michael S . Tsirkin" <mst@redhat.com>, netdev@vger.kernel.org,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	s=arc-20240116; t=1783167078; c=relaxed/simple;
+	bh=I0ArMeGYCV7eBZ+H0eMzetwYIqVs237Hckjn6vEC4gw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fhjp3O6oL8RBMdTFKsDZVhLA2FKw/QJRRXCOnSLDmBt/wOCfigUmVsQ8bZVRs+jdt3f3SAPRPH9EOIsmYV6eS+kr8zgIj5xUpmX4fD4gtyU7u0lBuHvq9zY7eIIChTAxMKfhGYwK3dpYkfCZBlmj9mXO3FV1VaTlyk902gyeXfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=b5qkeUAU; arc=none smtp.client-ip=95.215.58.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="b5qkeUAU"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783167070;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=59W4E6bQ83pCRNjQa4BY31cifN2ilfN3ElfL7uzJsQw=;
+	b=b5qkeUAU+x4/o24mimYPXtMOxzeX9vnC2QI84dYe5i0EKBzi1BwLAbftjjdrlUpR2vKFq9
+	ng2sImo3PgaZr/JKXOKP/lC18XtR+docEGvoHk5UabsLh+OKCRHuctEj/ALt9vW8+4BAFi
+	hnHnT0nhh9plwbn2UQ/83r+EfwbO6yw=
+From: Thorsten Blum <thorsten.blum@linux.dev>
+To: Potnuri Bharat Teja <bharat@chelsio.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Tim Gebauer <tim.gebauer@tu-dortmund.de>, linux-doc@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Thorsten Blum <thorsten.blum@linux.dev>,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] tun/tap & vhost-net: make qdisc backpressure opt-in
- via IFF_BACKPRESSURE
-Message-ID: <akj1fObc_PSd4oha@karahi.librecast.net>
-References: <20260704112058.95421-1-simon.schippers@tu-dortmund.de>
+Subject: [PATCH net-next] net: chelsio: cxgb4: Use str_plural() in mem_intr_handler()
+Date: Sat,  4 Jul 2026 14:10:11 +0200
+Message-ID: <20260704121010.201016-3-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260704112058.95421-1-simon.schippers@tu-dortmund.de>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1005; i=thorsten.blum@linux.dev; h=from:subject; bh=I0ArMeGYCV7eBZ+H0eMzetwYIqVs237Hckjn6vEC4gw=; b=owGbwMvMwCUWt7pQ4caZUj3G02pJDFkeP5TiF036YuX8RzEgpT4p1jPOS+PJKzbui/NvdlTnT TpwN/BjRykLgxgXg6yYIsuDWT9m+JbWVG4yidgJM4eVCWQIAxenAEzk1w6G//nSGu+urGa4vihq xnWDO9l7rzrrKPmsaejao2WeYbXhiy0jw0o9mcz6GzkJvLWGwVmVR40VL53Sun64QPPLnIWVb9T PMQMA
+X-Developer-Key: i=thorsten.blum@linux.dev; a=openpgp; fpr=1D60735E8AEF3BE473B69D84733678FD8DFEEAD4
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On 2026-07-04 13:20, Simon Schippers wrote:
-> Commit 1d6e569b7d0c ("tun/tap & vhost-net: avoid ptr_ring tail-drop
-> when a qdisc is present") did not show a relevant performance regression
-> in my testing but on Brett Sheffield's librecast testbed it shows a
-> significant performance drop. The regression can be pinpointed when
-> multiple iperf3 TCP threads are sending. For 8 threads the performance
-> dropped from 13.5 Gbit/s to 9.13 Gbit/s. This is the reason why this
-> patch makes the qdisc backpressure behavior opt-in.
+Replace the manual ternary "s" pluralization with str_plural() to
+simplify the code.
 
-Thanks Simon.
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+---
+ drivers/net/ethernet/chelsio/cxgb4/t4_hw.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-I've tested and confirmed this fixes the original failing IPv6 multicast (UDP)
-test which flagged the problem.
-
-Tested-by: Brett A C Sheffield <bacs@librecast.net>
-
-Cheers,
-
-
-Brett
--- 
-Brett Sheffield (he/him)
-Librecast - Decentralising the Internet with Multicast
-https://librecast.net/
-https://blog.brettsheffield.com/
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c b/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
+index 6871127427fa..29d7b786e51e 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
+@@ -33,6 +33,7 @@
+  */
+ 
+ #include <linux/delay.h>
++#include <linux/string_choices.h>
+ #include "cxgb4.h"
+ #include "t4_regs.h"
+ #include "t4_values.h"
+@@ -4867,7 +4868,7 @@ static void mem_intr_handler(struct adapter *adapter, int idx)
+ 		if (printk_ratelimit())
+ 			dev_warn(adapter->pdev_dev,
+ 				 "%u %s correctable ECC data error%s\n",
+-				 cnt, name[idx], cnt > 1 ? "s" : "");
++				 cnt, name[idx], str_plural(cnt));
+ 	}
+ 	if (v & ECC_UE_INT_CAUSE_F)
+ 		dev_alert(adapter->pdev_dev,
