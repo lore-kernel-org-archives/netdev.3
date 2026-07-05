@@ -1,159 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2733347C6;
-	Sun,  5 Jul 2026 14:48:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711CFB672;
+	Sun,  5 Jul 2026 15:04:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783262883; cv=none; b=n67Rh+FnfzD0EkOzeM2tOx7L8cc3JMGhnc/D1paHzDzsHoNEWmS6FO+ztXkApQ/f/cO8Wq1eiEiBYC8B6nuD5GXUkqw2toer9TlUUEMuxp+illBP9g8RU4UnCUBnLoHcuLxavrSpPGfHvBIC82EUubr38NiLTBJxMAsJU9hT794=
+	t=1783263845; cv=none; b=uEuTgJm8mZUIXfhxr3YJY8+sMwIEqECabpD7NvCE5jksnVT9ZzTyUKlI7CyiLX5/96aDuK8SqdBqzLwdIxnpAFjA3FO0LFbaGk1lSkUtFsTD12dEWC3lazCn89Ymi1rxaWwIUPR8yjafyuLt1u9VHApVZKD5/59SCc+5DLanfbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783262883; c=relaxed/simple;
-	bh=IapWGt1veNqxOIcHGcw94j5cPhf1WPHsmmBl+M8Db4E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nX5fNwx+6o4+ql16Xy7Fi216PuW6pDDpUhsGZeFBueSY2HdhtOKWtWvCbbkJFVKKMFAeNaq2Zseb+Dj+EbrSBeEdB/KuUYvISJPkZ5gpqzn/HJKFAHq+tImsc75oPDDcBTnxv/JMURkYhnUZfsYMvmODlIbD17tM/x5VS58Dtzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bDUNe3Ip; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783263845; c=relaxed/simple;
+	bh=wo4lqtA47GkxIAmoMhie9KkYyvnhazyJKrtTvigul0M=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Sh0/Gu9Q/f0WMtOIm7rMg2DFAtdz5mFuV99VaT9+ILzau34agBSmNEIzvpMMrVhpgKuwm6/rHKA2IGvtYsKIvSYa0MdbDrVG/cMoGvWg5v/MkddQg6Jnny34ehEWvheI0Y4shUbeuoYlFVHk/MZZNHXtqNrxIMToXAYHuv7LA1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=u7Fb4+hm; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bDUNe3Ip"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25B881F000E9;
-	Sun,  5 Jul 2026 14:47:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783262881;
-	bh=UlYXU1qS0vwP6GO5xRuEl/y/r2Ay40eklzolqAObtF0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=bDUNe3IpRspasOsPMBHBgoZ855b66W41bax3jiC36Iueoz09A5EoPkDC5Qc4epFUp
-	 qu2Q2N6vb40+k+xLSJLif37mLqpZKId3tg88JCH1C76A+CJ1cXy7BUlEAYGXq4izDx
-	 lIGtvdnOu4uPFKg99O3jFGgsRgeLY9N6tBDScvzQbvO8iqa0kNjYiB8ZXN/cTVQ638
-	 J/zJtqvuc0DdZyqjZ/LWMWu9Tyu3GgsetA5HjvtS3dba8OkDzBdNp4zeRjSd3pRnQz
-	 egA9Wu/EaGOOyj491/BrN8PvCiP0fBSOszvkQHwpsaGm1nf/PMocwHsM20GX5fjn+F
-	 dVRExXQd44rbw==
-Date: Sun, 5 Jul 2026 15:47:57 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, David Heidelberg <david@ixit.cz>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="u7Fb4+hm"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:To:From:Date:From:Sender:Reply-To:Subject:Date:
+	Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=MjFyE/GuY4zCXOCWmZjS9nf5WEwFKlMosakxlzzhgKA=; b=u7Fb4+hmzFx3UipHSwoWedWBaU
+	KSTZCMZWLVdMdrU31XEcUPWdZlHdz0ghtvmlN3vYOq03ljvEGr7J1v8LIogoINE9dgA7GCnG4mXCJ
+	WS9CcL5vZF6JVFEG5lvN5eyR1iIHx3Uu1oP70Kxkp4a5WTenUj/5s6GW+Oe8Akb6oPZw=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wgONV-00AqQj-DU; Sun, 05 Jul 2026 17:03:29 +0200
+Date: Sun, 5 Jul 2026 17:03:29 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>,
+	Fu Wei <wefu@redhat.com>,
+	Michal Wilczynski <m.wilczynski@samsung.com>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-	oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 1/2] dt-bindings: net: nfc: samsung,s3fwrn5: add
- S3NRN4V and clk-req-gpios
-Message-ID: <20260705-panic-reviving-993142677f47@spud>
-References: <20260703202601.78563-1-jorijnvdgraaf@catcrafts.net>
- <20260703202601.78563-2-jorijnvdgraaf@catcrafts.net>
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	driver-core@lists.linux.dev, linux-riscv@lists.infradead.org,
+	linux-pwm@vger.kernel.org, linux-pm@vger.kernel.org,
+	linux-block@vger.kernel.org, netdev@vger.kernel.org,
+	nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH 0/7] rust: Use kernel style vertical imports in various
+ drivers
+Message-ID: <66d3d69d-0974-49e1-ad93-9295407f4b78@lunn.ch>
+References: <20260628-b4-rust-vertical-imports-v1-0-98bc71d4810b@gurudas.dev>
+ <c89a1bc8-6cc1-4e16-ac95-add389e45a2b@lunn.ch>
+ <akmnh0AKFfu9-OYn@gurudas.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="DwWmt+Yvmo67xykl"
-Content-Disposition: inline
-In-Reply-To: <20260703202601.78563-2-jorijnvdgraaf@catcrafts.net>
-
---DwWmt+Yvmo67xykl
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <akmnh0AKFfu9-OYn@gurudas.dev>
 
-On Fri, Jul 03, 2026 at 10:26:00PM +0200, Jorijn van der Graaf wrote:
-> The S3NRN4V is an S3FWRN5-family NFC + eSE controller found e.g. on the
-> Fairphone 6 (SM7635). Add a compatible for it and document the optional
-> clk-req-gpios property: when wired, the controller drives this line to
-> request its reference clock (needed to generate the poll carrier), and the
-> driver gates the clock on it instead of leaving it always-on.
->=20
-> The line is modelled as a GPIO rather than an interrupt because the driver
-> reads its level to (re)synchronise the clock state, not just react to its
-> edges. It is only meaningful on the S3NRN4V, so it is restricted to that
-> compatible.
->=20
-> Assisted-by: Claude:claude-opus-4-8
-> Assisted-by: Claude:claude-fable-5
-> Signed-off-by: Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>
-> ---
->  .../bindings/net/nfc/samsung,s3fwrn5.yaml     | 23 ++++++++++++++++++-
->  1 file changed, 22 insertions(+), 1 deletion(-)
->=20
-> diff --git a/Documentation/devicetree/bindings/net/nfc/samsung,s3fwrn5.ya=
-ml b/Documentation/devicetree/bindings/net/nfc/samsung,s3fwrn5.yaml
-> index 12baee457..3ebcd0933 100644
-> --- a/Documentation/devicetree/bindings/net/nfc/samsung,s3fwrn5.yaml
-> +++ b/Documentation/devicetree/bindings/net/nfc/samsung,s3fwrn5.yaml
-> @@ -14,12 +14,20 @@ properties:
->      enum:
->        - samsung,s3fwrn5-i2c
->        - samsung,s3fwrn82
-> +      - samsung,s3nrn4v-i2c
+> Is that reasoning off-base, or is the right path to split these out per subsystem
+> regardless?
 
-Why does the compatible contain the bus? The s3frn5 device probably only
-has it because it's an old text binding, your new device shouldn't have
-that.
+Adding to what others have said, some subsystems have there own CI
+system which tests every patch. Does it build? Does it add new
+warning, is sparse happy, are there more self test failures. What do
+different AIs think of the patch etc. Cross subsystem patches don't
+always hit the per subsystem CI tests.
 
-pw-bot: changes-requested
+So in general, it is better to submit per subsystem.
 
-Thanks,
-Conor.
-
-> =20
->    en-gpios:
->      maxItems: 1
->      description:
->        Output GPIO pin used for enabling/disabling the chip
-> =20
-> +  clk-req-gpios:
-> +    maxItems: 1
-> +    description:
-> +      Input GPIO pin connected to the controller's clock-request output.=
- When
-> +      present, the reference clock is enabled in response to this signal
-> +      instead of being left always-on.
-> +
->    interrupts:
->      maxItems: 1
-> =20
-> @@ -58,12 +66,25 @@ allOf:
->        properties:
->          compatible:
->            contains:
-> -            const: samsung,s3fwrn5-i2c
-> +            enum:
-> +              - samsung,s3fwrn5-i2c
-> +              - samsung,s3nrn4v-i2c
->      then:
->        required:
->          - interrupts
->          - reg
-> =20
-> +  # The clock-request handshake only exists on the S3NRN4V.
-> +  - if:
-> +      not:
-> +        properties:
-> +          compatible:
-> +            contains:
-> +              const: samsung,s3nrn4v-i2c
-> +    then:
-> +      properties:
-> +        clk-req-gpios: false
-> +
->  examples:
->    - |
->      #include <dt-bindings/gpio/gpio.h>
-> --=20
-> 2.55.0
->=20
-
---DwWmt+Yvmo67xykl
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCakpunAAKCRB4tDGHoIJi
-0gVgAP4tvuqBhaZ228L0ROWRbnr758cpA1W497SNJSZp97YOfgD/Trxth7/GTRpQ
-B9ciLo62hZ3odzTxSB0TJN6vCPwdSg4=
-=SnpT
------END PGP SIGNATURE-----
-
---DwWmt+Yvmo67xykl--
+       Andrew
