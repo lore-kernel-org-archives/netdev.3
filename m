@@ -1,86 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 133D213A3F7;
-	Sun,  5 Jul 2026 07:30:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A834433E89;
+	Sun,  5 Jul 2026 07:54:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783236626; cv=none; b=TgVWIHIbl4FXWgs6xfusjT/46Vnbz18yWs/Je0uX3zQ8BXLwjQ6nRw8viZ0V+NgCo7smRMFm5C/kuJKRQfXLYNzhg7fbku6SeKeQZ2k3IYZ8EQJlOfuMskTNdgsI8MPuHK7eoaI2eIcHZ3a5rn2ttHZD1MybhvCK5rxKCwqj3qU=
+	t=1783238046; cv=none; b=lISdpwGDYIypvK8jGgMQXZr1e375FWFVAcqkmWhor7514VRbAqEP6fdNDdF/pVk2uK9ceTSupJt2BxX6Ho+7og2EekfKJooWNl7dwnwG27GAIF58dhOHLKfieKkKu3vthsonARthaXawKTo+JXRGMgIYpwEFE97EKVO2hUfGD84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783236626; c=relaxed/simple;
-	bh=KwzAvgvm+w6lnAxK8HeBT4TI/nRFEPyX0IemfKj9vH8=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Fd0BW5c8oxjoId29rGvIayCPe2b6+UkdRUXELuOKlYFHYcApji/YXLYj3E614BChdA7895lK27mrgVXy5QxFIr4jzEIkDS9aanPrZakdi0x78xJlZSmaPptiELi+E8lwAnOTzHD2y50HO8M1G46A1140HV/VcIa5pKVC03Ly+zE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mcy2mpHw; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783238046; c=relaxed/simple;
+	bh=YL/WHd/8TFPHx4l3DQrXPuhucRcZBRkd5xOZrS5L7Yo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=eZD0Nzu2INWqjYja/MWwzb/d/2ISAw33MO9nEnud/Ww92YnVdfaEkFeuOmHaWBmIih7R9eu4aIYqpwLJI92Y4W0h20hr4J11FMicvR+DnL7ffLkHlmR0xioA/6bVPRb73ByB/0IJB5UceqfPyK+2D9RXsGF4NSJaTxCeniFkp+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b83cgTXA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mcy2mpHw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0B061F000E9;
-	Sun,  5 Jul 2026 07:30:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783236624;
-	bh=g0zqh/4IWoGPglrnJGkQTqXcAtUbh6knkgcgOB1qXSM=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=mcy2mpHwfSK2vn8lH1FXiRvw/QZLxBdrolI7dmAwoe+h0pclkxx0sFBMpZTdVgyCS
-	 nzbftg9r/383Lxzt7zcVNWhnWd/T5z8DnK5chK9tRBpFbOO8H+SF1ahW9S5jXXLwBD
-	 4ExTm49txx1aCcB3p+s6/hsod99LrrXoJetXrCEgiMg4rqLK53bHRLqTuOtCDa0u95
-	 bPW/zcULgeW80k+W4b1N1SgfOQD2NEv+Nz/ocWp/1D7ot/kL7EE4QmjZuF/nGVkkHt
-	 pJG7vsQEOl4xb8/C9NpWYzejIKik+1oxNriZIhlUj8q966um8FPADQaUQIJZaQBBRY
-	 /kH0L0f0kX1eg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5698C393A94F;
-	Sun,  5 Jul 2026 07:30:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b83cgTXA"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 2B8F0C2BCF5;
+	Sun,  5 Jul 2026 07:54:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1783238046;
+	bh=YL/WHd/8TFPHx4l3DQrXPuhucRcZBRkd5xOZrS5L7Yo=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=b83cgTXAFOgwxU9jfBq+ziR4vJFH8dgNyF0QGn6zJEbMn+BWB3dJnySbkVrJDe/MY
+	 HHfdggWmrJd7cIHgZoW1Dyz3L2SqYErLLE/lqFG/KtRSayo2Inal+1LRP6aMeylxtw
+	 Wfshmlpv7x2Cd/EBXH6oLsjuW2av9QVb2peRDV4YFrGAURBVc/lPg5MLRr1BlH+i9U
+	 GTaBeZm2Ty1TkFp9aseiGRkGjNGAp55LA391RGmCUfHkyrbT0vPSlPA++yaUcPsP83
+	 pxr1nFqWIN1SXdK5Akvn3EJWYzgkoAmie4MUazb5ISvNDZdMizW0mTCMsuSXeuTThR
+	 YxcP08Ut0wkjQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0BCD3C44501;
+	Sun,  5 Jul 2026 07:54:06 +0000 (UTC)
+From: Bryam Vargas via B4 Relay <devnull+hexlabsecurity.proton.me@kernel.org>
+Date: Sun, 05 Jul 2026 02:54:06 -0500
+Subject: [PATCH net v4 2/3] net/smc: bound the receive length to the RMB in
+ smc_rx_recvmsg()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: microchip: vcap: fix races on the shared Super
- VCAP block
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178323660590.3752073.10824310525866470753.git-patchwork-notify@kernel.org>
-Date: Sun, 05 Jul 2026 07:30:05 +0000
-References: 
- <20260630-microchip_fix_vcap_locking-v1-1-f60a4596734d@microchip.com>
-In-Reply-To: 
- <20260630-microchip_fix_vcap_locking-v1-1-f60a4596734d@microchip.com>
-To: =?utf-8?q?Jens_Emil_Schulz_=C3=98stergaard_=3Cjensemil=2Eschulzostergaard=40?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org,
-	=?utf-8?q?microchip=2Ecom=3E?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org
-Cc: horatiu.vultur@microchip.com, UNGLinuxDriver@microchip.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, Steen.Hegelund@microchip.com,
- daniel.machon@microchip.com, steen.hegelund@microchip.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260705-b4-disp-28a1bbca-v4-2-be089b98acc6@proton.me>
+References: <20260705-b4-disp-28a1bbca-v4-0-be089b98acc6@proton.me>
+In-Reply-To: <20260705-b4-disp-28a1bbca-v4-0-be089b98acc6@proton.me>
+To: Dust Li <dust.li@linux.alibaba.com>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Sidraya Jayagond <sidraya@linux.ibm.com>, 
+ Eric Dumazet <edumazet@google.com>, "D. Wythe" <alibuda@linux.alibaba.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, 
+ Wenjia Zhang <wenjia@linux.ibm.com>, Paolo Abeni <pabeni@redhat.com>
+Cc: Stefan Raspl <raspl@linux.ibm.com>, Wen Gu <guwen@linux.alibaba.com>, 
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ Mahanta Jambigi <mjambigi@linux.ibm.com>, 
+ Tony Lu <tonylu@linux.alibaba.com>, Ursula Braun <ubraun@linux.ibm.com>, 
+ linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783238044; l=2445;
+ i=hexlabsecurity@proton.me; s=proton; h=from:subject:message-id;
+ bh=I0K6pB19Txw2xkjG1QzwzyDeX8rOXh7QApCt4GO9qIc=;
+ b=/I0Zd31bYSOXxpR0waqZvHv4r013dQLQJXOXfqYo0YJhIZvn5GziX/nXs6nYGTJsb/F5lHiMP
+ TVdAwebAdJHC6UL/D2LPnRi2QKME2z4EByX4fsntrARFHTsgcSv72ts
+X-Developer-Key: i=hexlabsecurity@proton.me; a=ed25519;
+ pk=dmppBMZNLLoPzxHi9l8tZDzEZUunPbgsYqIZYXeUrL0=
+X-Endpoint-Received: by B4 Relay for hexlabsecurity@proton.me/proton with
+ auth_id=814
+X-Original-From: Bryam Vargas <hexlabsecurity@proton.me>
+Reply-To: hexlabsecurity@proton.me
 
-Hello:
+From: Bryam Vargas <hexlabsecurity@proton.me>
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+conn->bytes_to_rcv is accumulated in the receive tasklet from the
+peer's wire-controlled producer cursor via smc_curs_diff(), whose
+differing-wrap branch can exceed rmb_desc->len; a forged cursor drives
+bytes_to_rcv past the RMB, and over many CDC messages overflows the
+signed counter negative. smc_rx_recvmsg() reads it as the readable
+length and does a wrap-around copy whose second chunk is not re-bounded
+to rmb_desc->len, reading past the RMB into adjacent kernel memory and
+disclosing it to the peer. The nearby readable >= rmb_desc->len test
+only feeds SMC_STAT_RMB_RX_FULL on a separate earlier read; it does not
+bound the copy.
 
-On Tue, 30 Jun 2026 14:20:13 +0200 you wrote:
-> The VCAP instances on a chip are not independent, yet they are locked
-> independently. On sparx5 and lan969x the IS0 and IS2 instances are
-> backed by the same Super VCAP hardware block and share its cache and
-> command registers: every access drives the shared VCAP_SUPER_CTRL
-> register and moves data through the shared cache registers.
-> 
-> Accessing one instance therefore races with accessing another. The
-> per-instance admin->lock cannot prevent this, as each instance takes a
-> different lock.
-> 
-> [...]
+Bound the readable length to rmb_desc->len at the consumer, treating a
+negative (sign-overflowed) value as out of range too, so the copy can
+never exceed the ring. This enforces the documented
+0 <= bytes_to_rcv <= rmb_desc->len invariant where it is race-free
+against the producer update in the tasklet; conforming peers are
+unaffected.
 
-Here is the summary with links:
-  - [net] net: microchip: vcap: fix races on the shared Super VCAP block
-    https://git.kernel.org/netdev/net/c/d7a8d500d7e4
+Fixes: 952310ccf2d8 ("smc: receive data from RMBE")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
+---
+ net/smc/smc_rx.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-You are awesome, thank you!
+diff --git a/net/smc/smc_rx.c b/net/smc/smc_rx.c
+index c1d9b923938d..f461cf10b085 100644
+--- a/net/smc/smc_rx.c
++++ b/net/smc/smc_rx.c
+@@ -442,6 +442,18 @@ int smc_rx_recvmsg(struct smc_sock *smc, struct msghdr *msg,
+ 		/* initialize variables for 1st iteration of subsequent loop */
+ 		/* could be just 1 byte, even after waiting on data above */
+ 		readable = smc_rx_data_available(conn, peeked_bytes);
++		/* bytes_to_rcv is accumulated from the peer's wire-controlled
++		 * producer cursor; a forged cursor can drive it past the RMB,
++		 * or overflow the signed accumulator to a negative value across
++		 * many CDC messages (which a plain "> len" check would miss
++		 * before the size_t cast below turns it huge).  Bound it to the
++		 * RMB in either case so the wrap-around copy cannot run past
++		 * rmb_desc->len.  This enforces the documented
++		 * 0 <= bytes_to_rcv <= rmb_desc->len invariant at the consumer,
++		 * race-free against the producer update in the receive tasklet.
++		 */
++		if (readable < 0 || readable > conn->rmb_desc->len)
++			readable = conn->rmb_desc->len;
+ 		splbytes = atomic_read(&conn->splice_pending);
+ 		if (!readable || (msg && splbytes)) {
+ 			if (splbytes)
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+2.43.0
 
 
