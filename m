@@ -1,130 +1,161 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from out-12.smtp.spacemail.com (out-12.smtp.spacemail.com [198.54.127.83])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9216169AD2
-	for <netdev@vger.kernel.org>; Sun,  5 Jul 2026 00:31:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9ACB18DB1A;
+	Sun,  5 Jul 2026 00:38:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.54.127.83
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783211470; cv=none; b=Fj0u/zB9iVF2RRVgWXAjghmzD83yIWBC59O2VWP2+PQe8uDwqztmFwCewS2QpnidsSPCvlIa/YD65tc5UQNHBF+d88nxVfoiVt8E++/ND2Qy9SjcRGyoAlEnWnSLfjELXAswyT12OU/01rgYgmc+GSxuf6QN0dyMeybxxaMgVC0=
+	t=1783211925; cv=none; b=pEUsoh9k8nDpcccw9eJlG/qCfiIKz1hIp4rptKVm+tTCoSYXSttDdICY9r9bVRrSz2o5SZqpNSLSCbJvqnXSqjGdNKlFxWjWcywWhlDq0hpwjPuhY4Zr/nEQlX+C3aCH7gW0TUyoUGpYfv9KKxzs8oljVyZxRBXL/bqD++SdH7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783211470; c=relaxed/simple;
-	bh=XRrOAqGo1SaWPhRhkBK20y6xrteJRGYUgMAh4pyUKQI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oMZKDBwH3M5HgqEVlqIvkeXO0SBZKmVhUYq5qxCSKFYkX66PC2AOHTMDGC+jHnLUbwvRECTn7DrkdRRTeDJa5Qn7PrMHmGVlzrEJFSXbNyRpZAsAFkDZiXcpiFMgvb77V6MtcH6Ww0p3QKZHy7xBQIylsPXMp7tZpwl17QN5u5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=Ym/Z9T8X; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
+	s=arc-20240116; t=1783211925; c=relaxed/simple;
+	bh=7SA06ppJXAjnwTFQhfShgMBi+M6CQvRcfOhns8TQ+vI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sn5A0pQ254s9MVg9JBMTJoctZak/sABmEgPpJFFWgIMbKHMatQwzG6xYGTxQVdYWpKUydq55FvV1HdFnf3x3m2cQ/sdVixYtpk9Hn0U+gAXhUPjl4OwOrB1z9kw8jbe3HCXiPQ9hHFcy2M+MlPdxxi4ev5mxcnuTMwIYWBpn9wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gurudas.dev; spf=pass smtp.mailfrom=gurudas.dev; dkim=pass (2048-bit key) header.d=gurudas.dev header.i=@gurudas.dev header.b=NSAOyNTL; arc=none smtp.client-ip=198.54.127.83
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gurudas.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gurudas.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="Ym/Z9T8X"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2caced6038eso18000915ad.0
-        for <netdev@vger.kernel.org>; Sat, 04 Jul 2026 17:31:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=asu.edu; s=google; t=1783211468; x=1783816268; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=QzR86rL+Wq9WPxMLO6rL2wU+CKuwRy8NRTc65AlFuAc=;
-        b=Ym/Z9T8XJpUzuUdgCivJOLT8tICgp/hA+Zvq2Br86qXrvX49dZrGmrSbGM3CONerZk
-         R5mk/GDYFNYYAEv3XHINKQJXHm9QKrAOxhAhZ2hRcMLJEs4J3jmJwVA7jHms9KzukYOs
-         bh3p1y9p31sNumFpIhCykx56uDKGMhkFjo8D2gS43vsx79BWYnB3jrdn8dKCgSKW0d2A
-         67THDxQk2AM192CRpyWlM0TCqWbP6n0sH3RQWnL17b6eO7Oa3BFvXBG3QZ2bJLMXCZpB
-         /XAJ2yW2RA6o5ESFXzPAGju7VGir2+aGmG94hUXiNV6teLpH4fDwC9tEPQ9YyhINCGwU
-         0ayQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783211468; x=1783816268;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QzR86rL+Wq9WPxMLO6rL2wU+CKuwRy8NRTc65AlFuAc=;
-        b=MRRmVW3OStSAsh8WvSKEzuZmizA9MsNsjIgle0U9T5AWVfeI9XNIihf9OGhXk5BaC1
-         hiNUTazK0nVVqH/VxAxL6cifkEu4rwB42H8pJcIKs2CNXw0kMTjpqWJQdpM7xFg3TQo0
-         8C6wzCRdUlTQmrLt2CjUfFo798faF15oxM/Rrjo5zwVZH2q4R8XdGc8uLld5jaoYNN8K
-         TMjlASQ3dDd9Apm0r8R+CllXUHtTkSrCaPx+iCkFoghyQvXyw7PB5CtgBRjy1Hk610N1
-         yixxrBsLwMhBlv4G7jNyEQZF0LMj6sn5YSF5H4J42l3cjZj3Rn4IRPdvlsrQEpy9gyGI
-         zsWQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrZSHW4O0gQj57trUC1lqydwuxicxx+UiCCowEDT0baVQ65IsQopIEjkAT85XnPmFCtrfKFuuY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYWXqCZx9044f6qSi4xgHN+tnYAEbJrGpR5z/gs25XfpISzQ3i
-	Mf5edaac1naafHDNUvURJ9WRDTug7hG3mn8LJrU+Qxw0iUqMBHi6e7NojY/q1qilxA==
-X-Gm-Gg: AfdE7clEb1u9xIorbmfuT+C+VjaPq4fDOfeywqu4t2qd1uPP/7lNfe0eIWbd8507GZu
-	MGP7s1W1FmNitCE5B7i2vHebB43Q8IZ+mTvRHXd3BwoBXdUUgynIOkmHJ2gE1qS4nbhIZRxiTwF
-	LuUj/BmOeHsp8jXq0kZdwmho3imzZT4CSoTNjJ7VKFPqoyuIeQ2rXEQdYcf42EPFagy/PM8L0Qj
-	xe/GxokiYKdyR8sqo8I3aFZPrtwemsZMPlLV72ReWB3FK4566KDc5uwUpLVJGVkvkC1ErhVJE1e
-	93zBIXi6qsQl6VUNkjMrZyD/PV2D0+3U/seZSDjjjCn+nt6UvOgh9sL5l96SbBohuGaICUSUkaP
-	ahM4LNhjAZw6OMBVpZHNP8UIECty/ZZBneBGZy9NzRTFyCK7CDISPt1ikcUdcCkYxVsHlQtEzBQ
-	==
-X-Received: by 2002:a17:903:284:b0:2bf:13af:b077 with SMTP id d9443c01a7336-2cc09dd66a9mr35384805ad.14.1783211467991;
-        Sat, 04 Jul 2026 17:31:07 -0700 (PDT)
-Received: from p1.. ([2607:fb91:152f:d935:c8f0:3f07:a1a1:8c92])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cad712b12fsm27782795ad.25.2026.07.04.17.31.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 04 Jul 2026 17:31:07 -0700 (PDT)
-From: Xiang Mei <xmei5@asu.edu>
-To: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	"David S . Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=gurudas.dev header.i=@gurudas.dev header.b="NSAOyNTL"
+Received: from gurudas.dev (107-194-158-19.lightspeed.sntcca.sbcglobal.net [107.194.158.19])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.spacemail.com (Postfix) with ESMTPSA id 4gt7rn4SRMz2x99;
+	Sun, 05 Jul 2026 00:38:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gurudas.dev;
+	s=spacemail; t=1783211915;
+	bh=M633SL93BCN0PrL2e/cwx2xlbDs4y1U/AlCmHMhb3AI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NSAOyNTLPtXZ/k1vM23d4mp6kcF0MfY7hjEozE9ESHWUStbSSsqzbmiiD9bT9KmME
+	 xnAufNEJYHbKrfK7MERrVnvmbFeMgkIx6GxHLHSyiCFyy3RCzqYObOgb2IM2gkSkEl
+	 n5ETauFMijv8KmS/jXdluLdYQvgxUilcbOPVqAPT8FXUj6yRzgydyIO9gJ4MdAtdnt
+	 cxQgrF191paqd10Z5zniDfAmO76GJCGEoWxy3mQV3UO+ca0IHbz6G7bc9o/6KLFbTN
+	 eEaQWUGbFQiNK5sG4hbYbqVp7dDxT5pfkoyvnPCLpGPi6eDF8GCzqSTJ/ZeBQ4F+xV
+	 T2FbStM6b4UEQ==
+Date: Sat, 4 Jul 2026 17:38:31 -0700
+From: Guru Das Srinagesh <linux@gurudas.dev>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>,
+	Fu Wei <wefu@redhat.com>,
+	Michal Wilczynski <m.wilczynski@samsung.com>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: linux-sctp@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	bestswngs@gmail.com,
-	Xiang Mei <xmei5@asu.edu>
-Subject: [PATCH net] sctp: validate the body of a STALE_COOKIE error before reading it
-Date: Sat,  4 Jul 2026 17:30:13 -0700
-Message-ID: <20260705003013.1134430-1-xmei5@asu.edu>
-X-Mailer: git-send-email 2.43.0
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	driver-core@lists.linux.dev, linux-riscv@lists.infradead.org,
+	linux-pwm@vger.kernel.org, linux-pm@vger.kernel.org,
+	linux-block@vger.kernel.org, netdev@vger.kernel.org,
+	nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH 0/7] rust: Use kernel style vertical imports in various
+ drivers
+Message-ID: <akmnh0AKFfu9-OYn@gurudas.dev>
+Mail-Followup-To: Andrew Lunn <andrew@lunn.ch>,
+	Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>,
+	Fu Wei <wefu@redhat.com>,
+	Michal Wilczynski <m.wilczynski@samsung.com>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	driver-core@lists.linux.dev, linux-riscv@lists.infradead.org,
+	linux-pwm@vger.kernel.org, linux-pm@vger.kernel.org,
+	linux-block@vger.kernel.org, netdev@vger.kernel.org,
+	nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org
+References: <20260628-b4-rust-vertical-imports-v1-0-98bc71d4810b@gurudas.dev>
+ <c89a1bc8-6cc1-4e16-ac95-add389e45a2b@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c89a1bc8-6cc1-4e16-ac95-add389e45a2b@lunn.ch>
+X-Envelope-From: linux@gurudas.dev
 
-sctp_sf_do_5_2_6_stale() reads the 32-bit Measure of Staleness that
-follows the error header:
+On Mon, Jun 29, 2026 at 04:06:36PM +0200, Andrew Lunn wrote:
+> On Sun, Jun 28, 2026 at 08:38:14PM -0700, Guru Das Srinagesh wrote:
+> > Came across a recent commit bc58905eb07 ("samples: rust_misc_device: use
+> > vertical import style") and found a few more locations that could
+> > benefit from this cleanup. No functional changes.
+> > 
+> > Signed-off-by: Guru Das Srinagesh <linux@gurudas.dev>
+> > ---
+> > Guru Das Srinagesh (7):
+> >       samples: rust_dma: use vertical import style
+> >       pwm: th1520: use vertical import style
+> >       cpufreq: rcpufreq_dt: use vertical import style
+> >       block: rnull: use vertical import style
+> >       net: phy: ax88796b: use vertical import style
+> >       net: phy: qt2025: use vertical import style
+> >       drm/nova: use vertical import style
+> 
+> You have multiple subsystems here, so you need to split this patch
+> setup, per subsystem, and submit them separately. Maintainers only
+> accept patchsets for their own subsystems.
+> 
+> For netdev, please take a read of:
+> 
+> https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
+> 
+> You need to get the correct tree, and set the Subject: line correctly.
+> 
+>     Andrew
 
-	stale = ntohl(*(__be32 *)((u8 *)err + sizeof(*err)));
+Hi Andrew,
 
-without checking that the STALE_COOKIE cause actually carries that
-4-byte body. sctp_walk_errors() in the caller only requires
-err->length >= sizeof(struct sctp_errhdr), so a peer can send an 8-byte
-ERROR chunk whose sole STALE_COOKIE cause has length == 4 and no body.
-It passes sctp_chunk_length_valid() (>= 8) and the error walk, yet the
-staleness read reaches past the validated cause.
+Thanks for the feedback.
 
-When that is the only chunk in the packet the cause ends exactly at
-skb_tail (sctp_inq_pop() discards only when chunk_end > skb_tail), so
-the read stays in-bounds of the skb head slab object but past the packet
-data. The value is folded into the COOKIE_PRESERVATIVE parameter of the
-retransmitted INIT and reflected to the peer, leaking adjacent kernel
-slab bytes.
+I was aware of the per-subsystem rule, but reasoned that since these changes are
+purely about Rust import formatting coding style with no functional impact on any
+subsystem, they might go through the rust-for-linux tree with acks from the
+respective subsystem maintainers. The Rust coding style is independent of any
+subsystem-specific guidelines.
 
-Discard the chunk when the staleness field falls outside the validated
-chunk data.
+Is that reasoning off-base, or is the right path to split these out per subsystem
+regardless?
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Weiming Shi <bestswngs@gmail.com>
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
----
- net/sctp/sm_statefuns.c | 3 +++
- 1 file changed, 3 insertions(+)
+Miguel, could you please indicate if you have a preference here?
 
-diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
-index d23d935e128e..e4b4b63162cf 100644
---- a/net/sctp/sm_statefuns.c
-+++ b/net/sctp/sm_statefuns.c
-@@ -2592,6 +2592,9 @@ static enum sctp_disposition sctp_sf_do_5_2_6_stale(
- 
- 	err = (struct sctp_errhdr *)(chunk->skb->data);
- 
-+	if ((u8 *)err + sizeof(*err) + sizeof(__be32) > chunk->chunk_end)
-+		return sctp_sf_pdiscard(net, ep, asoc, type, arg, commands);
-+
- 	/* When calculating the time extension, an implementation
- 	 * SHOULD use the RTT information measured based on the
- 	 * previous COOKIE ECHO / ERROR exchange, and should add no
--- 
-2.43.0
-
+Thank you.
