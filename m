@@ -1,84 +1,76 @@
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B223815F1
-	for <netdev@vger.kernel.org>; Sun,  5 Jul 2026 14:16:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD261382370;
+	Sun,  5 Jul 2026 14:19:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783260985; cv=none; b=PjH8rZxLjqcEjM6ze/Jh9On1nCPmlw/22Z3uF8WBXsbK932hkVkLlGnjW5GBY+WpFf6760PL4LL6w+oQcoJVnPMmcOFJxx6MFGda2isZgbEz0e/lAGSlH39HKDQvcR2W3ISEZ75VI7eET9wMNfrJpSGsUVgn4Pr7TmNir9amcOo=
+	t=1783261168; cv=none; b=cUbgdI2DtKgIGZIJIyay/BPD7l6NBUInDchuoRNVnMowlN3Exk/EK1tAUAnmCAJzeLlMaOT64/PHgLpa5x1OyzKn+O2nLDghajoMsEnfLuNbH+nZzeoAU3lYgbBoeExSBwstKMAcuG8fmAqy/9TogJLBKzFRnM8f5dYknX48kcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783260985; c=relaxed/simple;
-	bh=haTkynxAOqe/YfGduuTTUWMreuoLlTQ2Qu07vsVgaVY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cfXpvwMok27faF2JImRZd60m8a6FMCeHzb7nrZNEVZYjAoMLkw450zukXGNcWjZuZo7ef278Hx8OHJfAS8I6TEMAFuHd4BmMLB6oiSe1JVG1LUCOZ6Fjs5XLqjjfOmR1/i5l37b9FoNd7l7U73qav/POgz5rYxLr/hMneHBTc9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=CKtiTnIs; arc=none smtp.client-ip=95.215.58.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1783261168; c=relaxed/simple;
+	bh=jcPJen87JmcP/j7nnSpXSY1c7GTdyigGtyopvSguuN4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m9qoDtCQ/0N6W8zwkB0xfY+zTSf6XXvnlS+TUnTyXCxbHs7K3H3dJ5IA84Vwaemre6dxZR4bhJatugOVZhXahAbvGGo43697yLg7KxZNzWhJ4T8mp++Q1qZxr8MeCLUhcfO4qfsrsEgCGIyoH+328exeIecq4jSDdXs3lpdgDJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cptocLBo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="CKtiTnIs"
-Message-ID: <4e1ac57e-a127-4c43-a719-08b9d99cade6@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783260971;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MLkErmE5LgOSLdN9cPaDzpscqqSBslDD7mRQkdPcKZg=;
-	b=CKtiTnIsNMbFTCC/IwVzzLgel+PWyMryRne98J8WBkLGvzY3mugyFz2NFqwOz1cQf4no0y
-	y0KuQRSVTvuJYAYcScwRqG290A8n8NJydayFdTT0YM9Wayi5CWBEXARWygcsKr0NNN+O8a
-	YOmyeI4qN5BLqKpKl0WyLrZ4tT8ptTk=
-Date: Sun, 5 Jul 2026 22:15:51 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cptocLBo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 857331F000E9;
+	Sun,  5 Jul 2026 14:19:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783261167;
+	bh=9DrplwkjJBjGxh1cD2R/mrFbb4Rpl+IeLJikyWbz1n0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=cptocLBoWZfJf1xHYKJoahvZWPj09dm3x9FLqDXE3okKXJfVcomzfi4Mb8GMT+0rZ
+	 eC8ShOS3TECSZQc2yeSvxIEUCQ5/Zg5n/l7A0PMRmE8g1Vo7VoAP9XD6iAtKVJytPB
+	 Komnun2kImCh88/6eIfp0I75KS/xzkxKHxwBdPpmUdVJrlLjLFA69N581eiP4QaghD
+	 Xy/9b8exL1sLmFALl9CqOmja/fTBqR/qPJGUxscaZ+pLoFyNa+IwwlovyQij64QD/W
+	 4ldZcyf90JsGEkKU6wSciZH4/WrDFUzGNRr7unp3oVr5ByekNOa5NGCtv4djSbgYx+
+	 r7rUEhGxftVZQ==
+Date: Sun, 5 Jul 2026 17:19:20 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Zhiping Zhang <zhipingz@meta.com>
+Cc: saeedm@nvidia.com, tariqt@nvidia.com, mbloch@nvidia.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+	michaelgur@nvidia.com, stable@vger.kernel.org
+Subject: Re: [PATCH net v2] net/mlx5: free mlx5_st_idx_data on final dealloc
+Message-ID: <20260705141920.GI15188@unreal>
+References: <20260630165324.2859353-1-zhipingz@meta.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [RFC] xdp: add device context to bpf_xdp_link_attach_failed
- tracepoint
-To: Masashi Honma <masashi.honma@gmail.com>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, ast@kernel.org, daniel@iogearbox.net,
- kuba@kernel.org, hawk@kernel.org, andrii@kernel.org, rostedt@goodmis.org,
- mhiramat@kernel.org, edumazet@google.com, pabeni@redhat.com,
- linux-kernel@vger.kernel.org
-References: <CAFk-A4mE9Jweo2hfX7y_85xbPyt0FqpMT1EvqX1OcYZ=LTLgRA@mail.gmail.com>
- <29129c40-4010-4862-9b4b-3bafad874568@linux.dev>
- <CAFk-A4n9U0r07tn6XHHqmOZ++-bmM4bSd-SwdpEU-88gjKts7Q@mail.gmail.com>
- <216969a9-3584-4dc8-9e23-50fc18b31725@linux.dev>
- <CAFk-A4mUijKffHg3QhOxC7Ne2rk_GVbYY2UJ-Ek497avdubzgw@mail.gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Leon Hwang <leon.hwang@linux.dev>
-In-Reply-To: <CAFk-A4mUijKffHg3QhOxC7Ne2rk_GVbYY2UJ-Ek497avdubzgw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260630165324.2859353-1-zhipingz@meta.com>
 
-On 2026/7/5 10:11, Masashi Honma wrote:
-> 2026年7月4日(土) 22:28 Leon Hwang <leon.hwang@linux.dev>:
->> Probably, you can get the 'extack->_msg' by tracing dev_xdp_attach using
->> kprobe+kretprobe or kprobe.session, if the extack is not NULL.
+On Tue, Jun 30, 2026 at 09:53:20AM -0700, Zhiping Zhang wrote:
+> Workloads that repeatedly allocate and release mkeys carrying TPH
+> steering-tag hints (e.g. churning RDMA MRs) leak one
+> struct mlx5_st_idx_data per cycle; kmemleak flags it as unreferenced
+> and the kmalloc slab grows over time.
 > 
-> Thanks, that's a nice pointer -- dev_xdp_attach() has both the net_device
-> (so the ifindex, which lets us correlate a failure to a specific attach)
-> and the extack, and it avoids depending on the tracepoint you want to
-> retire.
+> When the last reference to an ST table entry is dropped,
+> mlx5_st_dealloc_index() removed the entry from idx_xa but the backing
+> mlx5_st_idx_data allocation was never freed.
 > 
-> The tradeoff is that dev_xdp_attach() is a static internal function, so a
-> probe on it can break across kernels (inlining/signature changes). For a
-> best-effort error message that's tolerable with a graceful fallback, but
-> it's a maintenance cost on our side.
+> Free idx_data after the xa_erase() so the lifetime of the bookkeeping
+> struct matches the lifetime of the ST entry it tracks.
 > 
-> Since this is ultimately just an error-message improvement, and your
-> in-band BPF_LINK_CREATE work would solve it cleanly for all link types, I
-> think we'd lean toward waiting for that rather than adding an internal
-> kprobe to Cilium. Do you have a rough timeline for the BPF_LINK_CREATE
-> series? That would help us decide whether a stopgap is worth it.
-
-
-I will post the RFC around October.
+> Cc: stable@vger.kernel.org
+> Fixes: 888a7776f4fb ("net/mlx5: Add support for device steering tag")
+> Reviewed-by: Michael Gur <michaelgur@nvidia.com>
+> Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
+> ---
+> v2: respin per maintainer-netdev.rst; no code change.
+> v1: https://lore.kernel.org/linux-rdma/20260612170406.3339093-1-zhipingz@meta.com/
+> 
+>  drivers/net/ethernet/mellanox/mlx5/core/lib/st.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
 
 Thanks,
-Leon
-
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
