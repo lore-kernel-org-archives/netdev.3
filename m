@@ -1,186 +1,358 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67C033890E0
-	for <netdev@vger.kernel.org>; Sun,  5 Jul 2026 15:53:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 470A22DAFB0;
+	Sun,  5 Jul 2026 16:35:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783266831; cv=none; b=VZETRUKauyuqa8Lr0gWjLac8vtXF1nMyb7x3MWI/ZjGFWswd2agSah7NQxJTLc3J51Hn/hBqZqUQOxKlJ1BfGjEiL4LsmnY0V2X4SmMhYLewMg7LfYrBF+GXoChNHvaB9Y7bpu6l2BpiNnQI5T+dQRiqmJNB3K2EeHuMRuxPq4A=
+	t=1783269352; cv=none; b=OgiQXwPKs5mDq/6w04OzATAkCvX8mFOUdcE0lrt7f+nqqTWGAom462sy1kioQDRkdNaN47m304vf9HHf5NDl66aoONO4Q3V1AXujAYRPJ5A69WZ6PdCHIMFnBXtXlD2F4PEvhTbqnVvRhAS13nvoY35tLaf97ywGh8i1kGrdMmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783266831; c=relaxed/simple;
-	bh=5osjXumUGZ4Ch7vHbMYiDu8fWQgkHqYQPGL4m3IyHOo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Gm5EXht1L0x+V3x5Oxe1M7HrfWYF5YhK8aWnqh2yshREXYHM4CwHg07fmzEj7NayiYTk8bwQ3P6jepaStTzmduPYe1lVQlUxToVnAwDb5hXp4bX/0ZLbqV0u3S/OwwnMBv5LirV2xuUqfe9WN5D5Yxd6MUrvW0VgpVos9sJtfcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IMGwhpQC; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=DR/GCL+x; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1783269352; c=relaxed/simple;
+	bh=LGD7byL73kHV3ge5LWR2vDHNuj0QT5XpcmHXrVKIFCE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TSI+CHpoMVjJWy9K2tOILQwrPTuGXzAGHMBcSnVNd0hQUQNGc5ZPxVMS01qU/QK/lRNwDpFUO1jKG/JzLevGhqB8QCS22NVNOV74ORQ/7jZx1jOy3bRE863oZqTSKqa5WPVs5EbLTeTDWvTBD8BLl+rhFmkfv4+9dDbbGtcDKOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b=LkOab5eo; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IMGwhpQC";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="DR/GCL+x"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783266829;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Pj3JZzJSw3Gi4lnK7zsIQuSgeOctWdp7FV6jLpJ7PaE=;
-	b=IMGwhpQC30H931t9OEmze19TyNrpDLm8c/s3Qvyu8VIuNBQ9T2wPoSuj9RU40SqUazUCTp
-	2LAscdpNEijZFOaXNQP3HL28wwgPO/Z6nID3GNb/QmsOI7EaFV7it5Y0pFyhyNprZUCZf/
-	0kecw2H/WzUYZVAv3Ntv6FsC9Sa/9Is=
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-526-qrBIt4EONruc0gAGXbqRyQ-1; Sun, 05 Jul 2026 11:53:48 -0400
-X-MC-Unique: qrBIt4EONruc0gAGXbqRyQ-1
-X-Mimecast-MFC-AGG-ID: qrBIt4EONruc0gAGXbqRyQ_1783266827
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2c9b71388fbso51173565ad.1
-        for <netdev@vger.kernel.org>; Sun, 05 Jul 2026 08:53:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1783266827; x=1783871627; darn=vger.kernel.org;
-        h=mime-version:message-id:date:user-agent:references:in-reply-to
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Pj3JZzJSw3Gi4lnK7zsIQuSgeOctWdp7FV6jLpJ7PaE=;
-        b=DR/GCL+xSPzPUXlzyNf7fpHsNpEJaxSTGR7ijzQhh+woS3V4McNqCf/i7/4TFit5hA
-         Gmeo8DwWKYVkbyy1/kE96jRAHjJQI5JfhVrSMf+zr1v3JgDijALhtUbMAoSjUw1agzZv
-         +1WEhPgKyi5vWrJJkvvFnrhSw+hLArOi3COy1qc6xOea2xUkKfr+pSzKSDTFbaJC1Xz1
-         l7MO14iGcK0mx019uHiHsQrafVsXBip7sSjhOpSkegQHgYwtihW42Qp1WseWGToaZ0fk
-         AgNiKB+iG7PaKJqXIpw9as38FdyczEseltK/AdqlZSUgcrIPf3v4k2sUvPgDNwL0SNQi
-         PNsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783266827; x=1783871627;
-        h=mime-version:message-id:date:user-agent:references:in-reply-to
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Pj3JZzJSw3Gi4lnK7zsIQuSgeOctWdp7FV6jLpJ7PaE=;
-        b=Bv1oS3j3/ZStQzDtIxGTjT9wQ9HOytx4/XDqt4gwjPurisGdzD8V7RuxfDFGXhxOWq
-         VLaToyiQJURjOVxizQ5dNy01VcS6HjmdD0+G1rfOmP09mwkTCg0WjUKIRSGj2Dk5kk6u
-         6NyS+/YLHgcavQ+7FAQrqGorTNFTlTYnGwm0jkdPX0BMJ4WV+POO99xWHIcctmOLMEsa
-         jUoIXgILhra5VQi5wXti6ZfIPPEtolvs/3iN+WTtt6HyaKvM/T363wFW4WYAbcXFFBKj
-         fK1thPTvWUN7aWvKxlZO2xrdd3FgANYcH2J/SV6XNajHpuszcRF7d5WPe91ZdB8Up6Nt
-         2GRg==
-X-Forwarded-Encrypted: i=1; AHgh+Rq+v5NzPU9d4e9bQ3NnVFKJS5XiISgPgF6kFb8PXwYlP/xmvTr4Pa4wae/mXevPVO0iPDvXWEM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyssY32cS8GYSLOzHarE9SQt5U8Jp0HBjII+2ldDVJIiep7gTpQ
-	914RqJUS9IY4SBG1s3vK44wHE16zuAVCIoU+dV3TLlFz+HSjcMEYTP36UpOuvQHawmbsz0pRUZs
-	ycrEYd+FzoUbbveDoDu2n6qTqP8OERXAWrxTho3ewB9ftVoWued6+Gq10CQ==
-X-Gm-Gg: AfdE7cnvy/6lbGrc4hT4nKWtkJzjI7gYNj0DBE77P/iiQOvjIQeGhSxMoBdxFTvA7ux
-	78XQzdLalvo3idaKtFJTeevPYa92TNOZcasAeuUuPr79V32airr0eNbO9s9AlGmPdEzvQpprhKJ
-	3RJnhTYk+nIKWjpfBzW5xoRxt9DQrfzcARtWRQmf4hEZmg/67X62XBmvZDdCSwoCKswHVy/FwN3
-	EIhsW+etf46rHABMzeNq8AkUgiWYnkvcdyYavYlovwIpibu6sUYtkeBeZrkofORtEohxG3abcfn
-	uly8FfHOebOYBgCkTBHemYnH3gbGm2oJVVYbOIZDslJEyM0Encedno/ulX4SoT6Un3TXbamSmo7
-	VKA++MtBO
-X-Received: by 2002:a17:903:19e7:b0:2ca:73aa:b48f with SMTP id d9443c01a7336-2cbb9ec43cemr65027805ad.35.1783266826963;
-        Sun, 05 Jul 2026 08:53:46 -0700 (PDT)
-X-Received: by 2002:a17:903:19e7:b0:2ca:73aa:b48f with SMTP id d9443c01a7336-2cbb9ec43cemr65027605ad.35.1783266826464;
-        Sun, 05 Jul 2026 08:53:46 -0700 (PDT)
-Received: from localhost ([240d:1a:c0d:9f00:be24:11ff:fe35:71b3])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cad6f25e15sm34473835ad.13.2026.07.05.08.53.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 05 Jul 2026 08:53:45 -0700 (PDT)
-From: Shigeru Yoshida <syoshida@redhat.com>
-To: Jamie Bainbridge <jamie.bainbridge@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,  "David S. Miller"
- <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Jakub
- Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,  Matvey
- Kovalev <matvey.kovalev@ispras.ru>,  Pavel Zhigulin
- <Pavel.Zhigulin@kaspersky.com>,  netdev@vger.kernel.org,
-  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] qede: fix off-by-one in BD ring consumption on
- build_skb failure
-In-Reply-To: <CAAvyFNjLcVRQBuMsd31neQpo6BY4HBP-hNMHh=RtFeiWBo96ZA@mail.gmail.com>
-	(Jamie Bainbridge's message of "Fri, 3 Jul 2026 09:55:40 +1000")
-References: <20260630164623.3152625-1-syoshida@redhat.com>
-	<CAAvyFNhY2Jp5aH6YPrtfc0mBpwuSeT-8u8bODqq=pootpQffmw@mail.gmail.com>
-	<CAAvyFNjLcVRQBuMsd31neQpo6BY4HBP-hNMHh=RtFeiWBo96ZA@mail.gmail.com>
-User-Agent: mu4e 1.12.12; emacs 30.2
-Date: Mon, 06 Jul 2026 00:53:44 +0900
-Message-ID: <875x2te8l3.fsf@redhat.com>
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b="LkOab5eo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1783269348; x=1783874148;
+	i=markus.stockhausen@gmx.de;
+	bh=P9dloCFe9Ybn0q7JfV/WhY++BIuuh6GOj3OMLlSSWok=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
+	 References:MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=LkOab5eoRaFeEhZTHZia6vEkM3YS2xw6A8SNKZMorWNjwXTt+qTwkC4lv1/Ta39J
+	 AGCY37lu17hri6WUjQCXWwm41EOS9fPaqSDObMsnj3CJbcQHwMaB+MYQ2GDFz7N2c
+	 aVWg1xoN/qDaDz9VqnaAYUTZGhFIenDLUPxqzRrb5HXWSuB58yibcZ3+vxP+n0qvK
+	 7ZrqUI+nA4vxXWgcKGNXqYYYyJe26Nmy8WJhbeIyIqlqW/h18TT8LpCnJzVKuVHK8
+	 irI/HQxDNWlMpkPX57fW2i3o9FcH36ywK1IDgyo/XMg2ayIT46x1vwhoBMKI8Te1I
+	 LtByzeyPML/sG3tzOg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from client.hidden.invalid by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mq2jC-1xSApa1XsY-00oEpa; Sun, 05
+ Jul 2026 18:35:48 +0200
+From: Markus Stockhausen <markus.stockhausen@gmx.de>
+To: andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	chris.packham@alliedtelesis.co.nz,
+	daniel@makrotopia.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org
+Cc: Markus Stockhausen <markus.stockhausen@gmx.de>
+Subject: [PATCH net-next v3 4/8] net: mdio: realtek-rtl9300: Configure hardware polling during probing
+Date: Sun,  5 Jul 2026 18:35:28 +0200
+Message-ID: <20260705163532.2853959-5-markus.stockhausen@gmx.de>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260705163532.2853959-1-markus.stockhausen@gmx.de>
+References: <20260705163532.2853959-1-markus.stockhausen@gmx.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:bzTI9DtwbYtanjI+NSD7sZS2STcrHsn7RgT1ilR67bT4Pfg04ep
+ Od3zSfeePKf0WMQ9+0yWGYH3DNpxxyAp3kSaS8EFwgYfBSgc8c5nvcOvT6ps8FAHuSNaWMY
+ ET2F1bS3LI2p7nenCt8oeuYHhsGdErpxy9rZAiB4gK6SD8ZSXx2PJvWSI9N1b/sRe1ELHLl
+ iGzFb9xr9gMNfdDFEWovQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:vhPTfbOEQMw=;Y8lhS3Nb5b7YaRvwUPRO4rq5wsl
+ TjD8VrwD45DXllA0OTWMrE1A3EnBsy9fBAiQ8yGegkAht/Bzn4xVJIkIF8tPeYRakvG+t5vDe
+ oWZwJG+gaShBU4Dt7ICDyolsEuc4oNrMsKK+FacVc3sTzrnSEBU0T/w9idzEOFXVTAOde7edr
+ PqzNkD5FiCVi1uDt9C1mnoy+Hv2ZivN56+FvwnM7/Fm2X+SwwL+SH85Xmm8lZIS1CSgqwr+5/
+ pbElStksl+lxf1JwXgNiGtLBScDTcFJlKF2wCj2cvqJfDNILBMvugcSNJHQNYz3cUiV3/ru9C
+ HyhgO5grAqxhday0I9XQ2mqG5UPuiTeRXMzvMWibNXNAwerQKUnuDn83lL+bZuPWd5F2gnUHR
+ CFEBdBa/Sepn7Ksxst8D0KYhsNbJsg/jsZOTJaegDx+22+1jLACCJdwgpCsU/uPK1EHeL6eyd
+ +jZ8Onaaj6ZtxOLAnQFv9dbiljAdqe019jyz+NxdlUL/WpSCss5EFLDITvR72oHMe5LZxBuOW
+ eunQ8nklwBx5Bx6l3VmFtLPFF7jlZq4j3j+Ms9PdaR44DGkMCTJAUuXzploeWJ0+TU7WkKx1u
+ rYat+ZS2n8T6CLP4w/72I6hOvGRvkRYAWzJw8OWI+yc6C8o9PcBbZbhZ+oWLjgXWUrpnybthn
+ FO+JP3whuwDjnZXbARzEpVbd/Rw2w+0khWGVJRlCWi0L0RUN9+NXe7ebF/wd0w6mL49XFlRug
+ RP89qj52QYzs8K4iDF/c5Vn02fPlXc0c5XE7vYxnpSO61JEs+n3D/CcdSA2Lznl81BtX2E3U/
+ 1dfedKFYcrNU9yM1vcEBw8qNjZ/Z58gqs9FKxkRCGDnuSNS83hqcq/eQopcFb5X9f9OSgOrFa
+ ok3lYrp7dwA/a5CHhUVIArz6YMH+o0T8NLCM/469egJSdy/Qi85iQ0XaT+0r3mwS3cuqaY9p8
+ VDoWD3/BH7CWOUtQFzjU85/V+pD6GAsvToGKmnRbJoRQb8xV6ZX1s49SVvTt5pv5HNJSAQjIo
+ MkFgd6xSx3YyRVrTPk7zsQBoNpbqgzTdvH1b6Jgluer3IlzYoc0zMv+HdJWLPbjeStE5ZzOIg
+ 9W3MinKS/ubLcbLLq1IyLHX7OcvzyH6aUu4UHR/CZAN2XsHc9kdJYG7CZ3E6B6Im78f8y7C2U
+ A9vSKNZb8BWslL4cQEkQl9+4ggkgWTCS9xcjzZwFYK6Gpt+HcIoST4+a6Ym0fohN5DdzOaMBF
+ 3hGCnzo0vTqFJh1IfkvzzDHIrWU+bQcc54LU+OpAUlvt+SHwO/tb7DrCzYDh4W2RdXRTT5NBW
+ 7CrB9YDxqYIjcLCKUdvVVdXukv8R+V1n2bsC3GC8yT2sIM3KgkA5eBbUzsqwpn0R0okf7VZsn
+ 1S6kVmoCMgk76edKtYBSQDadWLqi3T21qgnvcbfHFn7utSDEol2IMGvVYHhkywgZnTuZyZuzC
+ HMYKmyUkBwAyOi6sAXZKhC9s941zeZoYo46KO8l5Ie/MPrB/NZLOBDvC66fwQzjL0RhSOm7F1
+ NdUvid0ae7uF+qqiAVa+ZkFlSDEukKTUigiaoUZjcM32Bh9BYkxEGgsJ9FFbjNZ1Gchrejkeo
+ ehR7uxTz7t1oKVmdOsuefCw7NWbRSt5iappzBMeCaeyHUwQWBDd3x37P8UXkeDNKkqcf2aem2
+ 6WLbFiersO8mAd58liPnI9N4jv1GCtUdTwOqeMzVUrktBRVxsqrsbP4+eB7fSMzYUUuKhTvzK
+ uSJ7X2kh1j+g21mvRZvgjRvSiUOCZc70tz002SDeZLukKVhdrCbolVZP7QWpnZwK1RI6Btvq+
+ vr6CeESQor8Gl74kms6+T58EMqk0MTLi95TEnX45YoT/C9m8r13SAJSoTeh7sYT9Mvk/klS3g
+ 0TPMwW4Hie1ByjzSI7RmGtfL7eShEmRH51fvDAh8krc/5MDpbDNohl73JUEpM8Joudk2foJPO
+ fS/7eDGt2eWna2ultqp2CoUDuQu0uMveHz5wgYTZHW3aCWLzTGVRM9HRPljxPCs3J/nywBfd5
+ 1uBLNcaVz9/W2cfQrOj3d7bY8AklUhbXwq9ZCfk6SK9HSe2oavq+YclPSu6idWtnUTA/2HPan
+ txxHbZ7gWT1xrZdgVeT6VXtrmWhp9lkFHce+xDyVeLqkv0NpRSj5hTgpI9iRDs9zW/Ieg7u6Z
+ OrX+FGHLc2ksp+8L02BG/AjX9ldUOpwex3fboHtrRWAxFb8RLXtk9w8fY1N7HkxGTL54BAshl
+ kzpdzAfKPu02r2A4SVctc35g/apIk9QxMh90dLh1wa7FYwXwVu7ok+n/Blv7d9o1wRfwdBa8h
+ rykTu3xnJBhuiMNM4b6GPTlCNA3RGTy7BxO0JmHMslfRjV8qsKu2n7bw1zjeO9pnUZAfH6JSU
+ adSOwltaLkLHaO5QJCoesD9l4wmwRWLrUBY61IzuylakFf5jFwyNT+Chgm3CD+28zzy0LaeYz
+ 0fDp1zJlQQHr2jbQZrqsBJLtupnPa6DxDOTv/iSlQ3TMNildTwVkzUhqyDmRK2+p2DDYpsUES
+ fWI05m3c6crn9Tqb/kNgPnkaVSR6mCGcuVSiO+zbc/GkZooIqZ/JqANgaiLKSYUM3bHeiz57G
+ 2BUgStxf20RhDujU5kLAoD8qUhRG5qZ3ijSgK0lfrOUi5RmeaMKm4nmWgIB1l7SSjtv+K37gI
+ xS1SCkWSPhBldOK4DDuxuHAkf0Pms8eOIcAEh9mItfX4CPf44GwvKHEopy5cq1OxuU4pQPhzh
+ wNqGvBn5stu+QtQ4WZ6fjssiNFllCXHvJ1InHQZXeeZQrsXgUswXPS2d0LQuVKYYtB51KwSjO
+ Akz0wQyj33uX3xz9OUgYgDm2pwv3OcSDAWT+5pgu1ibDQHs123rwx8JyE8y8lqbUCYRFR78z7
+ ogw4pT4mlZ25+8PBgjrhEgdK9bnay2GB4ePGIoZyrFhkdbUPZxfVSVUCfW4cZxrb8wjkq0tui
+ p1n/l7h7FPxXAI5wEf1vIEmWTAeCqTiYeMVSvKNxqm0/wNud55+gBqXrP5IG8IJf4PDe7KuwW
+ OIC8WuoV8t2Ca/Nd80TeTqrfErq0zBrHrl/o4W4iguaCnP9G6eUcU/29RuScxt0WhL4j52yea
+ bav5dec9bBIjTPDf6WkGAM351t+CAno9IKL7mKKupLNKu/pOk08B1T3WdC2fkksISlzDvzIOx
+ 36z1webHFf35cJg3zQPSlvjrIhw2QrEWkb18wdKULEbfZXeu0c5I1cxlSiRsFqgwctSZO1iAo
+ egQA7M+N9EScUWwQVS5cOBUQ3ng5KqdKS/6ppY7etu0T6x2TNSsYRub+wJyQyxNjczMpbja9M
+ ONIwBxWOOq3B28rQ+hNyk7oGJYAyUD2x2MDLIPc1CiuqpAJnb7QRIeubseYd7/rlUhKADHr5p
+ bVa5ejsTNPHTvQcYu3rSAm0au+lAHWZWH89qQF6aSjTlNRZTvnAzrqAevZsh/d5v/akEV8PPC
+ eTj5dIkdrSJ+rIssIxzS2EHKOdeg3hRt9MoJwGKswWJ26UQzdkKSGZgBLK281r49XvpnBU/eW
+ OWDTD78Pizuz3fPxjzY+1fBLRy/TLRSsCIGUoSClXNlt4UgiCCxE6kdQmW6M+eio5TspPxDgz
+ QqPaBHpDoojb7/gqTe2W+c/f/zHEDUp3pMPrucUfCpqmcHA9sFxb8EyOs+JLr2fYf1VGZ39Uu
+ L4l0ddyGvFft+3G4bvdDBJJ9GKjL1Zpi0i6OMLXeliJGHzL8haK872V6iLBdqJPDQJZraniLp
+ j0dBa840CgFfgVZBIRNOTqMSCilrPX3/91WcxogBAKADesH4BHg4Uh/h/+W8wYYGk9tsx4PEy
+ lKBN9g9egoSe/WRUYP0vYwbXy+zPu7sc01T4b0HrDW0ZubkwQhrvPgKDc7MXVLCdmlhhe0LQd
+ G8fNF0O8k3tjZZGvtxc2rX8hhDeowUAnGVmAGHeTeJ5/EAZul+oV6Oh9su77NWwz1M7JhI5Ch
+ 4RMcVYBPegGgy0gsbRJzyzDlkwLSLkhNJyq9zYewVgJz6ET26Y8l1aLl35h+iSQfm13xavWM8
+ 9btsaFHGPgVcjpkioGEUtJZI9WaPjtWM2jUfveHMahQt3d8obSR6VxDwQNghfa+D5yxUkjEoM
+ MOpWiwPamYRB4f2UvVcJj5mZnasCdsyMyMfvXwClN1vqX4DjNmFJWcte9Fv53UuEYKwsnSSF+
+ +dHjEYN+swHxXbYiDiJ/gWxUi6jwbJXsGOskQ2tCxrbcrOfojLn0DwrCS05C3kCNLdHN454Rj
+ +y+ZQq4v1J0P3qF/fboNftdnKhLtcWe+A6776zkiUtC84/RzrsIkF+wKFkBRjHTnUcqI5E4uc
+ +wUi4AaVkR7G4/2kft0puYKZFQOM8UKBGIMtVh7Lt78p8CTgRyAYSwg5QPsmg6HEHdWZTi1Eo
+ ZIi7K0IWTs94fO9lTLDeslzh10aDMXxDYPb+D+9hqkjxclCOUvq1ErbxrjD8egufoSPKLSieF
+ IPe7shMAbTNwRtljaSVn2Zy21J4WO0vbTRbVbyy+FYWkNx4T5wmbwnpv31WKnodMqtO4S7LwX
+ Qn+eWwhAIBL3VdxFiSHxt0rRdXA+PdXEgxHgfLZC+OLjCfxTFmHLTRhF64Xq9pSD7XcTJTXjt
+ hFnIAzmE+1ex41+4Y23+gD3DwmsXYYq1WudGJv+wendlk9z7DB4os6+IqfvrGury39MLNJlcO
+ 87pQg1GhksuDjzD56Sw6qRIEns8TEO9FbX43j9jjLj5IHZz17hxDBSrolodxDIFrX995WLITL
+ eBgN1Dunpy/96yi4QeRzZMclyKhEEdyR808cmds3JK14i4jwk+9Q26kDg9oIWHRgiWYMesc7L
+ jdf3nGLOsOM/i5FsOR8E0EYagCZRnB+Fptn/vUhbKQfDQwlkQtGavCbQzy8YniLKBtf80GOLa
+ pwe0g5HxO/krwEXUO0CipfUHq42a4zD39Hja9iSoBtFqIlCVO/Ho6M1ivUlJqKRM/tTEBWxcd
+ Rx+Woa/J9b2WQH7iF8k7j8QXNqcy86YurzxVCGn3xSNBRXXoCa6cFjTqLrCuRFOkLaBihvSk6
+ qxQbw+kZ47Ciu8ozRBlv3KeVLPWn3cBe/Uk2ghe/WFrD8fSZSsvXWzAvr0eNlfG+2Lb5XbFxq
+ 57ZFbN+t5eMOp3/I2yUFR6RnSyys/22WiiYqGN3okFZ/pfVEy3vei3/2rNGoSMBwJuC+C6Wnr
+ Qc69O00rCYY+ZjpqhsSu9CMknF2xh1mE05Z9icR+dzD0CJ+lL0kG6bGW8NJzipA7s5lFf53R7
+ 4T7XIj4DWJpUP/4V1eRAfLx4xCwhQJ0XoTUqL4NCfo8GL7VCaahMX+Q9S+QgY4ETGfIZqNlol
+ RKEzskYQP2+RDz3L1Z5kXjmKXXXaREyWxf2BgM8MSrV5AsMwpSMIRByWjNlGfZTHLv0L1b/LD
+ 5kn4L1F6Eqr3wDyfuAXtcGXifgxeGjVgLKdNJDAaf0R1QZLSUmGi/9Rw7JEWeba2zOUcl7als
+ fPjESAyCXAqhyw0ttk9fU0rdlyMi4v7/hrn59Bcy8fRdaqVS5uObPl4gHK613obExmx7v8/aw
+ q9E7e9eYLk15+53yRixsWfbbDBdrQpaSynLtHztwWG+3jDbpY00RLGnCygA24UHrQO335GUiV
+ 26iPd3VBv6CF73U0em1/C5JPm9e39n9o8KQLwqczZ75xR8rj+bd2nbp8MjzI54DgkcI/P3JGc
+ 07OtpfZhksLYxIINM0DVsUHbArlrGp
 
-Jamie Bainbridge <jamie.bainbridge@gmail.com> writes:
+During PHY probing and configuration complex configuration sequences
+might be issued and firmware might be loaded. Hardware polling can
+interfere badly with that. E.g. a hardware polling MMD c45 over c22
+request might break an ongoing firmware loading sequence.
 
-> On Fri, 3 Jul 2026 at 09:52, Jamie Bainbridge
-> <jamie.bainbridge@gmail.com> wrote:
->>
->> On Wed, 1 Jul 2026 at 02:47, Shigeru Yoshida <syoshida@redhat.com> wrote:
->> >
->> > qede_rx_build_skb() and qede_tpa_rx_build_skb() do not check for a
->> > NULL return from qede_build_skb(). When it returns NULL under memory
->> > pressure, the functions still consume a BD from the ring before
->> > returning NULL. The callers then recycle additional BDs, resulting in
->> > one extra BD being consumed (off-by-one). This desynchronizes the BD
->> > ring, which can corrupt DMA page reference counts and lead to SLUB
->> > freelist corruption.
->>
->> Good catch.
->>
->> Reviewed-by: Jamie Bainbridge <jamie.bainbridge@gmail.com>
->
-> Sorry for the double mail.
->
-> I believe the Fixes: should be against the problematic original code:
->
-> Fixes: 8a8633978b842 ("qede: Add build_skb() support.")
->
-> because that is what you are fixing.
+To avoid such issues the polling of the Realtek Otto switches can be
+(de)activated with one or two 32 bit mask registers. Each bit enables
+(=3D1) or disables (=3D0) the polling of the corresponding port. Make use
+of this as follows:
 
-Thank you for your review.
+- Disable polling for all ports when the MDIO driver starts.
+- Reenable polling just after the PHY has been attached.
+- Disable polling just before the PHY is being detached.
 
-The problematic code was introduced in commit 8a8633978b84 ("qede: Add
-build_skb() support."), so putting this in the Fixes tag would be
-correct.
+This synchronizes the kernel and hardware polling to some extent. It
+gracefully handles deferred probing of PHYs in case the driver is
+loaded asynchronously during boot. Additionally it brings the hardware
+polling into a consistent operation mode for devices where U-Boot does
+not take care.
 
-I'll send the v2 patch with the modified Fixes tag.
+[1] https://github.com/openwrt/openwrt/blob/main/target/linux/realtek/file=
+s-6.18/drivers/net/mdio/mdio-realtek-otto.c#L818
+[2] https://lore.kernel.org/netdev/680696024a8648535ce6dee771fe4de67802e0e=
+8.1769053496.git.daniel@makrotopia.org/
 
-Thank you,
-Shigeru
+Signed-off-by: Markus Stockhausen <markus.stockhausen@gmx.de>
+=2D--
+ drivers/net/mdio/mdio-realtek-rtl9300.c | 77 +++++++++++++++++++++++++
+ 1 file changed, 77 insertions(+)
 
-> Jamie
->
->> > Commit 4e910dbe3650 ("qede: confirm skb is allocated before using")
->> > added a NULL check inside qede_build_skb() to prevent a NULL pointer
->> > dereference, but did not address the missing NULL checks in the
->> > callers, making this off-by-one reachable.
->> >
->> > Fix this by adding NULL checks for the return value of
->> > qede_build_skb() in both qede_rx_build_skb() and
->> > qede_tpa_rx_build_skb(), returning NULL immediately before any BD ring
->> > manipulation.
->> >
->> > Fixes: 4e910dbe3650 ("qede: confirm skb is allocated before using")
->> > Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
->> > ---
->> >  drivers/net/ethernet/qlogic/qede/qede_fp.c | 5 +++++
->> >  1 file changed, 5 insertions(+)
->> >
->> > diff --git a/drivers/net/ethernet/qlogic/qede/qede_fp.c b/drivers/net/ethernet/qlogic/qede/qede_fp.c
->> > index 33e18bb69774..c11e0d8f98aa 100644
->> > --- a/drivers/net/ethernet/qlogic/qede/qede_fp.c
->> > +++ b/drivers/net/ethernet/qlogic/qede/qede_fp.c
->> > @@ -765,6 +765,9 @@ qede_tpa_rx_build_skb(struct qede_dev *edev,
->> >         struct sk_buff *skb;
->> >
->> >         skb = qede_build_skb(rxq, bd, len, pad);
->> > +       if (unlikely(!skb))
->> > +               return NULL;
->> > +
->> >         bd->page_offset += rxq->rx_buf_seg_size;
->> >
->> >         if (bd->page_offset == PAGE_SIZE) {
->> > @@ -812,6 +815,8 @@ qede_rx_build_skb(struct qede_dev *edev,
->> >         }
->> >
->> >         skb = qede_build_skb(rxq, bd, len, pad);
->> > +       if (unlikely(!skb))
->> > +               return NULL;
->> >
->> >         if (unlikely(qede_realloc_rx_buffer(rxq, bd))) {
->> >                 /* Incr page ref count to reuse on allocation failure so
->> > --
->> > 2.54.0
->> >
+diff --git a/drivers/net/mdio/mdio-realtek-rtl9300.c b/drivers/net/mdio/md=
+io-realtek-rtl9300.c
+index 562f9c7f2895..c36244cd9a66 100644
+=2D-- a/drivers/net/mdio/mdio-realtek-rtl9300.c
++++ b/drivers/net/mdio/mdio-realtek-rtl9300.c
+@@ -139,6 +139,7 @@
+ #define   RTL9300_PHY_CTRL_INDATA		GENMASK(31, 16)
+ #define   RTL9300_PHY_CTRL_DATA			GENMASK(15, 0)
+ #define RTL9300_SMI_ACCESS_PHY_CTRL_3		0xcb7c
++#define RTL9300_SMI_POLL_CTRL			0xca90
+ #define RTL9300_SMI_PORT0_5_ADDR_CTRL		0xcb80
+=20
+ #define RTL9310_NUM_BUSES			4
+@@ -164,6 +165,7 @@
+ #define   RTL9310_PHY_CTRL_INDATA		GENMASK(15, 0)
+ #define RTL9310_SMI_INDRT_ACCESS_MMD_CTRL	0x0c18
+ #define RTL9310_SMI_PORT_ADDR_CTRL		0x0c74
++#define RTL9310_SMI_PORT_POLLING_CTRL		0x0ccc
+ #define RTL9310_SMI_PORT_POLLING_SEL		0x0c9c
+=20
+ #define PHY_CTRL_CMD				BIT(0)
+@@ -194,6 +196,7 @@ struct otto_emdio_priv {
+ 	const struct otto_emdio_info *info;
+ 	struct regmap *regmap;
+ 	struct mutex lock; /* protect HW access */
++	DECLARE_BITMAP(phy_poll, MAX_PORTS);
+ 	DECLARE_BITMAP(valid_ports, MAX_PORTS);
+ 	u8 smi_bus[MAX_PORTS];
+ 	u8 smi_addr[MAX_PORTS];
+@@ -211,6 +214,7 @@ struct otto_emdio_info {
+ 	u8 num_buses;
+ 	u8 num_ports;
+ 	u16 num_pages;
++	u32 poll_ctrl;
+ 	int (*setup_controller)(struct otto_emdio_priv *priv);
+ 	int (*read_c22)(struct mii_bus *bus, int port, int regnum, u32 *value);
+ 	int (*read_c45)(struct mii_bus *bus, int port, int dev_addr, int regnum,=
+ u32 *value);
+@@ -246,6 +250,14 @@ static struct otto_emdio_priv *otto_emdio_bus_to_priv=
+(struct mii_bus *bus)
+ 	return chan->priv;
+ }
+=20
++static int otto_emdio_set_port_polling(struct otto_emdio_priv *priv, int =
+port, bool active)
++{
++	lockdep_assert_held(&priv->lock);
++
++	return regmap_assign_bits(priv->regmap, priv->info->poll_ctrl + (port / =
+32) * 4,
++				  BIT(port % 32), active);
++}
++
+ static int otto_emdio_run_cmd(struct mii_bus *bus, u32 cmd,
+ 			      struct otto_emdio_cmd_regs *cmd_data)
+ {
+@@ -576,6 +588,47 @@ static int otto_emdio_9310_setup_controller(struct ot=
+to_emdio_priv *priv)
+ 	return 0;
+ }
+=20
++static int otto_emdio_notify_phy_attach(struct phy_device *phydev)
++{
++	struct otto_emdio_priv *priv =3D otto_emdio_bus_to_priv(phydev->mdio.bus=
+);
++	int port =3D otto_emdio_phy_to_port(phydev->mdio.bus, phydev->mdio.addr)=
+;
++	int ret;
++
++	if (port < 0)
++		return port;
++
++	if (test_bit(port, priv->phy_poll))
++		return 0;
++
++	scoped_guard(mutex, &priv->lock) {
++		ret =3D otto_emdio_set_port_polling(priv, port, true);
++		if (!ret)
++			__set_bit(port, priv->phy_poll);
++	}
++
++	return ret;
++}
++
++static void otto_emdio_notify_phy_detach(struct phy_device *phydev)
++{
++	struct otto_emdio_priv *priv =3D otto_emdio_bus_to_priv(phydev->mdio.bus=
+);
++	int port =3D otto_emdio_phy_to_port(phydev->mdio.bus, phydev->mdio.addr)=
+;
++	struct mii_bus *bus =3D phydev->mdio.bus;
++	int ret;
++
++	if (port < 0)
++		return;
++
++	scoped_guard(mutex, &priv->lock) {
++		ret =3D otto_emdio_set_port_polling(priv, port, false);
++		if (!ret)
++			__clear_bit(port, priv->phy_poll);
++	}
++=09
++	if (ret)
++		dev_err(bus->parent, "failed to disable polling for port %d\n", port);
++}
++
+ static int otto_emdio_probe_one(struct device *dev, struct otto_emdio_pri=
+v *priv,
+ 				 struct fwnode_handle *node)
+ {
+@@ -605,6 +658,9 @@ static int otto_emdio_probe_one(struct device *dev, st=
+ruct otto_emdio_priv *priv
+ 		bus->write =3D otto_emdio_write_c22;
+ 	}
+ 	bus->parent =3D dev;
++	bus->notify_phy_attach =3D otto_emdio_notify_phy_attach;
++	bus->notify_phy_detach =3D otto_emdio_notify_phy_detach;
++
+ 	chan =3D bus->priv;
+ 	chan->mdio_bus =3D mdio_bus;
+ 	chan->priv =3D priv;
+@@ -721,6 +777,21 @@ static int otto_emdio_map_ports(struct device *dev)
+ 	return err;
+ }
+=20
++static int otto_emdio_init_polling(struct otto_emdio_priv *priv)
++{
++	int err;
++
++	for (int port =3D 0; port < priv->info->num_ports; port++) {
++		scoped_guard(mutex, &priv->lock) {
++			err =3D otto_emdio_set_port_polling(priv, port, false);
++			if (err)
++				return err;
++		}
++	}
++
++	return 0;
++}
++
+ static int otto_emdio_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev =3D &pdev->dev;
+@@ -740,6 +811,10 @@ static int otto_emdio_probe(struct platform_device *p=
+dev)
+ 	if (IS_ERR(priv->regmap))
+ 		return PTR_ERR(priv->regmap);
+=20
++	err =3D otto_emdio_init_polling(priv);
++	if (err)
++		return err;
++
+ 	platform_set_drvdata(pdev, priv);
+=20
+ 	err =3D otto_emdio_map_ports(dev);
+@@ -780,6 +855,7 @@ static const struct otto_emdio_info otto_emdio_9300_in=
+fo =3D {
+ 	.num_buses =3D RTL9300_NUM_BUSES,
+ 	.num_ports =3D RTL9300_NUM_PORTS,
+ 	.num_pages =3D RTL9300_NUM_PAGES,
++	.poll_ctrl =3D RTL9300_SMI_POLL_CTRL,
+ 	.setup_controller =3D otto_emdio_9300_setup_controller,
+ 	.read_c22 =3D otto_emdio_9300_read_c22,
+ 	.read_c45 =3D otto_emdio_9300_read_c45,
+@@ -805,6 +881,7 @@ static const struct otto_emdio_info otto_emdio_9310_in=
+fo =3D {
+ 	.num_buses =3D RTL9310_NUM_BUSES,
+ 	.num_pages =3D RTL9310_NUM_PAGES,
+ 	.num_ports =3D RTL9310_NUM_PORTS,
++	.poll_ctrl =3D RTL9310_SMI_PORT_POLLING_CTRL,
+ 	.setup_controller =3D otto_emdio_9310_setup_controller,
+ 	.read_c22 =3D otto_emdio_9310_read_c22,
+ 	.read_c45 =3D otto_emdio_9310_read_c45,
+=2D-=20
+2.54.0
 
