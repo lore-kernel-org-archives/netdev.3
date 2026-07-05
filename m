@@ -1,138 +1,141 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DDD237DAD5
-	for <netdev@vger.kernel.org>; Sun,  5 Jul 2026 12:22:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783254158; cv=pass; b=VruL4dJP0Yr62mXDl8nFTMRBzhMHxAukBgszOP2d/guoT0I5Ec+rW8Lrra+g0sSEE7qyZXOiR0g0CDhrV0RdDVy0ddVUxX6LkjiDtjeUPpi8eGoXQN2GIZCEM5la9xHmeaDrppF502sdEcbz8vS/fqD2O5iWHHuAysszGil7ozo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783254158; c=relaxed/simple;
-	bh=cVZuwq26LJUbjnXW20W3nbICqbmkh5x02bCyytPFsmg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Content-Type; b=KknYbSY51wZQdYBoz0ypVhYTvphBiecfNn6xLWXeNrk2iauU3Z0kKAKDi4Etjua7lzzWk4kPrc6JM1awmxWpTj85E1nspo/1EoStJe72M/0yJ5pP+9UVF2nqrZ14+Y4QB+grKw7YQE7g13mpUkEccx5TCrlTF4/UmGvvwLzHGhs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Srag6JtK; arc=pass smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [52.175.55.52])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA5DA25B08C;
+	Sun,  5 Jul 2026 12:31:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.175.55.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783254699; cv=none; b=WDyy4/PkWdy9miJmjwyQ72JdYlTBc5ysKct3JE1OXxBeoJKJhif6kn378d4XzbPpHs0fAsPqG3kAmwKvApwtqCkLd7NMUBED9+28ElUh9q3iOB7wGXNU5KTwRMd8ZWejlTXYkf5dvC+QDeKkzGRfFnRZtDRqYowuvEwXi4msWN8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783254699; c=relaxed/simple;
+	bh=PD2knw/u6d9AXJI/6yKiVENXur5UNuHjYtpY4e2et5Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=d3YA1qNc4XsZ2dE4p01L6vtk4xJ0+Wlr0UBesmq3RtvZdLvOXr49vABrw+DjA4Cc+1/+cZDM1k8Bf/G1kB0LJ7NL0fut2xP3+p660msliHSOaTDUbojyHSIUqnYcrQ0kw5Hhg7QsMCtsVigvcaFyl2A6J4VG0XJD4Id5+xyKWBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=frG/a/5T; arc=none smtp.client-ip=52.175.55.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Srag6JtK"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-384422b05b5so192163a91.2
-        for <netdev@vger.kernel.org>; Sun, 05 Jul 2026 05:22:37 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783254157; cv=none;
-        d=google.com; s=arc-20260327;
-        b=JCEYc3ce/PIfG6m+nDCHgbmnMh2a9AcG862e80ToXZdzc4bVIlIGTDcpapwCYC0XUV
-         DH1k8l/67tfhTTHNjhi8OYLKCJaCg0d4GGwIjkX2ZghL4VDC8Sx8NFn8pHjPO/aiWGWl
-         x9XSE39Bjn+h2YyOtaYU1CxOjr6GUqIpm+if5ouj12BeIRlcrvmT2IZ0X0swcyBthWh/
-         YtkLoG1gvABW16pr9oSXDcI1lMlmtVnFaaew27OmeLwLQkes2FXAdRbAq5/oJrrQ7yRf
-         nKwaQTVkFQqsi0IyHmazF7bXZkQz1NyLORS3telsJViS1QC7lN1wf/hWBigDKlyP1+Fj
-         ZwCQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=cVZuwq26LJUbjnXW20W3nbICqbmkh5x02bCyytPFsmg=;
-        fh=jaswLwv0nGa7C5zix8ixl2Ro9+OIOss0sUOuGEeQQ4c=;
-        b=IQ62OCDWtIFLtluY2wIshWeatacxxoXXTxXdsEUBmt/EmGgJMZzmMtbYvujVTzBynx
-         3xMdQDr351IMV/SWHVtfOf63S1FR9japuseo5GKMZwCqi+XJix4DTzmJaMZ11jGVD+2H
-         jS9a7beLHSoE2wAWEwn1KTeZGHydFAfpDY8iJqYxq/qJicphp11VWH19oQ1h4PtA3WXy
-         lVqCDhf580P9p3FcaU/olygIiD2YjRzKW/zxSEFifi5MTInKOZTyq3P7xIdtbfKMoI6h
-         YV14oxWWrnJq3to+xuV24L8uRZVNMUC8jIMnQn4t63rCQSv0VA5oMnL9pK/VoEV3a+Ox
-         rrAQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="frG/a/5T"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783254157; x=1783858957; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:to:subject:message-id:date
-         :from:in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=cVZuwq26LJUbjnXW20W3nbICqbmkh5x02bCyytPFsmg=;
-        b=Srag6JtKCPM+t9r+ECgpexUbRNBShKVyZn0lOfixCWw1BxqWyZ5y9aa8mG8eQgdQMc
-         hLz0KD1suEBLpAuqkZ/u1JMJkqBvw0DjcJkf57H4x6ODoNbeWRWtWLEDYZU3NxIYQCud
-         Jz4ph+lFllFK3lxXOsgOMQeA5HLycp9KjaSEy/LmTGAS2/9JgrHMrkDDOOyMukrfOrvE
-         3MemRYQ3l3R9T4O0r71iP5NO3VCHu/WG5FNRVKsfsmAXEG5BxstRhOUq25Ylp/VXVV5P
-         +4VmCqRjOGwmHPLGo5zqaJwEyzFWw0VS4G/RdBCju+oTeKkYOhcq/4BgYAVOyfDQN+L4
-         +L5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783254157; x=1783858957;
-        h=content-transfer-encoding:content-type:to:subject:message-id:date
-         :from:in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=cVZuwq26LJUbjnXW20W3nbICqbmkh5x02bCyytPFsmg=;
-        b=S42HsI0/ZmgxDJEpREc8bRbpqWvYRQjVfve3ueKhDnbXheaNLYNuofMEY2dkoAaie6
-         tQvmGWHvk0/pM/+Qkpz7etkMkMwbbF+LX562IZ830++bWMfi5uEWtf+dPYEVwrASNN67
-         5YUQZiOn6CB6mvZ/rYIQiP3i2H+gnccXNoX/TrbGlS7cRQFhGb4SbmJw9oY2f/3sskdF
-         OyI894uxeVg+8b4zi/lBbDLu5XrJWBFpYpqae0C2Ii1CwAmnH7y+teNcEcTc24NR/91P
-         F2+N8bgoQTDFwlMjiMGG4ci4k+HhO6QZZ1PQDPJH+LcJVaiUdv4cIv9Q4DVXJZZiR/Sl
-         ra5A==
-X-Forwarded-Encrypted: i=1; AHgh+RqkSAhXpeEtb+wqzfPNydR/wBipIiQ6rn2rvs33ZtVSolLPoYh8dCDDfcj0Poq8ArhMcBW8tPw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxP8Z6XqSfXSuk2G0yT/EWVUQx7HVpnuPe87ZctDKiSkLcDB+6+
-	Hs48zmZaVa+kLhFmPZZ4V2A3CsVLrpPeo1+ERDF4QRcO9r7qqVDi27h4PwOPcYNG9+5lHebJzw+
-	AEcZzvRG4opMUEY/cEXECR6Bhq2+faX0=
-X-Gm-Gg: AfdE7ckixhMO7Bipqaw3R2CLMCGj9Zs4JaY05+kkY7V8509c5RxUKuD0y4CD2ZOrCKG
-	8n6fuzneN3MBz/tSo5wA3LI10PSvTOPoypEd8RXAhTIIAY2BIuvrjb49gaaoTCOxph+lTa9992W
-	QBvTE0LXJTy/JVzI9I1y9SgK9TNfe+cvI1YlHWoF1DheS0EauE+DTt5R7fOKc6iFj4+k5qrgZO8
-	2RAOyCbRjFvH5DzaqpLECGrgLOA0ZW33Yhww0i0PVY02vlDIUlTeurID9+AZYZafHMMPWMxc7LG
-	YvLbsQMi2n6/Oh92jTUwKOxGVlk6GrBcM2iURir6LfXuWrfV0qDmuyDDIzhMEtljVQTVb6tdFgj
-	IFVLntDqmah1U
-X-Received: by 2002:a17:90a:a416:b0:383:5a16:bd67 with SMTP id
- 98e67ed59e1d1-3835a16bddcmr2702118a91.4.1783254156186; Sun, 05 Jul 2026
- 05:22:36 -0700 (PDT)
+	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
+	Date:Message-ID:MIME-Version:Content-Transfer-Encoding; bh=gG+XU
+	53ywe7NdIH9kWaQJFygNnvfcfysdEfINdlwKn8=; b=frG/a/5T2e7eqe8lbn1h/
+	6Kpcni6rwHS9VagGpBf/+a3VuEbKHLW0msEB7sxms8xP/WxgaFPCqxc7zS2Q9m3R
+	c+0J0NW6z4Y9TjRFAdQ7ue7VxCOvkQleEl/8HzPYPoXn74x1TAKMLYlrpCrNw7dn
+	fpDu59k5S2rctNkTq+9d60=
+Received: from localhost.localdomain (unknown [101.5.13.242])
+	by web2 (Coremail) with SMTP id yQQGZQAXwpR4Tkpq7Yi_Ag--.12581S2;
+	Sun, 05 Jul 2026 20:30:49 +0800 (CST)
+From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+To: netdev@vger.kernel.org
+Cc: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
+	Simon Horman <horms@verge.net.au>,
+	Julian Anastasov <ja@ssi.bg>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	lvs-devel@vger.kernel.org,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	linux-kernel@vger.kernel.org,
+	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
+	Ao Wang <wangao@seu.edu.cn>,
+	Xuewei Feng <fengxw06@126.com>,
+	Qi Li <qli01@tsinghua.edu.cn>,
+	Ke Xu <xuke@tsinghua.edu.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH nf] ipvs: skip IPv6 extension headers in SCTP state lookup
+Date: Sun,  5 Jul 2026 20:30:38 +0800
+Message-ID: <20260705123040.35755-1-zhaoyz24@mails.tsinghua.edu.cn>
+X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260628-b4-rust-vertical-imports-v1-0-98bc71d4810b@gurudas.dev>
- <c89a1bc8-6cc1-4e16-ac95-add389e45a2b@lunn.ch> <akmnh0AKFfu9-OYn@gurudas.dev>
-In-Reply-To: <akmnh0AKFfu9-OYn@gurudas.dev>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 5 Jul 2026 14:22:20 +0200
-X-Gm-Features: AVVi8CdKZk1uQg3RyoO9gWWnGdg1D5rtqZ5BcTTqS2w4TtsLqn1TqMImL9QufHY
-Message-ID: <CANiq72k0zokLC_L2wPJRDb_CyvnJznOSKUgTaiHo87GT6Pwyag@mail.gmail.com>
-Subject: Re: [PATCH 0/7] rust: Use kernel style vertical imports in various drivers
-To: Andrew Lunn <andrew@lunn.ch>, Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>, 
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Robin Murphy <robin.murphy@arm.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
-	Michal Wilczynski <m.wilczynski@samsung.com>, =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Jens Axboe <axboe@kernel.dk>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, driver-core@lists.linux.dev, 
-	linux-riscv@lists.infradead.org, linux-pwm@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linux-block@vger.kernel.org, netdev@vger.kernel.org, 
-	nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:yQQGZQAXwpR4Tkpq7Yi_Ag--.12581S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxZry8ArW7Ar1rZF1DZF15CFg_yoW5XF4xpa
+	90krWS9FW7Jryqvws7AryxC3y5Gws3Way7Wry8ta43Z3Z0grn5tFy0y3ya93Z8urWvg342
+	qr9Iq34UZF4kJFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9v1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l8cAvFVAK
+	0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4
+	x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2
+	z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4
+	CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E74AGY7Cv6cx26r4r
+	Kr1UJr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc
+	8vx2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVW8ZVWrXwCY02Av
+	z4vE14v_Xr1l42xK82IYc2Ij64vIr41l42xK82IY6x8ErcxFaVAv8VW8Ww4UJr1UMxC20s
+	026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_
+	JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14
+	v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xva
+	j40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JV
+	W8JrUvcSsGvfC2KfnxnUUI43ZEXa7VU1eWlPUUUUU==
+X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAgITAWpKHF5IggAAs6
 
-On Sun, Jul 5, 2026 at 2:38=E2=80=AFAM Guru Das Srinagesh <linux@gurudas.de=
-v> wrote:
->
-> Miguel, could you please indicate if you have a preference here?
+set_sctp_state() reads the SCTP chunk header again in order to drive the
+IPVS SCTP state table.  For IPv6 it computes the offset with
+sizeof(struct ipv6hdr), while the surrounding IPVS code uses iph->len from
+ip_vs_fill_iph_skb(), where ipv6_find_hdr() has already skipped extension
+headers and found the real transport header.
 
-Gary is right -- it depends.
+This makes the state machine read from the wrong offset for IPv6 SCTP
+packets that carry extension headers.  For example, an INIT packet with an
+8-byte destination options header can be scheduled correctly by
+sctp_conn_schedule(), but set_sctp_state() reads the first byte of the SCTP
+verification tag as a DATA chunk type.  The connection then moves from NONE
+to ESTABLISHED instead of INIT1, gets the longer established timeout, and
+updates the active/inactive destination counters incorrectly.  This happens
+even though the SCTP handshake has not completed.
 
-Generally speaking, it is best to do changes through each tree;
-especially so if it is the kind of thing that may be prone to
-conflicts.
+Use ip_vs_fill_iph_skb() in set_sctp_state() and base the chunk-header
+offset on iph.len, matching sctp_conn_schedule() and the SCTP NAT handlers.
+For IPv4 and IPv6 packets without extension headers this preserves the
+existing offset.
 
-In certain cases, yes, I may take treewide changes, with Acked-by's
-from maintainers (and very exceptionally I have done it without that
-if e.g. it is trivial enough and enough time has passed -- trusting
-that people trust me to do so).
+Fixes: 2906f66a5682 ("ipvs: SCTP Trasport Loadbalancing Support")
+Cc: stable@vger.kernel.org
+Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
+Reported-by: Ao Wang <wangao@seu.edu.cn>
+Reported-by: Xuewei Feng <fengxw06@126.com>
+Reported-by: Qi Li <qli01@tsinghua.edu.cn>
+Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
+Assisted-by: Claude-Code:GLM-5.2
+Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+---
+ net/netfilter/ipvs/ip_vs_proto_sctp.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-It is part of why the Rust tree exists, i.e. as a fallback and also
-for convenience in certain cases.
+diff --git a/net/netfilter/ipvs/ip_vs_proto_sctp.c b/net/netfilter/ipvs/ip_vs_proto_sctp.c
+index 63c78a1f3918..6e0fc23be305 100644
+--- a/net/netfilter/ipvs/ip_vs_proto_sctp.c
++++ b/net/netfilter/ipvs/ip_vs_proto_sctp.c
+@@ -375,17 +375,15 @@ set_sctp_state(struct ip_vs_proto_data *pd, struct ip_vs_conn *cp,
+ 		int direction, const struct sk_buff *skb)
+ {
+ 	struct sctp_chunkhdr _sctpch, *sch;
+ 	unsigned char chunk_type;
++	struct ip_vs_iphdr iph;
+ 	int event, next_state;
+-	int ihl, cofs;
++	int cofs;
+ 
+-#ifdef CONFIG_IP_VS_IPV6
+-	ihl = cp->af == AF_INET ? ip_hdrlen(skb) : sizeof(struct ipv6hdr);
+-#else
+-	ihl = ip_hdrlen(skb);
+-#endif
++	if (!ip_vs_fill_iph_skb(cp->af, skb, false, &iph))
++		return;
+ 
+-	cofs = ihl + sizeof(struct sctphdr);
++	cofs = iph.len + sizeof(struct sctphdr);
+ 	sch = skb_header_pointer(skb, cofs, sizeof(_sctpch), &_sctpch);
+ 	if (sch == NULL)
+ 		return;
+-- 
+2.47.3
 
-I hope that clarifies.
-
-Cheers,
-Miguel
