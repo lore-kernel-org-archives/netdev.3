@@ -1,76 +1,159 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD261382370;
-	Sun,  5 Jul 2026 14:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2733347C6;
+	Sun,  5 Jul 2026 14:48:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783261168; cv=none; b=cUbgdI2DtKgIGZIJIyay/BPD7l6NBUInDchuoRNVnMowlN3Exk/EK1tAUAnmCAJzeLlMaOT64/PHgLpa5x1OyzKn+O2nLDghajoMsEnfLuNbH+nZzeoAU3lYgbBoeExSBwstKMAcuG8fmAqy/9TogJLBKzFRnM8f5dYknX48kcc=
+	t=1783262883; cv=none; b=n67Rh+FnfzD0EkOzeM2tOx7L8cc3JMGhnc/D1paHzDzsHoNEWmS6FO+ztXkApQ/f/cO8Wq1eiEiBYC8B6nuD5GXUkqw2toer9TlUUEMuxp+illBP9g8RU4UnCUBnLoHcuLxavrSpPGfHvBIC82EUubr38NiLTBJxMAsJU9hT794=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783261168; c=relaxed/simple;
-	bh=jcPJen87JmcP/j7nnSpXSY1c7GTdyigGtyopvSguuN4=;
+	s=arc-20240116; t=1783262883; c=relaxed/simple;
+	bh=IapWGt1veNqxOIcHGcw94j5cPhf1WPHsmmBl+M8Db4E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m9qoDtCQ/0N6W8zwkB0xfY+zTSf6XXvnlS+TUnTyXCxbHs7K3H3dJ5IA84Vwaemre6dxZR4bhJatugOVZhXahAbvGGo43697yLg7KxZNzWhJ4T8mp++Q1qZxr8MeCLUhcfO4qfsrsEgCGIyoH+328exeIecq4jSDdXs3lpdgDJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cptocLBo; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=nX5fNwx+6o4+ql16Xy7Fi216PuW6pDDpUhsGZeFBueSY2HdhtOKWtWvCbbkJFVKKMFAeNaq2Zseb+Dj+EbrSBeEdB/KuUYvISJPkZ5gpqzn/HJKFAHq+tImsc75oPDDcBTnxv/JMURkYhnUZfsYMvmODlIbD17tM/x5VS58Dtzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bDUNe3Ip; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cptocLBo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 857331F000E9;
-	Sun,  5 Jul 2026 14:19:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bDUNe3Ip"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25B881F000E9;
+	Sun,  5 Jul 2026 14:47:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783261167;
-	bh=9DrplwkjJBjGxh1cD2R/mrFbb4Rpl+IeLJikyWbz1n0=;
+	s=k20260515; t=1783262881;
+	bh=UlYXU1qS0vwP6GO5xRuEl/y/r2Ay40eklzolqAObtF0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=cptocLBoWZfJf1xHYKJoahvZWPj09dm3x9FLqDXE3okKXJfVcomzfi4Mb8GMT+0rZ
-	 eC8ShOS3TECSZQc2yeSvxIEUCQ5/Zg5n/l7A0PMRmE8g1Vo7VoAP9XD6iAtKVJytPB
-	 Komnun2kImCh88/6eIfp0I75KS/xzkxKHxwBdPpmUdVJrlLjLFA69N581eiP4QaghD
-	 Xy/9b8exL1sLmFALl9CqOmja/fTBqR/qPJGUxscaZ+pLoFyNa+IwwlovyQij64QD/W
-	 4ldZcyf90JsGEkKU6wSciZH4/WrDFUzGNRr7unp3oVr5ByekNOa5NGCtv4djSbgYx+
-	 r7rUEhGxftVZQ==
-Date: Sun, 5 Jul 2026 17:19:20 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Zhiping Zhang <zhipingz@meta.com>
-Cc: saeedm@nvidia.com, tariqt@nvidia.com, mbloch@nvidia.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
-	michaelgur@nvidia.com, stable@vger.kernel.org
-Subject: Re: [PATCH net v2] net/mlx5: free mlx5_st_idx_data on final dealloc
-Message-ID: <20260705141920.GI15188@unreal>
-References: <20260630165324.2859353-1-zhipingz@meta.com>
+	b=bDUNe3IpRspasOsPMBHBgoZ855b66W41bax3jiC36Iueoz09A5EoPkDC5Qc4epFUp
+	 qu2Q2N6vb40+k+xLSJLif37mLqpZKId3tg88JCH1C76A+CJ1cXy7BUlEAYGXq4izDx
+	 lIGtvdnOu4uPFKg99O3jFGgsRgeLY9N6tBDScvzQbvO8iqa0kNjYiB8ZXN/cTVQ638
+	 J/zJtqvuc0DdZyqjZ/LWMWu9Tyu3GgsetA5HjvtS3dba8OkDzBdNp4zeRjSd3pRnQz
+	 egA9Wu/EaGOOyj491/BrN8PvCiP0fBSOszvkQHwpsaGm1nf/PMocwHsM20GX5fjn+F
+	 dVRExXQd44rbw==
+Date: Sun, 5 Jul 2026 15:47:57 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, David Heidelberg <david@ixit.cz>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+	oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 1/2] dt-bindings: net: nfc: samsung,s3fwrn5: add
+ S3NRN4V and clk-req-gpios
+Message-ID: <20260705-panic-reviving-993142677f47@spud>
+References: <20260703202601.78563-1-jorijnvdgraaf@catcrafts.net>
+ <20260703202601.78563-2-jorijnvdgraaf@catcrafts.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="DwWmt+Yvmo67xykl"
+Content-Disposition: inline
+In-Reply-To: <20260703202601.78563-2-jorijnvdgraaf@catcrafts.net>
+
+--DwWmt+Yvmo67xykl
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260630165324.2859353-1-zhipingz@meta.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 30, 2026 at 09:53:20AM -0700, Zhiping Zhang wrote:
-> Workloads that repeatedly allocate and release mkeys carrying TPH
-> steering-tag hints (e.g. churning RDMA MRs) leak one
-> struct mlx5_st_idx_data per cycle; kmemleak flags it as unreferenced
-> and the kmalloc slab grows over time.
-> 
-> When the last reference to an ST table entry is dropped,
-> mlx5_st_dealloc_index() removed the entry from idx_xa but the backing
-> mlx5_st_idx_data allocation was never freed.
-> 
-> Free idx_data after the xa_erase() so the lifetime of the bookkeeping
-> struct matches the lifetime of the ST entry it tracks.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 888a7776f4fb ("net/mlx5: Add support for device steering tag")
-> Reviewed-by: Michael Gur <michaelgur@nvidia.com>
-> Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
+On Fri, Jul 03, 2026 at 10:26:00PM +0200, Jorijn van der Graaf wrote:
+> The S3NRN4V is an S3FWRN5-family NFC + eSE controller found e.g. on the
+> Fairphone 6 (SM7635). Add a compatible for it and document the optional
+> clk-req-gpios property: when wired, the controller drives this line to
+> request its reference clock (needed to generate the poll carrier), and the
+> driver gates the clock on it instead of leaving it always-on.
+>=20
+> The line is modelled as a GPIO rather than an interrupt because the driver
+> reads its level to (re)synchronise the clock state, not just react to its
+> edges. It is only meaningful on the S3NRN4V, so it is restricted to that
+> compatible.
+>=20
+> Assisted-by: Claude:claude-opus-4-8
+> Assisted-by: Claude:claude-fable-5
+> Signed-off-by: Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>
 > ---
-> v2: respin per maintainer-netdev.rst; no code change.
-> v1: https://lore.kernel.org/linux-rdma/20260612170406.3339093-1-zhipingz@meta.com/
-> 
->  drivers/net/ethernet/mellanox/mlx5/core/lib/st.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
+>  .../bindings/net/nfc/samsung,s3fwrn5.yaml     | 23 ++++++++++++++++++-
+>  1 file changed, 22 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/Documentation/devicetree/bindings/net/nfc/samsung,s3fwrn5.ya=
+ml b/Documentation/devicetree/bindings/net/nfc/samsung,s3fwrn5.yaml
+> index 12baee457..3ebcd0933 100644
+> --- a/Documentation/devicetree/bindings/net/nfc/samsung,s3fwrn5.yaml
+> +++ b/Documentation/devicetree/bindings/net/nfc/samsung,s3fwrn5.yaml
+> @@ -14,12 +14,20 @@ properties:
+>      enum:
+>        - samsung,s3fwrn5-i2c
+>        - samsung,s3fwrn82
+> +      - samsung,s3nrn4v-i2c
+
+Why does the compatible contain the bus? The s3frn5 device probably only
+has it because it's an old text binding, your new device shouldn't have
+that.
+
+pw-bot: changes-requested
 
 Thanks,
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Conor.
+
+> =20
+>    en-gpios:
+>      maxItems: 1
+>      description:
+>        Output GPIO pin used for enabling/disabling the chip
+> =20
+> +  clk-req-gpios:
+> +    maxItems: 1
+> +    description:
+> +      Input GPIO pin connected to the controller's clock-request output.=
+ When
+> +      present, the reference clock is enabled in response to this signal
+> +      instead of being left always-on.
+> +
+>    interrupts:
+>      maxItems: 1
+> =20
+> @@ -58,12 +66,25 @@ allOf:
+>        properties:
+>          compatible:
+>            contains:
+> -            const: samsung,s3fwrn5-i2c
+> +            enum:
+> +              - samsung,s3fwrn5-i2c
+> +              - samsung,s3nrn4v-i2c
+>      then:
+>        required:
+>          - interrupts
+>          - reg
+> =20
+> +  # The clock-request handshake only exists on the S3NRN4V.
+> +  - if:
+> +      not:
+> +        properties:
+> +          compatible:
+> +            contains:
+> +              const: samsung,s3nrn4v-i2c
+> +    then:
+> +      properties:
+> +        clk-req-gpios: false
+> +
+>  examples:
+>    - |
+>      #include <dt-bindings/gpio/gpio.h>
+> --=20
+> 2.55.0
+>=20
+
+--DwWmt+Yvmo67xykl
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCakpunAAKCRB4tDGHoIJi
+0gVgAP4tvuqBhaZ228L0ROWRbnr758cpA1W497SNJSZp97YOfgD/Trxth7/GTRpQ
+B9ciLo62hZ3odzTxSB0TJN6vCPwdSg4=
+=SnpT
+-----END PGP SIGNATURE-----
+
+--DwWmt+Yvmo67xykl--
