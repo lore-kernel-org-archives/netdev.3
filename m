@@ -1,125 +1,123 @@
-Received: from out-21.smtp.spacemail.com (out-21.smtp.spacemail.com [66.29.159.70])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 926CEDDCD;
-	Sun,  5 Jul 2026 01:15:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.29.159.70
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783214160; cv=none; b=TJhwVQ7tMOD+qnuHT9xjbyQshjqxu1+M+xodCHdx5HT8X4KT9BtI1PQKb6oZw8camp53gv4TtF0ywGFiXVhriDmUNP+279as5OY1nqpyNLNXQqWhenNuLiGjsvD43LXvhJsVySbcvY/iU0n6tZIE/BoFJmg2zumOtS9hKJIROnI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783214160; c=relaxed/simple;
-	bh=QPy17h4e5yABRPwckIOx4tS7pXaXzbXdDl2ZbtQVdXQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VJfgjMPnlq5IEB7q/dLXC86EUJ0MlpjUsezbhTd0FrBd+9uefeGcf9U6L2RRvF8fjCDK/tVDuc3eCEFJdiKXcBcE9ny7KIGcy4vSP9NklDN0hRKlnDh2ptlwcaMfn+owo02UfKu+Qdwp0Kp/pogbwLmwtcnL+c0rHNN3BZDfOiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gurudas.dev; spf=pass smtp.mailfrom=gurudas.dev; dkim=pass (2048-bit key) header.d=gurudas.dev header.i=@gurudas.dev header.b=YCR0Kndl; arc=none smtp.client-ip=66.29.159.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gurudas.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gurudas.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B46C20DD51
+	for <netdev@vger.kernel.org>; Sun,  5 Jul 2026 02:11:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783217499; cv=pass; b=OsmYITBY8jfaCRAUPD8s18ppw/U7oAtVStf0xwxt75wN1nH1XAK4hjw9dPiBFMwoEo+JEA+Q43nvwe62uAntFvtqChKGTf5amecUo1HFGvo8gxt8kI6uYMXCH9pmp7dr8Oi/mbqe8inHxpP/p363VttQoE7oSnDxoSp7vQQUHPI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783217499; c=relaxed/simple;
+	bh=kxNPTAlLfcSyUWT9fknGJyrPuBuy2cw+GfowXjZrhaY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RqVK70xLLb2wWO6DHVMFqw1TqrchNtwdzB0l2Vxx0vn5xept34/MvXVr0XUQoNcmg8eVuOwJLeQaC3zhLQfVdcQPfcQ59TPlg955BOG4TMg2iBjV9vf56zfa/7k5Ur/x95cpnlyhMe4VRbpZKOYXuVt9yn7NNjJ4GJ1Es374moc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HmKdtRte; arc=pass smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gurudas.dev header.i=@gurudas.dev header.b="YCR0Kndl"
-Received: from gurudas.dev (107-194-158-19.lightspeed.sntcca.sbcglobal.net [107.194.158.19])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.spacemail.com (Postfix) with ESMTPSA id 4gt8gn46MPz2x99;
-	Sun, 05 Jul 2026 01:15:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gurudas.dev;
-	s=spacemail; t=1783214151;
-	bh=OHTMZhj9UQl6REPNtWFTGyIxAJpWRu/Vu/bsjHn8Ex0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YCR0KndlSWOcBAYhlrSZDBeGTpdr14biiYKVLt+UmWumy96f3oqAWHqVF/TQ+IAtc
-	 W8CK29uX1Lh9CPRo7lR7pqTXojRf0OFI0LLCU7Px6m8NE+Kn2WS3aa7NRUioQkSDvc
-	 cgJAze28g5e+zTVGdX1qgjvHRlp4q9+m9doUoyofhgK1V4m2D5shrUlDAeXRZdXGcl
-	 SgncobJsd4Of3wxD2goIHgP2QgtaVKilrKBJlRnToBb0RV77b3HzBzq+HsOiO/jjii
-	 a4ALmIBRGCcVGFOd3uGxDUKLkPn8u+8SgblOttrfz3VAvBhsBRDTl8cEr+aABbPKOH
-	 LXVb/sykR+vPQ==
-Date: Sat, 4 Jul 2026 18:15:48 -0700
-From: Guru Das Srinagesh <linux@gurudas.dev>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>,
-	Fu Wei <wefu@redhat.com>,
-	Michal Wilczynski <m.wilczynski@samsung.com>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	driver-core@lists.linux.dev, linux-riscv@lists.infradead.org,
-	linux-pwm@vger.kernel.org, linux-pm@vger.kernel.org,
-	linux-block@vger.kernel.org, netdev@vger.kernel.org,
-	nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH 1/7] samples: rust_dma: use vertical import style
-Message-ID: <akmwRDWy0FkAPeXf@gurudas.dev>
-Mail-Followup-To: Danilo Krummrich <dakr@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>,
-	Fu Wei <wefu@redhat.com>,
-	Michal Wilczynski <m.wilczynski@samsung.com>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	driver-core@lists.linux.dev, linux-riscv@lists.infradead.org,
-	linux-pwm@vger.kernel.org, linux-pm@vger.kernel.org,
-	linux-block@vger.kernel.org, netdev@vger.kernel.org,
-	nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org
-References: <20260628-b4-rust-vertical-imports-v1-0-98bc71d4810b@gurudas.dev>
- <20260628-b4-rust-vertical-imports-v1-1-98bc71d4810b@gurudas.dev>
- <DJMAFSKM4K9W.19ED2PVPU6S3R@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HmKdtRte"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-479b7aada85so1918550f8f.1
+        for <netdev@vger.kernel.org>; Sat, 04 Jul 2026 19:11:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783217496; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ItGVqIEIxa1tQ58ZkGIH8c4hVEuztKKSlXWyZxL9yzW+MFAYKSjHhzxEo5o13Fty/t
+         Oe7vCa4kMD8T6byZ0rqanpSVmjfsMOgkreDXDUl8FFK172iV4CAVqGAJ2HzflzuTktak
+         W2Qfrrc5D7it6eYneGHPDFUv2bwnKKYmaAHGDxAqM5EhBXzTt5ll/fbOMmwsSu2/AUxx
+         hkHHuWlZ3Eg3HBFnVy4VxtgiVwsp9OSLtnJ8KzEviQ+iF0wWQ4A5zwFCo6105YnwxqcM
+         T8nLoB6suXErJ3y9T6MH50HScd64QNjQqFbr0wrtKp6bmj1S0aHD0DsRlQ2ubUB17z7M
+         n5ZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=kxNPTAlLfcSyUWT9fknGJyrPuBuy2cw+GfowXjZrhaY=;
+        fh=hG3SgtV8NExFJskVc8NpU2i/fuUHHrhnw4ZEoY0XDQc=;
+        b=EJUTS/hU3fJC2wvs0rybq6DIw4S+0L5SoYDMg3Wqz1EVOd8/+z97FkFqeR0HyLCkgP
+         7dlkzVqocDlowfz4kxeB1WXiLPX941zNz4Cy8kAo0JWeMTbxaNDvArawtJy8PWxoiJzC
+         3VFyyNGsUD0qPTJMWDlqqSDGBEXUpoIfr5NaQCcXSgKlUi02AQRJBA29pZIDl1nl1vfp
+         NFGDhT34dVofAh/Lt3xxYO2GpUIsdgyBvSJM1vSSgtmlzwOmSkP/eABqqPsA1Pd7yaxp
+         h0NxU0mvOn9Dd7EyOodPHBxJDb+yfvga0TBwmP+hxtcID8XAifwBovboE01tXUdTukhW
+         aY+A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783217496; x=1783822296; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=kxNPTAlLfcSyUWT9fknGJyrPuBuy2cw+GfowXjZrhaY=;
+        b=HmKdtRtetM2NDeuyflLPyvdy/grl0W+ptN772MGAij7+nrHbbXhc2qymfD0Kb5PqMP
+         ryLcrY6xh6NQjLQ2MJ9Fv5gSwpke/rB44sixz803C+m96rP8/YKQ/itznIpy8MUvMJil
+         UUSjNEETrVFsP0dbmZGF0Tn3b4qcSpoYCEUkoZ8qq9Jn2sZHkelYODCB7QV6sqrdr/jC
+         zrh3QMZ5ZSv+ytznAc9ha3cqn89lWqrCNun/9GbiRjj3OU2SMuSKLpEaytOpa/pF6YW7
+         m8fTrMmEk4j/DFLdZuB5BdphHJLIgP/XoFSBOmiYaqx3yiClyxJBcS/hLRavFPyCBeaM
+         ONHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783217496; x=1783822296;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kxNPTAlLfcSyUWT9fknGJyrPuBuy2cw+GfowXjZrhaY=;
+        b=UM02k9ODJ+LVmFkJPJ/3EuF8uQIgBMXi0IXRuIlQXSc/9niDZZXyNrfY4vusyKO5rB
+         BpiodFCOEdjxEPYO2R6OiZiJSb9xMPcVa3Hn3cv84+r7AMg+C4KMGswzWH5cLmDNXlHh
+         x0ctofqwZFV7WmCfZ/guEwug4lJS9FZoqkrumevIfGkZby3cG31qhZFN0ERJZ14uMBo3
+         R2+VMpJcdi8a4rT65CGXxzGskQhIGGijQTg8Yn3PO0YOCvCbIQqJPkFW5TD5fzQr7Msw
+         W++5W7bPfUCwlzIgYXQvG3/WkGt+x0OkXQh2KNgwlOitp4vYR9a4lqU8Waqmdcu3b1ZI
+         wn0g==
+X-Gm-Message-State: AOJu0YwwpMKMIhPAMDSv4Sbuht8KsvrAEcHNG026g0kyIzYiQbhfaKhm
+	+4htuBaXVvPk//xjp8KUTmcf31LcRKRwtjUnds8RNMLopl22p3W9fs9F8v04pZSZduLVD7Ag3+1
+	aklcH6TuI58xFJXYR7bfzFnjK2NDc3P8=
+X-Gm-Gg: AfdE7clG0kZhFWnqKbXV3cZOZ2U0xYJv+iSBSom0BdLXjTBkfdDSr3vbF5aDMRHQgwK
+	mvI8NNIWGVxRfq3s//hFsmBFvzBcwlATGjXR4aIou8fI+k/VKa9ZQL4p85JgabnHO9xCXGrCvmS
+	0BvJ5nGCTsn+JxFQIQinC6/bQfIpkNGwC5rYu7IYIWP93DqJKJOciSuRsBdx+qAR1pNOBi/arTF
+	H8fjwxYvZiGs/nC/RxrInJtd5tVItjb4He651Ct15bJfsfERmwSJkqygwwt7P94WRBm+g==
+X-Received: by 2002:a05:6000:310a:b0:474:fd7a:93f2 with SMTP id
+ ffacd0b85a97d-47aab961efbmr5621255f8f.15.1783217496219; Sat, 04 Jul 2026
+ 19:11:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DJMAFSKM4K9W.19ED2PVPU6S3R@kernel.org>
-X-Envelope-From: linux@gurudas.dev
+References: <CAFk-A4mE9Jweo2hfX7y_85xbPyt0FqpMT1EvqX1OcYZ=LTLgRA@mail.gmail.com>
+ <29129c40-4010-4862-9b4b-3bafad874568@linux.dev> <CAFk-A4n9U0r07tn6XHHqmOZ++-bmM4bSd-SwdpEU-88gjKts7Q@mail.gmail.com>
+ <216969a9-3584-4dc8-9e23-50fc18b31725@linux.dev>
+In-Reply-To: <216969a9-3584-4dc8-9e23-50fc18b31725@linux.dev>
+From: Masashi Honma <masashi.honma@gmail.com>
+Date: Sun, 5 Jul 2026 11:11:25 +0900
+X-Gm-Features: AVVi8Cex59Et_09q6rUsvepTcxo82qiJkYVp8jk9ZmjruPc9k_ncvXD6H4LmGwo
+Message-ID: <CAFk-A4mUijKffHg3QhOxC7Ne2rk_GVbYY2UJ-Ek497avdubzgw@mail.gmail.com>
+Subject: Re: [RFC] xdp: add device context to bpf_xdp_link_attach_failed tracepoint
+To: Leon Hwang <leon.hwang@linux.dev>
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, ast@kernel.org, daniel@iogearbox.net, 
+	kuba@kernel.org, hawk@kernel.org, andrii@kernel.org, rostedt@goodmis.org, 
+	mhiramat@kernel.org, edumazet@google.com, pabeni@redhat.com, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 30, 2026 at 11:48:48AM +0200, Danilo Krummrich wrote:
-> On Mon Jun 29, 2026 at 5:38 AM CEST, Guru Das Srinagesh wrote:
-> >      page, pci,
-> 
-> Can you please also convert this one? Patch 7 also misses at least one case.
+2026=E5=B9=B47=E6=9C=884=E6=97=A5(=E5=9C=9F) 22:28 Leon Hwang <leon.hwang@l=
+inux.dev>:
+> Probably, you can get the 'extack->_msg' by tracing dev_xdp_attach using
+> kprobe+kretprobe or kprobe.session, if the extack is not NULL.
 
-Will fix this and the missed ones in Patch 7 as well. Thanks for your review, Danilo.
+Thanks, that's a nice pointer -- dev_xdp_attach() has both the net_device
+(so the ifindex, which lets us correlate a failure to a specific attach)
+and the extack, and it avoids depending on the tracepoint you want to
+retire.
+
+The tradeoff is that dev_xdp_attach() is a static internal function, so a
+probe on it can break across kernels (inlining/signature changes). For a
+best-effort error message that's tolerable with a graceful fallback, but
+it's a maintenance cost on our side.
+
+Since this is ultimately just an error-message improvement, and your
+in-band BPF_LINK_CREATE work would solve it cleanly for all link types, I
+think we'd lean toward waiting for that rather than adding an internal
+kprobe to Cilium. Do you have a rough timeline for the BPF_LINK_CREATE
+series? That would help us decide whether a stopgap is worth it.
+
+Regards,
+Masashi Honma.
