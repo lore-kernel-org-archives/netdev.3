@@ -1,49 +1,46 @@
-Received: from mail.mdapi.ch (mail.mdapi.ch [31.3.128.54])
+Received: from h8.fbrelay.privateemail.com (h8.fbrelay.privateemail.com [162.0.218.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D445A3EA66;
-	Sun,  5 Jul 2026 19:00:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=31.3.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0D3288BA;
+	Sun,  5 Jul 2026 19:06:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.0.218.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783278054; cv=none; b=fKAfzThjyDy0NW+A8t8XH7v7g33vxM7LaUFwVr9QOvCLEwpupopFxzL7rofsC3h+tpEECPRtNDVMptBUEbLU+lpvctNFDt4g1nsT5sLdVxpDGSspyvjmwj++cfmwR25NpkAa5J3HB6KPWzXjOUKZINY0gERnkT+aJYhFMS7FkFs=
+	t=1783278414; cv=none; b=Od5wvVbyp/eEvE4yQ8MY4znFc4UH4X12vT+sDvymg79ky1A3uS9DS9zVrcJ+kSw1cNltrzoZETcUAcGiI1uyywhwLUPAE8KnanHzKwez/ZOwPspamCtZMuDMXqHAt3rj/Q277PjJPyVzMWst9oxk8/dhMuHoU4hYgvpD656gZqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783278054; c=relaxed/simple;
-	bh=duqXLDPQETQQ+U4fgvsQIJ496Fi9642hU+8ipHBbK4E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UPeedJV+T557Ezcm7S7FNNe917XwS1ujU0qylNlFacRhZzyovDkJ/ktqoweuDrrzrLah0oO3X7rRIDAYDUN0TV3q7qOzEjNv2M0+mqwLfXlKnWmumIyJBGX30oT62JCbQ4RmirsnNsllUTND56cw8Oy6MoOCvdZr0tzXOQXQ0iQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tillo.ch; spf=pass smtp.mailfrom=tillo.ch; dkim=pass (2048-bit key) header.d=tillo.ch header.i=@tillo.ch header.b=l/hxzEAH; arc=none smtp.client-ip=31.3.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tillo.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tillo.ch
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tillo.ch header.i=@tillo.ch header.b="l/hxzEAH"
-From: Martino Dell'Ambrogio <tillo@tillo.ch>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tillo.ch; s=mail202603;
-	t=1783277683;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kSbm9eb07lNpMQeGNDv+47Xz9cCa+fkEB+5vEXOugUc=;
-	b=l/hxzEAHmdYokvb9tcSk5vIGuNVOle/glzII3RmdoQwMqW6dS1BsL+GYRB6DCGq1OC8wZM
-	/TkZRgqJE82Q2F3H8bCsmalDtjdB1Oomzco/JRf4DIapbBpKJcBPCfx2MsJOWPzf0JG0JL
-	mz/DQ8aOJXc+UU/OCcYEQR+4CcChVg/OZpO7nKbUV2jMYB93wWe91PZ+kP+Rb9EuX8/y1p
-	x17FCXQUF+CbGUIEj12QS/FmQxKhN6ZzVFXR8DwN2hKXHq8LocoQZtyLCh9MNdmd6uyaeK
-	zePbY73mmQ+Lo1X3p/L3gMs0Pw6HCzhE4iKRwl+Ash2E44qUYOgwHTK0YEq5kg==
-To: netdev@vger.kernel.org
-Cc: Russell King <linux@armlinux.org.uk>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S . Miller" <davem@davemloft.net>,
+	s=arc-20240116; t=1783278414; c=relaxed/simple;
+	bh=lVuLe5DKccN3BSNZnJ5IgF8cRkXFuHfGfiCHhThWpdE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cizv50EIJJ+Vq3KMoCiRLNLUXvfE6s0DrrJ3bF7tVfH4xrywdFNtUDNI/MiFPhuhOySc94g//bGQWm2EdfHymLbkDYXpwiYfh+n6JOX4OX1nGdZk9f93onuEr7Ub/31HN1iY9ckZCRhr7/vz+0ZM9EO9E/iLyjlmWNZmDcQULtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=catcrafts.net; spf=pass smtp.mailfrom=catcrafts.net; arc=none smtp.client-ip=162.0.218.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=catcrafts.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=catcrafts.net
+Received: from MTA-11-3.privateemail.com (mta-11.privateemail.com [198.54.118.200])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by h7.fbrelay.privateemail.com (Postfix) with ESMTPSA id 4gtcRZ6CBsz2xC6;
+	Sun,  5 Jul 2026 15:06:50 -0400 (EDT)
+Received: from mail.privateemail.com (K8S-PROD-WORKER-13 [87.215.145.39])
+	by mta-11.privateemail.com (Postfix) with ESMTPA id 4gtcR73L4Lz3hhT9;
+	Sun,  5 Jul 2026 15:06:27 -0400 (EDT)
+From: Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>,
+	David Heidelberg <david@ixit.cz>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	Martino Dell'Ambrogio <tillo@tillo.ch>
-Subject: [PATCH net-next 1/2] net: sfp: allow prefix matching in quirk lookup
-Date: Sun,  5 Jul 2026 20:54:38 +0200
-Message-ID: <20260705185440.136496-2-tillo@tillo.ch>
-In-Reply-To: <20260705185440.136496-1-tillo@tillo.ch>
-References: <20260705185440.136496-1-tillo@tillo.ch>
+	Rob Herring <robh@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	oe-linux-nfc@lists.linux.dev,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v2 0/2] nfc: s3fwrn5: support the S3NRN4V variant
+Date: Sun,  5 Jul 2026 21:06:18 +0200
+Message-ID: <20260705190621.128257-1-jorijnvdgraaf@catcrafts.net>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,92 +49,61 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Some clone SFP modules (notably XGS-PON ONT sticks) ship malformed
-EEPROMs where the vendor PN field is filled with non-printable garbage
-past the trailing legitimate characters instead of SFF-8472 mandated
-space padding. The current sfp_match() requires an exact full-field
-length match: sfp_strlen() returns 16 (no trailing spaces or NULs to
-strip), but strlen() of the quirk string is shorter, so the length
-comparison rejects the entry before strncmp() is even called and the
-quirk silently never applies. The kernel then honors the module's
-spurious TX_FAULT signal and the SFP state machine eventually disables
-the module.
+This adds support for the Samsung S3NRN4V, an S3FWRN5-family NFC
+controller found e.g. on the Fairphone 6 (SM7635), to the s3fwrn5
+driver.
 
-Add a prefix_match flag to struct sfp_quirk and a SFP_QUIRK_F_PREFIX
-macro. When set, sfp_match() compares only strlen() leading bytes of
-the quirk string, ignoring trailing field bytes. Existing exact-match
-quirks are unaffected (prefix_match defaults to false via zero-init in
-the existing SFP_QUIRK macros).
+The S3NRN4V differs from the already-supported parts in three ways: it
+ships with working firmware behind a bootloader protocol the driver
+does not implement (so firmware download is skipped), it loads its RF
+registers through a different proprietary command (DUAL_OPTION), and it
+gates its reference clock through a CLK_REQ line that the driver must
+service for the chip to be able to generate the 13.56 MHz poll carrier.
 
-Signed-off-by: Martino Dell'Ambrogio <tillo@tillo.ch>
----
- drivers/net/phy/sfp.c | 22 +++++++++++++++++-----
- drivers/net/phy/sfp.h |  1 +
- 2 files changed, 18 insertions(+), 5 deletions(-)
+Patch 1 adds the compatible and the clk-req-gpios property to the
+binding; patch 2 implements the variant in the driver.
 
-diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-index f520206..e7ba642 100644
---- a/drivers/net/phy/sfp.c
-+++ b/drivers/net/phy/sfp.c
-@@ -516,6 +516,13 @@ static void sfp_quirk_ubnt_uf_instant(const struct sfp_eeprom_id *id,
- 	{ .vendor = _v, .part = _p, .support = _s, .fixup = _f, }
- #define SFP_QUIRK_S(_v, _p, _s) SFP_QUIRK(_v, _p, _s, NULL)
- #define SFP_QUIRK_F(_v, _p, _f) SFP_QUIRK(_v, _p, NULL, _f)
-+/* Like SFP_QUIRK_F, but matches as a prefix. Use for clone modules
-+ * that fill EEPROM trailing bytes with garbage instead of the
-+ * SFF-8472-mandated space padding, so sfp_strlen can't trim the
-+ * field down to the legitimate length.
-+ */
-+#define SFP_QUIRK_F_PREFIX(_v, _p, _f) \
-+	{ .vendor = _v, .part = _p, .support = NULL, .fixup = _f, .prefix_match = true }
- 
- static const struct sfp_quirk sfp_quirks[] = {
- 	// Alcatel Lucent G-010S-P can operate at 2500base-X, but incorrectly
-@@ -626,13 +633,16 @@ static size_t sfp_strlen(const char *str, size_t maxlen)
- 	return size;
- }
- 
--static bool sfp_match(const char *qs, const char *str, size_t len)
-+static bool sfp_match(const char *qs, const char *str, size_t len, bool prefix)
- {
-+	size_t qs_len;
-+
- 	if (!qs)
- 		return true;
--	if (strlen(qs) != len)
-+	qs_len = strlen(qs);
-+	if (prefix ? qs_len > len : qs_len != len)
- 		return false;
--	return !strncmp(qs, str, len);
-+	return !strncmp(qs, str, qs_len);
- }
- 
- static const struct sfp_quirk *sfp_lookup_quirk(const struct sfp_eeprom_id *id)
-@@ -645,8 +655,10 @@ static const struct sfp_quirk *sfp_lookup_quirk(const struct sfp_eeprom_id *id)
- 	ps = sfp_strlen(id->base.vendor_pn, ARRAY_SIZE(id->base.vendor_pn));
- 
- 	for (i = 0, q = sfp_quirks; i < ARRAY_SIZE(sfp_quirks); i++, q++)
--		if (sfp_match(q->vendor, id->base.vendor_name, vs) &&
--		    sfp_match(q->part, id->base.vendor_pn, ps))
-+		if (sfp_match(q->vendor, id->base.vendor_name, vs,
-+			      q->prefix_match) &&
-+		    sfp_match(q->part, id->base.vendor_pn, ps,
-+			      q->prefix_match))
- 			return q;
- 
- 	return NULL;
-diff --git a/drivers/net/phy/sfp.h b/drivers/net/phy/sfp.h
-index 879dff7..867e45e 100644
---- a/drivers/net/phy/sfp.h
-+++ b/drivers/net/phy/sfp.h
-@@ -12,6 +12,7 @@ struct sfp_quirk {
- 	void (*support)(const struct sfp_eeprom_id *id,
- 			struct sfp_module_caps *caps);
- 	void (*fixup)(struct sfp *sfp);
-+	bool prefix_match;
- };
- 
- struct sfp_socket_ops {
+Tested on a Fairphone 6 running a milos-mainline kernel: reader mode polls
+and reads ISO 14443-4 tags reliably, both from a fresh boot and across
+driver reloads.
+
+Changes in v2:
+ - Drop the -i2c bus suffix from the new compatible: it is now plain
+   samsung,s3nrn4v (Requested by: Conor Dooley).
+ - Close a race in the probe-time CLK_REQ seeding by reading the GPIO
+   level under clk_lock, so a stale level can never overwrite a fresher
+   state applied by the irq thread (found by the Sashiko AI review of
+   v1).
+ - Binding completeness: document the PVDD supply (required for the
+   S3NRN4V), add an S3NRN4V example exercising the new properties, make
+   clk-req-gpios depend on clocks, and describe the CLK_REQ pin in
+   hardware terms.
+ - Rework the binding commit message: justify the GPIO modelling in
+   hardware terms and explain why no fallback compatible applies.
+ - Add an s3nrn4v i2c_device_id entry carrying the variant so both
+   match paths agree, and describe the of_match_ptr() removal in the
+   driver commit message.
+ - Reject malformed rfreg blobs (word alignment, single-byte section
+   index bound) up front instead of failing at STOP_UPDATE.
+ - Handle gpiod_get_value_cansleep() failure in the CLK_REQ sync
+   instead of treating an error as "clock off".
+v1: https://lore.kernel.org/20260703202601.78563-1-jorijnvdgraaf@catcrafts.net
+
+Jorijn van der Graaf (2):
+  dt-bindings: net: nfc: samsung,s3fwrn5: add S3NRN4V and clk-req-gpios
+  nfc: s3fwrn5: support the S3NRN4V variant
+
+ .../bindings/net/nfc/samsung,s3fwrn5.yaml     |  65 ++++++++-
+ drivers/nfc/s3fwrn5/core.c                    |  40 ++++-
+ drivers/nfc/s3fwrn5/i2c.c                     | 138 ++++++++++++++++--
+ drivers/nfc/s3fwrn5/nci.c                     | 119 ++++++++++++++-
+ drivers/nfc/s3fwrn5/nci.h                     |  32 +++-
+ drivers/nfc/s3fwrn5/s3fwrn5.h                 |  14 +-
+ drivers/nfc/s3fwrn5/uart.c                    |   2 +-
+ 7 files changed, 394 insertions(+), 16 deletions(-)
+
+
+base-commit: 805185b7c7a1069e407b6f7b3bc98e44d415f484
 -- 
-2.47.3
+2.55.0
 
