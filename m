@@ -1,130 +1,79 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521AE309EE2;
-	Mon,  6 Jul 2026 15:50:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2D23ACF00;
+	Mon,  6 Jul 2026 15:51:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783353034; cv=none; b=SP564uf+QxMZssvFri+SoJ7uuDne+t/OmXVIwXiCZiqPO2WIpCu8WLeJBHWN6LEOQaN4Ao1Gs54oiS1/MlRwp4m4whSlouoYNK8J9bNV+ZYX5gA9xkr3cAM9psU+ChQfPeN1slmuTsVXZD6uDb27CAYLp4cWFp2cuz/+rJ4lyZA=
+	t=1783353078; cv=none; b=n43ouR1jQI3MRcrImOKlPbWVrDYNLK5wcvtTm9AW1y1pE318/4aPb3fqiS4GsnT3T43x4h5iMVaQGk4ko4lg4iUzW/o/hzjrf8Or1Qk+AMzUyisN7Y1zwHdVzVIAmK7NuFqVUx+woYrFKExtvdw7zDp5iveJYcdVZrvkgfYjgvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783353034; c=relaxed/simple;
-	bh=of6d9n1ZVp2VvNBWbeQxrIvJaxz8Dqo4F/lZHKvIDzs=;
+	s=arc-20240116; t=1783353078; c=relaxed/simple;
+	bh=T8uQDftGeQcVHaybDPXQ+2XVTagwT4Ab1saqKyRZ61w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mC9Q5JKFMLaaEQt/Tw7REXPIGQUdtkcX5Xi/qGfjLHVj+d0S1IkkUHqeKS/Kv/ISPCpJCLMRjfsED3LO+Uw3hJOu0znZy6xP8pkMUeV718NAPVCTAU1LqdgHO/hTJxZgDc0lJcjd4IeFYlwxJNugG3IdwNKrjK8Q+LVw2KI0jDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FVBVZkkO; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=okkg7WGCJ8clT4JivJoNRj9ofuqubdHQ8RKbzfVgQZB7BE2S8FKaHzBA9T1lrf3zNZl+KLD389Nxe7xUCQ4a18EXH6yGg/m2m3DfaeudxmFHlVWUadQ4CmYLnKcufXcP0Iu8d2xM3gtDZbAkDnwbGbF0Jr3BoJJVSoNEMxW2tQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=6LSFvjSo; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FVBVZkkO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783353034; x=1814889034;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=of6d9n1ZVp2VvNBWbeQxrIvJaxz8Dqo4F/lZHKvIDzs=;
-  b=FVBVZkkO81v97qwqgXdQoZ5BtTEZSn8hptdpl5+zhp69DG8Wc7HTqCA0
-   Iua/lgzHUpOHNX2O5GBppmUYF1PiPf69sOaB8Ow4GlK1ag6lLh9zEg8pF
-   3VKtX/orEhXlCgZIM6AVkaFJHxZaFunveVf1rFI+fQqXnttQ54x0cVXY3
-   PlohclVweXpZXa4qC4hRMfljkSLzo1HoC+VphEFD4spHrYIS29LmWh30o
-   NBG1HLrivq2LD58UeKk3qVdcS1nUHVpnKz1s+8OtrxC2NoD4y3qJ8HZ/f
-   mX/u9zXsoPrcTEQjyYz7zOPXp9EpFEYt2ZjDbFgjEYiqZ9otPaMD0rKrP
-   Q==;
-X-CSE-ConnectionGUID: 8j/Cz05nRiy7iG5juUwfJg==
-X-CSE-MsgGUID: 6WJR7CnASM+iSX97cI0Y7Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11838"; a="101408853"
-X-IronPort-AV: E=Sophos;i="6.25,149,1779174000"; 
-   d="scan'208";a="101408853"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2026 08:50:32 -0700
-X-CSE-ConnectionGUID: NvB5N+KWQv+u1kUJ01a6bg==
-X-CSE-MsgGUID: ST8IrUj4Qs29+PTwG4IXGQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,149,1779174000"; 
-   d="scan'208";a="283836189"
-Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost) ([10.245.244.48])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2026 08:50:18 -0700
-Date: Mon, 6 Jul 2026 18:49:55 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Manuel Ebner <manuelebner@mailbox.org>, Mark Brown <broonie@kernel.org>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Lee Jones <lee@kernel.org>,
-	Thierry Reding <thierry.reding@avionic-design.de>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="6LSFvjSo"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=0n4o/4/hLK6M+oKVTRlGobXEsnI+F1F/g6UriRBdnP0=; b=6LSFvjSowVG1eU9vkHDXmYgUok
+	l24fYGo1SoltygNBKg1RnxMxlWM0yfq7ZZLOYRILkTRKH1H2L0ua+iiF1RJh/aNx63wjnnx5k3v0M
+	OAIjtmSlDA2St0AaUYTWUQwQcx13w4Hb3R5na9cXgupaBziCb/gBfYc4OKxN0du4y3dU=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wglb2-00B1Be-Av; Mon, 06 Jul 2026 17:51:00 +0200
+Date: Mon, 6 Jul 2026 17:51:00 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Gary Guo <gary@garyguo.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Guru Das Srinagesh <linux@gurudas.dev>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Peter Chen <peter.chen@kernel.org>,
-	Paul Cercueil <paul@crapouillou.net>, Bin Liu <b-liu@ti.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Maximilian Luz <luzmaximilian@gmail.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>, brgl@kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
-	driver-core@lists.linux.dev, devicetree@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org,
-	iommu@lists.linux.dev, linux-pm@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	linux-usb@vger.kernel.org, linux-mips@vger.kernel.org,
-	platform-driver-x86@vger.kernel.org, mfd@lists.linux.dev
-Subject: Re: [PATCH v3 02/20] driver core: platform: provide
- platform_device_set_of_node()
-Message-ID: <akvOo2EeERLYPh72@ashevche-desk.local>
-References: <20260706-pdev-fwnode-ref-v3-0-1ff028e33779@oss.qualcomm.com>
- <20260706-pdev-fwnode-ref-v3-2-1ff028e33779@oss.qualcomm.com>
- <fbc50f89e0c3bb148656a3b8d96974f591576dec.camel@mailbox.org>
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 2/2] net: phy: qt2025: Use vertical import style
+Message-ID: <c1d24c8b-1c1d-4784-88a6-3cbb519d0406@lunn.ch>
+References: <20260705-net-vert-imp-v1-0-95a35ddff411@gurudas.dev>
+ <20260705-net-vert-imp-v1-2-95a35ddff411@gurudas.dev>
+ <d2c1e11e-e616-4b2f-aa17-5eb96f045833@lunn.ch>
+ <DJRKZD8LBXXH.MCISM5ZLNVMP@garyguo.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <fbc50f89e0c3bb148656a3b8d96974f591576dec.camel@mailbox.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+In-Reply-To: <DJRKZD8LBXXH.MCISM5ZLNVMP@garyguo.net>
 
-On Mon, Jul 06, 2026 at 04:39:00PM +0200, Manuel Ebner wrote:
-> On Mon, 2026-07-06 at 14:44 +0200, Bartosz Golaszewski wrote:
+> This is one of the quirks of rustfmt. Before style edition 2024, if an
+> identifier is all caps, it sorts it after non-all-caps identifiers. The
+> motivation was to ensure constants are ordered after types, however for things
+> like C45 it is actually a type, causing this weirdness.
 
-> I removed Mark Brown <broonie@opensource.wolfsonmicro.com> from recipients because:
-> “RCPT TO <broonie@opensource.wolfsonmicro.com> failed:
-> <broonie@opensource.wolfsonmicro.com>: Recipient address rejected: Domain not found”.
+How often does the style edition change? Is there a 2026? How much
+changes in each one?
 
-Perhaps he needs to send a patch to update .mailmap?
-Cc'ed to Mark.
+At least in netdev, we tend to reject checkpatch.pl patches, which are
+mostly about style, unless they are part of a patchset adding new
+features. Style patches are mostly a waste of reviewer/maintainer
+time, because some actually break stuff, so need to be reviewed just
+as much as code adding new features. But style changes have a low ROI.
 
--- 
-With Best Regards,
-Andy Shevchenko
+So while there is currently not much rust code in the kernel, making
+style changes is not wasting too much reviewer/maintainer time, but as
+the amount of rust code goes up, you might see some subsystems
+rejecting such changes, or wanting to pin to a specific style edition,
+to reduce churn.
 
-
+     Andrew
