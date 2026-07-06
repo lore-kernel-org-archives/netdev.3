@@ -1,154 +1,161 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 073202F7ACE
-	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 17:33:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.171
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783359187; cv=pass; b=qCXUJg/rKWXm6puRoU7/9Wxr1g6kBhRHJ20lxMZIhxpqWts+KnCtEL4Ko8R3aTW/zh119YnzkAF+iwFBl9zt2EvxJFCqcdwZqHHKISkoi0bW87O4YLB/t8Tvckb8g19ejkoQllW51m7zokJMhDJaJ+MeTourobjunrQitiKkD0E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783359187; c=relaxed/simple;
-	bh=Gszr93hydq2zURZ8hxvOjO4dpL4R2clkfiRdevZOzMU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ArSKJBFYfvphUtbDBr0LTXR+34ecrCUmFr3GMYXRFQmPpLr1C7ETaV+kkXVPTWCSZXk+BfXsgGYYMsCv6kKWRI7V2vx7kPw4R/Wv2xbczFD/+qlVqZL9PGmxYtM61iXrEPoEeabQxyPRf5RrCiN5HFRJjgqCjKcz51LU5+yjDHk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=My4tYYoU; arc=pass smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E33543B2FD6
+	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 17:35:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783359327; cv=none; b=L19rnpKkk4+Pr/Gt7kT+6B8NY/+XLObFgiO865LmqcMqyRfyAAM6Ab+MaIN0BAfDbpvrJel0H4mIncummLUE5LQLI33R4/L9aGAuDEYrvsguW4TOwy7L7tLpAR6kfEXiSnJinyp+LFcuWQPggE0s7ScHW/xFczizuUqJdyp/Akc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783359327; c=relaxed/simple;
+	bh=XyJ6/jCk0lvpWQQi1qBmAqNhDAOjnyk1oXshJsoZz0Q=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=a0BviSSvoQIh51fX4T88NS3RJ6BxQLGAlud8btfPKWO6+JdOXGoXDRvWPyNWczfzeUF5Yk/fRdet2q8tFhmznq1Rd5UekO5XA2e40NE6uZrtcLXY3UGosI7+n45l4p/ZFLt22arSMnhsZZBjTkWBBfC/R0+m/hNwA7Eqj5WwbII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fEQ2pZpX; arc=none smtp.client-ip=209.85.128.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="My4tYYoU"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2ca7aaa4b85so30507505ad.3
-        for <netdev@vger.kernel.org>; Mon, 06 Jul 2026 10:33:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783359185; cv=none;
-        d=google.com; s=arc-20260327;
-        b=acUt51SRQZA/pCUow6mPqj/FMuYSLU9gPfqG4Cy3T7aombEGMqJt43X0vd2vN+fOxr
-         72e+NeHXzYojx3TlnTb0/+d0kM2RTE9c7WfD6Cw8L1zCBYseUAdZBLDkvfLoQcFW1XCY
-         rQItKpLWqU9dx47jS0f93wlMUfF5U67CavI6lftqYtoM7HNFC0mwhKnOkAp2x5E4buWA
-         Hv2o8vlhdKskzFQpcBJw9WLPFcmkyh6SkEUE/MdMmkQeiv87PKFHqNSz2+/+3HyR9lk/
-         IwOVy4nFOBZfl560dX9Oup2slma6rOJ06AYquM7vWEXArFbwM2izUs26yDiZRMY42I93
-         RRtQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=AIaTCMwhaTmMiCFgck+oUystkHONXu5O575YjPFEpPo=;
-        fh=UXXlvJ5ns//BMDUiBmwlnJHo70rCwIZs3pUpmj4JNM4=;
-        b=APZo469kp0vOiFjfifm9xhNIVyxOWPsFiygtHc8OXf7I3nCm28LWy7zzd3IijKfLmH
-         hVSfaPeGBmfSiK6sikt/i6SN4cQYUFNIH9UnoZEGElftDMCDZggsKarLhAWCh/teqnFX
-         +L5/+l1tsmuvgHd7oeolcF5RIf+s5dINop0bwYjRMu6sG6cmHAWdfnTc2tU3Oz/GpVwI
-         l54WQVeLbJ36YD0Xxaah52hpJfZYOupoPZLEP8cD6SVaSIFBhBQh2yDMuHa+5ri4RJQP
-         os9eviQzrYfhdfLDmFw0+C7e/SuJ3YjtcUHruUlVrxaz7ZoDkVQwxwuBQ2GHAy22jMKG
-         Ic5g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fEQ2pZpX"
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-7dbcb505578so27550277b3.3
+        for <netdev@vger.kernel.org>; Mon, 06 Jul 2026 10:35:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=asu.edu; s=google; t=1783359185; x=1783963985; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=AIaTCMwhaTmMiCFgck+oUystkHONXu5O575YjPFEpPo=;
-        b=My4tYYoUySs2fAeSzsNPwPRyfmPxWw7s2uOsX+8bIdwZfVpKwBqKc9h7p2YYrIjXpY
-         fy3oD8xeu6PUVWW8RKtM7A60cSvYPtOeYL2LEA1/g8iQzt0tcfym7p29ChqPyAMzEiG6
-         z3H8eJL8qz5dV00bKAh3Dn11lUAeq2FQiVyE7f35dDUzRDY/okbyyn/lHUyNfv3zQm3D
-         R1v2AUocoWAaM/jDyIRPEA+NfBUxTOx1EofAzlKZaU8a+er7YkorAa2DeCb8zQH+Rfmu
-         OdV1M184StHc5fgc7/996l1yQWP4tV2cGol0OMTDzFPqc38SYlbcu8Fjon9VboxBb+V4
-         +i8A==
+        d=gmail.com; s=20251104; t=1783359325; x=1783964125; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=9PYIrjiLcLJRMsJz3MN9nJHHGWlJH+U5Otv0B9TwQZQ=;
+        b=fEQ2pZpXIdC93SrHgHXDogxfxhKgqG/cmqzIgJhpUq1TjxF9C/SabN0AvV76Yxsj65
+         MySJtqHULhCUozAUCxQf3eSywksLKLjSOBvivOKNuFslS0eMyBKaDZ2ejRtNce1zW9fU
+         +vpNvIcazHfHaHj/OMohzbNhiWZV4jIkQ3KRNd2nUVXSNp5LqTkKma4NtFIa2bY7T7ui
+         1i8hWeDRDq8RH8wicPlEKpftFisZe07CPwP21MU7B7oLkIreV9cheH/+yfpcqLL7i+NI
+         b0gBNmGkZ+0BNIP3PQuA+uWM95CdsjuuCvDIAlwLpZCzx7v0Ocx4w5qL/PqvFkw+JPmV
+         lj8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783359185; x=1783963985;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1783359325; x=1783964125;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=AIaTCMwhaTmMiCFgck+oUystkHONXu5O575YjPFEpPo=;
-        b=SxMTLjtB+6TpGuu0dh3hXNBGV7YnsP0kUvvKp/F/ZPpueesTokQ433UmfGjNrT6xEh
-         Om5vW/gIujLyfpsK9A1ao47YJF6Csjw7f8kcxF8XT7xxb925fP7/d9+DG/iqUjVAc5Pi
-         ylIQsPOekYk3fpkyMh4PI39AeYY/P0LOIKUpan/kNFDidkyJNpdACjlypSEiSjGqAb/j
-         LuKN00eBQfngLIanoZq65KvJjTW450g1hA9Mk3zHxo9Pi3CgFIclA8t71bOspZBpF+S+
-         Ml3boV1NYMtdnH+CqWYFDYm6QVjmjEWQ9Ai4qasqObYyMa9yJwaen2z1MgTiy++wHcv8
-         /Ifg==
-X-Forwarded-Encrypted: i=1; AHgh+RoC9AbWfHUSjti0r9Ijdn96XTdJmtvMFQa6MZwlIQmcIZdHiRp01rRPHu8L5kaNq+GbzXrbcgw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHByDXiOm2tfd5098nOYOFsKbxJMJgb5iQO6bd6MzJBbqWKulZ
-	A53Bu9ehK+TNs98Oc1q+DnWxDpU8TpkcDIv1FFNXeHnOGisn7CvWrMC5R4WogWPgEJONR3OGOOi
-	8ScPTMdgVL1Btbw7Eub7/sdClgzLDQMBlqiQqStrV
-X-Gm-Gg: AfdE7cmDAlP5cUPF3y6oSf5pPnFs1NSOiwJzdqGUdxJZ1CaGvTLJf/8Gw25o6pAW55H
-	oF4AxDIspGGGvOeWWhAe1kF5ETYj5SWyxr0cX9KIVRffCvYw234pRqEJxFpkBwv6qn1XfMFu/eD
-	BKie/qLtpQflw1EIwuwSTXr2kLX/0oKhXM2wEzWBcEgS6DPyun6OYflUJxs4jz46sY5GuZymwCo
-	qA4WAaWeUUZkDa3EsKStE2lefmm2OilT/Z76wY/1rJpx4jEtexWSMLcj0+MVugpzk4U4OjU/gX0
-	L4gpAa/gcMXoy8QRtgmZqispD+8r
-X-Received: by 2002:a17:902:ecd0:b0:2c9:c517:d078 with SMTP id
- d9443c01a7336-2ccbf04a1cdmr15876265ad.36.1783359185403; Mon, 06 Jul 2026
- 10:33:05 -0700 (PDT)
+        bh=9PYIrjiLcLJRMsJz3MN9nJHHGWlJH+U5Otv0B9TwQZQ=;
+        b=MhdEt0CugUg27gqmlnF8sQ5rC+PbmEgUziChlMTsbz+PVAGGg2HNcjnCulCtwe/jiQ
+         Dk7Z8Bu9erwHvAc4qHWQ6MEHEA+pKi/pwBnesgthTY/D+8xU3gjy14BJaXNrFmiGJjNF
+         4rz/TqnzIfh4JgTI8wyaF6PhRSgNZDVB0DjLAkUZEVkkyeYxAKTBkn/bceJXIG3ikkgX
+         sZKTNTSk9goMc6/lXM8P54FGeC1wUyOjdMcwxqzP/KOB4HRD70GF6RXHRIxZj0pS8O5o
+         e7xkrsEkEvC0cdaqGRWUa52p6f0RzHE9sOqyedq7kAxG5f8uc+Ex7boRDwqbEE6W2D+3
+         r2Rw==
+X-Forwarded-Encrypted: i=1; AHgh+RpjM0lEh2FpZwI9AJ5Nnt+xomTARHAYSJ1PrBGF0JFOHwNQGtVel5s3fAimoewx5FNqzTIyiiM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzhHYTQAlz/mXexlxH3ektEIa120Ub+mpYKlQKVwvMaU0/BDjlj
+	56jKB4DzI5/AZsThLjfQoa1u0XSgwR2juyS0mvvFe2dct1nTbbljjVMU
+X-Gm-Gg: AfdE7ckVgLiVfEnOGxjr5yaEs/hGJYZiD+BvhqWAIXqKiZySBrc/SYrTKK/jW4O2vzD
+	sL6HtnOsbNJESaBwRhY+1a4omEYeoPN6u+l81wLv4xd7q5mnXg9tXJvyTamLQAXGVAuWWhZy9s9
+	9NcAkU1W70HAR6pAFlU9E689gtEJt4Mk3U5c+M3hYd2UY1Adyppks1M3BJc1LisuJ7WwAYXfDUm
+	aqYpvGJmnKBqBZNONk9H9W0nt1RCYU871o5M+14m7ORACn3shOkbvA6N2OlbWpXfn9TNuUMhpiO
+	1X7/hcmFaj6gA9rZzeMNQJiC4iJgXyXl/nXnHz8VzKsgyvwsbumooVsPRm6RWpfIm1Rg+WGNoAu
+	6osLx2M9WzVpIoR73XUjJy2KMCdKsfFyq97QT/FZjSK8VjdSloARnthav1oOLDt3IXXm/wKfIKh
+	+oycvPWfEVbTxUxcVUwLYkmiwkI1it9+ZKLLB8Wm08ZsSNgxfV3dOiwsRIPGjSYq2MuQ==
+X-Received: by 2002:a05:690c:62c8:b0:7dd:3f36:59f1 with SMTP id 00721157ae682-81be319d964mr10253497b3.45.1783359324738;
+        Mon, 06 Jul 2026 10:35:24 -0700 (PDT)
+Received: from gmail.com (172.235.85.34.bc.googleusercontent.com. [34.85.235.172])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8144783cc7fsm60947197b3.5.2026.07.06.10.35.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Jul 2026 10:35:24 -0700 (PDT)
+Date: Mon, 06 Jul 2026 13:35:23 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: David Lee <david.lee@trailofbits.com>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: David Lee <david.lee@trailofbits.com>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, 
+ Dominik 'Disconnect3d' Czarnota <dominik.czarnota@trailofbits.com>, 
+ netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+Message-ID: <willemdebruijn.kernel.31a7e80dcad9d@gmail.com>
+In-Reply-To: <20260706111226.309506-1-david.lee@trailofbits.com>
+References: <20260706111226.309506-1-david.lee@trailofbits.com>
+Subject: Re: [PATCH net v2] packet: avoid re-registering fanout hook after
+ device unregister
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260627024023.2201160-1-xmei5@asu.edi> <aktHvEy7JC-eGClA@secunet.com>
-In-Reply-To: <aktHvEy7JC-eGClA@secunet.com>
-From: Xiang Mei <xmei5@asu.edu>
-Date: Mon, 6 Jul 2026 10:32:54 -0700
-X-Gm-Features: AVVi8CcFt-NKVDNuTspmjXJLOce2jxmyZbjcNqucMFdCorfxeTNxbOmra_f3IzY
-Message-ID: <CAPpSM+QELmdaYADrxfuvAf8qSfDS5qrYFvLq5jM+P5NJ5Por7g@mail.gmail.com>
-Subject: Re: [PATCH ipsec] xfrm: fix sk_dst_cache double-free in xfrm_user_policy()
-To: Steffen Klassert <steffen.klassert@secunet.com>
-Cc: herbert@gondor.apana.org.au, davem@davemloft.net, netdev@vger.kernel.org, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	linux-kernel@vger.kernel.org, AutonomousCodeSecurity@microsoft.com, 
-	tgopinath@linux.microsoft.com, kys@microsoft.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-Thanks for your review!
+David Lee wrote:
+> packet_set_ring() temporarily detaches a socket from packet delivery while
+> reconfiguring its ring. It records the previous running state, clears
+> po->num, unregisters the protocol hook when needed, drops po->bind_lock,
+> and later restores po->num and re-registers the hook from the saved
+> was_running value.
+> 
+> That unlocked window can race with NETDEV_UNREGISTER. The notifier can
+> observe the socket as not running, skip __unregister_prot_hook(), and
+> invalidate the per-socket binding by setting po->ifindex to -1 and clearing
+> po->prot_hook.dev. A one-member fanout group can still retain its shared
+> fanout hook device pointer. When packet_set_ring() resumes, re-registering
+> solely from the stale was_running state can re-add the fanout hook after
+> the device has been unregistered.
+> 
+> Treat po->ifindex == -1 as an invalidated binding after reacquiring
+> po->bind_lock. Restore po->num as before, but do not re-register the hook
+> if device unregister already detached the socket.
+> 
+> Fixes: dc99f600698d ("packet: Add fanout support.")
+> Reported-by: David Lee <david.lee@trailofbits.com>
+> Signed-off-by: David Lee <david.lee@trailofbits.com>
 
-On Sun, Jul 5, 2026 at 11:14=E2=80=AFPM Steffen Klassert
-<steffen.klassert@secunet.com> wrote:
->
-> On Sat, Jun 27, 2026 at 02:40:23AM +0000, Xiang Mei (Microsoft) wrote:
-> > From: "Xiang Mei (Microsoft)" <xmei5@asu.edu>
-> >
-> > xfrm_user_policy() clears the socket dst cache with __sk_dst_reset(),
-> > i.e. the non-atomic __sk_dst_set(sk, NULL): it reads sk_dst_cache with
-> > rcu_dereference_protected(), stores NULL and dst_release()s the old dst=
-.
-> > That is only safe if no other thread modifies sk_dst_cache concurrently=
-.
-> >
-> > For a connected UDP socket that does not hold: the transmit fast path
-> > (udp_sendmsg -> sk_dst_check -> sk_dst_reset) resets the cache lockless=
-ly
-> > with an atomic xchg(). A per-socket policy change racing a send can mak=
-e
-> > both sides observe the same old dst and each dst_release() it, dropping
-> > the socket's single reference twice and freeing the xfrm_dst bundle whi=
-le
-> > it is still referenced:
-> >
-> >   BUG: KASAN: slab-use-after-free in dst_release
-> >   Write of size 4 at addr ffff88801897b6c0 by task exploit/155
-> >   Call Trace:
-> >    ...
-> >    dst_release (... ./include/linux/rcuref.h:109)
-> >    xfrm_user_policy (./include/net/sock.h:2239 ./include/net/sock.h:225=
-6 net/xfrm/xfrm_state.c:3053)
-> >    do_ip_setsockopt (net/ipv4/ip_sockglue.c:1347)
-> >    ip_setsockopt (net/ipv4/ip_sockglue.c:1417)
-> >    do_sock_setsockopt (net/socket.c:2368)
-> >    __sys_setsockopt (net/socket.c:2393)
-> >    __x64_sys_setsockopt (net/socket.c:2396)
-> >    do_syscall_64 (arch/x86/entry/syscall_64.c:94)
-> >    entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
-> >
-> > Reachable by an unprivileged user via a user+network namespace.
-> >
-> > Use the atomic sk_dst_reset() so the cache is cleared and released with=
- a
-> > single xchg(): whichever side wins releases the dst once, the other see=
-s
-> > NULL and does nothing. Behaviour is otherwise unchanged.
-> >
-> > Fixes: 2b06cdf3e688 ("xfrm: Clear sk_dst_cache when applying per-socket=
- policy.")
-> > Fixes: be8f8284cd89 ("net: xfrm: allow clearing socket xfrm policies.")
-> > Reported-by: AutonomousCodeSecurity@microsoft.com
-> > Signed-off-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
->
-> Applied, thanks a lot!
+My suggestion of a Reported-by was becaused the Signed-off-by was from
+a different author. Both tags from the same author is generally
+discouraged.
+
+Perhaps also add a Link to the discussion in the first patch, which
+adds some more rationale. The crux to me is that ifindex -1 is not
+just the default for detached sockets, it is a special invalidated
+condition.
+
+Link: https://lore.kernel.org/netdev/20260701113947.23180-1-david.lee@trailofbits.com/
+
+With those asides
+
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+
+
+> Assisted-by: Codex:gpt-5
+> ---
+> Changes in v2:
+> - Add Fixes and Reported-by tags.
+> - Fix the incorrect Signed-off-by tag from v1.
+> 
+> Trail of Bits has a PoC that achieves local privilege escalation using this
+> bug on a custom kernel config with CONFIG_LIST_HARDENED disabled, which can
+> be shared further if needed.
+> 
+>  net/packet/af_packet.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+> --- a/net/packet/af_packet.c
+> +++ b/net/packet/af_packet.c
+> @@ -4561,7 +4561,11 @@ static int packet_set_ring(struct sock *sk, union tpacket_req_u *req_u,
+>  
+>  	spin_lock(&po->bind_lock);
+>  	WRITE_ONCE(po->num, num);
+> -	if (was_running)
+> +	/*
+> +	 * NETDEV_UNREGISTER may have invalidated the binding while bind_lock
+> +	 * was dropped above.  Do not re-add a fanout hook to a dead device.
+> +	 */
+> +	if (was_running && READ_ONCE(po->ifindex) != -1)
+>  		register_prot_hook(sk);
+>  
+>  	spin_unlock(&po->bind_lock);
+> -- 
+> 2.43.0
+
+
