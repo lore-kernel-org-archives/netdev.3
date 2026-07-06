@@ -1,46 +1,35 @@
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DFE83F99EA
-	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 09:34:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F29434E41;
+	Mon,  6 Jul 2026 09:35:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783330472; cv=none; b=aF0ipLVO+mxFLhRrc49C5VSEyVjruSTJCRGpMQeN6n4YbkgdDVf0sL+azVmzRtZqZJnDl3QT0cmftlr2oEKXy4RE2BRIShbjlhokTgMXF0mt745xZRJexexfvV4VdoRmub01wvN8msz5q+6ChzeOH/AztfPGRfoG+kFfySkmz/o=
+	t=1783330527; cv=none; b=A1ZsrC9tauVBrZ7nPsWNj9ROzHszJXjLM3fXXlE8UphxE3irRPo/H+LxiX0z8M2Z1k9e+CGumJhX7dvJK+U7Pnya7Nu7+lP4Zjdq2PONK8C3RzUC5EV95xqY7JIkeZjYLQ5L2RYrZfeuCpSvU4ivCcoyOlO8fWiBHiEkaRP2Sdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783330472; c=relaxed/simple;
-	bh=zN5L/AvLHOKTBwFT3Fz0jxTEkQaIAaC1B4ZN3xSGxX0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XylTA4ELMve6lV+scd20eTkzDki0Mx8T6Qwr4DwFglHDmvZNaeb5gZU/CMqPetoVS+uzlSHQhL2Y2va/bvSkuUc7Y0eInAu5QIDi+xg1M/u8ZGBR9aaf6hZY5flExzD3DvVVpK7REEVQXjjFtL8sqI8Lm91Zkt7UyN2cSUy6uHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=kSWa0fNv; arc=none smtp.client-ip=91.218.175.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="kSWa0fNv"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783330455;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=sZQ9WVA3JaDoSNxxquL3VaiwxpdZMD31OCMRpHRYFNE=;
-	b=kSWa0fNvyjaywtoMVp+u+KAjN8DAHiHu93/cUYcmO8Up8UwIU6DzyOrSmhkwXStNm2uBJl
-	E9Xc0gSSpIsRoN6Lx1bo+7ccdCiFNikFuhI+3waKm/38WIrnBRbUPMUNyR6NAZvTVG74AL
-	iyM4ItoKsIInulhQ4BZK8odRufM8MKg=
-From: Qingfang Deng <qingfang.deng@linux.dev>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	s=arc-20240116; t=1783330527; c=relaxed/simple;
+	bh=n0B3B0tyhdS5oTazdgAMUW+gNHDIKtv7VjTt/R0pbVI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qK1jZalg/91adK0YqOzHaiX7PclLxGK+kCsJ6RLNa8H8mFGI81rFL46pdfyjjYM6mmnBRM1H7HSwl9hk5DD+o+g7VvArWbKcNZUUvHMzqn2FmIAqPK6j0P0mZKbLCnkImeG7qydhBWqIRJhxePMGbhvzJwD3KhzKt9yU0zf3gbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [111.196.245.140])
+	by APP-01 (Coremail) with SMTP id qwCowAAnwMi_dktq+pDxBA--.1304S2;
+	Mon, 06 Jul 2026 17:34:55 +0800 (CST)
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+To: Cai Huoqing <cai.huoqing@linux.dev>
+Cc: Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Qingfang Deng <qingfang.deng@linux.dev>,
-	Kees Cook <kees@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>,
-	Eric Woudstra <ericwouds@gmail.com>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Cc: linux-ppp@vger.kernel.org
-Subject: [RFC net-next] pppoe: fix stale device name shown in procfs
-Date: Mon,  6 Jul 2026 17:34:02 +0800
-Message-ID: <20260706093404.407667-1-qingfang.deng@linux.dev>
+Subject: [PATCH] net: hinic: validate firmware image section bounds
+Date: Mon,  6 Jul 2026 17:34:55 +0800
+Message-ID: <20260706093455.81168-1-pengpeng@iscas.ac.cn>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,46 +37,123 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-CM-TRANSID:qwCowAAnwMi_dktq+pDxBA--.1304S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxCr4xAr4fZw4UZrW8Jr4kCrg_yoW5KrW8pa
+	95CFW3Kr9rGr4UJwn3ta1UuF93WrWUGa4DJF9xG3WFy3W3XrWkt3ZYyryjvr45Gr95ZFZ7
+	Wa1jvr4kC3W5CF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvj14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Jw0_WrylYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
+	Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
+	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIY
+	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Gr0_Xr1lIxAIcVC0I7IYx2IY6xkF7I0E14
+	v26r4UJVWxJr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j
+	6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjfU5b
+	yZUUUUU
+X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
 
-In pppoe_seq_show(), the device name is currently read from
-po->pppoe_pa.dev, which contains the name at the time the socket was
-connected. If the lower network device is renamed afterwards, reading
-/proc/net/pppoe will still print the old name.
+The firmware update path copies each section from the image with an offset
+and length supplied by the firmware header. The image validator only
+checked the sum of section lengths and used fw_len + header_size to check
+the file size, but it did not prove that each section offset and length
+fits in the firmware payload.
 
-Fix this by reading the name directly from the bound net_device via the
-po->pppoe_dev pointer. Note that the pointer can be cleared when the
-socket is being released, so a NULL check is required.
+Reject images with a truncated header, avoid the fw_len plus header-size
+addition, validate each section type before it is used as a bit index, and
+prove every section range with offset <= fw_len and len <= fw_len - offset.
 
-Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
 ---
- drivers/net/ppp/pppoe.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ .../net/ethernet/huawei/hinic/hinic_devlink.c | 57 ++++++++++++++++---
+ 1 file changed, 49 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
-index 4a018acb5262..5bf526c596b6 100644
---- a/drivers/net/ppp/pppoe.c
-+++ b/drivers/net/ppp/pppoe.c
-@@ -960,6 +960,7 @@ static int pppoe_recvmsg(struct socket *sock, struct msghdr *m,
- #ifdef CONFIG_PROC_FS
- static int pppoe_seq_show(struct seq_file *seq, void *v)
- {
-+	struct net_device *dev;
- 	struct pppox_sock *po;
- 	char *dev_name;
+diff --git a/drivers/net/ethernet/huawei/hinic/hinic_devlink.c b/drivers/net/ethernet/huawei/hinic/hinic_devlink.c
+index c977c43e5d5a..0c06fbdadad3 100644
+--- a/drivers/net/ethernet/huawei/hinic/hinic_devlink.c
++++ b/drivers/net/ethernet/huawei/hinic/hinic_devlink.c
+@@ -20,14 +20,25 @@
+ #include "hinic_devlink.h"
+ #include "hinic_hw_dev.h"
  
-@@ -969,7 +970,10 @@ static int pppoe_seq_show(struct seq_file *seq, void *v)
++static bool hinic_fw_section_valid(u32 fw_len, u32 offset, u32 len)
++{
++	return offset <= fw_len && len <= fw_len - offset;
++}
++
+ static bool check_image_valid(struct hinic_devlink_priv *priv, const u8 *buf,
+-			      u32 image_size, struct host_image_st *host_image)
++			      size_t image_size, struct host_image_st *host_image)
+ {
+-	struct fw_image_st *fw_image = NULL;
++	const struct fw_image_st *fw_image;
+ 	u32 len = 0;
+ 	u32 i;
+ 
+-	fw_image = (struct fw_image_st *)buf;
++	if (image_size < UPDATEFW_IMAGE_HEAD_SIZE) {
++		dev_err(&priv->hwdev->hwif->pdev->dev,
++			"Wrong image size read from file\n");
++		return false;
++	}
++
++	fw_image = (const struct fw_image_st *)buf;
+ 
+ 	if (fw_image->fw_magic != HINIC_MAGIC_NUM) {
+ 		dev_err(&priv->hwdev->hwif->pdev->dev, "Wrong fw_magic read from file, fw_magic: 0x%x\n",
+@@ -41,14 +52,44 @@ static bool check_image_valid(struct hinic_devlink_priv *priv, const u8 *buf,
+ 		return false;
  	}
  
- 	po = v;
--	dev_name = po->pppoe_pa.dev;
-+	dev = READ_ONCE(po->pppoe_dev);
-+	if (!dev)
-+		goto out;
-+	dev_name = dev->name;
++	if (fw_image->fw_len != image_size - UPDATEFW_IMAGE_HEAD_SIZE) {
++		dev_err(&priv->hwdev->hwif->pdev->dev,
++			"Wrong data size read from file\n");
++		return false;
++	}
++
+ 	for (i = 0; i < fw_image->fw_info.fw_section_cnt; i++) {
+-		len += fw_image->fw_section_info[i].fw_section_len;
+-		host_image->image_section_info[i] = fw_image->fw_section_info[i];
++		const struct fw_section_info_st *section =
++			&fw_image->fw_section_info[i];
++
++		if (section->fw_section_type >= FILE_TYPE_TOTAL_NUM) {
++			dev_err(&priv->hwdev->hwif->pdev->dev,
++				"Wrong section type read from file: %u\n",
++				section->fw_section_type);
++			return false;
++		}
++
++		if (!hinic_fw_section_valid(fw_image->fw_len,
++					    section->fw_section_offset,
++					    section->fw_section_len)) {
++			dev_err(&priv->hwdev->hwif->pdev->dev,
++				"Wrong section size read from file\n");
++			return false;
++		}
++
++		if (section->fw_section_len > fw_image->fw_len - len) {
++			dev_err(&priv->hwdev->hwif->pdev->dev,
++				"Wrong data size read from file\n");
++			return false;
++		}
++
++		len += section->fw_section_len;
++		host_image->image_section_info[i] = *section;
+ 	}
  
- 	seq_printf(seq, "%08X %pM %8s\n",
- 		po->pppoe_pa.sid, po->pppoe_pa.remote, dev_name);
+-	if (len != fw_image->fw_len ||
+-	    (fw_image->fw_len + UPDATEFW_IMAGE_HEAD_SIZE) != image_size) {
+-		dev_err(&priv->hwdev->hwif->pdev->dev, "Wrong data size read from file\n");
++	if (len != fw_image->fw_len) {
++		dev_err(&priv->hwdev->hwif->pdev->dev,
++			"Wrong data size read from file\n");
+ 		return false;
+ 	}
+ 
 -- 
 2.43.0
 
