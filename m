@@ -1,135 +1,263 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B18413DB961
-	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 06:20:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A7253DE434;
+	Mon,  6 Jul 2026 06:20:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783318834; cv=none; b=RgU+hnhBz2ykeoXrMrZHsC4vGnKNtg0eNm13uElhCJ19OINfu1bSgxJv9S7Hwx6NjOVR/gDircX/FORAqZRWu4SHzJxMVpy2NhSVNW0AF2ELX7dobmaZrJmBWIfB/YHW+0GHE5tIsIN/h8qlGquxIX1C/iAObx32ccfLtJ7Cz4w=
+	t=1783318844; cv=none; b=oXJt6O4HiQQ/s/x8FPPtT+iFt0YK18JNQku+7abUpXspTV5uUeJBhtzYKdunWZzd1cU8eU6mJyP22F5aWvwMULvq0Av1tG7DOIhUunJ5ObdXHfww6puiOWSNXQwIt18YxM9ottr60HNFglvxVeDfDAcu092KNL7jdhJAm8l3KpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783318834; c=relaxed/simple;
-	bh=LWglcUmKJJujYCrUKRMCU+qSUx0o9x0XMXsedC1YP84=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ozgH3ycYNq9nyOgrrzC1hdI3QtR+sPBYy8EtiV9lcb/Ds3kdmKM0lZqtso8v3EQm9PMaVU+D3RtKabjL2e3dEppzFUR4C6NFUrCJTAfuvCMcDZc7BJ6qigedprYQDqZKQTES8aq9yv6iPQHhjyDcmaqDvw9+HEUdq7yXtafkCvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=breiti.cc; spf=pass smtp.mailfrom=breiti.cc; dkim=temperror (0-bit key) header.d=breiti.cc header.i=@breiti.cc header.b=o5eEs3cz; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=breiti.cc
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=breiti.cc
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=breiti.cc header.i=@breiti.cc header.b="o5eEs3cz"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-474560436c3so2534312f8f.0
-        for <netdev@vger.kernel.org>; Sun, 05 Jul 2026 23:20:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=breiti.cc; s=google; t=1783318818; x=1783923618; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=aKPxjwYIwY+lwdwsN7x/+EZw5Zz00YN/j9XJOtJ8WiY=;
-        b=o5eEs3czlsHFUQXS2Hy5BmzJMaiBQmR2A2se8dPsAaxu3ixcOzSBNYNq6GlWiNTf5L
-         Khj6MmWVv9q3xjhdLTeOMVvmgfVIdSfRVYlM+WvV7dnWyqFh4Z2vOh08l5+BLSNEaDHh
-         B3TjV5UCAck6aowEDwbyIHkqxWIIyr5iWep74=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783318818; x=1783923618;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=aKPxjwYIwY+lwdwsN7x/+EZw5Zz00YN/j9XJOtJ8WiY=;
-        b=rJI1qU42E32I9kEovsfzZ0I0s2us3A8SwirtKEB3GXweEo8xy77cg2A3q1s1BjdMg0
-         YQExy5GsWB4tAQb5oM+t13+HhcN41MhQjA8kGYrn0fHvqeq9Ucq1IFpv2eYRMgAQ48Fm
-         dGhleigHIS8IjVcFPzOz4Wu5p8bqmitGHTILydtL53jxbbXxcuY9zMlB6zgvYpceYVEg
-         HvRc+eklYO3pGb5Qt2VZ995NgecN6mqrqwq6E1Pm7fShVlZ2y0aMonWKBj1O8sJFkCLa
-         QBL6sdVYSl1KGeRRPG8oAzDPwAnO2l1ef9NKFQvDPrTbouu1OZt1iP691VggqgHcU+p/
-         y5QQ==
-X-Gm-Message-State: AOJu0Ywk90kyrOLnwfcf9UG2XmlVIzv9qyI8A5SJFe5AjVBsL7XgY+Bd
-	MQ3ZTSj8G8hFTwhtbtb2hBJ6LzIVB4V3IYVVaOxNQkUZXK3O8fG5RpiFgey84XkElbi7p6oD/4v
-	kWvckgXx+
-X-Gm-Gg: AfdE7clv2OKfk34yzKmmyUMv+9IelSS3VB+l5sV2K7DkTokadmr/KqrZJJnyUVfdNjY
-	3fjEOBfaUo/VvWsd4RjwJbVjRLHDpT6xe9PARDTVNRiv/kJP22BF8YGnMmYCXes0Sb0WHBJJ+NI
-	UEbdDP/vyyVpntAF2kvB7jMulYqQA/Bec4ail0kRvwdUMceJi0rli1MCnuqNcW7kBVqA62y8/zr
-	4dumwNthU0iqIMJvkXTQ1ajJK6d8GZAGllUReTyZh89ZDDSTxzIQL4h7Vi9mhTDLsYUU7JocrCK
-	nDsSBYicrbqrnt2uipTjuMYia5oBefONBkMoxRSDQCq8CJjo+EXDXgYDhJzCUIiJnCJL9l3TDbg
-	htdvbakUdEAw5oYVyZHvecWeq2O3x1Z6t9d/ZcaqRaEhJLrEVhqXkyuLCPBS6i15eBYjSPLvH2t
-	zvfuBllpuqNZybF82tYSvtO0+cuG95rPv7ujtZKrpZnEQ6pRSKpQ==
-X-Received: by 2002:a5d:5d03:0:b0:476:e67a:dfa7 with SMTP id ffacd0b85a97d-47aaa4222c9mr11073751f8f.7.1783318818209;
-        Sun, 05 Jul 2026 23:20:18 -0700 (PDT)
-Received: from framework.casa.breiti.cc ([2.57.48.190])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47a9e3e2702sm22194047f8f.9.2026.07.05.23.20.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 05 Jul 2026 23:20:17 -0700 (PDT)
-From: Markus Breitenberger <bre@breiti.cc>
-To: netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Choong Yong Liang <yong.liang.choong@linux.intel.com>,
-	Markus Breitenberger <bre@breiti.cc>,
-	stable@vger.kernel.org,
-	Markus Breitenberger <bre@keba.com>
-Subject: [PATCH net] net: stmmac: intel: don't reconfigure SerDes on unchanged mode
-Date: Mon,  6 Jul 2026 08:19:54 +0200
-Message-ID: <20260706061954.94842-1-bre@breiti.cc>
-X-Mailer: git-send-email 2.55.0
+	s=arc-20240116; t=1783318844; c=relaxed/simple;
+	bh=+bd9WiorYKiALUTe/ZE9Twmt5uX3p97amk10CfbvR3w=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=UDoCGGo1q7AfvCLbG/+j/hrKd/92BW2JFL4QRsYr6oQSlAHJP66qAI2IJgYJ/ikpiWKqzwKKF+rZOLnnAVX7Y7kLS4MHEHkRqr46LMj37wHwsYGhtnAtgHMfI/ZShn+0Q5bDODrfszTrGaWGHwoykNnZRCpOPPpoPolBEUhBrSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
+X-AuditID: a67dfc5b-c45ff70000001609-c8-6a4b48fe1d04
+From: Byungchul Park <byungchul@sk.com>
+To: linux-kernel@vger.kernel.org
+Cc: max.byungchul.park@gmail.com,
+	kernel_team@skhynix.com,
+	torvalds@linux-foundation.org,
+	damien.lemoal@opensource.wdc.com,
+	linux-ide@vger.kernel.org,
+	adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org,
+	mingo@redhat.com,
+	peterz@infradead.org,
+	will@kernel.org,
+	tglx@linutronix.de,
+	rostedt@goodmis.org,
+	joel@joelfernandes.org,
+	sashal@kernel.org,
+	daniel.vetter@ffwll.ch,
+	duyuyang@gmail.com,
+	johannes.berg@intel.com,
+	tj@kernel.org,
+	tytso@mit.edu,
+	willy@infradead.org,
+	david@fromorbit.com,
+	amir73il@gmail.com,
+	gregkh@linuxfoundation.org,
+	kernel-team@lge.com,
+	linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	mhocko@kernel.org,
+	minchan@kernel.org,
+	hannes@cmpxchg.org,
+	vdavydov.dev@gmail.com,
+	sj@kernel.org,
+	jglisse@redhat.com,
+	dennis@kernel.org,
+	cl@linux.com,
+	penberg@kernel.org,
+	rientjes@google.com,
+	vbabka@suse.cz,
+	ngupta@vflare.org,
+	linux-block@vger.kernel.org,
+	josef@toxicpanda.com,
+	linux-fsdevel@vger.kernel.org,
+	jack@suse.cz,
+	jlayton@kernel.org,
+	dan.j.williams@intel.com,
+	hch@infradead.org,
+	djwong@kernel.org,
+	dri-devel@lists.freedesktop.org,
+	rodrigosiqueiramelo@gmail.com,
+	melissa.srw@gmail.com,
+	hamohammed.sa@gmail.com,
+	harry.yoo@oracle.com,
+	chris.p.wilson@intel.com,
+	gwan-gyeong.mun@intel.com,
+	boqun.feng@gmail.com,
+	longman@redhat.com,
+	yunseong.kim@ericsson.com,
+	ysk@kzalloc.com,
+	yeoreum.yun@arm.com,
+	netdev@vger.kernel.org,
+	matthew.brost@intel.com,
+	her0gyugyu@gmail.com,
+	corbet@lwn.net,
+	catalin.marinas@arm.com,
+	bp@alien8.de,
+	x86@kernel.org,
+	hpa@zytor.com,
+	luto@kernel.org,
+	sumit.semwal@linaro.org,
+	gustavo@padovan.org,
+	christian.koenig@amd.com,
+	andi.shyti@kernel.org,
+	arnd@arndb.de,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	rppt@kernel.org,
+	surenb@google.com,
+	mcgrof@kernel.org,
+	petr.pavlu@suse.com,
+	da.gomez@kernel.org,
+	samitolvanen@google.com,
+	paulmck@kernel.org,
+	frederic@kernel.org,
+	neeraj.upadhyay@kernel.org,
+	joelagnelf@nvidia.com,
+	josh@joshtriplett.org,
+	urezki@gmail.com,
+	mathieu.desnoyers@efficios.com,
+	jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev,
+	juri.lelli@redhat.com,
+	vincent.guittot@linaro.org,
+	dietmar.eggemann@arm.com,
+	bsegall@google.com,
+	mgorman@suse.de,
+	vschneid@redhat.com,
+	chuck.lever@oracle.com,
+	neil@brown.name,
+	okorniev@redhat.com,
+	Dai.Ngo@oracle.com,
+	tom@talpey.com,
+	trondmy@kernel.org,
+	anna@kernel.org,
+	kees@kernel.org,
+	bigeasy@linutronix.de,
+	clrkwllms@kernel.org,
+	mark.rutland@arm.com,
+	ada.coupriediaz@arm.com,
+	kristina.martsenko@arm.com,
+	wangkefeng.wang@huawei.com,
+	broonie@kernel.org,
+	kevin.brodsky@arm.com,
+	dwmw@amazon.co.uk,
+	shakeel.butt@linux.dev,
+	ast@kernel.org,
+	ziy@nvidia.com,
+	yuzhao@google.com,
+	baolin.wang@linux.alibaba.com,
+	usamaarif642@gmail.com,
+	joel.granados@kernel.org,
+	richard.weiyang@gmail.com,
+	geert+renesas@glider.be,
+	tim.c.chen@linux.intel.com,
+	linux@treblig.org,
+	alexander.shishkin@linux.intel.com,
+	lillian@star-ark.net,
+	chenhuacai@kernel.org,
+	francesco@valla.it,
+	guoweikang.kernel@gmail.com,
+	link@vivo.com,
+	jpoimboe@kernel.org,
+	masahiroy@kernel.org,
+	brauner@kernel.org,
+	thomas.weissschuh@linutronix.de,
+	oleg@redhat.com,
+	mjguzik@gmail.com,
+	andrii@kernel.org,
+	wangfushuai@baidu.com,
+	linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org,
+	linux-i2c@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-modules@vger.kernel.org,
+	rcu@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev,
+	2407018371@qq.com,
+	dakr@kernel.org,
+	miguel.ojeda.sandonis@gmail.com,
+	neilb@ownmail.net,
+	bagasdotme@gmail.com,
+	wsa+renesas@sang-engineering.com,
+	dave.hansen@intel.com,
+	geert@linux-m68k.org,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v19 13/40] dept: apply sdt_might_sleep_{start,end}() to hashed-waitqueue wait
+Date: Mon,  6 Jul 2026 15:19:01 +0900
+Message-Id: <20260706061928.66713-14-byungchul@sk.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20260706061928.66713-1-byungchul@sk.com>
+References: <20260706061928.66713-1-byungchul@sk.com>
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUxTBxSGd+5XLx0l16rxijFqE8Vo1Pq1nCVz84eZV8n8iP80RBt7ldYC
+	WpQJzq0MzaqgNtVKAFEooSJU0QuIikRArSKYlKBSRAQUSkmZTQjgGO26wua/97zve87z57Ck
+	soOOZXXJR0VjssagYuSU/M9o+wrYEq9XZxnRfPo3DBXUytAs5dHovlUB2DNmBvw8WUBiyOqS
+	oS0TMFzvArzcZiXR435EorM6k0BbXz+DuUOZFAYcOYBDTzdjuHuQwI7xYUBH/z8E9jf8AZhr
+	cwOODPUCVrveAw5Yakhs74/BV2MBBptt2QwW/V5Po/dtPYFZJZUMXi6UKGzzBwmskH7CFoud
+	iFAi9p05WJDri3Bv1hE44SiXocO0GMNFKdh9wUah32tlsNbUK0Op8yng6Ks+AqWPb2jMu/qO
+	QXNoFNB17wOB7Q+uMJhzu4bG984wjaaCzzRWDnoIbHE9p7A5/waFpR1tBPb1emisetlK4vj5
+	eeixDADe/GRn8OInL2zUCs6rThAm/7aCMFqaRQqnLZHx8XCAFEpbhhnhhZ0X7ud3y4Qi6ZhQ
+	VbZMKHk4RAjFI2O08Na/QZDKzzCCNGKVCcWTPnLH8t3y77SiQZcmGld9v0+eWN16Bg73sMdL
+	3JWkCXqYsxDF8tw63vy8Fr7osuI6YkozXBzv8UyQU3oWt5CvOuelz4KcJbn2BXyO4xw1Fczk
+	EvhgXWi6RHGL+cCp19OHFNw3fGNn5/+ABXzF7YbpTlTEvxUsnAYoufV8V+AZNXWU565F8dfH
+	r9P/LczlG8s8lAUURfBVOSh1yWlJGp1h3crE9GTd8ZX7U5IkiLyb42Rwzz0Yce9qAo4FVbQC
+	N27VK2lNWmp6UhPwLKmapViyNF6vVGg16RmiMWWv8ZhBTG2CeSylmqNYM/6zVskd1BwVD4ni
+	YdH4JSXYqFgTZPwwe9GJPR+OEF87TwyWl+4Mbrvb12CXgU/9Otp3p/5U/jZojF+l+qt24XZq
+	MmYDnaAPyCcunSyczb3I1vpDPdSv7YseGjYdaToQ1zYjTv1LQuVSdQyl6/12Z+OzgSd+PCRd
+	0NeUrVXsqtGFu+b+2DqQx6qbM3yGhvldsdnej90qKjVRs3oZaUzV/AsL6zhiagMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe0hTcRTH+/3u3d11tLgspVv9UQ16YyVknB5EUbGLVhQUQVB6qUvOV7KV
+	ZRE552qahi43qWmp5SV0qfkoH4zWSqtl6LLSHraCZYnWIh/lY9qU+ufwOef7PY8/Dk0o6iXz
+	aHXiCUGTyMcrKRkp271RHzrBRcauedfIgtFwHj54vBJ4o3OQMDRoJKGg0kaB33pfCsbqqxJ4
+	2plGQntFOQLPkBHB7zErAYaGSRL8phYpDI68l4JZh2DS3oLA4jYR0NX+gABbrQ7DQNUEBX2P
+	fiEwf/ZSkN+rI8EnZiG41mOVQm+zCr57miQw2f0VQ+dwPwLRO4HB67iIwG+JgxslNYF2y08K
+	xl60EZBvbkdQ/LmbgF+9nxDUtnxEYL+dRsGXnDoCOryz4NWQj4Jn5ksUfHcXYPhRRUFRml0C
+	7tY+BIVWE4Ked3YM+puVFFgKq0lo+NQoBXffOIYPFhOG8upd4BF7SHieU4ID5wZcd+eANV+P
+	A+EbBvOdJgwjYpl0Synifhsuk1xZzT3MGV76Kc523Ya4sVET4gZL9QRnyAmkj/p9BJdec4or
+	fd5PcaNDrynOPlxEcq4SlruVMYq53BehXMO1bumerQdlm44K8epkQbN6c7QsprY1AyV56NM3
+	2yuJVOShMlEQzTJr2dvFTXiKKWYp29U1QkxxMLOQrcnukWQiGU0wHQvYLDGbnBJmM4fY8Sb/
+	tIlkFrO+9NdoiuXMOvbh27f/hi5gy6sc056gQL1ivHB6gYIJZ9/7npA5SFaEZpShYHVicgKv
+	jg9fpY2LSUlUn1515HhCNQr8k3huPLceDXaonIihkXKmHLZExCokfLI2JcGJWJpQBsuXLIuM
+	VciP8ilnBM3xKM3JeEHrRPNpUjlHHnFAiFYwx/gTQpwgJAma/yqmg+aloqD0nZtWEMuMGS7X
+	nwOZbXnOZ7HBh93DPFUPzcv3RYmOg2c667rx2iPRIQW5hgHCxWxXhabyxrn+sytDnshLLozJ
+	V4oFpM8mqvbrlWFLZjTvvJp3/sJHT132or1FO9jS+QPb1u+YuOJytcpupFx/vFDVhsO05bpt
+	dZMbOh3O3UpSG8OHrSA0Wv4vV41UCUsDAAA=
+X-CFilter-Loop: Reflected
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Markus Breitenberger <bre@keba.com>
+Make dept able to track dependencies by hashed-waitqueue waits.
 
-intel_mac_finish() is registered as the phylink mac_finish() callback
-for the Elkhart Lake SGMII ports. phylink calls mac_finish() at the end
-of every major link reconfiguration, including the initial one during
-probe, before any interface mode has actually changed.
-
-The callback reprograms the shared ModPHY LCPLL through the PMC IPC and
-then power-cycles the SerDes. On Elkhart Lake that ModPHY is also used
-by the on-die AHCI SATA PHY. Running the reconfiguration during the
-initial boot-time link-up disturbs the shared analog block while it is
-still driving SATA, so the SATA link fails to train:
-
-  ata1: SATA link down (SStatus 1 SControl 300)
-
-The disk carrying the root filesystem is never detected and the system
-hangs at rootwait. Ethernet itself comes up normally, which makes the
-failure look unrelated to the network driver.
-
-Firmware already programs the ModPHY for the configured interface, so
-the reconfiguration is redundant unless the interface mode really
-changes. Return early when the requested mode equals the current one.
-This avoids touching the shared ModPHY (and the SATA PHY) during boot
-while preserving runtime SGMII to 2500BASE-X switching, which still
-sees a genuine mode change and reconfigures as before.
-
-Fixes: a42f6b3f1cc1 ("net: stmmac: configure SerDes according to the interface mode")
-Cc: stable@vger.kernel.org
-Assisted-by: GitHub-Copilot:claude-opus-4.8
-Signed-off-by: Markus Breitenberger <bre@keba.com>
+Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ include/linux/wait_bit.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
-index b8d467ba6d72..9a162831ca40 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
-@@ -536,6 +536,15 @@ static int intel_mac_finish(struct net_device *ndev,
- 	int max_regs = 0;
- 	int ret = 0;
+diff --git a/include/linux/wait_bit.h b/include/linux/wait_bit.h
+index 9e29d79fc790..179a616ad245 100644
+--- a/include/linux/wait_bit.h
++++ b/include/linux/wait_bit.h
+@@ -6,6 +6,7 @@
+  * Linux wait-bit related types and methods:
+  */
+ #include <linux/wait.h>
++#include <linux/dept_sdt.h>
  
-+	/* mac_finish() runs at the end of every major link reconfiguration,
-+	 * including the initial one at probe, where the interface mode has
-+	 * not actually changed. Reprogramming and power-cycling the SerDes is
-+	 * only needed on a real mode change and is otherwise needlessly
-+	 * disruptive, so skip it when the mode is unchanged.
-+	 */
-+	if (priv->plat->phy_interface == interface)
-+		return 0;
-+
- 	ret = intel_tsn_lane_is_available(ndev, intel_priv);
- 	if (ret < 0) {
- 		netdev_info(priv->dev, "No TSN lane available to set the registers.\n");
+ struct wait_bit_key {
+ 	unsigned long		*flags;
+@@ -257,6 +258,7 @@ extern wait_queue_head_t *__var_waitqueue(void *p);
+ 	struct wait_bit_queue_entry __wbq_entry;			\
+ 	long __ret = ret; /* explicit shadow */				\
+ 									\
++	sdt_might_sleep_start(NULL);					\
+ 	init_wait_var_entry(&__wbq_entry, var,				\
+ 			    exclusive ? WQ_FLAG_EXCLUSIVE : 0);		\
+ 	for (;;) {							\
+@@ -274,6 +276,7 @@ extern wait_queue_head_t *__var_waitqueue(void *p);
+ 		cmd;							\
+ 	}								\
+ 	finish_wait(__wq_head, &__wbq_entry.wq_entry);			\
++	sdt_might_sleep_end();						\
+ __out:	__ret;								\
+ })
+ 
 -- 
-2.55.0
+2.17.1
 
