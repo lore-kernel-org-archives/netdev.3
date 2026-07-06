@@ -1,264 +1,228 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 251F11B4223
-	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 23:01:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97BA83D3308
+	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 23:02:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783378905; cv=none; b=hQ+grRQ6Ls7RmE7dRTFubp385bM9Ronpu85esHkyv7qi9s7PQyGOehYCJ7wKQP+AngNwvN555ET+96ge+s/0EP3zmKoZBTwpJh4xQhO6/Sfv2JbDHxsjskNs2hZrEd8aFj28Pm64aFYaZNQH1kvkRb8WWfdgTguIHmTZ6cMOQiI=
+	t=1783378979; cv=none; b=SDAfGT7h+4JVZ2qbCn/wsDIBVdeVRtkUgh+ScaonxIJNHXHY9L7bp9tgNFLnhHC7oEMAOXpUwYNqZM0MPKQRyBL8S8Ag58kFMX8yE71EJXPTuU2NCx80F4HpRToum/prlDyVxMBId2pUPBUBT3BCNduj9JoL/iDgY7Cf2GIzmjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783378905; c=relaxed/simple;
-	bh=2fcJP08/HSUH1wuSTGx+vBhClLrtN4O9zNgxlhnCbX0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=T1Fu8WTF8BAZO6Cpej2aPEn38cH7DGYBi7RARCLvMT33/I9i4KdNtFX3lM5J8G1AntItmnFov4Sm6g5el8W7woRsJBBervNmDquhgkUDxePLUJgirWl4pwqclEQMIpvMcoYIcAvkeA1Wo+sgPswY7Q72a5o5zQcNrulFoSDsu0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MaqfLxci; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	s=arc-20240116; t=1783378979; c=relaxed/simple;
+	bh=oC8jt29NXkSPFD96mbTv5nD63+RCBk7CuQSSpqn2mJI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Yk2hKYHfeOpzeqvyzT/KtDxttfUYRuKBNyvP8qP1Q3+PP/clBdVV+K62QavjM6z/JPv+797QapwlS883mo4FsX9qH80vKhrxONQUwWHuXhbqV06AiYwCmh0usWU4vAEz4YDtTZNTkeYqX1XMbCZraDwD5jQfWdgBCyTst0IQEVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kLY2pM6W; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MaqfLxci"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c98136ceff4so6130210a12.2
-        for <netdev@vger.kernel.org>; Mon, 06 Jul 2026 16:01:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783378903; x=1783983703; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=v4OKH8nLpRPfbp1hgj6REqr4yMvAGngFItE2YoOJh7A=;
-        b=MaqfLxci+7yU4xbgzhJ7Yft+fgtHLcaVKgIDMH/w/QqxbYBpNW6RvvMyUZb6zTGddG
-         gsi7pa1dKRhDE0GSR34GWGmvigUjd/OPo/f8v+tAS0NRr07+zOk0OifwzXmm+CmzClek
-         f14ZZA4OL96xP+l/o22mvz2cCi44rno0VJvFQYcV5xgrD9m9WdPiT2CwQ4qfJ3eKEIFw
-         /FtLCGYICBcJoTeW8LuxNCYel56kyCUFXOW5EAjs+lgymmlZcp0x1heY1VW112487g1p
-         1u28O0/G3etokeXBlSNVsBvsUH0DKx1+YzZc87ZvFghLGHFbcpte1tnHgvmGAHZrQByE
-         IWxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783378903; x=1783983703;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=v4OKH8nLpRPfbp1hgj6REqr4yMvAGngFItE2YoOJh7A=;
-        b=OD5/jdwGxqHGzFY/p/sMao2Ut0zwiW0nb2FznySnydse2/X/QT72kpB73rlu6ysMno
-         kNsIrUZeuhncwj46LdrcCS9dzjQOrKkJGNo2aH8q2x+9ZXqmwWbxevMliqOFGInEjH/a
-         cbZfTt3MnV8h0CLs2LSyhy/mHOoK9VAaIJP2/rQgjTX/UIzNYpfO87lFUcHr1u7GJwO4
-         d1HCWdB4QYCw9XUIvF0YKi0ujqtJ4meexkgRCPv2MvbtFuTVGOaVkvYoAjO64KBkUdzz
-         sa6hzhPf7SWplM1hS4iCYs1ZB5wJCrb+lxB9oJF4NdYsQXhrmcOZ9hhqPy1EMWiEtAqq
-         4/OA==
-X-Forwarded-Encrypted: i=1; AHgh+RoiXNLOzgTfQXbdjKuAft1IP2Ta9x3qH7O8joamPgNrXfv4QJoHcTlo4zCqrawsF4KbF3iJmXw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxoodzAg5Aa97xuOvx6w8xHS8ZeTpsjt+SmDgC8DZN28BCrOlPr
-	o00mE/s1sdYacPxJH4LN28ogf4Q2HnDXUjIIMxQZPuRAwnKW0EjQ3RgMdy1af1bGmtT1eN2oqKQ
-	swbsi1Q==
-X-Received: from pfll10.prod.google.com ([2002:a05:6a00:158a:b0:847:ada8:bf86])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:bd81:b0:847:8650:69cd
- with SMTP id d2e1a72fcca58-84826dad939mr2513930b3a.33.1783378903005; Mon, 06
- Jul 2026 16:01:43 -0700 (PDT)
-Date: Mon,  6 Jul 2026 23:01:27 +0000
-In-Reply-To: <20260706093525.13030-3-mahe.tardy@gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kLY2pM6W"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783378978; x=1814914978;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=oC8jt29NXkSPFD96mbTv5nD63+RCBk7CuQSSpqn2mJI=;
+  b=kLY2pM6W+QVek1thV6mGNrl+WF/Qdf856ZxAgwODQQlk/a3KU84Ibhjg
+   Vlf2efQEg2BfbKYxJoW/L0Rgz5r/znEr8LU8gPFUuuN8Zfk26ru2mNWWU
+   qTgDLZ39NUY55W1zzxzJD49BLhUemmHPgnoysP7DE5MpDJS0xZLUbZdui
+   sKeTv+DtH66g/XpjjIWR5N6ceq9S1UGLEFqU9lNuS1cvj0HPw5OUCOA23
+   UxQNSclYk41RdJu/68vhx6iGDanoD4i1+X//79TNJUT8HAC4w3fMek68u
+   Pa67Sc4GrPI8uoQ+B+IpQp9QnVuqPtB2LYcycYxhEzlDn9kfV6I+jL/jL
+   Q==;
+X-CSE-ConnectionGUID: zZK8/PR9SyGVlQ2eigaR3Q==
+X-CSE-MsgGUID: p2obEkwhTgaa+3+J+pqNTA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11839"; a="84071804"
+X-IronPort-AV: E=Sophos;i="6.25,151,1779174000"; 
+   d="scan'208";a="84071804"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2026 16:02:57 -0700
+X-CSE-ConnectionGUID: 8t+YtnOVQ6GmpL2Nyy4cng==
+X-CSE-MsgGUID: mpX+D+ugSiug+NSEK3v3uQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,151,1779174000"; 
+   d="scan'208";a="254482156"
+Received: from irvmail002.ir.intel.com ([10.43.11.120])
+  by orviesa009.jf.intel.com with ESMTP; 06 Jul 2026 16:02:54 -0700
+Received: from vecna.igk.intel.com (vecna.igk.intel.com [10.123.220.17])
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id 57DCE33BC0;
+	Tue,  7 Jul 2026 00:02:52 +0100 (IST)
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+To: intel-wired-lan@lists.osuosl.org,
+	Michal Schmidt <mschmidt@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
+	Piotr Kwapulinski <piotr.kwapulinski@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Marcin Szycik <marcin.szycik@linux.intel.com>
+Subject: [PATCH iwl-net v2 1/2] ice: move ice_vsi_realloc_stat_arrays() up
+Date: Tue,  7 Jul 2026 00:43:30 +0200
+Message-ID: <20260706224346.22546-1-przemyslaw.kitszel@intel.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260706093525.13030-3-mahe.tardy@gmail.com>
-X-Mailer: git-send-email 2.55.0.rc2.803.g1fd1e6609c-goog
-Message-ID: <20260706230142.1691146-1-kuniyu@google.com>
-Subject: Re: [PATCH bpf-next 2/6] bpf: Add ksock kfuncs
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: mahe.tardy@gmail.com
-Cc: andrew+netdev@lunn.ch, andrii@kernel.org, ast@kernel.org, 
-	bpf@vger.kernel.org, daniel@iogearbox.net, davem@davemloft.net, 
-	eddyz87@gmail.com, edumazet@google.com, john.fastabend@gmail.com, 
-	kuba@kernel.org, liamwisehart@meta.com, martin.lau@linux.dev, 
-	netdev@vger.kernel.org, pabeni@redhat.com, song@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-From: Mahe Tardy <mahe.tardy@gmail.com>
-Date: Mon,  6 Jul 2026 09:35:21 +0000
-> diff --git a/net/core/bpf_ksock.c b/net/core/bpf_ksock.c
-[...]
-> +static bool bpf_ksock_send_enter(struct bpf_ksock_send_guard *guard)
+Move ice_vsi_realloc_stat_arrays() up, to allow calling it from
+ice_vsi_cfg_def() by the next commit.
 
-Can we do this better with assigning a single bit to task_struct ?
+Fix kdoc for touched code. One line break removed, "int i" scope
+minimized to the loop, no changes otherwise.
 
+Reviewed-by: Marcin Szycik <marcin.szycik@linux.intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+---
+v2: no changes
+---
+ drivers/net/ethernet/intel/ice/ice_lib.c | 119 +++++++++++------------
+ 1 file changed, 59 insertions(+), 60 deletions(-)
 
-> +{
-> +	struct bpf_ksock_send_guard *entry;
-> +	struct hlist_bl_node *pos;
-> +	struct bpf_ksock_send_bucket *bucket;
-> +
-> +	bucket = bpf_ksock_send_bucket(current);
-> +	hlist_bl_lock(&bucket->head);
-> +	hlist_bl_for_each_entry(entry, pos, &bucket->head, node) {
-> +		if (entry->task == current) {
-> +			hlist_bl_unlock(&bucket->head);
-> +			return false;
-> +		}
-> +	}
-> +
-> +	guard->task = current;
-> +	INIT_HLIST_BL_NODE(&guard->node);
-> +	hlist_bl_add_head(&guard->node, &bucket->head);
-> +	hlist_bl_unlock(&bucket->head);
-> +	return true;
-> +}
-> +
-> +static void bpf_ksock_send_exit(struct bpf_ksock_send_guard *guard)
-> +{
-> +	struct bpf_ksock_send_bucket *bucket;
-> +
-> +	bucket = bpf_ksock_send_bucket(guard->task);
-> +	hlist_bl_lock(&bucket->head);
-> +	hlist_bl_del(&guard->node);
-> +	hlist_bl_unlock(&bucket->head);
-> +}
-[...]
-> +__bpf_kfunc struct bpf_ksock *
-> +bpf_ksock_create(const struct bpf_ksock_create_opts *opts, u32 opts__sz,
-> +		 int *err__uninit)
-> +{
-> +	struct bpf_ksock_create_opts opts_copy;
-> +	struct bpf_ksock *ks;
-> +	struct net *net;
-> +	int err;
-> +
-> +	/*
-> +	 * sock_create() derives the network namespace, credentials, and cgroup
-> +	 * from current. Kernel threads, including BPF workqueue callbacks, do
-> +	 * not carry the context of the task that invoked the BPF program.
-> +	 */
-> +	if (!bpf_ksock_has_user_task_context()) {
-> +		err = -EOPNOTSUPP;
-> +		goto err_out;
-> +	}
-> +
-> +	if (!opts || opts__sz != sizeof(struct bpf_ksock_create_opts)) {
-> +		err = -EINVAL;
-> +		goto err_out;
-> +	}
-> +
-> +	opts_copy = (struct bpf_ksock_create_opts){
-> +		.family = READ_ONCE(opts->family),
-> +		.type = READ_ONCE(opts->type),
-> +		.protocol = READ_ONCE(opts->protocol),
-> +		.reserved = READ_ONCE(opts->reserved),
-> +	};
-> +
-> +	if (opts_copy.reserved) {
-> +		err = -EINVAL;
-> +		goto err_out;
-> +	}
-> +
-> +	if (opts_copy.family != AF_INET && opts_copy.family != AF_INET6) {
-> +		err = -EAFNOSUPPORT;
-> +		goto err_out;
-> +	}
-> +
-> +	if (opts_copy.type != SOCK_DGRAM) {
-> +		err = -EPROTONOSUPPORT;
-> +		goto err_out;
-> +	}
-> +
-> +	if (opts_copy.protocol != IPPROTO_UDP && opts_copy.protocol != 0) {
-> +		err = -EPROTONOSUPPORT;
-> +		goto err_out;
-> +	}
-> +
-> +	ks = kzalloc_obj(*ks);
-> +	if (!ks) {
-> +		err = -ENOMEM;
-> +		goto err_out;
-> +	}
-> +
-> +	net = current->nsproxy->net_ns;
-> +	if (!bpf_ksock_net_try_charge(net)) {
-> +		err = -ENOSPC;
-> +		goto err_free;
-> +	}
-> +
-> +	/*
-> +	 * Use the normal current-task socket path so LSM/cgroup policy,
-> +	 * socket labels, and the active netns reference match a socket(2)
-> +	 * created by the BPF program's caller.
-> +	 */
-> +	err = sock_create(opts_copy.family, opts_copy.type, opts_copy.protocol,
-> +			  &ks->sock);
+diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
+index 8cdc4fda89e9..e48ee5940f17 100644
+--- a/drivers/net/ethernet/intel/ice/ice_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_lib.c
+@@ -2303,6 +2303,65 @@ static int ice_vsi_cfg_tc_lan(struct ice_pf *pf, struct ice_vsi *vsi)
+ 	return 0;
+ }
+ 
++/**
++ * ice_vsi_realloc_stat_arrays - Frees unused stat structures or alloc new ones
++ * @vsi: VSI pointer
++ * Return: 0 on success or -ENOMEM on allocation failure.
++ */
++static int ice_vsi_realloc_stat_arrays(struct ice_vsi *vsi)
++{
++	u16 req_txq = vsi->req_txq ? vsi->req_txq : vsi->alloc_txq;
++	u16 req_rxq = vsi->req_rxq ? vsi->req_rxq : vsi->alloc_rxq;
++	struct ice_ring_stats **tx_ring_stats;
++	struct ice_ring_stats **rx_ring_stats;
++	struct ice_vsi_stats *vsi_stat;
++	struct ice_pf *pf = vsi->back;
++	u16 prev_txq = vsi->alloc_txq;
++	u16 prev_rxq = vsi->alloc_rxq;
++
++	vsi_stat = pf->vsi_stats[vsi->idx];
++
++	if (req_txq < prev_txq) {
++		for (int i = req_txq; i < prev_txq; i++) {
++			if (vsi_stat->tx_ring_stats[i]) {
++				kfree_rcu(vsi_stat->tx_ring_stats[i], rcu);
++				WRITE_ONCE(vsi_stat->tx_ring_stats[i], NULL);
++			}
++		}
++	}
++
++	tx_ring_stats = vsi_stat->tx_ring_stats;
++	vsi_stat->tx_ring_stats =
++		krealloc_array(vsi_stat->tx_ring_stats, req_txq,
++			       sizeof(*vsi_stat->tx_ring_stats),
++			       GFP_KERNEL | __GFP_ZERO);
++	if (!vsi_stat->tx_ring_stats) {
++		vsi_stat->tx_ring_stats = tx_ring_stats;
++		return -ENOMEM;
++	}
++
++	if (req_rxq < prev_rxq) {
++		for (int i = req_rxq; i < prev_rxq; i++) {
++			if (vsi_stat->rx_ring_stats[i]) {
++				kfree_rcu(vsi_stat->rx_ring_stats[i], rcu);
++				WRITE_ONCE(vsi_stat->rx_ring_stats[i], NULL);
++			}
++		}
++	}
++
++	rx_ring_stats = vsi_stat->rx_ring_stats;
++	vsi_stat->rx_ring_stats =
++		krealloc_array(vsi_stat->rx_ring_stats, req_rxq,
++			       sizeof(*vsi_stat->rx_ring_stats),
++			       GFP_KERNEL | __GFP_ZERO);
++	if (!vsi_stat->rx_ring_stats) {
++		vsi_stat->rx_ring_stats = rx_ring_stats;
++		return -ENOMEM;
++	}
++
++	return 0;
++}
++
+ /**
+  * ice_vsi_cfg_def - configure default VSI based on the type
+  * @vsi: pointer to VSI
+@@ -3011,66 +3070,6 @@ ice_vsi_rebuild_set_coalesce(struct ice_vsi *vsi,
+ 	}
+ }
+ 
+-/**
+- * ice_vsi_realloc_stat_arrays - Frees unused stat structures or alloc new ones
+- * @vsi: VSI pointer
+- */
+-static int
+-ice_vsi_realloc_stat_arrays(struct ice_vsi *vsi)
+-{
+-	u16 req_txq = vsi->req_txq ? vsi->req_txq : vsi->alloc_txq;
+-	u16 req_rxq = vsi->req_rxq ? vsi->req_rxq : vsi->alloc_rxq;
+-	struct ice_ring_stats **tx_ring_stats;
+-	struct ice_ring_stats **rx_ring_stats;
+-	struct ice_vsi_stats *vsi_stat;
+-	struct ice_pf *pf = vsi->back;
+-	u16 prev_txq = vsi->alloc_txq;
+-	u16 prev_rxq = vsi->alloc_rxq;
+-	int i;
+-
+-	vsi_stat = pf->vsi_stats[vsi->idx];
+-
+-	if (req_txq < prev_txq) {
+-		for (i = req_txq; i < prev_txq; i++) {
+-			if (vsi_stat->tx_ring_stats[i]) {
+-				kfree_rcu(vsi_stat->tx_ring_stats[i], rcu);
+-				WRITE_ONCE(vsi_stat->tx_ring_stats[i], NULL);
+-			}
+-		}
+-	}
+-
+-	tx_ring_stats = vsi_stat->tx_ring_stats;
+-	vsi_stat->tx_ring_stats =
+-		krealloc_array(vsi_stat->tx_ring_stats, req_txq,
+-			       sizeof(*vsi_stat->tx_ring_stats),
+-			       GFP_KERNEL | __GFP_ZERO);
+-	if (!vsi_stat->tx_ring_stats) {
+-		vsi_stat->tx_ring_stats = tx_ring_stats;
+-		return -ENOMEM;
+-	}
+-
+-	if (req_rxq < prev_rxq) {
+-		for (i = req_rxq; i < prev_rxq; i++) {
+-			if (vsi_stat->rx_ring_stats[i]) {
+-				kfree_rcu(vsi_stat->rx_ring_stats[i], rcu);
+-				WRITE_ONCE(vsi_stat->rx_ring_stats[i], NULL);
+-			}
+-		}
+-	}
+-
+-	rx_ring_stats = vsi_stat->rx_ring_stats;
+-	vsi_stat->rx_ring_stats =
+-		krealloc_array(vsi_stat->rx_ring_stats, req_rxq,
+-			       sizeof(*vsi_stat->rx_ring_stats),
+-			       GFP_KERNEL | __GFP_ZERO);
+-	if (!vsi_stat->rx_ring_stats) {
+-		vsi_stat->rx_ring_stats = rx_ring_stats;
+-		return -ENOMEM;
+-	}
+-
+-	return 0;
+-}
+-
+ /**
+  * ice_vsi_rebuild - Rebuild VSI after reset
+  * @vsi: VSI to be rebuild
+-- 
+2.54.0
 
-This also triggers LSM in __sock_create() so needs the loop
-detection, no ?
-
-Same for __sys_bind_socket() and __sys_connect_socket().
-
-
-> +	if (err)
-> +		goto err_uncharge;
-> +
-> +	ks->sock->sk->sk_rcvbuf = SOCK_MIN_RCVBUF;
-> +	ks->sock->sk->sk_userlocks |= SOCK_RCVBUF_LOCK;
-> +
-> +	refcount_set(&ks->usage, 1);
-> +	put_unaligned(0, err__uninit);
-> +	return ks;
-> +
-> +err_uncharge:
-> +	bpf_ksock_net_uncharge(net);
-> +err_free:
-> +	kfree(ks);
-> +err_out:
-> +	put_unaligned(err, err__uninit);
-> +	return NULL;
-> +}
-> +
-> +/**
-> + * bpf_ksock_bind() - Bind a BPF kernel socket to a local address.
-> + * @ks:		The BPF kernel socket context.
-> + * @opts:	Pointer to struct bpf_ksock_addr_opts with local address.
-> + * @opts__sz:	Size of the opts struct.
-> + *
-> + * Binds the socket to the specified local address and port.
-> + * This is optional; if not called, the kernel will auto-assign.
-> + *
-> + * This function may sleep while binding the socket, so it can only be used in
-> + * sleepable BPF programs (SYSCALL).
-> + *
-> + * Return: 0 on success, negative errno on error.
-> + */
-> +__bpf_kfunc int bpf_ksock_bind(struct bpf_ksock *ks,
-> +			       const struct bpf_ksock_addr_opts *opts,
-> +			       u32 opts__sz)
-> +{
-> +	struct sockaddr_storage addr = {};
-
-nit: we don't need to initialise here since bpf_ksock_get_addr() does.
-
-
-> +	int addrlen;
-> +
-> +	if (!bpf_ksock_has_user_task_context())
-> +		return -EOPNOTSUPP;
-> +
-> +	addrlen = bpf_ksock_get_addr(opts, opts__sz, &addr);
-> +	if (addrlen < 0)
-> +		return addrlen;
-> +
-> +	return __sys_bind_socket(ks->sock, &addr, addrlen);
-> +}
-> +
-> +/**
-> + * bpf_ksock_connect() - Connect a BPF kernel socket to a remote address.
-> + * @ks:		The BPF kernel socket context.
-> + * @opts:	Pointer to struct bpf_ksock_addr_opts with remote address.
-> + * @opts__sz:	Size of the opts struct.
-> + *
-> + * Connects the socket to the specified remote address and port.
-> + *
-> + * This function may sleep while connecting the socket, so it can only be used
-> + * in sleepable BPF programs (SYSCALL).
-> + *
-> + * Return: 0 on success, negative errno on error.
-> + */
-> +__bpf_kfunc int bpf_ksock_connect(struct bpf_ksock *ks,
-> +				  const struct bpf_ksock_addr_opts *opts,
-> +				  u32 opts__sz)
-> +{
-> +	struct sockaddr_storage addr = {};
-
-Same.
