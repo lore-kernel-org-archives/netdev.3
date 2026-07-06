@@ -1,331 +1,194 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4E76424648
-	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 23:02:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783378981; cv=none; b=e/U/gG4hrJQb+btYR+AxJHTyHOCl4hm32wEUqIOTXgVTG1ToovLa3Mv96Enwj0fj0WtTvre4kKhrEybBFxQtCshtaNy/r8QorEJLOMyICsk9yYzxMnLFulNHV+fw+VVvQwczzxNH5DO4wRXKAKTQeghQ/fKq+wiCH3AmuCk31nk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783378981; c=relaxed/simple;
-	bh=I5oeYp8CKiLbEczOggXCh6v8Knf53nCclMdUkaK2Y1Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QVstfzHwYS1hRSkbgY6E4F7HFmzFLbG+lltSm2040b37RkjkCvgG8TPImaoLEO1IMVQjTZYa1CjQZVqw/Q1AFi76OuT/+WjqyueACvPXR5h2Z3T6JPOlELlMF4Mh+ExYViHkO2EH9XLH2lMBfCPXtaBrm+O6wAJoOxJH62B3unk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m+9rVMQY; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF013DCD99
+	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 23:11:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783379483; cv=pass; b=CWfu0hj2HZN2Kig7jZuW4ICcJb/5hpjeJ+ybDu34VfqMA4Qj11h0F08fKYvqE+xPZcmckFa1ioVx92X5U2pijxKtYvsp3ZL4nRGQIXEiv2nnxxTIjdDz3dr0cLYekr4O5TvyEUXUbd7EogeRIHiodsZu3BTrp4w6oTTkkUSO8xE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783379483; c=relaxed/simple;
+	bh=0ldrpoo68rpXzEUw90JeIBxRjusqYN4dYNmPwTKPHGE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Vtue6VAbmiUX+IWI7FExqwBKp1HTfUhbI+81mK/w8dUTcmiM5T5QfI8mXFlCUc1mG0SO7nKAQbZ6Z6WTZpOXQQ/Oc0ODMb8L+PGpU5pvQI50cC2IhiDOjQyWeTF0g/HD5ZnJIT+QTdBYJwB10Cr8Q1SXqWWtEF29E2EBl+iDrIc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NMQQb+IT; arc=pass smtp.client-ip=74.125.224.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m+9rVMQY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783378979; x=1814914979;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=I5oeYp8CKiLbEczOggXCh6v8Knf53nCclMdUkaK2Y1Y=;
-  b=m+9rVMQYWa+iGt1BQVHnGRkOM/rxgzJSCCpf/lB6teDtqwRxabEVGjAO
-   mbZhOAhvXNMMbqha1QcdY2s8wxplMbjvW03ZgFMW9qGNQDbSFXHgab/KI
-   KfgZqyn9cYlcu/kWAdw0TzBYoGnt+2DwJKQeVx4a5P41ekHMVkbkH/ehh
-   lM/gyrZbqiS7R4jgRyWDvzSsi6zxy95mDFNXg1tJDXeIqU0k5EaDSyrFU
-   VN68+Lq7qB9O+aRDIP7ZSpncjZjbMNc6sKTeLVv4XAp/bsKSQCzbtWS1q
-   /IPGY/IilmPiejiSU/4yrpoGfwYli+z+QPR3t3d/gBZc453ym9u+K2w8W
-   Q==;
-X-CSE-ConnectionGUID: RxjPp8GJRkGWVSb4/JXlhg==
-X-CSE-MsgGUID: xc34lB2aS/y0NDVanu3WoQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11839"; a="84071811"
-X-IronPort-AV: E=Sophos;i="6.25,151,1779174000"; 
-   d="scan'208";a="84071811"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2026 16:02:58 -0700
-X-CSE-ConnectionGUID: mH2ClXUrSmOPLxhq7xWp6g==
-X-CSE-MsgGUID: MTAGTHptSpqW8zc7/PQO/w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,151,1779174000"; 
-   d="scan'208";a="254482158"
-Received: from irvmail002.ir.intel.com ([10.43.11.120])
-  by orviesa009.jf.intel.com with ESMTP; 06 Jul 2026 16:02:55 -0700
-Received: from vecna.igk.intel.com (vecna.igk.intel.com [10.123.220.17])
-	by irvmail002.ir.intel.com (Postfix) with ESMTP id 4437233BC1;
-	Tue,  7 Jul 2026 00:02:53 +0100 (IST)
-From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-To: intel-wired-lan@lists.osuosl.org,
-	Michal Schmidt <mschmidt@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
-	Piotr Kwapulinski <piotr.kwapulinski@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Marcin Szycik <marcin.szycik@linux.intel.com>
-Subject: [PATCH iwl-net v2 2/2] ice: fix stats array overflow via proper realloc
-Date: Tue,  7 Jul 2026 00:43:31 +0200
-Message-ID: <20260706224346.22546-2-przemyslaw.kitszel@intel.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260706224346.22546-1-przemyslaw.kitszel@intel.com>
-References: <20260706224346.22546-1-przemyslaw.kitszel@intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NMQQb+IT"
+Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-664bb15d05dso4995281d50.3
+        for <netdev@vger.kernel.org>; Mon, 06 Jul 2026 16:11:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783379481; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Cd70KL2OG10E84w48qvbvoCnnevhKbqAYH97VZEiNSwNiVIF7k6c/q5HeX7TiZ3Twz
+         s2q2Ja9gXxh5U7e+kf0Z1BoFRJruJBk2miUKZ3Bb8OWOQuzP2nPkCG1kc2P2ZMuEFJ8I
+         qUEr24GDdFjFaar1K+cILJT5jVYk1WhY8gF5nq7mXIzkI0kqeo6qGWCE251DX9p2Qm42
+         dvec8Q1ZjAb94B2AMQJUiyUFAgoyy+AmxgzE8k3xJK9q3xAKdC3+7h0lfFiLXsnrzZ26
+         jISdHOZaGxAiDZ4fwCw0xICmG7WTq5WAP3rFTgfBMKOZ9F5ym/72EPFmbxOZMlICe0GL
+         iP2A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=r3cdgqapzumwzqnY9k4uVmaR2nHeOOKloBNHyQRqVGc=;
+        fh=rIQXLzywgd4qrWOh7TLVn+wCqr0TNDoTlH1NoVZfsAs=;
+        b=oYwNRwsgcJXgRSR8OEZveKvRQlflaz3+dLZkkEQnAjb0+JR4ZJcFPw9D5YuCxRik5O
+         513O8q1t/gfIYgvIA5BbhO8hV2VsyFLURxEtqtcDH5X3LjRC5c0V2y4Xmj6/TFhEvP+P
+         qsQCScuK3kp1QhXe4lFXDDLlPTmeQLzYyKhRbGBNy0FYg7jQhAqgzeogq6QYDN/dzok4
+         6d0NWNK2E4lHxuKKZHDLkOJDrmP3SBvyG+dlTJ+SQzzkQLm+DMNK+T6ZXNuz51Acn4N2
+         dqj5lXQ5LForkX903kP90cZSwNxCp1/NqFkGAJUxXGlH2YJoXttmXLeXCFZAVWlimmMG
+         s64w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783379481; x=1783984281; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=r3cdgqapzumwzqnY9k4uVmaR2nHeOOKloBNHyQRqVGc=;
+        b=NMQQb+ITiACZy51nzG8P1ipra2sFOEc9Duwxxsmnx9wdST78spV48OB/YxmfZX96R9
+         EPGlvssPnTsNdyIoxqIre1BWGmA5txoWFpqWX3Abzniy5h/eIRmt8pp+l2btLFOYNzSX
+         XNvIoGenl3zDP6fllVm2AfZ1J24E6CaqXpUaHO4bouMagiv7LGJ4eK2PzIPkLFhH3zj1
+         TK1IKxaDDyWwzeOj2DrGnFfpbZ/tLXf5Cbsqa2Hrw4uZC+FQdgiZ23rcMyrA2trYAkFz
+         C6W8kf7X90EVhiaGXd2pXJ13NBflRSZ9EnmlGSpPI5vGtWtTiwbqdyCFRSlUlYMpH1bQ
+         W5Qg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783379481; x=1783984281;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=r3cdgqapzumwzqnY9k4uVmaR2nHeOOKloBNHyQRqVGc=;
+        b=AJySSiVWKIaVSYnwNSWNcGk580GPTGSxaPl1TXGAwdPZlJ/AeoakDmYclAAmRuXyCF
+         93TzylD7SNIH9jv65Hvl/rNjaV4+BqFV8nui6itCR9/qj6uzzUMdTFFhGz/Yb2PKgkU+
+         SEuPYgCphkl+QZD9t94BwOZT++byibzV8HAP8IBN1isQXrj8ZGmGHrB13bQZQfUR24nn
+         8fCdIr3dqAjIChgFXdZlEK/tmiTmqW6w9/JDBN3QCzsPlUvFx+pHvjycXrfTxymbUz9t
+         PlqFotD0nElZc6Z0N2D/yM5L3IiYaeHTZSlauSQnUic4mVqaoxVj3/Ss9YCMZdNot8+9
+         vIuw==
+X-Forwarded-Encrypted: i=1; AHgh+Rpz+d0EUQ/V6n/Ow95NDUVqTZLza49KTUJ57nZRDcX20rHVnu8S8MXIg+BVZBNenhKYbbtzD7o=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzj8EzpMgLyOn+VQjNrZwXnd2hUjKWdz635hF4xffSSwvi8kIg3
+	YBBnBbAADQKsucIEL3iU0VQ8oqPbOGS6HugKraW+cAMJpxAukYfvyN1/Lv8EghhI3JFgQrBjmle
+	eAYYV4NZR5UVXKiLryDgnocSVBETTjcw=
+X-Gm-Gg: AfdE7cnrPvbqdoYzgG109iPiP3Hti8Kh+hFowbVBqBlYCfCOerQnojNuNavuP/XYiPL
+	tMEiJSYZIRG5nzaiYSUiKTxXW13Q0Z8ZLQp4fvbhRbGFaFGLNSr+B8USAK75DBIUPdR+USv2DCY
+	vOhGJ9JVcYvkA2HMHKwqL/brjzuWFfjeVEsmta505tchOTerYGNWuxucykhILEufGC1VjX1iBbA
+	qnjgfdg1TotucRC+Y66v9n79ZBvDiGUKch77VCzMGAo14bvp1i0PketUFFmgTAscek5maVH
+X-Received: by 2002:a53:d012:0:b0:664:d7aa:3ebf with SMTP id
+ 956f58d0204a3-6677faee048mr1719697d50.1.1783379481249; Mon, 06 Jul 2026
+ 16:11:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260706171918.317102-12-ameryhung@gmail.com> <53de193473737a3692df075a179e186e996dc26a592b697f2f335d9d4039c943@mail.kernel.org>
+In-Reply-To: <53de193473737a3692df075a179e186e996dc26a592b697f2f335d9d4039c943@mail.kernel.org>
+From: Amery Hung <ameryhung@gmail.com>
+Date: Mon, 6 Jul 2026 16:11:10 -0700
+X-Gm-Features: AVVi8CerpQkWQBGKAnXiwMgd3izzJDVAW6uUXCJoT_umDqP0xKf7SNii83bPR6g
+Message-ID: <CAMB2axORKWYVfG_ZSHosX70Kf61bEqtyTnRPhuJy79avBJAHWg@mail.gmail.com>
+Subject: Re: [PATCH bpf-next v3 11/15] bpf: tcp: Support selected sock_ops
+ callbacks as struct_ops
+To: bot+bpf-ci@kernel.org
+Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, alexei.starovoitov@gmail.com, 
+	andrii@kernel.org, daniel@iogearbox.net, eddyz87@gmail.com, memxor@gmail.com, 
+	martin.lau@kernel.org, shakeel.butt@linux.dev, roman.gushchin@linux.dev, 
+	kuniyu@google.com, kerneljasonxing@gmail.com, kernel-team@meta.com, 
+	ast@kernel.org, yonghong.song@linux.dev, clm@meta.com, 
+	ihor.solodrai@linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Integrate ice_vsi_alloc_stat_arrays() with realloc variant.
+On Mon, Jul 6, 2026 at 11:28=E2=80=AFAM <bot+bpf-ci@kernel.org> wrote:
+>
+> > diff --git a/net/ipv4/bpf_tcp_ops.c b/net/ipv4/bpf_tcp_ops.c
+> > new file mode 100644
+> > index 000000000000..3febbc8dd1a0
+> > --- /dev/null
+> > +++ b/net/ipv4/bpf_tcp_ops.c
+> > @@ -0,0 +1,188 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +/* Copyright (c) 2026 Meta Platforms, Inc. and affiliates. */
+> > +
+> > +#include <linux/bpf.h>
+> > +#include <linux/btf_ids.h>
+> > +#include <linux/bpf_verifier.h>
+> > +#include <net/bpf_sk_storage.h>
+> > +#include <net/tcp.h>
+> > +
+> > +static int timeout_init_stub(struct sock *sk, struct request_sock *req=
+__nullable)
+> > +{
+> > +     struct bpf_tramp_run_ctx *ctx =3D
+> > +             container_of(current->bpf_ctx, struct bpf_tramp_run_ctx, =
+run_ctx);
+> > +
+> > +     return ctx->retval;
+> > +}
+> > +
+> > +static int rwnd_init_stub(struct sock *sk, struct request_sock *req__n=
+ullable)
+> > +{
+> > +     struct bpf_tramp_run_ctx *ctx =3D
+> > +             container_of(current->bpf_ctx, struct bpf_tramp_run_ctx, =
+run_ctx);
+> > +
+> > +     return ctx->retval;
+> > +}
+>
+> This isn't a bug, but could timeout_init_stub() and rwnd_init_stub()
+> simply return 0 like the analogous int-returning stubs in
+> net/ipv4/bpf_tcp_ca.c?
 
-Instead of keeping two functions for stat arrays allocation, change the
-ice_vsi_realloc_stat_arrays() to handle initial condition (no vsi_stat
-entry) and replace ice_vsi_alloc_stat_arrays() by the more generic
-ice_vsi_realloc_stat_arrays().
+The stub function returning int here must return ctx->retval to allow
+the next program in the array to inspect the return value. The stub
+function are the struct_ops counterpart of dummy bpf program. It
+replaces a normal struct_ops program when update_effective_progs()
+fails and can be executed.
 
-Note that VSIs of ICE_VSI_CHNL type are ignored in realloc variant as they
-were in the replaced ice_vsi_alloc_stat_arrays().
-
-This is a fix for stats array overflow that occurs when VF is given more
-queues (an operation that will be more frequent, and by bigger increase,
-when we will merge my "XLVF" series).
-
-Splat for increasing number of queues thanks to Michal Schmidt:
-KASAN detects the bug:
- ==================================================================
- BUG: KASAN: slab-out-of-bounds in ice_vsi_alloc_ring_stats+0x385/0x4a0 [ice]
- Read of size 8 at addr ffff88810affea60 by task kworker/u131:7/221
-
- CPU: 24 UID: 0 PID: 221 Comm: kworker/u131:7 Not tainted 7.1.0-rc1+ #1 PREEMPT(lazy)
- ...
- Workqueue: ice ice_service_task [ice]
- Call Trace:
-  <TASK>
-  ...
-  kasan_report+0xd7/0x120
-  ice_vsi_alloc_ring_stats+0x385/0x4a0 [ice]
-  ice_vsi_cfg_def+0x12e2/0x2060 [ice]
-  ice_vsi_cfg+0xb5/0x3c0 [ice]
-  ice_reset_vf+0x858/0xf80 [ice]
-  ice_vc_request_qs_msg+0x1da/0x290 [ice]
-  ice_vc_process_vf_msg+0xb15/0x1430 [ice]
-  __ice_clean_ctrlq+0x70d/0x9d0 [ice]
-  ice_service_task+0x840/0xf20 [ice]
-  process_one_work+0x690/0xff0
-  worker_thread+0x4d9/0xd20
-  kthread+0x322/0x410
-  ret_from_fork+0x332/0x660
-  ret_from_fork_asm+0x1a/0x30
-  </TASK>
-
- Allocated by task 2439:
-  kasan_save_stack+0x1c/0x40
-  kasan_save_track+0x10/0x30
-  __kasan_kmalloc+0x96/0xb0
-  __kmalloc_noprof+0x1d8/0x580
-  ice_vsi_cfg_def+0x115c/0x2060 [ice]
-  ice_vsi_cfg+0xb5/0x3c0 [ice]
-  ice_vsi_setup+0x180/0x320 [ice]
-  ice_start_vfs+0x1f3/0x590 [ice]
-  ice_ena_vfs+0x66d/0x798 [ice]
-  ice_sriov_configure.cold+0xe4/0x121 [ice]
-  sriov_numvfs_store+0x279/0x480
-  kernfs_fop_write_iter+0x331/0x4f0
-  vfs_write+0x4c4/0xe40
-  ksys_write+0x10c/0x240
-  do_syscall_64+0xd9/0x650
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
- The buggy address belongs to the object at ffff88810affea40
-                which belongs to the cache kmalloc-32 of size 32
- The buggy address is located 0 bytes to the right of
-                allocated 32-byte region [ffff88810affea40, ffff88810affea60)
-
-Fixes: 2a2cb4c6c181 ("ice: replace ice_vf_recreate_vsi() with ice_vf_reconfig_vsi()")
-Closes: https://redhat.atlassian.net/browse/RHEL-164321
-Reviewed-by: Marcin Szycik <marcin.szycik@linux.intel.com>
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
----
-This is an alternative to the fix [1] by Michal Schmidt, which were
-blocked due to AI feedback. My fix was already developed before Michal's,
-just not public back then. We have agreed to go on with my version.
-
-[1] https://lore.kernel.org/netdev/20260520183501.3360810-3-anthony.l.nguyen@intel.com
-
-v1:
-https://lore.kernel.org/intel-wired-lan/20260701104141.9740-2-przemyslaw.kitszel@intel.com
-
-v2: Sashiko:
- * defer pf->vsi_stats[vsi->idx] to be done only after successful Tx and Rx stats arrays
-      allocation - this avoids "half initialized" state processing in ice_vsi_free_stats().
-    The above was reported by both opus-4.6 and gemini-3.1-pro. All other errors reported by
-    just gemini were a mix between false-positives and too-cornercase'y. Gemini report for v1:
-    https://sashiko.dev/#/patchset/20260701104141.9740-1-przemyslaw.kitszel%40intel.com
- * store also array lengths in separate variable for better tracking and proper freeing.
----
- drivers/net/ethernet/intel/ice/ice.h     |  2 +
- drivers/net/ethernet/intel/ice/ice_lib.c | 80 ++++++++----------------
- 2 files changed, 29 insertions(+), 53 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
-index f72bb1aa4067..b63b59f2d203 100644
---- a/drivers/net/ethernet/intel/ice/ice.h
-+++ b/drivers/net/ethernet/intel/ice/ice.h
-@@ -328,6 +328,8 @@ enum ice_vsi_state {
- struct ice_vsi_stats {
- 	struct ice_ring_stats **tx_ring_stats;  /* Tx ring stats array */
- 	struct ice_ring_stats **rx_ring_stats;  /* Rx ring stats array */
-+	u16 tx_ring_stats_len;
-+	u16 rx_ring_stats_len;
- };
- 
- /* struct that defines a VSI, associated with a dev */
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index e48ee5940f17..c71849119d04 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -338,7 +338,6 @@ static void ice_vsi_free_stats(struct ice_vsi *vsi)
- {
- 	struct ice_vsi_stats *vsi_stat;
- 	struct ice_pf *pf = vsi->back;
--	int i;
- 
- 	if (vsi->type == ICE_VSI_CHNL)
- 		return;
-@@ -349,14 +348,14 @@ static void ice_vsi_free_stats(struct ice_vsi *vsi)
- 	if (!vsi_stat)
- 		return;
- 
--	ice_for_each_alloc_txq(vsi, i) {
-+	for (int i = 0; i < vsi_stat->tx_ring_stats_len; i++) {
- 		if (vsi_stat->tx_ring_stats[i]) {
- 			kfree_rcu(vsi_stat->tx_ring_stats[i], rcu);
- 			WRITE_ONCE(vsi_stat->tx_ring_stats[i], NULL);
- 		}
- 	}
- 
--	ice_for_each_alloc_rxq(vsi, i) {
-+	for (int i = 0; i < vsi_stat->rx_ring_stats_len; i++) {
- 		if (vsi_stat->rx_ring_stats[i]) {
- 			kfree_rcu(vsi_stat->rx_ring_stats[i], rcu);
- 			WRITE_ONCE(vsi_stat->rx_ring_stats[i], NULL);
-@@ -513,51 +512,6 @@ static irqreturn_t ice_msix_clean_rings(int __always_unused irq, void *data)
- 	return IRQ_HANDLED;
- }
- 
--/**
-- * ice_vsi_alloc_stat_arrays - Allocate statistics arrays
-- * @vsi: VSI pointer
-- */
--static int ice_vsi_alloc_stat_arrays(struct ice_vsi *vsi)
--{
--	struct ice_vsi_stats *vsi_stat;
--	struct ice_pf *pf = vsi->back;
--
--	if (vsi->type == ICE_VSI_CHNL)
--		return 0;
--	if (!pf->vsi_stats)
--		return -ENOENT;
--
--	if (pf->vsi_stats[vsi->idx])
--	/* realloc will happen in rebuild path */
--		return 0;
--
--	vsi_stat = kzalloc_obj(*vsi_stat);
--	if (!vsi_stat)
--		return -ENOMEM;
--
--	vsi_stat->tx_ring_stats =
--		kzalloc_objs(*vsi_stat->tx_ring_stats, vsi->alloc_txq);
--	if (!vsi_stat->tx_ring_stats)
--		goto err_alloc_tx;
--
--	vsi_stat->rx_ring_stats =
--		kzalloc_objs(*vsi_stat->rx_ring_stats, vsi->alloc_rxq);
--	if (!vsi_stat->rx_ring_stats)
--		goto err_alloc_rx;
--
--	pf->vsi_stats[vsi->idx] = vsi_stat;
--
--	return 0;
--
--err_alloc_rx:
--	kfree(vsi_stat->rx_ring_stats);
--err_alloc_tx:
--	kfree(vsi_stat->tx_ring_stats);
--	kfree(vsi_stat);
--	pf->vsi_stats[vsi->idx] = NULL;
--	return -ENOMEM;
--}
--
- /**
-  * ice_vsi_alloc_def - set default values for already allocated VSI
-  * @vsi: ptr to VSI
-@@ -2316,11 +2270,19 @@ static int ice_vsi_realloc_stat_arrays(struct ice_vsi *vsi)
- 	struct ice_ring_stats **rx_ring_stats;
- 	struct ice_vsi_stats *vsi_stat;
- 	struct ice_pf *pf = vsi->back;
--	u16 prev_txq = vsi->alloc_txq;
--	u16 prev_rxq = vsi->alloc_rxq;
-+	u16 prev_txq, prev_rxq;
-+
-+	if (vsi->type == ICE_VSI_CHNL)
-+		return 0;
- 
- 	vsi_stat = pf->vsi_stats[vsi->idx];
-+	if (!vsi_stat) {
-+		vsi_stat = kzalloc_obj(*vsi_stat);
-+		if (!vsi_stat)
-+			return -ENOMEM;
-+	}
- 
-+	prev_txq = vsi_stat->tx_ring_stats_len;
- 	if (req_txq < prev_txq) {
- 		for (int i = req_txq; i < prev_txq; i++) {
- 			if (vsi_stat->tx_ring_stats[i]) {
-@@ -2337,9 +2299,11 @@ static int ice_vsi_realloc_stat_arrays(struct ice_vsi *vsi)
- 			       GFP_KERNEL | __GFP_ZERO);
- 	if (!vsi_stat->tx_ring_stats) {
- 		vsi_stat->tx_ring_stats = tx_ring_stats;
--		return -ENOMEM;
-+		goto err_free_partial_vsi_stat;
- 	}
-+	vsi_stat->tx_ring_stats_len = req_txq;
- 
-+	prev_rxq = vsi_stat->rx_ring_stats_len;
- 	if (req_rxq < prev_rxq) {
- 		for (int i = req_rxq; i < prev_rxq; i++) {
- 			if (vsi_stat->rx_ring_stats[i]) {
-@@ -2356,10 +2320,20 @@ static int ice_vsi_realloc_stat_arrays(struct ice_vsi *vsi)
- 			       GFP_KERNEL | __GFP_ZERO);
- 	if (!vsi_stat->rx_ring_stats) {
- 		vsi_stat->rx_ring_stats = rx_ring_stats;
--		return -ENOMEM;
-+		goto err_free_partial_vsi_stat;
- 	}
-+	vsi_stat->rx_ring_stats_len = req_rxq;
- 
-+	pf->vsi_stats[vsi->idx] = vsi_stat;
- 	return 0;
-+
-+err_free_partial_vsi_stat:
-+	if (!pf->vsi_stats[vsi->idx]) {
-+		/* vsi_stat was not visible before current alloc attempt */
-+		kfree(vsi_stat->tx_ring_stats);
-+		kfree(vsi_stat);
-+	}
-+	return -ENOMEM;
- }
- 
- /**
-@@ -2379,7 +2353,7 @@ static int ice_vsi_cfg_def(struct ice_vsi *vsi)
- 		return ret;
- 
- 	/* allocate memory for Tx/Rx ring stat pointers */
--	ret = ice_vsi_alloc_stat_arrays(vsi);
-+	ret = ice_vsi_realloc_stat_arrays(vsi);
- 	if (ret)
- 		goto unroll_vsi_alloc;
- 
--- 
-2.54.0
-
+>
+> These stubs are only used for CFI/trampoline generation and never
+> executed. The sibling file's int stubs (bpf_tcp_ca_undo_cwnd,
+> bpf_tcp_ca_sndbuf_expand, bpf_tcp_ca_ssthresh) all return 0. The
+> container_of() plus ctx->retval logic here duplicates the actual
+> bpf_tcp_ops_get_retval() helper below.
+>
+> > +static void active_established_stub(struct sock *sk, struct sk_buff *s=
+kb__nullable)
+> > +{
+> > +}
+>
+> [ ... ]
+>
+> > +BPF_CALL_0(bpf_tcp_ops_get_retval)
+> > +{
+> > +     struct bpf_tramp_run_ctx *ctx =3D
+> > +             container_of(current->bpf_ctx, struct bpf_tramp_run_ctx, =
+run_ctx);
+> > +
+> > +     /* bpf_get_retval() is only exposed to timeout_init/rwnd_init, wh=
+ich
+> > +      * always run via bpf_tcp_ops_call_int(). Its run_ctx carries the=
+ int
+> > +      * return value chained across the bpf_tcp_ops attached to the cg=
+roup
+> > +      * and is this program's saved_run_ctx.
+> > +      */
+> > +     if (WARN_ON_ONCE(!ctx->saved_run_ctx))
+> > +             return 0;
+> > +
+> > +     return container_of(ctx->saved_run_ctx, struct bpf_tramp_run_ctx,
+> > +                         run_ctx)->retval;
+> > +}
+>
+> [ ... ]
+>
+>
+> ---
+> AI reviewed your patch. Please fix the bug or email reply why it's not a =
+bug.
+> See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/READM=
+E.md
+>
+> CI run summary: https://github.com/kernel-patches/bpf/actions/runs/288106=
+80939
