@@ -1,61 +1,63 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4BE3C0634;
-	Mon,  6 Jul 2026 06:18:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42FCE3BFE2A
+	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 06:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783318710; cv=none; b=tXAVu1kreRonQEKxTkB63d+DfwB7BLpStiGIcqltPzR2C0CQ8pl3FTYgKgozVqyNLyJQbiwF+iGS3/QWEEB+TXh2xfkilyNSqg9DJLkdkmf+Bj7zMBYpfmHPl6E4G3f5pYfb/qcjPrIeZ62JGSIbNbAoNiOg+8B2tbex5qNw/xY=
+	t=1783318784; cv=none; b=jUVIidcJIsO/UCc5343iPyg9igp/KCBK6bloNXkArD7EVT/BxCg2Eeuvx10T/wPvYJ/9NUk0LukH1hyX7Lp+1SgXcrLSPuexqZh9Z+JqluCQo2viw3G2Gp1lvXmvvWKfH93MBSg+BiKmMX5f+sQCKgq61VaUDC8VtrW6oWmRCpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783318710; c=relaxed/simple;
-	bh=rlzJi+w5pTVlNbGPp8zxuDj9vBrmk0/GV9kbg45qOCI=;
+	s=arc-20240116; t=1783318784; c=relaxed/simple;
+	bh=J91Z2sAlURoeDInS8hfXxMIvJ7MBXF1jJazO5Hecld8=;
 	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=igTam+hVtkwJsbd3TkEf/1+tCnGybVQUtdCY7i09s8aOVj6AI9ZXq+kMzq/ITi1rqN8XXyBCjyQNjTIc9RP7MSoqQ5hPzsNOwIfMgibbDyy7S2tRoQ6/8CtzDQPPuaqBLEe0NEYFSBBRgVbwCrAdC62gKxEUeX0KOKhqH/famcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=b7BOw4+f; arc=none smtp.client-ip=62.96.220.36
+	 Content-Type:Content-Disposition:In-Reply-To; b=Otyy4Yw1fW4aaS2nslObG0e5Zdo0Psr78/aFajIaaqbQn7UF3vigI6JpyyF+tyoAKBlMAZzqQ3Y9GBsiMVaK6pRzWdHjaAhsrL4c6iyoPT0CjX3kyX+SvV6icnifZye2NrS9k6RTDrnWkhVy04z8PfBM1nuTZq9Cav3JL6/zaVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=tERll18i; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="b7BOw4+f"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="tERll18i"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 6FAE4206B0;
-	Mon,  6 Jul 2026 08:18:24 +0200 (CEST)
+	by mx1.secunet.com (Postfix) with ESMTP id 5F105206B0;
+	Mon,  6 Jul 2026 08:19:40 +0200 (CEST)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id LikC3xw6zmZr; Mon,  6 Jul 2026 08:18:23 +0200 (CEST)
+ with ESMTP id N_kNvfzC0UmA; Mon,  6 Jul 2026 08:19:39 +0200 (CEST)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id BD74E201D5;
-	Mon,  6 Jul 2026 08:18:23 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com BD74E201D5
+	by mx1.secunet.com (Postfix) with ESMTPS id 3C777201D5;
+	Mon,  6 Jul 2026 08:19:39 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 3C777201D5
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1783318703;
-	bh=n9FT2Biw8AjI4t21xCaa7W5yfp4/uLPWUAUCJ93irr0=;
+	s=202301; t=1783318779;
+	bh=D8uQpAA5OtZLGqgg5NT+AOOfHIbY4xy4+dsCLUotoJc=;
 	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
-	b=b7BOw4+fsXY9qVWQWuiToIxEPuyWdGLf154j++u/JMy5W0ZMtGuI5KMOuB01Mhlyc
-	 CG8UvzowFpcEo9k4IvEmn6dsKKpukub0v6pGsVZAyL2btq7IucumsUOhO6p2dDN1cs
-	 p8gJx6WkMHhbdLvj8iFHRRLtYrQdOrpwr9GIEgf9BmyvYMNQHOmz26fWYtCMYCPhMx
-	 UrRM+hGAtbDrtT3YVHb7aqyGbI94aux3Ejd12g4ihQJxOY4k24U8L7Cnm04RnEdq/y
-	 SQNPSwMJP/4nE9/TDmsD3gJzV8H0+jPplxbIdh6K61hNu/1o4U1/Iz1jZjZpB3ihXP
-	 53zZuxlExIQMA==
+	b=tERll18ipYBYmTGYnfaISp7ZXoP98pdxEmS1Uqy9MFg+WEcJEI12mSjZKhKbmnU0N
+	 e5itIRBsh16UE7Ez2g8btEDCIyRsjsPhpQBqPofvpRvpcJPySqCZ296Gnz26LJgrjN
+	 NxY9ZOifEDj0oNbTVjjjan6sHPJPQ1SU71girKt2gAM1038z9fuYpzqYjaoVc+MdA6
+	 F+EsniM5/KwEVO5Sk6MkcnftlYvy7CpiUKF2ycm4furw3uGZmkZds7nRYCVCekPFNb
+	 JxuiUvvvG0ipUG04fbTcGapb9SWRg2Cr2oC6lv2hLYoj4M1v3GwW1iz9YDYxZFAplS
+	 GCM46v0mfNs4g==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 6 Jul
- 2026 08:18:22 +0200
-Received: (nullmailer pid 3240584 invoked by uid 1000);
-	Mon, 06 Jul 2026 06:18:21 -0000
-Date: Mon, 6 Jul 2026 08:18:21 +0200
+ 2026 08:19:38 +0200
+Received: (nullmailer pid 3241579 invoked by uid 1000);
+	Mon, 06 Jul 2026 06:19:37 -0000
+Date: Mon, 6 Jul 2026 08:19:37 +0200
 From: Steffen Klassert <steffen.klassert@secunet.com>
-To: Cen Zhang <zzzccc427@gmail.com>
+To: Antony Antony <antony.antony@secunet.com>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller"
 	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
 	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>, <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<baijiaju1990@gmail.com>
-Subject: Re: [PATCH v2] xfrm: cache the offload ifindex for netlink dumps
-Message-ID: <aktIrbQDaG5M-3MJ@secunet.com>
-References: <20260627035058.2745055-1-zzzccc427@gmail.com>
+	<horms@kernel.org>, Christian Hopps <chopps@labn.net>, Tobias Brunner
+	<tobias@strongswan.org>, <netdev@vger.kernel.org>,
+	<syzbot+0ac4d84afe1066a1f3e9@syzkaller.appspotmail.com>
+Subject: Re: [PATCH ipsec v2] xfrm: reject optional IPTFS templates in
+ outbound policies
+Message-ID: <aktI-XbTCnR27Sfe@secunet.com>
+References: <20260627-xfrm-pol-out-tmpl-iptfs-reject-fix-v2-1-45ff81741874@secunet.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,97 +66,148 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20260627035058.2745055-1-zzzccc427@gmail.com>
+In-Reply-To: <20260627-xfrm-pol-out-tmpl-iptfs-reject-fix-v2-1-45ff81741874@secunet.com>
 X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
  (10.32.0.171)
 
-On Sat, Jun 27, 2026 at 11:50:58AM +0800, Cen Zhang wrote:
-> copy_to_user_state_extra() only holds a reference to the outer xfrm_state.
-> That does not pin x->xso.dev. NETDEV_DOWN and NETDEV_UNREGISTER can race
-> through xfrm_dev_state_flush(), xfrm_state_delete(), and
-> xfrm_dev_state_free(), which clears xso->dev and drops the netdev
-> reference before the GETSA dump reaches xso_to_xuo() and reads
-> xso->dev->ifindex.
+On Sat, Jun 27, 2026 at 10:23:43AM +0200, Antony Antony wrote:
+> syzbot reported a stack-out-of-bounds read in xfrm_state_find()
+> which flows from xfrm_tmpl_resolve_one().
 > 
-> The buggy scenario involves two paths, with each column showing the order
-> within that path:
+> Commit 3d776e31c841 ("xfrm: Reject optional tunnel/BEET mode
+> templates in outbound policies") disallowed optional tunnel and
+> BEET in outbound policies to prevent this. Later when IPTFS
+> added, it was not covered by that fix and can still trigger
+> the out-of-bounds read;
 > 
-> XFRM_MSG_GETSA dump path:           NETDEV teardown path:
-> 1. xfrm_get_sa() gets xfrm_state    1. xfrm_dev_state_flush() finds x
-> 2. copy_to_user_state_extra() sees  2. xfrm_state_delete() removes x
->    x->xso.dev                          from the SAD
-> 3. copy_user_offload() calls        3. xfrm_dev_state_free() clears
->    xso_to_xuo()                        xso->dev
-> 4. xso->dev->ifindex dereferences   4. netdev_put() drops the device
->    a detached net_device               reference
+> Extend the check to disallow optional IPTFS in outbound policies
+> as well. IPTFS should be identical to tunnel mode.
+> IN and FWD policies are not affected: xfrm_tmpl_resolve_one()
+> is only reachable via the outbound path.
 > 
-> Avoid following the live net_device from the dump paths. Cache the
-> attached ifindex in xfrm_dev_offload when state or policy offload is bound
-> to a device, and serialize that snapshot instead. This preserves the
-> user-visible XFRMA_OFFLOAD_DEV value without depending on the embedded
-> net_device lifetime.
+> Reproducer, before:
 > 
-> Validation reproduced this kernel report:
-> Oops: general protection fault
+> ip link add dummy0 type dummy
+> ip link set dummy0 up
+> ip addr add 10.1.1.1/24 dev dummy0
+> ip xfrm policy add src 10.1.1.1/32 dst 10.1.1.2/32 dir out tmpl
+>   src fc00::dead:1 dst fc00::dead:2 proto esp reqid 1 mode iptfs
+>   level use tmpl src fc00::dead:1 dst fc00::dead:2 proto esp reqid
+>   2 mode transport
+> ping -W 1 -c 1 10.1.1.2
+> PING 10.1.1.2 (10.1.1.2) 56(84) bytes of data.
 > 
-> Call Trace:
->  <TASK>
->  copy_to_user_state_extra+0xb8d/0x1370 [xfrm_user]
->  ? __pfx_copy_to_user_state_extra+0x10/0x10 [xfrm_user]
->  ? __asan_memset+0x23/0x50
->  ? srso_alias_return_thunk+0x5/0xfbef5
->  ? __alloc_skb+0x342/0x960
->  ? srso_alias_return_thunk+0x5/0xfbef5
->  ? __asan_memset+0x23/0x50
->  ? srso_alias_return_thunk+0x5/0xfbef5
->  ? __nlmsg_put+0x147/0x1b0
->  dump_one_state+0x1c7/0x3e0 [xfrm_user]
->  xfrm_state_netlink+0xcb/0x130 [xfrm_user]
->  ? __pfx_xfrm_state_netlink+0x10/0x10 [xfrm_user]
->  ? srso_alias_return_thunk+0x5/0xfbef5
->  ? xfrm_user_state_lookup.constprop.0+0x230/0x310 [xfrm_user]
->  xfrm_get_sa+0x102/0x250 [xfrm_user]
->  ? __pfx_xfrm_get_sa+0x10/0x10 [xfrm_user]
->  xfrm_user_rcv_msg+0x504/0xaa0 [xfrm_user]
->  ? __pfx_xfrm_user_rcv_msg+0x10/0x10 [xfrm_user]
->  ? srso_alias_return_thunk+0x5/0xfbef5
->  ? stack_trace_save+0x8e/0xc0
->  ? __pfx_stack_trace_save+0x10/0x10
->  netlink_rcv_skb+0x11f/0x350
->  ? __pfx_xfrm_user_rcv_msg+0x10/0x10 [xfrm_user]
->  ? __pfx_netlink_rcv_skb+0x10/0x10
->  ? __pfx_mutex_lock+0x10/0x10
->  ? srso_alias_return_thunk+0x5/0xfbef5
->  xfrm_netlink_rcv+0x65/0x80 [xfrm_user]
->  netlink_unicast+0x600/0x870
->  ? __pfx_netlink_unicast+0x10/0x10
->  ? srso_alias_return_thunk+0x5/0xfbef5
->  ? __pfx_stack_trace_save+0x10/0x10
->  netlink_sendmsg+0x75d/0xc10
->  ? __pfx_netlink_sendmsg+0x10/0x10
->  ? srso_alias_return_thunk+0x5/0xfbef5
->  ____sys_sendmsg+0x77a/0x900
->  ? srso_alias_return_thunk+0x5/0xfbef5
->  ? __pfx_____sys_sendmsg+0x10/0x10
->  ? __pfx_copy_msghdr_from_user+0x10/0x10
->  ? release_sock+0x1a/0x1d0
->  ? srso_alias_return_thunk+0x5/0xfbef5
->  ? netlink_insert+0x143/0xec0
->  ___sys_sendmsg+0xff/0x180
->  ? __pfx____sys_sendmsg+0x10/0x10
->  ? _raw_spin_lock_irqsave+0x85/0xe0
->  ? do_getsockname+0xf9/0x170
->  ? srso_alias_return_thunk+0x5/0xfbef5
->  ? fdget+0x53/0x3b0
->  __sys_sendmsg+0x111/0x1a0
->  ? __pfx___sys_sendmsg+0x10/0x10
->  ? srso_alias_return_thunk+0x5/0xfbef5
->  ? __sys_getsockname+0x8c/0x100
->  do_syscall_64+0x102/0x5a0
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> [   64.168420] ==================================================================
+> [   64.169977] BUG: KASAN: stack-out-of-bounds in __xfrm6_addr_hash+0x11e/0x170
+> [   64.169977] Read of size 4 at addr ffff88800e1ffd20 by task ping/2844
 > 
-> Fixes: 07b87f9eea0c ("xfrm: Fix unregister netdevice hang on hardware offload.")
-> Assisted-by: Codex:gpt-5.5
-> Signed-off-by: Cen Zhang <zzzccc427@gmail.com>
+> [   64.169977] CPU: 2 UID: 0 PID: 2844 Comm: ping Not tainted 7.1.0-rc7-00180-geb23b588430a #98 PREEMPT(full)
+> [   64.169977] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+> [   64.169977] Call Trace:
+> [   64.169977]  <TASK>
+> [   64.169977]  dump_stack_lvl+0x47/0x70
+> [   64.169977]  ? __xfrm6_addr_hash+0x11e/0x170
+> [   64.169977]  print_report+0x152/0x4b0
+> [   64.169977]  ? ksys_mmap_pgoff+0x6d/0xa0
+> [   64.169977]  ? entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> [   64.169977]  ? rcu_read_unlock_sched+0xa/0x20
+> [   64.169977]  ? __virt_addr_valid+0x21b/0x230
+> [   64.169977]  ? __xfrm6_addr_hash+0x11e/0x170
+> [   64.169977]  kasan_report+0xa8/0xd0
+> [   64.169977]  ? __xfrm6_addr_hash+0x11e/0x170
+> [   64.169977]  __xfrm6_addr_hash+0x11e/0x170
+> [   64.169977]  __xfrm_dst_hash+0x24/0xc0
+> [   64.169977]  xfrm_state_find+0xa2d/0x2f90
+> [   64.169977]  ? __pfx_xfrm_state_find+0x10/0x10
+> [   64.169977]  ? __pfx_ftrace_graph_ret_addr+0x10/0x10
+> [   64.169977]  ? __pfx_ftrace_graph_ret_addr+0x10/0x10
+> [   64.169977]  xfrm_tmpl_resolve_one+0x210/0x570
+> [   64.169977]  ? __pfx_xfrm_tmpl_resolve_one+0x10/0x10
+> [   64.169977]  ? __pfx_stack_trace_consume_entry+0x10/0x10
+> [   64.169977]  ? kernel_text_address+0x5b/0x80
+> [   64.169977]  ? __kernel_text_address+0xe/0x30
+> [   64.169977]  ? unwind_get_return_address+0x5e/0x90
+> [   64.169977]  ? arch_stack_walk+0x8c/0xe0
+> [   64.169977]  xfrm_tmpl_resolve+0x130/0x200
+> [   64.169977]  ? __pfx_xfrm_tmpl_resolve+0x10/0x10
+> [   64.169977]  ? __pfx_xfrm_policy_inexact_lookup_rcu+0x10/0x10
+> [   64.169977]  ? __refcount_add_not_zero.constprop.0+0xb2/0x110
+> [   64.169977]  ? __pfx___refcount_add_not_zero.constprop.0+0x10/0x10
+> [   64.169977]  xfrm_resolve_and_create_bundle+0xd5/0x310
+> [   64.169977]  ? __pfx_xfrm_resolve_and_create_bundle+0x10/0x10
+> [   64.169977]  ? __pfx_xfrm_policy_lookup_bytype+0x10/0x10
+> [   64.169977]  ? __pfx_xfrm_policy_lookup_bytype+0x10/0x10
+> [   64.169977]  xfrm_lookup_with_ifid+0x3d8/0xb80
+> [   64.169977]  ? __pfx_xfrm_lookup_with_ifid+0x10/0x10
+> [   64.169977]  ? ip_route_output_key_hash+0xc6/0x110
+> [   64.169977]  ? kasan_save_track+0x10/0x30
+> [   64.169977]  xfrm_lookup_route+0x18/0xe0
+> [   64.169977]  ip4_datagram_release_cb+0x4c9/0x530
+> [   64.169977]  ? __pfx_ip4_datagram_release_cb+0x10/0x10
+> [   64.169977]  ? do_raw_spin_lock+0x71/0xc0
+> [   64.169977]  ? __pfx_do_raw_spin_lock+0x10/0x10
+> [   64.169977]  release_sock+0xb0/0x170
+> [   64.169977]  udp_connect+0x43/0x50
+> [   64.169977]  __sys_connect+0xa6/0x100
+> [   64.169977]  ? alloc_fd+0x2e9/0x300
+> [   64.169977]  ? __pfx___sys_connect+0x10/0x10
+> [   64.169977]  ? preempt_latency_start+0x1f/0x70
+> [   64.169977]  ? fd_install+0x7e/0x150
+> [   64.169977]  ? rcu_read_unlock_sched+0xa/0x20
+> [   64.169977]  ? __sys_socket+0xdf/0x130
+> [   64.169977]  ? __pfx___sys_socket+0x10/0x10
+> [   64.169977]  ? vma_refcount_put+0x43/0xa0
+> [   64.169977]  __x64_sys_connect+0x7e/0x90
+> [   64.169977]  do_syscall_64+0x11b/0x2b0
+> [   64.169977]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> [   64.169977] RIP: 0033:0x7f4851ecb570
+> [   64.169977] Code: 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 80 3d f9 ca 0d 00 00 74 17 b8 2a 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 58 c3 0f 1f 80 00 00 00 00 48 83 ec 18 89 54
+> [   64.169977] RSP: 002b:00007ffc830e3498 EFLAGS: 00000202 ORIG_RAX: 000000000000002a
+> [   64.169977] RAX: ffffffffffffffda RBX: 00007ffc830e34d0 RCX: 00007f4851ecb570
+> [   64.169977] RDX: 0000000000000010 RSI: 00007ffc830e34d0 RDI: 0000000000000005
+> [   64.169977] RBP: 0000000000000000 R08: 0000000000000003 R09: 0000000000000000
+> [   64.169977] R10: 0000000000000006 R11: 0000000000000202 R12: 0000000000000005
+> [   64.169977] R13: 0000000000000000 R14: 00005619a863f340 R15: 0000000000000000
+> [   64.169977]  </TASK>
+> 
+> [   64.169977] The buggy address belongs to stack of task ping/2844
+> [   64.169977]  and is located at offset 88 in frame:
+> [   64.169977]  ip4_datagram_release_cb+0x0/0x530
+> 
+> [   64.169977] This frame has 1 object:
+> [   64.169977]  [32, 88) 'fl4'
+> 
+> [   64.169977] The buggy address belongs to the physical page:
+> [   64.169977] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0xe1ff
+> [   64.169977] flags: 0x4000000000000000(zone=1)
+> [   64.169977] raw: 4000000000000000 0000000000000000 ffffea0000387fc8 0000000000000000
+> [   64.169977] raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
+> [   64.169977] page dumped because: kasan: bad access detected
+> 
+> [   64.169977] Memory state around the buggy address:
+> [   64.169977]  ffff88800e1ffc00: f2 f2 00 00 f3 f3 00 00 00 00 00 00 00 00 00 00
+> [   64.169977]  ffff88800e1ffc80: 00 00 00 00 00 00 00 00 00 f1 f1 f1 f1 00 00 00
+> [   64.169977] >ffff88800e1ffd00: 00 00 00 00 f3 f3 f3 f3 f3 00 00 00 00 00 00 00
+> [   64.169977]                                ^
+> [   64.169977]  ffff88800e1ffd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 f1 f1
+> [   64.169977]  ffff88800e1ffe00: f1 f1 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+> [   64.169977] ==================================================================
+> [   64.245153] Disabling lock debugging due to kernel taint
+> 
+> After the fix:
+> 
+> ip xfrm policy add src 10.1.1.1/32 dst 10.1.1.2/32 dir out tmpl \
+>  src fc00::dead:1 dst fc00::dead:2 proto esp reqid 1 mode iptfs \
+>  level use tmpl src fc00::dead:1 dst fc00::dead:2 proto esp reqid 2 \
+>  mode transport
+> 
+> Error: Mode in optional template not allowed in outbound policy.
+> 
+> Fixes: d1716d5a44c3 ("xfrm: add generic iptfs defines and functionality")
+> Reported-by: syzbot+0ac4d84afe1066a1f3e9@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/6a3ceb94.43b4ff68.30a095.0004.GAE@google.com/T/
+> Signed-off-by: Antony Antony <antony.antony@secunet.com>
 
-Patch applied, thanks a lot!
+I decided for Antonys version of the fix.
+
+Patch applied, thanks everyone!
