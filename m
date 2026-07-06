@@ -1,226 +1,105 @@
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010002.outbound.protection.outlook.com [52.101.61.2])
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CFD83DC4A8
-	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 18:29:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.2
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783362569; cv=fail; b=B95ywawj4sntfioNPvhIda9F/0ngGSSvVZbl2xmn535aCmGuRdLJoZzmQgsVDpDqGpjE2FaS2m4ce5pdySxvGj9S7T/pYXgwuojj49gy3bw8dyIfNwB+RN1bnl3Mw5Xcuxn/xyeYswUVz7vQ1dECc6Bw0pFfUBfpMhgH0K2roWI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783362569; c=relaxed/simple;
-	bh=D1iy2Y/4OmcTYk7AaN9uLHW420IpCTbYHRYVgw78H5s=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=PchddSRzs65vnmJ3pUfJZiRoIvhGb5i1Hyw3jJSlXT+ZLRwkpFlGzRqvgsZ4A4mavLAPRlb2vXxoVVgqciidyXFjzE4uBn+mfe7iR31xN6CqzvozADz8zti3TQXg6aQsH3YUWd8X+XqbrYWkq8c1AEnAGPVhkSTGqN4NGFEnBDs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=DknFiFUW; arc=fail smtp.client-ip=52.101.61.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712C9386450;
+	Mon,  6 Jul 2026 18:56:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783364174; cv=none; b=KACVyqiwj4fUvgomHoVlw6G9ALIGf6bZS7FyHzKSfW0/z5Vp3c4n7bFPDOCnVNXF08v+VM4NAabbzHzgLY8QuCUIIX1f061gzq/7KNKXUbKw0TsxfRhyQS07Mv9340uM3/Un6Pir9YllQE9Yudv41ZHRHlZi4Q1qrUx2Fy3ZDs0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783364174; c=relaxed/simple;
+	bh=DnqQH3Ns8ijK/qIj9sMWeyEO0RrEk6NgD4q96g4A2FA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=q3jPmNAVjOBlaio6tAHCMEHpheAFC2o+Y0u2QLKZG+q8UwZXXvxYk9Q6rDX1DIuyBvhSPpiybnjETIG8GU3M6+KwiXUpsWeaHa2BewUG+BiqYUyIpQl1SFDXAQeTkxCSeZ/uED0l8TRi+XkINvjvyJS/9+/FjEusM9ZtPX05g+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=VHnOOmJL; arc=none smtp.client-ip=213.133.104.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="DknFiFUW"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HkPiB8MmVfTNKSNTz1k2YpGwb3oLq7VW5vam46XCuukULr7C5ZqM677Ynl6nzuiLQJBBQSTqXlEm99RBkzbWWfB7rsqjDWuGEMl+AqOZB4NxWt40xdiwoNUygMWN9RAzB8P4VcWt6Oasm5SgDYqF7DcBl+TCTjdWEz/G0OSXQ7FaCbcw0TPua/WWJpLoDxpQ8cBL33TnrUp7IsVoQs8xzqfk6Q9zpn1E+9kRSMn8dk5ogIaHGNiWQVuvnfRTH+ynX54IImaHhFL0AioN5wVpM2iCBAjMWb4M7oCd43Sk5FoGxsz96N53SwAWz7KovceRXrVUlCjI1X2qgdpJlMNgFQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LBNKYIzy3HU3EZuIBItUbPaFUA/bAJUOPK2cq6N54nE=;
- b=FcyQNNVhpwFXq/Oa5MIvVsrnVYGnA29TiyIVJT++VCLZ7dzVKI6XfIRwlog/WaLjjp0e1nKknvqn0RQN4LqL2q4qD37HKLHXAiVr06uVKUFxhvGHHsHdqP4bTXk0C8bOauml9EZDvtnqLgMQl3SVoZc7aYMS0QWSwRLv1BN+xluDzeLLuByaWGBGot7UUKkLuYGu5Ak8Q56msXOoP6YS7ff3/P7qjlRhClowN5lqKm6pXJ4UUmjRmM00feLmoUv6DDafLwEXJu46KlusLtskPU2yBITdjtSsZcFRtL7P58C0ge11FzlDYO5TAmON02Tm87jf/+bE2PXRCFqIfFq36w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LBNKYIzy3HU3EZuIBItUbPaFUA/bAJUOPK2cq6N54nE=;
- b=DknFiFUWSx9xy4AIHqXuzg4MEDJpeDW2s2z/nIgKgQKbKcchwoeEtZO5wX5vEWl9KnxOBx3jUsti7xH/F3H6+uGxwM82fWLQ1nJk0uuG1zi4EN//4haEVeN/RE69pIYOqjTZNgz7SRIMlk0feEUr3jWkuwhAh9Pd9rGpjhsFUoA=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN2PR12MB3485.namprd12.prod.outlook.com (2603:10b6:208:c9::22)
- by CY5PR12MB9053.namprd12.prod.outlook.com (2603:10b6:930:37::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.14; Mon, 6 Jul
- 2026 18:29:24 +0000
-Received: from MN2PR12MB3485.namprd12.prod.outlook.com
- ([fe80::7ac:5acc:f8b7:65c9]) by MN2PR12MB3485.namprd12.prod.outlook.com
- ([fe80::7ac:5acc:f8b7:65c9%4]) with mapi id 15.21.0181.008; Mon, 6 Jul 2026
- 18:29:24 +0000
-Message-ID: <3fb21caf-c9f8-4218-8c14-8192a71f26f2@amd.com>
-Date: Mon, 6 Jul 2026 11:29:21 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 2/2] pds_core: fix use-after-free on workqueue
- during remove
-To: Paolo Abeni <pabeni@redhat.com>, "Nikhil P. Rao" <nikhil.rao@amd.com>,
- netdev@vger.kernel.org
-Cc: kuba@kernel.org, brett.creeley@amd.com, eric.joyner@amd.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com
-References: <20260629200358.2626129-1-nikhil.rao@amd.com>
- <20260629200358.2626129-3-nikhil.rao@amd.com>
- <11c0ee2b-96ff-4e27-8688-485dc4605f58@redhat.com>
-Content-Language: en-US
-From: "Rao, Nikhil" <nikhirao@amd.com>
-In-Reply-To: <11c0ee2b-96ff-4e27-8688-485dc4605f58@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BY1P220CA0050.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:a03:59e::12) To MN2PR12MB3485.namprd12.prod.outlook.com
- (2603:10b6:208:c9::22)
+	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="VHnOOmJL"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=C0ZdpmCSsBgmr9judXMm3+P3KGMl0lmu2e+KakqgAGY=; b=VHnOOmJLbFZ/vlBv31b1dFC5em
+	KVHiIm5aA9W5LVr3SULB4XQO1bzSzfwIS6hzJp6czVXy+onEyCLCNTl5KD8MjORn5WkKQrdWR4VQk
+	Z/t3jwjpLafvrVpWzBTcK6IXkzadsD4ZWxyeuX/0DbuvXCZKW4WrqfUYJIrP946dFPEHLo4TcxDWJ
+	kbXIfxsPrApQ3SxrX1Sek+lJfOtiNcv++89XIRoX800Z1O2XmprCg09lr5uJRTPwY8xHhtxzCWhiz
+	41aDMc4GeGKbt8QKCN64tlvtRCu4bALYU35mZXWiR1uRiJiPGFb81pbXGQ4cHg94IuvW03rvK16q+
+	oYIJJ0EQ==;
+Received: from localhost ([127.0.0.1])
+	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1wgoUE-000Psa-0U;
+	Mon, 06 Jul 2026 20:56:10 +0200
+From: Daniel Borkmann <daniel@iogearbox.net>
+To: kuba@kernel.org
+Cc: pabeni@redhat.com,
+	jhs@mojatatu.com,
+	bigeasy@linutronix.de,
+	andrii@kernel.org,
+	memxor@gmail.com,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH net v2 0/3] Fix broken TC_ACT_REDIRECT from qdiscs
+Date: Mon,  6 Jul 2026 20:56:06 +0200
+Message-ID: <20260706185609.330006-1-daniel@iogearbox.net>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN2PR12MB3485:EE_|CY5PR12MB9053:EE_
-X-MS-Office365-Filtering-Correlation-Id: 929d9100-fcb9-47d8-bc95-08dedb8c812b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|376014|366016|22082099003|6133799003|56012099006|18002099003|4143699003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	BqLUwEHhVwpaEscXyXW9cewiC6Jsl1YdVYxL8RT/2j9eXDK0ojIQn2e9hGL761aHeUhwW65nGt0CTMQkvLTJQH5s2c8DCtDxZEaHx4LA7Rya0Fe9ounp/yaD56JJOvH6YyHgNqw90GL8ChAsNs2ZMBX15Nkeg3b6WDnz9FAYUpNiOxjKVqLttORBli91ySel/MdYv/qXrI6ghN3qL9z5lxTCUzvA2Aw0hsYlzAqBzP3S7dynoiGgSEgSAxP8Agmzg/sFgF6l1LFqLSThV+G79xzdXLEFO9QejdRkTGfAN5t0m3+TGVZdttdov8RcSiEuzBPg83iiqMGnYKUnb3wPrS6g4eNDeejhle6WzeeqlUqJf3uZa3HNMzHUeNw1VUGSLWsdSFhOYOhFfE9USEMClN5epFcl8Sw5IWstzeWFjBODv2GnFfW/jtq/N2TvSxFdZ1sM13HcX3gzprHXW9FkkWPk77cLsRmCvXOYEAm2oIkPxtZkX6YedQK783GN1P86+dq1ds6esF3zKC/kLrPSxsyByC7WkXZl8RaZXPxF4M+pPWMtfQHzfbNcFHQvy1K1a4hEe4FSalOhhnJVWqeU5Tvfwte+GOQwQT1selK2ciLPCGHc238HvmkTe06Kt63zqgFcUWPJQuXldrNkxLDhNPuIsMbooHp3lZIf6HI53jo=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB3485.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(366016)(22082099003)(6133799003)(56012099006)(18002099003)(4143699003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NmVKdkpzaVBXUHlsQ0dHSmpURGJOYzhxbjJJTVdVcURGUStUaDVYekQ4RWIv?=
- =?utf-8?B?OG9EK0xPQnBTMittZU44QXhzU0ZMOE15K0xLNnlzZWYrRVk4QWJVeklZek8x?=
- =?utf-8?B?aWdmM0dZQ2ZPZUxFSkZBKzllSG50bHF6c1BQRGZ6RXJVaXU4ZFgyaHRlU3V4?=
- =?utf-8?B?WVZITjFDOW5Nckg2OEo0cWxEbGtNK2VMZElPVTdhUjZlWFRGNlRlTEpKN2M2?=
- =?utf-8?B?OGozcnlMWWh6L21SMkFOZC9VbTRrZnRkdlBQM3UwSjFJM2hXdHl4QXcybU1O?=
- =?utf-8?B?ZUtyMHpqM3ZLMFpvcXlCMzF1UTNtVDhwYVp5RThzT014MGFxRHZQTFVjQTN4?=
- =?utf-8?B?U0k4ZWgyQ3liK1R0WU1YbGNrd1dWWGNRT0t5Z2pmQUdzVU50bEdFZWtoMFk2?=
- =?utf-8?B?ME5Id0VrblVxdE5PS0tUTGYxT1U0QXpINkt1V0VDSDVFVUZPWjhmNzg0U3Nj?=
- =?utf-8?B?cnRqczBXQlJjenNFVS9lT29nczl3NTVleThCdERhUmJaaUIwZFpXc1ZzWEQr?=
- =?utf-8?B?SGw4TzRkT1BLUUdHaEFobkFza0xMVmpZYTI0UCsvYjZtVjdVNk1aWXV0VEh2?=
- =?utf-8?B?cVAvdCtHY3VpbEFZTXNoVml6bHE2ejJDNXJWM3VBT0RFWTV2b2RDTURidVpX?=
- =?utf-8?B?cE1BSTcwWnd2dWJZeit1OHVCemVGWnd3NlBYYkV5OEVxbzdvZWNzR0VSUm5Y?=
- =?utf-8?B?YjA4VXJEWjJDTysrNWtiSzZiVGhmMW52eTJ1WlBlM1NVR1VHUFJUcjBQMDBW?=
- =?utf-8?B?YnZyMmp5Y3BVMWpmVm1wSkJ4SktFRXd3N1M3b20zMGdXR3JyRDJIV29aUWpm?=
- =?utf-8?B?Y3RlZXE5cndxVmg2QU1qTTBydytXNnVFUXhvOG55Qzl5OFdtdUxpdHNTSlQ1?=
- =?utf-8?B?eStBYkJqUHQ5YkFOYUkxU3gyaWh5ZWdWZE9hS0h2anRLaTRIcFN1OUVZV0ZL?=
- =?utf-8?B?NlRJSFVNcUVuNnlmOGFsSW5xQW4wbi9xM3FRREdjczJBamhMU3NqYzM5b20v?=
- =?utf-8?B?RlZtN0d6UmdnaGxaOVhZaEVRa3ZEd2ZlS1FKNXdDQld1V1RXRUcwWm84YU9u?=
- =?utf-8?B?cG84MC9wMjJuOUN5M2lKZWdBampxT2s2aGlXaFdydmVDZlkrQW91bENpLzkv?=
- =?utf-8?B?SUtoNVFCL3FVMXhGUDZOeTVvakZiNDVpejdVN2hETUV2NXZ5cjRRNVVaSWx3?=
- =?utf-8?B?UlRlMU9KeThWclVQaVAzOFZkbzZSbUdWdGFPczREQStweW9BMXU0a2dXNDdv?=
- =?utf-8?B?eXFoNTZ2NFkyL3d6S0FPbkV5ZGI5KzJLUUhwbnBuRmJ0T2M4Q0lUdjZtUEZi?=
- =?utf-8?B?ZzR2c3RJeGdBYTVwS2F6cyswTjVyT2FON2F4MkQ3WEdIaGc1QkZxWmZ1R24y?=
- =?utf-8?B?ZkNvbmh2T2cydmhOdlUwVWFIY0FyME0wUW9ZWHNscEdPMzU2UWs4bzIzSnVQ?=
- =?utf-8?B?aWlOVWhlMlliRGdGY3JxSVI4VG15UXZCVVdlVlNiT1VYalFBalhMWnpZSCtH?=
- =?utf-8?B?dlUzS05Zd3NUQTZnbUtGRlJ2ZTdjVFhSb2FXNTZrV0VLVFJ3RUdYc1RNalVa?=
- =?utf-8?B?SkYwL0ZNNmpaZHBYbGovNC85UXBPcUFqeUIrZS9RZFZGYjJSZ1E4UmlrdHhH?=
- =?utf-8?B?K1JoSlhnWGQ0czVxSGVCaGRkUVYvWWpkbnB6cXEyS0dqaGZaREJ2ODdYWmd6?=
- =?utf-8?B?V29LZFkzOUk1MlhTZ2dwb0NraUMxc2QrQ0pGYk5HZE5ERGJseTc5MWVqeFBj?=
- =?utf-8?B?U3NSWTlyOFZlNUE5MC8wNDZxZVUycU56cURwK2JMLzhVUlJQRWpNcWZhZS9X?=
- =?utf-8?B?MWY1RnlBdVRHOFZxU1NwM2pKVXg4Mm5ham12WC85bjRaQi9QY3JKcHZUYXpq?=
- =?utf-8?B?c1AzRFV1ZDVnc0t1dTJNRW5GQS9OSjhZakp6MURPVXhzb1h2T0hvQlhNbzFJ?=
- =?utf-8?B?VnRZV2tUZThEN3lNdDNtazBGMTFLSFZ1QmxOc2V4NHd3OVlWQVRMQW9naDAz?=
- =?utf-8?B?M2VhZFFsUjZFNE9YcXgrNkpPZnE0cUgzQlc4cndFUSt6dUwrUDRRb0o5b0VY?=
- =?utf-8?B?bHNyUngxVnNHZ3Qwa1ZSS211UVkrSDNscTYyc0RmRmU3cUEvaXhOMDBlS1lE?=
- =?utf-8?B?OExQNWdmS3BXaGRINkwzU0J1cjRwQlliUTVwVE5PQ0djZzhpVlhPc2NKQlN6?=
- =?utf-8?B?ck54NFBGYW1UOVpRSjhtR2NiQkFyZ25RZSthdTdUMDgvSjNlUHdJUm9FMENz?=
- =?utf-8?B?eFFlYWhCbERXbklPSEFTQk5qYytscnM3YTJrRGVFMVlvUUltNmhSaTVjZzdY?=
- =?utf-8?B?SjhHcW1xd1hhTi9pc2tNSHErZmZpS3pwQVcwV2dMcjNweHhCMS9uQT09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 929d9100-fcb9-47d8-bc95-08dedb8c812b
-X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB3485.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jul 2026 18:29:24.4450
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: r/Unaj+861eFv4aM2PoS8EiIRYOrYkWV0WC4KBd6pUwIkcNwY4tOmNnkFzhECNu2oe4D77N2UN3CtoEEhV/k3Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB9053
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: Clear (ClamAV 1.4.3/28052/Mon Jul  6 08:24:35 2026)
 
-On 7/2/2026 1:13 AM, Paolo Abeni wrote:> On 6/29/26 10:03 PM, Nikhil P. 
-Rao wrote:
- >> In pdsc_remove(), the workqueue is destroyed before pdsc_teardown()
- >> is called. This ordering allows two paths to queue work on the
- >> destroyed workqueue:
- >>
- >> 1. If pdsc_teardown() -> pdsc_devcmd_reset() times out, the error
- >>     path in pdsc_devcmd_locked() queues health_work.
- >>
- >> 2. A NotifyQ event can trigger the ISR and queue work before free_irq()
- >>     is called in pdsc_teardown().
- >
- > I think this should be 2 separate patches.
+This is an alternative fix to [0] in order to not uglify
+__dev_queue_xmit() with sprinkled ifdefs given this can be
+simplified and isolated through a simple test into the BPF
+redirect helper itself.
 
-Thanks for the review.
+I've also added a proper BPF selftest, so there is no need
+to check-in a binary BPF object into selftests given we do
+have BPF infra for all of this.
 
-The original combined them because moving destroy_workqueue() after 
-teardown fixed both issues.
+  [0] https://lore.kernel.org/netdev/20260629102157.737306-1-jhs@mojatatu.com/
+  [1] https://lore.kernel.org/netdev/20260629102157.737306-4-jhs@mojatatu.com/
 
-But they can be split:
+v1 -> v2:
+  - Added Sebastian's Reviewed-by
+  - Rebase to latest net, rest is same (Paolo)
 
-- Patch 1: Set pdsc->wq = NULL before destroying it (fixes issue 1). The 
-devcmd error path checks pdsc->wq before queuing, so this prevents the 
-UAF. Also avoids needless health recovery during remove.
+Daniel Borkmann (2):
+  bpf: Reject redirect helpers without a bpf_net_context
+  selftests/bpf: Add test for redirect from qdisc qevent block
 
-- Patch 2: Move destroy_workqueue() after teardown and add 
-cancel_work_sync() (fixes issue 2).
+Jamal Hadi Salim (1):
+  net/sched: Handle TC_ACT_REDIRECT from qdisc filter chains
 
-Combined, it looks like this:
+ include/net/pkt_cls.h                         |  14 ++-
+ net/core/filter.c                             |  17 ++-
+ net/sched/cls_api.c                           |   6 +-
+ net/sched/sch_cake.c                          |   2 +-
+ net/sched/sch_drr.c                           |   2 +-
+ net/sched/sch_dualpi2.c                       |   2 +-
+ net/sched/sch_ets.c                           |   2 +-
+ net/sched/sch_fq_codel.c                      |   2 +-
+ net/sched/sch_fq_pie.c                        |   2 +-
+ net/sched/sch_hfsc.c                          |   2 +-
+ net/sched/sch_htb.c                           |   2 +-
+ net/sched/sch_multiq.c                        |   2 +-
+ net/sched/sch_prio.c                          |   2 +-
+ net/sched/sch_qfq.c                           |   2 +-
+ net/sched/sch_sfb.c                           |   2 +-
+ net/sched/sch_sfq.c                           |   2 +-
+ tools/testing/selftests/bpf/config            |   1 +
+ .../selftests/bpf/prog_tests/tc_qevent.c      | 113 ++++++++++++++++++
+ .../selftests/bpf/progs/test_tc_qevent.c      |  23 ++++
+ 19 files changed, 175 insertions(+), 25 deletions(-)
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/tc_qevent.c
+ create mode 100644 tools/testing/selftests/bpf/progs/test_tc_qevent.c
 
-struct workqueue_struct *wq = pdsc->wq;
-if (wq)
-    pdsc->wq = NULL;
+-- 
+2.43.0
 
-/* teardown (free IRQ, cancel work, free memory) */
-
-if (wq)
-     destroy_workqueue(wq);
-
- >
- >> @@ -121,10 +122,16 @@ void pdsc_process_adminq(struct pdsc_qcq *qcq)
- >>        qcq->accum_work += aq_work;
- >>
- >>   credits:
- >> -     /* Return the interrupt credits, one for each completion */
- >> -     pds_core_intr_credits(&pdsc->intr_ctrl[qcq->intx],
- >> -                           nq_work + aq_work,
- >> -                           PDS_CORE_INTR_CRED_REARM);
- >> +     /* Return the interrupt credits, one for each completion.
- >> +      * Use READ_ONCE to get a single consistent copy of intx since 
-it can
- >> +      * be set to PDS_CORE_INTR_INDEX_NOT_ASSIGNED concurrently during
- >> +      * teardown, and skip the credits if so.
- >> +      */
- >> +     intx = READ_ONCE(qcq->intx);
- >> +     if (intx != PDS_CORE_INTR_INDEX_NOT_ASSIGNED)
- >> +             pds_core_intr_credits(&pdsc->intr_ctrl[intx],
- >> +                                   nq_work + aq_work,
- >> +                                   PDS_CORE_INTR_CRED_REARM);
- > AFAICS this does not look safe.
- >
- > A concurrent pdsc_qcq_free()/pdsc_qcq_intr_free() may free
- > `pdsc->intr_ctrl` before setting PDS_CORE_INTR_INDEX_NOT_ASSIGNED.
- >
- > I think the teardown should:
- >
- > - disable the IRQ
- > - cancel the work
- > - free the structs
- > in the above sequence.
-
-pdsc_qcq_intr_free() doesn't free intr_ctrl - it only calls free_irq(). 
-intr_ctrl is BAR-mapped memory, freed later by pdsc_unmap_bars() after 
-teardown completes.
-
-The sequence is already as suggested above:
-
-pdsc_qcq_free()
-- pdsc_qcq_intr_free() /* calls pdsc_intr_free->free_irq() */
-- cancel_work_sync()
-- Frees DMA memory and structs
-
-Note: the adminqcq ISR handles both adminq completions and notifyq 
-events, so notifyq struct is freed second.
-
-In the current code, qcq->intx is set to NOT_ASSIGNED in 
-pdsc_qcq_intr_free(). Moving this to after cancel_work_sync() removes 
-the need for READ_ONCE/WRITE_ONCE.
-
-Please let me know if the proposed split works, I will include it in v3 
-with the change above
-
-Nikhil
