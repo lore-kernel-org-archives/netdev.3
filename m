@@ -1,112 +1,279 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FFBA436BEB
-	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 18:20:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783362032; cv=pass; b=RNIqZu8RUDbm5mWUaufjuVgtKCa5eL12dK8MZiD3ovd3NfdHH58HPJ/W6bTpB99upgK9dNPcniA6sQCXiLRrmmqFvnY4gpsWdxPe50IWONTkqBtXEFEMv/wJz0Z1psWBDPLeF3kDFABqUDAS2aqrtQ+om7tPTnAuYI7n78DPhvU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783362032; c=relaxed/simple;
-	bh=f2PHj9VJmtsIw6saatHDAWjezcUB7k/3fO2FNNUj+Hw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=r86Wb79ONXcQc6UFIVLMx8k1jHSVhgAk0LJK6A11IaLpExnUp8XhmnRK2p/q1i/Cevu88R04yTZymzq5VzAK8qzlx1/ne5Dt7ys6mB/yHP30bdjGmL+xhXB8k5jDpAJglYdUlpo0JExhV3krLEg+QH4Qgy4aOSx/Ipg+gdlGkEU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gt1ranLw; arc=pass smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E329436BCE
+	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 18:20:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783362039; cv=none; b=Swwkh94IpN+kNnH7A9q9996MCEBlYlm+BnF1OUiKecPidWnQ4DGdWZsodbqb5CTTpjY3zXk5NK2X4asHjOlnsZ0+8YAkRreWjbROCoOSglNzm4USNCrOyQFDDXrtBDLWOFkIy2AWuVdejZbdxr9kmesIj/Xnj5xZq+15iBFV7TY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783362039; c=relaxed/simple;
+	bh=H35183HW7vA7mQc3hmYy8ZNFfX5tNujI6rsWMv4Tj9g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Pn7kf6RU/mpdarXTwFl966fuYipaMQn9KajL5ZUi7UASNFhZ0/9iGEBedDzjL2wS1pHaZ9TZ0UdIe0L/NfbYPoKi3Yo4hPSDzI7RjcBUl/mRn52qHgZkBVUeU9GikpEzOLF1FmGkOiB+ZpexzlP1Huh8v8YAtXQUsC8XgwC/iZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=CTLed4KJ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=C9C4Z9c/; arc=none smtp.client-ip=103.168.172.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.im
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gt1ranLw"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2cc7e86e7aeso18758545ad.2
-        for <netdev@vger.kernel.org>; Mon, 06 Jul 2026 11:20:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783362030; cv=none;
-        d=google.com; s=arc-20260327;
-        b=fQn8E5N405fJnYzbXd2UHDvKa2txNxCDf/wkcxz6g8New5B2wfx8sK3G6JGFLe/j0r
-         TIFsFxX0gW+J1VMjhPr3t9tiql5sRLttYdwrTzYBePecJPEfVt+gevI+OlFUv1L5p7kf
-         JbrWsAjCFnhXaeaFxr4VwSD6K3yGqxHLOifTYwjyd6OwQ0+K+RzlJLFn53oH5c/DZA2Y
-         h+ofdaBqrIfVMBFemRM5UJmupzswG5C+W3dH7fVutogRX2MFNYezKo3ENKh51V4QgxIX
-         XUZesZbePBHQZxcMiBUcLOZvKTWND9wKvV3V7fl1NRy5V+qhfDzcWiSZDsGAs2/YzRKt
-         gNgQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=f2PHj9VJmtsIw6saatHDAWjezcUB7k/3fO2FNNUj+Hw=;
-        fh=csTbyqsCpu9+rdP9Gk4oTvnhxHgYQbMW9WtwydVGp5Y=;
-        b=BRaEHZstcwsWcOLB3UxPzidIAm6Iueft9O98tug8UkP+EV9FxkA6QwA2uHN937PLXx
-         QERSQT2t5KFTCA4gwnpG4YNc1sanz3kOi8MNHe04/L7PTOgZsXXcTmjSGiZn/xbTxNTb
-         jd4aUELrXl1K/MPscRtxdCrTjEtBawhiucRGpmnJ6IKY41nkYdhuXUZeapYnh7tvkPo7
-         mLAwaLVkoc2hEa/tpIu0VFiWExHnx9Zg/zLubGUQnxdskFKs4EJDUzjuQKU9DmF4FFLl
-         a4I9gP1igmcaDTwteYxqsx1vaXzEEDAQ/zLism3WsKx6Yf7kRBpQFJGWSN9FJALTGJOl
-         GUsg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783362030; x=1783966830; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=f2PHj9VJmtsIw6saatHDAWjezcUB7k/3fO2FNNUj+Hw=;
-        b=gt1ranLw6AeYolFBNOfjD/7XWMW8UFwoLKzwKsAzE0dZnLTpuq30Mq5mM3YE5pvzgQ
-         TZC5yhUsm04Pfsu0HWQ7ABJv1Ws0J/P1Xa+z6xvfPGzZQt1imEX8nXMq/Hbo37GvPSF+
-         J6py53/dt5sMJQ1RfbAf1Oymm7EaqZSdboSPiUvzRiHLomrrvhY4yyds78FFZkLtY3In
-         XvH6OtgCvsLYgqwj/pB6Yq9KpiJOcEKlZLxwMfuxO9XW2WTkSIYSYkS2u0fshLLezP/k
-         MMrU4Dq0AdCiJIQVu2uCwzqXDFpHm4PBV9VVNKpOU8p11bb5rVfnBBbR8z6x3F9PoKAt
-         Kvnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783362030; x=1783966830;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=f2PHj9VJmtsIw6saatHDAWjezcUB7k/3fO2FNNUj+Hw=;
-        b=DWHgkbEeIyOeZMetYQw1Ixee7PZtxp0cBVFoLd6bBADpMwVZU3/1/ybvKm+DeftdsJ
-         pyNWRKKCHC1arhPcvd5xJ1sZQddGwz5MPp8tY1PY+RVjE9zVu4c8q0aEO0XCAVp32IUw
-         /kzdz6UpyZrT/xdy8EPxVytii30O5u8mEBoBJ7I+z8jROShBpLtoa0K3jEGjE5nBIMaJ
-         PeMXKUQIsD0LD/PjJDgPbiwRNFgUmm7ysKTMXZVUCRU7M4D4MIoZcOjEeahIyiQ1pMLl
-         5UwmdenUvxkwlkMfLfAA1eFj1CD6CJoBKcJJ9On7CSgM0r0x5e+QDu4Nze7dPiQoS9D+
-         0qyw==
-X-Forwarded-Encrypted: i=1; AHgh+RryT8gX9oBUGxNpvRIQcQ+QvIWHVIjF2YWP/Xw8oisVmtxgCelGziXLwh5A+mKhB6S6LHkfJCA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2PstzSo+4Y5xTIHWYo1FrnrGZNEjc0czh2XU6DF62c/jC34y/
-	YdwbBaRqsqU8iH75LXIRYq9nqx3+LjmqhfUVWNYyU18rwmUzm7OG2lrjuwTNFAi75NTss3LqrJY
-	MZiDi9HKLMqi2tjJqFgayJmN8AX6i895v9AHZEPei
-X-Gm-Gg: AfdE7ckkP3ilw+QVppt7gN7fGoo+o3EDG0H+B3nDUMLaoU0Z9j2RxYTtll/HlCtOUfz
-	rhkFNdx8771H0D35TO+v5mz1romGg6t0iinqG04NRKRZhIqCn8zcrjEmMqEnntQOiKjNb/1LiEw
-	VVrd0ENy2Sn9agBaDoVvPNWzkpEfhcGzKag4kMe5bvDcs1KGndxbgJ2une8zSNL76LorRvpMEmR
-	NaaB1jlhbuog/7kN8fwZKgWhinRU8Zep7TT+8wmA1vceWEC0sdu8r0wnZaawixR/qu7awmQ00vt
-	FSzeSU7/wIxfzzKjgUpFUtzhJlXTIqk7Qiep/R+xQ7Q7RaEgZcRuWHkP11D804B6+keDyUGl8tG
-	xHak5LR9MhgNB0M3I+LZDWzieaZhfBGDPjmZowNs=
-X-Received: by 2002:a05:6a21:7116:b0:3bf:6c08:2b2f with SMTP id
- adf61e73a8af0-3c08efa611amr2088864637.55.1783362029050; Mon, 06 Jul 2026
- 11:20:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="CTLed4KJ";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="C9C4Z9c/"
+Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
+	by mailfout.phl.internal (Postfix) with ESMTP id D1757EC00C9;
+	Mon,  6 Jul 2026 14:20:35 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-08.internal (MEProxy); Mon, 06 Jul 2026 14:20:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.im; h=
+	cc:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=fm2; t=1783362035; x=1783448435; bh=kPL1RA5c2oAG+pEjwbkyu
+	1r3npoxrJrYZitB34pmiP0=; b=CTLed4KJ7sduNM22VL0hYk/GxglJaSY4r50N8
+	nrF3dO2HAL7tu+4CvFKnw5PGWAT53aonTtnyBC643QBU3Wwny2ZnZ3fQQtjBZ0Ln
+	D8r4NXad5PLas+zuLZvzKQlJmSfxk71cy/GL/JJsEM1ToXcf8YHByk9rnelY+Ui6
+	HjlJw1SYpBc6bKa4/Wc/QqKdmwR8/zIX1nNGmmharRKcRzEJ1cU/8vm0mB0QHQiP
+	lWGxCtu1CL1kD5OfMjng+OvpHx2QUNr5zkkj6+qM2MXSBwa1KgWLS3fBc4hLzOY4
+	qQkEWka3v61oHp7LZBA7N8zTGnfZECAmwxzV6mmoVfNmOOfKw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1783362035; x=1783448435; bh=kPL1RA5c2oAG+pEjwbkyu1r3npoxrJrYZit
+	B34pmiP0=; b=C9C4Z9c/fxGzc+2hLP6OCrP2+N3W+U0D9o3C1jZQX3L45to+6ST
+	/liuRQdTdQUj+dIjFrEeJxhtTn4HTN+LZtZU/lFTb/seEHKbubebvdb6aIK0FML/
+	A7fvIyN+bfYVZiDsmuVLCopqwLG1yu45pOm+5Kzy9Rx48GbS36fM0Ouewukrc/Xo
+	ArwKsvwJwzSIlylE+oYbnH3c2A6AwIRnkGWMhDke6yHTg7rzbFJkcWL+ktl5ifTc
+	8clcp9tFusLX/4qfJE+zm8nZCRNDhnae4QNSJZYnLvMJzMX/6m19MzDJwB0LKQeM
+	Zuhrpjeqw1q9KLrmbAdkulN07IZK1Der58A==
+X-ME-Sender: <xms:8_FLakJrJOWd2z5Opt47pQ1Pe99qnZDM90w4kOOQxlttDIKzyUv44w>
+    <xme:8_FLaio1PUWlSop0wURIrhB9c4Z7u60yW0IuuKW5WV_zk10gTsx-Nbmie7i33LEsd
+    yI8PiWj-nTv783aK4640-S7L-7lkaEQGDCWdpllOx0n-X1ESYtTX_w>
+X-ME-Received: <xmr:8_FLarh6h13OjXatjhbJomqMlQ5k3oRYV2z64iFyaDogniARW3-kTFs5Mm8>
+X-ME-Proxy-Cause: dmFkZTFDNV4TCSYTGDDwqxrTt2wUmq5SXJTExHI+ftg3CIXmiEXT9Cdxpa8wnXYLgO9l8x
+    2f2KypsXYbqERuZ51r6jNsCS7okBAUnKVgTPWCcPCyeaHZ5FOgOXwsNX094GgSiX4vfCVp
+    jJixMaeEIbF5j/lrcWrO68n1pBQNkUBW0wu9lmHTwlClUJC4+FuH2lLzZkxuunM3OIOwCc
+    bmalj1eVV2we5H5lKzX3vZg2b6UQPHlguXkXAPT6FaoOGMam3z3czhPlRms4rdi+TyuzVx
+    7RR3fLzvPd0Ap0UtaCek9BHrAGedgaS2FgABCcK1ksw1tJwnoIFquEBh7dWaYSCHhymlPG
+    sC/1L/vCW7rVzWi7j8gr5yy/NeqkDV9jtFDvhONMamjR7BrmkNknabgjM+RsIdeOH8Chp+
+    aBCz3PkWOQQeBmW+olNZ/po1/HQ2bMaiV0sG45ScSzY/CKU+PqaYoYnNvW+dw4bvKek0YJ
+    jH8IRx9zxDtSy+xz84GQ31B7HD1BLK4Je0P1GMvhIKTLBxxC2OmIpN6dN/EiXCPaWSdRjP
+    0dbnvwSmVFHuEeFLJE4CFI9pgTAH9pqPOeJHjJaOobiFeLYxWDLgrYvGaCq2eVN5uIZ5ba
+    lO9SW+tdjg6sRWuQnKEWEPGkifPuoBnNgVyWyeXCwPI9K7GcH9eWCcKHd/hQ
+X-ME-Proxy: <xmx:8_FLahbc9g14sc34Ub2U-K06GHIFX3F7wxr8Z0bYo7RMDDtJxnL0gg>
+    <xmx:8_FLajm3HoSZhAldulm5Mxr6Ys-9It0O9-g-8TBu_8q-DLH1nqQRTw>
+    <xmx:8_FLany3dWy33Wx91Ldqrn9TKUjErBCJmeSTxpxo4mz7CLeaQZYkrg>
+    <xmx:8_FLap-N9X0KpbdZfWPGUETghRYYXn3jrYQrJ6yDfxATvKUIrVfVRw>
+    <xmx:8_FLaulf7JJN9PwLQE6MDJWAADCXCT-9o6cObAOI0O_es5JxEKtgF5r5>
+Feedback-ID: i559e4809:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 6 Jul 2026 14:20:34 -0400 (EDT)
+From: Alice Mikityanska <alice.kernel@fastmail.im>
+To: Daniel Borkmann <daniel@iogearbox.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Nikolay Aleksandrov <razor@blackwall.org>
+Cc: Shuah Khan <shuah@kernel.org>,
+	Stanislav Fomichev <stfomichev@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Simon Horman <horms@kernel.org>,
+	Florian Westphal <fw@strlen.de>,
+	netdev@vger.kernel.org,
+	Alice Mikityanska <alice@isovalent.com>
+Subject: [PATCH net-next v8 0/9] BIG TCP for UDP tunnels
+Date: Mon,  6 Jul 2026 21:19:32 +0300
+Message-ID: <20260706181941.385672-1-alice.kernel@fastmail.im>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260705123826.3818443-1-jkoolstra@xs4all.nl> <20260705123826.3818443-2-jkoolstra@xs4all.nl>
-In-Reply-To: <20260705123826.3818443-2-jkoolstra@xs4all.nl>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Mon, 6 Jul 2026 11:20:17 -0700
-X-Gm-Features: AVVi8CcxohvHsY7AotTJutKD4Bx9caNjYENOm7GnE1Tqy2ObFIE98uM4BTIeXi8
-Message-ID: <CAAVpQUAViuZ0DY_1=N_VGuzN7cBM+oFDKb_Fiik8Hb-ueQJpjQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v4 1/3] net: scm: move scm_detach_fds() from
- common path to scm_recv_unix()
-To: Jori Koolstra <jkoolstra@xs4all.nl>
-Cc: Christian Brauner <brauner@kernel.org>, Aleksa Sarai <cyphar@cyphar.com>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	netdev@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sun, Jul 5, 2026 at 5:37=E2=80=AFAM Jori Koolstra <jkoolstra@xs4all.nl> =
-wrote:
->
-> scm->fp can only be set when using UNIX sockets, therefore we should
-> move it out of the common path __scm_recv_common() into
-> scm_recv_unix().
->
-> Signed-off-by: Jori Koolstra <jkoolstra@xs4all.nl>
+From: Alice Mikityanska <alice@isovalent.com>
 
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+This series is a follow-up to "BIG TCP without HBH in IPv6", and it adds
+support for BIG TCP IPv4/IPv6 workloads in vxlan and geneve. Now that
+IPv6 BIG TCP doesn't require stripping the HBH in all various
+combinations in tunneled traffic, adding BIG TCP becomes feasible.
+
+Patch 01 adds accessors for the length field in the UDP header, as
+suggested by Paolo in review. The usage of udp_set_len is then added in
+the following patches that start using length=0 in BIG TCP UDP packets.
+
+Patches 02-04 close the gaps that prevent BIG TCP packets from going
+through UDP tunnel code.
+
+Patch 05 validates packets in udp_gro_receive to exclude packets with
+length=0 from GRO aggregation.
+
+Patch 06 is for proper formatting in tcpdump (set UDP len to 0 rather
+than a trimmed value on overflow).
+
+Patches 07-08 bump up tso_max_size for VXLAN and GENEVE.
+
+Patch 09 adds selftests.
+
+Thanks all!
+
+v8 changes: Addressed Paolo's and Jason's review comments. Made the
+selftest more robust, added checks for SACK and mode with disabled tx
+checksum offload on lower veth netdevs. Added details to commit
+messages. Kept skb_segment logic unchanged, because the frags overflow
+issue is not specific to BIG TCP.
+
+v7: https://lore.kernel.org/netdev/20260611192955.604661-1-alice.kernel@fastmail.im/
+
+v7 changes: Addressed Paolo's comments to properly block malformed
+packets with UDP length=0 at udp_rcv level.
+
+v6: https://lore.kernel.org/netdev/20260602093931.516281-1-alice.kernel@fastmail.im/
+
+v6 changes: Lowered the packets threshold in the selftest to pass
+upstream CI on debug kernels, also made it configurable.
+
+v5: https://lore.kernel.org/netdev/20260526161200.1135899-1-alice.kernel@fastmail.im/
+
+v5 changes: Rebased, dropped one of the patches that came in via the net
+tree, addressed an overflow in nsim_do_psp found by Sashiko.
+
+v4: https://lore.kernel.org/netdev/20260512165648.386518-1-alice.kernel@fastmail.im/
+
+v4 changes: Rebased, addressed Sashiko AI review [1] and Willem's
+comment about netperf flags.
+
+My comments on Sashiko AI review per patch:
+
+01: I'd prefer to keep the cases that I haven't tested outside of the
+scope of this series, which is for VXLAN/GENEVE tunnels, not for ESP.
+
+02: The patch doesn't have behavioral changes other than fixing the
+checksum. The final uh->len assignment assigns the actual length, not
+64k.
+
+03: The check can't be loosened, because total_len is also assigned to
+UDP length. BIG TCP works in the mode without GRO hint option.
+
+04: Fixed the fallback value for udplen. BIG TCP is fine, it's the
+uh->len = 0 case, uh->len can't exceed 64k.
+
+05: In the BIG TCP case, partial GSO splits the SKB in two. If full
+segmentation is needed, the SKB is split in many MSS-sized SKBs without
+fragments.
+
+06: Invalid packets from the wire are addressed in 08.
+
+07: __udp_gso_segment only handles UDP GSO packets, which can't be
+bigger than 64k. Kept udp_set_len_short in nf_nat_mangle_udp_packet, as
+the function doesn't support BIG TCP packets anyway (see
+mangle_contents).
+
+08: udp_gro_receive handles packets before aggregation, there are no BIG
+TCP packets at this point. RFC 768 doesn't say that padded UDP packets
+are valid. Real jumbograms don't seem to be supported in this path
+anyway.
+
+09: The packet goes to skb_udp_tunnel_segment, not __udp_gso_segment.
+__skb_udp_tunnel_segment handles this case.
+
+12: Improved process cleanup by killing everything inside netns before
+deleting them, and by avoiding killing netserver outside of netns.
+netperf with -r in TCP_STREAM mode works, and the option has the
+intended effect, but I replaced it with -m. Added dependency check for
+tcpdump.
+
+[1]: https://sashiko.dev/#/patchset/20260410150943.993350-1-alice.kernel%40fastmail.im
+
+v3: https://lore.kernel.org/netdev/20260410150943.993350-1-alice.kernel@fastmail.im/
+
+v3 changes: Fixed the redirect in the selftest, rebased over my L2TP fix
+[2] for the syzbot report [3].
+
+[2]: https://lore.kernel.org/netdev/20260403174949.843941-1-alice.kernel@fastmail.im/
+[3]: https://lore.kernel.org/netdev/69a1dfba.050a0220.3a55be.0026.GAE@google.com/
+
+v2: https://lore.kernel.org/netdev/20260226201600.222044-1-alice.kernel@fastmail.im/
+
+v2 changes: Addressed the review comments: added UDP len helpers,
+consolidated UDP len sanity checks in patch 08 into one, added
+selftests. Added fixups to related code (patch 01-03).
+
+v1: https://lore.kernel.org/netdev/20250923134742.1399800-1-maxtram95@gmail.com/
+
+Alice Mikityanska (8):
+  net: Use helpers to get/set UDP len tree-wide
+  net: Enable BIG TCP with partial GSO
+  udp: Support BIG TCP GSO packets where they can occur
+  udp: Support gro_ipv4_max_size > 65536
+  udp: Validate UDP length in udp_gro_receive
+  udp: Set length in UDP header to 0 for big GSO packets
+  vxlan: Enable BIG TCP packets
+  selftests: net: Add a test for BIG TCP in UDP tunnels
+
+Daniel Borkmann (1):
+  geneve: Enable BIG TCP packets
+
+ drivers/infiniband/core/lag.c                 |   2 +-
+ drivers/infiniband/sw/rxe/rxe_net.c           |   4 +-
+ drivers/net/amt.c                             |   6 +-
+ drivers/net/ethernet/intel/i40e/i40e_txrx.c   |   2 +-
+ drivers/net/ethernet/intel/iavf/iavf_txrx.c   |   2 +-
+ drivers/net/ethernet/intel/ice/ice_txrx.c     |   2 +-
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c   |   2 +-
+ .../marvell/octeontx2/nic/otx2_txrx.c         |   2 +-
+ .../net/ethernet/mellanox/mlx5/core/en_rx.c   |   4 +-
+ .../ethernet/mellanox/mlx5/core/en_selftest.c |   2 +-
+ drivers/net/ethernet/sfc/falcon/selftest.c    |   4 +-
+ drivers/net/ethernet/sfc/selftest.c           |   4 +-
+ drivers/net/ethernet/sfc/siena/selftest.c     |   4 +-
+ drivers/net/ethernet/sfc/tc_encap_actions.c   |   2 +-
+ .../stmicro/stmmac/stmmac_selftests.c         |   4 +-
+ drivers/net/geneve.c                          |   4 +-
+ drivers/net/netconsole.c                      |   2 +-
+ drivers/net/netdevsim/dev.c                   |   2 +-
+ drivers/net/netdevsim/psample.c               |   2 +-
+ drivers/net/netdevsim/psp.c                   |   8 +-
+ drivers/net/vxlan/vxlan_core.c                |   2 +
+ drivers/net/wireguard/receive.c               |   2 +-
+ include/linux/udp.h                           |  27 +++
+ include/trace/events/icmp.h                   |   2 +-
+ lib/tests/blackhole_dev_kunit.c               |   2 +-
+ net/6lowpan/nhc_udp.c                         |  10 +-
+ net/core/pktgen.c                             |   4 +-
+ net/core/selftests.c                          |   4 +-
+ net/core/skbuff.c                             |  10 +-
+ net/core/tso.c                                |   3 +-
+ net/ipv4/esp4.c                               |   2 +-
+ net/ipv4/fou_core.c                           |   2 +-
+ net/ipv4/ipconfig.c                           |   6 +-
+ net/ipv4/netfilter/nf_nat_snmp_basic_main.c   |   4 +-
+ net/ipv4/route.c                              |   2 +-
+ net/ipv4/udp.c                                |   7 +-
+ net/ipv4/udp_offload.c                        |  49 ++---
+ net/ipv4/udp_tunnel_core.c                    |   2 +-
+ net/ipv6/esp6.c                               |   5 +-
+ net/ipv6/fou6.c                               |   2 +-
+ net/ipv6/ip6_udp_tunnel.c                     |   2 +-
+ net/ipv6/udp.c                                |   7 +-
+ net/ipv6/udp_offload.c                        |   2 +-
+ net/l2tp/l2tp_core.c                          |   2 +-
+ net/netfilter/ipvs/ip_vs_xmit.c               |   2 +-
+ net/netfilter/nf_conntrack_proto_udp.c        |  15 +-
+ net/netfilter/nf_log_syslog.c                 |   2 +-
+ net/netfilter/nf_nat_helper.c                 |   2 +-
+ net/psp/psp_main.c                            |   2 +-
+ net/sched/act_csum.c                          |   4 +-
+ net/xfrm/xfrm_nat_keepalive.c                 |   2 +-
+ tools/testing/selftests/net/Makefile          |   1 +
+ .../testing/selftests/net/big_tcp_tunnels.sh  | 183 ++++++++++++++++++
+ 53 files changed, 335 insertions(+), 102 deletions(-)
+ create mode 100755 tools/testing/selftests/net/big_tcp_tunnels.sh
+
+-- 
+2.54.0
+
