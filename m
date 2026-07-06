@@ -1,45 +1,80 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD2C2BEC43
-	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 10:03:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2943A3A544D
+	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 10:07:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783332209; cv=none; b=MnKYnXYhlRxQs/7p/UXsNaYFNih7BNz6fbzeyMK3o3UGq200Q1ykz+rmi/yT3bPc8aEZP5zCsdcOsoTLSjw5BI+2ndOOFbYu4vfcB4WqVhGlby5KyY41VLMMp/Ck0o8lTnuQYJ6zbWL+XNNNqnqVxO0MlPnYomAZTdq4/Zyfwjo=
+	t=1783332464; cv=none; b=WvmcgBVLFuZ9HQSHydXfQ3fHYDQDikb6UOkjGfaiuLxRbwtrM83on6MgIV/AO4hps54uNn563rVGst1T6siXLCv6aKnvyuftBPURkrAnYcmj4FMQxTa6YkbXcalp3MZGOSn8Ee88UJm5tl+uqLuh2Nu8s63zuch1S+iPpBaPIyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783332209; c=relaxed/simple;
-	bh=SQrDTprm3umr+ce3Sgt9QuROrfdtOoxJvVvAbBurWOc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ekZyN1J15psCac8IXGYDzr/F/GXY1V8rEu0tg8CHiqJmPkzC4NEE/TuvKvoTKy1/yPbO5JP2SoNSvmGhIGQkRPdNFlXC3HHhnbIHOSma5FWrtGc8USPx+NeJGoLpcBm1QxVHYd6lN63BDvruVsud/5HG27QGZX0YkGZZsMZVenM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=i26Y78cs; arc=none smtp.client-ip=220.197.31.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1783332464; c=relaxed/simple;
+	bh=JJUqDu2+dqGsrDoXsty0EwVEEsRe1/5oiBAXNjpKIlU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=N3BWG1rkBSAWdGQOBi6o143+sZgHtabrm62EL1jv0pn1HQI+4h1iLJYHLSqcaoneT3lv6xlVLbfqBxMN03T8xWBmdWXfsosaFNx59KoXMwZ89wUsQ5ThQluEDrjN9Fhfn1RNHN++OYRuJsYAE0BG5ayT1G9TJ51DBCUKzkqXdPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BS5Loq7h; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="i26Y78cs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=JZ
-	bxPyhSxERyKahBZdc20f6bMMlZ7WgR+AHtNlbB1mw=; b=i26Y78csGwlea10dmU
-	AxFeixO1QH69sdXyWGvnxQtkdgIdE+CGS3qGVMmYK5ngJHA3hHPOOKrEFRkvIgSi
-	3oRr8NSPruYY5ZarNUHgQMcvN5iKi7c7fTgVM1tS0LltabnzN2N8E/+PBRX8Gk1g
-	KWBfD1bcRh/Br83MbmGt8qdAI=
-Received: from kylin-ERAZER-H610M.. (unknown [])
-	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wD3b0E1fUtqQtSiHg--.27701S2;
-	Mon, 06 Jul 2026 18:02:30 +0800 (CST)
-From: Yun Lu <luyun_611@163.com>
-To: davem@davemloft.net,
-	edumazet@google.com,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BS5Loq7h"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8482074a000so292183b3a.0
+        for <netdev@vger.kernel.org>; Mon, 06 Jul 2026 03:07:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783332462; x=1783937262; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=a1tEp0DM60rJuaNUtw2bTl3r+XcwQp5b/KdfASU4AAM=;
+        b=BS5Loq7h02CqGhrydSsTzhjDnXe5gfxmnB0blHXNlkWH9Wx/6/U+mqO+jeIoi6MJgi
+         osJtQAf6D0FTX1DI5bFTCTRd+cxKNhL0oJfIBLPu8cSN9WFfFFDgkrYbP2C2Cq0khtIu
+         tMUuW8Fr4Fgvm7CDzbDw45DbTphfGOB/ucB8CTeHGTjWCH/4luYJgi73QAt9o1pjcSbV
+         +pgKWVGi7siDOJu6MNy2ylapo/bMlY2v9WLn+SfwJVH3+pWx/9P/cKg6M/BnvFPu7UZ+
+         Ib40l1L1F17hwfTo5NpxP4TmCL5hRkdBXTTT/kTMCce7TTrtlkFaSEcGprtxj1fpEXy/
+         zzUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783332462; x=1783937262;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=a1tEp0DM60rJuaNUtw2bTl3r+XcwQp5b/KdfASU4AAM=;
+        b=cljASQPgJo71iUmuyghffY/Q+KsJZJOf4hRSW5qMFEIv9XgjT2up5ug3UtVEDPm0Et
+         mMQ9HM7ytinejtePQCHQEBx1y/ycL4SEv4qeUSSRlARwCuI79w9Cr4tiZtN59lJq81VB
+         kJbDcAU7JZSy6z2eVJ0FvdILr/snZylWFDWZp77yzIfIYI9XP10kz+tLllfzbA4XQAcu
+         g6cWvxbTPvRPkeQ4DHCNUz/ffNYxSvHk9GPIN9hoBtSPOeNDp5DMR4zl6C2OgN2DLczX
+         TrvrcEVSjzEaheUyWyqgWLSKNQCCtKE3xz/Z2ilZXG7NMTLA2u3RWutgmzwi75FEDHdS
+         70eA==
+X-Gm-Message-State: AOJu0Yy3Ta1+z02fmdrrcwGUnj4fLaNCnuawc45FNpguDV5AFVPiwuwt
+	Lk+mxzpW/VeW3QzCXqbjIqqt1zvjuHymqgw74MBoL0ELVnXg+yGaogPK
+X-Gm-Gg: AfdE7cnudimf5Cp2z2yeY787JPrwDnrJUTcPxkWewq4xH+aWPMw17dLdOkHr4FszCOV
+	zHlGKwx/eenFiZZqQovW0aL6krK38WcxjKzlBS412/LXm50VcTvzq00B7ndnjQlMbTn3oucxQw3
+	Tb0VcLDzhdBBp1KigrgCjs8FoYV/V5cTI47PwJkwFYit3Gi1ln3bWDxawxJxRCSinVoRroubsFG
+	h1l3cQy2IAdOfAG4GHkQRE7Pu4+lafDFzAi5g+IST3HA4x/QBsH0aIJfm3ZhY/sqNBzdZ6HaAgm
+	y2gtIyKz5rT5KhXl5FdNgS1Ohkbw6HnRiUgJyY5FVkhANiT2gye1TnSeqJVIs2hEPTT74jyoGUq
+	6K+wKJOPMmPZoniQztRHOkNwJR8USmqx6pcavp5ugy9DQZHbYCpS35hcclW20+xZKnMX38rQTtC
+	zIxsdFra+I7gEMJOm+
+X-Received: by 2002:a05:6a20:2444:b0:3b5:489c:7bb5 with SMTP id adf61e73a8af0-3c03e50a96bmr9977640637.28.1783332462454;
+        Mon, 06 Jul 2026 03:07:42 -0700 (PDT)
+Received: from amd.com ([165.204.156.251])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13b3c7fa33asm53276468c88.5.2026.07.06.03.07.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Jul 2026 03:07:41 -0700 (PDT)
+From: Paritosh Potukuchi <paritoshpotukuchi@gmail.com>
+X-Google-Original-From: Paritosh Potukuchi <paritosh.potukuchi@amd.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	kuba@kernel.org,
+	edumazet@google.com,
+	andrew+netdev@lunn.ch,
+	jv@jvosburgh.net,
+	davem@davemloft.net,
 	pabeni@redhat.com,
-	horms@kernel.org,
-	kerneljasonxing@gmail.com,
-	kuniyu@google.com
-Cc: mhal@rbox.co,
-	bjorn@kernel.org,
-	jiayuan.chen@linux.dev,
-	netdev@vger.kernel.org
-Subject: [PATCH net-next] net: skbuff: use net_zcopy_get() instead of refcount_inc()
-Date: Mon,  6 Jul 2026 18:02:29 +0800
-Message-ID: <20260706100229.13812-1-luyun_611@163.com>
+	paritosh.potukuchi@amd.com
+Subject: Re: [PATCH v2 2/2] bonding: reuse neigh_setup from slave neigh_parms
+Date: Mon,  6 Jul 2026 10:07:35 +0000
+Message-ID: <20260706100735.1852213-1-paritosh.potukuchi@amd.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <CAAVpQUChEhWDxVPXOOQQcPMBLNocCACKNiX6AZwy5O-3+wgbtw@mail.gmail.com>
+References: <CAAVpQUChEhWDxVPXOOQQcPMBLNocCACKNiX6AZwy5O-3+wgbtw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,39 +82,64 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3b0E1fUtqQtSiHg--.27701S2
-X-Coremail-Antispam: 1Uf129KBjvdXoW7XFy5ur4fCw1fXFyrXr47Jwb_yoWfWwc_Jr
-	ykZr4kC3y8JFy7Cws0krW5Gryvk3y09a4ruFZ2vFy2q345X398G34kGFW29F1kCF48WrW5
-	GFnIvrW8Aa4F9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUbjjg3UUUUU==
-X-CM-SenderInfo: pox130jbwriqqrwthudrp/xtbC7BbZqGpLfTYk0AAA3V
 
-From: Yun Lu <luyun@kylinos.cn>
+Hi Kuniyuki,
 
-The net_zcopy_get() increments the uarg->refcnt, which is called both
-in pskb_carve_inside_header() and pskb_carve_inside_nonlinear().
-Also use net_zcopy_get() in pskb_expand_head for code consistency.
+>The real user is qeth_l3_main.c only and it's not compiled
+>on 99% host.
 
-No functional change intended.
+>We usually bail out at if (!slave_ops->ndo_neigh_setup),
+>which is called after your neigh_parms_lookup_dev(), and
+>there is no need to do O(n) traversal.
 
-Signed-off-by: Yun Lu <luyun@kylinos.cn>
----
- net/core/skbuff.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+>With 2K netns, it could incur unnecessary 4K traversal (lo
+>+ another dev) for each neigh creation, which is done under
+>RTNL or from interrupt context.
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 18dabb4e9cfa..bcf3b2c65fb9 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -2326,7 +2326,7 @@ int pskb_expand_head(struct sk_buff *skb, int nhead, int ntail,
- 		if (skb_orphan_frags(skb, gfp_mask))
- 			goto nofrags;
- 		if (skb_zcopy(skb))
--			refcount_inc(&skb_uarg(skb)->refcnt);
-+			net_zcopy_get(skb_zcopy(skb));
- 		for (i = 0; i < skb_shinfo(skb)->nr_frags; i++)
- 			skb_frag_ref(skb, i);
- 
--- 
-2.43.0
+>So, it will be a problem.
 
+That makes sense. Thanks for the insight.
+
+>It does not help.  Just populating fields does not change the
+>loop detection logic.
+
+True. Just populating fields would not suffice. Do you think
+it would a good solution to modify the ndo_neigh_setup 
+function?
+
+Currently it takes a (netdev, parms) pair as an argument.
+
+The way the ndo_neigh_setup is being used , both in stacked/
+virtual devices and slave devices, is to expose the underlying
+netdev's local neigh_setup function, through the parms argument.
+
+There is a TODO in the bond_main.c file that suggests the 
+following:
+
+ /* TODO: find another way [1] to implement this.
+  * Passing a zeroed structure is fragile,
+  * but at least we do not pass garbage.
+  *
+  * [1] One way would be that ndo_neigh_setup() never touch
+  *     struct neigh_parms, but propagate the new neigh_setup()
+  *     back to ___neigh_create() / neigh_parms_alloc()
+  */
+
+As the TODO suggests, would it be a good idea to modify the 
+ndo_neigh_setup function to be able to return the netdev's
+local neigh_setup function.
+This would solve the problem of passing a dummy parms structure.
+
+typedef int (*neigh_setup_fn_t)(struct neighbour *);
+
+static neigh_setup_fn_t ndo_neigh_setup(struct net_device *dev)
+{
+    return qeth_l3_neigh_setup_noarp;
+}
+
+
+Though the problem with this approach is that ndo_neigh_setup 
+loses the flexibility to modify other fields in the parms 
+structure.
+
+What is your opinion on this? 
