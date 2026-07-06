@@ -1,63 +1,63 @@
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8A8242D97
-	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 13:34:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C31CD33A9E9
+	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 13:34:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783344882; cv=none; b=NuARRhLP4zhZ6GgFZEK6blMe2YMPPz7EQXTsQxAAOvOZby+md/BRhu4YMnhBO2Z0mapmgQW4jnBQa/v8D/nCgaJMUi0UhKjXk6lY/gstXWbKgMi5Y2Yn+obYUXJWeesHgoumxaUsaxZJ+gaB6OcMNMit2lkHBAyMz+/cG0ovT0Y=
+	t=1783344884; cv=none; b=p3TotanEuDwpjnoYkCeOe4YFxtuO15+L1F1Zk8D85Vf/ZdYFlG/lP8TpWc5IkxzR7v38HcBbWGbXlVYibEJLrw7arIndqLJD3eFM27Oioh4Gmkwt65PJK1lEqbNlbXyOAsdxi+Smy5EosM4v6RZYAaZVqQGG2I1lkQFdX5LEItg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783344882; c=relaxed/simple;
-	bh=uJH61AuKNLDgxNVFQxNRRR1zcKN9S6Q8K3SZ6xsylC4=;
+	s=arc-20240116; t=1783344884; c=relaxed/simple;
+	bh=oFQQ0BEtCNmZgPZ9hFd0SYNb3j3YgcpyHPK6J0kKe1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M3c1bDhZr8qgIaViYh8cZ1tQEnwLzpYccYhz46Cvox0EtoElxpUc7P5A5t9reLkDlmCesxGUhGMnPQS5/0D5Fig1HTShv/f6Jg/vqRz+aYoULVTpxO9DDR3ndRhxrYEf4ytBYNspccnLxBz15fhMSB/bNyInwq26ZpO5TBfMHx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j5yUfzKV; arc=none smtp.client-ip=209.85.128.172
+	 MIME-Version; b=Q23WpGRsCL6FE5ugKGiWJclqAD2lxHfFqhMEjU+YqH3hAaMoDA/0BKqxBEE2SdvFi7B1wyXJqG+jcUWPMyTQlmdkaDGQFo/LrUhwmGVsclMq6lL2JsyDCmXA6hGcFTMsnG1Aj+yME+M5zqsujpI+QUR6zBlxawqXK02WkF7B3fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=slsEbNop; arc=none smtp.client-ip=209.85.128.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j5yUfzKV"
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-804e46366d7so45083177b3.2
-        for <netdev@vger.kernel.org>; Mon, 06 Jul 2026 06:34:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="slsEbNop"
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-7fe36f1be74so41982667b3.2
+        for <netdev@vger.kernel.org>; Mon, 06 Jul 2026 06:34:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783344880; x=1783949680; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1783344882; x=1783949682; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=V0qrXkuZFbpb/ZLWfzjEsgyN9/LBHDZAebjYE4NdL2o=;
-        b=j5yUfzKVjAy+KRgJi98znge86f6SxCmUWYh0BfNrKt/9FQe/UVVNtZCW+7TRqVRpQ7
-         vmk+dDK+yYQ0ETqEYIBSqNovLyXzUYrFQ/LmbDBhc88MEznTt0CZfhskGaLRStsxo+q6
-         2Mx6nZN8wjsIKM6XueFjSNPKc0zaoiwTI9Db6u+lVZaBYF28aqXoxXOb3fKas3ZRxSLi
-         4jT7lVvWCubNJr/41WJyo1DPyqJcNoiFTgp9ANuOPeXlK0uO7JbZ81Ri3wPTXTE/Df0V
-         /EbGC/1e+bgg/gA75aZ5fWsnM/06dzuqi8gCq/5ijnRmepVibK2iz8W2M3BC16ausEEF
-         b68g==
+        bh=2/y2I+sB4nnIw24fNyYtwZ+R62pw0nFMF5HbbrlkcN4=;
+        b=slsEbNopGV4JmxoeeUG/FFbC8mq9ot3QqW9dAIajBBgtcCiLsa/nuS8SHDzKB8fZ3v
+         tk8IKW+kVhCV5yLB+Qp16grFGuNnQNdJao3RU99DuPWuoeKFwIsS2WFAKMAlZjX0Lvxj
+         iD2eZcdJ+OwksgWduMK6W84dipPjj7tSOe0hcBX08Nzv9IPYCWpneX0Pow18WwKeed9E
+         XGHxl2aCPXOBUmAYYQFZTJDkYNxe4LDYTHiborEc2sSDye/S44KvHF69ru/4X+vNdfmG
+         5lTT8ig7uJjevKintwpURM3MgRnS0K5ru/E5ygBDojUcMQTvAdz1KH6uGfHdvRg3hVWk
+         HCDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783344880; x=1783949680;
+        d=1e100.net; s=20251104; t=1783344882; x=1783949682;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=V0qrXkuZFbpb/ZLWfzjEsgyN9/LBHDZAebjYE4NdL2o=;
-        b=RLmb4xR4kwYFrJ6Vwuym11nBQft7aFYWSF3v1u5yt+NoJFGclLVKPihqy9Hj8ZQqrP
-         Q+7IUMg/4cHJdzV3z/4oRM38L1BBa+YHC3YEnX6JML7006N+dsnLzC20sbymPeYvzE+h
-         HJUfkbgfh/5fL9ZXgY6VSd+Foebqpn25B9cGFAMJiLcS6EYuWXGE7tx9DHcBngzpWm+x
-         6JWpe2ctIgq98nhPLQri5lZFD21edHZsRYlkckkNW16mff9MD7VTUp/M2WsvFKDiJf3F
-         Y9KSyv0g4EUOP8LD92qY8dHA2TDjlZuHhjssIbK18nJS64dBH+eUkb5SBFoCG4MqcvvW
-         p06w==
-X-Gm-Message-State: AOJu0YwB7vGVFQNrgBnGa8qpr0oMUZpJ1xdCp5eA7QNSONjDKL3br44H
-	EqhpKKr2CQtl5Dowz5iS3bIUWIl7gyn8Kz4mA317LK1vBc0PNpEvT8UUvUxzUg==
-X-Gm-Gg: AfdE7cmiKO422Ugb+jzt5V2lxE3OgrGTwg4pmast6qDVvTsYu1Rhw1wsA5mi4V9NXhU
-	Nj0bqUJ5efTOPMrNicX4yDnceQiZrbtDxcAwDtQUBeiXTNJKNtVDbIoIzEuYazWXSVS/GyEGNe+
-	B3wjTm87UXHa83HZHKxxX0N3wROrtrKzaWUpbAClkLYYXJYeXJxcXEgonfv7gyKL5Q5Noul+XoS
-	09AQHxXbDUwsyJRbIzOyhJuKzeUf/+U6ud5+bSIqbrbEoC6BJjrrPemDDhkDvL48LxVj9QSK5kI
-	KLWjOcLPJ3aykMRuho5vi/1/oTO09Ck2Snuoytn9dNQNWTEAF52nv4D2PxdWRewl+wRRWYjyNVT
-	Gq0D7OJUc5mKxz/kn2qkvIrCUJRLY9GeMTFRL0xHvnEJ7uTYBp0MUb1KXS5bRa0jp3AAJzGrjA8
-	fC9L+AOE4nQ8HQQXEyALtRamZAWViDV2WhovEXvcLTQn9I3EuEtvlSdO0hbmt4NBSdgNLogXEOp
-	2H/SPWPv3Qf8KZX8P9IpDUVVIY=
-X-Received: by 2002:a05:690c:62c8:b0:80c:85b6:7659 with SMTP id 00721157ae682-81be329f9d5mr2088617b3.62.1783344880391;
-        Mon, 06 Jul 2026 06:34:40 -0700 (PDT)
+        bh=2/y2I+sB4nnIw24fNyYtwZ+R62pw0nFMF5HbbrlkcN4=;
+        b=indixDF9B5ZJOHLEdakoWO+aNwkl5dqhzs/VVoFWD8XODkp264aUZs8H7QMQNQPfO5
+         ODjVh8o+aWkzNgJNKuYpmyBSBkTiAZtg4LA1uJjYtDiNGz3kEB6kpet3LNk5p3szhdP0
+         R+Icf+yoe7u58uAtAlOZU1dgZhDLli9tBDuV24idT/wkkFnN7DiZJwQKMqYO+oBxZNec
+         6QNIu8ojCixhpxe1j9fQeR44kcdNrJT5X57JwEGY7UBVOAjGq67wJZnnrjnCilEz/79f
+         sIZ/9dNxJ064dh2vHg4JPdco1b8lucqgO4UG88Q9LScHXFF+ikGb8239nt9mEhYm4pj9
+         5ybw==
+X-Gm-Message-State: AOJu0Ywc6JpsQqNNCV8WeNAaqwNstnFH1IlP67SH+7b6fW/Ojnb0APGB
+	uZVWbvGn7pMKDWx6vJeJjyH/fWRZdBXLH0MhXV5v94GNkDOVe8+lmOXOeuMYeQ==
+X-Gm-Gg: AfdE7cn2mUb90tZvVchYLcrH5uv6zfb03t+8cbaCG7DApvWol86CzWXmaK/cFdr2zSU
+	AGuPVD5WQm3Xa/GVc/mgW++pXbmjz7DXdkOYSmzQNwAJufVKH1WUPn4WFI3a7I22zYFL2EWhat+
+	q+I5hm74dKOMpR3nxV+GRhtvMza0fE0hlWEq60eQRcXaW1FXkOlGKWVzDGdPMjSBSKcmuHIyZwP
+	QQpnv9L2VB040wDAdPMnRp8qJ9Qa/nbhXk+toEiV7onIQ5aoXV5g5J2zJacnROX/U/EGv9jxrG5
+	fktgEMm1/2iONSuY44jO+Eq9XGDz8VvqUlGA5pN4VEBkdKl3ARyGemNTxia4LV8cbnydI6NihWo
+	uoIY+smLPrDthwEOrRgJoqeFU7OC21/3dO2r2juzbMIbWNUHrchIIekoExAkYS+F5Z9oAGOh6Yy
+	TYEy+SQbsnKRo9o1u9PzjnTIdScJJKdW13SArImHVxfd6BVAwwsjS8g/PLGDZoHRdS0wWrsTkpO
+	+7pPW5+Ur6hSaCZ
+X-Received: by 2002:a05:690c:4d83:b0:80c:85b6:75bd with SMTP id 00721157ae682-81be4809ee4mr1851507b3.70.1783344881777;
+        Mon, 06 Jul 2026 06:34:41 -0700 (PDT)
 Received: from willemb.c.googlers.com.com (172.235.85.34.bc.googleusercontent.com. [34.85.235.172])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8144b537e3asm57002827b3.34.2026.07.06.06.34.39
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8144b537e3asm57002827b3.34.2026.07.06.06.34.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2026 06:34:40 -0700 (PDT)
+        Mon, 06 Jul 2026 06:34:41 -0700 (PDT)
 From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -67,9 +67,9 @@ Cc: davem@davemloft.net,
 	horms@kernel.org,
 	andrew@lunn.ch,
 	Willem de Bruijn <willemb@google.com>
-Subject: [PATCH net-next 2/7] net_sched: sch_fq: clear past skb->tstamp if offloading pacing
-Date: Mon,  6 Jul 2026 09:34:04 -0400
-Message-ID: <20260706133433.3142805-3-willemdebruijn.kernel@gmail.com>
+Subject: [PATCH net-next 4/7] selftests: drv-net: refactor so_txtime errqueue handling
+Date: Mon,  6 Jul 2026 09:34:06 -0400
+Message-ID: <20260706133433.3142805-5-willemdebruijn.kernel@gmail.com>
 X-Mailer: git-send-email 2.55.0.795.g602f6c329a-goog
 In-Reply-To: <20260706133433.3142805-1-willemdebruijn.kernel@gmail.com>
 References: <20260706133433.3142805-1-willemdebruijn.kernel@gmail.com>
@@ -83,90 +83,128 @@ Content-Transfer-Encoding: 8bit
 
 From: Willem de Bruijn <willemb@google.com>
 
-When hardware offload is enabled, FQ will forward packets to the
-netdevice for pacing. The device has to test that skb->tstamp is
-in the future.
+Prepare error queue handling for upcoming SO_EE_ORIGIN_TIMESTAMPING
+messages in the next patch in this series.
 
-Avoid this cost for packets whose txtime has already passed, by
-clearing skb->tstamp.
+Convert do_recv_errqueue_timeout into dispatcher do_recv_errqueue
+and move SO_EE_ORIGIN_TXTIME specific code into a separate helper.
 
-Also disable timer drift logic when offload is enabled, because
-time_next_packet can exceed now causing a negative value.
+This will make the next patch a lot more readable.
+
+No functional changes.
 
 Signed-off-by: Willem de Bruijn <willemb@google.com>
-
 ---
+ .../testing/selftests/drivers/net/so_txtime.c | 66 ++++++++++---------
+ 1 file changed, 36 insertions(+), 30 deletions(-)
 
-Sashiko, ignore pre-existing issues. In particular, effects on
-non-EDT packets and when queue or sk rate limit is set.
-
-Sashiko, pacing offload is an optimization. Ignore that some packets
-may not get offloaded, e.g., when txtime is a few usec in the future.
----
- net/sched/sch_fq.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
-
-diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
-index d4cc8bc9fa06..36006f69a875 100644
---- a/net/sched/sch_fq.c
-+++ b/net/sched/sch_fq.c
-@@ -399,6 +399,11 @@ static struct fq_flow *fq_classify(struct Qdisc *sch, struct sk_buff *skb,
- 		    READ_ONCE(sk->sk_pacing_status) != SK_PACING_FQ)
- 			smp_store_release(&sk->sk_pacing_status,
- 					  SK_PACING_FQ);
-+
-+		if (q->offload_horizon &&
-+		    fq_skb_cb(skb)->time_to_send <= now)
-+			skb->tstamp = 0;
-+
- 		return &q->internal;
- 	}
- 
-@@ -707,6 +712,7 @@ static struct sk_buff *fq_dequeue(struct Qdisc *sch)
- 	struct fq_sched_data *q = qdisc_priv(sch);
- 	struct fq_perband_flows *pband;
- 	struct fq_flow_head *head;
-+	u64 time_next_packet;
- 	struct sk_buff *skb;
- 	struct fq_flow *f;
- 	unsigned long rate;
-@@ -721,7 +727,7 @@ static struct sk_buff *fq_dequeue(struct Qdisc *sch)
- 	if (skb) {
- 		q->internal.qlen--;
- 		fq_dequeue_skb(sch, &q->internal, skb);
--		goto out;
-+		return skb;
- 	}
- 
- 	now = ktime_get_ns();
-@@ -758,8 +764,8 @@ static struct sk_buff *fq_dequeue(struct Qdisc *sch)
- 
- 	skb = fq_peek(f);
- 	if (skb) {
--		u64 time_next_packet = max_t(u64, fq_skb_cb(skb)->time_to_send,
--					     f->time_next_packet);
-+		time_next_packet = max_t(u64, fq_skb_cb(skb)->time_to_send,
-+					 f->time_next_packet);
- 
- 		if (now + q->offload_horizon < time_next_packet) {
- 			head->first = f->next;
-@@ -828,11 +834,15 @@ static struct sk_buff *fq_dequeue(struct Qdisc *sch)
- 		 * f->time_next_packet was set when prior packet was sent,
- 		 * and current time (@now) can be too late by tens of us.
- 		 */
--		if (f->time_next_packet)
-+		if (f->time_next_packet && f->time_next_packet < now)
- 			len -= min(len/2, now - f->time_next_packet);
- 		f->time_next_packet = now + len;
- 	}
-+
- out:
-+	if (q->offload_horizon && time_next_packet <= now)
-+		skb->tstamp = 0;
-+
- 	return skb;
+diff --git a/tools/testing/selftests/drivers/net/so_txtime.c b/tools/testing/selftests/drivers/net/so_txtime.c
+index 55a386f3d1b9..7364ce2bec0b 100644
+--- a/tools/testing/selftests/drivers/net/so_txtime.c
++++ b/tools/testing/selftests/drivers/net/so_txtime.c
+@@ -158,7 +158,40 @@ static void do_recv_verify_empty(int fdr)
+ 		error(1, 0, "recv: not empty as expected (%d, %d)", ret, errno);
  }
  
+-static int do_recv_errqueue_timeout(int fdt)
++static int do_recv_errqueue_timeout(struct sock_extended_err *err,
++				    const char payload_char)
++{
++	const char *reason = NULL;
++	int64_t tstamp = 0;
++
++	switch (err->ee_errno) {
++	case ECANCELED:
++		if (err->ee_code != SO_EE_CODE_TXTIME_MISSED)
++			error(1, 0, "errqueue: unknown ECANCELED %u\n",
++			      err->ee_code);
++		reason = "missed txtime";
++	break;
++	case EINVAL:
++		if (err->ee_code != SO_EE_CODE_TXTIME_INVALID_PARAM)
++			error(1, 0, "errqueue: unknown EINVAL %u\n",
++			      err->ee_code);
++		reason = "invalid txtime";
++	break;
++	default:
++		error(1, 0, "errqueue: errno %u code %u\n",
++		      err->ee_errno, err->ee_code);
++	}
++
++	tstamp = ((int64_t)err->ee_data) << 32 | err->ee_info;
++	tstamp -= (int64_t)glob_tstart;
++	tstamp /= 1000 * 1000;
++	fprintf(stderr, "send: pkt %c at %" PRId64 "ms dropped: %s\n",
++		payload_char, tstamp, reason);
++
++	return 1;
++}
++
++static int do_recv_errqueue(int fdt)
+ {
+ 	char control[CMSG_SPACE(sizeof(struct sock_extended_err)) +
+ 		     CMSG_SPACE(sizeof(struct sockaddr_in6))] = {0};
+@@ -169,7 +202,6 @@ static int do_recv_errqueue_timeout(int fdt)
+ 	struct msghdr msg = {0};
+ 	struct iovec iov = {0};
+ 	struct cmsghdr *cm;
+-	int64_t tstamp = 0;
+ 
+ 	iov.iov_base = data;
+ 	iov.iov_len = sizeof(data);
+@@ -181,8 +213,6 @@ static int do_recv_errqueue_timeout(int fdt)
+ 	msg.msg_controllen = sizeof(control);
+ 
+ 	while (1) {
+-		const char *reason = NULL;
+-
+ 		ret = recvmsg(fdt, &msg, MSG_ERRQUEUE);
+ 		if (ret == -1 && errno == EAGAIN)
+ 			break;
+@@ -201,33 +231,9 @@ static int do_recv_errqueue_timeout(int fdt)
+ 		if (err->ee_origin != SO_EE_ORIGIN_TXTIME)
+ 			error(1, 0, "errqueue: origin 0x%x\n", err->ee_origin);
+ 
+-		switch (err->ee_errno) {
+-		case ECANCELED:
+-			if (err->ee_code != SO_EE_CODE_TXTIME_MISSED)
+-				error(1, 0, "errqueue: unknown ECANCELED %u\n",
+-				      err->ee_code);
+-			reason = "missed txtime";
+-		break;
+-		case EINVAL:
+-			if (err->ee_code != SO_EE_CODE_TXTIME_INVALID_PARAM)
+-				error(1, 0, "errqueue: unknown EINVAL %u\n",
+-				      err->ee_code);
+-			reason = "invalid txtime";
+-		break;
+-		default:
+-			error(1, 0, "errqueue: errno %u code %u\n",
+-			      err->ee_errno, err->ee_code);
+-		}
+-
+-		tstamp = ((int64_t) err->ee_data) << 32 | err->ee_info;
+-		tstamp -= (int64_t) glob_tstart;
+-		tstamp /= 1000 * 1000;
+-		fprintf(stderr, "send: pkt %c at %" PRId64 "ms dropped: %s\n",
+-			data[ret - 1], tstamp, reason);
+-
++		num_tstamp += do_recv_errqueue_timeout(err, data[ret - 1]);
+ 		msg.msg_flags = 0;
+ 		msg.msg_controllen = sizeof(control);
+-		num_tstamp++;
+ 	}
+ 
+ 	return num_tstamp;
+@@ -245,7 +251,7 @@ static void recv_errqueue_msgs(int fdt)
+ 			error(1, errno, "poll");
+ 
+ 		if (ret && (pfd.revents & POLLERR))
+-			num_tstamp += do_recv_errqueue_timeout(fdt);
++			num_tstamp += do_recv_errqueue(fdt);
+ 
+ 		if (num_tstamp == cfg_num_pkt)
+ 			break;
 -- 
 2.55.0.795.g602f6c329a-goog
 
