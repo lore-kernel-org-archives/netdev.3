@@ -1,213 +1,334 @@
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42FCE3BFE2A
-	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 06:19:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 366683A1D02;
+	Mon,  6 Jul 2026 06:19:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783318784; cv=none; b=jUVIidcJIsO/UCc5343iPyg9igp/KCBK6bloNXkArD7EVT/BxCg2Eeuvx10T/wPvYJ/9NUk0LukH1hyX7Lp+1SgXcrLSPuexqZh9Z+JqluCQo2viw3G2Gp1lvXmvvWKfH93MBSg+BiKmMX5f+sQCKgq61VaUDC8VtrW6oWmRCpw=
+	t=1783318785; cv=none; b=pObR3vMC9de4UiH0LUELbadndz6mX/B/4plCxFFoI9nCiKc0Yiwg9GINqlhiWiqW+U+zQBcEip5f4lezQWa6o22m1qg9VxKkB99We5OfXmAoB0gzI/NPUCMsYtT7GsWmRvtOpjlL887WbRKpp4J+cxe4Go1+Uo4ezonrBULvonU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783318784; c=relaxed/simple;
-	bh=J91Z2sAlURoeDInS8hfXxMIvJ7MBXF1jJazO5Hecld8=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Otyy4Yw1fW4aaS2nslObG0e5Zdo0Psr78/aFajIaaqbQn7UF3vigI6JpyyF+tyoAKBlMAZzqQ3Y9GBsiMVaK6pRzWdHjaAhsrL4c6iyoPT0CjX3kyX+SvV6icnifZye2NrS9k6RTDrnWkhVy04z8PfBM1nuTZq9Cav3JL6/zaVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=tERll18i; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="tERll18i"
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 5F105206B0;
-	Mon,  6 Jul 2026 08:19:40 +0200 (CEST)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id N_kNvfzC0UmA; Mon,  6 Jul 2026 08:19:39 +0200 (CEST)
-Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 3C777201D5;
-	Mon,  6 Jul 2026 08:19:39 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 3C777201D5
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1783318779;
-	bh=D8uQpAA5OtZLGqgg5NT+AOOfHIbY4xy4+dsCLUotoJc=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
-	b=tERll18ipYBYmTGYnfaISp7ZXoP98pdxEmS1Uqy9MFg+WEcJEI12mSjZKhKbmnU0N
-	 e5itIRBsh16UE7Ez2g8btEDCIyRsjsPhpQBqPofvpRvpcJPySqCZ296Gnz26LJgrjN
-	 NxY9ZOifEDj0oNbTVjjjan6sHPJPQ1SU71girKt2gAM1038z9fuYpzqYjaoVc+MdA6
-	 F+EsniM5/KwEVO5Sk6MkcnftlYvy7CpiUKF2ycm4furw3uGZmkZds7nRYCVCekPFNb
-	 JxuiUvvvG0ipUG04fbTcGapb9SWRg2Cr2oC6lv2hLYoj4M1v3GwW1iz9YDYxZFAplS
-	 GCM46v0mfNs4g==
-Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 6 Jul
- 2026 08:19:38 +0200
-Received: (nullmailer pid 3241579 invoked by uid 1000);
-	Mon, 06 Jul 2026 06:19:37 -0000
-Date: Mon, 6 Jul 2026 08:19:37 +0200
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: Antony Antony <antony.antony@secunet.com>
-CC: Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>, Christian Hopps <chopps@labn.net>, Tobias Brunner
-	<tobias@strongswan.org>, <netdev@vger.kernel.org>,
-	<syzbot+0ac4d84afe1066a1f3e9@syzkaller.appspotmail.com>
-Subject: Re: [PATCH ipsec v2] xfrm: reject optional IPTFS templates in
- outbound policies
-Message-ID: <aktI-XbTCnR27Sfe@secunet.com>
-References: <20260627-xfrm-pol-out-tmpl-iptfs-reject-fix-v2-1-45ff81741874@secunet.com>
+	s=arc-20240116; t=1783318785; c=relaxed/simple;
+	bh=UPgrUdj2zJuIcM2CRwF3Ndg48wh45GAuitrkG1THTag=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=lNax9jNAKf0exLu4g0QgBNMnleF1ztMIGeuZJ7+nYzvhMm1WCs58Fm+8w5/op+xOJ0x11C5MifJFReB/zy6K/sW4N7mJ/0MBKEGto3mOdu94+ED0QkFI8/Lm9w8jtGaGQXelbDR6EgJLKQXQ4AE3ATI+0l6gxqc5bUyduFETRuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
+X-AuditID: a67dfc5b-c2dff70000001609-75-6a4b48fb3220
+From: Byungchul Park <byungchul@sk.com>
+To: linux-kernel@vger.kernel.org
+Cc: max.byungchul.park@gmail.com,
+	kernel_team@skhynix.com,
+	torvalds@linux-foundation.org,
+	damien.lemoal@opensource.wdc.com,
+	linux-ide@vger.kernel.org,
+	adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org,
+	mingo@redhat.com,
+	peterz@infradead.org,
+	will@kernel.org,
+	tglx@linutronix.de,
+	rostedt@goodmis.org,
+	joel@joelfernandes.org,
+	sashal@kernel.org,
+	daniel.vetter@ffwll.ch,
+	duyuyang@gmail.com,
+	johannes.berg@intel.com,
+	tj@kernel.org,
+	tytso@mit.edu,
+	willy@infradead.org,
+	david@fromorbit.com,
+	amir73il@gmail.com,
+	gregkh@linuxfoundation.org,
+	kernel-team@lge.com,
+	linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	mhocko@kernel.org,
+	minchan@kernel.org,
+	hannes@cmpxchg.org,
+	vdavydov.dev@gmail.com,
+	sj@kernel.org,
+	jglisse@redhat.com,
+	dennis@kernel.org,
+	cl@linux.com,
+	penberg@kernel.org,
+	rientjes@google.com,
+	vbabka@suse.cz,
+	ngupta@vflare.org,
+	linux-block@vger.kernel.org,
+	josef@toxicpanda.com,
+	linux-fsdevel@vger.kernel.org,
+	jack@suse.cz,
+	jlayton@kernel.org,
+	dan.j.williams@intel.com,
+	hch@infradead.org,
+	djwong@kernel.org,
+	dri-devel@lists.freedesktop.org,
+	rodrigosiqueiramelo@gmail.com,
+	melissa.srw@gmail.com,
+	hamohammed.sa@gmail.com,
+	harry.yoo@oracle.com,
+	chris.p.wilson@intel.com,
+	gwan-gyeong.mun@intel.com,
+	boqun.feng@gmail.com,
+	longman@redhat.com,
+	yunseong.kim@ericsson.com,
+	ysk@kzalloc.com,
+	yeoreum.yun@arm.com,
+	netdev@vger.kernel.org,
+	matthew.brost@intel.com,
+	her0gyugyu@gmail.com,
+	corbet@lwn.net,
+	catalin.marinas@arm.com,
+	bp@alien8.de,
+	x86@kernel.org,
+	hpa@zytor.com,
+	luto@kernel.org,
+	sumit.semwal@linaro.org,
+	gustavo@padovan.org,
+	christian.koenig@amd.com,
+	andi.shyti@kernel.org,
+	arnd@arndb.de,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	rppt@kernel.org,
+	surenb@google.com,
+	mcgrof@kernel.org,
+	petr.pavlu@suse.com,
+	da.gomez@kernel.org,
+	samitolvanen@google.com,
+	paulmck@kernel.org,
+	frederic@kernel.org,
+	neeraj.upadhyay@kernel.org,
+	joelagnelf@nvidia.com,
+	josh@joshtriplett.org,
+	urezki@gmail.com,
+	mathieu.desnoyers@efficios.com,
+	jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev,
+	juri.lelli@redhat.com,
+	vincent.guittot@linaro.org,
+	dietmar.eggemann@arm.com,
+	bsegall@google.com,
+	mgorman@suse.de,
+	vschneid@redhat.com,
+	chuck.lever@oracle.com,
+	neil@brown.name,
+	okorniev@redhat.com,
+	Dai.Ngo@oracle.com,
+	tom@talpey.com,
+	trondmy@kernel.org,
+	anna@kernel.org,
+	kees@kernel.org,
+	bigeasy@linutronix.de,
+	clrkwllms@kernel.org,
+	mark.rutland@arm.com,
+	ada.coupriediaz@arm.com,
+	kristina.martsenko@arm.com,
+	wangkefeng.wang@huawei.com,
+	broonie@kernel.org,
+	kevin.brodsky@arm.com,
+	dwmw@amazon.co.uk,
+	shakeel.butt@linux.dev,
+	ast@kernel.org,
+	ziy@nvidia.com,
+	yuzhao@google.com,
+	baolin.wang@linux.alibaba.com,
+	usamaarif642@gmail.com,
+	joel.granados@kernel.org,
+	richard.weiyang@gmail.com,
+	geert+renesas@glider.be,
+	tim.c.chen@linux.intel.com,
+	linux@treblig.org,
+	alexander.shishkin@linux.intel.com,
+	lillian@star-ark.net,
+	chenhuacai@kernel.org,
+	francesco@valla.it,
+	guoweikang.kernel@gmail.com,
+	link@vivo.com,
+	jpoimboe@kernel.org,
+	masahiroy@kernel.org,
+	brauner@kernel.org,
+	thomas.weissschuh@linutronix.de,
+	oleg@redhat.com,
+	mjguzik@gmail.com,
+	andrii@kernel.org,
+	wangfushuai@baidu.com,
+	linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org,
+	linux-i2c@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-modules@vger.kernel.org,
+	rcu@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev,
+	2407018371@qq.com,
+	dakr@kernel.org,
+	miguel.ojeda.sandonis@gmail.com,
+	neilb@ownmail.net,
+	bagasdotme@gmail.com,
+	wsa+renesas@sang-engineering.com,
+	dave.hansen@intel.com,
+	geert@linux-m68k.org,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v19 02/40] dept: add single event dependency tracker APIs
+Date: Mon,  6 Jul 2026 15:18:50 +0900
+Message-Id: <20260706061928.66713-3-byungchul@sk.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20260706061928.66713-1-byungchul@sk.com>
+References: <20260706061928.66713-1-byungchul@sk.com>
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUxbZRTHfe597ksb6m66t0eWOG0UcZEhZDPHZBI+7MMziUZjTBYXdTdw
+	A2VQSGFsmKiwDmWw4SQR4wqkFimmZba22QvjZchmNwKN7STQ0TqYKAyhq3PYjRXEdrpvv5z/
+	//xyPhyR1U5yqaLeUKkYDXKJjldjdSTFmrFC84pf9LWlQn3dxxCe+o2D8dpBDK3Obh6uThzB
+	cC9uZqGuZw3DarNXgKXlkABB/0UWorbjCE7NmgWITPVyMBFbRBD3/cTC7yfPsDD2d5SHSKCV
+	gdsuHtrMzQhmJ/sZMHU4eWhpc2Pomb4gQGBhhQGH+zWYss1iaPl+M5i/NDHwxeleBpZtdgFG
+	O8IY1ixl4HXMCTB8Y5wD9/UfEbhnEvRVe5iHvv5hDPWrSwhqzPc48A+OcOCcCzIw4r2KIeT7
+	TIDOiQADN6eDHHh8oyzEmrbA6dtWHq4NWhjwWjbBmYt1CD691ctDuOkPDGPXexEM1E8zcNl5
+	LnFfAIO5tglB/eUYC647XTwcDe+EJYedz82lds9ZhtZdW+Vpd3s3ovEHzYgudZpYemkxytLO
+	kUWefu7LoD2nfhHo0YFJgVrcB2lH3zxDJxdeoW77MZ5+Hb/F0obIGPPGM++odxUoJfoqxZiZ
+	s19ddDfgZMtHyWHrDReuQZ71DUglEmkHiU3d4R+x3brGJZmXniPB4DKb5A3SU8RzYjYxV4us
+	9PNWctx2AieD9dIeEvU2oiRj6Vlyf/jSw2WNtJO4nE3/S7cSh2vwoUglvUS+W2ljkqxNdELR
+	KzgpJVKHiji6/pMS6Qnyw7dBfBJpLOgxO9LqDVWlsr5kx/aiaoP+8Pb8slI3Snyc7cOVfefR
+	X/63hpAkIl2KBnJfLdZyclVFdekQIiKr26BJS88r1moK5OoPFGPZ+8aDJUrFENoiYt1mTXbs
+	UIFWKpQrlQOKUq4YH6WMqEqtQZX+c3I88qZ1Pqc7W1ZJppRdrdqRguB8l/7Y2dpfF3KyW3an
+	vc2TGdNCzb777wYyQqbGwv79ez185kbNoUbb0w/eax+e25TPrJu/+dE6g7/h+aw/zVRM26v6
+	J+vA49u+OZI1mjO9u3lPYXmflJcfDJWnk/RPyDgamLmb92Tm6y+/oMMVRXLWNtZYIf8LifH4
+	F20DAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUxScRTG+997+YMs2h1Z3upDja2XuWkvyzpbL6svddPVauttfSnKO0XR
+	DMyy1RKNsrJSFrgCiyhZqQWBltYo09IMXRK9uNS0jSjTwqFQvqBBrS9nv3Oe5zw7H46AFNfy
+	ZgtkmdmcIlMql2AhJdyyqiBujE1KWxIsmgWF6pPQ1ePhwXtVPQWB4UIKDJYqDCH9Qz4U2q7w
+	4OWHfAra71Ui6AkUIvg1pidBXTdJQUjTxIfhkU4+aFUIJh1NCHQuDQkd7U9JqKpWETBkncDQ
+	3+hHoP3swVDap6LAZy5CcNWr50Pfi43wo+cxDya7vxLwITiAwOyZIMBTfwZBSJcO10328Lpu
+	EMNY22sSSrXtCG587ibB39eLoLrpEwLH7XwMX4prSHB7psHbgA9Di/Y8hh8uAwE/rRiM+Q4e
+	uFr7EZTpNQi8Hx0EFNy0YNCV2Sio633EB1f/OAFdOg0BlbbN0GP2UuAsNhHhc8Ou+zGgLy0g
+	wuUbAdq7jwkYMVfw15Uj9pf6IsVW2B8QrPpNCLNV16oQOzaqQexweQHJqovDbeOAj2RP2Y+w
+	5c4BzI4G3mHWETRS7CsTw946O0qwJW1xbN3Vbv7W9XuEq5M5uSyHUyxeu0+YOuSykFmtzFHT
+	JyuVh+zTz6EoAUMvZypMk7wIY3oh09ExQkY4mp7H2C94w3OhgKTdc5ki8wUqIkynNzG+pvMo
+	whQ9n/nd0vh3WUQnMFbLRfwvdC5Taa3/GxRFr2DujZcRERaHPZ2+ZqoYCY1oSgWKlmXmZEhl
+	8oR4ZXpqbqbsaPyBgxk2FP4n84nxklo07N7YgGgBkkwVwbrENDFPmqPMzWhAjICURIsWLEpK
+	E4uSpbnHOMXBvYrDck7ZgOYIKEmMKHEXt09Mp0izuXSOy+IU/1VCEDU7D3Xaj89KnrdXbV05
+	Ur2+y/lkPJCVYnoR2BlcozXGv1dZyiZmHLlksGVf2e3/vv1pL13y3Hi5xXnYPbNX5RxKEnkH
+	WxubkXzwWTA2b7Vkx6PEUMPrmQr/0il32uI2ZONLK7OWSbfXusUPa1TfmjNU+22n6wwf/R0J
+	WsO2E19wzKEJCaVMlS6NJRVK6R9hxjY0SwMAAA==
+X-CFilter-Loop: Reflected
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260627-xfrm-pol-out-tmpl-iptfs-reject-fix-v2-1-45ff81741874@secunet.com>
-X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
- (10.32.0.171)
 
-On Sat, Jun 27, 2026 at 10:23:43AM +0200, Antony Antony wrote:
-> syzbot reported a stack-out-of-bounds read in xfrm_state_find()
-> which flows from xfrm_tmpl_resolve_one().
-> 
-> Commit 3d776e31c841 ("xfrm: Reject optional tunnel/BEET mode
-> templates in outbound policies") disallowed optional tunnel and
-> BEET in outbound policies to prevent this. Later when IPTFS
-> added, it was not covered by that fix and can still trigger
-> the out-of-bounds read;
-> 
-> Extend the check to disallow optional IPTFS in outbound policies
-> as well. IPTFS should be identical to tunnel mode.
-> IN and FWD policies are not affected: xfrm_tmpl_resolve_one()
-> is only reachable via the outbound path.
-> 
-> Reproducer, before:
-> 
-> ip link add dummy0 type dummy
-> ip link set dummy0 up
-> ip addr add 10.1.1.1/24 dev dummy0
-> ip xfrm policy add src 10.1.1.1/32 dst 10.1.1.2/32 dir out tmpl
->   src fc00::dead:1 dst fc00::dead:2 proto esp reqid 1 mode iptfs
->   level use tmpl src fc00::dead:1 dst fc00::dead:2 proto esp reqid
->   2 mode transport
-> ping -W 1 -c 1 10.1.1.2
-> PING 10.1.1.2 (10.1.1.2) 56(84) bytes of data.
-> 
-> [   64.168420] ==================================================================
-> [   64.169977] BUG: KASAN: stack-out-of-bounds in __xfrm6_addr_hash+0x11e/0x170
-> [   64.169977] Read of size 4 at addr ffff88800e1ffd20 by task ping/2844
-> 
-> [   64.169977] CPU: 2 UID: 0 PID: 2844 Comm: ping Not tainted 7.1.0-rc7-00180-geb23b588430a #98 PREEMPT(full)
-> [   64.169977] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-> [   64.169977] Call Trace:
-> [   64.169977]  <TASK>
-> [   64.169977]  dump_stack_lvl+0x47/0x70
-> [   64.169977]  ? __xfrm6_addr_hash+0x11e/0x170
-> [   64.169977]  print_report+0x152/0x4b0
-> [   64.169977]  ? ksys_mmap_pgoff+0x6d/0xa0
-> [   64.169977]  ? entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> [   64.169977]  ? rcu_read_unlock_sched+0xa/0x20
-> [   64.169977]  ? __virt_addr_valid+0x21b/0x230
-> [   64.169977]  ? __xfrm6_addr_hash+0x11e/0x170
-> [   64.169977]  kasan_report+0xa8/0xd0
-> [   64.169977]  ? __xfrm6_addr_hash+0x11e/0x170
-> [   64.169977]  __xfrm6_addr_hash+0x11e/0x170
-> [   64.169977]  __xfrm_dst_hash+0x24/0xc0
-> [   64.169977]  xfrm_state_find+0xa2d/0x2f90
-> [   64.169977]  ? __pfx_xfrm_state_find+0x10/0x10
-> [   64.169977]  ? __pfx_ftrace_graph_ret_addr+0x10/0x10
-> [   64.169977]  ? __pfx_ftrace_graph_ret_addr+0x10/0x10
-> [   64.169977]  xfrm_tmpl_resolve_one+0x210/0x570
-> [   64.169977]  ? __pfx_xfrm_tmpl_resolve_one+0x10/0x10
-> [   64.169977]  ? __pfx_stack_trace_consume_entry+0x10/0x10
-> [   64.169977]  ? kernel_text_address+0x5b/0x80
-> [   64.169977]  ? __kernel_text_address+0xe/0x30
-> [   64.169977]  ? unwind_get_return_address+0x5e/0x90
-> [   64.169977]  ? arch_stack_walk+0x8c/0xe0
-> [   64.169977]  xfrm_tmpl_resolve+0x130/0x200
-> [   64.169977]  ? __pfx_xfrm_tmpl_resolve+0x10/0x10
-> [   64.169977]  ? __pfx_xfrm_policy_inexact_lookup_rcu+0x10/0x10
-> [   64.169977]  ? __refcount_add_not_zero.constprop.0+0xb2/0x110
-> [   64.169977]  ? __pfx___refcount_add_not_zero.constprop.0+0x10/0x10
-> [   64.169977]  xfrm_resolve_and_create_bundle+0xd5/0x310
-> [   64.169977]  ? __pfx_xfrm_resolve_and_create_bundle+0x10/0x10
-> [   64.169977]  ? __pfx_xfrm_policy_lookup_bytype+0x10/0x10
-> [   64.169977]  ? __pfx_xfrm_policy_lookup_bytype+0x10/0x10
-> [   64.169977]  xfrm_lookup_with_ifid+0x3d8/0xb80
-> [   64.169977]  ? __pfx_xfrm_lookup_with_ifid+0x10/0x10
-> [   64.169977]  ? ip_route_output_key_hash+0xc6/0x110
-> [   64.169977]  ? kasan_save_track+0x10/0x30
-> [   64.169977]  xfrm_lookup_route+0x18/0xe0
-> [   64.169977]  ip4_datagram_release_cb+0x4c9/0x530
-> [   64.169977]  ? __pfx_ip4_datagram_release_cb+0x10/0x10
-> [   64.169977]  ? do_raw_spin_lock+0x71/0xc0
-> [   64.169977]  ? __pfx_do_raw_spin_lock+0x10/0x10
-> [   64.169977]  release_sock+0xb0/0x170
-> [   64.169977]  udp_connect+0x43/0x50
-> [   64.169977]  __sys_connect+0xa6/0x100
-> [   64.169977]  ? alloc_fd+0x2e9/0x300
-> [   64.169977]  ? __pfx___sys_connect+0x10/0x10
-> [   64.169977]  ? preempt_latency_start+0x1f/0x70
-> [   64.169977]  ? fd_install+0x7e/0x150
-> [   64.169977]  ? rcu_read_unlock_sched+0xa/0x20
-> [   64.169977]  ? __sys_socket+0xdf/0x130
-> [   64.169977]  ? __pfx___sys_socket+0x10/0x10
-> [   64.169977]  ? vma_refcount_put+0x43/0xa0
-> [   64.169977]  __x64_sys_connect+0x7e/0x90
-> [   64.169977]  do_syscall_64+0x11b/0x2b0
-> [   64.169977]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> [   64.169977] RIP: 0033:0x7f4851ecb570
-> [   64.169977] Code: 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 80 3d f9 ca 0d 00 00 74 17 b8 2a 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 58 c3 0f 1f 80 00 00 00 00 48 83 ec 18 89 54
-> [   64.169977] RSP: 002b:00007ffc830e3498 EFLAGS: 00000202 ORIG_RAX: 000000000000002a
-> [   64.169977] RAX: ffffffffffffffda RBX: 00007ffc830e34d0 RCX: 00007f4851ecb570
-> [   64.169977] RDX: 0000000000000010 RSI: 00007ffc830e34d0 RDI: 0000000000000005
-> [   64.169977] RBP: 0000000000000000 R08: 0000000000000003 R09: 0000000000000000
-> [   64.169977] R10: 0000000000000006 R11: 0000000000000202 R12: 0000000000000005
-> [   64.169977] R13: 0000000000000000 R14: 00005619a863f340 R15: 0000000000000000
-> [   64.169977]  </TASK>
-> 
-> [   64.169977] The buggy address belongs to stack of task ping/2844
-> [   64.169977]  and is located at offset 88 in frame:
-> [   64.169977]  ip4_datagram_release_cb+0x0/0x530
-> 
-> [   64.169977] This frame has 1 object:
-> [   64.169977]  [32, 88) 'fl4'
-> 
-> [   64.169977] The buggy address belongs to the physical page:
-> [   64.169977] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0xe1ff
-> [   64.169977] flags: 0x4000000000000000(zone=1)
-> [   64.169977] raw: 4000000000000000 0000000000000000 ffffea0000387fc8 0000000000000000
-> [   64.169977] raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
-> [   64.169977] page dumped because: kasan: bad access detected
-> 
-> [   64.169977] Memory state around the buggy address:
-> [   64.169977]  ffff88800e1ffc00: f2 f2 00 00 f3 f3 00 00 00 00 00 00 00 00 00 00
-> [   64.169977]  ffff88800e1ffc80: 00 00 00 00 00 00 00 00 00 f1 f1 f1 f1 00 00 00
-> [   64.169977] >ffff88800e1ffd00: 00 00 00 00 f3 f3 f3 f3 f3 00 00 00 00 00 00 00
-> [   64.169977]                                ^
-> [   64.169977]  ffff88800e1ffd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 f1 f1
-> [   64.169977]  ffff88800e1ffe00: f1 f1 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-> [   64.169977] ==================================================================
-> [   64.245153] Disabling lock debugging due to kernel taint
-> 
-> After the fix:
-> 
-> ip xfrm policy add src 10.1.1.1/32 dst 10.1.1.2/32 dir out tmpl \
->  src fc00::dead:1 dst fc00::dead:2 proto esp reqid 1 mode iptfs \
->  level use tmpl src fc00::dead:1 dst fc00::dead:2 proto esp reqid 2 \
->  mode transport
-> 
-> Error: Mode in optional template not allowed in outbound policy.
-> 
-> Fixes: d1716d5a44c3 ("xfrm: add generic iptfs defines and functionality")
-> Reported-by: syzbot+0ac4d84afe1066a1f3e9@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/all/6a3ceb94.43b4ff68.30a095.0004.GAE@google.com/T/
-> Signed-off-by: Antony Antony <antony.antony@secunet.com>
+Wrapped the base APIs for easier annotation on wait and event.  Start
+with supporting waiters on each single event.  More general support for
+multiple events is a future work.  Do more when the need arises.
 
-I decided for Antonys version of the fix.
+How to annotate:
 
-Patch applied, thanks everyone!
+1. Initaialize a map for the interesting wait.
+
+   /*
+    * Place along with the wait instance.
+    */
+   struct dept_map my_wait;
+
+   /*
+    * Place in the initialization code.
+    */
+   sdt_map_init(&my_wait);
+
+2. Place the following at the wait code.
+
+   sdt_wait(&my_wait);
+
+3. Place the following at the event code.
+
+   sdt_event(&my_wait);
+
+That's it!
+
+Signed-off-by: Byungchul Park <byungchul@sk.com>
+---
+ include/linux/dept_sdt.h | 65 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 65 insertions(+)
+ create mode 100644 include/linux/dept_sdt.h
+
+diff --git a/include/linux/dept_sdt.h b/include/linux/dept_sdt.h
+new file mode 100644
+index 000000000000..0535f763b21b
+--- /dev/null
++++ b/include/linux/dept_sdt.h
+@@ -0,0 +1,65 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Single-event Dependency Tracker
++ *
++ * Started by Byungchul Park <max.byungchul.park@gmail.com>:
++ *
++ *  Copyright (c) 2020 LG Electronics, Inc., Byungchul Park
++ *  Copyright (c) 2024 SK hynix, Inc., Byungchul Park
++ */
++
++#ifndef __LINUX_DEPT_SDT_H
++#define __LINUX_DEPT_SDT_H
++
++#include <linux/kernel.h>
++#include <linux/dept.h>
++
++#ifdef CONFIG_DEPT
++#define sdt_map_init(m)							\
++	do {								\
++		static struct dept_key __key;				\
++		dept_map_init(m, &__key, 0, #m);			\
++	} while (0)
++
++#define sdt_map_init_key(m, k)		dept_map_init(m, k, 0, #m)
++
++#define sdt_wait(m)							\
++	do {								\
++		dept_request_event(m);					\
++		dept_wait(m, 1UL, _THIS_IP_, __func__, 0);		\
++	} while (0)
++
++/*
++ * sdt_might_sleep() and its family will be committed in __schedule()
++ * when it actually gets to __schedule(). Both dept_request_event() and
++ * dept_wait() will be performed on the commit.
++ */
++
++/*
++ * Use the code location as the class key if an explicit map is not used.
++ */
++#define sdt_might_sleep_start(m)					\
++	do {								\
++		struct dept_map *__m = m;				\
++		static struct dept_key __key;				\
++		dept_stage_wait(__m, __m ? NULL : &__key, _THIS_IP_, __func__);\
++	} while (0)
++
++#define sdt_might_sleep_end()		dept_clean_stage()
++
++#define sdt_ecxt_enter(m)		dept_ecxt_enter(m, 1UL, _THIS_IP_, "start", "event", 0)
++#define sdt_event(m)			dept_event(m, 1UL, _THIS_IP_, __func__)
++#define sdt_ecxt_exit(m)		dept_ecxt_exit(m, 1UL, _THIS_IP_)
++#define sdt_request_event(m)		dept_request_event(m)
++#else /* !CONFIG_DEPT */
++#define sdt_map_init(m)			do { } while (0)
++#define sdt_map_init_key(m, k)		do { (void)(k); } while (0)
++#define sdt_wait(m)			do { } while (0)
++#define sdt_might_sleep_start(m)	do { } while (0)
++#define sdt_might_sleep_end()		do { } while (0)
++#define sdt_ecxt_enter(m)		do { } while (0)
++#define sdt_event(m)			do { } while (0)
++#define sdt_ecxt_exit(m)		do { } while (0)
++#define sdt_request_event(m)		do { } while (0)
++#endif
++#endif /* __LINUX_DEPT_SDT_H */
+-- 
+2.17.1
+
