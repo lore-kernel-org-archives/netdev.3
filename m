@@ -1,147 +1,132 @@
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012069.outbound.protection.outlook.com [40.107.200.69])
+Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8449B41B366
-	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 15:30:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.69
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783351825; cv=fail; b=WqtnDCYkDiQZ/j8POvkilClbrPCretHw80Gd+VUZpDfyAGkrj9aCrDOkTLCQoZfsHkAwssE7s/RaHcikWWvqGOk2jPk4+D/FlCdxlnk122DqUbmvG73UZ0/JzrMBvsstbWc06XqlYl+vfxIFix2lAdDYgeEACJ62tz3O8BEWyQY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783351825; c=relaxed/simple;
-	bh=TkszoP/A/zpjKOhCcf2a2ZZEcvoG8KPIjzJJe7uRo2s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=rOsh3LgxwDsUgELUdkelc9X8LkJyEUm+wuW5wCovemA1MxzCHj/aOLOGc4ip8vafykyB29t78UL5JB3xrPmJE5E0WcTBx3LyOi1KOFOu9B4GeDgNpIx7dstv9mag3fbLHOP6dv0RftZZuWtZU+KaPE94bOvw0gNDmASPI26hg1o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=VDgnwAxU; arc=fail smtp.client-ip=40.107.200.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AAAD3976B2;
+	Mon,  6 Jul 2026 15:37:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783352224; cv=none; b=TeuJLvuiNvoW2/urdnrHHjGEhPx5BScWtfMx96UlHgCYIGRZ9vh7FgKD/cmAYbg7dY4WzJJxqnsgFJzis00il3BdiqhMqew2e9rlJa5wfMYeOBk9QP7EZ1yktCskA/pZnANuqpv5YBhB9jsmA/BHc9NBfk1VZilJxy3w6Sg032o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783352224; c=relaxed/simple;
+	bh=/gLU1ZYIoBZNDWpqrT3SqMshBw/xL7i3z8xLVloSYAU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VdpAMASFDMkQiNCBDsCKKw2yWAvpJNMAFnVQ2v9aUl0WKoW8G789uuNDvvEsAJQ36iJ0WKYTVF84/tJlVFpFGD3t9L3cEH6w1p5XuNE3DatlnrLYR7KvCxlFnnXFc4MVjPOcPjSGD3hreYKEKHqaGS1cWWQyUUF9i2CbjSgkKfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b=m1i2jSKS; arc=none smtp.client-ip=129.217.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="VDgnwAxU"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ig6el/E+JYCV94YZPyvETUukKRvwkmmITBp/gXUszBHIOl41tFdtMWYuv0AJR8FUbEA4DYI9yi1Owqduo6nt89mIynTxEp56t28r5E4p9jfyFwT4x4X2ZKeLtjbtSBugfdCCo5U8UHk8/zXM5eHRBg4hvV2HgZg90f7NV2F8slciT2xhWTfJJF2jmnlQgj84hAxQjqtg+wr4wsMYyxuGqyIH8naJendje+IjvkJ1ur5I0yu2wOzrUj8Ai4R2U7MWI1sE4jDMSfPLw6wRrIY9yBMQcg7G9DBkIvF5kUzX0VzQiJnZfPbxQFze9Oux/oszJ/NCZjIlwDpZhhfj+6vUzg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2yXZZeS0AVdb4iY/m3wBIL+8lNqeUqrjIJHTueFO5FY=;
- b=JpP6iQi/UuGsTfBdTQCp8ov5MMsBE9tI67bu2tGfPiJ/kOhWeHP/534u6GEAMgG+nm52tPYOwNl365biu9JWQMvXAk04IWOSAzlIKybObiQN38Cj69pHOba2XV01sfG0YbbVdAcaBLh6zZ5IJilUyFaB9IRsn72Yc7I+0RMnV++lm6j7zRA2JcmN4IrOn87WmzvJKqMnrC60cX+lmK9G+zYDEe1zPA+Eplj4jn649SQ2KCazn9lc9G4fwHy1GEGsJDln/sSUlEmcNaG9GQ3TjtbQJ/Z0sv7Rux+CSDoQgdfSHiL3+MFqNg4MUrsTsBpit1uD5UplJTFBeCzeQ9bRTw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2yXZZeS0AVdb4iY/m3wBIL+8lNqeUqrjIJHTueFO5FY=;
- b=VDgnwAxUXP2GES4GUWrU/+Uh+MBpSgVQbJBQ4IVlHBoOQOc94yz0aJL8M/p+MtaW9g9b5twrxssW0wfdlXZF+ACmlsI1L7oD8/JJqGdDqx+c3BEZh2r7la3ud46BcAq9SkySv++PigLe5l+U3XHDmphgiqxdI8x+f0dyalq/xmu2+4dhP7yZJd4TqBgGYiokXgUPtcSAIPsf57GD2wYfmybv5gEg2OMa5+s6mRAVsgZdlUC/0YwPYpiIT68NavhinHn12UFOqRB1J0209OMPdcKZUwxfniH67h+3Lu5oc95D8rxgrAlmEGiu5I2ByIevIH4fQB08ivFhrkM51Zgh+g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
- by SA0PR12MB7074.namprd12.prod.outlook.com (2603:10b6:806:2d5::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Mon, 6 Jul 2026
- 15:30:17 +0000
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2%6]) with mapi id 15.21.0181.010; Mon, 6 Jul 2026
- 15:30:17 +0000
-Date: Mon, 6 Jul 2026 18:30:05 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	David Ahern <dsahern@kernel.org>, netdev@vger.kernel.org,
-	eric.dumazet@gmail.com
-Subject: Re: [PATCH v2 net 3/3] ipv4: igmp: Fix potential memory leaks in
- igmp_mod_timer() and igmp_stop_timer()
-Message-ID: <20260706153005.GC410724@shredder>
-References: <20260705181756.963063-1-edumazet@google.com>
- <20260705181756.963063-4-edumazet@google.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260705181756.963063-4-edumazet@google.com>
-X-ClientProxiedBy: TL2P290CA0006.ISRP290.PROD.OUTLOOK.COM (2603:1096:950:2::6)
- To SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
+	dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b="m1i2jSKS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tu-dortmund.de;
+	s=unimail; t=1783352020;
+	bh=LcT8nSRPPRwrKXE781yHHNVxYxj3ib/wKkBEPXxseS8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=m1i2jSKS9nvyY5iUatK2T5uv4V0M85q0KcXiSWCes3Y7qiOJod8A7BVHwUm++zcO9
+	 CRaeZtbEd8uTeRI1rju6xjUS0AEMRyS+Mgm9ZR+zEetvEtuiJzA6bGGM7zMbRAKC1d
+	 7koO4jd+j+IMPRAkpazTV3VedhGWX6y24MtzuLeM=
+Received: from [129.217.186.105] ([129.217.186.105])
+	(authenticated bits=0)
+	by unimail.uni-dortmund.de (8.19.0.2/8.19.0.2) with ESMTPSA id 666FXc6A027333
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 6 Jul 2026 17:33:38 +0200 (CEST)
+Message-ID: <2728c540-2e76-4e06-9064-ed1dff071cbe@tu-dortmund.de>
+Date: Mon, 6 Jul 2026 17:33:38 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|SA0PR12MB7074:EE_
-X-MS-Office365-Filtering-Correlation-Id: 80af3e91-f032-480a-e41a-08dedb737b6d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|23010399003|366016|18002099003|22082099003|4143699003|11063799006|56012099006|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	zx91ASKcb4vEfm7MZZtECfaS74gqA4qcpTj3LnKgK1OoVRElQtAiCq6V0TqwuSSjmIRPqZcx6MTCNinzHIm8L2jKQtDk2FPVE7EacUYSAoZ4ww+/ExRxMD0pWAeWrBeaOI28UPlvy5pxkisiGS0mmJytCgQP/5r5jqVGndNWL/5qSGISVp76MhST48IbJnXr2eREqaXf+oZPdQi3YopkJzlZypt3QUnqYr+Pvd0uQFFW3NH6FbXg8xTw8cYoYIR37wRtqJ5AvxPhHjO+vhwAa7KUENMYeoZ2EhYqWpqqMAPydwwX9kpvVQYlduB5jfUJaB4KKJa2NT37GPYfOmRGEZh46Fz1lVJqbIILtZqi8pJQcaGpA+uyy1KYrIjF+daQK1nONMS5C6LndY+eQHyVP4LoAHCZEyDMSFf2BEpj/Qi77HdD1fqJiCyz6kCNjuE7/wXl1PAS2bNlq11ooaczEAz+HgNiTAltVt1s0gnWehjjQXGFV3b9WdkajO3xLlRXEKLcneSPtldtrtLliU/ek98ESgFuXeQQXMhnMHCWUZxpDA+HbQLngKbgOXLt0hRaCKQ9VXF24uLVX+Sxm8aeqS/9WQzedphPBfODJN3AVloAIiK3VqGyPaFzjpO507OeiZVFR1aTdQkUW1jAdCBv0FFpvaL6WPRI3Su9lAQU3/g=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(23010399003)(366016)(18002099003)(22082099003)(4143699003)(11063799006)(56012099006)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?JTtQ/jBt9b9LaLWcAtxAOR5rceGwTRHYT3NrBNerVZTCngnirVV/XUnvezEo?=
- =?us-ascii?Q?Y+23omGoD2LwF//alHmQzinkEYBDTg+q+CvWNYVhU4ClQgWyk1H2M5DhPUpJ?=
- =?us-ascii?Q?k7yrA0vEck1albPVBGV0OC6Gcg76p6z8LpKG2lAv+PK44Ja1rvnGteRkUtxW?=
- =?us-ascii?Q?YOTd5ltqJkyRtjnblYRF5wBydqLJq1clRkWhkdyChUZJKa4hPqKub1TZxFWp?=
- =?us-ascii?Q?ABG+M9EUHVhdI2QbykTGJ6XI5lk+SIBs22dDCivbyE5/yTMLNU6xE5+x+7CZ?=
- =?us-ascii?Q?F29ZaMQnOLo6JOImL27KVfr5MYkV8blgYusn61kP2BkWeAataONF/hDcTZdJ?=
- =?us-ascii?Q?f5mnoYARjodcjsXeuhzEqiDQI2D5mzY94sGSaZ7jzyc4bHLIvTbWaJJmFX0w?=
- =?us-ascii?Q?qnBlVAHCI3T332pC17+aFuFF5bD7JMgvCIpJ7UWwbkG6REFTo1abPT4ublOB?=
- =?us-ascii?Q?7N14YEWpU45jImdZErzBlVPjzJUePlWIXIseKEfZat0jC4cIYW0FHKh5440I?=
- =?us-ascii?Q?libZxOk5CHNKtlcQkiybp3zbylqAKpb+r1wBcgmc/v45sYd51tzAEXsH8QuR?=
- =?us-ascii?Q?rU95lA/tdXJH+WlTgR0RCBloKS3V7drSxjjR28WfdEjEZ6YFxF/YBUC3kKcS?=
- =?us-ascii?Q?pV3ctsrPvZWBnt5TDCDs97uq23n/UJQVfpLJabjsmO1/TO4n2MOAQofj3Ypc?=
- =?us-ascii?Q?CnTbskycv1imnPDJyZFVaVdr+8GUKBSrwfPFLRxqam67jfKd7sdbz3Sc6ahn?=
- =?us-ascii?Q?QDlzC4f5WV1/Osz/n/cClK0wLlnXS9URQ0OQ9avFoUq7c2KFAW/srs6NOIjz?=
- =?us-ascii?Q?HKFNUjA9aJsb9OpozPTtWDnbbEg7pLMM8Ow667KxYcDirlLjqWfXVD8Hw4JY?=
- =?us-ascii?Q?V/NFD+9BPnV4g6tZPca26jq8u8f9Z81B4Ed/i7Z54MNQMiOiAMW7LidymOvv?=
- =?us-ascii?Q?HR8AefJ2UWBKLNjLnWlcQYvcjig/2eqkj6N72QHkCnHY1dnYAeUAGJzkX/nc?=
- =?us-ascii?Q?zNRUdkPTyR6+wxlw/ALfvcDwiQ1qMBxlFjvAvCorqTI/a815jfvlp4NyOWG1?=
- =?us-ascii?Q?720c01yNDwAgUzKVEFbHlQxHP+s7+VpqatSVynnGLLpV5eJPfEO1QiTVAgh0?=
- =?us-ascii?Q?qp6VgF//cWCP8c2i8IjKQuVU8qUFg1Jsc88q75hisvVk2C0xZGbeMYSqdqbA?=
- =?us-ascii?Q?O9RpQNG0hM00LoutywBYPr8Pkoya+wYoX3ZtVanG6tdJ/oYpI1QgYUOG1vVn?=
- =?us-ascii?Q?fNpE/8UKRf3yrcgQmEwMeSzBaLgxjacyEMfbZ11/EYS5znty5vuyi94h170r?=
- =?us-ascii?Q?/et49G3hSaqBWUdldZ/d3/SERgSZJjyQfmXFKdxtRaA4F8FXbildeTw0WWqV?=
- =?us-ascii?Q?koLnMd/ijunISdhyLZbqiGKI8jD3tc7t9CmmTqt06SQjKJoRpEwPAMbUukl+?=
- =?us-ascii?Q?xSdVDueJXU4Tr7/DGz1eBYwCYrOitWHa8uujH42O4wOLBFLKIG/h8YzUEoP/?=
- =?us-ascii?Q?yqVXG9IM8i3tve/1YgMLfp8XlNsn5dR+4mQ5+z8xDx2sP3dwmTdKisw9GaBG?=
- =?us-ascii?Q?/EGrbQZ4cm3ZlAJ3ZAIb0fE40pGfQThFMl/3LNhyNstszB7nSSb83w+HlAEv?=
- =?us-ascii?Q?rKQuRQ3DAFhvKetbAKs2zGaP6kfTMklrQFpdnt/WQAL4+SkLs/Rd//gs59K6?=
- =?us-ascii?Q?HjYbvz5/7gGNajWDPiOiO2Qo7aOeyI8D/sYNNZYN3/NpiADda9b3dZ8RXeWt?=
- =?us-ascii?Q?vnGzGhZ9YQ=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 80af3e91-f032-480a-e41a-08dedb737b6d
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jul 2026 15:30:17.3032
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2YAXFSZsE+VOnYbw7tasStnNN8akQ/Q8iwQLJkjdvoWMfjDUXH1QNGEnCTj/v485mWrGocQFggmf1BsXT/ZPyg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB7074
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] tun/tap & vhost-net: make qdisc backpressure
+ opt-in via IFF_BACKPRESSURE
+To: "Michael S. Tsirkin" <mst@redhat.com>,
+        Brett A C Sheffield <bacs@librecast.net>
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+        Jason Wang <jasowangio@gmail.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+        Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        Tim Gebauer <tim.gebauer@tu-dortmund.de>, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20260706094242.115992-1-simon.schippers@tu-dortmund.de>
+ <akt_Q7kdR3Zb8_GZ@karahi.librecast.net>
+ <20260706091706-mutt-send-email-mst@kernel.org>
+Content-Language: en-US
+From: Simon Schippers <simon.schippers@tu-dortmund.de>
+In-Reply-To: <20260706091706-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sun, Jul 05, 2026 at 06:17:56PM +0000, Eric Dumazet wrote:
-> When a timer is deleted and not re-armed in igmp_mod_timer(), or stopped
-> in igmp_stop_timer(), the code currently decrements the reference counter
-> of the multicast list entry @im using refcount_dec(&im->refcnt).
+On 7/6/26 15:23, Michael S. Tsirkin wrote:
+> On Mon, Jul 06, 2026 at 12:11:15PM +0200, Brett A C Sheffield wrote:
+>> On 2026-07-06 11:42, Simon Schippers wrote:
+>>> Commit 1d6e569b7d0c ("tun/tap & vhost-net: avoid ptr_ring tail-drop
+>>> when a qdisc is present") did not show a relevant performance regression
+>>> in my testing but on Brett Sheffield's librecast testbed it shows a
+>>> significant performance drop in a IPv6 multicast testcase. The regression
+>>> can be pinpointed when multiple iperf3 UDP threads are sending. For 8
+>>> threads the performance dropped from 13.5 Gbit/s to 9.13 Gbit/s. This is
+>>> the reason why this patch makes the qdisc backpressure behavior opt-in.
+>>
+>> Your v1 commit message was correct.  The iperf3 tests were TCP, not UDP.
+>>
+>> The original failing test that alerted me to the problem was IPv6 multicast
+>> (UDP), but the reproducer tests I provided stats for in the regression report
+>> were TCP "To eliminate my code and any multicast weirdness" and also to verify
+>> that this also affected TCP.
+>>
+>> Sorry for the confusion. The command lines used are in the regression report.
+>>
+>> I've tested the v2 patch (with IPv6 multicast), and verified the
+>> previously failing test passes.
+>>
+>> Tested-by: Brett A C Sheffield <bacs@librecast.net>
+>>
+>> Cheers,
 > 
-> However, both functions can be called from the RCU reader path:
-> - igmp_mod_timer() via igmp_heard_query() -> for_each_pmc_rcu()
-> - igmp_stop_timer() via igmp_rcv() -> igmp_heard_report()
 > 
-> If the group im was concurrently removed from the list by ip_mc_dec_group(),
-> its reference count might have already been decremented to 1.
+> Just to clarify, it's more of a work-around, not a fix.
 > 
-> In this case, timer_delete() succeeds, and refcount_dec() decrements
-> the refcount from 1 to 0. Since refcount_dec() does not free the object
-> when it hits 0 (unlike ip_ma_put()), the im structure is leaked.
-> 
-> Fix this by using ip_ma_put(im) instead of refcount_dec(&im->refcnt),
-> and deferring the put until after the spinlock is released.
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> It's not really great to have a flag that says "change something
+> opaque in the internals of the device, it affects performance
+> in some way, we can't predict how".
 
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Yes, I agree, but in the end I am just using netif_tx_stop_queue() and
+netif_tx_wake_queue()...
+
+> 
+> So maybe we really should revert for now, and work on something
+> more coherent for the next linux.
+
+But even if we could perfectly fix the performance issues, maybe users
+even users rely on the dropping behavior. From Brett [1]:
+
+"In our multicast use case data is sent by multiple threads to multiple
+groups simultaneously, this just breaks things to the extent that a 
+<2 second test times out after 5 minutes."
+
+We are *not* factor 5min * 60sec/min / 2s = 150 times slower than without
+the patchset. My theory is that the sender sends a fixed amount of data
+of which most is dropped without backpressure, which is much faster then
+the real processing, and so the test *relies* on the tail-dropping to
+work.
+
+@Brett can you maybe support this theory?
+
+Thank you both very much! :)
+
+[1] Link: https://lore.kernel.org/netdev/akVnoOYQOrt8k-Gu@karahi.librecast.net/
+
+> 
+> 
+>>
+>> Brett
+>> -- 
+>> Brett Sheffield (he/him)
+>> Librecast - Decentralising the Internet with Multicast
+>> https://librecast.net/
+>> https://blog.brettsheffield.com/
+> 
