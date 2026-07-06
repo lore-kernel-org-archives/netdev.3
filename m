@@ -1,128 +1,76 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from bregans-1.gladserv.net (bregans-1.gladserv.net [185.128.211.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D20261C84AB
-	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 10:10:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1B7233F582;
+	Mon,  6 Jul 2026 10:11:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.211.58
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783332658; cv=none; b=iklPt85+Uvp4c1SqMforGl4D7l/gbUNTqBH0tfX6FxzKWMSFnbKx2zG7OGsGi0/RadmMjkNI8ECYD7CkTgSzqr7URHECUQECueGbnfQUL0IHv2GUxs9WqfYR/jzt5reoP5MhyWkc8SBjeInGqEBuUwNrU/+9wcA9US5CqDP6HZQ=
+	t=1783332704; cv=none; b=VDESHk7jpURQihjTvV8QpQftf0ntCETGvF3gwGHIXodg2cXNKxye2ipClbqfLK2IOsdXl4gDdDqkC9qkCowBDUCIUXzv2S7JmEj8E/5rj5IQY799x133d3c3rJfO4+yGzYyqsf6acWV75Ar14+eQuEuW4ov1F2L5bVyaDPOT8AU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783332658; c=relaxed/simple;
-	bh=ehD/tg0esm9lLt5mPMSX0LhNYICrtgMCjsqu+N1t72M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cry4CsdwFZ1dGxXbQ+QTXd/NLS30Z/mIvE2YE1s3C2/rETJw4dw6O1nWog3VQ9FFU/pSqeiqGz81Z8+eIPXO5PQZOxmMRoSSgX8QtFDn2/2NrSfDyPsKvgmQEWt0AdPJxjX+bnZdtCJw0WVJYcgp2nlPcK/tPgvM0UkoIoAmDSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ROTaZoAK; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ROTaZoAK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783332655;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6UrHChc8M+M+p0SiB4fBzc+NlWnId3OCW6A/n3Cjpjw=;
-	b=ROTaZoAKrh6NObFBpPrp+LBy5ErjtHH7v2MFbuAcZ+NRF+dzeegSjCHugAeXOwiNosloxu
-	Ih+6otGMI5Kgmcb80EFgG7bi7yx+peNssTP3O6R+TOA7FFB+Hol75de1pxGZcT8VrHhAQw
-	bP+6VwiCXboZYmmvDOpyl2+k+0+GNko=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-61-6UL7jBsPPSGmYehftaPLMA-1; Mon,
- 06 Jul 2026 06:10:52 -0400
-X-MC-Unique: 6UL7jBsPPSGmYehftaPLMA-1
-X-Mimecast-MFC-AGG-ID: 6UL7jBsPPSGmYehftaPLMA_1783332651
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 16C851955F72;
-	Mon,  6 Jul 2026 10:10:51 +0000 (UTC)
-Received: from gerbillo.redhat.com (unknown [10.44.32.156])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4178E1800591;
-	Mon,  6 Jul 2026 10:10:49 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
-To: hujy652@gmail.com
-Cc: lorenzo@kernel.org,
-	nbd@nbd.name,
-	netdev@vger.kernel.org,
-	linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH net] net:ethernet: mtk_wed: setup WDMA_RING_TX(0) for non-DBDC MT7986
-Date: Mon,  6 Jul 2026 12:10:44 +0200
-Message-ID: <20260706101044.161059-1-pabeni@redhat.com>
-In-Reply-To: <20260630144831.1109-1-hujy652@gmail.com>
-References: <20260630144831.1109-1-hujy652@gmail.com>
+	s=arc-20240116; t=1783332704; c=relaxed/simple;
+	bh=MBzYfn6wrT/moznkuon8LGgRLOwNEgezeJ/ZvYxKR6Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Sv/Ya2K3VH/pYQnqAFe1gOES49fbCu9BaE15OCIxiS0oHMF5afoveFxdntk/XX9CGtuBlknUDJHBfQS2i/ncDnMfr+p5TEQYJPaB7N9wdsi/E6P/0Zsoq9dRGVJ+tEafPw4u2V8dMkFBGLGzZ13hO366BYxA4RWAU8EHikySyDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.211.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
+Date: Mon, 6 Jul 2026 12:11:15 +0200
+From: Brett A C Sheffield <bacs@librecast.net>
+To: Simon Schippers <simon.schippers@tu-dortmund.de>
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	"Michael S . Tsirkin" <mst@redhat.com>, netdev@vger.kernel.org,
+	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Tim Gebauer <tim.gebauer@tu-dortmund.de>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2] tun/tap & vhost-net: make qdisc backpressure
+ opt-in via IFF_BACKPRESSURE
+Message-ID: <akt_Q7kdR3Zb8_GZ@karahi.librecast.net>
+References: <20260706094242.115992-1-simon.schippers@tu-dortmund.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260706094242.115992-1-simon.schippers@tu-dortmund.de>
 
-From: AI Reviewer <ai@example.com>
+On 2026-07-06 11:42, Simon Schippers wrote:
+> Commit 1d6e569b7d0c ("tun/tap & vhost-net: avoid ptr_ring tail-drop
+> when a qdisc is present") did not show a relevant performance regression
+> in my testing but on Brett Sheffield's librecast testbed it shows a
+> significant performance drop in a IPv6 multicast testcase. The regression
+> can be pinpointed when multiple iperf3 UDP threads are sending. For 8
+> threads the performance dropped from 13.5 Gbit/s to 9.13 Gbit/s. This is
+> the reason why this patch makes the qdisc backpressure behavior opt-in.
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev/
----
-net:ethernet: mtk_wed: setup WDMA_RING_TX(0) for non-DBDC MT7986
+Your v1 commit message was correct.  The iperf3 tests were TCP, not UDP.
 
-This commit updates mtk_wed_start() to configure WDMA_RING_TX(0) on
-non-DBDC MT7986 devices. It adds a call to mtk_wed_wdma_tx_ring_setup()
-for v2 hardware if the descriptor is not yet set up.
+The original failing test that alerted me to the problem was IPv6 multicast
+(UDP), but the reproducer tests I provided stats for in the regression report
+were TCP "To eliminate my code and any multicast weirdness" and also to verify
+that this also affected TCP.
 
-> diff --git a/drivers/net/ethernet/mediatek/mtk_wed.c b/drivers/net/ethernet/mediatek/mtk_wed.c
-> index 10d9beaae3721..2420557f6c966 100644
-> --- a/drivers/net/ethernet/mediatek/mtk_wed.c
-> +++ b/drivers/net/ethernet/mediatek/mtk_wed.c
-> @@ -2334,6 +2334,10 @@ mtk_wed_start(struct mtk_wed_device *dev, u32 irq_mask)
->  		if (!dev->rx_wdma[i].desc)
->  			mtk_wed_wdma_rx_ring_setup(dev, i, 16, false);
+Sorry for the confusion. The command lines used are in the regression report.
 
-[Severity: High]
-This isn't a bug introduced by this patch, but does this loop need to check
-the return value of mtk_wed_wdma_rx_ring_setup()?
+I've tested the v2 patch (with IPv6 multicast), and verified the
+previously failing test passes.
 
-If mtk_wed_wdma_rx_ring_setup() returns -ENOMEM, the hardware registers are
-not programmed, but mtk_wed_start() continues execution and enables DMA.
+Tested-by: Brett A C Sheffield <bacs@librecast.net>
 
-Could this lead to hardware DMA using an uninitialized ring base address?
+Cheers,
 
->  
-> +	if (mtk_wed_is_v2(dev->hw))
-> +		if (!dev->tx_wdma[0].desc)
-> +			mtk_wed_wdma_tx_ring_setup(dev, 0, MTK_WED_WDMA_RING_SIZE, false);
 
-[Severity: High]
-Are there similar error handling concerns with this new call to
-mtk_wed_wdma_tx_ring_setup()?
-
-Like the RX path, if dma_alloc_coherent() fails inside this setup function,
-it returns -ENOMEM without programming the hardware registers.
-
-Since mtk_wed_start() doesn't check this return value, it will proceed to
-enable hardware DMA, which might attempt to use an uninitialized DMA address.
-
-[Severity: High]
-Does the check for !dev->tx_wdma[0].desc prevent necessary hardware
-initialization after a warm reset?
-
-When the WLAN driver triggers a hardware reset, the WED hardware registers
-are cleared, and mtk_wed_start() is called again.
-
-Because dev->tx_wdma[0].desc was allocated during the initial start, the
-guard will evaluate to false, skipping the hardware register reprogramming
-for tx_wdma[0].
-
-Will the hardware DMA end up using a zeroed ring base address after a reset?
-
-> +
->  	if (dev->wlan.hw_rro) {
->  		for (i = 0; i < MTK_WED_RX_PAGE_QUEUES; i++) {
->  			u32 addr = MTK_WED_RRO_MSDU_PG_CTRL0(i) +
+Brett
 -- 
-This is an AI-generated review.
-
+Brett Sheffield (he/him)
+Librecast - Decentralising the Internet with Multicast
+https://librecast.net/
+https://blog.brettsheffield.com/
