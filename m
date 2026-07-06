@@ -1,110 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06EFC31619C;
-	Mon,  6 Jul 2026 13:48:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1460E2D94B5;
+	Mon,  6 Jul 2026 13:52:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783345738; cv=none; b=bILJsFGwlqAIW31r3+eX0+Xkpwt84069ermOfHikK0Q4xvNwE2fL1OiXqLh9kSRMy2qOxJ8vC68PftwBbgb5YgXTMgv7yLvk/lsw69qpndlfFkfB+ivBXD7NPLYswBBlqQg9rr+GhbVawR/csiqRngsruqBLonA4IkWZ1QbvdoU=
+	t=1783345981; cv=none; b=S04Oxz0/hB6uUDdcnu2nV2kiMoiefbVDLNZfZvLL7coUubZQS9rMPgCHfP1RhDPGMUUJYtit0pRmZ3+PulbVJuAbW/FDrvEs4O4Vv/1E4oQlFJ+5VJKIO1Z72/Yit8Z9F8qebW3FCjxwZrxh+1ImuhwXLaNgXfMCrtWz6KQkWm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783345738; c=relaxed/simple;
-	bh=XRZKJZ4/dXD7MfZQeO8CA/MSwruwfGfCBENJB88OinU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=H96abq52lxIHPWF1gia6VYHn27rSG6zd823uB2eyhsvCH/xaOlJuuPkkq7E3DbgDgUIFnCuCudZxeP/vEvkjhgKrkb3wAHLAnplSxY/YydnZd3xN+esaXwno5IsDmS8ik5LjDIVm0mpVJCD9lWyqZZm+Jvmp6WcE8q8HKcMJmnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WMr6XcQ+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783345981; c=relaxed/simple;
+	bh=X9u2Yb++bPGtSX8B8ceMfGalDUd/9dCI2PW/K2HBQ5U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pWuqnL5v6AnOIW/wfDHeiGSFRI9mXy67MQ9kJ9CkmHSkuZqUtYKKSeh+qHIOzgmhW8hZl1FyZ++9oKMc6NbOBLlCaPRdelx3ow3F7z/Yh9D+LeE+jF/EH3MCQlEcBV1KDWBLQ/PinnGgQuv7jw+Xt39D8ai3zcEiAnjUyKFZ6Iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=HfcBssDi; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=BU+yYIMj; arc=none smtp.client-ip=202.12.124.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WMr6XcQ+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C7621F000E9;
-	Mon,  6 Jul 2026 13:48:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783345736;
-	bh=jVV7bp2HWv2rNP0PffEi0gwhgBaqZkkFggdogt0+07s=;
-	h=Date:From:To:Cc:Subject;
-	b=WMr6XcQ+IcKqrfRumAIcVd5dJ80KFPZKU8OZxTHj8egk1OudoX7hNDLLAZPzU3W8r
-	 aCFZI5dkkVmJGBQlXkDcL/Ct5qw5oJJSceSaEYw6v2Oo6Rr9yov201tzpDg4B9R8EL
-	 7Dc0Z9LkDF6EqB70NgeDZ6DNuPHNXd53Ph/cX7dp59YTsZDhVkB5rh+23XDaE4PSpb
-	 CnKjuDqe3wheJvAToK+UeQTgf9fmR1RPRD64heFmfyNJd02yJxetfY1YHLmQXl7fFb
-	 CP9ybTeSqNMaWr+KzGNuxvB/rzSL41BvX+bAjxkRqHATS/7q61dNiqxnaouLDkA6d3
-	 maP3ZKEQisOzw==
-Date: Mon, 6 Jul 2026 14:48:52 +0100
-From: Mark Brown <broonie@kernel.org>
-To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Networking <netdev@vger.kernel.org>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Next Mailing List <linux-next@vger.kernel.org>,
-	Nirmoy Das <nirmoyd@nvidia.com>
-Subject: linux-next: manual merge of the net-next tree with the net tree
-Message-ID: <akuyRPMJsZkyJnx0@sirena.org.uk>
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="HfcBssDi";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="BU+yYIMj"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfout.stl.internal (Postfix) with ESMTP id 23EEB1D00131;
+	Mon,  6 Jul 2026 09:52:58 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Mon, 06 Jul 2026 09:52:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1783345977; x=
+	1783432377; bh=ri7UpKBxtxOWBJ5q0RP7VJp2qNGzQPVzz7f6EvwhtRM=; b=H
+	fcBssDiLO9kMJ0PsCumgPMzDr9w/vRnZVf8SBnRA1BUMSBFRr+skIJtBhpE9d4Qj
+	r90s8dnYUlWHrBAFgKBu3tjjEGcnaMBgXw1sXQRfErNiUExe4b2/R1ZF4m4Jdh10
+	8s9tf1slzgnrOx9W17f7uaWEMMprUeE3QC71VlxmAGi6eADqy5WSIEUhaup/kNnJ
+	NbaIY4J6r2MWpmRHiQYvOGSwNi1iU66rUYXXRJH8tZH59i/pzSY/7yppFGgk7IyY
+	xkS3jJWVe/AIZGITOVkmirhhnIgOWctYtcbrO1+r6ycdZNOvSkH7OfFVCx8Ra2BF
+	JmUjV9K+HGZUfXgV3sXWQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1783345977; x=1783432377; bh=ri7UpKBxtxOWBJ5q0RP7VJp2qNGzQPVzz7f
+	6EvwhtRM=; b=BU+yYIMjEnVPhMPVw1WHDvrVPOc9UIxfpkjmTFbT3lS/ZpyvQ3U
+	MiPuxyJDS0bBDd/1Xv1fnPPWtgMWBuK7j/Hep6Bvhs4CzC1CAxATVr/UKnvVLIVu
+	FT6h87rb+pqEpDmC41h6rlMEQ6+IFg+gQ18543kwqDJyuaqBaD4uZsUn2FhPMqZo
+	pWN4cm3MQm9V9iSET0VHLQYCBSdF+n+BarKgdg9l5bBlctBRuZZuIb+zJOxqELZ+
+	2ObDC3aURdsXGuYPEOStRl8CHvpjBdWmJrAws/Ok2NvxYdr+XWcgeVXzCzobD0qn
+	Tqi+URVb2eILPEm1sjYraw9WhagEYhu732Q==
+X-ME-Sender: <xms:OLNLaq8tbEqgbBz9iaPlYzj-JCM6qchgi8rKhUp_7ZmqPIhfkJvhXg>
+    <xme:OLNLas-xPL8hs5SkZwAwmf05SY9fpaNxqjRc5PklXBNvyCIudAzoqlD_id2dH5pJg
+    gSL2T-n9Ft-Wlun0fWWAkLyi2jCe736h5DVNiLmZU3huevJjU2Oins>
+X-ME-Received: <xmr:OLNLaiSLr0ziU1DYfWIszelmRgDoY4SfaGteOWCgPwGj-VmLpBpJ0EAowLk>
+X-ME-Proxy-Cause: dmFkZTGjbR1FjwQurhhE+qJKgDg+cwJc/ciwGMB482qq+sWBS4ugETC1jqfQwy6dShhfRF
+    m+pOfGxPIri0E6YtbhLutPfjLPxQnbSxv7ZFRvpE8iqx2tkhxUzEQFl48+qoIvznz2lV07
+    6YDFzQu1iKWTtC7QfZDNpreij/q6BtaMOrg9T3AxNtFREEuOi6GPUyMWZm/OkqyAgVCo8v
+    fSfu8XQCouBZ8+DOQksyqWhmMulco3RPLVqYFA2TdXN/28n8/7fGi3esqYMOugts+biltt
+    7sf6/XaNpo5tjGIdnvLsZry8aauADQ4JLlLsydKPssBIQySAtua/pKZFh4iBEGbTBGHkgs
+    jHjPS/jETresIncZLvtuK0G4vewb4AFMJlmSoX6y/eSFAQZwsp8Gc/V8m5+CWgi5uwblp5
+    i+p0mmq3Ybf5S8Jv4CY47qL9OQ3H60yDhDoDXSZBynwhhMI8T4/NuFDYTY+I1XIwNnM3Z1
+    PVG7Mvejr/0xHJNfIEW0e8apxIcLZynQuvdZ8H2TaV/PW9zL1uhlY6dnvfs/JgLyoyntsJ
+    Rq5fNPVqQlOyTn0gcwPJSuOgkouJNHIC9cx14jT2LjmWGdWAIrwKxT5icJbbJrsAfcolyM
+    tjkJ8J4m5vPNLmmmC9taKQ0D3BLheTB8YGaAo0Q1VNJBg/n9Qf64fktv/Gwg
+X-ME-Proxy: <xmx:OLNLaocEoGmynKA4GAw-SABN_nCcYxcoaKH8mRrkvDyS04zpvB3xiQ>
+    <xmx:OLNLauALXEPI-ItpcbUUezjRVyZZQ_yM0qKzi-Is44PdLdJfXdfcjg>
+    <xmx:OLNLaimuqeU4xAEXLmUCdqzLEMgnvufaamDqa8Zn7fzuecgMrHIKeQ>
+    <xmx:OLNLahdZXstHwcYGa0sqDNq-uHqMcS7AqrslfoRznMcih1-sxw_2Cg>
+    <xmx:ObNLahCnjG2hY9Wt8gxc07Jhb34-8HpuaBDOaeKnV1jd2PZwidWLCNAe>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 6 Jul 2026 09:52:56 -0400 (EDT)
+Date: Mon, 6 Jul 2026 15:52:54 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Breno Leitao <leitao@debian.org>
+Cc: netdev@vger.kernel.org, Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>, stable@vger.kernel.org,
+	zdi-disclosures@trendmicro.com
+Subject: Re: [PATCH ipsec] xfrm: espintcp: fix UAF during close
+Message-ID: <akuzNohOorXU3RyA@krikkit>
+References: <50e2ab4348eb8177581058f0152394cfae6a8d27.1783071494.git.sd@queasysnail.net>
+ <akfkd_1yI_G4cVoc@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="gy5knwxr8P5bZ+WD"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+In-Reply-To: <akfkd_1yI_G4cVoc@gmail.com>
 
+2026-07-03, 09:36:42 -0700, Breno Leitao wrote:
+> Hello Sabrina,
+> 
+> On Fri, Jul 03, 2026 at 04:21:12PM +0200, Sabrina Dubroca wrote:
+> > diff --git a/net/xfrm/espintcp.c b/net/xfrm/espintcp.c
+> > index 374e1b964438..f09b5dd85db8 100644
+> > --- a/net/xfrm/espintcp.c
+> > +++ b/net/xfrm/espintcp.c
+> > @@ -517,6 +517,8 @@ static void espintcp_close(struct sock *sk, long timeout)
+> >  	sk->sk_prot = &tcp_prot;
+> >  	barrier();
+> >  
+> > +	synchronize_rcu();
+> 
+> I've got the impression netdev usually prefers synchronize_net() instead
+> of synchornize_rcu(). Is there any reason for synchronize_net() not
+> being used here?
 
---gy5knwxr8P5bZ+WD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I don't think it makes sense here. We're not holding RTNL (those are
+just basic userspace TCP sockets), and we're not on the netns exit
+path.
 
-Hi all,
+> Also, given you have a explicit synchronize_rcu() here, should the
+> barrier() above be dropped?
 
-Today's linux-next merge of the net-next tree got a conflict in:
+Ok, I can clean that up in v2.
 
-  tools/testing/selftests/net/lib.sh
-
-between commit:
-
-  dd6a23bac306b ("selftests: net: make busywait timeout clock portable")
-
-=66rom the net tree and commit:
-
-  895bad9cc4cec ("selftests: net: make busywait timeout clock portable")
-
-=66rom the net-next tree.
-
-I fixed it up (see below) and can carry the fix as necessary. This
-is now fixed as far as linux-next is concerned, but any non trivial
-conflicts should be mentioned to your upstream maintainer when your tree
-is submitted for merging.  You may also want to consider cooperating
-with the maintainer of the conflicting tree to minimise any particularly
-complex conflicts.
-
-diff --cc tools/testing/selftests/net/lib.sh
-index d46d2cec89e45,d389a965d8f19..0000000000000
---- a/tools/testing/selftests/net/lib.sh
-+++ b/tools/testing/selftests/net/lib.sh
-@@@ -93,10 -89,8 +89,9 @@@ loopy_wait(
-  {
-  	local sleep_cmd=3D$1; shift
-  	local timeout_ms=3D$1; shift
-- 	local start_time
- +	local current_time
- =20
-- 	start_time=3D$(timestamp_ms) || return
-+ 	local start_time=3D$(timestamp_ms)
-  	while true
-  	do
-  		local out
-
---gy5knwxr8P5bZ+WD
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmpLskMACgkQJNaLcl1U
-h9Bp7Af/RvykH3dJh4/vhScpTYl5MhyYOquAh8krSszLd0R3XSfeckxfkWIsQNO3
-7FzeRE5dEerdD5n2dMPvDdfFkLtE2iiGZN2Pba17NLy3A5DpLG5TPOK3ap5NBYLO
-z5d/wEiP1SfAYTB/tLqv01tRw+fsBeJmn+Y+YeWoH6UxFIJVyhp2LXHBBnH6r+H7
-cBcifOcDyjhy4QPR601fz7Qtjhv69Gq/NDumseaMmk1U34IzNTFX8LyNZyYhNd7p
-DIvDP3BSv5kja5HW39xgRd85UE+b8wVLgFNbiH28pfgTZl/tjOh9on24XPSnVqLb
-s6H4t/9zL8qhEkKJifzgu1v1wsLxzQ==
-=p66H
------END PGP SIGNATURE-----
-
---gy5knwxr8P5bZ+WD--
+-- 
+Sabrina
