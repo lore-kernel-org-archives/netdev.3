@@ -1,275 +1,167 @@
-Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com [209.85.217.50])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50E10328B7B
-	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 13:40:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE24637206E
+	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 13:40:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783345233; cv=none; b=KHZu0xDvrbU21+4X3bn6jMjKa9g3/iYvY8iRYJFAPsRQRspUHZgFbQcP1PhIYPTorcytMZEgl89hL/TPe3VRKPqFrxFeEOnsYGCHMavNjA46WoLh0z3IV3992CEnfqTigP3sRhDPhsnftck3xyRS/Cdct9lmBLN8g3SAVcb5xN8=
+	t=1783345244; cv=none; b=deiDdurOalM/lYVd1nOWz6vBUnjsSW5xv5Z/hfbWRhjBNOJJarJZdNqmXsMjTQs9AqrOjEd/fJPcgfMVvBz7A3NbC0Ee813SjbZIjNdDx/HnhF9vRky8W84XBgMeqi+dhp5lfU0/Z3X7L4NCkdFkLgX+7MmaNbOsUFpzNeD6h9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783345233; c=relaxed/simple;
-	bh=+4SXSM6yY0foXoy2DcWC6lU9mIxKfAfanIt8hKWwRMY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Unv2w2NL9QX9FWDHVlesUcSUO6UVo1JG7bvPFMz/K4kyklIjgpbII4GEvEDcqttmlc7r5qyxnm6Q8mdS/jw8uzeDCnajzbtZKagg5EiBf9Vk9UlHBGeNaGeSgC3ohUe2U0t2R1nFOq56IaalC3J3ka/h2mfz9qV2ekUb9GW79t4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GKdFCNzi; arc=none smtp.client-ip=209.85.217.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1783345244; c=relaxed/simple;
+	bh=0+RWQWSA13FX6pe7N5CQ3naJhVnVEXib4aGb8pU1d0M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CKjLV0ll3Xw9/s60Zc9UnASWKMHfH8cCo89bnBbMKFaPsnsvTbE6kDennz7Uwm+B+OqusNaSA+uWUURGv/fI4aepD0SvXcsYbPXZ9N2JaVF03XZbhaSaIwXquILosdMo5gLoB8AcNI4t97CkMIgZlaXCy3VU77ElcIrqEKP6tEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=BeB2Gime; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GKdFCNzi"
-Received: by mail-vs1-f50.google.com with SMTP id ada2fe7eead31-735f73287e2so1745930137.2
-        for <netdev@vger.kernel.org>; Mon, 06 Jul 2026 06:40:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="BeB2Gime"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-4759b4f0897so1286227f8f.1
+        for <netdev@vger.kernel.org>; Mon, 06 Jul 2026 06:40:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783345231; x=1783950031; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=l/ealltnK2UkTfUFcJ8pVE/x72F7G9jhIV7KaN7FoGM=;
-        b=GKdFCNziFwHCbX7gE8RvMe+GrPgSsrWy7ttsp/52uWflAV5nAEo/vtsOplT65TlFQP
-         oa0eAN53+vQ+bpZ2t6fEtt99MceIZO3a05/RJgGO3XToSLnYUdfiAtcWwhnnrfSaoNeP
-         wa3JnQTuzNb6+u9WuYFTRbd5z6UDeQISvGbJ0G9b5c1POY19+PZUI4sY9/Wwo2hmtYJd
-         o8afA83RoIcUCOfnZsJIoW9reXYrW6e5R/jH071pcasHCj03rYbMMpQlOzalDZHDLnwH
-         28m/RgObCvjNReTBGY+Tf6l6G6lxgienwD/8V3uxVDC5kvyCX4TydyaTjH1///+W8GjM
-         QiEQ==
+        d=suse.com; s=google; t=1783345241; x=1783950041; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Hm+LDMnXUOOt907y7W2ahajiogOgrWflUu1E8MxtMXI=;
+        b=BeB2GimepWEc8U+PhLgJKNJUYkRg/Lh3dYjc4S9m/EJGMd09hU2Saok48yr5/d8yHm
+         dvz+TzcZ6bZu7I4TnUazdoBqEOOF0L4B9FcfHd4jg+mLyIN1oDvYD6mcDbdJ5zv7B3w8
+         Tust4SmDKCkSz6N9c6W+dr5A8fsX+gOmKuF24zN+ucyfcq6FlYj7jaJM83KnWKZnz9cb
+         pNgJ3EEmnavlcIKG6y3YHhPEDv3lbjbR7wvl6ZG9m4Pl8d4eOKBWA1sMBoKtSZ1Lc++T
+         0J0iE72CAobRIwR3BFQH2mpKXttebpWsWiIg4XOHJxfX1jq4cxtblpabrvIjdgwpiUOv
+         kxBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783345231; x=1783950031;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=l/ealltnK2UkTfUFcJ8pVE/x72F7G9jhIV7KaN7FoGM=;
-        b=csoD9zqHu/0Qrxa8QA9H+K8AjaBCNvPNDBeBqupNPXc8+7LehBsxKSiRmfLluTcCht
-         VmC5tGR+v3LEHfUm79if2HvtQZaRQ/2f/fksXNAzuieTpQDCmT+22xUEeJbX+UhTXEO5
-         UdT49TPtXeFHUxruFhXh9tlNi1+IfOqjHG48weZWGvzWSAJn3xlVf8eO6lobb0P8UWEr
-         B5tUpJ9limIuGd5tRxokz3GEDuCYQQxtOw+nmNCuiUJV3ONDEUjPeIfLWnrkcfkTz3dt
-         WDzzHaPVdZKKzclHDZFXe7fMa4GNNKBnudSAX/yZmC03zgAoRB2WuJfDSx2yJnDGyAHD
-         Caaw==
-X-Gm-Message-State: AOJu0YxlOuiCAdfXrhBqgjvlSF2Glgaypsyr/K4z5YPZcP4KwG0heGDI
-	yuNbVMDYwTmSMccKNWf2afAA6NjfaRQZDd6n+Ru0x8EXtD31FG87eXwBvIfxPg==
-X-Gm-Gg: AfdE7cmyT9Yo5HunUFIkfRIRQuxvAulz4A/65XrR3fFZQVJYjJOPmdGcuZ+o/S3GrCE
-	i1+2N0kjHme3Z3+igbCRgraz+AEDfhOsYgVJan11Fc55gXSK5mVv0PuU88mh6fEwNaDrau/42tC
-	h0XTYBt6teU5jTOzMcaj7hHytdfLblmP6iL7YmR4lsNaumXeEyDjV/hRBktlLoj26tdHNCR/UiY
-	oI1mGOGfZr+2HnOrnJxU2kLnSORlUPO6sH9cYTS5UVNjsrqO0VJRVUp8xiYd4ZSrHRBU1HSncw1
-	GGFsnwC2B6UYAU8q+7u5TC08hEnz2ZgYphTdKrG+tPznWZ1/NQD6c+tSUO50ndgTP93cip48j24
-	lyAPNZz5QB0DCAQ26MAUZsc2tmqK7tK2d9J1BCKaWBRQuhw7rbT/B1onEFtelRg4JEYbHyO9LHe
-	sFS7/AQVXa1MGj8SgKGsj3J2l4BaYjFvoI5j6FzI7EsL4ANw/NohNEXeFW43QCfZRKm7zlXGSo0
-	jLd7kmFT2vzD4FK
-X-Received: by 2002:a05:690c:2789:b0:80d:926c:ea45 with SMTP id 00721157ae682-81be203dc72mr2314387b3.31.1783344881128;
-        Mon, 06 Jul 2026 06:34:41 -0700 (PDT)
-Received: from willemb.c.googlers.com.com (172.235.85.34.bc.googleusercontent.com. [34.85.235.172])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8144b537e3asm57002827b3.34.2026.07.06.06.34.40
+        d=1e100.net; s=20251104; t=1783345241; x=1783950041;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Hm+LDMnXUOOt907y7W2ahajiogOgrWflUu1E8MxtMXI=;
+        b=PwscFUsnXqecqIDXPtbQBnPbWZ1xGy0Tb3M4n0aSzpb0NCauVgZOuHhFHcl3UnM7CC
+         3TP3RY4xNmlzrFkHKevKJJoDxlW7kgBQByENyDPCSzo82VhI8IjM49lUvWGBCsn4oCdi
+         vkngZOV79+tPv/gSBBWJdqIQKJAFfFIESd8XhJ/LZ/nmMarXEBLgzkEzDu4kV8iI3uyJ
+         5dPJ9agPqYecwN+jaDWUStnY/taPlv4zzPrYypndzm7k0RqCil9ANeiB39chhQvXeAe6
+         kBn3i1QpoEiTzZ1LXBjbXCz9Z7m0yZpiExm8ZUVdh5NLMc+onmtQEgxRf4tEoVlypony
+         haLg==
+X-Forwarded-Encrypted: i=1; AHgh+RoakVcV5hu6edQlpTHcJzhzqvIOoBRGwxKp3+qF+GPcJE78/iDJ8rLFJe5A16mYtCGegaASkTo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwP1Z5ujWUEy5C/XftDcO0gkrpjl1UfBOIwdZM9qakhqFBPMKL1
+	ME+ZhYP/lZchMdN212cDy+7hEelSZV2jAXPJ+EwS1qF2hYqm55PbbYMRtht3kMnLqBe0RH35a8l
+	+SY85KwM=
+X-Gm-Gg: AfdE7clnWDGFXZ8o0KAKiEZ7WpjpnHozqpDTTVuPImkm5Vhf7G/SKft9STknRU0qxTt
+	KS5XaPikvZU2jllYcr2XeXCduw4zPlFoHZ0zyeoiCaX4mHFtdtPh89mKR3wVLtiYjBm0Z4+1kv8
+	BsGIPr6dwL3EVQp859FrtkwO2pCRvDDOlp5bjFF6G0bmwk75siSYhy9CiPuj0xKQ9Bhm1NgFfj/
+	vNd8v2owntodQ0v9FM1LQWFiebr/j84vOlm794jivAIrkcPkSE6oVQLqEvuJsFSG2Fg3rPGsAbQ
+	FGFP+xlRWxhYeqMQQVeA/SvRb8a/yqTNCyAKkO32w0/4c96UkOacK0CAvuRCWBI91+ZlLy/A804
+	pklxjeD6GackAtutOOexZEFzgGETHrhRzuhwzdETkiYbGw3OUT9JSlk/k2G+GDgAzmggcGLQwuu
+	A+CdeDDTFbJB01mvH2EsphvQVKtP4yUsyYooo=
+X-Received: by 2002:adf:e003:0:10b0:475:f0f0:9ece with SMTP id ffacd0b85a97d-47de6723b2emr155297f8f.57.1783345241288;
+        Mon, 06 Jul 2026 06:40:41 -0700 (PDT)
+Received: from localhost.localdomain ([2a00:6d43:105:c401:e307:1a37:2e76:ce91])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa0f214d2sm24424868f8f.33.2026.07.06.06.40.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2026 06:34:40 -0700 (PDT)
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	andrew@lunn.ch,
-	Willem de Bruijn <willemb@google.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Joshua A Hay <joshua.a.hay@intel.com>
-Subject: [PATCH net-next 3/7] idpf: support pacing offload
-Date: Mon,  6 Jul 2026 09:34:05 -0400
-Message-ID: <20260706133433.3142805-4-willemdebruijn.kernel@gmail.com>
-X-Mailer: git-send-email 2.55.0.795.g602f6c329a-goog
-In-Reply-To: <20260706133433.3142805-1-willemdebruijn.kernel@gmail.com>
-References: <20260706133433.3142805-1-willemdebruijn.kernel@gmail.com>
+        Mon, 06 Jul 2026 06:40:41 -0700 (PDT)
+From: Marco Crivellari <marco.crivellari@suse.com>
+To: linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: Tejun Heo <tj@kernel.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	Haren Myneni <haren@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	MD Danish Anwar <danishanwar@ti.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Mika Westerberg <westeri@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Nick Child <nnac123@linux.ibm.com>,
+	Petko Manolov <petkan@nucleusys.com>,
+	Richard Cheng <icheng@nvidia.com>,
+	Rick Lindsley <ricklind@linux.ibm.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Yehezkel Bernat <YehezkelShB@gmail.com>
+Subject: [PATCH net-next v2 0/5] net: Move system_long_wq to system_dfl_long_wq
+Date: Mon,  6 Jul 2026 15:40:23 +0200
+Message-ID: <20260706134033.244295-1-marco.crivellari@suse.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Willem de Bruijn <willemb@google.com>
+Hello,
 
-If skb->tstamp is in the future, program this future delivery txtime
-in the transmit descriptor.
+Currently the code uses the per-cpu workqueue system_long_wq to schedule
+long running works.
 
-TCP pacing offload is only offloaded if SK_PACING_FQ is negotiated and
-the FQ offload_horizon is configured.
+Unbound works could benefit from scheduler task placement, to optimize
+performance and power consumption. Another good reason to have this unbound,
+is the "queue_delayed_work()" function, used to enqueue the work item.
+More details on this will follow in the next section.
 
-But device support for pacing offload must be more robust. It can also
-be reached through SO_TXTIME.
+Recently, a new unbound workqueue specific for long running work has been
+added:
 
-Bound check txtime. Only packets with timestamp between now and the
-horizon (max_pacing_offload_horizon) are offloaded.
+    c116737e972e ("workqueue: Add system_dfl_long_wq for long unbound works")
 
-Support only in splitq mode, where tx and tx completion queues are
-separate and so completions can be returned out of order.
+~~~ Details about queue_delayed_work ~~~
 
-Assume that the NIC clock is PTP synchronized to CLOCK_TAI. This
-can later be refined, e.g., to a custom CLOCK_AUX.
+system_long_wq is a per-cpu workqueue and it is used as a parameter of
+queue_delayed_work(). This function schedule an item that it will later
+be enqueued (once the timer will fire). __queue_delayed_work() does the job
+receiving as "cpu" WORK_CPU_UNBOUND:
 
-Disable if in netpoll. It does not need the feature, and the ktime
-functions are not safe to call in this context.
+    if (housekeeping_enabled(HK_TYPE_TIMER)) {
+    //      [....]
+    } else {
+            if (likely(cpu == WORK_CPU_UNBOUND))
+                    add_timer_global(timer);
+            else
+                    add_timer_on(timer, cpu);
+    }
 
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: Joshua A Hay <joshua.a.hay@intel.com>
-Signed-off-by: Willem de Bruijn <willemb@google.com>
+The timer is global, so can fire everywhere, and the work item will be
+enqueued where the timer fired.
+
+Since the workqueue work doesn't rely on per-cpu variables, there is no
+obvious reason that justify the use of a per-cpu workqueue. So change the
+workqueue with the new system_dfl_long_wq, so that the used workqueue is
+now unbound and can benefit from scheduler task placement.
+
+Thanks!
 
 ---
+Changes in v2:
+- rebased on v7.2-rc2
 
-Sashiko, ignore pre-existing issues.
+- dropped the RFC prefix, kept Ack and review tags
 
-Sashiko, ignore that idpf_tx_splitq_set_txtime may have a benign race
-by calling ktime_mono_to_any twice to get TAI to REALTIME offset.
----
- .../net/ethernet/intel/idpf/idpf_ethtool.c    |  3 +-
- drivers/net/ethernet/intel/idpf/idpf_lib.c    |  5 ++
- drivers/net/ethernet/intel/idpf/idpf_txrx.c   | 63 ++++++++++++++++++-
- drivers/net/ethernet/intel/idpf/idpf_txrx.h   |  2 +
- 4 files changed, 71 insertions(+), 2 deletions(-)
+Link to v1: https://lore.kernel.org/all/20260511092846.120141-1-marco.crivellari@suse.com/
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_ethtool.c b/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
-index bb99d9e7c65d..5ddf347927dc 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
-@@ -1801,7 +1801,8 @@ static void idpf_get_ts_stats(struct net_device *netdev,
- static const struct ethtool_ops idpf_ethtool_ops = {
- 	.supported_coalesce_params = ETHTOOL_COALESCE_USECS |
- 				     ETHTOOL_COALESCE_USE_ADAPTIVE,
--	.supported_ring_params	= ETHTOOL_RING_USE_TCP_DATA_SPLIT,
-+	.supported_ring_params	= ETHTOOL_RING_USE_TCP_DATA_SPLIT |
-+				  ETHTOOL_RING_USE_PACING_OFFLOAD_HORIZON,
- 	.get_msglevel		= idpf_get_msglevel,
- 	.set_msglevel		= idpf_set_msglevel,
- 	.get_link		= ethtool_op_get_link,
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-index cf966fe6c759..de4170c2aa3b 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-@@ -888,6 +888,11 @@ static int idpf_cfg_netdev(struct idpf_vport *vport)
- 	netdev->min_mtu = ETH_MIN_MTU;
- 	netdev->max_mtu = vport->max_mtu;
- 
-+	if (idpf_is_queue_model_split(vport->dflt_qv_rsrc.txq_model) &&
-+	    !idpf_is_cap_ena(adapter, IDPF_OTHER_CAPS,
-+			    VIRTCHNL2_CAP_SPLITQ_QSCHED))
-+		netdev->max_pacing_offload_horizon = 128000;
-+
- 	dflt_features = NETIF_F_SG	|
- 			NETIF_F_HIGHDMA;
- 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-index 7f9056404f64..3de0c4ec54f6 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-@@ -1,6 +1,8 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /* Copyright (C) 2023 Intel Corporation */
- 
-+#include <linux/netpoll.h>
-+
- #include "idpf.h"
- #include "idpf_ptp.h"
- #include "idpf_virtchnl.h"
-@@ -2408,9 +2410,13 @@ void idpf_tx_splitq_build_flow_desc(union idpf_tx_flex_desc *desc,
- 				    struct idpf_tx_splitq_params *params,
- 				    u16 td_cmd, u16 size)
- {
--	*(u32 *)&desc->flow.qw1.cmd_dtype = (u8)(params->dtype | td_cmd);
-+	*(__le32 *)&desc->flow.qw1.cmd_dtype = cpu_to_le32((u8)(params->dtype | td_cmd));
- 	desc->flow.qw1.rxr_bufsize = cpu_to_le16((u16)size);
- 	desc->flow.qw1.compl_tag = cpu_to_le16(params->compl_tag);
-+
-+	desc->flow.qw1.ts[0] = params->offload.desc_ts[0];
-+	desc->flow.qw1.ts[1] = params->offload.desc_ts[1];
-+	desc->flow.qw1.ts[2] = params->offload.desc_ts[2];
- }
- 
- /**
-@@ -3011,6 +3017,57 @@ static bool idpf_tx_splitq_need_re(struct idpf_tx_queue *tx_q)
- 	return gap >= IDPF_TX_SPLITQ_RE_MIN_GAP;
- }
- 
-+static void idpf_tx_splitq_set_txtime(const struct idpf_tx_queue *tx_q,
-+				      const struct sk_buff *skb,
-+				      struct idpf_tx_splitq_params *tx_params)
-+{
-+	const int ts_gran_pow2 = 9;
-+	u64 ts, now;
-+
-+	/* Skip if netpoll: not needed and not safe to call ktime helpers */
-+	if (netpoll_tx_running(skb->dev))
-+		return;
-+
-+	switch (skb->tstamp_type) {
-+	case SKB_CLOCK_REALTIME:
-+		ts = ktime_to_ns(ktime_add(skb->tstamp,
-+					   ktime_mono_to_any(0, TK_OFFS_TAI) -
-+					   ktime_mono_to_any(0, TK_OFFS_REAL)));
-+		break;
-+	case SKB_CLOCK_MONOTONIC:
-+		ts = ktime_to_ns(ktime_mono_to_any(skb->tstamp, TK_OFFS_TAI));
-+		break;
-+	case SKB_CLOCK_TAI:
-+		ts = ktime_to_ns(skb->tstamp);
-+		break;
-+	default:
-+		WARN_ON_ONCE(1);
-+		return;
-+	}
-+
-+	now = ktime_get_clocktai_ns();
-+	if (ts < now)
-+		return;
-+
-+	/* beyond offload horizon? set overflow bit only */
-+	if (ts > now + ((u64)skb->dev->pacing_offload_horizon * NSEC_PER_USEC)) {
-+		tx_params->offload.desc_ts[2] = 1 << 7;
-+		return;
-+	}
-+
-+	ts >>= ts_gran_pow2;
-+
-+	tx_params->offload.desc_ts[0] = ts & 0xff;
-+	tx_params->offload.desc_ts[1] = (ts >> 8) & 0xff;
-+	tx_params->offload.desc_ts[2] = ((ts >> 16) & 0x7f);
-+
-+	/* 0 is valid 24b timestamp, but also means field unset.
-+	 * Add 512 ns (ts_gran_pow2) to avoid this case
-+	 */
-+	if ((ts & 0x7fffff) == 0)
-+		tx_params->offload.desc_ts[0] = 1;
-+}
-+
- /**
-  * idpf_tx_splitq_frame - Sends buffer on Tx ring using flex descriptors
-  * @skb: send buffer
-@@ -3097,6 +3154,10 @@ static netdev_tx_t idpf_tx_splitq_frame(struct sk_buff *skb,
- 
- 		tx_params.dtype = IDPF_TX_DESC_DTYPE_FLEX_FLOW_SCHE;
- 		tx_params.eop_cmd = IDPF_TXD_FLEX_FLOW_CMD_EOP;
-+
-+		if (skb->tstamp && skb->dev->pacing_offload_horizon)
-+			idpf_tx_splitq_set_txtime(tx_q, skb, &tx_params);
-+
- 		/* Set the RE bit to periodically "clean" the descriptor ring.
- 		 * MIN_GAP is set to MIN_RING size to ensure it will be set at
- 		 * least once each time around the ring.
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.h b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-index 4be5b3b6d3ed..865408b57b0d 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-@@ -161,6 +161,7 @@ union idpf_tx_flex_desc {
-  * @tso_segs: Number of segments to be sent
-  * @tso_hdr_len: Length of headers to be duplicated
-  * @td_cmd: Command field to be inserted into descriptor
-+ * @desc_ts: Flow scheduling offload timestamp
-  */
- struct idpf_tx_offload_params {
- 	u32 tx_flags;
-@@ -174,6 +175,7 @@ struct idpf_tx_offload_params {
- 	u16 tso_hdr_len;
- 
- 	u16 td_cmd;
-+	u8 desc_ts[3];
- };
- 
- /**
+Marco Crivellari (5):
+  ibmvnic: Move long delayed work on system_dfl_long_wq
+  net: ti: icssg-stats: Move long delayed work on system_dfl_long_wq
+  net: thunderbolt: Move long delayed work on system_dfl_long_wq
+  net: usb: pegasus: Move long delayed work on system_dfl_long_wq
+  net: usb: r8152: Move long delayed work on system_dfl_long_wq
+
+ drivers/net/ethernet/ibm/ibmvnic.c          | 4 ++--
+ drivers/net/ethernet/ti/icssg/icssg_stats.c | 2 +-
+ drivers/net/thunderbolt/main.c              | 7 ++++---
+ drivers/net/usb/pegasus.c                   | 9 +++++----
+ drivers/net/usb/r8152.c                     | 7 ++++---
+ 5 files changed, 16 insertions(+), 13 deletions(-)
+
 -- 
-2.55.0.795.g602f6c329a-goog
+2.54.0
 
