@@ -1,76 +1,71 @@
-Received: from bregans-1.gladserv.net (bregans-1.gladserv.net [185.128.211.58])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1B7233F582;
-	Mon,  6 Jul 2026 10:11:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.211.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450DD44211B;
+	Mon,  6 Jul 2026 10:16:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783332704; cv=none; b=VDESHk7jpURQihjTvV8QpQftf0ntCETGvF3gwGHIXodg2cXNKxye2ipClbqfLK2IOsdXl4gDdDqkC9qkCowBDUCIUXzv2S7JmEj8E/5rj5IQY799x133d3c3rJfO4+yGzYyqsf6acWV75Ar14+eQuEuW4ov1F2L5bVyaDPOT8AU=
+	t=1783332995; cv=none; b=OcXs1RwE8rlqeKJXDiMqAV6r+xgOpVuL09W3x4hYY/egNgJzX+RveOLAtP/7FZizEodu9RWX1+3PuLZaB9+fB/6MB4qLj1KYK/8Qnu3T543JCeNad0lY6/KZNWf3Is4766h4Qt9OWnHpF6CcZHo5VmNBp4Fo6j5KUhJdwss3khk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783332704; c=relaxed/simple;
-	bh=MBzYfn6wrT/moznkuon8LGgRLOwNEgezeJ/ZvYxKR6Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Sv/Ya2K3VH/pYQnqAFe1gOES49fbCu9BaE15OCIxiS0oHMF5afoveFxdntk/XX9CGtuBlknUDJHBfQS2i/ncDnMfr+p5TEQYJPaB7N9wdsi/E6P/0Zsoq9dRGVJ+tEafPw4u2V8dMkFBGLGzZ13hO366BYxA4RWAU8EHikySyDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.211.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
-Date: Mon, 6 Jul 2026 12:11:15 +0200
-From: Brett A C Sheffield <bacs@librecast.net>
-To: Simon Schippers <simon.schippers@tu-dortmund.de>
-Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	"Michael S . Tsirkin" <mst@redhat.com>, netdev@vger.kernel.org,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Tim Gebauer <tim.gebauer@tu-dortmund.de>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] tun/tap & vhost-net: make qdisc backpressure
- opt-in via IFF_BACKPRESSURE
-Message-ID: <akt_Q7kdR3Zb8_GZ@karahi.librecast.net>
-References: <20260706094242.115992-1-simon.schippers@tu-dortmund.de>
+	s=arc-20240116; t=1783332995; c=relaxed/simple;
+	bh=Ui/6WL/wE/IDrkuouB3Cpe6r7kaK99syNQCjQSVq+XQ=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=Vu+njwD769XqcQT+y1XMhRgtzSiylY0zd9Pg3KIuyoU+lv79yTUVn6ABTzSVWceXobiCgvzc0Fa+hrLm2t3fXQRYO1E9wXJ5vqgfZr6BH3+FQngE32FhFfk/IxX1pjh9ajo4pjyRiVqZsKEmVR1/YJNdfi9WkFyOpx3SQeO6lTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jd2yAfyO; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jd2yAfyO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96A361F000E9;
+	Mon,  6 Jul 2026 10:16:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783332993;
+	bh=yT+Ai7PVmpAGS1R+fNNohYl4y8lLsQnylybaH+IWsZM=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=jd2yAfyOznOWM1i2Ex037TWFM7s+HhO1kBqYSmUyH4LNJVTE4mwE75V0fcjoEkF6C
+	 IFKL54m+7HZSeZR/IY6no51OooriHNxhrUQ3TTrntwWHmP4mZuleKJKufAT/TJEfTD
+	 TW99ZoZ1hahJl5gNfH/dfDwXyRhf8T4FPQwEJEKCzKkOdj0fNCbM3sqHvXwSJs/fPM
+	 HgoU87Ir/VXbg9FbyyZ/zF8s7Jm0XfpWKg/bMAlWEOuzpo4q4UEHpqlHRQdDtIGpyN
+	 YrSbKjzBH5N3Au/2EiKn7BgYfagVaGr+8vUUWEXzEEMGPyj2qySQtou/oMPLvbu0AT
+	 tfKVqrYrvBIeQ==
+Content-Type: multipart/mixed; boundary="===============4166175548752548279=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260706094242.115992-1-simon.schippers@tu-dortmund.de>
+Message-Id: <d49e2fcbde106e80971b769793170fd479315d563d31bcaf6db33737c01c814c@mail.kernel.org>
+In-Reply-To: <20260706093525.13030-4-mahe.tardy@gmail.com>
+References: <20260706093525.13030-4-mahe.tardy@gmail.com>
+Subject: Re: [PATCH bpf-next 3/6] selftests/bpf: Add ksock kfunc test
+From: bot+bpf-ci@kernel.org
+To: mahe.tardy@gmail.com,bpf@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,andrii@kernel.org,ast@kernel.org,daniel@iogearbox.net,davem@davemloft.net,eddyz87@gmail.com,edumazet@google.com,john.fastabend@gmail.com,kuba@kernel.org,liamwisehart@meta.com,martin.lau@linux.dev,pabeni@redhat.com,song@kernel.org,netdev@vger.kernel.org,mahe.tardy@gmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Mon,  6 Jul 2026 10:16:33 +0000 (UTC)
 
-On 2026-07-06 11:42, Simon Schippers wrote:
-> Commit 1d6e569b7d0c ("tun/tap & vhost-net: avoid ptr_ring tail-drop
-> when a qdisc is present") did not show a relevant performance regression
-> in my testing but on Brett Sheffield's librecast testbed it shows a
-> significant performance drop in a IPv6 multicast testcase. The regression
-> can be pinpointed when multiple iperf3 UDP threads are sending. For 8
-> threads the performance dropped from 13.5 Gbit/s to 9.13 Gbit/s. This is
-> the reason why this patch makes the qdisc backpressure behavior opt-in.
+--===============4166175548752548279==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Your v1 commit message was correct.  The iperf3 tests were TCP, not UDP.
+> Add a selftest that exercises the ksock kfuncs end-to-end. One sycall
+> bpf setup program creates a ksock context and connect the socket.
+> Another syscall bpf program lookup the context and send test data.
+> The userspace harness create a network namespace and a new socket on
+> loopback, run the setup and send syscall bpf progs then check that the
+> userspace socket received the data from bpf.
 
-The original failing test that alerted me to the problem was IPv6 multicast
-(UDP), but the reproducer tests I provided stats for in the regression report
-were TCP "To eliminate my code and any multicast weirdness" and also to verify
-that this also affected TCP.
+This isn't a bug, but would a quick pass over the changelog wording help
+here?  A few spots read a little off:
 
-Sorry for the confusion. The command lines used are in the regression report.
-
-I've tested the v2 patch (with IPv6 multicast), and verified the
-previously failing test passes.
-
-Tested-by: Brett A C Sheffield <bacs@librecast.net>
-
-Cheers,
+  "One sycall" -> "One syscall"
+  "creates a ksock context and connect the socket" -> connects
+  "Another syscall bpf program lookup the context" -> looks up
+  "The userspace harness create a network namespace" -> creates
 
 
-Brett
--- 
-Brett Sheffield (he/him)
-Librecast - Decentralising the Internet with Multicast
-https://librecast.net/
-https://blog.brettsheffield.com/
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/28783010022
+--===============4166175548752548279==--
