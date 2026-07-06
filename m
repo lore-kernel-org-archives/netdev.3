@@ -1,139 +1,62 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D93430CD3
-	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 21:26:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD4C9420E78;
+	Mon,  6 Jul 2026 21:28:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783373170; cv=none; b=hVKsYdodlm0SaXOeBj4f2fqTBbwW/qwk8cBghYFQVbU0FZdLZtym4AH2zr5UjJzI+XySPrIw7FybwYn9CX2N0kwDBy95d24otY2GU4a6riNteEmwx8b6BBPbbT91lJ2tJIPs3vQcnFA+6iwv8crNKxGSSphcRIFChefFs7RFfyc=
+	t=1783373318; cv=none; b=ADTBBKSBWwyMY9f6V4yzsjvOCtJOTrB49k6XYbLOsJ8dLZ5rVzkN5MTd0SyX0WZ3anLT1F2yWiY0Pz8hUW8jh0jzlwxLj92/ZwVLsIunnn/CdMUcv9OeSeDxVKNuTSX2uKoqrMjeG5k9jelwS5hdqSkUWgSMssDxcMhPufo+ndQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783373170; c=relaxed/simple;
-	bh=Bs3BqDfwVT32fxCzGLIASSLmPsP2xEpS+XdhYE+ExzI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fvl0T5wBs6Fnc8uJ8g214mmC9ViULt5bRVMzyhWQhMKTcuZOKH4XiYluH7IRLj4YQKGxmXSDtkyBPCibm9Uk8kHNOn7QFD8dndtVcq5DeuKYBGQNkJFZFrgjY9GjCyVti4tevClUvPYgem+VKwZ0MLJL2hb5E+QnIJozS/CMLZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=CLCF81mc; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
+	s=arc-20240116; t=1783373318; c=relaxed/simple;
+	bh=NfFeGMXrHzNARYruWC+3n+ZwrJwJzUAU4YP5HtPgcuI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pgmEpk4SW/8kguGW4Epk7qdGaLiUt981qavJ++R1AUZGGSvnrMiRH0Pud2GdV76Mk0/Y1lXESHaDy/kNMLQW2XOIR51XjhN7G+b4Rt+VhAsImwSwscWup2TwV14JIzTDFrY35QWxXLv9GyfxYVI2PNknNmyCOKzKEvjHwBTKIek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=021m6RD7; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="CLCF81mc"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2cace7da66eso32710605ad.0
-        for <netdev@vger.kernel.org>; Mon, 06 Jul 2026 14:26:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=asu.edu; s=google; t=1783373167; x=1783977967; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=tWhlUUX4fbebZqU7q8r9h76HiQyUnyQMMOJxI7aP7F8=;
-        b=CLCF81mcLqC6PK9Zumhw1blj4Ea/zdHcSmM0X4ogdjWwzqGSUnTma24b2tYrtsP2rp
-         jy8P8Vqk7Wa9RwBeBFKt58MnwiOdLqHp8nIxSr1e6tUanJExPWqY5TbBN6z3RjyNTDUk
-         6CSWys0gajf1W9xogX6FY6RjgJR8NwVrALJHOGHFg9mbZWTEvQ6U8TqzhAHnHLsSRI8N
-         zUP4cx3qGcQ9dWgkrzrTeDvr7WwGHrFGRsi0GpihtK9fkBOR7hJ8cmm3txrEfmtHTHGM
-         8PwKXDa1x0C5zS4LN/fQTP0qQz1tDOZityNQHw/w8t0S0l5pmc7tDXmjHiSdbluW2UO2
-         PPWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783373167; x=1783977967;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=tWhlUUX4fbebZqU7q8r9h76HiQyUnyQMMOJxI7aP7F8=;
-        b=A0hJ2TEBWUnRV/4QPPfKN+IOJ+RKXuAwF6GpHNMdHAGWh8dO1Xtz/8cGtaMHSK7+7+
-         dBTThk+GY8ngg4FLDF3ASnBE7O5I9gunVJtOrz5igwNwte4JnnoyzaezH7ut4m1/vFCM
-         qQFqFW/PHjPR5/JV87ZS4eWWZXw7SPOjVCAlen8UGLlzOoeVv/hiUkQsQhPtgDdEBtSw
-         vsB6SNrYvc5t7FbMrKImeBQBt96TS8L+87T+nNU/N0RGW/hrw21jyA3nm6ZoSJVTBdgW
-         CrcD5WgGZlMSgUk6q5FNj6L7e0L/E6kvK/hqBWiko0pkTTog9Q8TC0Y7lSI34DKm275Q
-         BatQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrCeDXZiOm083lCHgcoBvCT6raiyoYDtwTswG9rc5+rKvRlVM/x9R1JUeVA2Fx2dZt1H/4EnVE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxjwcVJvKhY4ebwvLzFycuq8hNwsYlIvJn/KcRnM9PRmdib3zBF
-	a3ljTvGAVNnQnDTe7HIrDEupZaCh3XJM/ws7B6oYV/Cxn9V74pg6zjJ4h+R3+c8wxQ==
-X-Gm-Gg: AfdE7ckSdrxSAMDoDS3wiHw5ZpEUFlga7F+/+xwPtV+bWTgpKn4Is3E6ZkNhNTXH5BK
-	MGZ4bGoQv7MNcootR2TVmJK4rx2amSVlHL1mbmIdB1u/GeQX/FccwkJdl7b8Haaa3j8k7M1aSNj
-	3oLtqFL+FKJgDo70Go5kRBWpW2iX+nSORcymdk8U3pM/nbXktMsNkCfFiUfjdSifc0vkABUtXGm
-	5gVcZKyaBlWC4xVC8yw5oPX+riY0redVbn1c00HyjmkDZYs9m2pWfY/MIXFQuXsRuuHP3wq+alo
-	73ogte64ZYn+x2k+L7FKr9uU5dKm7jcHwBhuVC1+5WgCk3M+F1AeCOFjDhGVW6kmyBT/o38WVrg
-	QJ7laFkzEPFNztSrPwvziHR4ErLSKDECzTYPgHMGJt6tbJMH0C1ZHyyi8y0J1qS4NvDJrrWosUA
-	z8h4CvXGWcvkZ0we+rx/GzSKJhF77V
-X-Received: by 2002:a17:903:17c5:b0:2bd:5ab:af95 with SMTP id d9443c01a7336-2ccbdf40961mr25196295ad.0.1783373167019;
-        Mon, 06 Jul 2026 14:26:07 -0700 (PDT)
-Received: from xiang.tailc0aff1.ts.net ([20.171.14.70])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13b6594f6a9sm583356c88.5.2026.07.06.14.26.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2026 14:26:06 -0700 (PDT)
-From: "Xiang Mei (Microsoft)" <xmei5@asu.edu>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Thomas Karlsson <thomas.karlsson@paneda.se>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	AutonomousCodeSecurity@microsoft.com,
-	tgopinath@linux.microsoft.com,
-	kys@microsoft.com,
-	"Xiang Mei (Microsoft)" <xmei5@asu.edu>
-Subject: [PATCH net] macvlan: cap IFLA_MACVLAN_BC_QUEUE_LEN to bound broadcast backlog
-Date: Mon,  6 Jul 2026 21:25:56 +0000
-Message-ID: <20260706212556.3199234-1-xmei5@asu.edu>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="021m6RD7"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=phB/xZVURmCiAAbO9shCTxcGld2NBaG91LF7FAgSjhk=; b=021m6RD7AQRlbdpeLVkBlGgLj0
+	/CvMxII15nvJ/FOlaLbLsowseW/KiwjGUHVQekUBeIDEWcWvPCys4SOYq6KWLtYqosgRPcObw9yKx
+	xZS+G9C9t7HxmeyDcyjNp/8QRGuEETS3SgestxihNweDw/fM2wmZ22NqynarkBoOjAhY=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wgqrh-00B45y-2L; Mon, 06 Jul 2026 23:28:33 +0200
+Date: Mon, 6 Jul 2026 23:28:33 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 net-next] net: phy: Drop #inclusion of
+ <linux/mod_devicetable.h> from <linux/mdio.h>
+Message-ID: <96a77bc9-9804-43fb-acf0-b93574cd60f3@lunn.ch>
+References: <ca270a534d0f230a939a3fb4a661808b35d6436d.1783329817.git.u.kleine-koenig@baylibre.com>
+ <12ec5246-4124-4edb-a5f8-f10c73b1fcb7@lunn.ch>
+ <akwToZyYvHZPtdjV@monoceros>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <akwToZyYvHZPtdjV@monoceros>
 
-The netlink policy for IFLA_MACVLAN_BC_QUEUE_LEN accepts any u32, and the
-value becomes port->bc_queue_len_used, the only cap on how many skbs
-macvlan_broadcast_enqueue() may queue on port->bc_queue. An unprivileged
-user owning a user+net namespace (CAP_NET_ADMIN is checked only against
-the target netns) can set it to 0xffffffff, so the backlog check never
-trips and every broadcast frame is skb_clone()'d with GFP_ATOMIC and
-queued. When RX softirq outpaces the bc_work drain (e.g. many ALLMULTI
-macvlans under a broadcast flood), the queue grows unbounded and
-OOMs/panics the host.
+> That's exactly my thought, and there is commit ad428f5811bd
+> ("mod_devicetable.h: Split into per subsystem headers") that is part of
+> v7.2-rc2 and that does exactly that (apart from the filename).
 
-Bound the value with NLA_POLICY_MAX() at 4096, 4x the default of 1000.
-This keeps headroom above the default while capping the backlog; values
-above the cap are now rejected with -ERANGE at netlink parse time.
+Ah, O.K. net-next tends to great dragged along the -rcX versions. So
+you can probably submit the networking changes in a weeks time. Just
+make sure they apply to
 
-  Out of memory: Killed process 141 (su) UID:0
-  Kernel panic - not syncing: System is deadlocked on memory
-  Call Trace:
-   vpanic (kernel/panic.c:650)
-   panic (kernel/panic.c:787)
-   out_of_memory (mm/oom_kill.c:1166)
-   __alloc_frozen_pages_noprof (mm/page_alloc.c:4914)
-   alloc_pages_mpol (mm/mempolicy.c:2490)
-   folio_alloc_noprof (mm/mempolicy.c:2591)
-   filemap_fault (mm/filemap.c:3565)
+https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git
 
-Fixes: d4bff72c8401 ("macvlan: Support for high multicast packet rate")
-Reported-by: AutonomousCodeSecurity@microsoft.com
-Signed-off-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
----
- drivers/net/macvlan.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
-index c40fa331836b..d4cede6393b0 100644
---- a/drivers/net/macvlan.c
-+++ b/drivers/net/macvlan.c
-@@ -37,6 +37,7 @@
- #define MACVLAN_HASH_BITS	8
- #define MACVLAN_HASH_SIZE	(1<<MACVLAN_HASH_BITS)
- #define MACVLAN_DEFAULT_BC_QUEUE_LEN	1000
-+#define MACVLAN_MAX_BC_QUEUE_LEN	4096
- 
- #define MACVLAN_F_PASSTHRU	1
- #define MACVLAN_F_ADDRCHANGE	2
-@@ -1755,7 +1756,7 @@ static const struct nla_policy macvlan_policy[IFLA_MACVLAN_MAX + 1] = {
- 	[IFLA_MACVLAN_MACADDR] = { .type = NLA_BINARY, .len = MAX_ADDR_LEN },
- 	[IFLA_MACVLAN_MACADDR_DATA] = { .type = NLA_NESTED },
- 	[IFLA_MACVLAN_MACADDR_COUNT] = { .type = NLA_U32 },
--	[IFLA_MACVLAN_BC_QUEUE_LEN] = { .type = NLA_U32 },
-+	[IFLA_MACVLAN_BC_QUEUE_LEN] = NLA_POLICY_MAX(NLA_U32, MACVLAN_MAX_BC_QUEUE_LEN),
- 	[IFLA_MACVLAN_BC_QUEUE_LEN_USED] = { .type = NLA_REJECT },
- 	[IFLA_MACVLAN_BC_CUTOFF] = { .type = NLA_S32 },
- };
--- 
-2.43.0
-
+	Andrew
