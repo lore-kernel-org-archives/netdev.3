@@ -1,60 +1,36 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE06D422548;
-	Mon,  6 Jul 2026 09:33:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B07543E5ED1;
+	Mon,  6 Jul 2026 09:34:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783330443; cv=none; b=bhOwsWx3aKRznb7Ul90A+yWoJUZ9n+ZcafskTI6PR9hNlMZb/KJzR487KU781S3fBdO/O/5rakO1FTviXCov5hkWCxJmS1VgahTLX73GYefbliAcCk9wDR+0zo41UgvhtyUJ4whPn6PveDQgI8FiNE+aKi4kDUleTsnyOvnio6w=
+	t=1783330459; cv=none; b=KhQL9JSQ0evbO8OY/qXgEG3SVwsZBxcxaWOzsH0vl+jtu8I7rTYXJaUwrhL3jKbr1pLf84DRF8Ao4OYPk56JTwDEuEdMj+Cko648LalJ/Bju/UCU+tYEksPoZ34E0Ggx8u/G/+10l+CVL1bquxtbIF3EpTwfdkOiLzESFQ+bF8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783330443; c=relaxed/simple;
-	bh=1JL2JcRPykcNOXZTIj7DSdSZdXzQeo47vikrlB/NC40=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SUgD1agprPu7i6wceoxja+AbqmDIr2VfHm6b3Buk3XBamvhbtNutTG0B4bgiq65U/HbvHBgx12UXCL/k6Sc+01dx5bj8jtH961KNHDLJll3g/plQSY5t6yWjirG7C0NQpFqaYy8Qig2c/hO62OeScoUYLhUx0izxht7frfHNLpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=N+inEnI+; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="N+inEnI+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1783330439; x=1814866439;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=1JL2JcRPykcNOXZTIj7DSdSZdXzQeo47vikrlB/NC40=;
-  b=N+inEnI+PX1842HbuFOn5Vq2O+neCXZFFjMn+7orTtZ3SFb8t6hi1uOa
-   kW63W2zf2H56MI8ShkQeLSyy0c15ZODP2Er1Cc+ITkRmORJ06ZLPXNJmf
-   5LxQxuOYlk5VT6b3nbaIlsDYakTEaMMoPMYFXkx5JvnVtHOG5xK/izw91
-   jPFmH5R4tllKbvaHMyNrEGVzOPQ0CEdvbyseIg+nNM5lGH8GDX0v6F2cy
-   FicdFDc0kBNFq6mvJsNIFlw+JC1vbu+7CuKkZcV4xik9LzvSIo8Sr+t+P
-   iI+sNkcQgI0BzMEe2zbgnVv9mzrNU3RR/gEeDmbLNmAkGtGdalJp4FRN0
-   A==;
-X-CSE-ConnectionGUID: srxHzna7TxyI0LjVtT+l4Q==
-X-CSE-MsgGUID: bmiwaOOeR2mncEczngPfzg==
-X-IronPort-AV: E=Sophos;i="6.25,149,1779174000"; 
-   d="scan'208";a="60494878"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2026 02:32:53 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.87.151) by
- chn-vm-ex2.mchp-main.com (10.10.87.31) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.43; Mon, 6 Jul 2026 02:32:53 -0700
-Received: from che-ld-unglab06.microchip.com (10.10.85.11) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Mon, 6 Jul 2026 02:32:49 -0700
-From: Thangaraj Samynathan <thangaraj.s@microchip.com>
-To: <netdev@vger.kernel.org>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>,
-	<bryan.whitehead@microchip.com>, <UNGLinuxDriver@microchip.com>,
-	<linux-kernel@vger.kernel.org>
-Subject: [PATCH net-next v5 1/2] net: lan743x: add RMII strap status detection for PCI11x1x
-Date: Mon, 6 Jul 2026 15:01:49 +0530
-Message-ID: <20260706093150.9033-2-thangaraj.s@microchip.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260706093150.9033-1-thangaraj.s@microchip.com>
-References: <20260706093150.9033-1-thangaraj.s@microchip.com>
+	s=arc-20240116; t=1783330459; c=relaxed/simple;
+	bh=jJM8EHcPKmodcduUHQf+XPYE8Gcu0XLeUc3KfcWOBOU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Gpj3uXUmuEypWTvG7NTcPDpAEt9Co0wQBi4tzBTJA9ym2zyIRloMH5LsTTj4BDDCyPQsOdNPIukfyp+HtVz5BYHdGyocKZocLjEsfO9vKFKPRI5E4DI/hks2li79wX+EJ5zp09QJcso/WAZHRcPiWjzXZQyCMjmQvV3vQgGaOMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [111.196.245.140])
+	by APP-01 (Coremail) with SMTP id qwCowAD3mNGNdktqhIvxBA--.35187S2;
+	Mon, 06 Jul 2026 17:34:05 +0800 (CST)
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+To: Sudarsana Kalluru <skalluru@marvell.com>
+Cc: Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	Manish Chopra <manishc@marvell.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] net: bnx2x: validate firmware section bounds without overflow
+Date: Mon,  6 Jul 2026 17:34:03 +0800
+Message-ID: <20260706093403.81017-1-pengpeng@iscas.ac.cn>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,75 +38,76 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+X-CM-TRANSID:qwCowAD3mNGNdktqhIvxBA--.35187S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7ZF15Cr4fWr47JFy7tF17trb_yoW8ury3pa
+	1DGFW3Gr47GF13Cw40qa1DZF9Yk393J3yDGFyUCa95Z34Syw1kGas0kay2gr1UGrWkAw1a
+	gFn8AanxuFn0vw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9I14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Jw0_WrylYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
+	Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x
+	0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2
+	zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Gr0_Xr
+	1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1lIxAIcVCF04k26cxKx2IYs7xG6r1j
+	6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJb
+	IYCTnIWIevJa73UjIFyTuYvjfU5byZUUUUU
+X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
 
-Extend pci11x1x_strap_get_status() to read the RMII strap bits from
-the STRAP_READ register. The is_rmii_en flag is initialized to
-false and updated based on the hardware strap only if SGMII is not
-already enabled. This ensures correct interface identification during
-adapter initialization.
+The firmware loader validates each section with offset + length before it
+uses section offsets to read data from the firmware image. Both fields are
+32-bit values from the firmware header, so the addition can wrap before it
+is compared with the firmware size.
 
-Update the netif_dbg() to report the selected interface as SGMII,
-RMII, or RGMII.
+Validate sections as offset <= size and length <= size - offset instead.
+Also require the firmware version section to contain the four bytes that
+bnx2x_check_firmware() reads later.
 
-Signed-off-by: Thangaraj Samynathan <thangaraj.s@microchip.com>
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
 ---
- drivers/net/ethernet/microchip/lan743x_main.c | 12 ++++++++++--
- drivers/net/ethernet/microchip/lan743x_main.h |  3 +++
- 2 files changed, 13 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/broadcom/bnx2x/bnx2x_main.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
-index e759171bfd76..3a418105cd11 100644
---- a/drivers/net/ethernet/microchip/lan743x_main.c
-+++ b/drivers/net/ethernet/microchip/lan743x_main.c
-@@ -42,6 +42,7 @@ static void pci11x1x_strap_get_status(struct lan743x_adapter *adapter)
- 	u32 strap;
- 	int ret;
- 
-+	adapter->is_rmii_en = false;
- 	/* Timeout = 100 (i.e. 1 sec (10 msce * 100)) */
- 	ret = lan743x_hs_syslock_acquire(adapter, 100);
- 	if (ret < 0) {
-@@ -73,8 +74,15 @@ static void pci11x1x_strap_get_status(struct lan743x_adapter *adapter)
- 			adapter->is_sgmii_en = false;
- 		}
- 	}
--	netif_dbg(adapter, drv, adapter->netdev,
--		  "SGMII I/F %sable\n", adapter->is_sgmii_en ? "En" : "Dis");
-+
-+	if (!adapter->is_sgmii_en && strap & STRAP_READ_USE_RMII_EN_) {
-+		if (strap & STRAP_READ_RMII_EN_)
-+			adapter->is_rmii_en = true;
-+	}
-+
-+	netif_dbg(adapter, drv, adapter->netdev, "Selected I/F: %s\n",
-+		  adapter->is_sgmii_en ? "SGMII" :
-+		  adapter->is_rmii_en  ? "RMII"  : "RGMII");
+diff --git a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_main.c b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_main.c
+index 208a894d6190..c756a639e6ee 100644
+--- a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_main.c
++++ b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_main.c
+@@ -13258,6 +13258,11 @@ static int bnx2x_init_dev(struct bnx2x *bp, struct pci_dev *pdev,
+ 	return rc;
  }
  
- static bool is_pci11x1x_chip(struct lan743x_adapter *adapter)
-diff --git a/drivers/net/ethernet/microchip/lan743x_main.h b/drivers/net/ethernet/microchip/lan743x_main.h
-index 1573c8f9c993..1f8d9294a6ef 100644
---- a/drivers/net/ethernet/microchip/lan743x_main.h
-+++ b/drivers/net/ethernet/microchip/lan743x_main.h
-@@ -36,7 +36,9 @@
- #define FPGA_SGMII_OP			BIT(24)
++static bool bnx2x_fw_section_valid(size_t fw_size, u32 offset, u32 len)
++{
++	return offset <= fw_size && len <= fw_size - offset;
++}
++
+ static int bnx2x_check_firmware(struct bnx2x *bp)
+ {
+ 	const struct firmware *firmware = bp->firmware;
+@@ -13281,7 +13286,7 @@ static int bnx2x_check_firmware(struct bnx2x *bp)
+ 	for (i = 0; i < sizeof(*fw_hdr) / sizeof(*sections); i++) {
+ 		offset = be32_to_cpu(sections[i].offset);
+ 		len = be32_to_cpu(sections[i].len);
+-		if (offset + len > firmware->size) {
++		if (!bnx2x_fw_section_valid(firmware->size, offset, len)) {
+ 			BNX2X_ERR("Section %d length is out of bounds\n", i);
+ 			return -EINVAL;
+ 		}
+@@ -13300,6 +13305,11 @@ static int bnx2x_check_firmware(struct bnx2x *bp)
+ 	}
  
- #define STRAP_READ			(0x0C)
-+#define STRAP_READ_USE_RMII_EN_		BIT(23)
- #define STRAP_READ_USE_SGMII_EN_	BIT(22)
-+#define STRAP_READ_RMII_EN_		BIT(7)
- #define STRAP_READ_SGMII_EN_		BIT(6)
- #define STRAP_READ_SGMII_REFCLK_	BIT(5)
- #define STRAP_READ_SGMII_2_5G_		BIT(4)
-@@ -1072,6 +1074,7 @@ struct lan743x_adapter {
- 	struct lan743x_rx       rx[LAN743X_USED_RX_CHANNELS];
- 	bool			is_pci11x1x;
- 	bool			is_sgmii_en;
-+	bool			is_rmii_en;
- 	/* protect ethernet syslock */
- 	spinlock_t		eth_syslock_spinlock;
- 	bool			eth_syslock_en;
+ 	/* Check FW version */
++	if (be32_to_cpu(fw_hdr->fw_version.len) < 4) {
++		BNX2X_ERR("FW version section is too small\n");
++		return -EINVAL;
++	}
++
+ 	offset = be32_to_cpu(fw_hdr->fw_version.offset);
+ 	fw_ver = firmware->data + offset;
+ 	if (fw_ver[0] != bp->fw_major || fw_ver[1] != bp->fw_minor ||
 -- 
-2.34.1
+2.43.0
 
