@@ -1,80 +1,82 @@
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D3843786E
-	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 09:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F25414E3773
+	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 09:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783330537; cv=none; b=D8oN4mPTkNnda/GCcDo1UUfEVJEWxVP7AeBF1J4vK3PTRgaisBA5Ufryt3q/fyO8ANpdTS+q1mzNxcF/J494omZbhY4ShEWU1Uc3ZpbaySS48BB/UFvo/5EzFiJ0AuV2Y3SPN+PK6G9BK1mFbVBiF3fnDQd2NYMj2RgLP478/fY=
+	t=1783330539; cv=none; b=sOAWOcyCzBJvpRLtFEPJrmRLGQO0CLD32hLYLi4EcofZKcGaUnj6jUyGjohiOLtoaXJbCE/Ts9MN/rYDjSQ74trPO8zvONL2TQrARfiRO7BJeL43CYHl7h2FbJDepfRzT0k5HAaT9kRX0JapHS/9lEVv7ch2SNADjyB9QDyTzH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783330537; c=relaxed/simple;
-	bh=42Kj3VAyHdKAb4Mujj+SNBJjepZpYO0t8Hxlz5eSYok=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AVtLKWC6mW8UGOO5kdbllzln2QhnYGNcm2E+/iyTBAo5np5ox4BYEmWOicIXN0i5e9ZE1DRRNAc2AV+ZrNVHGYRVqqmA0ifZU4IukbJk2+CpmKhLctZGCzCZI22RtY/GpHeG3nY89T/fSnQFyuvT+6izNSmqk2mRdGGeqmWUZVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=hkaf0IXL; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=hLo5kcQU; arc=none smtp.client-ip=205.220.168.131
+	s=arc-20240116; t=1783330539; c=relaxed/simple;
+	bh=eIEOzhD//NGAkff8ufm0J15xyTStaX5cCnX7vkBYkyM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=LksG1tPWnSrwVvelm+8mOtPyubrBchQbxMvKzQ3cf1Ewi+pabxoDstNcAtqt9bVktTwJfuwdAOSTjXWh+eahWhWzdQac1UG8l5hivXxV5jd+442qpZWSWIJfRzg+9z5LfLKPN7VOHXIRIWI1u6zyFIzEemTA1FrkpdObyjZ5DMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Pbj490pZ; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=MZC+0Wsv; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="hkaf0IXL";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="hLo5kcQU"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Pbj490pZ";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="MZC+0Wsv"
 Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66693xr4107755
-	for <netdev@vger.kernel.org>; Mon, 6 Jul 2026 09:35:31 GMT
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66693rZW107420
+	for <netdev@vger.kernel.org>; Mon, 6 Jul 2026 09:35:33 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=x4hNt3rfNhUiPXOePYpG8Tjf20b4cSynXFo
-	kVgMJOC4=; b=hkaf0IXL4USdEe3sk0UKsslLAhxribsbMOq4P5NJ+pZlGwyjVlN
-	uNEa75X596G0RL4wNsJZGlRgf6SoaNrXLTNx6Q4uN5E6knM76KANsP2fviOsaVfI
-	i2yn79rpzofaLkK5jExvWEA1U5LHU00cHqgXz05asUzOuaIz5SET6w3IThDN9uPH
-	IkNCGnNbTj6HTzTBGI0e0pCJp3vP+HN5UGLrVz90lqJVN41bHds/+xijrmlctRkP
-	L6yEUdH/41PmtxQTWdVLRP9JDOGrgn8HDiknXlvHF3XbeHIPMExD57joolQWzUOJ
-	mEfcU6Vvkx32kVMsSLjQKKHeVMe/mww1Upg==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f891ur6x3-1
+	cc:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=qcppdkim1; bh=6+5lE7ilLsL
+	woQEluALM/vn0y9JfV02RJOJEvWyumEc=; b=Pbj490pZ7DPdHxlQjFBc60XFk7L
+	8ajFrmPHjjtBsh0obbvlbqL8CtoEtBN/EqmJEgGxgVBtvkq9YNXMGdDpmWzWJ24u
+	oPF40HtfewilHOjF/Ex2IW0TvJ4SBD5eibuPInfYrZHXES7Zq9Z9E5SA6oPy79HM
+	lQo52C5miEe9pMptLXYKKi81CbDUYFql9+EahE0GJvqqIFhkzh6Hp2F8afKXu9Fv
+	nHhLEY3nDh5Edtgf/coavUE4YkVxb8krWli75h8x6K7+n9ijd8UPKpCeRayzm+hN
+	SwgYqdIOC7BTR6GhJUe7Dp+C/IUFol68TnNd7UII/j/uOy1K5DWKtDF+PIg==
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f891ur6xa-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Mon, 06 Jul 2026 09:35:31 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-92e63df032bso313801885a.0
-        for <netdev@vger.kernel.org>; Mon, 06 Jul 2026 02:35:31 -0700 (PDT)
+	for <netdev@vger.kernel.org>; Mon, 06 Jul 2026 09:35:33 +0000 (GMT)
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-92e820609d9so198622585a.2
+        for <netdev@vger.kernel.org>; Mon, 06 Jul 2026 02:35:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1783330530; x=1783935330; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=x4hNt3rfNhUiPXOePYpG8Tjf20b4cSynXFokVgMJOC4=;
-        b=hLo5kcQUH/ZEoNTg9xQ55bRyXfHmQBLWEGRVS1P2KLG7HOOjBF69yzBI4IbfZOF9fF
-         VveAq0e9ryyR3/vfbMK53uRi18vlyWNvekEcj5645fWJRwZAXU75sZSQW8UlOL/hdzFx
-         SrkLAoNSeNGCA7/EPYHM/L4MVOoPAN2GoQu2+vaqhSFwTb+bputtY1SX+TS2AAheewYs
-         nLjjtSTV1NuARvyQ0sVdjoKlThCMg5NC14o9OhQ5muMIO/VPuL3DIcKsqJfUglsuTqr5
-         kDXJvhWqMg/YZkgzEKa//A2tP+qRahLvanlRi+nbQVstd4m0fzI6UyVtICyHD5grqO/G
-         Ej4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783330530; x=1783935330;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=oss.qualcomm.com; s=google; t=1783330533; x=1783935333; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=x4hNt3rfNhUiPXOePYpG8Tjf20b4cSynXFokVgMJOC4=;
-        b=MAcoyH+mQnyn+yOtO5O0oQzgir3ggq2PBgVFePrwpi/b2Z1e4keDOY+w/7SJvuX1H0
-         KIex6vKfyg75ktPZXN+7OKTdiCxe7RLpHawF4kyvADZn/voDi8VWCoiYB9ZcDfk6Nto+
-         4pYyU1ZVO+nWszsih1thp+Sim36B//9AwgMgZgAyp/3c1gT2WmDfySJjCD5U7uURkdfK
-         oJrU7A+xtgFeCYy0umMtq4/RCNcw5hiI4OrQix4v1+Itz2CLfFaxTmOA6qGM+9o29B6G
-         PhcWbv7mRox5FnRyIoRQ9Ios2OayYNwzXSwssdrstar6hlMZwEre3sbZeqWW58p9plRw
-         3SfQ==
-X-Forwarded-Encrypted: i=1; AHgh+RopAott5zh9WtDd9quXXYEzu0cZA0VrGOQRTonrg/pJK9v9JB7RBB0VSHX3tjlU60mgzBS7vkc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQC54K7C/stpJ1L72Q+K4W+px2bNxv6zBhhhToJLR5o7J0y6/M
-	5RJYvrDPiX4lOxU16u6uaFzZSc6199iC33Ttbw3kG/H/ppz9AWFCi2lBMoyrQzp8mRrl6hyE1Ud
-	oYP71eTrd0TlkUzDFU14+NCzaYGWeFLYlcaIBHruDCePCJKuneSLnvrW2DrM=
-X-Gm-Gg: AfdE7ckjFVhADp9Dr8Hg1mS83ABPAf7CnOxFnddWm7RmHggi8B+6PAB/8tYgrKEuoYb
-	HD0XUk686cKz3XYvGtVDB/daDLUaMhCqrfEl3sBA1qpQQCZq2bqEs0n2MupJxH9wwO50cC5QfVT
-	CfrdwSbw1nTOg0JNHwjhlUq1ZlianhjbB8iOu/UvIfbO0SzLIaOIfBHLRGy836UjzHahb7yLPaw
-	i0Xu3nfPm68kvWMaXa8KPhH5K1PT4lf22m0a8EkZCpgtrljd62QjT4DZ/Fm0Iqxixr46oL6Y9GP
-	XVqsZfJZ7WH22ZpUMlV6a1w7NilouNrj1XXQEf6+CRYeaoGAe6SZueTrQATBhDwkgyg3jIJHp1x
-	WoENUBbTDpjn+dAbgLj2Bd/AAtpw=
-X-Received: by 2002:a05:620a:6082:b0:92e:61f7:5687 with SMTP id af79cd13be357-92e8b539407mr1666942885a.29.1783330530185;
-        Mon, 06 Jul 2026 02:35:30 -0700 (PDT)
-X-Received: by 2002:a05:620a:6082:b0:92e:61f7:5687 with SMTP id af79cd13be357-92e8b539407mr1666940885a.29.1783330529728;
-        Mon, 06 Jul 2026 02:35:29 -0700 (PDT)
+        bh=6+5lE7ilLsLwoQEluALM/vn0y9JfV02RJOJEvWyumEc=;
+        b=MZC+0WsvLZ2NsO1JmJaEzY9sGsZYXl9162Xl+yiB4z4f+SniBzZpZMN7v132eyaD4s
+         oUrPDH1WWZ2wq0rFqxZi0XaDwR7j/XwqcNk6Od1NTt9lC05s8R8gl9cmg2OXoRhpzTWk
+         wk/PgRglMQlChxfHybsS906MFLPxc2kVn/wAowgZ2Un6un2Of1ylCOSfazERI4KXW49b
+         dH3LlvD6jJ9eoMBBo3c5XZsHNUgEfSYkdG1kb7O7+l0X8VoOwxtwgZVRgd1fh2V9CGDC
+         zHCj38iWPXJwMJwXapVapBGwXezLR6VjqSPOAQ6Z9RqPBw8QtXlTfVFPaudGkJA6JQi6
+         t61Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783330533; x=1783935333;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=6+5lE7ilLsLwoQEluALM/vn0y9JfV02RJOJEvWyumEc=;
+        b=gf0VAKPUbYJNrhqBuwL/DEWoEsTXB9AZVVaxwQFx8JiitLkpN0pDnxkN7OBegCKr+2
+         7i6zXKB/F4Iy+mDYKnRzHP/vEgo49m2YLF1NbeBTORLlskEzlrDaghQildhJKHeHSRiV
+         ajUUUgT45hKBbtg0nwey4NsvGEyFmdA/TXTNj5qTOgeotxpoP3N7+xd1cOP/gtGlTxDQ
+         aK1Bm6Cikch/qg7Q+Rw/AzYsKc9I4dKH8VQ8ySTVRfj+r5/V8aVm05Locq1uYuAxxTj3
+         WRild7ikVWdFf/U9uRBZsEh4Sdbw3Hgja10surEgQDwrD5jv4fmi+bX9elGuzJAgdYjs
+         fDUA==
+X-Forwarded-Encrypted: i=1; AHgh+RrD8cVSNUpGeRrjWjEVRjNsNrX7ZnnYJWtR7mY89YfUeoZEEW9oTHHiOaZcvzSuht3kMU4lKEM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzrzUvqDj1Iyb5t4hBqXupyYjIDfDu+Vfj3OaPOaCkDBP+Z8n7p
+	PB314Jfr1QwBELD1z1vthA6DNWoNbYJuccQPxTDI4jP64OMbzt8pgjictn6HNMXc7GqMlO5BYiE
+	GYMqyrLR54COQPI0S+na5iiAfhHKLrW6c4Hdw9FGyuAcSvmvHZjiR2N+E1Rw=
+X-Gm-Gg: AfdE7cknQPFYYk5XfXdbbtFhl7kiXBbw3ar7RfvQrfbyzdMII/EZT6A07UFytiyLC4h
+	8WF9q2i8zG6hNb59KASXLLopePxFbq5ceZ9ure6gGSirB3G8hXmmgCSqVsRJ+eT/parjf8CdnNj
+	1YhM0FlszAWQ0mUiY3/ZiMcpThsUwXqUVQYZr6Xthqy9O1WruBlV57YwHnjIIBx2iq6Q1pW7bH1
+	xFUWa+WoymTz7L922ewNLml1MyKvfcLfAEwxLZO9b7uSuoXax772MeXMXnnBssnFy4tdhM7Qn31
+	+BhLs1K193WbX6rXp5THl3/jCEQ+VrZCB7n+73At+f8gj7GQek7dLtwdiauBeWciJn6VSudYutm
+	kxmjWRmZ39iI4HFCWGcJTtp9Pedc=
+X-Received: by 2002:a05:620a:4096:b0:92e:7d53:8e83 with SMTP id af79cd13be357-92e9a4f2cd4mr1240861485a.56.1783330532653;
+        Mon, 06 Jul 2026 02:35:32 -0700 (PDT)
+X-Received: by 2002:a05:620a:4096:b0:92e:7d53:8e83 with SMTP id af79cd13be357-92e9a4f2cd4mr1240858985a.56.1783330532161;
+        Mon, 06 Jul 2026 02:35:32 -0700 (PDT)
 Received: from quoll ([178.197.223.174])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493cce11497sm290925905e9.12.2026.07.06.02.35.27
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493cce11497sm290925905e9.12.2026.07.06.02.35.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2026 02:35:28 -0700 (PDT)
+        Mon, 06 Jul 2026 02:35:31 -0700 (PDT)
 From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 To: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
         Tom Lendacky <thomas.lendacky@amd.com>, Rob Herring <robh@kernel.org>,
@@ -85,49 +87,51 @@ To: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
         Richard Cochran <richardcochran@gmail.com>, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, netdev@vger.kernel.org
 Cc: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Subject: [PATCH 1/2] arm64: dts: amd: seattle: Remove useless clocks DTSI include
-Date: Mon,  6 Jul 2026 11:35:24 +0200
-Message-ID: <20260706093523.274093-3-krzysztof.kozlowski@oss.qualcomm.com>
+Subject: [PATCH 2/2] arm64: dts: amd: seattle: Remove useless xgbe DTSI include
+Date: Mon,  6 Jul 2026 11:35:25 +0200
+Message-ID: <20260706093523.274093-4-krzysztof.kozlowski@oss.qualcomm.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260706093523.274093-3-krzysztof.kozlowski@oss.qualcomm.com>
+References: <20260706093523.274093-3-krzysztof.kozlowski@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3395; i=krzysztof.kozlowski@oss.qualcomm.com;
- h=from:subject; bh=42Kj3VAyHdKAb4Mujj+SNBJjepZpYO0t8Hxlz5eSYok=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBqS3bcQfZBrCmFoiQLVudR7CeFVhhcE1ScGZ28e
- W0f9Y+B2S6JAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCakt23AAKCRDBN2bmhouD
- 17p9D/0TBfp+/n2xq15jwV+novyrQONMFBQzxVcD3OoZwwPOU8qtkM9NzipW4MzH4KE3E+woz0X
- BU3efE1WpDvV4kqwdfL5mTgRlDfRZ0jNG1m/bz5ZqetiEUr51n0mungnDcyOSfNOb95R+grGE2f
- Tbx1WrcD4Hoy3y6lU9xmTFjTutHdyXUeb7u1J5dx+5IjpkoVAl0mFikumq79U2QnCo9dxNObBI6
- 7hVzSYtFoddGkC62brq4MvQXVKAokCabbsE8GIzZaSuGu/wRGNIjt3yLgZEFj9Jzm6KTqO3pQGh
- JVs9jJZ+Mnhs3+fTQzyrihS67Hhh6mCb9rv91uq4iqDhRw/k9RkjuBQUmy/rPD7aASx08TUy3DO
- N+KPQeIUtXJbf9lNoBQHLxJiAViV/kiG4kWPnpNZt5B0PYDOdNqoA+p+kr/jHMGEFRRTlFEbxFT
- eLjyb0YOwtrZpzTeNOFzvufkfSbHnKF2c4q48bBypqqu+jFpeP4xAz59ybY2MGHO5AtxuuTcG4F
- a7XA6BhG7383HWfezFLWMODQrIoSJpOKKnJmRNPKkzg1pniDbm+fkCEtafw/GlRgostlu4NZibQ
- y+BqC8WAblUCBOnSSHruMRldGpogIuQsdR5m5VoV54tTZBceYVURjWpV+CY3wfBE7me9Mise0Th Hd8KadIKhcCuXOQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6482; i=krzysztof.kozlowski@oss.qualcomm.com;
+ h=from:subject; bh=eIEOzhD//NGAkff8ufm0J15xyTStaX5cCnX7vkBYkyM=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBqS3bcvp65RtPTDKzIG6Air43gF1sJufaUcjkMr
+ zSyhPmkL+2JAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCakt23AAKCRDBN2bmhouD
+ 1/+6D/wN7RfYnANjffxf/4w0QcMEmdt5CPHK2d/uWJChjvj5SeyxFt5svLboWJf1pBMesC4fXw5
+ DoTa4412flPJavW12LCKzCjbch/h6b/lNod7x2I9tSk9sDZ/F24n03J0/ZUEts/pmTmyjeBANRf
+ aoFdesoboBQShvAwQT4NNZn7ytV3/rGHDm0q7nIT0TS1iMMcV4/3ZqByewUR0u8Drg+ERTYkE2+
+ uoHHD7wJ+MHfR5w2vurMGZEWUcNIrbL+94N7RKxe1kYxgks/ZDbr2hN73sNmHvmG8qyRxZhcQ53
+ uufAaAB0J3DdvdTRPoS7B0mi5Jz1FY1pKPVp49A3F/Kzc1yf3lObuSO3hVvX/jIqtHZQ7d+Cxo1
+ jUhK+UZPdJ/XmXK/z2tNiC+cSwpVGNSVqR0UTDxubrmy5wYkSSbNI2YxJOCn8ZCpkYsjcSqEj3a
+ ZBU6Lx9r4lNXEiAldP/J8USy9Pb6BlDAWklEm9XsF0rZhTq295ds9zydlQ94g8JGWb34wW94hR2
+ jBG488QGCkl3Qf7DdO1C0SA74Pk3o9Se0+UN6yUlewe2IUsC0IfB8GI8LmehI+HvI0VkixFU9Et
+ yMnn9MbPybroOwRArxdcH1pNjmyiXF39vMq8mRohnQT0Ws5YTSqsPlQ1FleQSAwmG/k47aaPdOP DgUc790dC2p1adw==
 X-Developer-Key: i=krzysztof.kozlowski@oss.qualcomm.com; a=openpgp; fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: TGQ5BejTFjf0mC3_XrnLFDV4YrYvesGu
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA2MDA5NiBTYWx0ZWRfXwWKBN9a0mxfE
- Kc4x8cMvJYuizYUOiWKbm4J/D2o7DrgykKqMqmqojLyjJtexykLnRHMsFvgjrhI5idv7iMpEQFK
- wbJslgbcHq3E+Rwvdv5oe3jJak5iYMg=
-X-Authority-Analysis: v=2.4 cv=Mo1iLWae c=1 sm=1 tr=0 ts=6a4b76e3 cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=N6niishs+lR9UBL1FN3Qrw==:17
+X-Proofpoint-GUID: BhF-DjZCuvDyCB-ZRdM6W5cXyYvguHZk
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA2MDA5NiBTYWx0ZWRfX+qwFepD7bF66
+ +vUMwFOns0spYbOpLYwhLRc+TVnbBeLtgtB8Ln0JXa/A3Aq6PVu+ZYKoVdvaSBjAJvvdDVzyCS/
+ CKKctLZ6fbfftuV13h6DoRYVWPGSHNw=
+X-Authority-Analysis: v=2.4 cv=Mo1iLWae c=1 sm=1 tr=0 ts=6a4b76e5 cx=c_pps
+ a=qKBjSQ1v91RyAK45QCPf5w==:117 a=N6niishs+lR9UBL1FN3Qrw==:17
  a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
  a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22 a=EUspDBNiAAAA:8
- a=LplHZR8TypZ71DMuxxAA:9 a=bTQJ7kPSJx9SKPbeHEYW:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA2MDA5NiBTYWx0ZWRfX3rnXKEa2Y6bX
- 4Q5wSWoz0JtQFyiL74XJ1f2Z+qFgKCy7yDOhFvfJmYY8jqV/XzCHlFkQZs2ncZ5RtycNVLwVehj
- jLCo/+Lf5mU7lzf8X9LjpMoBzlF2gItLKGa8LCzUMhFnl1ZjsJMXW/BI2uSulZsJ8vrqhckCowr
- uschfOM/FI7HBozeuSFisGvWka9CvDyGz+Fb5wjrAGxnLPhep3D1320RPpp9zj8e+o8/oqa9Bgd
- 9bWXnHON6AbvYy+uiTc8igy0NoQNOI/vtIlqgfSmY/n+bPiBVuA5oOHz7zf5l3z5/+staED8qn8
- reQ3NxRu2NVgegfKn7pMXk4HMpxN26T37I2GCFCqeZpFuOKrWTJTqbyTI6Wd2yNubQYJnOc0wI7
- I2UTLonrLSRUQAvq85MoLTcWg/ITgZg6I1q5o5eMjGOjZtn665Aq/AnAgG7OcLi8KOBLBd6MCk4
- dWOMJwGxthdthviZBfA==
-X-Proofpoint-ORIG-GUID: TGQ5BejTFjf0mC3_XrnLFDV4YrYvesGu
+ a=EJugBUHlmtfpvM5MZ8AA:9 a=NFOGd7dJGGMPyQGDc5-O:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA2MDA5NiBTYWx0ZWRfXzgrX8hGntRoq
+ /B5AcEbgpFznuhblYt6bYkWEO+f/2yi8KcPrnVUFkSBXNP+HbXylOgVXQlTPscnq/2zoODVs5rJ
+ KjM6OKSHwqhcii9WQKleSMWr6n8lIsTfkx2ieXqE81UO1YlPCvqRJpsNX8R4f6ILTrZekj+Puq2
+ 69qFvRYFRd07lNCr+7WEMOTGDjFq19PQepKRBcDMkl/JUSu+6WPtordcbG+Gi2IO1RZLrUjsiR8
+ O5uBb1NczOMioViOTd0wy45fV4GaiQ1sGS1AA3FUlKyugBX/N9vSdhhRLfa93FEyBB0u7k5ike8
+ qCRmLJFQpy6jJlcnR4o4Fz4KcoQ5ZoY5QcsLyZaUdjOBF3dggjk+MFOTEl1tp2d93OmM1aCvZXL
+ WaQ7hj+2Nxid5uWTwzXQcLkS4NIZyU7FJMOgry5alTBPLjuFjep8Pb+t9Pr0v4nIWpI4CDCYinj
+ p+RpIIgKOciJOtnSdlg==
+X-Proofpoint-ORIG-GUID: BhF-DjZCuvDyCB-ZRdM6W5cXyYvguHZk
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
  definitions=2026-07-06_01,2026-07-03_01,2025-10-01_01
@@ -137,112 +141,193 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607060096
 
-The "amd-seattle-clks.dtsi" file is included exactly once, so paste the
+The "amd-seattle-xgbe-b.dtsi" file is included exactly once, so paste the
 contents directly in proper DTSI.  No functional impact.
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 ---
- arch/arm64/boot/dts/amd/amd-seattle-clks.dtsi | 43 -------------------
- arch/arm64/boot/dts/amd/amd-seattle-soc.dtsi  | 36 +++++++++++++++-
- 2 files changed, 35 insertions(+), 44 deletions(-)
- delete mode 100644 arch/arm64/boot/dts/amd/amd-seattle-clks.dtsi
+ .../boot/dts/amd/amd-overdrive-rev-b0.dts     | 78 ++++++++++++++++-
+ .../boot/dts/amd/amd-seattle-xgbe-b.dtsi      | 84 -------------------
+ 2 files changed, 77 insertions(+), 85 deletions(-)
+ delete mode 100644 arch/arm64/boot/dts/amd/amd-seattle-xgbe-b.dtsi
 
-diff --git a/arch/arm64/boot/dts/amd/amd-seattle-clks.dtsi b/arch/arm64/boot/dts/amd/amd-seattle-clks.dtsi
+diff --git a/arch/arm64/boot/dts/amd/amd-overdrive-rev-b0.dts b/arch/arm64/boot/dts/amd/amd-overdrive-rev-b0.dts
+index 8862adae44e9..0860fc7a6927 100644
+--- a/arch/arm64/boot/dts/amd/amd-overdrive-rev-b0.dts
++++ b/arch/arm64/boot/dts/amd/amd-overdrive-rev-b0.dts
+@@ -71,5 +71,81 @@ sdcard0: mmc@0 {
+ };
+ 
+ &smb0 {
+-	/include/ "amd-seattle-xgbe-b.dtsi"
++	xgmac0: ethernet@e0700000 {
++		compatible = "amd,xgbe-seattle-v1a";
++		reg = <0 0xe0700000 0 0x80000>,
++		      <0 0xe0780000 0 0x80000>,
++		      <0 0xe1240800 0 0x00400>, /* SERDES RX/TX0 */
++		      <0 0xe1250000 0 0x00060>, /* SERDES IR 1/2 */
++		      <0 0xe12500f8 0 0x00004>; /* SERDES IR 2/2 */
++		interrupts = <0 325 4>,
++			     <0 346 1>, <0 347 1>, <0 348 1>, <0 349 1>,
++			     <0 323 4>;
++		amd,per-channel-interrupt;
++		amd,speed-set = <0>;
++		amd,serdes-blwc = <1>, <1>, <0>;
++		amd,serdes-cdr-rate = <2>, <2>, <7>;
++		amd,serdes-pq-skew = <10>, <10>, <18>;
++		amd,serdes-tx-amp = <0>, <0>, <0>;
++		amd,serdes-dfe-tap-config = <3>, <3>, <3>;
++		amd,serdes-dfe-tap-enable = <0>, <0>, <7>;
++		mac-address = [ 02 A1 A2 A3 A4 A5 ];
++		clocks = <&xgmacclk0_dma_250mhz>, <&xgmacclk0_ptp_250mhz>;
++		clock-names = "dma_clk", "ptp_clk";
++		phy-mode = "xgmii";
++		iommus = <&xgmac0_smmu 0x00 0x17>; /* 0-7, 16-23 */
++		dma-coherent;
++	};
++
++	xgmac1: ethernet@e0900000 {
++		compatible = "amd,xgbe-seattle-v1a";
++		reg = <0 0xe0900000 0 0x80000>,
++		      <0 0xe0980000 0 0x80000>,
++		      <0 0xe1240c00 0 0x00400>, /* SERDES RX/TX1 */
++		      <0 0xe1250080 0 0x00060>, /* SERDES IR 1/2 */
++		      <0 0xe12500fc 0 0x00004>; /* SERDES IR 2/2 */
++		interrupts = <0 324 4>,
++			     <0 341 1>, <0 342 1>, <0 343 1>, <0 344 1>,
++			     <0 322 4>;
++		amd,per-channel-interrupt;
++		amd,speed-set = <0>;
++		amd,serdes-blwc = <1>, <1>, <0>;
++		amd,serdes-cdr-rate = <2>, <2>, <7>;
++		amd,serdes-pq-skew = <10>, <10>, <18>;
++		amd,serdes-tx-amp = <0>, <0>, <0>;
++		amd,serdes-dfe-tap-config = <3>, <3>, <3>;
++		amd,serdes-dfe-tap-enable = <0>, <0>, <7>;
++		mac-address = [ 02 B1 B2 B3 B4 B5 ];
++		clocks = <&xgmacclk1_dma_250mhz>, <&xgmacclk1_ptp_250mhz>;
++		clock-names = "dma_clk", "ptp_clk";
++		phy-mode = "xgmii";
++		iommus = <&xgmac1_smmu 0x00 0x17>; /* 0-7, 16-23 */
++		dma-coherent;
++	};
++
++	xgmac0_smmu: iommu@e0600000 {
++		 compatible = "arm,mmu-401";
++		 reg = <0 0xe0600000 0 0x10000>;
++		 #global-interrupts = <1>;
++		 interrupts = /* Uses combined intr for both
++			       * global and context
++			       */
++			      <0 336 4>,
++			      <0 336 4>;
++		#iommu-cells = <2>;
++		dma-coherent;
++	 };
++
++	 xgmac1_smmu: iommu@e0800000 {
++		 compatible = "arm,mmu-401";
++		 reg = <0 0xe0800000 0 0x10000>;
++		 #global-interrupts = <1>;
++		 interrupts = /* Uses combined intr for both
++			       * global and context
++			       */
++			      <0 335 4>,
++			      <0 335 4>;
++		#iommu-cells = <2>;
++		dma-coherent;
++	 };
+ };
+diff --git a/arch/arm64/boot/dts/amd/amd-seattle-xgbe-b.dtsi b/arch/arm64/boot/dts/amd/amd-seattle-xgbe-b.dtsi
 deleted file mode 100644
-index 73f687773ce6..000000000000
---- a/arch/arm64/boot/dts/amd/amd-seattle-clks.dtsi
+index 18b0c2dd1b2d..000000000000
+--- a/arch/arm64/boot/dts/amd/amd-seattle-xgbe-b.dtsi
 +++ /dev/null
-@@ -1,43 +0,0 @@
+@@ -1,84 +0,0 @@
 -// SPDX-License-Identifier: GPL-2.0
 -/*
-- * DTS file for AMD Seattle Clocks
+- * DTS file for AMD Seattle XGBE (RevB)
 - *
-- * Copyright (C) 2014 Advanced Micro Devices, Inc.
+- * Copyright (C) 2015 Advanced Micro Devices, Inc.
 - */
 -
--	adl3clk_100mhz: uartspiclk_100mhz: clock-100000000 {
--		compatible = "fixed-clock";
--		#clock-cells = <0>;
--		clock-frequency = <100000000>;
--		clock-output-names = "adl3clk_100mhz";
+-	xgmac0: ethernet@e0700000 {
+-		compatible = "amd,xgbe-seattle-v1a";
+-		reg = <0 0xe0700000 0 0x80000>,
+-		      <0 0xe0780000 0 0x80000>,
+-		      <0 0xe1240800 0 0x00400>, /* SERDES RX/TX0 */
+-		      <0 0xe1250000 0 0x00060>, /* SERDES IR 1/2 */
+-		      <0 0xe12500f8 0 0x00004>; /* SERDES IR 2/2 */
+-		interrupts = <0 325 4>,
+-			     <0 346 1>, <0 347 1>, <0 348 1>, <0 349 1>,
+-			     <0 323 4>;
+-		amd,per-channel-interrupt;
+-		amd,speed-set = <0>;
+-		amd,serdes-blwc = <1>, <1>, <0>;
+-		amd,serdes-cdr-rate = <2>, <2>, <7>;
+-		amd,serdes-pq-skew = <10>, <10>, <18>;
+-		amd,serdes-tx-amp = <0>, <0>, <0>;
+-		amd,serdes-dfe-tap-config = <3>, <3>, <3>;
+-		amd,serdes-dfe-tap-enable = <0>, <0>, <7>;
+-		mac-address = [ 02 A1 A2 A3 A4 A5 ];
+-		clocks = <&xgmacclk0_dma_250mhz>, <&xgmacclk0_ptp_250mhz>;
+-		clock-names = "dma_clk", "ptp_clk";
+-		phy-mode = "xgmii";
+-		iommus = <&xgmac0_smmu 0x00 0x17>; /* 0-7, 16-23 */
+-		dma-coherent;
 -	};
 -
--	ccpclk_375mhz: clock-375000000 {
--		compatible = "fixed-clock";
--		#clock-cells = <0>;
--		clock-frequency = <375000000>;
--		clock-output-names = "ccpclk_375mhz";
+-	xgmac1: ethernet@e0900000 {
+-		compatible = "amd,xgbe-seattle-v1a";
+-		reg = <0 0xe0900000 0 0x80000>,
+-		      <0 0xe0980000 0 0x80000>,
+-		      <0 0xe1240c00 0 0x00400>, /* SERDES RX/TX1 */
+-		      <0 0xe1250080 0 0x00060>, /* SERDES IR 1/2 */
+-		      <0 0xe12500fc 0 0x00004>; /* SERDES IR 2/2 */
+-		interrupts = <0 324 4>,
+-			     <0 341 1>, <0 342 1>, <0 343 1>, <0 344 1>,
+-			     <0 322 4>;
+-		amd,per-channel-interrupt;
+-		amd,speed-set = <0>;
+-		amd,serdes-blwc = <1>, <1>, <0>;
+-		amd,serdes-cdr-rate = <2>, <2>, <7>;
+-		amd,serdes-pq-skew = <10>, <10>, <18>;
+-		amd,serdes-tx-amp = <0>, <0>, <0>;
+-		amd,serdes-dfe-tap-config = <3>, <3>, <3>;
+-		amd,serdes-dfe-tap-enable = <0>, <0>, <7>;
+-		mac-address = [ 02 B1 B2 B3 B4 B5 ];
+-		clocks = <&xgmacclk1_dma_250mhz>, <&xgmacclk1_ptp_250mhz>;
+-		clock-names = "dma_clk", "ptp_clk";
+-		phy-mode = "xgmii";
+-		iommus = <&xgmac1_smmu 0x00 0x17>; /* 0-7, 16-23 */
+-		dma-coherent;
 -	};
 -
--	sataclk_333mhz: clock-333000000 {
--		compatible = "fixed-clock";
--		#clock-cells = <0>;
--		clock-frequency = <333000000>;
--		clock-output-names = "sataclk_333mhz";
--	};
+-	xgmac0_smmu: iommu@e0600000 {
+-		 compatible = "arm,mmu-401";
+-		 reg = <0 0xe0600000 0 0x10000>;
+-		 #global-interrupts = <1>;
+-		 interrupts = /* Uses combined intr for both
+-			       * global and context
+-			       */
+-			      <0 336 4>,
+-			      <0 336 4>;
+-		#iommu-cells = <2>;
+-		dma-coherent;
+-	 };
 -
--	dmaclk_500mhz: pcieclk_500mhz: clock-500000000 {
--		compatible = "fixed-clock";
--		#clock-cells = <0>;
--		clock-frequency = <500000000>;
--		clock-output-names = "pcieclk_500mhz";
--	};
--
--	xgmacclk0_dma_250mhz: xgmacclk0_ptp_250mhz: xgmacclk1_dma_250mhz: xgmacclk1_ptp_250mhz:
--	miscclk_250mhz: clock-250000000 {
--		compatible = "fixed-clock";
--		#clock-cells = <0>;
--		clock-frequency = <250000000>;
--		clock-output-names = "miscclk_250mhz";
--	};
--
-diff --git a/arch/arm64/boot/dts/amd/amd-seattle-soc.dtsi b/arch/arm64/boot/dts/amd/amd-seattle-soc.dtsi
-index a611f8288b3e..c5b9dbfdf014 100644
---- a/arch/arm64/boot/dts/amd/amd-seattle-soc.dtsi
-+++ b/arch/arm64/boot/dts/amd/amd-seattle-soc.dtsi
-@@ -11,7 +11,41 @@ / {
- 	#address-cells = <2>;
- 	#size-cells = <2>;
- 
--	/include/ "amd-seattle-clks.dtsi"
-+	adl3clk_100mhz: uartspiclk_100mhz: clock-100000000 {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+		clock-frequency = <100000000>;
-+		clock-output-names = "adl3clk_100mhz";
-+	};
-+
-+	ccpclk_375mhz: clock-375000000 {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+		clock-frequency = <375000000>;
-+		clock-output-names = "ccpclk_375mhz";
-+	};
-+
-+	sataclk_333mhz: clock-333000000 {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+		clock-frequency = <333000000>;
-+		clock-output-names = "sataclk_333mhz";
-+	};
-+
-+	dmaclk_500mhz: pcieclk_500mhz: clock-500000000 {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+		clock-frequency = <500000000>;
-+		clock-output-names = "pcieclk_500mhz";
-+	};
-+
-+	xgmacclk0_dma_250mhz: xgmacclk0_ptp_250mhz: xgmacclk1_dma_250mhz: xgmacclk1_ptp_250mhz:
-+	miscclk_250mhz: clock-250000000 {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+		clock-frequency = <250000000>;
-+		clock-output-names = "miscclk_250mhz";
-+	};
- 
- 	gic0: interrupt-controller@e1101000 {
- 		compatible = "arm,gic-400", "arm,cortex-a15-gic";
+-	 xgmac1_smmu: iommu@e0800000 {
+-		 compatible = "arm,mmu-401";
+-		 reg = <0 0xe0800000 0 0x10000>;
+-		 #global-interrupts = <1>;
+-		 interrupts = /* Uses combined intr for both
+-			       * global and context
+-			       */
+-			      <0 335 4>,
+-			      <0 335 4>;
+-		#iommu-cells = <2>;
+-		dma-coherent;
+-	 };
 -- 
 2.53.0
 
