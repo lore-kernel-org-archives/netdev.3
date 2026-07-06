@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7FF144212C;
-	Mon,  6 Jul 2026 10:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B5403BD22B
+	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 10:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783333227; cv=none; b=L8yDuIebbq4xTGsTykgym8OBRzttgpzUoWKK4fY99Da6YgmO21tGIoyal8GYucG8EvEcR82cm4ytOMZV7Axnmv8jVK4W6x4Ymsvh+6E2FbHcEfH6L1e7r2C2/lEsFD6vzAPYN007evjRdyVm5CPy2jQcF5FG+OkzrJknJfFjlJM=
+	t=1783333231; cv=none; b=qCcFZDAzDtDt8FzfKB81ztKy4amImPQS28MZ44RxdEQUY25TWW1ELekTxM8M4uwW6LLwgwICUWFihCATw/XKRdqhy3fO+By0LBRN+xz20yMVwtUF5kCon8CutveByHu4I5m2iS5+V1/Oev6dsgbUD6asxAcZ0l9ZLrFLg4sF3fU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783333227; c=relaxed/simple;
-	bh=TbS4whPA7BqetYpEMyEfBenVEo1dobd9dMMAgwfY94Y=;
+	s=arc-20240116; t=1783333231; c=relaxed/simple;
+	bh=cOq/g4rxdhFh3c0xPJ9gwk/jxLOVthe9XluHj4I3iDc=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=tgrgELM0DyyUtN89EcqncC3crXPWmOc9oMMP3pOqCOyzdZQKdnhpTXk23pkgYvybSHt12JxgkQy0V+GmiM8SR5lcHPbucNiD2+SX7Wppo4qJo8FUc7gTiBXSiRbJSVChcGWPioIVfWTC8uASYR5SyaaRwG/EM4WsATIpg9i7rHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BQl8/0sF; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=bYhfxtjsoicAqa0xmTYDSYQi1p50YGnLCd7HVTUg+59YROd7ONFDzA5URgwM/0S2Jhor48SlWXwmPoo3ahpvHahjkXDiPIAlSqoTJJy3mtIsvQ1XeBKLKpZtIqZ3j5eKPgaKjAO6jBT82vEnKBGzzOM4kbl8/Zqg3IGQnZ6Z1v8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i+iK02Rd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BQl8/0sF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC3241F00A3D;
-	Mon,  6 Jul 2026 10:20:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i+iK02Rd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D2A11F000E9;
+	Mon,  6 Jul 2026 10:20:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783333225;
-	bh=pYbEhN7G2VytXVvQ6vuXrI5sYUDrK5WlwR9Yr1E3c9M=;
+	s=k20260515; t=1783333230;
+	bh=W5GqfmmJtLMmXXIzCMKqzn/P91aHErAAwUnp5sezLro=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=BQl8/0sFFHS5FeLF+kQs0gAZwN62CM8E9VYzKAOxtiYEDYI9fAzlWVq/9SB1UXYx9
-	 UiezOOqMBpU/NeykE9PQynnc28TfinrN0aIt2IDPJ9T4gEupoj4txSU7gdPtV0QLAX
-	 Fz0BZO8lDmh/O0BRBKMVm/tFBmJwmJEmkuaQEZlwMiY3jS80wv/PIek89ODuXxUgJC
-	 CzwcTQpWnBHymD6JfqeMTO+5GkaLzixjq85FpA3sOm/D6E0stBJae8XYDPgTLWYaIL
-	 NZiOyaExseO4zo+1W/rTmK3X7NgyovPY9ZA/3ctOYbw4TWyoBzobn7bIyFHGiJkQIs
-	 kLC14LzCudTzw==
+	b=i+iK02RdATzhDskPojBdJcFLqQrgB++tR/KnpKKF5SybjQJ9HpGNPj92XNvRmJDQW
+	 5ZDsLxjQpXfDFfPh903z7YLW/iWbYSIeho4z1W8k363eQJKBqmw7P1AAYe5pzrHBxz
+	 AUBdsAeQQh2ZtNvm2E9THwOD1KCv4XBp4XHkXSviVvTgwtJZ9pU3oNvqktG/hk5n8T
+	 kRWao1ab9AjL9VD28KgpsWyCzuFZl5k+Zxww9HIzMg1OFs1eKW2Ea4ksprzYaKmP3f
+	 BsEkHfBOWZvQqhuxhTYr5woM44uP4I4/ojbWyvJAnJQ6HQVlEf/MumJ4XAy67S/hBG
+	 4qHrgZcE+Z26Q==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 939C83AB1394;
-	Mon,  6 Jul 2026 10:20:07 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0BC63AB1394;
+	Mon,  6 Jul 2026 10:20:11 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,41 +37,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] selftests: net: make busywait timeout clock
- portable
+Subject: Re: [PATCH net] selftests/tc-testing: Add tests that force multiq and
+ taprio to enqueue to child's gso_skb
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178333320639.484760.17349135118133429852.git-patchwork-notify@kernel.org>
-Date: Mon, 06 Jul 2026 10:20:06 +0000
-References: <20260630165157.3814871-1-nirmoyd@nvidia.com>
-In-Reply-To: <20260630165157.3814871-1-nirmoyd@nvidia.com>
-To: Nirmoy Das <nirmoyd@nvidia.com>
+ <178333321038.484760.9697781506643276164.git-patchwork-notify@kernel.org>
+Date: Mon, 06 Jul 2026 10:20:10 +0000
+References: <20260630153651.249752-1-victor@mojatatu.com>
+In-Reply-To: <20260630153651.249752-1-victor@mojatatu.com>
+To: Victor Nogueira <victor@mojatatu.com>
 Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, shuah@kernel.org, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org, stable@vger.kernel.org
+ pabeni@redhat.com, jhs@mojatatu.com, jiri@resnulli.us,
+ netdev@vger.kernel.org, hexlabsecurity@proton.me, pctammela@mojatatu.com
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Paolo Abeni <pabeni@redhat.com>:
 
-On Tue, 30 Jun 2026 09:51:57 -0700 you wrote:
-> loopy_wait() expects millisecond timestamps. However, Ubuntu Resolute
-> can use uutils date, where `date -u +%s%3N` returns seconds plus full
-> nanoseconds instead of a 3-digit millisecond field. This makes
-> busywait expire too early and can make vlan_bridge_binding.sh read a
-> stale operstate.
-> 
-> Fixes: 25ae948b4478 ("selftests/net: add lib.sh")
-> Cc: stable@vger.kernel.org # 6.8+
-> Link: https://github.com/uutils/coreutils/issues/11658
-> Signed-off-by: Nirmoy Das <nirmoyd@nvidia.com>
+On Tue, 30 Jun 2026 12:36:51 -0300 you wrote:
+> Add test cases to reproduce scenarios fixed recently [1] where
+> multiqueue and taprio forced their children into enqueueing an skb to
+> gso_skb (during peek), but failed to dequeue from gso_skb because they
+> called the child's dequeue callback directly. This causes a desync in the
+> child's qlen/backlog and results in an eventual null-ptr-deref (with a
+> qfq or dualpi2 child).
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2] selftests: net: make busywait timeout clock portable
-    https://git.kernel.org/netdev/net/c/dd6a23bac306
+  - [net] selftests/tc-testing: Add tests that force multiq and taprio to enqueue to child's gso_skb
+    https://git.kernel.org/netdev/net-next/c/1704cc864070
 
 You are awesome, thank you!
 -- 
