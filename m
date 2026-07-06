@@ -1,178 +1,272 @@
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+Received: from mail-qv1-f73.google.com (mail-qv1-f73.google.com [209.85.219.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CCD0220687
-	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 16:35:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.174
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783355705; cv=pass; b=eP0fWtBS/bfDj6HJ/JQyuQpVHCBUQzMb2qNBOmWAwGdt51fbDNEdmqHzKXAeNTQV35Z6wM7RnDV+NpsqhvyQCCDQnaevTgqywS9e4ZgyPG+J2bbSnKmCLsi2IOGsWO3UXJ6pJ1intqQ1ZONtVAgmZ9psxcKllh86gwGFqd+qThU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783355705; c=relaxed/simple;
-	bh=jp4o02YVqFXtkcO5evY3sYAyjmc2SIxBIBpizq3qZCE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AI+7/Km9XN4YnyIfLLvstqmlw7uOvtJGkoDwLGsD/sswWPPPyRJf805QeyXd/TmCO37EFYYY1BCbcIWli8OX9GlIFgnGzGQDDh8qhEhMnnlRq5cVmenCWntHxiTe92JVe8YqU6kkh7g76l/mD9h8tk2VkXPrtZEOfC+jkwsYfzc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vOPhojDr; arc=pass smtp.client-ip=209.85.215.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B89F3430318
+	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 16:35:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783355721; cv=none; b=efYHlLpz+0x05NMdrnS1WYwHSep4g0ANRYsnErA1bMVv7znkid5blbIqpjY2T1hlmKQkL6QsvUdynV3SlscXbDxM1bd3nEkYjE7XBD0Khne+m5DGgXz/Q7NxRMtZWxjJaoW+ri751SJcrdjhAajLMp9Nf0ImkqdhyC48+S5av2A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783355721; c=relaxed/simple;
+	bh=lTT3EdAjCHgqfhji5x45jFrswWLrKP7Q/xR5KirOdQQ=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=PWP9nKwYeUKGx/upw6Q8DWPmNitkfEA98RrqzTQ3MmRVb6vdrGs8xPXGXbL5YdA+euYJ74g0cs0/e7Wap2V3SELoFeLU857RWF/t3VuNB6a8tNs/uLUwrT3brZHrnmyliSEn/x0XvfMMPImCABjHlr8PEB925O4SKWu3JZ4OqVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Z88u61+a; arc=none smtp.client-ip=209.85.219.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vOPhojDr"
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-c9c80265bd7so1855469a12.1
-        for <netdev@vger.kernel.org>; Mon, 06 Jul 2026 09:35:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783355704; cv=none;
-        d=google.com; s=arc-20260327;
-        b=PdEIrpu3r06FH43LtIfHoKMLg5sAU3dPQ2vbJKh8hTWAsimGK9gn/dK5/aEEReGqHf
-         3c8WbDF117HViZ+uS1Q27gnZbM7Hwr/Rzq7zprKpq+e8GJyH+Z2rgUzPFB+LqFVfYe5T
-         xeAVi13kTZet4FCmHT4YikpukvJiUpOo4tDGBAeXOBzvRfRMyjQtCF4vi1gdKqm+LeZx
-         USmANGEdNJJUaz6x7s2ZCk61lApFVWhfYF0CMfjYKBMPvD+ujfOA9aH36n9Hl4ZPKoE0
-         EUioQLdv0qXG/MduGbRVghE3wlRXsjvM+B44/7rGpAcWjhZ9eFav6TBonevsZ+G9MSq8
-         RdtA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=l/qK1HC6z6FPRZZxYaSbBC0LTsTLNWfixN1WH2aw2eY=;
-        fh=ODpa+pky6NNW/T9O0LGWzl64o2roM0A5mSRkpqwKzfk=;
-        b=OEbDWHs8Yrqk/hkTdOMOz9TCKX+lVqo9RpahxY7WaJdIW+1QjfRqQLqOwQC81ugXT8
-         /5oonEPpvfPKjmZpbg4A5czBiqfZgcXVInaVB2/Hylw5IajWfMVMKigDbVDXfV9K4gG5
-         4uVTTzBJ1EJgBXu8Bjpl2fs5ZxnM0+93UFEn64GjGeP0YGeXm6e3Mgdoqs3Rl+D9+wem
-         sAIIKPn0eFa5dKRFeIlcK7iZKqrQ3Y+QpHFH7AxIKiqUUkH5x4TwZ85In6XtGeD/+VmM
-         qdoEA7UMmwrrjPIFkSAxZQoCarI60O5m+h5JDPmgLSAFP3OQZ+vhwIqGyBaftR84a29W
-         jMAw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Z88u61+a"
+Received: by mail-qv1-f73.google.com with SMTP id 6a1803df08f44-8f0c46bfb6dso57193936d6.1
+        for <netdev@vger.kernel.org>; Mon, 06 Jul 2026 09:35:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783355704; x=1783960504; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=l/qK1HC6z6FPRZZxYaSbBC0LTsTLNWfixN1WH2aw2eY=;
-        b=vOPhojDr6/KQcYRagi3YDV0G0iS8CW7VRin3vCw1ywGlW91PNqetU11B8WTXGymx1Y
-         Jb3r3DPC1TfRD05iE2Q+B2Lrc48RKPLi1My5X+7IYNj7c42BLtE1uOFI1Swen65Shmos
-         AGGm3fga1Ewq0M48gP29VJELvjOZWL1U8rwvJjiZtDGk9rtQ56rB5Hc9OwcNFUnrRmHx
-         coZK1I0Dx6aj6WssTWFTyQjZurCYjHz/lo+mNephDm3Rs3z6TYNpO+iLFqL7C/hvojNh
-         QRBg0qNq8KCkUQXBfhwd3367HX2lBpxsaoxJeRkxSqFoeWS1GV4d82iXSbN3uRdMd+VT
-         BarA==
+        d=google.com; s=20251104; t=1783355718; x=1783960518; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=JiKVxFhdlU9cbi5aFLNmMdozLxk9HbOYj0zb8MjUoc4=;
+        b=Z88u61+aCBp3TF1wunHdVwO227TcftjoJhunX/uir8jE6mWeQZNhaACRtt40a3XoL3
+         NYBLHdp3SNbKQKy8xQ9h3kU8qJNZxwmxCvH8+fCnmTQFDI7v3jt4wXqCWpB4iQKikFi5
+         lUSEwBHZPgU6klSahzXQz8GU3BYe9cNwaqi4w4GvwfnNTClXxUJk94wH7j+y+LPFdyvs
+         iFpcllVNQlnbsKosvbWhZjsXs6cjzjI+We2d3cca1L21IDxwRDZJZw/a5DNUBh8wDqSN
+         AWafOxk/mcr4crPrQsq+8CzDs5xXN5Vk9BwZVfImkObK8u/BqEqujqN+Y8dkzd2xooQa
+         nmXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783355704; x=1783960504;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=l/qK1HC6z6FPRZZxYaSbBC0LTsTLNWfixN1WH2aw2eY=;
-        b=aWya4vzsAEcZyuY/z5s/95yM0bk5q2dkH2/dYcRKl0XCAzfm/3+BRSxH+KNfpFgfTc
-         qxolqfEi9Zt5vW7UY0k1mYqMx9LxEAWC5OHgIq33LjVmsSoKmKuCGzcOtv67trIkLanU
-         ACTLOH17b3ZMLbVo8qZhgTZg1OORvg8jaK7AbPNy6p7SLpZOd5KU9v/u2Mo7ULi2h41q
-         xiBlzHCMFHUMeftUi6VjiYBtm/oDV2uK78Qd4Z1PaPVf/uXvCPp0Xl0k7wwNRABTkhiG
-         qIGZH9OZzzsNfffTkdkr3kWQI4FQz73X3JMTepF68LdiqOKaoKG524jDnIkbp+HsP0mU
-         xAGQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rpt/MaC4dvZSt2446vuvSdS55nbbTo6fIHedffdO6YdMKHAbFD1y0Wjc5kdyKF/9ILi7rmCEN0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1mra1nf6/1ex8HjhefipK3mOVUYcKBmpWBLGLQp3kQW1mG0y7
-	CgH/sDBT1ENcNybvtnr5Ir3Qrs0b84TVhgCEZozohcaSS9ZyMGKVPyzwpkXSUGjnma2WVgWqkT2
-	/KIDXSDuJEn/LFMxJbAtSGXirZJdSLNDfyHYJEXBR
-X-Gm-Gg: AfdE7cnoKVzPbXsGlef8+Z7XMJoO7QI4IIwrs9zDgc/ObhA1yA6ZMgLhx6cR1sogwOf
-	CeZdQhhPySYSKi8z4K70U3hkjdi5ag1Sw7ZUappQKOgaWeKZGVxtxSU7JcS9oAY5GQZn9uBrwAp
-	uKrNzV5UWsIBusvacujAcvX3h7pSm7HBonPU4SmLR3t/Ahhjpqmz14NUj7R3puNXdqsvl0b3RRe
-	pb0dbK3tYrOsRWiV8FFi93K8Pg5iDqAyiWcdiZf9JZZyTdcMXEE/l27YUb5SwTsWwr4Ycs7NrCF
-	VGg4k7W2+ThaqbvV3d6nUNY7GoAMd1oMiIjBCAvuSdjCp6ycZF/w4znA3BGXplmaOMeQguVpAiE
-	m+RmK9FiZ0Sv5QEHvFoUVbCp6g9BZAxckOUcyiRk=
-X-Received: by 2002:a05:6a21:682:b0:3bf:9e25:1a0d with SMTP id
- adf61e73a8af0-3c08ef84007mr1665765637.52.1783355701949; Mon, 06 Jul 2026
- 09:35:01 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1783355719; x=1783960519;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JiKVxFhdlU9cbi5aFLNmMdozLxk9HbOYj0zb8MjUoc4=;
+        b=fs3TYgU/mUZ534rMzr3ePmo7Jnfv+jaZeIyrtC5Y+EJvxc9ab/+lSMdpCcV3ttRGeu
+         EZmZjRkmOAa0lz6u21AU5BQmtpep8WCPQc7aEENcUVZquHqZqiznd3oac5gMKU+lzp7c
+         kLiLT9yUtp4AeCbCDwBvH+63pXNd/OlSnPZ0elBMaWUK4lZGg1uOkSPrYgy7+yalm1tO
+         rWyMRFguEtiXDhlafcxSsuGXnfF3wlX8AapFmhNazBV+WyOR9Feqv84SQymtjxmoenv1
+         ZL6sHSETAnO8XzDzQLN4kJHtxn9R198il++rYOk49f6kBIvzu2O8VSaUkJ/LYins/JiS
+         3wAg==
+X-Forwarded-Encrypted: i=1; AHgh+Rr2+bVSCIQte4YQ0YpYa9vPCjPOXQjkMc349ofJFXK9MvYAtalPacRPgncsQ8Bih/39o1ps3jA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyq3PnRYFZhWS3ZEJkLlzBkfAOh99pfaB/QKRmVq+OYPYAmYO96
+	TM0h79ZWqVdJV9mqYD+PtHdE0S7qUA8qdRSnBcNstZN5w/V+EMqZsVcTUkvx1aHQxcIRplOSxps
+	yt2I7vt5CVhOyUQ==
+X-Received: from qvnr10.prod.google.com ([2002:a0c:f80a:0:b0:8dc:18c1:5c77])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6214:4002:b0:8ee:fd0c:5d96 with SMTP id 6a1803df08f44-8fcb1aeda0cmr17366926d6.7.1783355718356;
+ Mon, 06 Jul 2026 09:35:18 -0700 (PDT)
+Date: Mon,  6 Jul 2026 16:35:17 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260703001009.1572444-1-kuniyu@google.com> <20260703001009.1572444-7-kuniyu@google.com>
-In-Reply-To: <20260703001009.1572444-7-kuniyu@google.com>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Mon, 6 Jul 2026 09:34:50 -0700
-X-Gm-Features: AVVi8Cd1DScKSpt1fSOrucCK6h5te4ybwOSBDsA3Guj0c3vPkDpBnte_OvV2jP0
-Message-ID: <CAAVpQUDKoYU773xHEfVR4J1LLJyF+v66eAJupaM5XQqe2vE1vQ@mail.gmail.com>
-Subject: Re: [PATCH v2 net-next 06/14] net: Add per-netns netdev
- unregistration infra.
-To: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.795.g602f6c329a-goog
+Message-ID: <20260706163517.2415530-1-edumazet@google.com>
+Subject: [PATCH v2 net-next] tun: no longer rely on RTNL in tun_fill_info()
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>, Willem de Bruijn <willemb@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Replying to Sashiko review,
+Update tun_fill_info() to read device configuration fields (flags, owner,
+group, numqueues, numdisabled) locklessly using READ_ONCE().
 
-On Thu, Jul 2, 2026 at 5:10=E2=80=AFPM Kuniyuki Iwashima <kuniyu@google.com=
-> wrote:
-[...]
->
-> Note that unregister_netdevice_move_net() does not need to call
-> rtnl_net_queue_work() because __dev_change_net_namespace() is
-> (supposed to be) called with rtnl_net_lock().  (Not all callers
-> hold it yet, but the race does not happen until all callers
-> are converted and RTNL is removed.)
-[...]
-> +static void unregister_netdevice_move_net(struct net *net_old,
-> +                                         struct net *net,
-> +                                         struct net_device *dev)
-> +{
-> +       if (net_old > net) {
-> +               spin_lock(&net->dev_unreg_lock);
-> +               spin_lock_nested(&net_old->dev_unreg_lock, SINGLE_DEPTH_N=
-ESTING);
-> +       } else {
-> +               spin_lock(&net_old->dev_unreg_lock);
-> +               spin_lock_nested(&net->dev_unreg_lock, SINGLE_DEPTH_NESTI=
-NG);
-> +       }
-> +
-> +       if (!list_empty(&dev->unreg_list_net)) {
-> +               list_del(&dev->unreg_list_net);
-> +               list_add_tail(&dev->unreg_list_net, &net->dev_unreg_head)=
-;
-> +       }
-> +
-> +       spin_unlock(&net_old->dev_unreg_lock);
-> +       spin_unlock(&net->dev_unreg_lock);
-> +}
-> +
-> +void unregister_netdevice_many_net(struct net *net)
-> +{
-> +       struct net_device *dev, *tmp;
-> +       LIST_HEAD(unreg_head_net);
-> +       LIST_HEAD(unreg_head);
-> +
-> +       spin_lock(&net->dev_unreg_lock);
-> +       list_splice_init(&net->dev_unreg_head, &unreg_head_net);
-> +       spin_unlock(&net->dev_unreg_lock);
-> +
-> +       list_for_each_entry_safe(dev, tmp, &unreg_head_net, unreg_list_ne=
-t) {
-> +               list_del_init(&dev->unreg_list_net);
-> +               list_add_tail(&dev->unreg_list, &unreg_head);
-> +       }
+Annotate all writes to these fields in the control paths with WRITE_ONCE()
+to prevent data races, as these fields can be modified concurrently via
+ioctls (TUNSETPERSIST, TUNSETOWNER, TUNSETGROUP, TUNSETIFF) or queue
+attaching/detaching.
 
----8<---
-Will this result in a stalled unregistration if a cross-netns device is del=
-eted
-and concurrently moved to a new namespace?
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+---
+v2: addressed Kuniyuki and sashiko feedback.
+v1: https://lore.kernel.org/netdev/20260701125112.3652880-1-edumazet@google.com/
 
-If a user triggers deletion, unregister_netdevice_queue_net() queues the de=
-vice
-in dev_unreg_head and schedules the async workqueue. Because unregistration
-runs asynchronously, dev->reg_state remains NETREG_REGISTERED initially.
-If the pending device is concurrently moved to a new netns via
+ drivers/net/tun.c      | 60 ++++++++++++++++++++++--------------------
+ drivers/net/tun_vnet.h |  8 +++---
+ 2 files changed, 36 insertions(+), 32 deletions(-)
 
-dev_change_net_namespace(), unregister_netdevice_move_net() correctly trans=
-fers
-the device to the new netns's dev_unreg_head list.
+diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+index ffbe6f13fb1fa2333227a6b085806c82a362c0a4..9e2761887896955a243649b75d35a3e2a4c67529 100644
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -532,7 +532,7 @@ static void tun_disable_queue(struct tun_struct *tun, struct tun_file *tfile)
+ {
+ 	tfile->detached = tun;
+ 	list_add_tail(&tfile->next, &tun->disabled);
+-	++tun->numdisabled;
++	WRITE_ONCE(tun->numdisabled, tun->numdisabled + 1);
+ }
+ 
+ static struct tun_struct *tun_enable_queue(struct tun_file *tfile)
+@@ -541,7 +541,7 @@ static struct tun_struct *tun_enable_queue(struct tun_file *tfile)
+ 
+ 	tfile->detached = NULL;
+ 	list_del_init(&tfile->next);
+-	--tun->numdisabled;
++	WRITE_ONCE(tun->numdisabled, tun->numdisabled - 1);
+ 	return tun;
+ }
+ 
+@@ -600,7 +600,7 @@ static void __tun_detach(struct tun_file *tfile, bool clean)
+ 		rcu_assign_pointer(tun->tfiles[tun->numqueues - 1],
+ 				   NULL);
+ 
+-		--tun->numqueues;
++		WRITE_ONCE(tun->numqueues, tun->numqueues - 1);
+ 		if (clean) {
+ 			RCU_INIT_POINTER(tfile->tun, NULL);
+ 			sock_put(&tfile->sk);
+@@ -663,7 +663,7 @@ static void tun_detach_all(struct net_device *dev)
+ 		tfile->socket.sk->sk_shutdown = RCV_SHUTDOWN;
+ 		tfile->socket.sk->sk_data_ready(tfile->socket.sk);
+ 		RCU_INIT_POINTER(tfile->tun, NULL);
+-		--tun->numqueues;
++		WRITE_ONCE(tun->numqueues, tun->numqueues - 1);
+ 	}
+ 	list_for_each_entry(tfile, &tun->disabled, next) {
+ 		tfile->socket.sk->sk_shutdown = RCV_SHUTDOWN;
+@@ -786,7 +786,7 @@ static int tun_attach(struct tun_struct *tun, struct file *file,
+ 	if (publish_tun)
+ 		rcu_assign_pointer(tfile->tun, tun);
+ 	rcu_assign_pointer(tun->tfiles[tun->numqueues], tfile);
+-	tun->numqueues++;
++	WRITE_ONCE(tun->numqueues, tun->numqueues + 1);
+ 	tun_set_real_num_queues(tun);
+ out:
+ 	return err;
+@@ -2370,32 +2370,36 @@ static size_t tun_get_size(const struct net_device *dev)
+ 
+ static int tun_fill_info(struct sk_buff *skb, const struct net_device *dev)
+ {
+-	struct tun_struct *tun = netdev_priv(dev);
++	const struct tun_struct *tun = netdev_priv(dev);
++	unsigned int flags = READ_ONCE(tun->flags);
++	kuid_t owner = READ_ONCE(tun->owner);
++	kgid_t group = READ_ONCE(tun->group);
+ 
+-	if (nla_put_u8(skb, IFLA_TUN_TYPE, tun->flags & TUN_TYPE_MASK))
++	if (nla_put_u8(skb, IFLA_TUN_TYPE, flags & TUN_TYPE_MASK))
+ 		goto nla_put_failure;
+-	if (uid_valid(tun->owner) &&
++	if (uid_valid(owner) &&
+ 	    nla_put_u32(skb, IFLA_TUN_OWNER,
+-			from_kuid_munged(current_user_ns(), tun->owner)))
++			from_kuid_munged(current_user_ns(), owner)))
+ 		goto nla_put_failure;
+-	if (gid_valid(tun->group) &&
++	if (gid_valid(group) &&
+ 	    nla_put_u32(skb, IFLA_TUN_GROUP,
+-			from_kgid_munged(current_user_ns(), tun->group)))
++			from_kgid_munged(current_user_ns(), group)))
+ 		goto nla_put_failure;
+-	if (nla_put_u8(skb, IFLA_TUN_PI, !(tun->flags & IFF_NO_PI)))
++	if (nla_put_u8(skb, IFLA_TUN_PI, !(flags & IFF_NO_PI)))
+ 		goto nla_put_failure;
+-	if (nla_put_u8(skb, IFLA_TUN_VNET_HDR, !!(tun->flags & IFF_VNET_HDR)))
++	if (nla_put_u8(skb, IFLA_TUN_VNET_HDR, !!(flags & IFF_VNET_HDR)))
+ 		goto nla_put_failure;
+-	if (nla_put_u8(skb, IFLA_TUN_PERSIST, !!(tun->flags & IFF_PERSIST)))
++	if (nla_put_u8(skb, IFLA_TUN_PERSIST, !!(flags & IFF_PERSIST)))
+ 		goto nla_put_failure;
+ 	if (nla_put_u8(skb, IFLA_TUN_MULTI_QUEUE,
+-		       !!(tun->flags & IFF_MULTI_QUEUE)))
++		       !!(flags & IFF_MULTI_QUEUE)))
+ 		goto nla_put_failure;
+-	if (tun->flags & IFF_MULTI_QUEUE) {
+-		if (nla_put_u32(skb, IFLA_TUN_NUM_QUEUES, tun->numqueues))
++	if (flags & IFF_MULTI_QUEUE) {
++		if (nla_put_u32(skb, IFLA_TUN_NUM_QUEUES,
++				READ_ONCE(tun->numqueues)))
+ 			goto nla_put_failure;
+ 		if (nla_put_u32(skb, IFLA_TUN_NUM_DISABLED_QUEUES,
+-				tun->numdisabled))
++				READ_ONCE(tun->numdisabled)))
+ 			goto nla_put_failure;
+ 	}
+ 
+@@ -2814,8 +2818,8 @@ static int tun_set_iff(struct net *net, struct file *file, struct ifreq *ifr)
+ 			return 0;
+ 		}
+ 
+-		tun->flags = (tun->flags & ~TUN_FEATURES) |
+-			      (ifr->ifr_flags & TUN_FEATURES);
++		WRITE_ONCE(tun->flags, (tun->flags & ~TUN_FEATURES) |
++				       (ifr->ifr_flags & TUN_FEATURES));
+ 
+ 		netdev_state_change(dev);
+ 	} else {
+@@ -3213,13 +3217,13 @@ static long __tun_chr_ioctl(struct file *file, unsigned int cmd,
+ 		/* Disable/Enable persist mode. Keep an extra reference to the
+ 		 * module to prevent the module being unprobed.
+ 		 */
+-		if (arg && !(tun->flags & IFF_PERSIST)) {
+-			tun->flags |= IFF_PERSIST;
++		if (arg && !(READ_ONCE(tun->flags) & IFF_PERSIST)) {
++			WRITE_ONCE(tun->flags, READ_ONCE(tun->flags) | IFF_PERSIST);
+ 			__module_get(THIS_MODULE);
+ 			do_notify = true;
+ 		}
+-		if (!arg && (tun->flags & IFF_PERSIST)) {
+-			tun->flags &= ~IFF_PERSIST;
++		if (!arg && (READ_ONCE(tun->flags) & IFF_PERSIST)) {
++			WRITE_ONCE(tun->flags, READ_ONCE(tun->flags) & ~IFF_PERSIST);
+ 			module_put(THIS_MODULE);
+ 			do_notify = true;
+ 		}
+@@ -3235,10 +3239,10 @@ static long __tun_chr_ioctl(struct file *file, unsigned int cmd,
+ 			ret = -EINVAL;
+ 			break;
+ 		}
+-		tun->owner = owner;
++		WRITE_ONCE(tun->owner, owner);
+ 		do_notify = true;
+ 		netif_info(tun, drv, tun->dev, "owner set to %u\n",
+-			   from_kuid(&init_user_ns, tun->owner));
++			   from_kuid(&init_user_ns, owner));
+ 		break;
+ 
+ 	case TUNSETGROUP:
+@@ -3248,10 +3252,10 @@ static long __tun_chr_ioctl(struct file *file, unsigned int cmd,
+ 			ret = -EINVAL;
+ 			break;
+ 		}
+-		tun->group = group;
++		WRITE_ONCE(tun->group, group);
+ 		do_notify = true;
+ 		netif_info(tun, drv, tun->dev, "group set to %u\n",
+-			   from_kgid(&init_user_ns, tun->group));
++			   from_kgid(&init_user_ns, group));
+ 		break;
+ 
+ 	case TUNSETLINK:
+diff --git a/drivers/net/tun_vnet.h b/drivers/net/tun_vnet.h
+index fa5cab9d3e55c5a6e70afe4c76582c8affe0b73c..f4c652b1fa44d82ae23243857809619bfb5290d2 100644
+--- a/drivers/net/tun_vnet.h
++++ b/drivers/net/tun_vnet.h
+@@ -40,9 +40,9 @@ static inline long tun_set_vnet_be(unsigned int *flags, int __user *argp)
+ 		return -EFAULT;
+ 
+ 	if (be)
+-		*flags |= TUN_VNET_BE;
++		WRITE_ONCE(*flags, *flags | TUN_VNET_BE);
+ 	else
+-		*flags &= ~TUN_VNET_BE;
++		WRITE_ONCE(*flags, *flags & ~TUN_VNET_BE);
+ 
+ 	return 0;
+ }
+@@ -93,9 +93,9 @@ static inline long tun_vnet_ioctl(int *vnet_hdr_sz, unsigned int *flags,
+ 		if (get_user(s, sp))
+ 			return -EFAULT;
+ 		if (s)
+-			*flags |= TUN_VNET_LE;
++			WRITE_ONCE(*flags, *flags | TUN_VNET_LE);
+ 		else
+-			*flags &= ~TUN_VNET_LE;
++			WRITE_ONCE(*flags, *flags & ~TUN_VNET_LE);
+ 		return 0;
+ 
+ 	case TUNGETVNETBE:
+-- 
+2.55.0.795.g602f6c329a-goog
 
-However, does this block miss a call to rtnl_net_queue_work(net) to schedul=
-e
-processing for the new netns?
----8<---
-
-I didn't add rtnl_net_queue_work() intentionally as mentioned in the commit
-message.
-
-For now, such a race does not occur thanks to RTNL.
-
-Once RTNL is removed, all dev_change_net_namespace() callers must be
-called under per-netns RTNL, so even if the race occurred, the dev would be
-removed at __rtnl_net_unlock().
