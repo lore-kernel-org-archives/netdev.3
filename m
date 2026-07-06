@@ -1,163 +1,236 @@
-Received: from mail-pj2-f3.google.com (mail-pj2-f3.google.com [74.125.227.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14E4438484
-	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 21:02:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C9943F4B4
+	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 21:13:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783371774; cv=none; b=FAp54o6ypesGS8wGDRt9HKqZmIs2TiGE3kGscBC/ZB5+ECzifZY5BlgmSPDqV7Og5e4lga8UUNdBHewfSr+XQt39qAnbvOPcsNPRF9vcnEtewjQUpzY9aQBulEX4Nh3zddpsDIBkCFTzIjI5D/QtzAMP+pcddvDv0c7Am1lqUx0=
+	t=1783372408; cv=none; b=BTcl89BHs8oLK5RsmfQ5/V2cejus3cuaOwXxDZdvxdkP59RJIYZRyJLim3SSZE+c81ei0g2EsZREqZGQNYGmaZOYfnG+Sd/9MriDedQ4am4INTp9Svb1Q5XB2rSz0E/EO7L6A3vzzVphakuEuhOtg7+uVjm/5UvxG5bYbbVb72E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783371774; c=relaxed/simple;
-	bh=yE4a2OoB2EdymvEnSgE8O740pw/Pct2sb0k04H4xwtA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OGAXoU2PcrrdItgGm3gg3kr34t2fe9NlCth81PEm2k9FDANOqFWIpki+d8j8NW8JKeqU0MYFo5DJ3IeMasNiZh2TqUlcwMYM9Yc0+O9hWLCJqm0KZw29OEJJWfNB8Ll9FUEgiGxyRsyMpv7uZvBpDPkIHfwSOE/mJ79Vv4xSwqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BUnL+QK+; arc=none smtp.client-ip=74.125.227.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1783372408; c=relaxed/simple;
+	bh=S+PkDhZh3t6IN3EjUsWlEzchoPCNlIc+JZiP3q67Xjc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Wv5LrPieIb7yIni4fKGu6uN59WSuiNNcmGEpkM++cQ1OxgTdG3+aaZoPGTBo7+Crb/iwVN6NAuUemqczDP8o7Mx3nupTXwoIxe6RTgtomD4fHZcusce2aCqJlS4BMFoYBOd4g0VrdZhcBXNrrZquM8eZ6kp890zOGio9B1/Xy8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Pt9tIOJO; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BUnL+QK+"
-Received: by mail-pj2-f3.google.com with SMTP id d9443c01a7336-2ccb0e85312so3602425ad.0
-        for <netdev@vger.kernel.org>; Mon, 06 Jul 2026 14:02:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783371769; x=1783976569; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=jaY5gLMzPvaPKGXT1DU4u3duCOtyWyKV0VKOG5KOP6Y=;
-        b=BUnL+QK+y7nL68DJnLndwf/KjxL3gziIxvuyk/4B9HkYXwTPnfp47puFL9PMSgBEhq
-         BXm4jZ8VWEfEtkloORIxSyY+usTG+vMa8rkpxf+7DF1kTvy5EeM32VKOSaybwJV1mEkb
-         G2pM8KKt/7EES/e3C6ZkLeFkVxt8GAgxGT/J9ALhS7O5qDU3RGAqnZFJbKq5+385mAn4
-         x8EcVTnj0G8rokD8pMgtgFKq6yjvvKRoy368tl/EiRrkZI5UXqoimcgoUnDhj4SH+BYX
-         OwOcFUXxsGAb6jVU2EhUfvt1VjZEwVb+X4pkyWl40khZGRVihWNcC3FFnGsNVLuBDM3g
-         4pqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783371769; x=1783976569;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jaY5gLMzPvaPKGXT1DU4u3duCOtyWyKV0VKOG5KOP6Y=;
-        b=B6JvC769FaDsGQaI10aDDZtQqNg3GohtKoiIEDZdueyw/isZhrquwEEpWi2pa7MXzZ
-         oulkzEZg9i5dVpbIo14SD0o+hv2T7CylTGr4orFXpAdR5fevPW3Jys2KsUHcEiswdhJi
-         l5zvvUxwvMfFQb7AXewxdXGVSGuJ/bg7P748Bgc/Cs49T/5OWKqHfhamm/EKzTxlXVGn
-         vArsVauPZt13T8lFQTii3J3SHUON13GHceS8qjCog+lVH3vxoNsF3ENuKA3Pa+sOmUOb
-         1wXsmmWOvg6D8jkOto/hPZtC4hEf3F9PVjhJG04RWJoqYaHqvCB71eqNvYvceIAvYhCp
-         ptUg==
-X-Forwarded-Encrypted: i=1; AHgh+RqMjQI73Jv8rH3jjcCIRIvHh6IzzQFS7DjcueFARdu9Dl2ZCe3MCGzuq1YWFUxg8hOIc0G8XMY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxWvnHso1uGR33jUxO7GXMhuNXiHu8bAzeSOZnYDxhA9FhZOvLr
-	8nDVDXqmhjcEJl0vHUojF9KHLPdcwVpou1tKa39cj2Fy0eKL6P5ybSZ0
-X-Gm-Gg: AfdE7ckMTZMmxD80zw03XrKPhVbOFs7k7dyNQUE5SLtevIpX4sjSLd66v6XdCt+Q6yw
-	Hkehom/bUHTs9ccKhOmyi7RKUXj3/1phz2Pq25qvN4L3n8HUpwq1IHuEj2pOdjPP0S3CXOnQQax
-	a1FviQ5Z1oWeQUJjtoBBTU1JjFfMqYz2o9Z6ATX1o8uTYWvOlgsmz14NZKlwluJU55ysIV1/xM6
-	CeCHtj+JgCcjSNd/8V3XQB/NX00q+qOZzT0nDMLdvqQEO7axybXb2HGEuJMp3lusiuta9+jFmcJ
-	EZRGG93E9iyNRn7Us69mWxZEKmwrUeT+J9wTUMvrA7OqhqeIAmguExrCKwF8F3Q267+1PIzEO/N
-	l+j8JLaXXRfJ8mAchYZFNqYHIgIO8P9MA5ElQKVpkxFjO300Od0+mVdXPyTyYtsupNnoZpvPl0E
-	wmJlOQcr3s/VG1D+4=
-X-Received: by 2002:a17:902:ef48:b0:2c9:ff29:3f91 with SMTP id d9443c01a7336-2ccbe50aa67mr23504705ad.6.1783371769111;
-        Mon, 06 Jul 2026 14:02:49 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:9::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9bdb7e9sm568745ad.10.2026.07.06.14.02.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2026 14:02:47 -0700 (PDT)
-Date: Mon, 6 Jul 2026 14:02:39 -0700
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: Mahe Tardy <mahe.tardy@gmail.com>
-Cc: bpf@vger.kernel.org, andrew+netdev@lunn.ch, andrii@kernel.org, 
-	ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net, eddyz87@gmail.com, 
-	edumazet@google.com, john.fastabend@gmail.com, kuba@kernel.org, liamwisehart@meta.com, 
-	martin.lau@linux.dev, pabeni@redhat.com, song@kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH bpf-next 2/6] bpf: Add ksock kfuncs
-Message-ID: <akwTnnSGJpki9hAn@devvm7509.cco0.facebook.com>
-References: <20260706093525.13030-1-mahe.tardy@gmail.com>
- <20260706093525.13030-3-mahe.tardy@gmail.com>
- <akvdsqFhq0x19cu2@devvm7509.cco0.facebook.com>
- <akvlWB6AkP6kQ7xO@gmail.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Pt9tIOJO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783372402;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=K/IiNVEaBSIhPlU7hh3s8hLrT9rD+6NyA4ZJlm2HBq0=;
+	b=Pt9tIOJOYWFkAboOQLBqQy1wHXt0Vaoy9+0LkfgI/mVfvFNrbDCh5ntqpTDP3h7iJlo1Su
+	wJle+LApFTsRuw81tud9AkuFi7ueCdUcEKkY6Jd//23olRhDPLxHPmVbZ+vK85exyygNye
+	Jss5d7jdp5Db5sFx3CCa6pQY7ZRh9cg=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-467-d3cR-lOhO8aQZU2ET1gsFg-1; Mon,
+ 06 Jul 2026 17:13:19 -0400
+X-MC-Unique: d3cR-lOhO8aQZU2ET1gsFg-1
+X-Mimecast-MFC-AGG-ID: d3cR-lOhO8aQZU2ET1gsFg_1783372396
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 745901955DAF;
+	Mon,  6 Jul 2026 21:13:16 +0000 (UTC)
+Received: from RHTRH0061144 (unknown [10.22.81.35])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6A72D18005AA;
+	Mon,  6 Jul 2026 21:13:14 +0000 (UTC)
+From: Aaron Conole <aconole@redhat.com>
+To: Minxi Hou <houminxi@gmail.com>
+Cc: netdev@vger.kernel.org,  echaudro@redhat.com,  i.maximets@ovn.org,
+  davem@davemloft.net,  edumazet@google.com,  kuba@kernel.org,
+  pabeni@redhat.com,  horms@kernel.org,  shuah@kernel.org,
+  dev@openvswitch.org,  linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net-next] selftests/net/openvswitch: add SCTP flow key test
+In-Reply-To: <20260702090908.1253688-1-houminxi@gmail.com> (Minxi Hou's
+	message of "Thu, 2 Jul 2026 05:09:08 -0400")
+References: <20260702090908.1253688-1-houminxi@gmail.com>
+Date: Mon, 06 Jul 2026 17:13:13 -0400
+Message-ID: <f7to6gj255i.fsf@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <akvlWB6AkP6kQ7xO@gmail.com>
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-On 07/06, Mahe Tardy wrote:
-> On Mon, Jul 06, 2026 at 09:58:09AM -0700, Stanislav Fomichev wrote:
-> > On 07/06, Mahe Tardy wrote:
-> > > Add BPF kfuncs that allow BPF LSM programs to create and use sockets for
-> > > sending data. This provides a mechanism for BPF programs to emit
-> > > telemetry. For this first patch set, it's restricted to SOCK_DGRAM
-> > > socket types with IPPROTO_UDP protocol but could be easily extended to
-> > > SOCK_STREAM and IPPROTO_TCP in the future.
-> > > 
-> > > The API consists of six kfuncs:
-> > > 
-> > >   bpf_ksock_create()   - Create a socket (sleepable)
-> > 
-> > [..]
-> > 
-> > >   bpf_ksock_bind()     - Bind socket to local address (sleepable)
-> > >   bpf_ksock_connect()  - Connect socket to remote address (sleepable)
-> > 
-> > Since you're doing only UDP for now, maybe you don't need bind/connect? The
-> > kernel should autobind (by default) when you sendmsg over UDP socket (IIRC).
-> 
-> Yep indeed, I kinda overlooked that as I started with UDP & TCP supports
-> and mostly added the args checks. Another thing is that send is simpler
-> since only used on connected sockets, so you just pass the struct
-> bpf_ksock and data. So on one side it would simplify the current
-> UDP-only API for now by removing the kfuncs but we might need a more
-> complex send kfunc (something like sendto).
+Hi Minxi,
 
-Since you were targeting bpf_netpoll_send_udp originally, maybe sendto
-is a better fit? You get the payload and the destination and you
-bpf_sendto() it? We can later move to stateful bind/connect if needed.
+Minxi Hou <houminxi@gmail.com> writes:
 
-(mostly coming from the pow of minimizing api exposure initially, but
-not a strong preference)
+> Register OVS_KEY_ATTR_SCTP in the flow key parser so that sctp()
+> can be used in flow specifications. The ovs_key_sctp class already
+> exists (with src/dst fields matching the TCP/UDP siblings) but was
+> not wired into the parser, so the token was silently dropped and the
+> kernel rejected the flow.
+>
+> Add test_sctp_connect_v4 exercising the SCTP flow key with
+> port-specific matching: sctp(dst=4443) for client-to-server and
+> sctp(src=4443) for server-to-client, mirroring the SCTP four-way
+> handshake direction. The test verifies connectivity with flows
+> installed, confirms failure after flow removal, then reinstalls
+> and verifies recovery.
+>
+> Signed-off-by: Minxi Hou <houminxi@gmail.com>
+> ---
 
-> > 
-> > >   bpf_ksock_send()     - Send data through the socket (sleepable)
-> > >   bpf_ksock_acquire()  - Acquire a reference to a socket context
-> > >   bpf_ksock_release()  - Release a reference (cleanup via
-> > >                          queue_rcu_work since sock_release sleeps)
-> > > 
-> > > The setup kfuncs bpf_ksock_create, bpf_ksock_bind, bpf_ksock_connect,
-> > > can be called from SYSCALL programs only. While bpf_ksock_acquire,
-> > > bpf_ksock_release and bpf_ksock_send can be called from SYSCALL and LSM
-> > > programs.
-> > > 
-> > > The implementation follows the established kfunc lifecycle pattern
-> > > (create/acquire/release with refcounting, kptr map storage, dtor
-> > > registration). The kernel socket is wrapped in a refcounted bpf_ksock
-> > > struct. Cleanup is deferred via queue_rcu_work() because sock_release()
-> > > may sleep.
-> > > 
-> > > The kfuncs are only compiled when CONFIG_INET is enabled, as they
-> > > specifically support AF_INET and AF_INET6 sockets.
-> > > 
-> > > The socket operations go through the expected LSM hooks instead of
-> > > by-passing them like many kernel sockets since those are created by BPF
-> > > programs and thus system users. Thus bpf_ksock_send() kfunc, which is
-> > > exposed to LSM progs, has a re-entering protection to avoid recursion.
-> > > Also, because of the LSM checks, we prevent the use of the kfuncs from
-> > > asynchronous workqueue as the current value would then be invalid.
-> > 
-> > [..]
-> > 
-> > > A bpf_ksock_max sysctl is added to limit the maximum number of BPF
-> > > kernel sockets that may exist in each network namespace. Out of
-> > > simplicity for now, the settings is host wide but the counters are per
-> > > network namespace.
-> > 
-> > What is this guarding against? Rogue bpf programs creating too many sockets?
-> 
-> Yes. AI review raised this because users are prevented from creating too
-> many sockets by bumping against the max number of fd and this would
-> allow them to create way more sockets. I kind of agreed that having "a
-> limit" on resource creation would make sense but maybe it doesn't and we
-> can simplify this!
+One issue I think will happen with this patch is that the other two
+in-flight patches will also collide.  I'm thinking it may require
+rebasing.
 
-I believe even the kernel sockets go via lsm layer, so this enforcement
-can be done in an lsm bpf program. Seems like that should be enough?
+A better strategy going forward would be to bundle the new test
+additions in one series.  That's just for going forward, do not resubmit
+the existing patches I've acked unless a maintainer asks for it.
+
+>  .../selftests/net/openvswitch/openvswitch.sh  | 92 +++++++++++++++++++
+>  .../selftests/net/openvswitch/ovs-dpctl.py    |  5 +
+>  2 files changed, 97 insertions(+)
+>
+> diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+> index 2954245129a2..dd4d0b3bcc23 100755
+> --- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
+> +++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+> @@ -32,6 +32,7 @@ tests="
+>  	dec_ttl					ttl: dec_ttl decrements IP TTL
+>  	flow_set				flow-set: Flow modify
+>  	action_set				set: SET action rewrites fields
+> +	sctp_connect_v4				sctp: SCTP flow key matching
+>  	psample					psample: Sampling packets with psample"
+>  
+>  info() {
+> @@ -443,6 +444,97 @@ test_action_set() {
+>  	return 0
+>  }
+>  
+> +# sctp_connect_v4 test
+> +# - sctp(dst=4443) matches client-to-server INIT
+> +# - sctp(src=4443) matches server-to-client INIT-ACK
+> +# - remove flows and verify connection fails, reinstall and recover
+> +test_sctp_connect_v4() {
+> +	local t="test_sctp_connect_v4"
+> +	which ncat >/dev/null 2>&1 || return $ksft_skip
+> +	modprobe -q sctp 2>/dev/null || return $ksft_skip
+> +
+> +	sbx_add "$t" || return $?
+> +	ovs_add_dp "$t" sctp4 || return 1
+> +
+> +	info "create namespaces"
+> +	for ns in client server; do
+> +		ovs_add_netns_and_veths "$t" "sctp4" "$ns" \
+> +		    "${ns:0:1}0" "${ns:0:1}1" || return 1
+> +	done
+> +
+> +	ip netns exec client ip addr add 172.31.110.10/24 dev c1
+> +	ip netns exec client ip link set c1 up
+> +	ip netns exec server ip addr add 172.31.110.20/24 dev s1
+> +	ip netns exec server ip link set s1 up
+> +
+> +	# ARP forwarding
+> +	ovs_add_flow "$t" sctp4 \
+> +	    'in_port(1),eth(),eth_type(0x0806),arp()' \
+> +	    '2' || return 1
+> +	ovs_add_flow "$t" sctp4 \
+> +	    'in_port(2),eth(),eth_type(0x0806),arp()' \
+> +	    '1' || return 1
+> +
+> +	# SCTP port matching: dst for request, src for reply
+> +	ovs_add_flow "$t" sctp4 \
+> +	    'in_port(1),eth(),eth_type(0x0800),ipv4(proto=132),sctp(dst=4443)' \
+> +	    '2' || return 1
+> +	ovs_add_flow "$t" sctp4 \
+> +	    'in_port(2),eth(),eth_type(0x0800),ipv4(proto=132),sctp(src=4443)' \
+> +	    '1' || return 1
+> +
+> +	echo "server" | \
+> +		ovs_netns_spawn_daemon "$t" "server" \
+> +				ncat --sctp -l 172.31.110.20 -vn 4443
+> +	sleep 0.1
+
+Instead of this pattern, we can probably do an ovs_wait on the Listening
+string.  That way we aren't relying only on the sleep, but on the actual
+Ncat output.  Something like
+
+   ovs_wait sh -c
+     "[ \$(grep 'Ncat: Listening on ....' ${ovs_dir}/stderr) ]" || \
+     return 1
+
+Or you could use a count and do '-ge <number>'
+
+That way if the ncat spawn takes time to start up, it can be ready in
+time.
+
+> +	info "verify SCTP association with port-keyed flows"
+> +	ovs_sbx "$t" ip netns exec client \
+> +	    ncat --sctp -i 1 -zv 172.31.110.20 4443 \
+> +	    || return 1
+> +
+> +	ovs_del_flows "$t" sctp4
+> +
+> +	info "verify connection fails without flows"
+> +	ovs_add_flow "$t" sctp4 \
+> +	    'in_port(1),eth(),eth_type(0x0806),arp()' \
+> +	    '2' || return 1
+> +	ovs_add_flow "$t" sctp4 \
+> +	    'in_port(2),eth(),eth_type(0x0806),arp()' \
+> +	    '1' || return 1
+> +
+> +	echo "server2" | \
+> +		ovs_netns_spawn_daemon "$t" "server" \
+> +				ncat --sctp -l 172.31.110.20 -vn 4443
+> +	sleep 0.1
+> +
+> +	ovs_sbx "$t" ip netns exec client \
+> +	    ncat --sctp -w 2 -zv 172.31.110.20 4443 \
+> +	    >/dev/null 2>&1 \
+> +	    && { info "FAIL: connection should fail without flows"
+> +	         return 1; }
+> +
+> +	info "reinstall flows and verify recovery"
+> +	ovs_add_flow "$t" sctp4 \
+> +	    'in_port(1),eth(),eth_type(0x0800),ipv4(proto=132),sctp(dst=4443)' \
+> +	    '2' || return 1
+> +	ovs_add_flow "$t" sctp4 \
+> +	    'in_port(2),eth(),eth_type(0x0800),ipv4(proto=132),sctp(src=4443)' \
+> +	    '1' || return 1
+> +
+> +	echo "server3" | \
+> +		ovs_netns_spawn_daemon "$t" "server" \
+> +				ncat --sctp -l 172.31.110.20 -vn 4443
+> +	sleep 0.1
+> +
+> +	ovs_sbx "$t" ip netns exec client \
+> +	    ncat --sctp -i 1 -zv 172.31.110.20 4443 \
+> +	    || return 1
+> +
+> +	return 0
+> +}
+> +
+>  # psample test
+>  # - use psample to observe packets
+>  test_psample() {
+> diff --git a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
+> index e1ecfad2c03e..7cfc29ec7e59 100644
+> --- a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
+> +++ b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
+> @@ -1982,6 +1982,11 @@ class ovskey(nla):
+>                  "icmp",
+>                  ovskey.ovs_key_icmp,
+>              ),
+> +            (
+> +                "OVS_KEY_ATTR_SCTP",
+> +                "sctp",
+> +                ovskey.ovs_key_sctp,
+> +            ),
+>              (
+>                  "OVS_KEY_ATTR_TCP_FLAGS",
+>                  "tcp_flags",
+
