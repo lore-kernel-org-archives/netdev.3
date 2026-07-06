@@ -1,43 +1,159 @@
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE2B3E0C4F
-	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 06:54:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395DC4C955D
+	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 06:56:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783320852; cv=none; b=hNX5/0Rd1n53x8RzOu/Gv4rGtI/y1VvfScuwoOSgTlfjl5l6/oB8DKlrurOIutBoYLW4q8b4FsorUTN+lvWjDOm6ULizfRwTsXkAH+T+ZqgbUvjXTTkVl65HCCW7OL9pbvP8dI2pr+UUiAMzuLjRwU+BdGl9c71UQsuQkQzw+r4=
+	t=1783320980; cv=none; b=RLvv/2aMdCpCfEPb2YpV0tuWj8DL8QSL2jKRduuDMdImBNqPQVHwIQqaFV7NnGEVMlyISG33ep/qB+Dx0fm35PD94XozYhQG3tov9bTA21msGvX+8ao0LK7RoGRenL1Fm4QDazOJOFfF2m+zLxU6H/z500b92AMYFMXG9GHHA48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783320852; c=relaxed/simple;
-	bh=CW1QrPZ/84Xc1S5fxWfdrxrRFouH1TmDZbxVYwQgotM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LEs8DyyZNdHtWH4VXhpqsv/mCqN3Mg4rcz4CgkyJnVh3cFfU8XVtrl0QlxW45xmtgZYxrgbgyeL62+s2EqNH/V29KBXYkhICvL+M+idrix5g63L2oBOPle0FNhhzkZ0RXZcVNAnS3UkBltkVUKviHOgNrRNnz0aYEbjeuvcy/3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
-Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
-	id EF92860288; Mon, 06 Jul 2026 08:53:55 +0200 (CEST)
-Date: Mon, 6 Jul 2026 08:53:55 +0200
-From: Florian Westphal <fw@strlen.de>
-To: Dharmik Parmar <dharmikparmar2004@yahoo.com>
-Cc: netdev@vger.kernel.org
-Subject: Re: [PATCH net] selftests: netfilter: conntrack_resize.sh: fix skip
- exit code
-Message-ID: <aktQ5kLLtdG3pn3W@strlen.de>
-References: <20260705204252.630729-1-dharmikparmar2004.ref@yahoo.com>
- <20260705204252.630729-1-dharmikparmar2004@yahoo.com>
+	s=arc-20240116; t=1783320980; c=relaxed/simple;
+	bh=yzeS2+tgX/KTEQ362glkjxTC0H71KwhM4gTtu3L5FpI=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=UHpJjkK3xb5SCgGIY+btWphnuQJMYg9z9OZJhDa/814/SxeNQwWv6DIHd2iEPMoNE19/TRcMuc02/4S4jnNbrk+K0713UIcGGNzRQy/aVy1XdRZ0+eZrRn9Pzs91xj//ZUJGllnaiUPZisqDWZyXiWeSvDShFq5+BL2MRrtTwqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ABkjuis1; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ABkjuis1"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-847921eed4aso3732493b3a.3
+        for <netdev@vger.kernel.org>; Sun, 05 Jul 2026 23:56:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783320971; x=1783925771; darn=vger.kernel.org;
+        h=mime-version:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=K+iH0oScX6vUoO3wK//wIGjcdPMvMKHF3g6QanG2LHo=;
+        b=ABkjuis19XR+m5LnfSTHjkD2CW49WAb9dxH9uHApGZLWj3/zrhFZmITm8CV06TSrWJ
+         RzW+1ITc+CweP7G1PPYnckLBrMr8EoJkqew71eg+WKo40Yum7KTfkByNoAhHYD9AYhce
+         q269JXiDza4GadxIABnqe5tqHQoJVSSJ46Lq54wmX/FoFE+Bt3/ZRK/oFBvSH1OVP2RQ
+         su/4qNYAsd6UyyicRRgghsW1Us6EQy063l7YP9xaGzv0i35UYt+01wbdhOBSUWDL0TmK
+         q99zx94rD0kW7g+JhQ+dr5JpLd4ECBvafbSBO/H52EmMCRpZVstk2SjMZvUi/xAdP4o2
+         mCZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783320971; x=1783925771;
+        h=mime-version:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=K+iH0oScX6vUoO3wK//wIGjcdPMvMKHF3g6QanG2LHo=;
+        b=siBOBx1Jsb8mLv8ym0VyVP7RCi6S+dwCRH1bQL2Gwnp2ZPxsF1s/OZfF//3FrpTLas
+         JBQIav7he56AgdmFj5+GEXIOnhFQOO2U68Z6QoyPBYxKrd//I3RJoJiuLA821pZBb1sI
+         kEeO3Dc4JJqOfUvPSQblCrV5Ft44I3iGCTCg/v7CEPAGfTGp6OVTEDpTjDTwzZy1TOyk
+         tFYY82pTDAe2rWpDbMBokNlZ5oBRt71xOd/6h/VAFfGqZrjH/TWZd2mzwyRC4JN4AF+5
+         5bxzrDIXkq8/1JLsJpQ9aH7kUs5uZ3vBH4PCTu+vLJ7jZUtewmMRlEmJuXUlZYKy4g/o
+         kXFw==
+X-Gm-Message-State: AOJu0YxH6IyFjL3OAQtvK5JexfV/DuwoyF7N6Y8BBfEu5pO2taPrdOyh
+	P4CEJrlxS64eAiWQuGxGFaUq6ZVAc84fDY1dwbUajAK4I55bXEHw0ygGPmjHyl7v
+X-Gm-Gg: AfdE7cn2ck2Foi2gRNc8FKWLD3HWjOBWlAMB6DMkf1IQwXKL9WGWmjZi8xW2OieqWim
+	eSmITjUWu6vrSPAVdhzTiS+8j+tEuPwzw3/jQlqHb60RC3Lh+lM0zLheGlUkhMO+uwP+W45Uezl
+	8rx+xXQnJ+zxoBFdatol3Kwu7o/JUF12ZA3GjoRW8g/H3iUWSwQ6ZatfIPQrZejRjGHoNVxg9C+
+	FhwCWqnIPCtCV8DNKNMB54G7coUmmu8CLzSN12HT+0xdQgdnGcZdBaxIj5/HAyXrOfSQiQaYsAy
+	KuNAiCoedVSHs0k2Rcw16VKu9Dz1JL71azUF7Wfs4ZNS8EH2I0rp9Zjrl8QXE8a5locEGNYuXez
+	rlYBNGDAIy/a/1cPgWwjHYEiCrDXyPIGeQsLDSskMgZhsShFM+Rxl5F57dWnmRq+B3wDhunum3f
+	kswQjWrg==
+X-Received: by 2002:a05:6a00:4612:b0:847:84a2:cda7 with SMTP id d2e1a72fcca58-847f6d5a847mr9033848b3a.12.1783320970734;
+        Sun, 05 Jul 2026 23:56:10 -0700 (PDT)
+Received: from [127.0.1.1] ([47.253.114.73])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847f6d7a915sm3181753b3a.44.2026.07.05.23.56.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 05 Jul 2026 23:56:10 -0700 (PDT)
+From: Wayen Yan <win847@gmail.com>
+To: netdev@vger.kernel.org
+Cc: lorenzo@kernel.org, horms@kernel.org, pabeni@redhat.com, kuba@kernel.org, edumazet@google.com, andrew+netdev@lunn.ch, angelogioacchino.delregno@collabora.com, matthias.bgg@gmail.com, linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
+Subject: [PATCH net] net: airoha: fix HTB class modification offload
+Date: Mon, 6 Jul 2026 14:18:58 +0800
+Message-ID: <178332096675.2250671.599544331813347302@gmail.com>
+Content-Type: text/plain; charset=utf-8
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260705204252.630729-1-dharmikparmar2004@yahoo.com>
 
-Dharmik Parmar <dharmikparmar2004@yahoo.com> wrote:
-> When conntrack sysctls are unavailable, the test prints SKIP but exits
-> with $KSFT_SKIP.  lib.sh defines ksft_skip instead, so the kselftest
-> runner did not see a proper skip.
+HTB core does not populate parent_classid for TC_HTB_NODE_MODIFY.
+Airoha currently checks parent_classid against TC_HTB_CLASSID_ROOT
+in a helper shared by both TC_HTB_LEAF_ALLOC_QUEUE and
+TC_HTB_NODE_MODIFY. Since the modify path leaves parent_classid as
+zero, the check always fails and changing parameters of an already
+offloaded HTB class is rejected with -EINVAL.
 
-Acked-by: Florian Westphal <fw@strlen.de>
+Move the root-parent check into the allocation path and validate
+modify requests using the per-netdev QoS channel bitmap, consistent
+with the delete and query paths.
+
+Fixes: ef1ca9271313 ("net: airoha: Add sched HTB offload support")
+Signed-off-by: Wayen Yan <win847@gmail.com>
+---
+ drivers/net/ethernet/airoha/airoha_eth.c | 32 +++++++++++++++++-------
+ 1 file changed, 23 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index 59001fd4b6f7..8e4e79c1e4c2 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -2766,18 +2766,13 @@ static int airoha_qdma_set_tx_rate_limit(struct net_device *netdev,
+ 	return 0;
+ }
+ 
+-static int airoha_tc_htb_modify_queue(struct net_device *dev,
+-				      struct tc_htb_qopt_offload *opt)
++static int airoha_tc_htb_set_rate(struct net_device *dev,
++				  struct tc_htb_qopt_offload *opt,
++				  u32 channel)
+ {
+-	u32 channel = TC_H_MIN(opt->classid) % AIROHA_NUM_QOS_CHANNELS;
+ 	u32 rate = div_u64(opt->rate, 1000) << 3; /* kbps */
+ 	int err;
+ 
+-	if (opt->parent_classid != TC_HTB_CLASSID_ROOT) {
+-		NL_SET_ERR_MSG_MOD(opt->extack, "invalid parent classid");
+-		return -EINVAL;
+-	}
+-
+ 	err = airoha_qdma_set_tx_rate_limit(dev, channel, rate, opt->quantum);
+ 	if (err)
+ 		NL_SET_ERR_MSG_MOD(opt->extack,
+@@ -2786,6 +2781,20 @@ static int airoha_tc_htb_modify_queue(struct net_device *dev,
+ 	return err;
+ }
+ 
++static int airoha_tc_htb_modify_queue(struct net_device *netdev,
++				      struct tc_htb_qopt_offload *opt)
++{
++	u32 channel = TC_H_MIN(opt->classid) % AIROHA_NUM_QOS_CHANNELS;
++	struct airoha_gdm_dev *dev = netdev_priv(netdev);
++
++	if (!test_bit(channel, dev->qos_sq_bmap)) {
++		NL_SET_ERR_MSG_MOD(opt->extack, "invalid queue id");
++		return -EINVAL;
++	}
++
++	return airoha_tc_htb_set_rate(netdev, opt, channel);
++}
++
+ static int airoha_tc_htb_alloc_leaf_queue(struct net_device *netdev,
+ 					  struct tc_htb_qopt_offload *opt)
+ {
+@@ -2794,6 +2803,11 @@ static int airoha_tc_htb_alloc_leaf_queue(struct net_device *netdev,
+ 	struct airoha_gdm_dev *dev = netdev_priv(netdev);
+ 	struct airoha_qdma *qdma = dev->qdma;
+ 
++	if (opt->parent_classid != TC_HTB_CLASSID_ROOT) {
++		NL_SET_ERR_MSG_MOD(opt->extack, "invalid parent classid");
++		return -EINVAL;
++	}
++
+ 	/* Here we need to check the requested QDMA channel is not already
+ 	 * in use by another net_device running on the same QDMA block.
+ 	 */
+@@ -2803,7 +2817,7 @@ static int airoha_tc_htb_alloc_leaf_queue(struct net_device *netdev,
+ 		return -EBUSY;
+ 	}
+ 
+-	err = airoha_tc_htb_modify_queue(netdev, opt);
++	err = airoha_tc_htb_set_rate(netdev, opt, channel);
+ 	if (err)
+ 		goto error;
+ 
+-- 
+2.51.0
+
+
