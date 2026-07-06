@@ -1,17 +1,17 @@
 Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A68973E8346;
-	Mon,  6 Jul 2026 06:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E05B3E9F76;
+	Mon,  6 Jul 2026 06:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783318889; cv=none; b=o88Cw9cnEuU6XiXNH8TOtgxASx82d3iTHuH/u6C4C5FQcXxuhSfcxylqEeHBBV2qmrokVIQcHJDSswUsodQdY4HyM7WaPrPEHeEvzZGnqfqazvHzqyu1eeuVp54f/ewyMyGePNUWAFSmCqquDykgCpo0DSCbtTYcjKy//v6NEp8=
+	t=1783318897; cv=none; b=V05sNCRX7YtW2FskqmQ1D2Kn8WmNAqMVlyCK+sG47RQsMbrs6BhBlphkkBnMnMs24sdGFNSMjLA3/WIkTuzrM5zyhdFj6zKdh91k61YS0wZDDVzhdQZG6pEmjVqPO/P/EsBDiYYkO77ErWphm1nox2IBHubA0MP3vlAad1a5xBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783318889; c=relaxed/simple;
-	bh=3ChC4SyDlXiXdXOWVfnb/g6ALQ0lSSP8kJq96KetFjs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=HiXwv6TFGltutjBQ7sjESmXAr5+jGKDmXDsomJbVkvTx3j07s7EdHMAEkDxFstnk5vMeoL6l6nTN4JmVgB+Xx6ZmwWcGrW7H+F0yMPFALbDnmTzArj6BcnfrlAdhUBVFxbMYuBbovFHVBNbCYBGrcp97mZDf8/ZrQZKacvu6F/s=
+	s=arc-20240116; t=1783318897; c=relaxed/simple;
+	bh=zDQdYdTFavgacMtdiXy3/hskR9xaYH1DaF21getAMWE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=GNSkDN98Cvnd6admLCwwFiAcLGxwLcSPLuy/p+GsZj7X3Mokkn4dZfl5ELX90cE/3PRmyVKDTvq/yORLCYFvFqNnalrdx7v4O6PuQyCUvIVy73YIi0H6Ceie96I2gCDLjhi4vjVivQC0f2b1CtJKbeBwd7oXwInIqPVQDcF267A=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sk.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-c2dff70000001609-b4-6a4b4904580f
+X-AuditID: a67dfc5b-c2dff70000001609-2e-6a4b4905a985
 From: Byungchul Park <byungchul@sk.com>
 To: linux-kernel@vger.kernel.org
 Cc: max.byungchul.park@gmail.com,
@@ -178,45 +178,45 @@ Cc: max.byungchul.park@gmail.com,
 	aliceryhl@google.com,
 	tmgross@umich.edu,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v19 29/40] dept: make dept aware of lockdep_set_lock_cmp_fn() annotation
-Date: Mon,  6 Jul 2026 15:19:17 +0900
-Message-Id: <20260706061928.66713-30-byungchul@sk.com>
+Subject: [PATCH v19 33/40] dept: call dept_hardirqs_off() in local_irq_*() regardless of irq state
+Date: Mon,  6 Jul 2026 15:19:21 +0900
+Message-Id: <20260706061928.66713-34-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20260706061928.66713-1-byungchul@sk.com>
 References: <20260706061928.66713-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUxTZxTHfe597ks7G28q0Tt0wzUR0cQyNjBnyaJEk3mFkZD4xYwPoxlX
-	KQKSggyWbOKkikWapoTiFLTdpAotpamwAoovIIhkYUy25Iqi7TZRlLcUqgIVLBC//XL+5//L
-	+XBYUilRkaw2t0DU5WqyVbQcy8dX27ZT+5KzPv3DGA9l+mNQ0+SkYcDlQKBvW8Tw1tzDwMzs
-	QwYWO3oQWP4ykyAN3CRh2r1Aw8uuAIJzI+fD6fAzAuz/LxDw1nIYXlqmaAiM+hA8NbWQcK+q
-	nIYJNw0jQx0EWGo9GNp87Qw4PCnwxD6CoXqUhvPVJwioarxGwKy9gQF7yWYI+ePANf4nBd4S
-	HwO2k5cwXO+4h2GwvYaGx85FCpqeSQT4fRIFkukpgsaJX2l4UD0WrgcnGbh/y0pAj3UdtNzU
-	I6ibmSDhRpmPgDtNXgLqroxT0BUcI6DyvpWGueFWCvrm+gj41zjOQFWoLHzScSOCcr0FQ+mj
-	BDD274U37v8oqJ2JgxlHQzjvfswkJgqv9UYsOC84kTA/Z0ZC19gkKbSdG2aE0htDjGD1HBV+
-	uz5KCLZAkBI8DadpwRMwM4Jt/jkpTPT3M0Lv2XksdHaVIaHN/0Xqx9/Iv8wQs7WFoi52Z7o8
-	88wDL5U3F11Ud+00LkE/RxmQjOW5eP5UuYN4z8NVF5eZ5rbwkjRLLnEEt4m/WjFCGZCcJbnB
-	KP6MvQIbEMuu5Q7wTS2xSzuY28xbXlTSS6zgdvCLwUvkijOKd7hvLbMsPHeFapf9Si6Bfzh5
-	Fy85ec4h4483NjMrhQ/521ckbEIKK1rVgJTa3MIcjTY7Xp1ZnKstUn93JMeDwv9m/zGU1ooC
-	A/s7Ecci1WoFJCZlKSlNYX5xTifiWVIVoYiOSc5SKjI0xT+IuiPf6o5mi/mdaAOLVesVn736
-	PkPJHdIUiIdFMU/UvU8JVhZZgo4tsOqDfc/X/0MbIpu5vw/tKYqI3q9wu0567xw015+w9fYa
-	Q/5SbcpUTFGlKymt/uvaVPUeQ8/GnZcNxXu3RqVNbfI6y5MLDbtMCRt264MuVsSfEHlPkqb7
-	8tL9Fc4PbhvV7Y9+GvpKhtZIp0ze7voLMa8/n1YxZ83c77/QH7WqcH6mJm4bqcvXvAM4Wnkk
-	awMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSW0wTeRTG/c/8OzNMrJlUEifwgGlcMRtBjZecROPlQRkvu/FB48YHpdFR
-	Sgtiq9iaGGlrFRF2a7UlUtCK0ChUQaoiYiNCwHvkpqKA0KSiCIgolVAotWj25eR3vvOdL+fh
-	MKSsWhLDKNMPiZp0hVpOsZj9e6UpAW/cnLrYdzMRss3HoavHL4HXhjoMgdFsDIUVbgpCjmoa
-	sqsuSODxGyOG5hvlCHoC2QjGJhwkmGvCGELWJhpGxztpsBkQhL1NCOwtVhI6mh+Q4L5lIOB7
-	5RQFAw3fENh8fgry+w0Yhl25CAr6HDT0NybBUE+tBMLdHwl482MQgcs/RYC/7hSCkF0Fl4o9
-	kXX7VwomXrwkId/WjOCyr5uEb/29CG41vUfgvWqk4IPlNglt/lnQHhim4IntDAVDLYUEfKmk
-	wGn0SqDl+QCCIocVQd87LwGmKxUU2IuqMNT03qOhZWCSgC67lYDyqr+gx9WH4ZmlmIicG3Hd
-	nAOOfBMRKZ8IsF2vJWDcVUavLUXCmPlfLJR57hCCuTVECe6LbiRMBK1IGC01kYLZEmkbBodJ
-	4YTniFD6bJASgoFXlOD94cTC02JeKDkdJISzLxKEmoJueuu6neyqvaJamSlqFq1OZlNy31ZL
-	MoLzdaW1p3EWMsbloCiG55bx3bZLxDRTXDzf0TFOTnM0N5f35PVJchDLkFxbHJ/rysM5iGFm
-	c//wFbcXTXsw9wdv/3yOmmYpt4IPB0rI35lxfHll3S+Oiug3Jot+5cu45Xzn8CNsQawTzShD
-	0cr0zDSFUr08UatK0acrdYl7DqRVocg7uY5Nnr2LRtuS6hHHIPlMKazdlCqTKDK1+rR6xDOk
-	PFo6f8HmVJl0r0J/VNQc2K05rBa19SiWwfI50k07xGQZt19xSFSJYoao+X9KMFExWcjSsLhT
-	FU6tIWdkGT/H599Xzx2x6ra1qupikxrXXI1t31By0KAfowKMacsd57zVGXovvy50/5wOxWgV
-	U41LY5K17c89H7p86z9KvxTWsrrzCa6t233O3u/0gyvsiGfXfyczRxZee5vXui3uYH38w4L9
-	ucf2zaTZx8HtQx5Pu9svx9oUxZI/SY1W8RNXjqH7SgMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSfUxTZxTG9977vvdeKt1uOjKuuMSlmdPgB5PhchIXhu4P7uayzJkZP6Ku
+	GzejfBRWFGTBhG6WgSukcWubwdAyRltrN7G1RjeJCkEDGRW/Zhm6wlYbq5QGKFTkYysY/3vy
+	nOf8zvPH4WjFAEnj1Jr9klajKlIyMiyLJLesZd/dUvD6becbcDcQJDAZq8VQ6/6BQGCyFoH+
+	/H8Y5o5eYSE2PciCv/8iDa4zOgom2ucZeNQ1jsA0HGQgajMgiAR+J3BnagSBLThPQfDSNwjm
+	zIVw/CcPAxZTP4KW4Xs0jIeHENw3emnoMX3LgPWrDgLmZjeGgC2EwRJmwHw6FZosDyiYtjlZ
+	+MfRyELgag0B90A3ApchREPHX6uhpeZnDBc6ehJ952IIqpviBNruXKdgeMhPwDYZZUF3uRWD
+	Y8xC4Ir1JfBe1COomZgn0NfkI3C34SGGU6EuGtocEQJdkyMUeNwmGp7YE2f6zvayoDdMs2Ca
+	rWXA2x1noX3MzsDM4x8ZaPDlQnNsPYwaYyQnR4zrG7CovzHHiK5jLiTOPDmKxFjb17R42FMh
+	dkxZsXi+8R4rWt0HRI8jXWy9EKZEt7OOEUd9PlYM3rJQ4rGerWJrw3fkw7RdsrfypCJ1uaTN
+	yP5Elv/gTz0p1b1wMOSCahRZcgQlcQKfJfTdGMXP9LUzukXN8CsFv3+aXtAp/CuCpz5EjiAZ
+	R/M3lwsGW/1i6EX+U8Ec+TsR4jjMrxDqb5Uu2HL+TcF21kg9ZS4XTrZfWuQkJfxfZ5sXfQW/
+	QRiMXsULTIG3JwkmZy95urBUuOzwYyOSW9FzTqRQa8qLVeqirHX5lRr1wXWflRS7UeLhbIdm
+	d59D4/3bOhHPIWWyHHLeK1AQVXlZZXEnEjhamSJ/bdWWAoU8T1X5paQt2ac9UCSVdaJlHFam
+	yjOnKvIU/Oeq/VKhJJVK2mdTiktKq0abM1B0p8abvGlAtuTf4Y3vxP3ebWu4cKHui4k/nk/P
+	zvw+87F6a+Wy6Ksph8PQVqWo2FNRFZhfvbZqZm92/OMNOz7I8FXNbu/+Tf92Vu6hXzbZZR8N
+	vryj8aTavHvv0veLedo7lNtTZ08NnzPTdRljdb1+leHEyJ6StL4wNnqVmwuVuCxftT6d1pap
+	/gdoHahobAMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe0xScRTH+90XV5K6Ec07bdlYT0urle30WPbmmus129r6p6juEgUzKItW
+	SyCmPWxEgUs0zZI1pTIflDWWs2UPa0n2cOWjB1FOiVZY+UBDW/+cfc/nfM93549D42InGUkr
+	0vfz6nS5UkoJCeGGJYZYMjEpde4JxxzIMR6D1g4PCa91dQT0BHIIKLjhoCBouyWAnMoLJDx6
+	oyeg6Xo5go6eHAS/+204GGuHCAiaGwQQ6H0nAIsOwZCrAYHVbcahpekeDo5qHQY/KwYp6Lr/
+	A4Hlg4eCvE4dAX77aQT5XpsAOh/IwNdxl4Shti8YvPnVjcDuGcTAU5eNIGhNg6KSqtC69TsF
+	/c+e45BnaUJw6UMbDj863yOobmhH4Lqqp+CzqQaHZs8YeNnjp+Cx5RQFPncBBt8qKCjWu0hw
+	P+1CUGgzI/C+dWFguHyDAmthJQG17+8IwN01gEGr1YxBeeV66LB7CWg0lWChc0OumxFgyzNg
+	ofIVA8u1uxj02ssEy0sR99t4huDKqpwYZ3wRpDjHRQfi+vvMiAuUGnDOaAq197v9OHe86iBX
+	2thNcX09ryjO9auY4J6UsNyVE30Yd/ZZLFeb3ybYtGKbcOluXqnI5NVzlu0Qpnx9bSQzdGMP
+	eR2QhXyjT6IwmmUWsM+rdcSwppjpbEtLLz6sJcxktirXS55EQhpnmqPZ0/bcEdN4Zidr9bWH
+	TDRNMFPZ3JcZw1jELGTtThP2LzOaLa+oG8kJC/HrA4UjXMzEs+/8DwkTEhajUWVIokjPVMkV
+	yvg4TVqKNl1xKG7XXlUlCn2T/ejA2dso0CyrRwyNpOEiWL4uVUzKMzVaVT1iaVwqEU2bkZQq
+	Fu2Waw/z6r3b1QeUvKYeRdGENEK0biu/Q8zske/n03g+g1f/n2J0WGQWulWTrfRLuFFrHdPu
+	zIjJ7t066WPUqnPYlORA8Jg2fO30yT7JlVUDWRPVTnf827hZ81dPiNJGvpiavCjxJlqcXIav
+	UanOxSQcWR3VvuXy5i/hR/cl/BkXiNZr/Pol9bNlO396Z9ZuDPTrGrelnTl/QC4rkh3+HPuA
+	SJj/9NPKmsEVW45ICU2KfF4MrtbI/wIjatboSQMAAA==
 X-CFilter-Loop: Reflected
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -224,158 +224,63 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 
-commit eb1cfd09f788e ("lockdep: Add lock_set_cmp_fn() annotation") has
-been added to address the issue that lockdep was not able to detect a
-true deadlock like the following:
+For dept to function properly, dept_task()->hardirqs_enabled must be set
+correctly.  If it fails to set this value to false, for example, dept
+may mistakenly think irq is still enabled even when it's not.
 
-   https://lore.kernel.org/lkml/20220510232633.GA18445@X58A-UD3R/
-
-The approach is only for lockdep but dept should work being aware of it
-because the new annotation is already used to avoid false positive of
-lockdep in the code.
-
-Make dept aware of the new lockdep annotation.
+Do dept_hardirqs_off() regardless of irq state not to miss any
+unexpected cases by any chance e.g. changes of the state by asm code.
 
 Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
- include/linux/dept.h     | 10 +++++++++
- kernel/dependency/dept.c | 48 +++++++++++++++++++++++++++++++++++-----
- kernel/locking/lockdep.c |  1 +
- 3 files changed, 53 insertions(+), 6 deletions(-)
+ include/linux/irqflags.h | 14 ++++++++++++++
+ kernel/dependency/dept.c |  1 +
+ 2 files changed, 15 insertions(+)
 
-diff --git a/include/linux/dept.h b/include/linux/dept.h
-index 827ccc1890d1..f3cc7566ddf2 100644
---- a/include/linux/dept.h
-+++ b/include/linux/dept.h
-@@ -53,6 +53,11 @@ struct dept_map {
- 	const char			*name;
- 	struct dept_key			*keys;
+diff --git a/include/linux/irqflags.h b/include/linux/irqflags.h
+index d8b9cf093f83..586f5bad4da7 100644
+--- a/include/linux/irqflags.h
++++ b/include/linux/irqflags.h
+@@ -214,6 +214,13 @@ extern void warn_bogus_irq_restore(void);
+ 		raw_local_irq_disable();		\
+ 		if (!was_disabled)			\
+ 			trace_hardirqs_off();		\
++		/*					\
++		 * Just in case that C code has missed	\
++		 * trace_hardirqs_off() at the first	\
++		 * place e.g. disabling irq at asm code.\
++		 */					\
++		else					\
++			dept_hardirqs_off();		\
+ 	} while (0)
  
-+	/*
-+	 * keep lockdep map to handle lockdep_set_lock_cmp_fn().
-+	 */
-+	void				*lockdep_map;
-+
- 	/*
- 	 * subclass that can be set from user
- 	 */
-@@ -79,6 +84,7 @@ struct dept_map {
- {									\
- 	.name = #n,							\
- 	.keys = (struct dept_key *)(k),					\
-+	.lockdep_map = NULL,						\
- 	.sub_u = 0,							\
- 	.map_key = { .classes = { NULL, } },				\
- 	.wgen = 0U,							\
-@@ -179,6 +185,8 @@ void dept_softirqs_on_ip(unsigned long ip);
- void dept_hardirqs_on(void);
- void dept_softirqs_off(void);
- void dept_hardirqs_off(void);
-+
-+#define dept_set_lockdep_map(m, lockdep_m) ({ (m)->lockdep_map = lockdep_m; })
- #else /* !CONFIG_DEPT */
- struct dept_key { };
- struct dept_map { };
-@@ -221,5 +229,7 @@ struct dept_ext_wgen { };
- #define dept_hardirqs_on()				do { } while (0)
- #define dept_softirqs_off()				do { } while (0)
- #define dept_hardirqs_off()				do { } while (0)
-+
-+#define dept_set_lockdep_map(m, lockdep_m)		do { } while (0)
- #endif
- #endif /* __LINUX_DEPT_H */
+ #define local_irq_save(flags)				\
+@@ -221,6 +228,13 @@ extern void warn_bogus_irq_restore(void);
+ 		raw_local_irq_save(flags);		\
+ 		if (!raw_irqs_disabled_flags(flags))	\
+ 			trace_hardirqs_off();		\
++		/*					\
++		 * Just in case that C code has missed	\
++		 * trace_hardirqs_off() at the first	\
++		 * place e.g. disabling irq at asm code.\
++		 */					\
++		else					\
++			dept_hardirqs_off();		\
+ 	} while (0)
+ 
+ #define local_irq_restore(flags)			\
 diff --git a/kernel/dependency/dept.c b/kernel/dependency/dept.c
-index 5bf32633e1fb..048348ea64d2 100644
+index 007e1bc7d201..35a3667ac8b3 100644
 --- a/kernel/dependency/dept.c
 +++ b/kernel/dependency/dept.c
-@@ -1615,9 +1615,39 @@ static int next_wgen(void)
- 	return atomic_inc_return(&wgen) ?: atomic_inc_return(&wgen);
+@@ -2095,6 +2095,7 @@ void noinstr dept_hardirqs_off(void)
+ 	 */
+ 	dept_task()->hardirqs_enabled = false;
  }
++EXPORT_SYMBOL_GPL(dept_hardirqs_off);
  
--static void add_wait(struct dept_class *c, unsigned long ip,
--		     const char *w_fn, int sub_l, bool sched_sleep,
--		     bool timeout)
-+/*
-+ * XXX: This is a temporary patch needed until lockdep stops tracking
-+ * dependency in wrong way.  lockdep has added an annotation to specify
-+ * a callback to determin whether the given lock aquisition order is
-+ * okay or not in its own way.  Even though dept is already working
-+ * correctly with sub class on that issue, it needs to be aware of the
-+ * annotation anyway.
-+ */
-+static bool lockdep_cmp_fn(struct dept_map *prev, struct dept_map *next)
-+{
-+	/*
-+	 * Assumes the cmp_fn thing comes from struct lockdep_map.
-+	 */
-+	struct lockdep_map *p_lock = (struct lockdep_map *)prev->lockdep_map;
-+	struct lockdep_map *n_lock = (struct lockdep_map *)next->lockdep_map;
-+	struct lock_class *p_class = p_lock ? p_lock->class_cache[0] : NULL;
-+	struct lock_class *n_class = n_lock ? n_lock->class_cache[0] : NULL;
-+
-+	if (!p_class || !n_class)
-+		return false;
-+
-+	if (p_class != n_class)
-+		return false;
-+
-+	if (!p_class->cmp_fn)
-+		return false;
-+
-+	return p_class->cmp_fn(p_lock, n_lock) < 0;
-+}
-+
-+static void add_wait(struct dept_map *m, struct dept_class *c,
-+		unsigned long ip, const char *w_fn, int sub_l,
-+		bool sched_sleep, bool timeout)
+ void noinstr dept_update_cxt(void)
  {
- 	struct dept_task *dt = dept_task();
- 	struct dept_wait *w;
-@@ -1658,8 +1688,13 @@ static void add_wait(struct dept_class *c, unsigned long ip,
- 		if (!eh->ecxt)
- 			continue;
- 
--		if (eh->ecxt->class != c || eh->sub_l == sub_l)
--			add_dep(eh->ecxt, w);
-+		if (eh->ecxt->class == c && eh->sub_l != sub_l)
-+			continue;
-+
-+		if (i == dt->ecxt_held_pos - 1 && lockdep_cmp_fn(eh->map, m))
-+			continue;
-+
-+		add_dep(eh->ecxt, w);
- 	}
- 
- 	wg = next_wgen();
-@@ -2145,6 +2180,7 @@ void dept_map_init(struct dept_map *m, struct dept_key *k, int sub_u,
- 	m->name = n;
- 	m->wgen = 0U;
- 	m->nocheck = !valid_key(k);
-+	m->lockdep_map = NULL;
- 
- 	dept_exit_recursive(flags);
- }
-@@ -2366,7 +2402,7 @@ static void __dept_wait(struct dept_map *m, unsigned long w_f,
- 		if (!c)
- 			continue;
- 
--		add_wait(c, ip, w_fn, sub_l, sched_sleep, timeout);
-+		add_wait(m, c, ip, w_fn, sub_l, sched_sleep, timeout);
- 	}
- }
- 
-diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-index 39b9e3e27c0b..c99f91f7a54d 100644
---- a/kernel/locking/lockdep.c
-+++ b/kernel/locking/lockdep.c
-@@ -5035,6 +5035,7 @@ void lockdep_set_lock_cmp_fn(struct lockdep_map *lock, lock_cmp_fn cmp_fn,
- 		class->print_fn = print_fn;
- 	}
- 
-+	dept_set_lockdep_map(&lock->dmap, lock);
- 	lockdep_recursion_finish();
- 	raw_local_irq_restore(flags);
- }
 -- 
 2.17.1
 
