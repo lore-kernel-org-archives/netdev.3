@@ -1,159 +1,248 @@
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F29434E41;
-	Mon,  6 Jul 2026 09:35:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D3843786E
+	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 09:35:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783330527; cv=none; b=A1ZsrC9tauVBrZ7nPsWNj9ROzHszJXjLM3fXXlE8UphxE3irRPo/H+LxiX0z8M2Z1k9e+CGumJhX7dvJK+U7Pnya7Nu7+lP4Zjdq2PONK8C3RzUC5EV95xqY7JIkeZjYLQ5L2RYrZfeuCpSvU4ivCcoyOlO8fWiBHiEkaRP2Sdg=
+	t=1783330537; cv=none; b=D8oN4mPTkNnda/GCcDo1UUfEVJEWxVP7AeBF1J4vK3PTRgaisBA5Ufryt3q/fyO8ANpdTS+q1mzNxcF/J494omZbhY4ShEWU1Uc3ZpbaySS48BB/UFvo/5EzFiJ0AuV2Y3SPN+PK6G9BK1mFbVBiF3fnDQd2NYMj2RgLP478/fY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783330527; c=relaxed/simple;
-	bh=n0B3B0tyhdS5oTazdgAMUW+gNHDIKtv7VjTt/R0pbVI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qK1jZalg/91adK0YqOzHaiX7PclLxGK+kCsJ6RLNa8H8mFGI81rFL46pdfyjjYM6mmnBRM1H7HSwl9hk5DD+o+g7VvArWbKcNZUUvHMzqn2FmIAqPK6j0P0mZKbLCnkImeG7qydhBWqIRJhxePMGbhvzJwD3KhzKt9yU0zf3gbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [111.196.245.140])
-	by APP-01 (Coremail) with SMTP id qwCowAAnwMi_dktq+pDxBA--.1304S2;
-	Mon, 06 Jul 2026 17:34:55 +0800 (CST)
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
-To: Cai Huoqing <cai.huoqing@linux.dev>
-Cc: Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] net: hinic: validate firmware image section bounds
-Date: Mon,  6 Jul 2026 17:34:55 +0800
-Message-ID: <20260706093455.81168-1-pengpeng@iscas.ac.cn>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1783330537; c=relaxed/simple;
+	bh=42Kj3VAyHdKAb4Mujj+SNBJjepZpYO0t8Hxlz5eSYok=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AVtLKWC6mW8UGOO5kdbllzln2QhnYGNcm2E+/iyTBAo5np5ox4BYEmWOicIXN0i5e9ZE1DRRNAc2AV+ZrNVHGYRVqqmA0ifZU4IukbJk2+CpmKhLctZGCzCZI22RtY/GpHeG3nY89T/fSnQFyuvT+6izNSmqk2mRdGGeqmWUZVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=hkaf0IXL; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=hLo5kcQU; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="hkaf0IXL";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="hLo5kcQU"
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66693xr4107755
+	for <netdev@vger.kernel.org>; Mon, 6 Jul 2026 09:35:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=x4hNt3rfNhUiPXOePYpG8Tjf20b4cSynXFo
+	kVgMJOC4=; b=hkaf0IXL4USdEe3sk0UKsslLAhxribsbMOq4P5NJ+pZlGwyjVlN
+	uNEa75X596G0RL4wNsJZGlRgf6SoaNrXLTNx6Q4uN5E6knM76KANsP2fviOsaVfI
+	i2yn79rpzofaLkK5jExvWEA1U5LHU00cHqgXz05asUzOuaIz5SET6w3IThDN9uPH
+	IkNCGnNbTj6HTzTBGI0e0pCJp3vP+HN5UGLrVz90lqJVN41bHds/+xijrmlctRkP
+	L6yEUdH/41PmtxQTWdVLRP9JDOGrgn8HDiknXlvHF3XbeHIPMExD57joolQWzUOJ
+	mEfcU6Vvkx32kVMsSLjQKKHeVMe/mww1Upg==
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f891ur6x3-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Mon, 06 Jul 2026 09:35:31 +0000 (GMT)
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-92e63df032bso313801885a.0
+        for <netdev@vger.kernel.org>; Mon, 06 Jul 2026 02:35:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1783330530; x=1783935330; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=x4hNt3rfNhUiPXOePYpG8Tjf20b4cSynXFokVgMJOC4=;
+        b=hLo5kcQUH/ZEoNTg9xQ55bRyXfHmQBLWEGRVS1P2KLG7HOOjBF69yzBI4IbfZOF9fF
+         VveAq0e9ryyR3/vfbMK53uRi18vlyWNvekEcj5645fWJRwZAXU75sZSQW8UlOL/hdzFx
+         SrkLAoNSeNGCA7/EPYHM/L4MVOoPAN2GoQu2+vaqhSFwTb+bputtY1SX+TS2AAheewYs
+         nLjjtSTV1NuARvyQ0sVdjoKlThCMg5NC14o9OhQ5muMIO/VPuL3DIcKsqJfUglsuTqr5
+         kDXJvhWqMg/YZkgzEKa//A2tP+qRahLvanlRi+nbQVstd4m0fzI6UyVtICyHD5grqO/G
+         Ej4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783330530; x=1783935330;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=x4hNt3rfNhUiPXOePYpG8Tjf20b4cSynXFokVgMJOC4=;
+        b=MAcoyH+mQnyn+yOtO5O0oQzgir3ggq2PBgVFePrwpi/b2Z1e4keDOY+w/7SJvuX1H0
+         KIex6vKfyg75ktPZXN+7OKTdiCxe7RLpHawF4kyvADZn/voDi8VWCoiYB9ZcDfk6Nto+
+         4pYyU1ZVO+nWszsih1thp+Sim36B//9AwgMgZgAyp/3c1gT2WmDfySJjCD5U7uURkdfK
+         oJrU7A+xtgFeCYy0umMtq4/RCNcw5hiI4OrQix4v1+Itz2CLfFaxTmOA6qGM+9o29B6G
+         PhcWbv7mRox5FnRyIoRQ9Ios2OayYNwzXSwssdrstar6hlMZwEre3sbZeqWW58p9plRw
+         3SfQ==
+X-Forwarded-Encrypted: i=1; AHgh+RopAott5zh9WtDd9quXXYEzu0cZA0VrGOQRTonrg/pJK9v9JB7RBB0VSHX3tjlU60mgzBS7vkc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwQC54K7C/stpJ1L72Q+K4W+px2bNxv6zBhhhToJLR5o7J0y6/M
+	5RJYvrDPiX4lOxU16u6uaFzZSc6199iC33Ttbw3kG/H/ppz9AWFCi2lBMoyrQzp8mRrl6hyE1Ud
+	oYP71eTrd0TlkUzDFU14+NCzaYGWeFLYlcaIBHruDCePCJKuneSLnvrW2DrM=
+X-Gm-Gg: AfdE7ckjFVhADp9Dr8Hg1mS83ABPAf7CnOxFnddWm7RmHggi8B+6PAB/8tYgrKEuoYb
+	HD0XUk686cKz3XYvGtVDB/daDLUaMhCqrfEl3sBA1qpQQCZq2bqEs0n2MupJxH9wwO50cC5QfVT
+	CfrdwSbw1nTOg0JNHwjhlUq1ZlianhjbB8iOu/UvIfbO0SzLIaOIfBHLRGy836UjzHahb7yLPaw
+	i0Xu3nfPm68kvWMaXa8KPhH5K1PT4lf22m0a8EkZCpgtrljd62QjT4DZ/Fm0Iqxixr46oL6Y9GP
+	XVqsZfJZ7WH22ZpUMlV6a1w7NilouNrj1XXQEf6+CRYeaoGAe6SZueTrQATBhDwkgyg3jIJHp1x
+	WoENUBbTDpjn+dAbgLj2Bd/AAtpw=
+X-Received: by 2002:a05:620a:6082:b0:92e:61f7:5687 with SMTP id af79cd13be357-92e8b539407mr1666942885a.29.1783330530185;
+        Mon, 06 Jul 2026 02:35:30 -0700 (PDT)
+X-Received: by 2002:a05:620a:6082:b0:92e:61f7:5687 with SMTP id af79cd13be357-92e8b539407mr1666940885a.29.1783330529728;
+        Mon, 06 Jul 2026 02:35:29 -0700 (PDT)
+Received: from quoll ([178.197.223.174])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493cce11497sm290925905e9.12.2026.07.06.02.35.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Jul 2026 02:35:28 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+To: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Raju Rangoju <Raju.Rangoju@amd.com>,
+        Prashanth Kumar K R <PrashanthKumar.K.R@amd.com>,
+        Richard Cochran <richardcochran@gmail.com>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Subject: [PATCH 1/2] arm64: dts: amd: seattle: Remove useless clocks DTSI include
+Date: Mon,  6 Jul 2026 11:35:24 +0200
+Message-ID: <20260706093523.274093-3-krzysztof.kozlowski@oss.qualcomm.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3395; i=krzysztof.kozlowski@oss.qualcomm.com;
+ h=from:subject; bh=42Kj3VAyHdKAb4Mujj+SNBJjepZpYO0t8Hxlz5eSYok=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBqS3bcQfZBrCmFoiQLVudR7CeFVhhcE1ScGZ28e
+ W0f9Y+B2S6JAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCakt23AAKCRDBN2bmhouD
+ 17p9D/0TBfp+/n2xq15jwV+novyrQONMFBQzxVcD3OoZwwPOU8qtkM9NzipW4MzH4KE3E+woz0X
+ BU3efE1WpDvV4kqwdfL5mTgRlDfRZ0jNG1m/bz5ZqetiEUr51n0mungnDcyOSfNOb95R+grGE2f
+ Tbx1WrcD4Hoy3y6lU9xmTFjTutHdyXUeb7u1J5dx+5IjpkoVAl0mFikumq79U2QnCo9dxNObBI6
+ 7hVzSYtFoddGkC62brq4MvQXVKAokCabbsE8GIzZaSuGu/wRGNIjt3yLgZEFj9Jzm6KTqO3pQGh
+ JVs9jJZ+Mnhs3+fTQzyrihS67Hhh6mCb9rv91uq4iqDhRw/k9RkjuBQUmy/rPD7aASx08TUy3DO
+ N+KPQeIUtXJbf9lNoBQHLxJiAViV/kiG4kWPnpNZt5B0PYDOdNqoA+p+kr/jHMGEFRRTlFEbxFT
+ eLjyb0YOwtrZpzTeNOFzvufkfSbHnKF2c4q48bBypqqu+jFpeP4xAz59ybY2MGHO5AtxuuTcG4F
+ a7XA6BhG7383HWfezFLWMODQrIoSJpOKKnJmRNPKkzg1pniDbm+fkCEtafw/GlRgostlu4NZibQ
+ y+BqC8WAblUCBOnSSHruMRldGpogIuQsdR5m5VoV54tTZBceYVURjWpV+CY3wfBE7me9Mise0Th Hd8KadIKhcCuXOQ==
+X-Developer-Key: i=krzysztof.kozlowski@oss.qualcomm.com; a=openpgp; fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowAAnwMi_dktq+pDxBA--.1304S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxCr4xAr4fZw4UZrW8Jr4kCrg_yoW5KrW8pa
-	95CFW3Kr9rGr4UJwn3ta1UuF93WrWUGa4DJF9xG3WFy3W3XrWkt3ZYyryjvr45Gr95ZFZ7
-	Wa1jvr4kC3W5CF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvj14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jw0_WrylYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
-	Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
-	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIY
-	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Gr0_Xr1lIxAIcVC0I7IYx2IY6xkF7I0E14
-	v26r4UJVWxJr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j
-	6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjfU5b
-	yZUUUUU
-X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
+X-Proofpoint-GUID: TGQ5BejTFjf0mC3_XrnLFDV4YrYvesGu
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA2MDA5NiBTYWx0ZWRfXwWKBN9a0mxfE
+ Kc4x8cMvJYuizYUOiWKbm4J/D2o7DrgykKqMqmqojLyjJtexykLnRHMsFvgjrhI5idv7iMpEQFK
+ wbJslgbcHq3E+Rwvdv5oe3jJak5iYMg=
+X-Authority-Analysis: v=2.4 cv=Mo1iLWae c=1 sm=1 tr=0 ts=6a4b76e3 cx=c_pps
+ a=HLyN3IcIa5EE8TELMZ618Q==:117 a=N6niishs+lR9UBL1FN3Qrw==:17
+ a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22 a=EUspDBNiAAAA:8
+ a=LplHZR8TypZ71DMuxxAA:9 a=bTQJ7kPSJx9SKPbeHEYW:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA2MDA5NiBTYWx0ZWRfX3rnXKEa2Y6bX
+ 4Q5wSWoz0JtQFyiL74XJ1f2Z+qFgKCy7yDOhFvfJmYY8jqV/XzCHlFkQZs2ncZ5RtycNVLwVehj
+ jLCo/+Lf5mU7lzf8X9LjpMoBzlF2gItLKGa8LCzUMhFnl1ZjsJMXW/BI2uSulZsJ8vrqhckCowr
+ uschfOM/FI7HBozeuSFisGvWka9CvDyGz+Fb5wjrAGxnLPhep3D1320RPpp9zj8e+o8/oqa9Bgd
+ 9bWXnHON6AbvYy+uiTc8igy0NoQNOI/vtIlqgfSmY/n+bPiBVuA5oOHz7zf5l3z5/+staED8qn8
+ reQ3NxRu2NVgegfKn7pMXk4HMpxN26T37I2GCFCqeZpFuOKrWTJTqbyTI6Wd2yNubQYJnOc0wI7
+ I2UTLonrLSRUQAvq85MoLTcWg/ITgZg6I1q5o5eMjGOjZtn665Aq/AnAgG7OcLi8KOBLBd6MCk4
+ dWOMJwGxthdthviZBfA==
+X-Proofpoint-ORIG-GUID: TGQ5BejTFjf0mC3_XrnLFDV4YrYvesGu
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-07-06_01,2026-07-03_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 impostorscore=0 bulkscore=0 adultscore=0 priorityscore=1501
+ suspectscore=0 spamscore=0 phishscore=0 lowpriorityscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607060096
 
-The firmware update path copies each section from the image with an offset
-and length supplied by the firmware header. The image validator only
-checked the sum of section lengths and used fw_len + header_size to check
-the file size, but it did not prove that each section offset and length
-fits in the firmware payload.
+The "amd-seattle-clks.dtsi" file is included exactly once, so paste the
+contents directly in proper DTSI.  No functional impact.
 
-Reject images with a truncated header, avoid the fw_len plus header-size
-addition, validate each section type before it is used as a bit index, and
-prove every section range with offset <= fw_len and len <= fw_len - offset.
-
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 ---
- .../net/ethernet/huawei/hinic/hinic_devlink.c | 57 ++++++++++++++++---
- 1 file changed, 49 insertions(+), 8 deletions(-)
+ arch/arm64/boot/dts/amd/amd-seattle-clks.dtsi | 43 -------------------
+ arch/arm64/boot/dts/amd/amd-seattle-soc.dtsi  | 36 +++++++++++++++-
+ 2 files changed, 35 insertions(+), 44 deletions(-)
+ delete mode 100644 arch/arm64/boot/dts/amd/amd-seattle-clks.dtsi
 
-diff --git a/drivers/net/ethernet/huawei/hinic/hinic_devlink.c b/drivers/net/ethernet/huawei/hinic/hinic_devlink.c
-index c977c43e5d5a..0c06fbdadad3 100644
---- a/drivers/net/ethernet/huawei/hinic/hinic_devlink.c
-+++ b/drivers/net/ethernet/huawei/hinic/hinic_devlink.c
-@@ -20,14 +20,25 @@
- #include "hinic_devlink.h"
- #include "hinic_hw_dev.h"
+diff --git a/arch/arm64/boot/dts/amd/amd-seattle-clks.dtsi b/arch/arm64/boot/dts/amd/amd-seattle-clks.dtsi
+deleted file mode 100644
+index 73f687773ce6..000000000000
+--- a/arch/arm64/boot/dts/amd/amd-seattle-clks.dtsi
++++ /dev/null
+@@ -1,43 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-/*
+- * DTS file for AMD Seattle Clocks
+- *
+- * Copyright (C) 2014 Advanced Micro Devices, Inc.
+- */
+-
+-	adl3clk_100mhz: uartspiclk_100mhz: clock-100000000 {
+-		compatible = "fixed-clock";
+-		#clock-cells = <0>;
+-		clock-frequency = <100000000>;
+-		clock-output-names = "adl3clk_100mhz";
+-	};
+-
+-	ccpclk_375mhz: clock-375000000 {
+-		compatible = "fixed-clock";
+-		#clock-cells = <0>;
+-		clock-frequency = <375000000>;
+-		clock-output-names = "ccpclk_375mhz";
+-	};
+-
+-	sataclk_333mhz: clock-333000000 {
+-		compatible = "fixed-clock";
+-		#clock-cells = <0>;
+-		clock-frequency = <333000000>;
+-		clock-output-names = "sataclk_333mhz";
+-	};
+-
+-	dmaclk_500mhz: pcieclk_500mhz: clock-500000000 {
+-		compatible = "fixed-clock";
+-		#clock-cells = <0>;
+-		clock-frequency = <500000000>;
+-		clock-output-names = "pcieclk_500mhz";
+-	};
+-
+-	xgmacclk0_dma_250mhz: xgmacclk0_ptp_250mhz: xgmacclk1_dma_250mhz: xgmacclk1_ptp_250mhz:
+-	miscclk_250mhz: clock-250000000 {
+-		compatible = "fixed-clock";
+-		#clock-cells = <0>;
+-		clock-frequency = <250000000>;
+-		clock-output-names = "miscclk_250mhz";
+-	};
+-
+diff --git a/arch/arm64/boot/dts/amd/amd-seattle-soc.dtsi b/arch/arm64/boot/dts/amd/amd-seattle-soc.dtsi
+index a611f8288b3e..c5b9dbfdf014 100644
+--- a/arch/arm64/boot/dts/amd/amd-seattle-soc.dtsi
++++ b/arch/arm64/boot/dts/amd/amd-seattle-soc.dtsi
+@@ -11,7 +11,41 @@ / {
+ 	#address-cells = <2>;
+ 	#size-cells = <2>;
  
-+static bool hinic_fw_section_valid(u32 fw_len, u32 offset, u32 len)
-+{
-+	return offset <= fw_len && len <= fw_len - offset;
-+}
+-	/include/ "amd-seattle-clks.dtsi"
++	adl3clk_100mhz: uartspiclk_100mhz: clock-100000000 {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++		clock-frequency = <100000000>;
++		clock-output-names = "adl3clk_100mhz";
++	};
 +
- static bool check_image_valid(struct hinic_devlink_priv *priv, const u8 *buf,
--			      u32 image_size, struct host_image_st *host_image)
-+			      size_t image_size, struct host_image_st *host_image)
- {
--	struct fw_image_st *fw_image = NULL;
-+	const struct fw_image_st *fw_image;
- 	u32 len = 0;
- 	u32 i;
++	ccpclk_375mhz: clock-375000000 {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++		clock-frequency = <375000000>;
++		clock-output-names = "ccpclk_375mhz";
++	};
++
++	sataclk_333mhz: clock-333000000 {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++		clock-frequency = <333000000>;
++		clock-output-names = "sataclk_333mhz";
++	};
++
++	dmaclk_500mhz: pcieclk_500mhz: clock-500000000 {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++		clock-frequency = <500000000>;
++		clock-output-names = "pcieclk_500mhz";
++	};
++
++	xgmacclk0_dma_250mhz: xgmacclk0_ptp_250mhz: xgmacclk1_dma_250mhz: xgmacclk1_ptp_250mhz:
++	miscclk_250mhz: clock-250000000 {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++		clock-frequency = <250000000>;
++		clock-output-names = "miscclk_250mhz";
++	};
  
--	fw_image = (struct fw_image_st *)buf;
-+	if (image_size < UPDATEFW_IMAGE_HEAD_SIZE) {
-+		dev_err(&priv->hwdev->hwif->pdev->dev,
-+			"Wrong image size read from file\n");
-+		return false;
-+	}
-+
-+	fw_image = (const struct fw_image_st *)buf;
- 
- 	if (fw_image->fw_magic != HINIC_MAGIC_NUM) {
- 		dev_err(&priv->hwdev->hwif->pdev->dev, "Wrong fw_magic read from file, fw_magic: 0x%x\n",
-@@ -41,14 +52,44 @@ static bool check_image_valid(struct hinic_devlink_priv *priv, const u8 *buf,
- 		return false;
- 	}
- 
-+	if (fw_image->fw_len != image_size - UPDATEFW_IMAGE_HEAD_SIZE) {
-+		dev_err(&priv->hwdev->hwif->pdev->dev,
-+			"Wrong data size read from file\n");
-+		return false;
-+	}
-+
- 	for (i = 0; i < fw_image->fw_info.fw_section_cnt; i++) {
--		len += fw_image->fw_section_info[i].fw_section_len;
--		host_image->image_section_info[i] = fw_image->fw_section_info[i];
-+		const struct fw_section_info_st *section =
-+			&fw_image->fw_section_info[i];
-+
-+		if (section->fw_section_type >= FILE_TYPE_TOTAL_NUM) {
-+			dev_err(&priv->hwdev->hwif->pdev->dev,
-+				"Wrong section type read from file: %u\n",
-+				section->fw_section_type);
-+			return false;
-+		}
-+
-+		if (!hinic_fw_section_valid(fw_image->fw_len,
-+					    section->fw_section_offset,
-+					    section->fw_section_len)) {
-+			dev_err(&priv->hwdev->hwif->pdev->dev,
-+				"Wrong section size read from file\n");
-+			return false;
-+		}
-+
-+		if (section->fw_section_len > fw_image->fw_len - len) {
-+			dev_err(&priv->hwdev->hwif->pdev->dev,
-+				"Wrong data size read from file\n");
-+			return false;
-+		}
-+
-+		len += section->fw_section_len;
-+		host_image->image_section_info[i] = *section;
- 	}
- 
--	if (len != fw_image->fw_len ||
--	    (fw_image->fw_len + UPDATEFW_IMAGE_HEAD_SIZE) != image_size) {
--		dev_err(&priv->hwdev->hwif->pdev->dev, "Wrong data size read from file\n");
-+	if (len != fw_image->fw_len) {
-+		dev_err(&priv->hwdev->hwif->pdev->dev,
-+			"Wrong data size read from file\n");
- 		return false;
- 	}
- 
+ 	gic0: interrupt-controller@e1101000 {
+ 		compatible = "arm,gic-400", "arm,cortex-a15-gic";
 -- 
-2.43.0
+2.53.0
 
