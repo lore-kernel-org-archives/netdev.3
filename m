@@ -1,508 +1,244 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SVZP279CU002.outbound.protection.outlook.com (mail-norwaywestazon11020086.outbound.protection.outlook.com [52.101.180.86])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD723A0B24
-	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 23:17:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A1633CB8EB;
+	Mon,  6 Jul 2026 23:25:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.180.86
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783379847; cv=pass; b=uFCjzfXMEIcKgmcDa0KyC0tXSBz2qpUfF9SYtBnaFNHYGuJpRe7f7wbx/mdH5rBJD0a1sHCy5H6FYpuorzS3F3hXzI7W/NsxSaSWBGkN37t2nmZZeG+lWpiAIphOImbvUzzaj5ICssgyDgCYCgkLuwwGBQYVS/2M0IatEVJCsjM=
+	t=1783380341; cv=fail; b=CD7IU38zO7mzfF3N6pX8yyZlPApfwIDD5k0irz5pBhGja+eSARHKBms3TbIEf7sLKBpwsLDE5ZNrTyIZK1JPc2/bbn/LjlYsuxorHhcUIJWL/W8Uj+dB75E2iQAkVhovKKU1X+pmHraOdH1uNS4/O/6uvxLxAJkr1IxWKkZ3LVg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783379847; c=relaxed/simple;
-	bh=dLk3l8o6wKpS2bhAj8bomNH493j7PIlHJrP2s7SSSzE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=raG8nFyTEL44m+kt8sI/QeM1TqkmbrdY6ism2th/DyIQ+yxpZ/0c5wyLIWgXWFMNzJ54lqdwJaXxz0yOtODVXoI4x+tFnGTnmExo36VNU7rjrBLVMysbysXOIvHr1l+ROAGKy3rWs1OixksfhIA4pUOyNui2ZEIbUpjkihZbvLA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=onk9ehAK; arc=pass smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1783380341; c=relaxed/simple;
+	bh=sM9Wa/BrEOIYdpPdFfOnCgb4YTeTDTMe78K0ah1L3ws=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=JStUVFjOjYjO9oJhhrIgzM8Rgdwvvp4MojOyRFfoF5JXkrWpi4TZBQmtajnXLHoklz2YOp2gabknMdk2kbE8Z47hOnrukQdeSpP2tAWYk7NSevgttMIbT4qf4TElThzTUKm+WXtm2I9xNIgecdtth24Wq2B+b2AqrX9QLvP69PE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=paneda.se; spf=pass smtp.mailfrom=paneda.se; dkim=pass (1024-bit key) header.d=PANEDA.onmicrosoft.com header.i=@PANEDA.onmicrosoft.com header.b=Ghq0PTZG; arc=fail smtp.client-ip=52.101.180.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=paneda.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paneda.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="onk9ehAK"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2c7c61b5292so51751405ad.0
-        for <netdev@vger.kernel.org>; Mon, 06 Jul 2026 16:17:24 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783379844; cv=none;
-        d=google.com; s=arc-20260327;
-        b=l/cb0XUzd9cwjgx5/wH4mH+/d4xo+zKQify1yD1+SenW/FpqgNU4xEUYtnlZbfrEsN
-         3f0yXogE57VEdJdYXz9szV+A+3kQ9IAEwz9pd4mGSgEhmg29m1vGub4U1KOttB3wkrC0
-         e6IWnNedBOEWgmnWiSf+/rZzqFwFyWEyx3CaF8tR5rHz66MY+nXzJ2E/+TOqfeKsMWgG
-         XGh9EkFJUw/oeDIm3iDWOuT67lRe6kbnM94Gw9IiPOttXegd+bcG5Jk/Nc4++zruhy2U
-         iwaIJvqrSsgvu0M8SWqj2jLvKhvBkLzPOVeDzt1mImjnsTEcZbQilDjLZ0W/wDug1pIi
-         E/ow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=M+8qKp600TVGZqCnC9V4CuKTCWgTklOkq2jFp4B/wF8=;
-        fh=X7IsDcoJzEXd05MJGtxPkZ0yQBhiO6gtQJupxlYmAms=;
-        b=oib4jnY0g/n1aOrL6PFZVLo2AOY6sHezGYZ/7FLyGEmTN4zBrax8KSAivQ47LhEM/G
-         fFwn/EaxRVJ/fkmt/vjMrd/OPhYLKuNHshix0pQGt62D1lg6Swf0/K5yEV/cZwwdadBI
-         p+D/4Arfv1fVTiqBk4UywiT46MhJugNyQkvCw0MG8K1sJlzhlQZ7H6wfn2Eh6xpinJFX
-         BOhqm3flauo0XDgyd4c70t91hJCvug2JxdtFKNnk4j5SlxESyKGCaD2ib/iMiDJCKvzC
-         8V56LTbPFmxVaCb2HU02VFZvUCN5J3IW7LRdgFZ2Xugf80HoPzstNOLgnntgfS0y5DRp
-         HhSQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=PANEDA.onmicrosoft.com header.i=@PANEDA.onmicrosoft.com header.b="Ghq0PTZG"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UueaVNdxjViJ5kqaZLmFq0C0UkXu7WU3pov3skBFiDL5d688NdPQSA91rNHsjIIVaf7f6aRHL98bzpdA9HOuG6gz/i9Z9UMGAp9riFNj+lgcarpLAImjJUwDNVeaucEDCKcWDLmV4S/BrP3jpDBI1MdnDs97imb47Vq2xzYYLEDjgc/0+r3FPi6bRLN4NBLtkQ+HZpSDKxRZOb+zWBrmxCUEBAl+b1mgHRTMrRvE7u+q+/GIer/+FFJjIXVqgj0guFzpzYQ3iQN5w6Cr6xMo8WpO6acbPEOGKBfX0Ds6TolvThTRPGPjv7aGlsii5iOk3cQGKlsrZU2J64esM7J68A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sM9Wa/BrEOIYdpPdFfOnCgb4YTeTDTMe78K0ah1L3ws=;
+ b=OILuzNKI9bC3mX9AF0ds+2ZrN9VWy6LX+d2SLHFVOtIbpvId6Wiu4FQc2Xj2xDLjfYC22kA040tJopOIaY35yitCi93NVr7/5CihJqUKqh11M3QjfzY+BF1i86pTIV1UVh1kkSy1XB++RNF0r+tX9otkTRDcc1x7xRTMhq3mSaEkvL1h7cCkma1iKasigxeQCYBK0J8mbDFKhAntMmI2SRMtKKFOsEhstPZA8EsZDQceNe5tmHnozwMrlEQM7jJps5HkHeiUiIv81Mse4sAEDzDu4vYVde5nGH4Zh9qB9aaQCyzLryXPI5Zob4wAGS1YgSjfmXCzSFjLkzf+GE2wIQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=paneda.se; dmarc=pass action=none header.from=paneda.se;
+ dkim=pass header.d=paneda.se; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783379844; x=1783984644; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=M+8qKp600TVGZqCnC9V4CuKTCWgTklOkq2jFp4B/wF8=;
-        b=onk9ehAKukv9SrKG2pmgsC/pGjqcl2y4gNZ7+BKuzIX8bB6vSLNJ8I6BnGW070dXK6
-         wmQcn3PlYzmTpGY8y5aXG3MWzo6lkoLjNcLZQK+W2AV6ziQwxqj6bNRXyDB6PG50dKcs
-         V2dFokHG8Bx46SDq+Ce+n7srJVGj4FLbkQpVZq/GoP2lAyN+hK4NKZj+eXF5Irt3Iwey
-         BhvDCeEnzm2M24VEGX42nupmb/HV5nCv80ycWi4kMJAhQnYVKdj/JA8CluC3nGI1ZTcS
-         +VvLXPX+AjvqXMP6A0Dm2+kHFnzMySi3tKidpdsSLpRFciPc0S1UrwPE0g8Eyw20IEPh
-         ll3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783379844; x=1783984644;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=M+8qKp600TVGZqCnC9V4CuKTCWgTklOkq2jFp4B/wF8=;
-        b=q/AFp/PQHuQYWD7YMJKydInXnZtRUWVlCuXZucaRokMh4yqw16cyhxfKIfBltDwtB+
-         Hkw2QjkxmaRGK3x6VM5ZnPRiaIjcyWN+AajtXVKNXX7ZvJFeuuLbDriFDs+Ip7W/Dnci
-         dB43+RJu1CXv9iG3x+QIwnxzhBKhfgRCbDwN2BuAj3/oMGcWcvXTo49OWqP2xbF7PiVQ
-         xyMwch/9Yg9Fv/VHmJ8dTFdq96TFeOqd8IXBwpBT5XIEogkyqGtsu2Gt3bBcYumID5m2
-         95klzlfR/Dpw3+t6NYCDiFtL5zIF+P3yvbV9w4zGs6Fl5onHwFSya1DKEGz3z3A5FMDD
-         K6tw==
-X-Forwarded-Encrypted: i=1; AHgh+RoqfMluQyONd/iP0aXPJ4dL60eq0zYFOKS+JgUkyO8gUHlO2+C5q3SscYQg3MHakzQj/uxM6Zo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3zMMPskSITeCc1xPf2+EHWIHmrlIzb4uWwAaRECZgupzdaLwI
-	2XJKOxAaRkUP7pmK9KvMfQz6foPPdtX2uDj6XrItQMcIbH2OJ8D4+e1hs132N0nkx4bgFJ/xalD
-	fOLvKe6LR0aRJInDJgYMnD2RaM8hz/ZzycyrUC1iL
-X-Gm-Gg: AfdE7clgY/R5MA4Y3GbcmV/HG5vzT7v4H+ETKfnt/kZdRPq0qtn+IMo6nIEWYs0uFKq
-	G64WDWuMvjOQ6bIM3S8pm1aVUAty9U8P9sZX/1H0Fvnp/xWQwzUhae8OKnTZ8U8UN2FVNyuR4uj
-	TG2lqLg3elYMT1IU+yD9I4UHzKVxMoSMSl5Oy+CErtEMYtSBn1EGTtPaUCt/7820lH/Q9fGk+WD
-	4gh2yb8EI9cMa7ycTqp44lvqwy6tO+smlhoTjH59i2QipER1owRqKoWzwpG65lfLy+ITUMscgoT
-	thJlqkSlFzvAlhRT9r7QZ1K4zhCmB019fuMmSY0ZMTqcE+J/6p6ptKqEJtivxbWhzYUx/PbEaVT
-	TFygbzRN0gUcbVfyl4zP5iz4HbxBH3qgSJTS/aw==
-X-Received: by 2002:a05:6a20:c786:b0:3b3:be05:2b73 with SMTP id
- adf61e73a8af0-3c08ecd72famr3009005637.18.1783379843218; Mon, 06 Jul 2026
- 16:17:23 -0700 (PDT)
+ d=PANEDA.onmicrosoft.com; s=selector1-PANEDA-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sM9Wa/BrEOIYdpPdFfOnCgb4YTeTDTMe78K0ah1L3ws=;
+ b=Ghq0PTZGHZ1C6sIu3W/iZ6nLL/5JDv+g7LecxEyBfPrxUY70d8oYtngMSdi9FAKnp+7Pd+ZWlL8JjV3IC9iZhJSWVceqaHrmxQwFwT9ItNZwB6RnIUqsu/WPw6voTLEsTETWQBlpl/tnOL9plNjpW1h5gLBGYaY9/6r7s15rIFs=
+Received: from OS4P279MB0403.NORP279.PROD.OUTLOOK.COM (2603:10a6:e10:1f::7) by
+ SV0P279MB1388.NORP279.PROD.OUTLOOK.COM (2603:10a6:f10:3c::9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.159.19; Mon, 6 Jul 2026 23:25:33 +0000
+Received: from OS4P279MB0403.NORP279.PROD.OUTLOOK.COM
+ ([fe80::9d1e:929a:6822:8d50]) by OS4P279MB0403.NORP279.PROD.OUTLOOK.COM
+ ([fe80::9d1e:929a:6822:8d50%6]) with mapi id 15.21.0181.012; Mon, 6 Jul 2026
+ 23:25:33 +0000
+From: Thomas Karlsson <thomas.karlsson@paneda.se>
+To: Xiang Mei <xmei5@asu.edu>
+CC: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "AutonomousCodeSecurity@microsoft.com"
+	<AutonomousCodeSecurity@microsoft.com>, "tgopinath@linux.microsoft.com"
+	<tgopinath@linux.microsoft.com>, "kys@microsoft.com" <kys@microsoft.com>
+Subject: Re: [PATCH net] macvlan: cap IFLA_MACVLAN_BC_QUEUE_LEN to bound
+ broadcast backlog
+Thread-Topic: [PATCH net] macvlan: cap IFLA_MACVLAN_BC_QUEUE_LEN to bound
+ broadcast backlog
+Thread-Index: AQHdDY4S481ZgdFiBEeV/y1nwovnhrZhEUYHgAAC0QCAAAJQQw==
+Date: Mon, 6 Jul 2026 23:25:33 +0000
+Message-ID:
+ <OS4P279MB04037D97A6ECD2021F1675C9EAF12@OS4P279MB0403.NORP279.PROD.OUTLOOK.COM>
+References: <20260706212556.3199234-1-xmei5@asu.edu>
+ <OS4P279MB0403BDB88C2B7F4D4939DCC4EAF12@OS4P279MB0403.NORP279.PROD.OUTLOOK.COM>
+ <CAPpSM+QjiZxUOqK6Aor6gLehVj=xGQ0uAcuPm089EuSNRFeynA@mail.gmail.com>
+In-Reply-To:
+ <CAPpSM+QjiZxUOqK6Aor6gLehVj=xGQ0uAcuPm089EuSNRFeynA@mail.gmail.com>
+Accept-Language: en-SE, en-US
+Content-Language: aa
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=paneda.se;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: OS4P279MB0403:EE_|SV0P279MB1388:EE_
+x-ms-office365-filtering-correlation-id: 32f1bcd7-4c72-4fc9-a195-08dedbb5e064
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|23010399003|7416014|1800799024|366016|38070700021|18002099003|4143699003|22082099003|56012099006;
+x-microsoft-antispam-message-info:
+ DRHXrizjOHdfOZqezYOyxKGx7fKQTC8sIpM52Uygg6vc6BQ9PsnofMouNzO1kl+rsvth2mHUhkCnOdYPIXhQUOfc3qqo/r4sRaHUttMO24G+hUMtTVmS78F2VrYrmYMVu4PIFChG7C5c6HYnj0K64wytyszXb+PWKJndNEkUyhEjAIjAfCa1GGONZ1MEp0IuazZPo2/ibjF07/jNnZRYoDI25fwfk8qpbWMZj+X5uoHRSxV67Gz4X6O0KM+FFzvm8I5y/BY0uIcMeQO9GZSz7ZUPyKDb+R/BApkN1scGoUYZ0dWPEHA4lClydXmCNiNpe3tZOcqzVqojIO3KwXmZtUkW41Ft5F+K6qbRlL0K24PKmYIczjJeBFIRY9N680AcVvRch3utbM2XNoYsUCuxitlVJJO9PLw8objMXSi7d8BbbI13D/aBxi6gPRgIzTo/FNXOkhParr0/HT0b5Hv+LEeQ3HjzLe9y/Qvx8l/97OoQHLvXxx4bra18WTBJWjrm4f5hc0vwOC7+S8ebRMp9gqrvjZKx+H5z5BvmARGnfgUpCZTZ6gKO4vDEiT5lHxlWsmHTDaAo96KoQHVGmcs38F8DS/qEJB+2v6wvYn75cQbIgMQiYt0Y6qC6+nX+S84ALroXnO2uCZMhIxm7uVmjcSD8M7philM5vT/MHBVVS7IfgfPQRQEoLj7nF3OZhPiO8bAl3Ks/UazJLShUDYER8SI/tGifZbRqRzDtGVRP7nw=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OS4P279MB0403.NORP279.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(7416014)(1800799024)(366016)(38070700021)(18002099003)(4143699003)(22082099003)(56012099006);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?cFQ5NjBmQmNhdnNVRElQOExGRU9iRXF3d1NjSFNNaHB4UWc3T0RHc3FqSGJn?=
+ =?utf-8?B?VFJJOVdzMWtsbXVneWlXSC96NW00ZnFwQzVqTjRMRmpCa2lUS0RyamRsKzd5?=
+ =?utf-8?B?djVkWVpTamdhYzdTM1hjNGhKQWY0ZDRQSWRCV0ZWSzNqbmRCQ3lZMzhDaVlu?=
+ =?utf-8?B?amdkMHU4a0F6VDRDTTQxRXFFZWpvb3lnRG1Jb0VLSmJDUmVscklFeURzZUxq?=
+ =?utf-8?B?TlhRVFdIZEU5S2lxODBGanpNVmRJSjh5NXVGUG02N0JLZEtnK1Q2K0p1RHNp?=
+ =?utf-8?B?TVMrS3hLcndDZ1dlbzdDSytLUG1XYjhrNmszRndlcU5wZkFPckcySUJCTDNN?=
+ =?utf-8?B?NWNxc2VSZm5NRmMvVnlqUENmaUVreU9EdlZWWjFkUVc5ZXVmdjF1c0cycW9Z?=
+ =?utf-8?B?Nm5qK1F2WWJTblF0OGorTmRWbTg2MnBPSUZWbHpJYm83UmYvRWV6dlpUNWpq?=
+ =?utf-8?B?RXZWMDhET2RONXN6MHU0dEdQVzZRY3QvVEJMNmdHZjVFY25PdjV3ci84WlZB?=
+ =?utf-8?B?cVhxT3FGMHZZT0VaMmNtWTNQY2lnWDltLzhHTktzMkM1NUJXWXN6RjNNcC9K?=
+ =?utf-8?B?U2lySzRQRTRBSVdmLzczazJmbjdpSzVLa2xUTnA0YS9KbFFENU0zRmYwbTNO?=
+ =?utf-8?B?T2RJTjNQQXQzVHhFNkZpYVFzUE1RMElVOGJtSy8yaWNXa2V2dDdPck1tNGhp?=
+ =?utf-8?B?Z0NJTUZuVk5jQ2N1aWplWGVMelFPVmUrcVlQQzNNNjhwdGJQTVlLTlhqWkdq?=
+ =?utf-8?B?L3RucDhscXNUYjJaV2tqMGI3NGtEcFJtY2FMN0cxMVNjT0RhSGZzUmowdGJN?=
+ =?utf-8?B?WFIxTXNMR3EyWDdNVUFDTHlPZjZwb1J5WVJKN08xc1VCS1pZcThSMlBaZ3NO?=
+ =?utf-8?B?aVdBQWhuWEM0MHRBSmpEZjZkcUtuc1l6UVJaOUJNazAwMGt4a3E0SDZ6N2Iz?=
+ =?utf-8?B?cjZTL3NZRHNSdEV2ZUJXcmZySzhpZnRHOTcraThzak1wZGp1c3lwTmVIN3Zr?=
+ =?utf-8?B?ZDZTZWxpQytrZGtSaExJTHlCaXBZVjJLM2dqbWN4cnNHWDVUUHo2SCtCTWZX?=
+ =?utf-8?B?VG83ZHpOV011ejlXdkxyd1l6TUVydFFDUGpGYk9jaG9leWYrYk1XdmNqOXVt?=
+ =?utf-8?B?azlPTTl3dXdPM0luMXRvMXZXYVVJMG5UWEZSbzRxZnBiemZOc3F0NDZpM1Y5?=
+ =?utf-8?B?dzMwSjVrcWdRNUpNbjRiZUJmdjlmVzBvVmFtN0NSTHkzRGxrUkdXVG5MZDRX?=
+ =?utf-8?B?ZEd0c283Si95TXdaNXJYenhSNFZlM05FS0pJbzl6eEJPTDYwckJJVzVKY0Q4?=
+ =?utf-8?B?K3lTL09lVGxIZTNGT0xneDNNaEE4RUhUVGkrdERaODdXQWNsaTRuSHk1Nnc3?=
+ =?utf-8?B?a2NBaTMvMi9tOEs3TGkwUlF1YzRoY1hhREtqUEtwK1d3L3l6eW56YnV1a3Ew?=
+ =?utf-8?B?WEZuRWRJOWgxaVh2WDNqS0hYaWp1cWdhMm1UTzl0QTJxb29oRlcyR3crV2ZP?=
+ =?utf-8?B?RXEzb0NEd0Ezay9aczRnRmZDL2NPY2l4ZVpBa3Z0dnNyR3ROVGhmUXhyTmpG?=
+ =?utf-8?B?MWM4djJoN1Y4YjZXamVrelY4cm9mSmVHblJ6VjJ0TDFmMDVhSXlxV0RkbUdn?=
+ =?utf-8?B?RFhzdGR5RHBMRnBxTFNKSWxWT0JONGc2VENLUHVJbGNaNHhvV21aL1ZtWWQ1?=
+ =?utf-8?B?OHRwb3AxSmdyR0FFVWh5ai93K0U4MFkrc051RlkxYS9rZzJwcFphVXhER2lj?=
+ =?utf-8?B?V09uWE5mNGJ4a0Nsc0JlUWxGaU1HaVhPQkV3eHJiTTZQcWxHZ1Y4ejhmekxF?=
+ =?utf-8?B?WVZXVVJVR1RuVWJYSnk5U0d0YmxNOXcwNjVEZEREZkZnd0taK3FFY3pvbWhJ?=
+ =?utf-8?B?dnByRFpHTXNrNzF1WW5aZDcwSXpyTlJ2SkRYSmg3Tm5nQTE1QU44RC9WSS9C?=
+ =?utf-8?B?dlI1MUNLbDZXbm9USXZoWVZXWGI5TUQ2K0lPUG01N0JEZUxtbzNNZlNZM0w4?=
+ =?utf-8?B?UERMcTdvbGdjelBQT2FTNVMybUkwdjVyZXBMbDJOakR1NFBvRWd1YVo0aFV5?=
+ =?utf-8?B?ZlhKQlhkTzVTNWZzcjI5YjZZOU01VE9GeFVSK0w2RUI2RVRETVpSVTIvOTZG?=
+ =?utf-8?B?YXZOR1VpS0QwVmNyS2daa3AyZXZZWjRxanlBR3NjaUIyWnhVeDRPdnlCdzJ0?=
+ =?utf-8?B?eVBJYmcwVm8xYjlXQjNHZE1zVStKdUlxTk5ydk92QUpBNThLc2ZEWk9mZFNS?=
+ =?utf-8?B?K1kyWVhWMi9rOUZKK1pkbzNwamdsOW9Va2Y5dFF5dndGdUlldEZxNnJSWmFH?=
+ =?utf-8?B?dldPdXl0M2MrWmRrcVhuVG1IWVFTdmkzL3hhekxqVC9wa283ZzgzZz09?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260705123826.3818443-1-jkoolstra@xs4all.nl> <20260705123826.3818443-4-jkoolstra@xs4all.nl>
-In-Reply-To: <20260705123826.3818443-4-jkoolstra@xs4all.nl>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Mon, 6 Jul 2026 16:17:11 -0700
-X-Gm-Features: AVVi8CfHos24Kv9fVUY1fKP13GD0sDCI86-gLPvh-ecHWsAM5E-pX13a8-b3DE8
-Message-ID: <CAAVpQUA_hhHRr60HWmZqHMT5Gfaiq6D8zjmuqT3KikuUtm9Eiw@mail.gmail.com>
-Subject: Re: [PATCH net-next v4 3/3] selftest: Add tests for useful handling
- of LSM denials on SCM_RIGHTS
-To: Jori Koolstra <jkoolstra@xs4all.nl>
-Cc: Christian Brauner <brauner@kernel.org>, Aleksa Sarai <cyphar@cyphar.com>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	netdev@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: paneda.se
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: OS4P279MB0403.NORP279.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 32f1bcd7-4c72-4fc9-a195-08dedbb5e064
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Jul 2026 23:25:33.2979
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: e1ee824e-c05e-4daf-9c7f-12a2c63da8b0
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 3ThTDhp3VZfV3nz5RD+AZ0VtFPbH1x+wcTeUcdnK/zv8QP7MYzdT4fp0B6sIYaEpVPen5dQR9RbVzXHJ5Su+LIFf3K0WrAJo5zxBs9H4P2s=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SV0P279MB1388
 
-On Sun, Jul 5, 2026 at 5:37=E2=80=AFAM Jori Koolstra <jkoolstra@xs4all.nl> =
-wrote:
->
-> Tests SCM_RIGHTS fd passing on a socket with the new socket option
-> SO_RIGHTS_NOTRUNC turned on. To hook into the security_file_receive()
-> call, BPF is used. The BPF program shares a hashmap with userspace that
-> lists the inos to be blocked (of the receiver tgid).
->
-> Signed-off-by: Jori Koolstra <jkoolstra@xs4all.nl>
-> Assisted-by: LLM # used LLM to get skeleton BPF and libbpf code
-> ---
->  .../testing/selftests/net/af_unix/.gitignore  |   2 +
->  tools/testing/selftests/net/af_unix/Makefile  |   8 +
->  .../net/af_unix/scm_rights_denial_lsm.bpf.c   |  36 +++
->  .../net/af_unix/scm_rights_denial_lsm.c       | 263 ++++++++++++++++++
->  4 files changed, 309 insertions(+)
->  create mode 100644 tools/testing/selftests/net/af_unix/scm_rights_denial=
-_lsm.bpf.c
->  create mode 100644 tools/testing/selftests/net/af_unix/scm_rights_denial=
-_lsm.c
->
-> diff --git a/tools/testing/selftests/net/af_unix/.gitignore b/tools/testi=
-ng/selftests/net/af_unix/.gitignore
-> index 240b26740c9e..5034482f8864 100644
-> --- a/tools/testing/selftests/net/af_unix/.gitignore
-> +++ b/tools/testing/selftests/net/af_unix/.gitignore
-> @@ -3,6 +3,8 @@ msg_oob
->  scm_inq
->  scm_pidfd
->  scm_rights
-> +scm_rights_denial_lsm
-> +scm_rights_denial_lsm.bpf.o
->  so_peek_off
->  unix_connect
->  unix_connreset
-> diff --git a/tools/testing/selftests/net/af_unix/Makefile b/tools/testing=
-/selftests/net/af_unix/Makefile
-> index 4c0375e28bbe..594cd26ec398 100644
-> --- a/tools/testing/selftests/net/af_unix/Makefile
-> +++ b/tools/testing/selftests/net/af_unix/Makefile
-> @@ -11,9 +11,17 @@ TEST_GEN_PROGS :=3D \
->         scm_inq \
->         scm_pidfd \
->         scm_rights \
-> +       scm_rights_denial_lsm \
->         so_peek_off \
->         unix_connect \
->         unix_connreset \
->  # end of TEST_GEN_PROGS
->
-> +TEST_GEN_FILES :=3D scm_rights_denial_lsm.bpf.o
-> +
->  include ../../lib.mk
-> +include ../bpf.mk
-> +
-> +$(OUTPUT)/scm_rights_denial_lsm: $(BPFOBJ)
-> +$(OUTPUT)/scm_rights_denial_lsm: CFLAGS +=3D -I$(SCRATCH_DIR)/include
-> +$(OUTPUT)/scm_rights_denial_lsm: LDLIBS +=3D -lelf -lz
-> diff --git a/tools/testing/selftests/net/af_unix/scm_rights_denial_lsm.bp=
-f.c b/tools/testing/selftests/net/af_unix/scm_rights_denial_lsm.bpf.c
-> new file mode 100644
-> index 000000000000..4f2414465bfd
-> --- /dev/null
-> +++ b/tools/testing/selftests/net/af_unix/scm_rights_denial_lsm.bpf.c
-> @@ -0,0 +1,36 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +#include <linux/bpf.h>
-> +#include <linux/errno.h>
-> +#include <bpf/bpf_helpers.h>
-> +#include <bpf/bpf_tracing.h>
-> +
-> +char _license[] SEC("license") =3D "GPL";
-> +
-> +struct inode {
-> +       unsigned long i_ino;
-> +} __attribute__((preserve_access_index));
-> +
-> +struct file {
-> +       struct inode *f_inode;
-> +} __attribute__((preserve_access_index));
-> +
-> +struct {
-> +       __uint(type, BPF_MAP_TYPE_HASH);
-> +       __uint(max_entries, 16);
-> +       __type(key, __u64);     /* inode number */
-> +       __type(value, __u32);   /* tgid of the receiver being tested */
-> +} denied_inodes SEC(".maps");
-> +
-> +SEC("lsm/file_receive")
-> +int BPF_PROG(scm_rights_deny, struct file *file)
-> +{
-> +       __u32 tgid =3D bpf_get_current_pid_tgid() >> 32;
-> +       __u64 ino =3D file->f_inode->i_ino;
-> +       __u32 *owner;
-> +
-> +       owner =3D bpf_map_lookup_elem(&denied_inodes, &ino);
-> +       if (owner && *owner =3D=3D tgid)
-> +               return -EPERM;
-> +
-> +       return 0;
-> +}
-> diff --git a/tools/testing/selftests/net/af_unix/scm_rights_denial_lsm.c =
-b/tools/testing/selftests/net/af_unix/scm_rights_denial_lsm.c
-> new file mode 100644
-> index 000000000000..b8656de86efe
-> --- /dev/null
-> +++ b/tools/testing/selftests/net/af_unix/scm_rights_denial_lsm.c
-> @@ -0,0 +1,263 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +#define _GNU_SOURCE
-> +#include <errno.h>
-> +#include <fcntl.h>
-> +#include <stdio.h>
-> +#include <stdlib.h>
-> +#include <string.h>
-> +#include <unistd.h>
-> +#include <sys/socket.h>
-> +#include <sys/stat.h>
-> +#include <sys/types.h>
-> +
-> +#include <bpf/bpf.h>
-> +#include <bpf/libbpf.h>
-> +
-> +#include "kselftest_harness.h"
-> +
-> +#ifndef SO_RIGHTS_NOTRUNC
-> +#define SO_RIGHTS_NOTRUNC 85
-> +#endif
-> +
-> +#define NR_FILES 2
-> +
-> +/* Per-file content, so a received fd can be matched to the file sent */
-> +#define SECRET(n) "secret %d", (n)
-> +
-> +/* Indices into the socketpair */
-> +#define SK_SENDER 0
-> +#define SK_RECEIVER 1
-> +
-> +FIXTURE(scm_rights_denial_bpf)
-> +{
-> +       struct bpf_object *obj;
-> +       struct bpf_link *link;
-> +       int map_fd;
-> +       int sk[2];
-> +       int files[NR_FILES];
-> +       __u64 inos[NR_FILES];
-> +       char paths[NR_FILES][64];
-> +};
-
-Could you add FIXTURE_VARIANT() and cover all types ?
-SOCK_STREAM, SOCK_DGRAM, SOCK_SEQPACKET
-
-
-> +
-> +FIXTURE_SETUP(scm_rights_denial_bpf)
-> +{
-> +       struct bpf_program *prog;
-> +       char lsms[256] =3D {};
-> +       int i, fd;
-> +
-> +       if (geteuid() !=3D 0)
-> +               SKIP(return, "requires root");
-> +
-> +       fd =3D open("/sys/kernel/security/lsm", O_RDONLY);
-> +       ASSERT_LE(0, fd);
-> +       ASSERT_LT(0, read(fd, lsms, sizeof(lsms) - 1));
-
-This style is easier to follow the logic for me.
-
-err =3D func();
-ASSERT_LT(val, err);
-
-
-> +       close(fd);
-> +
-> +       if (!strstr(lsms, "bpf"))
-> +               SKIP(return, "BPF LSM not active (boot with lsm=3D...,bpf=
-)");
-
-Could you add minimal relevant configs (CONFIG_BPF_LSM etc)
-to tools/testing/selftests/net/af_unix/config ?
-
-NIPA (netdev CI) uses it as the base config.
-
-
-> +
-> +       self->obj =3D bpf_object__open_file("scm_rights_denial_lsm.bpf.o"=
-, NULL);
-> +       ASSERT_NE(NULL, self->obj);
-> +       ASSERT_EQ(0, bpf_object__load(self->obj));
-> +
-> +       prog =3D bpf_object__find_program_by_name(self->obj, "scm_rights_=
-deny");
-> +       ASSERT_NE(NULL, prog);
-> +
-> +       self->link =3D bpf_program__attach_lsm(prog);
-> +       ASSERT_NE(NULL, self->link);
-> +
-> +       self->map_fd =3D bpf_object__find_map_fd_by_name(self->obj,
-> +                                                      "denied_inodes");
-> +       ASSERT_LE(0, self->map_fd);
-> +
-> +       ASSERT_EQ(0, socketpair(AF_UNIX, SOCK_STREAM, 0, self->sk));
-> +
-> +       for (i =3D 0; i < NR_FILES; i++) {
-> +               struct stat st;
-> +
-> +               snprintf(self->paths[i], sizeof(self->paths[i]),
-> +                        "/tmp/scm_rights_denial_bpf.%d.XXXXXX", i);
-> +               self->files[i] =3D mkstemp(self->paths[i]);
-> +               ASSERT_LE(0, self->files[i]);
-> +
-> +               ASSERT_LT(0, dprintf(self->files[i], SECRET(i)));
-> +
-> +               ASSERT_EQ(0, fstat(self->files[i], &st));
-> +               self->inos[i] =3D st.st_ino;
-> +       }
-> +}
-> +
-> +FIXTURE_TEARDOWN(scm_rights_denial_bpf)
-> +{
-> +       bpf_link__destroy(self->link);
-> +       bpf_object__close(self->obj);
-> +
-> +       for (int i =3D 0; i < NR_FILES; i++) {
-> +               if (self->files[i] >=3D 0) {
-> +                       close(self->files[i]);
-> +                       unlink(self->paths[i]);
-> +               }
-> +       }
-> +
-> +       close(self->sk[SK_SENDER]);
-> +       close(self->sk[SK_RECEIVER]);
-> +}
-> +
-> +static int deny_inode(int map_fd, __u64 ino)
-> +{
-> +       __u32 tgid =3D getpid();
-
-nit: newline here
-
-> +       return bpf_map_update_elem(map_fd, &ino, &tgid, BPF_ANY);
-> +}
-> +
-> +static int set_notrunc(int sk)
-> +{
-> +       int one =3D 1;
-
-nit: ditto.
-
-> +       return setsockopt(sk, SOL_SOCKET, SO_RIGHTS_NOTRUNC,
-> +                         &one, sizeof(one));
-> +}
-> +
-> +static int send_fds(int sk, int *fds, int n)
-> +{
-> +       char ctrl[CMSG_SPACE(NR_FILES * sizeof(int))] =3D {};
-> +       char data =3D 'x';
-> +       struct iovec iov =3D {
-> +               .iov_base =3D &data,
-> +               .iov_len =3D sizeof(data),
-> +       };
-> +       struct msghdr msg =3D {
-> +               .msg_iov =3D &iov,
-> +               .msg_iovlen =3D 1,
-> +               .msg_control =3D ctrl,
-> +               .msg_controllen =3D CMSG_SPACE(n * sizeof(int)),
-> +       };
-> +       struct cmsghdr *cmsg =3D CMSG_FIRSTHDR(&msg);
-> +
-> +       cmsg->cmsg_level =3D SOL_SOCKET;
-> +       cmsg->cmsg_type =3D SCM_RIGHTS;
-> +       cmsg->cmsg_len =3D CMSG_LEN(n * sizeof(int));
-> +       memcpy(CMSG_DATA(cmsg), fds, n * sizeof(int));
-> +
-> +       return sendmsg(sk, &msg, 0);
-> +}
-> +
-> +static int recv_fd_slots(int sk, int *slots, int *msg_flags)
-> +{
-> +       int nr_slots;
-> +       char ctrl[CMSG_SPACE(NR_FILES * sizeof(int))];
-> +       char data;
-> +       struct iovec iov =3D {
-> +               .iov_base =3D &data,
-> +               .iov_len =3D sizeof(data),
-> +       };
-> +       struct msghdr msg =3D {
-> +               .msg_iov =3D &iov,
-> +               .msg_iovlen =3D 1,
-> +               .msg_control =3D ctrl,
-> +               .msg_controllen =3D sizeof(ctrl),
-> +       };
-> +       struct cmsghdr *cmsg;
-> +
-> +       if (recvmsg(sk, &msg, 0) < 0)
-> +               return -1;
-> +
-> +       *msg_flags =3D msg.msg_flags;
-> +
-> +       cmsg =3D CMSG_FIRSTHDR(&msg);
-> +       if (!cmsg)
-> +               return 0;
-> +
-> +       nr_slots =3D (cmsg->cmsg_len - CMSG_LEN(0)) / sizeof(int);
-> +       memcpy(slots, CMSG_DATA(cmsg), nr_slots * sizeof(int));
-> +
-> +       return nr_slots;
-> +}
-> +
-> +/* Prove a received fd works by reading back the file's content. */
-> +static int check_secret(int fd, int idx)
-> +{
-> +       char want[32], got[32] =3D {};
-> +
-> +       snprintf(want, sizeof(want), SECRET(idx));
-> +       if (pread(fd, got, sizeof(got) - 1, 0) < 0)
-> +               return -1;
-> +
-> +       return strcmp(want, got);
-> +}
-> +
-> +TEST_F(scm_rights_denial_bpf, all_allowed)
-> +{
-> +       int slots[NR_FILES], nr_slots, flags, i;
-> +
-> +       ASSERT_EQ(0, set_notrunc(self->sk[SK_RECEIVER]));
-> +       ASSERT_NE(-1, send_fds(self->sk[SK_SENDER], self->files, NR_FILES=
-));
-> +       nr_slots =3D recv_fd_slots(self->sk[SK_RECEIVER], slots, &flags);
-> +
-> +       ASSERT_EQ(NR_FILES, nr_slots);
-> +       EXPECT_EQ(0, flags & MSG_CTRUNC);
-> +
-> +       for (i =3D 0; i < NR_FILES; i++) {
-> +               ASSERT_LE(0, slots[i]);
-> +               EXPECT_EQ(0, check_secret(slots[i], i));
-> +               close(slots[i]);
-> +       }
-> +}
-> +
-> +TEST_F(scm_rights_denial_bpf, first_denied)
-> +{
-> +       int slots[NR_FILES], nr_slots, flags;
-> +
-> +       ASSERT_EQ(0, deny_inode(self->map_fd, self->inos[0]));
-> +
-> +       ASSERT_EQ(0, set_notrunc(self->sk[SK_RECEIVER]));
-> +       ASSERT_NE(-1, send_fds(self->sk[SK_SENDER], self->files, NR_FILES=
-));
-> +       nr_slots =3D recv_fd_slots(self->sk[SK_RECEIVER], slots, &flags);
-> +
-> +       ASSERT_EQ(NR_FILES, nr_slots);
-> +       EXPECT_EQ(0, flags & MSG_CTRUNC);
-> +       EXPECT_EQ(-EPERM, slots[0]);
-> +
-> +       ASSERT_LE(0, slots[1]);
-> +       EXPECT_EQ(0, check_secret(slots[1], 1));
-> +       close(slots[1]);
-> +}
-> +
-> +TEST_F(scm_rights_denial_bpf, all_denied)
-> +{
-> +       int slots[NR_FILES], nr_slots, flags, i;
-> +
-> +       for (i =3D 0; i < NR_FILES; i++)
-> +               ASSERT_EQ(0, deny_inode(self->map_fd, self->inos[i]));
-> +
-> +       ASSERT_EQ(0, set_notrunc(self->sk[SK_RECEIVER]));
-> +       ASSERT_NE(-1, send_fds(self->sk[SK_SENDER], self->files, NR_FILES=
-));
-> +       nr_slots =3D recv_fd_slots(self->sk[SK_RECEIVER], slots, &flags);
-> +
-> +       ASSERT_EQ(NR_FILES, nr_slots);
-> +       EXPECT_EQ(0, flags & MSG_CTRUNC);
-> +
-> +       for (i =3D 0; i < NR_FILES; i++)
-> +               EXPECT_EQ(-EPERM, slots[i]);
-> +}
-> +
-> +TEST_F(scm_rights_denial_bpf, denied_without_notrunc)
-> +{
-> +       int slots[NR_FILES], nr_slots, flags;
-> +
-> +       /*
-> +        * Baseline behaviour without SO_RIGHTS_NOTRUNC: the fd array is
-> +        * truncated at the first denied fd and MSG_CTRUNC is set.
-> +        */
-> +       ASSERT_EQ(0, deny_inode(self->map_fd, self->inos[1]));
-> +
-> +       ASSERT_NE(-1, send_fds(self->sk[SK_SENDER], self->files, NR_FILES=
-));
-> +       nr_slots =3D recv_fd_slots(self->sk[SK_RECEIVER], slots, &flags);
-> +
-> +       ASSERT_EQ(1, nr_slots);
-> +       EXPECT_NE(0, flags & MSG_CTRUNC);
-> +
-> +       ASSERT_LE(0, slots[0]);
-> +       EXPECT_EQ(0, check_secret(slots[0], 0));
-> +       close(slots[0]);
-> +}
-> +
-> +TEST_HARNESS_MAIN
-> --
-> 2.55.0
->
+SGVsbG8gWGlhbmcsCgpMZXQgbWUgZWxhYm9yYXRlIG9uIG91ciB1c2UtY2FzZSB3aXRoIGEgbGl0
+dGxlIGV4YW1wbGUgY2FsY3VsYXRpb24uIExldHMgc2F5IG1lZGl1bSBsYXRlbmN5IHJlYWwtdGlt
+ZSBhdWRpbyBzZW50IGF0IDFtcyBwZXIgcGFja2V0LiBUaGlzIHdvdWxkIGFtb3VudCB0byAxMDAw
+IHBhY2tldHMgcGVyIHNlY29uZCBwZXIgc3RyZWFtLiBTY2FsaW5nIHRoYXQgdG8gNjAwLTgwMCB1
+bmlxdWUgYXVkaW8gc3RyZWFtcyB3b3VsZCByZXN1bHQgaW4gNi04MDBrIHBwcy4gVGhpcyB3b3Vs
+ZCBiZSBhIHR5cGljYWwgdXNlIGNhc2UgZm9yIG91ciBzZXJ2ZXJzLiBUaGUgbWFjdmxhbiBCQyBx
+dWV1ZSBsZW4gbmVlZCBhZGp1c3RtZW50IHRvIGJlIGFibGUgdG8gc3dhbGxvdyBzaG9ydCBzY2hl
+ZHVsaW5nL3Byb2Nlc3NpbmcgZGVsYXlzIGluIHRoZXNlIHdvcmtsb2FkcyBvciBwYWNrZXQgbG9z
+cyBzdGFydCB0byBzaG93LiAKClN3aXRjaGluZyB0byBldmVuIGxvd2VyIGxhdGVuY3kgKGFsdGhv
+dWdoIG5vdCByZWNvbW1lbmRlZCkgb3IgaW5jcmVhc2luZyB0aGUgbnVtYmVyIG9mIHVuaXF1ZSBz
+dHJlYW1zIGNvdWxkIG9mIGNvdXJzZSBpbmNyZWFzZSB0aGUgbG9hZCBldmVuIGZ1cnRoZXIuCgpB
+cyBmb3IgYSByZWNvbW1lbmRlZCB1cHBlciBsaW1pdCwgSSdtIG5vdCBzdXJlLiBMaWtlIEkgc2Fp
+ZCwgd2UgdXNlIDEwMGsgdG9kYXkgYW5kIGFyZSBjdXJyZW50bHkgcnVubmluZyBvdXIgd29ya2xv
+YWQgZXh0cmVtZWx5IHN0YWJsZSB3aXRoIHRoYXQuIERvIHdlIGhhdmUgc29tZSBtYXJnaW4gaW4g
+dGhhdCBudW1iZXI/IFByb2JhYmx5LCBidXQgSSdtIG5vdCBhYmxlIHRvIHF1YW50aWZ5IGV4YWN0
+bHkgaG93IG11Y2guCgpUbyBhY2NvdW50IGZvciBzb21lb25lIHVzaW5nIGl0IGV2ZW4gbW9yZSBh
+Z2dyZXNzaXZlbHksIDEyOCBvciAyNTZrIGNvdWxkIHBlcmhhcHMgYmUgYSByZXNvbmFibGUgdXBw
+ZXIgbGltaXQ/IAoKQmVzdCByZWdhcmRzLApUaG9tYXMKCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18KRnJvbTrCoFhpYW5nIE1laSA8eG1laTVAYXN1LmVkdT4KU2VudDrC
+oFR1ZXNkYXksIDcgSnVseSAyMDI2IDAwOjM0ClRvOsKgVGhvbWFzIEthcmxzc29uIDx0aG9tYXMu
+a2FybHNzb25AcGFuZWRhLnNlPgpDYzrCoEFuZHJldyBMdW5uIDxhbmRyZXcrbmV0ZGV2QGx1bm4u
+Y2g+OyBEYXZpZCBTIC4gTWlsbGVyIDxkYXZlbUBkYXZlbWxvZnQubmV0PjsgRXJpYyBEdW1hemV0
+IDxlZHVtYXpldEBnb29nbGUuY29tPjsgSmFrdWIgS2ljaW5za2kgPGt1YmFAa2VybmVsLm9yZz47
+IFBhb2xvIEFiZW5pIDxwYWJlbmlAcmVkaGF0LmNvbT47IG5ldGRldkB2Z2VyLmtlcm5lbC5vcmcg
+PG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+OyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnIDxs
+aW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnPjsgQXV0b25vbW91c0NvZGVTZWN1cml0eUBtaWNy
+b3NvZnQuY29tIDxBdXRvbm9tb3VzQ29kZVNlY3VyaXR5QG1pY3Jvc29mdC5jb20+OyB0Z29waW5h
+dGhAbGludXgubWljcm9zb2Z0LmNvbSA8dGdvcGluYXRoQGxpbnV4Lm1pY3Jvc29mdC5jb20+OyBr
+eXNAbWljcm9zb2Z0LmNvbSA8a3lzQG1pY3Jvc29mdC5jb20+ClN1YmplY3Q6wqBSZTogW1BBVENI
+IG5ldF0gbWFjdmxhbjogY2FwIElGTEFfTUFDVkxBTl9CQ19RVUVVRV9MRU4gdG8gYm91bmQgYnJv
+YWRjYXN0IGJhY2tsb2cKwqAKT24gTW9uLCBKdWwgNiwgMjAyNiBhdCAzOjMx4oCvUE0gVGhvbWFz
+IEthcmxzc29uCjx0aG9tYXMua2FybHNzb25AcGFuZWRhLnNlPiB3cm90ZToKPgo+IERlYXIgYWxs
+LAo+Cj4gV2hpbGUgcmVzdHJpY3RpbmcgYSBsb3dlciBtYXggdGhhbiBNQVggVTMyIG1heSBiZSB3
+YXJyYW50ZWQgdGhlIHByb3Bvc2VkIGxpbWl0IG9mIDQwOTYgaXMgd2F5IHRvbyBzbWFsbCBmb3Ig
+aGlnaCB0aHJvdWdocHV0IG11bHRpY2FzdCB0cmFmZmljLgo+Cj4gV2UgY3VycmVudGx5IHJ1biBt
+YW55IHByb2R1Y3Rpb24gc2VydmVycyB3aXRoIHRoZSBCQyBxdWV1ZSBsZW4gc2V0IHRvIGEgdmFs
+dWUgb2YgMTAwIDAwMC4KPgoKVGhhbmtzLCBUaG9tYXMsIGZvciB5b3VyIGZlZWRiYWNrLiA0MDk2
+IGNvdWxkIGJlIHNtYWxsLgpXZSB3b3VsZCBsaWtlIHRvIGhlYXIgeW91ciBzdWdnZXN0ZWQgdmFs
+dWVzLCBhbmQgd2Ugd291bGQgbGlrZSB0byBkbwpzb21lIHRlc3RzIHdpdGggdGhlIHZhbHVlIHlv
+dSBzdWdnZXN0LgoKWGlhbmcKCgo+Cj4gQmVzdCByZWdhcmRzLAo+IFRob21hcyBLYXJsc3Nvbgo+
+Cj4KPiBTZW50IGZyb20gT3V0bG9vayBmb3IgQW5kcm9pZAo+IF9fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fCj4gRnJvbTogWGlhbmcgTWVpIChNaWNyb3NvZnQpIDx4bWVpNUBhc3UuZWR1
+Pgo+IFNlbnQ6IE1vbmRheSwgMDYgSnVseSAyMDI2IDIzOjI1OjU2Cj4gVG86IEFuZHJldyBMdW5u
+IDxhbmRyZXcrbmV0ZGV2QGx1bm4uY2g+OyBEYXZpZCBTIC4gTWlsbGVyIDxkYXZlbUBkYXZlbWxv
+ZnQubmV0PjsgRXJpYyBEdW1hemV0IDxlZHVtYXpldEBnb29nbGUuY29tPjsgSmFrdWIgS2ljaW5z
+a2kgPGt1YmFAa2VybmVsLm9yZz47IFBhb2xvIEFiZW5pIDxwYWJlbmlAcmVkaGF0LmNvbT4KPiBD
+YzogVGhvbWFzIEthcmxzc29uIDx0aG9tYXMua2FybHNzb25AcGFuZWRhLnNlPjsgbmV0ZGV2QHZn
+ZXIua2VybmVsLm9yZyA8bmV0ZGV2QHZnZXIua2VybmVsLm9yZz47IGxpbnV4LWtlcm5lbEB2Z2Vy
+Lmtlcm5lbC5vcmcgPGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc+OyBBdXRvbm9tb3VzQ29k
+ZVNlY3VyaXR5QG1pY3Jvc29mdC5jb20gPEF1dG9ub21vdXNDb2RlU2VjdXJpdHlAbWljcm9zb2Z0
+LmNvbT47IHRnb3BpbmF0aEBsaW51eC5taWNyb3NvZnQuY29tIDx0Z29waW5hdGhAbGludXgubWlj
+cm9zb2Z0LmNvbT47IGt5c0BtaWNyb3NvZnQuY29tIDxreXNAbWljcm9zb2Z0LmNvbT47IFhpYW5n
+IE1laSAoTWljcm9zb2Z0KSA8eG1laTVAYXN1LmVkdT4KPiBTdWJqZWN0OiBbUEFUQ0ggbmV0XSBt
+YWN2bGFuOiBjYXAgSUZMQV9NQUNWTEFOX0JDX1FVRVVFX0xFTiB0byBib3VuZCBicm9hZGNhc3Qg
+YmFja2xvZwo+Cj4gVGhlIG5ldGxpbmsgcG9saWN5IGZvciBJRkxBX01BQ1ZMQU5fQkNfUVVFVUVf
+TEVOIGFjY2VwdHMgYW55IHUzMiwgYW5kIHRoZQo+IHZhbHVlIGJlY29tZXMgcG9ydC0+YmNfcXVl
+dWVfbGVuX3VzZWQsIHRoZSBvbmx5IGNhcCBvbiBob3cgbWFueSBza2JzCj4gbWFjdmxhbl9icm9h
+ZGNhc3RfZW5xdWV1ZSgpIG1heSBxdWV1ZSBvbiBwb3J0LT5iY19xdWV1ZS4gQW4gdW5wcml2aWxl
+Z2VkCj4gdXNlciBvd25pbmcgYSB1c2VyK25ldCBuYW1lc3BhY2UgKENBUF9ORVRfQURNSU4gaXMg
+Y2hlY2tlZCBvbmx5IGFnYWluc3QKPiB0aGUgdGFyZ2V0IG5ldG5zKSBjYW4gc2V0IGl0IHRvIDB4
+ZmZmZmZmZmYsIHNvIHRoZSBiYWNrbG9nIGNoZWNrIG5ldmVyCj4gdHJpcHMgYW5kIGV2ZXJ5IGJy
+b2FkY2FzdCBmcmFtZSBpcyBza2JfY2xvbmUoKSdkIHdpdGggR0ZQX0FUT01JQyBhbmQKPiBxdWV1
+ZWQuIFdoZW4gUlggc29mdGlycSBvdXRwYWNlcyB0aGUgYmNfd29yayBkcmFpbiAoZS5nLiBtYW55
+IEFMTE1VTFRJCj4gbWFjdmxhbnMgdW5kZXIgYSBicm9hZGNhc3QgZmxvb2QpLCB0aGUgcXVldWUg
+Z3Jvd3MgdW5ib3VuZGVkIGFuZAo+IE9PTXMvcGFuaWNzIHRoZSBob3N0Lgo+Cj4gQm91bmQgdGhl
+IHZhbHVlIHdpdGggTkxBX1BPTElDWV9NQVgoKSBhdCA0MDk2LCA0eCB0aGUgZGVmYXVsdCBvZiAx
+MDAwLgo+IFRoaXMga2VlcHMgaGVhZHJvb20gYWJvdmUgdGhlIGRlZmF1bHQgd2hpbGUgY2FwcGlu
+ZyB0aGUgYmFja2xvZzsgdmFsdWVzCj4gYWJvdmUgdGhlIGNhcCBhcmUgbm93IHJlamVjdGVkIHdp
+dGggLUVSQU5HRSBhdCBuZXRsaW5rIHBhcnNlIHRpbWUuCj4KPsKgwqAgT3V0IG9mIG1lbW9yeTog
+S2lsbGVkIHByb2Nlc3MgMTQxIChzdSkgVUlEOjAKPsKgwqAgS2VybmVsIHBhbmljIC0gbm90IHN5
+bmNpbmc6IFN5c3RlbSBpcyBkZWFkbG9ja2VkIG9uIG1lbW9yeQo+wqDCoCBDYWxsIFRyYWNlOgo+
+wqDCoMKgIHZwYW5pYyAoa2VybmVsL3BhbmljLmM6NjUwKQo+wqDCoMKgIHBhbmljIChrZXJuZWwv
+cGFuaWMuYzo3ODcpCj7CoMKgwqAgb3V0X29mX21lbW9yeSAobW0vb29tX2tpbGwuYzoxMTY2KQo+
+wqDCoMKgIF9fYWxsb2NfZnJvemVuX3BhZ2VzX25vcHJvZiAobW0vcGFnZV9hbGxvYy5jOjQ5MTQp
+Cj7CoMKgwqAgYWxsb2NfcGFnZXNfbXBvbCAobW0vbWVtcG9saWN5LmM6MjQ5MCkKPsKgwqDCoCBm
+b2xpb19hbGxvY19ub3Byb2YgKG1tL21lbXBvbGljeS5jOjI1OTEpCj7CoMKgwqAgZmlsZW1hcF9m
+YXVsdCAobW0vZmlsZW1hcC5jOjM1NjUpCj4KPiBGaXhlczogZDRiZmY3MmM4NDAxICgibWFjdmxh
+bjogU3VwcG9ydCBmb3IgaGlnaCBtdWx0aWNhc3QgcGFja2V0IHJhdGUiKQo+IFJlcG9ydGVkLWJ5
+OiBBdXRvbm9tb3VzQ29kZVNlY3VyaXR5QG1pY3Jvc29mdC5jb20KPiBTaWduZWQtb2ZmLWJ5OiBY
+aWFuZyBNZWkgKE1pY3Jvc29mdCkgPHhtZWk1QGFzdS5lZHU+Cj4gLS0tCj7CoCBkcml2ZXJzL25l
+dC9tYWN2bGFuLmMgfCAzICsrLQo+wqAgMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwg
+MSBkZWxldGlvbigtKQo+Cj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L21hY3ZsYW4uYyBiL2Ry
+aXZlcnMvbmV0L21hY3ZsYW4uYwo+IGluZGV4IGM0MGZhMzMxODM2Yi4uZDRjZWRlNjM5M2IwIDEw
+MDY0NAo+IC0tLSBhL2RyaXZlcnMvbmV0L21hY3ZsYW4uYwo+ICsrKyBiL2RyaXZlcnMvbmV0L21h
+Y3ZsYW4uYwo+IEBAIC0zNyw2ICszNyw3IEBACj7CoCAjZGVmaW5lIE1BQ1ZMQU5fSEFTSF9CSVRT
+wqDCoMKgwqDCoMKgIDgKPsKgICNkZWZpbmUgTUFDVkxBTl9IQVNIX1NJWkXCoMKgwqDCoMKgwqAg
+KDE8PE1BQ1ZMQU5fSEFTSF9CSVRTKQo+wqAgI2RlZmluZSBNQUNWTEFOX0RFRkFVTFRfQkNfUVVF
+VUVfTEVOwqDCoMKgIDEwMDAKPiArI2RlZmluZSBNQUNWTEFOX01BWF9CQ19RVUVVRV9MRU7CoMKg
+wqDCoMKgwqAgNDA5Ngo+Cj7CoCAjZGVmaW5lIE1BQ1ZMQU5fRl9QQVNTVEhSVcKgwqDCoMKgwqAg
+MQo+wqAgI2RlZmluZSBNQUNWTEFOX0ZfQUREUkNIQU5HRcKgwqDCoCAyCj4gQEAgLTE3NTUsNyAr
+MTc1Niw3IEBAIHN0YXRpYyBjb25zdCBzdHJ1Y3QgbmxhX3BvbGljeSBtYWN2bGFuX3BvbGljeVtJ
+RkxBX01BQ1ZMQU5fTUFYICsgMV0gPSB7Cj7CoMKgwqDCoMKgwqDCoMKgwqAgW0lGTEFfTUFDVkxB
+Tl9NQUNBRERSXSA9IHsgLnR5cGUgPSBOTEFfQklOQVJZLCAubGVuID0gTUFYX0FERFJfTEVOIH0s
+Cj7CoMKgwqDCoMKgwqDCoMKgwqAgW0lGTEFfTUFDVkxBTl9NQUNBRERSX0RBVEFdID0geyAudHlw
+ZSA9IE5MQV9ORVNURUQgfSwKPsKgwqDCoMKgwqDCoMKgwqDCoCBbSUZMQV9NQUNWTEFOX01BQ0FE
+RFJfQ09VTlRdID0geyAudHlwZSA9IE5MQV9VMzIgfSwKPiAtwqDCoMKgwqDCoMKgIFtJRkxBX01B
+Q1ZMQU5fQkNfUVVFVUVfTEVOXSA9IHsgLnR5cGUgPSBOTEFfVTMyIH0sCj4gK8KgwqDCoMKgwqDC
+oCBbSUZMQV9NQUNWTEFOX0JDX1FVRVVFX0xFTl0gPSBOTEFfUE9MSUNZX01BWChOTEFfVTMyLCBN
+QUNWTEFOX01BWF9CQ19RVUVVRV9MRU4pLAo+wqDCoMKgwqDCoMKgwqDCoMKgIFtJRkxBX01BQ1ZM
+QU5fQkNfUVVFVUVfTEVOX1VTRURdID0geyAudHlwZSA9IE5MQV9SRUpFQ1QgfSwKPsKgwqDCoMKg
+wqDCoMKgwqDCoCBbSUZMQV9NQUNWTEFOX0JDX0NVVE9GRl0gPSB7IC50eXBlID0gTkxBX1MzMiB9
+LAo+wqAgfTsKPiAtLQo+IDIuNDMuMAo+
