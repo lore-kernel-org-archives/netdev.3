@@ -1,120 +1,82 @@
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79E362E736A
-	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 13:55:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 740E818C008;
+	Mon,  6 Jul 2026 13:58:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783346129; cv=none; b=VX/hkHJfJs7bk5wslwDGcDZWRiLq8CE37z5ehuooyN3LaTVTRb+gKYL4Ul7SrZc58pVLvHpzkVF/xrex3yvUiXcz1OaJtXF3bBNAkXWoVrln8aQaxFB8uBH2g33c6OxMtqkmPAQ69pxOkhR4JtR+QZK4hzztLO11/uzZlm0lWdU=
+	t=1783346307; cv=none; b=WpB3CekROlZ269di92V+AM2KFjSa9D7MqJczbjHqBtNlM/WVMZJK65nyKsH7CwT7obeCeVUCtGJzzEgAKwD2py9lkLKN2RQMMgv8kiYrp1TemfVTseGlC4sLE6nVkguUbfi4cMUwjK9o7AKLNCqkRfRKhxg3tBWbCZ1z14vPwF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783346129; c=relaxed/simple;
-	bh=rSvalNLhQaQ3apwOEUMfr2154HFkB49g22/1CuJLpak=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=ecKzWMWzb9pbOGP4mgpqJJDtIDNgr6KR0vU5YeK/xExCy9+yp12P/W49jlqXR14E9arTO7f5K54YYGBy3oUI0HMos1Ycy0p6K30PHSluZUKcBunEjkI6HRMdi0l86PB/5/hK3UdarCY9/pVEKUnerRoKV4n9xGw+2PNFTBAqrWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XMHPjA4y; arc=none smtp.client-ip=209.85.128.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1783346307; c=relaxed/simple;
+	bh=lkAFaYGEao++IKnSzYgKo6EJpcZg5F7hSxyK4imz4Wg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IiWZo+bBOvaTEpTLSIWLAFc0McgRdIjawA6bMNapfdE0Hwgm1psXrBUQjntU6jZqfLy/j3BroP1BC5QphIdfx7cgr/nNKbOnjFcul3ptb6dDs2UGufIXDYIR661PMXhkGlHw762XDWq8m08UpDhX+LT8u8RtzyUt4REW1WBYprw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=wuJTfgQ4; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XMHPjA4y"
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-80bb578d58bso24842507b3.0
-        for <netdev@vger.kernel.org>; Mon, 06 Jul 2026 06:55:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783346127; x=1783950927; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=SrImBI3WtIa1ASISM1T4xqaLApnPkT2AAEsmhw2GWts=;
-        b=XMHPjA4y/+cI7Xy3oBEa2Z01SRr08HbmO556O0d9rH0/QkA/3sGB7cv9okrgMNe8Zy
-         CtJDmCfMWM/FI5PnqxKL4qov5MEgcie2qZOG3f95E3YsFqoc2zAnzF9YllpDP2uDSRTu
-         /rEimvJay47ijcqPFjAy9CGMHhfQGn+WEDm/f9hEIlBXApfW7dBPAGR/e+P09+GrEfao
-         rQ3GINaMM0DEWCYlSGHUuVS0zF//DLd7zk3IFDNdlxMXp52iDulAxltEmOUHrns5Wth2
-         rdQfGvrVh13A1hrkJQSIZUc7TnsfgTyGaG7duj3hq0iLdjpDGhC2E6Dtf2rNXhnjM6Yt
-         O5gQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783346127; x=1783950927;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=SrImBI3WtIa1ASISM1T4xqaLApnPkT2AAEsmhw2GWts=;
-        b=HUE48XBPjvX0VBoZnbreh924JfhFX2owbCPGIcz9FY4tR78CSd8tMhn47b0Rxdbc3g
-         +qVJwNXbSAf7X7wMuDJjBwiyMtWp45alHlNr1BitIsO3tIDsuB62eCUw82dS3LIN8xAW
-         RKQvoD8Q/CRr1gb13IPhOxfYqvAgAkWVWX25bTbMb8z3VafLHGT+d9rTYRk7UNZnG8HA
-         ijCzle3t6ims8/yTg6YNkd4kLEtUUduwJZzZm6ZWSvln1xr3mJPBypOtvlBYA7VB0m02
-         j4byMOQ6OUJkVvCZLZEQrl1VR7C6Z1W/1klNeY3sHe9WdLvmtp9X6CQ4rEE2jDqJr+xz
-         STqg==
-X-Forwarded-Encrypted: i=1; AHgh+RqIVEWGPGl7asb8kvPLATrJpGKqF0j327vp1TFzyyx/Yr5r19Xmn5tfPcc6mI80txlW+ZEuFXg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2+VVF85hBS9ifI5KnBunXqlMd4kcFemVlaL5Nnfmip70+F0Nz
-	yTLxQwKN0hZ+mUnVn3wdN851ebj307S8LXXDlW3meTuMsFVxkSHuE5kK
-X-Gm-Gg: AfdE7cnoeEM5CmGT+KaH9bmbY5z0SbySBiZb40tHtUl5/6SDVO0bnAnzRY8dbGCWET0
-	uW4I+v9x+4Wek6aLVvXQNobx5C+dWn7ljJx+fHOor9jhqenFzxe6etlQeme6AxQIhGZvpg3ATza
-	pXPgRtiql6rbioUWXiIlnvf49yxG/WRqEhwGwSes5pCF3SlK5JMk7g6Hhh0/9LxdQvFVtoAPs2l
-	YcTkMEjlLRrElSnCGO0oRsNC5KdyP1BM647w7bShny3NQlvvgDBa0vSDAAYyAEdOoF5Yk9gsLMa
-	snP13R5Crvd6JP0DKP5H+ZC1Nr8M6++piloQqvWMrFYO23I9yL9Qu9nwvC4RD2RWvILLu57yUOv
-	qbWBI1LPAhV7RoolF9av93+KZFVKTmpaZnfkNXwwYk7+MI0LmLVe7HZLh2R7Ril0/KTkkcYRecO
-	CLKNMbGwjhEV6chvswPLn3P9mgkurtG9tDh0N5BHwWSHBw/ZTDD/JBxe13DlBCsGl2jQ==
-X-Received: by 2002:a05:690c:e08:b0:80d:66b2:82c with SMTP id 00721157ae682-81be184d41fmr2713047b3.16.1783346127448;
-        Mon, 06 Jul 2026 06:55:27 -0700 (PDT)
-Received: from gmail.com (172.235.85.34.bc.googleusercontent.com. [34.85.235.172])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-81448dd0217sm57733137b3.22.2026.07.06.06.55.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2026 06:55:27 -0700 (PDT)
-Date: Mon, 06 Jul 2026 09:55:26 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Yun Lu <luyun_611@163.com>, 
- davem@davemloft.net, 
- edumazet@google.com, 
- kuba@kernel.org, 
- pabeni@redhat.com, 
- horms@kernel.org, 
- kerneljasonxing@gmail.com, 
- kuniyu@google.com
-Cc: mhal@rbox.co, 
- bjorn@kernel.org, 
- jiayuan.chen@linux.dev, 
- netdev@vger.kernel.org, 
- minhnguyen.080505@gmail.com
-Message-ID: <willemdebruijn.kernel.250ccf6e7c9be@gmail.com>
-In-Reply-To: <20260706100229.13812-1-luyun_611@163.com>
-References: <20260706100229.13812-1-luyun_611@163.com>
-Subject: Re: [PATCH net-next] net: skbuff: use net_zcopy_get() instead of
- refcount_inc()
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="wuJTfgQ4"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=GHUWA0+7peyvHO+iBsxA1/V10pSUVW7Kn735d4eyL10=; b=wuJTfgQ4rHweUj4fRL8yDFGf/r
+	WzBjcrN1em2lx1b+9DbcNinyXfALxV/J08I7agu3zNqStHokQmjEnI10eK8k507VvPyZookfOPZEe
+	zLqGdtggCR90KQH3HL50zdacwCGeKWggr2Fa0mV8aDIPAcSQqbm7JW7K1vWvRkAUNaus=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wgjpt-00B03A-1A; Mon, 06 Jul 2026 15:58:13 +0200
+Date: Mon, 6 Jul 2026 15:58:13 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Guru Das Srinagesh <linux@gurudas.dev>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 2/2] net: phy: qt2025: Use vertical import style
+Message-ID: <d2c1e11e-e616-4b2f-aa17-5eb96f045833@lunn.ch>
+References: <20260705-net-vert-imp-v1-0-95a35ddff411@gurudas.dev>
+ <20260705-net-vert-imp-v1-2-95a35ddff411@gurudas.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260705-net-vert-imp-v1-2-95a35ddff411@gurudas.dev>
 
-Yun Lu wrote:
-> From: Yun Lu <luyun@kylinos.cn>
+On Sun, Jul 05, 2026 at 10:38:41PM -0700, Guru Das Srinagesh wrote:
+> Convert `use` imports to vertical layout for better readability and
+> maintainability.
 > 
-> The net_zcopy_get() increments the uarg->refcnt, which is called both
-> in pskb_carve_inside_header() and pskb_carve_inside_nonlinear().
-> Also use net_zcopy_get() in pskb_expand_head for code consistency.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Yun Lu <luyun@kylinos.cn>
+> Signed-off-by: Guru Das Srinagesh <linux@gurudas.dev>
 > ---
->  net/core/skbuff.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/net/phy/qt2025.rs | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
 > 
-> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-> index 18dabb4e9cfa..bcf3b2c65fb9 100644
-> --- a/net/core/skbuff.c
-> +++ b/net/core/skbuff.c
-> @@ -2326,7 +2326,7 @@ int pskb_expand_head(struct sk_buff *skb, int nhead, int ntail,
->  		if (skb_orphan_frags(skb, gfp_mask))
->  			goto nofrags;
->  		if (skb_zcopy(skb))
-> -			refcount_inc(&skb_uarg(skb)->refcnt);
-> +			net_zcopy_get(skb_zcopy(skb));
+> diff --git a/drivers/net/phy/qt2025.rs b/drivers/net/phy/qt2025.rs
+> index 470d89a0ac00..efde3f909367 100644
+> --- a/drivers/net/phy/qt2025.rs
+> +++ b/drivers/net/phy/qt2025.rs
+> @@ -14,11 +14,17 @@
+>  use kernel::io::poll::read_poll_timeout;
+>  use kernel::net::phy::{
+>      self,
+> -    reg::{Mmd, C45},
+> +    reg::{
+> +        Mmd,
+> +        C45, //
+> +    },
 
-This adds some unnecessary instructions in skb_zcopy.
+Given the comment this should be sorted in 'ASCIIbetical order',
+isn't this wrong, C comes before M? 
 
-It's not terrible and I see the consistency argument. But would make
-more sense to update the recently added pskb_carve_.. variants instead.
+	Andrew
