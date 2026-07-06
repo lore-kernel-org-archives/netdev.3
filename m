@@ -1,152 +1,271 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0FDA4314BB
-	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 13:23:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 976C537F00A
+	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 13:24:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783344231; cv=none; b=m1GAIYNlacD/AeDusuRWYFDWAJc7IfeHYfVwVSGV/wXhuM4Eq3CMRoPNpmjB9+vprwiSQK/ode/6EvWTwAwzvBDW8aSeEuXJS4VIkho/HerZQMapvUXf+dSySSywA93wQseR9Oz63I4YhbcIUAlx0/5NSqltIrpjwhJRi5jc4sk=
+	t=1783344277; cv=none; b=sBZkTuiEGRnMHSvQNiPcbqgwvMxGkYU6OJ+qhoIlRc4WZgrzDpL6/OyKmTOZ0iCuIzuGnwzS8ro8R2uCn+KNQaJbJmKjk0el4S/3zV/g5ZzhrZ9HoARsENsOXFxJvjjaU37qJPZ/7ZHA6IA/nV7h158RxX7uZsCQ5QP7F68n/bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783344231; c=relaxed/simple;
-	bh=N0QGuvm6HyGdu49K4Td11hFP4tn89+ZNKW65vJ51WLo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mbN3AkeZzwGzmQpILVZJK8EmypRsyuij78N3OiS1osqJqZa9BE4Mmw6OvtT9SU64EzXF5fxCajQNwboutbVZNMgrxecLW6E9zjzQMJNea3TVHM3yBzdbYu/H1UiwG9rqQanNfhdNYvrKllOkC3IDpNU0ROlTzrwxKH9/O6V2Roo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=O5S+1vau; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=gr4VmvyM; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1783344277; c=relaxed/simple;
+	bh=ToUoBuUJoS1vI9JQbupGD9AhsrfiD0t/t7tbmkvJ+bg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=mYSaFwzBLQB05zoqdLP3Wl+OaMkg+fhbLWP0L5AQl/njYRrOI8AKTbJGwhdg+LUTRGhLwmd6rx3ZVaXOe3ZSmUwXBcVQnNjeYBRkxlNETYqNZ6SadxCRKAnekge+cKeamhiA+h3S73H9/+uqX8XMD2BYwL5yo3di5qVEtAi/r3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=MjFrAnhn; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=kOZglkNs; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="O5S+1vau";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="gr4VmvyM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783344228;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xwaVaSQ5TrM+UFp0WZFnLdkXUL3cYc/gcLsGvJWd3Uc=;
-	b=O5S+1vauKA7+XQ9M1GRiTlre7jtnaOtLM4/5Y49GQXcgE0fQRCK1ob/y4gyy3zxKf3oKrv
-	/TbuuE4aT+XE+fsiiD8iRqFTPj8hbAKqUumFwYTDYVS6XCx47g6L0ExJUri7m+YpBwz+RT
-	ogCAug1EChPZr33tueeYWX3RY/MUFag=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-358-_jrxpeU3NpqlHOcmPiJprA-1; Mon, 06 Jul 2026 09:23:47 -0400
-X-MC-Unique: _jrxpeU3NpqlHOcmPiJprA-1
-X-Mimecast-MFC-AGG-ID: _jrxpeU3NpqlHOcmPiJprA_1783344225
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-4629f312a67so2802721f8f.2
-        for <netdev@vger.kernel.org>; Mon, 06 Jul 2026 06:23:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="MjFrAnhn";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="kOZglkNs"
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 666AxI3S369076
+	for <netdev@vger.kernel.org>; Mon, 6 Jul 2026 12:45:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	ygsrBoZ5Msq9mGih2gcNmJUG+KH6qwVJkoNpq3S1CcA=; b=MjFrAnhnTzb+xV5s
+	v+4J6CGSB7Axv+Nr58UzsQpgwafsybZqVyHj6wa6qd80gwGZIVaDIPIu71l1pwAs
+	2Mkc5NH/bOSZrO15edr08Y9srJOJX2R1XayYh0b4yygYdSpy7EfuSlqjbaUz9DjA
+	HrL8KBUsmxXkhX/v4TIQzIYw0FIR+PZnYBaGVMIIQpSGWE5teYcUbkbrFKyZNhg4
+	bU3CEXzfLm2PPlChvI0t7Izu2ovMdgX5HZfe3YF/E3K5Sic6J1EkpbAggWyM8dPx
+	ariZaaWueCZsLX2beqMa2/FpzW6FHOJiITC4zMbnd7Tj6PsJlwjElOOZI2OykkVa
+	WIQehg==
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f88h99395-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Mon, 06 Jul 2026 12:45:32 +0000 (GMT)
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-92e66f9e2baso290760985a.0
+        for <netdev@vger.kernel.org>; Mon, 06 Jul 2026 05:45:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1783344225; x=1783949025; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xwaVaSQ5TrM+UFp0WZFnLdkXUL3cYc/gcLsGvJWd3Uc=;
-        b=gr4VmvyMrtRLBnl5WQXAhAg4GBCKakKO/7NFJYJoCN49Im7ZcfvUA9hq4KLZJS9Cgd
-         9DwMj9+rcsbBUNtb2Ca38dTpUcvNvcgpMDwvYJDm8toHIPJNAXYMK5oe+qQG30wPQia8
-         Am1G9XrgAtUeIZmo1q/B8IU0KlyxvNkKkjWDJkwpVHuCFSMXrwwwEvzDfTbwZKKJ4J/a
-         nOIuTDV31bsIB4NPZdLA2YwuhYhew0vzKkzN2hl36cjSIbDqCCsj3um1QiZn1x8cWSmd
-         Iwsog+XOMWZkUtu0wcTdRqjnirm8jTo1lm1yDyW0YN6YgjUgE7rNmpH6FGFUgBk0K3mH
-         HtpA==
+        d=oss.qualcomm.com; s=google; t=1783341932; x=1783946732; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ygsrBoZ5Msq9mGih2gcNmJUG+KH6qwVJkoNpq3S1CcA=;
+        b=kOZglkNswQbvXsIywNiQp9/5P3dQaWOIIgowd7LIc4FgJvpHVk8jpqAHoImHpG1H54
+         J8eKvcMmhTeuHQEtY6Vldev5ylz4uU0+W7iIyfyJzHyzX+LR3yNtpOA7gFN3HY6Rzp3j
+         6DmGcNqMeRCjLz+qJi32PDQMK8S8otZTcuUfDU7cvyWBq6y2gPL7PZxEvbuPeiFOXM1d
+         fVMGsz+X2dqHmN3zMXgUIGu0AUh1xiGefGfJYFB/cckcIPHJ4194NZeo/sqm4vNwRJ+2
+         03uczS9gc1ph6Tg0VNiga+xJYzIr2WcrUltD6tAG5N3n3NUCVGi3y0LANhdiUHV/hKGp
+         cYPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783344225; x=1783949025;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xwaVaSQ5TrM+UFp0WZFnLdkXUL3cYc/gcLsGvJWd3Uc=;
-        b=WaG8Fwbmss5VMie7goqAufCB+Q4jDG12TbALqTyzRGhgSoI9d0ePrPF0tFtKNfInhy
-         RxARdzh6382b58PW8bmes2Lv6goqKTTFicBW+e1cVPDyw1OV+6gzr3KZD6Nm5/amhqV5
-         vqmCNfoVQeMlaKR/xJyD483JXy0vu/mOqJhFWNZx13OsT8JTGHUcYw7NImW6eVHQ3nzn
-         B+fVftq2jQKllyiJvvHJ74xZOX+c2avrIJdyb/SfSZUxRBZAohKROimNH6NKGk85V3qQ
-         aiXgSXavop8vxpYvh4eju3lnHXECMHtz9dHuHLnR51W4/WtzpsYg5NOMJgMJ67SKdMyu
-         3nsQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrOyj4jb/9KJtMB3CNauH2pHOyjniW2mmq+lZN3DhLP4ZVoY9WsVixFJa6vBKjigKJlCJGztpM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywsw/c2t8RQwKjvM59E3cFk+MDTQoBukJJmJzr7HJR8wCT8OkbW
-	+hTuVVGnJvMIU9nkunWMw9oHjWwAo0aWfxYklWlkqTyU7pQmxhzDXIghftwlGJk8dCROp3k88Kh
-	cN1TBDQ5Nbl9WwJv48d1BWYDbIk6HFFSGy6znUz/HyiGEJEefNr6L96V1jg==
-X-Gm-Gg: AfdE7ckPXxdNdSY/wu+a77RFw0/hAy6XXA4zWmlXJx/BK585XCVNh4bn0SOa1uxK7Ig
-	WJIlP9pc8YiTkV1XALjQWYf37K5PekUSnUHQMtNtxXOignVO9eXKsjk3vDpxliOyqh2FEDOmAFM
-	BdEhbewcUUROCCoKc/4cusSienVgibru6JOf+mCNuD1BcKJxmty6yXZqZ51IIYN9X6wOoWx1ZnK
-	ozpdsWoi7HYQm9qoL4sbupIjJQYfmSi7u2OiF+UwemV3PqlDyFWMD9NFJskkZNQeJKJRgAzleRP
-	sVfyFllm1WnPInEKftZ+T3XIqPpEsN0TAmydYPB62z3oc9UJCJSzdF4QAVBRRxcG+vNo8fTyNx/
-	wRwtMwjEseD08/qKRUrhjJuu6RpjigUsU
-X-Received: by 2002:a05:6000:82:b0:472:90af:e406 with SMTP id ffacd0b85a97d-47de66ce06dmr154905f8f.37.1783344225271;
-        Mon, 06 Jul 2026 06:23:45 -0700 (PDT)
-X-Received: by 2002:a05:6000:82:b0:472:90af:e406 with SMTP id ffacd0b85a97d-47de66ce06dmr154861f8f.37.1783344224726;
-        Mon, 06 Jul 2026 06:23:44 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-68-31.inter.net.il. [80.230.68.31])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47a9e4d7801sm25370218f8f.16.2026.07.06.06.23.42
+        d=1e100.net; s=20251104; t=1783341932; x=1783946732;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ygsrBoZ5Msq9mGih2gcNmJUG+KH6qwVJkoNpq3S1CcA=;
+        b=snUq1zwL7Zle4QMact4ytnpoLgw0DwoklHhh6Eb41j26H98ZMyrb/fpM7bxnez03rK
+         9A/eD38GAd9OM29vONcb8e1Fpod7rrVSHvioV/ZZDsz5RJ1rD4e5JgrXIKJONMpK3ejM
+         hyODyCDSQFQPsH1ynREPl6kvGuGx/flZ4q3bwcvE1LYfJp8D0ua4RZp1WTpYmjmWirVH
+         hzeyifCSrdSck9CgoDeW+6KAy4IXhla89sIbHdwC9w2gu1Fw1Gcsub5ioBFrijNPb/EG
+         +Ac6IZG65shQXQNV+1R1oBgIOqdOJuSS76i4B/r9CTmlR1fM4QyOTp8bx83qMk+ebosW
+         2t5g==
+X-Forwarded-Encrypted: i=1; AHgh+Rop1yYUdYwHsuBBInnz+5U9Rb8mo6wlLV3lfXzyhJXMy90lPFF5E+VFBGOLUspXFtmLyVzGz2Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzbZ09c/05f4uig6YeHB7rotjxe3HReBRiOVy/JyobnEpnJvnyI
+	Raw5lIyJHBPC4MOAgRGkp4y9NxLElFhnPukRp5d6doiYZOR1s2z1Mw5tljVOk9xS+mquretraLV
+	JCj18/ElQ6KsTOsSB7ziIkU/YFEVeCfFuezCYQqeJbSU6Cp4+bVvWde23ccg=
+X-Gm-Gg: AfdE7clQfAJs+jemVK2uD/yB61viQ9KGGCZrYaH2RrsR441qoNqEd0+PDPAWyb6jpC8
+	YN47J87ms0UGB2toH5IISJXKCvXVjVoDkkcJlYwe1RPySyBvE2ncpgJNrMgPQ1EaOYB1CTI+HyQ
+	3+FWyzhyQK0wrWsgxdX6SNPpAsAbqdxweRs68Q4VudIPtAGgUOwofaGDQ41xZjH7kRKAojVOZ0J
+	kEU1lbWN82/AVboHQx2rsnsYnKbEHwMjD0xXweMdD/3P3W+Ojz0D045hfwEPE/CpHcjOyxGIUCC
+	VVB/lV9qbyDkCinvwYzbgwuS/kuWuaJPNMysy0Yi8Ug4cv7RfayCBZ+s/PdGtKzSz26zFe+Fj0g
+	Dx0i/I7VphJkhOkbak7WXNGb5bEDLFOqqeBbO4Qto
+X-Received: by 2002:a05:620a:2725:b0:92e:6637:db5 with SMTP id af79cd13be357-92ebb4c7b4bmr53502285a.16.1783341925139;
+        Mon, 06 Jul 2026 05:45:25 -0700 (PDT)
+X-Received: by 2002:a05:620a:2725:b0:92e:6637:db5 with SMTP id af79cd13be357-92ebb4c7b4bmr53358785a.16.1783341917264;
+        Mon, 06 Jul 2026 05:45:17 -0700 (PDT)
+Received: from brgl-qcom.local ([2a01:cb1d:dc:7e00:86f0:c42b:ef4c:d3bb])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa0a55be4sm22126539f8f.31.2026.07.06.05.45.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2026 06:23:44 -0700 (PDT)
-Date: Mon, 6 Jul 2026 09:23:40 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Brett A C Sheffield <bacs@librecast.net>
-Cc: Simon Schippers <simon.schippers@tu-dortmund.de>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, Simon Horman <horms@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Tim Gebauer <tim.gebauer@tu-dortmund.de>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] tun/tap & vhost-net: make qdisc backpressure
- opt-in via IFF_BACKPRESSURE
-Message-ID: <20260706091706-mutt-send-email-mst@kernel.org>
-References: <20260706094242.115992-1-simon.schippers@tu-dortmund.de>
- <akt_Q7kdR3Zb8_GZ@karahi.librecast.net>
+        Mon, 06 Jul 2026 05:45:16 -0700 (PDT)
+From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Date: Mon, 06 Jul 2026 14:44:21 +0200
+Subject: [PATCH v3 09/20] iommu/fsl: use platform_device_set_of_node()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <akt_Q7kdR3Zb8_GZ@karahi.librecast.net>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260706-pdev-fwnode-ref-v3-9-1ff028e33779@oss.qualcomm.com>
+References: <20260706-pdev-fwnode-ref-v3-0-1ff028e33779@oss.qualcomm.com>
+In-Reply-To: <20260706-pdev-fwnode-ref-v3-0-1ff028e33779@oss.qualcomm.com>
+To: Lee Jones <lee@kernel.org>,
+        Mark Brown <broonie@opensource.wolfsonmicro.com>,
+        Thierry Reding <thierry.reding@avionic-design.de>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Srinivas Kandagatla <srini@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Vinod Koul <vkoul@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+        Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>,
+        Saravana Kannan <saravanak@kernel.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>, Doug Berger <opendmb@gmail.com>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+        Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Matthew Brost <matthew.brost@intel.com>,
+        =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Peter Chen <peter.chen@kernel.org>,
+        Paul Cercueil <paul@crapouillou.net>, Bin Liu <b-liu@ti.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Maximilian Luz <luzmaximilian@gmail.com>,
+        Hans de Goede <hansg@kernel.org>,
+        =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: brgl@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
+        driver-core@lists.linux.dev, devicetree@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org,
+        iommu@lists.linux.dev, linux-pm@vger.kernel.org, imx@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, intel-xe@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org, linux-usb@vger.kernel.org,
+        linux-mips@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        mfd@lists.linux.dev,
+        Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2377;
+ i=bartosz.golaszewski@oss.qualcomm.com; h=from:subject:message-id;
+ bh=ToUoBuUJoS1vI9JQbupGD9AhsrfiD0t/t7tbmkvJ+bg=;
+ b=owEBbQKS/ZANAwAKAQWdLsv/NoTDAcsmYgBqS6M2nbcqYQU2rto0INZYhmejKoOnH4JJ+foOF
+ gbtQ5diyWiJAjMEAAEKAB0WIQSR5RMt5bVGHXuiZfwFnS7L/zaEwwUCakujNgAKCRAFnS7L/zaE
+ wz3eD/9zvS34vmhbvapxOOuDeHkgoWjbwClrYYz28lrOOlhdhx5lHNAE1M677a9LnxVGFTNWSgn
+ z/9TlTUdzy917cFnaNTfg70HD8e/p303kaNPl4g8CNn4TxYUEHm9ktX4btw0hsN/hTGOEb9xrJt
+ YTxoQgL6mPAoTC0Lw2nQbw1KUtKQD1CFXM5HUF3lWAyZyOo0ZKAUpQ60eF/hC31K9znEizz+t6H
+ MDZ3G2qpJhCF52wAoxmhehajnKaeHhV16Ecs/vtwGrv7Yg7zibDx4RVD+ggasuNS3h+wjWclE77
+ a8ascuOrwRU45/+MqL4dliFlZ6Ybby3l8MDigKYin/YAH5vuJF1HzvySs9WsRdD6C8Lq4t75DEm
+ HXFZJ0fB1GZp0UT7ayM9xHCIglviy66c8S07wtLg6kkkLq2x3VnHMgPUcoT7h8f95M59G3qXUEA
+ 8ATrnqHYVAYpH0WshNgZ4U5bJMUAVg+VeidCRa+lK85JtBU3wAWCTEqc1gsfTY3+XhDRr5yiHx9
+ Q2zV36L8qjBGU/KX0zn+aScN54PuQD+Sw8Fl8IgXOOnNdr4kHuA1+O3XIlVqm+rrQ8GKb7n2k0x
+ SL5YGsI5Tya0+tbYEXhNPxmRmzQHjKyZL7455KsB1CiWGQk3FpnaykdRAHJuEVyv9OmujsnRceK
+ xP3+XsEnk3J1FyQ==
+X-Developer-Key: i=bartosz.golaszewski@oss.qualcomm.com; a=openpgp;
+ fpr=169DEB6C0BC3C46013D2C79F11A72EA01471D772
+X-Proofpoint-ORIG-GUID: YiGzk5xnO31l6S0XPwlpfXAQoeooOOlV
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA2MDEyOSBTYWx0ZWRfX9yIWHtyKisKS
+ II94D9ukHGSm+/RRahg8ItiJyBxw8hejVTfHlj+6Pcbrj4C9E1euwugChwPBDV8GdaHAWwrspzW
+ YWes2wXCcQhSbnNJOTwoWK1OtNOERPI=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA2MDEyOSBTYWx0ZWRfX+h9I4Qk1wknm
+ 8/C452Ubt1J6CxYujbPMcx9yTpdFlQh8JmYUsJmUYbeE9i5j9KAI4BjFh8ffAa3wONiWHIikO7R
+ XC5wsQKmXU//LBvjnziojP7KkerUsKbHAw86nJ8Fv3aIUUemRTWYRIiajhCsFTrRXSfWDrejAM2
+ x6LMLGpfCpsfnxKtnFjIoQ3dNhDh5Slew6NwFiHYsNIeUBR46N+/yHAkIYBCGEdgPyZ9k/w7hrl
+ 5kHDrCHIVa/5g+v6H3hxml140O4Wu1DMk4yq9SWqww90jSItO8agtocLpE4zOVbjid8WJdOfwrA
+ +qZHtMC2wqs/iX2E/dVwuAyWEOc1jv4ThN/OYBQs1PHmZOF1zKqZ8UXmvAsXtxOfdeR6mLlxjvT
+ sXPG5zLkj1HGMf9d1SuJ+klIys+pq5ff8q7WhuMshqir8jrb7yuFM/OZOV2F5ygP6pNIejDHmwf
+ Tb/pRLD2haItshobciA==
+X-Proofpoint-GUID: YiGzk5xnO31l6S0XPwlpfXAQoeooOOlV
+X-Authority-Analysis: v=2.4 cv=GulyPE1C c=1 sm=1 tr=0 ts=6a4ba36c cx=c_pps
+ a=qKBjSQ1v91RyAK45QCPf5w==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22 a=7CQSdrXTAAAA:8
+ a=QyXUC8HyAAAA:8 a=EUspDBNiAAAA:8 a=31kahzM04Zwkpn2euDMA:9 a=QEXdDO2ut3YA:10
+ a=NFOGd7dJGGMPyQGDc5-O:22 a=a-qgeE7W1pNrGK8U0ZQC:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-06_01,2026-07-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 adultscore=0 clxscore=1015 malwarescore=0 impostorscore=0
+ priorityscore=1501 suspectscore=0 lowpriorityscore=0 phishscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607060129
 
-On Mon, Jul 06, 2026 at 12:11:15PM +0200, Brett A C Sheffield wrote:
-> On 2026-07-06 11:42, Simon Schippers wrote:
-> > Commit 1d6e569b7d0c ("tun/tap & vhost-net: avoid ptr_ring tail-drop
-> > when a qdisc is present") did not show a relevant performance regression
-> > in my testing but on Brett Sheffield's librecast testbed it shows a
-> > significant performance drop in a IPv6 multicast testcase. The regression
-> > can be pinpointed when multiple iperf3 UDP threads are sending. For 8
-> > threads the performance dropped from 13.5 Gbit/s to 9.13 Gbit/s. This is
-> > the reason why this patch makes the qdisc backpressure behavior opt-in.
-> 
-> Your v1 commit message was correct.  The iperf3 tests were TCP, not UDP.
-> 
-> The original failing test that alerted me to the problem was IPv6 multicast
-> (UDP), but the reproducer tests I provided stats for in the regression report
-> were TCP "To eliminate my code and any multicast weirdness" and also to verify
-> that this also affected TCP.
-> 
-> Sorry for the confusion. The command lines used are in the regression report.
-> 
-> I've tested the v2 patch (with IPv6 multicast), and verified the
-> previously failing test passes.
-> 
-> Tested-by: Brett A C Sheffield <bacs@librecast.net>
-> 
-> Cheers,
+Ahead of reworking the reference counting logic for platform devices,
+encapsulate the assignment of the OF node for dynamically allocated
+platform devices with the provided helper.
 
+Acked-by: Robin Murphy <robin.murphy@arm.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+---
+ drivers/iommu/fsl_pamu.c | 16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
 
-Just to clarify, it's more of a work-around, not a fix.
+diff --git a/drivers/iommu/fsl_pamu.c b/drivers/iommu/fsl_pamu.c
+index 25aa477a95a95cb4fa4e132727cde0a936750ee2..c83bbc3faad56d6ee1c89b0a7f74028af02c81e9 100644
+--- a/drivers/iommu/fsl_pamu.c
++++ b/drivers/iommu/fsl_pamu.c
+@@ -8,6 +8,7 @@
+ 
+ #include "fsl_pamu.h"
+ 
++#include <linux/cleanup.h>
+ #include <linux/fsl/guts.h>
+ #include <linux/interrupt.h>
+ #include <linux/genalloc.h>
+@@ -933,7 +934,6 @@ static struct platform_driver fsl_of_pamu_driver = {
+ static __init int fsl_pamu_init(void)
+ {
+ 	struct platform_device *pdev = NULL;
+-	struct device_node *np;
+ 	int ret;
+ 
+ 	/*
+@@ -955,7 +955,8 @@ static __init int fsl_pamu_init(void)
+ 	 * PAMU node would require significant changes to a lot of code.
+ 	 */
+ 
+-	np = of_find_compatible_node(NULL, NULL, "fsl,pamu");
++	struct device_node *np __free(device_node) =
++			of_find_compatible_node(NULL, NULL, "fsl,pamu");
+ 	if (!np) {
+ 		pr_err("could not find a PAMU node\n");
+ 		return -ENODEV;
+@@ -964,7 +965,7 @@ static __init int fsl_pamu_init(void)
+ 	ret = platform_driver_register(&fsl_of_pamu_driver);
+ 	if (ret) {
+ 		pr_err("could not register driver (err=%i)\n", ret);
+-		goto error_driver_register;
++		return ret;
+ 	}
+ 
+ 	pdev = platform_device_alloc("fsl-of-pamu", 0);
+@@ -973,7 +974,8 @@ static __init int fsl_pamu_init(void)
+ 		ret = -ENOMEM;
+ 		goto error_device_alloc;
+ 	}
+-	pdev->dev.of_node = of_node_get(np);
++
++	platform_device_set_of_node(pdev, np);
+ 
+ 	ret = pamu_domain_init();
+ 	if (ret)
+@@ -988,17 +990,11 @@ static __init int fsl_pamu_init(void)
+ 	return 0;
+ 
+ error_device_add:
+-	of_node_put(pdev->dev.of_node);
+-	pdev->dev.of_node = NULL;
+-
+ 	platform_device_put(pdev);
+ 
+ error_device_alloc:
+ 	platform_driver_unregister(&fsl_of_pamu_driver);
+ 
+-error_driver_register:
+-	of_node_put(np);
+-
+ 	return ret;
+ }
+ arch_initcall(fsl_pamu_init);
 
-It's not really great to have a flag that says "change something
-opaque in the internals of the device, it affects performance
-in some way, we can't predict how".
-
-So maybe we really should revert for now, and work on something
-more coherent for the next linux.
-
-
-> 
-> Brett
-> -- 
-> Brett Sheffield (he/him)
-> Librecast - Decentralising the Internet with Multicast
-> https://librecast.net/
-> https://blog.brettsheffield.com/
+-- 
+2.47.3
 
