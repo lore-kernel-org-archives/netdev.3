@@ -1,57 +1,45 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79FDC36C9EC
-	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 10:02:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD2C2BEC43
+	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 10:03:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783332170; cv=none; b=oVLa0kmlPUVJi4GPJw4uIEt4UPWxSl7W+niO1lQRTifZ7dOo5o5p4QNpgRD6DB1OifTHGoHvpKc90TQBx/o+Atd+s9MhLr4K2itsTjvcD73JR/83d2UNdzToyzYmzIMxyQ4vHZRY81xdqQPkAz7ebUnVoEkz0JUn5TSd5x9Czxc=
+	t=1783332209; cv=none; b=MnKYnXYhlRxQs/7p/UXsNaYFNih7BNz6fbzeyMK3o3UGq200Q1ykz+rmi/yT3bPc8aEZP5zCsdcOsoTLSjw5BI+2ndOOFbYu4vfcB4WqVhGlby5KyY41VLMMp/Ck0o8lTnuQYJ6zbWL+XNNNqnqVxO0MlPnYomAZTdq4/Zyfwjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783332170; c=relaxed/simple;
-	bh=2yPPPI4sVPsogh1N8K42E/+yAXC8cm8D6ZakBHj/BSM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lPfgyDRWAZfhaUYzxBWJvMMMWiExYcs8Ryl0wk6aoVbWR7GZStKtH8XpyItjTyqAuOHGTS2mYedEwi925GfrjKAF+etAsI0beZxtyQdIw5FSMD965orKYti0yNjRCInU84D+uqkW7IOpRRk8xDNjtwxitr7A5lXqBvAiKbf9Znc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QepcjkmT; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1783332209; c=relaxed/simple;
+	bh=SQrDTprm3umr+ce3Sgt9QuROrfdtOoxJvVvAbBurWOc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ekZyN1J15psCac8IXGYDzr/F/GXY1V8rEu0tg8CHiqJmPkzC4NEE/TuvKvoTKy1/yPbO5JP2SoNSvmGhIGQkRPdNFlXC3HHhnbIHOSma5FWrtGc8USPx+NeJGoLpcBm1QxVHYd6lN63BDvruVsud/5HG27QGZX0YkGZZsMZVenM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=i26Y78cs; arc=none smtp.client-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QepcjkmT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783332168; x=1814868168;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=2yPPPI4sVPsogh1N8K42E/+yAXC8cm8D6ZakBHj/BSM=;
-  b=QepcjkmT0abBR7HoP3p/mDCO5UcV7mKQNxcWlBiPZ/EMaJgTCvd5LTr9
-   J6t5XJvxVi/NHL3T5KEmoBwxm7Uh0Bi5NRntMZQEhY79nhJnTXTbpr34L
-   BCwECeWcAQgXaTM7+AiTBZqg15++4ClfXMchdoqIXLCeMnrI0eVyJbF9r
-   wH08ALvzKvX7kkfBMPOm8gNyf4pgANHkqIwIlEbwHEfKRLssrfVhafWyI
-   zVGDxgmctRI9tgNsYlu8G4MlPWwXiaHCwIkaXLKZjzSXVeDntx2lddMX4
-   iMfZbIjhNqJ4F5Xnn2ZZbjMF4Ygwis8RkPP+hJiZfbJcJ4+erFAUNgkOE
-   g==;
-X-CSE-ConnectionGUID: VmDYGjudQbykrhpgbJ/IMw==
-X-CSE-MsgGUID: I9Oa0PfXRa+GeYhviE3CQw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11838"; a="94566405"
-X-IronPort-AV: E=Sophos;i="6.25,149,1779174000"; 
-   d="scan'208";a="94566405"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2026 03:02:47 -0700
-X-CSE-ConnectionGUID: uUOeQ0LSSqCEQ38s38Xcmg==
-X-CSE-MsgGUID: ECgfHR/gQtupEWtSNd6oJA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,149,1779174000"; 
-   d="scan'208";a="251930799"
-Received: from os-delivery.igk.intel.com ([10.102.18.218])
-  by orviesa006.jf.intel.com with ESMTP; 06 Jul 2026 03:02:47 -0700
-From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: anthony.l.nguyen@intel.com,
-	netdev@vger.kernel.org,
-	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: [PATCH iwl-next v2] ixgbe: E610: force phy link to get down when interface is down
-Date: Mon,  6 Jul 2026 11:43:29 +0200
-Message-Id: <20260706094330.186341-1-jedrzej.jagielski@intel.com>
-X-Mailer: git-send-email 2.31.1
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="i26Y78cs"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=JZ
+	bxPyhSxERyKahBZdc20f6bMMlZ7WgR+AHtNlbB1mw=; b=i26Y78csGwlea10dmU
+	AxFeixO1QH69sdXyWGvnxQtkdgIdE+CGS3qGVMmYK5ngJHA3hHPOOKrEFRkvIgSi
+	3oRr8NSPruYY5ZarNUHgQMcvN5iKi7c7fTgVM1tS0LltabnzN2N8E/+PBRX8Gk1g
+	KWBfD1bcRh/Br83MbmGt8qdAI=
+Received: from kylin-ERAZER-H610M.. (unknown [])
+	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wD3b0E1fUtqQtSiHg--.27701S2;
+	Mon, 06 Jul 2026 18:02:30 +0800 (CST)
+From: Yun Lu <luyun_611@163.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	kerneljasonxing@gmail.com,
+	kuniyu@google.com
+Cc: mhal@rbox.co,
+	bjorn@kernel.org,
+	jiayuan.chen@linux.dev,
+	netdev@vger.kernel.org
+Subject: [PATCH net-next] net: skbuff: use net_zcopy_get() instead of refcount_inc()
+Date: Mon,  6 Jul 2026 18:02:29 +0800
+Message-ID: <20260706100229.13812-1-luyun_611@163.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,216 +47,39 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3b0E1fUtqQtSiHg--.27701S2
+X-Coremail-Antispam: 1Uf129KBjvdXoW7XFy5ur4fCw1fXFyrXr47Jwb_yoWfWwc_Jr
+	ykZr4kC3y8JFy7Cws0krW5Gryvk3y09a4ruFZ2vFy2q345X398G34kGFW29F1kCF48WrW5
+	GFnIvrW8Aa4F9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUbjjg3UUUUU==
+X-CM-SenderInfo: pox130jbwriqqrwthudrp/xtbC7BbZqGpLfTYk0AAA3V
 
-For the E610 family, similarly to the E8xx adapters, the default behavior
-is for the PHY link to remain up even when the corresponding OS interface
-is down.
+From: Yun Lu <luyun@kylinos.cn>
 
-Add function setting down the PHY config IXGBE_ACI_PHY_ENA_LINK bit
-what leads to disabling PHY link.
+The net_zcopy_get() increments the uarg->refcnt, which is called both
+in pskb_carve_inside_header() and pskb_carve_inside_nonlinear().
+Also use net_zcopy_get() in pskb_expand_head for code consistency.
 
-Now ixgbe_close() needs to share some of the ixgbe_watchdog_link_is_down
-code so move the common part into the separate function.
+No functional change intended.
 
-Align functionality with the implementation of the ice driver.
-
-Let user to configure link-down-on-close enablement through ethtool.
-
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Signed-off-by: Yun Lu <luyun@kylinos.cn>
 ---
-v2: apply Paul's notes
----
- drivers/net/ethernet/intel/ixgbe/ixgbe.h      |  1 +
- drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c | 35 ++++++++++++++++++-
- drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h |  1 +
- .../net/ethernet/intel/ixgbe/ixgbe_ethtool.c  | 15 ++++++++
- drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 27 +++++++++++---
- 5 files changed, 73 insertions(+), 6 deletions(-)
+ net/core/skbuff.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe.h b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-index 30f62174acf2..7bbb82dd962c 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-@@ -685,6 +685,7 @@ struct ixgbe_adapter {
- #define IXGBE_FLAG2_MOD_POWER_UNSUPPORTED	BIT(22)
- #define IXGBE_FLAG2_API_MISMATCH		BIT(23)
- #define IXGBE_FLAG2_FW_ROLLBACK			BIT(24)
-+#define IXGBE_FLAG2_LINK_DOWN_ON_CLOSE		BIT(25)
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 18dabb4e9cfa..bcf3b2c65fb9 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -2326,7 +2326,7 @@ int pskb_expand_head(struct sk_buff *skb, int nhead, int ntail,
+ 		if (skb_orphan_frags(skb, gfp_mask))
+ 			goto nofrags;
+ 		if (skb_zcopy(skb))
+-			refcount_inc(&skb_uarg(skb)->refcnt);
++			net_zcopy_get(skb_zcopy(skb));
+ 		for (i = 0; i < skb_shinfo(skb)->nr_frags; i++)
+ 			skb_frag_ref(skb, i);
  
- 	/* Tx fast path data */
- 	int num_tx_queues;
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-index 831cfe9a4697..02bc0dac5123 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-@@ -1923,6 +1923,33 @@ void ixgbe_fc_autoneg_e610(struct ixgbe_hw *hw)
- 	hw->fc.current_mode = hw->fc.requested_mode;
- }
- 
-+/**
-+ * ixgbe_disable_phy_link - force phy link to get down
-+ * @hw: pointer to hardware structure
-+ *
-+ * Send 0x0601 with the IXGBE_ACI_PHY_ENA_LINK bit set down.
-+ *
-+ * Return: the exit code of the operation.
-+ */
-+int ixgbe_disable_phy_link(struct ixgbe_hw *hw)
-+{
-+	struct ixgbe_aci_cmd_get_phy_caps_data pcaps = {};
-+	struct ixgbe_aci_cmd_set_phy_cfg_data pcfg = {};
-+	int err;
-+
-+	err = ixgbe_aci_get_phy_caps(hw, false, IXGBE_ACI_REPORT_ACTIVE_CFG,
-+				     &pcaps);
-+	if (err)
-+		return err;
-+
-+	ixgbe_copy_phy_caps_to_cfg(&pcaps, &pcfg);
-+
-+	pcfg.caps &= ~IXGBE_ACI_PHY_ENA_LINK;
-+	pcfg.caps |= IXGBE_ACI_PHY_ENA_AUTO_LINK_UPDT;
-+
-+	return ixgbe_aci_set_phy_cfg(hw, &pcfg);
-+}
-+
- /**
-  * ixgbe_disable_rx_e610 - Disable RX unit
-  * @hw: pointer to hardware structure
-@@ -2207,6 +2234,7 @@ int ixgbe_setup_phy_link_e610(struct ixgbe_hw *hw)
- 	u8 rmode = IXGBE_ACI_REPORT_TOPO_CAP_MEDIA;
- 	u64 sup_phy_type_low, sup_phy_type_high;
- 	u64 phy_type_low = 0, phy_type_high = 0;
-+	bool force_on_required;
- 	int err;
- 
- 	err = ixgbe_aci_get_link_info(hw, false, NULL);
-@@ -2272,6 +2300,11 @@ int ixgbe_setup_phy_link_e610(struct ixgbe_hw *hw)
- 		phy_type_high |= IXGBE_PHY_TYPE_HIGH_10G_USXGMII;
- 	}
- 
-+	/* If IXGBE_ACI_PHY_ENA_LINK has been explicitly disabled that means
-+	 * we need to force PHY link UP state during PHY link setup
-+	 */
-+	force_on_required = !(pcfg.caps & IXGBE_ACI_PHY_ENA_LINK);
-+
- 	/* Mask the set values to avoid requesting unsupported link types. */
- 	phy_type_low &= sup_phy_type_low;
- 	pcfg.phy_type_low = cpu_to_le64(phy_type_low);
-@@ -2280,7 +2313,7 @@ int ixgbe_setup_phy_link_e610(struct ixgbe_hw *hw)
- 
- 	if (pcfg.phy_type_high != pcaps.phy_type_high ||
- 	    pcfg.phy_type_low != pcaps.phy_type_low ||
--	    pcfg.caps != pcaps.caps) {
-+	    pcfg.caps != pcaps.caps || force_on_required) {
- 		pcfg.caps |= IXGBE_ACI_PHY_ENA_LINK;
- 		pcfg.caps |= IXGBE_ACI_PHY_ENA_AUTO_LINK_UPDT;
- 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h
-index 2cb76a3d30ae..59044d67ebeb 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h
-@@ -50,6 +50,7 @@ int ixgbe_cfg_phy_fc(struct ixgbe_hw *hw,
- 		     enum ixgbe_fc_mode req_mode);
- int ixgbe_setup_fc_e610(struct ixgbe_hw *hw);
- void ixgbe_fc_autoneg_e610(struct ixgbe_hw *hw);
-+int ixgbe_disable_phy_link(struct ixgbe_hw *hw);
- void ixgbe_disable_rx_e610(struct ixgbe_hw *hw);
- int ixgbe_init_phy_ops_e610(struct ixgbe_hw *hw);
- int ixgbe_identify_phy_e610(struct ixgbe_hw *hw);
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-index b8e85bc91a27..16e26d54f3be 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-@@ -139,6 +139,8 @@ static const char ixgbe_priv_flags_strings[][ETH_GSTRING_LEN] = {
- 	"vf-ipsec",
- #define IXGBE_PRIV_FLAGS_AUTO_DISABLE_VF	BIT(2)
- 	"mdd-disable-vf",
-+#define IXGBE_PRIV_LINK_DOWN_ON_CLOSE	BIT(3)
-+	"link-down-on-close",
- };
- 
- #define IXGBE_PRIV_FLAGS_STR_LEN ARRAY_SIZE(ixgbe_priv_flags_strings)
-@@ -3822,6 +3824,9 @@ static u32 ixgbe_get_priv_flags(struct net_device *netdev)
- 	if (adapter->flags2 & IXGBE_FLAG2_AUTO_DISABLE_VF)
- 		priv_flags |= IXGBE_PRIV_FLAGS_AUTO_DISABLE_VF;
- 
-+	if (adapter->flags2 & IXGBE_FLAG2_LINK_DOWN_ON_CLOSE)
-+		priv_flags |= IXGBE_PRIV_LINK_DOWN_ON_CLOSE;
-+
- 	return priv_flags;
- }
- 
-@@ -3859,6 +3864,16 @@ static int ixgbe_set_priv_flags(struct net_device *netdev, u32 priv_flags)
- 		}
- 	}
- 
-+	flags2 &= ~IXGBE_FLAG2_LINK_DOWN_ON_CLOSE;
-+	if (priv_flags & IXGBE_PRIV_LINK_DOWN_ON_CLOSE) {
-+		if (adapter->hw.mac.type == ixgbe_mac_e610) {
-+			flags2 |= IXGBE_FLAG2_LINK_DOWN_ON_CLOSE;
-+		} else {
-+			e_info(probe, "Cannot set private flags: Feature supported only for E610 devices\n");
-+			return -EOPNOTSUPP;
-+		}
-+	}
-+
- 	if (flags2 != adapter->flags2) {
- 		adapter->flags2 = flags2;
- 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-index 7a0783c1abc1..f650fa45b9ef 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-@@ -7551,6 +7551,17 @@ static void ixgbe_close_suspend(struct ixgbe_adapter *adapter)
- 	ixgbe_free_all_rx_resources(adapter);
- }
- 
-+static void ixgbe_handle_link_down(struct ixgbe_adapter *adapter)
-+{
-+	struct net_device *netdev = adapter->netdev;
-+
-+	if (test_bit(__IXGBE_PTP_RUNNING, &adapter->state))
-+		ixgbe_ptp_start_cyclecounter(adapter);
-+
-+	e_info(drv, "NIC Link is Down\n");
-+	netif_carrier_off(netdev);
-+}
-+
- /**
-  * ixgbe_close - Disables a network interface
-  * @netdev: network interface device structure
-@@ -7573,6 +7584,16 @@ int ixgbe_close(struct net_device *netdev)
- 
- 	ixgbe_fdir_filter_exit(adapter);
- 
-+	if (adapter->flags2 & IXGBE_FLAG2_LINK_DOWN_ON_CLOSE) {
-+		int err;
-+
-+		err = ixgbe_disable_phy_link(&adapter->hw);
-+		if (err)
-+			e_error(drv, "Cannot set PHY link down\n");
-+
-+		ixgbe_handle_link_down(adapter);
-+	}
-+
- 	ixgbe_release_hw_control(adapter);
- 
- 	return 0;
-@@ -8251,11 +8272,7 @@ static void ixgbe_watchdog_link_is_down(struct ixgbe_adapter *adapter)
- 	if (ixgbe_is_sfp(hw) && hw->mac.type == ixgbe_mac_82598EB)
- 		adapter->flags2 |= IXGBE_FLAG2_SEARCH_FOR_SFP;
- 
--	if (test_bit(__IXGBE_PTP_RUNNING, &adapter->state))
--		ixgbe_ptp_start_cyclecounter(adapter);
--
--	e_info(drv, "NIC Link is Down\n");
--	netif_carrier_off(netdev);
-+	ixgbe_handle_link_down(adapter);
- }
- 
- static bool ixgbe_ring_tx_pending(struct ixgbe_adapter *adapter)
 -- 
-2.31.1
+2.43.0
 
