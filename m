@@ -1,108 +1,121 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304A93FD159;
-	Mon,  6 Jul 2026 08:42:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244F73F86FA;
+	Mon,  6 Jul 2026 08:46:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783327358; cv=none; b=o3HYj2gNVbmZI/lajffEs3eitewEnRbFdrTKg42oN9uKp2I+SRULhYE3dF0Hctcg7Vd2mGfQ9+otOcc4jLBE7URAz5K5nw9GOPNsRb50Scdkm6vyE3v4Zs4xI9e5yAQ8WS7wrTWcR7O6BYSW3PRpk3fzZnyzc/PLnvubnjTcXE0=
+	t=1783327595; cv=none; b=kTl5XFJrNe+t8xYBWKX/TAsS2ZLAuEjlmj+VlpAXEDXxrT54lF2LxcSMs2KrLfRyWhaNbj0cr9S1dyoooquieseGJ1x45me/L1jfHitnVLFqn/Z/PB1863bubLtL6+BYL+M6Kx9k0RbaaTMwlLjvH8snbX7RvghzWCcybMSkZ9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783327358; c=relaxed/simple;
-	bh=O4q3m9twkSC1QC9V2DeWjMZQFNL1nKCZpNAoTTNPdOc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ISkT6wZ5EB6xybIOv75GWN+0aHCc4E8f9pBe4ZgltyQVg40W+BMUPB8+j3O8sycNtzlDbY0POQKjIa1kcmGhGG5weqfdX+FBk1Iqya1A0XrYhFc1PonoLtDbmukvqYQb7QE+KHGTDdSAOHvSCpM0vuBXBzmEy9jPulMwcsYzelg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xEzvHrmZ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WP2PNLca; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1783327595; c=relaxed/simple;
+	bh=Aq7XpudnAcKaS81HjDJDNYPswQh+BUSNaYY8W66620A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=U4u+4Do6/I1EJVnn+tUXEy4tpD1d6geRI06JLZ3h2hq/ETbxkKOxOtUouknq+n53uJs0GbLhNoueMbLIJ10bm8cv3DcAUNSIKsDvIw2KO7njhCCuQkjMd0n4Lc8V1QiFjTOzp/HawR978caHBW4DZ0BlkNN8TXQZKIrRrw/5t3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=ng7yDoUh; arc=none smtp.client-ip=220.197.31.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xEzvHrmZ";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WP2PNLca"
-Date: Mon, 6 Jul 2026 10:42:22 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1783327343;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Qx2JGNYXzBQVck8nCP9EIoLDc9txtLOxBCkElVT+408=;
-	b=xEzvHrmZJIRJyRrBqvbshSnu52HLO8ue8Vule+sdKx2uzfp/swOjBcFZij3UNweaE1G/20
-	iQ+YRVGQVQjwEJe1zh/TkaQwkUYmsRf1sVT0aK1MhpgsJoC+pR+9i0SAG/qKDpmtjOFjTW
-	3TdvXuzMlmQDZSKFytMF2yHJOF1NVAi0hyVA6/7ajcjgeCxpSS0AVaU+v7kpIWZkR8/kPu
-	wAS9EELIqgox5PuZUG2CiNi8DW2fu/1Qv2hV4lrwYX7p/yLERy6dI+vkLAfEWV9IxDRsyc
-	j1QgJKor7fn4iVERFkYHh+WT8XfJ5iXnmnlJJGAZxafJ8jFTc613xHO4Ye02Xw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1783327343;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Qx2JGNYXzBQVck8nCP9EIoLDc9txtLOxBCkElVT+408=;
-	b=WP2PNLcaTAzB3qA0iJOv8D8ZDx9jJzYzqtcHxwOwZT1TRFIs2jwW5FFQ9ljELht+FYSHYO
-	GfjT2OyA72zsvuBA==
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-To: Thomas Gleixner <tglx@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, 
-	David Woodhouse <dwmw2@infradead.org>, Miroslav Lichvar <mlichvar@redhat.com>, 
-	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, 
-	Arthur Kiyanovski <akiyano@amazon.com>, Rodolfo Giometti <giometti@enneenne.com>, 
-	Vincent Donnefort <vdonnefort@google.com>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oliver.upton@linux.dev>, kvmarm@lists.linux.dev, Oliver Upton <oupton@kernel.org>, 
-	Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org, Takashi Iwai <tiwai@suse.com>, 
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>, Johannes Berg <johannes.berg@intel.com>, 
-	Jacob Keller <jacob.e.keller@intel.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Peter Hilber <peter.hilber@oss.qualcomm.com>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, virtualization@lists.linux.dev, linux-wireless@vger.kernel.org, 
-	linux-sound@vger.kernel.org
-Subject: Re: [PATCH] timekeeping: Document monotonic raw timestamps in
- snapshots correctly
-Message-ID: <20260706081734-32262bc9-5dcd-401c-bd47-18b91636bf73@linutronix.de>
-References: <20260526165826.392227559@kernel.org>
- <20260526171223.374814973@kernel.org>
- <20260626103359-66ab2b54-d36f-416b-94a4-3f3708dccced@linutronix.de>
- <87echtk24a.ffs@fw13>
- <20260626125819-d8b197fc-7671-4d12-a578-9025affc52d9@linutronix.de>
- <87fr29ib4v.ffs@fw13>
- <20260629055344-b74c43de-2a2b-4608-ae4e-ed0ac8e12fd1@linutronix.de>
- <87bjctsptt.ffs@fw13>
- <87wlv9k3wz.ffs@fw13>
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="ng7yDoUh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=O/
+	yofhFvHkov23hY7UUkFz/6GuSRZ5PQqaEKBSq6uK8=; b=ng7yDoUh9xzk+cI9Db
+	Jkm295TPDyA7NxLvxh82tF9kWXjAqMiuzTX4BHjfbT8nszLuvR1QC3M2EKVWboMc
+	zMykFNW3zprDTKdjh6yIaEL7PPteRP26F7wwhizIHtw+Cl816Tx1oWKdxGQYB1yr
+	LO9foGgCt/dWm87l40PqKZB+E=
+Received: from LAPTOP-M8806FGF.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wD3958pa0tqWi0WCw--.19204S2;
+	Mon, 06 Jul 2026 16:45:30 +0800 (CST)
+From: zhangzl2013@126.com
+To: Zhaolong Zhang <zhangzl2013@126.com>,
+	Jay Vosburgh <jv@jvosburgh.net>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Qianheng Peng <pengqh1@chinatelecom.cn>,
+	Zhaolong Zhang <zhangzl68@chinatelecom.cn>
+Subject: [PATCH] bonding: fix devconf_all NULL dereference when IPv6 is disabled
+Date: Mon,  6 Jul 2026 16:45:30 +0800
+Message-ID: <20260706084530.447402-1-zhangzl2013@126.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <87wlv9k3wz.ffs@fw13>
+X-CM-TRANSID:_____wD3958pa0tqWi0WCw--.19204S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Aw4xAF1DZw4ktry5tFyrWFg_yoW8tF15pr
+	Z3KrW5ur1ktr1UAF4UX3W093s5Za18XFZFkrWIkr95Zan5Ka1DAFy7Jr109F15trWrCFZI
+	va1Uta90gwn5Jw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pE4SoPUUUUU=
+X-CM-SenderInfo: x2kd0wt2osiiat6rjloofrz/xtbBogpSImpLayog3wAA3H
 
-On Sun, Jul 05, 2026 at 02:38:04PM +0200, Thomas Gleixner wrote:
-> The comments related to raw monotonic timestamps for the various
-> snapshot mechanisms in code and struct documentation are ambiguous. They
-> reference them as CLOCK_MONOTONIC_RAW timestamps, but with the arrival
-> of AUX clocks that's not longer correct.
-> 
-> The raw monotonic timestamps only represent CLOCK_MONOTONIC_RAW for the
-> system time clock IDs, i.e. REALTIME, MONOTONIC, BOOTTIME, TAI.
-> 
-> For AUX clocks they refer to the monotonic raw clock which is related to
-> the individual AUX clocks. These monotonic raw timestamps have the same
-> conversion factor as CLOCK_MONOTONIC_RAW, but differ from that by an
-> offset:
-> 
-> 	MONORAW(AUX$N) = MONORAW(SYSTEM) + OFFSET(AUX$N)
-> 
-> The offset is established when a AUX clock is enabled and stays constant
-> for the lifetime of the AUX clock.
-> 
-> Update the comments so they reflect reality.
-> 
-> Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-> Reported-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
+From: Zhaolong Zhang <zhangzl68@chinatelecom.cn>
 
-Thanks!
+When booting with the 'ipv6.disable=1' parameter, the devconf_all is
+never initialized because inet6_init() exits before addrconf_init() is
+called which initializes it. bond_send_validate(), however, will still
+call bond_ns_send_all() even ipv6 is indeed disabled. It will lead to
+NULL derefence of net->ipv6.devconf_all in ip6_pol_route().
 
-Reviewed-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
+ BUG: kernel NULL pointer dereference, address: 000000000000000c
+ [...]
+ Workqueue: bond0 bond_arp_monitor [bonding]
+ RIP: 0010:ip6_pol_route+0x69/0x480
+ [...]
+ Call Trace:
+  <TASK>
+  ? srso_return_thunk+0x5/0x5f
+  ? __pfx_ip6_pol_route_output+0x10/0x10
+  fib6_rule_lookup+0xfe/0x260
+  ? wakeup_preempt+0x8a/0x90
+  ? srso_return_thunk+0x5/0x5f
+  ? srso_return_thunk+0x5/0x5f
+  ? sched_balance_rq+0x369/0x810
+  ip6_route_output_flags+0xd7/0x170
+  bond_ns_send_all+0xde/0x280 [bonding]
+  bond_ab_arp_probe+0x296/0x320 [bonding]
+  ? srso_return_thunk+0x5/0x5f
+  bond_activebackup_arp_mon+0xb4/0x2c0 [bonding]
+  process_one_work+0x196/0x370
+  worker_thread+0x1af/0x320
+  ? srso_return_thunk+0x5/0x5f
+  ? __pfx_worker_thread+0x10/0x10
+  kthread+0xe3/0x120
+  ? __pfx_kthread+0x10/0x10
+  ret_from_fork+0x199/0x260
+  ? __pfx_kthread+0x10/0x10
+  ret_from_fork_asm+0x1a/0x30
+  </TASK>
 
-(...)
+Fix this by adding ipv6_mod_enabled() condition check in the caller.
+
+Fixes: 4e24be018eb9 ("bonding: add new parameter ns_targets")
+Signed-off-by: Qianheng Peng <pengqh1@chinatelecom.cn>
+Signed-off-by: Zhaolong Zhang <zhangzl68@chinatelecom.cn>
+---
+ drivers/net/bonding/bond_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index e044fc733b8c..522eab060f9e 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -3455,7 +3455,8 @@ static void bond_send_validate(struct bonding *bond, struct slave *slave)
+ {
+ 	bond_arp_send_all(bond, slave);
+ #if IS_ENABLED(CONFIG_IPV6)
+-	bond_ns_send_all(bond, slave);
++	if (likely(ipv6_mod_enabled()))
++		bond_ns_send_all(bond, slave);
+ #endif
+ }
+ 
+-- 
+2.52.0
+
