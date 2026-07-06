@@ -1,109 +1,95 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 325C6389471
-	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 15:27:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD5E389E07
+	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 15:27:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783351636; cv=none; b=QDekXyUoJTb1kEIvwvhhgwKzCT7m8eZPtIzHhx0Mf/9Odr2bP1remCs+SNcpYBvzcf1yb1wKNeJNy3bjLLlTxd5IKQhDl+0LXaA8mGpmhiND/x14gxkzSjDBcen9xLZrL20ctcf2cj782YkOSK2cfl0FijuSbuQMtLTdtjVbsNg=
+	t=1783351639; cv=none; b=k/TRgD2ax6g/J1nwc/2idNw8lpC41BQ4K99PoIr5NWdHVVgUPSZespKpIWhTBJ9P+L3Fe9TCl9dDjRJ3Sy7CedgqLnJhhuoxwqOppmoSaZmZTDq87OsfT2BRj8QeyjnA2VeqdPZjJK87iAPk2INYqp+wIRNsrEnV76g5HXXQ2RY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783351636; c=relaxed/simple;
-	bh=uLoqch9/c60sOgxm7nfgT7VWAe/wfBjsOiSuSTpNN38=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f2LRrt18PaSF9TKvSJfovBaPBhityq2ygneAL9Vj5/Cy8VRbAhb9PKSsqnzsXFhHomg3LRUSkotes5APol00zB7cdAJikM7OFmshO4jsKiqMKReb0qNGp+rdVhWJRkzXHDZPm6O7jPVFy8Pvht4NSJa4Xyb52W7U76MvjTFfh/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OUlCz8yg; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1783351639; c=relaxed/simple;
+	bh=lSoboED2PAHrqCkmDz/2UOnv2dxYPKKdRMpTQi4HUMo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=IM5gjltIhXHVFucqtE4RNXooeZ3J97qkJVZ1TPvBWv9+5KVKe2b9cakMS4+ej/hB7gPF/qes6/Y5ol930ajTQxexSkInlRxjlxK5vOEIJ+eehR4a826wvBQbNJsSXcMN+XFJB9PXhwlOk+BiGYlKuLm83IB00IbYwvg39tfq34w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hoYKJ12i; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OUlCz8yg"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4938d5f86f3so21208685e9.1
-        for <netdev@vger.kernel.org>; Mon, 06 Jul 2026 08:27:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783351633; x=1783956433; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xq7K8KruM3IJOWy2HE+UaBvcH61LEV5J6OZAeJrMC/k=;
-        b=OUlCz8ygJ1R5xX7Jt7uFhjUS+bUAiFbi+D4xb15lUbVhu4Q9PgWKB1T/HAGQN3t+ca
-         adMmIW4GNv/i2NRyFCNSff++NFLe1yga/VBg1EAi3EpcoYoZ1H0GbkP1xDjB+1+gMptU
-         lBEP00OVBjn0vR5M1wML8eCePchUgiL7uqQ/Nx1yCmU4hoSLqC0qLgqL2dbk7ZfNEXdx
-         gjHdoTIJBM8NfiCVXxX8gSSxssXLFDdtqrjZGdlfFAimaVZpWaaN5eIKPGplBHB4BXOd
-         zw1iWpbjRVIjfkFz5r18BzovUmL2ew7QKufZivtIKDFavAGNiMBNSeO2z0pDb2eP+XCq
-         CCSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783351633; x=1783956433;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Xq7K8KruM3IJOWy2HE+UaBvcH61LEV5J6OZAeJrMC/k=;
-        b=ObzP4ht3pS14FPoIB8H+T24yNFDcoSYbz92x+6QrSIpXFttyNXcWHiJh2wVOT06hXi
-         he27RcB0HcMu6rSincOMM+sWqXcI9XKVBGfxbr8BuGyfChKegz8PxWD87gDGNMRs9t14
-         gFTJhBY/z6hyb7YmDq4pFChjH6BTJGrYpDfaYQgUnGtmlRc8cxC2Hr6Vp5NDBHVLcpfN
-         /qKZRN7t0oojpw6eX5U8KNIbRfx+nQ0xqbwWXX27OkmbKormdPJMICiKnpWQEgVdLufj
-         jitMLQLnGfzuYFQUjxYsZl/QWWCIrriGsREQVUGjkIqsfr+/p/fdkNtLYAddkR3wyYU0
-         3AlA==
-X-Forwarded-Encrypted: i=1; AHgh+RrFo+D6/D/mqqnIcegaEuJhx08htinHeU/BSGz/RGx1LKYRR5I1AZP9QKmi9unawtDDyrpU+lE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YymgcR8cMETdMhfY927y3fqD1Ryb67KPmiRnv3qnSQrF6EoTo52
-	ruQz48tzhx/QrMKxdKsWrYyPnYRERc9F8xkwvcqPSp9MERvxI11o6Ihy
-X-Gm-Gg: AfdE7ckihDokKf+3wOoZuVb6Y3Of+OUZ6eQpiDljK1uzut27eU8054BwrTijBFuoNKa
-	s2adZkIPKgyH2+HJqoc3xIx0NxfYnicQTYBspQL5rP0Mh2boG66MwsOPWwyImsXO85NaruLn2pO
-	GnIfV4SeZxKFHXT9x9YtaYNXlx6XYFeoKL24v57DbAE0jReku9Gn5s1HcsqtyjlMGQmc4cm7QEz
-	7CLxMQnC3YMZobyFpBwbVs+kUCPSy7oW/n5HlAPaFnWAK+fDH9mY9Me0Icgp3NVe52t3ZBILn0n
-	XyVzNut5/Now5HFojF/LLEc7eiaKP6s0KGP3bRTqgv+0hiMg3EDWycf90LPt4gWj9q+0QUjfopx
-	gC3Mn1mB0KOE1KU9yPM5uFSiSFJakLe2ZoR7+8BZWuLvoPT/cQBcZZt+/LDTxvGaKM8DO6Iisio
-	QHQT55AKREg6LmEsfFrpjQC0ohAl1nhp9wqjhf0dlJzHcc
-X-Received: by 2002:a05:600c:628d:b0:493:c2ac:58f with SMTP id 5b1f17b1804b1-493decbf152mr14148715e9.8.1783351633138;
-        Mon, 06 Jul 2026 08:27:13 -0700 (PDT)
-Received: from gmail.com (deskosmtp.auranext.com. [195.134.167.217])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493c6381e4fsm436227065e9.8.2026.07.06.08.27.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2026 08:27:12 -0700 (PDT)
-Date: Mon, 6 Jul 2026 17:27:10 +0200
-From: Mahe Tardy <mahe.tardy@gmail.com>
-To: bot+bpf-ci@kernel.org
-Cc: bpf@vger.kernel.org, andrew+netdev@lunn.ch, andrii@kernel.org,
-	ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net,
-	eddyz87@gmail.com, edumazet@google.com, john.fastabend@gmail.com,
-	kuba@kernel.org, liamwisehart@meta.com, martin.lau@linux.dev,
-	pabeni@redhat.com, song@kernel.org, netdev@vger.kernel.org,
-	martin.lau@kernel.org, yonghong.song@linux.dev, clm@meta.com,
-	ihor.solodrai@linux.dev
-Subject: Re: [PATCH bpf-next 3/6] selftests/bpf: Add ksock kfunc test
-Message-ID: <akvJTq3URZBpUTMh@gmail.com>
-References: <20260706093525.13030-4-mahe.tardy@gmail.com>
- <d49e2fcbde106e80971b769793170fd479315d563d31bcaf6db33737c01c814c@mail.kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hoYKJ12i"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783351637;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lSoboED2PAHrqCkmDz/2UOnv2dxYPKKdRMpTQi4HUMo=;
+	b=hoYKJ12iw6svMR/l8L8ehDql8YBRpHW93wG+z8Cia6K7AGrBHiF0zMOsq4KaZ903MTTAHy
+	WmNlEDPX8Gq3HZa42usOUY8VfwqaAWLfFnyTrzXjuUx6gaH8uWnqIKK5lOkeFQYbIXMzvz
+	gXh+zrUoekmjAclgFJ28pPdYmSOhY88=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-101-VHLqI0jtNIedTqvshkqKwg-1; Mon,
+ 06 Jul 2026 11:27:13 -0400
+X-MC-Unique: VHLqI0jtNIedTqvshkqKwg-1
+X-Mimecast-MFC-AGG-ID: VHLqI0jtNIedTqvshkqKwg_1783351631
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 06BBE1955D8E;
+	Mon,  6 Jul 2026 15:27:11 +0000 (UTC)
+Received: from RHTRH0061144 (unknown [10.22.81.35])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0BEAC18005A7;
+	Mon,  6 Jul 2026 15:27:08 +0000 (UTC)
+From: Aaron Conole <aconole@redhat.com>
+To: Minxi Hou <houminxi@gmail.com>
+Cc: netdev@vger.kernel.org,  echaudro@redhat.com,  i.maximets@ovn.org,
+  davem@davemloft.net,  edumazet@google.com,  kuba@kernel.org,
+  pabeni@redhat.com,  horms@kernel.org,  shuah@kernel.org,
+  dev@openvswitch.org,  linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net-next v4] selftests/net/openvswitch: add ICMPv6 echo
+ type match test
+In-Reply-To: <20260702075044.1176798-1-houminxi@gmail.com> (Minxi Hou's
+	message of "Thu, 2 Jul 2026 03:50:44 -0400")
+References: <20260702075044.1176798-1-houminxi@gmail.com>
+Date: Mon, 06 Jul 2026 11:27:07 -0400
+Message-ID: <f7ty0fo16lw.fsf@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d49e2fcbde106e80971b769793170fd479315d563d31bcaf6db33737c01c814c@mail.kernel.org>
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-On Mon, Jul 06, 2026 at 10:16:33AM +0000, bot+bpf-ci@kernel.org wrote:
-> > Add a selftest that exercises the ksock kfuncs end-to-end. One sycall
-> > bpf setup program creates a ksock context and connect the socket.
-> > Another syscall bpf program lookup the context and send test data.
-> > The userspace harness create a network namespace and a new socket on
-> > loopback, run the setup and send syscall bpf progs then check that the
-> > userspace socket received the data from bpf.
-> 
-> This isn't a bug, but would a quick pass over the changelog wording help
-> here?  A few spots read a little off:
-> 
->   "One sycall" -> "One syscall"
->   "creates a ksock context and connect the socket" -> connects
->   "Another syscall bpf program lookup the context" -> looks up
->   "The userspace harness create a network namespace" -> creates
+Minxi Hou <houminxi@gmail.com> writes:
 
-Will fix these typos in next iteration.
-
-> 
-> 
+> Register OVS_KEY_ATTR_ICMPV6 in the flow key parser so that
+> icmpv6(type=...) can be used in flow specifications. Without this
+> registration the parser silently drops the token and the kernel
+> rejects the flow with EINVAL because the expected ICMPv6 key
+> attribute is missing.
+>
+> While here, add convert_int() to the ovs_key_ipv6 and ovs_key_icmp
+> fields_map entries so that specifying a field value produces the
+> correct wildcard mask. The IPv6 flow label uses convert_int(20) to
+> produce a 20-bit mask (0x000FFFFF), matching the kernel constraint in
+> flow_netlink.c that rejects masks with bits 20-31 set; byte-wide
+> fields use convert_int(8). The ipv4 counterpart already does this via
+> convert_int(); the ipv6 and icmp classes were simply missing the fifth
+> tuple element. Existing callers that pass empty parentheses are
+> unaffected because convert_int("") returns (0, 0).
+>
+> Add test_icmpv6 exercising the ICMPv6 echo flow key. The test uses
+> static neighbour entries with nud permanent to prevent racy NDP, then
+> verifies in three steps: install icmpv6(type=128) and
+> icmpv6(type=129) flows and confirm ping works, remove the flows and
+> confirm ping fails, reinstall and confirm recovery.
+>
+> Signed-off-by: Minxi Hou <houminxi@gmail.com>
 > ---
-> AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-> See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-> 
-> CI run summary: https://github.com/kernel-patches/bpf/actions/runs/28783010022
+
+Reviewed-by: Aaron Conole <aconole@redhat.com>
 
