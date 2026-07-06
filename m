@@ -1,117 +1,132 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A529414DCC;
-	Mon,  6 Jul 2026 09:29:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B5F3F4822
+	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 09:32:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783330175; cv=none; b=sTG2jIs9u/k0mY2cGKWNNV4FKfvUORd+uakUqUzWNTGERxGZqll8QDOV9hdxVJT7xBAF7fGmLsCGMx6t0FcSCvRkd6ATB/u9I/86ca8eFWHH/tWbUZJp087AC9S6qp4BCldPg1PrEMhZJNVXEOwK6yopWwB8oAizAdVF/oq+aCU=
+	t=1783330327; cv=none; b=rBXwa6ghK9AAEm2YlQNZVN8A3BWmrbdRHkaM5PCbPm03kKj2TG/9OdL/NIujhpo9LxHbzz2Y+gaf+qFCEnj/X7KQHVl9HGpB3UnvIU7jL6rN/gIj+PWaKBVsDPrllfrhbUqYWrFZl8lbdc0/+QYSf/QRm9MFQY5OEYiazA5j5hU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783330175; c=relaxed/simple;
-	bh=JPB4Ms/3eH3V+i81pMEkiYfy3gOCTrbnmZe6oSsaViw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YyOU4GlltQSNKnpg+GOgWS7N3r0Z2i6G3iUWcOhON4WeuTk7X0jY0659Ec7Ygf1LFzX0zu5u/dbScF1g3I3WLmkfLQuSGMMfzJ/1259auTbc50iFW90pARJ6B9hBOCTE0yFq+AHSswDTXFWB1dK6TYFOxQJv04P1Y6KdxjHckcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xxeVSsXj; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=eaLAHws8; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1783330327; c=relaxed/simple;
+	bh=AW5Jo2PZ04jm1iYTwzobVILZM6p6estGxZK0l+xeoyQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gvbCkdKEEpXIJOdxbxPeIXYWW39AHNJZlrrBYm1YcIaTy4ukt5dZsanuuStbT4IQLDVJpI2Y4OL+qdxBXfxiq9QH5p4L92C32t65+Y3DfecvW0lNEEirqXjXo1Ysq/s4dOCnKfdcg9OpKyr3I7orp6ypLWAvzuMw5n10go+fUas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T4OLTfO5; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=jf6RzTUa; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xxeVSsXj";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="eaLAHws8"
-Date: Mon, 6 Jul 2026 11:29:26 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1783330168;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T4OLTfO5";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="jf6RzTUa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783330322;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cCcLZepvm4b8pYaezu8ngLtA5fS9bUMBOmMVNu03xBw=;
-	b=xxeVSsXjSFqPcOq0HVzsUmQYNJDJzl24WpDMo5GkQ68mJgbLAxwbu3hfeyNOVS68/CA1Kp
-	EPhiqNGEWQAv567jxgrw6BnY1TcT/TTyfFpOnchbGyJb1Gp4KUn+SGOIN7JYX1x+Nj/xfY
-	LrUdG8PwTS3lkNDO2xn0nrtTFx6qHRIBdXiFhZNsbtiTyAksxrgs8Kf/vKad9Psa7o5pXR
-	hE/aowlFonkWPlzCkboAkiOuGw05jnV642MSm9xF+AXIorMLAay0X7O/kHWV7Eggt9DLum
-	w4On59vnU7MbkZwKn9LlT2OUUe5QtmUmvSpnJZQwqZCBJkfdyUTNEVonrTKojg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1783330168;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cCcLZepvm4b8pYaezu8ngLtA5fS9bUMBOmMVNu03xBw=;
-	b=eaLAHws8CrHTCsFAG6LX6kdZCh8OF7U9jFSumI1QwuDAgSWkwU/7L23aBefukCq6zfK257
-	u6YFS4dd3qh47PBA==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Qingfang Deng <qingfang.deng@linux.dev>
-Cc: Breno Leitao <leitao@debian.org>, Norbert Szetei <norbert@doyensec.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Taegu Ha <hataegu0826@gmail.com>, Kees Cook <kees@kernel.org>,
-	linux-ppp@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Guillaume Nault <gnault@redhat.com>, netdev@vger.kernel.org,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Daniel Gomez <da.gomez@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Aaron Tomlin <atomlin@atomlin.com>, linux-modules@vger.kernel.org
-Subject: Re: [PATCH net v2] ppp: defer channel free to an RCU grace period to
- fix pppol2tp RX UAF
-Message-ID: <20260706092926.PIlrhRKz@linutronix.de>
-References: <D9C0245B-608B-4884-8A09-F55BA4A9F948@doyensec.com>
- <de2616b3-6edf-4255-ba77-0674e225ab27@linux.dev>
- <akfjpBVML_1RFF91@gmail.com>
- <87111f02-5b7a-4185-8364-2faba650578b@linux.dev>
+	bh=y/S6VjjAq2bjAFrTzcZXWjqla9iifhH1rfxk58mIeTo=;
+	b=T4OLTfO5qPMh68+H4f7n6UrPD8sHzMkcIjugC+Ig4zi/CuT9fn4HYc51V4QtRXv/AQRpQY
+	RsMT3XDdyjp3/olegNfrskX5mmjxMmyTmIMiHFvRXoU2MqdfhJePkmeK1457ZHtIoP54nh
+	Os0je+IS2TrMib3GaQRBdjv5s1a5W9c=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-16-2CGuY5ioM2KNRkkQ8GAKMw-1; Mon, 06 Jul 2026 05:31:59 -0400
+X-MC-Unique: 2CGuY5ioM2KNRkkQ8GAKMw-1
+X-Mimecast-MFC-AGG-ID: 2CGuY5ioM2KNRkkQ8GAKMw_1783330318
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-493ce08a6b4so29374315e9.1
+        for <netdev@vger.kernel.org>; Mon, 06 Jul 2026 02:31:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1783330318; x=1783935118; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=y/S6VjjAq2bjAFrTzcZXWjqla9iifhH1rfxk58mIeTo=;
+        b=jf6RzTUapDI412/71MYf9lDH+JIsJIe1xf7cD0leydPRt7hQ5LrFsFvqsdErato4G0
+         TqZVWMvCcrv3Ah84miW00SCkmgtXDa1feT9E0JbRW8Hy3IaHmtgyPmDCoUXoGx5eXsGO
+         AOlXy669weQX7b7sYSRw4bJyt1fI/AKk4utTTTdONLywYooebcZBunBHDwzGz4UlJAii
+         SWRFMLnLgbi4sfGs8GGJEgiajzEnPxtyvxCoY+FIma21ZsXlGrgAY5Je5Ve/Q0P+0Unz
+         ZUT+6T4TlkTihC3XcpkS028ykGBrMAk8VYtPRR7U8WetYSrIdzxDiPXcKN9Alh8H0PFJ
+         a3WQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783330318; x=1783935118;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=y/S6VjjAq2bjAFrTzcZXWjqla9iifhH1rfxk58mIeTo=;
+        b=hbHDk2imdhy1bXd5MRB/AABn5eV3swQKqVpSxSWV+hRtNmSSfr5jU+XLDPL5i6JVgT
+         /S72a1Ii4TmihbCX+dfUADW4FaqHjwO2fBS6WkHP5UOeaCTlBFjzd5h2An1NmuLZ3CL1
+         X8dv0MtrF2s8EzrCGWbR9w3tmq7Yh3rPl4/XpRexty2jVO0jUEkB1m1xMEqELvheLf2l
+         /uqVdWm8HGNZFCnHzfJx6lBg7UgpYrd9bKjO6hIpk03737E/NilrgbKjlOpE9qyxFxdo
+         6RY1rVIKsMpMW84VIFbJfpFdClUuB4073EWNmooUVi8viNuywQxy6kP9qQYQzVX6D+KQ
+         +tVQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rod4bYlkvX0+q11ETmaYA0Gm6RLq9czGgvdHleemvT4AYddoNN2pSd++AjY4pZomE/g/MJMt7M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzzPsLulfp9TNlaFbTso30NrcJykxoknztjK6ErZWwGhE6t0Php
+	74FU77S3RxctKpuGkk8VSPlGI53PlV3DPeDL+99clJPZESWKPeOJDrB8IC6Me6EJnLNJIozf1YC
+	CZ6FRRrwxmvve2NKWTQPVDLJQKBbieCJo5INURYsLTUjZFb3AnbjvRJ/uXw==
+X-Gm-Gg: AfdE7cl9QN6586N4RxZnhy8A3gPijxQkP86nnulpMhK9k7RJVlHazJZ0ke7SZvXF1qH
+	oo7lx7k375aZX54t9+20jpp51HGLkp+5sYdd/Xq0P/L2HsF2DYue9KgrgKb6RfnDvdkNpbgK3ir
+	IgaRJtZI+60EVn3iXxjIjvJPkCQwehIe87HVWoBce4pnceidVRAaROB8UvoHX0bxqeK+MdHNTgo
+	tOr6DdZuQWoHs4LCXXgNJi6VoaAJzzl4ejMO5bynlrVw4TntjhyTJqtET4mUmWbe9fFYmUkb/x0
+	aV1ydUHTpxRERipbabYyDy3/J9AZHV4EdRr0k2LbVlTaha00pTn27ayFfiVJjNnYPgHfEm/WfXt
+	aC2OT/9XJRqERKiQmX9FwiAoJJUEvouCRBj1SWPIBiI2ShXmGBsIJ9HS7/NtdV34yC1rGxFJY+q
+	T4weNlNY4aEyi5
+X-Received: by 2002:a05:600c:34ce:b0:491:91cc:d12d with SMTP id 5b1f17b1804b1-493dea22594mr1060055e9.25.1783330318052;
+        Mon, 06 Jul 2026 02:31:58 -0700 (PDT)
+X-Received: by 2002:a05:600c:34ce:b0:491:91cc:d12d with SMTP id 5b1f17b1804b1-493dea22594mr1058685e9.25.1783330316297;
+        Mon, 06 Jul 2026 02:31:56 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:5521:6b10:58fd:68f:7756:389d? ([2a0d:3344:5521:6b10:58fd:68f:7756:389d])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47a9de1d905sm23254178f8f.2.2026.07.06.02.31.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 06 Jul 2026 02:31:55 -0700 (PDT)
+Message-ID: <455c46ac-25cb-45d4-9cb3-5330f7b553c0@redhat.com>
+Date: Mon, 6 Jul 2026 11:31:54 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <87111f02-5b7a-4185-8364-2faba650578b@linux.dev>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v6 2/5] dpll: add DPLL_PIN_TYPE_INT_NCO pin type
+To: Ivan Vecera <ivecera@redhat.com>, netdev@vger.kernel.org,
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Cc: Jiri Pirko <jiri@nvidia.com>, "David S. Miller" <davem@davemloft.net>,
+ Donald Hunter <donald.hunter@gmail.com>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Jiri Pirko <jiri@resnulli.us>,
+ Michal Schmidt <mschmidt@redhat.com>, Pasi Vaananen <pvaanane@redhat.com>,
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+ Petr Oros <poros@redhat.com>, Prathosh Satish
+ <Prathosh.Satish@microchip.com>, Simon Horman <horms@kernel.org>,
+ linux-kernel@vger.kernel.org
+References: <20260630125536.720717-1-ivecera@redhat.com>
+ <20260630125536.720717-3-ivecera@redhat.com>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20260630125536.720717-3-ivecera@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-+ MODULE maintainer
-
-On 2026-07-05 10:57:44 [+0800], Qingfang Deng wrote:
-> On 7/4/2026 at 12:32 AM, Breno Leitao wrote:
-> > On Fri, Jul 03, 2026 at 03:27:00PM +0800, Qingfang Deng wrote:
-> > > AI-review found an issue: https://sashiko.dev/#/patchset/D9C0245B-608B-4884-8A09-F55BA4A9F948%40doyensec.com
-> > > 
-> > > An rcu_barrier() call is needed at the end of ppp_cleanup().
-> > 
-> > I was initially unclear why rcu_barrier() would be necessary on a kfree path,
-> > but it appears to be required during module unload to ensure that
-> > ppp_release_channel_free() completes before the module's struct rcu_head is
-> > destroyed. Is that the correct understanding?
+On 6/30/26 2:55 PM, Ivan Vecera wrote:
+> Add DPLL_PIN_TYPE_INT_NCO pin type for virtual pins representing
+> the NCO mode of a DPLL. When connected as a DPLL input, the DPLL
+> enters NCO mode where the output frequency is adjusted by the host
+> via the PTP clock interface.
 > 
-> It's required to ensure that all ppp_release_channel_free() callback
-> complete before the text segment of the module is unloaded.
+> Update the fractional-frequency-offset and fractional-frequency-
+> offset-ppt attribute documentation to note that for INT_NCO pins
+> these attributes represent the DPLL's current output frequency
+> offset from its nominal frequency.
+> 
+> Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+> Signed-off-by: Ivan Vecera <ivecera@redhat.com>
 
-So either a rcu_barrier() in ppp's module_exit() callback or a
-synchronize_rcu() instead of the call_rcu(). And all this because the
-module RCU callbacks pending which can be invoked after the module has
-been removed. There is a synchronize_rcu() during module exit but this
-is after the module code is gone.
+@Vadim: it's not clear to me if your doubts over the design choice
+raised in previous iterations are still there. My understanding is there
+is reasonable agreement vs the new pin type, if you have very strong
+objections please raise them soonish.
 
-I'm curious how many modules have a call_rcu() within their code but
-don't have anything to enforce its completion before module removal is
-complete? Wouldn't something like
+Thanks,
 
+Paolo
 
-diff --git a/kernel/module/main.c b/kernel/module/main.c
-index 46dd8d25a6058..8eae1ea2d6eb4 100644
---- a/kernel/module/main.c
-+++ b/kernel/module/main.c
-@@ -858,6 +858,9 @@ SYSCALL_DEFINE2(delete_module, const char __user *, name_user,
- 		goto out;
- 
- 	mutex_unlock(&module_mutex);
-+
-+	/* Ensure all rcu callbacks issued by the module have completed */
-+	rcu_barrier();
- 	/* Final destruction now no one is using it. */
- 	if (mod->exit != NULL)
- 		mod->exit();
-
-make sense?
-
-Sebastian
