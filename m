@@ -1,119 +1,150 @@
-Received: from fhigh-b4-smtp.messagingengine.com (fhigh-b4-smtp.messagingengine.com [202.12.124.155])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7793717BCA;
-	Mon,  6 Jul 2026 13:31:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2712D8370
+	for <netdev@vger.kernel.org>; Mon,  6 Jul 2026 13:34:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783344673; cv=none; b=KOP5bk28Qq+6/GvUdFFLqp8nS2bV3PJ3Qb518Vwv7KW7NTYocHaRvOEwtwtkQ4hs28vO5ApI3WSyn6wOZSVLEGOzPjjMwluR8BspIvKzBUzVRzgHI9aQ21tE4fDGUrbgha0aRDpfO9DPNVO4IKRuwbjO50rv2/e1NeFnZQojhtc=
+	t=1783344853; cv=none; b=ckKCKw2+terqQxBIDHw0Ei/Fi4fMND074naXHI83GQ3zKcvwgk565gZkuOinUe625IkD6Dgc2XCsPv2E9tgRuUPaxT+JOjiscLwzWU95qNNQ2ow0u0ZugSSMWCt14UOuxq21nXRtKQjiCs2eh7fHT9lIZH3xQ91g6wRxpHay2z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783344673; c=relaxed/simple;
-	bh=7x9awA5nmoyx1UqwnEAd0FflOuYZ1NXGJFmepI2KkUs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q0L6MTR4m82wvRs3jmzTbGohxxL+8QLuz4DQYhKVOxli2Pbt02OMr+Y95Xkm7bAjdgCsvGwbEwD5zGrSgCzICrfQGcKF6JoycWRqiyeIE1zc9tdC4xoOGcq9M5T0Hq9NKXbjB57dihyKLis/BZrhXpPml9udmFRvvSJdBQ9iS/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=dOJKes6/; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=UF+TIdiw; arc=none smtp.client-ip=202.12.124.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	s=arc-20240116; t=1783344853; c=relaxed/simple;
+	bh=dOZOfz4GEcL94TAWHHP3lq/FSUgOnvQBVmqjHjw/D7U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nVn3e7g+jLMUXU29Skqmp0MSVFX2o0HHSB0P3UerHa5iwVQkzYwEKw8p7dhfw3lFF1xnHS65ybbXmkF45Jv46U2Fo5rhVlUu7PXKL7uOWQZNuhmmqRtVmATe0hVOGJ4nQJQVXqUa1sCBFBGn4grZHxtFDIPrShemk/53jj3bdMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YxSC6EbQ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=iRnSB55V; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="dOJKes6/";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="UF+TIdiw"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 553B87A0084;
-	Mon,  6 Jul 2026 09:31:09 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Mon, 06 Jul 2026 09:31:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1783344669; x=
-	1783431069; bh=DFUGFQyQzVPK09g2DuqR4kS0HKfrvSeKc/J6SUbSCZM=; b=d
-	OJKes6/uCU7WGHG0Ngj3ZtwdbZuAoyUtO6GmM4b1pXMsQ5mfQ03C5q44GkT6Synr
-	3Ax3znTFT0w/T1bc28rt9O+0/lJrozTxVpU2EYhEpimf6Kb+oVibbq9mroePku5V
-	w8vXNj2YOnvrMEXVXrEB1kNiaWSTRcJIPUdxHU+v0LNfVacolFdlsWOZKkmxhBHn
-	qORL1NxGhDAsdWPl9NA3gkfiTwBrwQxsVzcPF4bpD+hfDMJ+Resy8fXVYpfCrgm2
-	2YzwQMuJ51JSRtz8ep3j2ATq0BgZ0UFocG2bfJQFQ1hlEuMfBIHfctmKrGZ8ibKx
-	4sEeIjMZz1QfYDC8NQJPw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1783344669; x=1783431069; bh=DFUGFQyQzVPK09g2DuqR4kS0HKfrvSeKc/J
-	6SUbSCZM=; b=UF+TIdiw31W9QOHNCeIqqZzECs+quEagkAirzVlEkULRUpvOjJy
-	WzzJUV/5lFLfrTuSadYFMaCxj7WQ30RP63b0anxGFUoS05nzAiLWsofFEurBC38Q
-	lvrXMqE2Jxzgmgcz3MQlgtUr6Gw+870SWrWleormz7Em2Fi8l9G2nFir4B/Rjf19
-	acZtWgiNDNSsEHjmIcsCWKjXPI/HVVnO0jaiguGwGM/i7qR462Y1Q6rVe4QPRRKA
-	JRRRIg9gQ0UoyyxbaLwELURwWiIBFvDreB6OD7GlOTlTc363oiAINltRkupD2YvG
-	fRtdZlkEIuYzrpGgUouE0Sxr/EXFf1wVHww==
-X-ME-Sender: <xms:HK5LatxvxsNO4CRyVM11tMJIMFJRmLJazsFhdTh41iyPOWedtjQMzw>
-    <xme:HK5Latv-bpxCNMvitKc8eGwAG8-RMJcY4KCJoyZo7gLVkJnNljVA0GybW5zKGvaUO
-    _ZWj5ieNv9yyB7j5q8XyUwc5YRNqBwKIRmzL_TRu-VjDYATro1aHlQ>
-X-ME-Received: <xmr:HK5LaoBBJvlJPA5mjEV4RPVEPnPseTnrgp285oGxYRiJTsR0wIEoBu00o1Q>
-X-ME-Proxy-Cause: dmFkZTFD7wJ3IvjMz1MIxwtJ6Wnrm2HM6x/4TCwRPWChgA+dgF6zRTZ95J23b4iSQHLSGM
-    WwBHaXUIeiaOTXXzS1mVPLK1lj7Gtw//28L+z+hap+rJbT+kuxH0zTWrHUWq33UqAY7Dw1
-    MAqea8gDL1DMqYf5gpipWAWnW3aqydoNu2Eg2VGpmLIOWo1OaUKEh6h1hTJOIseya2JDTQ
-    U0IzsR5vVlg9AtCI/n2i3V9Bdu+Djd2RStBrEY4qu0hrQZgGw2QYAZQutJv1NmS9KICom4
-    9ch+GMNCsGMsDCLPIBlTdBtjTS5m2FOv40caTkNObC9g3f6FadUD+ZuSJ+9sO6jknmVDGK
-    5+6ddZFQ6jUCpfZyu+03ySDjE4OjpyQV9D7e8PyqcsPX8C1uvDtX1m8Adxll32w7psjdGv
-    YlOCfwzlvGQT+9jTyild7bLeH1fl7lTI4zD5NzHQWR9im+7RivF918oDp5JUfJrww2HMdq
-    /ZvST1/0qbsY9vilB0iqkEksndN4O7KwuowXaJQNsPJXatLH9yGqa8ObK6PsJSUNKQcUbJ
-    TESbf8SlP0KXmCFJg+5MNG47MPuqvGTZQFzdEtyLDdiJSA+5h+T5Fn/qo/oAjbuwd2dzlj
-    LZrOTpJgoBukGwLVlzl80en+rX4uznz2sQQq8jm3f8Y7a55cPC4yPWNaU0mQ
-X-ME-Proxy: <xmx:HK5LanHK7k1Q5FPku9uzTd8tkovMuAe9v6Amb7EbV1KjeazkQMgYqA>
-    <xmx:HK5LagDxX8oVPgWKSDEHzx5Ds4GXENiQLciT04OpkKNHkBLRHZMv2g>
-    <xmx:HK5Lalme1Llgur9qLk4Xb3lHWdikjIQZ8P-H8dGBboMAW6FOBb_Veg>
-    <xmx:HK5LauM59amSlS0KEh7hABM8BeQH7KVtKYbxVwJvl6-mOB6CkSP8iQ>
-    <xmx:Ha5LalNUBIHgb0rJK6bQwaW-7DlTB2x5SUsokqcwxcrTkpQsifIFRaNS>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 6 Jul 2026 09:31:08 -0400 (EDT)
-Date: Mon, 6 Jul 2026 15:31:06 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Daehyeon Ko <4ncienth@gmail.com>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net] macsec: don't read an unset MAC header in
- macsec_encrypt()
-Message-ID: <akuuGhf4aR7V33eO@krikkit>
-References: <20260703083634.2035145-1-4ncienth@gmail.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YxSC6EbQ";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="iRnSB55V"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783344850;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3IUhPhmdKFY/hvP+RYH3Pc2WHx3JLJjsr6cul6j9Vdw=;
+	b=YxSC6EbQRyassKLh4zE3VIKFri+ZHEXE43B1tHD4Gc0/FH14gZOsUmi42cSPBJtyk7z35l
+	QXRFcto8ZzOVQ8kpJfUKkAe0m47ZkGIiKBZjxwy/cnkDymS0+sJhMQT4T9lyvFj83kmA9/
+	zWBBX7CGhPVTsr9Weo9651PcGP8efeY=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-458-EvBcW1vlNBO4npFjI_9vMA-1; Mon, 06 Jul 2026 09:34:09 -0400
+X-MC-Unique: EvBcW1vlNBO4npFjI_9vMA-1
+X-Mimecast-MFC-AGG-ID: EvBcW1vlNBO4npFjI_9vMA_1783344848
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-473de38dcfaso1741847f8f.0
+        for <netdev@vger.kernel.org>; Mon, 06 Jul 2026 06:34:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1783344848; x=1783949648; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3IUhPhmdKFY/hvP+RYH3Pc2WHx3JLJjsr6cul6j9Vdw=;
+        b=iRnSB55VG35RyGt1WJPF9DrYaAn9a+ZrDlywdWEYetUbvRPf5om0PqyEi76GvwQ1uV
+         PFxKQep1jJ0KifQQX8X/AkofU4UxTcwj8bK1TviuV1SId3JVDG7oYUZAjNhmFwBTmQs/
+         Xw5N2Dxv/jixEPQUnKO0z8eucI9s3i6Nr1QQLX6uS3jCQq+YMGXnmlGZeMn0IC3Ip8Ib
+         0d2NcRjUl1lOPiAdaJuqfe972aomzW9S7x4Qe4fF6BKMzkJhUbkOAIyQKtKfQwcjQ5wM
+         64y6cA+I7Hf+C3YTQlo9n2/oXyeTdxEpjGFLTITY+e8BTqSevHK+KIlG20yMseHL+T5L
+         QsPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783344848; x=1783949648;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3IUhPhmdKFY/hvP+RYH3Pc2WHx3JLJjsr6cul6j9Vdw=;
+        b=gdV1zuEFfthNmcykSUSBACark+OvMs6qVYDQVQzGMkDIZwAsiEmT1GsdrAV7ioDJXs
+         cKllXBqfh40Nir4oy/nN9BSgB99EWiDHsp28fjZdj5ymrGaO5rhwJBN4hnyaZV/OwOOu
+         az4eeTem4lFYVwU/Cf4245WH32zMvJuSDe0Ch959CX5GOw30/T6gYPbApVOv1hi4+Trq
+         VdXpjAEdd4Mctg+tKn3jd0nMvMspsjAozaGWFO1glpqPDkfN3XUkLXZl61cicVJsRy9I
+         dnHBX3Eu6/YKklhe3QQflpwWAIfDhavMdb+S9InnbqLPr4fBDCfa35aY7O04psD7w3q4
+         j0Qw==
+X-Forwarded-Encrypted: i=1; AHgh+RrQMGUiqDQ04BTl4+zhHoGvSF0V8SjGD0/WgX2qIuFrLYhhV5sJnh/qc665x8epIAyUDkjddzY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyuAgm/seQE30UL7TrcX5x1Ah9iqlOVeAC8LzCZB8KEO7C20OaC
+	A9hlQdDhzHrg3qYxh3+asnHd1AKHGc9qHQ0qqQaAgfKLjywPpfG+JFL0XikUn4QP85w7KuSXmxm
+	FPTPlBp4E9exOKnwFepWTQnt508FF2bC2k/zuYIp7RxxpGOUVS0sVrVSdmQ==
+X-Gm-Gg: AfdE7cnxewaAjR7j+/J/y6Yti7CEwwuyCOpmrKO8YFqahn6mkeniY3IHruKPmDVR02F
+	3UfiDnW19uzKkIgUUk+KDyAJ0Zj1Q6OXdCRU98LCoGhMbdtEDysuMdFj8taSPPmFQms/ND7YfSr
+	X6/5xX+IWioy/FVeq5sFAkZ+WSBDOXG+F8hzRHQ/5uFxp7a+iftz0iOwV7SN5aGhlACFMrBVatz
+	r/10KERu1pLffsSlaW982E3rh6Oj2b/Win43vPVEWqpiEnD+fdscf2UaxPxonL2LEPEVxK6C6a2
+	QCvQOS1+nlT2lbcY8YKRMs9FrzUkbawd8d8ypaXTY5N4aQQ/mKLqyBOWLPTodeDE2nDqObf2sru
+	plyyueR9gFobrScGZRiLOlIKgwP4xHCmPdSw4nSNSs0ZO9FxvcwYOdn1CywGKTIPE8U8BmN4mfF
+	CK1YL0KIYkvMO/
+X-Received: by 2002:a05:600c:6085:b0:493:bc97:916b with SMTP id 5b1f17b1804b1-493df0929f2mr5699535e9.26.1783344847700;
+        Mon, 06 Jul 2026 06:34:07 -0700 (PDT)
+X-Received: by 2002:a05:600c:6085:b0:493:bc97:916b with SMTP id 5b1f17b1804b1-493df0929f2mr5698905e9.26.1783344847212;
+        Mon, 06 Jul 2026 06:34:07 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:5521:6b10:58fd:68f:7756:389d? ([2a0d:3344:5521:6b10:58fd:68f:7756:389d])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493ccd9d607sm357583515e9.2.2026.07.06.06.34.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 06 Jul 2026 06:34:06 -0700 (PDT)
+Message-ID: <b95dda96-ee50-449c-9d23-3de490d3ab1f@redhat.com>
+Date: Mon, 6 Jul 2026 15:34:04 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260703083634.2035145-1-4ncienth@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v9 6/6] riscv: dts: eswin:
+ eic7700-hifive-premier-p550: enable Ethernet controller
+To: Conor Dooley <conor@kernel.org>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ ningyu@eswincomputing.com, linmin@eswincomputing.com,
+ alexandre.torgue@foss.st.com, mcoquelin.stm32@gmail.com,
+ pinkesh.vaghela@einfochips.com, pritesh.patel@einfochips.com,
+ maxime.chevallier@bootlin.com, linux-arm-kernel@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com, linux-riscv@lists.infradead.org,
+ palmer@dabbelt.com, pjw@kernel.org, weishangjuan@eswincomputing.com,
+ horms@kernel.org, alex@ghiti.fr, lee@kernel.org, wens@kernel.org,
+ lizhi2@eswincomputing.com, devicetree@vger.kernel.org,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, netdev@vger.kernel.org, rmk+kernel@armlinux.org.uk,
+ aou@eecs.berkeley.edu, linux-kernel@vger.kernel.org
+References: <20260630063123.1118-1-lizhi2@eswincomputing.com>
+ <20260630063445.1226-1-lizhi2@eswincomputing.com>
+ <8e5eb97d-dfaf-47a1-8572-b3252a2c7ed3@redhat.com>
+ <20260706-confess-dagger-e60b5fad57e8@spud>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20260706-confess-dagger-e60b5fad57e8@spud>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-2026-07-03, 17:36:33 +0900, Daehyeon Ko wrote:
-> macsec_encrypt() reads the Ethernet header via eth_hdr(skb)
-> (skb->head + skb->mac_header) to memmove() the 12 source/destination MAC
-> bytes forward and make room for the SecTAG.
+On 7/6/26 3:21 PM, Conor Dooley wrote:
+> On Mon, Jul 06, 2026 at 03:09:37PM +0200, Paolo Abeni wrote:
+>> On 6/30/26 8:34 AM, lizhi2@eswincomputing.com wrote:
+>>> From: Zhi Li <lizhi2@eswincomputing.com>
+>>>
+>>> Enable the on-board Gigabit Ethernet controller on the
+>>> HiFive Premier P550 development board.
+>>>
+>>> This patch is included only to provide the DTS context for reviewing the
+>>> binding and driver changes in this series.
+>>>
+>>> The upstream DTS series will be submitted separately after the binding
+>>> and driver changes are finalized.
+>>>
+>>> Signed-off-by: Zhi Li <lizhi2@eswincomputing.com>
+>>
+>> @Rob, Krzysztof, Conor: I see this patch is not listed in the devicetree
+>> PW, but I think it needs explicit acks from relevant SMEs. Could you
+>> please have a look?
 > 
-> On the AF_PACKET SOCK_RAW + PACKET_QDISC_BYPASS transmit path the skb
-> reaches the macsec ndo_start_xmit() with the MAC header unset, so
-> eth_hdr(skb) resolves to skb->head + (u16)~0 and the read is out of
-> bounds: a 12-byte heap over-read that is also emitted on the wire as the
-> frame's outer source/destination MAC. KASAN reports a slab-out-of-bounds
-> read in macsec_start_xmit() on 6.0; on current mainline a CONFIG_DEBUG_NET
-> build flags it as an unset mac header in skb_mac_header().
+> We do not typical provide tags from dts patches, but that's irrelevant
+> for you, because this (and effectively all other dts) patch(es) should
+> not go through the net tree to begin with.
+> Instead, the platform maintainers should review and/or apply it.
 > 
-> On the TX path the L2 header is at skb->data, so use skb_eth_hdr(), added
-> by commit 96cc4b69581d ("macvlan: do not assume mac_header is set in
-> macvlan_broadcast()") for exactly this purpose.
-> 
-> Fixes: c09440f7dcb3 ("macsec: introduce IEEE 802.1AE driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
-> ---
->  drivers/net/macsec.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Additionally, it seems the contributor's commit message suggests
+> that they didn't intend this patch to be applied at all?
 
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Thanks for the head-up.
 
--- 
-Sabrina
+I noticed a bit too late that part of the discussion about this patch
+did not land on the netdev ML; a new revision is expected.
+
+/P
+
