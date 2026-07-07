@@ -1,64 +1,262 @@
-Received: from mail-106120.protonmail.ch (mail-106120.protonmail.ch [79.135.106.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96DF2434E5A
-	for <netdev@vger.kernel.org>; Tue,  7 Jul 2026 16:34:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.120
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783442091; cv=none; b=WYjBIJ58PcH8qp1x9kHnWj1KpdeTaJjhtQVzMw4l3cexmrr7jzjggDPhvZyH0g3iESTkv3s0PGymNMeWN1unam2zlM5OU6VmoK66P7/03IbWub6dFXqZb+U48ZEQsGtSw2cI3P1mLsN/90/hM72NtK/cF5Qck/jvJSg6LZ9BJrI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783442091; c=relaxed/simple;
-	bh=Mzs8SuveZMo5RAd1ZZoYdnYkNRzqIAba+zrREv7yGOI=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EX5UF9PbZGCoVgLBisHlke/Wps3wL9SajOxStgsi+7WMmy5p4sPjkCpN7Q6Xtyi5s/Y0g/BfmMLwO4DHbnwjl677atQkoS/HdnmQcmKMdvwj/VYwZTXZ7tUJ1wQlNYvW8nXdhu4NniDwGBIbE4O+y45hJLnJCzn20yA3u2YtDJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=I0uTCUbL; arc=none smtp.client-ip=79.135.106.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76A55435A82
+	for <netdev@vger.kernel.org>; Tue,  7 Jul 2026 16:35:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783442128; cv=pass; b=ohyS7Q2lTSdIj56aFWVIW9awu7K6MA/4L2u3spFISFkmyewmOaWz78IomA3OjMYB0yy8dI7NtPa9Y2TTpK6IsztUARBDY/4VA+XncYx81KSXu9jZdvxfQujH92sKtEpfGF2Ynn0LgVDbmXqoc2KqNaTlk4xFn1ptmOv08vaQK1w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783442128; c=relaxed/simple;
+	bh=47FgWmL0/sJ3EBkjYH8n2XCB0eNqC8ghlh81msiLbSQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jYmFeYaLfvGerq13tCdJVCY26SSHVLnLiirV0O87AjDPhG0PcuZ3FLrLjV/O52W7b59trHpCUcjWs/QYI3DGLZevOdAW29VhCfn1u6g5OpumtFUaRKjnThbaVVi4yIjkY4yj5xaSJftWDlgXXBk1r+dG5Tqdz3wA7+7u8gYxrrs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sa1JGVJV; arc=pass smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="I0uTCUbL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1783442085; x=1783701285;
-	bh=e1mEXN3Io1+cxS8ymD1K/F8t95agWjX3EwyhwfhzKIw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=I0uTCUbLfIf/k8Yyl/dFVy5xj2obGWjaPB/uhDp6vua4d5flxTzHvn9BfShSwx7AS
-	 +dQFwnNXhHUyyBxh0Yvpqv4KFGwfHc4UNBBxNv/Qex4EPkflfhmp780L2LoozdXQOF
-	 lrx9TNBvWZqPnaO4et9/vIfpSclIcb9jhXIeWj0v8ZeKRASeU7J1vZRvvDr1wMKmld
-	 HO1ZC+8UMkOiRo4+b4ALvgfi4c9Hg3wA2bMPeMTdUvBw6DtkWmOnKXTZOh3OcINNHx
-	 0csB6HJilTIN9jVNGLS3eXMG5qLFRROAZl161JHmgmy7cLGcB1eiW++4UFGSjbW8jC
-	 H4bNY9lVExxGg==
-Date: Tue, 07 Jul 2026 16:34:40 +0000
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Alex Elder <elder@kernel.org>
-From: Esteban Urrutia <esteuwu@proton.me>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH 1/3] arm64: dts: qcom: sm8450: Add IPA support
-Message-ID: <3b7d997c-ecea-46d1-9e5a-effad3486676@proton.me>
-In-Reply-To: <4afa8797-1cb1-4cf1-bdbd-9cb5725377b8@oss.qualcomm.com>
-References: <20260622-sm8450-ipa-v1-0-532f0299f96e@proton.me> <20260622-sm8450-ipa-v1-1-532f0299f96e@proton.me> <806046b2-20ed-437e-a7e6-b3c0699f5a2d@oss.qualcomm.com> <b1f872f5-66cc-45fc-ad42-c308f8970691@proton.me> <66330ed6-826a-431e-9e8e-f2998af55168@oss.qualcomm.com> <1e151b08-5d3b-4b75-8d71-635617868285@proton.me> <4afa8797-1cb1-4cf1-bdbd-9cb5725377b8@oss.qualcomm.com>
-Feedback-ID: 147889766:user:proton
-X-Pm-Message-ID: 2c3f07974c2d266b2db99000671eb75cfc5fb6d8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sa1JGVJV"
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c15b9def622so64373766b.2
+        for <netdev@vger.kernel.org>; Tue, 07 Jul 2026 09:35:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783442125; cv=none;
+        d=google.com; s=arc-20260327;
+        b=hOkPArodNxXTneCRmHB53Gczl/KOFBPfFOJrTWCepN7KKiuK16qqVMJrz64CA+M9j6
+         n4bIQGn/O6QXxB0umKBPGH82ilzWoZ87A0OZvA1nLE3n8MW69EkC0E359xzip2sQRgA+
+         rUhSt/KBylp5XbLP+ENn7we1sMjcIycQQlBeIGs7a5NF2EPjzJ1JO4w3BZcjoY/WkE5I
+         0Hd20TIX6d7vPEJUOrs/3o5W3Ebzk67k/7564KQ/4kf9B5Mfnxg7qkiw1tmRYQGMHe8P
+         bdUyTl7uyWhErzdnA8RBvIbi8V3nI0IBsFapGlqMm8nAsh7/xi8sgFki3HGySlrsbNbu
+         9FtA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=eX0leblPThsG/mxI+RmYykiu1iq7KLEwPDU510RCSpY=;
+        fh=KHpAAkit/vOqWvh/AvhZGLFbe2WX6eQ0U/Q0ZBANmeQ=;
+        b=oWXBzG2UBm+1RzD3vUZ+C9fnGk1g2Pu1rrp5q2HZjq5mg47SfKUEmJD1EHJFQnlhxg
+         IcL7o0mEnbpqobUJpS4i2Zw+u5dkU27dLoH3LZkHpglb5UzIMY8Sg/EzKQdyr341AX2E
+         o2TmjnLcpcmtbb9O7BTwz32ojJEB8XM5hCyXKRXNQMDI68emv7qsd+OXzI4MzwmWyGbe
+         60L4cebZZLl0p0ZWnIDRUjVFjBM2kt0X2DYlexFXZbBOMTXTa625a161TREJHc486+Vl
+         84WLouTD33OcZtN9QZMf5NgL0seaMQdcXJsJtyVul6W3HsJjqam56lqQTBl6JS2VTDT0
+         wqig==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783442125; x=1784046925; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=eX0leblPThsG/mxI+RmYykiu1iq7KLEwPDU510RCSpY=;
+        b=sa1JGVJV2QP5QAOcJ3q63TXKUoiGsUUuiXy12zyBYOoQjH+XmIuTgdmpIuSBGMeg0I
+         ls/1/eULCoNkQjh8tplPsQRf1RVkc1HaC2ebgRAecxzxR6/fMnw3e/m19mmCUXLnOY6I
+         t37rIKzdoUifcElq8tYmZwwo7fstNCnvJnZYddqEKdeKl0MeUv0tkhWdlb/A55I+fgwk
+         gDOeE+XFVhxrfiBaKkdJ5pJs3s2MUNZa1qmn9S1nTFpQNs+5nTUwOSR58g7hX4YqycHu
+         B/Xb+GznJW7LmqlEDEdJnOkkX4X3mUjbFz10xhmVTmD3wp0ilAlwmY14uytibBb/uG6O
+         qQzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783442125; x=1784046925;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=eX0leblPThsG/mxI+RmYykiu1iq7KLEwPDU510RCSpY=;
+        b=i6e6THxLcOpJqe23wWjNWrlX/OgWXoh7Y68MVpauAwPsFycLmuZ7HjtbzT0dl+3GuD
+         ThKM6KUKeFPfW9yXBJoGk4L54rNmZaSL67KVTb6OCOJmJv0bjO+1WFKaBBrw4saiD/Ek
+         U4baJIQKXe+LZUuhNl/YvfOENs8l+09N9T+ALHqI/+C/VIsnoaGbTEQDsfc2E8GtvCkm
+         CseUx4DOxCGKS1gGnNy6rPHT96vr0cGwZR+WEOlh0zDxFXiQIH/1g8DUSnSxW6HGEZtp
+         9ofmzHjEYhBxHt2pDY9fFNIdaqCXs4YfZXQIzu5kbHoCR0UVKJ93R9Ngetwg31x/N7fB
+         ti2w==
+X-Forwarded-Encrypted: i=1; AHgh+RoVpsMrYBNCVLmgw1dKDQqWwo3hOvpAjYZ9tp7QsBaPNX3mFVizW/dVnP4OQnHuWMMzUzcehIs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyh0dcZv9sX6WU7/vzay+8hirfc0+MqajwFS+ZfT6eARNYiaREB
+	SGD4hs/TlFvRlPa2UPYDKmYDSEcqhwwq+L/xC/FMmTaZHD8SYrpz+ePod56oNsnwQQA6gQUunKo
+	rWOT8wZkoHZGf+HtrXfeiP7lo9k7GyWQ=
+X-Gm-Gg: AfdE7clqCXtUHNMbY4u+5S2DiUdOWj8B/vesHUvtnYfNqrb8eYfHGeu1opTmGXYcAXo
+	PofIc6zXBkbMgqaSnI2jHpbZVMcrXdMezsIKgeC+WZ0xfbBc4Ey0zWqBiia5WUW4Up6DCzVOZ7a
+	Qq+Zw5AO3ZCnTg4YqPXVRavqEQtOlMD4fqvW+dqdlOun1AvkJPXSAjd6lL/fvZshyohHvH5jidw
+	epweWYxpk4R5JEgUWrFDJ9O1VY8WQJsmHwBxCCLg9xQ7YtQ/qoho5GZaVBTliTQuuMwHoe4iwtR
+	lnvUHGG5ullLRvnIXhYmkF9yPO80
+X-Received: by 2002:a17:906:1754:b0:c12:9fb7:3e68 with SMTP id
+ a640c23a62f3a-c15a67bd5ecmr244859066b.38.1783442124492; Tue, 07 Jul 2026
+ 09:35:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20260706134716.3879-2-bestswngs@gmail.com> <GV1P189MB1988C48DB0AA286E9DF62789C6F02@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
+In-Reply-To: <GV1P189MB1988C48DB0AA286E9DF62789C6F02@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
+From: Weiming Shi <bestswngs@gmail.com>
+Date: Wed, 8 Jul 2026 00:34:47 +0800
+X-Gm-Features: AVVi8CdComON0MR6xWcmE3xdXWeZZPUdcAYQEQ0bPmJDHOFxhbmn34eaqbK-8ho
+Message-ID: <CANgPUi2Keetyi7Vs1+c4QBhLq33RG-=sZBJmJyJTeZDTbLdt-w@mail.gmail.com>
+Subject: Re: [PATCH net] tipc: serialize udp bearer replicast list updates
+To: Tung Quang Nguyen <tung.quang.nguyen@est.tech>
+Cc: Jon Maloy <jmaloy@redhat.com>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	"tipc-discussion@lists.sourceforge.net" <tipc-discussion@lists.sourceforge.net>, Xiang Mei <xmei5@asu.edu>, 
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 7/7/26 6:35 AM, Konrad Dybcio wrote:
-> Yes
+Tung Quang Nguyen <tung.quang.nguyen@est.tech> =E4=BA=8E2026=E5=B9=B47=E6=
+=9C=887=E6=97=A5=E5=91=A8=E4=BA=8C 21:21=E5=86=99=E9=81=93=EF=BC=9A
+>
+> >Subject: [PATCH net] tipc: serialize udp bearer replicast list updates
+> >
+> >tipc_udp_rcast_add() and cleanup_bearer() both update ub->rcast.list wit=
+h
+> >list_add_rcu() / list_del_rcu(), but nothing serializes them. The add ru=
+ns from
+> >the encap receive softirq (via tipc_udp_rcast_disc()) without rtnl_lock(=
+), so it
+> >can race the cleanup delete and corrupt the
+> >list:
+> >
+> > list_del corruption. prev->next should be ffff8880298d7ab8,
+> >   but was ffff88802449ad38. (prev=3Dffff888027e3ec98)  kernel BUG at
+> >lib/list_debug.c:62!
+> > RIP: __list_del_entry_valid_or_report+0x17a/0x200
+> > Workqueue: events cleanup_bearer
+> > Call Trace:
+> >  cleanup_bearer (net/tipc/udp_media.c:811)
+> >  process_one_work (kernel/workqueue.c:3302)
+> >  worker_thread (kernel/workqueue.c:3466)
+> >
+> >The bearer can be enabled from an unprivileged user namespace, as the
+> >TIPCv2 generic-netlink ops carry no GENL_ADMIN_PERM.
+> >
+> >Add a spinlock and take it around both list updates. Re-check for the pe=
+er
+> >under the lock in the add path so the check-then-add in
+> >tipc_udp_rcast_disc() cannot insert a duplicate.
+> >
+> >Fixes: ef20cd4dd163 ("tipc: introduce UDP replicast")
+> >Reported-by: Xiang Mei <xmei5@asu.edu>
+> >Assisted-by: Claude:claude-opus-4-8
+> >Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+> >---
+> > net/tipc/udp_media.c | 19 ++++++++++++++++++-
+> > 1 file changed, 18 insertions(+), 1 deletion(-)
+> >
+> >diff --git a/net/tipc/udp_media.c b/net/tipc/udp_media.c index
+> >62ae7f5b5840..601174297a16 100644
+> >--- a/net/tipc/udp_media.c
+> >+++ b/net/tipc/udp_media.c
+> >@@ -94,6 +94,7 @@ struct udp_replicast {
+> >  * @ifindex:  local address scope
+> >  * @work:     used to schedule deferred work on a bearer
+> >  * @rcast:    associated udp_replicast container
+> >+ * @rcast_lock:       serializes updates to @rcast.list
+> >  */
+> > struct udp_bearer {
+> >       struct tipc_bearer __rcu *bearer;
+> >@@ -101,6 +102,7 @@ struct udp_bearer {
+> >       u32 ifindex;
+> >       struct work_struct work;
+> >       struct udp_replicast rcast;
+> >+      spinlock_t rcast_lock; /* protects rcast.list */
+> > };
+> >
+> > static int tipc_udp_is_mcast_addr(struct udp_media_addr *addr) @@ -301,=
+7
+> >+303,7 @@ static bool tipc_udp_is_known_peer(struct tipc_bearer *b,  sta=
+tic
+> >int tipc_udp_rcast_add(struct tipc_bearer *b,
+> >                             struct udp_media_addr *addr)
+> > {
+> >-      struct udp_replicast *rcast;
+> >+      struct udp_replicast *rcast, *tmp;
+> >       struct udp_bearer *ub;
+> >
+> >       ub =3D rcu_dereference_rtnl(b->media_ptr);
+> >@@ -319,6 +321,17 @@ static int tipc_udp_rcast_add(struct tipc_bearer *b=
+,
+> >
+> >       memcpy(&rcast->addr, addr, sizeof(struct udp_media_addr));
+> >
+> >+      /* tipc_udp_rcast_disc() adds from softirq without rtnl_lock(). *=
+/
+>
+> Remove above comment because it is vague. Caller of tipc_udp_rcv() alread=
+y holds rcu_read_lock().
+>
+> >+      spin_lock_bh(&ub->rcast_lock);
+>
+> Move 'spin_lock_bh(&ub->rcast_lock)' to above 'list_add_rcu(&rcast->list,=
+ &ub->rcast.list);' because only 'ub->rcast.list' needs protection.
+>
+> >+      list_for_each_entry(tmp, &ub->rcast.list, list) {
+> >+              if (!memcmp(&tmp->addr, addr, sizeof(struct
+> >udp_media_addr))) {
+> >+                      spin_unlock_bh(&ub->rcast_lock);
+> >+                      dst_cache_destroy(&rcast->dst_cache);
+> >+                      kfree(rcast);
+> >+                      return 0;
+> >+              }
+> >+      }
+>
+> This is wrong because the code in the loop is never executed. tipc_udp_is=
+_known_peer() already verifies address duplication.
+> Please remove above code and fix tipc_udp_is_known_peer() as below:
+>
+> static bool tipc_udp_is_known_peer(struct tipc_bearer *b,
+>                                    struct udp_media_addr *addr)
+>  {
+> -       struct udp_replicast *rcast, *tmp;
+> +       struct udp_replicast *rcast;
+>         struct udp_bearer *ub;
+>
+>         ub =3D rcu_dereference_rtnl(b->media_ptr);
+> @@ -292,7 +292,7 @@ static bool tipc_udp_is_known_peer(struct tipc_bearer=
+ *b,
+>                 return false;
+>         }
+>
+> -       list_for_each_entry_safe(rcast, tmp, &ub->rcast.list, list) {
+> +       list_for_each_entry_rcu(rcast, &ub->rcast.list, list) {
+>                 if (!memcmp(&rcast->addr, addr, sizeof(struct udp_media_a=
+ddr)))
+>                         return true;
+>         }
+>
+> >+
+> >       if (ntohs(addr->proto) =3D=3D ETH_P_IP)
+> >               pr_info("New replicast peer: %pI4\n", &rcast->addr.ipv4);=
+  #if
+> >IS_ENABLED(CONFIG_IPV6) @@ -327,6 +340,7 @@ static int
+> >tipc_udp_rcast_add(struct tipc_bearer *b,  #endif
+> >       b->bcast_addr.broadcast =3D TIPC_REPLICAST_SUPPORT;
+> >       list_add_rcu(&rcast->list, &ub->rcast.list);
+> >+      spin_unlock_bh(&ub->rcast_lock);
+> >       return 0;
+> > }
+> >
+> >@@ -679,6 +693,7 @@ static int tipc_udp_enable(struct net *net, struct
+> >tipc_bearer *b,
+> >               return -ENOMEM;
+> >
+> >       INIT_LIST_HEAD(&ub->rcast.list);
+> >+      spin_lock_init(&ub->rcast_lock);
+> >
+> >       if (!attrs[TIPC_NLA_BEARER_UDP_OPTS])
+> >               goto err;
+> >@@ -819,10 +834,12 @@ static void cleanup_bearer(struct work_struct
+> >*work)
+> >       struct udp_replicast *rcast, *tmp;
+> >       struct tipc_net *tn;
+> >
+> >+      spin_lock_bh(&ub->rcast_lock);
+> >       list_for_each_entry_safe(rcast, tmp, &ub->rcast.list, list) {
+> >               list_del_rcu(&rcast->list);
+> >               call_rcu_hurry(&rcast->rcu, rcast_free_rcu);
+> >       }
+> >+      spin_unlock_bh(&ub->rcast_lock);
+> >
+> >       tn =3D tipc_net(sock_net(ub->sk));
+> >
+> >--
+> >2.43.0
+> >
+>
 
-On SM8475 I get this warning though:
-
-[    9.551813] ipa 3f40000.ipa: limiting IPA memory size to 0x00005000
-
-Both SM8450 and SM8475 use the same IPA version, so that shouldn't be an
-issue.
-On SM8550 and SM8650 this area is set to 0x5000 as well.
-What should the proper solution be?
-
-Regards,
-Esteban
-
+Thank you for the review. I will look into your suggestions and send out v2=
+.
