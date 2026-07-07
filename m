@@ -1,148 +1,74 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077563E00B4
-	for <netdev@vger.kernel.org>; Tue,  7 Jul 2026 10:30:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEABD317177;
+	Tue,  7 Jul 2026 10:30:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783420217; cv=none; b=oEiK4P+Yzu9A4p3WMRHapUXtCDjdvW+e++KPsmBgPWaDACZP0bJTb/1JmE2nHyZ96BblktwrSKKjnHezbhalXiW0CUVm4yhgyJfCToux6ElKqcSxFeyNZXQsdsVtlQHLMarVl5c0IoPVAwSzMUynS00tzoMvgUG8bU8fE3ZuI4o=
+	t=1783420234; cv=none; b=qXAMr5gAoL8mW33skW6rKN0kLcK6tQYRMnEd3oHF97Q+wTe7m2CdYq/pl9SDSLRkxvQP5IZHDV1Cn/NQAhIvmhSbKOmP4InwG7lpNDm5PCG7se+XAwxzr4nN8iI13TSqvvQyGYJXPicEccdU8Cf6lJBsCTAUZV++IGfV9YDrp6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783420217; c=relaxed/simple;
-	bh=6z6CU6EQ+brZROdDnjSW/AgL95ryAiJb7RKNl3DSgo8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Yg4ZJn7/RlBeBsNma2Qsh1ZbhbnuGqZnMnWGY93ySzImhqCCySHT2U1KsSKuxuvdwOS8HcM10ZxX07nPxdmqh+tuhMhIsCKapJ79UgxyOrx0gbLE8T4FbZLlLFojBuSuwBE6M1KzfVFCCHRE4RWABbmfqbKWMhHjpdoiaOZAhtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bjbhaiuH; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=g7HwghTJ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1783420234; c=relaxed/simple;
+	bh=P1LPUyfTT6UNum5H1lPiHnGnvr9XA7zAn97Ggh5udtA=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=X70dvFV7CSDX59JrQfEkNYIaX+SOSHX8sc7zKwbQIXZ05NtbPJToKTLHwHDUXRKm5NMypJOe7/EZ4rBzFvKpmHLw8MVzxyoMXYAoHufM4cm0Spzu8zAT/yec9EnsN4SO/9LI4q1zB5bO80MjXrJuxkauEVX+ddRrrGnF78A2U+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fG7eHL4w; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bjbhaiuH";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="g7HwghTJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783420215;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zoSPVAeyfLAakHdkwoRkZKuwxGIMQEg6NmXCD0Y72LU=;
-	b=bjbhaiuHUp7lS5edjMbw0xDFz6MR85leQxmFE32mgnG1bG61EqiLJ0iv86+6MlP4OiKuCp
-	SpeJeKX8OiGzAiObXNWxp50qWJsDbziaILLLuPEoc21NklZDUw+3KiEuObVH8YZee8+an9
-	9NTs3dMsxuMvoaRTUMjSEvIYr6LqLkM=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-517-K_imPixtOEyMd8ZGbWj5tg-1; Tue, 07 Jul 2026 06:30:13 -0400
-X-MC-Unique: K_imPixtOEyMd8ZGbWj5tg-1
-X-Mimecast-MFC-AGG-ID: K_imPixtOEyMd8ZGbWj5tg_1783420213
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-4744b72f90bso2467362f8f.0
-        for <netdev@vger.kernel.org>; Tue, 07 Jul 2026 03:30:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1783420213; x=1784025013; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zoSPVAeyfLAakHdkwoRkZKuwxGIMQEg6NmXCD0Y72LU=;
-        b=g7HwghTJAqV3bRAiaWm45BKCoDtr+T1xD7v0YqsMEHt3iUjF5gj/++kax/nQkJP/ZK
-         giY5U5vtQVRS2awio7qCi8DOs10d7EGO9+x1JoFVg5TPY/4Lc6WItl40qHjyqhhk8xJt
-         lmm5E2APg7ts5FMqiYuP5SjbpMPs+RtmTAqBdf1XMeyX6DRhyXC10b9CTKGNNO2nWhLa
-         63cEjqLCxL/2xnwCaBtBHjqV2vqFBN6Ugiqrm8Dt0hG1MUm+nJAG+b0XlgMGN9Y5lny6
-         jBYRJ1OwMEtUfUQDtDRm7SL5Zl+XQS0Zain3/MuCwyrBbhL+NekLHW9hqdkmdq+Ufkly
-         NjBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783420213; x=1784025013;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zoSPVAeyfLAakHdkwoRkZKuwxGIMQEg6NmXCD0Y72LU=;
-        b=b3Sc5/krBkENfYGQCq2g8EmVM9x2mcHjrHKFdtM2uTCSEl/bvz7w6wJqX09kU2Vwgz
-         SmiRomxKLK7aULAbUAfYLpp+8Kap3CDTDzNxVk46PPVjOBfRmdQMezWhQx7Cs1Uvl2Qn
-         oNLDUM0p1da/WKO6hTyi+n23SoLFgItJZaBTtjKAhshKwAvuEgKsqq4ZAZytSJw0mLMG
-         51HHIn64lShOmZV86PWUu3fPbCXUA0f9wSAf3la0T8Yem3etfUb9SCzXqcE8dGtPRWsM
-         zWw49mhMg6AcMytjrLAQr2Sar+sx/L4BuISrTBj1ZA4zgTuWGk6V4FNnSG42i5R8X8s3
-         Sr0Q==
-X-Forwarded-Encrypted: i=1; AHgh+RoRf/cbPla23AoQhm3cFlaC0R1HC87FfFLZB+fLIkH0ColuJ+Mt9vqB1AwZcR7Bt2gHIozfCeo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCn3BmPdsV9c9jPqlx+YOkGMLMqeqhjZU7YDB+MzeNodxjlQCs
-	BCLE9S7wPluqripISupUUtCK4MlWtpDr/e84sWa1Qz9oPka1uy3fVEsfFeYZZqKlVGJR6Rqjns2
-	4jeKFAPtkne6JxgHCgAndUDDaPgaTbtqwrCTfdQLT2OGuntTprgaR8V63ZQ==
-X-Gm-Gg: AfdE7cliZv9qXjDrTwwzFjPm9nBiLC7K3kyYKZ553lK37oLIIH8sAsgDMYWLooJgqsa
-	9/HyUCQqoN4gWYnY8cpYZN7I/xNyynT32EzF1jm0MK6h37Rko8luZoc2y72AX9qXC4NKg4yrGXh
-	tUeF3xsIiaWEwbwOcut3absT++9DEuviJW0w1DZKgj3z/y7GeW4WpBX/paozV0lpoXyo0kxnksy
-	bPPyKOiq+a/E201PQuysRt71xXOV7E7Vm5Wt+AYZEl3M4cYVFDzmLGPNCIETQObGwVq77On4/HZ
-	6NKpkI5yGVgPoK1GuHMvbxkKQ6XjkIYzZ/4k/ceOuVgXrhEJV30yWV9YdttBBqTQqQCjoAxyRyl
-	LuUmaM5ry4onbDs6teHC4PPTEJvi16MO9O2vzyDAp40jyJ0U+t+4oXMIXmp8M8eNVGu2gw1W+Lb
-	ISINb96NUYdt/j
-X-Received: by 2002:a05:6000:604:b0:462:6aa1:4393 with SMTP id ffacd0b85a97d-47de668ef06mr4430905f8f.4.1783420212385;
-        Tue, 07 Jul 2026 03:30:12 -0700 (PDT)
-X-Received: by 2002:a05:6000:604:b0:462:6aa1:4393 with SMTP id ffacd0b85a97d-47de668ef06mr4430875f8f.4.1783420211781;
-        Tue, 07 Jul 2026 03:30:11 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:5521:6b10:58fd:68f:7756:389d? ([2a0d:3344:5521:6b10:58fd:68f:7756:389d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47a9de1e736sm35594909f8f.7.2026.07.07.03.30.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Jul 2026 03:30:11 -0700 (PDT)
-Message-ID: <71a1bacf-c54f-45b0-80df-7175261cf2ac@redhat.com>
-Date: Tue, 7 Jul 2026 12:30:09 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fG7eHL4w"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01ACB1F000E9;
+	Tue,  7 Jul 2026 10:30:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783420233;
+	bh=V27VjV4O2guipQj7TJBil7hD2n4t6eT/HIHVLroM7DI=;
+	h=Date:From:To:Cc:Subject;
+	b=fG7eHL4wb5Owayi0Cvoua3RnstPq3sZeo/FUyxWFjV/YgUgZZSakL0Nz9hbV61BAN
+	 NQwREMGsOFA5XXGvXXFKnmms+6lgk51XOsA9xtP7cS+kPzhjG+VhksHtxCaZRI+9HX
+	 XEC98Dt0afBO593we0EniHIDr24XJL2mpJYif5doMg6k1aU7HQPlAqaWm890JU0hcy
+	 aefQJdk29gFbSBzyNHmC8OboBt/CUgdYZDeh0aRYKtT2sN3maowMr+fdziSMfvFW10
+	 adb0Wpv4m7G7BQAqs1A87E2gC21GqWAhm2xJVzQWU1WXG8UBjlAo7xS321VBDv3yjT
+	 n7eTfSAxgwXOw==
+Date: Tue, 7 Jul 2026 11:30:29 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Daniel Borkmann <daniel@iogearbox.net>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>, bpf <bpf@vger.kernel.org>,
+	Networking <netdev@vger.kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-next@vger.kernel.org
+Subject: Missing signoff in the bpf-next tree
+Message-ID: <akzVRW-FyZ8HCDdx@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: ti: icssg-prueth: Fix link-local addresses being
- forwarded out of slave ports
-To: MD Danish Anwar <danishanwar@ti.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Simon Horman <horms@kernel.org>, Meghana Malladi <m-malladi@ti.com>
-Cc: linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260701112535.4027920-1-danishanwar@ti.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260701112535.4027920-1-danishanwar@ti.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="e8+9Np68LcNTiq9c"
+Content-Disposition: inline
 
-On 7/1/26 1:25 PM, MD Danish Anwar wrote:
-> Link-local multicast addresses (01:80:c2:00:00:0x) must only be
-> delivered to the host port (P0) and must not be forwarded out of
-> the physical slave ports. icssg_fdb_add_del() was programming these
-> addresses with P1/P2 membership bits set, causing the firmware to
-> forward them out of slave ports.
-> 
-> Clear P1/P2 membership and set only P0 membership when
-> is_link_local_ether_addr() returns true.
-> 
-> Fixes: 487f7323f39a ("net: ti: icssg-prueth: Add helper functions to configure FDB")
-> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
-> ---
->  drivers/net/ethernet/ti/icssg/icssg_config.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/ti/icssg/icssg_config.c b/drivers/net/ethernet/ti/icssg/icssg_config.c
-> index 3f8237c17d099..04a81402e3f3c 100644
-> --- a/drivers/net/ethernet/ti/icssg/icssg_config.c
-> +++ b/drivers/net/ethernet/ti/icssg/icssg_config.c
-> @@ -732,6 +732,16 @@ int icssg_fdb_add_del(struct prueth_emac *emac, const unsigned char *addr,
->  	u8 fid = vid;
->  	int ret;
->  
-> +	/* Link-local addresses (01:80:c2:00:00:0x) must only be delivered to
-> +	 * the host port (P0). Clear P1/P2 membership to prevent the firmware
-> +	 * from forwarding them out of the physical slave ports.
-> +	 */
-> +	if (is_link_local_ether_addr(addr)) {
-> +		fid_c2 |= ICSSG_FDB_ENTRY_P0_MEMBERSHIP;
-> +		fid_c2 &= ~(ICSSG_FDB_ENTRY_P1_MEMBERSHIP |
-> +			    ICSSG_FDB_ENTRY_P2_MEMBERSHIP);
-> +	}
 
-Sashiko gemeni mentioned it could be safer to reject entirely wrong masks:
+--e8+9Np68LcNTiq9c
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-https://sashiko.dev/#/patchset/20260701112535.4027920-1-danishanwar%40ti.com
+Commit
 
-It's not clear to me if the mentioned bad scenario is actually possibly,
-please have a look.
+  83a93e3b80bd3 ("selftests/bpf: libarena: Replace leftover st_ prefix with test_")
 
-/P
+is missing a Signed-off-by from its author
 
+--e8+9Np68LcNTiq9c
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmpM1UQACgkQJNaLcl1U
+h9ALQgf/foItRvZA/3Ri6vG1+O/n1a71wTFxutjBdm8YxgWjCXWDi2u5MTlKxRh9
+4h5nslBeD2UQ4gHy0gM0MFHbZR7lQ3UyERXVRiXacLJyXjBhC4BxpY4BLeAqy7+f
+UbC4HQ0kQS+ylxKLEILBFdSwrUvWK74f7mEyeYiBjL+6SFofqwBxuwaV6TZsAfEd
+xjlRCDd/7TM9v8GKaapz8besB7g5VkFeIGgJPfCnPMDbf3p9EG4yoCH7FtOeF8Ia
+jKuNxiPZ8M31lIyWb29HMvQFpOxsYmAuVr5xY15mXg9odIsREnmCgCeSgKnxKzia
+s7vQHZBwMPfd0QGWgE3Uv0cYkd6OZA==
+=8LRB
+-----END PGP SIGNATURE-----
+
+--e8+9Np68LcNTiq9c--
