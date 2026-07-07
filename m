@@ -1,329 +1,232 @@
-Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F88623D283
-	for <netdev@vger.kernel.org>; Tue,  7 Jul 2026 08:40:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF724292B54;
+	Tue,  7 Jul 2026 08:43:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783413628; cv=none; b=U9KqXkpSr7A7lXYpCC0c7sKnTsL1FhW2Eh1UwODHqTkMWgKs/gOd2o5T1nVDASazpt9mjan7FDwJmsMeROzG+5Jb7c028ovWppaWN28Bqbh59LCa5s9nzeX/5UvQrWqV7J0Zg0jPXi9BwHxnk4HzzX9MViwTT0hyj60xrlu5aAA=
+	t=1783413789; cv=none; b=DeJlfkkD95dQZvB6nl7DaANPt2dXyrGDu6gPdjtWwaCXEC3M8p2NZq3KgoxlXj2LBpPvrd5GjmtOWwk61d4RcHG1f9LdtwN28Eg/gRnySvh74bXQe0LHvNRtoc3pHOQIWRKaxqMXSFeeE4gpr7f3l6bXsbWXU0pMUrXqwQouN/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783413628; c=relaxed/simple;
-	bh=86vpXdxznYjfDsTHql9lzneqRJTBAmPckYWSPmRzHxQ=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=BR0hcw4+SmlJvqeLhSmZMI1DL/o561EkfdqKyKndJaNgWukbqZuhF1WHXbGfN5Y3q0dhh8q5D7yQxAzcktGbQLxow4SbvkmVMZAfsvKhkk6TnJ64N3VHmsgGe2TcAtxZq17MCD67qGrnY/X5e9ZBQRdnWsFJUyV574M7csr36Rk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=X1kXzO8U; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=nky4sdWj; arc=none smtp.client-ip=202.12.124.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.im
+	s=arc-20240116; t=1783413789; c=relaxed/simple;
+	bh=yT00ZIO+MgWMcC/Ag5o/ZQ4d4ps9Yb7HjH5BLQShRcA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=IHguZZ8h7ewGnPvqX0ppElmkf9SVzxoP4ZmYok7hzYVgeNAGOPluRilzb3nE3DyX0ZW4piBblGpMVNctrVu0OtWTg65n3l4NxjZrFjj4SKwz6/Cx0Xwal8/nhFlHpA5fCLHCJOJD4rDe1sb+BxLwlQCgE2Z/4EtjU5J9fRLwjfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rXWOgY+Q; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="X1kXzO8U";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="nky4sdWj"
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 015947A01C0;
-	Tue,  7 Jul 2026 04:40:23 -0400 (EDT)
-Received: from phl-imap-03 ([10.202.2.93])
-  by phl-compute-10.internal (MEProxy); Tue, 07 Jul 2026 04:40:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.im; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1783413623;
-	 x=1783500023; bh=rg6cpnY+iUByQKP6g6ELKDuzd8Mzh6QRqpDUyCW0BNY=; b=
-	X1kXzO8U34k/TCCMq0bLNFD2C21vqmCJYgxaE5jRJndMU9RZYX5vJNPY2u1NHoap
-	ob0DDNGyjpyT+h9S8jPNCW/hfgKTkkTYo4vj6WxEITbjzYMcyjJPhQ6eFn4qZHJY
-	a1A9c4wVWV6Hs4sIortUHCWvVzbwZ3DdVvMtrDbu/ndaBddkjkeFQbS9DGBe0Whz
-	ZnrLMKyMqF1dGXBsS20cdzAJZ99zTrypfD9uVvdOQ+BuduEZPvrSembuf54ds+XT
-	75n7undH3XkpQ991B1xt/sMiVG1mSPPG7nAef6+fS+FlWRnQClyshf82TL7BsjNf
-	ATlaUOaWrPrjIH/jCMegTQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1783413623; x=
-	1783500023; bh=rg6cpnY+iUByQKP6g6ELKDuzd8Mzh6QRqpDUyCW0BNY=; b=n
-	ky4sdWju/lz/O1Syq2I9WsCyOxTU+FAzh5ZPrTsbAM8WvYBvoXyBRI7X8e/Edmk2
-	Oc/qGY1QnkaztfATvayVtOl9DQ4ya0KcvndHprDKG5szVzHg5uhNG/KNZjFCW6p+
-	8TuTPYTfOzL0IVRx/q8XKiJgG4rZciPqN9DDWciaiNMWknGvIg5xeJAvFDFu3Mkt
-	4FIC6sh6kTytG3827XJdCkh8PceUeWTOFykn+yLTJllTgRij1GNRDcsSWNRhkv/6
-	DC+H0yc9J56nBEQfzB1mYO22xWSvIhEeaN58SWF4Ve9FudYCWrj/S8GP2TDEFy0r
-	Jw0hvQ0v9B6DxPJGNWnBA==
-X-ME-Sender: <xms:drtMamXwu8-xd33Qd9R58omDF2A0WoypxmqRQt04mZStZ93I8zG0oA>
-    <xme:drtMatbsqlsyQIWDiVCgE9Cz14vaXyjEFEkZEn-R2zUmT4IOm_78dy0u9D5aC0UzW
-    F9d1ucCxEKxBFzXhrDkyxH2ELO97BGDznypVkrYyLC0Gyzb_aC2yGLk>
-X-ME-Proxy-Cause: dmFkZTEIpu81W02IfGioN3vlq4s0+KL9ok4qBYueUoqt7yIBoOmlmvy8sZpSCO0gT95fNO
-    cxUvN9U3pc7pOuOw4EDjcC9huqotBvMLO484hKdRLAouwOKj4Eu1x2PZ+Y0jjIV36xhhzt
-    fdCTVxiRkssqiLMQYUgMGKOcxB5S3Q3+6YQIFa7Kf5vmAR4HEu3WTz2qQcEGOUc/OseoRT
-    4/SF0WwTvrphtSKKRZ+44L+yZtvB3zqc/yl9djP4aVzaOn+OdXjItROEZn1XB1w5K86PdF
-    TnV6E30LT75qvlAX17J96QM2DInY0LGPNIRb0XGhCo2fwY1lpND2JcwJrlH0D6+2L6YmZB
-    mUTTj8Kb6uF1xG2tErluAsWcVxl6Lw/G+AVDI5JCEBI14QFLnGVFt0WzgbL3HPTWT8Nm7p
-    tU1Jj/pHSUso0QSWUb8YbhT8ZjoIp1cvbN+SHqwj51pciYrgfTBKrx+K+uXjkB/3QFFVYb
-    nl6TUxAfbGBm34XdSqXfpyrPi6FDBkbLZs0xgF6/+lH6TWDErblhTDLe8+LFruGewlWq9/
-    mYwDMcA3GL9shZpq6Rjo8wQ1pRHJdmCItdBQJfKq3FrnvJpjhHrGZKTQZuUPEJIjTgKrYp
-    4WjnQYw15EIL/9pHyaNaiJEwPhASsDMLYMbHrPR/MtPYA5iFRaWj3xBRXh2A
-X-ME-Proxy: <xmx:drtMagbLdAPlNYdLKbZ_m60POtkDQMfGc9XhzJxaseztbLzgMapYdQ>
-    <xmx:drtMakwhEJaoVPIjy_riV9uul44UbGSUUtwiU7TvW9YzOx23fDDhdQ>
-    <xmx:drtMajez18wzz--0OnosWFOHH8x9SVO0AO56klnc8G4GIFDErhoBeA>
-    <xmx:drtMaqI2xyfSmGx6t8jvKNrZFjc55ytWaKezw_YQaM2Dl063nz6dLQ>
-    <xmx:d7tMal_-v3-QvoLJXNA4xv9AkiimZYA5ZCgomMIVmHMWSvla2TSCVuCz>
-Feedback-ID: i559e4809:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 8EB2318E0071; Tue,  7 Jul 2026 04:40:22 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rXWOgY+Q"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 6DAB2C2BCB8;
+	Tue,  7 Jul 2026 08:43:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1783413789;
+	bh=yT00ZIO+MgWMcC/Ag5o/ZQ4d4ps9Yb7HjH5BLQShRcA=;
+	h=From:Date:Subject:To:Cc:From;
+	b=rXWOgY+Qug7LLpRNLnVWx4r0lP24yK+XOBDZzGoAjitsFC9XCUUNHbcF+WxjV7agK
+	 NII+kfRVnJ/hVPB+WcJ03m2IdyuSoXCtbh6zeWQtZ6Pa+DkuZMnSAip0n/hEaPK/1L
+	 myqw5Av/Ora4JKlQy/FWH9hclXPEqPDk2IkCm4wmAXyJXqWZRjXnYkevXzaJ9h0VP7
+	 zqDe74i1FANe20zm/rfzpJ2bPW9oN2WhLmBI8rGfkoNDsYz0ZRY+Od4isH8KyvJbT/
+	 1HQVm9Vr1fElugQgz+dG/aX+MoYjzL4mpH4AB5Mg+e0UcGBpHcCFpaKHXuABUhLLA4
+	 biQ9lX713heRw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 46F2AC43458;
+	Tue,  7 Jul 2026 08:43:09 +0000 (UTC)
+From: Joel Granados <joel.granados@kernel.org>
+Date: Tue, 07 Jul 2026 10:42:50 +0200
+Subject: [PATCH RFC net-next v2] net: enforce net sysctl registration
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Tue, 07 Jul 2026 11:40:02 +0300
-From: "Alice Mikityanska" <alice.kernel@fastmail.im>
-To: "Paolo Abeni" <pabeni@redhat.com>,
- "Daniel Borkmann" <daniel@iogearbox.net>,
- "David S. Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
- "Xin Long" <lucien.xin@gmail.com>,
- "Willem de Bruijn" <willemdebruijn.kernel@gmail.com>,
- "Willem de Bruijn" <willemb@google.com>, "David Ahern" <dsahern@kernel.org>,
- "Nikolay Aleksandrov" <razor@blackwall.org>
-Cc: "Shuah Khan" <shuah@kernel.org>,
- "Stanislav Fomichev" <stfomichev@gmail.com>,
- "Andrew Lunn" <andrew+netdev@lunn.ch>, "Simon Horman" <horms@kernel.org>,
- "Florian Westphal" <fw@strlen.de>, netdev@vger.kernel.org,
- "Alice Mikityanska" <alice@isovalent.com>
-Message-Id: <48f70526-e4f1-472c-86f6-72c105853a21@app.fastmail.com>
-In-Reply-To: <80222d3f-e6cf-408b-b42f-0a2a6afce297@redhat.com>
-References: <20260706181941.385672-1-alice.kernel@fastmail.im>
- <20260706181941.385672-10-alice.kernel@fastmail.im>
- <80222d3f-e6cf-408b-b42f-0a2a6afce297@redhat.com>
-Subject: Re: [PATCH net-next v8 9/9] selftests: net: Add a test for BIG TCP in UDP
- tunnels
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260707-jag-net_const_qualify-v2-1-5a5c52031ead@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAm8TGoC/4WNQQ6CMBREr0L+2prSIFBXJiYewK0hpJZf/Epab
+ SuBEO5uwwVcTmbemwUCesIAx2wBjyMFcjYFsctAP5TtkVGXMgguSl4KyZ6qZxZjq50Nsf181UB
+ mZqZALquD7JSuILFvj4amzXuD6+WcJSRhU4QmtQ8K0fl5Ox3zbfPHP+YsZ4iyvtdGF5zr0wu9x
+ WHvfA/Nuq4/9BFwyckAAAA=
+X-Change-ID: 20260629-jag-net_const_qualify-f4e09759dac7
+To: "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Joel Granados <joel.granados@kernel.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6002;
+ i=joel.granados@kernel.org; h=from:subject:message-id;
+ bh=yT00ZIO+MgWMcC/Ag5o/ZQ4d4ps9Yb7HjH5BLQShRcA=;
+ b=owJ4nAHtARL+kA0DAAoBupfNUreWQU8ByyZiAGpMvBu9Hzr9cKocdRfyS1nVh8iKyqW4O/DEo
+ EAeu+cjqbnsS4kBswQAAQoAHRYhBK5HCVcl5jElzssnkLqXzVK3lkFPBQJqTLwbAAoJELqXzVK3
+ lkFP+mwL/R0LZDg/kgjoLSxh8NxSXVYxKn4zKR2+anryGC/H5K1hbhlw2hJc1gxtTcUiX+4+o+t
+ RkSUNWGtM0rd8zuhs7ErK4kHKaBBWkZOG/MHU2TGNEfk/Qo1b06hJYWQxsJ3NOMaFZRNSJ5wnLj
+ EK5O+fzcSDDAZsSIyDYHawUDC36ma6JZ/GuAOIj9IHTFESoV/FyogLD8dpMReDqjPg9SbL6aWae
+ fHytn6XGdZ8FgMkpFf2qak8xECBhsRCucVv7tRACc3vJpLIJJs6nCrpDxhDaY5KNbCfd3UpQcd5
+ cxYVVD4QlIRQ6e8wOnGgVsGV1vHTGwd41RnXPymDTD2Z/ldQszSKfxYf8U6U7XJt3V9GR2gJxc9
+ ujj0aVblSt6n+lhLBewGP3UbzKbyqWG4IR9Wtt+PVc6sKNfvigsBG63+kvmgrKOd+A3+ILuntvt
+ RBa06oDlPoULhEoSUH7E30zCGJ3tIok5v7Rq2tbuia+Il1uWL+jxAFBIUcgDYM36vmcUZXnZVp5
+ yk=
+X-Developer-Key: i=joel.granados@kernel.org; a=openpgp;
+ fpr=F1F8E46D30F0F6C4A45FF4465895FAAC338C6E77
+X-Endpoint-Received: by B4 Relay for joel.granados@kernel.org/default with
+ auth_id=239
 
-On Tue, Jul 7, 2026, at 11:06, Paolo Abeni wrote:
-> On 7/6/26 8:19 PM, Alice Mikityanska wrote:
->> From: Alice Mikityanska <alice@isovalent.com>
->> 
->> The test sets up VXLAN and GENEVE tunnels over IPv4 and IPv6 and runs
->> IPv4 and IPv6 traffic through them with BIG TCP enabled. It checks that
->> a non-negligible amount of big aggregated packets are seen in tcpdump.
->> 
->> Check the number of packets on both TX and RX sides to verify that GSO
->> packets are valid and not dropped. Capture on the lower netdev (veth),
->> when checksum offload is on, to verify that encapsulated BIG TCP packets
->> can get to their destination. In the test with TX checksum offload off,
->> software GSO splits aggregated VXLAN packets before passing them to
->> veth, so capture inside the tunnel instead to check that the big packets
->> are not dropped.
->> 
->> Check that the amount of SACKs is negligible. On unsupported kernels,
->> some amount of broken GSO packets bigger than 65536 bytes can be
->> produced in VXLAN tunnels, but they don't reach the destination. Seeing
->> TCP SACKs is a sign that such packets could have been dropped (in such
->> cases, the amount of SACKs is a few times bigger than the number of
->> attempts to send BIG TCP packets).
->> 
->> Signed-off-by: Alice Mikityanska <alice@isovalent.com>
->> ---
->>  tools/testing/selftests/net/Makefile          |   1 +
->>  .../testing/selftests/net/big_tcp_tunnels.sh  | 183 ++++++++++++++++++
->>  2 files changed, 184 insertions(+)
->>  create mode 100755 tools/testing/selftests/net/big_tcp_tunnels.sh
->> 
->> diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
->> index 708d960ae07d..4cb0a0bc1eea 100644
->> --- a/tools/testing/selftests/net/Makefile
->> +++ b/tools/testing/selftests/net/Makefile
->> @@ -13,6 +13,7 @@ TEST_PROGS := \
->>  	arp_ndisc_untracked_subnets.sh \
->>  	bareudp.sh \
->>  	big_tcp.sh \
->> +	big_tcp_tunnels.sh \
->>  	bind_bhash.sh \
->>  	bpf_offload.py \
->>  	bridge_stp_mode.sh \
->> diff --git a/tools/testing/selftests/net/big_tcp_tunnels.sh b/tools/testing/selftests/net/big_tcp_tunnels.sh
->> new file mode 100755
->> index 000000000000..128a710e74ad
->> --- /dev/null
->> +++ b/tools/testing/selftests/net/big_tcp_tunnels.sh
->> @@ -0,0 +1,183 @@
->> +#!/usr/bin/env bash
->> +# SPDX-License-Identifier: GPL-2.0
->> +#
->> +# Testing for IPv4 and IPv6 BIG TCP over VXLAN and GENEVE tunnels.
->> +
->> +SERVER_NS=$(mktemp -u server-XXXXXXXX)
->> +SERVER_IP4="192.168.1.1"
->> +SERVER_IP6="2001:db8::1:1"
->> +SERVER_IP4_TUN="192.168.2.1"
->> +SERVER_IP6_TUN="2001:db8::2:1"
->> +
->> +CLIENT_NS=$(mktemp -u client-XXXXXXXX)
->> +CLIENT_IP4="192.168.1.2"
->> +CLIENT_IP6="2001:db8::1:2"
->> +CLIENT_IP4_TUN="192.168.2.2"
->> +CLIENT_IP6_TUN="2001:db8::2:2"
->> +
->> +: "${PACKETS_THRESHOLD:=1000}"
->> +
->> +# Kselftest framework requirement - SKIP code is 4.
->> +ksft_skip=4
->> +
->> +setup() {
->> +	ip netns add "$SERVER_NS"
->> +	ip netns add "$CLIENT_NS"
->> +	ip -netns "$SERVER_NS" link add link1 type veth peer name link0 netns "$CLIENT_NS"
->> +
->> +	ip -netns "$CLIENT_NS" link set link0 up
->> +	ip -netns "$CLIENT_NS" addr replace "$CLIENT_IP4/24" dev link0
->> +	ip -netns "$CLIENT_NS" addr replace "$CLIENT_IP6/112" dev link0 nodad
->> +	ip -netns "$CLIENT_NS" link set link0 \
->> +		gso_max_size 196608 gso_ipv4_max_size 196608 \
->> +		gro_max_size 196608 gro_ipv4_max_size 196608
->> +	ip -netns "$SERVER_NS" link set link1 up
->> +	ip -netns "$SERVER_NS" addr replace "$SERVER_IP4/24" dev link1
->> +	ip -netns "$SERVER_NS" addr replace "$SERVER_IP6/112" dev link1 nodad
->> +	ip -netns "$SERVER_NS" link set link1 \
->> +		gso_max_size 196608 gso_ipv4_max_size 196608 \
->> +		gro_max_size 196608 gro_ipv4_max_size 196608
->> +
->> +	ip netns exec "$SERVER_NS" netserver >/dev/null
->> +}
->> +
->> +setup_tunnel() {
->> +	if [ "$2" = 4 ]; then
->> +		SERVER_IP="$SERVER_IP4"
->> +		CLIENT_IP="$CLIENT_IP4"
->> +		echo "Setting up ${1^^} over IPv4, veth tx csum offload $3"
->> +	else
->> +		SERVER_IP="$SERVER_IP6"
->> +		CLIENT_IP="$CLIENT_IP6"
->> +		echo "Setting up ${1^^} over IPv6, veth tx csum offload $3"
->> +	fi
->> +
->> +	if [ "$1" = vxlan ]; then
->> +		ip -netns "$CLIENT_NS" link add tun0 type vxlan \
->> +			id 5001 remote "$SERVER_IP" local "$CLIENT_IP" dev link0 dstport 4789
->> +	else
->> +		ip -netns "$CLIENT_NS" link add tun0 type geneve \
->> +			id 5001 remote "$SERVER_IP"
->> +	fi
->> +	ip -netns "$CLIENT_NS" link set tun0 up
->> +	ip -netns "$CLIENT_NS" addr replace "$CLIENT_IP4_TUN/24" dev tun0
->> +	ip -netns "$CLIENT_NS" addr replace "$CLIENT_IP6_TUN/112" dev tun0 nodad
->> +	ip -netns "$CLIENT_NS" link set tun0 \
->> +		gso_max_size 196608 gso_ipv4_max_size 196608 \
->> +		gro_max_size 196608 gro_ipv4_max_size 196608
->> +	if [ "$1" = vxlan ]; then
->> +		ip -netns "$SERVER_NS" link add tun1 type vxlan \
->> +			id 5001 remote "$CLIENT_IP" local "$SERVER_IP" dev link1 dstport 4789
->> +	else
->> +		ip -netns "$SERVER_NS" link add tun1 type geneve \
->> +			id 5001 remote "$CLIENT_IP"
->> +	fi
->> +	ip -netns "$SERVER_NS" link set tun1 up
->> +	ip -netns "$SERVER_NS" addr replace "$SERVER_IP4_TUN/24" dev tun1
->> +	ip -netns "$SERVER_NS" addr replace "$SERVER_IP6_TUN/112" dev tun1 nodad
->> +	ip -netns "$SERVER_NS" link set tun1 \
->> +		gso_max_size 196608 gso_ipv4_max_size 196608 \
->> +		gro_max_size 196608 gro_ipv4_max_size 196608
->> +
->> +	ip netns exec "$CLIENT_NS" ethtool -K link0 tx-checksumming "$3" > /dev/null
->> +	ip netns exec "$SERVER_NS" ethtool -K link1 tx-checksumming "$3" > /dev/null
->> +}
->> +
->> +cleanup_tunnel() {
->> +	ip -netns "$CLIENT_NS" link del tun0
->> +	ip -netns "$SERVER_NS" link del tun1
->> +}
->> +
->> +cleanup() {
->> +	ip netns pids "$SERVER_NS" | xargs -r kill
->> +	ip netns pids "$CLIENT_NS" | xargs -r kill
->> +	ip netns del "$SERVER_NS"
->> +	ip netns del "$CLIENT_NS"
->> +	rm -rf "$WORKDIR"
->> +}
->> +
->> +do_test() {
->> +	# When tx csum offload is off, software GSO is performed before passing the
->> +	# packet to veth. Check BIG TCP packets inside the VXLAN tunnel to verify
->> +	# the software checksum path: if the checksum code is broken, these packets
->> +	# will be dropped.
->> +	if [ "$2" = on ]; then
->> +		CAPTURE_IFACE='link'
->> +	else
->> +		CAPTURE_IFACE='tun'
->> +	fi
->> +
->> +	ip netns exec "$SERVER_NS" tcpdump -nn -s 256 -i "${CAPTURE_IFACE}1" greater 65536 -w "$WORKDIR/server.pcap" 2> /dev/null &
->> +	TCPDUMP_SERVER_PID="$!"
->> +	ip netns exec "$CLIENT_NS" tcpdump -nn -s 256 -i "${CAPTURE_IFACE}0" greater 65536 -w "$WORKDIR/client.pcap" 2> /dev/null &
->> +	TCPDUMP_CLIENT_PID="$!"
->> +
->> +	# This filter doesn't capture all possible variants of SACK, but it's aimed
->> +	# at the typical one where SACK follows after [nop, nop, timestamp, nop,
->> +	# nop] (14 bytes after the 20-byte TCP header). IPv6 needs a separate match,
->> +	# because man tcpdump says:
->> +	# > Arithmetic expression against transport layer headers, like tcp[0], does
->> +	# > not work against IPv6 packets.  It only looks at IPv4 packets.
->> +	ip netns exec "$SERVER_NS" tcpdump -nn -s 256 -i "tun1" '(tcp[tcpflags] & (tcp-syn|tcp-ack) = tcp-ack and tcp[34:2] & 0xffc3 = 0x0502) or (ip6[6] = 0x06 and ip6[53] & 0x12 = 0x10 and ip6[74:2] & 0xffc3 = 0x0502)' -w "$WORKDIR/sack.pcap" 2> /dev/null &
->> +	TCPDUMP_SACK_PID="$!"
->> +
->> +	if [ "$1" = 4 ]; then
->> +		SERVER_IP="$SERVER_IP4_TUN"
->> +		echo "Running IPv4 traffic in the tunnel"
->> +	else
->> +		SERVER_IP="$SERVER_IP6_TUN"
->> +		echo "Running IPv6 traffic in the tunnel"
->> +	fi
->> +
->> +	sleep 1 # Give tcpdump a second to spin up.
->> +	ip netns exec "$CLIENT_NS" netperf -t TCP_STREAM -l 5 -H "$SERVER_IP" -- \
->> +		-m 80000 > /dev/null
->> +	sleep 1 # Give tcpdump a second to process buffered packets.
->> +	kill "$TCPDUMP_SERVER_PID" "$TCPDUMP_CLIENT_PID" "$TCPDUMP_SACK_PID"
->> +	wait "$TCPDUMP_SERVER_PID" "$TCPDUMP_CLIENT_PID" "$TCPDUMP_SACK_PID"
->> +	PACKETS_SERVER=$(tcpdump --count -r "$WORKDIR/server.pcap" 2> /dev/null | cut -d ' ' -f 1)
->> +	PACKETS_CLIENT=$(tcpdump --count -r "$WORKDIR/client.pcap" 2> /dev/null | cut -d ' ' -f 1)
->> +	PACKETS_SACK=$(tcpdump --count -r "$WORKDIR/sack.pcap" 2> /dev/null | cut -d ' ' -f 1)
->> +
->> +	echo "Captured BIG TCP RX packets: $PACKETS_SERVER"
->> +	echo "Captured BIG TCP TX packets: $PACKETS_CLIENT"
->> +	echo "Captured TCP SACK packets: $PACKETS_SACK"
->> +	[ "$PACKETS_SERVER" -gt "$PACKETS_THRESHOLD" ] || return 1
->> +	[ "$PACKETS_CLIENT" -gt "$PACKETS_THRESHOLD" ] || return 1
->> +	[ "$PACKETS_SACK" -lt "$(( PACKETS_CLIENT / 2 ))" ] || return 1
->
-> KCI fails here, see:
->
-> https://netdev-ctrl.bots.linux.dev/logs/vmksft/net/results/722863/156-big-tcp-tunnels-sh/stdout
->
-> possibly the above parsing is a bit fragile/tcpdump version's dependent?!?
+Replace the warning and file permission change with an error when an
+"unsafe" net sysctl registration is detected.
 
-TL/DR: I've seen this when I ran out of space in /tmp before adding -s 256.
+One of the barriers preventing the const qualification of the ctl_tables
+in the net directory is the permission (->mode) change in
+ensure_safe_net_sysctl. This prep commit removes that barrier allowing
+the const qualification of net ctl_tables.
 
-Hmm, the changes I made in this iteration were aimed at addressing version-
-dependent behavior of tcpdump... I used to count the lines of its
-output. Newer tcpdump prints two lines per encapsulated packet. Older
-tcpdump can't parse BIG TCP in this test and prints one line per packet.
-To make it more robust, I decided to store the pcap and count the
-packets there (--count doesn't work with live capture when tcpdump is
-interrupted). The pitfall is that now it takes a few hundred megabytes
-in /tmp to store those pcaps.
+Signed-off-by: Joel Granados <joel.granados@kernel.org>
+---
+What?
+=====
+Replace warning and file permission change with an error (reject
+registration) when an "unsafe" net sysctl registration is detected.
 
-Now, seeing empty stdout from tcpdump could be if the pcap file is empty
-(doesn't contain the pcap header), because we ran out of space in /tmp
-(first two tcpdumps took all space, the third didn't write the header -
-I observed this behavior before I added -s 256). We don't see the
-corresponding error messages, because tcpdump starts with 2> /dev/null
-(otherwise it floods the screen with statistics). Could this be the
-reason? How much space is allocated for /tmp in the CI runners?
+Why?
+====
+The main motivation for this is to continue with the const qualification
+of the ctl_table arrays [1]. The permission change inside
+ensure_safe_net_sysctl disallows cons qualifiaction as it basically
+modifies the entries before running the sysctl registration.
 
-I can probably address it by limiting the overall number of captured
-packets with -c, but then I won't be able to compare $PACKETS_SACK
-relative to $PACKETS_CLIENT.
+      ent->mode &= ~0222;
 
-> Note that KCI automatically drops from PW series with failing test.
->
-> /P
+Analysis
+========
+* I believe that there is currently now way that the permission change
+  gets executed [2]
+* I found one case where the warning message was posted to lore
+  (vsock_sysctl_register) [3], but it made its to mainline as part of
+  the second case in [2].
+* We should error anyway because writing to the global sysctl value
+  through a child netns is indicative of a bug [4].
+
+RFC
+===
+I'm sending it out as an RFC as I would like to discuss the change to
+ensure_safe_net_sysctl in isolation, but my idea is to send out a series
+that actually const qualifies the clt_tables in the net directory. I
+would be very thankful if you point me to anything that I have missed in
+my analysis that shows that this cannot/shouldn't be done.
+
+Changes in v2:
+- Rebased on top of net-next
+- Updated subject to "RFC net-next"
+- Link to v1: https://lore.kernel.org/r/20260629-jag-net_const_qualify-v1-1-ee98b8fc400c@kernel.org
+
+Best
+
+[1]
+  https://git.kernel.org/pub/scm/linux/kernel/git/sysctl/sysctl.git/commit/?h=constfy-sysctl-6.14-rc1&id=1751f872cc97f992ed5c4c72c55588db1f0021e1
+
+[2]
+  I have identified 4 contexts relevant to the ensure_safe_net_sysctl call
+  inside the network sysctl registration.
+
+  1. When the (struct net) == &init_net (like in iw_cm_init): In this case
+     ensure_safe_net_sysctl is not executed and permission modification
+     never happens.
+
+  2. When the ctl_table data (->data) gets "manually" assigned to
+     something other init_net (like in vsock_sysctl_register): In this
+     case ensure_safe_net_sysctl *is* executed but the data that is passed
+     is neither a module address (!is_module_address) nor a kernel core
+     address (!is_kernel_core_data); so the permission modification never
+     happens.
+
+  3. When the permissions are explicitly changed on a kmemdup'ed ctl_table
+     array (like in sysctl_core_net_init): in this case
+     ensure_safe_net_sysctl *is* executed but the permission modification
+     never happens as the mode is not writable.
+
+  4. When ctl have custom proc_handlers (like in nf_lwtunnel_net_init): In
+     this case ->data is NULL so it is not a module address
+     (!is_module_address) nor a kernel core address
+     (!is_kernel_core_data), so permission modification never happens.
+
+  It seems like there is no way of executing the permission change in
+  ensure_safe_net_sysctl. Please correct me if this is inacurate and help
+  me find the case that I missed.
+
+[3]
+  https://lore.kernel.org/all/20260302194926.90378-1-graf@amazon.com/
+
+[4]
+  The ensure_safe_net_sysctl function was introduced in Commit:
+  31c4d2f160eb7b17cbead24dc6efed06505a3fee ("net: Ensure net namespace
+  isolation of sysctls") which states that it is trying to prevent a
+  leak (indicative of a bug).
+---
+
+---
+ net/sysctl_net.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
+
+diff --git a/net/sysctl_net.c b/net/sysctl_net.c
+index 19e8048241bacb18de853d3b904d0f97fd2fe78a..c1630a266f8436d8962ceb87dc629964b2d71260 100644
+--- a/net/sysctl_net.c
++++ b/net/sysctl_net.c
+@@ -114,16 +114,16 @@ __init int net_sysctl_init(void)
+ 	goto out;
+ }
+ 
+-/* Verify that sysctls for non-init netns are safe by either:
++/* Return error when sysctls for non-init netns are unsafe by verifying:
+  * 1) being read-only, or
+  * 2) having a data pointer which points outside of the global kernel/module
+  *    data segment, and rather into the heap where a per-net object was
+  *    allocated.
+  */
+-static void ensure_safe_net_sysctl(struct net *net, const char *path,
+-				   struct ctl_table *table, size_t table_size)
++static int ensure_safe_net_sysctl(struct net *net, const char *path,
++				  const struct ctl_table *table, size_t table_size)
+ {
+-	struct ctl_table *ent;
++	const struct ctl_table *ent;
+ 
+ 	pr_debug("Registering net sysctl (net %p): %s\n", net, path);
+ 	ent = table;
+@@ -149,15 +149,14 @@ static void ensure_safe_net_sysctl(struct net *net, const char *path,
+ 		else
+ 			continue;
+ 
+-		/* If it is writable and points to kernel/module global
+-		 * data, then it's probably a netns leak.
+-		 */
++		/* Warn on netns leak. */
+ 		WARN(1, "sysctl %s/%s: data points to %s global data: %ps\n",
+-		     path, ent->procname, where, ent->data);
++			path, ent->procname, where, ent->data);
+ 
+-		/* Make it "safe" by dropping writable perms */
+-		ent->mode &= ~0222;
++		return -EACCES;
+ 	}
++
++	return 0;
+ }
+ 
+ struct ctl_table_header *register_net_sysctl_sz(struct net *net,
+@@ -166,7 +165,8 @@ struct ctl_table_header *register_net_sysctl_sz(struct net *net,
+ 						size_t table_size)
+ {
+ 	if (!net_eq(net, &init_net))
+-		ensure_safe_net_sysctl(net, path, table, table_size);
++		if (ensure_safe_net_sysctl(net, path, table, table_size))
++			return NULL;
+ 
+ 	return __register_sysctl_table(&net->sysctls, path, table, table_size);
+ }
+
+---
+base-commit: 474cff6868129755cf889edf40d7f491729fc588
+change-id: 20260629-jag-net_const_qualify-f4e09759dac7
+
+Best regards,
+-- 
+Joel Granados <joel.granados@kernel.org>
+
+
