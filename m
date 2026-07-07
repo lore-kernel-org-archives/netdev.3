@@ -1,106 +1,110 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7611A682E
-	for <netdev@vger.kernel.org>; Tue,  7 Jul 2026 17:34:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E8E384CC6
+	for <netdev@vger.kernel.org>; Tue,  7 Jul 2026 17:41:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783445668; cv=none; b=L63TPQwTwzZyHJiiWFHkHPOhUAFamNhZzGb8MqQoOJ8+3S/VBCtjIBDK+hz1Qw7lfReLSYMQ0UXOgcIrNnwYe9W0Xe+WdjWHDgyokAg9O3GmFMBgzID6R1QaRsKufuOFRKlpn/rOiiK9erD/3iBO3ywGjtSvM+XatmfQEjoYwHs=
+	t=1783446104; cv=none; b=IESGooMhIlfs046PRe/vSyTiGvXhHssNTWo07QHuDDmjlSbR5UWDzak2g3sKHsv1/DnBzTwqWmBbN+paHCWbHJt375KFYMkPHk4rfNY6zqyE9N5wmf0QKNbFBJg3xy+XXbqEMCDHwXH1T5Hd/5mBuVPJJurTivZY4ewQL5MxLiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783445668; c=relaxed/simple;
-	bh=beAz6lsgDrchDZ/6u3XdDTWLW4VSMLJ9oCgRdfGYjoM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qt6YnMA2usSRMXgUta3dyDT3dM9UJr1uwdQ5hywVYNf3TPJFXaq4mcdwDRdF/lNgSn3GE+WrdPeby+6YaUT4IHwSCtOYBPHuw11/Y6R3nztsKIPAqQk/ROT1/Dg0hXI7abspNpyS8G3KWzws5JknCLW4Xn6w7l62xnJiJS6enC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pA3+/vbt; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1783446104; c=relaxed/simple;
+	bh=GHfONwn/bpfIhneQDq32RP98AToMZwhpL+MQfz4dijQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:MIME-Version:
+	 Content-Type:References; b=BH40qXrSEOj/jw9IDOXCgWzWn6oz2GYEt/6pmHLjpRnWmd8iFLBN9mSLuGYukNGA1pylQV2r6UY900fy0aQjdqvFCu1yAAvmYxZii0YXQSuFEZU3JfeXIxdnTd979iG2j5LPGn4gwJc7SuqODUe3YVeZwoLJKOpJMHXeeuvfbhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=cFbFWmrZ; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pA3+/vbt"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-49392c85c8cso2044895e9.2
-        for <netdev@vger.kernel.org>; Tue, 07 Jul 2026 10:34:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783445666; x=1784050466; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=beAz6lsgDrchDZ/6u3XdDTWLW4VSMLJ9oCgRdfGYjoM=;
-        b=pA3+/vbt8tLDdJcH9nMuapUuLHNQwPWsAK5UwusD1kc0wcaY6WdyCJo9HsHRLxNkTk
-         ucNQE6V+nuBE0hCs1pg/9MPDEieRt05a3pB6Rf48xxL6eIoUPizCUn6pVy1F/tmWrsgT
-         reZFdPx5Do7yzdjeFoXFFE7mRZ2dMHcyJel07LG7hCkl5k7JWZqeVACP+nE0Ckxoxyex
-         z2RK+SGsAu/ySPTesfVmhGHUcYSAsEVWP1U3fHL3zqyhh4YEgYhUogOUWYqYpueyLjxJ
-         6ZHBlKmQlAib4xcqaJTYGZQMFok4PFLDdYpJDV8vaIRHjyy102mSJ6oafM+pwD/aMpOG
-         3Ysg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783445666; x=1784050466;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=beAz6lsgDrchDZ/6u3XdDTWLW4VSMLJ9oCgRdfGYjoM=;
-        b=Bn9avxxQ7dK59B4nspt2f/TLI9i0abZ5ivIp6j08eR8mW0UMfUaa1nKolNqbN3yIZm
-         gjgvfqvqUDEsYUb5XXW8JYs8xwdr73Iu0YjWMoqc9JDEa8V7yDssPAE6tUrp9+mfbbWQ
-         PsvEE+9frPKNOrPnB42O81M7kxz+br6FHdbLdwUrYUjZCtE8LbuU/zbLGw23+Q6P7BCz
-         Ejvz4d7wPKovP2tdvaZ2FHcGkjqFNaPXVpBOnmghLnSdgBkxHDYj8KdWVPMfXmnJltHp
-         8+XOKRNfJzAF/7UVLQirh/9lLwX7oKzLAUUgEghPksxmCK2c+SrtfGyb4OHrrnYvDza7
-         NOoA==
-X-Gm-Message-State: AOJu0YwI3VbTWof2Z2ceLEyvFyWtYwB3viH8M7OiV2+V4KQuJIt+xx1D
-	X6r4Aanhd5B3mz84OwxN8YOwsiVjl0Sb13Dx23V/kkIG5vCVnQDHdpNI
-X-Gm-Gg: AfdE7cnay9yI1zw1OCw1bWnpxE2nWMy4gX1bKZLFbTK/uBgW90DAcn3wlY1LXxR2PiF
-	a8XLnLT4bo9PDdp0qL2UZZI2RAHgiKS0ow18av2JTXWQpWDFLAxlUoe1q9xa8eITojknxQUISXk
-	n94JnvKgpmSpGge78qssAS+1/lqXjqu6qe6mJWv7/2Ew70WVTUulxV8Azxx8+k1ZXL2W1A2/H2J
-	zzJor5trRag44jRK2l+f4st6G0Ua7z0oX4uRsKtt8KgYWGCqGaKaO7UvCn03rtsmdOBQHDccIrz
-	Sli+qw8svnWlq265+z0tXjmXgqzCmAbvDQ4rFOAanS0EqcdEGo4iMXc/8EHxNjkZQEvP7LmbXQJ
-	YI+K1qJsVGWFRtiktgaoB3ODBVliH5MOmfM48axIDV8O0PE6CcrO9V9Rp09/QeLgmMNITNMupwW
-	eJY4am
-X-Received: by 2002:a05:600c:5249:b0:493:d282:8275 with SMTP id 5b1f17b1804b1-493d2828325mr109539005e9.0.1783445665573;
-        Tue, 07 Jul 2026 10:34:25 -0700 (PDT)
-Received: from skbuf ([2a02:2f04:d40e:d500:a377:64bd:e25e:a10b])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa0f214d2sm34456301f8f.33.2026.07.07.10.34.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 10:34:23 -0700 (PDT)
-Date: Tue, 7 Jul 2026 20:34:20 +0300
-From: Vladimir Oltean <olteanv@gmail.com>
-To: Rosen Penev <rosenp@gmail.com>
-Cc: netdev@vger.kernel.org, Madalin Bucur <madalin.bucur@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next] net: dpaa_eth: convert to napi_gro_receive
-Message-ID: <20260707173420.6qkzi75hegx4dq7b@skbuf>
-References: <20260706030632.1826810-1-rosenp@gmail.com>
- <20260706083906.5oxmr47vbnaztfu2@skbuf>
- <CAKxU2N-6Msn+WciepQ3rnP64fUE6s_jviWfy8no_-qorPoyJEw@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="cFbFWmrZ"
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260707174136euoutp0168de8d8262ec3f24ad42ddfd93efaf41~AEsZ8J8220448404484euoutp01K
+	for <netdev@vger.kernel.org>; Tue,  7 Jul 2026 17:41:36 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260707174136euoutp0168de8d8262ec3f24ad42ddfd93efaf41~AEsZ8J8220448404484euoutp01K
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1783446096;
+	bh=2uqhzatz7NlDzESa9PUCo71vFC+Z9fG5K7FS6DttHiE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=cFbFWmrZMKBqTlKeU7OTiwH7GnvgN+5xUCa3/BWttM+6oWP9X+WD0ZCCka4eDWnqL
+	 rEvD4xrGAcdPF/xByYBb3G6XFUqRxELaJEY9V2vJ1A3niLLvUB8rQoz6thM3iXRHlL
+	 zD3vwiKEND2gF03UmNxp14VHlWylEQcwQANpsgXg=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20260707174135eucas1p1386ed6bc3c44c1a4e927a0a8bae8fd27~AEsZYmV6x1385013850eucas1p1Q;
+	Tue,  7 Jul 2026 17:41:35 +0000 (GMT)
+Received: from AMDC4843.eu.corp.samsungelectronics.net (unknown
+	[106.120.77.61]) by eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20260707174134eusmtip1c78c3c4b343d56ce01467ae68af74883~AEsYqzfhO1143211432eusmtip1D;
+	Tue,  7 Jul 2026 17:41:34 +0000 (GMT)
+From: Jakub Raczynski <j.raczynski@samsung.com>
+To: netdev@vger.kernel.org
+Cc: k.tegowski@samsung.com, k.domagalski@samsung.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Jakub
+	Raczynski <j.raczynski@samsung.com>, Maxime Chevallier
+	<maxime.chevallier@bootlin.com>
+Subject: [PATCH net v2 1/2] net/stmmac: Set Rx queue page_pool to NULL when
+ freeing DMA resources
+Date: Tue,  7 Jul 2026 19:41:14 +0200
+Message-Id: <20260707174115.1264466-2-j.raczynski@samsung.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260707174115.1264466-1-j.raczynski@samsung.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKxU2N-6Msn+WciepQ3rnP64fUE6s_jviWfy8no_-qorPoyJEw@mail.gmail.com>
+X-CMS-MailID: 20260707174135eucas1p1386ed6bc3c44c1a4e927a0a8bae8fd27
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260707174135eucas1p1386ed6bc3c44c1a4e927a0a8bae8fd27
+X-EPHeader: CA
+X-CMS-RootMailID: 20260707174135eucas1p1386ed6bc3c44c1a4e927a0a8bae8fd27
+References: <20260707174115.1264466-1-j.raczynski@samsung.com>
+	<CGME20260707174135eucas1p1386ed6bc3c44c1a4e927a0a8bae8fd27@eucas1p1.samsung.com>
 
-On Mon, Jul 06, 2026 at 04:25:31PM -0700, Rosen Penev wrote:
-> On Mon, Jul 6, 2026 at 1:39 AM Vladimir Oltean <olteanv@gmail.com> wrote:
-> > Have you tested traffic in mixed scenarios, where flows from multiple
-> > interfaces land on the same CPU?
-> Just iperf3 --bidir.
+When freeing RX descriptor resources, there is standard clearing of
+descriptor page_pool via page_pool_destroy() which does destroy
+page but does not set its pointer to NULL, which must be done by driver
+calling this function.
+It is not done in __free_dma_rx_desc_resources() when stopping interface,
+which is generally not an issue, because __alloc_dma_rx_desc_resources() does
+setup this regardless of previous state.
+But above is true assuming reinitialization is successful.
 
-Just this would not have reproduced the problem I pointed out.
+In case of failure of page_pool_create() in __alloc_dma_rx_desc_resources(),
+all non-NULL pages will be freed, including those already cleared.
+So there is possible kernel panic due to wrong paging request at address.
 
-> > Until further evidence comes in:
-> Maybe netif_receive_skb_list is a better fit here.
+Fix this by assigning NULL to page_pool pointer on free.
+Also remove NULL check as page_pool_destroy() does check for NULL param.
 
-Maybe or maybe not. I don't know how netif_receive_skb_list() is
-implemented and whether it shares the same pain points as
-napi_gro_receive() on DPAA1, or what performance it has to offer.
-Testing in a wide variety of circumstances should show that.
+Fixes: da5ec7f22a0f1 ("net: stmmac: refactor stmmac_init_rx_buffers for stmmac_reinit_rx_buffers")
+Signed-off-by: Yashwant Varur <yashwant.v@samsung.com>
+Signed-off-by: Jakub Raczynski <j.raczynski@samsung.com>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-I currently have very limited access to email for the rest of this week.
-I did not mean to completely dismiss napi_gro_receive(), just point out
-what kind of complexity is required for proper operation when the QMan
-portal mixes frames from different interfaces in the same NAPI poll
-cycle.
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 2a0d7eff88d3..3098971e0b66 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -2172,8 +2172,8 @@ static void __free_dma_rx_desc_resources(struct stmmac_priv *priv,
+ 		xdp_rxq_info_unreg(&rx_q->xdp_rxq);
+ 
+ 	kfree(rx_q->buf_pool);
+-	if (rx_q->page_pool)
+-		page_pool_destroy(rx_q->page_pool);
++	page_pool_destroy(rx_q->page_pool);
++	rx_q->page_pool = NULL;
+ }
+ 
+ static void free_dma_rx_desc_resources(struct stmmac_priv *priv,
+-- 
+2.34.1
+
