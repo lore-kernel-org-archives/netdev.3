@@ -1,110 +1,225 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022114.outbound.protection.outlook.com [52.101.96.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 106293F88AA
-	for <netdev@vger.kernel.org>; Tue,  7 Jul 2026 12:00:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783425617; cv=none; b=Zl2SSZoHXIa9b4H53rmnd1vT8DDZNbJNY6YCk8fU8OPo+HKIiD53zd/yf039oPv7j6A8EiLPe5mFkK2gWTWGcxgubp7sRaXL+4bTkos2G8bdPvn96EZm0+LbPFT/Vh3yMr2G9+HgJ2zZ3mOnwgh59jdxBxWduKkTK0zpcFJ0jJs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783425617; c=relaxed/simple;
-	bh=qlDJ746JGiTFJNRIapHXqXoAzifdALXvediQx13XyIs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MVX4IIrFobRsYUTr9e74FMSWtseb2p3C7MDrUY/dSf5QyCodw8r0lfLqCOtxpswTVG+jcvrC43ypCerHnbAT0pl2bRxIrgjyuZhVjTmuYXfo4UPR4CimaABJCB3C6t8mYH6ZtzJvnydTp/6r7D8YhYFGC4Q/yhtBJ3ukqNy6pI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OxAaE1xC; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4AC43FE362;
+	Tue,  7 Jul 2026 12:26:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.114
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783427222; cv=fail; b=tvmU3bdaAITDaCrh2HZbUDT0hSBcTfzbC0no/iOLa7GbGrh59+iyrnb5GQSaZAA6BBU7z36M+TfMpreNrEZnmX0NfI7waDIeM4v84n5X9+d+pVsDWTZavCooibl4HuLhO9sRj+E0ednbJalh7ryArM+7sbsnAYmn977taIwK/F0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783427222; c=relaxed/simple;
+	bh=MHbZObFH/YiDHiGKbRxzAATYxmqcK5zgrhAUZaM05wk=;
+	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
+	 To:Cc:MIME-Version; b=Xx5qOnL/t1tzQQlie+fnA1XnCBo5jM9Mw3qMteJGwbfIEaYyLqGpqTfjWm6dHg2Kf3qI84fpOG5qBQjpzEAjKkc0U2YJPSazuEjA5anpRzWKtPF1nwmVjJndHfnMnthobItwbZPihow93MSJzANU10NaV58NkwriUd0udtGyWKE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=FcCZOFAL; arc=fail smtp.client-ip=52.101.96.114
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OxAaE1xC"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-493e497643fso1485e9.0
-        for <netdev@vger.kernel.org>; Tue, 07 Jul 2026 05:00:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783425603; x=1784030403; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=qlDJ746JGiTFJNRIapHXqXoAzifdALXvediQx13XyIs=;
-        b=OxAaE1xC9empgB7Oh8znVpWuy/t/AqYZnOvpr6qkGq1FCl4Own//li1VQ3aUQ0qVIY
-         +KfWwAzw7vxBiE3uaJk/rVVnxnqCSYabZel2F9YtMP5vnAYeC2N6L5LWRA4aPEyxbxsE
-         iSHE8O5k1k2fdruGxV5+rYz4zN+HoLoA95mBJBztgdeAcPUrzO4qxSzDlA7TqRQCKxzl
-         aYjEa3r5ab4wefrofDX/2kOZZS9pfIu+EzHsfTlMWpxX5Ehl2lPN08cOwlLXo/E6QFGc
-         07vypalpD44TtQCXv+wrV0YqQ+EKR6v3hRffVt0gmCRcwcUlsb6yh9Ujqu9jclkSjtM8
-         JCdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783425603; x=1784030403;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=qlDJ746JGiTFJNRIapHXqXoAzifdALXvediQx13XyIs=;
-        b=fQbtY5BQbsDscz64LjFXFJBIn7sORw5IBRTB/Nma1luSjJALhzEE1yUASlYXcWewy3
-         s2Z1O5qsBsgTnoTiNVV5n+WK5MkruZ/97b4RmdqvVpKum1RXERPESwpFi8E4yE5DchlA
-         hazdgKJssuPuhkV/k9k/craz3ggL5doQOKyey/++iHF3DoBFTB59ejtxXP7a03rkpPSi
-         RJPKU1QOUXulL/+Y49Zwr9dPxPOSPT7dGOnEpNqlmpqMncZBDYm2FE4adcrPVldwdeql
-         KvPj9CIxM3laWgJ5x6QiwOTY4Pp+IJfZ4aqEy/1WE7zRd4aDZUszBsy4+EfHL1x5FUJk
-         jhBg==
-X-Forwarded-Encrypted: i=1; AHgh+RpmCJsGGTNMNlpe/mPJ+a3YEvh40Mtkx7mPVGjt8hjKl2HPki/MckEjf1R4Bzvs/BARrez+ySQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzkjLpXuo51rhbdPVlVzfrreOyhVtAFQugsjZr/r3EFccWei6Fl
-	ePDGmBd3FyDAB57vtA9IRIvGK5YFtsUr1PHP+Ud0V96P0k5ecY6r+iHx
-X-Gm-Gg: AfdE7clssiiVLCW7qZexgeTEYAZcIczCYZ8fSLyhcG0EOK6PcKkvM0BdjQtbpj1vgUx
-	KaGeE94sNWCO/blW82ggWcmZQ9480fDczbqKH9Tr8zx0+MuJQW4XUX7FKJak9DMhH3viaIIAXOs
-	s0OH9P99GdfRwTx9tlJqgRbeodV9QW7vKb4x0BG03lMAssENLJSDyWn1BrVc5CPvSTAHZ2hmks+
-	9lQ5Ty2yhjXJ/bJ1p610XTF7lHUQFaucAVc4yYcgP6sSoYz9v2qbnyrNfXvtwLixFqOLJXTvwgm
-	PkbKSVdYSbMDoQK+Cb1+zFQ1jd9BWgqjFA5TB32FoBX92CqLY5gD0sqi7mr+9q+/8bzfC4X57Fr
-	AtzDtlC9tdQ009Gq2qKvTiI9eNIDe8+F24f8+NScFNmX770VJic1yzMPwP4Q3amPBle/MSsY6AH
-	I/rHgfUs3lEHAm6OWdahCKMCeAtdScJu5djPK9JeAOMofno+7ROB9bTrUc7tQP+2DqlA==
-X-Received: by 2002:a05:600c:3b01:b0:493:a570:df7d with SMTP id 5b1f17b1804b1-493df080ce5mr49199465e9.20.1783425602811;
-        Tue, 07 Jul 2026 05:00:02 -0700 (PDT)
-Received: from [192.168.255.3] (85-11-142-46.pool.kielnet.net. [46.142.11.85])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493e0f439fesm54216335e9.8.2026.07.07.05.00.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Jul 2026 05:00:02 -0700 (PDT)
-Message-ID: <e5e61dab-5ff1-4a7c-9b74-d3ed61e6c81a@gmail.com>
-Date: Tue, 7 Jul 2026 14:00:00 +0200
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="FcCZOFAL"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Q0wdsznwVTNW+UUoyhCJjgINQ13bsPyOcDS5yIh1JDCvmYUSbpuTudblZlQGTJSlcUZYs4I1j9F/NKIERiFzMpO8k6hU/die7G6L3y2rRezpmjks73jYCNKFrIWsAwo/lgFDLpfpF7hqNUhS2fV/9Eam0wM96aXcAxNBRj08fUB8ZiJF8HmCnBstFG/B8hn9okjafKsdjhDH6lnCR9q0GTs1O8ThZ02PdZ/auwZmzaqH1X7TD94QCWnVl3gfk6TlOkrAdVHJ0405efhEqj/cdZpJ+mztXsHQH3t3FaohJC/mXIuUhZh1NUCM1p3eGke6gkI/6DiSLTJOtNbas6WVfQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MqUN+Ge5pa8YkE8//+RBDKMEy9BtL9Ej05adkUt6a9o=;
+ b=K95gBAnUcJ63L/kZA1c91bdaPh8oD4A40RRRZhzFPgp07wUGmtsoPBiNiRCFac2kgI82mQ7BKeupUO/SW7/BFt5oJxDa/mQ6gzlbG9LIgLzzz5WRn4gz3jLHwsADY3jDeomgtkTRRZJAVxCCvXXam3YONqs8NJMxFSlXs4e783e6+NUR+hF5gQC2aUj622HKEO7ndHNtz3RumvwsslDHI0JkkFF92zGQ72D085RL9lLUmbm+tLA6uzTr5qZMmCHzKO1pxxzfxD7Jeug8MD9JGq5eKstW1UH9I/jT+6oEVCSHjyYTP7fi2h8APvcEidHVQC+xhSjpG3cXcxIu4whAdg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MqUN+Ge5pa8YkE8//+RBDKMEy9BtL9Ej05adkUt6a9o=;
+ b=FcCZOFALIoQOVKgwlR2QgXETJyFLMo4vqIVUdzvlP/BxbTqVnE0+QnK+CdCHFYOzA9I1h65wA/4Pljsb0Wuxe82AVi3PUxy3Y+rX3G/SB/RmUt346YS6UGHsys5Do8EkJyWxUGhpqQ81rwXVt2euRrLPgiiC1CSBc+FLbThAphM=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by CWXP265MB2615.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:8b::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.13; Tue, 7 Jul
+ 2026 12:26:56 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0181.008; Tue, 7 Jul 2026
+ 12:26:56 +0000
+From: Gary Guo <gary@garyguo.net>
+Date: Tue, 07 Jul 2026 13:26:40 +0100
+Subject: [PATCH v2 1/7] wifi: ath9k_htc: don't store usb_device_id
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260707-usb_dyn_id_uaf-v2-1-632dcf3adfba@garyguo.net>
+References: <20260707-usb_dyn_id_uaf-v2-0-632dcf3adfba@garyguo.net>
+In-Reply-To: <20260707-usb_dyn_id_uaf-v2-0-632dcf3adfba@garyguo.net>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+ =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>, 
+ Johan Hovold <johan@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Petko Manolov <petkan@nucleusys.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Chas Williams <3chas3@gmail.com>, Alan Stern <stern@rowland.harvard.edu>
+Cc: linux-usb@vger.kernel.org, driver-core@lists.linux.dev, 
+ linux-wireless@vger.kernel.org, linux-media@vger.kernel.org, 
+ linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org, 
+ usb-storage@lists.one-eyed-alien.net, linux-kernel@vger.kernel.org, 
+ Gary Guo <gary@garyguo.net>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783427215; l=2845;
+ i=gary@garyguo.net; s=20221204; h=from:subject:message-id;
+ bh=MHbZObFH/YiDHiGKbRxzAATYxmqcK5zgrhAUZaM05wk=;
+ b=F+Xy09P6O+kMXaie+SWGy76yz7RsnCRpPLvMuUMxPJK1xq7qZ0iAhCk6TlXp5vF1B0QPNLK+2
+ a39iaBet8+QDeycXS+OpgUDlCLHz55yAIsAjNg5w1y8scG1cZBUSdXo
+X-Developer-Key: i=gary@garyguo.net; a=ed25519;
+ pk=vB3uIX95SM4eVrIqo1DWNWKDKD2xzB+yLLLr0yOPYMo=
+X-ClientProxiedBy: LO4P265CA0166.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:312::10) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v5 2/4] net: pse-pd: add Realtek/Broadcom PSE MCU
- core
-Content-Language: en-US
-To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
- Kory Maincent <kory.maincent@bootlin.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- Daniel Golle <daniel@makrotopia.org>, =?UTF-8?Q?Bj=C3=B8rn_Mork?=
- <bjorn@mork.no>
-References: <20260706112425.3149226-1-jelonek.jonas@gmail.com>
- <20260706112425.3149226-3-jelonek.jonas@gmail.com>
- <akvhq1YcUFP6eizf@monoceros>
-From: Jonas Jelonek <jelonek.jonas@gmail.com>
-In-Reply-To: <akvhq1YcUFP6eizf@monoceros>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWXP265MB2615:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0b8eee36-8e4b-4531-2aa9-08dedc230901
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|23010399003|7416014|10070799003|366016|1800799024|921020|18002099003|22082099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	MjwzkSUtHUELPQWQQ9lInTnWXl55PVh4TUTfHZDJ7BkTFVcEvpJ86KVgF9Ess/Suscr7mrDU1/o4tjlBQUPjJ9D4Hsepbv8PCJH68DC743uhXyW7hiBM1UNgo0sY3ipQsCSpg2bVN1cY51iM0TEU+CyOSNGVe/YtoRwAwby1x43DpnDVQVDyf2HLVMcAryKENE3TNwUSmRbiQGd1waFTc77NxN/b1PL2dW9hgqQjB7IbrflIK8mu4bBahIulGrvMFcJR+g8sEBMmGzgH+MCwXbXpxRqFFSUnF/XHGfmzWtf4+7OvViQ2kUUvp80cID557zUv0MfBwoxdobo0tkR2ie8IxyfzYFs/+kvxlP5M8ib2Gn+YbF5tuBJ0UmSUIr9T3MsL+bB9MYoMLr1Xjan+9zQmyM+aK+v537pxmRhXAmOKH4R4u02RiFa6jpB8Bp+mv2d1VZeI0Xi7LNSfDgBwk+1MZ4mMeDRrdZ95dkY1NOCnjqYbqdhQ0na7qyH5tYjxAoqhtNem6X9TeSzgCe0ffVd5O6lwCyU+Vz2CYU6ZHfvD5cTVAFgV8xlqpjGLLe/TSF/gRLGi3gdN/BrnX/N1fpBQIW+oKqAKQPaHWWtPCV6HwBQMGrKi/uDAVYV0mcy7GeAP3388B452cGtrgYr2erZ+FReancmZDbAFisrMKVns0ZxrFcGRZE2SlxKy4APxt8TieoWoFpu7bbdpph2+/w==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(7416014)(10070799003)(366016)(1800799024)(921020)(18002099003)(22082099003)(56012099006);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RHluSnRaM1NxT0tuTEtkYlJLM2U4Y0o2eGxSS292SUZZZXkxdTdxekNtT09O?=
+ =?utf-8?B?MUgwUDliQjA2cUZCQjR4Q05qQzgybFpmNzBEVnhjbE5QUTJ5clY5OW5jckh6?=
+ =?utf-8?B?MTF2YmFvaTlJaUw3aXNXOUprV0Q1RWpUVW5wTmp4aFJ3YldIUDBCRm1PaUFw?=
+ =?utf-8?B?eVJNMnN6dUpOS3RoTWVvZHczZjlUeFRQdXJ2eFRuSHcxbnhDZlc5L3RxRzFq?=
+ =?utf-8?B?Z0xyWGdJTzB0UXQrOXlraGdGelN4WGorTjRzNEN4a1M3L09DK2s0R2hBQlYr?=
+ =?utf-8?B?ZzBybFBFRkhLUUZkRVhRTXhiaUlWVHpKWWgrSC8wRWJvZU1YTUZZaXJuejAw?=
+ =?utf-8?B?RDROQytaVXpZLzdmdXpLaC8zdjJHVGQzOHV5SUtsS05GdUU3YUF6WjMxMlF2?=
+ =?utf-8?B?Nks5TGRlcGREZklla24yS1NHYldETU92MFFQaHo0YTlJN3BvcCsweVBIRzd1?=
+ =?utf-8?B?K1ZoemxXazlTMU1iWWhkUm5ZbUpROGFERzQ4aEV5aU5ranNsTUNURTVGZVR0?=
+ =?utf-8?B?aDBlU3Z1VnNMTHl2K3JFa0NhZkEwRjducHNhZGVqNDU5MjljZlpuM2xxMVFu?=
+ =?utf-8?B?dk16OFIvMG1tZ0NQN0IwT1hSVWRuK0xZNStuWjY4NHY4Y1luVTFmL2luT2lx?=
+ =?utf-8?B?QWVUMXF4NGk2K1YvcytPQkI5SHpTaGRHVExJZGJEd1BuNlplS2ZvQ0QxbERr?=
+ =?utf-8?B?MmVxeFN4UzRsMFVYREdvNDlQTHliVjJwVXVndnlIMERTdWNnZEltNU1icWVl?=
+ =?utf-8?B?dkpyU08zNGxMQTVlVzZlOXUvVlJkVmt0Qmt4MTNqd3B6M2hSTDVaYVFBWjdi?=
+ =?utf-8?B?bXF1TDk2SnZuSWpUVnlPRUpybVd6Vm1hcDhaeVdXaDNHUVpZVEFad2MxWGta?=
+ =?utf-8?B?UVNVRmtucm1tN2laZHBnMFVkd3NHWHA5dVJLTmc3ay94ZDJxTUswNkp1TWNh?=
+ =?utf-8?B?MUQ2SWY2ei9XZHFZSGJITk1PRWhyT3RFdGRFRWI1cmxJVXd4a042WkxPa3ha?=
+ =?utf-8?B?UHBkZjNUUm5YZVRQY3l2T0k1NnpadHMybGovTVh4VjdkcmxWQjZORE1pVU9L?=
+ =?utf-8?B?UVJaYnQyWStZYXk1QUFTWkxjMFZKY1JLckdudnNxbTBhWEZHM0lQSWJJMkRI?=
+ =?utf-8?B?eXNzQjRmVjZyTVhtTTBlNmRnaE56QXhLNXBHUHZZSGozcm5SaUtqanhsb2dy?=
+ =?utf-8?B?anRyQkJIeGlROXRvNHFtZktGYzNQWUZGSnAxUEJMN3dNQUFJY1crWi9jb1VS?=
+ =?utf-8?B?NkFxQWVmS0p4Wnk4STNDSDhLb1NlZEFZemFjS2x0aEt6SnhkMEFEczUwMSsr?=
+ =?utf-8?B?bFpuWGVKUUFGVmZqZVd4bjI3VmRhSi9QMkFtYmFBVnhNYUFiVW9qMVRPTHBB?=
+ =?utf-8?B?clM2RzI4VGFPd2FKZGJBY29zdVFzR0hET05aSFhRZlJqa3Fxd3lnTEpvVWxE?=
+ =?utf-8?B?ZCs0ZU5xWk5kVlpBcEhTeUtTWVJueGdUTVNneXVjYUlEZDd0YW8vL080ckJK?=
+ =?utf-8?B?U1VZaXFVaUIwMUN2cGkvRGhYamp1NnllL2tXb2ljUUREVUFmNS9CNFFKdnB3?=
+ =?utf-8?B?c3VsdVFWS0x1SDFVajh2cy82bTVtQlJnemVMRStFSkRmREpvblpXUmVZM3Nm?=
+ =?utf-8?B?bjBIZ3A0WWxHSlJqaVZEaHg1aWJuK2N5a3JlNnpsdWkrdW93WG9sU2ExemRE?=
+ =?utf-8?B?MTV3ZEVJRUVjYThrbURyTDZvMFM4RnorTGgraXA4QWVQczdEV1M5Q3cwdDFL?=
+ =?utf-8?B?b3FmOU9pb2RvR3MwNlFWVmN4R2lFZU0rZlFYVU9WOHZOU0tMejdWMzgxMkg3?=
+ =?utf-8?B?bGhEUVdNU3h6cXJZSVJoTTFCQlhzQVFYdVRHUEVEeThZKzI4VEtROERMVTdn?=
+ =?utf-8?B?NnRQdlVPaWVhYVVrMTFUcVJhL291cGJnMzhsMFRNNVlPM1ArUitrdDFpd3dt?=
+ =?utf-8?B?NitYbWRmKzIxT3BMYnZleWxiM1FLSEFZTm5zMGEzMkJRWGswUkdyRUhQT3kv?=
+ =?utf-8?B?aUtXa08zUmtCekVkZG1yMmErcFJNUHd0b1pBZytkZVk3Q3lTenBOQUR4cHJJ?=
+ =?utf-8?B?WWtOZy8xcnpsZ3NDOGZnK1VnOG91UkREaGtscThGRzdJT0taWFh5aTVmVVRN?=
+ =?utf-8?B?Q3VoeldtU1hIWkk2bTNobFJ2T3ViS013Mm1kK0pYaytVYnViRjUvUmFORTQ1?=
+ =?utf-8?B?Umo1cmRZOCtzNUZtQUxCa1hvSzZqZlRsNEtsTXVJMU0wR0dmOVdXRThOTmp3?=
+ =?utf-8?B?UURVbjZKVDFEYVIzOWRGd2ovUEF4bHhSdnZNdzFjY1A1eEEyanBTQmlSS3RL?=
+ =?utf-8?B?Ly91bHJOdVhVem5WRjZIdTB2SE9JM1BvR3JzcUZIdDQxdnMxcThiUT09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0b8eee36-8e4b-4531-2aa9-08dedc230901
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2026 12:26:56.6948
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0gPWQKiAdJiOq3CCp36GlS+38yI1lxA77muj8KADLGI5xHP0mYGaxVLHqxVv4gMYfBm3wdDiBHYwnkbVhIJsVQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB2615
 
-Hi Uwe,
+usb_device_id is not guaranteed to live longer than probe due to presence
+of dynamic ID. All information apart from driver_data can be easily
+retrieved from usb_device, so just store driver_data.
 
-On 06.07.26 19:12, Uwe Kleine-König wrote:
-> Hello,
->
-> On Mon, Jul 06, 2026 at 11:24:22AM +0000, Jonas Jelonek wrote:
->> +#include <linux/mod_devicetable.h>
-> Please only include those <linux/device-id/*.h> that you actively need.
-> I'm working on getting rid of <linux/mod_devicetable.h>, so please don't
-> introduce new users.
+Signed-off-by: Gary Guo <gary@garyguo.net>
+---
+ drivers/net/wireless/ath/ath9k/hif_usb.c | 12 ++++++------
+ drivers/net/wireless/ath/ath9k/hif_usb.h |  2 +-
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-I'll fix this in the next version. Thanks for the hint.
+diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.c b/drivers/net/wireless/ath/ath9k/hif_usb.c
+index 47f904e7e652..d3491ff08e6e 100644
+--- a/drivers/net/wireless/ath/ath9k/hif_usb.c
++++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
+@@ -1087,7 +1087,7 @@ static int ath9k_hif_usb_download_fw(struct hif_device_usb *hif_dev)
+ 	}
+ 	kfree(buf);
+ 
+-	if (IS_AR7010_DEVICE(hif_dev->usb_device_id->driver_info))
++	if (IS_AR7010_DEVICE(hif_dev->id_info))
+ 		firm_offset = AR7010_FIRMWARE_TEXT;
+ 	else
+ 		firm_offset = AR9271_FIRMWARE_TEXT;
+@@ -1182,7 +1182,7 @@ static int ath9k_hif_request_firmware(struct hif_device_usb *hif_dev,
+ 	if (MAJOR_VERSION_REQ == 1 && hif_dev->fw_minor_index == 3) {
+ 		const char *filename;
+ 
+-		if (IS_AR7010_DEVICE(hif_dev->usb_device_id->driver_info))
++		if (IS_AR7010_DEVICE(hif_dev->id_info))
+ 			filename = FIRMWARE_AR7010_1_1;
+ 		else
+ 			filename = FIRMWARE_AR9271;
+@@ -1198,7 +1198,7 @@ static int ath9k_hif_request_firmware(struct hif_device_usb *hif_dev,
+ 
+ 		return -ENOENT;
+ 	} else {
+-		if (IS_AR7010_DEVICE(hif_dev->usb_device_id->driver_info))
++		if (IS_AR7010_DEVICE(hif_dev->id_info))
+ 			chip = "7010";
+ 		else
+ 			chip = "9271";
+@@ -1255,9 +1255,9 @@ static void ath9k_hif_usb_firmware_cb(const struct firmware *fw, void *context)
+ 
+ 	ret = ath9k_htc_hw_init(hif_dev->htc_handle,
+ 				&hif_dev->interface->dev,
+-				hif_dev->usb_device_id->idProduct,
++				le16_to_cpu(hif_dev->udev->descriptor.idProduct),
+ 				hif_dev->udev->product,
+-				hif_dev->usb_device_id->driver_info);
++				hif_dev->id_info);
+ 	if (ret) {
+ 		ret = -EINVAL;
+ 		goto err_htc_hw_init;
+@@ -1369,7 +1369,7 @@ static int ath9k_hif_usb_probe(struct usb_interface *interface,
+ 
+ 	hif_dev->udev = udev;
+ 	hif_dev->interface = interface;
+-	hif_dev->usb_device_id = id;
++	hif_dev->id_info = id->driver_info;
+ #ifdef CONFIG_PM
+ 	udev->reset_resume = 1;
+ #endif
+diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.h b/drivers/net/wireless/ath/ath9k/hif_usb.h
+index dc0b0fa5c325..b3e7b0fb54b8 100644
+--- a/drivers/net/wireless/ath/ath9k/hif_usb.h
++++ b/drivers/net/wireless/ath/ath9k/hif_usb.h
+@@ -115,7 +115,7 @@ struct cmd_buf {
+ struct hif_device_usb {
+ 	struct usb_device *udev;
+ 	struct usb_interface *interface;
+-	const struct usb_device_id *usb_device_id;
++	int id_info;
+ 	const void *fw_data;
+ 	size_t fw_size;
+ 	struct completion fw_done;
 
-> Best regards
-> Uwe
+-- 
+2.54.0
 
-Best regards,
-Jonas
