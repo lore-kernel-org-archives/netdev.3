@@ -1,156 +1,164 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F60430CF0
-	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 11:02:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE57E420E85
+	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 11:09:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783508570; cv=none; b=EfuiKZf5NS0L+qPAeNZgB+TK64A1SFSMvTEtXguYqJNfRF6n971zWns4S+42iXwRUCRjhxA6/WFie43YuUet4jVnpyZEtIFDcpJ0KpiY9mGwVhv3e8GAIrC/D658Ot+ZekahEAjNp8mOePPpb5O58NpqSz5Y+zpb5ChEm9DDWDg=
+	t=1783508944; cv=none; b=JuED9qGYLr+05cXsFlTHvDcnYcXrux2QSIYq7w1kLsVpLVuzMCNunYoUBVldmqR75GAp8ltauVNz8K8y0T8F4AAYQjdxsYtf1WIU3fcFmf5bIPcMmNgtzfcHTpwgME4La2XjhcZ1z2WyTPD4Me+w3nnisJE5EPdWom4KLmZA3rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783508570; c=relaxed/simple;
-	bh=oPZaKv1OXlABgq9QPAtMKfhvRK+tiC3E15Kuw9g/LH0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dNs4XSuxjR0D4yKbCtOr22sn1kAA+8mVLv6iitGTBK+D+FFGMUz+iwQYzZXHjndV74kvY8rZ9DwizNkmAUztx1wvinDVvf6wLeCKMuEHC/3YeIzso9SF4Z1/AF0EWOsZ3JCMi/29hpzzRUkxh9qa5UPa8JoJxVUGg5JzDyd+6F4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=TVCoBivw; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	s=arc-20240116; t=1783508944; c=relaxed/simple;
+	bh=Ch4qZpXD8kAZhrpg54ek7qWALqUDSIIDtce5DKYs4yk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=j+cm6pKyCxCHR0uJQ0TOT3hCa3agudUbW9Zu+cO6G3xXiKtxBJ8/AWD+ikYIZqad2O7PJd8emLJhqopXGVZcsObT8wB32mSjf6+VXBqDHWYeiRcYeKezwUTYsQgB+PSbfntRn+Oya70OJnzyWQAAHWYfQiYIcH+P6fzpyJ2dfDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VYhC0NRF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="TVCoBivw"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-493b27c7451so18913595e9.0
-        for <netdev@vger.kernel.org>; Wed, 08 Jul 2026 04:02:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre.com; s=google; t=1783508557; x=1784113357; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=oPZaKv1OXlABgq9QPAtMKfhvRK+tiC3E15Kuw9g/LH0=;
-        b=TVCoBivwZB2Iu+tXZ3PZJl6FTVvr7/zv/pmro4MivlSx8HxlzupIfthsZ8Jim8mcQN
-         Ag2xQD1zlSNB9iI/B816fkbjAjAvNmspd4RfFBRANlt03eGinG4oeeNYVFkZSx6rkpLT
-         qG5bHwkZyvigBoT6egeQcBw0Wgu6XK/y/nU7ui0lkmSg6lwhjZI/qfMt7mEfCxRptRbh
-         iVXPhcg/iWozh82DGlFpg0+caPRIMs/IBAkwHkEiOlb22hdpVFYsy3a/LmdxDXTB3JP4
-         aOua/pWfGBrSsBV7C2QTnR8PelDfMvOLDFzIDzu+CeAy0oVyQpsUWykyUPeRUEeF7kEl
-         EKOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783508557; x=1784113357;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=oPZaKv1OXlABgq9QPAtMKfhvRK+tiC3E15Kuw9g/LH0=;
-        b=edAybCyIGUxSm7MqBP3GaG50TtPG5uBf8vbEK9vZl+g7230kvF4Aso/DrCZ9lcE1qn
-         o4o1MQ39EH4NyvrAByra/aNaJmyvmJDo5KJX0lN5HkJMRQQqWqcb3TKSOab93b1omwlS
-         4acVDfRuee8eEz8BkEmMR8EXgaH7VTkk9m/wTK3EPjlcSHr5H2c/9Zif+V62O4xIX6Hz
-         PbamwHG98Q/qEwjkWElc6xfEOAMpNs431BQheHFEShyR4WuAL6jNwA0xGD9Q92lfLXFy
-         dA6pZ/0qOjrX3dd+H/5rTQW7fMioAbMoDBSBTM1Tc9k2ytexK1Kmy9gRZv7syz0yAB8B
-         78Tw==
-X-Forwarded-Encrypted: i=1; AHgh+RpJLAQUZWTiNSjm32XfOkhsoglA6Pxe9CQbIafhth0zDiOJCburfpEllb6LWsy/qnZaP/+oZPA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxiflVu/8ryDxuYJpE/JVJtfR9dOegA3IWTtiEOIr3z3qt2ag4x
-	4B1gPVi8rMkzXPXBawB1Viv4Y6xTfBvEsgnJYTViN965RyUMuJ/J6pfBFFK0m+mVdSqWYjoyV4t
-	3jdoy
-X-Gm-Gg: AfdE7clibZc8oxYq3h0H80BCw12wdVeEBONZkAQdOfA94GjHPYJOngTRVWdWUFftCDm
-	bbjF4+oB8pt8F5DpcXANVVrlt0kkYvoPuVaT0nDiKs0cML0x/VuadVdSsa57L+EV2LFpx74YqNJ
-	Dj/nQS3m8TEMI8Myno+fERhHYKbCp/QdpuKCSvogv4Vms/Y9aCCm0WlvQG0vFTR+gGl/EIwN+v8
-	aImWZOAcZAc9EVYNoqh+7joEDMqWyIDYtrni7z7IC7bb+0N1H4pkpUbwOmR/Gqz2MZ2hsf/P8xc
-	/DrXuUGEOcGi4fwobvV4l9Zz2tp8bBri6KTecYF10y5Je81WiotipddbN6KiREKAx8WRfh9/Ldo
-	fJiL2qTot5nexjCWDaf8L0/ySeMfuZhz8uhPP318PvBtZrqQ75CmuFNT6nBToFZnYIohdRupdmc
-	hFOoLw+29IF1M1x8v+MrcN9iNaW6g+9pdDClfuyHFvJWcFS3t5XkSR0voKO25qZ0tk9t2gi7hBx
-	QWA
-X-Received: by 2002:a05:600c:1d04:b0:493:bc4a:a14d with SMTP id 5b1f17b1804b1-493e63a9f76mr20030585e9.19.1783508557034;
-        Wed, 08 Jul 2026 04:02:37 -0700 (PDT)
-Received: from localhost (p200300f65f47db04930dc5bd4534e1e5.dip0.t-ipconnect.de. [2003:f6:5f47:db04:930d:c5bd:4534:e1e5])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-493e0f40d50sm151903545e9.5.2026.07.08.04.02.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jul 2026 04:02:36 -0700 (PDT)
-Date: Wed, 8 Jul 2026 13:02:34 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 net-next] net: phy: Drop #inclusion of
- <linux/mod_devicetable.h> from <linux/mdio.h>
-Message-ID: <ak4tWWl2Mt3BkTXy@monoceros>
-References: <ca270a534d0f230a939a3fb4a661808b35d6436d.1783329817.git.u.kleine-koenig@baylibre.com>
- <12ec5246-4124-4edb-a5f8-f10c73b1fcb7@lunn.ch>
- <akwToZyYvHZPtdjV@monoceros>
- <96a77bc9-9804-43fb-acf0-b93574cd60f3@lunn.ch>
- <akynGw4TQimFiQST@monoceros>
- <2f07f731-0b97-4a23-8ccd-f01638fc1c7e@lunn.ch>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VYhC0NRF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A41F51F000E9;
+	Wed,  8 Jul 2026 11:08:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783508938;
+	bh=gs9vAao4aEUztfSrj1GntTCmCsvmgmNhJErp1+vaAV8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=VYhC0NRFX/R5yPpYWMLdvV+A2mpX75pUuN5SAOAky/nkA/xKZ0fk338ufUa4eYZum
+	 irV2XBLT8JN0W7gJ5GGcVJjjtbibzMx6XSs1SQnuKswvqLRCjZSzeIyYC4+anLNgBf
+	 C25tD/m/gvjZyXwTv5JmFu15uGcVpSeMq86PIUsuNPn1NEYo9jX+j7RO2/gTvR5/hV
+	 aoVR7LV6iHoMjKNR6lFvDO+O2kER8cru5WkzGM02FrqO+CSo4UWVOlur9vkbc/3B3P
+	 42iJygU0jmylzDQFTVrbeT5jVH9lZtz+w8oTBX8B2ggHm957ggebSbGf7Qw006X9Ao
+	 UliByQC6fDEMA==
+From: Simon Horman <horms@kernel.org>
+To: dddddd@hust.edu.cn
+Cc: Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	david@ixit.cz,
+	error27@gmail.com,
+	krzk@kernel.org,
+	kees@kernel.org,
+	kuba@kernel.org,
+	sameo@linux.intel.com,
+	michael.thalmeier@hale.at,
+	dzm91@hust.edu.cn,
+	hust-os-kernel-patches@googlegroups.com
+Subject: Re: [PATCH net] nfc: pn533: fix use-after-free in pn533_recv_frame
+Date: Tue,  7 Jul 2026 19:06:52 +0100
+Message-ID: <20260707180649.1434511-4-horms@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260627131345.1548407-1-dddddd@hust.edu.cn>
+References: <20260627131345.1548407-1-dddddd@hust.edu.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ncfrdjtwdwvsqxls"
-Content-Disposition: inline
-In-Reply-To: <2f07f731-0b97-4a23-8ccd-f01638fc1c7e@lunn.ch>
+Content-Transfer-Encoding: 8bit
 
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://sashiko.dev
+---
+nfc: pn533: fix use-after-free in pn533_recv_frame
 
---ncfrdjtwdwvsqxls
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v1 net-next] net: phy: Drop #inclusion of
- <linux/mod_devicetable.h> from <linux/mdio.h>
-MIME-Version: 1.0
+This commit adds a spinlock cmd_state_lock to serialize access to dev->cmd 
+in pn533_recv_frame() and the command completion worker. It aims to prevent 
+a use-after-free when a command is detached and freed while being 
+concurrently received.
 
-On Tue, Jul 07, 2026 at 02:10:56PM +0200, Andrew Lunn wrote:
-> On Tue, Jul 07, 2026 at 09:15:35AM +0200, Uwe Kleine-K=F6nig (The Capable=
- Hub) wrote:
-> > Hello Andrew,
-> >=20
-> > On Mon, Jul 06, 2026 at 11:28:33PM +0200, Andrew Lunn wrote:
-> > > > That's exactly my thought, and there is commit ad428f5811bd
-> > > > ("mod_devicetable.h: Split into per subsystem headers") that is par=
-t of
-> > > > v7.2-rc2 and that does exactly that (apart from the filename).
-> > >=20
-> > > Ah, O.K. net-next tends to great dragged along the -rcX versions. So
-> > > you can probably submit the networking changes in a weeks time. Just
-> > > make sure they apply to
-> > >=20
-> > > https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git
-> >=20
-> > Note that while I created the patch under discussion on top of -rc2, the
-> > justification is also valid on -rc1 and the patch doesn't use the new
-> > headers, so it can be applied to the above repo already now.
->=20
-> Yes, our patchwork instance and its CI agree:
->=20
-> https://patchwork.kernel.org/project/netdevbpf/patch/ca270a534d0f230a939a=
-3fb4a661808b35d6436d.1783329817.git.u.kleine-koenig@baylibre.com/
+> diff --git a/drivers/nfc/pn533/pn533.c b/drivers/nfc/pn533/pn533.c
+> index d7bdbc82e2ba2..921e93a5f16f5 100644
+> --- a/drivers/nfc/pn533/pn533.c
+> +++ b/drivers/nfc/pn533/pn533.c
 
-That's great.
+[ ... ]
 
-> but i was actually meaning the patches which swaps to the broken out
-> header with only struct mdio_device_id. I assume that patch is the one
-> which really reduces the number of files which get recompiled on
-> unrelated changes. That patch can be submitted to netdev probably next
-> week.
+> @@ -458,10 +477,10 @@ static int __pn533_send_async(struct pn533 *dev, u8 cmd_code,
+>  	mutex_lock(&dev->cmd_lock);
+>  
+>  	if (!dev->cmd_pending) {
+> -		dev->cmd = cmd;
+> +		pn533_set_current_cmd(dev, cmd);
+>  		rc = dev->phy_ops->send_frame(dev, req);
+>  		if (rc) {
+> -			dev->cmd = NULL;
+> +			pn533_set_current_cmd(dev, NULL);
 
-Ah, indeed. After 995832b2cebe6969d1b42635db698803ee31294d and its
-parent there are not many left affecting netdev. But ack, I will wait a
-bit before tackling drivers/net/wireless/intel/iwlwifi/iwl-config.h
-(which is the only remaining user of <linux/mod_devicetable.h> in
-drivers/net).
+[Severity: High]
+This is a pre-existing issue, but if dev->phy_ops->send_frame() fails, it
+jumps to the error label and frees cmd. If a concurrent receive scheduled 
+the complete work, could that work also free cmd, causing a double free?
 
-Best regards
-Uwe
+>  			goto error;
+>  		}
 
---ncfrdjtwdwvsqxls
-Content-Type: application/pgp-signature; name="signature.asc"
+[ ... ]
 
------BEGIN PGP SIGNATURE-----
+> @@ -569,10 +588,10 @@ static void pn533_wq_cmd(struct work_struct *work)
+>  
+>  	mutex_unlock(&dev->cmd_lock);
+>  
+> -	dev->cmd = cmd;
+> +	pn533_set_current_cmd(dev, cmd);
+>  	rc = dev->phy_ops->send_frame(dev, cmd->req);
+>  	if (rc < 0) {
+> -		dev->cmd = NULL;
+> +		pn533_set_current_cmd(dev, NULL);
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmpOLkcACgkQj4D7WH0S
-/k6E0wgApW4YEibqxo7s6E2O2Qy4D5Tx3XurOUW4nbjnKTfepxZwf8B5r5Hn6fr/
-QhUtm5a9JNOxWPsmJM79yjdBDGmGls18G+CTQxwOxRj1IfW+RAD0kGQBXYJpq4uN
-dQq21Wq7sO6jOxuBlYuu9oZFDA6ZkqnU/0VnH6Jp1D/vCOsfAcxPttTO3D61MGiO
-eQuh2zR7SPDiF+Lzm7IWi6NEZAKbXg/+jbkioFJU2vE09GkH9lJvVtS5SQwVX25p
-HhoQCYm1wTyEPP8gTl9lf3hSQ/Epr7DFMtxmrTQ4GMgTplSOQln8zMJwK37v+bBi
-F3CvCSUqlUJWY0AEQxg1ehLQbzbj0g==
-=v4gp
------END PGP SIGNATURE-----
+[Severity: High]
+This isn't a bug introduced by this patch, but if dev->phy_ops->send_frame() 
+fails in pn533_wq_cmd(), cmd is freed. Does a race condition exist here 
+similar to __pn533_send_async(), where concurrent complete work could also 
+free cmd?
 
---ncfrdjtwdwvsqxls--
+[Severity: High]
+Additionally, this is also a pre-existing issue, but does this error path 
+drop the command without calling complete_cb and without clearing 
+dev->cmd_pending? Could this leave the command queue permanently hung 
+upon transient bus errors?
+
+>  		dev_kfree_skb(cmd->req);
+>  		kfree(cmd);
+>  		return;
+>  	}
+
+[ ... ]
+
+> @@ -2165,6 +2184,15 @@ static int pn533_data_exchange_complete(struct pn533 *dev, void *_arg,
+>   */
+>  void pn533_recv_frame(struct pn533 *dev, struct sk_buff *skb, int status)
+>  {
+> +	unsigned long flags;
+> +
+> +	/*
+> +	 * Hold cmd_state_lock across the whole receive path so the current
+> +	 * command cannot be freed by pn533_send_async_complete() between the
+> +	 * dev->cmd check and the stores into it.
+> +	 */
+> +	spin_lock_irqsave(&dev->cmd_state_lock, flags);
+> +
+>  	if (!dev->cmd)
+>  		goto sched_wq;
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but if there is no active command 
+(!dev->cmd), this jumps to sched_wq without freeing the skb. Does this leak 
+the skb if an unexpected frame arrives?
+
+>  
+>  	dev->cmd->status = status;
+
+[ ... ]
+
+> @@ -2182,6 +2210,7 @@ void pn533_recv_frame(struct pn533 *dev, struct sk_buff *skb, int status)
+>  
+>  	if (pn533_rx_frame_is_ack(skb->data)) {
+>  		dev_dbg(dev->dev, "%s: Received ACK frame\n", __func__);
+> +		spin_unlock_irqrestore(&dev->cmd_state_lock, flags);
+>  		dev_kfree_skb(skb);
+>  		return;
+>  	}
+
+[Severity: High]
+This is a pre-existing issue, but does pn533_rx_frame_is_ack() safely read 
+from skb->data here? Since there doesn't appear to be a check for skb->len 
+before calling it, could this result in an out-of-bounds read if a malformed 
+or short frame is received?
