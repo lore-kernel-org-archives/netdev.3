@@ -1,113 +1,79 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C90783E6392
-	for <netdev@vger.kernel.org>; Tue,  7 Jul 2026 11:10:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454053F58E6;
+	Tue,  7 Jul 2026 11:20:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783422616; cv=none; b=Qcu+msxGWmq11Kh2mQ/nXtuTjeVNhZmmj8L0JM9hwh9lc3iZ5+5+/or3tblfQqiLI69zUbG4IqyLz9WuveHCANyG8SRbqSjSjHpy0mWvt3YpnWrBI8nAGD1DNoI6SxdlndMk5WWnatsRWvmdPwfvkivTvk72CraEr42VAxZS4yg=
+	t=1783423227; cv=none; b=nBgC0Suw75kgJsu0N1sjiE4cwojsQBx9KwK1XCek+7JKaeSMav85xWFaJzn5A4OceTuis/GTg5oV8q//X9HI74/a8C3PkS4ANlAQBqgKCYmlgsf4Q/i9+6jbcTvzRcFqS+WI4A6CVnXAb6gEVs0Dkw9DJhPxfOAUfwDaaCZoEws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783422616; c=relaxed/simple;
-	bh=HbrxnkhkBloL8pgj3H5uTbv6oVtfAv7MakqvR3BMI3U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZYycVru0CTxMxjZh6VKjRwsYfWnh2h7KpkYwz54IHvF78QlVFREsl87GmENdeE4lznIcACdx8Mbx8QiGYS2HZR68M7QEdvxOtaco75pK5CUlHLyq8+4d3UJMt/Qicoz54WugPWNWO/qolBCEe7RFx9kG3Y7pEIk2OTc0tkN3V30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=fbct+YP2; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1783423227; c=relaxed/simple;
+	bh=xcb/lYqIKXK1vUGxwYDaeE3NG/6v6Sfe2CEeH3RLIuI=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=PlD574hZqdurK8j08rz/dqBDZRsNl3EgWQoQDSWSZabBZ8cDkHarNWoNHmK94o9nuf4BSlfTtspUaQJrBcNlOIkss8MeoiCWcpHg+Adsz83QmtmFbSfWziA8uXenX5lc/YpD7uza0OwbQyhRtwQOgcMh/1vaqm8WsH3kYMlMYuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jbxpbKjw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="fbct+YP2"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 3647C1A0EB7;
-	Tue,  7 Jul 2026 11:10:12 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 087C7601A3;
-	Tue,  7 Jul 2026 11:10:12 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 42C9F11BC150A;
-	Tue,  7 Jul 2026 13:10:03 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1783422610; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=6XCXmOjphQkcXnm91iLeRRCWQdQMqmpt67g9KghxGOI=;
-	b=fbct+YP2HBJM3/5c0slj9Qm0giNfSh4VoTfPYOYLPwSxPGzVs9tCCYO0eqHRy7vfJUuNoK
-	hRrq8rh7Qt8PXJr1tMrNckUDtyofg5X/KIk10vevbVPXmEOTOd3SF8FEUUUvhwx0sl/+lQ
-	zcLcvvIcLZsxlLHXfVqp+7/FJh8b/lxQOkWgy5pvU9r/GLpAdyNcLIggcn3Txdvw0sjfqX
-	qpSO0xjE/K6rbOp1Kt3SGQCOvo6H/AzrJGT2ciGuT3M5RoQwu/2ypvq5+kxErSb624GmGV
-	9r23o/ZvzpGg6c9xbko+Xj7eHCPNTfDHiO4PRieyX/zyZImM4toHBaopHIa7DQ==
-Message-ID: <a5dcf2a7-8291-4ac9-bbf4-513b43524f10@bootlin.com>
-Date: Tue, 7 Jul 2026 13:10:03 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jbxpbKjw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A3631F000E9;
+	Tue,  7 Jul 2026 11:20:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783423226;
+	bh=HC1CiGl3Dfh6Ra3ZH1WZbs+vEPwTQRbaXlOvtAdG00E=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=jbxpbKjwm/4fYDVHIMVXGz86C+O6obKIKX17WRhr8yli0nqgSaZWqWQd/9mmadAmP
+	 CiW2W8l392A215x9Cm7fsZBCTr15Qgm8MhWUxhOR3SUCyuxuacYBfQ9bp/6MljLHWa
+	 EIBQI/sGCXf2lgYUs30T9gXkmZeXc3yYEiVGZKfyKcjpQTbgTdnvqj8Nhb3fqk1j7y
+	 e3Zon3s8QHfgmYLlaPRTC+5b3WT/rIFN05i4b1PnN8YHxtoZVurckgn8vKU8fljqwJ
+	 MOEPWFlM6Z7jU6sjJoH+mAyrtfUt3M4ZU7nONQHWlPRfHotgV4nvEDHwyP5BkS2sYX
+	 U1++OQdjOjLIQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5691C3925479;
+	Tue,  7 Jul 2026 11:20:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v5 2/8] net: phy: phylink: add helper to modify
- pause
-To: javen <javen_xu@realsil.com.cn>, hkallweit1@gmail.com,
- nic_swsd@realtek.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- daniel@makrotopia.org, linux@armlinux.org.uk, enelsonmoore@gmail.com,
- daniel@thingy.jp
-References: <20260707091637.371-1-javen_xu@realsil.com.cn>
- <20260707091637.371-3-javen_xu@realsil.com.cn>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20260707091637.371-3-javen_xu@realsil.com.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v3] net: usb: lan78xx: disable VLAN filter in
+ promiscuous mode
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178342320589.1506559.9026475494202161606.git-patchwork-notify@kernel.org>
+Date: Tue, 07 Jul 2026 11:20:05 +0000
+References: <20260701-lan78xx-vlan-promisc-v3-1-232266d32743@dissecto.com>
+In-Reply-To: <20260701-lan78xx-vlan-promisc-v3-1-232266d32743@dissecto.com>
+To: Enrico Pozzobon <enrico.pozzobon@dissecto.com>
+Cc: Thangaraj.S@microchip.com, Rengarajan.S@microchip.com,
+ UNGLinuxDriver@microchip.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ Woojung.Huh@microchip.com, netdev@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
-Hi, 
+Hello:
 
-On 7/7/26 11:16, javen wrote:
-> From: Javen Xu <javen_xu@realsil.com.cn>
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Wed, 01 Jul 2026 16:47:23 +0200 you wrote:
+> From: Enrico Pozzobon <enrico.pozzobon@dissecto.com>
 > 
-> For Realtek nics, when we enable jumbo, pause are not supported. So we
-> must check the pause capabilities from ourself and lp.
+> The hardware VLAN filter (RFE_CTL_VLAN_FILTER_) drops VLAN-tagged frames
+> whose VID has not been registered via lan78xx_vlan_rx_add_vid(). It is
+> left enabled in promiscuous mode, so packet capture (e.g. tcpdump or
+> Wireshark) does not see tagged frames for unregistered VIDs.
 > 
-> Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
-> ---
-> Changes in v5:
->  - no changes, new file
-> ---
->  drivers/net/phy/phylink.c | 66 +++++++++++++++++++++++++++++++++++++++
->  include/linux/phylink.h   |  2 ++
->  2 files changed, 68 insertions(+)
-> 
-> diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-> index 59dfe35afa54..c450ee33b75c 100644
-> --- a/drivers/net/phy/phylink.c
-> +++ b/drivers/net/phy/phylink.c
-> @@ -1828,6 +1828,72 @@ int phylink_set_fixed_link(struct phylink *pl,
->  }
->  EXPORT_SYMBOL_GPL(phylink_set_fixed_link);
->  
-> +/**
-> + * phylink_set_mac_capabilities() - Dynamically update MAC capabilities
-> + * @pl: a pointer to a &struct phylink returned from phylink_create()
-> + * @mac_capabilities: the new MAC capabilities mask
-> + *
-> + * This function allows a MAC driver to dynamically change its capabilities,
-> + * such as losing/gaining Pause frame support based on MTU size.
-> + * It recalculates supported link modes and triggers renegotiation if needed.
-> + */
-> +void phylink_set_mac_capabilities(struct phylink *pl, unsigned long mac_capabilities)
+> [...]
 
-This is a step in the right direction, but this is maybe too generic, as
-mac_capabilities represent both the MAC's Pause support as well as Speed/Duplex
-support.
+Here is the summary with links:
+  - [net,v3] net: usb: lan78xx: disable VLAN filter in promiscuous mode
+    https://git.kernel.org/netdev/net/c/60444706aa17
 
-The speed/duplex parts shouldn't be changed dynamically, I think the helper
-needs to be specific in its naming that this is strictly about changing the MAC's
-Pause / Asym capabilities dynamically, and be either passed some booleans, one for
-rx one for tx, or fail if we try to change anything other than MAC_SYM_PAUSE and
-MAC_ASYM_PAUSE.
-
-Maybe something like "phylink_update_mac_pause_capabilities" ?
-
-The 'update' part makes it clear this may trigger re-negotiation.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
-Maxime
