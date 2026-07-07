@@ -1,86 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF1CE18FDDE;
-	Tue,  7 Jul 2026 01:12:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11E282D47F1
+	for <netdev@vger.kernel.org>; Tue,  7 Jul 2026 01:26:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783386761; cv=none; b=S3l2gbMSvlZjhSorIC5QQQ4YRUKKXTLTj9T+JXQ1Y246mH2hyf9XGNfl8+LCn4eynVqh6RF11gzuydixqsySHgjiUGKuB1dgAo/E3SsfTkuclimIP3GO/UfiCiJf/NSiW2GA8HiMqiDlj0nA6dHpyIAChTARc4cccCg/N+iO04k=
+	t=1783387602; cv=none; b=kE5XIGBCZhiXIPVs5Z2oycXwYqWNn8i5S9xDs1G8HaYlfFNr0PzJTHOvMYk88jMaobUwYGO7LSUvKgw1zVNM64DNxnziDKgzvmU3z0OXSzKUyqfNnQvRPffMbPhiBAGsZ20P+6MpNGcijeIqfFu7PHfhKSiLgJdSiGxceVUS3LQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783386761; c=relaxed/simple;
-	bh=Oa58u2MEFM17e6mdrEnFTSH0F2mIknYamCu58oZtmWE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JVt8F44b5lYAvGYex1JNw5BMakuI7e5rDxFmpieJ0nPxagrOP8SGaeaDPDcuNlhgWu96X1Gn4LXUuTOi01Dc7PgQGvoFd4B2Z1mmP+TZ+3NEGKnL9jgWDCpVVpXWnPbZeoYemXt12T74jRtQzpdyrqy27sqIbrxzf7f9Cet8Suc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aqV/Etli; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783387602; c=relaxed/simple;
+	bh=rypkywCllkRCtt7lrzaFfAjRvYVR/iBmoYtPGMl+Hms=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=msv22JztYjA+M9FBiQnrJNgwmbleD7qV2KYusKccSLnEeWyzpUvCv8PBvkla+VPiGO9OyYzYjBtrrN5C81c9u0VMDwlDIwINO9eplSESXepsKl5OyVJ1LtZjIMbhlxm7kMjBnnXWcRmJydDt88DXGR224gzQOzkWKc3Bqsc9rLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=NLpehEzj; arc=none smtp.client-ip=91.218.175.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aqV/Etli"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82BB71F000E9;
-	Tue,  7 Jul 2026 01:12:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783386760;
-	bh=Bpr94blKxteo8hypXiKiHMmG4NpkfXoLHUxXUd6dXlE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=aqV/EtlifybphsGTzPN4XSgCiBcycrTeTLlWNLVUrKOrd09ebjJiXqQ0Cmjv2hygY
-	 6g4hqp4xh5cumNqeNUmmRJa0ZWUkraM+OAK1+9cZSEjECKmtIDOXt+7/aq2eUHmiND
-	 6QZJnGmOlaJ82h/7L8lLDDrT+J6h86c00nbiHrhwdQFlD9joO+tW7amMONpy/FUiBY
-	 3p/wOqNIS9XBnud3q9ZptwP7wDH4S4YIt01VfDJdWuNXL50hchTL7d17v8JemjVgEa
-	 imy618oWv77Eqtu/Ke81Pcg2XDYrPhz4go4uBzfqxcNJYXwDAFusW0siencRO1Qo7u
-	 m+3dp0r6bKQ8w==
-Message-ID: <7368b556-b874-4d90-87de-44d7f0d3dc31@kernel.org>
-Date: Tue, 7 Jul 2026 10:12:34 +0900
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="NLpehEzj"
+Message-ID: <5e2119f1-3c1c-43eb-984e-a8eeab2896e0@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783387597;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QOhHJ1dEBTNHFcbH9VoW95mNmVv3gt+0b86uohL6/ko=;
+	b=NLpehEzjCglzQx+nvZdL1ZNVCLZDZoJdJq7jhEjuPkZangZaof5yjCXsyJ+ChqF6Cp/oS/
+	uP6T7WxFcbSBuq61400mGJ5AP7270TSqRT62RqwObsREa/ldagd/m9nyad9A5Im+GmQXp/
+	WapcEt534CmmlT9lKJSVR9NEXH3A+1E=
+Date: Tue, 7 Jul 2026 09:26:06 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/9] ata: don't store pci_device_id
-To: Gary Guo <gary@garyguo.net>, Bjorn Helgaas <bhelgaas@google.com>,
- Zhenzhong Duan <zhenzhong.duan@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- Niklas Cassel <cassel@kernel.org>, GOTO Masanori <gotom@debian.or.jp>,
- YOKOTA Hiroshi <yokota@netlab.is.tsukuba.ac.jp>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Vaibhav Gupta <vaibhavgupta40@gmail.com>,
- Jens Taprogge <jens.taprogge@taprogge.org>, Ido Schimmel
- <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- David Airlie <airlied@redhat.com>
-Cc: linux-pci@vger.kernel.org, driver-core@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-ide@vger.kernel.org,
- linux-scsi@vger.kernel.org, industrypack-devel@lists.sourceforge.net,
- netdev@vger.kernel.org, dri-devel@lists.freedesktop.org
-References: <20260706-pci_id_fix-v3-0-2d48fc025acc@garyguo.net>
- <20260706-pci_id_fix-v3-1-2d48fc025acc@garyguo.net>
-Content-Language: en-US
-From: Damien Le Moal <dlemoal@kernel.org>
-Organization: Western Digital Research
-In-Reply-To: <20260706-pci_id_fix-v3-1-2d48fc025acc@garyguo.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-On 7/6/26 23:11, Gary Guo wrote:
-> pci_device_id is not guaranteed to live longer than probe due to presence
-> of dynamic ID. All information apart from driver_data can be easily
-> retrieved from pci_dev, so just store driver_data.
-> 
-> Reviewed-by: Danilo Krummrich <dakr@kernel.org>
-> Signed-off-by: Gary Guo <gary@garyguo.net>
-
-Looks good, but please change the commit title to:
-
-ata: ata_generic: don't store pci_device_id
-
-With that,
-
-Acked-by: Damien Le Moal <dlemoal@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: luoxuanqiang <xuanqiang.luo@linux.dev>
+Subject: Re: [PATCH net-next v2] ipv4: hold a consistent view of rt->dst.dev
+ under RCU
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>,
+ Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+References: <20260701032434.17500-1-xuanqiang.luo@linux.dev>
+ <20260705164649.GA295849@shredder>
+In-Reply-To: <20260705164649.GA295849@shredder>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
 
--- 
-Damien Le Moal
-Western Digital Research
+在 2026/7/6 00:46, Ido Schimmel 写道:
+> On Wed, Jul 01, 2026 at 11:24:34AM +0800,xuanqiang.luo@linux.dev wrote:
+>> From: Xuanqiang Luo<luoxuanqiang@kylinos.cn>
+>>
+>> rt_flush_dev() walks the per-CPU uncached route list and rewrites
+>> rt->dst.dev in-place to blackhole_netdev under spin_lock_bh().
+>> This lock does not exclude RCU readers, which may load rt->dst.dev
+>> multiple times within a single rcu_read_lock() region.
+>>
+>> ip_rt_send_redirect() is a typical example: it reads rt->dst.dev
+>> three times to obtain in_dev, the L3 master ifindex, and net.
+>> A concurrent device unregistration can repoint rt->dst.dev to
+>> blackhole_netdev between those reads, making the reader combine
+>> state from two different net_devices — for instance, an in_dev
+>> from the real device but a netns and peer lookup from the blackhole
+>> device.  ip_rt_get_source() has the same problem: it reads
+>> rt->dst.dev four times to obtain the output ifindex, the netns,
+>> and the source address, so a concurrent flush can cause the source
+>> selection to mix state from different devices.
+> Why only change ip_rt_send_redirect() and ip_rt_get_source() when the
+> patch is titled "ipv4: hold a consistent view of rt->dst.dev under RCU"?
+> What is the criterion?
+
+Thanks! You are right, the subject is too broad. I will make them
+more accurate in the next version.
+
+>> Take a single dst_dev_rcu() snapshot of rt->dst.dev at the start
+>> of each affected RCU reader and use that snapshot throughout, so
+>> concurrent flushes cannot cause mid-function inconsistency.
+>> Publish the in-place write in rt_flush_dev() with rcu_assign_pointer()
+>> to match the readers.
+> The rt_flush_dev() change should be a separate change. Note that
+> dst_dev_put() was already converted to use rcu_assign_pointer().
+>
+I will split the rt_flush_dev() change into a separate patch.
+
+>> Fixes: caacf05e5ad1a ("ipv4: Properly purge netdev references on uncached routes.")
+> Please remove the Fixes tag given you are targeting net-next.
+
+Just to clarify: is the suggestion to drop the Fixes tag here solely
+because this patch is targeted at net-next? Or are there any other
+reasons?
+
+>> Signed-off-by: Xuanqiang Luo<luoxuanqiang@kylinos.cn>
+>> ---
+>> v2:
+>> - Use dst_dev_rcu() and dev_net_rcu() for the RCU readers.
+>> - Use rcu_assign_pointer() when publishing the uncached route device
+>>    replacement.
+>> - Slightly adjust the commit message wording because this issue was found
+>>    by inspection, not from an observed user-visible failure.
+>>
+>> v1:https://lore.kernel.org/all/20260630094250.29386-1-xuanqiang.luo@linux.dev/
+>>
+>>   net/ipv4/route.c | 29 +++++++++++++++++------------
+>>   1 file changed, 17 insertions(+), 12 deletions(-)
+>>
+>> diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+>> index 3f3de5164d6e5..57f38467e6d0c 100644
+>> --- a/net/ipv4/route.c
+>> +++ b/net/ipv4/route.c
+>> @@ -873,6 +873,7 @@ static void ipv4_negative_advice(struct sock *sk,
+>>   void ip_rt_send_redirect(struct sk_buff *skb)
+>>   {
+>>   	struct rtable *rt = skb_rtable(skb);
+>> +	struct net_device *dev;
+> https://docs.kernel.org/process/maintainer-netdev.html#local-variable-ordering-reverse-xmas-tree-rcs
+>
+> Same in other places.
+
+Thanks for pointing this out!
+I will fix the local variable ordering in the next version.
+
