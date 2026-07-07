@@ -1,62 +1,35 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0BD31A057
-	for <netdev@vger.kernel.org>; Tue,  7 Jul 2026 08:31:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B3C2459E5;
+	Tue,  7 Jul 2026 08:40:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783413103; cv=none; b=ZorGKVUYmDul6cVCaJc1NzEsiS1GyyucCD1489FjV+5hzueEjYo5uBibuGzpUL3veHAGQoWZYoHwMK23CXpK2OAD1YMI25D6dQ29t1NOYJEV8S3WVG6IAByzG2mLLldaAO9UZon6gWCgUP7MmheRp4q2QI0IRi/Q5Sh2CzP+EAw=
+	t=1783413627; cv=none; b=nkX8aWqSGOTUvt+QiyePXHlQqrDY7ZWX6GzbSdLn/FvWnRDidagc0D3IiQlPNHR46SILhaRNTq1veE0t6G3iugP7sCE30bGdOw96yp8tUx5N4sj4nk8jyJMwyZSL4wQFy6VNjvsWMmWDtA909WihideWK4byACjTuIIssP1SUug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783413103; c=relaxed/simple;
-	bh=o5TlCe16qoetQL4Uc3WOc1ZnLAh2hwBZUxAUSkYXSYU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BXE7oDy7JReEEaOpXZ9kq52RnWKqsAuI3EpShLySpgDZmHYGwzxrR1LcE4xq7AP0q5YWjudfq1MC2FZ+CHEuBWOV7Eypyv/X+eMXJi6hr/493EFihICD3vDNaqP+t4I4vQdQk3ezio8YEsuoxaNIYGYEutSheUuwyKdtjHmaUZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NxHRW1LS; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1783413627; c=relaxed/simple;
+	bh=KQte1xYYXSlk71R+by2fCp6liTq7fRmyqHlxw6SQvvU=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=fuaY6q49aLMHTzD8RbokdraQxvTaQ87Xrt0tR+cD1r7UCUfNKCKr1T4l2XF6ClsWYHAmI4x8eaFpt+vVIbVGs0SwpGOkZyITE8tQITyKhBrrVmp8lSZfzIx6OT/SYOb9uQDpz19f27W2STxW5bRrhzMyFFzkPANdXxQdE6VijaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NqCum4IJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NxHRW1LS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783413100;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TO/CLQeGrRneCKqmDtYKMQxIBN6nL5tFljCHjkfDvkE=;
-	b=NxHRW1LShCc+D27tYjMYSRvbHaXfcg99NL8s0JecpyfIeVhQMA+Wvagt1tJ6RPWRaNsyrf
-	cXmGouFquClH+TfKCneXsGSB20xiPqQdH279qC5ABftqvUenmK/mMjUQ0XyfzGXE2+un54
-	cXdFuFbU8k+M9LW8hg1j4ciTPWyO52M=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-400-Lu07oMRDPFKwJA2MHx-R0A-1; Tue,
- 07 Jul 2026 04:31:39 -0400
-X-MC-Unique: Lu07oMRDPFKwJA2MHx-R0A-1
-X-Mimecast-MFC-AGG-ID: Lu07oMRDPFKwJA2MHx-R0A_1783413098
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CD2A81955DBF;
-	Tue,  7 Jul 2026 08:31:37 +0000 (UTC)
-Received: from gerbillo.redhat.com (unknown [10.44.48.253])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A87D23000C06;
-	Tue,  7 Jul 2026 08:31:34 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
-To: anthony.l.nguyen@intel.com
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org,
-	tactii@gmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net 3/4] idpf: handle NULL adev in idpf_idc_vdev_mtu_event
-Date: Tue,  7 Jul 2026 10:31:29 +0200
-Message-ID: <20260707083129.53988-1-pabeni@redhat.com>
-In-Reply-To: <20260630214404.930923-4-anthony.l.nguyen@intel.com>
-References: <20260630214404.930923-4-anthony.l.nguyen@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NqCum4IJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D263F1F00A3A;
+	Tue,  7 Jul 2026 08:40:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783413625;
+	bh=6pPjjJWgI4QmgLZ+t0RAIIz/DKF1BXp4p7v//2iLbnk=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=NqCum4IJ6b0EY2vskmseepw8EDbH1VJs3jybVnAdBXN+OBvZvL4d+hFlPD6/RSDAp
+	 KTrg1bhxjP+Dn1DK34id6JaXUwJnA7wezGasfjOxfZ4ebYpZ1C5yezSXuwJp6GVk+F
+	 7QE9Vg1KQmvPAcIDsbWuxOaGYNos3LVouKviGvUSd2mgj0qRUeB+5iuDFdQ8WdAh4N
+	 5pEHO87bXUaUAuomBMAbheTIM+c007Nde1cuMEZ5XKoprF06HbT7TVsjoBumlyUNJu
+	 XaOspb4IMJpvKFrQDaOSx7VInSbkJrNRQA80vsUiWVT8GpCD+PFBiyLP/IG6bc1CV6
+	 HY2pgW9yRUlZQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198283925461;
+	Tue,  7 Jul 2026 08:40:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,86 +37,50 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Subject: Re: [PATCH bpf-next v4 0/2] bpf,
+ sockmap: disallow sockmap mutation from tc, xdp,
+ socket_filter and flow_dissector
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178341360589.1430372.1113135547618558255.git-patchwork-notify@kernel.org>
+Date: Tue, 07 Jul 2026 08:40:05 +0000
+References: <20260630145410.3648099-1-rhkrqnwk98@gmail.com>
+In-Reply-To: <20260630145410.3648099-1-rhkrqnwk98@gmail.com>
+To: Sechang Lim <rhkrqnwk98@gmail.com>
+Cc: ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+ eddyz87@gmail.com, memxor@gmail.com, john.fastabend@gmail.com,
+ davem@davemloft.net, kuba@kernel.org, hawk@kernel.org, shuah@kernel.org,
+ martin.lau@linux.dev, song@kernel.org, yonghong.song@linux.dev,
+ jolsa@kernel.org, emil@etsalapatis.com, sdf@fomichev.me,
+ jiayuan.chen@linux.dev, varunrmallya@gmail.com, ihor.solodrai@linux.dev,
+ bpf@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
 
-From: AI Reviewer <ai@example.com>
+Hello:
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/
----
-idpf: handle NULL adev in idpf_idc_vdev_mtu_event
+This series was applied to bpf/bpf-next.git (master)
+by Daniel Borkmann <daniel@iogearbox.net>:
 
-This change caches vdev_info->adev with READ_ONCE() and returns early
-when the cached pointer is NULL, so that device_lock()/device_unlock()
-operate on the same captured auxiliary_device and do not dereference a
-NULL adev field that was cleared by the teardown path.
+On Tue, 30 Jun 2026 14:54:04 +0000 you wrote:
+> A tc, xdp, socket_filter or flow_dissector program updating or deleting
+> a sockmap deadlocks on stab->lock vs sk_callback_lock and has no reason
+> to. Patch 1 disallows it in may_update_sockmap(); patch 2 drops the
+> selftests that exercised it.
+> 
+> v4:
+>  - also drop BPF_PROG_TYPE_SOCKET_FILTER (John Fastabend)
+> 
+> [...]
 
-> diff --git a/drivers/net/ethernet/intel/idpf/idpf_idc.c b/drivers/net/ethernet/intel/idpf/idpf_idc.c
-> index b7d6b08fc89e..9f764135507c 100644
-> --- a/drivers/net/ethernet/intel/idpf/idpf_idc.c
-> +++ b/drivers/net/ethernet/intel/idpf/idpf_idc.c
-> @@ -162,9 +162,12 @@ void idpf_idc_vdev_mtu_event(struct iidc_rdma_vport_dev_info *vdev_info,
->  
->  	set_bit(event_type, event.type);
->  
-> -	device_lock(&vdev_info->adev->dev);
-> -	adev = vdev_info->adev;
-> -	if (!adev || !adev->dev.driver)
-> +	adev = READ_ONCE(vdev_info->adev);
-> +	if (!adev)
-> +		return;
-> +
-> +	device_lock(&adev->dev);
+Here is the summary with links:
+  - [bpf-next,v4,1/2] bpf, sockmap: disallow update and delete from tc, xdp, socket_filter and flow_dissector
+    https://git.kernel.org/bpf/bpf-next/c/7fb52b3bd3a3
+  - [bpf-next,v4,2/2] selftests/bpf: drop tc/xdp/flow_dissector/socket_filter sockmap mutation tests
+    (no matching commit)
 
-[High]
-Does caching the pointer with READ_ONCE() actually make this safe against
-the teardown path, or does it just narrow a NULL-deref into a
-use-after-free on the mutex embedded in adev->dev?
-
-Looking at the teardown side, idpf_idc_vport_dev_ctrl(adapter, false)
-calls idpf_idc_vport_dev_down(), which calls idpf_unplug_aux_dev() on
-vdev_info->adev:
-
-    idpf_unplug_aux_dev(adev)
-        auxiliary_device_delete(adev);
-        auxiliary_device_uninit(adev);   /* put_device -> release -> kfree */
-
-and only afterwards assigns vport->vdev_info->adev = NULL.
-
-The MTU path runs under rtnl_lock and the vport_ctrl_lock, but
-ig3rdma_core_remove() (which drives the IDC teardown via the auxiliary
-bus) does not appear to take either of those, so the two paths are not
-serialized against each other.
-
-With the new code:
-
-    adev = READ_ONCE(vdev_info->adev);
-    if (!adev)
-        return;
-    device_lock(&adev->dev);
-
-if the teardown path frees adev between the READ_ONCE() load and the
-device_lock() call (it can, because the kfree happens before vdev_info->adev
-is set to NULL, and there is no get_device()/put_device() or RCU barrier
-on this path), then device_lock() operates on a freed struct device and
-its embedded mutex.
-
-Would the correct fix here pair the load with get_device()/put_device()
-across the locked region, NULL out vdev_info->adev before the
-auxiliary_device_uninit() in the teardown path, and add a
-synchronize_rcu()-style barrier (or a shared lock) so the MTU path cannot
-observe a freed adev?
-
->  iadrv = container_of(adev->dev.driver,
->  			     struct iidc_rdma_vport_auxiliary_drv,
-> @@ -172,7 +175,7 @@ void idpf_idc_vdev_mtu_event(struct iidc_rdma_vport_dev_info *vdev_info,
->  	if (iadrv->event_handler)
->  		iadrv->event_handler(vdev_info, &event);
->  unlock:
-> -	device_unlock(&vdev_info->adev->dev);
-> +	device_unlock(&adev->dev);
->  }
+You are awesome, thank you!
 -- 
-This is an AI-generated review.
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
