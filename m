@@ -1,76 +1,103 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538363EB81E;
-	Tue,  7 Jul 2026 18:31:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A6643F4B6;
+	Tue,  7 Jul 2026 18:33:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783449079; cv=none; b=mnnKqAosA0FOkkL1Z2bmI6HYsxpB4BZ+SvTlBdmWcVmXZVteOXPZqvbaIG1EgkXNeXijOq6TEPqU9HfBIzRZvd1CAq0Q+8OBb6JwWelfo+fJAc9jNeFLFhIGOp79WZ6otjgpd4Kqg0V+C23nDa1QKpaTKNO12qouChV4yccp6oA=
+	t=1783449181; cv=none; b=lMxbGnREyAo5GfypLGYVY8B7BhGSx+/JnhFASfPH1mktXv5xQ8pqRgMDYf0FN0vILUY4HYEJQbl0Ef+YaWLdMjLGSbunLVgqFZG6UCZNB6RZC6bpgQiKxLpidl6PIR6lUkLPVJtLTBnmw63bLFfGdj6IhtpjTwbXNVJn4Zj9htU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783449079; c=relaxed/simple;
-	bh=6rnez0pQKR9IlghS2nAbl0rO9vucvzzo6OUAc4Qgi28=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KJNpvDYvkV9jqDMEGn0l3/sx4yLokTEZq+zBY1NL45g0i9Dv4LjuPBckST0Fzja9L9IBBhTIzdxDvQ3tm2hHMWNdD7SYw5R+gVdnLfjYptKevZ44cRxulMQKPQ83RgyqDsF0bLWJtM3qrgxgTPwv37rwvvnT+tsJhPn7GBAF03A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Oj1yds81; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1783449181; c=relaxed/simple;
+	bh=P51/JJ0y3mMFG7YE2Uz3EMjOL6J9azpFYTXILHsr97k=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=iid1Y1oyWq+OLkUsb0qECRm3wnkTIrCDdQfRSkA0rPwC8bUTsCiCZRRjGgBR7obDgdS45ttowYYDSMzPsRykSp5Y8/hz4P5oDM8dwtDekLxzEU7+3dlLUwhOJe7vGIq0p+024IsFtJI5IoLLNj49azAoxvamEVDQF4vsG5WsXNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bSEclqlg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Oj1yds81"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=k5m+Pgp4RwbMKePDOPmKj1j/iO+dkm9HhURejYjv8hw=; b=Oj1yds81xnMoN9icAqqSk1MEHN
-	j1OsLrZNODpuu0LXLPdV62Nzc5MbidbbnjragNrY6aZJZ+SoGUQmInxq9JRYfThLl7BddEtcw2sb5
-	oLxkcsF3Fkx7dvowFIrQOy9+JaICoKc5MoA3iZ/njT06RolEmvjzOxv44SsBQnCeO9W8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1whAZY-00BD5W-51; Tue, 07 Jul 2026 20:31:08 +0200
-Date: Tue, 7 Jul 2026 20:31:08 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Dust Li <dust.li@linux.alibaba.com>
-Cc: Alexandra Winter <wintera@linux.ibm.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>,
-	Wen Gu <guwen@linux.alibaba.com>, Paolo Abeni <pabeni@redhat.com>,
-	Mahanta Jambigi <mjambigi@linux.ibm.com>,
-	"D . Wythe" <alibuda@linux.alibaba.com>,
-	Sidraya Jayagond <sidraya@linux.ibm.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Federico Kirschbaum <federico.kirschbaum@xbow.com>
-Subject: Re: [PATCH net] dibs: loopback: validate offset and size in
- move_data()
-Message-ID: <c09ac69d-5f69-4634-81a0-5e629cf135ba@lunn.ch>
-References: <20260707074318.1448662-1-dust.li@linux.alibaba.com>
- <ak0NpKUDkvrkuSOm@linux.alibaba.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bSEclqlg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBFEB1F000E9;
+	Tue,  7 Jul 2026 18:32:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783449180;
+	bh=oDId+F9Q8sjFATMQdxVY2dRWUEpcTb5ObrRiQhxwi+k=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject;
+	b=bSEclqlg+7W8IhP5E6cPoc66IbYZtj4myhu2F9bmfuW/c3zw70d4S21JKXmQgT1Tz
+	 1ErfH04h2mUZzdcYihFvKqzbfIz61xMJ0DiLWdT3Ga/JJMJGJv55g/LLEtkt4wAJd+
+	 2t53GAvtTZnWzO+IMD1/H7YM+9RLLsWAfBwph5FVwq7naW3g7qPeSSIXwk7fTVbP50
+	 zVauK3buao0wmcX4SoK/uNlVtrZXUE56XpEl7HALTIOLh/sBpFuq/4urWFK+8Czmri
+	 YO4xvT/hl6HL3V6Kaxn0caMRklSq9K/5ruNYucDSaoSH0ydb5hWk70eJJKLTY+DA4/
+	 reM7vycowRd7Q==
+Date: Tue, 07 Jul 2026 13:32:59 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ak0NpKUDkvrkuSOm@linux.alibaba.com>
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: UNGLinuxDriver <UNGLinuxDriver@microchip.com>, 
+ Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, 
+ netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, linux-kernel@vger.kernel.org, 
+ Rengarajan Sundararajan <Rengarajan.S@microchip.com>, 
+ Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>
+To: Mikhail Lukianchikov <avermoal@gmail.com>
+In-Reply-To: <20260707165840.107409-1-avermoal@gmail.com>
+References: <20260707165840.107409-1-avermoal@gmail.com>
+Message-Id: <178344917921.3727597.7607936677033722171.robh@kernel.org>
+Subject: Re: [PATCH] dt-bindings: net: convert microchip,lan78xx.txt to
+ YAML schema
 
-On Tue, Jul 07, 2026 at 10:31:00PM +0800, Dust Li wrote:
-> On 2026-07-07 15:43:18, Dust Li wrote:
-> >The loopback move_data() performs a memcpy into the registered DMB
-> >without checking whether offset + size exceeds the DMB length.  Unlike
-> >real ISM hardware, which enforces memory region bounds natively, the
-> >software loopback has no such protection.
-> >
-> >A peer-supplied out-of-bounds offset or oversized write would result in
-> >an OOB write past the allocated kernel buffer.  Add an explicit bounds
-> >check before the memcpy to reject such requests with -EINVAL.
-> >
-> >Fixes: f7a22071dbf3("net/smc: implement DMB-related operations of loopback-ism")
-> >Cc: stable@vger.kernel.org
-> >Reported-by: Federico Kirschbaum <federico.kirschbaum@xbow.com>
+
+On Tue, 07 Jul 2026 22:58:40 +0600, Mikhail Lukianchikov wrote:
+> Convert the Microchip LAN78xx family (LAN7800, LAN7801, LAN7850) binding
+> documentation from plain text to DT schema format using YAML.
 > 
-> Reported-by: Baul Lee <baul.lee@xbow.com>
+> The conversion was validated with 'make dt_binding_check'
+> 
+> Signed-off-by: Mikhail Lukianchikov <avermoal@gmail.com>
+> ---
+>  .../bindings/net/microchip,lan78xx.txt        |  53 --------
+>  .../bindings/net/microchip,lan78xx.yaml       | 113 ++++++++++++++++++
+>  2 files changed, 113 insertions(+), 53 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/net/microchip,lan78xx.txt
+>  create mode 100644 Documentation/devicetree/bindings/net/microchip,lan78xx.yaml
+> 
 
-Could you provide a link to the report?
+My bot found errors running 'make dt_binding_check' on your patch:
 
-Thanks
-	Andrew
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/microchip,lan78xx.example.dtb: /: 'compatible' is a required property
+	from schema $id: http://devicetree.org/schemas/root-node.yaml
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/microchip,lan78xx.example.dtb: /: 'model' is a required property
+	from schema $id: http://devicetree.org/schemas/root-node.yaml
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/microchip,lan78xx.example.dtb: /: '#address-cells' is a required property
+	from schema $id: http://devicetree.org/schemas/root-node.yaml
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/microchip,lan78xx.example.dtb: /: '#size-cells' is a required property
+	from schema $id: http://devicetree.org/schemas/root-node.yaml
+Documentation/devicetree/bindings/net/microchip,lan78xx.example.dtb: /usb: failed to match any schema with compatible: ['usb-host']
+
+doc reference errors (make refcheckdocs):
+Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/net/microchip,lan78xx.txt
+MAINTAINERS: Documentation/devicetree/bindings/net/microchip,lan78xx.txt
+
+See https://patchwork.kernel.org/project/devicetree/patch/20260707165840.107409-1-avermoal@gmail.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
+
