@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA7EE3C2BA8
-	for <netdev@vger.kernel.org>; Tue,  7 Jul 2026 10:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52FFC2E764D
+	for <netdev@vger.kernel.org>; Tue,  7 Jul 2026 10:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783418445; cv=none; b=R1+xeC/TGwJ5Ef8HIjBr2kNiaItYlYqOhyfixcIErPsYEd4riIwbCsdWYPV7g+JIVA+epmhcwer8gp9LdNkuqwPL6mdKVTejxDBQ1/SUQW0qcu8rvQVj9pogzVAIdr9bS8d8iv+qfpyquu35m12EQiLkUfZ0ygR3TS76Okg8+IM=
+	t=1783418477; cv=none; b=cZ0HWKH+mH+lGbALpp6ZCyXyx14btLitK7i0G6QgO6v+0erSxV+UN4XP++Il/OctQkhQYexSicicnHdVIS5aCOSZj9kKzmAT1A2S8PVlJDxHvdiVFS0RZ3vgtkohLF7+yTlnqOOuJxOF655XfDUTiHtRMM7fuFp9VJWNIpbjlNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783418445; c=relaxed/simple;
-	bh=Bzh+PVRhjAYCF3zOJVFgAsMimYyWRW26rz7H7+sko0E=;
+	s=arc-20240116; t=1783418477; c=relaxed/simple;
+	bh=vXskx8sM2yRTZ9zWg7B80bBzs5Zdx1sEmmoJCthXhm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nshRMAeZZKxm4VXNEeYTgAiOq/bIal5HN6Wji9XcESm0uUxNg5bYGtzlf55A35fHWXm9umRVsaibY71gTYSckY7mupdSbwUKusQd4xfNBQfVrw3w8PPiBPaRA5td6LmsoU20rzHa4i/sqEcWY/oDmh0KDkHiNeEbQ8JR+smgyS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y0RDEDSd; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=B4DOf6d5UzjFs757ePcmxAVuvs4hVaZkPJm4xba2zBYwPCh8GdgEvvHDwLByrYLFjcSZoiFCnF9sB7ywRqRJj+kA6sGaZNETYCpsXrP+IbHXwRG/xjLgGagufuTcNwwF5YqFXL6meK5//yGwV0/zin7+qoNZLw4JfJJOnuULwbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i5RZKxHp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y0RDEDSd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66C641F000E9;
-	Tue,  7 Jul 2026 10:00:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i5RZKxHp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E72251F000E9;
+	Tue,  7 Jul 2026 10:01:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783418444;
-	bh=RhpTsXogCidqVoSXLmz+o1vy0yYdauEaLLOvAGijMyg=;
+	s=k20260515; t=1783418475;
+	bh=xPQ4gR/CN+dsW5qciUqH5gfy4g/srZkvzGZXLhHrpgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Y0RDEDSdIVGo2L8WwALqV4bgmlbKZ03ydYlwd3awUf3vyZPvQFw7XuPUhCy/BAZZf
-	 rjdnbTNq5n/sDlzJPzBkotAW3aEpSLeTuNRiTCwSDF/Ggfkf6g3HtiX+o+iXn6pESL
-	 oRYMtEBQFgM5dxhliNC0KWe587GL6AgixmuTI0IaXiBb9JzLKH6dVlIFkJdzT6iJne
-	 wo1aTHmB6KKxHPWcongZo/99RoNFlC1r/b7FmApk6oRA7/Tt/5yBJrEbyDHxnHv2mA
-	 lcuDYXGUqca6/5jFmqpf5W6GKmR6sOJCMGOKT/M/FUhcsb/3OGDHciTK1rbLc0c20s
-	 blSTsnt472VgQ==
+	b=i5RZKxHpJANpzEmY/Iy/y0RkmifUbaiZL+1Aa9yXMBMr1yV/hi+BV5pvtiSUm9ZOw
+	 CVXhJ1WFLopXiqFkrWzXPnl9EwXcIfRYx7j5cPPCetuQ+76uEd/Uy97aBwrh+KSzn7
+	 Eh78Q50nsKhscTG8qLaELKuS3hWXu2axRF77ewtBGRRO1d3q9LNyWXX2oWBPsQcDOC
+	 dh5r2SQue4mFMgTIdVwkr7rWbatzwzx/MSqNm9cQGWwdRzlhDHwAPUhg/6dQoTPhAx
+	 0qhFtN7kPxOHEVGJIaFuSThdQIYfE3UxlFf6qNsAZoAC+ABJuBnCrhOPNiC3prx8CM
+	 yXHfVPcwCRUsA==
 From: Simon Horman <horms@kernel.org>
 To: dddddd@hust.edu.cn
 Cc: Simon Horman <horms@kernel.org>,
@@ -38,8 +38,8 @@ Cc: Simon Horman <horms@kernel.org>,
 	dzm91@hust.edu.cn,
 	hust-os-kernel-patches@googlegroups.com
 Subject: Re: [PATCH net] nfc: clear active_target when the target list is replaced
-Date: Tue,  7 Jul 2026 11:00:18 +0100
-Message-ID: <20260707100018.1379850-1-horms@kernel.org>
+Date: Tue,  7 Jul 2026 11:01:05 +0100
+Message-ID: <20260707100105.1380119-1-horms@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260625111835.2411251-1-dddddd@hust.edu.cn>
 References: <20260625111835.2411251-1-dddddd@hust.edu.cn>
@@ -53,17 +53,17 @@ Content-Transfer-Encoding: 8bit
 
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/
 ---
 nfc: clear active_target when the target list is replaced
 
-This patch clears dev->active_target, stops the check_presence timer, and
-resets RF and DEP link states in nfc_targets_found() if the currently
-active target's array is being replaced. This prevents leaving a dangling
-pointer when the target array is freed.
+This patch updates nfc_targets_found() so that when the active target
+points into the dev->targets array about to be freed, the cached pointer
+is cleared and a partial teardown (presence-check timer stop, dep_link_up
+cleared, rf_mode reset) is performed before kfree(dev->targets).
 
 > diff --git a/net/nfc/core.c b/net/nfc/core.c
-> index a92a6566e6a0d..950807906645a 100644
+> index a92a6566e6a0..950807906645 100644
 > --- a/net/nfc/core.c
 > +++ b/net/nfc/core.c
 > @@ -786,6 +786,21 @@ int nfc_targets_found(struct nfc_dev *dev,
@@ -82,45 +82,50 @@ pointer when the target array is freed.
 > +			dev->dep_link_up = false;
 > +			dev->rf_mode = NFC_RF_NONE;
 > +			break;
-
-[Severity: High]
-Could this cause a regression by bypassing the required driver and LLCP
-teardown sequences?
-
-By directly setting dev->dep_link_up = false, any subsequent user-space
-call to nfc_dep_link_down() will return -EALREADY early. This permanently
-skips nfc_llcp_mac_is_down(), which leaks LLCP sockets.
-
-Also, it appears the hardware drivers will never receive the deactivate
-signal since dev->ops->deactivate_target() and dev->ops->dep_link_down()
-are bypassed. Could this lead to a hardware lockup or denial of service?
-
 > +		}
 > +	}
 > +
->  	kfree(dev->targets);
->  	dev->targets = NULL;
 
-[Severity: High]
-This is a pre-existing issue, but I noticed that nfc_dep_link_is_up()
-accesses and modifies core NFC state variables locklessly:
+[Medium]
+The commit message says this teardown mirrors what nfc_deactivate_target()
+does, but nfc_deactivate_target() does not touch dev->dep_link_up at all.
+Forcing dep_link_up = false here when the active target was set up via
+nfc_dep_link_up() introduces a state mutation that is not described in
+the commit log.
 
-net/nfc/core.c:nfc_dep_link_is_up() {
-	dev->dep_link_up = true;
+Can this leave DEP/LLCP state only partially torn down?
 
-	if (!dev->active_target && rf_mode == NFC_RF_INITIATOR) {
-		...
-		target = nfc_find_target(dev, target_idx);
+Compared to nfc_dep_link_down(), this new branch skips:
+
+	rc = dev->ops->dep_link_down(dev);
+	...
+	nfc_llcp_mac_is_down(dev);
+	nfc_genl_dep_link_down_event(dev);
+
+so the driver is never told to bring the DEP link down, LLCP sockets
+bound to the local are not released via nfc_llcp_socket_release(), and
+no NFC_EVENT_DEP_LINK_DOWN is sent to userspace.
+
+A subsequent userspace nfc_dep_link_down() will then be rejected here:
+
+net/nfc/core.c:nfc_dep_link_down() {
+	...
+	if (dev->dep_link_up == false) {
+		rc = -EALREADY;
+		goto error;
+	}
 	...
 }
 
-Drivers (like pn533) call nfc_dep_link_is_up() asynchronously without
-holding device_lock(&dev->dev). Since nfc_targets_found() and
-nfc_target_lost() can free and reallocate dev->targets while holding
-the lock, could nfc_find_target() iterate over freed memory if it races
-with them?
+so the normal cleanup path that calls nfc_llcp_mac_is_down() is no
+longer reachable from userspace until device unregister.
 
-Furthermore, could this lockless access allow nfc_dep_link_is_up() to
-assign a dangling pointer to dev->active_target right after it is
-cleared by nfc_targets_found(), defeating the safety checks introduced
-by this patch?
+Does this risk leaking the LLCP sockets that were created while
+dep_link_up was true?
+
+If the goal is just to clear the dangling active_target pointer, would
+it be enough to clear dev->active_target (and stop the presence-check
+timer) without also forcing dep_link_up = false and rf_mode = NFC_RF_NONE?
+Alternatively, if a full DEP teardown is intended, should this path call
+dev->ops->dep_link_down(dev) and nfc_llcp_mac_is_down(dev) like
+nfc_dep_link_down() does?
