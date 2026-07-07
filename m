@@ -1,54 +1,83 @@
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011039.outbound.protection.outlook.com [40.107.208.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE18C43C7A4
-	for <netdev@vger.kernel.org>; Tue,  7 Jul 2026 17:45:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783446361; cv=none; b=eYHkvTsvvJ65BmtrAJTd0uFfjp8WeLzY8Cu9Zh/jacMdUA4wkd7zQfFpk3Hfp4tdfye9lmd9ol7nPMpww/wGw66F99j/2K4Rt4NT5QLtg5UuGdKAFsmCovS1Mj0tJgXhvkaEqFezvVZsAnqdFjtiw6IxmKxoo0bZt0SjxnnMR1A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783446361; c=relaxed/simple;
-	bh=zgf6bYj2qzoxiVAmp6lF++UBvv8mYszlAZyhPneA22U=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:MIME-Version:
-	 Content-Type:References; b=d+q0M0Zi0LrFhKfg6y6ivfOz2kqRh9S4Uw3Us3CPkjYr4m02frskQFNogJ5hDpFvMt3ZgenWGBtLbKUIAGtITeG6hsoiW2qy47NqCKEX6JXvd3F3Lp0P7yh31yjYfN9B0QInBfFzFgOnQGCzvqALD3Kk+hqOBIAhY/uGq5o+WsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=MQEN2kXJ; arc=none smtp.client-ip=210.118.77.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BAB0420879;
+	Tue,  7 Jul 2026 17:46:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.39
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783446362; cv=fail; b=cxhpdI5ckvGtPLZ949EOIjIz2c8l8B4E1Arzry2ClE0rHwErAMUa2Cv8J3KRYTZEXgLEqpNeRo7y/WdtOriOkqbQGl2rGOxu6IOqPkYuDyTMEVqrrln1+62FEHTO3/T6+MxpuD9bTJymSPp8dBPif4tnTd3Hp5MWyliD7GFrk7o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783446362; c=relaxed/simple;
+	bh=/IuLDTQxw2JYdYjMRbq7YyVuJ8BLMvXaj5Dt7GCuKPQ=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PU7j+9cvHGrYlZpblLWjLk/FzBsjIQ+5ReQBwPCnq80ddEsJRnWDDf1dG81hdmtOTqXm8IxQ8X8ndOcfCnfrqtTm9Phpi6Q9kEjz3Y3dYQ2eVZyQsGO80Lb2U3TIPUnUMy+V81vqNJQ3YS/XtXSXQ84HuvYP2e6kQU9ICMV7gUc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Bjir8gG2; arc=fail smtp.client-ip=40.107.208.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="MQEN2kXJ"
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260707174557euoutp0271b2ce0d31a084d0ec3efc788228bd94~AEwNWI5o02060220602euoutp02q
-	for <netdev@vger.kernel.org>; Tue,  7 Jul 2026 17:45:57 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260707174557euoutp0271b2ce0d31a084d0ec3efc788228bd94~AEwNWI5o02060220602euoutp02q
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1783446357;
-	bh=Rm9MRGSl4GczQZf6rw7zLloar1+rboEsZM2ZEp7jaAk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MQEN2kXJq8lzQPqaPbvmZBWkvIBAa9Jqf60VpiuIhk1mgwV9VaZsUqoU77z+//Wx9
-	 H/yhb1wNSBcUe+yNsRdl+30Y256Ig4TtZLXuJ4Y4hFR2Lcnyhdng2e5VR4H0G0Ljk/
-	 W4AL0CTrNYrIpgv9XLPPS2a9kogB56QNeyYALzYY=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20260707174556eucas1p2fd039c22df294462f75715f490d6559c~AEwM34DsU2928629286eucas1p29;
-	Tue,  7 Jul 2026 17:45:56 +0000 (GMT)
-Received: from AMDC4843.eu.corp.samsungelectronics.net (unknown
-	[106.120.77.61]) by eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20260707174556eusmtip26f81bf233f44fb324944fb9100858ea6~AEwMN8hge2398923989eusmtip2Z;
-	Tue,  7 Jul 2026 17:45:56 +0000 (GMT)
-From: Jakub Raczynski <j.raczynski@samsung.com>
-To: netdev@vger.kernel.org
-Cc: k.tegowski@samsung.com, k.domagalski@samsung.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Jakub
-	Raczynski <j.raczynski@samsung.com>
-Subject: [PATCH net v3 2/2] net/stmmac: Fix free-after-use panic when
- interface goes does with XDP
-Date: Tue,  7 Jul 2026 19:45:51 +0200
-Message-Id: <20260707174551.1264558-3-j.raczynski@samsung.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260707174551.1264558-1-j.raczynski@samsung.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Bjir8gG2"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yADpw/JMEfdSvh5C5/g4GNlxdIwi07QIekNJpq/3Gyp2pX5a5rYhJlitax1/8yhq5jiYSbfNsVkL7tH6X39ZThjWPgrp8zEgy8Ru8EW2yTRsLvAL5S9rNsnPiN8B+htIGCa+uyJ4kNnLS3E9k/DTIDcCBkV1IHDvGxY6AH4KOVvWrByvr5FjRKpsbWuh+DM3lUUOrfh+HxXTBF3HT4oa7lWgvpj3w5lllRC1wAfCLT76MnyuDe7RLPOfSlsiMuRroiKZWNo0m4HJupWxvGHITWKmNUWRUIJZ7kk3YH3d0atcAp+Uj0oi8Nv8Ad/sp21/ScYmrbPn1ShXcGNNy6OtGA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Fbgz8yo+5uCX9GnKg+7xdiP08romZ2W2B7Gh7d8216Y=;
+ b=By4ZAyOO5FQJlERfI/EPKCKniiA6q2w35bOcdAYQX2VHSfSFGP1v7Q6oz+JJ4YzbhdQvKF7FaldRaAwl0GezWfW8wwnIsneCkS3K4JdIxrtpvtXiVRO1NEx/9jsrwKPnfhdJckWVFYejzf3HBIzg3WBei3JfitQ6Ru9Y1ItHBjGN1Xk2xW4hqkMwXrZdBC5y50qIVLh/jmzoFhYhZPjko3A5+H71DrXCv3yk/HlS4BdCBk2U8/yvGL9dCRppYaasiMbCOXQKYEZRc+nz4NMq/ZPw6u1fmhUTJD+IqtmubhPe05Y/6Ga7JmBVyKZ4bhoXMC3Uq4YIcbNFDmDd3SbvBA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.233) smtp.rcpttodomain=resnulli.us smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Fbgz8yo+5uCX9GnKg+7xdiP08romZ2W2B7Gh7d8216Y=;
+ b=Bjir8gG2J6Qy35uvPEIWMkzF/4qqWv2+B2CL4qiKOZtyKTBJ+b6qi/Gg1lB56JxwgTadp4pIpExVaktItzJ1jtr7waCVF2ok8YnX+K3jarfWh458wKqzRGHFkxANdvYbpMNyVTwKwf88+kQ3QJQJA3R+fvo9z2x3GGyVBaKStVcnJKkU9N4cDYNU7SnIUJMxy5lrAYWpdwczOZHEkJMfEYEff1J+W1MxYnYg9MG67aQ4SuV7ptMpxLd791R+AIuGyLAzqFLyGB6I+0GPHb4ESSkV8uGknsEWru++4fv3JTvBu5UoIyFcXl5Xn+tg3whiQG2CbSld8wMw59DGvFuaMQ==
+Received: from CH5P221CA0019.NAMP221.PROD.OUTLOOK.COM (2603:10b6:610:1f2::26)
+ by CH8PR12MB9789.namprd12.prod.outlook.com (2603:10b6:610:260::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.10; Tue, 7 Jul
+ 2026 17:45:57 +0000
+Received: from CH2PEPF00000141.namprd02.prod.outlook.com
+ (2603:10b6:610:1f2::4) by CH5P221CA0019.outlook.office365.com
+ (2603:10b6:610:1f2::26) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.202.9 via Frontend Transport; Tue, 7
+ Jul 2026 17:45:57 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ CH2PEPF00000141.mail.protection.outlook.com (10.167.244.74) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.181.6 via Frontend Transport; Tue, 7 Jul 2026 17:45:56 +0000
+Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 7 Jul
+ 2026 10:45:44 -0700
+Received: from drhqmail201.nvidia.com (10.126.190.180) by
+ drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Tue, 7 Jul 2026 10:45:44 -0700
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
+ (10.126.190.180) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
+ Transport; Tue, 7 Jul 2026 10:45:40 -0700
+From: Mark Bloch <mbloch@nvidia.com>
+To: Jiri Pirko <jiri@resnulli.us>, Eric Dumazet <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>
+CC: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+	<netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, Mark Bloch <mbloch@nvidia.com>
+Subject: [PATCH net-next V5 2/6] devlink: Factor out eswitch mode setting
+Date: Tue, 7 Jul 2026 20:45:23 +0300
+Message-ID: <20260707174527.425134-3-mbloch@nvidia.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260707174527.425134-1-mbloch@nvidia.com>
+References: <20260707174527.425134-1-mbloch@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,185 +85,105 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20260707174556eucas1p2fd039c22df294462f75715f490d6559c
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20260707174556eucas1p2fd039c22df294462f75715f490d6559c
-X-EPHeader: CA
-X-CMS-RootMailID: 20260707174556eucas1p2fd039c22df294462f75715f490d6559c
-References: <20260707174551.1264558-1-j.raczynski@samsung.com>
-	<CGME20260707174556eucas1p2fd039c22df294462f75715f490d6559c@eucas1p2.samsung.com>
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PEPF00000141:EE_|CH8PR12MB9789:EE_
+X-MS-Office365-Filtering-Correlation-Id: 051cbd1e-8259-438a-6cd7-08dedc4f99a4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|23010399003|82310400026|1800799024|36860700016|11063799006|56012099006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	G6w+c7YHYA9iU1ZdsDQruvQSsvOe6HNW4eAFONvXv2OhuCwRPU/729cqIhU3ouQnL2zw7DOgO58xkN8XzaYPBO29W+em1JGY3uOaWioPiO3o0K4Ekr/kZzAtNjs/yzzsJBz9OgZvM3rG4ooQ9jODRIwirYnTCgssRV99cyIprvyMtcR8AQtVjralE6mNnH5l1Soq/32XWeOAOtvqQzRSQUtfnM3hdBNav51tQqKomhJYgTyOqM9yDRGLp3dxo8q3y26bkvt01xwq92rTh4Tsb3fCyTnTUXJyJ7vgFu+eUaMQYTOBBqpCEcEZVhAtGVymCCL5cx7MepYiRljhMy/R0LrnwBOBYBuomjg8KlFgwiU78MNSc6enMcwov7rdkmdCFbQt4qj7Ox+rct0bX9x2iXE9FT3HQGHJFhM+muAsamKSDQ/cLJdEoHRwE5gLHFAILbNdXqb3metnES9rW3DLTrHIdNoON9XV37nnTMAa8eOjXCyq5ADa4wxaTu5UpLKy/M2nOa0X01CRteysGmjneHqY3szFcR6adKiX4SagYeQ8PIvASwxYYkS7CujWQXyraXwR2LMkOLZ6mdvTCnDZyGkGJO43ZHFgc0NuWXouuNXEbXpvBNeTUGpL4W1Fg+5qSYFrq6qk6iQBxk7Vvvn2pBhmbLBnF7I0ELKF2XTdF+aQzUAs2KWR9Mc8cgwODJlP
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(82310400026)(1800799024)(36860700016)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	UVC5DRFKyfI1qjPZ4UUfEVeCSXoT5Bvougx8f1z8i6zUs8X+USn0o8HmeXa+hBCGhdMoBuj8Xn6A2Kov5ioPJaB2CLw7OSEy1U9cYwCb9r4hIudY9iFj6iCI7ydR3mxfFS9oQOaIYoeixx2Jk6vOXCgjX4ueD2UQweeCcTtPAEy8t+AMLA+8Oec7PJxBQSLM7LhXQcVEsAN1YXVYeF6iI0yQA9dM4H67DAgIHKTderEAgLAeBCTI4RuItBJS/kWGnzT1W4tVtgxFnG6lkwMKZohxPQtfKtDJTv3/+cmQCqDKgiFj2e5uwTblom6ZUCPQ8E/txM69pXAOuulTWvTs8eThQ/yclyCIq/kjlIyJv7XS+XyU6DOuE0PrDW1Jaa2MYxdeaHA/X94rED2QiINAnGtaLn24lU+yV/pS2YPGYi9AQj1/Te+cf9Fm9u3zjmd8
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2026 17:45:56.9905
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 051cbd1e-8259-438a-6cd7-08dedc4f99a4
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH2PEPF00000141.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH8PR12MB9789
 
-When running XDP forwarding and interface gets shut down, kernel might panic
-or show SLUB "poison overwritten" errors due to a race condition between
-NAPI polling and resource freeing.
+Move the common eswitch mode set checks into a small helper and use it
+from the netlink eswitch set command. Making the same validation
+available to the devlink core path that applies eswitch mode defaults.
 
-Observed error is one of following:
-- Poison overwrriten
-[ 1889.547746] eth1: Link is Down
-[ 1889.549940] =============================================================================
-[ 1889.549954] BUG kmalloc-4k (Tainted: G    B             ): Poison overwritten
-[ 1889.549959] -----------------------------------------------------------------------------
-[ 1889.549963] 0xffffff882dcc4d80-0xffffff882dcc4da7 @offset=19840. First byte 0x0 instead of 0x6b
-[ 1889.549969] Allocated in __alloc_dma_tx_desc_resources+0x60/0x10c [stmmac] age=169 cpu=7 pid=27759
-[ 1889.550020]  __kmem_cache_alloc_node+0x100/0x2e8
-[ 1889.550032]  __kmalloc+0x58/0x1a0
-[ 1889.550039]  __alloc_dma_tx_desc_resources+0x60/0x10c [stmmac]
-[ 1889.550052]  alloc_dma_desc_resources+0xec/0x164 [stmmac]
-[ 1889.550064]  stmmac_setup_dma_desc+0xec/0x1e4 [stmmac]
-[ 1889.550076]  stmmac_open+0x28/0x94 [stmmac]
-[...]
-
-- Wrong memory address
-[ 1901.546692] Unable to handle kernel paging request at virtual address dead000000000122
-[...]
-[ 1902.964068] Call trace:
-[ 1902.967193]  free_to_partial_list+0x560/0x600
-[ 1902.972227]  __slab_free+0x1a8/0x420
-[ 1902.976480]  __kmem_cache_free+0x204/0x218
-[ 1902.981254]  kfree+0x6c/0x128
-[ 1902.984900]  kvfree+0x3c/0x4c
-[ 1902.988545]  page_pool_release+0x234/0x27c
-[ 1902.993320]  page_pool_destroy+0xcc/0x190
-[ 1902.998006]  __free_dma_rx_desc_resources+0x100/0x360 [stmmac]
-[ 1903.004516]  free_dma_desc_resources+0x8c/0xac [stmmac]
-[ 1903.010419]  stmmac_release+0x1c0/0x2b4 [stmmac]
-[...]
-
-Root cause is stmmac_release() stops DMA and frees TX/RX ring buffers and
-page pools while XDP could still be accessing these resources in the
-background, because napi_synchronize() from napi_disable() does not ensure
-XDP is done.
-
-This makes small window where IRQ is still possible after NAPI has finished.
-Problem is that stmmac_release() handles closing XDP in different order than
-stmmac_xdp_disable_pool(), which is not affected by this issue, where
-synchronize_rcu() is executed after napi_disable() and disable_rx/tx_queue().
-
-Fix this by following:
-- Set STMMAC_DOWN flag before stopping DMA to signal XDP to stop and discard
-- Call synchronize_rcu() after stopping DMA but before freeing resources to
-  ensure all ongoing NAPI operations complete, in similar order to
-  stmmac_xdp_disable_pool()
-- Clear STMMAC_DOWN flag in __stmmac_open() to restore normal operation.
-  This was only done for stmmac_reset_subtask() during abnormal operation,
-  which is not enough. This flag does not affect normal operation as it is
-  used only for XDP apps. Usage of such flags is far from optimal and would
-  be good to rewrite, but it would be quite an effort
-
-Also replace stmmac_disable_all_queues() with __stmmac_disable_all_queues(),
-as it is barren after this change.
-
-Fixes: bba2556efad66 ("net: stmmac: Enable RX via AF_XDP zero-copy")
-Co-developed-by: Chang-Sub Lee <cs0617.lee@samsung.com>
-Signed-off-by: Chang-Sub Lee <cs0617.lee@samsung.com>
-Signed-off-by: Jakub Raczynski <j.raczynski@samsung.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
 ---
- .../net/ethernet/stmicro/stmmac/stmmac_main.c | 28 ++++++++++++++-----
- 1 file changed, 21 insertions(+), 7 deletions(-)
+ net/devlink/dev.c           | 27 ++++++++++++++++++++-------
+ net/devlink/devl_internal.h |  3 +++
+ 2 files changed, 23 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index b9ffff001baf..9d971ae35d48 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -262,7 +262,11 @@ static void stmmac_verify_args(void)
- 		pr_warn("stmmac: module parameter 'flow_ctrl' is obsolete - please remove from your module configuration\n");
+diff --git a/net/devlink/dev.c b/net/devlink/dev.c
+index bcf001554e84..119ef105d0a7 100644
+--- a/net/devlink/dev.c
++++ b/net/devlink/dev.c
+@@ -702,6 +702,25 @@ int devlink_nl_eswitch_get_doit(struct sk_buff *skb, struct genl_info *info)
+ 	return genlmsg_reply(msg, info);
  }
  
--static void __stmmac_disable_all_queues(struct stmmac_priv *priv)
-+/**
-+ * stmmac_disable_all_queues - Disable all queues
-+ * @priv: driver private structure
-+ */
-+static void stmmac_disable_all_queues(struct stmmac_priv *priv)
++int devlink_eswitch_mode_set(struct devlink *devlink,
++			     enum devlink_eswitch_mode mode,
++			     struct netlink_ext_ack *extack)
++{
++	const struct devlink_ops *ops = devlink->ops;
++	int err;
++
++	devl_assert_locked(devlink);
++
++	if (!ops->eswitch_mode_set)
++		return -EOPNOTSUPP;
++
++	err = devlink_rates_check(devlink, devlink_rate_is_node, extack);
++	if (err)
++		return err;
++
++	return ops->eswitch_mode_set(devlink, mode, extack);
++}
++
+ int devlink_nl_eswitch_set_doit(struct sk_buff *skb, struct genl_info *info)
  {
- 	u8 rx_queues_cnt = priv->plat->rx_queues_to_use;
- 	u8 tx_queues_cnt = priv->plat->tx_queues_to_use;
-@@ -286,16 +290,15 @@ static void __stmmac_disable_all_queues(struct stmmac_priv *priv)
- }
+ 	struct devlink *devlink = devlink_nl_ctx(info)->devlink;
+@@ -712,14 +731,8 @@ int devlink_nl_eswitch_set_doit(struct sk_buff *skb, struct genl_info *info)
+ 	u16 mode;
  
- /**
-- * stmmac_disable_all_queues - Disable all queues
-+ * stmmac_drain_xdp - Cleanup for XDP apps
-  * @priv: driver private structure
-  */
--static void stmmac_disable_all_queues(struct stmmac_priv *priv)
-+static void stmmac_drain_xdp(struct stmmac_priv *priv)
- {
- 	u8 rx_queues_cnt = priv->plat->rx_queues_to_use;
- 	struct stmmac_rx_queue *rx_q;
- 	u8 queue;
- 
--	/* synchronize_rcu() needed for pending XDP buffers to drain */
- 	for (queue = 0; queue < rx_queues_cnt; queue++) {
- 		rx_q = &priv->dma_conf.rx_queue[queue];
- 		if (rx_q->xsk_pool) {
-@@ -303,8 +306,6 @@ static void stmmac_disable_all_queues(struct stmmac_priv *priv)
- 			break;
- 		}
+ 	if (info->attrs[DEVLINK_ATTR_ESWITCH_MODE]) {
+-		if (!ops->eswitch_mode_set)
+-			return -EOPNOTSUPP;
+-		err = devlink_rates_check(devlink, devlink_rate_is_node,
+-					  info->extack);
+-		if (err)
+-			return err;
+ 		mode = nla_get_u16(info->attrs[DEVLINK_ATTR_ESWITCH_MODE]);
+-		err = ops->eswitch_mode_set(devlink, mode, info->extack);
++		err = devlink_eswitch_mode_set(devlink, mode, info->extack);
+ 		if (err)
+ 			return err;
  	}
--
--	__stmmac_disable_all_queues(priv);
- }
+diff --git a/net/devlink/devl_internal.h b/net/devlink/devl_internal.h
+index cdf894ba5a9d..af43b7163f78 100644
+--- a/net/devlink/devl_internal.h
++++ b/net/devlink/devl_internal.h
+@@ -348,6 +348,9 @@ bool devlink_rate_is_node(const struct devlink_rate *devlink_rate);
+ int devlink_rates_check(struct devlink *devlink,
+ 			bool (*rate_filter)(const struct devlink_rate *),
+ 			struct netlink_ext_ack *extack);
++int devlink_eswitch_mode_set(struct devlink *devlink,
++			     enum devlink_eswitch_mode mode,
++			     struct netlink_ext_ack *extack);
  
- /**
-@@ -4149,6 +4150,9 @@ static int __stmmac_open(struct net_device *dev,
- 
- 	stmmac_reset_queues_param(priv);
- 
-+	/* Clear DOWN flag when opening the interface */
-+	clear_bit(STMMAC_DOWN, &priv->state);
-+
- 	ret = stmmac_hw_setup(dev);
- 	if (ret < 0) {
- 		netdev_err(priv->dev, "%s: Hw setup failed\n", __func__);
-@@ -4243,6 +4247,9 @@ static void __stmmac_release(struct net_device *dev)
- 	/* Stop and disconnect the PHY */
- 	phylink_stop(priv->phylink);
- 
-+	/* Set DOWN flag to prevent XDP from processing new packets */
-+	set_bit(STMMAC_DOWN, &priv->state);
-+
- 	stmmac_disable_all_queues(priv);
- 
- 	for (chan = 0; chan < priv->plat->tx_queues_to_use; chan++)
-@@ -4256,6 +4263,8 @@ static void __stmmac_release(struct net_device *dev)
- 	/* Stop TX/RX DMA and clear the descriptors */
- 	stmmac_stop_all_dma(priv);
- 
-+	stmmac_drain_xdp(priv);
-+
- 	/* Release and free the Rx/Tx resources */
- 	free_dma_desc_resources(priv, &priv->dma_conf);
- 
-@@ -6412,7 +6421,7 @@ static int stmmac_setup_tc_block_cb(enum tc_setup_type type, void *type_data,
- 	if (!tc_cls_can_offload_and_chain0(priv->dev, type_data))
- 		return ret;
- 
--	__stmmac_disable_all_queues(priv);
-+	stmmac_disable_all_queues(priv);
- 
- 	switch (type) {
- 	case TC_SETUP_CLSU32:
-@@ -7122,6 +7131,9 @@ void stmmac_xdp_release(struct net_device *dev)
- 	/* Stop TX/RX DMA channels */
- 	stmmac_stop_all_dma(priv);
- 
-+	/* Drain leftover XDP buffers */
-+	stmmac_drain_xdp(priv);
-+
- 	/* Release and free the Rx/Tx resources */
- 	free_dma_desc_resources(priv, &priv->dma_conf);
- 
-@@ -8208,6 +8220,8 @@ int stmmac_suspend(struct device *dev)
- 	/* Stop TX/RX DMA */
- 	stmmac_stop_all_dma(priv);
- 
-+	stmmac_drain_xdp(priv);
-+
- 	stmmac_legacy_serdes_power_down(priv);
- 
- 	/* Enable Power down mode by programming the PMT regs */
+ /* Linecards */
+ unsigned int devlink_linecard_index(struct devlink_linecard *linecard);
 -- 
-2.34.1
+2.43.0
 
