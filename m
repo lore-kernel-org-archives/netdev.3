@@ -1,97 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A221512CDBE;
-	Tue,  7 Jul 2026 14:46:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295EF36F912;
+	Tue,  7 Jul 2026 14:51:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783435567; cv=none; b=CWHoeF2GU7ixGxPwIWr6n49WO1okJDoLH+c6bsQIKoyG5FLLU2H4Z7wbvCcdr3NtewwhTeMeUchMwUcbgL1I1z6XpoEszqOP8Y+3TWltF5fxbs8FPrW2keqtmicDqBb4YJqLquFZ5pJ0jy5Gm7pDejLMqPFQJGSp+QuKt3vrPbU=
+	t=1783435880; cv=none; b=jgGfyUj1HRpAiXZMdcwDWGwhglFuH+r2gLXcE8HiBRhxPdGPuNaHnI4g6C7UvTgCBg9o+gqFCczK7tP83JQH/hIMxJK8Wz9Jm4wpqzCBpQ4V6kGv+xDlm/irfGlGe3bErSLj05NCGddVBtUcxOsr77/jU+5P1AO06rfQpqTkIy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783435567; c=relaxed/simple;
-	bh=LEyF9w8SPCzfdrRD+YDZIfJow2IM6iqVN/nTK27WsnM=;
+	s=arc-20240116; t=1783435880; c=relaxed/simple;
+	bh=L9pxNODWKGKAuUCsthtXuF8mIBH7L4Qzn2ryWaBeMOU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L1/y1gdg1PdebtRkELdRCifLJUBDKEqBLAahg0wXJ2d1cfVRwrStu83zCDPCRtMdCepw+LCQ5yb3/NuNwYaRIKb2M3i6iUNYylJE+PkAoNySQ6NdMGw3OL7jSGpBEH0HSvJdI/1m51VOKmykC4poi2NaY+y4gCJouibvxLCyh7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BpkPQxRV; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=S1nq/Zw2T3iutwclBHnsEd0sv5f62gnsayjBAVojvkZiuRRyqPYYdO7B3kmyaY4XHNGmZ8PzsGiR58qoUCMGcVfns8qFjvJVa9ipJLNYt5Glp8D3OhWTj7J2AUBlkQLtHcmjQ6qgZA7NKPqc/z04kPM46lfamNSd3Y5S6cl4oic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=aR4VJX9a; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BpkPQxRV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2066F1F000E9;
-	Tue,  7 Jul 2026 14:46:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783435566;
-	bh=38uJr8hVPGVJpV7RT0QtVixAplTyJQKOmyP/3Wvejkk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=BpkPQxRVjX7WXA/JEprOiZavYtpKUwCoXkGlay8OFTxOO3pBbm4Srga6ztyH+1G9J
-	 lK186j+V1CMVof8L6JnsbKESfM9aIozW2Fx5vLrzsSg8fNxMP82rXmD1RvGKwxmWTR
-	 toZSpjPZFfeMKf8ftXcFnxIWjZ59vBwOUbLfRcTdXK9hM4AdfUY23GHcs17g8mi4Km
-	 sYOaH1qvo7ncsQHtpLwY+T5IIOGF8UlSyExgMxbNm0iIpp7tzTLzlWINFiO2aFZki5
-	 mTuTothfBivZ9KvlFwlGUoGRccKPFG9tF5Q8RAWeV0x0tDP9G04KiXwRTm3QUUMy9E
-	 m4/nOvrkforfQ==
-Date: Tue, 7 Jul 2026 15:46:01 +0100
-From: Simon Horman <horms@kernel.org>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	Brian Norris <briannorris@chromium.org>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	Jakub Kicinski <kuba@kernel.org>, b43-dev@lists.infradead.org,
-	libertas-dev@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH 0/4] drivers/net: replace __get_free_pages() with
- kmalloc()
-Message-ID: <20260707144601.GH1364329@horms.kernel.org>
-References: <20260701-b4-drivers-wireless-v1-0-60264cdf2efe@kernel.org>
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="aR4VJX9a"
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 9F22560581;
+	Tue,  7 Jul 2026 16:51:15 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1783435875;
+	bh=gt9EUNIkxSF/HxvT4+/9rtfn5HBwdYBkGcy8bzzqMU8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aR4VJX9a0lT4k9RgfZhExBrDXRGUzS7AoA51CHfEL2KNL1oAInOVY65NfNkS4a194
+	 rxvdatytP7zN8L80/1RejAhfLRbXPpxDIFHiYXhM2p9ElKBlKezwe57ldSDeS5ITS5
+	 pplEuB28dm/CYaFJ+S0kyhbSpfgsH2ZYdYsE8kKllun3Q79DvRKeL/4uz4UXINnbvv
+	 cAZqvc59Utem2Chghcg+66CSJ2ITL3ZtMbSNOIkK2+iLh4uM6cjosMqV2g9cIXU8O7
+	 pEnP53NxY082Zr3DnPGYV7GtiEcuHtimKPoG9sml53gan3rkih6RXfWwpu0o+mtArX
+	 lhHIrCAybxR0w==
+Date: Tue, 7 Jul 2026 16:51:12 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Simon Horman <horms@kernel.org>
+Cc: Runyu Xiao <runyu.xiao@seu.edu.cn>, laforge@gnumonks.org,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com,
+	osmocom-net-gprs@lists.osmocom.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, jianhao.xu@seu.edu.cn
+Subject: Re: [PATCH net-next] gtp: annotate PDP lookups under RTNL
+Message-ID: <ak0SYEOvw6K_8C_w@chamomile>
+References: <20260701123925.3193089-1-runyu.xiao@seu.edu.cn>
+ <20260707142820.GG1364329@horms.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260701-b4-drivers-wireless-v1-0-60264cdf2efe@kernel.org>
+In-Reply-To: <20260707142820.GG1364329@horms.kernel.org>
 
-On Wed, Jul 01, 2026 at 04:59:09PM +0300, Mike Rapoport (Microsoft) wrote:
-> This is a (small) part of larger work of replacing page allocator calls
-> with kmalloc.
-> 
-> My initial intention a few month ago was to remove ugly casts [1], but then
-> willy pointed out that Linus objected to something like this [2] and it
-> looks like more than a decade old technical debt.
-> 
-> Largely, anything that doesn't need struct page (or a memdesc in the
-> future) should just use kmalloc() or kvmalloc() to allocate memory.
-> kmalloc() guarantees alignment, physical contiguity and working
-> virt_to_phys() and beside nicer API that returns void * on alloc and
-> doesn't require to know the allocation size on free, kmalloc() provides
-> better debugging capabilities than page allocator.
-> 
-> Another thing is that touching these allocation sites gives the reviewers
-> opportunity to see if a PAGE_SIZE buffer is actually needed or maybe
-> another size is appropriate.
-> 
-> For larger allocations that don't need physically contiguous memory
-> kvmalloc() can be a better option that __get_free_pages() because under
-> memory pressure it's is easier to allocate several order-0 pages than a
-> physically contiguous chunk with the same number of pages.
-> 
-> And last, but not least, removing needless calls to page allocator should
-> help with memdesc (aka project folio) conversion. There will be way less
-> places to audit to see if the user was actually using struct page.
-> 
-> Also in git:
-> https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git gfp-to-kmalloc/drivers-net-wireless
-> 
-> [1] https://lore.kernel.org/all/20251018093002.3660549-1-rppt@kernel.org/
-> [2] https://lore.kernel.org/all/CA+55aFwp4iy4rtX2gE2WjBGFL=NxMVnoFeHqYa2j1dYOMMGqxg@mail.gmail.com/
-> 
-> ---
-> Changes in v2:
-> - split out wireless drivers from a larger set 
-> - use kzalloc() instead of kmalloc() + memset in b43legacy
-> 
-> v1: https://patch.msgid.link/20260630-b4-drivers-net-v1-0-672162a91f37@kernel.org
+Hi Simon,
 
-For the series:
+On Tue, Jul 07, 2026 at 03:28:20PM +0100, Simon Horman wrote:
+> On Wed, Jul 01, 2026 at 08:39:25PM +0800, Runyu Xiao wrote:
+> > The GTP PDP lookup helpers are shared by RCU-protected data and report
+> > paths and RTNL-protected control paths such as gtp_genl_new_pdp(). The
+> > helpers walk RCU hlists, but they do not currently pass the RTNL
+> > condition for the control-path lookups.
+> > 
+> > Pass lockdep_rtnl_is_held() to the PDP hlist iterators. Existing
+> > RCU-reader callers remain valid because the RCU-list macros also accept
+> > an active RCU read-side section; the added condition only documents the
+> > non-RCU protection already used by RTNL control paths.
+> > 
+> > This was found by our static analysis tool and then manually reviewed
+> > against the current tree. The dynamic triage evidence is a
+> > target-matched CONFIG_PROVE_RCU_LIST warning; the change is limited
+> > to documenting the existing protection contract.
+> > 
+> > This is a lockdep annotation cleanup. It does not change PDP lifetime or
+> > hash updates.
+> > 
+> > Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+> 
+> Reviewed-by: Simon Horman <horms@kernel.org>
+> 
+> There is an AI-generated review of this patch available on sashko.dev.
+> While I don't believe that the issues raised there should impede progress
+> of this patch you may want to look into them as possible follow-up.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+This patch refers to the rtnl_lock, but it is the genetlink mutex that
+protects updates on the PDP context list.
 
+Then, from packet path, rcu lookups are performed.
+
+I think this patch is not correct.
