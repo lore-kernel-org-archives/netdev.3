@@ -1,306 +1,158 @@
-Received: from mail.eswincomputing.com (mail.eswincomputing.com [123.124.195.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83635226CF6;
-	Tue,  7 Jul 2026 06:43:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.124.195.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 265BF3AB285
+	for <netdev@vger.kernel.org>; Tue,  7 Jul 2026 06:48:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783406594; cv=none; b=rGh6CKl1QbmI8K1FoUdmIVbD+2T5mYyo3jWJs7nBqvv4hOkoocj1IgnBtETp2bkwOdg3gq64atsh21DWtakjco0S4bDDllW5aUJb0r8A4xlKnDJAZIoUHvr/U5RP3W0UDP5F3AIvzvOsuMr5A19DzwzXoEGxhrfVNf6SOtjoRzI=
+	t=1783406886; cv=none; b=YS8W8ScI51741qNiPjH+YcChmBkbq5woq/Q2C7r5nphZHQZdtc+OeHjmkam+n423UtS3y3tqsjZyfCT+AyfTvBad722KvpCsKUO3MT7xYopkuhPjhXgHKMACgJti/iG2sRR31RRPaHokZQWVWoJMhyG6S33nZ4u+Oz0wM92BjmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783406594; c=relaxed/simple;
-	bh=NTOhPjNpdndJhT79CPrWjIgNfrPCvlosknceyDRJ0Ac=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OGMHiHnB2U9A7qwAeHbfkw4gWnTAqgLAEUjAl3QptYbtJ4mIvmAb/p1wSzsb3mdrzeihLNoBA+dbGL6qyKcLASR2tsS0m6F77GzqyhBqTJ4YDvpJJuPfegUkaytdrqy1WAkGEmn6yg/66HdnFllb/Y6UxEi+8iAisqoazLZptN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=eswincomputing.com; spf=pass smtp.mailfrom=eswincomputing.com; arc=none smtp.client-ip=123.124.195.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=eswincomputing.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=eswincomputing.com
-Received: from E0004057DT.eswin.cn (unknown [10.11.96.26])
-	by app2 (Coremail) with SMTP id TQJkCgCHnaDcn0xqpwAyAA--.41186S2;
-	Tue, 07 Jul 2026 14:42:38 +0800 (CST)
-From: lizhi2@eswincomputing.com
-To: devicetree@vger.kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com,
-	rmk+kernel@armlinux.org.uk,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	maxime.chevallier@bootlin.com
-Cc: ningyu@eswincomputing.com,
-	linmin@eswincomputing.com,
-	pinkesh.vaghela@einfochips.com,
-	pritesh.patel@einfochips.com,
-	weishangjuan@eswincomputing.com,
-	horms@kernel.org,
-	Zhi Li <lizhi2@eswincomputing.com>
-Subject: [PATCH net-next v10 4/4] net: stmmac: eic7700: add support for eth1 clock inversion variant
-Date: Tue,  7 Jul 2026 14:42:32 +0800
-Message-ID: <20260707064234.1333-1-lizhi2@eswincomputing.com>
-X-Mailer: git-send-email 2.52.0.windows.1
-In-Reply-To: <20260707064033.1265-1-lizhi2@eswincomputing.com>
-References: <20260707064033.1265-1-lizhi2@eswincomputing.com>
+	s=arc-20240116; t=1783406886; c=relaxed/simple;
+	bh=BFtxn4X+mJFtlkHIVeC52mXm9VbFSXRnEgr35mm+F4Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LVifz/8iIheHUU9NrbirXwba8f7gaJ7SF4pHGSrQ2dKFILvUoDpM940BuMMsQ0udYF/kD5eckACVg7q4YYQql6f89DdjO/4TxpqAiBsuGcrm4zM/nmLiFS2OK3w/pLgYwi32jqwBb8xArXmx2210ae1Mjxjf+tZkb8JiW352h1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R4GDgs8Z; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R4GDgs8Z"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-37df72c9984so3725221a91.3
+        for <netdev@vger.kernel.org>; Mon, 06 Jul 2026 23:48:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783406884; x=1784011684; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mV9b9qbeBEweBEXICaOG52qJ87vvXvQEsEcejPT+TSs=;
+        b=R4GDgs8ZdTQhZTvgC3zLoGvn239hSGyuiq3Ex5kpf0d8+D+kQ+wnqlA0QNDaVGn21M
+         nUzmkgLcrBRKanlw/z0LBqKUMbA48U76TtR70TRBmDZxMwSDHpTwOEwxi7tY5tocYhEP
+         z2ApZn2uLtmWTlvmcCxKIE7hb0Pb55VoZwEI9HqUX7ljnCFuF/5x5WzbOF0icijRWGYO
+         BLCA/AsTcKHp97xJ68vZSMtMfWpD3AQrMXExqxhGKUP2BSP4lrlg/Eu4zkpRLfmEdQzY
+         NwXqVQfUIG+e2jmcp9IqN8iP84sQp81bsYMyU5dufdkRBOLTfvi/1EdKGxyWQ14V30gE
+         ZVJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783406884; x=1784011684;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mV9b9qbeBEweBEXICaOG52qJ87vvXvQEsEcejPT+TSs=;
+        b=m6a31Vzw8Rrk6jx61dsjJOJEDHPitKIy//duzL0VlXP0NklYsQiahX3kMzwExukKOx
+         XrMz0oWyu46A4vSZYOrlJ2N5Kky/YyGSeY18PndoIDXp0jzCV/r2T/dK8xzUjOBX2Ec2
+         UDd0p9r3n+R7ChX68q/cPao1kHjewn1vQrdkbgLR93BJJd38yu+MBqkEy0EYU0o9Yr0t
+         k7uT7or2TuP+8oJiaIH2BQQ4yH43HCiwBDIOBbJaaJrHc6r7VOCsjMAsu0q9F8pbEdhn
+         NCNd0S52EmYNbdhBpT0e5JufrX9pXUCa2oopY3G/dcdS9CkTH3RyQuB6R5R3NeV+X7c8
+         /qJg==
+X-Gm-Message-State: AOJu0YyzH0JfglicjOQcK+3Cu6Lf2pCcrdXMfFU8Mtbksd1ErTYZaEWR
+	9yTWlrDw7cID/g3xeavOS4sEj3lT1exxnDS4yBy+r7nuqHrO0Wpw8rpdIjKalo89
+X-Gm-Gg: AfdE7cl7VF0jWauRAjNiMnJG2oQNHwJXWiRrpvZd3JwZmj9N9TDxRmME60BCmpnNczt
+	oQtx1XQDWRnNcqLSsKFhrQnSToxdm2W7SATs9lheUe6UsqF572uYsN7WtHz+FZ+PZoWdHapqzAX
+	FnJFtCABtQ2D91dVULQIfaqtb6Xdw0Lia6BzXc9WHShUpF0Qi/r7weeRx7xWWBC6ZHrgdweLYfb
+	3ce6mXXa7FpDB4eF0xlu4g2aEJxJGqYz6p0o0fepOpQb/Mk/nfADporWT2p1J3c5WVlqg6m6OlE
+	A+N+gE34rQ4YuVzcRZSl/O2Gbs+FUC3fkiFWKtgedCyYzyXwjh828FtwWoKUgOoeTzAx8uEpJwA
+	zyTd9ryaLT68ijtMGuYq9nv4DMX+dtABKecp84d2KESHTUtxi7hpdgCB2ircMW5a33g6/TL9rMy
+	JuzclR7ugwtioYN/M=
+X-Received: by 2002:a17:90b:270d:b0:37e:b6a:6cdf with SMTP id 98e67ed59e1d1-387573b2d12mr4124292a91.20.1783406884332;
+        Mon, 06 Jul 2026 23:48:04 -0700 (PDT)
+Received: from io.local ([159.196.197.79])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-387d229a20csm537968a91.16.2026.07.06.23.48.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Jul 2026 23:48:03 -0700 (PDT)
+From: Jamie Bainbridge <jamie.bainbridge@gmail.com>
+To: netdev@vger.kernel.org,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Phil Sutter <phil@nwl.cc>,
+	Xin Long <lucien.xin@gmail.com>,
+	Rustam Kovhaev <rkovhaev@gmail.com>
+Cc: Jamie Bainbridge <jamie.bainbridge@gmail.com>
+Subject: [PATCH iproute] ss: Don't re-print an SCTP listen socket as an assoc
+Date: Tue,  7 Jul 2026 16:46:50 +1000
+Message-ID: <4d56e7ac2502cd92d4837d9fb16b9228aa17d599.1783406660.git.jamie.bainbridge@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:TQJkCgCHnaDcn0xqpwAyAA--.41186S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxtw48CFy8tr1kWF18JF4Utwb_yoW3Aw4DpF
-	W8CrW5KF4qqr1fK397JF4vva43tr4xKr4SyrWrKFsayas8tr98Xa40ya48JFy8JrW3Zr13
-	Xw4jyFWxZa9F9rJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBG14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
-	Y2ka0xkIwI1lw4CEc2x0rVAKj4xxMxkF7I0En4kS14v26r4a6rW5MxkIecxEwVCm-wCF04
-	k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18
-	MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr4
-	1lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4U
-	JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcV
-	C2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x0pRByxiUUUUU=
-X-CM-SenderInfo: xol2xx2s6h245lqf0zpsxwx03jof0z/
 
-From: Zhi Li <lizhi2@eswincomputing.com>
+"ss -Sa" prints a LISTEN-state SCTP sock once as a non-assoc when
+is_sctp_assoc() correctly returns false, then again when we have cached
+the inode in sctp_ino, so is_sctp_assoc() returns true.
 
-The eth1 MAC exhibits silicon-inherent RX and TX timing behavior that
-differs from the eth0 implementation.
+On the second pass, we try to print the socket state with
+sctp_sstate_name[s->state], but s->state == 10 (SCTP_SS_LISTENING)
+but sctp_sstate_name[] only has 8 entries, so we illegally access beyond
+the end of the name array.
 
-At 1000Mbps, RX sampling requires clock inversion due to a fixed MAC
-input skew that cannot be compensated by standard RGMII delay settings.
+If you are lucky, the space beyond the array is NULL and the argument to
+the print format is printed as "(null)" by the C library:
 
-The TX path includes a fixed ~2ns internal delay introduced by the MAC
-silicon. This delay is always present and is already accounted for in
-the device tree tx-internal-delay-ps property as part of the effective
-output timing.
+  $ ./misc/ss -San
+  State     Recv-Q Send-Q    Local Address:Port Peer Address:Port
+  LISTEN    0      5           192.0.2.10:9001       0.0.0.0:*
+  `- (null) 0      5           192.0.2.10:9001       0.0.0.0:*
+  `- ESTAB  0      0      192.0.2.10%net1:9001     192.0.2.9:11111
 
-The tx-internal-delay-ps property describes the effective delay seen at
-the MAC output. Since the hardware register controls only the
-programmable portion of the delay, the driver subtracts the fixed
-silicon-inherent component before programming the delay register.
+If you are unlucky, the space beyond the array is non-NULL and you
+pass an invalid address to the print format:
 
-Use compatible-specific match data to identify the eth1 variant and
-apply RX clock inversion only at 1000Mbps.
+  $ ./misc/ss -San
+  Segmentation fault (core dumped)
 
-The PHY interface mode is adjusted via phy_fix_phy_mode_for_mac_delays()
-to avoid double-application of RGMII delays when MAC-side delays are
-already present.
+The inode is correctly cached at the bottom of inet_show_sock(), so
+check if we've already processed this SCTP LISTEN inode and exit early.
 
-Link speed dependency means RX sampling configuration is applied in the
-fix_mac_speed callback after negotiation.
+  $ ./misc/ss -San
+  State    Recv-Q Send-Q    Local Address:Port Peer Address:Port
+  LISTEN   0      5           192.0.2.10:9001       0.0.0.0:*
+  `- ESTAB 0      0      192.0.2.10%net1:9001     192.0.2.9:11111
 
-No behavior changes for the existing eth0 controller.
+We cannot exit later than this (eg: in sock_state_print()) because by
+then we're already halfway through a new line in inet_stats_print().
 
-Signed-off-by: Zhi Li <lizhi2@eswincomputing.com>
+Keep the existing check in is_sctp_assoc() because that is needed to
+differentiate related assocs from new endpoints.
+
+Note: there is still a chance of double-printing a listen socket (now
+with the correct format if netlink delivers us listen sockets and their
+assocs with something else in between:
+
+  $ ./misc/ss -Sane
+  State    Recv-Q Send-Q    Local Address:Port Peer Address:Port
+> LISTEN   0      5           192.0.2.10:9001       0.0.0.0:*     ino:36518
+  LISTEN   0      5           192.0.2.10:9002       0.0.0.0:*     ino:44485
+  `- ESTAB 0      0      192.0.2.10%net1:9002     192.0.2.9:22222 ino:44485
+> LISTEN   0      5           192.0.2.10:9001       0.0.0.0:*     ino:36518
+  `- ESTAB 0      0      192.0.2.10%net1:9001     122.0.2.9:11111 ino:36518
+
+This behaviour existed before this commit. I don't see a way around this
+except to pre-sort the results from netlink which seems unrealistic.
+
+Fixes: f89d46ad63f6f ("ss: Add support for SCTP protocol")
+Reported-by: Rustam Kovhaev <rkovhaev@gmail.com>
+Signed-off-by: Jamie Bainbridge <jamie.bainbridge@gmail.com>
 ---
- .../ethernet/stmicro/stmmac/dwmac-eic7700.c   | 111 ++++++++++++++++--
- 1 file changed, 103 insertions(+), 8 deletions(-)
+ misc/ss.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-eic7700.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-eic7700.c
-index ec99b597aeaf..eab8c13fbdcc 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-eic7700.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-eic7700.c
-@@ -28,11 +28,15 @@
- 
- /*
-  * TX/RX Clock Delay Bit Masks:
-- * - TX Delay: bits [14:8] — TX_CLK delay (unit: 0.02ns per bit)
-- * - RX Delay: bits [30:24] — RX_CLK delay (unit: 0.02ns per bit)
-+ * - TX Delay: bits [14:8] - TX_CLK delay (unit: 0.02ns per bit)
-+ * - TX Invert : bit  [15]
-+ * - RX Delay: bits [30:24] - RX_CLK delay (unit: 0.02ns per bit)
-+ * - RX Invert : bit  [31]
-  */
- #define EIC7700_ETH_TX_ADJ_DELAY	GENMASK(14, 8)
- #define EIC7700_ETH_RX_ADJ_DELAY	GENMASK(30, 24)
-+#define EIC7700_ETH_TX_INV_DELAY	BIT(15)
-+#define EIC7700_ETH_RX_INV_DELAY	BIT(31)
- 
- #define EIC7700_MAX_DELAY_STEPS		0x7F
- #define EIC7700_DELAY_STEP_PS		20
-@@ -43,7 +47,14 @@ static const char * const eic7700_clk_names[] = {
- 	"tx", "axi", "cfg",
- };
- 
-+struct eic7700_dwmac_data {
-+	bool rgmii_rx_clk_invert;
-+	bool has_internal_tx_delay;
-+	u32 tx_clk_inherent_skew_ps;
-+};
-+
- struct eic7700_qos_priv {
-+	struct device *dev;
- 	struct plat_stmmacenet_data *plat_dat;
- 	struct regmap *eic7700_hsp_regmap;
- 	u32 eth_axi_lp_ctrl_offset;
-@@ -54,6 +65,7 @@ struct eic7700_qos_priv {
- 	u32 eth_clk_dly_param;
- 	bool has_txd_offset;
- 	bool has_rxd_offset;
-+	bool eth_rx_clk_inv;
- };
- 
- static int eic7700_clks_config(void *priv, bool enabled)
-@@ -97,9 +109,6 @@ static int eic7700_dwmac_init(struct device *dev, void *priv)
- 	if (dwc->has_rxd_offset)
- 		regmap_write(dwc->eic7700_hsp_regmap, dwc->eth_rxd_offset, 0);
- 
--	regmap_write(dwc->eic7700_hsp_regmap, dwc->eth_clk_offset,
--		     dwc->eth_clk_dly_param);
--
- 	return 0;
- }
- 
-@@ -126,8 +135,38 @@ static int eic7700_dwmac_resume(struct device *dev, void *priv)
- 	return ret;
- }
- 
-+/*
-+ * eth1 requires RX clock inversion at 1000Mbps due to silicon-inherent
-+ * RX sampling skew at MAC input.
-+ *
-+ * The configuration is updated in fix_mac_speed() because the required
-+ * sampling behavior depends on the negotiated link speed.
-+ */
-+static void eic7700_dwmac_fix_speed(void *priv, phy_interface_t interface,
-+				    int speed, unsigned int mode)
-+{
-+	struct eic7700_qos_priv *dwc = (struct eic7700_qos_priv *)priv;
-+	u32 dly_param = dwc->eth_clk_dly_param;
-+
-+	switch (speed) {
-+	case SPEED_1000:
-+		if (dwc->eth_rx_clk_inv)
-+			dly_param |= EIC7700_ETH_RX_INV_DELAY;
-+		break;
-+	case SPEED_100:
-+	case SPEED_10:
-+		break;
-+	default:
-+		dev_warn(dwc->dev, "unsupported speed %u\n", speed);
-+		return;
-+	}
-+
-+	regmap_write(dwc->eic7700_hsp_regmap, dwc->eth_clk_offset, dly_param);
-+}
-+
- static int eic7700_dwmac_probe(struct platform_device *pdev)
+diff --git a/misc/ss.c b/misc/ss.c
+index 14e9f27a75321556240a5f290b8bcf51c605a4c2..7e94160f7590c35aa187fe00902be8def7593608 100644
+--- a/misc/ss.c
++++ b/misc/ss.c
+@@ -3764,6 +3764,14 @@ static bool bpf_map_opts_is_enabled(void)
+ static int inet_show_sock(struct nlmsghdr *nlh,
+ 			  struct sockstat *s)
  {
-+	const struct eic7700_dwmac_data *data;
- 	struct plat_stmmacenet_data *plat_dat;
- 	struct stmmac_resources stmmac_res;
- 	struct eic7700_qos_priv *dwc_priv;
-@@ -148,6 +187,30 @@ static int eic7700_dwmac_probe(struct platform_device *pdev)
- 	if (!dwc_priv)
- 		return -ENOMEM;
- 
-+	dwc_priv->dev = &pdev->dev;
-+
-+	data = device_get_match_data(&pdev->dev);
-+	if (!data)
-+		return dev_err_probe(&pdev->dev,
-+				     -EINVAL, "no match data found\n");
-+
-+	dwc_priv->eth_rx_clk_inv = data->rgmii_rx_clk_invert;
-+	/*
-+	 * The MAC silicon unconditionally adds ~2 ns TX delay; prevent
-+	 * the PHY from also adding TX delay to avoid doubling it.
-+	 *
-+	 * DT specifies rgmii-id (TX from MAC silicon, RX from PHY);
-+	 * override to rgmii-rxid so the PHY only adds its RX delay.
++	/* SCTP assocs share the same inode number with their parent endpoint.
++	 * If we've seen a LISTEN socket inode before, we've already printed it
++	 * and cached the inode at the bottom of this function. We don't want
++	 * to re-print the LISTEN socket again. so exit early.
 +	 */
-+	if (data->has_internal_tx_delay) {
-+		plat_dat->phy_interface =
-+				 phy_fix_phy_mode_for_mac_delays(plat_dat->phy_interface,
-+								 true, false);
-+		if (plat_dat->phy_interface == PHY_INTERFACE_MODE_NA)
-+			return dev_err_probe(&pdev->dev, -EINVAL,
-+				"phy interface mode is NA\n");
-+	}
++	if (s->type == IPPROTO_SCTP && s->state == SS_LISTEN && sctp_ino == s->ino)
++		return 0;
 +
- 	/* Read rx-internal-delay-ps and update rx_clk delay */
- 	if (!of_property_read_u32(pdev->dev.of_node,
- 				  "rx-internal-delay-ps", &delay_ps)) {
-@@ -167,7 +230,13 @@ static int eic7700_dwmac_probe(struct platform_device *pdev)
- 				 FIELD_PREP(EIC7700_ETH_RX_ADJ_DELAY, val);
- 	}
- 
--	/* Read tx-internal-delay-ps and update tx_clk delay */
-+	/* Read tx-internal-delay-ps and update tx_clk delay.
-+	 *
-+	 * For eswin,eic7700-qos-eth-clk-inversion, the DT property describes
-+	 * the effective TX delay at the MAC output, including the inherent
-+	 * silicon delay. Subtract the fixed component to obtain the
-+	 * programmable delay value.
-+	 */
- 	if (!of_property_read_u32(pdev->dev.of_node,
- 				  "tx-internal-delay-ps", &delay_ps)) {
- 		if (delay_ps % EIC7700_DELAY_STEP_PS)
-@@ -175,9 +244,16 @@ static int eic7700_dwmac_probe(struct platform_device *pdev)
- 				"tx delay must be multiple of %dps\n",
- 				EIC7700_DELAY_STEP_PS);
- 
-+		if (delay_ps < data->tx_clk_inherent_skew_ps)
-+			return dev_err_probe(&pdev->dev, -EINVAL,
-+				"tx delay %ups below inherent skew %ups\n",
-+				delay_ps, data->tx_clk_inherent_skew_ps);
-+
-+		delay_ps -= data->tx_clk_inherent_skew_ps;
-+
- 		if (delay_ps > EIC7700_MAX_DELAY_PS)
- 			return dev_err_probe(&pdev->dev, -EINVAL,
--				"tx delay out of range\n");
-+				"tx delay out of programmable range\n");
- 
- 		val = delay_ps / EIC7700_DELAY_STEP_PS;
- 
-@@ -254,12 +330,31 @@ static int eic7700_dwmac_probe(struct platform_device *pdev)
- 	plat_dat->exit = eic7700_dwmac_exit;
- 	plat_dat->suspend = eic7700_dwmac_suspend;
- 	plat_dat->resume = eic7700_dwmac_resume;
-+	plat_dat->fix_mac_speed = eic7700_dwmac_fix_speed;
- 
- 	return devm_stmmac_pltfr_probe(pdev, plat_dat, &stmmac_res);
- }
- 
-+static const struct eic7700_dwmac_data eic7700_dwmac_data = {
-+	.rgmii_rx_clk_invert = false,
-+	.has_internal_tx_delay = false,
-+	.tx_clk_inherent_skew_ps = 0,
-+};
-+
-+static const struct eic7700_dwmac_data eic7700_dwmac_data_clk_inversion = {
-+	.rgmii_rx_clk_invert = true,
-+	.has_internal_tx_delay = true,
-+	.tx_clk_inherent_skew_ps = 2000,
-+};
-+
- static const struct of_device_id eic7700_dwmac_match[] = {
--	{ .compatible = "eswin,eic7700-qos-eth" },
-+	{	.compatible = "eswin,eic7700-qos-eth",
-+		.data = &eic7700_dwmac_data,
-+	},
-+	{
-+		.compatible = "eswin,eic7700-qos-eth-clk-inversion",
-+		.data = &eic7700_dwmac_data_clk_inversion,
-+	},
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, eic7700_dwmac_match);
+ 	struct rtattr *tb[INET_DIAG_MAX+1];
+ 	struct inet_diag_msg *r = NLMSG_DATA(nlh);
+ 	unsigned char v6only = 0;
 -- 
-2.25.1
+2.47.3
 
