@@ -1,118 +1,64 @@
-Received: from mail.kmu-office.ch (mail.kmu-office.ch [178.209.48.109])
+Received: from mail-106120.protonmail.ch (mail-106120.protonmail.ch [79.135.106.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96EC137DAA9
-	for <netdev@vger.kernel.org>; Tue,  7 Jul 2026 16:29:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.209.48.109
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96DF2434E5A
+	for <netdev@vger.kernel.org>; Tue,  7 Jul 2026 16:34:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.120
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783441771; cv=none; b=RxFVGYG6CMpEdlozf6qoja36X+T5oANWwt01PLoMEwPhtWCcoWlvHeJALNieVsqwtLSYNxiHFXNqt5m4jqdRz91hc4MqgS8IdrpX+uZvdk6wCIQhLVwTEubX3KiSEbNqqIf7+aSUdEoo9gnl3sKWk8gE6FNj35CiLy/p/xPnYtM=
+	t=1783442091; cv=none; b=WYjBIJ58PcH8qp1x9kHnWj1KpdeTaJjhtQVzMw4l3cexmrr7jzjggDPhvZyH0g3iESTkv3s0PGymNMeWN1unam2zlM5OU6VmoK66P7/03IbWub6dFXqZb+U48ZEQsGtSw2cI3P1mLsN/90/hM72NtK/cF5Qck/jvJSg6LZ9BJrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783441771; c=relaxed/simple;
-	bh=iStYC0Iq8iFRqb83/hsfeJQsuMLUUC870SWEGOWoh+w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=B2+ZZ1N21hzZHsa/a/t9GBueAkCvXHn8B3NrSLJN/rDz6MTnNG3Imjkl9kdKOVYrf6U0jblEsbJaeSdydRplFwdOSWPW8o3/ZWg7n/DI6yuTZ3vMHAPtbjoDo18gg49d45sJ/DHh+v5cW4WOmqpdwv99Tt3EDHqJJ2eTKVT4GPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=agner.ch; spf=pass smtp.mailfrom=agner.ch; dkim=pass (1024-bit key) header.d=agner.ch header.i=@agner.ch header.b=OExklQX0; arc=none smtp.client-ip=178.209.48.109
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=agner.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=agner.ch
+	s=arc-20240116; t=1783442091; c=relaxed/simple;
+	bh=Mzs8SuveZMo5RAd1ZZoYdnYkNRzqIAba+zrREv7yGOI=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EX5UF9PbZGCoVgLBisHlke/Wps3wL9SajOxStgsi+7WMmy5p4sPjkCpN7Q6Xtyi5s/Y0g/BfmMLwO4DHbnwjl677atQkoS/HdnmQcmKMdvwj/VYwZTXZ7tUJ1wQlNYvW8nXdhu4NniDwGBIbE4O+y45hJLnJCzn20yA3u2YtDJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=I0uTCUbL; arc=none smtp.client-ip=79.135.106.120
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=agner.ch header.i=@agner.ch header.b="OExklQX0"
-Received: from allenwind.lan (unknown [IPv6:2a02:169:3c38:10::3a0])
-	by mail.kmu-office.ch (Postfix) with ESMTPSA id 5A49C5CA16B;
-	Tue,  7 Jul 2026 18:21:50 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=agner.ch; s=dkim;
-	t=1783441310;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=1lw1VBDE1/D2I6ja8qlx//S0jIyLgr96wpIl4MJHkxE=;
-	b=OExklQX0Z1RbE+wjJPmTMPSVhBQoTHdvN82uETaE1DHuFypcgBk2aUoB16NyUEuQN0lUe4
-	0X/5M9sDKZj7IoVSnybczAGLz9yKrX1VHWAUjX1+XzzOmz6OPBeG2pUd6bb87VxYv6/OwM
-	AlvuAaXr2C2jIkXgK31f8EO6df7/474=
-From: Stefan Agner <stefan@agner.ch>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	regressions@lists.linux.dev,
-	Stefan Agner <stefan@agner.ch>
-Subject: [PATCH net] net: stmmac: resume PHY before reopening the interface on MTU change
-Date: Tue,  7 Jul 2026 18:21:46 +0200
-Message-ID: <20260707162146.73823-1-stefan@agner.ch>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="I0uTCUbL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1783442085; x=1783701285;
+	bh=e1mEXN3Io1+cxS8ymD1K/F8t95agWjX3EwyhwfhzKIw=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=I0uTCUbLfIf/k8Yyl/dFVy5xj2obGWjaPB/uhDp6vua4d5flxTzHvn9BfShSwx7AS
+	 +dQFwnNXhHUyyBxh0Yvpqv4KFGwfHc4UNBBxNv/Qex4EPkflfhmp780L2LoozdXQOF
+	 lrx9TNBvWZqPnaO4et9/vIfpSclIcb9jhXIeWj0v8ZeKRASeU7J1vZRvvDr1wMKmld
+	 HO1ZC+8UMkOiRo4+b4ALvgfi4c9Hg3wA2bMPeMTdUvBw6DtkWmOnKXTZOh3OcINNHx
+	 0csB6HJilTIN9jVNGLS3eXMG5qLFRROAZl161JHmgmy7cLGcB1eiW++4UFGSjbW8jC
+	 H4bNY9lVExxGg==
+Date: Tue, 07 Jul 2026 16:34:40 +0000
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Alex Elder <elder@kernel.org>
+From: Esteban Urrutia <esteuwu@proton.me>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH 1/3] arm64: dts: qcom: sm8450: Add IPA support
+Message-ID: <3b7d997c-ecea-46d1-9e5a-effad3486676@proton.me>
+In-Reply-To: <4afa8797-1cb1-4cf1-bdbd-9cb5725377b8@oss.qualcomm.com>
+References: <20260622-sm8450-ipa-v1-0-532f0299f96e@proton.me> <20260622-sm8450-ipa-v1-1-532f0299f96e@proton.me> <806046b2-20ed-437e-a7e6-b3c0699f5a2d@oss.qualcomm.com> <b1f872f5-66cc-45fc-ad42-c308f8970691@proton.me> <66330ed6-826a-431e-9e8e-f2998af55168@oss.qualcomm.com> <1e151b08-5d3b-4b75-8d71-635617868285@proton.me> <4afa8797-1cb1-4cf1-bdbd-9cb5725377b8@oss.qualcomm.com>
+Feedback-ID: 147889766:user:proton
+X-Pm-Message-ID: 2c3f07974c2d266b2db99000671eb75cfc5fb6d8
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Since the referenced commit, changing the MTU on a running interface no
-longer disconnects and reconnects the PHY; __stmmac_release() merely
-stops phylink, which also suspends the PHY (BMCR power-down) when WoL
-is not enabled. __stmmac_open() then performs the DMA software reset in
-stmmac_hw_setup() before phylink_start() resumes the PHY again.
+On 7/7/26 6:35 AM, Konrad Dybcio wrote:
+> Yes
 
-IEEE 802.3 22.2.4.1.5 allows a PHY to stop its receive clock while
-powered down, and stmmac requires a running receive clock for the DMA
-software reset to complete (the phylink config sets mac_requires_rxc).
-On such setups, e.g. the RK3566-based Home Assistant Green with an
-RTL8211F-VD PHY in RGMII mode, any runtime MTU change now times out and
-leaves the interface dead:
+On SM8475 I get this warning though:
 
-  rk_gmac-dwmac fe010000.ethernet end0: Failed to reset the dma
-  rk_gmac-dwmac fe010000.ethernet end0: stmmac_hw_setup: DMA engine initialization failed
-  rk_gmac-dwmac fe010000.ethernet end0: __stmmac_open: Hw setup failed
-  rk_gmac-dwmac fe010000.ethernet end0: failed reopening the interface after MTU change
+[    9.551813] ipa 3f40000.ipa: limiting IPA memory size to 0x00005000
 
-In the field this is triggered by NetworkManager applying an MTU while
-activating the connection, breaking networking entirely.
+Both SM8450 and SM8475 use the same IPA version, so that shouldn't be an
+issue.
+On SM8550 and SM8650 this area is set to 0x5000 as well.
+What should the proper solution be?
 
-Resume the PHY before reopening the interface, like stmmac_resume()
-does, to ensure the receive clock is running for the DMA software
-reset.
+Regards,
+Esteban
 
-Fixes: db299a0c09e9 ("net: stmmac: move PHY handling out of __stmmac_open()/release()")
-Link: https://github.com/home-assistant/operating-system/issues/4858
-Assisted-by: Claude:claude-fable-5
-Tested-by: Stefan Agner <stefan@agner.ch>
-Signed-off-by: Stefan Agner <stefan@agner.ch>
----
-Note: phylink_prepare_resume()'s kernel-doc says it is to be called
-prior to phylink_resume(); here it is paired with phylink_start()
-(called from __stmmac_open()) instead, which phylink_resume() itself
-uses to restart the machinery. If preferred, I can extend the
-kernel-doc or introduce a more generically named helper.
-
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -5884,6 +5884,15 @@
- 
- 		__stmmac_release(dev);
- 
-+		/* phylink_stop() in __stmmac_release() suspends the PHY.
-+		 * IEEE 802.3 allows PHYs to stop their receive clock while
-+		 * powered down, but the DMA software reset performed by
-+		 * stmmac_hw_setup() requires a running receive clock.
-+		 * Resume the PHY, as on system resume, to ensure its clocks
-+		 * are running before reopening the interface.
-+		 */
-+		phylink_prepare_resume(priv->phylink);
-+
- 		ret = __stmmac_open(dev, dma_conf);
- 		if (ret) {
- 			free_dma_desc_resources(priv, dma_conf);
--- 
-2.49.0
