@@ -1,140 +1,204 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013007.outbound.protection.outlook.com [52.101.72.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36CBF19D065
-	for <netdev@vger.kernel.org>; Tue,  7 Jul 2026 08:45:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783413932; cv=none; b=m3ph7tV7H5G2BRKC59YqSiNpiwKKengUIzXGRHcNo6tLiABLBUFJK0fvczsvl7q7upovkuCxNhURtPis5xl9qpjlzx17UfYhfQZ8a2kwCzhKOv1yKuFUOPrbtBv7EJnlJIIf1VVIi5uhZU2Mdv7uPb9iYnEKx1buIuZX6+ydO3M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783413932; c=relaxed/simple;
-	bh=tlwKcaYpnhlrmwYXGp448EifMjMd+UfA0EFtVTEhYZk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PXdw5mxrvLutG/qU/+jKa5hHrVUKGzsXkeikrhOh57n1LblcN9nL8+V1lMIkxRITx+7PQObwL6zsle3jcPiPAAv2Rwexqy6XRj/V4j/auhEIQy2Jve1+5MYQpSjsowVXOtviXGC0C1PNDASL/0VTVEEmd9gyX1g3pKI0g3VbEcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gWw/zZFI; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=J0HgxWNQ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1C4F328260;
+	Tue,  7 Jul 2026 08:46:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.7
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783414011; cv=fail; b=qyYHuFX0WgrzxjbHPyjw5vmWoNu/umZ1CI73QYk/j+iHNiIUqhDW/Ev5UFDJa+bY+n8lZfTGBa8qy38PLoFKKwrSIGdUs19h4emvDxiHAOcTVSCDgmZc6frHbkaTMhrl7YUaZVjgUBuU4TkAn/ciyqZAvinllu0RFJK4X+Xmvnc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783414011; c=relaxed/simple;
+	bh=gNVVafJDL4KbuE7WKS7zKOCtl3XyKLynmdckTHaqOUk=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=X4VXizWV540CYLD7aVFl5q7mboGEobgMQT3OYpxtNUKSjpz0cYim9jcn5jwrtGacGPUytp7ml8D9/KMzZCCJhoJ86sCHaP7nP2zlGoULTNOACK+3/XzDcuCRr2Eauj6ERa1a3arPjCA6raeOr/7Gz+ekx/JeL31g0OIycfIPPM8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=gMSRLXcs; arc=fail smtp.client-ip=52.101.72.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gWw/zZFI";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="J0HgxWNQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783413930;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WBby4NIaLLIhvVGMeDiSJrQP+NcVkO4R8rZDsmeFUN4=;
-	b=gWw/zZFIzgAjrUf/xJyhy1Ku64Z0fQ0awBlQBoHwmpvgH663fKaHGqoMJOGtnxEVQ1pIGZ
-	RDxjUdZEfX5TYVQHAmmuF4oEynrgNx1LrQAFkZGEF7e7T2Vf63S+Jo4KOfayVtirza/Cdp
-	g8F0yAveeSlQ9egWo/AS1ikwT+GjBTA=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-355-IjGBg7qOM1CiyIa53nWvYA-1; Tue, 07 Jul 2026 04:45:29 -0400
-X-MC-Unique: IjGBg7qOM1CiyIa53nWvYA-1
-X-Mimecast-MFC-AGG-ID: IjGBg7qOM1CiyIa53nWvYA_1783413928
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-493b54823bdso2767715e9.0
-        for <netdev@vger.kernel.org>; Tue, 07 Jul 2026 01:45:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1783413928; x=1784018728; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WBby4NIaLLIhvVGMeDiSJrQP+NcVkO4R8rZDsmeFUN4=;
-        b=J0HgxWNQLJWV+mZjOXeTL40iDG/jzr/B5sD8uh5A+FEIdIIK5si9fAWXP5/wTXqc3T
-         jKmX4NvMHbg7faaMs1IzWSVIxU1rKMGC3pQ6aSA7RfG+eOXSB0a5WtrC14GMiFE/29AH
-         X9CG5z+2wy/tt+j+wlmsJtglvD8/Il/Jak6MQoPu5vGhE4FNLkawWIpewO0BUuF6kB5K
-         dXv9pMIJgqUC4eJenJpopiY2/FbCEhRHhOxKi++i+8ab4Ywq9lyyyT55NSVHaxR3ERNK
-         lHhheWwVNtKsuEgSwsumcbetzY2Hzo62AH2w6aYYlNPT7R2+yAiLdg+NsZZqaCir/ODt
-         iuRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783413928; x=1784018728;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WBby4NIaLLIhvVGMeDiSJrQP+NcVkO4R8rZDsmeFUN4=;
-        b=ldTyAvrWXhy1i3em/Um+yKH8SdAvJxzdn5W1xi/7KXTv8XhkIEkHVsPzPRyRu3tzqu
-         2dvIsFF3u7sri/lYTU4sPrB1gLO1ONF+An09KAXWap7DHoRDklW+cZK5I7VM2f6qu90F
-         X2ZDNYTOhlI2ekVe5xBLpfGWvE0iIGz8SNB84qAlXyy4A2z/pWQXwH4msXFiuTifhHKd
-         1MXppAviGtr3LNK6imeFD2Ax8Qku24n9CtFv1t5AGXXb83TYYJYHb/e7QNfgggmk8S3j
-         U61KU3gVgttdnfsqFj7150JYlLubp4UIGHXYAhiL8/23t6oDArpR862R9F5M5Pg2/zlt
-         f21g==
-X-Gm-Message-State: AOJu0Yztoh+z8v32ZuBXUimWEl8Coh2FQRd16RJDZb4cQnhNFPwThquA
-	swYz/g7vaDPc9CU4vRPQoRiQ437Nb+yiJ+bxNqffqWyshLWH99igsNmNGrPzIsokybuYhNV9332
-	sPAg3HNNviAiUGF28iES4f3r5w4B0+SPRDDuO+0GlRuRtBtHcDO+6/IbJbA==
-X-Gm-Gg: AfdE7cnn8JxsXypIoMJr8q9Pi+hveYN091Dgw3Ji7kaLAu51r48hAbeyLlwFGWRbuCc
-	opmidzmL8RwnCjSK6NwLyGVNMBCfVSu98kMkPa3IYfyvcXhFbmVkioQt8Hh4YrPyIU/Y5LXCguv
-	myVeN1xPxKRVils+rGEV8bxP05bYMCaN9BNADSuKK0+ybx+wr4pHPy7f3DzNmFt9A3YerGFiRt1
-	q473hTHH9Npwzpf2OlJk3vvPjxhoXEEtvPjgXNTObTtYffpOmHdWJbG4cIJ40eRu9+43gabvOaj
-	zlu0PxEvE8emM60pgMm967O0uZVN74JSFjX0/Q9/ny10aPE8cAsArFm+yLiFvdpU9AshmjpR1J1
-	jxgyqFSpPP4AejHtiZYsE7TBbTtmbAG13ltYK2k361DNeZyx3Px9UqNWJcGMAweTcWgVaxvt+xY
-	AejpeBJ1i2iJGS
-X-Received: by 2002:a05:600c:3487:b0:493:c2ac:58f with SMTP id 5b1f17b1804b1-493e1011ea5mr18167315e9.8.1783413927767;
-        Tue, 07 Jul 2026 01:45:27 -0700 (PDT)
-X-Received: by 2002:a05:600c:3487:b0:493:c2ac:58f with SMTP id 5b1f17b1804b1-493e1011ea5mr18166965e9.8.1783413927358;
-        Tue, 07 Jul 2026 01:45:27 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:5521:6b10:58fd:68f:7756:389d? ([2a0d:3344:5521:6b10:58fd:68f:7756:389d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa0f2186bsm31669370f8f.36.2026.07.07.01.45.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Jul 2026 01:45:26 -0700 (PDT)
-Message-ID: <b110e40c-6a63-4490-8def-356471b5bda6@redhat.com>
-Date: Tue, 7 Jul 2026 10:45:25 +0200
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="gMSRLXcs"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tJac1pqNnqhJ34oyd7oX5H+x72P/d/65+D4PWv7DZe4W7d2xbMr1FEUqbg1clATxQnTchsDLwzkygzX/FMAhgaJqZPhAPdxuFof6Gp2I+I9GgFY9ZW5Qi5UQaIKN0r8kyasp+vq84TnuRQiJs/n+m6jLfCl/KGwqKFxh1ecouXOlTmntBcG1lC5i3tx49f/GgjUSEhPRqO0nDdZbIvEzIHqIQeXifXNR9WtzIqcNSe4vRX6sDlNUO570gDBGDu9OGpC/HiCMK/23Ws7eF/U+emijpe5aqRVmEFg19jShVvf/ffLT/kTijlo/lNfEKjEWHHQq37jVX9Zt3lVBnoR4+Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VgPnzfXMfKg4CJENz6fu8LczSELELf1lTHmWEHwhssw=;
+ b=p5Ac9OBvMFcu66ObPykaYKatOObHakI7rWUdEwXVK1FO5ZMwodLxMcFVjzss85iyrcywn8jehaUaS/abX3K7H4L5HCuWcy5XP8sbSxdvPt5LHDwmYuW/5PNL6GwOJS2/A94daHJVRh+iQPBnCHDxpNDMX6DYI+kHJY+jXNjpBJF7p8/k/jiyFSirjgDqQGAD8St2j0QvVU1WptrZW1bjvNJWBOKyy8r7y96X4s7ZnqQsRpkZZ/DS9rZkuTw+oXAzkmqf/CbThubgMBM0S73lPJRb8SiAhpLbwEEea0tFRy9gwRwr9pnyUQjabgluTPEPSE1LzqOEXSbd8AWL2SXC7Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VgPnzfXMfKg4CJENz6fu8LczSELELf1lTHmWEHwhssw=;
+ b=gMSRLXcs6fbuEBDPTRr0EDubFqkV8S1UkJxjD2zqE74JD6aDHfybnxKXRNyMlmRFMLFxcVH2y1fg30xBjpZN0BgtMVaRRAN94QwoA3v1HqDIgtkUhcWWFXlCxMo/IyouERPd94gnJSdWyUeXZepL/eqLB9XlTBWWUZrN3En+3ovyYHKXjRBuF5m/WzcVm5bFKovDjTuGcvZARxZxkwgmw9xWUID0LEAGyySLf6mPhmGxD1OSqbSk5LLPM2RJFu5ptI68i6wOURsfmHBXmLyZKxI/4j/VQNUxyrAIxVzmQ8ZvgV9CB4K6os+bgyRCoZ0MBqDoz96F+m8uQHOvx0jBow==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22)
+ by VI1PR04MB7182.eurprd04.prod.outlook.com (2603:10a6:800:121::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.13; Tue, 7 Jul
+ 2026 08:46:45 +0000
+Received: from VE1PR04MB7216.eurprd04.prod.outlook.com
+ ([fe80::a9a5:cf83:dbe8:1f74]) by VE1PR04MB7216.eurprd04.prod.outlook.com
+ ([fe80::a9a5:cf83:dbe8:1f74%3]) with mapi id 15.21.0181.012; Tue, 7 Jul 2026
+ 08:46:45 +0000
+From: wei.fang@oss.nxp.com
+To: claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux@armlinux.org.uk,
+	wei.fang@nxp.com,
+	chleroy@kernel.org,
+	maxime.chevallier@bootlin.com
+Cc: imx@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v4 net-next 00/14] net: enetc: cleanups and improvements
+Date: Tue,  7 Jul 2026 16:18:20 +0800
+Message-Id: <20260707081834.710730-1-wei.fang@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MA5P287CA0204.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1aa::16) To VE1PR04MB7216.eurprd04.prod.outlook.com
+ (2603:10a6:800:1b0::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 0/1] net: rnpgbe: fix mailbox endianness
-To: Dong Yibo <dong100@mucse.com>, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- vadim.fedorenko@linux.dev
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, yaojun@mucse.com
-References: <20260701032208.1843156-1-dong100@mucse.com>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20260701032208.1843156-1-dong100@mucse.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VE1PR04MB7216:EE_|VI1PR04MB7182:EE_
+X-MS-Office365-Filtering-Correlation-Id: 45d2ded5-5cc5-4792-d6e7-08dedc044657
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|23010399003|7416014|19092799006|56012099006|6133799003|11063799006|18002099003|921020;
+X-Microsoft-Antispam-Message-Info:
+	ezb7ZCQN8mm7gY54HrozLnnqpv7Rj/lraoBXjXh9owygq1P8Jl1B5kXqa8peaa8cXyWueSj4AyBEmlqPPcJL32IlHCqeyv2YWAemHruVu4/VA6rkRNEDP02ijdGxWDja2B7fDoDYAXBpvCYoKkleYTfjN66ROOqiT6V92i9Tq82Vt+jLMVpPzwMXZ+8WPubWj6yof9THue4VxLMFgSf/1FAsLX4zFY4QxSzeN8ob1xj5gB4gPaIGEYc6xVBAfkHf/PFeDokM1ZIC6tK2chy+WIg8dXMxNBoKx4oMUxbPXUUpi7JjkGF67tbAL36N+NEKKTltGTkCGqS8txqUqTIb8d088hTJml92k71bgx1s0LT0BJ8Ps+eHdHBQK2VuTOU7HZ0ZVJ6nUCfd2VLqcEl3lDABU2I2HlzC2/5I6XDQUjUgxrJdgfzBZGkSOe46iOJCQR8xv1Ung+/siBnWVVpkv5mPsQnRi5YUlxi03kP668iFpf827q/yfuzo6Qrvmw7bQtSd6QrkGD41tafXxTcnXc+HpQKpk4Krt5GgprGJ822SxxCVD385WJ7jF3zI1MHm88ASlHW4m8sbZ5IDA0VUTXN2ig/5D5edBQllQZaxsL4vOiMdQzPi0uSSQi+w+A79HHbEIA5mEdC6luRrPww3QA9hyvOECKnMAw4J6n1wzScrIO5metQaPL0sB1ozLW4v6K7vtIal5SnnK1czC09cTQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB7216.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(7416014)(19092799006)(56012099006)(6133799003)(11063799006)(18002099003)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?lJNOUuUAc2qg7gdolJJ+N08fxPlADZxnOgpdVr031f/pEe/8rO+5mxB7D48N?=
+ =?us-ascii?Q?FqqAVTrkvmDZOpln8aXiL2zaXXOhog2jYg7hcMHlU1qRf+ivceVAfJGsC3/I?=
+ =?us-ascii?Q?xKSXGmXIZDBH3f9RBmVFODVzi+YHFckAgl2YnV8bVEsZi4kofqvx1FFvVwl0?=
+ =?us-ascii?Q?kemDdx8s17qgBhQtdzVwlWdpb1wABw0mjeVmK6/C1z/eou4s2leSC/xfeJMp?=
+ =?us-ascii?Q?WZkaF10uE8vUOp0i09oCpBlqRXSmO3T1Y3BY1luJUZwLDWL7yokbiVgWz4nR?=
+ =?us-ascii?Q?z9Ocz9w/LSWiV9Rjb3hdfAIS5WLMlWz5rJ7UvlFPBIxXnU0FA0DStTsJRt0k?=
+ =?us-ascii?Q?DOMiIJsky6ygWuNyPsiR8lQBf0/gSoTh2oZfBjZsq+N2F9vwppVLwzjT/vRI?=
+ =?us-ascii?Q?wmT6RiM9Aq4BaeS8l+9nw4PNoyFVxXR5PBXHhtDbNLhiZvksta3UENpiItnG?=
+ =?us-ascii?Q?XUBCAG5H5DQjnKQI7mwfDF+o5iB70Gy1ob8W9HKrgtJD2tXN8KAaw/aUss2D?=
+ =?us-ascii?Q?HmCevKphScXANszESqLWxj2dDLTCOQOVRiDgV4gyqMTHjlOTlbEkbW4q9hDf?=
+ =?us-ascii?Q?G/EctVf0H/39EkflOgLv4EvYYV3v/jHhlCwN3LxBICIWmD66MgXQrWAAdVRD?=
+ =?us-ascii?Q?6iWTx3XK3iNKogpro8aQkQC230ZUT0+3rJg/TENf6Ays9PwBzUsuM3oKYrPu?=
+ =?us-ascii?Q?BLsEA+B3ZLzy8EG2ke5ek7v7/mslPGhV42zwfOihQsyKtMLfWeYDehEDByT2?=
+ =?us-ascii?Q?2Ugj5nHdTdfmipk2OkjP1ZSWAoFcxqRS5x2aiEa/Ln7xRcvq603pG9X/egPo?=
+ =?us-ascii?Q?UyRQR7ED+q1ee/VZjM5X5M2ZBCm5K4ZOkphlyMEfMx7eEy78pnZ7Vzh7DBvc?=
+ =?us-ascii?Q?59rPcjpeKJMKquJinp42h6da2qYWEW0e/7VfvCmY8YaPqdixewm6OAjkE1Qb?=
+ =?us-ascii?Q?qXikEA3c6ela0iRsWhYFvK8CQ6dO/OIHlAau80NTHw9uN+bSoCXjOy5vGt6O?=
+ =?us-ascii?Q?prSCf4rO4COh9bsRX9Sc9TxeO7sNn1yzAZmE+nobNthuQBgm2LcJQkc2Xh20?=
+ =?us-ascii?Q?7P+yqJHMbvlXHMuHKH7SmzdNyQqP2geN4JZnYGAUkku8QLl+nPB4aNEimKUr?=
+ =?us-ascii?Q?JNG3IG3DmviHbVlD0PD+xmRpEv23wVmyRxoEr9FL5xh+6pGX08lvHLFAhhKf?=
+ =?us-ascii?Q?9QoNQbleHzewh6IpnX+7mWGEMVMW/vtGqgDCrYU9si/1uqKoa8j/R85WapHJ?=
+ =?us-ascii?Q?Hz3gTkp/JgWsO14HAR9iwTBcbK8IMS4jc0HXPGVBYGU0IJnCbENbXgQay228?=
+ =?us-ascii?Q?JwVmxzyhmVkp4pGj4Y6Nq9kNzpdDKQaeZZq4xvIT7FkqpjpGbgJ7O+GHEtlH?=
+ =?us-ascii?Q?UHvmFeL8j11IHmoNXhQ5Vz16Za0U+F8iwd6jy/GMm6eJbLqHmPrmzco33MAh?=
+ =?us-ascii?Q?1KkNIyGhIuw23zMfzAopJ8GORNOfDlzHSbNe4qSCffvnMd2KTOch8WWdl4O/?=
+ =?us-ascii?Q?AaEeoM2RI36e+mg+zPSw4Pa9zyCQIzeRUJPHA+zTI2cckbh/8K8yLXZ4a6Ov?=
+ =?us-ascii?Q?kr98e9PLUGbzh0CYUV93EC7RxDbLSaHkYyGkYhWFlvNP3gLZZnAqTd8vvBqR?=
+ =?us-ascii?Q?s4vg4wrpz510YXZIZ2LbOaUzC/IBPjJkfT0nXUHr4a+KABoslMma4h/MP/3I?=
+ =?us-ascii?Q?DPPLPBzORcukLXZ/NJvuFDkSadBF3prtMeRUr9NGwYgZQ+LH281Wpw24+N5r?=
+ =?us-ascii?Q?Qaf3dcRcXvyCGgPoE9mHPqH2B9L1xGXiq4czTH4aYZv8MKUtstFt?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 45d2ded5-5cc5-4792-d6e7-08dedc044657
+X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB7216.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2026 08:46:45.4544
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: n2DuEGJf+liqkbcieDvqsn9vqQ3/+6MVuImymsG2sfepajDrTwjNxsq9JBRVtfTUtH+7/eVWsisDtJ3bQHlkUF9ANrftbrKqhQfpA30TU7pIl1Y9VEKtjT94wgvGsylE
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7182
 
-On 7/1/26 5:22 AM, Dong Yibo wrote:
-> The rnpgbe mailbox exchanges data through 32-bit MMIO registers in
-> little-endian wire format.  The original code had two problems:
-> 
->  1. FW structs with __le16/__le32 fields were cast to (u32 *) before
->     reaching the transport, hiding the endian annotations from sparse.
-> 
->  2. No cpu_to_le32()/le32_to_cpu() conversion was performed between
->     the CPU-endian MMIO values and the little-endian payload, causing
->     data corruption on big-endian systems.
-> 
-> v2 fixes this by introducing union wrappers around the FW structs
-> and adding the missing byte-order conversions in the transport layer.
-> All pointer casts on the mailbox data path are eliminated.
-> 
-> Changelog:
-> v1 -> v2:
-> - Remove all pointer casts on the mailbox data path.  Use union
->   wrappers (mbx_fw_cmd_req_u, mbx_fw_cmd_reply_u) that overlay
->   each FW struct with a __le32 dwords[] array.  Callers fill
->   named fields with cpu_to_le16/32() and pass dwords[] directly
->   to the transport — no casts needed.
-> - Change transport signatures from u32 */void * to explicit
->   __le32 * so sparse can verify endian correctness.
-> - Add comments in mucse_read_mbx_pf() and mucse_write_mbx_pf()
->   explaining why memcpy_toio() cannot replace the readl()/writel()
->   loop (the mailbox uses 32-bit MMIO registers, not byte-
->   addressable RAM).
-> 
-> links:
-> ---
-> v1: https://lore.kernel.org/netdev/20260617083531.251119-1-dong100@mucse.com/
+From: Wei Fang <wei.fang@nxp.com>
 
-A few process notes:
-- this is 'net' material, I'm applying the patch there
-- no needed for a cover letter for a one-patch series
+The first group of patches (1, 2, 5-7) eliminates code duplication
+between the ENETC v1 and v4 drivers. Since both hardware generations
+share identical register layouts for MAC promiscuous mode, MAC hash
+filters, and VLAN promiscuous mode - differing only in register address
+offsets - common helper functions are extracted into enetc_pf_common.c
+and shared by both drivers.
 
-/P
+Patch 3 converts ndo_set_rx_mode() to ndo_set_rx_mode_async(), removing
+the dedicated workqueue that was previously needed to defer MAC address
+list updates to a sleepable context.
+
+Patch 4 replaces counter-based MAFT entry tracking with a bitmap, which
+keeps hardware and software state in sync and avoids partial failures
+during entry allocation.
+
+Patches 8 and 9 fix phylink-related issues: removing invalid code from
+enetc4_pl_mac_link_up() and properly differentiating phylink capabilities
+between pseudo-MAC and standalone MAC.
+
+The remaining patches (10-14) are minor cleanups: removing a redundant
+VLAN promiscuous mode initialization in probe, using the PCI device name
+for the debugfs directory, simplifying port speed configuration, removing
+a redundant num_vsi field, using alloc_etherdev_mqs() for the VF driver,
+and using kzalloc_flex() for a flexible array allocation.
+
+---
+v4:
+1. Improve enetc4_set_si_msix_num()
+2. Update commit messages
+v3 link: https://lore.kernel.org/imx/20260703101328.550714-1-wei.fang@oss.nxp.com/
+v2 link: https://lore.kernel.org/imx/20260702025714.456233-1-wei.fang@oss.nxp.com/
+v1 link: https://lore.kernel.org/imx/20260630072036.382761-1-wei.fang@oss.nxp.com/
+---
+
+Claudiu Manoil (1):
+  net: enetc: differentiate phylink capabilities for pseudo-MAC and
+    standalone MAC
+
+Wei Fang (13):
+  net: enetc: extract common helpers for MAC promiscuous mode setting
+  net: enetc: extract common helpers for MAC hash filter configuration
+  net: enetc: convert ndo_set_rx_mode() to ndo_set_rx_mode_async()
+  net: enetc: improve MAFT entry management with bitmap tracking
+  net: enetc: use PCI device name for debugfs directory
+  net: enetc: simplify enetc4_set_port_speed()
+  net: enetc: remove invalid code from enetc4_pl_mac_link_up()
+  net: enetc: open-code enetc4_set_default_si_vlan_promisc()
+  net: enetc: refactor SI VLAN promiscuous mode configuration
+  net: enetc: move enetc_set_si_vlan_promisc() to enetc_pf_common.c
+  net: enetc: remove redundant num_vsi field from enetc_port_caps
+  net: enetc: use alloc_etherdev_mqs() to create netdev for VF driver
+  net: enetc: use kzalloc_flex() for enetc_psfp_gate allocation
+
+ drivers/net/ethernet/freescale/enetc/enetc.h  |   4 +-
+ .../ethernet/freescale/enetc/enetc4_debugfs.c |  42 +-
+ .../net/ethernet/freescale/enetc/enetc4_hw.h  |   6 +-
+ .../net/ethernet/freescale/enetc/enetc4_pf.c  | 471 ++++++++----------
+ .../ethernet/freescale/enetc/enetc_ethtool.c  |   2 +-
+ .../net/ethernet/freescale/enetc/enetc_hw.h   |  12 +-
+ .../net/ethernet/freescale/enetc/enetc_pf.c   |  94 +---
+ .../net/ethernet/freescale/enetc/enetc_pf.h   |   6 -
+ .../freescale/enetc/enetc_pf_common.c         | 150 +++++-
+ .../freescale/enetc/enetc_pf_common.h         |   5 +
+ .../net/ethernet/freescale/enetc/enetc_qos.c  |   4 +-
+ .../net/ethernet/freescale/enetc/enetc_vf.c   |   9 +-
+ include/linux/fsl/ntmp.h                      |   2 +
+ 13 files changed, 411 insertions(+), 396 deletions(-)
+
+-- 
+2.34.1
 
