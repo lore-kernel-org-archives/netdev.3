@@ -1,138 +1,150 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [52.175.55.52])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07F3D3F870C;
-	Tue,  7 Jul 2026 11:00:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.175.55.52
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AEF53F54CC;
+	Tue,  7 Jul 2026 11:02:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783422045; cv=none; b=sR2+x8F1IGTAGO8LlQNemf0nOc49s+7ctEtPbTr3nTeAcqBX3spUo12cJ0L8+yHpUi1Az2DJmMY3vlo+P98bWyxZxRHLbjU5YKS58HDhWkH7ebJ0A/tOu5Wt8GdEAti/W/YIJ4XuhGOgRm2uKe3GcNFnz03P3p7Gcfrt9Dx/0X8=
+	t=1783422135; cv=none; b=I/49HpsPJhFyzcZdYypA5KaleumFo4oKIqOoBZpjyOOUBsfRRJmqiIJPwJZnqP2reX4CmHad0PvTp3gKvUQxBsgxKgBDdwQ1ZAq8XAdG3W11Q/2xooUiuJGwcLbL50ePlkuFsv3Mgx4Ur/7DMu2FMK3Wy8Lijoy2D56KZnY5BJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783422045; c=relaxed/simple;
-	bh=xfAix1SI/5H4odFpah60tVEkhbcttrfLxGmJA+3KN7A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l31HJlprJpBxUNIZyWDgtADhumrunhpvCQw4iFyS4sC97gOQRAy02gAp1cHJSgL+Y2fcCTCccO9T7Xm6e98O5F1h2q10GcdLxGMR+Tc8iq3FFuXZqpKXdYNQ5W/bM68FxkvyBXfvBHH22a649w0mP1o63AbrNQYSiMP745zaukk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=E1jvZzaW; arc=none smtp.client-ip=52.175.55.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
+	s=arc-20240116; t=1783422135; c=relaxed/simple;
+	bh=v7zg2qCQsTEo10UD+roP0qnbDkvm4NPLPvXdiuiUP/g=;
+	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
+	 References:Date:Message-Id; b=aZxxHd6i4OcqS5jJw7iSkW5Du4lgyjkBOmhP3vRVUrwK4VCaz3HuRvyr8k8yBf/dD3HV1LRF0SWpapulL6u07Ekq53MU1wyzMdlsmMovW+WKB8gwhsci0BkQBuxf2Trd7ejm5o/osGTVkAsgDT9qHPXGl2KRn31I3460QSh9Wns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LsgZiBer; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="E1jvZzaW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
-	Date:Message-ID:MIME-Version:Content-Transfer-Encoding; bh=Wb1ul
-	XqaN6LhsrQOCbA/VuSQqCeRVoSv6NswqkkKJ8w=; b=E1jvZzaWo3hUgMdd0OHlg
-	CsCEz2tugJDvIaW4EiZ/SUgjsLh75MKd9wBJy4POqO+9HqAexd/KRipE4B8PKftL
-	qwRWKBksOdraVTP9oT0OxpaWeqBkjD1rYD/oYGvJeCPjW16zVbMf3w0rEhhh1h7E
-	eMRZc36m2Go404eE7lbP90=
-Received: from localhost.localdomain (unknown [101.5.13.242])
-	by web2 (Coremail) with SMTP id yQQGZQAXw5VB3ExqboPLAg--.29993S2;
-	Tue, 07 Jul 2026 19:00:17 +0800 (CST)
-From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-To: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org
-Cc: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
-	Ao Wang <wangao@seu.edu.cn>,
-	Xuewei Feng <fengxw06@126.com>,
-	Qi Li <qli01@tsinghua.edu.cn>,
-	Ke Xu <xuke@tsinghua.edu.cn>
-Subject: [PATCH nf] netfilter: ecache: fix inverted time_after() check
-Date: Tue,  7 Jul 2026 19:00:14 +0800
-Message-ID: <20260707110015.99988-1-zhaoyz24@mails.tsinghua.edu.cn>
-X-Mailer: git-send-email 2.46.2
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LsgZiBer"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 319711F000E9;
+	Tue,  7 Jul 2026 11:02:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783422134;
+	bh=ZZSMUzOXrzSnSc5a15tq3LDEwCotl56yX4e8egwm56U=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=LsgZiBerlYXDzZCJeZfm/poKFwL/nWxwgiKopIDaOo1mp4s6b8JqcwMn5tZb7TQe3
+	 yKEfEyCFn3xIvNTndPfQFTVDdIBuhN4EgGTX0U2iVl3F3l+CbyJAIR0rj+93s3sKZ3
+	 FnUKWkYPi6tDe+nJm9mBw3K/n5cUMjUhAesc4gEeVo6w9rFqg6t2+xy1Axats23+8c
+	 acG4MiNflcLJgmfE/6fKWpyhQrVePCZbFCAXHJffrOfjm6uo5vD7y+Na3ew0pq/dpk
+	 7ZXjhmyA/Av5LO6WmhhVIyymKxaZBXpxmI8xtJQMr7zu+vKHMepUNyCOGRwpeMZLPL
+	 5irBMvWgHhI7A==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:yQQGZQAXw5VB3ExqboPLAg--.29993S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxZry3tFWkur18uF15XFWkZwb_yoW5Wr17pF
-	Z5Zr93tFWxCrWYkanYvw1UAFn8ua93u34xua45GF95CanxGrs8JFs5KrW2qF98ZrWvkF4I
-	yF4jyr1jkFs8XF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9v1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l8cAvFVAK
-	0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4
-	x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2
-	z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4
-	CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E74AGY7Cv6cx26r4r
-	Kr1UJr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc
-	8vx2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVW8ZVWrXwCY02Av
-	z4vE14v_Gw4l42xK82IYc2Ij64vIr41l42xK82IY6x8ErcxFaVAv8VW8Ww4UJr1UMxC20s
-	026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_
-	JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14
-	v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xva
-	j40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JV
-	W8JrUvcSsGvfC2KfnxnUUI43ZEXa7VU1rb15UUUUU==
-X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAgABAWpMxHwgogAAse
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH net-next v4 2/3] net: af_unix: useful handling of LSM
+ denials on SCM_RIGHTS
+From: Christian Brauner <brauner@kernel.org>
+To: Jori Koolstra <jkoolstra@xs4all.nl>
+Cc: Christian Brauner <brauner@kernel.org>, 
+ Aleksa Sarai <cyphar@cyphar.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+ "David S . Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ netdev@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20260705123826.3818443-3-jkoolstra@xs4all.nl>
+References: <20260705123826.3818443-1-jkoolstra@xs4all.nl>
+ <20260705123826.3818443-3-jkoolstra@xs4all.nl>
+Date: Tue, 07 Jul 2026 13:02:05 +0200
+Message-Id: <20260707-werkvertrag-walzen-anteil-4aef3ab6e47f@brauner>
+X-Mailer: b4 0.16-dev-4217c
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2985; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=v7zg2qCQsTEo10UD+roP0qnbDkvm4NPLPvXdiuiUP/g=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT53Nms2OlisytFlMtOYCNbzdIVDInRbicuyM6+1tKkp
+ Nn2dP75jlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIncX8nwT2vV7E020/fb3y9v
+ kN711yXscvoZDiZfnnmWi8OeeLG3HmZkmC+xJzja/u1cY3/JJRMWOIvz9+g6PJT84/uj+/WbdUZ
+ P2AE=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 
-ecache_work_evict_list() redelivers DESTROY events for conntracks that
-were moved to the per-netns dying_list after event delivery failed.  It
-sets a 10ms deadline:
+> Right now if some LSM such as Smack denies an AF_UNIX socket peer to
+> receive an SCM_RIGHTS fd, the SCM_RIGHTS fd array will be cut short at
+> that point, and MSG_CTRUNC is set on return of recvmsg(). This is
+> highly problematic behaviour, because it leaves the receiver
+> wondering what happened. As per man page MSG_CTRUNC is supposed to
+> indicate that the control buffer was sized too short, but suddenly
+> a permission error might result in the exact same flag being set.
+> Moreover, the receiver has no chance to determine how many fds got
+> originally sent and how many were suppressed.[1]
+> 
+> Add a SO_RIGHTS_NOTRUNC option to UNIX sockets to enable more useful
+> handling of LSM denials when receiving SCM_RIGHTS messages: instead of
+> truncating the message at the first blocked fd, keep every fd slot
+> and store the LSM errno in the blocked slot.
+> 
+> [1]: https://github.com/uapi-group/kernel-features#useful-handling-of-lsm-denials-on-scm_rights
+> 
+> Signed-off-by: Jori Koolstra <jkoolstra@xs4all.nl>
 
-    stop = jiffies + ECACHE_MAX_JIFFIES
+Reviewed-by: Christian Brauner (Amutable) <brauner@kernel.org>
 
-but then tests:
+> -void scm_detach_fds(struct msghdr *msg, struct scm_cookie *scm)
+> +int scm_recv_one_fd(struct file *f, int __user *ufd, unsigned int flags,
+> +		    bool notrunc)
+> +{
+> +	int error;
+> +
+> +	if (!ufd)
+> +		return -EFAULT;
+> +
+> +	error = security_file_receive(f);
+> +	if (error)
+> +		return notrunc ? put_user(error, ufd) : error;
+> +
+> +	FD_PREPARE(fdf, flags, get_file(f));
+> +	if (fdf.err)
+> +		return fdf.err;
+> +
+> +	error = put_user(fd_prepare_fd(fdf), ufd);
+> +	if (error)
+> +		return error;
+> +
+> +	__receive_sock(fd_prepare_file(fdf));
+> +	return fd_publish(fdf);
+> +}
 
-    time_after(stop, jiffies)
+Seems good.
 
-This condition is true while the deadline is still in the future, so the
-worker returns STATE_RESTART after the first successful redelivery in the
-usual case.  ecache_work() maps STATE_RESTART to delay 0, which turns the
-redelivery path into one dying conntrack per workqueue dispatch and makes
-the sent > 16 batching/cond_resched() path effectively unreachable.
+> +
+> +void scm_detach_fds(struct msghdr *msg, struct scm_cookie *scm, bool notrunc)
+>  {
+>  	struct cmsghdr __user *cm =
+>  		(__force struct cmsghdr __user *)msg->msg_control_user;
+> @@ -365,12 +389,12 @@ void scm_detach_fds(struct msghdr *msg, struct scm_cookie *scm)
+>  		return;
+>  
+>  	if (msg->msg_flags & MSG_CMSG_COMPAT) {
+> -		scm_detach_fds_compat(msg, scm);
+> +		scm_detach_fds_compat(msg, scm, notrunc);
+>  		return;
+>  	}
+>  
+>  	for (i = 0; i < fdmax; i++) {
+> -		err = scm_recv_one_fd(scm->fp->fp[i], cmsg_data + i, o_flags);
+> +		err = scm_recv_one_fd(scm->fp->fp[i], cmsg_data + i, o_flags, notrunc);
+>  		if (err < 0)
+>  			break;
+>  	}
+> @@ -542,8 +566,14 @@ void scm_recv_unix(struct socket *sock, struct msghdr *msg,
+>  	if (!__scm_recv_common(sock->sk, msg, scm, flags))
+>  		return;
+>  
+> -	if (scm->fp)
+> -		scm_detach_fds(msg, scm);
+> +	if (scm->fp) {
+> +		struct unix_sock *u;
+> +		bool notrunc;
+> +
+> +		u = unix_sk(sock->sk);
+> +		notrunc = READ_ONCE(u->scm_rights_notrunc);
+> +		scm_detach_fds(msg, scm, notrunc);
 
-A conntrack netlink listener whose receive queue is congested can make
-DESTROY event delivery fail with -ENOBUFS.  With sustained conntrack
-churn, entries then accumulate on the dying_list and are only drained at
-the degraded one-entry-per-dispatch rate once delivery succeeds again,
-wasting CPU on back-to-back workqueue reschedules and prolonging
-conntrack memory/resource pressure.
+Minor nit: Really no need for the boolean. Would be enough to do:
 
-In a KASAN QEMU test with CONFIG_NF_CONNTRACK_EVENTS=y and
-nf_conntrack.enable_hooks=1, a congested DESTROY listener caused 8192
-nf_ct_delete() calls to return false and move entries to the dying_list.
-After closing the listener, the unfixed kernel needed 7670 ecache_work()
-entries to destroy 7669 conntracks.  With this change, the same 8192
-entries were destroyed by 2 ecache_work() entries.
+scm_detach_fds(msg, scm, READ_ONCE(u->scm_rights_notrunc));
 
-Swap the comparison so the worker restarts only after the deadline has
-expired.
-
-Fixes: 2ed3bf188b33 ("netfilter: ecache: use dedicated list for event redelivery")
-Cc: stable@vger.kernel.org
-Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
-Reported-by: Ao Wang <wangao@seu.edu.cn>
-Reported-by: Xuewei Feng <fengxw06@126.com>
-Reported-by: Qi Li <qli01@tsinghua.edu.cn>
-Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
-Assisted-by: Claude-Code:GLM-5.2
-Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
----
- net/netfilter/nf_conntrack_ecache.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/netfilter/nf_conntrack_ecache.c b/net/netfilter/nf_conntrack_ecache.c
-index 9df159448b89..cc8d8e85169f 100644
---- a/net/netfilter/nf_conntrack_ecache.c
-+++ b/net/netfilter/nf_conntrack_ecache.c
-@@ -77,7 +77,7 @@ static enum retry_state ecache_work_evict_list(struct nf_conntrack_net *cnet)
- 		hlist_nulls_del_rcu(&ct->tuplehash[IP_CT_DIR_ORIGINAL].hnnode);
- 		hlist_nulls_add_head(&ct->tuplehash[IP_CT_DIR_REPLY].hnnode, &evicted_list);
- 
--		if (time_after(stop, jiffies)) {
-+		if (time_after(jiffies, stop)) {
- 			ret = STATE_RESTART;
- 			break;
- 		}
 -- 
-2.47.3
-
+Christian Brauner <brauner@kernel.org>
