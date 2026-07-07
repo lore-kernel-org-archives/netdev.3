@@ -1,151 +1,130 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C63E33D648F
-	for <netdev@vger.kernel.org>; Tue,  7 Jul 2026 09:48:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F3CB3D6CA0
+	for <netdev@vger.kernel.org>; Tue,  7 Jul 2026 09:48:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783417728; cv=none; b=JmcdfvraxFOsXZ5BmFsel+/NBSc2/C7aU2lGxjQBlauchlQfF9IYJ40BjaG+tOHkl87fKthXBn28mWMUpEYf0a+hxSE4QN8pQyTNU9qRg8XRb54asrC4iDudr+u3RnGbg7g8EXvhJp972JtB6Jr3LsFId/L3sBfrpY/QpSpTTfA=
+	t=1783417736; cv=none; b=u9Kd8sGqshZNaNKQ0CQvc1OzCTHD/wJscKzMyPna6y6iVAFAqFPhzoUAWmzeIgWGFXNItLiTzfnvYOWc9wZdSmmrKfwQ2G0rYJ2DBZ/xmTsL4JJKYQ53oAD3BNup1i33yJa22NW5LiymUx268DoZPKCusIaRrWzIJIoMcYbjQ94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783417728; c=relaxed/simple;
-	bh=KbABl74tqG5GNUvT0QDb0Q47cc8vCeHZWLO1bl26ED4=;
+	s=arc-20240116; t=1783417736; c=relaxed/simple;
+	bh=dxErGz/gtuJMMd0ZCUwsU0QRw3tKi/SSEtrZ2mEv2ZM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s0DuCRKURwJRNMgFsQadwx7nNOYgxIv6Bob4Rp6q2Rz6xCFumUKOfs5JTsh65GCBs3Ae5HvX3TMYlGW16zyM/5ZyByDFVcxGUZFJjrb+DawqCOkqH8BaNQEAItgHg8/8NsDYrKEVOjJvAjfs6EGV3G03qEvKhKQDgLmQcj2sMec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pnWFmxsH; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=VHWd4dQx9sKcc/vCfFtnNNoKrZJtmHJCovGontJJSw4/2PYU5N7iV3AJ0+Jx5JhrgYJxbyv+tEqZroYYfh5ofbXodlzle66w0F0zNM36iu90nZoqKRTAcxPVai8uWdsLeY/rIAFtUjGsMJL4TBc+mIM/esHhjx3XqUMEzVAA6qY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b=WmmDCAQc; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pnWFmxsH"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-4798bea72f9so2404670f8f.1
-        for <netdev@vger.kernel.org>; Tue, 07 Jul 2026 02:48:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b="WmmDCAQc"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-493b7612475so37121065e9.3
+        for <netdev@vger.kernel.org>; Tue, 07 Jul 2026 02:48:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783417725; x=1784022525; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=J0oaZRt2VWFRfQvi/SNR337ENDlCcdDtqHlqF7h8Mhg=;
-        b=pnWFmxsHcHi+IV2mcxnLNG4LFXms2f7dhMM+nWQLPtcQ57Neym52Ukr4q27SxgzeVG
-         pmrC3MgTAXh63FQRJcULNSAqWvWFxoKxugJ2Jy4Y/lONeqrnBwyq7TubQwnUlfFoJETD
-         5nYkBxhj2hTv99wVXtvknQpWmijsQRRUqx90Nbw0dJvxcBK2+v5nWm/sYmUuD7N8ITNR
-         yCbjakWkZ/hnWEtji15qTeTtm6yOTOwo5hdm/ovltTzUSL0VEFMZCOz3Q5tE8o6j9hk/
-         avbVOMfUePO/QR/gxiVL8z/BLnydad2ejq8LnFDyo/KqW7Oba+AxJYDowbtsWqP4qj4F
-         c53A==
+        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1783417733; x=1784022533; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Qs3A+LONAtni+h8Qp1wmlltG03uWEkxp59/Fd3Ox+rE=;
+        b=WmmDCAQcONqxk8QJsEcXqFwhg5sYGEf8xrpamiqLkwYdRbxOBRrJN/i29BzoAXcTgS
+         k5hXvOuvttmuf2y7ZHOViUajJuhaMkyUBDWR8eg537kXOx/1jz3tuhX0ifR88nk2tJ+b
+         l9WQNxWWuUIv3OFmvIrIpcqAo5LyInMH1s0WBaSzBD9/UMuiTDXrF40U7uP3FpFT4bLI
+         AHSp0whB9b9JMnJW4L7eYN4Xgmh6NdnDe73jLVji6bS6JBMlSMQh04uNMmuverWCfw99
+         JXr8HgmQOS6ah49YklfN+e0+QNbBDQuVpHn2e4hprBvTK+1iHWg1gEJy5vjEdHG9Q3i7
+         aQ0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783417725; x=1784022525;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=J0oaZRt2VWFRfQvi/SNR337ENDlCcdDtqHlqF7h8Mhg=;
-        b=PyrwdsFJ4329CpfcaCGGvt5ThG3AfTu0SJzCwqFbSTFb/pC+fcmlq+8EDXl7qCewXS
-         r6VSEP3X2t64T3DawHQPVBNFHBZ5qWk98cmBPAblrZKW2e88aC6VxCD7P9huDkbbNiO8
-         +YUBsR58MNK+fNzo58fG3TVsnWeWCGp5U9pVBpT1UqEa8mwUKoA4Rh3lOePrM3laDjla
-         dDFBdWVL1X6trTNRILDo2wnXEql8vo6rTdsivcQ/tcz7nkp5SQDwHaK+Y4QVcx6lCJ4+
-         d1cld7skhZz9mYDfnzEYHdmxm72KDJjl6YXCDOVbPnlJR6PQlbnibCwtOicuKhHukfl4
-         9RFw==
-X-Forwarded-Encrypted: i=1; AHgh+RpyP8sgI2sWHieiQKvxdhuobRWqn56Knx0k7dHw8TY6ciOcZbXmDLRvjptxEojWn6YmX6wfeMM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwRbxPC/Uct4o+jVMCIaoDdCFLDO8VN/PsKj6FmFuiGwkrXYktN
-	sExwCLj453EsCUro8BO8WZ4N+xMw2/23nRqc+qCicm4PIl21Ww5c1Yua
-X-Gm-Gg: AfdE7ck2e8oZd/dGshPC+DHWPoF0pRUc6yIJ4msYm4fIPNnvdHljbMoWxXeSQBaK2dz
-	zgozaWWkW+3WhIaKPMs9g8YvMQlT48nXRVN6w/8WrhSoWJnOXkFpTPa2FlqGPzWOajbLhPr7Puh
-	ZlwmywjWK1poIr/yuz92pC5lyzRTxVcet/dkb+TR7j5VEk2m1+GGWMNxCeD16nxy/Hz4HRny4ke
-	VeSkFex/pqwvODAf7JSTr+l8wl9rW19JVgzKUSyB8Ye0LW2Mu9GF5JOs5zGgfa2uYQgfLyiF0od
-	5IaIE5w2ydve+uJcuPcNOzZ4sAQj8svHsRetw2eR/X96D2d1oTTSAILBgfnJ7mklB4LsBf+eY4w
-	8q8NiFmxbhn/xI8JrutdFQG9Y5ZNCCulzNIKHbvTBXGeSxSe3MjN3hASkZUNLCBELxeqnp4njh3
-	yrw1Vs6qlpwaACSrlf9nVIkBREIUCVs9jD6+Dn7TVBYvYS
-X-Received: by 2002:a5d:4644:0:b0:474:9dd3:981 with SMTP id ffacd0b85a97d-47de66b1354mr3643129f8f.26.1783417725020;
-        Tue, 07 Jul 2026 02:48:45 -0700 (PDT)
-Received: from gmail.com (deskosmtp.auranext.com. [195.134.167.217])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47a9e4d7801sm32987273f8f.16.2026.07.07.02.48.44
+        d=1e100.net; s=20251104; t=1783417733; x=1784022533;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Qs3A+LONAtni+h8Qp1wmlltG03uWEkxp59/Fd3Ox+rE=;
+        b=e0szrRqBCVLA3Jxq+zpWPQRGeRKifsTmuuCqvrlwEoIEjWN39THJb4WI72wCyxbllD
+         jjT78hOhy8hWnOcUcTeb//vh1nkyGnT4I8iQbDm9MgR8cFFhGs83yMTTiFdoDNGuGD9E
+         /79kSgOOjSnNhXlBkZZP/Qxn1GTicXxHQwwa7IvPtXkGh/p93VmGqFrCm8JD528FBqN0
+         aK2hIdZdoNPM76M3QHZEclMebNWZOm0Z35PfdZA0VhYM0Jj/cw6pziia3o+LFOg0PCLo
+         DiIzBrwMeDJ2AnKOQ7ryWGWunrFGOWpY74lF3hDoCVp1mIkSmURwLtz5d4wVmO2wLAkd
+         FNKQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpORuj21rsGK/ZCPRP/gpC6C655UtVp4e5DDvVRzIHG3f1vXlgSAw7PV4X2peD0A2se4P7zedM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzuO1t6iks4TY29oIXjQlraSKq+io5xc7MEDO3N4zGnVw31FuHJ
+	4UB87vJF71gGEjy0PLCcHqCRO8bqy2XeCFE/DgH1Mg39oxqqxF2IdtXy8fQkAoL6swk=
+X-Gm-Gg: AfdE7ckWvqEhAHk83LrKgJ4F0nl8JNq9ZkZL5Gs8yx9HPooflKDHGoa1917d4SEpcRq
+	6yB+xXz7Kl1HhegWUByxU30OqeBfIEWaqcvJOxuSZTHNX3V6FVvmiCZOoZieAFRrdp1kcPdjYPa
+	laeAQ1aJG+s6A2LAbmEO68mRYNR8wXXtVNGid74VeibNs2bPVwb6yQ0TAlu0weD+D7VB2DCO0ej
+	vGifoEeSZhVAOsc9pQnlXk8NyRu9NT/P3GOeWOmv0QkZERimn7VDB0qIPV4vFvYiP0kjPRG+X1Z
+	IFu5gK+aPazezcO6kIb7hJVw8w1/YBbLIP1U7/e4LdKjc72L6M0m4ruq0aHs6/+sWOYNTfksPUL
+	BBHFwGlfw90j3GjLvATAY0A/KchhQvCIUlv2OCtfec6o/CzLBkaQnJZbmcMAKFkk/im24cJJJmM
+	b4JGu9rypZriYLqNfC0MAxtntBW37MdYDXUskpK5+EaadGUXcT2X7/2GllW459XtQ3G1x/XpNq3
+	gKzzKC60+qtr8spIzJzRUD25fRkOfWEEfZ6OzZ1rCZdq3lzZnHk33tRcXRSH5N7ctowerJSVg==
+X-Received: by 2002:a05:600c:8b67:b0:493:bd2f:c5dd with SMTP id 5b1f17b1804b1-493df08c35dmr46181645e9.21.1783417733495;
+        Tue, 07 Jul 2026 02:48:53 -0700 (PDT)
+Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493e0078d49sm47904175e9.0.2026.07.07.02.48.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 02:48:44 -0700 (PDT)
-Date: Tue, 7 Jul 2026 11:48:42 +0200
-From: Mahe Tardy <mahe.tardy@gmail.com>
-To: Amery Hung <ameryhung@gmail.com>
-Cc: bpf@vger.kernel.org, andrew+netdev@lunn.ch, andrii@kernel.org,
-	ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net,
-	eddyz87@gmail.com, edumazet@google.com, john.fastabend@gmail.com,
-	kuba@kernel.org, liamwisehart@meta.com, martin.lau@linux.dev,
-	pabeni@redhat.com, song@kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH bpf-next 2/6] bpf: Add ksock kfuncs
-Message-ID: <akzLeuHT1gQqFBM0@gmail.com>
-References: <20260706093525.13030-1-mahe.tardy@gmail.com>
- <20260706093525.13030-3-mahe.tardy@gmail.com>
- <CAMB2axO2cHcKRZzrQyY8Zd2aO56MZd8=bf5po+59qnGj=bXrkw@mail.gmail.com>
+        Tue, 07 Jul 2026 02:48:52 -0700 (PDT)
+Date: Tue, 7 Jul 2026 10:48:50 +0100
+From: Daniel Thompson <daniel@riscstar.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>
+Cc: Alex Elder <elder@riscstar.com>, netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: Re: [PATCH] net: stmmac: Avoid freeing and re-requesting IRQ during
+ XDP set prog
+Message-ID: <akzLgrzsw4xYmnLH@aspen.lan>
+References: <20260706-tc956x-stmmac-no_irq_teardown-v1-1-df009d0272bf@riscstar.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMB2axO2cHcKRZzrQyY8Zd2aO56MZd8=bf5po+59qnGj=bXrkw@mail.gmail.com>
+In-Reply-To: <20260706-tc956x-stmmac-no_irq_teardown-v1-1-df009d0272bf@riscstar.com>
 
-On Mon, Jul 06, 2026 at 02:33:43PM -0700, Amery Hung wrote:
-> On Mon, Jul 6, 2026 at 3:26 AM Mahe Tardy <mahe.tardy@gmail.com> wrote:
-> >
-> > Add BPF kfuncs that allow BPF LSM programs to create and use sockets for
-> > sending data. This provides a mechanism for BPF programs to emit
-> > telemetry. For this first patch set, it's restricted to SOCK_DGRAM
-> > socket types with IPPROTO_UDP protocol but could be easily extended to
-> > SOCK_STREAM and IPPROTO_TCP in the future.
-> >
-> > The API consists of six kfuncs:
-> >
-> >   bpf_ksock_create()   - Create a socket (sleepable)
-> >   bpf_ksock_bind()     - Bind socket to local address (sleepable)
-> >   bpf_ksock_connect()  - Connect socket to remote address (sleepable)
-> >   bpf_ksock_send()     - Send data through the socket (sleepable)
-> >   bpf_ksock_acquire()  - Acquire a reference to a socket context
-> >   bpf_ksock_release()  - Release a reference (cleanup via
-> >                          queue_rcu_work since sock_release sleeps)
-> >
-> > The setup kfuncs bpf_ksock_create, bpf_ksock_bind, bpf_ksock_connect,
-> > can be called from SYSCALL programs only. While bpf_ksock_acquire,
-> > bpf_ksock_release and bpf_ksock_send can be called from SYSCALL and LSM
-> > programs.
-> >
-> > The implementation follows the established kfunc lifecycle pattern
-> > (create/acquire/release with refcounting, kptr map storage, dtor
-> > registration). The kernel socket is wrapped in a refcounted bpf_ksock
-> > struct. Cleanup is deferred via queue_rcu_work() because sock_release()
-> > may sleep.
-> >
-> > The kfuncs are only compiled when CONFIG_INET is enabled, as they
-> > specifically support AF_INET and AF_INET6 sockets.
-> >
-> > The socket operations go through the expected LSM hooks instead of
-> > by-passing them like many kernel sockets since those are created by BPF
-> > programs and thus system users. Thus bpf_ksock_send() kfunc, which is
-> > exposed to LSM progs, has a re-entering protection to avoid recursion.
-> > Also, because of the LSM checks, we prevent the use of the kfuncs from
-> > asynchronous workqueue as the current value would then be invalid.
-> 
-> Are these the first BPF kfuncs that invoke (attachable) security
-> hooks? Some fs kfuncs seem to deliberately skip them. Can we avoid the
-> limiting recursion check by skipping the security hook in
-> bpf_ksock_send()? There is still security_socket_connect() in
-> bpf_ksock_connect() to prevent undesired send.
+On Mon, Jul 06, 2026 at 05:17:58PM +0100, Daniel Thompson wrote:
+> Currently stmmac will run a full cycle of IRQ tear down and setup when
+> setting up a new XDP program. This makes tuning TSN systems difficult
+> because whenever a new XDP program is installed then the irq threads will
+> be stopped and restarted which will undo any thread tuning.
+>
+> The problem is avoided by removing stmmac_free_irq()/stmmac_request_irq()
+> from stmmac_xdp_release()/stmmac_xdp_open().
+>
+> stmmac_free_irq() implicitly synchronizes interrupts and, with that
+> removed, I was unable to prove that later actions in
+> stmmac_xdp_release() are safe when there are concurrent interrupts. To
+> avoid problems let's also move the code to disable DMA interrupts earlier
+> in the sequence and explicitly sync the interrupts handler(s).
+>
+> Signed-off-by: Daniel Thompson <daniel@riscstar.com>
+> <snip>
+> @@ -7156,10 +7201,8 @@ int stmmac_xdp_open(struct net_device *dev)
+>  	stmmac_reset_queues_param(priv);
+>
+>  	/* DMA CSR Channel configuration */
+> -	for (chan = 0; chan < dma_csr_ch; chan++) {
+> +	for (chan = 0; chan < dma_csr_ch; chan++)
+>  		stmmac_init_chan(priv, priv->ioaddr, priv->plat->dma_cfg, chan);
+> -		stmmac_disable_dma_irq(priv, priv->ioaddr, chan, 1, 1);
+> -	}
 
-FYI I found some piece of documentation around kfuncs and LSM hooks[^1],
-people tried to avoid the recursion to happen in the first place.
+Sashiko picked up that stmmac_init_chan() has the effect of enabling DMA
+irqs, making this code unsafe.
 
-Initially I wrote this with kernel sockets, which are not subject to LSM
-hooks on the send path iirc. I migrated away from this thinking that
-those "bpf sockets" should still be subject to the LSMs and not bypass
-them, but we can change that or also have it partially as you mentioned
-with connect but not send? Note that this would maybe change if we go
-the sendto route as suggested on the other thread.
+Given stmmac_xdp_open() can only be called on a running interface (and that
+stmmac_xdp_open() explicitly sets sph) then re-initializing with stmmac_init_chan()
+should have no effect and we can drop that as well.
 
-[^1]: https://docs.kernel.org/bpf/fs_kfuncs.html
+I'll double check with a code review across all the dwmac versions
+before pushing out a v2!
 
-> 
-> >
-> > A bpf_ksock_max sysctl is added to limit the maximum number of BPF
-> > kernel sockets that may exist in each network namespace. Out of
-> > simplicity for now, the settings is host wide but the counters are per
-> > network namespace.
-> >
-[...]
 
+Daniel.
