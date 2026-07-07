@@ -1,203 +1,134 @@
-Received: from mail-pl1-f228.google.com (mail-pl1-f228.google.com [209.85.214.228])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.kmu-office.ch (mail.kmu-office.ch [178.209.48.109])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5B43A453F
-	for <netdev@vger.kernel.org>; Tue,  7 Jul 2026 19:07:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.228
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4673A8747
+	for <netdev@vger.kernel.org>; Tue,  7 Jul 2026 19:10:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.209.48.109
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783451252; cv=none; b=IkwQoNMGy7mQrDo7klL8fopAz3Cd8rV1GS+10wVmvlvjgJa6L3JR29IJi5+PZb0XycRsD6TLahLUfod/R8rTRvp605RsDAi/fNmFlxEH62AaKXlI/GMe5J7NRZ6F9/0QyUSc8Fy4u/8Abjp9+5gZL/8TWx1SkUpc90FB5orMlYI=
+	t=1783451450; cv=none; b=R+n5peKbVVPS2X29jQJ3ryhJq7IptYczxCNNH/j4T3u+TsWUkNnIXJdZ1k8KOeVoUtuxMP9bMYfqBbsMsThy09ht3iQXeo/xU1iDymSLBcghhDTbT0RvUcdZkjSd/MyPq+ltpOx8gKhwJghZdWga12VCcZbcc5b9MQD6O4TV/NY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783451252; c=relaxed/simple;
-	bh=9vcQe+lqkSUhO/hqEL7euMzw+Ylhy7Jrd0ckhEu+kjI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XkVsLcof+0fPO4+6cuHX4SBAD/MCrcchoryLIFarZSA5vIzycEXVPgOA7ctB8ZeQekXIELb33PifC2oNQGyeo3QT2BWvrKxcmBHq9uTCjM7bzidy1H4Tv/H95rVX0iJ6NcLHNS+fAhRu3UK0Dr2hjGMCLagompzX5iiuMhfRoKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=C0Qa+k8G; arc=none smtp.client-ip=209.85.214.228
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1783451450; c=relaxed/simple;
+	bh=FoV3ouqOwPig5EjoPsk4ZNqHCDCi2jiG3waYcczWHbI=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=pxXB/QXDxKH/fAgqwdPrUBCFTtLcEadyhStvQ65FOpox7ZWAK60iaaSHbr5QKt6f1nj74DyH9RG6kDreHr5bMmF5KvO/5U8TPPvo9gPLTJhgO0I0BuM6FcbeTB+R1/m3TiBFau0fXzrC0/JTvvaMSbREdzbm96fDkWUvCeesJHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=agner.ch; spf=pass smtp.mailfrom=agner.ch; dkim=pass (1024-bit key) header.d=agner.ch header.i=@agner.ch header.b=YImG43wp; arc=none smtp.client-ip=178.209.48.109
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=agner.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=agner.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="C0Qa+k8G"
-Received: by mail-pl1-f228.google.com with SMTP id d9443c01a7336-2cc891373e0so28009595ad.2
-        for <netdev@vger.kernel.org>; Tue, 07 Jul 2026 12:07:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783451240; x=1784056040;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=Xkh6iulIg4hP5C8wk35n/uewfJIZaPdnzakI+h7ndnA=;
-        b=M/22BEt5meoK+O3//BNaMIibVvXGv+cFDGKoYG/tgV19c+XueY/4anVye0Az+77WGl
-         6KYg8hbe7qrpeBgpsDhczyVE/pMKa/EPOZT+cP79MzPEnh5IiLl9zPk67bYYmN83ioOh
-         P+TARkcq50vSMCJvwrFaKi9v/fA0jeC86QweMeEs3llSdFgN0xX9ANtoExCZiSrLtc53
-         axcwsxpOn+PsUQ7OGyXlN4dZEYRJ3xvKWlmqiH7eSC9JMczmQb3/80HZvj3tUP1Nu346
-         JzNmnQ0E37PTZ88y2kJkvgPdt/dqGLw22aIWyqBtRpGeCx2xSkKXbErJqyJiWJL87pNz
-         UGcg==
-X-Forwarded-Encrypted: i=1; AHgh+RqfZxy4+ijI6wpUdo4GPD9tfD6+195eoBA9iQoFTa0jmhpcGSlAmO0xz4tPIYO/2e98uXh78Jo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyeAjOdK0+cBlUdazqzwQlbHWEy7PlhPAkUTtRkFI9MLDM/2Nh/
-	LXk2AqrwPXmXL8dTd7+ALLbZUC/wIWitu+UYA543CTSBsNOArC/Y9VqFgqtW+Qv6D/JR2uvV4R+
-	rb9Y5yt9hjC7t6vVaP5iyJSvI7pjsup41GywzCOC80OzuAXmN71frKpPC3lwrBNh3CKX9jP0LcM
-	DZ8Jxg+ESXLncLRQy8/8X9inaVYWOA86PHOSWrZoOJnHzbv4vWqXM6MNxToc851KWsgpoLQqU1g
-	I324p28cNnx
-X-Gm-Gg: AfdE7cmkmDriaGEo8PRS3IfGoOVUO0OMkGo/15yTb/MMQxEbrQdkASd8Pw5nXvykQJx
-	fq+zIcz+Hwj7m2d6pwqtCb8Spy2mbQliB7B38wrh/MrRQCXz+ufeyDvz041PLmWD58tsnkeVQ5y
-	oYf7XSR0+rtqpTxv+ujXGaRQKzvlnq1RoAWFNogsMx2+6heFK7DRMc5f8I/EP3u68ryLH+A78pe
-	uWr10t2sB2NEfmkRmUtjSsM5fJHBIljyQbYZRLDobp//15j1NQ78yxk+WmKHxV71/UE7LGgemkw
-	Hd36fdW7zEW1bkwhW4dueXvuci7a+fnyhDa+HtLsjFN/1dje8wwa3Prnx2dBRzPxLFMoITzhQVt
-	jpRztVgDqaAFwW/oA76mj2FFSokY/YJMNgrzqkToJ9ch8fGX8nQ74ASVTgB7athr5rfiqs+u8Mk
-	jAD7pRdrq7Zt1gUdcbC0ofg4oF/M6emOtS6QrTsNIc9EhsFag=
-X-Received: by 2002:a17:903:3886:b0:2c9:960c:f73b with SMTP id d9443c01a7336-2ccbed29117mr67970675ad.24.1783451240250;
-        Tue, 07 Jul 2026 12:07:20 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-116.dlp.protect.broadcom.com. [144.49.247.116])
-        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2ccc9bdd3b7sm3128155ad.16.2026.07.07.12.07.19
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 07 Jul 2026 12:07:20 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-vk1-f197.google.com with SMTP id 71dfb90a1353d-5a787be4ee9so6662007e0c.1
-        for <netdev@vger.kernel.org>; Tue, 07 Jul 2026 12:07:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1783451239; x=1784056039; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Xkh6iulIg4hP5C8wk35n/uewfJIZaPdnzakI+h7ndnA=;
-        b=C0Qa+k8GjT0ksKSVThSDGp18wywA3lGwxtP2/EhtfCN1xfMU+41CX2MZy014bF2G1o
-         JJoSzUNse+pRGzL/q1mSjBof7GG6CC2HCPhjCaau8AwvNnzLxuq6ilgwF8mOlrJ0n+tm
-         /6t3At5PhqebGOnBZeiQdSMt+YNFGGQctHG8s=
-X-Forwarded-Encrypted: i=1; AHgh+Rp1jmTRa3Uc9ibM4QQW8790upHVdx1i240Va8vX0RF6c6y0TRzZZVd0uq0PV8A/ilfUWnQPQIk=@vger.kernel.org
-X-Received: by 2002:a05:620a:408d:b0:92e:675e:8ede with SMTP id af79cd13be357-92ebb4b40ffmr711531385a.13.1783450830716;
-        Tue, 07 Jul 2026 12:00:30 -0700 (PDT)
-X-Received: by 2002:a05:620a:408d:b0:92e:675e:8ede with SMTP id af79cd13be357-92ebb4b40ffmr711515485a.13.1783450829742;
-        Tue, 07 Jul 2026 12:00:29 -0700 (PDT)
-Received: from lvnvda4076.lvn.broadcom.net ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-92e90cbd6c9sm1237044185a.33.2026.07.07.12.00.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 12:00:29 -0700 (PDT)
-From: Kiran Kella <kiran.kella@broadcom.com>
-To: daniel.zahka@gmail.com,
-	kuba@kernel.org,
-	willemdebruijn.kernel@gmail.com
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	weibunny@fb.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	jayakrishnan.udayavarma@broadcom.com,
-	ajit.khaparde@broadcom.com,
-	akhilesh.samineni@broadcom.com,
-	Kiran Kella <kiran.kella@broadcom.com>,
-	Vikas Gupta <vikas.gupta@broadcom.com>,
-	Bhargava Marreddy <bhargava.marreddy@broadcom.com>,
-	Daniel Zahka <daniel.zahka@broadcom.com>
-Subject: [PATCH net v2] psp: fix NULL genl_sock deref race with concurrent netns teardown
-Date: Tue,  7 Jul 2026 11:59:37 -0700
-Message-ID: <20260707185937.3177211-1-kiran.kella@broadcom.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (1024-bit key) header.d=agner.ch header.i=@agner.ch header.b="YImG43wp"
+Received: from webmail.kmu-office.ch (unknown [IPv6:2a02:418:6a02::a3])
+	by mail.kmu-office.ch (Postfix) with ESMTPSA id BD6405C53A1;
+	Tue,  7 Jul 2026 21:10:46 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=agner.ch; s=dkim;
+	t=1783451446;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EHdhmWw8bTLtB+4kBs5YmjWw0Q5vkcur8qe9Menb+4Y=;
+	b=YImG43wpWUITLr/OqWZqVeD0BxZ2LBxvqtZmsG2DdkJaZjaMFYFxOahbnLGZK4vqI0OFpt
+	O1OW00LRxTMyo+WcuEIlcf+uteIvi6l2gnCqcdx3pUVrlS4MI5n1typ7DGgKYO0NLziA/V
+	eB/QJLcSHzScGvpvrvemDA6L7E1NIEc=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Date: Tue, 07 Jul 2026 21:10:46 +0200
+From: Stefan Agner <stefan@agner.ch>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "Russell King
+ (Oracle)" <rmk+kernel@armlinux.org.uk>, Maxime Chevallier
+ <maxime.chevallier@bootlin.com>, Ovidiu Panait
+ <ovidiu.panait.rb@renesas.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, regressions@lists.linux.dev
+Subject: Re: [PATCH net] net: stmmac: resume PHY before reopening the
+ interface on MTU change
+In-Reply-To: <a6515f8c-1358-4e2a-a485-2a25a7dc6313@lunn.ch>
+References: <20260707162146.73823-1-stefan@agner.ch>
+ <a6515f8c-1358-4e2a-a485-2a25a7dc6313@lunn.ch>
+Message-ID: <9c8cdec3250eb3226d4f64ca8397cfa8@agner.ch>
+X-Sender: stefan@agner.ch
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-The race occurs between network namespace removal and PSP device
-unregistration.  When a netns is deleted while a PSP device associated
-with that netns is concurrently being removed, psp_dev_unregister()
-triggers psp_nl_notify_dev() to send a device change notification.
-Concurrently, cleanup_net() running in the netns workqueue calls
-genl_pernet_exit(), which sets net->genl_sock to NULL. If
-genl_pernet_exit() wins the race, two sites in psp_nl_multicast_per_ns()
-then dereference the NULL socket and crash:
+On 2026-07-07 20:50, Andrew Lunn wrote:
+> On Tue, Jul 07, 2026 at 06:21:46PM +0200, Stefan Agner wrote:
+>> Since the referenced commit, changing the MTU on a running interface no
+>> longer disconnects and reconnects the PHY; __stmmac_release() merely
+>> stops phylink, which also suspends the PHY (BMCR power-down) when WoL
+>> is not enabled. __stmmac_open() then performs the DMA software reset in
+>> stmmac_hw_setup() before phylink_start() resumes the PHY again.
+>> 
+>> IEEE 802.3 22.2.4.1.5 allows a PHY to stop its receive clock while
+>> powered down, and stmmac requires a running receive clock for the DMA
+>> software reset to complete (the phylink config sets mac_requires_rxc).
+>> On such setups, e.g. the RK3566-based Home Assistant Green with an
+>> RTL8211F-VD PHY in RGMII mode, any runtime MTU change now times out and
+>> leaves the interface dead:
+>> 
+>>   rk_gmac-dwmac fe010000.ethernet end0: Failed to reset the dma
+>>   rk_gmac-dwmac fe010000.ethernet end0: stmmac_hw_setup: DMA engine initialization failed
+>>   rk_gmac-dwmac fe010000.ethernet end0: __stmmac_open: Hw setup failed
+>>   rk_gmac-dwmac fe010000.ethernet end0: failed reopening the interface after MTU change
+>> 
+>> In the field this is triggered by NetworkManager applying an MTU while
+>> activating the connection, breaking networking entirely.
+>> 
+>> Resume the PHY before reopening the interface, like stmmac_resume()
+>> does, to ensure the receive clock is running for the DMA software
+>> reset.
+>> 
+>> Fixes: db299a0c09e9 ("net: stmmac: move PHY handling out of __stmmac_open()/release()")
+>> Link: https://github.com/home-assistant/operating-system/issues/4858
+>> Assisted-by: Claude:claude-fable-5
+>> Tested-by: Stefan Agner <stefan@agner.ch>
+>> Signed-off-by: Stefan Agner <stefan@agner.ch>
+>> ---
+>> Note: phylink_prepare_resume()'s kernel-doc says it is to be called
+>> prior to phylink_resume(); here it is paired with phylink_start()
+>> (called from __stmmac_open()) instead, which phylink_resume() itself
+>> uses to restart the machinery. If preferred, I can extend the
+>> kernel-doc or introduce a more generically named helper.
+>> 
+>>  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 9 +++++++++
+>>  1 file changed, 9 insertions(+)
+>> 
+>> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+>> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+>> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+>> @@ -5884,6 +5884,15 @@
+>>  
+>>  		__stmmac_release(dev);
+>>  
+>> +		/* phylink_stop() in __stmmac_release() suspends the PHY.
+>> +		 * IEEE 802.3 allows PHYs to stop their receive clock while
+>> +		 * powered down, but the DMA software reset performed by
+>> +		 * stmmac_hw_setup() requires a running receive clock.
+>> +		 * Resume the PHY, as on system resume, to ensure its clocks
+>> +		 * are running before reopening the interface.
+>> +		 */
+>> +		phylink_prepare_resume(priv->phylink);
+>> +
+>>  		ret = __stmmac_open(dev, dma_conf);
+>>  		if (ret) {
+>>  			free_dma_desc_resources(priv, dma_conf);
+> 
+> I'm not convinced.
+> 
+> __stmmac_open() and __stmmac_release() should be opposites of each
+> other. If __stmmac_release() stops the clock, __stmmac_open() should
+> start the clock.
 
-CPU 0 (netns teardown)       CPU 1 (PSP device unregister)
-======================       =============================
-cleanup_net [workqueue]
-  genl_pernet_exit()         psp_dev_unregister()
-    net->genl_sock = NULL      psp_nl_notify_dev()
-                                 psp_nl_multicast_per_ns()
-                                   build_ntf()
-                                     -> netlink_has_listeners(NULL)
-                                     /* crash */
-                                   genlmsg_multicast_netns()
-                                     -> nlmsg_multicast_filtered(NULL)
-                                     /* crash */
+Hm, I see. __stmmac_release() calls phylink_stop(). But from what I can
+tell we can't simply move phylink_start() in __stmmac_open() since it
+does too much. So we need to use phylink_prepare_resume() in
+__stmmac_open(), so there is still some asymmetry. I'll send a v2.
 
-Both the main_net path (derived from psd->main_netdev) and each
-assoc_net entry in psd->assoc_dev_list are affected.
-
-Fix by replacing the bare dev_net() calls with maybe_get_net().
-maybe_get_net() returns NULL if the namespace is already dying.
-Holding the reference ensures genl_sock remains valid across both the
-build_ntf() and genlmsg_multicast_netns() calls.
-
-Fixes: 00c94ca2b99e ("psp: base PSP device support")
-Fixes: 06c2dce2d0f6 ("psp: add new netlink cmd for dev-assoc and dev-disassoc")
-Reviewed-by: Ajit Khaparde <ajit.khaparde@broadcom.com>
-Reviewed-by: Vikas Gupta <vikas.gupta@broadcom.com>
-Reviewed-by: Bhargava Marreddy <bhargava.marreddy@broadcom.com>
-Reviewed-by: Akhilesh Samineni <akhilesh.samineni@broadcom.com>
-Reviewed-by: Daniel Zahka <daniel.zahka@broadcom.com>
-Tested-by: Daniel Zahka <daniel.zahka@broadcom.com>
-Signed-off-by: Kiran Kella <kiran.kella@broadcom.com>
----
-v2:
- - get rid of the extra struct net *net, by doing
-(!maybe_get_net(assoc_net)) directly (as suggested by Daniel Zahka)
-
-v1: https://lore.kernel.org/all/20260703112431.2860506-1-kiran.kella@broadcom.com/
-
- net/psp/psp_nl.c | 23 ++++++++++++++---------
- 1 file changed, 14 insertions(+), 9 deletions(-)
-
-diff --git a/net/psp/psp_nl.c b/net/psp/psp_nl.c
-index 9610d8c456ff..1438dbb07949 100644
---- a/net/psp/psp_nl.c
-+++ b/net/psp/psp_nl.c
-@@ -62,7 +62,10 @@ psp_nl_multicast_per_ns(struct psp_dev *psd, unsigned int group,
- 	struct net *main_net;
- 	struct sk_buff *ntf;
- 
--	main_net = dev_net(psd->main_netdev);
-+	main_net = maybe_get_net(dev_net(psd->main_netdev));
-+	if (!main_net)
-+		return;
-+
- 	xa_init(&sent_nets);
- 
- 	list_for_each_entry(entry, &psd->assoc_dev_list, dev_list) {
-@@ -77,21 +80,23 @@ psp_nl_multicast_per_ns(struct psp_dev *psd, unsigned int group,
- 		if (ret == -EBUSY)
- 			continue;
- 
--		ntf = build_ntf(psd, assoc_net, ctx);
--		if (!ntf)
-+		if (!maybe_get_net(assoc_net))
- 			continue;
- 
--		genlmsg_multicast_netns(&psp_nl_family, assoc_net, ntf, 0,
--					group, GFP_KERNEL);
-+		ntf = build_ntf(psd, assoc_net, ctx);
-+		if (ntf)
-+			genlmsg_multicast_netns(&psp_nl_family, assoc_net, ntf,
-+						0, group, GFP_KERNEL);
-+		put_net(assoc_net);
- 	}
- 	xa_destroy(&sent_nets);
- 
- 	/* Send to main device netns */
- 	ntf = build_ntf(psd, main_net, ctx);
--	if (!ntf)
--		return;
--	genlmsg_multicast_netns(&psp_nl_family, main_net, ntf, 0, group,
--				GFP_KERNEL);
-+	if (ntf)
-+		genlmsg_multicast_netns(&psp_nl_family, main_net, ntf, 0, group,
-+					GFP_KERNEL);
-+	put_net(main_net);
- }
- 
- static struct sk_buff *psp_nl_clone_ntf(struct psp_dev *psd, struct net *net,
--- 
-2.54.0
-
+--
+Stefan
