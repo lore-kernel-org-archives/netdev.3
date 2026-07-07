@@ -1,47 +1,47 @@
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 758CB36C9F4;
-	Tue,  7 Jul 2026 04:25:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50772376A02;
+	Tue,  7 Jul 2026 04:25:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783398305; cv=none; b=h1sXaDpXTqzw28AmzuDsL4RLDcLt00VmXxSRggd3ReAaIJiz/dAR2EkHScI/X4wOEYjhkcSWYRsm2PCcgQZtDGRJBXwHHRH4Bv0AnVe+GjxEGWat+q2cz5k8JgeikmIOK2HVzKfXhZblw20/Z2328Ry9k0LsIHmGMF1bYHY6r/I=
+	t=1783398309; cv=none; b=u53bK9WWwwNh8BbzDSivedAthEEeMQZTNBybf4ZtTGF6VAw+KrNbxFv3ZwW9KGcVNjao7HI0M91CifAq6niIVJkaUNYy+UOsUiJQbadeO/1eeJnlFKdDbtz6NWFjqnxXOMEBuwal6qIM0+npKy18zo/6HbaOhDainz5Be1X0ePU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783398305; c=relaxed/simple;
-	bh=hoQ+njDruRZA2fYr+9bliB6+6hXbxa/ta81thoEAfiE=;
+	s=arc-20240116; t=1783398309; c=relaxed/simple;
+	bh=iS2xaF3MfRcDZQfxihJlRs2HNvbT2UjiWs65evAkupI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=VCzU/5iiHYpIOmd2UWagyk5UWxQXvb6UFsTdwxBlqYVyLNfU+7P26G2oCuXqjVYwC+koi64RGkJ/C3wmQ9Cq1JMxL96+dQchsbRnIR1F2LYirMNM+6ZeY1sZMWbpHEqqL3AY0GvEtg3+ECCwDGODM/iWBq165y2eqxlyTpleiiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=PoaYtoDh; arc=none smtp.client-ip=185.226.149.37
+	 In-Reply-To:To:Cc; b=F3olcUXH0p2YyF3lxP7QkRLeWlzdoA6N4/WbNWOPqZu6ZcjxQr/dbq7fRlmOukp1VgLXEgioCLsphWoBIgAlkdrefId8uyvlcqARZMgCyA41uRrmf82E+4eTQHxKxdxwPc+3ukdoHXUvdDAglAOLReahw8r9nUYLMsV9UIzIaZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=UA7grwvG; arc=none smtp.client-ip=185.226.149.38
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="PoaYtoDh"
-Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="UA7grwvG"
+Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
+	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.93)
 	(envelope-from <mhal@rbox.co>)
-	id 1wgxMa-00DUhY-Pa; Tue, 07 Jul 2026 06:24:52 +0200
+	id 1wgxMa-00Dei7-KK; Tue, 07 Jul 2026 06:24:52 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
 	s=selector2; h=Cc:To:In-Reply-To:References:Message-Id:
 	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
-	bh=UTH7OiFh1ARrWMmMRsngXeh99jzhBAy7BatQuxWO90Q=; b=PoaYtoDh4qwiH57DwrxBsf4y7s
-	ab6syiU3gq3pSX6QniPwUGXAD3yaQ9HZFBfQT+RVsjbPZAbvGW7yZxiiCpYaIIlJ27H40QM+Se67G
-	E6nud8hj7Ys91xu2GwM4oY/NPqQTmRgbRkS9icrCAWMR06I4ZywTp6cw1JJlUyvbK/W/5oYy6jMDs
-	+pFBbM/lcevmamCfmcjhRwZXiu8x+wiv08X9OouGVQPlbKRNsUaBxySSydX8B1FLxEq6fe/zzWBVv
-	W0YOQRjrLRGUZzGu0LIC1FaKb/YhwZdPu0YZtGtRMln3T8GtgVgC70netVaYVVluSe83zj7CFl77a
-	9P1BUHvg==;
+	bh=N7suj9lGfY/+0u6hiDQfJtAVJa8d0udKprWW7Vg2L/I=; b=UA7grwvGERVJ4Wxg6WpbuIhAYx
+	3H6kuKMzT5wa/tGkGrx1XUn/6rJSMr3Vsk1o6e5JVXWPBkuZ2dXS+YGaCrI9idVrE449mk33XkHYq
+	wof53OsoGAJValzmt9chJSCHcGdwHVs1ml84dmOdKq38lId+j8H+uVHQYGxt4CGL/04qWOlxGVNIs
+	qPZvOUJp8ZXhxX2TcdVUWsC0rvTNEbm39LJKAm8hu0/nF1RTleKtjYqxnnfZ8RYcbmxFbIzAdUZvI
+	WI/O+rP3Cbe+TE7l5a93GhkcaI+CnmxfM9g8Oq7QhqVffxBOSKxwgon6cMgu194arKXU0qVu9/G3/
+	zxV8zexw==;
 Received: from [10.9.9.74] (helo=submission03.runbox)
-	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
 	(envelope-from <mhal@rbox.co>)
-	id 1wgxMZ-00076S-J1; Tue, 07 Jul 2026 06:24:51 +0200
+	id 1wgxMY-0004l5-JL; Tue, 07 Jul 2026 06:24:50 +0200
 Received: by submission03.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.95)
-	id 1wgxMS-00Ctdi-6U;
-	Tue, 07 Jul 2026 06:24:44 +0200
+	id 1wgxMT-00Ctdi-Dm;
+	Tue, 07 Jul 2026 06:24:45 +0200
 From: Michal Luczaj <mhal@rbox.co>
-Date: Tue, 07 Jul 2026 06:23:58 +0200
-Subject: [PATCH bpf v4 3/4] selftests/bpf: Adapt sockmap update error
- handling
+Date: Tue, 07 Jul 2026 06:23:59 +0200
+Subject: [PATCH bpf v4 4/4] selftests/bpf: Fail unbound UDP on sockmap
+ update
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,7 +50,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260707-sockmap-lookup-udp-leak-v4-3-f878346f27ab@rbox.co>
+Message-Id: <20260707-sockmap-lookup-udp-leak-v4-4-f878346f27ab@rbox.co>
 References: <20260707-sockmap-lookup-udp-leak-v4-0-f878346f27ab@rbox.co>
 In-Reply-To: <20260707-sockmap-lookup-udp-leak-v4-0-f878346f27ab@rbox.co>
 To: Alexei Starovoitov <ast@kernel.org>, 
@@ -72,83 +72,46 @@ Cc: Michal Luczaj <mhal@rbox.co>, bpf@vger.kernel.org,
  netdev@vger.kernel.org
 X-Mailer: b4 0.15.2
 
-Update sockmap_listen to accommodate the recent change in sockmap that
-rejects unbound UDP sockets.
+sockmap now rejects unbound UDP sockets. Adjust test_maps. While at it,
+check socket()'s return value.
 
-TCP: Reject unbound and bound (unless established or listening).
-UDP: Accept only bound sockets.
-
-While at it, migrate to ASSERT_* and enforce reverse xmas tree.
+This effectively reverts commit c39aa2159974 ("bpf, selftests: Fix
+test_maps now that sockmap supports UDP").
 
 Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
 Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
 Signed-off-by: Michal Luczaj <mhal@rbox.co>
 ---
- .../selftests/bpf/prog_tests/sockmap_listen.c       | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ tools/testing/selftests/bpf/test_maps.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c b/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c
-index cc0c68bab907..1c96a3cf4b97 100644
---- a/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c
-+++ b/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c
-@@ -53,8 +53,8 @@ static void test_insert_opened(struct test_sockmap_listen *skel __always_unused,
- 			       int family, int sotype, int mapfd)
- {
- 	u32 key = 0;
--	u64 value;
- 	int err, s;
-+	u64 value;
+diff --git a/tools/testing/selftests/bpf/test_maps.c b/tools/testing/selftests/bpf/test_maps.c
+index c32da7bd8be2..6a2641ee7897 100644
+--- a/tools/testing/selftests/bpf/test_maps.c
++++ b/tools/testing/selftests/bpf/test_maps.c
+@@ -759,16 +759,15 @@ static void test_sockmap(unsigned int tasks, void *data)
+ 		goto out_sockmap;
+ 	}
  
- 	s = xsocket(family, sotype, 0);
- 	if (s == -1)
-@@ -63,11 +63,8 @@ static void test_insert_opened(struct test_sockmap_listen *skel __always_unused,
- 	errno = 0;
- 	value = s;
- 	err = bpf_map_update_elem(mapfd, &key, &value, BPF_NOEXIST);
--	if (sotype == SOCK_STREAM) {
--		if (!err || errno != EOPNOTSUPP)
--			FAIL_ERRNO("map_update: expected EOPNOTSUPP");
--	} else if (err)
--		FAIL_ERRNO("map_update: expected success");
-+	ASSERT_ERR(err, "map_update");
-+	ASSERT_EQ(errno, EOPNOTSUPP, "errno");
- 	xclose(s);
- }
+-	/* Test update with unsupported UDP socket */
++	/* Test update with unsupported unbound UDP socket */
+ 	udp = socket(AF_INET, SOCK_DGRAM, 0);
+-	i = 0;
+-	err = bpf_map_update_elem(fd, &i, &udp, BPF_ANY);
+-	if (err) {
+-		printf("Failed socket update SOCK_DGRAM '%i:%i'\n",
+-		       i, udp);
++	CHECK(udp < 0, "socket(AF_INET, SOCK_DGRAM)", "errno:%d\n", errno);
++	err = bpf_map_update_elem(fd, &(int){0}, &udp, BPF_ANY);
++	close(udp);
++	if (!err) {
++		printf("Unexpectedly succeeded unbound UDP update '0:%i'\n", udp);
+ 		goto out_sockmap;
+ 	}
+-	close(udp);
  
-@@ -77,8 +74,8 @@ static void test_insert_bound(struct test_sockmap_listen *skel __always_unused,
- 	struct sockaddr_storage addr;
- 	socklen_t len = 0;
- 	u32 key = 0;
--	u64 value;
- 	int err, s;
-+	u64 value;
- 
- 	init_addr_loopback(family, &addr, &len);
- 
-@@ -93,8 +90,12 @@ static void test_insert_bound(struct test_sockmap_listen *skel __always_unused,
- 	errno = 0;
- 	value = s;
- 	err = bpf_map_update_elem(mapfd, &key, &value, BPF_NOEXIST);
--	if (!err || errno != EOPNOTSUPP)
--		FAIL_ERRNO("map_update: expected EOPNOTSUPP");
-+	if (sotype == SOCK_STREAM) {
-+		ASSERT_ERR(err, "map_update");
-+		ASSERT_EQ(errno, EOPNOTSUPP, "errno");
-+	} else {
-+		ASSERT_OK(err, "map_update");
-+	}
- close:
- 	xclose(s);
- }
-@@ -1289,7 +1290,7 @@ static void test_ops(struct test_sockmap_listen *skel, struct bpf_map *map,
- 		/* insert */
- 		TEST(test_insert_invalid),
- 		TEST(test_insert_opened),
--		TEST(test_insert_bound, SOCK_STREAM),
-+		TEST(test_insert_bound),
- 		TEST(test_insert),
- 		/* delete */
- 		TEST(test_delete_after_insert),
+ 	/* Test update without programs */
+ 	for (i = 0; i < 6; i++) {
 
 -- 
 2.55.0
