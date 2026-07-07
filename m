@@ -1,187 +1,309 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE65434E2D;
-	Tue,  7 Jul 2026 16:16:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F41C30DD2F;
+	Tue,  7 Jul 2026 16:26:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783440963; cv=none; b=YBtGhQYNKIMtQDtnZ7yopyxsIBxgdjARoZIGhAILNwPCXy+uIkpvBYCssAQP8skciX6WR38nJ6mKYTr9s+/rGuWMbdti52VQf7kEKttcf0D+lrMLk8z4WGhHkjALNWM4JugTvW+4r/EhIrWZt18weKg6L2pVho9ryxldHeiJLmI=
+	t=1783441563; cv=none; b=iwHNYrUyB/MM3XT+hgeo5JVt/p4aF/wwK/fq0r0JnPjby7wZpcCVkOeo0ewEdstzD/GM/AmJCNMv2jrdIIoMSEkP4BDxvHtaMI24aHypZsnpBSdWl4o2N6C0dJ26V6m1Adgz7zlAmSIAT95s8blFB2yZHnhcuh/Bh0WB4mRFwGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783440963; c=relaxed/simple;
-	bh=IQS+AU57I9FVF7loCFwQTNk/nzq7oElljhrawF91FRc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=lt0GXgXJ5PGKzIhMoPYmRVOqmjwdiYCmFLiaMNBaxxot1i9M17jq6huAFfgzD1Id7OaptBjR8meguSgwhD2uStJPKO7UEXA5IsxMMft5TXb3YjVA/mJHTQTMuT9n1BMeYG8iLuk8SXoukKf+lM5IVmRSobl0+xi9+CrdLgllscg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g33en/YF; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1783441563; c=relaxed/simple;
+	bh=UgR4pX0fSVmJ0GeiLM53tyFkFkQLvkwfVqKtUzeFg68=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h8RjxoVhl+J7BoVgH6FwuUS7XVbj10NcQSVxUqPcKOhogMGXVC0CDT0se45EYp3+Cxeliovrf0q3GfD2KsSt8X506suUSajmW2Ev51kJpODm6vkV3TLtg0Q41FDncx5Q1y8QwpR+/AZp+08u1/iJBvHkryR8Spd0C4GWuE+PZXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CYyP7Mf4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g33en/YF"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id DCC75C2BCB8;
-	Tue,  7 Jul 2026 16:16:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1783440962;
-	bh=IQS+AU57I9FVF7loCFwQTNk/nzq7oElljhrawF91FRc=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=g33en/YF4i563TwQMqga6FZDrtUa7/ZLLRmi/yp1+MRWgcVOaL9q+iIhtRzlW4LBo
-	 P1cVu4sLirK0O9GK7eSNoB+KNYPzGX9cUX2KDxGLO7kCZpeeo46udL7/ORGqVuVhNh
-	 Zsmf/XAfBoF8AyLIWX/qPIi8fLBr8mKx4iXV+9mGmOHCYmS6SRJ7H5QhzQfVU0r4Ty
-	 ff3eYKiykxF4Qi8VQ3iTlfalnYAUT6K7ZlCk32/9GMVsyo5qKTucL3dyh4IUYi89AY
-	 ja8i7g8LDhbKJJsldSivsY8OgLnKWBt0Xyqt0kFg7R3PXgN4pdgHS7FMk+0TlDAk1N
-	 Wt06Q2Rj58iYQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B2014C43458;
-	Tue,  7 Jul 2026 16:16:02 +0000 (UTC)
-From: Mattia Meleleo via B4 Relay <devnull+mattia.meleleo.coralogix.com@kernel.org>
-Date: Tue, 07 Jul 2026 18:15:53 +0200
-Subject: [PATCH bpf] bpf, sockmap: Account for receive queue in FIONREAD
- without a verdict program
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CYyP7Mf4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8B171F000E9;
+	Tue,  7 Jul 2026 16:26:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783441561;
+	bh=xaDuq1ZB1HflLrDzdt+OV6vrfoAZsFjA2zyfOAaYkgE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=CYyP7Mf4+GN9JppbBY9CLselE708FkBS7NaTpa1ICCH0kPty9sSTKl2ceN25EiSJB
+	 f+vwZpciH0whckwTcU4M8zGYtWzdOdGvzCBArGAagQ/3KeJmfZGopKUXTKUBF8e3OC
+	 srz0EXlTtlhOzcfztwb3jJ3XietlHsdhwt2UunmcVg+h7jdYqAzHu0JDcgj6Rk4aIL
+	 z7gMtD3mENFrZC7bTrMgsXJrbwZjJdTP3X+362B4RqKqXRhji9DdgZW2vmkKO0xp7J
+	 iAyQgBr9rX3CuDaVcNR5RqsYZZq6UVzRJtY5NXGrJKQg9YzfDPKaMuLIudP9umfRry
+	 KaRS7V12x2hrA==
+Date: Tue, 7 Jul 2026 18:25:58 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Felix Fietkau <nbd@nbd.name>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
+	Shuah Khan <shuah@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
+	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH nf-next v4 3/6] net: netfilter: Add IPv4 over IPv6 tunnel
+ flowtable acceleration
+Message-ID: <ak0olot-8WTVrtGB@lore-desk>
+References: <20260703-b4-flowtable-sw-accel-ip6ip-v4-0-00398cd12382@kernel.org>
+ <20260703-b4-flowtable-sw-accel-ip6ip-v4-3-00398cd12382@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260707-fionread-no-verdict-v1-1-ce94a72357ec@coralogix.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMQQrCMBBFr1L+2oFYpDFeRVykyYyOi7RMahFK7
- 27U5fv89zZUNuWKS7fBeNWqU2lwPHRIj1juTJobo3f94LzzJO1gHDOViVa2rGmheJLzEHxMQQK
- aORuLvn/VK8ZZcPuP9TU+OS3fHvb9A1FPRcB8AAAA
-X-Change-ID: 20260707-fionread-no-verdict-a4f8697ac9f9
-To: John Fastabend <john.fastabend@gmail.com>, 
- Jakub Sitnicki <jakub@cloudflare.com>, 
- Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, 
- Mattia Meleleo <mattia.meleleo@coralogix.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783440961; l=4235;
- i=mattia.meleleo@coralogix.com; s=20260707; h=from:subject:message-id;
- bh=aFZBdyJoJSWVLETQmNXpLi70lCPgP+Z+qtlX8undb2c=;
- b=7VzhVRcI4/wPM/f39bOT4hg4dp0xF2Z8AKpWg83TJEmeLzjJFJza9F4yZ6pZbB3P+255nqEOT
- GZkJLvRwBfPACWBpY6Y2OPq6iQK3ApXuROFw7E7Tyl6Sm9rg2mwEGfD
-X-Developer-Key: i=mattia.meleleo@coralogix.com; a=ed25519;
- pk=cs1zLoe3YDm4bJ7bfbPaZH0lHnd871JyJLiSh2eEzLs=
-X-Endpoint-Received: by B4 Relay for mattia.meleleo@coralogix.com/20260707
- with auth_id=857
-X-Original-From: Mattia Meleleo <mattia.meleleo@coralogix.com>
-Reply-To: mattia.meleleo@coralogix.com
-
-From: Mattia Meleleo <mattia.meleleo@coralogix.com>
-
-tcp_bpf_ioctl() answers SIOCINQ from psock->msg_tot_len, which only
-counts bytes in ingress_msg. Without a stream/skb verdict program
-nothing is diverted there: data stays in sk_receive_queue, so FIONREAD
-returns 0 even though read() returns data.
-
-Add tcp_inq() to the reported value when the psock has no verdict
-program. The two queues are disjoint, so bytes redirected into
-ingress_msg from other sockets stay correctly accounted through
-msg_tot_len.
-
-Add a selftest covering FIONREAD without a verdict program.
-
-Fixes: 929e30f93125 ("bpf, sockmap: Fix FIONREAD for sockmap")
-Signed-off-by: Mattia Meleleo <mattia.meleleo@coralogix.com>
----
- net/ipv4/tcp_bpf.c                                 | 16 ++++++++-
- .../selftests/bpf/prog_tests/sockmap_basic.c       | 39 ++++++++++++++++++++++
- 2 files changed, 54 insertions(+), 1 deletion(-)
-
-diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
-index cc0bd73f3..a001b1fff 100644
---- a/net/ipv4/tcp_bpf.c
-+++ b/net/ipv4/tcp_bpf.c
-@@ -334,6 +334,7 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
- 
- static int tcp_bpf_ioctl(struct sock *sk, int cmd, int *karg)
- {
-+	struct sk_psock *psock;
- 	bool slow;
- 
- 	if (cmd != SIOCINQ)
-@@ -344,7 +345,20 @@ static int tcp_bpf_ioctl(struct sock *sk, int cmd, int *karg)
- 		return -EINVAL;
- 
- 	slow = lock_sock_fast(sk);
--	*karg = sk_psock_msg_inq(sk);
-+	psock = sk_psock_get(sk);
-+	if (unlikely(!psock)) {
-+		unlock_sock_fast(sk, slow);
-+		return tcp_ioctl(sk, cmd, karg);
-+	}
-+	*karg = sk_psock_get_msg_len_nolock(psock);
-+	/* Without a verdict program, ingress data is never diverted to
-+	 * ingress_msg: it stays in sk_receive_queue and is read through
-+	 * the fallback to tcp_recvmsg(), so account for it like
-+	 * tcp_ioctl() does.
-+	 */
-+	if (!psock->progs.stream_verdict && !psock->progs.skb_verdict)
-+		*karg += tcp_inq(sk);
-+	sk_psock_put(sk, psock);
- 	unlock_sock_fast(sk, slow);
- 
- 	return 0;
-diff --git a/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c b/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
-index cb3229711..f0f368201 100644
---- a/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
-+++ b/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
-@@ -1373,6 +1373,43 @@ static void test_sockmap_multi_channels(int sotype)
- 	test_sockmap_pass_prog__destroy(skel);
- }
- 
-+/* A socket in a sockmap without a verdict program keeps its ingress data
-+ * in sk_receive_queue: FIONREAD must account for it.
-+ */
-+static void test_sockmap_no_verdict_fionread(void)
-+{
-+	int err, map, zero = 0, sent, avail;
-+	int c0 = -1, c1 = -1, p0 = -1, p1 = -1;
-+	struct test_sockmap_pass_prog *skel;
-+	char buf[256] = "0123456789";
-+
-+	skel = test_sockmap_pass_prog__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "open_and_load"))
-+		return;
-+	map = bpf_map__fd(skel->maps.sock_map_rx);
-+
-+	err = create_socket_pairs(AF_INET, SOCK_STREAM, &c0, &c1, &p0, &p1);
-+	if (!ASSERT_OK(err, "create_socket_pairs()"))
-+		goto out;
-+
-+	err = bpf_map_update_elem(map, &zero, &c1, BPF_NOEXIST);
-+	if (!ASSERT_OK(err, "bpf_map_update_elem(c1)"))
-+		goto out_close;
-+
-+	sent = xsend(p1, &buf, sizeof(buf), 0);
-+	ASSERT_EQ(sent, sizeof(buf), "xsend(p1)");
-+	avail = wait_for_fionread(c1, sizeof(buf), IO_TIMEOUT_SEC);
-+	ASSERT_EQ(avail, sizeof(buf), "ioctl(FIONREAD)");
-+
-+out_close:
-+	close(c0);
-+	close(p0);
-+	close(c1);
-+	close(p1);
-+out:
-+	test_sockmap_pass_prog__destroy(skel);
-+}
-+
- void test_sockmap_basic(void)
- {
- 	if (test__start_subtest("sockmap create_update_free"))
-@@ -1415,6 +1452,8 @@ void test_sockmap_basic(void)
- 		test_sockmap_skb_verdict_shutdown();
- 	if (test__start_subtest("sockmap skb_verdict fionread"))
- 		test_sockmap_skb_verdict_fionread(true);
-+	if (test__start_subtest("sockmap no_verdict fionread"))
-+		test_sockmap_no_verdict_fionread();
- 	if (test__start_subtest("sockmap skb_verdict fionread on drop"))
- 		test_sockmap_skb_verdict_fionread(false);
- 	if (test__start_subtest("sockmap skb_verdict change tail"))
-
----
-base-commit: d2c9a99135da931377240942d44f3dea104cedb8
-change-id: 20260707-fionread-no-verdict-a4f8697ac9f9
-
-Best regards,
---  
-Mattia Meleleo <mattia.meleleo@coralogix.com>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="KpcLrKuIJxPbhAqD"
+Content-Disposition: inline
+In-Reply-To: <20260703-b4-flowtable-sw-accel-ip6ip-v4-3-00398cd12382@kernel.org>
 
 
+--KpcLrKuIJxPbhAqD
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+commenting on shashiko's report:
+https://sashiko.dev/#/patchset/20260703-b4-flowtable-sw-accel-ip6ip-v4-0-00=
+398cd12382%40kernel.org
+
+> Introduce sw flowtable acceleration for the TX/RX paths of
+> IPv4 over IPv6 tunnels, relying on the netfilter flowtable
+> infrastructure.
+> The feature can be tested with a forwarding scenario between two
+> NICs (eth0 and eth1), where an IPv4 over IPv6 tunnel is used to
+> reach a remote site via eth1 as the underlay device:
+>=20
+>     ETH0 -- TUN0 <=3D=3D> ETH1 -- [IP network] -- TUN1 (2001:db8:2::2)
+>=20
+> [IP configuration]
+>=20
+> 6: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state U=
+P group default qlen 1000
+>     link/ether 00:00:22:33:11:55 brd ff:ff:ff:ff:ff:ff
+>     inet 192.168.0.2/24 scope global eth0
+>        valid_lft forever preferred_lft forever
+> 7: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state U=
+P group default qlen 1000
+>     link/ether 00:11:22:33:11:55 brd ff:ff:ff:ff:ff:ff
+>     inet6 2001:db8:2::1/64 scope global nodad
+>        valid_lft forever preferred_lft forever
+> 8: tun0@NONE: <POINTOPOINT,NOARP,UP,LOWER_UP> mtu 1480 qdisc noqueue stat=
+e UNKNOWN group default qlen 1000
+>     link/tunnel6 2001:db8:2::1 peer 2001:db8:2::2 permaddr ce9c:2940:7dcc=
+::
+>     inet 192.168.100.1/24 scope global tun0
+>        valid_lft forever preferred_lft forever
+>=20
+> $ ip route show
+> default via 192.168.100.2 dev tun0
+> 192.168.0.0/24 dev eth0 proto kernel scope link src 192.168.0.2
+> 192.168.100.0/24 dev tun0 proto kernel scope link src 192.168.100.1
+>=20
+
+[...]
+
+>  	struct nf_flow_xmit xmit =3D {};
+> +	struct in6_addr *ip6_daddr;
+>  	struct flow_offload *flow;
+>  	struct neighbour *neigh;
+>  	struct rtable *rt;
+> @@ -844,25 +872,41 @@ nf_flow_offload_ip_hook(void *priv, struct sk_buff =
+*skb,
+>  	other_tuple =3D &flow->tuplehash[!dir].tuple;
+>  	ip_daddr =3D other_tuple->src_v4.s_addr;
+> =20
+> -	if (nf_flow_tunnel_v4_push(state->net, skb, other_tuple, &ip_daddr) < 0)
+> +	if (nf_flow_tunnel_push(state->net, skb, other_tuple, &ip_daddr,
+> +				&ip6_daddr) < 0)
+>  		return NF_DROP;
+> =20
+>  	switch (tuplehash->tuple.xmit_type) {
+> -	case FLOW_OFFLOAD_XMIT_NEIGH:
+> -		rt =3D dst_rtable(tuplehash->tuple.dst_cache);
+> +	case FLOW_OFFLOAD_XMIT_NEIGH: {
+> +		struct dst_entry *dst;
+> +
+>  		xmit.outdev =3D dev_get_by_index_rcu(state->net, tuplehash->tuple.ifid=
+x);
+>  		if (!xmit.outdev) {
+>  			flow_offload_teardown(flow);
+>  			return NF_DROP;
+>  		}
+> -		neigh =3D ip_neigh_gw4(rt->dst.dev, rt_nexthop(rt, ip_daddr));
+> +		if (other_tuple->tun.encap_proto =3D=3D AF_INET6 ||
+> +		    ctx.tun.proto =3D=3D IPPROTO_IPV6) {
+> +			struct rt6_info *rt6;
+> +
+> +			rt6 =3D dst_rt6_info(tuplehash->tuple.dst_cache);
+> +			neigh =3D ip_neigh_gw6(rt6->dst.dev,
+> +					     rt6_nexthop(rt6, ip6_daddr));
+> +			dst =3D &rt6->dst;
+> +		} else {
+> +			rt =3D dst_rtable(tuplehash->tuple.dst_cache);
+> +			neigh =3D ip_neigh_gw4(rt->dst.dev,
+> +					     rt_nexthop(rt, ip_daddr));
+> +			dst =3D &rt->dst;
+> +		}
+
+- Does this logic correctly handle cross-family tunneling like an IPv6-in-I=
+Pv4
+  packet (SIT) being forwarded out via another IPv4 tunnel?
+  - SIT support is added by a following patch in the series.
+
+>  		if (IS_ERR(neigh)) {
+>  			flow_offload_teardown(flow);
+>  			return NF_DROP;
+>  		}
+>  		xmit.dest =3D neigh->ha;
+> -		skb_dst_set_noref(skb, &rt->dst);
+> +		skb_dst_set_noref(skb, dst);
+>  		break;
+> +	}
+>  	case FLOW_OFFLOAD_XMIT_DIRECT:
+>  		xmit.outdev =3D dev_get_by_index_rcu(state->net, tuplehash->tuple.out.=
+ifidx);
+>  		if (!xmit.outdev) {
+> @@ -1112,8 +1156,12 @@ nf_flow_offload_ipv6_lookup(struct nf_flowtable_ct=
+x *ctx,
+>  	if (!nf_flow_skb_encap_protocol(ctx, skb, htons(ETH_P_IPV6)))
+>  		return NULL;
+> =20
+> -	if (nf_flow_tuple_ipv6(ctx, skb, &tuple) < 0)
+> +	if (ctx->tun.proto =3D=3D IPPROTO_IPIP) {
+> +		if (nf_flow_tuple_ip(ctx, skb, &tuple) < 0)
+> +			return NULL;
+> +	} else if (nf_flow_tuple_ipv6(ctx, skb, &tuple) < 0) {
+>  		return NULL;
+> +	}
+> =20
+>  	return flow_offload_lookup(flow_table, &tuple);
+>  }
+> @@ -1140,7 +1188,11 @@ nf_flow_offload_ipv6_hook(void *priv, struct sk_bu=
+ff *skb,
+>  	if (tuplehash =3D=3D NULL)
+>  		return NF_ACCEPT;
+> =20
+> -	ret =3D nf_flow_offload_ipv6_forward(&ctx, flow_table, tuplehash, skb);
+> +	if (ctx.tun.proto =3D=3D IPPROTO_IPIP)
+> +		ret =3D nf_flow_offload_forward(&ctx, flow_table, tuplehash, skb);
+> +	else
+> +		ret =3D nf_flow_offload_ipv6_forward(&ctx, flow_table, tuplehash,
+> +						   skb);
+>  	if (ret < 0)
+>  		return NF_DROP;
+>  	else if (ret =3D=3D 0)
+> @@ -1164,21 +1216,38 @@ nf_flow_offload_ipv6_hook(void *priv, struct sk_b=
+uff *skb,
+>  		return NF_DROP;
+> =20
+>  	switch (tuplehash->tuple.xmit_type) {
+> -	case FLOW_OFFLOAD_XMIT_NEIGH:
+> -		rt =3D dst_rt6_info(tuplehash->tuple.dst_cache);
+> +	case FLOW_OFFLOAD_XMIT_NEIGH: {
+> +		struct dst_entry *dst;
+> +
+>  		xmit.outdev =3D dev_get_by_index_rcu(state->net, tuplehash->tuple.ifid=
+x);
+>  		if (!xmit.outdev) {
+>  			flow_offload_teardown(flow);
+>  			return NF_DROP;
+>  		}
+> -		neigh =3D ip_neigh_gw6(rt->dst.dev, rt6_nexthop(rt, ip6_daddr));
+> +		if (other_tuple->tun.encap_proto =3D=3D AF_INET ||
+> +		    ctx.tun.proto =3D=3D IPPROTO_IPIP) {
+> +			__be32 ip_daddr =3D other_tuple->src_v4.s_addr;
+> +			struct rtable *rt4;
+> +
+> +			skb->protocol =3D htons(ETH_P_IP);
+> +			rt4 =3D dst_rtable(tuplehash->tuple.dst_cache);
+> +			neigh =3D ip_neigh_gw4(rt4->dst.dev,
+> +					     rt_nexthop(rt4, ip_daddr));
+> +			dst =3D &rt4->dst;
+
+- Can this branch incorrectly cast a struct rt6_info to a struct rtable
+  if an IPv4-in-IPv6 packet is forwarded to another IPv6 tunnel?
+  - Double tunnel encapsulation is not currently supported.
+
+Regards,
+Lorenzo
+
+> +		} else {
+> +			rt =3D dst_rt6_info(tuplehash->tuple.dst_cache);
+> +			neigh =3D ip_neigh_gw6(rt->dst.dev,
+> +					     rt6_nexthop(rt, ip6_daddr));
+> +			dst =3D &rt->dst;
+> +		}
+>  		if (IS_ERR(neigh)) {
+>  			flow_offload_teardown(flow);
+>  			return NF_DROP;
+>  		}
+>  		xmit.dest =3D neigh->ha;
+> -		skb_dst_set_noref(skb, &rt->dst);
+> +		skb_dst_set_noref(skb, dst);
+>  		break;
+> +	}
+>  	case FLOW_OFFLOAD_XMIT_DIRECT:
+>  		xmit.outdev =3D dev_get_by_index_rcu(state->net, tuplehash->tuple.out.=
+ifidx);
+>  		if (!xmit.outdev) {
+> diff --git a/net/netfilter/nf_flow_table_path.c b/net/netfilter/nf_flow_t=
+able_path.c
+> index caaf48c5fd2a..5e84b7f18a26 100644
+> --- a/net/netfilter/nf_flow_table_path.c
+> +++ b/net/netfilter/nf_flow_table_path.c
+> @@ -216,12 +216,13 @@ static int nft_flow_tunnel_update_route(const struc=
+t nft_pktinfo *pkt,
+>  	struct dst_entry *tun_dst =3D NULL;
+>  	struct flowi fl =3D {};
+> =20
+> -	switch (nft_pf(pkt)) {
+> +	switch (tun->encap_proto) {
+>  	case NFPROTO_IPV4:
+>  		fl.u.ip4.daddr =3D tun->dst_v4.s_addr;
+>  		fl.u.ip4.saddr =3D tun->src_v4.s_addr;
+>  		fl.u.ip4.flowi4_iif =3D nft_in(pkt)->ifindex;
+> -		fl.u.ip4.flowi4_dscp =3D ip4h_dscp(ip_hdr(pkt->skb));
+> +		if (nft_pf(pkt) =3D=3D NFPROTO_IPV4)
+> +			fl.u.ip4.flowi4_dscp =3D ip4h_dscp(ip_hdr(pkt->skb));
+>  		fl.u.ip4.flowi4_mark =3D pkt->skb->mark;
+>  		fl.u.ip4.flowi4_flags =3D FLOWI_FLAG_ANYSRC;
+>  		break;
+> @@ -229,13 +230,14 @@ static int nft_flow_tunnel_update_route(const struc=
+t nft_pktinfo *pkt,
+>  		fl.u.ip6.daddr =3D tun->dst_v6;
+>  		fl.u.ip6.saddr =3D tun->src_v6;
+>  		fl.u.ip6.flowi6_iif =3D nft_in(pkt)->ifindex;
+> -		fl.u.ip6.flowlabel =3D ip6_flowinfo(ipv6_hdr(pkt->skb));
+> +		if (nft_pf(pkt) =3D=3D NFPROTO_IPV6)
+> +			fl.u.ip6.flowlabel =3D ip6_flowinfo(ipv6_hdr(pkt->skb));
+>  		fl.u.ip6.flowi6_mark =3D pkt->skb->mark;
+>  		fl.u.ip6.flowi6_flags =3D FLOWI_FLAG_ANYSRC;
+>  		break;
+>  	}
+> =20
+> -	nf_route(nft_net(pkt), &tun_dst, &fl, false, nft_pf(pkt));
+> +	nf_route(nft_net(pkt), &tun_dst, &fl, false, tun->encap_proto);
+>  	if (!tun_dst)
+>  		return -ENOENT;
+> =20
+>=20
+> --=20
+> 2.55.0
+>=20
+
+--KpcLrKuIJxPbhAqD
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCak0olgAKCRA6cBh0uS2t
+rI3NAQClQS3W+Ft7PA84x3n6YiTHeu7fpbuZ5bFy/w/e7uXuhgD/RyZixGGKm2Qr
+cNBbhlAS61B4HSxfpr27WoCCykRS+Ac=
+=gbZe
+-----END PGP SIGNATURE-----
+
+--KpcLrKuIJxPbhAqD--
