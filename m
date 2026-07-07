@@ -1,16 +1,16 @@
 Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8387741610A;
-	Tue,  7 Jul 2026 14:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3590D375F80;
+	Tue,  7 Jul 2026 14:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783433764; cv=none; b=O7XlKxmWEyI6IoB574Bh00Fsa0jCIM38mXz5I7KcQI++RbpbeGuoKToLHyAvvKIEpppNgK7+6bfdV03JymhQysbWiOVd4Z8eOqJgmq5VxYKzIpQAJKoUtKPFoabrKjUre+M/yOZtoGtoXe4zEfVvsc0OY3bwMaI+dqCOFHKDnV4=
+	t=1783433780; cv=none; b=RViz+NHwLZ8Lb8x2N7tGLgNMHCOiALMb9fPGoZg41ZaM0indwjsOzCa7AjPdobasSK/dlqWDN8psvsbSXU+HdJ0ztbwg+NCsBtKMxXS+pj/mDyGJvrj7Y36XYhKFEdYMJFK3Jd1uKluCeFlpxAMImTKQleec/1rXhk4tmvwbvUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783433764; c=relaxed/simple;
-	bh=RzKDzwvPzVv9VAu1F2utaWFqu+UkMv7U8YODxCgZCyU=;
+	s=arc-20240116; t=1783433780; c=relaxed/simple;
+	bh=CtInqgYaYPPYAPb+Q1dD3K6AQRXwhR/EmugxqI8k/Ig=;
 	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=gHdOmzdMBqVCUbGbsq0pftFDO75vFaiNyBbIGEks810zAnZaepiBjRJ7lhrXfF3kmo6O7VYFiTfzfJtWTZQapYO+cwvXKDvCDRYfLXnpFpjSJ2sW4Y4yoPu1ShJwFklZ9jIUQtkdJwlWWWRc29bhslyB/U32yyAyZY82JQiez2g=
+	 Content-Disposition; b=q6ORHw5MljlEUKOx1HgKCJF3gIKvG5iza3BwtQxWtf7SRAX3J68kY+RqYVeazJUp+gpNdJc2WzJhobWs78Fv70CQ1Jjy0oXW8lBDeyL6gt/ZP8VQbkeMiwPv1hZAbQu0ECkqBrE4W9PbfJKM9iLtZpcWu0Eg2xY/MUGAoGZEDPs=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
@@ -18,9 +18,9 @@ Received: from local
 	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
 	 (Exim 4.99)
 	(envelope-from <daniel@makrotopia.org>)
-	id 1wh6ac-000000008AM-2LBE;
-	Tue, 07 Jul 2026 14:15:58 +0000
-Date: Tue, 7 Jul 2026 16:15:50 +0200
+	id 1wh6as-000000008AX-41Ds;
+	Tue, 07 Jul 2026 14:16:15 +0000
+Date: Tue, 7 Jul 2026 16:16:07 +0200
 From: Daniel Golle <daniel@makrotopia.org>
 To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -28,9 +28,9 @@ To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH RFC net-next 1/3] net: dsa: wire flash_update devlink
- callback to drivers
-Message-ID: <ak0KFsQXHv8rlmtk@makrotopia.org>
+Subject: [PATCH RFC net-next 2/3] net: dsa: mxl862xx: add SMDIO clause-22
+ register access
+Message-ID: <ak0KJ6gUk2l_IwoI@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,61 +40,76 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-Add a devlink_flash_update callback to dsa_switch_ops so that DSA
-drivers can support devlink dev flash without open-coding the devlink
-plumbing. The new trampoline in net/dsa/devlink.c follows the existing
-dsa_devlink_info_get pattern exactly.
+Add mxl862xx_smdio_read() and mxl862xx_smdio_write() for clause-22
+SMDIO register access. MCUboot rescue mode only exposes clause-22
+registers; the existing clause-45 MMD interface is unavailable during
+firmware transfer. The MDIO bus lock is held per-transaction (not
+across polls) so that SB PDI polling during flash erase does not
+starve other MDIO users.
 
 Signed-off-by: Daniel Golle <daniel@makrotopia.org>
 ---
- include/net/dsa.h |  3 +++
- net/dsa/devlink.c | 13 +++++++++++++
- 2 files changed, 16 insertions(+)
+ drivers/net/dsa/mxl862xx/mxl862xx-host.c | 35 ++++++++++++++++++++++++
+ drivers/net/dsa/mxl862xx/mxl862xx-host.h |  2 ++
+ 2 files changed, 37 insertions(+)
 
-diff --git a/include/net/dsa.h b/include/net/dsa.h
-index 8c16ef23cc10..39d1dd500e40 100644
---- a/include/net/dsa.h
-+++ b/include/net/dsa.h
-@@ -1170,6 +1170,9 @@ struct dsa_switch_ops {
- 	int	(*devlink_info_get)(struct dsa_switch *ds,
- 				    struct devlink_info_req *req,
- 				    struct netlink_ext_ack *extack);
-+	int	(*devlink_flash_update)(struct dsa_switch *ds,
-+				       struct devlink_flash_update_params *params,
-+				       struct netlink_ext_ack *extack);
- 	int	(*devlink_sb_pool_get)(struct dsa_switch *ds,
- 				       unsigned int sb_index, u16 pool_index,
- 				       struct devlink_sb_pool_info *pool_info);
-diff --git a/net/dsa/devlink.c b/net/dsa/devlink.c
-index ed342f345692..25311a87cbc5 100644
---- a/net/dsa/devlink.c
-+++ b/net/dsa/devlink.c
-@@ -20,6 +20,18 @@ static int dsa_devlink_info_get(struct devlink *dl,
- 	return -EOPNOTSUPP;
+diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-host.c b/drivers/net/dsa/mxl862xx/mxl862xx-host.c
+index 4acd216f7cc0..6e582caea1fa 100644
+--- a/drivers/net/dsa/mxl862xx/mxl862xx-host.c
++++ b/drivers/net/dsa/mxl862xx/mxl862xx-host.c
+@@ -495,6 +495,41 @@ int mxl862xx_reset(struct mxl862xx_priv *priv)
+ 	return ret;
  }
  
-+static int dsa_devlink_flash_update(struct devlink *dl,
-+				    struct devlink_flash_update_params *params,
-+				    struct netlink_ext_ack *extack)
++#define MXL862XX_SMDIO_ADDR_REG		0x1f
++#define MXL862XX_SMDIO_PAGE_MASK	0xfff0
++#define MXL862XX_SMDIO_OFF_MASK		0x000f
++
++int mxl862xx_smdio_read(struct mxl862xx_priv *priv, u32 addr)
 +{
-+	struct dsa_switch *ds = dsa_devlink_to_ds(dl);
++	struct mii_bus *bus = priv->mdiodev->bus;
++	int phy = priv->mdiodev->addr;
++	int ret;
 +
-+	if (!ds->ops->devlink_flash_update)
-+		return -EOPNOTSUPP;
-+
-+	return ds->ops->devlink_flash_update(ds, params, extack);
++	mutex_lock(&bus->mdio_lock);
++	ret = __mdiobus_write(bus, phy, MXL862XX_SMDIO_ADDR_REG,
++			      addr & MXL862XX_SMDIO_PAGE_MASK);
++	if (ret >= 0)
++		ret = __mdiobus_read(bus, phy, addr & MXL862XX_SMDIO_OFF_MASK);
++	mutex_unlock(&bus->mdio_lock);
++	return ret;
 +}
 +
- static int dsa_devlink_sb_pool_get(struct devlink *dl,
- 				   unsigned int sb_index, u16 pool_index,
- 				   struct devlink_sb_pool_info *pool_info)
-@@ -169,6 +181,7 @@ dsa_devlink_sb_occ_tc_port_bind_get(struct devlink_port *dlp,
++int mxl862xx_smdio_write(struct mxl862xx_priv *priv, u32 addr, u16 val)
++{
++	struct mii_bus *bus = priv->mdiodev->bus;
++	int phy = priv->mdiodev->addr;
++	int ret;
++
++	mutex_lock(&bus->mdio_lock);
++	ret = __mdiobus_write(bus, phy, MXL862XX_SMDIO_ADDR_REG,
++			      addr & MXL862XX_SMDIO_PAGE_MASK);
++	if (ret >= 0)
++		ret = __mdiobus_write(bus, phy, addr & MXL862XX_SMDIO_OFF_MASK,
++				      val);
++	mutex_unlock(&bus->mdio_lock);
++	return ret;
++}
++
+ void mxl862xx_host_init(struct mxl862xx_priv *priv)
+ {
+ 	INIT_WORK(&priv->crc_err_work, mxl862xx_crc_err_work_fn);
+diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-host.h b/drivers/net/dsa/mxl862xx/mxl862xx-host.h
+index 66d6ae198aff..4e054c6e4c0e 100644
+--- a/drivers/net/dsa/mxl862xx/mxl862xx-host.h
++++ b/drivers/net/dsa/mxl862xx/mxl862xx-host.h
+@@ -18,5 +18,7 @@ int mxl862xx_api_wrap(struct mxl862xx_priv *priv, u16 cmd, void *data, u16 size,
+ 	mxl862xx_api_wrap(dev, cmd, &(data), sizeof((data)), true, true)
  
- static const struct devlink_ops dsa_devlink_ops = {
- 	.info_get			= dsa_devlink_info_get,
-+	.flash_update			= dsa_devlink_flash_update,
- 	.sb_pool_get			= dsa_devlink_sb_pool_get,
- 	.sb_pool_set			= dsa_devlink_sb_pool_set,
- 	.sb_port_pool_get		= dsa_devlink_sb_port_pool_get,
+ int mxl862xx_reset(struct mxl862xx_priv *priv);
++int mxl862xx_smdio_read(struct mxl862xx_priv *priv, u32 addr);
++int mxl862xx_smdio_write(struct mxl862xx_priv *priv, u32 addr, u16 val);
+ 
+ #endif /* __MXL862XX_HOST_H */
 -- 
 2.55.0
