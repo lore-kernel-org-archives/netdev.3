@@ -1,169 +1,387 @@
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010050.outbound.protection.outlook.com [52.101.201.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94D873859FD;
-	Tue,  7 Jul 2026 17:46:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783446385; cv=fail; b=JEpcMC/9cuGDx7GnBiJz0xoq+k0znOtJf0HFI7uVH1PEmDT11d2YEqBMAut+CaPu1AL98DqDic4jlLnPTfnpzIfP/AvP6+EeLYgZoKqK4/pu7SDkp+4fBxhZ6aKvuR1/l5IKqZR9UOKBde3BNwSmnIOfxTSdecxt71YPU8Ikclk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783446385; c=relaxed/simple;
-	bh=D7y1w1hAd0iotSyKh7CxtFC4/yc2h/GnCKbOuoAwXZ4=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=llrVzm4xRf2sGQ2xgdXAV9krFXJK2/R7XcyU3whYiOkfPaMbzntPubkO7siNxEnl6H04vC/Ckn/v/keLqvDAyaZhLt3HfKI1PHnRoxzL9/Z7N985O/yNUY4tR5V11KXV1LbUxMkhhlTYrdYiPoGLVPck08sI8ii5WZXWtGbSPr4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=iMzDqxqq; arc=fail smtp.client-ip=52.101.201.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE332C0303
+	for <netdev@vger.kernel.org>; Tue,  7 Jul 2026 18:07:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783447650; cv=none; b=TGWyEgOakWnneGQkFUI50I2zHpu3UaSqRVMIy4j/vyv8DNaIgKxTO6bAMOOzm6VRRfVItsMClGVyankfN5K70wzY/qaEFrrVkXx0CcSgqNeX/h7Q1QWw+Z0sdcLYtC0VD2vZuf0tkKScDmWAFwZCsgZO6IUigfM6kf4VAC3sPfI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783447650; c=relaxed/simple;
+	bh=vcki7oBvw1sLDftOfNNiIqiR2vQwgZTYBbexjDEXxW8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=b2s76TvkOTp8RMNU40E/aBd2d09ku/hi+f9M8+dtweQ/p30OooE5oafTfcgc2aafoW/DP4NUawFrfgY2AROU00INRr2DaedDKEQyngMawRN7wsAxnleE6injPUFHY+Gu+sgCfAD/SxuMz/l04a/1ouYGGT7duxgq/32rDnx32GA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=H01hJZr8; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="iMzDqxqq"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KiiZQ5+HdDQ3+OSUddg2oymm4J/z25OIl9yCCEJkwRDBF9U3bKcy6aNmD7NANojk9XLvTnYb5bSdsoXfGDeUU81gDoD3gn9zw9v4tZjTkKp5d6o0NizAC+NQeCR8rrEVsEdfCstmv2GXbANwF21rxEHYht6EPBj4+QCxPOwvQ2HCxfzniGQuUBJZ5XFUBOg//yRFBzGmuLKSdBFq8Npd+GiXGC6/uKSkE33QjWEZjsMpd9nrvNwP0W9PlKhWQwJr/RiJbXpGCyWwoI8+7T5JClDAnSjX+gsTjP5tuCCBpE0JtShwfajnBda5Nd0wgqH4jzGrQ1Q/Ras5ukGC1rfNbw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YruQRGdooAus926mXQ5iORF2/vtVgeWZuFRhOiiAGHc=;
- b=AR0YFkTfDDbeJY1QNKY8VDG7gRaoAtooWBRUCu3xIok+79Ol7HciRhTmNlXjI1YHQikpHwhxXT3WSREDxXalWRlx1qDHqgQMTEwKDJ9MBwXcfIkRI3PEU8dFYfLDXSf/uIi+0lwtvmwEO8gNgFqP/Cv6iUItyTAmMIKTE7KjK2yEGtNicp/q0nRAoCQpapMSIjwby2EaDR1QVkD1d7uEJTud3F0HG7m+XXBWq0jebQ2voA0espSdEepa+/7azUkOh4HGjhVtl7Wx0Ef1aKnqEWTeU+poEoQlJkXJYbUueyTxsymaTe523V8zuTbgdDuHulfeuRkScwHS8m1qpXCV4Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=resnulli.us smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YruQRGdooAus926mXQ5iORF2/vtVgeWZuFRhOiiAGHc=;
- b=iMzDqxqqnVRsym6noIrTuLgzyLlqZFU0w7bV0+Kzq5dfOA5z90SxWfM1ppdduUS8xL/CrekQALSYbmc1Ajm//KFfkhnsWKpXL/dCsoxlyXDZTLNyarKVcUpwQYqLpEWYkDuPaZbVgY0Yo8euEYyEu3rW8Ppv1qR8PRAeAHIcSufpbTJuYFxzSS6eEv2w2i0ahP+GLKCd9SwuyfGrMzJp3JRc7btMWd2VVvLjVOj9AmzFiXVzOwA5Ye8xKGRBjRTNm6rYNewCtN/HQGXlie270XNR1ddSovqporw7AA+B/K0ypazrp1LroTWvllk8TRk+2zo/QxSe6RMog35hqpp9aw==
-Received: from CH2PR20CA0016.namprd20.prod.outlook.com (2603:10b6:610:58::26)
- by SJ2PR12MB8720.namprd12.prod.outlook.com (2603:10b6:a03:539::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.10; Tue, 7 Jul
- 2026 17:46:18 +0000
-Received: from CH2PEPF0000013F.namprd02.prod.outlook.com
- (2603:10b6:610:58:cafe::7c) by CH2PR20CA0016.outlook.office365.com
- (2603:10b6:610:58::26) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.202.9 via Frontend Transport; Tue, 7
- Jul 2026 17:46:16 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- CH2PEPF0000013F.mail.protection.outlook.com (10.167.244.71) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.6 via Frontend Transport; Tue, 7 Jul 2026 17:46:16 +0000
-Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 7 Jul
- 2026 10:46:01 -0700
-Received: from drhqmail201.nvidia.com (10.126.190.180) by
- drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Tue, 7 Jul 2026 10:46:00 -0700
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
- (10.126.190.180) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
- Transport; Tue, 7 Jul 2026 10:45:57 -0700
-From: Mark Bloch <mbloch@nvidia.com>
-To: Jiri Pirko <jiri@resnulli.us>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>
-CC: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
-	<netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, Mark Bloch <mbloch@nvidia.com>
-Subject: [PATCH net-next V5 6/6] net/mlx5: Apply devlink eswitch mode boot default on probe
-Date: Tue, 7 Jul 2026 20:45:27 +0300
-Message-ID: <20260707174527.425134-7-mbloch@nvidia.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260707174527.425134-1-mbloch@nvidia.com>
-References: <20260707174527.425134-1-mbloch@nvidia.com>
+	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="H01hJZr8"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-84832ec2615so1053271b3a.1
+        for <netdev@vger.kernel.org>; Tue, 07 Jul 2026 11:07:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1783447647; x=1784052447; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=adKQv1s51c2HukqV2OIYDY9VO+GH/YDmDfRrvcoAyQU=;
+        b=H01hJZr8VyCBCGj5J1vtlVRNng2MuJ3ofUzY3I21S4QNPA2Ezgkt2Qrbb4tPK0VFiZ
+         DNnb1rp2kgKNUR9EVJXDT7tnwr015KsYldyL5bQHW9q0Y6Z1V0nTH97tSB3G273mh0KG
+         3CGre1kkLn897Q/iSTebbdFcEr+FBJzRuttY9oATs4286NuQLolf7e1K/+WyQ2k9jjPy
+         uLjyKDmb9ptWit/U2SW/+ZQ2nFaOPywERmjbXOFfAQ30b+vleur8wogZ7PqZufzm4fLa
+         7EZGgTPKrHl44I6vaQ70+W5AWyoDsIceIZHZlKIO6vLsZ1ytwn6R9aZ4qdKI/Hx7Tn4H
+         QNPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783447647; x=1784052447;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=adKQv1s51c2HukqV2OIYDY9VO+GH/YDmDfRrvcoAyQU=;
+        b=idtKDBHWKSpkAGzxxmAaCLDr/XUxJLVFan5NEYvTbEtWFcbAeQkTAnOKIY1zOjNpTN
+         mZ/1z+Ah+JB0RABsNplGkGI4e5iL51BEKhCRIp6CHq50ocuGWyljCRvSyySDzuuGXZLK
+         ZdcpJaL3MEKqhF4U/TDPd0OLVnRvKlzh89Okp2gXbnIyVgJazAaTVOZvTwkKoY8wyG4H
+         l2C0O8WWGnsThn3klfQNB7c1TE55nt8kPTTGl//C36TF4qIjoa8CtrsKNw1izGrZBhaD
+         v+hb3Vv47Bdg8KkWgDhxsGsUyiGsorLz6eyhVfSmXTvMFhV/4GIkizgYycbzkw5sulKR
+         3xcQ==
+X-Forwarded-Encrypted: i=1; AHgh+Ro+YeUem/SVMtEIgxplX0lyo4vylfDfdttUBnjFrOnrIy3amIoomfEELSfrAH9h3B9PHMIDme4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwvfJPZ/R6WETAGn+lzKBzlIrl+9CuNAENsnfmDFu/zkmStY1HP
+	nRR0jIA/Q751skXGemOJeFMd8/bxH9Uh0i0BrKeGMDxsb1nQhKTCb1bAmtURmq64Zdo=
+X-Gm-Gg: AfdE7clxtQc1U4b6MQegcuiBlgzgWNqkEL9CW7A5hqlkaJCGZQTkzX8cZRvSZyH8mi0
+	tH5uteiCQQbqMKRBSDiRwCpYkF/MpdRIQXnIf3QxM1XAoI8Xgdm29heW+5SQPADtAUKs+XYuYqE
+	RMw6izzWIzW06+X6Qma2hkHcQpLnQj0o7He0J0UxoPxS60m+zkSL757GPX4+ZiZdpQ2/YSneRMk
+	BtunQjlAKwBeqiKKdPim9ffRKk+gM+VUhYK9eRziRY34oAhjYeIgMlPt8pcv1xcz2BDXOWDbrSI
+	sdOLtHPdKYvQwSu38TG+hjuHUuiJo6/6zPjkLDMZ/6m9kls76RjU0mZmFdQh1K9VbK71R6Gz9gI
+	/KM+boazMTFj8xEpyfOS8OCtPKTSUmXoX207g5eU6mEgmR+Kk03LnckBzQRaRgVjJSo2Gc7tlaC
+	HlIxdnXR6rYv+sjaAUOYOx/Wbb3+heshMemF0f5cRDvg==
+X-Received: by 2002:a05:6a20:cf88:b0:3c0:9c19:6589 with SMTP id adf61e73a8af0-3c09c196d09mr5103844637.67.1783447646809;
+        Tue, 07 Jul 2026 11:07:26 -0700 (PDT)
+Received: from localhost (107-190-31-17.cpe.teksavvy.com. [107.190.31.17])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9bf76dbsm16476255ad.21.2026.07.07.11.07.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 Jul 2026 11:07:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PEPF0000013F:EE_|SJ2PR12MB8720:EE_
-X-MS-Office365-Filtering-Correlation-Id: b232b0a8-5110-4bbc-e378-08dedc4fa52e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|23010399003|82310400026|1800799024|36860700016|6133799003|11063799006|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	zV/3cf9neZZwqObYjx1Xq6bFFaHGlk2J20b/ggFA3HTwnbZhpHOfFzX5uievavJTmXTHeCUCmRtxj1RitTBQnv2uEhNvVIAWVLacY1l5UEbQRXF0zg8rfTnkpwS25Gyf5OZzTsf3e5f05hEsXQ5kxqF8NCv5QXDEqzFZvHLjFdAuzr5771Z14p7fLBE9ChGIXtGNlHKm7ZUdvKqFhuJIKNteA+fNOQmBLId/5isV0X+Zgf2bPDDs+rIykvQLKrD+CORMMWZGl9sJoNGVG5P9sNm2ZWJxH3e6cDdKExym437GBU7W4eEwGJKlNtzea8+3YmJeu0le7Y/jDj1/M3kffHo6DYQTcfErHz9vbCisEHa/fczriqZhZhL5ZJzrHaVv+7FAGOPTgcIWzHJkBmdbbTzazulVkH+NPktzciGsui+Dc8hzFkWs+ntbPtpE9wP2sHdupwJYjmBDz+OSjWRKD1HQLmkVgaFrHkLQ0ch7u22Wom1BwR8wkafIC8DwegaX73Nv2il3cRvg7jUn1Jv1IlCatwb4vd3z8aPSCfR8GravKekMEi+7WNuwzXOoCpu/UnpakGOjdfIApCrDS7nHdfGVUhEFH84fiIvSblj8CbQ4SU2nZX3RLliWfMxWuPmXJe3xvAcH9NjDHu+uLF+YMMzD1Z2cHt8PLVagVdX91wpHL9v2zugK+Gi6KcxPce4bZDH1HrzTwsVB3P2B+La+eQ==
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(82310400026)(1800799024)(36860700016)(6133799003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	3lXWpWmaIrMYuv4qvXf+2c7SLFst7bdRjH+eYiBKVJ+eJq+ryyKOn1riurCEHhX8SDEB3WuPMGS5vVJN5HtxEwQUNgEkFB1FVyxdP1tcfwwoWYg1x6xIqGt79fB5D5D9rfGmhSWJ2/pT81DrVpo99yrUCguJi1QbMTefzGsFVqpD3mmCerhBtgr1MOA4/ycdwJVd1wWj5LWMzo1bhlgGNht71S+d1Rd1+PSVenU/XP3U3VyAe/vaaf61gSaL+MSyD9im6iSHTSKFzMHgTGqAMQ5s72Aaxt2/j8YOPokTXAPaI5cEEaxeVcazJjrys89sbP2RRWwZteR7J0xiqVO+EhkJ5sXV9ErQrrBceT6tWcSndBFAqBKSnwkpYCn+kfSZGJjhl1ATTPlsSOhnf2765zlQn86NWaFXlpSDvKKEw1HLZwZOizhEJcWfZLTKk4LA
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2026 17:46:16.3508
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b232b0a8-5110-4bbc-e378-08dedc4fa52e
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH2PEPF0000013F.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8720
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 07 Jul 2026 14:07:24 -0400
+Message-Id: <DJSJFDD2MQ4Q.2ECD6WSD2AFAA@etsalapatis.com>
+Cc: <eddyz87@gmail.com>, <memxor@gmail.com>, <martin.lau@linux.dev>,
+ <song@kernel.org>, <yonghong.song@linux.dev>, <jolsa@kernel.org>,
+ <emil@etsalapatis.com>, <john.fastabend@gmail.com>, <sdf@fomichev.me>,
+ <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+ <pabeni@redhat.com>, <horms@kernel.org>, <shuah@kernel.org>,
+ <hawk@kernel.org>, <yatsenko@meta.com>, <leon.hwang@linux.dev>,
+ <kpsingh@kernel.org>, <a.s.protopopov@gmail.com>, <ameryhung@gmail.com>,
+ <rongtao@cestc.cn>, <eyal.birger@gmail.com>, <bpf@vger.kernel.org>,
+ <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-kselftest@vger.kernel.org>, <toke@redhat.com>, <dsahern@kernel.org>
+Subject: Re: [PATCH bpf-next v6 1/3] bpf: Add BPF_FIB_LOOKUP_VLAN flag to
+ bpf_fib_lookup() helper
+From: "Emil Tsalapatis" <emil@etsalapatis.com>
+To: "Avinash Duduskar" <avinash.duduskar@gmail.com>, <ast@kernel.org>,
+ <daniel@iogearbox.net>, <andrii@kernel.org>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260704092159.1256823-1-avinash.duduskar@gmail.com>
+ <20260704092159.1256823-2-avinash.duduskar@gmail.com>
+In-Reply-To: <20260704092159.1256823-2-avinash.duduskar@gmail.com>
 
-Apply devlink_eswitch_mode= boot defaults for mlx5 after the initial
-probe finishes device initialization while holding the devlink instance
-lock.
+On Sat Jul 4, 2026 at 5:21 AM EDT, Avinash Duduskar wrote:
+> bpf_fib_lookup() returns the FIB-resolved egress ifindex straight
+> from the fib result. When the egress is a VLAN device, the returned
+> ifindex is the VLAN netdev's, which has no XDP xmit handler; XDP
+> programs that want to forward the frame (e.g. xdp-forward) must
+> instead target the underlying physical device and push the VLAN tag
+> themselves. Today the program has no way to learn either the
+> underlying ifindex or the VLAN tag without maintaining its own
+> VLAN-to-ifindex map in userspace and refreshing it on netlink
+> events.
+>
+> Add BPF_FIB_LOOKUP_VLAN. When the caller sets this flag and the fib
+> result is a VLAN device whose immediate parent is a real (non-VLAN)
+> device in the same network namespace, populate the existing output
+> fields params->h_vlan_proto and params->h_vlan_TCI from the VLAN
+> device and replace params->ifindex with the parent's ifindex.
+> params->h_vlan_TCI carries the VID only, with PCP and DEI bits zero; a
+> consumer wanting to set egress priority writes PCP itself.
+> params->smac is the VLAN device's own address, which can differ from
+> the parent's.
+>
+> Only the immediate parent is resolved, via vlan_dev_priv(dev)->real_dev
+> and not vlan_dev_real_dev(), which walks to the bottom of a stack. When
+> the immediate parent is not a real device in the same namespace, the
+> lookup returns BPF_FIB_LKUP_RET_VLAN_FAILURE and leaves params->ifindex
+> at the input. This covers a stacked VLAN (QinQ), where the immediate
+> parent is itself a VLAN device and one h_vlan_proto/h_vlan_TCI pair
+> cannot describe two tags, and a parent in another network namespace (a
+> VLAN device can be moved while its parent stays), whose ifindex would
+> be meaningless in the caller's namespace. A program that wants the VLAN
+> device's own ifindex re-issues the lookup without BPF_FIB_LOOKUP_VLAN,
+> so the unreducible case stays distinct from a physical egress. That
+> distinction matters for XDP: a program cannot xmit on a VLAN device, so
+> a success carrying the VLAN ifindex would make it redirect to a device
+> with no ndo_xdp_xmit and drop the frame at xdp_do_flush(). The swap and
+> the vlan fields are written only on the reduce path; other output
+> fields keep their existing behaviour, so a frag-needed result still
+> reports the route mtu in params->mtu_result.
+>
+> BPF_FIB_LOOKUP_VLAN is only useful to XDP, which cannot redirect to a
+> VLAN device. A tc program can redirect to the VLAN device directly, so
+> bpf_skb_fib_lookup() rejects the flag with -EINVAL; bpf_xdp_fib_lookup()
+> accepts it. When the flag is not set, behaviour is unchanged:
+> h_vlan_proto and h_vlan_TCI are zeroed and ifindex is left at the FIB
+> result.
+>
+> The new block is compiled only under CONFIG_VLAN_8021Q since
+> vlan_dev_priv() is not defined otherwise; without that config
+> is_vlan_dev() is constant false and the flag is accepted but never
+> acts. That is safe because no VLAN device can exist there, so every
+> egress is already physical.
+>
+> This lets an XDP redirect target the physical device and learn the
+> tag to push in a single lookup, which xdp-forward's optional VLAN
+> mode (xdp-project/xdp-tools#504) wants from the kernel side.
+>
+> The helper's input semantics are unchanged; the reverse direction
+> (supplying a tag as lookup input) is added in the following patch.
+>
+> Suggested-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+> Reviewed-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+> Acked-by: David Ahern <dsahern@kernel.org>
+> Signed-off-by: Avinash Duduskar <avinash.duduskar@gmail.com>
 
-At this point the devlink instance is registered and mlx5 can perform an
-eswitch mode change. Calling devl_apply_default_esw_mode() also clears
-any pending default apply work queued by devl_register(), so the queued
-work will not apply the same default again.
+Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
 
-Keep this call in mlx5_init_one() rather than the lower-level
-devl-locked init helper. That helper is also used by devlink reload, and
-devlink core already applies the boot default after a successful
-DRIVER_REINIT reload.
-
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
----
- drivers/net/ethernet/mellanox/mlx5/core/main.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-index 643b4aac2033..0712efea74cc 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-@@ -1392,6 +1392,17 @@ static void mlx5_unload(struct mlx5_core_dev *dev)
- 	mlx5_free_bfreg(dev, &dev->priv.bfreg);
- }
- 
-+static void mlx5_devl_apply_default_esw_mode(struct mlx5_core_dev *dev)
-+{
-+	struct devlink *devlink = priv_to_devlink(dev);
-+
-+	if (!MLX5_ESWITCH_MANAGER(dev))
-+		return;
-+
-+	devl_assert_locked(devlink);
-+	devl_apply_default_esw_mode(devlink);
-+}
-+
- int mlx5_init_one_devl_locked(struct mlx5_core_dev *dev)
- {
- 	bool light_probe = mlx5_dev_is_lightweight(dev);
-@@ -1471,6 +1482,8 @@ int mlx5_init_one(struct mlx5_core_dev *dev)
- 	err = mlx5_init_one_devl_locked(dev);
- 	if (err)
- 		devl_unregister(devlink);
-+	else
-+		mlx5_devl_apply_default_esw_mode(dev);
- unlock:
- 	devl_unlock(devlink);
- 	return err;
--- 
-2.43.0
+> ---
+>  include/uapi/linux/bpf.h       | 31 ++++++++++++++++++++++++++++++-
+>  net/core/filter.c              | 33 +++++++++++++++++++++++++++++----
+>  tools/include/uapi/linux/bpf.h | 31 ++++++++++++++++++++++++++++++-
+>  3 files changed, 89 insertions(+), 6 deletions(-)
+>
+> diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
+> index 89b36de5fdbb..e00f0392e728 100644
+> --- a/include/uapi/linux/bpf.h
+> +++ b/include/uapi/linux/bpf.h
+> @@ -3532,6 +3532,29 @@ union bpf_attr {
+>   *			Use the mark present in *params*->mark for the fib lookup.
+>   *			This option should not be used with BPF_FIB_LOOKUP_DIRECT,
+>   *			as it only has meaning for full lookups.
+> + *		**BPF_FIB_LOOKUP_VLAN**
+> + *			If the fib lookup resolves to a VLAN device whose
+> + *			parent is a real (non-VLAN) device, set
+> + *			*params*->h_vlan_proto and *params*->h_vlan_TCI from
+> + *			the VLAN device and replace *params*->ifindex with the
+> + *			parent's ifindex. *params*->h_vlan_TCI carries the VID
+> + *			only, with PCP and DEI bits zero; a consumer wanting to
+> + *			set egress priority writes PCP itself. *params*->smac is
+> + *			the VLAN device's own address, which can differ from the
+> + *			parent's. Only the immediate parent is resolved; if it
+> + *			is itself a VLAN device (QinQ) or in another namespace,
+> + *			the egress cannot be reduced to a physical device plus
+> + *			one tag and the lookup returns
+> + *			**BPF_FIB_LKUP_RET_VLAN_FAILURE** with *params*->ifindex
+> + *			left at the input. Re-issue without
+> + *			**BPF_FIB_LOOKUP_VLAN** to obtain the VLAN device's own
+> + *			ifindex. The swap and the vlan fields
+> + *			are written only on success; other output fields keep
+> + *			the helper's existing behaviour, so a frag-needed result
+> + *			still reports the route mtu in *params*->mtu_result.
+> + *			This flag is only valid for XDP programs; tc programs
+> + *			receive -EINVAL since they can redirect to the VLAN
+> + *			device directly.
+>   *
+>   *		*ctx* is either **struct xdp_md** for XDP programs or
+>   *		**struct sk_buff** tc cls_act programs.
+> @@ -7327,6 +7350,7 @@ enum {
+>  	BPF_FIB_LOOKUP_TBID    =3D (1U << 3),
+>  	BPF_FIB_LOOKUP_SRC     =3D (1U << 4),
+>  	BPF_FIB_LOOKUP_MARK    =3D (1U << 5),
+> +	BPF_FIB_LOOKUP_VLAN    =3D (1U << 6),
+>  };
+> =20
+>  enum {
+> @@ -7340,6 +7364,7 @@ enum {
+>  	BPF_FIB_LKUP_RET_NO_NEIGH,     /* no neighbor entry for nh */
+>  	BPF_FIB_LKUP_RET_FRAG_NEEDED,  /* fragmentation required to fwd */
+>  	BPF_FIB_LKUP_RET_NO_SRC_ADDR,  /* failed to derive IP src addr */
+> +	BPF_FIB_LKUP_RET_VLAN_FAILURE, /* VLAN egress, parent unresolvable */
+>  };
+> =20
+>  struct bpf_fib_lookup {
+> @@ -7393,7 +7418,11 @@ struct bpf_fib_lookup {
+> =20
+>  	union {
+>  		struct {
+> -			/* output */
+> +			/*
+> +			 * output with BPF_FIB_LOOKUP_VLAN: set from the
+> +			 * resolved egress VLAN device (see the flag); zeroed
+> +			 * on other successful lookups.
+> +			 */
+>  			__be16	h_vlan_proto;
+>  			__be16	h_vlan_TCI;
+>  		};
+> diff --git a/net/core/filter.c b/net/core/filter.c
+> index 2e96b4b847ce..b5a45485a54b 100644
+> --- a/net/core/filter.c
+> +++ b/net/core/filter.c
+> @@ -6201,10 +6201,29 @@ static const struct bpf_func_proto bpf_skb_get_xf=
+rm_state_proto =3D {
+>  #endif
+> =20
+>  #if IS_ENABLED(CONFIG_INET) || IS_ENABLED(CONFIG_IPV6)
+> -static int bpf_fib_set_fwd_params(struct bpf_fib_lookup *params, u32 mtu=
+)
+> +static int bpf_fib_set_fwd_params(struct net_device *dev,
+> +				  struct bpf_fib_lookup *params,
+> +				  u32 flags, u32 mtu, u32 in_ifindex)
+>  {
+>  	params->h_vlan_TCI =3D 0;
+>  	params->h_vlan_proto =3D 0;
+> +
+> +#if IS_ENABLED(CONFIG_VLAN_8021Q)
+> +	if ((flags & BPF_FIB_LOOKUP_VLAN) && is_vlan_dev(dev)) {
+> +		struct net_device *real_dev =3D vlan_dev_priv(dev)->real_dev;
+> +
+> +		if (!is_vlan_dev(real_dev) &&
+> +		    net_eq(dev_net(real_dev), dev_net(dev))) {
+> +			params->h_vlan_proto =3D vlan_dev_vlan_proto(dev);
+> +			params->h_vlan_TCI =3D htons(vlan_dev_vlan_id(dev));
+> +			params->ifindex =3D real_dev->ifindex;
+> +		} else {
+> +			params->ifindex =3D in_ifindex;
+> +			return BPF_FIB_LKUP_RET_VLAN_FAILURE;
+> +		}
+> +	}
+> +#endif
+> +
+>  	if (mtu)
+>  		params->mtu_result =3D mtu; /* union with tot_len */
+> =20
+> @@ -6216,6 +6235,7 @@ static int bpf_fib_set_fwd_params(struct bpf_fib_lo=
+okup *params, u32 mtu)
+>  static int bpf_ipv4_fib_lookup(struct net *net, struct bpf_fib_lookup *p=
+arams,
+>  			       u32 flags, bool check_mtu)
+>  {
+> +	u32 in_ifindex =3D params->ifindex;
+>  	struct neighbour *neigh =3D NULL;
+>  	struct fib_nh_common *nhc;
+>  	struct in_device *in_dev;
+> @@ -6347,7 +6367,7 @@ static int bpf_ipv4_fib_lookup(struct net *net, str=
+uct bpf_fib_lookup *params,
+>  	memcpy(params->smac, dev->dev_addr, ETH_ALEN);
+> =20
+>  set_fwd_params:
+> -	return bpf_fib_set_fwd_params(params, mtu);
+> +	return bpf_fib_set_fwd_params(dev, params, flags, mtu, in_ifindex);
+>  }
+>  #endif
+> =20
+> @@ -6357,6 +6377,7 @@ static int bpf_ipv6_fib_lookup(struct net *net, str=
+uct bpf_fib_lookup *params,
+>  {
+>  	struct in6_addr *src =3D (struct in6_addr *) params->ipv6_src;
+>  	struct in6_addr *dst =3D (struct in6_addr *) params->ipv6_dst;
+> +	u32 in_ifindex =3D params->ifindex;
+>  	struct fib6_result res =3D {};
+>  	struct neighbour *neigh;
+>  	struct net_device *dev;
+> @@ -6486,13 +6507,14 @@ static int bpf_ipv6_fib_lookup(struct net *net, s=
+truct bpf_fib_lookup *params,
+>  	memcpy(params->smac, dev->dev_addr, ETH_ALEN);
+> =20
+>  set_fwd_params:
+> -	return bpf_fib_set_fwd_params(params, mtu);
+> +	return bpf_fib_set_fwd_params(dev, params, flags, mtu, in_ifindex);
+>  }
+>  #endif
+> =20
+>  #define BPF_FIB_LOOKUP_MASK (BPF_FIB_LOOKUP_DIRECT | BPF_FIB_LOOKUP_OUTP=
+UT | \
+>  			     BPF_FIB_LOOKUP_SKIP_NEIGH | BPF_FIB_LOOKUP_TBID | \
+> -			     BPF_FIB_LOOKUP_SRC | BPF_FIB_LOOKUP_MARK)
+> +			     BPF_FIB_LOOKUP_SRC | BPF_FIB_LOOKUP_MARK | \
+> +			     BPF_FIB_LOOKUP_VLAN)
+> =20
+>  BPF_CALL_4(bpf_xdp_fib_lookup, struct xdp_buff *, ctx,
+>  	   struct bpf_fib_lookup *, params, int, plen, u32, flags)
+> @@ -6541,6 +6563,9 @@ BPF_CALL_4(bpf_skb_fib_lookup, struct sk_buff *, sk=
+b,
+>  	if (flags & ~BPF_FIB_LOOKUP_MASK)
+>  		return -EINVAL;
+> =20
+> +	if (flags & BPF_FIB_LOOKUP_VLAN)
+> +		return -EINVAL;
+> +
+>  	if (params->tot_len)
+>  		check_mtu =3D true;
+> =20
+> diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bp=
+f.h
+> index 89b36de5fdbb..e00f0392e728 100644
+> --- a/tools/include/uapi/linux/bpf.h
+> +++ b/tools/include/uapi/linux/bpf.h
+> @@ -3532,6 +3532,29 @@ union bpf_attr {
+>   *			Use the mark present in *params*->mark for the fib lookup.
+>   *			This option should not be used with BPF_FIB_LOOKUP_DIRECT,
+>   *			as it only has meaning for full lookups.
+> + *		**BPF_FIB_LOOKUP_VLAN**
+> + *			If the fib lookup resolves to a VLAN device whose
+> + *			parent is a real (non-VLAN) device, set
+> + *			*params*->h_vlan_proto and *params*->h_vlan_TCI from
+> + *			the VLAN device and replace *params*->ifindex with the
+> + *			parent's ifindex. *params*->h_vlan_TCI carries the VID
+> + *			only, with PCP and DEI bits zero; a consumer wanting to
+> + *			set egress priority writes PCP itself. *params*->smac is
+> + *			the VLAN device's own address, which can differ from the
+> + *			parent's. Only the immediate parent is resolved; if it
+> + *			is itself a VLAN device (QinQ) or in another namespace,
+> + *			the egress cannot be reduced to a physical device plus
+> + *			one tag and the lookup returns
+> + *			**BPF_FIB_LKUP_RET_VLAN_FAILURE** with *params*->ifindex
+> + *			left at the input. Re-issue without
+> + *			**BPF_FIB_LOOKUP_VLAN** to obtain the VLAN device's own
+> + *			ifindex. The swap and the vlan fields
+> + *			are written only on success; other output fields keep
+> + *			the helper's existing behaviour, so a frag-needed result
+> + *			still reports the route mtu in *params*->mtu_result.
+> + *			This flag is only valid for XDP programs; tc programs
+> + *			receive -EINVAL since they can redirect to the VLAN
+> + *			device directly.
+>   *
+>   *		*ctx* is either **struct xdp_md** for XDP programs or
+>   *		**struct sk_buff** tc cls_act programs.
+> @@ -7327,6 +7350,7 @@ enum {
+>  	BPF_FIB_LOOKUP_TBID    =3D (1U << 3),
+>  	BPF_FIB_LOOKUP_SRC     =3D (1U << 4),
+>  	BPF_FIB_LOOKUP_MARK    =3D (1U << 5),
+> +	BPF_FIB_LOOKUP_VLAN    =3D (1U << 6),
+>  };
+> =20
+>  enum {
+> @@ -7340,6 +7364,7 @@ enum {
+>  	BPF_FIB_LKUP_RET_NO_NEIGH,     /* no neighbor entry for nh */
+>  	BPF_FIB_LKUP_RET_FRAG_NEEDED,  /* fragmentation required to fwd */
+>  	BPF_FIB_LKUP_RET_NO_SRC_ADDR,  /* failed to derive IP src addr */
+> +	BPF_FIB_LKUP_RET_VLAN_FAILURE, /* VLAN egress, parent unresolvable */
+>  };
+> =20
+>  struct bpf_fib_lookup {
+> @@ -7393,7 +7418,11 @@ struct bpf_fib_lookup {
+> =20
+>  	union {
+>  		struct {
+> -			/* output */
+> +			/*
+> +			 * output with BPF_FIB_LOOKUP_VLAN: set from the
+> +			 * resolved egress VLAN device (see the flag); zeroed
+> +			 * on other successful lookups.
+> +			 */
+>  			__be16	h_vlan_proto;
+>  			__be16	h_vlan_TCI;
+>  		};
 
