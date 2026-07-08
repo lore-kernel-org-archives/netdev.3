@@ -1,35 +1,33 @@
-Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B5E35E92F;
-	Wed,  8 Jul 2026 15:15:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8423B38B8;
+	Wed,  8 Jul 2026 15:18:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783523750; cv=none; b=ssv8MFkeZZs6mgZ9bUPTUhwLw7/bFbuRGkxj3XmbR7qCaPxdM7Q/WaTsYqThMuvJhW+iOmnc35TTLs1XA8ABt96sw2MfJkni76PLN08zMwWPgi9g0IDiHPJ4JfwTZewxnjkGyKkQu0c9XV0ESRrxo6mhXM9cVFYTJBIZTMPdTr8=
+	t=1783523898; cv=none; b=Rb/nsFMheVl6UyzYtwGakPXN2AvbjYEHY8i56VxGsx6h+Zx2aVSWc/QVSF440LcvBB9UjwBEM4G0FpxeCaShZBGJBmdgQ19VeH1hgtvJLF6LMAr1Y/cbBIn3AYymmE5TBMHDnD07D5CJa8Mlj70+KH1eE2AR3wj4bHz0LiINuUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783523750; c=relaxed/simple;
-	bh=Z/M4qo4aKet++ZcdMmdrhg8tuZe93BjhicMEfgYQ8Tk=;
+	s=arc-20240116; t=1783523898; c=relaxed/simple;
+	bh=hVLLP9ctd8IX3dhnbSd7/S7pBf4qrnCBsR221ie1WDo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AFT0k7tFrv53WZff5ZDo6W+YUE2fmspQ1KfEChtZP2uE1mIGEHqZZBNFdKn6zaNjvi/o629ClhdhjXwF7NLBXPBWcHd+kG7P2vdfA7GzVoF6WjR52nrerPq4/hlWlPoOSbly/u+7zay6nvtt/l9ctqjmnqNDnYJw1QMlC6SA4Q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b=eqdssayO; arc=none smtp.client-ip=129.217.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
+	 In-Reply-To:Content-Type; b=Y+ocvOiV1daOEztNxqwM6UYWgi7WPU76DzBqoaUDtSZzCgR07rveBj/7+rmfDlb7JhkxVaHBk6VGkXxZ5s230ODtov6Z+35o2Eae6S5IpkBe9517SEah4oFQ2EZ9F9Wz3VfwEY9C+crwGUW2E9YUghEUsHnJFQP1KikTFF+ipJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lBnJ3wOw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b="eqdssayO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tu-dortmund.de;
-	s=unimail; t=1783523541;
-	bh=JUDy9KU7vJOTJs+mWZpY03LuKhL3NZcOljSDWdfTCWA=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lBnJ3wOw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D27361F00A3A;
+	Wed,  8 Jul 2026 15:18:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783523897;
+	bh=IIWw6J2tftar4U32QMJUBurC/xgaQlSBZGNvsiWM3tE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=eqdssayOH+/cStC+U/0yFHImlwHFTayvhMtscaSSyYc/avX8xY2PRMifV/gj/+FWF
-	 9+HjBhXrw8IHgPVt+ms0Eza6uSxiyjVRcQvexIdn/2cjCv4zxsUQfV9hYPf8jJROwr
-	 S07ZOTA1Nug4/AHiMhghK71Y2nyvh0cLHrZV+WUw=
-Received: from [129.217.186.105] ([129.217.186.105])
-	(authenticated bits=0)
-	by unimail.uni-dortmund.de (8.19.0.2/8.19.0.2) with ESMTPSA id 668FCKJF013807
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 8 Jul 2026 17:12:20 +0200 (CEST)
-Message-ID: <c743935b-7b6f-49f4-b1dd-3fe1cc528464@tu-dortmund.de>
-Date: Wed, 8 Jul 2026 17:12:19 +0200
+	b=lBnJ3wOwaTIJaiUXM3efsw2nz3JTqibBiG1nHc/F93OTSzeX4HFFLLVfBownWb4sw
+	 tfNAn/JGW5Xh+exX2Y4HPFEzVv5X7ixxDFI2NDNU297IX9H19wFkkkSviO3EmltnSr
+	 E+Q2TWvnN5mpiRnAjVUjZkN3kQe1gFuyYyAY/FbTGdxEfhUqJDv31EEuqW9yi/8P9E
+	 DAr4iTYl5BJpuijQzRKgnHCFWqYQH3FLjmZ9w+AlySav3pffUIjSNZInOryVKVA4u7
+	 Ck/fkdKypu0pKXj7Fylor91Ju7aUXGgghhHOtn3+eEvSDZRfzXFIiQCpbkFDukb/sd
+	 +4FHMuLesoIpA==
+Message-ID: <d7e3955e-6605-4de9-9641-f1755de65f1a@kernel.org>
+Date: Wed, 8 Jul 2026 09:18:16 -0600
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,162 +35,77 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] tun/tap & vhost-net: make qdisc backpressure
- opt-in via IFF_BACKPRESSURE
-To: Brett A C Sheffield <bacs@librecast.net>,
-        "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-        Jason Wang <jasowangio@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
-        Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        Tim Gebauer <tim.gebauer@tu-dortmund.de>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20260706094242.115992-1-simon.schippers@tu-dortmund.de>
- <akt_Q7kdR3Zb8_GZ@karahi.librecast.net>
- <20260706091706-mutt-send-email-mst@kernel.org>
- <2728c540-2e76-4e06-9064-ed1dff071cbe@tu-dortmund.de>
- <akvhhy_JpH64KrcL@karahi.librecast.net>
- <0d28fdc4-3c03-48d6-bd59-e59f7a01f4b6@tu-dortmund.de>
- <ak1cIAwQzKS35x0m@karahi.librecast.net>
+Subject: Re: [PATCH iproute2-next v4 2/2] devlink: support u64-array values in
+ devlink param show/set
 Content-Language: en-US
-From: Simon Schippers <simon.schippers@tu-dortmund.de>
-In-Reply-To: <ak1cIAwQzKS35x0m@karahi.librecast.net>
+To: Ratheesh Kannoth <rkannoth@marvell.com>, stephen@networkplumber.org,
+ kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
+ jiri@resnulli.us
+References: <20260702031359.2392868-1-rkannoth@marvell.com>
+ <20260702031359.2392868-3-rkannoth@marvell.com>
+From: David Ahern <dsahern@kernel.org>
+In-Reply-To: <20260702031359.2392868-3-rkannoth@marvell.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 7/7/26 22:05, Brett A C Sheffield wrote:
-> On 2026-07-07 08:52, Simon Schippers wrote:
->> Brett, can you try the two attached patches here with iperf3?
->> I think testing with 8 and 16 threads is enough, so where there is a
->> regression.
->>
->> The two patches are about time when to wake:
->> Currently we wake after consuming half the internal ring buffer.
->> One of the attached patches wakes after 2 cachelines (128 of 1000
->> packets) and the other one just wakes once the ring buffer is empty.
->>
->> This would really help :)
-> 
-> Sure...
-> 
-> 
+On 7/1/26 9:13 PM, Ratheesh Kannoth wrote:
+> diff --git a/devlink/devlink.c b/devlink/devlink.c
+> index 803ea5d7..5d092d92 100644
+> --- a/devlink/devlink.c
+> +++ b/devlink/devlink.c
+> @@ -3516,12 +3516,143 @@ static const struct param_val_conv param_val_conv[] = {
+>  
+>  #define PARAM_VAL_CONV_LEN ARRAY_SIZE(param_val_conv)
+>  
+> +struct devlink_param_u64_array {
+> +	uint64_t size;
 
-The reverted results for reference:
-7.2.0-rc1 reverted:
+use of uint64_t here causes claude to comment:
 
-threads 1
-[  5]   0.00-10.00  sec  15.3 GBytes  13.1 Gbits/sec  368            sender
-[  5]   0.00-10.00  sec  2.00 GBytes  1.72 Gbits/sec                  receiver
-
-threads 2
-[SUM]   0.00-10.00  sec  15.9 GBytes  13.7 Gbits/sec  1567             sender
-[SUM]   0.00-10.00  sec  4.00 GBytes  3.43 Gbits/sec                  receiver
-
-threads 4
-[SUM]   0.00-10.00  sec  16.5 GBytes  14.1 Gbits/sec  6701             sender
-[SUM]   0.00-10.00  sec  8.00 GBytes  6.87 Gbits/sec                  receiver
-
-threads 8
-[SUM]   0.00-10.00  sec  16.2 GBytes  14.0 Gbits/sec  19319             sender
-[SUM]   0.00-10.00  sec  15.7 GBytes  13.5 Gbits/sec                  receiver
-
-threads 16
-[SUM]   0.00-10.00  sec  14.4 GBytes  12.4 Gbits/sec  43593             sender
-[SUM]   0.00-10.00  sec  14.4 GBytes  12.4 Gbits/sec                  receiver
+Style 2: int i loop counter vs uint64_t size field in
+param_value_u64_array_put_from_str() — signed/unsigned comparison.
 
 
-> 7.2.0-rc2 (unpatched)
-> 
-> threads 1
-> [  5]   0.00-10.00  sec  20.4 GBytes  17.5 Gbits/sec    0            sender
-> [  5]   0.00-10.00  sec  2.00 GBytes  1.72 Gbits/sec                  receiver
-> 
-> threads 2
-> [SUM]   0.00-10.00  sec  12.7 GBytes  10.9 Gbits/sec    0             sender
-> [SUM]   0.00-10.00  sec  4.00 GBytes  3.43 Gbits/sec                  receiver
-> 
-> threads 8
-> [SUM]   0.00-10.00  sec  11.5 GBytes  9.85 Gbits/sec    0             sender
-> [SUM]   0.00-10.01  sec  11.4 GBytes  9.83 Gbits/sec                  receiver
-> 
-> threads 16
-> [SUM]   0.00-10.00  sec  11.6 GBytes  9.95 Gbits/sec    0             sender
-> [SUM]   0.00-10.01  sec  11.5 GBytes  9.91 Gbits/sec                  receiver
-> 
-> 
-> 7.2.0-rc2 with 0001-tun-set-waking-threshold-to-ptr_ring_empty.patch
-> 
-> threads 1
-> [  5]   0.00-10.00  sec  19.6 GBytes  16.8 Gbits/sec    0            sender
-> [  5]   0.00-10.00  sec  2.00 GBytes  1.72 Gbits/sec                  receiver
-> 
-> threads 2
-> [SUM]   0.00-10.00  sec  11.1 GBytes  9.50 Gbits/sec    0             sender
-> [SUM]   0.00-10.00  sec  4.00 GBytes  3.43 Gbits/sec                  receiver
-> 
-> threads 8
-> [SUM]   0.00-10.00  sec  10.8 GBytes  9.25 Gbits/sec    0             sender
-> [SUM]   0.00-10.01  sec  10.7 GBytes  9.23 Gbits/sec                  receiver
-> 
-> threads 16
-> [SUM]   0.00-10.00  sec  10.9 GBytes  9.34 Gbits/sec    0             sender
-> [SUM]   0.00-10.01  sec  10.8 GBytes  9.30 Gbits/sec                  receiver
-> 
-> 
-> 7.2.0-rc2 with 0001-tun-set-waking-threshold-to-tx_ring.batch.patch
-> 
-> threads 1
-> [  5]   0.00-10.00  sec  19.6 GBytes  16.9 Gbits/sec    2            sender
-> [  5]   0.00-10.00  sec  2.00 GBytes  1.72 Gbits/sec                  receiver
-> 
-> threads 2
-> [SUM]   0.00-10.00  sec  13.9 GBytes  11.9 Gbits/sec    0             sender
-> [SUM]   0.00-10.00  sec  4.00 GBytes  3.43 Gbits/sec                  receiver
-> 
-> threads 8
-> [SUM]   0.00-10.00  sec  12.7 GBytes  10.9 Gbits/sec    0             sender
-> [SUM]   0.00-10.01  sec  12.3 GBytes  10.6 Gbits/sec                  receiver
-> 
-> threads 16
-> [SUM]   0.00-10.00  sec  12.5 GBytes  10.7 Gbits/sec    0             sender
-> [SUM]   0.00-10.00  sec  12.4 GBytes  10.7 Gbits/sec                  receiver
-> 
-> 
-> 
-> HTH,
-> 
-> 
-> Brett
+> +	uint64_t *val;
+> +};
+> +
+> +static void param_value_u64_array_free(struct devlink_param_u64_array *arr)
+> +{
+> +	free(arr->val);
+> +	arr->val = NULL;
+> +	arr->size = 0;
+> +}
+> +
+> +static int param_value_nested_u64_attr_cb(const struct nlattr *attr, void *data)
+> +{
+> +	struct devlink_param_u64_array *arr = data;
+> +	unsigned int len;
+> +	uint64_t val;
+> +	uint64_t *new_val;
 
-Thank you again!
+iproute2 follows netdev coding style - reverse xmas tree.
 
-These results show that waking earlier performs better in this case:
-For 8 threads we get 10.6 Gbit/s instead of 9.83 Gbit/s when waking early
-but we are still *far* from the 13.5 Gbit/s when we revert everything
-(see above I pasted the reverted results there).
+other comments from claude:
 
-So I come to the conclusion:
+Bug 1 (both cmd_dev_param_set and cmd_port_param_set): When the new and
+current U64_ARRAY values are equal, param_value_u64_array_put_from_str()
+returns 1 as a sentinel. The code jumps to out: but err is still 1, so
+the function returns a non-zero error code to its caller even though
+nothing went wrong. All other types reach goto out with err = 0 because
+a prior mnlu_gen_socket_sndrcv() call succeeded. Fix: explicitly set err
+= 0 before the goto.
 
-1. Waking earlier/later will not fix the performance issues. It may
-   improve the performance slightly.
-   Apart from that we introduce smp_mb__after_atomic() for the re-check
-   on producer side (noop on x86) and a full smp_mb() for the re-check on
-   consumer side.
-   Nothing else stands out to me apart from the overheads of
-   netif_tx_stop_queue() and netif_tx_wake_queue(). But we must use
-   those 2 functions one way or another.
+Bug 2 (JSON output for U64_ARRAY in pr_out_param_value_print): The loop
+calls print_u64(PRINT_ANY, label, ...) with the same key on every
+iteration. In JSON mode this produces duplicate keys ("value": 0,
+"value": 1, ...), which is invalid JSON. Needs
+open_json_array()/close_json_array() wrapping the loop.
 
-2. Users may depend on the dropping. Without backpressure tun/tap acts
-   like a pfifo qdisc which tail-drops. Some users may require this.
+Style 1: flag_as_u8 is repurposed to select which netlink attribute to
+parse for U64_ARRAY — its name is completely unrelated to this use,
+making the code fragile.
 
---> I would merge this opt-in patchset, it should be fine (it is not
-    flagged by Sashiko anymore btw). I would not be mad if it would not
-    get merged but I am out of ideas on how to improve.
 
-Thanks,
-Simon
+Please show json output in the commit message as well.
 
