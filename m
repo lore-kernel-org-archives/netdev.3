@@ -1,75 +1,44 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BAC3407CD3
-	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 09:22:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 003B6409604
+	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 09:25:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783502578; cv=none; b=sdNz+Rzt1zPHhASK+nwOZAaCsyGm1LzpS6y0mZ2J9bDeOrG0UQFVpkLinstExEBJrJCgG20YOnHgP5CpURaFoeIN77hhO9nqEo/ILUhFpp1rBT5g4YJj9mwhaTZ++vNT9eVZTab1HSCrp9iTxQD4ifS3sAhNx/zCLHoUlmEjb3Q=
+	t=1783502738; cv=none; b=NH8dUHgV+EaYDEmvZNfFhOLBHAelg/KdaV9Y3+wnL7JbJ42tH/dNZscYgA7SdjPluKhxExt1gCi8niQM5Mt/egLPMk3//wNMeR8l4tlYOiB/2q2ZPrgWMLeHUw/3F89GPc32/6NuzyIVLJw96q70QLa+jIT6rtC4yAP5jiGCzH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783502578; c=relaxed/simple;
-	bh=71IPpVxSL6rELSFV3RscCJl7aym1gXBpQyo2V285sW4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QAjzgU/gu8jWESuGBhI3ma3WMvKtLX/V9aulYgus4QYKVPcVA7vQM8461GVBTuTnQWrX/kiNtnYnL8ZN5YNheBiiSE1ATuRiRzmLFpqiMNjTZ6soshPUHs+9dw8BqzPvmxR+zKMrDIjhEpWfw5XXqMdKw3m+IkH1ooc+ZwXnMLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oiAX3HRW; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1783502738; c=relaxed/simple;
+	bh=3vN/ULZGpFFyN5ckZxRRrREJIWoW0aNmPunjbOmS3GY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JkjkJvwSOIgu1lEbYyPjLyS2/xbp7xjphAhPTgCxfcZSVru0uk6eszNfwka3DmYxRQG6QFo11Gi3LgagYsyBI1LOfwAKg1bkHB2YTooNS0wZGdfAX0cDZ8U2G9qP0HXdIWEyjX0JqCF29FGktRBBYseROLFSG6fQQvjGZU4cr+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=XAtDioUD; arc=none smtp.client-ip=23.88.38.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oiAX3HRW"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-381216921aaso477788a91.1
-        for <netdev@vger.kernel.org>; Wed, 08 Jul 2026 02:22:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783502576; x=1784107376; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=bESlo7lvNwhdiVElYDSnZy0QW9Bj+WsccRVrVGGNJng=;
-        b=oiAX3HRWBGooIDPulrZn1l987zJdstH6BPbfN05ASw4hB35iJdMBZ0YS8nsNTs7ePL
-         j3IRes2PnwojXzYU9NApKi2RPH1kFghEsvJNjad8A6lt6NAlQaacFDggaaA2t0aOzkeP
-         f7v0sXq0y/aGroJ8n16OTv5EUFZztalq3WLGn5J9wrYco9f2DIqB03K/KNJ7u25p35WY
-         Q5ClouECdVbbyz0uZqQM0Se4l21yINh6j2LzNPH+4Zf12OWh6bK0ZFma4b2+btlDju8u
-         b43opC16xq8o0VFCk0hr9hp3uu29bs14ZReLVRqPFZ3K2hFvatl1D2nBqAZyadRfMo3k
-         zxZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783502576; x=1784107376;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bESlo7lvNwhdiVElYDSnZy0QW9Bj+WsccRVrVGGNJng=;
-        b=UohcfV4QRfAPC4dJdCzKrsPyV40X+6K8XFmckDIPwp3X0XGs8lTz37V4vwTcLaSTAD
-         IO6lGefPGhzYXrJ8yi4mDEv/QEKHgda/jrlDzPFlZnZYOAPzy4caKdBxUD9uUTt1HDTa
-         IPlNVG1AQqboy/0el1sWYqBo8g2Z5UwfBi46NnxeEioap1T+MgA57ww65RsGS5jwMnes
-         PFRdpSUnARUDwKsTxLugi8hcHT303Ri3/REhJV9SXM/kCPrz2UkOqjOnMM8XJTX+y0hD
-         SCxtBsJJ8Sjbz6/RYEgjcNorPBLOvmV3xAK4rzxKQ5wKJKijzGV125TjVoZ1bsBGJzD7
-         +H4w==
-X-Forwarded-Encrypted: i=1; AHgh+Rqtsgdm5eLlljekPSI2XB7PaP/D7/z+EgQxmHeE2m6RACEQ7dPvCfIag9C64p//erXcI8teDtc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzu4FntHr9c8tOyN4rkitSsReZW1K9wv4jLDcOvRg6J42cnmBAo
-	PVkB0sztyFs9nZ+0bQ16swxb4rJNI/rgPnAILzDRGt8frzdTR0BIlLFY
-X-Gm-Gg: AfdE7ckXtQBitI5Fhb2WJkSZYcs4BJJU/BtJi8YBNcKywTg2HB4U19q2IvARzAugHPK
-	a7OVy07RH7j+xmfoDHH7bNZsYog/wSk3tQq+KBucC9dpABzrFeOEei8LJZT2iCb98ZREN47e07c
-	vBaU0Lr4RgjaKjnVZGv3b7ax8n/zA33tXTdytHa54BID3h+BLsEsgC+q1Xb2qoP86nMFRBHp2h8
-	oZk6MpbLg8UemsDTYorZyy99Y3vauiI1iaqWB87cXaglreF7Sarqn5diu+JkfHvFa2xhQDxDIcQ
-	V1Ni5JrG1viX4q2eNNhBakXjn+lVX1U5duCRd4Zw2VXjdwU6hV+nkSffLu3HCIkpsvPq0YxwOof
-	0KKWPBWuvoPGxCjpuqjqjRIhE6VlPIqQUcacPecj7UJ5Di9sh27vZ0DDWH/vaKPszIuue4u1SiF
-	ZC3RPM
-X-Received: by 2002:a17:90b:17c1:b0:37f:ed7e:7e42 with SMTP id 98e67ed59e1d1-3893ff630c1mr1831193a91.14.1783502576376;
-        Wed, 08 Jul 2026 02:22:56 -0700 (PDT)
-Received: from homebox ([66.75.253.8])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3118389d9bcsm9985334eec.20.2026.07.08.02.22.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jul 2026 02:22:56 -0700 (PDT)
-From: Yuan Tan <yuantan098@gmail.com>
-To: linux-kernel@vger.kernel.org,
-	workflows@vger.kernel.org
-Cc: yuantan098@gmail.com,
-	jhs@mojatatu.com,
-	gregkh@linuxfoundation.org,
-	sven@narfation.org,
-	netdev@vger.kernel.org,
-	netfilter-devel@vger.kernel.org,
-	linux-crypto@vger.kernel.org
-Subject: [RFC] VEGA: a syzbot-like workflow for LLM-found kernel bugs
-Date: Wed,  8 Jul 2026 02:22:47 -0700
-Message-ID: <20260708092247.4188498-1-yuantan098@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="XAtDioUD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
+	s=09092022; t=1783502316;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=XWkYU4Tl1LIlSBFPEbkVF+ndyjxVNCuoXkEReRpmdi4=;
+	b=XAtDioUDr99Cgtu7OTy1gMTDubFDxzvz5iPtM3udwsCPfWhxUsrk9zl69t+IeJ57MxJmbD
+	9hJc61i3XPFYxM2lJJF00zroGHFBckEJuzh6iqJ8rbG84BR0Vj3knN/uyhepxQbAh2rVYo
+	mq5zfOaIpE2FukxV8EBeXO4i8DPgItpHzoaK03e6TRbMRO9hoCWelmIm31PY3N8flQxUFH
+	SC5tVQoy25Fxgvvo3iubb9GWLIhlxEgULUWRLUnNOu1y6Ial0xLcC9rshhF+OSN5npFHUF
+	VV1VpqdIaxWl8qr3KDLFMSSyVe67xIMRfzPuWNNgJBDg8Z19onux6hyz0Qe+1Q==
+From: Simon Wunderlich <sw@simonwunderlich.de>
+To: netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	b.a.t.m.a.n@lists.open-mesh.org,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH net 0/9] pull request: batman-adv 2026-07-08
+Date: Wed,  8 Jul 2026 11:18:12 +0200
+Message-ID: <20260708091821.314516-1-sw@simonwunderlich.de>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -78,108 +47,66 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi all,
+Dear net maintainers,
 
-We would like to ask for feedback on a proposed workflow for reporting Linux
-kernel bugs found by an LLM-assisted code auditing tool that we have
-been developing since earlier this year.
+here are some more smaller bugfixes for batman-adv which we would like
+to have integrated into net.
 
-Since February, we have been developing an LLM-driven kernel code auditing
-tool called VEGA. It started as a side project, but the results became much
-substantial than we expected: VEGA has found hundreds of valid bugs in Linux
-kernel.
+Please pull or let me know of any problem!
 
-That immediately created a practical problem: we do not want to dump a large
-pile of bug reports onto mail lists and annoy the maintainers.
+Thank you,
+      Simon
 
-The first thing we tried was to fix as many as we could ourselves. We
-started working with a group of student volunteers. Most of them are
-college students, so we have been training them, reviewing their patches,
-and trying to build an internal review process before anything is sent to
-the mailing list. The goal is to turn these findings into useful fixes, and
-also to help new contributors grow into people who can reduce maintainer
-workload instead of adding to it.
+The following changes since commit 26560c4a03dc4d607331600c187f59ab2df5f341:
 
-The process was not perfect. Some patches were not good enough, and we also
-made some mistakes early on when deciding what should be called a security
-issue.  Our internal review process has been improving with the help of the
-community.
+  batman-adv: dat: ensure accessible eth_hdr proto field (2026-06-28 11:49:04 +0200)
 
-Since March, we picked up non-root triggerable bug first and have worked on
-fixes for more than 100 validated kernel bugs. we especially want to thank
-the students and professor who have helped a lot with this effort.
+are available in the Git repository at:
 
-But the remaining queue is still too large for us to handle.
+  https://git.open-mesh.org/batadv.git tags/batadv-net-pullrequest-20260708
 
-Recently Jamal pointed out problems around our tags. That made me realize
-that we should probably stop treating this as an ad-hoc patch effort and
-build something closer to syzbot: public, reproducible, trackable,
-deduplicated, and useful to maintainers.
+for you to fetch changes up to 98052bdaf6ac1639a63ffc10244eeeab1f62ed2b:
 
-So this mail is an RFC for a VEGA reporting workflow.
+  batman-adv: dat: fix tie-break for candidate selection (2026-07-06 07:18:59 +0200)
 
-The rough idea
-==============
+----------------------------------------------------------------
+Here are some batman-adv bugfixes, all by Sven Eckelmann:
 
-VEGA would have a public dashboard, similar to syzbot, and would
-send selected bug reports to the relevant kernel mailing lists.
+ - ensure minimal ethernet header on TX
 
-The goal is to send reports that contain enough information for maintainers
-or other developers to pick up, understand, reproduce and fix the issue.
+ - fix VLAN priority offset
 
-For each public report, we expect to include:
+ - clean untagged VLAN on netdev registration failure
 
-  - a description of the bug
-  - the tested kernel tree and commit
-  - the kernel config and environment
-  - the crash log
-  - a minimized user-space reproducer
-  - the suspected introducing commit
-  - a suggested fix patch
+ - tt: avoid request storms during pending request
 
-The suggested fix patch is meant to reduce maintainer burden. It still need
-human review, but hopefully it can save a lot time from building a patch
-from scratch.
+ - tt: prevent TVLV OOB check overflow
 
-What will be public
-===================
+ - frag: free unfragmentable packet
 
-All VEGA findings that we have evaluated as not having major security
-impact can be published on the VEGA dashboard. The dashboard would make it
-possible to see what VEGA found, whether the issue was reproduced, whether
-a fix exists, whether it was reported to a mailing list, and whether it has
-been fixed upstream.
+ - frag: fix primary_if leak on failed linearization
 
-For issues that we have validated as having possible serious security
-impact, we will not publish it on the public dashboard before going through
-the appropriate kernel security process.
+ - mcast: avoid OOB read of num_dests header
 
-Dumping everything onto the mailing list may be annoying. During the initial
-stage, reports will be rate-limited and sent manually. We will check for
-duplicates against lore/upstream, and make sure the issue is not already
-fixed or reported.
+ - dat: fix tie-break for candidate selection
 
-Report identity and tags
-========================
+----------------------------------------------------------------
+Sven Eckelmann (9):
+      batman-adv: ensure minimal ethernet header on TX
+      batman-adv: fix VLAN priority offset
+      batman-adv: clean untagged VLAN on netdev registration failure
+      batman-adv: tt: avoid request storms during pending request
+      batman-adv: tt: prevent TVLV OOB check overflow
+      batman-adv: frag: free unfragmentable packet
+      batman-adv: frag: fix primary_if leak on failed linearization
+      batman-adv: mcast: avoid OOB read of num_dests header
+      batman-adv: dat: fix tie-break for candidate selection
 
-Each public VEGA report will have a stable identity, similar to
-syzbot reports.
-
-One possible format is:
-
-  Reported-by: VEGA <vega+HASH@DOMAIN>
-  Closes: <public dashboard URL>
-
-=========
-
-We would like to hear what maintainers think about this before we start
-sending these reports.
-
-We do not want VEGA to become another source of mailing list noise. The goal
-is to make LLM-based bug finding transparent and useful, and to make sure
-the reports come with enough context, reproducers, suggested fixes, and
-tracking so that they reduce work rather than create more.
-
-Thanks,
-Yuan
-
+ net/batman-adv/distributed-arp-table.c |  2 +-
+ net/batman-adv/fragmentation.c         |  8 +++++---
+ net/batman-adv/main.c                  | 10 +++++++++-
+ net/batman-adv/mesh-interface.c        | 16 +++++-----------
+ net/batman-adv/mesh-interface.h        |  2 ++
+ net/batman-adv/multicast_forw.c        |  7 +++----
+ net/batman-adv/translation-table.c     |  5 +++--
+ 7 files changed, 28 insertions(+), 22 deletions(-)
