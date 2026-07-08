@@ -1,132 +1,140 @@
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3283B1F5437
-	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 13:41:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3263F3803F4;
+	Wed,  8 Jul 2026 13:42:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783518068; cv=none; b=TFCEx8v2FMFk7OXpXy0gllmJlLTDNe5yEHKLv91N76SNA2Gpk1iTh3XN9gG8TEXc6L22k4nRkTh52aRGiXXVjQf4IL40FxWtYuQM+luP8Gg1dSfN6ydOdC+bWCg7XWEQMrHWEdbUWYU840ApVWP3tE8kGa8jBeqp/h/x99+oick=
+	t=1783518121; cv=none; b=R67Ht7+wL1QZLY192nN4g086qx8IXcs0dwr4r2wZ1ax+OP/FGKUX0q3zkMgXraaj+X7lw2X6/Q9lTMOBjJQaRVgIlXxJZrrc3nIE2C7aAaRRM+DQBnvfvHfttLEoYo/h1cX79/4Kv4CkSScj+fjpCykhurF08aN02Lpx1enig8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783518068; c=relaxed/simple;
-	bh=yahR6VV4oId4ke2EcTPSLUBVRa8Wq4PuIKySjS6Aa6U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WRVdNiYnLu4q1Hfx/rDF8m0g+CLAS2eJh9Fhsl9hi7uNQnx8Nv19TpN5leOQvJs5phRc2Xe6ra1AtfoPlz3bFHInsNMAoI7Uhky8pCm6C3ovbwTbxHGOZvdd5tsTbGU9oeTzoGSlMrD+Mh3VFbxEoTZLYBEioWCwoTBo9dfLNCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=IyRbqlxO; arc=none smtp.client-ip=91.218.175.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1783518121; c=relaxed/simple;
+	bh=aWYlSl1iKd+S/LFdxx9EKTZByuDcw7WfLy/kJpP40Lg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Ii6RyxTi+GVM/IOAWHrX+TVWUbF1RtN83LJRP19l5Vk8DD5XmtQFaAf28YeVgFvA0f5AgZzegcn0rBQUX07GXd6yLWAQ+0KyyQ2E6LPfut/1ngUGF4vt5CHJPVf8D4vpg87zhNUVKGVKy/u2hmr++rHvdVpAHyA9N9ilHF5Yd0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K7d7PHI1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="IyRbqlxO"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783518065;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=JIjKdwSo1SvNGAxUxkPye4smNHCYoCTZEiX1YoURXjw=;
-	b=IyRbqlxOYa1pYEWPtoUM+QP3xxmtOIfHAB2guWgAqjCxjDOpmKok+2sNtNtWv9vr2p1ZCP
-	r6Rlpz7EaxDyis5GD+KjvHlCfSF+3eHm3V9d1Uc52EYfkr1YcfpOtpTb2sJc4rLhxXiJ6w
-	rtsSdh0r4aqIPO46mEDWvQGtRIXgVbM=
-From: Tao Cui <cui.tao@linux.dev>
-To: dsahern@kernel.org,
-	leonro@nvidia.com
-Cc: linux-rdma@vger.kernel.org,
-	netdev@vger.kernel.org,
-	cui.tao@linux.dev,
-	cuitao@kylinos.cn
-Subject: [PATCH iproute2-next v4] rdma: display resource limits in curr/max format
-Date: Wed,  8 Jul 2026 21:40:03 +0800
-Message-ID: <20260708134003.85505-1-cui.tao@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K7d7PHI1"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id EE048C2BCF4;
+	Wed,  8 Jul 2026 13:42:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1783518121;
+	bh=aWYlSl1iKd+S/LFdxx9EKTZByuDcw7WfLy/kJpP40Lg=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=K7d7PHI1R2B+ae/wDg5xwBOnZk6DbWkMaY1YKH4Lk30yBUr115+7i24rCn7gTI0rw
+	 h+gpCG7Ols1PmlbmSWoonsL4Mof4TdHTmw0FRSgewbPLnXRufqHjls+hRUCIMWUDFW
+	 B6YiJHR01g3C0epZ98GkhFNCOrVCQ61wGA9IfNpeLFAzOGEwUCTtI0NNVLfCNfZUnn
+	 2F9FI0caCqCE0Wowz+a+9PD7Xc8uU55XRVDfuPOnN9XBHb+wQV0xQ+lbETuPBNbcUf
+	 ReZTsIvtAGX3SUmbOauSmeV04v/MlTTiCHeUtfi/R9RrnSDcFCfsQMvaQVEVMGkhU+
+	 /SGR9IVrDIExQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D09D8C44501;
+	Wed,  8 Jul 2026 13:42:00 +0000 (UTC)
+From: Mattia Meleleo via B4 Relay <devnull+mattia.meleleo.coralogix.com@kernel.org>
+Date: Wed, 08 Jul 2026 15:40:57 +0200
+Subject: [PATCH bpf v2 2/2] selftests/bpf: Test FIONREAD on a sockmap
+ socket without a verdict program
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260708-fionread-no-verdict-v2-2-29dd293621c7@coralogix.com>
+References: <20260708-fionread-no-verdict-v2-0-29dd293621c7@coralogix.com>
+In-Reply-To: <20260708-fionread-no-verdict-v2-0-29dd293621c7@coralogix.com>
+To: bpf@vger.kernel.org
+Cc: netdev@vger.kernel.org, John Fastabend <john.fastabend@gmail.com>, 
+ Jakub Sitnicki <jakub@cloudflare.com>, 
+ Jiayuan Chen <jiayuan.chen@linux.dev>, 
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+ Emil Tsalapatis <emil@etsalapatis.com>, 
+ Mattia Meleleo <mattia.meleleo@coralogix.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783518119; l=2540;
+ i=mattia.meleleo@coralogix.com; s=20260707; h=from:subject:message-id;
+ bh=p7lS9BLCvIzk4qRf5KI1vjYiReTBJhPhNVqmY8gvgxU=;
+ b=zidsfoXQVVjr8qXp8v/wgttXzZ9KXCEg/FS17WN9aNkwrJnTH+cmUDhGghDWN0U9pwtueba5j
+ Yde+vEcC9KCBvy4GdbjXKLNw3rzF7bN5uRarJc6s8QXpJ3lt5CY0xDJ
+X-Developer-Key: i=mattia.meleleo@coralogix.com; a=ed25519;
+ pk=cs1zLoe3YDm4bJ7bfbPaZH0lHnd871JyJLiSh2eEzLs=
+X-Endpoint-Received: by B4 Relay for mattia.meleleo@coralogix.com/20260707
+ with auth_id=857
+X-Original-From: Mattia Meleleo <mattia.meleleo@coralogix.com>
+Reply-To: mattia.meleleo@coralogix.com
 
-From: Tao Cui <cuitao@kylinos.cn>
+From: Mattia Meleleo <mattia.meleleo@coralogix.com>
 
-Parse the new RDMA_NLDEV_ATTR_RES_SUMMARY_ENTRY_MAX netlink attribute
-to show resource limits alongside current counts in curr/max format:
+Add a test validating that FIONREAD on a TCP socket in a sockmap
+without a verdict program reports data pending in sk_receive_queue.
 
-  Before: 0: mlx5_0: qp 123  cq 45  mr 200  pd 10
-  After:  0: mlx5_0: qp 123/131072  cq 45/65536  mr 200/1000000  pd 10/32768
-
-JSON output provides both current and max fields per resource type
-(e.g. "qp": 123, "qp-max": 131072). Backward compatible: no output
-change when kernel lacks the new attribute.
-
-Signed-off-by: Tao Cui <cuitao@kylinos.cn>
-Link: https://lore.kernel.org/all/20260615003646.168704-1-cui.tao@linux.dev/
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+Signed-off-by: Mattia Meleleo <mattia.meleleo@coralogix.com>
 ---
-Changes in v4:
-- Add Link to the kernel patch that introduces the new uapi attribute.
----
- rdma/include/uapi/rdma/rdma_netlink.h |  5 +++++
- rdma/res.c                            | 21 ++++++++++++++++++++-
- rdma/utils.c                          |  1 +
- 3 files changed, 26 insertions(+), 1 deletion(-)
+ .../selftests/bpf/prog_tests/sockmap_basic.c       | 39 ++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
-diff --git a/rdma/include/uapi/rdma/rdma_netlink.h b/rdma/include/uapi/rdma/rdma_netlink.h
-index 4356ec4a..e5b8b065 100644
---- a/rdma/include/uapi/rdma/rdma_netlink.h
-+++ b/rdma/include/uapi/rdma/rdma_netlink.h
-@@ -604,6 +604,11 @@ enum rdma_nldev_attr {
- 	RDMA_NLDEV_ATTR_FRMR_POOL_PINNED_HANDLES,	/* u32 */
- 	RDMA_NLDEV_ATTR_FRMR_POOL_KEY_KERNEL_VENDOR_KEY,	/* u64 */
- 
-+	/*
-+	 * Resource summary entry maximum value.
-+	 */
-+	RDMA_NLDEV_ATTR_RES_SUMMARY_ENTRY_MAX,		/* u64 */
-+
- 	/*
- 	 * Always the end
- 	 */
-diff --git a/rdma/res.c b/rdma/res.c
-index 062f0007..046935e2 100644
---- a/rdma/res.c
-+++ b/rdma/res.c
-@@ -55,7 +55,26 @@ static int res_print_summary(struct nlattr **tb)
- 
- 		name = mnl_attr_get_str(nla_line[RDMA_NLDEV_ATTR_RES_SUMMARY_ENTRY_NAME]);
- 		curr = mnl_attr_get_u64(nla_line[RDMA_NLDEV_ATTR_RES_SUMMARY_ENTRY_CURR]);
--		res_print_u64(name, curr, nla_line[RDMA_NLDEV_ATTR_RES_SUMMARY_ENTRY_CURR]);
-+		if (nla_line[RDMA_NLDEV_ATTR_RES_SUMMARY_ENTRY_MAX]) {
-+			uint64_t max;
-+			char max_name[64];
-+
-+			max = mnl_attr_get_u64(
-+				nla_line[RDMA_NLDEV_ATTR_RES_SUMMARY_ENTRY_MAX]);
-+			snprintf(max_name, sizeof(max_name), "%s-max", name);
-+			print_u64(PRINT_JSON, name, NULL, curr);
-+			print_u64(PRINT_JSON, max_name, NULL, max);
-+			if (!is_json_context()) {
-+				char buf[64];
-+
-+				snprintf(buf, sizeof(buf), "%s %" PRIu64 "/%" PRIu64 " ",
-+					 name, curr, max);
-+				pr_out("%s", buf);
-+			}
-+		} else {
-+			res_print_u64(name, curr,
-+				      nla_line[RDMA_NLDEV_ATTR_RES_SUMMARY_ENTRY_CURR]);
-+		}
- 	}
- 	return 0;
+diff --git a/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c b/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
+index cb3229711..f0f368201 100644
+--- a/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
++++ b/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
+@@ -1373,6 +1373,43 @@ static void test_sockmap_multi_channels(int sotype)
+ 	test_sockmap_pass_prog__destroy(skel);
  }
-diff --git a/rdma/utils.c b/rdma/utils.c
-index 87003b2c..90ea1c55 100644
---- a/rdma/utils.c
-+++ b/rdma/utils.c
-@@ -480,6 +480,7 @@ static const enum mnl_attr_data_type nldev_policy[RDMA_NLDEV_ATTR_MAX] = {
- 	[RDMA_NLDEV_ATTR_EVENT_TYPE] = MNL_TYPE_U8,
- 	[RDMA_NLDEV_SYS_ATTR_MONITOR_MODE] = MNL_TYPE_U8,
- 	[RDMA_NLDEV_ATTR_STAT_OPCOUNTER_ENABLED] = MNL_TYPE_U8,
-+	[RDMA_NLDEV_ATTR_RES_SUMMARY_ENTRY_MAX] = MNL_TYPE_U64,
- };
  
- static int rd_attr_check(const struct nlattr *attr, int *typep)
++/* A socket in a sockmap without a verdict program keeps its ingress data
++ * in sk_receive_queue: FIONREAD must account for it.
++ */
++static void test_sockmap_no_verdict_fionread(void)
++{
++	int err, map, zero = 0, sent, avail;
++	int c0 = -1, c1 = -1, p0 = -1, p1 = -1;
++	struct test_sockmap_pass_prog *skel;
++	char buf[256] = "0123456789";
++
++	skel = test_sockmap_pass_prog__open_and_load();
++	if (!ASSERT_OK_PTR(skel, "open_and_load"))
++		return;
++	map = bpf_map__fd(skel->maps.sock_map_rx);
++
++	err = create_socket_pairs(AF_INET, SOCK_STREAM, &c0, &c1, &p0, &p1);
++	if (!ASSERT_OK(err, "create_socket_pairs()"))
++		goto out;
++
++	err = bpf_map_update_elem(map, &zero, &c1, BPF_NOEXIST);
++	if (!ASSERT_OK(err, "bpf_map_update_elem(c1)"))
++		goto out_close;
++
++	sent = xsend(p1, &buf, sizeof(buf), 0);
++	ASSERT_EQ(sent, sizeof(buf), "xsend(p1)");
++	avail = wait_for_fionread(c1, sizeof(buf), IO_TIMEOUT_SEC);
++	ASSERT_EQ(avail, sizeof(buf), "ioctl(FIONREAD)");
++
++out_close:
++	close(c0);
++	close(p0);
++	close(c1);
++	close(p1);
++out:
++	test_sockmap_pass_prog__destroy(skel);
++}
++
+ void test_sockmap_basic(void)
+ {
+ 	if (test__start_subtest("sockmap create_update_free"))
+@@ -1415,6 +1452,8 @@ void test_sockmap_basic(void)
+ 		test_sockmap_skb_verdict_shutdown();
+ 	if (test__start_subtest("sockmap skb_verdict fionread"))
+ 		test_sockmap_skb_verdict_fionread(true);
++	if (test__start_subtest("sockmap no_verdict fionread"))
++		test_sockmap_no_verdict_fionread();
+ 	if (test__start_subtest("sockmap skb_verdict fionread on drop"))
+ 		test_sockmap_skb_verdict_fionread(false);
+ 	if (test__start_subtest("sockmap skb_verdict change tail"))
+
 -- 
-2.43.0
+Git-155)
+
 
