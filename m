@@ -1,148 +1,112 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FB0946AF3C
-	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 12:58:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04D581EFF93
+	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 13:03:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783515503; cv=none; b=fu7NpHpzf3yDIx2jgR+COH/XG299e9gIZD9+wr1OIzdmKUfcv2GvzWN303bfWJcXIWzfQcQQZWYO0g7jSeNsBS4IkCnMS69mR690Kuhbu2103kkYTcUjtpc1pAMPj2mgaRj7P+Y2nUtSuwmjYS2mbioA5AC+bqjOCLDgDwNUjK4=
+	t=1783515805; cv=none; b=TAPOmyak+P8IHSWzpYbeDtAAkxzNFJfAd0IxN/rG9vh3T/kfrdJpU+R9/pBYDkQx/2uDnYMcwhlJNJMFuLChQoh6bDjTQJyFUGWF0CDshHnwsyK1QBqN2ZOTCyDC4BreoEU4avn4kRii8bnFYnJLXs5aKDGwSpgCaSTHINiaMc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783515503; c=relaxed/simple;
-	bh=noyNZIBNowT704kBjYsKRt2gfriqtdlSDXM1j5kfgTs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FqxD5PJJnF/ZbriOalJKzuIRxxlxkhShnKcxzCcEz+mRIyRbUsDIBB7yKjjqzjeX1V7Q09qF4AsQt9qsNkKaKIrJ5iY7oMAlpp67zTIaqciEKZCFG1bC4iHfvXBGC502fytZLXX9yu2qa8MZW55aYUXqLTprNO9Wk8Ai8lsTYv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T5rOCQ6b; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1783515805; c=relaxed/simple;
+	bh=PKHW0WcCeH4hbjwkHqZQZfJ391i/CVkS6YBEpZka+W0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KIiSnMCaZErtfj2fo5lVw93yuk1ZQdhbOIgsSrhvt4bGUumcCjwGxNk+FKLCkjK6wvmKg1F+T9R8vhhv7kAjUqWo6LfjJvvN1YXnsg9jlWDeWV1lIj17tEoRuH+a/ImMwWvJY+EAU03DOlV75v1OMRRRsXcsBxBagHoBQZUeG7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dyYAYbPx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T5rOCQ6b"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783515500;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FkIgguwzTz0DIjsJKhXxpAcKVh8edh02QO5x18FiQP4=;
-	b=T5rOCQ6b2cz9i85OIzySnS6QU5covy6qUwiZiLyON8jfl7qDNvWudsn0+9XOcEb02Wsq6A
-	zRGNn8tacwcecG3Ln7BApoeoTy4IDGRBdNI5wQywGz3ERf7VlY/W63RlBL7jqgE6HuG90U
-	ZCOwYeosNaDsD+lO5C8hfLQ7HwvQ7G8=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-32-C9NO083LOeeko7ixeLZVaw-1; Wed,
- 08 Jul 2026 08:58:17 -0400
-X-MC-Unique: C9NO083LOeeko7ixeLZVaw-1
-X-Mimecast-MFC-AGG-ID: C9NO083LOeeko7ixeLZVaw_1783515495
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id ED6501955F75;
-	Wed,  8 Jul 2026 12:58:14 +0000 (UTC)
-Received: from ShadowPeak.redhat.com (unknown [10.44.48.104])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7354F1800591;
-	Wed,  8 Jul 2026 12:58:10 +0000 (UTC)
-From: Petr Oros <poros@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Petr Oros <poros@redhat.com>,
-	Marcin Szycik <marcin.szycik@linux.intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Alice Michael <alice.michael@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Ivan Vecera <ivecera@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>,
-	intel-wired-lan@lists.osuosl.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH iwl-net v4 2/2] ice: preserve uplink DFLT Rx rule on switchdev release
-Date: Wed,  8 Jul 2026 14:57:55 +0200
-Message-ID: <20260708125755.706263-3-poros@redhat.com>
-In-Reply-To: <20260708125755.706263-1-poros@redhat.com>
-References: <20260708125755.706263-1-poros@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dyYAYbPx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2469B1F000E9;
+	Wed,  8 Jul 2026 13:03:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783515803;
+	bh=3BmCoU/mJxpggR/8PGM1XrH38msRz7NT+nvS7+P+Qc0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=dyYAYbPxsIIELLH3Qz6lbSbauelb937sO2KTTNPuNZbeIxrTHzIP6FGLvW1KGkvoe
+	 n4ajs4thOSB3QRsXi5WEK9Jun+If8h6v35ZAWNgDviRR29DJ+FBEm+fOsbtZ57WLiH
+	 yqOlgtx6h3n02vpskNKi4CeNvW7LNNoz1xTuPpKqdewUwoO62QS80q1qRuk6lY7BYU
+	 h3hSBYviXOq7hm7xjaEAEz+j7ERQbC/mE2NRunm9o7gRg8v5MfEBJvp11tOfS22XEf
+	 6A3HTp1KF5aRofksx0irwvcT3KBTZy3tgMqX7XSvS5a4YUUdchaKRaC3rEdxs5N47l
+	 NRZYwPOaE7XHw==
+Date: Wed, 8 Jul 2026 15:03:21 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Wayen Yan <win847@gmail.com>
+Cc: netdev@vger.kernel.org, horms@kernel.org, pabeni@redhat.com,
+	kuba@kernel.org, edumazet@google.com, andrew+netdev@lunn.ch,
+	angelogioacchino.delregno@collabora.com, matthias.bgg@gmail.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH net] net: airoha: Fix potential use-after-free in
+ airoha_ppe_deinit()
+Message-ID: <ak5KmSbAQJXcU3sW@lore-desk>
+References: <178351022574.97989.6880403520276841703@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="3aCkLgBstNRB5eAc"
+Content-Disposition: inline
+In-Reply-To: <178351022574.97989.6880403520276841703@gmail.com>
 
-When the uplink PF is promiscuous, ice_vsi_sync_fltr() installs an
-ICE_SW_LKUP_DFLT catch-all Rx rule on the uplink VSI. Entering switchdev
-re-affirms it through the idempotent ice_set_dflt_vsi(), but
-ice_eswitch_release_env() removed both the Rx and Tx DFLT rules
-unconditionally on teardown. That clobbered a promisc-owned Rx rule: it
-disappeared while IFF_PROMISC was still set and the sync path was not
-retriggered, leaving the uplink without the catch-all the netdev
-requested.
 
-Skip the Rx DFLT removal when the uplink is promiscuous, both in
-ice_eswitch_release_env() and the err_def_tx unwind of
-ice_eswitch_setup_env(); the Tx leg, owned by switchdev, is still removed.
-Test the live netdev->flags, the same value ena_rx_filtering() ->
-ice_cfg_vlan_pruning() above already keys on, so the preserved rule and
-the pruning state stay consistent, including for a promisc change made
-while switchdev ran (which never reached the gated filter sync).
+--3aCkLgBstNRB5eAc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Fixes: 5c07be96d8b3 ("ice: Avoid setting default Rx VSI twice in switchdev setup")
-Reviewed-by: Marcin Szycik <marcin.szycik@linux.intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Petr Oros <poros@redhat.com>
----
-v4:
-- No code change, added Marcin's and Aleksandr's Reviewed-by.
+> airoha_ppe_deinit() replaces the NPU pointer with NULL via
+> rcu_replace_pointer() but does not wait for existing RCU readers
+> to exit before calling ppe_deinit() and airoha_npu_put(). This can
+> cause a use-after-free if a reader in an RCU read-side critical
+> section still holds a reference to the NPU when it is freed.
+>=20
+> The init path (airoha_ppe_init) already calls synchronize_rcu()
+> after rcu_assign_pointer(), but the deinit path introduced in
+> commit 6abcf751bc08 ("net: airoha: Fix schedule while atomic in
+> airoha_ppe_deinit()") omitted the matching barrier when switching
+> from rcu_read_lock()/rcu_dereference() to rcu_replace_pointer().
+>=20
+> Add synchronize_rcu() before ppe_deinit() to ensure all existing
+> RCU readers have completed before the NPU resources are released.
+>=20
+> Fixes: 6abcf751bc084804a9e5b3051442e8a2ce67f48a ("net: airoha: Fix schedu=
+le while atomic in airoha_ppe_deinit()")
+> Signed-off-by: Wayen Yan <win847@gmail.com>
 
-v3: https://lore.kernel.org/all/20260701133601.2118382-3-poros@redhat.com/
-v2: https://lore.kernel.org/all/20260622113428.2565255-3-poros@redhat.com/
-v1: https://lore.kernel.org/all/deef5756e534ef06c12d910c5305d3fd205d30a0.1781786935.git.poros@redhat.com/
----
- drivers/net/ethernet/intel/ice/ice_eswitch.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_eswitch.c b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-index c30e27bbfe6e25..07e2016fb9481f 100644
---- a/drivers/net/ethernet/intel/ice/ice_eswitch.c
-+++ b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-@@ -66,8 +66,10 @@ static int ice_eswitch_setup_env(struct ice_pf *pf)
- 	ice_cfg_dflt_vsi(uplink_vsi->port_info, uplink_vsi->idx, false,
- 			 ICE_FLTR_TX);
- err_def_tx:
--	ice_cfg_dflt_vsi(uplink_vsi->port_info, uplink_vsi->idx, false,
--			 ICE_FLTR_RX);
-+	/* keep the Rx DFLT rule if the uplink is promiscuous (see release_env) */
-+	if (!(uplink_vsi->netdev->flags & IFF_PROMISC))
-+		ice_cfg_dflt_vsi(uplink_vsi->port_info, uplink_vsi->idx,
-+				 false, ICE_FLTR_RX);
- err_def_rx:
- 	ice_vsi_del_vlan_zero(uplink_vsi);
- err_vlan_zero:
-@@ -276,8 +278,16 @@ static void ice_eswitch_release_env(struct ice_pf *pf)
- 	vlan_ops->ena_rx_filtering(uplink_vsi);
- 	ice_cfg_dflt_vsi(uplink_vsi->port_info, uplink_vsi->idx, false,
- 			 ICE_FLTR_TX);
--	ice_cfg_dflt_vsi(uplink_vsi->port_info, uplink_vsi->idx, false,
--			 ICE_FLTR_RX);
-+
-+	/* Keep the Rx DFLT rule if the uplink is promiscuous; it must outlive
-+	 * the session. Test the live netdev->flags, the same value
-+	 * ena_rx_filtering() -> ice_cfg_vlan_pruning() above keys its decision
-+	 * on, so the preserved DFLT rule and the pruning state stay consistent.
-+	 */
-+	if (!(uplink_vsi->netdev->flags & IFF_PROMISC))
-+		ice_cfg_dflt_vsi(uplink_vsi->port_info, uplink_vsi->idx,
-+				 false, ICE_FLTR_RX);
-+
- 	ice_fltr_add_mac_and_broadcast(uplink_vsi,
- 				       uplink_vsi->port_info->mac.perm_addr,
- 				       ICE_FWD_TO_VSI);
--- 
-2.54.0
+> ---
+>  drivers/net/ethernet/airoha/airoha_ppe.c | 1 +
+>  1 file changed, 1 insertion(+)
+>=20
+> diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ether=
+net/airoha/airoha_ppe.c
+> index e7c78293002a..f6396925722d 100644
+> --- a/drivers/net/ethernet/airoha/airoha_ppe.c
+> +++ b/drivers/net/ethernet/airoha/airoha_ppe.c
+> @@ -1659,6 +1659,7 @@ void airoha_ppe_deinit(struct airoha_eth *eth)
+>  	npu =3D rcu_replace_pointer(eth->npu, NULL,
+>  				  lockdep_is_held(&flow_offload_mutex));
+>  	if (npu) {
+> +		synchronize_rcu();
+>  		npu->ops.ppe_deinit(npu);
+>  		airoha_npu_put(npu);
+>  	}
+> --=20
+> 2.51.0
+>=20
+>=20
 
+--3aCkLgBstNRB5eAc
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCak5KmQAKCRA6cBh0uS2t
+rO4SAQC9XjKbr4FL6USCpb+vk0nuGcS4kQNSPUegG0T8eqjCtQD7B3MdOSiy8IBZ
+Vj4KmUaxBPWe3TLxHe1uwKv127c+lQA=
+=ioCF
+-----END PGP SIGNATURE-----
+
+--3aCkLgBstNRB5eAc--
