@@ -1,208 +1,137 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8878C39B955
-	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 23:34:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783553642; cv=pass; b=URxdXGUrhDts6t9biDHvGegeAAF28lMneK+kC6ZHRKkz6kCN+uAUrawstMlkUQzZtarSxr/l14snoCKFJrT6fCIZyq0iA3GbmRg6lzc5DPRO9YY36Ic1sI2af7Mpc1ggfnbDNwUUnlHThVTrJ8WY1gpH73PjbTULaXu4798xUJ0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783553642; c=relaxed/simple;
-	bh=VYi2u1mRLgvUmIU8MU5aTHmBuiTDCK8LORomizCP0Rc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=d4xDbpofQY4F09czNx3cA7zKhubYUlZr6watsGnvXvliGggHNwWLdWzzMAKOPDvKy3kiN+WERpn/wTrybjE9TYc2wITXemjdF3HE7lv/xAHSRYtFv+ZfuyDtfK8HeeEiPTu3XBvLLNySPEfVpc6yNCppEeK77AnLeK4NkOhjdjw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cc0Crqku; arc=pass smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E3F39E191
+	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 23:34:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783553662; cv=none; b=gslwUs5hglMRzxrHzq1HV0SsF4aiyOBXcrsvUEhi0eDWmJeQGbg04YFuorpqM4cunNVXEz2iXCQo9lCie/XcDpI4jxxHVrM6lBbyDkIIQfPBU+0TnhiGySPzE5ajUDCK65Rp3xJ99ecYoKoPx6YpW4S4vV6UQlcVtEF2vPD8MRE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783553662; c=relaxed/simple;
+	bh=A0Dxdory9hMsY0U9BoiMisGXGz0kh03T5faevW7vQE4=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version:
+	 In-Reply-To:References; b=WZ5dKeSwL/zC12dpB33hg3h6NAZKk610Aer6/guEVK4SfEvRKaH3wiLVZzj+FArELhM3NaKN0KYAFpBtgvK22nwtzbrwfNSJteBbB6NoUJd/jSEJJLNYIPWCUwMQz3og/oBQMS/mW2D/HAhSNxPSYrgZy/5eTRKBHhxz7k9QZz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KQJNoQxB; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cc0Crqku"
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-845c92bc464so861422b3a.2
-        for <netdev@vger.kernel.org>; Wed, 08 Jul 2026 16:34:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783553641; cv=none;
-        d=google.com; s=arc-20260327;
-        b=HSL3O0rGqbw3vZrYSExAILddxM4Q8/VpilbyicmmmkJdM9pibsUqAImMkmVtEmHOFJ
-         cfo5Yqq/8DRibux0V32PnXA69zAGMpPr0bTALJErcqdiHobsUsK7+awTBIa3PT0l0Os2
-         sXvLQsw8Ok7Im3cBQspiBgeNGz7iwR7S8OZ8bKArxiK/BNtiNBZszbgRnMGAMO7FOyu5
-         qpEhZbfI2Q7BdZzMyF7F6mN1Zz0fkfgdahXlwYCjaiSoZ24YH6h1PIA3j5oYoxnF8pKR
-         iPx5DlPYURRfrMMcZrM9NUvcsHs1Kk7fHTft7RtHyxbVa7mKxRY6qnzqBZktl12QWfZ8
-         XB6g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=CX+gEapl9T2joPC10iHvd+2YSrps/B4k6fMebpx5nhM=;
-        fh=vh4v5g3PGLuvSLwjKPWOb9AkQoKN3RuRuBu8/DyCy5c=;
-        b=myFyKCmjKySP73tI5QnhXhRi60xBe4QENt0xxsWgpKbnfQz63QL1HtkHD8Km4oALfR
-         AmhcNN+83HZz4+h2fiPppBPTaeSlUN/+GJzmpkNTbJsCd2z/4DKX0p23umhgncU0BxWs
-         yCOGhqLQpcv8yRyuJD/RN+caNgGMqYl/9pRGhsXMEW3JYBNPBZgySYRmdsYRrm9BiGxf
-         JeLNmaFYZyPZSvzZ9ANYyy3SEvEhpON9IOZ3/nebmbIlQDTuqu7Q/sdwEeRtDgJhy9LH
-         K6nb3Yu8FpMbiEOCfqBf+pjDn7tyCcP4g1YdqyuLZGe4WR5PHLYm9HB3wzEl7B74JLg1
-         w+Ow==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KQJNoQxB"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2cacd69a9c0so15960615ad.1
+        for <netdev@vger.kernel.org>; Wed, 08 Jul 2026 16:34:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783553641; x=1784158441; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=CX+gEapl9T2joPC10iHvd+2YSrps/B4k6fMebpx5nhM=;
-        b=cc0CrqkuP7XgQ/wTpBwkEd/3ID7UJ8Vkq+O41tq3WLNYvi37xWyFYIqs++EA2OHs+E
-         MgPf7bD3NH8MshW2L2tFAcvrrWLw/kA8FP8LzAagdzH4/Zgi0z0NFejoysdjGDrniS8s
-         6CfRUw0r58jleB2F0/swpTtOsa1QfS4KDJRLf5fzO8mI3Uw2EJWXzDGTaXhq32PXDBK0
-         5EbupS81Ic3h0JZ7l+WbH1yqcS4ZBzctYEmZWObXctfAFKj4ISSzUKtjWzdEQcaYxuzs
-         FV2IG7mvRAmlmi2BCohWDD+3nmN/GQ98/TU+rGgh7bwcGu+l+A35QZPaJkAdW7Rbr+QL
-         N5Ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783553641; x=1784158441;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1783553650; x=1784158450; darn=vger.kernel.org;
+        h=references:in-reply-to:mime-version:content-type:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=CX+gEapl9T2joPC10iHvd+2YSrps/B4k6fMebpx5nhM=;
-        b=jUkkiVpPn4hQlsR03IzuuPSWGdRdGsZbafgHMQLKHLg2SQ7KV3Fnaxj71J8iru92Uc
-         b2NrnjX+CoEt/XW2r5C4rMjGk4M0jZv7/WDb4a/iANb8YMrUGE8zMxXyOxV0If7Nunbj
-         VvMNeRjZz86v3VHZTGVDiNVU213QwRiVVV/ZUjke8SKJCxF3Pv/boKUxGjINzNHi1/zR
-         CFqK+B4bmWhNLQ5GRir+OaHM7QP6JYBzwUIKGUrm1BqD9fpd0oFKp3sWzZP+zjVC3n0/
-         t59vO+UIBt2sbHzl9RYBGMkjWpxUdMe32v1PiXdp5m1FwH6/KiyOLudem/leh+uTzqIr
-         3qXg==
-X-Gm-Message-State: AOJu0YzZqWwRticDCmL1Qb6Xvq51eXBVmfScQTlt2CpOrObK/wth7/YB
-	XiVGa/nRCxVvIAAXeK6BBAQfitTcejvYp/vj12ltX9Wc+XQSrR5il0JulDskxgrp4bQsyyawlQU
-	kM3U0BP+o58xLMMd3+NkYpzgPwwohNtc=
-X-Gm-Gg: AfdE7cnqr7K1azbbctox1/OKLMKUKZuTZyfj32Q7/t6939IpTLI1pv/Vf0uY5sRkW3e
-	jHGUKv13tkwu1+cfVnP/gNz8Wc4EMsoA7mSkoMoYO7IUMBeAlu+v4q8hU8UqoxYSpgT+jlLAv8/
-	tFv1e2O68M8q3lXHaXhDtuUzCbmNP86gHy00dwV1uv8+itMCN0N9T62PGvDJ/y+S6MrAGWvGquP
-	5q6YkdXcXX/dk682A4UyHWndVZ162W3CFSueK6EoWXM5cVmP/xGGYOngLK0mTKP2pgMDxCX9ZXj
-	p1t29yDvnp26XsU8x6yDZR303a1EMj1JyTbvVmlKWqMsgqgNNc9xPmpWjbaqvY1Smg04S18wdEV
-	OnQBErL4=
-X-Received: by 2002:a05:6a00:6f18:b0:848:4810:2b67 with SMTP id
- d2e1a72fcca58-84848102d18mr3298627b3a.21.1783553640851; Wed, 08 Jul 2026
- 16:34:00 -0700 (PDT)
+        bh=tkrEjWV2T4kZn9l/EN1RfmTfNtrV7m8I3DpucB/PUhw=;
+        b=KQJNoQxBrxfXJXO6sJR+8MwqE/GJhF/vYt35S1hbX4okELC/saJ/WDT1wkDRgKmbQq
+         Ed2Uf47R+IOXMg84QluT7lcOOFfiQhaqAVPnHo6Ssg1rbN7BJhxjnVWpzSF41Tk3wzBx
+         hwSNbDBewU+jrXAl75ZviEwlIwb6VNEV3SXnRaCbnYZTINkdijEIqOK114syqBaR/+Zn
+         8rkSdjWFzocfbymIbxk5hwDvF3lBmPSuzPZVlxotIruFMLgz3mPdqOoamKOO2HVayoSy
+         olyEOLnIsqszXDH5AXBpD63JaKbaAVAfpJA2O9/d84JPNpeX99o+MbXLM7n5laMC1TYR
+         g4VQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783553650; x=1784158450;
+        h=references:in-reply-to:mime-version:content-type:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=tkrEjWV2T4kZn9l/EN1RfmTfNtrV7m8I3DpucB/PUhw=;
+        b=qAcInY9qwhvfGCfmSh9/zANbrgbVvlw35jPsLVCthqpj00j5TgiFME1APj54Q/S5PQ
+         bJV6fjvFjQGLfUAvOpgf7bCiDSDBnTC30Zzb9a6WY1n9H9JmTTTsAqJ8mA8tN6mU8CNi
+         IsLZPeEaPp8DUQqlUsiy+kBzSqcNYNeNeCqATf6/49uovF0+ng3dVPH5Bj2tOY+307vy
+         p95ChN6pIjcXtFlknHH/VJ9IMlEHGnWTx1v45FPlxXLDbb8PTO72DXdnVQE47w9Pv2Si
+         89DD2cR9k6AO8AyOpRmowdRRwFOZfNm+uy03aWjNHrWn0y9MA7YCGvkTFyTidipZTPp0
+         vXsw==
+X-Gm-Message-State: AOJu0YzDO5hMtS8ykDCv5B+PQ6MbzA6VvBY0nG2ANayRJyIUy0PVSsxd
+	A9hlCvz5j74WJ5oieKgdBzrfYYsTAhJ4QxC8zXuzzBCWj+NFYFbdCYmgzBcWNGrEnZs=
+X-Gm-Gg: AfdE7clZHA4WxSLHfWrFAxzIlBJAioimmEcePgFIUMyEWcKl3k4+egcyKIU7gHHLwDQ
+	zSoMnDRzOm913+kMZKVS74Cr6efgwvTJ7jg7S3ix/k0Dx8Tureb+as9Cy69ebMGXyWhPQOLW0ab
+	XoYkV+qhpSJ54E5QutJzti1fOPaR1iScfAMadImVmlJgKXZaUKEquDJbOmxqFCfzxpWP1TzSXCb
+	aO9383WL4FVy4jyq4j7IpKGnxUw5vUIwY8Tsp/ppEaXArZttwHROMZzflHoiLlGknhf9DRccifW
+	U2ks+AiecbAkZothmlJiS+HxyEIbJwlQKTyW/MkTywYeqkGMJRgNHIBbx+45aQKi/Os1GTITL+I
+	y0gdgNM1kdkedtAJAlShNijQW9IrDylo9RTiAlUrCg8ZNN9DHoVFBMaVzRK+K93y1ZuruVwJ4kw
+	CQCmUhWg==
+X-Received: by 2002:a17:902:d58b:b0:2ca:cb8a:f26b with SMTP id d9443c01a7336-2ccea348afamr45697605ad.10.1783553650075;
+        Wed, 08 Jul 2026 16:34:10 -0700 (PDT)
+Received: from [127.0.1.1] ([47.253.114.73])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9bdb56fsm34840455ad.15.2026.07.08.16.34.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Jul 2026 16:34:09 -0700 (PDT)
+From: Wayen Yan <win847@gmail.com>
+To: netdev@vger.kernel.org
+Cc: lorenzo@kernel.org, horms@kernel.org, pabeni@redhat.com, kuba@kernel.org, edumazet@google.com, andrew+netdev@lunn.ch, angelogioacchino.delregno@collabora.com, matthias.bgg@gmail.com, linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, Daniel Golle <daniel@makrotopia.org>, Qingfang Deng <dqfext@gmail.com>, SkyLake Huang <SkyLake.Huang@mediatek.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 4/5] net: phy: mediatek: add calibration logic for AN7581
+Date: Thu, 09 Jul 2026 00:30:00 +0800
+Message-ID: <178355364330.113879.7307879640095189809@gmail.com>
+Content-Type: text/plain; charset=utf-8
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <4d56e7ac2502cd92d4837d9fb16b9228aa17d599.1783406660.git.jamie.bainbridge@gmail.com>
-In-Reply-To: <4d56e7ac2502cd92d4837d9fb16b9228aa17d599.1783406660.git.jamie.bainbridge@gmail.com>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Wed, 8 Jul 2026 19:33:49 -0400
-X-Gm-Features: AVVi8Cdr6uyVfBEitP0e7Tb4E4sWOds5ebvaEZsQen_uVscn7m6UOVmiQ5ZL_gg
-Message-ID: <CADvbK_efrY+6jj=J7kQ7+k82wOJa+eABdZBK3Ou725M4hTZa5A@mail.gmail.com>
-Subject: Re: [PATCH iproute] ss: Don't re-print an SCTP listen socket as an assoc
-To: Jamie Bainbridge <jamie.bainbridge@gmail.com>
-Cc: netdev@vger.kernel.org, Stephen Hemminger <stephen@networkplumber.org>, 
-	Phil Sutter <phil@nwl.cc>, Rustam Kovhaev <rkovhaev@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20260708102341.53919-5-ansuelsmth@gmail.com>
+References: <20260708102341.53919-1-ansuelsmth@gmail.com> <20260708102341.53919-5-ansuelsmth@gmail.com>
 
-On Tue, Jul 7, 2026 at 2:48=E2=80=AFAM Jamie Bainbridge
-<jamie.bainbridge@gmail.com> wrote:
->
-> "ss -Sa" prints a LISTEN-state SCTP sock once as a non-assoc when
-> is_sctp_assoc() correctly returns false, then again when we have cached
-> the inode in sctp_ino, so is_sctp_assoc() returns true.
->
-> On the second pass, we try to print the socket state with
-> sctp_sstate_name[s->state], but s->state =3D=3D 10 (SCTP_SS_LISTENING)
-> but sctp_sstate_name[] only has 8 entries, so we illegally access beyond
-> the end of the name array.
->
-> If you are lucky, the space beyond the array is NULL and the argument to
-> the print format is printed as "(null)" by the C library:
->
->   $ ./misc/ss -San
->   State     Recv-Q Send-Q    Local Address:Port Peer Address:Port
->   LISTEN    0      5           192.0.2.10:9001       0.0.0.0:*
->   `- (null) 0      5           192.0.2.10:9001       0.0.0.0:*
->   `- ESTAB  0      0      192.0.2.10%net1:9001     192.0.2.9:11111
->
-> If you are unlucky, the space beyond the array is non-NULL and you
-> pass an invalid address to the print format:
->
->   $ ./misc/ss -San
->   Segmentation fault (core dumped)
->
-> The inode is correctly cached at the bottom of inet_show_sock(), so
-> check if we've already processed this SCTP LISTEN inode and exit early.
->
->   $ ./misc/ss -San
->   State    Recv-Q Send-Q    Local Address:Port Peer Address:Port
->   LISTEN   0      5           192.0.2.10:9001       0.0.0.0:*
->   `- ESTAB 0      0      192.0.2.10%net1:9001     192.0.2.9:11111
->
-> We cannot exit later than this (eg: in sock_state_print()) because by
-> then we're already halfway through a new line in inet_stats_print().
->
-> Keep the existing check in is_sctp_assoc() because that is needed to
-> differentiate related assocs from new endpoints.
->
-> Note: there is still a chance of double-printing a listen socket (now
-> with the correct format if netlink delivers us listen sockets and their
-> assocs with something else in between:
->
->   $ ./misc/ss -Sane
->   State    Recv-Q Send-Q    Local Address:Port Peer Address:Port
-> > LISTEN   0      5           192.0.2.10:9001       0.0.0.0:*     ino:365=
-18
->   LISTEN   0      5           192.0.2.10:9002       0.0.0.0:*     ino:444=
-85
->   `- ESTAB 0      0      192.0.2.10%net1:9002     192.0.2.9:22222 ino:444=
-85
-> > LISTEN   0      5           192.0.2.10:9001       0.0.0.0:*     ino:365=
-18
->   `- ESTAB 0      0      192.0.2.10%net1:9001     122.0.2.9:11111 ino:365=
-18
->
-> This behaviour existed before this commit. I don't see a way around this
-> except to pre-sort the results from netlink which seems unrealistic.
->
-> Fixes: f89d46ad63f6f ("ss: Add support for SCTP protocol")
-> Reported-by: Rustam Kovhaev <rkovhaev@gmail.com>
-> Signed-off-by: Jamie Bainbridge <jamie.bainbridge@gmail.com>
-> ---
->  misc/ss.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
->
-> diff --git a/misc/ss.c b/misc/ss.c
-> index 14e9f27a75321556240a5f290b8bcf51c605a4c2..7e94160f7590c35aa187fe009=
-02be8def7593608 100644
-> --- a/misc/ss.c
-> +++ b/misc/ss.c
-> @@ -3764,6 +3764,14 @@ static bool bpf_map_opts_is_enabled(void)
->  static int inet_show_sock(struct nlmsghdr *nlh,
->                           struct sockstat *s)
->  {
-> +       /* SCTP assocs share the same inode number with their parent endp=
-oint.
-> +        * If we've seen a LISTEN socket inode before, we've already prin=
-ted it
-> +        * and cached the inode at the bottom of this function. We don't =
-want
-> +        * to re-print the LISTEN socket again. so exit early.
-> +        */
-> +       if (s->type =3D=3D IPPROTO_SCTP && s->state =3D=3D SS_LISTEN && s=
-ctp_ino =3D=3D s->ino)
-> +               return 0;
-> +
->         struct rtattr *tb[INET_DIAG_MAX+1];
->         struct inet_diag_msg *r =3D NLMSG_DATA(nlh);
->         unsigned char v6only =3D 0;
-> --
-> 2.47.3
->
-Hi, Jamie, thanks for identifying the issue.
+Hi Christian,
 
-The same listen was dumped twice continuously, which is abnormal.
+Thanks for working on this. One critical bug found that will crash
+on probe, plus a couple of minor issues.
 
-I think the issue was introduced in kernel by:
+1) Uninitialized shared pointer in an7581_phy_probe()
 
-  1ba8d77f410d ("sctp_diag: Respect ss adding TCPF_CLOSE to idiag_states")
+The local variable `shared` is declared but never assigned before
+use:
 
-where the check against TCPF_LISTEN in sctp_ep_dump() is incorrect.
+    static int an7581_phy_probe(struct phy_device *phydev)
+    {
+        struct airoha_socphy_shared *shared;   /* not initialized */
+        ...
+        ret = devm_phy_package_join(&phydev->mdio.dev, phydev, 0,
+                                    sizeof(struct airoha_socphy_shared));
+        if (ret)
+            return ret;
 
-and got fixed (unintentionally) by:
+        ...
+        if (phydev->mdio.addr == AIROHA_DEFAULT_PORT0_ADDR)
+            shared->phydev_p0 = phydev;   /* writing to uninitialized pointer */
 
-  7d8297e26b4e ("sctp: hold socket lock when dumping endpoints in sctp_diag=
-")
+devm_phy_package_join() allocates the shared priv data internally
+(accessible via phydev->shared->priv), but the local variable
+`shared` itself is never populated. You need to call
+phy_package_get_priv(phydev) after the join succeeds before
+accessing any shared fields.
 
-Thanks.
+Fix:
+
+    shared = phy_package_get_priv(phydev);
+
+should be added right after devm_phy_package_join() succeeds.
+
+Without this fix, the first PHY to probe (addr == 0x9) will crash,
+and all subsequent PHYs' config_init will dereference an
+uninitialized phydev_p0 in every calibration function.
+
+2) Typo: mdi_resister_type -> mdi_resistor_type
+
+The field name "resister" appears in multiple places (enum, struct
+field, config_init, FIXME comments). It should be "resistor".
+This will be baked into the ABI once merged so worth fixing now:
+
+- enum airoha_mdi_resister_type -> airoha_mdi_resistor_type
+- shared->mdi_resister_type -> shared->mdi_resistor_type
+- FIXME comment: "MDI Resister Type" -> "MDI Resistor Type"
+
+3) Observation: mdi_resister_type is always MDI_5R but tables have
+   MDI_0R data
+
+Currently the code hardcodes mdi_resister_type = MDI_5R, so the
+MDI_0R entries in an7581_tx_amp_compensation_tbl[] are dead data.
+The FIXME suggests this should be read from SCU registers
+eventually. Consider adding the MDI_0R branch now (or at minimum
+an else) so the code structure is ready when the SCU read is
+implemented, and avoid shipping dead table data.
+
+Best,
+Wayen
+
