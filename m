@@ -1,87 +1,199 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D3C62EF64F;
-	Wed,  8 Jul 2026 15:42:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492D6372B25
+	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 15:46:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783525373; cv=none; b=o+RfKLDX1XHpFm/gNJy6NYGlNLzo8C1OeTk/fVCyKY+XdxtBtg0Bh7XKVK24+ScrM7jc7iwQBZ72QYjzw/xhXd11+qnWF7tv8bciNZZi/cxHBFEIy+Ai9V4dV5LkfWmJ+nmB/Sy4fVZUP4UnayGKGDPNKIROoZ9A2/netEahpGo=
+	t=1783525565; cv=none; b=ezhhZJZnxDbsd8WiOp6VLL7c/dOVQYYw25dVPhWG9fmdNc0K23ykSborP5YFM1mfX9205ujXyC0+GPn1X/gu0rv55x9gxEloxLfBzCKcvN9b3/fELJSZo0ioW8iA/PVTkbqmir1IynI0sCaabGTgBeRjFKpJYQRhdpPX2Z5gej8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783525373; c=relaxed/simple;
-	bh=n5q1N+F+EtpYBlqFVelOGH+V9eik0CiVbOF5G+JRUlM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FRX4niv+XfgWF2x5IDpOlwappKiyBRQYIgdudL/ktB85LlFWZl7FntNMQ4kypV3vPWk3pCDWWTTX59vtIHziaxf1OkLFFVHlZ1lYFMejMLHrN2qLQ7t+gkwEHWePdtq6RBUIoI0hvcdzJFLdDtlVaA2O3WMNR2/0VVa69li8sg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BuL7Jx1L; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783525565; c=relaxed/simple;
+	bh=9vHkvbT9qGw6XnwnbsV8mVwKGJQJ6h+q3CIzqn5nO9A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hYaYiDLWjsxbD/RWaiDxbmygQPpNovhWOQ0HQMeK+ftJ+MC1h3aYXLLjYxcRhGU3V6qr3vmC6a1M4OXkzp5P2lpqeTkF7o6nxddxOPL74Y/2vrIzx6tYjkfvV8baURKyjDyLClQei8MUQDa6IueaOTWJAubWIrX3mPeHoKozEC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=V9o0/GIU; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BuL7Jx1L"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCD101F000E9;
-	Wed,  8 Jul 2026 15:42:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783525372;
-	bh=myM5TVBym+J7VoDATrItCwAsgA0Kf6ZymjUmGE93LlM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=BuL7Jx1LxY/yiPjkgDR5OPXH+zWsx1gCpMmVvDa62XvKL3f/pa2LOUXUpzoCrRrM4
-	 JfU1OapOnmLmQbIwJb56euDRGCCX0qi+Av9zT5xlOm0WAVYz46fMXkOaU5RU4dyigc
-	 Ij8GZFAWl2LRefEMfBzPwq+XkdUWn20WAl9F80i5QKGIEZ7Neiph9yvXoR9HhpZfWl
-	 7naZmxb/abWJQRFznl4PsCW5R+NwoA9UQn/yfZrzZDFdpSYHqp/YXd3qwESsg4VfHR
-	 FkMTksjQNsarrGDTcgfwwtRpYgi+maKBGk6QcGxuQCF9blUyHwPcH6OqtlrlNxIwg2
-	 YE60v2Ix4lAzQ==
-Message-ID: <309e7b6b-c5a0-4404-97a9-72de45e507ff@kernel.org>
-Date: Wed, 8 Jul 2026 09:42:51 -0600
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="V9o0/GIU"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-4720d22c94aso808423f8f.1
+        for <netdev@vger.kernel.org>; Wed, 08 Jul 2026 08:46:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1783525562; x=1784130362; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=f/mdlbu7kxNAYQt2PwbA0grJPU5KW1EejarCbBPlRO8=;
+        b=V9o0/GIUUfwXKE6Si0vT9XcZGfRtCEAITKFydTRSMtxOkifhRtmp/MtdeuBSvQjlah
+         GKs0jcAl1dbNwep3X2epdX94A1E2PRCE/RJiQzscSyYA+100AJlBrKKtfaJDQR7m4qkR
+         MweaN2SaoTQVXZzo+CbE6iStSMIrM4q/CBP5yJG7R81GdmoVDUVD+GVaUICIey6oYKd8
+         c0/nveapDqgLkjDAcqEvEelk984mV+G/mTYHz2PA9ukpzmVGFCRmoyUTJUuTmnoF/KXq
+         /H2ps2dV9sdcW0mO39x4tQ2SC1Bv8NBxCJ8uQ5aycxoeyR9m8B7y7ZQSTbchyM/Rw7cS
+         uAKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783525562; x=1784130362;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=f/mdlbu7kxNAYQt2PwbA0grJPU5KW1EejarCbBPlRO8=;
+        b=qWIZDNihD4QXwRXfB2IJeGxojS3CK/31qIJFWJlG5AP3QbGw88AEaCCAySZezwyGjw
+         c6IqNxDOvgVA70Z4YC10tdkdRvyW3a2eLYVHKdh1hU6IDtzcfFkzsx4RF7q+nzMaj4y5
+         WkdWRrRvvRX2LO3yUa0MxhWy4iL/MyK4anQ13plYGkkPn39/xP4YejgZwDInIWY40ZCm
+         2GyXUU1K0i7YBA3RDBgFupi1Fxxzk5CYvSBREKCNd1vKkYaHXaz5hF3cvH/1Wu0PFqPR
+         zzkZLCAgFrvFqzK43HkZXz1ptkgXCHso0NH399DoVLPzxyYrWWdshQ9N1VAXQp1GlpwR
+         +5UA==
+X-Forwarded-Encrypted: i=1; AHgh+Rqhw+2b2H0wRZBsESxGkT6wTO5e4ueXwdVENYskQwed3iYFF+31sQL6anEukxUaXIGg9piEjFw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy39JHoix3PetLa4KXuLp8tUuEhGqe9exKmAMzduak0Cw3KkG1K
+	3g/xkiaM52y4MfdyjUkSa4yaRHpJFJtN4/1KBXCX2uZaU/CibXpUedd/KjiiFCVYfBc=
+X-Gm-Gg: AfdE7cktIW820WZhM8YfcnmXDNLSGbH3mZm181P+92awm9NkV4c0TFVMdyQ6BAeX6jx
+	Gyv5MhVPPVhh8M11vuzCs4wU0Jk5l5aSZ7wO7/V5ZpUvOvACGcdTxzdWWtpLQKId4ZDaVmt7xw5
+	HtotdxNXX882iQ/OFghtjjOcES/x93zIlhx5HBpMAgIInNb9V8Er+iypM1viNDiLXYgQ6SyH2W8
+	ex/CIJxNemTvaB7vH2i61EkBtIQZJsIwiwWRRS0/Jsy4LA1+NiWM0J+FYmE7Xfztr8IVpqBThpt
+	jvyGRcDfhkVqTrr7d9VjFa7fxb7VrqeyeIW+8dl/iCsSRAlZ3scyGrxCoOtiUZWlc5GLXte2dIi
+	VSeDj/LhlMRbgFLzWvfOjD+gD6ivem0QUxJNNGnzUqQM0s00ScejlQgLVfiZbQIzmAr/Bxw3bdO
+	Ef+/j3JF96Ktgzh/vHY02gpjnEHcPgYAwvOLeKaTqI
+X-Received: by 2002:a05:6000:4304:b0:46d:55a5:8ec5 with SMTP id ffacd0b85a97d-47df078bbffmr3378920f8f.33.1783525561596;
+        Wed, 08 Jul 2026 08:46:01 -0700 (PDT)
+Received: from zovi.suse.cz (nat2.prg.suse.com. [195.250.132.146])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47a9e4d780csm44806847f8f.11.2026.07.08.08.45.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Jul 2026 08:46:01 -0700 (PDT)
+From: Petr Pavlu <petr.pavlu@suse.com>
+To: Tony Luck <tony.luck@intel.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Philipp Reisner <philipp.reisner@linbit.com>,
+	Lars Ellenberg <lars.ellenberg@linbit.com>,
+	=?UTF-8?q?Christoph=20B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Johan Hovold <johan@kernel.org>,
+	Alex Elder <elder@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Michal Januszewski <spock@gentoo.org>,
+	Helge Deller <deller@gmx.de>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,
+	Chuck Lever <cel@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>,
+	Tom Talpey <tom@talpey.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Tejun Heo <tj@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Aaron Tomlin <atomlin@atomlin.com>,
+	Pavel Machek <pavel@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Kentaro Takeda <takedakn@nttdata.co.jp>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Cc: linux-edac@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	drbd-dev@lists.linux.dev,
+	linux-block@vger.kernel.org,
+	greybus-dev@lists.linaro.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-acpi@vger.kernel.org,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev,
+	cgroups@vger.kernel.org,
+	linux-modules@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	driver-core@lists.linux.dev,
+	bridge@lists.linux.dev,
+	netdev@vger.kernel.org,
+	keyrings@vger.kernel.org,
+	linux-security-module@vger.kernel.org
+Subject: [PATCH 0/2] Bring includes in linux/kmod.h up to date
+Date: Wed,  8 Jul 2026 17:44:28 +0200
+Message-ID: <20260708154510.6794-1-petr.pavlu@suse.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net: ipip: use tunnel parameters for
- fill_forward_path route lookup
-Content-Language: en-US
-To: Lorenzo Bianconi <lorenzo@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Pablo Neira Ayuso <pablo@netfilter.org>,
- Florian Westphal <fw@strlen.de>
-Cc: netdev@vger.kernel.org, netfilter-devel@vger.kernel.org
-References: <20260708-ipip-route-lookup-fill_forward_path-v1-1-b77df74822ed@kernel.org>
-From: David Ahern <dsahern@kernel.org>
-In-Reply-To: <20260708-ipip-route-lookup-fill_forward_path-v1-1-b77df74822ed@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 7/8/26 5:25 AM, Lorenzo Bianconi wrote:
-> Pass source address, DSCP and output interface from the tunnel
-> configuration to ip_route_output() in ipip_fill_forward_path(), aligning
-> the route lookup with the slow path in ipip_tunnel_xmit().
-> 
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> ---
->  net/ipv4/ipip.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/ipv4/ipip.c b/net/ipv4/ipip.c
-> index b643194f57d2..d1aa048a6099 100644
-> --- a/net/ipv4/ipip.c
-> +++ b/net/ipv4/ipip.c
-> @@ -360,8 +360,9 @@ static int ipip_fill_forward_path(struct net_device_path_ctx *ctx,
->  	const struct iphdr *tiph = &tunnel->parms.iph;
->  	struct rtable *rt;
->  
-> -	rt = ip_route_output(dev_net(ctx->dev), tiph->daddr, 0, 0, 0,
-> -			     RT_SCOPE_UNIVERSE);
-> +	rt = ip_route_output(dev_net(ctx->dev), tiph->daddr, tiph->saddr,
-> +			     inet_dsfield_to_dscp(tiph->tos),
-> +			     tunnel->parms.link, RT_SCOPE_UNIVERSE);
->  	if (IS_ERR(rt))
->  		return PTR_ERR(rt);
->  
-> 
-> ---
-> base-commit: 155c68aef2397f8c5d72ef10acf48ae159bf1869
-> change-id: 20260708-ipip-route-lookup-fill_forward_path-6a8a1f45084c
-> 
-> Best regards,
+The usermode helper declarations were previously provided by linux/kmod.h
+but commit c1f3fa2a4fde ("kmod: split off umh headers into its own file")
+moved them to linux/umh.h in 2017. Add explicit includes of linux/umh.h to
+files that use usermode helpers and remove linux/kmod.h where it is no
+longer needed.
 
-Reviewed-by: David Ahern <dsahern@kernel.org>
+Then clean up linux/kmod.h so that it includes only the headers that it
+actually requires, importantly removing the compat linux/umh.h include.
+
+Apologies for the wide distribution.
+
+This cleanup is motivated by trying to reduce the preprocessed size of
+linux/module.h, which includes linux/kmod.h. The linux/module.h header is
+included by every *.mod.c file to provide `struct module` and other related
+definitions, so it should avoid pulling in unnecessary dependencies. Note
+that this series doesn't immediately improve the situation, since most of
+the files included by linux/kmod.h are, for now, also included by
+linux/module.h through other paths.
+
+Petr Pavlu (2):
+  umh, treewide: Explicitly include linux/umh.h where needed
+  module: Bring includes in linux/kmod.h up to date
+
+ arch/x86/kernel/cpu/mce/dev-mcelog.c |  2 +-
+ drivers/block/drbd/drbd_nl.c         |  1 +
+ drivers/greybus/svc_watchdog.c       |  1 +
+ drivers/macintosh/windfarm_core.c    |  1 +
+ drivers/pnp/pnpbios/core.c           |  2 +-
+ drivers/video/fbdev/uvesafb.c        |  1 +
+ fs/coredump.c                        |  2 +-
+ fs/nfs/cache_lib.c                   |  2 +-
+ fs/nfsd/nfs4layouts.c                |  2 +-
+ fs/nfsd/nfs4recover.c                |  1 +
+ fs/ocfs2/stackglue.c                 |  1 +
+ include/linux/kmod.h                 | 12 ++----------
+ kernel/cgroup/cgroup-v1.c            |  1 +
+ kernel/module/kmod.c                 |  1 +
+ kernel/power/process.c               |  2 +-
+ kernel/reboot.c                      |  2 +-
+ kernel/umh.c                         |  2 +-
+ lib/kobject_uevent.c                 |  2 +-
+ net/bridge/br_stp_if.c               |  2 +-
+ security/keys/request_key.c          |  2 +-
+ security/tomoyo/common.h             |  2 +-
+ 21 files changed, 22 insertions(+), 22 deletions(-)
+
+
+base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+-- 
+2.54.0
 
