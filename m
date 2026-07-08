@@ -1,99 +1,177 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012058.outbound.protection.outlook.com [40.107.209.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5281E449ECB
-	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 12:40:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783514443; cv=none; b=jJv/mTnSVHKJTXlUzs1mq00VPsr/62hv3zpYDrE82F3xOoGAIMeF64+o34R0Fd5TqxSpnsFqt9eUbncteUfL4jkRXw7WOEy1itAs2S2DahS8kJKEePgiYuq5rdd0C9WS4YuxPftxzmtF+y61d5blCLEe+St79p1LL4Dn/8aNU2E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783514443; c=relaxed/simple;
-	bh=Rf0of+Q3tLrD0mzL1fVMuQplssF0gH5DqAqaplySbFg=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=CAd/kGftzFBi7bO6LYIDBZ7fdFoYv9Gc3kEVEiHuWHjcoo/6YoiVKXc9tvHu1oWEWf0rWCfX9fbN4o3HJxYAn2t/8FAIu74nuEeGC5zyu2lI8n7tn0krQ+cHwq962KQxQX5MvWlaEzQlyQ48EbE1YMYPvkNEsOFLiBrdnDZ9Ino=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WXY/msMd; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6E53C1080
+	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 12:41:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.58
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783514495; cv=fail; b=eCJKwC+y0LlBUA67A2FEbGFpjkr/dIGHCT8DoOLL5xlm0O2zhfUJoJl2MHqGwy6GfweyCJsB1j+07A3ZzCASYwEhGKP/TK5Ff6YEz0OSRyDrcsvo8Js9wAQswURDSepg4UEO/IdZSx08TeI0jcbiFwX9kdkat4EwqbYC/501+3k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783514495; c=relaxed/simple;
+	bh=FO6aQUGJexejNEZuSdJtwIPn0HSKTChxOUpgRWzVLFo=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=ffU+xVZXfBS6HFMa+BxOCPAe/O8gu9FJZ4wI7V5PuzXFTtegaJikUCXC3tea5+GK5kKUcyqHrrWHgoC7fVXXQSl1uaXmMHH/nmOUQn40RY72tlBYpSbC4vz9yBRB5gunyMQ1Pzi4BeR+UHDFnKzHLk3ZdRdtLhkH8L67H/PCDKY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=qcJehTMQ; arc=fail smtp.client-ip=40.107.209.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WXY/msMd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2FE71F000E9;
-	Wed,  8 Jul 2026 12:40:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783514441;
-	bh=FUo9b+9FoBbsLn3317d+k19kmmeqMysjUpHIoR1cSuk=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=WXY/msMdkHLLjOnaDNSKaKLkQ7IUtX2XkDYYUj2yMJb3uyfXyfw977x8TaveQVUBC
-	 ZnLVed77j3rhhfXFI+3DrdJzxxxnWMDIiOxQZj+AiNfWXLzf+T4ScOcidgYjoAcONz
-	 2OoU+yWXizMKvNGQwPcSdKJhazQTv0JTi8jyHXVUkFiCiIsewvujo4+QpTxFeMSKVT
-	 qF+V68Y4Tfkx8CPyIyb8nKtt5MbMeHw7vlpqGvuKNaPNH3o8EltfQdRVoN6fX+cigo
-	 dBBO+1s+fssVQZWibmvpjA84orDAdjg3Qt3MBoW+t2qelPFejqkkecfnZKFMs28vhw
-	 r9vMUa7Jc5H/w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56C483927044;
-	Wed,  8 Jul 2026 12:40:22 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="qcJehTMQ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=NV1SSUo3Iv4ynX9nbG1SL6nRe/v/WtwDstvPmEj9jzAwpKfvzqhlTcm5jXUazHviysQMTq2RsmW5ZMhW7IBqaBQv9mgTJ+LSG2Ha2SxFkL1wV8urlq0Q8SASOUyCrPpK+XefyyYiiIas2y5bUVoCnKcigtzoGXYaFdRu8YyL/ZueXQ0eAFR2SAPVWLHeJo0L/1XY29g8RBTb21Uj7f7RyHgcRyFZAVB2pB2cl5ybdnT9cUrcPISvZMTTBW7lcDxaEbGX0Sz+H6oE4zUrkWgOP/eIPFWZ6cunhk1AvLqM9TJpWEGbNkR+/j3bx0lBvTkIRwO0xYv+lDsu2Ww63zaqug==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Xsyh+rTspxLHRtpF3CgkxwFxJZokxyxtj2vdroXutVs=;
+ b=G/HIGlgazK/ydf1eSF/0RXKnFkPn/JQy2MzxM2I8e2c11EnAHbXoLVz3bwjVzlATKIywn/eUuoTG4zV0RnSJi+JrA4QRxXjmjxXXSDDv8jt3Y3iJsqPce0at/nrlOy6VQWX2np57e+Y5zCRQBYUAbn32ZF181TgIj6J2GlXQQzO8NIFs0Fzfz5EZUoboNsVuMOIAsCpSXRdTJtXCoeCfYuACssO1MxYBCxjhzz4EtK68AM1QOU/u2PcYduxgahl5CmhQ+NnifZrgaywxXyk+Q5d30Tol1ct+d+zAYADHS+h2P6lLmibGfHP9MB9iheVV8cbb6Xu2xArvPWG5tjmUSA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Xsyh+rTspxLHRtpF3CgkxwFxJZokxyxtj2vdroXutVs=;
+ b=qcJehTMQQvT6NvI+cqkmkDNF4lgVzksWeOG8oNpEr3cNPjGUuCttOG/+trSN00srneFW37OOWzuRCdboCvCCGC6WVUD0SitUglcRjYsfNpaixzWYE6X3GdWySOyIGv5HE5zTk5zvuc32wAkuC6m3WNwjYWd8nhAeg/mkYnQTbJrPEIiUr6qRX5jhCzaHvCgH1Ralp1oyFzziqD0yhRoq/k/pGUxGG0KZ7tngqR9z4ONEfEnS2YzBXOsmVvQdVTd1jPHYPi7Xv2wYYlWkTB5w/ue8/b0OuKTYaQ/8hS4JGrofXJC7tU1D3Xq77K2kA98B32yPwSuGz0DIA9fwJGV2Qw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
+ by IA1PR12MB6556.namprd12.prod.outlook.com (2603:10b6:208:3a0::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.10; Wed, 8 Jul
+ 2026 12:41:29 +0000
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2%6]) with mapi id 15.21.0181.010; Wed, 8 Jul 2026
+ 12:41:29 +0000
+From: Ido Schimmel <idosch@nvidia.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	petrm@nvidia.com,
+	andrew+netdev@lunn.ch,
+	Ido Schimmel <idosch@nvidia.com>
+Subject: [PATCH net-next 0/3] mlxsw: Make the driver ops-locked
+Date: Wed,  8 Jul 2026 15:39:30 +0300
+Message-ID: <20260708123933.1303291-1-idosch@nvidia.com>
+X-Mailer: git-send-email 2.54.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: FR4P281CA0323.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:eb::6) To SA3PR12MB7901.namprd12.prod.outlook.com
+ (2603:10b6:806:306::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 00/11][pull request] Intel Wired LAN Driver
- Updates
- 2026-07-01 (igc, igb)
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178351442114.2482258.15820086308090785003.git-patchwork-notify@kernel.org>
-Date: Wed, 08 Jul 2026 12:40:21 +0000
-References: <20260701210303.1745310-1-anthony.l.nguyen@intel.com>
-In-Reply-To: <20260701210303.1745310-1-anthony.l.nguyen@intel.com>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
- horms@kernel.org
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|IA1PR12MB6556:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1679df1b-dc31-4e53-d9b1-08dedcee3b4d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|376014|1800799024|366016|18002099003|56012099006|11063799006|5023799004|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	xb7UZ6odB0tT2f/MX5NPZpFzubaayF4PlqNvCG2Gm1HoDD6GwY7m/9o1z4N3jeKU30xzkyW3guq44eOBwRpswKCxhNKd4ebXdnDNRD7gaB6BAvrqqCMXSf0kktIlFhaUP7hlVHSZL/l4whSKJb46KzC4ktXD7sL4cNS/mt9DMmlnO+6kgTinIrW2NnsahLOnw0GulBIlLhW/z96sk2fHwTfeK4T13WFFkGBOLBd5Ny7sOY/TdPk4rydTvrfit84l1fMi6m5z6FF4XJo1m4obKTcyj7tO9J3lNGjdpzKYi1JDZTINuznZbojvU207BBIONqQWE8KYA4R67ld+IeeejcI2cNZoWa/v+9SsW4HBHEFvjlkdksFgDx6HWm+gvA04dhFh4xbnm96/QG4rF1nvLFcRwz9bAo323LBce+iw0SN3BIzxFMt2o7sok8pHg4prdp+cjSqdLVjlK9g9Pfq9XRGDSxPQgM0H1wIl0HgYpmSEDk1l6+fromtFghUXSeAxSHzsbIuEWbgmLYdvjjno6iBhk1EGLsIHvbz0n3uB8bIh99/Pg/ugEnOV1alSfJrnQ6168M7P11adAfmHzhUlZ7J4zoPdkIUc29iCeV6wGHJzM/cnAn0PNz1+tCiY9QuYxvdyrTIO9nASDYfKtY9Hbg5J5FNQKeqZWzOClc8mvYU=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(366016)(18002099003)(56012099006)(11063799006)(5023799004)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?I33ADwSGGZC9mcdb+pENDhLnJtm90JEaUvE0J0Ak+0hXORbuT/NMzllu56YQ?=
+ =?us-ascii?Q?tvf+t3/EXG9OA/Mx+OQGkOTy9gvCQ7TY6BYIvWqvdfjA4+3GH224lcMc6GaL?=
+ =?us-ascii?Q?7v1M+cXExb4NpSmOqkKFO3ZzqHONYg/ZQtDsPayouFeI9FhYajYrkz7Qup3a?=
+ =?us-ascii?Q?0uWKqkxJGCl7aSkvyr6LseQ2sCoKZNW6UFzc+8c6NMlPJU8SvThVRX2W0UWM?=
+ =?us-ascii?Q?8ikp5LtNCDeDAe0W7gc2tk4fMGrEsZMmopEnP05yZ3xvo9kMkZA0k+GoMRWD?=
+ =?us-ascii?Q?/Cmay8Heg2NU3BU38tbaNnzgYiWM9qfIIRnziWPIyrgVOnnG/GS+fZ8tppzZ?=
+ =?us-ascii?Q?359ZbWeytT6ssglKrBrXD1r/bn8P+rgbpTc9CeRaePb7K3G5vT43GyS/V8hx?=
+ =?us-ascii?Q?O2XhWkm7xvqQlB2f/+knhXT81HIdsOf/mXOA9Ap4JXD5F4BaRGt8CR8CS1MV?=
+ =?us-ascii?Q?Tatg+aGNmRkFpRTq2Px105vbpKqeV7PxNIhWFj4JP/wEgsFO7K0x/y3BHylt?=
+ =?us-ascii?Q?lKVkFjYiddJPert4kJhNToAPobgrzj4rbURKrJTTlxqCph2cDQ5GGFgMrO9p?=
+ =?us-ascii?Q?TeT7yOqgdFYxUFRfHngwPrWaMYcaoVi/qmwQhpVqdx0HQa8+7vceCoxbJrUg?=
+ =?us-ascii?Q?7QGSsKKudXfMaYGK1ITKNhlVlTG2H8iaJ6x2A/txDAiKVfPxd1ek+YORfnKV?=
+ =?us-ascii?Q?PC7d/Bht3S1GmtxudEXniLMxqSoaKVGvQc/uAicY08/eAYqT1pSO7PeM0ae5?=
+ =?us-ascii?Q?Ye2VRQSc6LjeZtKimKhHn8YOsW9qC91uToHKD/waCghEMg7MIKAeORI2PQoZ?=
+ =?us-ascii?Q?hYNuNKQuruSnYue+uu1CY5axs9muda2eA4CT+/A+vIc2H5RAh/7Evu3nIwgU?=
+ =?us-ascii?Q?kzuOg9+ektxYWugcWUtymx2vM2Ku5bGKVxWwYkahvrAqUkr40rp08MjKYxlS?=
+ =?us-ascii?Q?n7/n/3tmfmYXLfIFshtloCUfs5BAD7xgD4MbRGD3pUEwJ99TVVm13g/VxMNb?=
+ =?us-ascii?Q?yT9CEd3p+RJQvoucHtc9CJdQi5FaYWjAWljKuYSXAHKw4B6csn1DjokQ6knk?=
+ =?us-ascii?Q?+p59CnvClh2pRmkSlECJvVxOoeBt7KJE2aT8wQLfsn0T6bDfndnKVWMl/plm?=
+ =?us-ascii?Q?zyFR9zHwMYix4hx+Qx5Pzxnr/4a3P1reDnAcm8AAXyyrk5OZYLFR5J23Hdot?=
+ =?us-ascii?Q?gocGney2xjIC1w1advRt1EmwR9pqk2x8KnI4364Q88gKPIKHiBObU8oGmcof?=
+ =?us-ascii?Q?tFVP1IlkohGnqZ7YOB56wIuB+bg+LiZWf/jZShe7xk+4wZ5nzf+BJIi9zNet?=
+ =?us-ascii?Q?v80RHc+IywPFbsMEDW7X/55M/IVRB/YlOlHwfMd3yzm5izvcy0rVfoXt6ceL?=
+ =?us-ascii?Q?ykdcAo3d5cSSlKlLfeuRM1mvmdn0gGLUn2iwXZfplyPDtRO/vYylB01jldIH?=
+ =?us-ascii?Q?vCaka9xHoPj19SlUieE/KsYXNw+SJ8cX2/vhJSrAMf8v6AejCgsRfflQqkHf?=
+ =?us-ascii?Q?tP8cgbTVyilZfvIe4TWspzF+sOFJFBx7e2mqwnV3maNy2sOkloYdIZZazEtx?=
+ =?us-ascii?Q?/roQgC9Xx30DZIl+V2ykcDKSFLE8i9wAHy8l3WJhkgDtkuNx8mOC6Tzo4Je3?=
+ =?us-ascii?Q?fCkFwdH0ofTg64MV8mbJ2QVB9eUa7kyYEZ6nXT3GgEqouW6cBd8eTAjz80L0?=
+ =?us-ascii?Q?Mm0RLfIvR44O6Y+gcjGBKrpDmScrKwjDreDno0Y2a7LiHCJH?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1679df1b-dc31-4e53-d9b1-08dedcee3b4d
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2026 12:41:29.1213
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: STo20Px+WzB3c9ZUfyPMfR+9GJmk0YeutnKV61lTiiZqEPEIGWyWSc5JanqkmI805XLXcPNNJb4g/z6yoU1y0g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6556
 
-Hello:
+Make the driver ops-locked in order to allow ethtool operations to be
+invoked without RTNL being held.
 
-This series was applied to netdev/net-next.git (main)
-by Tony Nguyen <anthony.l.nguyen@intel.com>:
+An ops-locked driver has most of its NDOs, all of its ethtool operations
+and some net device notifications run with the netdev instance lock
+held.
 
-On Wed,  1 Jul 2026 14:02:49 -0700 you wrote:
-> Kohei Enju adds ethtool support for get/set hash key on igc and adds
-> setting of skb hash type based on values from Rx descriptor on igb.
-> 
-> Takashi Kozu adds ethtool support for get/set hash key on igb.
-> 
-> Faizal adds support for forcing link speed via ethtool when
-> autonegotiation is disabled on the igc driver.
-> 
-> [...]
+In the specific case of mlxsw, the driver is not using any functions
+that acquire this lock nor functions that expect the lock to be held for
+an ops-locked driver. Therefore, converting its NDOs to run with the
+lock being held is trivial except for a small quirk which is handled in
+patch #1.
 
-Here is the summary with links:
-  - [net-next,01/11] igc: prepare for RSS key get/set support
-    https://git.kernel.org/netdev/net-next/c/66731a51b1fb
-  - [net-next,02/11] igc: expose RSS key via ethtool get_rxfh
-    https://git.kernel.org/netdev/net-next/c/f243be8edeab
-  - [net-next,03/11] igc: allow configuring RSS key via ethtool set_rxfh
-    https://git.kernel.org/netdev/net-next/c/3fc4c1ee5f84
-  - [net-next,04/11] igb: prepare for RSS key get/set support
-    https://git.kernel.org/netdev/net-next/c/dfaf57ef99cf
-  - [net-next,05/11] igb: expose RSS key via ethtool get_rxfh
-    https://git.kernel.org/netdev/net-next/c/1ae67b2b28bc
-  - [net-next,06/11] igb: allow configuring RSS key via ethtool set_rxfh
-    https://git.kernel.org/netdev/net-next/c/e3c94e9782a7
-  - [net-next,07/11] igb: set skb hash type from RSS_TYPE
-    https://git.kernel.org/netdev/net-next/c/17cd41a9733d
-  - [net-next,08/11] igc: remove unused autoneg_failed field
-    https://git.kernel.org/netdev/net-next/c/1ee93ee2e085
-  - [net-next,09/11] igc: move autoneg-enabled settings into igc_handle_autoneg_enabled()
-    https://git.kernel.org/netdev/net-next/c/c731361cfef9
-  - [net-next,10/11] igc: replace goto out with direct returns in igc_config_fc_after_link_up()
-    https://git.kernel.org/netdev/net-next/c/fa7315482f58
-  - [net-next,11/11] igc: add support for forcing link speed without autonegotiation
-    https://git.kernel.org/netdev/net-next/c/acb138b8235c
+The driver does not generate any net device notifications, so there is
+no risk of nested notifications of the ops-locked types. For the
+notifications that run under the instance lock, RTNL is also held, and
+the driver does not acquire the instance lock itself, so no changes are
+required in its notifier handling.
 
-You are awesome, thank you!
+Ethtool operations can be invoked without RTNL except for two operations
+that are annotated in patch #2.
+
+Lastly, patch #3 converts the driver to be ops-locked.
+
+A probe on rtnl_lock() shows it is no longer taken when dumping
+statistics:
+
+ # perf probe --add rtnl_lock
+
+Before:
+
+ # perf stat -e probe:rtnl_lock -- ethtool -S swp1 --all-groups
+ [...]
+                  1      probe:rtnl_lock
+
+After:
+
+ # perf stat -e probe:rtnl_lock -- ethtool -S swp1 --all-groups
+ [...]
+                  0      probe:rtnl_lock
+
+No issues were reported after running a full regression with a debug
+config that has lockdep enabled.
+
+Ido Schimmel (3):
+  mlxsw: Convert to async version of ndo_set_rx_mode
+  mlxsw: ethtool: Prepare for RTNL-less ethtool operations
+  mlxsw: Tell the core to use the netdev instance lock
+
+ drivers/net/ethernet/mellanox/mlxsw/spectrum.c         | 8 ++++++--
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_ethtool.c | 2 ++
+ 2 files changed, 8 insertions(+), 2 deletions(-)
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.54.0
 
