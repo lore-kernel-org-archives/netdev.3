@@ -1,52 +1,52 @@
 Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8858B4C77AD;
-	Wed,  8 Jul 2026 18:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9670B4CA27E;
+	Wed,  8 Jul 2026 18:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783536008; cv=none; b=Ne7ABl7TD5YnUeFRpojVzW/QVXycD7+Bzfsvno0qsLSQc0jf1ooN0t1Zf+bb20EQN3C44DQ0Stmn51JpYnLobEnWlgxEZxdwrbzb4o1N8YR1mkYz+mShWBymyVevnW+vplpW29JACZAq+rarH24qCCDC7ff9t5pfPhvGHows22U=
+	t=1783536018; cv=none; b=JX25uYmQRLkRg+ER2l1BAnsoU+pwW8qhV9B6PkL9DwpvRZGDwFLn6z2KBoLTXcR0ZnVs4Dh2hAbNKvP5krpLpAPd9VNR8d3fv2ttkgjprRr136XN/Bsgtsk8mcz17mgAGclGpTraY9cYYE8FQ7rVcNxBoERasNssQQGCY6HKPW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783536008; c=relaxed/simple;
-	bh=lEqPa+K5sRA7grl68cay5/oe3+WcycKRkSmKFlfn2DE=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=e/KqdwhV3EHHs1hPYTX6l9O430H9h0R3fxMzwjynW0pO6qsqdIfx2L4mjIhwZ37bXE8rrb+SYgIbcVJIwf94vk3WOF5BsWmzy8qKiiOgHGsbX1IDYe6kuahJ9AsvuRUjo3uIBFxUH1uds0gJTFcnqsZmtoVj7WqjYFx58cmn+kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=paNm7O8a; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=Rzj9YE42; arc=none smtp.client-ip=23.88.97.239
+	s=arc-20240116; t=1783536018; c=relaxed/simple;
+	bh=XWnSmpL8oHrAf5oCNAJBmVBIHfSqqNjo9SXstWqcK6Y=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=mrsjPwfMXxm/ziZXdn0owYKajNZtSeX0a1mcn9E9ipkIZpZ7/zid/gZbT87PZZWnmWASA/l+gkyNAtfCkD/Ig1v5Rgy5KPyQRk3plYRCcPDOuP0KkBrvP62HKSwSSw2DFYHV0oHimJfXwxdJdSJ8Uhy7FW/0l1Vbl3N8FEIuvWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=h1UcJBR9; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=ya9V/IU3; arc=none smtp.client-ip=23.88.97.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="paNm7O8a";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="Rzj9YE42"
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="h1UcJBR9";
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="ya9V/IU3"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1783536005;
-	bh=lEqPa+K5sRA7grl68cay5/oe3+WcycKRkSmKFlfn2DE=;
-	h=From:Subject:Date:To:Cc:From;
-	b=paNm7O8auFsi6o17Pv99+4nPKlx3485Q7So3pNCSnkbJBQ5fHRFUqvIBpFQEzjA61
-	 t18I0bIj8F0vQsOEXYZxClrP+voj7HmLUtawJ4MDSl4Id9vC/giL9oLDf83iTqA6Oq
-	 KWLyDGA8oT5RaY7Qs4YlUUqwPxYZIqRh7TZHyJBuQ02k3NLskA2+I7rCbNoVUJMvRm
-	 D9XbvTns0ey9SG3gUThqzadQ/KbONNdgwWj48vTyt5F78Niq8F700T6qZshtKLWxFH
-	 6Enk0NEgP9qIJF0VJSnD/XLM9fR4MqSRCqWImUKNEbBmQPzsm1H0kw76muQSpb+Ryl
-	 /sYCRSwXB9+tw==
+	s=default; t=1783536010;
+	bh=XWnSmpL8oHrAf5oCNAJBmVBIHfSqqNjo9SXstWqcK6Y=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=h1UcJBR9JOG4BYwutLQI1IDxYn7Hp7FI8AjHP0yyRBRHN5lvGYfNrmWXvaaJr9aiL
+	 zOIhJ3QPwm2J0mh0tPsgp5eaGmUJPumh9yBQBXYehQ/UDMn0mIQnZjfz8+zw0R1Bi4
+	 toImvprI31VpvF9Hem91S94rXS16/XnR6kxwkWg/Re7HUOAueZE/hRLb5opFBNY65O
+	 Ih4vVrWUmZuisY27hlJ1P14IMXq7tI72LFc3lsJjHd8COhD3X3hK5roGObPBor993c
+	 og6qEIf8LPw16YmHa4UVv+SfAlUnYpj3gV9PwmWrCctZw31cuZ27glQ8L/GotCXlCP
+	 6pBHajikJJPaw==
 Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id E859649441; Wed,  8 Jul 2026 18:40:05 +0000 (UTC)
+	id 026BF49440; Wed,  8 Jul 2026 18:40:10 +0000 (UTC)
 X-Spam-Level: 
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1783536004;
-	bh=lEqPa+K5sRA7grl68cay5/oe3+WcycKRkSmKFlfn2DE=;
-	h=From:Subject:Date:To:Cc:From;
-	b=Rzj9YE42AlWCC5aZTMME4ZMPwVvNMvVjlFdQFxL+F+QxuxsroHMcbgaDTeNUDV9kc
-	 t4xMWbbIY4RTvUCWca6y7WsquvcmVhE7iqdPDZ3mv6hp6HSkb6s5pbs3+sRf1Lb/Dk
-	 5X/tUUnOua3y5HONqpYpsCUaLg5tXQ82EzC5SWPt5YLc6TTHTSRavbAnCjlMRGj6eL
-	 V7SSmn74UE0E+vDfH4c4Trmqq/dBLdd69lOcushV1N/8wy64YJJgLBBPqMj9ABcLFx
-	 G3qtJFTp3s76fj8dXAxa3BMmXF8aPtfmwMCNNJAgHJodSVfcsGwbkquyzO7AQQobdq
-	 qGudvzW6adcyg==
+	s=default; t=1783536005;
+	bh=XWnSmpL8oHrAf5oCNAJBmVBIHfSqqNjo9SXstWqcK6Y=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=ya9V/IU3VZ2HJfjp2qWvl99enysVT1UG38sg/jYfJ+lEM12yWxc6Ep2acXTi4tHxv
+	 aEuNwLWOFWTtuNGttKPeB5EgC3y1+xgB3clE6J9kLFScxxRO5TEfC7ReJ2Tunw/ijH
+	 DbqEzaizcUfNRPmE4OIbIikMB9ob4VIgkjtDV4k58QsICV1O+FXzt49ptbdxSztXRw
+	 vn7It8SKzvLiCRW1UQUHx+1Uzs1vlRi9380mDhJJkbp48dpKPLb9boiAPTSEX6tDxm
+	 4tIPg8D37k+S/vQ8rglotZwW0bVuTym7npANoYBHreklLmHR8KnbNb4N/TB/gebM1R
+	 7QYdiCQduNaxg==
 Received: from DebianDesktop.lan (p200300c69f1c3c00b7612fd38ae89dbd.dip0.t-ipconnect.de [IPv6:2003:c6:9f1c:3c00:b761:2fd3:8ae8:9dbd])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 95C89493DD;
-	Wed,  8 Jul 2026 18:40:04 +0000 (UTC)
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 4B7DC493EB;
+	Wed,  8 Jul 2026 18:40:05 +0000 (UTC)
 From: Birger Koblitz <mail@birger-koblitz.de>
-Subject: [PATCH net-next v2 00/12] ax88179_178a: Add support for
- AX88179A-based chips
-Date: Wed, 08 Jul 2026 20:39:06 +0200
-Message-Id: <20260708-ax88179a-v2-0-0800fedb2e16@birger-koblitz.de>
+Date: Wed, 08 Jul 2026 20:39:09 +0200
+Subject: [PATCH net-next v2 03/12] ax88179_178a: Add MMD accessor function
+ for AX88179A
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,11 +55,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAEqZTmoC/0WNQQ7CIBBFr9LMWgxDU0BX3sN0QWXaTjTUAGmqT
- e8uYePy5f28v0OiyJTg2uwQaeXESyigTg08ZhcmEuwLg5JKS91K4TZr0VyccOjtZSSFppVQ5u9
- II281dYdAWQTaMvTFzJzyEj/1Y8Xqa85I/OdWFFJgq23nR2067G4Dx4mieC7Di/P37An64zh+b
- D8n2LIAAAA=
-X-Change-ID: 20260630-ax88179a-a1d89fe21730
+Message-Id: <20260708-ax88179a-v2-3-0800fedb2e16@birger-koblitz.de>
+References: <20260708-ax88179a-v2-0-0800fedb2e16@birger-koblitz.de>
+In-Reply-To: <20260708-ax88179a-v2-0-0800fedb2e16@birger-koblitz.de>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
@@ -67,73 +65,139 @@ Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, Birger Koblitz <mail@birger-koblitz.de>
 X-Mailer: b4 0.14.2
 
-This adds support for the current generation of ASIX network adapter chips,
-which are based on the AX88179A. This includes the AX88179A/B (1GBit-PHY),
-AX88772D/E (100MBit) and AX88279 (2.5GBit).
-
-The AX179A-based chips all provide both a CDC-NCM compatible USB interface,
-and a proprietary vendor interface with more features. By default, the
-proprietary vendor interface is not active and Linux will load the CDC-NCM
-driver to support the devices. If the ax88179_178a module is configured by
-the OS to have precedence over CDC-NCM, then this driver will switch the
-device to use the vendor interface, and the device will be controlled by
-the ax88179_178a driver when the device is probed again after an automatic
-reset of the device bringing up the vendor interface.
-
-The following hardware was tested:
-Delock 66046 2.5GBit adapter (AX88279, FW: 1.2.0.0)
-TP-Link UE306 1GBit adapter (AX88179B, FW: 1.3.0.0)
-Renkforce RF-4708614 1GBit adapter (AX88179A, FW: 1.0.4.0)
-UGREEN CR110 100MBit adapter (AX88722E, FW: 1.3.0.0)
-
-The driver supports the following features
-- EEE
-- TCP segmentation offload
-- VLAN filtering/tagging offload 
-  (NETIF_F_HW_VLAN_CTAG_FILTER, NETIF_F_HW_VLAN_CTAG_RX/TX)
-- RX/TX checksum offload
-- FC/Pause configuration
-- EEPROM read access
-
-The code is based on the ASIX 4.1.0 out-of-tree driver published under
-the GPL,, the aqc111 driver which provides support for the AX88279A,
-and some tracing of USB-transfers of the Windows-driver.
+The AX88179A uses a much simpler Clause-45 MMD access interface,
+make use of this interface and abstract MMD read/write operations
+for the AX88179 and AX88179A architecture by introducing
+ax_read_mmd() and ax_write_mmd(), which in turn call the chips'
+respective implementation.
 
 Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
 ---
-Changes in v2:
-- Correctly use net-next prefix
-- Fix compilation issue in HW support patch
-- Split MMD support patch into patches for EEE/new chip support
-- Do not use ADVERTISE_RESV but private flag definition
-- Fix pause configuration to keep track of settings when autoneg disabled
-- Fix issue with unitialized variable reported by kernel test robot <lkp@intel.com>
-- Avoid white-space changes
+ drivers/net/usb/ax88179_178a.c | 66 ++++++++++++++++++++++++------------------
+ 1 file changed, 38 insertions(+), 28 deletions(-)
 
-- Link to v1: https://lore.kernel.org/r/20260701-ax88179a-v1-0-13685df67515@birger-koblitz.de
+diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
+index 3aad69b5d4f8ad43527fa7cf51304af9a926ea78..c483b7b636e37d45455d46e1b0354fd63e0ef100 100644
+--- a/drivers/net/usb/ax88179_178a.c
++++ b/drivers/net/usb/ax88179_178a.c
+@@ -37,6 +37,7 @@
+ #define AX_FW_MODE				0x08
+ #define AX88179A_FLASH_READ			0x21
+ #define AX88179A_FLASH_WRITE			0x24
++#define AX88179A_PHY_CLAUSE45			0x27
+ #define AX88179A_ACCESS_BL			0x2A
+ #define AX88179A_PHY_POWER			0x31
+ #define AX88179A_AUTODETACH			0xC0
+@@ -575,6 +576,32 @@ ax88179_phy_write_mmd_indirect(struct usbnet *dev, u16 prtad, u16 devad,
+ 	return 0;
+ }
+ 
++static int ax_read_mmd(struct usbnet *dev, u16 dev_addr, u16 reg)
++{
++	struct ax88179_data *priv = dev->driver_priv;
++	u16 res;
++	int ret;
++
++	if (priv->chip_version >= AX_VERSION_AX88179A) {
++		ret = ax88179_read_cmd(dev, AX88179A_PHY_CLAUSE45, dev_addr, reg, 2, &res);
++		if (ret < 0)
++			return ret;
++		return res;
++	}
++
++	return ax88179_phy_read_mmd_indirect(dev, reg, dev_addr);
++}
++
++static int ax_write_mmd(struct usbnet *dev, u16 dev_addr, u16 reg, u16 data)
++{
++	struct ax88179_data *priv = dev->driver_priv;
++
++	if (priv->chip_version >= AX_VERSION_AX88179A)
++		return ax88179_write_cmd(dev, AX88179A_PHY_CLAUSE45, dev_addr, reg, 2, &data);
++
++	return ax88179_phy_write_mmd_indirect(dev, reg, dev_addr, data);
++}
++
+ static int ax88179_suspend(struct usb_interface *intf, pm_message_t message)
+ {
+ 	struct usbnet *dev = usb_get_intfdata(intf);
+@@ -892,22 +919,19 @@ ax88179_ethtool_get_eee(struct usbnet *dev, struct ethtool_keee *data)
+ 	int val;
+ 
+ 	/* Get Supported EEE */
+-	val = ax88179_phy_read_mmd_indirect(dev, MDIO_PCS_EEE_ABLE,
+-					    MDIO_MMD_PCS);
++	val = ax_read_mmd(dev, MDIO_MMD_PCS, MDIO_PCS_EEE_ABLE);
+ 	if (val < 0)
+ 		return val;
+ 	mii_eee_cap1_mod_linkmode_t(data->supported, val);
+ 
+ 	/* Get advertisement EEE */
+-	val = ax88179_phy_read_mmd_indirect(dev, MDIO_AN_EEE_ADV,
+-					    MDIO_MMD_AN);
++	val = ax_read_mmd(dev, MDIO_MMD_AN, MDIO_AN_EEE_ADV);
+ 	if (val < 0)
+ 		return val;
+ 	mii_eee_cap1_mod_linkmode_t(data->advertised, val);
+ 
+ 	/* Get LP advertisement EEE */
+-	val = ax88179_phy_read_mmd_indirect(dev, MDIO_AN_EEE_LPABLE,
+-					    MDIO_MMD_AN);
++	val = ax_read_mmd(dev, MDIO_MMD_AN, MDIO_AN_EEE_LPABLE);
+ 	if (val < 0)
+ 		return val;
+ 	mii_eee_cap1_mod_linkmode_t(data->lp_advertised, val);
+@@ -920,8 +944,7 @@ ax88179_ethtool_set_eee(struct usbnet *dev, struct ethtool_keee *data)
+ {
+ 	u16 tmp16 = linkmode_to_mii_eee_cap1_t(data->advertised);
+ 
+-	return ax88179_phy_write_mmd_indirect(dev, MDIO_AN_EEE_ADV,
+-					      MDIO_MMD_AN, tmp16);
++	return ax_write_mmd(dev, MDIO_MMD_AN, MDIO_AN_EEE_ADV, tmp16);
+ }
+ 
+ static int ax88179_chk_eee(struct usbnet *dev)
+@@ -935,32 +958,19 @@ static int ax88179_chk_eee(struct usbnet *dev)
+ 		int eee_lp, eee_cap, eee_adv;
+ 		u32 lp, cap, adv, supported = 0;
+ 
+-		eee_cap = ax88179_phy_read_mmd_indirect(dev,
+-							MDIO_PCS_EEE_ABLE,
+-							MDIO_MMD_PCS);
+-		if (eee_cap < 0) {
+-			priv->eee_active = 0;
++		eee_cap = ax_read_mmd(dev, MDIO_MMD_PCS, MDIO_PCS_EEE_ABLE);
++		if (eee_cap < 0)
+ 			return false;
+-		}
+ 
+ 		cap = mmd_eee_cap_to_ethtool_sup_t(eee_cap);
+-		if (!cap) {
+-			priv->eee_active = 0;
+-			return false;
+-		}
+-
+-		eee_lp = ax88179_phy_read_mmd_indirect(dev,
+-						       MDIO_AN_EEE_LPABLE,
+-						       MDIO_MMD_AN);
+-		if (eee_lp < 0) {
+-			priv->eee_active = 0;
++		if (!cap)
+ 			return false;
+-		}
+ 
+-		eee_adv = ax88179_phy_read_mmd_indirect(dev,
+-							MDIO_AN_EEE_ADV,
+-							MDIO_MMD_AN);
++		eee_lp = ax_read_mmd(dev, MDIO_MMD_AN, MDIO_AN_EEE_LPABLE);
++		if (eee_lp < 0)
++			return true;
+ 
++		eee_adv = ax_read_mmd(dev, MDIO_MMD_AN, MDIO_AN_EEE_ADV);
+ 		if (eee_adv < 0) {
+ 			priv->eee_active = 0;
+ 			return false;
 
----
-Birger Koblitz (12):
-      ax88179_178a: Fix endianness of pause watermark register
-      ax88179_178a: Add HW support for AX179A-based chips
-      ax88179_178a: Add MMD accessor function for AX88179A
-      ax88179_178a: Add EEE HW configuration support for AX88179A
-      ax88179_178a: Add support for 2500 link speed of AX88279
-      ax88179_178a: EEE setup for AX88179A-based chips
-      ax88179_178a: Obtain speed and duplex from Interrupt URB
-      ax88179_178a: Add support for ethtool pause parameter configuration
-      ax88179_178a: Add VLAN offload support for AX88179A
-      ax88179_178a: Add ethtool get_drvinfo
-      ax88179_178a: Add support for AX88179A/772D/279 EEPROM access
-      ax88179_178a: Add AX179A/AX279 multicast configuration
-
- drivers/net/usb/ax88179_178a.c | 1435 ++++++++++++++++++++++++++++++++++++----
- 1 file changed, 1298 insertions(+), 137 deletions(-)
----
-base-commit: 1a9edf8be190decb17227e3cba540513d93ebb85
-change-id: 20260630-ax88179a-a1d89fe21730
-
-Best regards,
 -- 
-Birger Koblitz <mail@birger-koblitz.de>
+2.47.3
 
