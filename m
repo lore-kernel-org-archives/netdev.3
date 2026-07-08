@@ -1,114 +1,118 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D46EB30D406
-	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 14:36:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CD73390228;
+	Wed,  8 Jul 2026 14:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783521418; cv=none; b=QD9HiNvsRDPLhhOnajUS7owk3XpxfnNGacsRo2mfYWnIKeMu/etU4EIXKMx4d9pz6HhKyRBmXOoBtByiaippyDzG2TrdM21x2XYGvKdTQDEGuEZeSiYgZeEMkjh+wyFhyyfHQID2hwE4w5Qon3aRkl6cuh3IroUYExEaibLlhbQ=
+	t=1783522525; cv=none; b=lECXL9R5ViXOWkYZtHH/c6Yqy7yV4VozRShKqNm5hBhBNGk/mIethq+zhmN8ktuOwjPf1UAm98tQgwuRgzUGAbHf/6zQcV6HZgxIId8gvt3JGPtW0PK9xnGNC0+Aj1/CTqYD44cxBzjcNKRx8aDV4oh3+d2CVti0iJ8aWQH/OH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783521418; c=relaxed/simple;
-	bh=pbvyAJM+rCULUC9AV5t8u+o/XnjXzKnrgqOeNsVlCYY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cw6krvhhGBRw4bPIPALgOsHdIf6vnW6Mio1jpyRA+FxZrlkpg9SC3IZxlG6jLJGIY8octbZIwThrVyPhf1NK5RxZG4OLtDv9arQYKRD7k8MUihrnuD2UtE7+rl5BWyI7LEYOww6ANWar+mHmKUcnGNgFnaKVmZQLOyBIUBUBClw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bf0Y7f8L; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783522525; c=relaxed/simple;
+	bh=8FhydZ5T6HRYZO1CUeYB4dyiCSrzViAcpUgRLUr8FGE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lDqECGGqAv/K8iNiHQgOYUbpAzz6KaspXfStnSid8Nsf05jpJ7X0LhAPlfWcG/6wZC3Wk5A6tgzq5mp5wceh+fMJGL7nNW9bs2yukhARnpVquKjwvMqKeBSlHPVaX21hUp0GjQA25VGEO0noaX1JgDcOnzHxdhDoRblOzJ/62Lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xW4i8IH0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bf0Y7f8L"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 072261F000E9;
-	Wed,  8 Jul 2026 14:36:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783521417;
-	bh=exnNu2I5aI5H24F1WtiUJW2O63f75UQrbEQvXGcBk5s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bf0Y7f8LcK5njMeKKfJmq+s6ioYdgQLclm1vrgIVwKCC9dIAQv/DWPWNfgO/WLO6W
-	 CumTgWja4ZYeg2DRgEINH10R5BEwyG2Qal4dSILLMNpud5LoQWUfgE4BWpQ8o1xSiR
-	 fN4BPeU+dcpycQF3lCX+8o/Z1kJMATH5MdEAFzO866liybnj3pwTCewDNtoAFdl9Up
-	 CjntL4QoqsBvjeHhGjOW3NP0vyJ7sUZD7OY/MSJFb+XUz97jpQHqDZn/w2A82szYRR
-	 d90PaZhfzowdC3Ph4KHJrGpZyr8fWbnLCoviNrDL1MCRsVYdm7OyhMbpNj0jWHO7Pl
-	 eNvTxgDHXsF2w==
-From: Simon Horman <horms@kernel.org>
-To: mheib@redhat.com
-Cc: Simon Horman <horms@kernel.org>,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	jiri@resnulli.us,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	corbet@lwn.net,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch
-Subject: Re: [PATCH iwl-next v3 2/2] i40e: add devlink parameter for Flow Director ATR sample rate
-Date: Wed,  8 Jul 2026 15:36:51 +0100
-Message-ID: <20260708143651.1491857-1-horms@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260701093830.948756-2-mheib@redhat.com>
-References: <20260701093830.948756-2-mheib@redhat.com>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xW4i8IH0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AE281F000E9;
+	Wed,  8 Jul 2026 14:55:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1783522523;
+	bh=N4tk33+gGzEvWhx3TAYATpFb6wxOHUQmG8/nMmeWOk0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=xW4i8IH00Xp6ZAjNrt4/A3qUb/gBuHTe/GlvTkuACu4a9Pz0zHAJa6o5Zjifg3gJ7
+	 RZjLOgySpbzaGfHe1VBkUx6uoZ7r9my1/m1uZVWhbuNgeO+eZ7cckcAXUw1lPNde4o
+	 QVN2IHGaRvCryL30/1DVjQWiXXoyUMZ7O05dyy0E=
+Date: Wed, 8 Jul 2026 16:55:20 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Yuan Tan <yuantan098@gmail.com>
+Cc: linux-kernel@vger.kernel.org, workflows@vger.kernel.org,
+	jhs@mojatatu.com, sven@narfation.org, netdev@vger.kernel.org,
+	netfilter-devel@vger.kernel.org, linux-crypto@vger.kernel.org
+Subject: Re: [RFC] VEGA: a syzbot-like workflow for LLM-found kernel bugs
+Message-ID: <2026070828-carried-extortion-789e@gregkh>
+References: <20260708092247.4188498-1-yuantan098@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260708092247.4188498-1-yuantan098@gmail.com>
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev
----
-i40e: add devlink parameter for Flow Director ATR sample rate
+On Wed, Jul 08, 2026 at 02:22:47AM -0700, Yuan Tan wrote:
+> Hi all,
+> 
+> We would like to ask for feedback on a proposed workflow for reporting Linux
+> kernel bugs found by an LLM-assisted code auditing tool that we have
+> been developing since earlier this year.
+> 
+> Since February, we have been developing an LLM-driven kernel code auditing
+> tool called VEGA. It started as a side project, but the results became much
+> substantial than we expected: VEGA has found hundreds of valid bugs in Linux
+> kernel.
+> 
+> That immediately created a practical problem: we do not want to dump a large
+> pile of bug reports onto mail lists and annoy the maintainers.
 
-This commit introduces a runtime devlink parameter to tune the Flow Director
-ATR sample rate. This allows dynamic adjustments to the sampling interval
-without rebuilding the driver, which can help reduce TCP packet reordering
-on systems with high-rate workloads.
+True, which is why we all end up with long lists of issues/patches at
+the moment.  The initial reaction is "we need a dashboard for everyone
+to collab around!" like you did here, but I'd like to say this is not
+the best thing to do at all.
 
-> diff --git a/drivers/net/ethernet/intel/i40e/i40e_devlink.c b/drivers/net/ethernet/intel/i40e/i40e_devlink.c
-> index 229179ccc1319..cf487efdd803d 100644
-> --- a/drivers/net/ethernet/intel/i40e/i40e_devlink.c
-> +++ b/drivers/net/ethernet/intel/i40e/i40e_devlink.c
-[ ... ]
-> @@ -33,12 +33,48 @@ static int i40e_max_mac_per_vf_get(struct devlink *devlink,
->  	return 0;
->  }
->  
-> +static int i40e_atr_sample_rate_set(struct devlink *devlink,
-> +				    u32 id,
-> +				    struct devlink_param_gset_ctx *ctx,
-> +				    struct netlink_ext_ack *extack)
-> +{
-> +	struct i40e_pf *pf = devlink_priv(devlink);
-> +	u32 sample_rate = ctx->val.vu32;
-> +
-> +	pf->atr_sample_rate = sample_rate;
+syzbot can get away with a dashboard because someone is tending to it,
+triaging the "serious" bugs before they become public, and only letting
+the "would be nice to fix one day" type issues remain.  That's a huge
+resource commitment that Google has made here, and that's great, but I
+doubt that anyone else will have those resources to do this type of
+thing.
 
-[Severity: Low]
-Does modifying pf->atr_sample_rate concurrently with the Tx fast path
-introduce a data race?
+Instead, let's just work to get these things fixed.  We all have
+hundreds of patches/reports in our internal systems right now,
+attempting to triage/rank/coordinate would just waste time.  In other
+words, just grind through them, send patches out, and get these fixed.
 
-In the Tx fast path, i40e_atr() reads this value locklessly. If the devlink
-callback sets this to 0 between the two reads in i40e_atr():
+I'm doing this now, and I know many others are as well.  We are all
+running "different" tools, and so we find different issues, so we can
+all just keep sending patches as we get them done.  It's going to take a
+lot of effort (I've somehow convinced 8 interns to help me out with this
+this summer), but once we get it done, we'll be much better off.
 
-drivers/net/ethernet/intel/i40e/i40e_txrx.c:i40e_atr() {
-        if (!pf->atr_sample_rate)
-                return;
-        ...
-        if (tx_ring->atr_count < pf->atr_sample_rate)
-        ...
-}
+> The first thing we tried was to fix as many as we could ourselves. We
+> started working with a group of student volunteers. Most of them are
+> college students, so we have been training them, reviewing their patches,
+> and trying to build an internal review process before anything is sent to
+> the mailing list. The goal is to turn these findings into useful fixes, and
+> also to help new contributors grow into people who can reduce maintainer
+> workload instead of adding to it.
+> 
+> The process was not perfect. Some patches were not good enough, and we also
+> made some mistakes early on when deciding what should be called a security
+> issue.  Our internal review process has been improving with the help of the
+> community.
 
-Could this race lead to a situation where the second check evaluates
-tx_ring->atr_count against 0, unintentionally programming an extra Flow
-Director filter?
+That's great, keep it up!
 
-While the functional impact might just be a single extra sampled packet,
-should we use READ_ONCE() in the fast path and WRITE_ONCE() here to avoid
-KCSAN data race warnings and ensure a consistent value is used throughout
-the function?
+> But the remaining queue is still too large for us to handle.
+> 
+> Recently Jamal pointed out problems around our tags. That made me realize
+> that we should probably stop treating this as an ad-hoc patch effort and
+> build something closer to syzbot: public, reproducible, trackable,
+> deduplicated, and useful to maintainers.
 
-> +	return 0;
-> +}
+Again, I think that effort is going to be larger than just getting the
+patches fixed and pushed out.  It also turns into a central
+point-of-failure, which is what we do not want to have at all for the
+kernel.
 
-[ ... ]
+But hey, I could be totally wrong.  Maybe some generous company that is
+involved in unleashing this hell on us would be so kind as to pony up to
+do the work to create this and help fix the issues that their tools are
+finding.  Just like Google did in the past, there is precedent, but for
+some reason people don't like learning from history...
+
+It's going to be a long 18 months...
+
+greg k-h
