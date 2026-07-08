@@ -1,74 +1,102 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6ABB40245A
-	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 10:29:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA3C422526
+	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 10:29:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783506550; cv=none; b=tbedXWaC+hKV/LiRH7qyX/h4i5CXNfI1jp8qGr85hW3HoaWF399u1WDfQKq+4aLaiSdcEvFHoVp+DVjzxNB4IRnw99KNmDhhyAifqKVygQq+OcOKw7Cs75a4ZhPtdDDfxbdq2jAChst9UwNjEW1juRWPEdDUBysGqfsN/75+9xY=
+	t=1783506565; cv=none; b=tO5JLqyFLAW1Zdm3Pk9hunskaNUZ6MAl7nQI3S9qgFmp9J4rBbHkh/gxQUxhA8LH3CoYpgf8AWyG4MNz52aYk9R42ZmdqY8RtqAePp1VkCA+2QxbeI23is0qfMplM0FWDwMujOAo37sSGpGGRfwlopHJzclAb/UsBq6dPO77y/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783506550; c=relaxed/simple;
-	bh=2t3E1/0xS0XXOKRO6cCSiH4uZyYW+8gF84n/unnSMRE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KTVQd95kKTm+Omwd5wGxhTvOt4uS44IT3ReaBG2C4jQmoHK24p5ES0wJwVIhkpxeSA3zk4vTjYuIgGoBh9tFST29Rz1SWqRtr0MZx28LLyiBJb3LIfaR/sWrSERqY70TX8WzbgHwVdVDo56R4tk2GxSYDLY5H4TO/SDie12QlrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cbvY2dAn; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1783506565; c=relaxed/simple;
+	bh=5P3Ch4NcxEeqmveBzaLX+zkEGpQ11ii8Z8OoJFfzhLA=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=dCCFpUWgsu0xJ+kDGWyfErvrSfatN0HdehxBInKtosmA1J5IcFrMwfoWIvKmraUGlEwwy71EvlnEcJNLkocDHEM9bxRmw+weEXhvL0cxpKKM0ipEPXPTPU2uixE5K1YWZye+q9dnfAcQkXJZHg4R8/hcET9mBA1BBhlxPRDwYdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NKWL9nLv; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=SEjAzWqw; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cbvY2dAn"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NKWL9nLv";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="SEjAzWqw"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783506542;
+	s=mimecast20190719; t=1783506553;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ccaL/aUC9kUBKct9kVBnzfixSBmhgaadjyvZzfo3xN4=;
-	b=cbvY2dAn2TGpYUpYDoIpGF7pAgpE3lDrb1ul3gaJfhmbLC2+CEUEmBG8iw6SXsqERtdJhi
-	HjwynMnmMCvTlTQlyA0IilLmvLgcRr20issEZ+0TfYJG/2L6avhDXfwgiExII4uyRKsB6o
-	/pESYfeEoJcEDuqMmjuyQUmeEOEemh4=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-676-UlnjUOy7NbKmTa4BUgMvaA-1; Wed,
- 08 Jul 2026 06:27:32 -0400
-X-MC-Unique: UlnjUOy7NbKmTa4BUgMvaA-1
-X-Mimecast-MFC-AGG-ID: UlnjUOy7NbKmTa4BUgMvaA_1783506449
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 704151800651;
-	Wed,  8 Jul 2026 10:27:28 +0000 (UTC)
-Received: from gerbillo.redhat.com (unknown [10.44.49.133])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id BB1C418005B9;
-	Wed,  8 Jul 2026 10:27:21 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
-To: theo.lebrun@bootlin.com
-Cc: conor.dooley@microchip.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	richardcochran@gmail.com,
-	linux@armlinux.org.uk,
-	netdev@vger.kernel.org,
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=VKbeenKshINiNwrwcYYrN7tTsXlZGXZFYsepVeLpk40=;
+	b=NKWL9nLvY5HJGIze7tRblV46zn5vvjUs3vZn8OJEoB4iYOnt+fclcK9mS7N2W1rCAPhmEM
+	IgUWnQ9GjSwgZzBdX8KjZGCI9fjGyfRg3uiwBkFxpWq7rJ5T7wXJB7/72Lph7iOn2S6G4a
+	8ZlZUFXq62KWtkXPCcRuW6XSZldoNd4=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-172-s8Wny_R0O7u7KEgigQIjMA-1; Wed, 08 Jul 2026 06:29:08 -0400
+X-MC-Unique: s8Wny_R0O7u7KEgigQIjMA-1
+X-Mimecast-MFC-AGG-ID: s8Wny_R0O7u7KEgigQIjMA_1783506548
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-493bf840a69so4278265e9.3
+        for <netdev@vger.kernel.org>; Wed, 08 Jul 2026 03:29:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1783506547; x=1784111347; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:content-type:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=VKbeenKshINiNwrwcYYrN7tTsXlZGXZFYsepVeLpk40=;
+        b=SEjAzWqwOK8G5rxOGN2R5pLijuYMcr/c+SEWjJ28pwAlI47Etd+lnCT2SxFZAPwgCX
+         OOpatT43NToL3n7h3emdpEjjvLmniC+HuoNWIpzoU1SoZHdNLzmetYEM11pgmLcD0BGp
+         pvsaIdBsJAUnHARNUqg1BOHttU2BP9lyXUBETGK3ISHXAfBEqHGl+LbmjdStPrnLnA+0
+         vwiHVzi67TkhtRjdOd4AAg2Am0p8oYLvwTwUWD383X91fBn9/9sDQH8GzWPJ7jKacBXx
+         /OQosDD7WSWYH+1/+gX/qwUHRh3VN8hdWOnG1n2Fem2RdPTZHZQuWvZ30SaQYFtKcuJZ
+         I2yA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783506547; x=1784111347;
+        h=content-transfer-encoding:mime-version:content-type:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=VKbeenKshINiNwrwcYYrN7tTsXlZGXZFYsepVeLpk40=;
+        b=R0mWe0I3mZBY4ynz4gKZPgkwGsOsoSNzcS1FeLx1gJKZQrBHEpgvXmymFMXQs1J7tc
+         RSE87Q8p9ALAthC+n9DjDwI+nWQ5A3PYGQAllnVmIFC3Ksc1kONXfEmin1D15nZhrG4g
+         OFWNBMAImaVE7UWMhOvLsskQd3esmeyAdghEAiRIIfxornQnUeMGXVL7uGMQgsySurjY
+         JH2QnGOXLIBQgLAhlz9kaSqBN7D/xrSBI44j0A4IgOvjMqfpKoT1Pcr2vjcQqFARDalE
+         9byzTtlVK5Aks5uo2L/TYR2v/5IIpJXKFDAjLSstEdN+y4a3epZfxuN+UjTBztDLq6qJ
+         DV9w==
+X-Gm-Message-State: AOJu0YwwMUp2aQ50+7qHcjY1it6D23MfUYMUjF0umx6FzjfC2zotOrWx
+	qqKLJklK/0CHr+xf3mQK9x0Hl2ri0w2APUhAXjyN9vAcNXtWVlEZtxbR8VYayIF5I960Uq9Ckkq
+	qRZOO7cHz3Ej/lHcvZMMgMHJ3pvbM/wPxfw3omaAhJilAaP9H+EpCL3U/qB2UkCtaaPGbJVRcIi
+	tQolU/DBaJp1e/J8p83BjgPR73ymcUzdbV+qPeO77R/g==
+X-Gm-Gg: AfdE7clkH0QT8TRMC/bHqlT8SbCFqvPE95HkzuHVRHYULZPuGhO8RUCz4dPqz+6PUzu
+	LxFL00JwBJQmeXlxO8Foewxra0H4hF4Jqt/E5+gJZwRQkZCe17QhkQFXLeT/KT2pWf/1csVbcQ1
+	jP/twO451tW+yV2+A+si0j1kPJ3CWxtqKQRoFAd305cPxA+iaVSvQXwwBiGn4zjN/gk8FqG5oU1
+	Buz2o/dlANL9hlgr4w4fGA/BnR3fIjlIJ4cD5K64GXCFhrkXN9CNOB/gquM2Uy1T9Iq2r8Zuor1
+	Y4pLGvztueikRQ0cKZ5q+FSSAFnc37GBvU9uNqxwznp10TdLyNkODw2g35Ha5/lFOQSizo0lTLT
+	YXvyv5VtZbqyG0SHECM/ijUimdf58oxx3+RhUXc3nOEn1o3s=
+X-Received: by 2002:a05:600c:628e:b0:492:6113:d4fc with SMTP id 5b1f17b1804b1-493e68cfbbcmr20997275e9.17.1783506547644;
+        Wed, 08 Jul 2026 03:29:07 -0700 (PDT)
+X-Received: by 2002:a05:600c:628e:b0:492:6113:d4fc with SMTP id 5b1f17b1804b1-493e68cfbbcmr20996675e9.17.1783506547139;
+        Wed, 08 Jul 2026 03:29:07 -0700 (PDT)
+Received: from stex1 (host-79-34-22-35.business.telecomitalia.it. [79.34.22.35])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493e0ebf593sm135475255e9.0.2026.07.08.03.29.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Jul 2026 03:29:06 -0700 (PDT)
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Jason Wang <jasowangio@gmail.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eric Dumazet <edumazet@google.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	linux-kernel@vger.kernel.org,
-	nicolas.ferre@microchip.com,
-	claudiu.beznea@tuxon.dev,
-	pvalerio@redhat.com,
-	nb@tipi-net.de,
-	vladimir.kondratiev@mobileye.com,
-	gregory.clement@bootlin.com,
-	benoit.monin@bootlin.com,
-	tawfik.bayouk@mobileye.com,
-	thomas.petazzoni@bootlin.com,
-	maxime.chevallier@bootlin.com
-Subject: Re: [PATCH net-next v3 07/15] net: macb: introduce macb_context struct for buffer management
-Date: Wed,  8 Jul 2026 12:27:16 +0200
-Message-ID: <20260708102716.169767-1-pabeni@redhat.com>
-In-Reply-To: <20260701-macb-context-v3-7-00268d5b1502@bootlin.com>
-References: <20260701-macb-context-v3-7-00268d5b1502@bootlin.com>
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	kvm@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	virtualization@lists.linux.dev,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jason Wang <jasowang@redhat.com>
+Subject: [PATCH net v2 0/2] vsock/virtio: collapse receive queue under memory pressure
+Date: Wed,  8 Jul 2026 12:29:02 +0200
+Message-ID: <20260708102904.50732-1-sgarzare@redhat.com>
+X-Mailer: git-send-email 2.55.0
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -76,179 +104,53 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-From: AI Reviewer <ai@example.com>
+This series contains a patch (the first one) that is part of work I'm
+doing to improve the tracking of memory used by AF_VSOCK sockets.
+The second patch is a test for our suite that highlights the issue.
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/
----
-net: macb: introduce macb_context struct for buffer management
+Since Brien reported an issue with his environment (based on Linux 6.12.y)
+related to the work I’m doing, I extracted this patch and tried to make it
+as easy as possible to backport. Brien tested it by backporting it to
+6.12.y, which now contains the backport of the 059b7dbd20a6
+("vsock/virtio: fix potential unbounded skb queue").
 
-This patch moves per-queue ring buffers and ring-size parameters out of
-struct macb / struct macb_queue into a new struct macb_context that is
-allocated on open and freed on close, so future patches can swap in a
-new context while the interface is running.
+This patch primarily fixes STREAM sockets, but also partially fixes
+SEQPACKET (with the exception of EOMs, which are kept in separate skbs to
+avoid overcomplicating the code).
 
-> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-> index 951a7f080225..dfb1d49d841c 100644
-> --- a/drivers/net/ethernet/cadence/macb_main.c
-> +++ b/drivers/net/ethernet/cadence/macb_main.c
+The rest of the work, I feel, is more net-next material and still needs
+some work to be completed.
 
-[ ... ]
+Changelog
+---------
 
-> @@ -1257,6 +1288,7 @@ static void macb_tx_error_task(struct work_struct *work)
->  	struct macb_queue *queue = container_of(work, struct macb_queue,
->  						tx_error_task);
->  	unsigned int q = queue - queue->bp->queues;
-> +	struct macb_txq *txq = macb_txq(queue);
->  	struct macb *bp = queue->bp;
+v2:
+- defined MAX_COLLAPSE_LEN macro instead of using a variable [Paolo]
+- added a threshold to avoid walking all the queue while collapsing
+  [Paolo]
+- collapsed the queue before calling virtio_transport_inc_rx_pkt().
+  While working on the threshold, I figured out that the check I was
+  introducing can also be used to proactively trigger the collapse, so I
+  moved the call to virtio_transport_collapse_rx_queue() before acquiring
+  the rx_lock to have also a better diff to simplify backports
+- improved code readability (removed `out` label, `keep` initialization,
+  etc.) [Paolo + other small stuff]
+- Brien kindly retested this version as well (thank you so much)
 
-[High]
-Can macb_tx_error_task() dereference a freed context?
+v1: https://lore.kernel.org/netdev/20260626134823.206676-1-sgarzare@redhat.com/
 
-macb_tx_error_task is scheduled from macb_interrupt():
+Thanks,
+Stefano
 
-    schedule_work(&queue->tx_error_task);
+Stefano Garzarella (2):
+  vsock/virtio: collapse receive queue under memory pressure
+  vsock/test: add test for small packets under pressure
 
-After this patch, the very first thing the worker does is:
+ net/vmw_vsock/virtio_transport_common.c | 165 +++++++++++++++++++++++-
+ tools/testing/vsock/vsock_test.c        |  87 +++++++++++++
+ 2 files changed, 251 insertions(+), 1 deletion(-)
 
-    struct macb_txq *txq = macb_txq(queue);
-
-which expands to &bp->ctx->txq[q] and dereferences bp->ctx.
-
-Looking at macb_close():
-
-    macb_reset_hw(bp);
-    ...
-    macb_free(bp);
-    kfree(bp->ctx);
-    bp->ctx = NULL;
-
-There is no cancel_work_sync(&queue->tx_error_task), and macb_reset_hw()
-does not drain the workqueue. If an interrupt scheduled the work just
-before close, or the work was already pending, the worker can run after
-kfree(bp->ctx) and hit a NULL dereference (and a use-after-free if
-macb_open() re-allocates ctx concurrently via ethtool ring reconfig).
-
-The same reasoning applies to bp->hresp_err_bh_work, which is queued
-from macb_interrupt() and whose handler calls
-mog_init_rings()/macb_init_buffers() that read bp->ctx->tx_ring_size and
-bp->ctx->{tx,rx}q[q]. cancel_work_sync(&bp->hresp_err_bh_work) is only
-called from macb_remove(), not macb_close().
-
-Pre-patch these fields lived inside the embedded struct macb_queue so a
-late worker would touch stale-but-addressable memory; post-patch the
-first indirection through bp->ctx faults.
-
-Would adding cancel_work_sync(&queue->tx_error_task) per queue and
-cancel_work_sync(&bp->hresp_err_bh_work) before kfree(bp->ctx) in
-macb_close() close this window?
-
-[ ... ]
-
-> @@ -3690,8 +3778,8 @@ static int macb_set_ringparam(struct net_device *netdev,
->  		macb_close(bp->netdev);
->  	}
->  
-> -	bp->rx_ring_size = new_rx_size;
-> -	bp->tx_ring_size = new_tx_size;
-> +	bp->configured_rx_ring_size = new_rx_size;
-> +	bp->configured_tx_ring_size = new_tx_size;
->  
->  	if (reset)
->  		macb_open(bp->netdev);
-
-[Medium]
-Should the return value of macb_open() be checked here?
-
-This patch adds a new failure point inside macb_open():
-
-    bp->ctx = kzalloc_obj(*bp->ctx);
-    if (!bp->ctx) {
-        err = -ENOMEM;
-        goto pm_exit;
-    }
-
-On failure, bp->ctx remains NULL and the interface stays down, but
-macb_set_ringparam() ignores the return value and reports success to
-userspace. The commit message says the motivation is to improve
-reliability under memory pressure, but this caller silently swallows the
-new allocation failure.
-
-[ ... ]
-
-> @@ -5039,6 +5125,12 @@ static int at91ether_open(struct net_device *netdev)
->  	if (ret < 0)
->  		return ret;
->  
-> +	bp->ctx = kzalloc_obj(*bp->ctx);
-> +	if (!bp->ctx) {
-> +		ret = -ENOMEM;
-> +		goto pm_exit;
-> +	}
-> +
->  	/* Clear internal statistics */
->  	ctl = macb_readl(bp, NCR);
->  	macb_writel(bp, NCR, ctl | MACB_BIT(CLRSTAT));
-
-[Low]
-Should bp->ctx->rx_ring_size, tx_ring_size and rx_buffer_size be
-initialized on this path?
-
-macb_open() sets them from configured_{rx,tx}_ring_size and calls
-macb_init_rx_buffer_size(), but at91ether_open() leaves them at zero
-after kzalloc_obj().
-
-Helpers such as macb_rx_ring_wrap() compute:
-
-    return index & (bp->ctx->rx_ring_size - 1);
-
-which becomes index & 0xFFFFFFFF when rx_ring_size is 0. It happens to
-be harmless today because the at91ether path constrains indices to
-[0, AT91ETHER_MAX_RX_DESCR-1] independently and macb_get_regs() reports
-zeroed head/tail for the tx-less at91ether, but pre-patch macb_init_dflt()
-unconditionally set bp->rx_ring_size = DEFAULT_RX_RING_SIZE.
-
-Any future shared helper that used tx_ring_size as a stride or divisor
-would misbehave on at91ether.
-
-[ ... ]
-
-> @@ -5076,6 +5171,9 @@ static int at91ether_close(struct net_device *netdev)
->  
->  	at91ether_stop(bp);
->  
-> +	kfree(bp->ctx);
-> +	bp->ctx = NULL;
-> +
->  	pm_runtime_put(&bp->pdev->dev);
->  
->  	return 0;
-
-[High]
-Is there IRQ synchronization missing before freeing bp->ctx on this
-path?
-
-at91ether_stop() disables MAC RX/TX and writes IDR to mask further
-interrupts, but does not synchronize with a handler already running or
-already dispatched on another CPU. at91ether_interrupt() calls
-at91ether_rx(), which after this patch does:
-
-    struct macb_rxq *rxq = &bp->ctx->rxq[0];
-    ...
-    desc = macb_rx_desc(queue, rxq->tail);
-    ...
-    p_recv = rxq->buffers + rxq->tail * AT91ETHER_MAX_RBUFF_SZ;
-
-If the handler is in flight when kfree(bp->ctx); bp->ctx = NULL runs,
-the next access through bp->ctx faults. The macb_open()/macb_close()
-path is somewhat protected by napi_disable() before macb_free(), but
-at91ether does not use NAPI and has no equivalent barrier.
-
-Would a synchronize_irq(bp->netdev->irq) between at91ether_stop() and
-kfree(bp->ctx) close this?
 -- 
-This is an AI-generated review.
+2.55.0
 
