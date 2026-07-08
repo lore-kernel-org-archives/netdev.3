@@ -1,247 +1,102 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F073FD13E
-	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 08:59:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6854A3E63B7;
+	Wed,  8 Jul 2026 09:10:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783501185; cv=none; b=kuWowS5N5Xv2Ca6rxgHGJeHAIXlWXdw5Fy6oatZk+zxEi78vJ+FLjkjJduNViUAkYhwO1GBQCOTzOeqUXZISXE1BbmyHRc/nAl165e6mojS5yGJC19rNlNa7QrRgR1hzv1kIgofofttFwx1ssYyqqJIoqa7G7+9fhWGgi7sfb1M=
+	t=1783501842; cv=none; b=oSmA1BokKEFnxHHMU4Fxun36GWq8PBKhF2Zo3dNsCnRdMmHe+ieVeukGfDwQY9ZPjpov277grBWxurOiG+UpnAlw1K+br7+sSn2IBZp7EkwxbZBS9UI0kt/419YBmYcxaGDCu669QNUFqE/mIjPbBJ0lTEU3/pmpM/WoEFPpnt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783501185; c=relaxed/simple;
-	bh=Hxj1jqc916O0uzfL9e7xmGijfaiq/P1jtACMCIsM/kQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GgQm0aSphCalBLURKogYyfuqH/gfEMHc/RDtpEmPMF8EaEAedA5+ligIua+N/vgBBDLoxmMjdpI5Hc/jmZRDmnZQlUO7WYwVSUGjC0ZtPWJgP1eWP4GUZhWVOnEQwS5j5dyzwm7M+ZaaTesS6WGkHSME+lx32CNJE6ZTgUWKR+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=oya2JJ9x; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+	s=arc-20240116; t=1783501842; c=relaxed/simple;
+	bh=0sUL3+aJiUYmMDcQh9ThfNfCmQ/IiGTOA4cRVGsQcuE=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=h+pO3D2v4Rm32qcBP+nRz3XnUSQhI9f/KjgW6im23XjdR7fBQbVCvocTvq3JkJJ1cqUUE7NrUB41Rn18xPTyvf8oLYUWWItym0fe62SuTcHfZT7/6UlNwXcwVTcPQvvhP5yN7wK1PswPJKodShZ2jYwpVNLKghcztrNnnMt9PxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mVzIDkyV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="oya2JJ9x"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-493c00f74baso2656835e9.0
-        for <netdev@vger.kernel.org>; Wed, 08 Jul 2026 01:59:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1783501182; x=1784105982; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=5D6baHSlULcTUcRv1byvFK7PiJs9aEAD/KVj4sL3W1Q=;
-        b=oya2JJ9xNdc8CX9J7lFjIn2TFMrsc3OSU3PR6M5a1YgmeDlP6vfJE5NuEL3/JUQbIm
-         zc7ppyFr52LPd+LLm2kP4L6iL05c4TREy2Ckys7DlMnr6P61586d5r51ATQ6XkkYCRYE
-         AlopDYO6RnzmMhXA9+uoT6eIsS9rK/mDcztpMBWtSCIuJZ8y+d0HZbzWag6Jk87KYvCv
-         j/BpXdGbjhJmtnhAJwNilvy/cNRRwLtUHQ4uEDWAgMJyJ7MpQNZWQqFHNVpc6a/Eiy78
-         jJ+aN6DpAN78jdzvVYXVQ3bDOL50jqgvQdZm/xz1D2xWd2YQC3T0Hz1btQQiUdcmeroE
-         IX/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783501182; x=1784105982;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5D6baHSlULcTUcRv1byvFK7PiJs9aEAD/KVj4sL3W1Q=;
-        b=grCyf5sK+aq9hBgi2F807Ft08Sp5X+lpfXZlrIqWnFSzQz91GSlodLeZmeFKxSneDo
-         K+7fnQ7p08pw+qq1vgv6J0V4cUWaYLjA/l8G53T1BOw/OzC7N3bCDlVFnoI1dt8u4OsJ
-         W869AAm2FAJ8cQaMY0g+VSRXW1CQBEuIHom6HJFw0CpEj2S29ro38juF3yQQCo2JC25Q
-         IOdhX0CcnRMJ3yWpyQH9ZTWmgqg67bOhOlqVbwiYtVU/sWoyFFsP+ZRbkCuOLbX+1Hax
-         OjGdBgVVQBDehLCGCLjhPxUupPXGWfdufb9ahiYT2tOPyFn0cQRKnRt0EH21e8HD2ZMS
-         bWZg==
-X-Forwarded-Encrypted: i=1; AHgh+Rog5aRu4Z3Yy7uTB5X0ivt1Mtv8le1gzN6zI/RUEo+zj1WEBjIjVi2EwNHmxCI3sBrhuPnzX50=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOR9K/FxgmmHALWNdFI1RpLqskup28V6AK2q9UXsPWHJ35GDZA
-	cZgocFaaWMYry36L+tHQAcnnIG8mLIcZPyBUNIK09itt0Qs/Vj2GMkisFD0Ro3XUUf0=
-X-Gm-Gg: AfdE7ckjsNZ+NdnkUlMnkehlgcXR62UQ3PtkLkn6cnCjUrzB5g8Uh2M41qEpa7cxG3J
-	sdqNMXc/LmTe0XN06q6oS+LY09U2XO+a9MUVCHPHRbpyRn5tXN/0jhCyEeZaNzVZbKzeXcHYX23
-	lo0J2KFNbxUnA5z1U0ltcGcBYXmudqIqWipegjvMSamh1LQkSA33D8iiUW+sbU3eXPEeekLHUWw
-	kgiWGZTfCEl11/Fwo7SXKx9cm8thjAMBa59jwPfP+U93P5IAOJTVGLPmIGTik8tZ6x9YXmK597W
-	CE7mgaDWH40QavW8CeVEjN0OmCyjHN7dyF5rewYeM0YoxOMd9393XPnbJ/gtoV8PjRqARYC4pIF
-	IJnr6jYkrDSPcCcidDkTbWlo5/9vwtBVtqyC6qeNZ+V3zZK7q8P8LWzCwUqI/HRpOb49KCo1HdG
-	WZx4IMeBwG4u41TFU0Lp3e
-X-Received: by 2002:a05:600c:34c3:b0:493:e79e:daa6 with SMTP id 5b1f17b1804b1-493e79edba5mr10649235e9.33.1783501181720;
-        Wed, 08 Jul 2026 01:59:41 -0700 (PDT)
-Received: from localhost ([208.127.45.21])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493e0f3676dsm129473725e9.5.2026.07.08.01.59.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jul 2026 01:59:41 -0700 (PDT)
-Date: Wed, 8 Jul 2026 10:59:36 +0200
-From: Jiri Pirko <jiri@resnulli.us>
-To: Mark Bloch <mbloch@nvidia.com>
-Cc: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
-	Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, netdev@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH net-next V5 4/6] devlink: Apply eswitch mode boot defaults
-Message-ID: <ak4Muihtk40r3lfV@FV6GYCPJ69>
-References: <20260707174527.425134-1-mbloch@nvidia.com>
- <20260707174527.425134-5-mbloch@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mVzIDkyV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 452D21F000E9;
+	Wed,  8 Jul 2026 09:10:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783501841;
+	bh=AbHCrpgnhZAReBZ/2Y02VNZH638XGlqqfQepZimy0oQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=mVzIDkyV2CYGM9LAecPpz+jB6MW2r3IJF6gi3PMKHSKGW00fvPcT48/WFPJ80TXQ6
+	 255etu1ZQL+5U8qrOw27R+kTYQpKUv/AE0+ORg62j+1GkzGCrmn9DdItn5I0fIrpcR
+	 pn5ZkTjfuox3em2We0+nBon9NPrWkEpFtuYrvT+Rp+MMWtjAyWK2ATslzA13oIezka
+	 Hu48ndtjnDVYdSjKlJSqousP0KBZTd0XnhhnsrE1IcvLxYfjgPUSJoKgqn0YczzzBS
+	 04nNgydzbKyw12jcki/AgEui64+9TTwx9urI8rLIkX6dJ0gdRmWRW+CLPWzaB2dP6o
+	 QiKaGU3xdcYbw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0D8F3926388;
+	Wed,  8 Jul 2026 09:10:21 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260707174527.425134-5-mbloch@nvidia.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next 00/10] net: dsa: microchip: move non-common
+ function out of ksz_common.c
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178350182064.2389464.8671802680771875517.git-patchwork-notify@kernel.org>
+Date: Wed, 08 Jul 2026 09:10:20 +0000
+References: <20260702-clean-ksz-4th-v1-0-93441e695fa4@bootlin.com>
+In-Reply-To: <20260702-clean-ksz-4th-v1-0-93441e695fa4@bootlin.com>
+To: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
+Cc: woojung.huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch,
+ olteanv@gmail.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, linux@armlinux.org.uk, pascal.eberhard@se.com,
+ miquel.raynal@bootlin.com, thomas.petazzoni@bootlin.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, vladimir.oltean@nxp.com
 
-Tue, Jul 07, 2026 at 07:45:25PM +0200, mbloch@nvidia.com wrote:
->Apply parsed devlink_eswitch_mode= defaults after devlink registration
->and after successful reload.
->
->devl_register() may still be called before the device is ready for an
->eswitch mode change. Keep the registration path passive and let the
->regular devl_unlock() path queue the async apply work once the instance
->is registered and the default is still pending.
->
->The queueing path runs while the devlink instance lock is held, so the
->queued work gets its devlink reference before the caller drops the lock.
->The worker then takes the devlink instance lock normally and applies the
->default only if the instance is still registered and the default is still
->pending.
+Hello:
 
-This is very code-descriptive. What's the benefit of that?
+This series was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-
->
->For successful reloads that performed DRIVER_REINIT, devlink_reload()
->already holds the devlink instance lock and the driver has completed
->reload_up(). Clear pending work and apply the default directly from the
->reload path instead of queueing work.
->
->Preserve the user configured mode when it is set before devlink applies
->the default.
->
-
-[..]
-
-
->+void devlink_default_esw_mode_apply_locked(struct devlink *devlink)
->+{
->+	const struct devlink_ops *ops = devlink->ops;
->+	int err;
->+
->+	devl_assert_locked(devlink);
->+
->+	if (!devlink_default_esw_mode_match(devlink))
->+		return;
->+
->+	if (!ops->eswitch_mode_set) {
->+		if (!devlink_default_esw_mode_match_all)
->+			devl_warn(devlink,
->+				  "devlink_eswitch_mode= selected this device but eswitch mode setting is not supported\n");
->+		return;
->+	}
->+
->+	err = devlink_eswitch_mode_set(devlink, devlink_default_esw_mode, NULL);
->+	if (err)
->+		devl_warn(devlink,
->+			  "Couldn't apply default eswitch mode, err %d\n",
->+			  err);
->+}
->+
->+void devlink_default_esw_mode_queue_apply_work(struct devlink *devlink)
-
-eswitch/esw - we call it "eswitch" consistently everywhere. Why "esw"
-here?
-
-
-
->+{
->+	devl_assert_locked(devlink);
->+
->+	if (!devlink_default_esw_mode_enabled || !devlink_default_esw_mode_wq)
->+		return;
->+	if (!devlink->default_esw_mode_apply_pending ||
->+	    !__devl_is_registered(devlink))
->+		return;
->+	if (!devlink_try_get(devlink))
->+		return;
->+	if (!queue_work(devlink_default_esw_mode_wq,
->+			&devlink->default_esw_mode_apply_work))
->+		devlink_put(devlink);
->+}
->+
->+static void devlink_default_esw_mode_apply_work(struct work_struct *work)
->+{
->+	struct devlink *devlink;
->+
->+	devlink = container_of(work, struct devlink,
->+			       default_esw_mode_apply_work);
->+
-
-What happens if userspace eswitch mode set happens now? Any userspace
-attempt should cancel the default apply. I don't see such mechanism in
-your patches, did I miss it?
-
-
-
->+	devl_lock(devlink);
->+
->+	if (devl_is_registered(devlink) &&
->+	    devlink->default_esw_mode_apply_pending) {
->+		devlink_default_esw_mode_apply_locked(devlink);
->+		devlink->default_esw_mode_apply_pending = false;
->+	}
->+
->+	devl_unlock(devlink);
->+	devlink_put(devlink);
->+}
->+
->+void devlink_default_esw_mode_instance_init(struct devlink *devlink)
-
-Why "_instance_"? Care to drop?
-
-
->+{
->+	INIT_WORK(&devlink->default_esw_mode_apply_work,
->+		  devlink_default_esw_mode_apply_work);
->+	devlink->default_esw_mode_apply_pending = true;
->+}
->+
->+void devlink_default_esw_mode_apply_pending_clear(struct devlink *devlink)
->+{
->+	devl_assert_locked(devlink);
->+
->+	devlink->default_esw_mode_apply_pending = false;
->+}
->+
->+void devlink_default_esw_mode_instance_cleanup(struct devlink *devlink)
-
-Why "_instance_"? Care to drop?
-
-
->+{
->+	if (cancel_work_sync(&devlink->default_esw_mode_apply_work))
->+		devlink_put(devlink);
->+}
->+
-> static int __init devlink_default_esw_mode_setup(char *str)
-> {
-> 	devlink_default_esw_mode_param = str;
->@@ -228,10 +325,21 @@ int __init devlink_default_esw_mode_init(void)
-> 		return err;
-> 	}
+On Thu, 02 Jul 2026 11:07:22 +0200 you wrote:
+> Hi all,
 > 
->+	devlink_default_esw_mode_wq = alloc_workqueue("devlink_default_esw_mode",
->+						      WQ_UNBOUND | WQ_MEM_RECLAIM,
->+						      0);
->+	if (!devlink_default_esw_mode_wq) {
->+		devlink_default_esw_mode_param = NULL;
->+		devlink_default_esw_mode_nodes_clear();
->+		pr_warn("devlink: devlink_eswitch_mode parameter ignored, failed to allocate workqueue\n");
-
-Why you don't "return"  here? I think that we don't need to allow the
-case wq is not allocated.
-
-
->+	}
->+
-> 	return 0;
-> }
+> This series continues the rework of the KSZ driver initiated by three
+> previous series (see [1], [2] & [3]).
 > 
-> void __init devlink_default_esw_mode_cleanup(void)
-> {
->+	if (devlink_default_esw_mode_wq)
->+		destroy_workqueue(devlink_default_esw_mode_wq);
-> 	devlink_default_esw_mode_nodes_clear();
-> }
+> The KSZ driver handles more than 20 switches split in several families.
+> This was previously handled through a common set of dsa_switch_ops
+> operations that used device-specific ksz_dev_ops callbacks. The three
+> previous series have split this common struct dsa_switch_ops into 5
+> to connect the ksz_dev_ops's implentations directly to the new
+> dsa_swicth ops.
+> 
+> [...]
 
-[..]
+Here is the summary with links:
+  - [net-next,01/10] net: dsa: microchip: split ksz8_change_mtu()
+    https://git.kernel.org/netdev/net-next/c/15604320877e
+  - [net-next,02/10] net: dsa: microchip: split port_max_mtu() implementation
+    https://git.kernel.org/netdev/net-next/c/18a856b23680
+  - [net-next,03/10] net: dsa: microchip: make ksz_is_port_mac_global_usable() static
+    https://git.kernel.org/netdev/net-next/c/caf5d68b51e6
+  - [net-next,04/10] net: dsa: microchip: move ksz88xx stats handling in ksz8.c
+    https://git.kernel.org/netdev/net-next/c/a7e806f11f37
+  - [net-next,05/10] net: dsa: microchip: move ksz_get_gbit() and ksz_get_xmii() to ksz9477.c
+    https://git.kernel.org/netdev/net-next/c/7a83196e9012
+  - [net-next,06/10] net: dsa: microchip: move KSZ9477 errata handling to ksz9477.c
+    https://git.kernel.org/netdev/net-next/c/ab4b571d44fb
+  - [net-next,07/10] net: dsa: microchip: handle KSZ8-specific tc setup in ksz8.c
+    https://git.kernel.org/netdev/net-next/c/610106257cd7
+  - [net-next,08/10] net: dsa: microchip: move ksz9477_set_default_prio_queue_mapping() to ksz9477.c
+    https://git.kernel.org/netdev/net-next/c/e8de229a62ec
+  - [net-next,09/10] net: dsa: microchip: rename ksz9477_drive_strength_write()
+    https://git.kernel.org/netdev/net-next/c/da466bf62b01
+  - [net-next,10/10] net: dsa: microchip: move the drive strength config out of the common section
+    https://git.kernel.org/netdev/net-next/c/90c676dd4bb6
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
