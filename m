@@ -1,104 +1,117 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434B226738C
-	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 18:08:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 578E7377006
+	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 18:09:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783534123; cv=none; b=KEaRhts0mTNCbhveQd4R4QCLpYDQcbRAWgb5p/TX/of1hheGECiQbJA6yzFJHHjeVzhupd967CmPyR3FjtR/iZrEGX43PWqi9BDnPcyggSeQFveO4azs9wfSYonOwj69kfiegTRhgVwaxZtSDTf53rT9Cu4B4UvQwLBa6jqkkyQ=
+	t=1783534171; cv=none; b=ih9bg7rKdNSjUlJnnvXaXqzwgs6rJtEdh8YlbhC7i2Kvia4BfOxzVpLyxFcW6n+QQKUlRrMtz/B8D9wdk3KuAQ+Z66jrfDFKN3+IFiJtAghZ4gSwluZpFhvHffV8zGbEh+JodAoPpxhJMBNFro7tFI3QKXjXhYrKwfy/jqw96R0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783534123; c=relaxed/simple;
-	bh=KbokKl5nrwSqS7Q/jI+MxYq0pfmbv1r0nrns1022QFQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=E6ChGRlPc38i9lJq5lxmg7Cn0maQIb7BSdRY9DE38NdkRGPiOYHq3ZiU8GOZfuZ70ddUc1/JkXCWDMOuo/grmfH6Nbd8cBi/VIfgSC0npj+rKJ8tHPvnY4SOWqlVteFGQlskfWc/3nhmKgMuZRx0i+uCfiwSVG/v2QOyPF1HyAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=FKIgk6y+; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
+	s=arc-20240116; t=1783534171; c=relaxed/simple;
+	bh=1cslmbdwiNueRqfh2a3Jv4FoUlr/3mzm22PGhSNq6Bc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tyO9MAHd4XQG15RHrYOTuJ7VfVe/HGFkauza7mQLCxEisjapkRFmM0Be6Si26b3rEdhfJo/EN7oU6RU1a7xm+Rwz/yhleqqYlgFg24e15OvXB3kzOU/iltWEmuNZgFhCplAiXzLaTXAxAjHW1yBkcSrvh6hNjo5IXxJwcfVlWM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gviw6Nco; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="FKIgk6y+"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2c6b67d5fa1so799285ad.2
-        for <netdev@vger.kernel.org>; Wed, 08 Jul 2026 11:08:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1783534121; x=1784138921; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=TX0UR4nd5ReWUWVY7VHdaquK1A7gNg1IcwsjKOi92tM=;
-        b=FKIgk6y+0DuEjLIEzZLU+I9Ul3gMGuBThZVnzkebqKww/kMhp2zw7svb50nKozDz0h
-         NowvP4Vij1fI8QwhXpe+9x3Ze7tmVrY8EY7ZQ7Rt34q4SHCQO0CD8fs2Fphafryc+arc
-         WitUpMQzVYk4UY7ICK419XImFQfVsO8HADT/BFSvHwdPu7LZqs8Qvz6dvdEkqBYNm5wM
-         r10/ALqH0vPXewEqyKWXQPb/1r0TVf9nWsJYk8Et5o+KqCvNj7EVoqrLjTsYAKeHZN/0
-         W5n6xH5lt0ScxOby69r4Af7D9VfD2II8Sk+EQWcl0pwAjl+pSK21TVYF2yKZU9GG9hrp
-         uKXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783534121; x=1784138921;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=TX0UR4nd5ReWUWVY7VHdaquK1A7gNg1IcwsjKOi92tM=;
-        b=fIKaVxiHpuY8MCKgtscKF655ubllLEzpqfsjv+6vJ1FotTE+tF1AlGd+vvW5vVJHXX
-         sTPsK8PYepNRBS/uPOg+NDjcCNuRFkWpo6yhH//ViUhuybXHobcXt50n3xsVNVH24ECj
-         YHAFce2fwMm4TyBXVMt3h1RSJLLH0Snf/cF+kNiOhNey7UU77b887T07gVlL921aUGeu
-         sSqUjsRb1eb1UptUtvN2/+Jo8wWBPtBT1j7QTyju0XruWVbuxAvkOAxSByfVOU9Xaxi7
-         +9RuA70o3rrVqdtiPfA5Ae9btlOWz5F1hLQ6vosGFS9MIuJSEn5t5813fmXrZXb8bQEM
-         sdoA==
-X-Gm-Message-State: AOJu0YzBJxsF0wsg6RqYUtVRtv1NRlco9EOCFeSLTvVBKi+uxJM6tWJH
-	Kh8ppp/5sC/EWdN6VyuHqXsQvkedAMh15Nimh3UZTkgAkFG51qSdxgVGDTwuCdNX3W1vaqgmUjW
-	HjFcfNQ68Hg==
-X-Gm-Gg: AfdE7ckTmSpKPx12EDBrbEl5k4yfuGAnf+X2O8KKhg5GBq+/tZvbV257eygyHyivEK4
-	ebu1m83mBlA1KCNXo3bUbkO3pLZoEp9bOBhVUt4bbA4obCbm5KaO5qXHXApfKrI2U1uBusRbzD4
-	mS0PY6UWeRg0ek4ecJkysapNhnNQyI1hHObV+MB2UdAKVf/xpmwkN2haDQkG8csUi2VhfmZYRHK
-	X7QvToWHHuyqYEZHGig6Zo4D1rXHBkPEUphe1Ni+NgfB+xiXfcviPoinQLUHBaZuqGEI8YAWAYx
-	uZFU41nIuk20vXTj+MK2LnF5wpB5bpcqQLPEnPj4GBiX1jMxZBOCBe+77h2AMKQhiCIIjA6f1TE
-	t/3wLUJsqlCjz6inDByVp8rc5mPydzWlSpuIoxc2/JPEhUNPHCXfBscXlmabhFJVixy6axaMOC3
-	k3+zw6zK/Y
-X-Received: by 2002:a17:90b:57cd:b0:37f:9ce1:7369 with SMTP id 98e67ed59e1d1-389416ec46emr3507540a91.31.1783534121438;
-        Wed, 08 Jul 2026 11:08:41 -0700 (PDT)
-Received: from krios.corp.tfbnw.net ([2620:10d:c090:600::7d75])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-311747f596asm22158810eec.2.2026.07.08.11.08.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jul 2026 11:08:41 -0700 (PDT)
-From: Emil Tsalapatis <emil@etsalapatis.com>
-To: netdev@vger.kernel.org
-Cc: edumazet@google.com,
-	ncardwell@google.com,
-	kuniyu@google.com,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	Emil Tsalapatis <emil@etsalapatis.com>
-Subject: [PATCH net-next] net/tcp: Prevent inlining tcp_syn_ack_timeout()
-Date: Wed,  8 Jul 2026 14:08:37 -0400
-Message-ID: <20260708180837.9507-1-emil@etsalapatis.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gviw6Nco"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783534169;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=t0l36wH7ACcSK7YRfFa0NfUzN3zxMisdAMh1oZ2Yw5g=;
+	b=gviw6Nco2oDMPQkZjH6RI78w1mXag3N202scFUKVUMYbLU4CugrJNuxAURBf7Q8bl8jYTL
+	qv+2+PkAFRMoJNiqfdy5y77hxI7r9Srkh5opxov+HQCdWv8fWj/Dck40yRy7roXY5268qC
+	/oJhXvvILRlDcDUZT06ve1xm4nCMjP4=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-510-DDAKTR9yNJmRpiw6FM1Uzg-1; Wed,
+ 08 Jul 2026 14:09:24 -0400
+X-MC-Unique: DDAKTR9yNJmRpiw6FM1Uzg-1
+X-Mimecast-MFC-AGG-ID: DDAKTR9yNJmRpiw6FM1Uzg_1783534163
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 71B7319560AD;
+	Wed,  8 Jul 2026 18:09:23 +0000 (UTC)
+Received: from [10.44.50.138] (unknown [10.44.50.138])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B2C41180065F;
+	Wed,  8 Jul 2026 18:09:21 +0000 (UTC)
+Message-ID: <e7517908-f02c-4c5a-ac63-34a4d26edf41@redhat.com>
+Date: Wed, 8 Jul 2026 20:09:19 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: =?UTF-8?Q?Re=3A_zl3073x_flash=3A_utility_=22family=22_register_?=
+ =?UTF-8?Q?=E2=80=94_0x7C_=28driver=29_vs_0x7D_=28Microchip_ZLS30733_referen?=
+ =?UTF-8?Q?ce=29=3F?=
+To: Mike Frandsen <michael@cambrianworks.com>
+Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>, netdev@vger.kernel.org
+References: <CANEVyMq03cwnhjc_H5hWMXwC1CH=V8OZDQFNT+ufzpHOOYJaaw@mail.gmail.com>
+Content-Language: en-US
+From: Ivan Vecera <ivecera@redhat.com>
+In-Reply-To: <CANEVyMq03cwnhjc_H5hWMXwC1CH=V8OZDQFNT+ufzpHOOYJaaw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-The tcp_syn_ack_timeout() function gets inlined by Clang,
-preventing tracing. Since the call is not in the fast
-path, prevent it from being inlined.
+Hi Mike,
 
-Signed-off-by: Emil Tsalapatis <emil@etsalapatis.com>
----
- net/ipv4/tcp_timer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 7/8/26 7:08 PM, Mike Frandsen wrote:
+> Hi Ivan,
+> 
+> While porting the zl3073x flash sequence to a small userspace tool for the
+> ZL80732 (Azurite), we noticed a discrepancy between the mainline driver and
+> Microchip's own reference flasher about which register holds the flash
+> utility's "family" byte:
+> 
+> - drivers/dpll/zl3073x/flash.c (as of 01e0e8b6a2d7) reads the family from
+>    register 0x7C and checks for 0x21;
+> - Microchip's ZLS30733 reference code (shipped in their AZFB firmware
+>    bundle) reads the family from 0x7D (masking the low 7 bits) and treats
+>    0x7C as a different field.
 
-diff --git a/net/ipv4/tcp_timer.c b/net/ipv4/tcp_timer.c
-index bf171b5e1eb3..f7215d53bbda 100644
---- a/net/ipv4/tcp_timer.c
-+++ b/net/ipv4/tcp_timer.c
-@@ -748,7 +748,7 @@ static void tcp_write_timer(struct timer_list *t)
- 	sock_put(sk);
- }
- 
--void tcp_syn_ack_timeout(const struct request_sock *req)
-+noinline_for_tracing void tcp_syn_ack_timeout(const struct request_sock *req)
- {
- 	struct net *net = read_pnet(&inet_rsk(req)->ireq_net);
- 
--- 
-2.54.0
+In the reference code there is a confusion... There are the following
+constants defined:
+
+static const Uint32T HOST_REG_VERSION = 0x007C;
+static const Uint32T HOST_REG_FAMILY = 0x007D;
+
+These constants are nowhere referenced and the code uses hardcoded
+values:
+
+     utilityHash = HostRegister_read(pContext, 0x78, 4);
+     utilityFam = HostRegister_read(pContext, 0x7c, 1);
+     utilityRel = HostRegister_read(pContext, 0x7d, 1);
+     ...
+     if (utilityFam != 0x21)
+     {
+           status = ZL303XX_INVALID_OPERATION;
+           ...
+     }
+
+So the family code reported by the utility at register address 0x7c and
+should contain the value of 0x21.
+
+> We have not yet confirmed on hardware which location reports 0x21 after
+> the utility loads (our port defensively accepts either). Do you know
+> which location is authoritative per Microchip's documentation — and if it
+> is 0x7D, whether flash.c's check works today by coincidence of the utility
+> images it has been used with?
+
+There is no official documentation for this :-( but according my test,
+all known utility versions reports 0x21 in reg 0x7c.
+
+Thanks,
+Ivan
 
