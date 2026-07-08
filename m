@@ -1,131 +1,133 @@
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0533E7BBB
-	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 07:27:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B0C73C4163;
+	Wed,  8 Jul 2026 07:35:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783495645; cv=none; b=Omi3c9GXveRHJLpzSBUkQP0OQxA3sa80H/7DwCMB1VU4LvT69bhh/d2hJfNY3/5pPRWDGHv6mV4mlO1/2uVc3LdUQrLRVXU4d0s+R6s4PN8dLYz5MNLCcbYkqfdR7/5Rg8bU+N30IDQDwOexehZIGdlUhG/UZhdUxh8mtOjnC7g=
+	t=1783496142; cv=none; b=KuS3OASDc4gANJ8fTw9ZtEw+ZleRwwwfYNqRdqXJ7zafFzBdPszyZVqYkd6LEaUoXOu13YLp1cN7QMRVsRhyjvdJu4QGcjPBqVEk20u62sZhbN+kIjpN+Dq/niXnvTV+AsoiDOpTZzZXiw/CszF3FPfos/qjqzDB8t2B9a8lO2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783495645; c=relaxed/simple;
-	bh=8TwkcMAicouAmlLicdqCdPqx48WWKC4JL5vHmeBaaEQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:In-Reply-To:
-	 Content-Type:References; b=gV7ffOeZPeglZrlKG9tGGLWupaB649rBqpmmLTBgE6rCtwnxNuD1W+EECTeqQCdr+qaQN0WPZljBmZqmm84TyQyhCdI6XcA6ExyTgdR3/3nqaUL3TgaCcJFQ2h6uX+YLvUnu3BJoENBfO35JU4z16BEi8eHxY97pCnBCICEy1uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=C8KSUpY/; arc=none smtp.client-ip=210.118.77.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1783496142; c=relaxed/simple;
+	bh=MqE9Y8BMDYiV70tzBzAEXt6PK0XA3tgk1BxOSWXF4mE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fl956ksxzztkwwhDHMhY+5FPzZ9rXTtz5IFG5r9HUHAAGcb4Abyp3sLui+R17wde/r60LKCAP6e8UPKfnXSVwGlVTf9Tci7mME4QQZ07Vz0dUX1T7qGowXo/FRT1mMZsUrDA0mfxZE0Q5Ye97uc00fKLLmk+JasZjZyhnMir1Vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=GAsgFV8/; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="C8KSUpY/"
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260708072708euoutp020ddce7b5481265a080b4b868f3931eff~AP9MdpT7m1814218142euoutp02o
-	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 07:27:08 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260708072708euoutp020ddce7b5481265a080b4b868f3931eff~AP9MdpT7m1814218142euoutp02o
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1783495628;
-	bh=AAT0vxHvZGnQFghigS3BsjoKQVyxGb6u1tpbTaYnWoA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=C8KSUpY/JfVGmDRu7STwuADaSziCHaNIIg1/sjBVa/o2LhIGB2vi/x8rLiSD37/+P
-	 AsJTC2cxhc9t7lo1v9hzAt5Wbf5vAiBxaBUMYDdJYBxwHVSlg8iYZiuKIVnnITnGV5
-	 uWFPg3H7vc9UzQq6aaST3GlttX+WpMuJlX4wjFVc=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20260708072707eucas1p2dce9de593df0be3855839c4f41f61f2c~AP9Lj3STQ0421304213eucas1p2m;
-	Wed,  8 Jul 2026 07:27:07 +0000 (GMT)
-Received: from AMDC4622.eu.corp.samsungelectronics.net (unknown
-	[106.120.77.34]) by eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20260708072706eusmtip1a9d4958030b6902d17d42dbb46221419~AP9KjxNiX1151911519eusmtip1i;
-	Wed,  8 Jul 2026 07:27:06 +0000 (GMT)
-Date: Wed, 8 Jul 2026 09:27:06 +0200
-From: Jakub Raczynski <j.raczynski@samsung.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: netdev@vger.kernel.org, k.tegowski@samsung.com,
-	k.domagalski@samsung.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="GAsgFV8/"
+Received: by linux.microsoft.com (Postfix, from userid 1173)
+	id 26DD120B7166; Wed,  8 Jul 2026 00:35:24 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 26DD120B7166
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1783496124;
+	bh=tHbyxUhrsarzNRWmvxSCy2nePku4Gzl46NyrQxhVDTU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GAsgFV8/gFHDIknrIuM61IsHT48x6Hsbl9j5ukuVc1teGLGUh1Zt8FHbdnALVrRRY
+	 RRYuc2/2EKDusilkbW6yOfVYGoTlH6EYPSgM+MQE/8aDz01mTJZKLrqSxb29uA46oC
+	 h+ZVMHiTsNZT7wYzxSh5PrBsQOvtxvc8pe/JHbPQ=
+Date: Wed, 8 Jul 2026 00:35:24 -0700
+From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, mkalderon@marvell.com,
+	zyjzyj2000@gmail.com, sagi@grimberg.me, mgurtovoy@nvidia.com,
+	haris.iqbal@ionos.com, jinpu.wang@ionos.com, bvanassche@acm.org,
+	kbusch@kernel.org, Jens Axboe <axboe@kernel.dk>,
+	Christoph Hellwig <hch@lst.de>, kch@nvidia.com, smfrench@gmail.com,
+	linkinjeon@kernel.org, metze@samba.org, tom@talpey.com,
+	cel@kernel.org, jlayton@kernel.org, neil@brown.name,
+	okorniev@redhat.com, Dai.Ngo@oracle.com, trondmy@kernel.org,
+	anna@kernel.org, achender@kernel.org, davem@davemloft.net,
 	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net 2/2] net/stmmac: Verify provided DTS AXI setup
-Message-ID: <ak37yhQjA32gI0kr@AMDC4622.eu.corp.samsungelectronics.net>
+	horms@kernel.org, kees@kernel.org,
+	andriy.shevchenko@linux.intel.com, clm@meta.com,
+	ebadger@purestorage.com, linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org, target-devel@vger.kernel.org,
+	linux-nvme@lists.infradead.org, linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org, linux-nfs@vger.kernel.org,
+	netdev@vger.kernel.org, rds-devel@oss.oracle.com,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: Re: [PATCH rdma-next v9] RDMA: Change capability fields in
+ ib_device_attr from int to u32
+Message-ID: <ak39vJTvGCNJSHwi@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <20260703060329.896125-1-ernis@linux.microsoft.com>
+ <20260706084950.GK15188@unreal>
+ <akzS9EdxScQsx9n8@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+ <20260707102546.GM15188@unreal>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <ee504cab-b1da-4584-8693-70ed5cd943c7@lunn.ch>
-X-CMS-MailID: 20260708072707eucas1p2dce9de593df0be3855839c4f41f61f2c
-X-Msg-Generator: CA
-Content-Type: multipart/mixed;
-	boundary="----FoLMw5K6Fe9t5vMBf.HRV6LBdzA_42JMttv_zc4dtfIAKr8-=_130f8b_"
-X-RootMTR: 20260707174439eucas1p153ea592df5c1c7a50e947022a80a1056
-X-EPHeader: CA
-X-CMS-RootMailID: 20260707174439eucas1p153ea592df5c1c7a50e947022a80a1056
-References: <20260707174431.1264520-1-j.raczynski@samsung.com>
-	<CGME20260707174439eucas1p153ea592df5c1c7a50e947022a80a1056@eucas1p1.samsung.com>
-	<20260707174431.1264520-3-j.raczynski@samsung.com>
-	<ee504cab-b1da-4584-8693-70ed5cd943c7@lunn.ch>
-
-------FoLMw5K6Fe9t5vMBf.HRV6LBdzA_42JMttv_zc4dtfIAKr8-=_130f8b_
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20260707102546.GM15188@unreal>
 
-On Tue, Jul 07, 2026 at 09:04:00PM +0200, Andrew Lunn wrote:
-> On Tue, Jul 07, 2026 at 07:44:31PM +0200, Jakub Raczynski wrote:
-> > During parsing of AXI setup, there are few issues:
-> > - 'axi_blen' array is uninitialized value on stack without zero-init stack
-> >   configured. This can result in random AXI burst length config if
-> >   DTS config provides shorter array than AXI_BLEN.
+> > I originally left max_srq as int because its only consumer pairs it with
+> > num_comp_vectors (a signed int) in nvmet_rdma, so keeping it int let
+> > that site stay a plain min() instead of a min_t().
+> > 
+> > num_comp_vectors is the completion-vector count, legitimately int and
+> > never anywhere near INT_MAX, so I'd prefer to leave it signed rather
+> > than convert it everywhere. Does that work for you, or would you rather
+> > num_comp_vectors be converted too?
 > 
-> What does the DT blinding say about the length? Is it allowed to be
-> short?
+> In this patch no, but it is worth to write this in commit message.
 > 
-> Are we talking about:
+> Thanks
+
+Thanks for the confirmation, Leon.
+
+I'll use min_t for max_srq and document it in the commit message.
+
+
+- Vennela
 > 
->       snps,blen:
->         $ref: /schemas/types.yaml#/definitions/uint32-array
->         description:
->           this is a vector of supported burst length.
->         minItems: 7
->         maxItems: 7
-> 
-> So it should be 7. Are there any in kernel DT blobs which don't pass
-> 7? Can we just error out when it is not 7?
-
-Erroring would be fine, as wrong amount will pass.
-Same as previous answer, I start to agree more and more that code should give
-more errors rather silent fix stuff.
-This is mostly Sashiko complaining but I have seen this being incorrect in
-some internal forks.
-But, as a code is currently written, this does not have to be 7 and
-documentation is merely a suggestions. I doubt wrong DTS would pass to
-mainline linux so it is merely 'internal' fix.
-
-> 
-> > - In case of failed memory allocation for AXI and error, there is no handling
-> >   of that. Fix it by checking if AXI config is error and return if so,
-> >   as this can only lack of memory. No AXI config, although is probably
-> >   wrong in most cases, is not treated as error, as generic config is mostly
-> >   provided in drivers.
-> 
-> This seems like a different fix. Maybe put it into a patch of its own.
-> 
-
-Got that.
-
-> > Fixes: afea03656add ("stmmac: rework DMA bus setting and introduce new platform AXI structure")
-> 
-> Again, does this bother anybody? At least axi_blen issue seems to be
-> that the DT blob is broken, so i doubt it actually does. Are there
-> reports of memory allocation error and resulting Opps.
-> 
-
-Only internal and quickly fixed. No public reports.
-
-BR
-Jakub Raczynski
-
-------FoLMw5K6Fe9t5vMBf.HRV6LBdzA_42JMttv_zc4dtfIAKr8-=_130f8b_
-Content-Type: text/plain; charset="utf-8"
-
-
-------FoLMw5K6Fe9t5vMBf.HRV6LBdzA_42JMttv_zc4dtfIAKr8-=_130f8b_--
+> > 
+> > If it needs converting, I'll do it as a separate patch, since it lives
+> > in a different struct (ib_device) and touches many call sites.
+> > Otherwise, using min_t() for just this one call is fine too.
+> > 
+> > Thanks,
+> > Vennela
+> > 
+> > > 
+> > > diff --git a/drivers/infiniband/core/nldev.c b/drivers/infiniband/core/nldev.c
+> > > index f599c24b34e8..aae4f3f6bcba 100644
+> > > --- a/drivers/infiniband/core/nldev.c
+> > > +++ b/drivers/infiniband/core/nldev.c
+> > > @@ -454,7 +454,8 @@ static int fill_res_info(struct sk_buff *msg, struct ib_device *device,
+> > >         };
+> > > 
+> > >         struct nlattr *table_attr;
+> > > -       int ret, i, curr, max;
+> > > +       u64 curr, max;
+> > > +       int ret, i;
+> > > 
+> > >         if (fill_nldev_handle(msg, device))
+> > >                 return -EMSGSIZE;
+> > > diff --git a/drivers/infiniband/core/restrack.c b/drivers/infiniband/core/restrack.c
+> > > index cfee2071586c..1b2f9df49e28 100644
+> > > --- a/drivers/infiniband/core/restrack.c
+> > > +++ b/drivers/infiniband/core/restrack.c
+> > > @@ -61,7 +61,7 @@ void rdma_restrack_clean(struct ib_device *dev)
+> > >   * @type: actual type of object to operate
+> > >   * @show_details: count driver specific objects
+> > >   */
+> > > -int rdma_restrack_count(struct ib_device *dev, enum rdma_restrack_type type,
+> > > +u32 rdma_restrack_count(struct ib_device *dev, enum rdma_restrack_type type,
+> > >                         bool show_details)
+> > >  {
+> > >         struct rdma_restrack_root *rt = &dev->res[type];
+> > > diff --git a/include/rdma/restrack.h b/include/rdma/restrack.h
+> > > index 451f99e3717d..c081384740ce 100644
+> > > --- a/include/rdma/restrack.h
+> > > +++ b/include/rdma/restrack.h
+> > > @@ -123,7 +123,7 @@ struct rdma_restrack_entry {
+> > >         u32 id;
+> > >  };
+> > > 
+> > > -int rdma_restrack_count(struct ib_device *dev, enum rdma_restrack_type type,
+> > > +u32 rdma_restrack_count(struct ib_device *dev, enum rdma_restrack_type type,
+> > >                         bool show_details);
+> > >  /**
+> > >   * rdma_is_kernel_res() - check the owner of resource
