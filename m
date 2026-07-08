@@ -1,112 +1,95 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04D581EFF93
-	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 13:03:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F152D7BF;
+	Wed,  8 Jul 2026 13:04:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783515805; cv=none; b=TAPOmyak+P8IHSWzpYbeDtAAkxzNFJfAd0IxN/rG9vh3T/kfrdJpU+R9/pBYDkQx/2uDnYMcwhlJNJMFuLChQoh6bDjTQJyFUGWF0CDshHnwsyK1QBqN2ZOTCyDC4BreoEU4avn4kRii8bnFYnJLXs5aKDGwSpgCaSTHINiaMc0=
+	t=1783515860; cv=none; b=QPhIJl09wEO2U5ziachO6H+oHfR9vXLGx85TGmXXGkcaIFabSvUlY8S6C0d64j4y+RA2572GQfKwJ8dsnP2wrTHc+HaMl4DWSWU2HF7LHO7RgeOSLB8d0v2VJzq5W0Uy7Sb51B7f5SfCpKLE/ZhwGQLsCxXN5nAdZsup56I8TvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783515805; c=relaxed/simple;
-	bh=PKHW0WcCeH4hbjwkHqZQZfJ391i/CVkS6YBEpZka+W0=;
+	s=arc-20240116; t=1783515860; c=relaxed/simple;
+	bh=JXmP3skyaaMi4BY4n7w3R6Ut2ADHA6ulYgIRlMj/YXc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KIiSnMCaZErtfj2fo5lVw93yuk1ZQdhbOIgsSrhvt4bGUumcCjwGxNk+FKLCkjK6wvmKg1F+T9R8vhhv7kAjUqWo6LfjJvvN1YXnsg9jlWDeWV1lIj17tEoRuH+a/ImMwWvJY+EAU03DOlV75v1OMRRRsXcsBxBagHoBQZUeG7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dyYAYbPx; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=eLq9HmRMyVDFQ5+7l1GfIPYrg55o7jf9t46u/EkdD/BEHlHiFhnM69pqaZpkSl4zbgXCrY5bMuKNuIfZUbWQZg25lBPWICz6ZHrjkU05jGiug/2t73WRG+jAIRkr3cpZz4fmQHal/kqd7NH8OfGunBWFLQ8n5KXHYnVc3/QrYeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=VgX5Gph6; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dyYAYbPx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2469B1F000E9;
-	Wed,  8 Jul 2026 13:03:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783515803;
-	bh=3BmCoU/mJxpggR/8PGM1XrH38msRz7NT+nvS7+P+Qc0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=dyYAYbPxsIIELLH3Qz6lbSbauelb937sO2KTTNPuNZbeIxrTHzIP6FGLvW1KGkvoe
-	 n4ajs4thOSB3QRsXi5WEK9Jun+If8h6v35ZAWNgDviRR29DJ+FBEm+fOsbtZ57WLiH
-	 yqOlgtx6h3n02vpskNKi4CeNvW7LNNoz1xTuPpKqdewUwoO62QS80q1qRuk6lY7BYU
-	 h3hSBYviXOq7hm7xjaEAEz+j7ERQbC/mE2NRunm9o7gRg8v5MfEBJvp11tOfS22XEf
-	 6A3HTp1KF5aRofksx0irwvcT3KBTZy3tgMqX7XSvS5a4YUUdchaKRaC3rEdxs5N47l
-	 NRZYwPOaE7XHw==
-Date: Wed, 8 Jul 2026 15:03:21 +0200
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Wayen Yan <win847@gmail.com>
-Cc: netdev@vger.kernel.org, horms@kernel.org, pabeni@redhat.com,
-	kuba@kernel.org, edumazet@google.com, andrew+netdev@lunn.ch,
-	angelogioacchino.delregno@collabora.com, matthias.bgg@gmail.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH net] net: airoha: Fix potential use-after-free in
- airoha_ppe_deinit()
-Message-ID: <ak5KmSbAQJXcU3sW@lore-desk>
-References: <178351022574.97989.6880403520276841703@gmail.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="VgX5Gph6"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=mD6KjjgfwpBL/g4vGVwQBgC2tYhaN/n2+ryjbjSF3IE=; b=VgX5Gph6KJX3vRkpfoOfuxI5i2
+	lQpOQj9FSVs6D/+Q9WgxnbK7Iu3P83HgnMCKKfd5qJuaRoNj4CdDir5oiYWeLwnjwIW6CD+RATm10
+	yEIqVJBuJoIjSxiqKXjELd89Dda5CqdnBGpdC8e3KHu2yqmLWbZtXV6ZhML2K5m/Qb/0=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1whRwY-00BJt8-OC; Wed, 08 Jul 2026 15:04:02 +0200
+Date: Wed, 8 Jul 2026 15:04:02 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Ben Brown <Ben.Brown@alliedtelesis.co.nz>
+Cc: "hkallweit1@gmail.com" <hkallweit1@gmail.com>,
+	"linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	Chris Packham <Chris.Packham@alliedtelesis.co.nz>
+Subject: Re: [PATCH] net: phy: marvell: Add soft reset for 88E1510
+Message-ID: <0c9c5fe2-6b91-42d2-8582-80f9a47df827@lunn.ch>
+References: <20260702225034.1062457-1-ben.brown@alliedtelesis.co.nz>
+ <3536a59f-405c-452a-a7d6-359c0ea1b151@lunn.ch>
+ <c0d760ff-fe66-48df-bd9f-3226dfdc97fc@alliedtelesis.co.nz>
+ <3c493e6f-b5d8-42ed-a752-fdce6452926d@lunn.ch>
+ <c77dd281-9ae2-4634-a670-bd6c70afb3df@alliedtelesis.co.nz>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="3aCkLgBstNRB5eAc"
-Content-Disposition: inline
-In-Reply-To: <178351022574.97989.6880403520276841703@gmail.com>
-
-
---3aCkLgBstNRB5eAc
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <c77dd281-9ae2-4634-a670-bd6c70afb3df@alliedtelesis.co.nz>
 
-> airoha_ppe_deinit() replaces the NPU pointer with NULL via
-> rcu_replace_pointer() but does not wait for existing RCU readers
-> to exit before calling ppe_deinit() and airoha_npu_put(). This can
-> cause a use-after-free if a reader in an RCU read-side critical
-> section still holds a reference to the NPU when it is freed.
->=20
-> The init path (airoha_ppe_init) already calls synchronize_rcu()
-> after rcu_assign_pointer(), but the deinit path introduced in
-> commit 6abcf751bc08 ("net: airoha: Fix schedule while atomic in
-> airoha_ppe_deinit()") omitted the matching barrier when switching
-> from rcu_read_lock()/rcu_dereference() to rcu_replace_pointer().
->=20
-> Add synchronize_rcu() before ppe_deinit() to ensure all existing
-> RCU readers have completed before the NPU resources are released.
->=20
-> Fixes: 6abcf751bc084804a9e5b3051442e8a2ce67f48a ("net: airoha: Fix schedu=
-le while atomic in airoha_ppe_deinit()")
-> Signed-off-by: Wayen Yan <win847@gmail.com>
+> > Lets take a step back.
+> > 
+> > What sort of reset are we talking about? Software or hardware?
+> > 
+> > 	Andrew
+> 
+> It is doing a hardware reset using a GPIO line.
+> 
+> When linked down the phy gets put into reset using a hardware GPIO line,
+> during link up the phy initializes the hardware using phy_init_hw(),
+> which de-asserts that reset GPIO. Then trivial setup is done before
+> the driver specific config_init().
+> 
+> When we are doing the marvell m88e1510_config_init() the first page
+> write is not applying so it ends up writing configuration to the wrong 
+> registers. When testing fixes adding a 15us sleep before changing the 
+> page also meant the page was updated correctly.
 
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+  reset-gpios:
+    maxItems: 1
+    description:
+      The GPIO phandle and specifier for the PHY reset signal.
 
-> ---
->  drivers/net/ethernet/airoha/airoha_ppe.c | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ether=
-net/airoha/airoha_ppe.c
-> index e7c78293002a..f6396925722d 100644
-> --- a/drivers/net/ethernet/airoha/airoha_ppe.c
-> +++ b/drivers/net/ethernet/airoha/airoha_ppe.c
-> @@ -1659,6 +1659,7 @@ void airoha_ppe_deinit(struct airoha_eth *eth)
->  	npu =3D rcu_replace_pointer(eth->npu, NULL,
->  				  lockdep_is_held(&flow_offload_mutex));
->  	if (npu) {
-> +		synchronize_rcu();
->  		npu->ops.ppe_deinit(npu);
->  		airoha_npu_put(npu);
->  	}
-> --=20
-> 2.51.0
->=20
->=20
+  reset-assert-us:
+    description:
+      Delay after the reset was asserted in microseconds. If this
+      property is missing the delay will be skipped.
 
---3aCkLgBstNRB5eAc
-Content-Type: application/pgp-signature; name=signature.asc
+  reset-deassert-us:
+    description:
+      Delay after the reset was deasserted in microseconds. If
+      this property is missing the delay will be skipped.
 
------BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCak5KmQAKCRA6cBh0uS2t
-rO4SAQC9XjKbr4FL6USCpb+vk0nuGcS4kQNSPUegG0T8eqjCtQD7B3MdOSiy8IBZ
-Vj4KmUaxBPWe3TLxHe1uwKv127c+lQA=
-=ioCF
------END PGP SIGNATURE-----
+What delays are you using?
 
---3aCkLgBstNRB5eAc--
+     Andrew
