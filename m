@@ -1,112 +1,133 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931E730C163
-	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 11:12:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776D9433BC2
+	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 11:15:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783509176; cv=none; b=m+RsUQfKuA6x93dLK81qrGSCS6EVGBZQlVYt5qvRZ6Nn4k5EkXPUHVyF+AQz2oKHTQdlDNOeiJ41Yj7DdDVMObJuumH8pNMOOEvZ5kRBfzbHCj4WUb6OpYLIRVHRfZvb37m3HVLFDCmhMOJK2rKPoVifnv9kaPFE+bFdRAYv5gA=
+	t=1783509317; cv=none; b=tkNHbNsV393lrcwgl4RQgRZvejV41ZmBGImzHnJrK3dvKvMF58pM1UXQox+zUgb0zHRx1tdkGQMHSa2g+lxPomCCr7+26aiiKrOGWXsf/oojAiK36rnFSl/DXWQGsuzIAeat858knCxMRIrTuOD9HZL5BRLZ79D1HAWHk2PY9U4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783509176; c=relaxed/simple;
-	bh=vAYuSKepYX2R6SHPiXef5gcb+t+WIrxDadX/4+/aE/4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lYp2lCEh8LHfoE0R4GBISQHZRAslOE0PnYWjAbwNCqu3Sxi5tuZepc6KerfhjyxXG7ZTuZaDShr/N/sZ296vPnPZlQwqmc16Gvn2hYgcnoDn/v3ad+dRxdQy5J5RZgogz8FpEnH/RJUTuTaM+FwwOH3R2GrAJw9t9uVofgizoZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qeYd3w2+; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1783509317; c=relaxed/simple;
+	bh=+L61LaO/tSTgwUG3yNGocYARlCgeLxPVR53vlY4PE90=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BiS8vh+T5wZo0mQZHEe7e41px2/L4TlWbZJd3syUfHZ1isIA1NjbeM0wYifVMCVkZGKgp93ZScNEg+79NrQOCHo8yWsCsEV89gWaCgWZ/Z6P7gkxoDZ2vgV4a1DdUTIRq8/pdzDl44E+0MT44LURka+7L1czP88piv5597IBjR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JU9IJmE3; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=fg87rMwW; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qeYd3w2+"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2cacd69a9c0so6576695ad.1
-        for <netdev@vger.kernel.org>; Wed, 08 Jul 2026 04:12:55 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JU9IJmE3";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="fg87rMwW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783509314;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HAAfDroIq6UXGR519c5uoiGAKX45EOugo6OCZQqCTl4=;
+	b=JU9IJmE3zfnZCQy2GrVrJKhag3An7hFkdQWkPV/a1+EqRf4aHeun2wqJc2iDVLzNOdbyHh
+	OziO2914rOG/KKD3T97FF/s7cmmyEOfXv08f0w63P3KY6oA7cI1ZdkC4fDybeJgJX4xNAI
+	Zivqoat7RXpMbsa/nFTTlUG6SP268PU=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-638-z_Wn_xUnNMWu_7WvtQbGYw-1; Wed, 08 Jul 2026 07:15:13 -0400
+X-MC-Unique: z_Wn_xUnNMWu_7WvtQbGYw-1
+X-Mimecast-MFC-AGG-ID: z_Wn_xUnNMWu_7WvtQbGYw_1783509312
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-47d81cf0c4cso497448f8f.2
+        for <netdev@vger.kernel.org>; Wed, 08 Jul 2026 04:15:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783509175; x=1784113975; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=s31bR1iKC+e6h6RE4wZIClsqmUypkmINB4OCzr0ClWk=;
-        b=qeYd3w2+Mi4x8EL2Uj+6GSkm91Y5b/0Vir3TnPgMfsv6L3ALF1Etk8FU7POfNsuNzX
-         FHDGAJo9CgkxzZCyLgn7mbX+YENou+i3COnArVb3TRUiNawE2lVM8WucYQg7IvI9Fahs
-         xJE+5CYMuDUSqW3t32UArpJkoG93wDUNFA6lihQWrDjc+KErVCSKOtNYo8kbdJkv/v0V
-         oT1CLBPNKIL+1qJr+gvj9QD7ZTP5RGiIhij4hATc3/Uuxdd5j+/W7nkKMQC0zOKsb52v
-         UMgn6jI9nzI3RWZxn6hTxbD614jiIo/4uuxgSPE+rw5zL0XD7jFBI1kmO8TdOg+5Gkox
-         Brtg==
+        d=redhat.com; s=google; t=1783509312; x=1784114112; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=HAAfDroIq6UXGR519c5uoiGAKX45EOugo6OCZQqCTl4=;
+        b=fg87rMwWUPqGWgLbsOCKfm3r+5hRK7oydya3fQT7CmssLbDie8TG8Z4UVXFlOZDtO4
+         lG4WIz6bKGRWsi82UlIhjXoFY9k73z/sX4rp2IIbzPIm/swwXVEjqw92gQLHHojX0V9T
+         Bhx7Sla1SdBIxaZcywQI+QV+14O36AeJ7qrGFla7p9a7oKU+IA7m+4f9h60ivxnuDvHy
+         9iuKMuuTmdeLDJq4/XaV2dE6d0Zwi8lcOxkD5EYAs+OgGUaczki+39EJxQYoGxhK4B6s
+         HtANEbFEhVBIOQ6zlANa4INjDDL8wIMkuZpRAw7K7mZ2nrpKXd9NcTDC3d+31DhCjM2t
+         2X8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783509175; x=1784113975;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1783509312; x=1784114112;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=s31bR1iKC+e6h6RE4wZIClsqmUypkmINB4OCzr0ClWk=;
-        b=pf7i+tGuB/1Vz5vY5OBtZM2zM/5e3LEW83NncoCSnROnlCas7KW5ZF/B0OrSpTxVCf
-         iFgrilOLvKSaEwX9RrWY/Fz4upM2rlAceKYaYPw0B09WSg/cE/tzNl+H8OQuRFaxzUzW
-         Pc1Hph6L2U+JYIcUwhGWBYp+iTy6UA7HWD7KR45sg6uHBFdpCaeOmUEWJTckr5d6rlX5
-         QLwhF1FV6LdWJQSFu/yYTcAPxJ13xVRL2sB6Tz7SDMomARSUE/KiXGIekn9Rc3xvhYky
-         zuzCki6t4uSnf/3rDRalYXJLNsca4ue1xEJS+Z9lD7wJeE3ip64+IRtLSWrmo4on/Jrl
-         c9sA==
-X-Forwarded-Encrypted: i=1; AHgh+RpVoVgNguwSpJW1JkQfU6TQWq8WGXlQ+6ZQch5IjFMCVT+Rj3HAxgPwO/tMVTKa57MLtEzy3Do=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwBJexXcrQU+Z76Yh9YhGnkNVW/WPMB+FZ7V1a9EiLfc9TvAl/w
-	yYmf367DHhzvK5+jhTDMCf4Ts90jZCkNyY+ZDXFudwYDzxDbb9qr7hqT
-X-Gm-Gg: AfdE7cl7fCtkltr/7fdCU/F52g1UHElaC4kGTnjvXlYgshaF/wYu4yqtW56V/FXobmj
-	lAgpebeot/4pC4O0K5cAFAOeLkAF5LC4oNKOdJYZ2gCWxikCTqA782ta+PJuui3mWLqVspIH2ta
-	vobsPsh+bbHYMn9G5XBzWHgNw6f2H7zT/FLYGPovGFodq5Igc0Z9Y4FcflajQFbpSsAaN3yoXvp
-	1aj4VV5eal8hDJKcnbvzPSwkfGbltrwNI3KihaXH3AFhvq+nxzhPod3EAXoSYXmuHyfgduS9T6C
-	6LkS8etdk0oJswkkY+TFNO7IYPNabc5oQ9E/KRhleSIPJnLO85rGn3OMjcTIcHogKd2a3jlQFcf
-	vpa6hObRGG6UpQC78nxLGxyBcs0wyt9xZ5oiohB9VDDE9kRlf2aLpGRQm3G5CBIbnGOQ3+Ig=
-X-Received: by 2002:a17:903:4b30:b0:2c6:a012:6241 with SMTP id d9443c01a7336-2ccea348876mr23010425ad.6.1783509174902;
-        Wed, 08 Jul 2026 04:12:54 -0700 (PDT)
-Received: from lgs.. ([2001:250:5800:1000::f280])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9bf8d80sm26679355ad.25.2026.07.08.04.12.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jul 2026 04:12:54 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>
-Subject: [PATCH] dpaa2-switch: put MAC endpoint device on disconnect
-Date: Wed,  8 Jul 2026 19:10:25 +0800
-Message-ID: <20260708111025.749311-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        bh=HAAfDroIq6UXGR519c5uoiGAKX45EOugo6OCZQqCTl4=;
+        b=DAWVf6HFsk/J0IOyMVhSzVJHcty0uXnyyyGrHY/SsbGRrK6pLIRPMQaDsGLpe6fdaw
+         GntmgpYkwUsbT2dMOG0fTK6JG7xHBjDLbh4WG2w3ormJ5vC5OZB5d3MY6n1jfZVlFZ1f
+         2X8i3Y3an3F1SBBzQ6WBHvP+h/PipYPS5s/dU3B2RI8XlH5Au5V2+vv/EIvIJ84QcuUc
+         0VHwBmo2nXiT6vm9Wc1h8E6b0mfNQGv6xLn300yzmE7UlpDB/aNJNulX9MiQVF9wKyIW
+         fzKHTeTX6RWUpm+Wm8QzD6zJPd/AIzKDdmgAzt85kPubNzaApwEJkSQx/RDPbFV6h9xA
+         bwzQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrEoMKypEBrBDy9UqKnyHMzAYylq9ZpeLtf1jePzaEmE9j8Qasyoz/S20SR5ZHbUBkxgTiX/5o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyONUgnoSsEI2yWqXb+Heq2VPXcpPxJgQ1snu64ntIeYeAF0Jz3
+	Cx+tMqGBJ5A7mJIdU0PzAe9w8SFiTZpHILCDL2AjoyUU4NeQ42SqCWsVjH/BRIQ1oHWufWAkUQx
+	xsk7p3zlOxipYXVz3MqM7HlycfqKqk7jO5GCkOLIiJ8b5YR66CYxsRl1gEw==
+X-Gm-Gg: AfdE7cntIbHQdR3CcT/UzUQjeDemINwrX/9rvh+Sj9SPbkhPHoTkm0yIH61TMFj6HLV
+	887fe0PpQcwNSCzM3nVvv8a3tHVH1aEP3rzuxsWueN1ZZqZI/bClaiw5sj/fK0FmT4ZIhXV2D2f
+	jVrMzkmrUtGcEYajiliDfcAPosYNb9Ea2PXAePmabVnu7SoXhVhk3PGkvRmVjprus5NNAbTPHxi
+	PpPX/hI5PhPUxP7dCqm7n6uDxMmDaZWO0YfIkfZOUiydAM8KCKOGDnViZDoO7xKDqji21WA+lAN
+	8kOVAAgTuPup/umm2yJKoOvAqvGgBWfyWQwqj5KLS3sYJwgxe4hORgMvcjl4DwNf8Fibd2bcKk5
+	aV5z3PygYMX0pzxzdkoEzHFAwRgpf1KWtuSKHtBqUwB3rEv8BQ9wTfy3vWgm2eJ0LutyTpt4oZf
+	2mwgkZbWl9lNHa
+X-Received: by 2002:a05:600c:8b62:b0:493:adcb:d368 with SMTP id 5b1f17b1804b1-493e6843f10mr22365205e9.9.1783509312043;
+        Wed, 08 Jul 2026 04:15:12 -0700 (PDT)
+X-Received: by 2002:a05:600c:8b62:b0:493:adcb:d368 with SMTP id 5b1f17b1804b1-493e6843f10mr22364805e9.9.1783509311582;
+        Wed, 08 Jul 2026 04:15:11 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:5521:6b10:58fd:68f:7756:389d? ([2a0d:3344:5521:6b10:58fd:68f:7756:389d])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47a9de1d905sm43419310f8f.2.2026.07.08.04.15.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 08 Jul 2026 04:15:11 -0700 (PDT)
+Message-ID: <e85432be-d9a3-4b70-b324-dc657617d1d3@redhat.com>
+Date: Wed, 8 Jul 2026 13:15:09 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4] selftests/net/openvswitch: add ICMPv6 echo
+ type match test
+To: Minxi Hou <houminxi@gmail.com>, netdev@vger.kernel.org
+Cc: aconole@redhat.com, echaudro@redhat.com, i.maximets@ovn.org,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, horms@kernel.org,
+ shuah@kernel.org, dev@openvswitch.org, linux-kselftest@vger.kernel.org
+References: <20260702075044.1176798-1-houminxi@gmail.com>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20260702075044.1176798-1-houminxi@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-fsl_mc_get_endpoint() returns the MAC endpoint device with a reference
-taken through device_find_child(). The switch port connect path stores
-that device in mac->mc_dev and keeps it for the lifetime of the connected
-MAC object.
+On 7/2/26 9:50 AM, Minxi Hou wrote:
+> Register OVS_KEY_ATTR_ICMPV6 in the flow key parser so that
+> icmpv6(type=...) can be used in flow specifications. Without this
+> registration the parser silently drops the token and the kernel
+> rejects the flow with EINVAL because the expected ICMPv6 key
+> attribute is missing.
+> 
+> While here, add convert_int() to the ovs_key_ipv6 and ovs_key_icmp
+> fields_map entries so that specifying a field value produces the
+> correct wildcard mask. The IPv6 flow label uses convert_int(20) to
+> produce a 20-bit mask (0x000FFFFF), matching the kernel constraint in
+> flow_netlink.c that rejects masks with bits 20-31 set; byte-wide
+> fields use convert_int(8). The ipv4 counterpart already does this via
+> convert_int(); the ipv6 and icmp classes were simply missing the fifth
+> tuple element. Existing callers that pass empty parentheses are
+> unaffected because convert_int("") returns (0, 0).
+> 
+> Add test_icmpv6 exercising the ICMPv6 echo flow key. The test uses
+> static neighbour entries with nud permanent to prevent racy NDP, then
+> verifies in three steps: install icmpv6(type=128) and
+> icmpv6(type=129) flows and confirm ping works, remove the flows and
+> confirm ping fails, reinstall and confirm recovery.
+> 
+> Signed-off-by: Minxi Hou <houminxi@gmail.com>
 
-However, the disconnect path only closes the MAC and frees the dpaa2_mac
-object. It does not drop the endpoint device reference stored in
-mac->mc_dev, so every successful connect leaks that device reference when
-the MAC is later disconnected.
+Does not apply cleanly anymore. Please rebase and resend. Note that you
+can retain Aaron's ack.
 
-Drop the endpoint device reference before freeing the dpaa2_mac object.
-
-Fixes: 84cba72956fd ("dpaa2-switch: integrate the MAC endpoint support")
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
----
- drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-index 858ba844ac51..dd4f60031d0c 100644
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-@@ -1560,6 +1560,7 @@ static void dpaa2_switch_port_disconnect_mac(struct ethsw_port_priv *port_priv)
- 		dpaa2_mac_disconnect(mac);
- 
- 	dpaa2_mac_close(mac);
-+	put_device(&mac->mc_dev->dev);
- 	kfree(mac);
- }
- 
--- 
-2.43.0
+/P
 
