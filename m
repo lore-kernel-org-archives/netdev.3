@@ -1,1702 +1,272 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371EE3EA95A
-	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 10:23:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4DA53AB262
+	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 10:24:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.22.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783506242; cv=none; b=Oe+DjE8V/M1IiYCGDY2L27DE7kWaKDo+VDgHNSG6J3zrfvGrbPGi4mCQqTZekeDzoLH8dPv9BsQZBhiHz4y+vfy4ZINIuC1ffbKFpCFCSvWdfIgDM+KYK8mOSR6bA8caaHk8lCVNz38fCM21L4cyK+NI54CUa8e3hAfM/43bwf8=
+	t=1783506283; cv=none; b=uCkyAjVSwJrQUtzjU9LIywK/2vYe+ddWqXpINgMMeM2hvFZOIJCJN5o8xpl43KmOF3ZyW4eCCKsbSOWcXXmGWrxzTJXyBc5B9BIXntg6lt4MsL0xV47nxCwzvRm2ezvY1xIPwddxRUVxhI9VMAZuIU/GlElNgeLSa/QNlFmuE2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783506242; c=relaxed/simple;
-	bh=15E+48iYPy7Fw+D1PSiZ/ShqOWbSu0/GPoKTFYVxnwY=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M3Q+TCc1r4kM03yDBzdb7Run/MbVQh+owpZefP0hPMs8i3Yd8HqTJdGsJUZy9NP9E/VLLeTBeLAic9TXYpivhOAZUSotWV68dlADf0MvzaHgDSarx3XfBRNuSOkS7DDQRjmgx5nLzT0fI4c9PqG9ctsPcqkpwN1fvQ0F12YVKo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hy/EWPQW; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hy/EWPQW"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-4720d22c94aso476039f8f.1
-        for <netdev@vger.kernel.org>; Wed, 08 Jul 2026 03:23:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783506236; x=1784111036; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=ER7MUt+NKPquufARTcXhEHjCrBjJvnX8oO9uSMDLvh0=;
-        b=hy/EWPQWJRj7nhlqbh7TDu7NdhjPNtIVe4OcekPK8sztcH+DIeSCBIXsc8mSLoIXhF
-         9hTGOc/9X2TEixvK8LkS+fCoQ/Giy0gWil9NReAyQeQtRSdYQnLA0qIPjIR2K7btCut8
-         D+QnGxoZuboY96u85sqlQt5rHH6FjycZd4/Iqchbal2KlWPz5FKbAOiCg5IF2fqwx43F
-         t6115y7dio0/g/MNwAqkHAfTHe5LFeae5w/lj3KJyg6SXTvtNON5hoMHOuXQPO6nAMM4
-         SrDO8zUFc4kvJWQTY14cA8Mg9H5AqsQjzL6B8fuLVZR3FdT7Z8bIQjLqCzkpN7WTNWkk
-         6C1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783506236; x=1784111036;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=ER7MUt+NKPquufARTcXhEHjCrBjJvnX8oO9uSMDLvh0=;
-        b=P1BcJObUQBM8nj0HqdKPplS1mGrACUOqt8P5zYStH0mzoaB7E2xw5DA7aV9dAy8jK2
-         PR5/7933UGOcSoa2D0K7bN9zY3/bUIWaag3Px+xsg3mG4K8NCgLNiUH0FE9XtkAfGG3k
-         JZ1fYRYb6dBo1yknb6j3FpPbcY1daeFNzIhkGS0AbzY3/ZK2kI8aiFctqv/ckXo+0lzs
-         xRO6/8nqQceo4+9u/zrZXWOwdwgsZOqMBEBHxz/iKolK/PkqZkCuRQbByNq6A2sVeCNa
-         xIQmSKanaAbtD9uNPc+E23EUCVScfctER4CpJF54vY15xI1rOusOBJUgIviJEBR2kRbR
-         XSHA==
-X-Forwarded-Encrypted: i=1; AHgh+RoAcwccZsnlVMAiTD5OuLAU94yGcIxwjTFudIol95GsCwNp0CY5vlHznk3POYP91LNYCgsXcN8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGWX0al1puGInU8iHJ3yYb5cG3veKGx9Dsr4e+IkDetf++W/oU
-	w4XymDbD2ngY6HiQLNhyzx9cm8PaP9j0c4i3IXb/2fzFjPKj57ecNj3O
-X-Gm-Gg: AfdE7ckgWUMiNWA3gmFoQQ4QsfWpNQ9rYUBOBXdVcHlb/82Ojf1y6b8hh/P3YFTHWVQ
-	gK6oocpHMHP8hJQ/HYFn5yoY5LR/4Xfp7k3GEHWuUiHsOBZ7DmcxinWiVlCgDASlhqmMTudlPI0
-	7fL27Ef7TZ5LfHu4KQ0ZQGP8UHoPQ/Q64EhPuyA+32dmnbWYwxSE1WTsJHugDQhKilK0glttNCz
-	hMGf09UN2LaOhHd6+rmtbfK5W2On5dTksK34BPSpOkDlpuj/zY1Yuus30SvQq17Cw1f7MdocpyO
-	dtfyo3UgP0YUOj765+MB+NyiiVfpIw8Ear1EYhWQFqssnM5qboviiAq9CHjROdQ3MIAZORgFQ+W
-	+zm0QX1rhBZPBQSVSj3n44VO71tuvbfezAQweMvDXw0aIaBfZ79sQ4VOzoba5HOGTl9Vh9GQ2TT
-	z1BKrr65UyCYWl+VZJYPyB9o2RIlZ6VOp5CC81S4noN8clfvaF3ViqcvlDhaAbxQcLyJHYovH+a
-	wuaeVh4goZMSdlAHkE=
-X-Received: by 2002:a5d:5d07:0:b0:473:f4c3:4d51 with SMTP id ffacd0b85a97d-47df079abe1mr1739457f8f.43.1783506236114;
-        Wed, 08 Jul 2026 03:23:56 -0700 (PDT)
-Received: from Ansuel-XPS24.localdomain (host-95-248-227-210.retail.telecomitalia.it. [95.248.227.210])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-47aa0f2186bsm40660248f8f.36.2026.07.08.03.23.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jul 2026 03:23:55 -0700 (PDT)
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Qingfang Deng <dqfext@gmail.com>,
-	SkyLake Huang <SkyLake.Huang@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH net-next 4/5] net: phy: mediatek: add calibration logic for AN7581
-Date: Wed,  8 Jul 2026 12:23:30 +0200
-Message-ID: <20260708102341.53919-5-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260708102341.53919-1-ansuelsmth@gmail.com>
-References: <20260708102341.53919-1-ansuelsmth@gmail.com>
+	s=arc-20240116; t=1783506283; c=relaxed/simple;
+	bh=H2shEOmNejMQSYdatJnwXRcHlaK5PfqWoplcteZBtvk=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=UPxVJ3qpR1NCi991u+suGxgPT8Zmay1Ze1tKIiBk8PcF3GuNPENe+ykxoB5A/D3CcT2zyJHyEtmKsSWq6KuAtP7qZgc4PHNRICQk5t2KE81uJy1FggStdPlQMwtOQPS2jZbUrgDgfH0H9B9EUWUt5Mn6c3l7XDdh7ZKpBoC6/n0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=54.207.22.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
+X-QQ-mid: esmtpgz12t1783506234te4e7f166
+X-QQ-Originating-IP: 0O58FwahYTO6u4S7lcAVRSo8k9RjSzH5DW7xKk2VDQY=
+Received: from smtpclient.apple ( [60.188.196.189])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Wed, 08 Jul 2026 18:23:52 +0800 (CST)
+X-QQ-SSF: 0001000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 81809779861008349
+EX-QQ-RecipientCnt: 6
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH net-next v6 3/3] net: libwx: support vf per-queue
+ statistics via ethtool -S
+From: "mengyuanlou@net-swift.com" <mengyuanlou@net-swift.com>
+In-Reply-To: <20260707095046.104606-1-pabeni@redhat.com>
+Date: Wed, 8 Jul 2026 18:23:42 +0800
+Cc: netdev@vger.kernel.org,
+ jiawenwu@trustnetic.com,
+ duanqiangwen@net-swift.com,
+ horms@kernel.org,
+ kuba@kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <C73D2F94-B574-47ED-9744-7B3C3DA9BB39@net-swift.com>
+References: <20260701100145.23738-4-mengyuanlou@net-swift.com>
+ <20260707095046.104606-1-pabeni@redhat.com>
+To: Paolo Abeni <pabeni@redhat.com>
+X-Mailer: Apple Mail (2.3864.600.51.1.1)
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpgz:net-swift.com:qybglogicsvrgz:qybglogicsvrgz5b-1
+X-QQ-XMAILINFO: N4l297NxaS4d/0DAGa1I6fOMJypBS6l1As2m29UbKrUEk4ZcPpBCvwdl
+	oEds33LVv+AUJ0gZ4qJU226TiImx+OhvqcNlKIDioP5OKG4RKt7prUlIhsoKK1AITAwY+v2
+	uji0X7q+X9uxod0WppG/EoodXH7Ip5Wis7gNetj0jWvIWVyPrMoAkH6TjolTMdDuHN5rxMC
+	Y4Cv3oICljhnZ4zZ5hZGJFr7kAf3DcOPjRKkrOMUxz1q6eu/AyHrrzPeGLgq/hGvtJKT/aU
+	dlZkKqWEY9+s/sM4+0RO1XAX43sUEbwpXyJMLDhpP03K3D3GRtWSpREGJdv+5Tz7bUpYf+2
+	NjCnITndqi4kTCG0uS6ksytutIf1HQXEIF6nv8M1TRtU+jc0aCWuSjEChAr6Lny/GH2gMEj
+	rxmLmqYNQ+HXb9S/FTSXl7two4fdTvl+4lPBWyVAnpf4xPG8QTLvLFwhx4FEBfmpUoRY1oO
+	kWcP7Cd7hDMon4Fnd9rszA7F1PI3el+uSWIhkjL+wTIVv42OYN4uWXjAlK5dEljfA5RbYZp
+	oodF5M+SSzjMfiNKe7wKk+383xPA2cp13ihOEs+GlxvcIZ6znzrULsmPfjhazp8Fwzu/fFX
+	LzTeYJIRUnoyjgNyvhCJQpBEOaVUf8/BIMRBtTlDqCtqpkjLtBGT8f1dJW5Z6POAUynNiUf
+	mcq31qTUMQXvwBXarwmlD2vxYzSeWbQTq85bi5l522uIsJfJ1rOwastpsCnCRs1Tb2IUkLE
+	Xp6faMT1bp/+fLEP4u3dQoV5+z1/rdDjgdgtL3L+yED/+upOXVsBVyUK/ZKvQ+U+Op9bt1A
+	IaZVypuKvmQU+Oug5tewq+liyepsvlsUiDIx+apz/+wVjmBb6YYQAVwZjJJ7NEibqsL0NhC
+	UJnYS9U0Yb3oSbcBuc142qLCMkvFlBHHNeV1DCfkN3IXMnwhBtFehO9vYNA96nrH301cdAX
+	/MhPazPvTmIfRMpPxmlif4VbiLLxIv+ebm+3Sc0vtFrMfizn3DUC5XLZCrkfTzBP3d9Vh0T
+	+MBlQQoknwbmYa6pzfpqK13myb5dEDFi/6MRKKeZcDdhhnfRkops2ipfqovgXaCyZtliOEe
+	dla3/DbWJu4cf4N0rwXZLHfYBoAtpizwA==
+X-QQ-XMRINFO: MPJ6Tf5t3I/yesON6mHkT11hJVx/QaGLwA==
+X-QQ-RECHKSPAM: 0
 
-Airoha AN7581 require dedicated calibration and specific tuneup to make
-the Ethernet port work on specific HW PCB layout.
 
-The calibration process is similar to Mediatek PHY but Airoha PHY use
-Software calibration process instead of making use of EFUSE.
 
-It does also require some complex table for TX Amp compensation and
-multiple register settings for EEE and 10/100M to correctly work.
-Also the PHY apply a different TX Amp compensation table based on the
-SoC PDIDR version. Such version info is stored in the SCU SoC registers.
+> 2026=E5=B9=B47=E6=9C=887=E6=97=A5 17:50=EF=BC=8CPaolo Abeni =
+<pabeni@redhat.com> =E5=86=99=E9=81=93=EF=BC=9A
+>=20
+> From: AI Reviewer <ai@example.com>
+>=20
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> Full review at: https://netdev-ai.bots.linux.dev/sashiko/
+> ---
+> Now I have enough information to produce the report.
+>=20
+> commit e59c58bb080afb34cac34c91b8c320a1f05134e6
+> Author: Mengyuan Lou <mengyuanlou@net-swift.com>
+>=20
+> net: libwx: support vf per-queue statistics via ethtool -S
+>=20
+> The patch wires wx_get_sset_count, wx_get_strings, and =
+wx_get_ethtool_stats
+> into wx_ethtool_ops_vf, adds a small vf-only global stats table, and =
+starts
+> calling wx_update_stats() from wxvf_service_task. It also adds NULL =
+checks
+> for wx->rx_ring[i] / wx->tx_ring[i] inside wx_update_stats.
+>=20
+>> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c =
+b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
+>> index 22037f015ded..f72908630ea4 100644
+>> --- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
+>> +++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
+>=20
+> [ ... ]
+>=20
+>> @@ -114,7 +133,7 @@ void wx_get_strings(struct net_device *netdev, =
+u32 stringset, u8 *data)
+>> ethtool_sprintf(&p, "tx_queue_%u_packets", i);
+>> ethtool_sprintf(&p, "tx_queue_%u_bytes", i);
+>> }
+>> - for (i =3D 0; i < WX_NUM_RX_QUEUES; i++) {
+>> + for (i =3D 0; i < WX_NUM_RX_QUEUES(netdev); i++) {
+>> ethtool_sprintf(&p, "rx_queue_%u_packets", i);
+>> ethtool_sprintf(&p, "rx_queue_%u_bytes", i);
+>> }
+>=20
+> [ ... ]
+>=20
+>> @@ -852,6 +878,9 @@ static const struct ethtool_ops wx_ethtool_ops_vf =
+=3D {
+>> .set_coalesce =3D wx_set_coalesce,
+>> .get_ts_info =3D ethtool_op_get_ts_info,
+>> .get_link_ksettings =3D wx_get_link_ksettings_vf,
+>> + .get_sset_count =3D wx_get_sset_count,
+>> + .get_strings =3D wx_get_strings,
+>> + .get_ethtool_stats =3D wx_get_ethtool_stats,
+>> };
+>=20
+> [Medium]
+> Before this change wx_ethtool_ops_vf had no get_sset_count / =
+get_strings /
+> get_ethtool_stats callbacks, so the VF exposed no ethtool -S output at =
+all.
+> Wiring these in also picks up the shared per-queue string loop that =
+emits
+> tx_queue_%u_packets / tx_queue_%u_bytes and rx_queue_%u_packets /
+> rx_queue_%u_bytes.
+>=20
+> Per-queue TX/RX packet and byte counters are a category that already =
+has a
+> standard uAPI (netdev_stat_ops with queue_stats_rx / queue_stats_tx,
+> surfaced by netlink and ynl). Documentation/networking/statistics.rst =
+and
+> the ethtool -S guidance state that new counters covering values that =
+have a
+> standard uAPI should not be added to ethtool -S even when the driver =
+does
+> not yet implement the standard interface.
+>=20
+> The wangxun tree does not implement netdev_stat_ops (no
+> get_base_stats / get_queue_stats_rx / get_queue_stats_tx callbacks are
+> present under drivers/net/ethernet/wangxun/).
 
-Add module version as suggested by Airoha to identify the calibration logic
-with a specific version.
+Ok=EF=BC=8CI will remove patch3=EF=BC=88support vf per-queue statistics =
+via ethtool -S).
+>=20
+> Would it be preferable to expose the per-queue counters on the VF via
+> netdev_stat_ops instead of adding them to ethtool -S here?
 
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
----
- drivers/net/phy/mediatek/airoha-ge-soc.c | 1489 ++++++++++++++++++++++
- drivers/net/phy/mediatek/mtk-ge-soc.h    |   13 +
- 2 files changed, 1502 insertions(+)
-
-diff --git a/drivers/net/phy/mediatek/airoha-ge-soc.c b/drivers/net/phy/mediatek/airoha-ge-soc.c
-index 429594f27792..bc487b093cfa 100644
---- a/drivers/net/phy/mediatek/airoha-ge-soc.c
-+++ b/drivers/net/phy/mediatek/airoha-ge-soc.c
-@@ -1,16 +1,1493 @@
- // SPDX-License-Identifier: GPL-2.0+
-+#include <linux/bitfield.h>
- #include <linux/pinctrl/consumer.h>
- #include <linux/phy.h>
- 
-+#include "../phylib.h"
- #include "mtk.h"
- #include "mtk-ge-soc.h"
- 
-+#define AIROHA_DEFAULT_PORT0_ADDR		0x9
- #define AIROHA_PHY_MAX_LEDS			2
- 
-+enum airoha_mdi_resister_type {
-+	MDI_0R,
-+	MDI_5R,
-+
-+	MDI_TYPE_MAX,
-+};
-+
-+enum airoha_transformer_type {
-+	TXMR,
-+	DISCRETE,
-+
-+	TRANSFORMER_TYPE_MAX,
-+};
-+
-+enum airoha_calib_const_type {
-+	TX_AMP_TEST_A,
-+	TX_AMP_TEST_B,
-+	TX_AMP_TEST_C,
-+	TX_AMP_TEST_D,
-+	TX_AMP_1G_A,
-+	TX_AMP_1G_B,
-+	TX_AMP_1G_C,
-+	TX_AMP_1G_D,
-+	TX_AMP_100M_A,
-+	TX_AMP_100M_B,
-+	TX_AMP_10M_A,
-+	TX_AMP_10M_B,
-+	R50_A,
-+	R50_B,
-+	R50_C,
-+	R50_D,
-+
-+	CALIB_CONST_TYPE_MAX,
-+};
-+
-+struct airoha_socphy_shared {
-+	struct phy_device *phydev_p0;
-+	enum airoha_transformer_type transformer_type[4];
-+	enum airoha_mdi_resister_type mdi_resister_type;
-+	bool rext_sw_calib_done;
-+	int (*tx_amp_compensation_tbl)[TRANSFORMER_TYPE_MAX][MDI_TYPE_MAX][CALIB_CONST_TYPE_MAX][4];
-+	u8 *r50_cal_tbl;
-+};
-+
-+/*
-+ * 2 chip revision
-+ * TXMR or discrete
-+ * 2 MDI type
-+ * TX AMP test/TX AMP 1G/TX AMP 100M/TX AMP 10M/R50
-+ * 4 PHY
-+ */
-+static int an7581_tx_amp_compensation_tbl[2][TRANSFORMER_TYPE_MAX][MDI_TYPE_MAX][CALIB_CONST_TYPE_MAX][4] = {
-+	{ /* IC version 1 */
-+		[TXMR] = {
-+			{ },
-+			{
-+				[TX_AMP_TEST_A] = { -12, -11, -9, -6 },
-+				[TX_AMP_TEST_B] = { -9, -13, -9, -5 },
-+				[TX_AMP_TEST_C] = { -5, -4, -3, 1 },
-+				[TX_AMP_TEST_D] = { -9, -8, -7, -5 },
-+				[TX_AMP_1G_A] = { -12, -11, -9, -6 },
-+				[TX_AMP_1G_B] = { -9, -13, -9, -5 },
-+				[TX_AMP_1G_C] = { -5, -4, -3, 1 },
-+				[TX_AMP_1G_D] = { -9, -8, -7, -5 },
-+				[TX_AMP_100M_A] = { -2, -2, 0, 2 },
-+				[TX_AMP_100M_B] = { -2, -2, 1, 1 },
-+				[TX_AMP_10M_A] = { 0, 0, 0, 0 },
-+				[TX_AMP_10M_B] = { 0, 0, 0, 0 },
-+				[R50_A] = { 15, 15, 15, 15 },
-+				[R50_B] = { 15, 15, 18, 15 },
-+				[R50_C] = { -8, -8, -8, -8 },
-+				[R50_D] = { -8, -8, -8, -8 },
-+			},
-+		},
-+		[DISCRETE] = {
-+			{ },
-+			{
-+				[TX_AMP_TEST_A] = { -9, -7, -7, -5 },
-+				[TX_AMP_TEST_B] = { -9, -9, -7, -4 },
-+				[TX_AMP_TEST_C] = { -9, -7, -9, -6 },
-+				[TX_AMP_TEST_D] = { -11, -9, -10, -8 },
-+				[TX_AMP_1G_A] = { -9, -7, -7, -5 },
-+				[TX_AMP_1G_B] = { -9, -8, -7, -4 },
-+				[TX_AMP_1G_C] = { -9, -7, -9, -6 },
-+				[TX_AMP_1G_D] = { -11, -8, -10, -8 },
-+				[TX_AMP_100M_A] = { 4, 3, 4, 4 },
-+				[TX_AMP_100M_B] = { 4, 4, 5, 4 },
-+				[TX_AMP_10M_A] = { 0, 0, 0, 0 },
-+				[TX_AMP_10M_B] = { 0, 0, 0, 0 },
-+				[R50_A] = { 0, 0, 0, 0 },
-+				[R50_B] = { 0, 0, 0, 0 },
-+				[R50_C] = { 0, 0, 0, 0 },
-+				[R50_D] = { 0, 0, 0, 0 },
-+			},
-+		},
-+	},
-+	{ /* IC version 2 */
-+		[TXMR] = {
-+			{ },
-+			{
-+				[TX_AMP_TEST_A] = { -10, -12, -12, -11 },
-+				[TX_AMP_TEST_B] = { -10, -11, -11, -10 },
-+				[TX_AMP_TEST_C] = { -5, -7, -9, -3 },
-+				[TX_AMP_TEST_D] = { -8, -10, -7, -8 },
-+				[TX_AMP_1G_A] = { -12, -6, -6, 4 },
-+				[TX_AMP_1G_B] = { -10, -5, -5, 1 },
-+				[TX_AMP_1G_C] = { -5, -3, -4, 11 },
-+				[TX_AMP_1G_D] = { -8, -3, -3, 4 },
-+				[TX_AMP_100M_A] = { 2, 1, 0, 3 },
-+				[TX_AMP_100M_B] = { 0, 0, 0, 3 },
-+				[TX_AMP_10M_A] = { 0, 0, 0, 0 },
-+				[TX_AMP_10M_B] = { 0, 0, 0, 0 },
-+				[R50_A] = { 15, 15, 15, 15 },
-+				[R50_B] = { 15, 15, 18, 15 },
-+				[R50_C] = { 4, 4, 4, 4 },
-+				[R50_D] = { 4, 4, 4, 4 },
-+			},
-+		},
-+		[DISCRETE] = {
-+			{ },
-+			{
-+				[TX_AMP_TEST_A] = { -11, 11, -12, -7 },
-+				[TX_AMP_TEST_B] = { -9, -10, -9, -8 },
-+				[TX_AMP_TEST_C] = { -6, -3, -7, -4 },
-+				[TX_AMP_TEST_D] = { -7, -8, -10, -7 },
-+				[TX_AMP_1G_A] = { -11, -11, -12, -7 },
-+				[TX_AMP_1G_B] = { -9, -10, -9, -8 },
-+				[TX_AMP_1G_C] = { -6, -3, -7, -4 },
-+				[TX_AMP_1G_D] = { -7, -8, -10, -7 },
-+				[TX_AMP_100M_A] = { 2, 2, 1, 2 },
-+				[TX_AMP_100M_B] = { 3, 3, 3, 3 },
-+				[TX_AMP_10M_A] = { 0, 0, 0, 0 },
-+				[TX_AMP_10M_B] = { 0, 0, 0, 0 },
-+				[R50_A] = { 12, 12, 12, 12 },
-+				[R50_B] = { 7, 7, 7, 7 },
-+				[R50_C] = { 2, 2, 0, 0 },
-+				[R50_D] = { 0, 0, 2, 2 },
-+			},
-+		},
-+	},
-+};
-+
-+static u8 an7581_zcal_to_r45ohm[64] = {
-+	127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127,
-+	127, 127, 127, 127, 127, 127, 127, 127, 123, 119, 115, 112, 108, 104, 100,  96,
-+	 94,  92,  88,  85,  82,  80,  76,  74,  72,  68,  66,  64,  62,  60,  56,  55,
-+	 52,  50,  48,  46,  44,  42,  40,  39,  36,  35,  32,  32,  30,  28,  27,  25
-+};
-+
-+static int airoha_cal_cycle(struct phy_device *phydev, int devad,
-+			    u32 regnum, u16 mask, u16 cal_val)
-+{
-+	struct airoha_socphy_shared *shared = phy_package_get_priv(phydev);
-+	struct phy_device *phydev_p0;
-+	int ret;
-+
-+	phydev_p0 = shared->phydev_p0;
-+
-+	phy_modify_mmd(phydev, devad, regnum, mask, cal_val);
-+
-+	ret = mtk_cal_cycle_wait(phydev_p0);
-+	phydev_dbg(phydev, "cal_val: 0x%x, ret: %d\n", cal_val, ret);
-+
-+	return ret;
-+}
-+
-+static int airoha_rext_cal_sw(struct phy_device *phydev)
-+{
-+	int calibration_polarity;
-+	u8 zcal_ctrl = 32;
-+	int first_calib;
-+	int ret;
-+
-+	/* BG voltage output */
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x100, 0xc000);
-+	/* tst_mode2 */
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0xff, 0x2);
-+
-+	phy_clear_bits_mmd(phydev, MDIO_MMD_VEND2, 0xff,
-+			   GENMASK(15, 4) | GENMASK(1, 0));
-+
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG0,
-+		      MTK_PHY_RG_CAL_CKINV | MTK_PHY_RG_ANA_CALEN |
-+		      MTK_PHY_RG_REXT_CALEN);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG1, 0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG6, 0);
-+
-+	phydev_dbg(phydev, "Start REXT SW cal.\n");
-+	first_calib = airoha_cal_cycle(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG5,
-+				       MTK_PHY_RG_REXT_ZCAL_CTRL_MASK, zcal_ctrl);
-+
-+	if (first_calib < 0) {
-+		phydev_err(phydev, "REXT SW calibration failed.\n");
-+		return -EINVAL;
-+	}
-+
-+	/* If REXT calibration failed:
-+	 * - increase dB until calibration succeed.
-+	 * If REXT calibration succeeded:
-+	 * - decrease dB until calibration fail to fine tune it.
-+	 */
-+	if (first_calib == 1)
-+		calibration_polarity = -1;
-+	else
-+		calibration_polarity = 1;
-+
-+	while (zcal_ctrl > 0 &&
-+	       zcal_ctrl < FIELD_MAX(MTK_PHY_RG_REXT_ZCAL_CTRL_MASK)) {
-+		zcal_ctrl += calibration_polarity;
-+
-+		ret = airoha_cal_cycle(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG5,
-+				       MTK_PHY_RG_REXT_ZCAL_CTRL_MASK, zcal_ctrl);
-+		/* Exit if we either failed or succeeded compared to the
-+		 * first calibration result. (aka we finished fine tuning or
-+		 * we succeeded with calibration)
-+		 */
-+		if (ret != first_calib)
-+			break;
-+	}
-+
-+	if (ret < 0) {
-+		phydev_err(phydev, "REXT SW calibration failed.\n");
-+		return -EINVAL;
-+	}
-+
-+	if (zcal_ctrl == 0 ||
-+	    zcal_ctrl == FIELD_MAX(MTK_PHY_RG_REXT_ZCAL_CTRL_MASK)) {
-+		zcal_ctrl = 32;
-+		phydev_err(phydev, "REXT SW calibration saturation. Defaulting to %x.\n",
-+			   zcal_ctrl);
-+	}
-+
-+	phy_modify_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG5,
-+		       MTK_PHY_RG_REXT_TRIM_MASK,
-+		       FIELD_PREP(MTK_PHY_RG_REXT_TRIM_MASK, zcal_ctrl));
-+	phy_modify_mmd(phydev, MDIO_MMD_VEND2, MTK_PHY_RG_BG_RASEL,
-+		       MTK_PHY_RG_BG_RASEL_MASK,
-+		       FIELD_PREP(MTK_PHY_RG_BG_RASEL_MASK, zcal_ctrl >> 3));
-+
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG0, 0);
-+
-+	return 0;
-+}
-+
-+static int airoha_tx_offset_cal_sw(struct phy_device *phydev, u8 txg_calen_x)
-+{
-+	struct airoha_socphy_shared *shared = phy_package_get_priv(phydev);
-+	struct phy_device *phydev_p0;
-+	u16 dev1e_145_tmp, bmcr_tmp;
-+	int calibration_polarity;
-+	u16 reg_dac1, reg_dac2;
-+	int zcal_ctrl = 0;
-+	int first_calib;
-+	u16 reg, mask;
-+	int ret;
-+
-+	phydev_p0 = shared->phydev_p0;
-+
-+	/* BG voltage output */
-+	phy_write_mmd(phydev_p0, MDIO_MMD_VEND2, 0x100, 0xc000);
-+
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG0,
-+		      MTK_PHY_RG_ANA_CALEN);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG1,
-+		      MTK_PHY_RG_TXVOS_CALEN);
-+	phy_write_mmd(phydev_p0, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG0,
-+		      MTK_PHY_RG_ANA_CALEN);
-+	phy_write_mmd(phydev_p0, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG1,
-+		      MTK_PHY_RG_TXVOS_CALEN);
-+
-+	/* Force 1G full duplex for calibration */
-+	bmcr_tmp = phy_read(phydev, MII_BMCR);
-+	phy_write(phydev, MII_BMCR, BMCR_FULLDPLX | BMCR_SPEED1000);
-+
-+	/* Force MDI */
-+	dev1e_145_tmp = phy_read_mmd(phydev, MDIO_MMD_VEND1, 0x0145);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x0145, 0x1010);
-+
-+	/* 1e_96[15]:bypass_tx_offset_cal, Hw bypass, Fw cal */
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x96,
-+		      0x8000);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x3e,
-+		      0xf808);
-+
-+	switch (txg_calen_x) {
-+	case PAIR_A:
-+		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0xdd, BIT(12));
-+		reg_dac1 = MTK_PHY_RG_DASN_DAC_IN0_A;
-+		reg_dac2 = MTK_PHY_RG_DASN_DAC_IN1_A;
-+		reg = MTK_PHY_RG_CR_TX_AMP_OFFSET_A_B;
-+		mask = MTK_PHY_CR_TX_AMP_OFFSET_A_MASK;
-+		break;
-+	case PAIR_B:
-+		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0xdd, BIT(8));
-+		reg_dac1 = MTK_PHY_RG_DASN_DAC_IN0_B;
-+		reg_dac2 = MTK_PHY_RG_DASN_DAC_IN1_B;
-+		reg = MTK_PHY_RG_CR_TX_AMP_OFFSET_A_B;
-+		mask = MTK_PHY_CR_TX_AMP_OFFSET_B_MASK;
-+		break;
-+	case PAIR_C:
-+		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0xdd, BIT(4));
-+		reg_dac1 = MTK_PHY_RG_DASN_DAC_IN0_C;
-+		reg_dac2 = MTK_PHY_RG_DASN_DAC_IN1_C;
-+		reg = MTK_PHY_RG_CR_TX_AMP_OFFSET_C_D;
-+		mask = MTK_PHY_CR_TX_AMP_OFFSET_C_MASK;
-+		break;
-+	case PAIR_D:
-+		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0xdd, BIT(0));
-+		reg_dac1 = MTK_PHY_RG_DASN_DAC_IN0_D;
-+		reg_dac2 = MTK_PHY_RG_DASN_DAC_IN1_D;
-+		reg = MTK_PHY_RG_CR_TX_AMP_OFFSET_C_D;
-+		mask = MTK_PHY_CR_TX_AMP_OFFSET_D_MASK;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, reg_dac1,
-+		      0x8000);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, reg_dac2,
-+		      0x8000);
-+
-+	phydev_dbg(phydev, "Start TX Offset SW cal.\n");
-+
-+	first_calib = airoha_cal_cycle(phydev, MDIO_MMD_VEND1, reg, mask,
-+				       zcal_ctrl << __ffs(mask));
-+
-+	/* If TX Offset calibration failed:
-+	 * - increase dB until calibration succeed.
-+	 * If TX Offset calibration succeeded:
-+	 * - decrease dB until calibration fail to fine tune it.
-+	 */
-+	if (first_calib == 1)
-+		calibration_polarity = -1;
-+	else
-+		calibration_polarity = 1;
-+
-+	while (zcal_ctrl > -32 && zcal_ctrl < 32) {
-+		u32 val;
-+
-+		zcal_ctrl += calibration_polarity;
-+		if (zcal_ctrl >= 0)
-+			val = zcal_ctrl;
-+		else
-+			/* BIT(5) signal negative number for TX Offset */
-+			val = BIT(5) | abs(zcal_ctrl);
-+
-+		ret = airoha_cal_cycle(phydev, MDIO_MMD_VEND1, reg, mask,
-+				       val << __ffs(mask));
-+		/* Exit if we either failed or succeeded compared to the
-+		 * first calibration result. (aka we finished fine tuning or
-+		 * we succeeded with calibration)
-+		 */
-+		if (ret != first_calib)
-+			break;
-+	}
-+
-+	if (ret < 0) {
-+		phydev_err(phydev, "TX Offset calibration failed.\n");
-+		return -EINVAL;
-+	}
-+
-+	if (zcal_ctrl == -32 ||
-+	    zcal_ctrl == 32) {
-+		zcal_ctrl = 0;
-+		phydev_err(phydev, "TX Offset SW calibration saturation. Defaulting to %x.\n",
-+			   zcal_ctrl);
-+
-+		phy_modify_mmd(phydev, MDIO_MMD_VEND1, reg, mask,
-+			       zcal_ctrl << __ffs(mask));
-+	}
-+
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x100, 0x0);
-+
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_DASN_DAC_IN0_A, 0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_DASN_DAC_IN0_B, 0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_DASN_DAC_IN0_C, 0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_DASN_DAC_IN0_D, 0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_DASN_DAC_IN1_A, 0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_DASN_DAC_IN1_B, 0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_DASN_DAC_IN1_C, 0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_DASN_DAC_IN1_D, 0);
-+
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG0, 0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG1, 0);
-+	phy_write_mmd(phydev_p0, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG0, 0);
-+	phy_write_mmd(phydev_p0, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG1, 0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x96, 0x0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x3e, 0xc000);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0xdd, 0);
-+
-+	/* Restore BMCR */
-+	phy_write(phydev, MII_BMCR, bmcr_tmp);
-+
-+	/* Restore MDI */
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x0145, dev1e_145_tmp);
-+
-+	return 0;
-+}
-+
-+static int airoha_tx_amp_cal_sw(struct phy_device *phydev, u8 txg_calen_x)
-+{
-+	struct airoha_socphy_shared *shared = phy_package_get_priv(phydev);
-+	u16 mask_gbe, mask_tbt, mask_tst, mask_hbt;
-+	u16 reg, reg_100, reg_dac1, reg_dac2;
-+	struct phy_device *phydev_p0;
-+	int calibration_polarity;
-+	u8 zcal_ctrl = 32;
-+	int first_calib;
-+	int ret;
-+
-+	phydev_p0 = shared->phydev_p0;
-+
-+	/* BG voltage output */
-+	phy_write_mmd(phydev_p0, MDIO_MMD_VEND2, 0x100, 0xc000);
-+
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x145, 0x1010);
-+
-+	phy_write_mmd(phydev_p0, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG0,
-+		      MTK_PHY_RG_CAL_CKINV | MTK_PHY_RG_ANA_CALEN);
-+	phy_write_mmd(phydev_p0, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG1,
-+		      MTK_PHY_RG_TXVOS_CALEN);
-+
-+	/* select 1V */
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG6, 0x10);
-+
-+	/* enable Tx VLD*/
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x3e, 0xf808);
-+
-+	/* Force 1G full duplex for calibration */
-+	phy_write(phydev, MII_BMCR, BMCR_FULLDPLX | BMCR_SPEED1000);
-+
-+	switch (txg_calen_x) {
-+	case PAIR_A:
-+		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0xdd, BIT(12));
-+		reg_dac1 = MTK_PHY_RG_DASN_DAC_IN0_A;
-+		reg_dac2 = MTK_PHY_RG_DASN_DAC_IN1_A;
-+		reg = MTK_PHY_TXVLD_DA_RG;
-+		mask_gbe = MTK_PHY_DA_TX_I2MPB_A_GBE_MASK;
-+		mask_tbt = MTK_PHY_DA_TX_I2MPB_A_TBT_MASK;
-+		reg_100 = MTK_PHY_TX_I2MPB_TEST_MODE_A2;
-+		mask_hbt = MTK_PHY_DA_TX_I2MPB_A_HBT_MASK;
-+		mask_tst = MTK_PHY_DA_TX_I2MPB_A_TST_MASK;
-+		break;
-+	case PAIR_B:
-+		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0xdd, BIT(8));
-+		reg_dac1 = MTK_PHY_RG_DASN_DAC_IN0_B;
-+		reg_dac2 = MTK_PHY_RG_DASN_DAC_IN1_B;
-+		reg = MTK_PHY_TX_I2MPB_TEST_MODE_B1;
-+		mask_gbe = MTK_PHY_DA_TX_I2MPB_B_GBE_MASK;
-+		mask_tbt = MTK_PHY_DA_TX_I2MPB_B_TBT_MASK;
-+		reg_100 = MTK_PHY_TX_I2MPB_TEST_MODE_B2;
-+		mask_hbt = MTK_PHY_DA_TX_I2MPB_B_HBT_MASK;
-+		mask_tst = MTK_PHY_DA_TX_I2MPB_B_TST_MASK;
-+		break;
-+	case PAIR_C:
-+		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0xdd, BIT(4));
-+		reg_dac1 = MTK_PHY_RG_DASN_DAC_IN0_C;
-+		reg_dac2 = MTK_PHY_RG_DASN_DAC_IN1_C;
-+		reg = MTK_PHY_TX_I2MPB_TEST_MODE_C1;
-+		mask_gbe = MTK_PHY_DA_TX_I2MPB_C_GBE_MASK;
-+		mask_tbt = MTK_PHY_DA_TX_I2MPB_C_TBT_MASK;
-+		reg_100 = MTK_PHY_TX_I2MPB_TEST_MODE_C2;
-+		mask_hbt = MTK_PHY_DA_TX_I2MPB_C_HBT_MASK;
-+		mask_tst = MTK_PHY_DA_TX_I2MPB_C_TST_MASK;
-+		break;
-+	case PAIR_D:
-+		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0xdd, BIT(0));
-+		reg_dac1 = MTK_PHY_RG_DASN_DAC_IN0_D;
-+		reg_dac2 = MTK_PHY_RG_DASN_DAC_IN1_D;
-+		reg = MTK_PHY_TX_I2MPB_TEST_MODE_D1;
-+		mask_gbe = MTK_PHY_DA_TX_I2MPB_D_GBE_MASK;
-+		mask_tbt = MTK_PHY_DA_TX_I2MPB_D_TBT_MASK;
-+		reg_100 = MTK_PHY_TX_I2MPB_TEST_MODE_D2;
-+		mask_hbt = MTK_PHY_DA_TX_I2MPB_D_HBT_MASK;
-+		mask_tst = MTK_PHY_DA_TX_I2MPB_D_TST_MASK;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, reg_dac1,
-+		      0x8000 | 0xf0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, reg_dac2,
-+		      0x8000 | 0xf0);
-+
-+	phydev_dbg(phydev, "Start TX Amp SW cal.\n");
-+	first_calib = airoha_cal_cycle(phydev, MDIO_MMD_VEND1, reg,
-+				       mask_gbe, zcal_ctrl << __ffs(mask_gbe));
-+
-+	/* If TX Amp calibration failed:
-+	 * - increase dB until calibration succeed.
-+	 * If TX Amp calibration succeeded:
-+	 * - decrease dB until calibration fail to fine tune it.
-+	 */
-+	if (first_calib == 1)
-+		calibration_polarity = -1;
-+	else
-+		calibration_polarity = 1;
-+
-+	while (zcal_ctrl > 0 &&
-+	       zcal_ctrl < FIELD_MAX(MTK_PHY_RG_REXT_ZCAL_CTRL_MASK)) {
-+		zcal_ctrl += calibration_polarity;
-+
-+		ret = airoha_cal_cycle(phydev, MDIO_MMD_VEND1, reg,
-+				       mask_gbe, zcal_ctrl << __ffs(mask_gbe));
-+		/* Exit if we either failed or succeeded compared to the
-+		 * first calibration result. (aka we finished fine tuning or
-+		 * we succeeded with calibration)
-+		 */
-+		if (ret != first_calib)
-+			break;
-+	}
-+
-+	if (ret < 0) {
-+		phydev_err(phydev, "TX AMP calibration failed.\n");
-+		phy_modify_mmd(phydev, MDIO_MMD_VEND1, reg,
-+			       mask_gbe | mask_tbt,
-+			       (zcal_ctrl << __ffs(mask_gbe)) |
-+			       (zcal_ctrl << __ffs(mask_tbt)));
-+
-+		return -EINVAL;
-+	}
-+
-+	if (zcal_ctrl == 0 ||
-+	    zcal_ctrl == FIELD_MAX(MTK_PHY_RG_REXT_ZCAL_CTRL_MASK))
-+		phydev_warn(phydev, "TX AMP SW calibration saturation.\n");
-+
-+	phy_modify_mmd(phydev, MDIO_MMD_VEND1, reg,
-+		       mask_gbe | mask_tbt,
-+		       (zcal_ctrl << __ffs(mask_gbe)) |
-+		       (zcal_ctrl << __ffs(mask_tbt)));
-+
-+	phy_modify_mmd(phydev, MDIO_MMD_VEND1, reg_100,
-+		       mask_hbt | mask_tst,
-+		       (zcal_ctrl << __ffs(mask_hbt)) |
-+		       (zcal_ctrl << __ffs(mask_tst)));
-+
-+	phy_write_mmd(phydev_p0, MDIO_MMD_VEND2, 0x100, 0x0);
-+
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_DASN_DAC_IN0_A, 0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_DASN_DAC_IN0_B, 0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_DASN_DAC_IN0_C, 0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_DASN_DAC_IN0_D, 0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_DASN_DAC_IN1_A, 0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_DASN_DAC_IN1_B, 0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_DASN_DAC_IN1_C, 0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_DASN_DAC_IN1_D, 0);
-+	phy_write_mmd(phydev_p0, MDIO_MMD_VEND1, 0x145, 0x1000);
-+
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG0, 0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG1, 0);
-+	phy_write_mmd(phydev_p0, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG0, 0);
-+	phy_write_mmd(phydev_p0, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG1, 0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x3e, 0xc000);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0xdd, 0);
-+
-+	/* Restore AN enable */
-+	phy_write(phydev, MII_BMCR, BMCR_ANENABLE);
-+
-+	return 0;
-+}
-+
-+static int airoha_tx_r50_cal_sw(struct phy_device *phydev, u8 txg_calen_x)
-+{
-+	struct airoha_socphy_shared *shared = phy_package_get_priv(phydev);
-+	struct phy_device *phydev_p0;
-+	u16 dev1e_145_tmp, bmcr_tmp;
-+	int calibration_polarity;
-+	u8 zcal_ctrl = 32;
-+	int first_calib;
-+	u16 reg;
-+	int ret;
-+
-+	phydev_p0 = shared->phydev_p0;
-+
-+	/* BG voltage output */
-+	phy_write_mmd(phydev_p0, MDIO_MMD_VEND2, 0x100, 0xc000);
-+
-+	phy_write_mmd(phydev_p0, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG0,
-+		      MTK_PHY_RG_CAL_CKINV | MTK_PHY_RG_ANA_CALEN);
-+	phy_write_mmd(phydev_p0, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG1, 0);
-+	/* select 1V */
-+	phy_write_mmd(phydev_p0, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG6, 0x10);
-+
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG0,
-+		      MTK_PHY_RG_CAL_CKINV | MTK_PHY_RG_ANA_CALEN);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG1, 0);
-+	/* select 1V */
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG6, 0x10);
-+
-+	/* Force 1G full duplex for calibration */
-+	bmcr_tmp = phy_read(phydev, MII_BMCR);
-+	phy_write(phydev, MII_BMCR, BMCR_FULLDPLX | BMCR_SPEED1000);
-+
-+	/* Force MDI */
-+	dev1e_145_tmp = phy_read_mmd(phydev, MDIO_MMD_VEND1, 0x0145);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x0145, 0x1010);
-+
-+	/* disable tx slew control */
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x0185, 0x0000);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x00fb, 0x0100);
-+
-+	switch (txg_calen_x) {
-+	case PAIR_A:
-+		phy_set_bits_mmd(phydev, MDIO_MMD_VEND1,
-+				 MTK_PHY_RG_ANA_CAL_RG0,
-+				 MTK_PHY_RG_ZCALEN_A);
-+		break;
-+	case PAIR_B:
-+		phy_set_bits_mmd(phydev, MDIO_MMD_VEND1,
-+				 MTK_PHY_RG_ANA_CAL_RG1,
-+				 MTK_PHY_RG_ZCALEN_B);
-+		break;
-+	case PAIR_C:
-+		phy_set_bits_mmd(phydev, MDIO_MMD_VEND1,
-+				 MTK_PHY_RG_ANA_CAL_RG1,
-+				 MTK_PHY_RG_ZCALEN_C);
-+		break;
-+	case PAIR_D:
-+		phy_set_bits_mmd(phydev, MDIO_MMD_VEND1,
-+				 MTK_PHY_RG_ANA_CAL_RG1,
-+				 MTK_PHY_RG_ZCALEN_D);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	phydev_dbg(phydev, "Start TX r50 SW cal.\n");
-+	first_calib = airoha_cal_cycle(phydev_p0, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG5,
-+				       MTK_PHY_RG_REXT_ZCAL_CTRL_MASK, zcal_ctrl);
-+
-+	if (first_calib < 0) {
-+		phydev_err(phydev, "TX r50 SW calibration failed.\n");
-+		return -EINVAL;
-+	}
-+
-+	/* If TX r50 calibration failed:
-+	 * - increase dB until calibration succeed.
-+	 * If TX r50 calibration succeeded:
-+	 * - decrease dB until calibration fail to fine tune it.
-+	 */
-+	if (first_calib == 1)
-+		calibration_polarity = -1;
-+	else
-+		calibration_polarity = 1;
-+
-+	while (zcal_ctrl > 0 &&
-+	       zcal_ctrl < FIELD_MAX(MTK_PHY_RG_REXT_ZCAL_CTRL_MASK)) {
-+		zcal_ctrl += calibration_polarity;
-+
-+		ret = airoha_cal_cycle(phydev_p0, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG5,
-+				       MTK_PHY_RG_REXT_ZCAL_CTRL_MASK, zcal_ctrl);
-+		/* Exit if we either failed or succeeded compared to the
-+		 * first calibration result. (aka we finished fine tuning or
-+		 * we succeeded with calibration)
-+		 */
-+		if (ret != first_calib)
-+			break;
-+	}
-+
-+	if (ret < 0) {
-+		phydev_err(phydev, "TX r50 SW calibration failed.\n");
-+		return -EINVAL;
-+	}
-+
-+	if (zcal_ctrl == 0 ||
-+	    zcal_ctrl == FIELD_MAX(MTK_PHY_RG_REXT_ZCAL_CTRL_MASK))
-+		phydev_warn(phydev, "TX r50 SW calibration saturation.\n");
-+
-+	zcal_ctrl = shared->r50_cal_tbl[zcal_ctrl];
-+
-+	switch (txg_calen_x) {
-+	case PAIR_A:
-+		reg = BIT(7) | FIELD_PREP(MTK_PHY_CR_TX_R50_OFFSET_A_MASK, zcal_ctrl);
-+		phy_modify_mmd(phydev, MDIO_MMD_VEND1,
-+			       MTK_PHY_RG_CR_TX_R50_OFFSET_A_B,
-+			       BIT(7) | MTK_PHY_CR_TX_R50_OFFSET_A_MASK, reg);
-+		break;
-+	case PAIR_B:
-+		reg = BIT(7) | FIELD_PREP(MTK_PHY_CR_TX_R50_OFFSET_B_MASK, zcal_ctrl);
-+		phy_modify_mmd(phydev, MDIO_MMD_VEND1,
-+			       MTK_PHY_RG_CR_TX_R50_OFFSET_A_B,
-+			       BIT(7) | MTK_PHY_CR_TX_R50_OFFSET_B_MASK, reg);
-+		break;
-+	case PAIR_C:
-+		reg = BIT(7) | FIELD_PREP(MTK_PHY_CR_TX_R50_OFFSET_C_MASK, zcal_ctrl);
-+		phy_modify_mmd(phydev, MDIO_MMD_VEND1,
-+			       MTK_PHY_RG_CR_TX_R50_OFFSET_C_D,
-+			       BIT(7) | MTK_PHY_CR_TX_R50_OFFSET_C_MASK, reg);
-+		break;
-+	case PAIR_D:
-+		reg = BIT(7) | FIELD_PREP(MTK_PHY_CR_TX_R50_OFFSET_D_MASK, zcal_ctrl);
-+		phy_modify_mmd(phydev, MDIO_MMD_VEND1,
-+			       MTK_PHY_RG_CR_TX_R50_OFFSET_C_D,
-+			       BIT(7) | MTK_PHY_CR_TX_R50_OFFSET_D_MASK, reg);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG0, 0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG1, 0);
-+	phy_write_mmd(phydev_p0, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG0, 0);
-+	phy_write_mmd(phydev_p0, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG1, 0);
-+
-+	/* Enable tx slew control */
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x0185, 0x0001);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x00fb, 0x0000);
-+
-+	phy_write_mmd(phydev_p0, MDIO_MMD_VEND2, 0x100, 0x0);
-+
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG6, 0x0);
-+	phy_write_mmd(phydev_p0, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG6, 0x0);
-+
-+	/* Restore BMCR */
-+	phy_write(phydev, MII_BMCR, bmcr_tmp);
-+
-+	/* Restore MDI */
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x0145, dev1e_145_tmp);
-+
-+	return 0;
-+}
-+
-+static int airoha_rx_offset_cal_sw(struct phy_device *phydev)
-+{
-+	/* Hw bypass, Fw cal */
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x96, 0x8000);
-+	/* tx/rx_cal_criteria_value */
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x37, 0x0033);
-+
-+	/* rx offset cal by Hw setup */
-+	phy_clear_bits_mmd(phydev, MDIO_MMD_VEND1, 0x39,
-+			   BIT(14) | BIT(11));
-+
-+	/* disable rtune calibration */
-+	phy_clear_bits_mmd(phydev, MDIO_MMD_VEND2, 0x107,
-+			   BIT(12));
-+
-+	/* bypass tx/rx dc offset cancellation process */
-+	phy_set_bits_mmd(phydev, MDIO_MMD_VEND1, 0x171,
-+			 BIT(8) | BIT(7));
-+
-+	/* rx offset calibration start */
-+	phy_set_bits_mmd(phydev, MDIO_MMD_VEND1, 0x39,
-+			 BIT(13));
-+
-+	/* rx offset calibration stop */
-+	phy_clear_bits_mmd(phydev, MDIO_MMD_VEND1, 0x39,
-+			   BIT(13));
-+
-+	mdelay(10);
-+
-+	phy_clear_bits_mmd(phydev, MDIO_MMD_VEND1, 0x171,
-+			   BIT(8) | BIT(7));
-+
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG6,
-+		      0x1);
-+
-+	return 0;
-+}
-+
-+static int airoha_cal_sw(struct phy_device *phydev, enum CAL_ITEM cal_item,
-+			 u8 start_pair, u8 end_pair)
-+{
-+	u8 pair_n;
-+	int ret;
-+
-+	for (pair_n = start_pair; pair_n <= end_pair; pair_n++) {
-+		switch (cal_item) {
-+		case REXT:
-+			ret = airoha_rext_cal_sw(phydev);
-+			break;
-+		case TX_OFFSET:
-+			ret = airoha_tx_offset_cal_sw(phydev, pair_n);
-+			break;
-+		case TX_AMP:
-+			ret = airoha_tx_amp_cal_sw(phydev, pair_n);
-+			break;
-+		case TX_R50:
-+			ret = airoha_tx_r50_cal_sw(phydev, pair_n);
-+			break;
-+		case RX_OFFSET:
-+			ret = airoha_rx_offset_cal_sw(phydev);
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
-+		if (ret)
-+			return ret;
-+	}
-+	return 0;
-+}
-+
-+static int airoha_start_cal(struct phy_device *phydev, enum CAL_ITEM cal_item,
-+			    enum CAL_MODE cal_mode, u8 start_pair,
-+			    u8 end_pair, u32 *buf)
-+{
-+	int ret;
-+
-+	switch (cal_mode) {
-+	case SW_M:
-+		ret = airoha_cal_sw(phydev, cal_item, start_pair, end_pair);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	if (ret) {
-+		phydev_err(phydev, "cal %d failed\n", cal_item);
-+		return -EIO;
-+	}
-+
-+	return 0;
-+}
-+
-+static int airoha_phy_calib(struct phy_device *phydev)
-+{
-+	struct airoha_socphy_shared *shared = phy_package_get_priv(phydev);
-+	struct phy_device *phydev_p0;
-+	int ret;
-+
-+	phydev_p0 = shared->phydev_p0;
-+
-+	/* PreCalibrate Set */
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x5c, 0x6666);
-+
-+	if (!shared->rext_sw_calib_done) {
-+		ret = airoha_start_cal(phydev, REXT, SW_M, NO_PAIR, NO_PAIR, NULL);
-+		if (ret)
-+			return ret;
-+
-+		shared->rext_sw_calib_done = true;
-+	}
-+
-+	ret = airoha_start_cal(phydev, TX_R50, SW_M, PAIR_A, PAIR_D, NULL);
-+	if (ret)
-+		return ret;
-+
-+	ret = airoha_start_cal(phydev, TX_OFFSET, SW_M, PAIR_A, PAIR_D, NULL);
-+	if (ret)
-+		return ret;
-+
-+	ret = airoha_start_cal(phydev, TX_AMP, SW_M, PAIR_A, PAIR_D, NULL);
-+	if (ret)
-+		return ret;
-+
-+	ret = airoha_start_cal(phydev, RX_OFFSET, SW_M, NO_PAIR, NO_PAIR, NULL);
-+	if (ret)
-+		return ret;
-+
-+	/* Gating, short with other pair */
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x15, 0x0);
-+
-+	phy_write_mmd(phydev_p0, MDIO_MMD_VEND2, 0x100, 0x0);
-+
-+	return 0;
-+}
-+
-+static int airoha_phy_auto_select_transformer(struct phy_device *phydev)
-+{
-+	struct airoha_socphy_shared *shared = phy_package_get_priv(phydev);
-+	struct phy_device *phydev_p0;
-+	u8 phy_offset;
-+	u16 bmcr_tmp;
-+	u16 val;
-+	int i;
-+
-+	phydev_p0 = shared->phydev_p0;
-+	phy_offset = phydev->mdio.addr - phydev_p0->mdio.addr;
-+
-+	/* Force 1G full duplex for calibration */
-+	bmcr_tmp = phy_read(phydev, MII_BMCR);
-+	phy_write(phydev, MII_BMCR, BMCR_FULLDPLX | BMCR_SPEED1000);
-+
-+	phy_modify_mmd(phydev, MDIO_MMD_VEND2, 0x271, GENMASK(4, 0),
-+		       FIELD_PREP(GENMASK(4, 0), 0x3));
-+
-+	phy_modify_mmd(phydev, MDIO_MMD_VEND2, 0x269, GENMASK(15, 12),
-+		       FIELD_PREP(GENMASK(15, 12), 0x2));
-+
-+	phy_modify_mmd(phydev, MDIO_MMD_VEND2, 0x26f, GENMASK(14, 12),
-+		       FIELD_PREP(GENMASK(14, 12), 0x0));
-+
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0xdd, BIT(12));
-+
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_DASN_DAC_IN0_A,
-+		      0x8000 | 0xf0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_DASN_DAC_IN1_A,
-+		      0x8000 | 0xf0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_DASN_DAC_IN0_B,
-+		      0x8000 | 0xf0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_DASN_DAC_IN1_B,
-+		      0x8000 | 0xf0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_DASN_DAC_IN0_C,
-+		      0x8000 | 0xf0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_DASN_DAC_IN1_C,
-+		      0x8000 | 0xf0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_DASN_DAC_IN0_D,
-+		      0x8000 | 0xf0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_DASN_DAC_IN1_D,
-+		      0x8000 | 0xf0);
-+
-+	/* Force pGA gain */
-+	phy_select_page(phydev, MTK_PHY_PAGE_EXTENDED_52B5);
-+	__mtk_tr_modify(phydev, 0x1, 0xf, 0x10,
-+			GENMASK(20, 15),
-+			FIELD_PREP(GENMASK(20, 15), 0x1f));
-+
-+	__mtk_tr_modify(phydev, 0x1, 0xf, 0x11,
-+			GENMASK(23, 18) | GENMASK(15, 10) | GENMASK(7, 2),
-+			FIELD_PREP(GENMASK(23, 18), 0x1f) |
-+			FIELD_PREP(GENMASK(15, 10), 0x1f) |
-+			FIELD_PREP(GENMASK(7, 2), 0x1f));
-+	phy_restore_page(phydev, MTK_PHY_PAGE_STANDARD, 0);
-+
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0xc9, 0xffff);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x151, 0x12);
-+
-+	switch (phy_offset) {
-+	case 0:
-+		val = 0x1;
-+		break;
-+	case 1:
-+		val = 0x3;
-+		break;
-+	case 2:
-+		val = 0x5;
-+		break;
-+	case 3:
-+		val = 0x7;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x15,
-+		      FIELD_PREP(GENMASK(14, 12), val) | 0x161);
-+	mdelay(500);
-+
-+	for (i = 0; i < 3; i++)
-+		val = phy_read_mmd(phydev, MDIO_MMD_VEND2, 0x1a);
-+
-+	/* Check the value and report transformer type for later */
-+	shared->transformer_type[phy_offset] = val < 0xe0;
-+
-+	/* Switch to Default */
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x15, 0x1000);
-+
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0xdd, 0x0);
-+
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_DASN_DAC_IN0_A,
-+		      0x0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_DASN_DAC_IN1_A,
-+		      0x0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_DASN_DAC_IN0_B,
-+		      0x0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_DASN_DAC_IN1_B,
-+		      0x0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_DASN_DAC_IN0_C,
-+		      0x0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_DASN_DAC_IN1_C,
-+		      0x0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_DASN_DAC_IN0_D,
-+		      0x0);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_DASN_DAC_IN1_D,
-+		      0x0);
-+
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0xc9, 0xfff);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x151, 0x0);
-+
-+	phy_select_page(phydev, MTK_PHY_PAGE_EXTENDED_52B5);
-+	__mtk_tr_modify(phydev, 0x1, 0xf, 0x10,
-+			GENMASK(20, 15),
-+			FIELD_PREP(GENMASK(20, 15), 0x4));
-+
-+	__mtk_tr_modify(phydev, 0x1, 0xf, 0x11,
-+			GENMASK(23, 18) | GENMASK(15, 10) | GENMASK(7, 2),
-+			FIELD_PREP(GENMASK(23, 18), 0x0) |
-+			FIELD_PREP(GENMASK(15, 10), 0x0) |
-+			FIELD_PREP(GENMASK(7, 2), 0x0));
-+	phy_restore_page(phydev, MTK_PHY_PAGE_STANDARD, 0);
-+
-+	/* Restore BMCR */
-+	phy_write(phydev, MII_BMCR, bmcr_tmp);
-+
-+	return 0;
-+}
-+
-+static int airoha_phy_tx_amp_compensation(struct phy_device *phydev)
-+{
-+	struct airoha_socphy_shared *shared = phy_package_get_priv(phydev);
-+
-+	u16 reg_1e_12_read;
-+	u16 reg_1e_16_read;
-+	u16 reg_1e_17_read;
-+	u16 reg_1e_18_read;
-+	u16 reg_1e_19_read;
-+	u16 reg_1e_20_read;
-+	u16 reg_1e_21_read;
-+	u16 reg_1e_22_read;
-+	u16 reg_1e_174_read;
-+	u16 reg_1e_175_read;
-+
-+	int reg_1e_12_header;
-+	int reg_1e_16_header;
-+	int reg_1e_17_header;
-+	int reg_1e_18_header;
-+	int reg_1e_19_header;
-+	int reg_1e_21_header;
-+	int reg_1e_174_header;
-+	int reg_1e_175_header;
-+
-+	int reg_1e_12_end;
-+	int reg_1e_16_end;
-+	int reg_1e_17_end;
-+	int reg_1e_18_end;
-+	int reg_1e_20_end;
-+	int reg_1e_22_end;
-+	int reg_1e_174_end;
-+	int reg_1e_175_end;
-+
-+	struct phy_device *phydev_p0;
-+	u8 phy_offset;
-+
-+	int txamp_low_limit = -3;
-+	int txamp_high_limit = 0x42;
-+
-+	int r50_low_limit = -8;
-+	int r50_high_limit = 0x88;
-+
-+	bool overflow;
-+	int (*tx_amp_table)[CALIB_CONST_TYPE_MAX][4];
-+	int transformer_type, mdi_resister_type;
-+
-+	phydev_p0 = shared->phydev_p0;
-+	phy_offset = phydev->mdio.addr - phydev_p0->mdio.addr;
-+
-+	transformer_type = shared->transformer_type[phy_offset];
-+	mdi_resister_type = shared->mdi_resister_type;
-+	tx_amp_table = shared->tx_amp_compensation_tbl[transformer_type][mdi_resister_type];
-+
-+	reg_1e_12_read = phy_read_mmd(phydev, MDIO_MMD_VEND1, 0x12);
-+	reg_1e_16_read = phy_read_mmd(phydev, MDIO_MMD_VEND1, 0x16);
-+	reg_1e_17_read = phy_read_mmd(phydev, MDIO_MMD_VEND1, 0x17);
-+	reg_1e_18_read = phy_read_mmd(phydev, MDIO_MMD_VEND1, 0x18);
-+	reg_1e_19_read = phy_read_mmd(phydev, MDIO_MMD_VEND1, 0x19);
-+	reg_1e_20_read = phy_read_mmd(phydev, MDIO_MMD_VEND1, 0x20);
-+	reg_1e_21_read = phy_read_mmd(phydev, MDIO_MMD_VEND1, 0x21);
-+	reg_1e_22_read = phy_read_mmd(phydev, MDIO_MMD_VEND1, 0x22);
-+	reg_1e_174_read = phy_read_mmd(phydev, MDIO_MMD_VEND1, 0x174);
-+	reg_1e_175_read = phy_read_mmd(phydev, MDIO_MMD_VEND1, 0x175);
-+
-+	reg_1e_12_header = ((reg_1e_12_read & 0xfc00) / 1024) + *tx_amp_table[TX_AMP_1G_A][phy_offset];
-+	reg_1e_17_header = ((reg_1e_17_read & 0x3f00) / 256) + *tx_amp_table[TX_AMP_1G_B][phy_offset];
-+	reg_1e_19_header = ((reg_1e_19_read & 0x3f00) / 256) + *tx_amp_table[TX_AMP_1G_C][phy_offset];
-+	reg_1e_21_header = ((reg_1e_21_read & 0x3f00) / 256) + *tx_amp_table[TX_AMP_1G_D][phy_offset];
-+
-+	overflow = false;
-+	if (reg_1e_12_header < txamp_low_limit ||
-+	    reg_1e_12_header > txamp_high_limit)
-+		overflow = true;
-+	if (reg_1e_17_header < txamp_low_limit ||
-+	    reg_1e_17_header > txamp_high_limit)
-+		overflow = true;
-+	if (reg_1e_19_header < txamp_low_limit ||
-+	    reg_1e_19_header > txamp_high_limit)
-+		overflow = true;
-+	if (reg_1e_21_header < txamp_low_limit ||
-+	    reg_1e_21_header > txamp_high_limit)
-+		overflow = true;
-+
-+	if (overflow) {
-+		reg_1e_12_header = 0x20;
-+		reg_1e_17_header = 0x20;
-+		reg_1e_19_header = 0x20;
-+		reg_1e_21_header = 0x20;
-+	} else {
-+		if (reg_1e_12_header < 0)
-+			reg_1e_12_header = 0;
-+		else if (reg_1e_12_header > 0x3f)
-+			reg_1e_12_header = 0x3f;
-+		if (reg_1e_17_header < 0)
-+			reg_1e_17_header = 0;
-+		else if (reg_1e_17_header > 0x3f)
-+			reg_1e_17_header = 0x3f;
-+		if (reg_1e_19_header < 0)
-+			reg_1e_19_header = 0;
-+		else if (reg_1e_19_header > 0x3f)
-+			reg_1e_19_header = 0x3f;
-+		if (reg_1e_21_header < 0)
-+			reg_1e_21_header = 0;
-+		else if (reg_1e_21_header > 0x3f)
-+			reg_1e_21_header = 0x3f;
-+	}
-+
-+	reg_1e_16_end = (reg_1e_16_read & 0x003f) + *tx_amp_table[TX_AMP_TEST_A][phy_offset];
-+	reg_1e_18_end = (reg_1e_18_read & 0x003f) + *tx_amp_table[TX_AMP_TEST_B][phy_offset];
-+	reg_1e_20_end = (reg_1e_20_read & 0x003f) + *tx_amp_table[TX_AMP_TEST_C][phy_offset];
-+	reg_1e_22_end = (reg_1e_22_read & 0x003f) + *tx_amp_table[TX_AMP_TEST_D][phy_offset];
-+
-+	overflow = false;
-+	if (reg_1e_16_end < txamp_low_limit ||
-+	    reg_1e_16_end > txamp_high_limit)
-+		overflow = true;
-+	if (reg_1e_18_end < txamp_low_limit ||
-+	    reg_1e_18_end > txamp_high_limit)
-+		overflow = true;
-+	if (reg_1e_20_end < txamp_low_limit ||
-+	    reg_1e_20_end > txamp_high_limit)
-+		overflow = true;
-+	if (reg_1e_22_end < txamp_low_limit ||
-+	    reg_1e_22_end > txamp_high_limit)
-+		overflow = true;
-+
-+	if (overflow) {
-+		reg_1e_16_end = 0x20;
-+		reg_1e_18_end = 0x20;
-+		reg_1e_20_end = 0x20;
-+		reg_1e_22_end = 0x20;
-+	} else {
-+		if (reg_1e_16_end < 0)
-+			reg_1e_16_end = 0;
-+		else if (reg_1e_16_end > 0x3f)
-+			reg_1e_16_end = 0x3f;
-+		if (reg_1e_18_end < 0)
-+			reg_1e_18_end = 0;
-+		else if (reg_1e_18_end > 0x3f)
-+			reg_1e_18_end = 0x3f;
-+		if (reg_1e_20_end < 0)
-+			reg_1e_20_end = 0;
-+		else if (reg_1e_20_end > 0x3f)
-+			reg_1e_20_end = 0x3f;
-+		if (reg_1e_22_end < 0)
-+			reg_1e_22_end = 0;
-+		else if (reg_1e_22_end > 0x3f)
-+			reg_1e_22_end = 0x3f;
-+	}
-+
-+	reg_1e_16_header = ((reg_1e_16_read & 0xfc00) / 1024) + *tx_amp_table[TX_AMP_100M_A][phy_offset];
-+	reg_1e_18_header = ((reg_1e_18_read & 0x3f00) / 256) + *tx_amp_table[TX_AMP_100M_B][phy_offset];
-+
-+	overflow = false;
-+	if (reg_1e_16_header < txamp_low_limit ||
-+	    reg_1e_16_header > txamp_high_limit)
-+		overflow = true;
-+	if (reg_1e_18_header < txamp_low_limit ||
-+	    reg_1e_18_header > txamp_high_limit)
-+		overflow = true;
-+
-+	if (overflow) {
-+		reg_1e_16_header = 0x20;
-+		reg_1e_18_header = 0x20;
-+	} else {
-+		if (reg_1e_16_header < 0)
-+			reg_1e_16_header = 0;
-+		else if (reg_1e_16_header > 0x3f)
-+			reg_1e_16_header = 0x3f;
-+		if (reg_1e_18_header < 0)
-+			reg_1e_18_header = 0;
-+		else if (reg_1e_18_header > 0x3f)
-+			reg_1e_18_header = 0x3f;
-+	}
-+
-+	reg_1e_12_end = (reg_1e_12_read & 0x003f) + *tx_amp_table[TX_AMP_10M_A][phy_offset];
-+	reg_1e_17_end = (reg_1e_17_read & 0x003f) + *tx_amp_table[TX_AMP_10M_B][phy_offset];
-+
-+	overflow = false;
-+	if (reg_1e_12_end < txamp_low_limit ||
-+	    reg_1e_12_end > txamp_high_limit)
-+		overflow = true;
-+	if (reg_1e_17_end < txamp_low_limit ||
-+	    reg_1e_17_end > txamp_high_limit)
-+		overflow = true;
-+
-+	if (overflow) {
-+		reg_1e_12_end = 0x20;
-+		reg_1e_17_end = 0x20;
-+	} else {
-+		if (reg_1e_12_end < 0)
-+			reg_1e_12_end = 0;
-+		else if (reg_1e_12_end > 0x3f)
-+			reg_1e_12_end = 0x3f;
-+		if (reg_1e_17_end < 0)
-+			reg_1e_17_end = 0;
-+		else if (reg_1e_17_end > 0x3f)
-+			reg_1e_17_end = 0x3f;
-+	}
-+
-+	reg_1e_174_header = ((reg_1e_174_read & 0x7f00) / 256) + *tx_amp_table[R50_A][phy_offset];
-+	reg_1e_174_end = (reg_1e_174_read & 0x007f) + *tx_amp_table[R50_B][phy_offset];
-+	reg_1e_175_header = ((reg_1e_175_read & 0x7f00) / 256) + *tx_amp_table[R50_C][phy_offset];
-+	reg_1e_175_end = (reg_1e_175_read & 0x007f) + *tx_amp_table[R50_D][phy_offset];
-+
-+	overflow = false;
-+	if (reg_1e_174_header < r50_low_limit ||
-+	    reg_1e_174_header > r50_high_limit)
-+		overflow = true;
-+	if (reg_1e_174_end < r50_low_limit ||
-+	    reg_1e_174_end > r50_high_limit)
-+		overflow = true;
-+	if (reg_1e_175_header < r50_low_limit ||
-+	    reg_1e_175_header > r50_high_limit)
-+		overflow = true;
-+	if (reg_1e_175_end < r50_low_limit ||
-+	    reg_1e_175_end > r50_high_limit)
-+		overflow = true;
-+
-+	if (overflow) {
-+		reg_1e_174_header = 0x34;
-+		reg_1e_174_end = 0x34;
-+		reg_1e_175_header = 0x34;
-+		reg_1e_175_end = 0x34;
-+	} else {
-+		if (reg_1e_174_header < 0)
-+			reg_1e_174_header = 0;
-+		else if (reg_1e_174_header > 0x7f)
-+			reg_1e_174_header = 0x7f;
-+		if (reg_1e_174_end < 0)
-+			reg_1e_174_end = 0;
-+		else if (reg_1e_174_end > 0x7f)
-+			reg_1e_174_end = 0x7f;
-+		if (reg_1e_175_header < 0)
-+			reg_1e_175_header = 0;
-+		else if (reg_1e_175_header > 0x7f)
-+			reg_1e_175_header = 0x7f;
-+		if (reg_1e_175_end < 0)
-+			reg_1e_175_end = 0;
-+		else if (reg_1e_175_end > 0x7f)
-+			reg_1e_175_end = 0x7f;
-+	}
-+
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x12,
-+		      (reg_1e_12_header * 1024) + reg_1e_12_end);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x16,
-+		      (reg_1e_16_header * 1024) + reg_1e_16_end);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x17,
-+		      (reg_1e_17_header * 256) + reg_1e_17_end);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x18,
-+		      (reg_1e_18_header * 256) + reg_1e_18_end);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x19,
-+		      (reg_1e_19_read & 0x00ff) + (reg_1e_19_header * 256));
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x20,
-+		      (reg_1e_20_read & 0xff00) + reg_1e_20_end);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x21,
-+		      (reg_1e_21_read & 0x00ff) + (reg_1e_21_header * 256));
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x22,
-+		      (reg_1e_22_read & 0xff00) + reg_1e_22_end);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x174,
-+		      0x8080 + (reg_1e_174_header * 256) + reg_1e_174_end);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x175,
-+		      0x8080 + (reg_1e_175_header * 256) + reg_1e_175_end);
-+
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x176, 0x4400);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x177, 0x0044);
-+
-+	return 0;
-+}
-+
-+static int an7581_phy_config_init(struct phy_device *phydev)
-+{
-+	struct airoha_socphy_shared *shared = phy_package_get_priv(phydev);
-+	struct phy_device *phydev_p0;
-+	u32 soc_pdidr;
-+	u8 phy_offset;
-+	int ret;
-+
-+	phydev_p0 = shared->phydev_p0;
-+	phy_offset = phydev->mdio.addr - phydev_p0->mdio.addr;
-+
-+	/* FIXME: Read SoC PDIDR if available or default to 1 */
-+	soc_pdidr = 1;
-+
-+	shared->mdi_resister_type = MDI_5R;
-+	if (soc_pdidr == 1)
-+		shared->tx_amp_compensation_tbl = &an7581_tx_amp_compensation_tbl[0];
-+	else
-+		shared->tx_amp_compensation_tbl = &an7581_tx_amp_compensation_tbl[1];
-+	shared->r50_cal_tbl = an7581_zcal_to_r45ohm;
-+
-+	ret = airoha_phy_calib(phydev);
-+	if (ret)
-+		return ret;
-+
-+	ret = airoha_phy_auto_select_transformer(phydev);
-+	if (ret)
-+		return ret;
-+
-+	ret = airoha_phy_tx_amp_compensation(phydev);
-+	if (ret)
-+		return ret;
-+
-+	/* RX setting for 5R_TXMR before AN setting */
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0xe6, 0x1111);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0xe7, 0x5555);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0xe9, 0x0001);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0xfe, 0x0000);
-+
-+	/* Long Loop Reach setting */
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x11, 0xff00);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x202, 0x2310);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x203, 0x0025);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x204, 0x2310);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x205, 0x0025);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x206, 0x2310);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x207, 0x0025);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x208, 0x2310);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x209, 0x0025);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x20a, 0x2310);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x20b, 0x0025);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x20e, 0x2310);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x20f, 0x0025);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x210, 0x2310);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x211, 0x0025);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x212, 0x2310);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x213, 0x0025);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x214, 0x2310);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x215, 0x0025);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x216, 0x2310);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x217, 0x0025);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x21a, 0x2310);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x21b, 0x0025);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x21c, 0x2310);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x21d, 0x0025);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x21e, 0x2310);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x21f, 0x0025);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x220, 0x2310);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x221, 0x0025);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x222, 0x2310);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x223, 0x0025);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x226, 0x2310);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x227, 0x0025);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x228, 0x2310);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x229, 0x0025);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x22a, 0x2310);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x22b, 0x0025);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x22c, 0x2310);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x22d, 0x0025);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x22e, 0x2310);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x22f, 0x0025);
-+
-+	/* RX Setting */
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x3c, 0xc000);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x3d, 0x0000);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x3e, 0xc000);
-+
-+	/* EEE setting */
-+	phy_write_mmd(phydev, MDIO_MMD_AN, 0x3c, 0x0000);
-+
-+	/* RX */
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x41, 0x3333);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x44, 0x00c0);
-+
-+	/* 10M settings */
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x1a3, 0x00d2);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x1a4, 0x010e);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x27b, 0x1177);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x27c, 0x0808);
-+
-+	phy_select_page(phydev, MTK_PHY_PAGE_EXTENDED_1);
-+	__phy_write(phydev, 0x14, 0x3a18);
-+	phy_restore_page(phydev, MTK_PHY_PAGE_STANDARD, 0);
-+
-+	phy_write(phydev, 0x9, 0x1e00);
-+
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x269, 0x2114);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x26a, 0x1113);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x26f, 0x0000);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x271, 0x2c63);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x272, 0x0c2b);
-+
-+	/* EEE set because power down can't set tokenring */
-+	phy_select_page(phydev, MTK_PHY_PAGE_EXTENDED_52B5);
-+	__mtk_tr_write(phydev, 0x0, 0x7, 0x15, 0x0055a0);
-+	__mtk_tr_write(phydev, 0x0, 0x7, 0x17, 0x07ff3f);
-+	__mtk_tr_write(phydev, 0x1, 0xf, 0x0, 0x00001e);
-+	__mtk_tr_write(phydev, 0x1, 0xf, 0x1, 0x6fb90a);
-+	__mtk_tr_write(phydev, 0x1, 0xf, 0x18, 0x0e2f00);
-+	__mtk_tr_write(phydev, 0x1, 0xd, 0x26, 0x444444);
-+	__mtk_tr_write(phydev, 0x2, 0xd, 0x3, 0x000004);
-+	__mtk_tr_write(phydev, 0x2, 0xd, 0x6, 0x2ebaef);
-+	__mtk_tr_write(phydev, 0x2, 0xd, 0x8, 0x00000b);
-+	__mtk_tr_write(phydev, 0x2, 0xd, 0xc, 0x00504d);
-+	__mtk_tr_write(phydev, 0x2, 0xd, 0xd, 0x02314f);
-+	__mtk_tr_write(phydev, 0x2, 0xd, 0xf, 0x003028);
-+	__mtk_tr_write(phydev, 0x2, 0xd, 0x10, 0x00000a);
-+	__mtk_tr_write(phydev, 0x2, 0xd, 0x11, 0x040001);
-+	__mtk_tr_write(phydev, 0x2, 0xd, 0x14, 0x00024a);
-+	__mtk_tr_write(phydev, 0x2, 0xd, 0x1c, 0x003210);
-+	phy_restore_page(phydev, MTK_PHY_PAGE_STANDARD, 0);
-+
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x120, 0x8014);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x122, 0xffff);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x144, 0x0200);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x14a, 0xee20);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x19b, 0x0111);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x234, 0x1181);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x238, 0x0120);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x239, 0x0117);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x2d1, 0x0733);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x323, 0x0011);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x324, 0x013f);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x326, 0x0037);
-+	phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x268, 0x07f4);
-+
-+	if (shared->transformer_type[phy_offset] == TXMR) {
-+		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x00, 0x0187);
-+		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x01, 0x01cc);
-+		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x02, 0x01c2);
-+		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x03, 0x0109);
-+		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x04, 0x020b);
-+		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x05, 0x0202);
-+		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x06, 0x0387);
-+		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x07, 0x03c5);
-+		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x08, 0x03c2);
-+		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x09, 0x0309);
-+		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x0a, 0x000e);
-+		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x0b, 0x0002);
-+
-+		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x23, 0x0880);
-+		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x24, 0x0880);
-+		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x25, 0x0880);
-+		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x26, 0x0880);
-+	} else {
-+		if (soc_pdidr == 2) {
-+			phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x269, 0x1114);
-+			phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x26a, 0x1113);
-+			phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x26f, 0x2000);
-+			phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x271, 0x4c88);
-+			phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x272, 0x0c2b);
-+
-+			/* 100M sharp */
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x00, 0x0190);
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x01, 0x01c8);
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x02, 0x01c0);
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x03, 0x0030);
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x04, 0x0208);
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x05, 0x0000);
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x06, 0x0318);
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x07, 0x03c8);
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x08, 0x03c0);
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x09, 0x0230);
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x0a, 0x0008);
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x0b, 0x0200);
-+
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x23, 0x0885);
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x24, 0x0885);
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x25, 0x0885);
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x26, 0x0885);
-+		} else {
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x00, 0x0190);
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x01, 0x01cf);
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x02, 0x01c0);
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x03, 0x0030);
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x04, 0x020f);
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x05, 0x0000);
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x06, 0x0318);
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x07, 0x03cf);
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x08, 0x03c0);
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x09, 0x0230);
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x0a, 0x000f);
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x0b, 0x0200);
-+
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x23, 0x0003);
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x24, 0x0003);
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x25, 0x0003);
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x26, 0x0003);
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- static int an7581_phy_probe(struct phy_device *phydev)
- {
-+	struct airoha_socphy_shared *shared;
- 	struct mtk_socphy_priv *priv;
- 	struct pinctrl *pinctrl;
-+	int ret;
- 
- 	/* Toggle pinctrl to enable PHY LED */
- 	pinctrl = devm_pinctrl_get_select(&phydev->mdio.dev, "gbe-led");
-@@ -18,10 +1495,18 @@ static int an7581_phy_probe(struct phy_device *phydev)
- 		dev_err(&phydev->mdio.bus->dev,
- 			"Failed to setup PHY LED pinctrl\n");
- 
-+	ret = devm_phy_package_join(&phydev->mdio.dev, phydev, 0,
-+				    sizeof(struct airoha_socphy_shared));
-+	if (ret)
-+		return ret;
-+
- 	priv = devm_kzalloc(&phydev->mdio.dev, sizeof(*priv), GFP_KERNEL);
- 	if (!priv)
- 		return -ENOMEM;
- 
-+	if (phydev->mdio.addr == AIROHA_DEFAULT_PORT0_ADDR)
-+		shared->phydev_p0 = phydev;
-+
- 	phydev->priv = priv;
- 
- 	return 0;
-@@ -63,6 +1548,7 @@ static struct phy_driver mtk_socphy_driver[] = {
- 	{
- 		PHY_ID_MATCH_EXACT(AIROHA_GPHY_ID_AN7581),
- 		.name		= "Airoha AN7581 PHY",
-+		.config_init	= an7581_phy_config_init,
- 		.config_intr	= genphy_no_config_intr,
- 		.handle_interrupt = genphy_handle_interrupt_no_ack,
- 		.probe		= an7581_phy_probe,
-@@ -72,6 +1558,8 @@ static struct phy_driver mtk_socphy_driver[] = {
- 		.led_hw_control_set = mt798x_phy_led_hw_control_set,
- 		.led_hw_control_get = mt798x_phy_led_hw_control_get,
- 		.led_polarity_set = an7581_phy_led_polarity_set,
-+		.read_page	= mtk_phy_read_page,
-+		.write_page	= mtk_phy_write_page,
- 	},
- 	{
- 		PHY_ID_MATCH_EXACT(AIROHA_GPHY_ID_AN7583),
-@@ -98,5 +1586,6 @@ static const struct mdio_device_id __maybe_unused airoha_socphy_tbl[] = {
- MODULE_DESCRIPTION("Airoha SoC Gigabit Ethernet PHY driver");
- MODULE_AUTHOR("Christian Marangi <ansuelsmth@gmail.com>");
- MODULE_LICENSE("GPL");
-+MODULE_VERSION("01.01.20260306");
- 
- MODULE_DEVICE_TABLE(mdio, airoha_socphy_tbl);
-diff --git a/drivers/net/phy/mediatek/mtk-ge-soc.h b/drivers/net/phy/mediatek/mtk-ge-soc.h
-index 507e68343576..5e9d24a9833c 100644
---- a/drivers/net/phy/mediatek/mtk-ge-soc.h
-+++ b/drivers/net/phy/mediatek/mtk-ge-soc.h
-@@ -12,6 +12,7 @@
- 
- #define MTK_EXT_PAGE_ACCESS			0x1f
- #define MTK_PHY_PAGE_STANDARD			0x0000
-+#define MTK_PHY_PAGE_EXTENDED_1			0x0001
- #define MTK_PHY_PAGE_EXTENDED_3			0x0003
- 
- #define MTK_PHY_LPI_REG_14			0x14
-@@ -177,6 +178,7 @@
- #define MTK_PHY_RG_ANA_CAL_RG0			0xdb
- #define   MTK_PHY_RG_CAL_CKINV			BIT(12)
- #define   MTK_PHY_RG_ANA_CALEN			BIT(8)
-+#define   MTK_PHY_RG_REXT_CALEN			BIT(4)
- #define   MTK_PHY_RG_ZCALEN_A			BIT(0)
- 
- #define MTK_PHY_RG_ANA_CAL_RG1			0xdc
-@@ -187,6 +189,9 @@
- 
- #define MTK_PHY_RG_ANA_CAL_RG5			0xe0
- #define   MTK_PHY_RG_REXT_TRIM_MASK		GENMASK(13, 8)
-+#define   MTK_PHY_RG_REXT_ZCAL_CTRL_MASK	GENMASK(5, 0)
-+
-+#define MTK_PHY_RG_ANA_CAL_RG6			0xe1
- 
- #define MTK_PHY_RG_TX_FILTER			0xfe
- 
-@@ -208,6 +213,14 @@
- #define   MTK_PHY_CR_TX_AMP_OFFSET_C_MASK	GENMASK(13, 8)
- #define   MTK_PHY_CR_TX_AMP_OFFSET_D_MASK	GENMASK(6, 0)
- 
-+#define MTK_PHY_RG_CR_TX_R50_OFFSET_A_B		0x174
-+#define   MTK_PHY_CR_TX_R50_OFFSET_A_MASK	GENMASK(13, 8)
-+#define   MTK_PHY_CR_TX_R50_OFFSET_B_MASK	GENMASK(6, 0)
-+
-+#define MTK_PHY_RG_CR_TX_R50_OFFSET_C_D		0x175
-+#define   MTK_PHY_CR_TX_R50_OFFSET_C_MASK	GENMASK(13, 8)
-+#define   MTK_PHY_CR_TX_R50_OFFSET_D_MASK	GENMASK(6, 0)
-+
- #define MTK_PHY_RG_AD_CAL_COMP			0x17a
- #define   MTK_PHY_AD_CAL_COMP_OUT_MASK		GENMASK(8, 8)
- 
--- 
-2.53.0
+netdev_stat_ops support is deferred to a follow-up patch; this one only =
+extends ethtool ops.
+>=20
+>> void wx_set_ethtool_ops_vf(struct net_device *netdev)
+>> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c =
+b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+>> index 260e14d5d541..349afbe60132 100644
+>> --- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+>> +++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+>> @@ -2886,6 +2886,8 @@ void wx_update_stats(struct wx *wx)
+>> for (i =3D 0; i < wx->num_rx_queues; i++) {
+>> struct wx_ring *rx_ring =3D wx->rx_ring[i];
+>>=20
+>> + if (!rx_ring)
+>> + continue;
+>> non_eop_descs +=3D rx_ring->rx_stats.non_eop_descs;
+>=20
+> [ ... ]
+>=20
+>> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c =
+b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
+>> index 26de78e9a69e..1d84fe35d7d9 100644
+>> --- a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
+>> +++ b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
+>> @@ -409,6 +410,7 @@ static void wxvf_service_task(struct work_struct =
+*work)
+>>=20
+>> wxvf_link_config_subtask(wx);
+>> wxvf_reset_subtask(wx);
+>> + wx_update_stats(wx);
+>> wx_service_event_complete(wx);
+>> }
+>=20
+> [High]
+> Can this call race with VF PCI suspend and shutdown to produce a
+> use-after-free on wx->rx_ring[i] / wx->tx_ring[i]?
+>=20
+> Both ngbevf and txgbevf use wxvf_suspend as their PM suspend callback =
+and
+> wxvf_shutdown (which calls wxvf_suspend) as their pci_driver =
+->shutdown
+> callback:
+>=20
+>    static DEFINE_SIMPLE_DEV_PM_OPS(ngbevf_pm_ops, wxvf_suspend, =
+wxvf_resume);
+>    ...
+>    .shutdown =3D wxvf_shutdown,
+>=20
+> wxvf_suspend() in wx_vf_common.c does:
+>=20
+>    int wxvf_suspend(struct device *dev_d)
+>    {
+>        struct pci_dev *pdev =3D to_pci_dev(dev_d);
+>        struct wx *wx =3D pci_get_drvdata(pdev);
+>=20
+>        netif_device_detach(wx->netdev);
+>        wx_clear_interrupt_scheme(wx);
+>        pci_disable_device(pdev);
+>=20
+>        return 0;
+>    }
+>=20
+> wx_clear_interrupt_scheme() ends up freeing the q_vectors (via
+> kfree_rcu), and the ring allocations are embedded in the q_vector, so
+> wx->rx_ring[i] / wx->tx_ring[i] end up pointing at memory that will be
+> freed after an RCU grace period.
+>=20
+> wxvf_suspend / wxvf_shutdown do not call timer_shutdown_sync on
+> wx->service_timer or cancel_work_sync on wx->service_task, and they do
+> not set WX_STATE_DOWN.
+>=20
+> With this hunk in place, the service_task now walks wx->rx_ring[] and
+> wx->tx_ring[]:
+>=20
+>    void wx_update_stats(struct wx *wx)
+>    {
+>        ...
+>        for (i =3D 0; i < wx->num_rx_queues; i++) {
+>            struct wx_ring *rx_ring =3D wx->rx_ring[i];
+>=20
+>            if (!rx_ring)
+>                continue;
+>            non_eop_descs +=3D rx_ring->rx_stats.non_eop_descs;
+>            ...
+>        }
+>        ...
+>        for (i =3D 0; i < wx->num_tx_queues; i++) {
+>            struct wx_ring *tx_ring =3D wx->tx_ring[i];
+>=20
+>            if (!tx_ring)
+>                continue;
+>            restart_queue +=3D tx_ring->tx_stats.restart_queue;
+>            ...
+>        }
+>=20
+> If the service_task latches a non-NULL rx_ring / tx_ring pointer just
+> before wx_clear_interrupt_scheme runs, the added NULL check does not
+> help, and the subsequent ->rx_stats / ->tx_stats reads touch memory
+> that has been kfree_rcu'd. wxvf_remove() covers this by calling
+> timer_shutdown_sync + cancel_work_sync before =
+wx_clear_interrupt_scheme,
+> but wxvf_suspend / wxvf_shutdown do not.
+>=20
+> Should wxvf_suspend (and hence wxvf_shutdown) quiesce the =
+service_timer
+> and service_task, or set WX_STATE_DOWN, before =
+wx_clear_interrupt_scheme
+> now that wx_update_stats is on the service_task's call path?
+> --=20
+> This is an AI-generated review.
+>=20
+>=20
 
