@@ -1,111 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8423B38B8;
-	Wed,  8 Jul 2026 15:18:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A4CD3451AF;
+	Wed,  8 Jul 2026 15:23:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783523898; cv=none; b=Rb/nsFMheVl6UyzYtwGakPXN2AvbjYEHY8i56VxGsx6h+Zx2aVSWc/QVSF440LcvBB9UjwBEM4G0FpxeCaShZBGJBmdgQ19VeH1hgtvJLF6LMAr1Y/cbBIn3AYymmE5TBMHDnD07D5CJa8Mlj70+KH1eE2AR3wj4bHz0LiINuUs=
+	t=1783524237; cv=none; b=YVhdwiFHcWMW6aZ5wXasd/rPG3j6buzETimV3SzjkzYfGN096rEZgZYSLn/fBNWajRRvEljWOxq/7CKWVZqQ8QgSW4yfzAlStLMN8i6/G8zP90rGPOFVLbEUHPV9gEMWdjJcOYlNEW/yrVYYjXkEZKpDBGCo4yCAZbV9Q2nwRCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783523898; c=relaxed/simple;
-	bh=hVLLP9ctd8IX3dhnbSd7/S7pBf4qrnCBsR221ie1WDo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Y+ocvOiV1daOEztNxqwM6UYWgi7WPU76DzBqoaUDtSZzCgR07rveBj/7+rmfDlb7JhkxVaHBk6VGkXxZ5s230ODtov6Z+35o2Eae6S5IpkBe9517SEah4oFQ2EZ9F9Wz3VfwEY9C+crwGUW2E9YUghEUsHnJFQP1KikTFF+ipJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lBnJ3wOw; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lBnJ3wOw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D27361F00A3A;
-	Wed,  8 Jul 2026 15:18:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783523897;
-	bh=IIWw6J2tftar4U32QMJUBurC/xgaQlSBZGNvsiWM3tE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=lBnJ3wOwaTIJaiUXM3efsw2nz3JTqibBiG1nHc/F93OTSzeX4HFFLLVfBownWb4sw
-	 tfNAn/JGW5Xh+exX2Y4HPFEzVv5X7ixxDFI2NDNU297IX9H19wFkkkSviO3EmltnSr
-	 E+Q2TWvnN5mpiRnAjVUjZkN3kQe1gFuyYyAY/FbTGdxEfhUqJDv31EEuqW9yi/8P9E
-	 DAr4iTYl5BJpuijQzRKgnHCFWqYQH3FLjmZ9w+AlySav3pffUIjSNZInOryVKVA4u7
-	 Ck/fkdKypu0pKXj7Fylor91Ju7aUXGgghhHOtn3+eEvSDZRfzXFIiQCpbkFDukb/sd
-	 +4FHMuLesoIpA==
-Message-ID: <d7e3955e-6605-4de9-9641-f1755de65f1a@kernel.org>
-Date: Wed, 8 Jul 2026 09:18:16 -0600
+	s=arc-20240116; t=1783524237; c=relaxed/simple;
+	bh=9NlGv7j3wYR2B3bsrFkE0C5K5mAsL2M2Y8LZOX+yPfs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pbcqDpKAOsuxzkTBgI16AdrUqN/CWpMb4G/minfOzxuxX5DRq0AlSWJO6g93CzGriwMTnFEUyue3xRiy6lJMkDicMI7cQ3UhxKMbHQInthbucYNuzRajezgxRZyqo/qvjc5D8mzvEtkDCEVPMtE54mLxDvuM/GhRiJyOyBgGK/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
+Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
+	id 1884B60E29; Wed, 08 Jul 2026 17:23:53 +0200 (CEST)
+Date: Wed, 8 Jul 2026 17:23:52 +0200
+From: Florian Westphal <fw@strlen.de>
+To: xietangxin <xietangxin@h-partners.com>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Phil Sutter <phil@nwl.cc>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	gaoxingwang <gaoxingwang1@huawei.com>,
+	huyizhen <huyizhen2@huawei.com>, netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net] netfilter: nf_nat_masquerade: recalculate TCP TS
+ offset when port is randomized
+Message-ID: <ak5riPx5d3rSG6MG@strlen.de>
+References: <20260629093408.3927103-1-xietangxin@h-partners.com>
+ <akKN4cywAsFRdefX@strlen.de>
+ <0ad60f06-387e-49bc-9e26-3dcebf182cb4@h-partners.com>
+ <akUhid7_3iHovivd@strlen.de>
+ <3620a5a9-9ced-4825-9bc4-6950be205749@h-partners.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iproute2-next v4 2/2] devlink: support u64-array values in
- devlink param show/set
-Content-Language: en-US
-To: Ratheesh Kannoth <rkannoth@marvell.com>, stephen@networkplumber.org,
- kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Cc: andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
- jiri@resnulli.us
-References: <20260702031359.2392868-1-rkannoth@marvell.com>
- <20260702031359.2392868-3-rkannoth@marvell.com>
-From: David Ahern <dsahern@kernel.org>
-In-Reply-To: <20260702031359.2392868-3-rkannoth@marvell.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <3620a5a9-9ced-4825-9bc4-6950be205749@h-partners.com>
 
-On 7/1/26 9:13 PM, Ratheesh Kannoth wrote:
-> diff --git a/devlink/devlink.c b/devlink/devlink.c
-> index 803ea5d7..5d092d92 100644
-> --- a/devlink/devlink.c
-> +++ b/devlink/devlink.c
-> @@ -3516,12 +3516,143 @@ static const struct param_val_conv param_val_conv[] = {
->  
->  #define PARAM_VAL_CONV_LEN ARRAY_SIZE(param_val_conv)
->  
-> +struct devlink_param_u64_array {
-> +	uint64_t size;
+xietangxin <xietangxin@h-partners.com> wrote:
+> Thanks for your guidance. I’ve successfully fix the helper location
+> as you suggested, and it works fine for local traffic.
+> 
+> However, I realized that I had completely overlooked the forwarding scenario
+> (where SNAT acts as a middlebox gateway, e.g. Host A -> Gateway B -> Server C).
+> In this gateway scenario, when random-fully is enabled, the test results show
+> a massive performance degradation: the QPS drops from ~19000 down to ~10000.
 
-use of uint64_t here causes claude to comment:
+I don't think the forwarding case is fixable.
 
-Style 2: int i loop counter vs uint64_t size field in
-param_value_u64_array_put_from_str() — signed/unsigned comparison.
+Host S could be another NAT gateway, so it could be possible that
+the connections originate from different physical machines and
+timestamps differ due to different clocks, not per-connection
+randomisation.
 
+> Since skb->sk is NULL on the forwarding gateway, my current approach of
+> updating tp->tsoffset in struct tcp_sock cannot be applied here.
 
-> +	uint64_t *val;
-> +};
-> +
-> +static void param_value_u64_array_free(struct devlink_param_u64_array *arr)
-> +{
-> +	free(arr->val);
-> +	arr->val = NULL;
-> +	arr->size = 0;
-> +}
-> +
-> +static int param_value_nested_u64_attr_cb(const struct nlattr *attr, void *data)
-> +{
-> +	struct devlink_param_u64_array *arr = data;
-> +	unsigned int len;
-> +	uint64_t val;
-> +	uint64_t *new_val;
+Yes. I think the tp->tsoffset recalc is fine to handle local case.
 
-iproute2 follows netdev coding style - reverse xmas tree.
+For local case we do know that we're the end host and ts recalc is fine.
 
-other comments from claude:
+> To be honest, I am currently stuck on how to handle this forwarding scenario
+> within the netfilter architecture without adding redundant overhead to the fast path.
+> 
+> Could you please give some advice on how the community would prefer to resolve this?
+> For instance, should we look into extending the Conntrack NAT extension to
+> track and adjust the TCP timestamps?
 
-Bug 1 (both cmd_dev_param_set and cmd_port_param_set): When the new and
-current U64_ARRAY values are equal, param_value_u64_array_put_from_str()
-returns 1 as a sentinel. The code jumps to out: but err is still 1, so
-the function returns a non-zero error code to its caller even though
-nothing went wrong. All other types reach goto out with err = 0 because
-a prior mnlu_gen_socket_sndrcv() call succeeded. Fix: explicitly set err
-= 0 before the goto.
+If we have some guarantee that internal network isn't doing any
+snat at all, then yes, one could implement some TS adjustment
+scheme similar to seqadj extension we already have to deal with
+tcp sequence number adjustments.
 
-Bug 2 (JSON output for U64_ARRAY in pr_out_param_value_print): The loop
-calls print_u64(PRINT_ANY, label, ...) with the same key on every
-iteration. In JSON mode this produces duplicate keys ("value": 0,
-"value": 1, ...), which is invalid JSON. Needs
-open_json_array()/close_json_array() wrapping the loop.
+We'd have to keep state and subtract the offset to get back the
+right tsecr again on reverse direction.
 
-Style 1: flag_as_u8 is repurposed to select which netlink attribute to
-parse for U64_ARRAY — its name is completely unrelated to this use,
-making the code fragile.
+I'm not keen to have something like this, it would breaks PAWS
+as soon as the originating host is itself a nat gateway.
 
-
-Please show json output in the commit message as well.
-
+Is this really a problem to begin with?
