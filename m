@@ -1,87 +1,86 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F55136C592;
-	Wed,  8 Jul 2026 12:48:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 947F33403F1
+	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 12:50:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783514925; cv=none; b=L41WWw13SKHaFDNOVuQY9ldYnzJ/EBCt7wgl77XACC5Lfr/o031HqxCQvDnU/7QpagcXRD1xKQxQ5AODjdyKCHowXPtpsEwVgZQ0AN5mJdQUWKqqlL9j9YU9AKEBggqXALpbOcsWdH3eC4VHHVYxufa6T7BCQdWydJi9/HZjz2U=
+	t=1783515031; cv=none; b=n9v0m+6v4k3xWvwm1RmUPBgDoJWVAuYFHcoPTUoLw7/lwu7QFUH0UZOXnnJdYHgl19K0j+Cl4pBr699IYWoivtwTfrReSbY0x9qcs/dVMV7Jw+FnWX02DxMAA2P/IlWkNlH5lIbDwhuRirkvJg12jrXtKmhgEERIzEtDQKEUBfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783514925; c=relaxed/simple;
-	bh=1v9gi2AEkBMEA2mRyZBiOEF7xQVkeUQRC8vf3RMsBg0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=G93UvomYv84eRC/IXrQxORyU3HduWeL/Klz77SklSN8GB51dQ5Aprq8x/ZYgccMz7N1DeAe3qLqnz/q7s6jXuVamDxNhGxEqSsbr1Oy+v6WpxGU/9VFkWKiUZAukwKF5Z8awBmTTT5LhTWvDYT1xjNa6ueL+B+CbcUx/zQHUR5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NgLoUN+V; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783515031; c=relaxed/simple;
+	bh=dkMtuhc9Xrbnd+v5E+gMTCqeYWh8egGekVhm1gf4rA8=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=B3crS8iFuW4WDkQhPvGsDOnM2Z9Dj6fXnXv3AaqUrzm+w/jeux6Cz4HqrQQyUojFsJ1EMmMUj56yFxLrgKKUfs7e6XfH7LKce7M2juwVwSkya9blZkd/+TAqnBH8RTAtYj+qC7QwJwbaJ6+i1bKKsKZXyHI7azE1XhV+hX95l6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RYvZP12y; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NgLoUN+V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F8D61F000E9;
-	Wed,  8 Jul 2026 12:48:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RYvZP12y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AFD71F000E9;
+	Wed,  8 Jul 2026 12:50:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783514924;
-	bh=Ss3ktjgLTrUfnRyyBurg+0JT9wxIeMA/04p7rsp5/WU=;
-	h=From:Date:Subject:To:Cc;
-	b=NgLoUN+VO6vcaXhgr70iHlF9fPMFzGsyK2Nai9wsNkanvpbIUMmVQkiDmALzl7i9s
-	 ktCNgjJy3UiQNDMWMG/I5p3kjiXxUL4umLStv/q5b8LqZOBKVfGx8ptec/yNiZLtgo
-	 TSbAeQaD2nWHQSRgiyQp/5ut7/AfpQjqdU9VhNaDc/HyL1/4OZPUrkNW87c1DlxKpk
-	 n7++mBNfdt+RsvQuAtLCHAKo818yqaIAiBN7UkoswO7oNtpj/jURWPdazA+iY4q8yi
-	 3fdKTvFA3h3/BAWZ16G9bwJeACzesu0HzAxf7vdunNFk+uOoYjCWw8ntttAqQYAfF9
-	 ggIlEv3mKQqng==
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Wed, 08 Jul 2026 14:48:28 +0200
-Subject: [PATCH net-next] net: ip6_tunnel: use tunnel parameters for
- fill_forward_path route lookup
+	s=k20260515; t=1783515030;
+	bh=4ItEn/Ro7108dB74ZXSJd+dcfahUyGFvE4mN6jco6xQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=RYvZP12yl12UjsH+qs9zoooIfVwAXpha2Kq1N+DfC8EpVnof/G2UloiA0mLEgf2V9
+	 oJ5q2UWoP7rIjDQg49cmyBCoZciW2ESlLdX73mk9rQ3g2iGEKBhfVTJ7L6ejHvetrA
+	 wpRq6ApqBCMkLHj19bxwpDoYJ6yrva+OB9j7LOTPhR/4pcPxmeVbXKLwE6CXqhu5SU
+	 4Gy8V0Dn98EoEb1bIuUwJ3zQSzK2KMNxkYrh18I0KpN9suRnl3QJyfacriXa5zOHkY
+	 6jBWdmlIUwuwAHGg9n7Upe3LPYPpxD9ChXcN4idb5RCRJvOkgWYU4w0/8CWOZWQ/Jk
+	 d7u7fn2f6GnQA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0C8B392704E;
+	Wed,  8 Jul 2026 12:50:10 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260708-ip6ip6-route-lookup-fill_forward_path-v1-1-863b9647102e@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2NQQqDMBAAvyJ77kIirZp+pYgE3ejSkIRNbAXx7
- w2Fucxl5oRMwpTh2Zwg9OHMMVTRtwbmzYaVkJfq0Kq2U70akFNXQYl7IfQxvveEjr2fXJSvlWV
- Ktmxo3Hx/WKP1QAZqKwk5Pv6fFwQqGOgoMF7XD5s3tNCBAAAA
-X-Change-ID: 20260708-ip6ip6-route-lookup-fill_forward_path-9fc45a9118e9
-To: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Pablo Neira Ayuso <pablo@netfilter.org>, 
- Florian Westphal <fw@strlen.de>
-Cc: netdev@vger.kernel.org, netfilter-devel@vger.kernel.org, 
- Lorenzo Bianconi <lorenzo@kernel.org>
-X-Mailer: b4 0.14.3
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2 net 0/3] ipv4/ipv6: Fix UAF and memory leak in IGMP/MLD
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178351500964.2486281.17497875860770814057.git-patchwork-notify@kernel.org>
+Date: Wed, 08 Jul 2026 12:50:09 +0000
+References: <20260705181756.963063-1-edumazet@google.com>
+In-Reply-To: <20260705181756.963063-1-edumazet@google.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ kuniyu@google.com, idosch@nvidia.com, dsahern@kernel.org,
+ netdev@vger.kernel.org, eric.dumazet@gmail.com
 
-Pass source address, output interface and flowlabel (carrying TClass
-and flow label) from the tunnel configuration to the flowi6 struct in
-ip6_tnl_fill_forward_path(), aligning the route lookup with the slow
-path in ipxip6_tnl_xmit().
+Hello:
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- net/ipv6/ip6_tunnel.c | 4 ++++
- 1 file changed, 4 insertions(+)
+This series was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index bf8e40af60b0..557d8637ac57 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -1847,6 +1847,10 @@ static int ip6_tnl_fill_forward_path(struct net_device_path_ctx *ctx,
- 	struct ip6_tnl *t = netdev_priv(ctx->dev);
- 	struct flowi6 fl6 = {
- 		.daddr = t->parms.raddr,
-+		.saddr = t->parms.laddr,
-+		.flowi6_oif = t->parms.link,
-+		.flowlabel = t->parms.flowinfo &
-+			     (IPV6_TCLASS_MASK | IPV6_FLOWLABEL_MASK),
- 	};
- 	struct dst_entry *dst;
- 	int err;
+On Sun,  5 Jul 2026 18:17:53 +0000 you wrote:
+> This series addresses two potential UAF vulnerabilities
+> and memory leaks in the IPv4 IGMP and IPv6 MLD subsystems.
+> 
+> The first two patches fix a UAF where the packet receive path races with
+> device teardown. If the device refcount has already hit 0 (but the memory
+> is still held by RCU), incoming IGMP/MLD packets trying to schedule delayed
+> work or timers would call refcount_inc() on the 0 refcount, triggering a
+> warning and eventually leading to a UAF when the work runs after the device
+> has been freed. This is fixed by introducing safe hold helpers using
+> refcount_inc_not_zero(). In MLD, we also ensure we only enqueue the skb
+> if we successfully acquired the device reference, to avoid leaking skbs
+> when the device is being destroyed.
+> 
+> [...]
 
----
-base-commit: 08030ddb87b4c6c6a2c03c82731b5e188f02f5b9
-change-id: 20260708-ip6ip6-route-lookup-fill_forward_path-9fc45a9118e9
+Here is the summary with links:
+  - [v2,net,1/3] ipv4: igmp: Fix potential UAF in igmp_gq_start_timer()
+    https://git.kernel.org/netdev/net/c/7b19c0f81ed1
+  - [v2,net,2/3] ipv6: mcast: Fix potential UAF in MLD delayed work
+    https://git.kernel.org/netdev/net/c/9b26518b6896
+  - [v2,net,3/3] ipv4: igmp: Fix potential memory leaks in igmp_mod_timer() and igmp_stop_timer()
+    https://git.kernel.org/netdev/net/c/3546deaa0c30
 
-Best regards,
+You are awesome, thank you!
 -- 
-Lorenzo Bianconi <lorenzo@kernel.org>
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
