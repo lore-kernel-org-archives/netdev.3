@@ -1,139 +1,112 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D02E3BFAD1;
-	Wed,  8 Jul 2026 11:12:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931E730C163
+	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 11:12:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783509136; cv=none; b=jPykNzg+2BHAzKfffm4/r4V0kBaDeYODapjHybpZlQc/EQGBctMxgxXGcxzmW1U5RWKXbNi9nZb/N+q272A+1rf161mh/5l6dBV3ty1I2W6icrSzxM38hML9437kp5xQaugwCRsg8PoPvD2SZhDTzulUBDFlOlk+quSYhm0diQI=
+	t=1783509176; cv=none; b=m+RsUQfKuA6x93dLK81qrGSCS6EVGBZQlVYt5qvRZ6Nn4k5EkXPUHVyF+AQz2oKHTQdlDNOeiJ41Yj7DdDVMObJuumH8pNMOOEvZ5kRBfzbHCj4WUb6OpYLIRVHRfZvb37m3HVLFDCmhMOJK2rKPoVifnv9kaPFE+bFdRAYv5gA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783509136; c=relaxed/simple;
-	bh=dXbZA1E6z2cbPpn5lXVwUbC3y8RJZe9PuV/6K4qA1zI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BiF3qR7rJBWbNmlFriBx6WniD58XQNt58kyh0Zl5TMaCh8AK6D9gKK7Jy9JLhDW1doGywyM1Q2jE3uZXVl3dxr7KLHFTiwqROst+wcS4IiNial7Vxvx7N5A16lXhOPP8xDX5PX/K0Igub6V6+d7tbDOcI6EHjY1pLqR7mThKQ/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NKaLLLgY; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1783509176; c=relaxed/simple;
+	bh=vAYuSKepYX2R6SHPiXef5gcb+t+WIrxDadX/4+/aE/4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lYp2lCEh8LHfoE0R4GBISQHZRAslOE0PnYWjAbwNCqu3Sxi5tuZepc6KerfhjyxXG7ZTuZaDShr/N/sZ296vPnPZlQwqmc16Gvn2hYgcnoDn/v3ad+dRxdQy5J5RZgogz8FpEnH/RJUTuTaM+FwwOH3R2GrAJw9t9uVofgizoZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qeYd3w2+; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NKaLLLgY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783509135; x=1815045135;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=dXbZA1E6z2cbPpn5lXVwUbC3y8RJZe9PuV/6K4qA1zI=;
-  b=NKaLLLgYSGwRbFEUPZ4WXfWAkQLZfXhRPviQaSCCWKxzP1Hwd/RZVyI5
-   qhXuK+dXM700naBdhd5VjHzf3fB68yRX1rwFVdBb5K4tRooC+h47nZN0b
-   HqlzRyvi3i/kegVxXwlN1Q9bFbd81z5OdScYJJbrEMHBh9n2zirrfivj3
-   BLmv97jfpG4CZUhQ06zO8jXEDpEWV04IHrUTpZ4Y4IibitKa+7JaNke2V
-   eeZ2GZkWMVMW7okGFl4bSqx3udTAk2pzQVKxjuOZ7hAoPkOtFqIPD9PMt
-   rUuZBYfnUwPvVhb5PmwwjRrhP3ahd79YDWKu/qN+x7cMdQsrVi6vnYScE
-   A==;
-X-CSE-ConnectionGUID: y2pZuRN5R/a+RXZU4b1NyA==
-X-CSE-MsgGUID: e/wLbpAFT1aFeVdEaqouAA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11840"; a="84025163"
-X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
-   d="scan'208";a="84025163"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 04:12:14 -0700
-X-CSE-ConnectionGUID: xnTXU7N2RFKFpJyFUzPznA==
-X-CSE-MsgGUID: WXa6o+4tR/u+kKLX2b+3mA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
-   d="scan'208";a="252523743"
-Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.100])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 04:12:00 -0700
-Date: Wed, 8 Jul 2026 14:11:58 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Bartosz Golaszewski <brgl@kernel.org>
-Cc: Lee Jones <lee@kernel.org>,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	Thierry Reding <thierry.reding@avionic-design.de>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qeYd3w2+"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2cacd69a9c0so6576695ad.1
+        for <netdev@vger.kernel.org>; Wed, 08 Jul 2026 04:12:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783509175; x=1784113975; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=s31bR1iKC+e6h6RE4wZIClsqmUypkmINB4OCzr0ClWk=;
+        b=qeYd3w2+Mi4x8EL2Uj+6GSkm91Y5b/0Vir3TnPgMfsv6L3ALF1Etk8FU7POfNsuNzX
+         FHDGAJo9CgkxzZCyLgn7mbX+YENou+i3COnArVb3TRUiNawE2lVM8WucYQg7IvI9Fahs
+         xJE+5CYMuDUSqW3t32UArpJkoG93wDUNFA6lihQWrDjc+KErVCSKOtNYo8kbdJkv/v0V
+         oT1CLBPNKIL+1qJr+gvj9QD7ZTP5RGiIhij4hATc3/Uuxdd5j+/W7nkKMQC0zOKsb52v
+         UMgn6jI9nzI3RWZxn6hTxbD614jiIo/4uuxgSPE+rw5zL0XD7jFBI1kmO8TdOg+5Gkox
+         Brtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783509175; x=1784113975;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=s31bR1iKC+e6h6RE4wZIClsqmUypkmINB4OCzr0ClWk=;
+        b=pf7i+tGuB/1Vz5vY5OBtZM2zM/5e3LEW83NncoCSnROnlCas7KW5ZF/B0OrSpTxVCf
+         iFgrilOLvKSaEwX9RrWY/Fz4upM2rlAceKYaYPw0B09WSg/cE/tzNl+H8OQuRFaxzUzW
+         Pc1Hph6L2U+JYIcUwhGWBYp+iTy6UA7HWD7KR45sg6uHBFdpCaeOmUEWJTckr5d6rlX5
+         QLwhF1FV6LdWJQSFu/yYTcAPxJ13xVRL2sB6Tz7SDMomARSUE/KiXGIekn9Rc3xvhYky
+         zuzCki6t4uSnf/3rDRalYXJLNsca4ue1xEJS+Z9lD7wJeE3ip64+IRtLSWrmo4on/Jrl
+         c9sA==
+X-Forwarded-Encrypted: i=1; AHgh+RpVoVgNguwSpJW1JkQfU6TQWq8WGXlQ+6ZQch5IjFMCVT+Rj3HAxgPwO/tMVTKa57MLtEzy3Do=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBJexXcrQU+Z76Yh9YhGnkNVW/WPMB+FZ7V1a9EiLfc9TvAl/w
+	yYmf367DHhzvK5+jhTDMCf4Ts90jZCkNyY+ZDXFudwYDzxDbb9qr7hqT
+X-Gm-Gg: AfdE7cl7fCtkltr/7fdCU/F52g1UHElaC4kGTnjvXlYgshaF/wYu4yqtW56V/FXobmj
+	lAgpebeot/4pC4O0K5cAFAOeLkAF5LC4oNKOdJYZ2gCWxikCTqA782ta+PJuui3mWLqVspIH2ta
+	vobsPsh+bbHYMn9G5XBzWHgNw6f2H7zT/FLYGPovGFodq5Igc0Z9Y4FcflajQFbpSsAaN3yoXvp
+	1aj4VV5eal8hDJKcnbvzPSwkfGbltrwNI3KihaXH3AFhvq+nxzhPod3EAXoSYXmuHyfgduS9T6C
+	6LkS8etdk0oJswkkY+TFNO7IYPNabc5oQ9E/KRhleSIPJnLO85rGn3OMjcTIcHogKd2a3jlQFcf
+	vpa6hObRGG6UpQC78nxLGxyBcs0wyt9xZ5oiohB9VDDE9kRlf2aLpGRQm3G5CBIbnGOQ3+Ig=
+X-Received: by 2002:a17:903:4b30:b0:2c6:a012:6241 with SMTP id d9443c01a7336-2ccea348876mr23010425ad.6.1783509174902;
+        Wed, 08 Jul 2026 04:12:54 -0700 (PDT)
+Received: from lgs.. ([2001:250:5800:1000::f280])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9bf8d80sm26679355ad.25.2026.07.08.04.12.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Jul 2026 04:12:54 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Ioana Ciornei <ioana.ciornei@nxp.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Ulf Hansson <ulfh@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Peter Chen <peter.chen@kernel.org>,
-	Paul Cercueil <paul@crapouillou.net>, Bin Liu <b-liu@ti.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Maximilian Luz <luzmaximilian@gmail.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
-	driver-core@lists.linux.dev, devicetree@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org,
-	iommu@lists.linux.dev, linux-pm@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	linux-usb@vger.kernel.org, linux-mips@vger.kernel.org,
-	platform-driver-x86@vger.kernel.org, mfd@lists.linux.dev,
-	Manuel Ebner <manuelebner@mailbox.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Subject: Re: [PATCH v3 05/20] driver core: update kerneldoc for
- platform_device_alloc()
-Message-ID: <ak4wfuYxO2serrQt@ashevche-desk.local>
-References: <20260706-pdev-fwnode-ref-v3-0-1ff028e33779@oss.qualcomm.com>
- <20260706-pdev-fwnode-ref-v3-5-1ff028e33779@oss.qualcomm.com>
- <ak0jyUbNonSRiP_g@ashevche-desk.local>
- <CAMRc=Md7-XMBKpdPuZ4=epfTn6F-PXKJBZNPGuz5xbVy58BHsg@mail.gmail.com>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>
+Subject: [PATCH] dpaa2-switch: put MAC endpoint device on disconnect
+Date: Wed,  8 Jul 2026 19:10:25 +0800
+Message-ID: <20260708111025.749311-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMRc=Md7-XMBKpdPuZ4=epfTn6F-PXKJBZNPGuz5xbVy58BHsg@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 08, 2026 at 12:42:58AM -0700, Bartosz Golaszewski wrote:
-> On Tue, 7 Jul 2026 18:05:29 +0200, Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> said:
-> > On Mon, Jul 06, 2026 at 02:44:17PM +0200, Bartosz Golaszewski wrote:
-> >> Users of platform_device_alloc() + platform_device_add() must not modify
-> >> certain fields of the dynamically created platform device object. Update
-> >> the kernel doc to say which fields are affected and which functions to
-> >> use.
-> >
-> > Consider using __private checker attribute for them as well. It will make
-> > sparse scream.
-> 
-> Sure but let's leave it for another series.
+fsl_mc_get_endpoint() returns the MAC endpoint device with a reference
+taken through device_find_child(). The switch port connect path stores
+that device in mac->mc_dev and keeps it for the lifetime of the connected
+MAC object.
 
-Sure, just a side note comment that you know that we have some facilities for
-that type of problems.
+However, the disconnect path only closes the MAC and frees the dpaa2_mac
+object. It does not drop the endpoint device reference stored in
+mac->mc_dev, so every successful connect leaks that device reference when
+the MAC is later disconnected.
 
+Drop the endpoint device reference before freeing the dpaa2_mac object.
+
+Fixes: 84cba72956fd ("dpaa2-switch: integrate the MAC endpoint support")
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+---
+ drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
+index 858ba844ac51..dd4f60031d0c 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
+@@ -1560,6 +1560,7 @@ static void dpaa2_switch_port_disconnect_mac(struct ethsw_port_priv *port_priv)
+ 		dpaa2_mac_disconnect(mac);
+ 
+ 	dpaa2_mac_close(mac);
++	put_device(&mac->mc_dev->dev);
+ 	kfree(mac);
+ }
+ 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.43.0
 
