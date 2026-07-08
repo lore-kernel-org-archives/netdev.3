@@ -1,99 +1,87 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B676F33F591;
-	Wed,  8 Jul 2026 13:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3FEE33F591;
+	Wed,  8 Jul 2026 13:28:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783517283; cv=none; b=NmslI3uw5VItdsyn8mb1DfSM4g7zilOu9V85zlCpz6I7LzxBxqKDayBCWalEv4/P3AhV6GXFWiTONB9IdEznUzZcf//oMXgfnvD7uN6dyhNVHjvsTuRsZjdg7oh0uXZTwN8O2DVssRpWsLXyK/xb1hqi7ng8lYO+pW1IszE9dXM=
+	t=1783517310; cv=none; b=FBQBi4B7hjTsRsr6y07jRBkst4Lldpuu4HdnKosjpzz8N3V41aftmIpsEReTh/SuW/1r4DKFBCTHQqMlGkm9lp2xuE8Bxw+C/p5+exuUp1DcP+FVRhtSE0kKEXxCaKWFik5oeF4zeJpZNzifaZRxTaWgyf++NO3ms21Ei0sVFpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783517283; c=relaxed/simple;
-	bh=QJ95qpiXZBu+4cDMaEogfSFwkcealgcdhFrXZnWHJGw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DqXWxefu+jzSrf+i+BrtAirD3yJl1sayXS47Xd3BB7Wii++RMn2SXl45BEmDXButrODF3B0KwF1OLv7Ak7L3/bVKkqE5zDILTz2wljNXYPUkvEgWPAe04tapXM1HxDgf0EwEqsYSzery3YHNYDFIeMSb8r6amhuGo3lLfhDZHkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gq/dzTHH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783517310; c=relaxed/simple;
+	bh=zDaESKBTYy4jlyC3dl7SAdhWIb6bcGpfhcnF1zMQ4QI=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=tCB6rKEG3FINLgS6vyciNKte4Y7PrsriBjsBh3I0I2uVolIxNoHG6LuPvxpaX6gkYJvHPq3sEnNaniqURCvKW8ef9uiMPI/95EaxmSygUbk9ISITRhWKDiiwK2Jn2YiN4sXn3v0fPneZzGfHT/XEIMCKuO9G2iseBYrhjdO7Jg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cf9eQrzY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gq/dzTHH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD841F000E9;
-	Wed,  8 Jul 2026 13:27:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cf9eQrzY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0F871F000E9;
+	Wed,  8 Jul 2026 13:28:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783517279;
-	bh=JZznSW1QxIA8YchHXYmBD7rqYjeBEHt8iCwtpCrWKE8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=gq/dzTHHIPOEXl71Cphk3JscbEHk9Wo5plPjKBq+bmWbIWK56ZMHaxIrTY3KFY+HQ
-	 A1X6ZaAvKvBP98O74jcXyYY1Jt17sg8z4ahhyBZ4hBhGUvrx3QnsUatXAl0GvrY2mA
-	 BQf1+UYkt3LNEoOJEM5TKj9Yytsovd6h5eND+lOXK70SSQp/hlpBIIeP8jBz0DTn/K
-	 bLJ5UDpxgmx4+LBs1R25AYDzr28o8DwJAlBFiH4+Tpe6HcMfRVhys5r4+jkmqXQj+d
-	 jlcBzXBiitML/4/D1WNM/YlayTkznXQR0XwkZw4evyIWfphPLUZmYlJF0mYzNB5+Cx
-	 JW+BxXzgtWlzQ==
-Message-ID: <529e3997-d26f-4d8e-ad90-3329fe90e555@kernel.org>
-Date: Wed, 8 Jul 2026 22:27:54 +0900
+	s=k20260515; t=1783517307;
+	bh=ErTICou7hVajnT0Tkw4wgoMeIyyZeH0Ei8wY6hC32YE=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=cf9eQrzY/qXpDWv94NIcSNOogqURsFqT5oeggOZh3wXmktJmDNexK6hxrimRyhBIk
+	 TKe+WhQOTz9pBAypnCuf9szvS7c+/oWS/9jQzAhbqS/wCUnQQuD9fBihnWeoak8p7D
+	 +JkHyR+pUreDy0N0cm76qLWkFf1C1UsKzix80go8ezNeszoKwkOVhBOv2cl8UWN+ph
+	 o6sIhvSuCk4OjJIMfYv8REmbSlcQ3Qh9bscQ/0c6O7WCdGqc2SPJEAxDAHmkHvuhN3
+	 aFAAV41C7oVu6gibY5VbQ5dg/uoei+RZ/GSUH4AYoXlx9qQ8uxcoyXPzevdojPQevq
+	 EXVE+rbfLRmcA==
+Content-Type: multipart/mixed; boundary="===============9166916302589270823=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3] net: skb: isolate skb data area allocations
- into a separate bucket
-To: Pedro Falcato <pfalcato@suse.de>, Paolo Abeni <pabeni@redhat.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Simon Horman <horms@kernel.org>, Jason Xing <kerneljasonxing@gmail.com>,
- Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
- Kees Cook <kees@kernel.org>, linux-mm@kvack.org,
- Vlastimil Babka <vbabka@kernel.org>
-References: <20260702170728.168755-1-pfalcato@suse.de>
- <04debe19-bbe8-4b5f-9668-753d1f97832d@redhat.com>
- <ak4w2k4Woj55E0On@pedro-suse>
-Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <ak4w2k4Woj55E0On@pedro-suse>
-Content-Type: text/plain; charset=UTF-8
+Message-Id: <0b7502b52100d29cb13a190835864be85e2d69967a8df8125b9762492ba4f368@mail.kernel.org>
+In-Reply-To: <6c7a059057d309e999b706b5b547be9c620ce544.1783514455.git.deliran@verdict.gg>
+References: <6c7a059057d309e999b706b5b547be9c620ce544.1783514455.git.deliran@verdict.gg>
+Subject: Re: [PATCH bpf-next 1/1] selftests: drv-net: add XDP RX checksum metadata tests
+From: bot+bpf-ci@kernel.org
+To: deliran@verdict.gg,lorenzo@kernel.org
+Cc: sdf@fomichev.me,kuba@kernel.org,andrii@kernel.org,ast@kernel.org,daniel@iogearbox.net,hawk@kernel.org,john.fastabend@gmail.com,martin.lau@linux.dev,sdf.kernel@gmail.com,bpf@vger.kernel.org,netdev@vger.kernel.org,deliran@verdict.gg,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Wed,  8 Jul 2026 13:28:26 +0000 (UTC)
+
+--===============9166916302589270823==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
+> diff --git a/tools/testing/selftests/drivers/net/hw/xdp_metadata.py b/tools/testing/selftests/drivers/net/hw/xdp_metadata.py
+> index 33a1985356d9..687c43a1797a 100644
+> --- a/tools/testing/selftests/drivers/net/hw/xdp_metadata.py
+> +++ b/tools/testing/selftests/drivers/net/hw/xdp_metadata.py
 
+[ ... ]
 
-On 7/8/26 8:16 PM, Pedro Falcato wrote:
-> On Wed, Jul 08, 2026 at 10:30:50AM +0200, Paolo Abeni wrote:
->> On 7/2/26 7:07 PM, Pedro Falcato wrote:> @@ -586,6 +586,8 @@ struct
->> sk_buff *napi_build_skb(void *data, unsigned int frag_size)
->>>  }
->>>  EXPORT_SYMBOL(napi_build_skb);
->>>  
->>> +static kmem_buckets *skb_data_buckets __ro_after_init;
->>> +
->>>  static void *kmalloc_pfmemalloc(size_t obj_size, gfp_t flags, int node)
->>>  {
->>>  	if (!gfp_pfmemalloc_allowed(flags))
->>> @@ -593,7 +595,8 @@ static void *kmalloc_pfmemalloc(size_t obj_size, gfp_t flags, int node)
->>>  	if (!obj_size)
->>>  		return kmem_cache_alloc_node(net_hotdata.skb_small_head_cache,
->>>  					     flags, node);
->>> -	return kmalloc_node_track_caller(obj_size, flags, node);
->>> +	return kmem_buckets_alloc_node_track_caller(skb_data_buckets, obj_size,
->>> +						    flags, node);
->>
->> Sashiko noted that some drivers may require GFP_DMA buckets, and the
->> above may break them:
->>
->> https://sashiko.dev/#/patchset/20260702170728.168755-1-pfalcato%40suse.de
-> 
-> Oh, this is really awkward. Adding linux-mm and slab maintainers for input here.
-> 
-> Considering the current slab bucketing does not seem to duplicate DMA or
-> CGROUP caches, could it make sense to duplicate those as well?
-
-Could we specify what kmalloc types the user needs when creating
-kmem_buckets and duplicate caches for the requested kmalloc types only?
-
-> Otherwise we could add a branch like:
+> @@ -81,8 +83,22 @@ _RSS_KEY_TYPE = 1
+>  _RSS_KEY_PKT_CNT = 2
+>  _RSS_KEY_ERR_CNT = 3
 >
-> if (gfp_flags & __GFP_DMA)
-> 	/* use the global dma kmalloc caches */
+> +_CSUM_KEY_IP_SUMMED = 0
+> +_CSUM_KEY_CKSUM = 1
+> +_CSUM_KEY_LEVEL = 2
+> +_CSUM_KEY_PKT_CNT = 3
+> +_CSUM_KEY_ERR_CNT = 4
+> +
+>  XDP_RSS_L4 = 0x8  # BIT(3) from enum xdp_rss_hash_type
+>
+> +# Mirror of enum xdp_checksum from include/net/xdp.h
+> +XDP_CHECKSUM_NONE = 0x1
+> +XDP_CHECKSUM_UNNECESSARY = 0x2
+> +XDP_CHECKSUM_COMPLETE = 0x4
 
--- 
-Cheers,
-Harry / Hyeonggon
+This isn't a bug, but XDP_CHECKSUM_NONE does not seem to be used anywhere
+in the test; was it intended to mirror the full enum for documentation, or
+could it be dropped to match the nearby XDP_RSS_L4 which defines only the
+bit it uses?
+
+[ ... ]
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/28945032378
+--===============9166916302589270823==--
