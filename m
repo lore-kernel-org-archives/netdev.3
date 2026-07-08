@@ -1,134 +1,91 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F150E409600
-	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 09:16:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B2440960A;
+	Wed,  8 Jul 2026 09:18:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783502174; cv=none; b=qb077BagLUD1/uqLPFKxFHFpOpXOSqKVXxl1onGWcQXAxWSk9OoG8ert67mXOdhxEK2htPySwbvLdZV5gaA+mGs2bW3lq61yR4uARmOT4w9YXGC7VNJT6Q/ippOFA2JvOyqmrrgQXQrPF7HFyh/Ku4DkRZjpytdutTSTmMWJ8lY=
+	t=1783502328; cv=none; b=KS7xfoDu7NR43u5qhVRyRlINmZcmX77nhbpM4JNMOweoTif9h6iGbV5RGSnRy8tRI6l2G07OwlSlF2hdJIG4mJ7NpEohCfj+kk+HR9laNG4ocPOq7tXpRzrAD/BU2loheBkWLyrdtKfLmSh5c8mqElwsiWIQm5L/mqq1b7jZVsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783502174; c=relaxed/simple;
-	bh=wfg0mXHJNXcM6eMr/sjVc2ZVkhsTW8b/GaVJ+8zp73I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gNMn9A4qdbUmdP/if6G9YCQhUjIjZGoozBKey1CnaBZQNWcH4Xli4mGlODbu/duSS690OrMbzD4BH5eOlz+t3wtVw5yGmcX18gfvNP7xzJ2j5wT2LjOekE4QSlOCaIwbXG5h6KZ0jMYt9S+H7ifrBuAeJTQ+EPBu+2txGjXpxLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ru94O26T; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1783502328; c=relaxed/simple;
+	bh=MUiT6sSKkPf6yigCLCZNekpAZH4pZEOgUWrAgBdFUtE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=uJfov1RJruJMn9HEQpN82ZpYX9HWvJ1YN9i1/SHiBtXcJeRJVJ0HDz1yPMiazb10l1+pYDGcaSLnOKCc6RANJk0EPhFAe1cm6k3Y96E8NEDQ3BbxutbTmzKblBu3qUWL3KnuQpt88jBn5MO9TK18iAy38IBDWtBh1dv/WFxcCSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=nqnZQX4z; arc=none smtp.client-ip=23.88.38.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ru94O26T"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 06C91C8F445;
-	Wed,  8 Jul 2026 09:16:23 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 1BF8F60337;
-	Wed,  8 Jul 2026 09:16:09 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 83A6411BC0CFE;
-	Wed,  8 Jul 2026 11:16:02 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1783502168; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=qOMFD/APDtG7nBqOMYfX/IhIsViQVFXVhI6H/yMdvHo=;
-	b=ru94O26T43mlxL2cIBX5lzUbVlmEHXENjSYkidWcZ4fB4BNAHeZORh+6LVllswrshyMRUK
-	g6u6c/gM9RhAgallDLmQti6HwsxELEQnBgJBybPJs3xohzndsgOBdfnCj0PjjDn+i0gCqU
-	xOKqt8v/5ye+ltJaHOKVGQeHGNAUcWIs1Tnbn4GDJ6dKyAo4Ys5Lj+Q0NI9y/GhJkQ5twI
-	M3/vuMt7PSK5rwxB1ZZQsGt1v0Dzz+FhCeMhgmBCTb+VGEgUsFI6/DK+Jirpz8G44nTq8H
-	LQv9+McURbD8FwAiF8+uG4UkjhFt9G1RiApWT4mIwi3DFKgsvUQEQkQw1Kt8xw==
-Message-ID: <c8cbf359-e224-44c6-8692-9e1d1527ae0c@bootlin.com>
-Date: Wed, 8 Jul 2026 11:16:01 +0200
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="nqnZQX4z"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
+	s=09092022; t=1783502321;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZFpl7pK3uTWz21nbIM7Bm6WBFUQXvhGQVbOYY5GDip8=;
+	b=nqnZQX4z5ROHJ+k22LirLdDuCstF4g31h8fMI0/Nbgter3bg7D6mJ3zwo92wWyivEtJfWP
+	FiA8o8zt5b/A5SRdTOCKDPiTa3k+h5vGMtb9X31J9a2PnY+/fEUmYnfGGIvnYN5JuDyfuz
+	SiwcZLdw39gKp3Kxzed/isMmWEnCiig0a78U6GKeNk+tzVjTBOUb1d7H03laG2ZESaudNp
+	4PEjOv/ubsMckI5Me+UMvU6NTSVRQ0kNhxEcW117t/cKlGy2ASCBuF5xloEI6NFbR+JZ+F
+	M4O/zWLem6VFyk7YV+wZYdDtvGItGSSiFzKU6U3KRMJrczVs/UXfd8g3xUzr3g==
+From: Simon Wunderlich <sw@simonwunderlich.de>
+To: netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	b.a.t.m.a.n@lists.open-mesh.org,
+	Sven Eckelmann <sven@narfation.org>,
+	stable@vger.kernel.org,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH net 5/9] batman-adv: tt: prevent TVLV OOB check overflow
+Date: Wed,  8 Jul 2026 11:18:17 +0200
+Message-ID: <20260708091821.314516-6-sw@simonwunderlich.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260708091821.314516-1-sw@simonwunderlich.de>
+References: <20260708091821.314516-1-sw@simonwunderlich.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] net: stmmac: resume PHY before hardware setup when
- opening the interface
-To: Stefan Agner <stefan@agner.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
- Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, regressions@lists.linux.dev
-References: <message-id-of-your-v1-mail>
- <20260707195425.405989-1-stefan@agner.ch>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20260707195425.405989-1-stefan@agner.ch>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-Hi Stefan,
+From: Sven Eckelmann <sven@narfation.org>
 
-On 7/7/26 21:54, Stefan Agner wrote:
-> Since the referenced commit, changing the MTU on a running interface no
-> longer disconnects and reconnects the PHY; __stmmac_release() merely
-> stops phylink, which also suspends the PHY (BMCR power-down) when WoL
-> is not enabled. __stmmac_open() then performs the DMA software reset in
-> stmmac_hw_setup() before phylink_start() resumes the PHY again.
-> 
-> IEEE 802.3 22.2.4.1.5 allows a PHY to stop its receive clock while
-> powered down, and stmmac requires a running receive clock for the DMA
-> software reset to complete (the phylink config sets mac_requires_rxc).
-> On such setups, e.g. the RK3566-based Home Assistant Green with an
-> RTL8211F-VD PHY in RGMII mode, any runtime MTU change now times out and
-> leaves the interface dead:
-> 
->   rk_gmac-dwmac fe010000.ethernet end0: Failed to reset the dma
->   rk_gmac-dwmac fe010000.ethernet end0: stmmac_hw_setup: DMA engine initialization failed
->   rk_gmac-dwmac fe010000.ethernet end0: __stmmac_open: Hw setup failed
->   rk_gmac-dwmac fe010000.ethernet end0: failed reopening the interface after MTU change
-> 
-> In the field this is triggered by NetworkManager applying an MTU while
-> activating the connection, breaking networking entirely.
-> 
-> Resume the PHY in __stmmac_open() before the hardware setup, making it
-> the counterpart of the phylink_stop() in __stmmac_release(), like
-> stmmac_resume() already does for the same reason. phylink_start() also
-> resumes the PHY, but only after stmmac_hw_setup(), and it cannot be
-> moved before the hardware setup since it may bring the link up
-> immediately from a workqueue, racing with the initialization (see the
-> comment in stmmac_resume()). For the regular ndo_open path the PHY has
-> just been attached and is not suspended, in which case
-> phylink_prepare_resume() does nothing.
-> 
-> Fixes: db299a0c09e9 ("net: stmmac: move PHY handling out of __stmmac_open()/release()")
-> Link: https://github.com/home-assistant/operating-system/issues/4858
-> Signed-off-by: Stefan Agner <stefan@agner.ch>
+A TT unicast TVLV contains the number of VLANs stored in it. This number is
+an u16 and gets multiplied by the size of the struct
+batadv_tvlv_tt_vlan_data (8 bytes). The size can therefore overflow the u16
+used to store the tt_vlan_len. All additional safety checks to prevent
+out-of-bounds access of the TVLV buffer are invalid due to this overflow.
 
-I was able to reproduce the issue on imx8mp and socfpga. Adding this case to
-my periodic test list...
+Using size_t prevents this overflow and ensures that the safety checks
+compare against the actual buffer requirements.
 
-Indeed the assymetry isn't very nice, OTOH there's not phylink counterpart
-for phylink_prepare_resume(). This helper was added for the suspend/resume
-case, and only for it as the doc states, it just happens to do exactly
-what we need to fix the issue :
+Cc: stable@vger.kernel.org
+Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+---
+ net/batman-adv/translation-table.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-/**
- * phylink_prepare_resume() - prepare to resume a network device
- * @pl: a pointer to a &struct phylink returned from phylink_create()
- *
- * Optional, but if called must be called prior to phylink_resume().
- *
- * Prepare to resume a network device, preparing the PHY as necessary.
- */
-void phylink_prepare_resume(struct phylink *pl)
-
-I think this helper should be renamed and the doc updated, stmmac is the
-sole user, and it's really about controlling that rxc and not about
-suspend / resume. Resuming from suspend is just one of the cases where we
-need that RXC early on.
-
-So either something like 'phylink_prepare_start_or_resume' but it's long,
-or maybe we can be more explicit about it and simply call it:
-
-phylink_start_rxc(pl)
-
-(without a corresponding stop)
-
-Maxime
+diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
+index aae72015645a4..dae5e1d8c0385 100644
+--- a/net/batman-adv/translation-table.c
++++ b/net/batman-adv/translation-table.c
+@@ -4033,7 +4033,8 @@ static int batadv_tt_tvlv_unicast_handler_v1(struct batadv_priv *bat_priv,
+ 					     u16 tvlv_value_len)
+ {
+ 	struct batadv_tvlv_tt_data *tt_data;
+-	u16 tt_vlan_len, tt_num_entries;
++	u16 tt_num_entries;
++	size_t tt_vlan_len;
+ 	char tt_flag;
+ 	bool ret;
+ 
+-- 
+2.47.3
 
