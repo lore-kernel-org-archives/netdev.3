@@ -1,50 +1,35 @@
-Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0046C40960A;
-	Wed,  8 Jul 2026 09:25:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA89409631;
+	Wed,  8 Jul 2026 09:30:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783502740; cv=none; b=AIcbbu3frsInox+hHnTdHYbewWo1QbLr3ZvBrHM/FHvt0UYTTGYyQjKUUux9RKDllE9mGEa5uOxdXJz+XxAQdDyPO1BS+fzeyM35PEJicyout0+BJdcMZuUMqTNJCtZ6JXjim9IHWHaLleGMjcczXDYECRUwTiV0hd7SiDadmcE=
+	t=1783503031; cv=none; b=LyBpZG+4Z6SkZrwjqsea10dKnXaD1fkE1DqGU4v6luPCiAiP9bhf0bOY6JMDgazHYRt6fY/2RtsI3zZfBBzq/cm1kQNa00wOv1Enoy37Fnxt21ttf0I8cgi7n5Vd4uC6vybq1n//Cm17hge7h+wlyR163k+PCMxfBqF2+vbCwZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783502740; c=relaxed/simple;
-	bh=z2y2eFK/vgKRHQoO8Ch0RMv5BVHK+J78ZvQ7iUZ5lU4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YBtAYVFGZRmUN0PFrwC3h9OMxooGz7njqyMF8HTtEycrON43IsB89YdVyLCdxGlDklIH6g+W6IU4FvHWFgTgUUk0wR1nvTfWghiJJcvyIGJ1IhM9PylhNXHKrU+AcFBoCnIZcdHnJV3hxpSW3wJY9abiFUr6miy0x240QTZWzEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=mN+nJC0h; arc=none smtp.client-ip=23.88.38.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
+	s=arc-20240116; t=1783503031; c=relaxed/simple;
+	bh=/2j4cwYxuKWS4+udthx3B8WvhFnFUuf4/Mi2+zu589Q=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=o+2Px81sdDcjKh6SLwiPsX6FQBBSB/1K7h7a2tvaqQr+zbUKGNiNYxG0l4IjeVp2x34Dk2k5q0I+vZYT0xFujKtGQGGAOzsiqkxtOMSTudaIaYffqir6xFF9elwPvZl3sUjfwru+ilhrSmO5MxxX9F1FZzyAQAJt5349fU265O8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G2Qv3WY5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="mN+nJC0h"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1783502320;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Mhon6sTuY4kUTXwjWv/Mi9kGv+9UzLfGRQ7dJRuPoZ4=;
-	b=mN+nJC0hwMwr8tRccPs1GyDN2Pi/CAxBAEBxe1wnx42SIMgXXRUhZfXYc3m2lQtAb70G8B
-	WQL3CHenvd+3zxuodQAj9RkV+njCVLgnF9g24+NXwXj58VUOvWjKbufU5jRjEkkPmj0p/r
-	pgN6c1s+xqScl/WK7sVOl/8PErDZwMCDfGYKfvyaU1Fj/HSkJUoyHBo+t/+rMgb7nSuCIC
-	mHh38te0f84yXeM7fHJB39Geu5J+oKOPXqOZXhTJEjS3tqdnH1Pc61u8v3izyNkz/RiUdk
-	ZI7OZXEg4n8km/8MSMNIzf0emYMiGAKM1fAly6PgXddjr3sNMHb/c13tGvYTjQ==
-From: Simon Wunderlich <sw@simonwunderlich.de>
-To: netdev@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	b.a.t.m.a.n@lists.open-mesh.org,
-	Sven Eckelmann <sven@narfation.org>,
-	stable@vger.kernel.org,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net 4/9] batman-adv: tt: avoid request storms during pending request
-Date: Wed,  8 Jul 2026 11:18:16 +0200
-Message-ID: <20260708091821.314516-5-sw@simonwunderlich.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260708091821.314516-1-sw@simonwunderlich.de>
-References: <20260708091821.314516-1-sw@simonwunderlich.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G2Qv3WY5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09F171F000E9;
+	Wed,  8 Jul 2026 09:30:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783503029;
+	bh=VOLjFkTtD2WeJzPh6YV7IO8zlHSCJPyGX+mnycJQSAU=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=G2Qv3WY51e/EUcelScfmwcU6jqmBByjVehf8+5XpN3g9PwUwA8KLYl9ZoKsyuZ8jU
+	 J/bvb9E8+jMLKe/RRZTjKbYsByknky8UNX2MdlcPbvCNNWbh1XD4i8ucUjnADo8lB0
+	 56g8ufknvRkmPjVOBdVUEq5aSE3r3S1ItPaWo+ZlYKPtWKIMYtc5dDnvVcixy6BfdT
+	 fQOCW6XKmDmRp5ZH8MtMfMazzN+LZT4S7zIxFc2sSgbejTRvAEpCtgWDfpl4KGEvaW
+	 ntoCYHxb9/0RRkjvqYeWWodtH9dzsxJO9z1Xnty+iFS+jDoRjvPsGgK2OjUFgsmO1S
+	 6DEFC+3E6TGwQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93CA539263BF;
+	Wed,  8 Jul 2026 09:30:09 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,42 +37,57 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next 0/2] devlink: extend phys_port_name controller
+ prefix
+ to non-external ports
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178350300814.2399537.7921578576105301581.git-patchwork-notify@kernel.org>
+Date: Wed, 08 Jul 2026 09:30:08 +0000
+References: <20260702111726.816985-1-tariqt@nvidia.com>
+In-Reply-To: <20260702111726.816985-1-tariqt@nvidia.com>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
+ ajayachandra@nvidia.com, cmi@nvidia.com, danielj@nvidia.com,
+ jiri@resnulli.us, corbet@lwn.net, kees@kernel.org, leon@kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-rdma@vger.kernel.org, mbloch@nvidia.com, moshe@nvidia.com,
+ ohartoov@nvidia.com, parav@nvidia.com, saeedm@nvidia.com, shayd@nvidia.com,
+ skhan@linuxfoundation.org, horms@kernel.org
 
-From: Sven Eckelmann <sven@narfation.org>
+Hello:
 
-batadv_send_tt_request() allocates a tt_req_node when none exists for the
-destination originator node. This should prevent that a multiple TT
-requests are send at the same time to an originator.
+This series was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-But if allocation of the send buffer failed, this request must be cleaned
-up again. But indicator for such a failure is "ret == false". But the
-actual implementation is checking for "ret == true".
+On Thu, 2 Jul 2026 14:17:24 +0300 you wrote:
+> Hi,
+> 
+> This series by Moshe includes the controller number in phys_port_name
+> for non-external ports with a non-zero controller, and updates the mlx5
+> driver to mark satellite PFs as non-external.
+> 
+> The controller prefix (c) in phys_port_name was previously only included
+> for ports marked as external. However, newer devices can have multiple
+> controllers within the DPU itself, even within a single host
+> environment. For example, a SmartNIC may have additional local PCI
+> physical functions that are managed by the eswitch but are not on an
+> external host. These ports use a non-zero controller number to
+> distinguish them from the eswitch manager's own functions, while the
+> external flag remains unset.
+> 
+> [...]
 
-The check must be inverted to not loose the information about the TT
-request directly after it was attempted to be sent out. This should avoid
-potential request storms.
+Here is the summary with links:
+  - [net-next,1/2] devlink: print controller prefix for non-zero controller
+    https://git.kernel.org/netdev/net-next/c/f6ec46b7e2b2
+  - [net-next,2/2] net/mlx5: Set satellite PF devlink ports as non-external
+    https://git.kernel.org/netdev/net-next/c/a49ea2e042af
 
-Cc: stable@vger.kernel.org
-Fixes: 335fbe0f5d25 ("batman-adv: tvlv - convert tt query packet to use tvlv unicast packets")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
----
- net/batman-adv/translation-table.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index 4bfad36a4b704..aae72015645a4 100644
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -2971,7 +2971,7 @@ static bool batadv_send_tt_request(struct batadv_priv *bat_priv,
- out:
- 	batadv_hardif_put(primary_if);
- 
--	if (ret && tt_req_node) {
-+	if (!ret && tt_req_node) {
- 		spin_lock_bh(&bat_priv->tt.req_list_lock);
- 		if (!hlist_unhashed(&tt_req_node->list)) {
- 			hlist_del_init(&tt_req_node->list);
+You are awesome, thank you!
 -- 
-2.47.3
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
