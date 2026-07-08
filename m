@@ -1,216 +1,123 @@
-Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A00884D8D86;
-	Wed,  8 Jul 2026 18:40:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C58A3C0A05
+	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 19:00:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783536022; cv=none; b=GF53qLtfhVs6H47qIfMiJThq/D7eLv+saiHTwJHn5Phrsvt4vYHN86WRJz4NJwq4r9tuVn4lR25WIq7DtpMt7XJikX+WFaCCjFvWUKkwFf944KCHCAMJjjiAPFav1DxeUYKez/OYapfU0rWZRwl9mDLNdpEqZ2orDwQ9+yAjqm0=
+	t=1783537214; cv=none; b=rsem7A9rDRxZ9VhF6pk1LOZhy+n/aFOFCSGk8AZKQDT6YOqUK5wRzaXYaaGOJNvDem3P93zLHn0hzIGPdLBnAJKAr3HgEiMqPfwJy8GxVrXegNCczEyrVVf8vXRpGnLaUHricpdhg/UKlGnS+v8UZWgoZxwTBsSqZJ76501TcE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783536022; c=relaxed/simple;
-	bh=CAHOASJFkvHTG3BGUywT9taqG/e3JFGDRjy/E+wj0B4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=u1zTnFqX7Hi+rLCzAL3O0Jd0N2VlH/Z/BhET4g8bxu9lZUIqOOZOQBkEMglFtfqCI7B7MVRg2R7yB16A5yCfwRFPdx7gkkQD8VYjUOBmIAKzY0KWD0bGI1Id09LmQvx+QyzWDzT4rQW76EkfdPudwm9aAbdUlZDQA9I7kTHK43k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=oOj3ob1H; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=ltQf5sRG; arc=none smtp.client-ip=23.88.97.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
+	s=arc-20240116; t=1783537214; c=relaxed/simple;
+	bh=/i4q3PciWLr5dRKe8HwkUbjEdZBsKalnv/hNk0whSdY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cSP9Bi56wjtpP1Ej5k46jhvbgGTQcCRilzeG5JPZ6QFMW61JyreBtWt1rp/O5z87PfzPn17aeDUzdgFgxBKlzNZLgB86LpSrHPUrfzKmwiIc0/wzTY2OJ8piN1PhaeL8qtg1G+X7JChxV4bGT9BAVmVa4wZE6AOYaIrvRcoNsh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=pB7UcjMW; arc=none smtp.client-ip=91.218.175.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="oOj3ob1H";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="ltQf5sRG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1783536015;
-	bh=CAHOASJFkvHTG3BGUywT9taqG/e3JFGDRjy/E+wj0B4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=oOj3ob1HHLrVKH80uX1Iaa3IfQpvQ9Tk0Qck2B5kDQMff/fz6RkTFto0/v8uDKG1T
-	 5h34kmv7mKp4BBu/UTne842LG469xkX0aTi5Ov1rnA3cGDRaGXwNUk4/6ish+V2sjG
-	 9Fwcq4+P3NdSTE4wVv2yxzdlw5xFQGCwQAd9vmqjUJmbGKPLdSiNtMNTtiej9F4D+O
-	 YdExBHl//TsMRokepVKkOsJGyCAzpQFgwU9z69L8yDNQMCiO/ot9Pj5GwwIVEKNs2k
-	 85/LhxURQ11SMS6Z1+YiUQphyIvByu3VyBVnrtz/G4W6N2GLie9GrL7cywmzXzyEz6
-	 l6mJE+fkpxewA==
-Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id 197EC493DD; Wed,  8 Jul 2026 18:40:15 +0000 (UTC)
-X-Spam-Level: 
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1783536007;
-	bh=CAHOASJFkvHTG3BGUywT9taqG/e3JFGDRjy/E+wj0B4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=ltQf5sRG6Q6VjjCFYkQsWrwMb8KmdaOkExkL4zBx6e6n0zTd4hhvjoCzgOFgJCfhH
-	 976J2Si+ixMRoIK4eLVG1i3y7zvrPd+rwhSs+WTIQVuGmTtpk/qxbSgl8bNwIdtcN6
-	 R6vbKu2lWblJIN8VEj19TYIcXd3sLZWJoT0raIFoG+E0NZDH9jQ2lo8oFkVqWx8/s/
-	 LWqFFUy0b/Fggci56sbErDBCQvI0F/yZt3dQVgDt+fCvi1p9ZNf83FAB6nbI6BjIoV
-	 ZaiX0WVcRaUDGebmSWfm86tmm4I/4hizEvJF8T6nSJJ91J2hPS+CX5MxCXgGdgu5TI
-	 xxRs9tE6CRIOw==
-Received: from DebianDesktop.lan (p200300c69f1c3c00b7612fd38ae89dbd.dip0.t-ipconnect.de [IPv6:2003:c6:9f1c:3c00:b761:2fd3:8ae8:9dbd])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 0FD9F493ED;
-	Wed,  8 Jul 2026 18:40:07 +0000 (UTC)
-From: Birger Koblitz <mail@birger-koblitz.de>
-Date: Wed, 08 Jul 2026 20:39:17 +0200
-Subject: [PATCH net-next v2 11/12] ax88179_178a: Add support for
- AX88179A/772D/279 EEPROM access
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="pB7UcjMW"
+Message-ID: <7a6d7de8-7c33-42fd-a0f3-68bc1911b0e5@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783537210;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dW2Pe/NnDxzT3LmCghEoob5D1+lVvIxfWr0Cp5jm/kU=;
+	b=pB7UcjMWL8pHSHChuspgfgOi2EgLbGP5vu+IzQ/ytPRmG7t1prIyXPRVawHGrF4qsiz8Ti
+	6wpDfilioOfgqcZpxVjw5Hm7v0l5wQBfwMvfWINrL7bNnfEm7dCVJqyWIEOHBE8yI2SHvl
+	2/g7ZbgGh1qLyWT6PrbQC39Bp3wOQs4=
+Date: Wed, 8 Jul 2026 20:00:00 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Subject: Re: [PATCH net v3] tipc: fix u16 MTU truncation in media and bearer
+ MTU validation
+To: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>, jmaloy@redhat.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org
+Cc: netdev@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
+ linux-kernel@vger.kernel.org, tung.quang.nguyen@est.tech,
+ AutonomousCodeSecurity@microsoft.com, tgopinath@linux.microsoft.com,
+ kys@microsoft.com
+References: <20260708180212.2898-1-blbllhy@gmail.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <20260708180212.2898-1-blbllhy@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260708-ax88179a-v2-11-0800fedb2e16@birger-koblitz.de>
-References: <20260708-ax88179a-v2-0-0800fedb2e16@birger-koblitz.de>
-In-Reply-To: <20260708-ax88179a-v2-0-0800fedb2e16@birger-koblitz.de>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Birger Koblitz <mail@birger-koblitz.de>
-X-Mailer: b4 0.14.2
+X-Migadu-Flow: FLOW_OUT
 
-The AX88179A/772D devices have 32 efuses with 20 bytes each,
-which can be randomly programmed. The AX88279 has 16K FLASH.
+On 08/07/2026 19:02, Cen Zhang (Microsoft) wrote:
+> Both TIPC_NL_MEDIA_SET and TIPC_NL_BEARER_SET accept user-supplied
+> MTU values but only enforce a minimum bound, not a maximum. When a user
+> sets the MTU to a value exceeding U16_MAX (65535), it passes validation
+> but is silently truncated when assigned to u16 fields l->mtu and
+> l->advertised_mtu in tipc_link_create(). Values like 65536 (0x10000)
+> truncate to 0, causing a division by zero in tipc_link_set_queue_limits()
+> which computes TIPC_MAX_PUBL / (l->mtu / ITEM_SIZE). Other overflowing
+> values (e.g. 65537-131071) produce small incorrect MTU values, resulting
+> in link malfunction behaviors.
+> 
+> Crash stack (triggered as unprivileged user via user namespace):
+> 
+>    tipc_link_set_queue_limits  net/tipc/link.c:2531
+>    tipc_link_create            net/tipc/link.c:520
+>    tipc_node_check_dest        net/tipc/node.c:1279
+>    tipc_disc_rcv               net/tipc/discover.c:252
+>    tipc_rcv                    net/tipc/node.c:2129
+>    tipc_udp_recv               net/tipc/udp_media.c:392
+> 
+> Two independent paths lack the upper bound check:
+> 1. tipc_udp_mtu_bad() -- called from __tipc_nl_media_set() (MEDIA_SET)
+> 2. inline check in __tipc_nl_bearer_set() at bearer.c:1160 (BEARER_SET)
+> 
+> Fix both by rejecting MTU values above U16_MAX.
+> 
+> Fixes: 901271e0403a ("tipc: implement configuration of UDP media MTU")
+> Reported-by: AutonomousCodeSecurity@microsoft.com
+> Closes: https://lore.kernel.org/all/CAB8m9WgETt0AjmFwE=F-CKjGXsK6_WDv0=kbYRcC8-noo+amnA@mail.gmail.com
+> Signed-off-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
+> ---
+> v3: Use nla_policy check to limit MTU max value as suggested by Vadim
+> v2: Solved format issue
+> Link: https://lore.kernel.org/all/CAB8m9WgETt0AjmFwE=F-CKjGXsK6_WDv0=kbYRcC8-noo+amnA@mail.gmail.com
+> 
+>   net/tipc/netlink.c | 6 +++++-
+>   1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/tipc/netlink.c b/net/tipc/netlink.c
+> index 8336a9664703..1307dd1a9613 100644
+> --- a/net/tipc/netlink.c
+> +++ b/net/tipc/netlink.c
+> @@ -113,12 +113,16 @@ const struct nla_policy tipc_nl_node_policy[TIPC_NLA_NODE_MAX + 1] = {
+>   };
+>   
+>   /* Properties valid for media, bearer and link */
+> +static const struct netlink_range_validation tipc_nl_mtu_range = {
+> +	.max = U16_MAX,
+> +};
+> +
+>   const struct nla_policy tipc_nl_prop_policy[TIPC_NLA_PROP_MAX + 1] = {
+>   	[TIPC_NLA_PROP_UNSPEC]		= { .type = NLA_UNSPEC },
+>   	[TIPC_NLA_PROP_PRIO]		= { .type = NLA_U32 },
+>   	[TIPC_NLA_PROP_TOL]		= { .type = NLA_U32 },
+>   	[TIPC_NLA_PROP_WIN]		= { .type = NLA_U32 },
+> -	[TIPC_NLA_PROP_MTU]		= { .type = NLA_U32 },
+> +	[TIPC_NLA_PROP_MTU]		= NLA_POLICY_FULL_RANGE(NLA_U32, &tipc_nl_mtu_range),
 
-Provide ethtool read capability for these devices. However,
-no write access is provided.
+netlink_range_validation with only .max range doesn't look great, there
+is simply NLA_POLICY_MAX() macro.
 
-Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
----
- drivers/net/usb/ax88179_178a.c | 75 +++++++++++++++++++++++++++++++++---------
- 1 file changed, 59 insertions(+), 16 deletions(-)
+if you really want to use range check you can technically set .min to
+TIPC_MIN_BEARER_MTU, but you still have to have both checks for min mtu
+as there is unavoidable encap overhead...
 
-diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
-index 31e0ec1c15b455b8810f73d4d8ae9a5b5b05f9a2..3972eff910ca766cd6e2cca0431ca50a2b02dd2b 100644
---- a/drivers/net/usb/ax88179_178a.c
-+++ b/drivers/net/usb/ax88179_178a.c
-@@ -17,6 +17,8 @@
- 
- #define AX88179_PHY_ID				0x03
- #define AX_EEPROM_LEN				0x100
-+#define AX88279_EEPROM_LEN			0x4000
-+#define AX88179A_EEPROM_LEN			(32 * 20)
- #define AX88179_EEPROM_MAGIC			0x17900b95
- #define AX_MCAST_FLTSIZE			8
- #define AX_MAX_MCAST				64
-@@ -37,8 +39,11 @@
- #define AX_FW_MODE				0x08
- #define AX_GPHY_CTL				0x0F
- #define AX88179A_FLASH_READ			0x21
-+#define AX88179A_FLASH_WEN			0x22
-+#define AX88179A_FLASH_WDIS			0x23
- #define AX88179A_FLASH_WRITE			0x24
- #define AX88179A_PHY_CLAUSE45			0x27
-+#define AX88179A_FLASH_ERASE_SECTION		0x28
- #define AX88179A_ACCESS_BL			0x2A
- #define AX88179A_PHY_POWER			0x31
- #define AX88179A_AUTODETACH			0xC0
-@@ -805,41 +810,74 @@ ax88179_set_wol(struct net_device *net, struct ethtool_wolinfo *wolinfo)
- 
- static int ax88179_get_eeprom_len(struct net_device *net)
- {
--	return AX_EEPROM_LEN;
-+	struct usbnet *dev = netdev_priv(net);
-+	struct ax88179_data *ax179_data;
-+
-+	ax179_data = dev->driver_priv;
-+
-+	if (ax179_data->chip_version < AX_VERSION_AX88179A)
-+		return AX_EEPROM_LEN;
-+	else if (ax179_data->chip_version >= AX_VERSION_AX88279)
-+		return AX88279_EEPROM_LEN;
-+	else
-+		return AX88179A_EEPROM_LEN;
- }
- 
--static int
--ax88179_get_eeprom(struct net_device *net, struct ethtool_eeprom *eeprom,
--		   u8 *data)
-+static void
-+ax88179_eeprom_access_params(struct ax88179_data *ax179_data, int i, u16 *value, u16 *idx)
-+{
-+	/* AX88179 has a word-addressable EEPROM
-+	 * AX88179A uses EFUSES with 20 bytes length
-+	 * AX88279 has an EEPROM addressable in 256 byte blocks
-+	 */
-+	if (ax179_data->chip_version < AX_VERSION_AX88179A) {
-+		*value = i;
-+		*idx = 1;
-+	} else if (ax179_data->chip_version >= AX_VERSION_AX88279) {
-+		*value = (i * ax179_data->eeprom_block) >> 16;
-+		*idx = (i * ax179_data->eeprom_block) & 0xffff;
-+	} else {
-+		*value = i << 4;
-+		*idx = 0;
-+	}
-+}
-+
-+static int ax88179_get_eeprom(struct net_device *net, struct ethtool_eeprom *eeprom, u8 *data)
- {
- 	struct usbnet *dev = netdev_priv(net);
--	u16 *eeprom_buff;
--	int first_word, last_word;
--	int i, ret;
-+	struct ax88179_data *ax179_data;
-+	int first, last, i, ret;
-+	u8 *eeprom_buff;
-+
-+	ax179_data = dev->driver_priv;
- 
- 	if (eeprom->len == 0)
- 		return -EINVAL;
- 
- 	eeprom->magic = AX88179_EEPROM_MAGIC;
- 
--	first_word = eeprom->offset >> 1;
--	last_word = (eeprom->offset + eeprom->len - 1) >> 1;
--	eeprom_buff = kmalloc_array(last_word - first_word + 1, sizeof(u16),
--				    GFP_KERNEL);
-+	first = eeprom->offset / ax179_data->eeprom_block;
-+	last = (eeprom->offset + eeprom->len - 1) / ax179_data->eeprom_block;
-+
-+	eeprom_buff = kzalloc((last - first + 1) * ax179_data->eeprom_block, GFP_KERNEL);
- 	if (!eeprom_buff)
- 		return -ENOMEM;
- 
--	/* ax88179/178A returns 2 bytes from eeprom on read */
--	for (i = first_word; i <= last_word; i++) {
--		ret = __ax88179_read_cmd(dev, AX_ACCESS_EEPROM, i, 1, 2,
--					 &eeprom_buff[i - first_word]);
-+	for (i = first; i <= last; i++) {
-+		u16 value, idx;
-+
-+		ax88179_eeprom_access_params(ax179_data, i, &value, &idx);
-+		ret = __ax88179_read_cmd(dev, ax179_data->eeprom_read_cmd,
-+					 value, idx, ax179_data->eeprom_block,
-+					 eeprom_buff + (i - first) * ax179_data->eeprom_block);
-+
- 		if (ret < 0) {
- 			kfree(eeprom_buff);
- 			return -EIO;
- 		}
- 	}
- 
--	memcpy(data, (u8 *)eeprom_buff + (eeprom->offset & 1), eeprom->len);
-+	memcpy(data, eeprom_buff + eeprom->offset % ax179_data->eeprom_block, eeprom->len);
- 	kfree(eeprom_buff);
- 	return 0;
- }
-@@ -849,12 +887,17 @@ ax88179_set_eeprom(struct net_device *net, struct ethtool_eeprom *eeprom,
- 		   u8 *data)
- {
- 	struct usbnet *dev = netdev_priv(net);
-+	struct ax88179_data *ax179_data;
- 	u16 *eeprom_buff;
- 	int first_word;
- 	int last_word;
- 	int ret;
- 	int i;
- 
-+	ax179_data = dev->driver_priv;
-+	if (ax179_data->chip_version >= AX_VERSION_AX88179A)
-+		return -EOPNOTSUPP;
-+
- 	netdev_dbg(net, "write EEPROM len %d, offset %d, magic 0x%x\n",
- 		   eeprom->len, eeprom->offset, eeprom->magic);
- 
-
--- 
-2.47.3
+>   	[TIPC_NLA_PROP_BROADCAST]	= { .type = NLA_U32 },
+>   	[TIPC_NLA_PROP_BROADCAST_RATIO]	= { .type = NLA_U32 }
+>   };
 
