@@ -1,133 +1,181 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776D9433BC2
-	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 11:15:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D36D43E4A2
+	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 11:16:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783509317; cv=none; b=tkNHbNsV393lrcwgl4RQgRZvejV41ZmBGImzHnJrK3dvKvMF58pM1UXQox+zUgb0zHRx1tdkGQMHSa2g+lxPomCCr7+26aiiKrOGWXsf/oojAiK36rnFSl/DXWQGsuzIAeat858knCxMRIrTuOD9HZL5BRLZ79D1HAWHk2PY9U4=
+	t=1783509414; cv=none; b=tOCSex+/RgD1BE1152XNtYe+l0Olt/Vb0wXxYrPmiCQ8+JaPSWcKNrI9zSRDL/FgWAW72ynpotZGFIg8VYUo99quxA9V6/Ft+qz8D0us2s3s0PMe9VWGc0vX8wCOKymXmrzlw80lLuAitlSi/mPXHIdnEKytpaTQ4xtjcyf2WaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783509317; c=relaxed/simple;
-	bh=+L61LaO/tSTgwUG3yNGocYARlCgeLxPVR53vlY4PE90=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BiS8vh+T5wZo0mQZHEe7e41px2/L4TlWbZJd3syUfHZ1isIA1NjbeM0wYifVMCVkZGKgp93ZScNEg+79NrQOCHo8yWsCsEV89gWaCgWZ/Z6P7gkxoDZ2vgV4a1DdUTIRq8/pdzDl44E+0MT44LURka+7L1czP88piv5597IBjR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JU9IJmE3; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=fg87rMwW; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1783509414; c=relaxed/simple;
+	bh=3PInDbf4JbfgTmFx+PN8mNEA88VRjgw5io2se7ift1c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ic5lzGTfvZiwT7VGYkaYO0H3ZTle1CaY+vROqimLzSrcEz20889C8BbKlLkpd3S1PW6EqljJyxcf6xtxg9C+pdq8FEjzKRSyZ57lNkJFqvZr8kSMPX+ctLglJxD3oIg8Pa/6zYgupZclL9AjdhHDS0xNkEtkBhmyKgib0j1fhzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Za4DuOW8; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=6r1x0ynR; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=i0hMqNmj; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Aj3XLAhY; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JU9IJmE3";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="fg87rMwW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783509314;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Za4DuOW8";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="6r1x0ynR";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="i0hMqNmj";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Aj3XLAhY"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id D033D759DC;
+	Wed,  8 Jul 2026 11:16:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1783509408; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HAAfDroIq6UXGR519c5uoiGAKX45EOugo6OCZQqCTl4=;
-	b=JU9IJmE3zfnZCQy2GrVrJKhag3An7hFkdQWkPV/a1+EqRf4aHeun2wqJc2iDVLzNOdbyHh
-	OziO2914rOG/KKD3T97FF/s7cmmyEOfXv08f0w63P3KY6oA7cI1ZdkC4fDybeJgJX4xNAI
-	Zivqoat7RXpMbsa/nFTTlUG6SP268PU=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-638-z_Wn_xUnNMWu_7WvtQbGYw-1; Wed, 08 Jul 2026 07:15:13 -0400
-X-MC-Unique: z_Wn_xUnNMWu_7WvtQbGYw-1
-X-Mimecast-MFC-AGG-ID: z_Wn_xUnNMWu_7WvtQbGYw_1783509312
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-47d81cf0c4cso497448f8f.2
-        for <netdev@vger.kernel.org>; Wed, 08 Jul 2026 04:15:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1783509312; x=1784114112; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=HAAfDroIq6UXGR519c5uoiGAKX45EOugo6OCZQqCTl4=;
-        b=fg87rMwWUPqGWgLbsOCKfm3r+5hRK7oydya3fQT7CmssLbDie8TG8Z4UVXFlOZDtO4
-         lG4WIz6bKGRWsi82UlIhjXoFY9k73z/sX4rp2IIbzPIm/swwXVEjqw92gQLHHojX0V9T
-         Bhx7Sla1SdBIxaZcywQI+QV+14O36AeJ7qrGFla7p9a7oKU+IA7m+4f9h60ivxnuDvHy
-         9iuKMuuTmdeLDJq4/XaV2dE6d0Zwi8lcOxkD5EYAs+OgGUaczki+39EJxQYoGxhK4B6s
-         HtANEbFEhVBIOQ6zlANa4INjDDL8wIMkuZpRAw7K7mZ2nrpKXd9NcTDC3d+31DhCjM2t
-         2X8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783509312; x=1784114112;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=HAAfDroIq6UXGR519c5uoiGAKX45EOugo6OCZQqCTl4=;
-        b=DAWVf6HFsk/J0IOyMVhSzVJHcty0uXnyyyGrHY/SsbGRrK6pLIRPMQaDsGLpe6fdaw
-         GntmgpYkwUsbT2dMOG0fTK6JG7xHBjDLbh4WG2w3ormJ5vC5OZB5d3MY6n1jfZVlFZ1f
-         2X8i3Y3an3F1SBBzQ6WBHvP+h/PipYPS5s/dU3B2RI8XlH5Au5V2+vv/EIvIJ84QcuUc
-         0VHwBmo2nXiT6vm9Wc1h8E6b0mfNQGv6xLn300yzmE7UlpDB/aNJNulX9MiQVF9wKyIW
-         fzKHTeTX6RWUpm+Wm8QzD6zJPd/AIzKDdmgAzt85kPubNzaApwEJkSQx/RDPbFV6h9xA
-         bwzQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrEoMKypEBrBDy9UqKnyHMzAYylq9ZpeLtf1jePzaEmE9j8Qasyoz/S20SR5ZHbUBkxgTiX/5o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyONUgnoSsEI2yWqXb+Heq2VPXcpPxJgQ1snu64ntIeYeAF0Jz3
-	Cx+tMqGBJ5A7mJIdU0PzAe9w8SFiTZpHILCDL2AjoyUU4NeQ42SqCWsVjH/BRIQ1oHWufWAkUQx
-	xsk7p3zlOxipYXVz3MqM7HlycfqKqk7jO5GCkOLIiJ8b5YR66CYxsRl1gEw==
-X-Gm-Gg: AfdE7cntIbHQdR3CcT/UzUQjeDemINwrX/9rvh+Sj9SPbkhPHoTkm0yIH61TMFj6HLV
-	887fe0PpQcwNSCzM3nVvv8a3tHVH1aEP3rzuxsWueN1ZZqZI/bClaiw5sj/fK0FmT4ZIhXV2D2f
-	jVrMzkmrUtGcEYajiliDfcAPosYNb9Ea2PXAePmabVnu7SoXhVhk3PGkvRmVjprus5NNAbTPHxi
-	PpPX/hI5PhPUxP7dCqm7n6uDxMmDaZWO0YfIkfZOUiydAM8KCKOGDnViZDoO7xKDqji21WA+lAN
-	8kOVAAgTuPup/umm2yJKoOvAqvGgBWfyWQwqj5KLS3sYJwgxe4hORgMvcjl4DwNf8Fibd2bcKk5
-	aV5z3PygYMX0pzxzdkoEzHFAwRgpf1KWtuSKHtBqUwB3rEv8BQ9wTfy3vWgm2eJ0LutyTpt4oZf
-	2mwgkZbWl9lNHa
-X-Received: by 2002:a05:600c:8b62:b0:493:adcb:d368 with SMTP id 5b1f17b1804b1-493e6843f10mr22365205e9.9.1783509312043;
-        Wed, 08 Jul 2026 04:15:12 -0700 (PDT)
-X-Received: by 2002:a05:600c:8b62:b0:493:adcb:d368 with SMTP id 5b1f17b1804b1-493e6843f10mr22364805e9.9.1783509311582;
-        Wed, 08 Jul 2026 04:15:11 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:5521:6b10:58fd:68f:7756:389d? ([2a0d:3344:5521:6b10:58fd:68f:7756:389d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47a9de1d905sm43419310f8f.2.2026.07.08.04.15.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Jul 2026 04:15:11 -0700 (PDT)
-Message-ID: <e85432be-d9a3-4b70-b324-dc657617d1d3@redhat.com>
-Date: Wed, 8 Jul 2026 13:15:09 +0200
+	bh=zf0N7hyL9ieefPaK1hQyYaoHoBFLf71w/CV6PNdQScA=;
+	b=Za4DuOW8aViDWdGKSRqUx+4l0Wiat9bfqmZmUpcJU4asPLP2SHTX5SRpROgsQ08eJN1xBi
+	qY3On68ubhYOTy4etsXYgv/c32bIZQGW+2iDNmvI4CtOn5ojw4nE2pMXfUJTy8nRjeiYcm
+	lD4lqTtj3TUUTUSMzpPF5psGnesq2AU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1783509408;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zf0N7hyL9ieefPaK1hQyYaoHoBFLf71w/CV6PNdQScA=;
+	b=6r1x0ynRj86u7sQ1VQIc9IRfOk/cBqFF9KRYm+28V22F8wBxU+EUCOncVAtBQ1OtmqH5eI
+	EI4VRIkQK9uUlGCg==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=i0hMqNmj;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Aj3XLAhY
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1783509407; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zf0N7hyL9ieefPaK1hQyYaoHoBFLf71w/CV6PNdQScA=;
+	b=i0hMqNmjGuh18zyd9w7EBeCsH3kQW85vULtgyHNjuKGx+sz2m8SL74PJLqYEReu9RZbtv+
+	OMnuopjq1kf3VMNu1oF9xcqtPGRKZ6u6Sp041aF9TbrJvcx0CeAUP5g95t2Rpu+TewoSVm
+	38IEf9OIvW51n7bf1Nz5bDcochaADvs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1783509407;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zf0N7hyL9ieefPaK1hQyYaoHoBFLf71w/CV6PNdQScA=;
+	b=Aj3XLAhYXjGFu1orWSrMrTIBuRA+FR70+NILNlEteFudv028P9a5xA0UZdzNJLRM8qzlKX
+	KwpBM+z5LjKsQABA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E0590779AE;
+	Wed,  8 Jul 2026 11:16:46 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id GMK9Mp4xTmriQQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Wed, 08 Jul 2026 11:16:46 +0000
+Date: Wed, 8 Jul 2026 12:16:44 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Simon Horman <horms@kernel.org>, Jason Xing <kerneljasonxing@gmail.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-hardening@vger.kernel.org, Kees Cook <kees@kernel.org>, linux-mm@kvack.org, 
+	Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>
+Subject: Re: [PATCH net-next v3] net: skb: isolate skb data area allocations
+ into a separate bucket
+Message-ID: <ak4w2k4Woj55E0On@pedro-suse>
+References: <20260702170728.168755-1-pfalcato@suse.de>
+ <04debe19-bbe8-4b5f-9668-753d1f97832d@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v4] selftests/net/openvswitch: add ICMPv6 echo
- type match test
-To: Minxi Hou <houminxi@gmail.com>, netdev@vger.kernel.org
-Cc: aconole@redhat.com, echaudro@redhat.com, i.maximets@ovn.org,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, horms@kernel.org,
- shuah@kernel.org, dev@openvswitch.org, linux-kselftest@vger.kernel.org
-References: <20260702075044.1176798-1-houminxi@gmail.com>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20260702075044.1176798-1-houminxi@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <04debe19-bbe8-4b5f-9668-753d1f97832d@redhat.com>
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: D033D759DC
+X-Spam-Flag: NO
+X-Spam-Score: -4.01
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MIME_TRACE(0.00)[0:+];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FREEMAIL_CC(0.00)[davemloft.net,google.com,kernel.org,gmail.com,vger.kernel.org,kvack.org];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,sashiko.dev:url,suse.de:dkim]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
 
-On 7/2/26 9:50 AM, Minxi Hou wrote:
-> Register OVS_KEY_ATTR_ICMPV6 in the flow key parser so that
-> icmpv6(type=...) can be used in flow specifications. Without this
-> registration the parser silently drops the token and the kernel
-> rejects the flow with EINVAL because the expected ICMPv6 key
-> attribute is missing.
+On Wed, Jul 08, 2026 at 10:30:50AM +0200, Paolo Abeni wrote:
+> On 7/2/26 7:07 PM, Pedro Falcato wrote:> @@ -586,6 +586,8 @@ struct
+> sk_buff *napi_build_skb(void *data, unsigned int frag_size)
+> >  }
+> >  EXPORT_SYMBOL(napi_build_skb);
+> >  
+> > +static kmem_buckets *skb_data_buckets __ro_after_init;
+> > +
+> >  static void *kmalloc_pfmemalloc(size_t obj_size, gfp_t flags, int node)
+> >  {
+> >  	if (!gfp_pfmemalloc_allowed(flags))
+> > @@ -593,7 +595,8 @@ static void *kmalloc_pfmemalloc(size_t obj_size, gfp_t flags, int node)
+> >  	if (!obj_size)
+> >  		return kmem_cache_alloc_node(net_hotdata.skb_small_head_cache,
+> >  					     flags, node);
+> > -	return kmalloc_node_track_caller(obj_size, flags, node);
+> > +	return kmem_buckets_alloc_node_track_caller(skb_data_buckets, obj_size,
+> > +						    flags, node);
 > 
-> While here, add convert_int() to the ovs_key_ipv6 and ovs_key_icmp
-> fields_map entries so that specifying a field value produces the
-> correct wildcard mask. The IPv6 flow label uses convert_int(20) to
-> produce a 20-bit mask (0x000FFFFF), matching the kernel constraint in
-> flow_netlink.c that rejects masks with bits 20-31 set; byte-wide
-> fields use convert_int(8). The ipv4 counterpart already does this via
-> convert_int(); the ipv6 and icmp classes were simply missing the fifth
-> tuple element. Existing callers that pass empty parentheses are
-> unaffected because convert_int("") returns (0, 0).
+> Sashiko noted that some drivers may require GFP_DMA buckets, and the
+> above may break them:
 > 
-> Add test_icmpv6 exercising the ICMPv6 echo flow key. The test uses
-> static neighbour entries with nud permanent to prevent racy NDP, then
-> verifies in three steps: install icmpv6(type=128) and
-> icmpv6(type=129) flows and confirm ping works, remove the flows and
-> confirm ping fails, reinstall and confirm recovery.
+> https://sashiko.dev/#/patchset/20260702170728.168755-1-pfalcato%40suse.de
+
+Oh, this is really awkward. Adding linux-mm and slab maintainers for input here.
+
+Considering the current slab bucketing does not seem to duplicate DMA or
+CGROUP caches, could it make sense to duplicate those as well? Otherwise we
+could add a branch like:
+
+if (gfp_flags & __GFP_DMA)
+	/* use the global dma kmalloc caches */
+
 > 
-> Signed-off-by: Minxi Hou <houminxi@gmail.com>
+> >  }
+> >  
+> >  /*
+> > @@ -634,7 +637,7 @@ static void *kmalloc_reserve(unsigned int *size, gfp_t flags, int node,
+> >  	 * Try a regular allocation, when that fails and we're not entitled
+> >  	 * to the reserves, fail.
+> >  	 */
+> > -	obj = kmalloc_node_track_caller(obj_size,
+> > +	obj = kmem_buckets_alloc_node_track_caller(skb_data_buckets, obj_size,
+> >  					flags | __GFP_NOMEMALLOC | __GFP_NOWARN,
+> >  					node);
+> 
+> Minor nit: checkpatch laments WRT brackets alignment.
 
-Does not apply cleanly anymore. Please rebase and resend. Note that you
-can retain Aaron's ack.
+Will fix, thanks.
 
-/P
-
+-- 
+Pedro
