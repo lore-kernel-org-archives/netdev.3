@@ -1,102 +1,73 @@
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7473FD140
-	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 08:04:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F25D3FC5BE
+	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 08:09:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783497892; cv=none; b=pYpV6V1+jdCJcrSIVu9j56VQOTZVROof3MBpcS5yZ7b+Kw9KIAa+i8qLo3FDQXS4E8pw7M/srr8Ltz+Jzzc+ImCJ011jnFZ39ZT2UtOCpAjHtMOt8JnRsNGXYlcP6pjgei9Kt6AO4YVx5BFe9tLk+o2aPwmM+/LHL0JEGNKz/to=
+	t=1783498156; cv=none; b=MjptiF1bpGuRzMRa8pUvI/Xdc/bjDiuCCqpUzZbpV0vdrVpF3qfIu0UaRaQH1FPBIM1BNrWX3Rc0dJKLUTQd9K+xUS7E0AUPR/Pl5ZayCpmN4nbvxSRXprbieBr18kfnQDTKBI25kTCdLF6LvuRG+i1nHFcY0d2vcYPp79tsSDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783497892; c=relaxed/simple;
-	bh=lhKSffhkWzsZ0/8rfDC7YE2ivqQOUh/Jm8bDdf9qJW4=;
+	s=arc-20240116; t=1783498156; c=relaxed/simple;
+	bh=702mdA8LTCW0LMJY/Wr0rF7VyxkqhvUcebXQgKhzJ40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bjB1jYEzgGK3DhkSvv32SkehR3EaBo6/QuyIDNke6rZjqcui0vBoffVBgflxCRqPkZqDMkC8m6OeurvuIBP7tA9DRkuyofRMejfZIsz0SC6yZPbARICYOjkYFss3p6jUZWBDv3VxawPt7FoAE0e/FuhFFgkSXPNzLX1wjr6eV6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=tESaesU1; arc=none smtp.client-ip=209.85.215.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 MIME-Version; b=EeerHBJhn9cRh2jBvVbkZ92pRboIHSxjKE1gjVZoNfQLkZpsw45LruBlCgagjsESoNAqnNVC6zgrfInspgliXEEEIRq/Cbj4yZIHHu8miD/jdh9aSxtVWWOMGHZa5pLDYp/Qgkcmz6CLAuPm5Ci2g/lIwwNNFPDbpUMvYCHbnjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GTth6Ip2; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="tESaesU1"
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-c96b08cdd1cso244389a12.0
-        for <netdev@vger.kernel.org>; Wed, 08 Jul 2026 01:04:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783497885; x=1784102685; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=lhKSffhkWzsZ0/8rfDC7YE2ivqQOUh/Jm8bDdf9qJW4=;
-        b=tESaesU1raCpuNWf2JvAnEeXLHI8sUQcmt9PGuNv5NbzcwZYHvL6troiP83gF6gWI8
-         NYcUj2N80mkAuGimeoTMcot4YlSmdqA/N3BFU9ofrgtB/fhL7J/uDmglEPxZhRzdWuYL
-         dD9p/b+0lfeCjxAPW1AT5JEkQH1vz6xiKjxv7q+OuszVamrdoxraPLmEpV/MB+MAMK2g
-         nilJV/I+veph0rnnV92UMTinF73W1/iObmDdTSH1dZJWQwUhjf+/9CssPM5pDC91+lNT
-         XUhvu42LseRDdw8rw7xhxoTK9w4S7MNCPbmRPMt817MXLVUXDc0DfnkqsfeUnytQAq5k
-         BMeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783497885; x=1784102685;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lhKSffhkWzsZ0/8rfDC7YE2ivqQOUh/Jm8bDdf9qJW4=;
-        b=NOeqatSDzyh/qYRjP2OzyOlKT1shfFUECEUA5o8EX+rNuKfyPKXqEhVT79c2Npy/h5
-         SZiFQZlSGd5eA3hWRnIW1dGe/6KK4tHZyO4Vjeit3y/AkdyPSRikH6zujWJbAR+YQHFH
-         tLIMmTTeX5RkTZy9ZGbW8TKjN22rWoN6hm8hgPhI8cYmrg9nXka+FXriIngYuem8idRq
-         1LfblI830hw9swn7nyn0Z7bXHuJUZICvUsF8N3HV5/nt5HSQp4YFcQyj9/G0+rmg8Mzr
-         dzF2DJsT2SQQRv9xzOl8bKVkDNwaDdI7meRuW9rdnTori/puosM0YLwAGkc6G66vykcU
-         jnwg==
-X-Forwarded-Encrypted: i=1; AHgh+RpIn3Cg6W7PplNCXVS3ZgSXm7Af27nV0apO1mS/rJFIuUyOpBHG/HFgYuzDtV+w9fJpTYkOwZw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwW7xUdA5GyZJUvLmXS4XiWqBubKVm4EhZSh8feKOoggnnvDwmJ
-	HWFuSGXTrdxRFe7pMgAFleRJSFYc7c45VYaeZVi7+/1rrxYhg1qgEIOB
-X-Gm-Gg: AfdE7ckdzeL+Zne7Rn0K4P/gIgmRbqV8DAnuSfpxTcbjVm1VXyYQMY9yHR0FQSk0/rA
-	7qraFkLMn/BhhDaRVWFuTGw4VACXnXzA7mXRIea5EeSBAgIJjyOD2pw1/IbgVoc6IyG/Qsaj2dv
-	7v/LtijV5L/6h8fj/TT4ZOD/E00KOQpDMQODVEqYy4cbz8mFKZ9T2JMo9LIjtTpi7OVsOEGjJBo
-	3oJac73VOIwkNzkY++NxwWMs/Kqoi9K1WrDmd72zu4nHqAqwfToWMuq81RUHB02rxvo/Q5vcwGr
-	SswZqdEoFMJBZuY6WF1UpFMNvLbK7eL4fTRkqmrgKsflld1tm4GXhb2MuDfmsx0HPQIruPHy5wZ
-	Mi1Qc59NhTCVDQeTf6mPOE1d8dmd2DKi3gv2wGDefG9U20D+eBsgW6OU5CLjYTaLokplaczLKWb
-	6lWa1diTN7yMQcuRwrjmuEgi6CPFQbDJLm23zz7elf8pIpeEJThbEm1rC8QGFD
-X-Received: by 2002:a05:6a20:1587:b0:3b2:86cb:929e with SMTP id adf61e73a8af0-3c0bd206b59mr1755177637.46.1783497885553;
-        Wed, 08 Jul 2026 01:04:45 -0700 (PDT)
-Received: from r912.tailbb6e1e.ts.net ([182.70.116.80])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-311950eb930sm2220581eec.8.2026.07.08.01.04.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jul 2026 01:04:45 -0700 (PDT)
-From: Avinash Duduskar <avinash.duduskar@gmail.com>
-To: toke@redhat.com,
-	andrii@kernel.org,
-	ast@kernel.org,
-	daniel@iogearbox.net
-Cc: a.s.protopopov@gmail.com,
-	ameryhung@gmail.com,
-	bpf@vger.kernel.org,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	eddyz87@gmail.com,
-	edumazet@google.com,
-	emil@etsalapatis.com,
-	eyal.birger@gmail.com,
-	hawk@kernel.org,
-	horms@kernel.org,
-	john.fastabend@gmail.com,
-	jolsa@kernel.org,
-	kpsingh@kernel.org,
-	kuba@kernel.org,
-	leon.hwang@linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	martin.lau@linux.dev,
-	memxor@gmail.com,
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GTth6Ip2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783498152;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Z0t8XVivFCWpKwmYWDQSAZHlhT75KpK6j/oL38Ul+ck=;
+	b=GTth6Ip2wQkSqfrSvcpn+br7yNI0Ks0COZF/h2XA9WtJ4ej21HNZiE1FdGDDARMCI9g0g7
+	dEpYc0YCGyCs7I26x0ry5kcm+4YXsEFhZ5f7zOe/4aoFurck7kLNOpCCF3Ta3pxNkr2pZz
+	vJlkA22J+ywUyvgaJ1lnt8trGBMmhhc=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-308-Z38E3Gx0Oo2V3QOF5_1f0Q-1; Wed,
+ 08 Jul 2026 04:09:09 -0400
+X-MC-Unique: Z38E3Gx0Oo2V3QOF5_1f0Q-1
+X-Mimecast-MFC-AGG-ID: Z38E3Gx0Oo2V3QOF5_1f0Q_1783498145
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3F8BA1955D5B;
+	Wed,  8 Jul 2026 08:09:05 +0000 (UTC)
+Received: from gerbillo.redhat.com (unknown [10.44.49.133])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DB87D1956056;
+	Wed,  8 Jul 2026 08:08:58 +0000 (UTC)
+From: Paolo Abeni <pabeni@redhat.com>
+To: haiyangz@linux.microsoft.com
+Cc: linux-hyperv@vger.kernel.org,
 	netdev@vger.kernel.org,
+	kys@microsoft.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	longli@microsoft.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
 	pabeni@redhat.com,
-	rongtao@cestc.cn,
-	sdf@fomichev.me,
-	shuah@kernel.org,
-	song@kernel.org,
-	yatsenko@meta.com,
-	yonghong.song@linux.dev
-Subject: Re: [PATCH bpf-next v6 1/3] bpf: Add BPF_FIB_LOOKUP_VLAN flag to bpf_fib_lookup() helper
-Date: Wed,  8 Jul 2026 13:34:34 +0530
-Message-ID: <20260708080434.732503-1-avinash.duduskar@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260704092159.1256823-2-avinash.duduskar@gmail.com>
-References: <20260704092159.1256823-1-avinash.duduskar@gmail.com> <20260704092159.1256823-2-avinash.duduskar@gmail.com>
+	horms@kernel.org,
+	ernis@linux.microsoft.com,
+	dipayanroy@linux.microsoft.com,
+	gargaditya@linux.microsoft.com,
+	shradhagupta@linux.microsoft.com,
+	linux-kernel@vger.kernel.org,
+	paulros@microsoft.com
+Subject: Re: [PATCH net-next v2] net: mana: Add handler for sriov configure
+Date: Wed,  8 Jul 2026 10:08:54 +0200
+Message-ID: <20260708080854.64655-1-pabeni@redhat.com>
+In-Reply-To: <20260701180116.507690-1-haiyangz@linux.microsoft.com>
+References: <20260701180116.507690-1-haiyangz@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -104,27 +75,65 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-The bpf ci bot flagged the VLAN_FAILURE re-issue advice in the uapi doc
-here, and the finding is real. By the time the lookup fails,
-params->tbid is gone (the h_vlan fields it shares storage with are
-zeroed on entry to bpf_fib_set_fwd_params()) and params->mark is gone
-on the resolved-neighbour path (overwritten by the smac output). A
-program that follows the advice with the same struct and DIRECT|TBID or
-MARK set runs the second lookup with a zero tbid or a garbage mark. The
-selftests did not catch it because every arm re-initializes params,
-which is the safe pattern.
+From: AI Reviewer <ai@example.com>
 
-Toke, the re-issue recovery came from
-https://lore.kernel.org/all/87jyrwf9g1.fsf@toke.dk/, so before I
-respin: my preference is to keep the mechanics and fix the sentence,
-"repeat the lookup without the flag, re-initializing *params* first;
-output fields overwrite the inputs they share storage with".
-Overwriting inputs on the way out is the helper's existing behaviour on
-every path (rt_metric lands on top of tos/flowinfo even on NO_NEIGH),
-so one rule, re-initialize before any reuse, seems better than making
-VLAN_FAILURE the only return code that preserves inputs. If you would
-rather VLAN_FAILURE restore tbid and mark the way it already restores
-ifindex, or lose the advice sentence entirely, I will do that instead.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://sashiko.dev/
+---
+net: mana: Add handler for sriov configure
 
-Avi
+Add callback function for the pci_driver / sriov_configure.
+
+It asks the NIC to provide certain number of VFs, or disable
+VFs if the request is zero.
+
+> diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> index e8b7ffb47eb98..f7a79874fd0eb 100644
+> --- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> +++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> @@ -2496,6 +2496,20 @@ static void mana_gd_shutdown(struct pci_dev *pdev)
+>  	pci_disable_device(pdev);
+>  }
+
+[Severity: High]
+With the addition of SR-IOV support in this patch, do mana_gd_shutdown() and
+mana_gd_remove() need to call pci_disable_sriov()?
+
+If a user enables VFs via sysfs and then unbinds the driver or shuts down the
+system, could this omission introduce a regression where orphaned, dead VF PCI
+devices are left in the kernel?
+
+Accessing these orphaned VFs might trigger use-after-free crashes or hardware
+faults, as the underlying PF hardware and driver context have been destroyed.
+
+> +static int mana_sriov_configure(struct pci_dev *pdev, int numvfs)
+> +{
+> +	int err = 0;
+> +
+> +	dev_info(&pdev->dev, "Requested num VFs: %d\n", numvfs);
+> +
+> +	if (numvfs > 0)
+> +		err = pci_enable_sriov(pdev, numvfs);
+> +	else
+> +		pci_disable_sriov(pdev);
+
+[Severity: High]
+Should this path check if the VFs are currently assigned to a guest VM before
+disabling SR-IOV?
+
+If a privileged user writes 0 to sriov_numvfs while VFs are actively assigned
+to a VM (e.g., via vfio-pci), could forcefully removing the PCI devices cause
+a regression resulting in host IOMMU faults and guest kernel panics?
+
+Would it be better to check pci_vfs_assigned(pdev) here, or use the
+pci_sriov_configure_simple() helper to safely enforce this?
+
+> +
+> +	return err ? err : numvfs;
+> +}
+-- 
+This is an AI-generated review.
+
