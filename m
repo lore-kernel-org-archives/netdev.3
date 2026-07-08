@@ -1,386 +1,134 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010053.outbound.protection.outlook.com [52.101.85.53])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE763435A83
-	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 12:29:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A7443E492;
+	Wed,  8 Jul 2026 12:29:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783513749; cv=fail; b=bMUya0mDH1VekiSMaUIjFhYEUFnFgiaTaXce9ZcUyFXFdR/E6pim72KhnK8BMdECZ5kL2sQlOEf8Im7iLPXCIvokOcu2cPuRgVTCvdF/9GqV0/xLzo+UNSeiz+der3Z/e7DIsFJYO4tQLk3YMC8KpR0i2Vebwmn0RPtaXyqZD2I=
+	t=1783513753; cv=pass; b=ONGvUjXaRu5OvqxO+mPDZcJ3bMzR6l00BNPR+j2TF4kmgHJAus86If2b7M0civ1cMG46CQmQ1y8xeOGLa0GmL2OHcb3ZAJubsVHqyC9neiK8wgm4oC4kslWPVwvtQyEJ/r7jzhZroN+L8w/myy3iT2ibjgX8GTkfYgCrSvBUHDw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783513749; c=relaxed/simple;
-	bh=cxslQo4IdbluiAFHUyLHcRu7o4cmz46hD79YdlZbakk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=B6CF0rCBfaxYITcQQe75MDDI3E8NN6UDD5olz93BSRFJFfJ3RjSHwlXOh6WiJtIXGmqzy9piFNWn7ai0NOBafZxhfo5wrlrzfJPdSn1ZvPUudwHIvryaSexqPAF2ArlcYwrLXEutHSmQPCmPfh8uwdBARKjtOv15ra4GFWMkss0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=abDDnre4; arc=fail smtp.client-ip=52.101.85.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1783513753; c=relaxed/simple;
+	bh=hNxi3I7/AjHCOFwddBwrPLCzilKwHtStVx43u1/rLDU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=B6GJNT0p95tBMNxy6Mwk/yI/l9DM4cm35P3X2SoGuZSfp6+QGM32VCmzcwB7VEc3lESA9xVOfAROvPItJMLyjVHAlzp1mOz8gN4fs2rl+rxapyXJKE24qhrE7JH3q3SFEG59ZSTgE7YyIWlkSbnSAUUhRN2ogZOcxxL3PL3TP3A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=louisalexis.eyraud@collabora.com header.b=h6bRTRdC; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="abDDnre4"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fXz/yjj2rQqDgFdmUH5bv4wHLMfKKyQ7qEAuNUuMPlbpn13hHHP1vuBb4RcoP03ziPPRVDr6AZbqDJb385X0NvYKYhJKVFXpFp7oZYD5fJH/YnimaCelxS+6P9JDdbhE3JWVt4eGK3fPyCLsvzHIb/ZgKbgwthpC1mCL7zFXCYUcGBp/5lx4rzhbcm8WVPDOHap5xcXVt9Wza8EyR88xHwLHw7Wa3AfSq3Nq9eHFfCOFGDT69adzDgxT9CMRDZAQNjFG/6qkRnMDKUvuR4yPHQK+TVgDfUfpaJ+hzXmW62DYTozlRRpqiWyHv2GIiJ86nq1YKzP4x9sKTbBfJg8bDw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ONfYazt/fpuAmfCYa0KQcnoXRNXia+T7ckh3kbQy2jQ=;
- b=lf7xALIiD78RheDUavJzad9SqbvCXV3QStVimGbPNkc5g17VnDv4fmogrNv4fFJfZ57F/xnFh5ZIRQRUJWGLjijeV8NHEeb1SS4fNTGJ8+q+QQKORhP3gHDEvKVJSRCvU0iqX7sedca2MU21aBcXeC+tMEgnHHaSKBn5q9j25LwvVEosYpp2OlrnqnRD6lKC0lkn/Rx35FErmTw2mbHZ4wS0Fx4abDql8BefQNGxgmpFQqmkXs30wXtJxBgaQA+uCxVXPCFs1bXcnq87HtU8qnaZ4b+HVNxpwnAVRl37kLGx5gS78Y5VfZ58RY5fqc5Sn611J+L8EKeGPLxRkZ0FJw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ONfYazt/fpuAmfCYa0KQcnoXRNXia+T7ckh3kbQy2jQ=;
- b=abDDnre4cYaRshNN/sY2wEjjHx6fPuPyD0B1d1aWLHapWXpYjN0tna6Wc5nheUbIhoqgnTMjTMO1KUS1aqjcjhqKUAWGZIp8hZYkrDVluc5GPthjplRcmmxu8eHyA3RGIIVC4ECWsAWHBJxdu/ybGKBNmTKGcFjcplbNTLz3jun3akIDCYFHTH2waMQu/wP/MOzwb7f9ZNRD18e57xl90InQrvvMY3oCdRaJG2uWQfqqpfq+mt4v2AxKt3hU6w/F+oyoKne+vAKoAwN9fHGM2pRqJyjxdnV2oeest5EabGchBpk2j5ywKkNU0rdzQo7AAOtlIVYkALZX1Z37+1aZTw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
- by DM4PR12MB6637.namprd12.prod.outlook.com (2603:10b6:8:bb::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.10; Wed, 8 Jul
- 2026 12:29:01 +0000
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2%6]) with mapi id 15.21.0181.010; Wed, 8 Jul 2026
- 12:29:01 +0000
-From: Ido Schimmel <idosch@nvidia.com>
-To: netdev@vger.kernel.org,
-	bridge@lists.linux.dev
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	horms@kernel.org,
-	razor@blackwall.org,
-	petrm@nvidia.com,
-	Ido Schimmel <idosch@nvidia.com>
-Subject: [PATCH net-next v3 1/2] bridge: mcast: Fix a false positive lockdep splat
-Date: Wed,  8 Jul 2026 15:28:19 +0300
-Message-ID: <20260708122820.1298718-2-idosch@nvidia.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260708122820.1298718-1-idosch@nvidia.com>
-References: <20260708122820.1298718-1-idosch@nvidia.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: FR4P281CA0009.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:c8::11) To SA3PR12MB7901.namprd12.prod.outlook.com
- (2603:10b6:806:306::12)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=louisalexis.eyraud@collabora.com header.b="h6bRTRdC"
+ARC-Seal: i=1; a=rsa-sha256; t=1783513718; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=dmk5QtOSqylrvj1O3kiWrYo5jOBHtMdHnLgwpkgK/OeYJcaygEFc908bdEjJcwFL8duOUKfqaBXGOC+SRZSCHufdPYaYi9PLGNM8bRxhcFLFnofEyRbsoTBNyULAcUmy14ns31kQof4IQPKzXk0XT8RQSPfV+HzfwpBImuFSjoI=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1783513718; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=QCvu92owlqFigfn30SNdUxyYgy9yaDdYJCfmb5B8+hA=; 
+	b=TUVE5cAWvaUKOL/7VkXKNsheZFAnqsjFihWOVi5E8/Lf3tOGzoa/GO+f4zkq6Tnoe+IopkOelUVU/gUR72HtIh4Cuvzg1DGca0jE5//B0m0MTT5dIGFCJ1yRRuscfQIB3dWcW5Zc8zDQl5E1y6DCGRw/JiBf04r8cl6BSbEceZo=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=louisalexis.eyraud@collabora.com;
+	dmarc=pass header.from=<louisalexis.eyraud@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1783513718;
+	s=zohomail; d=collabora.com; i=louisalexis.eyraud@collabora.com;
+	h=Message-ID:Subject:Subject:From:From:To:To:Cc:Cc:Date:Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To;
+	bh=QCvu92owlqFigfn30SNdUxyYgy9yaDdYJCfmb5B8+hA=;
+	b=h6bRTRdCEfGpTsXUdZushp4txBmx8lAJ2sgujTR/sAo9JJSBSlceJfhV4vZkaYkY
+	rtrySVIeuYT8F3dzrFdpWNZza1RcYhMupJRR8ITAYN7hBDSSyKEo6vz8FjpFDY09sUP
+	Nkn2iZd7+RFWywEK1Pwpr2rr8GIUn8Cc/b1GUQZQ=
+Received: by mx.zohomail.com with SMTPS id 1783513715946883.1743690151607;
+	Wed, 8 Jul 2026 05:28:35 -0700 (PDT)
+Message-ID: <e390664dc439043a43b6ded3c50c9a2bb5bbd2f6.camel@collabora.com>
+Subject: Re: [PATCH net-next 5/6] net: stmmac: mediatek: add support for TX
+ deallocation adjustment feature
+From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn	
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet	 <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni	 <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski	 <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Richard Cochran	 <richardcochran@gmail.com>, Matthias Brugger
+ <matthias.bgg@gmail.com>,  AngeloGioacchino Del Regno
+ <angelogioacchino.delregno@collabora.com>, Biao Huang
+ <biao.huang@mediatek.com>, Maxime Coquelin	 <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc: rmk+kernel@armlinux.org.uk, kernel@collabora.com,
+ netdev@vger.kernel.org, 	devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, 	linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, 
+	linux-stm32@st-md-mailman.stormreply.com
+Date: Wed, 08 Jul 2026 14:28:30 +0200
+In-Reply-To: <2a421449-01eb-4066-8c19-d554ff8e4f6e@bootlin.com>
+References: <20260707-dwmac-mediatek-mt8189-v1-0-17f345eaaca3@collabora.com>
+	 <20260707-dwmac-mediatek-mt8189-v1-5-17f345eaaca3@collabora.com>
+	 <2a421449-01eb-4066-8c19-d554ff8e4f6e@bootlin.com>
+Organization: Collabora Ltd
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|DM4PR12MB6637:EE_
-X-MS-Office365-Filtering-Correlation-Id: c27a8dcb-5918-469e-71df-08dedcec7d80
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|22082099003|3023799007|56012099006|11063799006|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	5mxa41wAxJiA0XL+veF3AahTwAvDLV69vIHJm0q5LxVWBs3kDZ5QkRzaFEM4wuHnSHN/phSqfvUeDU/5V/VWwmZ84UQBDdzJxeatiJBF4MrJrMTZexZZsnGBKrq5Du+lPU1zQFZU0FzPv4kjhhbfmu7hA3VojhbUulBZyI16cLVmFXQ0+6IpdZEgGkSMcjYT2108RYVT6t7/tH8j0BqJgln1yXvRIcR4Cr5SgEaOtI3RqZezdDl/6zk0witPcvs/BfgCINqi29haRSi03QTNHa8Qby7Sdyhb/21aYlJgE0V3gPiqn4EgzN0b4mQll1GUQiGOiHcqn4K4LDTpM0qo3EdKQNZ7t25P9AfjTox2SHTuhG6HNO2wWIkrtGffxRZOcTqhvxdpJcv3HRqwfJUzHelmb6KEJG9c1wnXeqpNzLTaGbmlBjiy6aK3IH7o4BzPPo/6Uw+Xa8fvumaULBow7sCT+gCYOHNxY0n9ELjVj0p/iGeNnsOIAPBeJEznZw14sMLJdy2ugzGrNDO4oyXNJjN2n7SvTZMo8rokBziGszvLdsH6/j5ikfR8ew4uKox4iqwv6gVDyi+JLQG/uk/WpJAbFYZNCmt/7883nr4DqOgjKav4wgjbRn9e+Jc0kyhbYXch8LYZxWleVg6ahqJmD6ZSHmjrvh8vhxl/3ZWrUP4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(22082099003)(3023799007)(56012099006)(11063799006)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?dpTxIjVTWDw06xt23OFPhCy9iuiGrbXlceKSOOcVniGVzks1CNlj/rdiKsxl?=
- =?us-ascii?Q?Hb+iJ+Tio+VZPRqiySShKSnxoW+EiwaQDZbe7cKxAyb8tenTU56GqK6d5/4e?=
- =?us-ascii?Q?7z5WMi9r7E7tfa6nCx8elVpolPQ1Ufbd3o+0DnMhArHHrnW+ySoEDKbAaX53?=
- =?us-ascii?Q?8NyjFTXYIQsGPirZ1se9Tyxi+bicalDGLk58gFSveSw4ChyItmM73lxNtX8J?=
- =?us-ascii?Q?GXTTRRket/a6NtwFOFtonD2KfFmuMFmxglD0P7vDSrQcQLgTWMEGA4QO+meK?=
- =?us-ascii?Q?HXXisY6anSgW9aTc/NMGL57brM//OBupaK5v1LkeRnnM3MG3otP0fI5SPyop?=
- =?us-ascii?Q?/v9oDYmPIqxsgM+a/4YCOKimG2T9Z832q2befuIZLT6VOo6s1ZbEG13TbsMP?=
- =?us-ascii?Q?TvzQQwGm73MTWfQHNvFxNFYrs2p2ibAdyob22wlaPB6rmRd3j3sNFxAwGRIh?=
- =?us-ascii?Q?5PGdNrnO+7mT/y3i0XlyLU0fIPoL/fI6T0WDWBMPcTbVU1x2OPDbt8NF/8K8?=
- =?us-ascii?Q?UXkOfuyXESPbqcQUXOy1qcp142Bw+HyFIdH3zAlOsgzNkkl+ZOwxu6CAIkJn?=
- =?us-ascii?Q?oW2+q8OBdLC1RJTvB1rkUxacu4V46EdgCjUFfrG3xYZKqlkBovJtMYgLFGFl?=
- =?us-ascii?Q?enMOObhHI6SkIYwDSJnWXTEXUR3WeQrVlZfzWC3ca75A/evGIsvLRSeEN5HK?=
- =?us-ascii?Q?9c2dk52mS/UZDbHqwbdAzZTY7N4OEg4zvIW/Ua0u9Yz/wv+EYATkOW4thJuZ?=
- =?us-ascii?Q?bGzejHKu0AnXJPrHLTRaWtTLvCf/gfCh1zA8uDDcs0Z87OaThqCu0sCjFiSD?=
- =?us-ascii?Q?zDUx0g5HOHgEuP4sJQh/txdQX3x0ehjb72Bd/92S7ABxZer9hOt3d//TKaSg?=
- =?us-ascii?Q?dAPG+c3sWBbvma9LjSGhkG+Idjr2JWbDwr5t09TnXsbmRIw1Kt3nbIwGoNgW?=
- =?us-ascii?Q?KDxrMaUBXNuKXQMWdHBfjLodcB8C86QDjyxQYjmDVKDXMY9wJo2EuA+mFDNy?=
- =?us-ascii?Q?R/K+IH3b7+nhaMDarcgR32qRuluDpEPcW6//gsfF0ZHwUVI9vtu0CdGPIsk1?=
- =?us-ascii?Q?ATbFV1BwegUinEaJctKT2sk1f/EaYvU54q6dBRvxAAq1WTzHL+loVLxsteTS?=
- =?us-ascii?Q?Ax1hf6KF99b1Re4CjXRj7FeBXGYUxUfiV4j4y0soXhtEHiUmvDbSfvd8Cl/C?=
- =?us-ascii?Q?/ckTMNqSMSUEsFV0k/+Y3hscG0gE1VCWuT9/ndZKomWKarKLsiCHszDjX1bQ?=
- =?us-ascii?Q?lMAwLlGwgp+Gxy5IlbzUhYgovfOdVqr2cjGhHciMnq7kXnp9nlnX4d1+oCEL?=
- =?us-ascii?Q?5vSDJqAJ0Lm+eR5fZe2oD/m34bHQAlbb1QUQ1MeXQ2h5x1J5cpX9RH7yZULL?=
- =?us-ascii?Q?782/yrS/uEJHrS9roSPNoiWDr6g8MwC0/evj1aWzrduTTab+Ts6+8463buVX?=
- =?us-ascii?Q?Xm7YT5WWAGnRYxlwxkbtvRegiy8UxceNqG1T1QfHSXY7TV4HwLcFS4oculvy?=
- =?us-ascii?Q?ncHQLGWk39/nJwfJDKTq4JAyA3uSxD1ht1DuTosWC2YWbKimY2IurFiPnnAB?=
- =?us-ascii?Q?PcHviIy6zr0NHAI3Z7zGQd9U5LiceTFf8gMfEq4mGOII0Drd2tmDp3jEISpc?=
- =?us-ascii?Q?pvolerE5LfWO7qATl5ye4rZLrrIPXLBKnhZ89aXoEod9wl8wZ7Pwwv71Dku3?=
- =?us-ascii?Q?0B6xlzgWENzOengtEZJwa/pEuxeGvPZx782rO1o4OU3xSSEC?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c27a8dcb-5918-469e-71df-08dedcec7d80
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2026 12:29:01.1020
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FS7Q451V6Ql70xgfD5UTqStYPKiVS2MVOY3+wnigpPVYHvzA3S26Z8bnceaE2WB2TxvVutFBQxo0Qj1sO6yN+g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6637
+X-ZohoMailClient: External
 
-Connecting two bridges on the same system [1] can result in a lockdep
-splat [2].
+Hi Maxime,
 
-The report is a false positive. Multicast queries are built and
-transmitted under the bridge multicast lock. When the outgoing port of
-one bridge is configured on top of another bridge, the transmit path
-re-enters bridge code and acquires the other bridge's multicast lock in
-order to snoop the query. Both lock instances share a single lockdep
-class, so lockdep flags the nested acquisition as an AA deadlock.
+On Tue, 2026-07-07 at 11:11 +0200, Maxime Chevallier wrote:
+> Hi,
+>=20
+> On 7/7/26 10:21, Louis-Alexis Eyraud wrote:
+> > The MT8189 SoC has in the Ethernet control 0 register from the
+> > peripheral configuration (pericfg) additional bits to adjust the TX
+> > deallocation.
+> >=20
+> > In preparation of MT8189 SoC support, add its definition, use in
+> > the
+> > set_delay_v2 callback, and a support flag in the platform data.
+>=20
+> Can you elaborate a bit on this ? I don't quite get what you mean by
+> "tx deallocation", this seems to have to do with RGMII timings from
+> the register access pattern, but the local boolean flag for the
+> feature
+> is named "use_stage_fine", I'm failing to connect all the dots here
+> with the different terminology in use :(
+>=20
+The data sheets I have, don't have info regarding this register, so
+I'll try to get more and improve commit and/or code description.
 
-Giving each bridge its own lock class will not solve the problem: the
-reverse topology would produce an ABBA splat with the same pair of
-classes. It also consumes a lockdep key per bridge.
+I'll also check if the register definition name is consistent
+(downstream driver and upstream u-boot use this stage fine term).
 
-Instead, fix the problem by deferring the transmission of the queries to
-a workqueue. Build the skb and update querier state under the lock as
-before, then enqueue the skb on a per multicast context queue and
-schedule the work.
+The use_stage_fine feature flag could be renamed anyway to match what
+it does.
 
-Purge the queue when the multicast context is de-initialized. At this
-stage the work cannot be requeued. There is no need to take a reference
-on skb->dev since the work cannot outlive the bridge or the bridge port.
+> >=20
+> > Signed-off-by: Louis-Alexis Eyraud
+> > <louisalexis.eyraud@collabora.com>
+> > ---
+> > =C2=A0.../net/ethernet/stmicro/stmmac/dwmac-mediatek.c=C2=A0=C2=A0 | 25
+> > ++++++++++++++++------
+> > =C2=A01 file changed, 19 insertions(+), 6 deletions(-)
+> >=20
+> > diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
+> > b/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
+> > index bcc0baef3f71..6b0a42b5839f 100644
+> > --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
+> > +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
+> > @@ -37,7 +37,8 @@
+> > =C2=A0#define ETH_FINE_DLY_RXC	BIT(0)
+> > =C2=A0
+> > =C2=A0/* Peri Configuration register for mt8189 */
+> > -#define MT8189_CTRL0_TXC_OUT_OP		BIT(20)
+> > +#define MT8189_CTRL0_TXC_OUT_OP			BIT(20)
+>=20
+> Extra whitespace inserted here :)
+>=20
+Oops, to be fixed in v2
 
-Use the high priority workqueue to reduce the delay between the enqueue
-time and the transmission time. With default settings (i.e., querier
-interval - 255 seconds, query interval - 125 seconds) the extra delay
-should not be a problem.
+Regards,
+Louis-Alexis
 
-Avoid the unlikely case of the queue growing endlessly by limiting it to
-1,000 skbs. Use this number for the simple reason that this is the
-default Tx queue length.
-
-Use local_bh_{disable,enable}() to disable/enable softIRQs and migration
-in order to avoid corrupting the multicast statistics (per-CPU
-u64_stats).
-
-[1]
-ip link add name br1 up type bridge mcast_snooping 1 mcast_querier 1
-ip link add name br0 up type bridge mcast_snooping 1 mcast_querier 1
-ip link add link br0 name br0.10 up master br1 type vlan id 10
-
-[2]
-WARNING: possible recursive locking detected
-7.0.0-virtme-gb50c64a58a90 #1 Not tainted
-[...]
-ip/339 is trying to acquire lock:
-ffff888104f0b480 (&br->multicast_lock){+.-.}-{3:3}, at: br_ip6_multicast_query (net/bridge/br_multicast.c:3584)
-
-but task is already holding lock:
-ffff888104f03480 (&br->multicast_lock){+.-.}-{3:3}, at: br_multicast_port_query_expired (net/bridge/br_multicast.c:1904)
-
-[...]
-
-Call Trace:
-[...]
-br_ip6_multicast_query (net/bridge/br_multicast.c:3584)
-br_multicast_ipv6_rcv (net/bridge/br_multicast.c:3988)
-br_dev_xmit (net/bridge/br_device.c:98 (discriminator 1))
-dev_hard_start_xmit (net/core/dev.c:3904)
-__dev_queue_xmit (net/core/dev.c:4871)
-vlan_dev_hard_start_xmit (net/8021q/vlan_dev.c:131 (discriminator 1))
-dev_hard_start_xmit (net/core/dev.c:3904)
-__dev_queue_xmit (net/core/dev.c:4871)
-br_dev_queue_push_xmit (net/bridge/br_forward.c:60)
-__br_multicast_send_query (net/bridge/br_multicast.c:1811 (discriminator 1))
-br_multicast_send_query (net/bridge/br_multicast.c:1889)
-br_multicast_port_query_expired (net/bridge/br_multicast.c:1914)
-call_timer_fn (kernel/time/timer.c:1749)
-[...]
-
-Reported-by: syzbot+d7b7f1412c02134efa6d@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/000000000000c4c9d405f2643e01@google.com/
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Acked-by: Nikolay Aleksandrov <nikolay@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
----
- net/bridge/br_multicast.c | 87 +++++++++++++++++++++++++++++++++++----
- net/bridge/br_private.h   |  4 ++
- 2 files changed, 83 insertions(+), 8 deletions(-)
-
-diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
-index 6b3ac473fd22..e39494b26ab1 100644
---- a/net/bridge/br_multicast.c
-+++ b/net/bridge/br_multicast.c
-@@ -1774,6 +1774,64 @@ static void br_multicast_select_own_querier(struct net_bridge_mcast *brmctx,
- #endif
- }
- 
-+static u8 br_multicast_query_type(const struct sk_buff *skb)
-+{
-+	return skb->protocol == htons(ETH_P_IP) ? IGMP_HOST_MEMBERSHIP_QUERY :
-+						  ICMPV6_MGM_QUERY;
-+}
-+
-+static void br_multicast_port_query_queue_work(struct work_struct *work)
-+{
-+	struct net_bridge_mcast_port *pmctx;
-+	struct sk_buff_head list;
-+	struct sk_buff *skb;
-+
-+	pmctx = container_of(work, struct net_bridge_mcast_port,
-+			     query_queue_work);
-+
-+	__skb_queue_head_init(&list);
-+	spin_lock_bh(&pmctx->query_queue.lock);
-+	skb_queue_splice_tail_init(&pmctx->query_queue, &list);
-+	spin_unlock_bh(&pmctx->query_queue.lock);
-+
-+	while ((skb = __skb_dequeue(&list))) {
-+		u8 query_type = br_multicast_query_type(skb);
-+
-+		local_bh_disable();
-+		br_multicast_count(pmctx->port->br, pmctx->port, skb,
-+				   query_type, BR_MCAST_DIR_TX);
-+		NF_HOOK(NFPROTO_BRIDGE, NF_BR_LOCAL_OUT, dev_net(skb->dev),
-+			NULL, skb, NULL, skb->dev, br_dev_queue_push_xmit);
-+		local_bh_enable();
-+	}
-+}
-+
-+static void br_multicast_query_queue_work(struct work_struct *work)
-+{
-+	struct net_bridge_mcast *brmctx;
-+	struct sk_buff_head list;
-+	struct sk_buff *skb;
-+
-+	brmctx = container_of(work, struct net_bridge_mcast, query_queue_work);
-+
-+	__skb_queue_head_init(&list);
-+	spin_lock_bh(&brmctx->query_queue.lock);
-+	skb_queue_splice_tail_init(&brmctx->query_queue, &list);
-+	spin_unlock_bh(&brmctx->query_queue.lock);
-+
-+	while ((skb = __skb_dequeue(&list))) {
-+		u8 query_type = br_multicast_query_type(skb);
-+
-+		local_bh_disable();
-+		br_multicast_count(brmctx->br, NULL, skb, query_type,
-+				   BR_MCAST_DIR_RX);
-+		netif_rx(skb);
-+		local_bh_enable();
-+	}
-+}
-+
-+#define BR_MULTICAST_QUERY_QUEUE_LEN_MAX	1000
-+
- static void __br_multicast_send_query(struct net_bridge_mcast *brmctx,
- 				      struct net_bridge_mcast_port *pmctx,
- 				      struct net_bridge_port_group *pg,
-@@ -1783,6 +1841,7 @@ static void __br_multicast_send_query(struct net_bridge_mcast *brmctx,
- 				      u8 sflag,
- 				      bool *need_rexmit)
- {
-+	struct sk_buff_head *queue;
- 	bool over_lmqt = !!sflag;
- 	struct sk_buff *skb;
- 	u8 igmp_type;
-@@ -1791,7 +1850,12 @@ static void __br_multicast_send_query(struct net_bridge_mcast *brmctx,
- 	    !br_multicast_ctx_matches_vlan_snooping(brmctx))
- 		return;
- 
-+	queue = pmctx ? &pmctx->query_queue : &brmctx->query_queue;
-+
- again_under_lmqt:
-+	if (skb_queue_len_lockless(queue) >= BR_MULTICAST_QUERY_QUEUE_LEN_MAX)
-+		return;
-+
- 	skb = br_multicast_alloc_query(brmctx, pmctx, pg, ip_dst, group,
- 				       with_srcs, over_lmqt, sflag, &igmp_type,
- 				       need_rexmit);
-@@ -1800,11 +1864,8 @@ static void __br_multicast_send_query(struct net_bridge_mcast *brmctx,
- 
- 	if (pmctx) {
- 		skb->dev = pmctx->port->dev;
--		br_multicast_count(brmctx->br, pmctx->port, skb, igmp_type,
--				   BR_MCAST_DIR_TX);
--		NF_HOOK(NFPROTO_BRIDGE, NF_BR_LOCAL_OUT,
--			dev_net(pmctx->port->dev), NULL, skb, NULL, skb->dev,
--			br_dev_queue_push_xmit);
-+		skb_queue_tail(queue, skb);
-+		queue_work(system_highpri_wq, &pmctx->query_queue_work);
- 
- 		if (over_lmqt && with_srcs && sflag) {
- 			over_lmqt = false;
-@@ -1812,9 +1873,8 @@ static void __br_multicast_send_query(struct net_bridge_mcast *brmctx,
- 		}
- 	} else {
- 		br_multicast_select_own_querier(brmctx, group, skb);
--		br_multicast_count(brmctx->br, NULL, skb, igmp_type,
--				   BR_MCAST_DIR_RX);
--		netif_rx(skb);
-+		skb_queue_tail(queue, skb);
-+		queue_work(system_highpri_wq, &brmctx->query_queue_work);
- 	}
- }
- 
-@@ -1997,6 +2057,10 @@ void br_multicast_port_ctx_init(struct net_bridge_port *port,
- 	pmctx->port = port;
- 	pmctx->vlan = vlan;
- 	pmctx->multicast_router = MDB_RTR_TYPE_TEMP_QUERY;
-+
-+	skb_queue_head_init(&pmctx->query_queue);
-+	INIT_WORK(&pmctx->query_queue_work, br_multicast_port_query_queue_work);
-+
- 	timer_setup(&pmctx->ip4_mc_router_timer,
- 		    br_ip4_multicast_router_expired, 0);
- 	timer_setup(&pmctx->ip4_own_query.timer,
-@@ -2038,6 +2102,8 @@ void br_multicast_port_ctx_deinit(struct net_bridge_mcast_port *pmctx)
- 	del |= br_ip4_multicast_rport_del(pmctx);
- 	br_multicast_rport_del_notify(pmctx, del);
- 	spin_unlock_bh(&br->multicast_lock);
-+	cancel_work_sync(&pmctx->query_queue_work);
-+	__skb_queue_purge(&pmctx->query_queue);
- }
- 
- int br_multicast_add_port(struct net_bridge_port *port)
-@@ -4112,6 +4178,9 @@ void br_multicast_ctx_init(struct net_bridge *br,
- 	seqcount_spinlock_init(&brmctx->ip6_querier.seq, &br->multicast_lock);
- #endif
- 
-+	skb_queue_head_init(&brmctx->query_queue);
-+	INIT_WORK(&brmctx->query_queue_work, br_multicast_query_queue_work);
-+
- 	timer_setup(&brmctx->ip4_mc_router_timer,
- 		    br_ip4_multicast_local_router_expired, 0);
- 	timer_setup(&brmctx->ip4_other_query.timer,
-@@ -4135,6 +4204,8 @@ void br_multicast_ctx_init(struct net_bridge *br,
- void br_multicast_ctx_deinit(struct net_bridge_mcast *brmctx)
- {
- 	__br_multicast_stop(brmctx);
-+	cancel_work_sync(&brmctx->query_queue_work);
-+	__skb_queue_purge(&brmctx->query_queue);
- }
- 
- void br_multicast_init(struct net_bridge *br)
-diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
-index d55ea9516e3e..f8f77a2d4891 100644
---- a/net/bridge/br_private.h
-+++ b/net/bridge/br_private.h
-@@ -131,6 +131,8 @@ struct net_bridge_mcast_port {
- 	unsigned char			multicast_router;
- 	u32				mdb_n_entries;
- 	u32				mdb_max_entries;
-+	struct sk_buff_head             query_queue;
-+	struct work_struct              query_queue_work;
- #endif /* CONFIG_BRIDGE_IGMP_SNOOPING */
- };
- 
-@@ -167,6 +169,8 @@ struct net_bridge_mcast {
- 	struct bridge_mcast_own_query	ip6_own_query;
- 	struct bridge_mcast_querier	ip6_querier;
- #endif /* IS_ENABLED(CONFIG_IPV6) */
-+	struct sk_buff_head             query_queue;
-+	struct work_struct              query_queue_work;
- #endif /* CONFIG_BRIDGE_IGMP_SNOOPING */
- };
- 
--- 
-2.54.0
-
+> Thanks,
+>=20
+> Maxime
