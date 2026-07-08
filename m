@@ -1,156 +1,91 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E1A43E9C4
-	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 16:50:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B4D438025
+	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 16:54:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783529420; cv=none; b=CD88171qtL9lYsX5T9hNTZzZAqrI0/yUFfxvaTiJtvqyJybFl5shq07e7yHImD5J9eWxSObayaKZ81AyROrYeDe/cynXZ3gfDwz1rHjHmELmSMS+8TrAYVzChJy4u2ndrxBYfyTvWK/If98We92VmPmQG5p5SdeRrg7igyz1rUY=
+	t=1783529644; cv=none; b=OsglbrysdoLHa9MEP/WIZBk2IePDbhqky9ufQyBuQQ6FGia6G7kZ+tDHvEjAR95CjYOGCfodSzevBqhC36U4t/FEugdLKQAEPSMLOq5S2WKpbI51Ud2z1to8xMb2uGZ8UWg5CccmSO1I+A4WKQ2GQAZQSNI/boa3NtMbMyosUuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783529420; c=relaxed/simple;
-	bh=HEXCS7+2myohc1YZaELPgANH9OaRCUzaJ5f7a6XuwhQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=POslLU3XJtpQestvJlkbGyPLspo4M17FnDDTIQFSc26IDEVmeJGbeLV2OrSZeEYEh4MG51gu9o+ioTDe0P8R3+9QRlyZzt3ZAIzhkmeSSlOnU5QaXzHswNMfNnf67at0P25qsyvXBgCWbaieDpAOjEgMu1dDWISVN/f+ObEKkCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CR4kgh28; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=S2ZogioL; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1783529644; c=relaxed/simple;
+	bh=xCYFMAjgPJDY/t9Mmqrv/XueFYFlFyqzJG0g30NW4Ck=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TkEqPiRg0X4/UEyfTsEhYzokMpuHtXqhUentDuC76yWf3tUIYIGI7pZtz1uWTOKnJoJjhwNjbjhzTikNaUhju8fOLgmWm3NvOACwJYTz6lv2QwPaaEzK+fWTsREJadPhz5rSVUfBdz9XysPHtBDVyOVeD2GaemdN+fuJ/4k00Vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pvr+HOy3; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CR4kgh28";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="S2ZogioL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783529413;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iOZxF9JBJJ0HTV1hxdJ54Cs/JFpZYK6OhfeE5DF280s=;
-	b=CR4kgh28GW2JJuQiQCOVOVDhBPPPsmGORpuY/MW4mG3wuiv0heukWHxKbFlw/xkVJDtt/T
-	bKGnoa385Lg3sZvqbdRCx1HcmMSoZk08nIhLhBns/2aGWhjzszl4dNOuJtzVFHrd6h3jFc
-	cHnaDydv4JPObgpL4tlCbJZmCHtI9as=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-564-n3j9NmLvMcm6CbgZOvWXTg-1; Wed, 08 Jul 2026 12:50:11 -0400
-X-MC-Unique: n3j9NmLvMcm6CbgZOvWXTg-1
-X-Mimecast-MFC-AGG-ID: n3j9NmLvMcm6CbgZOvWXTg_1783529410
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-49244130073so55665e9.1
-        for <netdev@vger.kernel.org>; Wed, 08 Jul 2026 09:50:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pvr+HOy3"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2caf4496889so524055ad.1
+        for <netdev@vger.kernel.org>; Wed, 08 Jul 2026 09:54:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1783529410; x=1784134210; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=iOZxF9JBJJ0HTV1hxdJ54Cs/JFpZYK6OhfeE5DF280s=;
-        b=S2ZogioLkYQS9nC40/heiOWtv2tt+PBKqW9cyk5srBHMFR10DN1Wy7LiBG7QzZbs8r
-         gRu6UiipzrgCGYvAjKgjTYNUTCZ3aZ0xPI8Dy7IRG6Wk/BprPcppjt5gGOHNkkcR/jLa
-         gn3mCTT1OVtzNhfCyCQfRZvL5kl7BSl2qynNuD6lQ5Nn5PGiswMJsuDQcISTk1Q7B7MT
-         nBCWwMo7VbhNVa7LyHJRsTd+G5Zp3MvEwMNttoJ36SHF0X9yXla9dcGYMPhXn37DHKzr
-         qhL29zi80lzWVygg6Y9voFBqPAJ5Fa+pAZYVbAxa9WFJOfybPji9fqXEFQYThMihVoS7
-         8pxA==
+        d=gmail.com; s=20251104; t=1783529642; x=1784134442; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xCYFMAjgPJDY/t9Mmqrv/XueFYFlFyqzJG0g30NW4Ck=;
+        b=pvr+HOy33mjsK7v89RXUXWxlpIQ5FhE0wnFMAHBM4gw0aEw1KKwpLl5Eij5Bw3Eh6b
+         zYjHolr/4XtPoK69NUHWRDJCkg7+9N2Ed27zhz+w1ZQ/2KY6AKNzTRqQx5lccCYcXQUF
+         37muZV/C5Cu9K/6RkBT0vj6Dz3Lqzeb/jZWB+w50/ec+Duzbvu4H1XmwG6iPELIcEJW4
+         3RFYcZhdmlFEOWETaoNZaCLPXG4iRL/cKS4Yn+HqwnJA0CUX7dh2FsjlsmWOFZeWfrI3
+         DegO/Xnna0z2GR3GTrbaFd6G0qN132PDoAypk7fFzVfob55btihvnuHiL0PzlTwiNmLI
+         Jx2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783529410; x=1784134210;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=iOZxF9JBJJ0HTV1hxdJ54Cs/JFpZYK6OhfeE5DF280s=;
-        b=L3Co716/zEHjbDM8zmgtfXPMNaxsa/gfy+r0/he4CXQGGZBwGUakd/w1r0kceGOOIV
-         E+bts4fuOmH9XK54eUSFg4D7VyWaGBGYchU1/txWThPMDTWhmCz4gQZTSyGB3lSTfiNb
-         WpdBtkMbn8l4RH3AG/47Qkwi6166C7h77O97LgfqClhZnVrfLbD4UwtNxAsYI2Tt1Z8c
-         3Jw/cKvvlGOe5Lq70KLEvgRAVwvk+lB/dnoqNsdyFJUS35Wy2ij7T/rksoh7EuHgaXsD
-         QJVsHXyuwVtfFp0CTit3unp+Jk7Ph0PZkurE/hPt4XUXwo1UGJIYXxAtryeo1dv8yv/G
-         MeRw==
-X-Forwarded-Encrypted: i=1; AHgh+RqM7TWWs7ieDPRGqIyCCYWSNNcYyjH4mtpPM8V2GJmnOT+FIQotRwg1TwhNsUidkVilC4qwfSM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxl7xHXX+T32EoihXQWJAmkJmBAhsdHBNcfMkyMBfqYT+y0qUL+
-	j1+UYbvv98rCfgdOM8dTLou6XBhP92UQHQSAafD1HN01OM82YMNevaCRWZAJhD8xy2cYnjCJc+7
-	3n9q0MbIr4ikl4Ogrdz9dQyA9oSbtHOpUoT61SfK/xaQGbAcnU+XTgXRKRQ==
-X-Gm-Gg: AfdE7cnX3tPOoaCvxtDtvsroPGrn5VmtB91afOKtlrC0b86r09MiAn1NS3b0tGwPxp6
-	H66CRTflTp9PSCS8nYH4n34dBFmBZOp4WmDlApZOOQ8KE3RZpk8Lh7iArbi+3puK/eQslnHDa4y
-	pCBasZ2ULqGJaHfYy4l9RFzQJBozlzpw1krmojzjIyhVYYx1GLnaV9KoSrw3wHdnAx9IQ+pfC33
-	hhbDljo8/n14ShMGUa/eism9Rnda1FJZuZF+7UMHjowiX1H6/gc3tvuekZ6MTtjMiKegt0xRtDo
-	g9x0wYSoOL6DR4Vc7kR3AT6RXH0E7hq5IndJMdjpyN1IQJxPaWRbuGaRO5LOaSM1EqGTDFCQXoV
-	hfhQ0OQCEbopBG/Kpk38nUDaxcLSTjpML
-X-Received: by 2002:a05:600c:19d0:b0:493:cce0:3724 with SMTP id 5b1f17b1804b1-493e68aed4dmr30880575e9.4.1783529410059;
-        Wed, 08 Jul 2026 09:50:10 -0700 (PDT)
-X-Received: by 2002:a05:600c:19d0:b0:493:cce0:3724 with SMTP id 5b1f17b1804b1-493e68aed4dmr30880225e9.4.1783529409552;
-        Wed, 08 Jul 2026 09:50:09 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-68-31.inter.net.il. [80.230.68.31])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa039b0cesm44408115f8f.22.2026.07.08.09.50.07
+        d=1e100.net; s=20251104; t=1783529642; x=1784134442;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xCYFMAjgPJDY/t9Mmqrv/XueFYFlFyqzJG0g30NW4Ck=;
+        b=V5NMCgbqXjtdy5aoV+4Eb1kZ6IIjDi+VNRDzVZ8MOk7n7bXQVzg/JpOz4yeP8q/PWC
+         tdIs6Qgr9b6DRehAk+dXqwGKTOfEXvYU00OcBvcIM2CbMoehZ1M1aBewEVigTFEXDsow
+         Ioi7Csr4g2uyhmUSeZKiTAa8lMDl5f7zrcwQCaGO6DEadKACF0ssuig0f+i4PgXnw2L+
+         LgrKB+JF01ZVXTkSZciFeG0Rle1gMQu/hubk0OMLxgN7jrqV6kCpMC7MLkwnARNEouQo
+         vt3qsMdpIulqbZ+owpF5JyWe4Doq2zR8WxYrAk7oE+tlDSTzk1kOhRkwm2/+AzA479kl
+         3sqQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqjkgNcVgKDSJDRUut5mgnVtQj/owE+dSe9F9e2afMQr7el/dsKeU1Wjug19kPfuxaYsHRV6PE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzt8eh0bVHhD2xRvCzEY6mTAyZipNF5U3h4C4UPWBrv9ZP0/Jqk
+	ReL2xWxy24Wobn67qv8ZxaCax2ZVlxcjN8JnNdNAoVBGSy4lCpc1WaVX
+X-Gm-Gg: AfdE7cmO+LDDvXjBO+4oh92ePhR7KWmqUPRv7m/SXGs22YjBzBptCkORs6bkS7+SLb8
+	wmU1Vryc4UGec4GmM4rRGb8hqMTou9Vkn8mgmgyBOwiXLLuPs2ejfrHjwpslCeF5AhAxc5wLUTO
+	eNOvFzCYuHAzaTDiLd6nEnIqE3Z1VKymf5XBnv2rZyCFuyQcOnqMohrS/7r9hvAYNAbBPBfp3dh
+	Aah9nNQQqW2CKBPwGZZpaOdPz6KHIeuR9M/Z/MWIMdqLIo3NM1PdbkTXZ4CgMCnOOaZfF0BwMqI
+	FB6/1nmIGI74FIgfimY887SlGmNUHdsAnFfcxxocQJ0V6PaJDFMdZhpRIg/DvjFl0fGzDJL5V8q
+	gja6qJysSAUtUQn62twlxRBvrKuAmWFzaxh2H7IljqtWugrWhUcHN7xBldBQFy6Kk2++F2rmEfj
+	sGUw61yzQFPwfV4BGGo2xMXvBF7+NFvA==
+X-Received: by 2002:a17:903:1b66:b0:2cc:86d6:24cc with SMTP id d9443c01a7336-2cce9f79426mr39826815ad.4.1783529642147;
+        Wed, 08 Jul 2026 09:54:02 -0700 (PDT)
+Received: from LAPTOP-83ECOPAB.localdomain ([167.220.149.19])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9d3bcc0sm30747565ad.67.2026.07.08.09.54.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jul 2026 09:50:08 -0700 (PDT)
-Date: Wed, 8 Jul 2026 12:50:06 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: enrico.zanda@arm.com
-Cc: jasowangio@gmail.com, virtualization@lists.linux.dev,
-	netdev@vger.kernel.org, kuba@kernel.org, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, eperezma@redhat.com, nd@arm.com
-Subject: Re: [PATCH net] vhost-net: fix TX stall when vhost owns virtio-net
- header
-Message-ID: <20260708124901-mutt-send-email-mst@kernel.org>
-References: <20260708152242.2268848-1-enrico.zanda@arm.com>
+        Wed, 08 Jul 2026 09:54:01 -0700 (PDT)
+From: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
+To: vadim.fedorenko@linux.dev
+Cc: AutonomousCodeSecurity@microsoft.com,
+	blbllhy@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	horms@kernel.org,
+	jmaloy@redhat.com,
+	kuba@kernel.org,
+	kys@microsoft.com,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	tgopinath@linux.microsoft.com,
+	tipc-discussion@lists.sourceforge.net
+Subject: Re: [PATCH net] tipc: fix u16 MTU truncation in media and bearer MTU validation
+Date: Wed,  8 Jul 2026 12:53:57 -0400
+Message-ID: <20260708165357.1080-1-blbllhy@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <04feb35c-ab30-4a12-ae19-a160b451c14a@linux.dev>
+References: <04feb35c-ab30-4a12-ae19-a160b451c14a@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260708152242.2268848-1-enrico.zanda@arm.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 08, 2026 at 04:22:42PM +0100, enrico.zanda@arm.com wrote:
-> From: Enrico Zanda <enrico.zanda@arm.com>
-> 
-> When vhost owns the virtio-net header, i.e. when
-> VHOST_NET_F_VIRTIO_NET_HDR is negotiated, sock_hlen is 0,
-> meaning that no header will be forwarded to the TAP device.
-> 
-> In the current vhost_net_build_xdp() implementation,
-> when sock_hlen == 0, the gso pointer can point at the start of the
-> Ethernet frame instead of a virtio-net header.
-> This results in a wrong interpretation of the destination MAC address
-> bytes as struct virtio_net_hdr fields.
-> 
-> This can, for some MAC addresses, trigger -EINVAL and return early
-> before the TX descriptor is completed, which can stall vhost-net TX.
-> 
-> Before 97b2409f28e0, the gso pointer was set to the zeroed padding area,
-> using it as a synthetic virtio-net header. Restore that behavior.
-> 
-> Fixes: 97b2409f28e0 ("vhost-net: reduce one userspace copy when building XDP buff")
-> Signed-off-by: Enrico Zanda <enrico.zanda@arm.com>
-
-
-The fix looks good:
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-
-Sashiko thinks there's something something security here, but I think
-it is misguided. It's just guest hurting itself. driver breaks the
-device it gets to keep both pieces.
-
-> ---
->  drivers/vhost/net.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
-> index 77b59f49bddb..3e72b9c6af0c 100644
-> --- a/drivers/vhost/net.c
-> +++ b/drivers/vhost/net.c
-> @@ -731,10 +731,12 @@ static int vhost_net_build_xdp(struct vhost_net_virtqueue *nvq,
->  		goto err;
->  	}
->  
-> -	gso = buf + pad - sock_hlen;
-> -
-> -	if (!sock_hlen)
-> +	if (!sock_hlen) {
->  		memset(buf, 0, pad);
-> +		gso = buf;
-> +	} else {
-> +		gso = buf + pad - sock_hlen;
-> +	}
->  
->  	if ((gso->flags & VIRTIO_NET_HDR_F_NEEDS_CSUM) &&
->  	    vhost16_to_cpu(vq, gso->csum_start) +
-> -- 
-> 2.43.0
-
+Thanks for the suggestion. I'll use NLA_POLICY_MAX(NLA_U32, U16_MAX)
+in tipc_nl_prop_policy and drop the manual upper bound checks in v3.
