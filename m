@@ -1,91 +1,101 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B4D438025
-	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 16:54:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C893C3B38B8;
+	Wed,  8 Jul 2026 16:55:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783529644; cv=none; b=OsglbrysdoLHa9MEP/WIZBk2IePDbhqky9ufQyBuQQ6FGia6G7kZ+tDHvEjAR95CjYOGCfodSzevBqhC36U4t/FEugdLKQAEPSMLOq5S2WKpbI51Ud2z1to8xMb2uGZ8UWg5CccmSO1I+A4WKQ2GQAZQSNI/boa3NtMbMyosUuU=
+	t=1783529718; cv=none; b=rN3JCV4v29y554fr2dHyMD9AJaBVwiH4g3eMkJxovjfHwDjN5XtwxF2QTwGAsMLpQeHZ2gjzGXz9oq4Whio4sYccxr2cHIKBbNOcbAnHayLupXKr1uZUQ1J4OyHWfdEqSpEg/5yPXO/8IBdJkANRf7JwIdNPvm9sQ2DsW0E3eWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783529644; c=relaxed/simple;
-	bh=xCYFMAjgPJDY/t9Mmqrv/XueFYFlFyqzJG0g30NW4Ck=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TkEqPiRg0X4/UEyfTsEhYzokMpuHtXqhUentDuC76yWf3tUIYIGI7pZtz1uWTOKnJoJjhwNjbjhzTikNaUhju8fOLgmWm3NvOACwJYTz6lv2QwPaaEzK+fWTsREJadPhz5rSVUfBdz9XysPHtBDVyOVeD2GaemdN+fuJ/4k00Vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pvr+HOy3; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1783529718; c=relaxed/simple;
+	bh=E597jrkyamse8scXKS+eJA6HFU7y85qrwCtLMoF2A+E=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=K2sJL7GwjZU/RZCZEcK1eeO5r7/1F7ciiEMpUDrZucfvC+Rj6eHnPnxZN77G/7FRnLCROiv88z/qYxF1xQqwke4hoRUFnDu5CZHOWZUgIkNyMLXEtD4AazxhVoXqvIqut6SUvaXxaTvtB9+CV1UrUmooYzdYgTPf+idMR2Jv1v0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cMJVQgYK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pvr+HOy3"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2caf4496889so524055ad.1
-        for <netdev@vger.kernel.org>; Wed, 08 Jul 2026 09:54:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783529642; x=1784134442; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=xCYFMAjgPJDY/t9Mmqrv/XueFYFlFyqzJG0g30NW4Ck=;
-        b=pvr+HOy33mjsK7v89RXUXWxlpIQ5FhE0wnFMAHBM4gw0aEw1KKwpLl5Eij5Bw3Eh6b
-         zYjHolr/4XtPoK69NUHWRDJCkg7+9N2Ed27zhz+w1ZQ/2KY6AKNzTRqQx5lccCYcXQUF
-         37muZV/C5Cu9K/6RkBT0vj6Dz3Lqzeb/jZWB+w50/ec+Duzbvu4H1XmwG6iPELIcEJW4
-         3RFYcZhdmlFEOWETaoNZaCLPXG4iRL/cKS4Yn+HqwnJA0CUX7dh2FsjlsmWOFZeWfrI3
-         DegO/Xnna0z2GR3GTrbaFd6G0qN132PDoAypk7fFzVfob55btihvnuHiL0PzlTwiNmLI
-         Jx2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783529642; x=1784134442;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xCYFMAjgPJDY/t9Mmqrv/XueFYFlFyqzJG0g30NW4Ck=;
-        b=V5NMCgbqXjtdy5aoV+4Eb1kZ6IIjDi+VNRDzVZ8MOk7n7bXQVzg/JpOz4yeP8q/PWC
-         tdIs6Qgr9b6DRehAk+dXqwGKTOfEXvYU00OcBvcIM2CbMoehZ1M1aBewEVigTFEXDsow
-         Ioi7Csr4g2uyhmUSeZKiTAa8lMDl5f7zrcwQCaGO6DEadKACF0ssuig0f+i4PgXnw2L+
-         LgrKB+JF01ZVXTkSZciFeG0Rle1gMQu/hubk0OMLxgN7jrqV6kCpMC7MLkwnARNEouQo
-         vt3qsMdpIulqbZ+owpF5JyWe4Doq2zR8WxYrAk7oE+tlDSTzk1kOhRkwm2/+AzA479kl
-         3sqQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqjkgNcVgKDSJDRUut5mgnVtQj/owE+dSe9F9e2afMQr7el/dsKeU1Wjug19kPfuxaYsHRV6PE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzt8eh0bVHhD2xRvCzEY6mTAyZipNF5U3h4C4UPWBrv9ZP0/Jqk
-	ReL2xWxy24Wobn67qv8ZxaCax2ZVlxcjN8JnNdNAoVBGSy4lCpc1WaVX
-X-Gm-Gg: AfdE7cmO+LDDvXjBO+4oh92ePhR7KWmqUPRv7m/SXGs22YjBzBptCkORs6bkS7+SLb8
-	wmU1Vryc4UGec4GmM4rRGb8hqMTou9Vkn8mgmgyBOwiXLLuPs2ejfrHjwpslCeF5AhAxc5wLUTO
-	eNOvFzCYuHAzaTDiLd6nEnIqE3Z1VKymf5XBnv2rZyCFuyQcOnqMohrS/7r9hvAYNAbBPBfp3dh
-	Aah9nNQQqW2CKBPwGZZpaOdPz6KHIeuR9M/Z/MWIMdqLIo3NM1PdbkTXZ4CgMCnOOaZfF0BwMqI
-	FB6/1nmIGI74FIgfimY887SlGmNUHdsAnFfcxxocQJ0V6PaJDFMdZhpRIg/DvjFl0fGzDJL5V8q
-	gja6qJysSAUtUQn62twlxRBvrKuAmWFzaxh2H7IljqtWugrWhUcHN7xBldBQFy6Kk2++F2rmEfj
-	sGUw61yzQFPwfV4BGGo2xMXvBF7+NFvA==
-X-Received: by 2002:a17:903:1b66:b0:2cc:86d6:24cc with SMTP id d9443c01a7336-2cce9f79426mr39826815ad.4.1783529642147;
-        Wed, 08 Jul 2026 09:54:02 -0700 (PDT)
-Received: from LAPTOP-83ECOPAB.localdomain ([167.220.149.19])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9d3bcc0sm30747565ad.67.2026.07.08.09.54.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jul 2026 09:54:01 -0700 (PDT)
-From: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
-To: vadim.fedorenko@linux.dev
-Cc: AutonomousCodeSecurity@microsoft.com,
-	blbllhy@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	horms@kernel.org,
-	jmaloy@redhat.com,
-	kuba@kernel.org,
-	kys@microsoft.com,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	tgopinath@linux.microsoft.com,
-	tipc-discussion@lists.sourceforge.net
-Subject: Re: [PATCH net] tipc: fix u16 MTU truncation in media and bearer MTU validation
-Date: Wed,  8 Jul 2026 12:53:57 -0400
-Message-ID: <20260708165357.1080-1-blbllhy@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <04feb35c-ab30-4a12-ae19-a160b451c14a@linux.dev>
-References: <04feb35c-ab30-4a12-ae19-a160b451c14a@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cMJVQgYK"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7988AC2BCB3;
+	Wed,  8 Jul 2026 16:55:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1783529718;
+	bh=E597jrkyamse8scXKS+eJA6HFU7y85qrwCtLMoF2A+E=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=cMJVQgYKlFzajGolZcGKlXnxYn8BndZZNonH+JBdN+FbdIkEdrnFTcwTZm2oW9Me7
+	 DuOL55xJaJIWWeorVXSCsFpzK4o3eVXRKKfXWyVn0r/mFfnF2oWg/pF3pzU6/L7nS6
+	 MvtJmRNxSnEM6JI1Dds4A2e3izD7hRPGEdkCtdKugpP+PImE2oOQI1wtOPX8Pfgb6X
+	 QucuhyWOyi/D9OpbH4MzMhPm1TM1AkvF+PLUdrIBCmisI+TQlsL9CgkxkzXeIg2HGF
+	 h5Z2ZCSATaRrhneHXY+3ltAO/6zgK8M2CzngLiq21vmT1z8NCyYIi260msjBqSxRsQ
+	 P8YvbYKOVU9uA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 54CE7C43458;
+	Wed,  8 Jul 2026 16:55:18 +0000 (UTC)
+From: Mattia Meleleo via B4 Relay <devnull+mattia.meleleo.coralogix.com@kernel.org>
+Subject: [PATCH bpf v3 0/2] bpf, sockmap: Fix FIONREAD for sockets without
+ a verdict program
+Date: Wed, 08 Jul 2026 18:54:59 +0200
+Message-Id: <20260708-fionread-no-verdict-v3-0-b4ee31b3af53@coralogix.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32NQQ6CMBBFr0K6dgwUpNSV9zAuynQKNUpJiw2Gc
+ HcBN8YYl3/y5r2JBfKWAjsmE/MUbbCuW0a+Sxi2qmsIrF424ykvU5EKMAvgSWnoHETy2uIAqjB
+ VKYVCaSRbPntPxo6b9czq3rDL+xge9ZVwWH0r1towOP/c2jHb4L+ZmEEGSLJQgucHQXhC59XNN
+ Xbco7tvlcg/PdVvD4cUuNSay7zkGYpvzzzPLyVrRqkZAQAA
+X-Change-ID: 20260707-fionread-no-verdict-a4f8697ac9f9
+To: bpf@vger.kernel.org
+Cc: netdev@vger.kernel.org, John Fastabend <john.fastabend@gmail.com>, 
+ Jakub Sitnicki <jakub@cloudflare.com>, 
+ Jiayuan Chen <jiayuan.chen@linux.dev>, 
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+ Emil Tsalapatis <emil@etsalapatis.com>, 
+ Mattia Meleleo <mattia.meleleo@coralogix.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783529717; l=1347;
+ i=mattia.meleleo@coralogix.com; s=20260707; h=from:subject:message-id;
+ bh=E597jrkyamse8scXKS+eJA6HFU7y85qrwCtLMoF2A+E=;
+ b=0iyEGHE6MMl1uTga9/nSgQVDD2IvFs7va7vLyFLAhTkzB1duqMtZhZW6OGN5Axe7MNJiR1OnJ
+ zsBC2BRmcNSDURwUIft6fxR3Jo0AhDyQ40dZ4TIJLHIXbVtfLgppgAF
+X-Developer-Key: i=mattia.meleleo@coralogix.com; a=ed25519;
+ pk=cs1zLoe3YDm4bJ7bfbPaZH0lHnd871JyJLiSh2eEzLs=
+X-Endpoint-Received: by B4 Relay for mattia.meleleo@coralogix.com/20260707
+ with auth_id=857
+X-Original-From: Mattia Meleleo <mattia.meleleo@coralogix.com>
+Reply-To: mattia.meleleo@coralogix.com
 
-Thanks for the suggestion. I'll use NLA_POLICY_MAX(NLA_U32, U16_MAX)
-in tipc_nl_prop_policy and drop the manual upper bound checks in v3.
+Sockets added to a sockmap/sockhash with no stream/skb verdict program
+attached answer FIONREAD with 0 even when unread data is pending in
+sk_receive_queue. Fix tcp_bpf_ioctl() to account for the receive queue
+in that case, and add a selftest.
+
+Changes in v3:
+- Remove unused sk_psock_msg_inq()
+- Link to v2: https://patch.msgid.link/20260708-fionread-no-verdict-v2-0-29dd293621c7@coralogix.com
+
+Changes in v2:
+- Split the fix and the selftest into separate patches
+- Use READ_ONCE() to read the verdict program pointers
+- Link to v1: https://patch.msgid.link/20260707-fionread-no-verdict-v1-1-ce94a72357ec@coralogix.com
+
+Signed-off-by: Mattia Meleleo <mattia.meleleo@coralogix.com>
+---
+Mattia Meleleo (2):
+      bpf, sockmap: Account for receive queue in FIONREAD without a verdict program
+      selftests/bpf: Test FIONREAD on a sockmap socket without a verdict program
+
+ include/linux/skmsg.h                              | 14 --------
+ net/ipv4/tcp_bpf.c                                 | 17 +++++++++-
+ .../selftests/bpf/prog_tests/sockmap_basic.c       | 39 ++++++++++++++++++++++
+ 3 files changed, 55 insertions(+), 15 deletions(-)
+---
+base-commit: d2c9a99135da931377240942d44f3dea104cedb8
+change-id: 20260707-fionread-no-verdict-a4f8697ac9f9
+
+Best regards,
+--  
+Mattia Meleleo <mattia.meleleo@coralogix.com>
+
+
