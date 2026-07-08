@@ -1,155 +1,174 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7CC44A13A0
-	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 18:13:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783534412; cv=none; b=HG/DZxW2ITG+6Q+uAlpylnXmTl5reqBPHuM5ypbo12p4cr1oCZu6DFA7wQQKOFRMYuDTshktase4zdXd/3NnNHeD75Fj/aOP/KAXNwxm/Jlo9KgvY+iBjh6ySo6ym0GhPLstZSR7H8wrNitVQPSDJ1QhS2Gp3UqiEb/ZJXN7Lpo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783534412; c=relaxed/simple;
-	bh=mKB64eFzBwevlbfHP4GHbGCdzZzNbk41FGpjUYsfux4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qeZJyqz0x3BiZZT9jZatTIWbmyTJuEMtCrSuHHXo5JVJuin34eoYg12Plb+oS/L/VFWNExCZQHut9PkYbmWmdyAWb0eXnUggdLl4BRElrQRTxRqblEGnTJjMKfSwHFeG32Bv3oA/QeO2lw8p/9S2K8TJ3s2KakvJfXmFNjW7I3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=NXY/JxGv; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A0748A2B5
+	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 18:13:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.182
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783534434; cv=pass; b=CNETVdKvOw+h/gOgkgOivMCwQZmfuVW/booNsUsb3tjRo5qUoU4TR16IIXE8ePzjgn1FgKjuF5D4eE+dfA+o8B3LevZiLSwbRC7pnr3lryHqHAul3v5stIYvXPoOhHxDABTRLkAiWBfaf1HodPdOguHIlwsqngmPP4PcRjEINXw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783534434; c=relaxed/simple;
+	bh=Ef1jX5C1Tf/JqtPxDR2IveLskH1395Bpc8jsazmgvWo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RrSR6BDM3LC2Eq3PL1ItvDJr8FgUlkjt8RZIPGrudCMHY4WoAnMG0dLgV0KhXAHiNZac4lrNswtd+CW4XnfoTs5KUqCyort8+FoSRyn2+zOPAtywwmUuPQDF63g6lnTlC6Ns22gGE2pc52FCMX3HtQZXPt90KqZM9fOe2RBfqtQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=PA0jfaLp; arc=pass smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="NXY/JxGv"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-47de008b020so73317f8f.1
-        for <netdev@vger.kernel.org>; Wed, 08 Jul 2026 11:13:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="PA0jfaLp"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2cc7ef7ec27so13625655ad.1
+        for <netdev@vger.kernel.org>; Wed, 08 Jul 2026 11:13:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783534430; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Owy0cGaF+Lb8DEM0TlgB+Q1J/H8TgC698czp+yDUtdIw48NxiY1X1WIj49DXV4JBS+
+         OhbBOD9Xg/ZWlK6vTV7OI6UXr+JbGiByqY3QRBiCElQKEARCQeWGUQKyTg0frag0M4X5
+         4EW2ONG+wOsNK04JUqxVQyJ9dT1aIZUlvqgdV0ktqdRpIsbcwcvx/C1GLnC0EXJI1gGJ
+         Obw44aHq5+6C4l4oWRiM0+9h9bdF/xFNpH5KejqB88dZVXKPQdWOdnQGKnjReFXaWQba
+         fky+7vkV9XdWnoRTWoxRKjvjXD9hjVjtjbXaNznAFy0UIhPV0XkQ2BcABF3pefC8PE2o
+         gS+A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=KPmG3iDrDem82BUtmSEHHGtoKTFS1QWeIgwx+sqCnqc=;
+        fh=7LzjGf9bymF79ME4Dtg7V9FazZKQFpU4mSNsgqDZu+s=;
+        b=row3hRN/e7UKE29lb7oU0dSpD88mMb05L1XTE90gG6Zsdlfd1SOrC6qOjJjt3ud1Q5
+         Qf/4n2GkNO4d4iUNL7oLGHP3PKKByCKw9Z5uE7ZnI2OHa1mrG5pH6RbLNt+4kwim3OWH
+         NyXoFI3zGLAOJx/xqoiAXLNapSHTfOY19OFv2RywzbkYq0EZ8CEmXivCoWhU5dRfseEt
+         Xc/SodimZQvLwkW2wI61fZLWtaoSKfU65PJGZxVwFtKvHv8xbsFC5KYLoRdgoR6qe3Gf
+         q0Piu1hum/y9pzEtwdC2kikvneMI5dhs0dTUDD6CvhWDAuqPjp4I//1vgj+jdgNIHIAs
+         qOaw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1783534407; x=1784139207; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=asu.edu; s=google; t=1783534430; x=1784139230; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=WEMJWE1zcwQ4UkLGDHzDIo1wA9TMgoKtQk475YCTe6o=;
-        b=NXY/JxGvymDRFrsijRMZ9tHdf1vok229JiWLzBHZwp/af9/Y7FHShzV1p28lfGDO0P
-         Zjbde5zb79XSg/jwyzfbIjMg0JbSsUD456xvuSBgfX9elPAfqtA7LRQ4E5uq5/7exmey
-         EqK3Ef4oiDQgW7SogTWxwIn9DFaDCNwAlfxgMTUAGHE1yhxkzaZ+/aNgxXqr5PJhJTbk
-         YJ3U/xgt0mK8BckXQ4KsDSdGzsNpqaB1DoJXAjYrfk/nUDVL5XmP9eQo6rp9dUT4uRxU
-         WqEtlylEfFx/GQK85wL6RWzG+tt8Cl+7EtXP6XzSYBHRNjkC+HgLsWCbnvW7fF2s9gZo
-         WeaA==
+        bh=KPmG3iDrDem82BUtmSEHHGtoKTFS1QWeIgwx+sqCnqc=;
+        b=PA0jfaLpG1XzkHkh/jmwcpzir1Vm8W8vYMcyRpwsit5qieadzZOx+VCm9tJESN60Qi
+         lQwxre5rMtTOGPuYrXkoK0HclmlG5etVQf3nvJFmu/cpPhCa7qE6NnYhg0ngto/kbLBe
+         rWyUrFLLOdCCPcnKj4tRmEFYCQS80Yd7vrHagNCqNeOyLTG4e3gward1T4V6nv0S3cgG
+         OLYqI0lezgA+V3Ko2AGoM7P6NX0WNmwUiXWhHpVnBrynuKJ+iGN87oN9cdJjeh5Z0gR+
+         ujw56I5ekhQH2yoH+MIRSs+NrbdLz13LwHjhXE3Js1rMxfutbYD7e/pGvhsH0RoVVq2q
+         FXQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783534407; x=1784139207;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1783534430; x=1784139230;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=WEMJWE1zcwQ4UkLGDHzDIo1wA9TMgoKtQk475YCTe6o=;
-        b=k0iCp3OYk0v6ZVqsnBwEUDgzZKmuOhUs/1EN81aun2JpzDoNEBNlajgn+Gff33yA+S
-         He68rapeWR510r+qogc/IaD1oV9hkfkco7FKU2JsMVyHBFHCSh5cBZnkMJUZep5lYfxd
-         qLAqchRyQjBX2+UwVu0hQttwt8fJ2LVHMsTCZTixbXvAZf3fHXe/mawj8FBHFQKTLCaC
-         XrgLGMFDXUalwBl8GQtNFtHaEZ0UQ1XkfpnLDODp00yxBe+81PEjqPNDSLMXaHnWPiZk
-         X59WmtEKL54SWUKZjqDI9NgOax2bbqhx5uD8uptjWBNc+nl09wQhtIcFX5ETGpnnZ0Mi
-         dpQQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpIabgh419TBbPe4A6Sd7c4FWksTmAyATvGeNb9L8V36AFtQL0YWsVfQ6cN/u7l+NLREAGGJfQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzid63+sDq7lk9olG4NB7Oo4kV1bnUjbG1ntjmMiRgaXyFVMf/l
-	gkGosaauuTo4q7ogoYpnLOG/DNG4K8Pr1UQkfah0IDnyTItNEkjrlNIAI8b9oNcD/jk=
-X-Gm-Gg: AfdE7clQjoNt9csSIZ28OZB+tFkHmuy14rBS/NRHvrYHHIAPFi46n5xtYTLYMwf4ibF
-	LJoJbrs9WGkx/Gx8c/B5QAxe6hTNJrFvrja1GUes1pAY9DaxSAAcBesXubOToV67ASDQ58W0gt+
-	8QnzaiFoy92qp278cEQd6g0CU0e2jyf75Hlit7d0Z/6jVq7bxpEtMCQqLQz9CfwwB+wJm1uumrl
-	Xzm8NfqHyrR2RQKFl8737Een929zNqvHQcOgG2rXKtlHk1V11CPL2Ojfs/Ona0LMOREopyRMMMn
-	vzLKNf0s7C7xShYUto1YSxiUgVRHgt25+HIsbDdy/cSrp0LemHJmEx+SjJHv1BJ2806T/8KKkoX
-	Rei+tKb4XvTEaxMKE6UUCLPUonIZDZecfGVF3sf2GOOK6THOmxyUuhfJsQQOpr4LiO6WufLFGpO
-	1nYXijMDh7ltEWWkPY1wBKb1EjIbkQTc7BhzzRtg==
-X-Received: by 2002:a05:6000:460c:b0:473:c608:eeb5 with SMTP id ffacd0b85a97d-47de9a4f159mr9196162f8f.29.1783534406837;
-        Wed, 08 Jul 2026 11:13:26 -0700 (PDT)
-Received: from localhost.localdomain (nat2.prg.suse.com. [195.250.132.146])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47a9de1d910sm43325516f8f.6.2026.07.08.11.13.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jul 2026 11:13:26 -0700 (PDT)
-Date: Wed, 8 Jul 2026 20:13:23 +0200
-From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
-To: Petr Pavlu <petr.pavlu@suse.com>
-Cc: Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Philipp Reisner <philipp.reisner@linbit.com>, Lars Ellenberg <lars.ellenberg@linbit.com>, 
-	Christoph =?utf-8?Q?B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>, Jens Axboe <axboe@kernel.dk>, Johan Hovold <johan@kernel.org>, 
-	Alex Elder <elder@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Michal Januszewski <spock@gentoo.org>, 
-	Helge Deller <deller@gmx.de>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Trond Myklebust <trondmy@kernel.org>, 
-	Anna Schumaker <anna@kernel.org>, Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
-	NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>, 
-	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, Mark Fasheh <mark@fasheh.com>, 
-	Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>, 
-	Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Daniel Gomez <da.gomez@kernel.org>, 
-	Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, 
-	Pavel Machek <pavel@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Danilo Krummrich <dakr@kernel.org>, 
-	Nikolay Aleksandrov <razor@blackwall.org>, Ido Schimmel <idosch@nvidia.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	David Howells <dhowells@redhat.com>, Jarkko Sakkinen <jarkko@kernel.org>, 
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Kentaro Takeda <takedakn@nttdata.co.jp>, 
-	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, linux-edac@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	drbd-dev@lists.linux.dev, linux-block@vger.kernel.org, greybus-dev@lists.linaro.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-acpi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org, linux-nfs@vger.kernel.org, 
-	ocfs2-devel@lists.linux.dev, cgroups@vger.kernel.org, linux-modules@vger.kernel.org, 
-	linux-pm@vger.kernel.org, driver-core@lists.linux.dev, bridge@lists.linux.dev, 
-	netdev@vger.kernel.org, keyrings@vger.kernel.org, linux-security-module@vger.kernel.org
-Subject: Re: [PATCH 1/2] umh, treewide: Explicitly include linux/umh.h where
- needed
-Message-ID: <ak6STbqZd-Q-c56v@localhost.localdomain>
-References: <20260708154510.6794-1-petr.pavlu@suse.com>
- <20260708154510.6794-2-petr.pavlu@suse.com>
+        bh=KPmG3iDrDem82BUtmSEHHGtoKTFS1QWeIgwx+sqCnqc=;
+        b=GUIjbdZnQLdSoU35jbwVwyFuCrg0YUXz+mOsztUckWQ/17wwz3eqif0daOkFTAeyM7
+         qHaVx3RCdajJkhgDVJyHgVnHDol0lbpR4rdDnmYjOpCyiPlglEBKGallkrUEhCK5stE8
+         o3S7LXgZUx7WXEebAnqiCEDH5uWqTHqF7Xw7oqqG3x2Q1N1nyCOASIOgDSh9rRlouec4
+         yakm+PBO/L2opiXjlWTTQg+FVaQr5BAeyxAycmwF1kIXP1u5AL5OkRDusIS+r3JXuawx
+         0sOfJJ2JMzIMk2s+W3Uwghuoig/PTDaR1LseQVVn9uFnaBN18PUhC5Rpv1zmraaBlpoj
+         xSFQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rrfgs3+mQJMSkVUbpK6lxZo2fYZQ4Gc5jjkwCCiQlAiVwFBvElTny1lHSBmeZEDSlkMCrROkMg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwgPFFomDRZFlMyPKuhM91vLDsGKTMhuMAi8wMqkJJWOy8a1tOu
+	3nav95Y4DWvjzQA+uWOVjXPUC9vGqWYsSNVmwK6YVgqfiWlDtypKp4HiHk7ETGYz3mg/9yD91wE
+	lOlgi7ISma+MSYln/09U5zlE1+9ZPcLW3IBv4kS+g
+X-Gm-Gg: AfdE7clzpd8a3d0kysqroXMecLuJekvJRotrkq8TwIOVXoy+ajAZvj2VS7KI5oicfbs
+	RaFEm/1wC+2XDzD+uETdL1cPvQbvjvEdGHYvMQ9GeGj6UjQXQkRChhfmZHQmMflWFNIwhlBbeNw
+	SpERZIygsgMmoG5OtPfTelIcolY1/o+Pluut6bGJ85U68D2xKZPnQSJsAhZrk6NHfYr7n4pwx8W
+	LN5OPPCvbhmnkxRSlGhffQdQLM+wnWA4/plTcEBGFRZW52FYX+FyWJWD0XZD0Q/4ZlM+BpblC7o
+	FRnc2kxkEA62ZLphwEH9z9FuDPje
+X-Received: by 2002:a17:902:f60a:b0:2c9:cf5d:d9b8 with SMTP id
+ d9443c01a7336-2ccea45e5damr36563195ad.33.1783534430021; Wed, 08 Jul 2026
+ 11:13:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="kijzkd5xnaepafl2"
-Content-Disposition: inline
-In-Reply-To: <20260708154510.6794-2-petr.pavlu@suse.com>
-
-
---kijzkd5xnaepafl2
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
+References: <20260706232850.3333016-1-xmei5@asu.edu> <ak44aLdDrMZXb6fC@strlen.de>
+In-Reply-To: <ak44aLdDrMZXb6fC@strlen.de>
+From: Xiang Mei <xmei5@asu.edu>
+Date: Wed, 8 Jul 2026 11:13:37 -0700
+X-Gm-Features: AVVi8Ccu6snYjdggb6FSCQxgs0Bqzpz8sfbT4KG_8j_8JgBoMUD0oIr2n4336iA
+Message-ID: <CAPpSM+RV+94_tvtX0EF=beC0AeNL0H2kTjtLt1c4fv3ddy4H3Q@mail.gmail.com>
+Subject: Re: [PATCH net] netfilter: bridge: fix stale prevhdr pointer in br_ip6_fragment()
+To: Florian Westphal <fw@strlen.de>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Phil Sutter <phil@nwl.cc>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	AutonomousCodeSecurity@microsoft.com, tgopinath@linux.microsoft.com, 
+	kys@microsoft.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 1/2] umh, treewide: Explicitly include linux/umh.h where
- needed
-MIME-Version: 1.0
 
-Hi Petr.
+On Wed, Jul 8, 2026 at 4:46=E2=80=AFAM Florian Westphal <fw@strlen.de> wrot=
+e:
+>
+> Xiang Mei (Microsoft) <xmei5@asu.edu> wrote:
+> > br_ip6_fragment() gets prevhdr, a pointer into the skb head, from
+> > ip6_find_1stfragopt(), then calls skb_checksum_help().  For a cloned sk=
+b
+> > skb_checksum_help() reallocates the head via pskb_expand_head(), leavin=
+g
+> > prevhdr dangling.  It is later dereferenced in ip6_frag_next(), causing=
+ a
+> > use-after-free write.
+> >
+> > Re-find prevhdr after skb_checksum_help() so it points into the current
+> > head.
+> >
+> >   BUG: KASAN: slab-use-after-free in ip6_frag_next (net/ipv6/ip6_output=
+.c:857)
+> >   Write of size 1 at addr ffff888013ff5016 by task exploit/141
+> >   Call Trace:
+> >    ...
+> >    kasan_report (mm/kasan/report.c:595)
+> >    ip6_frag_next (net/ipv6/ip6_output.c:857)
+> >    br_ip6_fragment (net/ipv6/netfilter.c:212)
+> >    nf_ct_bridge_post (net/bridge/netfilter/nf_conntrack_bridge.c:407)
+> >    nf_hook_slow (net/netfilter/core.c:619)
+> >    br_forward_finish (net/bridge/br_forward.c:66)
+> >    __br_forward (net/bridge/br_forward.c:115)
+> >    maybe_deliver (net/bridge/br_forward.c:191)
+> >    br_flood (net/bridge/br_forward.c:245)
+> >    br_handle_frame_finish (net/bridge/br_input.c:229)
+> >    br_handle_frame (net/bridge/br_input.c:442)
+> >    ...
+> >    packet_sendmsg (net/packet/af_packet.c:3114)
+> >    ...
+> >    do_syscall_64 (arch/x86/entry/syscall_64.c:94)
+> >    entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+> >   Kernel panic - not syncing: Fatal exception in interrupt
+> >
+> > Fixes: 764dd163ac92 ("netfilter: nf_conntrack_bridge: add support for I=
+Pv6")
+> > Reported-by: AutonomousCodeSecurity@microsoft.com
+> > Signed-off-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
+> > ---
+> >  net/ipv6/netfilter.c | 4 ++++
+> >  1 file changed, 4 insertions(+)
+> >
+> > diff --git a/net/ipv6/netfilter.c b/net/ipv6/netfilter.c
+> > index 6d80f85e55fa..547879da9532 100644
+> > --- a/net/ipv6/netfilter.c
+> > +++ b/net/ipv6/netfilter.c
+> > @@ -147,6 +147,10 @@ int br_ip6_fragment(struct net *net, struct sock *=
+sk, struct sk_buff *skb,
+> >           (err =3D skb_checksum_help(skb)))
+> >               goto blackhole;
+> >
+> > +     err =3D ip6_find_1stfragopt(skb, &prevhdr);
+> > +     if (err < 0)
+> > +             goto blackhole;
+>
+> Would you mind sending a v2 that solves this the same way that it was
+> fixed in ipv6 output engine?
+>
 
-On Wed, Jul 08, 2026 at 05:44:29PM +0200, Petr Pavlu <petr.pavlu@suse.com> =
-wrote:
-> diff --git a/kernel/cgroup/cgroup-v1.c b/kernel/cgroup/cgroup-v1.c
-> index a4337c9b5287..60eb994c32ae 100644
-> --- a/kernel/cgroup/cgroup-v1.c
-> +++ b/kernel/cgroup/cgroup-v1.c
-> @@ -16,6 +16,7 @@
->  #include <linux/pid_namespace.h>
->  #include <linux/cgroupstats.h>
->  #include <linux/fs_parser.h>
-> +#include <linux/umh.h>
-> =20
->  #include <trace/events/cgroup.h>
+Thanks for pointing me to the better fix. We have tested v2 on the poc
+and sent v2.
 
-There is kmod.h in here too but it's unnecessary, no module lazy loading
-in this code.
-
-Thanks,
-Michal
-
---kijzkd5xnaepafl2
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCak6TOhsUgAAAAAAEAA5t
-YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+AgY2gEAgOkCGIEUNQ8/AFfxYtdb
-0XG1ZQXkD0d1Rm0cAq1+u8cBANw3nWI/wHkp5zcHmZWevxdnweU507gsyVTXzMGQ
-ZwsB
-=k+w6
------END PGP SIGNATURE-----
-
---kijzkd5xnaepafl2--
+Xiang
+> See
+> ef0efcd3bd3f ("ipv6: Fix dangling pointer when ipv6 fragment")
+>
+> Thanks!
