@@ -1,137 +1,147 @@
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D573405840
-	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 08:53:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383AD3F54B0
+	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 08:55:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783500829; cv=none; b=bJLKLkuqr8MdBQ3aZyvBZVJxRwBDikpGMWJ7eUH821xSJFl68NMe9lxUfIsfeMj559+PHxizzQR6pSb+PnQVNQb0BYpLxfHNaehOuR1sh4nehwiVYzdjorkBnsOYy1jSqImMhIt/EF87JRWfvTcOzJHPPsWAlQmtFoxYBjYBKn4=
+	t=1783500961; cv=none; b=AeRo+a6WhVqjrwW2hPNWIURz0/WSzCod9EMUBakEcDQ5XdL22XhxR33mIXJC/FxxcKzc0SWRrVNyJA54IuoEQNEG10gAUJ5Ahn+TmrhBdJ08TbcbH1Rk76NXoj6vLF1L+OG7hC8Rq/HCMkU7nlCOKgxodq506j+n55AZPnIjSD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783500829; c=relaxed/simple;
-	bh=zOlEVYeGEnHUWgGiq13W7clte+Kjpp6lbmP5AtRSte4=;
+	s=arc-20240116; t=1783500961; c=relaxed/simple;
+	bh=hvxo0k1MrjhNygA/KP1UD+xDX6qJaRVTlMh+2Jzokh4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=J5zdqfovAo1KZALcY/ab/R1+4Nvn/bxHejvIZEx8GMCeWylT1Djg7qVMKycqAHvv7f0XaPvdTva/XcSrjKn+16btsB9GBJROP6hGGzfryYPx78RKqTmBvr8csQT9rk8v3GTt3OQLS6CPg5FtWMWxOcFZeGDYHAsqYmG90rQq5/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=IPMFtSyw; arc=none smtp.client-ip=91.218.175.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	 In-Reply-To:Content-Type; b=XF8b+DDfvDfTqkQDkfMOWG4gWqC50iV99Y+gLyXtqa9AQpM1vtLlvmEpcGmC0WuXKrv4JHIjA/Vb3cnhbz+Qh8gFDZUcl4Gd8u618+d6ztyK89PWsUqwpw/2z30hNzAGd5UDZs+FxKxsxJXB9kcwA49uxoCxmqw2OC+Dd4wX99Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gFAs+lJn; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=iGDKGnqC; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="IPMFtSyw"
-Message-ID: <7298c8b1-be12-444d-b7ff-fd88bac48022@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783500814;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gFAs+lJn";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="iGDKGnqC"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783500959;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hdkSyk5AuGaQo2OKjcPZNgt6Jx7S1vSumu70nXXh9iU=;
-	b=IPMFtSyw5HezFJEHu/c2l5XBBfPimAsvCz5NU9Rs/W4y5iZxgvqAUdVX04q1HdFoqt+k+7
-	9OEa2rwougvpcH7ICxzOhHoENlyyUlVJTUOGq/f9P7Wc5pVy52dLYRbu8LZILu4Z34d3NA
-	8bA+vCxGYPfBxJtlW7lbT17x80Y6fSY=
-Date: Wed, 8 Jul 2026 09:53:28 +0100
+	bh=IbP35j/x3DTm7o/Yn1OIdMEqiWJ44P60wi1DTKxILpo=;
+	b=gFAs+lJnsEKGw15vVHxOMwQsbat8gOfDQpft5AyQfl0vfTYrh5X+IE+cQ09Q0D8KqHsAiI
+	om71ym15oe1KSk76XkgLrIPk241TSPlrmjEuljXmRac63pAy2EaqCF+omwZryMr3prZOFE
+	LRGLL1+LKU0lfyrT1q9Bw+EsSyq9Iuo=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-633-9n9LQ620N3OWTYRF_BQwcw-1; Wed, 08 Jul 2026 04:55:56 -0400
+X-MC-Unique: 9n9LQ620N3OWTYRF_BQwcw-1
+X-Mimecast-MFC-AGG-ID: 9n9LQ620N3OWTYRF_BQwcw_1783500955
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-493c588b6f2so5844005e9.0
+        for <netdev@vger.kernel.org>; Wed, 08 Jul 2026 01:55:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1783500955; x=1784105755; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=IbP35j/x3DTm7o/Yn1OIdMEqiWJ44P60wi1DTKxILpo=;
+        b=iGDKGnqC8no4D4pk81ZehNPW1n6HuwtsNx6SAQToBt48vqGHGHjUw1FIq3Z/ZOgN2L
+         42EB3wAV7MuiI/jJvLqCOfGKnpf/L29J9v0zy4txREZdhLocd2tHFHqg9lJrOrEQbJcc
+         kZVc8+UZKb8d1vCt2nZmOEwoCtBW9e/kxfQCzOYe6vdg/aF2BbQNS+WG/7ozkiIR2F5n
+         uCZ4k4suvbrZNb5WuFnQ0YOnkUPm9KlUGNtyzcuRojjX3roINk435DI8CRQpv04Vjpje
+         KdUQx1Ad6SSMRUBrCfmqqTKd/oiABRUcbhE29Hd0UHL0umlWlnXg7AeBYqlc2bn8UMh3
+         EMIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783500955; x=1784105755;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IbP35j/x3DTm7o/Yn1OIdMEqiWJ44P60wi1DTKxILpo=;
+        b=tPMFZ885hTFzJcJ1T5zVFxyPZFyzp90sOmh4oD4HXYDynkvhBKb3JTWNQ7uw/V3GlS
+         GrWab5lFd7E2mTPzSP5Ry56bIZJ8Y06DSQ61l4dHRKZuCv56Cosu9dzbfWm6VpQw9w/P
+         eMFXlRufFpxPmFVsR6zc37B49UOOECnavam3LAwwAT2lc0uZlPyz01ZtchRTHbvmAf6H
+         nd3WipvhYiXGSlCByGsXtaT+G90kZOcaeqeb0NxEP/kLKDzQzMKSKHQmWa4UWzExINdG
+         kXgbc98W61TF+06D3MCpsmWPbKdHr0J0XsqsPs8X/dWd5HMfo52WJ6PKSAEkL3C51j+s
+         gW1w==
+X-Forwarded-Encrypted: i=1; AHgh+RoexPowBr03DZIcIhqWHWi5uZuiFiN8Lgk+KTRV4cDidzyPxh/eUNLkglSZE+XhjyOcKK8CRCo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YztP2+dyc0aAw7pVmMMJIq/oiMVDO154kTKe1t/pkc5wPqEn6rU
+	vFCea2ZNnNg9PsRrAZmwmZ/GzxyrvH1FPv1pSfmIQjTRnpG6dppFTwGNRvNRof0tslfos/kZzvF
+	V5q7F/xQfpcmx2lTAJBJNmat3UR7QY5ImcYhWCGWia0HWj/hjKgYbyEnPIA==
+X-Gm-Gg: AfdE7ck1CgEr8rAE7xgG03HxeQud640+7jq/ASX8FMIEBrmq8gkxFucnV/womQ8SKCG
+	xl+Bz97ciVQxQZl1F4+Wq6/5VIMqml7tmhucwbMF4MeWC8Gn3E3IT4rZHNmtnSOErcd+yiJF6cN
+	VUbsI4p8yGkC8JX1OL72hHybse/vPPu6FqOxwR2/XXNaeucAfHO17n9ibau+rtlQs5k4tRDiObR
+	9p02SR1dG8y5Lfi28J7oGi348kmuAEdGDC2t9frTCDq3trpm4JJQ0fAqrK/sU7SkmOwDnTcyeFV
+	MFfJBQrd2p8/94Gbu13xGt0lfFDoKxigvRbiASEK9g+9BodagqLD0QrNiVDxnz5uAmg0L2epNQX
+	biE6Lr+JDpZ8ahDm/j/RZjxfUU4dRVF5Lz9Mh+sTp/tOlXayUq8fCeCtPNW6I3uc5mzRYecOC36
+	jyKoLPpjp7cEWM
+X-Received: by 2002:a05:600c:548d:b0:493:b8d9:f28b with SMTP id 5b1f17b1804b1-493e68c7f63mr16435245e9.23.1783500954924;
+        Wed, 08 Jul 2026 01:55:54 -0700 (PDT)
+X-Received: by 2002:a05:600c:548d:b0:493:b8d9:f28b with SMTP id 5b1f17b1804b1-493e68c7f63mr16435005e9.23.1783500954522;
+        Wed, 08 Jul 2026 01:55:54 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:5521:6b10:58fd:68f:7756:389d? ([2a0d:3344:5521:6b10:58fd:68f:7756:389d])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493e5a6240fsm34114935e9.2.2026.07.08.01.55.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 08 Jul 2026 01:55:54 -0700 (PDT)
+Message-ID: <3832c190-b5b7-49a2-902d-7f75598b0789@redhat.com>
+Date: Wed, 8 Jul 2026 10:55:51 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH nf v2] ipvs: make destination flags atomic
-To: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
- Simon Horman <horms@verge.net.au>, Julian Anastasov <ja@ssi.bg>,
- David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
- Phil Sutter <phil@nwl.cc>, Alexander Frolkin <avf@eldamar.org.uk>
-Cc: netdev@vger.kernel.org, lvs-devel@vger.kernel.org,
- linux-kernel@vger.kernel.org, netfilter-devel@vger.kernel.org,
- coreteam@netfilter.org, stable@vger.kernel.org,
- Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>, Ao Wang <wangao@seu.edu.cn>,
- Xuewei Feng <fengxw06@126.com>, Qi Li <qli01@tsinghua.edu.cn>,
- Ke Xu <xuke@tsinghua.edu.cn>
-References: <20260708060454.20534-1-zhaoyz24@mails.tsinghua.edu.cn>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/4] drivers/net: replace __get_free_pages() with
+ kmalloc()
+To: Johannes Berg <johannes.berg@intel.com>
+Cc: Brian Norris <briannorris@chromium.org>,
+ Francesco Dolcini <francesco@dolcini.it>, Jakub Kicinski <kuba@kernel.org>,
+ b43-dev@lists.infradead.org, libertas-dev@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+References: <20260701-b4-drivers-wireless-v1-0-60264cdf2efe@kernel.org>
+From: Paolo Abeni <pabeni@redhat.com>
 Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20260708060454.20534-1-zhaoyz24@mails.tsinghua.edu.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <20260701-b4-drivers-wireless-v1-0-60264cdf2efe@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
 
-On 08/07/2026 07:04, Yizhou Zhao wrote:
-> IPVS destination schedulers read dest->flags from packet processing paths
-> while holding only the RCU read lock.  The same word is updated by plain
-> read-modify-write operations from connection accounting and destination
-> update paths, for example ip_vs_bind_dest(), ip_vs_unbind_dest(), and
-> __ip_vs_update_dest().
+On 7/1/26 3:59 PM, Mike Rapoport (Microsoft) wrote:
+> This is a (small) part of larger work of replacing page allocator calls
+> with kmalloc.
 > 
-> The RCU read lock protects the destination lifetime, but it does not
-> serialize accesses to dest->flags.  A plain load can therefore race with a
-> plain write, and concurrent plain read-modify-write updates can lose an
-> AVAILABLE or OVERLOAD bit update.
+> My initial intention a few month ago was to remove ugly casts [1], but then
+> willy pointed out that Linus objected to something like this [2] and it
+> looks like more than a decade old technical debt.
 > 
-> KCSAN reports the race with a standard IPVS configuration using the SH
-> scheduler and a destination with u_threshold set:
+> Largely, anything that doesn't need struct page (or a memdesc in the
+> future) should just use kmalloc() or kvmalloc() to allocate memory.
+> kmalloc() guarantees alignment, physical contiguity and working
+> virt_to_phys() and beside nicer API that returns void * on alloc and
+> doesn't require to know the allocation size on free, kmalloc() provides
+> better debugging capabilities than page allocator.
 > 
->    BUG: KCSAN: data-race in __ip_vs_update_dest / ip_vs_sh_schedule
->    write to ... of 4 bytes by task ipvs_cfg:
->      __ip_vs_update_dest
->      ip_vs_edit_dest
->      do_ip_vs_set_ctl
->      __x64_sys_setsockopt
->    read to ... of 4 bytes by task ipvs_churn:
->      ip_vs_sh_schedule
->      ip_vs_schedule
->      tcp_conn_schedule
->      ip_vs_in_hook
->      tcp_connect
->      __x64_sys_connect
->    value changed: 0x00000003 -> 0x00000001
+> Another thing is that touching these allocation sites gives the reviewers
+> opportunity to see if a PAGE_SIZE buffer is actually needed or maybe
+> another size is appropriate.
 > 
-> Convert dest->flags to atomic_t and use atomic_read(), atomic_or(), and
-> atomic_and() for all destination flag tests and updates.  This preserves
-> the existing 32-bit field size while making the flag updates atomic RMW
-> operations and making readers use atomic accesses.  Valid minimum-sized
-> IPVS configuration and scheduling paths are unchanged; only the
-> synchronization of the destination status flags changes.
+> For larger allocations that don't need physically contiguous memory
+> kvmalloc() can be a better option that __get_free_pages() because under
+> memory pressure it's is easier to allocate several order-0 pages than a
+> physically contiguous chunk with the same number of pages.
 > 
-> This is limited to synchronizing the flags word itself.  It does not add
-> ordering for readers, and it does not make scheduler decisions operate on a
-> fresh snapshot of all destination state; readers may still observe stale
-> state in the usual IPVS fast path. This keeps the packet fast path free
-> of additional barriers or locks.
+> And last, but not least, removing needless calls to page allocator should
+> help with memdesc (aka project folio) conversion. There will be way less
+> places to audit to see if the user was actually using struct page.
 > 
-> Fixes: eba3b5a78799d ("ipvs: SH fallback and L4 hashing")
-> Cc: stable@vger.kernel.org
-> Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-> Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
-> Reported-by: Ao Wang <wangao@seu.edu.cn>
-> Reported-by: Xuewei Feng <fengxw06@126.com>
-> Reported-by: Qi Li <qli01@tsinghua.edu.cn>
-> Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
-> Assisted-by: Claude-Code:GLM-5.2
-> Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+> Also in git:
+> https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git gfp-to-kmalloc/drivers-net-wireless
+> 
+> [1] https://lore.kernel.org/all/20251018093002.3660549-1-rppt@kernel.org/
+> [2] https://lore.kernel.org/all/CA+55aFwp4iy4rtX2gE2WjBGFL=NxMVnoFeHqYa2j1dYOMMGqxg@mail.gmail.com/
+> 
 > ---
-> Changes in v2:
-> - Clarify that the patch fixes the flags data race and RMW lost updates,
->    but does not prevent readers from observing stale scheduling state.
-> - Fix checkpatch logical-continuation warnings.
-> - Suggested by Julian Anastasov.
-> - Link to v1: https://lore.kernel.org/netfilter-devel/20260707085706.96322-1-zhaoyz24@mails.tsinghua.edu.cn/
-> ---
-> diff --git a/include/net/ip_vs.h b/include/net/ip_vs.h
-> index 49297fec448a..bb969738ed73 100644
-> --- a/include/net/ip_vs.h
-> +++ b/include/net/ip_vs.h
-> @@ -972,7 +972,7 @@ struct ip_vs_dest {
->   	u16			af;		/* address family */
->   	__be16			port;		/* port number of the server */
->   	union nf_inet_addr	addr;		/* IP address of the server */
-> -	volatile unsigned int	flags;		/* dest status flags */
-> +	atomic_t		flags;		/* dest status flags */
->   	atomic_t		conn_flags;	/* flags to copy to conn */
->   	atomic_t		weight;		/* server weight */
->   	atomic_t		last_weight;	/* server latest weight */
 
-It would be quite interesting to look at pahole output of ip_vs_dest
-structure after the modification, it may have some "areas to improve"
-for the performance
+@Johannes: just an head-up, I assume this series will go via your tree
+(despite the slightly misleading subj)
+
+/P
+
