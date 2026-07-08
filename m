@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 387953E1718;
-	Wed,  8 Jul 2026 08:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33D73E1718;
+	Wed,  8 Jul 2026 08:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783498227; cv=none; b=hUfjcTx4CLk8XgSzmT7ODJ9iNG+dBak+ymJ6cry69wc5p4Ky2a4VPUgU8C8k583HgOC1BzNLBeRECAbzlsxffapMfHFn6rPHdqRsgG5Tham51nT73TjqcSlVdIFbke8SWC0giXnJEA78RzkScXmTYEUh5lWukbi9qwezOwgiL8A=
+	t=1783498231; cv=none; b=WTb3FbA9NU8jRVLY4KUB9DPTM6hnlwGJynQnhx4teWiiUZJtvejVu98dLA1DonHa5UMOwYHWkKN8TY/+8gEzrzzqxqyRfijc87qC7mySrrAWjIVqCj+DZQ0Jmx0wgpXcerEt1VgK1JZXKbcWvfxgqFDOSsDzALyeWaUZq8SzfIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783498227; c=relaxed/simple;
-	bh=yCqSS875QpHsbFoa2bk23+nvYovKpFiry8Jjh/B8F7Y=;
+	s=arc-20240116; t=1783498231; c=relaxed/simple;
+	bh=iLIjsb8tRTcX/YPNIypN3llBDzQOK/o6qMYkp7pjJdQ=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Z4jxvHR7dH+Q47g5N0Ub+pJATZSiQ23pkB6skyOCi908O2/rWQ4zQqj2eEUo7UUyJ9j1EQScZPXxLBU4C1bDisT+9BLNAu3aSaZvVLMRTxIiBjo7h5MQaEdX05dGxN7k94Cre2tCjp5IDZ2hAnUviiOufotviL9xeYPU9A3KojA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hTQuXiYY; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=SM0+MecKf6l/KTdlQotPyqB3dDa9ADqbT4FSNDdhg6Tj/dpb97pT/YX9hLHMo2h/CFcai6gwYAD7+VFbvsDPXy/G0ZZcz3D0rfLIqBrCkpRHp7abSnVFRxORbH6/LwSJ6tPPnee+7PWx1HmK8VX78B2y3EdJVgoQFA7DQXinj9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RwVZm9cC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hTQuXiYY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B65441F000E9;
-	Wed,  8 Jul 2026 08:10:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RwVZm9cC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6E051F000E9;
+	Wed,  8 Jul 2026 08:10:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783498225;
-	bh=GgV78O363yhQjW/mjMg5O2ccLPnLEWk0RTgUkDs69oA=;
+	s=k20260515; t=1783498229;
+	bh=BWUQKtaGcIWy+3Ddut53BrtJ3jcIrpB39/3J4wJRA9c=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=hTQuXiYYVkRMp7d1/Pa2YQwcmHonvxgag+V7+chaFddpQzq9hUYEb/dW/y1abE+uL
-	 WGe7au04gJKnfuln1bNIqXW40DJCOksR9GULiJDaqu0c0X14thRYC/deWzY5tcjYpT
-	 +vBPY46uymIVMNW5haPIGGdaa9nHjMN5u2GgN8KAY2EYrOhs8M7WA/shwv32Ju+nlP
-	 ZT+ykpTQj9gtU9FylhaM8sZhIkBf/aA5SpDpnA4J8ny0Xdwm+oENAdAAmyRWpSQIYF
-	 D5SDMZ/Xi8VcIYWDBlZ6EVQI8zHVsKtUfcnq8lzh0ATO0b6N1MmHM2hBbuHhL9DFZ9
-	 3okoGfSrNwiWQ==
+	b=RwVZm9cC6SmHA3bTPiMNYwTL4P1dFncP1udZRWx0HYzAFZ+AllKR54NbZBLEVnK0y
+	 w0QqDCQ4CKC1U/cXz8bBx99FYAbjh8iaXKZjJVbdFDFG0Vh+lr174hUxWCrQbk1/DR
+	 tlhtNq04usSmvgYMzehIAwl3d1FjcnkhgqaZkvtcP79kDYNaPsq3UyII0x1/GD5dhh
+	 QgMlMr05fCoG49ON/SpOqqw6WfDOM+6aPVVSk6YgDUX05fJkcQ/jcuy03H6zid37xn
+	 zgVBgX7jyizVeGVAWXZcGG5Sds4eYPK51xaHFio8NSXFjBSxodV6m3g3if5HtC68e6
+	 DTV/ENpFtBZLg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 569443926383;
-	Wed,  8 Jul 2026 08:10:06 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56A9A3926383;
+	Wed,  8 Jul 2026 08:10:10 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,40 +37,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: mdio: select REGMAP_MMIO instead of depending on
- it
+Subject: Re: [PATCH net-next v3] selftests/net/openvswitch: add output
+ truncation
+ test
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178349820489.2361978.9830216385714459265.git-patchwork-notify@kernel.org>
-Date: Wed, 08 Jul 2026 08:10:04 +0000
-References: <20260702032653.1580616-1-rosenp@gmail.com>
-In-Reply-To: <20260702032653.1580616-1-rosenp@gmail.com>
-To: Rosen Penev <rosenp@gmail.com>
-Cc: netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
- linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, dtcccc@linux.alibaba.com,
- linux-kernel@vger.kernel.org
+ <178349820913.2361978.12788467344075013470.git-patchwork-notify@kernel.org>
+Date: Wed, 08 Jul 2026 08:10:09 +0000
+References: <20260702074926.1174810-1-houminxi@gmail.com>
+In-Reply-To: <20260702074926.1174810-1-houminxi@gmail.com>
+To: Minxi Hou <houminxi@gmail.com>
+Cc: netdev@vger.kernel.org, aconole@redhat.com, echaudro@redhat.com,
+ i.maximets@ovn.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
+ dev@openvswitch.org, linux-kselftest@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Paolo Abeni <pabeni@redhat.com>:
 
-On Wed,  1 Jul 2026 20:26:52 -0700 you wrote:
-> REGMAP_MMIO is a hidden (non-user-visible) tristate symbol. Using
-> depends on it is incorrect because there is no way for the user to
-> enable it directly. Change to select, which is the convention used
-> by every other driver in the tree that needs REGMAP_MMIO.
+On Thu,  2 Jul 2026 03:49:26 -0400 you wrote:
+> Add test_trunc exercising the OVS_ACTION_ATTR_TRUNC action. The test
+> verifies truncation limits in four steps: reject trunc(1) and
+> trunc(13) which are below ETH_HLEN, confirm normal forwarding works,
+> apply trunc(14) which truncates packets to the Ethernet header and
+> verify ping fails, then restore normal forwarding and verify recovery.
 > 
-> Fixes: 8057cbb8335c ("net: mdio: mscc-miim: Add depend of REGMAP_MMIO on MDIO_MSCC_MIIM")
-> Assisted-by: opencode:big-pickle
-> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> The kernel requires max_len >= ETH_HLEN (14 bytes). trunc(14) sets
+> OVS_CB(skb)->cutlen so pskb_trim strips the IP payload at output
+> time; the receiver drops the runt frame and no echo reply is
+> generated.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net: mdio: select REGMAP_MMIO instead of depending on it
-    https://git.kernel.org/netdev/net/c/1a3267a8c9ec
+  - [net-next,v3] selftests/net/openvswitch: add output truncation test
+    https://git.kernel.org/netdev/net-next/c/a211b03fee2c
 
 You are awesome, thank you!
 -- 
