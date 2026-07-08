@@ -1,65 +1,66 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A39A432BC2
-	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 11:30:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3B637A486
+	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 11:35:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783510232; cv=none; b=g78C+mg+oOpTAWpm/bMDnz/qVrCuIW1ue7fESdDLiAzA/8NQPRLLsqCp/JzSbcXD/QnQCxLSSSfEwW+zG67o/8mTpr5x8ozn2FfXcpurixROupNkhASy67pecdRlAJ1/CCIR7Ncn16SYrcfww64mfbjjq1e9orEsoXE6/d7MLDg=
+	t=1783510558; cv=none; b=tcaq8TXqKyzg3Uc7E+FQrqifUNgfVXy4AKNDzxcSM/vuM0oEEEdu3HKkIh8amWiYdfw4Ef/B0byWtigv3mxmFnrZIHVyEoaTroQ8XyDD5Ef/djXEuE+D/PB5vZmub2yNDZqREivPKxolfAxUfxp8GrWMELv/S4S59ZOVwPTpHLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783510232; c=relaxed/simple;
-	bh=Vrq9mBwQ+OgkDpO4vYLKiM2lqQLZT2sV8bYkbGoVBNs=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=tXZZ4FIaCN0FRqS6if1HjYtvm0zoe3vOn0CsUP7T+tyUSx4nTK7OOJ3DKB9X7YfFBdRzTrbqw4FryDgbPj9cvepig+JSLgavm8km8cO4SJMJerh97TaJm3nxGkgjoEbAiVB4jL2R53xDAJwNU8j61bWZLtNNFZmc1KplmtFI58A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jLUVbib3; arc=none smtp.client-ip=209.85.214.180
+	s=arc-20240116; t=1783510558; c=relaxed/simple;
+	bh=Ah83tdi6uMZ65rIqw/348ZXK0jFCKAqKHBYKp7CVmzM=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=O/TEy4ZlQu5rFZ3hDp6+Kmcx0M3J39+usjXNU3eVFq5N2WE49vbl4Io92FIV1Fc8bVPMmmVCJ+tlesFKNk/f9ZSa75GOTBKglyBXSfzg7IXMnpu569K0g+bYUOX4dCuRxHEBjMiVOlo1JEaNAry2f4FaQDhiVBTNFY+5RzMxCEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OT7D5EhI; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jLUVbib3"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2c9b1edf2bdso7893415ad.1
-        for <netdev@vger.kernel.org>; Wed, 08 Jul 2026 04:30:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OT7D5EhI"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2caea3f742bso9945725ad.0
+        for <netdev@vger.kernel.org>; Wed, 08 Jul 2026 04:35:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783510231; x=1784115031; darn=vger.kernel.org;
-        h=mime-version:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=AsxOcajZ7gYxW17W0Pj55YOWQAyg0/24La7iNV21scc=;
-        b=jLUVbib35bZfVqpGXmgkJqK6Pyvf1nswpJEJ+KnrhyWtoiHIE/TxH9os6KX3cYB7Kv
-         nEtm5GRB9LmJ0klARM9/wiGzXM5UeNWj5OtpHtiT0qoZFeZbz73YRuyse8QxvW3GdjlV
-         mU+9JbpYk0iAP+geYpmsapYyGFMMBCICQUzstLBYL/8rWGSZ1QF9/63BBrNYcs9s9cQe
-         4HLvugRC/YUE5LvFOY2lebFDRL4EhZfkkb6iHQ044ep/zFPlQ8oW5hOI/JFBjgl4wn1S
-         QkL/TQIRouZybSm6tu0PpVzj3E92+nTA2fgU8dggMRqFHzzNlDPjlRHHkF8KHOEftGtj
-         gGcQ==
+        d=gmail.com; s=20251104; t=1783510557; x=1784115357; darn=vger.kernel.org;
+        h=mime-version:content-type:message-id:date:subject:cc:to:from:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Brmbfs6RPXs03BhYiS0ot6De5Oja1VZ3H8esF8uHn1Q=;
+        b=OT7D5EhITy+wHvzmvqZxMxMmB+iPT+0bGOrGyZCAYNIgkVfNBfaysgP3e6XzjmMtnh
+         +fQVg6ZFLm/RdNfmnxQ7gjNo73ZzuEevSGydRs1aZW/nEapAHDoC3aliZOme2Mh7AOO/
+         L8GPYjHm+LdDMzwPiyXu6AnkPNubcMgFUE6L7Jlg64nOrqEaR04pN+f8sEFYQTWqq2hq
+         jmDq6AnQ/pBUYqZ2DVttG4BHRomNoi6/7MA21MTYLietew3gD6BUmshfVnyjAxG9qJq3
+         r1PX2F9ghsNbpbz0Z1/lZdCzoBuzidbRIwKIctCbmi2sA+Gbalqx3tQpailQ6NdVVQnd
+         GF5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783510231; x=1784115031;
-        h=mime-version:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AsxOcajZ7gYxW17W0Pj55YOWQAyg0/24La7iNV21scc=;
-        b=LczYebvL6aJk6uwZn44j4Rv8PZucPknYGhc8p3saf/oz71ynm8BwV4bVIYC2ardbW1
-         HLmiOYQE9BT2OhTYQDxLGpsASo4Zp6LxpMsir80XoOBBi2lbElJKomitx+CahXdu+BK0
-         EvLrCJvq3tA7kNycQsGAQNcLrOMakeGkMHOFn3Pj+vVt/FnCALAVKhbflPut4rDh2C9e
-         OfwIb5aONfpaKp8A50U/OJCXLhAY0RLXyVtJYc/p1WhFXR4gKUTona7NxkwC8o4LHNKW
-         4b9Z5EwtUw2+DVKETSs8gH9AtdqH0e2hhGZvloYMgc2+ou7/h4Vb+yJoNQfP63EoSgql
-         md9g==
-X-Gm-Message-State: AOJu0YxAfeEIkrccf2HsLRe3xhwIvH2capHuqk4Uhsfarx4VNf9VniAs
-	WiavVI0sw3a3lRu/5wwR12lRDq/BakXgsOIDsPU7p2nrtwBrw0R+5NWAxHoxnLmaq4w=
-X-Gm-Gg: AfdE7cnSkNRnSswKms5dv7moUK0nb1fl02Up+RSbhb6t/MnvxHYvQMUAbbxpWxA7qw6
-	5TIQDGPPAZw3Vuw08XZ+0Rgm+zf1QzY4H6DePkNLBWBK61fsjdU1T9BuOvMuKZ9Fb9KMqnvzAsh
-	uRrx2iDrNwTejW1yweC9qqgltaBgFh8ymeEXnD28ZmJ3nkNIGF8zbVsgu5eMj8Oe/ZoXUxEZWVN
-	dVJo4QZGJQeFyTkSAWX2k3uUkr+vUpZusiolquSRHch6hB6/9wHSkpQcybuBbNHossuPDF45Ril
-	YTk5hf+DA50W8/3r49y/+Gtf4aHE0yuMXxDoIDMoEZhE2mwylV41YiXfD+rFgaoqSY5kEQSHDix
-	A43zNmnb+71IdKZGbCZrO1GqlqIazc7woPMrhAV7TldBaeHp5umg/9hnpJdUR6hhcvHvRPOlSFO
-	+rjFt/yg==
-X-Received: by 2002:a17:903:1aae:b0:2ca:ecfa:1308 with SMTP id d9443c01a7336-2ccea396a45mr22556175ad.20.1783510230507;
-        Wed, 08 Jul 2026 04:30:30 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1783510557; x=1784115357;
+        h=mime-version:content-type:message-id:date:subject:cc:to:from
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=Brmbfs6RPXs03BhYiS0ot6De5Oja1VZ3H8esF8uHn1Q=;
+        b=GxKHyD5jL/LMtW0DseQ3pQA4wDF/7q5CLH/3nzT/Zw2d0RpSKUbn18q59jVxgRubyd
+         gk27eIwpwUSABOSlMAjgIcAOouyW7St39iswmeitzsrgmMlvTJwMCp5VwyX7kmSD9xo2
+         7EqTeizuzTxIXOpUH5zTJ8Soyaz5ce7XCP9FTK79utVyCrNQQlFJ70maHLodx6e+cwKV
+         9Do4BHNiVjsmK0Zi+lrdPb1CfU2ItlshlzVLPQ13XPNZWqpP1OZQyu6ZDRXXsIy4G3Eg
+         8rfRfasZfV0fZmqHwrGhyIBdwwzdLPAmtQtuq9zWYsPaEXBBPlgbVSdi6pqnNesp3N+7
+         ePag==
+X-Gm-Message-State: AOJu0YycalsLmbQ+rKXsqjnX7c629PAi7bVQNUR866FZyUm2uK1BCwkH
+	u4tMmY72ZgKVkcMJcCiuBBaZWcBLGQROqLyMtX81x1kHgAs7spDMFAXJqX8bOXwfgGE=
+X-Gm-Gg: AfdE7ckKsvjDV/2vZnhRFLHPxbQeIT66hDHETKcJWVLMMfDGSlPdb0OSTUQpn+IfUf9
+	wbBPF5b2j/dvNYHr7GhUIT2LEf45PlYjL4CCSZjt6dtARRv/e+8TLZDXAhIiRw8TBzDS6TNRqRj
+	4Qt/qAKHJqz61ErEiEANVnFEVswQjgdUuztkc+rrgXQ7+DTu1wEGxCPrG7kZqwZEe7wSgpaFjAA
+	WmukNGEKNhInEBecn6qyJZDIcM8G2JLWC9japMfdYSmcJIFM6+Wbz5dtokABQnbiAhTj6MpIZv1
+	BQvMpdp66lhJ8RmBnjDgb/KrDij00abPfrRXAsjRc6zxWhuDmXfZ0wExyl5f9xDZU5vWoccBSI5
+	DprtK7ZA+4cHdWMbepanxe0DTLXE1MMo/RkFYQujKOHuc4gx7YEkjdtRfEJavtIWqWqPW3D9LGU
+	yVLE1OxQ==
+X-Received: by 2002:a17:903:2411:b0:2c9:b396:1a55 with SMTP id d9443c01a7336-2ccea394d5dmr21404765ad.12.1783510556811;
+        Wed, 08 Jul 2026 04:35:56 -0700 (PDT)
 Received: from [127.0.1.1] ([47.253.114.73])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9bdb877sm26691105ad.14.2026.07.08.04.30.25
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9d59e51sm26989615ad.76.2026.07.08.04.35.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jul 2026 04:30:30 -0700 (PDT)
+        Wed, 08 Jul 2026 04:35:56 -0700 (PDT)
 From: Wayen Yan <win847@gmail.com>
 To: netdev@vger.kernel.org
 Cc: lorenzo@kernel.org, horms@kernel.org, pabeni@redhat.com, kuba@kernel.org, edumazet@google.com, andrew+netdev@lunn.ch, angelogioacchino.delregno@collabora.com, matthias.bgg@gmail.com, linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-Subject: [PATCH net] net: airoha: Fix potential use-after-free in airoha_ppe_deinit()
-Date: Wed, 8 Jul 2026 19:16:16 +0800
-Message-ID: <178351022574.97989.6880403520276841703@gmail.com>
+Subject: [PATCH net] net: airoha: Fix DMA direction for NPU mailbox buffer
+Date: Wed, 8 Jul 2026 19:35:29 +0800
+Message-ID: <178351055214.98729.11403147818632027428@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -68,39 +69,60 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-airoha_ppe_deinit() replaces the NPU pointer with NULL via
-rcu_replace_pointer() but does not wait for existing RCU readers
-to exit before calling ppe_deinit() and airoha_npu_put(). This can
-cause a use-after-free if a reader in an RCU read-side critical
-section still holds a reference to the NPU when it is freed.
+airoha_npu_send_msg() always maps the mailbox buffer with DMA_TO_DEVICE,
+but some callers expect the NPU to write response data back into the
+same buffer:
 
-The init path (airoha_ppe_init) already calls synchronize_rcu()
-after rcu_assign_pointer(), but the deinit path introduced in
-commit 6abcf751bc08 ("net: airoha: Fix schedule while atomic in
-airoha_ppe_deinit()") omitted the matching barrier when switching
-from rcu_read_lock()/rcu_dereference() to rcu_replace_pointer().
+- airoha_npu_wlan_msg_get() (NPU_OP_GET): NPU writes response into
+  the buffer, then the caller reads it via memcpy()
+- airoha_npu_ppe_stats_setup() (NPU_OP_SET): NPU writes back
+  npu_stats_addr field in the response
 
-Add synchronize_rcu() before ppe_deinit() to ensure all existing
-RCU readers have completed before the NPU resources are released.
+On non-cache-coherent architectures like EN7581 (Cortex-A53 without
+hardware cache coherency for NPU DMA), DMA_TO_DEVICE unmap is a no-op
+— it does not invalidate the CPU cache. If the NPU-written cache line
+is still present in the CPU cache when the caller reads the buffer,
+the CPU observes stale data instead of the NPU response.
 
-Fixes: 6abcf751bc084804a9e5b3051442e8a2ce67f48a ("net: airoha: Fix schedule while atomic in airoha_ppe_deinit()")
+This is a timing-sensitive bug: small mailbox buffers (~24 bytes)
+typically fit in a single cache line and may survive in the cache
+until the caller reads them, producing silent data corruption rather
+than a crash. The bug is more likely to trigger when the caller reads
+the response immediately after dma_unmap_single() without intervening
+cache-evicting operations.
+
+Fix by using DMA_BIDIRECTIONAL for both map and unmap, which ensures
+dma_unmap_single() invalidates the CPU cache on non-coherent systems.
+The mailbox buffers are small so there is no performance concern.
+
+Fixes: c52918744ee1e49cea86622a2633b9782446428f ("net: airoha: npu: Move memory allocation in airoha_npu_send_msg() caller")
 Signed-off-by: Wayen Yan <win847@gmail.com>
 ---
- drivers/net/ethernet/airoha/airoha_ppe.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/airoha/airoha_npu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ethernet/airoha/airoha_ppe.c
-index e7c78293002a..f6396925722d 100644
---- a/drivers/net/ethernet/airoha/airoha_ppe.c
-+++ b/drivers/net/ethernet/airoha/airoha_ppe.c
-@@ -1659,6 +1659,7 @@ void airoha_ppe_deinit(struct airoha_eth *eth)
- 	npu = rcu_replace_pointer(eth->npu, NULL,
- 				  lockdep_is_held(&flow_offload_mutex));
- 	if (npu) {
-+		synchronize_rcu();
- 		npu->ops.ppe_deinit(npu);
- 		airoha_npu_put(npu);
- 	}
+diff --git a/drivers/net/ethernet/airoha/airoha_npu.c b/drivers/net/ethernet/airoha/airoha_npu.c
+index 870d61fdd9c6..b679bed952de 100644
+--- a/drivers/net/ethernet/airoha/airoha_npu.c
++++ b/drivers/net/ethernet/airoha/airoha_npu.c
+@@ -168,7 +168,7 @@ static int airoha_npu_send_msg(struct airoha_npu *npu, int func_id,
+ 	dma_addr_t dma_addr;
+ 	int ret;
+ 
+-	dma_addr = dma_map_single(npu->dev, p, size, DMA_TO_DEVICE);
++	dma_addr = dma_map_single(npu->dev, p, size, DMA_BIDIRECTIONAL);
+ 	ret = dma_mapping_error(npu->dev, dma_addr);
+ 	if (ret)
+ 		return ret;
+@@ -191,7 +191,7 @@ static int airoha_npu_send_msg(struct airoha_npu *npu, int func_id,
+ 
+ 	spin_unlock_bh(&npu->cores[core].lock);
+ 
+-	dma_unmap_single(npu->dev, dma_addr, size, DMA_TO_DEVICE);
++	dma_unmap_single(npu->dev, dma_addr, size, DMA_BIDIRECTIONAL);
+ 
+ 	return ret;
+ }
 -- 
 2.51.0
 
