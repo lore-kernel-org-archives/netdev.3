@@ -1,56 +1,74 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F07938837B
-	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 10:25:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6ABB40245A
+	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 10:29:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783506334; cv=none; b=LDpsMOw0hrwVIAjgb8GveHrmPrMqIJcs07GxPSvO/X6xQGYQyg98/EC/MauAIF7cXGns87FDlP3a6qRzBu6phOCXNWb0ZsvRBWFWDyXT3SfRPadAg8gMbas+5JMp70QRBxWkHJt1pKyPIpM0LbCQRvZ2DqLaOsVmOd9LWHd/d/Y=
+	t=1783506550; cv=none; b=tbedXWaC+hKV/LiRH7qyX/h4i5CXNfI1jp8qGr85hW3HoaWF399u1WDfQKq+4aLaiSdcEvFHoVp+DVjzxNB4IRnw99KNmDhhyAifqKVygQq+OcOKw7Cs75a4ZhPtdDDfxbdq2jAChst9UwNjEW1juRWPEdDUBysGqfsN/75+9xY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783506334; c=relaxed/simple;
-	bh=3ujeQAT2Zujw2I8H3azrrcUWTkL2aGkXHXo+Gy6YLSQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nOrzx0+Obw5gHr7f0+FzQ5unllYCBAx2NG7cG7GeFSzSkzj+Y27YBNn87NMEOOK9fBwwHUThV8Il9kMnIKnL9G2Tqd9XZmRnf7WkbH+KjccFqe+xOFxuZtVyvqgEjhejQ94C9hjHPjKKFqlQvB5lDN7TzXXaja7ODtlzX5R29a0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M/cB5jh0; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1783506550; c=relaxed/simple;
+	bh=2t3E1/0xS0XXOKRO6cCSiH4uZyYW+8gF84n/unnSMRE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KTVQd95kKTm+Omwd5wGxhTvOt4uS44IT3ReaBG2C4jQmoHK24p5ES0wJwVIhkpxeSA3zk4vTjYuIgGoBh9tFST29Rz1SWqRtr0MZx28LLyiBJb3LIfaR/sWrSERqY70TX8WzbgHwVdVDo56R4tk2GxSYDLY5H4TO/SDie12QlrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cbvY2dAn; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M/cB5jh0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783506332; x=1815042332;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=3ujeQAT2Zujw2I8H3azrrcUWTkL2aGkXHXo+Gy6YLSQ=;
-  b=M/cB5jh05B+cpFovqWHd5qxmpof6o8cEhUElaAc0DIJU8PHDEwxP79x2
-   hIxNzKRbDgeBi8D7QqR8vksf1O9k1dlX4LLfIplyDZAQmFPI7g0Hvbc8M
-   FrkEQyu9Xmq4gTRj1dZUnsbkZJKFLI+2xRDQNePN+p/gDNf396YWW2rg+
-   oxXzpxa6z1xwAxMQLmKk1o1+DPoejKYX1GoeNA4mQ0+YKupfZ5kECTtaE
-   CoGQAbAx7F4P+ExzQ22/LnXKJlX7eXzr1iPxNVYlRmIcT1/+oWVeWxepH
-   XXAqGXtMhLiIS2BZIsILi7Sj2irD2zr/yMtMPk947WqpBGresQ6S2UUNh
-   g==;
-X-CSE-ConnectionGUID: 6nLEHChSRPGVgcgHfexgOg==
-X-CSE-MsgGUID: xDTxwko8TIm4HIZorZTHVg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11840"; a="83142705"
-X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
-   d="scan'208";a="83142705"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 03:25:31 -0700
-X-CSE-ConnectionGUID: sN6NktRyTFmY7p2yIh54kQ==
-X-CSE-MsgGUID: 447K19F2SrWllaqVZVjJLg==
-X-ExtLoop1: 1
-Received: from os-delivery.igk.intel.com ([10.102.18.218])
-  by fmviesa003.fm.intel.com with ESMTP; 08 Jul 2026 03:25:29 -0700
-From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: anthony.l.nguyen@intel.com,
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cbvY2dAn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783506542;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ccaL/aUC9kUBKct9kVBnzfixSBmhgaadjyvZzfo3xN4=;
+	b=cbvY2dAn2TGpYUpYDoIpGF7pAgpE3lDrb1ul3gaJfhmbLC2+CEUEmBG8iw6SXsqERtdJhi
+	HjwynMnmMCvTlTQlyA0IilLmvLgcRr20issEZ+0TfYJG/2L6avhDXfwgiExII4uyRKsB6o
+	/pESYfeEoJcEDuqMmjuyQUmeEOEemh4=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-676-UlnjUOy7NbKmTa4BUgMvaA-1; Wed,
+ 08 Jul 2026 06:27:32 -0400
+X-MC-Unique: UlnjUOy7NbKmTa4BUgMvaA-1
+X-Mimecast-MFC-AGG-ID: UlnjUOy7NbKmTa4BUgMvaA_1783506449
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 704151800651;
+	Wed,  8 Jul 2026 10:27:28 +0000 (UTC)
+Received: from gerbillo.redhat.com (unknown [10.44.49.133])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id BB1C418005B9;
+	Wed,  8 Jul 2026 10:27:21 +0000 (UTC)
+From: Paolo Abeni <pabeni@redhat.com>
+To: theo.lebrun@bootlin.com
+Cc: conor.dooley@microchip.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	richardcochran@gmail.com,
+	linux@armlinux.org.uk,
 	netdev@vger.kernel.org,
-	pmenzel@molgen.mpg.de,
-	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: [PATCH iwl-next v3] ixgbe: E610: force phy link to get down when interface is down
-Date: Wed,  8 Jul 2026 12:06:09 +0200
-Message-Id: <20260708100609.331976-1-jedrzej.jagielski@intel.com>
-X-Mailer: git-send-email 2.31.1
+	linux-kernel@vger.kernel.org,
+	nicolas.ferre@microchip.com,
+	claudiu.beznea@tuxon.dev,
+	pvalerio@redhat.com,
+	nb@tipi-net.de,
+	vladimir.kondratiev@mobileye.com,
+	gregory.clement@bootlin.com,
+	benoit.monin@bootlin.com,
+	tawfik.bayouk@mobileye.com,
+	thomas.petazzoni@bootlin.com,
+	maxime.chevallier@bootlin.com
+Subject: Re: [PATCH net-next v3 07/15] net: macb: introduce macb_context struct for buffer management
+Date: Wed,  8 Jul 2026 12:27:16 +0200
+Message-ID: <20260708102716.169767-1-pabeni@redhat.com>
+In-Reply-To: <20260701-macb-context-v3-7-00268d5b1502@bootlin.com>
+References: <20260701-macb-context-v3-7-00268d5b1502@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -58,217 +76,179 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-For the E610 family, similarly to the E8xx adapters, the default behavior
-is for the PHY link to remain up even when the corresponding OS interface
-is down.
+From: AI Reviewer <ai@example.com>
 
-Add function setting down the PHY config IXGBE_ACI_PHY_ENA_LINK bit
-what leads to disabling PHY link.
-
-Now ixgbe_close() needs to share some of the ixgbe_watchdog_link_is_down
-code so move the common part into the separate function.
-
-Align functionality with the implementation of the ice driver.
-
-Let user to configure link-down-on-close enablement through ethtool.
-
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/
 ---
-v2: apply Paul's notes
-v3: use e_err
----
- drivers/net/ethernet/intel/ixgbe/ixgbe.h      |  1 +
- drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c | 35 ++++++++++++++++++-
- drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h |  1 +
- .../net/ethernet/intel/ixgbe/ixgbe_ethtool.c  | 15 ++++++++
- drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 27 +++++++++++---
- 5 files changed, 73 insertions(+), 6 deletions(-)
+net: macb: introduce macb_context struct for buffer management
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe.h b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-index 30f62174acf2..7bbb82dd962c 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-@@ -685,6 +685,7 @@ struct ixgbe_adapter {
- #define IXGBE_FLAG2_MOD_POWER_UNSUPPORTED	BIT(22)
- #define IXGBE_FLAG2_API_MISMATCH		BIT(23)
- #define IXGBE_FLAG2_FW_ROLLBACK			BIT(24)
-+#define IXGBE_FLAG2_LINK_DOWN_ON_CLOSE		BIT(25)
- 
- 	/* Tx fast path data */
- 	int num_tx_queues;
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-index 831cfe9a4697..02bc0dac5123 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-@@ -1923,6 +1923,33 @@ void ixgbe_fc_autoneg_e610(struct ixgbe_hw *hw)
- 	hw->fc.current_mode = hw->fc.requested_mode;
- }
- 
-+/**
-+ * ixgbe_disable_phy_link - force phy link to get down
-+ * @hw: pointer to hardware structure
-+ *
-+ * Send 0x0601 with the IXGBE_ACI_PHY_ENA_LINK bit set down.
-+ *
-+ * Return: the exit code of the operation.
-+ */
-+int ixgbe_disable_phy_link(struct ixgbe_hw *hw)
-+{
-+	struct ixgbe_aci_cmd_get_phy_caps_data pcaps = {};
-+	struct ixgbe_aci_cmd_set_phy_cfg_data pcfg = {};
-+	int err;
-+
-+	err = ixgbe_aci_get_phy_caps(hw, false, IXGBE_ACI_REPORT_ACTIVE_CFG,
-+				     &pcaps);
-+	if (err)
-+		return err;
-+
-+	ixgbe_copy_phy_caps_to_cfg(&pcaps, &pcfg);
-+
-+	pcfg.caps &= ~IXGBE_ACI_PHY_ENA_LINK;
-+	pcfg.caps |= IXGBE_ACI_PHY_ENA_AUTO_LINK_UPDT;
-+
-+	return ixgbe_aci_set_phy_cfg(hw, &pcfg);
-+}
-+
- /**
-  * ixgbe_disable_rx_e610 - Disable RX unit
-  * @hw: pointer to hardware structure
-@@ -2207,6 +2234,7 @@ int ixgbe_setup_phy_link_e610(struct ixgbe_hw *hw)
- 	u8 rmode = IXGBE_ACI_REPORT_TOPO_CAP_MEDIA;
- 	u64 sup_phy_type_low, sup_phy_type_high;
- 	u64 phy_type_low = 0, phy_type_high = 0;
-+	bool force_on_required;
- 	int err;
- 
- 	err = ixgbe_aci_get_link_info(hw, false, NULL);
-@@ -2272,6 +2300,11 @@ int ixgbe_setup_phy_link_e610(struct ixgbe_hw *hw)
- 		phy_type_high |= IXGBE_PHY_TYPE_HIGH_10G_USXGMII;
- 	}
- 
-+	/* If IXGBE_ACI_PHY_ENA_LINK has been explicitly disabled that means
-+	 * we need to force PHY link UP state during PHY link setup
-+	 */
-+	force_on_required = !(pcfg.caps & IXGBE_ACI_PHY_ENA_LINK);
-+
- 	/* Mask the set values to avoid requesting unsupported link types. */
- 	phy_type_low &= sup_phy_type_low;
- 	pcfg.phy_type_low = cpu_to_le64(phy_type_low);
-@@ -2280,7 +2313,7 @@ int ixgbe_setup_phy_link_e610(struct ixgbe_hw *hw)
- 
- 	if (pcfg.phy_type_high != pcaps.phy_type_high ||
- 	    pcfg.phy_type_low != pcaps.phy_type_low ||
--	    pcfg.caps != pcaps.caps) {
-+	    pcfg.caps != pcaps.caps || force_on_required) {
- 		pcfg.caps |= IXGBE_ACI_PHY_ENA_LINK;
- 		pcfg.caps |= IXGBE_ACI_PHY_ENA_AUTO_LINK_UPDT;
- 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h
-index 2cb76a3d30ae..59044d67ebeb 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h
-@@ -50,6 +50,7 @@ int ixgbe_cfg_phy_fc(struct ixgbe_hw *hw,
- 		     enum ixgbe_fc_mode req_mode);
- int ixgbe_setup_fc_e610(struct ixgbe_hw *hw);
- void ixgbe_fc_autoneg_e610(struct ixgbe_hw *hw);
-+int ixgbe_disable_phy_link(struct ixgbe_hw *hw);
- void ixgbe_disable_rx_e610(struct ixgbe_hw *hw);
- int ixgbe_init_phy_ops_e610(struct ixgbe_hw *hw);
- int ixgbe_identify_phy_e610(struct ixgbe_hw *hw);
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-index b8e85bc91a27..16e26d54f3be 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-@@ -139,6 +139,8 @@ static const char ixgbe_priv_flags_strings[][ETH_GSTRING_LEN] = {
- 	"vf-ipsec",
- #define IXGBE_PRIV_FLAGS_AUTO_DISABLE_VF	BIT(2)
- 	"mdd-disable-vf",
-+#define IXGBE_PRIV_LINK_DOWN_ON_CLOSE	BIT(3)
-+	"link-down-on-close",
- };
- 
- #define IXGBE_PRIV_FLAGS_STR_LEN ARRAY_SIZE(ixgbe_priv_flags_strings)
-@@ -3822,6 +3824,9 @@ static u32 ixgbe_get_priv_flags(struct net_device *netdev)
- 	if (adapter->flags2 & IXGBE_FLAG2_AUTO_DISABLE_VF)
- 		priv_flags |= IXGBE_PRIV_FLAGS_AUTO_DISABLE_VF;
- 
-+	if (adapter->flags2 & IXGBE_FLAG2_LINK_DOWN_ON_CLOSE)
-+		priv_flags |= IXGBE_PRIV_LINK_DOWN_ON_CLOSE;
-+
- 	return priv_flags;
- }
- 
-@@ -3859,6 +3864,16 @@ static int ixgbe_set_priv_flags(struct net_device *netdev, u32 priv_flags)
- 		}
- 	}
- 
-+	flags2 &= ~IXGBE_FLAG2_LINK_DOWN_ON_CLOSE;
-+	if (priv_flags & IXGBE_PRIV_LINK_DOWN_ON_CLOSE) {
-+		if (adapter->hw.mac.type == ixgbe_mac_e610) {
-+			flags2 |= IXGBE_FLAG2_LINK_DOWN_ON_CLOSE;
-+		} else {
-+			e_info(probe, "Cannot set private flags: Feature supported only for E610 devices\n");
-+			return -EOPNOTSUPP;
-+		}
-+	}
-+
- 	if (flags2 != adapter->flags2) {
- 		adapter->flags2 = flags2;
- 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-index 7a0783c1abc1..d0bba3e202ca 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-@@ -7551,6 +7551,17 @@ static void ixgbe_close_suspend(struct ixgbe_adapter *adapter)
- 	ixgbe_free_all_rx_resources(adapter);
- }
- 
-+static void ixgbe_handle_link_down(struct ixgbe_adapter *adapter)
-+{
-+	struct net_device *netdev = adapter->netdev;
-+
-+	if (test_bit(__IXGBE_PTP_RUNNING, &adapter->state))
-+		ixgbe_ptp_start_cyclecounter(adapter);
-+
-+	e_info(drv, "NIC Link is Down\n");
-+	netif_carrier_off(netdev);
-+}
-+
- /**
-  * ixgbe_close - Disables a network interface
-  * @netdev: network interface device structure
-@@ -7573,6 +7584,16 @@ int ixgbe_close(struct net_device *netdev)
- 
- 	ixgbe_fdir_filter_exit(adapter);
- 
-+	if (adapter->flags2 & IXGBE_FLAG2_LINK_DOWN_ON_CLOSE) {
-+		int err;
-+
-+		err = ixgbe_disable_phy_link(&adapter->hw);
-+		if (err)
-+			e_err(drv, "Cannot set PHY link down\n");
-+
-+		ixgbe_handle_link_down(adapter);
-+	}
-+
- 	ixgbe_release_hw_control(adapter);
- 
- 	return 0;
-@@ -8251,11 +8272,7 @@ static void ixgbe_watchdog_link_is_down(struct ixgbe_adapter *adapter)
- 	if (ixgbe_is_sfp(hw) && hw->mac.type == ixgbe_mac_82598EB)
- 		adapter->flags2 |= IXGBE_FLAG2_SEARCH_FOR_SFP;
- 
--	if (test_bit(__IXGBE_PTP_RUNNING, &adapter->state))
--		ixgbe_ptp_start_cyclecounter(adapter);
--
--	e_info(drv, "NIC Link is Down\n");
--	netif_carrier_off(netdev);
-+	ixgbe_handle_link_down(adapter);
- }
- 
- static bool ixgbe_ring_tx_pending(struct ixgbe_adapter *adapter)
+This patch moves per-queue ring buffers and ring-size parameters out of
+struct macb / struct macb_queue into a new struct macb_context that is
+allocated on open and freed on close, so future patches can swap in a
+new context while the interface is running.
+
+> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+> index 951a7f080225..dfb1d49d841c 100644
+> --- a/drivers/net/ethernet/cadence/macb_main.c
+> +++ b/drivers/net/ethernet/cadence/macb_main.c
+
+[ ... ]
+
+> @@ -1257,6 +1288,7 @@ static void macb_tx_error_task(struct work_struct *work)
+>  	struct macb_queue *queue = container_of(work, struct macb_queue,
+>  						tx_error_task);
+>  	unsigned int q = queue - queue->bp->queues;
+> +	struct macb_txq *txq = macb_txq(queue);
+>  	struct macb *bp = queue->bp;
+
+[High]
+Can macb_tx_error_task() dereference a freed context?
+
+macb_tx_error_task is scheduled from macb_interrupt():
+
+    schedule_work(&queue->tx_error_task);
+
+After this patch, the very first thing the worker does is:
+
+    struct macb_txq *txq = macb_txq(queue);
+
+which expands to &bp->ctx->txq[q] and dereferences bp->ctx.
+
+Looking at macb_close():
+
+    macb_reset_hw(bp);
+    ...
+    macb_free(bp);
+    kfree(bp->ctx);
+    bp->ctx = NULL;
+
+There is no cancel_work_sync(&queue->tx_error_task), and macb_reset_hw()
+does not drain the workqueue. If an interrupt scheduled the work just
+before close, or the work was already pending, the worker can run after
+kfree(bp->ctx) and hit a NULL dereference (and a use-after-free if
+macb_open() re-allocates ctx concurrently via ethtool ring reconfig).
+
+The same reasoning applies to bp->hresp_err_bh_work, which is queued
+from macb_interrupt() and whose handler calls
+mog_init_rings()/macb_init_buffers() that read bp->ctx->tx_ring_size and
+bp->ctx->{tx,rx}q[q]. cancel_work_sync(&bp->hresp_err_bh_work) is only
+called from macb_remove(), not macb_close().
+
+Pre-patch these fields lived inside the embedded struct macb_queue so a
+late worker would touch stale-but-addressable memory; post-patch the
+first indirection through bp->ctx faults.
+
+Would adding cancel_work_sync(&queue->tx_error_task) per queue and
+cancel_work_sync(&bp->hresp_err_bh_work) before kfree(bp->ctx) in
+macb_close() close this window?
+
+[ ... ]
+
+> @@ -3690,8 +3778,8 @@ static int macb_set_ringparam(struct net_device *netdev,
+>  		macb_close(bp->netdev);
+>  	}
+>  
+> -	bp->rx_ring_size = new_rx_size;
+> -	bp->tx_ring_size = new_tx_size;
+> +	bp->configured_rx_ring_size = new_rx_size;
+> +	bp->configured_tx_ring_size = new_tx_size;
+>  
+>  	if (reset)
+>  		macb_open(bp->netdev);
+
+[Medium]
+Should the return value of macb_open() be checked here?
+
+This patch adds a new failure point inside macb_open():
+
+    bp->ctx = kzalloc_obj(*bp->ctx);
+    if (!bp->ctx) {
+        err = -ENOMEM;
+        goto pm_exit;
+    }
+
+On failure, bp->ctx remains NULL and the interface stays down, but
+macb_set_ringparam() ignores the return value and reports success to
+userspace. The commit message says the motivation is to improve
+reliability under memory pressure, but this caller silently swallows the
+new allocation failure.
+
+[ ... ]
+
+> @@ -5039,6 +5125,12 @@ static int at91ether_open(struct net_device *netdev)
+>  	if (ret < 0)
+>  		return ret;
+>  
+> +	bp->ctx = kzalloc_obj(*bp->ctx);
+> +	if (!bp->ctx) {
+> +		ret = -ENOMEM;
+> +		goto pm_exit;
+> +	}
+> +
+>  	/* Clear internal statistics */
+>  	ctl = macb_readl(bp, NCR);
+>  	macb_writel(bp, NCR, ctl | MACB_BIT(CLRSTAT));
+
+[Low]
+Should bp->ctx->rx_ring_size, tx_ring_size and rx_buffer_size be
+initialized on this path?
+
+macb_open() sets them from configured_{rx,tx}_ring_size and calls
+macb_init_rx_buffer_size(), but at91ether_open() leaves them at zero
+after kzalloc_obj().
+
+Helpers such as macb_rx_ring_wrap() compute:
+
+    return index & (bp->ctx->rx_ring_size - 1);
+
+which becomes index & 0xFFFFFFFF when rx_ring_size is 0. It happens to
+be harmless today because the at91ether path constrains indices to
+[0, AT91ETHER_MAX_RX_DESCR-1] independently and macb_get_regs() reports
+zeroed head/tail for the tx-less at91ether, but pre-patch macb_init_dflt()
+unconditionally set bp->rx_ring_size = DEFAULT_RX_RING_SIZE.
+
+Any future shared helper that used tx_ring_size as a stride or divisor
+would misbehave on at91ether.
+
+[ ... ]
+
+> @@ -5076,6 +5171,9 @@ static int at91ether_close(struct net_device *netdev)
+>  
+>  	at91ether_stop(bp);
+>  
+> +	kfree(bp->ctx);
+> +	bp->ctx = NULL;
+> +
+>  	pm_runtime_put(&bp->pdev->dev);
+>  
+>  	return 0;
+
+[High]
+Is there IRQ synchronization missing before freeing bp->ctx on this
+path?
+
+at91ether_stop() disables MAC RX/TX and writes IDR to mask further
+interrupts, but does not synchronize with a handler already running or
+already dispatched on another CPU. at91ether_interrupt() calls
+at91ether_rx(), which after this patch does:
+
+    struct macb_rxq *rxq = &bp->ctx->rxq[0];
+    ...
+    desc = macb_rx_desc(queue, rxq->tail);
+    ...
+    p_recv = rxq->buffers + rxq->tail * AT91ETHER_MAX_RBUFF_SZ;
+
+If the handler is in flight when kfree(bp->ctx); bp->ctx = NULL runs,
+the next access through bp->ctx faults. The macb_open()/macb_close()
+path is somewhat protected by napi_disable() before macb_free(), but
+at91ether does not use NAPI and has no equivalent barrier.
+
+Would a synchronize_irq(bp->netdev->irq) between at91ether_stop() and
+kfree(bp->ctx) close this?
 -- 
-2.31.1
+This is an AI-generated review.
 
