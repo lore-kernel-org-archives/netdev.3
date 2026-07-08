@@ -1,94 +1,70 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6CF39734D
-	for <netdev@vger.kernel.org>; Wed,  8 Jul 2026 23:34:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5DE346E7A;
+	Wed,  8 Jul 2026 23:44:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783553673; cv=none; b=fg9jteL2dzx5QjoE58pqLbIjPEYeIVV2+SbJ32EmdEwi2iSZKx7xgQpj6BHR8cHBa/5Dp/3rwPC0mRYRQo3keYLzIUrg8nXrU5y80c50EV/g0ElRzTtbuTZOmzfx9PlxW0wfDTzI0JSEr9Itne8k+Wb8ISBplxWj//woo2/K7+o=
+	t=1783554295; cv=none; b=pY9+/dk2rn2ZMYo+j+F+e6eYxkU4uYuq/rjZN6wv2WJ5SX4VosTzRF+vsR6TxNo0Wi8KQFAy+ZBfxeX/Xn8Up4SXKyoQXBxJGTz1hFiGjYyVS5Mh+3HvgRuQsjN62rQ9KV/68q/ngKO2f9oknEndts6altjO9kyUaBPs9oo/Fbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783553673; c=relaxed/simple;
-	bh=by8a3ZobOJ/8ByTSJnV6u8jfzUou4z6FmlbfwtxeMwo=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version:
-	 In-Reply-To:References; b=oOMOL4NWPaiiZvVV9EXpgaGpkfv4r/YXQucg8fjT0xzyFt5NY3d+Hfmh7TPgZ5Azuqpo09n+tzPJS0z7vI/tNl5ZdRTtjW3kHTLLXoX5x/ilPeAhVmsIWZGl2t1IAUbx1FPziQDDWnQi2sXUUkqnTQfS1YA7oauDije6ucvP1wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RelSXqIH; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1783554295; c=relaxed/simple;
+	bh=lhL1NlzO/lJ8S5/AwRVQc3DuZx2WtRnS8KEYTGAbdDY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hp+wg3S+ZUNNsyZA0On/elFRtAiqDIlQO7jdI6paPwytZZNoim/DXh+vsHiiQrBSlT1evppqOguIoLIY91egsw7YaWC2nhR7Lr+SbJ/sWRUSmZBwQJLiUDIl8/AH8GEPIl7RyAi3crF6DKB1C8ewWkjKYtu3+tac9IxcJaAPwaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=g87yIN0r; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RelSXqIH"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-848595b338cso167458b3a.0
-        for <netdev@vger.kernel.org>; Wed, 08 Jul 2026 16:34:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783553671; x=1784158471; darn=vger.kernel.org;
-        h=references:in-reply-to:mime-version:content-type:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=rcfqpyklPdRJm8BTRultdJ4ZxpQ7NoW5CVhgwgaydYs=;
-        b=RelSXqIHUXyAUHZOvTuYL7WqKhJDgG3qJ6Y6xyQ7DqApePnO7c4GMqeElGA0JavG0G
-         T3WCWceW6+4a/mL5/HdCwwDst5BfuBXFhivC8CqoSQkuGo4Q0evRYxHfIpFZ5AdIT4VY
-         /tz8tZsIA0zIngWGf1o1NY60jj1VBi0xpUA+ritYrOiDvRz9i3z2SWO+6cFDSMHUTQ5p
-         0B+FqqZosPixUVmyPm9p0vZHWL5TEdOfn/Sqm79Rl5tSd6gknbeZphGmgvJqe+pSkQUh
-         LF6OqRdAnf2v106Qil6kHU0CGeGJgzp8zgN7IEuDiO55eXachTDO3FI29+f8PGCprGxg
-         7O8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783553671; x=1784158471;
-        h=references:in-reply-to:mime-version:content-type:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=rcfqpyklPdRJm8BTRultdJ4ZxpQ7NoW5CVhgwgaydYs=;
-        b=DdyXmf1wAWKWBMV0cYEFpxaxm5Q+4Pe+/9+zCpUddw14oFx3x4It7BcVIMq1ibVUv9
-         XFsrRlirdK6ZqP8GuZjjXIPrYB38YRxReCKyzA1shSLptjcq3pkoZjIpnki1cEDEWNkg
-         Bf2ro4FLAwLfHw8cFLaR0yiwue4A3LoBpjURQDSMEP1bpA6O8gfx5eGbH50Spneg38am
-         12Jh8Jma0395vWtIqFnCuFoo/buOTYR5DW3FoArPCdyo1tmks8fC5+piExfad/DAev6n
-         ChVvYbo45EREkDdraH0zmWP1uENyNGFNEUZj3NJ3EZ6ykPNzVlezyLw1+AKtBpLoHc7b
-         FFyQ==
-X-Gm-Message-State: AOJu0Yy2YE3uB5iQH42OVd3MFrZq1szT1Z+qpxymIqAysfsW+Fh6g3yN
-	T6WvO5ZkiHLCxYaR4HDBv456IbFqGGBhlLzE5PcUUsk7mDt690TDN6+QJ0dLFJfhWTE=
-X-Gm-Gg: AfdE7cmrlwlxrv38l6Kp5+A5GkEDnJ/SzKnfx8iRgxhsNL3Z18Rw2BPkleDG2Uf5GrU
-	ZZPqZhejl2cUZu7DvwHJZuDScHYU0HJ1AmN1jxLOVcilytTmSWQnDSld+v6gQ3hefPw/kyAD+bE
-	S4Zq7FXTslKK3ilNLGnZIDF+iLmtF8y24xCIqOhN3EdGP+QnSLhFN7l+IwSpYAK36ceKJWWVWco
-	nJTXgJ4UgZTyDTFxqKVXxkYntlotvPCxJPNqUM1DFxP9z1JdpPCkVzoziP9xg/SXC92BD2rC/Yb
-	tELg2HnSXNMsanZZpSwP0ICqdnwoRNEe2CRDiQ+x8T+Ci5yKZi50LTL9nxFI4TAxfuBB1vzQdrO
-	CWz8V5OcAPcW84pnpUtq22zPyHCQswvWTUg+Mvbq1seIPt629Ekv1uyYZ3QZ9SdOk0s10DiaIP4
-	8/0AVNcw==
-X-Received: by 2002:a05:6a21:3a85:b0:3c0:9c18:d5ac with SMTP id adf61e73a8af0-3c0bd237362mr5073243637.73.1783553671195;
-        Wed, 08 Jul 2026 16:34:31 -0700 (PDT)
-Received: from [127.0.1.1] ([47.253.114.73])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ca5b3c1f77fsm2927638a12.32.2026.07.08.16.34.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jul 2026 16:34:30 -0700 (PDT)
-From: Wayen Yan <win847@gmail.com>
-To: netdev@vger.kernel.org
-Cc: lorenzo@kernel.org, horms@kernel.org, pabeni@redhat.com, kuba@kernel.org, edumazet@google.com, andrew+netdev@lunn.ch, angelogioacchino.delregno@collabora.com, matthias.bgg@gmail.com, linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, Daniel Golle <daniel@makrotopia.org>, Qingfang Deng <dqfext@gmail.com>, SkyLake Huang <SkyLake.Huang@mediatek.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 3/5] net: phy: mediatek: split Airoha code to dedicated source
-Date: Thu, 09 Jul 2026 00:32:00 +0800
-Message-ID: <178355366449.113894.1139754683497248912@gmail.com>
-Content-Type: text/plain; charset=utf-8
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="g87yIN0r"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=6p9CG0ucUJyWWPCmR1i0n8mseOGxxjsoZi2KpUvwYFM=; b=g87yIN0rgi+sraGKqIr8gUPHCy
+	KihKUu5dmKFk8wq2yK4l3x0zh1cQGvT9i/avJ7sZ2Z4HAg3Y6ChHyMConek8beVh3js8Lk30B0sQr
+	3L29RcNh0+uaH213xG5rMvbd0mimJkjukGpiIDH2umxA9HhmhjFO+hX23LHRpmMoXPYM=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1whbwT-00BPV2-GM; Thu, 09 Jul 2026 01:44:37 +0200
+Date: Thu, 9 Jul 2026 01:44:37 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Christian Marangi <ansuelsmth@gmail.com>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Qingfang Deng <dqfext@gmail.com>,
+	SkyLake Huang <SkyLake.Huang@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH net-next 2/5] net: phy: mediatek: move MTK GE SoC
+ registers define to dedicated header
+Message-ID: <788172f8-1005-4df1-afb7-320a135bdaf9@lunn.ch>
+References: <20260708102341.53919-1-ansuelsmth@gmail.com>
+ <20260708102341.53919-3-ansuelsmth@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20260708102341.53919-4-ansuelsmth@gmail.com>
-References: <20260708102341.53919-1-ansuelsmth@gmail.com> <20260708102341.53919-4-ansuelsmth@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260708102341.53919-3-ansuelsmth@gmail.com>
 
-Hi Christian,
+On Wed, Jul 08, 2026 at 12:23:28PM +0200, Christian Marangi wrote:
+> In preparation for support of special Software Calibration for Airoha
+> PHY, move the MTK GE SoC registers define to a dedicated header.
+> 
+> It's also needed to generalize the cal_cycle function as Airoha needs
+> only part of its logic (the wait logic) to complete a calibration cycle.
 
-One minor typo in the new Kconfig help text:
+Can this be two patches?
 
-In drivers/net/phy/mediatek/Kconfig, the help text for
-AIROHA_GE_SOC_PHY has a leftover "d":
-
-    Include support for built-in Ethernet PHYs which are present in
-    the AN7581 and AN7583 SoCs. These PHYs d will dynamically
-                                            ^
-    calibrate during startup.
-
-Should be: "These PHYs will dynamically calibrate during startup."
-
-Otherwise the code split looks clean.
-
-Best,
-Wayen
-
+	Andrew
