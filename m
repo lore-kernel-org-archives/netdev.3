@@ -1,183 +1,145 @@
-Received: from a9-24.smtp-out.amazonses.com (a9-24.smtp-out.amazonses.com [54.240.9.24])
-	(using TLSv1.2 with cipher AES128-SHA256 (128/128 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13EA33E3148;
-	Thu,  9 Jul 2026 07:34:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.240.9.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741F33C1974
+	for <netdev@vger.kernel.org>; Thu,  9 Jul 2026 07:45:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783582448; cv=none; b=On4SZ5qwvFzb87rgXrWeEAreodA+ECppIp8L+RE42pgOqB++JKBuLhP6Bo5XeFc7DFWYpLvlInTZNkDRisRVqUQ5n+KK4Qp6TAiwvE1UeCcLXCXlVJt4AGxNmnwBCPUhmQKCdPXYqeNzs3bYR8IK9ol52ze0e6KMHD0X/hf6tsM=
+	t=1783583105; cv=none; b=YkqGvmDLd20Dj1E5JFSCJnBq9GKG+U2eNK/uUgcjFTgO59RKxkt4DpeYSm1JqrmOzIEqPTH/utk1sk8xHo8h+IIGDkV4EpJTlw0db07OC+Z/IFW5GypwOfbKI+vjGPbN8uAAryDXTrIF6xKHXSZ2MWuKz5xocDHw9rLZZtRkvnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783582448; c=relaxed/simple;
-	bh=ffmcoX5dLpTuQVb52phMivqfVFjJTx5n/J7UOF6+aOM=;
-	h=In-Reply-To:From:To:Cc:Subject:Message-ID:Date:MIME-Version:
-	 Content-Type; b=kigehcMiUjbpCwUVVPssbeBkw50OIWGF+p1N6j4kYOsXPl0gkMZ0dIlvSAVW5oGgZtM3auy5n4WKNIFbO0mVSwwhpETdvtPjLKQAob6Pn8AAHKT8GzPix+yFBluifDmrrl6ke5Nhssq5vR32gmQ3tEQmEdYgSuodX2Pbvi6QHEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=c127.dev; spf=pass smtp.mailfrom=send.c127.dev; dkim=pass (1024-bit key) header.d=c127.dev header.i=@c127.dev header.b=q7oCQ2iT; dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b=QWb/dRSt; arc=none smtp.client-ip=54.240.9.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=c127.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=send.c127.dev
+	s=arc-20240116; t=1783583105; c=relaxed/simple;
+	bh=ljQxIHA11d7j3UwD5SUG7PWcXQCYFxsNMhqkVbdm2WA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fXfYpJVD4YCIE14Rnlo7vgN38KA6tHwaMAysXNvYWkQoHO/TGD+Lekos5bU3AmKCYqP0PxM8YXi+dKyLYIc59tmQQXx9DLrkTycv97jnkZUBoiGuTCek526QFrgD9YRO+YZF38GhmpartoNJI5hzINXrgb8YUTCHz0dE0Y7EUwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=k/R1qZ8E; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=c127.dev header.i=@c127.dev header.b="q7oCQ2iT";
-	dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b="QWb/dRSt"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple; s=resend;
-	d=c127.dev; t=1783582445;
-	h=In-Reply-To:From:To:Cc:Subject:Message-ID:Content-Transfer-Encoding:Date:MIME-Version:Content-Type;
-	bh=ffmcoX5dLpTuQVb52phMivqfVFjJTx5n/J7UOF6+aOM=;
-	b=q7oCQ2iTrPQ78m6m80FkQ0XmJ3It6ryCJuXAstYeKOiSg0yx+a5/sjT3diOmdhVh
-	cDowV6ttsn1h1sEIJRPqTybFFQ7OXN5h7eP2WdQ9FZupG5Oyhucv50IQVOIQ8gQesGl
-	pZYLig6rrLOukfgVEfM+YY6yuSBbTl4rQXgu08fQ=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-	s=224i4yxa5dv7c2xz3womw6peuasteono; d=amazonses.com; t=1783582445;
-	h=In-Reply-To:From:To:Cc:Subject:Message-ID:Content-Transfer-Encoding:Date:MIME-Version:Content-Type:Feedback-ID;
-	bh=ffmcoX5dLpTuQVb52phMivqfVFjJTx5n/J7UOF6+aOM=;
-	b=QWb/dRStyBFXRo5yoBFMulxP84SBuiLywvJR2vRQdZVFz3LOyzEqNhNK0rWn73Iu
-	idW/Pwagx7GyZIFhmrmcISt7l1HaT0FXdbeyqq/jVXtQpXn64c32/LOt/RIrzhzzyb+
-	EMwqNIRW0Oo03fC5qGiKbyVwEGUXRanpsexogh+o=
-In-Reply-To: <577055ac-9378-4d43-9ff2-1a1dd17ae9dc@yahoo.com>
-From: Johan Alvarado <contact@c127.dev>
-To: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-Cc: linusw@kernel.org, alsi@bang-olufsen.dk, andrew@lunn.ch, 
-	olteanv@gmail.com, kuba@kernel.org, davem@davemloft.net, 
-	edumazet@google.com, pabeni@redhat.com, linux@armlinux.org.uk, 
-	luizluca@gmail.com, maxime.chevallier@bootlin.com, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v4 2/2] net: dsa: realtek: rtl8365mb: add
- HSGMII support for RTL8367S
-Message-ID: <0100019f45cc4fe2-2464b68a-dfcf-4e93-9bfc-8445370d8e3e-000000@email.amazonses.com>
-Content-Transfer-Encoding: 7bit
-Date: Thu, 9 Jul 2026 07:34:05 +0000
+	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="k/R1qZ8E"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-847d1e9db22so1655474b3a.2
+        for <netdev@vger.kernel.org>; Thu, 09 Jul 2026 00:45:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=asu.edu; s=google; t=1783583103; x=1784187903; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=j3pmlo/oWq2uNWTooLbzNWToUXky3k5pknmZssX/yPA=;
+        b=k/R1qZ8Eov4b7hTEpg6BojLWtq2FsUkfqz9KCFcoPdTz/2jT9BGUzEHaWyzqE13HfR
+         Vi60NSdYWz8XgMpRizJzpW9NFWnhcIGRuCpMfPeBPVh2/VLyH6Bu27lDDfRN5xT93u88
+         GyTZkyHFh9A8gKji+Lv1SqlnZG5hzD1JR/janhBiI37HI0NvKxL2UMwoqmSKgOtNWj2v
+         Hu754VoCscGCDLn63rPmfpP5DULW5+wDqgLgZ+vUq3CosmMC7JeBr8Lk1c+9acWfcxL7
+         PVJyGHtwacnTd8ZI05Ap1g6BNBtrvRwO5k7TKn3ibxLcNZcBEeM2G5dAudcdGZWkbJ95
+         ENJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783583103; x=1784187903;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=j3pmlo/oWq2uNWTooLbzNWToUXky3k5pknmZssX/yPA=;
+        b=qpvHkdoZx7o3LZvJgXGLpVb6RzfYREeejWEeaOBCXVMVs39y/7DKOXbD10iVCaO9tO
+         RLthVUc71pgSfAPzRMz972m/pV3lYtHGUZPkcpvRu46Q7/0IlxbBEdaOXtNDT94fP1LK
+         bwXV+elTyXx4/im0xFDxBGRIpYBe8Wcq9xZyZIPGIQWpbbabBBgKZX95tyvL5J0OSZbb
+         J94jC1BpHyCtt/LjLQrvzaETrDLQgUCp7ovL5SN+Uuyp178WOErKwCmaxm8zxmpJo7zN
+         C+8sF2nCI0mQrH9A/Ailr79I61WH8msekABFK1rKFQ+4pHc5ZPnrxoQ+tZ9p2E8XxugB
+         s29Q==
+X-Gm-Message-State: AOJu0Yx60GacsQ4BMYVDtpGrq/kGhp8IIs8DRNmRkLXYc2nIVToe9ixM
+	1Ch4d62xPLY1BsSX0VjdlyiFY9FGlAqGebsB3E2O2WVKvAd+yfQOtJyJt+/SNq5zSA==
+X-Gm-Gg: AfdE7ckiNOTXvKD/Ncc4i76wn6huhRxk5PtE6UdCawMb6pDQPP3p+VEwqT6QveS4Yzb
+	L1LX3iWO0bvAHkjxGHtWOGSX91GBs4RyuI8XNytrHhN5VDD6yVccpx9DNkpe07ogSsVLequUsUC
+	ekO1WhbPtnUCza+a2K9vqotUQf1s6K6NMw4nYlJ/PUmAt4O1OYqWAd3vikKzrVJi+CPJNY0XcgU
+	aYUvJmt6rTe/5IBENYkAwZZVMb2dfKBWkw9fyfPqXvL7MNxhyVm43HXycToFJM1slHwdAtX1Rwf
+	omPc9kPfWiuYDRew4JrejiHsWh4XcMWBUz5oFhVeqnczFKIeX6/Hx9dj1ihJlaAqj+t7SiMxMDH
+	/ah9L/LrxFzqAp27GM05z0kt4vYYySETKOIEp2VVmzti/2RxBK8IdE7ILKoZEjBofyzQtVbmG6A
+	==
+X-Received: by 2002:a05:6a00:1bc9:b0:848:42c4:d8c8 with SMTP id d2e1a72fcca58-848437a26bamr6023748b3a.68.1783583102879;
+        Thu, 09 Jul 2026 00:45:02 -0700 (PDT)
+Received: from p1.. ([2601:600:a402:c8a0:214c:bc6d:954f:ba01])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8483dc66f2asm2501048b3a.24.2026.07.09.00.45.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jul 2026 00:45:02 -0700 (PDT)
+From: Xiang Mei <xmei5@asu.edu>
+To: Allison Henderson <achender@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	rds-devel@oss.oracle.com,
+	linux-kernel@vger.kernel.org,
+	Santosh Shilimkar <santosh.shilimkar@oracle.com>,
+	Ka-Cheong Poon <ka-cheong.poon@oracle.com>,
+	bestswngs@gmail.com,
+	Xiang Mei <xmei5@asu.edu>
+Subject: [PATCH net] rds: tcp: hold the net_device across ipv6_chk_addr() in rds_tcp_laddr_check()
+Date: Thu,  9 Jul 2026 00:44:59 -0700
+Message-ID: <20260709074459.326345-1-xmei5@asu.edu>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Feedback-ID: :1.us-east-1.z4rHY0qbNtjoW80ZyzVy+DEul17RQEOMT7FC66S60ffkhLWkV35D8ZWXVyxJY1/89bAuLCem4GFJq1VXsxM0u6ZfZbvT1qSjDUeuZG9/Lxk1uINIqi7CenEa93u+fNllqnJMZ0quaBrclhnmtzdFllG4KHSjZOEcaGLa1BWoSpA=:1.us-east-1.epbACCJLarUaEI78XZoGREJ9LamRjxMH5pM2kZb64rA=:AmazonSES
-X-SES-Outgoing: 2026.07.09-54.240.9.24
+Content-Transfer-Encoding: 8bit
 
-Hi Mieczyslaw,
+rds_tcp_laddr_check() looks up a scoped IPv6 interface with
+dev_get_by_index_rcu(), drops the RCU read-side lock, and only then
+passes the bare struct net_device * into ipv6_chk_addr().
 
-On 7/3/2026 5:12 PM, Mieczyslaw Nalewaj wrote:
-> Johan, looks like you forgot to include the scheduler bandwidth bits
-> for the CPU port. Without this, HSGMII will still be capped at the
-> old SGMII rate limits. Something like:
+dev_get_by_index_rcu() only keeps the device alive within the same RCU
+read-side section. After rcu_read_unlock(), a concurrent RTM_DELLINK can
+free the net_device; ipv6_chk_addr() then dereferences the stale pointer
+in __ipv6_chk_addr_and_flags() (e.g. l3mdev_master_dev_rcu(dev)), reading
+freed memory.
 
-Good catch. I had dropped these on the assumption that the vendor
-driver never touches them, but your mail made me look again: the
-"Max rate" block in dal_rtl8367c_switch_init() programs exactly these
-registers for EXT_PORT0 - the port 6 ingress and egress rate limiters
-are raised to 0x7FFFF via rtl8367c_setAsicPortIngressBandwidth() and
-rtl8367c_setAsicPortEgressRate(), followed by a raw write of 0x0007
-to 0x03fa (LINE_RATE_HSG_H). I had missed it because those writes go
-through the indexed register macros and a raw address rather than the
-PORT6_* register names.
+Take a reference with dev_hold() before dropping the RCU lock and release
+it with dev_put() after ipv6_chk_addr(), so the device cannot be freed
+while in use. dev_put(NULL) is a no-op, so the scope_id == 0 path is
+unaffected.
 
-On my board this was masked by the bootloader: U-Boot runs the vendor
-switch init (rtk_switch_init() from the ipq5018 gmac driver) and
-leaves the limits raised, but the kernel driver then issues a full
-chip reset in rtl8365mb_setup(), which puts these registers back to
-their reset defaults. With the ingress/egress limiters back at their
-defaults that would indeed cap HSGMII at roughly 1 Gbps, and I could
-not have seen it in testing because my downstream ports are 1G only
-(as noted in the cover letter, 2.5G line rate is unverified on my
-hardware).
+  BUG: KASAN: slab-use-after-free in __ipv6_chk_addr_and_flags (... net/ipv6/addrconf.c:1998)
+  Read of size 8 at addr ffff8880106ec000 by task exploit/153
+  Call Trace:
+   ...
+   kasan_report (mm/kasan/report.c:595)
+   __ipv6_chk_addr_and_flags (... net/ipv6/addrconf.c:1998)
+   ipv6_chk_addr (net/ipv6/addrconf.c:2031 net/ipv6/addrconf.c:1972)
+   rds_tcp_laddr_check (net/rds/tcp.c:370)
+   rds_bind (net/rds/bind.c:248)
+   __sys_bind (net/socket.c:1920)
+   __x64_sys_bind (net/socket.c:1956)
+   do_syscall_64 (arch/x86/entry/syscall_64.c:63)
+   entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
 
-One caveat I want to be transparent about: for the same reason I
-cannot verify the cap itself, and the vendor documentation leaves
-some room for doubt. The rtl8367c_setAsicPortIngressBandwidth()
-comment describes the bandwidth value 0x1FFFF as "disable", and
-that is exactly the reset default - I read back both limiters as
-0x1FFFF (LSBs at 0xFFFF, MSBs at 1) on my RTL8367S after the
-driver's chip reset - so the limiter may in fact be disabled out
-of reset (though that note looks like stale text from earlier
-17-bit-granularity chips, given this family's maximum is 0x7FFFF).
+Fixes: eee2fa6ab322 ("rds: Changing IP address internal representation to struct in6_addr")
+Reported-by: Weiming Shi <bestswngs@gmail.com>
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
+---
+ net/rds/tcp.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Raising the limiters is safe under either reading: if the default
-really is a ~1 Gbps limit, the write removes it, and if it means
-"disabled", the new value (0x7FFFF * 8 Kbps, about 4.19 Gbps, well
-above the 2.5G line rate) never engages.
+diff --git a/net/rds/tcp.c b/net/rds/tcp.c
+index a1de114d5e2e..204dcdc33c27 100644
+--- a/net/rds/tcp.c
++++ b/net/rds/tcp.c
+@@ -363,12 +363,16 @@ int rds_tcp_laddr_check(struct net *net, const struct in6_addr *addr,
+ 			rcu_read_unlock();
+ 			return -EADDRNOTAVAIL;
+ 		}
++		dev_hold(dev);
+ 		rcu_read_unlock();
+ 	}
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	ret = ipv6_chk_addr(net, addr, dev, 0);
++	dev_put(dev);
+ 	if (ret)
+ 		return 0;
++#else
++	dev_put(dev);
+ #endif
+ 	return -EADDRNOTAVAIL;
+ }
+-- 
+2.43.0
 
-While I cannot push more than 1 Gbps, I did verify that these
-registers really are the live rate limiters for the SerDes CPU
-port, by going the other way: on a build with the setup-time
-writes described below already in place, I lowered the limiters at
-runtime (via regmap debugfs) to 12500 * 8 Kbps = 100 Mbps
-and ran iperf3 across the CPU port. Throughput clamps from ~460 to
-~95 Mbps with the ingress limiter lowered (CPU-originated traffic)
-and from ~600 to ~96 Mbps with the egress limiter lowered
-(CPU-bound traffic); restoring the maximum returns both directions
-to baseline. The ~95/100 ratio is the expected TCP goodput for a
-100 Mbps wire-rate limit, so both limiters demonstrably meter this
-port at the documented 8 Kbps granularity. The only thing this
-cannot settle is the meaning of the 0x1FFFF default itself
-(~1.048 Gbps cap vs. disabled), since any value at or above the
-traffic I can generate behaves identically. If you have an
-RTL8367S setup that can push more than 1 Gbps across the HSGMII
-CPU port, a before/after measurement would be a very welcome
-confirmation of the cap.
-
-So I'll add the writes in v5, following the vendor init: raise the
-port 6 ingress/egress limiters to their maximum once at setup time,
-rather than per interface mode. Two differences from your snippet:
-the vendor init writes the full 19-bit rate value, i.e. the LSB
-halves too (0x00cf and 0x0398 set to 0xFFFF), so I'll program both
-halves rather than only the *_CTRL1 registers, to avoid depending on
-the reset defaults of the LSB registers. And LINE_RATE_HSG_H needs no
-new write at all: the driver's common init jam table has always
-written 0x03fa = 0x0007 in rtl8365mb_switch_init(), so that one is
-already at its maximum on every probe (which also matches the 7 you
-read back for it). I have this running on my board already: with the
-setup-time writes in place both limiters read back 0x7FFFF after
-probe, and the HSGMII link comes up and forwards as before.
-
-As an aside, a per-interface-mode variant of these writes does exist
-in the vendor code, but only for other chip families: in
-rtl8367c_setAsicPortExtMode(), the chip id 0x0652/0x6368 branch
-programs its rate registers (0x0130/0x039f/0x03fa) on every mode
-change, with 7s for EXT_HSGMII and lower values otherwise, and the
-0x0801/0x6511 branch writes 0x00d0/0x0399/0x03fa = 7 only for
-EXT_HSGMII (which is where the pattern in your snippet comes from).
-For the 0x6367 family the ext-mode path never touches them, and the
-vendor only programs them once, unconditionally, in switch_init -
-which is another reason I prefer the one-time setup write over doing
-it from the PCS path.
-
-For completeness, the same vendor block also touches three related
-bits: rtl8367c_setAsicPortIngressBandwidth() additionally clears the
-port 6 ingress metering pre-IFG bit and sets the "flow control when
-ingress rate exceeded" bit (PORT6_MISC_CFG, 0x00ce bits 10/11), and
-switch_init follows the egress rate write with
-rtl8367c_setAsicPortEgressRateIfg(ENABLED), which sets the global
-"egress rate accounting includes IFG" bit (SCHEDULE_WFQ_CTRL 0x0300
-bit 0). With the limiters raised to maximum the meter never engages,
-so neither the exceed action nor the IFG accounting has any
-observable effect. I plan to leave those three bits at their reset
-defaults and program only the rate values and LINE_RATE_HSG_H, to
-keep the driver's footprint on the QoS block minimal - but I'm happy
-to mirror the vendor init exactly if you'd rather not deviate from
-it.
-
-> One more thing while we're on this: I checked the equivalent
-> registers for RGMII on the RTL8367S, and they come out to 1, 1, 7
-> respectively (INGRESSBW_PORT6_RATE_CTRL1, PORT6_EGRESSBW_CTRL1,
-> LINE_RATE_HSG_H). For correctness these should be set to those
-> values in the RGMII path as well, rather than left at whatever
-> reset/default state they're currently in.
-
-The 1/1 you read back for the rate limiter MSBs match the reset
-defaults I see on my RTL8367S as well, and the 7 for LINE_RATE_HSG_H
-is the value the common init jam table writes on every probe, as
-above. Since the driver hard-resets the chip and then replays the
-init jam on every probe, those values are already guaranteed in
-the RGMII case, so writing them again from the RGMII path would be
-a no-op. These fields are also the MSBs of the per-port QoS rate
-limiters rather than link-mode configuration, so I would prefer to
-touch them as little as possible from the link paths. My plan for
-v5 is therefore the single write at setup time described above,
-which covers both SGMII and HSGMII and has no functional effect on
-RGMII either way: both the default value (~1.048 Gbps, if it acts
-as a limit at all) and the raised maximum sit above the 1G RGMII
-line rate, so the meter never engages there. Let me know if you
-see a problem with that.
-
-Best regards,
-Johan
