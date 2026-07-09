@@ -1,144 +1,145 @@
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6CF42CAE2
-	for <netdev@vger.kernel.org>; Thu,  9 Jul 2026 12:37:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783600664; cv=none; b=GO/ijMA35j4T2sWeu3amjXWK7fR8L88gQSbLgCB4UXjymjxHO+FFNP4UdOXezcrpL9CUZwRFQoKq4zAM0xsJ1G46fgHl+jvK+qCRyGndKrxIszWlziKiDvORxQoDAOlDY7GjHBh0b5nOVIvanxfOERTfJR3oOcZglW6IAKI1iP4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783600664; c=relaxed/simple;
-	bh=N7u+K2H8AMSpKxT22XYhaTAOeJR5UWYAcY50gHQtV+s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OVs7VXjUvuzy8NjMX03RhlkA4CX4WjllRqaKfX/WDZ/AbyAJM25VxCQ5QDC40/6kdQvIOQ5KsyNL5mLLIEpvDNDKQdSTbkVPTm7inqZgAadrOLhd6H6FjFI/9fOHA/3Qo+sviEhVPpqFEJlTMmnNWhUe/peGq5X+rubAJCKxdxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oSTzm5VZ; arc=none smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 987BD1BD9C9
+	for <netdev@vger.kernel.org>; Thu,  9 Jul 2026 12:39:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783600754; cv=pass; b=IVDeDWV5K1WYPVKabOHXSFgJNfB3ue1twG8+pWj68XIH5he3dYjEoa3gjZXyfXO92BrHI4Xvysu+bln+MP00oyqOnwKQCQbRygAtgpXspVObL0XtQwQqzYhzsosrr3NNnwpqe9MPk6rLqRr5nZPWY8RdomkgduLuezQEDc/mOJk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783600754; c=relaxed/simple;
+	bh=Xl9PbSXbschCuJYzks46Urc8XGsA9GGrNgmJ8oWnohY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jMIsa13tes3dUIl2LdBk4eAptjsOkhwHUvtiOm9F4+LlSdopNxWYsEAeUvPuS2ryXAgCf9oivVnlf7yamYibD6NJenFLFURzSZv74XUWm2hd95k14hsXszcRyOx0p59RiVfbjoFoos0JkvTn7Gp9lN65A3uW1IAleJ3LngGvhhM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eJnm6eQH; arc=pass smtp.client-ip=209.85.218.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oSTzm5VZ"
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-51c4436d02cso8140831cf.1
-        for <netdev@vger.kernel.org>; Thu, 09 Jul 2026 05:37:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eJnm6eQH"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c15b509c323so104781166b.0
+        for <netdev@vger.kernel.org>; Thu, 09 Jul 2026 05:39:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783600751; cv=none;
+        d=google.com; s=arc-20260327;
+        b=o5DIPT0yaPOfMx0SWc49xRJ4SFsCCtySgxrPfDo2ILy6VuLxzsxP6eV5Jp67AZKYak
+         o/UApNmePbF6T6f2QNudUMJtLwaLSxa7VBs5nnZYr8iFJKZbdT1BBORTmiHlTwmiSm2Z
+         PJe8f9ssew+awWOZLAwjdNxbkr7J84BLU6HA5nqDjJ0hexY37Lqrd4wAGNcSxSG1MZcC
+         zDphAAczszrMjme/cDxnbTDVCLl16toARUjrzlBYE45bk1moeWCq8xEtXTh3gWdAFVEI
+         sLqBsTytY+NHYgerGfUaHtSSEdaniV2QHE4unvizuzUSYvYz7HrQaZGiwwFPTWBV8OEt
+         rY6Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Xl9PbSXbschCuJYzks46Urc8XGsA9GGrNgmJ8oWnohY=;
+        fh=xUUQ3lsbv3DTvKdt/3+IHztWHOYXD70ym7pg/8QqFsY=;
+        b=eITwFcDbYYnPCflTvs6uqqP9ilGVx4qadpgZtE0XeoTWJns5hqRSpsl5Higl0R8pun
+         wCYAlFrjPgsdffHfh4tmsmkoxohrhl0GFE7OKHkOKX2dQhWWBchWP2ZRmoYhZDvuTpVh
+         DNt/ZzY0otmXHCtxgUfUlxzd692no1pmOSzeUhvoL19JT3L0DJ2x49P4Qjg22aB8A9Of
+         sh0+VdZl8qAeJpfbuSB+I7EHWGk3ISj03ij7/OZLVv0T7MRDEX5r4ARKtYA+Ltb+z0km
+         i8jawM2SGZaUzAIjkGOlfVXv9265DQEZaI1sYKKjQfunE6hhI7adgaBXbn34OMic94+a
+         N0lw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783600662; x=1784205462; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=eZsM6QHqor3CIMylXI/PYzeAjQqxKR3ZG+lD/y/C554=;
-        b=oSTzm5VZ7AfjqOHJkzYkX+wFI4gGi93a2qGibtMzjADMd0+KQ15XUmLpKBT+9QUEhz
-         pZ0iU0UQbXCTHq/lik610Ak7La5pZDSlCYj0TB5ws6Po5gVYxNQKxiYyY8tluNujTuJU
-         6GNV6NlRaiRw/+Zs+kLGOmdaeMyeVONB4UXX8QbZ0FpbyNkOj1Y9av572FJDxpVGp7+0
-         CXj7wmqKhVaTr30U2+PPioWJ64IDEkmGB5XfdYlYgroWD6KcFsn/QShQ+OG4l9NbcQvO
-         YLztGYAWcX7EELU5M/WW3X71uqUMV8M7bSpTvp7bYLAES6TMuLJ9CEdMz3qcNdCI8bTn
-         Bi5Q==
+        d=gmail.com; s=20251104; t=1783600751; x=1784205551; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Xl9PbSXbschCuJYzks46Urc8XGsA9GGrNgmJ8oWnohY=;
+        b=eJnm6eQHfFlt2rdQI3xo7xAzeOmjFTHpkVA17rMwzRJ6hkNiY5c3x/I/8zDX4auA/d
+         nkSpdIF+qbWFUcX1ip3R/Vy+33sJREkKUhjrl//5QDgO7rOInoo6OT1dp+UgkOOu7DwS
+         TClCCZpva3RRp4EiPcKt8tvCezP7NNnsR87liioMsSVHQjVTl4LPJVPUZdGh9ZjN5P0G
+         ykA9wl6tWzZ4FFtJ9BRLa7jKTSsbBbeAqKa7m8di6ORGrY3p8OINcshy6XJQHp3le0jH
+         dkisisnnwihkjr1vqytCFc8XGtbKSi0/1AhDEPPlh2U06mAe/W92EXj4UnfLIUE1V1Bg
+         CA+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783600662; x=1784205462;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=eZsM6QHqor3CIMylXI/PYzeAjQqxKR3ZG+lD/y/C554=;
-        b=buGAcVskr5Sgmpp2BQ6vMqnEJV4yelos8qNmVjXVmowjnSM2IGyM62DALcGxeMqyXf
-         w8VBRlJ+dZkKaI+gvn4iVxzOaYSUABLWHCJ9Pwxbq4N9X0aaRg6GtVhRSp77hsWW9GFu
-         2JRRCjDsfk+oVzuWznk6CN0teUOuVWe/FiRqb70+dWX0qAHsG7AyJFPnYORUXiq5hmqX
-         ZTmem/GZZ/dzQTuKs4aj0Q3cdUWfKvznoSqKdmdE45rNAe1Dor2CRb2DoZ/1f8h+yNNx
-         45p6gupXz+laDntq64DhwaKiYeuolMeq9pYu/EuemIkfTFI85g12haLg0MPi508N3+kB
-         Ac5A==
-X-Forwarded-Encrypted: i=1; AHgh+Rq9BXOLWTaOvgo6p4qFW/R2gA0QgH2g/X8dRv3RNAxBTRCn1qn4UvkaVFIX9kq+YI5gfKvvtQs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwNhTw67jZcon3WWwZn4O0aBxTPPoT9PkdVcfj5eOc/ydhp3NG+
-	EV52cD0zu9JuNNp88d69uW3nYVXtNDx4fmeiBbBjhY380e6ZAMVPVD0R
-X-Gm-Gg: AfdE7cmElnZWMDewgdajJbdYK4NS5O7AFl7/Cxkip4qPahx/m3qDHBE8ULLPz6Oorwe
-	1aOGWMH5le1FxH3q8268XhDMP1qdB8nduSKHjeehCfYE5jZ98p4rEvI538rzQUzHwIY24xTdes7
-	0IYwisl8Ah+ZJVjq3lX5wzss2isxz4E9gIeKEZFDGq2BgjFQRkQf+tNQB0W/0CsJ/vU7FroiThb
-	Qr7Bf35P7IfQ0ibPOBldRMdtWkMMa+/21q7DtOq7FI3ZJbVEud1o7Fdqi4P4g0plKeZ2Gw66vKR
-	g7r/6RGYSa370VW+ebJnDRkq+1h6lA9nNKupbQTPWTfb/2/FTe5/NbeI9GI1zrszutkSR+eYwLL
-	e23Saa4GfEuzoYm0d7jONpK+FwElbJ7sNU6Mq+bO6ctGSzXb7EPOFjYidi6PJY6IT7Edq8ttk1L
-	vI66SxtJTlFh6xpBWusj8h2S7UxFUilDEQ+3UV/d2YXBqH
-X-Received: by 2002:a05:622a:606:b0:51c:844f:28df with SMTP id d75a77b69052e-51c8b420e56mr74133901cf.75.1783600662266;
-        Thu, 09 Jul 2026 05:37:42 -0700 (PDT)
-Received: from ?IPV6:2a03:83e0:1145:4:69c1:4b24:4324:2373? ([2620:10d:c091:500::1:7f14])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51c41abe756sm172240671cf.6.2026.07.09.05.37.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Jul 2026 05:37:41 -0700 (PDT)
-Message-ID: <dab3ce06-b2a7-4495-8fb3-a867e33806a6@gmail.com>
-Date: Thu, 9 Jul 2026 08:37:40 -0400
+        d=1e100.net; s=20251104; t=1783600751; x=1784205551;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Xl9PbSXbschCuJYzks46Urc8XGsA9GGrNgmJ8oWnohY=;
+        b=ZYKorxe/NgeBAS5i7EkbUBVxwjlMlOnUpq4DWArpxaMQC5ytFJ0DtOd9Xmz/uFeLZq
+         vwFBKFiu987JYcJKgtQs+ISQ6MVabt7nPIRETFWH5gExRYGZZhXfNjh8uIaK6RwJsI3v
+         I9xKKk7ZhxWF9dw0aD1sZSIPLORwMbqMFgaSJGyj6t7vWn8qaBjSqjpYfL3KBxjopk1a
+         0xVj12Rr0iTw1RmYufc1Y9eeZJ6uQ35o3PWRwMErwyYVeUfuakeWhXbSUNSyUcUpflGe
+         +6cGv0tvAJG/XQmE2ttNKkzH5bkJUzI3To4E3MHElkdLDIBDS4jBRiw9wZo2RsgRPm11
+         zUtA==
+X-Forwarded-Encrypted: i=1; AHgh+Rr2vLhdZEwsiQR1nT5H2g8v/QzHyLuUC/zy0K6dEuoDkNHtCKur7bfYnM2uO4og58pBQ+o1dTU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLCQpb4WwfHPz24Z6hF+CkUSIpeThisYuXMZG6ldXqv4IZNU35
+	jodckEzYZmAj4eeqrOOMljb4kSreR2ln5n/R6eWcyhohRZxh7zwwvMP63REtR30iR1LL7CEB+7t
+	PT9pGvcw5Y/HYBoqwFkWFFXGyHg5Df4s=
+X-Gm-Gg: AfdE7clspj/d1e/szX/uke1e+GqA9nVW0jagiMZDcBTQAOzavtnIf7EDF0a+1VZM7+v
+	ND3iE6H1jSvvkeM3nJ1KAoO4Ux9j+edNQWpjYcHCfm+lYQzvTTxvuDmIG0D6ItttXTjZd81Xg8N
+	UTHRZUg9GjYhdh/XzLpDhzINBEYBDW0FGsX1JsUMA5OE47oYiNEYNLSzch4DsifMoblH0ucz+QR
+	9Pnrcw7jBOEkrErioKTq843hMnihVeGNdpFuCnzp/fzjlHuhXhL6wG1OOz88GYWC1rnKgI=
+X-Received: by 2002:a17:907:e153:b0:c12:6ed1:a7bc with SMTP id
+ a640c23a62f3a-c15cdfe9b54mr217106766b.7.1783600750745; Thu, 09 Jul 2026
+ 05:39:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 00/15] net/mlx5e: PSP cleanups and improvements
-To: Cosmin Ratiu <cratiu@nvidia.com>,
- "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
- "davem@davemloft.net" <davem@davemloft.net>, Tariq Toukan
- <tariqt@nvidia.com>, "kuba@kernel.org" <kuba@kernel.org>,
- "pabeni@redhat.com" <pabeni@redhat.com>,
- "edumazet@google.com" <edumazet@google.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Cc: Boris Pismenny <borisp@nvidia.com>,
- "willemdebruijn.kernel@gmail.com" <willemdebruijn.kernel@gmail.com>,
- Jianbo Liu <jianbol@nvidia.com>, "leon@kernel.org" <leon@kernel.org>,
- Rahul Rameshbabu <rrameshbabu@nvidia.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
- Raed Salem <raeds@nvidia.com>, Chris Mi <cmi@nvidia.com>,
- Dragos Tatulea <dtatulea@nvidia.com>,
- "sdf.kernel@gmail.com" <sdf.kernel@gmail.com>, Mark Bloch
- <mbloch@nvidia.com>, "sdf@fomichev.me" <sdf@fomichev.me>,
- Saeed Mahameed <saeedm@nvidia.com>,
- "aleksandr.loktionov@intel.com" <aleksandr.loktionov@intel.com>,
- Gal Pressman <gal@nvidia.com>, Lama Kayal <lkayal@nvidia.com>,
- "jacob.e.keller@intel.com" <jacob.e.keller@intel.com>
-References: <20260707130858.969928-1-tariqt@nvidia.com>
- <0dfe5f6b-dbc8-4104-8883-e88e8e59ab58@gmail.com>
- <9c6a65b7e54a31dea87e7ea1c5b1b3931240f3ac.camel@nvidia.com>
- <3a8a33b0822e82d8a37aeb7e9c326889074e458a.camel@nvidia.com>
-Content-Language: en-US
-From: Daniel Zahka <daniel.zahka@gmail.com>
-In-Reply-To: <3a8a33b0822e82d8a37aeb7e9c326889074e458a.camel@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <CAE2MWknz4X_gcNo6jkR87Lg8F0zfubkOc4Ujr57CS3aBMWrjEA@mail.gmail.com>
+ <20260625054005.0016.bridge-mcast@kernel.org> <CAE2MWkn=azz3gUKGBYc1jjvVnLxDHuHk9M7wAJHdAW8v=dP5GA@mail.gmail.com>
+ <CAE2MWkkON7HuB+Szc1VhaPL8ZTYMAyfzmPM_7FkXvOPnjnF5rQ@mail.gmail.com> <2026063019-crummy-mosaic-d9bb@gregkh>
+In-Reply-To: <2026063019-crummy-mosaic-d9bb@gregkh>
+From: Ujjal Roy <royujjal@gmail.com>
+Date: Thu, 9 Jul 2026 18:08:58 +0530
+X-Gm-Features: AVVi8CeeSy9sOe-nDvJ2FgnZIaGmm16MJR8SeE21mrKCu6quf0TcNIj4Rs8oCSQ
+Message-ID: <CAE2MWk=SXVZRmOnnWs0AYWLWqLipo0PTND9UCQw6noDBoJ5CdA@mail.gmail.com>
+Subject: Re: Please backport bridge multicast exponential field encoding fix
+ series to stable kernels
+To: Greg KH <greg@kroah.com>
+Cc: Sasha Levin <sashal@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Nikolay Aleksandrov <razor@blackwall.org>, Ido Schimmel <idosch@nvidia.com>, 
+	David Ahern <dsahern@kernel.org>, Shuah Khan <shuah@kernel.org>, Andy Roulin <aroulin@nvidia.com>, 
+	Yong Wang <yongwang@nvidia.com>, Petr Machata <petrm@nvidia.com>, stable@vger.kernel.org, 
+	Ujjal Roy <ujjal@alumnux.com>, bridge@lists.linux.dev, Kernel <netdev@vger.kernel.org>, 
+	Kernel <linux-kernel@vger.kernel.org>, linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, Jul 1, 2026 at 2:00=E2=80=AFAM Greg KH <greg@kroah.com> wrote:
+>
+> On Wed, Jul 01, 2026 at 01:33:07AM +0530, Ujjal Roy wrote:
+> > On Thu, Jun 25, 2026 at 8:20=E2=80=AFPM Ujjal Roy <royujjal@gmail.com> =
+wrote:
+> > >
+> > > On Thu, Jun 25, 2026 at 4:12=E2=80=AFPM Sasha Levin <sashal@kernel.or=
+g> wrote:
+> > > >
+> > > > > Please backport the 5-patch bridge multicast exponential field
+> > > > > encoding series (726fa7da2d8c, 12cfb4ecc471, 95bfd196f0dc,
+> > > > > e51560f4220a, 529dbe762de0) to the stable kernels.
+> > > >
+> > > > I tried, but it doesn't apply to 7.1. Could you provide a backport =
+please?
+> > > >
+> > > > --
+> > > > Thanks,
+> > > > Sasha
+> > >
+> > > I will create patches on top of 7.1. But tell me what about all other
+> > > stable releases? I have to create patches to all stables and how to
+> > > share the patches to you? Via this email or any other process? I am a
+> > > fresh on backporting my changes to all stables.
+> >
+> > I have prepared the patches for stable releases mentioned in kernel.org=
+.
+> >
+> > And I am waiting for your response so that I can send you the patchset.
+>
+> Please just send the patches :)
 
-On 7/9/26 6:51 AM, Cosmin Ratiu wrote:
-> So the test relies on TCP retransmissions to catch the encrypted echo
-> from the responder on the UDP socket. The timeline seems to be:
-> 1. data_send_off disables PSP on its end.
-> 2. data_send_off opens a UDP socket and binds it to port 1000.
-> 3. data_send_off sends "data echo" to psp_responder on the control
-> connection.
-> 4. psp_responder send "echo" on the now sabotaged PSP connection.
-> 5. psp_responder acks the "echo request" on the control connection.
-> 6. data_send_off receives the ack.
-> 7. data_send_off tries to receive "echo" on the PSP connection but
-> expect_fail==True so stops after 100 ms.
-> 8. data_send_off reenables PSP on its end.
-> 9. data_send_off waits for "echo" to be received now that connectivity
-> is back for up to 350 ms.
-> 10. data_send_off asserts that something is in the UDP socket queue.
->
-> So UDP packets could be enqueued if PSP packets are received between
-> steps 4-8.
->
-> It seems disabling PSP steering rules isn't as atomic as we thought,
-> and sometimes the first echo is discarded by steering. The default TCP
-> retransmission timeout is 200 ms so there are no retransmissions in the
-> ~150-170 ms between steps 4-8.
->
-> With a slightly modified test that directly requests data echoes, the
-> test becomes more reliable. Additionally, you need the UDP_NO_CHECK6_RX
-> (102) socket options for the ipv6 version, otherwise zero-checksum UDP
-> packets are discarded by the stack. I vaguely remember doing this
-> change for this test in Jakub's repo a few years ago.
->
-> Anyway, here's the diff that makes both tests reliably pass:
+I just sent another email with the subject "Please backport bridge
+multicast exponential field encoding fix series to
+6.1.y/6.6.y/6.12.y/6.18.y/7.0.y", please accept that for direct
+cherry-picking. Infact 5.15.y also cherry-picked cleanly, except for
+the selftest commit which is not needed here, will send another email
+regarding this.
 
-Thanks for taking a look. I suppose the timing and 0 udp checksum 
-explain why I wasn't seeing any packets. I was concerned that we may 
-have entered a state where we were losing some udp packets permanently, 
-as opposed to just some transient drops at the time the device is 
-reconfigured, but it sounds like that isn't the case. So, I think this 
-works ok then.
-
+I will send a separate patchset after resolving conflicts on 5.10.y and 7.1=
+.y
