@@ -1,59 +1,75 @@
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011043.outbound.protection.outlook.com [40.107.208.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 819B83932D3;
-	Thu,  9 Jul 2026 03:50:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783569049; cv=none; b=OnguIqTbLL+wGWZvjAKzuCA2jIcgt3pfM8IOLvlua526luvF57XdTViBDjfhe24WRBWsHvbS9yCl5KmH8DEehaBVrCuefAqXzzdYbkjbFukVfeAHy0ZBXbx18im4ZeiNuRsAu8juuEsbK/OdmQMFzke+UfgZJ7+ocmiYNwddD/w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783569049; c=relaxed/simple;
-	bh=JednrzXnDxkafOhtty2lkU/oY2wK64ws0iG8VhUIDOE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Dvlf0iybqldU/jZN/01CUBWbzpTLfOOn7kmZvSF503UFyKVWlRJBfSW45fxsw94L0aYDWrJLXxe9rjPrwYAKc+iGsbIy7kMWiVOSDReJ2KLCvZRJ9o5n4xFAkYSr7HyIaUTtBTRVKg2GPeb4oTGyOzxuLgjQHcvevTN3HxEEF5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=EdzzAUmi; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A9E1FC8;
+	Thu,  9 Jul 2026 03:53:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783569208; cv=fail; b=t25GF0Jlp8ALonuu+rRjxfVlHqxonwM2/bGLJyNp4itlkWIj12RPDgmHR8KLOjMflp0SiXaO89JQ23C1CFM36aFJeWKY0okzIZqg0VVhEbzlLH91T7G5iMm4hVVYLm5s4LwPwmeHaiDWmItjP7lJBqUqOvn+TQe/uJ9H4r6HKR8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783569208; c=relaxed/simple;
+	bh=EsUVjQE4uOvFi33moTqOVh7RYte75tNMnq4v3EYGnJY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FC1HP/kBGQr6U5UOY4/dqkhqxBWr8ENZ3aKk0tWUyYHj4306DMMtoYSeSh8fw8fbVmcD921P3lvK5vm00Epm7i42uvYn0ZEnz4h3QPZH18A6K8BYUHFREou5yB28/9Rh113XKBG6N8huNuuJDh/gQ/SpHDJn8m5aj8p0RFl0eXA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=KbFyMgCt; arc=fail smtp.client-ip=40.107.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="EdzzAUmi"
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 668N8cWU2286152;
-	Wed, 8 Jul 2026 20:50:27 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=7
-	AvdgVr3QRDIWeldWDM0dtGdNKHEk1MnEyC3CdIAFNM=; b=EdzzAUmix0d7xWxyF
-	9SN4v8jRrD8DtAqyFOGCcSDU4bUg1dqWzQWILeQeispJzmcN+IiYepX2V7NLzs6X
-	U9xSGgAYvoNSsLgQZxJEqj2DDzg7Ea++WBat/AGIPg/1isjWHRoe70YDX6r8y6eK
-	6iTylFXCuuawUHC3qPRODGIGPQLj+1bn0Uk2op1e2aftjXeurwgB/PV2y+4/2QQY
-	8gfqAlMnpei/L1RCfO/Ja/YLNx+UBPU9PmmTnGnVACQE5WQMutWTYcyrL9x8Tbjq
-	xm3BJF7SeNcRjbqsXv6ztb089vkLfhKCjLaI7i2FpNPtvxfGssPblB8pKYgmapxy
-	devSw==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4f9jwmu871-4
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 08 Jul 2026 20:50:27 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Wed, 8 Jul 2026 20:50:26 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Wed, 8 Jul 2026 20:50:26 -0700
-Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id 47D5A3F7097;
-	Wed,  8 Jul 2026 20:50:23 -0700 (PDT)
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <stephen@networkplumber.org>, <dsahern@kernel.org>, <kuba@kernel.org>,
-        <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
-CC: <rkannoth@marvell.com>, <andrew+netdev@lunn.ch>, <edumazet@google.com>,
-        <pabeni@redhat.com>, <jiri@resnulli.us>
-Subject: [PATCH v5 iproute2-next 1/2] devlink: use DEVLINK_VAR_ATTR_TYPE_* in param show/set
-Date: Thu, 9 Jul 2026 09:20:15 +0530
-Message-ID: <20260709035016.911607-2-rkannoth@marvell.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="KbFyMgCt"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TrAkAbPhMbSVSSgD+BeX3PyUO7Qbljut0CmeUsjNtrepNhZEQKx83DqedfAypXlD0qbbrP9KdLbGLd+oTCijScosb2S6p/D85jYGxmdzKf56mvXoQmMM89Bgjf1wThsxfXJUusB8lGOkviYszqGGPy2vlfqTLyimJtY1XS8hwbRXCiBMRKq7RiAW84xj4AiOa3uZXzUwbih2KbzHUq7yepTBS3UYuKzlUqKEFTFn4L3mPDYJ+e5lmAndEhGzVBD+sltjcBmuAqCNdzz1LecWAMcKXwZgEu9DwAFOwgQqMMfkXLGmPsV2ftyyXv7mjfz3tu6f197/3m3IJPKR74p14Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EsUVjQE4uOvFi33moTqOVh7RYte75tNMnq4v3EYGnJY=;
+ b=ByTWAUzBamV/ZmKKWv6pPC7tzQ3/Va5AtnyBuSvr1D+uVWELgtlBqOGuQsCsRlH8MkhFfyVdtmxxqWkxwpN6cl21sRrDC/hJGjlqPVYFCML6lk64v2moSIKaYyrMRfLbUJDHXK7LuC6aLHREyqkMlhwXdhiblYSornaZB4i1ehfpPMdNfbhHeN7fpqxFAFPtpK21h995CrPPVDNDiKbZS7aMaOOQgr+KvF1jDgzzbE42grfGIvFUiaHme0tR4KcGoykuwHzf3WwGMY2NU9Z5Y553eIlnooYxppqu227crV9BP81y0v78ORhswHv012pXHkX/3hMeIP3Hpasc/8ONZQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EsUVjQE4uOvFi33moTqOVh7RYte75tNMnq4v3EYGnJY=;
+ b=KbFyMgCt9TvbGUbOqJ67Yw6Yc3+LlwufaSKYR346z2+Fz+bb0fnYUGDSf6XKlF3MDdeiojfDCAYOJUS4I9gpw2PBj7xeN3880uRLcgcO8aD0fKe8odZylmXHHb4HI8aEGwnfYLS7RqnpHVCYbhui2uAlytDojG2TGfp7SrkF1iLxZj+jS+W/zaK+PyKHWGERqsHF/FNp3zNUWuOP0yYYLDqNJ0pu12wTPRL50uUAoYtNgEButmEfBzONw6E9oaXZcGNtkQ1Gc93WLzEJaLzBFjxddJAn9pEsC+sOixboo0xzXkiXTR55/mC9nLTmEI+AeiGxg9U227VcgBS6xqAUFQ==
+Received: from BY3PR05CA0030.namprd05.prod.outlook.com (2603:10b6:a03:254::35)
+ by DS0PR12MB9060.namprd12.prod.outlook.com (2603:10b6:8:c4::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.14; Thu, 9 Jul
+ 2026 03:53:18 +0000
+Received: from SJ5PEPF000001EC.namprd05.prod.outlook.com
+ (2603:10b6:a03:254:cafe::3d) by BY3PR05CA0030.outlook.office365.com
+ (2603:10b6:a03:254::35) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.181.8 via Frontend Transport; Thu, 9
+ Jul 2026 03:53:18 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ SJ5PEPF000001EC.mail.protection.outlook.com (10.167.242.200) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.181.6 via Frontend Transport; Thu, 9 Jul 2026 03:53:17 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 8 Jul
+ 2026 20:53:04 -0700
+Received: from nvidia.com (10.126.231.37) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 8 Jul
+ 2026 20:53:02 -0700
+From: Jacky Huang <jackyhuang@nvidia.com>
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
+CC: Russell King <linux@armlinux.org.uk>, "David S . Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Daniel Golle
+	<daniel@makrotopia.org>, Vladimir Oltean <vladimir.oltean@nxp.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Question: net: phy: realtek: RTL8211FS SGMII bridge mode support
+Date: Thu, 9 Jul 2026 12:52:42 +0900
+Message-ID: <20260709035244.3008436-1-jackyhuang@nvidia.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260709035016.911607-1-rkannoth@marvell.com>
-References: <20260709035016.911607-1-rkannoth@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,166 +78,63 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA5MDAzMiBTYWx0ZWRfXw1WNOPq0Z4SX
- Yzj7/wTCbtSXhZZ6SfeN+3gCTUzrqcWLZ+h/LMjaubLXnyjGW65OlzMS1w4D7+H0wSKI3ASt7aF
- cURc/QvyNT0syRvE66PGaN2VgNSIv7c=
-X-Proofpoint-GUID: R4w-tvc5vpOAU0_veCXNXHdaZZ7hh1CV
-X-Proofpoint-ORIG-GUID: R4w-tvc5vpOAU0_veCXNXHdaZZ7hh1CV
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA5MDAzMiBTYWx0ZWRfX1W7iQ/oeWN42
- fNjrOuPYcJSqXWubigewkaXWtq+o5dq432Ijt5YyUEPWDXtHQ6ZylHv/un1uLnRgTc2WBCUfBij
- 3ofwK1hOEBCgWstRTo+YvXw/Ypq8wphG8dhiyV4wuCrwFBbo1gL/3K4dOACO2VRicZ2Lq2yWO9d
- ukPb2/kEvJM4/rqGYC0ofCR94ky1C5SS04xQIqaVJGolPjjzTdwZne8gOpRdJgc2c+Si5Ddpahw
- LKBwxZZpJheJ2vDi7ZmIWefjOYb0LEwrZ07yENk6dOFHojvd6Xwf1iKBqZw/OfD1Tr3qiAQ7PEo
- qlSNsVaFPe45iY2IDDr5QTN7jqop2rxAH3XMetJuJHd9HXi5claY2i9kVeBc+3Uw12M3LsiTLSR
- kn0BjhBWYRlaH/rCprrjmscMmoyA1C4l2cX9g2N0Y4FZ14DCG3M1yK7VVI+Oo+RpQri2vUblC7H
- C4QZ1syy+UPbylUXEtg==
-X-Authority-Analysis: v=2.4 cv=aPDAb79m c=1 sm=1 tr=0 ts=6a4f1a83 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=EAYMVhzMl8SCOHhVQcBL:22 a=M5GUcnROAAAA:8 a=GRCvF58QQ8dbGe4S3LoA:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-08_05,2026-07-08_01,2025-10-01_01
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001EC:EE_|DS0PR12MB9060:EE_
+X-MS-Office365-Filtering-Correlation-Id: c2571721-9916-40bf-e30a-08dedd6d9c75
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|36860700016|82310400026|1800799024|376014|23010399003|18002099003|56012099006|3023799007|11063799006|5023799004;
+X-Microsoft-Antispam-Message-Info:
+	Ny5sB4YPqKfBWgU4dqo13vrkeHDdgWqv4DWF/yjR8kCGCwz32jdQjIfzjgEmRbkrOlsAp+pxFYgNw33czofwRTdu5ml7m6O3xu2oXVChDZuQO6YEOqxkEscyvsSmigK0pia5BW5cSfzeHjF6+regw9FXvjAhA5LcY7n3ZRihX6lz0yPu26/mMu2cDhovU5CBkCXA+PAuQorxmcR5GZmQYtGsIw5+9PnZTlhbz7tWLX8+LLZOfWrJBMcP66kK68FkJSmO7U35lYAO2LMoaXd7Mc49XkDUmBJgVIzrmuRBmUF6MXXbsOgLZJS/97WOB9VpTxNtTs+0D1vIToT8D+cYFnqKPJ0ar3UykSRqlNfu4bF1Ncaji52txTTRkfDKKMtjTHifIQB+v9EgtVASlDm0KdXO1HdnadwZrH4dgDFMHwq0+KrS9AEeFNltokh7gOdkEj+lmwK66sWdZV9nAjRax088sFQSund9IFvTf2+mQD3kBYgNiPSaSnIt4qCunkcXZe9w/EPEPpdOcM/4zlBgaez/yDpuneSBQQ/3watI0QdzmAkiu4duIT4sS7BtNKuggsV9/1+mPnOIEqQHdPNdwuy19/8HD+jM6jSmAr1Uv0H+ieN3CZbAoUmxeP915fkZeoIbBSOmY1sMzVlsx4HGb0XReSXlvmYO01D7ntfSEVSKcFISVHKejYV8WZDd+/+UAgTxtfvkiK+w3n3l9Fpvpg==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(36860700016)(82310400026)(1800799024)(376014)(23010399003)(18002099003)(56012099006)(3023799007)(11063799006)(5023799004);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	wKCYEv0iUgi01uO1xZXWpmX54EK6KH/bbt99u7kNcIfIrRc+qu4opE5ZyNWHvENYl4i8KefnBgBVSYbdDJfjJARZzQpbyOveHpVSdH8mfTfkSnoUUC/P605qxZFpuB9TCwAt9vQPSAjkyYuPBGbKonD8VlKEeqTCctfMcujLTilviL2jSmqlELRguoFBF8JjD4GQAIZyMoJspJRPAvEu4FxSqz1gBTTGhQLhGupuPj7+ZcQukpvoEVGInvCGKarKVIj11JnMJWNnilx94C6HM0OkUigq9cowyCt1z8dmIPNp7RB1b++FkwWZPULv5+pFnnSKkwP0Q1nTluQWatyH+c5dUS/dxsvJqm2UDznywD26iVXalC036/o7z3IMe41Q/SxYtMEaMWTREGE7tQAF5K+SyZdxgoRin7I3KNv6psIeo1/QQopmkXQz9k43eU+k
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2026 03:53:17.8565
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c2571721-9916-40bf-e30a-08dedd6d9c75
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF000001EC.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB9060
 
-Replace MNL_TYPE_* constants with DEVLINK_VAR_ATTR_TYPE_* when
-handling DEVLINK_ATTR_PARAM_TYPE in param value display and set
-paths. The kernel uAPI now exposes these values directly via
-devlink_var_attr_type.
+Hi,
 
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
----
- devlink/devlink.c | 34 +++++++++++++++++-----------------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+RTL8211FS is the SGMII-capable variant of RTL8211F. Besides the standard
+copper/RGMII mode, it supports hardware-strapped RGMII-to-SGMII bridge mode,
+where the MAC side uses RGMII and the line side uses SGMII.
 
-diff --git a/devlink/devlink.c b/devlink/devlink.c
-index 434a91fe..803ea5d7 100644
---- a/devlink/devlink.c
-+++ b/devlink/devlink.c
-@@ -3526,7 +3526,7 @@ static int pr_out_param_value_print(const char *nla_name, int nla_type,
- 	print_string(PRINT_FP, NULL, " %s ", label);
- 
- 	switch (nla_type) {
--	case MNL_TYPE_U8:
-+	case DEVLINK_VAR_ATTR_TYPE_U8:
- 		if (conv_exists) {
- 			err = param_val_conv_str_get(param_val_conv,
- 						     PARAM_VAL_CONV_LEN,
-@@ -3541,7 +3541,7 @@ static int pr_out_param_value_print(const char *nla_name, int nla_type,
- 				   mnl_attr_get_u8(val_attr));
- 		}
- 		break;
--	case MNL_TYPE_U16:
-+	case DEVLINK_VAR_ATTR_TYPE_U16:
- 		if (conv_exists) {
- 			err = param_val_conv_str_get(param_val_conv,
- 						     PARAM_VAL_CONV_LEN,
-@@ -3556,7 +3556,7 @@ static int pr_out_param_value_print(const char *nla_name, int nla_type,
- 				   mnl_attr_get_u16(val_attr));
- 		}
- 		break;
--	case MNL_TYPE_U32:
-+	case DEVLINK_VAR_ATTR_TYPE_U32:
- 		if (conv_exists) {
- 			err = param_val_conv_str_get(param_val_conv,
- 						     PARAM_VAL_CONV_LEN,
-@@ -3571,11 +3571,11 @@ static int pr_out_param_value_print(const char *nla_name, int nla_type,
- 				   mnl_attr_get_u32(val_attr));
- 		}
- 		break;
--	case MNL_TYPE_STRING:
-+	case DEVLINK_VAR_ATTR_TYPE_STRING:
- 		print_string(PRINT_ANY, label, "%s",
- 			     mnl_attr_get_str(val_attr));
- 		break;
--	case MNL_TYPE_FLAG:
-+	case DEVLINK_VAR_ATTR_TYPE_FLAG:
- 		if (flag_as_u8)
- 			print_bool(PRINT_ANY, label, "%s",
- 				   mnl_attr_get_u8(val_attr));
-@@ -3753,22 +3753,22 @@ static int cmd_dev_param_set_cb(const struct nlmsghdr *nlh, void *data)
- 			ctx->cmode_found = true;
- 			val_attr = nla_value[DEVLINK_ATTR_PARAM_VALUE_DATA];
- 			switch (nla_type) {
--			case MNL_TYPE_U8:
-+			case DEVLINK_VAR_ATTR_TYPE_U8:
- 				ctx->value.vu8 = mnl_attr_get_u8(val_attr);
- 				break;
--			case MNL_TYPE_U16:
-+			case DEVLINK_VAR_ATTR_TYPE_U16:
- 				ctx->value.vu16 = mnl_attr_get_u16(val_attr);
- 				break;
--			case MNL_TYPE_U32:
-+			case DEVLINK_VAR_ATTR_TYPE_U32:
- 				ctx->value.vu32 = mnl_attr_get_u32(val_attr);
- 				break;
--			case MNL_TYPE_U64:
-+			case DEVLINK_VAR_ATTR_TYPE_U64:
- 				ctx->value.vu64 = mnl_attr_get_u64(val_attr);
- 				break;
--			case MNL_TYPE_STRING:
-+			case DEVLINK_VAR_ATTR_TYPE_STRING:
- 				ctx->value.vstr = mnl_attr_get_str(val_attr);
- 				break;
--			case MNL_TYPE_FLAG:
-+			case DEVLINK_VAR_ATTR_TYPE_FLAG:
- 				ctx->value.vbool = val_attr ? true : false;
- 				break;
- 			}
-@@ -3841,7 +3841,7 @@ static int cmd_dev_param_set(struct dl *dl)
- 
- 	mnl_attr_put_u8(nlh, DEVLINK_ATTR_PARAM_TYPE, ctx.nla_type);
- 	switch (ctx.nla_type) {
--	case MNL_TYPE_U8:
-+	case DEVLINK_VAR_ATTR_TYPE_U8:
- 		if (conv_exists) {
- 			err = param_val_conv_uint_get(param_val_conv,
- 						      PARAM_VAL_CONV_LEN,
-@@ -3858,7 +3858,7 @@ static int cmd_dev_param_set(struct dl *dl)
- 			return 0;
- 		mnl_attr_put_u8(nlh, DEVLINK_ATTR_PARAM_VALUE_DATA, val_u8);
- 		break;
--	case MNL_TYPE_U16:
-+	case DEVLINK_VAR_ATTR_TYPE_U16:
- 		if (conv_exists) {
- 			err = param_val_conv_uint_get(param_val_conv,
- 						      PARAM_VAL_CONV_LEN,
-@@ -3875,7 +3875,7 @@ static int cmd_dev_param_set(struct dl *dl)
- 			return 0;
- 		mnl_attr_put_u16(nlh, DEVLINK_ATTR_PARAM_VALUE_DATA, val_u16);
- 		break;
--	case MNL_TYPE_U32:
-+	case DEVLINK_VAR_ATTR_TYPE_U32:
- 		if (conv_exists) {
- 			err = param_val_conv_uint_get(param_val_conv,
- 						      PARAM_VAL_CONV_LEN,
-@@ -3892,7 +3892,7 @@ static int cmd_dev_param_set(struct dl *dl)
- 			return 0;
- 		mnl_attr_put_u32(nlh, DEVLINK_ATTR_PARAM_VALUE_DATA, val_u32);
- 		break;
--	case MNL_TYPE_U64:
-+	case DEVLINK_VAR_ATTR_TYPE_U64:
- 		if (conv_exists)
- 			err = param_val_conv_uint_get(param_val_conv,
- 						      PARAM_VAL_CONV_LEN,
-@@ -3907,7 +3907,7 @@ static int cmd_dev_param_set(struct dl *dl)
- 			return 0;
- 		mnl_attr_put_u64(nlh, DEVLINK_ATTR_PARAM_VALUE_DATA, val_u64);
- 		break;
--	case MNL_TYPE_FLAG:
-+	case DEVLINK_VAR_ATTR_TYPE_FLAG:
- 		err = str_to_bool(dl->opts.param_value, &val_bool);
- 		if (err)
- 			goto err_param_value_parse;
-@@ -3917,7 +3917,7 @@ static int cmd_dev_param_set(struct dl *dl)
- 			mnl_attr_put(nlh, DEVLINK_ATTR_PARAM_VALUE_DATA,
- 				     0, NULL);
- 		break;
--	case MNL_TYPE_STRING:
-+	case DEVLINK_VAR_ATTR_TYPE_STRING:
- 		mnl_attr_put_strz(nlh, DEVLINK_ATTR_PARAM_VALUE_DATA,
- 				  dl->opts.param_value);
- 		if (!strcmp(dl->opts.param_value, ctx.value.vstr))
--- 
-2.43.0
+The in-tree realtek driver currently does not handle this mode. RTL8211FS
+shares the same PHY ID as RTL8211F (0x001cc916), so the driver binds it
+as a standard RTL8211F and follows the existing copper/RGMII path. In
+RGMII-to-SGMII bridge mode, this means read_status() does not observe the
+SGMII-side link and the link stays down.
 
+We have discussed this with Realtek. They confirmed that the current mode
+can be detected from a vendor mode-selection register shared by RTL8211F
+variants, and that this case is application-dependent rather than generic
+copper PHY behavior.
+
+Our plan is to add RTL8211FS bridge mode support inside the realtek
+driver, gated on the detected mode. The driver would only read this
+register for detection and would not use it to override the hardware
+strapping. For that mode, config_init() would program the SGMII side as
+needed, and read_status() would read the SGMII-side link status instead
+of relying on the copper path. The existing RTL8211F copper/RGMII behavior
+would be left unchanged.
+
+Does this approach sound acceptable for upstream? If you prefer a
+different model, or if there is already related work that we should build
+on, please let me know.
+
+Thanks,
+Jacky C. Huang
