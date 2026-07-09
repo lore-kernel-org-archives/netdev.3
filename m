@@ -1,231 +1,159 @@
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B871022097;
-	Thu,  9 Jul 2026 13:01:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.222
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B61B6242D88
+	for <netdev@vger.kernel.org>; Thu,  9 Jul 2026 13:04:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783602103; cv=none; b=C1Pizf5sxsWa8cQ9pzTY5WMDYGZpU6WuUyV45Nue2xqTKaSCmbviloUn7XM1TB0t4ACQWsJh7jg6+pBT16bBNEHo/emyl/fhd5lr9B1Nh2oDiWKe4QMH9GWym2J1xvbLsu2rn3+n/isxj3zigPVcfkNgGn9e0tgI8r+OrCyicf4=
+	t=1783602269; cv=none; b=fEhPEJ6ZZSWx/319oP5wsgol9Nxr1ijJrThKK9ujrNcPWI5ynCvmUUsNnDn13SKBqEmTsQEMPau4+KTLshjG4URWM2NLIYJg65AkE+eOX/6Hcfro6/qw2F03MgghxIAkUnWwD9CMFblG4TnjErD2Km0Wa1Aooib3RPHS3BxbcY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783602103; c=relaxed/simple;
-	bh=JKZDS8WZ+t/gQ1mOl8AQFVGRJyZE3RE44N79+4rT7L4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cCkhQbFrTMAZRJdR6hXQbgyA1RR7fDwdIfEIYmKfu+m8g3hhzSQl88unFFpwYIxnvWDYSIwq9+EnncPUbqoRoGTEprHUWrvVog2Nc0H9cmf146KlT4/n0xo/J5WXJpRpSVmMwNpcbhQvaKz53zcg+hT4Yu2vFXpMQhuRCQxlk6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=h-partners.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=AT+cCbE9; arc=none smtp.client-ip=113.46.200.222
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=h-partners.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
+	s=arc-20240116; t=1783602269; c=relaxed/simple;
+	bh=pomWuPe/tr64a82692VQtY4Wk2PnNc+aTLslFAls9Aw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eQ/zx5QbVkm0qPd1L/fgxQGSMhpTNsVFJaeUtYXfaf+BOqfu8iLJnk8WyKki7DmvHgWDhRSeue95AVQqIZMgNRaoEUu3MZV8xSqjt3Nuck1K5EjFTtwZa/2ru3oU1EZgX73iGf4sVTFxoq7TfpMxiWkJpqKXCeVKalHZZcSJIwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=GH6Q3lUU; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b="AT+cCbE9"
-dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=WopBaQaQuiL/DU1vAnYKzMrkSjej1oGbeLKGRLVVDVE=;
-	b=AT+cCbE9PfJtQFumjJbUDTMuS/6pugaV7RgVoHFEO33Eu4o+ZG8aure4z3z0G8kMMJ88NVS2m
-	VjejYENaYpsTtwhXnJ1aUWFLxGLJxJTi0hoQb3iWl4au8Pdk4K+EMlFo3CKTUdP5YZbbpZxPVK0
-	usf14K7UHmb7PfkECWXr54o=
-Received: from mail.maildlp.com (unknown [172.19.163.200])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4gwvxf0bdNzLlXD;
-	Thu,  9 Jul 2026 20:52:22 +0800 (CST)
-Received: from kwepemr100001.china.huawei.com (unknown [7.202.195.168])
-	by mail.maildlp.com (Postfix) with ESMTPS id C740D4055B;
-	Thu,  9 Jul 2026 21:01:36 +0800 (CST)
-Received: from huawei.com (10.50.159.234) by kwepemr100001.china.huawei.com
- (7.202.195.168) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Thu, 9 Jul
- 2026 21:01:35 +0800
-From: xietangxin <xietangxin@h-partners.com>
-To: Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-CC: Phil Sutter <phil@nwl.cc>, Simon Horman <horms@kernel.org>,
-	<netfilter-devel@vger.kernel.org>, <coreteam@netfilter.org>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Victor Nogueira
-	<victor@mojatatu.com>, gaoxingwang <gaoxingwang1@huawei.com>, huyizhen
-	<huyizhen2@huawei.com>, xietangxin <xietangxin@h-partners.com>
-Subject: [PATCH net v2] netfilter: nf_nat: recalculate TCP TS offset when snat change sport
-Date: Thu, 9 Jul 2026 21:12:16 +0800
-Message-ID: <20260709131216.2189210-1-xietangxin@h-partners.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="GH6Q3lUU"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-493ec555a26so4925715e9.0
+        for <netdev@vger.kernel.org>; Thu, 09 Jul 2026 06:04:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1783602266; x=1784207066; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=fOOmFkjlODizpn7Pcs0slVGKdf2bx5h/bU795bDZqXU=;
+        b=GH6Q3lUUH5Jiyx1mink2Jtohp84TSDDEwackmOd/AdtmidnqTqsXgdvLLyetR8RVeK
+         lYMoyOeS8Ai9Rwkx8+q7VssbZtSYDSxbj9whzWtRuZvOBLIWBbNx2INXa/0s+13BvPxk
+         96qyo7AZNuJCGKyKsOaXepdd5rNpoDg/1+xvjfV5rIlrbjkeHeM7CLoxCnzFl8CDlgYQ
+         jIWtgmx+/T0Ej2CKK3kpkA7HGtUg7Ii4PBMMj3tx1p8NgvtubSTu5BLVTLvXAAlpfy+L
+         6g8NY3Do4fJXTEY1MdkqcOLUL/LUMjieUgAJ8jO/P4DSceQnZvVlACJ4A/zW6HgOL/HB
+         rtLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783602266; x=1784207066;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fOOmFkjlODizpn7Pcs0slVGKdf2bx5h/bU795bDZqXU=;
+        b=PqkXrA7eJqJnIYQjoCD8+CqTTStXPQczjoIsZD0J19USbHPnT5C6izle6UXshhzwyM
+         WaeICjyyT6uDIKisuh1RHzdwde7XqVoJM61SdfVHRlqU+/8FipBsOB1PZOEAAXYHvb/W
+         lTZPTI2vAcO0AkkmUYY0FXa0i5J3dE7oJKrmRjkKbmU+N6vIp63Dk7tWgFxTY7tFdbfY
+         5tOawWlyV4f/QHED9SDN9oeWa7OJpVfU9tFkptCfwJKCTOm+2ZeK1p4nZZfvjn12pAsU
+         80VK7u0PqkQVeM1Obt8ciIZ3KtjDVBZh651gqjIAWNF5iipuEtSD26hySbHJTDT2OJeD
+         9TCA==
+X-Forwarded-Encrypted: i=1; AHgh+RoRouaMT8iuRE6Q8XFQ6BBRjz1yhZdRqhmBjW203+oZm7utTm0HiIoOmoZHN2fBHbcOctVVlWQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxXslAKYxfVFCI0herTvuKQhYY1QF4fp0IyInRHJfeNmo5K8Fek
+	wloxY2ik4zBAddlYoiMeA+brh+qolhc9FR0uUGzgM3kxaDEs+DjaYt2cMvwn2WVS6Ew=
+X-Gm-Gg: AfdE7cnbZ8ESGF/zM/xo7P+shZ3GHWJzRfxShxgLOOObXHmnca+39EE78vbnB2Zgk/w
+	y5KE+1VAzIEUekgZnUeiKHo19uVdNd0qqV/xsCYjgFUomN4ryDQJj+lu+w2Hr3P67+1LnnO/II1
+	6tjxoqCFnlA7bfwvLh+gyQKUTAfcFMIiMtohLPeMATMkw/e0bYOQA9zOtjnexBJ+R+ZA63thleX
+	bhXUYF8Hxaa/O0tLcjvngfbKL2JoTbu1C2f4KpO5sai1nzO7ov7uhgbfSAh9Sqa8xfADHwFIjcV
+	1ltQUG1U8tqDoaGIF5UQqvgasAh2wPMy+7LiGx+wGbwEULRrfJWWCLGz4Z1wXtSvShZIMyWt4Rv
+	CWnthj9Pkt0Asn+W5/7Eqf0GeR3WngZv8nyCBP1wyZ+Uq3Ef/Fy2yi1GHuKeTsuUNNT2kejQFbE
+	OAVe5BFmDceTO6TxWQL9Y6Z5Uanu/mMWJE4VrPcg==
+X-Received: by 2002:a05:600c:6206:b0:493:d078:796 with SMTP id 5b1f17b1804b1-493e6a4a8a4mr66442385e9.17.1783602266150;
+        Thu, 09 Jul 2026 06:04:26 -0700 (PDT)
+Received: from localhost.localdomain (nat2.prg.suse.com. [195.250.132.146])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493eb6fb526sm69825665e9.15.2026.07.09.06.04.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jul 2026 06:04:25 -0700 (PDT)
+Date: Thu, 9 Jul 2026 15:04:23 +0200
+From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+To: Jiri Pirko <jiri@resnulli.us>
+Cc: linux-rdma@vger.kernel.org, cgroups@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-s390@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	jgg@ziepe.ca, leon@kernel.org, parav@nvidia.com, mbloch@nvidia.com, 
+	cmeiohas@nvidia.com, roman.gushchin@linux.dev, bvanassche@acm.org, 
+	zyjzyj2000@gmail.com, shuah@kernel.org, tj@kernel.org, hannes@cmpxchg.org, 
+	alibuda@linux.alibaba.com, dust.li@linux.alibaba.com, sidraya@linux.ibm.com, 
+	wenjia@linux.ibm.com
+Subject: Re: [PATCH rdma-next 08/13] RDMA/cgroup: Scope rdma cgroup device
+ visibility to the net namespace
+Message-ID: <ak-Z071LrWhnI5lK@localhost.localdomain>
+References: <20260709095532.855647-1-jiri@resnulli.us>
+ <20260709095532.855647-9-jiri@resnulli.us>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemr100001.china.huawei.com (7.202.195.168)
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="y2qmoqgw5gkrylpt"
+Content-Disposition: inline
+In-Reply-To: <20260709095532.855647-9-jiri@resnulli.us>
 
-Problem observed in Kubernetes environments where MASQUERADE target with
---random-fully is configured by default. after commit
-165573e41f2f ("tcp: secure_seq: add back ports to TS offset") TCP short
-connection QPS dropped from ~20000 to ~10000. This added source and
-destination ports into TS offset calculation.
 
-However, with MASQUERADE --random-fully, when multiple internal connections
-(e.g sport 10000,20000) are mapped to the same external port (e.g 30000),
-their TS offsets are calculated as ts_offset(10000) and ts_offset(20000).
-If the server reuses the TIME_WAIT slot from the first connection, there is
-a chance that ts_offset(20000) < ts_offset(10000), breaking TSval
-monotonicity for the same 4-tuple and causing RST packets:
-  Client -> Server 24870 -> 80 [SYN] TSval=2294041168
-  Server -> Client 80 -> 24870 [ACK] TSecr=2846236456
-  Client -> Server 24870 -> 80 [RST] Seq=855605690
+--y2qmoqgw5gkrylpt
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH rdma-next 08/13] RDMA/cgroup: Scope rdma cgroup device
+ visibility to the net namespace
+MIME-Version: 1.0
 
-After nf_nat_inet_fn() successfully assigns a new randomized
-source port, recalculate the TS offset using the new port and
-update the SYN packet's TSval accordingly.
+Hi.
 
-Test results on 4U4G VM with
-`./wrk -t8 -c200 -H "Connection: close" -d10s --latency http://5.5.5.5:80`
-Before:
-  random:10712 req/s, random-fully:10986 req/s
-After:
-  random:20530 req/s, random-fully:19511 req/s
+On Thu, Jul 09, 2026 at 11:55:27AM +0200, Jiri Pirko <jiri@resnulli.us> wro=
+te:
+> index 993446ab66d0..4523c1884d67 100644
+> --- a/Documentation/admin-guide/cgroup-v2.rst
+> +++ b/Documentation/admin-guide/cgroup-v2.rst
+> @@ -2752,6 +2752,13 @@ RDMA
+>  The "rdma" controller regulates the distribution and accounting of
+>  RDMA resources.
+> =20
+> +When RDMA devices are isolated per network namespace (exclusive mode),
+> +device names are unique only within a network namespace. The device lines
+> +below are therefore scoped to the reading or writing process's network
+> +namespace: only devices accessible from that namespace are listed, and a
+> +limit is applied to the device of that name in that namespace. Configure
+> +limits from the same network namespace as the workloads.
 
-Fixes: 165573e41f2f ("tcp: secure_seq: add back ports to TS offset")
-Cc: stable@vger.kernel.org
-Closes:https://lore.kernel.org/all/92935c00-e0be-4591-ac44-5978c7804d57@yeah.net/
-Signed-off-by: xietangxin <xietangxin@h-partners.com>
----
-v2:
-  - Move the new helper in the IP_CT_NEW case of nf_nat_inet_fn().
-  - Fix a compilation failure when CONFIG_IPV6 is disabled.
+OK.
 
-v1: https://lore.kernel.org/all/20260629093408.3927103-1-xietangxin@h-partners.com/
----
- net/netfilter/nf_nat_core.c | 103 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 102 insertions(+), 1 deletion(-)
+> --- a/include/linux/cgroup_rdma.h
+> +++ b/include/linux/cgroup_rdma.h
+> @@ -7,6 +7,7 @@
+>  #define _CGROUP_RDMA_H
+> =20
+>  #include <linux/cgroup.h>
+> +#include <net/net_namespace.h>
+> =20
+>  enum rdmacg_resource_type {
+>  	RDMACG_RESOURCE_HCA_HANDLE,
+> @@ -34,6 +35,15 @@ struct rdmacg_device {
+>  	struct list_head	dev_node;
+>  	struct list_head	rpools;
+>  	char			*name;
+> +	/*
+> +	 * Net namespace the device belongs to. @netns_shared mirrors
+> +	 * ib_devices_shared_netns: when true the device is visible from every
+> +	 * net namespace (shared mode); otherwise @net is the only namespace
+> +	 * that may see and configure it. @netns_shared is updated when the
+> +	 * sharing mode changes, so use {READ,WRITE}_ONCE() to access it.
+> +	 */
+> +	possible_net_t		net;
+> +	bool			netns_shared;
 
-diff --git a/net/netfilter/nf_nat_core.c b/net/netfilter/nf_nat_core.c
-index 63ff6b4d5d21..9d0b316fa3c7 100644
---- a/net/netfilter/nf_nat_core.c
-+++ b/net/netfilter/nf_nat_core.c
-@@ -16,6 +16,8 @@
- #include <linux/siphash.h>
- #include <linux/rtnetlink.h>
- 
-+#include <net/tcp.h>
-+#include <net/secure_seq.h>
- #include <net/netfilter/nf_conntrack_bpf.h>
- #include <net/netfilter/nf_conntrack_core.h>
- #include <net/netfilter/nf_conntrack_helper.h>
-@@ -894,6 +896,99 @@ static bool in_vrf_postrouting(const struct nf_hook_state *state)
- 	return false;
- }
- 
-+static __be32 *nf_nat_tcp_ts_option_ptr(const struct sk_buff *skb)
-+{
-+	struct tcphdr *th;
-+	unsigned char *ptr;
-+	unsigned char opcode;
-+	unsigned char opsize;
-+	unsigned int optlen, offset;
-+
-+	offset = 0;
-+	th = tcp_hdr(skb);
-+	optlen = (th->doff - 5) * 4;
-+	ptr = (unsigned char *)(th + 1);
-+
-+	while (offset < optlen) {
-+		opcode = ptr[offset];
-+		if (opcode == TCPOPT_EOL)
-+			break;
-+
-+		if (opcode == TCPOPT_NOP) {
-+			offset++;
-+			continue;
-+		}
-+
-+		if (offset + 1 >= optlen)
-+			break;
-+
-+		opsize = ptr[offset + 1];
-+		if (opsize < 2 || offset + opsize > optlen)
-+			break;
-+
-+		if (opcode == TCPOPT_TIMESTAMP && opsize == TCPOLEN_TIMESTAMP)
-+			return (__be32 *)(ptr + offset + 2);
-+
-+		offset += opsize;
-+	}
-+
-+	return NULL;
-+}
-+
-+static void nf_nat_update_tcp_ts_offset(struct nf_conn *ct, struct sk_buff *skb)
-+{
-+	__be32 *tsptr;
-+	struct net *net;
-+	struct tcphdr *th;
-+	struct tcp_sock *tp;
-+	union tcp_seq_and_ts_off st;
-+	struct nf_conntrack_tuple *orig_tuple;
-+	struct nf_conntrack_tuple *reply_tuple;
-+
-+	orig_tuple = &ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple;
-+	reply_tuple = &ct->tuplehash[IP_CT_DIR_REPLY].tuple;
-+	if (orig_tuple->src.u.tcp.port == reply_tuple->dst.u.tcp.port)
-+		return;
-+
-+	th = tcp_hdr(skb);
-+	if (!th || !th->syn || th->ack)
-+		return;
-+
-+	net = nf_ct_net(ct);
-+	if (READ_ONCE(net->ipv4.sysctl_tcp_timestamps) != 1)
-+		return;
-+
-+	if (!skb->sk)
-+		return;
-+
-+	tsptr = nf_nat_tcp_ts_option_ptr(skb);
-+	if (!tsptr)
-+		return;
-+
-+	switch (nf_ct_l3num(ct)) {
-+	case NFPROTO_IPV4:
-+		st = secure_tcp_seq_and_ts_off(net, reply_tuple->dst.u3.ip,
-+					       reply_tuple->src.u3.ip,
-+					       reply_tuple->dst.u.tcp.port,
-+					       reply_tuple->src.u.tcp.port);
-+		break;
-+#if IS_ENABLED(CONFIG_IPV6)
-+	case NFPROTO_IPV6:
-+		st = secure_tcpv6_seq_and_ts_off(net, reply_tuple->dst.u3.ip6,
-+						 reply_tuple->src.u3.ip6,
-+						 reply_tuple->dst.u.tcp.port,
-+						 reply_tuple->src.u.tcp.port);
-+		break;
-+#endif
-+	default:
-+		return;
-+	}
-+
-+	tp = tcp_sk(skb->sk);
-+	*tsptr = htonl(tcp_skb_timestamp_ts(tp->tcp_usec_ts, skb) + st.ts_off);
-+	WRITE_ONCE(tp->tsoffset, st.ts_off);
-+}
-+
- unsigned int
- nf_nat_inet_fn(void *priv, struct sk_buff *skb,
- 	       const struct nf_hook_state *state)
-@@ -937,8 +1032,14 @@ nf_nat_inet_fn(void *priv, struct sk_buff *skb,
- 						       state);
- 				if (ret != NF_ACCEPT)
- 					return ret;
--				if (nf_nat_initialized(ct, maniptype))
-+				if (nf_nat_initialized(ct, maniptype)) {
-+					if (state->hook == NF_INET_POST_ROUTING &&
-+					    nf_ct_protonum(ct) == IPPROTO_TCP &&
-+					    (ct->status & IPS_SRC_NAT)) {
-+						nf_nat_update_tcp_ts_offset(ct, skb);
-+					}
- 					goto do_nat;
-+				}
- 			}
- null_bind:
- 			ret = nf_nat_alloc_null_binding(ct, state->hook);
--- 
-2.43.0
+Any reason to store the netns_shared split per device? (IIUC, it's a
+global parameter.)
 
+Thanks,
+Michal
+
+--y2qmoqgw5gkrylpt
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCak+cKRsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+AgSmgD/Vgg6K9wF0JX4NBgdz4NM
+xV33/zTua20t6++MDiv2LGQA/iiwBIKorFXkq2bd30gmVkdyXN6gNLUnmclqxnfK
++M0P
+=L3DZ
+-----END PGP SIGNATURE-----
+
+--y2qmoqgw5gkrylpt--
