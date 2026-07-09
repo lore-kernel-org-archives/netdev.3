@@ -1,80 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6425240242B;
-	Thu,  9 Jul 2026 09:20:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 163873FC5D8
+	for <netdev@vger.kernel.org>; Thu,  9 Jul 2026 09:22:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783588848; cv=none; b=D1gMKGrXpNRCG7aavZP3+rYTCdxt64VVCYj5KnDmKTMGq2hF2IdkKS7qxVhIIt1nJm8aZSbVHiUKbki/BogjlehCrmdCmWueRAM6y7Hf+OobHcagEXUfuSOY9Sn6KZ84SN0G/HewMOSwVMJOn/ccdsQdYE0HRviU8SkXVVGtCgQ=
+	t=1783588975; cv=none; b=Shj+fMKpNqPKuxciDws2Ku9OD89JbyjbvTa9g/ANcITVzPD/4d3Vo5cPMmuZS9bw9EcxgeaF4XXGMj55IaeRBgBXylbBHijajXt2o+0D6R2SvobW3awQaGYqWEeoy+KzEpNpSwCmhQBRZhtod1balwZo1iCyVBmWgusXskR6Yvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783588848; c=relaxed/simple;
-	bh=XOS9SWzdNhOR+qVEsGZ34Nd9EotkFmJ6YiS8xu6q8ys=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=KcV4qmCDe4Zq73Qrx9FYzDgCBkdE3GjT8vAHSEnHqDE4l6/t+/DrEGXv4dHlFfMPRUS7Yqzbs49VdS90Mc9X4JOwZ1yBJQ0c1qWIrqLgpEkOuUspeKXmkiR15ETqQ8KCHNglgqL73Qoh50hhgjI0ZqUYPsfiiET+4RiaMe8hb5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DhV+Hkg6; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783588975; c=relaxed/simple;
+	bh=9EdaGAvYJ5tbCvOjl8CHeOoyPtBqGPgNsT9qMmRu+Es=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hk5YYhJm/qMV9Tha7NvmlPQBGyCztTBtDyyWqLcX9/Czl4TdmOweZkJwT1OQVTxfwKr9dqK4lcQrzNYvNlQ/uC3VW8ZsYVXTlkVa7GwI2tvjgmK2TaDdVDPTL9758jijZcF6z3+7lCYu4qVjZKzlVXmft0tYhzEash1nIrGQ4wU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IgLnkjdU; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DhV+Hkg6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC70C1F000E9;
-	Thu,  9 Jul 2026 09:20:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783588847;
-	bh=bjUxEVmvjUCSt1uiQXxhR9MAK5xCL97Y/ZayRGqElFM=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=DhV+Hkg6rJEoRgZoPCAkZUZ/plsCcYXdaF/9ri5O45f5m/t03MeqbKH1jLuzPwYMS
-	 SES6suNHz9HBA3QTG3OqtVSUNKz2N1ghn0EpxetRdJ0mcomPFGEFeHSASS4d2Jafaw
-	 dwI8VWeN5voIJLelyN1A+sG9eA5v1o6ag35reGyC4fe4kWM0TgwszYz0n3uJxEi2CC
-	 kwO2MegKkYMxr9V01G7m4c0hRY6PDxCtl6VgopisZLESk8Z1vZ0QW41FJQiv0DGpip
-	 kMHGC0b06nWSFLChfWn14KFRxhtUCB3t47NAATqIucTuegY3wayEz1Z8GfL+K1q/Dc
-	 LrSw2nM3+i3yw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0C8F393A564;
-	Thu,  9 Jul 2026 09:20:26 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IgLnkjdU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783588972; x=1815124972;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=9EdaGAvYJ5tbCvOjl8CHeOoyPtBqGPgNsT9qMmRu+Es=;
+  b=IgLnkjdUlLlmG4cE0DpGDcwjRO9bch+RbiHn0gHx/crmFpJnZvZd/TDk
+   I3m7yWLTTQwTWmYf9tkXLWSikZFkxWbHJiLfRQwa/Z7NpU0x9H9d8oCSj
+   PdeDN4SFLcuT+ePzFmHdpvNeFHvThTsIRdfWuQlTQ5sJ11gttI3H6l7Gn
+   ZmpMOshKEuCEKgzirdmtWdBOpW2uGK+9mpJTzePLcaUOafSOFHx42r9cy
+   ZdWi1SOJTIbd3aN1Qdyot+dk2qtWm8aVZNDyM4ADRwd8o9RxlZ9vSL+S7
+   0IuNmdNNPFVYnnlfXMGWkGX8oVSbk7ZeSssjgzeakRflDCnrImRwRtDWU
+   Q==;
+X-CSE-ConnectionGUID: +n4N7rdTQrKbeo05NCyQhg==
+X-CSE-MsgGUID: n2wX6xmkSwKSZhO+x73Khw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="101693411"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="101693411"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 02:22:34 -0700
+X-CSE-ConnectionGUID: ReNFUb8JR7iKxKlmK8LGyQ==
+X-CSE-MsgGUID: /O5vCSJFTeWSIIutLaS32Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="251884450"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 02:22:29 -0700
+Date: Thu, 9 Jul 2026 11:22:26 +0200
+From: Raag Jadav <raag.jadav@intel.com>
+To: "Tauro, Riana" <riana.tauro@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>, kuba@kernel.org,
+	aravind.iddamsetty@linux.intel.com, intel-xe@lists.freedesktop.org,
+	anshuman.gupta@intel.com, joonas.lahtinen@linux.intel.com,
+	simona.vetter@ffwll.ch, airlied@gmail.com, pratik.bari@intel.com,
+	joshua.santosh.ranjan@intel.com, ashwin.kumar.kulkarni@intel.com,
+	shubham.kumar@intel.com, ravi.kishore.koppuravuri@intel.com,
+	maarten.lankhorst@linux.intel.com, mallesh.koujalagi@intel.com,
+	soham.purkait@intel.com,
+	Zack McKevitt <zachary.mckevitt@oss.qualcomm.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
+	dri-devel@lists.freedesktop.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v4 1/3] drm/drm_ras: Add drm_ras netlink error event
+Message-ID: <ak9oUmZ8sS3aF6jB@black.igk.intel.com>
+References: <20260701094409.129131-5-riana.tauro@intel.com>
+ <20260701094409.129131-6-riana.tauro@intel.com>
+ <202f6d3a-c29b-491b-979f-1d8223f59108@intel.com>
+ <ak6xThf9qeB0wqgK@intel.com>
+ <d96a4c3f-e0e7-42d7-bb8a-994b2f408dea@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v1 net-next] net: phy: Drop #inclusion of
- <linux/mod_devicetable.h> from <linux/mdio.h>
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178358882538.3359576.3896028235103596799.git-patchwork-notify@kernel.org>
-Date: Thu, 09 Jul 2026 09:20:25 +0000
-References: 
- <ca270a534d0f230a939a3fb4a661808b35d6436d.1783329817.git.u.kleine-koenig@baylibre.com>
-In-Reply-To: 
- <ca270a534d0f230a939a3fb4a661808b35d6436d.1783329817.git.u.kleine-koenig@baylibre.com>
-To: =?utf-8?q?Uwe_Kleine-K=C3=B6nig_=28The_Capable_Hub=29_=3Cu=2Ekleine-koenig?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org,
-	=?utf-8?q?=40baylibre=2Ecom=3E?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <d96a4c3f-e0e7-42d7-bb8a-994b2f408dea@intel.com>
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Mon,  6 Jul 2026 11:29:19 +0200 you wrote:
-> <linux/mdio.h> itself doesn't use any of the device id structures. The
-> files #including <linux/mdio.h> use a variety of them:
+On Thu, Jul 09, 2026 at 10:45:27AM +0530, Tauro, Riana wrote:
+> On 09-07-2026 01:51, Rodrigo Vivi wrote:
+> > On Tue, Jul 07, 2026 at 12:02:11PM +0530, Tauro, Riana wrote:
+> > > Hi Rodrigo/Jakub/Aravind
+> > > 
+> > > Please let me know if you have any feedback for this patch or can you please
+> > > ack this if it looks good to you.
+> > I looks good to me, but could you please double check the sashiko's comments?
 > 
-> 	$ git grep -l '<linux/mdio.h>' | xargs grep --color  -E '\<(acpi_device_id|amba_id|ap_device_id|apr_device_id|auxiliary_device_id|bcma_device_id|ccw_device_id|cdx_device_id|coreboot_device_id|css_device_id|dfl_device_id|dmi_(device|system)_id|eisa_device_id|fsl_mc_device_id|hda_device_id|hid_device_id|hv_vmbus_device_id|i2c_device_id|i3c_device_id|ieee1394_device_id|input_device_id|ipack_device_id|isapnp_device_id|ishtp_device_id|mcb_device_id|mdio_device_id|mei_cl_device_id|mhi_device_id|mips_cdmm_device_id|of_device_id|parisc_device_id|pci_device_id|pci_epf_device_id|pcmcia_device_id|platform_device_id|pnp_(card_)?device_id|rio_device_id|rpmsg_device_id|sdio_device_id|sdw_device_id|serio_device_id|slim_device_id|spi_device_id|spmi_device_id|ssam_device_id|ssb_device_id|tb_service_id|tee_client_device_id|typec_device_id|ulpi_device_id|usb_device_id|vchiq_device_id|virtio_device_id|wmi_device_id|x86_(cpu|device)_id|zorro_device_id|cpu_feature)\>'
-> 	...
+> Sashiko has a comment regarding namespaces
 > 
-> but none of them relies on <linux/mdio.h>'s #include.
+> [Severity: Medium]Since the generic netlink family explicitly supports
+> multiple networknamespaces by setting .netnsok = true,
+>  will hardcoding init_net hereprevent listeners in non-init namespaces from
+> receiving error events
 > 
-> [...]
+> .netnsok = true is auto generated not explicitly added in code.
 
-Here is the summary with links:
-  - [v1,net-next] net: phy: Drop #inclusion of <linux/mod_devicetable.h> from <linux/mdio.h>
-    https://git.kernel.org/netdev/net-next/c/6d86ce0da0d5
+Because that's what ynl_gen_c.py does without it being parsed from
+anywhere.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+> But from what i see, drm device is present in the host and not replicated
+> across namespaces
+> and most of the non-network implementations use inet.  (ex: Binder)
+> If this really needs a fix, we can drop the has_listeners suggested by raag 
+> in previous patch.
+> I don't think in an error path, allocating a new buffer would be a big
+> overhead if listeners are not present.
 
+I don't know enough about namespaces to comment on this. I'll rely on
+Jakub's disposition if netnsok is relevant here, or needed at all for
+our usecase.
 
+Raag
