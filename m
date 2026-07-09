@@ -1,44 +1,54 @@
-Received: from mail.avm.de (mail.avm.de [212.42.244.119])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D9737B027;
-	Thu,  9 Jul 2026 10:06:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.119
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83836407572;
+	Thu,  9 Jul 2026 10:09:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783591564; cv=none; b=B80o6VXA8QmLgyRhNbUKbj8Jrtx7526jZzSMTKWjfprwOI+jZ0FlSw+yVuSYKdOH0p9xYjmHvcTG/hQA7vpa9tvP4vk9j+bt9mYWCiXSVh9F2ziWosk3MIlY+bFsod+38eGCTWSwpYRiLxoDPD1Vs6DHWTP6fNSEnKjM2WRg9pg=
+	t=1783591745; cv=none; b=kkDfYGw7yFG6qeA/2G+4yCyPchVYqln0E92ensZ1yib8dBzrnUdc0Q6DAZMvSwTnnsDm5FYutO/7eMecE6eYO8GNIfsM4E72LyGnRxfwIf2uMs/Byra+isqcboMvItCLEyQ+48EdQ6I8iLQP/b7szlHxeaWcfXIFTS5A4T2s9+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783591564; c=relaxed/simple;
-	bh=xh3A6Cod132QtKk80AN23GuEgJYz08oP/XhIZDqWACc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i6Fit77teEnl96PQ0YtDaNO8xfKtyudzwEv3KjzXbJ3Lx0CyE6ZvyFejhwEA4A/TEaCjQGUrAGleEYOWwRtrrhvV/j9G4eX0H/8s2SYxYKY1Q0hudLcbQCQHsj6U3ntsydLNDkmTbNR5Q/9yWr5RVpHJLW1s+x3ZFT7jczDDIBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fritz.com; spf=pass smtp.mailfrom=fritz.com; arc=none smtp.client-ip=212.42.244.119
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fritz.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fritz.com
-Received: from [212.42.244.71] (helo=mail.avm.de)
-	by mail.avm.de with ESMTP (eXpurgate 4.57.1)
-	(envelope-from <t.martitz@fritz.com>)
-	id 6a4f7283-fbf2-7f0000032729-7f000001d7f4-1
-	for <multiple-recipients>; Thu, 09 Jul 2026 12:05:55 +0200
-Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [212.42.244.71])
-	by mail.avm.de (Postfix) with ESMTPS;
-	Thu,  9 Jul 2026 12:05:55 +0200 (CEST)
-From: Thomas Martitz <t.martitz@fritz.com>
-To: Simon Horman <horms@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
-	linux-kernel@vger.kernel.org (open list)
-Cc: Thomas Martitz <t.martitz@fritz.com>,
-	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v2 1/1] macvlan: allow source mode devices along with passthru
-Date: Thu,  9 Jul 2026 12:05:11 +0200
-Message-ID: <20260709100512.1383421-2-t.martitz@fritz.com>
-In-Reply-To: <20260709100512.1383421-1-t.martitz@fritz.com>
-References: <20260709100512.1383421-1-t.martitz@fritz.com>
+	s=arc-20240116; t=1783591745; c=relaxed/simple;
+	bh=b2LM1DBpGPa87yNnInaMs3XraVNXEaoJ77Jl0uv5QpQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MYSiDwV34/ZIOhaYOlati1+OVduLRLAsyWN5UJ+WgaEZDTqRr3JQfcGAwTE7STSiKnwHWHPW2wk4K6RGRo/4156SWjodI3iyRrL0cQiPAGCLz6nCxNNetDyLfHPQ0t/ScE4qUOagE+bMf9gO9w0h0nE9RbI/p2Pi8c7Ly7Z2OQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=NFppqISm; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="NFppqISm"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 669A2mGqA2982778, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
+	s=dkim; t=1783591369;
+	bh=Gm0XorlIeqAZWxxh0XB2NLHt31NlXXFC9cxnABxfQXQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=NFppqISmXQyJidfCY+PmgviPpCaftroR1DjPZZZIlvgh+XTx0poqtAULicykV0uE8
+	 j6EPGkFswKpZvA4u04AUdku/W9Z4FM5kk5Fw6woeqVDjJGip9tId1nTn8K79B12L/r
+	 f9gAjJ0P+Rla+5jakzO1CdeF+4zroqz4qx+Qk+mILsYCbwEGrcF01c3Y0svZ13RObI
+	 Vf3knVcxG5CcqEDsu0qvACb8CXGB3eDBLzaNl+Ipu5UOoURMQJOsUU1llKhRkJdEeq
+	 3Zrzl2Lsbc4pi0nFdUP3x9lH1pvx1gq9fpvrgsTsgelb9lqOmIKvEplUB1ICjt+Nnx
+	 YfNzLtFeKX2Rg==
+Received: from RS-EX-MBS2.realsil.com.cn ([172.29.17.102])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 669A2mGqA2982778
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 9 Jul 2026 18:02:49 +0800
+Received: from RS-EX-MBS2.realsil.com.cn (172.29.17.102) by
+ RS-EX-MBS2.realsil.com.cn (172.29.17.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Thu, 9 Jul 2026 18:02:49 +0800
+Received: from 172.29.37.154 (172.29.37.152) by RS-EX-MBS2.realsil.com.cn
+ (172.29.17.102) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Thu, 9 Jul 2026 18:02:49 +0800
+From: javen <javen_xu@realsil.com.cn>
+To: <hkallweit1@gmail.com>, <nic_swsd@realtek.com>, <andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <maxime.chevallier@bootlin.com>, <horms@kernel.org>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<daniel@makrotopia.org>, <linux@armlinux.org.uk>, <enelsonmoore@gmail.com>,
+	<daniel@thingy.jp>, Javen Xu <javen_xu@realsil.com.cn>
+Subject: [PATCH net-next v6 0/7] r8169: add support for phylink
+Date: Thu, 9 Jul 2026 18:02:29 +0800
+Message-ID: <20260709100237.541-1-javen_xu@realsil.com.cn>
+X-Mailer: git-send-email 2.50.1.windows.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,242 +56,32 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-purgate-ID: 149429::1783591555-4B5F37A1-8FB684CB/0/0
-X-purgate-type: clean
-X-purgate-size: 8389
-X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
-X-purgate: clean
+Content-Type: text/plain
 
-This allows for configurations where there are a few
-known senders in the system (e.g. multiple SoCs on the same
-board) along with unlimited external senders.
+From: Javen Xu <javen_xu@realsil.com.cn>
 
-The source mode devices represent the known senders while
-all external senders terminate on passthru device.
+This series patch adds support for phylink. RTL8116af is a fiber mode
+card, link status and speed can not be read from standard phy reg. So
+we read link status and speed from serdes reg by pcs. So as RTL8127atf.
 
-Although you could still receive packets on the lower device
-without the need for the passthru vlan device, there
-are use cases where you need additional packet processing
-in the pipeline that hooks via rx_handler. But the rx_handler
-is already bound to the macvlan port.
+Javen Xu (7):
+  r8169: add speed in private struct
+  net: phy: phylink: add helper to modify pause
+  r8169: add support for phylink
+  r8169: add support for RTL8116af
+  r8169: add support for RTL8127atf
+  r8169: add ltr support for RTL8117 series
+  r8169: fix RTL8116af can not enter s0idle and c10
 
-With this patch the rx_handler can be attached to the passthru
-device while macvlan itself remains attached to the lower device.
+ drivers/net/ethernet/realtek/Kconfig      |   2 +-
+ drivers/net/ethernet/realtek/r8169_main.c | 673 +++++++++++++++++-----
+ drivers/net/phy/phylink.c                 |  87 +++
+ drivers/net/phy/realtek/realtek_main.c    |  54 --
+ include/linux/phylink.h                   |   2 +
+ include/net/phy/realtek_phy.h             |   7 -
+ 6 files changed, 619 insertions(+), 206 deletions(-)
+ delete mode 100644 include/net/phy/realtek_phy.h
 
-We use this to use the share the only available high-speed interface
-for inter-SoC networking and external networking (user traffic).
-Inter-SoC packets are received on the source mode interface, identified
-by a well-known source address. Some of our chips have simply no other
-viable link for inter-SoC traffic.
-
-Signed-off-by: Thomas Martitz <t.martitz@fritz.com>
----
- drivers/net/macvlan.c | 107 ++++++++++++++++++++++++++++--------------
- 1 file changed, 73 insertions(+), 34 deletions(-)
-
-diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
-index 9a4bc99dbf53b..2505f5f2e9d30 100644
---- a/drivers/net/macvlan.c
-+++ b/drivers/net/macvlan.c
-@@ -83,6 +83,11 @@ static inline void macvlan_set_passthru(struct macvlan_port *port)
- 	port->flags |= MACVLAN_F_PASSTHRU;
- }
- 
-+static inline void macvlan_clear_passthru(struct macvlan_port *port)
-+{
-+	port->flags &= ~MACVLAN_F_PASSTHRU;
-+}
-+
- static inline bool macvlan_addr_change(const struct macvlan_port *port)
- {
- 	return port->flags & MACVLAN_F_ADDRCHANGE;
-@@ -637,7 +642,7 @@ static int macvlan_open(struct net_device *dev)
- 	struct net_device *lowerdev = vlan->lowerdev;
- 	int err;
- 
--	if (macvlan_passthru(vlan->port)) {
-+	if (vlan->mode == MACVLAN_MODE_PASSTHRU) {
- 		if (!(vlan->flags & MACVLAN_FLAG_NOPROMISC)) {
- 			err = dev_set_promiscuity(lowerdev, 1);
- 			if (err < 0)
-@@ -712,7 +717,7 @@ static int macvlan_stop(struct net_device *dev)
- 	dev_uc_unsync(lowerdev, dev);
- 	dev_mc_unsync(lowerdev, dev);
- 
--	if (macvlan_passthru(vlan->port)) {
-+	if (vlan->mode == MACVLAN_MODE_PASSTHRU) {
- 		if (!(vlan->flags & MACVLAN_FLAG_NOPROMISC))
- 			dev_set_promiscuity(lowerdev, -1);
- 		goto hash_del;
-@@ -792,6 +797,23 @@ static int macvlan_set_mac_address(struct net_device *dev, void *p)
- 	return macvlan_sync_address(dev, addr->__data);
- }
- 
-+static void macvlan_port_release_mac(struct net_device *dev)
-+{
-+	struct macvlan_port *port = macvlan_port_get_rtnl(dev);
-+
-+	/* If the lower device address has been changed by passthru
-+	 * macvlan, put it back.
-+	 */
-+	if (macvlan_passthru(port) &&
-+	    !ether_addr_equal(port->dev->dev_addr, port->perm_addr)) {
-+		struct sockaddr_storage ss;
-+
-+		ss.ss_family = port->dev->type;
-+		memcpy(&ss.__data, port->perm_addr, port->dev->addr_len);
-+		dev_set_mac_address(port->dev, &ss, NULL);
-+	}
-+}
-+
- static void macvlan_change_rx_flags(struct net_device *dev, int change)
- {
- 	struct macvlan_dev *vlan = netdev_priv(dev);
-@@ -977,8 +999,18 @@ static void macvlan_uninit(struct net_device *dev)
- 
- 	macvlan_flush_sources(port, vlan);
- 	port->count -= 1;
--	if (!port->count)
--		macvlan_port_destroy(port->dev);
-+	if (port->count) {
-+		/* In case of remaining source interfaces undo
-+		 * passthru-specific properties.
-+		 */
-+		if (vlan->mode == MACVLAN_MODE_PASSTHRU) {
-+			macvlan_port_release_mac(dev);
-+			macvlan_clear_passthru(vlan->port);
-+		}
-+		return;
-+	}
-+
-+	macvlan_port_destroy(port->dev);
- }
- 
- static void macvlan_dev_get_stats64(struct net_device *dev,
-@@ -1052,7 +1084,7 @@ static int macvlan_fdb_add(struct ndmsg *ndm, struct nlattr *tb[],
- 	/* Support unicast filter only on passthru devices.
- 	 * Multicast filter should be allowed on all devices.
- 	 */
--	if (!macvlan_passthru(vlan->port) && is_unicast_ether_addr(addr))
-+	if (vlan->mode != MACVLAN_MODE_PASSTHRU && is_unicast_ether_addr(addr))
- 		return -EOPNOTSUPP;
- 
- 	if (flags & NLM_F_REPLACE)
-@@ -1077,7 +1109,7 @@ static int macvlan_fdb_del(struct ndmsg *ndm, struct nlattr *tb[],
- 	/* Support unicast filter only on passthru devices.
- 	 * Multicast filter should be allowed on all devices.
- 	 */
--	if (!macvlan_passthru(vlan->port) && is_unicast_ether_addr(addr))
-+	if (vlan->mode != MACVLAN_MODE_PASSTHRU && is_unicast_ether_addr(addr))
- 		return -EOPNOTSUPP;
- 
- 	if (is_unicast_ether_addr(addr))
-@@ -1308,17 +1340,7 @@ static void macvlan_port_destroy(struct net_device *dev)
- 		kfree_skb(skb);
- 	}
- 
--	/* If the lower device address has been changed by passthru
--	 * macvlan, put it back.
--	 */
--	if (macvlan_passthru(port) &&
--	    !ether_addr_equal(port->dev->dev_addr, port->perm_addr)) {
--		struct sockaddr_storage ss;
--
--		ss.ss_family = port->dev->type;
--		memcpy(&ss.__data, port->perm_addr, port->dev->addr_len);
--		dev_set_mac_address(port->dev, &ss, NULL);
--	}
-+	macvlan_port_release_mac(dev);
- 
- 	kfree(port);
- }
-@@ -1506,15 +1528,6 @@ int macvlan_common_newlink(struct net_device *dev,
- 	}
- 	port = macvlan_port_get_rtnl(lowerdev);
- 
--	/* Only 1 macvlan device can be created in passthru mode */
--	if (macvlan_passthru(port)) {
--		/* The macvlan port must be not created this time,
--		 * still goto destroy_macvlan_port for readability.
--		 */
--		err = -EINVAL;
--		goto destroy_macvlan_port;
--	}
--
- 	vlan->lowerdev = lowerdev;
- 	vlan->dev      = dev;
- 	vlan->port     = port;
-@@ -1527,10 +1540,30 @@ int macvlan_common_newlink(struct net_device *dev,
- 	if (data && data[IFLA_MACVLAN_FLAGS])
- 		vlan->flags = nla_get_u16(data[IFLA_MACVLAN_FLAGS]);
- 
-+	/* Only 1 macvlan device can be created in passthru mode. There may be
-+	 * additional source mode devices but nothing else at the moment.
-+	 *
-+	 * First check if adding a source mode device to an existing passthru vlan.
-+	 */
-+	if (macvlan_passthru(port) && vlan->mode != MACVLAN_MODE_SOURCE) {
-+		/* The macvlan port must be not created this time,
-+		 * still goto destroy_macvlan_port for readability.
-+		 */
-+		err = -EINVAL;
-+		goto destroy_macvlan_port;
-+	}
-+
-+	/* Now check if adding a passthru device to an existing set of source mode
-+	 * devices.
-+	 */
- 	if (vlan->mode == MACVLAN_MODE_PASSTHRU) {
--		if (port->count) {
--			err = -EINVAL;
--			goto destroy_macvlan_port;
-+		struct macvlan_dev *p;
-+
-+		list_for_each_entry(p, &port->vlans, list) {
-+			if (p->mode != MACVLAN_MODE_SOURCE) {
-+				err = -EINVAL;
-+				goto destroy_macvlan_port;
-+			}
- 		}
- 		macvlan_set_passthru(port);
- 		eth_hw_addr_inherit(dev, lowerdev);
-@@ -1564,7 +1597,11 @@ int macvlan_common_newlink(struct net_device *dev,
- 	if (err)
- 		goto unregister_netdev;
- 
--	list_add_tail_rcu(&vlan->list, &port->vlans);
-+	/* macvlan_handle_frame expects the (one and only) passthru device first. */
-+	if (vlan->mode == MACVLAN_MODE_PASSTHRU)
-+		list_add_rcu(&vlan->list, &port->vlans);
-+	else
-+		list_add_tail_rcu(&vlan->list, &port->vlans);
- 	update_port_bc_queue_len(vlan->port);
- 	netif_stacked_transfer_operstate(lowerdev, dev);
- 	linkwatch_fire_event(dev);
-@@ -1627,9 +1664,11 @@ static int macvlan_changelink(struct net_device *dev,
- 	if (data && data[IFLA_MACVLAN_MODE]) {
- 		set_mode = true;
- 		mode = nla_get_u32(data[IFLA_MACVLAN_MODE]);
--		/* Passthrough mode can't be set or cleared dynamically */
--		if ((mode == MACVLAN_MODE_PASSTHRU) !=
--		    (vlan->mode == MACVLAN_MODE_PASSTHRU))
-+		/* Passthrough mode can't be set or cleared dynamically,
-+		 * regardless of existing source interfaces. Furthermore, source
-+		 * interfaces can't switch modes within a passhtrough port.
-+		 */
-+		if (macvlan_passthru(vlan->port) && mode != vlan->mode)
- 			return -EINVAL;
- 		if (vlan->mode == MACVLAN_MODE_SOURCE &&
- 		    vlan->mode != mode)
-@@ -1639,7 +1678,7 @@ static int macvlan_changelink(struct net_device *dev,
- 	if (data && data[IFLA_MACVLAN_FLAGS]) {
- 		__u16 flags = nla_get_u16(data[IFLA_MACVLAN_FLAGS]);
- 		bool promisc = (flags ^ vlan->flags) & MACVLAN_FLAG_NOPROMISC;
--		if (macvlan_passthru(vlan->port) && promisc) {
-+		if (vlan->mode == MACVLAN_MODE_PASSTHRU && promisc) {
- 			int err;
- 
- 			if (flags & MACVLAN_FLAG_NOPROMISC)
 -- 
-2.54.0
+2.43.0
 
