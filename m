@@ -1,61 +1,78 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460E93126BF;
-	Thu,  9 Jul 2026 13:58:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 593482C029D;
+	Thu,  9 Jul 2026 14:01:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783605496; cv=none; b=t/gMqW9nxfltwYjPl3jvQyoOur4X/foO3hero7N7bYoswLGjfq5wieSRiYRMc865WqrXRUvTkX8SnvVbzZE4sMVJr3Ovsuvr/HNASyn7uLemewKbWErNDyEA3cGDp3hSmOGL958qxQcOCXyddcNcjWphbcbecDMRHp4fksI8BDE=
+	t=1783605710; cv=none; b=mra7oXZNRpeDcdeP5kTd8yQXiih29aYTx3ze7ZeEb9M14Re6cLL05HlUJvSSSq7hcEMHZVmxk9UOXL132gTMixHhKPvhE+5q7NG1EXVY0jbLjQfp9sQBdws62TuYNnVcFuje7L2LCSxGlT1xCSOIJLT/71adz77WC+trhE+RkXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783605496; c=relaxed/simple;
-	bh=3hwXFOzv/YTq/Wpo0kEOWr1fqx4v+yPB06CDQGibXQ8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TDkUoF7UuRFHMWvOA1ynPH5yobTJJvy/4kxiHk+7o2R+y31aPTyWMOi0O1vEzJ6sZnX4sfDliMgxDKdY0/H9Dn5ZrkgvHL8cfXV69ddrUGWW4+bM9oDsp1ElA0Yn0iQZ0Mh7uCByzxdEystvxpGSXJcjqu/R09jfgzLj/H7W4us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=FsTDzJUP; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1783605710; c=relaxed/simple;
+	bh=NsUUyYLiMvVkx3K07K1ak3fXf989M3aFmNYTZApMkJo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WoDBap/tsRviMQsFNOudJcU4pg6DfR+5S4mN++opBWda7UF50pjCOKJVuJ2DVAgUyJn/JolEoWWxipPnJ34EOnfu06OI9ySPOp/eYjrAtNFxCGrwB5ukov/POyfA4Gv9mPmwMtoEOtx5EBuY6Jj+sAGhwtMaFQJGVLO1RGbTsyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=Y94DA6lA; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="FsTDzJUP"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=3j5wUOy81jE85IQW1jkfY+qaRlufRS4VpmYySwqNofk=; b=FsTDzJUPGt8N4nYpc8afLFPlRq
-	6M/4HGyszaGPq1I2VBGgct5CSRElAYMq2jKF2NlK7XRldUwQw9HOfyWvfo9n7XNw/G0qK9Pt9iWFv
-	3A7mAIyFw7MQVKzbTsPIgbFggtRqTwbxFmHeP2khEkhdUaqJsRPCZLjfVHMiBP3BJFCA=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1whpGS-00BVJu-UW; Thu, 09 Jul 2026 15:58:08 +0200
-Date: Thu, 9 Jul 2026 15:58:08 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Manuel Ebner <manuelebner@mailbox.org>
-Cc: Vladimir Oltean <olteanv@gmail.com>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>, netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] docs: packing: fix brackets
-Message-ID: <c7a53f96-b5b5-4e41-b134-afb0b1518c33@lunn.ch>
-References: <20260709121427.391749-2-manuelebner@mailbox.org>
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="Y94DA6lA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1783605707;
+	bh=NsUUyYLiMvVkx3K07K1ak3fXf989M3aFmNYTZApMkJo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Y94DA6lABAfIWKm9mEjfNwpSSs1ze7b4zequXSUlSnjcYU2iBEoHE+09fA9x8+tlG
+	 gAMBhdkw+hXVTGiMKO8Qn4xoBLJ5DvM6+FXbkAgeZ+09RMDvYSFNRg0ZO/HH6VQ2mW
+	 keAfhg5Ijdh83U32b72/4p5kgV4EqhEUbIJ5Mym9Le39uNfQii6lXmcTd9/bg7CdLi
+	 U3Oyp80ASvEE+lkGxl1J1hPnPws/76oNSIJ/GYGx8NCgxZslQJowTiTT5sLNgOvLFK
+	 7iJFoG+Rus5j3gV8hCzX4L8BsscHKysfrGVm3aaofUahICkOnVyya9yqYiY2p+olKM
+	 p0xXvGGoXADSA==
+Received: from [100.64.1.21] (unknown [100.64.1.21])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: kholk11)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id B847317E0D33;
+	Thu, 09 Jul 2026 16:01:46 +0200 (CEST)
+Message-ID: <122d78b9-7e22-449b-ad27-f456d807f9e5@collabora.com>
+Date: Thu, 9 Jul 2026 16:01:46 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260709121427.391749-2-manuelebner@mailbox.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 03/18] dt-bindings: clock: mediatek: Make
+ '#clock-cells' required for MT8195
+To: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Matthias Brugger
+ <matthias.bgg@gmail.com>, Chun-Jie Chen <chun-jie.chen@mediatek.com>,
+ Philipp Zabel <p.zabel@pengutronix.de>,
+ Edward-JW Yang <edward-jw.yang@mediatek.com>,
+ Richard Cochran <richardcochran@gmail.com>
+Cc: kernel@collabora.com, linux-clk@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ netdev@vger.kernel.org
+References: <20260709-mt8189-clocks-system-base-v2-0-2926da3db6cf@collabora.com>
+ <20260709-mt8189-clocks-system-base-v2-3-2926da3db6cf@collabora.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Content-Language: en-US
+In-Reply-To: <20260709-mt8189-clocks-system-base-v2-3-2926da3db6cf@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jul 09, 2026 at 02:14:27PM +0200, Manuel Ebner wrote:
-> Add two ')' to nested functions in code block.
+On 7/9/26 15:42, Louis-Alexis Eyraud wrote:
+> Both MT8195 clock controllers dt-bindings (clock and sys-clock)
+> document the '#clock-cells' property but do not enforce it as required
+> property.
+> As clock provider nodes should define this property in devicetrees, add
+> it to the required property list in both its dt-bindings files.
 > 
-> Signed-off-by: Manuel Ebner <manuelebner@mailbox.org>
+> Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
 
-Please add a Fixes tag.
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-With that: Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-
-    Andrew
-
----
-pw-bot: cr
