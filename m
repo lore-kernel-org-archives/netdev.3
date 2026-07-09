@@ -1,146 +1,104 @@
-Received: from mx0.infotecs.ru (mx0.infotecs.ru [91.244.183.115])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4523C381AE0;
-	Thu,  9 Jul 2026 15:51:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.244.183.115
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D79C636A375
+	for <netdev@vger.kernel.org>; Thu,  9 Jul 2026 15:59:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783612318; cv=none; b=npnzlw8B56VlmWLmkW3LOZdS2QVv5HMxJ40ohesvtmr2iICl9P1GeQBFENJqe9c1ZNLV4r+oTRKSRXufB1nTvAxEDMOR7aQjI8DVDl7gxNa59tlUZHJik3pCamOolJd82NEkKUOCPwEdaC1++H/y3HLEGYPG78w4kGl/eq9mvSc=
+	t=1783612781; cv=none; b=g9/tl0gcSlGnWKTCdaLXspVWkYDXwTcxlayx4P7d2PHmDCusjifX3YlY5lZGYKi9fILQC9w57ICpc9s/SR9kC12TQ5UMNCj7S92D/OIbhgK9aEJB3Upi27/cu9AG6tHllvosOiCo33izIzhtTq7zh/2VLztgIywCQYeENxK65HI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783612318; c=relaxed/simple;
-	bh=qZokTdFXcgSfazJoafBNlRc/K/h9T8rmtQ40ju2qrsY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=tNH4iJv9pqTc7sErF+quIoKWEACUldmAY2opkILmUGv4PJ2nw4MjSmMwGrKZR1C173fJCm7u8oxmhQAkyqXVo23oOSJq63OkKCDV0oCY3te/ZTzxpJ6pzLonpq/UeFHNUikUjv2wYsLRjqBM1QNc8OMFK9kUmQM5OIJCMQKv8ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=infotecs.ru; spf=pass smtp.mailfrom=infotecs.ru; dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b=kVza1cYS; arc=none smtp.client-ip=91.244.183.115
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=infotecs.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infotecs.ru
+	s=arc-20240116; t=1783612781; c=relaxed/simple;
+	bh=bnDDy05kYz3XkFFSJ+rs21I3F6XQAlDJfnl4nBcLMQE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XI/qhjIZ5x1+3pAyTwRLDTtgFuR9SiG0TxQqQM7PI+lIh4jnfFDthfGrwdD7wnTaq+asKQnvdUi603IL97nSiR94x9MpwLfn9MfGyZ9EjrsB9LIs6/+g4n/hQKLNUtTxyCspmSIRoSVR0VqIC6u1sgmZ12RI83+TosrfSaF1XTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l3MnGtDS; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b="kVza1cYS"
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx0.infotecs.ru 48C062C0BCF
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=infotecs.ru; s=mx;
-	t=1783612306; bh=qZokTdFXcgSfazJoafBNlRc/K/h9T8rmtQ40ju2qrsY=;
-	h=From:To:CC:Subject:Date:References:In-Reply-To:From;
-	b=kVza1cYSWn5euyxBVWucfyQbjzroE0WWnctvYSCthw6SxBOsPhW2A7zUzn7GSj+Z9
-	 b4G3tfI8gce65NHiWUAo70NMEp3N/c69grrODjzLf2nc+tSe4qNJXfg2dcb4J/+Cva
-	 CfkX8q4c1C6wIz0glyIJMA8vapA0LgcNI2+Uvv90=
-Received: from mx0.infotecs-nt (localhost [127.0.0.1])
-	by mx0.infotecs.ru (Postfix) with ESMTP id 48C062C0BCF;
-	Thu,  9 Jul 2026 18:51:46 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx0.infotecs-nt 0F82B2C0ACD
-Received: from msk-exch-02.infotecs-nt (msk-exch-02.infotecs-nt [10.0.7.192])
-	by mx0.infotecs-nt (Postfix) with ESMTP id 0F82B2C0ACD;
-	Thu,  9 Jul 2026 18:51:46 +0300 (MSK)
-From: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
-To: Allison Henderson <achender@kernel.org>
-CC: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Ka-Cheong Poon
-	<ka-cheong.poon@oracle.com>, Santosh Shilimkar
-	<santosh.shilimkar@oracle.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-rdma@vger.kernel.org"
-	<linux-rdma@vger.kernel.org>, "rds-devel@oss.oracle.com"
-	<rds-devel@oss.oracle.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "lvc-project@linuxtesting.org"
-	<lvc-project@linuxtesting.org>
-Subject: Re: [PATCH net] rds: Fix inet6_addr_lst NULL dereference when IPv6 is
- disabled
-Thread-Topic: [PATCH net] rds: Fix inet6_addr_lst NULL dereference when IPv6
- is disabled
-Thread-Index: AQHdDtFJkzJE74BSrkynIWuhoK5tUrZlIweAgAACtwA=
-Date: Thu, 9 Jul 2026 15:51:45 +0000
-Message-ID: <01d99faa-c8c3-438e-852b-92ba230b8b4a@infotecs.ru>
-References: <20260708115922.2226279-1-Ilia.Gavrilov@infotecs.ru>
- <a724cf77f2338776f44b465a25009c22a0ee7c43.camel@kernel.org>
-In-Reply-To: <a724cf77f2338776f44b465a25009c22a0ee7c43.camel@kernel.org>
-Accept-Language: ru-RU, en-US
-Content-Language: ru-RU
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-exclaimer-md-config: 208ac3cd-1ed4-4982-a353-bdefac89ac0a
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <566EC7F9B2FCF146AC35704173D34FB6@infotecs.ru>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l3MnGtDS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783612779; x=1815148779;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=bnDDy05kYz3XkFFSJ+rs21I3F6XQAlDJfnl4nBcLMQE=;
+  b=l3MnGtDSIslkggtJhoYbNbamPeMYuPIncq8eStZSKshCCeEIT6vAT39i
+   Yz40LNBb78SIt8lI0FWpVCPl4Lz8wqc+F/INI+8EjzJL6mWyNOXcoqbK0
+   bht75rbvTFr5AYLh+JUg0pWC8x2blOk9wYzZrdFrZ0Z70aaH4pthp3+N4
+   BRG1f8HwmozMH5qxYYPCY8ekTKLzi0W0I4RHWhhD4RJ7OJMbbe8SlVQbR
+   oZtiLWRD2iImRL0Ee+mrqbFogP9fePRTlIp9vFW4UwunkTpACvYrofuvM
+   5FWf/JVUJfdzSYg02nl2qJHfAUwCDipM0QSVZC7JUzXyBXgYVQDRT2bTT
+   g==;
+X-CSE-ConnectionGUID: kKR10I1YTce273I0Z7EPBw==
+X-CSE-MsgGUID: Yz9jp4yrTaSJD6/qtGwybg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="95671657"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="95671657"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 08:59:39 -0700
+X-CSE-ConnectionGUID: aJOjZyFIRIS4eZj9684RzA==
+X-CSE-MsgGUID: l/gfQvLHSou4XVQm3Ltjeg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="279019819"
+Received: from irvmail002.ir.intel.com ([10.43.11.120])
+  by fmviesa001.fm.intel.com with ESMTP; 09 Jul 2026 08:59:37 -0700
+Received: from gond.igk.intel.com (gond.igk.intel.com [10.123.220.52])
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id 801AF312C4;
+	Thu,  9 Jul 2026 16:59:36 +0100 (IST)
+From: Marcin Szycik <marcin.szycik@linux.intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	anthony.l.nguyen@intel.com,
+	Marcin Szycik <marcin.szycik@linux.intel.com>,
+	kernel test robot <lkp@intel.com>
+Subject: [PATCH iwl-next] ice: fix uninitialized response buffer in ice_acl_create_tbl()
+Date: Thu,  9 Jul 2026 16:59:04 +0200
+Message-ID: <20260709145904.164375-1-marcin.szycik@linux.intel.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSMG-AntiPhishing: NotDetected
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Envelope-From: Ilia.Gavrilov@infotecs.ru
-X-KSMG-AntiSpam-Info: LuaCore: 112 0.3.112 7c8d497b0e572fbfa504a2ee62037c045a8cb4ec, {Tracking_msgid_8}, {Tracking_from_domain_doesnt_match_to}, 127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;infotecs.ru:7.1.1, FromAlignment: s
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiSpam-Lua-Profiles: 204370 [Jul 09 2026]
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Version: 6.1.1.22
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 3.0.0.9059, bases: 2026/07/09 08:43:00 #28414782
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 8
+Content-Transfer-Encoding: 8bit
 
-T24gNy85LzI2IDY6NDEgUE0sIEFsbGlzb24gSGVuZGVyc29uIHdyb3RlOg0KPiBPbiBXZWQsIDIw
-MjYtMDctMDggYXQgMTE6NTkgKzAwMDAsIElsaWEgR2F2cmlsb3Ygd3JvdGU6DQo+PiBXaGVuIGJv
-b3Rpbmcgd2l0aCB0aGUgJ2lwdjYuZGlzYWJsZT0xJyBwYXJhbWV0ZXIsIGluZXQ2X2FkZHJfbHN0
-DQo+PiBpcyBuZXZlciBpbml0aWFsaXplZCBiZWNhdXNlIGluZXQ2X2luaXQoKSBleGl0cyBiZWZv
-cmUgYWRkcmNvbmZfaW5pdCgpDQo+PiBpcyBjYWxsZWQgdG8gaW5pdGlhbGl6ZSBpdC4gQW4gYXR0
-ZW1wdCB0byBiaW5kIGFuIFJEUyBzb2NrZXQgdG8NCj4+IGFuIGlwdjYgYWRkcmVzcyByZXN1bHRz
-IGluIGEgY3Jhc2ggaW4gX19pcHY2X2Noa19hZGRyX2FuZF9mbGFncygpDQo+IA0KPiBIZWxsbyBJ
-bGlhLA0KPiANCj4gVGhhbmtzIGZvciB0aGUgY2F0Y2guICBTb21lIGNvbW1lbnRzIGJlbG93Og0K
-PiANCj4+DQo+PiBLQVNBTjogbnVsbC1wdHItZGVyZWYgaW4gcmFuZ2UgWzB4MDAwMDAwMDAwMDAw
-MDAwOC0weDAwMDAwMDAwMDAwMDAwMGZdDQo+PiBSSVA6IDAwMTA6X19pcHY2X2Noa19hZGRyX2Fu
-ZF9mbGFncysweDFkZi8weDdlMA0KPj4gQ2FsbCBUcmFjZToNCj4+ICA8VEFTSz4NCj4+ICBpcHY2
-X2Noa19hZGRyKzB4M2IvMHg1MA0KPj4gIHJkc190Y3BfbGFkZHJfY2hlY2srMHgxNTUvMHgzYjAg
-W3Jkc190Y3BdDQo+PiAgcmRzX3RyYW5zX2dldF9wcmVmZXJyZWQrMHgxNWQvMHgyZDAgW3Jkc10N
-Cj4+ICA/IHRyYWNlX2hhcmRpcnFzX29uKzB4MmQvMHgxMTANCj4+ICByZHNfYmluZCsweDE0MzMv
-MHgxZDYwIFtyZHNdDQo+PiAgPyByZHNfcmVtb3ZlX2JvdW5kKzB4ZDUwLzB4ZDUwIFtyZHNdDQo+
-PiAgPyBhYV9hZl9wZXJtKzB4MjUwLzB4MjUwDQo+PiAgPyBfX21pZ2h0X2ZhdWx0KzB4ZGUvMHgx
-OTANCj4+ICA/IF9fc3lzX2JpbmQrMHgxZGMvMHgyMTANCj4+ICBfX3N5c19iaW5kKzB4MWRjLzB4
-MjEwDQo+PiAgPyBfX2lhMzJfc3lzX3NvY2tldHBhaXIrMHgxMDAvMHgxMDANCj4+ICA/IHJlc3Rv
-cmVfZnByZWdzX2Zyb21fZnBzdGF0ZSsweDUzLzB4MTAwDQo+PiAgX194NjRfc3lzX2JpbmQrMHg3
-My8weGIwDQo+PiAgPyBzeXNjYWxsX2VudGVyX2Zyb21fdXNlcl9tb2RlKzB4MWMvMHg1MA0KPj4g
-IGRvX3N5c2NhbGxfNjQrMHgzNC8weDgwDQo+PiAgZW50cnlfU1lTQ0FMTF82NF9hZnRlcl9od2Zy
-YW1lKzB4NmUvMHhkOA0KPj4gUklQOiAwMDMzOjB4N2Y0N2Y4MjY5ZWE5DQo+PiAgPC9UQVNLPg0K
-Pj4NCj4+IFRoZSBmb2xsb3dpbmcgY29kZSByZXByb2R1Y2VzIHRoZSBpc3N1ZToNCj4+DQo+PiBz
-dHJ1Y3Qgc29ja2FkZHJfaW42IGFkZHI7DQo+PiBzID0gc29ja2V0KFBGX1JEUywgU09DS19TRVFQ
-QUNLRVQsIDApOw0KPj4NCj4+IG1lbXNldCgmYWRkciwgMCwgc2l6ZW9mKGFkZHIpKTsNCj4+IGlu
-ZXRfcHRvbihBRl9JTkVUNiwgQUREUkVTUywgJmFkZHIuc2luNl9hZGRyKTsNCj4+IGFkZHIuc2lu
-Nl9mYW1pbHkgPSBBRl9JTkVUNjsNCj4+IGFkZHIuc2luNl9wb3J0ID0gaHRvbnMoUE9SVCk7DQo+
-Pg0KPj4gYmluZChzLCAmYWRkciwgc2l6ZW9mKGFkZHIpOw0KPiBuaXQ6IG1pc3NpbmcgcGFyZW4g
-aGVyZQ0KPiANCj4+DQo+PiBGb3VuZCBieSBJbmZvVGVDUyBvbiBiZWhhbGYgb2YgTGludXggVmVy
-aWZpY2F0aW9uIENlbnRlcg0KPj4gKGxpbnV4dGVzdGluZy5vcmcpIHdpdGggU3l6a2FsbGVyLg0K
-Pj4NCj4+IEZpeGVzOiBlZWUyZmE2YWIzMjIgKCJyZHM6IENoYW5naW5nIElQIGFkZHJlc3MgaW50
-ZXJuYWwgcmVwcmVzZW50YXRpb24gdG8gc3RydWN0IGluNl9hZGRyIikNCj4+IEZpeGVzOiAxZTJi
-NDRlNzhlZWEgKCJyZHM6IEVuYWJsZSBSRFMgSVB2NiBzdXBwb3J0IikNCj4+IFNpZ25lZC1vZmYt
-Ynk6IElsaWEgR2F2cmlsb3YgPElsaWEuR2F2cmlsb3ZAaW5mb3RlY3MucnU+DQo+PiAtLS0NCj4+
-ICBuZXQvcmRzL2liLmMgIHwgNCArKysrDQo+PiAgbmV0L3Jkcy90Y3AuYyB8IDggKysrKystLS0N
-Cj4+ICAyIGZpbGVzIGNoYW5nZWQsIDkgaW5zZXJ0aW9ucygrKSwgMyBkZWxldGlvbnMoLSkNCj4+
-DQo+PiBkaWZmIC0tZ2l0IGEvbmV0L3Jkcy9pYi5jIGIvbmV0L3Jkcy9pYi5jDQo+PiBpbmRleCAz
-OWY4NzI3MmUwNzEuLjhmOWNmNDkxOTg0ZiAxMDA2NDQNCj4+IC0tLSBhL25ldC9yZHMvaWIuYw0K
-Pj4gKysrIGIvbmV0L3Jkcy9pYi5jDQo+PiBAQCAtNDI5LDYgKzQyOSwxMCBAQCBzdGF0aWMgaW50
-IHJkc19pYl9sYWRkcl9jaGVja19jbShzdHJ1Y3QgbmV0ICpuZXQsIGNvbnN0IHN0cnVjdCBpbjZf
-YWRkciAqYWRkciwNCj4+ICAJCXNhID0gKHN0cnVjdCBzb2NrYWRkciAqKSZzaW47DQo+PiAgCX0g
-ZWxzZSB7DQo+PiAgI2lmIElTX0VOQUJMRUQoQ09ORklHX0lQVjYpDQo+PiArCQlpZiAoIWlwdjZf
-bW9kX2VuYWJsZWQoKSkgew0KPj4gKwkJCXJldCA9IC1FQUREUk5PVEFWQUlMOw0KPj4gKwkJCWdv
-dG8gb3V0Ow0KPj4gKwkJfQ0KPj4gIAkJbWVtc2V0KCZzaW42LCAwLCBzaXplb2Yoc2luNikpOw0K
-Pj4gIAkJc2luNi5zaW42X2ZhbWlseSA9IEFGX0lORVQ2Ow0KPj4gIAkJc2luNi5zaW42X2FkZHIg
-PSAqYWRkcjsNCj4+IGRpZmYgLS1naXQgYS9uZXQvcmRzL3RjcC5jIGIvbmV0L3Jkcy90Y3AuYw0K
-Pj4gaW5kZXggYTFkZTExNGQ1ZTJlLi45NTVkOTIyNzdkNWEgMTAwNjQ0DQo+PiAtLS0gYS9uZXQv
-cmRzL3RjcC5jDQo+PiArKysgYi9uZXQvcmRzL3RjcC5jDQo+PiBAQCAtMzY2LDkgKzM2NiwxMSBA
-QCBpbnQgcmRzX3RjcF9sYWRkcl9jaGVjayhzdHJ1Y3QgbmV0ICpuZXQsIGNvbnN0IHN0cnVjdCBp
-bjZfYWRkciAqYWRkciwNCj4+ICAJCXJjdV9yZWFkX3VubG9jaygpOw0KPj4gIAl9DQo+PiAgI2lm
-IElTX0VOQUJMRUQoQ09ORklHX0lQVjYpDQo+PiAtCXJldCA9IGlwdjZfY2hrX2FkZHIobmV0LCBh
-ZGRyLCBkZXYsIDApOw0KPj4gLQlpZiAocmV0KQ0KPj4gLQkJcmV0dXJuIDA7DQo+PiArCWlmIChp
-cHY2X21vZF9lbmFibGVkKCkpIHsNCj4+ICsJCXJldCA9IGlwdjZfY2hrX2FkZHIobmV0LCBhZGRy
-LCBkZXYsIDApOw0KPj4gKwkJaWYgKHJldCkNCj4+ICsJCQlyZXR1cm4gMDsNCj4+ICsJfQ0KPiAN
-Cj4gVGhlcmUncyBhbm90aGVyIGlwdjZfY2hrX2FkZHIoKSBpbiBfX3Jkc19maW5kX2lmaW5kZXgo
-KSB3aXRoIHRoZSBzYW1lIGlzc3VlIHRoYXQgYWZmZWN0cyBpbmJvdW5kIGxpbmstbG9jYWwgSVB2
-Ng0KPiBjb25uZWN0cy4gIENhbiB5b3UgYWRkIGEgc2ltaWxhciBndWFyZCB0aGVyZSB0b28/ICBU
-aGVuIEkgdGhpbmsgdGhhdCBzaG91bGQgY292ZXIgYWxsIHRoZSBwb2ludHMgb2YgZXhwb3N1cmUu
-ICBUaGFua3MNCj4gZm9yIHdvcmtpbmcgb24gdGhpcy4NCj4gDQo+IEFsbGlzb24NCj4gDQoNClRo
-YW5rcyBmb3IgdGhlIHJldmlldywgSSdsbCBhZGQgdGhlIGd1YXJkIGluIHRoZSBuZXh0IHBhdGNo
-IHZlcnNpb24uDQoNCj4+ICAjZW5kaWYNCj4+ICAJcmV0dXJuIC1FQUREUk5PVEFWQUlMOw0KPj4g
-IH0NCj4gDQoNCg==
+Buffer is uninitialized in error path. Move assignment before goto. This
+buffer is only used for response, so its content doesn't matter.
+
+Fixes: d80ee68614c3 ("ice: initialize ACL table")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202607022231.FWjSU75X-lkp@intel.com
+Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
+---
+Tony, please squash this with the offending commit. It's not applied
+yet, so hash is invalid, but I don't want to resend a ~5000 line
+patchset just to move one line.
+---
+ drivers/net/ethernet/intel/ice/ice_acl_ctrl.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/ice/ice_acl_ctrl.c b/drivers/net/ethernet/intel/ice/ice_acl_ctrl.c
+index a76762e3aa46..4ea08bd9784c 100644
+--- a/drivers/net/ethernet/intel/ice/ice_acl_ctrl.c
++++ b/drivers/net/ethernet/intel/ice/ice_acl_ctrl.c
+@@ -354,14 +354,14 @@ int ice_acl_create_tbl(struct ice_hw *hw, struct ice_acl_tbl_params *params)
+ 		return -ENOMEM;
+ 	}
+ 
++	resp_buf = &tbl_alloc.buf.resp_buf;
++
+ 	tbl = kzalloc_obj(*tbl);
+ 	if (!tbl) {
+ 		err = -ENOMEM;
+ 		goto err_dealloc_tbl;
+ 	}
+ 
+-	resp_buf = &tbl_alloc.buf.resp_buf;
+-
+ 	/* Retrieve information of the allocated table */
+ 	tbl->id = alloc_id;
+ 	tbl->first_tcam = resp_buf->ops.table.first_tcam;
+-- 
+2.49.0
+
