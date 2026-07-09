@@ -1,200 +1,234 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013034.outbound.protection.outlook.com [52.101.83.34])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 804A93D3D18;
-	Thu,  9 Jul 2026 06:36:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.34
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783579015; cv=fail; b=FmQUxfF2JKbTNR+L0PiWhdOJswmvPt4MTs2L5m4AsT0/ykIgD6nd2fN/2WqOqjywzD1GiUySMH3Gnq1U2J9tzKTqtgazVVb69lrv/v9TNT9W7JKrGAr7Z6S5Qa/xPPwSMCxTN1ra9IQ0MuHLrMJsoiH4kYQ/FHRD/G/qCJQkXhM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783579015; c=relaxed/simple;
-	bh=L0b4HPjuyp0Sx7T3p7iSrPy+hj6DWcULvGmlDpU4pOQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=l6jIbanZXcFAsI/s632G2hn4Qsjqa1jVzNwCtcGzMwJBG4ofx1iQxXadfQK3lfqZmyiMNucBGMX+fYcjuZZt0ajxGyNa8RqcXzVhZptzb8CBi85Q0LBJ1jP2e/wyegDtLQ7owTcafMceA/rsghC8rAQvJ4u0qloN9k8IPisLeME=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech; spf=pass smtp.mailfrom=est.tech; dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b=IQQwzEZB; arc=fail smtp.client-ip=52.101.83.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=est.tech
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD873D45F8;
+	Thu,  9 Jul 2026 06:42:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783579339; cv=none; b=Gk0LiAX3TgfVoY+7/G653pU0XaKaj2IMa5XzXKwOjQMAr06HxoHHg+FySxL4UmMiPZ0wvyyH0X+v3oTxgmxAYx6BbHZoSe9xyg6EuMq2wzi6gYNs7YGA591JXeqqEzTXhoAMYaF8tf1JzLfm+ZvAsIuyZXvORrjht/+A4H38iCM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783579339; c=relaxed/simple;
+	bh=uzvOeyBIGJ0zH58vlG6UTeG2oa3ZaqKUvQ/CpRjhHGc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=X6cFGm1TmF3igRkEbk8OpN+I3Lj8Dc1pp3UH+e+Dxj/+BHyDOwV/XrdGJryQoDZzJnUUCkQXqH+Mo9dJRCulmmI1W0bNPc5KwZPRJ1ZMJxIUEAHsPkLw270DbvY0GP1KHboDGlyN2aGZUqFSi7FLu+Ex0qy8oztTaLU8D62/Kj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b=Bop6gkYI; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b="IQQwzEZB"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nug/tFAxTTnFoZdkhsmzsbWKoD66qaIAr3h2nzKzKGPNulm4Q8q3BXsSvMIknryk0zBHw/AsiGqTTRQnAtdcUezt9Zi+5z3WAEWKLx8bSHmqgroada0H/jqCaCu1ukegDU1xYu28fI5/6XTbcQnNpEmVDqUxp8bBYKjMS7W3fg50F5IF8q0dFvAYIbxT97rutE2GC4V773oo+vP/Sy3TOlu6V37qyl8stGWx0Mkzqj7sdMSYSEvSYWLGme6ZtzI4laJLVJS7SmFUKD1WvfwTRTzlYrhMWK5a4yjW3yupke4hhdFOCsd0udOG7qALLyrN7XSwkVA6ydwa6p5dGcqlzg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+1QJvi9GFrfMSa/cYbwqeFQTpj+rk9uBEBKosJE8TsI=;
- b=Ecw2+8kLUcyOVMdyPoVZPTp++JvLlPW/vOWsZ+IFrNmircL87gn3NHPo65iKurXagCh693r1Lhib0c11vWSjmcvsYdrytyyMJJAlj+omi9rIPLcSry4wbpqzEpYgCY/XKfgacuCXcvO0Roaozo7Whwr4DA6UQN7/FRT/TpGV2hclMPDaq1MGW4khGKB0wd9SLlNovTqousu27XQDwhNR1LyjWuFDvH1x7kvY5ScikIECoss+32fx6gJqEDLWiIkK6+QrluvuGT0MTUwTKnV85QG1LkSTJHWIYD/TEMVztZqAnG6wJy1EuaIRHdhf+lGe3lLaAdWp7AIo84ejHsyVpQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
- dkim=pass header.d=est.tech; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+1QJvi9GFrfMSa/cYbwqeFQTpj+rk9uBEBKosJE8TsI=;
- b=IQQwzEZB9UNe2qNmBDHWqdBYJC3NhFhbBiDqpFTCJuCPUcJFoWIAbdDkDrcAVe/dYYeXiiXVDfGYX0scTtZCQr7LSHjz44yAUzE3iLM6Fif0gW+OkYg1oPshr5sa3MCNF/He/YfIljaiwDLdisOTzNaYUaqsj4u6hfRv1Jk8up8pCTpPCY8MX7JVZ1GPobnhXhuGVLtI/wmlQZwHljUGM+23AHwwQ1eOqlNv/SBo9IawncI33lYmRBy4BqM4KMIS0S1V7sCaAIm+xeSDGDLe9orcRSOC2DPiFDSm9+8iMH7a/BLcs9q2vIAN3+Af9VXiEplmbQxsv289sNMfXI9SGg==
-Received: from GV1P189MB1988.EURP189.PROD.OUTLOOK.COM (2603:10a6:150:63::5) by
- VI0P189MB2765.EURP189.PROD.OUTLOOK.COM (2603:10a6:800:253::19) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.10; Thu, 9 Jul 2026 06:36:46 +0000
-Received: from GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
- ([fe80::bfff:5391:8a49:21b7]) by GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
- ([fe80::bfff:5391:8a49:21b7%6]) with mapi id 15.21.0181.010; Thu, 9 Jul 2026
- 06:36:46 +0000
-From: Tung Quang Nguyen <tung.quang.nguyen@est.tech>
-To: Weiming Shi <bestswngs@gmail.com>
-CC: Xiang Mei <xmei5@asu.edu>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "tipc-discussion@lists.sourceforge.net"
-	<tipc-discussion@lists.sourceforge.net>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>, Jon Maloy <jmaloy@redhat.com>, "David S . Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>
-Subject: RE: [PATCH net] tipc: fix NULL deref in tipc_lxc_xmit() on node up
-Thread-Topic: [PATCH net] tipc: fix NULL deref in tipc_lxc_xmit() on node up
-Thread-Index: AQHdDv/rRKGZNvCCMUWwNzY1DQG3/7Zku75A
-Date: Thu, 9 Jul 2026 06:36:45 +0000
-Message-ID:
- <GV1P189MB19889F69294F168C74685630C6FE2@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
-References: <20260708173052.2973990-3-bestswngs@gmail.com>
-In-Reply-To: <20260708173052.2973990-3-bestswngs@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=est.tech;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: GV1P189MB1988:EE_|VI0P189MB2765:EE_
-x-ms-office365-filtering-correlation-id: f8ce432c-bda4-46af-187c-08dedd84728b
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|1800799024|23010399003|7416014|366016|38070700021|22082099003|56012099006|11063799006|5023799004|18002099003|6133799003;
-x-microsoft-antispam-message-info:
- b3vYqZ/zXaFj/msUkuQqam7roEnQ9Ox9cYbCvMd8cUA9caMjaAosmdqheNMo357OLcYGC7rqCxXkYnmO3IYOoXL/u0IdspPWk35s2XmPt6sCKupOzonR2rej/x6jny5442a6jUsqIgGebNMeDgwQschRiSvgYL4qgzqiO75ACez2W/rUBdpZYkFVwTH0nEbYbyarCwoVcjCLVQakfTpbpdUiFm73tdIKxpgGZYINr9hi8HAcVo5Dg70Ja3YkLGv7DBLG0j5uy3uTJrytrxui95zLKFMQdXRMCL+eEjNLeCueRcMoTmXsLJSDaOfuVV2T0WNOir0aazVuPolRYdq6B9Wp6klWh2PYd8+1kSan6kB1DlLTIIfzJxGYWMdNghIWeMO0CSM5b9cmoE+DJsZibltJ7JlkLEh3+Cpk5E9GhTv0QUbnod9cSNjPSnL55DswN+Z/AX7B3jFoTyN3puiJQUtFt7x7/6+/X+LOjw8NvBZB8Z3X2463Lb64bnTrOOL7/0pzNMmOLvG7nBs41SRzkQYZCSZfhdy6ztX+iGs1cSFSl7ytxqqxUDWanoqkE1g0GRHnTpSQKCXWyKhMLKkKakJxkeaSLn5rNsY+no+fGTohBtxRKOW5lFjDjLnP6k3RjJzvL2hJnnFyQawALsxn0KxLM6dOTPulL87gPU/aXnQZiBADx7F9MZ8PUVfM6sg7qJx+t0ik1BZB3c81YysaweBXqoE1HdzarMjKQaRsW6s=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1P189MB1988.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(23010399003)(7416014)(366016)(38070700021)(22082099003)(56012099006)(11063799006)(5023799004)(18002099003)(6133799003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?GufcIW4GFrCvh9xWcF9V4N8JWLcQv9m8NEv/UXvXuc58xHgw57R9zzdxAcH1?=
- =?us-ascii?Q?WcDnnx3Afqf0MjrAJa07yjAsoEC4eSsnSKm15IeRvplggQFn3jQpuDHj6XH7?=
- =?us-ascii?Q?y5LfxDrsicXxqs9IdfBu8a+KfAc3zG+ZH8jzLkNhFrbG/riqWomBfym+9LWK?=
- =?us-ascii?Q?UpHBJEBmpBh3KubPYa76t8r9KVl5W2GOktZyzPwWx3KwY4xIZkwpZt2UebA0?=
- =?us-ascii?Q?jT8YfOtY0eaUixnccrryF1bI5EaJIjs/mKQvCztj/1A2Wtp0TovihVu2sHED?=
- =?us-ascii?Q?ZrNFQlY6DV1+IgN+QzSmRWEuYtQu5MIYY+LSb7pCv1oBDquJEVBxc97+N7/7?=
- =?us-ascii?Q?tqzvieqlRxHTzvY89buGzxZ+5vnnqcRO5Fu46P2ixaN37ewbXcJoJUHvd9b/?=
- =?us-ascii?Q?awXfvxRvchdmk8sqC/ryM69rqt1zXCfVl16M9HP8NKWDB/JZxl5c3jKcsWDm?=
- =?us-ascii?Q?3hWoI2XdXiqhGAKGglLdc5nl+bhGOVtXw+csZotzRJeIfi/bjP2zr14e6A2v?=
- =?us-ascii?Q?IeHO1DBRUWKK+qG8cOg/1Tj9P/5aPMBqUNdx/Z/DD4JD3rbdeXNxHwWC/c+r?=
- =?us-ascii?Q?NwbDd1bbdWpibrCIFVEf2kov7pf5E3xkUKK5H9Azr4/po8FQNSCa1w4u7xXR?=
- =?us-ascii?Q?i3OKeuLGFrmmH9n+9vzeWhpeSYpG/5EftO9Pz5J3sTtqBCElEKZcWalLm1Yg?=
- =?us-ascii?Q?ygMi8mqXzwyXZSa7uEu5/bViFKoB1QJZukD3LORUvw/5b0CI/bjAjxZKRBXf?=
- =?us-ascii?Q?njEzpb+A4gkjsUUjM9QEKzLKoMMZOthJrX86l3lRioLgsU+zHysO+EEQNXS2?=
- =?us-ascii?Q?XeolX+zlz2w1PExINhFezJoIEzfDwftrd1uwm0pDSq72VZDsboo1T65MBqbg?=
- =?us-ascii?Q?UsekguJlFA3qBxi8JxO+0AzdDdAfTMb+g3ix4ujG4a1Xn4tRDo3DBfHNmv+a?=
- =?us-ascii?Q?Ip2mQ4Ra7YL+NcVP5rsNADJHnhKmBEY1RhE4vcjlaxT9a+xo5LO+9UpTR81w?=
- =?us-ascii?Q?hx05oOi4gwlW/g9vcZ6+GfpQ7hzt5Hvn9vnZ/TLRL9uQoaCAoAcZrVh8goCf?=
- =?us-ascii?Q?3tnIPxcZgzF8MUCH7SJ8ZWM1JyqqFyYMoB5r7UljCTerpUz5+i9aSxKoTqBH?=
- =?us-ascii?Q?Ua/v1NIpf5JIsvIt2OPt5Vq6wG6h6BYqcASB9u6BzCbMkKbqvt/MRipXbg1A?=
- =?us-ascii?Q?2N//DZHpYtNFFqzT7IuxGP7cGoDki1I1r/YNQD78zhsHIRfhu4Iecs3ZJi3K?=
- =?us-ascii?Q?0ZzqV66e8QSKNPViu7ILif9Yw5y1HIUGf4xklfwRp8bzwzHgVmn2sV5h8CsA?=
- =?us-ascii?Q?j7ZKjAguL2BAMDlxWh8f4XG6I8xzDlmicD2jZUlerRA/sKVhoKhrN/qvRfDn?=
- =?us-ascii?Q?1rEw0mzXv1SccOo19mtwGZBSNBeQFAkKRTueE1x/jU3iQHJ0hJK5E0mJtgzx?=
- =?us-ascii?Q?U1xW+eXgWigepETtBeBtIZ7xDQbcve5oEki7c2eznC6saBuUNLfYikP08NP+?=
- =?us-ascii?Q?YvZclR95ThWiffDXLHKUW7owYzKR8Tzto5zWSdpzT50MqO3orIrOl9h8j7qh?=
- =?us-ascii?Q?QPbN8QxLlPQXqiKCs5aE+KHkZiVuu1hvImtDpzG7s5zo//AwZwq2jZeL8qCc?=
- =?us-ascii?Q?H/Ijd3bhoTCd9SxLP/w4KePZBPnnqBqEZR6rF9LQzhz2ynVs8E2EqtFQRGnh?=
- =?us-ascii?Q?sAAntWZd+GiV1Z2vshKsM0TmBs/fOKFMA/gC/EDUh6cTroSDsO8iCXsERsR6?=
- =?us-ascii?Q?6zdNkS+qAQ=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b="Bop6gkYI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1783579333; x=1784184133;
+	i=markus.stockhausen@gmx.de;
+	bh=/RDVHMovIXh5DrYkL3r1VHqHbiwSP7QSB+a/pojgNQE=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
+	 References:MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=Bop6gkYI4V/SufVfNrKpTg8htociiKNIkPSVOQLhUHQXt+6OPTqpJHaj8VLj6oyW
+	 ESryMNS3vYsGMCGYapgrYotRnAxn/t7gnd37QywIUCocnnTrZ32duq2xx5Huq5xCP
+	 JY8VKqImMA0V+BmtMFaONv3Hv+z+6Fil/33ML3EjUzqtCUZvp2rXF2eF6gmbd6JPO
+	 eWzo5iiq9JbaVzE8WgoBUE+dxVUbRcAqwQ7ZJwipYJsm5KdXgeDEx+dmEMWUsBqJx
+	 1G+SV6QhFWaF2gHauirAibt5PrtJitgowMtgWuSTx2Shb99Db7wHmjIHqSSTUL4Hu
+	 ES43FtyVqXCUTSH6MA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from client.hidden.invalid by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N1fii-1x61eP1zrc-017hiQ; Thu, 09
+ Jul 2026 08:42:13 +0200
+From: Markus Stockhausen <markus.stockhausen@gmx.de>
+To: andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	chris.packham@alliedtelesis.co.nz,
+	daniel@makrotopia.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org
+Cc: Markus Stockhausen <markus.stockhausen@gmx.de>
+Subject: [PATCH net-next v4 3/8] net: phy: add (*notify_phy_attach/detach)() hooks to struct mii_bus
+Date: Thu,  9 Jul 2026 08:41:52 +0200
+Message-ID: <20260709064157.2865063-4-markus.stockhausen@gmx.de>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260709064157.2865063-1-markus.stockhausen@gmx.de>
+References: <20260709064157.2865063-1-markus.stockhausen@gmx.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: est.tech
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: f8ce432c-bda4-46af-187c-08dedd84728b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Jul 2026 06:36:45.9962
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Omy0n7VPg9DSuHzdeP58IvsNE41hGiLI4ApdnoEBHdqOydcGqaRklHhLF+o4/4BmE5ENoEMAveKfpOlIbBoQuh8bRvQPexvi8kAE9iBYYbM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0P189MB2765
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:FJbIM4dMtxwr8b5QGh0HabIrIZrQhDxmIs0u/Ur3Ztv3YASpmk9
+ a31U8mrYCoApmZZdmweHDo6dmR9Ljnnii1dUQl3DsHuN/wQ1wQIzfMV5iXz6Uw+kBeVwL1k
+ mb0NM9U8UBa3iGW8BTycB4HVnqKdqrNDV2XB7I5/uYK4YsB3qZmEqjUdLiMdzoLwHaC/T8X
+ KOlFgAWyl8IAOCRRk3KNw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:8r4BBh7f5PU=;5leyTaJrljghW+mceVUSicNxyrv
+ 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
+ AoaIQ2/Tk=
 
->Subject: [PATCH net] tipc: fix NULL deref in tipc_lxc_xmit() on node up
->
->tipc_named_node_up() builds a bulk of this node's cluster-scope service
->bindings for a peer that just came up and sends it with tipc_node_xmit().
->When cluster_scope is empty the bulk is an empty skb chain, and both
->consumers dereference the head unconditionally: named_distribute() reads
->buf_msg(skb_peek_tail(list)) to tag the last message, and for a same-host =
-peer
->tipc_node_xmit() routes into tipc_lxc_xmit(), which reads
->buf_msg(skb_peek(list)). skb_peek*() returns NULL on an empty chain, so
->buf_msg(NULL) faults.
->
->cluster_scope is legitimately empty during the window in
->tipc_net_finalize() between setting the node address, after which peers ca=
-n
->link up and trigger tipc_named_node_up(), and tipc_nametbl_publish()
->inserting the first self-binding. A peer linking in that window crashes th=
-e node.
->It is reachable by an unprivileged user, who can gain CAP_NET_ADMIN in a
->private net namespace and drive TIPC there.
->
-> Oops: general protection fault, probably for non-canonical address
-> KASAN: null-ptr-deref in range [0x00000000000000d8-0x00000000000000df]
-> RIP: 0010:tipc_lxc_xmit (net/tipc/node.c:1629 net/tipc/msg.h:202)
->  tipc_node_xmit (net/tipc/node.c:1718)
->  tipc_named_node_up (net/tipc/name_distr.c:222)
->  tipc_node_write_unlock (net/tipc/node.c:428)
->  tipc_rcv (net/tipc/node.c:2185)
->  tipc_l2_rcv_msg (net/tipc/bearer.c:669)
->
->Skip the distribution when cluster_scope is empty; an empty bulk carries n=
-o
->bindings, so not sending it changes nothing.
->
->Fixes: cad2929dc432 ("tipc: update a binding service via broadcast")
->Reported-by: Xiang Mei <xmei5@asu.edu>
->Assisted-by: Claude:claude-opus-4-8
->Cc: stable@vger.kernel.org
->Signed-off-by: Weiming Shi <bestswngs@gmail.com>
->---
-> net/tipc/name_distr.c | 6 ++++--
-> 1 file changed, 4 insertions(+), 2 deletions(-)
->
->diff --git a/net/tipc/name_distr.c b/net/tipc/name_distr.c index
->ba4f4906e13b..495e46defddb 100644
->--- a/net/tipc/name_distr.c
->+++ b/net/tipc/name_distr.c
->@@ -218,8 +218,10 @@ void tipc_named_node_up(struct net *net, u32
->dnode, u16 capabilities)
-> 	spin_unlock_bh(&tn->nametbl_lock);
->
-> 	read_lock_bh(&nt->cluster_scope_lock);
->-	named_distribute(net, &head, dnode, &nt->cluster_scope, seqno);
->-	tipc_node_xmit(net, &head, dnode, 0);
->+	if (!list_empty(&nt->cluster_scope)) {
->+		named_distribute(net, &head, dnode, &nt->cluster_scope,
->seqno);
->+		tipc_node_xmit(net, &head, dnode, 0);
->+	}
+From: Daniel Golle <daniel@makrotopia.org>
 
-Your existing patch already has this check, so please use it plus checking =
-non-empty 'head' before calling tipc_node_xmit():
-https://patchwork.kernel.org/project/netdevbpf/patch/20260706163024.1205930=
--2-bestswngs@gmail.com/
+Some MDIO buses require to program PHY polling registers depending on
+the PHY type. RealTek switch SoCs are the most prominent example of a
+DSA switch which doesn't allow to program MAC speed, duplex and
+flow-control settings without using PHY polling to do so [1].
 
+Avoid a half-baked solution in the MDIO bus driver because
 
-> 	read_unlock_bh(&nt->cluster_scope_lock);
-> }
->
->--
->2.43.0
->
+- it must reinvent the bus scanning to determine the PHYs and
+- it must anticipate the right point in time (e.g. deferred PHYs).
+
+Hence there is a need to inform the MDIO bus driver that a PHY is
+being attached or detached. Provide two simple hooks in struct
+mii_bus which are called
+
+- right after a PHY has been attached
+- just before the PHY is going to be detached
+
+Remark! A slightly different version of this patch was part of a
+former series [2]. The discussion already showed that an initialization
+hook should be placed somewhere late during the whole setup. This
+commit implants it right after phy_init_hw() as suggested. On top of
+this it adds the detach hook.
+
+[1] https://github.com/openwrt/openwrt/pull/21515#discussion_r2714069716
+[2] https://lore.kernel.org/netdev/cover.1769053496.git.daniel@makrotopia.=
+org/
+
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Signed-off-by: Markus Stockhausen <markus.stockhausen@gmx.de>
+=2D--
+ drivers/net/phy/phy_device.c | 9 +++++++++
+ include/linux/phy.h          | 4 ++++
+ 2 files changed, 13 insertions(+)
+
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 0615228459ef..676cbf183350 100644
+=2D-- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -1876,6 +1876,12 @@ int phy_attach_direct(struct net_device *dev, struc=
+t phy_device *phydev,
+ 	if (err)
+ 		goto error;
+=20
++	if (phydev->mdio.bus->notify_phy_attach) {
++		err =3D phydev->mdio.bus->notify_phy_attach(phydev);
++		if (err)
++			goto error;
++	}
++
+ 	phy_resume(phydev);
+=20
+ 	/**
+@@ -1919,6 +1925,9 @@ void phy_detach(struct phy_device *phydev)
+ 	struct module *ndev_owner =3D NULL;
+ 	struct mii_bus *bus;
+=20
++	if (phydev->mdio.bus->notify_phy_detach)
++		phydev->mdio.bus->notify_phy_detach(phydev);
++
+ 	if (phydev->devlink) {
+ 		device_link_del(phydev->devlink);
+ 		phydev->devlink =3D NULL;
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index 199a7aaa341b..3160ca99deab 100644
+=2D-- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -376,6 +376,10 @@ struct mii_bus {
+ 			 int regnum, u16 val);
+ 	/** @reset: Perform a reset of the bus */
+ 	int (*reset)(struct mii_bus *bus);
++	/** @notify_phy_attach: Perform post-attach handling */
++	int (*notify_phy_attach)(struct phy_device *phydev);
++	/** @notify_phy_detach: Perform pre-detach handling */
++	void (*notify_phy_detach)(struct phy_device *phydev);
+=20
+ 	/** @stats: Statistic counters per device on the bus */
+ 	struct mdio_bus_stats stats[PHY_MAX_ADDR];
+=2D-=20
+2.54.0
 
