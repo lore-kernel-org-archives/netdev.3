@@ -1,152 +1,179 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-qt1-f225.google.com (mail-qt1-f225.google.com [209.85.160.225])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732072744F
-	for <netdev@vger.kernel.org>; Thu,  9 Jul 2026 20:13:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783628034; cv=pass; b=BWdKXpMSasYnElVOR1GXER/QonTsqYWO0O6iSKsFaOQ3TMrKsARDvKEt7igUo0aoAfSeTiXWAp6e6q7jdoHzQD2aPjb2Qp+w3oN+SBOqjvtaUFPdR2z5Rxim/XxLThVzg1d3lSYSd0ZMB05/1zIB2V/Ev3pOUUCP4+UNa3hxBOk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783628034; c=relaxed/simple;
-	bh=6iTx+2OhEZxEm/nEmZXKPtfkGBAYSdZ6m6tQMnwow5A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BVyKEPJvblwNTt+qtZTkp77hyPoAUC16kLe0rgFAmZff/nDOahPFzce2rMeMm3dn4jibfxh3gco2WQ0tRlcqy/RDykJ6TUKbPy/Dv2N5weD1/UFgcZqwnMHl7N5n++T0fCl02yoQnrEeX9YQi8RJCeYlGmXa4izOSGN3RyFky/8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aWzQcwzM; arc=pass smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959FD2580CF
+	for <netdev@vger.kernel.org>; Thu,  9 Jul 2026 20:19:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.225
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783628371; cv=none; b=fsTEPML1JY4RV008YVAfedeHOXhW6F+j0mzvzwywDQ8TpuML6Ru3U76Rq56fMK20cqf9kbMnQ19PiK4QE1hxzA96QSyKstcFD8d6ZFqfqRlnY8G5soAlB7iVY/V9BXnDrQqhlnxxs4IejpExvJAV6Uxrp1YOew9FjzOtowxpjug=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783628371; c=relaxed/simple;
+	bh=Rtt8nr3qT6hzMGJBoDeZojgqNi/SCvnpBDlzHvuaz5E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=d1gtjWHTPYg2RTGWFT/ih0aj/Vt0krxKXpsVuS5mbQGrhL2G7UKzaDJOkdA/YqduBGPrM+WSZRGKW1ING9gtcTkXWy1P0sHD5C9ZbzIELwKvOLf+SUXTCLwVJ3rOzLtI3PfLB9TmDaWP5SneUvIAz51v9yvUV6BNisv0mJbQXWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=O1VF9SRz; arc=none smtp.client-ip=209.85.160.225
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aWzQcwzM"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-4799b3f7c83so178506f8f.2
-        for <netdev@vger.kernel.org>; Thu, 09 Jul 2026 13:13:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783628032; cv=none;
-        d=google.com; s=arc-20260327;
-        b=hGmFMlyMr1GpsOueMi74e29o/q+HUKEkKSlzK+E1nUUMJ2s6twIHT3CQOJxjlyoTGY
-         j1JEfINgrKQhS7EC01bCyJsmx6bd0OHCU+iqMWe5hBhn+Vn0EW0pC9N30XXIJYw6Liy6
-         gkpdao9fKaPeca26FWWjqyv8YDnLbHooPa5bpMfRQc2POhL1hId9q/HXtBD3OpqlOpq8
-         IRfJO5gK/o0uiC/HIb+BjzvNN2rgg5Wto31FhJ3EZLhSAKO21P3bpeAYelhc6b5rv7mz
-         1ppc/FhEMeDNIbWdBMnxnTSyN/cVRIvpLd98EKaLPTvl5gM4Q4IawP6QnFUic+SQsuFG
-         RcSw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=6iTx+2OhEZxEm/nEmZXKPtfkGBAYSdZ6m6tQMnwow5A=;
-        fh=a/bVTH9IGX4cvPGAp42AKU7NnwwYCBhafZGNFajWTnk=;
-        b=TouPW7bba6URiXDFjQcVWaYHXUK8MKD1tjF0qaAA0gwcst7VkTF6J1LL+5cnG0Vlw1
-         nIMs5jThzx998D/sRdTd3MUWtOC85kQfZaGleMRjG/iUj0skhiFpTrLXdmyVoNEFl4ZE
-         bQSQZ4LcxGPDE67yPHHNMixzP8d7HWx7aYideg/b1Qpyd4LiTb8UkakymZX2u1ZKOerm
-         jLFDoU8lsLm+wyvWMVCD1SrzOiXHxToogq0ITGZ9DaFW9aWDJuRsYOoU9JRMLNGE7BDJ
-         NmMixmWlQU2Dn8lVHNUucnFRX+dgIIoPZXPnMr5gAWeMqrkT+og91Ac6TiEmxxL/mzJS
-         0k0g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783628032; x=1784232832; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=6iTx+2OhEZxEm/nEmZXKPtfkGBAYSdZ6m6tQMnwow5A=;
-        b=aWzQcwzMD1fpfzbOWKzPd7bZQFk+njC4cPi7rzzHLIIU2FRf9aNT4HBYdMhJomRr2b
-         rkYEgxscvcuU11BeA3NNBrHAu6Da5UMVOjjz6W+KZ0IcOKrHImwJuYNaSSoBNayJE6oW
-         vQDdqq/MAjJ+3osw0TzkxU3TZhP1g/CdHq6MxunGHvsoTwiCvochvHLZ2qY+hH1zABgg
-         dgQqf+Rc2gU7352j/+snRO203Q4VAeQRbICcQae1P/tJxToZWyGHCchH8s4Vqf7qJJ/a
-         ewxxRiuU1/IT3PTMchRZF/Vxj7GsRql3+PoaPvFtsZvFXRWICLTTENoSO2QHZxAvVFE/
-         Nm9Q==
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="O1VF9SRz"
+Received: by mail-qt1-f225.google.com with SMTP id d75a77b69052e-51c0006ea8eso1316011cf.1
+        for <netdev@vger.kernel.org>; Thu, 09 Jul 2026 13:19:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783628032; x=1784232832;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=6iTx+2OhEZxEm/nEmZXKPtfkGBAYSdZ6m6tQMnwow5A=;
-        b=JtqbRyltN1hXK2eJDOGxDaXNvwIJMQjbdUf76n4JJF8zmdMjLdZU3fvrAe3u1/Wkgu
-         4IjLwSuWB27rkI8BYbjokgZOJsS1qyhZA+WR8tH7BZG/VnjflAo/rIVX+qk2Pw905E74
-         dzh7uFVW8rGzEVd+mtiwaBa/1VXFJBSyTrlgvGMxhgqOa+I8ygVjmSeZxc8vXxit3zoQ
-         P5fcTShP/C3WJ5qI1EghQTpGEoQxFYFACwUDAex+L0lesHK7/JoqiAat3LtqL7YFdps9
-         WlYtv26MfekQfHYaNDc5u91pOog+Tifj/LAMrtfboPsZjZSUuQDLaz84uWUQFW5Vzrwf
-         DHPw==
-X-Forwarded-Encrypted: i=1; AHgh+RpWQr/mPkoZ1iKpRz7GbYhDeCCNb0l+BpktjSg8MaJIUW8Ou4sfv5KXMI3cVZP4mHfZDKY5hIQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGGvDc6dB5A/QKaU+ubM6KykUQNPKLTFPtjHLNRsoCyhis+TLG
-	iAMtt4ccsPLr6YO76mjwAu1dRSfm1sHyCz2phLiwOC01L2C/wYVlAlzAXFEYzW+M+RnZGjruoux
-	VbxXOM1WMBjVtqB0sKTsfaUuvJ8che14=
-X-Gm-Gg: AfdE7cnadzNwN5pmLnvCKtXggyYiKnzmGINaApBMVWr0eLKqoWk35QGTkZxeKM6H6+i
-	BtYuijDtN9NW2DJ53Ns331kgmRwJFs+JGMLz7kCiwSo6ez4Hu5OVfrj2amU3khdugrRlDl5MBMq
-	PmapPz59wzbq/O7tVn7gilmnIteE6Wb1bKL7XSvkrMdseiMsfdEffBEzLoH1vF+OzrE9Fu6ZyBL
-	b0eTgNKrE+B2zJ8joZ1tObBPH2MYpJ9LZLgvebfcUlvR7Gaq/gQ6VcOc//cZv5AeHELz6px5gHF
-	p0aKYRRnqbuFp9yDNrWUBLEZGaiazkuDX0MK779/VA7FVP/a3tmRPV/b
-X-Received: by 2002:a05:6000:4705:b0:47d:e3b3:ff6d with SMTP id
- ffacd0b85a97d-47df07b4a15mr9587472f8f.57.1783628031569; Thu, 09 Jul 2026
- 13:13:51 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1783628368; x=1784233168;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=+lEIT10jaUsYVAQviHGdUkscS5sAHeOl4kQGTRtqCbo=;
+        b=KqIGp+nuBGTrisCsenZRsqX0HznvVnj0IV3QAKED7BofpXMN35J3p+/cIMH+fIvJTg
+         2BcklflonQRSntjQd72CbOtDwjhOybelQlxu7eU5S2YjaPqq0PGEjeIwsbr8GWoJi58A
+         T8lHaI886al0FK9TPFr2fEzEyZWOAtr2Owp3w4QJ3zhhP1KAU4kC3NkJG9luOPVyCBSs
+         JTv5W3EhJ88t2g8OdL5MX6r7CRJm9V3igCAmQ0EmOupiExGLdaAop4UWtjrVZ+m3x3T0
+         h3/2kGuCbDAg83klNT5/SMW8HciafAUfvRvTYle/qDOJ5CsP7aZJPJKTV/owsGAz4sIx
+         d7Fg==
+X-Forwarded-Encrypted: i=1; AHgh+RoMNeZu4rD79DaIOZeEnGd6mKKnlU2KT9FGlqbO3Ktp34sqeGfarAqKIG0EQMhWMLcOJuD7ttk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzrEHnxj59HCzzbAd8yD7zv2AQ2wFoxBoHwFXxdcf6TLg0a2VeD
+	6nY8uNll0fcGjHeCU+bBgzYJWLEN0EpNWidGKDAj30Xc19TxlPI/S4he0odAe36OgFnTORPK0q8
+	axIaTbFa2CnCkJisDLOkgSyD2Z0ZN0i4WRWEkXLHaeDCvq/DwZJZIZONYO0nM0VQbVhJwCQrJjx
+	LqbmJJQvmkCXgqo4T1uqgM/SzG9Rzc5qyA5IEWvJiSarkIG21BoGgrmYzOh70UF6h8G4H4oT//l
+	CtTQOojV03EfaPfhnsp
+X-Gm-Gg: AfdE7ckZ7M61MOyCIZaLDWKdV5o1vTyt7N/zJ3DHQWKJ6uS3wo+hOoLL/SU/KVbVip3
+	7rM3yMNzFngf/bq1S3kIkM6MRYGtEpp1P1nYWSO6kzTIleXF2of+Tihm/zHbIlXRDNhKtaIrj6F
+	Q8k70q/vwuIaOSjtqj4Gcutnv14DILFsCCtmKV7O/izqFl3zMwG+i23rx43LvoU1LaoWS47H964
+	shc9hCzTEhKD+iwkuJXdnBfXvT+QN0P+vZnTYrOZ+oFt99dfVF515yYE4WHgIrPQype7A6PrRss
+	YJhxANaRaJdCuXGV09lwawA3VaXMjeLXKR/7tB7z+9xUoKDjxZ4tZ6xMS19vO41rQMk6ZtDHPXr
+	o8Fnj+Ty9+ZGhOr+KRIqlNVf/8BysYurgJUadpfvdsaT6YKhnqCYxwlgNGC8ZB/Ls7zUY1dWqzd
+	oshrzDlj1t/P1a2xbt130894xS1/Nze2mVTOAJzMWBE7tbI5Kf4bqY
+X-Received: by 2002:a05:622a:1:b0:51c:1590:8e13 with SMTP id d75a77b69052e-51c8b2ae557mr111235571cf.4.1783628368516;
+        Thu, 09 Jul 2026 13:19:28 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-11.dlp.protect.broadcom.com. [144.49.247.11])
+        by smtp-relay.gmail.com with ESMTPS id d75a77b69052e-51caadbae83sm129301cf.16.2026.07.09.13.19.28
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 09 Jul 2026 13:19:28 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-c88aab7c1d4so170875a12.3
+        for <netdev@vger.kernel.org>; Thu, 09 Jul 2026 13:19:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1783628367; x=1784233167; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=+lEIT10jaUsYVAQviHGdUkscS5sAHeOl4kQGTRtqCbo=;
+        b=O1VF9SRzqnvbm/OXwjh8cTXyEJ5TmXWKxHmo2Mheaf8hxVfgN0+SXTklaIrpbIOgJ4
+         VQKWjDPFK0N7J+eQXjMAYlWrAT9q9nMmv3w9431Fr578WkH+epmgJK2H0zURtzSRKvfa
+         /m3KCNfixx3axcwk5Nhs+hbD3Fn7Umlu1NdvM=
+X-Forwarded-Encrypted: i=1; AHgh+Ro8jCajSPlJ6cJWxh7jB9GvCzqPRvoxEi/lMSY9qrkZmW3JmNJrtZ6i4j15/ZkwPwl2w+O8ci0=@vger.kernel.org
+X-Received: by 2002:a05:6a20:7d9f:b0:3c0:9c19:6599 with SMTP id adf61e73a8af0-3c0bd1b32c8mr12492667637.65.1783628367186;
+        Thu, 09 Jul 2026 13:19:27 -0700 (PDT)
+X-Received: by 2002:a05:6a20:7d9f:b0:3c0:9c19:6599 with SMTP id adf61e73a8af0-3c0bd1b32c8mr12492626637.65.1783628366437;
+        Thu, 09 Jul 2026 13:19:26 -0700 (PDT)
+Received: from lvn-dbc2448.lvn.broadcom.net ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13b659d7c8bsm35839987c88.12.2026.07.09.13.19.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jul 2026 13:19:25 -0700 (PDT)
+From: Harshaka Narayana <harshaka.narayana@broadcom.com>
+To: harshaka.narayana@broadcom.com
+Cc: andrew+netdev@lunn.ch,
+	bcm-kernel-feedback-list@broadcom.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	guolin.yang@broadcom.com,
+	kuba@kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	ronak.doshi@broadcom.com,
+	sankararaman.jayaraman@broadcom.com
+Subject: [PATCH net v2] vmxnet3: fix BUG_ON in vmxnet3_get_hdr_len() for Geneve packets
+Date: Thu,  9 Jul 2026 13:16:54 -0700
+Message-ID: <20260709201654.4108084-1-harshaka.narayana@broadcom.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <6e905826-779a-456d-a37d-7602a37ab6d7@lunn.ch> <SN7PR11MB81098D82A7B377E0AC439979FFF62@SN7PR11MB8109.namprd11.prod.outlook.com>
- <cb7921f5-cc9a-49fe-9561-cac903cf611e@lunn.ch> <BL3PR11MB63854B0A4AA33A718D474C6588F62@BL3PR11MB6385.namprd11.prod.outlook.com>
- <BL3PR11MB6385517EECD04C783E9DC42488F62@BL3PR11MB6385.namprd11.prod.outlook.com>
- <26d44b09-d72c-4e23-84a6-3d0ea4a521ef@lunn.ch> <705f6fcb-e0e2-4898-bf83-78c38f32f505@trager.us>
- <BL3PR11MB6385468A86BACA1D8EFEF2BE88F62@BL3PR11MB6385.namprd11.prod.outlook.com>
- <SN7PR11MB8109F7A3F491E20701BDC0DFFFF02@SN7PR11MB8109.namprd11.prod.outlook.com>
- <46f714b7-ec6e-4b26-9ff8-b7f27f11fe33@trager.us> <4ccc869f-a724-41fc-9bfc-da5332f54790@lunn.ch>
-In-Reply-To: <4ccc869f-a724-41fc-9bfc-da5332f54790@lunn.ch>
-From: Alexander Duyck <alexander.duyck@gmail.com>
-Date: Thu, 9 Jul 2026 13:13:14 -0700
-X-Gm-Features: AUfX_mzF0OOGDtV91XS9vL13PXgBX6mAO15lzAx7X_n5iyPUFUxuE5_6Ne-WUIw
-Message-ID: <CAKgT0Ue-wMYab25gPzE8iarW2abYONv=5ZBokrLS6-DfD4WFpA@mail.gmail.com>
-Subject: Re: Ethtool : PRBS feature
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Lee Trager <lee@trager.us>, "Das, Shubham" <shubham.das@intel.com>, 
-	"Srinivasan, Vijay" <vijay.srinivasan@intel.com>, 
-	Maxime Chevallier <maxime.chevallier@bootlin.com>, 
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "mkubecek@suse.cz" <mkubecek@suse.cz>, 
-	"D H, Siddaraju" <siddaraju.dh@intel.com>, 
-	"Chintalapalle, Balaji" <balaji.chintalapalle@intel.com>, 
-	"Lindberg, Magnus" <magnus.k.lindberg@ericsson.com>, 
-	"niklas.damberg@ericsson.com" <niklas.damberg@ericsson.com>, "Wirandi, Jonas" <jonas.wirandi@ericsson.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-On Thu, Jul 9, 2026 at 7:37=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> On Wed, Jul 08, 2026 at 05:58:52PM -0700, Lee Trager wrote:
-> > On 7/7/26 2:06 AM, Das, Shubham wrote:
-> >
-> > > Thanks Andrew, Lee for the feedback.
-> > >
-> > > Lee,
-> > > I don't see prbs11.0, prbs11.1, prbs11.2, prbs11.3, prbs13.0, prbs13.=
-1, prbs13.2, prbs13.3, prbs16 and prbs32 in IEEE 802.3 2022 standard.
-> > > Is this specific to fnic based on base PRBS pattern or it is mentione=
-d in some other standard ?
-> > Those were from the fbnic spec, I'm not sure where they originate from.=
- I
-> > suppose we can drop those for now but its good to keep in mind more tes=
-ts
-> > may be added in the future.
->
-> Can you find out what they actually do. It might be something as silly
-> as, the .1 indicate it only runs on lane 1? So these are in fact
-> standard prbs11 and being able to specify the lane via another
-> attribute is sufficient?
+vmxnet3_get_hdr_len() assumes gdesc->rcd.v4/v6/tcp always describe the
+outer header, but for a Geneve-encapsulated packet the device can set
+them based on the inner header instead, signalled by the
+VMXNET3_RCD_HDR_INNER_SHIFT bit in the completion descriptor. Since the
+function never skips the outer encapsulation, this mismatch triggers:
 
-Looks like they are different derivations of the polynomial for the
-given pattern. For example PRBS11 is 1 + x^9 + x^11, but PRBS11_0 is 1
-+ x^5 + x^6 + X^10 + x^11. That is one thing to think about. When we
-say PRBS7 the assumption is we are all talking about 1 + x^6 + x^7 for
-the polynomial. We may want to have that clearly recorded somewhere so
-there isn't any confusion on which polynomials we are using for this
-testing as there is always a risk that somebody is playing with
-bleeding edge hardware and ends up defining a PRBS polynomial
-differently than what is expected. I almost wonder if we couldn't
-define the sequence as a bitmap instead of an enum with each bit
-representing which fields are in the sequence.
+- BUG_ON(hdr.ipv4->protocol != IPPROTO_TCP), because the outer
+  protocol is UDP (Geneve), not TCP.
+- BUG_ON(hdr.eth->h_proto != ...), when the tunnel's outer and inner
+  IP versions differ (e.g. outer IPv6/inner IPv4 or vice versa).
 
-The 13_X values seem to be used to generate QPRBS13. I would assume
-the 11_X values are something similar. Odds are they aren't in the
-standard. The comphy we use supports both PCIe and SATA use cases as
-well as Ethernet so it has support for additional testing that may not
-be referred to in the standard. In the case of QPRBS13 it looks like
-it was rejected as a testing sequence for 400G so it may not be
-something that we have to concern ourselves with, at least when it
-comes to testing Ethernet PHYs.
+Check VMXNET3_RCD_HDR_INNER_SHIFT up front and bail out, since the
+function cannot locate the inner header it would need to parse. Also
+convert the remaining BUG_ON()s in this function to return 0
+defensively.
+
+Fixes: 45dac1d6ea04 ("vmxnet3: Changes for vmxnet3 adapter version 2 (fwd)")
+Signed-off-by: Harshaka Narayana <harshaka.narayana@broadcom.com>
+Signed-off-by: Ronak Doshi <ronak.doshi@broadcom.com>
+Signed-off-by: Sankararaman Jayaraman <sankararaman.jayaraman@broadcom.com>
+---
+v2:
+  - Check VMXNET3_RCD_HDR_INNER_SHIFT up front to catch the Geneve
+    inner-header case directly, and convert the remaining
+    BUG_ON(hdr.eth->h_proto != ...) checks to return 0
+  - Reworded commit message to describe the root cause via
+    VMXNET3_RCD_HDR_INNER_SHIFT
+v1: https://lore.kernel.org/netdev/20260707165248.1859188-1-harshaka.narayana@broadcom.com/
+---
+ drivers/net/vmxnet3/vmxnet3_drv.c | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/vmxnet3/vmxnet3_drv.c b/drivers/net/vmxnet3/vmxnet3_drv.c
+index 40522afc0532..dedf4082eb6c 100644
+--- a/drivers/net/vmxnet3/vmxnet3_drv.c
++++ b/drivers/net/vmxnet3/vmxnet3_drv.c
+@@ -1530,7 +1530,13 @@ vmxnet3_get_hdr_len(struct vmxnet3_adapter *adapter, struct sk_buff *skb,
+ 		struct ipv6hdr *ipv6;
+ 		struct tcphdr *tcp;
+ 	} hdr;
+-	BUG_ON(gdesc->rcd.tcp == 0);
++
++	/* v4/v6/tcp then describe the inner header, which we can't locate. */
++	if (le32_to_cpu(gdesc->dword[0]) & (1UL << VMXNET3_RCD_HDR_INNER_SHIFT))
++		return 0;
++
++	if (gdesc->rcd.tcp == 0)
++		return 0;
+ 
+ 	maplen = skb_headlen(skb);
+ 	if (unlikely(sizeof(struct iphdr) + sizeof(struct tcphdr) > maplen))
+@@ -1544,15 +1550,21 @@ vmxnet3_get_hdr_len(struct vmxnet3_adapter *adapter, struct sk_buff *skb,
+ 
+ 	hdr.eth = eth_hdr(skb);
+ 	if (gdesc->rcd.v4) {
+-		BUG_ON(hdr.eth->h_proto != htons(ETH_P_IP) &&
+-		       hdr.veth->h_vlan_encapsulated_proto != htons(ETH_P_IP));
++		if (hdr.eth->h_proto != htons(ETH_P_IP) &&
++		    hdr.veth->h_vlan_encapsulated_proto != htons(ETH_P_IP))
++			return 0;
++
+ 		hdr.ptr += hlen;
+-		BUG_ON(hdr.ipv4->protocol != IPPROTO_TCP);
++		if (hdr.ipv4->protocol != IPPROTO_TCP)
++			return 0;
++
+ 		hlen = hdr.ipv4->ihl << 2;
+ 		hdr.ptr += hdr.ipv4->ihl << 2;
+ 	} else if (gdesc->rcd.v6) {
+-		BUG_ON(hdr.eth->h_proto != htons(ETH_P_IPV6) &&
+-		       hdr.veth->h_vlan_encapsulated_proto != htons(ETH_P_IPV6));
++		if (hdr.eth->h_proto != htons(ETH_P_IPV6) &&
++		    hdr.veth->h_vlan_encapsulated_proto != htons(ETH_P_IPV6))
++			return 0;
++
+ 		hdr.ptr += hlen;
+ 		/* Use an estimated value, since we also need to handle
+ 		 * TSO case.
+-- 
+2.52.0
+
