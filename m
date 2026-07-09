@@ -1,102 +1,216 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B24421A12;
-	Thu,  9 Jul 2026 12:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC7FE3F23AF;
+	Thu,  9 Jul 2026 12:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783599849; cv=none; b=f9IZxkmUxC3wTOlPwikX9NjjOP58IyKzcxytZtIOlQ3tCw03kgopqmDvpFuL2GftUGnvHHWaUvxSRJxQkrzzrWqlQr6yCI3QpuON5gDWXTUZQzqmQkScr4nBtKWLyQEOaAD2m98s8y9l3ICl3ClSsunP2U4tpqUrn62z/5aSIF0=
+	t=1783600023; cv=none; b=P2MOHpyQdKYgsBHrSCEikN7rJv/3JyCwAyiPDD9B57Krg7MqUlNcD35tIThQVOn0RNUdQ7W8+nxEk563sm/XNmiGEWIOU9ArL8NbcT/px58DS6VvR8Ae3KkCO6ZooSyB20WlOZaG/18vRPghGG8nvJSfennm+piujyuZVZQ1yNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783599849; c=relaxed/simple;
-	bh=Z2p6mTxexM5ayWvNEc+bvn3ualEgwR9TXegPvbYJdaY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NtnERQWOYyy5VjFQrAuvXzfZ/+zsNL3WkMHW0a/K4nhY532OcagT3PGzCkx/7nYQxk9aaRuk9WstX3soHBUGHqMponjkNlkMJBfuJcMaHUJ6LPnWnje4X+ewrHvQhSYIeFe/Xz4m3unCvcAKHk9InzzBTU346TLBUQyfU6WsWJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UTltpLRG; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783600023; c=relaxed/simple;
+	bh=v1Fh7OWmq/hgyatfTis5Tnl4T9pLqRXS/pUE1Bio3gs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WDXTxznTcvKnda1I3PB8MpZKx4xg29AGVwGuG4KI3rt2vvnGeU3rLUWMtziPi3X7/S5UshaE6LJ3FmrLX8NAJIDH5oCUjNxfvgI8qJ5JkQtaqYnt9sYlAwKuMCUlncGWg+Piy2Y7J/iaNTIc2AC9jY9Zn1364YRTQXTjnMcLxBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JQFdS78B; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UTltpLRG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD7171F00A3A;
-	Thu,  9 Jul 2026 12:24:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783599845;
-	bh=otlFjEoj8m+amo7QVt6GIhwzNauV5M27a5j3zyxRS0I=;
-	h=From:To:Cc:Subject:Date;
-	b=UTltpLRGWJ19iX0BQYsrgpyppRlMSG+TIUgWW2knJjg2nKVbg44E2sRKvokfMQ5ad
-	 AeheMyTTa3+nwxvuzva7vlgcw5c2i/JfUZJPHxbWBjLgmNKGRB2M/YerXqMKiGNjf1
-	 XemSoFJ5YVTJz6SCZtFUoEpYOEyZaN06vCeibNms=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: netdev@vger.kernel.org,
-	linux-usb@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Griffin Kroah-Hartman <griffin@kroah.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Shaoxu Liu <shaoxul@foxmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH net-next] rndis_host: add overflow check in rndis_rx_fixup()
-Date: Thu,  9 Jul 2026 14:24:01 +0200
-Message-ID: <2026070900-denim-brook-52d4@gregkh>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JQFdS78B"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 128771F000E9;
+	Thu,  9 Jul 2026 12:26:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783600022;
+	bh=xVHh7g8SYwYGJGtfysLs07tEzq4wF0oBi4U8l3YY2Xc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=JQFdS78BckhReHmupxhHrvodd7wWnuHp3wRPS/TNTgf3GSf1wjG1i/1JBAILu20qo
+	 vCja3fQCT91vNvUOnZWkYHl7J+m2sUsE4ui/BOVqsY/DPELxBDUYnEy981fYuN/Yk5
+	 TbmV6jjo0rW/j9qrKqAi4dvys1IK5Qv3Fiap2SDeTJjsFG9l8ntkPV+5uCLvL01rmI
+	 i70oQfltPnA+7L3O/e5WnB8oiIu7yzmpWabl1FRWGU8E0AILItBI0Ca55bgmau/tnT
+	 qQvHUdH8rtg6mMrcuZJi8OVKUCu3asPQJOZg14yipSb5pqwL4YRyXHNArsGjw4lWrl
+	 Qeaknd+5Hqs6Q==
+Message-ID: <8d735844-dccb-4a65-b7fc-468d144ebc02@kernel.org>
+Date: Thu, 9 Jul 2026 14:26:57 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1902; i=gregkh@linuxfoundation.org; h=from:subject:message-id; bh=FTegPm6uIQsGEinvailIqfu5TwgyFj6hWEU3lbCIQCk=; b=owGbwMvMwCRo6H6F97bub03G02pJDFn+kx58ehbpcXWdzz5V4d6Q84+E2q1TNx34Gq1zjEEq/ bjSBevnHbEsDIJMDLJiiixftvEc3V9xSNHL0PY0zBxWJpAhDFycAjAR3hUMCyb+T2bed3Fp3ruO G6ob/+rdef9sQxPDgg0LCkXuqd3gVNuYEqb9w81kfotCJAA=
-X-Developer-Key: i=gregkh@linuxfoundation.org; a=openpgp; fpr=F4B60CC5BF78C2214A313DCB3147D40DDB2DFB29
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH v2] mptcp: only set DATA_FIN when a mapping is present
+Content-Language: fr
+To: gang.yan@linux.dev, Michael Bommarito <michael.bommarito@gmail.com>
+Cc: Geliang Tang <geliang@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ mptcp@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Mat Martineau <martineau@kernel.org>
+References: <2edcb1cd-f2db-4d0c-a0e3-fd2b4dd820fe@redhat.com>
+ <20260707171730.2679013-1-michael.bommarito@gmail.com>
+ <8155514655323d8c4a07da86d2b2ccdd7244c125@linux.dev>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <8155514655323d8c4a07da86d2b2ccdd7244c125@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Griffin Kroah-Hartman <griffin@kroah.com>
+Hi Michael, Gang,
 
-Add an overflow check to ensure that data_offset + data_len + 8 does not
-wrap, which would enable an OOB read of the USB data buffer.
+On 09/07/2026 07:43, gang.yan@linux.dev wrote:
+> July 8, 2026 at 1:17 AM, "Michael Bommarito" <michael.bommarito@gmail.com> wrote:
 
-Assisted-by: gkh_clanker_1000
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Shaoxu Liu <shaoxul@foxmail.com>
-Signed-off-by: Griffin Kroah-Hartman <griffin@kroah.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/net/usb/rndis_host.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+Thank you for this patch and the review!
 
-diff --git a/drivers/net/usb/rndis_host.c b/drivers/net/usb/rndis_host.c
-index 5e39d05a2d7b..37d4865f5c5e 100644
---- a/drivers/net/usb/rndis_host.c
-+++ b/drivers/net/usb/rndis_host.c
-@@ -14,6 +14,7 @@
- #include <linux/usb/cdc.h>
- #include <linux/usb/usbnet.h>
- #include <linux/usb/rndis_host.h>
-+#include <linux/overflow.h>
- 
- 
- /*
-@@ -506,6 +507,7 @@ int rndis_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
- 		struct rndis_data_hdr	*hdr = (void *)skb->data;
- 		struct sk_buff		*skb2;
- 		u32			msg_type, msg_len, data_offset, data_len;
-+		u32			overflow_check;
- 
- 		msg_type = le32_to_cpu(hdr->msg_type);
- 		msg_len = le32_to_cpu(hdr->msg_len);
-@@ -514,7 +516,9 @@ int rndis_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
- 
- 		/* don't choke if we see oob, per-packet data, etc */
- 		if (unlikely(msg_type != RNDIS_MSG_PACKET || skb->len < msg_len
--				|| (data_offset + data_len + 8) > msg_len)) {
-+				|| (data_offset + data_len + 8) > msg_len
-+				|| check_add_overflow(data_offset, data_len, &overflow_check)
-+				|| check_add_overflow(overflow_check, 8, &overflow_check))) {
- 			dev->net->stats.rx_frame_errors++;
- 			netdev_dbg(dev->net, "bad rndis message %d/%d/%d/%d, len %d\n",
- 				   le32_to_cpu(hdr->msg_type),
+>> mptcp_get_options() clears only the status group of struct
+>> mptcp_options_received; data_seq, subflow_seq and data_len are filled in
+>> by mptcp_parse_option() exclusively inside the DSS mapping block, which
+>> runs only when the DSS M (mapping present) bit is set.
+>>
+>> A peer can send a DSS option with the DATA_FIN flag set but the mapping
+>> bit clear. The parser then records mp_opt->data_fin while leaving
+>> data_len and data_seq uninitialized. For a zero-length segment
+>> mptcp_incoming_options() evaluates
+
+By chance, do you have a reproducer? Maybe using Packetdrill with MPTCP
+support? [1]
+If not, how did you discover this issue?
+
+[1] https://github.com/multipath-tcp/packetdrill/
+
+>>  if (mp_opt.data_fin && mp_opt.data_len == 1 &&
+>>  mptcp_update_rcv_data_fin(msk, mp_opt.data_seq, mp_opt.dsn64))
+>>
+>> which reads the uninitialized data_len and data_seq; KMSAN reports an
+>> uninit-value in mptcp_incoming_options(). The stale data_seq can also be
+>> fed into the receive-side DATA_FIN sequence tracking.
+>>
+>> Record the DATA_FIN flag only when the DSS option carries a mapping, so
+>> data_fin is never set without data_seq and data_len also being present.
+>> data_fin is part of the status group that mptcp_get_options() clears up
+>> front, so on the no-map path it stays zero and the zero-length DATA_FIN
+>> branch is simply skipped. A DATA_FIN is always transmitted together with
+>> a mapping (mptcp_write_data_fin() sets use_map along with data_seq and
+>> data_len), so legitimate DATA_FIN handling is unaffected.
+>>
+>> Fixes: 43b54c6ee382 ("mptcp: Use full MPTCP-level disconnect state machine")
+>> Suggested-by: Paolo Abeni <pabeni@redhat.com>
+>> Cc: stable@vger.kernel.org
+>> Assisted-by: Claude:claude-opus-4-8
+>> Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+>> ---
+>> v2: adopt Paolo Abeni's suggested approach - do not set mp_opt->data_fin
+>>  at all unless a mapping is present, rather than gating the consumer in
+>>  mptcp_incoming_options() (v1). data_fin then defaults to the value
+>>  mptcp_get_options() already clears it to (0) on the no-map path, so
+>>  the uninitialized data_len/data_seq are never read.
+>>
+>>  net/mptcp/options.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/net/mptcp/options.c b/net/mptcp/options.c
+>> index dff3fd5d3b559..6d003b24b969f 100644
+>> --- a/net/mptcp/options.c
+>> +++ b/net/mptcp/options.c
+>> @@ -157,7 +157,6 @@ static void mptcp_parse_option(const struct sk_buff *skb,
+>>  ptr++;
+>>
+>>  flags = (*ptr++) & MPTCP_DSS_FLAG_MASK;
+>> - mp_opt->data_fin = (flags & MPTCP_DSS_DATA_FIN) != 0;
+>>  mp_opt->dsn64 = (flags & MPTCP_DSS_DSN64) != 0;
+>>  mp_opt->use_map = (flags & MPTCP_DSS_HAS_MAP) != 0;
+>>  mp_opt->ack64 = (flags & MPTCP_DSS_ACK64) != 0;
+>> @@ -178,6 +177,7 @@ static void mptcp_parse_option(const struct sk_buff *skb,
+>>  }
+>>
+>>  if (mp_opt->use_map) {
+>> + mp_opt->data_fin = (flags & MPTCP_DSS_DATA_FIN) != 0;
+>>  if (mp_opt->dsn64)
+>>  expected_opsize += TCPOLEN_MPTCP_DSS_MAP64;
+>>  else
+> 
+> One minor thing I noticed while reviewing: Sashiko previously pointed out
+> in a comment that the 'pr_debug' logging 'mp_opt->data_fin' might be
+> problematic because it's printed before data_fin is actually assigned
+> (since data_fin is now set only inside the if (mp_opt->use_map) block). 
+> 
+> I think it would be cleaner to move the pr_debug call after the data_fin
+> assignment, so the logged value is always meaningful and consistent with
+> the actual parsed state, like:
+
+(...)
+> This change isn't critical to the fix itself, so feel free to let Paolo/Matt and
+> other Maintainers decide if it should go in now, later, or not at all.
+
+Probably best to fix that now, to avoid getting confused when looking at
+debug info. Do you mind doing that in a v3, please?
+
+pw-bot: changes-requested
+
+> A couple of additional notes for future submissions (just friendly reminders):
+> 
+> - The subject-prefix convention for MPTCP patches is typically [PATCH mptcp-net]
+>   for bug fixes targeting the net tree, or [PATCH mptcp-next] for new features.
+>   Since this is a fix, something like [PATCH mptcp-net v2] would be more appropriate.
+
+For a "one-off" or urgent fix for MPTCP, that's OK to send patches to
+the netdev ML directly. In this case, please use the "net" prefix, see:
+
+  https://docs.kernel.org/process/maintainer-netdev.html
+
+For other kind of patches specific to MPTCP, please send them only to
+the MPTCP ML with the 'mptcp-net' or 'mptcp-next' prefixes. Just to be
+clear: here you can send the v3 to the same people and lists -- you
+missed Simon apparently, did you not use get_maintainer.pl script? --
+with the 'net' prefix ([PATCH net v3]).
+
+> - It's also helpful to include a Link: to the previous version (v1) in the changelog,
+>   so reviewers can easily track the discussion history.
+
+If I may add, please also send new version in a separate thread, not as
+a reply, not to confuse various tools, as mentioned in the same doc.
+
+Cheers,
+Matt
 -- 
-2.55.0
+Sponsored by the NGI0 Core fund.
 
