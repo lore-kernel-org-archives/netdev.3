@@ -1,325 +1,146 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D940426694;
-	Thu,  9 Jul 2026 15:48:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mx0.infotecs.ru (mx0.infotecs.ru [91.244.183.115])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4523C381AE0;
+	Thu,  9 Jul 2026 15:51:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.244.183.115
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783612091; cv=none; b=EXRxQFjifsFOjk9hiZ+qakn2CyFCOBWLUImlbdvBsa6VWeTE67r+ts4Nrt7inrwPqmDGCWBcHcGu43R96QoqeMhiBIGO1Ym8QsmIBVDzQLXBmj48JKig0gh6rPtPiCDAJUE7kVwXTiHAMyoEEYLXma8h82xHOa2aGShBgWsW11s=
+	t=1783612318; cv=none; b=npnzlw8B56VlmWLmkW3LOZdS2QVv5HMxJ40ohesvtmr2iICl9P1GeQBFENJqe9c1ZNLV4r+oTRKSRXufB1nTvAxEDMOR7aQjI8DVDl7gxNa59tlUZHJik3pCamOolJd82NEkKUOCPwEdaC1++H/y3HLEGYPG78w4kGl/eq9mvSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783612091; c=relaxed/simple;
-	bh=Gx3BetVdOhK9tL3J4kYCUB6lFM5K/OloIYl5fsDDOFQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QxgeSQEfIQQPWeSNYLLnwq/PaUNrNgx9g1d8wc+/t9taQ94rKlrH6ySRkRvazFjxROYzaVqm5anRqfk6/rteT43IU94waTjqJ/U8T1SH+uQm2SFvE4nsUyet93KPkH04XKM1bmwrdCYlDNjHCEoRdZXyCMSIHbwpwCuyP/Tz9nY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=ECJiMV3l; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1783612318; c=relaxed/simple;
+	bh=qZokTdFXcgSfazJoafBNlRc/K/h9T8rmtQ40ju2qrsY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=tNH4iJv9pqTc7sErF+quIoKWEACUldmAY2opkILmUGv4PJ2nw4MjSmMwGrKZR1C173fJCm7u8oxmhQAkyqXVo23oOSJq63OkKCDV0oCY3te/ZTzxpJ6pzLonpq/UeFHNUikUjv2wYsLRjqBM1QNc8OMFK9kUmQM5OIJCMQKv8ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=infotecs.ru; spf=pass smtp.mailfrom=infotecs.ru; dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b=kVza1cYS; arc=none smtp.client-ip=91.244.183.115
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=infotecs.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infotecs.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="ECJiMV3l"
-Received: by linux.microsoft.com (Postfix, from userid 1204)
-	id 1852720B716D; Thu,  9 Jul 2026 08:48:03 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 1852720B716D
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1783612083;
-	bh=KrNo05al+iHU65EqWsm2pT9OTDN3Qql+zzSQH5XVV/o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ECJiMV3l1QuK0yFx8wTLGR+6qMqz3l/AwK74cYG7G/q0DsO9ufiapDLnJulAJdhxn
-	 iTsI/WZQrL25aOZYr8+bbdAUrTxPlfgUth1SLpdHeSd6P/welskVBuGGl0VRn6a1Qe
-	 4AKFz8rByCM3n2haE/ILCOdfP2VGxXoUhvN3rc4c=
-Date: Thu, 9 Jul 2026 08:48:03 -0700
-From: Dipayaan Roy <dipayanroy@linux.microsoft.com>
-To: Simon Horman <horms@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
-	decui@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	leon@kernel.org, longli@microsoft.com, kotaranov@microsoft.com,
-	shradhagupta@linux.microsoft.com, ssengar@linux.microsoft.com,
-	ernis@linux.microsoft.com, shirazsaleem@microsoft.com,
-	linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
-	stephen@networkplumber.org, jacob.e.keller@intel.com,
-	dipayanroy@microsoft.com, leitao@debian.org, kees@kernel.org,
-	john.fastabend@gmail.com, hawk@kernel.org, bpf@vger.kernel.org,
-	daniel@iogearbox.net, ast@kernel.org, sdf@fomichev.me,
-	yury.norov@gmail.com, pavan.chebbi@broadcom.com
-Subject: Re: [PATCH net-next v11 2/2] net: mana: force full-page RX buffers
- via ethtool private flag
-Message-ID: <ak/Cs/qWVJD57qgl@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <20260701141808.461554-3-dipayanroy@linux.microsoft.com>
- <20260708155741.1509815-2-horms@kernel.org>
+	dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b="kVza1cYS"
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx0.infotecs.ru 48C062C0BCF
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=infotecs.ru; s=mx;
+	t=1783612306; bh=qZokTdFXcgSfazJoafBNlRc/K/h9T8rmtQ40ju2qrsY=;
+	h=From:To:CC:Subject:Date:References:In-Reply-To:From;
+	b=kVza1cYSWn5euyxBVWucfyQbjzroE0WWnctvYSCthw6SxBOsPhW2A7zUzn7GSj+Z9
+	 b4G3tfI8gce65NHiWUAo70NMEp3N/c69grrODjzLf2nc+tSe4qNJXfg2dcb4J/+Cva
+	 CfkX8q4c1C6wIz0glyIJMA8vapA0LgcNI2+Uvv90=
+Received: from mx0.infotecs-nt (localhost [127.0.0.1])
+	by mx0.infotecs.ru (Postfix) with ESMTP id 48C062C0BCF;
+	Thu,  9 Jul 2026 18:51:46 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx0.infotecs-nt 0F82B2C0ACD
+Received: from msk-exch-02.infotecs-nt (msk-exch-02.infotecs-nt [10.0.7.192])
+	by mx0.infotecs-nt (Postfix) with ESMTP id 0F82B2C0ACD;
+	Thu,  9 Jul 2026 18:51:46 +0300 (MSK)
+From: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
+To: Allison Henderson <achender@kernel.org>
+CC: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Ka-Cheong Poon
+	<ka-cheong.poon@oracle.com>, Santosh Shilimkar
+	<santosh.shilimkar@oracle.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-rdma@vger.kernel.org"
+	<linux-rdma@vger.kernel.org>, "rds-devel@oss.oracle.com"
+	<rds-devel@oss.oracle.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "lvc-project@linuxtesting.org"
+	<lvc-project@linuxtesting.org>
+Subject: Re: [PATCH net] rds: Fix inet6_addr_lst NULL dereference when IPv6 is
+ disabled
+Thread-Topic: [PATCH net] rds: Fix inet6_addr_lst NULL dereference when IPv6
+ is disabled
+Thread-Index: AQHdDtFJkzJE74BSrkynIWuhoK5tUrZlIweAgAACtwA=
+Date: Thu, 9 Jul 2026 15:51:45 +0000
+Message-ID: <01d99faa-c8c3-438e-852b-92ba230b8b4a@infotecs.ru>
+References: <20260708115922.2226279-1-Ilia.Gavrilov@infotecs.ru>
+ <a724cf77f2338776f44b465a25009c22a0ee7c43.camel@kernel.org>
+In-Reply-To: <a724cf77f2338776f44b465a25009c22a0ee7c43.camel@kernel.org>
+Accept-Language: ru-RU, en-US
+Content-Language: ru-RU
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-exclaimer-md-config: 208ac3cd-1ed4-4982-a353-bdefac89ac0a
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <566EC7F9B2FCF146AC35704173D34FB6@infotecs.ru>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260708155741.1509815-2-horms@kernel.org>
+X-KSMG-AntiPhishing: NotDetected
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Envelope-From: Ilia.Gavrilov@infotecs.ru
+X-KSMG-AntiSpam-Info: LuaCore: 112 0.3.112 7c8d497b0e572fbfa504a2ee62037c045a8cb4ec, {Tracking_msgid_8}, {Tracking_from_domain_doesnt_match_to}, 127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;infotecs.ru:7.1.1, FromAlignment: s
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiSpam-Lua-Profiles: 204370 [Jul 09 2026]
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Version: 6.1.1.22
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 3.0.0.9059, bases: 2026/07/09 08:43:00 #28414782
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 8
 
-On Wed, Jul 08, 2026 at 04:57:42PM +0100, Simon Horman wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> Full review at: https://netdev-ai.bots.linux.dev/sashiko/
-> ---
-> net: mana: force full-page RX buffers via ethtool private flag
-> 
-> This adds an ethtool private flag "full-page-rx" that forces one RX buffer
-> per page to avoid a page_pool fragment path throughput regression on some
-> 4K PAGE_SIZE ARM64 platforms. Toggling the flag while the port is up
-> triggers a mana_detach() + mana_attach() reconfiguration to apply the new
-> buffer layout.
-> 
-> A few questions inline.
-> 
-> > diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> > index 7438ea6b3f26..38f50b4eef87 100644
-> > --- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-> > +++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> 
-> [ ... mana_use_single_rxbuf_per_page() and mana_get_rxbuf_cfg() hunks
->       unrelated to the comments below ... ]
-> 
-> > diff --git a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-> > index 3531abfdaf43..24f6ce63b031 100644
-> > --- a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-> > +++ b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-> 
-> [ ... ]
-> 
-> > @@ -611,6 +630,88 @@ static int mana_get_link_ksettings(struct net_device *ndev,
-> >  	return 0;
-> >  }
-> >  
-> > +static u32 mana_get_priv_flags(struct net_device *ndev)
-> > +{
-> > +	struct mana_port_context *apc = netdev_priv(ndev);
-> > +
-> > +	return apc->priv_flags;
-> > +}
-> > +
-> > +static int mana_set_priv_flags(struct net_device *ndev, u32 priv_flags)
-> > +{
-> > +	struct mana_port_context *apc = netdev_priv(ndev);
-> > +	u32 changed = apc->priv_flags ^ priv_flags;
-> > +	u32 old_priv_flags = apc->priv_flags;
-> > +	bool schedule_port_reset = false;
-> > +	int err = 0;
-> > +
-> > +	if (!changed)
-> > +		return 0;
-> > +
-> > +	/* Reject unknown bits */
-> > +	if (priv_flags & ~GENMASK(MANA_PRIV_FLAG_MAX - 1, 0))
-> > +		return -EINVAL;
-> > +
-> > +	if (changed & BIT(MANA_PRIV_FLAG_USE_FULL_PAGE_RXBUF)) {
-> > +		apc->priv_flags = priv_flags;
-> 
-> [Low]
-> Is the storage of priv_flags intentionally nested inside the per-flag
-> branch?  With only one flag today this is fine, but when a second bit is
-> added to enum mana_priv_flag_bits, a user toggling only the new bit
-> passes the !changed and unknown-bits checks, the outer if is skipped,
-> apc->priv_flags is never updated, and mana_set_priv_flags() returns 0
-> while mana_get_priv_flags() keeps reporting the old state.
-> 
-> Would it be cleaner to store priv_flags unconditionally after validation
-> and use per-flag if (changed & BIT(...)) blocks only for the
-> flag-specific reconfiguration?
-> 
-
-Hi Simon, Paolo,
-
-Agreed on this future concern,
-but also we donot plan to have another mana driver private flag.
-
-
-> > +
-> > +		if (!apc->port_is_up) {
-> > +			/* Port is down, flag updated to apply on next up
-> > +			 * so just return.
-> > +			 */
-> > +			return 0;
-> > +		}
-> > +
-> > +		/* Pre-allocate buffers to prevent failure in mana_attach
-> > +		 * later
-> > +		 */
-> > +		err = mana_pre_alloc_rxbufs(apc, ndev->mtu, apc->num_queues);
-> 
-> [Low]
-> When the MTU is already jumbo (mtu + MANA_RXBUF_PAD > PAGE_SIZE / 2) or
-> XDP is attached, mana_use_single_rxbuf_per_page() already returns true
-> regardless of the new priv flag:
-> 
-> 	if (apc->priv_flags & BIT(MANA_PRIV_FLAG_USE_FULL_PAGE_RXBUF))
-> 		return true;
-> 
-> 	/* For xdp and jumbo frames make sure only one packet fits per page. */
-> 	if (mtu + MANA_RXBUF_PAD > PAGE_SIZE / 2 || mana_xdp_get(apc))
-> 		return true;
-> 
-> In that case mana_get_rxbuf_cfg() produces identical output whether the
-> new flag is on or off, yet toggling the flag here always performs a full
-> mana_pre_alloc_rxbufs() + mana_detach() + mana_attach() cycle and flaps
-> the link.
-> 
-> Would a pre/post comparison of mana_get_rxbuf_cfg() output be worth
-> adding to skip the reconfiguration when nothing actually changes?
-Good point will add a pre and post comparison as well to skip the
-detach/attach when already in that configuration.
-
-> 
-> [High]
-> mana_set_priv_flags() drives the same detach/attach sequence used by
-> mana_set_channels() and mana_per_port_queue_reset_work_handler(), but
-> does not take apc->vport_mutex and set apc->channel_changing = true
-> across the window.
-> 
-> The struct comment on channel_changing spells out the invariant:
-> 
-> 	/* Set by mana_set_channels() under vport_mutex to block RDMA
-> 	 * from grabbing the vport during the detach/attach window.
-> 	 * Checked by mana_cfg_vport() when called from the RDMA path.
-> 	 */
-> 	bool channel_changing;
-> 
-> Without it, after mana_detach() uncfg's the vport an RDMA client can
-> call mana_cfg_vport() and bump vport_use_count, and then mana_attach()
-> will fail with -EBUSY when it re-cfg's the vport.
-> 
-> There is also no equivalent of the '!port_is_up && vport_use_count'
-> early -EBUSY check that mana_set_channels() performs, so is the flag
-> allowed to be changed silently while an RDMA client is using the vport?
-> 
-Agreed. Will add the same vport_mutex + channel_changing pattern used by
-mana_set_channels() and mana_per_port_queue_reset_work_handler() to
-block RDMA from grabbing the vport during the detach/attach window.
-
-> > +		if (err) {
-> > +			netdev_err(ndev,
-> > +				   "Insufficient memory for new allocations\n");
-> > +			apc->priv_flags = old_priv_flags;
-> > +			return err;
-> > +		}
-> > +
-> > +		err = mana_detach(ndev, false);
-> 
-> [High]
-> mana_detach() begins with ASSERT_RTNL(), and so does mana_attach()
-> called below.  Is RTNL guaranteed to be held on the SET priv-flags path?
-> 
-> mana registers net_shaper_ops in mana_devops, which makes it an
-> ops-locked driver, so netdev_need_ops_lock() is true and the ethtool
-> core acquires rtnl only when the driver opts in via
-> ETHTOOL_OP_NEEDS_RTNL_* for that specific command.
-> 
-> Looking at mana_ethtool_ops.op_needs_rtnl:
-> 
-> 	.op_needs_rtnl		= ETHTOOL_OP_NEEDS_RTNL_SCHANNELS |
-> 				  ETHTOOL_OP_NEEDS_RTNL_SRINGPARAM |
-> 				  ETHTOOL_OP_NEEDS_RTNL_GLINK,
-> 
-> ETHTOOL_OP_NEEDS_RTNL_SPFLAGS is not listed, so ASSERT_RTNL() in the
-> detach/attach helpers below will WARN, and the code races with
-> RTNL-serialized mutators (mana_open, mana_close, mana_change_mtu,
-> mana_tx_timeout) that read and write apc->port_is_up, apc->rxqs,
-> apc->tx_qp and apc->port_st_save.
-> 
-> Should ETHTOOL_OP_NEEDS_RTNL_SPFLAGS be added to op_needs_rtnl, matching
-> what is already done for SET channels?
-> 
-Agreed, Will add ETHTOOL_OP_NEEDS_RTNL_SPFLAGS to .op_needs_rtnl.
-> > +		if (err) {
-> > +			netdev_err(ndev, "mana_detach failed: %d\n", err);
-> > +			apc->priv_flags = old_priv_flags;
-> > +
-> > +			/* Port is in an inconsistent state. Restore
-> > +			 * 'port_is_up' so that queue reset work handler
-> > +			 * can properly detach and re-attach.
-> > +			 */
-> > +			apc->port_is_up = true;
-> > +			schedule_port_reset = true;
-> > +			goto out;
-> > +		}
-> > +
-> > +		err = mana_attach(ndev);
-> > +		if (err) {
-> > +			netdev_err(ndev, "mana_attach failed: %d\n", err);
-> > +			apc->priv_flags = old_priv_flags;
-> > +
-> > +			/* Restore 'port_is_up' so the reset work handler
-> > +			 * can properly detach/attach. Without this,
-> > +			 * the handler sees port_is_up=false and skips
-> > +			 * queue allocation, leaving the port dead.
-> > +			 */
-> > +			apc->port_is_up = true;
-> > +			schedule_port_reset = true;
-> 
-> [High]
-> On this branch, mana_detach() has already succeeded and run
-> mana_cleanup_port_context(), so apc->rxqs is NULL and queues are torn
-> down.  Setting apc->port_is_up = true here between now and when
-> queue_reset_work runs opens a window where callers gate on port_is_up
-> as their "safe to access rxqs/tx_qp" predicate.
-> 
-> For example, mana_get_ethtool_stats() does:
-> 
-> 	if (!apc->port_is_up)
-> 		return;
-> 	...
-> 	rxq = apc->rxqs[q];
-> 	...
-> 
-> A concurrent ethtool -S invocation during that window will pass the
-> port_is_up gate and dereference apc->rxqs[q]->stats on a NULL rxqs.
-> 
-> Is the port_is_up restore actually needed for the reset work handler's
-> mana_detach() call?  On the reset path, mana_detach() takes its early
-> return when !netif_device_present(ndev):
-> 
-> 	if (!from_close && !netif_device_present(ndev))
-> 		return 0;
-> 
-> That early return does not touch apc->port_st_save, so the saved state
-> from the earlier successful mana_detach() should already be intact for
-> the follow-up mana_attach().
-> 
-> There is also no smp_wmb() paired with this write, unlike the pattern
-> used inside mana_detach()/mana_attach() proper.
-> 
-
-For the mana_attach() failure path: agreed, will remove port_is_up =
-true. After a successful mana_detach(ndev, false), netif_device_detach()
-has already been called so the reset handler's mana_detach() takes the
-early return via !netif_device_present(), preserving port_st_save for
-the subsequent mana_attach().
-
-For the mana_detach() failure path: keeping port_is_up = true is
-intentional. Here netif_device_detach() was never reached, so the reset
-handler's mana_detach() would re-enter fully and overwrite port_st_save
-from port_is_up, if left as false, mana_attach() would skip queue
-allocation and leave the port dead.
-
-
-> > +		}
-> > +	}
-> > +
-> > +out:
-> > +	mana_pre_dealloc_rxbufs(apc);
-> > +
-> > +	if (schedule_port_reset)
-> > +		queue_work(apc->ac->per_port_queue_reset_wq,
-> > +			   &apc->queue_reset_work);
-> > +
-> > +	return err;
-> > +}
-> > +
-> 
-> [ ... remaining hunks unrelated to the comments above ... ]
-
-Thanks for the review comments, I will address them in the next
-version.
-
-
-Regards
-Dipayaan Roy
+T24gNy85LzI2IDY6NDEgUE0sIEFsbGlzb24gSGVuZGVyc29uIHdyb3RlOg0KPiBPbiBXZWQsIDIw
+MjYtMDctMDggYXQgMTE6NTkgKzAwMDAsIElsaWEgR2F2cmlsb3Ygd3JvdGU6DQo+PiBXaGVuIGJv
+b3Rpbmcgd2l0aCB0aGUgJ2lwdjYuZGlzYWJsZT0xJyBwYXJhbWV0ZXIsIGluZXQ2X2FkZHJfbHN0
+DQo+PiBpcyBuZXZlciBpbml0aWFsaXplZCBiZWNhdXNlIGluZXQ2X2luaXQoKSBleGl0cyBiZWZv
+cmUgYWRkcmNvbmZfaW5pdCgpDQo+PiBpcyBjYWxsZWQgdG8gaW5pdGlhbGl6ZSBpdC4gQW4gYXR0
+ZW1wdCB0byBiaW5kIGFuIFJEUyBzb2NrZXQgdG8NCj4+IGFuIGlwdjYgYWRkcmVzcyByZXN1bHRz
+IGluIGEgY3Jhc2ggaW4gX19pcHY2X2Noa19hZGRyX2FuZF9mbGFncygpDQo+IA0KPiBIZWxsbyBJ
+bGlhLA0KPiANCj4gVGhhbmtzIGZvciB0aGUgY2F0Y2guICBTb21lIGNvbW1lbnRzIGJlbG93Og0K
+PiANCj4+DQo+PiBLQVNBTjogbnVsbC1wdHItZGVyZWYgaW4gcmFuZ2UgWzB4MDAwMDAwMDAwMDAw
+MDAwOC0weDAwMDAwMDAwMDAwMDAwMGZdDQo+PiBSSVA6IDAwMTA6X19pcHY2X2Noa19hZGRyX2Fu
+ZF9mbGFncysweDFkZi8weDdlMA0KPj4gQ2FsbCBUcmFjZToNCj4+ICA8VEFTSz4NCj4+ICBpcHY2
+X2Noa19hZGRyKzB4M2IvMHg1MA0KPj4gIHJkc190Y3BfbGFkZHJfY2hlY2srMHgxNTUvMHgzYjAg
+W3Jkc190Y3BdDQo+PiAgcmRzX3RyYW5zX2dldF9wcmVmZXJyZWQrMHgxNWQvMHgyZDAgW3Jkc10N
+Cj4+ICA/IHRyYWNlX2hhcmRpcnFzX29uKzB4MmQvMHgxMTANCj4+ICByZHNfYmluZCsweDE0MzMv
+MHgxZDYwIFtyZHNdDQo+PiAgPyByZHNfcmVtb3ZlX2JvdW5kKzB4ZDUwLzB4ZDUwIFtyZHNdDQo+
+PiAgPyBhYV9hZl9wZXJtKzB4MjUwLzB4MjUwDQo+PiAgPyBfX21pZ2h0X2ZhdWx0KzB4ZGUvMHgx
+OTANCj4+ICA/IF9fc3lzX2JpbmQrMHgxZGMvMHgyMTANCj4+ICBfX3N5c19iaW5kKzB4MWRjLzB4
+MjEwDQo+PiAgPyBfX2lhMzJfc3lzX3NvY2tldHBhaXIrMHgxMDAvMHgxMDANCj4+ICA/IHJlc3Rv
+cmVfZnByZWdzX2Zyb21fZnBzdGF0ZSsweDUzLzB4MTAwDQo+PiAgX194NjRfc3lzX2JpbmQrMHg3
+My8weGIwDQo+PiAgPyBzeXNjYWxsX2VudGVyX2Zyb21fdXNlcl9tb2RlKzB4MWMvMHg1MA0KPj4g
+IGRvX3N5c2NhbGxfNjQrMHgzNC8weDgwDQo+PiAgZW50cnlfU1lTQ0FMTF82NF9hZnRlcl9od2Zy
+YW1lKzB4NmUvMHhkOA0KPj4gUklQOiAwMDMzOjB4N2Y0N2Y4MjY5ZWE5DQo+PiAgPC9UQVNLPg0K
+Pj4NCj4+IFRoZSBmb2xsb3dpbmcgY29kZSByZXByb2R1Y2VzIHRoZSBpc3N1ZToNCj4+DQo+PiBz
+dHJ1Y3Qgc29ja2FkZHJfaW42IGFkZHI7DQo+PiBzID0gc29ja2V0KFBGX1JEUywgU09DS19TRVFQ
+QUNLRVQsIDApOw0KPj4NCj4+IG1lbXNldCgmYWRkciwgMCwgc2l6ZW9mKGFkZHIpKTsNCj4+IGlu
+ZXRfcHRvbihBRl9JTkVUNiwgQUREUkVTUywgJmFkZHIuc2luNl9hZGRyKTsNCj4+IGFkZHIuc2lu
+Nl9mYW1pbHkgPSBBRl9JTkVUNjsNCj4+IGFkZHIuc2luNl9wb3J0ID0gaHRvbnMoUE9SVCk7DQo+
+Pg0KPj4gYmluZChzLCAmYWRkciwgc2l6ZW9mKGFkZHIpOw0KPiBuaXQ6IG1pc3NpbmcgcGFyZW4g
+aGVyZQ0KPiANCj4+DQo+PiBGb3VuZCBieSBJbmZvVGVDUyBvbiBiZWhhbGYgb2YgTGludXggVmVy
+aWZpY2F0aW9uIENlbnRlcg0KPj4gKGxpbnV4dGVzdGluZy5vcmcpIHdpdGggU3l6a2FsbGVyLg0K
+Pj4NCj4+IEZpeGVzOiBlZWUyZmE2YWIzMjIgKCJyZHM6IENoYW5naW5nIElQIGFkZHJlc3MgaW50
+ZXJuYWwgcmVwcmVzZW50YXRpb24gdG8gc3RydWN0IGluNl9hZGRyIikNCj4+IEZpeGVzOiAxZTJi
+NDRlNzhlZWEgKCJyZHM6IEVuYWJsZSBSRFMgSVB2NiBzdXBwb3J0IikNCj4+IFNpZ25lZC1vZmYt
+Ynk6IElsaWEgR2F2cmlsb3YgPElsaWEuR2F2cmlsb3ZAaW5mb3RlY3MucnU+DQo+PiAtLS0NCj4+
+ICBuZXQvcmRzL2liLmMgIHwgNCArKysrDQo+PiAgbmV0L3Jkcy90Y3AuYyB8IDggKysrKystLS0N
+Cj4+ICAyIGZpbGVzIGNoYW5nZWQsIDkgaW5zZXJ0aW9ucygrKSwgMyBkZWxldGlvbnMoLSkNCj4+
+DQo+PiBkaWZmIC0tZ2l0IGEvbmV0L3Jkcy9pYi5jIGIvbmV0L3Jkcy9pYi5jDQo+PiBpbmRleCAz
+OWY4NzI3MmUwNzEuLjhmOWNmNDkxOTg0ZiAxMDA2NDQNCj4+IC0tLSBhL25ldC9yZHMvaWIuYw0K
+Pj4gKysrIGIvbmV0L3Jkcy9pYi5jDQo+PiBAQCAtNDI5LDYgKzQyOSwxMCBAQCBzdGF0aWMgaW50
+IHJkc19pYl9sYWRkcl9jaGVja19jbShzdHJ1Y3QgbmV0ICpuZXQsIGNvbnN0IHN0cnVjdCBpbjZf
+YWRkciAqYWRkciwNCj4+ICAJCXNhID0gKHN0cnVjdCBzb2NrYWRkciAqKSZzaW47DQo+PiAgCX0g
+ZWxzZSB7DQo+PiAgI2lmIElTX0VOQUJMRUQoQ09ORklHX0lQVjYpDQo+PiArCQlpZiAoIWlwdjZf
+bW9kX2VuYWJsZWQoKSkgew0KPj4gKwkJCXJldCA9IC1FQUREUk5PVEFWQUlMOw0KPj4gKwkJCWdv
+dG8gb3V0Ow0KPj4gKwkJfQ0KPj4gIAkJbWVtc2V0KCZzaW42LCAwLCBzaXplb2Yoc2luNikpOw0K
+Pj4gIAkJc2luNi5zaW42X2ZhbWlseSA9IEFGX0lORVQ2Ow0KPj4gIAkJc2luNi5zaW42X2FkZHIg
+PSAqYWRkcjsNCj4+IGRpZmYgLS1naXQgYS9uZXQvcmRzL3RjcC5jIGIvbmV0L3Jkcy90Y3AuYw0K
+Pj4gaW5kZXggYTFkZTExNGQ1ZTJlLi45NTVkOTIyNzdkNWEgMTAwNjQ0DQo+PiAtLS0gYS9uZXQv
+cmRzL3RjcC5jDQo+PiArKysgYi9uZXQvcmRzL3RjcC5jDQo+PiBAQCAtMzY2LDkgKzM2NiwxMSBA
+QCBpbnQgcmRzX3RjcF9sYWRkcl9jaGVjayhzdHJ1Y3QgbmV0ICpuZXQsIGNvbnN0IHN0cnVjdCBp
+bjZfYWRkciAqYWRkciwNCj4+ICAJCXJjdV9yZWFkX3VubG9jaygpOw0KPj4gIAl9DQo+PiAgI2lm
+IElTX0VOQUJMRUQoQ09ORklHX0lQVjYpDQo+PiAtCXJldCA9IGlwdjZfY2hrX2FkZHIobmV0LCBh
+ZGRyLCBkZXYsIDApOw0KPj4gLQlpZiAocmV0KQ0KPj4gLQkJcmV0dXJuIDA7DQo+PiArCWlmIChp
+cHY2X21vZF9lbmFibGVkKCkpIHsNCj4+ICsJCXJldCA9IGlwdjZfY2hrX2FkZHIobmV0LCBhZGRy
+LCBkZXYsIDApOw0KPj4gKwkJaWYgKHJldCkNCj4+ICsJCQlyZXR1cm4gMDsNCj4+ICsJfQ0KPiAN
+Cj4gVGhlcmUncyBhbm90aGVyIGlwdjZfY2hrX2FkZHIoKSBpbiBfX3Jkc19maW5kX2lmaW5kZXgo
+KSB3aXRoIHRoZSBzYW1lIGlzc3VlIHRoYXQgYWZmZWN0cyBpbmJvdW5kIGxpbmstbG9jYWwgSVB2
+Ng0KPiBjb25uZWN0cy4gIENhbiB5b3UgYWRkIGEgc2ltaWxhciBndWFyZCB0aGVyZSB0b28/ICBU
+aGVuIEkgdGhpbmsgdGhhdCBzaG91bGQgY292ZXIgYWxsIHRoZSBwb2ludHMgb2YgZXhwb3N1cmUu
+ICBUaGFua3MNCj4gZm9yIHdvcmtpbmcgb24gdGhpcy4NCj4gDQo+IEFsbGlzb24NCj4gDQoNClRo
+YW5rcyBmb3IgdGhlIHJldmlldywgSSdsbCBhZGQgdGhlIGd1YXJkIGluIHRoZSBuZXh0IHBhdGNo
+IHZlcnNpb24uDQoNCj4+ICAjZW5kaWYNCj4+ICAJcmV0dXJuIC1FQUREUk5PVEFWQUlMOw0KPj4g
+IH0NCj4gDQoNCg==
