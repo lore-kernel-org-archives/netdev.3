@@ -1,330 +1,107 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2416C3DB316;
-	Thu,  9 Jul 2026 06:42:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D623D7D94;
+	Thu,  9 Jul 2026 06:42:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783579363; cv=none; b=tUDLWqoqILAjpnVOVvevTlzOVTz0AQJyNCnJG7N1htFJyljYE5JG31yXSD0t2OsNrMwqHObcvt3jrn04sZXL2Pr6VFc1EOEyYWb0muc4VyRcGAvywVBdmVl1uWKNKzasUeiP5MhbuZlb/1k/DZPbPqhoA7ocoKVV802TX6Bu9Mw=
+	t=1783579363; cv=none; b=BYFf8LYWtEFRZds+orcrwDBGlYs1jiVetmR5e/ccpQDzV/QdbVFowp9JcMDPWLoedBZxcdLJAV6TUeQ3YxdNi69gw1jFssGZgo4fwpnQQGVrTcENF/kxXFIsIy7qRSOtVVkWCsGQl/f1kgvzd4WOUkgL1RqTJdgdtc6zGS3LDl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783579363; c=relaxed/simple;
-	bh=b2fIzrpV91OZuBZOTh3socWUCqiku+BOU02NGLS2fTg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cwBKjjYYLe2h2ZC45x6y/H1mZwx4FQGjEcAuWKOH18+GCutw1NzXTqYO/nIA1dXIQAN/8tlGhFxNftrklo74qm5QYuZNZJF9WCRD+LwFGKMa4XbGfV3TsHIr+m4fPik3WjAB9S5TLrscsRyOCKbVMHuaclT3AK8uiGHted98SbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b=dLxUqboN; arc=none smtp.client-ip=212.227.17.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+	bh=sIqRl8nj7fhsaHoNfU6gxSrWFODdtNEWV4abkjTv10o=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=TPizz+da5F9c7W/qHYGNBqwjjW3UndGEHBVo6drpOvkxvx2b0C7M49LXP34ZVzXTCLv26SpLZfhy7810D9vs+gQZ5fSCbF/eSjk1TxCCkKt3iis2QF4O6oI61OB8JMBVgHvLyvUfB2nUK2Vv09NnAg+kF0tHyQ4bP9XAbOeHTlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=JkQ335j6; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b="dLxUqboN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1783579335; x=1784184135;
-	i=markus.stockhausen@gmx.de;
-	bh=pUSN7sE5oCeU8d00HqwCi5zFbWnpjlNjZlwPUk4m33w=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=dLxUqboNDpeH3OaZqHAaSlIl5rJZGaeXYNp7M3+0MZ4MdLbgKzYVc8UmlrHgGG4h
-	 s6dYgbBnUxcx7D/tLM8wdXRi6VxCdDJn1Z+VolHDXCv0EJIFrDYlTnbaU99JzP0yd
-	 TTl1vz55bAZoZbtIw32uu92ENcF4+ydBfEYSqBXsk9Q5yxLOuheWf/sGGe2B/Dyin
-	 d5D/mNIiAKyjyLohyBrfICBHnWeoW2h/HRsi+LPis6WcQ1J9uCjpgiQ+uf7ZAEUEh
-	 7pRSIP1xwXWAaHdJY8fKhdSMs0Pz28BqZBoAFIJgyRNcIWFYijvHT8F3ihhJ/LzCZ
-	 GYs8+AN91hw+mW65Bg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from client.hidden.invalid by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M1Ygt-1wehOG0etP-008Q21; Thu, 09
- Jul 2026 08:42:15 +0200
-From: Markus Stockhausen <markus.stockhausen@gmx.de>
-To: andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	chris.packham@alliedtelesis.co.nz,
-	daniel@makrotopia.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	devicetree@vger.kernel.org
-Cc: Markus Stockhausen <markus.stockhausen@gmx.de>
-Subject: [PATCH net-next v4 7/8] net: mdio: realtek-rtl9300: Add support for RTL838x
-Date: Thu,  9 Jul 2026 08:41:56 +0200
-Message-ID: <20260709064157.2865063-8-markus.stockhausen@gmx.de>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260709064157.2865063-1-markus.stockhausen@gmx.de>
-References: <20260709064157.2865063-1-markus.stockhausen@gmx.de>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="JkQ335j6"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id E640CC2F4C0;
+	Thu,  9 Jul 2026 06:42:48 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id A4BD45FF03;
+	Thu,  9 Jul 2026 06:42:34 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0D6FD11BC2145;
+	Thu,  9 Jul 2026 08:42:28 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1783579353; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=lHI43/71o6g//1+/ZN/imjts4lJXPoUki77Sz72H31M=;
+	b=JkQ335j6G+s1i1qOOPfvRWiH9Oc0IwSeCIDySDgrekWvvStt8oqt6oYDvE3+t9eZF/zDF7
+	/IF76CVF+wgAAxPI+jh//jutbeTaw3vEPpMICfK6sgg6Ym9zUhtuC29f9iG/a2JX0FI0I7
+	vmcajRU+Wj6pYeGK4EZaNrb1oEsyElOpGzClfgO/fVavxdG1SdVqY7V4gjRw/klGUopLyl
+	FqKYB7r1IwBsxvjhhfU9LRBkm7Rrx0hcAgLLznlVKClaNSK4U5gdtjTlEz43ZWcMPOuz8O
+	grnbJ9agQOg3GR0oX9CSgm/dvDkEIJXZD1rTh53/+txqj3uC5xggMbFqKK8UuQ==
+From: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
+Subject: [PATCH net-next 00/10] net: dsa: microchip: add PTP support for
+ KSZ8463
+Date: Thu, 09 Jul 2026 08:42:26 +0200
+Message-Id: <20260709-ksz-new-ptp-v1-0-344f02fe739e@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:rzfbk+t2jh2gkPoYypkh4bp07wlQe7smEcpsrUpk1truWLZHdms
- 3DqZXRT8lvQuz2pn33TATJWSVraYVfXc2kcvg1wgfR0DP3QeNYqGtjuymKH1LlHExzEdul6
- PSA8QG9atZipIZYCNW6fWK7daoEtWM1lAPMKtMO8SCmnaIsXYyOhKCUHrRIrkoM7jnf+GRM
- PUVgNoNFPm3p0afgjE3mw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:YG9RaCT00Ik=;jbs04Oz0Vg5nI2Y/4SXZvqSLA48
- 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
- lwXrzm13s2q5HOzdM3xiKmeZK/go+GIPzjjA8/q
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MWwqAIBAArxL73YI9KOsq0YfVWktgolJSdPekz
+ 4GZecCTY/LQZw84OtnzYRIUeQbzpsxKyEtiKEXZiFZI3P2Nhi60waLu5DJVQklVa0iFdaQ5/rc
+ BDIUkxgDj+36758snZwAAAA==
+X-Change-ID: 20260708-ksz-new-ptp-f98db30a8a4f
+To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
+ Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, Simon Horman <horms@kernel.org>, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Pascal Eberhard <pascal.eberhard@se.com>, 
+ =?utf-8?q?Miqu=C3=A8l_Raynal?= <miquel.raynal@bootlin.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
+X-Mailer: b4 0.14.3
+X-Last-TLS-Session-Version: TLSv1.3
 
-The MDIO driver has been prepared for multiple device support. Add all
-required bits for the RTL838x (aka maple) series. This is straightforward
-but some things are worth mentioning.
+Hi all,
 
-- The device has a lot in common with the RTL930x series. 28 ports, 4096
-  (Realtek) pages, 4 MMIO registers
-- The MDIO engine has no fail bit. Thus the mask is set to zero
-- There is only one SMI bus for 1G PHYs. No bus_map_base register exists.
-- The setup_controller() function needs no c45 setup but must activate
-  the PHY access.
+This series adds PTP support for the KSZ8463.
 
-Signed-off-by: Markus Stockhausen <markus.stockhausen@gmx.de>
-=2D--
- drivers/net/mdio/mdio-realtek-rtl9300.c | 108 ++++++++++++++++++++++++
- 1 file changed, 108 insertions(+)
+The KSZ8463 differs quite a lot from other KSZ switches supporting PTP:
+it has a different interrupt logic and a different 'PTP engine'.
 
-diff --git a/drivers/net/mdio/mdio-realtek-rtl9300.c b/drivers/net/mdio/md=
-io-realtek-rtl9300.c
-index 97fb151d8b36..a6dfd8d26722 100644
-=2D-- a/drivers/net/mdio/mdio-realtek-rtl9300.c
-+++ b/drivers/net/mdio/mdio-realtek-rtl9300.c
-@@ -119,6 +119,28 @@
- #include <linux/property.h>
- #include <linux/regmap.h>
-=20
-+#define RTL8380_NUM_BUSES			1
-+#define RTL8380_NUM_PAGES			4096
-+#define RTL8380_NUM_PORTS			28
-+#define RTL8380_SMI_GLB_CTRL			0xa100
-+#define   RTL8380_SMI_PHY_PATCH_DONE		BIT(15)
-+#define RTL8380_SMI_ACCESS_PHY_CTRL_0		0xa1b8
-+#define RTL8380_SMI_ACCESS_PHY_CTRL_1		0xa1bc
-+#define   RTL8380_PHY_CTRL_REG_ADDR		GENMASK(24, 20)
-+#define   RTL8380_PHY_CTRL_PARK_PAGE		GENMASK(19, 15)
-+#define   RTL8380_PHY_CTRL_MAIN_PAGE		GENMASK(14, 3)
-+#define   RTL8380_PHY_CTRL_WRITE		BIT(2)
-+#define   RTL8380_PHY_CTRL_READ			0
-+#define   RTL8380_PHY_CTRL_TYPE_C45		BIT(1)
-+#define   RTL8380_PHY_CTRL_TYPE_C22		0
-+#define   RTL8380_PHY_CTRL_FAIL			0 /* no fail indicator */
-+#define RTL8380_SMI_ACCESS_PHY_CTRL_2		0xa1c0
-+#define   RTL8380_PHY_CTRL_INDATA		GENMASK(31, 16)
-+#define   RTL8380_PHY_CTRL_DATA			GENMASK(15, 0)
-+#define RTL8380_SMI_ACCESS_PHY_CTRL_3		0xa1c4
-+#define RTL8380_SMI_POLL_CTRL			0xa17c
-+#define RTL8380_SMI_PORT0_5_ADDR_CTRL		0xa1c8
-+
- #define RTL9300_NUM_BUSES			4
- #define RTL9300_NUM_PAGES			4096
- #define RTL9300_NUM_PORTS			28
-@@ -347,6 +369,60 @@ static int otto_emdio_write_cmd(struct mii_bus *bus, =
-u32 cmd,
- 	return otto_emdio_run_cmd(bus, cmd | priv->info->cmd_write, cmd_data);
- }
-=20
-+static int otto_emdio_8380_read_c22(struct mii_bus *bus, int port, int re=
-gnum, u32 *value)
-+{
-+	struct otto_emdio_priv *priv =3D otto_emdio_bus_to_priv(bus);
-+	struct otto_emdio_cmd_regs cmd_data =3D {
-+		.c22_data	=3D FIELD_PREP(RTL8380_PHY_CTRL_REG_ADDR, regnum) |
-+				  FIELD_PREP(RTL8380_PHY_CTRL_PARK_PAGE, 0x1f) |
-+				  FIELD_PREP(RTL8380_PHY_CTRL_MAIN_PAGE, priv->page[port]),
-+		.io_data	=3D FIELD_PREP(RTL8380_PHY_CTRL_INDATA, port),
-+	};
-+
-+	return otto_emdio_read_cmd(bus, RTL8380_PHY_CTRL_TYPE_C22, &cmd_data,
-+				   RTL8380_PHY_CTRL_DATA, value);
-+}
-+
-+static int otto_emdio_8380_write_c22(struct mii_bus *bus, int port, int r=
-egnum, u16 value)
-+{
-+	struct otto_emdio_priv *priv =3D otto_emdio_bus_to_priv(bus);
-+	struct otto_emdio_cmd_regs cmd_data =3D {
-+		.c22_data	=3D FIELD_PREP(RTL8380_PHY_CTRL_REG_ADDR, regnum) |
-+				  FIELD_PREP(RTL8380_PHY_CTRL_PARK_PAGE, 0x1f) |
-+				  FIELD_PREP(RTL8380_PHY_CTRL_MAIN_PAGE, priv->page[port]),
-+		.io_data	=3D FIELD_PREP(RTL8380_PHY_CTRL_INDATA, value),
-+		.port_mask_low	=3D BIT(port),
-+	};
-+
-+	return otto_emdio_write_cmd(bus, RTL8380_PHY_CTRL_TYPE_C22, &cmd_data);
-+}
-+
-+static int otto_emdio_8380_read_c45(struct mii_bus *bus, int port,
-+				    int dev_addr, int regnum, u32 *value)
-+{
-+	struct otto_emdio_cmd_regs cmd_data =3D {
-+		.c45_data	=3D FIELD_PREP(PHY_CTRL_MMD_DEVAD, dev_addr) |
-+				  FIELD_PREP(PHY_CTRL_MMD_REG, regnum),
-+		.io_data	=3D FIELD_PREP(RTL8380_PHY_CTRL_INDATA, port),
-+	};
-+
-+	return otto_emdio_read_cmd(bus, RTL8380_PHY_CTRL_TYPE_C45, &cmd_data,
-+				   RTL8380_PHY_CTRL_DATA, value);
-+}
-+
-+static int otto_emdio_8380_write_c45(struct mii_bus *bus, int port,
-+				     int dev_addr, int regnum, u16 value)
-+{
-+	struct otto_emdio_cmd_regs cmd_data =3D {
-+		.c45_data	=3D FIELD_PREP(PHY_CTRL_MMD_DEVAD, dev_addr) |
-+				  FIELD_PREP(PHY_CTRL_MMD_REG, regnum),
-+		.io_data	=3D FIELD_PREP(RTL8380_PHY_CTRL_INDATA, value),
-+		.port_mask_low	=3D BIT(port),
-+	};
-+
-+	return otto_emdio_write_cmd(bus, RTL8380_PHY_CTRL_TYPE_C45, &cmd_data);
-+}
-+
- static int otto_emdio_9300_read_c22(struct mii_bus *bus, int port, int re=
-gnum, u32 *value)
- {
- 	struct otto_emdio_priv *priv =3D otto_emdio_bus_to_priv(bus);
-@@ -567,6 +643,15 @@ static int otto_emdio_setup_topology(struct otto_emdi=
-o_priv *priv)
- 	return 0;
- }
-=20
-+static int otto_emdio_8380_setup_controller(struct otto_emdio_priv *priv)
-+{
-+	/*
-+	 * PHY_PATCH_DONE enables PHY control via SoC. This is required for PHY =
-access, including
-+	 * patching and must be set before the PHYs are probed.
-+	 */
-+	return regmap_set_bits(priv->regmap, RTL8380_SMI_GLB_CTRL, RTL8380_SMI_P=
-HY_PATCH_DONE);
-+}
-+
- static int otto_emdio_9300_setup_controller(struct otto_emdio_priv *priv)
- {
- 	u32 glb_ctrl_mask =3D 0, glb_ctrl_val =3D 0;
-@@ -862,6 +947,28 @@ static int otto_emdio_probe(struct platform_device *p=
-dev)
- 	return 0;
- }
-=20
-+static const struct otto_emdio_info otto_emdio_8380_info =3D {
-+	.addr_map_base =3D RTL8380_SMI_PORT0_5_ADDR_CTRL,
-+	.cmd_fail =3D RTL8380_PHY_CTRL_FAIL,
-+	.cmd_read =3D RTL8380_PHY_CTRL_READ,
-+	.cmd_write =3D RTL8380_PHY_CTRL_WRITE,
-+	.cmd_regs =3D {
-+		.c22_data =3D RTL8380_SMI_ACCESS_PHY_CTRL_1,
-+		.c45_data =3D RTL8380_SMI_ACCESS_PHY_CTRL_3,
-+		.io_data =3D RTL8380_SMI_ACCESS_PHY_CTRL_2,
-+		.port_mask_low =3D RTL8380_SMI_ACCESS_PHY_CTRL_0,
-+	},
-+	.num_buses =3D RTL8380_NUM_BUSES,
-+	.num_pages =3D RTL8380_NUM_PAGES,
-+	.num_ports =3D RTL8380_NUM_PORTS,
-+	.poll_ctrl =3D RTL8380_SMI_POLL_CTRL,
-+	.setup_controller =3D otto_emdio_8380_setup_controller,
-+	.read_c22 =3D otto_emdio_8380_read_c22,
-+	.read_c45 =3D otto_emdio_8380_read_c45,
-+	.write_c22 =3D otto_emdio_8380_write_c22,
-+	.write_c45 =3D otto_emdio_8380_write_c45,
-+};
-+
- static const struct otto_emdio_info otto_emdio_9300_info =3D {
- 	.addr_map_base =3D RTL9300_SMI_PORT0_5_ADDR_CTRL,
- 	.bus_map_base =3D RTL9300_SMI_PORT0_15_POLLING_SEL,
-@@ -912,6 +1019,7 @@ static const struct otto_emdio_info otto_emdio_9310_i=
-nfo =3D {
- };
-=20
- static const struct of_device_id otto_emdio_ids[] =3D {
-+	{ .compatible =3D "realtek,rtl8380-mdio", .data =3D &otto_emdio_8380_inf=
-o },
- 	{ .compatible =3D "realtek,rtl9301-mdio", .data =3D &otto_emdio_9300_inf=
-o },
- 	{ .compatible =3D "realtek,rtl9311-mdio", .data =3D &otto_emdio_9310_inf=
-o },
- 	{}
-=2D-=20
-2.54.0
+Patches 1 to 4 add interrupt support for the KSZ8463
+Patches 5 to 10 add the PTP support for the KSZ8463
+
+Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
+---
+Bastien Curutchet (Schneider Electric) (10):
+      net: dsa: microchip: implement ksz8463_setup()
+      net: dsa: microchip: split ksz8_config_cpu_port()
+      net: dsa: microchip: allow the use of other IRQ operations.
+      net: dsa: microchip: add PTP interrupt handling for KSZ8463
+      net: dsa: microchip: adapt port offset for KSZ8463's PTP register
+      net: dsa: tag_ksz: move the KSZ8795 tag handling below ksz_xmit_timestamp()
+      net: dsa: tag_ksz: share code for KSZ8795 and KSZ9893 xmit operations
+      net: dsa: microchip: add KSZ8463 tail tag handling
+      net: dsa: microchip: explicitly enable detection of L2 PTP frames
+      net: dsa: microchip: add two-steps PTP support for KSZ8463
+
+ drivers/net/dsa/microchip/ksz8.c        | 311 +++++++++++++++++++++++++++-----
+ drivers/net/dsa/microchip/ksz8_reg.h    |   1 +
+ drivers/net/dsa/microchip/ksz_common.c  |  15 +-
+ drivers/net/dsa/microchip/ksz_common.h  |   6 +
+ drivers/net/dsa/microchip/ksz_ptp.c     | 261 ++++++++++++++++++++++++++-
+ drivers/net/dsa/microchip/ksz_ptp.h     |  16 ++
+ drivers/net/dsa/microchip/ksz_ptp_reg.h |  10 +
+ include/net/dsa.h                       |   2 +
+ net/dsa/tag_ksz.c                       | 229 ++++++++++++++---------
+ 9 files changed, 713 insertions(+), 138 deletions(-)
+---
+base-commit: a6cfd2762eb18cde4eb34906599ffa7b07c2ed60
+change-id: 20260708-ksz-new-ptp-f98db30a8a4f
+
+Best regards,
+-- 
+Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
 
