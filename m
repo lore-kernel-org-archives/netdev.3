@@ -1,104 +1,104 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D79C636A375
-	for <netdev@vger.kernel.org>; Thu,  9 Jul 2026 15:59:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7FB841930A;
+	Thu,  9 Jul 2026 16:02:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783612781; cv=none; b=g9/tl0gcSlGnWKTCdaLXspVWkYDXwTcxlayx4P7d2PHmDCusjifX3YlY5lZGYKi9fILQC9w57ICpc9s/SR9kC12TQ5UMNCj7S92D/OIbhgK9aEJB3Upi27/cu9AG6tHllvosOiCo33izIzhtTq7zh/2VLztgIywCQYeENxK65HI=
+	t=1783612981; cv=none; b=C4zNdiISQv3G/spybxE2d1pyK7nF/ldXRtPYjJ83sB3Gek23nnxpBvyit2OvcOrqTyrfDQaKJ2pcWAV7J3CQKPdEwYSyxYcUS5zv4bTt9qFWIxjh1ufbLK6bEsSAlkEfglKNSLL62ikA86rDPiuiPNECXQdJldgeKJBpL2VRy1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783612781; c=relaxed/simple;
-	bh=bnDDy05kYz3XkFFSJ+rs21I3F6XQAlDJfnl4nBcLMQE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XI/qhjIZ5x1+3pAyTwRLDTtgFuR9SiG0TxQqQM7PI+lIh4jnfFDthfGrwdD7wnTaq+asKQnvdUi603IL97nSiR94x9MpwLfn9MfGyZ9EjrsB9LIs6/+g4n/hQKLNUtTxyCspmSIRoSVR0VqIC6u1sgmZ12RI83+TosrfSaF1XTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l3MnGtDS; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1783612981; c=relaxed/simple;
+	bh=yO9iKAHylHhWE7yssxF0VmcIXI4P+bdqYUVcw3c2FRE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Md2bcNztgiVdvUl9dq0IltuGkIzQvac8aLeU/+RJFrouIFG9V+NyVNxl0oPw5rMmvslZKpTK7bPHtRYaYx/T0I+ztpjbnNIdfvHLzOLW3VZ+apHrZ/b8edY53GLsXJu6ne3lsQ+HBMAB1YwxkDIBzg+ToczR+/DiKyJ8gXlOMSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=2sZH6Pr5; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l3MnGtDS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783612779; x=1815148779;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=bnDDy05kYz3XkFFSJ+rs21I3F6XQAlDJfnl4nBcLMQE=;
-  b=l3MnGtDSIslkggtJhoYbNbamPeMYuPIncq8eStZSKshCCeEIT6vAT39i
-   Yz40LNBb78SIt8lI0FWpVCPl4Lz8wqc+F/INI+8EjzJL6mWyNOXcoqbK0
-   bht75rbvTFr5AYLh+JUg0pWC8x2blOk9wYzZrdFrZ0Z70aaH4pthp3+N4
-   BRG1f8HwmozMH5qxYYPCY8ekTKLzi0W0I4RHWhhD4RJ7OJMbbe8SlVQbR
-   oZtiLWRD2iImRL0Ee+mrqbFogP9fePRTlIp9vFW4UwunkTpACvYrofuvM
-   5FWf/JVUJfdzSYg02nl2qJHfAUwCDipM0QSVZC7JUzXyBXgYVQDRT2bTT
-   g==;
-X-CSE-ConnectionGUID: kKR10I1YTce273I0Z7EPBw==
-X-CSE-MsgGUID: Yz9jp4yrTaSJD6/qtGwybg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="95671657"
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="95671657"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 08:59:39 -0700
-X-CSE-ConnectionGUID: aJOjZyFIRIS4eZj9684RzA==
-X-CSE-MsgGUID: l/gfQvLHSou4XVQm3Ltjeg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="279019819"
-Received: from irvmail002.ir.intel.com ([10.43.11.120])
-  by fmviesa001.fm.intel.com with ESMTP; 09 Jul 2026 08:59:37 -0700
-Received: from gond.igk.intel.com (gond.igk.intel.com [10.123.220.52])
-	by irvmail002.ir.intel.com (Postfix) with ESMTP id 801AF312C4;
-	Thu,  9 Jul 2026 16:59:36 +0100 (IST)
-From: Marcin Szycik <marcin.szycik@linux.intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	anthony.l.nguyen@intel.com,
-	Marcin Szycik <marcin.szycik@linux.intel.com>,
-	kernel test robot <lkp@intel.com>
-Subject: [PATCH iwl-next] ice: fix uninitialized response buffer in ice_acl_create_tbl()
-Date: Thu,  9 Jul 2026 16:59:04 +0200
-Message-ID: <20260709145904.164375-1-marcin.szycik@linux.intel.com>
-X-Mailer: git-send-email 2.49.0
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="2sZH6Pr5"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=TZ/xManMkD1zLCtWQet0kB0NqWYDW37fUEY390SgfAY=; b=2sZH6Pr5VH5orwGq7DPe1zWxfA
+	Aofnv51s6C46cvf2JBCUVTgHVNsVnpVIHR1AE3AYEAGy5X84/xyJfML8FMxwiQWwpTIfiCQyLcBAf
+	Ocae+/DWOuGm9Ln/XY9vp+N7BuFwh6hVBhrFGnaH6IxQqsshDnKfIT3huPf895RS0N9wREHw+wchL
+	lVODsh8ZM6WvvBCuDKcHqzVooXjIKwBcQtpbxgzPPvzn8tF5cUCAq8DNkh1TKm5WO58ul8KE6pEZv
+	y2NLi1nKKpvwMalFtyml8B4DPo1Ekpkk56OSxF2hcTbabyfALTDfI0/c9n5rAVg36tOXWug2//iRy
+	zc1U9B/w==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1whrD0-00000002zQ5-3eed;
+	Thu, 09 Jul 2026 16:02:42 +0000
+Message-ID: <9db11888-c202-4306-9441-b663eabc0da4@infradead.org>
+Date: Thu, 9 Jul 2026 09:02:41 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] docs: packaging: fix brackets
+To: Manuel Ebner <manuelebner@mailbox.org>,
+ Vladimir Oltean <olteanv@gmail.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>,
+ Jacob Keller <jacob.e.keller@intel.com>, Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <vladimir.oltean@nxp.com>,
+ netdev@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260709141012.400011-2-manuelebner@mailbox.org>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20260709141012.400011-2-manuelebner@mailbox.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Buffer is uninitialized in error path. Move assignment before goto. This
-buffer is only used for response, so its content doesn't matter.
 
-Fixes: d80ee68614c3 ("ice: initialize ACL table")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202607022231.FWjSU75X-lkp@intel.com
-Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
----
-Tony, please squash this with the offending commit. It's not applied
-yet, so hash is invalid, but I don't want to resend a ~5000 line
-patchset just to move one line.
----
- drivers/net/ethernet/intel/ice/ice_acl_ctrl.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_acl_ctrl.c b/drivers/net/ethernet/intel/ice/ice_acl_ctrl.c
-index a76762e3aa46..4ea08bd9784c 100644
---- a/drivers/net/ethernet/intel/ice/ice_acl_ctrl.c
-+++ b/drivers/net/ethernet/intel/ice/ice_acl_ctrl.c
-@@ -354,14 +354,14 @@ int ice_acl_create_tbl(struct ice_hw *hw, struct ice_acl_tbl_params *params)
- 		return -ENOMEM;
- 	}
- 
-+	resp_buf = &tbl_alloc.buf.resp_buf;
-+
- 	tbl = kzalloc_obj(*tbl);
- 	if (!tbl) {
- 		err = -ENOMEM;
- 		goto err_dealloc_tbl;
- 	}
- 
--	resp_buf = &tbl_alloc.buf.resp_buf;
--
- 	/* Retrieve information of the allocated table */
- 	tbl->id = alloc_id;
- 	tbl->first_tcam = resp_buf->ops.table.first_tcam;
+On 7/9/26 7:10 AM, Manuel Ebner wrote:
+> Add two ')' to nested functions in code block.
+> 
+> Fixes: a9ad2a8dfb43 ("lib: packing: document recently added APIs")
+> Signed-off-by: Manuel Ebner <manuelebner@mailbox.org>
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+
+Subject is now incorrect; should be packing:
+
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+
+> ---
+> [v2]
+>  add Fixes tag.
+>  add Reviewed-by.
+> [v1]
+>  https://lore.kernel.org/all/20260709121427.391749-2-manuelebner@mailbox.org/
+> ---
+>  Documentation/core-api/packing.rst | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Documentation/core-api/packing.rst b/Documentation/core-api/packing.rst
+> index f68f1e08fef9..cff1a262efce 100644
+> --- a/Documentation/core-api/packing.rst
+> +++ b/Documentation/core-api/packing.rst
+> @@ -330,7 +330,7 @@ Here is an example of how to use the fields APIs:
+>  
+>     void unpack_your_data(const packed_buf_t *buf, struct data *unpacked)
+>     {
+> -           BUILD_BUG_ON(sizeof(*buf) != SIZE;
+> +           BUILD_BUG_ON(sizeof(*buf) != SIZE);
+>  
+>             unpack_fields(buf, sizeof(*buf), unpacked, fields,
+>                           QUIRK_LITTLE_ENDIAN);
+> @@ -338,7 +338,7 @@ Here is an example of how to use the fields APIs:
+>  
+>     void pack_your_data(const struct data *unpacked, packed_buf_t *buf)
+>     {
+> -           BUILD_BUG_ON(sizeof(*buf) != SIZE;
+> +           BUILD_BUG_ON(sizeof(*buf) != SIZE);
+>  
+>             pack_fields(buf, sizeof(*buf), unpacked, fields,
+>                         QUIRK_LITTLE_ENDIAN);
+
 -- 
-2.49.0
-
+~Randy
