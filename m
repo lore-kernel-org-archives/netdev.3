@@ -1,286 +1,192 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012070.outbound.protection.outlook.com [52.101.66.70])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AABDF3DD526;
-	Thu,  9 Jul 2026 06:42:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.70
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783579377; cv=fail; b=Y/tG6Hfi/MiXA2g3q5CHF+qkBzct6++2Yg4290nbzNxncBdRncXdA82HO572mX+E2cugTApMyvD1FrpRn/evhCrMKZQ9sQQ1wVK2qyBOsxuHZk8kc9MB7ngz9LFFoZ22F/9r/dh6SJtxV+DukwsoBhcofvg8h8264l2fOlYzmEU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783579377; c=relaxed/simple;
-	bh=DKh1nzaTpNt/dd9Xbv6fVBX1Sb0BlJpxRCn4/x3vDH4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Pn/4T36Uu9UW+VsrJ9aGzLvwGwbVaxH5CgXUVanyZcnsIp/P8+qBQm75nWkAabBKQm6zdHPw8++F29VkmQEMsU8nxZeE8WYuuRW1XVLIj0WlnKEjoggrKAZuhnXQY4xJnQGEPTkjbjTRdilq6dF0nX38xzmVVSGynfGTlkJ4z3U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech; spf=pass smtp.mailfrom=est.tech; dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b=XMBF6ESc; arc=fail smtp.client-ip=52.101.66.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=est.tech
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ECC73E074E
+	for <netdev@vger.kernel.org>; Thu,  9 Jul 2026 06:42:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783579383; cv=none; b=DEIdcEZb/LD/0cyjx4vC7dsreG8MAuik+whdocu4HAKF8YA9hTuj0Y7W5kwyQVqIEwuewtDc9r5Sxy76n/SNa+/tsSiyi/xVBIfh0oesTwUZCnhjFLEqHGjmP16/htXzsOWH7Mi6dd7oTXvd2j6jKjxbr2qDtFfT7i4HE+ILFEo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783579383; c=relaxed/simple;
+	bh=KcRnAacbUb1U1qpPj32Xg0y3dcBts07hc7eNi6V5GcI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=LVXBbCuBMwNjpWBZ7jhPcFCc+J/GibzSq1vpnF6Q8JEzOC+r17G+ztpVFnB5Js/UlKYiiURBSrC+4iZuZXmcvcRRcNWFvUIEXKTkMUltluY0tfD8SSLQpHyG+oD4WIXlgxh3ykgnnXE/xg30fEdWtJPsTGKPzKdsu5xlc8450fQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=vQKwea77; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b="XMBF6ESc"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QDGZj50h420GbZAgXDpQoG2a/GkKBEjo9E3FayyQpcDaGLkIcIa35ey3RxhjygENLGpFkgTND1d9xpEApzA5roFVOkYx/OPc+j1W28Kynpc9whEExG1FIvT78SSoCyqQxeOxLJzzVmeqJbbrAA8xAMlomiS6KmYaXL3A4IUDDczrtnAIbW/c1reD+XHnJX9B2rR6sujGFabqm2uGCERdfwxl0ZIK3gGb5L3zr5y/Z2BQ8XU5Ts1UVD48abfw87YGLvYEkJb6jmX8CtMCky3ao+67wc4gZDT80UydLi2ajVQ69PtvCVxtabRD94uTdx5ddaLFmwT2UaY0LCMDHie13Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=a91IXcHHIZ+2YJLH7csU0+/5i9PSVJBcuyTO9fT+IfI=;
- b=iv/TB/2in60fJonDb14vRm53n9a+KcAnOINvLN3OBCv3Yt0RcHqEOQlinzZ4M71m+r2mJOtCxe+3nbyZwemCCpIcaGrNqTT1YY61HU7MaPSo3Aq4GPgyDg1mMyZUx2wYIT5pUcKWAAJZXNhA0tbq2vXiLHwWhkzhwHdC2OoGGJMNenpEqWklbiuqAf8Tf4caRoA98l7lXpmO9ruaGmblE1rLApMaMDO6JjAHPSAFOKJrSSIsTrYM2SFLbB8odrDhyk0Rfu/cKwjTsaIMZnyCbEbngsUcLxYbrSsPm/S0YWHrUEAL2Qqafrytz4fbvLKzcTHC6ggfJkHFxb9qz4W6SA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
- dkim=pass header.d=est.tech; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=a91IXcHHIZ+2YJLH7csU0+/5i9PSVJBcuyTO9fT+IfI=;
- b=XMBF6EScYqBExUTvoVhfsuVE7bU4WznxddXGWZrLE8m7Jy8cA+nLwJECZEBv3ZG8KIaRhmEzhx+IxDvh8q/i0N6JnQGU6HPCO9LiWvNQxekQQqGT120lDzV1tBy9ZYXAHGhuBJmqudWB73ML7OPCsyueIy2/cDLQPxRFnF77PMVRzfmIZKBdBjJ8iZWoZHXc11FsClbrL55FSamix/Xkw4X6OIbvrPGKvf3vMDJSXt5HTPYVsi4sipdCHeNbog1dvTb8nc1neemVFvRa2WPGfjm9ghT1AuRhGOmRtMUv2tc4XgDhdAeUL3+pTpVZJAiAnvv/FDPbPFKB51NguKaqqg==
-Received: from GV1P189MB1988.EURP189.PROD.OUTLOOK.COM (2603:10a6:150:63::5) by
- DU4P189MB2755.EURP189.PROD.OUTLOOK.COM (2603:10a6:10:570::15) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.11; Thu, 9 Jul 2026 06:42:46 +0000
-Received: from GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
- ([fe80::bfff:5391:8a49:21b7]) by GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
- ([fe80::bfff:5391:8a49:21b7%6]) with mapi id 15.21.0181.010; Thu, 9 Jul 2026
- 06:42:46 +0000
-From: Tung Quang Nguyen <tung.quang.nguyen@est.tech>
-To: Weiming Shi <bestswngs@gmail.com>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"tipc-discussion@lists.sourceforge.net"
-	<tipc-discussion@lists.sourceforge.net>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, Xiang Mei <xmei5@asu.edu>, Jon Maloy
-	<jmaloy@redhat.com>, "David S . Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-Subject: RE: [PATCH net v2] tipc: serialize udp bearer replicast list updates
-Thread-Topic: [PATCH net v2] tipc: serialize udp bearer replicast list updates
-Thread-Index: AQHdDi/D4YmkcIZsF02+N8D+qqpgrLZkvlsw
-Date: Thu, 9 Jul 2026 06:42:46 +0000
-Message-ID:
- <GV1P189MB1988185B47AFAA9202408186C6FE2@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
-References: <20260707164248.821265-2-bestswngs@gmail.com>
-In-Reply-To: <20260707164248.821265-2-bestswngs@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=est.tech;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: GV1P189MB1988:EE_|DU4P189MB2755:EE_
-x-ms-office365-filtering-correlation-id: f7fe4857-a610-4f62-9a83-08dedd85497a
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|23010399003|1800799024|7416014|376014|366016|38070700021|22082099003|18002099003|5023799004|56012099006|11063799006|6133799003;
-x-microsoft-antispam-message-info:
- Z5Z6pTl3yyC2JsmmcmOGG75RtW/UBiPqZrjwIPiHjxzsRFKCLf5DqZ5ucTkG+TR8vmhlVuyZ/Z0sgmz1qxdEC24VSG4uwsUlcc/Y0Hp3Pjc+uSpe1PASnpcusSRTNHd15frKQu5jWSU/W41PNGr7VTmbs3vnS/9BlD3Pb2Bl8e1n/ad5uhDgHCXqUgMgCi7oIP3RQWfwkwHZhHG/B42EJaEXn7e8w4qJZeiHMTt4S4yzjbD7A9Z+QahEucXd5kh2gLEdP1ZjnoJMfHlSpbvUsTXU7gw6vS0KGsyrEVml6TvGyM/Xh5GNshOhrTY0Rh2GzG0fyZEIplUWKynGHg9othU54enor1MS4IcPBwapAmE/YaQPDP52hK65QBjqfs938Af42HPtf3Zr/oeSJERdaay/QtM8Xkl8cOHswOieXIiagbkcdnXy1Hgxi/gKGqVTm00+55lI+Wt6nB+QmsKy9lg/Qd83+CA4GUKPpJHao4TH/CZYJg3X7eo7CZntpD8NP+H6VXvJ+eOAa7rYmm083P0+QYm9pCB1xud0eNZnUzXE3UOMiwu0AZ21TImWO57lYydiQ1KQdwhFxJ6wEH2oMsK+TLV+JjYGsnyzGKxOJ0Zsjg7FSK2mPqa/wQd8Dfeys9nOGLC6CqCqaQCd2tmjNc4E61r5z4a2ZtcXmX353OaGgX83+j9sgHHAjCw1ieFWGOJ0awxTLArSmqNx0MvPhUKKsw5CCOmWaRdGn+IgGd0=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1P189MB1988.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(7416014)(376014)(366016)(38070700021)(22082099003)(18002099003)(5023799004)(56012099006)(11063799006)(6133799003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?n9V3LsD8wEHUuSN5H5fo+vQS191a5yXJjpKfWMupjwVaQnI11T3iOHY1F6Ab?=
- =?us-ascii?Q?77ErwCWlJf5dVCyBH+KuyzdM03chHgT5YO3CZXeQjiFSjZCQP+wJSjfvUV53?=
- =?us-ascii?Q?Rg7VVLqLjau9MgfuhjjvlGWIeWeGPj++gbBP2XB4Lu5qzNNuKOrOYNRpFrKx?=
- =?us-ascii?Q?0XIJcZQu+wS4Vjx9XpiT4rik5pCd99UVHruTz6LdIoYusHKAk6qM9UqQWimR?=
- =?us-ascii?Q?Wp5q/dtK2RqO1/9CWxA8YmPCKnRLDuCx28ABto0JYisumOgAVmYYpSIqSaOl?=
- =?us-ascii?Q?l3rIXrRgxH3FpA7WCPonGCHeW2Wj9dCRga+PtVg/SnDHZVsgXnIGgDF8WLim?=
- =?us-ascii?Q?qPvucTncy9wjDCT7zgr5st5aJxQDhJu8nh+9N8jGDznY9uwhu0i2Ob8FlDhZ?=
- =?us-ascii?Q?inM/GG3tOJ2rNKbqlpH39SfSXgReMAdOkvMnzU6BzE/NEqQ2oDEdk6SZLqxI?=
- =?us-ascii?Q?35jqVHS1nv7ajlHgBV9Gnaqf44fnwGcb+zQUrsrOv/rdlLzaVFzrLiMM44gb?=
- =?us-ascii?Q?4FzQ6T2qo0Nhe1uKX3pkBAV/LIQeqDrrcAZAVXAxAY+AhcWFCs6axCpDffTG?=
- =?us-ascii?Q?z0FYXXqscqWI8OxLMmi0LI1XkS9rTEkRF+hczIce9ssTbzF/Yla8J92G8Lon?=
- =?us-ascii?Q?M1RcUER2UvohjnfyALYhXwy0RjHRtHRcOm2/ndR4c9tUyEgVio9RXLMGo/5t?=
- =?us-ascii?Q?DkKlk5biQoJURErY9ecpA0hV7wSDInx1pdUqIKkh6gcgBi7pMyIpl+xcxajF?=
- =?us-ascii?Q?H3BxdM9hXLisp1xse41n5lC8bhpGk5YJhr1/G9SC4/WLdN3mmdXeMxeMrEx0?=
- =?us-ascii?Q?mHPXpVEL21aHc/5BDeAvyfO489XxoslQceiYCFJjUl60jbChj2+TsvGDRNpb?=
- =?us-ascii?Q?bLbbzzrbtsIiyy0lMpHezBsmasyx488I0e5zsKlnNB4p5fgwB9K3jkgzSTtr?=
- =?us-ascii?Q?yiOqdtR6+xeuPiVAo7gXvpygfrgUJMJ834aC7d1HaFYeOznk0SdFHMVIfXsZ?=
- =?us-ascii?Q?FRi12y4nKoLOMvwVxPsXD8m1SM10Xo6DtlmQRsQ3Q6+cL08xB559k8hR8AEa?=
- =?us-ascii?Q?+6K3abeTG6Ekbu/FKdu7aH9CZWZEGru5kjgfb1xtectEeKQLPxvAcsO7QFeN?=
- =?us-ascii?Q?u56cnLvnyVmdUF3UQDM9RXNWHiz9bumsbYemiUv4Lg4khn3sww8xE/A3mz7T?=
- =?us-ascii?Q?H/JG0F8iS6bIrjF1EJz31S7mikTIxPuNDXed/Qtwjw8+r2vvXqnPRxEc8yOQ?=
- =?us-ascii?Q?VapZ6Q6WsjFCvAM2sXucxKi3/fgbkxyEStraH148mh4xVBdXKG4Gzzt3Isaj?=
- =?us-ascii?Q?yAIsCXJtal4MtFm1/pGU+h+asFCy/6jKM0zWd8JP2E191y8L8zmrUcsUIue2?=
- =?us-ascii?Q?5qtuipEjCkAMrc02QKXi+Jn8RVVNKf0rzsXWgRHy+Q7vdRua9lN2icg3B4Wb?=
- =?us-ascii?Q?ckJ0tfbtDmTOJO+eGGYWNiFxPW9v9S2tTyZQl47TEfi0hiNN142pD0InNShX?=
- =?us-ascii?Q?bKYyu2gc+5tXMorjJ+cd9hlP/yc5KCgX4XRhEOHQWVfqZLpMHZWOiomczYEs?=
- =?us-ascii?Q?CprRZ/26Wbv60jwP9RYC8IMyYARAoWRuwUfqfs7eIhVNo8twg00z5Jp8HR/Y?=
- =?us-ascii?Q?JQJTOaBDWHjW3vZMSLvNcYlX6QLf8a24OCB50PQ4DQoOC3gAEHCmeMb/sr1G?=
- =?us-ascii?Q?OndrCMBSYQrNq/Fw5Wy9bDR2iTIXW5zSHh02K3KQWeUPUV8zXE2kLSTbGHWh?=
- =?us-ascii?Q?b7Nf3ydxMg=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="vQKwea77"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 4819A1A0F03;
+	Thu,  9 Jul 2026 06:42:50 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 1C9E55FF03;
+	Thu,  9 Jul 2026 06:42:50 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0622F11BC207F;
+	Thu,  9 Jul 2026 08:42:46 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1783579368; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=DB/AuADM3cKTTPWyDwbhPOvmCpqeymWC83FnlPAt0eM=;
+	b=vQKwea77njXb/b9vUxguCPyHXWdLmugyb94Lj6AwlNDmGpk8iTuLWYB1+WZsNzwj4/NXjG
+	xO8AS1hWTFcK/illIbpm6Ks2DbNwS3H0uHiKbHl5+BJ6xbwKw4F7+oP9U24/BGf1BOE9mc
+	1gU3ncy71ZggPnSQrgy6TeKlLfyzKJUW6IhSdTlmGLESUoO3fJvgGIyQF1QR4SdAk+4lrM
+	TryATep4jTgTJHocfJo1z58tY0YTkbgBum5G+LZ/vvAmXEjmEtlI6B/bV/diCDgX0szeTr
+	UiLx2GYdiGsOcSrbUOQmAhUrj5LRFuE3OSHweM1QjBVbNNBzNg8VK15Hw94LPA==
+From: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
+Date: Thu, 09 Jul 2026 08:42:33 +0200
+Subject: [PATCH net-next 07/10] net: dsa: tag_ksz: share code for KSZ8795
+ and KSZ9893 xmit operations
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: est.tech
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: f7fe4857-a610-4f62-9a83-08dedd85497a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Jul 2026 06:42:46.6040
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 7kuZ52ppDFVD/0XtU9RCO7kebgPLn6qE8B80+sTHUVJjWw1+wN2RFw1Dv4W8siYysXn8vI1N0R4vbmTNb/xj40D00ePSihs9pIy+1cbh8Lg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4P189MB2755
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260709-ksz-new-ptp-v1-7-344f02fe739e@bootlin.com>
+References: <20260709-ksz-new-ptp-v1-0-344f02fe739e@bootlin.com>
+In-Reply-To: <20260709-ksz-new-ptp-v1-0-344f02fe739e@bootlin.com>
+To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
+ Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, Simon Horman <horms@kernel.org>, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Pascal Eberhard <pascal.eberhard@se.com>, 
+ =?utf-8?q?Miqu=C3=A8l_Raynal?= <miquel.raynal@bootlin.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
+X-Mailer: b4 0.14.3
+X-Last-TLS-Session-Version: TLSv1.3
 
->Subject: [PATCH net v2] tipc: serialize udp bearer replicast list updates
->
->tipc_udp_rcast_add() and cleanup_bearer() both update ub->rcast.list with
->list_add_rcu() / list_del_rcu(), but nothing serializes them. The add runs=
- from
->the encap receive softirq (via tipc_udp_rcast_disc()) without rtnl_lock(),=
- so it
->can race the cleanup delete and corrupt the
->list:
->
-> list_del corruption. prev->next should be ffff8880298d7ab8,
->   but was ffff88802449ad38. (prev=3Dffff888027e3ec98)  kernel BUG at
->lib/list_debug.c:62!
-> RIP: __list_del_entry_valid_or_report+0x17a/0x200
-> Workqueue: events cleanup_bearer
-> Call Trace:
->  cleanup_bearer (net/tipc/udp_media.c:811)
->  process_one_work (kernel/workqueue.c:3302)
->  worker_thread (kernel/workqueue.c:3466)
->
->The bearer can be enabled from an unprivileged user namespace, as the
->TIPCv2 generic-netlink ops carry no GENL_ADMIN_PERM.
->
->Add a spinlock to struct udp_bearer and take it around the
->list_add_rcu() in tipc_udp_rcast_add() and the list_del_rcu() loop in
->cleanup_bearer() so the two writers can no longer corrupt the list.
->
->While here, switch the read-only walk in tipc_udp_is_known_peer() to
->list_for_each_entry_rcu(); it never deletes, so list_for_each_entry_safe()=
- was
->misleading.
->
->Fixes: ef20cd4dd163 ("tipc: introduce UDP replicast")
->Reported-by: Xiang Mei <xmei5@asu.edu>
->Suggested-by: Tung Nguyen <tung.quang.nguyen@est.tech>
->Assisted-by: Claude:claude-opus-4-8
->Signed-off-by: Weiming Shi <bestswngs@gmail.com>
->---
->v2: (per Tung's review)
-> - Narrow the lock to just list_add_rcu().
-> - Drop the under-lock dup re-check; serializing the writers is enough.
-> - Use list_for_each_entry_rcu() in tipc_udp_is_known_peer().
->
-> net/tipc/udp_media.c | 11 +++++++++--
-> 1 file changed, 9 insertions(+), 2 deletions(-)
->
->diff --git a/net/tipc/udp_media.c b/net/tipc/udp_media.c index
->62ae7f5b5840..c6aa8c3c54ce 100644
->--- a/net/tipc/udp_media.c
->+++ b/net/tipc/udp_media.c
->@@ -94,6 +94,7 @@ struct udp_replicast {
->  * @ifindex:	local address scope
->  * @work:	used to schedule deferred work on a bearer
->  * @rcast:	associated udp_replicast container
->+ * @rcast_lock:	serializes updates to @rcast.list
->  */
-> struct udp_bearer {
-> 	struct tipc_bearer __rcu *bearer;
->@@ -101,6 +102,7 @@ struct udp_bearer {
-> 	u32 ifindex;
-> 	struct work_struct work;
-> 	struct udp_replicast rcast;
->+	spinlock_t rcast_lock; /* protects rcast.list */
-> };
->
-> static int tipc_udp_is_mcast_addr(struct udp_media_addr *addr) @@ -281,7
->+283,7 @@ static int tipc_udp_send_msg(struct net *net, struct sk_buff *sk=
-b,
->static bool tipc_udp_is_known_peer(struct tipc_bearer *b,
-> 				   struct udp_media_addr *addr)
-> {
->-	struct udp_replicast *rcast, *tmp;
->+	struct udp_replicast *rcast;
-> 	struct udp_bearer *ub;
->
-> 	ub =3D rcu_dereference_rtnl(b->media_ptr);
->@@ -290,7 +292,7 @@ static bool tipc_udp_is_known_peer(struct tipc_bearer
->*b,
-> 		return false;
-> 	}
->
->-	list_for_each_entry_safe(rcast, tmp, &ub->rcast.list, list) {
->+	list_for_each_entry_rcu(rcast, &ub->rcast.list, list) {
-> 		if (!memcmp(&rcast->addr, addr, sizeof(struct
->udp_media_addr)))
-> 			return true;
-> 	}
+KSZ8795 and KSZ9893 have very similar tag handling in the xmit path,
+leading to code duplication.
 
-sashiko reports:
+There are only two differences between the two ksz*_xmit():
+- the KSZ8795 doesn't handle priorities between frames
+- ksz8795_xmit() directly returns the SKB instead of calling
+ksz_defer_xmit(). Yet, ksz_defer_xmit() also returns directly the SKB
+if no clone is present inside the SKB. Clones are only created by the KSZ
+driver when the PTP feature is enabled. Since KSZ8795 doesn't support
+PTP, returning the SKB directly or ksz_defer_xmit() is the same.
 
-...
-Is there a possibility of triggering a lockdep warning here?
-Since this function is called from tipc_udp_nl_bearer_add() during Netlink
-configuration, rtnl_lock() is held but rcu_read_lock() is not.
-Without an explicit lockdep condition like lockdep_rtnl_is_held() passed to
-the list traversal macro, lockdep will complain about the RCU list being
-traversed outside a reader section.
->                 if (!memcmp(&rcast->addr, addr, sizeof(struct udp_media_a=
-ddr)))
->                         return true;
->         }
-> @@ -326,7 +328,9 @@ static int tipc_udp_rcast_add(struct tipc_bearer *b,
->                 pr_info("New replicast peer: %pI6\n", &rcast->addr.ipv6);
->  #endif
->         b->bcast_addr.broadcast =3D TIPC_REPLICAST_SUPPORT;
-> +       spin_lock_bh(&ub->rcast_lock);
->         list_add_rcu(&rcast->list, &ub->rcast.list);
-> +       spin_unlock_bh(&ub->rcast_lock);
->         return 0;
->  }
-Could this allow duplicate peers to be added to the list?
-The under-lock duplicate check was removed in this patch iteration. Since
-tipc_udp_is_known_peer() is checked locklessly earlier in
-tipc_udp_rcast_disc(), two concurrent packets from the same unknown peer
-could both see the peer as missing.
-They would then both acquire rcast_lock sequentially and add duplicate
-entries, leading to memory leaks and traffic amplification when broadcastin=
-g.
-[ ... ]
-...
+The upcoming support for the KSZ8463 also requires a similar xmit().
 
-I think we have to check duplicate address in tipc_udp_rcast_add() before a=
-dding and remove tipc_udp_is_known_peer().
+Gather the common code from ksz8795_xmit() and ksz9893_xmit() into a new
+ksz_common_xmit() function that takes three input arguments:
+- do_tstamp to tell whether ksz_xmit_timestamp() should be called
+- prio to give the priority tag (if any)
+- override_mask to give the location of the override bit (if any)
 
->@@ -326,7 +328,9 @@ static int tipc_udp_rcast_add(struct tipc_bearer *b,
-> 		pr_info("New replicast peer: %pI6\n", &rcast->addr.ipv6);
->#endif
-> 	b->bcast_addr.broadcast =3D TIPC_REPLICAST_SUPPORT;
->+	spin_lock_bh(&ub->rcast_lock);
-> 	list_add_rcu(&rcast->list, &ub->rcast.list);
->+	spin_unlock_bh(&ub->rcast_lock);
-> 	return 0;
-> }
->
->@@ -679,6 +683,7 @@ static int tipc_udp_enable(struct net *net, struct
->tipc_bearer *b,
-> 		return -ENOMEM;
->
-> 	INIT_LIST_HEAD(&ub->rcast.list);
->+	spin_lock_init(&ub->rcast_lock);
->
-> 	if (!attrs[TIPC_NLA_BEARER_UDP_OPTS])
-> 		goto err;
->@@ -819,10 +824,12 @@ static void cleanup_bearer(struct work_struct
->*work)
-> 	struct udp_replicast *rcast, *tmp;
-> 	struct tipc_net *tn;
->
->+	spin_lock_bh(&ub->rcast_lock);
-> 	list_for_each_entry_safe(rcast, tmp, &ub->rcast.list, list) {
-> 		list_del_rcu(&rcast->list);
-> 		call_rcu_hurry(&rcast->rcu, rcast_free_rcu);
-> 	}
->+	spin_unlock_bh(&ub->rcast_lock);
->
-> 	tn =3D tipc_net(sock_net(ub->sk));
->
->--
->2.43.0
+Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
+---
+ net/dsa/tag_ksz.c | 73 ++++++++++++++++++++++++++-----------------------------
+ 1 file changed, 35 insertions(+), 38 deletions(-)
+
+diff --git a/net/dsa/tag_ksz.c b/net/dsa/tag_ksz.c
+index f58ce0f0e9e4..f8b40437c5fa 100644
+--- a/net/dsa/tag_ksz.c
++++ b/net/dsa/tag_ksz.c
+@@ -218,6 +218,37 @@ static struct sk_buff *ksz_defer_xmit(struct dsa_port *dp, struct sk_buff *skb)
+ 	return NULL;
+ }
+ 
++static struct sk_buff *ksz_common_xmit(struct sk_buff *skb,
++				       struct net_device *dev,
++				       bool do_tstamp,
++				       u8 prio,
++				       u8 override_mask)
++{
++	struct dsa_port *dp = dsa_user_to_port(dev);
++	struct ethhdr *hdr;
++	u8 *tag;
++
++	if (skb->ip_summed == CHECKSUM_PARTIAL && skb_checksum_help(skb)) {
++		kfree_skb(skb);
++		return NULL;
++	}
++
++	/* Tag encoding */
++	if (do_tstamp)
++		ksz_xmit_timestamp(dp, skb);
++
++	tag = skb_put(skb, KSZ_INGRESS_TAG_LEN);
++	hdr = skb_eth_hdr(skb);
++
++	*tag = dsa_xmit_port_mask(skb, dev);
++	*tag |= prio;
++
++	if (is_link_local_ether_addr(hdr->h_dest))
++		*tag |= override_mask;
++
++	return ksz_defer_xmit(dp, skb);
++}
++
+ static struct sk_buff *ksz9477_xmit(struct sk_buff *skb,
+ 				    struct net_device *dev)
+ {
+@@ -308,23 +339,7 @@ MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_KSZ9477, KSZ9477_NAME);
+ 
+ static struct sk_buff *ksz8795_xmit(struct sk_buff *skb, struct net_device *dev)
+ {
+-	struct ethhdr *hdr;
+-	u8 *tag;
+-
+-	if (skb->ip_summed == CHECKSUM_PARTIAL && skb_checksum_help(skb)) {
+-		kfree_skb(skb);
+-		return NULL;
+-	}
+-
+-	/* Tag encoding */
+-	tag = skb_put(skb, KSZ_INGRESS_TAG_LEN);
+-	hdr = skb_eth_hdr(skb);
+-
+-	*tag = dsa_xmit_port_mask(skb, dev);
+-	if (is_link_local_ether_addr(hdr->h_dest))
+-		*tag |= KSZ8795_TAIL_TAG_OVERRIDE;
+-
+-	return skb;
++	return ksz_common_xmit(skb, dev, false, 0, KSZ8795_TAIL_TAG_OVERRIDE);
+ }
+ 
+ static struct sk_buff *ksz8795_rcv(struct sk_buff *skb, struct net_device *dev)
+@@ -362,28 +377,10 @@ static struct sk_buff *ksz9893_xmit(struct sk_buff *skb,
+ {
+ 	u16 queue_mapping = skb_get_queue_mapping(skb);
+ 	u8 prio = netdev_txq_to_tc(dev, queue_mapping);
+-	struct dsa_port *dp = dsa_user_to_port(dev);
+-	struct ethhdr *hdr;
+-	u8 *tag;
+-
+-	if (skb->ip_summed == CHECKSUM_PARTIAL && skb_checksum_help(skb)) {
+-		kfree_skb(skb);
+-		return NULL;
+-	}
+-
+-	/* Tag encoding */
+-	ksz_xmit_timestamp(dp, skb);
+-
+-	tag = skb_put(skb, KSZ_INGRESS_TAG_LEN);
+-	hdr = skb_eth_hdr(skb);
+-
+-	*tag = dsa_xmit_port_mask(skb, dev);
+-	*tag |= FIELD_PREP(KSZ9893_TAIL_TAG_PRIO, prio);
+ 
+-	if (is_link_local_ether_addr(hdr->h_dest))
+-		*tag |= KSZ9893_TAIL_TAG_OVERRIDE;
+-
+-	return ksz_defer_xmit(dp, skb);
++	return ksz_common_xmit(skb, dev, true,
++			       FIELD_PREP(KSZ9893_TAIL_TAG_PRIO, prio),
++			       KSZ9893_TAIL_TAG_OVERRIDE);
+ }
+ 
+ static const struct dsa_device_ops ksz9893_netdev_ops = {
+
+-- 
+2.54.0
 
