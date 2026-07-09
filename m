@@ -1,140 +1,323 @@
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 576A2411675;
-	Thu,  9 Jul 2026 10:52:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E512410D08;
+	Thu,  9 Jul 2026 10:53:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783594383; cv=none; b=AKb3uNUv91iFmoqGRSROLvPdJajSAKgXnc3u8FXXHTRTvvfvIIbI+4pgkhj+2eZtBQU+TIsAYliq1tDI+ffo7ghfCnLcFj4hQWRNWR8YqLHmydtn5pZvlbnbZliIB+S5V0p5wV+F6L0235dPbhLDs3DdSk4eVLvKneP9cBOsToc=
+	t=1783594409; cv=none; b=lNfnOy8RrENyizalbIsUp8w4z9+y2lf3NJlufQuLlVKVdOP+rtMG23dxzhTAfxyX4tUeaVpYtC+1iUiSM0DeePNljbeW4MWovzAdZWf+6FR4plnTorInmtcozpyXXGvTwGe5B+LL9Dj4SP48+4UhTCldBFNzCCCfCiHunIYHkZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783594383; c=relaxed/simple;
-	bh=V3rpfWAd+lWD9msPJ9an2gJqMtwH77vCEKUZ/6rphls=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FWs/Sh5ZD4+KdBe6Q7wFLHEXEoCKk9psseS3+esLRFCBA0esB7xOmQdaZzOItm8N4gFGP9YqM4IfWR1bSwt2KlbxdmBJ+QOVOPh0rNR5icMvsVtPLn6/XesptTRTEqTY8MF66WaUURsDOfRhdYwc59yZ4Xf9deJTOAL1r5Mjljw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b=EeY3sV2K; arc=none smtp.client-ip=205.220.166.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+	s=arc-20240116; t=1783594409; c=relaxed/simple;
+	bh=/nsoa9sAruWvEczbJwAFbfJJycWq3GZkCMcUuttMxYw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=AcXFTao5ig8cd7OVPSbaJBbOtRvV9ERocY7WDkNHinYZrO2b43Ai3itFts6BwUuElPiYyildj9GcErnpgPCpo/z7DZg/KokYEuEEGcAOb6Ql27+wGLBweRR+ftorcrnmYrXxQITWgxih3XrdWNR2YNN7XOcXKJ3frwTCUCjr6LI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VrAs10UR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b="EeY3sV2K"
-Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 669ALKuW2183284;
-	Thu, 9 Jul 2026 03:52:47 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
-	 h=cc:content-transfer-encoding:content-type:date:from
-	:message-id:mime-version:subject:to; s=PPS06212021; bh=7iLGBe6dL
-	tR3X+bil544DxNqjEmhqOYIjDDrXOXzhsg=; b=EeY3sV2KusRwNHV21/a1/J5sy
-	64ro/l54HQClpE8leBmFoX2Jw5KlHHxpiWGYkxUuv7tFuG3xx9BWpjKfG40yLdnz
-	b0K0QAhjYC+/OhhFCtogKbRuy4X/nke6+dzIh6R8IBnK1+L3KWVe3WHxXHfkRwQ7
-	TNU1gFZxPArU4Zi+SLwLXKNhF7z/6uoaffokZWELpL5fHQUYZOIv10K+BJ4Pr06n
-	0PfGrJufuHyn3GHTsD/FGuGk3a8Ta/LNzHOXXpdQ+84GhqaV7wbh/mZFMpz2CaJU
-	+Cc8mvMcW5XTABIynnsGB4gVKVaAtT8A8DxiQqGwbVkehT5hbWVyRtZe14rlg==
-Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [128.224.246.37])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 4fa1gy8qap-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Thu, 09 Jul 2026 03:52:47 -0700 (PDT)
-Received: from ala-exchng01.corp.ad.wrs.com (10.11.224.121) by
- ALA-EXCHNG02.corp.ad.wrs.com (10.11.224.122) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.61; Thu, 9 Jul 2026 03:52:46 -0700
-Received: from pek-yzhou-d3.wrs.com (10.11.232.110) by
- ala-exchng01.corp.ad.wrs.com (10.11.224.121) with Microsoft SMTP Server id
- 15.1.2507.61 via Frontend Transport; Thu, 9 Jul 2026 03:52:44 -0700
-From: Yun Zhou <yun.zhou@windriver.com>
-To: <dsahern@kernel.org>, <idosch@nvidia.com>, <davem@davemloft.net>,
-        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-        <horms@kernel.org>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <yun.zhou@windriver.com>
-Subject: [PATCH] net: gre: fix lltx regression for GRE tunnels with SEQ/CSUM
-Date: Thu, 9 Jul 2026 18:52:43 +0800
-Message-ID: <20260709105243.864835-1-yun.zhou@windriver.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VrAs10UR"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7132EC4AF09;
+	Thu,  9 Jul 2026 10:53:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1783594409;
+	bh=/nsoa9sAruWvEczbJwAFbfJJycWq3GZkCMcUuttMxYw=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=VrAs10UR56j7x2mBIxeHSUZUbMNrd3i+oNbsMxAUW8WPukRdxBjPQZlhltuANc2Xe
+	 9z/11vJckoMBDK8SD42BSpWiRy4GyBiNAPyN+xgBjXABKIykHOMdZbI7OHsGlp9nsa
+	 /qf6giZWCWGLV/QKdRetl4WopPp4yxTZapmjPpXPSQyyV4kM7d9o8GOH2MwkuXl/Y3
+	 Np5Qla6lHyjRSaZ74cEy/S0KNsC2XjfXAclXU67u0rxo65DRdoInJ4qGcBHI4ICver
+	 pboGzcJ7pYojkCETCL2m8q4cmV1FcP11DiCtHIS1ZX/rrkYryIs5iOVzSff66mYog/
+	 4nuMx8tfGomQw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5D8D3C44506;
+	Thu,  9 Jul 2026 10:53:29 +0000 (UTC)
+From: Jack Wu via B4 Relay <devnull+jackbb_wu.compal.com@kernel.org>
+Date: Thu, 09 Jul 2026 18:53:24 +0800
+Subject: [PATCH v4 2/7] net: wwan: t9xx: Add control plane transaction
+ layer
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: orP29TGAcc_p0bFjhlYFd1CxclJbsE4s
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA5MDEwNSBTYWx0ZWRfXxV04wVr/eQMK
- sirk8NohBtKzCzstQ18GF+K6glUBWTQTY8J8Ptsdms+rrOZOg4ivXV83BdGLEGiAc480+hkWTtV
- 4t8brFvxnZT0Iquf13VmIHV/mJRPfgTTTpXG8uHWLhpfFqLVfYmW
-X-Proofpoint-GUID: orP29TGAcc_p0bFjhlYFd1CxclJbsE4s
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA5MDEwNSBTYWx0ZWRfX/gidtCm3i2Z4
- ZwICXEQILUcD6BCB8B0PhfyJ0RE02yI6xmTR/wt3BA1ZXVe1oYdT4wNSFSKXjg08Dhb5xeZA5EP
- 5tZTpIP+nTN4XaSl2OMG94ZENHbcSt3NtE5UmPT0VZ55ISK6qh8VinXJIgO0WCf/UePmdmVLbGl
- bPHia8ataoDmb4OvOCAoGrZC4AE9EFT8eNY/6JghA+iHvxAy/66a5hLJmV0wPISb3XhwieBEYR+
- BxmdsJcncT5+ejndP6/4/+g6wAmo/U7aGunn96X2QAuJmpH4+MsituydLCW/MKPoPlTX9SPCj/Y
- ucRxuA0861f6Nkm7j5Tomcgy6ikPVicwOHlfyAvxUthmKonqwxLQKTnBzaq1tzOmHE5/Kq4UL74
- PpuM1WbPpFmM+rlGsrVH9e7ffZJ1QnUaRpTYR2wDjUC6lW8WyEMx96d6l/a/lLD2wtZE7Ia1jXT
- WcsHSEJeOOB8Sf5/Xgw==
-X-Authority-Analysis: v=2.4 cv=P7IKQCAu c=1 sm=1 tr=0 ts=6a4f7d7f cx=c_pps
- a=Lg6ja3A245NiLSnFpY5YKQ==:117 a=Lg6ja3A245NiLSnFpY5YKQ==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=bi6dqmuHe4P4UrxVR6um:22
- a=iKiJcTA2PjBS6x5JeXcw:22 a=t7CeM3EgAAAA:8 a=493gFeiaP1eb9wWiEwEA:9
- a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-09_02,2026-07-08_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 bulkscore=0 priorityscore=1501 adultscore=0 clxscore=1015
- malwarescore=0 phishscore=0 suspectscore=0 impostorscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607090105
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260709-t9xx_driver_v1-v4-2-a8c009d509c5@compal.com>
+References: <20260709-t9xx_driver_v1-v4-0-a8c009d509c5@compal.com>
+In-Reply-To: <20260709-t9xx_driver_v1-v4-0-a8c009d509c5@compal.com>
+To: Loic Poulain <loic.poulain@oss.qualcomm.com>, 
+ Sergey Ryazanov <ryazanov.s.a@gmail.com>, 
+ Johannes Berg <johannes@sipsolutions.net>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Jack Wu <jackbb_wu@compal.com>, Wen-Zhi Huang <wen-zhi.huang@mediatek.com>, 
+ Shi-Wei Yeh <shi-wei.yeh@mediatek.com>, 
+ Minano Tseng <Minano.tseng@mediatek.com>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
+ linux-doc@vger.kernel.org
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783594406; l=6909;
+ i=jackbb_wu@compal.com; s=20260526; h=from:subject:message-id;
+ bh=wfTrNGvGb5bUD1I0toeeyCurwA64gBiRDShNOCJlb0s=;
+ b=kgob/5pxDu+OGWZqZIbakm85WQvxQWTC7QMK+IgTRuRKwE1Q8JI9uf98FDl+RobmGc6QM7G7d
+ qEzJIiB76d1B1VNHo++qAM9e82UnxuGkI+wTIxOO3hjYdwTq0wdswzW
+X-Developer-Key: i=jackbb_wu@compal.com; a=ed25519;
+ pk=VH1prTWixNl8OEUPPSfII3p46MzJpQN8J3+ecE1tZXg=
+X-Endpoint-Received: by B4 Relay for jackbb_wu@compal.com/20260526 with
+ auth_id=793
+X-Original-From: Jack Wu <jackbb_wu@compal.com>
+Reply-To: jackbb_wu@compal.com
 
-Before commit 00d066a4d4ed ("netdev_features: convert NETIF_F_LLTX to
-dev->lltx"), NETIF_F_LLTX was set unconditionally in __gre_tunnel_init()
-alongside GRE_FEATURES:
+From: Jack Wu <jackbb_wu@compal.com>
 
-    dev->features |= GRE_FEATURES | NETIF_F_LLTX;
+The control plane implements TX services that reside in the
+transaction layer. The services receive the packets from the
+port layer and call the corresponding DMA components to
+transmit data to the device. Meanwhile, TX services receive
+and manage the port control commands from the port layer.
 
-When that commit converted NETIF_F_LLTX to the dev->lltx flag, it
-placed 'dev->lltx = true' after the SEQ/CSUM early returns instead
-of before them. This causes GRE/GRETAP tunnels with SEQ or CSUM+encap
-to lose lockless TX, reintroducing _xmit_lock acquisition around their
-ndo_start_xmit. Since GRE xmit re-enters the stack via
-ip_tunnel_xmit(), holding _xmit_lock risks ABBA deadlock with the
-underlay device.
+The control plane implements RX services that reside in the
+transaction layer. The services receive the downlink packets
+from the modem and transfer the packets to the corresponding
+port layer interfaces.
 
-  CPU0                        CPU1
-  ----                        ----
-  lock(&qdisc_xmit_lock_key#6);
-                              lock(&qdisc_xmit_lock_key#3);
-                              lock(&qdisc_xmit_lock_key#6);
-  lock(&qdisc_xmit_lock_key#3);
-
-Fix by moving dev->lltx = true before the early returns, restoring
-the original unconditional behavior.
-
-Fixes: 00d066a4d4ed ("netdev_features: convert NETIF_F_LLTX to dev->lltx")
-Signed-off-by: Yun Zhou <yun.zhou@windriver.com>
+Signed-off-by: Jack Wu <jackbb_wu@compal.com>
 ---
- net/ipv4/ip_gre.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wwan/Kconfig                    |  5 ++++
+ drivers/net/wwan/t9xx/Makefile              |  5 ++--
+ drivers/net/wwan/t9xx/mtk_ctrl_plane.c      | 45 +++++++++++++++++++++++++++++
+ drivers/net/wwan/t9xx/mtk_ctrl_plane.h      | 22 ++++++++++++++
+ drivers/net/wwan/t9xx/mtk_dev.c             | 11 +++++++
+ drivers/net/wwan/t9xx/mtk_dev.h             |  2 ++
+ drivers/net/wwan/t9xx/pcie/Makefile         | 10 +++++++
+ drivers/net/wwan/t9xx/pcie/mtk_pci.c        |  2 ++
+ drivers/net/wwan/t9xx/pcie/mtk_trans_ctrl.h | 21 ++++++++++++++
+ 9 files changed, 121 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-index 9fbff16cda1d..8c5ad8ec8d09 100644
---- a/net/ipv4/ip_gre.c
-+++ b/net/ipv4/ip_gre.c
-@@ -1018,6 +1018,8 @@ static void __gre_tunnel_init(struct net_device *dev)
- 	dev->features		|= GRE_FEATURES;
- 	dev->hw_features	|= GRE_FEATURES;
+diff --git a/drivers/net/wwan/Kconfig b/drivers/net/wwan/Kconfig
+index 18bd40b3b8d2..a2ffed346acc 100644
+--- a/drivers/net/wwan/Kconfig
++++ b/drivers/net/wwan/Kconfig
+@@ -124,6 +124,7 @@ config MTK_T7XX
+ config MTK_T9XX
+ 	tristate "MediaTek PCIe 5G WWAN modem T9xx device"
+ 	depends on PCI && ACPI
++	select MTK_T9XX_PCI
+ 	select NET_DEVLINK
+ 	help
+ 	  Enables MediaTek PCIe based 5G WWAN modem (T9xx series) device.
+@@ -133,6 +134,10 @@ config MTK_T9XX
  
-+	dev->lltx = true;
+ 	  If unsure, say N.
+ 
++config MTK_T9XX_PCI
++	tristate
++	depends on PCI
 +
- 	/* TCP offload with GRE SEQ is not supported, nor can we support 2
- 	 * levels of outer headers requiring an update.
- 	 */
-@@ -1029,8 +1031,6 @@ static void __gre_tunnel_init(struct net_device *dev)
+ endif # WWAN
  
- 	dev->features |= NETIF_F_GSO_SOFTWARE;
- 	dev->hw_features |= NETIF_F_GSO_SOFTWARE;
--
--	dev->lltx = true;
+ endmenu
+diff --git a/drivers/net/wwan/t9xx/Makefile b/drivers/net/wwan/t9xx/Makefile
+index 6f2dd3f91454..ae9d6f2344ab 100644
+--- a/drivers/net/wwan/t9xx/Makefile
++++ b/drivers/net/wwan/t9xx/Makefile
+@@ -4,7 +4,8 @@ ccflags-y += -I$(src)/pcie
+ ccflags-y += -I$(src)
+ 
+ obj-$(CONFIG_MTK_T9XX) += mtk_t9xx.o
++obj-$(CONFIG_MTK_T9XX_PCI) += pcie/
+ 
+ mtk_t9xx-y := \
+-	pcie/mtk_pci.o \
+-	pcie/mtk_pci_drv_m9xx.o
++	mtk_dev.o \
++	mtk_ctrl_plane.o
+diff --git a/drivers/net/wwan/t9xx/mtk_ctrl_plane.c b/drivers/net/wwan/t9xx/mtk_ctrl_plane.c
+new file mode 100644
+index 000000000000..cf6079218e1c
+--- /dev/null
++++ b/drivers/net/wwan/t9xx/mtk_ctrl_plane.c
+@@ -0,0 +1,45 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (c) 2022, MediaTek Inc.
++ * Copyright (c) 2022-2023, Intel Corporation.
++ */
++
++#include <linux/device.h>
++
++#include "mtk_ctrl_plane.h"
++
++/**
++ * mtk_ctrl_init() - Initialize the control plane block.
++ * @mdev: Pointer to the MTK modem device.
++ *
++ * Allocates and initializes the control plane block
++ * associated with @mdev.
++ *
++ * Return: 0 on success, -ENOMEM on allocation failure.
++ */
++int mtk_ctrl_init(struct mtk_md_dev *mdev)
++{
++	struct mtk_ctrl_blk *ctrl_blk;
++
++	ctrl_blk = devm_kzalloc(mdev->dev, sizeof(*ctrl_blk), GFP_KERNEL);
++	if (!ctrl_blk)
++		return -ENOMEM;
++
++	ctrl_blk->mdev = mdev;
++	mdev->ctrl_blk = ctrl_blk;
++
++	return 0;
++}
++EXPORT_SYMBOL(mtk_ctrl_init);
++
++/**
++ * mtk_ctrl_exit() - Clean up the control plane block.
++ * @mdev: Pointer to the MTK modem device.
++ *
++ * Frees the control plane block associated with @mdev.
++ */
++void mtk_ctrl_exit(struct mtk_md_dev *mdev)
++{
++	mdev->ctrl_blk = NULL;
++}
++EXPORT_SYMBOL(mtk_ctrl_exit);
+diff --git a/drivers/net/wwan/t9xx/mtk_ctrl_plane.h b/drivers/net/wwan/t9xx/mtk_ctrl_plane.h
+new file mode 100644
+index 000000000000..c141876ef95d
+--- /dev/null
++++ b/drivers/net/wwan/t9xx/mtk_ctrl_plane.h
+@@ -0,0 +1,22 @@
++/* SPDX-License-Identifier: GPL-2.0-only
++ *
++ * Copyright (c) 2022, MediaTek Inc.
++ */
++
++#ifndef __MTK_CTRL_PLANE_H__
++#define __MTK_CTRL_PLANE_H__
++
++#include <linux/kref.h>
++#include <linux/skbuff.h>
++
++#include "mtk_dev.h"
++
++struct mtk_ctrl_blk {
++	struct mtk_md_dev *mdev;
++	struct mtk_ctrl_trans *trans;
++};
++
++int mtk_ctrl_init(struct mtk_md_dev *mdev);
++void mtk_ctrl_exit(struct mtk_md_dev *mdev);
++
++#endif /* __MTK_CTRL_PLANE_H__ */
+diff --git a/drivers/net/wwan/t9xx/mtk_dev.c b/drivers/net/wwan/t9xx/mtk_dev.c
+new file mode 100644
+index 000000000000..50f77d5a210c
+--- /dev/null
++++ b/drivers/net/wwan/t9xx/mtk_dev.c
+@@ -0,0 +1,11 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (c) 2022, MediaTek Inc.
++ */
++
++#include <linux/module.h>
++
++#include "mtk_dev.h"
++
++MODULE_DESCRIPTION("MediaTek T9xx PCIe WWAN driver");
++MODULE_LICENSE("GPL");
+diff --git a/drivers/net/wwan/t9xx/mtk_dev.h b/drivers/net/wwan/t9xx/mtk_dev.h
+index 8278a0e2875e..9843171fe2ae 100644
+--- a/drivers/net/wwan/t9xx/mtk_dev.h
++++ b/drivers/net/wwan/t9xx/mtk_dev.h
+@@ -36,6 +36,7 @@ enum mtk_dev_evt_d2h {
+ };
+ 
+ struct mtk_md_dev;
++struct mtk_ctrl_blk;
+ 
+ struct mtk_dev_ops {
+ 	u32 (*get_dev_state)(struct mtk_md_dev *mdev);
+@@ -57,6 +58,7 @@ struct mtk_md_dev {
+ 	void *hw_priv;
+ 	u32 hw_ver;
+ 	char dev_str[MTK_DEV_STR_LEN];
++	struct mtk_ctrl_blk *ctrl_blk;
+ };
+ 
+ static inline u32 mtk_dev_get_dev_state(struct mtk_md_dev *mdev)
+diff --git a/drivers/net/wwan/t9xx/pcie/Makefile b/drivers/net/wwan/t9xx/pcie/Makefile
+new file mode 100644
+index 000000000000..7410d1796d27
+--- /dev/null
++++ b/drivers/net/wwan/t9xx/pcie/Makefile
+@@ -0,0 +1,10 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
++ccflags-y += -I$(src)
++ccflags-y += -I$(src)/..
++
++obj-$(CONFIG_MTK_T9XX_PCI) += mtk_t9xx_pcie.o
++
++mtk_t9xx_pcie-y := \
++	mtk_pci_drv_m9xx.o \
++	mtk_pci.o
+diff --git a/drivers/net/wwan/t9xx/pcie/mtk_pci.c b/drivers/net/wwan/t9xx/pcie/mtk_pci.c
+index 72259bf1b603..68dddd652eff 100644
+--- a/drivers/net/wwan/t9xx/pcie/mtk_pci.c
++++ b/drivers/net/wwan/t9xx/pcie/mtk_pci.c
+@@ -14,6 +14,7 @@
+ #include <linux/module.h>
+ 
+ #include "mtk_dev.h"
++#include "mtk_trans_ctrl.h"
+ #include "mtk_pci.h"
+ #include "mtk_pci_reg.h"
+ 
+@@ -467,6 +468,7 @@ static u32 mtk_pci_ext_h2d_evt_hw_bits(u32 chs)
+ 
+ 	SET_HW_BITS(hw_bits, chs, MHCCIF_RC2EP_EVT_DEVICE_RESET,
+ 		    DEV_EVT_H2D_DEVICE_RESET);
++
+ 	return LE32_TO_U32(cpu_to_le32(hw_bits));
  }
  
- static int ipgre_tunnel_init(struct net_device *dev)
+diff --git a/drivers/net/wwan/t9xx/pcie/mtk_trans_ctrl.h b/drivers/net/wwan/t9xx/pcie/mtk_trans_ctrl.h
+new file mode 100644
+index 000000000000..d6de4c43b529
+--- /dev/null
++++ b/drivers/net/wwan/t9xx/pcie/mtk_trans_ctrl.h
+@@ -0,0 +1,21 @@
++/* SPDX-License-Identifier: GPL-2.0-only
++ *
++ * Copyright (c) 2022, MediaTek Inc.
++ */
++
++#ifndef __MTK_TRANS_CTRL_H__
++#define __MTK_TRANS_CTRL_H__
++
++#include <linux/kref.h>
++#include <linux/list.h>
++#include <linux/skbuff.h>
++#include <linux/types.h>
++
++#include "mtk_dev.h"
++
++struct mtk_ctrl_trans {
++	struct mtk_ctrl_blk *ctrl_blk;
++	struct mtk_md_dev *mdev;
++};
++
++#endif
+
 -- 
-2.43.0
+2.34.1
+
 
