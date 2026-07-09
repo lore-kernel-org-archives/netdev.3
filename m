@@ -1,142 +1,180 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33DC53ADBAF;
-	Thu,  9 Jul 2026 19:17:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5873AB26E
+	for <netdev@vger.kernel.org>; Thu,  9 Jul 2026 19:19:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783624669; cv=none; b=Haq9bR27jpcla/Yqlh98YX2rIQmxRMWWVf2U1Me7JeBZ5pphkXBGPOplFKU9rQCgDGnbF4IhYb6gGixyxzeznBJ+hSS2XEX2KjNv4iL1+BGT3/b2I82sg9fsdOHwKQ6acBJFoQfntpBK2SW+abhPxLis9sxFGnHlx6MGbG5ExeQ=
+	t=1783624785; cv=none; b=WKmkEINpklYYmfIaICy3wiWbjVaP8R2CInYfxwE8GpWsKiWOqNWbKIVuDLcWBeCrTfuLqidGR/GAAw9blTsZStx+GO6gRZwyXqMuiv9B4M4pD2OikWOC7k25J8AiTJoKeWOzF5Q53nGZnBGMyyRazheuIM5lPAtLkrQRFHxdEhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783624669; c=relaxed/simple;
-	bh=Yk2/WyUvGKiE19ekfgRZRBIVFr/IXq405T6qgGjhObU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jH3JkskDqaeTDIXRVjUgmZv0U68pXDAagYUmCH8Q+1U6Lys6c4zoU4C86kjkr1PDYV7enykirW6Qq4l28jgBbTTShJDSoTo8kaGY9s35/VQkLlDK/d7Y/3yK4DwaQt8qYHcK1hIh35srQw/gh2pOYtLhO/XZLP/qoKgXkOtf2QM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=JSpUAkba; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1783624785; c=relaxed/simple;
+	bh=ag2iaJNRSatXfZcIQOXwJLWZ7MP77+wFc5guU6LKKE4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a0CnNuJtWkqV6WXdRQyW7gcx3tmK5riFarcsr64tj1xZUh/1eNMg8AykkKSOCPzX9lBxzAdygWFgtPVx8RFOx4DmFpKsuaOuhUks9XMBs3UmMTnAVa+b8WNVWI1wl5nYnSRBFiRko2Rum4/1E9NjpgGhC1IIDLeyB08qoQkroEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PHrs6MxO; arc=none smtp.client-ip=209.85.219.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="JSpUAkba"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 669HmKRL2623385;
-	Thu, 9 Jul 2026 19:17:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=iM0lLaDqCbZFq0pzTAGAUTnhVO0+hIDxT5C/jc/ce
-	hk=; b=JSpUAkbaOUz2oxeygM/U42pZNCkOe1uaWbhe4QXL2ifreBCItQjJehZYH
-	6OqKzPc7cNDaD5r0OSVwa8i97lQxP0kerjgRABPuPqZsZEeiqKOt0ggxAJonh8ca
-	XVpkSPup4AhqZ4uB9/DfT1HlvYVklhOXEVtLByq7dC4zgO+6eq28kWw2l6zZtov5
-	CJcv4UR81lJL6bcTk1KstdPTOxXzyrSjU3P8XvKT0kPFr8lvKNwrz4v6Aa3wN+Wj
-	Tks+Ei10NPpCx5OsUoP1Q/O0HG8TiumLoEC6JuAe29F4evwvJhviv4NNEl70WbvM
-	aOdTYSmL8LIE9V2kM6RFIW7wK5y/g==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f6sw53arg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Jul 2026 19:17:39 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 669J4cHF026662;
-	Thu, 9 Jul 2026 19:17:38 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4f7e0hph50-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Jul 2026 19:17:38 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 669JHXMl28836466
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 9 Jul 2026 19:17:33 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5126720040;
-	Thu,  9 Jul 2026 19:17:33 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 17E1C2004B;
-	Thu,  9 Jul 2026 19:17:33 +0000 (GMT)
-Received: from t83lp68.lnxne.boe (unknown [9.87.84.240])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  9 Jul 2026 19:17:33 +0000 (GMT)
-From: Hidayath Khan <hidayath@linux.ibm.com>
-To: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com
-Cc: horms@kernel.org, linux-s390@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, wintera@linux.ibm.com,
-        twinkler@linux.ibm.com, heiko.carstens@de.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
-        hidayath@linux.ibm.com
-Subject: [PATCH net] net/af_iucv: fix NULL deref in afiucv_hs_callback_syn()
-Date: Thu,  9 Jul 2026 21:17:32 +0200
-Message-ID: <20260709191732.124092-1-hidayath@linux.ibm.com>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PHrs6MxO"
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-8ff88549786so2112216d6.3
+        for <netdev@vger.kernel.org>; Thu, 09 Jul 2026 12:19:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783624783; x=1784229583; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=8lTAkLkaFfueQ/1V07Pbb9gud8KYPki4tliZP1BPO3s=;
+        b=PHrs6MxO1ELbyBow0rxKOskrO9vH7JuuPzlu+5FRPCzFOQA65F2pza394Wetas0dTP
+         7zwcIAHBmAbooaocKM1TznSzTYCEmGJKxDId3kgIwtg5UYzPPR6TIx7Lf7zgHKCvvhzf
+         31lvh6xDtSyXnVvrWCQd2m3kq5V5RvV08OhRtLksDuZh36kWClGxf//OWSz+Pgx0DOHN
+         DqrTd473rwe5maDyGq4bgBo96+CCf8SqWWog2ejisq6P/9d2a9VT9QzZ9ygUXyldosJK
+         iSh15opyzZ9LsNxMzbOHifuSM1Ne2+O+xLuuzn5baf90zYqQ8F61TNDI6+VVP1XjVWgO
+         y3aQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783624783; x=1784229583;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8lTAkLkaFfueQ/1V07Pbb9gud8KYPki4tliZP1BPO3s=;
+        b=rduXdYlgGROUBMY7KndvJ0gsgKejjNgpaSaW0bBdW6HI+2N/L4Zyf1/hyf03iJJwOj
+         i4/2lGRPRFLkublzNKLrgKT/Sab9iw1/hpj9o2Ev6vyomXE2LWRzKX6zgXIE1yerLgHX
+         xMUwMYkT5rxxxelwQ/Xlnro4RniZf9Nq0Pq3yay5nJPQx0kA+QM5uQ//VoIGeZZY1LYa
+         nSv5wCJNkHK1i223BztSu5QaM+Q25Mel3nT1n7ghcEn2HLEuEQKpgy2H6OM5oUiBaPNp
+         AEE8cL8ozwrAS8R1Z/jDRsP450Pl8T1jjeuWglgmja0q38P7qg5XLAjHeJ0jC3/mT30K
+         SSRQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrOQWyaLewARNIyBatM1NtR4U9HQWnPEvEi+QucK1dZWPxID5oD3AvlLIDaOEGakgNFZ66oUNc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOoUPQRhE9DXR2olgb+N9lo/GDVPEwE9ow1dB78+mlYRJL+38B
+	G362lI125z5rmT6gVMwGiNHBbBRT9R1TxlDFuFJHQ4q8LoijUzW3AcFx/8SnkN6D
+X-Gm-Gg: AfdE7cnp1chj8dU19jUY2puOxMNAAMbjoa1Ml0TbvZykQbDauwstV0AP0uecgfsQkWE
+	TxaPJYWasI68BP13thrGXXlrIfuQnMy7Qe8+l/YKhoWHprUCGh4botqswxJyGNitqfMxO0azy7P
+	BzobCMV/d/ZdNY1bC4nXbs2O8T/RcFa69D9VSupetO9XfmKtCBTIAFi3IGQaIE8HW7fO4npJUS1
+	5htE6MwXjQN+JGstpgYoUrY5RNRaCQQjGxnP5KoMyu25Wr+iFGCvxRLclYdPXjjKQC/+DHmSF6f
+	0Ex39AtLxIOGIVhWrJNZBMiFXHd/neXlMZEU1D7ZHDBcK9xpE6YIYU6XFXUquJ0PuV5s1U/yMUV
+	UlNoX6yotL973KgbboHIE62dsv5DU65UMK1KxWwfFGHpEqwnfHQAlWWohzlbiQIKrvwfraK1rFU
+	gBOBybKpzgGggFyHMjCm5j/IWKNsMLnyIu3lQ6PKLUoPDk61X74hrxSETJaFC62ZuSYbLXdzW+T
+	81TGIThRTw6RZJHZMNio6udpy+Wux4o
+X-Received: by 2002:a05:6214:c87:b0:8fe:49d6:fb76 with SMTP id 6a1803df08f44-8fec3810ff7mr93576996d6.57.1783624782634;
+        Thu, 09 Jul 2026 12:19:42 -0700 (PDT)
+Received: from server0.tail6e7dd.ts.net (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ffd87c8d4csm25507836d6.44.2026.07.09.12.19.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jul 2026 12:19:42 -0700 (PDT)
+From: Michael Bommarito <michael.bommarito@gmail.com>
+To: Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>
+Cc: Geliang Tang <geliang@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Gang Yan <gang.yan@linux.dev>,
+	mptcp@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v3] mptcp: only set DATA_FIN when a mapping is present
+Date: Thu,  9 Jul 2026 15:19:25 -0400
+Message-ID: <20260709191925.2811195-1-michael.bommarito@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: NXn5DVpO6ueY8MIWNudF1jYm5CA_wQxP
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA5MDE4NiBTYWx0ZWRfX29HCDHg2IVxC
- o9gaWQhb5U4TuDx85U9OuTp84RQMSW9fQLZNPS1XrsTFmrmay2CUye8134/cnt3pa8srk0Qtgpp
- lTSrtewQ6XpYdq4kVbjXgQA4ubAkVcGQ50Sgn7YaSeO9Hg3o5fMovj6HEUrHu3wycyx8wjAecrX
- eIUlBphAGP9r+d90Ej0lChmnwkdJjHOgfKoL2iPJ8ddn+iiXc/yhJRLmXWbfLlmeGmDu0xFlmQY
- Kt6ePMkgEnYVHVu6V3eYd6uEUJ3nEQ/xGvZXZPV80b3+vomrGs+yfQBUv2iRtpWBMlssQGv5ubL
- 87f+IfNmCk6vWrQxH3kucm7U6tmz1/3bnBRuqwLpiGa2BksVzsXuymQBbYytAhiwhOTkFOhLYff
- ynNxl/vE29LRj0qvrcMzcVITTdlWIuN4mbny395v+IOjwx9No+vsqXgHhgKCQqCsJQbE4m+NwIH
- wEirXL7taFFn/Yr/xPg==
-X-Proofpoint-ORIG-GUID: t6Rv0bnmOeQZ-znRcVDm_Wu4v1o-AOMv
-X-Authority-Analysis: v=2.4 cv=FqQ1OWrq c=1 sm=1 tr=0 ts=6a4ff3d4 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=lZ-7vaNzbJThIC_oh1kA:9
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA5MDE4NiBTYWx0ZWRfXwsuPbVwRX4Jl
- ZWFaDxco1XGBqQCSDnBAmp/YBLjHLhxqKv+FAYRbIb14XXulYuMW71JjoUYPPsB2szZDn38L8ka
- S2BK+kBqzEJdH5kYSs+Ok1T+7aLBnYs=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-09_04,2026-07-09_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 impostorscore=0 clxscore=1015 malwarescore=0 lowpriorityscore=0
- priorityscore=1501 bulkscore=0 suspectscore=0 spamscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607090186
+Content-Transfer-Encoding: 7bit
 
-afiucv_hs_callback_syn() allocates the child socket with GFP_ATOMIC.
-If the allocation fails, nsk is NULL.
+mptcp_get_options() clears only the status group of struct
+mptcp_options_received; data_seq, subflow_seq and data_len are filled in
+by mptcp_parse_option() exclusively inside the DSS mapping block, which
+runs only when the DSS M (mapping present) bit is set.
 
-The connection-refused path is entered when the listen state check
-fails, the accept backlog is full, or nsk is NULL. The code
-unconditionally calls iucv_sock_kill(nsk) in that path.
+A peer can send a DSS option with the DATA_FIN flag set but the mapping
+bit clear. The parser then records mp_opt->data_fin while leaving
+data_len and data_seq uninitialized. For a zero-length segment
+mptcp_incoming_options() evaluates
 
-iucv_sock_kill() does not accept a NULL socket pointer and immediately
-dereferences sk via sock_flag(sk, SOCK_ZAPPED). When nsk is NULL,
-calling iucv_sock_kill(nsk) results in a NULL pointer dereference.
+	if (mp_opt.data_fin && mp_opt.data_len == 1 &&
+	    mptcp_update_rcv_data_fin(msk, mp_opt.data_seq, mp_opt.dsn64))
 
-Only call iucv_sock_kill() when a child socket was successfully
-allocated.
+which reads the uninitialized data_len and data_seq; KMSAN reports an
+uninit-value in mptcp_incoming_options(). The stale data_seq can also be
+fed into the receive-side DATA_FIN sequence tracking.
 
-Fixes: 3881ac441f64 ("af_iucv: add HiperSockets transport")
+Record the DATA_FIN flag only when the DSS option carries a mapping, so
+data_fin is never set without data_seq and data_len also being present.
+data_fin is part of the status group that mptcp_get_options() clears up
+front, so on the no-map path it stays zero and the zero-length DATA_FIN
+branch is simply skipped. A DATA_FIN is always transmitted together with
+a mapping (mptcp_write_data_fin() sets use_map along with data_seq and
+data_len), so legitimate DATA_FIN handling is unaffected.
+
+Move the pr_debug() that logs the parsed DSS flags below the mapping
+block, so it reports the final data_fin value instead of the stale one
+it would otherwise print before the assignment.
+
+Fixes: 43b54c6ee382 ("mptcp: Use full MPTCP-level disconnect state machine")
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
-Signed-off-by: Hidayath Khan <hidayath@linux.ibm.com>
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
 ---
- net/iucv/af_iucv.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+v3:
+ - Move the pr_debug() DSS flag log below the mapping block so it prints
+   the final data_fin value (Gang Yan).  data_fin is now assigned only
+   inside the use_map block, so logging it earlier would report a stale
+   value.  No functional change to the fix.
+v2: adopt Paolo Abeni's suggested approach - do not set mp_opt->data_fin
+    at all unless a mapping is present, rather than gating the consumer in
+    mptcp_incoming_options() (v1).  data_fin then defaults to the value
+    mptcp_get_options() already clears it to (0) on the no-map path, so
+    the uninitialized data_len/data_seq are never read.
 
-diff --git a/net/iucv/af_iucv.c b/net/iucv/af_iucv.c
-index fed240b453bd..f5b1ec44b6ae 100644
---- a/net/iucv/af_iucv.c
-+++ b/net/iucv/af_iucv.c
-@@ -1872,7 +1872,8 @@ static int afiucv_hs_callback_syn(struct sock *sk, struct sk_buff *skb)
- 		afiucv_swap_src_dest(skb);
- 		trans_hdr->flags = AF_IUCV_FLAG_SYN | AF_IUCV_FLAG_FIN;
- 		err = dev_queue_xmit(skb);
--		iucv_sock_kill(nsk);
-+		if (nsk)
-+			iucv_sock_kill(nsk);
- 		bh_unlock_sock(sk);
- 		goto out;
- 	}
+Link to v1: https://lore.kernel.org/all/20260617215725.1116295-1-michael.bommarito@gmail.com/
+Link to v2: https://lore.kernel.org/all/20260707171730.2679013-1-michael.bommarito@gmail.com/
 
-base-commit: 262b2eac463d880a664cf92af1107b4f9d84ad37
+ net/mptcp/options.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/net/mptcp/options.c b/net/mptcp/options.c
+index dff3fd5d3b559..1b74ca5b6a595 100644
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -157,17 +157,11 @@ static void mptcp_parse_option(const struct sk_buff *skb,
+ 		ptr++;
+ 
+ 		flags = (*ptr++) & MPTCP_DSS_FLAG_MASK;
+-		mp_opt->data_fin = (flags & MPTCP_DSS_DATA_FIN) != 0;
+ 		mp_opt->dsn64 = (flags & MPTCP_DSS_DSN64) != 0;
+ 		mp_opt->use_map = (flags & MPTCP_DSS_HAS_MAP) != 0;
+ 		mp_opt->ack64 = (flags & MPTCP_DSS_ACK64) != 0;
+ 		mp_opt->use_ack = (flags & MPTCP_DSS_HAS_ACK);
+ 
+-		pr_debug("data_fin=%d dsn64=%d use_map=%d ack64=%d use_ack=%d\n",
+-			 mp_opt->data_fin, mp_opt->dsn64,
+-			 mp_opt->use_map, mp_opt->ack64,
+-			 mp_opt->use_ack);
+-
+ 		expected_opsize = TCPOLEN_MPTCP_DSS_BASE;
+ 
+ 		if (mp_opt->use_ack) {
+@@ -178,12 +172,18 @@ static void mptcp_parse_option(const struct sk_buff *skb,
+ 		}
+ 
+ 		if (mp_opt->use_map) {
++			mp_opt->data_fin = (flags & MPTCP_DSS_DATA_FIN) != 0;
+ 			if (mp_opt->dsn64)
+ 				expected_opsize += TCPOLEN_MPTCP_DSS_MAP64;
+ 			else
+ 				expected_opsize += TCPOLEN_MPTCP_DSS_MAP32;
+ 		}
+ 
++		pr_debug("data_fin=%d dsn64=%d use_map=%d ack64=%d use_ack=%d\n",
++			 mp_opt->data_fin, mp_opt->dsn64,
++			 mp_opt->use_map, mp_opt->ack64,
++			 mp_opt->use_ack);
++
+ 		/* Always parse any csum presence combination, we will enforce
+ 		 * RFC 8684 Section 3.3.0 checks later in subflow_data_ready
+ 		 */
 -- 
-2.52.0
+2.53.0
 
