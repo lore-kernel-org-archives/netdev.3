@@ -1,288 +1,139 @@
-Received: from mail.avm.de (mail.avm.de [212.42.244.120])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FCA4400E13;
-	Thu,  9 Jul 2026 09:12:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.120
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF8093E0241
+	for <netdev@vger.kernel.org>; Thu,  9 Jul 2026 09:18:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783588341; cv=none; b=l0Pz3wj8yD7Ze518gk7sSQL0FzIOku5Hpzsgeta1SMwqmalSj5xrhAD/cbKzYf4iNdYqJr3WMFwVp148nQxidm/V7+uW/AARUYmNS6E37+aijzbVzm+H5jcPkjo25M2q+vo9MVTK8ygnr1zRJIaIyWwP9SB1eBjrxBsRpY9aAvM=
+	t=1783588686; cv=none; b=kUgXS01c+OBMWlHsOHr/DwZD10YDkwGvP0nqCaZekeRU2uxreEk53JtucLQT1iPWrK3LE+nb7zkHH9dvVVM348yrywl9SOcCFwg1PJklDMQRjfYQ1ftRCkrNvvlhWzLSVl8vPfl4bSC79LJ35gw+VNuj8ccLjBrJxe7w9H8icc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783588341; c=relaxed/simple;
-	bh=xh3A6Cod132QtKk80AN23GuEgJYz08oP/XhIZDqWACc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YgDAKGGjCWnzkja3ieNk4fKx5Ke91y9Vgna/sw140qO5rsqy2U2sEefNbp+zO78Z8YXYJajlXHSbFtdVa7ZhBp5KL8gF1h65viyPcizzu6Q7Pk4VxOO+ZSMx2WL1iHM4yNoihaXvPZWm3ZEbnlAfkYbMwt5acf3xPIg+qEPpZR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fritz.com; spf=pass smtp.mailfrom=fritz.com; arc=none smtp.client-ip=212.42.244.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fritz.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fritz.com
-Received: from [2001:bf0:244:244::71] (helo=mail.avm.de)
-	by mail.avm.de with ESMTP (eXpurgate 4.57.1)
-	(envelope-from <t.martitz@fritz.com>)
-	id 6a4f65ef-7cb1-7f0000032729-7f0000019a3e-1
-	for <multiple-recipients>; Thu, 09 Jul 2026 11:12:15 +0200
-Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [IPv6:2001:bf0:244:244::71])
-	by mail.avm.de (Postfix) with ESMTPS;
-	Thu,  9 Jul 2026 11:12:15 +0200 (CEST)
-From: Thomas Martitz <t.martitz@fritz.com>
-To: Simon Horman <horms@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
-	linux-kernel@vger.kernel.org (open list)
-Cc: Thomas Martitz <t.martitz@fritz.com>,
-	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v2 1/1] macvlan: allow source mode devices along with passthru
-Date: Thu,  9 Jul 2026 11:11:37 +0200
-Message-ID: <20260709091138.170348-2-t.martitz@fritz.com>
-In-Reply-To: <20260709091138.170348-1-t.martitz@fritz.com>
-References: <20260702065642.1783764-1-t.martitz@fritz.com>
- <20260709091138.170348-1-t.martitz@fritz.com>
+	s=arc-20240116; t=1783588686; c=relaxed/simple;
+	bh=FjpUXsvhXEAkUlVQP4tEH1Ee2iSdcpYkelan5p5vzPs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AfuyFEi93XKkSfzl8xpdkc8JFe7KWtJ6HQS0cWJSvjJWE0Ru9JcfGFPsIplkpibhKLyBqY0sPENJIzZ3qA2nII6xL1hoHLyMdAGHcs8l2Uv1RAzwaP3L45qTmO0sPiKtAiG7v5HF69GcQQTBC19FuFvxq3KiSFHfSMn1BJPul60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bsa2QEWE; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=m3q6G+k2; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bsa2QEWE";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="m3q6G+k2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783588683;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lcgAW3wWwD+CDc95tyrJwQ6t0jD3GIhvTCB6YDG1NyM=;
+	b=bsa2QEWEHDPr5cMcdwWrXYDbSL3c7Dg+wGlrHKnmPIrtA3I1t1SzjuBa7KkqdRKyf7sqL/
+	fbLG7sHwE3XBJqniWOalHS693gxNlJFxoGl8ymRTo2ebT1IDZjWK2/aFCHEJWXrXMF8Ee+
+	2M8y29ejM0lu+Gku12cDnw+O5pOccIk=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-30-LWTVZQLqMfCFvdBNM7W48Q-1; Thu, 09 Jul 2026 05:18:00 -0400
+X-MC-Unique: LWTVZQLqMfCFvdBNM7W48Q-1
+X-Mimecast-MFC-AGG-ID: LWTVZQLqMfCFvdBNM7W48Q_1783588679
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-47407691804so1362001f8f.1
+        for <netdev@vger.kernel.org>; Thu, 09 Jul 2026 02:18:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1783588679; x=1784193479; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=lcgAW3wWwD+CDc95tyrJwQ6t0jD3GIhvTCB6YDG1NyM=;
+        b=m3q6G+k2BxxHrRuy8NIc3HM7r5BkAQ5kBQ1fZ9ywGCU76Ww2QoD/Ei/V6NBLnwI8dP
+         49p94kw0oGoRgi10BqgLIvP3Fl7Fwk+kdgpsLR7Me3bzNDOqPzGkN/Owy8+dCZwIys5S
+         E/HTui+ygs+0ZK7c0wRh8RmbhlFIObPhFcEFbMDpxyv+QGLycE8U1jdpm5wWcmcXfhO2
+         KxQuY430In6dk8AbRp8TUiJ52D/d64S9jTnwkznspCX+hXqnuRKzGQU3vGuTB7NjcFtS
+         HEFq3Y+yLePpLqpZWWE84RKIjYCyY2s2Yy8bXB0IgAEEUt01zrrBzLbXZ6ksZeGPKNIv
+         UnVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783588679; x=1784193479;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=lcgAW3wWwD+CDc95tyrJwQ6t0jD3GIhvTCB6YDG1NyM=;
+        b=PMt/WU2pEth7ExpNtM+lGLPRf1FoyO+5Czn6vSOSwxc2KSPFLyTYUm2VMFKL0pfRYa
+         2EKiQiU7R/YM5c4ebOuupI8XvIHhTADSmIxYVbWebVCHhOS9P6lS5qtzU8+wyp3ycOlW
+         4YIzEOIIqVvgsVelUXlrHAyCvVEhugzpLFDsy/WzB3925SDlThDKSDwwMTWi0d4DLo2f
+         QBSfKRq9RNhaLwJ8ymh0jxJH1MLC3UzkKiI4jqMNZww+ucHyBCxtrPzIN8k+6hI5nSRR
+         N+111EYlZpVfV1hpgAJnppMRK0XaLs+KsqlZbmD5bCDVI3Gl5kiGlT+dq0kbg/wFbKow
+         MVLQ==
+X-Gm-Message-State: AOJu0YyDZSg5d5OZCPEYis7lCLeirWrGxKKF3NXNYAd7kL5SG8sr0Rpq
+	yVHpoO6+9tdh1zDikwx1Z1hcbJrwNROl4Of1bHaLHQqmFgGEIUqiqKhiBkofYBtaB6U3VuEvFRW
+	gf6lbFaS/GLokjiJ02EvVoqUMAv7cDVS5t0FtXSsSExGQN+JR30z+FkIc6w==
+X-Gm-Gg: AfdE7cnjc1hWQVr8Hl9KFZsOtE5NXvZYcoWuc/WOTYmer66ud+T5QhlLxWNzxUoRdVP
+	otonXQCStBrLve5vE1hIw3fouiBg9e98ZG3u++60lL1Ic1i5MIhpsRRPBmm+XMYqeBTGr5EEidV
+	vEQDrqcR8ODcUxZnYpBanUFbGoLmcr6tfp/ELYXH8CiAvFK1nkNVbw8k4UQJTQtbihfoSCl+ETe
+	lVK0JNXPlyfiwdRCowuDfd+5OAox5f2FMRYeXv7ZwFjaSimc/flWPBTRxySzZb+5zWOHnRQHYMZ
+	MtQyimojuE7PvLIB5sL2xjQCXUKNi0DonCgPbkt/vpLOFw6jKgZCrYGer4fRxR714ZRDxO0z62a
+	AdxGV6E/PrUGBrWrM6x4dDXT4Z8T9QJU41TqLaXBDOo8JUWhOtTBhp7k/NGA3
+X-Received: by 2002:a05:6000:1a85:b0:460:1223:a044 with SMTP id ffacd0b85a97d-47df06c10c9mr6983272f8f.0.1783588679365;
+        Thu, 09 Jul 2026 02:17:59 -0700 (PDT)
+X-Received: by 2002:a05:6000:1a85:b0:460:1223:a044 with SMTP id ffacd0b85a97d-47df06c10c9mr6983241f8f.0.1783588678905;
+        Thu, 09 Jul 2026 02:17:58 -0700 (PDT)
+Received: from sgarzare-redhat (host-79-34-22-35.business.telecomitalia.it. [79.34.22.35])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47a9de1d910sm48486557f8f.6.2026.07.09.02.17.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jul 2026 02:17:58 -0700 (PDT)
+Date: Thu, 9 Jul 2026 11:17:52 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: netdev@vger.kernel.org, Jason Wang <jasowangio@gmail.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eric Dumazet <edumazet@google.com>, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Stefan Hajnoczi <stefanha@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
+	virtualization@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>, 
+	Jason Wang <jasowang@redhat.com>
+Subject: Re: [PATCH net v2 2/2] vsock/test: add test for small packets under
+ pressure
+Message-ID: <ak9h1kWcLmpP74PI@sgarzare-redhat>
+References: <20260708102904.50732-1-sgarzare@redhat.com>
+ <20260708102904.50732-3-sgarzare@redhat.com>
+ <20260708065853-mutt-send-email-mst@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-purgate-ID: 149429::1783588335-6B6EB0F0-E785C2A3/0/0
-X-purgate-type: clean
-X-purgate-size: 8389
-X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
-X-purgate: clean
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260708065853-mutt-send-email-mst@kernel.org>
 
-This allows for configurations where there are a few
-known senders in the system (e.g. multiple SoCs on the same
-board) along with unlimited external senders.
+On Wed, Jul 08, 2026 at 06:59:41AM -0400, Michael S. Tsirkin wrote:
+>On Wed, Jul 08, 2026 at 12:29:04PM +0200, Stefano Garzarella wrote:
+>> From: Stefano Garzarella <sgarzare@redhat.com>
+>>
+>> Add a test that sends 2 MB of data using randomly sized small packets
+>> (129-512 bytes) over a SOCK_STREAM connection. Packets above
+>> GOOD_COPY_LEN (128) bypass the in-place coalescing in recv_enqueue(),
+>> forcing each one into its own skb.
+>>
+>> Without receive queue collapsing, the per-skb overhead eventually
+>> exceeds buf_alloc and the connection is reset. The test verifies
+>> that all data arrives and that content integrity is preserved.
+>>
+>> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+>
+>maybe cut down SO_VM_SOCKETS_BUFFER_SIZE? will make it easier to
+>trigger?
 
-The source mode devices represent the known senders while
-all external senders terminate on passthru device.
+Currently, with the default value, the trigger is practically immediate 
+for packets between 129 and 512 bytes, but yes, a smaller buffer size 
+certainly makes this effect even more pronounced.
 
-Although you could still receive packets on the lower device
-without the need for the passthru vlan device, there
-are use cases where you need additional packet processing
-in the pipeline that hooks via rx_handler. But the rx_handler
-is already bound to the macvlan port.
+>
+>anyway
+>
+>Acked-by: Michael S. Tsirkin <mst@redhat.com>
 
-With this patch the rx_handler can be attached to the passthru
-device while macvlan itself remains attached to the lower device.
+Thanks!
 
-We use this to use the share the only available high-speed interface
-for inter-SoC networking and external networking (user traffic).
-Inter-SoC packets are received on the source mode interface, identified
-by a well-known source address. Some of our chips have simply no other
-viable link for inter-SoC traffic.
+If I need to post a v3, I'll add it; otherwise, I guess we can leave it 
+as is or send a follow-up for net-next.
 
-Signed-off-by: Thomas Martitz <t.martitz@fritz.com>
----
- drivers/net/macvlan.c | 107 ++++++++++++++++++++++++++++--------------
- 1 file changed, 73 insertions(+), 34 deletions(-)
-
-diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
-index 9a4bc99dbf53b..2505f5f2e9d30 100644
---- a/drivers/net/macvlan.c
-+++ b/drivers/net/macvlan.c
-@@ -83,6 +83,11 @@ static inline void macvlan_set_passthru(struct macvlan_port *port)
- 	port->flags |= MACVLAN_F_PASSTHRU;
- }
- 
-+static inline void macvlan_clear_passthru(struct macvlan_port *port)
-+{
-+	port->flags &= ~MACVLAN_F_PASSTHRU;
-+}
-+
- static inline bool macvlan_addr_change(const struct macvlan_port *port)
- {
- 	return port->flags & MACVLAN_F_ADDRCHANGE;
-@@ -637,7 +642,7 @@ static int macvlan_open(struct net_device *dev)
- 	struct net_device *lowerdev = vlan->lowerdev;
- 	int err;
- 
--	if (macvlan_passthru(vlan->port)) {
-+	if (vlan->mode == MACVLAN_MODE_PASSTHRU) {
- 		if (!(vlan->flags & MACVLAN_FLAG_NOPROMISC)) {
- 			err = dev_set_promiscuity(lowerdev, 1);
- 			if (err < 0)
-@@ -712,7 +717,7 @@ static int macvlan_stop(struct net_device *dev)
- 	dev_uc_unsync(lowerdev, dev);
- 	dev_mc_unsync(lowerdev, dev);
- 
--	if (macvlan_passthru(vlan->port)) {
-+	if (vlan->mode == MACVLAN_MODE_PASSTHRU) {
- 		if (!(vlan->flags & MACVLAN_FLAG_NOPROMISC))
- 			dev_set_promiscuity(lowerdev, -1);
- 		goto hash_del;
-@@ -792,6 +797,23 @@ static int macvlan_set_mac_address(struct net_device *dev, void *p)
- 	return macvlan_sync_address(dev, addr->__data);
- }
- 
-+static void macvlan_port_release_mac(struct net_device *dev)
-+{
-+	struct macvlan_port *port = macvlan_port_get_rtnl(dev);
-+
-+	/* If the lower device address has been changed by passthru
-+	 * macvlan, put it back.
-+	 */
-+	if (macvlan_passthru(port) &&
-+	    !ether_addr_equal(port->dev->dev_addr, port->perm_addr)) {
-+		struct sockaddr_storage ss;
-+
-+		ss.ss_family = port->dev->type;
-+		memcpy(&ss.__data, port->perm_addr, port->dev->addr_len);
-+		dev_set_mac_address(port->dev, &ss, NULL);
-+	}
-+}
-+
- static void macvlan_change_rx_flags(struct net_device *dev, int change)
- {
- 	struct macvlan_dev *vlan = netdev_priv(dev);
-@@ -977,8 +999,18 @@ static void macvlan_uninit(struct net_device *dev)
- 
- 	macvlan_flush_sources(port, vlan);
- 	port->count -= 1;
--	if (!port->count)
--		macvlan_port_destroy(port->dev);
-+	if (port->count) {
-+		/* In case of remaining source interfaces undo
-+		 * passthru-specific properties.
-+		 */
-+		if (vlan->mode == MACVLAN_MODE_PASSTHRU) {
-+			macvlan_port_release_mac(dev);
-+			macvlan_clear_passthru(vlan->port);
-+		}
-+		return;
-+	}
-+
-+	macvlan_port_destroy(port->dev);
- }
- 
- static void macvlan_dev_get_stats64(struct net_device *dev,
-@@ -1052,7 +1084,7 @@ static int macvlan_fdb_add(struct ndmsg *ndm, struct nlattr *tb[],
- 	/* Support unicast filter only on passthru devices.
- 	 * Multicast filter should be allowed on all devices.
- 	 */
--	if (!macvlan_passthru(vlan->port) && is_unicast_ether_addr(addr))
-+	if (vlan->mode != MACVLAN_MODE_PASSTHRU && is_unicast_ether_addr(addr))
- 		return -EOPNOTSUPP;
- 
- 	if (flags & NLM_F_REPLACE)
-@@ -1077,7 +1109,7 @@ static int macvlan_fdb_del(struct ndmsg *ndm, struct nlattr *tb[],
- 	/* Support unicast filter only on passthru devices.
- 	 * Multicast filter should be allowed on all devices.
- 	 */
--	if (!macvlan_passthru(vlan->port) && is_unicast_ether_addr(addr))
-+	if (vlan->mode != MACVLAN_MODE_PASSTHRU && is_unicast_ether_addr(addr))
- 		return -EOPNOTSUPP;
- 
- 	if (is_unicast_ether_addr(addr))
-@@ -1308,17 +1340,7 @@ static void macvlan_port_destroy(struct net_device *dev)
- 		kfree_skb(skb);
- 	}
- 
--	/* If the lower device address has been changed by passthru
--	 * macvlan, put it back.
--	 */
--	if (macvlan_passthru(port) &&
--	    !ether_addr_equal(port->dev->dev_addr, port->perm_addr)) {
--		struct sockaddr_storage ss;
--
--		ss.ss_family = port->dev->type;
--		memcpy(&ss.__data, port->perm_addr, port->dev->addr_len);
--		dev_set_mac_address(port->dev, &ss, NULL);
--	}
-+	macvlan_port_release_mac(dev);
- 
- 	kfree(port);
- }
-@@ -1506,15 +1528,6 @@ int macvlan_common_newlink(struct net_device *dev,
- 	}
- 	port = macvlan_port_get_rtnl(lowerdev);
- 
--	/* Only 1 macvlan device can be created in passthru mode */
--	if (macvlan_passthru(port)) {
--		/* The macvlan port must be not created this time,
--		 * still goto destroy_macvlan_port for readability.
--		 */
--		err = -EINVAL;
--		goto destroy_macvlan_port;
--	}
--
- 	vlan->lowerdev = lowerdev;
- 	vlan->dev      = dev;
- 	vlan->port     = port;
-@@ -1527,10 +1540,30 @@ int macvlan_common_newlink(struct net_device *dev,
- 	if (data && data[IFLA_MACVLAN_FLAGS])
- 		vlan->flags = nla_get_u16(data[IFLA_MACVLAN_FLAGS]);
- 
-+	/* Only 1 macvlan device can be created in passthru mode. There may be
-+	 * additional source mode devices but nothing else at the moment.
-+	 *
-+	 * First check if adding a source mode device to an existing passthru vlan.
-+	 */
-+	if (macvlan_passthru(port) && vlan->mode != MACVLAN_MODE_SOURCE) {
-+		/* The macvlan port must be not created this time,
-+		 * still goto destroy_macvlan_port for readability.
-+		 */
-+		err = -EINVAL;
-+		goto destroy_macvlan_port;
-+	}
-+
-+	/* Now check if adding a passthru device to an existing set of source mode
-+	 * devices.
-+	 */
- 	if (vlan->mode == MACVLAN_MODE_PASSTHRU) {
--		if (port->count) {
--			err = -EINVAL;
--			goto destroy_macvlan_port;
-+		struct macvlan_dev *p;
-+
-+		list_for_each_entry(p, &port->vlans, list) {
-+			if (p->mode != MACVLAN_MODE_SOURCE) {
-+				err = -EINVAL;
-+				goto destroy_macvlan_port;
-+			}
- 		}
- 		macvlan_set_passthru(port);
- 		eth_hw_addr_inherit(dev, lowerdev);
-@@ -1564,7 +1597,11 @@ int macvlan_common_newlink(struct net_device *dev,
- 	if (err)
- 		goto unregister_netdev;
- 
--	list_add_tail_rcu(&vlan->list, &port->vlans);
-+	/* macvlan_handle_frame expects the (one and only) passthru device first. */
-+	if (vlan->mode == MACVLAN_MODE_PASSTHRU)
-+		list_add_rcu(&vlan->list, &port->vlans);
-+	else
-+		list_add_tail_rcu(&vlan->list, &port->vlans);
- 	update_port_bc_queue_len(vlan->port);
- 	netif_stacked_transfer_operstate(lowerdev, dev);
- 	linkwatch_fire_event(dev);
-@@ -1627,9 +1664,11 @@ static int macvlan_changelink(struct net_device *dev,
- 	if (data && data[IFLA_MACVLAN_MODE]) {
- 		set_mode = true;
- 		mode = nla_get_u32(data[IFLA_MACVLAN_MODE]);
--		/* Passthrough mode can't be set or cleared dynamically */
--		if ((mode == MACVLAN_MODE_PASSTHRU) !=
--		    (vlan->mode == MACVLAN_MODE_PASSTHRU))
-+		/* Passthrough mode can't be set or cleared dynamically,
-+		 * regardless of existing source interfaces. Furthermore, source
-+		 * interfaces can't switch modes within a passhtrough port.
-+		 */
-+		if (macvlan_passthru(vlan->port) && mode != vlan->mode)
- 			return -EINVAL;
- 		if (vlan->mode == MACVLAN_MODE_SOURCE &&
- 		    vlan->mode != mode)
-@@ -1639,7 +1678,7 @@ static int macvlan_changelink(struct net_device *dev,
- 	if (data && data[IFLA_MACVLAN_FLAGS]) {
- 		__u16 flags = nla_get_u16(data[IFLA_MACVLAN_FLAGS]);
- 		bool promisc = (flags ^ vlan->flags) & MACVLAN_FLAG_NOPROMISC;
--		if (macvlan_passthru(vlan->port) && promisc) {
-+		if (vlan->mode == MACVLAN_MODE_PASSTHRU && promisc) {
- 			int err;
- 
- 			if (flags & MACVLAN_FLAG_NOPROMISC)
--- 
-2.54.0
+Thanks,
+Stefano
 
