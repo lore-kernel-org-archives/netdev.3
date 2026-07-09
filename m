@@ -1,55 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8B24252C6;
-	Thu,  9 Jul 2026 16:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66E04343FA
+	for <netdev@vger.kernel.org>; Thu,  9 Jul 2026 16:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783613933; cv=none; b=Hs2eJZk14O2ZBbJhHUGwf/tp9yKoQhrPNBDnOoojIpfWf+FdHZ4UeTNRRFI+bF6M39Yw8EXRpo9X/X0tU/XEv927GHfPpd4L2gCKInJQyOinTGRv/vUUBEVc9s89+xee3tEBfEWq74GVP43fIWfX4Ra6W9EGhs+qRPxtemwFCTo=
+	t=1783614192; cv=none; b=bNoMOPp7BRksI8YmamednCOHGybCHUWjQUh2HkWjbE537ACoZZFNHrBzWH4e50npR5zvzWGxOaAIaMAZPIGtCoo4ANGBdzdMkAilsq6zRyd6rzk7e/R2fO1BOhI6y1gxvKIP4efiwDUqVC5gGoPnw1LFA32rlvYE1a5uowXdoN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783613933; c=relaxed/simple;
-	bh=AsailK8F37XDf6dcGFjdUTsjDgb9MVOWzdP5r9LYmHM=;
+	s=arc-20240116; t=1783614192; c=relaxed/simple;
+	bh=AO1uuYrOhsHTQYNgP/lQBuUFWvrW5PwbhmtC6sGMJbA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U64rbnHJkGop/QEbzpfTjcfLIdf9NF/zD9OQwOqcbjUhmi0+M43xsNlGt+o9n0fqinsy+LicStJj4/hXu33Ut041iHa72mIDx48IXMWH/sBQA24vxI7xW1JBOi0y9AbjG0egH38p+AkS6XgTRtPwPSC/ZdIBTS7jPPYCiSnhstY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ReI3OB5Y; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=b+c/II8k4PzYrBWTcA17AZPsMQI4b1e1PSoGVpm7TagD2vdjx+c4m150u+Qur1Le578Y4z2Kr7eAAl4rjcyRH3xZa66cu9e5yS2KcKxIoYb8anxCze+pYRcIFSvuj884DCeV1ygMYd7k7Fqa20L+JYpPt9izi+bT7O1pwXN5F/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GX/PFe17; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ReI3OB5Y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C91221F000E9;
-	Thu,  9 Jul 2026 16:18:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GX/PFe17"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ED6B1F000E9;
+	Thu,  9 Jul 2026 16:23:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783613924;
-	bh=+c800ITVYyf0HQortvRIAgN2/p9RkJsrk68oS9gg2HE=;
+	s=k20260515; t=1783614185;
+	bh=xY8F16dOVGVz/HPOHeaPOgh5zFeAeHxadmKlUSBpORM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ReI3OB5YQQMOrVPAHVH9nU9vT0kJx40oXUtXWU3yZRmSuSycR8b2uG9TiG58WMMb3
-	 pRz2BDgimBsUcM0L+vlcMoxQYENYIYCjYo7XhvIRSPYMHHiutilz6dOFm2v3vkNO/B
-	 syFeuOgoboklXNnQpz6GUaeCi3fbiDJiLJqqseX9TeNfB8Bq7R9XO9GAOnd4PiXjbz
-	 8Rqur66twNmP535APYhnaDdaLTTn6WyKDzhIV0uXSF1+f4z5P6hDdO5N+ByN/EUukL
-	 yDEqM+A8xapUb0F419oNc3kWJ4+3klSi6S+R6mv7ADyE5koVq1qKXPHdfH3gYamWMC
-	 Z46muTatq1BDA==
-Date: Thu, 9 Jul 2026 09:18:44 -0700
-From: Kees Cook <kees@kernel.org>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: linux-atm-general@lists.sourceforge.net, linux-can@vger.kernel.org,
-	linux-sctp@vger.kernel.org, netdev@vger.kernel.org,
+	b=GX/PFe17eJ6JOxK0t8hkX4Wtk2KqMkbigvXkRxAvvQa7oBFnwfaOYZM9WrZ8AmhoU
+	 kZN+TkFYtBBWUthuwN2qBxxtjcW8VGeDyUYDp3p+lgnHE/Jf6U5sAuZPwHazq+YqIA
+	 r296KRh9Nk9ac519CtcIUq/AaKjaJuAsmuCQixkSJJh806f6C3sHf8NPsBLx0E9vtg
+	 ooCZr2W1q07Z7UJEC+VP4h5XKYx1ilPVVh5KeUcD43m2VAa1Jxxc09g0neLzRrtbgN
+	 Az1eATCam5wSD5cbc+TaYI/hCkUuLromifKM2tjMdgvymguc2LPm77B8wMlubbLM88
+	 JkdwlSNn2FLLQ==
+Date: Thu, 9 Jul 2026 17:23:01 +0100
+From: Simon Horman <horms@kernel.org>
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Remi Denis-Courmont <courmisch@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>, Petr Mladek <pmladek@suse.com>,
-	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
-Subject: Re: [PATCH net-next] net: Convert %pK back to %p
-Message-ID: <202607090916.7731D36D@keescook>
-References: <20260706073824.xixrLxoD@linutronix.de>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next] net: airoha: add preliminary support to
+ configure tx hw QoS queue during flowtable offloading
+Message-ID: <20260709162301.GS1364329@horms.kernel.org>
+References: <20260703-airoha-hw-qos-queue-stub-v1-1-ef253ffdd093@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -58,20 +47,21 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260706073824.xixrLxoD@linutronix.de>
+In-Reply-To: <20260703-airoha-hw-qos-queue-stub-v1-1-ef253ffdd093@kernel.org>
 
-On Mon, Jul 06, 2026 at 09:38:24AM +0200, Sebastian Andrzej Siewior wrote:
-> This is a revert of commit 71338aa7d050c ("net: convert %p usage to
-> %pK") which is from 2011. Back then the default behaviour for %p was to
-> print the pointer. The %pK modifier was introduced to be able to control
-> the behaviour of specific pointer output without changing the behaviour
-> of %p for everyone. It was dedicated to avoid leaking pointers via
-> /proc.
+On Fri, Jul 03, 2026 at 01:02:17PM +0200, Lorenzo Bianconi wrote:
+> Add the plumbing to program the AIROHA_FOE_QID field in the PPE FOE
+> entry with a per-flow priority value during flowtable offload. This
+> allows the hardware to steer offloaded flows to a specific QoS queue
+> on the egress QDMA block for traffic forwarded between two interfaces
+> via hardware acceleration, bypassing the kernel forwarding path.
+> The priority parameter is currently always zero because netfilter does
+> not yet provide a mechanism to pass the skb priority field to the
+> flowtable offload driver. Once that support is added in the netfilter
+> subsystem, the driver will be able to extract the priority from the
+> flow rule and map it to the appropriate hardware queue.
+> 
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
-Given the policy on bare %p, and that there are so few in this list (15
-files), how about review those that can just simply be removed or
-switched to %pS, etc:
-https://docs.kernel.org/process/deprecated.html#p-format-specifier
+Reviewed-by: Simon Horman <horms@kernel.org>
 
--- 
-Kees Cook
