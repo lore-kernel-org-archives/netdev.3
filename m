@@ -1,108 +1,130 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F4D3BBFD3;
-	Thu,  9 Jul 2026 19:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 815ED2750FB;
+	Thu,  9 Jul 2026 19:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783625465; cv=none; b=fJSpn7Ochkt/7p2+O4b4zY4/uCbekbFJlQMt0BIKMgikVg2xApqeZygv7w8vB10vG5948kTmUxyeii8NcTvdYLmDsNuivFOaCLEz9qZ5WyjQl/SXq090Ek20SBCCr6zOmTTsgt6Df8RkWz0gQ1UINhGYE4jq3oDfWGaQ8AmdNM4=
+	t=1783625569; cv=none; b=XNC4L1m4vgsBpWr0w1DazUMn8QDQ0MxGhTXJtwxxK40YYTCPwSvR2SiVzQjVz54T+UBBiL5Oc2iUCBo8+h/tTSYsIRrfFj8wpm5vp5GHG3ry8+YvSWBO9UR2bzKtfgiWPHce23qUtWcGeD5eksreGbMHt5B46TOPc6YcG2mAZE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783625465; c=relaxed/simple;
-	bh=nPdk0wLiglWbmv8CImFoITXX66UG323kvIOGdHTnBDE=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=LaMtC4343v/V9w/X9xeg2VXINE1AEy/46ADvGOSoxpk5WWIXnP7Ba6nLRC8ucrdg8LQqX9PjRbgau8tbamkMNsaSgPfaEkCQq3rjTaH4DVCVzDoM80N7IxCWVsfxLLLnblm0ORllQjxanrcRA7qTzbs5CnB75qTfuqigMwUmM8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xqvi1vRp; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783625569; c=relaxed/simple;
+	bh=lBVcNbE3SdloI5j4P8VPbIu6NmrvZndG9ZjUXvjaqfU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TFTcnLos4OqI86xXTqRDbcr+Cil5Phkyqb9OksLquAU2EDCtJMyfuxjI6fqC8o61JL+ToAaoDJJ16Rq03JegWRlo6Yq9Gse/mDtBI0nTsRVGdKbdFK+CowT7LFfKjs3NyeSsPvAjqYeANxRu5H2ESKg8IvkM7srNqs8Fnyc3Nxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=auzMKv1K; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xqvi1vRp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 223CD1F00A3A;
-	Thu,  9 Jul 2026 19:31:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="auzMKv1K"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 244A21F000E9;
+	Thu,  9 Jul 2026 19:32:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783625462;
-	bh=wOQPDaTUbeRaM7DIPsOUnVQ9NOIfjKXC/WmBn8dq7PE=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject;
-	b=Xqvi1vRpGOpjTgMtOfg95Z5nfPVJ5WlY4AW3sFJIaWyLOm5UETnSXxW/70+AJN4NI
-	 XnLoYyLEiZI7Wbq1dMWTD/QJil6cCmdDbkyc2KK8k84D9NB30D1Lr9FuklLSU5ojUs
-	 3bqmbtV8BF+p8i5yNRmqlD43J5aZjHJ5zJWZxnJcWYF+1NR/sUvcX3jislN+w5GBdp
-	 W053z5Gpw0Di5BI1D9pVTV5zUqhQGVWFFA8uM12seJj7xO2maDrXtzZCmRf7VS4e1a
-	 ISPlpyl+F3PDE+TQEDZ5JQvqtBrOh0/Yv+71/TqPF34vBp5aWg6wKOIs+mn4SJcWUa
-	 so/n2mSkOdbmw==
-Date: Thu, 09 Jul 2026 14:31:01 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1783625568;
+	bh=kAnk8wurZx5c5OpGGojggK9/9lXOvy6JHQHST6N14hk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=auzMKv1KlscxwXNmEZXTOFba3AzC1zvV5+KdLqK0W5IDP55KMnvUDomWlmIqurbJq
+	 KvnBdQZTeHn6OnilAVzhRDXElp2+lyOAqSt8AzaPojSa6/oownhsZAeRZ66qSpL/oZ
+	 QPffV5w4Rg1Ou9qpCF7MsXqreDvfczmOByHdhc/WAsKhMv9fb0+4/LyVRMjvolSXnM
+	 gyP9Q5qvjQcq8TuiOCwfjhGGvo1RbIJw+Ef2lv9z7fc6OWQJoR7zsX7App24WvM+x2
+	 0Sx8wwnFRJlrbavFkDmXz0Sm0yUuWQncw1ncAwrPth0JOYmqq7jEyRTmUKtvOrGDpc
+	 uBdy+bMWI8DJw==
+From: Bjorn Andersson <andersson@kernel.org>
+To: konradybcio@kernel.org,
+	Sumit Garg <sumit.garg@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	freedreno@lists.freedesktop.org,
+	linux-media@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	ath12k@lists.infradead.org,
+	linux-remoteproc@vger.kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	robin.clark@oss.qualcomm.com,
+	sean@poorly.run,
+	akhilpo@oss.qualcomm.com,
+	lumag@kernel.org,
+	abhinav.kumar@linux.dev,
+	jesszhan0024@gmail.com,
+	marijn.suijten@somainline.org,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	vikash.garodia@oss.qualcomm.com,
+	bod@kernel.org,
+	mchehab@kernel.org,
+	elder@kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	jjohnson@kernel.org,
+	mathieu.poirier@linaro.org,
+	trilokkumar.soni@oss.qualcomm.com,
+	mukesh.ojha@oss.qualcomm.com,
+	pavan.kondeti@oss.qualcomm.com,
+	jorge.ramirez@oss.qualcomm.com,
+	tonyh@qti.qualcomm.com,
+	vignesh.viswanathan@oss.qualcomm.com,
+	srinivas.kandagatla@oss.qualcomm.com,
+	amirreza.zarrabi@oss.qualcomm.com,
+	jenswi@kernel.org,
+	op-tee@lists.trustedfirmware.org,
+	apurupa@qti.qualcomm.com,
+	skare@qti.qualcomm.com,
+	linux-kernel@vger.kernel.org,
+	Sumit Garg <sumit.garg@oss.qualcomm.com>
+Subject: Re: (subset) [PATCH v9 00/14] firmware: qcom: Add OP-TEE PAS service support
+Date: Thu,  9 Jul 2026 14:32:39 -0500
+Message-ID: <178362521364.2422497.1305957434056184382.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260702115835.167602-1-sumit.garg@kernel.org>
+References: <20260702115835.167602-1-sumit.garg@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: davem@davemloft.net, pabeni@redhat.com, kuba@kernel.org, 
- Rengarajan.S@microchip.com, edumazet@google.com, andrew+netdev@lunn.ch, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- netdev@vger.kernel.org, conor+dt@kernel.org, krzk+dt@kernel.org
-To: Mikhail Lukianchikov <avermoal@gmail.com>
-In-Reply-To: <20260709181724.24682-2-avermoal@gmail.com>
-References: <20260709181724.24682-2-avermoal@gmail.com>
-Message-Id: <178362546037.1021520.7768707354122248220.robh@kernel.org>
-Subject: Re: [PATCH v2] dt-bindings: net: microchip,lan78xx: convert to DT
- schema
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
 
-On Fri, 10 Jul 2026 00:17:25 +0600, Mikhail Lukianchikov wrote:
-> Convert the Microchip LAN78xx family (LAN7800, LAN7801, LAN7850) binding
-> documentation from plain text to DT schema.
+On Thu, 02 Jul 2026 17:28:16 +0530, Sumit Garg wrote:
+> From: Sumit Garg <sumit.garg@oss.qualcomm.com>
 > 
-> The conversion adds proper validation for the 'microchip,led-modes'
-> property inside the MDIO node and updates the MAINTAINERS entry.
+> Qcom platforms has the legacy of using non-standard SCM calls
+> splintered over the various kernel drivers. These SCM calls aren't
+> compliant with the standard SMC calling conventions which is a
+> prerequisite to enable migration to the FF-A specifications from Arm.
 > 
-> Signed-off-by: Mikhail Lukianchikov <avermoal@gmail.com>
-> ---
-> Changes in v2:
->  - Rename file to microchip,lan7800.yaml.
->  - Keeps only one maintainer.
->  - Code style fixed.
->  - Example fixed, remove usb-port@1 node.
->  - Move patternProperties for PHY inside mdio node to fix validation. (suggested by sashiko-bot)
-> 
-> Link to v1: https://lore.kernel.org/netdev/20260707165840.107409-1-avermoal@gmail.com
-> 
->  .../bindings/net/microchip,lan7800.yaml       | 105 ++++++++++++++++++
->  .../bindings/net/microchip,lan78xx.txt        |  53 ---------
->  MAINTAINERS                                   |   3 +-
->  3 files changed, 106 insertions(+), 55 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/net/microchip,lan7800.yaml
->  delete mode 100644 Documentation/devicetree/bindings/net/microchip,lan78xx.txt
-> 
+> [...]
 
-My bot found errors running 'make dt_binding_check' on your patch:
+Applied, thanks!
 
-yamllint warnings/errors:
+[01/14] firmware: qcom: Add a generic PAS service
+        commit: 08314e7c2c38b9ae6a5e01c58ed10a950859404d
+[02/14] firmware: qcom_scm: Migrate to generic PAS service
+        commit: 5c1a2975d23c51c01aca51945d0f10a4ee4c9020
+[03/14] firmware: qcom: Add a PAS TEE service
+        commit: b6f7978da0c4d26fe465aa6634f5a0b48f900de0
+[14/14] MAINTAINERS: Add maintainer entry for Qualcomm PAS TZ service
+        commit: 6701259025d49139131a0eb2257659a066dcca22
 
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/microchip,lan7800.example.dtb: /: 'compatible' is a required property
-	from schema $id: http://devicetree.org/schemas/root-node.yaml
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/microchip,lan7800.example.dtb: /: 'model' is a required property
-	from schema $id: http://devicetree.org/schemas/root-node.yaml
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/microchip,lan7800.example.dtb: /: '#address-cells' is a required property
-	from schema $id: http://devicetree.org/schemas/root-node.yaml
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/microchip,lan7800.example.dtb: /: '#size-cells' is a required property
-	from schema $id: http://devicetree.org/schemas/root-node.yaml
-Documentation/devicetree/bindings/net/microchip,lan7800.example.dtb: /usb: failed to match any schema with compatible: ['usb-host']
+This is available as an immutable branch, for other subsystems to pull at:
+  https://git.kernel.org/pub/scm/linux/kernel/git/qcom/linux.git 20260702115835.167602-2-sumit.garg@kernel.org
 
-doc reference errors (make refcheckdocs):
 
-See https://patchwork.kernel.org/project/devicetree/patch/20260709181724.24682-2-avermoal@gmail.com
+[04/14] remoteproc: qcom_q6v5_pas: Switch over to generic PAS TZ APIs
+        commit: 254030af0d81b12b7624d9ce85c6bdd3171629c6
+[05/14] remoteproc: qcom_q6v5_mss: Switch to generic PAS TZ APIs
+        commit: f3b1357673ddb37ae8b9a8fe44df73cbd2a519c5
+[06/14] remoteproc: qcom_wcnss: Switch to generic PAS TZ APIs
+        commit: ea3b5245f5deba916320b32a8e6510a74c034c17
+[07/14] remoteproc: qcom: Select QCOM_PAS generic service
+        commit: c4383254ac7a529736577e304176a10371c2ee0b
 
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
-
+Best regards,
+-- 
+Bjorn Andersson <andersson@kernel.org>
