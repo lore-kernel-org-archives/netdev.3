@@ -1,42 +1,41 @@
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634BA41A79E;
-	Thu,  9 Jul 2026 13:43:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F26420E7C;
+	Thu,  9 Jul 2026 13:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783604591; cv=none; b=AKU0KegYqckKUqfZGQn6+3MKChEx05LlxUAukpbSmStBX4m5nd5Ry926b3jNCoXhfz1d9PdDekSQ2mPhoZOPwi97coWOZcNuxPSQyr6QqpdWcc6DiiUBE1HaMu5w+5j02l2MiabIieCAe3IhhQak/YYNVa27GZVNfhNVMMsxeFk=
+	t=1783604593; cv=none; b=qCYgM7MzcratbndQxoQZkJMzzmHJ9S/g7nUUwAz4BDVQ1zMf7THUuPEYxwFa5P1jthF1rzz4mFsenuqS42yIw/g/HEGBZXQssXfB2n+czK+8V0wL7Lgifd2N192jLUfEz7ZgWzK0w2ukViBltw+QZgypRA22PB6gBDaxPn0WrCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783604591; c=relaxed/simple;
-	bh=0iPztvmI78QkGurYVCSEGCjiopYD7pP6BiUyKFDjSaY=;
+	s=arc-20240116; t=1783604593; c=relaxed/simple;
+	bh=NQA4v7ofjihlUwPierDt2fyHDxar3p7FmRYOiatcdYo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=aICeCnpkTMqqodSCzvPv8rqrb8DX8742ttb0S+37BtZpckyOiVlWHX1JJ9nWF1vzvqwse1SLQJH7wKrTqF3p4z6tCouakc869o+q8EDkcptsLuTpp322Ue7iRhLmbj/n9A4GPJJOBWoVuKxxbW497qfteh1Q2qfR5Z3J16Pd93g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=VP//9UTR; arc=none smtp.client-ip=148.251.105.195
+	 In-Reply-To:To:Cc; b=uJHQS+eeH6NpFhHrkikJRXfW+bAS1BWBY2JDLTZV3radUt5GDHn6StbZ895mSMbaGwYaYFUE79mrELA8od4hqDSknKTKJXxi8bi6zhzKQesX8Umm69vHfKhmovbsY8th/VpTn1pZW3XRtD/y8Yn/jQdEwSIymP0Er0pcNuY012U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=muAlv0Jt; arc=none smtp.client-ip=148.251.105.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="VP//9UTR"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="muAlv0Jt"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1783604586;
-	bh=0iPztvmI78QkGurYVCSEGCjiopYD7pP6BiUyKFDjSaY=;
+	s=mail; t=1783604589;
+	bh=NQA4v7ofjihlUwPierDt2fyHDxar3p7FmRYOiatcdYo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=VP//9UTRBtTswiSyQORgRo0JFU3KDAyFRO0EjiGGHr5TUjKw3YuQ5ZAYJRPaf2qwQ
-	 WLqbPFlXl6lAvIRXR31DtI71DuyMHtMoJjK1FWzVxQ5IJKnR+ZVXfP33srX9Z8ycoC
-	 WVDW60hX7SX6a77uQqgXfD47ragN0wh33o4SoUs7GiWzszJD1sT6D98cOoQO2a+D96
-	 bI2wQMehSmCPkf3bTXCcEn8bmFMKn7ZZkTAH7czXRArcZ93LZe5smbgLxp76aNFYa/
-	 G+kUhsSKWbEccVWG5RvJkAcpZrbSYhAhx4Wdso8NXGivVEnbphe8jmNWuwm3mkLfM7
-	 q7qMwcK4AZWpg==
+	b=muAlv0Jt/1NX/Z8enH/EUCNr9VzivWJExExqUw/UhYIU+/rQXYvD1kRDSQ3dLCLtQ
+	 AjiCg88xcH8mmF6h9ADbFj6pzxZtgB4NY+12yfsdM0qv6hMjanke4Sa5mPQT4Berm/
+	 ZPfdWTjvms2VPh3L+vBs7DaA4TLxQUkzq5K5EfywwvheMaUhq86yQ3W7lKFLlK05T2
+	 xYDZ62qrhN4z6OGhX+OU/hIxkylE/j7BDx9yen/ssL0pAxgzUt+pWBYhJYhM0gf5MO
+	 WHzjvQiQpAND6NeQgdhCxqHMPDGLPwkcgHVAdh5BhLEf+BFnXg8aZdLk3KazaZsBus
+	 WFiqRmZSC9yxg==
 Received: from yukiji.home (unknown [100.64.0.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: laeyraud)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id C142317E0D56;
-	Thu, 09 Jul 2026 15:43:05 +0200 (CEST)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 402BB17E0CDE;
+	Thu, 09 Jul 2026 15:43:08 +0200 (CEST)
 From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-Date: Thu, 09 Jul 2026 15:42:49 +0200
-Subject: [PATCH v2 09/18] clk: mediatek: Add MT8189 apmixedsys clock
- support
+Date: Thu, 09 Jul 2026 15:42:51 +0200
+Subject: [PATCH v2 11/18] clk: mediatek: Add MT8189 vlpckgen clock support
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,7 +44,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260709-mt8189-clocks-system-base-v2-9-2926da3db6cf@collabora.com>
+Message-Id: <20260709-mt8189-clocks-system-base-v2-11-2926da3db6cf@collabora.com>
 References: <20260709-mt8189-clocks-system-base-v2-0-2926da3db6cf@collabora.com>
 In-Reply-To: <20260709-mt8189-clocks-system-base-v2-0-2926da3db6cf@collabora.com>
 To: Michael Turquette <mturquette@baylibre.com>, 
@@ -64,16 +63,16 @@ Cc: kernel@collabora.com, linux-clk@vger.kernel.org,
  netdev@vger.kernel.org, Irving-CH Lin <irving-ch.lin@mediatek.com>, 
  Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783604575; l=9564;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783604575; l=10081;
  i=louisalexis.eyraud@collabora.com; s=20250113; h=from:subject:message-id;
- bh=0iPztvmI78QkGurYVCSEGCjiopYD7pP6BiUyKFDjSaY=;
- b=zSeyFM9MgJBTYQ5YncQL4nZER3IjXNWNnPsf66tLXv5o+zcVjfv4WitcrlJXP5wtGNmm3/2KZ
- tNzjdZGjW6AA+VT3iX+T1LT+laIhUaopYPCbiDrV3IDnICK5SRcXIq7
+ bh=NQA4v7ofjihlUwPierDt2fyHDxar3p7FmRYOiatcdYo=;
+ b=RuLClbuU9aYPcCKZ5jfB/ZrIu8jH2dO32XXwREg1lkvBHiliSYyFl42dQBuV0EvkeHymIWSLy
+ 0fnv3zZYyMnCI4dSZ8cldTxgU/qRKMy9VumZKWVVyTHtoZN0OjXvP1M
 X-Developer-Key: i=louisalexis.eyraud@collabora.com; a=ed25519;
  pk=CHFBDB2Kqh4EHc6JIqFn69GhxJJAzc0Zr4e8QxtumuM=
 
-Add support for the MT8189 apmixedsys clock controller, which provides
-PLLs generated from SoC 26m.
+Add support for the MT8189 vlpckgen clock controller, which provides
+muxes and dividers for clock selection in vlp domain for other IP blocks.
 
 Co-developed-by: Irving-CH Lin <irving-ch.lin@mediatek.com>
 Signed-off-by: Irving-CH Lin <irving-ch.lin@mediatek.com>
@@ -81,53 +80,30 @@ Co-developed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
 ---
- drivers/clk/mediatek/Kconfig                 |  13 ++
- drivers/clk/mediatek/Makefile                |   1 +
- drivers/clk/mediatek/clk-mt8189-apmixedsys.c | 196 +++++++++++++++++++++++++++
- 3 files changed, 210 insertions(+)
+ drivers/clk/mediatek/Makefile              |   3 +-
+ drivers/clk/mediatek/clk-mt8189-vlpckgen.c | 285 +++++++++++++++++++++++++++++
+ 2 files changed, 287 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/mediatek/Kconfig b/drivers/clk/mediatek/Kconfig
-index 2c09fd729bab..f67dfb6cd019 100644
---- a/drivers/clk/mediatek/Kconfig
-+++ b/drivers/clk/mediatek/Kconfig
-@@ -815,6 +815,19 @@ config COMMON_CLK_MT8188_WPESYS
- 	help
- 	  This driver supports MediaTek MT8188 Warp Engine clocks.
- 
-+config COMMON_CLK_MT8189
-+	tristate "Clock driver for MediaTek MT8189"
-+	depends on ARM64 || COMPILE_TEST
-+	select COMMON_CLK_MEDIATEK
-+	select COMMON_CLK_MEDIATEK_FHCTL
-+	default ARCH_MEDIATEK
-+	help
-+	  Enable this option to support the clock management for MediaTek MT8189 SoC. This
-+	  includes handling of all primary clock functions and features specific to the MT8189
-+	  platform. Enabling this driver ensures that the system's clock functionality aligns
-+	  with the MediaTek MT8189 hardware capabilities, providing efficient management of
-+	  clock speeds and power consumption.
-+
- config COMMON_CLK_MT8192
- 	tristate "Clock driver for MediaTek MT8192"
- 	depends on ARM64 || COMPILE_TEST
 diff --git a/drivers/clk/mediatek/Makefile b/drivers/clk/mediatek/Makefile
-index d8736a060dbd..66577ccb9b93 100644
+index 9d3d2983bfb2..3b25df9e7b50 100644
 --- a/drivers/clk/mediatek/Makefile
 +++ b/drivers/clk/mediatek/Makefile
-@@ -123,6 +123,7 @@ obj-$(CONFIG_COMMON_CLK_MT8188_VDOSYS) += clk-mt8188-vdo0.o clk-mt8188-vdo1.o
+@@ -123,7 +123,8 @@ obj-$(CONFIG_COMMON_CLK_MT8188_VDOSYS) += clk-mt8188-vdo0.o clk-mt8188-vdo1.o
  obj-$(CONFIG_COMMON_CLK_MT8188_VENCSYS) += clk-mt8188-venc.o
  obj-$(CONFIG_COMMON_CLK_MT8188_VPPSYS) += clk-mt8188-vpp0.o clk-mt8188-vpp1.o
  obj-$(CONFIG_COMMON_CLK_MT8188_WPESYS) += clk-mt8188-wpe.o
-+obj-$(CONFIG_COMMON_CLK_MT8189) += clk-mt8189-apmixedsys.o
+-obj-$(CONFIG_COMMON_CLK_MT8189) += clk-mt8189-apmixedsys.o clk-mt8189-topckgen.o
++obj-$(CONFIG_COMMON_CLK_MT8189) += clk-mt8189-apmixedsys.o clk-mt8189-topckgen.o \
++				   clk-mt8189-vlpckgen.o
  obj-$(CONFIG_COMMON_CLK_MT8192) += clk-mt8192-apmixedsys.o clk-mt8192.o
  obj-$(CONFIG_COMMON_CLK_MT8192_AUDSYS) += clk-mt8192-aud.o
  obj-$(CONFIG_COMMON_CLK_MT8192_CAMSYS) += clk-mt8192-cam.o
-diff --git a/drivers/clk/mediatek/clk-mt8189-apmixedsys.c b/drivers/clk/mediatek/clk-mt8189-apmixedsys.c
+diff --git a/drivers/clk/mediatek/clk-mt8189-vlpckgen.c b/drivers/clk/mediatek/clk-mt8189-vlpckgen.c
 new file mode 100644
-index 000000000000..0657a50c30d9
+index 000000000000..8eda5331972e
 --- /dev/null
-+++ b/drivers/clk/mediatek/clk-mt8189-apmixedsys.c
-@@ -0,0 +1,196 @@
++++ b/drivers/clk/mediatek/clk-mt8189-vlpckgen.c
+@@ -0,0 +1,285 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2025-2026 MediaTek Inc.
@@ -148,181 +124,270 @@ index 000000000000..0657a50c30d9
 +#include <linux/platform_device.h>
 +#include <linux/slab.h>
 +
-+#include "clk-fhctl.h"
 +#include "clk-mtk.h"
-+#include "clk-pll.h"
++#include "clk-mux.h"
++#include "clk-gate.h"
 +
 +#include <dt-bindings/clock/mediatek,mt8189-clk.h>
 +
-+#define MT8189_PLL_FMAX		(3800UL * MHZ)
-+#define MT8189_PLL_FMIN		(1500UL * MHZ)
-+#define MT8189_PLLEN_OFS	0x70
-+#define MT8189_INTEGER_BITS	8
++static DEFINE_SPINLOCK(mt8189_vlpclk_lock);
 +
-+#define PLL_SETCLR(_id, _name, _reg, _en_setclr_bit,		\
-+			_rstb_setclr_bit, _flags, _pd_reg,	\
-+			_pd_shift, _tuner_reg, _tuner_en_reg,	\
-+			_tuner_en_bit, _pcw_reg, _pcw_shift,	\
-+			_pcwbits) {				\
-+		.id = _id,					\
-+		.name = _name,					\
-+		.en_reg = MT8189_PLLEN_OFS,			\
-+		.reg = _reg,					\
-+		.pll_en_bit = _en_setclr_bit,			\
-+		.rst_bar_mask = BIT(_rstb_setclr_bit),		\
-+		.flags = _flags,				\
-+		.fmax = MT8189_PLL_FMAX,			\
-+		.fmin = MT8189_PLL_FMIN,			\
-+		.pd_reg = _pd_reg,				\
-+		.pd_shift = _pd_shift,				\
-+		.tuner_reg = _tuner_reg,			\
-+		.tuner_en_reg = _tuner_en_reg,			\
-+		.tuner_en_bit = _tuner_en_bit,			\
-+		.pcw_reg = _pcw_reg,				\
-+		.pcw_shift = _pcw_shift,			\
-+		.pcwbits = _pcwbits,				\
-+		.pcwibits = MT8189_INTEGER_BITS,		\
-+	}
-+
-+static const struct mtk_pll_data apmixed_plls[] = {
-+	PLL_SETCLR(CLK_APMIXED_ARMPLL_LL, "armpll-ll", 0x204, 18,
-+		   0, PLL_AO, 0x208, 24, 0, 0, 0, 0x208, 0, 22),
-+	PLL_SETCLR(CLK_APMIXED_ARMPLL_BL, "armpll-bl", 0x214, 17,
-+		   0, PLL_AO, 0x218, 24, 0, 0, 0, 0x218, 0, 22),
-+	PLL_SETCLR(CLK_APMIXED_CCIPLL, "ccipll", 0x224, 16,
-+		   0, PLL_AO, 0x228, 24, 0, 0, 0, 0x228, 0, 22),
-+	PLL_SETCLR(CLK_APMIXED_MAINPLL, "mainpll", 0x304, 15,
-+		   23, HAVE_RST_BAR | PLL_AO,
-+		   0x308, 24, 0, 0, 0, 0x308, 0, 22),
-+	PLL_SETCLR(CLK_APMIXED_UNIVPLL, "univpll", 0x314, 14,
-+		   23, HAVE_RST_BAR, 0x318, 24, 0, 0, 0, 0x318, 0, 22),
-+	PLL_SETCLR(CLK_APMIXED_MMPLL, "mmpll", 0x324, 13,
-+		   23, HAVE_RST_BAR, 0x328, 24, 0, 0, 0, 0x328, 0, 22),
-+	PLL_SETCLR(CLK_APMIXED_MFGPLL, "mfgpll", 0x504, 7,
-+		   0, 0, 0x508, 24, 0, 0, 0, 0x508, 0, 22),
-+	PLL_SETCLR(CLK_APMIXED_APLL1, "apll1", 0x404, 11,
-+		   0, 0, 0x408, 24, 0x040, 0x00c, 0, 0x40c, 0, 32),
-+	PLL_SETCLR(CLK_APMIXED_APLL2, "apll2", 0x418, 10,
-+		   0, 0, 0x41c, 24, 0x044, 0x00c, 1, 0x420, 0, 32),
-+	PLL_SETCLR(CLK_APMIXED_EMIPLL, "emipll", 0x334, 12,
-+		   0, PLL_AO, 0x338, 24, 0, 0, 0, 0x338, 0, 22),
-+	PLL_SETCLR(CLK_APMIXED_APUPLL2, "apupll2", 0x614, 2,
-+		   0, 0, 0x618, 24, 0, 0, 0, 0x618, 0, 22),
-+	PLL_SETCLR(CLK_APMIXED_APUPLL, "apupll", 0x604, 3,
-+		   0, 0, 0x608, 24, 0, 0, 0, 0x608, 0, 22),
-+	PLL_SETCLR(CLK_APMIXED_TVDPLL1, "tvdpll1", 0x42c, 9,
-+		   0, 0, 0x430, 24, 0, 0, 0, 0x430, 0, 22),
-+	PLL_SETCLR(CLK_APMIXED_TVDPLL2, "tvdpll2", 0x43c, 8,
-+		   0, 0, 0x440, 24, 0, 0, 0, 0x440, 0, 22),
-+	PLL_SETCLR(CLK_APMIXED_ETHPLL, "ethpll", 0x514, 6,
-+		   0, 0, 0x518, 24, 0, 0, 0, 0x518, 0, 22),
-+	PLL_SETCLR(CLK_APMIXED_MSDCPLL, "msdcpll", 0x524, 5,
-+		   0, 0, 0x528, 24, 0, 0, 0, 0x528, 0, 22),
-+	PLL_SETCLR(CLK_APMIXED_UFSPLL, "ufspll", 0x534, 4,
-+		   0, 0, 0x538, 24, 0, 0, 0, 0x538, 0, 22),
++static const char * const vlp_26m_oscd10_parents[] = {
++	"clk26m",
++	"osc_d10"
 +};
 +
-+#define FH(_pllid, _fhid, _offset) {				\
-+		.data = {					\
-+			.pll_id = _pllid,			\
-+			.fh_id = _fhid,				\
-+			.fh_ver = FHCTL_PLLFH_V2,		\
-+			.fhx_offset = _offset,			\
-+			.dds_mask = GENMASK(21, 0),		\
-+			.slope0_value = 0x6003c97,		\
-+			.slope1_value = 0x6003c97,		\
-+			.sfstrx_en = BIT(2),			\
-+			.frddsx_en = BIT(1),			\
-+			.fhctlx_en = BIT(0),			\
-+			.tgl_org = BIT(31),			\
-+			.dvfs_tri = BIT(31),			\
-+			.pcwchg = BIT(31),			\
-+			.dt_val = 0x0,				\
-+			.df_val = 0x9,				\
-+			.updnlmt_shft = 16,			\
-+			.msk_frddsx_dys = GENMASK(23, 20),	\
-+			.msk_frddsx_dts = GENMASK(19, 16),	\
-+		},						\
-+	}
-+
-+static struct mtk_pllfh_data pllfhs[] = {
-+	FH(CLK_APMIXED_ARMPLL_LL, 0, 0x003C),
-+	FH(CLK_APMIXED_ARMPLL_BL, 1, 0x0050),
-+	FH(CLK_APMIXED_CCIPLL, 2, 0x0064),
-+	FH(CLK_APMIXED_MAINPLL, 3, 0x0078),
-+	FH(CLK_APMIXED_MMPLL, 4, 0x008C),
-+	FH(CLK_APMIXED_MFGPLL, 5, 0x00A0),
-+	FH(CLK_APMIXED_EMIPLL, 6, 0x00B4),
-+	FH(CLK_APMIXED_TVDPLL1, 7, 0x00C8),
-+	FH(CLK_APMIXED_TVDPLL2, 8, 0x00DC),
-+	FH(CLK_APMIXED_MSDCPLL, 9, 0x00F0),
-+	FH(CLK_APMIXED_UFSPLL, 10, 0x0104),
-+	FH(CLK_APMIXED_APUPLL, 11, 0x0118),
-+	FH(CLK_APMIXED_APUPLL2, 12, 0x012c),
++static const char * const vlp_vadsp_vowpll_parents[] = {
++	"clk26m",
++	"vowpll"
 +};
 +
-+static const struct of_device_id of_match_clk_mt8189_apmixed[] = {
-+	{ .compatible = "mediatek,mt8189-apmixedsys" },
++static const char * const vlp_sspm_ulposc_parents[] = {
++	"ulposc",
++	"univpll_d5_d2",
++	"osc_d10"
++};
++
++static const char * const vlp_aud_adc_parents[] = {
++	"clk26m",
++	"vowpll",
++	"aud_adc_ext",
++	"osc_d10"
++};
++
++static const char * const vlp_scp_iic_spi_parents[] = {
++	"clk26m",
++	"mainpll_d5_d4",
++	"mainpll_d7_d2",
++	"osc_d10"
++};
++
++static const char * const vlp_vadsp_uarthub_b_parents[] = {
++	"clk26m",
++	"osc_d10",
++	"univpll_d6_d4",
++	"univpll_d6_d2"
++};
++
++static const char * const vlp_axi_kp_parents[] = {
++	"clk26m",
++	"osc_d10",
++	"osc_d2",
++	"mainpll_d7_d4",
++	"mainpll_d7_d2"
++};
++
++static const char * const vlp_sspm_parents[] = {
++	"clk26m",
++	"osc_d10",
++	"mainpll_d5_d2",
++	"ulposc",
++	"mainpll_d6"
++};
++
++static const char * const vlp_pwm_vlp_parents[] = {
++	"clk26m",
++	"osc_d4",
++	"clk32k",
++	"osc_d10",
++	"mainpll_d4_d8"
++};
++
++static const char * const vlp_pwrap_ulposc_parents[] = {
++	"clk26m",
++	"osc_d10",
++	"osc_d7",
++	"osc_d8",
++	"osc_d16",
++	"mainpll_d7_d8"
++};
++
++static const char * const vlp_vadsp_parents[] = {
++	"clk26m",
++	"osc_d20",
++	"osc_d10",
++	"osc_d2",
++	"ulposc",
++	"mainpll_d4_d2"
++};
++
++static const char * const vlp_scp_parents[] = {
++	"clk26m",
++	"univpll_d4",
++	"univpll_d3",
++	"mainpll_d3",
++	"univpll_d6",
++	"apll1",
++	"mainpll_d4",
++	"mainpll_d6",
++	"mainpll_d7",
++	"osc_d10"
++};
++
++static const char * const vlp_spmi_p_parents[] = {
++	"clk26m",
++	"f26m_d2",
++	"osc_d8",
++	"osc_d10",
++	"osc_d16",
++	"osc_d7",
++	"clk32k",
++	"mainpll_d7_d8",
++	"mainpll_d6_d8",
++	"mainpll_d5_d8"
++};
++
++static const char * const vlp_camtg_parents[] = {
++	"clk26m",
++	"univpll_192m_d8",
++	"univpll_d6_d8",
++	"univpll_192m_d4",
++	"osc_d16",
++	"osc_d20",
++	"osc_d10",
++	"univpll_d6_d16",
++	"tvdpll1_d16",
++	"f26m_d2",
++	"univpll_192m_d10",
++	"univpll_192m_d16",
++	"univpll_192m_d32"
++};
++
++static const struct mtk_mux vlp_ck_muxes[] = {
++	/* VLP_CLK_CFG_0 */
++	MUX_GATE_CLR_SET_UPD(CLK_VLP_CK_SCP_SEL, "vlp_scp_sel",
++			     vlp_scp_parents, 0x008, 0x00c, 0x010,
++			     0, 4, 7, 0x04, 0),
++	MUX_CLR_SET_UPD(CLK_VLP_CK_PWRAP_ULPOSC_SEL, "vlp_pwrap_ulposc_sel",
++			vlp_pwrap_ulposc_parents, 0x008, 0x00c, 0x010,
++			8, 3, 0x04, 1),
++	MUX_CLR_SET_UPD(CLK_VLP_CK_SPMI_P_MST_SEL, "vlp_spmi_p_sel",
++			vlp_spmi_p_parents, 0x008, 0x00c, 0x010,
++			16, 4, 0x04, 2),
++	MUX_CLR_SET_UPD(CLK_VLP_CK_DVFSRC_SEL, "vlp_dvfsrc_sel",
++			vlp_26m_oscd10_parents, 0x008, 0x00c, 0x010,
++			24, 1, 0x04, 3),
++	/* VLP_CLK_CFG_1 */
++	MUX_CLR_SET_UPD(CLK_VLP_CK_PWM_VLP_SEL, "vlp_pwm_vlp_sel",
++			vlp_pwm_vlp_parents, 0x014, 0x018, 0x01c,
++			0, 3, 0x04, 4),
++	MUX_CLR_SET_UPD(CLK_VLP_CK_AXI_VLP_SEL, "vlp_axi_vlp_sel",
++			vlp_axi_kp_parents, 0x014, 0x018, 0x01c,
++			8, 3, 0x04, 5),
++	MUX_CLR_SET_UPD(CLK_VLP_CK_SYSTIMER_26M_SEL, "vlp_timer_26m_sel",
++			vlp_26m_oscd10_parents, 0x014, 0x018, 0x01c,
++			16, 1, 0x04, 6),
++	MUX_CLR_SET_UPD(CLK_VLP_CK_SSPM_SEL, "vlp_sspm_sel",
++			vlp_sspm_parents, 0x014, 0x018, 0x01c,
++			24, 3, 0x04, 7),
++	/* VLP_CLK_CFG_2 */
++	MUX_CLR_SET_UPD(CLK_VLP_CK_SSPM_F26M_SEL, "vlp_sspm_f26m_sel",
++			vlp_26m_oscd10_parents, 0x020, 0x024, 0x028,
++			0, 1, 0x04, 8),
++	MUX_CLR_SET_UPD(CLK_VLP_CK_SRCK_SEL, "vlp_srck_sel",
++			vlp_26m_oscd10_parents, 0x020, 0x024, 0x028,
++			8, 1, 0x04, 9),
++	MUX_CLR_SET_UPD(CLK_VLP_CK_SCP_SPI_SEL, "vlp_scp_spi_sel",
++			vlp_scp_iic_spi_parents, 0x020, 0x024, 0x028,
++			16, 2, 0x04, 10),
++	MUX_CLR_SET_UPD(CLK_VLP_CK_SCP_IIC_SEL, "vlp_scp_iic_sel",
++			vlp_scp_iic_spi_parents, 0x020, 0x024, 0x028,
++			24, 2, 0x04, 11),
++	/* VLP_CLK_CFG_3 */
++	MUX_CLR_SET_UPD(CLK_VLP_CK_SCP_SPI_HIGH_SPD_SEL,
++			"vlp_scp_spi_hs_sel",
++			vlp_scp_iic_spi_parents, 0x02c, 0x030, 0x034,
++			0, 2, 0x04, 12),
++	MUX_CLR_SET_UPD(CLK_VLP_CK_SCP_IIC_HIGH_SPD_SEL,
++			"vlp_scp_iic_hs_sel",
++			vlp_scp_iic_spi_parents, 0x02c, 0x030, 0x034,
++			8, 2, 0x04, 13),
++	MUX_CLR_SET_UPD(CLK_VLP_CK_SSPM_ULPOSC_SEL, "vlp_sspm_ulposc_sel",
++			vlp_sspm_ulposc_parents, 0x02c, 0x030, 0x034,
++			16, 2, 0x04, 14),
++	MUX_CLR_SET_UPD(CLK_VLP_CK_APXGPT_26M_SEL, "vlp_apxgpt_26m_sel",
++			vlp_26m_oscd10_parents, 0x02c, 0x030, 0x034,
++			24, 1, 0x04, 15),
++	/* VLP_CLK_CFG_4 */
++	MUX_GATE_CLR_SET_UPD(CLK_VLP_CK_VADSP_SEL, "vlp_vadsp_sel",
++			     vlp_vadsp_parents, 0x038, 0x03c, 0x040,
++			     0, 3, 7, 0x04, 16),
++	MUX_GATE_CLR_SET_UPD(CLK_VLP_CK_VADSP_VOWPLL_SEL,
++			     "vlp_vadsp_vowpll_sel",
++			     vlp_vadsp_vowpll_parents, 0x038, 0x03c, 0x040,
++			     8, 1, 15, 0x04, 17),
++	MUX_GATE_CLR_SET_UPD(CLK_VLP_CK_VADSP_UARTHUB_BCLK_SEL,
++			     "vlp_vadsp_uarthub_b_sel",
++			     vlp_vadsp_uarthub_b_parents,
++			     0x038, 0x03c, 0x040, 16, 2, 23, 0x04, 18),
++	MUX_GATE_CLR_SET_UPD(CLK_VLP_CK_CAMTG0_SEL, "vlp_camtg0_sel",
++			     vlp_camtg_parents, 0x038, 0x03c, 0x040,
++			     24, 4, 31, 0x04, 19),
++	/* VLP_CLK_CFG_5 */
++	MUX_GATE_CLR_SET_UPD(CLK_VLP_CK_CAMTG1_SEL, "vlp_camtg1_sel",
++			     vlp_camtg_parents, 0x044, 0x048, 0x04c,
++			     0, 4, 7, 0x04, 20),
++	MUX_GATE_CLR_SET_UPD(CLK_VLP_CK_CAMTG2_SEL, "vlp_camtg2_sel",
++			     vlp_camtg_parents, 0x044, 0x048, 0x04c,
++			     8, 4, 15, 0x04, 21),
++	MUX_GATE_CLR_SET_UPD(CLK_VLP_CK_AUD_ADC_SEL, "vlp_aud_adc_sel",
++			     vlp_aud_adc_parents, 0x044, 0x048, 0x04c,
++			     16, 2, 23, 0x04, 22),
++	MUX_GATE_CLR_SET_UPD(CLK_VLP_CK_KP_IRQ_GEN_SEL, "vlp_kp_irq_sel",
++			     vlp_axi_kp_parents, 0x044, 0x048, 0x04c,
++			     24, 3, 31, 0x04, 23),
++};
++
++static const struct mtk_gate_regs vlp_ck_cg_regs = {
++	.set_ofs = 0x1f4,
++	.clr_ofs = 0x1f8,
++	.sta_ofs = 0x1f0,
++};
++
++#define GATE_VLP_CK_FLAGS(_id, _name, _parent, _shift, _flag) {	\
++		.id = _id,				\
++		.name = _name,				\
++		.parent_name = _parent,			\
++		.regs = &vlp_ck_cg_regs,		\
++		.shift = _shift,			\
++		.flags = _flag,				\
++		.ops = &mtk_clk_gate_ops_setclr_inv,	\
++	}
++
++#define GATE_VLP_CK(_id, _name, _parent, _shift)	\
++	GATE_VLP_CK_FLAGS(_id, _name, _parent, _shift, 0)
++
++static const struct mtk_gate vlp_ck_clks[] = {
++	GATE_VLP_CK(CLK_VLP_CK_VADSYS_VLP_26M_EN, "vlp_vadsys_vlp_26m", "clk26m", 1),
++	GATE_VLP_CK_FLAGS(CLK_VLP_CK_FMIPI_CSI_UP26M_CK_EN, "vlp_fmipi_csi_up26m",
++			  "fmipi_csi_up26m", 11, CLK_IS_CRITICAL),
++};
++
++static const struct mtk_clk_desc vlpck_desc = {
++	.mux_clks = vlp_ck_muxes,
++	.num_mux_clks = ARRAY_SIZE(vlp_ck_muxes),
++	.clks = vlp_ck_clks,
++	.num_clks = ARRAY_SIZE(vlp_ck_clks),
++	.clk_lock = &mt8189_vlpclk_lock,
++};
++
++static const struct of_device_id of_match_clk_mt8189_vlpck[] = {
++	{ .compatible = "mediatek,mt8189-vlpckgen", .data = &vlpck_desc },
 +	{ /* sentinel */ }
 +};
-+MODULE_DEVICE_TABLE(of, of_match_clk_mt8189_apmixed);
++MODULE_DEVICE_TABLE(of, of_match_clk_mt8189_vlpck);
 +
-+static int clk_mt8189_apmixed_probe(struct platform_device *pdev)
-+{
-+	int r;
-+	struct clk_hw_onecell_data *clk_data;
-+	struct device_node *node = pdev->dev.of_node;
-+	const u8 *fhctl_node = "mediatek,mt8189-fhctl";
-+
-+	clk_data = mtk_alloc_clk_data(ARRAY_SIZE(apmixed_plls));
-+	if (!clk_data)
-+		return -ENOMEM;
-+
-+	fhctl_parse_dt(fhctl_node, pllfhs, ARRAY_SIZE(pllfhs));
-+
-+	r = mtk_clk_register_pllfhs(&pdev->dev, apmixed_plls, ARRAY_SIZE(apmixed_plls),
-+				    pllfhs, ARRAY_SIZE(pllfhs), clk_data);
-+	if (r)
-+		goto free_apmixed_data;
-+
-+	r = of_clk_add_hw_provider(node, of_clk_hw_onecell_get, clk_data);
-+	if (r)
-+		goto unregister_plls;
-+
-+	platform_set_drvdata(pdev, clk_data);
-+
-+	return 0;
-+
-+unregister_plls:
-+	mtk_clk_unregister_pllfhs(apmixed_plls, ARRAY_SIZE(apmixed_plls), pllfhs,
-+				  ARRAY_SIZE(pllfhs), clk_data);
-+free_apmixed_data:
-+	mtk_free_clk_data(clk_data);
-+	return r;
-+}
-+
-+static void clk_mt8189_apmixed_remove(struct platform_device *pdev)
-+{
-+	struct device_node *node = pdev->dev.of_node;
-+	struct clk_hw_onecell_data *clk_data = platform_get_drvdata(pdev);
-+
-+	of_clk_del_provider(node);
-+	mtk_clk_unregister_pllfhs(apmixed_plls, ARRAY_SIZE(apmixed_plls), pllfhs,
-+				  ARRAY_SIZE(pllfhs), clk_data);
-+	mtk_free_clk_data(clk_data);
-+}
-+
-+static struct platform_driver clk_mt8189_apmixed_drv = {
-+	.probe = clk_mt8189_apmixed_probe,
-+	.remove = clk_mt8189_apmixed_remove,
++static struct platform_driver clk_mt8189_vlpck_drv = {
++	.probe = mtk_clk_simple_probe,
++	.remove = mtk_clk_simple_remove,
 +	.driver = {
-+		.name = "clk-mt8189-apmixed",
-+		.of_match_table = of_match_clk_mt8189_apmixed,
++		.name = "clk-mt8189-vlpck",
++		.of_match_table = of_match_clk_mt8189_vlpck,
 +	},
 +};
-+module_platform_driver(clk_mt8189_apmixed_drv);
++module_platform_driver(clk_mt8189_vlpck_drv);
 +
-+MODULE_DESCRIPTION("MediaTek MT8189 apmixed clocks driver");
++MODULE_DESCRIPTION("MediaTek MT8189 vlpckgen clocks driver");
 +MODULE_LICENSE("GPL");
 
 -- 
