@@ -1,63 +1,74 @@
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E58112B143;
-	Thu,  9 Jul 2026 01:47:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D40228CB8
+	for <netdev@vger.kernel.org>; Thu,  9 Jul 2026 01:48:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783561642; cv=none; b=MNAOXKm9rNCFFr8BVmzMSNMQeMwocOdsOjfko2IntjxyJ88QcE/5rZEk1hCYkXxyHFFe6ouyxnQ2r7Ouh0L3ekBWh/vIXT/XEiM8fzZk2OQt2SG71eA+6+RaiDT5GllrvhZHXR29n26jc4rxIbyr4VkXX3vSIFNcAU/3YXMLuWw=
+	t=1783561709; cv=none; b=KwVh6qzEcRPFHP+7xMHBG752odUMJUf2c9pTkO8vOui4koIu2YRe7gtW9eOXtjASlud3f+96/tLZVy564BGjbO05QkJSk4zDmIKZs8K5WqQGjiF6hYVKdqGeDDxvYC5RUa/SMMGte9EkilVZ6SpA7ohiU6i0sqQlQJ3el1M3vLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783561642; c=relaxed/simple;
-	bh=WiPzRRV77/bnxx+p9jDWv1Jj2UmmsMHEREuncoD998A=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZESRxaCH8BKqgL3+uzOJvAosvmRS8DGJKR7JJc4itV2Eoapdpthfvy6b8S0XEJ0ep622SIBy3zHKzlr8sBsm4mM878TjTzWNlBojNrv8kLYk0mOwusnY20W0GPDbAguYblz0uKMYFDin5/jOp21NAEAwkBhrDleCia3COhXGPnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=fUlSK3AY; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+	s=arc-20240116; t=1783561709; c=relaxed/simple;
+	bh=iEHrD9FjHMVqJqfM/WCkUAP1GryeKRdy6kXTmAiXELY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rEJ8+Ay4A4tQDShOsMuDH9aCEJJIyJ47UwHekHeMLiArTuMM7/ehYv0KZ2gUEZwRV/Mjc0rbOvNQRKQH7zL7xiCuWEVicL3mRD1mKWO62eQ1BNbOXid0txgSRXqJaSAPwoHuxMNrMvLEQEcMK81gQ4lfyP8X02XH1VcvsK6dC1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RZpA6odj; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="fUlSK3AY"
-X-UUID: 187859a67b3811f18dc8c9802ae25ab1-20260709
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=ihwsC2Ib54+BEpZEK+sFICsRB63uVdA/3FQor2YMybk=;
-	b=fUlSK3AY3FjLZCFGduuaEc1JYPjXTVVFNg7tDDGc0pMZBEqGt7GPbaIsBj3faegNS/VOUdaeDQ96QzE4+pNZn34ZwUn3oS+Mq8KYPhzbR2zHPlu4HNpwwrgFpPlTaTtDPVvuKPNgQ5oOxDVJXqtJDeXBwBt1fO8JkxgNbd3Alr4=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.17,REQID:929d1d5d-0f16-4162-816a-5dbf26ea2155,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:d497b38,CLOUDID:9d1f05cf-4db6-49e6-af1b-870aa8b6eff7,B
-	ulkID:nil,BulkQuantity:0,SF:102|836|865|888|898,TC:-5,Content:0|15|50|99,E
-	DM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0,OSA:0,
-	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 187859a67b3811f18dc8c9802ae25ab1-20260709
-Received: from mtkmbs14n2.mediatek.inc [(172.21.101.76)] by mailgw02.mediatek.com
-	(envelope-from <shiming.cheng@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1538786639; Thu, 09 Jul 2026 09:47:08 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs13n1.mediatek.inc (172.21.101.193) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Thu, 9 Jul 2026 09:47:07 +0800
-Received: from mbjsdccf07.gcn.mediatek.inc (10.15.20.246) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.2562.29 via Frontend Transport; Thu, 9 Jul 2026 09:47:05 +0800
-From: Shiming Cheng <shiming.cheng@mediatek.com>
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <horms@kernel.org>, <matthias.bgg@gmail.com>,
-	<angelogioacchino.delregno@collabora.com>, <willemb@google.com>,
-	<daniel.zahka@gmail.com>, <alice@isovalent.com>, <sd@queasysnail.net>,
-	<eilaimemedsnaimel@gmail.com>, <imv4bel@gmail.com>, <nbd@nbd.name>,
-	<dsahern@kernel.org>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-mediatek@lists.infradead.org>
-CC: <stable@vger.kernel.org>, <steffen.klassert@secunet.com>,
-	<lena.wang@mediatek.com>, <shiming.cheng@mediatek.com>
-Subject: [PATCH v7] net: gro: fix double aggregation of flush-marked skbs
-Date: Thu, 9 Jul 2026 09:46:39 +0800
-Message-ID: <20260709014704.3625-1-shiming.cheng@mediatek.com>
-X-Mailer: git-send-email 2.45.2
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RZpA6odj"
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-84592b55832so327323b3a.3
+        for <netdev@vger.kernel.org>; Wed, 08 Jul 2026 18:48:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783561708; x=1784166508; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=UuiKXDPAgjQuMH9pMD+TDI3kTjVhNpir/uN1/Fbl0Us=;
+        b=RZpA6odjgo6kPxJApxZOR4YVz7mmDV+fFuERcZv6/P2+3uts0IxRWSchDiR12AekQx
+         AcBZwclGgVDPPjJ7ZkfLozz5os3VqGJZ4oBaexf9a7k5O3pwNeolUengjjXjl9qSA5Fs
+         rZbCw1JvAhxPR5hmRmA0S/eZUTDVD+RBoLiMGGpMFtbVPGGNP1aLfwNfKLHdOTVHA84q
+         0/Owvh4k7lskt8/v5rsOxWAIvnIkItpsiXWpSthk2yB8WCN5aXPbh4XDwtgcPlk2SgJa
+         J47fdCwqrNcvgQdML3QkADV/BVIR+XO69Uxpkz7kki+xWTGql0N5cYeEUcE0zU51mwiE
+         9CMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783561708; x=1784166508;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=UuiKXDPAgjQuMH9pMD+TDI3kTjVhNpir/uN1/Fbl0Us=;
+        b=ObOzHrgP9PsiTPRwyoOPb8TFFm1Krijz8ZWmMPFP3ZsTHZCb410/Id9JqxncdEucaf
+         ud4Jb+fGqaAJ+P5KPqE3Ydjwqq3xBIGvr9eFYp2QnF5cVIlTAyFsRjzg0T0qp9EILX3V
+         Em+oq8fam/qd9tWHGmjuZMR7WcPg0MquDpW6BgeWbmFqUrQ+6pmd857VDxkdoj8BZkIa
+         WK3GU0MKdRHNnm6c/sB+p9aocjnIdR9B5EZmENeWB+RfekISebsNAGaGbz5u0KflglX0
+         xjZFkax5TY+mUJPATC1dkUl6BVyecBdoaZg15PVN1UjupV/H0ECP01JlxLk5YprW7K1c
+         5gMw==
+X-Gm-Message-State: AOJu0YyVi4Av24d4Hr/Wj82K6sD0s2M+nWeioXHW3x+Y5nN3W36nd/7I
+	wRQ37D4TFUVhDwAzmRWjcFUt934mDgz3bVbTdvsx2aOnjRNBjtGIn77+AhqZZl8p
+X-Gm-Gg: AfdE7cktfj60QHVJAZWWKAW2c7aUq+43N6L2Bsx2dLBKPPo0e0PK5brm82buNDjmD//
+	ygFfexldvyK4c7DfW1Fhv5yAAN1Xr/GkAI5wf4p6hFVg+JkQnibIWTa0Sxz0jUnESN+6XZ9DD/e
+	Tc4X20mnUzklPcPzgy51Bk8Hl/MCSszmoOV4qiGkhhpFmGUelggIzVCW5n3cRBALMZlsneBns26
+	yEgtRI2IXGaYtOl1bGnbpYh2BIwd0JtrTEqkKH3WsIxth3L601/RR637XbZPYemuDjizQbRqnWB
+	r8dXV+SSFlgUnsMF8XgXr6+dmy89IDopfDUwBSxcCdA0pJ6kuWVEbbBNN6FyGRch8+9I/3H4n+V
+	aQf0JqXKP+8kYCF/Xz0cpY1lqdI5lPALTRzQZKwP63u7kY6LWhle5bTSzFNNS5L1ZTZCOLnL2KE
+	RQC3Uj0iAj5dvqWxOXBwZYDUXh3uuR8Hs8zEuvdP4=
+X-Received: by 2002:a05:6a00:4191:b0:847:7f3c:b5f5 with SMTP id d2e1a72fcca58-84842ed2020mr4993671b3a.11.1783561707666;
+        Wed, 08 Jul 2026 18:48:27 -0700 (PDT)
+Received: from d.home.yangfl.dn42 ([2a09:bac5:661a:3046::4cf:38])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847f6b97bbesm8072434b3a.17.2026.07.08.18.48.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Jul 2026 18:48:26 -0700 (PDT)
+From: David Yang <mmyangfl@gmail.com>
+To: netdev@vger.kernel.org
+Cc: David Yang <mmyangfl@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v6 0/3] net: dsa: motorcomm: Add LED support
+Date: Thu,  9 Jul 2026 09:47:44 +0800
+Message-ID: <20260709014812.1158178-1-mmyangfl@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,81 +76,47 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
 
-Commit 0ab03f353d36 ("net-gro: Fix GRO flush when receiving a GSO
-packet.") added a flush check to skb_gro_receive(), but
-skb_gro_receive_list() lacks the same validation.
+v5: https://lore.kernel.org/r/20260707064752.1030345-1-mmyangfl@gmail.com
+  - improve trigger selection
+v4: https://lore.kernel.org/r/20260703165241.542195-1-mmyangfl@gmail.com
+  - fix some reg op typos
+v3: https://lore.kernel.org/r/20260701155519.273212-1-mmyangfl@gmail.com
+  - fix null pointer dereference
+  - support polarity auto-configuration
+v2: https://lore.kernel.org/r/20260629183137.541341-1-mmyangfl@gmail.com
+  - allocate LED structures only
+  - eliminate double locking
+v1: https://lore.kernel.org/r/20260618202716.2166450-1-mmyangfl@gmail.com
+  - set up polarity correctly
+  - do not set up .brightness_get() to prevent dead lock
 
-As a result, packets marked with NAPI_GRO_CB(skb)->flush may still be
-re-aggregated.
+David Yang (3):
+  net: dsa: motorcomm: Move to subdirectory
+  net: dsa: motorcomm: Split SMI module
+  net: dsa: motorcomm: Add LED support
 
-This allows already-GRO'd packets with existing frag_list to be
-re-aggregated into a new GRO session, corrupting the frag_list chain
-structure. When skb_segment() attempts to unpack these malformed packets,
-it encounters invalid state and triggers a kernel panic.
+ MAINTAINERS                                   |   2 +-
+ drivers/net/dsa/Kconfig                       |  10 +-
+ drivers/net/dsa/Makefile                      |   2 +-
+ drivers/net/dsa/motorcomm/Kconfig             |  17 +
+ drivers/net/dsa/motorcomm/Makefile            |   5 +
+ .../net/dsa/{yt921x.c => motorcomm/chip.c}    | 222 +-----
+ .../net/dsa/{yt921x.h => motorcomm/chip.h}    |  14 +-
+ drivers/net/dsa/motorcomm/leds.c              | 630 ++++++++++++++++++
+ drivers/net/dsa/motorcomm/leds.h              | 121 ++++
+ drivers/net/dsa/motorcomm/smi.c               | 157 +++++
+ drivers/net/dsa/motorcomm/smi.h               |  88 +++
+ 11 files changed, 1048 insertions(+), 220 deletions(-)
+ create mode 100644 drivers/net/dsa/motorcomm/Kconfig
+ create mode 100644 drivers/net/dsa/motorcomm/Makefile
+ rename drivers/net/dsa/{yt921x.c => motorcomm/chip.c} (96%)
+ rename drivers/net/dsa/{yt921x.h => motorcomm/chip.h} (99%)
+ create mode 100644 drivers/net/dsa/motorcomm/leds.c
+ create mode 100644 drivers/net/dsa/motorcomm/leds.h
+ create mode 100644 drivers/net/dsa/motorcomm/smi.c
+ create mode 100644 drivers/net/dsa/motorcomm/smi.h
 
-Scenario (Tethering/Device forwarding):
-  1. Driver: Generated aggregated packet P1 via LRO with frag_list
-  2. Dev A: Receives aggregated fraglist packet and flush flag set
-  3. Dev A: Re-enters GRO, skb_gro_receive_list() is called
-  4. Missing flush check allows re-aggregation despite flush flag
-  5. Frag_list chain becomes corrupted (loops or dangling refs)
-  6. Dev B: TX path calls skb_segment(), crashes on corrupted frag_list
-
-Root cause in skb_segment():
-  The check at line ~4891:
-    if (hsize <= 0 && i >= nfrags && skb_headlen(list_skb) &&
-        (skb_headlen(list_skb) == len || sg)) {
-
-  When frag_list is corrupted by double aggregation, when list_skb is
-  a NULL pointer from skb->next, skb_headlen(list_skb) dereference
-  NULL/corrupted pointers occurs.
-
-Call Trace:
- skb_headlen(NULL skb)
- skb_segment
- tcp_gso_segment
- tcp4_gso_segment
- inet_gso_segment
- skb_mac_gso_segment
- __skb_gso_segment
- skb_gso_segment
- validate_xmit_skb
- validate_xmit_skb_list
- sch_direct_xmit
- qdisc_restart
- __qdisc_run
- qdisc_run
- net_tx_action
-
-Fix: Add NAPI_GRO_CB(skb)->flush validation to the early-return check in
-skb_gro_receive_list(), matching the defensive programming pattern of
-skb_gro_receive().
-
-Fixes: 3a1296a38d0c ("net: Support GRO/GSO fraglist chaining.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Shiming Cheng <shiming.cheng@mediatek.com>
----
- net/core/gro.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/net/core/gro.c b/net/core/gro.c
-index 35f2f708f010..b413f4a6462b 100644
---- a/net/core/gro.c
-+++ b/net/core/gro.c
-@@ -229,7 +229,9 @@ int skb_gro_receive(struct sk_buff *p, struct sk_buff *skb)
- 
- int skb_gro_receive_list(struct sk_buff *p, struct sk_buff *skb)
- {
--	if (unlikely(p->len + skb->len >= 65536))
-+	/* make sure to check flush flag and to not merge */
-+	if (unlikely(p->len + skb->len >= 65536 ||
-+		     NAPI_GRO_CB(skb)->flush))
- 		return -E2BIG;
- 
- 	if (!pskb_may_pull(skb, skb_gro_offset(skb))) {
 -- 
-2.45.2
+2.53.0
 
