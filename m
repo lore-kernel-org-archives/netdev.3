@@ -1,176 +1,295 @@
-Received: from mail-vs1-f97.google.com (mail-vs1-f97.google.com [209.85.217.97])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011001.outbound.protection.outlook.com [52.101.57.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E494DBD60
-	for <netdev@vger.kernel.org>; Thu,  9 Jul 2026 18:13:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.97
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783620834; cv=none; b=AcpfqABYSx7C7fg8hnhb7x95LEHy15nkp4FNScqh0zhObegT9wY9dMbbm/tFHFaCOQTDSigSv7/HQ1ODMkgKTEbdZw9SwkKc5sbQ/p5n2SL8X4GLqAEjsrK7z1r9fxw2DhmYk/QVC+wQcEL6y2yaRsElor8k7F4K68NBneB7/Tc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783620834; c=relaxed/simple;
-	bh=jf3wizrO3DNNSjq1mqu3bOte7Q6bOCty8fy7G99VYS4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J4wdBd00DW1y9dCuK+tE38UKBxAUPY9VVyty5TjfddypOviiLWQtNOQJe1ehQBusxO57hlhYK6e222yg6XW9peztdFBw06xhY6Aqc7PDVNRA9Nhu0LiBgxPoX6ZsKG0sIlzeUYTPCaeLms05kJz1Nnv74QB+kc1Rb3XWpoRmcVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=VwHrcfTD; arc=none smtp.client-ip=209.85.217.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 369FE3876B3;
+	Thu,  9 Jul 2026 18:14:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.1
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783620873; cv=fail; b=ReZGjm2Nez0r6JkghdV9NhJ76GJls9L617EPW9fU0p9Cc4dPPxTpR7gsRkNzlhBnXu21L6OFyRAlav7Pr6yEpvH3PK9gENrTg+7f31+S/kwsyiqPcsox8whRf+aO9P7Li4NFfvUQp7kah7MHJeCILcEsTDN9Lqj2xklk5TiyHzQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783620873; c=relaxed/simple;
+	bh=mV5EPJMhScx/C2RZ3FsjtLD/7JORi4cChRgTf6IYQwg=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=t9r3Ik7ihVFFj/FInrEL1OSDNssKXUL+hZfu1uaB7GPFlBaUXLZDdY5LESZQq69MViGblP5a8kJ9vdGVzbmtmXuxgJ+9Ui1zUpHKD2VkVeGMjt74jzvlRU0hElNCgKbXGBLCDOVbLdNyLUswr/OOXvCr8sCx2ZDASyx01wdp+xQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=uRiXVm7/; arc=fail smtp.client-ip=52.101.57.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="VwHrcfTD"
-Received: by mail-vs1-f97.google.com with SMTP id ada2fe7eead31-73750ce4b2bso64624137.1
-        for <netdev@vger.kernel.org>; Thu, 09 Jul 2026 11:13:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783620832; x=1784225632;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8GljFaPL3Kh0qSSSK7pTtIfC3Z+Tx2Ojf8hApXmO8iA=;
-        b=CIF6yE31rbaDDvIQAVIci2Zw1WheBlCjpiXt/tCZZBgG5K/DV3h/Nc5iluVXG+YBur
-         6GnbSzfEBs2WiaGmHpfDcM3/SHDi0Fwf2kMXl6vchHsNum4TunRcsNdzOgtzJjSd/G2q
-         BbQdd+wNI5yTO5yVXJCdM4OQKE20QMy8DcWkMZ5Ghrt+QP4/XHW0m+mXIcNjKshhTgcU
-         gsEce6Y8f321MrAUUOczIobgzBcG85qsBV/8b3rbcqSaN+MMyT9UeSc+q657pvwNXMaY
-         J8Eoj8MIXT9AVf4WZVi7TnwFx+aAGDeaaL5ESSvRafHvJH+CfVzEEQE1Kh0yQHToQYHz
-         Wodg==
-X-Forwarded-Encrypted: i=1; AHgh+RrkBbkB2s2ZJETIOteLq443SbTswgEij/prSZ5rrtVn8MFsZwJSarGBpNi6lDECmoXIBflXzVU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNADfJ2DFfGfoN8q5Le2IJCSD4UBOk0gr4hbQ6nGI1H3zk1Yfn
-	Jlru7W/dYaFDGVy/4RJS/Q6bIsQhSUKJtxKpb3uyxwXgaGixR76UfIkU+8sC32TwJKrBgikOZgK
-	92939prCJ1Q3Tf9FwgtQeGoIbpX3mu0j7f0ZHcv3LgCekrICzldIsSqE/+B4uKm3Xk1z/bdwkVj
-	ilO80ecX26BdjI1yZGwZuC2cjNOjh/TkqUj0O82RqblC9s92YLQ3NCmzn8f6Nsry4PBPQrnhbgr
-	zaEhtC+8+323P53So+2
-X-Gm-Gg: AfdE7cmfvg0jwBN3+Ykh8p/EddxoUmmji3pZvx6+LyaP7q5DmZZTKu59k+8+/xjA0iB
-	3bGdIirhlMAcqAJl/C3YiKaO25vXcOxtYGmjJUTgJgdF9fmuOszzu4Ycntrf9ox70Joo+s24Sqk
-	4Q1UqsvBWbf8IJO4gYMYplKSIhvA/6iqlUF7Ai74rqAfNSVue0HfQmjrWk0Q7y9IRC4z4c+WmQ2
-	0FItebvE/bKx/4yKfC0Sw4ff3yvacI4CV23jV75zdenQe1hYRizwp8iS4O9PrC5GpvYS1KeWXLN
-	8wg+kzGau3UiV5qRVA3u1DGlMyiteZdsSpw6vyXtL+2b9+zEe9LN+mU6BNoJLk+npQxkR2amJs2
-	dqWaPCjL6P49mMAg30Mgmi0JqNpdijyaNJWzIzwfG/bjw8rPcioBjDYiyF6gC71s0EQLUkc5fSS
-	aklugO/6YBLbi4JllnMpflJ+GOXLX8Mpw1AjGAN8K2Phyp3YNcnRsh
-X-Received: by 2002:a05:6102:a4b:b0:73e:605c:4078 with SMTP id ada2fe7eead31-744dfe61ac6mr5041962137.15.1783620831849;
-        Thu, 09 Jul 2026 11:13:51 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-11.dlp.protect.broadcom.com. [144.49.247.11])
-        by smtp-relay.gmail.com with ESMTPS id a1e0cc1a2514c-96ecf7878aesm293044241.0.2026.07.09.11.13.51
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 09 Jul 2026 11:13:51 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-c89704da8c7so253767a12.0
-        for <netdev@vger.kernel.org>; Thu, 09 Jul 2026 11:13:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1783620831; x=1784225631; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=8GljFaPL3Kh0qSSSK7pTtIfC3Z+Tx2Ojf8hApXmO8iA=;
-        b=VwHrcfTD7rAzhJYDwjofp9cG0iDEqfRqIO5vx0+3mrTndrUHf4Vhzf07Ze4uss7swN
-         txEHns3nV6s3CPhjsEhM5Ia0cYv7GRTdpZCc0gBBK6X8Z+ZsMmZjAf9NpOzdS754UgQK
-         8xE6CsJNrcllIY0+TSNWNX+n3kwNDI0YYo1kQ=
-X-Forwarded-Encrypted: i=1; AHgh+RpbnjnHzBzTYsAe4isFxltpzDsVbV2Z097ZHFPg4oqvl/BG3bKxTnm5FbzPV0GiVCzym+V5Zow=@vger.kernel.org
-X-Received: by 2002:a05:6a21:6e8f:b0:3bf:aab1:cc8b with SMTP id adf61e73a8af0-3c0bcea2b24mr9653575637.46.1783620830754;
-        Thu, 09 Jul 2026 11:13:50 -0700 (PDT)
-X-Received: by 2002:a05:6a21:6e8f:b0:3bf:aab1:cc8b with SMTP id adf61e73a8af0-3c0bcea2b24mr9653540637.46.1783620830282;
-        Thu, 09 Jul 2026 11:13:50 -0700 (PDT)
-Received: from lvn-dbc2448.lvn.broadcom.net ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13b659c865asm35076417c88.11.2026.07.09.11.13.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 11:13:49 -0700 (PDT)
-From: Harshaka Narayana <harshaka.narayana@broadcom.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Cc: ronak.doshi@broadcom.com,
-	bcm-kernel-feedback-list@broadcom.com,
-	andrew+netdev@lunn.ch,
-	edumazet@google.com,
-	linux-kernel@vger.kernel.org,
-	guolin.yang@broadcom.com,
-	Harshaka Narayana <harshaka.narayana@broadcom.com>,
-	Sankararaman Jayaraman <sankararaman.jayaraman@broadcom.com>
-Subject: [PATCH net] vmxnet3: fix BUG_ON in vmxnet3_get_hdr_len() for Geneve packets
-Date: Thu,  9 Jul 2026 11:11:46 -0700
-Message-ID: <20260709181146.3260540-1-harshaka.narayana@broadcom.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260707165248.1859188-1-harshaka.narayana@broadcom.com>
-References: <20260707165248.1859188-1-harshaka.narayana@broadcom.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="uRiXVm7/"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ksb1s09mysO/OQ/YXSKdGhNkTsr9Sj/UFg16WRLa3weHtnO9yGHCvlZed+eWYfWBHNBuiEZ1d0CnEWKXJUdue5S0cWHTRGux72F2QAKv+kghPBQ8rF89MlE5LTWHs3WjeTkGWMZ41fQQaM84ZTuro2cGrcTAkro1zpN2/Fp0b7TBLgApUEjtgAlQ03aYmb0nl9cyiFRamr50SDbJQadsTdQOG814gx6HGEwp2ob1EpTmqosipjZbALrWQpXiFgz8SYV9pcv4Z+F+Q7A2bCw+5f8dOcrnX2rQad8M0V2xSKcKKn3e2bP1Ap5l15xhq5AzNqoK5aD6TpJycOo8r0LcyQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=y8nwE3qAhNpBv8H77w9f+WelrqOhL+DOgsbSOLOpstI=;
+ b=yKCpzCTjjWjlNCh9dp74M73wIYvSjVSCiS88JgGDMLNJAy4krJRkp5/BAbxFkoaRCGpaFUfFfNKJr9ljcWgLO705AAFnNmA61jlZfMSQ8S9qaKm3TWPXaiTO7VbrUE9W+ieYKDjRYDom5/+BqLe3iPzQnIBEjOKLLoWPL7l26bI+9j1qS3ZFS6eP4t5GPw2PPdCjv7EWUjYjECniiYYR6IZt4cGh/icqr4Zq+CUld0+uqsmQDj4Jm7UFudbIwmRPhoOV0d4LjHb9iaFdFfQKPHp1ap8Ym/lqmb71FSxGr+6GGPUqnGB8w/ynldi5ljfAO0eFeN/XrTlU24ZS/NuVfQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=y8nwE3qAhNpBv8H77w9f+WelrqOhL+DOgsbSOLOpstI=;
+ b=uRiXVm7/VVMRzdWrwCez4sFEGjIlNoUsbxS//QNGOibmciI2K1iPIXa/sxsbheKtZIotNOr4izfgwOF+r2ENQtLgYfN+Tsa6Uwmtek2RMbOcPx6Qd8JYYktfippKRbGMbWHQkpyDHUhbETMLenRXarzd3Xx407WzMt02rKPcKYUrtJIuVkcZF1WtW5mL974yWL4d4P4UEnsx4mNhzVd7Qf0bhOpXe9BU7Lz8P0XDfWtIXsdLOcXNtcHdFHD9rAYxSa1ZDQmV3hKoXQ52Lv3r+MmtObnPLVkiYpwP0RWei2LCngazh6rzH8RTzjNBw0GoQSi+Xr41No0IU18P/gcX5g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB7548.namprd12.prod.outlook.com (2603:10b6:610:144::12)
+ by PH7PR12MB5655.namprd12.prod.outlook.com (2603:10b6:510:138::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Thu, 9 Jul 2026
+ 18:14:27 +0000
+Received: from CH3PR12MB7548.namprd12.prod.outlook.com
+ ([fe80::b710:d6a1:ab16:76de]) by CH3PR12MB7548.namprd12.prod.outlook.com
+ ([fe80::b710:d6a1:ab16:76de%6]) with mapi id 15.21.0181.014; Thu, 9 Jul 2026
+ 18:14:26 +0000
+Message-ID: <22e3a6cf-bb4b-4a0c-89f7-0206ea81ef8b@nvidia.com>
+Date: Thu, 9 Jul 2026 21:14:22 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next V5 6/6] net/mlx5: Apply devlink eswitch mode boot
+ default on probe
+To: Jiri Pirko <jiri@resnulli.us>
+Cc: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+ Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ netdev@vger.kernel.org, linux-rdma@vger.kernel.org, linux-doc@vger.kernel.org
+References: <20260707174527.425134-1-mbloch@nvidia.com>
+ <20260707174527.425134-7-mbloch@nvidia.com> <ak4LVcyKofmtrWcU@FV6GYCPJ69>
+ <7309e57a-89bc-4e4a-97e9-d843b02efa42@nvidia.com>
+ <ak9un-lCDmhGI9tL@FV6GYCPJ69>
+Content-Language: en-US
+From: Mark Bloch <mbloch@nvidia.com>
+In-Reply-To: <ak9un-lCDmhGI9tL@FV6GYCPJ69>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR5P281CA0053.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:f0::12) To CH3PR12MB7548.namprd12.prod.outlook.com
+ (2603:10b6:610:144::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB7548:EE_|PH7PR12MB5655:EE_
+X-MS-Office365-Filtering-Correlation-Id: fe853c33-26cc-4415-0b6e-08dedde5e939
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|23010399003|6133799003|11063799006|4143699003|56012099006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	8tjko4UGn8wDoeontELJVFrFA96s9mqKtocmST3wv+qD9d0Pb0Q5mCi4dfxfmgLEd1I+o44ahzk5jg7d/LihVvIvE+U9+yxL6QSK1xJCarF0nR0e8AACdqxKCGXSsBhzQkmwkjUSVp34vXztMpPhqGWwHiaFeRgnFzS+646JbiFt9KkbEil+ZBbIAcjHSMXQVTGRX2V7XcmOddYuhgh2PudK0/ah1dgUZSOm4WKZO1LN5Ki1mets0r+w4y1v3sJBwFrDFmEqM415snujxccAJ4pIIoWlRBriLOmeULsPyaDl86WGstyHPuBcxEnbKJOKIvtU/hqBbTcONwMH/xKLZ7ekBB+oWw5p9MMxVFJq4lpIX2SqrsjvB24XMd5RiL/YObcvRMRNjilzCjoeOtgCbM0rBHF9OEi397b663aS2GMcMJBvel1Qx5eY3tIYt9ijUrV/xDpZRL20QhfcljL9+sCt8L106W2Bjg/eLBxPsissXvV66eXClsCTEO126tv2SWq/cIIxnp6R62HG2hsxhn+VyeYjikzcuERgljaKtCFLd6X2QNlcBE46p2sukazdqbIFmN9bHsAyHFDzg70FCF+RrQXhR5zgkiAOmSELeSIl47dmvCYh4A7JT17Dls6WKEKWrb8idvqLqRZN1lduD7+zZd7Tg5t0Vh1ibrrA4aA=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB7548.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(23010399003)(6133799003)(11063799006)(4143699003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WGgwdm1mMjMvaU5HK1doRkQ2d3NzUEI0L2JXYlgrcVpOcWNMcjNvaU1ISG44?=
+ =?utf-8?B?RHdNSWtZVWtvRzRBSFBtQW9WUWZvcmV3ZE5WdW9pdHlqMlpZZG9qMlJmMDhL?=
+ =?utf-8?B?eUY3Z0NhNVFWV2dya2ViRWFSc0xWQ243OS9kOWVqM2VQYzZSRzk2QXkrVXEw?=
+ =?utf-8?B?SEJQZlczTlJkYlZvUGVSam04S0lCT0QvZHFJQUxmZjE4M3duQlhQb3Y3dGFC?=
+ =?utf-8?B?a2haK3U1bGNzMXpLdjVkcnlxa05IZHRoVklkYlBSTGxqVzhkRCtDZWVNbWhJ?=
+ =?utf-8?B?NzA0MWVFSFIyWHV2UUlYZ3V5cHF1dG5aZjJuZ1JHWUVtVmRxSndQaytESFNv?=
+ =?utf-8?B?RVF5WjdiK09KTFN3a2NuaGk1YW5Bb1JnaXdad1FGbUQ3MjBJZUhxV0lwbmNE?=
+ =?utf-8?B?WDUzaGN4OE5MTUNYVnhhcnA0TG9HTVRKdzYxQUxzSGY1ckpUNDlyZFFmZ1dS?=
+ =?utf-8?B?dDUrYUxyNGlua1V4MVZNN3J5RExKazMrVnBJcmlHeHlmVDJxRThDRFFFc216?=
+ =?utf-8?B?K0FMK29TTW9FZHIzMHhvOGNubFo0M0YyZHBZb2ZYbUcxQWxmUTZTN2Y1SjF2?=
+ =?utf-8?B?M1k5aG13MVhUTU1hTlMvelpSTzl4QXJjbjc3VWdCTXgvMmJKOUpCN0pLcVRV?=
+ =?utf-8?B?cWt3SnRMbGJtMzNySjRiaHZBNWxMbkd1OHJzZERPMWFsOEE0Zlp0aXdRTUxt?=
+ =?utf-8?B?Y2x4QmdSY1NSU2dyZlEwYnhOTThvdENoZjAzNENTRzNqTWFiZ25yTXhEaE9G?=
+ =?utf-8?B?T09yUC9IZzlzaXk1cEFvTWFwaXJiSlNGZU82WFdKUnA3ZVYwSHh1dWUrZmox?=
+ =?utf-8?B?L3RIbWJKb3BQTlZMODJIM1JQb051UGxwcnhvUGZIb0pLZ0NEdXU4TzVNY0Vn?=
+ =?utf-8?B?ZWhPOHM2bTRHbVRRS2ozQ0pRSE4raWtJc1dxbEkrOVhSR0FjZVZIdnloMk9t?=
+ =?utf-8?B?ZVlNMXZMYVEvdTdwSko5MG5ITzdVZjZFb1dlVElsbDNnWHMzWU56bHlTQk81?=
+ =?utf-8?B?SjMrcHJuVldsRDN0eC9wWlJkVkZCSFR5aFBOWHlOVVNuaVBEdDRtQ0ZHMWFD?=
+ =?utf-8?B?TU9ucEU5OUtEYUgyRnI2SWkzMUhpQlhCdWZ1QzgvWHZuVVoxbDZkSDBkNG1Q?=
+ =?utf-8?B?bGdacUlKaDVoNlBPYlVIVHdNZWxRWXJWN2M0azFzR2dRWGlGUm8wQ2wxOGNx?=
+ =?utf-8?B?ZWZEbzB4YitqdzZOTGtuZjk5ZUxRQmNxKzdvcGk1ZnljM1ZFQjB1SFFmWUZY?=
+ =?utf-8?B?eGdSbCtacTVzOU9ISURlSWwySXVxajZ2WkJTbldRRE5sUk1KaXJpcDFac29q?=
+ =?utf-8?B?SWVpYU5WNUhrQ0U2L3c2NXZ1VHl6VWhHNld1NDNRenJSdmRvMk94dlgxRXJv?=
+ =?utf-8?B?YTFnaU1YUWZaSWNzNlgxUHhyRjJ5UW95RXhlQXl1dGNOM0RtOE93Z1p3OVZ6?=
+ =?utf-8?B?NndqWWhyOUhqeGpqS0xJbEF2cWtWUlhXS1VmVTArTU5XOFQydUg4YnYrY3ha?=
+ =?utf-8?B?SzllNnpNVHFRNnI5T1ZqVDVoOG1sZnk4RGw5L3JuWWdzU2tTZ1htbWhFeE81?=
+ =?utf-8?B?RndEMUdxYlc0aFYyZnVpZlk3ZjVOMWkrc1U3YXhaWDljMndNVnJ3b2FVYlZV?=
+ =?utf-8?B?QWRVaFhHM2c3V0pkWEpXSHh4ZnRZVFhEazlwSUhmR2c0ZGVEVlVLdVdHazd3?=
+ =?utf-8?B?ZnRHbEtuVkRNdlJwK0dxQzdiSkU4c3k3djc1a29uWGloKzJ4NXRzdTgyM3lI?=
+ =?utf-8?B?UVNFV1R4LzlLOTBQRVhNdGpZYmU4WS9ibVV1RVEzdG5oVUtUdHQwUElTSnYx?=
+ =?utf-8?B?Q3NveDkzeWx6L1N0bXFESExEWEJic1hQZXM4ZUk1R0JEd2EyY3NHRHhyZUpM?=
+ =?utf-8?B?eXFQbm8xeUF1ZEI4NXRRYndWc0VpQ2laRFQ0K1ZLRzlBSExkQUd4RzZMV1dz?=
+ =?utf-8?B?Zm1UUk9DcWo3RFJvek10dkxON0laV25RTkRUazIzenFiclN2T0FCSGkzelVM?=
+ =?utf-8?B?b1ZlN25EV3hGaXFqYlNVTURUNTBWMnpwRHU0ZE9JQWVoQlFRRHg0TjBNY2My?=
+ =?utf-8?B?RmUxd0Y1azIzd2UrWVZ4NzFsNTRpSGxhZTVTcjlCQXFpQXU1R1N5K2ZZcDF3?=
+ =?utf-8?B?U2Y0bWVPNW1Lc0Zqd2FvbUhEU3EzUzhJSzBwVml2TC9oMU5RcWdvbFdnUXB3?=
+ =?utf-8?B?cWcxYlFGTjN4M2VyeHZieVlrZHV3QmxoN2NEU3hHTkpCUWk0Szg3ZGptTzVE?=
+ =?utf-8?B?VVVmQUpSSmdpa2pSYmRDVHJKa0Z4eUFocVVhLytCZFp3WDcxYmpmU0x1T0RT?=
+ =?utf-8?Q?iYWrbPJnF0Q3y68BWy?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fe853c33-26cc-4415-0b6e-08dedde5e939
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB7548.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2026 18:14:26.4614
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hJQeOwXiDdW/1SZGfC/8uLdmIBw04RQwEOryMh/2n8JioKISUO6rYRYsUZJ3T7JQiRpD0bMX43OoYa9iT89wpQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5655
 
-vmxnet3_get_hdr_len() assumes gdesc->rcd.v4/v6/tcp always describe the
-outer header, but for a Geneve-encapsulated packet the device can set
-them based on the inner header instead, signalled by the
-VMXNET3_RCD_HDR_INNER_SHIFT bit in the completion descriptor. Since the
-function never skips the outer encapsulation, this mismatch triggers:
 
-- BUG_ON(hdr.ipv4->protocol != IPPROTO_TCP), because the outer
-  protocol is UDP (Geneve), not TCP.
-- BUG_ON(hdr.eth->h_proto != ...), when the tunnel's outer and inner
-  IP versions differ (e.g. outer IPv6/inner IPv4 or vice versa).
 
-Check VMXNET3_RCD_HDR_INNER_SHIFT up front and bail out, since the
-function cannot locate the inner header it would need to parse. Also
-convert the remaining BUG_ON()s in this function to return 0
-defensively.
+On 09/07/2026 12:52, Jiri Pirko wrote:
+> Thu, Jul 09, 2026 at 08:00:19AM +0200, mbloch@nvidia.com wrote:
+>>
+>>
+>> On 08/07/2026 11:34, Jiri Pirko wrote:
+>>> Tue, Jul 07, 2026 at 07:45:27PM +0200, mbloch@nvidia.com wrote:
+>>>> Apply devlink_eswitch_mode= boot defaults for mlx5 after the initial
+>>>> probe finishes device initialization while holding the devlink instance
+>>>> lock.
+>>>>
+>>>> At this point the devlink instance is registered and mlx5 can perform an
+>>>> eswitch mode change. Calling devl_apply_default_esw_mode() also clears
+>>>> any pending default apply work queued by devl_register(), so the queued
+>>>> work will not apply the same default again.
+>>>>
+>>>> Keep this call in mlx5_init_one() rather than the lower-level
+>>>> devl-locked init helper. That helper is also used by devlink reload, and
+>>>> devlink core already applies the boot default after a successful
+>>>> DRIVER_REINIT reload.
+>>>>
+>>>> Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+>>>> ---
+>>>> drivers/net/ethernet/mellanox/mlx5/core/main.c | 13 +++++++++++++
+>>>> 1 file changed, 13 insertions(+)
+>>>>
+>>>> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+>>>> index 643b4aac2033..0712efea74cc 100644
+>>>> --- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
+>>>> +++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+>>>> @@ -1392,6 +1392,17 @@ static void mlx5_unload(struct mlx5_core_dev *dev)
+>>>> 	mlx5_free_bfreg(dev, &dev->priv.bfreg);
+>>>> }
+>>>>
+>>>> +static void mlx5_devl_apply_default_esw_mode(struct mlx5_core_dev *dev)
+>>>> +{
+>>>> +	struct devlink *devlink = priv_to_devlink(dev);
+>>>> +
+>>>> +	if (!MLX5_ESWITCH_MANAGER(dev))
+>>>> +		return;
+>>>> +
+>>>> +	devl_assert_locked(devlink);
+>>>> +	devl_apply_default_esw_mode(devlink);
+>>>> +}
+>>>> +
+>>>> int mlx5_init_one_devl_locked(struct mlx5_core_dev *dev)
+>>>> {
+>>>> 	bool light_probe = mlx5_dev_is_lightweight(dev);
+>>>> @@ -1471,6 +1482,8 @@ int mlx5_init_one(struct mlx5_core_dev *dev)
+>>>> 	err = mlx5_init_one_devl_locked(dev);
+>>>> 	if (err)
+>>>> 		devl_unregister(devlink);
+>>>> +	else
+>>>> +		mlx5_devl_apply_default_esw_mode(dev);
+>>>
+>>> I don't understand why this patch is needed at all. Just leave the job
+>>> to the devlink core, no? That was the point to not pollute drivers with
+>>> code like this. Is it some kind of leftover?
+>>
+>> It was discussed with Jakub here:
+>> https://lore.kernel.org/all/20260611085440.4fe36bf2@kernel.org/
+>>
+>> The main reason is timing. If the default is applied only by devlink
+>> core, it has to wait until the driver drops the devlink lock.
+> 
+> I don't follow.
+> 
+> <quote>
+> 	devl_lock(devlink);
+> 	if (dev->shd) {
+> 		err = devl_nested_devlink_set(dev->shd, devlink);
+> 		if (err)
+> 			goto unlock;
+> 	}
+> 	devl_register(devlink);
+> 	err = mlx5_init_one_devl_locked(dev);
+> 	if (err)
+> 		devl_unregister(devlink);
+> unlock:
+> 	devl_unlock(devlink);
+> </quote>
+> 
+> devlink lock is droped right after.
 
-Fixes: 45dac1d6ea04 ("vmxnet3: Changes for vmxnet3 adapter version 2 (fwd)")
-Signed-off-by: Harshaka Narayana <harshaka.narayana@broadcom.com>
-Signed-off-by: Ronak Doshi <ronak.doshi@broadcom.com>
-Signed-off-by: Sankararaman Jayaraman <sankararaman.jayaraman@broadcom.com>
----
- drivers/net/vmxnet3/vmxnet3_drv.c | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+Earlier versions had the fw reset / recovery flows covered as well.
+The regular probe/init in mlx5 need some changes in mlx5 so I can
+move it earlier, left the API just to make sure we are aligned and
+it could be used be a later patches.
 
-diff --git a/drivers/net/vmxnet3/vmxnet3_drv.c b/drivers/net/vmxnet3/vmxnet3_drv.c
-index 40522afc0532..dedf4082eb6c 100644
---- a/drivers/net/vmxnet3/vmxnet3_drv.c
-+++ b/drivers/net/vmxnet3/vmxnet3_drv.c
-@@ -1530,7 +1530,13 @@ vmxnet3_get_hdr_len(struct vmxnet3_adapter *adapter, struct sk_buff *skb,
- 		struct ipv6hdr *ipv6;
- 		struct tcphdr *tcp;
- 	} hdr;
--	BUG_ON(gdesc->rcd.tcp == 0);
-+
-+	/* v4/v6/tcp then describe the inner header, which we can't locate. */
-+	if (le32_to_cpu(gdesc->dword[0]) & (1UL << VMXNET3_RCD_HDR_INNER_SHIFT))
-+		return 0;
-+
-+	if (gdesc->rcd.tcp == 0)
-+		return 0;
- 
- 	maplen = skb_headlen(skb);
- 	if (unlikely(sizeof(struct iphdr) + sizeof(struct tcphdr) > maplen))
-@@ -1544,15 +1550,21 @@ vmxnet3_get_hdr_len(struct vmxnet3_adapter *adapter, struct sk_buff *skb,
- 
- 	hdr.eth = eth_hdr(skb);
- 	if (gdesc->rcd.v4) {
--		BUG_ON(hdr.eth->h_proto != htons(ETH_P_IP) &&
--		       hdr.veth->h_vlan_encapsulated_proto != htons(ETH_P_IP));
-+		if (hdr.eth->h_proto != htons(ETH_P_IP) &&
-+		    hdr.veth->h_vlan_encapsulated_proto != htons(ETH_P_IP))
-+			return 0;
-+
- 		hdr.ptr += hlen;
--		BUG_ON(hdr.ipv4->protocol != IPPROTO_TCP);
-+		if (hdr.ipv4->protocol != IPPROTO_TCP)
-+			return 0;
-+
- 		hlen = hdr.ipv4->ihl << 2;
- 		hdr.ptr += hdr.ipv4->ihl << 2;
- 	} else if (gdesc->rcd.v6) {
--		BUG_ON(hdr.eth->h_proto != htons(ETH_P_IPV6) &&
--		       hdr.veth->h_vlan_encapsulated_proto != htons(ETH_P_IPV6));
-+		if (hdr.eth->h_proto != htons(ETH_P_IPV6) &&
-+		    hdr.veth->h_vlan_encapsulated_proto != htons(ETH_P_IPV6))
-+			return 0;
-+
- 		hdr.ptr += hlen;
- 		/* Use an estimated value, since we also need to handle
- 		 * TSO case.
--- 
-2.52.0
+Anyway, I guess I can drop this as well and continue with followup
+patches just to keep forward progress.
+
+> 
+> 
+> 
+>> For mlx5, that usually happens very late in the init sequence. I
+>> wanted drivers to be able to apply the default as soon as the driver
+>> is ready for it, because on NICs with a DPU the host PF can remain
+>> stuck until the ECPF moves to switchdev.
+>>
+>> This API is also useful beyond the initial devlink registration path.
+>> Follow-up patches will use it for driver controlled paths that are
+>> not covered by the devlink core, such as recovery and FW reset.
+>>
+>> There is also a race window where userspace may take the devlink lock
+>> before the core gets a chance to apply the default. Letting the driver
+>> explicitly apply the default at the right point avoids that scenario.
+>>
+>> Thinking about this again, maybe the simpler approach is to apply the
+>> default from devl_unlock(). That would avoid the whole workqueue
+>> infra.
+>>
+>> I avoided doing that earlier because applying a default mode as a
+>> side effect of devl_unlock() feels a bit odd. But compared to adding
+>> dedicated workqueue handling maybe it is the lesser evil here.
+>>
+>> What do you think?
+> 
+> I was under impression that you need the work to resolve nested locking.
+> If not, drop it, sure.
+
+I think that should be fine. Once the instance is registered and the
+devlink lock is dropped, the driver should be ready for normal devlink
+operations anyway, since a user could trigger the same path at that
+point, so we just don't drop the lock and call the driver directly,
+should work.
+
+The only caveat I can think of is a driver holding some other lock
+while dropping the devlink lock, and then trying to take that same
+lock again from the mode-setting callback. But that sounds like a
+driver bug rather than something devlink should work around.
+
+I’ll drop the workqueue approach and rework this for v6 :)
+
+Mark
+
+> 
+> 
+>>
+>> About the extra API, I still think it's useful and would like to keep
+>> it if possible.
+>>
+>> Mark
+>>
+>>
+>>>
+>>>
+>>>
+>>>> unlock:
+>>>> 	devl_unlock(devlink);
+>>>> 	return err;
+>>>> -- 
+>>>> 2.43.0
+>>>>
+>>
 
