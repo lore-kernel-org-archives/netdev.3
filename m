@@ -1,130 +1,157 @@
-Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7714265606;
-	Thu,  9 Jul 2026 13:07:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43E8F1AA780
+	for <netdev@vger.kernel.org>; Thu,  9 Jul 2026 13:12:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783602440; cv=none; b=CCMPPtkXAFAzRSQpC6ljKwr2Cfx9mPbKGfo0i9T3NhQzyE0cu3p70B2uecGNAKb9aY7dNnSmPV12yrPqT9lv+u8sbi5VDMhJgMvgafrZLXSCnKp08GDVpFra+1wy+uDf3nniEgG9yk3eSz7xr8ihY1ylycrUDf1xDCZ9wTESaYs=
+	t=1783602755; cv=none; b=IudUYEWLcUBvEjvWZ8a88ttR3gQwePDHyyNGnpn7OlW6ff3LmMRHFrSKtOThVN3wgYDFQ0PqJgBsIenDXNO+5unRig4mIDDqBVYs3PihZVD4Eip0ugBU/RXrCk0Q+o1ACvYR7piiOSGPhXlDB9vOau3cvXSX/UMkGVbTdLiNSDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783602440; c=relaxed/simple;
-	bh=DcdpUurs4X8fkh8egxmf/0LLXh7nERi0BsvIcoCPM3I=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=pABc4zpKPWwI4bWZFxUDMb84woZ+oe6tcQF3k81fpmE77yxu68YUh3sFvvlFSEaW6dPkju1gaXn2VW2uKiTZhVLj1bEKr5hwaYuFbvUn7csdD4o0oc3nOhXA9/twq6J9tRte/qfRlz49XqoPI2sEjtRxM8vJOz+VXwe9oPa+gMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=uFb5HTcL; arc=none smtp.client-ip=193.238.174.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
+	s=arc-20240116; t=1783602755; c=relaxed/simple;
+	bh=iAyyFv/AQxA40DSCOj6cGXn3go3IfDOrY7GY4Sy9UyA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XPUpT8+2qgOq3dQ/LzGuc0daD9kijNOnXy4uXiTwZWZQ8YFsQp8bnIPcsYqpYOEXKBKYxYZJpT5ZHqOxtG6CB6piYLIRup57oFHkIhD2+HiOxdzSRQifQqNNJ5R9DAp5iHkVZUX6Qtn6dcdphIUbEVvyTCldKw/Ba+1QaYjOLbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=0HUpb3ZZ; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0sec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="uFb5HTcL"
-Received: from mx.ssi.bg (localhost [127.0.0.1])
-	by mx.ssi.bg (Potsfix) with ESMTP id 2D3CE20256;
-	Thu, 09 Jul 2026 16:07:04 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
-	:content-type:content-type:date:from:from:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
-	 bh=AEgbb6Kf815spH1aL9lrNyIHslNsEIK4qHsUXkhzeJU=; b=uFb5HTcLHVoJ
-	oImjwRXaq0xujvzQZP74dRX2QNjyvYrRdfKaga8E2K8nvbaHCeKjK9hphE7stcre
-	y3sJNu7+KId6DD06WEEHCVv9EUcWy+PpP7bSE543BaFS09NuJGSZIRvOQm78wo34
-	5WKSWleqX1FP5DCK5G4OsgHdHj+/UCDfLfYcv05W/9U9SeD8xLJ2KOoIPByBI2X0
-	EbBUmALzcd8Z2mGoPzsdv4DxeWRJ94QU4IJY4f/YJrBBzJ9lmLB/Lrf7OUEEzB7c
-	ZTWbTas95RQo6ACvyDVM7TvXFDub4eK4kbP0m2Xd1O+Hq7q3ZAt/051xysWKxFRE
-	nn6Bfcgq2T++WTrH1t8Atk+uUzMZKnll6sgacOmPHSkJ4TSl7cFdqZ2d76JHV9id
-	K7O9xjKipyKQmvFg9dJm3qUOKhrx+oFfT8kWipPkhCU72SSL3dNCosCYGN2i4XbD
-	VZBLMSuGRIRocTF8ooz3BIQFuTJ7o/UHASsXmxLQybtDfU5nlamiM+IIP5+d0XAy
-	4Ipe+4qIJoGzWNRO6OzpyVktgLHEDVsOCcYocM4Jv0C4he4S/I9F2IIMZW13n+tK
-	pjuUKVEmLCRy1Wh2XXVgvFWllrIjb0rbmMDLcXVbW6xtqIiTmsdzUaB24EZzouC6
-	GiMrTmbFJw7RSg42yWBcPfteoUDv7VI=
-Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
-	by mx.ssi.bg (Potsfix) with ESMTPS;
-	Thu, 09 Jul 2026 16:07:04 +0300 (EEST)
-Received: from ja.ssi.bg (unknown [213.16.62.126])
-	by box.ssi.bg (Potsfix) with ESMTPSA id 3AA376090B;
-	Thu,  9 Jul 2026 16:06:53 +0300 (EEST)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by ja.ssi.bg (8.18.2/8.18.2) with ESMTP id 669D6jCw052928;
-	Thu, 9 Jul 2026 16:06:45 +0300
-Date: Thu, 9 Jul 2026 16:06:45 +0300 (EEST)
-From: Julian Anastasov <ja@ssi.bg>
-To: Florian Westphal <fw@strlen.de>
-cc: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
-        Simon Horman <horms@verge.net.au>, David Ahern <dsahern@kernel.org>,
-        Ido Schimmel <idosch@nvidia.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Pablo Neira Ayuso <pablo@netfilter.org>, Phil Sutter <phil@nwl.cc>,
-        Alexander Frolkin <avf@eldamar.org.uk>, netdev@vger.kernel.org,
-        lvs-devel@vger.kernel.org, linux-kernel <linux-kernel@vger.kernel.org>,
-        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-        stable@vger.kernel.org, Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
-        Ao Wang <wangao@seu.edu.cn>, Xuewei Feng <fengxw06@126.com>,
-        Qi Li <qli01@tsinghua.edu.cn>, Ke Xu <xuke@tsinghua.edu.cn>
-Subject: Re: [PATCH nf] ipvs: make destination flags atomic
-In-Reply-To: <ak-KErd1a0NHGN-D@strlen.de>
-Message-ID: <8913381c-1e02-35c7-0ec4-61de5a12fd35@ssi.bg>
-References: <20260707085706.96322-1-zhaoyz24@mails.tsinghua.edu.cn> <41c3d792-af7d-5582-5057-ac3df5f7bfd6@ssi.bg> <91509A0C-9E4A-4F0E-A45C-ABD29396067E@mails.tsinghua.edu.cn> <afcdb34c-ec10-de8e-083c-624bcedca90e@ssi.bg> <ak-KErd1a0NHGN-D@strlen.de>
+	dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b="0HUpb3ZZ"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-4720d22c94aso1714620f8f.1
+        for <netdev@vger.kernel.org>; Thu, 09 Jul 2026 06:12:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=0sec.ai; s=google; t=1783602752; x=1784207552; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=H9Bxn/o6bHrATO0mn2uaPiWaqZWNuvOxb6ptBdz4eyg=;
+        b=0HUpb3ZZrqe6jNid3T41CKaPgavGJH2XFVDZpU4OlrkemmGqXwgJg3skM+++7PbJoz
+         lM/OTM5QiCBi7AkhWrErNjiarEbpLIoOl2TPEoy+r24R7peg4IVt39gNKvrY1i/fUO2s
+         zHYhmDod8lllMEPZp7x+E9/yUUr7CqutmJtEW7PzEQejJcDiSDtm/cvnwv2I4B7hSiHw
+         Dj1uGvCdOEqlEdcJnMDrHkyPUE1QXT24Ep8GvRUkfBlhVqoqH3EjJYF/b/ZDGK1FBv2U
+         WQnUgusisLYMbaAqYvcFqtjMnZNp8v0G8nSsm2p8ZkIApxVhGnDmNg6/ytZN1XQeXVNn
+         oUPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783602752; x=1784207552;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=H9Bxn/o6bHrATO0mn2uaPiWaqZWNuvOxb6ptBdz4eyg=;
+        b=MGqSgYfON5+gcuyi3VlQogRVYd2+OcAtewzPr6JnK539sH9RkD6VMJID8HCR9PxqPw
+         MBVZGTJLrLfdILuh4WULFn9lgESsO5u4BBNwa6emQvYie0QoafexJGcozfcZYLtfkQW8
+         +eU68WbkioTqmzm0FKciAW5VEQm4fRUKvzuhlzoUCjbW1DpFDdeqx5KLMQjGoVzK2u+e
+         Bvq9jpIkctnKLB1pBA+KRvYTnW2daiqC1U+7pdH7j4BJ6fTFi8PivwPlX6fx4f6VCX3T
+         M52Ia9XuF3OTaeJ1qDYnz9uqST3J01VlZb0Bte2I7GKjVtOxcTjleAmyRZTHStuWFBXX
+         ROww==
+X-Forwarded-Encrypted: i=1; AHgh+RqSoVaXI1fgD/YVlAPjpP0Csxn83rkQa8ScBZYrhtbIdTTrVNph6DJ7fHSlzQpfPEPsxq50Ew0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyl3b9RxBdvPo453x8Xuf2L5N/LibEoSzcm7/MRJFvy24quSO+t
+	VDO0KjWqpQL5filvNHPycjODZ6WMUltNUhZ70VYGfI5DewH1Idhz8a5ATq6ZwIo2iaQc
+X-Gm-Gg: AfdE7cmJNAze6BP3pIST5jBLKTtSHbJnaYnfG3d0KdSyFH6yFZgth6yxFQCTM+MxLrD
+	ZY+1/3pccMChrIQwHzxZibBxDmN0d3xnei1jpKi+JAob0xgEH4zAFAe85qDf03L93GSk05qgqoR
+	/UycgPClG+VuwJBoeqfs1fZyRy/qjY17OM3GSTXiEkrWU/XtbrsVFx69BNvKhVnwdkt/PUScORe
+	FP529//M4zjI7uVYWgI3Gt32dh+sm+bBJRLyPWL3knorIXY0VU406lS00cH/ICRHZMf+/5uij+J
+	eFn3+jc5QYkbWT7pMoYxKwviEz+H88NkM880YB+C8Ok1PY5qy5I8jJCJckqk+SwRqORBGMTM8EG
+	7Rddu7AZejOTKSU4fcjqT1vBlTpVnRYayv3amlVJwhA6+1PKDrVIuQzy90GwzLLhUM3B2GdYOAp
+	qpS6M8jZ160+72xZKr5HzjhUeBO1PdJ8z2TYuB57O4p2sb7EkUbMDpYS5YFvoQD4dvBhdG7BAmy
+	cJuNrJQ6GlO5O7o7PUxa3o856s43+9yw2w=
+X-Received: by 2002:a05:6000:290b:b0:476:e67a:dfa7 with SMTP id ffacd0b85a97d-47df073b100mr7611503f8f.7.1783602751497;
+        Thu, 09 Jul 2026 06:12:31 -0700 (PDT)
+Received: from PeakBook-Mini.tail8e484.ts.net ([178.197.218.188])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47a9e4d6da9sm50439168f8f.12.2026.07.09.06.12.30
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 09 Jul 2026 06:12:31 -0700 (PDT)
+From: Doruk Tan Ozturk <doruk@0sec.ai>
+To: david@ixit.cz,
+	oe-linux-nfc@lists.linux.dev
+Cc: horms@kernel.org,
+	david.laight.linux@gmail.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Doruk Tan Ozturk <doruk@0sec.ai>
+Subject: [PATCH net v2] nfc: llcp: bound the connect_sn TLV walk to the skb
+Date: Thu,  9 Jul 2026 15:12:29 +0200
+Message-ID: <20260709131229.44477-1-doruk@0sec.ai>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
 
+Commit 27256cdb290e ("nfc: llcp: bound SNL TLV parsing to the skb and
+add length checks") fixed the unbounded TLV walk in nfc_llcp_recv_snl(),
+and commit d8bd2dedbde5 ("nfc: llcp: fix OOB read and u8 offset wrap in
+TLV parsers") subsequently bounded nfc_llcp_parse_gb_tlv() and
+nfc_llcp_parse_connection_tlv(). One sibling parser sharing the same
+pattern remains unbounded: nfc_llcp_connect_sn().
 
-	Hello,
+nfc_llcp_connect_sn() walks a TLV list, reading a two-byte header
+(type, length) followed by length bytes of value, without checking that
+the two header bytes or the declared length stay within the buffer. It
+returns a pointer to a service name of up to 255 bytes that may point
+past the end of the skb; it is subsequently consumed by memcmp() in
+nfc_llcp_sock_from_sn(). In addition tlv_array_len was computed as
+"skb->len - LLCP_HEADER_SIZE" in size_t, so a CONNECT/CC frame shorter
+than the LLCP header underflows to a huge length and the walk runs far
+past the buffer.
 
-On Thu, 9 Jul 2026, Florian Westphal wrote:
+nfc_llcp_connect_sn() is reachable from nfc_llcp_recv_connect() and
+nfc_llcp_recv_cc(), i.e. from received CONNECT and CC PDUs. A nearby
+NFC device can reach this without authentication; LLCP link activation
+happens automatically after NFC-DEP, and the nfc_llcp_rx_skb()
+dispatcher applies no minimum-length guard.
 
-> Julian Anastasov <ja@ssi.bg> wrote:
-> > 	After looking again at the code, I think we can
-> > do it in different way:
-> > 
-> > - IP_VS_DEST_F_AVAILABLE and IP_VS_DEST_F_OVERLOAD are defined
-> > in include/uapi/linux/ip_vs.h but we never export them to user
-> > space. So, we are free to change them. We can move them to 
-> > include/net/ip_vs.h, see below...
-> > 
-> > - IP_VS_DEST_F_AVAILABLE is changed only under service_mutex,
-> > so we can keep its usage
-> > 
-> > - IP_VS_DEST_F_OVERLOAD needs different access methods.
-> > We can add 'unsigned long flags2;', may be after l_threshold.
-> > And to switch to such usage (F_OVERLOAD -> FL_OVERLOAD):
-> > 
-> > 	- test_bit(IP_VS_DEST_FL_OVERLOAD, &dest->flags2)
-> > 	- set_bit(IP_VS_DEST_FL_OVERLOAD, &dest->flags2)
-> > 
-> > 		Sometimes if (test_bit()) clear_bit() can avoid
-> > 		full memory barrier in ip_vs_dest_update_overload()
-> > 
-> > 	- clear_bit(IP_VS_DEST_FL_OVERLOAD, &dest->flags2)
-> > 		test_bit() guard can help here too
-> > 
-> > 	As there are other races involved, something like
-> > this can be a starting point for such change. It tries harder
-> > to update the overload flag on dest edit/add but it does not
-> > include the proposed bitops:
-> >
-> > diff --git a/include/net/ip_vs.h b/include/net/ip_vs.h
-> > index 49297fec448a..b34631270e24 100644
-> 
-> Who is supposed to do what?
-> 
-> I.e., are you going to submit this officially as replacement
-> for the v2 of this patch or do you expect the sumbitters of
-> this patch to rework their v2 along these lines?
+Walk the TLV list by pointer, bounded by skb_tail_pointer(skb), and
+validate each declared length before use, matching the approach already
+used for nfc_llcp_recv_snl(). Starting the walk at
+&skb->data[LLCP_HEADER_SIZE] against the tail pointer also removes the
+size_t underflow for short frames.
 
-	I can sumbit the ip_vs_dest_update_overload()
-part as separate patch which can be followed by patch(es)
-that convert the overload flag to bitops.
+Found by 0sec automated security-research tooling (https://0sec.ai).
 
-	I'll wait for comments from Yizhou Zhao, he should
-tell me if he is willing to convert the overload flag as
-additional patch.
+Fixes: d646960f7986 ("NFC: Initial LLCP support")
+Cc: stable@vger.kernel.org
+Assisted-by: 0sec:claude-opus-4-8
+Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
+---
+v2: drop the nfc_llcp_parse_gb_tlv() and nfc_llcp_parse_connection_tlv()
+    hunks - fixed independently by d8bd2dedbde5. This resend covers only
+    the still-unbounded nfc_llcp_connect_sn().
+v1: https://lore.kernel.org/netdev/20260705113505 net/nfc/llcp_core.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-Regards
-
---
-Julian Anastasov <ja@ssi.bg>
+diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
+index aed5fe1afef0..0de20279e046 100644
+--- a/net/nfc/llcp_core.c
++++ b/net/nfc/llcp_core.c
+@@ -849,13 +849,16 @@ static struct nfc_llcp_sock *nfc_llcp_sock_get_sn(struct nfc_llcp_local *local,
+ static const u8 *nfc_llcp_connect_sn(const struct sk_buff *skb, size_t *sn_len)
+ {
+ 	u8 type, length;
+-	const u8 *tlv = &skb->data[2];
+-	size_t tlv_array_len = skb->len - LLCP_HEADER_SIZE, offset = 0;
++	const u8 *tlv = &skb->data[LLCP_HEADER_SIZE];
++	const u8 *tlv_end = skb_tail_pointer(skb);
+ 
+-	while (offset < tlv_array_len) {
++	while (tlv + 2 < tlv_end) {
+ 		type = tlv[0];
+ 		length = tlv[1];
+ 
++		if (tlv + 2 + length > tlv_end)
++			break;
++
+ 		pr_debug("type 0x%x length %d\n", type, length);
+ 
+ 		if (type == LLCP_TLV_SN) {
+@@ -863,7 +866,6 @@ static const u8 *nfc_llcp_connect_sn(const struct sk_buff *skb, size_t *sn_len)
+ 			return &tlv[2];
+ 		}
+ 
+-		offset += length + 2;
+ 		tlv += length + 2;
+ 	}
+ 
+-- 
+2.43.0
 
