@@ -1,44 +1,44 @@
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837A1405C48;
-	Thu,  9 Jul 2026 10:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D9F408011;
+	Thu,  9 Jul 2026 10:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783591745; cv=none; b=sNYreRhPSXYjXlLPpSmG7aPSZ9XVT7WNJeP6NF2xE9h/XeXvh5Ib0l/lJJr+GxBojPJaFwF8YjczpukHqdUBQdM75URny7nhuAdbwrU+VptLjEB+s+Y/JZGTgUrS7KcUr8xcS74I/+6Nl8DV4NDPamI9QG7XF3o0SjezOMv/T4s=
+	t=1783591746; cv=none; b=EZsk03GYSWZrZsrz7fys98WBV5Z7cCf3QOuOj0oN586jq1Uzo13gNqOQdQlwAYdsOEAuoIirBfpxkd1rfijF6lsF1XcDYUshBUJCUss7kL+XV8QMXhKgIfjyi75Esq7vJ2FMuIT1fbNu8oBw70Ux+nXbePHOLyXL9dYrQeVwmlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783591745; c=relaxed/simple;
-	bh=fyoIvvMAPZ3uMEiOTWTLR50OX1Y0c4Fh6mtdeMVj3DA=;
+	s=arc-20240116; t=1783591746; c=relaxed/simple;
+	bh=Hp8FiCdY7xjuZ1pVb4OkuJM5rI9rN/mN5bpJBnhgOFk=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ux4fPNUQFT6D0Vt3Tj7cbyGy8tpiD69KvXjSujYGKFwSPA6NAFYPf7wPrDtTJxrDJigqgNGts/o49srs5wG7CAoF+syzNFI83ToKm4E4JBQt/et+wlDfOsG9tcuzjf9fEFRiINumUHl+8uP51D5Q0r9MwrZl8L+4Dc3np9LAIZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=Gq5HtNOi; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=WgYDqr8h7+t7/VPYcCiODTGYpWEfchdJaKmj7/lVvWZPNGXa5mT2ub6jSsgRrn3gSiLRvhqX5P9Tg2Tqd6XU+ognv7c9+mlFswnB9/ycHPegaKfY/2iI0tkRV/3yBVgWilPS+yyBz+sPcJb1CCqTRxpJmi2aDf2fS7f75ntAPMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=THRHujoV; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="Gq5HtNOi"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 669A2nGrA2982778, This message is accepted by code: ctloc85258
+	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="THRHujoV"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 669A2olzE2982781, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
-	s=dkim; t=1783591369;
-	bh=7kEGDGMaHF6S8xLpedLucjZCt9B7k2paX4O8i/xNCdc=;
+	s=dkim; t=1783591370;
+	bh=VDDl+hX8kOwO9Ei5j3Nschi9lCj1AHgLYKWwYi+6Xyc=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=Gq5HtNOiV8rx87hcFJRxcb1lAkkgSeuhTPopJToNxA6oIT7BtFKPm4UbeXDA1sdq0
-	 g5QkEd61phaCYBa5Dtg/FNmfUfWyWJKIHfTlQYJIdogfqWC2TLeMOmLpnImIPeqVtM
-	 bMFlV6bP5eROkistUh671ccroXFns58g6bMSL8y49+S/P0CI+hQX/lGndChKjbEsN5
-	 jVuuFbIzj4YlP0xdVmFwHw7Ij3571Iq97T6AhNoMRrRth9ovrrONk+F/MUZI0NqhiV
-	 3kxaAnGFxkAvYjlzDdLJt7DGYuxDcetz9ssM2sAkVCjYFDSNHfhZqAVasA5c5aTPBB
-	 J4u5u1OFQzDmg==
-Received: from RS-EX-MBS2.realsil.com.cn ([172.29.17.102])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 669A2nGrA2982778
+	b=THRHujoV9Lm+EvEvdDVSjXoYgAws6KVLRt85SHn7go10i5sliMk9IZhgHsdWrDYr1
+	 DPUxgYI6p/UrVFlQjBYXIswDgVbyy+QilHn/QQFy4NGLB/rQUGBEfChmsm5GEiNP7Z
+	 fnOMSZuwPqfbllES2Z3aURZKGwW/2pr6FF4RLyissMmuWLs/nLGE//aTmI+5VdLH3x
+	 pbQDGus2PcueRqoM08/77Tt5rf9/auVHTaw6MU4omE9lgeLWN5MvoWs3jQ2aEfgOmJ
+	 b21xt0DIzcIoiIb0AoII/tTZxjBCgzWD7ercGp87h0y7ypBMWJ9K0x315wfO9duGru
+	 KchJXugQ9jb5w==
+Received: from RS-EX-MBS1.realsil.com.cn ([172.29.17.101])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 669A2olzE2982781
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 9 Jul 2026 18:02:49 +0800
+	Thu, 9 Jul 2026 18:02:50 +0800
 Received: from RS-EX-MBS2.realsil.com.cn (172.29.17.102) by
- RS-EX-MBS2.realsil.com.cn (172.29.17.102) with Microsoft SMTP Server
+ RS-EX-MBS1.realsil.com.cn (172.29.17.101) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Thu, 9 Jul 2026 18:02:49 +0800
+ 15.2.2562.17; Thu, 9 Jul 2026 18:02:50 +0800
 Received: from 172.29.37.154 (172.29.37.152) by RS-EX-MBS2.realsil.com.cn
  (172.29.17.102) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Thu, 9 Jul 2026 18:02:49 +0800
+ Transport; Thu, 9 Jul 2026 18:02:50 +0800
 From: javen <javen_xu@realsil.com.cn>
 To: <hkallweit1@gmail.com>, <nic_swsd@realtek.com>, <andrew+netdev@lunn.ch>,
 	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
@@ -46,9 +46,9 @@ To: <hkallweit1@gmail.com>, <nic_swsd@realtek.com>, <andrew+netdev@lunn.ch>,
 CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<daniel@makrotopia.org>, <linux@armlinux.org.uk>, <enelsonmoore@gmail.com>,
 	<daniel@thingy.jp>, Javen Xu <javen_xu@realsil.com.cn>
-Subject: [PATCH net-next v6 2/7] net: phy: phylink: add helper to modify pause
-Date: Thu, 9 Jul 2026 18:02:31 +0800
-Message-ID: <20260709100237.541-3-javen_xu@realsil.com.cn>
+Subject: [PATCH net-next v6 6/7] r8169: add ltr support for RTL8117 series
+Date: Thu, 9 Jul 2026 18:02:35 +0800
+Message-ID: <20260709100237.541-7-javen_xu@realsil.com.cn>
 X-Mailer: git-send-email 2.50.1.windows.1
 In-Reply-To: <20260709100237.541-1-javen_xu@realsil.com.cn>
 References: <20260709100237.541-1-javen_xu@realsil.com.cn>
@@ -63,133 +63,99 @@ Content-Type: text/plain
 
 From: Javen Xu <javen_xu@realsil.com.cn>
 
-For Realtek nics, when we enable jumbo, pause are not supported. So we
-must check the pause capabilities from ourself and lp.
+This patch adds ltr support for RTL8117 series, enables RTL8117 series
+enter l1.2 state. This makes sense for the system to enter c10 state.
+
+This patch drops the COMBO_LTR_EXTEND_EN write for VER_52. This is
+intentional, as this bit is not required for RTL8116af.
 
 Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
 ---
+Changes in v2:
+ - no changes
+
+Changes in v3:
+ - no changes
+
+Changes in v4:
+ - no changes
+
 Changes in v5:
- - no changes, new file
+ - no changes
 
 Changes in v6:
- - rename phylink_update_mac_pause_capabilities(), this function only
-   changes mac pause capability
- - set asym pause and pause according to config->pause tx and rx
- - add phydev->lock when change pl->phydev->advertising
+ - no changes
 ---
- drivers/net/phy/phylink.c | 87 +++++++++++++++++++++++++++++++++++++++
- include/linux/phylink.h   |  2 +
- 2 files changed, 89 insertions(+)
+ drivers/net/ethernet/realtek/r8169_main.c | 22 +++++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-index 59dfe35afa54..9e9cd79301d6 100644
---- a/drivers/net/phy/phylink.c
-+++ b/drivers/net/phy/phylink.c
-@@ -1828,6 +1828,93 @@ int phylink_set_fixed_link(struct phylink *pl,
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index db2f3d9d6bf1..c279beb6fdb5 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -353,11 +353,13 @@ enum rtl_registers {
+ 	ALDPS_LTR	= 0xe0a2,
+ 	LTR_OBFF_LOCK	= 0xe032,
+ 	LTR_SNOOP	= 0xe034,
++	SEND_LTR_MSG	= 0xe038,
+ 
+ #define ALDPS_LTR_EN			BIT(0)
+ #define LTR_OBFF_LOCK_EN		BIT(0)
+ #define LINK_SPEED_CHANGE_EN		BIT(14)
+ #define LTR_SNOOP_EN			GENMASK(15, 14)
++#define LTR_MSG_EN			BIT(0)
+ };
+ 
+ enum rtl8168_8101_registers {
+@@ -3192,8 +3194,23 @@ static void rtl_enable_ltr(struct rtl8169_private *tp)
+ 		r8168_mac_ocp_write(tp, 0xcdf2, 0x9003);
+ 		r8168_mac_ocp_modify(tp, LTR_OBFF_LOCK, 0x0000, LINK_SPEED_CHANGE_EN);
+ 		break;
+-	case RTL_GIGA_MAC_VER_46 ... RTL_GIGA_MAC_VER_48:
+ 	case RTL_GIGA_MAC_VER_52:
++		r8168_mac_ocp_write(tp, 0xcdd0, 0x9003);
++		r8168_mac_ocp_modify(tp, LTR_SNOOP, 0x0000, LTR_SNOOP_EN);
++		r8168_mac_ocp_write(tp, 0xe02c, 0x1880);
++		r8168_mac_ocp_write(tp, 0xe02e, 0x4880);
++		r8168_mac_ocp_modify(tp, ALDPS_LTR, 0x0000, ALDPS_LTR_EN);
++		r8168_mac_ocp_write(tp, 0xcdd8, 0x9003);
++		r8168_mac_ocp_write(tp, 0xcdda, 0x9003);
++		r8168_mac_ocp_write(tp, 0xcddc, 0x9003);
++		r8168_mac_ocp_write(tp, 0xcdd2, 0x883c);
++		r8168_mac_ocp_write(tp, 0xcdd4, 0x8c12);
++		r8168_mac_ocp_write(tp, 0xcdd6, 0x9003);
++		r8168_mac_ocp_write(tp, 0xe0a6, 0x9003);
++		r8168_mac_ocp_write(tp, 0xe0a8, 0x9003);
++		r8168_mac_ocp_modify(tp, LTR_OBFF_LOCK, 0x0000, LINK_SPEED_CHANGE_EN);
++		break;
++	case RTL_GIGA_MAC_VER_46 ... RTL_GIGA_MAC_VER_48:
+ 		r8168_mac_ocp_modify(tp, ALDPS_LTR, 0x0000, ALDPS_LTR_EN);
+ 		RTL_W8(tp, COMBO_LTR_EXTEND, RTL_R8(tp, COMBO_LTR_EXTEND) | COMBO_LTR_EXTEND_EN);
+ 		fallthrough;
+@@ -3213,6 +3230,7 @@ static void rtl_enable_ltr(struct rtl8169_private *tp)
+ 	}
+ 	/* chip can trigger LTR */
+ 	r8168_mac_ocp_modify(tp, LTR_OBFF_LOCK, 0x0003, LTR_OBFF_LOCK_EN);
++	r8168_mac_ocp_modify(tp, SEND_LTR_MSG, 0x0000, LTR_MSG_EN);
  }
- EXPORT_SYMBOL_GPL(phylink_set_fixed_link);
  
-+/**
-+ * phylink_update_mac_pause_capabilities() - Dynamically update MAC pause
-+ * @pl: a pointer to a &struct phylink returned from phylink_create()
-+ * @mac_pause: the new MAC pause capabilities mask
-+ *
-+ * This function allows a MAC driver to dynamically change its pause state,
-+ * such as losing/gaining Pause frame support based on MTU size.
-+ * It recalculates supported link modes and triggers renegotiation if needed.
-+ */
-+void phylink_update_mac_pause_capabilities(struct phylink *pl, unsigned long mac_pause)
-+{
-+	struct phylink_link_state *config = &pl->link_config;
-+	unsigned long old_pause, caps_added, caps_removed;
-+	bool pause_adv, asym_adv;
-+
-+	ASSERT_RTNL();
-+
-+	if (mac_pause & ~(MAC_SYM_PAUSE | MAC_ASYM_PAUSE)) {
-+		phylink_err(pl, "Attempted to dynamically change non-pause MAC capabilities\n");
-+		return;
-+	}
-+
-+	old_pause = pl->config->mac_capabilities & (MAC_SYM_PAUSE | MAC_ASYM_PAUSE);
-+	caps_added = mac_pause & ~old_pause;
-+	caps_removed = old_pause & ~mac_pause;
-+
-+	if (!caps_added && !caps_removed)
-+		return;
-+
-+	mutex_lock(&pl->state_mutex);
-+
-+	pl->config->mac_capabilities &= ~(MAC_SYM_PAUSE | MAC_ASYM_PAUSE);
-+	pl->config->mac_capabilities |= mac_pause;
-+
-+	if (caps_removed & MAC_SYM_PAUSE)
-+		linkmode_clear_bit(ETHTOOL_LINK_MODE_Pause_BIT, pl->supported);
-+	if (caps_removed & MAC_ASYM_PAUSE)
-+		linkmode_clear_bit(ETHTOOL_LINK_MODE_Asym_Pause_BIT, pl->supported);
-+
-+	linkmode_and(config->advertising, config->advertising, pl->supported);
-+
-+	if (caps_added & MAC_SYM_PAUSE) {
-+		linkmode_set_bit(ETHTOOL_LINK_MODE_Pause_BIT, pl->supported);
-+		if (pl->phydev && !phylink_test(pl->phydev->supported, Pause))
-+			linkmode_clear_bit(ETHTOOL_LINK_MODE_Pause_BIT, pl->supported);
-+	}
-+	if (caps_added & MAC_ASYM_PAUSE) {
-+		linkmode_set_bit(ETHTOOL_LINK_MODE_Asym_Pause_BIT, pl->supported);
-+		if (pl->phydev && !phylink_test(pl->phydev->supported, Asym_Pause))
-+			linkmode_clear_bit(ETHTOOL_LINK_MODE_Asym_Pause_BIT, pl->supported);
-+	}
-+
-+	linkmode_and(config->advertising, config->advertising, pl->supported);
-+
-+	if (config->pause & MLO_PAUSE_AN) {
-+		if (phylink_test(pl->supported, Pause) &&
-+		    (config->pause & MLO_PAUSE_RX) && (config->pause & MLO_PAUSE_TX))
-+			linkmode_set_bit(ETHTOOL_LINK_MODE_Pause_BIT, config->advertising);
-+
-+		if (phylink_test(pl->supported, Asym_Pause) &&
-+		    ((config->pause & MLO_PAUSE_RX) ^ (config->pause & MLO_PAUSE_TX)))
-+			linkmode_set_bit(ETHTOOL_LINK_MODE_Asym_Pause_BIT, config->advertising);
-+	}
-+
-+	if (!pl->phydev)
-+		phylink_change_inband_advert(pl);
-+
-+	mutex_unlock(&pl->state_mutex);
-+
-+	if (pl->phydev) {
-+		pause_adv = linkmode_test_bit(ETHTOOL_LINK_MODE_Pause_BIT,
-+					      config->advertising);
-+		asym_adv = linkmode_test_bit(ETHTOOL_LINK_MODE_Asym_Pause_BIT,
-+					     config->advertising);
-+
-+		mutex_lock(&pl->phydev->lock);
-+		linkmode_mod_bit(ETHTOOL_LINK_MODE_Pause_BIT,
-+				 pl->phydev->advertising, pause_adv);
-+		linkmode_mod_bit(ETHTOOL_LINK_MODE_Asym_Pause_BIT,
-+				 pl->phydev->advertising, asym_adv);
-+		mutex_unlock(&pl->phydev->lock);
-+
-+		phy_start_aneg(pl->phydev);
-+	}
-+}
-+EXPORT_SYMBOL_GPL(phylink_update_mac_pause_capabilities);
-+
- /**
-  * phylink_create() - create a phylink instance
-  * @config: a pointer to the target &struct phylink_config
-diff --git a/include/linux/phylink.h b/include/linux/phylink.h
-index 2bc0db3d52ac..e3c7822100ab 100644
---- a/include/linux/phylink.h
-+++ b/include/linux/phylink.h
-@@ -842,4 +842,6 @@ void phylink_replay_link_begin(struct phylink *pl);
- 
- void phylink_replay_link_end(struct phylink *pl);
- 
-+void phylink_update_mac_pause_capabilities(struct phylink *pl, unsigned long mac_pause);
-+
- #endif
+ static void rtl_hw_aspm_clkreq_enable(struct rtl8169_private *tp, bool enable)
+@@ -3246,6 +3264,7 @@ static void rtl_hw_aspm_clkreq_enable(struct rtl8169_private *tp, bool enable)
+ 		rtl_enable_ltr(tp);
+ 		switch (tp->mac_version) {
+ 		case RTL_GIGA_MAC_VER_46 ... RTL_GIGA_MAC_VER_48:
++		case RTL_GIGA_MAC_VER_52:
+ 		case RTL_GIGA_MAC_VER_61 ... RTL_GIGA_MAC_VER_LAST:
+ 			/* reset ephy tx/rx disable timer */
+ 			r8168_mac_ocp_modify(tp, 0xe094, 0xff00, 0);
+@@ -3258,6 +3277,7 @@ static void rtl_hw_aspm_clkreq_enable(struct rtl8169_private *tp, bool enable)
+ 	} else {
+ 		switch (tp->mac_version) {
+ 		case RTL_GIGA_MAC_VER_46 ... RTL_GIGA_MAC_VER_48:
++		case RTL_GIGA_MAC_VER_52:
+ 		case RTL_GIGA_MAC_VER_61 ... RTL_GIGA_MAC_VER_LAST:
+ 			r8168_mac_ocp_modify(tp, 0xe092, 0x00ff, 0);
+ 			break;
 -- 
 2.43.0
 
