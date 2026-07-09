@@ -1,46 +1,52 @@
-Received: from mout-b-112.mailbox.org (mout-b-112.mailbox.org [195.10.208.42])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36DC03FAE10
-	for <netdev@vger.kernel.org>; Thu,  9 Jul 2026 10:35:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.10.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F543ED101;
+	Thu,  9 Jul 2026 10:38:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783593321; cv=none; b=dCGSVctSsa/z/HU0Nm05BW1vNryU8Om4V1QjNaBqjntQanSGFnozM6FMeZgWZxC/dcVBMIEzVkkCWwF2zQiqFT+eykguGTptFK62b3S1TjV2K03l/BVh3HLsa936mGSHYfOW+DA81mb+4z6XoYRvhR5utaSG4bhwuE/2nAAOn/4=
+	t=1783593492; cv=none; b=q8P22JWcKhJ9uVTOpHgph0k7IAYp5185N3Nmdyw4jSWNwdgPQx8NLnya5d9Rc91WijuIZtecb8gHdMRvNl/dGWPBjDrKvY9diBmN7zM4sYUoTC378R0GzYvahqVI80o3EnZ9tI8jlPyOhPS5WCVRvl74fvpSUVIxjKPPUvFrnQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783593321; c=relaxed/simple;
-	bh=p1kjbhdT6N3Q9NUC7Rx1mS/UfL+53xtmvDuoLjwn3DU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fYgpiA4z2st+Z5wpEpvZGx9k6uWQnMBcnVAHni9kRcAL9sEDcjDu1lXD2gz7L2LvXhlTreJ91cz+HNzOccP1jkZbmJWx9yeh1WdJAXum5S2VdKJTM0B7tjCcxXv56WdsL2QAgNoqGIhZ5LnRs0bQaJDwRcwfOTG5VKT949QWk9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com; spf=pass smtp.mailfrom=mandelbit.com; dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b=z74GkJIz; arc=none smtp.client-ip=195.10.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
+	s=arc-20240116; t=1783593492; c=relaxed/simple;
+	bh=uN27BS4ewStwCklQr2DuM5gP4rGJ1wPSO/4y1Hf/bo8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rqG23F2NPRWkodzOybf5cp1qwPjyFw9IkPt4FhvkZDMJzpE65aJiKpE0NXm+xjyzjU56j6PC61vASjiV2lu6Ja0E7Hfv97THu1xt6qNX4AmPypMJuaUNAzp9bJ4wIggm8JNtCOPn6q9/FUdIJfkT7IEB25/0lE1TN9zp3WXvZz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BnCOQY7x; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b="z74GkJIz"
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA512)
-	(No client certificate requested)
-	by mout-b-112.mailbox.org (Postfix) with ESMTPS id 4gwrmB00Vvz5wk3;
-	Thu, 09 Jul 2026 12:28:58 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
-	s=MBO0001; t=1783592938;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=jmFWoFrPowpEJzbuNxET6ZuMs1aM0FuNyRi2737QkK0=;
-	b=z74GkJIzy+oQd0qtm2tC5U8txbvp9aZ0XYISTnEplxlxyoTe45Zs3Umy/yhtaz0M14G2XD
-	jZh6UBQtOu7JYY8wqkZ8TvxMZcFz6pEUgPyKNZf7bX4fhJrBSwSg47jHoOAgKi5NfzsDYX
-	nbMM7jUqwAfwlMRhb1mXq2xwaXGbBvKNNspZbaBbY/3UPceN30f8bT53o4ZpIGRD1eW3B8
-	y1bV48wyU/ZjKsWYF4EQ23djoxnPZ9dAdHk4cbphHLS3EYqxGYTFvTwczM4HMskVw/Wz8O
-	H71A0SW9fGaN3TePGc219GtPZyt5VDUHrA0OoHFIAejxfqOO1Vvqo/S8T3Nggg==
-From: Marco Baffo <marco@mandelbit.com>
-To: netdev@vger.kernel.org
-Cc: David Ahern <dsahern@kernel.org>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Antonio Quartulli <antonio@openvpn.net>,
-	Marco Baffo <marco@mandelbit.com>
-Subject: [PATCH iproute2-next v2] ip: add OVPN device mode support
-Date: Thu,  9 Jul 2026 12:28:19 +0200
-Message-ID: <20260709102819.48809-1-marco@mandelbit.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BnCOQY7x"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C9CD1F000E9;
+	Thu,  9 Jul 2026 10:38:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783593491;
+	bh=Y6VGOlkpgo4arCW+nyarOcCI4IwHdmRhLsRejOptB8w=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=BnCOQY7xP6QHREHgMjc6e7PDRpKXWvc2mHPQ5W1aMPsERACfOO5K6l32UUrp0e2K/
+	 r34STa9E8zqjpZjU1xYa7Dr0Uu/wa3HiWVfq/pTUWrk81hSMW4+gkSLmV0AlEFKy0b
+	 bJ+TJ0qX1EbVkvCOFYhP1l+9RHBH3yr7MJhQEtr4YrapD0LpAnMrlnx6Ae/gDm3WYI
+	 W1vIRRoE2JRxeepbcUE1pr7jFfVoanpUKBOMOF4oYRd3DkCCvBlc9Rywa2fkrOhnj4
+	 6sAa4Jb7ZpFmOBIZSdHshNzt4WlkB+F6LEChx61GNDnIiUAhPStCUbIIqKMYLsuUs3
+	 WnuMwHhSm50TQ==
+From: Simon Horman <horms@kernel.org>
+To: dhowells@redhat.com
+Cc: Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	marc.dionne@auristor.com,
+	kuba@kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	linux-afs@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	jaltman@auristor.com,
+	jarkko@kernel.org,
+	keyrings@vger.kernel.org,
+	stable@kernel.org
+Subject: Re: [PATCH net 4/4] rxrpc: Fix CHALLENGE packet overqueuing and simplify RESPONSE generation
+Date: Thu,  9 Jul 2026 11:37:53 +0100
+Message-ID: <20260709103753.1543915-1-horms@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260702144919.172295-5-dhowells@redhat.com>
+References: <20260702144919.172295-5-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,205 +55,161 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-ovpn devices (OpenVPN data channel offload, kernel v6.16) can already
-be created with "ip link add ovpn0 type ovpn", but the mode is always
-left to the kernel default (p2p mode).
-
-Add ovpn link type support so that point-to-point (p2p) or multi-peer
-(mp) mode can be selected at creation time and shown by
-"ip -d link show".
-
-Example:
-
-  $ ip link add ovpn0 type ovpn mode mp
-
-Signed-off-by: Marco Baffo <marco@mandelbit.com>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://sashiko.dev
 ---
+Subject: rxrpc: Fix CHALLENGE packet overqueuing and simplify RESPONSE generation
 
-Changes in v2:
-- Created a mode table to use for both parsing and printing.
-- Used strcmp() instead of matches().
+This commit removes the out-of-band queueing mechanism for CHALLENGE
+packets. It transitions the connection event processor to handle
+CHALLENGE parsing and RESPONSE generation directly, while allowing
+application data to be passed via a user-type key.
 
- ip/Makefile           |  2 +-
- ip/iplink.c           |  2 +-
- ip/iplink_ovpn.c      | 92 +++++++++++++++++++++++++++++++++++++++++++
- man/man8/ip-link.8.in | 24 +++++++++++
- 4 files changed, 118 insertions(+), 2 deletions(-)
- create mode 100644 ip/iplink_ovpn.c
+Link: https://sashiko.dev/#/patchset/20260624163819.3017002-1-dhowells%40redhat.com
 
-diff --git a/ip/Makefile b/ip/Makefile
-index 3535ba78..978f6841 100644
---- a/ip/Makefile
-+++ b/ip/Makefile
-@@ -13,7 +13,7 @@ IPOBJ=ip.o ipaddress.o ipaddrlabel.o iproute.o iprule.o ipnetns.o \
-     ipvrf.o iplink_xstats.o ipseg6.o iplink_netdevsim.o iplink_rmnet.o \
-     ipnexthop.o ipmptcp.o iplink_bareudp.o iplink_wwan.o ipioam6.o \
-     iplink_amt.o iplink_batadv.o iplink_gtp.o iplink_virt_wifi.o \
--    iplink_netkit.o ipstats.o
-+    iplink_netkit.o ipstats.o iplink_ovpn.o
- 
- RTMONOBJ=rtmon.o
- 
-diff --git a/ip/iplink.c b/ip/iplink.c
-index 3f0b46c9..c6aee8b6 100644
---- a/ip/iplink.c
-+++ b/ip/iplink.c
-@@ -42,7 +42,7 @@ void iplink_types_usage(void)
- 		"          ifb | ip6erspan | ip6gre | ip6gretap | ip6tnl |\n"
- 		"          ipip | ipoib | ipvlan | ipvtap |\n"
- 		"          macsec | macvlan | macvtap | netdevsim |\n"
--		"          netkit | nlmon | pfcp | rmnet | sit | team | team_slave |\n"
-+		"          netkit | nlmon | ovpn | pfcp | rmnet | sit | team | team_slave |\n"
- 		"          vcan | veth | vlan | vrf | vti | vxcan | vxlan | wwan |\n"
- 		"          xfrm | virt_wifi }\n");
- }
-diff --git a/ip/iplink_ovpn.c b/ip/iplink_ovpn.c
-new file mode 100644
-index 00000000..d3dff295
---- /dev/null
-+++ b/ip/iplink_ovpn.c
-@@ -0,0 +1,92 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * iplink_ovpn.c	OpenVPN DCO device support
-+ *
-+ * Author: Marco Baffo <marco@mandelbit.com>
-+ *
-+ */
-+
-+#include <stdio.h>
-+#include <string.h>
-+#include <linux/if_link.h>
-+
-+#include "utils.h"
-+#include "ip_common.h"
-+
-+static const char * const ovpn_mode_strings[] = {
-+	[OVPN_MODE_P2P] = "p2p",
-+	[OVPN_MODE_MP] = "mp",
-+};
-+
-+static const char *ovpn_mode_to_str(__u8 mode)
-+{
-+	if (mode >= ARRAY_SIZE(ovpn_mode_strings) || !ovpn_mode_strings[mode])
-+		return "(unknown)";
-+
-+	return ovpn_mode_strings[mode];
-+}
-+
-+static void print_explain(FILE *f)
-+{
-+	fprintf(f,
-+		"Usage: ... ovpn [ mode { p2p | mp } ]\n"
-+		"\n"
-+		"MODE := p2p | mp\n"
-+		"(p2p is the default if mode is not specified)\n");
-+}
-+
-+static int ovpn_parse_opt(struct link_util *lu, int argc, char **argv,
-+			  struct nlmsghdr *n)
-+{
-+	while (argc > 0) {
-+		if (strcmp(*argv, "mode") == 0) {
-+			int mode, err;
-+
-+			NEXT_ARG();
-+			mode = parse_one_of("mode", *argv, ovpn_mode_strings,
-+					    ARRAY_SIZE(ovpn_mode_strings),
-+					    &err);
-+			if (err)
-+				return err;
-+			addattr8(n, 1024, IFLA_OVPN_MODE, mode);
-+		} else if (strcmp(*argv, "help") == 0) {
-+			print_explain(stderr);
-+			return -1;
-+		} else {
-+			fprintf(stderr, "ovpn: unknown option \"%s\"?\n", *argv);
-+			print_explain(stderr);
-+			return -1;
-+		}
-+		argc--;
-+		argv++;
-+	}
-+
-+	return 0;
-+}
-+
-+static void ovpn_print_opt(struct link_util *lu, FILE *f, struct rtattr *tb[])
-+{
-+	__u8 mode;
-+
-+	if (!tb || !tb[IFLA_OVPN_MODE] ||
-+	    RTA_PAYLOAD(tb[IFLA_OVPN_MODE]) < sizeof(mode))
-+		return;
-+
-+	mode = rta_getattr_u8(tb[IFLA_OVPN_MODE]);
-+
-+	print_string(PRINT_ANY, "mode", "mode %s ", ovpn_mode_to_str(mode));
-+}
-+
-+static void ovpn_print_help(struct link_util *lu, int argc, char **argv,
-+			    FILE *f)
-+{
-+	print_explain(f);
-+}
-+
-+struct link_util ovpn_link_util = {
-+	.id		= "ovpn",
-+	.maxattr	= IFLA_OVPN_MAX,
-+	.parse_opt	= ovpn_parse_opt,
-+	.print_opt	= ovpn_print_opt,
-+	.print_help	= ovpn_print_help,
-+};
-diff --git a/man/man8/ip-link.8.in b/man/man8/ip-link.8.in
-index fc7f0248..d54d2fbc 100644
---- a/man/man8/ip-link.8.in
-+++ b/man/man8/ip-link.8.in
-@@ -287,6 +287,7 @@ ip-link \- network device configuration
- .BR netdevsim " |"
- .BR netkit " |"
- .BR nlmon " |"
-+.BR ovpn " |"
- .BR pfcp " |"
- .BR rmnet " |"
- .BR sit " |"
-@@ -430,6 +431,9 @@ Link types:
- .BR nlmon
- - Netlink monitoring device
- .sp
-+.BR ovpn
-+- OpenVPN Data Channel Offload device
-+.sp
- .BR pfcp
- - Packet Forwarding Control Protocol device
- .sp
-@@ -1349,6 +1353,26 @@ the following additional arguments are supported:
- .BI  mode " MODE "
- - specifies the mode (datagram or connected) to use.
- 
-+.TP
-+OVPN Type Support
-+For a link of type
-+.I OVPN
-+the following additional arguments are supported:
-+
-+.BI "ip link add " DEVICE
-+.BR "type ovpn " [ " mode " "{ " p2p " | " mp " }" " ]"
-+
-+.in +8
-+.sp
-+.BR mode " { " p2p " | " mp " }"
-+- selects the OpenVPN device mode. The default,
-+.BR p2p ,
-+creates a point-to-point device for a single peer. The
-+.B mp
-+mode creates a multi-peer device.
-+
-+.in -8
-+
- .TP
- ERSPAN Type Support
- For a link of type
--- 
-2.43.0
+> diff --git a/fs/afs/cm_security.c b/fs/afs/cm_security.c
+> index 103168c70dd4d..db2a3b30f0209 100644
+> --- a/fs/afs/cm_security.c
+> +++ b/fs/afs/cm_security.c
+> @@ -295,13 +295,22 @@ static int afs_create_yfs_cm_token(struct sk_buff *challenge,
+>  	if (ret < 0)
+>  		goto out_aead;
+>  
+> -	server->cm_rxgk_appdata.len  = adatasize;
+> -	server->cm_rxgk_appdata.data = appdata;
+> -	appdata = NULL;
+> +	appdata_key = key_alloc(&key_type_user, "rxrpc: afs rxgk appdata",
+> +				GLOBAL_ROOT_UID, GLOBAL_ROOT_GID, current_cred(),
+> +				KEY_POS_VIEW | KEY_POS_SEARCH | KEY_USR_VIEW,
+> +				KEY_ALLOC_NOT_IN_QUOTA, NULL);
+> +	if (IS_ERR(appdata_key)) {
+> +		ret = PTR_ERR(appdata_key);
+> +		goto out_aead;
+> +	}
+> +
+> +	ret = key_instantiate_and_link(appdata_key, appdata, adatasize, NULL, NULL);
+> +	if (ret < 0) {
+> +		key_put(appdata_key);
+> +		goto out_aead;
+> +	}
+> +
+> +	server->cm_rxgk_appdata = appdata_key;
 
+[Severity: Medium]
+Does this plain store require memory barriers? afs_make_call() appears to
+read call->server->cm_rxgk_appdata concurrently without holding the
+cm_token_lock. Without smp_store_release() here and a corresponding
+smp_load_acquire() or READ_ONCE() on the read side, could the reader
+observe the pointer before the key object's initialization is completely
+visible to other CPUs?
+
+> diff --git a/fs/afs/rxrpc.c b/fs/afs/rxrpc.c
+> index 05fcb9b6adde7..ae48c15b3db94 100644
+> --- a/fs/afs/rxrpc.c
+> +++ b/fs/afs/rxrpc.c
+> @@ -373,8 +373,25 @@ void afs_make_call(struct afs_call *call, gfp_t gfp)
+>  		call->drop_ref = true;
+>  	}
+>  
+> +	if (call->key && call->server) {
+> +		u32 krb5_enctype = 0;
+> +		u8 security_index = 0;
+> +
+> +		rxrpc_kernel_query_key(call->key, &security_index, &krb5_enctype);
+> +		switch (security_index) {
+> +#ifdef CONFIG_RXGK
+> +		case RXRPC_SECURITY_YFS_RXGK:
+> +			app_data = call->server->cm_rxgk_appdata;
+> +			break;
+
+[Severity: Medium]
+Following up on the previous observation, is it safe to perform a plain
+read of the cm_rxgk_appdata pointer here in afs_make_call() without
+READ_ONCE() or a lock?
+
+> diff --git a/net/rxrpc/rxgk.c b/net/rxrpc/rxgk.c
+> index 77a67ace1d248..9ab766d5f0b6c 100644
+> --- a/net/rxrpc/rxgk.c
+> +++ b/net/rxrpc/rxgk.c
+> @@ -981,36 +981,36 @@ static int rxgk_construct_response(struct rxrpc_connection *conn,
+> [ ... ]
+> +	if (conn->bundle->app_data) {
+> +		rcu_read_lock();
+> +		appdata = (struct user_key_payload *)
+> +			user_key_payload_rcu(conn->bundle->app_data);
+
+[Severity: High]
+If an attacker passes the ID of a non-user key (like an asymmetric key
+or keyring) during sendmsg(), could casting that key's payload to struct
+user_key_payload and modifying its refcount cause memory corruption?
+
+> +		if (!refcount_inc_not_zero(&appdata->ref))
+
+[Severity: High]
+Can user_key_payload_rcu() return NULL here if the user key has been
+revoked by userspace via keyctl(KEYCTL_REVOKE)? If appdata evaluates to
+NULL, would calling refcount_inc_not_zero(&appdata->ref) attempt to
+dereference a low offset address and trigger a kernel panic?
+
+> diff --git a/net/rxrpc/sendmsg.c b/net/rxrpc/sendmsg.c
+> index 4c754f78ece9a..225eec410bedc 100644
+> --- a/net/rxrpc/sendmsg.c
+> +++ b/net/rxrpc/sendmsg.c
+> @@ -590,6 +592,18 @@ static int rxrpc_sendmsg_cmsg(struct msghdr *msg, struct rxrpc_send_params *p)
+> [ ... ]
+> +		case RXRPC_RESPONSE_APPDATA:
+> +			if (len != sizeof(key_serial_t))
+> +				return -EINVAL;
+> +			if (p->call.app_data)
+> +				return -EINVAL;
+> +			key_id = *(key_serial_t *)CMSG_DATA(cmsg);
+> +			key = lookup_user_key(key_id, 0, KEY_NEED_SEARCH);
+> +			if (IS_ERR(key))
+> +				return PTR_ERR(key);
+> +			p->call.app_data = key_ref_to_ptr(key);
+> +			break;
+
+[Severity: High]
+Should there be a check here in rxrpc_sendmsg_cmsg() to verify that the
+fetched key is actually a user-type key (e.g., key->type == &key_type_user)?
+Without validation, any key type could be assigned to p->call.app_data,
+leading to the invalid cast mentioned previously in
+rxgk_respond_to_challenge().
+
+> @@ -677 +716 @@ int rxrpc_do_sendmsg(struct rxrpc_sock *rx, struct msghdr *msg, size_t len)
+> [ ... ]
+>  	call = rxrpc_find_call_by_user_ID(rx, p.call.user_call_ID);
+>  	if (!call) {
+> [ ... ]
+> +		call = rxrpc_new_client_call_for_sendmsg(rx, msg, &p);
+> +		/* The socket is now unlocked... */
+> +		if (IS_ERR(call))
+> +			return PTR_ERR(call);
+
+[Severity: High]
+Does this direct return leak the key reference acquired by lookup_user_key()
+and stored in p.call.app_data when rxrpc_new_client_call_for_sendmsg()
+fails?
+
+> @@ -803,6 +803,7 @@ int rxrpc_do_sendmsg(struct rxrpc_sock *rx, struct msghdr *msg, size_t len)
+>  out_put_unlock:
+>  	if (!dropped_lock)
+>  		mutex_unlock(&call->user_mutex);
+>  error_put:
+>  	rxrpc_put_call(call, rxrpc_call_put_sendmsg);
+>  	_leave(" = %d", ret);
+>  	return ret;
+>  
+>  error_release_sock:
+>  	release_sock(&rx->sk);
+> +	key_put(p.call.app_data);
+>  	return ret;
+>  }
+
+[Severity: High]
+Do the out_put_unlock and error_put paths in rxrpc_do_sendmsg() also need
+to call key_put(p.call.app_data)? It appears rxrpc_alloc_client_call()
+takes its own reference on the key via key_get(), which means the original
+reference acquired during rxrpc_sendmsg_cmsg() will be leaked on successful
+operations or when failing after the socket lock is released.
