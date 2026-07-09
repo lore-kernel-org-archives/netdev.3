@@ -1,215 +1,430 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0682D3D902D;
-	Thu,  9 Jul 2026 06:42:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA9CB3DCD8F
+	for <netdev@vger.kernel.org>; Thu,  9 Jul 2026 06:42:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783579366; cv=none; b=Jplldqi4BB4hoyc+VYuFeUyAxbw5nhQQR+IundlF/R4JqQSQPX0t1J6oKvi2hj3LUjB5bI7OmWCB5Mv15XXMVDjKZ005J5JmxOPUVWnWSa/SGNJt1uJNv92ZGGk/5DotODxkvdPAbtTEaOZWw56poefkn6pT1SJJGg1bKU71xek=
+	t=1783579371; cv=none; b=pgNS4/01t/zOoi3cJFSMR9yvc7Suajwpaq/IAmlKYggnbMAiibwhcXtNpy2f2taB4IIBK7DfMTs7I4CbKLzLPKKJ6oItHgPgdfcZa6tII15K/og04a+gtw2GCIAclr6Ulr3QNCElSx67hOGceHVyDzjDhRHkhq5bV6KEHrOIcHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783579366; c=relaxed/simple;
-	bh=bGBazfBaxIINbA6KbVooTSYyJeoFBZk7o9o2KB5QKDs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HH9hIYQyXCRHHbrnjotBCyBRIoMXlDGCzEEkhkNyW5gT76u2FgAOOA+iUq93d6Ls5LlobR7/TzXDUKdBwzOTn1DzcRw/3bBWLKioZCAa6fFlGxxNNP9yR4/bRZu2e6rGW/tx2ke65q7RcS7i5y3iLXqlMg6GrjbruBFS1A4CAzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b=ZXy1r4w/; arc=none smtp.client-ip=212.227.17.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+	s=arc-20240116; t=1783579371; c=relaxed/simple;
+	bh=FyaSxs5CfRH3S+iVZrknTObLS5MeDwW6wxX61IFVllU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=nQJZpyI6Wao2/oduYv6DM5g2uXt2Eb2GxAUW3smeN2/HuZbYimpF0u4kPgHgTXwaKBI+qrq7QoOBu00yOKrXGNDBlC00s9JE2nsboQvFq2SHybuRZ/pDzeFCMReY4W4tEhPS0UECmkc8sk8m9PiM/hfF5a/EWXGs/CMVf0JwT6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=t1qy8icS; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b="ZXy1r4w/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1783579334; x=1784184134;
-	i=markus.stockhausen@gmx.de;
-	bh=UaWuu9dtL3vDt91uGr6iD55VTW+AtBtHh2AqwlfB+TA=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=ZXy1r4w/qnC/QQ0z8MajL70es0yOxr3Zk4YUSh4xjgbpdtK8VWX3l3XwUbC7qRCl
-	 CDFMQ9S6lyFd6Heq9sTl1QlHAyhfbduMhg5gr8VbjPnxEtBEEKm+7r4GcDB9MR4Of
-	 so7JPE5EpykWH6FZzjQzT/2j4D5nC3SQXLTMsec88ApsK3c+KRIMiGsVDSO/gWWVt
-	 w8LfzC+C+ymmxYxNkEZVWKNOEsaZ3pPCspw0KBKZznmolVv5B38aXb7ZbxP0/Ihjv
-	 xFq1mA+7aclvwuI6yf27k+FryIuoQ8EKNOGliRR6IxSVeVPgFQdswc6x++3N99MEJ
-	 WFp2pwe0Kqy30eO3ZA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from client.hidden.invalid by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1Md6R1-1xGDzx35ZD-00fGoP; Thu, 09
- Jul 2026 08:42:14 +0200
-From: Markus Stockhausen <markus.stockhausen@gmx.de>
-To: andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	chris.packham@alliedtelesis.co.nz,
-	daniel@makrotopia.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	devicetree@vger.kernel.org
-Cc: Markus Stockhausen <markus.stockhausen@gmx.de>
-Subject: [PATCH net-next v4 6/8] net: mdio: realtek-rtl9300: Increase MDIO timeout
-Date: Thu,  9 Jul 2026 08:41:55 +0200
-Message-ID: <20260709064157.2865063-7-markus.stockhausen@gmx.de>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260709064157.2865063-1-markus.stockhausen@gmx.de>
-References: <20260709064157.2865063-1-markus.stockhausen@gmx.de>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="t1qy8icS"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id BA5FB1A0F00;
+	Thu,  9 Jul 2026 06:42:43 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 8EF2A5FF03;
+	Thu,  9 Jul 2026 06:42:43 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 72E2511BC207F;
+	Thu,  9 Jul 2026 08:42:40 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1783579362; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=SqUj7se07XcwmaPT/JRkRahet4qGe/yuEYTCz2+ofRo=;
+	b=t1qy8icSq/+nM8pLOdzqwQW+mD2JR0BA8T+vm9fIbte6/8MJtxApiQDyQL0UImeQbuYFiA
+	PmxFJG0p1mXlV9CJZ4mfoBbR3WINJSNhZcSCWzWeQhGK3/43gtzu9tfX2AdReDXLU1HZDd
+	E2qlcjsKWtMKOBflJb8ytl+9v7Y2WhL0XhZzZ/HBDgBBDHFuKqFXN2mcPIMyQUla5XFpjK
+	TUFgRGwPux1yKMtYELdMy3fd2prI9xufuxjPFqWj7Tr2k6U6h0SgY0r53OlSwDE/x8sx0j
+	Lpa672jjZwW8USqUsdQi3lnyQevekGuDnHz8sfE5dPsFvV1mTGfWkPnWvnVIAg==
+From: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
+Date: Thu, 09 Jul 2026 08:42:30 +0200
+Subject: [PATCH net-next 04/10] net: dsa: microchip: add PTP interrupt
+ handling for KSZ8463
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:OijSNJDXsAo1SUXNo7n71z3x1NJbMI4mY9nhucPg/HILk5a9wns
- i6O0Z6b7th90CF0ut7J8DF9ZjB+VNOnqESS1vKEx3+fTCW+iLTIyt17G46rS8uvti3/NaCC
- H2To0Jg0mPpy8Jhyo8F6Du/p3Nu4SuErYvS7OwYVKFYkDPYz4lQMAHBLd9Idt6CmBb8QBC0
- x3kvfLRmMwAx2KupMxtIA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:LAQe4zzzW5g=;9cTL46qjS4/OOo9R7RA+0wBqlcX
- 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
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260709-ksz-new-ptp-v1-4-344f02fe739e@bootlin.com>
+References: <20260709-ksz-new-ptp-v1-0-344f02fe739e@bootlin.com>
+In-Reply-To: <20260709-ksz-new-ptp-v1-0-344f02fe739e@bootlin.com>
+To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
+ Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, Simon Horman <horms@kernel.org>, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Pascal Eberhard <pascal.eberhard@se.com>, 
+ =?utf-8?q?Miqu=C3=A8l_Raynal?= <miquel.raynal@bootlin.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
+X-Mailer: b4 0.14.3
+X-Last-TLS-Session-Version: TLSv1.3
 
-RTL838x devices with 28 ports produce PHY access timeout errors during
-one of three boots while waiting for MDIO command completion. This is
-currently set to 1ms.
+KSZ8463 PTP interrupts aren't handled by the driver.
+The interrupt layout in KSZ8463 has nothing to do with the other
+switches:
+- Its global interrupt enable register is 16-bits long and follow an
+  'enable' logic, instead of a 'mask' one
+- all the interrupts of all ports are grouped into one status register
+  while others have one interrupt register per port
+- xdelay_req and pdresp timestamps share one single interrupt bit on the
+  KSZ8463 while each of them has its own interrupt bit on other switches
 
-Background: Access to the Realtek Otto ethernet MDIO bus must wait for
-a free slot between two hardware polls. The polling sequence consists
-of at least 17 commands on the RTL838x devices. This delay can be nicely
-seen when disabling polling completely. The following times are measured
-on a bus running on the default 2.5MHz. Time measured is from the last
-register write that sets the command-start-bit until the hardware
-responds with the command-finished-bit set.
+Create a KSZ8463-specific set of interrupt domain operations to handle
+the global IRQ layer. To limit code duplication, it uses the same
+interrupt handler than the other switches. Since other switches have
+8-bits registers, only the high-byte of the interrupt status/enable
+registers are used. This high-byte is where the PTP interrupts are
+located. The low-byte contains the wake-up detection interrupts so if at
+some points these interrupts are needed we'll need a bit of rework here.
 
-- average c22 read with polling enabled on all ports: ~380us
-- average c22 read with polling enabled on one port: ~380us
-- average c22 read with polling completely disabled: ~180us
+Create KSZ8463-specific functions to setup the PTP interrupts. The
+created IRQ domain is tied to the first port of the KSZ8463. Again,
+the same PTP interrupt handler than the others switches is used.
 
-For this bus frequency the bare hardware runtime for a single command
-(32 bit preamble + 32 bit data) is ~25us. So the hardware adds quite
-some overhead. On top of this comes the fact that the RTL838x devices
-are low on resources (500Mhz 4Kec core with 16K cache).
+Implement the teardown callback to release the interrupts.
 
-Increase the timeout to 10ms to be on the safe side.
+Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
+---
+ drivers/net/dsa/microchip/ksz8.c        |  93 ++++++++++++++++++++++-
+ drivers/net/dsa/microchip/ksz_ptp.c     | 129 ++++++++++++++++++++++++++++++++
+ drivers/net/dsa/microchip/ksz_ptp.h     |   9 +++
+ drivers/net/dsa/microchip/ksz_ptp_reg.h |   6 ++
+ 4 files changed, 235 insertions(+), 2 deletions(-)
 
-Remark! In a future patch the bus clock frequency will be made
-configurable with a minimum frequency of 1.25MHz. Setting this
-(e.g. for debugging purposes) doubles the command run times but
-will safely stay below 10ms.
-
-Signed-off-by: Markus Stockhausen <markus.stockhausen@gmx.de>
-=2D--
- drivers/net/mdio/mdio-realtek-rtl9300.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/mdio/mdio-realtek-rtl9300.c b/drivers/net/mdio/md=
-io-realtek-rtl9300.c
-index 9141918e7c01..97fb151d8b36 100644
-=2D-- a/drivers/net/mdio/mdio-realtek-rtl9300.c
-+++ b/drivers/net/mdio/mdio-realtek-rtl9300.c
-@@ -268,9 +268,9 @@ static int otto_emdio_run_cmd(struct mii_bus *bus, u32=
- cmd,
- 	u32 cmdstate;
+diff --git a/drivers/net/dsa/microchip/ksz8.c b/drivers/net/dsa/microchip/ksz8.c
+index 3bbca6f9cfc5..c099a7005808 100644
+--- a/drivers/net/dsa/microchip/ksz8.c
++++ b/drivers/net/dsa/microchip/ksz8.c
+@@ -36,6 +36,13 @@
+ #include "ksz8_reg.h"
+ #include "ksz8.h"
+ 
++/*
++ * We use only the high-byte (so odd addresses) of the 16-bits registers to fit
++ * in the common IRQ framework
++ */
++#define KSZ8463_REG_ISR			0x191
++#define KSZ8463_REG_IER			0x193
++
+ /* ksz88x3_drive_strengths - Drive strength mapping for KSZ8863, KSZ8873, ..
+  *			     variants.
+  * This values are documented in KSZ8873 and KSZ8863 datasheets.
+@@ -181,6 +188,58 @@ static int ksz8_pme_pwrite8(struct ksz_device *dev, int port, int offset, u8 dat
+ 	return ksz8_ind_write8(dev, table, (u8)(offset), data);
+ }
+ 
++static void ksz8463_irq_mask(struct irq_data *d)
++{
++	struct ksz_irq *kirq = irq_data_get_irq_chip_data(d);
++
++	kirq->masked &= ~BIT(d->hwirq);
++}
++
++static void ksz8463_irq_unmask(struct irq_data *d)
++{
++	struct ksz_irq *kirq = irq_data_get_irq_chip_data(d);
++
++	kirq->masked |= BIT(d->hwirq);
++}
++
++static const struct irq_chip ksz8463_irq_chip = {
++	.name			= "ksz8463-irq",
++	.irq_mask		= ksz8463_irq_mask,
++	.irq_unmask		= ksz8463_irq_unmask,
++	.irq_bus_lock		= ksz_irq_bus_lock,
++	.irq_bus_sync_unlock	= ksz_irq_bus_sync_unlock,
++};
++
++static int ksz8463_irq_domain_map(struct irq_domain *d,
++				  unsigned int irq, irq_hw_number_t hwirq)
++{
++	irq_set_chip_data(irq, d->host_data);
++	irq_set_chip_and_handler(irq, &ksz8463_irq_chip, handle_level_irq);
++	irq_set_noprobe(irq);
++
++	return 0;
++}
++
++static const struct irq_domain_ops ksz8463_irq_domain_ops = {
++	.map	= ksz8463_irq_domain_map,
++	.xlate	= irq_domain_xlate_twocell,
++};
++
++static int ksz8463_girq_setup(struct ksz_device *dev)
++{
++	struct ksz_irq *girq = &dev->girq;
++
++	girq->nirqs = 8;
++	girq->reg_mask = KSZ8463_REG_IER;
++	girq->reg_status = KSZ8463_REG_ISR;
++	girq->masked = 0;
++	snprintf(girq->name, sizeof(girq->name), "ksz8463-girq");
++
++	girq->irq_num = dev->irq;
++
++	return ksz_irq_common_setup(dev, girq, &ksz8463_irq_domain_ops);
++}
++
+ static int ksz8463_reset_switch(struct ksz_device *dev)
+ {
+ 	ksz_cfg(dev, KSZ8463_REG_SW_RESET, KSZ8463_GLOBAL_SOFTWARE_RESET, true);
+@@ -2407,21 +2466,50 @@ static int ksz8463_setup(struct dsa_switch *ds)
+ 	p = &dev->ports[dev->cpu_port];
+ 	p->learning = true;
+ 
++	if (dev->irq > 0) {
++		ret = ksz8463_girq_setup(dev);
++		if (ret)
++			return ret;
++
++		ret = ksz8463_ptp_irq_setup(ds);
++		if (ret)
++			goto free_girq;
++	}
++
+ 	ret = ksz_mdio_register(dev);
+ 	if (ret < 0) {
+ 		dev_err(dev->dev, "failed to register the mdio");
+-		return ret;
++		goto free_ptp_irq;
+ 	}
+ 
+ 	ret = ksz_dcb_init(dev);
+ 	if (ret)
+-		return ret;
++		goto free_ptp_irq;
+ 
+ 	/* start switch */
+ 	regmap_update_bits(ksz_regmap_8(dev), regs[S_START_CTRL],
+ 			   SW_START, SW_START);
+ 
+ 	return 0;
++
++free_ptp_irq:
++	if (dev->irq > 0)
++		ksz8463_ptp_irq_free(ds);
++free_girq:
++	if (dev->irq > 0)
++		ksz_irq_free(&dev->girq);
++
++	return ret;
++}
++
++static void ksz8463_teardown(struct dsa_switch *ds)
++{
++	struct ksz_device *dev = ds->priv;
++
++	if (dev->irq > 0) {
++		ksz8463_ptp_irq_free(ds);
++		ksz_irq_free(&dev->girq);
++	}
+ }
+ 
+ /**
+@@ -3010,6 +3098,7 @@ const struct dsa_switch_ops ksz8463_switch_ops = {
+ 	.get_tag_protocol	= ksz8463_get_tag_protocol,
+ 	.connect_tag_protocol   = ksz8463_connect_tag_protocol,
+ 	.setup			= ksz8463_setup,
++	.teardown		= ksz8463_teardown,
+ 	.phy_read		= ksz8463_phy_read16,
+ 	.phy_write		= ksz8463_phy_write16,
+ 	.phylink_get_caps	= ksz8_phylink_get_caps,
+diff --git a/drivers/net/dsa/microchip/ksz_ptp.c b/drivers/net/dsa/microchip/ksz_ptp.c
+index 8b98039320ad..7a74befda9ad 100644
+--- a/drivers/net/dsa/microchip/ksz_ptp.c
++++ b/drivers/net/dsa/microchip/ksz_ptp.c
+@@ -32,6 +32,15 @@
+ 
+ #define KSZ_PTP_INT_START 13
+ 
++/*
++ * PTP interrupt bit is the bit 12 of the 16-bits ISR/IER. But ksz_common.c only
++ * accesses the high-byte of these registers so the PTP interrupt bit becomes 4.
++ */
++#define KSZ8463_SRC_PTP_INT		4
++#define KSZ8463_PTP_PORT1_INT_START	12
++#define KSZ8463_PTP_PORT2_INT_START	14
++#define KSZ8463_PTP_INT_START		KSZ8463_PTP_PORT1_INT_START
++
+ static int ksz_ptp_tou_gpio(struct ksz_device *dev)
+ {
  	int ret;
-=20
--	/* Defensive pre check just in case something goes horrible wrong */
-+	/* Defensive pre check just in case something goes horribly wrong */
- 	ret =3D regmap_read_poll_timeout(priv->regmap, info->cmd_regs.c22_data,
--				       cmdstate, !(cmdstate & PHY_CTRL_CMD), 10, 1000);
-+				       cmdstate, !(cmdstate & PHY_CTRL_CMD), 10, 10000);
- 	if (ret)
- 		return ret;
-=20
-@@ -310,7 +310,7 @@ static int otto_emdio_run_cmd(struct mii_bus *bus, u32=
- cmd,
- 		return ret;
-=20
- 	ret =3D regmap_read_poll_timeout(priv->regmap, info->cmd_regs.c22_data,
--				       cmdstate, !(cmdstate & PHY_CTRL_CMD), 10, 1000);
-+				       cmdstate, !(cmdstate & PHY_CTRL_CMD), 10, 10000);
- 	if (ret)
- 		return ret;
-=20
-=2D-=20
+@@ -1129,6 +1138,126 @@ static int ksz_ptp_msg_irq_setup(struct ksz_port *port, u8 n)
+ 	return ret;
+ }
+ 
++static int ksz8463_ptp_port_irq_setup(struct ksz_irq *ptpirq,
++				      struct ksz_port *port, int hw_irq)
++{
++	u16 ts_reg[] = {KSZ8463_REG_PORT_SYNC_TS, KSZ8463_REG_PORT_DREQ_TS};
++	static const char * const name[] = {"sync-msg", "delay-msg"};
++	const struct ksz_dev_ops *ops = port->ksz_dev->dev_ops;
++	struct ksz_ptp_irq *ptpmsg_irq;
++	int ret;
++	int i;
++
++	init_completion(&port->tstamp_msg_comp);
++
++	for (i = 0; i < 2; i++) {
++		ptpmsg_irq = &port->ptpmsg_irq[i];
++		ptpmsg_irq->num = irq_create_mapping(ptpirq->domain,
++						     hw_irq + i);
++		if (!ptpmsg_irq->num)
++			goto release_msg_irq;
++
++		ptpmsg_irq->port = port;
++		ptpmsg_irq->ts_reg = ops->get_port_addr(port->num, ts_reg[i]);
++
++		strscpy(ptpmsg_irq->name, name[i]);
++
++		ret = request_threaded_irq(ptpmsg_irq->num, NULL,
++					   ksz_ptp_msg_thread_fn, IRQF_ONESHOT,
++					   ptpmsg_irq->name, ptpmsg_irq);
++		if (ret) {
++			irq_dispose_mapping(ptpmsg_irq->num);
++			goto release_msg_irq;
++		}
++	}
++
++	return 0;
++
++release_msg_irq:
++	while (i--)
++		ksz_ptp_msg_irq_free(port, i);
++
++	return ret;
++}
++
++static void ksz8463_ptp_port_irq_teardown(struct ksz_port *port)
++{
++	int i;
++
++	for (i = 0; i < 2; i++)
++		ksz_ptp_msg_irq_free(port, i);
++}
++
++int ksz8463_ptp_irq_setup(struct dsa_switch *ds)
++{
++	struct ksz_device *dev = ds->priv;
++	struct ksz_port *port1, *port2;
++	struct ksz_irq *ptpirq;
++	int ret;
++
++	port1 = &dev->ports[0];
++	port2 = &dev->ports[1];
++	ptpirq = &port1->ptpirq;
++
++	ptpirq->irq_num = irq_find_mapping(dev->girq.domain,
++					   KSZ8463_SRC_PTP_INT);
++	if (!ptpirq->irq_num)
++		return -EINVAL;
++
++	ptpirq->dev = dev;
++	ptpirq->nirqs = 4;
++	ptpirq->reg_mask = KSZ8463_PTP_TS_IER;
++	ptpirq->reg_status = KSZ8463_PTP_TS_ISR;
++	ptpirq->irq0_offset = KSZ8463_PTP_INT_START;
++	snprintf(ptpirq->name, sizeof(ptpirq->name), "ptp-irq");
++
++	ptpirq->domain = irq_domain_create_linear(dev_fwnode(dev->dev),
++						  ptpirq->nirqs,
++						  &ksz_ptp_irq_domain_ops,
++						  ptpirq);
++	if (!ptpirq->domain)
++		return -ENOMEM;
++
++	ret = request_threaded_irq(ptpirq->irq_num, NULL, ksz_ptp_irq_thread_fn,
++				   IRQF_ONESHOT, ptpirq->name, ptpirq);
++	if (ret)
++		goto release_domain;
++
++	ret = ksz8463_ptp_port_irq_setup(ptpirq, port1,
++					 KSZ8463_PTP_PORT1_INT_START - KSZ8463_PTP_INT_START);
++	if (ret)
++		goto release_irq;
++
++	ret = ksz8463_ptp_port_irq_setup(ptpirq, port2,
++					 KSZ8463_PTP_PORT2_INT_START - KSZ8463_PTP_INT_START);
++	if (ret)
++		goto free_port1;
++
++	return 0;
++
++free_port1:
++	ksz8463_ptp_port_irq_teardown(port1);
++release_irq:
++	free_irq(ptpirq->irq_num, ptpirq);
++release_domain:
++	irq_domain_remove(ptpirq->domain);
++
++	return ret;
++}
++
++void ksz8463_ptp_irq_free(struct dsa_switch *ds)
++{
++	struct ksz_device *dev = ds->priv;
++	struct ksz_port *port1 = &dev->ports[0];
++	struct ksz_port *port2 = &dev->ports[1];
++	struct ksz_irq *ptpirq = &port1->ptpirq;
++
++	ksz8463_ptp_port_irq_teardown(port1);
++	ksz8463_ptp_port_irq_teardown(port2);
++	free_irq(ptpirq->irq_num, ptpirq);
++	irq_domain_remove(ptpirq->domain);
++}
++
+ int ksz_ptp_irq_setup(struct dsa_switch *ds, u8 p)
+ {
+ 	struct ksz_device *dev = ds->priv;
+diff --git a/drivers/net/dsa/microchip/ksz_ptp.h b/drivers/net/dsa/microchip/ksz_ptp.h
+index 3086e519b1b6..11408580031d 100644
+--- a/drivers/net/dsa/microchip/ksz_ptp.h
++++ b/drivers/net/dsa/microchip/ksz_ptp.h
+@@ -50,6 +50,8 @@ bool ksz_port_rxtstamp(struct dsa_switch *ds, int port, struct sk_buff *skb,
+ 		       unsigned int type);
+ int ksz_ptp_irq_setup(struct dsa_switch *ds, u8 p);
+ void ksz_ptp_irq_free(struct dsa_switch *ds, u8 p);
++int ksz8463_ptp_irq_setup(struct dsa_switch *ds);
++void ksz8463_ptp_irq_free(struct dsa_switch *ds);
+ 
+ #else
+ 
+@@ -72,6 +74,13 @@ static inline int ksz_ptp_irq_setup(struct dsa_switch *ds, u8 p)
+ 
+ static inline void ksz_ptp_irq_free(struct dsa_switch *ds, u8 p) {}
+ 
++static inline int ksz8463_ptp_irq_setup(struct dsa_switch *ds)
++{
++	return 0;
++}
++
++static inline void ksz8463_ptp_irq_free(struct dsa_switch *ds) {}
++
+ #define ksz_get_ts_info NULL
+ 
+ #define ksz_hwtstamp_get NULL
+diff --git a/drivers/net/dsa/microchip/ksz_ptp_reg.h b/drivers/net/dsa/microchip/ksz_ptp_reg.h
+index eab9aecb7fa8..1a669d6ee889 100644
+--- a/drivers/net/dsa/microchip/ksz_ptp_reg.h
++++ b/drivers/net/dsa/microchip/ksz_ptp_reg.h
+@@ -121,6 +121,12 @@
+ #define REG_PTP_PORT_SYNC_TS		0x0C0C
+ #define REG_PTP_PORT_PDRESP_TS		0x0C10
+ 
++#define KSZ8463_REG_PORT_DREQ_TS	0x0648
++#define KSZ8463_REG_PORT_SYNC_TS	0x064C
++#define KSZ8463_REG_PORT_DRESP_TS	0x0650
++#define KSZ8463_PTP_TS_ISR		0x068C
++#define KSZ8463_PTP_TS_IER		0x068E
++
+ #define REG_PTP_PORT_TX_INT_STATUS__2	0x0C14
+ #define REG_PTP_PORT_TX_INT_ENABLE__2	0x0C16
+ 
+
+-- 
 2.54.0
 
