@@ -1,219 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA14379EF2;
-	Thu,  9 Jul 2026 12:27:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6C0F42314E;
+	Thu,  9 Jul 2026 12:37:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783600048; cv=none; b=gKnrFOhyxM+G9BAL9R7Ead1Er/fASRFyfdz101robpSzW3ZYJLYOraXkZRucnRCzYrvOX0GSBRuoJStDoxCa63PvLT82qdbTNwBhUTLd6eaXRaN5SDzFJYnmTtNYYIs2usOBwPvEH5vugW6iVA0eGG7Ea5ikeC1+rGz2UWHSDZs=
+	t=1783600662; cv=none; b=UUQDIqqjOdP/nzvnWWBpo6AXNb2b1rPS5jv84M0Pq3Tq1vm39F5WH9CAQ2CUbOjcTwTyoX2/YMFZxiNlMPfgVT6Y6FYQDCtF1wPfI7QsyoKRS9lBTO0GAbzCu8bc1aHneGTgzx8E2owVyISVP9Kj7+8fnj1EASPTVJY8Rs55sck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783600048; c=relaxed/simple;
-	bh=D6sFePdHfg9/lQaT+pvy/ALPB+0TLGP+dk980qsNpV0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oe/eNr1bn8cu38sRa4s93WY9M9z0NJF2OknnoD/1xhe5Tz8xJCd2WDJBquq/0jHMmBr6MjCViJbTAqaYD/y9/m360Lqq4LqwHHSrx9AN8qrtc2Up9UC2mN4Ycl/WXWFIOEJv9g2RVutPACTl5sdirH4OxbGY0gzwZANq5sLgBu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q2gfnxiZ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783600662; c=relaxed/simple;
+	bh=9mUEh7JJ5Hj7d4HF8ZuDZfLWSNamwgKa9yDJtW4exD4=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=IVHCwOeF3SwvReUjJZhk9u4kPiF7NKUrDYu9nWYRGPQLKRhNPm4ippKFWBirDki20KSSFxm968hBsgQ5j+wSxBSODTHLH2oDTcPaBtQ3ZmksVx0Q7AqzxJoPzdQvZDXAK+GOiIKXxF5S9Q7T9P6jPicFzZ4py6vyH95ccQx0mpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=U/DlZ5eu; arc=none smtp.client-ip=80.241.56.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q2gfnxiZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC6C71F000E9;
-	Thu,  9 Jul 2026 12:27:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783600047;
-	bh=aPiI4acebEamfHqZdOJ7ZViugkZJ59S192ufQqTKWu8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Q2gfnxiZTKur91gL45oISEsS66q0C2fspHsKa1xHrpymOUeWFGClZpcKaAsw5KNH2
-	 98cfbMIRL4Nmgh7MaQMDZ2dssjVzOFXWNOj6Q+bglaVSr+E4PYt4OkivDiVnEvsTB/
-	 v6u/CkiW62IJAxyBkzTudsHwTyyGpDBqD6Mon95wRBa2Vewj7nYLiM5OndNJ/AQ9K9
-	 cakRN/sTAZm5TTM3yWgMQQlMR24ezcVsVfxcJY3B624DfX95cVIZCSjtUfOj1DNThF
-	 dyyHtrR7PKztwT4KCC7zHHh5CZjnDl2JIoOGLdamLpU58REiXsadJyjl6OZ8vcm4Ur
-	 nBgIlc3jnF+RA==
-From: Simon Horman <horms@kernel.org>
-To: rkannoth@marvell.com
-Cc: Simon Horman <horms@kernel.org>,
-	davem@davemloft.net,
-	gakula@marvell.com,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	sgoutham@marvell.com,
-	andrew+netdev@lunn.ch,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	hkelam@marvell.com
-Subject: Re: [PATCH v2 net] octeontx2-af: Block VFs from clobbering special CGX PKIND state
-Date: Thu,  9 Jul 2026 13:26:49 +0100
-Message-ID: <20260709122648.1552103-2-horms@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260703024157.3526879-1-rkannoth@marvell.com>
-References: <20260703024157.3526879-1-rkannoth@marvell.com>
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="U/DlZ5eu"
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA512)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4gwvcd4bk6zMlHs;
+	Thu, 09 Jul 2026 14:37:37 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1783600657;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9w3MuQ9hO1ow5wjopkcgpcnT5W91hwq/FqCJiEnl/U8=;
+	b=U/DlZ5euG11Bh810Iznq69BjcVMDkoFkm+C96W3oeQBilkHk8oNAFTBo6S0w3hXt1L1W1J
+	Qha2BmaIkGP+3knXFrk0+Qd7XUY+SdYpHHIOW5vEZXL66FeVNQPybYn8X5wmKy2gTIv7F4
+	nFe/mIiRWExsZLzW1hdtHp8t4IKbpFZpD9DfVsCYLb92IdyOwjIgxOsxm2LJU09sB5nsmC
+	53FPIW1gvDPniB+ElxG2hxKDRaRSHvsSLKcAz5nVEtFRfADKrSRxdyYkFdyAIjNQ59ZSCa
+	ngRXngGHcExvfhPcM/XusDRpW2kUKAfPm6fjd8eScRxwOyVXsQPW81HxAwewtA==
+Message-ID: <0a0721d511c10414cb6a6e53f1bb33698ada963e.camel@mailbox.org>
+Subject: Re: [PATCHv2 net-next 1/7] net: usb: centralize
+ usbnet_cdc_zte_rx_fixup in usbnet
+From: Manuel Ebner <manuelebner@mailbox.org>
+To: Oliver Neukum <oneukum@suse.com>, andrew+netdev@lunn.ch, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, 	netdev@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Thu, 09 Jul 2026 14:37:32 +0200
+In-Reply-To: <20260709120116.1423033-1-oneukum@suse.com>
+References: <20260709120116.1423033-1-oneukum@suse.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MBO-RS-ID: 1bc4835a57a33a462e4
+X-MBO-RS-META: 5zy76esrfprzhha86d1riy6nno75xab5
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/
----
-octeontx2-af: Block VFs from clobbering special CGX PKIND state
+On Thu, 2026-07-09 at 14:01 +0200, Oliver Neukum wrote:
 
-This patch prevents VF NIX LF allocation from resetting the CGX RX PKIND
-and default TX parse config when the shared LMAC has HiGig2 or EDSA
-parsing enabled. It adds cgx_get_pkind() and a new
-rvu_cgx_is_pkind_config_permitted() helper, then gates the pkind and TX
-parse writes in nix_interface_init() and rvu_mbox_handler_nix_lf_alloc().
+I guess a couple suggestions got lost, that's ok.
 
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
-> index 4ff3935ed3fe..2be1da3476ac 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
-> @@ -1355,3 +1355,35 @@ void rvu_mac_reset(struct rvu *rvu, u16 pcifunc)
->  	if (mac_ops->mac_reset(cgxd, lmac, !is_vf(pcifunc)))
->  		dev_err(rvu->dev, "Failed to reset MAC\n");
->  }
-> +
-> +/* Do not allow CGX-mapped VFs to overwrite PKIND when special parse kinds
-> + * (HiGig, EDSA, etc.) are in use on the shared LMAC.
-> + */
-> +bool rvu_cgx_is_pkind_config_permitted(struct rvu *rvu, u16 pcifunc)
-> +{
-> +	int pf, err, rxpkind;
-> +	u8 cgx_id, lmac_id;
-> +	void *cgxd;
-> +
-> +	pf = rvu_get_pf(rvu->pdev, pcifunc);
-> +
-> +	if (!(pcifunc & RVU_PFVF_FUNC_MASK))
-> +		return true;
-> +
-> +	if (!is_pf_cgxmapped(rvu, pf))
-> +		return true;
-> +
-> +	rvu_get_cgx_lmac_id(rvu->pf2cgxlmac_map[pf], &cgx_id, &lmac_id);
-> +	cgxd = rvu_cgx_pdata(cgx_id, rvu);
-> +	err = cgx_get_pkind(cgxd, lmac_id, &rxpkind);
-> +	if (err)
-> +		return false;
-> +
-> +	switch (rxpkind) {
-> +	case NPC_RX_HIGIG_PKIND:
-> +	case NPC_RX_EDSA_PKIND:
-> +		return false;
-> +	default:
-> +		return true;
-> +	}
-> +}
+> This helper is used by multiple drivers using usbnet.
+> It is better to be provided by usbnet than one of them.
+>=20
+> Signed-off-by: Oliver Neukum <oneukum@suse.com>
+> ---
+>=20
+> v2:
+> - spelling issues
+> - issue with lost synchronization with SPLIT packets
+>=20
+> =C2=A0drivers/net/usb/cdc_ether.c | 19 -------------------
+> =C2=A0drivers/net/usb/usbnet.c=C2=A0=C2=A0=C2=A0 | 19 +++++++++++++++++++
+> =C2=A02 files changed, 19 insertions(+), 19 deletions(-)
+>=20
+> diff --git a/drivers/net/usb/cdc_ether.c b/drivers/net/usb/cdc_ether.c
+> index b4df32e18461..e688fb99c61d 100644
+> --- a/drivers/net/usb/cdc_ether.c
+> +++ b/drivers/net/usb/cdc_ether.c
+> @@ -404,25 +404,6 @@ static int usbnet_cdc_zte_bind(struct usbnet *dev, s=
+truct
+> usb_interface *intf)
+> =C2=A0	return status;
+> =C2=A0}
+> =C2=A0
+> -/* Make sure packets have correct destination MAC address
 
-[High]
-Is the exclusion actually enforced against the other writers of these
-registers?
+Make sure packets have the correct destination MAC address
 
-rvu_npc_set_parse_mode() also calls cgx_set_pkind() and writes
-NIX_AF_LFX_TX_PARSE_CFG(nixlf) directly, and it is reachable from the
-rvu_mbox_handler_npc_set_pkind mbox handler as well as from
-rvu_nix_lf_teardown(). None of those paths take cgxd->lock.
+> - *
+> - * A firmware bug observed on some devices (ZTE MF823/831/910) is that t=
+he
+> - * device sends packets with a static, bogus, random MAC address (event =
+if
 
-Consider this interleaving on a shared LMAC:
+ (even if the device ...
 
-    CPU A (PF)                       CPU B (VF)
-    rvu_mbox_handler_npc_set_pkind
-      rvu_npc_set_parse_mode
-        (no cgxd->lock held)
-                                     mutex_lock(&cgxd->lock)
-                                     cgx_get_pkind() -> default
-                                     rvu_cgx_is_pkind_config_permitted()
-                                       returns true
-                                     cgx_set_pkind(default)
-                                     rvu_npc_set_pkind(default)
-                                     mutex_unlock(&cgxd->lock)
-        cgx_set_pkind(HIGIG)
-        write NIX_AF_LFX_TX_PARSE_CFG
+> - * device MAC address has been updated). Always set MAC address to that =
+of the
+> - * device.
 
-Or the reverse order, where CPU B's write clobbers CPU A's HiGig
-programming after CPU A has already installed it. Since
-rvu_npc_set_parse_mode() does not acquire cgxd->lock, does the check in
-rvu_cgx_is_pkind_config_permitted() effectively close the race the
-commit message describes?
+Always set the MAC address to the one of your device.
 
-Additionally, the comment on struct cgx's lock in lmac_common.h reads:
+Thanks
+ Manuel
 
-    /* Lock to serialize read/write of global csrs like
-     * RPMX_MTI_STAT_DATA_HI_CDC etc
-     */
-    struct mutex		lock;
-
-Is cgxd->lock the intended lock to serialize per-NIX-LF register writes
-like NIX_AF_LFX_TX_PARSE_CFG, or should a different mechanism be used?
-
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-> index 0297c7ab0614..4e72d6e072d5 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-
-[ ... ]
-
-> @@ -1509,11 +1517,14 @@ int rvu_mbox_handler_nix_lf_alloc(struct rvu *rvu,
->  	u16 bcast, mcast, promisc, ucast;
->  	struct rvu_hwinfo *hw = rvu->hw;
->  	u16 pcifunc = req->hdr.pcifunc;
-> +	u8 cgx_id = 0, lmac_id = 0;
->  	bool rules_created = false;
->  	struct rvu_block *block;
->  	struct rvu_pfvf *pfvf;
->  	u64 cfg, ctx_cfg;
-> +	struct cgx *cgxd;
->  	int blkaddr;
-> +	int pf;
->  
->  	if (!req->rq_cnt || !req->sq_cnt || !req->cq_cnt)
->  		return NIX_AF_ERR_PARAM;
-> @@ -1685,8 +1696,18 @@ int rvu_mbox_handler_nix_lf_alloc(struct rvu *rvu,
->  	rvu_write64(rvu, blkaddr, NIX_AF_LFX_RX_CFG(nixlf), req->rx_cfg);
->  
->  	/* Configure pkind for TX parse config */
-> -	cfg = NPC_TX_DEF_PKIND;
-> -	rvu_write64(rvu, blkaddr, NIX_AF_LFX_TX_PARSE_CFG(nixlf), cfg);
-> +	if (is_pf_cgxmapped(rvu, rvu_get_pf(rvu->pdev, pcifunc))) {
-> +		pf = rvu_get_pf(rvu->pdev, pcifunc);
-> +		rvu_get_cgx_lmac_id(rvu->pf2cgxlmac_map[pf], &cgx_id, &lmac_id);
-> +		cgxd = rvu_cgx_pdata(cgx_id, rvu);
-> +
-> +		mutex_lock(&cgxd->lock);
-> +		if (rvu_cgx_is_pkind_config_permitted(rvu, pcifunc)) {
-> +			cfg = NPC_TX_DEF_PKIND;
-> +			rvu_write64(rvu, blkaddr, NIX_AF_LFX_TX_PARSE_CFG(nixlf), cfg);
-> +		}
-> +		mutex_unlock(&cgxd->lock);
-> +	}
-
-[High]
-Does this outer is_pf_cgxmapped() guard change behavior for LBK, SDP and
-representor NIX LFs?
-
-Prior to this patch the write of NPC_TX_DEF_PKIND to
-NIX_AF_LFX_TX_PARSE_CFG(nixlf) was unconditional for every NIX LF that
-reached this point. is_pf_cgxmapped() returns false when
-pf < PF_CGXMAP_BASE (e.g. AF PF0 that owns LBK VFs) and for SDP PFs (via
-the is_sdp_pf() exclusion):
-
-    static inline bool is_pf_cgxmapped(struct rvu *rvu, u8 pf)
-    {
-        return (pf >= PF_CGXMAP_BASE && pf <= rvu->cgx_mapped_pfs) &&
-            !is_sdp_pf(rvu, rvu_make_pcifunc(rvu->pdev, pf, 0));
-    }
-
-For those non-CGX cases the register is now left at whatever
-rvu_lf_reset() leaves behind rather than NPC_TX_DEF_PKIND.
-
-The commit message describes the intent narrowly:
-
-    a VF NIX LF alloc must not reset the LMAC RX PKIND or default TX
-    parse config over the PF setup.
-
-rvu_cgx_is_pkind_config_permitted() already returns true for non-VF and
-for non-CGX-mapped pcifuncs. Would gating solely on
-rvu_cgx_is_pkind_config_permitted() (without the outer
-is_pf_cgxmapped()) match the stated intent and preserve prior behavior
-for LBK, SDP and representor NIX LFs?
+> [...]
