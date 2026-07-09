@@ -1,53 +1,54 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8234DB577;
-	Thu,  9 Jul 2026 18:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C1954DBD60;
+	Thu,  9 Jul 2026 18:12:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783620665; cv=none; b=G0GIKoD5P+fHDSq/o9ciCyt2pK/KS1TIGL+1g2/8kKUyCv7DhXicF8oW8wj3CSMXLdUWtdDKe860GohXmfE9oTMICowE8PI5gSvauceY9hodzao2QPmpMzrIvN5QHTZekFbUALG4k1aLSDOhUTIHBdiwn7LuorML/KqhKndI03A=
+	t=1783620734; cv=none; b=GQVahcJfXsP5eqGL9m2aVKarHuFqhHRIlI1HyA9nxMpsLx69tJx9Tfp0NFfv4qEdwy6Pbzns7vnOrwS/++tXL5HqOgfMDcE8oZK7RrG3jKmTwUzQ2/Azf3vFiUwopeOCyEffNXJJ4+wwaYR+fWwHfZf75qMec1Hax71FfOzforM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783620665; c=relaxed/simple;
-	bh=vB0GjRE3khfQCo9AeS5CukoIBpeitQMqkEW+W4frlb8=;
+	s=arc-20240116; t=1783620734; c=relaxed/simple;
+	bh=gG/aMUL9K6J7MQeQ3D/OrW9+BsX4y94z01HtY4iuQps=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nm4OvGgEAN+r1YeIoKFzLWXYbT7msj+4q4ZSELMy2R/qhtYargNofkjpaUmpSdvRuqSWti4ru5ebUoWtdMN0dVnKYo7x5t5WjSXQOuohAQi264FQGf9D4+DgzmnZVUfHSy4ZIC8fLM0kooIh7Gewb0FbaJh0lTZwID54woaz8bI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L1el/Cqy; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=fqQpovp5J5nKLSj34w5k3ckJHuGJ1TFVBVT3JJTw/ZiqJqo+1UpHEpK2qgBSk09oaCpjUhaklPcjLpD/W8K+vOV2k/btlJhcz2IQ0Aic/05Kw7Y8zHuRS6Zo9k1U6dQCiAGUuhpoJEeJ0bGx8bwrL3IDsKjgKKbMdHkXkrAKHME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gGDgNua5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L1el/Cqy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C148E1F000E9;
-	Thu,  9 Jul 2026 18:11:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gGDgNua5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CDAB1F000E9;
+	Thu,  9 Jul 2026 18:12:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783620664;
-	bh=vB0GjRE3khfQCo9AeS5CukoIBpeitQMqkEW+W4frlb8=;
+	s=k20260515; t=1783620732;
+	bh=N6ExRqFYusMX+tjVg7cG0UAnunHkBLlwLxZ3V0z43Yo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=L1el/Cqyibv9h7w/wdz/XpKMp+O4cUtBcrtayeWy3yBQtz/yXexEo5WvkUbweKm2i
-	 n8CveZ27popz0BfRvIWP75WuNPvkOScndWUWMaXOZqVbyKgVmf0u7ux8oaCObXkiEH
-	 jbEI6RKW0GpTSz6EFsryQvZC0dvvt+QvO/k56Xp5alnQmIKOS4Mp6ewKxBWo5c/1vk
-	 WxZCUlHDDcShLZlAxtpsVdDD2qEt1bF7grpCHXAodmpSM8INX8HqNmDWGpTYxZeqDS
-	 izlDK6V7AYvg9CW/w4RL92+cpjZrYlTZlEZnoUamTs0DR0mVzTQtukZs+dDoaya3M/
-	 ixBkyURreK+Xg==
-Date: Thu, 9 Jul 2026 19:10:58 +0100
+	b=gGDgNua5r/LnOAlUxg9BTyvo5mQCvFnGTGo2oOO+5cSHjWM2J1jOjdJw8UPmHQnVV
+	 NlH8GCheUps5nixZGBXCLRI3924QII5l9IIy6oTlD/eSL8YAg/U1hW6gwouU13vVUF
+	 lRUFbx29bdoVukedcHBj7JgWIYnmDfE4d2QatHh/DGoODhpiv5Pzfzd840SDSL6xvZ
+	 BFBh57Rc5mmIG1MjI/a3Xxt4g6W8VF+0TlOkcDDe8LxtovAtURy5EqMo6DtEi1XVXq
+	 uXMngg8j0bC9Quvo4bGNhGf9LY1O1H6Wd0B58owsFccwEEd4vh4py600QE4bLMDEm0
+	 lO+sQU8ACHo6A==
+Date: Thu, 9 Jul 2026 19:12:07 +0100
 From: Conor Dooley <conor@kernel.org>
-To: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-Cc: Michael Turquette <mturquette@baylibre.com>,
+To: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
+	Michael Turquette <mturquette@baylibre.com>,
 	Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
 	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Chun-Jie Chen <chun-jie.chen@mediatek.com>,
 	Philipp Zabel <p.zabel@pengutronix.de>,
 	Edward-JW Yang <edward-jw.yang@mediatek.com>,
 	Richard Cochran <richardcochran@gmail.com>, kernel@collabora.com,
 	linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v2 07/18] dt-bindings: clock: mediatek: regroup MT8195
- dt-bindings into MT8186
-Message-ID: <20260709-unwell-tigress-75bda15cf97f@spud>
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
+	Irving-CH Lin <irving-ch.lin@mediatek.com>
+Subject: Re: [PATCH v2 08/18] dt-bindings: clock: mediatek: Add MT8189 clocks
+Message-ID: <20260709-omission-thievish-45fb4b21f4a2@spud>
 References: <20260709-mt8189-clocks-system-base-v2-0-2926da3db6cf@collabora.com>
- <20260709-mt8189-clocks-system-base-v2-7-2926da3db6cf@collabora.com>
+ <20260709-mt8189-clocks-system-base-v2-8-2926da3db6cf@collabora.com>
+ <39ba7e37-bdd7-41ab-b72d-fed0bdbfc3b6@collabora.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,26 +56,71 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="YOyYCkfYLtSJJ1sW"
+	protocol="application/pgp-signature"; boundary="UX1C2aIXjTZQUR6q"
 Content-Disposition: inline
-In-Reply-To: <20260709-mt8189-clocks-system-base-v2-7-2926da3db6cf@collabora.com>
+In-Reply-To: <39ba7e37-bdd7-41ab-b72d-fed0bdbfc3b6@collabora.com>
 
---YOyYCkfYLtSJJ1sW
+--UX1C2aIXjTZQUR6q
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Jul 09, 2026 at 04:05:35PM +0200, AngeloGioacchino Del Regno wrote:
+> On 7/9/26 15:42, Louis-Alexis Eyraud wrote:
+> > Add dt schema and IDs for the clocks of MediaTek MT8189 SoC.
+> > The MT8189 clock IP provide clock control for main system
+> > (apmixedsys, topcksys and vlpcksys) and subsys (eg. peri, scp,
+> > ufs...).
+> >=20
+> > Also, add compatible for frequency hopping and spread spectrum clock
+> > functionality and reset controller header file for MT8189 UFS reset
+> > controller support.
+> >=20
+> > Co-developed-by: Irving-CH Lin <irving-ch.lin@mediatek.com>
+> > Signed-off-by: Irving-CH Lin <irving-ch.lin@mediatek.com>
+> > Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+>=20
+> Both the commit description and title are misleading, as in, you're not a=
+dding
+> MT8189 clocks, but *both* clocks *and* resets.
+>=20
+> Fix it please.
+>=20
+> After which:
+>=20
+> Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collab=
+ora.com>
+
+And
 Acked-by: Conor Dooley <conor.dooley@microchip.com>
-pw-bot: not-applicable
 
---YOyYCkfYLtSJJ1sW
+pw-bot: changes-requested
+
+Cheers,
+Conor.
+
+>=20
+> > ---
+> >   .../bindings/clock/mediatek,mt8186-clock.yaml      |  15 +
+> >   .../bindings/clock/mediatek,mt8186-fhctl.yaml      |   1 +
+> >   .../bindings/clock/mediatek,mt8186-sys-clock.yaml  |   5 +
+> >   include/dt-bindings/clock/mediatek,mt8189-clk.h    | 433 ++++++++++++=
++++++++++
+> >   include/dt-bindings/reset/mediatek,mt8189-resets.h |  17 +
+> >   5 files changed, 471 insertions(+)
+> >=20
+>=20
+>=20
+
+--UX1C2aIXjTZQUR6q
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCak/kMgAKCRB4tDGHoIJi
-0n4RAP4npZum5XLpd0EsHYWmc4hcy2hHK2ABwRM4HAGsi+yHGwEA7LZVZIA1cxgk
-OVcQXpO3gCi195JR54o1Z51wMc46Xgw=
-=pOIq
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCak/kdwAKCRB4tDGHoIJi
+0nERAP4kLU13u3da3l4qcBWIw/VmYndpJtfFXpU6Zgypf9MYBQD8DwkM+FWeYAyD
+xhlJbInggvLHDfXzemV0LCSaeSizQAw=
+=+U1Y
 -----END PGP SIGNATURE-----
 
---YOyYCkfYLtSJJ1sW--
+--UX1C2aIXjTZQUR6q--
