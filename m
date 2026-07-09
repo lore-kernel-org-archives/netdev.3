@@ -1,219 +1,209 @@
-Received: from sonic305-21.consmr.mail.ne1.yahoo.com (sonic305-21.consmr.mail.ne1.yahoo.com [66.163.185.147])
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B70A136BCC4
-	for <netdev@vger.kernel.org>; Thu,  9 Jul 2026 15:13:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.185.147
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783609982; cv=none; b=c63PLILy+TuwUcolNpFOpp08wldYTf/W/F8BNtkZ4Zxoylt7ijydiQgzyUedNEH98KdZQsJaMPK7yv8a7V/7l3eP78NN0Lt9o6WpEiZCJS3jbEFwL9sNVKIs8D3cp1yTWSwcDkfBOGE/rPIEoTOckCHFGkCaZUeXQd5oNErQ/to=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783609982; c=relaxed/simple;
-	bh=Ncsb8W3MPkLyXDKm+Y8UivlCJmy1txyn92Y12PYUKg0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HR/AKJFFbnbn+8sJFQJkQGmMqA3E8jCubHh5F6q5jl1rr7nPyLIoPwcR7rAh7HjRpqAH9lvhlRGB07RdYDpoA133TQhw4o4QTsQzMik3ZaujFAju6nDTJRatPGczuk6LiQfMHkYdkOUdqsMhgClYUPa9sNjyaII/1yyaPvQy+oU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=ujvpBcz6; arc=none smtp.client-ip=66.163.185.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 921A437AA75
+	for <netdev@vger.kernel.org>; Thu,  9 Jul 2026 15:13:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783610033; cv=pass; b=huAecdmiLBNS9c9f7ddGVUC5ESnLL4GImG2wU2GKMy4G+Aw+adb70Rqp58tP5qRAAubVMM5Tir2KjhwzLKwWGvsCkjRQlP8Skr8vjoO0qq0SCVEtXHigb+SlbOtvb+7N9Fr98oGyHpi4zGyQIuRWTc663gMYMMLZCWs3QPVhIBA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783610033; c=relaxed/simple;
+	bh=lm+iwZuldvNfgm8Lzbku/fwQXnHvxwIB+0za3JCHtHk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Dt0vpwVjQUBijgtE/TUQoXMUE+BLSaztMDYZmWIoiDNRo1vab61YwDuXyCOVkb/8RrxfMUCDv7zd0+M7WuT2pJLOMABsLkuI7OWHcO1D+bldSu8qXZpB8SLRde4tJkW2VhEGs/cMGN6zj9hrygr3+eUGC4ynwg+Sw1BKUm1K1h4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cZShSS8r; arc=pass smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="ujvpBcz6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1783609980; bh=xbLKV+fyL/sTfAdSz0wMm/SRXvoeeDb8C93qT5s1TUg=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=ujvpBcz6EGizFjhm90K5VoZehOhXimSKxmcjRFqudnEhm2wxzKDEYI4/w/Dys2ppr5pa82A/FFXENA6XW45H1DIQWBslkRKbAxrHlZ7MJ8dYqgpxO1vO3wnwsbSVFQiSNRYbvhQinE/117OSj7C6wbCwoIZ4fOigwxHpk/nXDSC4x1ggg1NQPzOSWD5pOYohqFAAEAcfsv8LAdlL076moEM9jO5Pes9pYAv0VcZBj7RGBfZZuEG1bA4qtQKEbctqHXa2VfXmhBQC3A4+CYnskuIS4+s1Mv/9wCBksU3pNxC0SL4/dLglUyOO3dSX5aWe1gokdMSwptP6X7acY/uYbQ==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1783609980; bh=3jbR8+4hvuFH8nyEbtr3RKejiomjccs2/+MAYkBDTKV=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=rRdoRQDBOM1Bn7ZGLW/BbHgbnDPU0PGPGcuEdubr2Bwk1IQFkGBeVP/8/dcxzAqaCcWx0tzOKob71nI0QdpMHaarFTnNXZYQAsCNyNZoaTF+tRTdOAHPLlH/NhMzcC3kJGIlxE0tfXgdZz0b2x0f4j9KvM6d7/nhy8aqXF4AzCsJ1GIda3xOD1KiRBUg9V5lSb4Ii7x+UyK/ydngQGlqGjJPhwaX9i/qwLq74xDOpkEkJW5V4u7fHgOiv86/9R00WI0QnCuSunnDmx5paMPP71VvyqWMx/RgltBoMvV3TmjmciMj9yP3JM5iMpyHXqUGfVE1tJLu0fwwC0Pb3h0FCA==
-X-YMail-OSG: WaGoWxkVM1lAKZnwCA9sep4_X9xkcRp5Vc0Ym9UhzpQEAyYma9_hiogfBXtcO6r
- BSbeH.tFoyg_esPPgrG5rEpV10kHttFjGEwj1cFO.3NBIaiZyCPLDsGsCiXW_RHA9jkwAB6V0atL
- iCKfrfPLhxlsjILmqjrSL1HWrQB53Cn1wOiPP.heyCGyPImjB3fo5G_t4K8Z.3CJU2koaKMb0YwD
- 6RxxLBPVR0SGO9GzX._lkN.M1WFu6qntr27OCzwk9bBtTxHwpAx1fII7n2ACRLXhYctdggd_HQi6
- 4qhqLkHJfFm2ZMrFyCJAJ7Y1.do_GJUHdFNu.wh8cZcmJrQENKlbc_.Coe_WNGRhxw_0je0k5MLP
- g4RyGn603MysLFlPJPesrh5VkdHvtDolth4NEzPFGPR29Vu_.V2X22W2x0OHbWeimKISZAI50Db3
- QTd.HjtkxVptBZadmB7Bo4U3pJIL3uYFjyg49JaG5Lh4y_D0WSOImXTHo_nCqb1_H_LWeVDvstIs
- TLoQFUIrjUBzpaj95OOx11r1E51qjTCEPyG4jm9XLG81ovFgvzeYaEqdQahXaiiULXlhsWNmIYoS
- _31jdQISu96PduZhUqRH5DNtj2kVIjBt1PxsH9T2Qd2VwTC_GWNrIzCzEQlmIg35ew7mT5v44MCD
- 0Lj0Ft1m.dqfgIzTwEH7adWaHmM8atrHAAa8yfgpzxNGEUr4Zdcgb_Ts.OMze32GhQq19yQREQSJ
- PmAPs3fAsBi96pDzJRmg8lgsaCPlI0wPOoyztfCL0Y7p7c.e.A46s1x7Ar_MRb40WgENW1ORnIey
- jLaXpUYeH9cJGwqtoeHjYL0.TVw9lruwPWIZQTRb9vtGB4pvg4FtPeVRiBny9jVAghzTG4t6Hg80
- P6H49XZYtFmgTbyuxV_GgNYWqMgKveJoDmiYvFiK7JoN3X4www8FMx5NWbcc4jlLiDodOCv0VaCy
- 3.JAzjMOf8UrcemPDnGCAI9iek0U3WhHk5NZVS0xL2W4ip7BcFuMdl1ilH3yePEmCQ1nhlv1r.oX
- 8w484MYT9SK3C5ZGxpo5rtL0Kwiw5bsAzSnkPT1qWmDGtmTAU8cRq2DG0oqeKgUtpiLW.QwHhOLu
- CExO74cfAwNfyM5cY84gIrEMBtsIOOTAAQKv20natR8FbOOYaN6c6PkvgUHQlZJWoY87y8AXlX4T
- u1QxD27WsMlmnjG52kA6gLpyoEbnM2L6Oz27A3easn9oYJ3fLtURnhDHttfeLC8mZrSHyLVH3EI5
- WPhOYbuY90j0DNVw_V7AvhX3rUeohmlGvpaFa7Zc7nN4zyfmeYoLQuvrKfrIM2pzRBiAgPFD9BT.
- ZuWbldObzu3IJYpVdPB6IRlP59k3MFBaT9Bjb3tfXgh99I__th7tPxK5iuCb65FoKY9SW4ZVbsS0
- xFX4qc6I8xc_KScuXGh_sH2TRrrDskByaCvi5pXqji0nLpowdAjY_gcesAcpa4FPLkh8s7husQAe
- N4WI9g5Yx1.q_27w4oHeJUBCbEFrzPNohvO_oOXjB3VUqg51cJOQchgLkJcn8Nvhrr7EuUFZo7zR
- .xSKiR8abPujrso0ofvXf1kKwXJ3MviDgpBIfQjgODEE0x2NBwUhxb32KK2prBk3zE_kh4kwBK6H
- 4x0KMn8Wz_d48o8azxFV8FCSqNXiT3ZMKVN_Q3dMISa0O4GBEXufWnMnCFJtMsXmMmiyNo1ByJTf
- yx3mKnBCSIAyc1nbE5Zc0z8JhDw7sJ0bFQE48.v.q6O3ZAWDhOOcgOVDX4W.zAtVwCmmeYrMG92_
- NpF8jbQUaSYmQD3DK5UsZRTRh3cWbqVkGnUx4KexVNtaEd0OX3GuaNaM1xT_EvwuS10pKDPICFSq
- ZOCW6uRLRaHWrrMig6CZW8h6mRiD6NC_Ye97cCpWDfE6iHpUHLsIS7JKXcllr6g3ea7etBbtdN5g
- KBhycZZun7mRJoxy8DoE2PORmPilx2AHdoGOSW2nwRF9HZRc5a2IpzKdUIW42z2TCfSnzkqaANVO
- S5E62Iopn2oeBBM1kFfEm7WEdnBUbVCgs8la4ZZOX783O.kq042k9Vqqi3Km3Fl5OFeXUe_YG0IF
- vixJuoJ8yr6.BBAlmO22GOSaTIhTW6RTvjBGY_wERWkhI6hSeEqt1H65B3VX04ROjznSqutst6Xh
- LG35ttxUG4mak3InyRI5W9tOaVINCb6lAqsGs7aP6x04oTxVTAQRRFuU96LJ_TYgXwhmOLBuIEfJ
- 5s9mErvz6uBHJqFCPAr6tP7ysfrBgIziiS2ZMmXCTy8hlkW22XgDSPHdeQKQLjB9NCfSj1Ys-
-X-Sonic-MF: <namiltd@yahoo.com>
-X-Sonic-ID: 0f3b3ae9-870c-4d16-900f-ff8a23c57d9e
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic305.consmr.mail.ne1.yahoo.com with HTTP; Thu, 9 Jul 2026 15:13:00 +0000
-Received: by hermes--production-ir2-7b48fcd765-2bc6j (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 3fa513dfaadcb2c8a76ae27bd4128239;
-          Thu, 09 Jul 2026 15:02:40 +0000 (UTC)
-Message-ID: <276c436f-696c-4301-831e-6a79e4756905@yahoo.com>
-Date: Thu, 9 Jul 2026 17:02:36 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cZShSS8r"
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c15bf399d3bso240505166b.2
+        for <netdev@vger.kernel.org>; Thu, 09 Jul 2026 08:13:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783610030; cv=none;
+        d=google.com; s=arc-20260327;
+        b=PXfWY+frKLP7Rr912I+iBhYPeIdlSPuY41rvK91Z0BezXv2Ao9OzWRJyhtzJlDCSN4
+         hDo79hflAxVmzpqJYtj5eoreAk8v8wKRixI1L+6TC+9Ls2K4gxYdqBZhQcJJ53/oHlgs
+         vxQ2qrythg8Qic6F5UyJUqFbqJrfwgAiqreJ9PAYsVvLst7VWT5CTvKbx55yrjSAVur4
+         zewXV0I3DUviNwWpPkPmEJqy1dhZTwWpxEiju/XidLTQ71nC63U10KuNIGaAfrLMPoqC
+         juHM0hc5MkcHFMo/1cjIiT9/89LBaTJkLsEuCSDK7l66XCFQlWQ7hwcJdQivLHpCEMNA
+         gbTg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=lm+iwZuldvNfgm8Lzbku/fwQXnHvxwIB+0za3JCHtHk=;
+        fh=QFq5JyauwUEu/nmh6dodvSqs+LcRe7kdIe2nwoQLwqM=;
+        b=UnAkfCyCFgX/mKmhYEC5EktvyZPszE8H0/4d7sUTEq8Hq1vERB7Xs1pkIjNe0SKqTk
+         n+Qr49UfhoZ2qiYPxEHI4BKNa2D5hho9wL0+WFUw8USibV7N0TgiVlxJhZH6Hm78bRhm
+         i8h/P98A4uJTcKBSgvKcWk6FTKKHC9mjASZMqmfF8G2EJQSlcfEGAgEGB/tzRFDjI7xr
+         uUv4vOER4deDDZ21O/2zp7TBMI/6WppBz6goGAsuARAuqFm7iPw6OjPiseJgd2eIhVvT
+         T0TjMvmvtQo0oERl+YqzZ49B5LW3rV6IFLx9K/S0Q9H48cshykJRpsDTlYaVM+EPDeZk
+         0SNQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783610030; x=1784214830; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=lm+iwZuldvNfgm8Lzbku/fwQXnHvxwIB+0za3JCHtHk=;
+        b=cZShSS8ro0THpxKUvnqocyUpAo9soBXcXvDp47ckLhenrBhPQ4tyd8EgkuJyqEpedz
+         Oqy8pQnBufM2azAaXoVITXgjgXjm5gIRGUUctc3JpFFFt4lxLafzDe/H/TZPlx9P/9f5
+         MKacuUcSnVUzfgRrbScM/zrSNXAw+G0+JCAwxID5SKn47zNpFcuB5R67QtMe6fugaxjW
+         vzNrVUyE3/O4N/f4kQA/I3Aw3sm5YnTU4tWoHydMSFE/7T1ngHtUncDPtlvYVaz5oIq/
+         XaiqR3rdwn7uMOTnzFX1ba4h+KnthRIOTFc+jdn4avr8ApxEuTrBZrt1XzHuYprYhRjU
+         z5WQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783610030; x=1784214830;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=lm+iwZuldvNfgm8Lzbku/fwQXnHvxwIB+0za3JCHtHk=;
+        b=fZDZXsz58fDtqJuB6jly/xGIXG67nX+01EfEjmlDWyhwT5tzWKF/az9vEJ8X0Xzvlg
+         70KSMp5PKffYZ153ubj1kFs9o5v5D22gBCpcuNWQwM6WMBK3XVgaNdC5aQRHq9cOZ6pe
+         TOV8E5MoI6wpwKbx01YNjlH+wk62uJNIwrHuBUY5ksYwa3NvKY9mrrPK9J2vc3B81nyt
+         MWdd7TF7AVmw7nbBheOBogD0Cb98opxv8WRtI7EgpyXWRrTBO1528kmOj+AsIxmOFqEu
+         uHO4vrmB1yK/ydBcd22zR+h+NDzIWbjYAMhBPzcPUa6PPInzLO2DfClpiC+jdGlPfiXx
+         9coQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqSwF6AZr48wuBXX8MN395pYDmyuMlWdxOiG8U3hv2skQi7OZEHVCTHqaHVGSQ4YFkcT68X1to=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy/Sy5or372u3aC3aFIfYWukgz403rp+/Kg3CS3lo9cvYUVxFi1
+	KSX0Qsn7PydOgyDxY43N3Bw5kXmmfX0+sbMYN5MdA+dpaqmg+vPBMdFf16tN+PwAR0TwrhMA4u/
+	M5MJCbSylYSzmh3yZ1950Ni5b+ZJn+IhrxZIQQLtaPw==
+X-Gm-Gg: AfdE7cnpQ4v5DPICzTO+PsSpN2MaeFc3U6ofnn3cHiA4kgB+9z98QLJmCsuPqQYcSxr
+	bNr0iIl1mT83XengA3Wuas9QH6sNijb0hjz7HhxwgvN/uXEmo47Lgl4FrMIyXDV9ML2XRA1jP1u
+	kpNkG66n3X1moAmVHzzYw0mv9gkiOBeJcnk7IP5B0PLpIrpje6Flwk4PXhrX7tbY/H7UmbGpU5n
+	t7Z8G6P99KGu/mCvL0LKS+DpE/rXLKMzsPMiWxhjW1yAcja2pAORYd1Jtf9m/mxmxL21DQ=
+X-Received: by 2002:a17:907:1b1c:b0:bed:19af:f89a with SMTP id
+ a640c23a62f3a-c15cde8c84dmr329373166b.7.1783610029787; Thu, 09 Jul 2026
+ 08:13:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v4 2/2] net: dsa: realtek: rtl8365mb: add HSGMII
- support for RTL8367S
-To: Johan Alvarado <contact@c127.dev>
-Cc: linusw@kernel.org, alsi@bang-olufsen.dk, andrew@lunn.ch,
- olteanv@gmail.com, kuba@kernel.org, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, linux@armlinux.org.uk,
- luizluca@gmail.com, maxime.chevallier@bootlin.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <0100019f45cc4fe2-2464b68a-dfcf-4e93-9bfc-8445370d8e3e-000000@email.amazonses.com>
-Content-Language: pl
-From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-In-Reply-To: <0100019f45cc4fe2-2464b68a-dfcf-4e93-9bfc-8445370d8e3e-000000@email.amazonses.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: WebService/1.1.26086 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+References: <20260709101327.9508-1-royujjal@gmail.com> <2026070925-delay-gauntlet-bc7c@gregkh>
+ <CAE2MWk=mm8_bkd54Gv1mdox6rfvx85Dd3AjOCxPz0fPAfyuWYA@mail.gmail.com>
+ <2026070954-activist-left-8303@gregkh> <CAE2MWkmcQdhGp3LTMtpgAse3AFcfKcAcpQe89+iijfP5e0w_QQ@mail.gmail.com>
+ <2026070948-lively-exchange-a458@gregkh>
+In-Reply-To: <2026070948-lively-exchange-a458@gregkh>
+From: Ujjal Roy <royujjal@gmail.com>
+Date: Thu, 9 Jul 2026 20:43:37 +0530
+X-Gm-Features: AVVi8CfKbtzcJnRxXIx3ULOTra4r8qYMzKp7zTKSzETyFRYKJOujtPr221wvxYo
+Message-ID: <CAE2MWkn3L7V3x8i0F-soGLxsBBo_Umgs1pJ3FwCw1OW7=U55zg@mail.gmail.com>
+Subject: Re: Please backport bridge multicast exponential field encoding fix
+ series to 6.1.y/6.6.y/6.12.y/6.18.y/7.0.y
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Linux Stable <stable@vger.kernel.org>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Nikolay Aleksandrov <razor@blackwall.org>, Ido Schimmel <idosch@nvidia.com>, 
+	David Ahern <dsahern@kernel.org>, Shuah Khan <shuah@kernel.org>, Andy Roulin <aroulin@nvidia.com>, 
+	Yong Wang <yongwang@nvidia.com>, Petr Machata <petrm@nvidia.com>, Ujjal Roy <ujjal@alumnux.com>, 
+	bridge@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Johan
+On Thu, Jul 9, 2026 at 7:52=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org>=
+ wrote:
+>
+> On Thu, Jul 09, 2026 at 06:35:04PM +0530, Ujjal Roy wrote:
+> > On Thu, Jul 9, 2026 at 6:23=E2=80=AFPM Greg KH <gregkh@linuxfoundation.=
+org> wrote:
+> > >
+> > > On Thu, Jul 09, 2026 at 06:12:40PM +0530, Ujjal Roy wrote:
+> > > > On Thu, Jul 9, 2026 at 4:34=E2=80=AFPM Greg KH <gregkh@linuxfoundat=
+ion.org> wrote:
+> > > > >
+> > > > > On Thu, Jul 09, 2026 at 10:13:27AM +0000, Ujjal Roy wrote:
+> > > > > > Hi Greg,
+> > > > > >
+> > > > > > Please consider backporting the following bridge multicast fix =
+series to 6.1.y, 6.6.y, 6.12.y, 6.18.y and 7.0.y.
+> > > > > >
+> > > > > > 726fa7da2d8c ("ipv4: igmp: get rid of IGMPV3_{QQIC,MRC} and sim=
+plify calculation")
+> > > > > > 12cfb4ecc471 ("ipv6: mld: rename mldv2_mrc() and add mldv2_qqi(=
+)")
+> > > > > > 95bfd196f0dc ("ipv4: igmp: encode multicast exponential fields"=
+)
+> > > > > > e51560f4220a ("ipv6: mld: encode multicast exponential fields")
+> > > > > > 529dbe762de0 ("selftests: net: bridge: add MRC and QQIC field e=
+ncoding tests")
+> > > > >
+> > > > > Why is any of this needed in older kernels?
+> > > > >
+> > > > > And 7.0.y is long end-of-life.
+> > > > >
+> > > > > And why, if this does fix issues, was it not tagged for stable to=
+ start
+> > > > > with?
+> > > > >
+> > > > > thanks,
+> > > > >
+> > > > > greg k-h
+> > > >
+> > > > I already explained this in the email thread, "Please backport brid=
+ge
+> > > > multicast exponential field encoding fix series to stable kernels".
+> > >
+> > > Sorry, but that's not here (remember, some of us get 1000+ emails a
+> > > day.)
+> > >
+> > > Please explain why patches need to be backported when asking for them=
+ to
+> > > be backported.
+> > >
+> > > thanks,
+> > >
+> > > greg k-h
+> >
+> > Sorry for breaking the thread. I understand your point, I will
+> > maintain this in the future.
+> > How should I send the patchset that addresses the conflicts on 5.10.y
+> > and 7.1.y? Shall I send the conflicts patchset as a series via a
+> > different thread or how? I've never done this before, so I'm asking.
+> >
+> > Here is the explanation for why the patches need to be backported:
+> >
+> > History: The multicast stack currently supports decoding of IGMPv3 and
+> > MLDv2 exponential timer field encodings, but lacks the corresponding
+> > encoding logic when generating multicast query packets. As a result,
+> > query intervals and response codes exceeding the linear encoding range
+> > can be transmitted incorrectly. This can cause multicast queriers and
+> > listeners to interpret different timing values, resulting in protocol
+> > interoperability issues, membership timeouts, and premature multicast
+> > group expiration.
+> >
+> > Testing: The series adds the missing encoding support for both IGMPv3
+> > and MLDv2 and includes selftests that validate the behavior.
+> > I backported the series to v6.6.123.2 and verified the accompanying
+> > selftests. The selftests fail on the unpatched kernel and pass after
+> > applying the series, demonstrating both the bug and the effectiveness
+> > of the fix.
+> >
+> > Given that this is a protocol correctness issue affecting multicast
+> > query generation, please consider backporting the complete series to
+> > all applicable stable kernels.
+> >
+>
+> But this really seems like a new feature being added, it's not fixing a
+> regression of something that previously worked, right?
+>
+> WHy can't people just update to the latest kernel release to get this if
+> they need it for their environments?
+>
+> thanks,
+>
+> greg k-h
 
-On 7/9/2026 9:34 AM, Johan Alvarado wrote:
-> Hi Mieczyslaw,
-> 
-> On 7/3/2026 5:12 PM, Mieczyslaw Nalewaj wrote:
->> Johan, looks like you forgot to include the scheduler bandwidth bits
->> for the CPU port. Without this, HSGMII will still be capped at the
->> old SGMII rate limits. Something like:
-> 
-> Good catch. I had dropped these on the assumption that the vendor
-> driver never touches them, but your mail made me look again: the
-> "Max rate" block in dal_rtl8367c_switch_init() programs exactly these
-> registers for EXT_PORT0 - the port 6 ingress and egress rate limiters
-> are raised to 0x7FFFF via rtl8367c_setAsicPortIngressBandwidth() and
-> rtl8367c_setAsicPortEgressRate(), followed by a raw write of 0x0007
-> to 0x03fa (LINE_RATE_HSG_H). I had missed it because those writes go
-> through the indexed register macros and a raw address rather than the
-> PORT6_* register names.
-> 
-> On my board this was masked by the bootloader: U-Boot runs the vendor
-> switch init (rtk_switch_init() from the ipq5018 gmac driver) and
-> leaves the limits raised, but the kernel driver then issues a full
-> chip reset in rtl8365mb_setup(), which puts these registers back to
-> their reset defaults. With the ingress/egress limiters back at their
-> defaults that would indeed cap HSGMII at roughly 1 Gbps, and I could
-> not have seen it in testing because my downstream ports are 1G only
-> (as noted in the cover letter, 2.5G line rate is unverified on my
-> hardware).
-> 
-> One caveat I want to be transparent about: for the same reason I
-> cannot verify the cap itself, and the vendor documentation leaves
-> some room for doubt. The rtl8367c_setAsicPortIngressBandwidth()
-> comment describes the bandwidth value 0x1FFFF as "disable", and
-> that is exactly the reset default - I read back both limiters as
-> 0x1FFFF (LSBs at 0xFFFF, MSBs at 1) on my RTL8367S after the
-> driver's chip reset - so the limiter may in fact be disabled out
-> of reset (though that note looks like stale text from earlier
-> 17-bit-granularity chips, given this family's maximum is 0x7FFFF).
-> 
-> Raising the limiters is safe under either reading: if the default
-> really is a ~1 Gbps limit, the write removes it, and if it means
-> "disabled", the new value (0x7FFFF * 8 Kbps, about 4.19 Gbps, well
-> above the 2.5G line rate) never engages.
-> 
-> While I cannot push more than 1 Gbps, I did verify that these
-> registers really are the live rate limiters for the SerDes CPU
-> port, by going the other way: on a build with the setup-time
-> writes described below already in place, I lowered the limiters at
-> runtime (via regmap debugfs) to 12500 * 8 Kbps = 100 Mbps
-> and ran iperf3 across the CPU port. Throughput clamps from ~460 to
-> ~95 Mbps with the ingress limiter lowered (CPU-originated traffic)
-> and from ~600 to ~96 Mbps with the egress limiter lowered
-> (CPU-bound traffic); restoring the maximum returns both directions
-> to baseline. The ~95/100 ratio is the expected TCP goodput for a
-> 100 Mbps wire-rate limit, so both limiters demonstrably meter this
-> port at the documented 8 Kbps granularity. The only thing this
-> cannot settle is the meaning of the 0x1FFFF default itself
-> (~1.048 Gbps cap vs. disabled), since any value at or above the
-> traffic I can generate behaves identically. If you have an
-> RTL8367S setup that can push more than 1 Gbps across the HSGMII
-> CPU port, a before/after measurement would be a very welcome
-> confirmation of the cap.
-> 
-> So I'll add the writes in v5, following the vendor init: raise the
-> port 6 ingress/egress limiters to their maximum once at setup time,
-> rather than per interface mode. Two differences from your snippet:
-> the vendor init writes the full 19-bit rate value, i.e. the LSB
-> halves too (0x00cf and 0x0398 set to 0xFFFF), so I'll program both
-> halves rather than only the *_CTRL1 registers, to avoid depending on
-> the reset defaults of the LSB registers. And LINE_RATE_HSG_H needs no
-> new write at all: the driver's common init jam table has always
-> written 0x03fa = 0x0007 in rtl8365mb_switch_init(), so that one is
-> already at its maximum on every probe (which also matches the 7 you
-> read back for it). I have this running on my board already: with the
-> setup-time writes in place both limiters read back 0x7FFFF after
-> probe, and the HSGMII link comes up and forwards as before.
-> 
-> As an aside, a per-interface-mode variant of these writes does exist
-> in the vendor code, but only for other chip families: in
-> rtl8367c_setAsicPortExtMode(), the chip id 0x0652/0x6368 branch
-> programs its rate registers (0x0130/0x039f/0x03fa) on every mode
-> change, with 7s for EXT_HSGMII and lower values otherwise, and the
-> 0x0801/0x6511 branch writes 0x00d0/0x0399/0x03fa = 7 only for
-> EXT_HSGMII (which is where the pattern in your snippet comes from).
-> For the 0x6367 family the ext-mode path never touches them, and the
-> vendor only programs them once, unconditionally, in switch_init -
-> which is another reason I prefer the one-time setup write over doing
-> it from the PCS path.
-> 
-> For completeness, the same vendor block also touches three related
-> bits: rtl8367c_setAsicPortIngressBandwidth() additionally clears the
-> port 6 ingress metering pre-IFG bit and sets the "flow control when
-> ingress rate exceeded" bit (PORT6_MISC_CFG, 0x00ce bits 10/11), and
-> switch_init follows the egress rate write with
-> rtl8367c_setAsicPortEgressRateIfg(ENABLED), which sets the global
-> "egress rate accounting includes IFG" bit (SCHEDULE_WFQ_CTRL 0x0300
-> bit 0). With the limiters raised to maximum the meter never engages,
-> so neither the exceed action nor the IFG accounting has any
-> observable effect. I plan to leave those three bits at their reset
-> defaults and program only the rate values and LINE_RATE_HSG_H, to
-> keep the driver's footprint on the QoS block minimal - but I'm happy
-> to mirror the vendor init exactly if you'd rather not deviate from
-> it.
-> 
->> One more thing while we're on this: I checked the equivalent
->> registers for RGMII on the RTL8367S, and they come out to 1, 1, 7
->> respectively (INGRESSBW_PORT6_RATE_CTRL1, PORT6_EGRESSBW_CTRL1,
->> LINE_RATE_HSG_H). For correctness these should be set to those
->> values in the RGMII path as well, rather than left at whatever
->> reset/default state they're currently in.
-> 
-> The 1/1 you read back for the rate limiter MSBs match the reset
-> defaults I see on my RTL8367S as well, and the 7 for LINE_RATE_HSG_H
-> is the value the common init jam table writes on every probe, as
-> above. Since the driver hard-resets the chip and then replays the
-> init jam on every probe, those values are already guaranteed in
-> the RGMII case, so writing them again from the RGMII path would be
-> a no-op. These fields are also the MSBs of the per-port QoS rate
-> limiters rather than link-mode configuration, so I would prefer to
-> touch them as little as possible from the link paths. My plan for
-> v5 is therefore the single write at setup time described above,
-> which covers both SGMII and HSGMII and has no functional effect on
-> RGMII either way: both the default value (~1.048 Gbps, if it acts
-> as a limit at all) and the raised maximum sit above the 1G RGMII
-> line rate, so the meter never engages there. Let me know if you
-> see a problem with that.
-> 
-> Best regards,
-> Johan
+This is a corner case when people set the query timer value higher
+than 128. People usually use the default value and don't change it, so
+they may not encounter this issue. But I found it when I changed the
+value during some extensive validation of protocol timeouts.
 
-Performance degradation without setting these registers can only be
-observed in HSGMII mode with simultaneous load on multiple LAN ports.
+If one host doesn't have this fix, clients will observe premature
+multicast group expiration. For example, a set-top box channel might
+disconnect early.
 
-This was noticed during work on adding support for the Mercusys MR85X
-router with DSA to OpenWrt: https://github.com/openwrt/openwrt/pull/19445#issuecomment-4505613294
-
-Regards
+But we can ignore this until few more people request this fix for older ker=
+nels.
