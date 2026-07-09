@@ -1,57 +1,35 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46E98408022;
-	Thu,  9 Jul 2026 10:09:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1608540BCB7;
+	Thu,  9 Jul 2026 10:10:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783591747; cv=none; b=MS1HJ82I57Q/sKQ7m5r/axSXavT+iua9yssnCZrvX3b73xiuvza+83AEISbHnftfZpMZP7YGIT73u6PoomY/ClWqProUPpEb0W2lwuQif6GLYmXX/+qdM/rgaHNCeGkUsNpmTm8bD2R6kx6CIeysn2IRMMiiga1qYfiukJYExxU=
+	t=1783591829; cv=none; b=Qbq5FZjrDF+tUoSii8c6CSgVGQdzYLAiAqVTLKIjrjPhGLsdeVmi9um5M6o2/IDES0tjvCc6XowmWtq7f0BvP6INj5QZF9t+zXjnuVUoYo6exakSiqZdD2+pcEnfREitYdxZhQobPoYJL2x/El2YyqeGaDnPkUX/1zALAuW0f3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783591747; c=relaxed/simple;
-	bh=VseLt84HN9pRMqSfQLuHa2XgUprH4VW97c56Y2Fc5l0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OWmioXaxn8qZ2yQf1yqN+jpUS2s6ciGmA8n/rle8irTaA1ozN4jIrcsTOMBv1p8k0LlVL+Snti8iCLbqS1f3WM4ZB0WljDAEJuI39kK77aGdvsiaAGO9pmjBF9yEBKMxBiKgo407j2Eol1KgUcxdBMa/DTHoJY2MDNY2zeJ2B0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=R4FbmQoq; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
+	s=arc-20240116; t=1783591829; c=relaxed/simple;
+	bh=i/FK8fPLitdoE553p1GwMvAyliy17XwACOghFp/tVrg=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=YLqtKcaojBlxwuiGR2pnSvXSIJACknrKssjBaz7D6CO3fAiD8fNRQruLnfRotasgFNPLeheBHcQstLAhBwjF16t8b57gNveGz14XDLw5nlAZTW/mqvz2/WJESf/F6MEH1lrh00uo8PyqzWDdo7sGjlhz/EyVgsCvXpjkwoW7zJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KantdWfS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="R4FbmQoq"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 669A2om062982781, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
-	s=dkim; t=1783591370;
-	bh=02qJkGoL3XQfkCurikv7zc6qI6DxSrX7y2ITegEFWvQ=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=R4FbmQoqCMdXgcP5jArrzv/7s11GIO3a8Qf8b+0e1wvD62ESBaRQ6/r7ddoO6q1F2
-	 NuEEGbQd03/FBU9HdzjqQD0fCMOqR6pTVsYIDqTfkWSINPn80SvRmoSB02nNjdfQq2
-	 eyHssDwEho2VaH5lqGeuHxHmS29RuyYhtGFSEwRfqRvtNQRU6QhAdWpZOHS0K+p1iW
-	 JzdOGCEWYbUftVwkiRIeGcEMChnIv3fR+2Wy+XrLAn+eAY9xau2TTeasPzaK0P5HlD
-	 akZBs8D4prIZpL1kLqm97Q7Cd9hoWqxarJ4kPWs834/tTfHJhtDlRoXlxZdhQO8yl1
-	 5zSbTN7/KuNcg==
-Received: from RS-EX-MBS1.realsil.com.cn ([172.29.17.101])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 669A2om062982781
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 9 Jul 2026 18:02:50 +0800
-Received: from RS-EX-MBS2.realsil.com.cn (172.29.17.102) by
- RS-EX-MBS1.realsil.com.cn (172.29.17.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Thu, 9 Jul 2026 18:02:50 +0800
-Received: from 172.29.37.154 (172.29.37.152) by RS-EX-MBS2.realsil.com.cn
- (172.29.17.102) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Thu, 9 Jul 2026 18:02:50 +0800
-From: javen <javen_xu@realsil.com.cn>
-To: <hkallweit1@gmail.com>, <nic_swsd@realtek.com>, <andrew+netdev@lunn.ch>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <maxime.chevallier@bootlin.com>, <horms@kernel.org>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<daniel@makrotopia.org>, <linux@armlinux.org.uk>, <enelsonmoore@gmail.com>,
-	<daniel@thingy.jp>, Javen Xu <javen_xu@realsil.com.cn>
-Subject: [PATCH net-next v6 7/7] r8169: fix RTL8116af can not enter s0idle and c10
-Date: Thu, 9 Jul 2026 18:02:36 +0800
-Message-ID: <20260709100237.541-8-javen_xu@realsil.com.cn>
-X-Mailer: git-send-email 2.50.1.windows.1
-In-Reply-To: <20260709100237.541-1-javen_xu@realsil.com.cn>
-References: <20260709100237.541-1-javen_xu@realsil.com.cn>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KantdWfS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B245F1F000E9;
+	Thu,  9 Jul 2026 10:10:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783591827;
+	bh=YK07+fqKaXgivIvgLDXYKgRiNA/xEteeQmg8DFg22/w=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=KantdWfSmKx0mcOgjYanlcb7am2S1JWJhgh6WE/5/1PtEAkmQrC+9Nuswo8AAalHL
+	 aqUXw6+jknU6ON1ffE8mZs6eMEFffdSuoktnKyAbfzdV5XLX4j3JcV4PMYmy5HGG0G
+	 2F60SGHBubtsQT4ZiHCJzVkjsdlKpRbKPiZJYaW/iUl9CGWcR3u4u6BgBHb3R822xM
+	 bi0B1+jCFaMpeuEyXINuzPt8M1VUM0j99+4pdxvcp73TIxaGFfazDJ8ursYUAHPKrW
+	 6g2EVfMk6BxRSkgJ2LlD48v1yb07gix9G9XkcIR3M84sT4L30v/VCMgUWGytR/9ieZ
+	 mtO51lyrre20Q==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93939393A964;
+	Thu,  9 Jul 2026 10:10:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,114 +37,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Subject: Re: [PATCH net v3 0/1] octeontx2-af: Bug fixes for VF RX mode
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178359180614.3386943.3763503743823915105.git-patchwork-notify@kernel.org>
+Date: Thu, 09 Jul 2026 10:10:06 +0000
+References: <20260702045616.3002773-1-nshettyj@marvell.com>
+In-Reply-To: <20260702045616.3002773-1-nshettyj@marvell.com>
+To: Nitin Shetty J <nshettyj@marvell.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ sgoutham@marvell.com, lcherian@marvell.com, gakula@marvell.com,
+ hkelam@marvell.com, sbhatta@marvell.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ naveenm@marvell.com, rkannoth@marvell.com, kirankumark@marvell.com
 
-From: Javen Xu <javen_xu@realsil.com.cn>
+Hello:
 
-RTL8116AF is a multi-function device. Functions 2 to 7 are hidden from
-the PCI core and return an all-ones response when their vendor ID is read,
-so they are not enumerated as normal PCI functions.
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-However, these hidden functions can still affect platform power
-management. If they are left in D0 or keep ASPM disabled, the platform may
-fail to enter the low-power s0ix state and the CPU package may fail to
-enter Package C10.
+On Thu, 2 Jul 2026 10:26:15 +0530 you wrote:
+> From: Kiran Kumar K <kirankumark@marvell.com>
+> 
+> Hello,
+> 
+> The patch resolves an issue where a VF changing its interface
+> state could inadvertently delete the RX promiscuous and all-multicast
+> MCAM rules belonging to the host PF.
+> 
+> [...]
 
-Put functions 2 to 7 into D3hot and enable ASPM on their PCIe link control
-register. Since these functions are hidden, access their configuration
-space through pci_bus_read_config_dword() / pci_bus_write_config_dword()
-using the same slot and the target function numbers.
+Here is the summary with links:
+  - [net,v3,1/1] octeontx2-af: fix VF bringup affecting PF promiscuous state
+    https://git.kernel.org/netdev/net/c/fabb881df322
 
-Ignore functions that return a PCI error response when reading their
-configuration space.
-
-Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
----
-Changes in v2:
- - no changes
-
-Changes in v3:
- - no changes
-
-Changes in v4:
- - add gate for rtl_lowpower_hidden_functions, only for RTL8116af
-
-Changes in v5:
- - no changes
-
-Changes in v6:
- - no changes
----
- drivers/net/ethernet/realtek/r8169_main.c | 42 +++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
-
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index c279beb6fdb5..c0b0c2bc5a48 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -3771,6 +3771,42 @@ static void rtl_hw_start_8168ep_3(struct rtl8169_private *tp)
- 	r8168_mac_ocp_modify(tp, 0xe860, 0x0000, 0x0080);
- }
- 
-+static void rtl_lowpower_hidden_functions(struct pci_dev *pdev)
-+{
-+	unsigned int slot = PCI_SLOT(pdev->devfn);
-+	struct pci_bus *bus = pdev->bus;
-+	int func, pos;
-+	u16 val;
-+
-+	for (func = 2; func < 8; func++) {
-+		unsigned int devfn = PCI_DEVFN(slot, func);
-+
-+		pos = pci_bus_find_capability(bus, devfn, PCI_CAP_ID_EXP);
-+		if (pos) {
-+			pci_bus_read_config_word(bus, devfn, pos + PCI_EXP_LNKCTL, &val);
-+
-+			if (PCI_POSSIBLE_ERROR(val))
-+				continue;
-+
-+			val |= (PCI_EXP_LNKCTL_ASPMC | PCI_EXP_LNKCTL_CLKREQ_EN);
-+			pci_bus_write_config_word(bus, devfn, pos + PCI_EXP_LNKCTL, val);
-+		}
-+
-+		pos = pci_bus_find_capability(bus, devfn, PCI_CAP_ID_PM);
-+		if (pos) {
-+			pci_bus_read_config_word(bus, devfn, pos + PCI_PM_CTRL, &val);
-+
-+			if (PCI_POSSIBLE_ERROR(val))
-+				continue;
-+
-+			val &= ~PCI_PM_CTRL_STATE_MASK;
-+			val |= PCI_D3hot;
-+			val |= PCI_PM_CTRL_PME_STATUS;
-+			pci_bus_write_config_word(bus, devfn, pos + PCI_PM_CTRL, val);
-+		}
-+	}
-+}
-+
- static void rtl_hw_start_8117(struct rtl8169_private *tp)
- {
- 	static const struct ephy_info e_info_8117[] = {
-@@ -5326,6 +5362,9 @@ static int rtl8169_resume(struct device *device)
- 	/* Some chip versions may truncate packets without this initialization */
- 	rtl_init_rxcfg(tp);
- 
-+	if (rtl_is_8116af(tp))
-+		rtl_lowpower_hidden_functions(tp->pci_dev);
-+
- 	return rtl8169_runtime_resume(device);
- }
- 
-@@ -6160,6 +6199,9 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		rtl8168_driver_start(tp);
- 	}
- 
-+	if (rtl_is_8116af(tp))
-+		rtl_lowpower_hidden_functions(tp->pci_dev);
-+
- 	if (pci_dev_run_wake(pdev))
- 		pm_runtime_put_sync(&pdev->dev);
- 
+You are awesome, thank you!
 -- 
-2.43.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
