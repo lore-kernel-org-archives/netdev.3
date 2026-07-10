@@ -1,179 +1,128 @@
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+Received: from mail.common-net.org (mail.common-net.org [139.28.148.254])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C9C223323
-	for <netdev@vger.kernel.org>; Fri, 10 Jul 2026 13:28:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333543B2AA;
+	Fri, 10 Jul 2026 13:30:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.28.148.254
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783690094; cv=none; b=sdeQju7AuBKiS0VxeC2Eb303OtFu6yDYtifBm9iMC+8xBoGYuYQG7pYPld31Gd3FDdk8j23txdjPvG/bGqPHB1IUKUZs8NSGgwqYMY5l3rkwqT1yH+4pqLbuUrczdclUHlqzIec1KeAp9C6dQOtb+z9/IvNChQKlCCEFj6kG0mc=
+	t=1783690217; cv=none; b=f7K7Tuoz4modm1bgutvJM68t5eXtzGc6ku+I9G+Vc4PptAspzMj/DGtSH4UNFmoSKKw3H4oMCRQ7ozUxDWlxoZKXmOoxfgbXqb0rhGU9RXdb0gHz+/BBdMn3KSdpbR4zDCN5Tf4yPCGIV1Yw9BEGvblS2up9fBCUt9Qdi1PRQTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783690094; c=relaxed/simple;
-	bh=pZmSyiar78n/0LuCmNk/GBrwaxL/D4ydZb4zaMp1dY0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cTYYdkH2cyiWe+Rw9sxXjdC+jnLtGVDQVdUoxUrVhXHvKbHsjt5bAawcLh1ie3Uku2HSXapaGluYK7iZw7vdj6+4nh2eg2d9Z9Bce3ZdSslXFuNflNiY8bB1pziD7DhVqMv6qOE8Fc3oIG8T5EGn9xwAhtwKcMlMrQuJQAeT+ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=RWMSyO+J; arc=none smtp.client-ip=95.215.58.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1783690217; c=relaxed/simple;
+	bh=37DVLOJ0C/nXxDG2gLv61Y0uJu2i22i2h5bi7umeXyU=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=GFGg2X6yCa0zVhcE+hJeiw3NHWiF9xxCoR2oYUFaLVYn8Oaf1wVxEDhM2GJ1GXkKjb1E/8xoiU93DUUsKLK4mNOuf/jEjj4216vkAOoXUpgWwnHWgdjtNm1uiZ7tsR6lTAvCV7ccQfTp+920CQOj7L/dr63o/q+MtmvrLT3vjFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=common-net.org; spf=pass smtp.mailfrom=common-net.org; dkim=pass (1024-bit key) header.d=common-net.org header.i=@common-net.org header.b=gm2zxTpu; arc=none smtp.client-ip=139.28.148.254
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=common-net.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=common-net.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="RWMSyO+J"
-Message-ID: <a958c34d-c164-47d0-cd4a-74c696fd1c9c@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783690090;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=amL3HvAI8RhjX49cE615AnVjynSnuYoBEAx0wJv5xfc=;
-	b=RWMSyO+Jw/f6QJyXJ9jWrmNsjispBHMkNfjbo2s3mADg7EfRlXpqFpo4+H44k+Y5r7qpqu
-	8fCiZSAZ7ceB3BuJQRsT+CAnP0LPSlXi8tmPMvCK1CU0BfRmyGr0oWFioG+EQIe5/SsU6l
-	zaSQyRHuCdeDm4v/6eUS7U6HWtvGX0E=
-Date: Fri, 10 Jul 2026 09:27:51 -0400
+	dkim=pass (1024-bit key) header.d=common-net.org header.i=@common-net.org header.b="gm2zxTpu"
+Received: from lubuntu-18.04 (host-82-61-152-174.retail.telecomitalia.it [82.61.152.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.common-net.org (Postfix) with ESMTPSA id 867BE6D20028;
+	Fri, 10 Jul 2026 15:22:11 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=common-net.org;
+	s=mail; t=1783689731;
+	bh=37DVLOJ0C/nXxDG2gLv61Y0uJu2i22i2h5bi7umeXyU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=gm2zxTpumybA5osNk06kwG/gShIjRPbJJII6j1nv05DGcMhU3EDPyCmZfqSU0JUaS
+	 sdbhV+EJUVX+GT0UMF287GMDwjlwa1BQlthhDKigp72RS27xPesgoe9d2/K6cHTVte
+	 mfxacV42SWEcP1PmoDCFIpmbuluTlWn/cFm4r0WU=
+Date: Fri, 10 Jul 2026 15:22:11 +0200
+From: Andrea Mayer <andrea@common-net.org>
+To: Alessio Faina <alessio.faina@canonical.com>
+Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, Po-Hsu Lin
+ <po-hsu.lin@canonical.com>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Shuah Khan
+ <shuah@kernel.org>, stefano.salsano@uniroma2.it, Andrea Mayer
+ <andrea.mayer@uniroma2.it>
+Subject: Re: [PATCH net-next] selftests/net: Skip
+ srv6_end_dt46_l3vpn_test::host_vpn_tests if iproute2 too old
+Message-Id: <20260710152211.63eb25d604ea0aa2b3707d68@common-net.org>
+In-Reply-To: <20260708152745.2430714-1-alessio.faina@canonical.com>
+References: <20260708152745.2430714-1-alessio.faina@canonical.com>
+Organization: Common Net
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Subject: Re: [PATCH net] net: dpaa: always set a valid mode I/F mode
-Content-Language: en-US
-To: Michael Walle <mwalle@kernel.org>, Madalin Bucur <madalin.bucur@nxp.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260706121011.1948906-1-mwalle@kernel.org>
- <cbfa2b2b-0ae8-9c96-f177-b503239edbd0@linux.dev>
- <DJUSHXVKZ0OC.1VDMPW228IYHO@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sean Anderson <sean.anderson@linux.dev>
-In-Reply-To: <DJUSHXVKZ0OC.1VDMPW228IYHO@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
 
-On 7/10/26 05:39, Michael Walle wrote:
-> Hi,
-> 
-> On Fri Jul 10, 2026 at 1:45 AM CEST, Sean Anderson wrote:
->> On 7/6/26 08:08, Michael Walle wrote:
->>> Before converting to the phylink interface, the init function would have
->>> set the correct mode in the maccfg2.
->>
->> So for reference, the old logic is
->>
->>          if (iface_speed < SPEED_1000)
->>                  tmp |= MACCFG2_NIBBLE_MODE;
->>          else if (iface_speed == SPEED_1000)
->>                  tmp |= MACCFG2_BYTE_MODE;
->>
->> which changes between nibble/byte mode depending on the max link speed
->> (e.g. phylink_interface_max_speed). Notably, neither is set for 2.5G.
-> 
-> Ahh you're right, I totally missed, that the speed parameter was
-> actually max_speed, which was set by
-> 
->    priv->speed = phy2speed[macdev->phy_if];
->    priv->max_speed = priv->speed;
-> 
-> FWIW, in the DPAA RM I have, there is no 2.5G speed. Are you sure,
-> there are DTSEC controllers with 2.5Gbps support? The only board I
-> found in the device trees is the T1023RDB which is using the memac.
+On Wed,  8 Jul 2026 17:27:45 +0200
+Alessio Faina <alessio.faina@canonical.com> wrote:
 
-It's listed as an option in the P5020/P5040 RMs (under "SerDes Lane
-Assignments and Multiplexing"). Of course despite other parts of the
-DPAARM referring to the dTSEC's 2.5G capabilities, the the dTSEC chapter
-itself makes no mention of any speed higher than 1G.
-
-As unlike U-Boot, Linux promises backwards compatibility even for
-out-of-tree devicetrees, I kept the existing behavior when doing my
-conversion on the off chance that someone had a board configured for
-2.5G.
-
-Given the similarities of 2.5G "SGMII" and SGMII, I suspect that the
-settings should probably be the same for 2.5G as for 1G.
-
->> Can you try moving this write to dtsec_mac_config?
+> In case iproute2 is older than version 5.14.0, released ~Sept 1, 2021,
+> the End.DT46 support is not available and the host_vpn_tests test contained
+> in the srv6_end_dt46_l3vpn_test.sh file is failing in some kernel backports.
+> This is the result of those tests:
 > 
-> That worked! At least for SGMII. I don't have a board with another
-> interface to test tough. I'll prepare a new version, making
-> phylink_interface_max_speed() public and setting the correct value
-> in .mac_config().
-
-Well, we already have switch/case there, so you could just use that
-since only RMII would default to nibble mode.
-
-> Alternatively, we could move
-> phylink_interface_max_speed() to the header as static inline, but
-> that function isn't that small.
+> ################################################################################
+> TEST SECTION: SRv6 VPN connectivity test among hosts in the same tenant
+> ################################################################################
 > 
->> And check in the RM
->> whether this is configured based on the interface (in which case we should
->> remove it from dtsec_link_up) or the link speed. And please also check what
->> the correct behavior for 2.5G should be.
+>     TEST: IPv6 Hosts connectivity: hs-t100-1 -> hs-t100-2 (tenant 100)  [ FAIL ]
 > 
-> This is an excerpt from the RM:
+>     TEST: IPv4 Hosts connectivity: hs-t100-1 -> hs-t100-2 (tenant 100)  [ FAIL ]
 > 
-> I/F Mode (bits 22-23):
->   This field determines the type of interface to which the MAC is
->   connected. Its default is 00.
+>     TEST: IPv6 Hosts connectivity: hs-t100-2 -> hs-t100-1 (tenant 100)  [ FAIL ]
+> 
+>     TEST: IPv4 Hosts connectivity: hs-t100-2 -> hs-t100-1 (tenant 100)  [ FAIL ]
+> 
+>     TEST: IPv6 Hosts connectivity: hs-t200-3 -> hs-t200-4 (tenant 200)  [ FAIL ]
+> 
+>     TEST: IPv4 Hosts connectivity: hs-t200-3 -> hs-t200-4 (tenant 200)  [ FAIL ]
+> 
+>     TEST: IPv6 Hosts connectivity: hs-t200-4 -> hs-t200-3 (tenant 200)  [ FAIL ]
+> 
+>     TEST: IPv4 Hosts connectivity: hs-t200-4 -> hs-t200-3 (tenant 200)  [ FAIL ]
+> 
+> To amend this, check the current running iproute2 supports the required
+> feature and, if not, just skip the test to avoid a failure.
+> 
+> 
+> Signed-off-by: Alessio Faina <alessio.faina@canonical.com>
+> ---
+>  .../selftests/net/srv6_end_dt46_l3vpn_test.sh       | 13 ++++++++-----
+>  1 file changed, 8 insertions(+), 5 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/net/srv6_end_dt46_l3vpn_test.sh b/tools/testing/selftests/net/srv6_end_dt46_l3vpn_test.sh
+> index a5e959a080bb..406c6a3d253e 100755
+> --- a/tools/testing/selftests/net/srv6_end_dt46_l3vpn_test.sh
+> +++ b/tools/testing/selftests/net/srv6_end_dt46_l3vpn_test.sh
+> @@ -510,12 +510,15 @@ host2gateway_tests()
+>  host_vpn_tests()
+>  {
+>  	log_section "SRv6 VPN connectivity test among hosts in the same tenant"
+> +	if ip route add help 2>&1 | grep -q -i End.DT46; then
+> +		check_and_log_hs_connectivity 1 2 100
+> +		check_and_log_hs_connectivity 2 1 100
+>  
+> -	check_and_log_hs_connectivity 1 2 100
+> -	check_and_log_hs_connectivity 2 1 100
+> -
+> -	check_and_log_hs_connectivity 3 4 200
+> -	check_and_log_hs_connectivity 4 3 200
+> +		check_and_log_hs_connectivity 3 4 200
+> +		check_and_log_hs_connectivity 4 3 200
+> +	else
+> +		echo "SKIP: SRv6 End.DT46 is unsupported by the installed iproute2 version"
+> +	fi
+>  }
 
-Of course, this implies that it's OK to leave this field as 0, which is probably
-why I left the logic as-is. But since you actually tested this (and I just tried
-to piece things together from the RMs) we should set it.
+Hi Alessio,
 
->    00 Reserved
->    01 Used for all 10Mbps and 100Mbps speeds
->    10 Used for all 1Gbps speeds
->    11 Reserved
-> 
-> So you could read it both ways? But since the older driver was using
-> the maximum interface speed..
-> 
->> At one point I had the P-series RMs downloaded, but it appears I've misplaced
->> them...
-> 
-> FWIW, I think it's freely available as long as you're logged in with
-> your NXP account.
+Rather than inlining the check inside host_vpn_tests(), I think it would be
+better to follow the pattern already used in srv6_hencap_red_l3vpn_test.sh,
+where test_iproute2_supp_or_ksft_skip() is called before setup(). A similar
+function here could exit the whole script with $ksft_skip if End.DT46 is not
+supported by the installed iproute2.
 
-I was at home without access to my NXP account :)
+Thanks,
 
---Sean
-
-> -michael
-> 
->>
->> --Sean
->>
->>> After converting, init will just
->>> set 0 as the mode. According to the "QorIQ Data Path Acceleration
->>> Architecture (DPAA) Reference Manual", this is a reserved value. In
->>> fact, this will prevent the PCS to establish a link to a connected SGMII
->>> PHY. In turn, mac_link_up() is never called. Fix it by setting a
->>> non-reserved mode; mac_link_up() will then set the correct mode later.
->>>
->>> Fixes: 5d93cfcf7360 ("net: dpaa: Convert to phylink")
->>> Signed-off-by: Michael Walle <mwalle@kernel.org>
->>> ---
->>> FWIW, I've tested this with a Marvell 88E1112 PHY.
->>>
->>>    drivers/net/ethernet/freescale/fman/fman_dtsec.c | 5 ++++-
->>>    1 file changed, 4 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/net/ethernet/freescale/fman/fman_dtsec.c b/drivers/net/ethernet/freescale/fman/fman_dtsec.c
->>> index fe35703c509e..566921d3a884 100644
->>> --- a/drivers/net/ethernet/freescale/fman/fman_dtsec.c
->>> +++ b/drivers/net/ethernet/freescale/fman/fman_dtsec.c
->>> @@ -402,7 +402,10 @@ static int init(struct dtsec_regs __iomem *regs, struct dtsec_cfg *cfg,
->>>    	tmp |= MACCFG1_TX_FLOW;
->>>    	iowrite32be(tmp, &regs->maccfg1);
->>>    
->>> -	tmp = 0;
->>> +	/* write a non-reserved mode, otherwise the PCS won't establish a link
->>> +	 * and .mac_link_up() is never called.
->>> +	 */
->>> +	tmp = MACCFG2_NIBBLE_MODE;
->>>    
->>>    	tmp |= (cfg->preamble_len << MACCFG2_PREAMBLE_LENGTH_SHIFT) &
->>>    		MACCFG2_PREAMBLE_LENGTH_MASK;
-> 
-
+Ciao
+Andrea
