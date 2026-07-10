@@ -1,60 +1,57 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3356C3955FF
-	for <netdev@vger.kernel.org>; Fri, 10 Jul 2026 09:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF543C5823
+	for <netdev@vger.kernel.org>; Fri, 10 Jul 2026 09:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783674246; cv=none; b=a+obmUdLN8989m2AggBrfQbmMVEmYxQVpeio83QBIfxxog5qeYbp7k9pqd4VLo8sUwBQvV+6khpWX6qD6L4WAKh7HECryTcnXV7dP+CABZKDYdz83O94+rgXT1KJL9Y5pqKbofXoM9j0N149yIUI3Ud3OGZgmeXNJQii7EQBpeE=
+	t=1783674246; cv=none; b=aaBcIeu7GaJAnBgrRQoAhlXm//C+/RX9pOIPwDYayxHyc98CkWI2/KKOIAoAcg18nRALlFNCQUSLiTsw3CS3njQjJovMyEISEsa4diLqWEuQhiICYj4V1xN8EBsCAAbVgYqj+FyrbXZUjRg554ca4Q28e0l/wYSrxsemTt5GApQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783674246; c=relaxed/simple;
-	bh=b2l3YhKudcEcjWr+oVimTrGXaXQoqA9zz3+xcpmkarA=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cau3DdtVzJi6EtrCPI8HhElFH4WiHeMeUhU08kyCi0o7LhjSKScFfMTr0ANl7T8570q/swBx4w4+Dd+dQdCUtVPlBVDVidcAeHsCLF/TjCTBObLBS+Wx8jzrLLRv5iN2yfUmaHtMItSiLl2aow/fGdbNetH9fTvFO11owPfuAYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=v2e92KDy; arc=none smtp.client-ip=62.96.220.36
+	bh=afyM7o3bBX28sWsSBnBtE5BzAaBnhYZf7X5xp2kQmPQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=P395yd9VPxf7TVAfEYRFIvhYp7+ou9DZemsh4Aunq1TGcD4vKjm2kXoHlyBoWO98eRjeDhkuSBQxltEhD+ev/9A+CQzhean+VFx8PXnt+3Rw7JhvgYPmA+HlzEZvm+aO3nO9HJxaVIqBj/FpXA1ObUr8SqIeJdraTkj732jq8hg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=fd7FmsaO; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="v2e92KDy"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="fd7FmsaO"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id D14CB207AC;
-	Fri, 10 Jul 2026 11:03:56 +0200 (CEST)
+	by mx1.secunet.com (Postfix) with ESMTP id 217E1206D0;
+	Fri, 10 Jul 2026 11:03:55 +0200 (CEST)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 07X6rXEDR68Q; Fri, 10 Jul 2026 11:03:56 +0200 (CEST)
+ with ESMTP id 2X4dpc2G8Gcw; Fri, 10 Jul 2026 11:03:54 +0200 (CEST)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 0552C205E5;
-	Fri, 10 Jul 2026 11:03:56 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 0552C205E5
+	by mx1.secunet.com (Postfix) with ESMTPS id 6ACA6205E5;
+	Fri, 10 Jul 2026 11:03:54 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 6ACA6205E5
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1783674236;
-	bh=HPAWE3t3rukmywq4/6GES7MwseQVXxki0W5I3Eo8mYk=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=v2e92KDyFDfvHNWZXRRhqtyQ4KnPIyvwvWfshrdMTQYdtTcHVOxsXxuxOpRGtt16w
-	 8PZmOMHebwfsoAwolA/HLEIBkuaRT59zUe8B/CedWLs7POPa3jUY+ymT9r/H/LP7AY
-	 Gv4wY5Fb0aSyff/zeyYnX//fUxKguWHAs6Zc0+4XAsDjEzJET2mbmoRuCqcbwT6kex
-	 G6aUcAo10MfHiz4gNQVdvRaOqHRqduM404+EW1mh6qE1klBQ2dApO+TC0f8Sl+IPdw
-	 e8WkFBUvmQVspQjskyGam6bWQ98Y7X43dGpqkDqIeYjmK1UXlsH83kcS0WT0Motjn2
-	 61iCi3dAgMR4g==
+	s=202301; t=1783674234;
+	bh=dcxZK3EEuN+ibtZF0LCKRGhcpZzTNhr7iwcLYQyfniA=;
+	h=From:To:CC:Subject:Date:From;
+	b=fd7FmsaO18fOHhTSPOdzTnRdIMW5b0WWWtRMM6BkG9pMbOV0Hv5paXXMOt0KZ9a8X
+	 0ZWz8dHbIP8S5zgUc5ixu3KfsJrgJ4avYFF+W94Mw1qskFWHm9hz96EyU73agy5LAs
+	 xYkzJOt/aTazabBH7MzvnXkTEac8XhWjngAZHDL/3jGt0rOfjoKcCrj6cOnm0sTKPm
+	 IW9NdmGObWaUkKt6/5MiJLKC4WFC2cHJzVF7o/Za/kMJvWloL4Fn87Euc5Oso030Op
+	 L/yEUMCu9Oti9FPxgQZqVEmu0KqocOHi7RlTjQCA3MLUa0E0BZ/8wNjDd8ngaQWGDx
+	 qdLmGc7vLsjrw==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Fri, 10 Jul
- 2026 11:03:55 +0200
-Received: (nullmailer pid 343857 invoked by uid 1000);
+ 2026 11:03:53 +0200
+Received: (nullmailer pid 343832 invoked by uid 1000);
 	Fri, 10 Jul 2026 09:03:52 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 08/10] xfrm: iptfs: propagate SKBFL_SHARED_FRAG in iptfs_skb_add_frags()
-Date: Fri, 10 Jul 2026 11:03:21 +0200
-Message-ID: <20260710090349.343389-9-steffen.klassert@secunet.com>
+Subject: [PATCH 0/10] pull request (net): ipsec 2026-07-10
+Date: Fri, 10 Jul 2026 11:03:13 +0200
+Message-ID: <20260710090349.343389-1-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260710090349.343389-1-steffen.klassert@secunet.com>
-References: <20260710090349.343389-1-steffen.klassert@secunet.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,49 +60,104 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
+X-ClientProxiedBy: EXCH-03.secunet.de (10.32.0.183) To EXCH-01.secunet.de
  (10.32.0.171)
 
-From: Chen YanJun <moomichen@tencent.com>
+1) xfrm: propagate -EINPROGRESS from validate_xmit_xfrm()
+   Return -EINPROGRESS from xfrm_output_one when validate_xmit_xfrm
+   requeues the packet asynchronously, so the caller doesn't treat it
+   as a real error and free the skb.
 
-When iptfs_skb_add_frags() copies frag references from the source
-frag walk into a new SKB, it increments the page reference count via
-__skb_frag_ref() but does not propagate SKBFL_SHARED_FRAG to the
-destination SKB's skb_shinfo->flags.
+2) xfrm: fix stale skb->prev after async crypto steals a GSO segment
+   Re-derive skb->prev from the fragment list after async crypto splits
+   a GSO skb, keeping the linked-list pointers validi.
 
-If the source SKB carries shared frags (e.g. from a page-pool backed
-receive path), the new inner SKB will appear to ESP as having privately
-owned frags.  A subsequent esp_input() call for a nested transport-mode
-SA then takes the no-COW fast path and decrypts in place, writing over
-pages that are still referenced by the outer IPTFS SKB.  This causes
-kernel-visible memory corruption and can trigger a panic.
+3) xfrm: nat_keepalive: avoid double free on send error
+   Hold a state ref while the nat_keepalive timer is active and drop the
+   timer before freeing the state, preventing a re-entered free on send
+   error.
 
-All other frag-transfer helpers in the kernel (skb_try_coalesce,
-skb_gro_receive, __pskb_copy_fclone, skb_shift, skb_segment) correctly
-propagate SKBFL_SHARED_FRAG; align iptfs_skb_add_frags() with this
-convention by setting the flag inside the loop immediately after
-__skb_frag_ref() and nr_frags++, so every exit path that attaches a frag
-unconditionally propagates SKBFL_SHARED_FRAG.
+4) xfrm: fix sk_dst_cache double-free in xfrm_user_policy()
+   Null the skb dst cache before freeing the policy so a later skb
+   destructor doesn't double-free it.
 
-Fixes: 5f2b6a909574 ("xfrm: iptfs: add skb-fragment sharing code")
-Signed-off-by: Chen YanJun <moomichen@tencent.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
----
- net/xfrm/xfrm_iptfs.c | 1 +
- 1 file changed, 1 insertion(+)
+5) xfrm: cache the offload ifindex for netlink dumps
+   Cache the device ifindex at state-add time and use it for netlink
+   dumps instead of dereferencing dst->dev, which may have changed by
+   the time the dump runs.
 
-diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
-index ad810d1f97c0..597aedeac26e 100644
---- a/net/xfrm/xfrm_iptfs.c
-+++ b/net/xfrm/xfrm_iptfs.c
-@@ -480,6 +480,7 @@ static int iptfs_skb_add_frags(struct sk_buff *skb,
- 		}
- 		__skb_frag_ref(tofrag);
- 		shinfo->nr_frags++;
-+		shinfo->flags |= SKBFL_SHARED_FRAG;
- 
- 		/* see if we are done */
- 		fraglen = tofrag->len;
--- 
-2.43.0
+6) xfrm: reject optional IPTFS templates in outbound policies
+   Reject outbound policies with an optional IPTFS template,
+   IPTFS must always be used if configured.
 
+7) xfrm: clear mode callbacks after failed mode setup
+   Clear the mode->init_flags and init_state callbacks on the error path
+   after xfrm_init_mode fails, so a partially-initialised mode isn't
+   reused in xfrm_state_construct.
+
+8) xfrm: iptfs: propagate SKBFL_SHARED_FRAG in iptfs_skb_add_frags()
+   Propagate SKBFL_SHARED_FRAG from the original skb to fragments
+   allocated by iptfs_skb_add_frags, keeping shared-fragment accounting
+   correct after IPTFS reassembly.
+
+9) xfrm6: clear dst.dev on error to avoid double netdev_put in xfrm6_fill_dst()
+   Clear dst->dev on the error path of xfrm6_fill_dst() so the caller
+   doesn't release the netdev reference twice via dst_release.
+
+10) xfrm: policy: preallocate inexact bins before xfrm_hash_rebuild reinsert
+    Preallocate all inexact hash bins before existing entries are
+    reinserted during xfrm_hash_rebuild, so reinsertion always hits an
+    existing bin.
+
+Please pull or let me know if there are problems.
+
+Thanks!
+
+The following changes since commit 805185b7c7a1069e407b6f7b3bc98e44d415f484:
+
+  Merge tag 'net-7.2-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2026-06-25 12:25:36 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/klassert/ipsec.git tags/ipsec-2026-07-10
+
+for you to fetch changes up to f38f8cce2f7e79775b3db7e8a5eacda04ac908e4:
+
+  xfrm: policy: preallocate inexact bins before xfrm_hash_rebuild reinsert (2026-07-06 08:30:02 +0200)
+
+----------------------------------------------------------------
+ipsec-2026-07-10
+
+----------------------------------------------------------------
+Antony Antony (1):
+      xfrm: reject optional IPTFS templates in outbound policies
+
+Cen Zhang (2):
+      xfrm: cache the offload ifindex for netlink dumps
+      xfrm: clear mode callbacks after failed mode setup
+
+Chen YanJun (1):
+      xfrm: iptfs: propagate SKBFL_SHARED_FRAG in iptfs_skb_add_frags()
+
+Petr Wozniak (2):
+      xfrm: propagate -EINPROGRESS from validate_xmit_xfrm()
+      xfrm: fix stale skb->prev after async crypto steals a GSO segment
+
+Qianyu Luo (1):
+      xfrm: nat_keepalive: avoid double free on send error
+
+Xiang Mei (Microsoft) (3):
+      xfrm: fix sk_dst_cache double-free in xfrm_user_policy()
+      xfrm6: clear dst.dev on error to avoid double netdev_put in xfrm6_fill_dst()
+      xfrm: policy: preallocate inexact bins before xfrm_hash_rebuild reinsert
+
+ include/net/xfrm.h            |  2 ++
+ net/core/dev.c                | 10 ++++++++--
+ net/ipv6/xfrm6_policy.c       |  1 +
+ net/xfrm/xfrm_device.c        | 13 +++++++++++--
+ net/xfrm/xfrm_iptfs.c         |  1 +
+ net/xfrm/xfrm_nat_keepalive.c | 15 +++++++++------
+ net/xfrm/xfrm_policy.c        |  4 ++--
+ net/xfrm/xfrm_state.c         | 12 +++++++++---
+ net/xfrm/xfrm_user.c          | 41 ++++++++++++++++++++++++++++++-----------
+ 9 files changed, 73 insertions(+), 26 deletions(-)
