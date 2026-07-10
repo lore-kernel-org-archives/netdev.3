@@ -1,149 +1,76 @@
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07707349CC9
-	for <netdev@vger.kernel.org>; Fri, 10 Jul 2026 14:39:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC553DCDB5;
+	Fri, 10 Jul 2026 14:40:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783694363; cv=none; b=BgsD0pe0nbUw/dFM4cCPQFNxJtqYvYNJymhC55uMaccOwyRYeGOg7royMPtbGFHhAtF1PIE7jA6O130dGjHKVxsyun27Xd7+sNLql2zz7KSxKzSUHjVI4L8jTLO1tKxqaxahXZY3iATGOeE1txgB7Qi/BuXV6h26xYoiNGIU16A=
+	t=1783694458; cv=none; b=Ptf2Jvo+KNcanVzPERO2WP+gOhhxjW2YtwwNe1yTPJNEpfQFj7QqUyCaByzeeK7sv08QDvB6VIKJFiXR4kOvNdVsE/6KkZkCC0SJCU3da2i6ojI9o9n3ha+esdY4gP+UZ504T/Lnq4jiIG4g3+FPFu8axGlddJTedEQBV/qHm+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783694363; c=relaxed/simple;
-	bh=4Gii1ym6K9QpzVfq94PZJSdWoP7NnEix+aBSrFpPCIs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=W0kcCZv91luFP+WwResSa45f8D+BT7hFHBX0XS1mG+HzBPkIvMrfjkztZulEimKRzs2vLxBgSoAO0dnfsIJwCSKXn/tSyOoIPdIsE/Ipz7/zakSCd4hZqu8LDqdvE4WlLpzW4kupBKCwNg97Dlcrqho6/1vMmAa4nWTRA2Is+ME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=XEmPz3pU; arc=none smtp.client-ip=91.218.175.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1783694458; c=relaxed/simple;
+	bh=zFaJ+IyWbtAcxsb+8hHCHRf5N5/Rulr6q2RW2+K4cmY=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=HYSb94WCEdcW4fYZWk7vZLnND68SjdQe8iyf1Xfi4x345BDZSXUrzwkFE+WaLJ006MoUuXELeEST/fr4c+hXNxnkHP5bEDOUwfW+kZmRmJ9QRy22P2H+aM0gn2ZeGLpfdgHlxkUMxzY7AG5vq7BAbfm5r1ay3yO/x5qFlCOF6hY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IUbGiUxd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="XEmPz3pU"
-Message-ID: <a5c5b8a6-85a8-7830-e19b-ffd5de750e3c@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783694349;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7QFfQEvWIc8hC7yQXMHVs3FeaASqXtgVk5YNjOkXDQE=;
-	b=XEmPz3pUI7UmGCNy0ohkq9/USDv+N0QFWPCEGJ1cxiuPA77A3xsmAqqU/7SLLi1HhOSJrf
-	hhSlBrNgATMMFi4vVfAwiLbKvUsTZ8NQ/B/6/jA6wWWa2zMaK3bbQqb9E3NrW+ZNFlJDyf
-	BWyeEUMKQsNnduL221Z7cKL44RujoJo=
-Date: Fri, 10 Jul 2026 10:39:03 -0400
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IUbGiUxd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1105B1F000E9;
+	Fri, 10 Jul 2026 14:40:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783694457;
+	bh=Ux+CmZMRRr4+801cKNR9wHEU/SAGIcxMzBRQf2BPDXQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=IUbGiUxduFIwDIq4hwvuStI9jNFwX5cszC9bY1vBp8IMKrTRod5MMbzpllLAKPEWr
+	 m9GQZj1JFGmHzXW+7m2m05qGvZvk+orrkiDB/od4BimgGco5mxkHffypWYFBKuiwhw
+	 GDhtmBcSg4wrkX3d36nGTQIYB6JqMTSGWTB74cr9kB7BnE79990bT6j9yO6CD1tPzs
+	 loCRvbHOGKoIqbtGhhfAHM732onc5eCq1hGXnKEInZlZTHhbn8aTLT9FUbK0aR8utG
+	 fDdu9rNWk7oFkv/LsZQ2Fg1gDQsZjdCTxwjXsK5mVz8S0Dg5+cZwY1a0rpd3lX0gow
+	 cbjwvLBgv0Mwg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1995A3924F98;
+	Fri, 10 Jul 2026 14:40:36 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net v2] net: dpaa: fix mode setting
-Content-Language: en-US
-To: Michael Walle <mwalle@kernel.org>, Madalin Bucur <madalin.bucur@nxp.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Russell King <linux@armlinux.org.uk>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260710143430.2276141-1-mwalle@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sean Anderson <sean.anderson@linux.dev>
-In-Reply-To: <20260710143430.2276141-1-mwalle@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+Subject: Re: [GIT PULL] wireless-2026-07-09
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178369443465.714934.14339027434959871822.git-patchwork-notify@kernel.org>
+Date: Fri, 10 Jul 2026 14:40:34 +0000
+References: <20260709115038.243870-3-johannes@sipsolutions.net>
+In-Reply-To: <20260709115038.243870-3-johannes@sipsolutions.net>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: netdev@vger.kernel.org, linux-wireless@vger.kernel.org
 
-On 7/10/26 10:22, Michael Walle wrote:
-> Before converting to the phylink interface, the init function would have
-> set the correct I/F mode depending on the maximum link speed of an
-> interface. After converting to phylink, the established link speed
-> is used to determine this setting and is set in the .link_up()
-> callback. The callback isn't called because the link is never
-> established between the PCS and a connected SGMII PHY.
-> To fix it, don't use the current speed, but set the mode depending on
-> the interface (which implies the maximum speed) in .mac_config().
+Hello:
+
+This pull request was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Thu,  9 Jul 2026 13:49:05 +0200 you wrote:
+> Hi,
 > 
-> Fixes: 5d93cfcf7360 ("net: dpaa: Convert to phylink")
-> Suggested-by: Sean Anderson <sean.anderson@linux.dev>
-> Signed-off-by: Michael Walle <mwalle@kernel.org>
-> ---
-> FWIW, I dropped setting a non-reserved mode in init(). The hardware
-> default is 0 and the mac_config() will set a valid mode anyway.
+> Sorry, I meant to send this yesterday, hoping it'd get
+> in/out before netdevconf and all that, because it's
+> actually really big. Mostly I've now collected many
+> random LLM-induced robustness fixes (I can't really
+> call most of them security fixes, though there likely
+> are a few).
 > 
-> Changes in v2:
->   - the setting is/was based on the maximum speed, not the current
->     speed. thus, move the setting into mac_config().
->   - Link to v1: https://lore.kernel.org/r/20260706121011.1948906-1-mwalle@kernel.org/
-> 
->   .../net/ethernet/freescale/fman/fman_dtsec.c  | 26 ++++++++++---------
->   1 file changed, 14 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/freescale/fman/fman_dtsec.c b/drivers/net/ethernet/freescale/fman/fman_dtsec.c
-> index fe35703c509e..7075f93bab49 100644
-> --- a/drivers/net/ethernet/freescale/fman/fman_dtsec.c
-> +++ b/drivers/net/ethernet/freescale/fman/fman_dtsec.c
-> @@ -900,22 +900,28 @@ static void dtsec_mac_config(struct phylink_config *config, unsigned int mode,
->   {
->   	struct mac_device *mac_dev = fman_config_to_mac(config);
->   	struct dtsec_regs __iomem *regs = mac_dev->fman_mac->regs;
-> -	u32 tmp;
-> +	u32 ecntrl, maccfg2;
-> +
-> +	maccfg2 = ioread32be(&regs->maccfg2);
-> +	maccfg2 &= ~(MACCFG2_NIBBLE_MODE | MACCFG2_BYTE_MODE);
->   
->   	switch (state->interface) {
->   	case PHY_INTERFACE_MODE_RMII:
-> -		tmp = DTSEC_ECNTRL_RMM;
-> +		ecntrl = DTSEC_ECNTRL_RMM;
-> +		maccfg2 |= MACCFG2_NIBBLE_MODE;
->   		break;
->   	case PHY_INTERFACE_MODE_RGMII:
->   	case PHY_INTERFACE_MODE_RGMII_ID:
->   	case PHY_INTERFACE_MODE_RGMII_RXID:
->   	case PHY_INTERFACE_MODE_RGMII_TXID:
-> -		tmp = DTSEC_ECNTRL_GMIIM | DTSEC_ECNTRL_RPM;
-> +		ecntrl = DTSEC_ECNTRL_GMIIM | DTSEC_ECNTRL_RPM;
-> +		maccfg2 |= MACCFG2_BYTE_MODE;
->   		break;
->   	case PHY_INTERFACE_MODE_SGMII:
->   	case PHY_INTERFACE_MODE_1000BASEX:
->   	case PHY_INTERFACE_MODE_2500BASEX:
-> -		tmp = DTSEC_ECNTRL_TBIM | DTSEC_ECNTRL_SGMIIM;
-> +		ecntrl = DTSEC_ECNTRL_TBIM | DTSEC_ECNTRL_SGMIIM;
-> +		maccfg2 |= MACCFG2_BYTE_MODE;
->   		break;
->   	default:
->   		dev_warn(mac_dev->dev, "cannot configure dTSEC for %s\n",
-> @@ -923,7 +929,8 @@ static void dtsec_mac_config(struct phylink_config *config, unsigned int mode,
->   		return;
->   	}
->   
-> -	iowrite32be(tmp, &regs->ecntrl);
-> +	iowrite32be(ecntrl, &regs->ecntrl);
-> +	iowrite32be(maccfg2, &regs->maccfg2);
->   }
->   
->   static void dtsec_link_up(struct phylink_config *config, struct phy_device *phy,
-> @@ -948,15 +955,10 @@ static void dtsec_link_up(struct phylink_config *config, struct phy_device *phy,
->   	iowrite32be(tmp, &regs->ecntrl);
->   
->   	tmp = ioread32be(&regs->maccfg2);
-> -	tmp &= ~(MACCFG2_NIBBLE_MODE | MACCFG2_BYTE_MODE | MACCFG2_FULL_DUPLEX);
-> -	if (speed >= SPEED_1000)
-> -		tmp |= MACCFG2_BYTE_MODE;
-> -	else
-> -		tmp |= MACCFG2_NIBBLE_MODE;
-> -
->   	if (duplex == DUPLEX_FULL)
->   		tmp |= MACCFG2_FULL_DUPLEX;
-> -
-> +	else
-> +		tmp &= ~MACCFG2_FULL_DUPLEX;
+> [...]
 
-Did you test this when forcing 10/100 speed?
+Here is the summary with links:
+  - [GIT,PULL] wireless-2026-07-09
+    https://git.kernel.org/netdev/net/c/a0d82fb85053
 
->   	iowrite32be(tmp, &regs->maccfg2);
->   
->   	mac_dev->update_speed(mac_dev, speed);
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-If so,
 
-Reviewed-by: Sean Anderson <sean.anderson@linux.dev>
