@@ -1,40 +1,42 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [52.175.55.52])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BB1F1FE471;
-	Fri, 10 Jul 2026 01:58:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.175.55.52
+Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A56C24677F
+	for <netdev@vger.kernel.org>; Fri, 10 Jul 2026 02:00:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.16.166
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783648740; cv=none; b=smnIrFbkitDJRNLA81DY5vlzK5xmWzD3TbM9PEbF7VBSUwODrVBK6CFrRCWeWdO1WtgKrB0WNTlVGmZoTJ4xbXRFAG1BOIP1blGDff+cpyFquQEgyrPtXT8tAwJCoKrIOoboDkUbI9blaGJ6RXR0qdh/ukZoCxzi3Tx7RMgCWsU=
+	t=1783648816; cv=none; b=UQtsBoZ1l3ta51qcucy/KTfDqapDM4VgdEiNKCUJu2pmeeR7noJWVJA4tNBHEnZxzGFiJaQqj8TtrdiivpDe50eOioRcod7bWAW8D1fZ1X69OF8ARX2tti+ZODg1NrHQSUnqyL6VmbF0pgdu4vLckNwLOPc1GBqUQDNw8tAr5wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783648740; c=relaxed/simple;
-	bh=f0cXaBA3jdW99H4NxUqPacfR/UpWvSvZUZpMvT1az40=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UK+/FONXrtWnWL6Oyq8wYFOdngE3KRQiPPtWkMsqGO3NpWzF1W/h9rZ8Fkjkn2Cu3DoHsn+OglvFzEHuMEDbdOvaiBOJ1yS3NPpvDgC3Y2cl+7iFqmsUlS+XkoiStpEdeNBF7WJzJu9CRYJNcveVYFsVfjFMSeZLBwhVM2ZhJr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=52.175.55.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
-Received: from zju.edu.cn (unknown [10.98.66.117])
-	by mtasvr (Coremail) with SMTP id _____wDnslLDUVBqucQuAA--.200S3;
-	Fri, 10 Jul 2026 09:58:29 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.98.66.117])
-	by mail-app4 (Coremail) with SMTP id zi_KCgCn2jHCUVBqpzAzAg--.28839S2;
-	Fri, 10 Jul 2026 09:58:26 +0800 (CST)
-From: Fan Wu <fanwu01@zju.edu.cn>
+	s=arc-20240116; t=1783648816; c=relaxed/simple;
+	bh=fUSTc5xaHdwxnk4fbuxXBwQvXdAxCvyQwCRGaxDrFVQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=JqRgwRJKwpRTbTE9u9QqpMXKn/2XSW+kbTCFhq8ZX0CP9regyxnSVg7sAg+VnO3/QaIE9s/2C6Z/2yPtFisMdvtiP32OZ4gbp0/BR398tEvhrmbT42RjBAKUZKQY7EJNXnZrhVkweYEHzYIVzUSCnuHEH4+RWhpCimbgD6s2bl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=54.206.16.166
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
+X-QQ-mid: esmtpgz14t1783648778t787e6e32
+X-QQ-Originating-IP: 1mkDYHdtrvUYj1qebYjWV2JSIRpZHsGZ3a3oFzpjCoc=
+Received: from localhost.localdomain ( [60.188.196.189])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 10 Jul 2026 09:59:37 +0800 (CST)
+X-QQ-SSF: 0001000000000000000000000000000
+X-QQ-GoodBg: 2
+X-BIZMAIL-ID: 2500668553094967198
+EX-QQ-RecipientCnt: 7
+From: Mengyuan Lou <mengyuanlou@net-swift.com>
 To: netdev@vger.kernel.org
-Cc: shenjian15@huawei.com,
-	salil.mehta@huawei.com,
-	dingtianhong@huawei.com,
+Cc: jiawenwu@trustnetic.com,
+	duanqiangwen@net-swift.com,
 	horms@kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Fan Wu <fanwu01@zju.edu.cn>
-Subject: [PATCH net v2] net: hip04: fix tx coalesce timer and IRQ teardown races
-Date: Fri, 10 Jul 2026 01:57:30 +0000
-Message-Id: <20260710015730.630775-1-fanwu01@zju.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	Mengyuan Lou <mengyuanlou@net-swift.com>
+Subject: [PATCH net-next v7 2/2] net: libwx: add support for set_coalesce in wx_ethtool_ops_vf
+Date: Fri, 10 Jul 2026 09:59:25 +0800
+Message-Id: <20260710015925.34769-3-mengyuanlou@net-swift.com>
+X-Mailer: git-send-email 2.30.1
+In-Reply-To: <20260710015925.34769-1-mengyuanlou@net-swift.com>
+References: <20260710015925.34769-1-mengyuanlou@net-swift.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,226 +44,111 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zi_KCgCn2jHCUVBqpzAzAg--.28839S2
-X-CM-SenderInfo: qrstjiaswqq6lmxovvfxof0/
-X-CM-DELIVERINFO: =?B?Ll45+wXKKxbFmtjJiESix3B1w3vZ3A9ovKVTomAyoQazvoRs/NHSP8GI2EvgeEEW7R
-	sfnXz+g1OQfMo27QHy5TwQyZzn0M4BCIM3p6ZDevjuTU4/UUiz/pS3Ua37ORSf1XF+NAVA
-	hC9W9qgB9RK9HxbpaO+p9E6mavGmQbzmcFsnzP86
-X-Coremail-Antispam: 1Uk129KBj93XoW3WrW5Ar4UJF4kGr45uw4fXrc_yoW3Zr1kpa
-	yfGa93tr4vyw4SqrZxJF48tryrAa1xJFZrGw1xGrZYkwnIyr1Utr1kKFyYgF4UAFWvyrsx
-	ur4FvFWru398A3gCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUPjb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Cr1j6rxdM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6rxl6s0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6x
-	kI12xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v2
-	6r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2
-	Ij64vIr41lF7xvr2IYc2Ij64vIr40E4x8a64kEw24lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l
-	42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJV
-	WUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAK
-	I48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F
-	4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY
-	6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU7gAwDUUUU
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpgz:net-swift.com:qybglogicsvrgz:qybglogicsvrgz5b-1
+X-QQ-XMAILINFO: MC9rDRZtSAjcWEsQXDxisAlmeU9ZseuAFD2gT1Rc/IL6h6lFwzxE/PEh
+	lV4cDi3l04O22y11mxabXoh4fnWqWA2ul1hTi9I6+Ja5W9NQODz3N43ctBog53c6YRfOnyX
+	3NPnd5kFsbg+6XmsUP6edydO1D2KMT1HNcXux5Iqlejs8ff90mu469NGEUNTJy2OdtMwIur
+	04qDSbMKvBpGelBfGxX3u96geuB3piWhaMPF82arbF1WPpnac8tyAq3iYM9zyd4wUQIjxdW
+	M2uqfKl/QpodRi+1ekRVt/me+9pLVA3KqLFWt+2Mt+T2ADkJU8STk9juAM2mSkovqQdU54W
+	NQiAgovMbRQfTvFF09OWCgsrCkLe3zkDSO8UUS3fYrkn5RfHBGzkUp2j5ra+LCx0X7TO6xb
+	9KGs26YKP8loGTE0zp54smJUD05hwadUcutPTLdSFRNSn97DdsNrJ2qR63VXpuG6pnMMb+8
+	JIWwcokJYUAU+aZjlfgFz5dqNc4vJnI+M/1ZjxUp7phqFjELgWCPjs04ffqJ8n+t39aUtvW
+	/1hn0ihrF2rrU/R6mlouq0BxbX7lBLmpwFW7wucc4V9RVr6rrAIcHzVjrNueT/z18oTaXWd
+	e+eoZZqB/pJ8dbZP0V8yH6ksHltaSXCxGgW/lmEL7N2mCiPJ6o5lSYuLvY2JRa7e+vTb7gR
+	bheFdf41LqwrtyxSB184OAzjslDrPNvpcA0gbj9TiwEfruQE+bw7tcXJGT+aLSWd6FBZZRE
+	UnkimGIIOLZCDAOjLHSlvi1p44qUkKZRSfhNPYMGLTzTJOCsnl1HlHTyxQlHvphXB4H4hp7
+	M52xaZ0RZHqmaZ5XRVmavRqxHd8tQ0jhTzcl3kWWvjDCT2GGI8JS0ykNdGkESBPYQ5Th1Dq
+	+9aP34vJHSH5Wu+eWpZkIPK5ICHfP3C4R7u71E1z56TTYfn9TAVMb0ynYXXrSoYbN9M+6Mn
+	6bVfd1F78cQVGnZo63eja/gyKhitDLGRqREtxUBS5Vyph5jN7snSZALcdXHuvRiSwbepGQT
+	mYyKFD2XyiQN9dlHjS3sZioBoyMUqheCQbz9ISY64EmwTJugJ1NDDA5KAWLqygK9uYSwUAC
+	mB4qtvf/Sd6fzhEnlMxdETDBscp8UZppxwXSMPqWwV2L7+WmxXuGLk=
+X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
+X-QQ-RECHKSPAM: 0
 
-The hip04 remove path frees the TX/RX rings before unregistering the
-netdev. If the interface is still up, unregister_netdev() then runs
-.ndo_stop, whose TX reclaim and NAPI poll touch the already-freed DMA
-ring memory. The TX coalesce timer and the platform IRQ also outlive
-the netdev private data they dereference.
+Add support for set_coalesce in wx_ethtool_ops_vf, which
+is used to set interrupt coalescing parameters.
 
-Reorder hip04_remove() so the netdev is unregistered (which runs .ndo_stop
-synchronously, stopping NAPI and the TX queue) before the rings are freed.
-Free the devm-managed IRQ explicitly before free_netdev(), so
-hip04_mac_interrupt() (whose dev_id is the netdev) cannot fire against
-freed memory: devm would otherwise release it only after .remove returns.
+Update wx_write_eitr_vf() to use the same interrupt
+moderation encoding as PF devices, since PF and VF share
+the same register layout. And remove the now-unused
+WX_VXITR_MASK definition.
 
-hip04_mac_stop() must quiesce both arming sites of the coalesce timer.
-The NAPI poll arms it, and napi_disable() returns once the poll calls
-napi_complete_done(), not when the poll function returns, so move that
-arm before napi_complete_done().  The existing early exits that jump to
-done do not call napi_complete_done(), so they remain outside the
-completion-after-arm window this change closes.  The TX xmit path also
-arms it, and mac_stop() is reached directly from hip04_tx_timeout_task()
-as well as via .ndo_stop, so use netif_tx_disable() rather than
-netif_stop_queue() to wait for an in-flight hip04_mac_start_xmit() to
-finish.  The timer is then drained with hrtimer_cancel().  A "closing"
-flag, checked at the single arming site, guards against a later arm.
-
-hip04_tx_timeout_task() restarts the device with mac_stop() + mac_open();
-serialize that restart against .ndo_stop with rtnl_lock(), matching the
-netdev core's locking, skip it if the device is no longer running, and
-emit an error if the restart fails instead of silently leaving it down.
-
-This issue was found by an in-house static analysis tool.
-
-Fixes: a41ea46a9a12 ("net: hisilicon: new hip04 ethernet driver")
-Cc: stable@vger.kernel.org
-Assisted-by: Codex:gpt-5.5
-Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
+Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
 ---
-v2:
-  - Address review comments from Simon Horman. Use netif_tx_disable() rather
-    than netif_stop_queue() in hip04_mac_stop() so that an in-flight
-    hip04_mac_start_xmit() finishes before the TX ring is reclaimed;
-    mac_stop() is also called directly from the tx-timeout work, not only
-    via .ndo_stop.
-  - Arm the coalesce timer in hip04_rx_poll() before napi_complete_done(), so
-    that napi_disable() observes the final arm and the subsequent cancel
-    cannot miss it.
-  - Free the devm-managed IRQ explicitly in hip04_remove() before free_netdev()
-    so that hip04_mac_interrupt() cannot run against freed memory, placing it
-    after unregister_netdev() so that the device is stopped first.
-  - Reorder hip04_remove() so that the netdev is unregistered (running .ndo_stop)
-    before the PHY is disconnected and the TX/RX rings are freed.
-  - Check the return value of hip04_mac_open() in the tx-timeout restart path.
+ drivers/net/ethernet/wangxun/libwx/wx_ethtool.c |  7 ++++++-
+ drivers/net/ethernet/wangxun/libwx/wx_vf.h      |  1 -
+ drivers/net/ethernet/wangxun/libwx/wx_vf_lib.c  | 13 ++++++++++++-
+ 3 files changed, 18 insertions(+), 3 deletions(-)
 
-v1: https://lore.kernel.org/netdev/20260703050133.2445155-1-fanwu01@zju.edu.cn/
-
- drivers/net/ethernet/hisilicon/hip04_eth.c | 74 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 66 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/net/ethernet/hisilicon/hip04_eth.c b/drivers/net/ethernet/hisilicon/hip04_eth.c
---- a/drivers/net/ethernet/hisilicon/hip04_eth.c
-+++ b/drivers/net/ethernet/hisilicon/hip04_eth.c
-@@ -15,6 +15,7 @@
- #include <linux/of_net.h>
- #include <linux/mfd/syscon.h>
- #include <linux/regmap.h>
-+#include <linux/rtnetlink.h>
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
+index eae038df6875..22037f015ded 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
+@@ -10,6 +10,7 @@
+ #include "wx_hw.h"
+ #include "wx_lib.h"
+ #include "wx_vf_common.h"
++#include "wx_vf_lib.h"
  
- #define SC_PPE_RESET_DREQ		0x026C
- 
-@@ -232,6 +233,7 @@
- 	int tx_coalesce_frames;
- 	int tx_coalesce_usecs;
- 	struct hrtimer tx_coalesce_timer;
-+	bool closing;
- 
- 	unsigned char *rx_buf[RX_DESC_NUM];
- 	dma_addr_t rx_phys[RX_DESC_NUM];
-@@ -497,6 +499,12 @@
- {
- 	unsigned long ns = priv->tx_coalesce_usecs * NSEC_PER_USEC / 2;
- 
-+	/* Do not (re-)arm the TX coalesce timer once teardown has begun.
-+	 * Both arming sites (TX xmit and NAPI rx poll) go through here.
-+	 */
-+	if (smp_load_acquire(&priv->closing))
-+		return;
-+
- 	/* allow timer to fire after half the time at the earliest */
- 	hrtimer_start_range_ns(&priv->tx_coalesce_timer, ns_to_ktime(ns),
- 			       ns, HRTIMER_MODE_REL);
-@@ -649,12 +657,15 @@
- 		priv->reg_inten |= RCV_INT;
- 		writel_relaxed(priv->reg_inten, priv->base + PPE_INTEN);
+ struct wx_stats {
+ 	char stat_string[ETH_GSTRING_LEN];
+@@ -488,7 +489,10 @@ int wx_set_coalesce(struct net_device *netdev,
+ 		else
+ 			/* rx only or mixed */
+ 			q_vector->itr = rx_itr_param;
+-		wx_write_eitr(q_vector);
++		if (wx->pdev->is_virtfn)
++			wx_write_eitr_vf(q_vector);
++		else
++			wx_write_eitr(q_vector);
  	}
-+	/* Arm the coalesce timer BEFORE napi_complete_done(): napi_disable()
-+	 * in hip04_mac_stop() returns once SCHED is cleared here, not when
-+	 * the poll function returns, so arming afterwards can slip past the
-+	 * stop path's hrtimer_cancel().
-+	 */
-+	if (tx_remaining)
-+		hip04_start_tx_timer(priv);
- 	napi_complete_done(napi, rx);
- done:
--	/* start a new timer if necessary */
--	if (rx < budget && tx_remaining)
--		hip04_start_tx_timer(priv);
--
- 	return rx;
- }
  
-@@ -729,6 +740,11 @@
- 	priv->rx_cnt_remaining = 0;
- 	priv->tx_head = 0;
- 	priv->tx_tail = 0;
-+	/* A plain write is sufficient here: mac_open() runs under RTNL, so it
-+	 * cannot race mac_stop()'s store-release, and napi_enable() below orders
-+	 * this reset before any TX/NAPI traffic can resume.
-+	 */
-+	WRITE_ONCE(priv->closing, false);
- 	hip04_reset_ppe(priv);
+ 	wx_update_rsc(wx);
+@@ -845,6 +849,7 @@ static const struct ethtool_ops wx_ethtool_ops_vf = {
+ 	.set_ringparam		= wx_set_ringparam_vf,
+ 	.get_msglevel		= wx_get_msglevel,
+ 	.get_coalesce		= wx_get_coalesce,
++	.set_coalesce		= wx_set_coalesce,
+ 	.get_ts_info		= ethtool_op_get_ts_info,
+ 	.get_link_ksettings	= wx_get_link_ksettings_vf,
+ };
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf.h b/drivers/net/ethernet/wangxun/libwx/wx_vf.h
+index eb6ca3fe4e97..b64a4de089f2 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_vf.h
++++ b/drivers/net/ethernet/wangxun/libwx/wx_vf.h
+@@ -41,7 +41,6 @@
+ #define WX_VF_MAX_RX_QUEUES      4
  
- 	for (i = 0; i < RX_DESC_NUM; i++) {
-@@ -759,8 +775,26 @@
- 	struct hip04_priv *priv = netdev_priv(ndev);
- 	int i;
+ #define WX_VXITR(i)              (0x200 + (4 * (i))) /* i=[0,1] */
+-#define WX_VXITR_MASK            GENMASK(8, 0)
+ #define WX_VXITR_CNT_WDIS        BIT(31)
+ #define WX_VXIVAR_MISC           0x260
+ #define WX_VXIVAR(i)             (0x240 + (4 * (i))) /* i=[0,3] */
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_vf_lib.c
+index aa8be036956c..7325b475ee10 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_vf_lib.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_vf_lib.c
+@@ -16,7 +16,18 @@ void wx_write_eitr_vf(struct wx_q_vector *q_vector)
+ 	int v_idx = q_vector->v_idx;
+ 	u32 itr_reg;
  
-+	/* Stop new timer arms before draining: set the closing flag (checked
-+	 * at the single arming site), wait for the NAPI poll and any in-flight
-+	 * TX to finish, then cancel the timer.
-+	 *
-+	 * netif_tx_disable() (not netif_stop_queue()) is required because this
-+	 * function is also called directly from hip04_tx_timeout_task(), not
-+	 * only via .ndo_stop where the core has already deactivated TX;
-+	 * netif_tx_disable() waits for an in-flight hip04_mac_start_xmit(),
-+	 * which arms the timer, to finish.
-+	 *
-+	 * Because hip04_rx_poll() arms the timer before napi_complete_done(),
-+	 * napi_disable() returning means that arm has happened, so the
-+	 * hrtimer_cancel() below cannot miss it.  The store-release pairs
-+	 * with the load in hip04_start_tx_timer().
-+	 */
-+	smp_store_release(&priv->closing, true);
-+
- 	napi_disable(&priv->napi);
--	netif_stop_queue(ndev);
-+	netif_tx_disable(ndev);
-+	hrtimer_cancel(&priv->tx_coalesce_timer);
- 	hip04_mac_disable(ndev);
- 	hip04_tx_reclaim(ndev, true);
- 	hip04_reset_ppe(priv);
-@@ -791,8 +825,21 @@
- 	struct hip04_priv *priv;
+-	itr_reg = q_vector->itr & WX_VXITR_MASK;
++	switch (wx->mac.type) {
++	case wx_mac_sp:
++		itr_reg = q_vector->itr & WX_SP_MAX_EITR;
++		break;
++	case wx_mac_aml:
++	case wx_mac_aml40:
++		itr_reg = (q_vector->itr >> 3) & WX_AML_MAX_EITR;
++		break;
++	default:
++		itr_reg = q_vector->itr & WX_EM_MAX_EITR;
++		break;
++	}
  
- 	priv = container_of(work, struct hip04_priv, tx_timeout_task);
-+
-+	/* Bail if the device was taken down (dev_close/unregister).  The
-+	 * mac_stop() below is called directly and does not clear
-+	 * __LINK_STATE_START, so this guard does not match the restart's
-+	 * own stop; it exists only to avoid restarting a torn-down device.
-+	 */
-+	rtnl_lock();
-+	if (!netif_running(priv->ndev))
-+		goto out;
-+
- 	hip04_mac_stop(priv->ndev);
--	hip04_mac_open(priv->ndev);
-+	if (hip04_mac_open(priv->ndev))
-+		netdev_err(priv->ndev, "restart after tx timeout failed\n");
-+out:
-+	rtnl_unlock();
- }
- 
- static int hip04_get_coalesce(struct net_device *netdev,
-@@ -1026,13 +1073,24 @@
- 	struct hip04_priv *priv = netdev_priv(ndev);
- 	struct device *d = &pdev->dev;
- 
-+	unregister_netdev(ndev);
-+
-+	/* The IRQ is devm-managed and would otherwise be freed only after
-+	 * this function returns.  Free it now, after unregister_netdev() has
-+	 * run .ndo_stop to stop the device and mask its interrupt source, but
-+	 * before the manual free_netdev() below, so that hip04_mac_interrupt()
-+	 * (dev_id == ndev) cannot fire against freed memory.  free_irq() also
-+	 * drains any in-flight handler.
-+	 */
-+	devm_free_irq(d, ndev->irq, ndev);
-+	cancel_work_sync(&priv->tx_timeout_task);
-+	hrtimer_cancel(&priv->tx_coalesce_timer);
-+
- 	if (priv->phy)
- 		phy_disconnect(priv->phy);
- 
- 	hip04_free_ring(ndev, d);
--	unregister_netdev(ndev);
- 	of_node_put(priv->phy_node);
--	cancel_work_sync(&priv->tx_timeout_task);
- 	free_netdev(ndev);
- }
- 
+ 	/* set the WDIS bit to not clear the timer bits and cause an
+ 	 * immediate assertion of the interrupt
+-- 
+2.30.1
 
