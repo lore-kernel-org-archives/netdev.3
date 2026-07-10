@@ -1,41 +1,41 @@
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08607404BCF;
-	Fri, 10 Jul 2026 11:54:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5A21403AF1;
+	Fri, 10 Jul 2026 11:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783684488; cv=none; b=czfxBJhzB3gTMo8o94/WHVw0325pfgVduQgffU+TDuxmXi7i1QV1yPpKCONLj6FjlI5MYEoWFb0c1Jxb6ILlNNOWcLt+DtZ3MhmJdpnaJTZVb/a1cLpYM9Y7BHORdp5J8dBFg4Vcj5dfhqqE0DEVq5Fn3mtWVKqHkZ0WjF3NGDY=
+	t=1783684497; cv=none; b=dNY2bHWpzhix9n2VHNjXMdXHHly9B68CYwQT8sxln3ZC8UIErK9OwYqeUhJD3f4x/S40rhwjqTJvdcnkjhu5veSF/sjCGi2dIVZlLpBB/e9pquiUVvOaX1k2uvXvBzvRWDcSjOA78Pgp29eY8TsS8Ar14kGtwB34QM4Zzu+jJrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783684488; c=relaxed/simple;
-	bh=ZEgIcPdaWEgHrbKJSPKouaH5QfTQzMUuCJVnz1gCezM=;
+	s=arc-20240116; t=1783684497; c=relaxed/simple;
+	bh=aC7eACdusPQb+kSWaFenb73RQI+wZmB66qZeD+vVINE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=TIwWrRVV+TN1cf7IglC0WEhVChnNm10v2+uqIuaHjQ1OVq7ybL2htQdBUAfXG4K2Y8PrN6Aeu+xbGK0BL8lMUcnfF0yU1lEss/Qhwafx0m23/8slEU4yMepXOz0+ZLwx0IsU4DLSbabTd5TqY30k/NXxcP1tlZLTXpCHEMe3tYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=fM4U84j9; arc=none smtp.client-ip=82.195.75.108
+	 In-Reply-To:To:Cc; b=ZThwrr3oNQn7IRViK/56ezB05YkEXrizuzmOpqPJQbo/MbFhKs0BUKPRhUOGeO1CpSZ58ojoPUBbKQ7Ewiy9Fy/JZ5rr+1p78XmuxlWQlqh+Tcmt3w/+wMYJh+swXaiGfvaXVajiSBt2ijXrACNAMz1gpoyu9Nhq/lEs1DT66oA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=bT3E19n3; arc=none smtp.client-ip=82.195.75.108
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="fM4U84j9"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="bT3E19n3"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
 	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description;
-	bh=smbJfo7MCQ/ziPYnih21ss1uOV4RRcSAkaEBgiLxeBg=; b=fM4U84j9Pjbe1ciGdU3Iq5NZqp
-	CchVTagtqJaa5UxrEW0jJVRpINCdxy6OOqTZxI86r0reug2CcHVBmjrOj0DQXQlaUXpAjb5Zv1Vld
-	4FNNV9ceASrpkVLTI6tCXJfSp+B1TOBTFDynNsJPeaQ93rfld+YCmz/Sap2X6eqH7kFCyQIimjPoq
-	7Bmxw9VsewldfFD/sqVM6Sqw77UTVTnuspCeKRV7m+OYw2+S8QmU/STPE0E9fezTw9/eYiUion3jb
-	mRQb654jFmr7hdmsWj8A1hXwYXL6yy6z9vuYZ96GbfPvwEXgXaaAGpSYYtiAVKYHoHqmANjYr9rze
-	Qc5xN/SQ==;
+	bh=5gzFJ/ruyU6gEXu70bKJirk+aMtDB4IeCWRclLWtdtk=; b=bT3E19n37o2GKR9WFBny2i9nvc
+	gnKsvmgIw2mXPR26D+A2++GPPd9JMro1Ovcff4mdp3sCCelfvr+owjIju/ypUYlvMAZgSFX4ZADTV
+	8f07AFtzDZYFbDfsk6P6KgBwFPLyMzSHG9mV1Miz/zrQfTLTjr7gWNy5gtqgCA0N+4pFZbHXpfMaE
+	gz1LlKZzqB0gpGEC4PtY144wLNjlgx0gq69vLd21ltGofjM/195yXd6l/2U2L16nrk2tQaz20aQsI
+	7eR8vGM5xy5F5chgZWwf984dHt68ei15KwHlbI/0QBKMfU+IAdv59CDxYeKt/BgSQDm0Bj63s8PTN
+	CpfuGNAQ==;
 Received: from authenticated-user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.96)
 	(envelope-from <leitao@debian.org>)
-	id 1wi9oS-004SYb-1K;
-	Fri, 10 Jul 2026 11:54:36 +0000
+	id 1wi9oa-004SZ9-2a;
+	Fri, 10 Jul 2026 11:54:45 +0000
 From: Breno Leitao <leitao@debian.org>
-Date: Fri, 10 Jul 2026 04:38:57 -0700
-Subject: [PATCH net-next v3 5/9] netconsole: move refill_skbs() and
- skb-pool sizing macros from netpoll
+Date: Fri, 10 Jul 2026 04:38:59 -0700
+Subject: [PATCH net-next v3 7/9] netconsole: move skb_pool / refill_wq from
+ struct netpoll to netconsole_target
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,7 +44,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260710-netconsole_move_more-v3-5-6f63f76b28bc@debian.org>
+Message-Id: <20260710-netconsole_move_more-v3-7-6f63f76b28bc@debian.org>
 References: <20260710-netconsole_move_more-v3-0-6f63f76b28bc@debian.org>
 In-Reply-To: <20260710-netconsole_move_more-v3-0-6f63f76b28bc@debian.org>
 To: "David S. Miller" <davem@davemloft.net>, 
@@ -55,167 +55,214 @@ Cc: netdev@vger.kernel.org, asantostc@gmail.com, gustavold@gmail.com,
  linux-kernel@vger.kernel.org, Breno Leitao <leitao@debian.org>, 
  kernel-team@meta.com
 X-Mailer: b4 0.16-dev-d5d98
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4632; i=leitao@debian.org;
- h=from:subject:message-id; bh=ZEgIcPdaWEgHrbKJSPKouaH5QfTQzMUuCJVnz1gCezM=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqUN1jKNRNrE0bgKQT/s+J7F9NNDsM+/WFMxdzz
- v019OC/QI+JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCalDdYwAKCRA1o5Of/Hh3
- bdhrEACrWKVRpkN8gZJAoezNjyx8RmqYSYzsIgxbDPSrXyyute8EsblEtvFR9u9OtBlYkoExh2N
- ktXVg/KL5fHc1x9JUxEFmZKCj8E5RZtYJouJqat0OjT3dLqKne4nqjedZFXeM8wO+mpZNov9izv
- swts2pm6ukjCip6R6CyAbJgcJTIREqI8EnLpYMZnXJNxCXezTbLlxP5e6c3jUiBf6XYWlepZfD7
- aSnyWKlVKF4prOCOy3e0rs6SkvVB6ijeOH4YME17KbIXkR4h/rIjUH24z0gqlSVXyt0kj90pHv/
- 6gIQuP0TRpW3E6WU9SUMx8Xa66mMPlmL9fmo7TVMOpupGUz4kVlpZ7CVM6kQTSjUVlEnsrzWXhZ
- CyXqlE+CDT5JCXdTZSeZTzNjtcC2/tUiZQf8jClSKHEpaIU8O8yhTbepaqjWATr0z/1E53d9hQC
- s2+dNnYFn6EBhZ1fNspYbMl7Mq5GQFC3TXgWhF9fZuvx39Yg3N3zP0OYp8xVWdgu/kr+7iwAbLu
- j91wf38F8ivolJqJ8ivzuSfW8EVb4nc35I5+qHvvBluAURZRaO8wDUWq9vK+HO/mvcM3yfo8cu7
- nq3JqYp4O26S7k2bj6GnaqSooNl5NyQQXzkWc83c4nBVrUOjqr0QnYJheNILzb5nNFLfc1qXiPo
- Nmy5puOOLla5wrg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6717; i=leitao@debian.org;
+ h=from:subject:message-id; bh=aC7eACdusPQb+kSWaFenb73RQI+wZmB66qZeD+vVINE=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqUN1jyQbjybjfnR5E4sjfiUAjsqr2kOBZxSrFS
+ CaJuG6yIZaJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCalDdYwAKCRA1o5Of/Hh3
+ bdTtD/4yPR3OnR1iQ+HYOyOKO7GD1lbfag7IbMiL+RBnGHBUnpoUZS6tp3kdsU+X/ByBNoDoe0p
+ mcXhIYS93abPDjvEHLRSrntspGuQvLxBm4dJhRTl/L3z7t8KnaVcZYqCc7jZwJY4qcd8xqIA478
+ dW4dMTBWcjq9VNdWDMiyU3/VoKedwpdZYRTDSU6zIgvM5VgXwjnTUc51Bp9C/Qnz7BqCslqwzfS
+ 6fosfayQf+sHmTzeccE4MthqXiY320qs6b6RQ0PI3uEGLNRGrQjtVsgiDF9EBCvnCkI02hqPPFO
+ jysaePakNBLcE8fbg5SnPUizqdI/M0TtCLGNiubP1cVkUPwDHt7IwBh1RWKGEl66sP7QiITrvEp
+ +qraMiaePo2xAyp9yqA53cprh46kR5a0DSbusIhAav3JpjBh0QwLxaUeqseCfwzjG+xKZboljUr
+ V+RH6utsZgJSHaevDUF4y7Euc3l0uzFhxooeD1kAMnqNdygChTEeJt2OHtZf2J2w2/NP2oVb3pW
+ 1tF9FE4ZA12mr9exrEz74DlDkAHReu5snP7Xh1Sdn6ZfjOUWCpn4egWe0AJ7qE/0FLE+lBeCSiQ
+ kSZ8A5sfJJRxF2ozxm/4/8Kz/pwdyKMtiyaEo0XTLRBINtxog+VWEaaB74D4s0pSFezbJYv9BAP
+ hpHWgfgX/gFLnPQ==
 X-Developer-Key: i=leitao@debian.org; a=openpgp;
  fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 X-Debian-User: leitao
 
-refill_skbs() is now only called from netconsole (directly via
-netconsole_skb_pool_init() and indirectly via the just-moved
-refill_skbs_work_handler()), and the MAX_UDP_CHUNK / MAX_SKBS /
-MAX_SKB_SIZE macros are private to it. Move them all into
-drivers/net/netconsole.c.
+These two fields back the fallback skb pool that find_skb() uses.
+Every helper that touches them lives in netconsole now (refill_skbs,
+refill_skbs_work_handler, netconsole_skb_pool_init,
+netconsole_skb_pool_flush, find_skb, netcons_skb_pop), so the data
+can move alongside its only consumer.
 
-MAX_UDP_CHUNK and MAX_SKB_SIZE were promoted to <linux/netpoll.h>
-by commit 6c537b845c99 ("netconsole: do not dequeue pooled skbs that
-cannot satisfy len") so find_skb() could detect oversized requests
-against the same value refill_skbs() used. With both functions now
-local to netconsole, the shared definition no longer needs to live
-in the header.
+Add skb_pool and refill_wq to struct netconsole_target, drop them
+from struct netpoll.
 
-Pure code motion: bodies and pool sizing semantics are unchanged.
+This will save 48-bytes for every netpoll user instance (except
+netconsole that will have it in netconsole target struct).
 
 Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- drivers/net/netconsole.c | 29 +++++++++++++++++++++++++++++
- include/linux/netpoll.h  | 15 ---------------
- net/core/netpoll.c       | 23 -----------------------
- 3 files changed, 29 insertions(+), 38 deletions(-)
+ drivers/net/netconsole.c | 53 +++++++++++++++++++++++++++---------------------
+ include/linux/netpoll.h  |  2 --
+ 2 files changed, 30 insertions(+), 25 deletions(-)
 
 diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-index 96d9a47312cd7..efeada762536f 100644
+index 742723c5a7d46..cf591ae667362 100644
 --- a/drivers/net/netconsole.c
 +++ b/drivers/net/netconsole.c
-@@ -61,6 +61,19 @@ MODULE_IMPORT_NS("NETDEV_INTERNAL");
- #define MAX_USERDATA_ITEMS		256
- #define MAX_PRINT_CHUNK			1000
+@@ -183,6 +183,11 @@ enum target_state {
+  *		remote_mac	(read-write)
+  * @buf:	The buffer used to send the full msg to the network stack
+  * @resume_wq:	Workqueue to resume deactivated target
++ * @skb_pool:	Per-target fallback skb pool consulted by find_skb() when
++ *		its GFP_ATOMIC allocation fails. Lifetime brackets a
++ *		successful netpoll_setup() / netpoll_cleanup() pair on @np.
++ * @refill_wq:	Work item that asynchronously tops @skb_pool back up to
++ *		MAX_SKBS after find_skb() drains an entry.
+  */
+ struct netconsole_target {
+ 	struct list_head	list;
+@@ -208,6 +213,8 @@ struct netconsole_target {
+ 	 */
+ 	char			buf[MAX_PRINT_CHUNK + 1];
+ 	struct work_struct	resume_wq;
++	struct sk_buff_head	skb_pool;
++	struct work_struct	refill_wq;
+ };
  
-+/*
-+ * Sizing for the per-target fallback skb pool consulted by find_skb()
-+ * when its GFP_ATOMIC allocation fails so messages still get out under
-+ * memory pressure.
-+ */
-+#define MAX_UDP_CHUNK			1460
-+#define MAX_SKBS			32
-+#define MAX_SKB_SIZE							\
-+	(sizeof(struct ethhdr) +					\
-+	 sizeof(struct iphdr) +						\
-+	 sizeof(struct udphdr) +					\
-+	 MAX_UDP_CHUNK)
-+
- static char config[MAX_PARAM_LENGTH];
- module_param_string(netconsole, config, MAX_PARAM_LENGTH, 0);
- MODULE_PARM_DESC(netconsole, " netconsole=[src-port]@[src-ip]/[dev],[tgt-port]@<tgt-ip>/[tgt-macaddr]");
-@@ -292,6 +305,22 @@ static void netcons_release_dev(struct netconsole_target *nt)
+ #ifdef	CONFIG_NETCONSOLE_DYNAMIC
+@@ -305,13 +312,11 @@ static void netcons_release_dev(struct netconsole_target *nt)
  		memset(&nt->np.dev_name, 0, IFNAMSIZ);
  }
  
-+static void refill_skbs(struct netpoll *np)
-+{
-+	struct sk_buff_head *skb_pool;
-+	struct sk_buff *skb;
-+
-+	skb_pool = &np->skb_pool;
-+
-+	while (READ_ONCE(skb_pool->qlen) < MAX_SKBS) {
-+		skb = alloc_skb(MAX_SKB_SIZE, GFP_ATOMIC | __GFP_NOWARN);
-+		if (!skb)
-+			break;
-+
-+		skb_queue_tail(skb_pool, skb);
-+	}
-+}
-+
- static void refill_skbs_work_handler(struct work_struct *work)
+-static void refill_skbs(struct netpoll *np)
++static void refill_skbs(struct netconsole_target *nt)
  {
- 	struct netpoll *np =
-diff --git a/include/linux/netpoll.h b/include/linux/netpoll.h
-index 51e5863d8e678..7e2fbce863e9b 100644
---- a/include/linux/netpoll.h
-+++ b/include/linux/netpoll.h
-@@ -21,20 +21,6 @@ union inet_addr {
- 	struct in6_addr	in6;
- };
- 
--/*
-- * Maximum payload netpoll's preallocated skb pool can carry. Keep this in
-- * sync with the buffer size used by refill_skbs() in net/core/netpoll.c;
-- * callers (e.g. netconsole) use it to detect requests the pool can never
-- * satisfy and avoid dequeuing a pooled skb that would later trip
-- * skb_over_panic() in skb_put().
-- */
--#define MAX_UDP_CHUNK	1460
--#define MAX_SKB_SIZE						\
--	(sizeof(struct ethhdr) +				\
--	 sizeof(struct iphdr) +					\
--	 sizeof(struct udphdr) +				\
--	 MAX_UDP_CHUNK)
--
- struct netpoll {
- 	struct net_device *dev;
- 	netdevice_tracker dev_tracker;
-@@ -90,7 +76,6 @@ void netpoll_cleanup(struct netpoll *np);
- void do_netpoll_cleanup(struct netpoll *np);
- netdev_tx_t netpoll_send_skb(struct netpoll *np, struct sk_buff *skb);
- void netpoll_zap_completion_queue(void);
--void refill_skbs(struct netpoll *np);
- void skb_pool_flush(struct netpoll *np);
- 
- #ifdef CONFIG_NETPOLL
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index 93a16faf808c8..9ca695f64210c 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -36,12 +36,6 @@
- #include <trace/events/napi.h>
- #include <linux/kconfig.h>
- 
--/*
-- * We maintain a small pool of fully-sized skbs, to make sure the
-- * message gets out even in extreme OOM situations.
-- */
--
--#define MAX_SKBS 32
- #define USEC_PER_POLL	50
- 
- static unsigned int carrier_timeout = 4;
-@@ -213,23 +207,6 @@ void netpoll_poll_enable(struct net_device *dev)
- 		up(&ni->dev_lock);
- }
- 
--void refill_skbs(struct netpoll *np)
--{
 -	struct sk_buff_head *skb_pool;
--	struct sk_buff *skb;
--
++	struct sk_buff_head *skb_pool = &nt->skb_pool;
+ 	struct sk_buff *skb;
+ 
 -	skb_pool = &np->skb_pool;
 -
--	while (READ_ONCE(skb_pool->qlen) < MAX_SKBS) {
--		skb = alloc_skb(MAX_SKB_SIZE, GFP_ATOMIC | __GFP_NOWARN);
--		if (!skb)
--			break;
--
--		skb_queue_tail(skb_pool, skb);
--	}
--}
--EXPORT_SYMBOL_GPL(refill_skbs);
--
- void netpoll_zap_completion_queue(void)
+ 	while (READ_ONCE(skb_pool->qlen) < MAX_SKBS) {
+ 		skb = alloc_skb(MAX_SKB_SIZE, GFP_ATOMIC | __GFP_NOWARN);
+ 		if (!skb)
+@@ -323,10 +328,10 @@ static void refill_skbs(struct netpoll *np)
+ 
+ static void refill_skbs_work_handler(struct work_struct *work)
  {
- 	unsigned long flags;
+-	struct netpoll *np =
+-		container_of(work, struct netpoll, refill_wq);
++	struct netconsole_target *nt =
++		container_of(work, struct netconsole_target, refill_wq);
+ 
+-	refill_skbs(np);
++	refill_skbs(nt);
+ }
+ 
+ /* Seed the per-target skb pool that find_skb() falls back to. The queue
+@@ -335,15 +340,13 @@ static void refill_skbs_work_handler(struct work_struct *work)
+  */
+ static void netconsole_skb_pool_init(struct netconsole_target *nt)
+ {
+-	refill_skbs(&nt->np);
++	refill_skbs(nt);
+ }
+ 
+ static void netconsole_skb_pool_flush(struct netconsole_target *nt)
+ {
+-	struct netpoll *np = &nt->np;
+-
+-	cancel_work_sync(&np->refill_wq);
+-	skb_queue_purge_reason(&np->skb_pool, SKB_CONSUMED);
++	cancel_work_sync(&nt->refill_wq);
++	skb_queue_purge_reason(&nt->skb_pool, SKB_CONSUMED);
+ }
+ 
+ /* Attempts to resume logging to a deactivated target. */
+@@ -462,8 +465,8 @@ static struct netconsole_target *alloc_and_init(void)
+ 	nt->state = STATE_DISABLED;
+ 	INIT_WORK(&nt->resume_wq, process_resume_target);
+ 	/* Set up the skb pool primitives once; enabling only refills it. */
+-	skb_queue_head_init(&nt->np.skb_pool);
+-	INIT_WORK(&nt->np.refill_wq, refill_skbs_work_handler);
++	skb_queue_head_init(&nt->skb_pool);
++	INIT_WORK(&nt->refill_wq, refill_skbs_work_handler);
+ 
+ 	return nt;
+ }
+@@ -1785,7 +1788,7 @@ static struct notifier_block netconsole_netdev_notifier = {
+  * pool locks and is therefore not NMI-safe. Skip the refill when called
+  * from NMI context; the next non-NMI caller will top the pool back up.
+  */
+-static struct sk_buff *netcons_skb_pop(struct netpoll *np, int len)
++static struct sk_buff *netcons_skb_pop(struct netconsole_target *nt, int len)
+ {
+ 	struct sk_buff *skb;
+ 
+@@ -1797,19 +1800,21 @@ static struct sk_buff *netcons_skb_pop(struct netpoll *np, int len)
+ 		if (!in_nmi())
+ 			net_warn_ratelimited("netconsole: dropping message, requested skb len %d exceeds pool buffer size %zu on %s\n",
+ 					     len, (size_t)MAX_SKB_SIZE,
+-					     np->dev->name);
++					     nt->np.dev->name);
+ 		return NULL;
+ 	}
+ 
+-	skb = skb_dequeue(&np->skb_pool);
++	skb = skb_dequeue(&nt->skb_pool);
+ 	if (!in_nmi())
+-		schedule_work(&np->refill_wq);
++		schedule_work(&nt->refill_wq);
+ 
+ 	return skb;
+ }
+ 
+-static struct sk_buff *find_skb(struct netpoll *np, int len, int reserve)
++static struct sk_buff *find_skb(struct netconsole_target *nt, int len,
++				int reserve)
+ {
++	struct netpoll *np = &nt->np;
+ 	int count = 0;
+ 	struct sk_buff *skb;
+ 
+@@ -1818,7 +1823,7 @@ static struct sk_buff *find_skb(struct netpoll *np, int len, int reserve)
+ 
+ 	skb = alloc_skb(len, GFP_ATOMIC | __GFP_NOWARN);
+ 	if (!skb)
+-		skb = netcons_skb_pop(np, len);
++		skb = netcons_skb_pop(nt, len);
+ 
+ 	if (!skb) {
+ 		if (++count < 10) {
+@@ -1940,8 +1945,10 @@ static void push_ipv6(struct netpoll *np, struct sk_buff *skb, int len)
+ 	skb->protocol = htons(ETH_P_IPV6);
+ }
+ 
+-static int netpoll_send_udp(struct netpoll *np, const char *msg, int len)
++static int netpoll_send_udp(struct netconsole_target *nt, const char *msg,
++			    int len)
+ {
++	struct netpoll *np = &nt->np;
+ 	int total_len, ip_len, udp_len;
+ 	struct sk_buff *skb;
+ 
+@@ -1956,7 +1963,7 @@ static int netpoll_send_udp(struct netpoll *np, const char *msg, int len)
+ 
+ 	total_len = ip_len + LL_RESERVED_SPACE(np->dev);
+ 
+-	skb = find_skb(np, total_len + np->dev->needed_tailroom,
++	skb = find_skb(nt, total_len + np->dev->needed_tailroom,
+ 		       total_len - len);
+ 	if (!skb)
+ 		return -ENOMEM;
+@@ -1987,7 +1994,7 @@ static int netpoll_send_udp(struct netpoll *np, const char *msg, int len)
+  */
+ static void send_udp(struct netconsole_target *nt, const char *msg, int len)
+ {
+-	int result = netpoll_send_udp(&nt->np, msg, len);
++	int result = netpoll_send_udp(nt, msg, len);
+ 
+ 	if (IS_ENABLED(CONFIG_NETCONSOLE_DYNAMIC)) {
+ 		if (result == NET_XMIT_DROP) {
+diff --git a/include/linux/netpoll.h b/include/linux/netpoll.h
+index 1216b5c237ce4..f377fdf7839ca 100644
+--- a/include/linux/netpoll.h
++++ b/include/linux/netpoll.h
+@@ -37,8 +37,6 @@ struct netpoll {
+ 	bool ipv6;
+ 	u16 local_port, remote_port;
+ 	u8 remote_mac[ETH_ALEN];
+-	struct sk_buff_head skb_pool;
+-	struct work_struct refill_wq;
+ };
+ 
+ #define np_info(np, fmt, ...)				\
 
 -- 
 2.53.0-Meta
