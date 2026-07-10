@@ -1,51 +1,50 @@
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5803D1A8E
-	for <netdev@vger.kernel.org>; Fri, 10 Jul 2026 09:07:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C970F37A487
+	for <netdev@vger.kernel.org>; Fri, 10 Jul 2026 09:07:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783674442; cv=none; b=nwigIWMoStzQBzgKYtewu4DpqLpXzntj9pv2tpeG458d+XidWWrIfaDPyqDcQtuTbeYerZEJrRSMHPb5H+kKkJBJ+vUDaI65+dlfb67QKhW8dzXFNXPEIfDDuEdAnDC8cGb6g9C4vbdMBB1zDSxBUS3i/JkYFNg+rjsMkYp13fs=
+	t=1783674443; cv=none; b=S4odIqHYx4W6vDHPRcOOPfjK/i9BOzPhIKyoQO1AxhJkdvShWh+XvltWPqk/4PdMkCvNFr53MIX4dLGk4Xorce/PhGuV7OKdajkgaX2arJa0cKXwEfzY0VVNbME/KD4J7VEqp2ir//99G/pR8UAL8aw4sHoyWKvAuLFrPIWo6Hk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783674442; c=relaxed/simple;
-	bh=FLES42Rxy33cINN6JXcMQAsosNS8p9fsFR9zPpgsvpw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Yn9CVx5X/HirW/qw32v1i0V3xMVnEV73AEAzf7C7YXEiwsSwnC1JVr7c8L0DRQScgaB3NmuXaCpeIY/crlbLc7anCUdX436MI3ea/gUMd/WWOUBixOSlWADXvDb9Cr9z+tuCE6KOtH6qarFhojV0psOnewJzTYnfxXUUpGw1nyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Hppr5b2A; arc=none smtp.client-ip=91.218.175.188
+	s=arc-20240116; t=1783674443; c=relaxed/simple;
+	bh=fmTL2s8F/eTQj2Mtdl4MWB8rAQdRaiVlgmFFyz9i54U=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=eYc2IjbKotB4EQ2t7Gfs7C9xUf2irpECsLko+b1KZwh91j0imeCfAOEu6YOZj57kNExZ9uZlY4Y1ceP3zfqYL2Uw8ZROMbBuf7Ri5nG6rk27zMPQ9iDkxAZyG4yd5luQbuiT856qxjkyI5C5t8nC7FPHBSTp3C8DF3IzuBzDa2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=YckP22k1; arc=none smtp.client-ip=91.218.175.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Hppr5b2A"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="YckP22k1"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783674428;
+	t=1783674439;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=yYMMh/W+IAPPdZfIO6vGDfigZx+htl6ZRBZny5XLWw0=;
-	b=Hppr5b2AFezieW2dnMnx7mcPVTe3p0+YDUeVMmQSk8UBffzD/hzLSZpaMfRrmLHXE90hea
-	j4twTT0kilh5BopHOWLwc0cUqig8GxEE81pi7UIHIcPwWZrBTGDmyqTtIy9Y8MlmT6Zx1h
-	F/qs6OCvbHO2bUVUWrYapzPNaF1Nb68=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=o5M72C3L1ZgsFmb5gY5mJ3SoLciOzkeobaXpGracEas=;
+	b=YckP22k162bNqNEwPV8+gIbiLDri+6utRarOwGdBGHydCMHlfPgo8vyxD7+Hanf3loiA/X
+	v2TNFkuFvqopkH2ss2issDBHGonfMFoxOx37z8uno9EpwagzBuAjnKTz9eJ8clOFlH12Gq
+	irMwCq3cl7R2gi2OAAs7wTcRxT3jLyE=
 From: xuanqiang.luo@linux.dev
 To: netdev@vger.kernel.org
 Cc: Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
-	Rasesh Mody <rmody@marvell.com>,
-	Sudarsana Kalluru <skalluru@marvell.com>,
-	GR-Linux-NIC-Dev@marvell.com,
 	Fan Gong <gongfan1@huawei.com>,
 	Xin Guo <guoxin09@huawei.com>,
 	Gur Stavi <gur.stavi@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Jian Shen <shenjian15@huawei.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Ivan Vecera <ivecera@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v1 0/3] net: fix stale TX skb pointers on DMA map failure
-Date: Fri, 10 Jul 2026 17:05:21 +0800
-Message-ID: <20260710090527.58354-1-xuanqiang.luo@linux.dev>
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH net v1 2/3] hinic3: fix use-after-free on DMA mapping failure
+Date: Fri, 10 Jul 2026 17:05:23 +0800
+Message-ID: <20260710090527.58354-3-xuanqiang.luo@linux.dev>
+In-Reply-To: <20260710090527.58354-1-xuanqiang.luo@linux.dev>
+References: <20260710090527.58354-1-xuanqiang.luo@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,30 +56,49 @@ X-Migadu-Flow: FLOW_OUT
 
 From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-While I was backporting commit 1a303baa715e6 ("ice: fix double-free of
-tx_buf skb"), an AI-assisted scan identified several suspected TX error
-paths. I reviewed the results and found this issue in the three drivers
-fixed here.
+If hinic3_tx_map_skb() fails in hinic3_send_one_skb(), the skb is freed,
+but tx_info->skb was set before the mapping attempt and is not cleared. The
+SQ producer index is rolled back, so later transmissions normally overwrite
+the entry.
 
-The drivers differ, but the bug is the same. On a DMA mapping failure, the
-TX path frees an skb while its ring entry still points to it. A later
-transmission normally overwrites the entry. If the interface is stopped
-first, teardown can instead access or free the skb again.
+If the interface is brought down first, hinic3_free_txqs_res() calls
+free_all_tx_skbs(). It scans the entire tx_info array and finds the stale
+pointer. hinic3_tx_unmap_skb() then dereferences the freed skb in
+skb_shinfo(), before it is freed again.
 
-I do not have these adapters, so I have not tested the drivers on hardware.
-I checked the error and teardown paths by inspection. Still, these small
-fixes seem worth posting for review. They are independent, but are sent as
-one series because they address the same issue.
+Set tx_info->skb and its WQEBB count only after DMA mapping succeeds,
+preventing the stale pointer from reaching free_all_tx_skbs().
 
-Xuanqiang Luo (3):
-  bna: fix use-after-free on DMA mapping failure
-  hinic3: fix use-after-free on DMA mapping failure
-  net: hibmcge: fix double-free of tx skb on DMA mapping failure
+Fixes: 17fcb3dc12bb ("hinic3: module initialization and tx/rx logic")
+Cc: stable@vger.kernel.org
+Assisted-by: Opencode:deepseek-v4-pro[1m]
+Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+---
+ drivers/net/ethernet/huawei/hinic3/hinic3_tx.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
- drivers/net/ethernet/brocade/bna/bnad.c           | 2 +-
- drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.c | 1 +
- drivers/net/ethernet/huawei/hinic3/hinic3_tx.c    | 5 +++--
- 3 files changed, 5 insertions(+), 3 deletions(-)
-
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c b/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
+index 9306bf0020caf..5739ecb08d0d3 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
+@@ -578,8 +578,6 @@ static netdev_tx_t hinic3_send_one_skb(struct sk_buff *skb,
+ 		*wqe_combo.task = task;
+ 
+ 	tx_info = &txq->tx_info[pi];
+-	tx_info->skb = skb;
+-	tx_info->wqebb_cnt = wqebb_cnt;
+ 
+ 	err = hinic3_tx_map_skb(netdev, skb, txq, tx_info, &wqe_combo);
+ 	if (err) {
+@@ -589,6 +587,9 @@ static netdev_tx_t hinic3_send_one_skb(struct sk_buff *skb,
+ 		goto err_drop_pkt;
+ 	}
+ 
++	tx_info->skb = skb;
++	tx_info->wqebb_cnt = wqebb_cnt;
++
+ 	netif_subqueue_sent(netdev, txq->sq->q_id, skb->len);
+ 	netif_subqueue_maybe_stop(netdev, txq->sq->q_id,
+ 				  hinic3_wq_free_wqebbs(&txq->sq->wq),
 -- 
 2.43.0
