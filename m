@@ -1,41 +1,41 @@
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F163B637A;
-	Fri, 10 Jul 2026 11:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C7CD421A02;
+	Fri, 10 Jul 2026 11:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783684473; cv=none; b=svJnSAvVgg670c9QjjhfsUOZ0jiuSYLZPNp4YBQ73CYuIVZHMxmSpy0BAO0rwgT2J8bdpOVXV/Rgsvue6OR2zEbDGT3Uco7kSurPKHssjSSC3axhvY94yRcdaeOWFwZLrpxf1jRSUx/k3ZkT9P63w40GRuy3OWz8sBFbeJomhvM=
+	t=1783684481; cv=none; b=FSwtL7e/WtlfQEaPDovPrirQdKqE/S2JKdg4lVfzN7CWDOj2ZUJuXyqIavVw8s+tsv3OaUnczXjURC587O95IE+6ZDD4q0Uq/ZubSMzqlnfqojFHq0maxd6XDtOoKzXxv54kJE4wYv48OQ3UvH4fF5IDTfghEhUXO8uBJLpPDVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783684473; c=relaxed/simple;
-	bh=29kW4YIq6TQb7vg5agUdfyguq5Y2tRhUDP/DCvJRiEs=;
+	s=arc-20240116; t=1783684481; c=relaxed/simple;
+	bh=nFPh5ac2FjWKCd6q3wB6UC+vMdK1zYkYSuMailRysDc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=rXGLBkeku3Ioahx3qENVa1CjedMJXjf/5V9+eKFkmm9l1xt9CEmkLxrxY2IkM+SNRnpp0b2RgyMOYhWbhuWhj5byFMVYKjY9XFeX418TIJDk3vAkeHuMRgXVMn/AGLrzk0g9BcLiYZDLi6Xh21d0hw6IByLPz9w1mxIhtJRre7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=ZWK5rQem; arc=none smtp.client-ip=82.195.75.108
+	 In-Reply-To:To:Cc; b=bzGwcQod/hSMooEQt4n57niiTzCfuY27ww695XhLA3Kbi12pzJZkS+daCQ9WRFB1zPsgdvn5KVt9CkjlLmquwUm/QmkrEprMYb/1VWGEEC6XUKLhHZkvAapSO1/N0Wyp75KOyTUAUHjqRlz64VBtCzrWXb66aHbDknxxu7+MUFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=bmcS8K4W; arc=none smtp.client-ip=82.195.75.108
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="ZWK5rQem"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="bmcS8K4W"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
 	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description;
-	bh=Bb4k9fj+CQPxPNk3uVIQ70vd+fl8m/Jh3dhoWRdsJzk=; b=ZWK5rQem4PXZXxWXhwG0SNgW7q
-	tdm3Xgs116/+NdfvmwErWPOoRoYl7/PRIjm/bNn5G+sspbM3kfIetqnO9j+8fOexg/AfU7TpMT2Dv
-	bJS5Hd/dwEeVoUqg7OSlJzteRxuDm1Y9+3CEUVls1aHZMRlAQw/5NDzcEukL/TmKPZsF/0kW3h8TU
-	WMjZ7wV1LUv/OkKPolrEDoMO7nxv32IYozLGulO0bnu046nGxgOXRY10bCuPzluFRvFIqWaBBNFjb
-	JjF809H/dd00Bx9Susz5RndpHMiwgGQJ1Qs/p3KFezUTtj6GQF4IfibhxERy0cLc8MJ+RxrqGCk11
-	uy9qTDVw==;
+	bh=3foEhfhb8cg0zgtGPamqg4RaUv3W2ktXLO1Kxs0TI5o=; b=bmcS8K4WGPhMj7bK/53yL57DWj
+	pcB+yP4uBZ9uiOQGLUFH+I+zv9FQCOCBYpPuF0MHtjgVpYsjeEO9+e6BKJ5dC6UKukFCPzNFcrXgr
+	hPzg45eyhyIYW4UgCv226nwXinbq6QXTAsp7hclpWemP2mj4v3o/VLs1OJ3HrfM4YmTxhGp7FuJ0u
+	dGXKcFX2dSOM7cypzSE38CCsFYijmgyIumr8NFBv36k2ibTCjdX+PW33rRSOlR+SHrro4GYYXiLiD
+	h6A/w1IfoCGwXtfD7ooPmr2BvBVXh/Qhn0hQQRAb4ryWJKYMcTvPKJITN9Ok5zDvmBN6Gog1jtFyp
+	OWNUJ4rg==;
 Received: from authenticated-user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.96)
 	(envelope-from <leitao@debian.org>)
-	id 1wi9oG-004SXb-0I;
-	Fri, 10 Jul 2026 11:54:24 +0000
+	id 1wi9oO-004SYN-1l;
+	Fri, 10 Jul 2026 11:54:32 +0000
 From: Breno Leitao <leitao@debian.org>
-Date: Fri, 10 Jul 2026 04:38:54 -0700
-Subject: [PATCH net-next v3 2/9] netpoll: export refill_skbs(),
- refill_skbs_work_handler(), skb_pool_flush()
+Date: Fri, 10 Jul 2026 04:38:56 -0700
+Subject: [PATCH net-next v3 4/9] netconsole: move
+ refill_skbs_work_handler() from netpoll
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,7 +44,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260710-netconsole_move_more-v3-2-6f63f76b28bc@debian.org>
+Message-Id: <20260710-netconsole_move_more-v3-4-6f63f76b28bc@debian.org>
 References: <20260710-netconsole_move_more-v3-0-6f63f76b28bc@debian.org>
 In-Reply-To: <20260710-netconsole_move_more-v3-0-6f63f76b28bc@debian.org>
 To: "David S. Miller" <davem@davemloft.net>, 
@@ -55,110 +55,92 @@ Cc: netdev@vger.kernel.org, asantostc@gmail.com, gustavold@gmail.com,
  linux-kernel@vger.kernel.org, Breno Leitao <leitao@debian.org>, 
  kernel-team@meta.com
 X-Mailer: b4 0.16-dev-d5d98
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3036; i=leitao@debian.org;
- h=from:subject:message-id; bh=29kW4YIq6TQb7vg5agUdfyguq5Y2tRhUDP/DCvJRiEs=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqUN1jUG+nwe4abIHIX4dub8UQRP2RO4sFEeY2U
- 3h/HIgNUUSJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCalDdYwAKCRA1o5Of/Hh3
- bbfoEACiicRTVIbosJvg08G9Va9Wt7KYiltJMzxoeOHOOpQ5GsrwafvgC+TLsnw0aWTcw2zU87Q
- iMXZOqwNCSLJzHc0HHd6/Dip82F0AEQRSLUzXgZJ36n/NB4t4DEDcJRFsZ9fQVI7suuc1iddm4y
- QKSXusDW3MXI6zQojWWztdT96QEbzy9ZumD4p3VboeUKIVtSQW7IW1n7ocd2lQcimBEgnB5TNB4
- A2nz3vfqobosSBeLjrLR19cIAmEvkiKTnJoRJ0FEGYIbWmgB6B3adxcpc2CanEAgS9YIzoxJNfM
- HwHsukF6D+u88xeaiCGqADGCpcvXngtCFZ09NgL3JuPVIdQf+3OZP9x5I41JD/LuSzCsSXayiwq
- JAchQqRpkSGpwxxjBb7HpY7yhAubEqYNsWo/mA681JUEhIpl9rtie+Qn3+hVp2wfTJ9VFpIAn7V
- Gjq0rDXAYohbUihwxT209BK8XIXQ+x0EMxsnP/YPS3bC2VKJgzMzxhG1Wuaq2WnpHFj+iYVIA8A
- 5xy17H8qyogJc64IeMUq9ajtugqICBGHrlQju6rcfgBZQ0uQvw3vIRt9nTb8qW0MAyCVAYov4g9
- sXXI1feLzZULpNnXK4+i7pfJ26ZkB8UxoSCD5kdrySURmRhy2VItv4eD/x7xFityUZuPHIG7zXz
- GfmCPy6uLwaxiVQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2471; i=leitao@debian.org;
+ h=from:subject:message-id; bh=nFPh5ac2FjWKCd6q3wB6UC+vMdK1zYkYSuMailRysDc=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqUN1jjepZA9fyIwSatuQFjaPZoy0Hw/iYn+Qn/
+ UR8thofJJ+JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCalDdYwAKCRA1o5Of/Hh3
+ bfTMD/4ldvdlUhAKZ9QnfO6zrD0bG43ah588cLeBIKlAFL4dllbjcB3EvL66OFRmwJp60jt6LPl
+ hYEhbQByr4AbLXEreuAPcNzdbrNp2KwklITa+ROAwqYYHqpaRRp7jgPNXezpfQV2ZECrOL1qSe/
+ bFNdcXH9XEME92cjkxLp6d9782pYhtxUDCKn1MZMqCN5eBcxUYgLNzZE0JEKCWMbsvbDcWNMtop
+ iScP6hKaDDr3vY0OqSUnWBXL7JLo0RMVUOFjcd1xlu1XSK+7nwIhFvaND0g7oqC9gqEWmIKr8JK
+ 91GSsslPYSd9uHXH6S8011b7z7F9chvRJw6WTXcFVvQFc4uVGT+D/59Qw10Z9NmgvO3wqbxvD/p
+ d0fgdhCD6SUlzDj7IpH+YSMX7/OZTOOVO1Ve8WVDeSz6aQABHbMLOwaddJhkERm1BL3/aTHNvMK
+ LLi0WKa78XyysJ4aTUi7b+LxgN8DRQ8eVL+yCmhpXz3E51Bpx5GCjrVEHIb4PYYmnxJUE00UDvH
+ EFrsyRrJ/o9mMABZGit7vXhTjUKmeakf6sSKGLPe0M3jUNHFg8cs+YgFYi9HyJJyzgZlgLKaAn+
+ 42W/STvRGs6Oa+VP+ltet0vmIfJ89DyV2Dh5BA+8AwwKBFk3aYUcA1GcPbfG1TbbtO0UJ4u/hXm
+ eSe6aiZdIfCsitA==
 X-Developer-Key: i=leitao@debian.org; a=openpgp;
  fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 X-Debian-User: leitao
 
-These three helpers manage the per-netpoll fallback skb pool. They
-are file-static today because all of their callers live in
-net/core/netpoll.c. Subsequent patches relocate the pool's owner
-from struct netpoll to the only consumer that actually uses it
-(netconsole), and that work needs netconsole to drive the helpers
-directly while the function bodies still live here.
+The work handler is wired via INIT_WORK() in
+netconsole_skb_pool_init() and has no other callers since the
+previous patch took the skb pool lifecycle out of __netpoll_setup().
+Move the function body into drivers/net/netconsole.c as a
+file-static helper, drop EXPORT_SYMBOL_GPL() and remove the
+prototype from <linux/netpoll.h>.
 
-Drop static, add prototypes in <linux/netpoll.h>, and
-EXPORT_SYMBOL_GPL() each. No behaviour change.
-
-The exports are transitional. Each helper is moved into
-drivers/net/netconsole.c later in this series, and at that point
-its EXPORT_SYMBOL_GPL() and prototype are dropped. By the end of
-the series no symbol introduced here remains exported.
-
-The goal of this patch is to make the subsequente patches easy to
-review.
+Pure code motion: the body is unchanged and still calls the
+exported refill_skbs() in net/core/netpoll.c.
 
 Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- include/linux/netpoll.h | 3 +++
- net/core/netpoll.c      | 9 ++++++---
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ drivers/net/netconsole.c | 8 ++++++++
+ include/linux/netpoll.h  | 1 -
+ net/core/netpoll.c       | 9 ---------
+ 3 files changed, 8 insertions(+), 10 deletions(-)
 
+diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
+index 1f75c4bbea8b6..96d9a47312cd7 100644
+--- a/drivers/net/netconsole.c
++++ b/drivers/net/netconsole.c
+@@ -292,6 +292,14 @@ static void netcons_release_dev(struct netconsole_target *nt)
+ 		memset(&nt->np.dev_name, 0, IFNAMSIZ);
+ }
+ 
++static void refill_skbs_work_handler(struct work_struct *work)
++{
++	struct netpoll *np =
++		container_of(work, struct netpoll, refill_wq);
++
++	refill_skbs(np);
++}
++
+ /* Seed the per-target skb pool that find_skb() falls back to. The queue
+  * head and refill work are set up once in alloc_and_init(); this only
+  * (re)fills the pool. Pair with netconsole_skb_pool_flush().
 diff --git a/include/linux/netpoll.h b/include/linux/netpoll.h
-index 88f7daa8560e5..a7b96e1792207 100644
+index a7b96e1792207..51e5863d8e678 100644
 --- a/include/linux/netpoll.h
 +++ b/include/linux/netpoll.h
-@@ -90,6 +90,9 @@ void netpoll_cleanup(struct netpoll *np);
- void do_netpoll_cleanup(struct netpoll *np);
+@@ -91,7 +91,6 @@ void do_netpoll_cleanup(struct netpoll *np);
  netdev_tx_t netpoll_send_skb(struct netpoll *np, struct sk_buff *skb);
  void netpoll_zap_completion_queue(void);
-+void refill_skbs(struct netpoll *np);
-+void refill_skbs_work_handler(struct work_struct *work);
-+void skb_pool_flush(struct netpoll *np);
+ void refill_skbs(struct netpoll *np);
+-void refill_skbs_work_handler(struct work_struct *work);
+ void skb_pool_flush(struct netpoll *np);
  
  #ifdef CONFIG_NETPOLL
- static inline void *netpoll_poll_lock(struct napi_struct *napi)
 diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index aed415d3cd74f..e062d88d10a37 100644
+index 58f30a4d5eb0f..93a16faf808c8 100644
 --- a/net/core/netpoll.c
 +++ b/net/core/netpoll.c
-@@ -213,7 +213,7 @@ void netpoll_poll_enable(struct net_device *dev)
- 		up(&ni->dev_lock);
+@@ -362,15 +362,6 @@ void skb_pool_flush(struct netpoll *np)
  }
+ EXPORT_SYMBOL_GPL(skb_pool_flush);
  
--static void refill_skbs(struct netpoll *np)
-+void refill_skbs(struct netpoll *np)
- {
- 	struct sk_buff_head *skb_pool;
- 	struct sk_buff *skb;
-@@ -228,6 +228,7 @@ static void refill_skbs(struct netpoll *np)
- 		skb_queue_tail(skb_pool, skb);
- 	}
- }
-+EXPORT_SYMBOL_GPL(refill_skbs);
- 
- void netpoll_zap_completion_queue(void)
- {
-@@ -351,7 +352,7 @@ netdev_tx_t netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
- }
- EXPORT_SYMBOL(netpoll_send_skb);
- 
--static void skb_pool_flush(struct netpoll *np)
-+void skb_pool_flush(struct netpoll *np)
- {
- 	struct sk_buff_head *skb_pool;
- 
-@@ -359,14 +360,16 @@ static void skb_pool_flush(struct netpoll *np)
- 	skb_pool = &np->skb_pool;
- 	skb_queue_purge_reason(skb_pool, SKB_CONSUMED);
- }
-+EXPORT_SYMBOL_GPL(skb_pool_flush);
- 
--static void refill_skbs_work_handler(struct work_struct *work)
-+void refill_skbs_work_handler(struct work_struct *work)
- {
- 	struct netpoll *np =
- 		container_of(work, struct netpoll, refill_wq);
- 
- 	refill_skbs(np);
- }
-+EXPORT_SYMBOL_GPL(refill_skbs_work_handler);
- 
+-void refill_skbs_work_handler(struct work_struct *work)
+-{
+-	struct netpoll *np =
+-		container_of(work, struct netpoll, refill_wq);
+-
+-	refill_skbs(np);
+-}
+-EXPORT_SYMBOL_GPL(refill_skbs_work_handler);
+-
  int __netpoll_setup(struct netpoll *np, struct net_device *ndev)
  {
+ 	struct netpoll_info *npinfo;
 
 -- 
 2.53.0-Meta
