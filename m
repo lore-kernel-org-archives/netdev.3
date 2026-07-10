@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11EE13CB8E2;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546BA3CCA13;
 	Fri, 10 Jul 2026 21:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783720413; cv=none; b=QtDbYLycTJDX/WOOCom7wOCN3wMztz5I+44YOMMyf0YQ7y7Fg2oqNqFZ8/NzTTdvTdUhSaTCJDwC8i66Y4KXbwfNSHPOFmZ4Bho2qw9IL7wuOPV+Edt/vjEd7TN/h6PNoYhn7CVFbGXeoFbNh5F/6YMwlr9+ldNjTx9xsxAVpKs=
+	t=1783720413; cv=none; b=iXs9TvEXwVIzJ8OuuRd/EG0VjyUJKdKqjBPb0zXgyudHIoOE8xmM3x9bUDyyTbjMJ4TNvWOC83S8jN4VhYkzOOm2s/FOkvB2V3Xj6hg2oPwjgRSVn0HGFJdzMIpoXKoAO+J6fjFTuy+lXd13ve+dkaELe50hqXf2jkdM7le2k2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783720413; c=relaxed/simple;
-	bh=K77jtNKlk7q9jPHK+9g1/W0M8S+mUc//obL6fMgPw9I=;
+	bh=5UMsDaI40kLIhvFQda9jCRZY6G24TnN5ExVTwtB+6hI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IovYhhrFYSvlzM9aw9kCZkSqm0YOf2BXXqJRj++fM5XL4Bng4ZYLhb3/HlGBtVUJPx0TjXEKjBapFDBruOD8Tp6Hf7Hq7mZ86YJQWBxNosCjmGsMov1fyDr+z/0oIJ57BSk6w4ujld6BxaBmBY06DA/CaEX+LD6ZfFflLS+Mr8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DPYoDk0w; arc=none smtp.client-ip=198.175.65.9
+	 MIME-Version; b=bMQtFIjPI6j7WfjM7tmffnelO+vKqqseEVECH7IVNP7WJp72N2OIMBWGJJU1dXB7tAKlnR1epCGN7Jt/Bl0Pf9mvZbOcUDAIYxLpykbHxxOv+Jt1DGzTLxAxyCOfzPYZY+LI47RFP/oExaQVIip6HT8Uz0Jsblq2x3zKq8sWHw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Dy0fdmZc; arc=none smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DPYoDk0w"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Dy0fdmZc"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783720412; x=1815256412;
+  t=1783720413; x=1815256413;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=K77jtNKlk7q9jPHK+9g1/W0M8S+mUc//obL6fMgPw9I=;
-  b=DPYoDk0wOv3a+ted75c3dtbPX0Qx/PVW2a72IuZxqANTdvakVVXfcyU0
-   F7xyXYHyQY1hkUiMp3oS6l2fo2BO5+uK4YpyVZrkkBHidqWGq4lN/qOOg
-   KFE/IzQp8b0qdJXjx4NIUdScI/iIa9SMyKtpEtaiSe4+QJLODtBkcyAax
-   eYtbZ8zXNtuW9YyDicelKXVTpxmgc8hflWNPDaglPjNz52U+e8pAThZ+M
-   bJ8HIGmQRF9JXXu5K53KlQoSZviCG8GEkLxmQfY/B4z4tHnAZAiy5V4PM
-   H0lrCjhNw8iVFXZdHX7VUyTHvr2T4U8MBm7SL/L0WiNMya8zSeuRfd2at
-   Q==;
-X-CSE-ConnectionGUID: 6KAlnf6aQSqs439SaOLxLQ==
-X-CSE-MsgGUID: AHcighV7ROmNrpF6IEWkbw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="107220793"
+  bh=5UMsDaI40kLIhvFQda9jCRZY6G24TnN5ExVTwtB+6hI=;
+  b=Dy0fdmZcGYy6HtHRgUSavOMLe2K+GM0K7DSkmcRkNieJbYxiEaImk1fp
+   QNE0mk89IUYfgcu6IIpkKHEEMKxJzjPlZlaRzYl18HUMYJLTX6Db4FzXO
+   fmLus8QI2Bv+FW+qmduAR58XH/n7nZ+HaIq1lbWvfgWso9E+yOGFRp6gZ
+   BmLIiokinvb1MG7wE1jv5gFz4qXdxosuo/elFzUAZaZ4JWCETCjwYb5tn
+   DKXlnnwj1Uat7HD0IaUdmx31U4JSC/QP6gCEGE07UtSBMlhvDld01Khvy
+   Hp7hSyuZf7rxWa4bdczeVBC4RwIcUCYvwGFLKiFlcb9mMtfLpAorAgm3+
+   w==;
+X-CSE-ConnectionGUID: oiTpAFZRTuKL+pTzv3mlIA==
+X-CSE-MsgGUID: mUXSzRzIQdmzS6pctt7oFg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="107220801"
 X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="107220793"
+   d="scan'208";a="107220801"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
   by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2026 14:53:24 -0700
-X-CSE-ConnectionGUID: vDJHfEFBTviJ26cPc9njDg==
-X-CSE-MsgGUID: +krU7o25RYGCHC91CFaOfg==
+X-CSE-ConnectionGUID: EkZfmZqjQHKPs18tUwY45g==
+X-CSE-MsgGUID: wD0X2liBSMKUUpXVp5NNag==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="254494652"
+   d="scan'208";a="254494655"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by orviesa008.jf.intel.com with ESMTP; 10 Jul 2026 14:53:23 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -68,10 +68,11 @@ Cc: Larysa Zaremba <larysa.zaremba@intel.com>,
 	corbet@lwn.net,
 	richardcochran@gmail.com,
 	linux-doc@vger.kernel.org,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
 	Samuel Salin <Samuel.salin@intel.com>
-Subject: [PATCH net-next v4 10/15] idpf: make mbx_task queueing and cancelling more consistent
-Date: Fri, 10 Jul 2026 14:53:07 -0700
-Message-ID: <20260710215313.1475803-11-anthony.l.nguyen@intel.com>
+Subject: [PATCH net-next v4 11/15] idpf: print a debug message and bail in case of non-event ctlq message
+Date: Fri, 10 Jul 2026 14:53:08 -0700
+Message-ID: <20260710215313.1475803-12-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260710215313.1475803-1-anthony.l.nguyen@intel.com>
 References: <20260710215313.1475803-1-anthony.l.nguyen@intel.com>
@@ -85,96 +86,44 @@ Content-Transfer-Encoding: 8bit
 
 From: Larysa Zaremba <larysa.zaremba@intel.com>
 
-One of the assumptions of libie_cp and pre-refactor idpf control queue
-handling is such that all Rx processing is handled by a single task, which
-is to be cancelled before the mailbox destruction. Aside from cancelling,
-it is also important to make sure that idpf_intr_rel() never reschedules
-it afterwards.
+Unlike previous internal idpf ctlq implementation, idpf calls the default
+message handler for all received messages that do not have a matching xn
+transaction, not only for VIRTCHNL2_OP_EVENT. This leads to many error
+messages printing garbage, because the parsing expected a valid event
+message, but got e.g. a delayed response for a timed-out transaction.
 
-In order to comply, in the init path, do the first queueing of mbx_task in
-idpf_init_dflt_mbx(), and in deinit and reset, always cancel the task in
-idpf_deinit_dflt_mbx(), in every single flow call idpf_mb_intr_rel_irq()
-beforehand.
+The information about timed-out transactions and otherwise unhandleable
+messages can still be valuable for developers, so print the information
+with dynamic debug and exit the function, so the following functions can
+parse valid events in peace.
 
-Reviewed-by: Emil Tantilov <emil.s.tantilov@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
 Tested-by: Samuel Salin <Samuel.salin@intel.com>
 Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/idpf/idpf.h          | 1 +
- drivers/net/ethernet/intel/idpf/idpf_lib.c      | 9 ++++-----
- drivers/net/ethernet/intel/idpf/idpf_virtchnl.c | 5 +++++
- 3 files changed, 10 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/intel/idpf/idpf_virtchnl.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf.h b/drivers/net/ethernet/intel/idpf/idpf.h
-index d7d751e2a781..470bc23c844c 100644
---- a/drivers/net/ethernet/intel/idpf/idpf.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf.h
-@@ -984,6 +984,7 @@ void idpf_vc_event_task(struct work_struct *work);
- void idpf_dev_ops_init(struct idpf_adapter *adapter);
- void idpf_vf_dev_ops_init(struct idpf_adapter *adapter);
- int idpf_intr_req(struct idpf_adapter *adapter);
-+void idpf_mb_intr_rel_irq(struct idpf_adapter *adapter);
- void idpf_intr_rel(struct idpf_adapter *adapter);
- u16 idpf_get_max_tx_hdr_size(struct idpf_adapter *adapter);
- int idpf_initiate_soft_reset(struct idpf_vport *vport,
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-index 6751534e022b..1c19cd1f9dd1 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-@@ -68,9 +68,11 @@ static void idpf_deinit_vector_stack(struct idpf_adapter *adapter)
-  * This will also disable interrupt mode and queue up mailbox task. Mailbox
-  * task will reschedule itself if not in interrupt mode.
-  */
--static void idpf_mb_intr_rel_irq(struct idpf_adapter *adapter)
-+void idpf_mb_intr_rel_irq(struct idpf_adapter *adapter)
- {
--	clear_bit(IDPF_MB_INTR_MODE, adapter->flags);
-+	if (!test_and_clear_bit(IDPF_MB_INTR_MODE, adapter->flags))
-+		return;
-+
- 	kfree(free_irq(adapter->msix_entries[0].vector, adapter));
- 	queue_delayed_work(adapter->mbx_wq, &adapter->mbx_task, 0);
- }
-@@ -1939,14 +1941,11 @@ static void idpf_init_hard_reset(struct idpf_adapter *adapter)
- 		goto unlock_mutex;
- 	}
- 
--	queue_delayed_work(adapter->mbx_wq, &adapter->mbx_task, 0);
--
- 	/* Initialize the state machine, also allocate memory and request
- 	 * resources
- 	 */
- 	err = idpf_vc_core_init(adapter);
- 	if (err) {
--		cancel_delayed_work_sync(&adapter->mbx_task);
- 		idpf_deinit_dflt_mbx(adapter);
- 		goto unlock_mutex;
- 	}
 diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-index 388075a07af7..1b5935e9c538 100644
+index 1b5935e9c538..bf63fc71d6ae 100644
 --- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
 +++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-@@ -2929,6 +2929,8 @@ int idpf_init_dflt_mbx(struct idpf_adapter *adapter)
- 	adapter->xnm = params.xnm;
- 	adapter->state = __IDPF_VER_CHECK;
+@@ -84,6 +84,13 @@ void idpf_recv_event_msg(struct libie_ctlq_ctx *ctx,
+ 	u32 event;
  
-+	queue_delayed_work(adapter->mbx_wq, &adapter->mbx_task, 0);
+ 	adapter = container_of(ctx, struct idpf_adapter, ctlq_ctx);
++	if (ctlq_msg->chnl_opcode != VIRTCHNL2_OP_EVENT) {
++		dev_dbg(&adapter->pdev->dev,
++			"Unhandled message with opcode %u from CP\n",
++			ctlq_msg->chnl_opcode);
++		goto free_rx_buf;
++	}
 +
- 	return 0;
- }
- 
-@@ -2938,6 +2940,9 @@ int idpf_init_dflt_mbx(struct idpf_adapter *adapter)
-  */
- void idpf_deinit_dflt_mbx(struct idpf_adapter *adapter)
- {
-+	idpf_mb_intr_rel_irq(adapter);
-+	cancel_delayed_work_sync(&adapter->mbx_task);
-+
- 	if (adapter->xnm) {
- 		idpf_mb_clean(adapter, adapter->asq, true);
- 		libie_ctlq_xn_deinit(adapter->xnm, &adapter->ctlq_ctx);
+ 	if (payload_size < sizeof(*v2e)) {
+ 		dev_err_ratelimited(&adapter->pdev->dev, "Failed to receive valid payload for event msg (op %d len %d)\n",
+ 				    ctlq_msg->chnl_opcode,
 -- 
 2.47.1
 
