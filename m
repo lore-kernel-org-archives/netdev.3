@@ -1,48 +1,55 @@
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7213EEAF8;
-	Fri, 10 Jul 2026 08:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B593DCDBC;
+	Fri, 10 Jul 2026 08:21:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783671614; cv=none; b=GZLhSSMu3bwzuCMBbACLQMTFQ+UQKnH5jkvlEjVC4p7yk9xI8heJpWzA0ggD/qrNAeafU8mV//l5octOpaHdB5j5W2/wMJnwl2URE9Gt5Y1XjUuYH24yz80jwyNIItD5XA1OeffZ6zG0cp4VNqd3Fo3BO4NOpNLcrofGQ8ya8aM=
+	t=1783671669; cv=none; b=XdkL+eh//MiAeShwaGBY1jFsDddW8ybPALsvugQSJrUWle0p9EGClcVFTAEbaKiuDTawDmrfqmuPBJs21XrqAxDs7pLlBI/XjB2fTgUalJieXUY+bN3mp0FtRZvf1sp2xjzxUZv8q2YD0Em/9cfwneBLObD34/t/3uhlj6Ltxzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783671614; c=relaxed/simple;
-	bh=WBv4g3SERUXVfGCwMZXdY1BqMEw5ovh8+sE1MB26oOU=;
+	s=arc-20240116; t=1783671669; c=relaxed/simple;
+	bh=AKDaVCfJi39Tgs/2h1ZaZCW7yPhT+bWU0gjLilWomb8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ps7tmPSoB/fENEW27tLPebjTBILsgynchKkWp29om7s1OVKIr9+DRTsGw1V/cdLGlJpFFP93LXa7iSUGJm5O+1i22w66b2brpmeu2PZVfrrkm8ZUND9awEt3lE61RsRW35mhZWkPqN/0Qd+ZBPe3ra6S3N0OOFs1Nzt9xQAiAZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=mPtOGxo0; arc=none smtp.client-ip=82.195.75.108
+	 Content-Type:Content-Disposition:In-Reply-To; b=KU/iUSbj51cvQdgn6jQNxDn0AaQNmwvBmJ6NYD1IkX58LqCqSv5EkVG0kYK8QOIldm4oW9qhpRVVt701ypgEmkM3JuXwkt4kDEFL6uBatXTbVH9mSHBJY1bJa7GKe8a1XKPA0uhiM+GjrbqHkLApMna1HlbxGLzYjqLpadSq1T4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=SYXdhwf6; arc=none smtp.client-ip=82.195.75.108
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="mPtOGxo0"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="SYXdhwf6"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
 	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=K6D5rhqdc9cjQivBsJt7uQxaSWphCdpgMsHZkpUgSGo=; b=mPtOGxo0IcJ0LlIFhsBANc2Njt
-	DlF74zV6UPkJCOHGVm7rgCk20p/hBxHvYYKDow7yeMDeHv1+Fp5oLZo7xV6BQxA2AhyA/Hb9VBq0K
-	PauR3gsqxngfflaufXLF6qc/Y4BwepGXSK5gniH45PJ+BB54amPraLavHkFFXpiaNdH0D2RCKJWQo
-	1MwEnSAcaVWuXKhJ0kyaSBDwyx1EjtJzVIjCaWsV2HsJgLXTfsslFgjQQYo1kJZ5Ii7jM8tsNVtp4
-	Ov8sdeOg5T+K4/CBw6xrfDr41QgQYzeufV+2qKYdh2lHRAtzHnBaWn+sv1yIrhNf3cr89yFUT7x5E
-	EKR40Jkw==;
+	bh=PLGhazUsM5CoDJX0gMbB8JmKh1fkD9xEB4wGjBKRQtk=; b=SYXdhwf6TnLG74rt3BsGAN1Jnu
+	8XeUOLT9UP7PIRK7VMt2N5WOjEdBZAiJi83YQ7Sfayyr9ydhbMTHZSoQrtORqBGBL1SqTOWxczJdp
+	zG0TPEe3qswltJhH6XxIiAntv+LH6NEsmt4u5XrIXny5kQ+l7G9qrvm+rjO7mtaHdj/JVKCYGvtkg
+	iju1OXKW9CdG4su1GyGWuzGKjj5SlAjjr7FhmmtJD7Djj+PKyDfyoHeSyhBSEVoCDdQnxUrGymxjR
+	UefwOZO2aK1UiJDyQNm1SsnfR8HfktgVBhqCQjqqARpcXyDYbP3I6wyJ1ebFoUqEfjxQw7WBQCN58
+	4LALyksQ==;
 Received: from authenticated-user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.96)
 	(envelope-from <leitao@debian.org>)
-	id 1wi6Sd-004LUY-1f;
-	Fri, 10 Jul 2026 08:19:51 +0000
-Date: Fri, 10 Jul 2026 01:19:45 -0700
+	id 1wi6Tj-004LW4-2A;
+	Fri, 10 Jul 2026 08:21:00 +0000
+Date: Fri, 10 Jul 2026 01:20:54 -0700
 From: Breno Leitao <leitao@debian.org>
-To: xiaoning.wang@oss.nxp.com
-Cc: Frank.Sae@motor-comm.com, andrew@lunn.ch, hkallweit1@gmail.com, 
-	linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, xiaoning.wang@nxp.com
-Subject: Re: [PATCH net V2] net: phy: motorcomm: read EEE abilities in
- yt8521_get_features()
-Message-ID: <alCrGOlOj2oof7Xm@gmail.com>
-References: <20260710080018.1070789-1-xiaoning.wang@oss.nxp.com>
+To: Illusion Wang <Illusion.Wang@nebula-matrix.com>
+Cc: Dimon <dimon.zhao@nebula-matrix.com>, 
+	Alvin <alvin.wang@nebula-matrix.com>, Sam <sam.chen@nebula-matrix.com>, 
+	netdev <netdev@vger.kernel.org>, andrew+netdev <andrew+netdev@lunn.ch>, corbet <corbet@lwn.net>, 
+	kuba <kuba@kernel.org>, horms <horms@kernel.org>, linux-doc <linux-doc@vger.kernel.org>, 
+	pabeni <pabeni@redhat.com>, "vadim.fedorenko" <vadim.fedorenko@linux.dev>, 
+	"lukas.bulwahn" <lukas.bulwahn@redhat.com>, edumazet <edumazet@google.com>, 
+	enelsonmoore <enelsonmoore@gmail.com>, skhan <skhan@linuxfoundation.org>, 
+	hkallweit1 <hkallweit1@gmail.com>, open list <linux-kernel@vger.kernel.org>
+Subject: Re: =?utf-8?B?5Zue5aSN77yaW1BBVENIIHYyMSBuZXQtbmV4?= =?utf-8?Q?t?=
+ 01/12] net/nebula-matrix: add minimum nbl build framework
+Message-ID: <alCrVABK5CLd57e8@gmail.com>
+References: <20260708064742.35391-1-illusion.wang@nebula-matrix.com>
+ <20260708064742.35391-2-illusion.wang@nebula-matrix.com>
+ <ak5sjL21NQSWDB9S@gmail.com>
+ <25d3ffc3-6f45-4baf-9c3c-ff075de14778.Illusion.Wang@nebula-matrix.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,25 +58,26 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260710080018.1070789-1-xiaoning.wang@oss.nxp.com>
+In-Reply-To: <25d3ffc3-6f45-4baf-9c3c-ff075de14778.Illusion.Wang@nebula-matrix.com>
 X-Debian-User: leitao
 
-On Fri, Jul 10, 2026 at 04:00:18PM +0800, xiaoning.wang@oss.nxp.com wrote:
-> From: Clark Wang <xiaoning.wang@nxp.com>
+On Fri, Jul 10, 2026 at 10:45:15AM +0800, Illusion Wang wrote:
+> >> From: illusion wang <illusion.wang@nebula-matrix.com>
+> >> +Support
+> >> +=======
+> >> +
+> >> +For more information about m18110-NIC/m18000-NIC, please visit the following URL:
+> >> +https://www.nebula-matrix.com/
+> >
+> >Do you have a link for the site in english?
 > 
-> In phy_probe(), genphy_c45_read_eee_abilities() is only called when a
-> driver uses phydrv->features. Drivers that implement .get_features are
-> responsible for reading the EEE abilities themselves.
+> >Thanks
 > 
-> yt8521_get_features() does not do this, so phydev->supported_eee stays
-> empty for YT8521/YT8531S and "ethtool --show-eee" reports "EEE status:
-> not supported", even though the PHY has the standard EEE capability
-> registers.
-> 
-> Call genphy_c45_read_eee_abilities() at the end of yt8521_get_features()
-> to populate supported_eee.
-> 
-> Fixes: 70479a40954c ("net: phy: Add driver for Motorcomm yt8521 gigabit ethernet phy")
-> Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+> Sorry, I will fix this in the next revision of the patch series.
+> Our official English product page is available at:
+> https://www.nebula-matrix.com/snic_s1000_en
+> The S1000 series products are based on the m18000 chip family,
+> and you can find full NIC product introductions on this page.
 
-Reviewed-by: Breno Leitao <leitao@debian.org>
+Thanks, that is what I was looking for. Please use the english like
+above.
