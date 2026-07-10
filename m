@@ -1,204 +1,234 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97754423A87;
-	Fri, 10 Jul 2026 11:54:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783684507; cv=none; b=mfzeS2bce8cxeAuNnBsIH8019zoQyarW6hWLKj6vwqCB04dOOf9opCUbFAgS0ufmnQKHEoYN1KeJpTJvEnBRsXOHK+f2VFRp3WUjjlPS6um/xks000xQ72FBiZuR+QS0RvquxEq/Px3S93BOuiLS4YcVfut4AwIBAH2z7+FRc1Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783684507; c=relaxed/simple;
-	bh=E5Uuzy66c/XxxYyuV5fNIICuWCNoal1F8sjYMId5w8I=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=nUwIl3kwHuTVkw6i9fFNFC6kMJYw5QXxgzk6W+eiE5r73ee14SFCEx69EeU3chkVrcTR2OGOVerO69q63Fto3rUVApbywNRQLPNlFNFVSGcOPA2Pf16doeIRjfflwrWdh5LbpE99BojhA007Qr+vk7LMeMnU6/H6222EaQnK+rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=IjGKdqlL; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F277E3B14D0
+	for <netdev@vger.kernel.org>; Fri, 10 Jul 2026 12:00:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.19
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783684813; cv=fail; b=EzzcY4Z0J1YKI3DbS7GgzIeQ6q7x2iZiVolvMmWRV7jbwnQRHsKUmlu348ZTaoe49ZtBe7OgNK7IJIUxuU97JyfAR0S/NHJbeHydoDpy9UcqvO39Kf3PtTbW2NmBgirZPdoP+cHRcHeGj3faYoBL1CSMEpLaFp9RdBDYRnvaLyE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783684813; c=relaxed/simple;
+	bh=Dlr15F7vGlODEFRRmSlBLYf3yzCUAfAkFIZxBq+GXMs=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Ea5SfCTvCzvbcD4fWbN7uLzWDHd1ROBnQp1iKq77FAsU//bxiuKROPoYdlsD1Jau1U9qSmGH8IkIak6n5STr/mVJjUmReI5hRn/gVa9hGW1LCHg7p/0EdiCxS7DSgNpxDiYVlhfdUfKHpydPEmR3jXS3Jh69dAC+7YSAq73Jm+o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Le1A8xuD; arc=fail smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="IjGKdqlL"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description;
-	bh=S+TpG0rNAE1sZNwsOErTcUgZBEXxg+Ruc3JdPKcoyPw=; b=IjGKdqlLmjHPzVRPyL9o+7zsMt
-	Qk77ykSUHDzwufP5tGZ6k3/km49Tea0uRcaRywZH7rL1ScnrFmlQ3IvA3VPV7fVBx/YdxRhTKWdaF
-	6g/S+Fbk8xz/0L/pydNq0Z71Wh+x/+pDMB9BqFQkgkMmRP/QDKsm47mqdgwl4BKDZ4bNfBvzY8zkF
-	sHm30bOFzWIzNXOEULmOKBEG74XkzjwrM3wCb9acqq4vfFNSem5x1jZ7+TLjrZ+8/aPRjwYxA7VAs
-	kzH782xQpSvRe0wJucn/hvZSKZEBCeK+7C3cDcEwmKKKCL7xemOvPyug+2JKx+/Mh51lk/Ifr4San
-	kT+LYREw==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wi9oj-004SZq-17;
-	Fri, 10 Jul 2026 11:54:53 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Fri, 10 Jul 2026 04:39:01 -0700
-Subject: [PATCH net-next v3 9/9] netconsole: move remote_mac from struct
- netpoll to netconsole_target
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Le1A8xuD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783684809; x=1815220809;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=Dlr15F7vGlODEFRRmSlBLYf3yzCUAfAkFIZxBq+GXMs=;
+  b=Le1A8xuDiAmHi+mRbF5G2KOKrKTfqfziw71bhUIdpArmhiEoyoq242FG
+   HFol+zkZtfnboU4xz1HYaNp8GztTy339hlOVTX2o1RW+Ta8DYLL54gtgY
+   0Q2IK+hJMwmvm9syELR05+TQVkcxN6YwMzDu8LKZgtoALC/2B+USm/lKV
+   pYy2fu6DgxrodNNWG5zXx0YE5JhOQhfdGgneryzzeU6nSjG63hxFW3x7X
+   c430D8T0qBG+2w134MJicwSmC9Y82W0XKRdvY+8ZnbTpIcdvnwI5Pi4p2
+   /EBoXS+C6UjVFyY22lVsK075VBuQ7uPrGmipXrFHaCm2xZfp+0mo87xIl
+   g==;
+X-CSE-ConnectionGUID: z2HsQre3QmGg5yXidzoK7g==
+X-CSE-MsgGUID: ad/fKNLZSGSHuCZvwd44Sw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="83359147"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="83359147"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2026 05:00:07 -0700
+X-CSE-ConnectionGUID: gtxcDAhcSUSrvCar4/ELNQ==
+X-CSE-MsgGUID: Cmf51Ne7RuSrlMkDNK25SQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="255518846"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2026 05:00:07 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Fri, 10 Jul 2026 05:00:06 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Frontend Transport; Fri, 10 Jul 2026 05:00:06 -0700
+Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.54) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Fri, 10 Jul 2026 05:00:06 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PYsqEnITCEJ/W4mbjmhdzqa6v60eDhh7xTYfcKisitomAAW4fTzaSDuni39/IplMbP1EsJi6813zDmjTjqqiPfO6hBgDkeU3juDU2cE7diSW2oBHBF0DFXs7PY4MzrSGCroKOEFgYZxpB0qBa0QKffYA72io3Ie+UTQt9rPdHs1ApNVMGC/8op9VRi68kGCmQic4U5wWhsR0QKiYwdmvtjOvsc9vOMAb5QquzpS55FmS0Jyx5bdFAxy4Ugv0C1B+8mrstKJHgx2CYhEtQYwy+pMc0JD0/x1eHld1w0ohwBQZwQoEZwP/rw2WB5iKm7MhAOnkdyT4dD3fxQb2E+b7jg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ih1o4voIW1n2p2T6bQrDPEbwwaqEPl5Ei9ZY/He+/uY=;
+ b=G3MOp2fRFyhdQ+YDOz7pTuTgYPzFoRpV5b4EknThN0woItVkR/X5tko8x0trEu5WZgAocx+FpGt6TaaNECWM3G6LZEOmQdqAZBXyZOia6Tup4iLNn5uGC5rWUIIjtn+1q60o6Hhnr/9/4LBR9gnzcztUe34Rd/7ef8IgN6vXNv4m/JKWj/AIKBDWdWoJsXm7JnnChsM2ye8FLlpGv2w8jubACWzPTCEuPH73rS2iYEYtCdxt2NxlTi4YCcWdKlrddhoDedT+O7zU8xGvnTaZ8tuM2jQHoJnF5br/NTK+KHSoYYPZmAqlT3BJDvEgGq2806ld04QPZsv1qKwhT6QKiw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from MW4PR11MB5890.namprd11.prod.outlook.com (2603:10b6:303:188::18)
+ by MW4PR11MB5870.namprd11.prod.outlook.com (2603:10b6:303:187::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Fri, 10 Jul
+ 2026 11:59:57 +0000
+Received: from MW4PR11MB5890.namprd11.prod.outlook.com
+ ([fe80::b3b8:941:41d9:9d77]) by MW4PR11MB5890.namprd11.prod.outlook.com
+ ([fe80::b3b8:941:41d9:9d77%5]) with mapi id 15.21.0181.008; Fri, 10 Jul 2026
+ 11:59:57 +0000
+From: "Jagielski, Jedrzej" <jedrzej.jagielski@intel.com>
+To: "Fijalkowski, Maciej" <maciej.fijalkowski@intel.com>
+CC: Simon Horman <horms@kernel.org>, "intel-wired-lan@lists.osuosl.org"
+	<intel-wired-lan@lists.osuosl.org>, "Nguyen, Anthony L"
+	<anthony.l.nguyen@intel.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>
+Subject: RE: [Intel-wired-lan] [PATCH iwl-next v1 5/6] ixgbe: E610: add MAC
+ address runtime refresh
+Thread-Topic: [Intel-wired-lan] [PATCH iwl-next v1 5/6] ixgbe: E610: add MAC
+ address runtime refresh
+Thread-Index: AQHdCgYiWmanBfClLkOeQCRi/Q496bZj4wGAgAEV4OCAAZg1AIAAIYBw
+Date: Fri, 10 Jul 2026 11:59:57 +0000
+Message-ID: <MW4PR11MB5890685F934F8FEAABD7B7E8F0FD2@MW4PR11MB5890.namprd11.prod.outlook.com>
+References: <20260702091553.57112-6-jedrzej.jagielski@intel.com>
+ <20260708170223.1514429-1-horms@kernel.org>
+ <PH0PR11MB59029D8B78557F03143546D3F0FE2@PH0PR11MB5902.namprd11.prod.outlook.com>
+ <alDCHrOYHvS1EdHE@boxer>
+In-Reply-To: <alDCHrOYHvS1EdHE@boxer>
+Accept-Language: pl-PL, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MW4PR11MB5890:EE_|MW4PR11MB5870:EE_
+x-ms-office365-filtering-correlation-id: d88a0b68-1056-4f89-1103-08dede7ac338
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|23010399003|1800799024|22082099003|18002099003|38070700021|11063799006|56012099006|4143699003|6133799003|5023799004;
+x-microsoft-antispam-message-info: A5uVUtsKd/+SwQsBsD4evsg4nx638NYFvwi5H0Z4V0AnXztOBLTMNsL2DdX8P5s3QaHgMmPe/8iI11qI2LTB95GcX4UYnpWLMMj9QJAoBa0/MfV7/62zd4bztpnBHfwd9HZjLVB6VUZPCrC5XNCgDbbxDjUAt5pvQqNNhiXrYMbz486BPrCQ94/U8+vENHhTyX/oQ9ZWvnwhPW/AKytnEGZWePdzv1KFjdmuaFomBQPFVdDHZSVncRTY4XU8/CL+WCnJXNPCweRslVeLdJBAkTYmCLhSE9OsKSkFt6kiWo7u4Mue0abNvM+u50oZFE01r87UwwlXloVItT557JavD1bCaIpcHeuOAK+nroiikzQ5LDTkUIqOM3A9Budl4AEu/a1TOgGLxHc7p6iQEvu5wdsgn4quMM9tlEvQOA576EM+lj2R0DNibm4skaVDTC+O6xoRTtOQEbwRABegtd37Pt1YbhO1YDnRh4NK0SC1L0XeKGpfMZHwytyzCqoz/Vf0QM8gDMPdkyVB4sa6lP3dlM2NQrJka2FyBaEC8qAw72x3orvoE10FJ6iT5R6eiKXnfux/kzwmGShuS7nb3o4f27xfdvr3xrcPyAQAX/vJUdnIa/XqRC0/5NToIJo0aImyyCiiJfWC+PDLUccUBNRjQXA9dWS4xTnEYtu1krzcFco=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR11MB5890.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(23010399003)(1800799024)(22082099003)(18002099003)(38070700021)(11063799006)(56012099006)(4143699003)(6133799003)(5023799004);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?HGjgSU4PswnS1DQzVCnk3qwEPZq4xY42/bMzYC9SAMZ71WxS2fr15Jl/EYfs?=
+ =?us-ascii?Q?RauS7F3wAZaO+VVacTom9iGjEnnqsOZ7RMkYLe6mpnP24Yaw/aVneVFhezOF?=
+ =?us-ascii?Q?DcNkva3J19V9mzewQvTIp5FdXFGUUskXs7T3KvolGQJchKaEJW8rsPNFpLfn?=
+ =?us-ascii?Q?g2tq+PwmYJH7+83SJDJqGKicgcVNmCNXOidBXDW8Fn/inIzT5Fj/lWzBWRlZ?=
+ =?us-ascii?Q?nT3IjNm50TqE/qk1dMMXpk6TmpdMcTSFABTco1KnJZ1aq/OT95JrdCg326Zx?=
+ =?us-ascii?Q?mh7EaR4SJS+/241O14HzoRdpEYcYI/qgkABg4X6HEj0Y0v6StuWjT7e8ev/r?=
+ =?us-ascii?Q?jBU8k1ZqmeVL+RtEVVYyBEivrX7W5Pr/BVK9y5eIXE70jAy4mjOslldwQU2Q?=
+ =?us-ascii?Q?R9kKV38qGTB3w9tVgzwZUA6F22eayuqmHiTc4fVEjQaVEjtWYdj71IVpFmCS?=
+ =?us-ascii?Q?6+RYMxp6H2KTr38TK2jZPeiJPGuA72c2TEqc5ZVTE/0iPoetTA4VeFsq8FuD?=
+ =?us-ascii?Q?nLkXpWmo3/pXK4qJCx2fyaaY8t/pcS15FUgkM3gLfKg46KeE5AvvoU8dofkw?=
+ =?us-ascii?Q?jHCuGOcym0aF5sDEdb4cQHcSrCnVkS0eP9cGH48KvPCxTiiUcujGvA8rT5GW?=
+ =?us-ascii?Q?QGAddwaGWP9JQhMxELiRvYqeK6ZpojUWqaB6UyYkq/ZcHUPv4EpCcbm+HruR?=
+ =?us-ascii?Q?7TXOQdU/UfGq9KEOyB9jwA7EeS7cpIzD26T158+VJ54fTud5JT2eOSSX+1Sk?=
+ =?us-ascii?Q?Ft7F/Vk09N83GNd65RNjnUqHK685p69856HZmKsd0f/6sbZ6n6NdUp2chnzx?=
+ =?us-ascii?Q?Wp6+A7gtwBMzgk3DZVr33KGknjcFczMBA+BFloVC/rP0t2zo5Pbmr+YF59ib?=
+ =?us-ascii?Q?6mrsgIkF7fQTw3dEAscBbN65K8TFkkjmIyze04R6v528zXeurdilUq+bLywB?=
+ =?us-ascii?Q?QiYmf+0Asci3r+4GPNsRMir9NPQctTZVUKeB+mUgbBjSMUU82Cx6KLbQv7A9?=
+ =?us-ascii?Q?a2xDWNdK72kTU7mBbhwpZV/MGsNb2JKm4ecBtHtCizd2KKs2Qocc0QmH+xVz?=
+ =?us-ascii?Q?AW1s1utZ8PSQvgUE8pEXYeLMSw58vULNGzCa9Tu+duxQLpqnqnzEghN9Q4ie?=
+ =?us-ascii?Q?ZP+fZbTYYFAdJP55xOgpk/2K3gaMvbkJO3l4P75PpT0um+yA9dbLp/7z7bXp?=
+ =?us-ascii?Q?Mtn+T9J8QRw9jsN4QEUsLiKTSaG9pDM2A+kfzd0hd+CmffhkygaTynLs7s66?=
+ =?us-ascii?Q?rHqmDcr3AKlPQUnNpK0RRJo3bkEQa7eH0ZS038OwOLrIs8bxYm6+8QfCzllz?=
+ =?us-ascii?Q?mIPw4NfOoQCRZ3wFOEXVyDPykBww8xfucnIGB9cCv/VDqf9cQqmeSpIq8O7t?=
+ =?us-ascii?Q?lvbPWHOlXmjUgMfAiex88ud2BqEu7hufPQg5aEEq4t+Ad+dbcwHyNdRoLWp8?=
+ =?us-ascii?Q?kTCDpYda+r31khlpHvY2WT8BqwmHFrpJ2g9tJmxLqUkk3aec8iZ+4xz5ONUr?=
+ =?us-ascii?Q?wUnAn+q9ZZfZJz5J6XIuv/w6cEdAlDHITrR6Z1pHquGW6hHdSReJjYkSrzUB?=
+ =?us-ascii?Q?oWS/CwhTWMJ4OoO5v1XPEhBh6oaqTJGXTW60KPjrYulq0YcBPvWzGaxOV93d?=
+ =?us-ascii?Q?uQbrBGVUMoCRly7P/B7ah5Vt8WAHjvSO8SHf/2ulITZLBU1Jd2u/8qUJolin?=
+ =?us-ascii?Q?NTmhZqeZJh+yzQAWbH2npJMQrhSUU/1pJgzwrrbQzZUdeqR7Cx9TjafPRU0U?=
+ =?us-ascii?Q?AbudyrsAdQ=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260710-netconsole_move_more-v3-9-6f63f76b28bc@debian.org>
-References: <20260710-netconsole_move_more-v3-0-6f63f76b28bc@debian.org>
-In-Reply-To: <20260710-netconsole_move_more-v3-0-6f63f76b28bc@debian.org>
-To: "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: netdev@vger.kernel.org, asantostc@gmail.com, gustavold@gmail.com, 
- linux-kernel@vger.kernel.org, Breno Leitao <leitao@debian.org>, 
- kernel-team@meta.com
-X-Mailer: b4 0.16-dev-d5d98
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4885; i=leitao@debian.org;
- h=from:subject:message-id; bh=E5Uuzy66c/XxxYyuV5fNIICuWCNoal1F8sjYMId5w8I=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqUN1kdM6FUNFQORkoIdqo+Dm7iW8Od1vrcvCjq
- Ow9MGIhVqOJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCalDdZAAKCRA1o5Of/Hh3
- bR8WEACANFNG+dTXMlruSIwZlXyiwvtsYNal8SLKQ034uAOvQ6kIDrCBW+pB5VgUn5wkIKboJq0
- 1K2TVVapgqxOZlc8NByaKHfJ0X8Q8gbhprpK8QOtj5CXXeHv2BrLkeZf9pNw57OYvTp+ckhBcSa
- 7vJhbRekPFZuPuZUjIRYOeU3pquEHL0Lo/LNOTuVFaZij5eLO+VGtxkRdpn4rTQxgMZzdAMGiRY
- T99Sk1Ke9XeFVLV8ZEOvOvSW3CzhOI4waAX8/wdkTDuk1nXavEnvYEAI+BZcZU4Ss5pylJOoB6L
- 4JR+reJ31u2L/1cNMkrdxF+/3/Xxojrzl8mzRACZEw4MLWYm+IEY82vc70JJFAhvmRaEtr+el4b
- T3FlYT/tJmjdYtt3AxC5QiiKH4ljZ40+X9mrFxCAYihRzctq8UqqRJOOo9tGYf/QUpPJWGeFwwB
- zW2x4N7R9X30RON8konkpfK9UKjBQXCWkCKOWE+YNtbafSuxrSh3YUQpdFRwViGm3QBzZAVWihF
- v8FYSoBv6+yei3DV+efKbvvjjxVDM284q/qjz/NTwqDo8mrc8gNqREFnriiQ/OAEWInbnS+K+1z
- MWxp98plg/qKzvzPbsVKsFYZEWf/Il9uQ4zdWk6UAsnonONqoAM+Fdl9ibNXvYDxvqGd/zKPPkc
- oi509+6JQhLMhkw==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
+X-Exchange-RoutingPolicyChecked: ZpnhyUlZ7ayoF3Wvel6315tUHtxZFEZ+cXsYvy8jTzLZ9eKZlF+DTe7TIYAtIHlAVYomzoUc0cXmsA2eJM0ezOdazIQireKi1ezIihnoM0qgRif4O9J0zHacdb5/YfqBGHWtD8g88POncu9ddMDQVapdHoiYx+7zr9P+hCqXRDHHEYpGjI3yBpNk2JmxihWnIMnI/vOvadUqXOkfZUswcNxaWHQSOiOrpgSeLGeTtGuoiMx+vtcZYiZ10d4n/UjpQEPGRlmqPZh6xWrzEnWHeO+DwAWqZA1PiTuANc818/a8Cb4gjkUOlXIiX1FCobMCuE7sGIIONtwLLppou7SwDA==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB5890.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d88a0b68-1056-4f89-1103-08dede7ac338
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Jul 2026 11:59:57.5747
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: gVe24513SI2Sax3qZ4K6GbfCEFFI28echvCBM1UBbCm22RMEc25MUtI7mZIdQ9BRj3Zb7xTz6w1ovn7+w8iGRCXeyga/EbgwhGCNHiL6JT8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB5870
+X-OriginatorOrg: intel.com
 
-The destination ethernet address is netconsole configuration: no other
-netpoll user (bonding, team, vlan, bridge, macvlan, dsa) references
-np->remote_mac, only netconsole's ethernet framing and its
-configfs/cmdline interface do.
+From: Fijalkowski, Maciej <maciej.fijalkowski@intel.com>=20
+Sent: Friday, July 10, 2026 11:58 AM
 
-Move it into struct netconsole_target and convert push_eth() to take the
-netconsole_target; netconsole_print_banner() and
-netconsole_parser_cmdline() already take it. The configfs show/store
-handlers and alloc_and_init() reach the field directly.
+>On Thu, Jul 09, 2026 at 09:37:27AM +0000, Jagielski, Jedrzej wrote:
+>> From: Simon Horman <horms@kernel.org>=20
+>> Sent: Wednesday, July 8, 2026 7:02 PM
+>>=20
+>> >This is an AI-generated review of your patch. The human sending this
+>> >email has considered the AI review valid, or at least plausible.
+>> >Full review at: https://netdev-ai.bots.linux.dev/sashiko/
+>> >---
+>> >ixgbe: E610: add MAC address runtime refresh
+>> >
+>> >This change polls RAR0 each service-task cycle on E610 and updates
+>> >netdev->dev_addr, hw->mac.addr and mac_table[0].addr when firmware has
+>> >altered the MAC.  A refresh is also invoked from ixgbe_reset() so the
+>> >address survives RAR0 clearing during init_hw().
+>
+>[...]
+>
+>> >[Medium]
+>> >Would it make sense to hoist the E610 gating out of
+>> >ixgbe_mac_addr_refresh() and skip the rtnl_lock()/rtnl_unlock()
+>> >entirely for non-E610 devices?
+>> >
+>> >The type check lives inside the helper:
+>> >
+>> >    static void ixgbe_mac_addr_refresh(struct ixgbe_adapter *adapter)
+>> >    {
+>> >        ...
+>> >        if (hw->mac.type !=3D ixgbe_mac_e610)
+>> >            return;
+>> >        ...
+>> >    }
+>> >
+>> >so 82598, 82599, X540 and X550 adapters (which comprise most of the
+>> >ixgbe device family) acquire the global rtnl_mutex every service-task
+>> >cycle only to return immediately.  Something like:
+>> >
+>> >    if (adapter->hw.mac.type =3D=3D ixgbe_mac_e610) {
+>> >        rtnl_lock();
+>> >        ixgbe_mac_addr_refresh(adapter);
+>> >        rtnl_unlock();
+>> >    }
+>>=20
+>> Cannot introduce rtnl locking into ixgbe_mac_addr_refresh() as this
+>> can be already called within rtnl-locked path
+>
+>i40e does a lot of dancing for cases like this. rtnl lock is handled via
+>boolean provided as function arg:
+>
+>static void i40e_rebuild(struct i40e_pf *pf, bool reinit, bool lock_acquir=
+ed)
+>...
+>	/* Release the RTNL lock before we start resetting VFs */
+>	if (!lock_acquired)
+>		rtnl_unlock();
+>
+>...
+>
+>end_unlock:
+>	if (!lock_acquired)
+>		rtnl_unlock();
 
-No functional change; the remote_mac sysfs attribute is unchanged.
+yeah, not the prettiest solution but, agree, should work :)
+will redesign it, thanks!
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- drivers/net/netconsole.c | 20 +++++++++++---------
- include/linux/netpoll.h  |  1 -
- 2 files changed, 11 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-index d0739b45f66e1..49b2243a20b2d 100644
---- a/drivers/net/netconsole.c
-+++ b/drivers/net/netconsole.c
-@@ -178,9 +178,9 @@ enum target_state {
-  *		local_ip	(read-write)
-  *		remote_ip	(read-write)
-  *		local_mac	(read-only)
-- *		remote_mac	(read-write)
-  * @local_port:	Source UDP port of the target (read-write).
-  * @remote_port: Destination UDP port of the target (read-write).
-+ * @remote_mac:	Destination ethernet address of the target (read-write).
-  * @buf:	The buffer used to send the full msg to the network stack
-  * @resume_wq:	Workqueue to resume deactivated target
-  * @skb_pool:	Per-target fallback skb pool consulted by find_skb() when
-@@ -209,6 +209,7 @@ struct netconsole_target {
- 	bool			release;
- 	struct netpoll		np;
- 	u16			local_port, remote_port;
-+	u8			remote_mac[ETH_ALEN];
- 	/* protected by target_list_lock; +1 gives scnprintf() room for its
- 	 * NUL terminator so a full MAX_PRINT_CHUNK payload is not truncated
- 	 */
-@@ -462,7 +463,7 @@ static struct netconsole_target *alloc_and_init(void)
- 	strscpy(nt->np.dev_name, "eth0", IFNAMSIZ);
- 	nt->local_port = 6665;
- 	nt->remote_port = 6666;
--	eth_broadcast_addr(nt->np.remote_mac);
-+	eth_broadcast_addr(nt->remote_mac);
- 	nt->state = STATE_DISABLED;
- 	INIT_WORK(&nt->resume_wq, process_resume_target);
- 	/* Set up the skb pool primitives once; enabling only refills it. */
-@@ -516,7 +517,7 @@ static void netconsole_print_banner(struct netconsole_target *nt)
- 		np_info(np, "remote IPv6 address %pI6c\n", &np->remote_ip.in6);
- 	else
- 		np_info(np, "remote IPv4 address %pI4\n", &np->remote_ip.ip);
--	np_info(np, "remote ethernet address %pM\n", np->remote_mac);
-+	np_info(np, "remote ethernet address %pM\n", nt->remote_mac);
- }
- 
- /* Parse the string and populate the `inet_addr` union. Return 0 if IPv4 is
-@@ -672,7 +673,7 @@ static ssize_t local_mac_show(struct config_item *item, char *buf)
- 
- static ssize_t remote_mac_show(struct config_item *item, char *buf)
- {
--	return sysfs_emit(buf, "%pM\n", to_target(item)->np.remote_mac);
-+	return sysfs_emit(buf, "%pM\n", to_target(item)->remote_mac);
- }
- 
- static ssize_t transmit_errors_show(struct config_item *item, char *buf)
-@@ -1077,7 +1078,7 @@ static ssize_t remote_mac_store(struct config_item *item, const char *buf,
- 		goto out_unlock;
- 	if (buf[MAC_ADDR_STR_LEN] && buf[MAC_ADDR_STR_LEN] != '\n')
- 		goto out_unlock;
--	memcpy(nt->np.remote_mac, remote_mac, ETH_ALEN);
-+	memcpy(nt->remote_mac, remote_mac, ETH_ALEN);
- 
- 	ret = count;
- out_unlock:
-@@ -1885,14 +1886,15 @@ static void push_udp(struct netconsole_target *nt, struct sk_buff *skb, int len)
- 	netpoll_udp_checksum(np, skb, len);
- }
- 
--static void push_eth(struct netpoll *np, struct sk_buff *skb)
-+static void push_eth(struct netconsole_target *nt, struct sk_buff *skb)
- {
-+	struct netpoll *np = &nt->np;
- 	struct ethhdr *eth;
- 
- 	eth = skb_push(skb, ETH_HLEN);
- 	skb_reset_mac_header(skb);
- 	ether_addr_copy(eth->h_source, np->dev->dev_addr);
--	ether_addr_copy(eth->h_dest, np->remote_mac);
-+	ether_addr_copy(eth->h_dest, nt->remote_mac);
- 	if (np->ipv6)
- 		eth->h_proto = htons(ETH_P_IPV6);
- 	else
-@@ -1980,7 +1982,7 @@ static int netpoll_send_udp(struct netconsole_target *nt, const char *msg,
- 		push_ipv6(np, skb, len);
- 	else
- 		push_ipv4(np, skb, len);
--	push_eth(np, skb);
-+	push_eth(nt, skb);
- 	skb->dev = np->dev;
- 
- 	return (int)netpoll_send_skb(np, skb);
-@@ -2375,7 +2377,7 @@ static int netconsole_parser_cmdline(struct netconsole_target *nt, char *opt)
- 
- 	if (*cur != 0) {
- 		/* MAC address */
--		if (!mac_pton(cur, np->remote_mac))
-+		if (!mac_pton(cur, nt->remote_mac))
- 			goto parse_failed;
- 	}
- 
-diff --git a/include/linux/netpoll.h b/include/linux/netpoll.h
-index 5ca79fa7d9431..79315461a7b1e 100644
---- a/include/linux/netpoll.h
-+++ b/include/linux/netpoll.h
-@@ -35,7 +35,6 @@ struct netpoll {
- 
- 	union inet_addr local_ip, remote_ip;
- 	bool ipv6;
--	u8 remote_mac[ETH_ALEN];
- };
- 
- #define np_info(np, fmt, ...)				\
-
--- 
-2.53.0-Meta
-
+>>=20
+>> >
+>> >would avoid the rtnl_mutex contention on non-E610 hardware.
+>> >
+>> >>  	ixgbe_reset_subtask(adapter);
+>> >>  	ixgbe_phy_interrupt_subtask(adapter);
+>> >>  	ixgbe_sfp_detection_subtask(adapter)
