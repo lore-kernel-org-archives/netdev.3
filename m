@@ -1,57 +1,57 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE3D13D6CB5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE4963D6CB7
 	for <netdev@vger.kernel.org>; Fri, 10 Jul 2026 09:04:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783674248; cv=none; b=FNitlb95He+fwITU4Itohd20AlGl7Sa0ly7bSH6TQvYRaQXO0MaUOLqmhlOJtzud/qaaFVdj9A0SSIKIEXdPFje5L24mOu+KDcTjovtriEKXl1ZJ/TDwFKjAP8Shlnb8H7aZzAvgLoIcMhDwfUyd5hDBw0kD3Z7YtLz+mB1tB5E=
+	t=1783674248; cv=none; b=dy+fmZkWnjR5rPz7GN7RAqmdxkNPrL64k8lDu9syXuGehOtGlWfccIBsm5Ro9JeAHxLBloPRvsXlUqn1FVpeZljTGWvrsGhAxYp6ITfhRtWtRi9P5IOkWKrPN5SMBKg6iXtrpQyOBI/GGrqNzzbwZkEncVQITGGGWcRTWt1Y58k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783674248; c=relaxed/simple;
-	bh=3w05C0XBoB8fJZuVU6A2+WJMXyRnsWgMf3DkjwhjPLw=;
+	bh=ZxoO5bLO86VerqL2LaDVODvD3178yyntzkiK74hLqCo=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WMGKrdy+7AXywV0puIB18q4gpeyRN/7+/vbfeOTGs9SRWyI1iSXZyVNeRcmus7mWejC9OojGPQv80qJWC/QjuV47J0c9Z8LB8wdgzOHRENl+viHhEDmKnwwedoMrQ3LwKL779KpXmpIPaYMdM1+P8fhLSleWFnJyvd9Ib9vVtzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=P6s+4niW; arc=none smtp.client-ip=62.96.220.36
+	 MIME-Version:Content-Type; b=KwTW/3faxbrW7bTMUaXBOlVHXwEQWiF1QNHc4zGyroJOTgdSPvZcsqHbhBzw7Y7OwoT+Jd2c049AgX6H9RSqe8do6TMudxT5kyKCL5YsHY2Ce59bYliwHKjeHxk58uLsZ3r+YyN+A3rsl+ANPi6k4s2BItz+MyT1D2Oy4IHiOi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=miN75Dqg; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="P6s+4niW"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="miN75Dqg"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 02AAD207C1;
-	Fri, 10 Jul 2026 11:04:02 +0200 (CEST)
+	by mx1.secunet.com (Postfix) with ESMTP id 88834207FB;
+	Fri, 10 Jul 2026 11:04:03 +0200 (CEST)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id GCAuubFCG5ES; Fri, 10 Jul 2026 11:04:01 +0200 (CEST)
+ with ESMTP id PjrBfmwQMwjg; Fri, 10 Jul 2026 11:04:02 +0200 (CEST)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 662AF205E5;
-	Fri, 10 Jul 2026 11:04:01 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 662AF205E5
+	by mx1.secunet.com (Postfix) with ESMTPS id D0563205E5;
+	Fri, 10 Jul 2026 11:04:02 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com D0563205E5
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1783674241;
-	bh=u8wzv+LV/tQ5l8X3cCVe+NuwD4DT/Ho3cpNt7OT5KLY=;
+	s=202301; t=1783674242;
+	bh=0QD/6WCiCN717ue0mC3vVCMXl9Iaw2Gd/T5ziaTYVxg=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=P6s+4niWrQabz8FAR/ieAahAMSXgtcV9Wvckt6BNfZn5EpFpbdW/dY3z/OZovKJb9
-	 hHPYMXNmbS4V30yZ+BEUfC8PgUEybV8zm1Eu8cc50C3yqtWlycgFN8qsLzuZP0PKPl
-	 UKPZ9KkjcrTqiU4aWVI2u0mNepzcAhlzkacRjMX7hzc4HNTM9zxC3BHUAyUwLC7Hct
-	 ZgvNlEDwoEsNhXAYN8Ng/nUkC4b1wlAA51yLaWhTQv1p4EIQQcWMGXWmsxGOs05e16
-	 sxXySDxYPfS1MCncRZABpHL6adP4HF8y5Sr+7IdWybOsvCWlKr23DI/3SI0TfSTTkB
-	 nNsi7roMzPN5Q==
+	b=miN75DqgMoLIkKjPo5z0il2YjAv5qL/Nr5xGQ+8iWO/coqNGH60kh2EMYeOYZaKdY
+	 1af8syo27NFXUV/g54U1naF6nZi8BAV/pGzasmK4v5IuMX+nhuKfs2FYzh3B47KgGt
+	 m2KQtr62uaXBmEy8dUfVpPtVtRNIjAoqL36BGzgHJPiaYH3J8ekmYUI6FEwpPqN4Xz
+	 QO+E8pA+v5jQ7lAI9S5r9JqxQ6kAAwXUxFmvIaA9ZsjFejRNo/MC5R688QZ1vHZPNp
+	 nXJpXAypJ4aq5iR6EhD2c1bbbdZOZ80zK/WnEz54urh1wWPXjU6JEc5vo2HQH28ZUC
+	 dkGTIb/hw3NrA==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Fri, 10 Jul
- 2026 11:04:00 +0200
-Received: (nullmailer pid 343839 invoked by uid 1000);
+ 2026 11:04:02 +0200
+Received: (nullmailer pid 343845 invoked by uid 1000);
 	Fri, 10 Jul 2026 09:03:52 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 02/10] xfrm: fix stale skb->prev after async crypto steals a GSO segment
-Date: Fri, 10 Jul 2026 11:03:15 +0200
-Message-ID: <20260710090349.343389-3-steffen.klassert@secunet.com>
+Subject: [PATCH 04/10] xfrm: fix sk_dst_cache double-free in xfrm_user_policy()
+Date: Fri, 10 Jul 2026 11:03:17 +0200
+Message-ID: <20260710090349.343389-5-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260710090349.343389-1-steffen.klassert@secunet.com>
 References: <20260710090349.343389-1-steffen.klassert@secunet.com>
@@ -66,48 +66,71 @@ Content-Type: text/plain
 X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
  (10.32.0.171)
 
-From: Petr Wozniak <petr.wozniak@gmail.com>
+From: "Xiang Mei (Microsoft)" <xmei5@asu.edu>
 
-skb_gso_segment() leaves the segment list head with ->prev pointing at
-the last segment, an invariant validate_xmit_skb_list() relies on when
-it sets its tail pointer (tail = skb->prev).
+xfrm_user_policy() clears the socket dst cache with __sk_dst_reset(),
+i.e. the non-atomic __sk_dst_set(sk, NULL): it reads sk_dst_cache with
+rcu_dereference_protected(), stores NULL and dst_release()s the old dst.
+That is only safe if no other thread modifies sk_dst_cache concurrently.
 
-When validate_xmit_xfrm() walks a GSO list and some segments are stolen
-by async crypto (->xmit() returns -EINPROGRESS), those segments are
-unlinked from the list but the head ->prev is never updated.  If the
-last segment is the one stolen, the returned head still has ->prev
-pointing at it, even though it is now owned by the crypto engine and may
-be freed.  validate_xmit_skb_list() later does tail->next = skb, writing
-through that stale pointer -- a use-after-free.
+For a connected UDP socket that does not hold: the transmit fast path
+(udp_sendmsg -> sk_dst_check -> sk_dst_reset) resets the cache locklessly
+with an atomic xchg(). A per-socket policy change racing a send can make
+both sides observe the same old dst and each dst_release() it, dropping
+the socket's single reference twice and freeing the xfrm_dst bundle while
+it is still referenced:
 
-Repoint skb->prev at the last retained segment before returning.
+  BUG: KASAN: slab-use-after-free in dst_release
+  Write of size 4 at addr ffff88801897b6c0 by task exploit/155
+  Call Trace:
+   ...
+   dst_release (... ./include/linux/rcuref.h:109)
+   xfrm_user_policy (./include/net/sock.h:2239 ./include/net/sock.h:2256 net/xfrm/xfrm_state.c:3053)
+   do_ip_setsockopt (net/ipv4/ip_sockglue.c:1347)
+   ip_setsockopt (net/ipv4/ip_sockglue.c:1417)
+   do_sock_setsockopt (net/socket.c:2368)
+   __sys_setsockopt (net/socket.c:2393)
+   __x64_sys_setsockopt (net/socket.c:2396)
+   do_syscall_64 (arch/x86/entry/syscall_64.c:94)
+   entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
 
-Fixes: f53c723902d1 ("net: Add asynchronous callbacks for xfrm on layer 2.")
-Signed-off-by: Petr Wozniak <petr.wozniak@gmail.com>
+Reachable by an unprivileged user via a user+network namespace.
+
+Use the atomic sk_dst_reset() so the cache is cleared and released with a
+single xchg(): whichever side wins releases the dst once, the other sees
+NULL and does nothing. Behaviour is otherwise unchanged.
+
+Fixes: 2b06cdf3e688 ("xfrm: Clear sk_dst_cache when applying per-socket policy.")
+Fixes: be8f8284cd89 ("net: xfrm: allow clearing socket xfrm policies.")
+Reported-by: AutonomousCodeSecurity@microsoft.com
+Signed-off-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 ---
- net/xfrm/xfrm_device.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/xfrm/xfrm_state.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/xfrm/xfrm_device.c b/net/xfrm/xfrm_device.c
-index 19c77f09acc9..aec1e1184a71 100644
---- a/net/xfrm/xfrm_device.c
-+++ b/net/xfrm/xfrm_device.c
-@@ -224,6 +224,14 @@ struct sk_buff *validate_xmit_xfrm(struct sk_buff *skb, netdev_features_t featur
- 		pskb = skb2;
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index c58cd024e3c6..08ba6805ddb3 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -3010,7 +3010,7 @@ int xfrm_user_policy(struct sock *sk, int optname, sockptr_t optval, int optlen)
+ 	if (sockptr_is_null(optval) && !optlen) {
+ 		xfrm_sk_policy_insert(sk, XFRM_POLICY_IN, NULL);
+ 		xfrm_sk_policy_insert(sk, XFRM_POLICY_OUT, NULL);
+-		__sk_dst_reset(sk);
++		sk_dst_reset(sk);
+ 		return 0;
  	}
  
-+	/* skb_gso_segment() set skb->prev to the last segment, but async
-+	 * crypto may have stolen it above without updating ->prev.  Repoint
-+	 * it at the last retained segment so validate_xmit_skb_list() does
-+	 * not chain onto a segment now owned by the crypto engine.
-+	 */
-+	if (skb)
-+		skb->prev = pskb;
-+
- 	return skb ? skb : ERR_PTR(-EINPROGRESS);
- }
- EXPORT_SYMBOL_GPL(validate_xmit_xfrm);
+@@ -3050,7 +3050,7 @@ int xfrm_user_policy(struct sock *sk, int optname, sockptr_t optval, int optlen)
+ 	if (err >= 0) {
+ 		xfrm_sk_policy_insert(sk, err, pol);
+ 		xfrm_pol_put(pol);
+-		__sk_dst_reset(sk);
++		sk_dst_reset(sk);
+ 		err = 0;
+ 	}
+ 
 -- 
 2.43.0
 
