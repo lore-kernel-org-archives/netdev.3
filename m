@@ -1,41 +1,41 @@
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 306EF41CB43;
-	Fri, 10 Jul 2026 11:54:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F163B637A;
+	Fri, 10 Jul 2026 11:54:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783684471; cv=none; b=V056i+2jOPJI3ar60yFR0+UbcNYLQSqZ+JgqLeaORKWWD+rxTKbEbi0UXAfMAh7xugFw7fzbhLtkXeGyracWvHqav1p+4vIEuEAX0rrJBWTRJH1MWQuSF/wR/ihqTd30IPSzWW18e9zcyJMBKWArrj8ERlGgq0fuW6LFf2yctRc=
+	t=1783684473; cv=none; b=svJnSAvVgg670c9QjjhfsUOZ0jiuSYLZPNp4YBQ73CYuIVZHMxmSpy0BAO0rwgT2J8bdpOVXV/Rgsvue6OR2zEbDGT3Uco7kSurPKHssjSSC3axhvY94yRcdaeOWFwZLrpxf1jRSUx/k3ZkT9P63w40GRuy3OWz8sBFbeJomhvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783684471; c=relaxed/simple;
-	bh=FrHrWtgVfE58Feh6du91FulP4WKEswSCdpmYM3JxkIU=;
+	s=arc-20240116; t=1783684473; c=relaxed/simple;
+	bh=29kW4YIq6TQb7vg5agUdfyguq5Y2tRhUDP/DCvJRiEs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=pAyEDyWKqQ1jPyHexOSUJgzoa5eMPedP+saHXR0/Gq+xoxv+9MK+hd5Q0rP59obKTT4wvYM+cn11CFHZuO1SM8Jop/9R4lH34TZRG2Oms/fgk4XUUOeitLjAEjsKR2mDYTs+W4K39MpoPYhgtyI+QNN2vnJlEAhMfPcSL93l4eM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=WS/aDT0s; arc=none smtp.client-ip=82.195.75.108
+	 In-Reply-To:To:Cc; b=rXGLBkeku3Ioahx3qENVa1CjedMJXjf/5V9+eKFkmm9l1xt9CEmkLxrxY2IkM+SNRnpp0b2RgyMOYhWbhuWhj5byFMVYKjY9XFeX418TIJDk3vAkeHuMRgXVMn/AGLrzk0g9BcLiYZDLi6Xh21d0hw6IByLPz9w1mxIhtJRre7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=ZWK5rQem; arc=none smtp.client-ip=82.195.75.108
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="WS/aDT0s"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="ZWK5rQem"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
 	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description;
-	bh=xMDAPaptgDk1W5/odzMbgIuEUp9S3c4/7fP44O+s2vM=; b=WS/aDT0sRqgEvLz0UNXXrm2c0k
-	cQ81V4Vow9qI+19cYrM9TOu/cMsKfPLd+LUatn5jTJhRSQdqHypCsovshcnbXzvt7p40QWCebHf7V
-	dEryG9QKWnbFTg3+2IFZHqoMdOW5vUeXajBrHYwP0ModE9zXvYf9WaVhTQLL2vPXhK7CWMFulVdBb
-	Do6nXAJt1qjSAFf8yRDFXXyJ2cZjEFzdsOgtSrOXZGMkrFWO/7YTIfHZWla784VmEtwTIQesAGHSQ
-	8VqTKo6NMak+6WBIymD2mV10wys3+bJCJ3umfVnurzv/brU0Igp7ECdNxrpYVFOfCcmM67Ah6OwA/
-	apbYhpFw==;
+	bh=Bb4k9fj+CQPxPNk3uVIQ70vd+fl8m/Jh3dhoWRdsJzk=; b=ZWK5rQem4PXZXxWXhwG0SNgW7q
+	tdm3Xgs116/+NdfvmwErWPOoRoYl7/PRIjm/bNn5G+sspbM3kfIetqnO9j+8fOexg/AfU7TpMT2Dv
+	bJS5Hd/dwEeVoUqg7OSlJzteRxuDm1Y9+3CEUVls1aHZMRlAQw/5NDzcEukL/TmKPZsF/0kW3h8TU
+	WMjZ7wV1LUv/OkKPolrEDoMO7nxv32IYozLGulO0bnu046nGxgOXRY10bCuPzluFRvFIqWaBBNFjb
+	JjF809H/dd00Bx9Susz5RndpHMiwgGQJ1Qs/p3KFezUTtj6GQF4IfibhxERy0cLc8MJ+RxrqGCk11
+	uy9qTDVw==;
 Received: from authenticated-user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.96)
 	(envelope-from <leitao@debian.org>)
-	id 1wi9oC-004SXT-0C;
-	Fri, 10 Jul 2026 11:54:20 +0000
+	id 1wi9oG-004SXb-0I;
+	Fri, 10 Jul 2026 11:54:24 +0000
 From: Breno Leitao <leitao@debian.org>
-Date: Fri, 10 Jul 2026 04:38:53 -0700
-Subject: [PATCH net-next v3 1/9] netconsole: clean up released targets
- dropped before the cleanup worker
+Date: Fri, 10 Jul 2026 04:38:54 -0700
+Subject: [PATCH net-next v3 2/9] netpoll: export refill_skbs(),
+ refill_skbs_work_handler(), skb_pool_flush()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,7 +44,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260710-netconsole_move_more-v3-1-6f63f76b28bc@debian.org>
+Message-Id: <20260710-netconsole_move_more-v3-2-6f63f76b28bc@debian.org>
 References: <20260710-netconsole_move_more-v3-0-6f63f76b28bc@debian.org>
 In-Reply-To: <20260710-netconsole_move_more-v3-0-6f63f76b28bc@debian.org>
 To: "David S. Miller" <davem@davemloft.net>, 
@@ -55,63 +55,110 @@ Cc: netdev@vger.kernel.org, asantostc@gmail.com, gustavold@gmail.com,
  linux-kernel@vger.kernel.org, Breno Leitao <leitao@debian.org>, 
  kernel-team@meta.com
 X-Mailer: b4 0.16-dev-d5d98
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1855; i=leitao@debian.org;
- h=from:subject:message-id; bh=FrHrWtgVfE58Feh6du91FulP4WKEswSCdpmYM3JxkIU=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqUN1j2raR2AuzZH3+BiTSCbZCGUz7sCYdiB9eu
- 5/BHjx2QMyJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCalDdYwAKCRA1o5Of/Hh3
- bVPYD/wI9YuySwYfil4Xgr10aGR1nibWiWVwGXlRX6UmS7FkSP1umBGo7UT+tUG1ZbNRLXUx1wh
- JF5W30wDXDyG0krYS1uCft0rUo9sKM/DQmgN9PNDZGVB1NKW2tlAbpi9POGpMsdj0/gp065a663
- WJDLyZnFAXCajiAO+5M7zrO67/rcVa4koPInZrx7n5oOCtNRwz9bJYqN5OFmcmuHstZDHBxoqS5
- 4TqudBDVOQ8jAIN++zdCI0U5bkb0AFuEDSHiP6riMONp52EXxeGs0Y4hK7Cgh6zw5vN9tuhMO0G
- 6Z0rXMoU331PSatN0iH7q3iNb46hu569G2WhgyNlLoj5c7yT0DKAvxoTTV68ocrhkPsWvO42x+m
- tFwGqwaGRn3nzh1LlvCPSzb0wVMa6qxjtkDqRgwpEacDL4Vjm5HMBfmERdvawsqYi7ENsbzMKmM
- qnZk8zsMIvmjjACJqC3dXX1wEEKVKHr6nUJTuF4z2EaYKvzD+Lh4ISw+gltUNQm0SrCbi0bQfOq
- sXo/L1tkdNi76AWXpJJfiiJmbdtiLS9rovEs9poZFT+dMrlC6rN3qrd+ImX/2fNSIYC5M2a+9ft
- ufiCs6jGmg7h6lwM0Yv62XcNb1Fco0NFWWltM8/DWT1GesW43bo63SbNkSRQ3UofDEz90JGvO2o
- jd0qh6mt59SgtgA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3036; i=leitao@debian.org;
+ h=from:subject:message-id; bh=29kW4YIq6TQb7vg5agUdfyguq5Y2tRhUDP/DCvJRiEs=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqUN1jUG+nwe4abIHIX4dub8UQRP2RO4sFEeY2U
+ 3h/HIgNUUSJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCalDdYwAKCRA1o5Of/Hh3
+ bbfoEACiicRTVIbosJvg08G9Va9Wt7KYiltJMzxoeOHOOpQ5GsrwafvgC+TLsnw0aWTcw2zU87Q
+ iMXZOqwNCSLJzHc0HHd6/Dip82F0AEQRSLUzXgZJ36n/NB4t4DEDcJRFsZ9fQVI7suuc1iddm4y
+ QKSXusDW3MXI6zQojWWztdT96QEbzy9ZumD4p3VboeUKIVtSQW7IW1n7ocd2lQcimBEgnB5TNB4
+ A2nz3vfqobosSBeLjrLR19cIAmEvkiKTnJoRJ0FEGYIbWmgB6B3adxcpc2CanEAgS9YIzoxJNfM
+ HwHsukF6D+u88xeaiCGqADGCpcvXngtCFZ09NgL3JuPVIdQf+3OZP9x5I41JD/LuSzCsSXayiwq
+ JAchQqRpkSGpwxxjBb7HpY7yhAubEqYNsWo/mA681JUEhIpl9rtie+Qn3+hVp2wfTJ9VFpIAn7V
+ Gjq0rDXAYohbUihwxT209BK8XIXQ+x0EMxsnP/YPS3bC2VKJgzMzxhG1Wuaq2WnpHFj+iYVIA8A
+ 5xy17H8qyogJc64IeMUq9ajtugqICBGHrlQju6rcfgBZQ0uQvw3vIRt9nTb8qW0MAyCVAYov4g9
+ sXXI1feLzZULpNnXK4+i7pfJ26ZkB8UxoSCD5kdrySURmRhy2VItv4eD/x7xFityUZuPHIG7zXz
+ GfmCPy6uLwaxiVQ==
 X-Developer-Key: i=leitao@debian.org; a=openpgp;
  fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 X-Debian-User: leitao
 
-drop_netconsole_target() might eventually tear down a target that
-netconsole_netdev_event() had moved to target_cleanup_list but that
-netconsole_process_cleanups_core() had not processed yet.
+These three helpers manage the per-netpoll fallback skb pool. They
+are file-static today because all of their callers live in
+net/core/netpoll.c. Subsequent patches relocate the pool's owner
+from struct netpoll to the only consumer that actually uses it
+(netconsole), and that work needs netconsole to drive the helpers
+directly while the function bodies still live here.
 
-Always cleanup devices that eventually have a device attached to the
-target, independent of the state.
+Drop static, add prototypes in <linux/netpoll.h>, and
+EXPORT_SYMBOL_GPL() each. No behaviour change.
+
+The exports are transitional. Each helper is moved into
+drivers/net/netconsole.c later in this series, and at that point
+its EXPORT_SYMBOL_GPL() and prototype are dropped. By the end of
+the series no symbol introduced here remains exported.
+
+The goal of this patch is to make the subsequente patches easy to
+review.
 
 Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- drivers/net/netconsole.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ include/linux/netpoll.h | 3 +++
+ net/core/netpoll.c      | 9 ++++++---
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-index c1812a98365b7..a939daa07cf9d 100644
---- a/drivers/net/netconsole.c
-+++ b/drivers/net/netconsole.c
-@@ -1481,15 +1481,15 @@ static void drop_netconsole_target(struct config_group *group,
+diff --git a/include/linux/netpoll.h b/include/linux/netpoll.h
+index 88f7daa8560e5..a7b96e1792207 100644
+--- a/include/linux/netpoll.h
++++ b/include/linux/netpoll.h
+@@ -90,6 +90,9 @@ void netpoll_cleanup(struct netpoll *np);
+ void do_netpoll_cleanup(struct netpoll *np);
+ netdev_tx_t netpoll_send_skb(struct netpoll *np, struct sk_buff *skb);
+ void netpoll_zap_completion_queue(void);
++void refill_skbs(struct netpoll *np);
++void refill_skbs_work_handler(struct work_struct *work);
++void skb_pool_flush(struct netpoll *np);
  
- 	mutex_lock(&target_cleanup_list_lock);
- 	spin_lock_irqsave(&target_list_lock, flags);
--	/* A STATE_DEACTIVATED target may have been moved to
--	 * target_cleanup_list by netconsole_netdev_event() but not yet
--	 * processed by netconsole_process_cleanups_core(). Unlinking it below
--	 * hides it from the cleanup worker, so this path has to clean it up
--	 * itself. Record that the target still owns a netpoll before the
--	 * state is downgraded.
-+	/* A target moved to target_cleanup_list by netconsole_netdev_event()
-+	 * but not yet processed still owns a netpoll; unlinking it below hides
-+	 * it from the cleanup worker, so this path must tear it down itself.
-+	 * This covers NETDEV_UNREGISTER (STATE_DEACTIVATED) and
-+	 * NETDEV_RELEASE / NETDEV_JOIN (STATE_DISABLED); key off nt->np.dev,
-+	 * which stays set until the netpoll is cleaned up.
- 	 */
- 	needs_cleanup = nt->state == STATE_ENABLED ||
--			nt->state == STATE_DEACTIVATED;
-+			nt->state == STATE_DEACTIVATED || nt->np.dev;
- 	/* Disable deactivated target to prevent races between resume attempt
- 	 * and target removal.
- 	 */
+ #ifdef CONFIG_NETPOLL
+ static inline void *netpoll_poll_lock(struct napi_struct *napi)
+diff --git a/net/core/netpoll.c b/net/core/netpoll.c
+index aed415d3cd74f..e062d88d10a37 100644
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -213,7 +213,7 @@ void netpoll_poll_enable(struct net_device *dev)
+ 		up(&ni->dev_lock);
+ }
+ 
+-static void refill_skbs(struct netpoll *np)
++void refill_skbs(struct netpoll *np)
+ {
+ 	struct sk_buff_head *skb_pool;
+ 	struct sk_buff *skb;
+@@ -228,6 +228,7 @@ static void refill_skbs(struct netpoll *np)
+ 		skb_queue_tail(skb_pool, skb);
+ 	}
+ }
++EXPORT_SYMBOL_GPL(refill_skbs);
+ 
+ void netpoll_zap_completion_queue(void)
+ {
+@@ -351,7 +352,7 @@ netdev_tx_t netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
+ }
+ EXPORT_SYMBOL(netpoll_send_skb);
+ 
+-static void skb_pool_flush(struct netpoll *np)
++void skb_pool_flush(struct netpoll *np)
+ {
+ 	struct sk_buff_head *skb_pool;
+ 
+@@ -359,14 +360,16 @@ static void skb_pool_flush(struct netpoll *np)
+ 	skb_pool = &np->skb_pool;
+ 	skb_queue_purge_reason(skb_pool, SKB_CONSUMED);
+ }
++EXPORT_SYMBOL_GPL(skb_pool_flush);
+ 
+-static void refill_skbs_work_handler(struct work_struct *work)
++void refill_skbs_work_handler(struct work_struct *work)
+ {
+ 	struct netpoll *np =
+ 		container_of(work, struct netpoll, refill_wq);
+ 
+ 	refill_skbs(np);
+ }
++EXPORT_SYMBOL_GPL(refill_skbs_work_handler);
+ 
+ int __netpoll_setup(struct netpoll *np, struct net_device *ndev)
+ {
 
 -- 
 2.53.0-Meta
