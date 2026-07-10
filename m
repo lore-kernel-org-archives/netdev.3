@@ -1,132 +1,108 @@
-Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6A134CDD
-	for <netdev@vger.kernel.org>; Fri, 10 Jul 2026 02:00:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.128
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [13.76.78.106])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26ECD7E792;
+	Fri, 10 Jul 2026 02:22:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.76.78.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783648836; cv=none; b=r2noHCK5QbiBJqBN+JtFaabC7XF+3tc77tpUw0wzEF0drYFGrFYbJ9uYkadFx7gGeK9I6pzgN30FJiKOnhvrLzKHKt742jRQVlVhV5ptcF/OT6Kgy/tHke9HqOcj+F+Aji/qDA+DptP3i3l71KprmOAjcFyYjZTw/UP1B8hjdhY=
+	t=1783650135; cv=none; b=Gd/yu3VKxcDvA4QALQi6lsOS113FlCFmVap+rK2f4LxCp2e3SE+VAtVsEigqcSigepnKip91W4SxiELzoS4Pa4Np6NHivOZnD1/MTVWw3xMMk54p+xBN+LfNOC0rvAnme1nDhujzydprWu1jXwgbAV/EktW1c+yCzzX3JF6nFZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783648836; c=relaxed/simple;
-	bh=UZa86QtGUFcj32KOciQANkPv4buxwTnOVELBM0Mfgyo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gkzTXplLh5AbtWvDofFlsjgCNdgEJoIaMAB05EC7wAFTGEOUo54TD8eImKK8kSonj/CM8/aasY/Vjgwagp1bFepdexO1nQverF0kVH646ZX4En4LMfFcYEN4cE2nLUPLv5dCpX2Q0XbUkXcmR813V10FCGSKCpvzCPjjvI+KKPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=54.254.200.128
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
-X-QQ-mid: esmtpgz14t1783648773t105e8cb5
-X-QQ-Originating-IP: dXceXjmy0NGzGUFHs4i33qOsLtnvOIBAi+i8VF6DiM0=
-Received: from localhost.localdomain ( [60.188.196.189])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 10 Jul 2026 09:59:30 +0800 (CST)
-X-QQ-SSF: 0001000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 3318885291999861221
-EX-QQ-RecipientCnt: 7
-From: Mengyuan Lou <mengyuanlou@net-swift.com>
-To: netdev@vger.kernel.org
-Cc: jiawenwu@trustnetic.com,
-	duanqiangwen@net-swift.com,
-	horms@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	Mengyuan Lou <mengyuanlou@net-swift.com>
-Subject: [PATCH net-next v7 0/2] net: libwx: improve VF ethtool support
-Date: Fri, 10 Jul 2026 09:59:23 +0800
-Message-Id: <20260710015925.34769-1-mengyuanlou@net-swift.com>
-X-Mailer: git-send-email 2.30.1
+	s=arc-20240116; t=1783650135; c=relaxed/simple;
+	bh=vDmmFMtTx0g6s6h5HhJRmiH/58fftU5/U/sMtTERGOo=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=DrD8LEv5RSfMVX2BPziiS7Fy51ajE8xXm5JPCdgLM8EaBwzbrSdhNO+A7dNB/NNtCAFR592uQy5JPwrNN68dKN7TpPlTPefbv9DQAJHfXppJMuXM+5YsJmlDUmLxTfFBHU0pAFDvT4wEVS3QaRUj92Mqq78f2yzIPaMTutkmCK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=13.76.78.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
+Received: from zju.edu.cn (unknown [10.97.40.56])
+	by mtasvr (Coremail) with SMTP id _____wDX9RRKV1BqSewuAA--.35S3;
+	Fri, 10 Jul 2026 10:22:03 +0800 (CST)
+Received: from smtpclient.apple (unknown [10.97.40.56])
+	by mail-app3 (Coremail) with SMTP id zS_KCgBXb3FJV1BqVVoGAw--.13159S2;
+	Fri, 10 Jul 2026 10:22:02 +0800 (CST)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpgz:net-swift.com:qybglogicsvrgz:qybglogicsvrgz5b-1
-X-QQ-XMAILINFO: M10PHUHiBhPoPSNuQ0ExhDOCwIiq4srW3tqp8T2b+JdfM3iYv4/rNvKf
-	R3I591AJ0nzeqoLdgToyxrH03gTwHvXSLwBcaF1Z5cLV4+D/iPz3gisPt+4+5Bey/x/iatL
-	ZcpfzZXMeDplEIs/8Vpc9pgY9jBQ1fa+M9QduK878G2pBB7CEVYUB0hse1BXxzNn3/Rc/WU
-	Vi2n/dwMrJDGbxX282k31Pk9WZ3agktc0WJvi56hkQZMg3ACHIrVm6p2L+PglVOZEfzK1FT
-	v0xMQZAhuhjAcJcIzEY8kzYfcKAhp3xSa9Mu5zAb22xrXUsHfX3Kgd4S6DdMjog0OEPTIQt
-	bB+UTbEZ9mduKNKTykrKHJ5mlhrscHKlQ7/qcwO0Fi4Qw2kUoO81AwlF4j1JWU2o7E1eEaU
-	ry4wGoTPJj3kITKDd5W782M7Ik5t34oXWf2ianE7ak5m/m4y3iXjaH/q1tnqdR7ORQCEA2h
-	5HS9NmOfOVpvFoXALV/c6jR2sEBU1q+EUAgXfPycgxwD1paXDn2kUYNAnYTklQhsF5/ZCEL
-	hqsjldP3owTMfwMKIH3os8qoD/d4SRelV5TVnw30op8NLz7RceFfV4yUK4NpneS1IR+cMwY
-	BNdhF+8U220YyA2ML+G613NlZcyvpXpDzVMv9wBQCLApqKOzMUB0U6f11MfFzaTAdqynKUq
-	X6CXTTja5x/RHF4vang5CY681e4sDqC64JDCmyUgvU8pJj21OoskRf0OSRVjMuNa0Wk6e5H
-	vRQnVC5VSXJfHB0FhyVBEg9+EVbQ5Hcx3y6CP7mAtxLrynn1Rc9MMD7gHUhtFBRdTkBh5Hs
-	SsOHHCxVZ9+puRfGdajB+P7Rc6Zho7NCFU9/qLeVlYNt5mKfwCHVQ8Vk/Y8nxz2eKm9Xb6m
-	Bu0GLfnnJ6v5kSJZbeArMcKdzQg4s97JxolY5vYk5WXT2/2tTsMcyK4lNmw8miRUQ1h1zkc
-	p8xU0SrVpr3KTYn/aMrYEiYXXzFyChIu8XNyYyplcv5xCUBaKiQAz6QdGNHEPcB8/oCGUJ4
-	0i+Y4xahp3cHZBHal/sT41QxC88/HTcsKOpFkpNF0EmWdJQHmnl435sVJOMFoYswk2yjyJ7
-	M+HvL/w+plwcTCGIGjg79mLXjV3CSlXjBHViZByZSXT
-X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
-X-QQ-RECHKSPAM: 0
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
+Subject: Re: [PATCH] wifi: brcmfmac: drain bus_reset work on device removal
+From: Fan Wu <12321260@zju.edu.cn>
+In-Reply-To: <20260710002451.500112-1-eddiephillips@google.com>
+Date: Fri, 10 Jul 2026 10:21:51 +0800
+Cc: Fan Wu <fanwu01@zju.edu.cn>,
+ Arend van Spriel <aspriel@gmail.com>,
+ Kalle Valo <kvalo@kernel.org>,
+ Franky Lin <franky.lin@broadcom.com>,
+ Hante Meuleman <hante.meuleman@broadcom.com>,
+ Chi-Hsien Lin <chi-hsien.lin@infineon.com>,
+ Wright Feng <wright.feng@infineon.com>,
+ Chung-Hsien Hsu <chung-hsien.hsu@infineon.com>,
+ "David S . Miller" <davem@davemloft.net>,
+ Jakub Kicinski <kuba@kernel.org>,
+ linux-wireless@vger.kernel.org,
+ brcm80211-dev-list.pdl@broadcom.com,
+ SHA-cyfmac-dev-list@infineon.com,
+ netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <47D1D7A8-65F4-4EBE-ABD8-5CDBA5A5CDAC@zju.edu.cn>
+References: <20260709101635.103005-1-fanwu01@zju.edu.cn>
+ <20260710002451.500112-1-eddiephillips@google.com>
+To: Eddie Phillips <eddiephillips@google.com>
+X-Mailer: Apple Mail (2.3774.600.62)
+X-CM-TRANSID:zS_KCgBXb3FJV1BqVVoGAw--.13159S2
+X-CM-SenderInfo: qrstjiaswqq6lmxovvfxof0/
+X-CM-DELIVERINFO: =?B?gXApPgXKKxbFmtjJiESix3B1w3vZ3A9ovKVTomAyoQazvoRs/NHSP8GI2EvgeEEW7R
+	sfnZPoDCNGYdHSfuFmYJL54WM8Dms9pSd1duk7P2JRh5+sy7aOgo1D8mBVqMLc1ZNCvnaO
+	PAtn46iPjtACMN8bHkqp9E6mavGmQbzmcFsnzP86
+X-Coremail-Antispam: 1Uk129KBj93XoW7uFyfZrWxuF1DGFyfGryUArc_yoW8GrWUpr
+	W3JrW5tF4qqa45KF4DZF12qa40gryS9FWDJr18Gry5tr98Jr12grW2yFyjgFWUurs5Aaya
+	vr43uw45Zan09agCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUP0b4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
+	xVW0oVCq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc804V
+	CY07AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AK
+	xVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48Icx
+	kI7VAKI48JM4x0Y48IcxkI7VAKI48G6xCjnVAKz4kxM4IIrI8v6xkF7I0E8cxan2IY04v7
+	MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr
+	0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0E
+	wIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JV
+	WxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAI
+	cVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8ructUUUUU==
 
-This series improves ethtool support for Wangxun VF drivers
-(ngbevf and txgbevf) in libwx.
+On Thu, Jul 09, 2026 at 05:23:37PM -0700, Eddie Phillips wrote:
+> Is this safe in a softIRQ context?
+> mutex_lock() sleeps until it can get the lock.
 
-This series extends VF support by enabling:
-ring parameter configuration via ethtool -G
-interrupt coalescing configuration via ethtool -C
+Thanks for taking a look. I agree this is not the right interface shape.
 
-Patch 1 adds support for set_ringparam in wx_ethtool_ops_vf,
-allowing VF users to adjust TX/RX descriptor ring sizes.
-Patch 2 enables set_coalesce support for VF devices and updates
-EITR programming to use the VF-specific register access helper.
+The current call sites I traced reach brcmf_fw_crashed() from the PCIe
+threaded IRQ path or from SDIO workqueue context, but brcmf_fw_crashed()
+is a core helper and the reset scheduling path should not grow a hidden
+sleepable-context requirement. I will respin this part so the arming gate
+does not use a mutex.
 
-Changelog:
-v7:
-- Remove patch3 and netdev_stat_ops support is deferred to a follow-up patch.
-v6: https://lore.kernel.org/all/20260701100145.23738-1-mengyuanlou@net-swift.com/
-- Patch 1:
-  Clarify comments describing wx_set_ring() failure semantics.
-- Patch 2:
-  Expand commit message to explain VF ITR encoding changes.
-- Patch 3:
-  Protect ring accesses in wx_update_stats().
-v5: https://lore.kernel.org/all/20260615104849.60444-1-mengyuanlou@net-swift.com
-- Patch 3:
-  Convert WX_NUM_{RX,TX}_QUEUES macros to take explicit netdev parameter
-  as suggested by Simon Horman.
-v4: https://lore.kernel.org/all/20260608103946.25786-1-mengyuanlou@net-swift.com
-  sashiko: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260529075147.88398-1-mengyuanlou%40net-swift.com
-- Patch 2:
-  PF and VF share the same ITR value range. Update wx_write_eitr_vf() to apply
-  identical range clamping as the PF path, ensuring consistent coalesce behavior
-  across both device types.
-- Patch 3:
-  Remove wx_update_stats in wxvf_down.
-  Replace both WX_GLOBAL_STATS_LEN and WX_STATS_LEN macros with type-safe
-  static helpers wx_global_stats_len() and wx_stats_len().
-v3: https://lore.kernel.org/all/20260529075147.88398-1-mengyuanlou@net-swift.com
-- Patch 3:
-  Drop netdev_stat_ops support from this patch.
-v2: https://lore.kernel.org/all/20260525101115.13151-1-mengyuanlou@net-swift.com
-- Patch 3:
-  Remove some stats which can be replaced by standard stats defined in
-  include/net/netdev_queues.h.
-- Patch 1:
-  Adding a return value to wx_set_ring to make wx_set_ringparam_vf can
-  be passed back to userspace.
-  Remove freeing and requesting of IRQs. Ring resize only updates descriptor
-  resources and does not change MSI-X vector or interrupt configuration,
-  so IRQs do not need to be reallocated.
-v1: https://lore.kernel.org/all/20260514103405.42175-1-mengyuanlou@net-swift.com
+> How about if brcmf_pcie_remove() calls brcmf_bus_cancel_reset_work(),
+> takes the lock and calls cancel_work_sync(), sleeps. If debugfs
+> path is already running, it can invoke the worker thread. Is there
+> potential that both try to reset?
 
-Mengyuan Lou (2):
-  net: libwx: add support for set_ringparam in wx_ethtool_ops_vf
-  net: libwx: add support for set_coalesce in wx_ethtool_ops_vf
+Yes, that is a real issue with this version. The lock only serializes
+scheduling against the cancel point. If the reset work has already started,
+cancel_work_sync() waits for it, but the worker may already be executing the
+bus reset teardown path; remove can then continue and run its own teardown
+afterwards.
 
- .../net/ethernet/wangxun/libwx/wx_ethtool.c   | 68 ++++++++++++++++++-
- drivers/net/ethernet/wangxun/libwx/wx_lib.c   |  9 +--
- drivers/net/ethernet/wangxun/libwx/wx_lib.h   |  4 +-
- drivers/net/ethernet/wangxun/libwx/wx_vf.h    |  1 -
- .../net/ethernet/wangxun/libwx/wx_vf_common.c |  4 +-
- .../net/ethernet/wangxun/libwx/wx_vf_common.h |  2 +
- .../net/ethernet/wangxun/libwx/wx_vf_lib.c    | 13 +++-
- 7 files changed, 90 insertions(+), 11 deletions(-)
+So the patch needs a stronger state/ownership model than just
+schedule-vs-cancel serialization. I will rework it so reset and remove cannot
+both own the same teardown sequence, and will send a v2 after auditing the
+PCIe/SDIO/USB paths again.
 
--- 
-2.30.1
+Thanks,
+Fan
 
