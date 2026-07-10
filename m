@@ -1,108 +1,106 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from us.padl.com (us.padl.com [216.154.215.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F873AE1B1;
-	Fri, 10 Jul 2026 06:13:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A475379C36;
+	Fri, 10 Jul 2026 06:43:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.154.215.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783663993; cv=none; b=N7y2rzc8Epdn5n84mCDc6z3s+HAqw53JgxAKIsNfuQtj4wu1fHh1uE1x9N/SJS4au/yp87j0wmNNLWXsCz819SZvJ4FkS2JiOuHohaRT0JZv6hc35d4xyVMKQUoETSP9e/iogUV6r5Qy1tiPfmBGVglhOzmxNCkkKkwX2ORH98w=
+	t=1783665835; cv=none; b=EU+H73T/3XEaatzeiCDHjdsTzRd9wsycLsmY11/FUfi876/seg5IK4IUpbpHuQ6TG7YMMoRK1PGRzojguvjsx6htjm9x5PeW1jxK4txZqFIY65W7b7DSz4MnS4MUpukFQkjrD/DfjHA7S3gOO0MX5DSj0IfCD6CoWLL0rnOy+To=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783663993; c=relaxed/simple;
-	bh=s4noOQ8Cks+3eRUB2ylzGQ8oWydfQD5cPB3Yhp8RbMs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Zv7ufjRXTSZ7Y2V2RmT6sn0s2J/MJYfTdRSnBuhve3M47nA79us0bjxZ/IoiYBpVdN9usYjZxa2Q3CzIwzG54Pyw2J+/u8QDPdfAUzvEyrY8r4EKUn2JsOEneUn4DmcyMCkHpQl5ziotRb8rxYszsZfbQYI3v7GJP3P7ySPYJr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 662a2f3c7c2611f1aa26b74ffac11d73-20260710
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:c25ac138-073c-4421-bd7d-630fb60023c1,IP:0,U
-	RL:25,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:50
-X-CID-META: VersionHash:e7bac3a,CLOUDID:fdb9896a82871974584b439cf41aae64,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:102|850|865|898,TC:nil,Content:0|15|50,E
-	DM:5,IP:nil,URL:99|82|11|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,O
-	SI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 662a2f3c7c2611f1aa26b74ffac11d73-20260710
-X-User: lilinmao@kylinos.cn
-Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <lilinmao@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 779862429; Fri, 10 Jul 2026 14:12:58 +0800
-From: Linmao Li <lilinmao@kylinos.cn>
-To: David Heidelberg <david@ixit.cz>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	Mark Greer <mgreer@animalcreek.com>,
-	netdev@vger.kernel.org,
-	oe-linux-nfc@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Linmao Li <lilinmao@kylinos.cn>
-Subject: [PATCH net-next] nfc: digital: Do not dump a NULL response in command completion
-Date: Fri, 10 Jul 2026 14:12:54 +0800
-Message-Id: <20260710061254.80975-1-lilinmao@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1783665835; c=relaxed/simple;
+	bh=sGr37KYenPAfZfJcc/bmn2zk3GBSLYR3711tt+h92zs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=KWV5seFCAeOmmpIxOcxKGHsR+DXpTEatGY3791906oHV5LiRfKpp01iNrMVz0hb/MF3CyhkBUPEkWkEK/X6eeL5fBe8RPFSRM1cnFX3Wb817NGxyuOXPDy/pS48oERBTTR2+ha3mamUm8Ss+LY3nizgdWr6+VcUGEVtUvVB+mq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=DoBTsxPR; arc=none smtp.client-ip=216.154.215.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=padl.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="DoBTsxPR"
+Received: from [127.0.1.1] (border.lukktone.com [139.130.100.52])
+	by us.padl.com (Postfix) with ESMTPSA id AA37460C0B;
+	Fri, 10 Jul 2026 02:43:47 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=padl.com; s=default;
+	t=1783665831; bh=hBIujlqYc22BZ+jJPqB34hQI0omaNUTV+G0Dw7cK4kk=;
+	h=From:Subject:Date:To:Cc:From;
+	b=DoBTsxPRHfpmex64dt2q/w7KGCCiTbgeCYsvlm5VvzRyWHB82BnP7eFqltyC5+QKa
+	 wpSRzSnqtlTx7YZKA+DLYeHjEr70+eVCuYl7U377+9Tdm41TBfrmimEiOb69g1ZuuD
+	 v+Pr7rSftE4pN2XCO5GAeqvP8/d4tamUTP1Xu8Dy3Kcn0YqAjT0exEnDhwa5A+0E68
+	 iLGmKqvhfArR8clHSKl1zZqeiT1ebSdeOheIOyeQ88LziUbPgsa59IxsFGs3XT75ST
+	 Xc9SbZFAZDvlWI7ZJqlikxcmkmy14x3FB9Dzx5Q9gncDOkp7oE06skgBK6C0F5Hu5S
+	 X83CnGgvm5wTw==
+From: Luke Howard <lukeh@padl.com>
+Subject: [PATCH net-next v2 0/2] net: dsa: mv88e6xxx: various hwstamp fixes
+Date: Fri, 10 Jul 2026 16:43:40 +1000
+Message-Id: <20260710-mv88e6xxx-ptp-fixes-v2-0-af97c38df247@padl.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJyUUGoC/22Oyw6CMBREf4Xctdf0EaC48j8MCx5XqZFC2trUE
+ P7dUrcuJzNnZjZwZDU5uBQbWAra6cUkIU4FDFNnHoR6TBoEExWrJMM5KEVVjBFXv+JdR3LIayn
+ KmvVKiQYSuVrKRgJvYMijoeih/Tnu3T9p8EfpkZ2084v95AOBZyJv1Uz+3QocGTIuVam4Uk3XX
+ NdufJ2HZYZ23/cvDFf68tEAAAA=
+X-Change-ID: 20260630-mv88e6xxx-ptp-fixes-1732570b8829
+To: Vladimir Oltean <olteanv@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Vivien Didelot <vivien.didelot@gmail.com>, 
+ Gregory CLEMENT <gregory.clement@bootlin.com>, Andrew Lunn <andrew@lunn.ch>, 
+ Richard Cochran <richardcochran@gmail.com>
+Cc: Cedric Jehasse <cedric.jehasse@gmail.com>, 
+ Kieran Tyrrell <kieran@sienda.com>, Max Holtmann <mh@rme-audio.de>, 
+ Max Hunter <max@huntershome.org>, 
+ Christoph Mellauner <christoph.mellauner@joyned.at>, 
+ Simon Gapp <simon.gapp@gapp-audio.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Luke Howard <lukeh@padl.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783665827; l=1380;
+ i=lukeh@padl.com; s=20260701; h=from:subject:message-id;
+ bh=sGr37KYenPAfZfJcc/bmn2zk3GBSLYR3711tt+h92zs=;
+ b=NkBNu7kFvodjstT3pHPYVpkU0OZp9YJBc3Hh/6kcZAC8f3FdRlZdOmhsgDUGayHW8CyTAhhNb
+ udDlsgey/m6CzEIqLfRQ7xnIYEoveMfwEhZBcne6lQOAjoFGQOyQxLp
+X-Developer-Key: i=lukeh@padl.com; a=ed25519;
+ pk=D6YgUnH9/OzSZsduYm9XDbvXn1IHDwKwI1hLTsKNRLw=
 
-digital_wq_cmd_complete() dumps the response data whenever cmd->resp is
-not an error pointer.  However, a driver can legitimately complete a
-command with no response skb at all.
+Two fixes for improving the reliably of hardware timestamp acquisition
+on Marvell switches. In our tests this eliminated missed timestamps in
+ptp4l.
 
-digital_tg_send_psl_res() is the only caller that passes timeout=0,
-meaning no response is expected once the command has been transmitted.
-On that path trf7970a completes the command with
-
-	trf->rx_skb = ERR_PTR(0);
-
-which evaluates to NULL.  IS_ERR(NULL) is false, so the NULL response
-passes the !IS_ERR() check and cmd->resp->data and cmd->resp->len are
-dereferenced whenever the debug print site is enabled.  The driver
-guards its own dump with "trf->rx_skb && !IS_ERR(trf->rx_skb)"; the
-digital layer is missing the NULL half of that test.
-
-Use IS_ERR_OR_NULL() so that NULL responses are skipped as well.  The
-callback on that path, digital_tg_send_psl_res_complete(), never
-dereferences resp and dev_kfree_skb() accepts NULL, so only the debug
-dump needs fixing.
-
-Fixes: 59ee2361c924 ("NFC Digital: Implement driver commands mechanism")
-Signed-off-by: Linmao Li <lilinmao@kylinos.cn>
+Signed-off-by: Luke Howard <lukeh@padl.com>
 ---
-A separate cleanup patch, "nfc: trf7970a: Use NULL when no response is
-expected", replaces that ERR_PTR(0) with a plain NULL.  It does not
-change behaviour (ERR_PTR(0) is NULL), so this fix is needed either way;
-if that patch lands first, read "trf->rx_skb = NULL;" above.
+Changes in v2:
+- Lineraize SKBs before retrieving embedded timestamp
+- Hoist driver register lock out of per-frame loop
+- Link to v1: https://patch.msgid.link/20260703-mv88e6xxx-ptp-fixes-v1-0-0138581889a9@padl.com
 
-Link: https://patch.msgid.link/20260706075743.564658-1-lilinmao@kylinos.cn
+To: Andrew Lunn <andrew@lunn.ch>
+To: Vladimir Oltean <olteanv@gmail.com>
+To: "David S. Miller" <davem@davemloft.net>
+To: Eric Dumazet <edumazet@google.com>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+To: Richard Cochran <richardcochran@gmail.com>
+Cc: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
 
- net/nfc/digital_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+---
+Luke Howard (2):
+      net: dsa: mv88e6xxx: use ARRIVAL1 counter for all peer delay messages
+      net: dsa: mv88e6xxx: embedded PTP timestamp support
 
-diff --git a/net/nfc/digital_core.c b/net/nfc/digital_core.c
-index 7cb1e6aaae90..18236221d898 100644
---- a/net/nfc/digital_core.c
-+++ b/net/nfc/digital_core.c
-@@ -127,7 +127,7 @@ static void digital_wq_cmd_complete(struct work_struct *work)
- 
- 	mutex_unlock(&ddev->cmd_lock);
- 
--	if (!IS_ERR(cmd->resp))
-+	if (!IS_ERR_OR_NULL(cmd->resp))
- 		print_hex_dump_debug("DIGITAL RX: ", DUMP_PREFIX_NONE, 16, 1,
- 				     cmd->resp->data, cmd->resp->len, false);
- 
--- 
-2.25.1
+ drivers/net/dsa/mv88e6xxx/chip.c     |   3 +
+ drivers/net/dsa/mv88e6xxx/chip.h     |   8 ++
+ drivers/net/dsa/mv88e6xxx/hwtstamp.c | 140 +++++++++++++++++++++++++++++++----
+ drivers/net/dsa/mv88e6xxx/hwtstamp.h |  14 ++++
+ 4 files changed, 152 insertions(+), 13 deletions(-)
+---
+base-commit: fe3e786ef4eb6e47d2901f568a27bd920477bbe9
+change-id: 20260630-mv88e6xxx-ptp-fixes-1732570b8829
+
+Best regards,
+--  
+Luke Howard <lukeh@padl.com>
 
