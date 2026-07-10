@@ -1,30 +1,32 @@
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBCFD2F6184
-	for <netdev@vger.kernel.org>; Fri, 10 Jul 2026 01:18:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23BF62FA0C4
+	for <netdev@vger.kernel.org>; Fri, 10 Jul 2026 01:18:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783646305; cv=none; b=kXnrvMjcekpv1wJDHPLOfABfBDvIbn1nk0zW+fx/RiI5qA3aseIVs0lMjd3aeXAiy/tZkSUV6PSEgD7j6g/In10VMe/qGbuJWPgVQeXw08EoiBpF1/9EYg8Js13YwE7q7OCCGbEqUl0PN9nkrKxvkjpvwOEuxZdODSS1rO7jeeM=
+	t=1783646308; cv=none; b=fyrqHgNe532cVxiXGIKAOOslyJTxOkA3ueg3yNh35GUVndJw151a08pCsBW+rN8IEkchM0XOwQRgS8QzC9wnNE4elcTXw9kVSx1+epmFJe0TARHHOB+nl+VpuejJ1SI6yIl+edod8xJDDmrPxd5py0Y5J1XVWkHNfguqk53Sets=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783646305; c=relaxed/simple;
-	bh=KcZ7kb032dm7LsVMPNALHhb3NlGbqCd1EM6xN7A7q1Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bfR0Gd3fcAtqcKFULTPN7Cb1bkXOnnvbQsg4aBplVYTKa1KgcthCZJQgC2iiUae9yCMjhJ6VxT87swLwqa2qOZ5rOy1tjnwLR3y9Q+VyTpt+dY1cX9Dbz0LY5Oj5sfurwnk1SY2b9Rsk1egyGCfTEPL2T6+mEjI1JdvJsz8wYq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=kq7kcw7K; arc=none smtp.client-ip=91.218.175.171
+	s=arc-20240116; t=1783646308; c=relaxed/simple;
+	bh=/ZQRq+x++QiN9kaduBMnI94LLLUyWqkM2zTVzpzMjNk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DE4Shh3db9ot16PIXPKCt4W7GUKdwj+mI8LFRnOkQCynp3dzWYjQKvQ+CthqeiB+KLCDqs2Q0yldITR21jOLGt+ewmXpcmr+D2WSrNpnhhf2qUzryzq2pwkRUkzRGOGhx8kT4axgYdi5KYtNpMc7/YCS3Xrp77yEx52tUCUPjBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=JZxKhbxu; arc=none smtp.client-ip=91.218.175.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="kq7kcw7K"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="JZxKhbxu"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783646298;
+	t=1783646302;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=r5pSf5Af22QGyjixoYkd7KHTq4uqLa/w2mYECvbCsV8=;
-	b=kq7kcw7K6EMK7bdAHmTVu6GpxCTxAlg+1FffswiQ+cWGk7YhFANBSKlLxztnoGuELQSMca
-	mFHejeREZo7xknDEcf+8++MoPXQ5VKDcDbqg1ZCa+jktfWkv1u4nfWnCCa5YfK3/T/OMfo
-	XOGfjdbVWnGWJRe8zhfSVOi/NfeLcds=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VTzx79yJrpdjUI5F4Orcx1DnIXf0Xz9TTn9PFIfcoJQ=;
+	b=JZxKhbxuwyttM1lcQT/up2le1nIQWOqs44xEkrWq7fqxdE3igbLSWP6ajDuvxC6gmxaug8
+	pc7TV/zezOwZeOATgCQg8hGGXgLqvmevMvV16+Hf7tS1MnmLuPLgFR3uBePTmG0LoJcWsv
+	kdZCQfClEAOqFRGaO5Mtuo0OZKLynsQ=
 From: Tao Cui <cui.tao@linux.dev>
 To: dsahern@kernel.org,
 	leonro@nvidia.com
@@ -32,9 +34,11 @@ Cc: linux-rdma@vger.kernel.org,
 	netdev@vger.kernel.org,
 	cui.tao@linux.dev,
 	cuitao@kylinos.cn
-Subject: [PATCH iproute2-next v5 0/2] rdma: display resource limits in curr/max format
-Date: Fri, 10 Jul 2026 09:17:57 +0800
-Message-ID: <20260710011759.378893-1-cui.tao@linux.dev>
+Subject: [PATCH iproute2-next v5 1/2] rdma: update uapi headers
+Date: Fri, 10 Jul 2026 09:17:58 +0800
+Message-ID: <20260710011759.378893-2-cui.tao@linux.dev>
+In-Reply-To: <20260710011759.378893-1-cui.tao@linux.dev>
+References: <20260710011759.378893-1-cui.tao@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,37 +50,30 @@ X-Migadu-Flow: FLOW_OUT
 
 From: Tao Cui <cuitao@kylinos.cn>
 
-This series adds support for displaying RDMA device resource limits in
-curr/max format in the rdma tool, building on the kernel uapi attribute
-RDMA_NLDEV_ATTR_RES_SUMMARY_ENTRY_MAX which has landed in linux-next
-(kernel commit 5911f6d6e7ce [1]).
+Update rdma_netlink.h file upto kernel commit 5911f6d6e7ce
+("RDMA/nldev: Add resource summary max values for usage display")
 
-Patch 1 syncs the rdma_netlink.h uapi header from the kernel.
-Patch 2 updates the rdma tool to parse the new attribute and display
-resource usage in curr/max format:
-
-  $ rdma resource show
-  0: mlx5_0: qp 123/131072  cq 45/65536  mr 200/1000000  pd 10/32768
-
-[1]: 
-Link: https://lore.kernel.org/all/20260615003646.168704-1-cui.tao@linux.dev/
-
-Tao Cui (2):
-  rdma: update uapi headers
-  rdma: display resource limits in curr/max format
-
- rdma/include/uapi/rdma/rdma_netlink.h |  5 +++++
- rdma/res.c                            | 21 ++++++++++++++++++++-
- rdma/utils.c                          |  1 +
- 3 files changed, 26 insertions(+), 1 deletion(-)
-
+Signed-off-by: Tao Cui <cuitao@kylinos.cn>
 ---
-Changes in v5:
-- Split the rdma_netlink.h update into its own commit following the
-  uapi headers sync format ("rdma: update uapi headers").
-Changes in v4:
-- Add a Link: reference to the kernel patch; re-send now that the
-  kernel side has landed in linux-next.
+ rdma/include/uapi/rdma/rdma_netlink.h | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/rdma/include/uapi/rdma/rdma_netlink.h b/rdma/include/uapi/rdma/rdma_netlink.h
+index 4356ec4a..e5b8b065 100644
+--- a/rdma/include/uapi/rdma/rdma_netlink.h
++++ b/rdma/include/uapi/rdma/rdma_netlink.h
+@@ -604,6 +604,11 @@ enum rdma_nldev_attr {
+ 	RDMA_NLDEV_ATTR_FRMR_POOL_PINNED_HANDLES,	/* u32 */
+ 	RDMA_NLDEV_ATTR_FRMR_POOL_KEY_KERNEL_VENDOR_KEY,	/* u64 */
+ 
++	/*
++	 * Resource summary entry maximum value.
++	 */
++	RDMA_NLDEV_ATTR_RES_SUMMARY_ENTRY_MAX,		/* u64 */
++
+ 	/*
+ 	 * Always the end
+ 	 */
 -- 
 2.43.0
 
