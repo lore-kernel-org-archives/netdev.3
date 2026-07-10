@@ -1,129 +1,125 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A099A42A79F;
-	Fri, 10 Jul 2026 13:21:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3B754189C0;
+	Fri, 10 Jul 2026 13:23:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783689701; cv=none; b=gD8X49LwXgnoXM1LXjt6JNIA8uZhe/tJ1spE6ELAn/Y11RYOYSuL5Q8j5VcnLY08699nDxJTIjitJ2u+/ZrkmsDHI+2Rn0nOHYEj7jDYjhyLN9yroiY3FdAgz6+Air5aG7Rh5M5fdwv06HRtyDIjtmZ9vxoz3OqN5VsFrBU+KNs=
+	t=1783689818; cv=none; b=TOuMdNSLMFk8Vi5C+O08X1tJ9RLuqP4Bfmd10ZNWBprXJ57yTOv3pd6cdH8RYiLXdXiEsarwMA5EGVzafbg0+j1Wazk2wo7tBUqlifjSRrmAeGRgydes0rGtIttP3eVSEMAd8uWIF+0gT407vGSUk7ipndeWH8/CwAP5rHJd3vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783689701; c=relaxed/simple;
-	bh=yMV9poYSLXS/3RgppG/pvEj1WqVKNCUnPlsBkB/oi9U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZeUJ1dFeFstNHcIKamIb8mlJzOPFjrOsIycFO4Z8fU44SWPIza3iQvZW7bszzyfB2Piktq2UgIjVMn9GnenzpqcwbCYRzLezIX6iM7Xp9eLsLzeMHM8PqyQLQqXyBakl8+cy6JryT/+mPa213XI2z6SKRJE+0zE3HvBXoYMbEtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=qaBxxKPb; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1783689818; c=relaxed/simple;
+	bh=9nEljnZQeIIirhHTNpz60NxuDdzoP2cR3awIo0m0qxQ=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=MiWJZ3W/xY+kLWCwJuKZBYlx8BIw+YWS0pg5zcrelQjw9Kru9L+b1pC0fvT7nqI+S8XMmL7Ofnau6qeE/GZDV6jJgyxlSegxIOBNVgCcfg8j7bI+Jv098zBEXg+wWmPlgxNHinJ7wgvQssl1+P2tqA5Yy1YDiaW9C26/xL3oR1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Y1YK4MIE; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="qaBxxKPb"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=3jUJlmtzH8od6MWoclW18ZkJp5mBapmJ5Ck79kLYAyk=; b=qa
-	BxxKPbvfNAoasihDNphVMqkx7RXwLmXxUKcGONp6rFaCvzTG9GJvlRfa++o4RxofPaXT5wzJZLb54
-	SYr4FWe5LyQZx4BM8mc8kSnGuKDlRsA6fvydOeH5p/LDpKAdu4Rfx9IWriNht/wKZ5xNJK+YZwSB1
-	iRHw51ownvBEFhw=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wiBAW-00Be2B-88; Fri, 10 Jul 2026 15:21:28 +0200
-Date: Fri, 10 Jul 2026 15:21:28 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Ujjal Roy <royujjal@gmail.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>,
-	Linux Stable <stable@vger.kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>, David Ahern <dsahern@kernel.org>,
-	Shuah Khan <shuah@kernel.org>, Andy Roulin <aroulin@nvidia.com>,
-	Yong Wang <yongwang@nvidia.com>, Petr Machata <petrm@nvidia.com>,
-	Ujjal Roy <ujjal@alumnux.com>, bridge@lists.linux.dev,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: Please backport bridge multicast exponential field encoding fix
- series to 6.1.y/6.6.y/6.12.y/6.18.y/7.0.y
-Message-ID: <797773e2-b155-451b-ae97-e8a005fd2d86@lunn.ch>
-References: <20260709101327.9508-1-royujjal@gmail.com>
- <2026070925-delay-gauntlet-bc7c@gregkh>
- <CAE2MWk=mm8_bkd54Gv1mdox6rfvx85Dd3AjOCxPz0fPAfyuWYA@mail.gmail.com>
- <2026070954-activist-left-8303@gregkh>
- <CAE2MWkmcQdhGp3LTMtpgAse3AFcfKcAcpQe89+iijfP5e0w_QQ@mail.gmail.com>
- <2026070948-lively-exchange-a458@gregkh>
- <CAE2MWkn3L7V3x8i0F-soGLxsBBo_Umgs1pJ3FwCw1OW7=U55zg@mail.gmail.com>
- <14350a31-ffc7-41fd-84d3-6cfb2cb96841@lunn.ch>
- <CAE2MWknt86W6yCtuS_RupiuwiDqXT8wZqENM2DjiW1R=eY8qdg@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Y1YK4MIE"
+Received: by linux.microsoft.com (Postfix, from userid 1231)
+	id 8AECB20B716F; Fri, 10 Jul 2026 06:23:30 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8AECB20B716F
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1783689810;
+	bh=tWadOobs0k+qwzIzGFvhW9CN/liX9HwGSzfTB/U2bxU=;
+	h=From:To:Subject:Date:From;
+	b=Y1YK4MIEkBtXg75v7xYxSCy2luRFY0oOTHEDKLa0wH5u9EjNWrKp+uHyZFySdxma8
+	 ju3dSXE0Dg7JkNTG5Y6tBxNYXs1hJzv5yfW6aDebReW+Zwz3/4G/0/8MzPvHRLzkGj
+	 Nsue5dmItZlTg+PJi06/Um2Af6e8/g4RAg7csQMY=
+From: Aditya Garg <gargaditya@linux.microsoft.com>
+To: kys@microsoft.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	longli@microsoft.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	kotaranov@microsoft.com,
+	horms@kernel.org,
+	ernis@linux.microsoft.com,
+	dipayanroy@linux.microsoft.com,
+	gargaditya@linux.microsoft.com,
+	ssengar@linux.microsoft.com,
+	gargaditya@microsoft.com,
+	linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Subject: [PATCH net-next] net: mana: Add debug knob to skip TX timeout recovery reset
+Date: Fri, 10 Jul 2026 06:22:29 -0700
+Message-ID: <20260710132229.2851441-1-gargaditya@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAE2MWknt86W6yCtuS_RupiuwiDqXT8wZqENM2DjiW1R=eY8qdg@mail.gmail.com>
 
-On Fri, Jul 10, 2026 at 02:40:39PM +0530, Ujjal Roy wrote:
-> On Fri, Jul 10, 2026 at 1:31 AM Andrew Lunn <andrew@lunn.ch> wrote:
-> >
-> > > > > History: The multicast stack currently supports decoding of IGMPv3 and
-> > > > > MLDv2 exponential timer field encodings, but lacks the corresponding
-> > > > > encoding logic when generating multicast query packets.
-> >
-> > RFC 3376 says:
-> >
-> > 4.1.1. Max Resp Code
-> >
-> >    The Max Resp Code field specifies the maximum time allowed before
-> >    sending a responding report.  The actual time allowed, called the Max
-> >    Resp Time, is represented in units of 1/10 second and is derived from
-> >    the Max Resp Code as follows:
-> Here I can give you some input. Default value is 10 seconds for which
-> the protocol value sent on the wire will be 100. This means 100 *
-> (1/10 second) = 10s. Similarly, setting just 14 seconds will cause
-> issues. The protocol value transmitted on the wire is 140, which, when
-> decoded as a linear value, results in 224. Similarly, values greater
-> than 25.5 seconds cannot be represented directly in the 8-bit field.
-> 
-> >
-> > Let me check i understand the issue. If the user configures a value >
-> > 127, linux continues to use the linear encoding, but a peer decodes it
-> > as a floating value.
-> Yes, you are right and that is what it does till now. And the Kernel
-> applies same to the QQIC field as well.
-> 
-> >
-> > 128 linear is 0 | 0x10) << (0 + 3) = 0x40 = 64. So the peer sends the
-> > reports earlier than required?
-> No, it is not 64. This becomes (0x10 << 3) = 0x80 = 128 again.
-> 
-> >
-> > 255 linear is (0xf | 0x10) << (7 + 3) = 0x1F0000 = 2031616. So the
-> > peer can send the reports much later than the 255 1/10 of a second
-> > than userspace expected.
-> Yes, you are right. But the calculation is incorrect; it becomes
-> 0x7C00, which is 31744.
+Add a per-port debugfs boolean "tx_timeout_skip_reset" that, when
+enabled, makes mana_tx_timeout() log the TX timeout and return without
+queueing the per-port detach/attach recovery work.
 
-Thanks for correcting my maths.
+This is a debug-only aid for bringup and qualification: skipping the
+recovery reset keeps the device and queue state intact so a TX timeout
+can be correlated with hardware telemetry. The knob defaults to false,
+so production recovery behaviour is unchanged.
 
-> > I think a much simpler fix for stable is to clamp the user space
-> > request for setting the max response time to 127. That seems like a
-> > one line patch.
-> In mainline I encoded the value according to the RFC. We can clamp to
-> 127 in stables, if we are not willing to take the entire series. This
-> will force user to use value < 128. Also, please consider QQIC; a
-> similar encoding issue persists.
+Signed-off-by: Aditya Garg <gargaditya@linux.microsoft.com>
+Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+Reviewed-by: Dipayaan Roy <dipayanroy@linux.microsoft.com>
+---
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 14 ++++++++++++++
+ include/net/mana/mana.h                       |  3 +++
+ 2 files changed, 17 insertions(+)
 
-It does not force the users to use a value < 128. You would need to
-return EINVAL for that, which i'm not proposing. Returning an error
-could break user space.
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index 89e7f59f635d..a8c329bdbacf 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -892,6 +892,17 @@ static void mana_tx_timeout(struct net_device *netdev, unsigned int txqueue)
+ 	struct mana_context *ac = apc->ac;
+ 	struct gdma_context *gc = ac->gdma_dev->gdma_context;
+ 
++	/* Debug knob for bringup/qualification: when set, log the timeout and
++	 * skip the reset so the failing state is preserved for telemetry.
++	 * Disabled by default; production behaviour is unchanged.
++	 */
++	if (READ_ONCE(apc->tx_timeout_skip_reset)) {
++		netdev_warn(netdev,
++			    "TX timeout on queue %u: reset skipped (tx_timeout_skip_reset enabled)\n",
++			    txqueue);
++		return;
++	}
++
+ 	/* Already in service, hence tx queue reset is not required.*/
+ 	if (test_bit(GC_IN_SERVICE, &gc->flags))
+ 		return;
+@@ -3486,6 +3497,9 @@ static int mana_init_port(struct net_device *ndev)
+ 			   &apc->steer_cqe_coalescing);
+ 	debugfs_create_u32("current_speed", 0400, apc->mana_port_debugfs,
+ 			   &apc->speed);
++	debugfs_create_bool("tx_timeout_skip_reset", 0600,
++			    apc->mana_port_debugfs,
++			    &apc->tx_timeout_skip_reset);
+ 	return 0;
+ 
+ reset_apc:
+diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
+index 226b61504596..4d041fb8437f 100644
+--- a/include/net/mana/mana.h
++++ b/include/net/mana/mana.h
+@@ -530,6 +530,9 @@ struct mana_port_context {
+ 	struct net_device *ndev;
+ 	struct work_struct queue_reset_work;
+ 
++	/* Debug knob to log TX timeout but skip recovery reset */
++	bool tx_timeout_skip_reset;
++
+ 	u8 mac_addr[ETH_ALEN];
+ 
+ 	struct mana_eq *eqs;
+-- 
+2.43.0
 
-By clamping to 127, we don't break user space, but we do avoid the
-kernel bug, and at least to my superficial reading of the RFC, we are
-"language lawyer" compliant with the RFC.
-
-	Andrew
