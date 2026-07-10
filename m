@@ -1,57 +1,62 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F9537E2ED
-	for <netdev@vger.kernel.org>; Fri, 10 Jul 2026 19:36:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA4438757B;
+	Fri, 10 Jul 2026 19:44:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783712198; cv=none; b=llZkfu8ZlD76GKhpdpAcO1YMYISuZKhtH3tvnLHl4YBdVBHh31FeCLUNKzT29soC1xUfs1d/ZaZTtVsC4mo5IiFhR1ZG/gR0jjYy/fbi/b6bZE93F+j8Ef2xIDqX/idayZFx/1tjtEN4ET7KJxMrKmO4DbFeKK0F/ByAV+e/Mng=
+	t=1783712701; cv=none; b=jMupsLHj4Z/WQzErQ9vBC66cbIJStHesWqif7KUMG8yeDOaTmhpTSpHxbAc2rjvsJYoiQN+C4Shx2jqix5AnNoGkSOOK/X9Spquob+WnmC1h3kN9cgj0FopknSy4rMy0R3WZq87ejExvNE2clFdDsoPr1tMb8leqbQJpUGDI/LQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783712198; c=relaxed/simple;
-	bh=WS98kGfygDlEMfZuJnC9+mF5mKSQWAxcx5kFA6qA8r4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hxkiW2SloEnWMsMtYWyXaADlh0/9UJmCrdfqHGiigMbrurvbMfVhdftD7pegv9tNnyyq0XFXeeER9BKQU0TsJ27sz5jsdC7ve24zC4DWNbsltYojhTpEehq0qu93NZzDDvOhcXoxGDsQcoACqyIg4JCKagnhHPe6Sq2kePXbCWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UUFLgzeX; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1783712701; c=relaxed/simple;
+	bh=MmHLgOZWD/DCvka42pERrn7Hnkq8hVSJmuccw4OV55g=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rcwxFHEbo7seLS4vIVz1XfDrwch1FuhdzOGJMvzTxE8TXzuSg1HYFF0aU4IK5+8VGFF9q0RpclZj52ADA0VJR91PXMTOISz4Ter2Vif8x/sXNWWRgOzxgwfKTzZjc7u7Wdp4ZBHnP1c5+yrxNJ09isYSwLMCviGo6it3aH4IALs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UHJqBX0N; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UUFLgzeX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783712195;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=lKRebUVmsTw/jM/4fGeq3q+j+hSjHHN0rDmB9FYU7rk=;
-	b=UUFLgzeXhIV/LILRXYuyGQ/+5VyYvMup5hguHWPSzvqVxVZHbRfhBNS1QXFncAiTb6tW5n
-	wVMrjijRanSp9xyJp7WBMN7OIeEKR5GNT9evHbGD52g1QKRYB7ja/oCB+JQT+jp8SsXGOC
-	qElYOAu4SiPF+PiknkP6v0JyCXVuClo=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-75-34P3W8L6OqemADJc-SGs7Q-1; Fri,
- 10 Jul 2026 15:36:32 -0400
-X-MC-Unique: 34P3W8L6OqemADJc-SGs7Q-1
-X-Mimecast-MFC-AGG-ID: 34P3W8L6OqemADJc-SGs7Q_1783712191
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EF2441800639;
-	Fri, 10 Jul 2026 19:36:29 +0000 (UTC)
-Received: from p16v.redhat.com (unknown [10.44.48.68])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 157133000B4D;
-	Fri, 10 Jul 2026 19:36:26 +0000 (UTC)
-From: Ivan Vecera <ivecera@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UHJqBX0N"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783712696; x=1815248696;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=MmHLgOZWD/DCvka42pERrn7Hnkq8hVSJmuccw4OV55g=;
+  b=UHJqBX0N/id/WeRfvUa0UjN5e9JpDtz+WGx9I5qSW2BmqpLKwQt+Z+Go
+   yLKHq9YfREroVOieob/chq0/EZzmsnlb/uSJYi6cv6BohFeS7m6UxU8KJ
+   O6td1YVa1z6GfYhvdJoG1abi/ji2iXldJdVZPY8KUzZ65p7Jt4DMwcmQH
+   l0BAPJ0j2TA49JrEWUI4Qezyhv3jwjuuCZj6Ftp5QCAOhFgcdhOs0mvDm
+   NyvWHfqnjZCYHyfxXWIRi3aPpx6ON7CYZHWIBtrkUdT6n9SAD1kp2xvvv
+   gJEKlUVb9OQdZhIpbE61Ss9aLv3CTkxQFFqa3zOQvZzYNsvfpmSt+jTMf
+   w==;
+X-CSE-ConnectionGUID: wigbTOUPSEOt2n2TjgIpcA==
+X-CSE-MsgGUID: iIL/m59pQ1OsQqE8wBU9iA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="101965193"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="101965193"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2026 12:44:54 -0700
+X-CSE-ConnectionGUID: bPspZNIVSYqjwce8SbNI4w==
+X-CSE-MsgGUID: bFC4kL7SRWK6MMAYgNmAmQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="293157253"
+Received: from boxer.igk.intel.com ([10.102.20.173])
+  by orviesa001.jf.intel.com with ESMTP; 10 Jul 2026 12:44:51 -0700
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 To: netdev@vger.kernel.org
-Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Milena Olech <milena.olech@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net] dpll: fix NULL pointer dereference in dpll_msg_add_pin_ref_sync()
-Date: Fri, 10 Jul 2026 21:36:25 +0200
-Message-ID: <20260710193625.1378822-1-ivecera@redhat.com>
+Cc: bpf@vger.kernel.org,
+	magnus.karlsson@intel.com,
+	stfomichev@gmail.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	bjorn@kernel.org,
+	kerneljasonxing@gmail.com,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Subject: [PATCH v2 net 0/5] xsk: fix AF_XDP multi-buffer Tx descriptor reclaim
+Date: Fri, 10 Jul 2026 21:44:19 +0200
+Message-Id: <20260710194424.84844-1-maciej.fijalkowski@intel.com>
+X-Mailer: git-send-email 2.38.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,62 +64,106 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-When a dpll_pin is shared across multiple dpll_device instances and
-those devices are being unregistered (e.g. during driver module removal),
-a NULL pointer dereference can occur in dpll_msg_add_pin_ref_sync().
+v1: https://lore.kernel.org/netdev/20260623133240.1048434-1-maciej.fijalkowski@intel.com/
+v1->v2:
 
-This happens under the following conditions:
- - A pin is registered with two or more dpll devices (dpll_A, dpll_B)
- - The pin has ref_sync pairs with other pins
- - During unregistration of dpll_A's pins, a ref_sync partner pin is
-   unregistered first, removing it from dpll_A->pin_refs
- - But since the partner pin is still registered with dpll_B, its
-   dpll_refs is not empty, so dpll_pin_ref_sync_pair_del() does NOT
-   run and the partner stays in the pin's ref_sync_pins xarray
- - When the pin itself is then unregistered from dpll_A, the delete
-   notification calls dpll_msg_add_pin_ref_sync() which finds the
-   partner in ref_sync_pins, passes dpll_pin_available() (partner is
-   still registered with dpll_B), but dpll_pin_on_dpll_priv(dpll_A,
-   partner) returns NULL because partner was already removed from
-   dpll_A->pin_refs
- - The NULL priv pointer is passed to the driver's ref_sync_get
-   callback, which dereferences it
+* Reduced the series from seven to five patches by squashing the three
+  generic Tx drain and reclaim changes into a single patch. The resulting
+  patch handles overflow, invalid descriptors in the middle of a packet,
+  and reclaim of the offending descriptor as one coherent change. This
+  so it will be less likely to have things reported by Sashiko that are
+  fixed in later commits;
 
- BUG: kernel NULL pointer dereference, address: 0000000000000034
- Oops: Oops: 0000 [#1] SMP NOPTI
- RIP: 0010:zl3073x_dpll_input_pin_ref_sync_get+0x73/0x80 [zl3073x]
- Call Trace:
-  dpll_msg_add_pin_ref_sync+0xb8/0x200
-  dpll_cmd_pin_get_one+0x3b6/0x4b0
-  dpll_pin_event_send+0x72/0x140
-  __dpll_pin_unregister+0x5a/0x2b0
-  dpll_pin_unregister+0x49/0x70
+* Reworked the zero-copy implementation substantially:
+  * removed the bind-transition mechanism, including tx_share_pending,
+    xp_prepare_xsk_tx_share(), xp_finish_xsk_tx_share(),
+    synchronize_net(), and the transient bind() -EAGAIN behavior;
+  * added packet-framed parsing for shared-UMEM SG pools, allowing
+    per-socket drain state to be resumed by both singular and shared Tx
+    paths;
+  * retained the legacy one-descriptor fallback for shared non-SG pools;
+  * preserved the existing per-socket fairness quota while allowing the
+    shared walker to consume multiple complete packets and continue
+    filling the requested batch across fairness rounds;
+  * made the fairness quota large enough to process one maximum-sized
+    valid multi-buffer packet;
+  * extended the parser result with consumed-descriptor and
+    budget-limited accounting needed by the shared walker;
+  * recorded the size of the pool's temporary Tx descriptor array and
+    capped batch processing at that size;
+  * kept reclaim-only descriptors ordered after preceding driver-visible
+    descriptors and protected the delayed-reclaim state with
+    READ_ONCE()/WRITE_ONCE().
 
-Fix this by skipping ref_sync pins whose priv pointer cannot be resolved
-for the current dpll device.
+* Rewrote the zero-copy patch description to cover oversized packets,
+  continuation draining across calls, shared-UMEM SG handling, and CQ
+  publication ordering.
 
-Fixes: 58256a26bfb3 ("dpll: add reference sync get/set")
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
----
- drivers/dpll/dpll_netlink.c | 3 +++
- 1 file changed, 3 insertions(+)
+* Corrected the too-many-frags selftest description to state that the
+  invalid packet contains max_frags + 1 fragments and terminates at an
+  explicit packet boundary.
 
-diff --git a/drivers/dpll/dpll_netlink.c b/drivers/dpll/dpll_netlink.c
-index bf729cde796a7..5703667593a7c 100644
---- a/drivers/dpll/dpll_netlink.c
-+++ b/drivers/dpll/dpll_netlink.c
-@@ -567,6 +567,9 @@ dpll_msg_add_pin_ref_sync(struct sk_buff *msg, struct dpll_pin *pin,
- 		if (!dpll_pin_available(ref_sync_pin))
- 			continue;
- 		ref_sync_pin_priv = dpll_pin_on_dpll_priv(dpll, ref_sync_pin);
-+		/* Pin may have been unregistered from this dpll already */
-+		if (!ref_sync_pin_priv)
-+			continue;
- 		if (WARN_ON(!ops->ref_sync_get))
- 			return -EOPNOTSUPP;
- 		ret = ops->ref_sync_get(pin, pin_priv, ref_sync_pin,
+
+Hi,
+
+This series fixes several AF_XDP multi-buffer Tx paths where descriptors
+consumed from the Tx ring are not consistently returned to userspace
+through the completion ring when the packet is later dropped as invalid.
+
+The affected cases are invalid or oversized multi-buffer Tx packets in
+both the generic and zero-copy paths. In these cases, the kernel can
+consume one or more Tx descriptors while building or validating a
+multi-buffer packet, then drop the packet before it reaches the device.
+Userspace still owns the UMEM buffers only after the corresponding
+addresses are returned through the CQ. Missing completions therefore
+make userspace lose track of those buffers.
+
+The generic path fixes cover following related cases:
+* partially built multi-buffer skbs dropped by xsk_drop_skb();
+  continuation descriptors left in the Tx ring after xsk_build_skb()
+  reports overflow;
+* invalid descriptors encountered in the middle of a multi-buffer
+  packet, including the offending invalid descriptor itself.
+
+The zero-copy path is handled separately. The batched Tx parser now
+distinguishes descriptors that can be passed to the driver from
+descriptors that are consumed only because they belong to an invalid
+multi-buffer packet. Reclaim-only descriptors are written to the CQ
+address area and published in completion order, after any earlier
+driver-visible Tx descriptors.
+
+The last two patches update xskxceiver so the tests account invalid
+multi-buffer Tx packets as descriptors that must be reclaimed, while
+still not expecting those invalid packets on the Rx side.
+
+This is a follow-up to Jason's changes [0] which were addressing generic
+xmit only and this set allows me to pass full xskxceiver test suite run
+against ice driver.
+
+Thanks,
+Maciej
+
+[0]: https://lore.kernel.org/netdev/20260520004244.55663-1-kerneljasonxing@gmail.com/
+
+
+Jason Xing (2):
+  xsk: fix buffer leak in xsk_drop_skb() for AF_XDP multi-buffer Tx
+  xsk: drain continuation descs after overflow in xsk_build_skb()
+
+Maciej Fijalkowski (3):
+  xsk: reclaim invalid multi-buffer Tx descs in ZC path
+  selftests/xsk: fix too-many-frags multi-buffer Tx test
+  selftests/xsk: account invalid multi-buffer Tx descriptors
+
+ include/net/xdp_sock.h                        |   1 +
+ include/net/xsk_buff_pool.h                   |   3 +
+ net/xdp/xsk.c                                 | 239 ++++++++++++++++--
+ net/xdp/xsk_buff_pool.c                       |   1 +
+ net/xdp/xsk_queue.h                           |  76 ++++--
+ .../selftests/bpf/prog_tests/test_xsk.c       |  48 ++--
+ 6 files changed, 313 insertions(+), 55 deletions(-)
+
 -- 
-2.53.0
+2.43.0
 
