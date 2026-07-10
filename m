@@ -1,59 +1,82 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF6326F293;
-	Fri, 10 Jul 2026 16:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03862D1303;
+	Fri, 10 Jul 2026 16:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783701475; cv=none; b=UGUgZHJfE0AWo63PA08z9fWrO89/hie5sQjE6pOHIrdDJHCblTs85OJL2ldLIG2/oh3Eu090jSISWdiRgfX0ihaafgZcmzOCBx+E2WoX7xpr1LK0+dszWIC5pVaBXnPPT10+3EGZLOJAcFSIJdk5qU3ig9seanYF4pft8oA5ilo=
+	t=1783701772; cv=none; b=Jvr5J3KEDPhb9MZQRNVbjNnE74w+1tILZ5hpb+SaWf1hxuXI1kaH/EBk4BbXkRHm88+eIDC/2wC9RLUPGwstu8MmobJreHr6EgrJTI95R8ioYwKuyLb7lzXAdV+xC+OSO1Rn31IEt/YvMOdPWKkL73edw/5viWKqWik4wfnHGyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783701475; c=relaxed/simple;
-	bh=6JQ5HtR8U5ofo03taD6S5+G9y2naXme5iUR2sOnmczI=;
+	s=arc-20240116; t=1783701772; c=relaxed/simple;
+	bh=9nA8uhhcTDfyIof4mgln0Vtd+gRgUi+zZKMRB+ptwlQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TcTeLFHkXdl3nc/3zHX6RDsj6B8ejCZ7VQAgbOEK7h8k9AeuWtaa5yvvnP/N0U91D0VJavlGnUJqsj6kpdwpjN5taO6nf/usL741GYvvYiJ5lmTyN0I1zcNBHYfttYy1ReXWNet33y6nwzpronSbQw5Lk8lBNzeXIxQqoEQmNT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=zCcH0Lmw; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=sT8bTHtoT+SaO1xl1i+6jU7At0FdFw4onueZqjjlKUxdrTlYpogKkwqNOC4lU9tDz6WtAl1qh8e3KIdbtLopTUhvXzytKWLFqA72yYxMpfkzr7PeePWz6eiaG+tCdw8dB5Re/a86BzaAYw56Y8UuTVeAJg+kSlbuKf6lzUTwHUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=rTQ33asI; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="zCcH0Lmw"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="rTQ33asI"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=KXSTbKG+7aSBdSKpvH/rz9uGEzE4kqyoxlMBzZZMa60=; b=zCcH0LmwiB0IoGAMB8jGU7HRwq
-	qtj8nKoeRqxY3LEy0uR3TLT46GPLDD0+BkhJV2v1DFCj4sJ5U2dNDdfjf17iB06l//+tan1I6HvqY
-	VZhpoWof9iIuF6ndXTHdv51SHIf0rLafrC7aSOSMex22wuVaeweLDgjI5RI4eUTBVAcI=;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=JLwLbiytSY+NyZAL9Suy3UCiKJ7rIXpmNTauGzSf0qA=; b=rT
+	Q33asI7ND/klJqTsm2Y//NzF/md9BOcnx4kmTIAb2qfX9Aj2oFr5FoPlsKl/PB2AtGKpPam6603A5
+	c7HlnVtI1nDMWn2UPUKjxl9/tKxUGrqFeSYXfSRW4+SnEVyQZMzscaD1UXlbgP8YKMmW4sZO2Z+X9
+	96I+TPOA/yJGbyw=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1wiEEW-00BfYc-EI; Fri, 10 Jul 2026 18:37:48 +0200
-Date: Fri, 10 Jul 2026 18:37:48 +0200
+	id 1wiEJH-00BfaP-5P; Fri, 10 Jul 2026 18:42:43 +0200
+Date: Fri, 10 Jul 2026 18:42:43 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-kernel@vger.kernel.org, "chunzhi.lin" <linchunzhi0@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-	Russell King <linux@armlinux.org.uk>, linux-acpi@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Subject: Re: [PATCH] docs: ACPI: DSD: motorcomm: fix docs build error
-Message-ID: <532f6e46-ee9f-4170-8ec4-72374e761cb0@lunn.ch>
-References: <20260710053106.730399-1-rdunlap@infradead.org>
+To: Vikas Gupta <vikas.gupta@broadcom.com>
+Cc: gg@lunn.ch, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org, leonro@nvidia.com, jgg@nvidia.com,
+	bhargava.marreddy@broadcom.com, rahul-rg.gupta@broadcom.com,
+	vsrama-krishna.nemani@broadcom.com,
+	rajashekar.hudumula@broadcom.com, ajit.khaparde@broadcom.com,
+	Siva Reddy Kallam <siva.kallam@broadcom.com>,
+	Dharmender Garg <dharmender.garg@broadcom.com>,
+	Yendapally Reddy Dhananjaya Reddy <yendapally.reddy@broadcom.com>
+Subject: Re: [PATCH net v2] bnge/bng_re: fix ring ID widths
+Message-ID: <97cb56d0-24c0-4d94-9455-8c7b1b185c14@lunn.ch>
+References: <20260704164747.1995227-1-vikas.gupta@broadcom.com>
+ <13ce47bb-c8e2-4ad6-8942-e0b4f8ff9e49@lunn.ch>
+ <CAHLZf_vxM0uht9S3tD02uaDWLSsYyMcCnRrwmOGhkDU4UeTbrw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260710053106.730399-1-rdunlap@infradead.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHLZf_vxM0uht9S3tD02uaDWLSsYyMcCnRrwmOGhkDU4UeTbrw@mail.gmail.com>
 
-On Thu, Jul 09, 2026 at 10:31:06PM -0700, Randy Dunlap wrote:
-> Separate the title with commas (since they are all run togethe in the
+On Fri, Jul 10, 2026 at 11:40:25AM +0530, Vikas Gupta wrote:
+> Hi Andrew,
+> 
+> On Sun, Jul 5, 2026 at 12:04 AM Andrew Lunn <andrew@lunn.ch> wrote:
+> >
+> > > - Backward compatibility with older firmware is not a concern.
+> >
+> > Could you expand on that please.
+> 
+> The backward compatibility concern raised in v1 does not apply. Thor
+> Ultra hardware has not yet been deployed and no firmware has been
+> released to the field. However, future revisions of HSI must maintain
+> backward compatibility.
 
-nitpick: together.
+O.K, thanks.
 
-Otherwise: Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+We take backwards compatibility seriously. The fact this hardware has
+not yet escaped the laboratory, is one of the few reasons acceptable
+for breaking backwards compatibility, so should be stated in the
+commit message. That also avoids having to answer the question again
+and again.
 
     Andrew
