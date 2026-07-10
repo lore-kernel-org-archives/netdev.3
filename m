@@ -1,182 +1,129 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sonic307-56.consmr.mail.ne1.yahoo.com (sonic307-56.consmr.mail.ne1.yahoo.com [66.163.190.31])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 353EA14A8B;
-	Fri, 10 Jul 2026 08:08:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 073BA3B42CB
+	for <netdev@vger.kernel.org>; Fri, 10 Jul 2026 08:18:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.190.31
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783670895; cv=none; b=bQUxYUsTkRfXzXrWYwgLMMhIVX+wAc4f2UmBttlyCpxqd0c3EbJDi3q+ELgauoCriY4oFAIBYeUTDYnEGt53QLLvsbZlTfbZ5vRUo4DnPHndvv3xWlf5CDPiGbXkqf3haLuFzwvMT9PNkMGXNZ0tLvlLUwWa5LBUXFNXy1Im8g8=
+	t=1783671505; cv=none; b=CyIoYfKNPWIarhL12Xi6fsd8SpotOwwI656ouCcGFUGeci9Pp0ZJB4B5FCYaaZIT7RhcPkAhDZGZcx0XfByZvQ4PLnjp+l5+iWasiXKw794DHoxUACNh4+7UfjSQdjDzrFerSmHprs1dbeC5mAjWufbiAJWO/bg2egm6jy23VSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783670895; c=relaxed/simple;
-	bh=Q+Yo2U7XnAZ8syfZgsKOmvbelG+Kcsw6H5GTya/Onh4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HyzFQAdww9WA3OBMi4ljitutTgJJYqUS8daAC/uARYV18H0GiEOFfrveM9cq2a+fDXBK25lYVpxDq+XzACZWZveXaL95fkJJDqwNqaTF9LQI5ze16G7d0WcXfTZSBzsseZLszD6ouqRcbdpdVM0E3/nZhmXvomMsG9qVcJk1hbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=t4RXXSZO; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=L7RASeSB; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1783671505; c=relaxed/simple;
+	bh=efnpitq5MLIvEzz5Ii+8iOQdc2Iv78JmanN5b1AUISY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XnrRIONBiP+76SSOoIqD4FZMOXM/h6fo9TPWvau4iOs32Fkeveu/o9xaAIPgE4FsmO8/H5AOGP2idqVMoXNMtoZ+qRmDo3duxRLf4Epa/P8Rr6XOPJSzuBIJ26PcgN8q+Siqf+USMxRnqKsGTt6wXVrKgubMZvNHHX5icLA7oK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=nspkYa+H; arc=none smtp.client-ip=66.163.190.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="t4RXXSZO";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="L7RASeSB"
-Date: Fri, 10 Jul 2026 10:08:10 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1783670892;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fkSyy0EdFmNm6HCxvkwcn7o7zQaNKDDJtxQq1O2JCQg=;
-	b=t4RXXSZOG4/jeKiAzEv1ALEKmJ+Ini0iOxcLJZqaZmVeYE5U4uem7GtZeVKd+TL8Y63XhI
-	cNqEN4VFPncgwC3sUg9y1PHLHxDG1VnsNdGb/jsJhizQNu7eNbLudoCtkr6n5IPBjYq0fc
-	mVEnEeUVJy8cODTgP2BshrLuGDAGp8i7FTEdq3UPnf7ZL7Q6iLaNpxDHlVsyKIQfgXD52D
-	e/8FWfyyu/KnwDpn9MlsEdO4m7O4gbbeK7FtCyahML7vUuFJ7/B+HncDUAKArnvgysZi/f
-	SzaU5yVxZQh+ms7AsLnA8MqAHzywuxoWfQ6KHnpW/3lqfgBMj2JirpmpwnML0A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1783670892;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fkSyy0EdFmNm6HCxvkwcn7o7zQaNKDDJtxQq1O2JCQg=;
-	b=L7RASeSB1pg0ErWTO9R22yZfLDm/ij6BAdmUQWm62sy44X+9prX96j6sAMFjHFIfM0yXWr
-	h7THdymrkjYSh6AQ==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: "Taedcke, Christian" <christian.taedcke-oss@weidmueller.com>
-Cc: christian.taedcke@weidmueller.com,
-	=?utf-8?B?VGjDqW8=?= Lebrun <theo.lebrun@bootlin.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Kevin Hao <haokexin@gmail.com>, Simon Horman <horms@kernel.org>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Robert Hancock <robert.hancock@calian.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net 1/2] net: macb: reprogram TBQP after shuffling the TX
- ring on link-up
-Message-ID: <20260710080810.ipWXip53@linutronix.de>
-References: <20260706-upstreaming-macb-irq-storm-v1-0-ab3115b5a13a@weidmueller.com>
- <20260706-upstreaming-macb-irq-storm-v1-1-ab3115b5a13a@weidmueller.com>
- <20260706150422.-wYiCBuE@linutronix.de>
- <4c0570d2-5018-4389-ab63-5f829cc41f32@weidmueller.com>
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="nspkYa+H"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1783671502; bh=HZTGzOSblixKNwAEbOA/HMVyQbV865BjFJWEFec0xA4=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=nspkYa+H9mibx+FbLeGeu6FuQtJXJlmG2IBVEnAQaeVEE1zniG19sf3/b9pP9yL7UsBfDpJwGmWhnU8MRnemj0tKMD3ug5HV+VCJraiCoS178Hkca9Xuy/qbxQiisnvHrkJ08vFk1yXKt2waeZznPEPQ/1kEw2KDJVQDOnoqy+RVtu+nY0/0/s/bdLdTtmig0X2FVK3C9ppulzP+lJX09TWIK8YZ1YUzttL7z5+e+Q6EkDNixLoF8FeZf88PJ4bW0mNDo5o76mgagENLCOkM3kwxCfHv5CEVNIb+5S9uwOOtonPAg9mZ4dK6EXe4lv7kM8yxoWPSwelukAu7EPhZtA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1783671502; bh=bwSHf9R6W32B/TlyxLCj4pJcUVnulRudbGUB0364gZb=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=MZDIKFBAOa383q4L5/xxR3pmhhZ6vFf7kVxGKf3W4mXNe3n/LZwCS+FcXC5jF/+ASxCccgHwyAunUt5Qopxkla2EzOMfuxLehkxd2en/EO2wK79blWK59r7us5dFkcJCNYqM6H8gonRVhg4gyhHyKkytiI5yPj47d/FAMachWvc2H83wyUuvFefaujkeIKIcQc5nEaCSSVIZAD1OBCaeiW957Vz3o8hcsXSDfIScqUY/moEGMgjgiLQj2A1E1LblOH3a4oniY+ys6hipWirbtoPb2PQzrRKuPL0TO1XgKR3Pn7cLJYXOaxHyuU6cUVe/5efa56vosVsoZcEeIhUbgQ==
+X-YMail-OSG: lO8ndqQVM1n3XJCb1bAzEAspjdEEVzRVUA26Lq6dWL.cUyIK1IfcXDAu3Xiv1G7
+ ojslMpBxhZgZRUriyBshd0LSaUI1yPaSTp6cO66EeECue5v8JPLtKIEsmWVfjbuLj8aQS7mmPVQN
+ vd02ueFQ5.GCVGpRYOZYtYuizW.aYjBCIIE8vWVHorTphJxDgLeXbVLkWmXgJyb3niVe6B1rzDfi
+ wcZGQO7HhlN3i09V1J0ifukDxbo454XEzM5O9VUtUyeANcyCF0CTQLphvqKejh8hINkvOjkBXIjz
+ VJ07eYuCRkUQm3POw_L_qI9AK.l9n6RYw4yhnrUJ9OcHevxXz0Q2t80K6r0S4K9aHIbUIWmRGQS6
+ qQo2JdqsvklPfpI7asgaahb_ofo7OGabBUP1QR9mLHBNNdU0GJR6oiSHiAJW9oJ3Vsu6Wnm9kpc.
+ QcR3jgeCyta2TrsFo1oo60lfgsFYPANgOBCH5hqgV_zMvrRHfuf_g9MrfOSmjpF9Lg_9kUp6gy84
+ wqvBrdFIVCf8y1l.1tcCOiJrI5h1oZx9aGt8c7tkwBxB5ayEalaxPaF6OObfx.nP6Bc9NDu4PSdL
+ GPDkJ8HaYOjjj_g2GIjtcNeRsYDoh5eqD8yIWQP35u_xvgrsizDBsxC52bgvcvJLxBE6GYUQ5bCH
+ EQwVw54giGYSh9SYsKBo_dNUS3p4toK0NU_l_.64_N36WEkwJUHeS72v.v4lJ9zn9JZs5cnvTl5c
+ WqCQNDvwbDbh.7RYbXoizAea2NjEUhLK6IDLMcv38MBathmk_pnJNUQaAAO.a4q29WF2Wf8cO1.D
+ sF.MkTf8I.4KFRULjSDJBnHDJMRUytTg7aHxTQZnxcgnUCZqKwskBCsm.BJ1nWjuoaMo7BLay91o
+ oAd1D4bZ9afgSGnRj2l36XDfMDdjaQB1sfy4Dt7aG6OX4X3Hj700G6JvskL_mXIYZl6idLkpEnfT
+ h.mCP0oLOjxj9A2ldzBC_gjObBcx65AuIh90iPGTXPd3RcL5q.pqXfeMmr93uD9KNi_yTiDiovUG
+ ic0jMLzVzDWPKyGauti5MBz2TfrlR7Oh4dJC8ayzpgArBYEg1bFhT.9z4B5C.TfWb3SWZwWZMiV1
+ reaWUjEkhDAEmV8rtGOpEDpjFldiAehgdZYE8pkB1AlnQReLOdJu.iluT0qEZvgJ.rbi2WPXHceP
+ SYbHSFeHCUOvFPIJ49_epIJyc6XHLTEMfmEA73mkgyk.ST3mNREvfFAFyvPkQqAqN.MD_rM.cvRa
+ 4NQuYb8iDokyHUjcCSktSpWy9puDeuPgVh3Fuk0bf8lVsDc55ZAOsDTFDeMc8WeY_iSDtTiYJk8s
+ Vi_xZKtASDqL78oZEu0OBq8sGF9jP9pbOusfOe9QGbLhqshSbi8TnbicAH7cqGAAGrjQaP_wEqaj
+ IkcPh34C63_ttu9uAQn._L3q9_mh26S25DelA9JTHijHGnU2_VnNRxYo6IvHaugGG0AEXcwaEMCq
+ KC2jXokjmicIrMy._MCr0kcra5RPTPjPSdUPB08BNVYKDFHhegYiyKmgjyzlT3XbqWvEZU6zY6uP
+ Ho8sSR7AXYgR2h5YruOjZnwo6wFgz1szsP3Mspn4hEe.fKn0Lbwp9Sa1i6M.5.vxD5xpwx1lwo1R
+ Ikbt7u9ib824QUWSzj0CoDSSS84TmXHn7PlcKIpxU7wPxyaqTa3Lf7z0vtI.AFtyUJn3aMFGLnUo
+ cwD8RK5RYRuXjRyeOh_OBFwRufjIbpXEJ.yQfLhndPfrRF4XIWqunl8baEo3BoWG9bOsL5K.rjEG
+ 9K3op8daNtoz4WU0qSXgWDgTmI2iTNKkDBZRAOyC7a5g_xMQcMi2lxpPm7jaV42Y3ieujXmJ43ZS
+ Syop8_SAytrgYNBbWSd02Wuye_KZnzsvlid4dgcZsipR4TvXgGp4V4i1X5wcjJH0ODukXyHiertF
+ Lk0v6FgRprswYGmJ.2onmh8Z4rSMTKf4fwIqKWUnHh28vnpXGGxALbH6hswihz_YGLMZzSVM3sNE
+ 4XTEsJ6iSeCl1gsm67NFfFAZLesFvMmIS1K7e9dR9wn38ISNyrBJMOzbwqh96ndONh27TqHLPyoh
+ rBQ5nH7EWgEaHOflxlfBq7WAEG7uRUckAT018vYWtnIB.idZz5uxfQgoIASoL0EUukLIiszzk4Z.
+ sqbBq4dhsGusw0q5UyzxHCo57qbjh_C4V7HHiZ.5D0oyC.CrYn5bUVcV8cZs.YqhzhQ4dpMXOEO2
+ fY0_Qg6iXo9FrxTCPRKXD4LYI7EYl5RgNLeTRxIjz00kVtBnwE1bZSgvQS5iVsOsJxNPKHsRogne
+ p
+X-Sonic-MF: <namiltd@yahoo.com>
+X-Sonic-ID: 81049a42-6c6e-4c47-8498-ef83ae1a6501
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic307.consmr.mail.ne1.yahoo.com with HTTP; Fri, 10 Jul 2026 08:18:22 +0000
+Received: by hermes--production-ir2-7b48fcd765-rd79m (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 2ca45d0c930fd1f126e11ebf0f3e9a28;
+          Fri, 10 Jul 2026 07:23:33 +0000 (UTC)
+Message-ID: <be5c2567-1b1a-4155-8577-cd9ad50500bf@yahoo.com>
+Date: Fri, 10 Jul 2026 09:23:29 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <4c0570d2-5018-4389-ab63-5f829cc41f32@weidmueller.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v5 0/2] net: dsa: realtek: rtl8365mb: add
+ SGMII/HSGMII support for RTL8367S
+To: Johan Alvarado <contact@c127.dev>, linusw@kernel.org,
+ alsi@bang-olufsen.dk, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ linux@armlinux.org.uk
+Cc: luizluca@gmail.com, maxime.chevallier@bootlin.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <0100019f488ec83f-cd82d418-999a-40de-b58b-135b4b2aee51-000000@email.amazonses.com>
+Content-Language: pl
+From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+In-Reply-To: <0100019f488ec83f-cd82d418-999a-40de-b58b-135b4b2aee51-000000@email.amazonses.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.26136 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-On 2026-07-07 15:36:24 [+0200], Taedcke, Christian wrote:
-> Thank you for the quick review! This is my first Linux kernel
-> contribution, so I appreciate your feedback here.
-
-You are doing good.
-
-> On 7/6/2026 5:04 PM, Sebastian Andrzej Siewior wrote:
-> > On 2026-07-06 16:02:14 [+0200], Christian Taedcke via B4 Relay wrote:
-> >> From: Christian Taedcke <christian.taedcke@weidmueller.com>
-> >>
-> >> gem_shuffle_tx_one_ring() rotates the software TX ring so that the
-> >> tail sits at index 0 and resets queue->tx_tail to 0, but it never
-> >> reprograms the hardware transmit buffer queue pointer (TBQP). Other
-> >> paths that reset tx_tail to the ring base (macb_init_buffers() and
-> >> macb_tx_error_task()) also reprogram TBQP to queue->tx_ring_dma; this
-> >> path does not, leaving TBQP pointing at a stale descriptor.
-> >>
-> >> gem_shuffle_tx_rings() runs on every link-up from
-> >> macb_mac_link_up(). After a few link up/down flaps that leave
-> >> un-completed descriptors in the ring, the stale TBQP keeps pointing at
-> >> a descriptor whose used bit is set. When TX is re-enabled on link-up,
-> >> the GEM reads that used descriptor and raises TXUBR. macb_interrupt()
-> >> schedules the TX NAPI, macb_tx_poll() makes no progress (work_done ==
-> >> 0) and macb_tx_restart() re-issues TSTART, which makes the controller
-> >> read the same used descriptor again and re-assert TXUBR. As the MAC
-> >> interrupt is level-triggered, it never deasserts and one CPU is pegged
-> >> at 100% in the threaded handler, eventually triggering "sched: RT
-> >> throttling activated" and a dead network interface.
-> > 
-> > But this should also happen with !RT at which point the interrupt runs
-> > at 100% CPU and the softirq has hardly an chance to make progress, no?
+On 7/9/2026 10:25 PM, Johan Alvarado wrote:
+> The RTL8367S is a 5+2 port switch from the same family as the
+> RTL8365MB-VC already supported by this driver. Its chip info table
+> entry declares SGMII and HSGMII on external interface 1, but the
+> driver so far only implements RGMII, leaving boards that wire the
+> switch to the CPU over the SerDes without a working CPU port.
 > 
-> Problably yes. I had issues reproducing the issue since it appeared only
-> on specific test setups when a lot packets where sent to another network
-> device and this device's power was cut. And even then on some test runs
-> the issue was not visible after a few hundred iterations. But after a
-> restart of the whole test setup (including cold reboot of all devices)
-> the issue sometimes appeared after 5 iterations.
-> I only metion RT here because it was the only thing i tested. I only ran
-> the RT kernel.
-> Should I change the description?
-
-It makes a difference if the problem you are facing is limited to
-PREEMPT_RT (and so does not trigger on !PREEMPT_RT due to $REASON),
-or also effects !PREEMPT_RT but may or may not trigger easily on
-PREEMPT_RT.
-
-> >> Fix it by reprogramming TBQP to the ring base on every path of
-> >> gem_shuffle_tx_one_ring() that resets tx_tail to 0, mirroring
-> >> macb_tx_error_task(). The early return for an already-aligned tail is
-> >> left untouched as TBQP is already consistent there. This is safe
-> >> because the shuffle runs from macb_mac_link_up() while TE is still
-> >> disabled, so the transmitter is halted.
-> >>
-> >> Fixes: 881a0263d502 ("net: macb: Shuffle the tx ring before enabling tx")
-> > 
-> > This is v7.0-rc4. So that RT tree of yours has some backports or did you
-> > run into this while trying to reproduce it upstream?
+> This series implements both modes. The configuration sequence and the
+> SerDes tuning parameters are derived from the GPL-licensed Realtek
+> rtl8367c vendor driver, as distributed in the Mercusys MR80X GPL code
+> drop, and cross-checked against the real register sequence captured at
+> runtime by chainloading a custom U-Boot ahead of the stock firmware
+> and logging the live SerDes accesses on hardware.
 > 
-> There were some backports. I ran this on the linux-yocto kernel
-> https://git.yoctoproject.org/linux-yocto branch
-> v6.6/standard/preempt-rt/base.
-> The "Fixes:" commit was backported as 0a47c3889fcd before their version
-> of 6.6.130.
+> The vendor driver brings up the SerDes by loading firmware into the
+> switch's embedded DW8051 microcontroller. Analysis of that firmware
+> (by Luiz Angelo Daros de Luca) showed it only performs a SerDes
+> data-path reset right after the SerDes reset is deasserted, and then
+> runs a link-polling loop that writes the external interface force
+> registers -- duplicating, and racing with, the link management phylink
+> already performs. This series therefore keeps the DW8051 disabled and
+> performs the one necessary action (the data-path reset via the SerDes
+> BMCR register) directly in the driver, avoiding both the race and a
+> dependency on a redistributable firmware blob.
 > 
-> The kernel i reproduced the issue on was linux-yocto branch
-> v6.6/standard/preempt-rt/base after 6.6.142 was merged into it.
 
-It is usually good to reproduce the issue on vanilla ensuring that the
-problem was not introduced by a backport or was solved differently
-upstream.
+[...]
 
-> >> Cc: stable@vger.kernel.org
-> >> Assisted-by: Claude:claude-opus-4-8
-> >> Signed-off-by: Christian Taedcke <christian.taedcke@weidmueller.com>
-> >> ---
-> >>  drivers/net/ethernet/cadence/macb_main.c | 9 ++++++++-
-> >>  1 file changed, 8 insertions(+), 1 deletion(-)
-> >>
-> >> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-> >> index fd282a1700fb..b11cb8f068b7 100644
-> >> --- a/drivers/net/ethernet/cadence/macb_main.c
-> >> +++ b/drivers/net/ethernet/cadence/macb_main.c
-> >> @@ -820,7 +820,7 @@ static void gem_shuffle_tx_one_ring(struct macb_queue *queue)
-> >>  	if (!count) {
-> >>  		queue->tx_head = 0;
-> >>  		queue->tx_tail = 0;
-> >> -		goto unlock;
-> >> +		goto reset_hw_ptr;
-> > 
-> > This update is even needed for count == 0 case? I kind of do understand
-> > that you need to updated if you shuffled the descriptors around.
-> 
-> This was my understanding before researching more because of the email
-> from Kevin in this thread: count == 0 may happen anywhere within the ring
-> (e.g. when both the tail and the head point to the middle).
-> Resetting queue->tx_tail to 0 but not resetting TBQP results in them
-> being out-of-sync.
-> But as Kevin mentioned in his email TBQP is reset to the original
-> value when transmit is disabled (by setting bit 3 in NCR register).
-> 
-> I will investigate this further why my code change fixed the issue for
-> me, but according to the documentation in [1] it should be a no-op.
+> ---
+> v5:
+>   - Raise the port 6 ingress and egress rate limiters to their maximum
+>     at setup time, as the vendor switch init does. The chip resets them
+>     to 0x1FFFF (~1.048 Gbps in units of 8 Kbps), which caps the
+>     aggregate HSGMII throughput at roughly 1 Gbps; the cap was
+>     confirmed on an RTL8367S-based Mercusys MR85X, where raising the
+>     limiters took multi-client throughput across the HSGMII CPU port
+>     from ~1.02 Gbps combined to ~2 Gbps (link in patch 2). The related
+>     HSGMII scheduler line rate (LINE_RATE_HSG_H) is already set to its
+>     maximum by the common init jam table. Pointed out by Mieczyslaw
+>     Nalewaj.
 
-I see.
+I think you should make limiter initiation dependent on whether
+the port is assigned to CPU. In a loop, check if the port is CPU port
+and set limiters for it. 
+This way, newly added systems with CPU port 5 or 7 will also work.
 
-> [1] https://docs.amd.com/v/u/en-US/ug1085-zynq-ultrascale-trm pg. 1040
-> 
-> Christian
-
-Sebastian
+Regards
