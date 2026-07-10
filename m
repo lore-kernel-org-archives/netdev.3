@@ -1,49 +1,86 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B2A0257824
-	for <netdev@vger.kernel.org>; Fri, 10 Jul 2026 15:22:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12301365A12
+	for <netdev@vger.kernel.org>; Fri, 10 Jul 2026 15:26:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783696925; cv=none; b=GPwHRNvdDY1g9r/yBRtUUDxs9XIPUX2/S0r48RlM7brmH+o9ntIJtlffY/xYDc6Ywdce4umYALzaCFTX+Oa3Pigcqfzn96d+MwehVksCBGW0s+/A3ebpG/suPEhsAcxM55gd17IniUgUDMSjiPWVs+Crkd8J5EmCp2YRFy/KOVc=
+	t=1783697219; cv=none; b=QyXDXvlNrH7gZVE4NDreJ5Twl/k09SVycnIfUpUHBSZWm3x9YGwDY2LB+1D110bR8C2zbJk6jutVtuKPFvuiqHEdVbOeeHjyH9hXkBhzKJdN5UaK7aJ9IboKtnVrQLKLppDNVeADVQTJCR3MPyMamZdpxYZL64xiiCJ5FIygR2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783696925; c=relaxed/simple;
-	bh=E02UlOJjRKHWirUaHnm/fAY0sE822rfZSlCOYRt5zZI=;
+	s=arc-20240116; t=1783697219; c=relaxed/simple;
+	bh=PXbwaqibc8aLYtHt2AbJ3XN4O9AIlRXDUFvInPc+0KM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WnFgwVkGEgbQAXFtFiQW4vUrcSEgdZuGRikLWrCElP3MilQ0sxiMGWFxsHDXxQI/Ug6FO14SPiHNCenhfrHa3KW9bKzrX5jy+kaEDg3+EPv3413VAaDFZYNOvGtywRDMdPCbs1zY6We/RPXa1XVk09Wpr7QqZ+eIE4urBIQh1Dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=G9yCNmRl; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=jRBNpv4qxnAEBcj1zgWIch4YKflomvDNO0rj7Yi3qEhCQo1Kud3OIEJTHToIo55RWi1eDAq45iVIjm4r3N9Bx6kXaPlzfE2ghXmf6wl5ZboW2bEBFuEMKhvgu0C8m4rx1gaG9+yejMfF5V09S5wNCjO8sBFaDjtzZzQVDP06kmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CP5PJfgy; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=kefbZYpS; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="G9yCNmRl"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CP5PJfgy";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="kefbZYpS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783696923;
+	s=mimecast20190719; t=1783697217;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0YH0OsQ7SG+0r7mMcuKkzz2GVNVtc6VjMrxG1+l0hoI=;
-	b=G9yCNmRlQzHzHPW/8FYqW8jke3YbX4wC4Ln728mtpB8ezuobGUPd/aCGN3YU71dp6ShGef
-	GofdwNNVyRF/e5jiucWL+7qJN9wTnTs6cQ0O14/L924F4V3F2Qv5ldKkMLIc1etigLVrhD
-	r6Oi0N1mVoPRQlANWXa9Q+IzDwLp4t8=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-324-lDIVrXVSMiqxm_mva8bwuQ-1; Fri,
- 10 Jul 2026 11:20:05 -0400
-X-MC-Unique: lDIVrXVSMiqxm_mva8bwuQ-1
-X-Mimecast-MFC-AGG-ID: lDIVrXVSMiqxm_mva8bwuQ_1783696804
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A58521955EBC;
-	Fri, 10 Jul 2026 15:20:03 +0000 (UTC)
-Received: from [10.44.48.68] (unknown [10.44.48.68])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8509B18005B8;
-	Fri, 10 Jul 2026 15:19:59 +0000 (UTC)
-Message-ID: <5c633517-048b-4174-bfc2-77eb36868635@redhat.com>
-Date: Fri, 10 Jul 2026 17:19:56 +0200
+	bh=h+YxD4p0SB+CCECA8qTnq1hIIPDKgloEvcPzGaAbiCo=;
+	b=CP5PJfgyUgyHF2QmzbMrkEsZyNnCZJ+ehUAfFpEG5pr5edJVeuXAwt01KEDx90oH62BNb7
+	OYEryltNjFhOrkZx4OW2ZZ9J4jzXlFMJaRaFWvp7osGmaCS6LDFuWi1lALbm9XtQC54xlL
+	xSwbhyflnzXQxSjsN60879VMoJPAuqk=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-86-jorimt1CN5y0V-xrzJmuCg-1; Fri, 10 Jul 2026 11:26:55 -0400
+X-MC-Unique: jorimt1CN5y0V-xrzJmuCg-1
+X-Mimecast-MFC-AGG-ID: jorimt1CN5y0V-xrzJmuCg_1783697215
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-493b54823bdso10986305e9.0
+        for <netdev@vger.kernel.org>; Fri, 10 Jul 2026 08:26:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1783697214; x=1784302014; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=h+YxD4p0SB+CCECA8qTnq1hIIPDKgloEvcPzGaAbiCo=;
+        b=kefbZYpSv9+du1gzG9yOWSdd8EPUa7ftQhWK7h/7dzWqO4XEJfrqYqj6UhIW6gS89a
+         2oFQcDUEch3jD7P3X0QRayglG8KSa8hLteBThb0zNbKBLCdWYzD/8TfJv96zoNTAvvn6
+         87zF41uK6+K5fQCmop8AtUOgfoNRUD/vnOe60STfQZwMeUk/EayMEtp29lN4TWmwcZBG
+         uLN4GTHxRyCqMrbIjSY9HbVOMF353NYkcAFsNH4mPOGcYqG/UN2iT+UXkK48yv/IPQJl
+         n5pJjBw62bKpTb6xiM3r3PMx65gBLj/+CT9aTmK7oNSpLzQWh8SvMoPMXFm0qfXe/qb/
+         lobg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783697214; x=1784302014;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=h+YxD4p0SB+CCECA8qTnq1hIIPDKgloEvcPzGaAbiCo=;
+        b=Nug+dZnU5NFr6vYHTKsFPN+tGihji0xpr+G7ZFvYOThalZbMUqRUSlZMqgFPYSueWd
+         rvZZPIct7p/P8oNYS5HoZWtmsEMXRNqr2i7P6j0fI6b7WQzL9n9w1A3cFYCONncOz6Fw
+         FaO7Kowy9askry80fNgqWw7xgaAcx3LK/aw71cASj+FW9sX92XGohpiGUcdfv+rxYkZp
+         9+H//dXX73cUFvvV5oBScaXfBuURdeLmsN9I79T9/Rxmlcicx/7d0ROPxx4UycDljoS+
+         TAX6+3uLgyVVWts9WQ6rNF1GpoZjae9vxePIZ+mozK5BHVgt8bzKplLVMHIO6tPZkrE2
+         K+qg==
+X-Forwarded-Encrypted: i=1; AHgh+RpExeJsn8awLK0SjRDS1dYwkO3r0PSDCY4Gw8GCKau/X66erM1SKFOswALRhai2oP9juCTateU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxXm8JyiKRZqTyMjPUxF5SPehO3E76UISMmDLTE4zr7ndnxYdFz
+	W6I+ryxN2uvKFhbpAYl3qvfLwCncCobUxkUgMBcIFNIiNceP42//0YDHPxhTzofKwI75VmD0e7K
+	kYX6KtIXxj5vObQE/KV5l9fJphlOrzZgwW5zdwo3YsqNZd+Fip3dmRuR3dTpppEuGlw==
+X-Gm-Gg: AfdE7clLxiv8Sjui3W0i2E2k4nrURgGab2cxjhEfE7nD2loJaPxmqbvDwXwlrlDVUj6
+	NNNSDVL87RLve6Yf4UJ3jDR9CMiwxFjnP8MUMhUsx6soRHAntPzZSsfZ3DICZ8Log8xAwNcDPK5
+	pjMm35IublW/bC23kAlSXuKRlsgk97v9rNz4T9E5RbGyoBn2ZePMiiL/A0pJvcMYmRKyu8oHEdw
+	0TEGGL5R70MU0M39a3xJqI5KeqGXcVP8b3AGVm0954FzOA6Wpqkg4WE0Vp8phw5bVO1HYzkNNgG
+	ScSFZPGEmbIJup+Iozx3408kRIjVpao2w0flhXcdi2ve4yZgJI+JqSAsRSRFtilG8+d8E+ycT+f
+	A9KymvUaq0g63BB1P6/jIB3mBfVfFq7KPcjc+FOpixT7n3HOeUL8VPBRKcxHtjk8PURfjUCnI3z
+	PjQ56kpJft7aqu
+X-Received: by 2002:a05:600d:8445:20b0:493:e963:e671 with SMTP id 5b1f17b1804b1-493f2b24ce5mr32456975e9.3.1783697214638;
+        Fri, 10 Jul 2026 08:26:54 -0700 (PDT)
+X-Received: by 2002:a05:600d:8445:20b0:493:e963:e671 with SMTP id 5b1f17b1804b1-493f2b24ce5mr32456695e9.3.1783697214203;
+        Fri, 10 Jul 2026 08:26:54 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:5521:6b10:58fd:68f:7756:389d? ([2a0d:3344:5521:6b10:58fd:68f:7756:389d])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493f2d97527sm75852785e9.2.2026.07.10.08.26.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 10 Jul 2026 08:26:53 -0700 (PDT)
+Message-ID: <531c4085-e7eb-4915-ae63-c53571930aa7@redhat.com>
+Date: Fri, 10 Jul 2026 17:26:52 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,57 +88,111 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 2/4] dpll: zl3073x: add PTP clock support
-To: Vadim Fedorenko <vadim.fedorenko@linux.dev>, netdev@vger.kernel.org
-Cc: Chris du Quesnay <Chris.duQuesnay@microchip.com>,
- Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Jiri Pirko <jiri@resnulli.us>, Michal Schmidt <mschmidt@redhat.com>,
- Paolo Abeni <pabeni@redhat.com>, Pasi Vaananen <pvaanane@redhat.com>,
- Petr Oros <poros@redhat.com>, Prathosh Satish
- <Prathosh.Satish@microchip.com>, Richard Cochran <richardcochran@gmail.com>,
- Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org
-References: <20260708170527.916035-1-ivecera@redhat.com>
- <20260708170527.916035-3-ivecera@redhat.com>
- <8de7e108-3616-4e02-a7be-243e4cb8563c@linux.dev>
+Subject: Re: [PATCH net-next 6/7] selftests: drv-net: extend so_txtime with hw
+ offload
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, netdev@vger.kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
+ horms@kernel.org, andrew@lunn.ch, Willem de Bruijn <willemb@google.com>
+References: <20260706133433.3142805-1-willemdebruijn.kernel@gmail.com>
+ <20260706133433.3142805-7-willemdebruijn.kernel@gmail.com>
+From: Paolo Abeni <pabeni@redhat.com>
 Content-Language: en-US
-From: Ivan Vecera <ivecera@redhat.com>
-In-Reply-To: <8de7e108-3616-4e02-a7be-243e4cb8563c@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <20260706133433.3142805-7-willemdebruijn.kernel@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On 7/10/26 3:08 PM, Vadim Fedorenko wrote:
-> On 08/07/2026 18:05, Ivan Vecera wrote:
->> Add PTP clock support for the ZL3073x DPLL driver. A PTP clock device
->> is registered for each DPLL channel that is in NCO mode, providing
->> gettimex64, settime64, adjtime, adjfine and perout callbacks.
-> 
-> Here we come back to the discussion of NCO mode. Is DPLL channel
-> actually a pin (virtual or physical)? If it's not, then it means that
-> channel is exposed as independent DPLL device, that shouldn't affect
-> other devices, but AFAIU, it can in the current implementation. If it is
-> a pin, why do you check device's mode rather then pins?
-> 
-> And another question - what happens when channel changes its mode to
-> non-NCO? Do we have ptp device disappearing from the system?
+On 7/6/26 3:34 PM, Willem de Bruijn wrote:
+> @@ -38,6 +41,34 @@ def test_so_txtime(cfg, clockid, ipver, args_tx, args_rx, expect_success):
+>          cmd(cmd_tx)
+>  
+>  
+> +def _dev_setup_pacing_offload(cfg):
+> +    """Configure pacing-offload-horizon."""
+> +    ethnl = EthtoolFamily()
+> +
+> +    try:
+> +        rings = ethnl.rings_get({'header': {'dev-index': cfg.ifindex}})
+> +    except NlError:
+> +        raise KsftSkipEx('ring-get not supported by device')
 
-Hi Vadim,
+pylint complains:
 
-I understand your point. The PTP code was originally developed before
-the NCO pin switching was implemented, when it made sense to split PTP
-support into two patches - basic PTP for NCO-only channels (patch 2) and
-then extending it to all modes via TIE write (patch 4).
+tools/testing/selftests/drivers/net/so_txtime.py:51:8: W0707: Consider
+explicitly re-raising using 'except NlError as exc' and 'raise
+KsftSkipEx('ring-get not supported by device') from exc'
+(raise-missing-from)
 
-Now that NCO mode can be entered and left dynamically via the NCO pin,
-this split no longer makes sense. Having patch 2 register PTP only for
-NCO-mode channels creates an awkward intermediate state where a dynamic
-NCO switch would require dynamic PTP clock registration/unregistration.
+> +
+> +    if 'pacing-offload-horizon' not in rings or \
+> +       'pacing-offload-horizon-max' not in rings:
+> +        raise KsftSkipEx('pacing offload horizon not supported by device')
+> +
+> +    if rings['pacing-offload-horizon-max'] < 50_000:
+> +        raise KsftSkipEx('pacing offload max horizon too small')
+> +
+> +    cur_horizon = rings['pacing-offload-horizon']
+> +    new_horizon = 50_000
+> +    ethnl.rings_set({
+> +        'header': {'dev-index': cfg.ifindex},
+> +        'pacing-offload-horizon': new_horizon,
+> +    })
+> +    defer(ethnl.rings_set, {
+> +        'header': {'dev-index': cfg.ifindex},
+> +        'pacing-offload-horizon': cur_horizon
+> +    })
+> +
+> +
+>  def _qdisc_setup(ifname, qdisc, optargs=""):
+>      """Replace root qdisc. Restore the original after the test.
+>  
+> @@ -56,6 +87,7 @@ def _test_variants_fq():
+>              ["one_pkt", "a,10", "a,10"],
+>              ["in_order", "a,10,b,20", "a,10,b,20"],
+>              ["reverse_order", "a,20,b,10", "b,10,a,20"],
+> +            ["beyond_hw_horizon", "a,70", "a,70"],
+>          ]:
+>              name = f"v{ipver}_{testcase[0]}"
+>              yield KsftNamedVariant(name, ipver, testcase[1], testcase[2])
+> @@ -64,15 +96,42 @@ def _test_variants_fq():
+>  @ksft_variants(_test_variants_fq())
+>  def test_so_txtime_fq_mono(cfg, ipver, args_tx, args_rx):
+>      """Run all variants of monotonic (fq) tests."""
+> -    cfg.require_ipver(ipver)
+>      _qdisc_setup(cfg.ifname, "fq")
+>      test_so_txtime(cfg, "mono", ipver, args_tx, args_rx, True)
+>  
+>  
+> +@ksft_variants(_test_variants_fq())
+> +def test_so_txtime_fq_mono_hw(cfg, ipver, args_tx, args_rx):
+> +    """Run all variants of monotonic fq tests, with offload horizon."""
+> +    cfg.require_nsim(nsim_test=False)
+> +
+> +    _dev_setup_pacing_offload(cfg)
+> +    try:
+> +        _qdisc_setup(cfg.ifname, "fq", "offload_horizon 50ms")
+> +    except Exception as e:
+> +        raise KsftSkipEx("netdev does not support offload. skipping") from e
+> +
+> +    # Expect all tests to use only hw pacing, except beyond_hw_horizon.
+> +    hw_only = "-h" if args_tx != "a,70" else ""
+> +    test_so_txtime(cfg, "mono", ipver, f"{hw_only} {args_tx}", args_rx, True)
+> +
+> +
+> +@ksft_variants(_test_variants_fq())
+> +def test_so_txtime_pfifofast_mono_hw(cfg, ipver, args_tx, args_rx):
+> +    """Run all variants of monotonic tests, without fq pacing sw backup."""
+> +    cfg.require_nsim(nsim_test=False)
+> +
+> +    _dev_setup_pacing_offload(cfg)
+> +    _qdisc_setup(cfg.ifname, "pfifo_fast")
+> +
+> +    # Expect all tests to pass, except beyond_hw_horizon without sw fallback.
+> +    expect_pass = False if args_tx == "a,70" else True
 
-I'll squash patches 1&3 and 2&4 in v2, so the PTP clock is always
-registered regardless of the initial channel mode, with per-callback
-mode checks.
+pylint says:
 
-Thanks,
-Ivan
+tools/testing/selftests/drivers/net/so_txtime.py:128:18: R1719: The if
+expression can be replaced with 'not test' (simplifiable-if-expression)
+
+/P
 
