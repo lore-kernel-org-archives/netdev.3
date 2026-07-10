@@ -1,52 +1,57 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E25388374;
-	Fri, 10 Jul 2026 19:27:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F9537E2ED
+	for <netdev@vger.kernel.org>; Fri, 10 Jul 2026 19:36:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783711674; cv=none; b=FgTZl09KPTLLM96q4aTd3MsqTlO4a0fN2HK1i3suOOFm5QPCOTHZ6iXPbqRpWFYNvggK4L2D/BMFR9pBoDhhD669nihJp3EdQODFJ9LRcW+3Kf0Qg7QlBnxQtAFrQIr+cHywdEm5oT5+ZoxV/vlPTDwcdT7cvKVdlmRmrr/RC/o=
+	t=1783712198; cv=none; b=llZkfu8ZlD76GKhpdpAcO1YMYISuZKhtH3tvnLHl4YBdVBHh31FeCLUNKzT29soC1xUfs1d/ZaZTtVsC4mo5IiFhR1ZG/gR0jjYy/fbi/b6bZE93F+j8Ef2xIDqX/idayZFx/1tjtEN4ET7KJxMrKmO4DbFeKK0F/ByAV+e/Mng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783711674; c=relaxed/simple;
-	bh=UWj/0xJ3E/s9fNNFWLVQr/YscRyFgXX/OvTPMf1Fvbw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HuzPd9fVFbr0ZBVxDFjQdTSJRquuOFcCCdy5xETLwAVVvRnggPpcRhAuismm14LKvouqYWXZKYBHgRPNCzrtY2LKtAx4k6D7umOQaiUXQmtwQCn9Gh42rwwMUizNeW9t8tk5WAWjlp+NQk0vY2luiXmxLS1iAUMOZ1L3H6oVIWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=VBl1erQH; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1783712198; c=relaxed/simple;
+	bh=WS98kGfygDlEMfZuJnC9+mF5mKSQWAxcx5kFA6qA8r4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hxkiW2SloEnWMsMtYWyXaADlh0/9UJmCrdfqHGiigMbrurvbMfVhdftD7pegv9tNnyyq0XFXeeER9BKQU0TsJ27sz5jsdC7ve24zC4DWNbsltYojhTpEehq0qu93NZzDDvOhcXoxGDsQcoACqyIg4JCKagnhHPe6Sq2kePXbCWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UUFLgzeX; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="VBl1erQH"
-Received: by linux.microsoft.com (Postfix, from userid 1006)
-	id 74B1720B7169; Fri, 10 Jul 2026 12:27:45 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 74B1720B7169
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1783711665;
-	bh=CIGcZUacPy7ZKSLfX1pZyU4Ol+FGeuAdAMX6DIN/vCs=;
-	h=From:To:Cc:Subject:Date:From;
-	b=VBl1erQHAaEaduadQeljAY3y0Qs58udnTl6bE2Rf79pvfmWf7HNX0zjcsbvJBn84U
-	 NjvcI6UA0MLnuEeAHbrRWQjfpH9u4eCW2tJrrQ7vsC/vLXc8+w62YAmpcQJUJnE5s9
-	 l6jBSjr/aOTQxJkY75WJrCzbgu8+tY/UrBhz5Sgw=
-From: Haiyang Zhang <haiyangz@linux.microsoft.com>
-To: linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UUFLgzeX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783712195;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=lKRebUVmsTw/jM/4fGeq3q+j+hSjHHN0rDmB9FYU7rk=;
+	b=UUFLgzeXhIV/LILRXYuyGQ/+5VyYvMup5hguHWPSzvqVxVZHbRfhBNS1QXFncAiTb6tW5n
+	wVMrjijRanSp9xyJp7WBMN7OIeEKR5GNT9evHbGD52g1QKRYB7ja/oCB+JQT+jp8SsXGOC
+	qElYOAu4SiPF+PiknkP6v0JyCXVuClo=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-75-34P3W8L6OqemADJc-SGs7Q-1; Fri,
+ 10 Jul 2026 15:36:32 -0400
+X-MC-Unique: 34P3W8L6OqemADJc-SGs7Q-1
+X-Mimecast-MFC-AGG-ID: 34P3W8L6OqemADJc-SGs7Q_1783712191
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EF2441800639;
+	Fri, 10 Jul 2026 19:36:29 +0000 (UTC)
+Received: from p16v.redhat.com (unknown [10.44.48.68])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 157133000B4D;
+	Fri, 10 Jul 2026 19:36:26 +0000 (UTC)
+From: Ivan Vecera <ivecera@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Milena Olech <milena.olech@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
-	Aditya Garg <gargaditya@linux.microsoft.com>,
-	Shradha Gupta <shradhagupta@linux.microsoft.com>,
-	linux-kernel@vger.kernel.org
-Cc: paulros@microsoft.com
-Subject: [PATCH net-next v4] net: mana: Add handler for sriov configure
-Date: Fri, 10 Jul 2026 12:27:29 -0700
-Message-ID: <20260710192735.2921300-1-haiyangz@linux.microsoft.com>
-X-Mailer: git-send-email 2.43.7
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net] dpll: fix NULL pointer dereference in dpll_msg_add_pin_ref_sync()
+Date: Fri, 10 Jul 2026 21:36:25 +0200
+Message-ID: <20260710193625.1378822-1-ivecera@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,79 +59,62 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-From: Haiyang Zhang <haiyangz@microsoft.com>
+When a dpll_pin is shared across multiple dpll_device instances and
+those devices are being unregistered (e.g. during driver module removal),
+a NULL pointer dereference can occur in dpll_msg_add_pin_ref_sync().
 
-Add callback function for the pci_driver / sriov_configure.
+This happens under the following conditions:
+ - A pin is registered with two or more dpll devices (dpll_A, dpll_B)
+ - The pin has ref_sync pairs with other pins
+ - During unregistration of dpll_A's pins, a ref_sync partner pin is
+   unregistered first, removing it from dpll_A->pin_refs
+ - But since the partner pin is still registered with dpll_B, its
+   dpll_refs is not empty, so dpll_pin_ref_sync_pair_del() does NOT
+   run and the partner stays in the pin's ref_sync_pins xarray
+ - When the pin itself is then unregistered from dpll_A, the delete
+   notification calls dpll_msg_add_pin_ref_sync() which finds the
+   partner in ref_sync_pins, passes dpll_pin_available() (partner is
+   still registered with dpll_B), but dpll_pin_on_dpll_priv(dpll_A,
+   partner) returns NULL because partner was already removed from
+   dpll_A->pin_refs
+ - The NULL priv pointer is passed to the driver's ref_sync_get
+   callback, which dereferences it
 
-It asks the NIC to provide certain number of VFs, or disable
-VFs if the request is zero.
+ BUG: kernel NULL pointer dereference, address: 0000000000000034
+ Oops: Oops: 0000 [#1] SMP NOPTI
+ RIP: 0010:zl3073x_dpll_input_pin_ref_sync_get+0x73/0x80 [zl3073x]
+ Call Trace:
+  dpll_msg_add_pin_ref_sync+0xb8/0x200
+  dpll_cmd_pin_get_one+0x3b6/0x4b0
+  dpll_pin_event_send+0x72/0x140
+  __dpll_pin_unregister+0x5a/0x2b0
+  dpll_pin_unregister+0x49/0x70
 
-Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+Fix this by skipping ref_sync pins whose priv pointer cannot be resolved
+for the current dpll device.
+
+Fixes: 58256a26bfb3 ("dpll: add reference sync get/set")
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
 ---
-v4:
-  Removed unnecessary pci_disable_sriov() from mana_gd_shutdown() as
-  suggested by AI review.
+ drivers/dpll/dpll_netlink.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-v3:
-  Updated sriov disabling paths suggested by Paolo Abeni
-
-v2:
-  No longer change VF autoprobe as discussed with Leon Romanovsky and Bjorn Helgaas.
-
----
- .../net/ethernet/microsoft/mana/gdma_main.c   | 24 +++++++++++++++++++
- 1 file changed, 24 insertions(+)
-
-diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-index aef3b77229c1..a38d4bb74621 100644
---- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-+++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-@@ -2456,6 +2456,8 @@ static void mana_gd_remove(struct pci_dev *pdev)
- {
- 	struct gdma_context *gc = pci_get_drvdata(pdev);
- 
-+	pci_disable_sriov(pdev);
-+
- 	mana_rdma_remove(&gc->mana_ib);
- 	mana_remove(&gc->mana, false);
- 
-@@ -2525,6 +2527,27 @@ static void mana_gd_shutdown(struct pci_dev *pdev)
- 	pci_disable_device(pdev);
- }
- 
-+static int mana_sriov_configure(struct pci_dev *pdev, int numvfs)
-+{
-+	int err = 0;
-+
-+	dev_info(&pdev->dev, "Requested num VFs: %d\n", numvfs);
-+
-+	if (numvfs > 0) {
-+		err = pci_enable_sriov(pdev, numvfs);
-+	} else {
-+		if (pci_vfs_assigned(pdev)) {
-+			dev_warn(&pdev->dev,
-+				 "Cannot disable SR-IOV while VFs are assigned\n");
-+			return -EPERM;
-+		}
-+
-+		pci_disable_sriov(pdev);
-+	}
-+
-+	return err ? err : numvfs;
-+}
-+
- static const struct pci_device_id mana_id_table[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MICROSOFT, MANA_PF_DEVICE_ID) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MICROSOFT, MANA_PF2_DEVICE_ID) },
-@@ -2540,6 +2563,7 @@ static struct pci_driver mana_driver = {
- 	.suspend	= mana_gd_suspend,
- 	.resume		= mana_gd_resume,
- 	.shutdown	= mana_gd_shutdown,
-+	.sriov_configure = mana_sriov_configure,
- };
- 
- static int __init mana_driver_init(void)
+diff --git a/drivers/dpll/dpll_netlink.c b/drivers/dpll/dpll_netlink.c
+index bf729cde796a7..5703667593a7c 100644
+--- a/drivers/dpll/dpll_netlink.c
++++ b/drivers/dpll/dpll_netlink.c
+@@ -567,6 +567,9 @@ dpll_msg_add_pin_ref_sync(struct sk_buff *msg, struct dpll_pin *pin,
+ 		if (!dpll_pin_available(ref_sync_pin))
+ 			continue;
+ 		ref_sync_pin_priv = dpll_pin_on_dpll_priv(dpll, ref_sync_pin);
++		/* Pin may have been unregistered from this dpll already */
++		if (!ref_sync_pin_priv)
++			continue;
+ 		if (WARN_ON(!ops->ref_sync_get))
+ 			return -EOPNOTSUPP;
+ 		ret = ops->ref_sync_get(pin, pin_priv, ref_sync_pin,
 -- 
-2.34.1
+2.53.0
 
