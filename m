@@ -1,57 +1,89 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CE540E8FC
-	for <netdev@vger.kernel.org>; Fri, 10 Jul 2026 10:54:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA9223FADF2
+	for <netdev@vger.kernel.org>; Fri, 10 Jul 2026 10:54:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783680851; cv=none; b=G12NhTuGcZVkGrEt5neJxCRDpH1+t9OQWfsvZ8s5brgfw0qmJtuo9xwFwWF2+/tIvWtPqdmLZKDd8FV+F5EkxrCOV49KVQkA+yvdmOsikPXQEo3UhTBC5W9AN1+VgD5oXM1H4RR0qPMMlFe5iIhYBCDgZdJ5C8PPRsrKv6Dpgz4=
+	t=1783680882; cv=none; b=fVLVl3sbrz3nGsvo1CXPADR5qjYSr0d/GTL1KsLSngTH3jaDetoicI2sevcaYRhBvGJUrCsfwA27T89yXFrnkGBUoFEgg5zozAaiBopAaFEduT8UO90gYle/RaWm9MU3K8MXIkDmHwJMP+B7cd13FLWgF7W5RJ/MrGTGkpXlC0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783680851; c=relaxed/simple;
-	bh=v+lj4eItScpbsuUVoYJ361waa9gsm1oFYCEJ7e2DDWI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BmFj6Gxzzu77chMLpPW456E6qHUZcXivy60IBXlHZXlOPv36PzyknPD4em1RJ0F3z+SyEcqMrxGy3hp70pVNnSBUIHakOzMP5sN9O38v9mZI6pKsQt2x9KlMIZsmSzCMB5WI99HtZWpwIT/kuFuSk0Q5zPUPRVOQkIC4d+Y1B8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f8g3Qlj2; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1783680882; c=relaxed/simple;
+	bh=vN8Gplg3HKboYHhrh53h0TgVjNq08Q48tb7ZFBm/Nag=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nzIgDZpz1HsDVS42gyG3GQVHcwXRHLSYiyYHOn42f6JPsySuColRbLBeHY1raRKOi+Fj7WkoBiilhuoweZvrDFNgjJZFkK9lSXeKNocqA2qrKah00W9tVaSz6T2ZXmfx6mtz+ewPLm9/ZcWYEhHbCVNuh/ib6/hHlma+FD8hi8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ohSWk+9m; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f8g3Qlj2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783680849; x=1815216849;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=v+lj4eItScpbsuUVoYJ361waa9gsm1oFYCEJ7e2DDWI=;
-  b=f8g3Qlj2HcSjI3phfvAyTw9xDUFSM1XCY6l+7hQK5ZXYUNDOvZYHTpNd
-   aZH1EVPelVYSYcNs5Rl0AXAdutoHRAW5xvjedvUfth9foxERUWDLFhS8X
-   CPgXBEg+UiGw0JjP1APjKFsWbaXJ0I5sNsI+PPX/rnL7CCG7Kyjevcjfz
-   ZCe3EzOl7kCSLfD4SBsej5UMoWpaf1aKjCWFqXYemMnGsKNNlR25sEQx9
-   l07c8+HjEuGgg5qVewdPrN9DP1eSdo+RGlFi2TwqJlxP+02yBPowpY+12
-   Lgng1bsgaW6R3qQA65em8u4fKj1PDVrZM0Jcw3R9r4SxnofclCOZBls7Z
-   g==;
-X-CSE-ConnectionGUID: LaJFDV8NQtyp6yWLz/I1Ng==
-X-CSE-MsgGUID: XmWsdWwBSKuMFOi2jmNcZw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="86920269"
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="86920269"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2026 03:54:07 -0700
-X-CSE-ConnectionGUID: XEwqCZbuTB2AhqO+6IkBmw==
-X-CSE-MsgGUID: lAfzOR/UQHuZ3JjkMszCVA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="259750960"
-Received: from gnrd8.igk.intel.com (HELO GNRD8) ([10.123.232.137])
-  by fmviesa005.fm.intel.com with ESMTP; 10 Jul 2026 03:54:06 -0700
-From: Sergey Temerkhanov <sergey.temerkhanov@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org
-Subject: [PATCH iwl-next v1 2/2] ixgbe: Implement PCI reset handler
-Date: Fri, 10 Jul 2026 10:54:03 +0000
-Message-ID: <20260710105403.1050025-3-sergey.temerkhanov@intel.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260710105403.1050025-1-sergey.temerkhanov@intel.com>
-References: <20260710105403.1050025-1-sergey.temerkhanov@intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ohSWk+9m"
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-c999f162c9aso436593a12.3
+        for <netdev@vger.kernel.org>; Fri, 10 Jul 2026 03:54:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783680880; x=1784285680; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=j4ZVGeRqKMU3nyf6nzNvRFsoeF/EGxON3z9J6rKtVAk=;
+        b=ohSWk+9moSZZ5EDWEhLYvlLf358g21eZnPOK3Q0HD0zKwl3ESSU0ue7XwFVJzAG2Gr
+         w6sMaEzKUvtdcUy/+3LU3lzS02uwQyA7oHvqHfmbM74Er5ODrM67qV55s9tGVpxWl+6L
+         8AQ6Q8o+vDJ3YP88wuUdCNs/QBBkCms7sZDk9ybAYoqXgVed/F5L84NJYYLHdLu1mL3F
+         fwN5pOEWAm1NBoNHtvVyQeQZjppg3siATA12ejYeDlnzkhBGjKGjnh1aCV26QLYi3pUa
+         uFSmbgBkpKxXhFVHPslVrLseeIu/IfGRRbe+758FnGwJnjuOnOUOUtvTxk86dgWOY0Fo
+         yRuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783680880; x=1784285680;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=j4ZVGeRqKMU3nyf6nzNvRFsoeF/EGxON3z9J6rKtVAk=;
+        b=c8V/amZGAq51aLUQ4WD96ukOFwKhCymRUasgi6sTZLMh4/NDSBDcTEtwJxuKQgnyF5
+         eTotZbTXmWuYfZgUwaOM2NgjBr0WeXFWg4oMmZusfWGSGxe/e/lR66xW0Ves6pPdV7wO
+         b3zqrf0tLVEJ3p3dJ2WvPblcpupIm+L+zVjdGupVNGLyouDZy50dV1tPvF0iCw70KDNT
+         zyqHFc+bnbVdN2t8KiowO0JaglQg/Cl9S2lprnwAx83DcvJCdd9UVNAKrkvYMtQSPsBP
+         392A1vO4LzxpvxV/CicSayuBrE9E71TmBGb93UFzLjIqU8zGFPFH9dkHQbJdmSzSbAib
+         xeZQ==
+X-Gm-Message-State: AOJu0YxSg7wgj7+NDRFuPWsDOoodGKPXUJyv2AkJmkTRPz1C88KEcZLa
+	LorGNbvlaUiOOY50RqlgsSdb7SX9PeKAICdGUj1rBUUx4lxCVLXn0NsAdTtFTSlL
+X-Gm-Gg: AfdE7cnay4v0izsDLOGlYpT/j21+xnVnZI4rhgJWU009pMSmlKZMwStaxyGJjRaVSjT
+	YkzR83fEC0Y+UjUgnBu2lWQO+RuglerNWuIzyxOK4zGi9CTj9MjM3vPrNx0t0QeyxTWMg9ZLZRC
+	2ACJkRSVmt53e5om5Bqcz1T+3gcmcNGHlsCevO3D0aN6XcDLh00tTi1XFpGX0faUgkcvIYqQYYY
+	wTNEfyoYHcNhog5/8wSzR5w6DLZEqXdAM5GhX9gqT9xy1sqflAfe1J9LIIiT8Z+ppOzn8ZOB7T6
+	WvNsw1nyjE3izdN4lWBfEJFZUMBS7kCMNE+uZQYpAjka8TDG1nmnaimtzFmIOv5xUtAeKvIH/pI
+	AoD+1a8cfWZVFcwhYnksmRVOp2Iyp3/RVV9eG4W/wy0RuTNdvqE7OC5wuXX+2cnNkuQdKeOnk8U
+	UrKgmDxOjeN94HEunaQofF
+X-Received: by 2002:a05:6a20:3d0c:b0:3c0:9c1a:8936 with SMTP id adf61e73a8af0-3c0bcc4068emr13266820637.62.1783680880360;
+        Fri, 10 Jul 2026 03:54:40 -0700 (PDT)
+Received: from DESKTOP-TIT0J8O.dm.ae ([49.47.198.15])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13b659c8572sm40752937c88.9.2026.07.10.03.54.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jul 2026 03:54:40 -0700 (PDT)
+From: Ahmed Naseef <naseefkm@gmail.com>
+To: netdev@vger.kernel.org
+Cc: =?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
+	"Chester A. Unal" <chester.a.unal@arinc9.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andrew Lunn <andrew@lunn.ch>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	DENG Qingfang <dqfext@gmail.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Landen Chao <Landen.Chao@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	Ahmed Naseef <naseefkm@gmail.com>
+Subject: [PATCH net-next 0/2] net: dsa: mt7530: add EcoNet EN7528 built-in switch support
+Date: Fri, 10 Jul 2026 14:54:22 +0400
+Message-Id: <cover.1783680864.git.naseefkm@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,132 +92,26 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Implement PCI device reset handler to allow the network device to
-get re-initialized and function after a PCI-level reset.
+The EcoNet EN7528 is a MIPS SoC whose platform support is already
+upstream. It integrates an MT7530 switch, memory-mapped like the built-in
+switches of the MediaTek MT7988 and Airoha EN7581/AN7583 SoCs, but with a
+true MT7530 core, four Gigabit PHYs on ports 1-4 and a CPU port at a fixed
+1000 Mbps full duplex link.
 
-This is necessary for the adapter to avoid TX queue timeouts
-occurring after the PCI reset is performed via sysfs during
-its operation.
+Patch 1 documents the compatible, patch 2 adds the driver support.
 
-The reset codepath may trigger a number of dependencies in the
-reset of the driver, so that it is necessary to check if
-the netdev is present and running there.
+Ahmed Naseef (2):
+  dt-bindings: net: dsa: mediatek,mt7530: add econet,en7528-switch
+  net: dsa: mt7530: add EN7528 support
 
-Signed-off-by: Sergey Temerkhanov <sergey.temerkhanov@intel.com>
-Reviewed-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
----
- drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 90 +++++++++++++++++++
- 1 file changed, 90 insertions(+)
+ .../bindings/net/dsa/mediatek,mt7530.yaml     |  5 ++
+ drivers/net/dsa/mt7530-mmio.c                 |  1 +
+ drivers/net/dsa/mt7530.c                      | 56 ++++++++++++++++++-
+ drivers/net/dsa/mt7530.h                      |  1 +
+ 4 files changed, 62 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-index 42dac766c907..1865b604ace7 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-@@ -12358,6 +12358,94 @@ static pci_ers_result_t ixgbe_io_slot_reset(struct pci_dev *pdev)
- 	return result;
- }
- 
-+/**
-+ * ixgbe_pci_reset_prepare - called before the pci bus is reset.
-+ * @pdev: Pointer to PCI device
-+ *
-+ * Quiesce the driver in preparation for a PCI function reset. Called from
-+ * pci_dev_save_and_disable() before the core saves config state and writes
-+ * PCI_COMMAND_INTX_DISABLE to clear bus mastering and MMIO decode, so MMIO
-+ * access to the device is still valid here.
-+ */
-+static void ixgbe_pci_reset_prepare(struct pci_dev *pdev)
-+{
-+	struct ixgbe_adapter *adapter = pci_get_drvdata(pdev);
-+	struct net_device *netdev;
-+
-+	if (!adapter)
-+		return;
-+
-+	netdev = adapter->netdev;
-+
-+	rtnl_lock();
-+	netif_device_detach(netdev);
-+	if (netif_running(netdev))
-+		ixgbe_close_suspend(adapter);
-+	rtnl_unlock();
-+
-+	/* __IXGBE_RESETTING is intentionally not set here: it is spun on
-+	 * while holding rtnl by ixgbe_reinit_locked(), ixgbe_dcbnl_devreset()
-+	 * and the ethtool reset paths, so holding it across the rtnl drop
-+	 * would deadlock those callers against ixgbe_pci_reset_done(), which
-+	 * needs to re-acquire rtnl.  During the reset window concurrent
-+	 * rtnl-holding paths must treat the netdev as detached, while teardown
-+	 * paths also observe __IXGBE_DOWN set by ixgbe_down() via
-+	 * ixgbe_close_suspend(), matching the existing ixgbe_io_error_detected()
-+	 * flow.
-+	 */
-+
-+	if (test_bit(__IXGBE_SERVICE_INITED, &adapter->state)) {
-+		/* The service timer was already stopped by ixgbe_down() via
-+		 * ixgbe_close_suspend(); if the netdev was not running, the
-+		 * timer is not armed.  Only the currently queued service task
-+		 * (if any) still needs to be flushed here.
-+		 */
-+		cancel_work_sync(&adapter->service_task);
-+		clear_bit(__IXGBE_SERVICE_SCHED, &adapter->state);
-+	}
-+}
-+
-+/**
-+ * ixgbe_pci_reset_done - called after the pci bus has been reset.
-+ * @pdev: Pointer to PCI device
-+ *
-+ * Re-initialize the device after a PCI function reset. The PCI core has
-+ * already called pci_restore_state() before invoking this callback, so the
-+ * saved Command register (including bus mastering) is back in place.
-+ */
-+static void ixgbe_pci_reset_done(struct pci_dev *pdev)
-+{
-+	struct ixgbe_adapter *adapter = pci_get_drvdata(pdev);
-+	struct net_device *netdev;
-+	bool running;
-+	int err = 0;
-+
-+	if (!adapter)
-+		return;
-+
-+	netdev = adapter->netdev;
-+
-+	rtnl_lock();
-+	adapter->hw.hw_addr = adapter->io_addr;
-+	ixgbe_reset(adapter);
-+	IXGBE_WRITE_REG(&adapter->hw, IXGBE_WUS, ~0);
-+	running = netif_running(netdev);
-+	if (running) {
-+		err = ixgbe_open(netdev);
-+		if (err) {
-+			e_dev_err("Cannot re-open netdev after PCI reset: %d. A new reset is needed.\n",
-+				  err);
-+			dev_close(netdev);
-+		}
-+	}
-+	/* Restore presence so userspace can retry later. If ixgbe_open() failed,
-+	 * dev_close() cleared IFF_UP first so netif_device_attach() will not wake
-+	 * Tx queues without a successful open.
-+	 */
-+	netif_device_attach(netdev);
-+	rtnl_unlock();
-+}
-+
- /**
-  * ixgbe_io_resume - called when traffic can start flowing again.
-  * @pdev: Pointer to PCI device
-@@ -12390,6 +12478,8 @@ static const struct pci_error_handlers ixgbe_err_handler = {
- 	.error_detected = ixgbe_io_error_detected,
- 	.slot_reset = ixgbe_io_slot_reset,
- 	.resume = ixgbe_io_resume,
-+	.reset_prepare = ixgbe_pci_reset_prepare,
-+	.reset_done = ixgbe_pci_reset_done,
- };
- 
- static DEFINE_SIMPLE_DEV_PM_OPS(ixgbe_pm_ops, ixgbe_suspend, ixgbe_resume);
+
+base-commit: fe3e786ef4eb6e47d2901f568a27bd920477bbe9
 -- 
-2.53.0
+2.34.1
 
