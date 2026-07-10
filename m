@@ -1,148 +1,181 @@
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC883C4562
-	for <netdev@vger.kernel.org>; Fri, 10 Jul 2026 07:40:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A79C3449985
+	for <netdev@vger.kernel.org>; Fri, 10 Jul 2026 07:46:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783669225; cv=none; b=l5iesSdvSiXYQyD5ZOdl1jFPUJfUwp+/BGAF01oyhBjGIjf76dB8zWXc0dgvNDrTW3ZAiQxEzBmfoQagcSrGrRr5cuwUeGix3tHhfXOTBGe5gQOjqdjRHgnNvEXa2aJt90C7wnaJvV54HNSj+5I2vbg7nDDdvIDnBNKhinyn8S4=
+	t=1783669608; cv=none; b=b/M/WBfNzdGgnGnReXZiMY4BM+xEzfVRZCt6vsSd/2WvhoOYuEQdyIbev4HHxuLzWVU7+gfAPAEa90YMeXDCKyzlGL7QwxkYPO7KkH4lX0E0vpneufjbHb6CyhH/kGu5PcK6GF0MJhmuA4iGgsXWjnd3QagYwWDR1lxMYKMGZ/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783669225; c=relaxed/simple;
-	bh=86pzGDg38uXFCW2JGOwA3e085I/3QBH3sZ2DZZ2NCCI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sBzifMgw83o1AqLWDmSZMg3aNOc5Db/2ifSP5OuYglS2dAZoPKpevsXY9Lwh/S1V2ciAWs4DQGwfotLNnEsyy+OISbEeoHYJd6ifuRi8QUkhScLq0zMrrcMaftZXwoXJYOCJlI7PAZ8eXfArQ6MCr8xwyaajMRXVX30vS+LRe40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=j/kSjpFx; arc=none smtp.client-ip=91.218.175.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="j/kSjpFx"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783669221;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rAnobAo08XVC7dBk56KDBO/XbkEzdxpuiaM6tAGNrhk=;
-	b=j/kSjpFxwqdqn+fL4fjSsxFArocXZQCkElUZ6k8kB9P/B0NcyRHptDeOIPd/HQ5xEP3gpF
-	082wQYQfhWRV7iPi4IAbrTRLU+C0OuM8+7fPSJ2xHyZuuKBXYIotk4VIJ0JIno7Q8UOPVE
-	nXuwxp62d5mGIpuzA5xXx2QUsalUByg=
-From: Menglong Dong <menglong.dong@linux.dev>
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Cc: menglong8.dong@gmail.com, Jakub Kicinski <kuba@kernel.org>,
- jasowang@redhat.com, mst@redhat.com, xuanzhuo@linux.alibaba.com,
- eperezma@redhat.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, magnus.karlsson@intel.com,
- sdf@fomichev.me, horms@kernel.org, ast@kernel.org, daniel@iogearbox.net,
- hawk@kernel.org, john.fastabend@gmail.com, bjorn@kernel.org,
- kerneljasonxing@gmail.com, netdev@vger.kernel.org,
- virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org
-Subject: Re: [PATCH net-next 1/3] net: busy-poll: introduce sk_tx_busy_loop()
-Date: Fri, 10 Jul 2026 15:39:57 +0800
-Message-ID: <NCm5lbjeS9uYIxdwTdjp7g@linux.dev>
-In-Reply-To: <ajJrckiXEUztBQDz@boxer>
-References:
- <20260611071242.2485058-1-dongml2@chinatelecom.cn>
- <TYn10tJ2SIGF1pAhF26DRQ@linux.dev> <ajJrckiXEUztBQDz@boxer>
+	s=arc-20240116; t=1783669608; c=relaxed/simple;
+	bh=BKBWWDRretnrU37CTI91R/3bBxlHmJWWI2HROJKe/cU=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=fBbgHA2/dqqqa4NgBQW130DCDWk+7LiqcfbP2RpEeWDfAj4L7Sr176gCyXX9etgTUjFJYhJsgYdr5FU7syJolDAbhULlTalJOWnRaFyY+Qtje0Z1OlQjwpwb6XXNhkzCnDb/G2IYyegbhzpFm1qR1c3+S27CFsmusSzSU6ojKfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-49001defc4dso975763b6e.3
+        for <netdev@vger.kernel.org>; Fri, 10 Jul 2026 00:46:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783669606; x=1784274406;
+        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=/RIrXkPXqk6Tm9n+eZtVOBYreXVHsQ7d94TjonpZcjE=;
+        b=EG2JqI7kU4+rmeqhr/Lw+uGyG3WHD8aLRAJGmgz01gk019y3W/AFTs+nzKxByZktAp
+         DzpeI+vecR7xeJtpJiUTg/VOujX9rN1YMJkSTgQL0XIqAJjCcmLaFISJnDfhiXyx/Ao9
+         ZajqOSjUsOuLOc0iy5nJAKbDp0Jiexma68WYveNRxmVbXNy/4Ra+ctsBww1yNhDsf3bo
+         Z+1Xq+OmGqTGqaLDFxognS6PrWJo9N0cqbkArYUgDmcYIq8JTqFe9i1qzDRVeRWXdqnZ
+         HMokO1gzY6WeW7dSJ5GGOwyVUJAv/O9t8Qp53AwnWArvlEyno2+qbU83bCBfPuDxdmkP
+         rzTQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9RNwG/D/+ake1xtWcLFgO/nqCOQ1ZKCDnIefQD9Kznj8P6LYOnlUn/1wSVHXrWG9x7f+zXaMM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7zmf4HffYfx9SWsOdjoz/bcjHgRy2c58NDPNBpgwJP/dZZUD7
+	NmI0vuanb53x2zkm63zeJBV0b+wN5zF8D0QM69dwZ0HarNMLzrRQGj1j1LOZRA/PT7Dge8wK8Us
+	zGyBrLE+3jMB0MOoZ8Jk2MtypBcDXeSuLY+oBoRArX2+tuMFsx4rajjdGqMs=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
-X-Migadu-Flow: FLOW_OUT
+X-Received: by 2002:a05:6808:4706:b0:490:315d:e0d5 with SMTP id
+ 5614622812f47-4a2020091cbmr8558875b6e.16.1783669605777; Fri, 10 Jul 2026
+ 00:46:45 -0700 (PDT)
+Date: Fri, 10 Jul 2026 00:46:45 -0700
+In-Reply-To: <20260708205404.911832-1-anzaki@gmail.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a50a365.c76b52dc.2a15e.000a.GAE@google.com>
+Subject: [syzbot ci] Re: netfilter: flowtable: tear down HW offloaded flows on
+ FIB route changes
+From: syzbot ci <syzbot+ci43317981636ba259@syzkaller.appspotmail.com>
+To: anzaki@gmail.com, davem@davemloft.net, edumazet@google.com, fw@strlen.de, 
+	horms@kernel.org, kuba@kernel.org, netdev@vger.kernel.org, 
+	netfilter-devel@vger.kernel.org, pabeni@redhat.com, pablo@netfilter.org
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On 2026/6/17 17:40 Maciej Fijalkowski <maciej.fijalkowski@intel.com> write:
-> On Sun, Jun 14, 2026 at 06:12:46PM +0800, Menglong Dong wrote:
-> > On 2026/6/14 02:21, Jakub Kicinski wrote:
-> > > On Thu, 11 Jun 2026 15:12:40 +0800 menglong8.dong@gmail.com wrote:
-> > > > For now, we use sk_busy_loop() for both rx and tx path. The sk_busy_loop()
-> > > > will call napi_busy_loop() for the specified napi_id. However, some
-> > > > nic drivers have tx napi, such as virtio-net. In this case, sk_busy_loop()
-> > > > doesn't work, as it can only schedule the NAPI for the rx queue.
-> > > > 
-> > > > Therefore, introduce sk_tx_busy_loop() for the nic drivers that support tx
-> > > > napi, which will schedule the tx napi if available.
-> > > 
-> > > First, I thought the only difference with Tx NAPI is that it can't be
-> > > busy polled. So if you want to poll an instance don't register it as 
-> > > a Tx one instead of adding all this "tx polling" stuff in the core?
-> > 
-> > I see. Register the tx NAPI with netif_napi_add_config() allow us
-> > busy poll it. But we still have two NAPI instance: rx NAPI and tx NAPI.
-> > sk_busy_loop() can only busy poll on one of them.
-> > 
-> > Before AF_XDP, we don't have the need to send packet via tx NAPI, which
-> > means that we don't need to busy poll it.
-> > 
-> > I analyst some nic drivers on the implement of AF_XDP. Some of them
-> > will check xsk tx ring of current queue and send the data in it in the
-> > rx NAPI, such as mlx5. Some of them will allocate a extra "rxtx" NAPI
-> > for the AF_XDP zero-copy queue, which will poll both the data receiving
-> > and sending.
-> > 
-> > In the case about, they will do the data sending and receiving for the
-> > AF_XDP in a single NAPI instance.
-> > 
-> > However, some driver receiving the data in rx NAPI and send data in
-> > tx NAPI for AF_XDP. In this case, we can't use sk_busy_loop() for both
-> > rx path and tx path, as we need to wake different NAPI instance.
-> > 
-> > > 
-> > > Second, can this problem happen for any other NIC or is it purely 
-> > > an artifact of virtio's delayed Tx completion handling?
-> > 
-> > According to my analysis, only virtio-net and ICSSG driver have
-> > split NAPI for AF_XDP. I don't have a ICSSG nic, but the codex tell
-> > me that it does have the same problem.
-> > 
-> > I'm not sure if it is a good idea to introduce the sk_tx_busy_loop().
-> > Maybe we can modify the driver instead by using the same NAPI
-> > for both data sending and receiving, just like others do. The
-> > advantage of introduce sk_tx_busy_loop() is that we can split the
-> > data sending and receiving, which maybe more efficient.
-> 
-> Would be good if you back your changes by any performance numbers. I
-> believe that drivers do tx processing via rx napi as before AF_XDP it was
-> only about cleaning up writebacks, AF_XDP added more weight via actual tx
-> descriptors submission.
-> 
-> Maybe you can vibe-code virtio-net to work only with rx napi and see what
-> are the results.
+syzbot ci has tested the following series
 
-According to my testing, there is no obvious performance improvement
-with tx napi. I'm going to implement the xsk tx queue consume in rx napi
-instead for virtio-net.
+[v1] netfilter: flowtable: tear down HW offloaded flows on FIB route changes
+https://lore.kernel.org/all/20260708205404.911832-1-anzaki@gmail.com
+* [PATCH nf] netfilter: flowtable: tear down HW offloaded flows on FIB route changes
 
-Thanks!
-Menglong Dong
+and found the following issue:
+general protection fault in net_generic
 
-> 
-> Side note/question - Do you have a tx-only use case for AF_XDP ? I am
-> planning (for a long time actually) to implement asymmetric AF_XDP
-> sockets. Currently for ZC scenarios xsk socket occupies both rx and tx
-> queues even when you do rx or tx only.
-> 
-> > 
-> > > 
-> > > Third, this series does not apply.
-> > 
-> > Ah, I'll rebase this series if a V2 is acceptable.
-> > 
-> > Thanks!
-> > Menglong Dong
-> > 
-> > > 
-> > > 
-> > 
-> > 
-> > 
-> > 
-> 
+Full report is available here:
+https://ci.syzbot.org/series/75cd5a68-8e8e-41ef-9da6-dea3554407a7
+
+***
+
+general protection fault in net_generic
+
+tree:      nf
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/netfilter/nf.git
+base:      60444706aa17616efc03190d099ac347e28b3d0a
+arch:      amd64
+compiler:  Debian clang version 22.1.6 (++20260514074242+fc4aad7b5db3-1~exp1~20260514074407.73), Debian LLD 22.1.6
+config:    https://ci.syzbot.org/builds/b941607c-6459-4d25-8127-6c11f2a37ef0/config
+syz repro: https://ci.syzbot.org/findings/93de0afd-01d4-4d54-9d3f-13094335f314/syz_repro
+
+Oops: general protection fault, probably for non-canonical address 0xdffffc00000002c8: 0000 [#1] SMP KASAN PTI
+KASAN: probably user-memory-access in range [0x0000000000001640-0x0000000000001647]
+CPU: 1 UID: 0 PID: 5813 Comm: syz.2.19 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:net_generic+0xd4/0x240 include/net/netns/generic.h:46
+Code: 8c be 4a 03 00 00 48 c7 c2 c0 83 e0 8c e8 14 1b 09 f8 49 bf 00 00 00 00 00 fc ff df 49 81 c6 40 16 00 00 4c 89 f0 48 c1 e8 03 <42> 80 3c 38 00 74 08 4c 89 f7 e8 0d a4 9a f8 4d 8b 26 e8 45 e8 1b
+RSP: 0018:ffffc90003bde998 EFLAGS: 00010202
+RAX: 00000000000002c8 RBX: ffffffff8999417e RCX: ffff8881699c5940
+RDX: 0000000000000000 RSI: ffffffff8c2ab760 RDI: ffffffff8c2ab720
+RBP: 0000000000000005 R08: ffffffff8999417e R09: 0000000000000000
+R10: 0000000000000000 R11: ffffffff8e959c20 R12: ffff8881b1679870
+R13: dffffc0000000000 R14: 0000000000001640 R15: dffffc0000000000
+FS:  00007ff6de31c6c0(0000) GS:ffff8882a921d000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ff6dd272780 CR3: 000000016bc8e000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ fib_seq_sum+0x29/0x280 net/core/fib_notifier.c:43
+ register_fib_notifier+0x49/0x360 net/core/fib_notifier.c:106
+ nf_flow_table_init+0x34a/0x460 net/netfilter/nf_flow_table_core.c:888
+ tcf_ct_flow_table_get+0x13b6/0x1f40 net/sched/act_ct.c:352
+ tcf_ct_init+0x6bd/0xb10 net/sched/act_ct.c:1423
+ tcf_action_init_1+0x4ba/0x740 net/sched/act_api.c:1433
+ tcf_action_init+0x30e/0xb10 net/sched/act_api.c:1508
+ tcf_action_add net/sched/act_api.c:2106 [inline]
+ tc_ctl_action+0x43b/0xc70 net/sched/act_api.c:2163
+ rtnetlink_rcv_msg+0x7b9/0xc00 net/core/rtnetlink.c:7085
+ netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2556
+ netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
+ netlink_unicast+0x7bb/0x940 net/netlink/af_netlink.c:1345
+ netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
+ sock_sendmsg_nosec+0x13a/0x180 net/socket.c:775
+ __sock_sendmsg net/socket.c:790 [inline]
+ ____sys_sendmsg+0x54e/0x850 net/socket.c:2684
+ ___sys_sendmsg+0x2a5/0x360 net/socket.c:2738
+ __sys_sendmsg net/socket.c:2770 [inline]
+ __do_sys_sendmsg net/socket.c:2775 [inline]
+ __se_sys_sendmsg net/socket.c:2773 [inline]
+ __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2773
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7ff6dd39ce59
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ff6de31c028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007ff6dd615fa0 RCX: 00007ff6dd39ce59
+RDX: 0000000000000040 RSI: 0000200000000080 RDI: 0000000000000003
+RBP: 00007ff6dd432e6f R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007ff6dd616038 R14: 00007ff6dd615fa0 R15: 00007ffd83f8d058
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:net_generic+0xd4/0x240 include/net/netns/generic.h:46
+Code: 8c be 4a 03 00 00 48 c7 c2 c0 83 e0 8c e8 14 1b 09 f8 49 bf 00 00 00 00 00 fc ff df 49 81 c6 40 16 00 00 4c 89 f0 48 c1 e8 03 <42> 80 3c 38 00 74 08 4c 89 f7 e8 0d a4 9a f8 4d 8b 26 e8 45 e8 1b
+RSP: 0018:ffffc90003bde998 EFLAGS: 00010202
+RAX: 00000000000002c8 RBX: ffffffff8999417e RCX: ffff8881699c5940
+RDX: 0000000000000000 RSI: ffffffff8c2ab760 RDI: ffffffff8c2ab720
+RBP: 0000000000000005 R08: ffffffff8999417e R09: 0000000000000000
+R10: 0000000000000000 R11: ffffffff8e959c20 R12: ffff8881b1679870
+R13: dffffc0000000000 R14: 0000000000001640 R15: dffffc0000000000
+FS:  00007ff6de31c6c0(0000) GS:ffff8882a921d000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ff6dd3ea540 CR3: 000000016bc8e000 CR4: 00000000000006f0
+----------------
+Code disassembly (best guess):
+   0:	8c be 4a 03 00 00    	mov    %?,0x34a(%rsi)
+   6:	48 c7 c2 c0 83 e0 8c 	mov    $0xffffffff8ce083c0,%rdx
+   d:	e8 14 1b 09 f8       	call   0xf8091b26
+  12:	49 bf 00 00 00 00 00 	movabs $0xdffffc0000000000,%r15
+  19:	fc ff df
+  1c:	49 81 c6 40 16 00 00 	add    $0x1640,%r14
+  23:	4c 89 f0             	mov    %r14,%rax
+  26:	48 c1 e8 03          	shr    $0x3,%rax
+* 2a:	42 80 3c 38 00       	cmpb   $0x0,(%rax,%r15,1) <-- trapping instruction
+  2f:	74 08                	je     0x39
+  31:	4c 89 f7             	mov    %r14,%rdi
+  34:	e8 0d a4 9a f8       	call   0xf89aa446
+  39:	4d 8b 26             	mov    (%r14),%r12
+  3c:	e8                   	.byte 0xe8
+  3d:	45                   	rex.RB
+  3e:	e8                   	.byte 0xe8
+  3f:	1b                   	.byte 0x1b
 
 
+***
 
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
 
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+
+To test a patch for this bug, please reply with `#syz test`
+(should be on a separate line).
+
+The patch should be attached to the email.
+Note: arguments like custom git repos and branches are not supported.
