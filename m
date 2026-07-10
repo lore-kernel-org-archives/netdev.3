@@ -1,129 +1,75 @@
-Received: from sonic307-56.consmr.mail.ne1.yahoo.com (sonic307-56.consmr.mail.ne1.yahoo.com [66.163.190.31])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 073BA3B42CB
-	for <netdev@vger.kernel.org>; Fri, 10 Jul 2026 08:18:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.190.31
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7213EEAF8;
+	Fri, 10 Jul 2026 08:20:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783671505; cv=none; b=CyIoYfKNPWIarhL12Xi6fsd8SpotOwwI656ouCcGFUGeci9Pp0ZJB4B5FCYaaZIT7RhcPkAhDZGZcx0XfByZvQ4PLnjp+l5+iWasiXKw794DHoxUACNh4+7UfjSQdjDzrFerSmHprs1dbeC5mAjWufbiAJWO/bg2egm6jy23VSY=
+	t=1783671614; cv=none; b=GZLhSSMu3bwzuCMBbACLQMTFQ+UQKnH5jkvlEjVC4p7yk9xI8heJpWzA0ggD/qrNAeafU8mV//l5octOpaHdB5j5W2/wMJnwl2URE9Gt5Y1XjUuYH24yz80jwyNIItD5XA1OeffZ6zG0cp4VNqd3Fo3BO4NOpNLcrofGQ8ya8aM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783671505; c=relaxed/simple;
-	bh=efnpitq5MLIvEzz5Ii+8iOQdc2Iv78JmanN5b1AUISY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XnrRIONBiP+76SSOoIqD4FZMOXM/h6fo9TPWvau4iOs32Fkeveu/o9xaAIPgE4FsmO8/H5AOGP2idqVMoXNMtoZ+qRmDo3duxRLf4Epa/P8Rr6XOPJSzuBIJ26PcgN8q+Siqf+USMxRnqKsGTt6wXVrKgubMZvNHHX5icLA7oK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=nspkYa+H; arc=none smtp.client-ip=66.163.190.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+	s=arc-20240116; t=1783671614; c=relaxed/simple;
+	bh=WBv4g3SERUXVfGCwMZXdY1BqMEw5ovh8+sE1MB26oOU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ps7tmPSoB/fENEW27tLPebjTBILsgynchKkWp29om7s1OVKIr9+DRTsGw1V/cdLGlJpFFP93LXa7iSUGJm5O+1i22w66b2brpmeu2PZVfrrkm8ZUND9awEt3lE61RsRW35mhZWkPqN/0Qd+ZBPe3ra6S3N0OOFs1Nzt9xQAiAZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=mPtOGxo0; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="nspkYa+H"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1783671502; bh=HZTGzOSblixKNwAEbOA/HMVyQbV865BjFJWEFec0xA4=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=nspkYa+H9mibx+FbLeGeu6FuQtJXJlmG2IBVEnAQaeVEE1zniG19sf3/b9pP9yL7UsBfDpJwGmWhnU8MRnemj0tKMD3ug5HV+VCJraiCoS178Hkca9Xuy/qbxQiisnvHrkJ08vFk1yXKt2waeZznPEPQ/1kEw2KDJVQDOnoqy+RVtu+nY0/0/s/bdLdTtmig0X2FVK3C9ppulzP+lJX09TWIK8YZ1YUzttL7z5+e+Q6EkDNixLoF8FeZf88PJ4bW0mNDo5o76mgagENLCOkM3kwxCfHv5CEVNIb+5S9uwOOtonPAg9mZ4dK6EXe4lv7kM8yxoWPSwelukAu7EPhZtA==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1783671502; bh=bwSHf9R6W32B/TlyxLCj4pJcUVnulRudbGUB0364gZb=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=MZDIKFBAOa383q4L5/xxR3pmhhZ6vFf7kVxGKf3W4mXNe3n/LZwCS+FcXC5jF/+ASxCccgHwyAunUt5Qopxkla2EzOMfuxLehkxd2en/EO2wK79blWK59r7us5dFkcJCNYqM6H8gonRVhg4gyhHyKkytiI5yPj47d/FAMachWvc2H83wyUuvFefaujkeIKIcQc5nEaCSSVIZAD1OBCaeiW957Vz3o8hcsXSDfIScqUY/moEGMgjgiLQj2A1E1LblOH3a4oniY+ys6hipWirbtoPb2PQzrRKuPL0TO1XgKR3Pn7cLJYXOaxHyuU6cUVe/5efa56vosVsoZcEeIhUbgQ==
-X-YMail-OSG: lO8ndqQVM1n3XJCb1bAzEAspjdEEVzRVUA26Lq6dWL.cUyIK1IfcXDAu3Xiv1G7
- ojslMpBxhZgZRUriyBshd0LSaUI1yPaSTp6cO66EeECue5v8JPLtKIEsmWVfjbuLj8aQS7mmPVQN
- vd02ueFQ5.GCVGpRYOZYtYuizW.aYjBCIIE8vWVHorTphJxDgLeXbVLkWmXgJyb3niVe6B1rzDfi
- wcZGQO7HhlN3i09V1J0ifukDxbo454XEzM5O9VUtUyeANcyCF0CTQLphvqKejh8hINkvOjkBXIjz
- VJ07eYuCRkUQm3POw_L_qI9AK.l9n6RYw4yhnrUJ9OcHevxXz0Q2t80K6r0S4K9aHIbUIWmRGQS6
- qQo2JdqsvklPfpI7asgaahb_ofo7OGabBUP1QR9mLHBNNdU0GJR6oiSHiAJW9oJ3Vsu6Wnm9kpc.
- QcR3jgeCyta2TrsFo1oo60lfgsFYPANgOBCH5hqgV_zMvrRHfuf_g9MrfOSmjpF9Lg_9kUp6gy84
- wqvBrdFIVCf8y1l.1tcCOiJrI5h1oZx9aGt8c7tkwBxB5ayEalaxPaF6OObfx.nP6Bc9NDu4PSdL
- GPDkJ8HaYOjjj_g2GIjtcNeRsYDoh5eqD8yIWQP35u_xvgrsizDBsxC52bgvcvJLxBE6GYUQ5bCH
- EQwVw54giGYSh9SYsKBo_dNUS3p4toK0NU_l_.64_N36WEkwJUHeS72v.v4lJ9zn9JZs5cnvTl5c
- WqCQNDvwbDbh.7RYbXoizAea2NjEUhLK6IDLMcv38MBathmk_pnJNUQaAAO.a4q29WF2Wf8cO1.D
- sF.MkTf8I.4KFRULjSDJBnHDJMRUytTg7aHxTQZnxcgnUCZqKwskBCsm.BJ1nWjuoaMo7BLay91o
- oAd1D4bZ9afgSGnRj2l36XDfMDdjaQB1sfy4Dt7aG6OX4X3Hj700G6JvskL_mXIYZl6idLkpEnfT
- h.mCP0oLOjxj9A2ldzBC_gjObBcx65AuIh90iPGTXPd3RcL5q.pqXfeMmr93uD9KNi_yTiDiovUG
- ic0jMLzVzDWPKyGauti5MBz2TfrlR7Oh4dJC8ayzpgArBYEg1bFhT.9z4B5C.TfWb3SWZwWZMiV1
- reaWUjEkhDAEmV8rtGOpEDpjFldiAehgdZYE8pkB1AlnQReLOdJu.iluT0qEZvgJ.rbi2WPXHceP
- SYbHSFeHCUOvFPIJ49_epIJyc6XHLTEMfmEA73mkgyk.ST3mNREvfFAFyvPkQqAqN.MD_rM.cvRa
- 4NQuYb8iDokyHUjcCSktSpWy9puDeuPgVh3Fuk0bf8lVsDc55ZAOsDTFDeMc8WeY_iSDtTiYJk8s
- Vi_xZKtASDqL78oZEu0OBq8sGF9jP9pbOusfOe9QGbLhqshSbi8TnbicAH7cqGAAGrjQaP_wEqaj
- IkcPh34C63_ttu9uAQn._L3q9_mh26S25DelA9JTHijHGnU2_VnNRxYo6IvHaugGG0AEXcwaEMCq
- KC2jXokjmicIrMy._MCr0kcra5RPTPjPSdUPB08BNVYKDFHhegYiyKmgjyzlT3XbqWvEZU6zY6uP
- Ho8sSR7AXYgR2h5YruOjZnwo6wFgz1szsP3Mspn4hEe.fKn0Lbwp9Sa1i6M.5.vxD5xpwx1lwo1R
- Ikbt7u9ib824QUWSzj0CoDSSS84TmXHn7PlcKIpxU7wPxyaqTa3Lf7z0vtI.AFtyUJn3aMFGLnUo
- cwD8RK5RYRuXjRyeOh_OBFwRufjIbpXEJ.yQfLhndPfrRF4XIWqunl8baEo3BoWG9bOsL5K.rjEG
- 9K3op8daNtoz4WU0qSXgWDgTmI2iTNKkDBZRAOyC7a5g_xMQcMi2lxpPm7jaV42Y3ieujXmJ43ZS
- Syop8_SAytrgYNBbWSd02Wuye_KZnzsvlid4dgcZsipR4TvXgGp4V4i1X5wcjJH0ODukXyHiertF
- Lk0v6FgRprswYGmJ.2onmh8Z4rSMTKf4fwIqKWUnHh28vnpXGGxALbH6hswihz_YGLMZzSVM3sNE
- 4XTEsJ6iSeCl1gsm67NFfFAZLesFvMmIS1K7e9dR9wn38ISNyrBJMOzbwqh96ndONh27TqHLPyoh
- rBQ5nH7EWgEaHOflxlfBq7WAEG7uRUckAT018vYWtnIB.idZz5uxfQgoIASoL0EUukLIiszzk4Z.
- sqbBq4dhsGusw0q5UyzxHCo57qbjh_C4V7HHiZ.5D0oyC.CrYn5bUVcV8cZs.YqhzhQ4dpMXOEO2
- fY0_Qg6iXo9FrxTCPRKXD4LYI7EYl5RgNLeTRxIjz00kVtBnwE1bZSgvQS5iVsOsJxNPKHsRogne
- p
-X-Sonic-MF: <namiltd@yahoo.com>
-X-Sonic-ID: 81049a42-6c6e-4c47-8498-ef83ae1a6501
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic307.consmr.mail.ne1.yahoo.com with HTTP; Fri, 10 Jul 2026 08:18:22 +0000
-Received: by hermes--production-ir2-7b48fcd765-rd79m (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 2ca45d0c930fd1f126e11ebf0f3e9a28;
-          Fri, 10 Jul 2026 07:23:33 +0000 (UTC)
-Message-ID: <be5c2567-1b1a-4155-8577-cd9ad50500bf@yahoo.com>
-Date: Fri, 10 Jul 2026 09:23:29 +0200
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="mPtOGxo0"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=K6D5rhqdc9cjQivBsJt7uQxaSWphCdpgMsHZkpUgSGo=; b=mPtOGxo0IcJ0LlIFhsBANc2Njt
+	DlF74zV6UPkJCOHGVm7rgCk20p/hBxHvYYKDow7yeMDeHv1+Fp5oLZo7xV6BQxA2AhyA/Hb9VBq0K
+	PauR3gsqxngfflaufXLF6qc/Y4BwepGXSK5gniH45PJ+BB54amPraLavHkFFXpiaNdH0D2RCKJWQo
+	1MwEnSAcaVWuXKhJ0kyaSBDwyx1EjtJzVIjCaWsV2HsJgLXTfsslFgjQQYo1kJZ5Ii7jM8tsNVtp4
+	Ov8sdeOg5T+K4/CBw6xrfDr41QgQYzeufV+2qKYdh2lHRAtzHnBaWn+sv1yIrhNf3cr89yFUT7x5E
+	EKR40Jkw==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wi6Sd-004LUY-1f;
+	Fri, 10 Jul 2026 08:19:51 +0000
+Date: Fri, 10 Jul 2026 01:19:45 -0700
+From: Breno Leitao <leitao@debian.org>
+To: xiaoning.wang@oss.nxp.com
+Cc: Frank.Sae@motor-comm.com, andrew@lunn.ch, hkallweit1@gmail.com, 
+	linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, xiaoning.wang@nxp.com
+Subject: Re: [PATCH net V2] net: phy: motorcomm: read EEE abilities in
+ yt8521_get_features()
+Message-ID: <alCrGOlOj2oof7Xm@gmail.com>
+References: <20260710080018.1070789-1-xiaoning.wang@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v5 0/2] net: dsa: realtek: rtl8365mb: add
- SGMII/HSGMII support for RTL8367S
-To: Johan Alvarado <contact@c127.dev>, linusw@kernel.org,
- alsi@bang-olufsen.dk, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- linux@armlinux.org.uk
-Cc: luizluca@gmail.com, maxime.chevallier@bootlin.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <0100019f488ec83f-cd82d418-999a-40de-b58b-135b4b2aee51-000000@email.amazonses.com>
-Content-Language: pl
-From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-In-Reply-To: <0100019f488ec83f-cd82d418-999a-40de-b58b-135b4b2aee51-000000@email.amazonses.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: WebService/1.1.26136 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260710080018.1070789-1-xiaoning.wang@oss.nxp.com>
+X-Debian-User: leitao
 
-On 7/9/2026 10:25 PM, Johan Alvarado wrote:
-> The RTL8367S is a 5+2 port switch from the same family as the
-> RTL8365MB-VC already supported by this driver. Its chip info table
-> entry declares SGMII and HSGMII on external interface 1, but the
-> driver so far only implements RGMII, leaving boards that wire the
-> switch to the CPU over the SerDes without a working CPU port.
+On Fri, Jul 10, 2026 at 04:00:18PM +0800, xiaoning.wang@oss.nxp.com wrote:
+> From: Clark Wang <xiaoning.wang@nxp.com>
 > 
-> This series implements both modes. The configuration sequence and the
-> SerDes tuning parameters are derived from the GPL-licensed Realtek
-> rtl8367c vendor driver, as distributed in the Mercusys MR80X GPL code
-> drop, and cross-checked against the real register sequence captured at
-> runtime by chainloading a custom U-Boot ahead of the stock firmware
-> and logging the live SerDes accesses on hardware.
+> In phy_probe(), genphy_c45_read_eee_abilities() is only called when a
+> driver uses phydrv->features. Drivers that implement .get_features are
+> responsible for reading the EEE abilities themselves.
 > 
-> The vendor driver brings up the SerDes by loading firmware into the
-> switch's embedded DW8051 microcontroller. Analysis of that firmware
-> (by Luiz Angelo Daros de Luca) showed it only performs a SerDes
-> data-path reset right after the SerDes reset is deasserted, and then
-> runs a link-polling loop that writes the external interface force
-> registers -- duplicating, and racing with, the link management phylink
-> already performs. This series therefore keeps the DW8051 disabled and
-> performs the one necessary action (the data-path reset via the SerDes
-> BMCR register) directly in the driver, avoiding both the race and a
-> dependency on a redistributable firmware blob.
+> yt8521_get_features() does not do this, so phydev->supported_eee stays
+> empty for YT8521/YT8531S and "ethtool --show-eee" reports "EEE status:
+> not supported", even though the PHY has the standard EEE capability
+> registers.
 > 
+> Call genphy_c45_read_eee_abilities() at the end of yt8521_get_features()
+> to populate supported_eee.
+> 
+> Fixes: 70479a40954c ("net: phy: Add driver for Motorcomm yt8521 gigabit ethernet phy")
+> Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
 
-[...]
-
-> ---
-> v5:
->   - Raise the port 6 ingress and egress rate limiters to their maximum
->     at setup time, as the vendor switch init does. The chip resets them
->     to 0x1FFFF (~1.048 Gbps in units of 8 Kbps), which caps the
->     aggregate HSGMII throughput at roughly 1 Gbps; the cap was
->     confirmed on an RTL8367S-based Mercusys MR85X, where raising the
->     limiters took multi-client throughput across the HSGMII CPU port
->     from ~1.02 Gbps combined to ~2 Gbps (link in patch 2). The related
->     HSGMII scheduler line rate (LINE_RATE_HSG_H) is already set to its
->     maximum by the common init jam table. Pointed out by Mieczyslaw
->     Nalewaj.
-
-I think you should make limiter initiation dependent on whether
-the port is assigned to CPU. In a loop, check if the port is CPU port
-and set limiters for it. 
-This way, newly added systems with CPU port 5 or 7 will also work.
-
-Regards
+Reviewed-by: Breno Leitao <leitao@debian.org>
