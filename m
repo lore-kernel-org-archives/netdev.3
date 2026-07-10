@@ -1,57 +1,60 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF543C5823
-	for <netdev@vger.kernel.org>; Fri, 10 Jul 2026 09:04:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 336063CB8FF
+	for <netdev@vger.kernel.org>; Fri, 10 Jul 2026 09:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783674246; cv=none; b=aaBcIeu7GaJAnBgrRQoAhlXm//C+/RX9pOIPwDYayxHyc98CkWI2/KKOIAoAcg18nRALlFNCQUSLiTsw3CS3njQjJovMyEISEsa4diLqWEuQhiICYj4V1xN8EBsCAAbVgYqj+FyrbXZUjRg554ca4Q28e0l/wYSrxsemTt5GApQ=
+	t=1783674247; cv=none; b=NKufsdJy8CW8HgE6iQ7EES2FkEYodApz6Zo7Grif3N2Iving2AJ1EshYF64Yp15HACD39iTtUDIDzoI4SGjqdIQtu0oacoiExxbPAQIn1vcav16XIaYrGtc7WXtoGxc3GR1s3ppa73mFmcNa7yfW6HKNH6QB/dT8syAeS5SLP0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783674246; c=relaxed/simple;
-	bh=afyM7o3bBX28sWsSBnBtE5BzAaBnhYZf7X5xp2kQmPQ=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=P395yd9VPxf7TVAfEYRFIvhYp7+ou9DZemsh4Aunq1TGcD4vKjm2kXoHlyBoWO98eRjeDhkuSBQxltEhD+ev/9A+CQzhean+VFx8PXnt+3Rw7JhvgYPmA+HlzEZvm+aO3nO9HJxaVIqBj/FpXA1ObUr8SqIeJdraTkj732jq8hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=fd7FmsaO; arc=none smtp.client-ip=62.96.220.36
+	s=arc-20240116; t=1783674247; c=relaxed/simple;
+	bh=D6t/HirDsGwjXAt/0GUvoIkD55RKlDlQIODAh4TCHw4=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XOOfIrrdiPx3dDFVIfjl33tUrObQNCsLEmV4HRUAJKQY4jpKPl/iHo3XXPZUzlt4cJ9kJSzFDeTJjnxynr7HwqaOE2DD8Fad3e/3nIF1VEn307ZFOTJCph3Ou0wEgf+ONInHhTY+JLXsOUlRk7XPOhH69ADlYtbrGYRiyQUbI34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=FgRVw9lB; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="fd7FmsaO"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="FgRVw9lB"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 217E1206D0;
-	Fri, 10 Jul 2026 11:03:55 +0200 (CEST)
+	by mx1.secunet.com (Postfix) with ESMTP id 84DCF207B0;
+	Fri, 10 Jul 2026 11:03:57 +0200 (CEST)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 2X4dpc2G8Gcw; Fri, 10 Jul 2026 11:03:54 +0200 (CEST)
+ with ESMTP id GDjiWsfqUWJq; Fri, 10 Jul 2026 11:03:56 +0200 (CEST)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 6ACA6205E5;
-	Fri, 10 Jul 2026 11:03:54 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 6ACA6205E5
+	by mx1.secunet.com (Postfix) with ESMTPS id D63F7205E5;
+	Fri, 10 Jul 2026 11:03:56 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com D63F7205E5
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1783674234;
-	bh=dcxZK3EEuN+ibtZF0LCKRGhcpZzTNhr7iwcLYQyfniA=;
-	h=From:To:CC:Subject:Date:From;
-	b=fd7FmsaO18fOHhTSPOdzTnRdIMW5b0WWWtRMM6BkG9pMbOV0Hv5paXXMOt0KZ9a8X
-	 0ZWz8dHbIP8S5zgUc5ixu3KfsJrgJ4avYFF+W94Mw1qskFWHm9hz96EyU73agy5LAs
-	 xYkzJOt/aTazabBH7MzvnXkTEac8XhWjngAZHDL/3jGt0rOfjoKcCrj6cOnm0sTKPm
-	 IW9NdmGObWaUkKt6/5MiJLKC4WFC2cHJzVF7o/Za/kMJvWloL4Fn87Euc5Oso030Op
-	 L/yEUMCu9Oti9FPxgQZqVEmu0KqocOHi7RlTjQCA3MLUa0E0BZ/8wNjDd8ngaQWGDx
-	 qdLmGc7vLsjrw==
+	s=202301; t=1783674236;
+	bh=m1cg/getpUwBybgRA3cQrGRPc+efByFcjLwl9A3p84A=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
+	b=FgRVw9lBZiZN4wqMaejaC3TDxWBaY57/tY/1GjeQ+pD72kJ+BtYLnM/xYTfRi0gDw
+	 lyBOOxzNs8VAlT+ZMq9gqyOWKsskH6fcQ4RbIDGjikhRO2v+/wl2euFRwzZUvZF1xO
+	 r39sy+8SxxE9BENK2JiS/FqUTRbxrAlXNv481AgBxNTRZ0HbbQAonFyvvWaG4CfqRA
+	 v1dsibOdDrFUfPdL71hcI099gfF50+2pvUk2mHJN7LPvSDCsb7C1KTGWaENJWxkcjf
+	 qP751vscR62NYeNFSUf9/+t6xoemkKkzETN6bRVNKi0YeYIACwZcSP09E2E8468ZZW
+	 9QvQHSAV2p4fw==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Fri, 10 Jul
- 2026 11:03:53 +0200
-Received: (nullmailer pid 343832 invoked by uid 1000);
+ 2026 11:03:56 +0200
+Received: (nullmailer pid 343854 invoked by uid 1000);
 	Fri, 10 Jul 2026 09:03:52 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 0/10] pull request (net): ipsec 2026-07-10
-Date: Fri, 10 Jul 2026 11:03:13 +0200
-Message-ID: <20260710090349.343389-1-steffen.klassert@secunet.com>
+Subject: [PATCH 07/10] xfrm: clear mode callbacks after failed mode setup
+Date: Fri, 10 Jul 2026 11:03:20 +0200
+Message-ID: <20260710090349.343389-8-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260710090349.343389-1-steffen.klassert@secunet.com>
+References: <20260710090349.343389-1-steffen.klassert@secunet.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,104 +63,88 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EXCH-03.secunet.de (10.32.0.183) To EXCH-01.secunet.de
+X-ClientProxiedBy: EXCH-02.secunet.de (10.32.0.172) To EXCH-01.secunet.de
  (10.32.0.171)
 
-1) xfrm: propagate -EINPROGRESS from validate_xmit_xfrm()
-   Return -EINPROGRESS from xfrm_output_one when validate_xmit_xfrm
-   requeues the packet asynchronously, so the caller doesn't treat it
-   as a real error and free the skb.
+From: Cen Zhang <zzzccc427@gmail.com>
 
-2) xfrm: fix stale skb->prev after async crypto steals a GSO segment
-   Re-derive skb->prev from the fragment list after async crypto splits
-   a GSO skb, keeping the linked-list pointers validi.
+xfrm_state_gc_task can run long after a failed IPTFS state setup. In the
+reproduced case, __xfrm_init_state() cached x->mode_cbs, IPTFS setup
+returned -ENOMEM before publishing mode_data, and the temporary module
+reference from xfrm_get_mode_cbs() was dropped immediately. The dead state
+then kept x->mode_cbs until deferred GC ran after xfrm_iptfs had been
+unloaded.
 
-3) xfrm: nat_keepalive: avoid double free on send error
-   Hold a state ref while the nat_keepalive timer is active and drop the
-   timer before freeing the state, preventing a re-entered free on send
-   error.
+Clear x->mode_cbs when mode init or clone fails before publishing
+mode_data. Those states never installed mode-specific state or the
+long-term IPTFS module pin, so deferred GC has nothing mode-specific to
+destroy and must not retain a callback table pointer past the temporary
+lookup reference.
 
-4) xfrm: fix sk_dst_cache double-free in xfrm_user_policy()
-   Null the skb dst cache before freeing the policy so a later skb
-   destructor doesn't double-free it.
+The buggy scenario involves two paths, with each column showing the order
+within that path:
 
-5) xfrm: cache the offload ifindex for netlink dumps
-   Cache the device ifindex at state-add time and use it for netlink
-   dumps instead of dereferencing dst->dev, which may have changed by
-   the time the dump runs.
+failed setup path:
+1. cache x->mode_cbs
+2. mode setup fails before mode_data
+3. drop the temporary module ref
+4. dead state keeps x->mode_cbs cached
 
-6) xfrm: reject optional IPTFS templates in outbound policies
-   Reject outbound policies with an optional IPTFS template,
-   IPTFS must always be used if configured.
+GC/unload path:
+1. xfrm_state_put() queues GC work
+2. xfrm_iptfs unloads later
+3. xfrm_state_gc_task runs
+4. GC dereferences stale x->mode_cbs
 
-7) xfrm: clear mode callbacks after failed mode setup
-   Clear the mode->init_flags and init_state callbacks on the error path
-   after xfrm_init_mode fails, so a partially-initialised mode isn't
-   reused in xfrm_state_construct.
+This also covers the failed clone path where clone_state() returns before
+publishing mode_data.
 
-8) xfrm: iptfs: propagate SKBFL_SHARED_FRAG in iptfs_skb_add_frags()
-   Propagate SKBFL_SHARED_FRAG from the original skb to fragments
-   allocated by iptfs_skb_add_frags, keeping shared-fragment accounting
-   correct after IPTFS reassembly.
+Validation reproduced this kernel report:
+Kernel panic - not syncing: Fatal exception
+CONFIG_FAULT_INJECTION_STACKTRACE_FILTER=y
+failslab_stacktrace_filter matched xfrm_iptfs frames
+ack_error=-12
+FAULT_INJECTION: forcing a failure
+BUG: unable to handle page fault
+Workqueue: events xfrm_state_gc_task
+RIP: xfrm_state_gc_task+0x142/0x650
+Modules linked in: esp4_offload xfrm_user [last unloaded: xfrm_iptfs]
+Kernel panic - not syncing: Fatal exception
 
-9) xfrm6: clear dst.dev on error to avoid double netdev_put in xfrm6_fill_dst()
-   Clear dst->dev on the error path of xfrm6_fill_dst() so the caller
-   doesn't release the netdev reference twice via dst_release.
+Fixes: 4b3faf610cc6 ("xfrm: iptfs: add new iptfs xfrm mode impl")
+Assisted-by: Codex:gpt-5.5
+Signed-off-by: Cen Zhang <zzzccc427@gmail.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+---
+ net/xfrm/xfrm_state.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-10) xfrm: policy: preallocate inexact bins before xfrm_hash_rebuild reinsert
-    Preallocate all inexact hash bins before existing entries are
-    reinserted during xfrm_hash_rebuild, so reinsertion always hits an
-    existing bin.
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index 10e5a1a95fe3..36a4f6793ede 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -2072,8 +2072,11 @@ static struct xfrm_state *xfrm_state_clone_and_setup(struct xfrm_state *orig,
+ 
+ 	x->mode_cbs = orig->mode_cbs;
+ 	if (x->mode_cbs && x->mode_cbs->clone_state) {
+-		if (x->mode_cbs->clone_state(x, orig))
++		if (x->mode_cbs->clone_state(x, orig)) {
++			if (!x->mode_data)
++				x->mode_cbs = NULL;
+ 			goto error;
++		}
+ 	}
+ 
+ 	x->props.reqid = m->new_reqid;
+@@ -3292,6 +3295,8 @@ int __xfrm_init_state(struct xfrm_state *x, struct netlink_ext_ack *extack)
+ 		if (x->mode_cbs->init_state)
+ 			err = x->mode_cbs->init_state(x);
+ 		module_put(x->mode_cbs->owner);
++		if (err && !x->mode_data)
++			x->mode_cbs = NULL;
+ 	}
+ error:
+ 	return err;
+-- 
+2.43.0
 
-Please pull or let me know if there are problems.
-
-Thanks!
-
-The following changes since commit 805185b7c7a1069e407b6f7b3bc98e44d415f484:
-
-  Merge tag 'net-7.2-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2026-06-25 12:25:36 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/klassert/ipsec.git tags/ipsec-2026-07-10
-
-for you to fetch changes up to f38f8cce2f7e79775b3db7e8a5eacda04ac908e4:
-
-  xfrm: policy: preallocate inexact bins before xfrm_hash_rebuild reinsert (2026-07-06 08:30:02 +0200)
-
-----------------------------------------------------------------
-ipsec-2026-07-10
-
-----------------------------------------------------------------
-Antony Antony (1):
-      xfrm: reject optional IPTFS templates in outbound policies
-
-Cen Zhang (2):
-      xfrm: cache the offload ifindex for netlink dumps
-      xfrm: clear mode callbacks after failed mode setup
-
-Chen YanJun (1):
-      xfrm: iptfs: propagate SKBFL_SHARED_FRAG in iptfs_skb_add_frags()
-
-Petr Wozniak (2):
-      xfrm: propagate -EINPROGRESS from validate_xmit_xfrm()
-      xfrm: fix stale skb->prev after async crypto steals a GSO segment
-
-Qianyu Luo (1):
-      xfrm: nat_keepalive: avoid double free on send error
-
-Xiang Mei (Microsoft) (3):
-      xfrm: fix sk_dst_cache double-free in xfrm_user_policy()
-      xfrm6: clear dst.dev on error to avoid double netdev_put in xfrm6_fill_dst()
-      xfrm: policy: preallocate inexact bins before xfrm_hash_rebuild reinsert
-
- include/net/xfrm.h            |  2 ++
- net/core/dev.c                | 10 ++++++++--
- net/ipv6/xfrm6_policy.c       |  1 +
- net/xfrm/xfrm_device.c        | 13 +++++++++++--
- net/xfrm/xfrm_iptfs.c         |  1 +
- net/xfrm/xfrm_nat_keepalive.c | 15 +++++++++------
- net/xfrm/xfrm_policy.c        |  4 ++--
- net/xfrm/xfrm_state.c         | 12 +++++++++---
- net/xfrm/xfrm_user.c          | 41 ++++++++++++++++++++++++++++++-----------
- 9 files changed, 73 insertions(+), 26 deletions(-)
