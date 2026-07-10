@@ -1,417 +1,232 @@
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f227.google.com (mail-pl1-f227.google.com [209.85.214.227])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02372369D73;
-	Fri, 10 Jul 2026 04:24:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A832A36B04E
+	for <netdev@vger.kernel.org>; Fri, 10 Jul 2026 04:24:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783657478; cv=none; b=Jy0e3XbSuOTF7ujVvX/nRWbzggGMTFjgyIvFY5cCWbeSuYsbruX0p4r0n/gd/PNyiEHVUaEkW7LEQpmERs/raN077jottiWaVuG/fl4QLge2ZDzaBN4ZjS6/t1SGr8uCGjFn0Fu9BSXNJWC9maLWbd/vYqi6swNQtJM+4Ve0Nq8=
+	t=1783657489; cv=none; b=ZvGVzTZ44qzNnWC+gv4dSnK0lG1tHlgrCzncENSis/heIW0vQus1zCLbR4kvVHPw/r6nI/HoVEUW4RypMJXO2+DM/aFLJcfjxLxm9wMbYWpLI/GNvpbJGoahsagLgGLaPL9wPwDzAokyDtxsWVgWYj7DZa4uE3Kaqzk6h3XGmSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783657478; c=relaxed/simple;
-	bh=5vGYUhOMuE2kcV5F2F/QyOUeKJT4pi9j/suBd/skgfU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=X2aSxDz9LFoVlnCTMXPMLyI5zu2veoXIOZVjBFlzResTODLIblb4vhTgE1fiTQC6FV1so0XJHtBJa04fh4Z/McYomY3AdSShMHLZKtLz/gKH+yREDN62n4gcTeQ6nm/0dnl1/4ooKrMHvlGvo2CVYYgCUZF+f/PzcTGBH+0ZjsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=LJGfn04S; arc=none smtp.client-ip=91.218.175.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1783657489; c=relaxed/simple;
+	bh=q6T5HM1Ir7K1x8fqrDBpPwstlae3JcOMz+opCymJgFM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mQDs2Bq/9WILqJ5osJAR6tp/RDnKqGZn/IYuXIUJOT56X3kw65k1ClsdJxtvZZmdifZzWCOQ1Opt58vuD9hqYeWTfX/bd5y/lPSvM81rgzKwOmawe8k5BTn2ehLh1Xzix+WJMtc30Kyyb5G7/Ob+kZuKJx068N2AgNhdr8zPOYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Kn3Wmk1Z; arc=none smtp.client-ip=209.85.214.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="LJGfn04S"
-Message-ID: <ebb4125e-6d35-44c9-b1b8-267dc3226b81@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783657473;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=48gm6OSOL1SSOirHXZF2Z0M3HkLWpnOs0tv5n6E0teY=;
-	b=LJGfn04SGFnL8UXhLSB+52PBN7KESuIh0Km2DPDIXEWCwpVcPBjjL7pNuROWfkO3PbuKb4
-	s5by1GL/2w+WeQFh6Fp0wbpSxEQCnzYDYPz5NsvnR03XOVlKjLSD4XfRhpaKmrfuJJHrAX
-	kh/MORb3lQmU3ylwe47f8YvgkCuI88Q=
-Date: Thu, 9 Jul 2026 21:24:25 -0700
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Kn3Wmk1Z"
+Received: by mail-pl1-f227.google.com with SMTP id d9443c01a7336-2ccf2360620so3489835ad.3
+        for <netdev@vger.kernel.org>; Thu, 09 Jul 2026 21:24:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783657487; x=1784262287;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=5e7Yk3cbHBxYPRcBi3ZAvbzqKH+vbeBv5TvNBvieM88=;
+        b=asoiq3XTnbiXm530LjFUzlygFeaTmrJFzKO3I6kUmy6PuAcJsJfiXLWGYwz4lv/RYz
+         qxJr25xMQRpmP4GXfIPEg9eI5gZHkUHYg08gv+QFtyJEe87AD6pjOqIARA/X+Qk77oSe
+         3i//+BcM7qZOADZiDrYW4hGKi0o65mKjJQvPoOaACWiPXb4CuYhUHB6S6ezeCPnkpcFw
+         Hb9oxAJlQNC8wwFilzaNsxLnQfVKna5FKCkMO/QnpnJcRE3TD8w4hevLYGFMxpP5XddD
+         D3vO4EDLsh4NoIMpjjngUHn0mEFj4rEiECpWLnszsqf+cFaYMdohKLIUD55er+HaCfBj
+         olqQ==
+X-Gm-Message-State: AOJu0YxvtkWjVMG+L5nCBhmR/BLxPCxX9u2UreDKNLHgvXHjy97CpXR3
+	sNrOrkxF/n/DanS2OPjwMbrh02GrHo68+UkrFnf9K2sPe+ocU4jdXVARCXPwDPRhWQ0v2rmXiC1
+	Larhh91u0mOfKgX8SkixMz2vzImw5cHs0GFcMTmM3MluKMyY280wr/i0COeL456T1g4eZzQWYZF
+	KJHXBUM64TaXLDSUiMjK+9iUtq1BGFI/fv69b7/vuPx+uLrmMNIpuKRbyN4Z+DfH90l8pELVYCg
+	uSLWbeFqq4=
+X-Gm-Gg: AfdE7cklY3LeotZxm8a22OSf08z7u/9PCA6nyoMp0+QXGszdHenKATEySGpvY5d3x7C
+	T2z6qoguj6nhgHoTh0nSSc+dN4U8yxQXUE+5M1ZxBgefZ4r+5Bz1cgap9w4VTJvn35eVD9zlVIB
+	PsWjCoYZcd9b+cBmMMQFpvO/qZryhJMll70qexapJjyXnZCGPzagOX27KjkIC5ITlM8SyvWdqzK
+	c/jYPOeOMcvQEkdfMt6eLK9XclmQH5OMkx9Jjcz8sBdbjZmYScelf6GUESbgtIxgIjhnoP0Kost
+	oR+3RsHgQc9FEhCwIvoNqAWQBwr8Fa7riasVcRGG1djccplfecVUcZ0Tkw2BgCThWSeSKW+HOC5
+	xsnIcirDsTNCe5rvs7NxmHroCJWSJgJC1a1lGixTeFDx3u7917oXry4kX8Zb1IwvKkEiUPxdLrL
+	cYSsmxWxy8ONsLmGzwI8wsTTxjDN1RYdMhvDwsrfhvAcQAlA==
+X-Received: by 2002:a17:902:c94e:b0:2ca:4cfd:a6df with SMTP id d9443c01a7336-2ccea45f347mr111062985ad.43.1783657486951;
+        Thu, 09 Jul 2026 21:24:46 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-11.dlp.protect.broadcom.com. [144.49.247.11])
+        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2ccdfbee677sm7640875ad.17.2026.07.09.21.24.46
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 09 Jul 2026 21:24:46 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-c88cfe287e1so526147a12.1
+        for <netdev@vger.kernel.org>; Thu, 09 Jul 2026 21:24:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1783657485; x=1784262285; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=5e7Yk3cbHBxYPRcBi3ZAvbzqKH+vbeBv5TvNBvieM88=;
+        b=Kn3Wmk1ZyLRQM9uTNZ+974OWjqJ5TIJJSuuZTvirJYIhA/EoXQYltXDWwqhAsQRXXs
+         /HSGLUV2/9uBWYWtoJPNza2Pt2I1JGi5upMF76GvEIdIU34L8EfX+WwpyK9/T1YgqYuS
+         bWQrkGIj72l/Q/hV7xYTCRx2RuMl/a55P6cNo=
+X-Received: by 2002:a05:6a21:4591:b0:3bf:6f9f:3381 with SMTP id adf61e73a8af0-3c0bc9c00b3mr10850717637.33.1783657484794;
+        Thu, 09 Jul 2026 21:24:44 -0700 (PDT)
+X-Received: by 2002:a05:6a21:4591:b0:3bf:6f9f:3381 with SMTP id adf61e73a8af0-3c0bc9c00b3mr10850697637.33.1783657484359;
+        Thu, 09 Jul 2026 21:24:44 -0700 (PDT)
+Received: from lvnvda3289.lvn.broadcom.net ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-313b4cbafa1sm276627eec.6.2026.07.09.21.24.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jul 2026 21:24:43 -0700 (PDT)
+From: Michael Chan <michael.chan@broadcom.com>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	pavan.chebbi@broadcom.com,
+	andrew.gospodarek@broadcom.com
+Subject: [PATCH net-next v5 00/15] bnxt_en: Add kTLS TX offload support
+Date: Thu,  9 Jul 2026 21:23:45 -0700
+Message-ID: <20260710042400.3996847-1-michael.chan@broadcom.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH rdma-next 13/13] RDMA/selftests: Add rxe_netns_names test
-To: Jiri Pirko <jiri@resnulli.us>, linux-rdma@vger.kernel.org,
- "yanjun.zhu@linux.dev" <yanjun.zhu@linux.dev>
-Cc: cgroups@vger.kernel.org, netdev@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-kselftest@vger.kernel.org, jgg@ziepe.ca,
- leon@kernel.org, parav@nvidia.com, mbloch@nvidia.com, cmeiohas@nvidia.com,
- roman.gushchin@linux.dev, bvanassche@acm.org, zyjzyj2000@gmail.com,
- shuah@kernel.org, tj@kernel.org, mkoutny@suse.com, hannes@cmpxchg.org,
- alibuda@linux.alibaba.com, dust.li@linux.alibaba.com, sidraya@linux.ibm.com,
- wenjia@linux.ibm.com
-References: <20260709095532.855647-1-jiri@resnulli.us>
- <20260709095532.855647-14-jiri@resnulli.us>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
-In-Reply-To: <20260709095532.855647-14-jiri@resnulli.us>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
+This patchset adds kTLS offload support for TX direction.  A number
+of new files are added:
 
-在 2026/7/9 2:55, Jiri Pirko 写道:
-> From: Jiri Pirko <jiri@nvidia.com>
->
-> Add a kselftest script that exercises per-netns RDMA device naming
-> with RXE. Cover duplicate names across namespaces, move conflict
-> handling, move-with-rename, and same-namespace rename requests.
+bnxt_mpc.[ch] handle midpath channels (MPCs) used to offload kTLS
+connections to the chip's crypto blocks without going through FW.
 
-This is a very comprehensive test suite for the per-netns RDMA device 
-naming infra.
+bnxt_crypto.[ch] handle the crypto interface and resources.
 
-I especially appreciate the inclusion of the 'TEST_TEARDOWN_RETURN' 
-case—ensuring
+bnxt_ktls.[ch] handle kTLS offload.
 
-that the kernel's automatic renaming and fallback mechanics work 
-seamlessly during
+A new CONFIG_BNXT_TLS is added to enable all of the above.  The first 6
+patches add the MPC logic including resource accounting and reservations.
+The next 5 patches add the crypto logic to handle the crypto resources
+and to send/receive control data using the MPCs.  The last 4 patches
+add kTLS offload for the TX direction.
 
-netns deletion is crucial for long-term stability.
+There will be a follow-on patchset to make the TX offload more complete
+and to add the RX direction offload.
 
+v5:
+Fix most valid Sashiko reported issues or add comments to clarify:
 
-One minor thing to clean up before pushing to the tree: the script 
-declares 'ktap_set_plan 7'
+Patch #2:
+Clarify in the commit log that kTLS, MPC rings are only supported on
+P5_PLUS chips in response to some Sashiko comments.
 
-but actually defines 6 distinct test cases in the execution block. I 
-will fix this plan count to 6
+Patch #3:
+Improve the ethtool -L MPC calculation to use the actual MPC rings
+during ring check.
 
-to avoid any "bad plan" warnings in automated CI frameworks (like KernelCI).
+Add a comment in the code to explain the bnxt_trim_mpc_ring() call.
 
+Patch #5:
+Check for P5_PLUS before allocating mpc_info to more clearly document that
+MPC rings are only supported on P5_PLUS chips.
 
-Aside from that, the cleanup paths and setup tracking are solid.
+Patch #8:
+Pre-existing Sashiko issue not addressed.
 
-Thanks for adding this.
+Patch #9:
+More clearly document and explain that bnxt_clear_crypto() has no
+concurrent readers/writers.
 
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Add comment to explain that the bnxt_free_one_ctx() caller is reponsible
+to check the epoch value when needed.
 
-Zhu Yanjun
+Patch #10:
+Add description in commit log that crypto engines use short completions
+only.
 
->
-> Signed-off-by: Jiri Pirko <jiri@nvidia.com>
-> ---
->   tools/testing/selftests/rdma/Makefile         |   3 +-
->   tools/testing/selftests/rdma/config           |   2 +
->   .../testing/selftests/rdma/rxe_netns_names.sh | 282 ++++++++++++++++++
->   3 files changed, 286 insertions(+), 1 deletion(-)
->   create mode 100755 tools/testing/selftests/rdma/rxe_netns_names.sh
->
-> diff --git a/tools/testing/selftests/rdma/Makefile b/tools/testing/selftests/rdma/Makefile
-> index 07af7f15c1bf..a91c14c45006 100644
-> --- a/tools/testing/selftests/rdma/Makefile
-> +++ b/tools/testing/selftests/rdma/Makefile
-> @@ -3,6 +3,7 @@ TEST_PROGS := rxe_rping_between_netns.sh \
->   		rxe_ipv6.sh \
->   		rxe_socket_with_netns.sh \
->   		rxe_test_NETDEV_UNREGISTER.sh \
-> -		rxe_sent_rcvd_bytes.sh
-> +		rxe_sent_rcvd_bytes.sh \
-> +		rxe_netns_names.sh
->   
->   include ../lib.mk
-> diff --git a/tools/testing/selftests/rdma/config b/tools/testing/selftests/rdma/config
-> index 4ffb814e253b..e1ff54ec0f57 100644
-> --- a/tools/testing/selftests/rdma/config
-> +++ b/tools/testing/selftests/rdma/config
-> @@ -1,3 +1,5 @@
->   CONFIG_TUN
->   CONFIG_VETH
-> +CONFIG_DUMMY
-> +CONFIG_NET_NS
->   CONFIG_RDMA_RXE
-> diff --git a/tools/testing/selftests/rdma/rxe_netns_names.sh b/tools/testing/selftests/rdma/rxe_netns_names.sh
-> new file mode 100755
-> index 000000000000..a7e57706fdff
-> --- /dev/null
-> +++ b/tools/testing/selftests/rdma/rxe_netns_names.sh
-> @@ -0,0 +1,282 @@
-> +#!/bin/bash
-> +# SPDX-License-Identifier: GPL-2.0
-> +#
-> +# Exercise RDMA device name handling across network namespaces.
-> +
-> +source "$(dirname "$0")/../kselftest/ktap_helpers.sh"
-> +
-> +NAME_PREFIX="rxe_netns_names_$$"
-> +NETDEV_PREFIX="rxn$$"
-> +NS1="${NAME_PREFIX}ns1"
-> +NS2="${NAME_PREFIX}ns2"
-> +RXE_A="${NAME_PREFIX}rxe_a"
-> +RXE_B="${NAME_PREFIX}rxe_b"
-> +RXE_SAME="${NAME_PREFIX}rxe_same"
-> +RXE_NEW="${NAME_PREFIX}rxe_new"
-> +DUMMY_A="${NETDEV_PREFIX}a"
-> +DUMMY_B="${NETDEV_PREFIX}b"
-> +OLD_MODE=""
-> +MODE_CHANGED=0
-> +MODS=("dummy" "rdma_rxe")
-> +TEST_SAME_NAMES="same RDMA device name can exist in two net namespaces"
-> +TEST_MOVE_CONFLICT="move without rename fails on destination name conflict"
-> +TEST_MOVE_RENAME="move then rename succeeds"
-> +TEST_COMBINED_MOVE_RENAME="move with requested destination name succeeds"
-> +TEST_SAME_NETNS_DUP_RENAME="same-netns rename rejects duplicate name"
-> +TEST_TEARDOWN_RETURN="netns delete returns device to init_net and renames on conflict"
-> +
-> +ksft_skip()
-> +{
-> +	ktap_skip_all "$*"
-> +	exit "$KSFT_SKIP"
-> +}
-> +
-> +fail()
-> +{
-> +	ktap_exit_fail_msg "$*"
-> +}
-> +
-> +need_cmd()
-> +{
-> +	command -v "$1" >/dev/null 2>&1 || ksft_skip "missing command: $1"
-> +}
-> +
-> +rdma_ns()
-> +{
-> +	local ns=$1
-> +
-> +	shift
-> +	ip netns exec "$ns" rdma "$@"
-> +}
-> +
-> +rdma_dev_exists()
-> +{
-> +	local ns=$1
-> +	local dev=$2
-> +
-> +	if [ -n "$ns" ]; then
-> +		rdma_ns "$ns" dev show "$dev" >/dev/null 2>&1
-> +	else
-> +		rdma dev show "$dev" >/dev/null 2>&1
-> +	fi
-> +}
-> +
-> +add_dummy()
-> +{
-> +	local netdev=$1
-> +
-> +	ip link add "$netdev" type dummy || return 1
-> +	ip link set "$netdev" up || return 1
-> +}
-> +
-> +add_rxe()
-> +{
-> +	local dev=$1
-> +	local netdev=$2
-> +
-> +	rdma link add "$dev" type rxe netdev "$netdev"
-> +}
-> +
-> +rdma_dev_on_netdev()
-> +{
-> +	local netdev=$1
-> +
-> +	rdma link show 2>/dev/null | awk -v want="$netdev" '
-> +		{
-> +			for (i = 1; i < NF; i++)
-> +				if ($i == "netdev" && $(i + 1) == want) {
-> +					dev = $2
-> +					sub(/\/.*/, "", dev)
-> +					print dev
-> +					exit
-> +				}
-> +		}'
-> +}
-> +
-> +wait_rdma_dev_on_netdev()
-> +{
-> +	local netdev=$1
-> +	local dev
-> +	local i
-> +
-> +	for i in $(seq 1 50); do
-> +		dev=$(rdma_dev_on_netdev "$netdev")
-> +		if [ -n "$dev" ]; then
-> +			echo "$dev"
-> +			return 0
-> +		fi
-> +		sleep 0.1
-> +	done
-> +
-> +	return 1
-> +}
-> +
-> +setup_devs()
-> +{
-> +	cleanup_devs
-> +
-> +	add_dummy "$DUMMY_A" || return 1
-> +	add_dummy "$DUMMY_B" || return 1
-> +
-> +	add_rxe "$RXE_A" "$DUMMY_A" || return 1
-> +	add_rxe "$RXE_B" "$DUMMY_B" || return 1
-> +}
-> +
-> +cleanup_devs()
-> +{
-> +	ip link del "$DUMMY_A" 2>/dev/null
-> +	ip link del "$DUMMY_B" 2>/dev/null
-> +}
-> +
-> +setup()
-> +{
-> +	OLD_MODE=$(rdma system show 2>/dev/null |
-> +		   sed -n 's/.*netns \([^ ]*\).*/\1/p')
-> +	[ -n "$OLD_MODE" ] || ksft_skip "failed to read RDMA netns mode"
-> +
-> +	rdma system set netns exclusive >/dev/null 2>&1 ||
-> +		ksft_skip "rdma netns exclusive mode is not supported"
-> +	MODE_CHANGED=1
-> +
-> +	ip netns add "$NS1" || return 1
-> +	ip netns add "$NS2" || return 1
-> +}
-> +
-> +cleanup()
-> +{
-> +	cleanup_devs
-> +
-> +	ip netns del "$NS1" 2>/dev/null
-> +	ip netns del "$NS2" 2>/dev/null
-> +
-> +	if [ "$MODE_CHANGED" -eq 1 ]; then
-> +		rdma system set netns "$OLD_MODE" 2>/dev/null
-> +	fi
-> +
-> +	for m in "${MODS[@]}"; do
-> +		modprobe -r "$m" 2>/dev/null
-> +	done
-> +}
-> +
-> +rdma_supports_combined_move_rename()
-> +{
-> +	rdma dev help 2>&1 | grep -Eq 'netns .*name|name .*netns'
-> +}
-> +
-> +[ "$(id -u)" -eq 0 ] || ksft_skip "must be run as root"
-> +need_cmd ip
-> +need_cmd rdma
-> +need_cmd modprobe
-> +
-> +trap cleanup EXIT
-> +
-> +for m in "${MODS[@]}"; do
-> +	modinfo "$m" >/dev/null 2>&1 || ksft_skip "module $m not found"
-> +	modprobe "$m" || fail "failed to load $m"
-> +done
-> +
-> +setup || fail "failed to create net namespaces"
-> +
-> +ktap_print_header
-> +ktap_set_plan 7
-> +
-> +if setup_devs &&
-> +   rdma dev set "$RXE_A" netns "$NS1" &&
-> +   rdma_ns "$NS1" dev set "$RXE_A" name "$RXE_SAME" &&
-> +   rdma dev set "$RXE_B" netns "$NS2" &&
-> +   rdma_ns "$NS2" dev set "$RXE_B" name "$RXE_SAME" &&
-> +   rdma_dev_exists "$NS1" "$RXE_SAME" &&
-> +   rdma_dev_exists "$NS2" "$RXE_SAME"; then
-> +	ktap_test_pass "$TEST_SAME_NAMES"
-> +else
-> +	ktap_test_fail "$TEST_SAME_NAMES"
-> +fi
-> +cleanup_devs
-> +
-> +if ! setup_devs ||
-> +   ! rdma dev set "$RXE_A" netns "$NS1" ||
-> +   ! rdma_ns "$NS1" dev set "$RXE_A" name "$RXE_SAME" ||
-> +   ! rdma dev set "$RXE_B" netns "$NS2" ||
-> +   ! rdma_ns "$NS2" dev set "$RXE_B" name "$RXE_SAME"; then
-> +	ktap_test_fail "$TEST_MOVE_CONFLICT"
-> +elif rdma_ns "$NS1" dev set "$RXE_SAME" netns "$NS2" >/dev/null 2>&1; then
-> +	ktap_test_fail "$TEST_MOVE_CONFLICT"
-> +elif rdma_dev_exists "$NS1" "$RXE_SAME" &&
-> +     rdma_dev_exists "$NS2" "$RXE_SAME"; then
-> +	ktap_test_pass "$TEST_MOVE_CONFLICT"
-> +else
-> +	ktap_test_fail "$TEST_MOVE_CONFLICT"
-> +fi
-> +cleanup_devs
-> +
-> +if ! setup_devs; then
-> +	ktap_test_fail "$TEST_MOVE_RENAME"
-> +elif rdma dev set "$RXE_A" netns "$NS2" &&
-> +     rdma_ns "$NS2" dev set "$RXE_A" name "$RXE_NEW"; then
-> +	if rdma_dev_exists "$NS2" "$RXE_NEW" &&
-> +	   ! rdma_dev_exists "" "$RXE_A"; then
-> +		ktap_test_pass "$TEST_MOVE_RENAME"
-> +	else
-> +		ktap_test_fail "$TEST_MOVE_RENAME"
-> +	fi
-> +else
-> +	ktap_test_fail "$TEST_MOVE_RENAME"
-> +fi
-> +cleanup_devs
-> +
-> +if ! rdma_supports_combined_move_rename; then
-> +	ktap_test_skip "$TEST_COMBINED_MOVE_RENAME"
-> +elif ! setup_devs; then
-> +	ktap_test_fail "$TEST_COMBINED_MOVE_RENAME"
-> +elif rdma dev set "$RXE_A" netns "$NS2" name "$RXE_NEW"; then
-> +	if rdma_dev_exists "$NS2" "$RXE_NEW" &&
-> +	   ! rdma_dev_exists "" "$RXE_A"; then
-> +		ktap_test_pass "$TEST_COMBINED_MOVE_RENAME"
-> +	else
-> +		ktap_test_fail "$TEST_COMBINED_MOVE_RENAME"
-> +	fi
-> +else
-> +	ktap_test_fail "$TEST_COMBINED_MOVE_RENAME"
-> +fi
-> +cleanup_devs
-> +
-> +if ! setup_devs; then
-> +	ktap_test_fail "$TEST_SAME_NETNS_DUP_RENAME"
-> +elif rdma dev set "$RXE_A" name "$RXE_SAME" &&
-> +     rdma dev set "$RXE_B" name "$RXE_NEW"; then
-> +	if rdma dev set "$RXE_A" name "$RXE_NEW" >/dev/null 2>&1; then
-> +		ktap_test_fail "$TEST_SAME_NETNS_DUP_RENAME"
-> +	elif rdma_dev_exists "" "$RXE_SAME" &&
-> +	     rdma_dev_exists "" "$RXE_NEW"; then
-> +		ktap_test_pass "$TEST_SAME_NETNS_DUP_RENAME"
-> +	else
-> +		ktap_test_fail "$TEST_SAME_NETNS_DUP_RENAME"
-> +	fi
-> +else
-> +	ktap_test_fail "$TEST_SAME_NETNS_DUP_RENAME"
-> +fi
-> +cleanup_devs
-> +
-> +if ! setup_devs; then
-> +	ktap_test_fail "$TEST_TEARDOWN_RETURN"
-> +elif ! rdma dev set "$RXE_A" name "$RXE_SAME" ||
-> +     ! rdma dev set "$RXE_B" netns "$NS2" ||
-> +     ! rdma_ns "$NS2" dev set "$RXE_B" name "$RXE_SAME" ||
-> +     ! rdma_dev_exists "$NS2" "$RXE_SAME"; then
-> +	ktap_test_fail "$TEST_TEARDOWN_RETURN"
-> +else
-> +	ip netns del "$NS2"
-> +	returned=$(wait_rdma_dev_on_netdev "$DUMMY_B")
-> +	ktap_print_msg "device returned to init_net as '${returned:-<missing>}'"
-> +	if rdma_dev_exists "" "$RXE_SAME" &&
-> +	   [ -n "$returned" ] &&
-> +	   [ "$returned" != "$RXE_SAME" ] &&
-> +	   [ "${returned#ibdev}" != "$returned" ]; then
-> +		ktap_test_pass "$TEST_TEARDOWN_RETURN"
-> +	else
-> +		ktap_test_fail "$TEST_TEARDOWN_RETURN"
-> +	fi
-> +fi
-> +cleanup_devs
-> +
-> +ktap_finished
+Already explained that only P5_PLUS supports MPC.
+
+Patch #11:
+Defer the MPC ring reset to bnxt_sp_task() just like other resets to
+avoid any possibility od deadlock.
+
+Add more comments to explain the MPC ring disable, stop, start.
+
+Patch #12:
+The bnxt_drv_busy() is the existing driver scheme to wait for activities
+to stop during shutdown.
+
+Patch #13:
+The kTLS software counters match the other driver software counters
+using plain u64.  We can add u64_stats_sync for 32-bit systems but it
+makes more sense to add it to all the existing counters as well.
+
+Use BNXT_NO_FW_ACCESS() to fix possible massive AER timeout.
+
+Patch #15:
+Use bool instead of bit fields to keep track of kTLS states (requested by
+Paolo).
+
+v4:
+https://lore.kernel.org/netdev/20260629184921.3496727-1-michael.chan@broadcom.com/
+
+Fix kerneldoc prototype warning and uninitialized variable warnings reported
+by Jakub.
+
+Fix most valid Sashiko reported issues.
+
+v3:
+https://lore.kernel.org/netdev/20260614072407.2761092-1-michael.chan@broadcom.com/
+
+Fix most AI reported issues from Jakub.
+
+v2:
+https://lore.kernel.org/netdev/20260512212105.3488258-1-michael.chan@broadcom.com/
+
+Fix unused variable compile warnings in patch 10 and 12 by reorganizing
+the patches (reported by Jakub)
+
+Fix some error recovery issues in patch 12
+
+v1:
+https://lore.kernel.org/netdev/20260504235836.3019499-1-michael.chan@broadcom.com/
+
+Michael Chan (15):
+  bnxt_en: Add Midpath channel information
+  bnxt_en: Account for the MPC TX and CP rings
+  bnxt_en: Set default MPC ring count
+  bnxt_en: Rename xdp_tx_lock to tx_lock
+  bnxt_en: Allocate and free MPC software structures
+  bnxt_en: Allocate and free MPC channels from firmware
+  bnxt_en: Allocate crypto structure and backing store
+  bnxt_en: Reserve crypto RX and TX key contexts on a PF
+  bnxt_en: Add infrastructure for crypto key context IDs
+  bnxt_en: Add MPC transmit and completion functions
+  bnxt_en: Add crypto MPC transmit/completion infrastructure
+  bnxt_en: Support kTLS TX offload by implementing .tls_dev_add/del()
+  bnxt_en: Implement kTLS TX normal path
+  bnxt_en: Add support for inline transmit BDs
+  bnxt_en: Add kTLS retransmission support
+
+ drivers/net/ethernet/broadcom/Kconfig         |   9 +
+ drivers/net/ethernet/broadcom/bnxt/Makefile   |   1 +
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 291 +++++--
+ drivers/net/ethernet/broadcom/bnxt/bnxt.h     |  95 ++-
+ .../net/ethernet/broadcom/bnxt/bnxt_crypto.c  | 617 ++++++++++++++
+ .../net/ethernet/broadcom/bnxt/bnxt_crypto.h  | 230 +++++
+ .../net/ethernet/broadcom/bnxt/bnxt_ethtool.c |  61 +-
+ drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c |   2 +-
+ .../net/ethernet/broadcom/bnxt/bnxt_ktls.c    | 578 +++++++++++++
+ .../net/ethernet/broadcom/bnxt/bnxt_ktls.h    | 174 ++++
+ drivers/net/ethernet/broadcom/bnxt/bnxt_mpc.c | 783 ++++++++++++++++++
+ drivers/net/ethernet/broadcom/bnxt/bnxt_mpc.h | 227 +++++
+ .../net/ethernet/broadcom/bnxt/bnxt_sriov.c   |   6 +-
+ drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c |   8 +-
+ include/linux/bnxt/hsi.h                      |  37 +
+ 15 files changed, 3052 insertions(+), 67 deletions(-)
+ create mode 100644 drivers/net/ethernet/broadcom/bnxt/bnxt_crypto.c
+ create mode 100644 drivers/net/ethernet/broadcom/bnxt/bnxt_crypto.h
+ create mode 100644 drivers/net/ethernet/broadcom/bnxt/bnxt_ktls.c
+ create mode 100644 drivers/net/ethernet/broadcom/bnxt/bnxt_ktls.h
+ create mode 100644 drivers/net/ethernet/broadcom/bnxt/bnxt_mpc.c
+ create mode 100644 drivers/net/ethernet/broadcom/bnxt/bnxt_mpc.h
 
 -- 
-Best Regards,
-Yanjun.Zhu
+2.51.0
 
