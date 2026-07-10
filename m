@@ -1,40 +1,40 @@
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6081D3DA7E0
-	for <netdev@vger.kernel.org>; Fri, 10 Jul 2026 07:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A07397E85
+	for <netdev@vger.kernel.org>; Fri, 10 Jul 2026 07:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783670136; cv=none; b=ubQP4uRc5fex1DJrKXvnJEBAyGwgUHgs9XZuWeOSTbs56I2D4zYIr+R8ftAhUGxWN5cAxhpJyvjB8voJER0TF0WKF2SWYAKG/v0v4dvEn9DTKih6NcA0irkkXtK7ZQRcd3/Fkpgw6RK/K/Dpkh/oTgMwc51rF1+l99AJAIE3vlg=
+	t=1783670240; cv=none; b=KnPPIT8tcka+ibtZwkiFA97prlugQ8PE7ARkku95GD8rV/jqptzhIFzEy6ZPU+uYJjvoQpgdjZQKD2c4WMAOgesUVXfpclvfHxm17UFBXD5fngbK/AjN/URd81uGUpbfSscv307zols0azqy7rSqKJ+3aIld2BOZ01ACgzstrMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783670136; c=relaxed/simple;
-	bh=wS+SWyniFauIJVB7lAgJku9ullKRz+aJuro6iP0XJ3s=;
+	s=arc-20240116; t=1783670240; c=relaxed/simple;
+	bh=zX0dSImflAg+L/++tj1wrqMOseP2MWczuBo3TqCL53s=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TgZ4ecZDFRgRfJkrXCJg/OoOaAE57LVRjclonP5Lv2eNjvq98mFCPe79NBoYF7Jg+B11V7BW7U5DYNtObV2+BNVDAtRx20c/ZHGY7QN7J+U/Uxf4V6e5wh0J8JW1lWxF0Dd4TlBsUL4rXxoM18GxV4oPC4jZJwowXSSdqFEj9Tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=RgeWRIny; arc=none smtp.client-ip=185.246.85.4
+	 In-Reply-To:Content-Type; b=X3QnlxHLurP/Ws3mHFOos72NwIAXO4Vt9h+j1am8qKJx1O8vQf7qfRdgfRHVGHzFbJ2qhyIEuvCtt7kHIHBU1R6wHLApwN3DkaXDCTzkcPI+qzP5wtWlqMBknUPwWUqtIKCRICvtCuG/Ao8cwwyXWDM+QZeg+qjK8DExS2Q72K8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=RhXYbml1; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="RgeWRIny"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="RhXYbml1"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id C19F34E40D3B;
-	Fri, 10 Jul 2026 07:55:25 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 8372F4E40D3B;
+	Fri, 10 Jul 2026 07:57:16 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 872DD60341;
-	Fri, 10 Jul 2026 07:55:25 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8B96011BD25EA;
-	Fri, 10 Jul 2026 09:55:18 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5733060341;
+	Fri, 10 Jul 2026 07:57:16 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F063D11BD268A;
+	Fri, 10 Jul 2026 09:57:12 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1783670124; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1783670235; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=MurWrrJf+gTtRqfWpt4rSJsv5jYUIeOi9Ka+haA90Es=;
-	b=RgeWRInyxGw8N+hnf0MqNZIPY4BbKbxVYDxS99yNr6zdehq2nx9K9ho1PIk2ay5CtKzgDW
-	oP81R0hh9tn7R7pCyFb+Rpvh5OK5YsWR9xJXha2DZZ8fLe/eIibQxykxz5TZWM11p4ILDc
-	a3D/9Kl7hMZJqWIN72ZXWEd0sWlpPPiUycwPrXuIT3DhzPCvdHM3aA8IvnQWgqzQ4zPNyO
-	vWS11uFaELE4l/+H33z2OEgChaMRkpM00rJTBaCLAWHIOS87SPESpfECz995Y0pM35GQCC
-	kIuyxZyARwZsQ2V616nvjxqUaRqaqxGSmlrxkJPe/9ccvIersDokY1bcx2Zxxw==
-Message-ID: <0e88052e-b36b-4655-98b8-ce9abc0d8061@bootlin.com>
-Date: Fri, 10 Jul 2026 09:55:17 +0200
+	bh=A9jMvDWVgs4vdAtq7MIw7ISq+1SET0BuYfcPZ1csGa4=;
+	b=RhXYbml1opA17eEKFHI1fXoIU19LxRHV0wQyGhH8ASupOKPSgwMkc6FLFUFleOO2POsZ2X
+	6rXBPAVPA7gaTFkSznerR1ygGUw53Wmrfr6utx/Mqs6V0LWeXzZHMagZmeTn2/WcZyRPMd
+	PSfM3z1osYrRody2C/GtBYeQMTjq8eT80kc/BMybYPVRJspQv6vYS6yn3scVBjYQ6TUuWO
+	qgN4l7lGbacqTELx/fQAN68kb2C7C9X5cAnwCnpv6e6jlabmJSip/5q2f/aEGB1mak6Dw1
+	UE0+5ChgEaAyCeTCyvMADSadw3PfQk1DhcHU+EtqxQRPxoSGF3PG/IiTsSviGQ==
+Message-ID: <91b91125-83ca-4ce9-9ac0-b2775fdcee20@bootlin.com>
+Date: Fri, 10 Jul 2026 09:57:12 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,8 +42,8 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 01/10] net: dsa: microchip: implement
- ksz8463_setup()
+Subject: Re: [PATCH net-next 04/10] net: dsa: microchip: add PTP interrupt
+ handling for KSZ8463
 To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com,
  Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
@@ -56,10 +56,10 @@ Cc: Pascal Eberhard <pascal.eberhard@se.com>,
  Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org
 References: <20260709-ksz-new-ptp-v1-0-344f02fe739e@bootlin.com>
- <20260709-ksz-new-ptp-v1-1-344f02fe739e@bootlin.com>
+ <20260709-ksz-new-ptp-v1-4-344f02fe739e@bootlin.com>
 From: Bastien Curutchet <bastien.curutchet@bootlin.com>
 Content-Language: en-US
-In-Reply-To: <20260709-ksz-new-ptp-v1-1-344f02fe739e@bootlin.com>
+In-Reply-To: <20260709-ksz-new-ptp-v1-4-344f02fe739e@bootlin.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Last-TLS-Session-Version: TLSv1.3
@@ -67,36 +67,224 @@ X-Last-TLS-Session-Version: TLSv1.3
 Hi all,
 
 On 7/9/26 8:42 AM, Bastien Curutchet (Schneider Electric) wrote:
-> KSZ8463 uses the ksz8_setup() as setup() callback for its DSA
-> operations. Its behavior is quite different than other KSZ8 switches,
-> especially its interrupt scheme.
+> KSZ8463 PTP interrupts aren't handled by the driver.
+> The interrupt layout in KSZ8463 has nothing to do with the other
+> switches:
+> - Its global interrupt enable register is 16-bits long and follow an
+>    'enable' logic, instead of a 'mask' one
+> - all the interrupts of all ports are grouped into one status register
+>    while others have one interrupt register per port
+> - xdelay_req and pdresp timestamps share one single interrupt bit on the
+>    KSZ8463 while each of them has its own interrupt bit on other switches
 > 
-> Remove from the ksz8_setup()/ksz8_reset_switch() everything that is
-> ksz8463-related.
-> Create a dedicated ksz8463_setup() and a ksz8463_reset_switch() function.
-> This new ksz8463_setup() is widely inspired from ksz8_setup, it has
-> following differences:
-> - it doesn't configure drive strength (not supported on KSZ8463)
-> - it uses the ksz8463_reset_switch()
-> - it doesn't configure IRQs
+> Create a KSZ8463-specific set of interrupt domain operations to handle
+> the global IRQ layer. To limit code duplication, it uses the same
+> interrupt handler than the other switches. Since other switches have
+> 8-bits registers, only the high-byte of the interrupt status/enable
+> registers are used. This high-byte is where the PTP interrupts are
+> located. The low-byte contains the wake-up detection interrupts so if at
+> some points these interrupts are needed we'll need a bit of rework here.
+> 
+> Create KSZ8463-specific functions to setup the PTP interrupts. The
+> created IRQ domain is tied to the first port of the KSZ8463. Again,
+> the same PTP interrupt handler than the others switches is used.
+> 
+> Implement the teardown callback to release the interrupts.
+> 
+> Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
+> ---
+>   drivers/net/dsa/microchip/ksz8.c        |  93 ++++++++++++++++++++++-
+>   drivers/net/dsa/microchip/ksz_ptp.c     | 129 ++++++++++++++++++++++++++++++++
+>   drivers/net/dsa/microchip/ksz_ptp.h     |   9 +++
+>   drivers/net/dsa/microchip/ksz_ptp_reg.h |   6 ++
+>   4 files changed, 235 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/dsa/microchip/ksz8.c b/drivers/net/dsa/microchip/ksz8.c
+> index 3bbca6f9cfc5..c099a7005808 100644
+> --- a/drivers/net/dsa/microchip/ksz8.c
+> +++ b/drivers/net/dsa/microchip/ksz8.c
+> @@ -36,6 +36,13 @@
+>   #include "ksz8_reg.h"
+>   #include "ksz8.h"
+>   
+> +/*
+> + * We use only the high-byte (so odd addresses) of the 16-bits registers to fit
+> + * in the common IRQ framework
+> + */
+> +#define KSZ8463_REG_ISR			0x191
+> +#define KSZ8463_REG_IER			0x193
+> +
+>   /* ksz88x3_drive_strengths - Drive strength mapping for KSZ8863, KSZ8873, ..
+>    *			     variants.
+>    * This values are documented in KSZ8873 and KSZ8863 datasheets.
+> @@ -181,6 +188,58 @@ static int ksz8_pme_pwrite8(struct ksz_device *dev, int port, int offset, u8 dat
+>   	return ksz8_ind_write8(dev, table, (u8)(offset), data);
+>   }
+>   
+> +static void ksz8463_irq_mask(struct irq_data *d)
+> +{
+> +	struct ksz_irq *kirq = irq_data_get_irq_chip_data(d);
+> +
+> +	kirq->masked &= ~BIT(d->hwirq);
+> +}
+> +
+> +static void ksz8463_irq_unmask(struct irq_data *d)
+> +{
+> +	struct ksz_irq *kirq = irq_data_get_irq_chip_data(d);
+> +
+> +	kirq->masked |= BIT(d->hwirq);
+> +}
+> +
+> +static const struct irq_chip ksz8463_irq_chip = {
+> +	.name			= "ksz8463-irq",
+> +	.irq_mask		= ksz8463_irq_mask,
+> +	.irq_unmask		= ksz8463_irq_unmask,
+> +	.irq_bus_lock		= ksz_irq_bus_lock,
+> +	.irq_bus_sync_unlock	= ksz_irq_bus_sync_unlock,
+> +};
+> +
+> +static int ksz8463_irq_domain_map(struct irq_domain *d,
+> +				  unsigned int irq, irq_hw_number_t hwirq)
+> +{
+> +	irq_set_chip_data(irq, d->host_data);
+> +	irq_set_chip_and_handler(irq, &ksz8463_irq_chip, handle_level_irq);
+> +	irq_set_noprobe(irq);
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct irq_domain_ops ksz8463_irq_domain_ops = {
+> +	.map	= ksz8463_irq_domain_map,
+> +	.xlate	= irq_domain_xlate_twocell,
+> +};
+> +
+> +static int ksz8463_girq_setup(struct ksz_device *dev)
+> +{
+> +	struct ksz_irq *girq = &dev->girq;
+> +
+> +	girq->nirqs = 8;
+> +	girq->reg_mask = KSZ8463_REG_IER;
+> +	girq->reg_status = KSZ8463_REG_ISR;
+> +	girq->masked = 0;
+> +	snprintf(girq->name, sizeof(girq->name), "ksz8463-girq");
+> +
+> +	girq->irq_num = dev->irq;
+> +
+> +	return ksz_irq_common_setup(dev, girq, &ksz8463_irq_domain_ops);
+> +}
+> +
+>   static int ksz8463_reset_switch(struct ksz_device *dev)
+>   {
+>   	ksz_cfg(dev, KSZ8463_REG_SW_RESET, KSZ8463_GLOBAL_SOFTWARE_RESET, true);
+> @@ -2407,21 +2466,50 @@ static int ksz8463_setup(struct dsa_switch *ds)
+>   	p = &dev->ports[dev->cpu_port];
+>   	p->learning = true;
+>   
+> +	if (dev->irq > 0) {
+> +		ret = ksz8463_girq_setup(dev);
+> +		if (ret)
+> +			return ret;
+> +
+> +		ret = ksz8463_ptp_irq_setup(ds);
+> +		if (ret)
+> +			goto free_girq;
+> +	}
+> +
+>   	ret = ksz_mdio_register(dev);
+>   	if (ret < 0) {
+>   		dev_err(dev->dev, "failed to register the mdio");
+> -		return ret;
+> +		goto free_ptp_irq;
+>   	}
+>   
+>   	ret = ksz_dcb_init(dev);
+>   	if (ret)
+> -		return ret;
+> +		goto free_ptp_irq;
+>   
+>   	/* start switch */
+>   	regmap_update_bits(ksz_regmap_8(dev), regs[S_START_CTRL],
+>   			   SW_START, SW_START);
+>   
+>   	return 0;
+> +
+> +free_ptp_irq:
+> +	if (dev->irq > 0)
+> +		ksz8463_ptp_irq_free(ds);
+> +free_girq:
+> +	if (dev->irq > 0)
+> +		ksz_irq_free(&dev->girq);
+> +
+> +	return ret;
+> +}
+> +
+> +static void ksz8463_teardown(struct dsa_switch *ds)
+> +{
+> +	struct ksz_device *dev = ds->priv;
+> +
+> +	if (dev->irq > 0) {
+> +		ksz8463_ptp_irq_free(ds);
+> +		ksz_irq_free(&dev->girq);
+> +	}
+>   }
+>   
+>   /**
+> @@ -3010,6 +3098,7 @@ const struct dsa_switch_ops ksz8463_switch_ops = {
+>   	.get_tag_protocol	= ksz8463_get_tag_protocol,
+>   	.connect_tag_protocol   = ksz8463_connect_tag_protocol,
+>   	.setup			= ksz8463_setup,
+> +	.teardown		= ksz8463_teardown,
+>   	.phy_read		= ksz8463_phy_read16,
+>   	.phy_write		= ksz8463_phy_write16,
+>   	.phylink_get_caps	= ksz8_phylink_get_caps,
+> diff --git a/drivers/net/dsa/microchip/ksz_ptp.c b/drivers/net/dsa/microchip/ksz_ptp.c
+> index 8b98039320ad..7a74befda9ad 100644
+> --- a/drivers/net/dsa/microchip/ksz_ptp.c
+> +++ b/drivers/net/dsa/microchip/ksz_ptp.c
+> @@ -32,6 +32,15 @@
+>   
+>   #define KSZ_PTP_INT_START 13
+>   
+> +/*
+> + * PTP interrupt bit is the bit 12 of the 16-bits ISR/IER. But ksz_common.c only
+> + * accesses the high-byte of these registers so the PTP interrupt bit becomes 4.
+> + */
+> +#define KSZ8463_SRC_PTP_INT		4
+> +#define KSZ8463_PTP_PORT1_INT_START	12
+> +#define KSZ8463_PTP_PORT2_INT_START	14
+> +#define KSZ8463_PTP_INT_START		KSZ8463_PTP_PORT1_INT_START
+> +
+>   static int ksz_ptp_tou_gpio(struct ksz_device *dev)
+>   {
+>   	int ret;
+> @@ -1129,6 +1138,126 @@ static int ksz_ptp_msg_irq_setup(struct ksz_port *port, u8 n)
+>   	return ret;
+>   }
+>   
+> +static int ksz8463_ptp_port_irq_setup(struct ksz_irq *ptpirq,
+> +				      struct ksz_port *port, int hw_irq)
+> +{
+> +	u16 ts_reg[] = {KSZ8463_REG_PORT_SYNC_TS, KSZ8463_REG_PORT_DREQ_TS};
+> +	static const char * const name[] = {"sync-msg", "delay-msg"};
+> +	const struct ksz_dev_ops *ops = port->ksz_dev->dev_ops;
+> +	struct ksz_ptp_irq *ptpmsg_irq;
+> +	int ret;
+> +	int i;
+> +
+> +	init_completion(&port->tstamp_msg_comp);
+> +
+> +	for (i = 0; i < 2; i++) {
+> +		ptpmsg_irq = &port->ptpmsg_irq[i];
+> +		ptpmsg_irq->num = irq_create_mapping(ptpirq->domain,
+> +						     hw_irq + i);
+> +		if (!ptpmsg_irq->num)
+> +			goto release_msg_irq;
+> +
 
-Sashiko said "Can this cause a probe failure or interrupt corruption 
-when a hardware interrupt is configured in the device tree?"
+Sashiko says : "Does this code return an uninitialized or incorrect 
+error code on failure?"
 
-It doesn't cause a probe failure on my setup. However, I think it's 
-right when it says that the IRQ setup could lead to 'erroneously return 
-an active Linux IRQ belonging to another hardware device'.
-
-I'll change the patch order in next iteration and put this one after the 
-KSZ8463 interrupt support to avoid this issue.
-
-
-
-FYI, Sashiko made two other comments on this patch about bugs that would 
-be triggered when 'the DSA master netdev is rebound'. I'm not sure to 
-understand how these bugs can be triggered and the comments start with 
-'This isn't a bug introduced by this patch' so I don't plan to 
-investigate it further.
+Yes it does, I'll fix it in next iteration
 
 
 Best regards,
