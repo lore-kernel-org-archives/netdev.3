@@ -1,130 +1,110 @@
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.77.92])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642E43C2B95
-	for <netdev@vger.kernel.org>; Sat, 11 Jul 2026 14:00:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.180
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783778419; cv=pass; b=XRft7XnawQmm+DDqV+L5Yr2C6gFOA4UTDoXqiSllMqxUNDI6FZiCvTaKRDegP8+Y+szTVz3icj8mHQwwToHhXVbOEn3ekmXumsNvVcXwvRx9k54frhmmx2bRC9VHt1jW0hbzKYNMKtTj8/yK01N4yo1IKyZEJILtT6Qv/iaceBk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783778419; c=relaxed/simple;
-	bh=2x8s2hRIzfzcX6kMgVsDG2qEJDcy4Ak63lIwgjF35zY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mlzajNq0yBZL8K/dEpq25cynPY640hq5ATw8C0d5OGvCXZq4pmEDj6luZMc05ZGrrvGTXEgJKKR2NMz5G3LzGmt8HO6R23Zv1y/BvDOs8cR4V6H9cIH4G93A+WssnPnznApXpi+hQs3Y5yWHbDxJgDWEzwk1FDAZTsu63WKbx9c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=auJzsx57; arc=pass smtp.client-ip=209.85.160.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D782D617
+	for <netdev@vger.kernel.org>; Sat, 11 Jul 2026 14:10:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.246.77.92
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783779031; cv=none; b=aAfeJ1zeXhc9nmNEQvB9zHmYto4G1nzwx+bDeqwcKYPqix/Zw1mhZ3qb2GAUeqODW9pjLM7VgvaV4nls/OoDvq/DYUD16jpn6w08HJ9MQPr0Wif5AwmfwF/vuP5f54yaCDXP7ZN294svbFei6kQ8t2x7ia2IITgg2W3HsyeNLvM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783779031; c=relaxed/simple;
+	bh=qQzG8LihjOK0cMyeTF0aPqL37/1zDlQWySjfLyQ/OmY=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WgbQiuu0veL5sM2RQgSf+GgTw8RuzM2ukA3d+vdyX79NW6mcNZX6U5OcUGsI+2tss0WtOxIuTwrbiGII4XE1yz5y2VsrZjo/nppxKeOYk9s9WlLHb/45NXLTZoqgQ9frHJMG7KkujEXQmtZejFN3iywcdwGbdLG2jO4DHJMAnC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=mJqsE0dH; arc=none smtp.client-ip=44.246.77.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="auJzsx57"
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-51c8e2e39easo13706961cf.0
-        for <netdev@vger.kernel.org>; Sat, 11 Jul 2026 07:00:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783778416; cv=none;
-        d=google.com; s=arc-20260327;
-        b=KPA64Bzk2Ik058f4XHkcsg3bk6hkLHyouklwulzv+rJFq+hfSSNOrFSVZNlmvCK91e
-         CpagCSJlK+y4Oz1CnOaCSHsbdnzHTP5d3v0sQwnqGdJUFfxKSMzQXxevyoTfa8SnZMc0
-         k9jebefAvnBlhbeEgD9MHgVnhcWCnetNLrC7eRzEa+qEpVwx984afgeOhvmx1llD89UT
-         ryf/sLUPVn7yBRBODEmIcTn3s7wOsEB8ygI3yQvninOyypoMpQ82Z5gmvIcSsFjevz6K
-         S4SEguA5AgBu9/QqxN51/stnYGCq73f/hDOjmjK9WUk0nq4W1QTbMSHydnocqLswuKgk
-         1OXw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=GqDR0IptsjWrOWRZQ2Jyt0YxUIjEB4dj30T2XPWVZdY=;
-        fh=jK0q+7F8TwV8RrE84Jz3ZQXX6FPOAlq5oHMg1Kh3aMo=;
-        b=JWJxxcysUnADDmoHDz8A+JpT7OKWSPDLzmLzAsNK+pLM/7krK8UK86zGDqerWGF2zk
-         q9JfJi1anTGT+vQqaza8jVINC64ebQpHKhtpKEDhrPUw9YEOmukaA58GBIw/+CS/pQAx
-         n3b/C9bsB3FvHv8txXT1ei+ju5c7YWYPXYrBeOHHVI6tvab3AX7wvpZa7jx3ltuYKdlR
-         UrtExyxIwxmaltuAWFbfoCIScVMIPBOInBbHXmgbspVdwafSB5/Ortq7UmikJnhKkiZE
-         z+pLlS6Be02b5+6WyXK+uMJiMBx6uEmTM0cm22T5BOEhEs7A8jUbdqpbew+Iah8Zhpd5
-         Q6RQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="mJqsE0dH"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783778416; x=1784383216; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=GqDR0IptsjWrOWRZQ2Jyt0YxUIjEB4dj30T2XPWVZdY=;
-        b=auJzsx57xi10LJGLIaOVxsXhfVM0fjiBx2oR6Y2FSzzlA3J5s/0CtG+K6p/ImEN6Pq
-         Q4JDugXNtrSC30C3c8oD8QT18rckS8QA3Tnkh/DKmdo/imspPHiENW7SxRc7bGzjFftK
-         KfqqJAj3hPCeO1oaE0ut7s+gLFJ4qfHRrVMfCopt85k4OXpJ7urYArr+JuNW6FyXxlv1
-         HUXaA7nIwdLbik4Rh5zlZulLgDMAKQAlUam7CndKegMSvViKmwPFW1hquVvBcGP8/DuV
-         5ggKoF3C3f7jDNeDGOCCZ+0vCCc8erQEAGbeuKfpwbCY/+4ZZTa1twjZDEf/NIbqV5vJ
-         q0jQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783778416; x=1784383216;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=GqDR0IptsjWrOWRZQ2Jyt0YxUIjEB4dj30T2XPWVZdY=;
-        b=YQcpZ+q9EUylZY3fgViKIJtTHluDAf81dlZYF58UUmhvryt0d2gw8G+y2WeDuJVvcq
-         LvnU4bsUKTBao2I1NQr8sXVKG49Qh64gykK9LBo6/ZvEUiMlZ40GIeTW/t8BeM89XEha
-         zuSoAKnAoUYqJvGGdMYhu5JsMEFhasABTtIy2tp26MviCAVuz5OeGMylQ6XvoKHktANK
-         yLSLtMa6eAye2jH2UzfVrrk/EVdDwTQE8FS5fRDcViI3Vl34VryBsukWB9RMPyW+xW30
-         6B/87GoWsmmnc4uIcRJaVzu28zaaWxrLqKqA27tiIg37eYk4LCl6Z/WAIMCcz1G3MD89
-         iUFA==
-X-Forwarded-Encrypted: i=1; AHgh+Rokwfbm+R/IpDuCz+pXDHue4tXnxHvSfMWm6BLuABYOSbKClb6FrkC95rXR2rmZpcV2K8v1oqM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNrS2NMJap7LsGsAp893SQNu36nr7zB17X97jERF5reX/9ENes
-	7kMXGNfU7Aw3P/zoVRJt90HabVwHuc2aAmc/S+gVxX0XXfvxOB+vr8WxYMwtXS2tnQl85rjmqjn
-	2/GOSyRmmtZqy2TYIVw4fr7YwGTuSAhco0/NXQWig
-X-Gm-Gg: AfdE7ckWtVI0HsRegrrj2zragE8MRDL/Y7rpY5DnoWlm68YBc35u0gy0lyyfwIRre/b
-	DqJgDFy8HUIw/Xewx9Mp64ZB0u1DUj7e69oiLlACxifkRrKY0A1A7ElV8YAEZA+cwaAYoGSZTCI
-	te0TrOCB1ZRsRV8222mxgRxQTR19nDyoEKClVfzcs3U1WoSDl+R8SVB5y+5+KCne0inNg7fWbW/
-	r4Y1lIkP9+N2jE2WuNRuALwODRawj/GSMHgghMqUyuUoCxCwZo481mBNlttJTF5M9INDG2vP9Ai
-	i/+ydavstuwJ9XKBa45enWA10dpGnTr3kPzNO77cRcdlfokZsmpoWlNF843orM6hCYLzPKLWKY5
-	bSQiDCfA1
-X-Received: by 2002:a05:622a:4885:b0:51b:f0ab:2b1b with SMTP id
- d75a77b69052e-51cbf26daddmr29126701cf.49.1783778415594; Sat, 11 Jul 2026
- 07:00:15 -0700 (PDT)
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1783779030; x=1815315030;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Zc0IUqfspWIdsBdj6E5oaopTppe3egV9yGHAAdC4TAI=;
+  b=mJqsE0dHpLNbcfzMZ5SfSGhG6Vl0x33YSghEJQZjWXGFR3yPX/bUlwk0
+   POBi0HdK1UrD5wSSgmLFKb5jYOpro/8UqYwxRJipVETyRj1rmPMJoVccG
+   uWXFfL6+2hELuVgM2qXjtsOMOkY8HMyP3xvJDmj+AUiMd1kKjANxcEgxI
+   xb75rtyBKY6r7NEVTxrfH1FSiNBQmLMP3QY4kNbwHu75e0ByhPsT18L8X
+   +Kds5geH040pXFk/SY+Yj4Jla7fr5s3nqnr89baPlU1FwTzfax8eN0nkn
+   PNIPDnGKqTl+IRdPGNktViH1wGfV3BDkbcuuld97TlzFb01XuWAuAu1ga
+   w==;
+X-CSE-ConnectionGUID: 4Uyi22c0R0CG1YR4/xKX1w==
+X-CSE-MsgGUID: hFvdzhlhTTevAeQy5Iffjg==
+X-IronPort-AV: E=Sophos;i="6.25,154,1779148800"; 
+   d="scan'208";a="23482300"
+Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
+  by internal-pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2026 14:10:27 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.236:3701]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.31.54:2525] with esmtp (Farcaster)
+ id 499d36dd-89d8-4b4d-98b7-8d97e3555623; Sat, 11 Jul 2026 14:10:27 +0000 (UTC)
+X-Farcaster-Flow-ID: 499d36dd-89d8-4b4d-98b7-8d97e3555623
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.218) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
+ Sat, 11 Jul 2026 14:10:26 +0000
+Received: from 603e5f7bc1fe.amazon.com (10.37.245.7) by
+ EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
+ Sat, 11 Jul 2026 14:10:24 +0000
+From: Takashi Kozu <takkozu@amazon.com>
+To: <anthony.l.nguyen@intel.com>
+CC: <aleksandr.loktionov@intel.com>, <andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>, <edumazet@google.com>, <enjuk@amazon.com>,
+	<horms@kernel.org>, <kohei.enju@gmail.com>, <kuba@kernel.org>,
+	<netdev@vger.kernel.org>, <pabeni@redhat.com>, <piotr.kwapulinski@intel.com>,
+	<sx.rinitha@intel.com>, <takkozu@amazon.com>
+Subject: RE: [PATCH net-next 04/11] igb: prepare for RSS key get/set support
+Date: Sat, 11 Jul 2026 23:10:07 +0900
+Message-ID: <20260711141009.52519-2-takkozu@amazon.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <70999e07-114e-47af-a8b1-912a30eccb8a@intel.com>
+References: <70999e07-114e-47af-a8b1-912a30eccb8a@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260711134732.1385563-1-tristmd@gmail.com>
-In-Reply-To: <20260711134732.1385563-1-tristmd@gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Sat, 11 Jul 2026 16:00:03 +0200
-X-Gm-Features: AVVi8CcY5CaPIMoOd8xuDL4_gMxfAA225TDZjOSaO1YM-5oHGXW8erun50xkGWY
-Message-ID: <CANn89iJo1HFtp6EoUmwo7KJ9LRsq_iQqhGV4Eco-7Szw5oN92Q@mail.gmail.com>
-Subject: Re: [PATCH net] ipvlan: add xmit recursion protection
-To: Tristan Madani <tristmd@gmail.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Mahesh Bandewar <maheshb@google.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Tristan Madani <tristan@talencesecurity.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D039UWA002.ant.amazon.com (10.13.139.32) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-On Sat, Jul 11, 2026 at 3:47=E2=80=AFPM Tristan Madani <tristmd@gmail.com> =
-wrote:
->
-> From: Tristan Madani <tristan@talencesecurity.com>
->
-> ipvlan devices can enter infinite transmit recursion when combined with
-> packet forwarding configurations (such as IPVS) that route traffic back
-> through the same ipvlan interface.
->
-> The recursion path is:
->
->   ipvlan_start_xmit -> ipvlan_queue_xmit -> ipvlan_xmit_mode_l3
->   -> ipvlan_process_outbound -> ip_local_out -> netfilter hooks
->   -> dev_queue_xmit -> ipvlan_start_xmit (recurse)
->
-> The existing per-CPU xmit recursion counter in __dev_queue_xmit()
-> (XMIT_RECURSION_LIMIT =3D 8) does detect the loop, but fires too late:
-> each recursion level consumes roughly 2KB of stack space through
-> ip_local_out and netfilter, and at 8 levels the cumulative usage
-> exceeds the 16KB kernel stack on x86_64. The resulting stack overflow
-> hits the VMAP_STACK guard page and causes a kernel panic.
->
+On 7/1/2026 2:02 PM, Tony Nguyen wrote:
+> > From: Takashi Kozu <takkozu@amazon.com>
+> ...
+> 
+> Hi Takashi-san,
+> 
+> Sashiko flags this for the power management path.
+> 
+> "
+> Will the new ASSERT_RTNL() in igb_write_rss_key() trigger a false-positive
+> kernel warning during runtime power management resume?
+> When the device undergoes runtime PM suspend and then wakes up,
+> igb_runtime_resume() is called. This passes rpm=true to __igb_resume(),
+> which
+> explicitly skips acquiring the rtnl_lock() to avoid deadlocks.
+> __igb_resume() then calls __igb_open(), which cascades to igb_configure(),
+> igb_setup_mrqc(), and finally igb_write_rss_key(). Because the lock is
+> intentionally not held on this path, the ASSERT_RTNL() will fail and
+> trigger a
+> WARN_ONCE.
+> Is it possible to remove this assertion or adjust it to account for the
+> runtime PM resume path?
+> "
+> 
+> Kohei-san's version in igc did not have this and it does share similar
+> flows with igc. I'm not sure if you added this for a specific reason but
+> would you be able to send a follow up patch to adjust or remove this?
+> 
+> Thanks,
+> Tony
 
-Please fix the existing mechanism. 2KB of stack space seems excessive.
+Thanks for the suggestion. Sent a follow-up patch as requested:
 
-If this is caused by some DEBUG option, it will be just fine to limit
-XMIT_RECURSION_LIMIT to 3 for such debug kernels.
+https://lore.kernel.org/all/20260711133239.29270-2-takkozu@amazon.com/
 
-Adding a workaround in every virtual driver is not an option.
+Thanks,
+Takashi
