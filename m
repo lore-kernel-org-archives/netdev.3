@@ -1,75 +1,66 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A089CD531
-	for <netdev@vger.kernel.org>; Sat, 11 Jul 2026 13:47:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC3C28F5;
+	Sat, 11 Jul 2026 13:49:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783777659; cv=none; b=kAV/MIJM3/ZiowqdtzidZoh8VZvDjG3SIZ4h1Aace/G7yVReLC3SUDy7ixrqVRJwgix22rz4/m1fcVjrxZHo9EDkSTAutRkHPFMLn9FcUeW1SeApy4g4aE/9NCajrBsfTEkAoYxytKyc4XyOvpNedDDjpJpgXwYABScOtKAHGqQ=
+	t=1783777743; cv=none; b=jtR1m7jYmZaSb5akx+7elP429i1ffqLlNG70n8Y39xzOC3iplqvgK7vUUY9GfFGMW3mURzfkuqmlzfB9S02nlK6k0d7juT8evsVyfq59rrKTj7se3om2unE9ZnNInAFqM85RDuuyPSDmAPdcxZdLIpzYi6ip4Kw50hanxaFQx+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783777659; c=relaxed/simple;
-	bh=dI5sz4efJ/IwhuA+ar8TvJxJWTOdMJOvEDrJnVCWieo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HK+XrpZvQVqGEX+kncLxfsfSFMfOvcLpd7QJRJ82Agt0RoIcJTVqYH5ZTWXqOCqSYmOowVJtivT2Bqo1SRsTdstchruUeQ22cZ74IYTBYwF20pVOVli/eeIgeBwbtehkCZMAqQa64pK5gUtxnvTj8TuXjtHzeR2PfsvRCMNV14A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a6bFz5ps; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1783777743; c=relaxed/simple;
+	bh=MotKtUbfKurNBepPQM1L3zQfVATLvjAa+t/D9/N0mHw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t+UBueO2jkw0Hu+hIkzQBzIhdSGhFjD21H4nRxoHme1ceWqfgZpFnvLSg3/es3Waovb9ZvF1tNr/xvQ/BlF3bdWm5diGNQavsYGrCBFR/JeMSw7qRmcMDv4wDl7ZRy+fJV4NQd7wetdd/DXcA2AZ0jgL2wQRoPK6GqY4T0BZ70Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=JvDir8OW; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=KSYAeQE9; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a6bFz5ps"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-493f431e317so15784255e9.0
-        for <netdev@vger.kernel.org>; Sat, 11 Jul 2026 06:47:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783777656; x=1784382456; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=vRsWWJteHWK3O+2yvFE1KJZgJEYSIpWRCnEwdBb+TyM=;
-        b=a6bFz5ps6z1NUfNjeqAYN68pJE3TX42OTyBdHbRt4NgLTGEbOkstyQ7Du3zrO1ATev
-         dxf5+yfMN2/CufYQROXsCVgeXHee2hXiPnJfMaYdIVQ93K1Zhe1QdLt3u/gQBMaG+/EB
-         iJGc/ZWRbxht7gmh1hH6bYOXuTgWfTBfTQBquiVTUNTB3ZWg4uRntyvKY40Dnu0ucNsd
-         8/wuHQ3QDO9MD9Z0UO27JK/W5ttcI2sLpEAIMT3XRlL+/4HGOhpJbji7Ul82i+wQ4kdI
-         KhCHeJg+koy75AkIxH8B4lxsNs5sJDEiJyju3WoESSO034Yfp3/r+u0s7Sjjc6dNGmxS
-         sIhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783777656; x=1784382456;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=vRsWWJteHWK3O+2yvFE1KJZgJEYSIpWRCnEwdBb+TyM=;
-        b=AOA41M9YK8GFVfVOZJyCVbXcuCRSljEoXpNVl6gd/PuVuUIeMFV+zrYqcVS3mo9RBy
-         ygWpnRKaSY1+Oy/E0YdgwVRTXIWjYRLOcecYO2VZZR+Wx32fumrS4OP9FaB5NGNL0Z0W
-         TN6W2zG0Pe6VWEZbdDfXNhsoPvnYeViCgFiDS/pZ7VT/TQbgaG2PZOpbINvmzOBMwzr6
-         E5aKyKJE0Ah7o0Ua9J5bz/kiMEmFK6FU1OFAPhRWxPBbAE/MK6vGjn0+8vprDSfC9nZZ
-         tum9CIXaaqlCIjLhdgLPQgx2c/XmXTlSa+ygNGJvQjcKtG1ivzSCW75EYzGjaMz7xK9y
-         wghA==
-X-Forwarded-Encrypted: i=1; AHgh+Rp/h+J8KW2GwWwczouWMid0kYVFG5E0D43MU5mXhSi2qgYEwk9PcD2evhJ89E6TsVFUFiiToFU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzixcEz21dUM5B+tusuQXDynAP+EB5idi6E+CEVR4rSKnyCj2/S
-	+olzjtBvAfGJ/Rcj4Rs9MauM0oCY/ZXI9pDZK+XhgIxu4M35/0qcIao=
-X-Gm-Gg: AfdE7ck5lcksYWSRcqq9JROi18HHh05cIpwZ/SyPkhtRuRI51j/ZTHIJcpP2yyYkLrr
-	YeV8pys4C53qw6FrwgAxAqEvUq+PgWbpv4hnt5VdFdFFsPDkE4kOi68S4yxLmRFE115Ph/KvYnF
-	IUurMXpmJilOlKsaIkVbY6i9l+hlK33G2kPdm4aIEbPFBOMjZIZ7GWlvKCPlYAwe2csvdiVCPYI
-	yP20owSHr2KceWn5UTE1/h8x8QEKANhUq96E7eV9yN6sdFV6eUaDK/TpAq+e5YH1NgVT6bNBRtc
-	v/61/ExdyRS29jxkojV9S78dv9qKX0CKLPujC7g/78SImoVdLhTtnYr1m5BGtGl+wY3HcewP7Vd
-	CGpTwdloJrb6bpb9PhqqhUEcvxBWSsvCH/CHelqY7glxk8l5fcG3jRFMMkg==
-X-Received: by 2002:a05:600c:6304:b0:493:bb2e:11a5 with SMTP id 5b1f17b1804b1-493f87e4a48mr27240475e9.15.1783777655987;
-        Sat, 11 Jul 2026 06:47:35 -0700 (PDT)
-Received: from debian.. ([2001:41d0:303:db6b::])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493f2e77c2esm104406305e9.2.2026.07.11.06.47.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Jul 2026 06:47:34 -0700 (PDT)
-From: Tristan Madani <tristmd@gmail.com>
-To: "David S . Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="JvDir8OW";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="KSYAeQE9"
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA512)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4gy9632ZdFz8tx5;
+	Sat, 11 Jul 2026 15:48:59 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1783777739;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=R/Fp82DdwdsdjuZNuHQ6xGSMhLCpNkimKrPid5jFkVI=;
+	b=JvDir8OW7qN7rNtkuZ9AmiD0P1ybb1bGg4XuvQIk/Uw1Yat9jtoGPKda1S80e5oDoCTReB
+	f/0PrL4DqtMT3ftXGnU7fbXYrnkSsgg9bnTb1WS5bOGHSOpO9pd0NUQq+CMYMh7oqyukId
+	RyLqWMBV1xfT+gCm+Rn+XwDGZM2y6cXldvUlqQPOvds+93WeXAk5EjgUC6dcl+Xm/0DBu9
+	4019rW/ZjAKUGA8xAflOs4oQbdBLDe+brlJ6b2tE7rf8/xOvBnVRNyJ7nnjOOltP6MnFOE
+	kGXQ5s9TUxDcqbPHfJaDwghnNHpiM9tFeNZcUQFjL+sH8VHOR4Gy9PP1vsfgXg==
+From: Manuel Ebner <manuelebner@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1783777738;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=R/Fp82DdwdsdjuZNuHQ6xGSMhLCpNkimKrPid5jFkVI=;
+	b=KSYAeQE9futuTg1FvFV1gHjII+0df3Uti7JxwICV5HxWu4+F4Fhdhr2ww4bpZZ/x4Juz0u
+	5FcAg+yb+4Uhw8jiuGGBKxreOA4HhR1CgA1R+Lqw/d+HZ5tDhdtzTyUTOxNT0iF7isf6BU
+	jLA4r/5OH2b+tYaQclHRMqECT99DHH+rk1975tyFsXEj9mQs22E8KSswssky5l8CEf0nNX
+	sMAMlv1Ht6L8jw0j5sxvC7dqIeOJJCse8a63zrJdLBkWdtr3inpWxH/7CT9CDN7LiUrSzh
+	e5UgUAWqFPy81tmJL6dlrBTgUZ9JHaz1sv2Lijmwmkpp5vm5XTsXxC6K3xc/5Q==
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Mahesh Bandewar <maheshb@google.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Manuel Ebner <manuelebner@mailbox.org>,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Tristan Madani <tristan@talencesecurity.com>
-Subject: [PATCH net] ipvlan: add xmit recursion protection
-Date: Sat, 11 Jul 2026 13:47:32 +0000
-Message-ID: <20260711134732.1385563-1-tristmd@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] dt-bindings: net: microchip: fix bracket
+Date: Sat, 11 Jul 2026 15:42:09 +0200
+Message-ID: <20260711134204.472841-7-manuelebner@mailbox.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -77,97 +68,32 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-MBO-RS-META: onhap5gzpm4h3e6w3mdrb36rygxocstr
+X-MBO-RS-ID: 2e1503e32c96732c293
 
-From: Tristan Madani <tristan@talencesecurity.com>
+Remove needless ')'
 
-ipvlan devices can enter infinite transmit recursion when combined with
-packet forwarding configurations (such as IPVS) that route traffic back
-through the same ipvlan interface.
-
-The recursion path is:
-
-  ipvlan_start_xmit -> ipvlan_queue_xmit -> ipvlan_xmit_mode_l3
-  -> ipvlan_process_outbound -> ip_local_out -> netfilter hooks
-  -> dev_queue_xmit -> ipvlan_start_xmit (recurse)
-
-The existing per-CPU xmit recursion counter in __dev_queue_xmit()
-(XMIT_RECURSION_LIMIT = 8) does detect the loop, but fires too late:
-each recursion level consumes roughly 2KB of stack space through
-ip_local_out and netfilter, and at 8 levels the cumulative usage
-exceeds the 16KB kernel stack on x86_64. The resulting stack overflow
-hits the VMAP_STACK guard page and causes a kernel panic.
-
-Add a per-CPU counter that prevents any re-entry into
-ipvlan_queue_xmit() while it is already executing on the same CPU.
-This mirrors the approach used by tunnel devices (see
-IP_TUNNEL_RECURSION_LIMIT in ip_tunnels.h) but with a stricter limit
-appropriate for ipvlan.
-
-Fixes: 2ad7bf363841 ("ipvlan: Initial check-in of the IPVLAN driver.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
+Signed-off-by: Manuel Ebner <manuelebner@mailbox.org>
 ---
- drivers/net/ipvlan/ipvlan_core.c | 25 +++++++++++++++++++++----
- 1 file changed, 21 insertions(+), 4 deletions(-)
+I send this in a seperate patch, because there's a change the maintainers
+wants a bracked added instead of removed.
+---
+ Documentation/devicetree/bindings/net/microchip,lan95xx.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ipvlan/ipvlan_core.c b/drivers/net/ipvlan/ipvlan_core.c
-index 835e04835..ab99eb624 100644
---- a/drivers/net/ipvlan/ipvlan_core.c
-+++ b/drivers/net/ipvlan/ipvlan_core.c
-@@ -9,6 +9,8 @@
- 
- static u32 ipvlan_jhash_secret __read_mostly;
- 
-+static DEFINE_PER_CPU(int, ipvlan_xmit_depth);
-+
- void ipvlan_init_secret(void)
- {
- 	net_get_random_once(&ipvlan_jhash_secret, sizeof(ipvlan_jhash_secret));
-@@ -676,6 +678,7 @@ int ipvlan_queue_xmit(struct sk_buff *skb, struct net_device *dev)
- {
- 	struct ipvl_dev *ipvlan = netdev_priv(dev);
- 	struct ipvl_port *port = ipvlan_port_get_rcu_bh(ipvlan->phy_dev);
-+	int ret = NET_XMIT_DROP;
- 
- 	if (!port)
- 		goto out;
-@@ -683,18 +686,32 @@ int ipvlan_queue_xmit(struct sk_buff *skb, struct net_device *dev)
- 	if (unlikely(!pskb_may_pull(skb, sizeof(struct ethhdr))))
- 		goto out;
- 
-+	if (this_cpu_read(ipvlan_xmit_depth)) {
-+		net_crit_ratelimited("ipvlan: xmit recursion detected on dev %s\n",
-+				     dev->name);
-+		goto out;
-+	}
-+
-+	this_cpu_inc(ipvlan_xmit_depth);
- 	switch(port->mode) {
- 	case IPVLAN_MODE_L2:
--		return ipvlan_xmit_mode_l2(skb, dev);
-+		ret = ipvlan_xmit_mode_l2(skb, dev);
-+		break;
- 	case IPVLAN_MODE_L3:
- #ifdef CONFIG_IPVLAN_L3S
- 	case IPVLAN_MODE_L3S:
- #endif
--		return ipvlan_xmit_mode_l3(skb, dev);
-+		ret = ipvlan_xmit_mode_l3(skb, dev);
-+		break;
-+	default:
-+		WARN_ONCE(true, "%s called for mode = [%x]\n",
-+			  __func__, port->mode);
-+		kfree_skb(skb);
-+		break;
- 	}
-+	this_cpu_dec(ipvlan_xmit_depth);
-+	return ret;
- 
--	/* Should not reach here */
--	WARN_ONCE(true, "%s called for mode = [%x]\n", __func__, port->mode);
- out:
- 	kfree_skb(skb);
- 	return NET_XMIT_DROP;
+diff --git a/Documentation/devicetree/bindings/net/microchip,lan95xx.yaml b/Documentation/devicetree/bindings/net/microchip,lan95xx.yaml
+index b9c394009040..f4d0929616a5 100644
+--- a/Documentation/devicetree/bindings/net/microchip,lan95xx.yaml
++++ b/Documentation/devicetree/bindings/net/microchip,lan95xx.yaml
+@@ -35,7 +35,7 @@ properties:
+           - usb424,9906   # SMSC9505A USB Ethernet Device (HAL)
+           - usb424,9907   # SMSC9500 USB Ethernet Device (Alternate ID)
+           - usb424,9908   # SMSC9500A USB Ethernet Device (Alternate ID)
+-          - usb424,9909   # SMSC9512/9514 USB Hub & Ethernet Device  ID)
++          - usb424,9909   # SMSC9512/9514 USB Hub & Ethernet Device ID
+           - usb424,9e00   # SMSC9500A USB Ethernet Device
+           - usb424,9e01   # SMSC9505A USB Ethernet Device
+           - usb424,9e08   # SMSC LAN89530 USB Ethernet Device
 -- 
-2.47.3
+2.54.0
 
