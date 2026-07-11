@@ -1,99 +1,100 @@
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC3C28F5;
-	Sat, 11 Jul 2026 13:49:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C0515E5DC;
+	Sat, 11 Jul 2026 13:56:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783777743; cv=none; b=jtR1m7jYmZaSb5akx+7elP429i1ffqLlNG70n8Y39xzOC3iplqvgK7vUUY9GfFGMW3mURzfkuqmlzfB9S02nlK6k0d7juT8evsVyfq59rrKTj7se3om2unE9ZnNInAFqM85RDuuyPSDmAPdcxZdLIpzYi6ip4Kw50hanxaFQx+Y=
+	t=1783778178; cv=none; b=qElnqAyzYhQE61NynNnfbzcsOpvlgJhq8LCa1i4nXG4uIWhbPRJndn7CP7PRfAgAUv9Md9S5Q/P3RWeuji+Q6I6oPVAQ+NkTB+Ib6pUeW19t5wyxuuSCrbGd9B2iwvRkA4c5jo/opiRte6nRnxmu6psx2L2/wc70H+yFREMSJjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783777743; c=relaxed/simple;
-	bh=MotKtUbfKurNBepPQM1L3zQfVATLvjAa+t/D9/N0mHw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t+UBueO2jkw0Hu+hIkzQBzIhdSGhFjD21H4nRxoHme1ceWqfgZpFnvLSg3/es3Waovb9ZvF1tNr/xvQ/BlF3bdWm5diGNQavsYGrCBFR/JeMSw7qRmcMDv4wDl7ZRy+fJV4NQd7wetdd/DXcA2AZ0jgL2wQRoPK6GqY4T0BZ70Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=JvDir8OW; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=KSYAeQE9; arc=none smtp.client-ip=80.241.56.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1783778178; c=relaxed/simple;
+	bh=Ilxa91/xmSMwAQV50SahUhvBYhDXmrw6AvaV8FO5t+4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=LDd6x9S3nlXiv1klVaHAxN7ZmFlR9t8+pYILmyLLZPidiHYAHvq0Dibi1M0d1f9UAqpbS/KmbsjY09p156AxHs+fv229CYRm2SLwQ1MQl6eFeO8cvNWqCu7faOhmhJciyawef7HnEfI0Zjjre32HlswpM+63XYBYa1gdcSiPXwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=anZI2NXe; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="JvDir8OW";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="KSYAeQE9"
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA512)
-	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4gy9632ZdFz8tx5;
-	Sat, 11 Jul 2026 15:48:59 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1783777739;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=R/Fp82DdwdsdjuZNuHQ6xGSMhLCpNkimKrPid5jFkVI=;
-	b=JvDir8OW7qN7rNtkuZ9AmiD0P1ybb1bGg4XuvQIk/Uw1Yat9jtoGPKda1S80e5oDoCTReB
-	f/0PrL4DqtMT3ftXGnU7fbXYrnkSsgg9bnTb1WS5bOGHSOpO9pd0NUQq+CMYMh7oqyukId
-	RyLqWMBV1xfT+gCm+Rn+XwDGZM2y6cXldvUlqQPOvds+93WeXAk5EjgUC6dcl+Xm/0DBu9
-	4019rW/ZjAKUGA8xAflOs4oQbdBLDe+brlJ6b2tE7rf8/xOvBnVRNyJ7nnjOOltP6MnFOE
-	kGXQ5s9TUxDcqbPHfJaDwghnNHpiM9tFeNZcUQFjL+sH8VHOR4Gy9PP1vsfgXg==
-From: Manuel Ebner <manuelebner@mailbox.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1783777738;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=R/Fp82DdwdsdjuZNuHQ6xGSMhLCpNkimKrPid5jFkVI=;
-	b=KSYAeQE9futuTg1FvFV1gHjII+0df3Uti7JxwICV5HxWu4+F4Fhdhr2ww4bpZZ/x4Juz0u
-	5FcAg+yb+4Uhw8jiuGGBKxreOA4HhR1CgA1R+Lqw/d+HZ5tDhdtzTyUTOxNT0iF7isf6BU
-	jLA4r/5OH2b+tYaQclHRMqECT99DHH+rk1975tyFsXEj9mQs22E8KSswssky5l8CEf0nNX
-	sMAMlv1Ht6L8jw0j5sxvC7dqIeOJJCse8a63zrJdLBkWdtr3inpWxH/7CT9CDN7LiUrSzh
-	e5UgUAWqFPy81tmJL6dlrBTgUZ9JHaz1sv2Lijmwmkpp5vm5XTsXxC6K3xc/5Q==
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Manuel Ebner <manuelebner@mailbox.org>,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] dt-bindings: net: microchip: fix bracket
-Date: Sat, 11 Jul 2026 15:42:09 +0200
-Message-ID: <20260711134204.472841-7-manuelebner@mailbox.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="anZI2NXe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71A4A1F000E9;
+	Sat, 11 Jul 2026 13:56:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783778177;
+	bh=VaIt5SuuNSmwgTajmIj4ItRNOiPXthdr8Oi+LYItYKo=;
+	h=From:Date:Subject:To:Cc;
+	b=anZI2NXegF0Jv+WXpfHyxi5tbL593/efATXYac0IDW0X6YqSk1IbZvErUeN60dheb
+	 mTmiUNW5IVqPthTU1/pBqpFNPlp+e9DdOTqlKFEZgyFlD4lvHpspShlEqRoUCQN54Q
+	 l1j1Efmg6lIkAfWd2oxiJ3DhXiHUOU3Rd6XYQ1WkZBynwNU6fp5KP/vrp40EvXLr8X
+	 mDmWtN1ekDCKmxcVdWEcKKJj88N+ILll5I5bmBazxxi+riIdPG49nB38D+vQITiMK9
+	 gsQJoXlBY92LRPp6LtLDKLilDlgph8yy46/kuNSGf0StoVkgkxicFohZJeh7XB0cJE
+	 P3Ws9PtQx/Z8Q==
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+Date: Sat, 11 Jul 2026 15:55:57 +0200
+Subject: [PATCH nf] selftests: netfilter: nft_flowtable.sh: check offload
+ counters for IP6IP6 tunnel test
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MBO-RS-META: onhap5gzpm4h3e6w3mdrb36rygxocstr
-X-MBO-RS-ID: 2e1503e32c96732c293
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260711-flowtable-selftest-ip6ip6-fix-v1-1-60e9e7384df7@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MQQqDMBAAvyJ77kISJSn9Sukh1Y1dCFGyQQvi3
+ 12Eucwc5gChyiTw6g6otLHwUlTso4PxF8tMyJM6OOO8CdZiysve4jcTCuXUSBry6hVM/Mdhekb
+ vejeE2IM+1kqa7/8bSoLPeV5j9sBgcwAAAA==
+X-Change-ID: 20260711-flowtable-selftest-ip6ip6-fix-4d8a623247a3
+To: Pablo Neira Ayuso <pablo@netfilter.org>, 
+ Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>
+Cc: netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ Lorenzo Bianconi <lorenzo@kernel.org>
+X-Mailer: b4 0.14.3
 
-Remove needless ')'
+The IP6IP6 tunnel test uses test_tcp_forwarding() which only verifies
+TCP data integrity but does not verify that flowtable offload actually
+took place. Unlike the non-tunnel and IPIP tests, it omits the
+check_counters() call.
+The reply direction for IP6IP6 tunnel traffic goes through the physical
+interface (oif=veth0), so it is already counted by the existing
+routed_repl counter rule. Add check_counters() after the IP6IP6 test to
+detect offload failures.
 
-Signed-off-by: Manuel Ebner <manuelebner@mailbox.org>
+Fixes: 5e5180352193 ("selftests: netfilter: nft_flowtable.sh: Add IP6IP6 flowtable selftest")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
-I send this in a seperate patch, because there's a change the maintainers
-wants a bracked added instead of removed.
----
- Documentation/devicetree/bindings/net/microchip,lan95xx.yaml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/net/netfilter/nft_flowtable.sh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/microchip,lan95xx.yaml b/Documentation/devicetree/bindings/net/microchip,lan95xx.yaml
-index b9c394009040..f4d0929616a5 100644
---- a/Documentation/devicetree/bindings/net/microchip,lan95xx.yaml
-+++ b/Documentation/devicetree/bindings/net/microchip,lan95xx.yaml
-@@ -35,7 +35,7 @@ properties:
-           - usb424,9906   # SMSC9505A USB Ethernet Device (HAL)
-           - usb424,9907   # SMSC9500 USB Ethernet Device (Alternate ID)
-           - usb424,9908   # SMSC9500A USB Ethernet Device (Alternate ID)
--          - usb424,9909   # SMSC9512/9514 USB Hub & Ethernet Device  ID)
-+          - usb424,9909   # SMSC9512/9514 USB Hub & Ethernet Device ID
-           - usb424,9e00   # SMSC9500A USB Ethernet Device
-           - usb424,9e01   # SMSC9505A USB Ethernet Device
-           - usb424,9e08   # SMSC LAN89530 USB Ethernet Device
+diff --git a/tools/testing/selftests/net/netfilter/nft_flowtable.sh b/tools/testing/selftests/net/netfilter/nft_flowtable.sh
+index 08ad07500e8a..0ea01a876c8b 100755
+--- a/tools/testing/selftests/net/netfilter/nft_flowtable.sh
++++ b/tools/testing/selftests/net/netfilter/nft_flowtable.sh
+@@ -629,7 +629,7 @@ if ! test_tcp_forwarding_nat "$ns1" "$ns2" 1 "IPIP tunnel"; then
+ fi
+ 
+ if test_tcp_forwarding "$ns1" "$ns2" 1 6 "[dead:2::99]" 12345; then
+-	echo "PASS: flow offload for ns1/ns2 IP6IP6 tunnel"
++	check_counters "flow offload for ns1/ns2 IP6IP6 tunnel"
+ else
+ 	echo "FAIL: flow offload for ns1/ns2 with IP6IP6 tunnel" 1>&2
+ 	ip netns exec "$nsr1" nft list ruleset
+@@ -683,7 +683,7 @@ if ! test_tcp_forwarding_nat "$ns1" "$ns2" 1 "IPIP tunnel over vlan"; then
+ fi
+ 
+ if test_tcp_forwarding "$ns1" "$ns2" 1 6 "[dead:2::99]" 12345; then
+-	echo "PASS: flow offload for ns1/ns2 IP6IP6 tunnel over vlan"
++	check_counters "flow offload for ns1/ns2 IP6IP6 tunnel over vlan"
+ else
+ 	echo "FAIL: flow offload for ns1/ns2 with IP6IP6 tunnel over vlan" 1>&2
+ 	ip netns exec "$nsr1" nft list ruleset
+
+---
+base-commit: 3f1f755366687d051174739fb99f7d560202f60b
+change-id: 20260711-flowtable-selftest-ip6ip6-fix-4d8a623247a3
+
+Best regards,
 -- 
-2.54.0
+Lorenzo Bianconi <lorenzo@kernel.org>
 
