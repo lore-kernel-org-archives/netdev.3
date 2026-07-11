@@ -1,64 +1,64 @@
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6446388E5B
-	for <netdev@vger.kernel.org>; Sat, 11 Jul 2026 09:22:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E8B388868
+	for <netdev@vger.kernel.org>; Sat, 11 Jul 2026 09:22:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783761771; cv=none; b=llLzgoihzQRBp8BIXna4PmLXwXXeixJR0xpeSj97UC76Kd/HA2XJZYU+1P84UL9cPOxcjvwhqWjhXNwzslRbRVfL9KujmlTbSsOI7XgMk35bti+2DQBsOswEiRPBXauErwY5itKn8rQRATEQhbJ2VJPlWQmzXFDxGwQl7EtbN5Y=
+	t=1783761774; cv=none; b=YLG0IwoCq/P5HUsqy764a3sBLvJuTnECdIfbEXc4qRlP0lLAsZcGOAKtz7eTJiMxu9rqojRDHmbFV1V8KOdtZIRVgw0Xz/zu1V4EscvxmdejNEIBXSZeKIjMlBgyILqwSf+llZHu411mlrUCKPDkrz7CaPhqynLqlU+uflOEtoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783761771; c=relaxed/simple;
-	bh=1ZDKUtGQ/a8BS68raZRoNcVAxiVUqlOQWmMvMBshBKY=;
+	s=arc-20240116; t=1783761774; c=relaxed/simple;
+	bh=mDM9Ligu7A+i1c5bQaZxxOVFQ0ClldFLx74pGEaA+oY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FgGXHpE8wa/FbyBt0CRrvU2m7jfl5JM6U7jlqGeZ3CgcTFASbxPu+/LSZF2kWl/nU1JDtfxTIhnMC4Bc7aNh3Z8I/W0Ynqkecmem1b+/5LwsST67d5ryTkuuPDDP+f6G/nxrS14qVSZivY8r35DcaYAtcwLeCuAXoU6GaogBgM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W2dtQqRj; arc=none smtp.client-ip=209.85.218.41
+	 MIME-Version; b=eaM72bsEheU/nFNgC3a/ril1mvU6MqNfyAMytZdfKx6hp5AIP21nukeFhvbd+/MH/hMg8TQxEfpk26SmsbvYsTGa1BKkB75ucNXYCGfMMcjyjzdjM9s3Rhvv7UIObPiHce3p+/aWm1nj8fI9X9LsfMrNW91KYIZJaNiYvtdrvRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oUG1QddS; arc=none smtp.client-ip=209.85.218.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W2dtQqRj"
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c15ba3a2b4bso209095766b.1
-        for <netdev@vger.kernel.org>; Sat, 11 Jul 2026 02:22:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oUG1QddS"
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c15ec1da77aso195032466b.2
+        for <netdev@vger.kernel.org>; Sat, 11 Jul 2026 02:22:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783761768; x=1784366568; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1783761771; x=1784366571; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=T98o7Pl7lA+wpHQm5Sj3XRNCCZO6SwAqa5AzQEn9zdo=;
-        b=W2dtQqRjx3L/A/DKWmnWU6w0kVY0VaBD5LxLlcWpuWbVBHWLeW82RDzbWgv1jb+wse
-         vjHvG9avFZcOTS41oezsFO4Iaa8icQ1tsurGuN8jU4C4Z9aov0GHVGHL6XadoeQuJrW0
-         xfhfoAqkrL4CK6V3wEIOz+78wx+wYJCPLkEQBLM5WoSv0hp/1bPViS3Cq+3eVUhdNUnP
-         kayOU3sonxU8jR32xSqL1jmzyQjT1B8ITGPawg4WwBo9zYNOewxpF/tMdH5LGkFpSXBP
-         b5DnL0x5SJjXrsLeocyAwOMwDYoPywM1PqzD/2xDeS2SVT2tEJl7pg2QLkfkFfo6ygne
-         7G3w==
+        bh=ndWdMIRoZiw7wrosi/rRhBvTDxisTiXVuV4qMbAvHHc=;
+        b=oUG1QddSZxU2P/GoR7KtrYkA6/vz5MVJNA/7KUzR2GQsRWBwoOmH4SgeAcxy8BEz1n
+         B4LYwmPKEGT9oJZEgcb2bijvA6TyXZaSQbI+i6FYR30lrAnTMvhlXABwE/BHnqe8N3ET
+         16+wqOwSTPrvH++ucEzqoDbet/uZUp2QMSDyA9rZ1L1mi/UepvG57lhFDaV7s3CEwWin
+         b81Hx3qhm/Eb3EyrqNUe8H5DibGUkUVBqy2rLyPuWCUKHKH9twSM2k7HoZ/T3JWzecI2
+         kAdDHgqHjaq7ovXHCaJBq2WlWH7k9vm5N5o5RJnhLLYtpDH/KE/s9xsjbY91nN2gsm+V
+         tUTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783761768; x=1784366568;
+        d=1e100.net; s=20251104; t=1783761771; x=1784366571;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=T98o7Pl7lA+wpHQm5Sj3XRNCCZO6SwAqa5AzQEn9zdo=;
-        b=e2xivMKhJv5fPrecQK44j7DsW4f4LecuDQksjTArzaI1b/VEEo1idtQ4aiw8eytg41
-         TPIFSDxrFlKllGJYvPzfJm5Hrm1ntosPdh29JSMWSzxAY0+iv1l3N+ujttrVQj3TGpzL
-         +9vKZ3hx4Ms/+ANz9wOIMLPOTnZj1FjOwVHaQ/xFa528mEQF0WErd+CpNXjozmhjJkJ9
-         e1CEnC2riaydGzudfjV6bh0n/7mWjil2MhzVnHaHlpewl5LXu/M4WXL/KOcQLQNFurSq
-         4JRU7+45fQ8ou3uVjh2Ys8wX0k/bm41RkhKue1g9kwhMcxxr+2F1JhI2ebJArtIGxZOA
-         L8YQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqQIIDIg5s12jLN3De24urjbnpsiUEnWmWK45jAisiiiOI3pZJJ/tieEAFrhA3FtkA03jnPLnY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzD3M/7Rcjty0GJVSCjfhS1WlpoFPiWTrfZHUn4fEXeWlcEv0v3
-	xQ5qKBuOxCBEbMlN5czwdeu1Ihr8oJ4gF06A6Kj5CX7QHxDtW/9isi79
-X-Gm-Gg: AfdE7cnEm8JeTZ8u7DfG2bgZXjGRSzdwDjZpu6QVCZDy83Te6BEw2BQDSqkOT5JJg59
-	L/f7pDIz5F3Dqma2KZ2MmeH5iInVRZ1HvPlfeIJ3qWBYHojfZ9ldVN91qf2K+gzpyEzZt9auFr3
-	Rv1zxyYKyx0h3qZfKat+1F7M1LSRI8QGO/Iy42xao16VAYQZNDwG7QUGPUTtV2gGHQFhr9RhPcD
-	FkXDmDoVyKxn81S7GJgRRljUWoZR0yifacXEKkI6d69kn0BRMyvqhhRA4lEPD/bRrpODTClPdN3
-	wKPCC+Q6DCIDQSXZp7JEVR7PuAucY4nlWB5Tb38RrlybsH+DGdtOxEcgK0KguxrOZDndu6Sm6AR
-	FB4Z+rbNRabuIeIuxxrRuEFdmBmrq1EWzLR9QHHVzGUtmi3Ko3m/Pc446g8Te/lCU8jHKh1qSb4
-	axDthKXXGrsi8Of2D35VQXoxHCM5yw7tWU3mbD+T7dFKmJxUeD40BST47gC8zGHz7PLYNF6JInI
-	DExSwEm77dWlR6mnQy2ulu5bw3C+dYDTlkwLlw4bYUA5UE=
-X-Received: by 2002:a17:906:c10d:b0:c15:e9aa:f711 with SMTP id a640c23a62f3a-c161e8b2300mr76157666b.14.1783761768105;
-        Sat, 11 Jul 2026 02:22:48 -0700 (PDT)
+        bh=ndWdMIRoZiw7wrosi/rRhBvTDxisTiXVuV4qMbAvHHc=;
+        b=JREw9wZ0VgUDYuXSlCBAiJi7+OGYspE1Yvjw/pHmem8LkiCuI2LB394UqS4698Xses
+         7+p2JvKaWKCSxShdeYKR88GKzyJMno501Ccl2gDjB9VmHUOHzO6xttr2mZJcMUi0Qqgm
+         xRL3nVCwXpaIUb4FegVnePflgdQ5GMm6cPo/jUhjdoS4tpwKsvPI1OW7npPViVoYgXT7
+         SSkdckFn3kp+31NlBpRVIaMCNJWSGAkWWw2TlIXHRA+VRnbcENHBJ2fTbrmGbSVw2da1
+         AM6XtB/cCOzQ3PbH02Yr3M8IQXeysBDpbLtwSOsCmGw+6alDzskGKd6LcJtLOzWtX9XQ
+         soxQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rq6KP9x+WZGq1Y3FIOi+9zTob4wQdrGD9K8T74ti3zgWd+GKlkIjqAj/d0v957Wk2PM+F/95GI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxNQhQT+C516BcrDcY/ib7PHGwXjYWwBSrLc6Cx2/ym8Dlk4cuC
+	pPM6AOXG8fyCANVE5ZF1u/5vmwqJoXbBq20on768wsc3AxL9Nmg7Dtxs
+X-Gm-Gg: AfdE7clo9XzuBnqGVdxAeoAaFC+pnaCmzBoW/WS8NDjqFllBSYZG6FVrMSKMHwS8nGo
+	OuCFswgrH3HoyyUAlEEWQRW41/8uxRwVwpH2h+O3yqZpWYTNb6YG6Wnrpm8TQyBiz2mcYXJp7C/
+	2mpRl1usLHuF9v3DR89skqGL0uW9pQinF5GoDyuR1JTWkGG8zjD+95Zl7n4Zb6lqklYjiTBRfTJ
+	JUzxwKYvFYd4M0tbPFW2DBijvbiz+wcXQlfYuqc0smtqHlsUMlZsiVaTb5gNh2th4kGWpEP+cdU
+	/OgMP31Km4fT+hOFAjHA+6PAur15SFThxBXZMj/bL6jOx4Ve2bDwq9ZRhzT6mIa2z7dmy3XJx8A
+	PYQ+bHEJ907mynwbAu6v0p6eOMM9eJSFkbnaL/xbN0C8CRy6mejyLnoYMTXl41zsMy68TWBh7wp
+	8gT/WP3niwBdsPUz1+LcTiDEKMshCTF1JboeYtAzH0/3KQqQi5dv1F+F2txBmxG5qD7x29M9bWA
+	GNjIYAUio6enZgCLRuBaGWgMqLqZ36JqQ6qj8D67mI8F1I=
+X-Received: by 2002:a17:907:6d07:b0:c12:73fd:a6cd with SMTP id a640c23a62f3a-c161f35cd90mr79405366b.52.1783761771294;
+        Sat, 11 Jul 2026 02:22:51 -0700 (PDT)
 Received: from 127.0.0.1localhost (82-132-221-54.dab.02.net. [82.132.221.54])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c15d3859f69sm517493566b.27.2026.07.11.02.22.45
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c15d3859f69sm517493566b.27.2026.07.11.02.22.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Jul 2026 02:22:47 -0700 (PDT)
+        Sat, 11 Jul 2026 02:22:50 -0700 (PDT)
 From: Pavel Begunkov <asml.silence@gmail.com>
 To: "David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
@@ -68,9 +68,9 @@ To: "David S . Miller" <davem@davemloft.net>,
 	netdev@vger.kernel.org
 Cc: io-uring@vger.kernel.org,
 	asml.silence@gmail.com
-Subject: [RFC 3/9] io_uring/zcrx: don't save/restore count for frag skbs
-Date: Sat, 11 Jul 2026 10:22:13 +0100
-Message-ID: <1279bf7c6c379945e57dce4d7366c1764a3fb938.1783619193.git.asml.silence@gmail.com>
+Subject: [RFC 4/9] io_uring/zcrx: split frag handling loop
+Date: Sat, 11 Jul 2026 10:22:14 +0100
+Message-ID: <3a52d7adf84dcf6f3182c4a64e34cd186e3e729a.1783619193.git.asml.silence@gmail.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <cover.1783619193.git.asml.silence@gmail.com>
 References: <cover.1783619193.git.asml.silence@gmail.com>
@@ -82,66 +82,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-We save and restore desc->count before recursing for frag skb
-processing. Extract the handling into a separate function instead and
-pass a flag.
+A preparation patch splitting the frag array handling loop into two,
+where first we skip frags below the requested offset. It makes further
+changes more readable.
 
 Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
 ---
- io_uring/zcrx.c | 22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+ io_uring/zcrx.c | 32 +++++++++++++++++++-------------
+ 1 file changed, 19 insertions(+), 13 deletions(-)
 
 diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
-index 0aa6455971d6..816a169b848e 100644
+index 816a169b848e..162e67287916 100644
 --- a/io_uring/zcrx.c
 +++ b/io_uring/zcrx.c
-@@ -1827,9 +1827,8 @@ static int io_zcrx_recv_frag(struct io_kiocb *req, struct io_zcrx_ifq *ifq,
- 	return len;
- }
+@@ -1877,23 +1877,29 @@ static int __zcrx_recv_skb(read_descriptor_t *desc, struct sk_buff *skb,
+ 		const skb_frag_t *frag = &shi->frags[i];
+ 		unsigned frag_end = start + skb_frag_size(frag);
  
--static int
--io_zcrx_recv_skb(read_descriptor_t *desc, struct sk_buff *skb,
--		 unsigned int offset, size_t len)
-+static int __zcrx_recv_skb(read_descriptor_t *desc, struct sk_buff *skb,
-+			   unsigned int offset, size_t len)
- {
- 	struct io_zcrx_args *args = desc->arg.data;
- 	struct io_zcrx_ifq *ifq = args->ifq;
-@@ -1907,11 +1906,8 @@ io_zcrx_recv_skb(read_descriptor_t *desc, struct sk_buff *skb,
- 		if (offset < frag_end) {
- 			unsigned copy = min(frag_end - offset, len);
- 			unsigned frag_off = offset - start;
--			size_t count;
- 
--			count = desc->count;
--			ret = io_zcrx_recv_skb(desc, frag_iter, frag_off, copy);
--			desc->count = count;
-+			ret = __zcrx_recv_skb(desc, frag_iter, frag_off, copy);
- 			if (ret < 0)
- 				goto out;
- 
-@@ -1926,10 +1922,20 @@ io_zcrx_recv_skb(read_descriptor_t *desc, struct sk_buff *skb,
- out:
- 	if (offset == start_off)
- 		return ret;
--	desc->count -= (offset - start_off);
- 	return offset - start_off;
- }
- 
-+static
-+int io_zcrx_recv_skb(read_descriptor_t *desc, struct sk_buff *skb,
-+			unsigned int offset, size_t len)
-+{
-+	int ret;
++		if (offset < frag_end)
++			break;
++		start = frag_end;
++	}
 +
-+	ret = __zcrx_recv_skb(desc, skb, offset, len);
-+	desc->count -= max(0, ret);
-+	return ret;
-+}
++	for (; i < shi->nr_frags; i++) {
++		const skb_frag_t *frag = &shi->frags[i];
++		unsigned frag_end = start + skb_frag_size(frag);
++		unsigned copy = min(frag_end - offset, len);
++		unsigned frag_off = offset - start;
 +
- static int io_zcrx_tcp_recvmsg(struct io_kiocb *req, struct io_zcrx_ifq *ifq,
- 				struct sock *sk, int flags,
- 				unsigned issue_flags, unsigned int *outlen)
+ 		if (WARN_ON(start > offset + len))
+ 			return -EFAULT;
++		start = frag_end;
+ 
+-		if (offset < frag_end) {
+-			unsigned copy = min(frag_end - offset, len);
+-			unsigned frag_off = offset - start;
+-
+-			ret = io_zcrx_recv_frag(req, ifq, frag, frag_off, copy);
+-			if (ret < 0)
+-				goto out;
++		ret = io_zcrx_recv_frag(req, ifq, frag, frag_off, copy);
++		if (ret < 0)
++			goto out;
+ 
+-			offset += ret;
+-			len -= ret;
+-			if (len == 0 || ret != copy)
+-				goto out;
+-		}
+-		start = frag_end;
++		offset += ret;
++		len -= ret;
++		if (len == 0 || ret != copy)
++			goto out;
+ 	}
+ 
+ 	skb_walk_frags(skb, frag_iter) {
 -- 
 2.54.0
 
