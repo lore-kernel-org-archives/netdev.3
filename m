@@ -1,89 +1,101 @@
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4AE305679
-	for <netdev@vger.kernel.org>; Sat, 11 Jul 2026 21:04:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 777FA2848AA
+	for <netdev@vger.kernel.org>; Sat, 11 Jul 2026 21:33:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783803853; cv=none; b=HjtP4rkB39U2KNINpvP0j7oYuVfdOp8ZV0vo1whJTHZhcEOR9iMPrJKt+Wq/47SZGR4zBOJbuTBamEqONa2U2HEePkBpCCScNrbAwAahJBtPbfEsKdUBCAmZE8jBeJPO/SM9+WO92DkUd6LYi6iin/q+ddkG2WF6n/TocKYgEnE=
+	t=1783805616; cv=none; b=hZEWr/5qXNlGK5cqhz6jLmJqLqMjUReN4UFn5peC8KH6Ba7Wra9jPXCo7wy489vsIGPDP2Aazpaqol+dqp5Jxz9cvM1EIS+OAw37hMKYpng3JhgkiiO9xT5zNKQJCOmgOgPYjb+ZBIY2EUa8EbW8wQJ0FsOVufQAMygIZkZRtC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783803853; c=relaxed/simple;
-	bh=cERCI6uVF9g47+lyhONovzvk5XFd5tFIJTjvMC/kf8k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cluSwK0pIx0evEYVIhJdXmks8+Y2iovanoBG+/ZkUPt0dV5uDb0d8jfoe8cxDQVPtaziUEz1ioEneeqLuZTOmZ/1gFskDWt9bgJMVaf5fLFLMXiu/sPituvNrHQolrOwj5/dUV9f+2JIhhNKZB3VkokNMISiu9lLuwYMPPH7VGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Txs1xkIS; arc=none smtp.client-ip=95.215.58.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1783805616; c=relaxed/simple;
+	bh=LP35FKI8HO2MgMPKNrrxv5nXoO7Hrs59CwDSPXYI+gs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lB0nMfdRCQXqEceTqCk/g0gBAPQh3VbjF9nPY41ejQiFj/ooaFYrQc+ja2O53Qyl9z9/eLkpXwKTCfI34uPAvWi2pE6sRZhRLPiBHNGev3gpqDZ0HZVmBZKxeAyVHH77uhOVs/byPl6N3jYxBaXVJYmDdkAsvW4ltZHwvEslIks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hQZ8Steg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Txs1xkIS"
-Message-ID: <45d2be78-4e58-445e-81b2-75dbcd15402f@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783803847;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=z5WuK1x1fHq3Mg+KyPpmOrUlIIIjpEDexQ1uLTd5pas=;
-	b=Txs1xkISM7iyukESV9HHLrnQS8R2PsL+z8ijLSJN6sX1f654R0e80F+jSY8LVuf0zH/aHv
-	WgobdxcXa63L+inTzkIKS2xTURgQj/VJvQdHmgFAjKj6/0a9mP1aOltFPr6y5qh+HboN1I
-	nGsSjUwOL2HAH853qQIrzjjynuX2KTo=
-Date: Sat, 11 Jul 2026 22:03:56 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hQZ8Steg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F4EB1F000E9
+	for <netdev@vger.kernel.org>; Sat, 11 Jul 2026 21:33:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783805615;
+	bh=Fxt5Kv6wtzwWWG7aOXJMN6ClRUQS1H+k6Gsv/nkbDwc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=hQZ8StegHT58gwL9HTVj24cITj6mQsepsSM6fTx2ksAqu/OBl+2cvO0xn6JFB9r0F
+	 KkhuYnqpKX4ShXzIqo8K+LGbkYqkTwb1ZBI5LQF9pVRTRKAMaOHFlpn6exgfxhnMxY
+	 0jXaZ2s0a+3mxHa+LlhZSi0N5YsMlUklois6B6KlN79GtdQ6Jx5SdLooF89x35tV5Z
+	 OFW4ibEwugG1q/W4NYBmCvdZe02OtbFz0+gRAochG0aIaBotvgyC7R6ZfqsR/GA8Xz
+	 4hErc2J4TBGDoIqvKP/3EESYF8E62U22SmG/y05pbMi9HZxwZGgkW1ihOkwS5wy1dv
+	 EJCmGwErwtqYQ==
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-39b51882d71so15711861fa.2
+        for <netdev@vger.kernel.org>; Sat, 11 Jul 2026 14:33:35 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RqPTacaunHB4EYPsyaK4VxUDaaSsNhmX0NV3OoVS8OyhiThgkugFeeYYFAXd5O+zBegn0dy/hk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3C1AacIgjZtGC540CGuFF6rduN9/qsK2KTLbY6iyjdMU/jgzW
+	P4PWWMGvB2oknLckUh4q1u9+2gmhS/+/f/WQYs52DmY2wzMc29qd1a1kg2kysSltBJwYwTbFe0P
+	dulK6a1bxbN3XGFfKPLdkFAaxrGcGbYw=
+X-Received: by 2002:a19:f008:0:b0:5b0:12cf:ae42 with SMTP id
+ 2adb3069b0e04-5b02369d80emr609392e87.35.1783805613854; Sat, 11 Jul 2026
+ 14:33:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net] ethtool: Embed FEC hist ranges as buffer in struct
-To: Eric Joyner <eric.joyner@amd.com>, netdev@vger.kernel.org
-Cc: Michael Chan <michael.chan@broadcom.com>,
- Pavan Chebbi <pavan.chebbi@broadcom.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Saeed Mahameed <saeedm@nvidia.com>,
- Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
- Mark Bloch <mbloch@nvidia.com>, Simon Horman <horms@kernel.org>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Brett Creeley <brett.creeley@amd.com>, Breno Leitao <leitao@debian.org>,
- "Nikhil P. Rao" <nikhil.rao@amd.com>
-References: <20260710230026.47721-1-eric.joyner@amd.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20260710230026.47721-1-eric.joyner@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+References: <20260711-rtl8366rb-fixes-v1-1-12b9210b0cce@kernel.org> <CAJq09z5s39bg34cPZpheBQWyZHROR-ja1nvrD9E-w9Ya45t0vw@mail.gmail.com>
+In-Reply-To: <CAJq09z5s39bg34cPZpheBQWyZHROR-ja1nvrD9E-w9Ya45t0vw@mail.gmail.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Sat, 11 Jul 2026 23:33:21 +0200
+X-Gmail-Original-Message-ID: <CAD++jLkS67rEytYFhb6057Q1QyKhaK+fU+iJ7cebRT7gHw=LKQ@mail.gmail.com>
+X-Gm-Features: AUfX_mwQ2FGWI0C79jojQE_PrYPBUxpLhqvZV0omYDRw-Y01HT1v9UxtgSnQ3SU
+Message-ID: <CAD++jLkS67rEytYFhb6057Q1QyKhaK+fU+iJ7cebRT7gHw=LKQ@mail.gmail.com>
+Subject: Re: [PATCH net-next] net: dsa: realtek: rtl8366rb: Fix up port isolation
+To: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+Cc: =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>, 
+	Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 11/07/2026 00:00, Eric Joyner wrote:
-> When a driver's .get_fec_stats() handler is called and the driver
-> supports FEC histogram stats, the driver supplies the histogram bin
-> ranges via a pointer.  This pointer is assigned while under the netdev
-> ops lock in fec_prepare_data(), but the actual data is only read after
-> the lock is released; so this allows the driver to change the ranges
-> (e.g. from another .get_fec_stats() call) while the current call chain
-> is reading them in fec_fill_reply().
-> 
-> Fix this by embedding a buffer for the driver-supplied ranges in struct
-> ethtool_fec_hist instead of using a pointer; this ensures there's an
-> ethtool core-owned consistent copy that can be used after the netdev ops
-> lock is dropped and later in fec_fill_reply(). While some drivers like
-> bnxt use a constant struct for their ranges and won't be affected by
-> this issue, others like mlx5 (and eventually ionic) will use a
-> dynamically constructed range struct and could potentially run into an
-> issue.
+On Sat, Jul 11, 2026 at 8:03=E2=80=AFPM Luiz Angelo Daros de Luca
+<luizluca@gmail.com> wrote:
 
-I didn't like the idea of dynamic range, FEC is not changing while the
-link is UP, I don't see a reason to dynamically reconstruct histogram
-bins every single call. And the histogram itself is stable per HW per
-FEC, can be constant pre-defined struct in a driver, like in bnxt.
+> > -               /* Start with all ports completely isolated */
+> > -               ret =3D rtl8366rb_port_set_isolation(priv, dp->index, 0=
+);
+> > -               if (ret)
+> > -                       return ret;
+>
+> If you don't isolate the ports, what is the default port status?
 
-But if dynamic allocation is the only option, then yes, we have to
-change this ABI.
+Hm as I wrote in the commit message:
 
-> Since the kernel API changed here, change the in-tree drivers that
-> report FEC histogram stats to copy their ranges instead of just
-> supplying a pointer.
-> 
-> Fixes: cc2f08129925 ("ethtool: add FEC bins histogram report")
-> Signed-off-by: Eric Joyner <eric.joyner@amd.com>
+"the next loop in the setup code, over the
+user ports, isolate all the ports from each other, so only the CPU
+port can see them."
+
+It looks like this:
+
+        /* Configure user ports */
+        dsa_switch_for_each_port(dp, ds) {
+                if (!dsa_port_is_user(dp))
+                        continue;
+
+                /* Forward only to the CPU, isolate from all other ports */
+                ret =3D rtl8366rb_port_set_isolation(priv, dp->index,
+upports_mask);
+                if (ret)
+                        return ret;
+
+                /* If we support cascade switches, it should also include t=
+he
+                 * downstream DSA ports.
+                 */
+                downports_mask |=3D BIT(dp->index);
+        }
+
+upports_mask is the bitmask for all CPU ports, so that should do what is
+expected?
+
+Yours,
+Linus Walleij
