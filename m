@@ -1,140 +1,123 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5C0939B979;
-	Sat, 11 Jul 2026 10:43:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D1D93A962E
+	for <netdev@vger.kernel.org>; Sat, 11 Jul 2026 10:49:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783766629; cv=none; b=qK1fEGZfsuZahYBsZoCvSdx0bIMu6hctXvw9W2Vhdo3fYagiFsWXCcCbtso5Sh9QQRwBvkztaIBml+Tgw+JG6BPkokmhtn90yOEnqrMUwVBWmBEJvfE/v6K7RMD8QpFFRvQbMkUOT4M/l1gDz1R02upYdAo6IbC8jkVdp7nhf94=
+	t=1783766944; cv=none; b=i9fe0neaFKZZtsjIsjZEol88j+E0W0EOf+vW27zrDrRbaU0/ECFMf5JcO9UbyUp/K6EN8K40ZPqfNg2gq7d3RA2xbh8Z5ZolWh5lJYssem81/xcJMuQW1HERFAH1v2e0EwXmJ0WcBqcyp3i9WDOnUk3MlhEOSOSgvlsUjJWue1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783766629; c=relaxed/simple;
-	bh=wMESLLx2bBOpenDSD5/Jp55qgZ2QSMmUYynjIj2Jx3o=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pdmFcHCRS/nY8Jhd03Sj4kRXFuJLSL7hWD7C0FyRc06WfRKJSQ9Qq7o3/SkKlXs1tDdllZVkeb3sBj9xBbUDAGEig6P5TFg/K9BwuPIr9P85oDBdahPs7SAcR4oqAV6ygw3SF0pv63qfJWLRxAnlO0j7FrV/82SKuZYZ93KApc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=eTuZKyr6; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1783766944; c=relaxed/simple;
+	bh=4QcSpgEoF0nWn5Y9kPAa7ADc4/e/LpiGpOgPc2Snb3o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FT+YeCvLS+F6N6ZuAGrzekCFsaDvJ6367gCJoVzV8G+smJQ/PWC/6iw99jmtlk8bqxdcHTNkbmEllLKGTBhsqq/uCUXwOoikzAfg2peBpBO/2kcwsCkwwwfpKtDBcF5rsRmppGVbCbK6kfIvIlb8Cj6hZuxGUY/hjcBvNfj2XHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fpqyhHz+; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="eTuZKyr6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1783766613; x=1784025813;
-	bh=jkcAeCtdaIBL453JvBHZ7QHpOsA9URVgLRmr4A57c9A=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=eTuZKyr6YNHQ1zYN694Z5bwUCIuqrTw40KOw1Bf5QDHCL77pCIegCFoZKz5iwJqkF
-	 7u9U/sDCCp/949JQAg+8dJmN9j0PeifBFrUoBqh9hrDpzMngBhX7pMhi9g1hi7NUFU
-	 YSNtH9fwZnd6VtG3fGO08ClKwQBqFFNhiTf67BFMKGHLn7ittgqNJNA2dckOQ1kTuw
-	 9nMA/iAOvwaqBayfdpRtJTTiE/OSFAxWzOdvznsNfD9bJ+QlGiegj30h/rK13kZxuO
-	 taJQrF71DTxbjSDVLB9wbVJPypiweOu/+ClDKtCz6pY7pCZgrq7PWoo9bOtRoTHWjD
-	 DpTzzitAY+uDA==
-Date: Sat, 11 Jul 2026 10:43:26 +0000
-To: Dust Li <dust.li@linux.alibaba.com>
-From: Bryam Vargas <hexlabsecurity@proton.me>
-Cc: Wenjia Zhang <wenjia@linux.ibm.com>, "D . Wythe" <alibuda@linux.alibaba.com>, Sidraya Jayagond <sidraya@linux.ibm.com>, Eric Dumazet <edumazet@google.com>, "David S . Miller" <davem@davemloft.net>, Mahanta Jambigi <mjambigi@linux.ibm.com>, Wen Gu <guwen@linux.alibaba.com>, Simon Horman <horms@kernel.org>, Ursula Braun <ubraun@linux.ibm.com>, Stefan Raspl <raspl@linux.ibm.com>, Tony Lu <tonylu@linux.alibaba.com>, Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v4 0/3] net/smc: bound wire-controlled CDC cursors against the local buffers
-Message-ID: <20260711104315.82912-1-hexlabsecurity@proton.me>
-In-Reply-To: <akzG4Hfeom6fNzFX@linux.alibaba.com>
-References: <20260705-b4-disp-28a1bbca-v4-0-be089b98acc6@proton.me> <akzG4Hfeom6fNzFX@linux.alibaba.com>
-Feedback-ID: 199661219:user:proton
-X-Pm-Message-ID: b5d2950248f52f23efe53d3fa9731dba1629dc0c
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fpqyhHz+"
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c15cf78d1a2so209859266b.1
+        for <netdev@vger.kernel.org>; Sat, 11 Jul 2026 03:49:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783766939; x=1784371739; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=au7GYuxpuvO8X+mfStKR1O+GhXnwrR6hrIqMke5JJ3A=;
+        b=fpqyhHz+5fwFFDiAJcoEAe2aSJy5DExqZiF4yZYLqGjX30yiJO3JuYREi0QNuhRcfV
+         4I8u2KYD+1+6NFJUkM2a44W3qrWEr2GFZXtd3Xpv5rS6PGIq80kK9ur/xEUl1aNt6eAc
+         MPH1FlBadhNwR7tvshSNx88BLAtR3KKlITVHdIIDFvulfQWgUqJoZGDoaXgDMAIwWv2A
+         Wmc6JtBt0tXEob5KIx2278z/TLiArxocpZg4KLqMB2CQGrobo7IRJLcsJV7ZujDLIEON
+         4qCmDFbDbvcDneedrp/H3twbx+G81p7xcZ9MwFX9O8qALAi17VNM1qxPQEc1D1j4usJP
+         cdTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783766939; x=1784371739;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=au7GYuxpuvO8X+mfStKR1O+GhXnwrR6hrIqMke5JJ3A=;
+        b=dKT4Xen0IQVnzZyT1bhvz2bWczUWgF7DR0pm9nqo4UuFhWYWMWYajSf8ZfeCug8Adm
+         O7wn3zb96iGNbEadtMxVgEOg9RItx8lRs746atbkcxrkt3UqZqaO+rW6Lf58Ow5FrO4d
+         lYs2ONFWn0M7hgcxFI4Ej7WED8Q/4pYKEnwvJFsb+V1zt/eM4TPbKmSTclaPiDe1AsWH
+         qZ4cQMbJ5c5v4IJnsOYEcCdFcHAM8RMRvQBHUmi2pN32n3QWx+kFd4WVcjkt8muqwCMl
+         INKhgEoel3m8YkgSSknJXHw1VCuBvXeSHCGPCDt/XjRUsWdRFfdQgl5Pf8XHrlmkqhUJ
+         jJsg==
+X-Gm-Message-State: AOJu0YyLIb0rS3lcmTGJ5ZMLiuXbjI/zLmIyXtya86P3PKvryepUykUv
+	vwRvD8MZ4DQeA7BcJEBtChjiR9sF7niUHtodpHEfGra1GP60sqpUb4cq08d1Yw==
+X-Gm-Gg: AfdE7cnJL2+J4Kt6Z2O0JARZO8KwcifeSQzkkV/5EH8e9Y5G0TEtJGL0q8UNJG1wBUl
+	ERcWI7VCzPgv8OllLN59NL05MqWk6oFVTwkemtDEiaooLuGPDoPTw+h6o9jQibLgo41sDR55Wd2
+	WWroIM5m6ny7DXHpb3/527flEE0JUNd7VH+aEaSK5WiDMweYmNiyAT50hiPy4dYUtuk8RH+rdKn
+	5mbDI0ESn+xS3pGOGOvgf3PwhjD/otvS8wHhwdn4aGI1+LqNYEHE8gF46+fvjBvcm2uROinuTuH
+	CdwO4OaQIjpxr2mwVQ9OUVmfT4ilStcD98hzvkKUEP0S10sJV532TXGWxgorKg4oBy0YWV4+sW0
+	IZLSAEAXc5hNXxaZP77absOfII2biqXlVdr04lJxhG4PB/Ia8TUQRAwwMb1QvBV7DxPznBk8Byk
+	YXaCJrF3d8wKSyGIb7vbwV1armUd81k2n7NA8Z4Zegk9pS9YF+lhbu9Fj2V+se6YRmU3FbPK0SO
+	0s2HktLNNBtYdVvh7EZYUvAIMlXhRYpUQGom3TOAgSUVXZfNA==
+X-Received: by 2002:a17:907:cf87:b0:c15:c638:d03c with SMTP id a640c23a62f3a-c161e9fbce2mr86442466b.47.1783766939215;
+        Sat, 11 Jul 2026 03:48:59 -0700 (PDT)
+Received: from 127.0.0.1localhost (82-132-222-132.dab.02.net. [82.132.222.132])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c15beb53b86sm609123166b.25.2026.07.11.03.48.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 11 Jul 2026 03:48:58 -0700 (PDT)
+From: Pavel Begunkov <asml.silence@gmail.com>
+To: netdev@vger.kernel.org
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	io-uring@vger.kernel.org,
+	asml.silence@gmail.com
+Subject: [RFC 00/10] io_uring: prototype for device memory tx
+Date: Sat, 11 Jul 2026 11:48:29 +0100
+Message-ID: <cover.1783614400.git.asml.silence@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, 7 Jul 2026 17:29:04 +0800, Dust Li wrote:
-> Are you planning to land these clamps first, and then follow up with a
-> separate validate/abort series?
+People were asking about io_uring tx with device memory, this is a quick
+and dirty enablement for io_uring's IORING_OP_SEND[MSG]_ZC. It's more of
+a testing prototype than to show the design as I'm not happy with uapi
+and how it relies on zcrx, and will be redoing it.
 
-Yes -- clamp series to net (Cc: stable), then the wire-boundary validate/ab=
-ort to
-net-next, which is the split from your v3 review. If you'd rather have the
-validate/abort as the primary fix, or both in one series, say so and I'll
-restructure it.
+It's piggy backed on top of a zcrx instance and relies on it managing
+the rx queue and talking to the device. It also uses memory and mappings
+from zcrx area. Since there is no proper iter type to pass  netmems,
+io_uring gives an ubuf/iovec iterator and relies on a new sg_from_iter
+to setup skbs in the right way. Just as devmem TCP, it implmements
+{get,put}_netmem by referencing, and verifies in
+validate_xmit_unreadable_skb() that skbs go to the right device.
 
-> Looking at your earlier A/B test, it simulates this logic in userspace to
-> demonstrate the bug, but it doesn't actually trigger the bug in our
-> current kernel.
+Pavel Begunkov (10):
+  net: pass ubuf to custom sg_from_iter callbacks
+  net: reject zcrx skbs to not registered devices
+  io_uring/zcrx: switch to pcpu refcounting
+  io_uring/zcrx: prepare areas to be exported for tx
+  io_uring/rsrc: introduce buf registration structure
+  io_uring/rsrc: extend buffer update
+  io_uring/rsrc: add uncloneable regbuf flag
+  io_uring/rsrc: add regbuf import flags
+  io_uring/rsrc: add zcrx backed registered buffers
+  io_uring/net: implement device memory send
 
-Right -- the earlier one replayed the smc_curs_diff/copy arithmetic over a =
-kmalloc
-buffer. I built the end-to-end version: two AF_SMC sockets over the SMC-D l=
-oopback
-(dibs), CONFIG_SMC=3Dm with KASAN, receive path unmodified. Only the sender=
-'s on-wire
-producer cursor is forged, modelling what a misbehaving peer sends:
+ include/linux/io_uring/net.h  |  10 ++
+ include/linux/socket.h        |   2 +-
+ include/net/netmem.h          |   1 +
+ include/uapi/linux/io_uring.h |  28 ++++-
+ io_uring/net.c                |  37 ++++--
+ io_uring/notif.h              |   5 +-
+ io_uring/rsrc.c               | 204 +++++++++++++++++++++++++++-------
+ io_uring/rsrc.h               |  32 +++++-
+ io_uring/zcrx.c               | 104 +++++++++++++++--
+ io_uring/zcrx.h               |  14 ++-
+ net/core/datagram.c           |   2 +-
+ net/core/dev.c                |  10 +-
+ net/core/skbuff.c             |   3 +
+ 13 files changed, 381 insertions(+), 71 deletions(-)
 
-  cdc.prod.wrap =3D curs.wrap;
-  cdc.prod.count =3D curs.count;
-+ if (forge) {                 /* peer just bumps the wrap, count stays 0 *=
-/
-+     static u16 w;
-+     cdc.prod.wrap =3D ++w;
-+     cdc.prod.count =3D 0;
-+ }
-
-The client sends six 1-byte messages, the server recvs into a 2 MB buffer.
-rmb_desc->len =3D 65504; the three arms on 7.2-rc1:
-
-  honest (no forge)            recv 6        clean
-  forged, patch 2/3 clamp on   recv 65504    clean   (=3D=3D rmb_desc->len)
-  forged, no clamp             recv 393024   KASAN
-
-In the last arm bytes_to_rcv reaches 6*len, so smc_rx_recvmsg()'s second wr=
-ap-around
-chunk (copylen - first_chunk =3D 393024 - 65504) is read from ring offset 0=
-, past the
-RMB page:
-
-  BUG: KASAN: slab-use-after-free in _copy_to_iter
-  Read of size 327520 ... smc_rx_recvmsg <- smc_recvmsg <- __sys_recvfrom
-
-(use-after-free rather than out-of-bounds only because the over-read lands =
-in a freed
-adjacent slab.) Happy to send the driver.
-
-> the security risk here doesn't seem high to me, since SMC is only meant t=
-o
-> be deployed in trusted environments.
-
-Agreed it's low urgency there. The reason I'd still keep the bound in stabl=
-e: it's a
-peer-driven out-of-bounds read of kernel memory that a buggy, not only mali=
-cious,
-peer can hit, and the clamp never resets an honest connection. The stable t=
-ag is
-your call.
-
-> once this is actually triggered, it means the data we've been handing to
-> userspace is already wrong ... the connection should be terminated. So I
-> don't really see much value in merging the bound-clamp patches first.
-
-I'm not arguing against the abort -- a bad CDC means the connection can't b=
-e trusted
-and should go down, and that's the net-next work. Two points on it.
-
-The predicate has to test the accumulator, not the cursor. Every forged CDC=
- here
-carries count =3D=3D 0, which is in [0, rmb_desc->len), so it passes any pe=
-r-cursor
-input check, including patch 1/3; only bytes_to_rcv goes out of range. A
-cursor-boundary abort wouldn't catch this vector.
-
-And placement: if the abort is queued (queue_work -> smc_conn_kill) after t=
-he
-atomic_add, a recvmsg() under lock_sock can still read the inflated accumul=
-ator in
-the window before teardown runs. A synchronous check that bails before the
-atomic_add avoids that, and so does the consumer clamp.
-
-If you'd prefer a single accumulator-abort in place of the -stable clamp, I=
-'ll
-respin it that way and run the same A/B.
-
-Bryam
+-- 
+2.54.0
 
