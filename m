@@ -1,145 +1,123 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864662C21DD
-	for <netdev@vger.kernel.org>; Sat, 11 Jul 2026 15:52:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A4CA225417;
+	Sat, 11 Jul 2026 16:03:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783785144; cv=none; b=gnOGLTKrB10u8BJ3K1c573FF1JNptpXujgl8YIkGdmAsSlAzAcGtBXjK3zdEa05RuvNHe/ayjFdGiwmw7GiBcKaLpV0MOiaFVxfUKEwogA2D6gNgf8jdT/oxlj6ak8SuOWOUHKvDvAEx2pHQ7Vft7YvZstcKRaEonAyMfGi65p0=
+	t=1783785831; cv=none; b=d7Q2F477KxccD7cjggeScPnv17UMAdqI8pKVc7WdsNVJQG+ODI0Dixi2HOqjIu4y+JaOSeJPnxoz+re7rbSaaHAQihJPbMEWlT3kB5sCbcGZULBdFxAbaL/naBq/CywJ94kR8mKlPZkVR7ylOysgJCetJIuSocRrrhpP43+vgBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783785144; c=relaxed/simple;
-	bh=lCnQkqEcnAuVhVKI8VK8T1Nky8MXYsIIAssTgtxhdA0=;
+	s=arc-20240116; t=1783785831; c=relaxed/simple;
+	bh=UKL31b/qHA8fpKfVVznWMhJSrg2YG2le+SMoyYnJ+Ak=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bJm/AO/u8qX5ZB9ok7CXvPIAkwKQXmUTlQffU2i7LFuUZTUJn2f+jCLY5QZbzxjN6qvyjvvwvrePwGZD3w5sYEgI8LyFTS0HGh4/b0JTCiOK5d1OrTZtxxmUQ8OakjaUKTLz2nNsrKJQKb0Jqk1DB0W09HNf/rWWu6UWoh6A3HA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HT35FGNM; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=qrlfyFNT; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=JLOi7wGUQ9DP8MLMq/LI5syywlbmJzqUHvrd2s5EGzms0JHRaT76EFWvAPkdMuv0CKl7R7hbCgfi74MSluk7g4tNkQfRE10bt0POsiSnfZ/oZdm1Nz5hQE1lEyseENV6IUXGPWw49M+/sC/dqph4reKsxNYTXPtYurXZd+3UAT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lgr4/5Ac; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HT35FGNM";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="qrlfyFNT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783785141;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8GQsJAkqOxpmPMDLvAmr6k9Ihtgwa7qxpwDTrH4YfZ0=;
-	b=HT35FGNMhLLxx2tRhBsITrCo5/zjuED4XwrVet8L6a3Y3ZDOY0OFqiggik1f9eO6JK9ufH
-	IDz5gfHF4WBSa9Xfm/QHxLXy32+k52pWK7Wkl1aJ1lKTAD05B8KKGAJc6JNgkAlq54L/Rv
-	l7y0kPe6Hpl7FOvXdDFzdLvirYpEjUo=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-646-fTh6K1epPZqRXmeR3QN73g-1; Sat, 11 Jul 2026 11:52:20 -0400
-X-MC-Unique: fTh6K1epPZqRXmeR3QN73g-1
-X-Mimecast-MFC-AGG-ID: fTh6K1epPZqRXmeR3QN73g_1783785139
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-493e3ecd385so18031595e9.3
-        for <netdev@vger.kernel.org>; Sat, 11 Jul 2026 08:52:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1783785139; x=1784389939; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=8GQsJAkqOxpmPMDLvAmr6k9Ihtgwa7qxpwDTrH4YfZ0=;
-        b=qrlfyFNTmk6Vht4B+tULJd0k1c1zHpEkKIuWjHFoZnXTcy05azR54+ANowGwVFz1Y4
-         Sf9jdPsjvdKaPgkKkLFoLTXLfe3HxA+E/G1z4BbESxEi7968PVmWYvmDkZzNgUH/ZO7i
-         Pq1PP6nyv4uthMA21HdQTUKNHKsgKpE1v3f4LTSY2l79V4Fwv8eNvAkXjJ80IDRh0F7V
-         tOId22j8+FX9jJD2P6xy2G9Dr0lPx/39A4KoH2PT/4FzAO+h4XmQysWE0Ckiz2QrwDKV
-         ejg10aHlMfIiDToB0yVwJEi5YjC4U7jZAHe1O2teA3ASpQ/45slictiq+Rckl86Rj8Tx
-         WPYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783785139; x=1784389939;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=8GQsJAkqOxpmPMDLvAmr6k9Ihtgwa7qxpwDTrH4YfZ0=;
-        b=Y9nlcTSETWZCEvKcEHHg//PklLzhffTf4iqDusNMTTjCpST8ldBGS+Z9kBSX+JXVpq
-         55IzJyrdO3Z98JPHcXw1yocKhhJ/cVPwTV596nWD0Dy3wb6iZjnKgFBWjNV2yo6fY6HA
-         /e49JXwlpDowH3zLOKux+/drb5LA+U34O9vsuJ3x7SJJFGJ4hBJHSccEOhCmoQ+fjbhU
-         w21GPIcnVtD5KMODd4BeKQj/lN/JoqcBEU5+bLgsyTldo86yyO/akDxmq2fRMYe3Cy8b
-         nJUvLSelKOPcbAxkblDpTG3Jsl4IldXVQ9pVDqfdSqL9pt7BkMr1kRv+oT4g1eVw7RPO
-         Ce5g==
-X-Forwarded-Encrypted: i=1; AHgh+RrMx92tmGbOig+nGXrz9Y5EPsITLCvS9y6KreY/RqtYcNzKTd1qYm65+r4Stu1aVbxqi3s7zXI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwhC9/RWZnDaOZvslZID786yQCnZFbMZ0VZ9AGoCFHOSa8FaN1c
-	/BCIALAl+rGcqXMzQ0gs/G1xUivZGpYuXm6UZIFdJPkcFbdrELRHVivXpzqZ6CEO0OQiJHbpqhK
-	rhC0VT9SUwjH9RggmhwHy2tyxQv1oHyBCNgu7ZA378r5450+80oYcP76uzg==
-X-Gm-Gg: AfdE7ckXaFtOlcLfpga951VPQ9v6kz8HjJ7m1eNo79beemnmWbCT+GLkBtvhOTEH/hh
-	y2OZUqiQHCLwhlIiE2tlavk3hqD3cy0yrfC8Hj1xKIBqK5Zo2x2YKdOc/T15zsNA2ZlyeOhDiW1
-	1yxEqlyfVSL8lwXa+eIcjcOIqs9GStJJSr49YWOmOVIyKQfVNJ5+yvp0M6SKXR6aLlSPCFMiswC
-	s/ybhpzDuIow7ZD2bHiVfYUmcRKodo9xNPcdhc07RnGwR05jFV24z4+mdXexgL2uPJZzxyOOsBs
-	5YoY4eHbJmT+auiEVZW9fmwE95S8k4nMcOkfz5Mp2Pga5mXYq/aUYMobZuYE4NjF9XsY0v3nAeF
-	2dBf7fsANBolsm98sdSZTuANzgwNFqRo04miesxnv4w==
-X-Received: by 2002:a05:600c:310f:b0:493:d115:d835 with SMTP id 5b1f17b1804b1-493f87d5800mr26790815e9.8.1783785138887;
-        Sat, 11 Jul 2026 08:52:18 -0700 (PDT)
-X-Received: by 2002:a05:600c:310f:b0:493:d115:d835 with SMTP id 5b1f17b1804b1-493f87d5800mr26790445e9.8.1783785138430;
-        Sat, 11 Jul 2026 08:52:18 -0700 (PDT)
-Received: from redhat.com (bzq-79-177-145-168.red.bezeqint.net. [79.177.145.168])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493eb6f373csm375363835e9.14.2026.07.11.08.52.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Jul 2026 08:52:17 -0700 (PDT)
-Date: Sat, 11 Jul 2026 11:52:13 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Michael Bommarito <michael.bommarito@gmail.com>
-Cc: Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	virtualization@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] virtio_net: validate device stats reply records before
- use
-Message-ID: <20260711114248-mutt-send-email-mst@kernel.org>
-References: <20260711150754.2918392-1-michael.bommarito@gmail.com>
- <20260711111503-mutt-send-email-mst@kernel.org>
- <CAJJ9bXwUtQ3pHqZ=AMuwaNLs16pmujiMdeBQtB5kFc6JjM-Pug@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lgr4/5Ac"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ABAD1F000E9;
+	Sat, 11 Jul 2026 16:03:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783785830;
+	bh=LCSrKy3yKc9O23s4OGvQ6iul5x3Q05f94mW04VT5aSk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=lgr4/5Ac9NnZQdqqiVrKCJpWWgAusTqDLrHRheuoQ78w/r/6Qc+PK2Lws6bG+R2yi
+	 6V50H/wVABcT/CyLxk6TIAZDUa7Cyg23Harw7HG0v0PF0GTimw3aYNUi/H+RiVlu/y
+	 yqpMktemrmhB4FB69SqXSAu5mIIpaTjpubt8bGRPFe1KX8efFtzRTUpG73Pu59pAAi
+	 q1Ql+LMOMAk96AHMmYU2rbsu/ul8SQdedlQuXzkxr12zlvEV+1yQHrYfui1tjwxcuZ
+	 +tze2p2HJct0YDzFidRikUePqpcmca1CQWZeLCOh0s0uWhlZyGRxXp4MGv939L8E4k
+	 KoIz+btJ8J24g==
+Date: Sat, 11 Jul 2026 11:03:45 -0500
+From: Bjorn Andersson <andersson@kernel.org>
+To: Sumit Garg <sumit.garg@kernel.org>
+Cc: konradybcio@kernel.org, linux-arm-msm@vger.kernel.org, 
+	devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org, 
+	linux-media@vger.kernel.org, netdev@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	ath12k@lists.infradead.org, linux-remoteproc@vger.kernel.org, robh@kernel.org, 
+	krzk+dt@kernel.org, conor+dt@kernel.org, robin.clark@oss.qualcomm.com, 
+	sean@poorly.run, akhilpo@oss.qualcomm.com, lumag@kernel.org, 
+	abhinav.kumar@linux.dev, jesszhan0024@gmail.com, marijn.suijten@somainline.org, 
+	airlied@gmail.com, simona@ffwll.ch, vikash.garodia@oss.qualcomm.com, bod@kernel.org, 
+	mchehab@kernel.org, elder@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, jjohnson@kernel.org, 
+	mathieu.poirier@linaro.org, trilokkumar.soni@oss.qualcomm.com, mukesh.ojha@oss.qualcomm.com, 
+	pavan.kondeti@oss.qualcomm.com, jorge.ramirez@oss.qualcomm.com, tonyh@qti.qualcomm.com, 
+	vignesh.viswanathan@oss.qualcomm.com, srinivas.kandagatla@oss.qualcomm.com, 
+	amirreza.zarrabi@oss.qualcomm.com, jenswi@kernel.org, op-tee@lists.trustedfirmware.org, 
+	apurupa@qti.qualcomm.com, skare@qti.qualcomm.com, linux-kernel@vger.kernel.org, 
+	Sumit Garg <sumit.garg@oss.qualcomm.com>
+Subject: Re: (subset) [PATCH v9 00/14] firmware: qcom: Add OP-TEE PAS service
+ support
+Message-ID: <alJn2M2Wu4FH7HUM@baldur>
+References: <20260702115835.167602-1-sumit.garg@kernel.org>
+ <178362521364.2422497.1305957434056184382.b4-ty@kernel.org>
+ <alDhkHVnzReCgU6H@sumit-xelite>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJJ9bXwUtQ3pHqZ=AMuwaNLs16pmujiMdeBQtB5kFc6JjM-Pug@mail.gmail.com>
+In-Reply-To: <alDhkHVnzReCgU6H@sumit-xelite>
 
-On Sat, Jul 11, 2026 at 11:29:56AM -0400, Michael Bommarito wrote:
-> On Sat, Jul 11, 2026 at 11:20 AM Michael S. Tsirkin <mst@redhat.com> wrote:
-> > Why does it "matter most", or at all, there?
-> > Host can always deny guest service. In fact, this is how cloud vendors
-> > charge their clients, by denying service to whoever did not pay them.
-> ...
-> > I'm all for making things easier to debug even when the device is buggy.
-> > But I'm not inclined to add tons of hard to maintain code to
-> > that end, and I would be worried broken hosts will come to
-> > rely on drivers working around them.
+On Fri, Jul 10, 2026 at 05:42:00PM +0530, Sumit Garg wrote:
+> Hi Bjorn,
 > 
-> I am always confused by the CoCo threat model to be honest,
-
-Confidential computing? It's vague at points, given the term covers a
-lot of different hardware. But one thing is clear - it's about
-confidentiality.  DoS by host is empathically outside the threat model.
-On any virtualization platform I know without exception,
-host can just exit the VM, done, service denied.
-
-> since it
-> seems like some people care a lot about maximalist reliance on the
-> contract and other people are more practical about how many other
-> vectors exist anyway.
-
-I don't really know what "vectors" or "the contract" are here.
-
-Making a guest recover from a misbehaving device has as much a chance
-to reduce security as increase it. So the only benefit is
-robustness for users/developers, not security. And that
-has to be weighted against the maintainance cost of the change.
-This one is too costly, I judge.
-
->  No hard feelings if you want to NACK, but at
-> least it's documented publicly now for people to consider.
+> On Thu, Jul 09, 2026 at 02:32:39PM -0500, Bjorn Andersson wrote:
+> > 
+> > On Thu, 02 Jul 2026 17:28:16 +0530, Sumit Garg wrote:
+> > > From: Sumit Garg <sumit.garg@oss.qualcomm.com>
+> > > 
+> > > Qcom platforms has the legacy of using non-standard SCM calls
+> > > splintered over the various kernel drivers. These SCM calls aren't
+> > > compliant with the standard SMC calling conventions which is a
+> > > prerequisite to enable migration to the FF-A specifications from Arm.
+> > > 
+> > > [...]
+> > 
+> > Applied, thanks!
+> > 
+> > [01/14] firmware: qcom: Add a generic PAS service
+> >         commit: 08314e7c2c38b9ae6a5e01c58ed10a950859404d
+> > [02/14] firmware: qcom_scm: Migrate to generic PAS service
+> >         commit: 5c1a2975d23c51c01aca51945d0f10a4ee4c9020
+> > [03/14] firmware: qcom: Add a PAS TEE service
+> >         commit: b6f7978da0c4d26fe465aa6634f5a0b48f900de0
+> > [14/14] MAINTAINERS: Add maintainer entry for Qualcomm PAS TZ service
+> >         commit: 6701259025d49139131a0eb2257659a066dcca22
+> > 
+> > This is available as an immutable branch, for other subsystems to pull at:
+> >   https://git.kernel.org/pub/scm/linux/kernel/git/qcom/linux.git 20260702115835.167602-2-sumit.garg@kernel.org
+> > 
+> > 
+> > [04/14] remoteproc: qcom_q6v5_pas: Switch over to generic PAS TZ APIs
+> >         commit: 254030af0d81b12b7624d9ce85c6bdd3171629c6
+> > [05/14] remoteproc: qcom_q6v5_mss: Switch to generic PAS TZ APIs
+> >         commit: f3b1357673ddb37ae8b9a8fe44df73cbd2a519c5
+> > [06/14] remoteproc: qcom_wcnss: Switch to generic PAS TZ APIs
+> >         commit: ea3b5245f5deba916320b32a8e6510a74c034c17
+> > [07/14] remoteproc: qcom: Select QCOM_PAS generic service
+> >         commit: c4383254ac7a529736577e304176a10371c2ee0b
+> > 
 > 
-> Thanks,
-> Mike
+> Thanks for picking the partial set although I expected for you to pick
+> the entire set given acks from all the other subsystem maintainers. Let
+> me know how we should proceed further.
+> 
 
+That would be desirable, so that I can also merge the cleanup patch at
+the tail end there.
+
+I did miss Dmitry's ack on the drm patch - that one I could have merged,
+but I don't see acks from media and net maintainers. I'm fine either way
+(them providing acks, or merging the immutable branch and respective
+change).
+
+As you can see Jeff did the latter already. Thanks Jeff!
+
+This leaves us with the cleanup patch (13), which I think we can pick
+for v7.3-rc2.
+
+Regards,
+Bjorn
