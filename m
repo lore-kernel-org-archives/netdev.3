@@ -1,93 +1,73 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B823C1400
-	for <netdev@vger.kernel.org>; Sat, 11 Jul 2026 11:41:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ECC538AC83
+	for <netdev@vger.kernel.org>; Sat, 11 Jul 2026 12:10:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783770093; cv=none; b=U4v6fNYua7j1FPFPdyH+huHx5LZf81rGZAinQSCgy1JRXgUhffLlYdEaPBP4LOTQf93I74ajBzpPGDtzWwIozwUj0EOcbMAChdyTxUwba+aQxmRQRNpEtpGc/HQvm9BxMPrD6VadrbmhBoaMKvWFR+2BUsV8gvYuuRzHamQLXmw=
+	t=1783771819; cv=none; b=eX8MV6GDPEPxp/DV6znLfI/13ezpXsIiv4H5mgvYSpNUL6xHc7/5aFDSjva07Cci+7FT8xyuDWVTa2BcghWf+78Sq1UO2YyDBK7Fm+wRF/eusbuUYMOurfIul4tSctYfn+5XE7lNECbmJzNueO+QyiVAJaSs/SD2Q9KNgNeW15g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783770093; c=relaxed/simple;
-	bh=yty9WLIUjhx4aO4+deZv2mcG0G1/RFIWFovRaTjaN0g=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=rICYCeOh0KllkQtwbAZLf/66HdkAT26YJmw3o3OXVVwjlhuBf2yG6eYkNTqCpmWAYBu69TNDBwlDwf4YF0YsU2Ss5+So4dL8WlJ5naVydmaaciUZFgdk0N+9caeZfyrjrtgQng6ESLPV1MhmiIFynFxnhPe+Vhnz0bAFkd5G2/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TVvz/vkP; arc=none smtp.client-ip=209.85.214.172
+	s=arc-20240116; t=1783771819; c=relaxed/simple;
+	bh=S8b/4BsFSE8KlFURh/bHVzTH/0yIH3iw8lTmdGMTBMw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Dag3QGs71IetzNe1Ka0bNm0VZVNd2uIKEf+l2cbdDxuYS2gvKvPfCi8uG/crnyqe/Abb5TloGiejuvKd4Imrm4o/6Obea7JU/l2SX4N3/99wM39ZrX0etbOI3uqqCXTG5iuuOIImOcczGPe9ISnxJIKfLgJFCd/bhx0nOZvjXuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qENWZoxT; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TVvz/vkP"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2ccf2360620so15263425ad.3
-        for <netdev@vger.kernel.org>; Sat, 11 Jul 2026 04:41:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qENWZoxT"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2c6b67d5fa1so28742895ad.2
+        for <netdev@vger.kernel.org>; Sat, 11 Jul 2026 05:10:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783770091; x=1784374891; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Q9JdVGG2sNfYkjr/rkIYVFcSLhYtKWGKRZRHailPGqU=;
-        b=TVvz/vkPnwhqGtYWJR9HdjyOuiBN9LIIcZ1yROn7i8/2w4XZAFRkZhz8kI3sDvBlp2
-         p0uswLU7WTaSoaV5VwekgJHFk12oBoad/3QHDmbUOFTXw0wRr/ibEViGUopgTMDkx1Vk
-         tn8yvSQ8cRiO5lLgxULDUd97KcXDtH5fiWmdJ0wSBnS38ojqNkzojUcM0euUINZ6rG9I
-         LAjhI/Uy5isVHnn/xLeN4OuAIRNi9cKt2PEqn+S4BKabw8eCa2BjLBykRd/koVA3fNVk
-         HOW2gRsLOX8F+uIYA7kF5/Ycgxe80mxnj8loujtv8oVDygpa56WXdttktiqOnnfnnKbT
-         rBKA==
+        d=gmail.com; s=20251104; t=1783771818; x=1784376618; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=rwcep/f1okQ2Nd2drpl9IskC13P+jKJfO97boATnYJE=;
+        b=qENWZoxTladv0WZ0OjR6jzpKCKID5dHu7wwdWd91MXzFplAsDtkVCRQC0hhqhs4U/L
+         4K3TUNWr0F/tbSr749nVKhUQFc8O3IHL0Z1hPlzvumM9fXxUE+dubGkf2gMUZHd6PMvv
+         DF8bm/mAwpK3+cdxLVRnhm+vltBnlSwjTWKdHEExJGoNu1iGpP9cGWB6/d4KUROOEX/D
+         FInR+PK9RcEcpugGr9wynt8xt7dOH/1LSOw/08+NXz/UGkMMPZztNag9DqFhTCfKvPt+
+         BuVz4bqOxzl6Pqu9T9DV1NYpIr3y66BKvX4X9UJ58Vq1PNzz/FXrjnksjI6n6eH4kgcH
+         FLrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783770091; x=1784374891;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Q9JdVGG2sNfYkjr/rkIYVFcSLhYtKWGKRZRHailPGqU=;
-        b=SiGHQcw+F9KCA4twgFKY4J3Iadeoy92ESIjVxKV7EqwPu+Jsxn/ldBW0M0mfFtijTL
-         La/sm/mEBjNbfbkNAMUx5HRFNXTrNLjdt8VJO1B+I/2OSHyLGSNzLgXU0/oNrSP0YSrP
-         ecUJcL6EV82MCR0iS8T283zUo9h20L8lW7xV85hHTvs8ETymooMEsmA7S2Q15BMkjmk+
-         3Y83d5Dp2ek7gE4tXtFtfkpkjxnIUXndjQXmdl0kYvil8Z1rWSKITmFHL6MQdlgQ7j6H
-         /SRV47cht13wJTPE/woXLchdGmrSjh92YKobxdOOOhgFqaKKHg6FzWE2n7biMhSF9mqV
-         Y0jQ==
-X-Gm-Message-State: AOJu0YyKpQ13MLcbW9erbo/Zc3b2Cu5ZcRGuW/dkjAb4/06h5BbizRoH
-	D8xdegtG53SK+qHne0JdgtDILrD71gQ/sAcnD9BoMXiHBiDDjZy5aKS/YpPSYEA1
-X-Gm-Gg: AfdE7ckZCEnu21YIraxL7eAYavG6/W9AZ1Dq1deNlMMvAenLueEwRrtrD/tYKm8JmYP
-	0XW+bQUv1V/RxsvzmGaOWaWy+LzpyZ1cxtLhxGw4YL1I+UvX0FpxtVlOQPABN/Yi8tuIGHSmE2I
-	olTgbFMKxQDbx8YqZbmQSmyD6PXwFrz6YGTMv3n3oR9iIC41xOsWqxt5RzIn2TUfoQkGJqAaSm0
-	okxgnt5drbuN1p7xKwB+kz0hIyb4G9zHh0N2LloUZ9Vgntppzlu4NdL7U5csVmcbi4g4KyCvu4f
-	poWjnVq9IQZKxO/PFzEkewKtaqOk8BQ8Nzv+dBz6NDCjhXuTfoCdqTiCnH6ohp9phImWPioh4KG
-	HGATPZxs4U4NWfK03+F1dVRZJ+/kqzgUIhvKktWESzLcdQ22olivnY8DL5KkUOTAqhnHZKSGUQt
-	PlN2sqoer3FJ9ChB3s/i45
-X-Received: by 2002:a17:90b:1fc8:b0:37e:2005:6507 with SMTP id 98e67ed59e1d1-38dc75f4cf5mr2500551a91.15.1783770091060;
-        Sat, 11 Jul 2026 04:41:31 -0700 (PDT)
-Received: from DESKTOP-TIT0J8O.dm.ae ([49.47.198.15])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-311935fd091sm32390087eec.24.2026.07.11.04.41.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Jul 2026 04:41:30 -0700 (PDT)
-From: Ahmed Naseef <naseefkm@gmail.com>
-To: netdev@vger.kernel.org
-Cc: =?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
-	"Chester A. Unal" <chester.a.unal@arinc9.com>,
+        d=1e100.net; s=20251104; t=1783771818; x=1784376618;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=rwcep/f1okQ2Nd2drpl9IskC13P+jKJfO97boATnYJE=;
+        b=Qx9bLqOHNBPF3VBTobZXd6lvak9oNolugXkEHeV7MPo7suG4o1cUpdksMz6VW6xxEu
+         GG0CnzvmYATRhEcW6vncWfZQ7jyyFS3h2k9AO9YABHEdsCtxozVxQvtMeDD2zYWrgm0f
+         FZNM+eMfOAz2NrdW/Ee45YPP7zv9S+q5eop9FBhm1XCxpog7bbqO6078szr7fvde2dwJ
+         +hk4xFD5QawBl05lI0vHCIZj2DOcyDSstvVmiVMGtIDGbWtqU216Rdl1oDoY+lwmGDBi
+         e+PYYHO9LijLZkLhCS3gVm86zu5sP4eR+xs1IgQ4r6KQ8oHcbAlxo2Gq3sEUEAtCKro7
+         Kt6g==
+X-Gm-Message-State: AOJu0Yz8YHjHuA2nAMeLpAD6W5zHzpwsur6UUVazAvwsFxOCegaIkKjz
+	sp7acMANkspnbhVYR5yZK9G2eg2lV7Yqu5uG1N00xMNY189ag75jh/LM
+X-Gm-Gg: AfdE7cmiH3l6FMbOIFNgueIocspv/epiSTH1JW7WaZGUylPp0DvQXTqkCSRB+bsGQfa
+	pM/w4D6Ypio+bFVxJACXcd+eOtw+lslQXzPsJFJg6u6DD6V0BsMa6B1BEr9Dd9rsQdY6djwWA7i
+	u59PwNisAOgNxCv++17LNw7+oLXdXrhlTQ4VfuLJzZDt6JFz2c0mXM8QuGwBiEmVymU8ahpxiGu
+	hghTDPygS/T1n6TzoP6T+fm+H0OyiFup4JHel6BB3IwS+htReQ7wG9IwQFnriap3qAPHn4twZbQ
+	yWO7wtXf4tRJRy0AzWj751pab3Uj3RcfCleFD9+88iwYniAY5UPjCD3amdBxnGlIJILJaVLOGf8
+	r/RfpOmU6jp0bYjSVF9zE/Ri6v364LIPBA/hZmizNBPcNZ40CJBhTpoi++IETHUByiSuIj9xSGO
+	WfTIq5IQrPXApaEf1N6ZkVp29AstY=
+X-Received: by 2002:a17:903:1b6b:b0:2ca:9d5a:8b6c with SMTP id d9443c01a7336-2ce9e79f42bmr29829555ad.5.1783771817755;
+        Sat, 11 Jul 2026 05:10:17 -0700 (PDT)
+Received: from localhost.localdomain ([202.8.105.118])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9d3bc42sm72537085ad.63.2026.07.11.05.10.15
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sat, 11 Jul 2026 05:10:17 -0700 (PDT)
+From: Jemmy Wong <jemmywong512@gmail.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
-	Andrew Lunn <andrew@lunn.ch>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	DENG Qingfang <dqfext@gmail.com>,
-	Daniel Golle <daniel@makrotopia.org>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Landen Chao <Landen.Chao@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	Ahmed Naseef <naseefkm@gmail.com>
-Subject: [PATCH net-next v2 2/2] net: dsa: mt7530: add EN7528 support
-Date: Sat, 11 Jul 2026 15:41:01 +0400
-Message-Id: <8c7dfabd860ab0a6dd771c2bac7b7599eb369a4f.1783770059.git.naseefkm@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1783770059.git.naseefkm@gmail.com>
-References: <cover.1783770059.git.naseefkm@gmail.com>
+	Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] net/rps: consolidate RPS dispatch into helpers
+Date: Sat, 11 Jul 2026 20:10:08 +0800
+Message-ID: <20260711121009.76842-1-jemmywong512@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -96,157 +76,252 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The EcoNet EN7528 SoC integrates an MT7530 switch (the chip revision
-register reads 0x7530), memory-mapped in the SoC register space and
-reached through the same MMIO glue used for the built-in switches of the
-MediaTek MT7988 and Airoha EN7581/AN7583 SoCs. Its reset sequence and its
-PHY indirect access registers are the same as on those switches, so add
-an ID_EN7528 variant bound with the "econet,en7528-switch" compatible,
-reusing mt7988_setup() and the indirect PHY accessors.
+The RPS steering logic in netif_rx_internal(), netif_receive_skb_internal()
+and netif_receive_skb_list_internal() was open-coded three times, each with
+its own #ifdef CONFIG_RPS block and manual rcu_read_lock()/unlock() pairs.
 
-The switch core, however, is an MT7530 and not an MT7531 derivative: the
-CPU port to trap frames to is set through the MT7530-style CPU_EN /
-CPU_PORT fields of the MFC register rather than the MT7531 CFC register,
-so add it to the MT7530 handling in mt753x_conduit_state_change(). For the
-same reason the MT7530 mirror and force-mode register layouts already
-apply to it as the default of the MT753X_*() macros.
+Factor it into two helpers, netif_rps() for the single-skb path and
+netif_rps_list() for the list path, sharing a common __netif_rps() inner
+helper that runs the get_rps_cpu()/enqueue_to_backlog() step under RCU.
 
-The four user ports (1-4) are connected to integrated Gigabit PHYs at
-MDIO addresses 9-12 of the switch internal MDIO bus. The CPU port (port
-6) is connected to the SoC Ethernet MAC at a fixed 1000 Mbps full duplex
-link, so the port capabilities cannot be shared with the MT7988 and
-EN7581 switches, whose CPU ports run at 10 Gbps.
+Both wrappers keep the early static_branch_unlikely(&rps_needed) check
+and only enter an RCU read-side critical section when RPS is actually
+enabled at runtime, so no extra rcu_read_lock()/unlock() is executed on
+the hot netif_rx_internal() path when RPS is compiled in but disabled.
 
-The LAN GPHYs advertise EEE by default, but negotiating EEE with some
-link partners results in an unstable link with dropped frames. Leave the
-LPI capabilities empty for the EN7528 so that phylink disables EEE on
-these PHYs and refuses to enable it from userspace.
+A new internal NET_RX_UNHANDLED sentinel lets a helper report "RPS did
+not take this skb" so the caller falls back to the local enqueue /
+__netif_receive_skb() path; it never escapes to callers.
 
-Signed-off-by: Ahmed Naseef <naseefkm@gmail.com>
+No functional change intended.
+
+Signed-off-by: Jemmy Wong <jemmywong512@gmail.com>
 ---
- drivers/net/dsa/mt7530-mmio.c |  1 +
- drivers/net/dsa/mt7530.c      | 58 ++++++++++++++++++++++++++++++-----
- drivers/net/dsa/mt7530.h      |  1 +
- 3 files changed, 52 insertions(+), 8 deletions(-)
+Changes since v1 [1]:
+  - Move rcu_read_lock()/unlock() inside the
+    static_branch_unlikely(&rps_needed) check, so no RCU read-side section
+    is entered when RPS is compiled in but disabled at runtime. Addresses
+    Paolo's concern that netif_rx_internal() is performance critical and
+    rcu_read_lock() is not a no-op.
+  - Drop the guard(rcu) / scoped_guard(rcu) conversion; the RCU section
+    is now scoped inside netif_rps() / netif_rps_list() themselves.
+  - Split __netif_rps() out of netif_rps() so that netif_rps_list() can
+    reuse the per-skb steering step without re-testing the static branch
+    or dropping and reacquiring the RCU lock per skb.
+  - netif_rps_list() now returns int; when RPS drains the entire list,
+    netif_receive_skb_list_internal() skips the __netif_receive_skb_list()
+    fall-through instead of walking an empty list. The result is decided
+    directly from list_empty(&undo_list): drop the splice on the drained
+    path and only splice back when there is something to fall through.
 
-diff --git a/drivers/net/dsa/mt7530-mmio.c b/drivers/net/dsa/mt7530-mmio.c
-index 1dc8b93fb51a..1065671bcdd1 100644
---- a/drivers/net/dsa/mt7530-mmio.c
-+++ b/drivers/net/dsa/mt7530-mmio.c
-@@ -13,6 +13,7 @@
- static const struct of_device_id mt7988_of_match[] = {
- 	{ .compatible = "airoha,an7583-switch", .data = &mt753x_table[ID_AN7583], },
- 	{ .compatible = "airoha,en7581-switch", .data = &mt753x_table[ID_EN7581], },
-+	{ .compatible = "econet,en7528-switch", .data = &mt753x_table[ID_EN7528], },
- 	{ .compatible = "mediatek,mt7988-switch", .data = &mt753x_table[ID_MT7988], },
- 	{ /* sentinel */ },
- };
-diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-index 3c2a3029b10c..6c8ed00ee9e7 100644
---- a/drivers/net/dsa/mt7530.c
-+++ b/drivers/net/dsa/mt7530.c
-@@ -2912,6 +2912,30 @@ static void en7581_mac_port_get_caps(struct dsa_switch *ds, int port,
- 	}
+Verified generated code with objdump on aarch64 with CONFIG_RPS=y,
+CONFIG_XPS=y, CONFIG_SMP=y, CONFIG_PREEMPT=y (so rcu_read_lock()
+expands to a real preempt_disable(), i.e. not a no-op -- the
+specific scenario Paolo asked about [2]):
+
+  scripts/bloat-o-meter net/core/dev.o (before -> after):
+    add/remove: 2/2 grow/shrink: 1/2 up/down: 720/-716 (4)
+    Function                        old     new   delta
+    __netif_rps                       -     660    +660
+    netif_receive_skb_list_internal 640     700     +60
+    netif_rx_internal               236     200     -36
+    netif_receive_skb               204     136     -68
+    get_rps_cpu                     608       -    -608
+    Total: Before=335841, After=335849, chg +0.00%
+
+  netif_rx_internal fast path (!rps_needed, i.e. static branch not
+  taken -- the path Paolo asked about [2]):
+    - identical instruction sequence to base, no rcu_read_lock/unlock
+    - stack frame 16 bytes smaller (0x50 -> 0x40)
+    - static_branch NOP is preserved
+  netif_receive_skb_internal: inlined in both builds; caller
+    netif_receive_skb shrinks by 68 bytes.
+  netif_receive_skb_list_internal: !rps_needed fast path unchanged;
+    rps_needed=true path grows +60 bytes for LIST_HEAD(undo_list)
+    setup, the explicit list_empty(&undo_list)/list_splice_init()
+    branch and its early NET_RX_SUCCESS return.
+
+[1] https://lore.kernel.org/all/20260702152830.39065-1-jemmywong512@gmail.com/
+[2] https://lore.kernel.org/all/e53482b8-4e1d-4a04-929c-f5cb443ba59d@redhat.com/
+
+ include/linux/netdevice.h |   5 +-
+ net/core/dev.c            | 118 +++++++++++++++++++++++---------------
+ 2 files changed, 74 insertions(+), 49 deletions(-)
+
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 9981d637f8b5..c265b78082e3 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -93,8 +93,9 @@ void netdev_set_default_ethtool_ops(struct net_device *dev,
+ void netdev_sw_irq_coalesce_default_on(struct net_device *dev);
+
+ /* Backlog congestion levels */
+-#define NET_RX_SUCCESS		0	/* keep 'em coming, baby */
+-#define NET_RX_DROP		1	/* packet dropped */
++#define NET_RX_UNHANDLED	-1
++#define NET_RX_SUCCESS		0
++#define NET_RX_DROP		1
+
+ #define MAX_NEST_DEV 8
+
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 4b3d5cfdf6e0..1a05ac8fdd50 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -5426,6 +5426,65 @@ static int enqueue_to_backlog(struct sk_buff *skb, int cpu,
+ 	return NET_RX_DROP;
  }
- 
-+static void en7528_mac_port_get_caps(struct dsa_switch *ds, int port,
-+				     struct phylink_config *config)
+
++#ifdef CONFIG_RPS
++static inline int __netif_rps(struct sk_buff *skb)
 +{
-+	switch (port) {
-+	/* Ports which are connected to switch PHYs. There is no MII pinout. */
-+	case 1 ... 4:
-+		__set_bit(PHY_INTERFACE_MODE_INTERNAL,
-+			  config->supported_interfaces);
++	int cpu;
++	int ret = NET_RX_UNHANDLED;
++	struct rps_dev_flow voidflow, *rflow = &voidflow;
 +
-+		config->mac_capabilities |= MAC_10 | MAC_100 | MAC_1000FD;
-+		break;
++	cpu = get_rps_cpu(skb->dev, skb, &rflow);
++	if (cpu >= 0)
++		ret = enqueue_to_backlog(skb, cpu, &rflow->last_qtail);
 +
-+	/* Port 6 is connected to SoC's GMAC at 1000 Mbps full duplex. There
-+	 * is no MII pinout.
-+	 */
-+	case 6:
-+		__set_bit(PHY_INTERFACE_MODE_INTERNAL,
-+			  config->supported_interfaces);
++	return ret;
++}
++#endif
 +
-+		config->mac_capabilities |= MAC_1000FD;
-+		break;
-+	}
++static inline int netif_rps(struct sk_buff *skb)
++{
++	int ret = NET_RX_UNHANDLED;
++
++#ifdef CONFIG_RPS
++	if (!static_branch_unlikely(&rps_needed))
++		return ret;
++
++	rcu_read_lock();
++	ret = __netif_rps(skb);
++	rcu_read_unlock();
++#endif
++
++	return ret;
 +}
 +
- static void
- mt7530_mac_config(struct dsa_switch *ds, int port, unsigned int mode,
- 		  phy_interface_t interface)
-@@ -3101,17 +3125,24 @@ static void mt753x_phylink_get_caps(struct dsa_switch *ds, int port,
- 				    struct phylink_config *config)
- {
- 	struct mt7530_priv *priv = ds->priv;
--	u32 eeecr;
- 
- 	config->mac_capabilities = MAC_ASYM_PAUSE | MAC_SYM_PAUSE;
- 
--	config->lpi_capabilities = MAC_100FD | MAC_1000FD | MAC_2500FD;
--
--	eeecr = mt7530_read(priv, MT753X_PMEEECR_P(port));
--	/* tx_lpi_timer should be in microseconds. The time units for
--	 * LPI threshold are unspecified.
-+	/* The EN7528 GPHYs report EEE capability, but negotiating EEE with
-+	 * common link partners (e.g. Realtek GbE NICs) results in an unstable
-+	 * link with dropped frames. Leave the LPI capabilities empty so that
-+	 * phylink disables EEE on these PHYs and refuses to enable it from
-+	 * userspace.
- 	 */
--	config->lpi_timer_default = FIELD_GET(LPI_THRESH_MASK, eeecr);
-+	if (priv->id != ID_EN7528) {
-+		u32 eeecr = mt7530_read(priv, MT753X_PMEEECR_P(port));
++static inline int netif_rps_list(struct list_head *head)
++{
++	int ret = NET_RX_UNHANDLED;
 +
-+		config->lpi_capabilities = MAC_100FD | MAC_1000FD | MAC_2500FD;
-+		/* tx_lpi_timer should be in microseconds. The time units for
-+		 * LPI threshold are unspecified.
-+		 */
-+		config->lpi_timer_default = FIELD_GET(LPI_THRESH_MASK, eeecr);
++#ifdef CONFIG_RPS
++	LIST_HEAD(undo_list);
++	struct sk_buff *skb, *next;
++
++	if (!static_branch_unlikely(&rps_needed))
++		return ret;
++
++	rcu_read_lock();
++	list_for_each_entry_safe(skb, next, head, list) {
++		skb_list_del_init(skb);
++		if (__netif_rps(skb) == NET_RX_UNHANDLED)
++			list_add_tail(&skb->list, &undo_list);
 +	}
- 
- 	priv->info->mac_port_get_caps(ds, port, config);
- }
-@@ -3254,7 +3285,8 @@ mt753x_conduit_state_change(struct dsa_switch *ds,
- 	 * forwarded to the numerically smallest CPU port whose conduit
- 	 * interface is up.
- 	 */
--	if (priv->id != ID_MT7530 && priv->id != ID_MT7621)
-+	if (priv->id != ID_MT7530 && priv->id != ID_MT7621 &&
-+	    priv->id != ID_EN7528)
- 		return;
- 
- 	mask = BIT(cpu_dp->index);
-@@ -3459,6 +3491,16 @@ const struct mt753x_info mt753x_table[] = {
- 		.phy_write_c45 = mt7531_ind_c45_phy_write,
- 		.mac_port_get_caps = en7581_mac_port_get_caps,
- 	},
-+	[ID_EN7528] = {
-+		.id = ID_EN7528,
-+		.pcs_ops = &mt7530_pcs_ops,
-+		.sw_setup = mt7988_setup,
-+		.phy_read_c22 = mt7531_ind_c22_phy_read,
-+		.phy_write_c22 = mt7531_ind_c22_phy_write,
-+		.phy_read_c45 = mt7531_ind_c45_phy_read,
-+		.phy_write_c45 = mt7531_ind_c45_phy_write,
-+		.mac_port_get_caps = en7528_mac_port_get_caps,
-+	},
- };
- EXPORT_SYMBOL_GPL(mt753x_table);
- 
-diff --git a/drivers/net/dsa/mt7530.h b/drivers/net/dsa/mt7530.h
-index dd33b0df3419..5f1e841f42c0 100644
---- a/drivers/net/dsa/mt7530.h
-+++ b/drivers/net/dsa/mt7530.h
-@@ -21,6 +21,7 @@ enum mt753x_id {
- 	ID_MT7988 = 3,
- 	ID_EN7581 = 4,
- 	ID_AN7583 = 5,
-+	ID_EN7528 = 6,
- };
- 
- #define	NUM_TRGMII_CTRL			5
--- 
-2.34.1
++	rcu_read_unlock();
++
++	if (list_empty(&undo_list))
++		ret = NET_RX_SUCCESS;
++	else
++		list_splice_init(&undo_list, head);
++#endif
++
++	return ret;
++}
++
+ static struct netdev_rx_queue *netif_get_rxqueue(struct sk_buff *skb)
+ {
+ 	struct net_device *dev = skb->dev;
+@@ -5695,34 +5754,18 @@ EXPORT_SYMBOL_GPL(do_xdp_generic);
 
+ static int netif_rx_internal(struct sk_buff *skb)
+ {
++	unsigned int qtail;
+ 	int ret;
+
+ 	net_timestamp_check(READ_ONCE(net_hotdata.tstamp_prequeue), skb);
+
+ 	trace_netif_rx(skb);
+
+-#ifdef CONFIG_RPS
+-	if (static_branch_unlikely(&rps_needed)) {
+-		struct rps_dev_flow voidflow, *rflow = &voidflow;
+-		int cpu;
+-
+-		rcu_read_lock();
+-
+-		cpu = get_rps_cpu(skb->dev, skb, &rflow);
+-		if (cpu < 0)
+-			cpu = smp_processor_id();
+-
+-		ret = enqueue_to_backlog(skb, cpu, &rflow->last_qtail);
+-
+-		rcu_read_unlock();
+-	} else
+-#endif
+-	{
+-		unsigned int qtail;
++	ret = netif_rps(skb);
++	if (ret != NET_RX_UNHANDLED)
++		return ret;
+
+-		ret = enqueue_to_backlog(skb, smp_processor_id(), &qtail);
+-	}
+-	return ret;
++	return enqueue_to_backlog(skb, smp_processor_id(), &qtail);
+ }
+
+ /**
+@@ -6389,19 +6432,11 @@ static int netif_receive_skb_internal(struct sk_buff *skb)
+ 	if (skb_defer_rx_timestamp(skb))
+ 		return NET_RX_SUCCESS;
+
+-	rcu_read_lock();
+-#ifdef CONFIG_RPS
+-	if (static_branch_unlikely(&rps_needed)) {
+-		struct rps_dev_flow voidflow, *rflow = &voidflow;
+-		int cpu = get_rps_cpu(skb->dev, skb, &rflow);
++	ret = netif_rps(skb);
++	if (ret != NET_RX_UNHANDLED)
++		return ret;
+
+-		if (cpu >= 0) {
+-			ret = enqueue_to_backlog(skb, cpu, &rflow->last_qtail);
+-			rcu_read_unlock();
+-			return ret;
+-		}
+-	}
+-#endif
++	rcu_read_lock();
+ 	ret = __netif_receive_skb(skb);
+ 	rcu_read_unlock();
+ 	return ret;
+@@ -6421,21 +6456,10 @@ void netif_receive_skb_list_internal(struct list_head *head)
+ 	}
+ 	list_splice_init(&sublist, head);
+
+-	rcu_read_lock();
+-#ifdef CONFIG_RPS
+-	if (static_branch_unlikely(&rps_needed)) {
+-		list_for_each_entry_safe(skb, next, head, list) {
+-			struct rps_dev_flow voidflow, *rflow = &voidflow;
+-			int cpu = get_rps_cpu(skb->dev, skb, &rflow);
++	if (netif_rps_list(head) == NET_RX_SUCCESS)
++		return;
+
+-			if (cpu >= 0) {
+-				/* Will be handled, remove from list */
+-				skb_list_del_init(skb);
+-				enqueue_to_backlog(skb, cpu, &rflow->last_qtail);
+-			}
+-		}
+-	}
+-#endif
++	rcu_read_lock();
+ 	__netif_receive_skb_list(head);
+ 	rcu_read_unlock();
+ }
+--
+2.54.0 (Apple Git-157)
