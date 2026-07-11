@@ -1,71 +1,71 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71937384CFF
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D57384CEA
 	for <netdev@vger.kernel.org>; Sat, 11 Jul 2026 09:12:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783761177; cv=none; b=L17VsTpGblWUst36CIjdktGK2p6RnjBiNmndbVZa/DLxBrQdhDGXUlhFYfUjb7QUWfdwSSu3DTyMvOL14MnQ45TWTcG89C2emE3yYKfsa5/T/vFAME+yI8irewAiBXdvuq3i3v2ZPxXWnVtx7RMIYtmknZUbBZV+VdiVF7wyCmc=
+	t=1783761178; cv=none; b=rozYEzIulHhQJAkeytR9xEO7/6SZYGf6BQXeJ6KxnCC78Dr/x1N7SuvMEelOcG10mMz6TEYeCjCkW1TR7YpLd927Z3c/N4O5Q+Vjfow2xCImWHmpX4e7XjwSSycKJXqNu2falpFITbGxwEhDXblAhbkn4N/1tiFFxSPH22Tvyz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783761177; c=relaxed/simple;
-	bh=iUPgH6JWPillkH2re/aBw/XfF6x479iYGVbuII+TcKg=;
+	s=arc-20240116; t=1783761178; c=relaxed/simple;
+	bh=3C5ZHtmURh7dwurigU+mzj8rTDm7QKCNJ6nCU+yuRWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YSxiCJWMEchg0w1FW1Okq62OChsEnLNQGgJnfkuQgfVtWUj2Zf897G7AU7DZXBrpvaojbHE0x44iiSEebGFeykHvfSaJH2NfqHHz1Q61+sDcoVKYwvoAuCS5Y0VaYwUnt/vXkHYBoSwJnGPuLj4ppgZqYTrwj+xYcWf5tJtEKjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AkNqMNfW; arc=none smtp.client-ip=209.85.208.43
+	 MIME-Version; b=CVAu4nAAFEVSvCl/R5eKzIRR1PmkKi55ja5HyrBF0oTcBzTLunKP3KtmUr5CaEbnoCKi2H+Y8jF036dqm9jimPZxJcPue9GCDyvZL+fNln1iuDRy3Xu3qoq8wU9N3yd2w7aLfHnahXxxvRMUjIrc/7w2xfNszKBbOcZKDvuXVPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JO1kwogK; arc=none smtp.client-ip=209.85.218.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AkNqMNfW"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-69531108f25so2759682a12.2
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JO1kwogK"
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c15d111ca99so167136966b.0
         for <netdev@vger.kernel.org>; Sat, 11 Jul 2026 02:12:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20251104; t=1783761175; x=1784365975; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=2uJksSIFTYd6T6NwSs+FCH5o6kh84G3qPp3LKMAk37I=;
-        b=AkNqMNfWm711IF8/ooW/kdoi5jnfvy6eQ9qrVQJiBBNCgXtcfmDzR7BIVbM71HIgDs
-         RouVrRmNnozUkKE58FtQU4k2mdSf1GLtSflL6SJNQ0+Yie7MIXHJFkB6sIFVXkJujd/n
-         Ai2XHVf/3QM3SYb0n5OKtZBzS1tXf9+VNjKuSFNOrANr0PaEZ4xHs1yO6M9Or56SrCwc
-         9yWSW+xGRGu+4qwYsQ6aa5og4jiEMAYxVG2Y+PEnaebLs9m6ezS60EDsLx01FQ/U5A5j
-         nkmkVbRwKgVNgOtetI6+2TBhI+grkdmi0up99vqsUsCUTjcmAa0SJ/Re/yZldOOcGS8c
-         BjtQ==
+        bh=YzxgLXuoC3y9XYCE+1b8RBAVVFev+ejEK09g/vo1UEs=;
+        b=JO1kwogKRafSX0F121xcUzaKzMp7HJcn3wj1X9HtzjTdR2e++X4krz9dzfN/osaeYI
+         gw9mQTy6d+gImmgNgqBnCJmjDfaYo2BHnlKqvpziUupeQtvk39JdVBmuv2aquXsI126h
+         j//+xYVOy649sYDLN5OETE+q4tUweN3JkaOhR1NTN5AHAAZJ3ZmNJorQxXVzpLXRq/nB
+         OkvSxvKXdOqyNyZWHNIE9duHItpv9n++o82Uat97YCfkQ8NGez7mpvjcZPKn0ab6TWgF
+         pU0evEN17N66Hf60jysolQ6HwYHm13s0hTvGYeuj3YXO8eLeeRa7bv4qCj7YCn9zIB2T
+         vp4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1783761175; x=1784365975;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2uJksSIFTYd6T6NwSs+FCH5o6kh84G3qPp3LKMAk37I=;
-        b=HP4nJL34gBKfC8qW+JYEtIOvpwe3ncE/NF+c+JnWKWXgsvcTLJMPIF52fCS+H447dh
-         ZrN1khMzK4W/u3+PCZwUJ5r9cztESF0twi5kAUdIbmSOA/e+mCoALH0/UYUvpw9VTEvR
-         3n0NFV+pbx7LeWSG/KXm4NmNBDGiYNl7t47DH7VpuSwP0KAu7NkwLBvZB6j70xWz1O0Y
-         czueIjg3BOWcZ9nyT7JG6szzXGOFIG0UWJIGZ8um2cqkn1QKliVT1+Ob7TmhMqbHQuyC
-         sL7JZ/5pkmMk6Ess0iqNqglpLlAKKF1JJ9cpzflYbe6sS3hd/KxtOHLLJznM8YRtGlaS
-         PfYg==
-X-Forwarded-Encrypted: i=1; AHgh+Rpd/2wkr/eFb0cGriB0NX54Nt6LgjNfSY+dWah3cstTPSQ0JW2pntPwk61yFIZQRKIGPSYruwE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSRpFCIMKQHH+GvAzWIQQ9hwSMkIVWYe/7rvZLT+48igyqnUrW
-	Q4UzGGhlrFjDpJVK+lrPm3MLSVAT2SLevGrijziF0QOMZndWXGhfaN07
-X-Gm-Gg: AfdE7ckvYDWWgDV3TDMlDiDB0Vc/evY2pVVnh6Ysk9dWmbygaZtPrD/WJHkEyb5smYR
-	KAwU3T+rEP96sfNV/9drEbfnBpQCRhgRHGVmnCF518NJ94yzSjF03yvzR2U2DGxrMs7+KoeBKRl
-	05Tlq0a+Lc1EuC2NakenaPgKCbk9GQQGt1++W5qssxMnr32cUBnbAtVJrxZVvuZpVNegbjwndjH
-	Yegb4/nWQQM/AroWg4v0EwyaC+3RJB8w5Ak8MP1MyfFsA4XtOyTRoVB3oqPvQTnIETWlBhch6fe
-	xiajgMk/nBabBmdV2X1cjwErCX+QEpU9DMRV8AqlOWi/fZxJv/wTwkZZDujraXdgeSKmpsYfUTx
-	T31Mjh/oaQXieIbk6YgKAB+cyJxTBEhL15L6rsaOCH+tPwFiGL8VyZIvaLwxTg0qoyN5IjGploi
-	CClJRn+MyDYzHPmJY/gbI/ODlc5Kfnt6GwhLPZ3P6JLdQ+7uefuj7rqywbXh4VF8xntOx+8/o8D
-	n1gkiFQWSFnyWCpsmjUv06K4eqjBp/pS5ycR7RIbmINtbA=
-X-Received: by 2002:a05:6402:2351:b0:698:9251:2f72 with SMTP id 4fb4d7f45d1cf-69c5f25b789mr1174608a12.35.1783761139565;
-        Sat, 11 Jul 2026 02:12:19 -0700 (PDT)
+        bh=YzxgLXuoC3y9XYCE+1b8RBAVVFev+ejEK09g/vo1UEs=;
+        b=HkE4DjYGj24OgwSUdaYvcq2uKfMVuau26+V7DbRGEpufe2LioqBJgTyd3qF3cflJkQ
+         /vfEBQRm3sq810vF+nXExhwQq0UMbNXFSP8hQGI8owVfXDamP3vpX55zFDnxf7vCY6+4
+         sjqIvHc5nYCEMi54UNg7hOmJ3U2jxIUlmyMEvRlWGpmFlMxTWad4Eb+4UBYocLqSEFbl
+         MDJwG8Hoj7mVQfecE10rde0cvUemlYWQYUig+usxnTa4gSbKNWcpYXMMJzsAYUhAAkHM
+         sgkOMfbt02qjj/OZzwt72vujHTySd6ROWSIQYZQVFM3DCG+G57/1sqXly/y2o/M56C6B
+         qk6g==
+X-Forwarded-Encrypted: i=1; AHgh+RrdjE6qYbvHCVJbYbu8NDDZa0KTlxwZDGI2yovnsgt9NzLs/NrKXx/aK4scfKBkv4kwv+UoZR0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAdiy0HUUaAJUxkEqDYLlk5iosc7rF28Q/BCS3PVcRK7LIy38t
+	0UeZzsqDNOFbWMx6XfacPYlY+G8PJnzt+cXR+JAx0l/RT7ZbCnVZ6I5B6QuNYg==
+X-Gm-Gg: AfdE7clHkK+R0AzMt30jEQM6vrIPP72PiWtxwSljEtq+oVB5fXY2wIlTCpSX9w7tPkd
+	L6x6nXq12iEpB2Jt5LSZTF4ZFEr9DWrKFKMZ4wUkdhmdUUeEQ+n6y8SBkIhKxY3aDx8EfNaQ3Rs
+	hZyrgxR3p3xPHPMsfvy4GK3X+1BRtRNDlPU5I0mmpbiI1vRA1blhw9v1QItDyCIgrCgmhWtYvvO
+	4rhciN0nvFBbJ/8vgW7UGp71yvh0vAz78FHhAfqc/IakBa6GITFUImfrNIpnOHwpBFD0/VIkBT7
+	2eUwX898Gk9RL+E6E0Le9jGTygwuFAk1+bnxzGLFpg9tQQB67g/pwP0TH2C/XsMp6JXy1jcRO3T
+	4ArUHrQGObyjsEowTq4AfXlJiyaBKqjY2LmEkdJU77Gt1zU9zbPYrzrVptJ6/0caxuADjIMwnfL
+	sty4Y5Zn4q8rzT/EbL+61+KmgT448emQv3tggOO3WR6oqVq37yEXFE2aW46cngi8bEGilEsdUzW
+	snNFQp3c0witDnHqw70CG+wr9PIRrGbZuCWBjCsCFn9hfo=
+X-Received: by 2002:a17:907:3f05:b0:c15:cfd7:fdcf with SMTP id a640c23a62f3a-c161e9d8a53mr73323066b.29.1783761175341;
+        Sat, 11 Jul 2026 02:12:55 -0700 (PDT)
 Received: from 127.0.0.1localhost (82-132-221-54.dab.02.net. [82.132.221.54])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-69c60d47188sm681191a12.27.2026.07.11.02.12.17
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-69c60d47188sm681191a12.27.2026.07.11.02.12.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Jul 2026 02:12:18 -0700 (PDT)
+        Sat, 11 Jul 2026 02:12:52 -0700 (PDT)
 From: Pavel Begunkov <asml.silence@gmail.com>
 To: io-uring@vger.kernel.org
 Cc: asml.silence@gmail.com,
 	netdev@vger.kernel.org
-Subject: [PATCH review-only 04/17] io_uring/zcrx: cache RQ tail
-Date: Sat, 11 Jul 2026 10:11:27 +0100
-Message-ID: <7d51b1e59c510acad94fcd0c00b617f075748a2d.1783616211.git.asml.silence@gmail.com>
+Subject: [PATCH review-only 16/17] io_urint/zcrx: narrow var scope in io_zcrx_recv_skb()
+Date: Sat, 11 Jul 2026 10:11:39 +0100
+Message-ID: <87e57608b1525ebcf4cb1cf29b00ca76ba3b982b.1783616211.git.asml.silence@gmail.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <cover.1783616211.git.asml.silence@gmail.com>
 References: <cover.1783616211.git.asml.silence@gmail.com>
@@ -77,88 +77,98 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The RQ tail is updated by the user space. Cache it to reduce cache line
-bouncing. Refilling now tries to exhaust the previous batch of rqes, but
-since it could be too low, the iterator is allowed to recalculate the
-rqes to process once after synching the tail value.
+A preparation patch that limits scopes of a couple variables in
+io_zcrx_recv_skb() and rename them, it makes it easier to reason about
+the code.
 
 Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
 ---
- io_uring/zcrx.c | 27 +++++++++++++++++++++------
- io_uring/zcrx.h |  1 +
- 2 files changed, 22 insertions(+), 6 deletions(-)
+ io_uring/zcrx.c | 35 ++++++++++++++++-------------------
+ 1 file changed, 16 insertions(+), 19 deletions(-)
 
 diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
-index 45b178afbbc3..1b8d748b35e7 100644
+index f7592a3c058d..74046a09911a 100644
 --- a/io_uring/zcrx.c
 +++ b/io_uring/zcrx.c
-@@ -1090,16 +1090,22 @@ void io_unregister_zcrx(struct io_ring_ctx *ctx)
+@@ -1836,8 +1836,7 @@ io_zcrx_recv_skb(read_descriptor_t *desc, struct sk_buff *skb,
+ 	struct io_kiocb *req = args->req;
+ 	struct sk_buff *frag_iter;
+ 	unsigned start, start_off = offset;
+-	int i, copy, end, off;
+-	int ret = 0;
++	int i, ret = 0;
  
- struct zcrx_rq_iter {
- 	int rqes_left;
-+	bool flushed;
- };
+ 	len = min_t(size_t, len, desc->count);
+ 	/*
+@@ -1875,20 +1874,19 @@ io_zcrx_recv_skb(read_descriptor_t *desc, struct sk_buff *skb,
  
--static inline u32 zcrx_rq_entries(struct zcrx_rq *rq)
-+static inline u32 __zcrx_rq_entries(struct zcrx_rq *rq)
- {
--	u32 entries;
-+	u32 entries = rq->cached_tail - rq->cached_head;
+ 	for (i = 0; i < skb_shinfo(skb)->nr_frags; i++) {
+ 		const skb_frag_t *frag;
++		unsigned frag_end;
  
--	entries = smp_load_acquire(&rq->ring->tail) - rq->cached_head;
- 	return min(entries, rq->nr_entries);
- }
+ 		if (WARN_ON(start > offset + len))
+ 			return -EFAULT;
  
-+static inline u32 zcrx_rq_entries(struct zcrx_rq *rq)
-+{
-+	rq->cached_tail = smp_load_acquire(&rq->ring->tail);
-+	return __zcrx_rq_entries(rq);
-+}
+ 		frag = &skb_shinfo(skb)->frags[i];
+-		end = start + skb_frag_size(frag);
++		frag_end = start + skb_frag_size(frag);
+ 
+-		if (offset < end) {
+-			copy = end - offset;
+-			if (copy > len)
+-				copy = len;
++		if (offset < frag_end) {
++			unsigned copy = min(frag_end - offset, len);
++			unsigned frag_off = offset - start;
+ 
+-			off = offset - start;
+-			ret = io_zcrx_recv_frag(req, ifq, frag, off, copy);
++			ret = io_zcrx_recv_frag(req, ifq, frag, frag_off, copy);
+ 			if (ret < 0)
+ 				goto out;
+ 
+@@ -1897,24 +1895,23 @@ io_zcrx_recv_skb(read_descriptor_t *desc, struct sk_buff *skb,
+ 			if (len == 0 || ret != copy)
+ 				goto out;
+ 		}
+-		start = end;
++		start = frag_end;
+ 	}
+ 
+ 	skb_walk_frags(skb, frag_iter) {
++		unsigned frag_end;
 +
- static struct io_uring_zcrx_rqe *zcrx_next_rqe(struct zcrx_rq *rq, unsigned mask)
- {
- 	unsigned int idx = rq->cached_head++ & mask;
-@@ -1110,7 +1116,8 @@ static struct io_uring_zcrx_rqe *zcrx_next_rqe(struct zcrx_rq *rq, unsigned mask
- static inline void zcrx_rq_iter_init(struct zcrx_rq_iter *it,
- 				     struct zcrx_rq *rq)
- {
--	it->rqes_left = min_t(unsigned, zcrx_rq_entries(rq), ZCRX_REFILL_CAP);
-+	it->rqes_left = min_t(unsigned, __zcrx_rq_entries(rq), ZCRX_REFILL_CAP);
-+	it->flushed = false;
- }
+ 		if (WARN_ON(start > offset + len))
+ 			return -EFAULT;
  
- static inline bool zcrx_rq_iter_next(struct zcrx_rq_iter *it,
-@@ -1118,8 +1125,16 @@ static inline bool zcrx_rq_iter_next(struct zcrx_rq_iter *it,
- 				     struct io_uring_zcrx_rqe **rqe)
- {
- 	it->rqes_left--;
--	if (unlikely(it->rqes_left < 0))
--		return false;
-+	if (unlikely(it->rqes_left < 0)) {
-+		if (it->flushed)
-+			return false;
-+		rq->cached_tail = smp_load_acquire(&rq->ring->tail);
-+		it->rqes_left = min_t(unsigned, __zcrx_rq_entries(rq),
-+				      ZCRX_REFILL_CAP);
-+		it->flushed = true;
-+		if (--it->rqes_left < 0)
-+			return false;
-+	}
+-		end = start + frag_iter->len;
+-		if (offset < end) {
++		frag_end = start + frag_iter->len;
++		if (offset < frag_end) {
++			unsigned copy = min(frag_end - offset, len);
++			unsigned frag_off = offset - start;
+ 			size_t count;
  
- 	*rqe = zcrx_next_rqe(rq, rq->nr_entries - 1);
- 	return true;
-diff --git a/io_uring/zcrx.h b/io_uring/zcrx.h
-index 3cdfa4415d62..0eb7ea35a9ff 100644
---- a/io_uring/zcrx.h
-+++ b/io_uring/zcrx.h
-@@ -53,6 +53,7 @@ struct zcrx_rq {
- 	struct zcrx_rq_hdr		*ring;
- 	struct io_uring_zcrx_rqe	*rqes;
- 	u32				cached_head;
-+	u32				cached_tail;
- 	u32				nr_entries;
- };
+-			copy = end - offset;
+-			if (copy > len)
+-				copy = len;
+-
+-			off = offset - start;
+ 			count = desc->count;
+-			ret = io_zcrx_recv_skb(desc, frag_iter, off, copy);
++			ret = io_zcrx_recv_skb(desc, frag_iter, frag_off, copy);
+ 			desc->count = count;
+ 			if (ret < 0)
+ 				goto out;
+@@ -1924,7 +1921,7 @@ io_zcrx_recv_skb(read_descriptor_t *desc, struct sk_buff *skb,
+ 			if (len == 0 || ret != copy)
+ 				goto out;
+ 		}
+-		start = end;
++		start = frag_end;
+ 	}
  
+ out:
 -- 
 2.54.0
 
