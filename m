@@ -1,109 +1,261 @@
-Received: from szelinsky.de (szelinsky.de [85.214.127.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53953BB13A;
-	Sat, 11 Jul 2026 12:25:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.127.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783772745; cv=none; b=h4K3h8QozdO+WI6UvjR7pfoxpOEG9Id40uA1TSMU7JhJc2PxEM4JvPHNkRdW5GECTGePMwLEJRDSaSTcgY8TDhic0fyO8FXkyk+XWdsphMeZNnk3wX7dIYRN2W2zHcSfrcNlDL7srCASZjwVbnxB9vE5fNBF6vQOEnd3HICfQWE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783772745; c=relaxed/simple;
-	bh=LwDCR1lz0avgJNwP8GcIJl5pmBAIKyrag4DMWJASX9Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=p7rpFfOX2qmxFTuh4ZBzruYX50Bc33zxAngmnXAnXA8FPoIs5/cRlXTuTluni5iSiIelIJNvbHi/H/C2K2ra8peqJYpl4LbdT0gmX0KCS2viSsExGGA9TbTI4FiRo/E3R1840EecDrqToNGZRWkTvfF8iTFOvHZM7uYJfO0zROg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=c24xmyAu; arc=none smtp.client-ip=85.214.127.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E3D2D0C94
+	for <netdev@vger.kernel.org>; Sat, 11 Jul 2026 12:36:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783773380; cv=pass; b=fJHY68J+vr9yj19Drfk2VqbiMWWSG9NjQmE2JywmFypqwUwLVSUkSUffjVxBobZnu2mP6/f4UguD6Dla5KEBl7Y7yEg1Ux+1TbluPru14um+7fabsbc8ZeRg1z89wYBrFJoiWmsAwdb0JBaqZRQL0KUlHAIwCuvit57JW2egkUw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783773380; c=relaxed/simple;
+	bh=SySi6wxUjqMlb54PMbePhqAsSdMDQniN9v3lzfJ0YBc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KH1xFdVxIWEHJ7PQsTQm9PnFAjUEhR4fnyZhW2Q5EQrWsO9LXV/OMQP4CHtcg3pXUjPJKJUfYmSJ8hV5yvH0g9OL9DCSGLDdfzn6RDu3hxJCbOHg5SgCOu1YZChR5fKKEo5L2eWFZqjoEp0BjxljhFW/jbmAhfwcVKI8IFafumY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MQ0eUdX/; arc=pass smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="c24xmyAu"
-Received: from localhost (localhost [127.0.0.1])
-	by szelinsky.de (Postfix) with ESMTP id 59B58E836F6;
-	Sat, 11 Jul 2026 14:16:27 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
-	s=mail; t=1783772187;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=MuPwlX3iVF53Pa6MkqOOzhjtclyijbwe3DZmBYmblAY=;
-	b=c24xmyAuzJQNPLA9sIj6lkOVhKcbJtNpnTcy5lAVL4Jjlhr4Tc+kT5VyKHdyzMAZ0NcdZT
-	bcOWJ1Naf5yKnOfhdfy8dtwEtpk3J9jr2SEt1oYgC8E9tEyZz67wq0D1TavJrynIOYm2Q8
-	dAedmT5oSZhMgWx/nudAx3aqHKitqMavkr7k4kY+aK6FW+xoqFRZpbHUl8pePaOyZySAr3
-	1M7UgBGBJWuApo079aP+xm1NlWJ8qehjrhnIQ7y9aILroAZVKfupTCSKzSF0Do1snKeZBA
-	sk8TS01CluCCOm3hDfqzgxoo5YjWKu+T1KKiWAaLnMFzl78l5MtJRBxSqUZdww==
-X-Virus-Scanned: Debian amavis at szelinsky.de
-Received: from szelinsky.de ([127.0.0.1])
- by localhost (szelinsky.de [127.0.0.1]) (amavis, port 10025) with ESMTP
- id b434LwQR-sUV; Sat, 11 Jul 2026 14:16:27 +0200 (CEST)
-Received: from p14sgen5.lanhh (dslb-088-070-183-212.088.070.pools.vodafone-ip.de [88.70.183.212])
-	by szelinsky.de (Postfix) with ESMTPSA;
-	Sat, 11 Jul 2026 14:16:26 +0200 (CEST)
-From: Carlo Szelinsky <github@szelinsky.de>
-To: Oleksij Rempel <o.rempel@pengutronix.de>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Carlo Szelinsky <github@szelinsky.de>
-Subject: [PATCH net v2 0/2] net: pse-pd: fix use-after-free of PI array on controller unregister
-Date: Sat, 11 Jul 2026 14:16:09 +0200
-Message-ID: <20260711121611.1639086-1-github@szelinsky.de>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MQ0eUdX/"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2cabc0a1ab6so22720475ad.0
+        for <netdev@vger.kernel.org>; Sat, 11 Jul 2026 05:36:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783773378; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ABFNvyTw1QF6RZYQv5Enwsf/IgFkUWpYiXq/sl6zjxxQIR1hgJIvcgbBfB7qCMpy1k
+         S4J6T9HyYMrp6taWgOjL6h7GAvw77i82hh5PIkycdum7g0ExMxM3Vwvh5mzYxU+H9QVp
+         5VPB5GpbGJL5gWkDNkoU4s2y362zLLH56MVxj9XJGGZD+9Ax60+Alp25t1hWwljKERgX
+         JmRFrSzjNlztEuJz8G1JO3AiVHrPB4m1a3SAaip9TAjsmoDoqDKpu92YD6rW+YYy6OMT
+         WFFjkXhF1utYm9+aHPecLH3r+TGvWmT1MxAaw6G6RQxj/y6dff4/aVTJeCBjdrpSnZ/l
+         MD2Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=p3UIKxrSmu2n2Hpeaq2hgsK+CnJAUQ4ug/QP00PQNO8=;
+        fh=dJw97ISd2fx7fIYE30lbo2f2i8MBs5+aOtlkCmCCDvI=;
+        b=c45wWZFgRVkUpLUPV0j5qJnYu/uOElLHvMulGTi87mupZreupg0eWDW4aNfzxr1tnF
+         dl7yGhcz37pE2eqRiKqybu2xST0ucsHaAlhqnY7bmx9P4EuutWNOeaEXSS+3DuQtHdl5
+         mCyOrdgtQopORrFp6wKVPhv49M8FBW6/33IGolUJ99a/DyEEK3l0pidQMptteBgBYMlT
+         2043xH8YzOAWoXxQ8KOKsoZctuG/RanmMgI3djtvJuFhAR57tcK+N6OE6BDcrO8Odx0s
+         DuCCNkG5sSrotNs8MNsLQiUk+f1kY7tBQsVMfXs+/7EL5TkmVcnQIwGPrkbAPvUTYRfC
+         B8Ag==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783773378; x=1784378178; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=p3UIKxrSmu2n2Hpeaq2hgsK+CnJAUQ4ug/QP00PQNO8=;
+        b=MQ0eUdX/oniybHA+rDpe+ptxDmMruUTmcmIIOOw3AgiH28xBXVMUwJS8dbNMB9u2LS
+         maJyrlSVk9CjK8fLh22CXbV/vui7wjRQ82KWYNtdVPok6kUzx8lbRaetLGY0FMVi8A17
+         wqGPoAWA45XW+Sn0+aWx1pukoIu72QWLKcA/g1oeskMWq7IpjAQYahnRuMF2oO8Zpl6y
+         XSmUylgv+ofZMqpzjeTP50fLAD7MbGPKHZ2n2btvmoDL15sWAMx/e89J9RZtyFAVqsRP
+         pNpmsJ7QyyjTOMS2cl3PdGe0AiCnRzDy/7waPCck5a53602HlJrG0rpX71pZaogDI13l
+         9ejA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783773378; x=1784378178;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=p3UIKxrSmu2n2Hpeaq2hgsK+CnJAUQ4ug/QP00PQNO8=;
+        b=E7gQLxcMXhLqNSxobeXHid1pqkIITBhOZMANJc7/NtFWbo7xgEm/YdKd0GrII2ZpHM
+         NhA1gSsPrAlmktvNgH12Nt07WhwM3feQaj+xS6tsSEWAD83+0an+hMlbKhfjSooC/DnV
+         1W5rPRj9NVgIgzYSw3YXfLF6U4V14ziE0vkmOcwAEniT0U5fw1o1U0Ks4CmcBHsTbRsc
+         ykZPpE2D1c1iOGq4C+Kv+ASc4xpbobG/Tua9f5ZASJ6KoQjVROqGMpdMeF9E1VRHrDKG
+         pqpYAyfEgEu1DrTYwcP+5wajdsLhJVQ65yqbiXgACTrvllUvmXb0TFrBchoAUyn9lvTa
+         neog==
+X-Forwarded-Encrypted: i=1; AHgh+RrpLl1zleg19/GBFsPMbtMOVNTJmn4s83NemSYdYwfkneinB4c8Gt848zPaqr8k6U9EGoan87Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy2jrGSQTteouorQLuufXuRtJ1Phw7zwfdTAgkQ+VyS628VI+lB
+	lkKYmd4e+BnGRPUomQ5iiTWVcTye/shXsSkBe+CncMYfVj76RZc6FiLX2f7v7rwSwA5iXKNNO/6
+	/6flGCK0+MuyTeuY4guZgyPBsONPiUC88V29zbbr7
+X-Gm-Gg: AfdE7ckQWQ2WRLzK7jweffytcbBbyuxi2JwW/n58VCBER2bpxd+WJUc2dTDSnB6VtCx
+	ac6zwHNK9uyZOc4gqbNk/VK3kHypYZ2JHzVU2reVy/WniUy7iykiWBJ+ujA7ER0HVaqZ7LkA0Zm
+	So1R5cnJyyvVjVtP8hgOvYOYO0767hPVkHJT4G+auKR8FWe5T3kqZJC0tm+Lat35WSPQX4eJukh
+	tWS9Ls1R1NQknNIWQiCM5at+/b147NxC+HeaZgTfVJ+MeOBrUq6DM4Pl0RcLq6Wrh1NHpzalgxG
+	qyCY/1vQPM0aYp9WiaFQbLcj8c2vEqz058pn4QqYt8jObeA4K8FF7kxug/JrseUu6ND+KgJ6Bmq
+	XiHwgt6KNv22v0Rx/g20Pn4Xdeb1Kuj0DcGAzoEAoBO3dUq5147qR
+X-Received: by 2002:a05:6a20:72a5:b0:398:6ea8:21d2 with SMTP id
+ adf61e73a8af0-3c110a69208mr3046148637.19.1783773378103; Sat, 11 Jul 2026
+ 05:36:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260620-bpf-iter-tcp-refcnt-v1-1-883bf9e69495@linux.dev>
+In-Reply-To: <20260620-bpf-iter-tcp-refcnt-v1-1-883bf9e69495@linux.dev>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Sat, 11 Jul 2026 05:36:05 -0700
+X-Gm-Features: AVVi8CcfTyzxfkzbvbHTzEquulsluAfF-rDOUv_47ONGcdu5G8dIKhY0LEnBX3Q
+Message-ID: <CAAVpQUDiLwSYwFStRGpMQkGbm3j8_KJm9LVj0ykV7V3nYQ4YTg@mail.gmail.com>
+Subject: Re: [PATCH bpf] bpf: tcp: Fix use-after-free in bpf_iter_tcp_established_batch()
+To: "Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>
+Cc: Eric Dumazet <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, Martin KaFai Lau <martin.lau@linux.dev>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
+	Ben Cressey <ben@cressey.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This series fixes use-after-free bugs in the PSE core teardown path.
+On Fri, Jun 19, 2026 at 5:33=E2=80=AFPM Jose Fernandez (Anthropic)
+<jose.fernandez@linux.dev> wrote:
+>
+> reqsk_queue_hash_req() publishes a TCP_NEW_SYN_RECV request_sock onto
+> the ehash chain (via inet_ehash_insert(), which drops the bucket lock on
+> return) and only afterwards refcount_set()s rsk_refcnt to 3.
+>
+> Lockless readers such as __inet_lookup_established() account for this by
+> using refcount_inc_not_zero(), but bpf_iter_tcp_established_batch() uses
+> plain sock_hold() while holding the bucket lock, on the assumption that
+> the lock guarantees sk_refcnt > 0. That assumption does not hold for
+> request_sock:
+>
+>   CPU 0                                CPU 1
+>   -----                                -----
+>   tcp_conn_request()
+>    reqsk_queue_hash_req()
+>     inet_ehash_insert(req)
+>      spin_lock(bucket)
+>      __sk_nulls_add_node_rcu(req)      // rsk_refcnt =3D=3D 0
+>      spin_unlock(bucket)
+>                                        bpf_iter_tcp_established_batch()
+>                                         spin_lock(bucket)
+>                                         sock_hold(req)   <-- addition on =
+0
+>                                         spin_unlock(bucket)
+>     refcount_set(&req->rsk_refcnt, 3)  // clobbers saturated value
+>
+> which surfaces as:
+>
+>   refcount_t: addition on 0; use-after-free.
+>   WARNING: lib/refcount.c:25 at refcount_warn_saturate+0x48/0x90, CPU#1
+>   Call Trace:
+>    bpf_iter_tcp_established_batch+0x14e/0x170
+>    bpf_iter_tcp_batch+0x53/0x200
+>    bpf_iter_tcp_seq_next+0x27/0x70
+>    bpf_seq_read+0x107/0x410
+>    vfs_read+0xb9/0x380
+>
+> refcount_warn_saturate() then saturates the count, the publishing CPU's
+> refcount_set() clobbers it, and the socket is left one reference short.
+> When the last legitimate owner drops its reference the reqsk is freed
+> while still reachable, leading to use-after-free panics in e.g.
+> inet_csk_accept() or inet_csk_listen_stop().
+>
+> This reproduces in seconds with tcp_syncookies=3D0, a handful of threads
+> doing connect()/close() to a local listener while others read an
+> iter/tcp link in a tight loop.
+>
+> Use refcount_inc_not_zero() and skip the socket on failure, the same way
+> every other ehash walker does. The listening hash is unaffected as
+> listeners are always inserted into lhash2 with sk_refcnt >=3D 1, so
+> bpf_iter_tcp_listening_batch() is left as-is.
+>
+> If every matching socket in a bucket is mid-init, end_sk can stay at 0;
+> advance to the next bucket in that case rather than terminating the
+> whole iteration on a stale batch[0].
+>
+> Fixes: 04c7820b776f ("bpf: tcp: Bpf iter batching and lock_sock")
+> Reviewed-by: Ben Cressey <ben@cressey.dev>
+> Assisted-by: Claude:unspecified
+> Signed-off-by: Jose Fernandez (Anthropic) <jose.fernandez@linux.dev>
+> ---
+>  net/ipv4/tcp_ipv4.c | 35 ++++++++++++++++++++---------------
+>  1 file changed, 20 insertions(+), 15 deletions(-)
+>
+> diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+> index fdc81150ff6c..92342dcc6892 100644
+> --- a/net/ipv4/tcp_ipv4.c
+> +++ b/net/ipv4/tcp_ipv4.c
+> @@ -3074,25 +3074,25 @@ static unsigned int bpf_iter_tcp_established_batc=
+h(struct seq_file *seq,
+>  {
+>         struct bpf_tcp_iter_state *iter =3D seq->private;
+>         struct hlist_nulls_node *node;
+> -       unsigned int expected =3D 1;
+> -       struct sock *sk;
+> +       unsigned int expected =3D 0;
+> +       struct sock *sk =3D *start_sk;
+>
+> -       sock_hold(*start_sk);
+> -       iter->batch[iter->end_sk++].sk =3D *start_sk;
+> -
+> -       sk =3D sk_nulls_next(*start_sk);
+>         *start_sk =3D NULL;
+>         sk_nulls_for_each_from(sk, node) {
+> -               if (seq_sk_match(seq, sk)) {
+> -                       if (iter->end_sk < iter->max_sk) {
+> -                               sock_hold(sk);
+> -                               iter->batch[iter->end_sk++].sk =3D sk;
+> -                       } else if (!*start_sk) {
+> -                               /* Remember where we left off. */
+> -                               *start_sk =3D sk;
+> -                       }
+> -                       expected++;
+> +               if (!seq_sk_match(seq, sk))
+> +                       continue;
+> +               if (iter->end_sk < iter->max_sk) {
+> +                       /* reqsk_queue_hash_req() inserts with sk_refcnt =
+=3D=3D 0
+> +                        * and refcount_set()s it after the bucket lock d=
+rops.
+> +                        */
+> +                       if (unlikely(!refcount_inc_not_zero(&sk->sk_refcn=
+t)))
+> +                               continue;
+> +                       iter->batch[iter->end_sk++].sk =3D sk;
+> +               } else if (!*start_sk) {
+> +                       /* Remember where we left off. */
+> +                       *start_sk =3D sk;
+>                 }
+> +               expected++;
 
-When a PSE controller is unregistered, pse_controller_unregister() frees
-the PI array (pcdev->pi) and the power domain supplies. But the IRQ
-handler, the notification worker, and the regulator disable path can
-still run at that point and touch this freed memory.
+This should be incremented just after seq_sk_match()
+(see below)
 
-Patch 1 reorders pse_controller_unregister() so the IRQ and the worker
-are stopped before anything they use is freed.
 
-Patch 2 clears pcdev->pi under the lock after freeing it, and makes the
-three regulator ops that read pcdev->pi return early when it is NULL.
+>         }
+>
+>         return expected;
+> @@ -3129,6 +3129,7 @@ static struct sock *bpf_iter_tcp_batch(struct seq_f=
+ile *seq)
+>         struct sock *sk;
+>         int err;
+>
+> +again:
+>         sk =3D bpf_iter_tcp_resume(seq);
+>         if (!sk)
+>                 return NULL; /* Done */
+> @@ -3167,6 +3168,10 @@ static struct sock *bpf_iter_tcp_batch(struct seq_=
+file *seq)
+>         WARN_ON_ONCE(iter->end_sk !=3D expected);
 
-This series closes the use-after-free reachable from the regulator core
-and the controller's own IRQ and worker during unregister. The wider
-case - a pse_control consumer (the ethtool path) whose handle outlives
-the controller - is a separate lifetime problem handled by the PSE
-notifier decoupling work for net-next, not this fix.
+Let's say the batch array was smaller than the hash chain length
+and we reallocate the array based on "expected" w/ the bucket lock.
 
-Both bugs are pre-existing. They are teardown races, so there is no easy
-way to trigger them on purpose and no simple reproducer. The fix is based
-on code review. It is compile tested and checkpatch clean.
+What happens if refcount_set(..., 3) is called during reallocation ?
+bpf_iter_fill_batch() will see the larger "expected", and WARN_ON_ONCE()
+will be triggered.
 
-v1: https://lore.kernel.org/all/20260524223306.2570676-1-github@szelinsky.de/
 
-Changes in v2:
-- Patch 1: also stop the IRQ before pse_flush_pw_ds(), and cancel the
-  notification worker before pse_release_pis(). v1 only moved
-  disable_irq() ahead of pse_release_pis(). Also fix the commit message,
-  which wrongly said the worker does not touch pcdev->pi.
-- Patch 2: take pcdev->lock around the kfree() and the pcdev->pi = NULL
-  store, so a reader sees an authoritative NULL. Add the same NULL guard
-  to pse_pi_enable() and pse_pi_is_enabled(), not just pse_pi_disable().
-- Thanks to Simon Horman for the review.
-
-Carlo Szelinsky (2):
-  net: pse-pd: stop async event sources before freeing PI data in
-    unregister
-  net: pse-pd: guard regulator ops against freed PI data during
-    unregister
-
- drivers/net/pse-pd/pse_core.c | 35 ++++++++++++++++++++++++++++++-----
- 1 file changed, 30 insertions(+), 5 deletions(-)
-
--- 
-2.43.0
-
+>  done:
+>         bpf_iter_tcp_unlock_bucket(seq);
+> +       if (unlikely(!iter->end_sk)) {
+> +               ++iter->state.bucket;
+> +               goto again;
+> +       }
+>         return iter->batch[0].sk;
+>  }
+>
+>
+> ---
+> base-commit: 4549871118cf616eecdd2d939f78e3b9e1dddc48
+> change-id: 20260619-bpf-iter-tcp-refcnt-107d52b238da
+>
+> Best regards,
+> --
+> Jose Fernandez (Anthropic) <jose.fernandez@linux.dev>
+>
