@@ -1,125 +1,93 @@
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout2.hostsharing.net (mailout2.hostsharing.net [83.223.78.233])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEA9939A061
-	for <netdev@vger.kernel.org>; Sun, 12 Jul 2026 13:51:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783864291; cv=pass; b=RIAyNzaSWpzUHT0uPBsqJwV9dSZ39zbR83dLzPI+zICnRmEQu8l2Gib7FCFV9rxlBGBX2bsR6X90Y0ZK2O1/LaVsV6Wd4kytMPBouZi8U4jDHVbFcxA2BG6oal0SnAnJPXbIZlB10UNlfX4lEDlAlvf35AfIoM9Afymk3pcKqrM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783864291; c=relaxed/simple;
-	bh=oDP0mR1EofatT0pur4pCie4dYJKereMksrCnMIlZt88=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=np4aqjWQ/yvtXieAg/m2JpQjXstm7gwaBrXi9j+l639roYKgl4tJXTyuc9sPY7a0JiPaqZrtmSL0fzMa8qzfa6/xbPqYSZv0Hv2H9vTPSCLd02Hb4twvmRIExo/Uc+cv/H+PKZlLQPgWNdbdogqjX0X4KnjiShk16pW0/bREgz8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d6UAqy4b; arc=pass smtp.client-ip=209.85.219.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d6UAqy4b"
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-8efbafa1bacso18025496d6.1
-        for <netdev@vger.kernel.org>; Sun, 12 Jul 2026 06:51:29 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783864289; cv=none;
-        d=google.com; s=arc-20260327;
-        b=VQG54+nSbVkAsELcUAPqXU1al+aCWFS9h+7HwkdbLrBPRkZ1L+JtY5tZ3N1n5BZC3Z
-         4559q6DRtWDTXWJmo7zAX/P/AeK+shF6NQL4ubJeOY99bKUVjUhWLc2F9RQpnGzy7CH9
-         Ppu/2N6Fq2aTISzOhjMCHd02vzMkMuilWzRT3JJF4+9yAF4VRGYnwKaRZziMFI21fSkO
-         5FQXw7jXJM9PuwPKbEUE6eii8HSnbMO7rXbfLj5ygF8Qo8HaMDBZhxRwluc6MG1aUHhf
-         t0TUfQWm5nK4yP3/PJyKgWgQVhUHPYLeQ5mUo9qsHxwMvngM24dNRTVO5cTKfuaList2
-         yrdQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=KPaDnid7id71L8MuAGH6afuYcqEb9Qc/jYvhMfY03I8=;
-        fh=v8UFJSeLPJt29zVL7fP/E9t0f4liOBi+1Pd+31yALhA=;
-        b=H4T4qF0hF7NkJVV3kPC+8FUH3o++9lr35tOKkxvz07tlxogghjxFTFUlzn09yKuYuv
-         Q3ZzGrU7gsnG08BD+hZLUCPC4fjs8+4ZxJMFs29RSBoSW/1VxwoS8gRxXoOp3NXxSaQj
-         kpZkccFRd3zE97FNAGbJE5/ExYJ2almgCpnxj1BBaRv51NGj72KJ3iw+d1zg3MO1jRVH
-         d+QSEGk9LwiwOhWyeEQXQeXJSYd2fHKba9jqO2NQoaYA3aYmvvRgdYfcKcjE0I9vwyCE
-         gdX0ajHjzmzlsWpvUxphMmOd2lc9EMl+RvzYN7Qhf5hLh71eTceQ4WEMnCdcjmdLretP
-         NRjQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783864289; x=1784469089; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=KPaDnid7id71L8MuAGH6afuYcqEb9Qc/jYvhMfY03I8=;
-        b=d6UAqy4bD8guehT/2lXLYkhjSaWDrHGdlPua9QEyr6BZBReXdyOdJ2XpyAHFKTeT/0
-         a/2g/uH8FxpOYczmZnEYFtrc0+3pk4di3Kgkbim0pKoZAfknpRVTIgtdJeY0qpG+TlGc
-         CaloSUDzIxgUbleeqT0wlReexKU61ujeiZl1wjkEG6pSWCnEsZsqB4z1YBwd1f3UTHZ9
-         EsfCapkBZ9MMeOx2jCbpfP/5YDBIvj+EXxLvkW6FnhT2hsmqdRaFQw+pOBqoZIhZzT/W
-         8YAAVmf/vyuQdA4GTxbKJn7FyHPw5ptLuonkur/SSk49WUeXYFaWPuR42+62LB35zy3F
-         +qoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783864289; x=1784469089;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=KPaDnid7id71L8MuAGH6afuYcqEb9Qc/jYvhMfY03I8=;
-        b=ay9y59gRO2Te3ExMA934Uy/TZcj1NawHLOE40fgtaWA+9dH5wt4hHDBJy/0v6AwJy4
-         2h8y7HXQ2RDAAK17bd0+8Ciwk6Ankt5U/Smquq8u6h9o3HH3sUhC343OMbKOMmYDGb3B
-         bE4Zo1jTdDy1lIChQvbw8Qou89F/Q6zKpvGX6k5dsfbiSUioGp3nSs4YD9uYzHDkQeFk
-         QeL76OJrZ//nfEmkG7cTHPlu4xgCaIrjjVbMlVPc/9Ij3yKPYkjd+Qwb9BPHQswItSmz
-         umfXPJG4bEFZzMI+9jGFYye+tfjdg105OFO49WXU0tK+51jYpD6ZOl8kzCL9vmuHRWxz
-         FaIw==
-X-Gm-Message-State: AOJu0YxvhjPbppgpMSYgRRVUb4aY807rQ11DJT0BZZ/ZdDQDbBuD0xf5
-	ohQtaZi6XGT5IfMzpH4V4PRTT54nNBWEg34oaHQOLC1Bv1oWMTGB7kKAZNvy0SsTXzEcMcrvacn
-	uts3KPfh3fQxInIPVYA3EBm8m4rmjXdsZ9md07oBC
-X-Gm-Gg: AfdE7clFj78TfU5fpZ5YXEq2Kyr8Vw+ZRmKtlU2I2DyZsd3tnpsoTqTIn1Kcyyeria6
-	8jUA+GA79MbXz4+nFx35G6VGU0dAtTwgOGL31KeHZPu/lY9jLRJYqnLuquSf7CihH3CBMv4KR9h
-	DPXir99x3EqOAg9EQB80MyRXl5fccOvcwseLfdJQmSsdTFYo/MDNpKtcRoQqKZNdQQmH3cD7mAZ
-	uBWG8ojF2XYQ91L1fpaATR9SkyRaECalYq6F/gpifEi28hiFYBTOKsjN0ENmjfBWCQ8EAo0XjlN
-	+eNDqKyJUuJP6VdUnDz0CCA8aIzHhOYhtqDsYddOW8/d7+id5DqVmo9IL5TT2vxA3b7yYD2B96o
-	ct1q5dBmA
-X-Received: by 2002:a05:6214:2aa4:b0:905:7415:d019 with SMTP id
- 6a1803df08f44-9057415d14cmr22982556d6.36.1783864288356; Sun, 12 Jul 2026
- 06:51:28 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C878E1FF5E3;
+	Sun, 12 Jul 2026 14:28:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.233
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783866510; cv=none; b=n1aJwmjBRr8pFyn517/nzvpa6R7VFKssgzT0bL+iu1dGcpmFVxV4kuEekcqoYpsgUO2rohCl/y0KzfGAJ3b5hITe2PuOB58JY+hYzQFI82gYOma4ZTME/tnqu3umjnwS10fFWGUVV7906AJGq2+1AeCDF0fv43wjQFJ5O9F461k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783866510; c=relaxed/simple;
+	bh=I+KFbiFzvw83rXUdeHnCjoqry53vD1aM4l4d4CLSeSw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EPrz05+eupWN0PJSnAkhZzrnov4MWd6yBHZA8PtbCN3k58ZVym5HTJJWW8+Xp8om0hjp+rnNaVpIXzUFeQpEsln76mGso+Is63xK/EJFMYgURomRX6osV7IEqbi8LNnEJLqi2T+26zYNNwB8Yf22B5RdV89HLnnloq7m2uiPht4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=83.223.78.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature ECDSA (secp384r1) server-digest SHA384
+	 client-signature ECDSA (secp384r1) client-digest SHA384)
+	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
+	by mailout2.hostsharing.net (Postfix) with ESMTPS id DD65710632;
+	Sun, 12 Jul 2026 16:28:18 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id CA35D60211BE; Sun, 12 Jul 2026 16:28:18 +0200 (CEST)
+Date: Sun, 12 Jul 2026 16:28:18 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: Maurice Hieronymus <mhi@mailbox.org>
+Cc: Edward Cree <ecree.xilinx@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Justin Tee <justin.tee@broadcom.com>,
+	Paul Ely <paul.ely@broadcom.com>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Borislav Petkov <bp@alien8.de>, Tony Luck <tony.luck@intel.com>,
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+	netdev@vger.kernel.org, linux-net-drivers@amd.com,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-scsi@vger.kernel.org, xen-devel@lists.xenproject.org,
+	linux-edac@vger.kernel.org
+Subject: Re: [PATCH 1/2] PCI: Replace pci_dev->is_busmaster with accessors
+Message-ID: <alOkgrK7Fm6opB4r@wunner.de>
+References: <20260711-pci-dev-flags-v1-0-2fcf2811138c@mailbox.org>
+ <20260711-pci-dev-flags-v1-1-2fcf2811138c@mailbox.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260712132531.33028-1-zhaoyz24@mails.tsinghua.edu.cn>
-In-Reply-To: <20260712132531.33028-1-zhaoyz24@mails.tsinghua.edu.cn>
-From: Eric Dumazet <edumazet@google.com>
-Date: Sun, 12 Jul 2026 15:51:16 +0200
-X-Gm-Features: AVVi8Cf9v2yHkrh7qafNb_R7r25uOxLYtf7c7-SgvEWHVnZtF95shTByiSnetF4
-Message-ID: <CANn89i+X+VQ-4a-qbM1-qmykR9stXo+sEQMOgj9AkhXSHA7LYA@mail.gmail.com>
-Subject: Re: [PATCH net] tcp: reject TIME_WAIT reopens when SYN queue is full
-To: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-Cc: netdev@vger.kernel.org, Neal Cardwell <ncardwell@google.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, "David S. Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	linux-kernel@vger.kernel.org, Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>, 
-	Ao Wang <wangao@seu.edu.cn>, Xuewei Feng <fengxw06@126.com>, Qi Li <qli01@tsinghua.edu.cn>, 
-	Ke Xu <xuke@tsinghua.edu.cn>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260711-pci-dev-flags-v1-1-2fcf2811138c@mailbox.org>
 
-On Sun, Jul 12, 2026 at 3:26=E2=80=AFPM Yizhou Zhao
-<zhaoyz24@mails.tsinghua.edu.cn> wrote:
->
-> A valid SYN that matches a TIME_WAIT socket is redirected to the
-> listener with a non-zero tcp_tw_isn.  tcp_conn_request() deliberately
-> exempts those requests from normal SYN queue throttling.  A peer can
-> therefore create victim-side TIME_WAIT entries with short connections,
-> replay valid reopen SYNs, and withhold the final ACK to allocate
-> request_sock objects outside the listener's normal SYN-flood controls.
->
-> Do not send syncookies for this path: tcp_timewait_state_process()
-> derives tcp_tw_isn from tw_snd_nxt so that a direct reopen uses an ISN
-> after the prior connection's sequence space.  A syncookie ISN is a
-> hash-derived value and has no such ordering guarantee.
->
-> Check the selected listener's SYN queue before descheduling the
-> TIME_WAIT socket.  If it is full, account a request-queue drop, retain
-> the TIME_WAIT socket, and discard the SYN.  Once the queue has room,
-> the existing direct-reopen path and its TIME_WAIT ISN are unchanged.
-> Normal SYNs continue to use syncookies when the listener is full.
+On Sat, Jul 11, 2026 at 05:21:06PM +0200, Maurice Hieronymus wrote:
+> `is_busmaster` is one bit of a ~60-bit C bitfield in `struct pci_dev`.
+> Bits sharing a bitfield word must not be modified concurrently, but its
+> writers take no common lock: `pci_set_master()` can run without the
+> device lock (e.g. from runtime PM resume paths), `pci_disable_device()`
+> clears the bit, and other bits in the same word are written from
+> entirely different contexts, e.g. `broken_parity_status` from sysfs.
+> Concurrent read-modify-write cycles of the shared word can then lose
+> updates.
+> 
+> Move `is_busmaster` into a new `flags` bitmap modified with atomic
+> bitops and accessed through generated accessor functions, following the
+> example of commit a7cc262a1135 ("driver core: Replace dev->offline +
+> ->offline_disabled with accessors"). More bitfield flags can follow the
+> same pattern later.
 
-I do not see it as a threat, sorry.
+We already have the priv_flags member in struct pci_dev,
+please use that instead of adding another one for the same purpose.
 
-Say no to AI hallucinations.
+Thanks,
+
+Lukas
