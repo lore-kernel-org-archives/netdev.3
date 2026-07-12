@@ -1,49 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE6F2149DF1;
-	Sun, 12 Jul 2026 14:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4EA23183C;
+	Sun, 12 Jul 2026 14:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783866922; cv=none; b=l+fcwl1fxMANtqu/ZQ843SNHT5pFdt8p9Q4OEKF/aKpmWlTBDW/d+rO9RNnXxlkC+22lX0USliE30IUG8iC+2UpXnPrQv1Y1Y/W1Vkj5DJ2g+cd9TGCfkp6cwNyhWnXGAOGmjE35dLeyKx6N6MC/8JvREBJK/XIgkeS0zhHgTkg=
+	t=1783867022; cv=none; b=VW+U7q7MKHoRaylTZDHPMEV0kLU//4tb6nszy20Jqzd+rzgfUdsBW3MkIb/yinopdjSrQxb6LzvvtD1eIszVvy9+OeKGHn1g7pFRFd72psvyU2fWeWYuseQ3lAJJA3GQJair7BTpxnj6rW1Lg2I6DRhgDfslRplpNrl27+5GDWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783866922; c=relaxed/simple;
-	bh=Uf5O0b+6iCsQ99EePPkjf+L/CmQ7N9Ld8f7WkqKW6vc=;
+	s=arc-20240116; t=1783867022; c=relaxed/simple;
+	bh=NOlCmulerS36hLuK8ycqNlA8BWE/5+xrSWghSmc91gY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RlygRZFe3TmaFSEDlrC3Q1aPfkVY0CdfAwnDHPYKl3ZFPlK+keQyaTY7UYeP5Ff6LrxPjX7fOXL4bWgof4HGBjOdSfb6kqAKnRQoKbQr4OPbPLVq5hSschWnfUNYQxZ0rmVN/jwkS/42AZllax1qXygRC3JH0GwIo6MhDMVVJsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HsT6GE5s; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=rRzC7h3AQhlpEKv43i3gyRqFOVMiEvXiNOJ27aGxgmFrssF5o/tJoD7Afll/yyyHFYJ/VZ+fpo8HbZRpliFG9Vp3XpVDCKEQBzuFuOysPqhUnlBnB3Gpi/dQs+pqyCIrMbtBxn925z6j9xWCM16UP6g2CWR5jRxE6hW8s9CVqrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Li45TgA1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HsT6GE5s"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76F021F000E9;
-	Sun, 12 Jul 2026 14:35:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Li45TgA1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 389BD1F000E9;
+	Sun, 12 Jul 2026 14:37:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783866920;
-	bh=7RWLP70+Lk7x6klHiPJCyXJm7RPKA7hKo0HmQbHzxBo=;
+	s=k20260515; t=1783867021;
+	bh=pmSC34Df9sJwJgpBvXLUH1wyBX5cNGCOC9TM/UI+Np4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=HsT6GE5sB5DUFUCMRQkNuUttWd6ae45mL6NHMgYoLcwatlYsmmGzSSeuoN4SwpbrE
-	 IT+svOg66VoMcq0agaiYVBUdh4MfFXYOqG05kS1le79jwP59Yp4T9iaTG5i20I3ixs
-	 Hnaszlbs0H7ItxEj9ncxu9i5jFuSIos3/5l4v5CEhE9QKMDMsdmHvd6+AkQabYVoni
-	 F2sHw1IjVBiS1c2Mb+vSl2dUIp0tOfGAOoxZl9wRxT+a0tQMz+q9AStLX47/3AFeM6
-	 nbh+DJ3IHV9Gjuc0EqmNRToJTUwUNzS5FF7T/QznODpqDSXOU9y+wPKhxceobGSCG2
-	 V9B0EoktaUhwQ==
-Date: Sun, 12 Jul 2026 16:35:16 +0200
+	b=Li45TgA1la4VR8WDqwbcAj0SQ5f4lweEms7CnWe3laFL93TiZ5RXcogkxFVgPrty4
+	 Kw5+PmjOq0Ot7YLkvUXW4aGOKGLAK8/2y9UJEU09fkVO46mZaDaRrUKmLhhQcdwaYl
+	 Ooc1WQWcparey8ZxSRyvu505PmhPOcE+alU9ANihp0w0C0+nRuVsyeDLstBFc658cL
+	 /WD/7PM+xXxIQ87PzDlQurkduAexHnBLOqZER7EEPjMBRzhigeRmRnHjqHc1jNMlV8
+	 UnxG0i+8p6qO1XbdB0uCZjRQQfSWcqyoBkQTjIAwsjZwdeRsrKbHCmfmH9rlPwkDct
+	 PuT3uDhw3s/dA==
+Date: Sun, 12 Jul 2026 16:36:57 +0200
 From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Junhui Liu <junhui.liu@pigmoral.tech>
-Cc: Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Samuel Holland <samuel@sholland.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
-	Richard Cochran <richardcochran@gmail.com>, linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, netdev@vger.kernel.org, Jerome Brunet <jbrunet@baylibre.com>
-Subject: Re: [PATCH v2 1/8] dt-bindings: clk: sun60i-a733-ccu: Add allwinner
- A733 support
-Message-ID: <20260712-sexy-polar-cuckoo-cefee4@quoll>
-References: <20260711-a733-clk-v2-0-974d188cbe0c@pigmoral.tech>
- <20260711-a733-clk-v2-1-974d188cbe0c@pigmoral.tech>
+To: Ahmed Naseef <naseefkm@gmail.com>
+Cc: netdev@vger.kernel.org, 
+	=?utf-8?B?QXLEsW7DpyDDnE5BTA==?= <arinc.unal@arinc9.com>, "Chester A. Unal" <chester.a.unal@arinc9.com>, 
+	"David S. Miller" <davem@davemloft.net>, Andrew Lunn <andrew@lunn.ch>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Conor Dooley <conor+dt@kernel.org>, 
+	DENG Qingfang <dqfext@gmail.com>, Daniel Golle <daniel@makrotopia.org>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Landen Chao <Landen.Chao@mediatek.com>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Russell King <linux@armlinux.org.uk>, Sean Wang <sean.wang@mediatek.com>, 
+	Vladimir Oltean <olteanv@gmail.com>, devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH net-next v2 1/2] dt-bindings: net: dsa: mediatek,mt7530:
+ add econet,en7528-switch
+Message-ID: <20260712-hysterical-thistle-prawn-9c81b5@quoll>
+References: <cover.1783770059.git.naseefkm@gmail.com>
+ <2133035bb22eacc8a0e21f86c0c800a45023ee01.1783770059.git.naseefkm@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,159 +53,27 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260711-a733-clk-v2-1-974d188cbe0c@pigmoral.tech>
+In-Reply-To: <2133035bb22eacc8a0e21f86c0c800a45023ee01.1783770059.git.naseefkm@gmail.com>
 
-On Sat, Jul 11, 2026 at 04:10:27PM +0800, Junhui Liu wrote:
-> +properties:
-> +  "#clock-cells":
-> +    const: 1
-> +
-> +  "#reset-cells":
-> +    const: 1
-> +
+On Sat, Jul 11, 2026 at 03:41:00PM +0400, Ahmed Naseef wrote:
+> The EcoNet EN7528 MIPS SoC integrates an MT7530 Gigabit switch,
+> memory-mapped in the SoC register space like the built-in switches of
+> the MediaTek MT7988 and Airoha EN7581/AN7583 SoCs. Its four user ports
+> are connected to integrated Gigabit PHYs and its CPU port is connected
+> internally to the SoC Ethernet MAC.
+> 
+> Those three switches are MT7531-based, whereas the EN7528 has a genuine
+> MT7530 switch core (its chip revision register reads 0x7530). The two
+> generations differ in their register programming - for example the CPU
+> port is selected through the MT7530-style MFC register rather than the
+> MT7531 CFC register - so the EN7528 is not compatible with the existing
+> switch compatibles and cannot fall back to one of them.
+> 
+> Add the econet,en7528-switch compatible, with the same constraints as
+> the other built-in switches.
+> 
 
-Please order according to DTS coding style. compatible is ALWAYS the
-first, then reg. Then name ordering, so reset-cells go to the end.
-
-
-> +  compatible:
-> +    enum:
-> +      - allwinner,sun60i-a733-ccu
-> +      - allwinner,sun60i-a733-r-ccu
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    minItems: 4
-> +    maxItems: 7
-> +
-> +  clock-names:
-> +    minItems: 4
-> +    maxItems: 7
-> +
-> +required:
-> +  - "#clock-cells"
-> +  - "#reset-cells"
-
-As well.
-
-> +  - compatible
-> +  - reg
-> +  - clocks
-> +  - clock-names
-> +
-> +allOf:
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          enum:
-> +            - allwinner,sun60i-a733-ccu
-> +
-> +    then:
-> +      properties:
-> +        clocks:
-> +          items:
-> +            - description: High Frequency Oscillator (19.2MHz, 24MHz, or 26MHz)
-> +            - description: Low Frequency Oscillator (usually at 32kHz)
-> +            - description: Internal Oscillator
-> +            - description: Low Frequency Oscillator fanout
-> +
-> +        clock-names:
-> +          items:
-> +            - const: hosc
-> +            - const: losc
-> +            - const: iosc
-> +            - const: losc-fanout
-> +
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          enum:
-> +            - allwinner,sun60i-a733-r-ccu
-> +
-> +    then:
-> +      properties:
-> +        clocks:
-> +          items:
-> +            - description: High Frequency Oscillator (19.2MHz, 24MHz, or 26MHz)
-> +            - description: Low Frequency Oscillator (usually at 32kHz)
-> +            - description: Internal Oscillator
-> +            - description: System 24MHz Clock
-> +            - description: Peripherals PLL 0 (200 MHz output)
-> +            - description: Peripherals PLL 0 (300 MHz output)
-> +            - description: Peripherals PLL 1 (300 MHz output)
-> +
-> +        clock-names:
-> +          items:
-> +            - const: hosc
-> +            - const: losc
-> +            - const: iosc
-> +            - const: sys-24m
-> +            - const: pll-periph0-200m
-> +            - const: pll-periph0-300m
-> +            - const: pll-periph1-300m
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    clock-controller@2002000 {
-> +      compatible = "allwinner,sun60i-a733-ccu";
-> +      reg = <0x02002000 0x2000>;
-> +      clocks = <&osc>, <&rtc 0>, <&rtc 2>, <&rtc 1>;
-> +      clock-names = "hosc", "losc", "iosc", "losc-fanout";
-> +      #clock-cells = <1>;
-> +      #reset-cells = <1>;
-> +    };
-> +
-> +...
-> diff --git a/include/dt-bindings/clock/sun60i-a733-ccu.h b/include/dt-bindings/clock/sun60i-a733-ccu.h
-> new file mode 100644
-> index 000000000000..6742070e3086
-> --- /dev/null
-> +++ b/include/dt-bindings/clock/sun60i-a733-ccu.h
-
-Filename must match compatible.
-
-> @@ -0,0 +1,290 @@
-> +/* SPDX-License-Identifier: (GPL-2.0-only OR MIT) */
-
-Why different license than the binding?
-
-> +/*
-> + * Copyright (C) 2026 Junhui Liu <junhui.liu@pigmoral.tech>
-
-...
-
-> +#define CLK_BUS_DSC		257
-> +#define CLK_CSI_MASTER0		258
-> +#define CLK_CSI_MASTER1		259
-> +#define CLK_CSI_MASTER2		260
-> +#define CLK_CSI			261
-> +#define CLK_BUS_CSI		262
-> +#define CLK_ISP			263
-> +#define CLK_RES_DCAP_24M	264
-> +#define CLK_APB2JTAG		265
-> +#define CLK_FANOUT_24M		266
-> +#define CLK_FANOUT_12M		267
-> +#define CLK_FANOUT_16M		268
-> +#define CLK_FANOUT_25M		269
-> +#define CLK_FANOUT_27M		270
-> +#define CLK_FANOUT_PCLK		271
-> +#define CLK_FANOUT0		272
-> +#define CLK_FANOUT1		273
-> +#define CLK_FANOUT2		274
-> +#define CLK_FANOUT3		275
-> +
-> +#endif /* _DT_BINDINGS_CLK_SUN60I_A733_CCU_H_ */
-> diff --git a/include/dt-bindings/clock/sun60i-a733-r-ccu.h b/include/dt-bindings/clock/sun60i-a733-r-ccu.h
-> new file mode 100644
-> index 000000000000..1d3845b483bf
-> --- /dev/null
-> +++ b/include/dt-bindings/clock/sun60i-a733-r-ccu.h
-
-Here as well and so on (other places as well).
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
 Best regards,
 Krzysztof
