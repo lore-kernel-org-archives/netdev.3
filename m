@@ -1,123 +1,88 @@
-Received: from zg8tmja2lje4os4yms4ymjma.icoremail.net (zg8tmja2lje4os4yms4ymjma.icoremail.net [206.189.21.223])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77BBA2010EE;
-	Sun, 12 Jul 2026 14:28:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.21.223
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783866534; cv=none; b=j8uifHGA8JDMONBknj4p8zV7Wqhmc1BsjwPzGGfbKCxKFKqMJrdERWq4dCNRCWjdW/XEAvFoE1SEpPHXDEg8Lvifk7kgr4LSRJqMPSyqch4yXMZ/M1vjEcKav7/G2+JS+zYCE/sd3QIJcDvMv3aey3NG7AnWBLdiMeIkJvnWZ8I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783866534; c=relaxed/simple;
-	bh=DFlad54vnxB7zbml31XlvwTNCCtOAs1+xuTz+3JvUQA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=f8JUSSWeSc8XQQJIJSWqKYCm38ojcwKbeWeiM+BpHNgGz9iuSm2IJdFaPmXM4xRE1X9DlgFAmH+yvgVr0Re4OelTdxzRY+u4GBeaBSgRR7C40Tsn2ej+/PpCcRLy5GOewKMTpAKbrtVBzwg8GnELr2b6wsa5j8iraum5c1sh1ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=206.189.21.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
-Received: from zju.edu.cn (unknown [10.98.66.117])
-	by mtasvr (Coremail) with SMTP id _____wBX5eCJpFNqnaA+AA--.30790S3;
-	Sun, 12 Jul 2026 22:28:26 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.98.66.117])
-	by mail-app4 (Coremail) with SMTP id zi_KCgB3fDaIpFNqK5hCAg--.58344S2;
-	Sun, 12 Jul 2026 22:28:24 +0800 (CST)
-From: Fan Wu <fanwu01@zju.edu.cn>
-To: netdev@vger.kernel.org
-Cc: przemyslaw.kitszel@intel.com,
-	horms@kernel.org,
-	shenjian15@huawei.com,
-	salil.mehta@huawei.com,
-	dingtianhong@huawei.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Fan Wu <fanwu01@zju.edu.cn>
-Subject: [PATCH net] net: hip04: fix RX buffer leak on build_skb failure
-Date: Sun, 12 Jul 2026 14:27:29 +0000
-Message-Id: <20260712142729.2057636-1-fanwu01@zju.edu.cn>
-X-Mailer: git-send-email 2.34.1
+Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB0CF23A562;
+	Sun, 12 Jul 2026 14:30:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783866616; cv=pass; b=dYZPi4ABu4sBV/tjLXWapJjiqre/KNdQUk1g7QPOBvbiqkvvgddBjakYrJLAiX40eHTYwRrqFekN+b1/vuR94LFXSU2tvQq9kpDRMduAF/XCs6ZgCQejHwO3HIrnDaIlHCFaDkab9E0tFbW0Lnbnv3eaCaVmZ5tv5+KP8Y+oiYE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783866616; c=relaxed/simple;
+	bh=kW0o9UPJNg9AiaH8DSDghz5FDDxObOe1q9wX485ILPE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=Rueej/iBMB/hou+4MYJtgwY2tY3dNMee/GYPtAWdlMVHmOXpQ27q/vfgj0vmyzo8QXIpN1SjWklulkk6c7Amcl1hKCtBAmNqypu6BHGFMExLKaledZC5Ucj6Z5xrd+cSOSISVqMM593hQNyYjKiLl6RnkkeUzDGg7qYp+oQj+ng=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pigmoral.tech; spf=pass smtp.mailfrom=pigmoral.tech; dkim=pass (1024-bit key) header.d=pigmoral.tech header.i=junhui.liu@pigmoral.tech header.b=lW/5oxaO; arc=pass smtp.client-ip=136.143.188.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pigmoral.tech
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pigmoral.tech
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=pigmoral.tech header.i=junhui.liu@pigmoral.tech header.b="lW/5oxaO"
+ARC-Seal: i=1; a=rsa-sha256; t=1783866572; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=CbSThQwVFKuvcUyMJAZMQMjEGfBe+S0u3AYavMf4uAL9cH8dhDMtYxTmTxcHMlX2Zpq846FJ1vHxLqz5czyzGw7u1B+xwqxZZppc8ZGqvOVWt+up/kboYR+82ZLmF4vPKlYsubWm7g82iNhicIQEfeQX67Srl7Wyh3rX+3OtoRQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1783866572; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=kW0o9UPJNg9AiaH8DSDghz5FDDxObOe1q9wX485ILPE=; 
+	b=b8lO66kWioDHgWFO9xDePdqvN4v+z/TTkf+KW6oLnVL3/7etC+D8wubfhR1qWqEADAPUAKJnnupOsQ+giMD8zR2BavWin+vb8if2doUVwYpgTQK7W6VktHlaG5hWx4ECUuHuM2zCjebWQpJOhnCkS57rM3FO/6ksD9FQLVLQgYg=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=pigmoral.tech;
+	spf=pass  smtp.mailfrom=junhui.liu@pigmoral.tech;
+	dmarc=pass header.from=<junhui.liu@pigmoral.tech>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1783866572;
+	s=zmail; d=pigmoral.tech; i=junhui.liu@pigmoral.tech;
+	h=Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Date:Message-Id:Message-Id:From:From:To:To:Cc:Cc:Subject:Subject:References:In-Reply-To:Reply-To;
+	bh=kW0o9UPJNg9AiaH8DSDghz5FDDxObOe1q9wX485ILPE=;
+	b=lW/5oxaO/c02GuF4ZI5GwC/QM/JtLE8JZtR1q+1ScpoHN22vN/zPs8UsKpyF7oq9
+	HycEte8i9DKiSCV4Kc1Q6gwkXBWuEiqPMXS7D3Te3oS8KLrJ+YzjFyC0aVGOxsZ0BoP
+	33xO5kdx++JJ6JUekSpkIePLuwYTO5enKOGfbOGA=
+Received: by mx.zohomail.com with SMTPS id 1783866570656662.824676365365;
+	Sun, 12 Jul 2026 07:29:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zi_KCgB3fDaIpFNqK5hCAg--.58344S2
-X-CM-SenderInfo: qrstjiaswqq6lmxovvfxof0/
-X-CM-DELIVERINFO: =?B?+WTCrgXKKxbFmtjJiESix3B1w3vZ3A9ovKVTomAyoQazvoRs/NHSP8GI2EvgeEEW7R
-	sfnXz+g1OQfMo27QHy5TwQyZwMXD6r00PqHAEpMgJrOWlB3cKExD1+OvwRHCV177ujW8w2
-	3QlJ4zOWQZ6fMa/hwJ6p9E6mavGmQbzmcFsnzP86
-X-Coremail-Antispam: 1Uk129KBj93XoW7CF18Cr1fCFyfJrWxAw1xXrc_yoW8ZrWDpa
-	yrGFWrJF9rtr17tr1DXw4IqF1rAan7Xay7WFW8Zws5ZFnIyr18ua48KFWUGF45Jr92qFs8
-	tF4j93s3uryDW3cCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUP0b4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
-	xVW0oVCq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc804V
-	CY07AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AK
-	xVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48Icx
-	kI7VAKI48JM4x0Y48IcxkI7VAKI48G6xCjnVAKz4kxM4IIrI8v6xkF7I0E8cxan2IY04v7
-	MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr
-	0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0E
-	wIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JV
-	WxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAI
-	cVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU85l1PUUUUU==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 12 Jul 2026 22:29:16 +0800
+Message-Id: <DJWNX2QDTLFF.17I9ING28DUWM@pigmoral.tech>
+From: "Junhui Liu" <junhui.liu@pigmoral.tech>
+To: "Junhui Liu" <junhui.liu@pigmoral.tech>, "Michael Turquette"
+ <mturquette@baylibre.com>, "Stephen Boyd" <sboyd@kernel.org>, "Brian
+ Masney" <bmasney@redhat.com>, "Rob Herring" <robh@kernel.org>, "Krzysztof
+ Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
+ "Chen-Yu Tsai" <wens@kernel.org>, "Jernej Skrabec"
+ <jernej.skrabec@gmail.com>, "Samuel Holland" <samuel@sholland.org>,
+ "Philipp Zabel" <p.zabel@pengutronix.de>, "Paul Walmsley" <pjw@kernel.org>,
+ "Palmer Dabbelt" <palmer@dabbelt.com>, "Albert Ou" <aou@eecs.berkeley.edu>,
+ "Alexandre Ghiti" <alex@ghiti.fr>, "Richard Cochran"
+ <richardcochran@gmail.com>
+Cc: <linux-clk@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-sunxi@lists.linux.dev>,
+ <linux-kernel@vger.kernel.org>, <linux-riscv@lists.infradead.org>,
+ <netdev@vger.kernel.org>, "Jerome Brunet" <jbrunet@baylibre.com>
+Subject: Re: [PATCH v2 7/8] clk: sunxi-ng: a733: Add bus clock gates
+X-Mailer: aerc 0.21.0
+References: <20260711-a733-clk-v2-0-974d188cbe0c@pigmoral.tech>
+ <20260711-a733-clk-v2-7-974d188cbe0c@pigmoral.tech>
+In-Reply-To: <20260711-a733-clk-v2-7-974d188cbe0c@pigmoral.tech>
+X-ZohoMailClient: External
 
-When build_skb() fails in hip04_rx_poll(), the driver jumps to the
-refill path without releasing the current RX buffer and its DMA mapping.
-Installing a replacement buffer then overwrites the slot references and
-leaks both resources.
+On Sat Jul 11, 2026 at 4:10 PM CST, Junhui Liu wrote:
 
-Keep the current slot intact and return budget so NAPI retries the same
-buffer.  Also free a newly allocated RX fragment when dma_map_single()
-fails.
+[...]
 
-This issue was found by an in-house static analysis tool.
+> +
+> +static SUNXI_CCU_GATE_HWS(mbus_iommu1_sys_clk, "mbus-iommu1-sys", mbus_h=
+ws, 0x5b4, BIT(0), 0);
+> +static SUNXI_CCU_GATE_HWS(apb_iommu1_sys_clk, "apb_iommu1-sys", apb0_hws=
+, 0x5b4, BIT(1), 0);
+> +static SUNXI_CCU_GATE_HWS(ahb_iommu1_sys_clk, "ahb_iommu1-sys", ahb_hws,=
+ 0x5b4, BIT(2), 0);
 
-Fixes: 701a0fd52318 ("hip04_eth: fix missing error handle for build_skb failed")
-Cc: stable@vger.kernel.org
-Assisted-by: Codex:gpt-5.5
-Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
----
+The clock names here should be "apb-iommu1-sys" and "ahb-iommu1-sys". I
+will update them in next version.
 
- drivers/net/ethernet/hisilicon/hip04_eth.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/hisilicon/hip04_eth.c b/drivers/net/ethernet/hisilicon/hip04_eth.c
-index 18376bcc7..1d03039b4 100644
---- a/drivers/net/ethernet/hisilicon/hip04_eth.c
-+++ b/drivers/net/ethernet/hisilicon/hip04_eth.c
-@@ -594,7 +594,10 @@ static int hip04_rx_poll(struct napi_struct *napi, int budget)
- 		skb = build_skb(buf, priv->rx_buf_size);
- 		if (unlikely(!skb)) {
- 			net_dbg_ratelimited("build_skb failed\n");
--			goto refill;
-+			/* Retain the slot; return budget so NAPI retries this buffer.
-+			 * Refill would overwrite rx_buf[]/rx_phys[] and leak them.
-+			 */
-+			return budget;
- 		}
- 
- 		dma_unmap_single(priv->dev, priv->rx_phys[priv->rx_head],
-@@ -622,14 +625,15 @@ static int hip04_rx_poll(struct napi_struct *napi, int budget)
- 			rx++;
- 		}
- 
--refill:
- 		buf = netdev_alloc_frag(priv->rx_buf_size);
- 		if (!buf)
- 			goto done;
- 		phys = dma_map_single(priv->dev, buf,
- 				      RX_BUF_SIZE, DMA_FROM_DEVICE);
--		if (dma_mapping_error(priv->dev, phys))
-+		if (dma_mapping_error(priv->dev, phys)) {
-+			skb_free_frag(buf);
- 			goto done;
-+		}
- 		priv->rx_buf[priv->rx_head] = buf;
- 		priv->rx_phys[priv->rx_head] = phys;
- 		hip04_set_recv_desc(priv, phys);
-
+--=20
+Best regards,
+Junhui Liu
