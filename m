@@ -1,45 +1,75 @@
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830592D2486
-	for <netdev@vger.kernel.org>; Sun, 12 Jul 2026 13:05:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BEA0301468
+	for <netdev@vger.kernel.org>; Sun, 12 Jul 2026 13:22:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783861519; cv=none; b=T8WcW0GK80cHOgdM237J01T/nNH9MBkmLg6575nR/uy5Ujuupmb3XENoD/ncX0O4uRwu6jBW/67t3ef745nkO0bNwWoYdz+MLIHysInyn9nchJq/TQq9P/QmUoQMyMYz716y2Dz4dWV3SsS2HqgoZEXLpRMUf/dTgauDueK+ees=
+	t=1783862569; cv=none; b=tGt2YwQa2P5XJcHHzh43MGoxHiuEZIvDvqrQyBxkyP1791XRWcLyjAm88j3V5Oa0I1MC6gl6igLLTEcNlgO53mmLjU8Pvk12GUeR1eU+mNlCwaVGa1GIDre2IYSdECkv7ZTWV48Ytl7jFyRAVjJAz74CYmnTYGBMU1Ui3+u7m/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783861519; c=relaxed/simple;
-	bh=GUp3PmnFmXHoEhrHLOH8q4YGU/QcMp1uvL4xYuiuYpY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=V5whh/4krpk6E4YKkYfTz/9dOc+PILPbrlmCqudRs/VzM3GbGS/NkDlL/0OP8ZZUsYQIOdBLUEO7/xb6IMjAYgcaWRt4x92PFz3ldxs4pIPEYrfUx8EwiFo8ND2Xrh5eT2FYvZaf/vdz07aW/sUTKR4CxU8w27UEm1Yja1KmH14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=tkfF8o5e; arc=none smtp.client-ip=95.215.58.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1783862569; c=relaxed/simple;
+	bh=xAwWrn135mVWGuRJMRuBayOCkroezRocDlu6CZpN8Sw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ipNsiswRD1xbTrzq8GxjDS/fKloSNEimSYzN1kDKn/PxfTZbSwXLTqNvnQXoJXWRnb1ED8xnqqcTemdLf1k192561dKP6GZXholJoIWVm3mK3QucbT6scaX51oLXshn1NuiHOSCKUWbxuvxJs4bXo7ZetEPofX25kUYExDpwWYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lwGd66Lo; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="tkfF8o5e"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783861505;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=9T+JTQqyK8bJsfsDIZygaYxhXti8DrgIowVgz9xghEw=;
-	b=tkfF8o5eMabajNpylI8gbbgnE5DL0YGvdMF/rAtKCIWIS7Uf2/FWsv4tkb3EqbzcqH87yG
-	PHI02nnFXKnvCYIYqZOU1SDsYlwtG1dKZgyHqpEq0rLew3wluoKUEhTUWphPVZLT9TxlE+
-	rfEzr1ljBwNgkxpQYhUQtO2CDlsCK4w=
-From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	linux-kernel@vger.kernel.org,
-	opurdila@ixiacom.com,
-	tim.bird@sony.com,
-	Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH net v1] llc: fix SAP refcount leak when creating incoming sockets
-Date: Sun, 12 Jul 2026 21:03:43 +0800
-Message-ID: <20260712130343.518797-1-xuanqiang.luo@linux.dev>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lwGd66Lo"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-493f0ae9572so8584335e9.3
+        for <netdev@vger.kernel.org>; Sun, 12 Jul 2026 06:22:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783862566; x=1784467366; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=f+YFzVviG3DzxMqpa6xeKwhT6SuFAN+/OdOMSnwiZgU=;
+        b=lwGd66LoMamqnIsdxcCBSbsxNB6gIYf3m3vmJmXe/TYUwBmVoTkA1QZ6iD/LTm6BS9
+         9gM/tmdCkjAHHHlskU3IKfeMCIrvuQ9m1oeqWN25I4G+6oPUw3Y1BUOPgD0EUX790wbK
+         eqAxQVrjbNaUIopyCcrBK2vi46BeBuSaBLCEJpkBSbMXQVE9iJDOPUt1+V4SBfuMZX4o
+         wQgDBdsE7OE9mrQCxt0S6f7kA47bhI6UU2tzxtNa6e0solnlmWpjRWk9urmamJVgPDOt
+         PdFtLOu9YVjSPYnlcZ0GJKUJ4U0zHxLQvyjTvpMUOwPD5D3H/eKTXSEe6qKstRkHuCrJ
+         kAXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783862566; x=1784467366;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=f+YFzVviG3DzxMqpa6xeKwhT6SuFAN+/OdOMSnwiZgU=;
+        b=Va+LdhS8nl7VetT+XRDKXCkTTxWEOzy6Q72dCngnUriTTJlLcX32HBbzP+QJPzlVts
+         HwoKXDDhhLUkSBQAmlAJHBKaDsMhEnBOjDk+R8XWY9tGkYtLKis71wNpziAjFuzik4JW
+         KYf9xiQ84EzJc7Urspmnc0Ny0ATXzduj1gM4m0Ology/mdBj/04Ef9NR2PtpZ/E2Z8g7
+         OjqRVNM4sdfpP4ZmHqeDgmtwV0xu5QTDV/lUQ22JXBeGHuuQE4VC3FIUXlAzyCzcx2qt
+         fH1LEK4HP5QwnNZFirlx6G65MmqW6+IAeUZk0Ke9lrjCvWWZRLoHM3hXkRD3oUoZJp/x
+         q/5A==
+X-Forwarded-Encrypted: i=1; AHgh+RqjVlpJ0HEQ87p8/Byx+NROks4xaOlFKS3CXYPzGkAfdeTnNrnQt1xXalCvUBvr2IlJC4jXoXw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyMZfwOEGBvMZvTAcD7q3X9WI26r/p1PK4Gju8TQ4ALk7g08JlP
+	KOykpOHD1iKdFqA2pJb8C97Eu6DtT7MNZaJJWTG4mKMwcfsQCB6rNHun
+X-Gm-Gg: AfdE7cmNDnN/IaIjr6CNjoy6tXuUM/QRB1waKV1X/l74JqMiTw3/Qwq9cSZ9TaXjpPJ
+	3/d9udXavTe14/LypOEEAykgiCZYhcshhkTLIZ3PYAMJR7C4G+HP5+OrDa7vf7Bu3LxSlmG/fO8
+	sHb0W81N5ht5wX4qjlCCrOqeA6FK5qdDfWNd39skWAi9E5AFl10iYerCE6vZaqvR4TZrtvABmgI
+	78rcQL+9ZxR0OitpEfkmp+J8i/0uCkqJgP22vt30gCMc8bDI7c9t4jJEsXJyAgZQkIpB/YYjw0B
+	VeKVzKh4k9W6T0VW+feLISA6A+JNgU2eXmygmDYQHdOrkC6IGRNPFPnigHDwxnYoHkGzBFK7NSu
+	YdNY6lUyL4R+z9nHSjSUUXgxjrxMpCDVkfWenLPQi7gHg7ZUj8OI0yBAse9+I/iHZ+dRiQYkbnA
+	DTJJ4f0cGtmmSrPAhEmVuZvsDa+Wy9HPrSoP0rfWuo+MnHWZW7ep1UybfLL1+RKT5gL1Ydyipo
+X-Received: by 2002:a05:600c:8b52:b0:492:53e8:3bc1 with SMTP id 5b1f17b1804b1-493f87f3cffmr58484955e9.17.1783862566268;
+        Sun, 12 Jul 2026 06:22:46 -0700 (PDT)
+Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493f4cbc620sm180883955e9.13.2026.07.12.06.22.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 12 Jul 2026 06:22:45 -0700 (PDT)
+From: David Carlier <devnexen@gmail.com>
+To: intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org
+Cc: anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	maciej.fijalkowski@intel.com,
+	aleksandr.loktionov@intel.com,
+	advoretsky@gmail.com,
+	stable@vger.kernel.org,
+	David Carlier <devnexen@gmail.com>
+Subject: [PATCH net] igc: remove napi_synchronize() in igc_down()
+Date: Sun, 12 Jul 2026 14:22:42 +0100
+Message-ID: <20260712132242.223254-1-devnexen@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,42 +77,42 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+When an AF_XDP zero-copy application is killed abruptly, the XSK pool is
+torn down but NAPI keeps polling. igc_clean_rx_irq_zc() then returns the
+full budget on every poll, so napi_complete_done() never clears
+NAPI_STATE_SCHED.
 
-llc_sap_add_socket() takes a SAP reference for each socket added to a SAP,
-and llc_sap_remove_socket() releases it. llc_create_incoming_sock() takes
-an additional SAP reference after adding the child socket.
+igc_down() calls napi_synchronize() before napi_disable(), so it spins
+forever waiting for that bit and the interface never goes down. Drop the
+napi_synchronize() and let napi_disable() do the job -- it sets
+NAPI_STATE_DISABLE, which forces the stuck poll to complete. Reorder it
+ahead of igc_set_queue_napi() so the NAPI mapping is cleared only after
+polling has stopped, matching the recent igb fix b1e067240379.
 
-This extra reference was balanced by an explicit llc_sap_put() in
-llc_ui_release() until commit 3100aa9d74db ("llc: fix SAP reference
-counting w.r.t. socket handling") removed that put. The corresponding hold
-in the accept path was left behind.
-
-When such a child socket is removed, only the reference taken by
-llc_sap_add_socket() is released. The extra reference keeps the SAP alive
-after its last socket is removed. Remove the obsolete hold.
-
-Fixes: 3100aa9d74db ("llc: fix SAP reference counting w.r.t. socket handling")
+Fixes: fc9df2a0b520 ("igc: Enable RX via AF_XDP zero-copy")
+Suggested-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+Signed-off-by: David Carlier <devnexen@gmail.com>
 ---
- net/llc/llc_conn.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/intel/igc/igc_main.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/llc/llc_conn.c b/net/llc/llc_conn.c
-index e8f427375c68..260460d50f54 100644
---- a/net/llc/llc_conn.c
-+++ b/net/llc/llc_conn.c
-@@ -767,7 +767,6 @@ static struct sock *llc_create_incoming_sock(struct sock *sk,
- 	newllc->dev = dev;
- 	dev_hold(dev);
- 	llc_sap_add_socket(llc->sap, newsk);
--	llc_sap_hold(llc->sap);
- out:
- 	return newsk;
- }
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index 2c9e2dfd8499..b3883a5a7d7a 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -5352,9 +5352,8 @@ void igc_down(struct igc_adapter *adapter)
+ 
+ 	for (i = 0; i < adapter->num_q_vectors; i++) {
+ 		if (adapter->q_vector[i]) {
+-			napi_synchronize(&adapter->q_vector[i]->napi);
+-			igc_set_queue_napi(adapter, i, NULL);
+ 			napi_disable(&adapter->q_vector[i]->napi);
++			igc_set_queue_napi(adapter, i, NULL);
+ 		}
+ 	}
+ 
 -- 
-2.51.0
+2.53.0
 
