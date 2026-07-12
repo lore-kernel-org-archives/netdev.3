@@ -1,796 +1,150 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C4828504D;
-	Sun, 12 Jul 2026 04:32:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AEF722E3E9
+	for <netdev@vger.kernel.org>; Sun, 12 Jul 2026 04:53:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783830720; cv=none; b=YDg6xnjXDbVy1luzaLjeeBPWJrodfC3uqArvvcz9Gnc+WsuOCB16K/2vwnHQXqYWFWsDG11Dzh4n0e4FWrQvXw95Iwz3Q1428iB6JURI+xJJpKX6Jbbeqia3yG1eMjchfLaRZ6Pk33sQV94APe4nG6Mzig0E/273cPMzAXgWIHU=
+	t=1783832004; cv=none; b=pJ4BzulSoW6SR4V8ka1NxQFLVE2E/qNf9mrmXLX7iCqor4RXZRMO3qGZOWFblHQRtAJH4lFLpiJsdOyMFI3ymJJPCbDwhN7pfbTJAaGcaEXzCi7vxnBZZxN6TMhHkGDbSskrO+DpJ6lK/e4vqfrIGvL6X5R58nQw6fDreh9tJNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783830720; c=relaxed/simple;
-	bh=zKDPK1Wze9cFaNbTHgSgyN8aWIQrlou44wX0p2A4tJc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=PAQ3pn79vCCDj9fmt8WFlGRmKi8jCyT2zXFU76bCblvyeyqPY0hOcBKa8pIAZ70smIw1fUntEcX5+gColaTvvm99+9c6an+4ZLkFb0lVClUiaEfMQuGMafkHHhyBqs6ZNr9HSVDjrqiZSVeMST5q4SKqLBHGkELruJpr4I4AxL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=camSUVLL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1783832004; c=relaxed/simple;
+	bh=shhBzf8yexRu7jj90QvU8W+4YZ4WazeRu+Yf64bVNvw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lsEvBRoR/sMcCQrw1y1sxYSyjfvMGehpmhSJzNMe2h71y0imsfruPZLW7BbzLRi9T4IBSkVgWuq/Es35n9E/IwNgtHzTcEhNz6vzek4SFlVEUeJ94YlVqycxJjFv/LNJ8o/SWJLh2ZZbipWvq99F2opD4G24eudS/IVk86Gr0Q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZRtEn0hr; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="camSUVLL"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 1FCD4C2BCF5;
-	Sun, 12 Jul 2026 04:32:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1783830720;
-	bh=zKDPK1Wze9cFaNbTHgSgyN8aWIQrlou44wX0p2A4tJc=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=camSUVLLN2joSMH3lsZCoctSlTJ5xJPAS7MIGQsLc64aLMM3izwD5wFdLqRlyEGt5
-	 VvU9QvT+lGWkBEX5bfWRDT9ooZRxOtv94MfQc84+D9csDfNCRmPY5p6wcT/wPia3yv
-	 HB/P7En4cny4DIpI/LWCRcgRLa701+L55CUXm8YucE/JJy6EExKUsL8i4xkXpcVj3Z
-	 s2E1nMygDEsozcmW4hLHmxlnImOVhGQkvNtSsjfzI4kFS1ySoJZ9sAaZ1cpdOproDC
-	 2Rt+/QzjBuqgOsVwQ4Kn97MmTyp5lvRfJPij1TRI+SiIYZ4TnjhbbiRqyrv+idZU/e
-	 qfi1ppu1kRjOQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F2AE0C44506;
-	Sun, 12 Jul 2026 04:31:59 +0000 (UTC)
-From: Johan Alvarado via B4 Relay <devnull+contact.c127.dev@kernel.org>
-Date: Sat, 11 Jul 2026 23:31:58 -0500
-Subject: [PATCH net-next v6 1/2] net: dsa: realtek: rtl8365mb: add SGMII
- support for RTL8367S
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZRtEn0hr"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2c6b67d5fa1so34850665ad.2
+        for <netdev@vger.kernel.org>; Sat, 11 Jul 2026 21:53:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783832003; x=1784436803; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Vtqux2brqZY3L9xWBvozGrzsW9R7W5/4mbtliRjhCrk=;
+        b=ZRtEn0hrZWiDP0SrY9SHWUQSF8WKuOnuFRGMqp7dAQf80hcPXgGf0hSz3xk5VFdWuF
+         p0zJ56IK0/2CKH2YVgBGdjURnvjI8pbFYwqxoQlMU2qUelO61llzCIDgorTd7DDoCAPN
+         YiVbOmkrvDt+E4XuDHZ05jD0U6YNFCB1CX3/kYVwS1HLJZ1gp7nuG3u5A0/V3TCklnkV
+         1Un9LRv2B99g2XkR7g4JCNkU8ySiGOjI4yhSeCCSiFFxcVncZ6HK7J+mXJGn3v10uKYP
+         hRRMetG0cdjG/QubbCpBPFJdSvXeP0U7Wd1H6C5clgZCAEl0R3tqpRQa3HQSXbEt+3Uk
+         4RAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783832003; x=1784436803;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Vtqux2brqZY3L9xWBvozGrzsW9R7W5/4mbtliRjhCrk=;
+        b=hnovwvqwRB10MX+1yHqTwxXso5DbgEOq+2aAs5y79zSX7yi/bJ02BjmQkN/B+sYSZf
+         HsdL7t6rgRfzzKw1rAFeKoDF7yiOSWaTCfWp3pMyKX9s0Z3FNTwQja05BMZXkbncQtdt
+         zJ0DbVF9L0s9Hp1CjLbrgtJ0TolZJ4bpSZROdPlD+YwyDrZXd4Yu3sNYmBgelr9AGp25
+         kASSHgVhYBaBQDkzlK6Xv4gb28wm52E+9hYdDgw7mEXwAz/X0W3d+I8+U/BMCt9elrBN
+         6e0gp5BxViH0K17sWGqXHOvMubUZPJwNeTkA00LZLskjV91tGV6CzXPx+S6u6zW+794B
+         T8Bw==
+X-Gm-Message-State: AOJu0YyLZp5LrzbEv/+2u8xgGgziKz2WT+0VN1bjSCmuk8UvNkaxC5/X
+	mWDhhZLczsN/vLKRNk+Ql1w3nc3h1AFLz0aL0o0KPiaDE4Xu2RA24tHK
+X-Gm-Gg: AfdE7ck93C5MGdEq9jtTyPs6dN8CEEc7smpw1TbyfQiE0tsXr7OBURt5+8MK9DzefSA
+	MMTafmcK9GgXWkdbFqsZNcyZC6cZqwKs3qpIPDBmfbfZE7NBNklV92dYMWNhD1TbFbQIASEB5cK
+	JCBH1sbHZC/AOjcFclJ0baTJMXXqQv/hqFrinRoUDg/1sGo+DbLWskXigiIq1rzNjjeM2sy+7/6
+	qgIkkv2um/IYdGEC4Ds4+y+or6uAL/dv3XVDO87hAORj2d3bIBt3VXhzTDd2C/ck3B8/Ezrn5ky
+	zZdiCMXX/QlaMWqMRwdt3d2ek2zXC2phT4kCX3hhjaEmB9qSy7ZG+D/sIW1F8PYCvYJxP5tZ5em
+	oxkhyDAQm2hiGlh4/hSGWXffjtb7C8x++GINHAIAJmasxZC7Xj+L1lOxA6ByKivdKDMnbRKcdDW
+	w=
+X-Received: by 2002:a17:902:f68b:b0:2ca:1eef:5096 with SMTP id d9443c01a7336-2ce9f15ccacmr45287845ad.36.1783832002767;
+        Sat, 11 Jul 2026 21:53:22 -0700 (PDT)
+Received: from localhost ([2001:da8:7001:11::cb])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9d3da55sm81624355ad.71.2026.07.11.21.53.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 11 Jul 2026 21:53:22 -0700 (PDT)
+From: Inochi Amaoto <inochiama@gmail.com>
+To: Inochi Amaoto <inochiama@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Yixun Lan <dlan@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc: netdev@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	spacemit@lists.linux.dev,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	E Shattow <e@freeshell.de>,
+	Han Gao <gaohan@iscas.ac.cn>
+Subject: Failed to reinit phy of spacemit-dwmac when reset-gpio is present
+Date: Sun, 12 Jul 2026 12:52:33 +0800
+Message-ID: <20260712045233.800748-1-inochiama@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260711-rtl8367s-sgmii-v6-1-88f7944ddca7@c127.dev>
-References: <20260711-rtl8367s-sgmii-v6-0-88f7944ddca7@c127.dev>
-In-Reply-To: <20260711-rtl8367s-sgmii-v6-0-88f7944ddca7@c127.dev>
-To: Linus Walleij <linusw@kernel.org>, 
- =?utf-8?q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>, 
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Russell King <linux@armlinux.org.uk>
-Cc: Mieczyslaw Nalewaj <namiltd@yahoo.com>, 
- Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- Luiz Angelo Daros de Luca <luizluca@gmail.com>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Johan Alvarado <contact@c127.dev>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783830718; l=26744;
- i=contact@c127.dev; s=20260711; h=from:subject:message-id;
- bh=RRf2dLothREM2DcRth3Sk2VAu5CS0SRlA40BYdUNBcc=;
- b=ZNhDzGEJ9nQaSsufx/7p0LHuskv9V2R/YiVFbNNb0qc0f8Bmdipog54FFTr2ck4p4A+vqpoBU
- 89V4I7sPlkPAoLBAObrk3gXJQA145yMnCd9od93rZxJ3QCEutr6IbvY
-X-Developer-Key: i=contact@c127.dev; a=ed25519;
- pk=ZgvIq3VMEZWi50hs8D+jx3cP3dPdBRYrZZyKEosLfBQ=
-X-Endpoint-Received: by B4 Relay for contact@c127.dev/20260711 with
- auth_id=864
-X-Original-From: Johan Alvarado <contact@c127.dev>
-Reply-To: contact@c127.dev
+Content-Transfer-Encoding: 8bit
 
-From: Johan Alvarado <contact@c127.dev>
+TL;DR:
 
-The RTL8367S can mux its embedded SerDes to external interface 1,
-which is typically used to connect the switch to a CPU port. The chip
-info table already declares SGMII as a supported interface mode for
-this chip, but the driver only implements RGMII so far.
+The DWMAC on Spacemit K3 is failled to register phy after the reload
+the driver module (rmmod then insmod). Because the reset-gpio is
+asserted while unloading the driver and is not desserted before reading
+the c22 id, which leads to a fault.
 
-Implement SGMII support as a phylink PCS, with the configuration
-sequence derived from the GPL-licensed Realtek rtl8367c vendor driver
-as distributed in the Mercusys MR80X GPL code drop:
+Description
 
- - Add accessors for the SerDes indirect access registers (SDS_INDACS),
-   through which the SerDes internal registers are reached.
+In a few days ago, E Shattow reports he has sufferred the a weird issue,
+when unloading the spacemit-dwmac driver and then reloading it, he got
+the following error:
 
- - Register a phylink_pcs for the SerDes, selected from mac_select_pcs
-   for the SGMII interface, so the SerDes handling lives in the PCS
-   operations rather than in the MAC operations.
+[   60.713071] mdio_bus stmmac-0: MDIO device at address 1 is missing.
 
- - Probe the SerDes tuning variant from the chip option register once
-   at setup. The vendor driver keeps two sets of SerDes tuning
-   parameters and selects between them based on this option; only the
-   variant for a non-zero option (which all RTL8367S parts seen so far
-   report) has been validated on hardware, so the SerDes interface
-   modes are only advertised in that case. An unsupported variant thus
-   fails at phylink validation time instead of at link configuration
-   time.
+This only occurs when reloading the driver but the first initialization
+successed. After some function tracking, I found it is failed at reading
+c22 id. The call graph is as the follows:
 
- - Keep the embedded DW8051 microcontroller in reset and disabled. The
-   vendor driver loads firmware into it to manage the SerDes link, but
-   analysis of that firmware shows it only duplicates the link
-   management phylink already performs: it polls the port status and
-   writes the external interface force registers behind the driver's
-   back.
+stmmac_mdio_register
+	mdiobus_alloc
+	of_mdiobus_register
+		__of_mdiobus_register
+		__mdiobus_register
+		__of_mdiobus_parse_phys
+			of_mdiobus_child_is_phy
+			of_mdiobus_register_phy
+				fwnode_mdiobus_register_phy
+					get_phy_device
+						get_phy_c22_id
 
- - Clear the line rate bypass bit for the external interface, tune the
-   SerDes with the vendor-prescribed parameters, mux the SerDes to MAC8
-   in SGMII mode and only then take the SerDes out of reset, as the
-   vendor driver does.
+By checking the difference between the initialization process and the
+reloading process, I found the reset gpio is asserted in the function
+mdiobus_unregister(). And there is no any function desserted this reset
+gpio in the loading stage. And in the initialization process, the reset
+goio is deasserted.
 
- - After deasserting the SerDes reset, reset the SerDes data path via
-   the SerDes BMCR register to flush the FIFOs and resync the PLL.
-   This mirrors what the vendor firmware does right after deasserting
-   the SerDes reset, and ensures a clean link state from cold boot.
+This bug report is sent as I found it is hard to solve this problem
+and ask for help to fix this issue as it is related to the framework
+instead of a specific driver.
 
- - Force the SGMII link parameters (link, speed, duplex) in the SDS_MISC
-   register from pcs_link_up(). SGMII in-band autonegotiation is not
-   implemented, so only fixed-link and conventional PHY setups are
-   supported, just like RGMII. This is reported to phylink through
-   pcs_inband_caps() returning LINK_INBAND_DISABLE, so phylink never
-   selects an in-band-enabled negotiation mode for this PCS.
-
- - Program the SerDes pause enables in SDS_MISC from the resolved
-   pause modes when forcing the MAC external interface in mac_link_up,
-   as the vendor driver does, rather than leaving whatever state the
-   boot firmware left there. Flow control testing shows these bits,
-   not the MAC force pause bits, gate pause on the SerDes external
-   interface. This is done in the MAC layer because pcs_link_up()
-   carries no pause information.
-
- - Implement pcs_get_state() by reading the link status from the
-   SerDes, with the forced speed and duplex read back from SDS_MISC.
-   Although the supported fixed-link and conventional PHY setups do not
-   use it, the PCS owns the SerDes link state, and phylink consults
-   pcs_get_state() to track the physical link when operating in in-band
-   mode with autonegotiation disabled. The SerDes has no link interrupt
-   wired up, so the PCS sets its poll flag.
-
-Tested on a Mercusys MR80X v2.20, where the RTL8367S is connected to
-the SoC over SGMII.
-
-Suggested-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
-Suggested-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Suggested-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-Signed-off-by: Johan Alvarado <contact@c127.dev>
+The possible workaround I found is as the following, just use the phy
+id in the compatible string (Confirmed by dlan):
 ---
- drivers/net/dsa/realtek/rtl8365mb_main.c | 515 ++++++++++++++++++++++++++++++-
- 1 file changed, 511 insertions(+), 4 deletions(-)
+--- a/arch/riscv/boot/dts/spacemit/k3-pico-itx.dts
++++ b/arch/riscv/boot/dts/spacemit/k3-pico-itx.dts
+@@ -196,7 +196,8 @@ &eth0 {
 
-diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
-index 5ac091bf93c9..ea03c42d0f1a 100644
---- a/drivers/net/dsa/realtek/rtl8365mb_main.c
-+++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
-@@ -40,7 +40,8 @@
-  * driver has only been tested with a fixed-link, but in principle it should not
-  * matter.
-  *
-- * NOTE: Currently, only the RGMII interface is implemented in this driver.
-+ * NOTE: Currently, only the RGMII and SGMII interfaces are implemented in this
-+ * driver.
-  *
-  * The interrupt line is asserted on link UP/DOWN events. The driver creates a
-  * custom irqchip to handle this interrupt and demultiplex the events by reading
-@@ -94,11 +95,13 @@
- #include <linux/bitops.h>
- #include <linux/interrupt.h>
- #include <linux/irqdomain.h>
-+#include <linux/mii.h>
- #include <linux/mutex.h>
- #include <linux/of_irq.h>
- #include <linux/regmap.h>
- #include <linux/if_bridge.h>
- #include <linux/if_vlan.h>
-+#include <linux/phylink.h>
- 
- #include "realtek.h"
- #include "realtek-smi.h"
-@@ -129,6 +132,7 @@
- 
- /* Chip reset register */
- #define RTL8365MB_CHIP_RESET_REG	0x1322
-+#define RTL8365MB_CHIP_RESET_DW8051_MASK	0x0010
- #define RTL8365MB_CHIP_RESET_SW_MASK	0x0002
- #define RTL8365MB_CHIP_RESET_HW_MASK	0x0001
- 
-@@ -238,6 +242,76 @@
- #define   RTL8365MB_EXT_RGMXF_RXDELAY_MASK	0x0007
- #define   RTL8365MB_EXT_RGMXF_TXDELAY_MASK	0x0008
- 
-+/* External interface line rate bypass register - one bit per external
-+ * interface, indexed by the external port number with port 5 (the first
-+ * external port) as the base. Other RTL8367 families index this register
-+ * differently (e.g. the RTL8367R uses (id + 1) % 2), so this mapping only
-+ * holds for the RTL8367C-style parts this driver supports.
-+ */
-+#define RTL8365MB_BYPASS_LINE_RATE_REG		0x03F7
-+#define RTL8365MB_BYPASS_LINE_RATE_MASK(_port)	BIT((_port) - 5)
-+
-+/* SerDes indirect access registers */
-+#define RTL8365MB_SDS_INDACS_CMD_REG		0x6600
-+#define   RTL8365MB_SDS_INDACS_CMD_BUSY_MASK	0x0100
-+#define   RTL8365MB_SDS_INDACS_CMD_RUN_MASK	0x0080
-+#define   RTL8365MB_SDS_INDACS_CMD_WR_MASK	0x0040
-+#define RTL8365MB_SDS_INDACS_ADR_REG		0x6601
-+#define RTL8365MB_SDS_INDACS_DATA_REG		0x6602
-+
-+/* SerDes miscellaneous configuration register */
-+#define RTL8365MB_SDS_MISC_REG				0x1D11
-+#define   RTL8365MB_SDS_MISC_SGMII_RXFC_MASK		0x4000
-+#define   RTL8365MB_SDS_MISC_SGMII_TXFC_MASK		0x2000
-+#define   RTL8365MB_SDS_MISC_MAC8_SEL_HSGMII_MASK	0x0800
-+#define   RTL8365MB_SDS_MISC_SGMII_FDUP_MASK		0x0400
-+#define   RTL8365MB_SDS_MISC_SGMII_LINK_MASK		0x0200
-+#define   RTL8365MB_SDS_MISC_SGMII_SPD_MASK		0x0180
-+#define   RTL8365MB_SDS_MISC_MAC8_SEL_SGMII_MASK	0x0040
-+
-+/* SerDes internal registers, accessed via the SDS_INDACS registers. The BMCR
-+ * data path reset holds BMCR_ANENABLE | BMCR_ISOLATE while toggling the
-+ * vendor-specific low bits from phase 1 to phase 2, which triggers a data path
-+ * reset and PLL resync.
-+ */
-+#define RTL8365MB_SDS_REG_BMCR			0x0000
-+#define   RTL8365MB_SDS_BMCR_DPRST_PHASE1	(BMCR_ANENABLE | BMCR_ISOLATE | 0x1)
-+#define   RTL8365MB_SDS_BMCR_DPRST_PHASE2	(BMCR_ANENABLE | BMCR_ISOLATE | 0x3)
-+#define RTL8365MB_SDS_REG_NWAY			0x0002
-+#define   RTL8365MB_SDS_NWAY_EN_MASK		0x0200
-+#define   RTL8365MB_SDS_NWAY_RESTART_MASK	0x0100
-+#define RTL8365MB_SDS_REG_RESET			0x0003
-+#define   RTL8365MB_SDS_RESET_DEASSERT		0x7106
-+#define RTL8365MB_SDS_REG_LINK_STATUS		0x003d
-+#define   RTL8365MB_SDS_LINK_STATUS_LINK_MASK	0x0010
-+
-+/* The embedded SerDes can only be muxed to external interface 1 (MAC8),
-+ * which is port 6.
-+ */
-+#define RTL8365MB_SDS_EXT_INTERFACE_ID		1
-+#define RTL8365MB_SDS_EXT_INTERFACE_PORT	6
-+
-+/* Line rate bypass bit for the SerDes external interface */
-+#define RTL8365MB_SDS_BYPASS_LINE_RATE_MASK \
-+	RTL8365MB_BYPASS_LINE_RATE_MASK(RTL8365MB_SDS_EXT_INTERFACE_PORT)
-+
-+/* SerDes tuning parameter variant selector. The vendor driver picks between
-+ * two sets of SerDes tuning parameters based on this chip option. Reading it
-+ * requires first arming the read by writing a magic key to the arm register,
-+ * then disarming it afterwards.
-+ */
-+#define RTL8365MB_SDS_OPTION_ARM_REG		0x13C0
-+#define   RTL8365MB_SDS_OPTION_ARM_KEY		0x0249
-+#define RTL8365MB_SDS_OPTION_REG		0x13C1
-+
-+/* Embedded DW8051 microcontroller control registers. The microcontroller
-+ * can run firmware to manage the SerDes link, but this driver keeps it in
-+ * reset and disabled: phylink already performs the link management that
-+ * the firmware would otherwise do.
-+ */
-+#define RTL8365MB_MISC_CFG0_REG			0x130C
-+#define   RTL8365MB_MISC_CFG0_DW8051_EN_MASK	0x0020
-+
- /* External interface port speed values - used in DIGITAL_INTERFACE_FORCE */
- #define RTL8365MB_PORT_SPEED_10M	0
- #define RTL8365MB_PORT_SPEED_100M	1
-@@ -551,6 +625,18 @@ static const struct rtl8365mb_jam_tbl_entry rtl8365mb_init_jam_common[] = {
- 	{ 0x1D32, 0x0002 },
- };
- 
-+/* SGMII SerDes tuning parameters, lifted from the vendor driver sources. The
-+ * vendor driver keeps two variants of this table and selects between them
-+ * based on the chip option register; these are the values for a non-zero
-+ * option, which is what RTL8367S parts seen so far report. See
-+ * rtl8365mb_sds_probe_option().
-+ */
-+static const struct rtl8365mb_jam_tbl_entry rtl8365mb_sds_jam_sgmii[] = {
-+	{ 0x0480, 0x04D7 }, { 0x0481, 0xF994 }, { 0x0482, 0x2420 },
-+	{ 0x0483, 0x6960 }, { 0x0484, 0x9728 }, { 0x0423, 0x9D85 },
-+	{ 0x0424, 0xD810 }, { 0x002E, 0x83F2 },
-+};
-+
- enum rtl8365mb_phy_interface_mode {
- 	RTL8365MB_PHY_INTERFACE_MODE_INVAL = 0,
- 	RTL8365MB_PHY_INTERFACE_MODE_INTERNAL = BIT(0),
-@@ -730,6 +816,9 @@ struct rtl8365mb_port {
-  * @cpu: CPU tagging and CPU port configuration for this chip
-  * @mib_lock: prevent concurrent reads of MIB counters
-  * @ports: per-port data
-+ * @pcs: PCS for the SerDes external interface
-+ * @sds_supported: SerDes tuning parameters match the chip option, so the
-+ *                 SerDes interface modes can be advertised
-  *
-  * Private data for this driver.
-  */
-@@ -740,8 +829,12 @@ struct rtl8365mb {
- 	struct rtl8365mb_cpu cpu;
- 	struct mutex mib_lock;
- 	struct rtl8365mb_port ports[RTL8365MB_MAX_NUM_PORTS];
-+	struct phylink_pcs pcs;
-+	bool sds_supported;
- };
- 
-+#define pcs_to_rtl8365mb(_pcs) container_of((_pcs), struct rtl8365mb, pcs)
-+
- static int rtl8365mb_phy_poll_busy(struct realtek_priv *priv)
- {
- 	u32 val;
-@@ -1042,6 +1135,334 @@ static int rtl8365mb_ext_config_rgmii(struct realtek_priv *priv, int port,
- 	return 0;
- }
- 
-+static int rtl8365mb_sds_write(struct realtek_priv *priv, u16 addr, u16 data)
-+{
-+	int ret;
-+
-+	ret = regmap_write(priv->map, RTL8365MB_SDS_INDACS_DATA_REG, data);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_write(priv->map, RTL8365MB_SDS_INDACS_ADR_REG, addr);
-+	if (ret)
-+		return ret;
-+
-+	/* The SerDes indirect access engine completes the command within the
-+	 * register write transaction, so there is no need to wait or poll for
-+	 * completion before the next access, matching the vendor driver.
-+	 */
-+	return regmap_write(priv->map, RTL8365MB_SDS_INDACS_CMD_REG,
-+			    RTL8365MB_SDS_INDACS_CMD_RUN_MASK |
-+			    RTL8365MB_SDS_INDACS_CMD_WR_MASK);
-+}
-+
-+static int rtl8365mb_sds_read(struct realtek_priv *priv, u16 addr, u16 *data)
-+{
-+	u32 val;
-+	int ret;
-+
-+	ret = regmap_write(priv->map, RTL8365MB_SDS_INDACS_ADR_REG, addr);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_write(priv->map, RTL8365MB_SDS_INDACS_CMD_REG,
-+			   RTL8365MB_SDS_INDACS_CMD_RUN_MASK);
-+	if (ret)
-+		return ret;
-+
-+	/* Wait for the indirect read to complete: the engine clears the BUSY
-+	 * bit once the data register holds the result.
-+	 */
-+	ret = regmap_read_poll_timeout(priv->map, RTL8365MB_SDS_INDACS_CMD_REG,
-+				       val,
-+				       !(val & RTL8365MB_SDS_INDACS_CMD_BUSY_MASK),
-+				       10, 1000);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_read(priv->map, RTL8365MB_SDS_INDACS_DATA_REG, &val);
-+	if (ret)
-+		return ret;
-+
-+	*data = val;
-+
-+	return 0;
-+}
-+
-+/* The vendor driver selects between two sets of SerDes tuning parameters based
-+ * on the chip option register. Only the variant for a non-zero option has been
-+ * tested on real hardware - the RTL8367S parts seen so far all report 1. The
-+ * variant for option 0 uses different tuning values that cannot be verified,
-+ * so probe the option once at setup and only advertise the SerDes interface
-+ * modes when the tuning parameters are known to match, so that an unsupported
-+ * variant fails at phylink validation time rather than when configuring the
-+ * link.
-+ */
-+static int rtl8365mb_sds_probe_option(struct realtek_priv *priv)
-+{
-+	struct rtl8365mb *mb = priv->chip_data;
-+	const struct rtl8365mb_extint *extint;
-+	u32 option;
-+	int ret;
-+	int i;
-+
-+	/* Nothing to probe if no external interface is wired to the SerDes */
-+	for (i = 0; i < RTL8365MB_MAX_NUM_EXTINTS; i++) {
-+		extint = &mb->chip_info->extints[i];
-+
-+		if (extint->supported_interfaces &
-+		    (RTL8365MB_PHY_INTERFACE_MODE_SGMII |
-+		     RTL8365MB_PHY_INTERFACE_MODE_HSGMII))
-+			break;
-+	}
-+	if (i == RTL8365MB_MAX_NUM_EXTINTS)
-+		return 0;
-+
-+	ret = regmap_write(priv->map, RTL8365MB_SDS_OPTION_ARM_REG,
-+			   RTL8365MB_SDS_OPTION_ARM_KEY);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_read(priv->map, RTL8365MB_SDS_OPTION_REG, &option);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_write(priv->map, RTL8365MB_SDS_OPTION_ARM_REG, 0);
-+	if (ret)
-+		return ret;
-+
-+	if (option == 0) {
-+		dev_warn(priv->dev,
-+			 "unsupported SerDes tuning variant (chip option 0), disabling SerDes interface modes\n");
-+		return 0;
-+	}
-+
-+	mb->sds_supported = true;
-+
-+	return 0;
-+}
-+
-+static int rtl8365mb_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
-+				phy_interface_t interface,
-+				const unsigned long *advertising,
-+				bool permit_pause_to_mac)
-+{
-+	const int id = RTL8365MB_SDS_EXT_INTERFACE_ID;
-+	struct rtl8365mb *mb = pcs_to_rtl8365mb(pcs);
-+	struct realtek_priv *priv;
-+	u16 val;
-+	int ret;
-+	int i;
-+
-+	priv = mb->priv;
-+
-+	/* Hold the embedded DW8051 microcontroller in reset and keep it
-+	 * disabled. The vendor driver loads firmware into it to manage the
-+	 * SerDes link, but the firmware only duplicates work that phylink
-+	 * already does: it polls the port status and forces the external
-+	 * interface configuration in the very registers this driver manages.
-+	 * Letting it run would race with phylink.
-+	 */
-+	ret = regmap_update_bits(priv->map, RTL8365MB_CHIP_RESET_REG,
-+				 RTL8365MB_CHIP_RESET_DW8051_MASK,
-+				 RTL8365MB_CHIP_RESET_DW8051_MASK);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_update_bits(priv->map, RTL8365MB_MISC_CFG0_REG,
-+				 RTL8365MB_MISC_CFG0_DW8051_EN_MASK, 0);
-+	if (ret)
-+		return ret;
-+
-+	/* The vendor driver clears the line rate bypass for all interface
-+	 * modes except TMII.
-+	 */
-+	ret = regmap_update_bits(priv->map, RTL8365MB_BYPASS_LINE_RATE_REG,
-+				 RTL8365MB_SDS_BYPASS_LINE_RATE_MASK, 0);
-+	if (ret)
-+		return ret;
-+
-+	/* Tune the SerDes with vendor-prescribed parameters */
-+	for (i = 0; i < ARRAY_SIZE(rtl8365mb_sds_jam_sgmii); i++) {
-+		ret = rtl8365mb_sds_write(priv,
-+					  rtl8365mb_sds_jam_sgmii[i].reg,
-+					  rtl8365mb_sds_jam_sgmii[i].val);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	/* Mux the SerDes to MAC8 in SGMII mode */
-+	ret = regmap_update_bits(priv->map, RTL8365MB_SDS_MISC_REG,
-+				 RTL8365MB_SDS_MISC_MAC8_SEL_SGMII_MASK |
-+					 RTL8365MB_SDS_MISC_MAC8_SEL_HSGMII_MASK,
-+				 RTL8365MB_SDS_MISC_MAC8_SEL_SGMII_MASK);
-+	if (ret)
-+		return ret;
-+
-+	val = RTL8365MB_EXT_PORT_MODE_SGMII
-+	      << RTL8365MB_DIGITAL_INTERFACE_SELECT_MODE_OFFSET(id);
-+	ret = regmap_update_bits(priv->map,
-+				 RTL8365MB_DIGITAL_INTERFACE_SELECT_REG(id),
-+				 RTL8365MB_DIGITAL_INTERFACE_SELECT_MODE_MASK(id),
-+				 val);
-+	if (ret)
-+		return ret;
-+
-+	/* Take the SerDes out of reset. The vendor driver does this only
-+	 * after the SerDes mux and the interface mode are configured.
-+	 */
-+	ret = rtl8365mb_sds_write(priv, RTL8365MB_SDS_REG_RESET,
-+				  RTL8365MB_SDS_RESET_DEASSERT);
-+	if (ret)
-+		return ret;
-+
-+	/* Reset the SerDes data path and resync its PLL, mirroring what the
-+	 * vendor firmware does right after deasserting the SerDes reset.
-+	 * This flushes the FIFOs and ensures a clean state for the link,
-+	 * preventing silent drops and CRC errors.
-+	 */
-+	ret = rtl8365mb_sds_write(priv, RTL8365MB_SDS_REG_BMCR,
-+				  RTL8365MB_SDS_BMCR_DPRST_PHASE1);
-+	if (ret)
-+		return ret;
-+
-+	ret = rtl8365mb_sds_write(priv, RTL8365MB_SDS_REG_BMCR,
-+				  RTL8365MB_SDS_BMCR_DPRST_PHASE2);
-+	if (ret)
-+		return ret;
-+
-+	/* Keep SGMII in-band autonegotiation disabled: the link parameters are
-+	 * forced from rtl8365mb_pcs_link_up() instead.
-+	 */
-+	ret = rtl8365mb_sds_read(priv, RTL8365MB_SDS_REG_NWAY, &val);
-+	if (ret)
-+		return ret;
-+
-+	val &= ~RTL8365MB_SDS_NWAY_EN_MASK;
-+	val |= RTL8365MB_SDS_NWAY_RESTART_MASK;
-+
-+	return rtl8365mb_sds_write(priv, RTL8365MB_SDS_REG_NWAY, val);
-+}
-+
-+static bool rtl8365mb_interface_is_serdes(phy_interface_t interface)
-+{
-+	return interface == PHY_INTERFACE_MODE_SGMII;
-+}
-+
-+static unsigned int rtl8365mb_pcs_inband_caps(struct phylink_pcs *pcs,
-+					      phy_interface_t interface)
-+{
-+	/* In-band autonegotiation is not implemented; the link is always
-+	 * forced. Report that to phylink so that it never selects an
-+	 * in-band-enabled negotiation mode for this PCS.
-+	 */
-+	return LINK_INBAND_DISABLE;
-+}
-+
-+static void rtl8365mb_pcs_get_state(struct phylink_pcs *pcs,
-+				    unsigned int neg_mode,
-+				    struct phylink_link_state *state)
-+{
-+	struct rtl8365mb *mb = pcs_to_rtl8365mb(pcs);
-+	struct realtek_priv *priv = mb->priv;
-+	u16 status;
-+	u32 val;
-+	int ret;
-+
-+	/* In-band autonegotiation is not implemented, so the link parameters are
-+	 * forced from rtl8365mb_pcs_link_up(). The real link state must still be
-+	 * read from the SerDes itself: the embedded DW8051 microcontroller that
-+	 * the vendor firmware uses to poll the SerDes is kept disabled (see
-+	 * rtl8365mb_pcs_config()), so the link status register can be read
-+	 * directly through the SDS_INDACS window without racing the auto-poll.
-+	 */
-+	ret = rtl8365mb_sds_read(priv, RTL8365MB_SDS_REG_LINK_STATUS, &status);
-+	if (ret) {
-+		state->link = false;
-+		return;
-+	}
-+
-+	state->link = !!(status & RTL8365MB_SDS_LINK_STATUS_LINK_MASK);
-+	state->an_complete = state->link;
-+	if (!state->link)
-+		return;
-+
-+	/* The speed and duplex are forced; read them back from the values
-+	 * programmed into the SerDes MISC register.
-+	 */
-+	ret = regmap_read(priv->map, RTL8365MB_SDS_MISC_REG, &val);
-+	if (ret) {
-+		state->link = false;
-+		return;
-+	}
-+
-+	state->duplex = (val & RTL8365MB_SDS_MISC_SGMII_FDUP_MASK) ?
-+				DUPLEX_FULL : DUPLEX_HALF;
-+
-+	switch (FIELD_GET(RTL8365MB_SDS_MISC_SGMII_SPD_MASK, val)) {
-+	case RTL8365MB_PORT_SPEED_1000M:
-+		state->speed = SPEED_1000;
-+		break;
-+	case RTL8365MB_PORT_SPEED_100M:
-+		state->speed = SPEED_100;
-+		break;
-+	case RTL8365MB_PORT_SPEED_10M:
-+		state->speed = SPEED_10;
-+		break;
-+	}
-+}
-+
-+static void rtl8365mb_pcs_link_up(struct phylink_pcs *pcs,
-+				  unsigned int neg_mode,
-+				  phy_interface_t interface, int speed,
-+				  int duplex)
-+{
-+	struct rtl8365mb *mb = pcs_to_rtl8365mb(pcs);
-+	struct realtek_priv *priv = mb->priv;
-+	u32 mask = RTL8365MB_SDS_MISC_SGMII_FDUP_MASK |
-+		   RTL8365MB_SDS_MISC_SGMII_LINK_MASK |
-+		   RTL8365MB_SDS_MISC_SGMII_SPD_MASK;
-+	u32 val = RTL8365MB_SDS_MISC_SGMII_LINK_MASK;
-+	u32 r_speed;
-+	int ret;
-+
-+	if (speed == SPEED_1000) {
-+		r_speed = RTL8365MB_PORT_SPEED_1000M;
-+	} else if (speed == SPEED_100) {
-+		r_speed = RTL8365MB_PORT_SPEED_100M;
-+	} else if (speed == SPEED_10) {
-+		r_speed = RTL8365MB_PORT_SPEED_10M;
-+	} else {
-+		dev_err(priv->dev, "unsupported SerDes speed %s\n",
-+			phy_speed_to_str(speed));
-+		return;
-+	}
-+
-+	val |= FIELD_PREP(RTL8365MB_SDS_MISC_SGMII_SPD_MASK, r_speed);
-+
-+	if (duplex == DUPLEX_FULL)
-+		val |= RTL8365MB_SDS_MISC_SGMII_FDUP_MASK;
-+
-+	/* pcs_link_up() carries no pause information, so the SerDes flow
-+	 * control bits are programmed together with the MAC external interface
-+	 * force from rtl8365mb_phylink_mac_link_up(), where the resolved pause
-+	 * modes are known.
-+	 */
-+	ret = regmap_update_bits(priv->map, RTL8365MB_SDS_MISC_REG, mask, val);
-+	if (ret) {
-+		dev_err(priv->dev, "failed to force SerDes link: %pe\n",
-+			ERR_PTR(ret));
-+		return;
-+	}
-+}
-+
-+static const struct phylink_pcs_ops rtl8365mb_pcs_ops = {
-+	.pcs_inband_caps = rtl8365mb_pcs_inband_caps,
-+	.pcs_config = rtl8365mb_pcs_config,
-+	.pcs_get_state = rtl8365mb_pcs_get_state,
-+	.pcs_link_up = rtl8365mb_pcs_link_up,
-+};
-+
- static int rtl8365mb_ext_config_forcemode(struct realtek_priv *priv, int port,
- 					  bool link, int speed, int duplex,
- 					  bool tx_pause, bool rx_pause)
-@@ -1118,6 +1539,8 @@ static void rtl8365mb_phylink_get_caps(struct dsa_switch *ds, int port,
- {
- 	const struct rtl8365mb_extint *extint =
- 		rtl8365mb_get_port_extint(ds->priv, port);
-+	struct realtek_priv *priv = ds->priv;
-+	struct rtl8365mb *mb = priv->chip_data;
- 
- 	config->mac_capabilities = MAC_SYM_PAUSE | MAC_ASYM_PAUSE |
- 				   MAC_10 | MAC_100 | MAC_1000FD;
-@@ -1141,6 +1564,25 @@ static void rtl8365mb_phylink_get_caps(struct dsa_switch *ds, int port,
- 
- 	if (extint->supported_interfaces & RTL8365MB_PHY_INTERFACE_MODE_RGMII)
- 		phy_interface_set_rgmii(config->supported_interfaces);
-+
-+	if (extint->supported_interfaces & RTL8365MB_PHY_INTERFACE_MODE_SGMII &&
-+	    mb->sds_supported)
-+		__set_bit(PHY_INTERFACE_MODE_SGMII,
-+			  config->supported_interfaces);
-+}
-+
-+static struct phylink_pcs *
-+rtl8365mb_phylink_mac_select_pcs(struct phylink_config *config,
-+				 phy_interface_t interface)
-+{
-+	struct dsa_port *dp = dsa_phylink_to_port(config);
-+	struct realtek_priv *priv = dp->ds->priv;
-+	struct rtl8365mb *mb = priv->chip_data;
-+
-+	if (rtl8365mb_interface_is_serdes(interface))
-+		return &mb->pcs;
-+
-+	return NULL;
- }
- 
- static void rtl8365mb_phylink_mac_config(struct phylink_config *config,
-@@ -1168,6 +1610,12 @@ static void rtl8365mb_phylink_mac_config(struct phylink_config *config,
- 		return;
- 	}
- 
-+	/* SGMII is handled by the SerDes PCS, configured through the
-+	 * phylink_pcs ops, so there is nothing to do here for it.
-+	 */
-+	if (rtl8365mb_interface_is_serdes(state->interface))
-+		return;
-+
- 	/* TODO: Implement MII and RMII modes, which the RTL8365MB-VC also
- 	 * supports
- 	 */
-@@ -1188,7 +1636,13 @@ static void rtl8365mb_phylink_mac_link_down(struct phylink_config *config,
- 	p = &mb->ports[port];
- 	cancel_delayed_work_sync(&p->mib_work);
- 
--	if (phy_interface_mode_is_rgmii(interface)) {
-+	/* phylink has no pcs_link_down callback, so on the SerDes path only the
-+	 * MAC external interface force is reset here. Clearing the MAC force is
-+	 * enough to bring the link down; the SerDes keeps presenting its last
-+	 * forced state until the next pcs_link_up() reprograms it.
-+	 */
-+	if (phy_interface_mode_is_rgmii(interface) ||
-+	    rtl8365mb_interface_is_serdes(interface)) {
- 		ret = rtl8365mb_ext_config_forcemode(priv, port, false, 0, 0,
- 						     false, false);
- 		if (ret)
-@@ -1218,14 +1672,51 @@ static void rtl8365mb_phylink_mac_link_up(struct phylink_config *config,
- 	p = &mb->ports[port];
- 	schedule_delayed_work(&p->mib_work, 0);
- 
--	if (phy_interface_mode_is_rgmii(interface)) {
-+	/* The SerDes forced link state is programmed by the PCS in
-+	 * rtl8365mb_pcs_link_up(); here only the MAC external interface force
-+	 * is configured, for both RGMII and SerDes.
-+	 */
-+	if (phy_interface_mode_is_rgmii(interface) ||
-+	    rtl8365mb_interface_is_serdes(interface)) {
- 		ret = rtl8365mb_ext_config_forcemode(priv, port, true, speed,
- 						     duplex, tx_pause,
- 						     rx_pause);
--		if (ret)
-+		if (ret) {
- 			dev_err(priv->dev,
- 				"failed to force mode on port %d: %pe\n", port,
- 				ERR_PTR(ret));
-+			return;
-+		}
-+
-+		/* The SerDes has its own pause enables; program them from
-+		 * the resolved pause modes, as the vendor driver does when
-+		 * forcing the link on a SerDes external interface. These
-+		 * bits, not the MAC force pause bits, gate pause on the
-+		 * SerDes external interface: flow control testing shows
-+		 * that pause frames are only emitted with the SerDes TXFC
-+		 * bit set, while the MAC force pause bits alone have no
-+		 * effect on this port. This is done here rather than in
-+		 * rtl8365mb_pcs_link_up() because pcs_link_up() carries no
-+		 * pause information.
-+		 */
-+		if (rtl8365mb_interface_is_serdes(interface)) {
-+			u32 val = 0;
-+
-+			if (tx_pause)
-+				val |= RTL8365MB_SDS_MISC_SGMII_TXFC_MASK;
-+			if (rx_pause)
-+				val |= RTL8365MB_SDS_MISC_SGMII_RXFC_MASK;
-+
-+			ret = regmap_update_bits(priv->map,
-+						 RTL8365MB_SDS_MISC_REG,
-+						 RTL8365MB_SDS_MISC_SGMII_TXFC_MASK |
-+							 RTL8365MB_SDS_MISC_SGMII_RXFC_MASK,
-+						 val);
-+			if (ret)
-+				dev_err(priv->dev,
-+					"failed to force SerDes pause modes on port %d: %pe\n",
-+					port, ERR_PTR(ret));
-+		}
- 
- 		return;
- 	}
-@@ -2419,6 +2910,14 @@ static int rtl8365mb_setup(struct dsa_switch *ds)
- 	mb = priv->chip_data;
- 	cpu = &mb->cpu;
- 
-+	mb->pcs.ops = &rtl8365mb_pcs_ops;
-+
-+	/* The SerDes has no link interrupt wired up, so phylink must poll the
-+	 * PCS for link changes when it tracks the link through pcs_get_state()
-+	 * (in-band mode with autonegotiation disabled).
-+	 */
-+	mb->pcs.poll = true;
-+
- 	ret = rtl8365mb_reset_chip(priv);
- 	if (ret) {
- 		dev_err(priv->dev, "failed to reset chip: %pe\n",
-@@ -2426,6 +2925,13 @@ static int rtl8365mb_setup(struct dsa_switch *ds)
- 		goto out_error;
- 	}
- 
-+	ret = rtl8365mb_sds_probe_option(priv);
-+	if (ret) {
-+		dev_err(priv->dev, "failed to probe SerDes chip option: %pe\n",
-+			ERR_PTR(ret));
-+		goto out_error;
-+	}
-+
- 	/* Configure switch to vendor-defined initial state */
- 	ret = rtl8365mb_switch_init(priv);
- 	if (ret) {
-@@ -2658,6 +3164,7 @@ static int rtl8365mb_detect(struct realtek_priv *priv)
- }
- 
- static const struct phylink_mac_ops rtl8365mb_phylink_mac_ops = {
-+	.mac_select_pcs = rtl8365mb_phylink_mac_select_pcs,
- 	.mac_config = rtl8365mb_phylink_mac_config,
- 	.mac_link_down = rtl8365mb_phylink_mac_link_down,
- 	.mac_link_up = rtl8365mb_phylink_mac_link_up,
+ 	mdio {
+ 		phy0: phy@1 {
+-			compatible = "ethernet-phy-ieee802.3-c22";
++			compatible = "ethernet-phy-id001c.c916",
++				     "ethernet-phy-ieee802.3-c22";
+ 			reg = <1>;
+ 			reset-gpios = <&gpio 0 15 GPIO_ACTIVE_LOW>;
+ 			reset-assert-us = <10000>;
+---
+An interesting thing is, moving the reset-gpio to the MDIO bus level
+does not solve this problem. Only setting the right phy id can mitigate
+the problem.
 
--- 
-2.55.0
-
-
+Regards,
+Inochi
