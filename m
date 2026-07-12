@@ -1,62 +1,39 @@
-Received: from sonic315-20.consmr.mail.ne1.yahoo.com (sonic315-20.consmr.mail.ne1.yahoo.com [66.163.190.146])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [212.227.15.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F92372670
-	for <netdev@vger.kernel.org>; Sun, 12 Jul 2026 18:26:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.190.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F7173B19AC;
+	Sun, 12 Jul 2026 18:35:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783880788; cv=none; b=UiX01tTVXNi0y44Btd0yAQGVwLYljwsZMsgVfvlskDUQxdbXJuEu+owsOqtj9vv9OqTxZ1nBoRvOXdF5b+AlBhiyFCnvueQhLwnEoWGnPUdKRBPTqUdepVoJPmW6UPzmAjdiIpsY60JHOicE5iWGsoVKS0HbUuSuylUPrfWpJPk=
+	t=1783881332; cv=none; b=SjsIHmVTrh2uL0tZ6s8uMVygSE96RwQ2BSlxezE4iN01RmBVRPKo0SaLkwDDfsv2COZaMNoehGtBHQaUWzYMPKuQD0tWkSk5qoAQT9AntCmsHza1cYDYSOz0sswVGgM5kO8qqfUr7duLeSCd5no9+mbU8oheJcappoCI+1PGWHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783880788; c=relaxed/simple;
-	bh=P6ghZ0tPlX4H+N/TU3ATLD8RRDscZKlj7i64rQ/hT1w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rB4zVGqRSqAQ7BLiYW+UXlfI6GH51Ls1gMQaC9MTDREycMO0FY1yBdjm+NGglYuz55zuB7fHVD4rN8nmgShG7ryc1v/qHRXBd2ztfLPnb3wyF4bhl3m1JLJhO07pJB6mHir/YP2DL7aRHzOC6LhCm+Q+FumoOr4aA8VEf8WwwS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=adPiLP7q; arc=none smtp.client-ip=66.163.190.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+	s=arc-20240116; t=1783881332; c=relaxed/simple;
+	bh=cuEvobqeT18L3ik7iyb7PK40Fg/TvTVSM1/DZd2tC7A=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=EVvqLJE1zGDu6Oa/JwqhNvxrHiEqdT0B7km6cMJIyN4V5bVqQzlFwhQZPT+M1UGoWl6JySdtQrpra1Bfo+6AHQ3qIPBTG/sSdkJZU+14zA2A/4cxF5/bkG+Ly0cnf1fQPHf2bDCCHZcTY2G9ugGwUvA8AU/4R1TqXjm80PKQDnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=MDvRgzmD; arc=none smtp.client-ip=212.227.15.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="adPiLP7q"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1783880776; bh=7UMEu4ya97zplXTcJ4hIzqbv8+E3Xf7XQi80Xf5pnCs=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=adPiLP7qPPfLLTYLVyRRbGSOecMVKvdOizeQtMCnl+hMTZqCAcoguMJMqAl1uFaPd+YrE/x9gDN1iFSEgXDjXPta3Jaw5qIFMf4XkLRVB2vjcYs+nF1wEsz29EdysBtEsWTXqoUU+yoam54bmNYpRrEQcIajfO8bqZvzMj7o9JvGdCGjcAadkO+zfebAr17lyRq+L7ZkEzFR4ZIXGtUQNKheLTnx273LRV8dAWZSogsWtWzRljKHM/z2cQ9ThuQ7cYa1DABqYl8+SQnDEO/eNMAklPUwQO48Rn6/6YRmzqivHXLtERFQu6lzEk+vONBx3Q4OvntkLYadYlg5kQYWzQ==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1783880776; bh=btPtEQ1cme/TdHEX6hi13d8UxdpDaw83oUXPTIU8l5o=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=q3cr0nvWcKIWQIzvOysvyKh5IX9PCCAnDlZlBs8iI7CK4Wp5TpfZ5vJ+ZeyaTN8lWo4v8k73GAfOSx1lXq2M0kvVYAjAap1uCedt2gvrcPYWMVhZ3QAJmgsM+4p6t6L4pvEyBwZ3IjUyWD/H+4tzg0g/rW8NuTBd2xJ3iYWavegPDEV9KyQ9qGrrl9GXuJOlgDf0VRv09xM0pXBO3NEvKbCr88DPSY3IfsH/G41EM6jMxVZ2D7w7IFM2pUTQOuF41xL6Rq6Xx3+B0X0TWh0DOnW70HTrFVEJb5CSg5EGTKTaXffF412vUSk2iN3MjB4HjH0gA+M4/MzSArv5PrW6cw==
-X-YMail-OSG: 21tgVmAVM1lZyX3ZgLNG6V_GGeqIAJUY7uBSNqNx5PW3_Cy5JWS0iEwandc7z5O
- Kj3RqkKrgONgoRlIX5odQOObtoTfEyOaFFCOXzYiPW98dGlNJlGGahWJwRhBHtxY3NF_ez5jW8_0
- v.ucj4v0ekBUne._HiaEVdFh4tIASjYfsl_bMtpIkIUAfNhKTFARcPiw.LmjJTtc3KC6BXtPLLYz
- ayjIZ3Q_y3NQhP7yG51kHlMO5MFasQBvLBfDmpBOtNFBL9c33alrc_DgaT_DjEU2lfjAXon4fmTY
- yvbpyQWQLNz_699nAAmR7Rw2N2P7z1FCgztvCHMvytAZj.pdnF.Anzf_WmKf0phYtfUfMQ_mT7No
- GIs.5mKIJjWptyraR49C2n4DCp89IGhHq7cI96VzofSVZ0V_LgPhkPfdPZd9ORY4QR3I3dIwUkj6
- OyudlJGHVZyBACmksLdptCDkhj8CGbeoCK.ADGjCylTjw1lgb0vD8PUJKj5K6SwWEGTsGVmo_Bxk
- 7x9KoGZEp.rdiYZvvX9gLOkzURBeB9euqyNEBKls1KKiOc2_xA34fFsQUH31C_bi.3ckZIzcs6_C
- xQvUF6nX9o0t6gxDn.4sgwvb4LLjo60k2km3Ve.PZI.47X3BLNiPfb5koxLeFnlEFAIcSGBQNAJX
- SgJNVvqh47hjKVqL7lA9vnU01k8pqmZmB5HVzKZfrm7UIFucUS79m8lec_rxmehLPyMaN_S4pnLV
- tyOj7mi9BUBjF1XQWAx2cFRGqKVwOjP8tgOMg4DgmWCwqNGXohLG56FKkAOvWMwW6AujGIS36FM6
- ws5KccLeDFnvOHXCzxd8G8US7YyiC5QMUTetwqXfjDfN3FhwDbH24niCk3qYfm3pfPQvUKwV0cw.
- 8LR5H012vUhEfTxZ.ony3PPLTkghUU9if6I6qoPUwiAtFsXNLtpxfxEWbtcQN8LNyho0FBVTJ4qd
- .hS_0yETGdZJgBYsKR0SgJqP6rjGKP5lZ7_BrkygRMmtxRE.yriDOKi6DeSEWvuRyBIrpVYc_MUH
- U0gErnH.D4acb0KHv8dPUWvXH7gbcp_b2mQ3oBo5q6bW6UZAtZfIEOoL9kBjb_mpqzipa2licB22
- Dmsy0S322Ul5p9SzDrOzruPrbPQakuwcz7hdPMxJdEjKVthBDSmdjD3KFSeTyNRaIl5fyGQAU5ZM
- unufhQniXY0W9.Nhlkdn.p25AaMXYspnz9waIhTYNk6ANZxIqDqE6Thnjxgij7uvBnDXPygbwbjj
- yXyA_TYz5nChkLx97YcRrQXv6z.Fu7IITvgSPVLawPSgfu8W.5QU_8mANSRD2YzxX.ZVzst5jpNX
- jp.OWMJmHqIS6nv823Bwiflkz5rH.wwXj.Jj8YyR9iVVswvGgjv8X68eFxULIjCk3OkDbAcfuKCl
- eJKwbAy23MwTSzymlwLzMWYSbq9Lf5vIkm9Z3VNt52vMmmXpTBJ.0YQw2atfavWkIY0htToU6AhH
- 3GrWhMZvHHQSh7Yo.raSkvQSKc0KrRkE3ZdFM4S8mDKhcvMevpzCqeSLwObt4zDM6hwXg39Y6q0V
- BYw90RIaxfFPvKnGa6D.GAY4j29ac_FEBgm9OWvpQWNs3CGJsVP83E0wrPwa9f3qHtL0GGRK6vSu
- AUuKAxnrZBNwNjUTkM0i1AxVjDXO9yr.3j1dZ6RF0gjOepqhdS.Lq6lzIy10vgm9mLIjVzWzmAgy
- qtweImaNGgBkkc4RgEFIxVGfJkfiEuCD9U4UP3x_VYS_IiSCgKSbKWb8.bM4NBwG1GW4BY.yHn5W
- ORCsnKpIJVtiS9ofd4H3bgz1KzmaIE6SeX.TSM7U_nOgyQWr0MIF.jU5Ax7j6hFE9D7F9Y6dC6.S
- Rq5foVCm910d7gGOcMSK3vSPCEtinmB2c8ZvIxnystSXfVtq6k.B5IDQWJbkDFOx4E5iz5SsR.Ec
- 5VLPn7rUle6uBBMyIorUjgrwvWum7FQjGWoASbQach5m.ho5DLpW5RhhyqTW_TC9iIuoKiQTu0NX
- p1526YDOBKrpGodzl9GKHFl2kq5ZegVeGqAz12kKfEzc.oH6tPEOXdW_yqR09vVafemsenQBBsbL
- csCcfNmsK6hBascKJJzDowXLq2q.DlOy6WaB26C6XwSzGeLQUMtwdvTdqGLExjCowwOOmu9hpUGf
- VtE1c8DqtNJC5NfoCGH_dJYJKzccsw9b9Oj7n9dOQqXRYaAGpIEFUpeOdaVZi7Zlov64rYwRPL3o
- VsH0Wnh7b7EPHhNq7R3PHqmuRzk5lGKWo_xEHT6ZthAGozTKYR0CqdZh1KiZvfSx_nwmhFpjzQTO
- Jqfyt5i6dmLQGRWzYNfnPU3_V_57oJW6DO7zEelnN8Ajp
-X-Sonic-MF: <namiltd@yahoo.com>
-X-Sonic-ID: 0e7521ab-684d-494e-b6a2-2971447cffb4
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic315.consmr.mail.ne1.yahoo.com with HTTP; Sun, 12 Jul 2026 18:26:16 +0000
-Received: by hermes--production-ir2-7b48fcd765-7kk4q (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 14ffdde626cdbfdeb3ae8e42bb048280;
-          Sun, 12 Jul 2026 18:05:35 +0000 (UTC)
-Message-ID: <7b164d90-b57f-4746-8b7f-b5bb7fd7fe51@yahoo.com>
-Date: Sun, 12 Jul 2026 20:05:32 +0200
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="MDvRgzmD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1783881328; x=1784486128; i=markus.elfring@web.de;
+	bh=hbUEczp4KsJi39poKqaYaUbduvNtMguZWWI/pkL2z+I=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:From:
+	 Subject:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=MDvRgzmDAqHDeSPo1GHFfv2V0OQU/FtA3vAhr/FOzSHo+Y0IPqmtZsQaGmGsNpmy
+	 JJMjYfTkNGvkGCuNzjXMThLDAKbJKpOsDohkOlHyQbvGObrov6oWFr/zqgDNKh8IV
+	 /7hvGnPwAO2B8yYagNDs5oyjhkpuFAkac5kIUk6k2Kk7v/1LfbFhAde1qpZ5DLHsM
+	 lo5v/oYYYSwkAdSr3pqyjbvrCaPGLVjqEMLx+JMluwj6xEkIxpdnC+GPk9MY6VDhs
+	 1ITq18vaX7CdIK887BfrjrvCAVX/V3BtjJlcZugJhQYZrDyApis21F9wSrTXrq5E2
+	 asO9r4B7pZKQ9mCBww==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from client.hidden.invalid by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MY5bV-1wYkG51LLR-00RZg0; Sun, 12
+ Jul 2026 20:35:28 +0200
+Message-ID: <7958e26e-a4f9-48ee-8d79-3797016944c5@web.de>
+Date: Sun, 12 Jul 2026 20:35:21 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,260 +41,150 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v6 2/2] net: dsa: realtek: rtl8365mb: add HSGMII
- support for RTL8367S
-To: contact@c127.dev, Linus Walleij <linusw@kernel.org>,
- =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
+To: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Russell King <linux@armlinux.org.uk>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Luiz Angelo Daros de Luca <luizluca@gmail.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260711-rtl8367s-sgmii-v6-0-88f7944ddca7@c127.dev>
- <20260711-rtl8367s-sgmii-v6-2-88f7944ddca7@c127.dev>
-Content-Language: pl
-From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-In-Reply-To: <20260711-rtl8367s-sgmii-v6-2-88f7944ddca7@c127.dev>
+ Jakub Kicinski <kuba@kernel.org>, MD Danish Anwar <danishanwar@ti.com>,
+ Michael Grzeschik <mgr@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>, Yibo Dong <dong100@mucse.com>
+Content-Language: en-GB, de-DE
+Cc: LKML <linux-kernel@vger.kernel.org>, kernel-janitors@vger.kernel.org
+From: Markus Elfring <Markus.Elfring@web.de>
+Subject: [PATCH net] net: rnpgbe: Pass an expression directly in
+ rnpgbe_rm_adapter()
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: WebService/1.1.26136 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:tvaKAH4390uOvJz93ZD75OkNUUQX4Q3Q8VpmHxbudXDlVU9c+JC
+ fUt32AiwWPHqOXRsRArVihbdyMPgnlea+HE+0KMtITkwLdx52HJHrYzirKoe/wu7eAye1PE
+ XdV8mAzhlLAJG13EnLZUeeN4JGelwZZHUcZAdg4xwBdq+FdOsYMvLeyABOxby+06mAh7+92
+ BRDX/Z30WUaZ8iHtoZK/w==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:xct38FPHCys=;i/DvmYohppi6CmqdCyGv8ISwjDv
+ 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
 
-Hi Johan
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Sun, 12 Jul 2026 20:25:10 +0200
 
-On 7/12/2026 6:31 AM, Johan Alvarado via B4 Relay wrote:
-> From: Johan Alvarado <contact@c127.dev>
-> 
-> In addition to SGMII, the RTL8367S SerDes also supports HSGMII, which
-> carries 2.5 Gbps with the same signaling as SGMII at 2.5x clock rate.
-> The chip info table already declares HSGMII as a supported interface
-> mode for external interface 1.
-> 
-> Extend the SerDes PCS to handle HSGMII, which phylink represents as
-> 2500base-x:
-> 
->  - Select the HSGMII SerDes tuning parameters and external interface
->    mode, and mux the SerDes to MAC8 in HSGMII mode, from pcs_config()
->    according to the interface. The parameters are again lifted from the
->    GPL-licensed Realtek rtl8367c vendor driver, and again only cover
->    the tuning variant for a non-zero chip option, so the mode is gated
->    on the option probed at setup.
-> 
->  - Advertise 2500base-x and MAC_2500FD on ports whose external
->    interface supports HSGMII.
-> 
->  - Accept SPEED_2500 in the forced link configuration. The MAC speed
->    field has no 2.5 Gbps value: the rate is determined by the HSGMII
->    SerDes configuration, and the vendor driver programs the 1 Gbps
->    value here, so do the same.
-> 
->  - Raise the port 6 ingress and egress rate limiters to their maximum
->    at setup time, as the vendor switch init does unconditionally for
->    the whole chip family. The chip resets them to 0x1FFFF (~1.048 Gbps
->    in units of 8 Kbps), which caps the aggregate HSGMII throughput at
->    roughly 1 Gbps. The vendor documentation describes the reset
->    default as disabling the limiter, but the cap is real: on an
->    RTL8367S-based Mercusys MR85X running an OpenWrt backport of this
->    series, several clients on 1 Gbps user ports were limited to about
->    1.02 Gbps combined across the HSGMII CPU port until these limiters
->    were raised, after which throughput reached about 2 Gbps [1]. The
->    related HSGMII scheduler line rate (LINE_RATE_HSG_H) is already set
->    to its maximum by the common init jam table.
-> 
-> Tested on a Mercusys MR80X v2.20, where the RTL8367S is connected to
-> the SoC over HSGMII.
-> 
-> Link: https://github.com/openwrt/openwrt/pull/19445#issuecomment-4505613294 [1]
-> Suggested-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
-> Suggested-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-> Signed-off-by: Johan Alvarado <contact@c127.dev>
+The address of a data structure member was determined before
+a corresponding null pointer check in the implementation of
+the function =E2=80=9Crnpgbe_rm_adapter=E2=80=9D.
 
-Thanks for the patch, this matches what I've seen too on similar
-hardware.
+Thus avoid the risk for undefined behaviour by omitting the variable =E2=
+=80=9Chw=E2=80=9D.
+Pass the required address directly to a function call.
 
-As discussed earlier in the thread: the rate limiter helper, as well
-as pcs_config()/RTL8365MB_SDS_BYPASS_LINE_RATE_MASK, currently assume
-the SerDes is always muxed to external interface 1 / port 6
-(RTL8365MB_SDS_EXT_INTERFACE_ID / _PORT). That's true for every chip
-currently in rtl8365mb_chip_infos[] (RTL8367S and RTL8367SB both have
-their SGMII/HSGMII-capable extint at { 6, 1, ... }), so nothing is
-broken today.
+This issue was detected by using the Coccinelle software.
 
-I still think it's worth guarding against this ahead of time though.
-It isn't an architectural constant of the family, just something that
-happens to hold for the two chips currently in the table, and there's
-no guarantee a future chip won't mux its SerDes to a different port
-or extint id. If that happens, pcs_config() would silently program
-the wrong DIGITAL_INTERFACE_SELECT/FORCE register, and the rate
-limiter helper would write to the wrong port's registers (or need to
-guess an address it can't verify) - the kind of thing that's easy to
-miss in review since it only breaks on hardware nobody in this thread
-has to test with.
+Fixes: 2ee95ec17e97c58b65e978a08b75fa8cb6424e4e ("net: rnpgbe: Add registe=
+r_netdev")
+Cc: stable@vger.kernel.org
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+=2D--
+ drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Since rtl8365mb_sds_probe_option() already walks
-chip_info->extints[] looking for the SGMII/HSGMII-capable one, I'd
-like to have it cache the discovered port and id (mb->sds_port /
-mb->sds_id) instead of relying on the fixed
-RTL8365MB_SDS_EXT_INTERFACE_ID/_PORT. pcs_config() and the bypass
-line-rate mask would then use the cached values, and
-rtl8365mb_sds_raise_rate_limits() would check mb->sds_port == 6 and
-warn+skip instead of assuming, since only the port 6 register
-addresses are known/verified so far.
+diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c b/drivers/net=
+/ethernet/mucse/rnpgbe/rnpgbe_main.c
+index 70a2b0082ba8..93cf757c951c 100644
+=2D-- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
++++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
+@@ -245,7 +245,6 @@ static int rnpgbe_probe(struct pci_dev *pdev, const st=
+ruct pci_device_id *id)
+ static void rnpgbe_rm_adapter(struct pci_dev *pdev)
+ {
+ 	struct mucse *mucse =3D pci_get_drvdata(pdev);
+-	struct mucse_hw *hw =3D &mucse->hw;
+ 	struct net_device *netdev;
+ 	int err;
+=20
+@@ -253,7 +252,7 @@ static void rnpgbe_rm_adapter(struct pci_dev *pdev)
+ 		return;
+ 	netdev =3D mucse->netdev;
+ 	unregister_netdev(netdev);
+-	err =3D rnpgbe_send_notify(hw, false, mucse_fw_powerup);
++	err =3D rnpgbe_send_notify(&mucse->hw, false, mucse_fw_powerup);
+ 	if (err)
+ 		dev_warn(&pdev->dev, "Send powerdown to hw failed %d\n", err);
+ 	free_netdev(netdev);
+=2D-=20
+2.55.0
 
-Draft below, as a preparatory patch to go before this one. No
-functional change for RTL8367S/RTL8367SB - just removes the
-assumption for whatever comes next. Let me know what you think.
-
----
-  #define RTL8365MB_BYPASS_LINE_RATE_REG		0x03F7
-  #define RTL8365MB_BYPASS_LINE_RATE_MASK(_port)	BIT((_port) - 5)
-  
- +/* Port 6 ingress and egress rate limiter registers. Each limit is a 19-bit
- + * value in units of 8 Kbps, split across a 16-bit LSB register (CTRL0) and a
- + * 3-bit MSB field (CTRL1). The chip resets them to 0x1FFFF; see
--+ * rtl8365mb_sds_raise_rate_limits().
-++ * rtl8365mb_sds_raise_rate_limits(). Only port 6 addresses are known - every
-++ * chip currently supported muxes the SerDes to port 6 (see mb->sds_port),
-++ * but this is not guaranteed for chips that may be added later.
- + */
- +#define RTL8365MB_INGRESSBW_PORT6_RATE_CTRL0_REG	0x00CF
- +#define RTL8365MB_INGRESSBW_PORT6_RATE_CTRL1_REG	0x00D0
-@@ -30,7 +32,29 @@
-  /* SerDes indirect access registers */
-  #define RTL8365MB_SDS_INDACS_CMD_REG		0x6600
-  #define   RTL8365MB_SDS_INDACS_CMD_BUSY_MASK	0x0100
--@@ -637,6 +649,18 @@ static const struct rtl8365mb_jam_tbl_entry rtl8365mb_sds_jam_sgmii[] = {
-+@@ -270,12 +284,11 @@
-+ #define   RTL8365MB_SDS_MISC_SGMII_SPD_MASK		0x0180
-+ #define   RTL8365MB_SDS_MISC_MAC8_SEL_SGMII_MASK	0x0040
-+ 
-+-/* The embedded SerDes can only be muxed to external interface 1 (MAC8),
-+- * which is port 6.
-++/* The embedded SerDes is muxed to whichever external interface the chip's
-++ * extint table marks as SGMII/HSGMII-capable. For every chip currently
-++ * supported this is external interface 1 (MAC8) on port 6, but this is
-++ * discovered per-chip in rtl8365mb_sds_probe_option() and cached in
-++ * mb->sds_port / mb->sds_id rather than assumed, since it need not hold for
-++ * chips added in the future.
-+  */
-+-#define RTL8365MB_SDS_EXT_INTERFACE_ID		1
-+-#define RTL8365MB_SDS_EXT_INTERFACE_PORT	6
-+-
-+-/* Line rate bypass bit for the SerDes external interface */
-+-#define RTL8365MB_SDS_BYPASS_LINE_RATE_MASK \
-+-	RTL8365MB_BYPASS_LINE_RATE_MASK(RTL8365MB_SDS_EXT_INTERFACE_PORT)
-+ 
-+ /* SerDes tuning parameter variant selector. The vendor driver picks between
-+  * two sets of SerDes tuning parameters based on this chip option. Reading it
-+@@ -637,6 +650,18 @@ static const struct rtl8365mb_jam_tbl_entry rtl8365mb_sds_jam_sgmii[] = {
-  	{ 0x0424, 0xD810 }, { 0x002E, 0x83F2 },
-  };
-  
-@@ -49,25 +73,61 @@
-  enum rtl8365mb_phy_interface_mode {
-  	RTL8365MB_PHY_INTERFACE_MODE_INVAL = 0,
-  	RTL8365MB_PHY_INTERFACE_MODE_INTERNAL = BIT(0),
--@@ -1242,20 +1266,70 @@ static int rtl8365mb_sds_probe_option(struct realtek_priv *priv)
-+@@ -871,6 +896,11 @@ struct rtl8365mb {
-+ 	struct rtl8365mb_port ports[RTL8365MB_MAX_NUM_PORTS];
-+ 	struct phylink_pcs pcs;
-+ 	bool sds_supported;
-++	/* Port and extint id the SerDes is muxed to on this chip, discovered
-++	 * in rtl8365mb_sds_probe_option() from the chip's extint table.
-++	 * Valid only if sds_supported is true.
-++	 */
-++	int sds_port;
-++	int sds_id;
-+ };
-+ 
-+ #define pcs_to_rtl8365mb(_pcs) container_of((_pcs), struct rtl8365mb, pcs)
-+@@ -1229,6 +1259,9 @@ static int rtl8365mb_sds_probe_option(struct realtek_priv *priv)
-+ 	if (i == RTL8365MB_MAX_NUM_EXTINTS)
-+ 		return 0;
-+ 
-++	mb->sds_port = extint->port;
-++	mb->sds_id = extint->id;
-++
-+ 	ret = regmap_write(priv->map, RTL8365MB_SDS_OPTION_ARM_REG,
-+ 			   RTL8365MB_SDS_OPTION_ARM_KEY);
-+ 	if (ret)
-+@@ -1242,20 +1275,74 @@ static int rtl8365mb_sds_probe_option(struct realtek_priv *priv)
-  	return 0;
-  }
-  
--+/* The vendor driver raises the port 6 ingress and egress rate limiters to
--+ * their maximum in its switch init, unconditionally for the whole chip
--+ * family. The chip reset in rtl8365mb_setup() puts them back to their reset
--+ * default of 0x1FFFF, a ~1.048 Gbps limit which caps the aggregate
--+ * throughput of an HSGMII CPU port at roughly 1 Gbps. The vendor
-++/* The vendor driver raises the ingress and egress rate limiters of the
-++ * SerDes-connected port to their maximum in its switch init, unconditionally
-++ * for the whole chip family. The chip reset in rtl8365mb_setup() puts them
-++ * back to their reset default of 0x1FFFF, a ~1.048 Gbps limit which caps the
-++ * aggregate throughput of an HSGMII CPU port at roughly 1 Gbps. The vendor
- + * documentation describes the reset default as disabling the limiter, but
- + * the cap has been observed on hardware. Raise them likewise, to 0x7FFFF
- + * (~4.19 Gbps, above the HSGMII line rate). The related HSGMII scheduler
- + * line rate register (LINE_RATE_HSG_H, 0x03FA) is already set to its
- + * maximum by the common init jam table.
-++ *
-++ * Only the port 6 register addresses are known. Every chip currently
-++ * supported muxes the SerDes to port 6 (see mb->sds_port, discovered in
-++ * rtl8365mb_sds_probe_option()); if a future chip ends up muxing it
-++ * elsewhere, skip rather than guess at an address.
- + */
- +static int rtl8365mb_sds_raise_rate_limits(struct realtek_priv *priv)
- +{
-++	struct rtl8365mb *mb = priv->chip_data;
- +	int ret;
- +
-++	if (mb->sds_port != 6) {
-++		dev_warn(priv->dev,
-++			 "SerDes on port %d has no known rate limiter registers, skipping\n",
-++			 mb->sds_port);
-++		return 0;
-++	}
-++
- +	ret = regmap_write(priv->map, RTL8365MB_INGRESSBW_PORT6_RATE_CTRL0_REG,
- +			   0xFFFF);
- +	if (ret)
-@@ -96,17 +156,18 @@
-  				bool permit_pause_to_mac)
-  {
- +	const struct rtl8365mb_jam_tbl_entry *sds_jam;
-- 	const int id = RTL8365MB_SDS_EXT_INTERFACE_ID;
-  	struct rtl8365mb *mb = pcs_to_rtl8365mb(pcs);
-  	struct realtek_priv *priv;
- +	size_t sds_jam_size;
-++	int id;
- +	u32 mode;
-  	u16 val;
-  	int ret;
-  	int i;
-  
-  	priv = mb->priv;
-- 
-++	id = mb->sds_id;
-++
- +	if (interface == PHY_INTERFACE_MODE_2500BASEX) {
- +		sds_jam = rtl8365mb_sds_jam_hsgmii;
- +		sds_jam_size = ARRAY_SIZE(rtl8365mb_sds_jam_hsgmii);
-@@ -116,8 +177,15 @@
-  
-  	/* Hold the embedded DW8051 microcontroller in reset and keep it
-  	 * disabled. The vendor driver loads firmware into it to manage the
-- 	 * SerDes link, but the firmware only duplicates work that phylink
--@@ -1283,24 +1357,24 @@ static int rtl8365mb_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
-+@@ -1272,17 +1359,20 @@ static int rtl8365mb_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
-+ 	/* The vendor driver clears the line rate bypass for all interface
-+ 	 * modes except TMII.
-+ 	 */
-+ 	ret = regmap_update_bits(priv->map, RTL8365MB_BYPASS_LINE_RATE_REG,
-+-				 RTL8365MB_SDS_BYPASS_LINE_RATE_MASK, 0);
-++				 RTL8365MB_BYPASS_LINE_RATE_MASK(mb->sds_port),
-++				 0);
-+ 	if (ret)
-  		return ret;
-  
-  	/* Tune the SerDes with vendor-prescribed parameters */
