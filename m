@@ -1,36 +1,68 @@
-Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.37])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AD193672A0
-	for <netdev@vger.kernel.org>; Sun, 12 Jul 2026 02:13:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C392AD37
+	for <netdev@vger.kernel.org>; Sun, 12 Jul 2026 03:46:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783822427; cv=none; b=RSzri7QtaDn3P7MXkWlIzDFc7faK1aqqVRqnQNpFq1ZRzExQZvez0ZEv3emUdQDn6k5WqBx3MFCrv5jM+KF388tGn55jO6iCutdD4h7Cy+qXmm5YUs9zZGxYhHva1yFFeMIagrDjre+QfEZUuuh9bEq71nVyhFr7Om6kAWa0KP0=
+	t=1783827962; cv=none; b=Hebaqh1OkO+db4304gehBt03HyC4zmzXZyztJ9vWEsD3H4zgrfg4FhA36LIh8oOUBKFFkwCGBOcA92KC6exkZrMHIGiGW/YQ2JqUEA3SDN6SjTpYNJhL97wHbvGxL5mfKP6k2+rZqxPk0AV14fmVvUfuMxTYy/brvZDozX7Sl90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783822427; c=relaxed/simple;
-	bh=E6mB5pdHBosQnW592xOaskjo7q29J4mWnCPtE8zo+zw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Zj07TQ3tBZuFbaFlAEIfhi2KUjL+UDVJNDmDMEudVqf8je7uDUpxF76cgJntgA5LBlmQDWqyQzg0YZL9Lo2ArbDj83GVKl6vJPYiaQuqN6JAJSoeKYlK6BTYqY/LPknv307STBt9zyfwVmnpUkGqJxqjNq4aWek6B8EX/5KJGtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; arc=none smtp.client-ip=160.80.4.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
-Received: from localhost.localdomain ([160.80.103.126])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 66C2DKm0015953;
-	Sun, 12 Jul 2026 04:13:26 +0200
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
-To: David Ahern <dsahern@kernel.org>, netdev@vger.kernel.org
-Cc: Stephen Hemminger <stephen@networkplumber.org>,
-        Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-        Stefano Salsano <stefano.salsano@uniroma2.it>,
-        Ahmed Abdelsalam <ahabdels@cisco.com>,
-        Paolo Lungaroni <paolo.lungaroni@uniroma2.it>,
-        Justin Iurman <justin.iurman@6wind.com>,
-        Anthony Doeraene <anthony.doeraene@uclouvain.be>,
-        Andrea Mayer <andrea.mayer@uniroma2.it>
-Subject: [PATCH iproute2-next 1/2] seg6: add support for lookup attribute in SRv6 encap routes
-Date: Sun, 12 Jul 2026 04:11:54 +0200
-Message-Id: <20260712021155.7621-2-andrea.mayer@uniroma2.it>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20260712021155.7621-1-andrea.mayer@uniroma2.it>
-References: <20260712021155.7621-1-andrea.mayer@uniroma2.it>
+	s=arc-20240116; t=1783827962; c=relaxed/simple;
+	bh=Qfc6vMUGIcxIJrJW+TuqjiyNUPdH0OcbBhUBq1FyOZk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nBG4sPbZ14F655PKaAt3kSwRtlS0UOWCF1bC2FPZ7Gzl14pMQki7+JOW9psyqJ7Xpl8K0pHA6p88moCQq81lKVsCl4aFKaOKFcsITNRrl7i2ayyt46G4HZfbjqWriFF5vWUJYFpnI6JrNxZdwC1aQQ30VGFWX+ey4o7T3HUDp/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LxdO68Hk; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LxdO68Hk"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-38511175ad3so1788536a91.2
+        for <netdev@vger.kernel.org>; Sat, 11 Jul 2026 20:46:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783827961; x=1784432761; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=o5XKQUUXHAbUeA3WN7L6NxqU0hXLMQd2VjUouTX2jV0=;
+        b=LxdO68HkeEBeczgjGU33BIrlrNOThBb1D9miJnC9T25ZOghD7DOiTWZP/qeN6657cl
+         sH2qxj1F5eTKXwJfpIB7qzxOr7Bmszr+3WOjx3IKBBsbEbNbanxfqXRsO60V12gHenp8
+         QWqSzRpzj8ejoJVKm1Vgp1rZuoVfUUewy9tHetsFdBPt7J3awYwWLBFBFizfsmV+rlo8
+         /juMgh+UelzR8iv81pioVaxIKkW38ZHEPL7VHdjpGbv5t/wIjg52r57phhlCCFAHCvCa
+         JxAJl24OEi5jx95ormFoE5Ye2bugOLd8wHYwHmnKcgeVnkGXp0BzsRpL9v+DfBXDJOFZ
+         NrVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783827961; x=1784432761;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=o5XKQUUXHAbUeA3WN7L6NxqU0hXLMQd2VjUouTX2jV0=;
+        b=meKrfqPuyj6lmhENnyh59taYGYKHeFBBNt0zLff7TV+iDYfRUeVXOccJ4kLfoXx6v4
+         vzcDZnJBljaOWNmQcBLbnlGZJm3x6ka5VtmZ9UBeatLAAnH6MMIOJaHAPAQ5rXOBzh63
+         9pGZXQG6XJRpj35Y973zbHbs+/8RcGK01s4OB4sg7uTqm0yUKP2hSGHt50SspGAyxwaY
+         ZGufo+ccTtQLsmeLRkEJs31kqc3fginAA2w5L4i+lY8HMbXmpWu1/AosdnLVlm+1l13n
+         K5TRULMHiyi3fgQcw8MwmUMa2wG6eoKyoExs+5IKB2wTPT41hUmXgF864dCED0bwOk3i
+         8PuA==
+X-Gm-Message-State: AOJu0YyOg7WXn/FXutttL+szJGHnQdNmnZNsSh0sAWzeQixoaew8T7+m
+	DVIW2IwzBc+Zqbf3eTwGqhcufCBjf771JT7FX5GjHMxjSd5fvQpINXTfGLmogGQku2o=
+X-Gm-Gg: AfdE7cl8iFuF+F9qFmBsO1abzNGKaQJSa49W8GiDDRGpJWQa/cW+234kaoUO+V+jA8f
+	p78wWQGw1momqGm+bruKx8p9el4gfRXf1tINqtEc/3ThTnxWRd+U97GCa9kEyaSSRD0KX4QOHuK
+	E6OWp5Vb77r3dAFrriO8tIQ4/S1JVwBAeQgV8lfETfzm//ECV+Ls0DlwqMT9A5+QL6lGhogOyLG
+	W9WRW3Moxeigb8FwBuwhvCyEji4koQ2+p7CP8SG8taiPQ0rGFNCjAYi01/cdzEg3hXbls4/QcYp
+	qCjrfX+rJ/eqj6jZJipzYJWshxAF1D3Zkkaq3fZepdY1m/HDsMslJN6RFQf07YKBUzLf7Co/JSu
+	9rz/VAyX4ka3S4RjR0snvnipRZC18ugspQPaKMeEkftX/nH3VbnOhrQIRQ9TOwvXsWPY5Hb3cMQ
+	+9LR8UvN6N4gTo7uagx72w9PvIC0XfjITUaPAgLIypJlCegN4=
+X-Received: by 2002:a17:90b:4e:b0:38d:c0f9:30be with SMTP id 98e67ed59e1d1-38dc77a74aamr4639670a91.38.1783827960814;
+        Sat, 11 Jul 2026 20:46:00 -0700 (PDT)
+Received: from Gris-WS (gia.grisge.info. [67.230.185.89])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-313b9ca880fsm15740932eec.23.2026.07.11.20.45.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 11 Jul 2026 20:46:00 -0700 (PDT)
+From: Gris Ge <cnfourt@gmail.com>
+To: netdev@vger.kernel.org,
+	David Ahern <dsahern@kernel.org>
+Cc: Gris Ge <cnfourt@gmail.com>
+Subject: [PATCH iproute2-next] Fix netdevsim switch_id display truncation
+Date: Sun, 12 Jul 2026 11:45:17 +0800
+Message-ID: <20260712034528.937880-2-cnfourt@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -38,116 +70,42 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
-X-Virus-Status: Clean
 
-Add support for the new optional "lookup" attribute for seg6 encap
-routes. It selects the FIB table for the post-encap SID route lookup
-and accepts a table number or a table name.
+Problem:
 
-Examples:
+The `ip -d link show sim0` against of netdevsim interface, the
+`switchid` only has 62 chars. The kernel `struct netdev_phys_item_id`
+confirmed the switch id is 32 bytes which should produces 64 hex chars.
 
-  # SID route installed in the underlay table 500
-  ip -6 route add fc00::100/128 via fd00::1 dev veth0 table 500
+Root cause:
 
-  # encap route in vrf-100; the first SID is looked up in table 500
-  ip -6 route add cafe::1/128 vrf vrf-100 \
-      encap seg6 mode encap segs fc00::100 lookup 500 dev veth0
+When `print_linkinfo()` showing `switchid`, it invokes `hexstring_n2a()`
+which output hex string to `SPRINT_BUF(b1)` including trailing NULL.
+The 32 bytes binary need 65 chars including trailing NULL while
+`SPRINT_BUF` is 64 chars.
 
-  # or if the SID is already handled by the main table
-  ip -6 route add cafe::1/128 vrf vrf-100 \
-      encap seg6 mode encap segs fc00::100 lookup main dev veth0
+Fix:
 
-When the attribute is omitted, the post-encap SID route lookup behaves
-as before, using the current routing context (e.g. the tables selected
-according to the routing policy database).
+Bump `SPRINT_BSIZE` from 64 to 128.
 
-Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+Signed-off-by: Gris Ge <cnfourt@gmail.com>
 ---
- ip/iproute.c          |  1 +
- ip/iproute_lwtunnel.c | 22 +++++++++++++++++++++-
- 2 files changed, 22 insertions(+), 1 deletion(-)
+ include/utils.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/ip/iproute.c b/ip/iproute.c
-index 5b9e7ac1..1ce71f78 100644
---- a/ip/iproute.c
-+++ b/ip/iproute.c
-@@ -101,6 +101,7 @@ static void usage(void)
- 		"ENCAPTYPE := [ mpls | ip | ip6 | seg6 | seg6local | rpl | ioam6 | xfrm ]\n"
- 		"ENCAPHDR := [ MPLSLABEL | SEG6HDR | SEG6LOCAL | IOAM6HDR | XFRMINFO ]\n"
- 		"SEG6HDR := [ mode SEGMODE ] segs ADDR1,ADDRi,ADDRn [hmac HMACKEYID] [cleanup]\n"
-+		"           [ lookup TABLEID ]\n"
- 		"SEGMODE := [ encap | encap.red | inline | l2encap | l2encap.red ]\n"
- 		"SEG6LOCAL := action ACTION [ OPTIONS ] [ count ]\n"
- 		"ACTION := { End | End.X | End.T | End.DX2 | End.DX6 | End.DX4 |\n"
-diff --git a/ip/iproute_lwtunnel.c b/ip/iproute_lwtunnel.c
-index 00b4f756..9a1e747c 100644
---- a/ip/iproute_lwtunnel.c
-+++ b/ip/iproute_lwtunnel.c
-@@ -256,6 +256,7 @@ static void print_encap_seg6(FILE *fp, struct rtattr *encap)
- {
- 	struct rtattr *tb[SEG6_IPTUNNEL_MAX+1];
- 	struct seg6_iptunnel_encap *tuninfo;
-+	SPRINT_BUF(b1);
+diff --git a/include/utils.h b/include/utils.h
+index f0d45bad..c451baa9 100644
+--- a/include/utils.h
++++ b/include/utils.h
+@@ -39,7 +39,7 @@ extern bool do_all;
+ extern int echo_request;
+ extern int use_iec;
  
- 	parse_rtattr_nested(tb, SEG6_IPTUNNEL_MAX, encap);
+-#define SPRINT_BSIZE 64
++#define SPRINT_BSIZE 128
+ #define SPRINT_BUF(x)	char x[SPRINT_BSIZE]
  
-@@ -274,6 +275,12 @@ static void print_encap_seg6(FILE *fp, struct rtattr *encap)
- 	}
- 
- 	print_srh(fp, tuninfo->srh);
-+
-+	if (tb[SEG6_IPTUNNEL_TABLE]) {
-+		print_string(PRINT_ANY, "lookup", "lookup %s ",
-+			     rtnl_rttable_n2a(rta_getattr_u32(tb[SEG6_IPTUNNEL_TABLE]),
-+					      b1, sizeof(b1)));
-+	}
- }
- 
- static void print_rpl_srh(FILE *fp, struct ipv6_rpl_sr_hdr *srh)
-@@ -955,7 +962,7 @@ static struct ipv6_sr_hdr *parse_srh(char *segbuf, int hmac, bool encap)
- static int parse_encap_seg6(struct rtattr *rta, size_t len, int *argcp,
- 			    char ***argvp)
- {
--	int mode_ok = 0, segs_ok = 0, hmac_ok = 0;
-+	int mode_ok = 0, segs_ok = 0, hmac_ok = 0, lookup_ok = 0;
- 	struct seg6_iptunnel_encap *tuninfo = NULL;
- 	struct ipv6_sr_hdr *srh;
- 	char **argv = *argvp;
-@@ -963,6 +970,7 @@ static int parse_encap_seg6(struct rtattr *rta, size_t len, int *argcp,
- 	bool tunsrc = false;
- 	inet_prefix saddr;
- 	int argc = *argcp;
-+	__u32 lookup = 0;
- 	int encap = -1;
- 	__u32 hmac = 0;
- 	int ret = -1;
-@@ -1006,6 +1014,13 @@ static int parse_encap_seg6(struct rtattr *rta, size_t len, int *argcp,
- 			if (hmac_ok++)
- 				duparg2("hmac", *argv);
- 			get_u32(&hmac, *argv, 0);
-+		} else if (strcmp(*argv, "lookup") == 0) {
-+			NEXT_ARG();
-+			if (lookup_ok++)
-+				duparg2("lookup", *argv);
-+			/* note that table 0 is considered an invalid value */
-+			if (rtnl_rttable_a2n(&lookup, *argv) || !lookup)
-+				invarg("\"lookup\" value is invalid\n", *argv);
- 		} else {
- 			break;
- 		}
-@@ -1036,6 +1051,11 @@ static int parse_encap_seg6(struct rtattr *rta, size_t len, int *argcp,
- 			goto out;
- 	}
- 
-+	if (lookup) {
-+		if (rta_addattr32(rta, len, SEG6_IPTUNNEL_TABLE, lookup))
-+			goto out;
-+	}
-+
- 	*argcp = argc + 1;
- 	*argvp = argv - 1;
- 	ret = 0;
+ void incomplete_command(void) __attribute__((noreturn));
 -- 
-2.20.1
+2.55.0
 
