@@ -1,120 +1,167 @@
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7210B3BADB1
-	for <netdev@vger.kernel.org>; Mon, 13 Jul 2026 08:56:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783933006; cv=none; b=ITnYtHlyidEDwCIbaoaDnhKg8mtZnnkqpGH2Ia6wZn+cVPT+ir/Mn1q4amC73+LM5WJdhEGizeAdLsCz5n40EtJvXNoDXWm0vjeoJR7YFYYDaEfAQrrMNRg7WfS96uYUAxAiwHfv0Ro8HJXGh4qlXQAaxt2XV6y2D5K3TJHgQ1M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783933006; c=relaxed/simple;
-	bh=AvM3Cgy/Ra73nGrF9esWzL68qEBWFII09uJw1zMVULQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gKRvioC3G3KWNWhb30Yi+KNPbixF/Pd0cyHbuyBvHnrLgjb0anpVFp2TgfVhdOrFsnWnSVl8G9YZIdjU3y11VtZ4tnkczGsxaiziJ4Yq0b+NZvBi3uUGoRzlX7NYr7hQVDDH9/RX8ZS2vnNqcTTqpUkAx3xaMZ0w+TbdzMB2Dvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b=Sb3YGq+6; arc=none smtp.client-ip=209.85.208.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A897F3D646E
+	for <netdev@vger.kernel.org>; Mon, 13 Jul 2026 08:57:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783933075; cv=pass; b=fqX+/rhAQYN6nwAgUktsP9ks3aTAtW+fR6kfEfK2lVSgefYF1A4HvsS7uGI68Uvpc4Z2CNuC2T9dD2Ket4OHCa1jX7Q8iCeRCicQcp6MdmvTqFmwn0cVGxHyNCxpW7SoW17ixCJmanHcd6fgwE7Y7VEuJ8lNLle+KxiT3msdJcE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783933075; c=relaxed/simple;
+	bh=zGXlgemVtM/fd1QacjWZsPwmu1tJ8IeGxyTqkvyGisI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=F5brGbcAsAVLur5naLVzhOtgtpHcYgPV0vqNaKYWiddh6vwgWfIcGquGbXP36TpxPp8x7cgrZc6lHCOuNrXpK2NOuV7gwEVjbulJeOctLYRapzA4RwTmDbdf+B5vqDLHsZsr65POUKE5s298pHuc5wp9HzKpQrflmnLjXOOg/X0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bhZpWy9p; arc=pass smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20251104.gappssmtp.com header.i=@resnulli-us.20251104.gappssmtp.com header.b="Sb3YGq+6"
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-39c8e65e3f5so27173981fa.0
-        for <netdev@vger.kernel.org>; Mon, 13 Jul 2026 01:56:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bhZpWy9p"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-47640541585so1322847f8f.1
+        for <netdev@vger.kernel.org>; Mon, 13 Jul 2026 01:57:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783933071; cv=none;
+        d=google.com; s=arc-20260327;
+        b=EN96Hi3i2Zy5/HwbIc/ApWF+BJsIbW3/m+wl/AW3YL7lTdU7VFDqkzmvMi59k1mAa2
+         YLQ9Xr/9jtB5wQs+WNodkkhE03nDtD3N4ZA9qOz8E0UTi/4pG4XDCZjmulLNwottG/mJ
+         /ZrixKMqBrEGtdfzbJGDETf1P7k27COj3fc20/BikVyn2dA35ZYs/MtuO0Ahve0w0lYN
+         i2rA10T/rKktlMbn7BoqtL05jXOv2BRIPElF93ojNiA4dVUcU9oCp4sYXEdeKobIex4P
+         6tFGZ89QyCY4MU/PqqaSMS/T364cTiOdIzVXC0NIj0/7DrVB1I/CZooywaRwdWe/XoW1
+         exEQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Niw6ma3uSQo4Oag5BSyj5O/UfANxhnZNo3KLkxIFV/I=;
+        fh=DLUKQgcLzYnQjlaHTK3G4xDsHMtwPcwl1AOFxF4xtjg=;
+        b=lDWqdMGlCSSBO6GHt5+KfHDUm5sfzhpu+YL0ND+ds2FWfK4SS6SoPp8thD2mFNcLyD
+         KhF0uEFPYQok+bIkpRZkjcpQmG9pdj+pSvAVeeYfnORyKN7OXs90N8/f4UFdmdUldMeD
+         /Nm/lOB3/rNVw+oZGzaufQOvz0piNetNiqqMqhLj2rTXnckd6NLusACrXMzGTHppMu20
+         jbWHsKi7qdxnmU2NpKO4XgUIa7hqhw2wuiaY+QgY7DzsEz0M5P2Nn9q9DgZR0iE09xnd
+         eUVxMwrfNtYhCB89/YDfBwH/M6WZ4fZU8yleWMRrPvEvH9gIvJJyLg+oe8Rg7tCvWVVP
+         F5aw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20251104.gappssmtp.com; s=20251104; t=1783933000; x=1784537800; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=google.com; s=20251104; t=1783933071; x=1784537871; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=x1nIX3sdRj3FebWw4JZT1K0eCGVCwy9cixatVxw9QSU=;
-        b=Sb3YGq+6+VLMioEzFI76UWcYJ+j9aqpJyA06pp9/iYqwgAeld3dwSQ60rL34sD8zZz
-         iDOgEmllxEV5xMQluyr2xMZG3ZNrFOffg80O3AJv1EMSdyWop7vsSWpEhC7RveAk1b7c
-         70i7VEe1DEYElCNevI1fP9u0LEeHUtm7GfPeY6dM6y7BCmcNw9dIlLe4SUisOE9AzbS3
-         QZEbP6P6AEi1g0KiWhH4m3TlFk1Lj+hNsYPX4+ozxbSUEiZ8Yl8vQ+Pu3n3DQqwNDDBJ
-         Povh2qd3WDt2/RMKSoWSwywYgcfGV1msrW8twwr5ID/4mvVfnr/+wooGIK4MvxMMHt8T
-         RhSw==
+        bh=Niw6ma3uSQo4Oag5BSyj5O/UfANxhnZNo3KLkxIFV/I=;
+        b=bhZpWy9p92MsHXolXEEEzyqO6a8taUshJqNTLDakidqvhciCwPleXpZnFFjlWiYgu2
+         PD4KtR4wi8mFviwOMoQsSLwoiUrgbFxzrfMzPSO3Sybm9n1+9I9aGIKm/8G9v52bT/Dy
+         /ECgJDqbQXnj9gc2kOfy3eG3Oyas3PdEqt32qqoJCGj+tlRe2CTAPATVLVaT2ZBSLmFE
+         6NLrPC6nlM9BaqCBTXA2N+qswyb64G3vtCx9kHyfA9GDzZl//f+Oby1N7yx4QVQbPtoh
+         MUkxAek+4XmOD/fokqGCzy3ZmMRVg9nKjm32kMvJgFt/LiXZSc+ZvzDDjsD9s3OVP1/l
+         B5sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783933000; x=1784537800;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1783933071; x=1784537871;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=x1nIX3sdRj3FebWw4JZT1K0eCGVCwy9cixatVxw9QSU=;
-        b=H4wqw300rJCKcNx0HmvDPIcArC5Bi8WXEbB054v6Qf8hZcpINGVCV03eZub5CyNHdV
-         D/37NZTe/96MgYoD8G1aWp8hSyZy8g7L2n+Lur9REJyK+eMFUjHav+dH8wcTFMxW3wVi
-         MnQ0Tmd4SxLn/QfTRi9leWcvEDy78wu1lToXGTYKhIK/UIs38eGin6xZYNsjI3rKEHa8
-         QE8KcV8rHGk6NJhZcZr9fzvvTJfSkLvsnDcVlAn56ByhehUcKaVUxK61/7mHWZD8ezqq
-         MevIn9ET6i+P1KrXX1pnJZ59cZ3txg3TQPPANpIseljh6aJbeD3xkNw3/S8KrpH4G4hx
-         CNdw==
-X-Gm-Message-State: AOJu0Ywd4BXBU9BFprnaGvEoJoiHQuLthQLPcppD6vBrDaXze5WNgr0P
-	tdcbEp3kjOEbDFr04iSWK8LaZ6IpYVxbqdCeqDOVTisGGRxsr6VcRWwf98dJRuGwaxg=
-X-Gm-Gg: AfdE7cnEk7jZ8YEo0w4f5Ubch7j1KPSL4MqgV42xMxzcwWZ2SWGg4ZPFpI/xa3i0u18
-	sJVD0zxHexBSddCyK9vb8M5//j6FGgFf03g1P5TjFNvsUGq/BJ33j6yvZmZDl6c3ZcY2IBaOB7X
-	APojCjiEN6XbhJgOBTZS7rpBiibr7CBnf565PmormN2nGpROVtnSDaKGrhJnfqftnryF0li2wh0
-	KBrU8eEKnXDCjwzNMXm4YkSzgY6ae5VaqOevmgP6c+aCeWJxQfQlMvO58VZ8zyEUQ44cz+QmpVc
-	3ApUwD6cGPnCezp82usFoGdbB8GM9tPJvPjZCLYuTsM37F1H+3p2KFmC1bIydIOdfDSydEoQIaT
-	YVAx0SjZY5l4H2xVMM9dN0Ulb+2aaZIDzS4PSV64ObOEwArC+RrRNDJbSnp2IDvzgAnTzpcpZAB
-	dH0aSQD07ffKWVy0h+Fi6pfQ==
-X-Received: by 2002:a05:651c:b28:b0:393:d6dd:e8a1 with SMTP id 38308e7fff4ca-39caa807641mr16871121fa.2.1783933000242;
-        Mon, 13 Jul 2026 01:56:40 -0700 (PDT)
-Received: from localhost ([140.209.217.211])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-39c84bb0a36sm26676391fa.41.2026.07.13.01.56.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jul 2026 01:56:39 -0700 (PDT)
-Date: Mon, 13 Jul 2026 10:56:35 +0200
-From: Jiri Pirko <jiri@resnulli.us>
-To: Ivan Vecera <ivecera@redhat.com>
-Cc: netdev@vger.kernel.org, Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-	Milena Olech <milena.olech@intel.com>, Jakub Kicinski <kuba@kernel.org>, 
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net] dpll: fix NULL pointer dereference in
- dpll_msg_add_pin_ref_sync()
-Message-ID: <alSoPTmMA8Ge0HAX@FV6GYCPJ69>
-References: <20260710193625.1378822-1-ivecera@redhat.com>
+        bh=Niw6ma3uSQo4Oag5BSyj5O/UfANxhnZNo3KLkxIFV/I=;
+        b=fLF1tzcgg2h+Olc48K1FsYbmJ40ZvIafIpdsuH4plKHK4z6VgTiSXgyfdlAkMvLpZi
+         Rg3kypdwFvlWsvjGaVL7vzAK4naV8rXjZ/4vGI5CHqgaDAofe1SlZhfSeHjy4DtwPiw8
+         33RSXO1AIY0Zux6284ZCQjrrBFqogmgzTrZN/HUktFsrMB0m/y4JGDxM2LEpfeR79V2B
+         ZZjpqB9Yz9skDKKMlrnVpP/PXaQiCrmlSP8lAcW0qHFheDmPblq0XuaEmuOu3EKU5+D5
+         4R2FIwaeqBcCDJgcZIhxAWQjelHDZ7NTAudk0NrtrqqmpP3K3jmcWtfW0VMgOIaAM1Ma
+         KxPg==
+X-Forwarded-Encrypted: i=1; AHgh+Rro12kLnf1pQp+RNCK4fdNd6xDb1QOQnv0DZqs6CALFZDUWlWE7AEazF5etxFbTAPURVkiNQj4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQ7y/lIg1L9q7OV2zoJehJivuMDA3nRxX68Lp/NXfpr+Sm0HqP
+	j1ov0pPjqEQmIou5CDJecXAd3cVMehMPqXXqAvixVkox430OOl+sZaqMth1FYrvBDH9YKyXkU6T
+	w0HxbYR7aHT9znh3jAL4f/bccQn4OD5mOhiJxqP1L
+X-Gm-Gg: AfdE7cmLUwMcEPGoLFN19g7O9dtZolRd3J8PZY3HkEMFufhgn8pVJu3uzcBz2NIgCyn
+	jHQEs96CbVrjI4C6pKHbYE3ZEcd7vuzAA+SMkhTONO5x48u4OpFgTwsZlUfXBts3Z3VdFBBMpwE
+	IXBSmTNsdJgaYBFU3M7/zvAZZ05XqCm4o08wxPTR+5+nIuwgIm6YoM2JGddhmxEMY7EoUB9ewfs
+	C9lLfyqcTO9jDjkLYXevj9uyZMPSsejKEYPm4cdn4xmcecOvBvo7twgivPMh61c00ioz1fky+ut
+	xGevsDArOA6Gm5i0WYlAWxm0lkk/XTLdXrX/xsDdlFkdjv9iyoa7C9zyVBPrLf4F16m8JA==
+X-Received: by 2002:a5d:5850:0:b0:472:55a:ef9b with SMTP id
+ ffacd0b85a97d-47f2dcac418mr8602513f8f.8.1783933070140; Mon, 13 Jul 2026
+ 01:57:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260710193625.1378822-1-ivecera@redhat.com>
+References: <20260713-fix-fops-owner-v8-0-2495cfa82d47@linux.dev>
+ <20260713-fix-fops-owner-v8-10-2495cfa82d47@linux.dev> <alSe6PsvdrSYP_Z0@google.com>
+ <d7c1607f-ea74-442a-9700-7fc4f0c64b76@linux.dev>
+In-Reply-To: <d7c1607f-ea74-442a-9700-7fc4f0c64b76@linux.dev>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 13 Jul 2026 10:57:37 +0200
+X-Gm-Features: AUfX_mw1uUYgV4eMXkVflbUYoDKpPh-OOQHMx0yAVcG6yUMQsdEhmzk4SLg_fQ0
+Message-ID: <CAH5fLggszOnUm7Rykt41V91de8h9YVaZt49wr52i3t5-QV84Xg@mail.gmail.com>
+Subject: Re: [PATCH v8 10/10] rust: module: update MAINTAINERS to cover module.rs
+To: Alvin Sun <alvin.sun@linux.dev>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
+	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	Aaron Tomlin <atomlin@atomlin.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <david@davidgow.net>, 
+	Rae Moar <raemoar63@gmail.com>, Breno Leitao <leitao@debian.org>, Jens Axboe <axboe@kernel.dk>, 
+	Dave Ertman <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>, 
+	Igor Korotin <igor.korotin@linux.dev>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	Bjorn Helgaas <bhelgaas@google.com>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
+	Carlos Llamas <cmllamas@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-modules@vger.kernel.org, driver-core@lists.linux.dev, 
+	dri-devel@lists.freedesktop.org, nova-gpu@lists.linux.dev, 
+	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-pci@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Fri, Jul 10, 2026 at 09:36:25PM +0200, ivecera@redhat.com wrote:
->When a dpll_pin is shared across multiple dpll_device instances and
->those devices are being unregistered (e.g. during driver module removal),
->a NULL pointer dereference can occur in dpll_msg_add_pin_ref_sync().
+On Mon, Jul 13, 2026 at 10:48=E2=80=AFAM Alvin Sun <alvin.sun@linux.dev> wr=
+ote:
 >
->This happens under the following conditions:
-> - A pin is registered with two or more dpll devices (dpll_A, dpll_B)
-> - The pin has ref_sync pairs with other pins
-> - During unregistration of dpll_A's pins, a ref_sync partner pin is
->   unregistered first, removing it from dpll_A->pin_refs
-> - But since the partner pin is still registered with dpll_B, its
->   dpll_refs is not empty, so dpll_pin_ref_sync_pair_del() does NOT
->   run and the partner stays in the pin's ref_sync_pins xarray
-> - When the pin itself is then unregistered from dpll_A, the delete
->   notification calls dpll_msg_add_pin_ref_sync() which finds the
->   partner in ref_sync_pins, passes dpll_pin_available() (partner is
->   still registered with dpll_B), but dpll_pin_on_dpll_priv(dpll_A,
->   partner) returns NULL because partner was already removed from
->   dpll_A->pin_refs
-> - The NULL priv pointer is passed to the driver's ref_sync_get
->   callback, which dereferences it
 >
-> BUG: kernel NULL pointer dereference, address: 0000000000000034
-> Oops: Oops: 0000 [#1] SMP NOPTI
-> RIP: 0010:zl3073x_dpll_input_pin_ref_sync_get+0x73/0x80 [zl3073x]
-> Call Trace:
->  dpll_msg_add_pin_ref_sync+0xb8/0x200
->  dpll_cmd_pin_get_one+0x3b6/0x4b0
->  dpll_pin_event_send+0x72/0x140
->  __dpll_pin_unregister+0x5a/0x2b0
->  dpll_pin_unregister+0x49/0x70
+> On 7/13/26 16:16, Alice Ryhl wrote:
+> > On Mon, Jul 13, 2026 at 02:45:31PM +0800, Alvin Sun wrote:
+> >> Module types now live in `rust/kernel/module.rs` alongside
+> >> `rust/kernel/module_param.rs`. Update the MODULE SUPPORT file pattern
+> >> from `rust/kernel/module_param.rs` to `rust/kernel/module*.rs` so both
+> >> files are covered.
+> >>
+> >> Cc: Petr Pavlu <petr.pavlu@suse.com>
+> >> Assisted-by: opencode:glm-5.2
+> >> Link: https://lore.kernel.org/rust-for-linux/8ea21b29-9baf-4926-a16f-7=
+d21c5a1a1b8@suse.com
+> >> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
+> >> ---
+> >>   MAINTAINERS | 2 +-
+> >>   1 file changed, 1 insertion(+), 1 deletion(-)
+> >>
+> >> diff --git a/MAINTAINERS b/MAINTAINERS
+> >> index e035a3be797c4..74733de3e41ee 100644
+> >> --- a/MAINTAINERS
+> >> +++ b/MAINTAINERS
+> >> @@ -17984,7 +17984,7 @@ F:   include/linux/module*.h
+> >>   F: kernel/module/
+> >>   F: lib/test_kmod.c
+> >>   F: lib/tests/module/
+> >> -F:  rust/kernel/module_param.rs
+> >> +F:  rust/kernel/module*.rs
+> >>   F: rust/macros/module.rs
+> >>   F: scripts/module*
+> >>   F: tools/testing/selftests/kmod/
+> > Is there a reason why this is a separate commit from the commit that
+> > introduces rust/kernel/module.rs file?
 >
->Fix this by skipping ref_sync pins whose priv pointer cannot be resolved
->for the current dpll device.
+> Gary asked the same on v6; `git log` shows MAINTAINERS changes are
+> conventionally
+> standalone commits with a `MAINTAINERS: ` prefix, so I kept it separate.
+> Gary agreed [1].
 >
->Fixes: 58256a26bfb3 ("dpll: add reference sync get/set")
->Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+> [1]:
+> https://lore.kernel.org/rust-for-linux/DJJ26195JBS9.D3DNLZPRJYO4@garyguo.=
+net/
 
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Ok, that's fine then.
+
+Alice
