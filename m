@@ -1,248 +1,165 @@
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD04A2D46B3
-	for <netdev@vger.kernel.org>; Mon, 13 Jul 2026 19:02:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD35F3546F3
+	for <netdev@vger.kernel.org>; Mon, 13 Jul 2026 19:26:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.169
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783969342; cv=pass; b=ZC6xJCxbennBv9d4UqWRAzHxiN/1yTyQMBp1nVrt6XuffOD5XlZURA+MrFy/Dhls36NE6TLIXqqSzRekLwDhQDCS+GSKB0ccRU6fAWo4D7z2fzbWe8dedTh+sxJ/Jci+wwbwshuLceRH5zMvHqQx4dLjware2ZSog1kDHzNTm8o=
+	t=1783970792; cv=pass; b=fPKee2LytC1ERJPcPtnp+S/eTwDVvdfEEyI12W/pesHHel5WYDTa7n3+APIZ4g/HmtgxMY0t7wt9dglxRmDc8SCFrRDT+d6ZRHdhdTOr9xORhmI0ehtBPvar87XK0jaxOmY6tcraC4K8uT8GkG2DTSjzTLUgqq7s4o75cXy1Ltc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783969342; c=relaxed/simple;
-	bh=LMuqfZdWNwDdBh+LD9S3nyT7cT9j5t4BEatyJl8ieNQ=;
+	s=arc-20240116; t=1783970792; c=relaxed/simple;
+	bh=2KfxiWGglcm4SlXzDjy5ADRqYpBoGXK45/8sDX+KhII=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=U9F6XV5XnvliO/EId1i54dPgxNa2UNetMUryLmKJ3O+h+LRvGqSxEhYj6cUpwWdHSvf/XhxSlUAXfcXrvaNpxJK5+gmGRQDL8JdbxXYbnApyw86UXAnAh8z6+NkpeoOGDHpYBLIvfefwQYezi8zMGxPclLn9tyQZgndjQzlovgA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=JMVm1WFp; arc=pass smtp.client-ip=209.85.219.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
+	 To:Cc:Content-Type; b=LY6lhFdtMKiVQ83kldAFASOceeJ6EGK+5KvxTmSV6lwaNYCTVOu7LOjhumijooSC0JP3ZQISJF7F6W4T4BRN6/f5kg7zuBWh7A9Gzetvj6yuYmVqud+owEuimyOenToKz3Uuc5zYyGG3Jq4NY2tgWJKwaVXOXUaNh66+wqfcXg8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fqXiV7i9; arc=pass smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="JMVm1WFp"
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-902f92b8504so26989476d6.2
-        for <netdev@vger.kernel.org>; Mon, 13 Jul 2026 12:02:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783969340; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fqXiV7i9"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-84867f07d63so3905091b3a.2
+        for <netdev@vger.kernel.org>; Mon, 13 Jul 2026 12:26:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783970790; cv=none;
         d=google.com; s=arc-20260327;
-        b=JxRge/+XH5XUIb3SUIKG1FlB8ix1bhlw1XlzFzoSCMnOtVO4nPHIvbsIic5uwvqbRc
-         69785/52Pcfx01bL+2HGi0sbI1extkDWZ0/JUJX67AAaafTFhbRQHADV4IHYgF+ng0DC
-         EKJTVnr/poXhX7ayHcTpLH04faK0Ew57/DSLuOLQVwCFHOlh/yjEmDbf8jWo8GLrVzB+
-         T90Aya2W5vpn7dxrdbj7k4axIvgEFp2i9YxeCIP8JeqrTe+vsmpcxVhH+yId/VSZXYnz
-         5dLGAl5DoWTTOX1DOh84BFZJl+m0JEv5DBadCjkW/MYrGP0axYUASh+yWiyEI17du5TZ
-         6cDg==
+        b=YBM9lGY+7/a4j3D4qaAp+rZ6QcZyqipOKaYDKYFA92dE0votZXOMbIdf4SIyRfcHNX
+         MmntpmcRZjDYS112/amDBYPTNVriz1xdQtU8bS6/vDyTYza/TBD4vGbMBtHxqHTeeiG/
+         xIpAXhps0G49fEroljeNhyMLFP9ptQ8LFHSvpuePPJaFaxnupBz0WLgYIhmXF4UVQRzS
+         y6zAMsZ7WHi0cWBMaBr2HNkqcnn82FdVlsoL5agB8FbI6qxBrQ3rlxWys26Mi9Nq+Ln6
+         635oHNSogoVa5CCLoHAlIojNb+FP0tsXDnySdjthbe9nEawqwn1BIipiWvfbzqxI0W+m
+         EU7Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ND4QVlZryHNvw3JTPiSudd8z751cUXLs/D6Kbqr80w8=;
-        fh=1WdjelLpGkkVgwdBOyv1JI2Es2iXNKl77AKy9a5yoKY=;
-        b=LhAl1ZLUNpNH7REkNsE0nahF+gc6DLElSeJ8GeKMDQ8Yv1oFt7cVLq50hFHkZQAiBz
-         I41uPASlzg1azX/uEFzgId1DmHcZS1CYYN34XfMzH2cPrsGktSMgpQipw0DSrax+zuce
-         w+BcchhH7NlgVFC/8/jcC+bL9XWFnSsp01r6JR4aX8DmESXfxPan4eajrw1Xc/WV40lN
-         5j5fuun59Sm3ORsH5mfjgm8oyub1tCpO8W06+5XsD59gzzPHvgxhonI9v20dEMnvH9M9
-         r+75Rj+xYRjGRkICVDSuVoK34o/QkeKJQBlGzRhExChwW018YRIjntqf0KvAY1yHacLb
-         /xmw==;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=GD+aEhZoiO03sz92m3wPJhu7G6KGUOHHc44tI5PLjnE=;
+        fh=OBHI+JIEoV86mph6Ys87VZX8lDkkUod3CbQAPyhuOLI=;
+        b=Fal2E/t8CNH9jEeieK2UO2s9N0Q70xXWv0VmHE5TVQRCHgfhtT/fgfmBr9535gRR9W
+         MQNzyzSQqeVtM/CAlD9YgdsvvldZT2UJiSCJLXnKOWGqp5zrH9rk2aNYaqV/sMsy+Nr2
+         ExSn3aiNUlnFqBBd/oRVBrJGfLaRpAy0Xx7Fx1P/lSGWaNryAfIQ52B+swBamCrz9+jm
+         DORzrj9e2Ga4C5iaWgpH9TKE11h1bwtKmscCHmHIBTRCZR3HbIBr8yzYPXk/2hn7Sfpe
+         yhWic6CQZ0VygJwxP+Kq+mxUVdscFP8IeHyJD/K/07DUXWKsy4vKrqGE71HX+beU+uE4
+         F89g==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1783969340; x=1784574140; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ND4QVlZryHNvw3JTPiSudd8z751cUXLs/D6Kbqr80w8=;
-        b=JMVm1WFplqYsrXcPLs3AedRTScc0vYo7irVLJLwx7bJPljsuhiB4h9UYsNvfAsHr+b
-         4tkw6+h5cJ6sQ6EjIWJFhqRoO4iwi2798JyZABNCWPsaODJp4x+QN7hxThCtkb8qf9Ea
-         LLQB6XvtGzGzYrBVcTN7muBxPoQgKALcGeg2gIKV/7jFEzDcgkONjLIFMup6Q25A/zEi
-         lzQXzcKBQRXpB4/wWU8uQbJwuKjzYZClkRD7qKgX90TT1YNVFG6knNUzAga7vL5hjcIm
-         bSTlTffrAFfIUeqWqbyN78eN1D/V7mqsRl02l0Zox2fTkSfRjtH95P5sOGFqdwBJDKK0
-         P0AA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783969340; x=1784574140;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1783970790; x=1784575590; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ND4QVlZryHNvw3JTPiSudd8z751cUXLs/D6Kbqr80w8=;
-        b=WpHz/wZeVy8N7GzNCaOtIo6VM5FxD//D9biFLHGTalD4sZ+IjY8AYWcL501+XLNoo3
-         0sciJqVYzJjDoDn41gputAcoq2YeDVzY9XMw1e8G/2YA4vSPVEBXd8cJIHHK8atlL4r5
-         gEFPLO5cXYcIxXAZUmUbUw1enzDZahupBQs+eB4l4nzZUSpQM3oEVRA0wMPSf6T3lKz6
-         422rCTIHviXRx2vc1EWr4yVo6gJVfC0XSWseWCbeoWQ4QRWNa3S2Zsiae/glK4fZ8/0r
-         30O8p+hUyvdjy1kZyyiX1lmoCJRHB1fj0+jRREJT6Bgy2QptO/XLGAwVEapijrFDL8wN
-         JksQ==
-X-Forwarded-Encrypted: i=1; AHgh+Ro3YX3xE9pvnzThjXbU96bv9BA8747xd6fpof+hgBnawEFfFto8JoNY+N2hCc8Ss4K1y+WaUt8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YySs83iM+/2xAOK3NfjnOaBIe1jG6Bew8aOvxhHyISu+qXWYxSv
-	+j3IjFZvTph52Nqq/nAHCk9PdwDWVSuklfnKbK32JW4rbh1m7ifbdhwOqeULtIlQfloA24HoD6z
-	OfhQyLlO1/2g+TsQmoksijrKuKpQbuUljFQ5rK6Vjkw==
-X-Gm-Gg: AfdE7cnPqvh3UAQ+GL5+xEPkks4dQtadwzAaSJDzrFlHE4r7RM2h5hvBI6GXTQ1AAdH
-	epRbip21XuoFz8OdSaOEy6TJGg0frNUSRfrTKFAU4BBvFsmm1xPQ+ekBWpgiPBz+IGMDPEguxjV
-	FezlKgETk1rl/p6yYbPNqJ6ECU27XGfKGI8BVUGXu94QABS7oHJ4/1Bs4TY59N+LoBwDH2/PEW5
-	k2WGoA42/LF7JEjidB0datkensxSiNSlm9KNS9S6NKpR30s87+wUFDVjxyYM5n17CPfyQL+
-X-Received: by 2002:ad4:5f8d:0:b0:8fd:6de3:bba7 with SMTP id
- 6a1803df08f44-904053d935dmr129372256d6.61.1783969339661; Mon, 13 Jul 2026
- 12:02:19 -0700 (PDT)
+        bh=GD+aEhZoiO03sz92m3wPJhu7G6KGUOHHc44tI5PLjnE=;
+        b=fqXiV7i94DBUeWhKiBiKN88qiOpnQbzGc86u6p3y0/J1UqEK6LsruYg8b8yzmTuqGt
+         spP6QjNA1GWaqLB/cLVhZEp2zlqneN/2b1KIzy6e5FpvbdONS1/P0xRuqRihI2cnMeJy
+         AN+qttWqUfJ8sFgUmhmG3QyQiIWZ+C8oRI4JPuJP2lrQmmQuj42PEb2X5ikUHFvJTwhI
+         /wK3Rm8dzpYasxKjg3gsYBmdS/PgJDMbKYZ1+e9+dP2jcaeoTN+aLe8CkBtPeMqFE+ZS
+         P2+4vFu+vTHA7rZxlBwR76nCO8CPaAJNh+vqPZzBqiEI8i+jwak2aklA5R+NCP8eXRwL
+         Sbdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783970790; x=1784575590;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=GD+aEhZoiO03sz92m3wPJhu7G6KGUOHHc44tI5PLjnE=;
+        b=qhl+1wLiLcE+i9qq57g+K83bvXD8sCvQ765maWu8S6aQCM1Fj5yTcTt90crySYUSuc
+         lty4JzO1iE83e0rb6rzU+z+lgds09nIoqGAO+IT1oMawebdzafMna6ZNNgq7mut097ZH
+         51cDReotqPImQBgvVirdZuuL2BEP0lyMQ0yyE8yeh8Q6L4p2hDFbpKHc7VW2UTqtj3ut
+         pFEhe4HhRvM+MLIlDfp9kfau303KAS773Z/nC2OQDp45oVcv9JbTVHKcaU9o5ipm4Kfs
+         j+I6pbf2V2baWoIYsb1Gtw7aJ5YxKY9BOniR3DUMZPZfJQUwr0qpFe1TPTtpEtH/AcCt
+         ik9g==
+X-Gm-Message-State: AOJu0YxGxJFPac4YQyeiZN5VOtjPJ0Wyk2Q4VQZh5emnwmA5s4RHHUKI
+	4NoLm9DOyJTrht2aIft+8U8Xex1JQRc8+Zwzlbwj8wAponX0+zoW03ObTsLdJgJyizhwbuGpZ2/
+	uwaMLrwpIfBepm7jtZQFo7hLZ64Jz08xyFgeh
+X-Gm-Gg: AfdE7clc+EraOCQHkk9KR80cyNQb/k8JK8J9BkyKwN01uLNVMKK8a0ug+XrO95ujFS3
+	95PRcT1oFQ8ZNvbGPl7v3uZw/IzK+oa8sR+62K7QlIFbSWNnWZfzyWoZc5JXqxJTJg6pvHEp0JG
+	6E5TrZmM56XfRAQmvjZc3eBWnqDzbRO0T2v9bYpa2f8rgOJSNDHOC8H3qQfaGOIfeu3bs9jN1ss
+	p6JF05zjASLPYsEEDySlsjWXpspTPJC6MVRo6TM2R2yZm24DpUnLO4V6qMgXt/y7BU026h8oqew
+	biWoenIJAOGZPPkjSTL+Tk3qJoYbuxVi2zBOaGug40yKionbOtGtkYx58PQbOUMmAhJIR+M=
+X-Received: by 2002:a05:6a00:18a0:b0:848:8715:c2cd with SMTP id
+ d2e1a72fcca58-848896ddc81mr8903357b3a.47.1783970790259; Mon, 13 Jul 2026
+ 12:26:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260706171918.317102-1-ameryhung@gmail.com> <20260706171918.317102-2-ameryhung@gmail.com>
-In-Reply-To: <20260706171918.317102-2-ameryhung@gmail.com>
-From: Emil Tsalapatis <linux-lists@etsalapatis.com>
-Date: Mon, 13 Jul 2026 15:02:08 -0400
-X-Gm-Features: AUfX_mxL4zz4204ui_yf_Z_RxH1muCe8ChhqbsvT5mXw7tis6KUbLq5ezLHCMTQ
-Message-ID: <CABFh=a6kCQHztTXZpndBTRRo7FWAfZ1NtzZJm5a7qmY1gd_b4Q@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v3 01/15] bpf: Remove __rcu tagging in st_link->map
-To: Amery Hung <ameryhung@gmail.com>
-Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, alexei.starovoitov@gmail.com, 
-	andrii@kernel.org, daniel@iogearbox.net, eddyz87@gmail.com, memxor@gmail.com, 
-	martin.lau@kernel.org, shakeel.butt@linux.dev, roman.gushchin@linux.dev, 
-	kuniyu@google.com, kerneljasonxing@gmail.com, kernel-team@meta.com
+References: <e0076ec046fbd8a70d4f3facfb701473d08c3ebb.1783632513.git.lucien.xin@gmail.com>
+In-Reply-To: <e0076ec046fbd8a70d4f3facfb701473d08c3ebb.1783632513.git.lucien.xin@gmail.com>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Mon, 13 Jul 2026 15:26:19 -0400
+X-Gm-Features: AUfX_mzkg_FY6Z1VCmwDzHq2AqMN8EPaSs1zICFDhV6On-qXe6SqI8cfSFv0cKM
+Message-ID: <CADvbK_e92MPvBRryL_c3D52UtfYKBKjgyH4wb2NGmMDCOAKo1A@mail.gmail.com>
+Subject: Re: [PATCH net-next] sctp: replace cb->args[4] with a local variable
+ in sctp_diag_dump()
+To: network dev <netdev@vger.kernel.org>, linux-sctp@vger.kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jul 6, 2026 at 2:59=E2=80=AFPM Amery Hung <ameryhung@gmail.com> wro=
-te:
+> diff --git a/net/sctp/diag.c b/net/sctp/diag.c
+> index c2a0de2adf6f..a9bb31303613 100644
+> --- a/net/sctp/diag.c
+> +++ b/net/sctp/diag.c
+> @@ -299,18 +299,21 @@ static int sctp_sock_dump_one(struct sctp_endpoint *ep, struct sctp_transport *t
+>  static int sctp_sock_dump(struct sctp_endpoint *ep, struct sctp_transport *tsp, void *p)
+>  {
+>       struct sctp_comm_param *commp = p;
+> -     struct sock *sk = ep->base.sk;
+> +     struct sock *sk = ep->base.sk, *nsk;
+>       struct sk_buff *skb = commp->skb;
+>       struct netlink_callback *cb = commp->cb;
+>       const struct inet_diag_req_v2 *r = commp->r;
+> +     u32 portid = NETLINK_CB(cb->skb).portid;
+>       struct sctp_association *assoc;
+> -     int err = 0;
+> +     int err = 0, idx = 0;
+> +
+> +     nsk = NETLINK_CB(cb->skb).sk;
 >
-> From: Martin KaFai Lau <martin.lau@kernel.org>
->
-> st_link->map is always written under update_mutex. The paths that read
-> st_link->map with rcu_read_lock() are not in the fast path, so they can
-> simply take update_mutex instead. Remove the __rcu annotation and replace
-> all RCU accessors with direct pointer reads under update_mutex. Use
-> READ_ONCE() in bpf_struct_ops_map_link_poll() which reads the pointer
-> without holding update_mutex.
->
-> It is a simplification change.
->
-> Reviewed-by: Eduard Zingerman <eddyz87@gmail.com>
-> Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-> Signed-off-by: Amery Hung <ameryhung@gmail.com>
-> ---
+>       lock_sock(sk);
+>       if (ep != tsp->asoc->ep)
+>               goto release;
+Could the peel-off exit here leave stale state in cb->args[1] across
+netlink dump sessions?
+Prior to this patch, sctp_diag_dump() always executed:
+        cb->args[1] = cb->args[4];
+        cb->args[4] = 0;
+after sctp_transport_traverse_process() returned.  Because cb->args[4]
+was only bumped inside the list_for_each_entry loop and was reset to 0
+when the loop completed normally, that outer assignment acted as an
+unconditional clear of cb->args[1] whenever no traversal was
+interrupted.
+After the patch, cb->args[1] is only cleared to 0 when the
+list_for_each_entry loop in sctp_sock_dump() runs to completion:
+>       list_for_each_entry(assoc, &ep->asocs, asocs) {
+> -             if (cb->args[4] < cb->args[1])
+> +             if (idx < cb->args[1])
+>                       goto next;
+[ ... ]
+>  next:
+> -             cb->args[4]++;
+> +             idx++;
+>       }
+>       cb->args[1] = 0;
+>       cb->args[3] = 0;
+> -     cb->args[4] = 0;
+>  release:
+>       release_sock(sk);
+>       return err;
+If a prior session left cb->args[1] = N > 0 and every sctp_sock_dump()
+call in the next session hits the early peel-off exit:
+        if (ep != tsp->asoc->ep)
+                goto release;
+then N is never cleared, and a later invocation on an unrelated
+endpoint applies "if (idx < cb->args[1]) goto next;" to its ep->asocs,
+silently skipping the first N associations.
+The trigger requires a previously interrupted dump plus a peel-off race
+across every traversed transport in the subsequent session, so the
+practical impact is narrow, but should the end-of-traversal path in
+sctp_diag_dump() still guarantee cb->args[1] is reset when no
+interruption occurred?
+[...]
 
+In this case, both cb->args[1] and cb->args[3] need to be cleared.
 
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+Please drop this patch, and I will prepare a new patch for net.git.
 
->
->  kernel/bpf/bpf_struct_ops.c | 29 ++++++++++++++---------------
->  1 file changed, 14 insertions(+), 15 deletions(-)
->
-> diff --git a/kernel/bpf/bpf_struct_ops.c b/kernel/bpf/bpf_struct_ops.c
-> index 51b16e5f5534..d06b3d9bcc13 100644
-> --- a/kernel/bpf/bpf_struct_ops.c
-> +++ b/kernel/bpf/bpf_struct_ops.c
-> @@ -57,7 +57,7 @@ struct bpf_struct_ops_map {
->
->  struct bpf_struct_ops_link {
->         struct bpf_link link;
-> -       struct bpf_map __rcu *map;
-> +       struct bpf_map *map;
->         wait_queue_head_t wait_hup;
->  };
->
-> @@ -1257,8 +1257,7 @@ static void bpf_struct_ops_map_link_dealloc(struct =
-bpf_link *link)
->         struct bpf_struct_ops_map *st_map;
->
->         st_link =3D container_of(link, struct bpf_struct_ops_link, link);
-> -       st_map =3D (struct bpf_struct_ops_map *)
-> -               rcu_dereference_protected(st_link->map, true);
-> +       st_map =3D (struct bpf_struct_ops_map *)st_link->map;
->         if (st_map) {
->                 st_map->st_ops_desc->st_ops->unreg(&st_map->kvalue.data, =
-link);
->                 bpf_map_put(&st_map->map);
-> @@ -1273,11 +1272,11 @@ static void bpf_struct_ops_map_link_show_fdinfo(c=
-onst struct bpf_link *link,
->         struct bpf_map *map;
->
->         st_link =3D container_of(link, struct bpf_struct_ops_link, link);
-> -       rcu_read_lock();
-> -       map =3D rcu_dereference(st_link->map);
-> +       mutex_lock(&update_mutex);
-> +       map =3D st_link->map;
->         if (map)
->                 seq_printf(seq, "map_id:\t%d\n", map->id);
-> -       rcu_read_unlock();
-> +       mutex_unlock(&update_mutex);
->  }
->
->  static int bpf_struct_ops_map_link_fill_link_info(const struct bpf_link =
-*link,
-> @@ -1287,11 +1286,11 @@ static int bpf_struct_ops_map_link_fill_link_info=
-(const struct bpf_link *link,
->         struct bpf_map *map;
->
->         st_link =3D container_of(link, struct bpf_struct_ops_link, link);
-> -       rcu_read_lock();
-> -       map =3D rcu_dereference(st_link->map);
-> +       mutex_lock(&update_mutex);
-> +       map =3D st_link->map;
->         if (map)
->                 info->struct_ops.map_id =3D map->id;
-> -       rcu_read_unlock();
-> +       mutex_unlock(&update_mutex);
->         return 0;
->  }
->
-> @@ -1314,7 +1313,7 @@ static int bpf_struct_ops_map_link_update(struct bp=
-f_link *link, struct bpf_map
->
->         mutex_lock(&update_mutex);
->
-> -       old_map =3D rcu_dereference_protected(st_link->map, lockdep_is_he=
-ld(&update_mutex));
-> +       old_map =3D st_link->map;
->         if (!old_map) {
->                 err =3D -ENOLINK;
->                 goto err_out;
-> @@ -1336,7 +1335,7 @@ static int bpf_struct_ops_map_link_update(struct bp=
-f_link *link, struct bpf_map
->                 goto err_out;
->
->         bpf_map_inc(new_map);
-> -       rcu_assign_pointer(st_link->map, new_map);
-> +       WRITE_ONCE(st_link->map, new_map);
->         bpf_map_put(old_map);
->
->  err_out:
-> @@ -1353,7 +1352,7 @@ static int bpf_struct_ops_map_link_detach(struct bp=
-f_link *link)
->
->         mutex_lock(&update_mutex);
->
-> -       map =3D rcu_dereference_protected(st_link->map, lockdep_is_held(&=
-update_mutex));
-> +       map =3D st_link->map;
->         if (!map) {
->                 mutex_unlock(&update_mutex);
->                 return 0;
-> @@ -1362,7 +1361,7 @@ static int bpf_struct_ops_map_link_detach(struct bp=
-f_link *link)
->
->         st_map->st_ops_desc->st_ops->unreg(&st_map->kvalue.data, link);
->
-> -       RCU_INIT_POINTER(st_link->map, NULL);
-> +       WRITE_ONCE(st_link->map, NULL);
->         /* Pair with bpf_map_get() in bpf_struct_ops_link_create() or
->          * bpf_map_inc() in bpf_struct_ops_map_link_update().
->          */
-> @@ -1382,7 +1381,7 @@ static __poll_t bpf_struct_ops_map_link_poll(struct=
- file *file,
->
->         poll_wait(file, &st_link->wait_hup, pts);
->
-> -       return rcu_access_pointer(st_link->map) ? 0 : EPOLLHUP;
-> +       return READ_ONCE(st_link->map) ? 0 : EPOLLHUP;
->  }
->
->  static const struct bpf_link_ops bpf_struct_ops_map_lops =3D {
-> @@ -1438,7 +1437,7 @@ int bpf_struct_ops_link_create(union bpf_attr *attr=
-)
->                 link =3D NULL;
->                 goto err_out;
->         }
-> -       RCU_INIT_POINTER(link->map, map);
-> +       link->map =3D map;
->         mutex_unlock(&update_mutex);
->
->         return bpf_link_settle(&link_primer);
-> --
-> 2.52.0
->
->
+Thanks.
