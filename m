@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03DFA42B321;
-	Mon, 13 Jul 2026 13:36:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB23427A04;
+	Mon, 13 Jul 2026 13:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783949787; cv=none; b=dYcZIpbkE9xbbqOmZ/V+TwnId2G0RFlWsYxP34uCW2WkG359O9ojzg/Dg5LeiOqJq43zC/XqIdr5hcXhyXn/SAtbp/cgCjXzPSxA/xSqVXzkgkPnAxCVVliG0vIp3VQlni585tttku+YSaWhc7tvYaNi/kOz9zizENTNQmfaq/o=
+	t=1783950378; cv=none; b=fn3DlLHCxVHIv6ytvjLC5lHtE43T7lxgPC4QfCdUceA/mD2cJd1a0eNr+tj+shlKEtyl/ytN8xs4LR2LbVau6oie6XpQwTUJ8jZ9rpn5dYCo0XZFMuva6Ci1HZy+NiIwYf+89eoCiZsw7fHMioP0Ugk6IaMfU8Fy14eFwtaXB9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783949787; c=relaxed/simple;
-	bh=KQaGjZklyXOL46oIWHAbvpKyrD5LOhE1uXXqc3I92SQ=;
+	s=arc-20240116; t=1783950378; c=relaxed/simple;
+	bh=Xq63b95fnJWEWifXL9TwilpDNub7RhHfakC0HRER//U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rHjtwvEZBH/F7fxhTbij3FLPaCvOwuR6niSXTlM1PbYrhBPIJgJd0xswIsMelpTf9xdN30uMwqL5/+ebW8MvarFVIOJsnC7KtI4EJBZ7kvzlGijodboXEzr/iQEvDdg+wxQrMTAehO5ItPDH5/+TGXLCTO7ZL5mYibbWy0xC8w0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eerlGjvH; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=hrukRXe68gtMP4Em0xT4/H7FD9a+Cn1kMcc0Bm2mvJbrwjVHBAdeem2BSqW1S+zRdVS7i5CZ3GZs7a0O4n8B2mLJuXLZmAu1XpIDwDjr4ZonVOPgVFlaktnlaB1m0M7XJdYzGs5ckttxJgOXjFAXbdHzGTcNPkL1E43LJBnU6xU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VH7hRci+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eerlGjvH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B7991F00A3A;
-	Mon, 13 Jul 2026 13:36:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VH7hRci+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93E9D1F00A3A;
+	Mon, 13 Jul 2026 13:46:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783949785;
-	bh=s6MkcBPdKLrgvddh1WFyAWTpNurDDwiIil/dsjVihBw=;
+	s=k20260515; t=1783950376;
+	bh=C7RB5+tejbIxG7f2sHs02Xqkdz1T/+FU8q47R7ERcKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eerlGjvHwK6QL3d0jzkAaVs2n1Bo5slZPHBWvYDx5JNAYb7PqD0ErAWeOkH9katJ3
-	 qmwdQglbelj6xgNds7VuBq1th2gOEP6LxvGukI36+P0g65Pn06qiSvZa9Tc9EdKwYj
-	 PpoceJ7m7N6YHD83ubMJkNln57Fjm8BttDtaeUL5xnEK6IYKDwnLXdsQe4WsAV9uqE
-	 8i8k5SE2kYdI66HHhnuNdrbb/KAspsoN7IKUzEYJTW5gbmdmDP/dA4SZGvffEWyGNX
-	 UoKR3th6WtBj+ba/1h1bDcHE/ohpZoWwa8OmqlBBuZqN3CdkA6jtJyyyNOskaxPBoi
-	 6StMInQYckr5w==
+	b=VH7hRci+jWfBxRlRGHexCrDf5994tjSE0Vg84RhXi0Cb0zLQE0I16ImcpnjC3xoTO
+	 xKONGufNzo2HnM1MAsSsN4Efw3CootgW46sn79LTwrr0gfXAqB7RxVojGbeO20MhG1
+	 B7q0stzsmEiEQ9CodCLpPa9nRMb6LE145sYlFqqXZA6WlFmszrQLWcsv8FrK6AlN37
+	 O8U5KcJ95Xd70N5yQYZsNU/UFeGrNWPdeMAt5dqjD+7sM5o5aSJ3/IYAZphWnCYTJ2
+	 +vr1btNU7nw15LdhDxGyrba7aFcW9UOQ7f+t9KWFdAPHMRR4gEGxpnJwQZvA4f3YNm
+	 /q2kxMi8L1Ebg==
 From: Simon Horman <horms@kernel.org>
 To: bestswngs@gmail.com
 Cc: Simon Horman <horms@kernel.org>,
@@ -41,8 +41,8 @@ Cc: Simon Horman <horms@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	tung.quang.nguyen@est.tech
 Subject: Re: [PATCH net v2] tipc: fix NULL deref in tipc_named_node_up() on empty publication list
-Date: Mon, 13 Jul 2026 14:35:00 +0100
-Message-ID: <20260713133459.1777719-2-horms@kernel.org>
+Date: Mon, 13 Jul 2026 14:46:10 +0100
+Message-ID: <20260713134610.1779498-1-horms@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260706163024.1205930-2-bestswngs@gmail.com>
 References: <20260706163024.1205930-2-bestswngs@gmail.com>
@@ -132,3 +132,5 @@ subsequent normal name publications?
 
 >  	tipc_node_xmit(net, &head, dnode, 0);
 >  	read_unlock_bh(&nt->cluster_scope_lock);
+-- 
+pw-bot: changes-requested
