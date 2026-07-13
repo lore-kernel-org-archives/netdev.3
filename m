@@ -1,183 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.avm.de (mail.avm.de [212.42.244.94])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A33A37A839;
-	Mon, 13 Jul 2026 11:07:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1672F387359;
+	Mon, 13 Jul 2026 11:30:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.94
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783940874; cv=none; b=OyI/YAUarbzGH0KlaQM4b/K4lyUPY6MwuvQqaDmOoAlHZHh+RGuKAh4XGUe6rTgjfP/KlkFhlTQMa0M/oYwjC2+MV+a0mQ1hENCghp+rY+NSloYVZ8hSBiyU1P6ns5uKluT908YKQ6sO6qj928/wGXctd8qUNLKoW4/+q0LcOxk=
+	t=1783942214; cv=none; b=OyqyuFCvIS3FaX3LkYzh6HsCIZPb5v+/knvO3i96TWWXB7iq2p8qtDaov6uRuArq4WTnQB62RSQwJtrek+ZJBbL7z1j8XeXJVDWM/NOBJEJMpa+N+56Qb1zAcnYRlLwaUgSQLhwkWb0skz6FtmGs0j6dGl0euBp4BWdPRBZOSg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783940874; c=relaxed/simple;
-	bh=gFPfNAZb5Emut5tl59jtS1GCSawh67g0IOaptPFibj4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=GWYRxsUty+wLcsMpnbfHJJWMAUu8+8jg62cmjmBdts+oKht/WX+5IAVEMeG196UjLjXIRY+tevO3TN/vQ4coFP92r16LPo97nj67/Gium+xE7jGhMg7f70WlrjDV0JTq8UDb1EbWEUVw4AXbP2LIOxytiN3ejksN2GhuHynSN8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OoTPnIF6; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OoTPnIF6"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id C59C1C2BCF5;
-	Mon, 13 Jul 2026 11:07:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1783940873;
-	bh=gFPfNAZb5Emut5tl59jtS1GCSawh67g0IOaptPFibj4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=OoTPnIF6SRLmVMupyhjeUKZcJU6AwKweMwZvPnhmtHyFwjFGZN6LED68Pg9kUqDIh
-	 QnIthYMOQS0FSZyN1buNkwC7IBnD/H8mjUCso0YSIVQgD3rz7hwLyyHbzgQHsM/7et
-	 ZMhrwojxoZ1IP71Bxifb4A/pv98lRSCNrDNqk2b+hWFAtomwindDIrfc8DsdmItmku
-	 9UWDy/4ZhoDm6QwHErqcuP1uhsqGZI4fOzzRpLoXobSgVpMST0T+HlbbsFjoxIVHg/
-	 J3TRolG2lzwG4pisXO7RHNB6bmwRtJM2ALur1waxVeb26jVXjtOo06m7mJb102PZH8
-	 SjIX+F9U8UW0w==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A3BBCC44507;
-	Mon, 13 Jul 2026 11:07:53 +0000 (UTC)
-From: Joel Granados <joel.granados@kernel.org>
-Date: Mon, 13 Jul 2026 13:07:42 +0200
-Subject: [PATCH RFC net-next v3 1/3] net: enforce net sysctl registration
+	s=arc-20240116; t=1783942214; c=relaxed/simple;
+	bh=YKVLIQtatBhn5yK/xtLhS4dBm2eOpXamOjk5hO60+Mw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IH23RUS8tS2K/OYVgDGYrOrHKaGkYdZvfRgsfrvrk+JBhxSyix2d42o/geV7vK+vp7khwIXKxTPNr/i1b6GGSg/EVp2UpohjHCu8HhaLwdZOg+8U3A1qoXfOqtQQvRu4wX/wHWsQRnIxk5My/0jsn873jQn0LZDRvku6PLrQbeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fritz.com; spf=pass smtp.mailfrom=fritz.com; arc=none smtp.client-ip=212.42.244.94
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fritz.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fritz.com
+Received: from [2001:bf0:244:244::71] (helo=mail.avm.de)
+	by mail.avm.de with ESMTP (eXpurgate 4.57.1)
+	(envelope-from <t.martitz@fritz.com>)
+	id 6a54caed-1649-7f0000032729-7f000001c90c-1
+	for <multiple-recipients>; Mon, 13 Jul 2026 13:24:29 +0200
+Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [IPv6:2001:bf0:244:244::71])
+	by mail.avm.de (Postfix) with ESMTPS;
+	Mon, 13 Jul 2026 13:24:29 +0200 (CEST)
+From: Thomas Martitz <t.martitz@fritz.com>
+To: Simon Horman <horms@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
+	linux-kernel@vger.kernel.org (open list)
+Cc: Thomas Martitz <t.martitz@fritz.com>,
+	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v4 0/1] macvlan: allow source mode devices along with passthru
+Date: Mon, 13 Jul 2026 13:24:12 +0200
+Message-ID: <20260713112414.2842803-1-t.martitz@fritz.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260713-jag-net_const_qualify-v3-1-7289fe9eaea6@kernel.org>
-References: <20260713-jag-net_const_qualify-v3-0-7289fe9eaea6@kernel.org>
-In-Reply-To: <20260713-jag-net_const_qualify-v3-0-7289fe9eaea6@kernel.org>
-To: "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
- Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>, 
- Phil Sutter <phil@nwl.cc>, 
- Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, 
- Xin Long <lucien.xin@gmail.com>, 
- Steffen Klassert <steffen.klassert@secunet.com>, 
- Herbert Xu <herbert@gondor.apana.org.au>, 
- "D. Wythe" <alibuda@linux.alibaba.com>, Dust Li <dust.li@linux.alibaba.com>, 
- Sidraya Jayagond <sidraya@linux.ibm.com>, 
- Wenjia Zhang <wenjia@linux.ibm.com>, 
- Mahanta Jambigi <mjambigi@linux.ibm.com>, 
- Tony Lu <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>, 
- Kuniyuki Iwashima <kuniyu@google.com>, 
- Stefano Garzarella <sgarzare@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
- linux-sctp@vger.kernel.org, linux-rdma@vger.kernel.org, 
- linux-s390@vger.kernel.org, virtualization@lists.linux.dev, 
- Joel Granados <joel.granados@kernel.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3574;
- i=joel.granados@kernel.org; h=from:subject:message-id;
- bh=gFPfNAZb5Emut5tl59jtS1GCSawh67g0IOaptPFibj4=;
- b=owJ4nAHtARL+kA0DAAoBupfNUreWQU8ByyZiAGpUxwZskgenDOU98txc57mfzp9zCAPadshX1
- w9t16Ag3hXFGYkBswQAAQoAHRYhBK5HCVcl5jElzssnkLqXzVK3lkFPBQJqVMcGAAoJELqXzVK3
- lkFPFuML/RuQe3IepvdaZwOqXPTFSxjiaQ9bHG5EjMlqTZJymTxUXke4CX6cffYqR8LOCXv/zqI
- Xz6yMTCeEaKdC/KbKlarrXHYnX0dUo/F3SqzxbWAoouVQN77rnoI7iQbY+TDK0GEy2zZONsm95u
- Vf+EfOQeGZuxwgpbCYUR8IBhhpqcVfuF0vI8vaxi7bhmmK30aRoBtLG+WYyHIgf/N7CXmGwRFxC
- yDHVArNMtiBNObUr0CVTFLxn8/BXuAIVrsNttsPGQm6aDvm3AQd87+wUS2otzOefZp82bJUl73e
- IzkI9JlAq/XN9dgNUEPdpolmegObR57+ikTaZzNrILLpVchdIIKBR4cZfPkGGVcjwBnrXrvM9Zy
- kksDs+AIzzP/SDuNq8GseNIMT37Jo/NFsSdfK+eblk8DVjuKx+gEwV7GHjkzZkGe6PEWWgIhT8f
- uCYW4EEdIC4+bpgG8ygVgbaTDyA1+W81V10LuKN5vBvLR6iuqzESCQGH1rg5ryeHGO+tKQvK3f8
- Ig=
-X-Developer-Key: i=joel.granados@kernel.org; a=openpgp;
- fpr=F1F8E46D30F0F6C4A45FF4465895FAAC338C6E77
-X-Endpoint-Received: by B4 Relay for joel.granados@kernel.org/default with
- auth_id=239
+Content-Transfer-Encoding: 8bit
+X-purgate-ID: 149429::1783941869-B34B5B3F-5DC6AEEB/0/0
+X-purgate-type: clean
+X-purgate-size: 2437
+X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
+X-purgate: clean
+X-pfmilter: queueID: D7249A0261
 
-Replace the warning and file permission change with an error when an
-"unsafe" net sysctl registration is detected.
+Hello,
 
-One of the barriers preventing the const qualification of the ctl_tables
-in the net directory is the permission (->mode) change in
-ensure_safe_net_sysctl. This prep commit removes that barrier and
-ensures that the received ctl_table pointer to the net ctl_table
-register function is const.
+we're trying to solve a use case on our devices where two SoC are
+connected on the same board, using the only available high-speed interface.
 
-Signed-off-by: Joel Granados <joel.granados@kernel.org>
+One SoC runs the main Linux system including the full routing stack
+(FRITZ!OS) and the other SoC implements most of the GPON ONT side.
+
+The high-speed interface is of course also used for the user traffic.
+Therefore we must tell the inter-SoC traffic apart from the user traffic.
+
+We achieve this by matching the well-known MAC address of the ONT SoC.
+The user traffic passes through the ONT SoC without modifying MAC headers.
+Now we would like to use macvlan (with source mode devices) on the main
+SoC side for this but our routing stack requires the rx_handler to be
+available. Therefore macvlan is currently not an option.
+
+With this patch macvlan becomes an option because the current limitation
+of either "one passthru device" or "any other configuration" is relaxed
+for the combination of passthru and any number of source mode devices.
+
+This allows us to configure a source mode device for the other SoC and
+register an rx_handler for further processing on the passthru device.
+
+Thanks in advance!
+
 ---
- include/net/net_namespace.h |  4 ++--
- net/sysctl_net.c            | 24 ++++++++++++------------
- 2 files changed, 14 insertions(+), 14 deletions(-)
+Changes in v4
+- Prevent macvlan_restore_mac() from changing the MAC address
+  of remaining source mode interfaces.
+- Set MACVLAN_F_PASSTHRU on the macvlan_port only after adding
+  the passthru interface truly succeeds.
+- Changing existing interfaces to passthru mode shouldn't become
+  allowed.
 
-diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
-index 80de5e98a66d6c9273aa7c5b9d489b22cef8559a..dca0ec809483bec604f4ca3d99dfea32834af8fa 100644
---- a/include/net/net_namespace.h
-+++ b/include/net/net_namespace.h
-@@ -522,12 +522,12 @@ struct ctl_table;
- #ifdef CONFIG_SYSCTL
- int net_sysctl_init(void);
- struct ctl_table_header *register_net_sysctl_sz(struct net *net, const char *path,
--					     struct ctl_table *table, size_t table_size);
-+					     const struct ctl_table *table, size_t table_size);
- void unregister_net_sysctl_table(struct ctl_table_header *header);
- #else
- static inline int net_sysctl_init(void) { return 0; }
- static inline struct ctl_table_header *register_net_sysctl_sz(struct net *net,
--	const char *path, struct ctl_table *table, size_t table_size)
-+	const char *path, const struct ctl_table *table, size_t table_size)
- {
- 	return NULL;
- }
-diff --git a/net/sysctl_net.c b/net/sysctl_net.c
-index 19e8048241bacb18de853d3b904d0f97fd2fe78a..4714887113d90a191c300c9c49a6317d5609efeb 100644
---- a/net/sysctl_net.c
-+++ b/net/sysctl_net.c
-@@ -114,16 +114,16 @@ __init int net_sysctl_init(void)
- 	goto out;
- }
- 
--/* Verify that sysctls for non-init netns are safe by either:
-+/* Return error when sysctls for non-init netns are unsafe by verifying:
-  * 1) being read-only, or
-  * 2) having a data pointer which points outside of the global kernel/module
-  *    data segment, and rather into the heap where a per-net object was
-  *    allocated.
-  */
--static void ensure_safe_net_sysctl(struct net *net, const char *path,
--				   struct ctl_table *table, size_t table_size)
-+static int ensure_safe_net_sysctl(struct net *net, const char *path,
-+				  const struct ctl_table *table, size_t table_size)
- {
--	struct ctl_table *ent;
-+	const struct ctl_table *ent;
- 
- 	pr_debug("Registering net sysctl (net %p): %s\n", net, path);
- 	ent = table;
-@@ -149,24 +149,24 @@ static void ensure_safe_net_sysctl(struct net *net, const char *path,
- 		else
- 			continue;
- 
--		/* If it is writable and points to kernel/module global
--		 * data, then it's probably a netns leak.
--		 */
-+		/* Warn on netns leak. */
- 		WARN(1, "sysctl %s/%s: data points to %s global data: %ps\n",
--		     path, ent->procname, where, ent->data);
-+			path, ent->procname, where, ent->data);
- 
--		/* Make it "safe" by dropping writable perms */
--		ent->mode &= ~0222;
-+		return -EACCES;
- 	}
-+
-+	return 0;
- }
- 
- struct ctl_table_header *register_net_sysctl_sz(struct net *net,
- 						const char *path,
--						struct ctl_table *table,
-+						const struct ctl_table *table,
- 						size_t table_size)
- {
- 	if (!net_eq(net, &init_net))
--		ensure_safe_net_sysctl(net, path, table, table_size);
-+		if (ensure_safe_net_sysctl(net, path, table, table_size))
-+			return NULL;
- 
- 	return __register_sysctl_table(&net->sysctls, path, table, table_size);
- }
+Changes in v3
+- fix passthru port removal caused by passing the wrong 
+  device to macvlan_port_release_mac(). This was also
+  detected by syzbot.
+- macvlan_port_release_mac() is now named macvlan_restore_mac()
+  and gets passed a "struct macvlan_port" directly.
+- Link to v2: https://lore.kernel.org/netdev/20260709100512.1383421-1-t.martitz@fritz.com/
+
+Changes in v2:
+- changed several port-wide checks (macvlan_passthru()) to 
+  per-interface checks (vlan->mode == vlan->mode == MACVLAN_MODE_PASSTHRU)
+- correctly handle removing the passthru interface when there are still
+  source interfaces
+- Link to initial posting: https://lore.kernel.org/netdev/20260612092345.2352255-1-t.martitz@fritz.com/
+---
+
+Thomas Martitz (1):
+  macvlan: allow source mode devices along with passthru
+
+ drivers/net/macvlan.c | 107 ++++++++++++++++++++++++++++--------------
+ 1 file changed, 73 insertions(+), 34 deletions(-)
 
 -- 
-2.50.1
-
+2.54.0
 
