@@ -1,84 +1,84 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77BB939EF14;
-	Mon, 13 Jul 2026 08:08:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807433A5430
+	for <netdev@vger.kernel.org>; Mon, 13 Jul 2026 08:09:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783930103; cv=none; b=lnF51uRsSTOLvZ6fAOVP7enAGyw688+5lSPBjSJwKu4zIxtOh/CSKBRfeFrX8i+Wxa8UESdmpDi9PFWGXELaD+g07+14mU7PaXubmHr+pg1VrHIBo1WInirpK0S6gbwg1AHHzMNzaA/5bkUm6+Hf81NiWeK/vXCsZyLjsDpZo1o=
+	t=1783930161; cv=none; b=a4NYtChAQoxw9UCm03Bh7slr5S4EY7H1wz6zW2n8TBh6MlZ6XjpUYK8Yh0BpEncNvRpPX0C9Y4J/2BoemQBX6UDTqxBV91g2wKG1kKUQDUBwtVj+e0fu+me2vF4psxgTcJmtnOxjiwApKlIDDf1F/E7tmaJ4qKUck58L8wSc8as=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783930103; c=relaxed/simple;
-	bh=uLT7HWzsI84MdeWJhgNF4lDj6foDO+aRXB+64HHmnzM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FpkSMwYs4BlrzDxdERcVUYLi+SpytyV2zQilEggUpY20TYZvkaWgroXyHVsVGqPgNypsZL2P0Zl0DsbVIdAUrWSwoSew7KUtuLRW6kqcOl+LR8u1NhKfxoqJ+0tRaybE5HYQZMCRdsNRrPvQyd0WGvEgBhnC4rUYL3vfk9y55R4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GdAfMVNg; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783930161; c=relaxed/simple;
+	bh=LVpxmD3DjHg8Dmy1kBLiTYyLvIy2N6+nkEpFxZWV8fk=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=ggCP5Q/esyrZee68BZ1ajQUPHFPXHRzyYyMpVuTgAWqgk1tLRHr5nR8gkya4mPE786CUyil6pOVDrLDIDdPQcdwcus+KQ2W2ScVR3nSSVpN4TKsw7oi/8F6OokiXdNzt324gUyNXzeUjHFZ1nEwI7F3WI+jRXJLzVsclTMvGe/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QMDOg8PP; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GdAfMVNg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 300321F00A3F;
-	Mon, 13 Jul 2026 08:08:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783930102;
-	bh=pYNE2/vvUsYohUa/Lltav4piWNiMdY9CO+/H9wkxZu4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GdAfMVNgR8cuLk8qti7w7tFiS+cVjrHBaRfIfI16N7YleLCkgNNDKTR2IiKInO4c6
-	 eW9VJ5OusGVuvE0MMMM9XOpH4pjsk5xCKr6LvMGCz+vk4dvRN61vLAEpk+WaHlEJEI
-	 //NNe2+dXOmZlic/YjAAXICikCfFE5GnaDlfO466oe1mo4YQW6dHhRGZpuHwRdGfxA
-	 6hQbvqZw0NUq7B/TEs1Xgj3yqpw16mqxbvQ37tN57fFAjVjHNYdMGIZoEBwypS3kzt
-	 6jNC3LDIvlOFikYUaPKzfq5rh67MM6n05mLl/Iq9Mf+68Njd1ghRQqrsLAmciNBt0k
-	 RewQpcHA4rrAg==
-Date: Mon, 13 Jul 2026 11:08:16 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Zhiping Zhang <zhipingz@meta.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Saeed Mahameed Michael <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
-	Michael Guralnik <michaelgur@nvidia.com>, netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net v2] net/mlx5: free mlx5_st_idx_data on final dealloc
-Message-ID: <20260713080816.GA327832@unreal>
-References: <20260702222507.1234467-1-zhipingz@meta.com>
- <9e4e455b-c10b-447e-9fe6-80672f26fd8a@redhat.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QMDOg8PP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783930159;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=T97f1i1yO9g6hKT4Zi+PU+4byj7CaY4bqSP81K0IE+A=;
+	b=QMDOg8PP0edJvkpknbmvAIHNxp2rRRpFJrHO5Dc13hCUh4jQsKUIZox8cN8bcesl56THrk
+	uk7Dc2Ovq5V/wtXHZQg4UHT4kH+dTbW3s+jydTqE7iV2N4PJzEcaz00njW80E0DW4nGNaF
+	Fj3pscSZVKyoMnwakkJyLkTz9WHjQuE=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-199-Ij7-4nE-PL6o-k2OM3itXw-1; Mon,
+ 13 Jul 2026 04:09:14 -0400
+X-MC-Unique: Ij7-4nE-PL6o-k2OM3itXw-1
+X-Mimecast-MFC-AGG-ID: Ij7-4nE-PL6o-k2OM3itXw_1783930152
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 753461955DD1;
+	Mon, 13 Jul 2026 08:09:12 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.44.33.159])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A12D519560A0;
+	Mon, 13 Jul 2026 08:09:06 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <alKCl7ZxPIeTyHHD@kernel.org>
+References: <alKCl7ZxPIeTyHHD@kernel.org> <20260710192220.1922433-1-dhowells@redhat.com> <20260710192220.1922433-13-dhowells@redhat.com>
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: dhowells@redhat.com, netdev@vger.kernel.org,
+    Marc Dionne <marc.dionne@auristor.com>,
+    Jakub Kicinski <kuba@kernel.org>,
+    "David S. Miller" <davem@davemloft.net>,
+    Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+    Simon Horman <horms@kernel.org>, linux-afs@lists.infradead.org,
+    linux-kernel@vger.kernel.org, Jeffrey Altman <jaltman@auristor.com>,
+    keyrings@vger.kernel.org, stable@kernel.org
+Subject: Re: [PATCH net v2 12/16] keys: Add refcounting to user-defined key type payload
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9e4e455b-c10b-447e-9fe6-80672f26fd8a@redhat.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2186303.1783930145.1@warthog.procyon.org.uk>
+Date: Mon, 13 Jul 2026 09:09:05 +0100
+Message-ID: <2186304.1783930145@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On Fri, Jul 10, 2026 at 01:25:45PM +0200, Paolo Abeni wrote:
-> On 7/3/26 12:24 AM, Zhiping Zhang wrote:
-> > Workloads that repeatedly allocate and release mkeys carrying TPH
-> > steering-tag hints (e.g. churning RDMA MRs) leak one
-> > struct mlx5_st_idx_data per cycle; kmemleak flags it as unreferenced
-> > and the kmalloc slab grows over time.
-> > 
-> > When the last reference to an ST table entry is dropped,
-> > mlx5_st_dealloc_index() removed the entry from idx_xa but the backing
-> > mlx5_st_idx_data allocation was never freed.
-> > 
-> > Free idx_data after the xa_erase() so the lifetime of the bookkeeping
-> > struct matches the lifetime of the ST entry it tracks.
-> > 
-> > Cc: stable@vger.kernel.org
-> > Fixes: 888a7776f4fb ("net/mlx5: Add support for device steering tag")
-> > Reviewed-by: Michael Gur <michaelgur@nvidia.com>
-> > Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
-> @Leon, @Saeed, @Tariq: just in case this fell under the radar, it's
-> waiting for your ack.
+Jarkko Sakkinen <jarkko@kernel.org> wrote:
 
-Tariq and I completed this on Jul 5 and Jul 6.
+> I get the relaxing part when it comes to RCU read lock but why does it
+> carry fixes tag? The commit message does not do a great job on
+> explaining this part.
 
-https://lore.kernel.org/linux-rdma/20260705141920.GI15188@unreal/
-https://lore.kernel.org/linux-rdma/0bb37f75-c94a-4a10-b115-186b71daf14f@nvidia.com/
+It's the first part of a multipatch fix (it was originally in one patch and I
+just duplicated the Fixes).  I can remove the Fixes line though - as you point
+out, this patch is not technically a fix in itself.
 
-Thanks
+David
 
-> 
-> Thanks,
-> 
-> Paolo
-> 
