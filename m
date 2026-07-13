@@ -1,132 +1,127 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98178359A6C
-	for <netdev@vger.kernel.org>; Mon, 13 Jul 2026 19:40:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1472B3382F4
+	for <netdev@vger.kernel.org>; Mon, 13 Jul 2026 20:04:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783971623; cv=none; b=WdBQ08hqy+SdV5Vw2eqvyxRbrfwfcEUQd3+J7v4CBCewjRvQcrL87IZbmyx22dZ3ADXYlcleYgYFvz36ZbucYU0a3DunqtiqoTuXcbgcHo9eTcBM//atYq0yOtPCpxctvXtRL/ygWcv2MguTrkYdeP3J5O1F9hsqzdd2aPRGz4M=
+	t=1783973064; cv=none; b=jNnEiGEAvtLKQVexE53/FVUQlEyPAQJ1/LHOkT/3iRC4Ag834EfgWVDbbDYhgpEjBTTtTmsJ6KElX1xAdOrOY5avxi5i7z1axNQROKNcycL8vtVGoX/QGQUTSur8cyaDtRbnkYyAybi4nusSpGLQEqt0EE0hVXYfwBHCqAmtGwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783971623; c=relaxed/simple;
-	bh=ZElYX+gf59pRPgluKzpGvx9WiCEsZq+Swc8cluTkDzo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=li4jwEahM5uUuLxRu1maCaKdpid2sw9IZ37wWPedDwz0rKzNt+39l1Qx9hYbJ8ccMqoo5EoPCYmnBaPHLbG00nbLG55vGcVbkXZkGlJ69/Y719K5+e8RvYNtDcM/1rXfv/dhJBoH4uQ7IdDg4JhASljuYj8Y9kvmV6e22VMVn2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=ZEka/sdd; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0sec.ai
+	s=arc-20240116; t=1783973064; c=relaxed/simple;
+	bh=YF+KOotGzZmW5OzmRDV//DtHveaZ5nJeRsKupPRkt7Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=six++qbpMpgOUrionsw+QghAlKSoSx/fhxpSxjAbvI0O0RBWzPBicsPHALnmEV5Ew8vC5ySFPRnGVkmArkU0+g2mLN3fB4Xs/tsRuZA+/Mks1tNm4dE0KCj6DfGbOmOPjxo7BhFbW+0N+lvLVKKO8obIA9ny9A9vkwXv0qnf54U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HgkFk3n1; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b="ZEka/sdd"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-4758b2a9e2aso2183916f8f.2
-        for <netdev@vger.kernel.org>; Mon, 13 Jul 2026 12:40:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HgkFk3n1"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-46f88060e8dso549854f8f.2
+        for <netdev@vger.kernel.org>; Mon, 13 Jul 2026 13:04:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=0sec.ai; s=google; t=1783971618; x=1784576418; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=2Anq+ZgEfX5t6X9Q7TePAbPIwtsyngsq62Z1m8/YM/k=;
-        b=ZEka/sddEpto7RUMFCIQb5azkrkfoCdYr8etYSkVMWZO4ISCu/iad8n56x1S3UkYt7
-         XpNtEycCBk0zqhZUN8/F4j8Q+gleArHpn8qeMlXD6G55tv73Yt7JZcg5Y+4AiJ5Imydu
-         yhTc0xH4X0s4HZK7NOph4LgugRFZ0eCK2hk2cR5qA8yqzVNwpJ2VTgDpWswdoC4DwrZe
-         7Jvn4MuqaMmjuqwveOJiuZbv1MTGRHm4iiAuIttR9wVV4gx1DveX7VerssR79FE7USfT
-         ivHn4PH/Yt4RQGEf0GdB/hQ/jDHWNfL3EOfCX9HaWKEp4tvffW2fmOxelNeZA+EV+Gjj
-         OQtA==
+        d=gmail.com; s=20251104; t=1783973061; x=1784577861; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=JTj575AcHAom2fz7OwDDRttEo4AE92OOBeJUOqyrws8=;
+        b=HgkFk3n111Uu2CWlsOwuDk71tx53WKuPJM4XSbnq8Ii8Al8FgRS7/TN9Ooc0SzS8Ih
+         0z/155WlWBOAq8NfjKLt3MkWhLffWp4QKiOrJ1R+AWFtFmg6CofXbl8wSUQeCCfu7Bao
+         rWKrDmeloj9iIvvyP4b5W1CuS+URN+R5CwHxvAuTgAygpTLENCSBV52PH7hi9PZ9H3Ac
+         JG2QsBOeFw+RtnTSsWOselL9mWGqKryCSshJEjD38J0WcGBHAtSaFFpfgWceDYroEJWN
+         I8OiG7NNZA6OsENsVIQ4PWzKDF1zXnjayvMoIVtbZv6QiyCcb67sCUbP5bkbMNXs6UcP
+         Z7BA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783971618; x=1784576418;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2Anq+ZgEfX5t6X9Q7TePAbPIwtsyngsq62Z1m8/YM/k=;
-        b=OhaUOv387Ykz3uFk91mY4QLR01GIKZ0Zfh3mz50PfgZ3F7wTNxMVRyAxlC/Cs8pvqI
-         CFChb7M4thReLqLIwps25fvQd+WOU6xljsWfpyoD4h76l0E4Ox1Nji0JEjfQyF2Xtdqe
-         5vNPiP7x7IG4A4BWjw6lhQoDV4vTKaRENzm7z7xa39PfCvGnsHRMGuz+fblQuBJA0CNb
-         uWdu+X52qeVuttkyiMNkjxXqbAnYtc9cZnI0BmrAqIOg/d3MNd0OdpU3o4zYg6VcaN0J
-         Z7RG0Vl2OUYp2CvGJ+C6ZlE5fYLh0y2pex6ueOBHBMDPwyLnyZ4/cwENipwk5i/Tsjdd
-         6RIA==
-X-Gm-Message-State: AOJu0Yzinqk265t7AXZAvsMrs7aDC0T94DnTYqQ0pb89row/O8U/O5LF
-	/k+eCfbEc+E1j2z3dgJXe2Xg2mg/HmeKVhIflvUlWGpYvt+oKTYGFmIbFecgcHPIPICH
-X-Gm-Gg: AfdE7ckEd53mQ0yQ1dUMKChBFGM6xKeEZYM/YMzSvWt8ULR7D8B3igEqo9HsaDqcWuz
-	Ibz/GHEfxcqZyFjZUaNcYmslc7PzYZSc9DvT6ASQxhG3BhyaF38M0A4xIkbfHeYeYiMYLiY5cYY
-	lE12Au3losl6BXTGsIs5yallh0uK0dE55ILfwKB5Ye1AgDd8ZhBnXznMKx1NU2GPk6VDVrREMRt
-	gd4fQbLEJBGQCl1+HOEMvDqAKDmV9AY7E5maV5CiZnRK/6tV7Gb7d/n+N3QoCWoyHxt/+ZIC+wR
-	iwOLn+CrLVShJ6vj5v4Mf+5p6KL9+XwuuVdOoekFvk2eF/b4pIGXSOGP2tPkyFEu2u6pYRPbt7f
-	6mkAhNTeCa/WZh5GyqvcMXVRApeHTTLWczB9CuFnzRYXiveNA//Ou5XSDh0WavSXHIx3fCyZ81g
-	kNwKCh5Wkgd9KzgC9b3zhaJgOEeQCZPlFgaR83AC3p4fiL+Z1hMKJcKiYyiGl18IpW+JEX25821
-	qfzofcgyuq/+rJQHq3c7C4lO1poE5KfMlfIMV2nnreVWA==
-X-Received: by 2002:a05:6000:2908:b0:46d:9871:1a44 with SMTP id ffacd0b85a97d-47f2dcc5c1amr11070214f8f.32.1783971617968;
-        Mon, 13 Jul 2026 12:40:17 -0700 (PDT)
-Received: from PeakBook-Mini.tail8e484.ts.net ([178.197.218.188])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f464c4320sm1648928f8f.32.2026.07.13.12.40.16
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 13 Jul 2026 12:40:17 -0700 (PDT)
-From: Doruk Tan Ozturk <doruk@0sec.ai>
-To: Vladimir Oltean <olteanv@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+        d=1e100.net; s=20251104; t=1783973061; x=1784577861;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JTj575AcHAom2fz7OwDDRttEo4AE92OOBeJUOqyrws8=;
+        b=debKZ4Z6Xqz8t2je5YMFb745bZnmQteqRPmEEmhu63DkgVemplnLsRXh/xD5FVucg6
+         DdK42GypD9gXzpS5qYJqdfETSOoVG4J7asIGyuYi/6fG+d567pK3xJplI2mGoj4W06fR
+         F7Jw98csF8y4GTZTMRvr5KQ1Dc8St1KAwjydmZIzRl45DGygN/XIgb1zEq7YtxT5puEP
+         WlqUsdrLbUm8h/BRnsoChW1dtA61clU24VzE3b2WyBVKw7zf+cYoab31FLxz0bEzkMDL
+         hm6y49IALSFsiom+Vz3EvZk8g+oT7ympvSdcP4EQdOhEoF7Up6wzJK1IfMbCJOypdGK8
+         KePA==
+X-Forwarded-Encrypted: i=1; AHgh+Rrf4jMpA16tUUE0oIAFijUgNOgKomCknwZa0YejQM0gQ0HoM6BR23dggWu+sPcCDLOT72YTnoU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx76x7HRDb1IhKBJcwwk+oAq4BR3eqB2HpDSrJWWdcWvPsJJzO7
+	wgqx+kkqHVe0ZXJoFvjD7lWquctbE6qRcZ9X5PRwKyrMdMcy4NIXDkiu
+X-Gm-Gg: AfdE7clxUbg5XRvs/Q8KU67MoHMYVR9qbcs/CW6UZCIflGy2oMsEcY3UajLhAXv+hlO
+	f9kC9yoR2GolqfkWtmO51M0MjLjOAeVMZGBaAuBeUpsc6CJpGBAEasX/wnlxW+uhr2d2v9yvX8v
+	xwmy8CCABlePHx6M0shLtoGme/VBNU+Aq9Xwbw3AapIUrxOvSorLA3JUzKlpWHBP2IfvuMfWXWM
+	GICmmnh19dgr7SDfhNzYsKbmMev0a1AnG8N72L2+M+GiPM0j9tbiALFg8MFfwXZo9OCkx2D+RCl
+	tiQuFiEgjzr7wVa5eXPQ7d6a+jdmiKuVwLTUlU5bCKlRR0Pu76Px3/H1Pr7zgCtozYkdclxE6rm
+	NOojE7qNs/UAob2AaBKlY4JRXdvf4ajE6uJ0sADzHh36rvbdS68Yc0+/Zxua5pb7Bx80pa86AQq
+	JKPtoA
+X-Received: by 2002:a05:600c:4f94:b0:492:1e4d:d44b with SMTP id 5b1f17b1804b1-493f8835228mr59867925e9.8.1783973061275;
+        Mon, 13 Jul 2026 13:04:21 -0700 (PDT)
+Received: from skbuf ([2a02:2f04:d40e:d500:d8f0:7a38:1703:914b])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4950a322c86sm17366115e9.11.2026.07.13.13.04.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jul 2026 13:04:20 -0700 (PDT)
+Date: Mon, 13 Jul 2026 23:04:17 +0300
+From: Vladimir Oltean <olteanv@gmail.com>
+To: Doruk Tan Ozturk <doruk@0sec.ai>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	Florian Fainelli <f.fainelli@gmail.com>,
 	Woojung Huh <woojung.huh@microchip.com>,
 	Nick Child <nnac123@linux.ibm.com>,
 	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, Sabrina Dubroca <sd@queasysnail.net>,
 	Arun Ramadoss <arun.ramadoss@microchip.com>,
-	UNGLinuxDriver@microchip.com,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Doruk Tan Ozturk <doruk@0sec.ai>,
+	UNGLinuxDriver@microchip.com, Michael Ellerman <mpe@ellerman.id.au>,
 	stable@vger.kernel.org
-Subject: [PATCH net 2/3] net: dsa: tag_ksz: don't read an unset MAC header in lan937x_xmit()
-Date: Mon, 13 Jul 2026 21:40:09 +0200
-Message-ID: <20260713194010.54642-3-doruk@0sec.ai>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260713194010.54642-1-doruk@0sec.ai>
+Subject: Re: [PATCH net 1/3] net: dsa: tag_ocelot_8021q: don't read an unset
+ MAC header on transmit
+Message-ID: <20260713200417.dghlrj4ca27b6nd4@skbuf>
 References: <20260713194010.54642-1-doruk@0sec.ai>
+ <20260713194010.54642-2-doruk@0sec.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260713194010.54642-2-doruk@0sec.ai>
 
-lan937x_xmit() reads the Ethernet header via eth_hdr(skb) to test the
-destination address. The sibling xmit paths in this file (ksz8795_xmit,
-ksz9477_xmit, ksz9893_xmit) already use skb_eth_hdr(); lan937x_xmit() is
-the lone hold-out.
+On Mon, Jul 13, 2026 at 09:40:08PM +0200, Doruk Tan Ozturk wrote:
+> ocelot_xmit() reads the Ethernet header via eth_hdr(skb) to test the
+> destination address against the link-local range.
+> 
+> On the AF_PACKET SOCK_RAW + PACKET_QDISC_BYPASS transmit path the skb
+> reaches ndo_start_xmit() with the MAC header unset, so eth_hdr(skb)
+> resolves to skb->head + (u16)~0 and the read is out of bounds.
+> 
+> On the TX path the L2 header is at skb->data, so use skb_eth_hdr(), as
+> done for the same class by
+> commit f5089008f90c ("macsec: don't read an unset MAC header in macsec_encrypt()")
+> and commit 96cc4b69581d ("macvlan: do not assume mac_header is set in macvlan_broadcast()").
+> 
+> Fixes: 43ba33b4f143 ("net: dsa: tag_ocelot_8021q: fix inability to inject STP BPDUs into BLOCKING ports")
+> Cc: stable@vger.kernel.org
+> Found by 0sec automated security-research tooling (https://0sec.ai).
+> Assisted-by: 0sec:claude-opus-4-8
+> Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
+> ---
 
-On the AF_PACKET SOCK_RAW + PACKET_QDISC_BYPASS transmit path the skb
-reaches ndo_start_xmit() with the MAC header unset, so eth_hdr(skb)
-resolves to skb->head + (u16)~0 and the read is out of bounds.
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
 
-On the TX path the L2 header is at skb->data, so use skb_eth_hdr(), as
-done for the same class by
-commit f5089008f90c ("macsec: don't read an unset MAC header in macsec_encrypt()")
-and commit 96cc4b69581d ("macvlan: do not assume mac_header is set in macvlan_broadcast()").
+I was not aware of the bug introduced by commit d346a3fae3ff ("packet:
+introduce PACKET_QDISC_BYPASS socket option"). Commits
+eabb1494c9f2 ("net: dsa: tag_ocelot: do not rely on skb_mac_header() for VLAN xmit")
+499b2491d550 ("net: dsa: tag_ksz: do not rely on skb_mac_header() in TX paths")
+f9346f00b5af ("net: dsa: tag_sja1105: don't rely on skb_mac_header() in TX paths")
+0bcf2e4aca6c ("net: dsa: tag_ocelot: call only the relevant portion of __skb_vlan_pop() on TX")
 
-Fixes: 092f875131dc ("net: dsa: tag_ksz: add tag handling for Microchip LAN937x")
-Cc: stable@vger.kernel.org
-Found by 0sec automated security-research tooling (https://0sec.ai).
-Assisted-by: 0sec:claude-opus-4-8
-Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
----
- net/dsa/tag_ksz.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+were made assuming that the bug to avoid would be exclusively a future
+one (the revert of commit 6d1ccff62780 ("net: reset mac header in
+dev_start_xmit()")) and thus they were not marked as bug fixes.
 
-diff --git a/net/dsa/tag_ksz.c b/net/dsa/tag_ksz.c
-index 67fa89f102e0..4f74336ae396 100644
---- a/net/dsa/tag_ksz.c
-+++ b/net/dsa/tag_ksz.c
-@@ -430,7 +430,7 @@ static struct sk_buff *lan937x_xmit(struct sk_buff *skb,
- 	u16 queue_mapping = skb_get_queue_mapping(skb);
- 	u8 prio = netdev_txq_to_tc(dev, queue_mapping);
- 	struct dsa_port *dp = dsa_user_to_port(dev);
--	const struct ethhdr *hdr = eth_hdr(skb);
-+	const struct ethhdr *hdr = skb_eth_hdr(skb);
- 	__be16 *tag;
- 	u16 val;
- 
--- 
-2.43.0
-
+Are they true bug fixes, as in "can we reproduce these [using
+CONFIG_NET_DSA_LOOP=y on virtually any network adapter]"? If so, should
+all the commits above also be backported to stable?
