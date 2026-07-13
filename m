@@ -1,64 +1,63 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E2F35838A
-	for <netdev@vger.kernel.org>; Mon, 13 Jul 2026 19:40:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77D0435A952
+	for <netdev@vger.kernel.org>; Mon, 13 Jul 2026 19:40:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783971620; cv=none; b=EQiGqxZNYum0S4O2gszVV2lA8QRZ4mH7EKu5FYrMBEiIFTgk94FnXUFCKP93AI4E01K1sOkaLGGwyCc9pkgPho3b6RKU/NeUzRtyyw/aV3X1TzHZ56TawUS9ZQruqUGyDZkKFu/LFgTRikohwXfaUTQP2ep1F2DKzkJh+KTUxKA=
+	t=1783971623; cv=none; b=ulPXDOzKgpbKywKQROTl3ywYnaDF8K405dDRld2T1d1ZDd1mqQQM4KcWwBBinBLvBrJVAVA2CQwXZLQNNSA7jGvc6nmXJvU0gMbLMA9kMDqtDQmABLO+nW7aHDMGfAV4L/yjsLNOxJCV0betLlvTnP7/NGgQ6ySr5eIn4Ca8Tpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783971620; c=relaxed/simple;
-	bh=cBBAAXVfz2OnPP835VfCEgjtcsAJ50plKAqlklYzeK4=;
+	s=arc-20240116; t=1783971623; c=relaxed/simple;
+	bh=Qb2HIoMSqWqjQCWpGfmBQN/eCpG6jcj8qiqVtJGiIdc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FyTVPOnDXv20qhNVBaLvNv60C++acsgGOTXTdOKcqR1Y2yg6sTv2oowT6Zc+iB2TJIIAC4ZsDRXgazscIfpr/NkfA5YA//PjLC4kdN2UMGYWWiiBos2WXPNRASFy2qMe0M/9b3Zek664WNBUsb6Y3TveSplnZlRZwBouYFx9Ffc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=opSmBt1X; arc=none smtp.client-ip=209.85.128.47
+	 MIME-Version; b=R5rlgfkB9FTxNkdyjGbyTyj1WlBWUqn1luaGkR6dXAqFilbai0g1M7g1VFceW/IVlvFAJgj1a08P3bcbBsU7uoqdgviyFeOHBZPUtiIJqe9re26Sxob319yeoN6KEhyAR7+Z8QvXmifJylO2g9XIK9IQwXeIK37yo53cvp+EvpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=Rt0Okg/R; arc=none smtp.client-ip=209.85.221.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0sec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b="opSmBt1X"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-493f431e317so2504695e9.0
-        for <netdev@vger.kernel.org>; Mon, 13 Jul 2026 12:40:17 -0700 (PDT)
+	dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b="Rt0Okg/R"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-4703bc0a99aso2006682f8f.3
+        for <netdev@vger.kernel.org>; Mon, 13 Jul 2026 12:40:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=0sec.ai; s=google; t=1783971616; x=1784576416; darn=vger.kernel.org;
+        d=0sec.ai; s=google; t=1783971620; x=1784576420; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=W7xWVihr3+KHFM8BLDbVBGdvZbVrj2tho5cLk2/xNCU=;
-        b=opSmBt1Xu67tnrgXx4jSRAZ8V/f84TSLZnBd+blsRbLHN7Ou9g3lDzDCj5TZUvX9l1
-         6ljneaAw+WN/RJ+VvBzT4JJNAB59PhzqXhF5jP/O7ZZBSi7jZr82DdwZWEdoNQxOSkzD
-         FROF1/tRenpwUClBPQmXlhNRT1WblHAkw7tPz95LjqshEykIkktGuhlVJcxKvt7vTppb
-         IHZeoVD/DVLeSdQoLdWsOc7vh+R59UelE3+veBuvL70ozgNC3C5jQKkZuHzhyVqYVqmC
-         H7ItH46lNAThPG0+3yhK7QYHEwPAnZAA/ONf58lG4ETGD03pkkZvy2yT/7E5pEmDvaYw
-         W4NA==
+        bh=8SE6mH/eebwrYuJdjdXRg/YfI81pgkyA3KxLJxVspBM=;
+        b=Rt0Okg/R7m2LYzMem/ylCjKCEzz69c8dLbMOcZti5wRcXsg1ktmSA7lar8vT1POltc
+         eA/DCf7sMTam6DmzQZ/uEG2ycSY6mvUcI4pFSQ0BCat8nNIZKSEZDAYqO29MgEKL7meO
+         1jCh+8ortx6Q5Z4RMUuxOsoyX4yl5iHU+ST0bVip6L2s+VseD+vroJwrM0SVba7N1hlP
+         Y2g6GRcfneRw45jJH8hU29kg2YDHdPXmIqHdMnSCLSZlvXHPuhDbTWFG33wlqeLNGhUI
+         fmt9B2yuuAk74yNuvkCKFGFWNVYwvqsoQTr098cRgvM8Ilcb9jQsQCXblbI6Bj2EnJm9
+         grrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783971616; x=1784576416;
+        d=1e100.net; s=20251104; t=1783971620; x=1784576420;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=W7xWVihr3+KHFM8BLDbVBGdvZbVrj2tho5cLk2/xNCU=;
-        b=DEWtIc0QwipxvG9jh3nKklKepoiw3ewUTPpMlGNd/le/nT4JB4OUCAJ7arRwaoJLwj
-         Hv1/jYf69FMyFrs9npIBxanmdMLHPPWw2lzziujJl9WSDiK5KPPg4zpp71QzYrwExOw2
-         bqapp3sqcHSGNiLt77GqT1pR6dLgEk25IQiuqaAzJbwJgPgOph7/YWl9CTAKUjiQcT0B
-         qqUEib0m2/USrBD2RrBw+wXYWy5l9PQorWJAdxzXc67NDCYlptbIWWN9hLyojMN6zLYK
-         u+Qbg3ztsrnYKXtE1G8AL0zAJ2aPjXtFus7CEpIAKG4UJvnYS7fRF1VKCK8X2tqOrrex
-         bnDA==
-X-Gm-Message-State: AOJu0YwMU3tKJ5Z0K9Miwx/IKEBWbXfiF/q+dJbCaQVBbOOKUJ84Oa17
-	76ClcOc/5F9N5j4Rr7cC4+jtA6oxbDWJ7Yy5j+gQBot6VAWzIM/yfdLKqqbE5BS93QLRc7hq7Sb
-	fVDZ63fRc
-X-Gm-Gg: AfdE7cnlTNZO78rBimsQHl0mu1FzjFBq4fnMvWzDjNT+Z5QDw6GB1zHvyJL77jkw1a1
-	zUjSUOW8Q2Bmg6d4rpF5pHbUQBsgP1dT2+Wu2CGF8v7tDbGLRJLxB+uYsU1pwDVx3r4BOIYvHrr
-	E31YwCo+5hAd6hbr5LOhzVZHtyTOXKWM4F1Yo7PK3A4B3mR+Ws9MaCed1o1U5YNTQEzj817zX9w
-	U7YM33KRU3zfUzDIKMtS6D8ghAr3eLfRKJTXxvVDWCHKqc1TMCwz3QboMsUD52LWxjT5TP6QrrF
-	fQLcBx1zVQ6P28lyowtJOlJ0DGKKXQYdhxKcJAWfNnE4cfyaD2QtxnTox1G1ah6MlK973QL1mfA
-	xddveOQjleiw+hOCeMO+fZAUqqf0YAnuenO0aylXl+DZmdKBjM940khOKJapDAlmn6KbNGyOFLM
-	px1fMOCuzW/U2FMrPpdRlsPK5axrFcCTuCL3wvrjeF8w3ae0dwMB4/x6OQuy9hQdhIIwzHZz8Mw
-	bcb3Qhok+iiO8bTrgikQdUEK4uOmMUrzKY=
-X-Received: by 2002:a05:6000:24c2:b0:477:6da:1b83 with SMTP id ffacd0b85a97d-47f2dcc8ab8mr11941321f8f.24.1783971616139;
-        Mon, 13 Jul 2026 12:40:16 -0700 (PDT)
+        bh=8SE6mH/eebwrYuJdjdXRg/YfI81pgkyA3KxLJxVspBM=;
+        b=pumed2L7Gp9G2cGlrArOOjUwtfV6HSjzxOw15rDbIUkn1yapK5zCVIhG995Jt/msgV
+         gatgK47W69jO7u+2KRLaOreEhK8cu5M7cl71RMgCnrpgpCBzQzKxbg/gI12DvH1+CXXH
+         QyhQVOy4Zu4d40L042c8y0Nxyf43qs2f60xT+s6Te2HmW/GiVUCBIlzExbpPtHeyM21f
+         +KXE2oHkv4G6BneSpe3hh952CKaKXe2yaWcxaj9gvVb3DF0CtopIEWOk4iJP0MZkX8bv
+         qOn5Y5Ayekz0SRnWHGsKod3oBpAZz9ZvueuN24KNRvV2o4A/5vQdD5drip633tnR7DwM
+         RMUQ==
+X-Gm-Message-State: AOJu0Yzg6Hd/d40JDUJKf6kPJfOjTe28lGSR/+f40tFlFRbsBFJJ/Uiq
+	D7UXxyRc6jFbNzU6C0HhveUWzcavso52EJaJNiiRKC6bBmYBx1W93bQUvFawayVERl0E
+X-Gm-Gg: AfdE7clMh/Zi355KKrFuUkrJzWU011IE4QwgEhrk+v8F8p/eBvysyKVTwHVdHO42W6h
+	Yg/ITD3W/aI0d9mJhkDfpuIuV+F/dA6Y2Ylj2003eWbQ//jw2gd3tTlQVKz6L0KSh9iXebge9CX
+	pyEmHN1t9Ob1HofWxwE4ZJfBAEY7GItwnrvFFaAd75et+k9MFXFkeDoMoA8LoaAkWoFGdfabx2n
+	QPkNqUMDx1kmhE/sx2JUn3fIohpGzXZROWdYOKybiYhbWoyHI60TdAV3ZMdGEUnXD1B323gjHlN
+	1Ho8nbca5aab8X7fx1yZI8tWyhA6G7EGQkaPkvKX0Ijzukzdxbvo8K99EdmIqrTIVi0wVI3Fo8+
+	pNymiNF6FejBKxAgBAuYzzSwPiRxYpTsuF28SVNOVJPRT5amnAc8TEM6I1nCbdvQyd2dMajxCFe
+	FQlNWrgwnQNCUGET49oMyxRlj1i4Q17vj26uo8zw57dGYABKyWJbtyd2dJogw3Gsxf8Tg2grSs5
+	L145ydKAotjP0tVlcJP/ds2PVb3+YEmihc=
+X-Received: by 2002:a5d:5846:0:b0:474:9002:c74a with SMTP id ffacd0b85a97d-47f2dced169mr11560342f8f.35.1783971619960;
+        Mon, 13 Jul 2026 12:40:19 -0700 (PDT)
 Received: from PeakBook-Mini.tail8e484.ts.net ([178.197.218.188])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f464c4320sm1648928f8f.32.2026.07.13.12.40.14
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f464c4320sm1648928f8f.32.2026.07.13.12.40.18
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 13 Jul 2026 12:40:15 -0700 (PDT)
+        Mon, 13 Jul 2026 12:40:19 -0700 (PDT)
 From: Doruk Tan Ozturk <doruk@0sec.ai>
 To: Vladimir Oltean <olteanv@gmail.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -78,9 +77,9 @@ Cc: netdev@vger.kernel.org,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Doruk Tan Ozturk <doruk@0sec.ai>,
 	stable@vger.kernel.org
-Subject: [PATCH net 1/3] net: dsa: tag_ocelot_8021q: don't read an unset MAC header on transmit
-Date: Mon, 13 Jul 2026 21:40:08 +0200
-Message-ID: <20260713194010.54642-2-doruk@0sec.ai>
+Subject: [PATCH net 3/3] ibmveth: don't read an unset MAC header on transmit
+Date: Mon, 13 Jul 2026 21:40:10 +0200
+Message-ID: <20260713194010.54642-4-doruk@0sec.ai>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260713194010.54642-1-doruk@0sec.ai>
 References: <20260713194010.54642-1-doruk@0sec.ai>
@@ -92,8 +91,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-ocelot_xmit() reads the Ethernet header via eth_hdr(skb) to test the
-destination address against the link-local range.
+ibmveth_is_packet_unsupported(), called from ibmveth_start_xmit(), reads
+the Ethernet header via eth_hdr(skb) to test the destination address.
 
 On the AF_PACKET SOCK_RAW + PACKET_QDISC_BYPASS transmit path the skb
 reaches ndo_start_xmit() with the MAC header unset, so eth_hdr(skb)
@@ -104,28 +103,28 @@ done for the same class by
 commit f5089008f90c ("macsec: don't read an unset MAC header in macsec_encrypt()")
 and commit 96cc4b69581d ("macvlan: do not assume mac_header is set in macvlan_broadcast()").
 
-Fixes: 43ba33b4f143 ("net: dsa: tag_ocelot_8021q: fix inability to inject STP BPDUs into BLOCKING ports")
+Fixes: 6f2275433a2f ("ibmveth: Detect unsupported packets before sending to the hypervisor")
 Cc: stable@vger.kernel.org
 Found by 0sec automated security-research tooling (https://0sec.ai).
 Assisted-by: 0sec:claude-opus-4-8
 Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
 ---
- net/dsa/tag_ocelot_8021q.c | 2 +-
+ drivers/net/ethernet/ibm/ibmveth.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/dsa/tag_ocelot_8021q.c b/net/dsa/tag_ocelot_8021q.c
-index f50f1cd83f16..4514026897d1 100644
---- a/net/dsa/tag_ocelot_8021q.c
-+++ b/net/dsa/tag_ocelot_8021q.c
-@@ -71,7 +71,7 @@ static struct sk_buff *ocelot_xmit(struct sk_buff *skb,
- 	u16 queue_mapping = skb_get_queue_mapping(skb);
- 	u8 pcp = netdev_txq_to_tc(netdev, queue_mapping);
- 	u16 tx_vid = dsa_tag_8021q_standalone_vid(dp);
--	struct ethhdr *hdr = eth_hdr(skb);
-+	struct ethhdr *hdr = skb_eth_hdr(skb);
+diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
+index 73e051d26b9d..88e8bdfbcd11 100644
+--- a/drivers/net/ethernet/ibm/ibmveth.c
++++ b/drivers/net/ethernet/ibm/ibmveth.c
+@@ -1218,7 +1218,7 @@ static int ibmveth_is_packet_unsupported(struct sk_buff *skb,
+ 	struct ethhdr *ether_header;
+ 	int ret = 0;
  
- 	if (ocelot_ptp_rew_op(skb) || is_link_local_ether_addr(hdr->h_dest))
- 		return ocelot_defer_xmit(dp, skb);
+-	ether_header = eth_hdr(skb);
++	ether_header = skb_eth_hdr(skb);
+ 
+ 	if (ether_addr_equal(ether_header->h_dest, netdev->dev_addr)) {
+ 		netdev_dbg(netdev, "veth doesn't support loopback packets, dropping packet.\n");
 -- 
 2.43.0
 
