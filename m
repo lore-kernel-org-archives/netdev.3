@@ -1,119 +1,143 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BC7038D40D
-	for <netdev@vger.kernel.org>; Mon, 13 Jul 2026 11:44:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84AA3FC5AB;
+	Mon, 13 Jul 2026 12:00:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783943057; cv=none; b=gOu9EqQ2+bVquHethQTCNn9wFdsv8at5Z2HHC1C3OK249sKwFVlE+gVxq0AwSClU3pa7RueOhAH7MfcMKR0Sl3w6NA/iuqCF2/MgBCwfYMUazKgvYGhscOPIGqPdOIjiTepxMGtLJdocoYVkCVgbOVdeW/Xw5kBUt3isDZBzlXY=
+	t=1783944041; cv=none; b=qK8GRKKA6LQDPyLRdFpuoz/Cw3Om2Hy9ikL8S/nA8GxJXEoUVdT6oePdA07KrOCbFv2CM/EFX6LH9vLiY/yRCSRHn9CAQXwe4uZwIMcNO6YYWX17d/3Rvs5Iodb9GVzb5o4K1f/WFxy4Z0dcp1wMNz6KHGTupfi7Y/NAgZ7FCbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783943057; c=relaxed/simple;
-	bh=fkmsy/qj3nDjH6r51nZM+y+pjrVIbB4xwZRlFVlVYik=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tj0X3fRcZHpMdMeDOd9rOf+ZuS9QwSr4Sx1p1sn6dFoWm0eER0u0RP7li5ImT+HIV6MFv3fCMz3ngkGkTmcUInh5bftOXNEwnLCLcjuJ1y9D6tHUDPDZgpBGLsWsSD2Ujpm1HVZlGsTJx9TE5rru8vF4Lco4a85Mu8r7UvdDWwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=M+TfEqy4; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
+	s=arc-20240116; t=1783944041; c=relaxed/simple;
+	bh=qm3xUzh4E0ywYBwCFEH/i8xmIC0wMJQmeILIW6rSEP8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=QBFyuk8SBmW+HL40MS5qTIziLT/0MMdiznTVcSr2/cmB04r2zhOkDwEJorO2jfENHhD5dy0YXLricw3x8k+l0aUr200gQ6h7gdTuhBtHovf1YoHSB0lICAOZ2dGq0I1W+0bnCWo/pDar+eFVZTuXBY6/EoKHE/YOFsHymY+AA+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=c2Vrxy6o; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="M+TfEqy4"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-47f36a122fdso1062200f8f.2
-        for <netdev@vger.kernel.org>; Mon, 13 Jul 2026 04:44:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openvpn.net; s=google; t=1783943055; x=1784547855; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:organization
-         :from:content-language:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=iCmyiRNgN+jRhAkyFwvAt0xGNMCOhabSbhuO5oOGF5U=;
-        b=M+TfEqy4B1o33TzJTzzCbXqdgtGFZhTniN40XnBRJyktulROSxdPsQU58aIn2Qd+e4
-         DEUhiiOJEJCy8tFL81K8MIvXBNAFbsN1EBGIqebdbPvFHiNsVLkvDcWD3WNQrL2vaMbH
-         aTSXAhTslibYJRFyVkGU4VPLFwex/m7k5D/UmQGalmkUmB/BeKfsgb4nsUyFFkaR4p0t
-         fpAPNqyPvq7bV6DlUUGcfFQ5xnLZ860xBcrEtZbwrDxkepqvhZI7K+LKn3BlIzDCcfID
-         kxIYu9bD44HRTBB54nZvoba/xMbEhOgEBtJKvH/zUdkKNz/9eVrUA+u1Dt/hya4KAGFu
-         pkOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783943055; x=1784547855;
-        h=content-transfer-encoding:content-type:in-reply-to:organization
-         :from:content-language:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=iCmyiRNgN+jRhAkyFwvAt0xGNMCOhabSbhuO5oOGF5U=;
-        b=UZ3HCMs17E6uc7MR+u6kywarxGLoXU6A1KaPwKwQMD/pKSGqJtGiC8bAYvdQGXRfhx
-         Vnj1PAGR2AhRoGazDvQ7d3VVGNxwP0t/+jQaFKGCj3RHD1vfrqEZcXy8ZsrPqPosGyU3
-         yDN/VYBhGCdL67zPde9FbByhudyuUL/TstoaSBZQmpEWsK3HFZ/ylyw//7kPBmZpEvFo
-         QbEC4NMOnTLEuyZRXZee3F4rI6EbYqtVeEKaHzSYpWTHHjoQ+PZDwOWijvbPL+7rMO/N
-         iiRCU1C7wP58L8Z9/h9wvt/CdIohbA+iqVhRkpJpVM4zPqt4GzbE+//RxvyI8mMB/NZS
-         Dmnw==
-X-Gm-Message-State: AOJu0Yzvs6N6dkqHGoQb6/psjRNDxSxOxbY/VOWV3OK5ne/7z9rNwPUU
-	rzwK9y4mOoRPPwdvCp61LAAnQqGPUFQhpvSTGpg55pLeYC7N3Zc6pPsecQzA2Z4P4ht9nMUaIzc
-	C7HMVv6s2ls/o9etlkIe9pzjMZi81VnLFVlD89WzFn0elCXcbwNc=
-X-Gm-Gg: AfdE7cmXrU/X/zE7g+P7LHXYt+eEcR1KcRnZFRaliX7Kn2z5z2t7WmFISpx0NnBejh2
-	PWLWFvkxCRRKVnUi6Pt7kHt2v5GHPqrCDHjxjYrX/3leXA95P2sdQ/0SvNSdvu3loqfPjuTLNci
-	h4Sd35zj7XIMUSyW1WMNVaFHridrlxUXtsE/Rsd61s5nzbgQfdNcV67HPNqK3NK2Y51d55goQK/
-	UzLHe20+AXqQQvhHymt5MfLXS9lBnjEUjEC57Jdky3gY66YXhixII3LLUuMQQhzcfVa8OewAKqC
-	oRevpM0OOy424VBMEdYdZfHYIc6Ki4cSqFv971q1rDjdQf+lTHKRW5UA/BDTLeve27WM4tCuN4C
-	4QWb21Wr6o9joXTjdWeZEZt+r20PKQyVS2PodEP6YixxTm6MVMspPzvRtLZVQwy7eKUeA7bojRY
-	VvFNaaAwbrgi77FouWe9DS9E82DO6g+5KM+fLCjFc/6UtwwdWM+qE=
-X-Received: by 2002:a05:6000:2612:b0:46e:1815:6a83 with SMTP id ffacd0b85a97d-47f2dd1f23fmr11029156f8f.29.1783943054642;
-        Mon, 13 Jul 2026 04:44:14 -0700 (PDT)
-Received: from ?IPV6:2001:67c:2fbc:1:cb9f:b978:adcf:f7ae? ([2001:67c:2fbc:1:cb9f:b978:adcf:f7ae])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa0960816sm82155316f8f.29.2026.07.13.04.44.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Jul 2026 04:44:14 -0700 (PDT)
-Message-ID: <6eb596f6-5be1-46f2-8f69-b73cd5e8b038@openvpn.net>
-Date: Mon, 13 Jul 2026 13:44:13 +0200
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="c2Vrxy6o"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 078E64E40D87;
+	Mon, 13 Jul 2026 12:00:37 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id C6F9460341;
+	Mon, 13 Jul 2026 12:00:36 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 875BF11BD2EA8;
+	Mon, 13 Jul 2026 14:00:30 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1783944035; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=5Z60738iah/NhBHLA0grqgv2G2DvvCyo3+0QyK5b82Y=;
+	b=c2Vrxy6oBYBaaN0IVFd3ZlwoSo3uw4YmRQE81dpQW95RW0nIaj/teJDrUgPu3y85MUmTFT
+	kcwx32knfeqTdoFpQ0j3At7D2nHkMbql3QT+rZ2M+uiRULJFfkqQJtl/iDG3jtnIoCS88z
+	B+WSruSB9u9QvjZHMHnEvv7tUJs9YnwV5UfpNg3i+ASzDkASKx8KuJ6tPFaTeyJvaCzOwY
+	cyeAGiQ6zpIO9FmjBeOaw8MdzWGxznH9feYswDtll3yr9tT6mIaIhwTukBeyltBtkucuSQ
+	a58Gtka2P0ZD0GbJxrbb+slHSq5HPzwfnVYVz3LyjDGqdLALvroleEeeXP8cMw==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 4/7] selftests: ovpn: increase timeout
-To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, Sabrina Dubroca <sd@queasysnail.net>
-References: <20260710-net-sft-fix-containers-v1-0-a2915c294ef5@kernel.org>
- <20260710-net-sft-fix-containers-v1-4-a2915c294ef5@kernel.org>
-Content-Language: en-US
-From: Antonio Quartulli <antonio@openvpn.net>
-Organization: OpenVPN Inc.
-In-Reply-To: <20260710-net-sft-fix-containers-v1-4-a2915c294ef5@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 13 Jul 2026 14:00:29 +0200
+Message-Id: <DJXFDPIB17FW.2BN105BPCBSKB@bootlin.com>
+To: "Nicolai Buchwitz" <nb@tipi-net.de>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Subject: Re: [PATCH net-next v3 06/15] net: macb: allocate tieoff descriptor
+ once across device lifetime
+Cc: "Conor Dooley" <conor.dooley@microchip.com>, "Andrew Lunn"
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>, "Richard Cochran" <richardcochran@gmail.com>,
+ "Russell King" <linux@armlinux.org.uk>, <netdev@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Nicolas Ferre"
+ <nicolas.ferre@microchip.com>, "Claudiu Beznea" <claudiu.beznea@tuxon.dev>,
+ "Paolo Valerio" <pvalerio@redhat.com>, "Vladimir Kondratiev"
+ <vladimir.kondratiev@mobileye.com>, "Gregory CLEMENT"
+ <gregory.clement@bootlin.com>, =?utf-8?q?Beno=C3=AEt_Monin?=
+ <benoit.monin@bootlin.com>, "Tawfik Bayouk" <tawfik.bayouk@mobileye.com>,
+ "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Maxime Chevallier"
+ <maxime.chevallier@bootlin.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260701-macb-context-v3-0-00268d5b1502@bootlin.com>
+ <20260701-macb-context-v3-6-00268d5b1502@bootlin.com>
+ <6e449ee7d40ec885e8a53fa18fe70e86@tipi-net.de>
+In-Reply-To: <6e449ee7d40ec885e8a53fa18fe70e86@tipi-net.de>
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi all,
+On Thu Jul 2, 2026 at 12:54 PM CEST, Nicolai Buchwitz wrote:
+> On 1.7.2026 17:59, Th=C3=A9o Lebrun wrote:
+>> The tieoff descriptor is a RX DMA descriptor ring of size one. It gets
+>> configured onto queues for Wake-on-LAN during system-wide suspend when
+>> hardware does not support disabling individual queues
+>> (MACB_CAPS_QUEUE_DISABLE).
+>>=20
+>> MACB/GEM driver allocates it alongside the main RX ring
+>> inside macb_alloc() at open. Free is done by macb_free() at close.
+>>=20
+>> Change to allocate once at probe and free on probe failure or device
+>> removal. This makes the tieoff descriptor lifetime much longer,
+>> avoiding repeating coherent buffer allocation on each open/close cycle.
+>>=20
+>> Main benefit: we dissociate its lifetime from the main ring's lifetime.
+>> That way there is less work to be doing on resources (re)alloc. This
+>> currently happens on close/open, but will soon also happen on context
+>> swap operations (set_ringparam, change_mtu, set_channels, etc).
+>>=20
+>> Signed-off-by: Th=C3=A9o Lebrun <theo.lebrun@bootlin.com>
+>> ---
+>>  drivers/net/ethernet/cadence/macb_main.c | 75=20
+>> +++++++++++++++++---------------
+>>  1 file changed, 41 insertions(+), 34 deletions(-)
+>>=20
+>> diff --git a/drivers/net/ethernet/cadence/macb_main.c=20
+>> b/drivers/net/ethernet/cadence/macb_main.c
+>> index 8b52122bc134..951a7f080225 100644
+>> --- a/drivers/net/ethernet/cadence/macb_main.c
+>> +++ b/drivers/net/ethernet/cadence/macb_main.c
+>
+>> [...]
+>
+>>  static void macb_init_rings(struct macb *bp)
+>> @@ -2832,8 +2801,6 @@ static void macb_init_rings(struct macb *bp)
+>>  	bp->queues[0].tx_head =3D 0;
+>>  	bp->queues[0].tx_tail =3D 0;
+>>  	desc->ctrl |=3D MACB_BIT(TX_WRAP);
+>> -
+>> -	macb_init_tieoff(bp);
+>>  }
+>>=20
+>>  static void macb_reset_hw(struct macb *bp)
+>> @@ -5518,6 +5485,38 @@ static int eyeq5_init(struct platform_device=20
+>> *pdev)
+>>  	return ret;
+>>  }
+>>=20
+>> +static int macb_alloc_tieoff(struct macb *bp)
+>> +{
+>> +	/* Tieoff is a workaround in case HW cannot disable queues, for PM.=20
+>> */
+>> +	if (bp->caps & MACB_CAPS_QUEUE_DISABLE)
+>> +		return 0;
+>
+> Before, the tieoff was allocated in macb_alloc(), which the at91ether=20
+> path
+> never called. Now it's allocated from macb_probe() for all variants,=20
+> gated only
+> on MACB_CAPS_QUEUE_DISABLE, so EMAC gets a coherent descriptor it never=
+=20
+> uses.
+>
+> Add MACB_CAPS_MACB_IS_EMAC to the if statement?
 
-On 10/07/2026 20:04, Matthieu Baerts (NGI0) wrote:
-> The default timeout is 45 seconds, that's too low for a few ovpn tests.
-> 
-> Indeed, these tests can take up to 50 seconds with some debug kernel
-> config on NIPA. Set a timeout to 90 seconds, just to be on the safe
-> side.
-> 
-> Note that the Fixes tag here points to the introduction of the ovpn
-> tests because I don't know when they started to take more than 45
-> seconds. That's OK because a timeout of 1.5 minutes is not exaggerated.
-> 
-> Fixes: 959bc330a439 ("testing/selftests: add test tool and scripts for ovpn module")
-> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Clearly. That EMAC distinction keeps being annoying.
 
-we didn't really bother tweaking this value because AFAIK NIPA uses a 
-much higher timeout value.
+Thanks,
 
-This said, I agree that when running locally 45 seconds may not be 
-always enough.
-
-
-Acked-by: Antonio Quartulli <antonio@openvpn.net>
-
-Jakub can pull this one directly without going through my tree.
-
-
--- 
-Antonio Quartulli
-OpenVPN Inc.
+--
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
