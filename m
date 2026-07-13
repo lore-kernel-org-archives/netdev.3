@@ -1,122 +1,234 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012069.outbound.protection.outlook.com [40.107.200.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15EAC3E3C53;
-	Mon, 13 Jul 2026 09:44:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783935898; cv=none; b=LyRT9NEU8WRtdtQshm0LFSzWUJphXiS0GKDo+j0lsrfWmsb44QejNDLHCoxBcrokyLdVmUktodtuWW7qIhOv6uB0sx3TAu91XS1tlWHHq2OY1V9nG5HSZcpJXOei/pmz3DLgqjPCXF7YjL4ZQb+5O4bv7zxD8C68GdoWS8s5LYE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783935898; c=relaxed/simple;
-	bh=JoBaVgEhbHTYLsmEt/80aTNQLnhmaFaNf1/ZXkIF8M4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ft7syMcQ6NKVd94MqvZaNMffdU6gfq2x4zNn76YA+eww89nCHp8ayThYWxD5DYRKpyK/vopeTNpy2g+aP/PP3u6B/CDLL+YFqfAs2REbE4Ezxkpqzgp4S4Mq90yEUcOxAUkFJkYNCcn/K/bYaZjSHvSnc68OvHm3j337y5QRalI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EMh6KG/D; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F2C35FF6E;
+	Mon, 13 Jul 2026 09:44:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.69
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783935903; cv=fail; b=r4jf+IX2i5x2+sVqoLAXaRlGrkfmTMegCmNsB3glQty9eIJJarOdlQH5j8NHeIGWxXMz6lyptHe8ZXVeY3VgUXnr+5OSJun0EBzbqO/l2naLR9MVmAeEOPK7Tqh75fki2ATvFGugmyA6HKDj6h9ouUEDZ3F7SW28/+0Jh4WJNOE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783935903; c=relaxed/simple;
+	bh=jnNwo+ClSWjCAKMCTN1RY1sxp8h6UvP0Eoml8b6VROo=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=RR633InMbJB9prUErwsq1LH4rNBR4kugSAKPoj5hdLWJ/q12Ie57wDk4gaH8zKp/Yfg8dtkTFWuy9au/N7wqVcVgPEyQZdfVOIlwfKYvO2izBuZoD2AxSjAHwbsuWP+kI8aVrh1R1Z575pB+YELUfdI7sMwOUSw32rw2GW16evY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=sKNqcnlP; arc=fail smtp.client-ip=40.107.200.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EMh6KG/D"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6207D1F00A3A;
-	Mon, 13 Jul 2026 09:44:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783935886;
-	bh=RK8kQ9CKwTFyOXiGePEatq3ie69rBMzdv1AFmy3Ehmc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=EMh6KG/DgpH04Bn/MwaxmQyidzQ3IuUp308au4kfCvZaUZS8T/UJAGBnzGARzLTa5
-	 A5RqsxHTNhPJh20+Gh7+VrFzic0/rn5Lx+k8ZtfsalosdF2WY0zdMP6VVoaverKO+d
-	 Q8GwU76C2XaSuI7xkQeuha1OXwUYCw1W8pw+xIOB9Pj1jl2z11hpLdh0k+iaJ0qlXN
-	 0a8ienc+RA3PqoroojBmtHM1mZ9eSiyLGgqXPsXFZOouhtR6Pv1Q6HUBmLnXk70p98
-	 LU6VJRadk86eut4THrs1JdvPsZ3G3da3PwmY8gdCf6fE2X9FYPu6E9+HUXs1kl5eGL
-	 pF+hBCoZOvnWg==
-Date: Mon, 13 Jul 2026 11:44:43 +0200
-From: Antoine Tenart <atenart@kernel.org>
-To: Michael Bommarito <michael.bommarito@gmail.com>
-Cc: "David S . Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net] ila: reload IPv6 header after pskb_may_pull in
- checksum adjust
-Message-ID: <alSzDJLwroWRoeB8@kwain>
-References: <20260711150648.2915106-1-michael.bommarito@gmail.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="sKNqcnlP"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PUESFjQ+E6lScOQf29hfFqbsVFoFW7wzRdNZBVujoTUOw+58f0Mp8ocpbO+gRMOrwN27Jglw04QjSPDyPF1XDuWQdn94Tz44Okwfd+VQ6fN8z78szLUim3NoshpFQTSbQDA+Eto8A7irREA8s7NfMKqYcvUBbobZahUyxc8oGkM/oKjORLUF7ROmxfO+7m6IvDKO/QiCFTPCJgUVScpla4/lgZCJVL6rGZAITYZ15oDfjLKjqo75Ur1Ae/ybxnZfz4pxC3sqxzmJVtK6rT93DRLnSuvJsGSU7Mxitq232ANm0cl2+WUN40YF4BWflr4ewJT2hBaKh+L9fbVFcT0zrQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=V+e6RmfXt3qxA9UnW5TIitbXtV6Z0EGUaJKm7P6Ut0g=;
+ b=e0e7sCRnpMBVOhaVMDr0cYvoVrfdxVbWYauGwhPAxaEh7kEHcqWVf/UqiAqc/bCDBG+NmXRHTTTDwUgkb19ctd4qRk7qU/lD24Yt6mwuNpM1m8oy5zA4WpvtXLml1ZHIJAY8MpXz1DiFRCk2dv14Kw4mdb/nkIEkfz9iAQkmXEyhUExQ4a0ObzGTVIOwqfXWwoa4isw9kuzBgq4ibynjzdGCaT+HQJg+X6fvDBIJr74W81hGaP+59yvTMbfA3uI7mFKWVy5NXMmSj7lTwcRP2BnvGf0j6nrU8cAeSmAVKDZffXvHNLpW/spxaaqtSd3PSMwz7i9IumtcJrdcynnOcg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=V+e6RmfXt3qxA9UnW5TIitbXtV6Z0EGUaJKm7P6Ut0g=;
+ b=sKNqcnlPoT1fRK0/6mVhkZA+WOWJRQYvb+PXSxFQNVM/YvWR/f5MpEMd68J+HsKuFrkjhqxVNr75HUoWGpWZNeg4QT46LrTyjmE5pW4tVEzcbmjEqJNaz5q2VIqjBHotjC+CRISzMPRDsTLzphkq8KMkndPI5xrfB19OWh/tPEE=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CY1PR12MB9697.namprd12.prod.outlook.com (2603:10b6:930:107::6)
+ by MN0PR12MB6272.namprd12.prod.outlook.com (2603:10b6:208:3c0::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.18; Mon, 13 Jul
+ 2026 09:44:50 +0000
+Received: from CY1PR12MB9697.namprd12.prod.outlook.com
+ ([fe80::3a41:55a0:8203:596d]) by CY1PR12MB9697.namprd12.prod.outlook.com
+ ([fe80::3a41:55a0:8203:596d%5]) with mapi id 15.21.0202.014; Mon, 13 Jul 2026
+ 09:44:50 +0000
+Message-ID: <2a3ba353-24e3-4363-90ea-67aa893ab324@amd.com>
+Date: Mon, 13 Jul 2026 15:14:39 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/4] net: xilinx: axienet: Derive RX frame length from
+ residue in dmaengine path
+To: Srinivas Neeli <srinivas.neeli@amd.com>, Vinod Koul <vkoul@kernel.org>,
+ Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Cc: Frank Li <Frank.Li@kernel.org>, Michal Simek <michal.simek@amd.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Suraj Gupta <suraj.gupta2@amd.com>, Marek Vasut <marex@nabladev.com>,
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+ Alex Bereza <alex@bereza.email>,
+ Folker Schwesinger <dev@folker-schwesinger.de>, dmaengine@vger.kernel.org,
+ netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, git@amd.com
+References: <20260713072146.45269-1-srinivas.neeli@amd.com>
+ <20260713072146.45269-4-srinivas.neeli@amd.com>
+Content-Language: en-US
+From: "Pandey, Radhey Shyam" <radheys@amd.com>
+In-Reply-To: <20260713072146.45269-4-srinivas.neeli@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN2P287CA0007.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:c01:21b::7) To CY1PR12MB9697.namprd12.prod.outlook.com
+ (2603:10b6:930:107::6)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260711150648.2915106-1-michael.bommarito@gmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY1PR12MB9697:EE_|MN0PR12MB6272:EE_
+X-MS-Office365-Filtering-Correlation-Id: aa053265-a733-4eba-b1ff-08dee0c361de
+X-LD-Processed: 3dd8961f-e488-4e60-8e11-a82d994e183d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|23010399003|366016|1800799024|3023799007|18002099003|22082099003|6133799003|4143699003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	73yXV8PJ82aWXvEBgk+PjRwZTke47c8KwlRWqu2fo0kIAd5qlXDNQ8dQcHzcpjJ+VXeaJwGvsrzE5Wla18F8k7npVTPdWcy9Yw53h7Hkjh/z1gsaUlDA5u5uTlc8yvMSs5sku5/xIdm1FDXNIWgUnU+X/o/6oi4Ag8JMkNwPoPDSAKpvUwa1vTuc2XxkzUxLHEBTeIteysgKUzmsjtITHeYcjV0IYZZ5cIQP+i83SN8Im0Bmdyv/OdL25PkW3gxSH3ZAkqS3fSae5a+92rGSSXynXIUN5s/DU7jPc0wL9JTGix5qxczHsc5o8CR568B8eq7NxQIaIW84xIUoHvEKHwrCa79QS060jL9fgD84pIOyOjAIzFTfhQRPjHddeiLE/sSD5rYiybkZYmgbRbTEXyRmPEyzKeFDpzVosg9XKrd7x727V3xGpr39tQHPo2T26bOWavl62LBm1rU4NV2cNa4mbJPE9dDxsCVNT2rzB2j/nQ3VtoNt5FI3W2GgqgXWt1UGsg5fYrKMcJrtg25HGwzqVYcPxPAAwrpwH52GCb1f0G9h/3N9QgZLchxD4uhRqaVIsX+mquBb21Nnt8Q28OBiHeIekky2g6dpD6ES4En7s7rosoy2/pM2Pjtg+0tY7UIW2vysy3Tl1BbCYqeBmvLbLBqC7S8pwDEA9+hgvv4=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY1PR12MB9697.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(366016)(1800799024)(3023799007)(18002099003)(22082099003)(6133799003)(4143699003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RUZTeWtLNXRDc2IxTlBrdkFEZDNLSVphcVdRZGl6bGRlaXZ4ZXI3NWxZRTFN?=
+ =?utf-8?B?Q2VWYzZtWXdhaU5JR3BrSG5OY1JEOXBQOWVtWTFvV3pZTzhqdm90cWhubkFW?=
+ =?utf-8?B?bmo5NndmaS9zVTlDNVRKa0JoZG0zaWw0MU43dTRIWGc0b0cvbnc0eVh4dytk?=
+ =?utf-8?B?K1h0WHVTOC9tTm51ejYvTU9iTTQ2L0JnT3hHQndLQmI1bE51a0RNWE5XQVRh?=
+ =?utf-8?B?Q0pmSTNYSG9SZTRHTjE3VnhtcW1pZmphQVFyWmhYdmYvQUJjQ3FrWHovK25C?=
+ =?utf-8?B?MHpsUTMxRUFYYW9TOGw4R0k4WlJOWGg3eGR3bnZBdkx6YWZpRDdYZk5mYmU4?=
+ =?utf-8?B?bnQ1cUkvMkM2bXRGTmRDZ0Q2cVNNNHZOZnhsYmlYa25IeDFLbXlZZFgxZjE0?=
+ =?utf-8?B?RUdFOTJYODB2QWNXeWQxSWhqcnNrbjV5Tk9DeWVSTVJLckYwazhTenpWTnA5?=
+ =?utf-8?B?YXkxd3RLY1hscnAwY0NCRGpEVWdVeGdxclJvR3phSm9YWDM4Q3g2Z1M5dnB4?=
+ =?utf-8?B?Sm13Tk1RVnJSZGFHTzdmVm9nN2F1V3BleXJTNlhRTkE4Sk41MlFvYjZ6Z1ZV?=
+ =?utf-8?B?QUJ1eFNvWmptcHQzWHZDbFNvcEFiRkoxME0yMHNPRE5IWUM0WnQwVHBVRlBB?=
+ =?utf-8?B?VUZkbnhRS0JNUjRacURqOGpaNmttNkpOaG5DRC94bkhOdlBjZ1dHbElwWS9h?=
+ =?utf-8?B?MXpiQ2VpVzF4WnU0NmtXWEpWU2d2SjErMmV3TS83WEtCbVdMU2pBN2FaWGgv?=
+ =?utf-8?B?L3VWeG5oMGxNUDZmQTdkdWh4b2ZJQnJrWmNmc1EzdXFESDlnL1BZMldyczdH?=
+ =?utf-8?B?emJzQXFtUU4wdngzQWhmMGpoM29URm85MGx4SkJvclpLQUxheGdLOGFuK25N?=
+ =?utf-8?B?ZmxQMTRDZnp4blg4K2xPL2t0MTFWRHJXT0c4OTZ3Y01OZW1BS2JiclpoVFBk?=
+ =?utf-8?B?VHpGejFTSGJHbllxRGNBUjF4bkwvQ3AyaktUczNCaVU3MGQ5bkl3U25iYVds?=
+ =?utf-8?B?V3YyTytyR05WODdYcE1NMHhFMm9FU1pYd045c1BtTXVGbHJlL2FKUHRDU3ph?=
+ =?utf-8?B?QU1wL0M1NFVEb3JnUGtnOHNMbzFsY2NHV1dsQlg0TTRZenFNNEsvczhrTUtI?=
+ =?utf-8?B?U3V5QjhjdTZHKzA4VlRzMHJuQVFxcVdzSUtLN1N0N1U5amJIZkhpTk9DKytE?=
+ =?utf-8?B?WGhXUnVWcjUvVGFEUjdKZFlSckd4RjVGb1JtWkoxTUlGZG1DcFRYMFNpNWJ0?=
+ =?utf-8?B?dEFjaXFJa2RGdEVWMTBaZXNPalJtMUNsdGFFVzNJSWpsblBGRlF5RTVjMUtG?=
+ =?utf-8?B?anE4WmptcDN5dWJqcDFDWmZUc0FiK3FaVGhOQ1k3SkswNW81N3hiUzdFbUh5?=
+ =?utf-8?B?WEx0UWtPRnAyWVpEdjlsVUIyNThVZ05HSHozVGJKbXZwWllZTVVtYkFHTzMw?=
+ =?utf-8?B?bElZRFBMMVRqQkRQclZJUjc3djNJQnJ5MkkyREozeUxKWVlkaGNGa3d2VUVq?=
+ =?utf-8?B?djNqaUEvczdRTEJ4QVJhSTl3Y1JpZXozTDdoZlJ1bnJGejUraDRxNTQvL25S?=
+ =?utf-8?B?ZExwamdUODlaZDVhVUlGaDErWkVLamJZSms5Sk1SV1BmVU9Dbk9uWkpZVzJr?=
+ =?utf-8?B?QTRiMDVMRFlvN1VPVWI0Y0tTL1ByR1RGQWxlbTRLNHRWVmlpV25Lcm00TWFR?=
+ =?utf-8?B?cGlCKy82ZXZzRVVhZ1REcXlzVHIyRjkxbXhteFlJYWF1N09mQnNoTXdtM25i?=
+ =?utf-8?B?UjhldVZMWUF1TmdCeHd6MVhRRXlueUJMOE4vQXJlSVYweFpId3hXdjBHT1Rx?=
+ =?utf-8?B?SFh1Qk5HTUNraXRJbGZ0M2FFUG9pK1BPYy9pVWdDQjBZaysyaFRaWkpOa20y?=
+ =?utf-8?B?SXlXRy9RUkF1MGRnWWJTS1NnN2RyckYzQzJ2bWpFUUlOTnVyU1dRdE5hMUY0?=
+ =?utf-8?B?d0pNUVk3L0pRUzJCVy95eVFmNWRrK0lmcmE4RTVlc3BIdGNyREl2c1Boa050?=
+ =?utf-8?B?ZWFvSE5UanNzNUk2QmJ6cW1sRWVqbjBNSmlVZ3E3MThLbHVlUjh4cWV6REtG?=
+ =?utf-8?B?TEQ3cU80UnFxcXg1bWtJNGxqeC9VL3YvV1pzZFdNSWx0RysvTFY2d1YzYUsz?=
+ =?utf-8?B?eWEzSDRzMFBOZ2tSVjZoVnp1SE9YVjVGdnFiS2dEL2RKN0hyQjFjRGRXSFRa?=
+ =?utf-8?B?U09hWUdwakpUUWtubkNvM2Z0OWpJdjFvQXhGT1B6S2NJNitScC8yKzh2YXFi?=
+ =?utf-8?B?akRoUnp0SnhaQTNoUHNhL3Yvbmp5RkV3RjBMeU5pVU9lV3BVREFNc2NYamFZ?=
+ =?utf-8?B?VVlLWG0yNEZyNXltRnhXdkRwREdkOUNCZVZRaDdGaCtBdjhqeGk2dz09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: aa053265-a733-4eba-b1ff-08dee0c361de
+X-MS-Exchange-CrossTenant-AuthSource: CY1PR12MB9697.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jul 2026 09:44:50.2007
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lce0K8CMMkpmJvO5oCSrz85f6XV5fQ0Kbh3APJH0KRaeC8GPn9X+m7eb4zpPAoR3
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6272
 
-Hi Michael,
+On 7/13/2026 12:51 PM, Srinivas Neeli wrote:
+> The dmaengine RX path derived the received frame length from the descriptor
+> APP metadata. That only works when the optional AXI4-Stream status/control
+> interface is present, because the hardware populates the APP fields solely
+> when that interface is enabled. On designs without it the length read back
+> is invalid.
+> 
+> The AXI DMA engine already reports how many bytes it wrote into the buffer
+> through the standard dmaengine residue mechanism. Compute the RX frame
+> length as the posted buffer length minus result->residue, which is
+> independent of the status/control interface and correct across all designs,
+> including multi-descriptor frames where the residue is summed over the
+> chain.
+> 
+> Drop the descriptor metadata lookup, which was only used for this purpose.
+> Detect a failed transfer from dmaengine_result.result instead of the
+> metadata pointer return value, and remove the now unused LEN_APP macro.
+> 
+> The transmit path is unaffected. It still passes APP metadata for checksum
+> offload and derives its length from the skb.
+> 
+> Signed-off-by: Srinivas Neeli <srinivas.neeli@amd.com>
 
-On Sat, Jul 11, 2026 at 11:06:48AM -0400, Michael Bommarito wrote:
-> ila_csum_adjust_transport() caches ip6h = ipv6_hdr(skb) before calling
-> pskb_may_pull(). On a non-linear skb whose transport header sits in a page
-> fragment, pskb_may_pull() can call __pskb_pull_tail() / pskb_expand_head()
-> and free the old skb head, leaving ip6h dangling; the following
-> get_csum_diff(ip6h, p) then reads freed memory. ila_update_ipv6_locator()
-> has the same pattern and additionally writes the new locator through the
-> stale destination-address pointer.
-> 
-> Impact: a remote IPv6 packet routed through a configured ILA
-> csum-adjust-transport route or receive-side mapping triggers a
-> slab-use-after-free in ila_update_ipv6_locator() (KASAN). The route or
-> mapping requires CAP_NET_ADMIN to configure, but trigger packets are
-> unauthenticated once it exists.
-> 
-> Reload ip6h (and the derived iaddr) after each pskb_may_pull() before use,
-> matching the transport-header reload the code already performs.
-> 
-> Fixes: 33f11d16142b ("ila: Create net/ipv6/ila directory")
-> Cc: stable@vger.kernel.org
-> Assisted-by: Claude:claude-opus-4-8
-> Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Reviewed-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Thanks!
 > ---
->  net/ipv6/ila/ila_common.c | 6 ++++++
->  1 file changed, 6 insertions(+)
+> Changes in V4:
+>   - Renamed subject to "Derive RX frame length from residue in dmaengine
+>     path".
+>   - Condensed the commit message.
+>   - Dropped the Fixes tag.
 > 
-> diff --git a/net/ipv6/ila/ila_common.c b/net/ipv6/ila/ila_common.c
-> index e71571455c8a0..acedc5a84e4d7 100644
-> --- a/net/ipv6/ila/ila_common.c
-> +++ b/net/ipv6/ila/ila_common.c
-> @@ -85,6 +85,7 @@ static void ila_csum_adjust_transport(struct sk_buff *skb,
->  			struct tcphdr *th = (struct tcphdr *)
->  					(skb_network_header(skb) + nhoff);
->  
-> +			ip6h = ipv6_hdr(skb);
->  			diff = get_csum_diff(ip6h, p);
->  			inet_proto_csum_replace_by_diff(&th->check, skb,
->  							diff, true, true);
-> @@ -96,6 +97,7 @@ static void ila_csum_adjust_transport(struct sk_buff *skb,
->  					(skb_network_header(skb) + nhoff);
->  
->  			if (uh->check || skb->ip_summed == CHECKSUM_PARTIAL) {
-> +				ip6h = ipv6_hdr(skb);
->  				diff = get_csum_diff(ip6h, p);
->  				inet_proto_csum_replace_by_diff(&uh->check, skb,
->  								diff, true, true);
-> @@ -110,6 +112,7 @@ static void ila_csum_adjust_transport(struct sk_buff *skb,
->  			struct icmp6hdr *ih = (struct icmp6hdr *)
->  					(skb_network_header(skb) + nhoff);
->  
-> +			ip6h = ipv6_hdr(skb);
->  			diff = get_csum_diff(ip6h, p);
->  			inet_proto_csum_replace_by_diff(&ih->icmp6_cksum, skb,
->  							diff, true, true);
-> @@ -151,6 +154,9 @@ void ila_update_ipv6_locator(struct sk_buff *skb, struct ila_params *p,
->  		break;
->  	}
->  
-> +	ip6h = ipv6_hdr(skb);
-> +	iaddr = ila_a2i(&ip6h->daddr);
-
-You should be able to reload the pointers only in the
-ILA_CSUM_ADJUST_TRANSPORT case.
-
-> +
->  	/* Now change destination address */
->  	iaddr->loc = p->locator;
->  }
-> -- 
-> 2.53.0
+> Changes in V3:
+>   - New patch in this series.
+>   - This patch enables axienet to work on designs where the AXI4-Stream
+>     status/control interface is not present. By using the standard
+>     dmaengine residue mechanism, the driver no longer depends on APP
+>     fields being populated by hardware.
+>   - This approach replaces the V2 xferred_bytes mechanism (V2 patch 5/5),
+>     making the dt-bindings patch (V2 patch 4/5) for xlnx,include-stscntrl-strm
+>     also unnecessary. Both V2 patches are dropped in this series.
+> ---
+>   drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 14 +++++---------
+>   1 file changed, 5 insertions(+), 9 deletions(-)
 > 
+> diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> index fcf517069d16..67d1b8e91d68 100644
+> --- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> +++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> @@ -53,7 +53,6 @@
+>   #define TX_BD_NUM_MAX			4096
+>   #define RX_BD_NUM_MAX			4096
+>   #define DMA_NUM_APP_WORDS		5
+> -#define LEN_APP				4
+>   #define RX_BUF_NUM_DEFAULT		128
+>   
+>   /* Must be shorter than length of ethtool_drvinfo.driver field to fit */
+> @@ -1159,29 +1158,26 @@ axienet_start_xmit(struct sk_buff *skb, struct net_device *ndev)
+>   static void axienet_dma_rx_cb(void *data, const struct dmaengine_result *result)
+>   {
+>   	struct skbuf_dma_descriptor *skbuf_dma;
+> -	size_t meta_len, meta_max_len, rx_len;
+>   	struct axienet_local *lp = data;
+>   	struct sk_buff *skb;
+> -	u32 *app_metadata;
+> +	size_t rx_len;
+>   	int i;
+>   
+>   	skbuf_dma = axienet_get_rx_desc(lp, lp->rx_ring_tail++);
+>   	skb = skbuf_dma->skb;
+> -	app_metadata = dmaengine_desc_get_metadata_ptr(skbuf_dma->desc, &meta_len,
+> -						       &meta_max_len);
+>   	dma_unmap_single(lp->dev, skbuf_dma->dma_address, lp->max_frm_size,
+>   			 DMA_FROM_DEVICE);
+>   
+> -	if (IS_ERR(app_metadata)) {
+> +	if (result->result != DMA_TRANS_NOERROR) {
+>   		if (net_ratelimit())
+> -			netdev_err(lp->ndev, "Failed to get RX metadata pointer\n");
+> +			netdev_err(lp->ndev, "RX DMA transfer failed\n");
+>   		dev_kfree_skb_any(skb);
+>   		lp->ndev->stats.rx_dropped++;
+>   		goto rx_submit;
+>   	}
+>   
+> -	/* TODO: Derive app word index programmatically */
+> -	rx_len = (app_metadata[LEN_APP] & 0xFFFF);
+> +	/* Actual length = posted buffer length - residue. */
+> +	rx_len = lp->max_frm_size - result->residue;
+>   	skb_put(skb, rx_len);
+>   	skb->protocol = eth_type_trans(skb, lp->ndev);
+>   	skb->ip_summed = CHECKSUM_NONE;
+
