@@ -1,64 +1,39 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from eidolon.nox.tf (eidolon.nox.tf [185.142.180.128])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5666D3B6BE6
-	for <netdev@vger.kernel.org>; Mon, 13 Jul 2026 08:12:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 923193B1032;
+	Mon, 13 Jul 2026 08:12:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.128
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783930334; cv=none; b=QfeyeMLgmFfQzh+wcY3lGLlCu0tuaOqbqk9W4G8Chxm2uUEc5DN70rABKiFU4zSf6FIncnD4VMYQFwaQdL0sSl7yDXtQL8psq9KgND1eOThzzrg2u6pvYp8gQ64VFD1SjatOvbyeIWlHM2B5XQ9fceK28d4k46Z8n/E9aItZhg8=
+	t=1783930335; cv=none; b=DCXIelrclab8/k+JdOsrLUS6QfW8aNQxtNwRnPswSap6oBEtHkyv+EydUUSy4coNnI4WkkRZItSuavtDfOGZ1M4OpWGYwQldp/XkprIF/TjQTU5ZFlNtMsBgo/wmCgVTR7Hhn1KPzJg4GS4qi2YC5k+syIspOzpKEDCQWEocfoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783930334; c=relaxed/simple;
-	bh=LLqegErpiwnNJz+6QEiPVr0B0jHHttmhiT2gIzb7tbI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eSmbGutgZykcmQ65FemLOUSRXif+dMl+Zhv4LoAL6EmiiFmpFEGYv6xPG//4DIt9HyZKD7iLYO7WgfoObP6DAkQ+JVrb0u0J1kixqXQqk+Lzdl5hzOvhZ/jAjBsbtCMb+9MmQ4wS/w3jH6JG7Q2AgTwGKL34uBx7eMisNuTEFlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QcD5Y/5L; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QcD5Y/5L"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783930332;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=n0U90slAaEmIBgfeuUR2Wm/d5X06U5sN8cTBSeFBj2M=;
-	b=QcD5Y/5L+MiLXgIwqXxm4veAo1CHSA8hzTj7KJbxWTGf5igAqWqDoS3uOJmtOLIOe0/UVt
-	rasCg9s56ZIdveF7YdfLWdPYY96MKedAOJqP2GOWhMKSL3xMqLWOcxrfU6Yen1ngdIlzXK
-	vGcMdbJSO1yw6hA+qN0cR1oYlOqrQeQ=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-650-z-U9RDirNlKfwNyEruPWoQ-1; Mon,
- 13 Jul 2026 04:11:01 -0400
-X-MC-Unique: z-U9RDirNlKfwNyEruPWoQ-1
-X-Mimecast-MFC-AGG-ID: z-U9RDirNlKfwNyEruPWoQ_1783930259
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A1FEA1955EBC;
-	Mon, 13 Jul 2026 08:10:59 +0000 (UTC)
-Received: from warthog.procyon.org.com (unknown [10.44.33.159])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 92E2118005A0;
-	Mon, 13 Jul 2026 08:10:56 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: netdev@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	stable@kernel.org
-Subject: [PATCH net v3 06/14] rxrpc: Fix generation of notifications after call completion
-Date: Mon, 13 Jul 2026 09:10:12 +0100
-Message-ID: <20260713081022.2186481-7-dhowells@redhat.com>
-In-Reply-To: <20260713081022.2186481-1-dhowells@redhat.com>
-References: <20260713081022.2186481-1-dhowells@redhat.com>
+	s=arc-20240116; t=1783930335; c=relaxed/simple;
+	bh=3ajd/nAcGp77st83VI1YpV+CMBbB7AcCAMs7VZKKiqE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=igS/+vtTUGWV9+4qYdjBxfu4hLMYQzuaiSRQxPbMnIl6FJ+ufrtufyDPy/+CJ45cVhejnNXhBioKWp0ppYrNh8ie2tmC5VS+91IWBDnDRriB1MBuJQRPjHE1u0Rx4ao3ZQsVCmA5WfwR2Mjoga/mHQ6eYr+NHLZO8ZW6YIFlapY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=diac24.net; spf=pass smtp.mailfrom=diac24.net; arc=none smtp.client-ip=185.142.180.128
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=diac24.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=diac24.net
+Received: from nat-wifi0.uniroma3.it ([193.204.167.180] helo=alea)
+	by eidolon.nox.tf with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <equinox@diac24.net>)
+	id 1wjBh1-00000001NmY-1iGv;
+	Mon, 13 Jul 2026 10:07:11 +0200
+Received: from equinox by alea with local (Exim 4.99.2)
+	(envelope-from <equinox@diac24.net>)
+	id 1wjBgd-00000001FAn-2Qy8;
+	Mon, 13 Jul 2026 10:06:47 +0200
+From: David 'equinox' Lamparter <equinox@diac24.net>
+To: Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang@kernel.org>
+Cc: netdev@vger.kernel.org,
+	mptcp@lists.linux.dev,
+	David 'equinox' Lamparter <equinox@diac24.net>
+Subject: [PATCH net-next] mptcp: sockopt: implement IPV6_TCLASS
+Date: Mon, 13 Jul 2026 10:04:37 +0200
+Message-ID: <20260713080634.296011-1-equinox@diac24.net>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -66,208 +41,87 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-AF_RXRPC may generate a notification to the application after a call has
-completed because it generates one notification when
-rxrpc_input_split_jumbo() queues the final packet and completes the call
-and then generates another when rxrpc_input_split_jumbo() does the
-aggregated data receive notification at the end of the function.
+The IPV6_TCLASS setsockopt just needs to be forwarded to the individual
+TCP sockets, like IP_TOS is already handled for IPv4.  The code here is
+pretty much identical, except there's no helper for IPv6 like IPv4's
+__ip_sock_set_tos().
 
-This might cause the AFS filesystem to malfunction because it tries to
-queue the afs_call for processing an extra time.  Most of the time this
-happens quickly enough that the second queue_work skips, but sometimes this
-means that the call work may happen a second time with implications for
-afs_call lifetime management.
+Coincidentally, ssh uses this sockopt and prints an error in the middle
+of your ongoing SSH session when it doesn't work (very annoying when
+doing SCP/SFTP on a multiplexed session.)
 
-Fix this by:
-
- (1) Create a lighter version of rxrpc_notify_socket() that's just used to
-     requeue a call for rxrpc_recvmsg() without creating another
-     notification.
-
- (2) Move rxrpc_notify_socket() to call_state.c and rename it to
-     __rxrpc_notify_socket().
-
- (3) Create a wrapper called rxrpc_notify_socket() that skips the
-     notification if a call is completed.
-
- (4) Make rxrpc_set_call_completion() call __rxrpc_notify_socket() to avoid
-     the skip-if-completed check.
-
-Fixes: 2d1faf7a0ca3 ("rxrpc: Simplify skbuff accounting in receive path")
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Eric Dumazet <edumazet@google.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
+Signed-off-by: David 'equinox' Lamparter <equinox@diac24.net>
+Cc: Matthieu Baerts <matttbe@kernel.org>
+Cc: Mat Martineau <martineau@kernel.org>
+Cc: Geliang Tang <geliang@kernel.org>
 ---
- include/trace/events/rxrpc.h |  1 +
- net/rxrpc/call_state.c       | 57 +++++++++++++++++++++++++++++++++++-
- net/rxrpc/recvmsg.c          | 42 +++++++++-----------------
- 3 files changed, 71 insertions(+), 29 deletions(-)
+note: I wasn't entirely sure what tree this should be on top of, with the
+mptcp trees on github & kernel.org;  this is on top of net-next.  It
+shouldn't really matter though.
+---
+ net/mptcp/sockopt.c | 34 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 34 insertions(+)
 
-diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
-index 8f3e3967885a..d7c7b04d69fc 100644
---- a/include/trace/events/rxrpc.h
-+++ b/include/trace/events/rxrpc.h
-@@ -343,6 +343,7 @@
- 	EM(rxrpc_call_see_distribute_error,	"SEE dist-err") \
- 	EM(rxrpc_call_see_input,		"SEE input   ") \
- 	EM(rxrpc_call_see_notify_released,	"SEE nfy-rlsd") \
-+	EM(rxrpc_call_see_notify_skipped,	"SEE nfy-skip") \
- 	EM(rxrpc_call_see_recvmsg,		"SEE recvmsg ") \
- 	EM(rxrpc_call_see_recvmsg_requeue,	"SEE recv-rqu") \
- 	EM(rxrpc_call_see_recvmsg_requeue_first, "SEE recv-rqF") \
-diff --git a/net/rxrpc/call_state.c b/net/rxrpc/call_state.c
-index 6afb54373ebb..6e402312e145 100644
---- a/net/rxrpc/call_state.c
-+++ b/net/rxrpc/call_state.c
-@@ -7,6 +7,61 @@
- 
- #include "ar-internal.h"
- 
-+/*
-+ * Post a call for attention by the socket or kernel service.  Further
-+ * notifications are suppressed by putting recvmsg_link on a dummy queue.
-+ */
-+static void __rxrpc_notify_socket(struct rxrpc_call *call)
-+{
-+	struct rxrpc_sock *rx;
-+	struct sock *sk;
-+
-+	if (test_bit(RXRPC_CALL_RELEASED, &call->flags)) {
-+		rxrpc_see_call(call, rxrpc_call_see_notify_released);
-+		return;
-+	}
-+
-+	rcu_read_lock();
-+
-+	rx = rcu_dereference(call->socket);
-+	sk = &rx->sk;
-+	if (rx && sk->sk_state < RXRPC_CLOSE) {
-+		if (call->notify_rx) {
-+			spin_lock_irq(&call->notify_lock);
-+			call->notify_rx(sk, call, call->user_call_ID);
-+			spin_unlock_irq(&call->notify_lock);
-+		} else {
-+			spin_lock_irq(&rx->recvmsg_lock);
-+			if (list_empty(&call->recvmsg_link)) {
-+				rxrpc_get_call(call, rxrpc_call_get_notify_socket);
-+				list_add_tail(&call->recvmsg_link, &rx->recvmsg_q);
-+			}
-+			spin_unlock_irq(&rx->recvmsg_lock);
-+
-+			if (!sock_flag(sk, SOCK_DEAD)) {
-+				_debug("call %ps", sk->sk_data_ready);
-+				sk->sk_data_ready(sk);
-+			}
-+		}
-+	}
-+
-+	rcu_read_unlock();
-+}
-+
-+/*
-+ * Post a call for attention by the socket or kernel service.  Further
-+ * notifications are suppressed by putting recvmsg_link on a dummy queue.
-+ */
-+void rxrpc_notify_socket(struct rxrpc_call *call)
-+{
-+	if (rxrpc_call_is_complete(call)) {
-+		rxrpc_see_call(call, rxrpc_call_see_notify_skipped);
-+		return;
-+	}
-+
-+	__rxrpc_notify_socket(call);
-+}
-+
- /*
-  * Transition a call to the complete state.
-  */
-@@ -25,7 +80,7 @@ bool rxrpc_set_call_completion(struct rxrpc_call *call,
- 	rxrpc_set_call_state(call, RXRPC_CALL_COMPLETE);
- 	trace_rxrpc_call_complete(call);
- 	wake_up(&call->waitq);
--	rxrpc_notify_socket(call);
-+	__rxrpc_notify_socket(call);
- 	return true;
+diff --git a/net/mptcp/sockopt.c b/net/mptcp/sockopt.c
+index fcf6feb2a9eb..edddafebb8de 100644
+--- a/net/mptcp/sockopt.c
++++ b/net/mptcp/sockopt.c
+@@ -394,6 +394,35 @@ static int mptcp_setsockopt_sol_socket(struct mptcp_sock *msk, int optname,
+ 	return -EOPNOTSUPP;
  }
  
-diff --git a/net/rxrpc/recvmsg.c b/net/rxrpc/recvmsg.c
-index efcba4b2e74f..28b2148b5693 100644
---- a/net/rxrpc/recvmsg.c
-+++ b/net/rxrpc/recvmsg.c
-@@ -17,13 +17,12 @@
- #include "ar-internal.h"
- 
- /*
-- * Post a call for attention by the socket or kernel service.  Further
-- * notifications are suppressed by putting recvmsg_link on a dummy queue.
-+ * Requeue a call for recvmsg() to pick up.
-  */
--void rxrpc_notify_socket(struct rxrpc_call *call)
-+static void rxrpc_requeue_call(struct socket *sock, struct rxrpc_call *call)
++static int mptcp_setsockopt_v6_set_tclass(struct mptcp_sock *msk, int optname,
++					  sockptr_t optval, unsigned int optlen)
++{
++	struct mptcp_subflow_context *subflow;
++	struct sock *sk = (struct sock *)msk;
++	int err, val;
++
++	err = ipv6_setsockopt(sk, SOL_IPV6, optname, optval, optlen);
++
++	if (err != 0)
++		return err;
++
++	lock_sock(sk);
++	sockopt_seq_inc(msk);
++	val = READ_ONCE(inet6_sk(sk)->tclass);
++	mptcp_for_each_subflow(msk, subflow) {
++		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
++		bool slow;
++
++		slow = lock_sock_fast(ssk);
++		inet6_sk(ssk)->tclass = val;
++		sk_dst_reset(ssk);
++		unlock_sock_fast(ssk, slow);
++	}
++	release_sock(sk);
++
++	return 0;
++}
++
+ static int mptcp_setsockopt_v6(struct mptcp_sock *msk, int optname,
+ 			       sockptr_t optval, unsigned int optlen)
  {
--	struct rxrpc_sock *rx;
--	struct sock *sk;
-+	struct rxrpc_sock *rx = rxrpc_sk(sock->sk);
-+	struct sock *sk = &rx->sk;
+@@ -436,6 +465,8 @@ static int mptcp_setsockopt_v6(struct mptcp_sock *msk, int optname,
  
- 	_enter("%d", call->debug_id);
- 
-@@ -32,31 +31,18 @@ void rxrpc_notify_socket(struct rxrpc_call *call)
- 		return;
+ 		release_sock(sk);
+ 		break;
++	case IPV6_TCLASS:
++		return mptcp_setsockopt_v6_set_tclass(msk, optname, optval, optlen);
  	}
  
--	rcu_read_lock();
--
--	rx = rcu_dereference(call->socket);
--	sk = &rx->sk;
--	if (rx && sk->sk_state < RXRPC_CLOSE) {
--		if (call->notify_rx) {
--			spin_lock_irq(&call->notify_lock);
--			call->notify_rx(sk, call, call->user_call_ID);
--			spin_unlock_irq(&call->notify_lock);
--		} else {
--			spin_lock_irq(&rx->recvmsg_lock);
--			if (list_empty(&call->recvmsg_link)) {
--				rxrpc_get_call(call, rxrpc_call_get_notify_socket);
--				list_add_tail(&call->recvmsg_link, &rx->recvmsg_q);
--			}
--			spin_unlock_irq(&rx->recvmsg_lock);
-+	spin_lock_irq(&rx->recvmsg_lock);
-+	if (list_empty(&call->recvmsg_link)) {
-+		rxrpc_get_call(call, rxrpc_call_get_notify_socket);
-+		list_add_tail(&call->recvmsg_link, &rx->recvmsg_q);
-+	}
-+	spin_unlock_irq(&rx->recvmsg_lock);
+ 	return ret;
+@@ -1485,6 +1516,9 @@ static int mptcp_getsockopt_v6(struct mptcp_sock *msk, int optname,
+ 	struct sock *sk = (void *)msk;
  
--			if (!sock_flag(sk, SOCK_DEAD)) {
--				_debug("call %ps", sk->sk_data_ready);
--				sk->sk_data_ready(sk);
--			}
--		}
-+	if (!sock_flag(sk, SOCK_DEAD)) {
-+		_debug("call %ps", sk->sk_data_ready);
-+		sk->sk_data_ready(sk);
- 	}
- 
--	rcu_read_unlock();
- 	_leave("");
- }
- 
-@@ -561,7 +547,7 @@ int rxrpc_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
- 
- 	if (!(flags & MSG_PEEK) &&
- 	    !skb_queue_empty(&call->recvmsg_queue))
--		rxrpc_notify_socket(call);
-+		rxrpc_requeue_call(sock, call);
- 	goto not_yet_complete;
- 
- call_failed:
+ 	switch (optname) {
++	case IPV6_TCLASS:
++		return mptcp_put_int_option(msk, optval, optlen,
++					    READ_ONCE(inet6_sk(sk)->tclass));
+ 	case IPV6_V6ONLY:
+ 		return mptcp_put_int_option(msk, optval, optlen,
+ 					    sk->sk_ipv6only);
+-- 
+2.53.0
 
