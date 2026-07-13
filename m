@@ -1,136 +1,336 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4647358387
-	for <netdev@vger.kernel.org>; Mon, 13 Jul 2026 20:36:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA6335CB66;
+	Mon, 13 Jul 2026 20:36:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783974962; cv=none; b=IU/VjqP8+G5fyv0J9AIKbiXCalNVU/q5UNb1DxpdI7P/aLdjnOB+RLuMdkfUGPJ3xHq+JrqSDlUu2as11NuyqYmapjeFI0/ZJlrIVAobY3LZ06dkFPBxNqYY7P+qV5tFmtd1AkKfODPSc/tmhygfXh0oKikyONC8+eIKyWYQByM=
+	t=1783974993; cv=none; b=nnIWIRjH45vXb7TKvhGvVR8KgMGkd8gdOZb4cw9na9Lg1oaX2rLPFgEfjgYcqzi5Kq6R57HIGvg8QjjutowASr8oa6vujT3gVKYT0TVkJp9bdbpEpn8J/wY6JMOqiEzrEAmxKzJWtq2fpAbCcPr5j+FsXzHqDifhL93hP9NQWAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783974962; c=relaxed/simple;
-	bh=i4TALkxCAVMteGK1DB5/DA9ATdL/J6spYDvGFVc3dc8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=dAaKV6bNnR1ouFeidtOcZDvD1vxEoGYtK8cl6WvXCpIpi60zA0Vc+N8tgVWLqeFUZbHD1e0z/PQ76a6vx3e2ZCQUNNcfW/E45QjV1X/zb3HTsmaOduqpvfSgrX6gBw0vRk7HPEnQUYiut1cZifJjb+sgcnF25kx0skIaTvn+j2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=MP5b1u+y; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
+	s=arc-20240116; t=1783974993; c=relaxed/simple;
+	bh=bnB/Rj10CeHD8dDw/g2YNp+SsOr/qZj71Gb2lV0xrbw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PcaPvgIXTk/1sSI/7vSUPZvEUjM7OFXiJCnwOObqI9EW+Ik5LLxqtYyvq0M6zPZHWUbE0lP7OPDclVrglSdl+wgCnYT3dhBF6Jp0R2jqIHrbKWwopMNtQbbpWpHxQoAFZiC+t6K4T2s/REg7qLaVVnb0UbVxZDUhcispAi/Vo0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=Pb+mw8M1; arc=none smtp.client-ip=159.69.126.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="MP5b1u+y"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2cabc0a1ab6so45705885ad.0
-        for <netdev@vger.kernel.org>; Mon, 13 Jul 2026 13:36:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1783974960; x=1784579760; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=dkco1dRBz7qBpSbwKfMxu97d3aGY4fdczk+e7FiAUMY=;
-        b=MP5b1u+yCsysHnmC9t1sZE1I5WhS351PDSqd6GTRiGnqSRNt0AqFKLSuOh7Zy6ut8I
-         xHWhDrco7vAk/hGuEzQSSm+DOSWrJ5hK+e/nocSOENvZ1H/XJE4nFTyEyGqePXqNCb4O
-         3J/FaXQmPsafHRsRNwGJ7JnIHO3WV6Sk7ehPB13UY94UPWCgr/gJqw3VG6OTbrna6XRE
-         LKjj4A/9+1vKehQOnP4+J7k64I/xG3q6pdtVDVf1k8UCPdUEHp58YFKw1tjmvnRtH3rg
-         ZXrAqqOHHoPmeX+5USgbNqLfic71bpb1DejvoV79VX3Z0rK50LdJLTPew6AyiFjvZspF
-         Jkug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783974960; x=1784579760;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dkco1dRBz7qBpSbwKfMxu97d3aGY4fdczk+e7FiAUMY=;
-        b=brFtfIQtkxuv4DLqmPofK2njYwfxVHg3M1rdl0M0SZGkB9LNfMtFVDXVDEyKQRrcsV
-         +xhxDHd1if8WerjAi6rsGbGdpOcrrUd3miTtNSZAiqBDEydgE877rydWQCbvxa5qLUHq
-         F3Npgc6xwcBEEOhIAciZbrInV7eAeUoMWjIDl5g/hkkFJNWEl7wLtltBqry9mcRkb1tY
-         AiAKDPJs6H/RPgLmsLUqgUZSN4c1VIJgY3/ow09oIoqheVvXomrDJmeIYk23ICMXsqo4
-         PLttFENRNcCpyMCCYTpT0wjuKpXc7owOIQ5M800eQw9fjKDyeweW5osTbJOt3Rz7uVC2
-         GM7A==
-X-Gm-Message-State: AOJu0YyZg3s61AJVhyqbaz0ZrUZC8tTBbV52WLHoX382dRAyixj/gSeD
-	YTU29BI4KUGakOL796BzSJfkCTlxYg0H4OR7hnqzUBDj+O8wek96jmkJaSiiYZG5pdw=
-X-Gm-Gg: AfdE7cl8D4L8Sdj90PKWsa/wYcPvZdPdTJt+OKl+fN1ScDcKmlup7FzM814yrp6RBft
-	BzAw48n11YuhADuOuM1vMRHj/o3K1V3IcHXnMJGBdwfNtC/5GE7oK15j72jwJHcrqT+nDV66rOO
-	jokPrfENjU2EBOe6i+1HILy+1E6HWcNWEVPBMKFpn+DMSSIkHtKvOYDOGUXs0u4FasHf5PcKT+F
-	A+f8woCRrOHHrW4MrvsxHduRKb2ySelbKF1Y1QrpFPWFVXvBKoAMVHWl0J4N1IHOMImShbJe/VZ
-	gCibJqO5EQl6n3cpO5dm+GZXX34WeAV6t9Ia3rh+rKssQtMw7vwNCWjlm0/2NxUj+4Ba/784HQp
-	KOuIag3oJqZXiMLJWFfXwRbZepsGuR63u4LrQevyunQR0t55o1SjB3ZFfktDiLMSQpIOsre3bx4
-	NJwCx0TtiSUV5FoLiCmbUC4TL0F1HCST91GoJEguk2G3P2HlaGiFRq
-X-Received: by 2002:a17:903:190:b0:2c9:fb11:1bf4 with SMTP id d9443c01a7336-2cee9a65ed1mr6395275ad.7.1783974960004;
-        Mon, 13 Jul 2026 13:36:00 -0700 (PDT)
-Received: from localhost (107-190-31-17.cpe.teksavvy.com. [107.190.31.17])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9c100adsm103385245ad.32.2026.07.13.13.35.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Jul 2026 13:35:59 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="Pb+mw8M1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
+	s=mail; t=1783974988;
+	bh=bnB/Rj10CeHD8dDw/g2YNp+SsOr/qZj71Gb2lV0xrbw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Pb+mw8M19m10mggqJHy7wMtpZ4G8kvuFi4RBEqrsDJOcCqmVNaPh0gFsBBsMwwlPf
+	 ylfYc5FhbbWjjPF9x6CXuo3uxUlkAUkAE1dA1vS+gEZKVUc6K59os7SknnOOdmsN2Z
+	 S2soIQVNbD/IH7Dc/XmuVr/Dd2NVZl8RmSrrXW0s=
+Date: Mon, 13 Jul 2026 22:36:28 +0200
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
+To: Rong Zhang <i@rong.moe>
+Cc: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>, 
+	Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>, Mark Pearson <mpearson-lenovo@squebb.ca>, 
+	"Derek J. Clark" <derekjohn.clark@gmail.com>, Hans de Goede <hansg@kernel.org>, 
+	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, Ike Panhc <ikepanhc@gmail.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>, 
+	Vishnu Sankar <vishnuocv@gmail.com>, Vishnu Sankar <vsankar@lenovo.com>, linux-leds@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	chrome-platform@lists.linux.dev, platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH RFC v2 5/9] leds: Add trigger_may_offload attribute
+Message-ID: <b36aa937-b100-4fa3-bbc9-631c4c39ba40@t-8ch.de>
+References: <20260618-leds-trigger-hw-changed-v2-0-c28c44053cf3@rong.moe>
+ <20260618-leds-trigger-hw-changed-v2-5-c28c44053cf3@rong.moe>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 13 Jul 2026 16:35:58 -0400
-Message-Id: <DJXQCE0A0P3A.1O2ZPP42RKBWH@etsalapatis.com>
-Cc: <netdev@vger.kernel.org>, <alexei.starovoitov@gmail.com>,
- <andrii@kernel.org>, <daniel@iogearbox.net>, <eddyz87@gmail.com>,
- <memxor@gmail.com>, <martin.lau@kernel.org>, <shakeel.butt@linux.dev>,
- <roman.gushchin@linux.dev>, <kuniyu@google.com>,
- <kerneljasonxing@gmail.com>, <kernel-team@meta.com>
-Subject: Re: [PATCH bpf-next v3 04/15] bpf: Remove unnecessary
- prog_list_prog() check
-From: "Emil Tsalapatis" <emil@etsalapatis.com>
-To: "Amery Hung" <ameryhung@gmail.com>, <bpf@vger.kernel.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260706171918.317102-1-ameryhung@gmail.com>
- <20260706171918.317102-5-ameryhung@gmail.com>
-In-Reply-To: <20260706171918.317102-5-ameryhung@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260618-leds-trigger-hw-changed-v2-5-c28c44053cf3@rong.moe>
 
-On Mon Jul 6, 2026 at 1:19 PM EDT, Amery Hung wrote:
-> From: Martin KaFai Lau <martin.lau@kernel.org>
->
-> effective_prog_pos(), called from replace_effective_prog() and
-> purge_effective_progs(), tests "!prog_list_prog(pl)" to skip a
-> 'detaching' pl.
->
-> When detaching a pl, pl->prog and pl->link are set to NULL in case
-> the update_effective_progs() failed.
->
-> However, replace_effective_prog() is not detaching a pl,
-> so the case "!prog_list_prog()" will not happen.
->
-> In purge_effective_prog(), the pl->prog and pl->link are restored
-> before calling purge_effective_progs(), so the case "!prog_list_prog()"
-> will not happen either.
->
-> This patch removes them as a prep work for the upcoming work
-> in attaching struct_ops to cgroup. When attaching a struct_ops
-> to cgroup, there is a link->map case and the prog_list_prog()
-> will not consider the link->map. The replace_effective_prog()
-> and purge_effective_progs() will then incorrectly skip a pl
-> with struct_ops map attached to it.
->
-> Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-> Signed-off-by: Amery Hung <ameryhung@gmail.com>
+On 2026-06-18 00:47:59+0800, Rong Zhang wrote:
+> There are multiple triggers implementing hardware control. Only "netdev"
+> provides a custom attribute to determine if it's offloaded to hardware
+> (i.e., in hardware control). For other triggers, there is no obvious way
+> for userspace to determine the trigger state programmatically. Moreover,
+> userspace can't query if an LED device supports hardware control or
+> identifies these triggers.
+> 
+> Add a new attribute "trigger_may_offload" to the LED core, so that
+> userspace can determine:
+> 
+> - if the LED device supports hardware control (supported => visible)
+> - which trigger is the hardware control trigger selected by the LED
+>   device
+> - if the trigger is selected ("<foo_trigger>")
+> - if the trigger is offloaded ("[foo_trigger]")
+> 
+> Note: the documentation describes the attribute as "returning a list"
+> despite the LED core currently only supports one hardware control
+> trigger per LED device. This is intentional to make the attribute
+> extensible in the future without breaking userspace.
 
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+Maybe also mention that the old 'offloaded' attribute is deprecated.
+However, does it really need to be deprecated?
 
+> Signed-off-by: Rong Zhang <i@rong.moe>
 > ---
->  kernel/bpf/cgroup.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
->
-> diff --git a/kernel/bpf/cgroup.c b/kernel/bpf/cgroup.c
-> index 4355ccb78a9c..b64f6757096c 100644
-> --- a/kernel/bpf/cgroup.c
-> +++ b/kernel/bpf/cgroup.c
-> @@ -965,9 +965,10 @@ static int effective_prog_pos(struct cgroup *cgrp,
-> =20
->  		init_bstart =3D bstart;
->  		hlist_for_each_entry(pl, &p->bpf.progs[atype], node) {
-> -			if (!prog_list_prog(pl))
-> -				continue;
+>  .../ABI/obsolete/sysfs-class-led-trigger-netdev    | 16 ++++++++
+>  Documentation/ABI/testing/sysfs-class-led          | 22 +++++++++++
+>  .../ABI/testing/sysfs-class-led-trigger-netdev     | 13 -------
+>  Documentation/leds/leds-class.rst                  |  8 ++++
+>  drivers/leds/led-class.c                           | 23 +++++++++++
+>  drivers/leds/led-triggers.c                        | 45 ++++++++++++++++++++++
+>  drivers/leds/leds.h                                |  2 +
+>  drivers/leds/trigger/ledtrig-netdev.c              |  2 +
+>  8 files changed, 118 insertions(+), 13 deletions(-)
+> 
+> diff --git a/Documentation/ABI/obsolete/sysfs-class-led-trigger-netdev b/Documentation/ABI/obsolete/sysfs-class-led-trigger-netdev
+> new file mode 100644
+> index 000000000000..8d2fbfaf50c3
+> --- /dev/null
+> +++ b/Documentation/ABI/obsolete/sysfs-class-led-trigger-netdev
+> @@ -0,0 +1,16 @@
+> +What:		/sys/class/leds/<led>/offloaded
+> +Date:		June 2026
+> +KernelVersion:	7.3
+> +Contact:	linux-leds@vger.kernel.org
+> +Description:
+> +		Communicate whether the LED trigger modes are offloaded to
+> +		hardware or whether software fallback is used.
+> +
+> +		If 0, the LED is using software fallback to blink.
+> +
+> +		If 1, the LED blinking in requested mode is offloaded to
+> +		hardware.
+> +
+> +		/sys/class/leds/<led>/trigger_may_offload provides a generic
+> +		method to query the offloaded state of supported triggers,
+> +		superseding this attribute.
+> diff --git a/Documentation/ABI/testing/sysfs-class-led b/Documentation/ABI/testing/sysfs-class-led
+> index 0313b82644f2..edd5a9a74dfd 100644
+> --- a/Documentation/ABI/testing/sysfs-class-led
+> +++ b/Documentation/ABI/testing/sysfs-class-led
+> @@ -78,6 +78,28 @@ Description:
+>  		(which would often be configured in the device tree for the
+>  		hardware).
+>  
+> +What:		/sys/class/leds/<led>/trigger_may_offload
+> +Date:		June 2026
+> +KernelVersion:	7.3
+> +Contact:	linux-leds@vger.kernel.org
+> +Description:
+> +		Names and states of triggers that may be offloaded to hardware.
+> +		Such triggers are also called "hw control trigger" in some
+> +		context.
+> +
+> +		Only exists when the LED supports trigger offload.
+> +
+> +		Reading this file returns a list of triggers that are capable to
+> +		be offloaded. The optional brackets around the trigger name
+> +		indicate the state of the current trigger:
+> +
+> +		- `foo_trigger`: the trigger is not selected.
+> +		- `<foo_trigger>`: the trigger is selected, but falls back to
+> +		  software blink for some reason (e.g., incompatible trigger
+> +		  parameters)
+> +		- `[foo_trigger]`: the trigger is selected and offloaded to
+> +		  hardware.
+> +
+>  What:		/sys/class/leds/<led>/inverted
+>  Date:		January 2011
+>  KernelVersion:	2.6.38
+> diff --git a/Documentation/ABI/testing/sysfs-class-led-trigger-netdev b/Documentation/ABI/testing/sysfs-class-led-trigger-netdev
+> index ed46b37ab8a2..396d37a4b820 100644
+> --- a/Documentation/ABI/testing/sysfs-class-led-trigger-netdev
+> +++ b/Documentation/ABI/testing/sysfs-class-led-trigger-netdev
+> @@ -62,19 +62,6 @@ Description:
+>  		When offloaded is true, the blink interval is controlled by
+>  		hardware and won't reflect the value set in interval.
+>  
+> -What:		/sys/class/leds/<led>/offloaded
+> -Date:		Jun 2023
+> -KernelVersion:	6.5
+> -Contact:	linux-leds@vger.kernel.org
+> -Description:
+> -		Communicate whether the LED trigger modes are offloaded to
+> -		hardware or whether software fallback is used.
 > -
-> +			/*
-> +			 * No detaching pl (NULL prog and link) is visible to the callers,
-> +			 * so skip the check compute_effective_progs() needs.
-> +			 */
->  			if (pl->flags & BPF_F_PREORDER) {
->  				if (pl =3D=3D target_pl)
->  					pos =3D bstart;
+> -		If 0, the LED is using software fallback to blink.
+> -
+> -		If 1, the LED blinking in requested mode is offloaded to
+> -		hardware.
+> -
+>  What:		/sys/class/leds/<led>/link_10
+>  Date:		Jun 2023
+>  KernelVersion:	6.5
+> diff --git a/Documentation/leds/leds-class.rst b/Documentation/leds/leds-class.rst
+> index 84665200a88d..41342ecb5f6b 100644
+> --- a/Documentation/leds/leds-class.rst
+> +++ b/Documentation/leds/leds-class.rst
+> @@ -179,6 +179,9 @@ ops and needs to declare specific support for the supported triggers.
+>  
+>  With hw control we refer to the LED driven by hardware.
+>  
+> +A sysfs attribute `trigger_may_offload` is provided for userspace to
+> +query supported triggers and their states.
+> +
+>  LED driver must define the following value to support hw control:
+>  
+>      - hw_control_trigger:
+> @@ -240,6 +243,11 @@ LED trigger must implement the following API to support hw control:
+>                  return a boolean indicating if the trigger is offloaded to
+>                  hardware.
+>  
+> +                If an LED driver specifies a hw control trigger but the
+> +                latter doesn't implement this callback, a dev_err_once will
+> +                be emitted and the LED trigger will be assumed to be not
+> +                offloaded.
 
+Not sure if this needs to be documented.
+I would make this optional initally and enforce it after all the drivers
+have been changed in the series.
+
+> +
+>  LED driver can activate additional modes by default to workaround the
+>  impossibility of supporting each different mode on the supported trigger.
+>  Examples are hardcoding the blink speed to a set interval, enable special
+> diff --git a/drivers/leds/led-class.c b/drivers/leds/led-class.c
+> index 9e14ae588f78..0ac80b93b8b5 100644
+> --- a/drivers/leds/led-class.c
+> +++ b/drivers/leds/led-class.c
+> @@ -90,8 +90,31 @@ static const struct bin_attribute *const led_trigger_bin_attrs[] = {
+>  	&bin_attr_trigger,
+>  	NULL,
+>  };
+> +
+> +static DEVICE_ATTR(trigger_may_offload, 0444, led_trigger_may_offload_show, NULL);
+
+DEVICE_ATTR_RO()
+
+> +static struct attribute *led_trigger_attrs[] = {
+> +	&dev_attr_trigger_may_offload.attr,
+> +	NULL,
+
+No comma after the sentinel.
+
+> +};
+> +
+> +static umode_t led_trigger_is_visible(struct kobject *kobj,
+> +				      struct attribute *attr,
+> +				      int idx)
+> +{
+> +	struct device *dev = kobj_to_dev(kobj);
+> +	struct led_classdev *led_cdev = dev_get_drvdata(dev);
+> +
+> +	if (attr == &dev_attr_trigger_may_offload.attr &&
+> +	    !led_cdev->hw_control_trigger)
+
+Can be a single line.
+
+> +		return 0;
+> +
+> +	return attr->mode;
+> +}
+> +
+>  static const struct attribute_group led_trigger_group = {
+>  	.bin_attrs = led_trigger_bin_attrs,
+> +	.attrs = led_trigger_attrs,
+> +	.is_visible = led_trigger_is_visible,
+>  };
+>  #endif
+>  
+> diff --git a/drivers/leds/led-triggers.c b/drivers/leds/led-triggers.c
+> index b1223218bda1..c43229d9c4c1 100644
+> --- a/drivers/leds/led-triggers.c
+> +++ b/drivers/leds/led-triggers.c
+> @@ -313,6 +313,51 @@ void led_trigger_set_default(struct led_classdev *led_cdev)
+>  }
+>  EXPORT_SYMBOL_GPL(led_trigger_set_default);
+>  
+> +/*
+> + * Caller must ensure led_cdev->trigger_lock held,
+
+Use lockdep_assert_held() to document and validate locking invariants.
+
+> + * and led_cdev->trigger->name must match led_cdev->hw_control_trigger.
+> + */
+> +static bool led_trigger_get_offloaded(struct led_classdev *led_cdev)
+> +{
+> +	if (likely(led_cdev->trigger->offloaded))
+> +		return led_cdev->trigger->offloaded(led_cdev);
+> +
+> +	dev_err_once(led_cdev->dev,
+> +		     "hw control trigger %s doesn't implement offloaded(), this is a bug\n",
+> +		     led_cdev->trigger->name);
+> +	return false;
+> +}
+> +
+> +ssize_t led_trigger_may_offload_show(struct device *dev,
+> +				     struct device_attribute *attr, char *buf)
+> +{
+> +	struct led_classdev *led_cdev = dev_get_drvdata(dev);
+> +	bool hit, offloaded = false;
+> +	struct led_trigger *trig;
+> +	int len;
+> +
+> +	mutex_lock(&led_cdev->led_access);
+> +	down_read(&led_cdev->trigger_lock);
+
+guard()?
+
+> +
+> +	trig = led_cdev->trigger;
+> +
+> +	hit = trig && !strcmp(led_cdev->hw_control_trigger, trig->name);
+> +	if (hit)
+> +		offloaded = led_trigger_get_offloaded(led_cdev);
+> +
+> +	/* [offloaded] <active_but_not_offloaded> inactive */
+> +	len = sysfs_emit(buf, "%s%s%s\n",
+> +			 offloaded ? "[" : (hit ? "<" : ""),
+> +			 led_cdev->hw_control_trigger,
+> +			 offloaded ? "]" : (hit ? ">" : ""));
+> +
+> +	up_read(&led_cdev->trigger_lock);
+> +	mutex_unlock(&led_cdev->led_access);
+> +
+> +	return len;
+> +}
+> +EXPORT_SYMBOL_GPL(led_trigger_may_offload_show);
+> +
+>  /* LED Trigger Interface */
+>  
+>  int led_trigger_register(struct led_trigger *trig)
+> diff --git a/drivers/leds/leds.h b/drivers/leds/leds.h
+> index bee46651e068..9177e098989b 100644
+> --- a/drivers/leds/leds.h
+> +++ b/drivers/leds/leds.h
+> @@ -27,6 +27,8 @@ ssize_t led_trigger_read(struct file *filp, struct kobject *kobj,
+>  ssize_t led_trigger_write(struct file *filp, struct kobject *kobj,
+>  			const struct bin_attribute *bin_attr, char *buf,
+>  			loff_t pos, size_t count);
+> +ssize_t led_trigger_may_offload_show(struct device *dev,
+> +				     struct device_attribute *attr, char *buf);
+>  
+>  extern struct rw_semaphore leds_list_lock;
+>  extern struct list_head leds_list;
+> diff --git a/drivers/leds/trigger/ledtrig-netdev.c b/drivers/leds/trigger/ledtrig-netdev.c
+> index a26109ca4b1c..21f22eea4ab8 100644
+> --- a/drivers/leds/trigger/ledtrig-netdev.c
+> +++ b/drivers/leds/trigger/ledtrig-netdev.c
+> @@ -487,6 +487,8 @@ static ssize_t offloaded_show(struct device *dev,
+>  {
+>  	struct led_netdev_data *trigger_data = led_trigger_get_drvdata(dev);
+>  
+> +	dev_warn_once(dev, "offloaded attribute has been deprecated, see trigger_may_offload.\n");
+> +
+>  	return sprintf(buf, "%d\n", trigger_data->hw_control);
+>  }
+>  
+> 
+> -- 
+> 2.53.0
+> 
