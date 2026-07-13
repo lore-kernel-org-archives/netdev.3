@@ -1,37 +1,37 @@
 Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE9943746C;
-	Mon, 13 Jul 2026 14:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856E443B480;
+	Mon, 13 Jul 2026 14:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783953193; cv=none; b=AUT6GPAJ4OMEMuq4X1oQt4IEB0L4EncZO7zksP5ZolkB/P7sjkyInwMYjyRVQx9wx/PZ/0cXVBhKW7dhQu5AUpe9He6pT+bk6kv9uwAB9Ys0cehakSNfVp2bRAU5dG0FQ6zgXa25mmiyxK5HWZsu6H8MAZDepPjUvxv/1fljX3g=
+	t=1783953195; cv=none; b=ajXWiwbJt97xaZSSUzNqMIhkgt+O9yXcYGw2a30+OF/XPpcM602gLaF+ZDA3wj4f0whVRxB1s6/lJzggwAw6jgKuBGtlJbuV0mvu/KxBZWMy/Y0IXdojO1nyFG4xqAjmYEo3mRB6l+WB2W80FV+BYbsDYDgZ95l2gc5H5PSQ8g0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783953193; c=relaxed/simple;
-	bh=O3gTeDMzfiWNzLpen7XA+3xxApeiqLbTYXfhFJJlkcM=;
+	s=arc-20240116; t=1783953195; c=relaxed/simple;
+	bh=KKtcR/+m4QN5F8ll5/kMMHagRDQ7KeNz9Wo+ucTMTzY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=nNqkNEPwSW0q/xRb1RnrxaluoX/cCYp2Rec9T9TKWvUJPIvvSxYMTSqU16u/YRfil3h+0JFdr0fzmhszD2J7khQ0qezkG45RZ1tmNHyLmvHdxq/eNPOldg3+wOEaOKpSc9Eza0YeymFSxGIcuoyQvqsXcNrN4MLtwjnB3clo2NQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=f8ZmkEyC; arc=none smtp.client-ip=203.29.241.158
+	 In-Reply-To:To:Cc; b=fWa9dj56KyzHrWnXJIw/DD7EqO+eLzmV5Ed8uMToIVMaWeYcJ4H6vYQXRMfFwzVu+L9pCXRvjwvyF0z6fI/QntPEWRwvwwqbSSzdOMu1d7WXBsaZACteqSSUNrwnQAUxyhe6lRAcgrMVRTYAtk1rkWw13EkqXGXVQwcRfc+Tauo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=BJ7APobG; arc=none smtp.client-ip=203.29.241.158
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="f8ZmkEyC"
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="BJ7APobG"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1783953182;
-	bh=3v5a6bXZwCBGLOTyOpJBVbQIBJws6d52jIUHNGTi9zU=;
+	d=codeconstruct.com.au; s=2022a; t=1783953183;
+	bh=KhBfWwuMYMkpiuzjTYQnaD8wQ0aG+68CnnMiZzh6YwI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=f8ZmkEyCfeUIHcMnCZimEWu5/nPPIwTdvl3XVNGcyxMBJJXZNDvL0nmDGzGB7uMAh
-	 VJTt8UMDuHrJbksOYmsoeRDLFsjWfMu2UFynlwbBTic6d5CowrRM7L939Lo3WG+8eI
-	 IZ9k1cqNa2xUb71rV9DRLZ/79Ep9meScEeXJ8G/R90NsuOo/pp7H7wZmMLgisRm6n2
-	 OOTxUvDlbK3NblaH+j4I0XT2DrhFViTjcbJ2rh4JFbBgDWIv4uSBOEb6NQe6dbSdmw
-	 W2aPyRBy+G2mOdeb6MWfvPQZccg2+hsyq8rGrbvrlyKP7nneQB+Eozy74sRClAHF7o
-	 45w5v2WytIOMw==
+	b=BJ7APobGWUo8kvNI8ZhrkcxwaAtEqwcCiDuh8sZxQxQGZRQd/GbHBuOBRjbqv94D2
+	 b/YTovxuY9tW0TkLVcmDkM4sT+TaLmtXf3QD/nt/ljFWCibNe7NncX+m6Hd6APdKzz
+	 IBbEDB6Oc1IsmpUQXz0LtU0dsu553+5KK3d7lUhk+CfOlL4UyFcdBloxyT96qeU8gG
+	 F00ZpHdMrcnTK0Y1nlf+tVc00eXXkB8tAU6XNlPK4X0mK8Zdi7ebfiEUc9l4XB0+St
+	 N5QH4YVg8CgHBwJ7ZAF+gT0LEODqF609y86QSzPkX6Og+TjIt0yrLlS1Jk6eZjdjcQ
+	 Na7XOuMFu0UlA==
 Received: by codeconstruct.com.au (Postfix, from userid 10000)
-	id 45BB26561A; Mon, 13 Jul 2026 22:33:02 +0800 (AWST)
+	id 2E3616561C; Mon, 13 Jul 2026 22:33:03 +0800 (AWST)
 From: Jeremy Kerr <jk@codeconstruct.com.au>
-Date: Mon, 13 Jul 2026 22:32:57 +0800
-Subject: [PATCH net-next v4 04/12] net: mctp: usb: Improve IN endpoint
- status handling
+Date: Mon, 13 Jul 2026 22:33:00 +0800
+Subject: [PATCH net-next v4 07/12] net: mctp: usb: Accommodate DSP0283 v1.1
+ header format
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,7 +40,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260713-dev-mctp-usb-1-1-v4-4-4ae8de764a01@codeconstruct.com.au>
+Message-Id: <20260713-dev-mctp-usb-1-1-v4-7-4ae8de764a01@codeconstruct.com.au>
 References: <20260713-dev-mctp-usb-1-1-v4-0-4ae8de764a01@codeconstruct.com.au>
 In-Reply-To: <20260713-dev-mctp-usb-1-1-v4-0-4ae8de764a01@codeconstruct.com.au>
 To: Matt Johnston <matt@codeconstruct.com.au>, 
@@ -51,165 +51,109 @@ To: Matt Johnston <matt@codeconstruct.com.au>,
 Cc: netdev@vger.kernel.org, linux-usb@vger.kernel.org
 X-Mailer: b4 0.16-dev
 
-Currently, we give-up on all non-zero status values on our IN/rx urb,
-and do not re-queue the urb. This will stall the driver, and prevent
-any further receive.
+In the v1.1 update to DSP0283, we have a larger header field, of 13 bits
+rather than 8.
 
-Instead, attempt a re-queue on transient errors, with a max of ten
-successive failures. Handle EPIPE specially, by scheduling a
-usb_clear_halt() in non-atomic context.
+In order to accommodate this, in preparation for proper v1.1 support,
+expand our struct mctp_usb_hdr's len field to a u16, and endian-convert
+when necessary. Because we don't yet support spanning mode, we will
+never receive or transmit with the top 5 bits set, so we always mask
+out anyway.
+
+This allows for a future change where we allow spanning mode with
+>512-byte transfers.
 
 Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
----
-v4:
- - move urb error common code to mctp_usb_in_urb_err, fixing a missing
-   rx_cancel
- - allow retries of usb_clear_halt
-v3:
- - improved IN urb status handling was introduced in v2, but now split
-   to a separate change, via sashiko feedback
- - now with usb_clear_halt on EPIPE.
----
- drivers/net/mctp/mctp-usb.c | 91 +++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 84 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/mctp/mctp-usb.c b/drivers/net/mctp/mctp-usb.c
-index 9e5c64e76e4a..d556dd2d91de 100644
---- a/drivers/net/mctp/mctp-usb.c
-+++ b/drivers/net/mctp/mctp-usb.c
-@@ -32,6 +32,9 @@ struct mctp_usb {
+---
+v2:
+ - fix short packet (hdr) debug message: use endian-converted value
+---
+ drivers/net/mctp/mctp-usblib.c | 14 ++++++++------
+ include/linux/usb/mctp-usb.h   | 11 ++++++++---
+ 2 files changed, 16 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/net/mctp/mctp-usblib.c b/drivers/net/mctp/mctp-usblib.c
+index 2e464254353e..d58178f47c06 100644
+--- a/drivers/net/mctp/mctp-usblib.c
++++ b/drivers/net/mctp/mctp-usblib.c
+@@ -99,6 +99,7 @@ int mctp_usblib_rx_complete(struct net_device *netdev,
+ 	while (skb) {
+ 		struct sk_buff *skb2 = NULL;
+ 		struct mctp_usb_hdr *hdr;
++		u16 hdr_len;
+ 		/* length of MCTP packet, no USB header */
+ 		u8 pkt_len;
  
- 	struct urb *tx_urb;
- 	struct urb *rx_urb;
-+	int in_err_count;
-+	int in_err_orig;
-+	bool clear_halt;
+@@ -116,21 +117,23 @@ int mctp_usblib_rx_complete(struct net_device *netdev,
+ 			break;
+ 		}
  
- 	/* enforces atomic access to rx_stopped and requeuing the retry work */
- 	spinlock_t rx_lock;
-@@ -158,27 +161,75 @@ static int mctp_usb_rx_queue(struct mctp_usb *mctp_usb, gfp_t gfp)
- 	return 0;
- }
+-		if (hdr->len <
++		hdr_len = be16_to_cpu(hdr->len) & MCTP_USB_1_0_PKTLEN_MAX;
++
++		if (hdr_len <
+ 		    sizeof(struct mctp_hdr) + sizeof(struct mctp_usb_hdr)) {
+ 			netdev_dbg(netdev, "rx: short packet (hdr) %d\n",
+-				   hdr->len);
++				   hdr_len);
+ 			rc = -EPROTO;
+ 			break;
+ 		}
  
-+static const unsigned int rx_err_max = 10;
-+
-+/* Returns -1 if we have hit excessive errors, zero otherwise. */
-+static int mctp_usb_in_urb_err(struct mctp_usb *mctp_usb, int status,
-+			       bool stalled)
-+{
-+	mctp_usblib_rx_cancel(&mctp_usb->rx);
-+
-+	if (!mctp_usb->in_err_count++)
-+		mctp_usb->in_err_orig = status;
-+
-+	if (mctp_usb->in_err_count >= rx_err_max) {
-+		netdev_err(mctp_usb->netdev,
-+			   "excessive errors from%s IN EP, first: %d\n",
-+			   stalled ? " (stalled)" : "",
-+			   mctp_usb->in_err_orig);
-+		return -1;
-+	}
-+
-+	return 0;
-+}
-+
- static void mctp_usb_in_complete(struct urb *urb)
- {
- 	struct mctp_usb *mctp_usb = urb->context;
- 	struct net_device *netdev = mctp_usb->netdev;
--	int status;
-+	unsigned long flags;
-+	int rc, status;
+ 		/* we know we have at least sizeof(struct mctp_usb_hdr) here */
+-		pkt_len = hdr->len - sizeof(struct mctp_usb_hdr);
++		pkt_len = hdr_len - sizeof(struct mctp_usb_hdr);
+ 		if (pkt_len > skb->len) {
+ 			rc = -EPROTO;
+ 			netdev_dbg(netdev,
+ 				   "rx: short packet (xfer) %d, actual %d\n",
+-				   hdr->len, skb->len);
++				   hdr_len, skb->len);
+ 			break;
+ 		}
  
- 	status = urb->status;
- 
- 	switch (status) {
--	default:
--		netdev_dbg(netdev, "unexpected rx urb status: %d\n", status);
--		fallthrough;
- 	case -ENOENT:
- 	case -ECONNRESET:
- 	case -ESHUTDOWN:
--	case -EPROTO:
-+		/* device shutdown, don't resubmit */
- 		mctp_usblib_rx_cancel(&mctp_usb->rx);
- 		return;
-+
-+	case -EPIPE:
-+		/* endpoint stall: clear halt, which will cause a resubmit */
-+		rc = mctp_usb_in_urb_err(mctp_usb, status, true);
-+		if (rc)
-+			return;
-+
-+		mctp_usb->clear_halt = true;
-+		spin_lock_irqsave(&mctp_usb->rx_lock, flags);
-+		if (!mctp_usb->rx_stopped)
-+			schedule_delayed_work(&mctp_usb->rx_retry_work,
-+					      RX_RETRY_DELAY);
-+		spin_unlock_irqrestore(&mctp_usb->rx_lock, flags);
-+		return;
-+
-+	default:
-+		netdev_dbg(netdev, "unexpected rx urb status: %d\n", status);
-+		fallthrough;
-+	case -ETIME:
-+	case -EPROTO:
-+	case -EILSEQ:
-+	case -EOVERFLOW:
-+		/* possibly transient; record first failure, resubmit */
-+		rc = mctp_usb_in_urb_err(mctp_usb, status, false);
-+		if (rc)
-+			return;
-+		break;
-+
- 	case 0:
--		mctp_usblib_rx_complete(netdev, &mctp_usb->rx,
--					urb->actual_length);
-+		mctp_usblib_rx_complete(netdev, &mctp_usb->rx, urb->actual_length);
-+		mctp_usb->in_err_count = 0;
- 		break;
+@@ -399,8 +402,7 @@ static int mctp_usblib_tx_skb_prepare(struct sk_buff *skb,
  	}
  
-@@ -189,6 +240,30 @@ static void mctp_usb_rx_retry_work(struct work_struct *work)
- {
- 	struct mctp_usb *mctp_usb = container_of(work, struct mctp_usb,
- 						 rx_retry_work.work);
-+	unsigned long flags;
-+	int rc;
-+
-+	/* We are only called when rx completions are suspended */
-+	if (mctp_usb->clear_halt) {
-+		int pipe = usb_rcvbulkpipe(mctp_usb->usbdev, mctp_usb->ep_in);
-+
-+		rc = usb_clear_halt(mctp_usb->usbdev, pipe);
-+		if (rc) {
-+			netdev_err(mctp_usb->netdev,
-+				   "can't clear IN EP halt: %d\n", rc);
-+
-+			if (++mctp_usb->in_err_count >= rx_err_max)
-+				return;
-+
-+			spin_lock_irqsave(&mctp_usb->rx_lock, flags);
-+			if (!mctp_usb->rx_stopped)
-+				schedule_delayed_work(&mctp_usb->rx_retry_work,
-+						      RX_RETRY_DELAY);
-+			spin_unlock_irqrestore(&mctp_usb->rx_lock, flags);
-+			return;
-+		}
-+		mctp_usb->clear_halt = false;
-+	}
+ 	hdr->id = cpu_to_be16(MCTP_USB_DMTF_ID);
+-	hdr->rsvd = 0;
+-	hdr->len = plen + sizeof(*hdr);
++	hdr->len = cpu_to_be16(plen + sizeof(*hdr));
  
- 	mctp_usb_rx_queue(mctp_usb, GFP_KERNEL);
+ 	return 0;
  }
-@@ -198,6 +273,8 @@ static int mctp_usb_open(struct net_device *dev)
- 	struct mctp_usb *mctp_usb = netdev_priv(dev);
+diff --git a/include/linux/usb/mctp-usb.h b/include/linux/usb/mctp-usb.h
+index 2e1cde6a6745..1a5e795b4ec1 100644
+--- a/include/linux/usb/mctp-usb.h
++++ b/include/linux/usb/mctp-usb.h
+@@ -2,7 +2,7 @@
+ /*
+  * mctp-usb.h - MCTP USB transport binding: common definitions,
+  * based on DMTF0283 specification:
+- * https://www.dmtf.org/sites/default/files/standards/documents/DSP0283_1.0.1.pdf
++ * https://www.dmtf.org/sites/default/files/standards/documents/DSP0283_1.1.0.pdf
+  *
+  * These are protocol-level definitions, that may be shared between host
+  * and gadget drivers.
+@@ -17,10 +17,15 @@
+ #include <linux/skbuff.h>
+ #include <linux/types.h>
  
- 	WRITE_ONCE(mctp_usb->rx_stopped, false);
-+	mctp_usb->clear_halt = false;
-+	mctp_usb->in_err_count = 0;
++/*
++ * MCTP-over-USB transport header. DSP0283 v1.0 has an 8-bit length field
++ * (preceded by 8 reserved bits), v1.1 has a 13-bit length field (preceded by
++ * 3 reserved bits). We use a be16 for our length to handle the larger v1.1
++ * representation, and mask as appropriate.
++ */
+ struct mctp_usb_hdr {
+ 	__be16	id;
+-	u8	rsvd;
+-	u8	len;
++	__be16	len;
+ } __packed;
  
- 	netif_start_queue(dev);
- 
+ /* max transfer size for DSP0283 v1.0 */
 
 -- 
 2.47.3
