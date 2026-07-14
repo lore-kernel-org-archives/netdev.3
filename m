@@ -1,148 +1,111 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.3ffe.de (0001.3ffe.de [159.69.201.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EEAE3630B0
-	for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 22:30:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8110441DDEF;
+	Tue, 14 Jul 2026 22:44:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.201.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784068234; cv=none; b=GY8bXKUwXcTzMLk0UmhD1WxjfXOHTnLGyK0qqxamYyOVWc8YAEQn6reGM4peapKdwiGWCsO8vtjGBTZU1fCI/lAKXcdwQmzzCIYQpdWF5zgBjzQCgWMj76+is71qKKmAdkFi+AiDD4Onlt9TVs1ukEXsh0orBwp9pYFjRJ/VovM=
+	t=1784069046; cv=none; b=qEGKg3eyHMWQxdcOd/8Odw4Pvv52SxnaIbWI6+WKjuLngWowP97L9slULW3LSCUGiM5XjcXEky+srL7K1n+5ckB+jDgEr8/VCe+q+sH2Y5phlLmHrpBO3j04ZEdbNxF+ve/Ufu1nmBxF25zjlrIC/qUtNvFqpNyIoOkgwDCTsEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784068234; c=relaxed/simple;
-	bh=yCxyz5vMtCXbzwphhTYHliMyAJmOkLPbekiskBvFq7w=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=VgUiepW996v3YhHolN6BaDqnbF+WZ0uulrD4y3vvUvbv3iRHRYA2VLT7tLvKvlpbLXcS05qb9u76tevdvCl8RiB24pTKJJXJzeol6sKVVO24VKgeBT9XwOHpNRIm/Fpymfd26yQU5VoyeAfMyqw+u/Atc/8cATK7UTyYFeaGoS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=purestorage.com; spf=pass smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=Mk2Qwl/N; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=purestorage.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=purestorage.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="Mk2Qwl/N"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-493d92b7db3so11605905e9.2
-        for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 15:30:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=purestorage.com; s=google2022; t=1784068227; x=1784673027; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=W6KUr8HepVyeORxgizJB/OB6YbettUbebwaiS4ePIes=;
-        b=Mk2Qwl/NohqYs2bIuJ1d8ML15gJjVAndIhdr22Xo+oKa2F/OT23guALg3XRpzbugnu
-         9bCsM3kBNGHPBEw+ByLSlog1EmhFt5BBnNV/O/SM00TmfGY9e2pcbfHS3brlT253vM0L
-         7wN5dskux7SfdUAySukqug0kwNP9GM8vjLX9gYp/MDphFiKxvTWNkMrAMMY95cX3NhDz
-         brvuZpZQaJqeFTzuRztzg7+U7DeL08HbkxIUdqFFTJWpDcDmZB5hyHuMiN1H0ZgQYFUY
-         hbI8qFD45lRa3yK0QH7l7RlY5OkMHcn4/qMyeIPcBOAJ08dwy3XO7UHn2O0u5TCjXbln
-         /9Ag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784068227; x=1784673027;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=W6KUr8HepVyeORxgizJB/OB6YbettUbebwaiS4ePIes=;
-        b=YmUS70iWfZqNcvVoTFJAOQzADqaTolYp/oM6bz4EHCXa+9FYbo4Op5mCUyUoOvufM2
-         eKKHBOAm+3kjsXKUCtyQKqd6yqZlKfmM2ZXOJuiCigdeaRTsb73aUy06cgCNb9t4emdg
-         4jYb7BYEPqaSRx7is0qpXnAnLk5bQUOx613x5v75CbI28MBKfyD5m8OIIld2XOheVVAS
-         pQEXl46KcsH6KjFq5dxGqeDCH1+sP9BszBLPTEgjz4Oc2c+SZUX2Ynx8dkVz8VJGEGg7
-         d2T+gtguBewCgM+PsitI5LJHNuJKVNo4LSzoPAgCgASKmpYSWuUJlPWWH/54adzB1M/k
-         A5pw==
-X-Gm-Message-State: AOJu0Yzy5h6qiwJpOztpvEt2OakO8Gc4TezLMvy9cUWUp0ipoTyqpOeG
-	GsgHwRdGBLtaoDeRNN/uh8j61/1hIvfi9pbMC9Hy0GWOH8lDtqJMza30wXme9i3FYR5yLBSpzet
-	GntTjaZAuSCvi0CAFeqSggDTTWWncCqHTi7Sy+iP0d17UKnqW6pNnYJEuIeUNOe2+RPW1vJDcGw
-	Hckg9og3FeRi2aIKCEJWKIDtFgiKJBG+Do+I44bg6lqvq5GmQ=
-X-Gm-Gg: AfdE7ckH56xE5KaWu4+QckgX+7AnQwsW1lij5vaz0QOJQQhVvoRrfwqBo8RfEOSxOTT
-	Fb0aqL2mSBIXEQqqKN0rG14uLNbU9jHQBp7JAPJn7Tlg5jxiWWCUQ4dIUmcIdoakzTzWxpKL4+f
-	BDN1q9ZIqMpJ5KbzNrztstCNZWW9SqFOOy6xrkJsSsyJOV/aD5uwANac25NynieeBseThBgL4bH
-	swTQRJNoWGoSaGqqEckiHGlf1nXYqS48WTC+ZfrpCx1+yn/cOagNTDpn/9y5vGN7b08EoThkCsN
-	C5BvgXqh1WMJdxQTmEVddD+kz6kWTlnFO9jchwLuCd0JY7C4tamTVnpFJkzBzuf8IfDZuVVhzz4
-	kugpGLMFEsZvhISnidISWuggrQenIjbMCkMelvN7CU/aUMRerISYYOM6EqfTm4yeyGQo0W/5C+9
-	T5UUatMQRnTOPBpGKkn6ggYLc70mPKOOPtiFjrwgdX8yule9r/vvElBSg5XG0NanEyy/U8g1BKP
-	/IZPSqR5J46p+8fqmsiEStZQgfJ4+X9JGDfrDIsVKqy9AyVoaXLqVMNdZbV3rp+NDr+n0Wdlur3
-	AUGB86ECI2LAf3E+qZQ8sP+Xccatt6D13JU=
-X-Received: by 2002:a05:600c:1f8f:b0:493:e79e:da6b with SMTP id 5b1f17b1804b1-493f8815d42mr197840995e9.21.1784068227346;
-        Tue, 14 Jul 2026 15:30:27 -0700 (PDT)
-Received: from dev-rjethwani.dev.purestorage.com ([208.88.159.128])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-495087366c0sm196536915e9.7.2026.07.14.15.30.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jul 2026 15:30:26 -0700 (PDT)
-From: Rishikesh Jethwani <rjethwani@purestorage.com>
-To: netdev@vger.kernel.org
-Cc: john.fastabend@gmail.com,
-	kuba@kernel.org,
-	sd@queasysnail.net,
-	davem@davemloft.net,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	leon@kernel.org,
-	nils.juenemann@gmail.com,
-	Rishikesh Jethwani <rjethwani@purestorage.com>
-Subject: [PATCH 2/2] net/mlx5e: kTLS: guard RX resync against stale channel index
-Date: Tue, 14 Jul 2026 16:29:15 -0600
-Message-Id: <20260714222915.2334949-3-rjethwani@purestorage.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260714222915.2334949-1-rjethwani@purestorage.com>
-References: <20260714222915.2334949-1-rjethwani@purestorage.com>
+	s=arc-20240116; t=1784069046; c=relaxed/simple;
+	bh=wfCMcQNi07TVlzjXUfxa3WKiIEmLUGRu5qmynwqHYrc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:From:To:
+	 References:In-Reply-To; b=soMOrB2vInmCuy1vpmwVi3hq+FTnT7ygwPUxkd3nnxXr5IuJzgpDUezWIwqTRjr56gAGzZM/1AJBY5SwaysFTFsdliCKClCc7kqe559Rp/jFiNveY4Ffl6CZXc3z0pwOLwbdbOegTuhvjxE6TA7YkyItvjam0ycDat6ekGp1ssU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=walle.cc; arc=none smtp.client-ip=159.69.201.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=walle.cc
+Received: from localhost (unknown [IPv6:2a02:810b:4320:1000:4685:ff:fe12:5967])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.3ffe.de (Postfix) with ESMTPSA id F138E444;
+	Wed, 15 Jul 2026 00:43:50 +0200 (CEST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 15 Jul 2026 00:43:50 +0200
+Message-Id: <DJYNOU41CMDC.1QU8SOPTLUNB5@kernel.org>
+Subject: Re: [PATCH RFC net-next] net: phy: sfp: drop 1000Base-T support for
+ FCLF8521P2BTL
+Cc: "Russell King" <linux@armlinux.org.uk>, "Heiner Kallweit"
+ <hkallweit1@gmail.com>, "David S . Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>, <netdev@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+From: "Michael Walle" <mwalle@kernel.org>
+To: "Andrew Lunn" <andrew@lunn.ch>
+X-Mailer: aerc 0.20.0
+References: <20260714125008.2466023-1-mwalle@kernel.org>
+ <c62c33be-0082-4e4a-8f13-2e14e851e975@lunn.ch>
+In-Reply-To: <c62c33be-0082-4e4a-8f13-2e14e851e975@lunn.ch>
 
-An RX offloaded socket stores its channel index in priv_rx->rxq when
-offload is enabled. If the channel count later shrinks, e.g. via
-'ethtool -L <dev> combined N', existing offloaded sockets can still
-carry a queue index from the old channel layout.
+Hi Andrew,
 
-The kTLS RX resync paths index priv->channels.c[priv_rx->rxq] directly
-in both resync_handle_work() and mlx5e_ktls_rx_resync(). After channel
-reduction, a stale priv_rx->rxq can be out of range for the current
-priv->channels.num and lead to invalid channel access.
+On Wed Jul 15, 2026 at 12:04 AM CEST, Andrew Lunn wrote:
+> On Tue, Jul 14, 2026 at 02:49:34PM +0200, Michael Walle wrote:
+>> The FCLF8521P2BTL is marketed as a drop in replacement for fiber
+>> modules using 1000Base-X autoneg towards the host as default. See the
+>> referenced application note, esp. question #11. Drop the 1000baseT
+>> capability, so 1000Base-X will eventually be used.
+>>=20
+>> This is esp. important if the TX_DISABLE pin is not connected on a
+>> board. Usually, pin is used as a reset line to the PHY on the copper
+>> SFP. If a bootloader expects the default mode and doesn't do any
+>> reconfiguration of the SFP module, a link might not be established.
+>>=20
+>> Link: https://www.coherent.com/resources/application-note/networking/100=
+0base-t-sfp-faq-an-2036.pdf
+>> Signed-off-by: Michael Walle <mwalle@kernel.org>
+>> ---
+>> I'm not sure, this is the correct place for the fix, nor if it goes in
+>> the right direction. There is a comment in
+>>=20
+>> /*
+>>  * Clause 22 copper SFP modules normally operate in Cisco SGMII mode wit=
+h
+>>  * negotiation enabled, but some may be in 1000base-X - which is for the
+>>  * PHY driver to determine.
+>>  */
+>
+> The reason Cisco SGMII is used is so you can support 10Mbps and
+> 100Mbps, as well as 1G. If all you can do ix 1000BaseX, supporting
+> 10/100 becomes harder. If the PHY is clever enough, it can send pause
+> frames to slow down the MAC. But that requires the PHY actually
+> converting the bitstream from the MAC back into packets, performing
+> packet buffering, and then creating the new bitstream at a lower
+> rate. Some multi-gigi PHYs do this, especially if they implement
+> MACSEC, but few 1G PHYs do.
+>
+> Normally, if the PHY is in 1000BaseX, the PHY driver will try to
+> reconfigure it to SGMII. However, There are some SFPs which are stuck
+> in 1000BaseX, and there is no access to the PHY registers, so there is
+> nothing we can do.
+>
+> Looking at the link you provided, this SFP has a Marvell 88E1111, and
+> its registers are available. So the Marvell PHY driver should
+> reconfigure it into SGMII mode.
 
-Guard both resync sites with a bounds check on priv_rx->rxq and bail out
-gracefully when the stored queue no longer exists. Account the skipped
-request and, in the workqueue path, cancel the async resync request and
-drop the reference taken when the work item was queued.
+I figured that, but have a look at the commit message, the problem
+is the non-existent TX_DISABLE line. So if linux would reconfigure
+the PHY, the bootloader won't be able to use it anymore if it's not
+doing a hardware reset (or reconfigure it on it's own).
 
-This complements the previous add-path fix, which rejects stale RXQ
-mappings during offload setup. Existing offloaded sockets still need
-protection in the resync callbacks after a channel-count reduction.
+I don't know what's the netdev position on that issue. You could
+blame it on bad hardware. Or we could just reconfigure it if the
+DT has a gpio phandle for the TX_DISABLE line, though that doesn't
+mean that it is actually used to reset the module on a board reset,
+or that the bootloader will do a reset.
 
-Fixes: 1182f3659357 ("net/mlx5e: kTLS, Add kTLS RX HW offload support")
-Link: https://lore.kernel.org/netdev/20260627210635.89769-1-nils.juenemann@gmail.com/
-Reported-by: Nils Juenemann <nils.juenemann@gmail.com>
-Tested-by: Nils Juenemann <nils.juenemann@gmail.com>
-Signed-off-by: Rishikesh Jethwani <rjethwani@purestorage.com>
----
- .../ethernet/mellanox/mlx5/core/en_accel/ktls_rx.c    | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+-michael
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_rx.c
-index 232e998a8f24..c0676148a36e 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_rx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_rx.c
-@@ -343,6 +343,13 @@ static void resync_handle_work(struct work_struct *work)
- 		return;
- 	}
- 
-+	if (unlikely(priv_rx->rxq >= resync->priv->channels.num)) {
-+		priv_rx->rq_stats->tls_resync_req_skip++;
-+		tls_offload_rx_resync_async_request_cancel(&resync->core);
-+		mlx5e_ktls_priv_rx_put(priv_rx);
-+		return;
-+	}
-+
- 	c = resync->priv->channels.c[priv_rx->rxq];
- 	sq = c->async_icosq;
- 
-@@ -568,6 +575,10 @@ void mlx5e_ktls_rx_resync(struct net_device *netdev, struct sock *sk,
- 	resync->seq = seq;
- 
- 	priv = netdev_priv(netdev);
-+	if (unlikely(priv_rx->rxq >= priv->channels.num)) {
-+		priv_rx->rq_stats->tls_resync_req_skip++;
-+		return;
-+	}
- 	c = priv->channels.c[priv_rx->rxq];
- 
- 	resync_handle_seq_match(priv_rx, c);
--- 
-2.25.1
+>
+> Maybe look at the marvell PHY driver, and snoop what it does when it
+> configures the PHY.
+>
+> 	    Andrew
 
