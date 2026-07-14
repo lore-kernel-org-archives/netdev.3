@@ -1,320 +1,312 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1E719CCF5;
-	Tue, 14 Jul 2026 00:51:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF481360EE8;
+	Tue, 14 Jul 2026 01:40:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783990288; cv=none; b=tbU2OLrERU8jc6mznjVKTiinjO/dTyVg0Neq0FgntUFJ31j3aWQIbAlf0AZgF3uirOAwbDcVaM/A+JE+aDnK/0QF7G6GgiioaoeHZWc3jWfCrYJtGffDndDggUTN6ZvVSOGEA3Z2I7UXgGHhsRN79RkOKiNo7aTygmRHYwXdkUY=
+	t=1783993255; cv=none; b=IPq6RfdVyo9MiEkoYAyhaeh7hcOqMUm56nFXomNOUF2QoF0UE5x/fayzZytow9ArxKPUoziow0OdTqpvcg4Ngs4DKHXHe1ARYFW74M8ASz/IiU3LMYuu0JapcRfAAtwcdhwIE41FNDXSYmvYbVZDq5pUWftMpQ85uQ8IkfLg1Q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783990288; c=relaxed/simple;
-	bh=BM9c6hMTpnL4QX8zUI+ike6CH7iodewiwLYQlCvNsyY=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pgaYu8PV8fswZ/w6h3/XAI9NnwO+wra50xtGWqUuqxLHDbjNnTHjYdJCuwSdyVIp81+aREhxEF9ARZoOjuY15N4ukFupMagKLBpppLc4FX7sOxwiXRA4Rb6r6QKHrCSCI1lL3Kl2XAxR743TVk6Y4to6OGkUpyJZI+peNujcAYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
-	 (Exim 4.99)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1wjRMp-000000001rn-1yPE;
-	Tue, 14 Jul 2026 00:51:23 +0000
-Date: Tue, 14 Jul 2026 01:51:20 +0100
-From: Daniel Golle <daniel@makrotopia.org>
-To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH net-next v2 4/4] net: dsa: mxl862xx: recover switch stuck in
- MCUboot rescue mode
-Message-ID: <5ba0bcb7857b3feab1a754ce0a7daa5b3f240801.1783988826.git.daniel@makrotopia.org>
-References: <cover.1783988826.git.daniel@makrotopia.org>
+	s=arc-20240116; t=1783993255; c=relaxed/simple;
+	bh=l6bvERbMlY3ENpErQmgpGYUwGdpBsN5ID1iHYaT/gpA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=iicaqRCM7u0u7ITSDFrVF2230bENyk1Q53EYdh5ufX0ScQRnKsWOuhSCpOSbeRshtVu4yLeDMx3wGqr/d5S6Y2SxyclzGmK9/M9Z048bEOIGQRpJLj9K4m8nPJjJvkXkueQRsBTseJlPzq/BAi008jsyPTmOpLfnpHO4MucXDUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=hZjMGnvN; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="hZjMGnvN"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66E0CKbx3892631;
+	Tue, 14 Jul 2026 01:40:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=2HwqGz5K8dsONnjlX
+	fGFSI1z6mJQtd/EhSeHyWKpGbg=; b=hZjMGnvNlhRRVOjZYbVHIfw8VWiFJO6k2
+	zjeYNlex1j7AsEbiR6CkwvgKPg3D+kDIgnC75SnYrbjYn9GE9xqpTa8uEWyZRe4a
+	6+DYTzx5BJI/Lbr2A48CRQ5ncX+bPF2zGrwXNvFXMBhNTVtmj/eWgt+g1Rn8Jp5m
+	zk4UVdBuAPjK1y5JXFLtfBxRmyA/gTBNTngXy4lkXAa8DqBxF1cabqUlnPCrO1UU
+	WbFu1XE8+akF4RlJrrpFiSjJDAmPKla4dhyV6xyX4pY3KEAsMHdJqT0bskFnbvR+
+	C3w1xgH0azKk4+zs5xFb5MohjeTF+51shusaeeUVg663WMNywOMQg==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fbf2a36wt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Jul 2026 01:40:37 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66E1YcKv027329;
+	Tue, 14 Jul 2026 01:40:36 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fc15jrcre-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Jul 2026 01:40:36 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66E1eWte61538642
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 14 Jul 2026 01:40:32 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6DC3020043;
+	Tue, 14 Jul 2026 01:40:32 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 30D4320040;
+	Tue, 14 Jul 2026 01:40:24 +0000 (GMT)
+Received: from sapthagiri.in.ibm.com (unknown [9.39.30.210])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 14 Jul 2026 01:40:23 +0000 (GMT)
+From: Srikar Dronamraju <srikar@linux.ibm.com>
+To: LKML <linux-kernel@vger.kernel.org>, netdev@vger.kernel.org,
+        David S Miller <davem@davemloft.net>
+Cc: Ingo Molnar <mingo@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Dust Li <dust.li@linux.alibaba.com>,
+        D Wythe <alibuda@linux.alibaba.com>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Jon Maloy <jmaloy@redhat.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+        linux-sctp@vger.kernel.org, Mahanta Jambigi <mjambigi@linux.ibm.com>,
+        Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sidraya Jayagond <sidraya@linux.ibm.com>,
+        Simon Horman <horms@kernel.org>, Tony Lu <tonylu@linux.alibaba.com>,
+        Wen Gu <guwen@linux.alibaba.com>, Wenjia Zhang <wenjia@linux.ibm.com>,
+        Willem de Bruijn <willemb@google.com>, Xin Long <lucien.xin@gmail.com>,
+        Shrikanth Hegde <sshegde@linux.ibm.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+        Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+        K Prateek Nayak <kprateek.nayak@amd.com>,
+        Srikar Dronamraju <srikar@linux.ibm.com>
+Subject: [PATCH 1/2] net/socket: Record preference for synchronous wakeups
+Date: Tue, 14 Jul 2026 07:09:42 +0530
+Message-ID: <20260714013940.4068189-5-srikar@linux.ibm.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260714013940.4068189-4-srikar@linux.ibm.com>
+References: <20260714013940.4068189-4-srikar@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1783988826.git.daniel@makrotopia.org>
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE0MDAxMCBTYWx0ZWRfX2xwLfpTsRk+w
+ 8PBt1xpxiqGMTctHmElcH0ZMNSA0pMejN4wW1T1ucyycEwZ3KtW7fOfG6RZH5MY02JPA8MddiVB
+ XY4WPP+/NTNA1Vu/iJsPUwrnwZun6KM=
+X-Proofpoint-GUID: 3CG71h_FKbaXbMLI9sZJP_JA8nadajtz
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE0MDAxMCBTYWx0ZWRfX8E84TxvaQGmo
+ tiJfHEPLFKzfYSo/qjGM/8mRkginXbsyHTIZg/RMJq7ZTCkDWPWhmtaOh/Fu3/sPWAQ6ZDXmSwM
+ +A2VYtZx0KOe9lMdPQLEUx0lGz5x2p/ALPClVIXjfnWUS01X6tuLE9DPCXVdihtl/naLtAq7WjU
+ z4VRFqMB9vPBMwBYjySp5MMfyUIyIanNqh50T6uihAWUkeqBzrcKzIcJsB8IDXbm13qbj54D8Xn
+ 2BEhGjYWE7W0ChP/sBAUeT+h05EiTXS01RSArXycUysWxDMpZso1CDurE+f1qBAJ4FUOYfPJPbU
+ ej3oAx6LpTZpNDY90zdtFGh1VwYyWQf6NNI7KLjktII4BLFXGP/V6sCcOMmAbKMdLwWAjnHtlGS
+ LDm2QQ4MfLVNFWS+eMc0t3cRhaVtWzq8oQhD0tFoV0Gf+wFSQUlV9hPHEy+j2kNPJyx1ql+GlQx
+ SVUPwAHGoDqgeT1Po7Q==
+X-Proofpoint-ORIG-GUID: 5lJU2OG1f1bKDrsZmJWFzqgjNi1Gtcai
+X-Authority-Analysis: v=2.4 cv=PvajqQM3 c=1 sm=1 tr=0 ts=6a559395 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8 a=rxtpb416KjLQLQcnxosA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-13_06,2026-07-10_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 malwarescore=0 bulkscore=0 impostorscore=0 adultscore=0
+ clxscore=1011 lowpriorityscore=0 spamscore=0 suspectscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607140010
 
-When the application firmware image is broken (e.g. after an
-interrupted flash update) or the sticky rescue flag is set, the
-switch stays in MCUboot which only exposes the clause-22 SMDIO
-interface used for firmware download. The clause-45 MMD API never
-becomes ready, probe fails with -ETIMEDOUT and the user is left
-without any way to install a working firmware image other than
-physical access to the UART console of the switch.
+Scheduler differentiates between affine and non-affine wakeups by the
+way of sync flags. Scheduler prefers to pull the tasks towards the waker
+if the sync flag is set.
 
-Detect this state during setup by reading the SB PDI STAT register
-via SMDIO: MCUboot signals readiness for a firmware download with
-the ready magic. Probe this register first to avoid pointlessly
-waiting for the MMD API on a switch sitting in rescue mode, and
-probe it again after a ready timeout to catch firmware which was
-still alive enough to accept the reset command but then fell into
-rescue mode due to a broken image on flash.
+In some cases, socket APIs are blindly requesting sync wakeups. This may
+cause load-balance issues and non-optimal performance.
 
-In rescue mode, complete the switch registration without any user
-interfaces so that devlink is available: user ports fail port_setup
-with -ENODEV which makes the DSA core re-register them as unused
-ports, while shared and unused ports succeed as their setup must not
-fail for the tree to register. The CPU port works without firmware
-access since it uses a fixed link and the phylink MAC ops do not
-touch the hardware; mac_select_pcs returns no PCS in rescue mode.
-Firmware API commands fail fast with -ENODEV instead of running
-into the MDIO poll timeout, and the port enable/disable and STP
-callbacks invoked by the DSA core during registration and teardown
-become no-ops.
+Record whether the most recent blocking socket operation could benefit
+from synchronous wakeups. Subsequent readiness notifications use this
+hint to determine whether WF_SYNC should be propagated.
 
-devlink dev info reports the running firmware version as
-"mcuboot-rescue" so the state can be told apart from an operational
-switch. devlink flash update skips the FW_UPDATE command in rescue
-mode as MCUboot is already waiting for a download, and proceeds
-directly with the SB PDI handshake. After a successful transfer the
-usual reprobe cycle restores normal operation; after a failed one
-rescue mode is detected again and the user can simply retry.
+The flag is advisory and affects only wakeup placement decisions.
 
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Signed-off-by: Srikar Dronamraju <srikar@linux.ibm.com>
 ---
-v2: new patch, allowing recovery from a failed or interrupted update
-    without physical access to the switch (Andrew Lunn)
+ include/net/sock.h |  1 +
+ net/socket.c       | 56 +++++++++++++++++++++++++++++++++++++++-------
+ 2 files changed, 49 insertions(+), 8 deletions(-)
 
- drivers/net/dsa/mxl862xx/mxl862xx-fw.c      | 49 ++++++++++++++++-----
- drivers/net/dsa/mxl862xx/mxl862xx-fw.h      |  3 ++
- drivers/net/dsa/mxl862xx/mxl862xx-host.c    |  3 ++
- drivers/net/dsa/mxl862xx/mxl862xx-phylink.c |  2 +
- drivers/net/dsa/mxl862xx/mxl862xx.c         | 38 ++++++++++++++--
- drivers/net/dsa/mxl862xx/mxl862xx.h         |  3 ++
- 6 files changed, 85 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-fw.c b/drivers/net/dsa/mxl862xx/mxl862xx-fw.c
-index b2c23ccf1370..88d53bea336f 100644
---- a/drivers/net/dsa/mxl862xx/mxl862xx-fw.c
-+++ b/drivers/net/dsa/mxl862xx/mxl862xx-fw.c
-@@ -92,6 +92,24 @@ static void mxl862xx_flash_notify(struct devlink *dl, const char *status,
- 	devlink_flash_update_status_notify(dl, status, NULL, done, total);
- }
- 
-+/**
-+ * mxl862xx_rescue_mode_detect - check whether the switch sits in MCUboot
-+ * @priv: driver private data
-+ *
-+ * MCUboot signals readiness for a firmware download with the SB PDI
-+ * ready magic; only the clause-22 SMDIO interface works in this state.
-+ *
-+ * Return: true if MCUboot is waiting for a firmware download.
-+ */
-+bool mxl862xx_rescue_mode_detect(struct mxl862xx_priv *priv)
-+{
-+	int ret;
-+
-+	ret = mxl862xx_smdio_read(priv, MXL862XX_SB_PDI_STAT);
-+
-+	return ret == MXL862XX_SB_PDI_READY;
-+}
-+
- /* device_reprobe() -> remove() frees priv while the work runs, so
-  * the work struct cannot live in mxl862xx_priv.
-  */
-@@ -172,13 +190,15 @@ static int mxl862xx_flash_firmware(struct mxl862xx_priv *priv,
- 	}
- 
- 	/* Step 1: reboot the firmware into MCUboot rescue mode */
--	ret = mxl862xx_api_wrap(priv, SYS_MISC_FW_UPDATE, NULL, 0,
--				false, false);
--	if (ret) {
--		dev_err(&priv->mdiodev->dev,
--			"flash: FW_UPDATE command failed: %pe\n",
--			ERR_PTR(ret));
--		return ret;
-+	if (!priv->rescue_mode) {
-+		ret = mxl862xx_api_wrap(priv, SYS_MISC_FW_UPDATE, NULL, 0,
-+					false, false);
-+		if (ret) {
-+			dev_err(&priv->mdiodev->dev,
-+				"flash: FW_UPDATE command failed: %pe\n",
-+				ERR_PTR(ret));
-+			return ret;
-+		}
- 	}
- 
- 	/* Failures from here on must go through end_magic so MCUboot
-@@ -328,6 +348,10 @@ int mxl862xx_devlink_info_get(struct dsa_switch *ds,
- 			return ret;
- 	}
- 
-+	if (priv->rescue_mode)
-+		return devlink_info_version_running_put(req, "fw",
-+							"mcuboot-rescue");
-+
- 	snprintf(ver_str, sizeof(ver_str), "%u.%u.%u",
- 		 priv->fw_version.major, priv->fw_version.minor,
- 		 priv->fw_version.revision);
-@@ -350,9 +374,13 @@ int mxl862xx_devlink_flash_update(struct dsa_switch *ds,
- 		return -EOPNOTSUPP;
- 	}
- 
--	dev_info(ds->dev, "flash: running firmware %u.%u.%u\n",
--		 priv->fw_version.major, priv->fw_version.minor,
--		 priv->fw_version.revision);
-+	if (priv->rescue_mode)
-+		dev_info(ds->dev,
-+			 "flash: recovering switch from MCUboot rescue mode\n");
-+	else
-+		dev_info(ds->dev, "flash: running firmware %u.%u.%u\n",
-+			 priv->fw_version.major, priv->fw_version.minor,
-+			 priv->fw_version.revision);
- 
- 	/* Close ports while the firmware is still alive so the DSA
- 	 * core's MDB/FDB tracking is drained, and detach user ports
-@@ -383,6 +411,7 @@ int mxl862xx_devlink_flash_update(struct dsa_switch *ds,
- 	if (!ret) {
- 		/* lift the block to query the new firmware version */
- 		priv->block_host = false;
-+		priv->rescue_mode = false;
- 		memset(&ver, 0, sizeof(ver));
- 		if (!MXL862XX_API_READ_QUIET(priv, SYS_MISC_FW_VERSION, ver) &&
- 		    ver.iv_major)
-diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-fw.h b/drivers/net/dsa/mxl862xx/mxl862xx-fw.h
-index a1b60fbacebf..57c2000cfee5 100644
---- a/drivers/net/dsa/mxl862xx/mxl862xx-fw.h
-+++ b/drivers/net/dsa/mxl862xx/mxl862xx-fw.h
-@@ -5,6 +5,9 @@
- 
- #include <net/dsa.h>
- 
-+struct mxl862xx_priv;
-+
-+bool mxl862xx_rescue_mode_detect(struct mxl862xx_priv *priv);
- int mxl862xx_devlink_info_get(struct dsa_switch *ds,
- 			      struct devlink_info_req *req,
- 			      struct netlink_ext_ack *extack);
-diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-host.c b/drivers/net/dsa/mxl862xx/mxl862xx-host.c
-index 7ba984e94d82..d6c0cdfa0e68 100644
---- a/drivers/net/dsa/mxl862xx/mxl862xx-host.c
-+++ b/drivers/net/dsa/mxl862xx/mxl862xx-host.c
-@@ -340,6 +340,9 @@ int mxl862xx_api_wrap(struct mxl862xx_priv *priv, u16 cmd, void *_data,
- 	if (priv->skip_teardown)
- 		return 0;
- 
-+	if (priv->rescue_mode)
-+		return -ENODEV;
-+
- 	if (priv->block_host && cmd != SYS_MISC_FW_UPDATE)
- 		return -EBUSY;
- 
-diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-phylink.c b/drivers/net/dsa/mxl862xx/mxl862xx-phylink.c
-index b689652aa9b9..a5b6940b552e 100644
---- a/drivers/net/dsa/mxl862xx/mxl862xx-phylink.c
-+++ b/drivers/net/dsa/mxl862xx/mxl862xx-phylink.c
-@@ -406,6 +406,8 @@ mxl862xx_phylink_mac_select_pcs(struct phylink_config *config,
- 
- 	switch (port) {
- 	case 9 ... 16:
-+		if (priv->rescue_mode)
-+			return NULL;
- 		if (!MXL862XX_FW_VER_MIN(priv, 1, 0, 84)) {
- 			dev_warn_once(dp->ds->dev,
- 				      "SerDes PCS unsupported on old firmware.\n");
-diff --git a/drivers/net/dsa/mxl862xx/mxl862xx.c b/drivers/net/dsa/mxl862xx/mxl862xx.c
-index e643083d3938..b7385cfa5474 100644
---- a/drivers/net/dsa/mxl862xx/mxl862xx.c
-+++ b/drivers/net/dsa/mxl862xx/mxl862xx.c
-@@ -629,9 +629,22 @@ static int mxl862xx_setup(struct dsa_switch *ds)
- 	if (ret)
- 		return ret;
- 
--	ret = mxl862xx_wait_ready(ds);
--	if (ret)
--		return ret;
-+	priv->rescue_mode = mxl862xx_rescue_mode_detect(priv);
-+	if (!priv->rescue_mode) {
-+		ret = mxl862xx_wait_ready(ds);
-+		if (ret) {
-+			/* the reset may only now have triggered rescue mode */
-+			priv->rescue_mode = mxl862xx_rescue_mode_detect(priv);
-+			if (!priv->rescue_mode)
-+				return ret;
-+		}
-+	}
-+
-+	if (priv->rescue_mode) {
-+		dev_warn(ds->dev,
-+			 "switch stuck in MCUboot rescue mode, use devlink to flash new firmware\n");
-+		return 0;
-+	}
- 
- 	mutex_init(&priv->serdes_lock);
- 	for (i = 0; i < ARRAY_SIZE(priv->serdes_ports); i++)
-@@ -716,11 +729,21 @@ static int mxl862xx_port_state(struct dsa_switch *ds, int port, bool enable)
- static int mxl862xx_port_enable(struct dsa_switch *ds, int port,
- 				struct phy_device *phydev)
- {
-+	struct mxl862xx_priv *priv = ds->priv;
-+
-+	if (priv->rescue_mode)
-+		return 0;
-+
- 	return mxl862xx_port_state(ds, port, true);
- }
- 
- static void mxl862xx_port_disable(struct dsa_switch *ds, int port)
- {
-+	struct mxl862xx_priv *priv = ds->priv;
-+
-+	if (priv->rescue_mode)
-+		return;
-+
- 	if (mxl862xx_port_state(ds, port, false))
- 		dev_err(ds->dev, "failed to disable port %d\n", port);
- }
-@@ -1338,6 +1361,12 @@ static int mxl862xx_port_setup(struct dsa_switch *ds, int port)
- 	bool is_cpu_port = dsa_port_is_cpu(dp);
- 	int ret;
- 
-+	/* DSA reinits failed user ports as unused; shared ports must
-+	 * succeed for the tree to register.
-+	 */
-+	if (priv->rescue_mode)
-+		return dsa_port_is_user(dp) ? -ENODEV : 0;
-+
- 	ret = mxl862xx_port_state(ds, port, false);
- 	if (ret)
- 		return ret;
-@@ -1629,6 +1658,9 @@ static void mxl862xx_port_stp_state_set(struct dsa_switch *ds, int port,
- 	struct mxl862xx_priv *priv = ds->priv;
- 	int ret;
- 
-+	if (priv->rescue_mode)
-+		return;
-+
- 	switch (state) {
- 	case BR_STATE_DISABLED:
- 		param.port_state = cpu_to_le32(MXL862XX_STP_PORT_STATE_DISABLE);
-diff --git a/drivers/net/dsa/mxl862xx/mxl862xx.h b/drivers/net/dsa/mxl862xx/mxl862xx.h
-index 64d91ad51936..5d21296561e3 100644
---- a/drivers/net/dsa/mxl862xx/mxl862xx.h
-+++ b/drivers/net/dsa/mxl862xx/mxl862xx.h
-@@ -323,6 +323,8 @@ struct mxl862xx_fw_version {
-  *                      during a firmware flash
-  * @skip_teardown:      discard firmware API commands during the teardown
-  *                      triggered by the post-flash reprobe
-+ * @rescue_mode:        switch is stuck in MCUboot; firmware API commands
-+ *                      fail fast, only clause-22 SMDIO works
-  * @stats_work:         periodic work item that polls RMON hardware counters
-  *                      and accumulates them into 64-bit per-port stats
-  */
-@@ -343,6 +345,7 @@ struct mxl862xx_priv {
- 	u16 vf_block_size;
- 	bool block_host;
- 	bool skip_teardown;
-+	bool rescue_mode;
- 	struct delayed_work stats_work;
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 51185222aac2..acc6b1976dc4 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1022,6 +1022,7 @@ enum sock_flags {
+ 	SOCK_RCVMARK, /* Receive SO_MARK  ancillary data with packet */
+ 	SOCK_RCVPRIORITY, /* Receive SO_PRIORITY ancillary data with packet */
+ 	SOCK_TIMESTAMPING_ANY, /* Copy of sk_tsflags & TSFLAGS_ANY */
++	SOCK_SYNC_WAKEUP, /* Prefer synchronous socket wakeups */
  };
  
+ #define SK_FLAGS_TIMESTAMP ((1UL << SOCK_TIMESTAMP) | (1UL << SOCK_TIMESTAMPING_RX_SOFTWARE))
+diff --git a/net/socket.c b/net/socket.c
+index 63c69a0fa74e..0bcb57ae490e 100644
+--- a/net/socket.c
++++ b/net/socket.c
+@@ -1198,15 +1198,27 @@ static void sock_splice_eof(struct file *file)
+ 		ops->splice_eof(sock);
+ }
+ 
++static inline void sock_update_sync_wakeup(struct sock *sk, bool nonblock)
++{
++	if (unlikely(!sk))
++		return;
++
++	if (nonblock) {
++		if (sock_flag(sk, SOCK_SYNC_WAKEUP))
++			sock_reset_flag(sk, SOCK_SYNC_WAKEUP);
++	} else {
++		if (!sock_flag(sk, SOCK_SYNC_WAKEUP))
++			sock_set_flag(sk, SOCK_SYNC_WAKEUP);
++	}
++}
++
+ static ssize_t sock_read_iter(struct kiocb *iocb, struct iov_iter *to)
+ {
+ 	struct file *file = iocb->ki_filp;
+ 	struct socket *sock = file->private_data;
+ 	struct msghdr msg = {.msg_iter = *to};
+ 	ssize_t res;
+-
+-	if (file->f_flags & O_NONBLOCK || (iocb->ki_flags & IOCB_NOWAIT))
+-		msg.msg_flags = MSG_DONTWAIT;
++	bool nonblock;
+ 
+ 	if (iocb->ki_pos != 0)
+ 		return -ESPIPE;
+@@ -1214,6 +1226,11 @@ static ssize_t sock_read_iter(struct kiocb *iocb, struct iov_iter *to)
+ 	if (!iov_iter_count(to))	/* Match SYS5 behaviour */
+ 		return 0;
+ 
++	nonblock = (file->f_flags & O_NONBLOCK) || (iocb->ki_flags & IOCB_NOWAIT);
++	if (nonblock)
++		msg.msg_flags = MSG_DONTWAIT;
++
++	sock_update_sync_wakeup(sock->sk, nonblock);
+ 	res = sock_recvmsg(sock, &msg, msg.msg_flags);
+ 	*to = msg.msg_iter;
+ 	return res;
+@@ -1225,13 +1242,17 @@ static ssize_t sock_write_iter(struct kiocb *iocb, struct iov_iter *from)
+ 	struct socket *sock = file->private_data;
+ 	struct msghdr msg = {.msg_iter = *from};
+ 	ssize_t res;
++	bool nonblock;
+ 
+ 	if (iocb->ki_pos != 0)
+ 		return -ESPIPE;
+ 
+-	if (file->f_flags & O_NONBLOCK || (iocb->ki_flags & IOCB_NOWAIT))
++	nonblock = (file->f_flags & O_NONBLOCK) || (iocb->ki_flags & IOCB_NOWAIT);
++	if (nonblock)
+ 		msg.msg_flags = MSG_DONTWAIT;
+ 
++	sock_update_sync_wakeup(sock->sk, nonblock);
++
+ 	if (sock->type == SOCK_SEQPACKET)
+ 		msg.msg_flags |= MSG_EOR;
+ 
+@@ -2221,6 +2242,7 @@ int __sys_sendto(int fd, void __user *buff, size_t len, unsigned int flags,
+ 	struct sockaddr_storage address;
+ 	int err;
+ 	struct msghdr msg;
++	bool nonblock;
+ 
+ 	err = import_ubuf(ITER_SOURCE, buff, len, &msg.msg_iter);
+ 	if (unlikely(err))
+@@ -2246,8 +2268,11 @@ int __sys_sendto(int fd, void __user *buff, size_t len, unsigned int flags,
+ 		msg.msg_namelen = addr_len;
+ 	}
+ 	flags &= ~MSG_INTERNAL_SENDMSG_FLAGS;
+-	if (sock->file->f_flags & O_NONBLOCK)
++	nonblock = (sock->file->f_flags & O_NONBLOCK);
++	if (nonblock)
+ 		flags |= MSG_DONTWAIT;
++
++	sock_update_sync_wakeup(sock->sk, nonblock);
+ 	msg.msg_flags = flags;
+ 	return __sock_sendmsg(sock, &msg);
+ }
+@@ -2284,6 +2309,7 @@ int __sys_recvfrom(int fd, void __user *ubuf, size_t size, unsigned int flags,
+ 	};
+ 	struct socket *sock;
+ 	int err, err2;
++	bool nonblock;
+ 
+ 	err = import_ubuf(ITER_DEST, ubuf, size, &msg.msg_iter);
+ 	if (unlikely(err))
+@@ -2297,8 +2323,11 @@ int __sys_recvfrom(int fd, void __user *ubuf, size_t size, unsigned int flags,
+ 	if (unlikely(!sock))
+ 		return -ENOTSOCK;
+ 
+-	if (sock->file->f_flags & O_NONBLOCK)
++	nonblock = (sock->file->f_flags & O_NONBLOCK);
++	if (nonblock)
+ 		flags |= MSG_DONTWAIT;
++
++	sock_update_sync_wakeup(sock->sk, nonblock);
+ 	err = sock_recvmsg(sock, &msg, flags);
+ 
+ 	if (err >= 0 && addr != NULL) {
+@@ -2634,6 +2663,7 @@ static int ____sys_sendmsg(struct socket *sock, struct msghdr *msg_sys,
+ 	unsigned char *ctl_buf = ctl;
+ 	int ctl_len;
+ 	ssize_t err;
++	bool nonblock;
+ 
+ 	err = -ENOBUFS;
+ 
+@@ -2666,8 +2696,12 @@ static int ____sys_sendmsg(struct socket *sock, struct msghdr *msg_sys,
+ 	flags &= ~MSG_INTERNAL_SENDMSG_FLAGS;
+ 	msg_sys->msg_flags = flags;
+ 
+-	if (sock->file->f_flags & O_NONBLOCK)
++	nonblock = (sock->file->f_flags & O_NONBLOCK);
++	if (nonblock)
+ 		msg_sys->msg_flags |= MSG_DONTWAIT;
++
++	sock_update_sync_wakeup(sock->sk, nonblock);
++
+ 	/*
+ 	 * If this is sendmmsg() and current destination address is same as
+ 	 * previously succeeded address, omit asking LSM's decision.
+@@ -2887,6 +2921,7 @@ static int ____sys_recvmsg(struct socket *sock, struct msghdr *msg_sys,
+ 	unsigned long cmsg_ptr;
+ 	int len;
+ 	ssize_t err;
++	bool nonblock;
+ 
+ 	msg_sys->msg_name = &addr;
+ 	cmsg_ptr = (unsigned long)msg_sys->msg_control;
+@@ -2895,9 +2930,12 @@ static int ____sys_recvmsg(struct socket *sock, struct msghdr *msg_sys,
+ 	/* We assume all kernel code knows the size of sockaddr_storage */
+ 	msg_sys->msg_namelen = 0;
+ 
+-	if (sock->file->f_flags & O_NONBLOCK)
++	nonblock = (sock->file->f_flags & O_NONBLOCK);
++	if (nonblock)
+ 		flags |= MSG_DONTWAIT;
+ 
++	sock_update_sync_wakeup(sock->sk, nonblock);
++
+ 	if (unlikely(nosec))
+ 		err = sock_recvmsg_nosec(sock, msg_sys, flags);
+ 	else
+@@ -3056,6 +3094,8 @@ static int do_recvmmsg(int fd, struct mmsghdr __user *mmsg,
+ 		if (flags & MSG_WAITFORONE)
+ 			flags |= MSG_DONTWAIT;
+ 
++		sock_update_sync_wakeup(sock->sk, flags & MSG_WAITFORONE);
++
+ 		if (timeout) {
+ 			ktime_get_ts64(&timeout64);
+ 			*timeout = timespec64_sub(end_time, timeout64);
 -- 
-2.55.0
+2.52.0
+
