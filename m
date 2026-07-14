@@ -1,205 +1,119 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E25C30C155;
-	Tue, 14 Jul 2026 22:27:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1729F2AD37
+	for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 22:30:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784068049; cv=none; b=R4n05XsmEJnJSlrQIGCxrIMu80WMnPz5o+qpcKBky7SU754WVFxmtaL/7PKTZ9b9zXJwF7DwDtdFuVpvoSI1kt8LDvqvSAl7HMfJCZfBMcjZYstkpm6WFTJ1hH4cKXd48CwSl6QxiGd6awHCxX8qZPmRDqZ8coVIOPNhsJxI630=
+	t=1784068216; cv=none; b=iot+f6WHPJE5vxvO+QuhHdE9bBzNJJz6hBqhFTxbPmWePUy25t4fIk7Cr/xWUEtPP7CYzY5jEjzSUmqPXKKWbvwAv0dUiVJWZSvYrS2/SLGFW/iOZMFz5gHCBIuZO8r1kZRqfq4VdpmUFGciEau7z9PERXse42VPzW9wBGj2IsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784068049; c=relaxed/simple;
-	bh=eS7weUHccKmcxG10A7cz/wI12Hn/QpdOc1wTo6mv1hI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WnOC8f1x1yKjELMKRDgMdZ1qXvFH3ODey+kSy4g9lvr6Od4UAHbNww+PYdL9MiMVPuhWkmiYeuBGGWx+iZFK8ao3n2Zoulp3HdS+I5p6zbI1PMly74aPc6KwTITn98oRYP2vPZtlgfAblvG5T/QlKGdJMKqeu9+XcsMhUtu9YVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YTkeFOlP; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1784068216; c=relaxed/simple;
+	bh=DEm9NUtHEjbHS6xPMwIBaPugOtrLEYOMfZ9ictWp0X0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=j3QuzzjF489Sp5sJ4GOv06K27Ctyg0d7XqGt/T5Y7o/Kyw+a/d3XwBYxG2IH9jT6Vcgwt6RyZ7V4OxPDFQSAp5oKZP+w2uWFeWlmmjY96GBmMK0+zWCTd3QtfVKcpN5/ovXcG82gS8LDQ5AtddRUy6hEcN5ddLk8/YBpsvJKkPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=purestorage.com; spf=pass smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=LNAVcTtI; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=purestorage.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=purestorage.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YTkeFOlP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784068047; x=1815604047;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=eS7weUHccKmcxG10A7cz/wI12Hn/QpdOc1wTo6mv1hI=;
-  b=YTkeFOlPvewa/hheHo2iacylfJ/eUmNhxUp8PB80/I2q2W1uWZ2i4sDV
-   0qsGe3WSPlBXh+fvtRMSsuRLRs5SbMUCjKtOYG5346cHXirwmpuJOFLiy
-   m+Ti7ZtsFs7VOJpf3uWIXgeVqSRJsApSu4CCsIfuOCdhhzakXNCdSjA9g
-   21zeAnD3IEUcQpCmmwy7jxiaT7sxGrZN/zTy+xormEf68XOiREZEehoM3
-   UT30mjBTc2h+0QvpPj+GEE14I9Meb02/q8h/836sFj5GMLvGUjodtNf7r
-   1UiCLSs9+FeZR47p6Y9y52mesKxmhP4v5PIbaGDe4iEiYYKNEwwZ1hll0
-   A==;
-X-CSE-ConnectionGUID: f2uEyeooTbC+2uvrK4RldA==
-X-CSE-MsgGUID: j7OBIFtbTLifDXynhCrsVA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11847"; a="102122555"
-X-IronPort-AV: E=Sophos;i="6.25,164,1779174000"; 
-   d="scan'208";a="102122555"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 15:27:27 -0700
-X-CSE-ConnectionGUID: 9JXcEjX7RVa+fgtvK1EfQQ==
-X-CSE-MsgGUID: xz62DWtHSfGIpQEiT3vF/Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,164,1779174000"; 
-   d="scan'208";a="252021695"
-Received: from lkp-server02.sh.intel.com (HELO ea128546eb3d) ([10.239.97.151])
-  by fmviesa010.fm.intel.com with ESMTP; 14 Jul 2026 15:27:24 -0700
-Received: from kbuild by ea128546eb3d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wjlax-00000000N4C-1GZD;
-	Tue, 14 Jul 2026 22:27:19 +0000
-Date: Wed, 15 Jul 2026 06:26:42 +0800
-From: kernel test robot <lkp@intel.com>
-To: Zhixing Chen <running910@gmail.com>, Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>, Phil Sutter <phil@nwl.cc>
-Cc: oe-kbuild-all@lists.linux.dev, "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org, netdev@vger.kernel.org,
-	Zhixing Chen <running910@gmail.com>
-Subject: Re: [PATCH nf v2] netfilter: ip6tables: set hotdrop for malformed
- extension header matches
-Message-ID: <202607150533.nQvx3zgH-lkp@intel.com>
-References: <20260714032124.7042-1-running910@gmail.com>
+	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="LNAVcTtI"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-493c19bad03so43126185e9.2
+        for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 15:30:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=purestorage.com; s=google2022; t=1784068208; x=1784673008; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=m7QorHOqJsKl7dLCabdPRyIk352hG19llomrerTBPDE=;
+        b=LNAVcTtIBatOFYy3lT13u5RjrlheutoqHfeAsuDKZYzglM8Z5+dwfUQVDJuAHvvVes
+         bYRNsA/rsPiTGlGU/9r+W1Moyl+hn8fIzTDEKxF3dTIowWL3y0/meX6vWW+FG7eAYY+C
+         teUDrHgkewcg6AXIQjlXhWWPixcXNCsICllJWEwFlOzlHqZX2h+sRxxgs6U588uCl2Tn
+         j7Znr9c5Woe9DelCZj80qmP4z7ENL0fYA+p0QoKWe3v5IKtmpsWBJVz35o3DzMK9uxxX
+         5YBe7qgtFxb1YGNRZyHnjMQgiJeqEcndnuU1Y7JsT+6x923TNpCqtg0LCLjXWVSZtu1z
+         Qdvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784068208; x=1784673008;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=m7QorHOqJsKl7dLCabdPRyIk352hG19llomrerTBPDE=;
+        b=Pr/ZQG4kgTiMMPboxiJlaYQSileA9dNnWm+khMJy9IAp0NB6t99C+v0u9ns90ISP6f
+         d+46JlcTuJEdzqXaVm5OUUZiCpxE6HUZrUqlAczrAYUBbwwDEV4SHkT7zdnAyYuyaq+m
+         mNBNsUxN0M4h9ShtXnVhHdMrVVh9QUd4D+9aKtGqnyMAv+u4r7vqdHGfX5HPpC5HoyWA
+         Va1whXL/gEzDCxwRamnJkLKxEreogTBa+sYhrV0uVNBwzn73ehByz+lHb4xVGwRahECH
+         pMdAZba1Xjqd8o439kR+adwO2t4Fn25Z86KyveQBUQwq8nGlHK7bvXh5aB0scgcLnPkW
+         6x8g==
+X-Gm-Message-State: AOJu0Yy+qUU5iSBmAxd/AedgksqKHmZOuR5PwcBcI3sdapzH2DSthxLw
+	eX4YL/h/q8I4mTC9gLfZa4vi6ynvMXPkRJxndqlwEC96TtOxuPP1zxVcEOXAM7hzaX2+1wEtqRo
+	95KKKMD+fxC9Pq1ONGNLC5fSomMojQ8pQZsGx5UnhcRJqnvNSYbLTHIrxiYqsyUBbw3pvWLzGsc
+	HTkV6OO1X/PD3O+HHDj4fUOlb8Mb9HIlFJWdUjGcjtMt7douM=
+X-Gm-Gg: AfdE7cko21MP7U9HKxkCWx0VugU/USpT1Szar7PvDsgcX+KcJ6rQPml3VEYCdcZwo9w
+	9hInlYpSRCTL3XU9evw1IulxR1qNBZ1/mToA4ndzDD9G9kkIBE9oUwCqvVP2ahJHGBLT/kfz/dH
+	CsA9cGGWvLDcbhTBbWV/1MMOXCokEgk9/0MIc7MQyop/a4lSAI7VhwAA9ujuVseFiAEyhoK7tUF
+	YbJ4qNSAxRg8Q9ept466rYY6hUh82AnwAcSEg/dDTo5SYZVvnL4InbUxLclpRvzyQIeeZXEEqB6
+	122gwsJYtXm0zuaf+M4V3i5iFUMUemIM2ftSByLneO0/+aIny1/GfjNEH5AslyPiVwh+gbzBZcv
+	AYtIhT/doSEMY5LudD0bnTYFJZ100CF66USTjAUtndsSASX+cdb3NMJzXS4hjYo2setD1ZNDxX6
+	JOqcjjTtcEiXv6C5u6CAWXuRyAUdMP1EE5UsdUoGhW1hq0hpvzno6cjUBQML6VlyivUfAo7JiNx
+	eEmgVu4KM+TLVD1OBtBFJ9tuHgo3yWATIkZ/szAz/GQUB4YKu1XOKnPHrJCbaPmn4b5nvnhBTAy
+	lCsWSxyxdngZZOA/JtYEwtBdXLIv22oyWQ0=
+X-Received: by 2002:a05:600c:8115:b0:493:aa0a:45ad with SMTP id 5b1f17b1804b1-4953c14f78dmr5319275e9.2.1784068208049;
+        Tue, 14 Jul 2026 15:30:08 -0700 (PDT)
+Received: from dev-rjethwani.dev.purestorage.com ([208.88.159.128])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-495087366c0sm196536915e9.7.2026.07.14.15.30.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jul 2026 15:30:07 -0700 (PDT)
+From: Rishikesh Jethwani <rjethwani@purestorage.com>
+To: netdev@vger.kernel.org
+Cc: john.fastabend@gmail.com,
+	kuba@kernel.org,
+	sd@queasysnail.net,
+	davem@davemloft.net,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	leon@kernel.org,
+	nils.juenemann@gmail.com,
+	Rishikesh Jethwani <rjethwani@purestorage.com>
+Subject: [PATCH net 0/2] net/mlx5e: fix NULL derefs when RX queue mapping outlives channel reconfig
+Date: Tue, 14 Jul 2026 16:29:13 -0600
+Message-Id: <20260714222915.2334949-1-rjethwani@purestorage.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260714032124.7042-1-running910@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Zhixing,
+Hi all,
 
-kernel test robot noticed the following build warnings:
+This series fixes two related NULL derefs in mlx5e's kTLS RX offload that
+surface when a channel-count reduction (e.g. ethtool -L combined N) leaves
+sockets carrying a queue index that is no longer valid
 
-[auto build test WARNING on netfilter-nf/main]
-[also build test WARNING on nf-next/main linus/master v7.2-rc3 next-20260713]
-[cannot apply to linux-review/Zhixing-Chen/netfilter-ip6tables-set-hotdrop-for-malformed-extension-header-matches/20260709-143240 horms-ipvs/master]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Patch 1: reject stale RX queue mapping on RX offload setup
+Patch 2: guard RX resync against stale channel index
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Zhixing-Chen/netfilter-ip6tables-set-hotdrop-for-malformed-extension-header-matches/20260714-114506
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git main
-patch link:    https://lore.kernel.org/r/20260714032124.7042-1-running910%40gmail.com
-patch subject: [PATCH nf v2] netfilter: ip6tables: set hotdrop for malformed extension header matches
-config: openrisc-allmodconfig (https://download.01.org/0day-ci/archive/20260715/202607150533.nQvx3zgH-lkp@intel.com/config)
-compiler: or1k-linux-gcc (GCC) 16.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260715/202607150533.nQvx3zgH-lkp@intel.com/reproduce)
+Not addressed in this series:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202607150533.nQvx3zgH-lkp@intel.com/
+- Torn reads of `priv->channels` during the struct-copy publish in
+  `mlx5e_switch_priv_channels()`. A reader on another CPU can still
+  briefly observe `{new c, old num}`, so bounds-checking against a
+  stale `num` can pass while dereferencing the new smaller array.
+  Closing that window likely needs proper synchronization,
+  such as RCU pointer, which is a larger change and better handled
+  in a separate series.
+    
+- Re-homing existing offloaded sockets across a channel shrink so
+  `priv_rx->rxq` remains valid. Patch 2 makes this failure mode graceful
+  by preventing the dereference, but the offload remains functionally
+  broken until the socket is torn down and re-added. That looks like a
+  broader design question for the mlx5 maintainers.
 
-All warnings (new ones prefixed by >>):
+Rishikesh Jethwani (2):
+  net/mlx5e: kTLS: reject stale RX queue mapping on RX offload setup
+  net/mlx5e: kTLS: guard RX resync against stale channel index
 
-   net/ipv6/netfilter/ip6t_ipv6header.c: In function 'ipv6header_mt6':
->> net/ipv6/netfilter/ip6t_ipv6header.c:31:13: warning: variable 'len' set but not used [-Wunused-but-set-variable=]
-      31 |         int len;
-         |             ^~~
+ .../mellanox/mlx5/core/en_accel/ktls_rx.c     | 24 ++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
 
+-- 
+2.25.1
 
-vim +/len +31 net/ipv6/netfilter/ip6t_ipv6header.c
-
-^1da177e4c3f41 Linus Torvalds           2005-04-16   25  
-1d93a9cbad608f Jan Engelhardt           2007-07-07   26  static bool
-62fc8051083a33 Jan Engelhardt           2009-07-07   27  ipv6header_mt6(const struct sk_buff *skb, struct xt_action_param *par)
-^1da177e4c3f41 Linus Torvalds           2005-04-16   28  {
-f7108a20dee44e Jan Engelhardt           2008-10-08   29  	const struct ip6t_ipv6header_info *info = par->matchinfo;
-^1da177e4c3f41 Linus Torvalds           2005-04-16   30  	unsigned int temp;
-^1da177e4c3f41 Linus Torvalds           2005-04-16  @31  	int len;
-^1da177e4c3f41 Linus Torvalds           2005-04-16   32  	u8 nexthdr;
-^1da177e4c3f41 Linus Torvalds           2005-04-16   33  	unsigned int ptr;
-^1da177e4c3f41 Linus Torvalds           2005-04-16   34  
-^1da177e4c3f41 Linus Torvalds           2005-04-16   35  	/* Make sure this isn't an evil packet */
-^1da177e4c3f41 Linus Torvalds           2005-04-16   36  
-^1da177e4c3f41 Linus Torvalds           2005-04-16   37  	/* type of the 1st exthdr */
-0660e03f6b18f1 Arnaldo Carvalho de Melo 2007-04-25   38  	nexthdr = ipv6_hdr(skb)->nexthdr;
-^1da177e4c3f41 Linus Torvalds           2005-04-16   39  	/* pointer to the 1st exthdr */
-^1da177e4c3f41 Linus Torvalds           2005-04-16   40  	ptr = sizeof(struct ipv6hdr);
-^1da177e4c3f41 Linus Torvalds           2005-04-16   41  	/* available length */
-^1da177e4c3f41 Linus Torvalds           2005-04-16   42  	len = skb->len - ptr;
-^1da177e4c3f41 Linus Torvalds           2005-04-16   43  	temp = 0;
-^1da177e4c3f41 Linus Torvalds           2005-04-16   44  
-44dde23698a7a8 Jeremy Sowden            2019-09-13   45  	while (nf_ip6_ext_hdr(nexthdr)) {
-3cf93c96af7adf Jan Engelhardt           2008-04-14   46  		const struct ipv6_opt_hdr *hp;
-3cf93c96af7adf Jan Engelhardt           2008-04-14   47  		struct ipv6_opt_hdr _hdr;
-^1da177e4c3f41 Linus Torvalds           2005-04-16   48  		int hdrlen;
-^1da177e4c3f41 Linus Torvalds           2005-04-16   49  
-^1da177e4c3f41 Linus Torvalds           2005-04-16   50  		/* No more exthdr -> evaluate */
-^1da177e4c3f41 Linus Torvalds           2005-04-16   51  		if (nexthdr == NEXTHDR_NONE) {
-^1da177e4c3f41 Linus Torvalds           2005-04-16   52  			temp |= MASK_NONE;
-^1da177e4c3f41 Linus Torvalds           2005-04-16   53  			break;
-^1da177e4c3f41 Linus Torvalds           2005-04-16   54  		}
-^1da177e4c3f41 Linus Torvalds           2005-04-16   55  		/* ESP -> evaluate */
-^1da177e4c3f41 Linus Torvalds           2005-04-16   56  		if (nexthdr == NEXTHDR_ESP) {
-^1da177e4c3f41 Linus Torvalds           2005-04-16   57  			temp |= MASK_ESP;
-^1da177e4c3f41 Linus Torvalds           2005-04-16   58  			break;
-^1da177e4c3f41 Linus Torvalds           2005-04-16   59  		}
-^1da177e4c3f41 Linus Torvalds           2005-04-16   60  
-^1da177e4c3f41 Linus Torvalds           2005-04-16   61  		hp = skb_header_pointer(skb, ptr, sizeof(_hdr), &_hdr);
-70c0eb1ca016f7 Florian Westphal         2018-09-04   62  		if (!hp) {
-70c0eb1ca016f7 Florian Westphal         2018-09-04   63  			par->hotdrop = true;
-70c0eb1ca016f7 Florian Westphal         2018-09-04   64  			return false;
-70c0eb1ca016f7 Florian Westphal         2018-09-04   65  		}
-^1da177e4c3f41 Linus Torvalds           2005-04-16   66  
-^1da177e4c3f41 Linus Torvalds           2005-04-16   67  		/* Calculate the header length */
-7c4e36bc172ae1 Jan Engelhardt           2007-07-07   68  		if (nexthdr == NEXTHDR_FRAGMENT)
-^1da177e4c3f41 Linus Torvalds           2005-04-16   69  			hdrlen = 8;
-7c4e36bc172ae1 Jan Engelhardt           2007-07-07   70  		else if (nexthdr == NEXTHDR_AUTH)
-416e8126a2672f yangxingwu               2019-07-10   71  			hdrlen = ipv6_authlen(hp);
-^1da177e4c3f41 Linus Torvalds           2005-04-16   72  		else
-^1da177e4c3f41 Linus Torvalds           2005-04-16   73  			hdrlen = ipv6_optlen(hp);
-^1da177e4c3f41 Linus Torvalds           2005-04-16   74  
-^1da177e4c3f41 Linus Torvalds           2005-04-16   75  		/* set the flag */
-^1da177e4c3f41 Linus Torvalds           2005-04-16   76  		switch (nexthdr) {
-^1da177e4c3f41 Linus Torvalds           2005-04-16   77  		case NEXTHDR_HOP:
-^1da177e4c3f41 Linus Torvalds           2005-04-16   78  			temp |= MASK_HOPOPTS;
-^1da177e4c3f41 Linus Torvalds           2005-04-16   79  			break;
-^1da177e4c3f41 Linus Torvalds           2005-04-16   80  		case NEXTHDR_ROUTING:
-^1da177e4c3f41 Linus Torvalds           2005-04-16   81  			temp |= MASK_ROUTING;
-^1da177e4c3f41 Linus Torvalds           2005-04-16   82  			break;
-^1da177e4c3f41 Linus Torvalds           2005-04-16   83  		case NEXTHDR_FRAGMENT:
-^1da177e4c3f41 Linus Torvalds           2005-04-16   84  			temp |= MASK_FRAGMENT;
-^1da177e4c3f41 Linus Torvalds           2005-04-16   85  			break;
-^1da177e4c3f41 Linus Torvalds           2005-04-16   86  		case NEXTHDR_AUTH:
-^1da177e4c3f41 Linus Torvalds           2005-04-16   87  			temp |= MASK_AH;
-^1da177e4c3f41 Linus Torvalds           2005-04-16   88  			break;
-^1da177e4c3f41 Linus Torvalds           2005-04-16   89  		case NEXTHDR_DEST:
-^1da177e4c3f41 Linus Torvalds           2005-04-16   90  			temp |= MASK_DSTOPTS;
-^1da177e4c3f41 Linus Torvalds           2005-04-16   91  			break;
-^1da177e4c3f41 Linus Torvalds           2005-04-16   92  		default:
-1d93a9cbad608f Jan Engelhardt           2007-07-07   93  			return false;
-^1da177e4c3f41 Linus Torvalds           2005-04-16   94  		}
-^1da177e4c3f41 Linus Torvalds           2005-04-16   95  
-^1da177e4c3f41 Linus Torvalds           2005-04-16   96  		nexthdr = hp->nexthdr;
-^1da177e4c3f41 Linus Torvalds           2005-04-16   97  		len -= hdrlen;
-^1da177e4c3f41 Linus Torvalds           2005-04-16   98  		ptr += hdrlen;
-aebe9616a67760 Zhixing Chen             2026-07-14   99  		if (ptr > skb->len) {
-aebe9616a67760 Zhixing Chen             2026-07-14  100  			par->hotdrop = true;
-aebe9616a67760 Zhixing Chen             2026-07-14  101  			return false;
-aebe9616a67760 Zhixing Chen             2026-07-14  102  		}
-^1da177e4c3f41 Linus Torvalds           2005-04-16  103  	}
-^1da177e4c3f41 Linus Torvalds           2005-04-16  104  
-7c4e36bc172ae1 Jan Engelhardt           2007-07-07  105  	if (nexthdr != NEXTHDR_NONE && nexthdr != NEXTHDR_ESP)
-^1da177e4c3f41 Linus Torvalds           2005-04-16  106  		temp |= MASK_PROTO;
-^1da177e4c3f41 Linus Torvalds           2005-04-16  107  
-^1da177e4c3f41 Linus Torvalds           2005-04-16  108  	if (info->modeflag)
-^1da177e4c3f41 Linus Torvalds           2005-04-16  109  		return !((temp ^ info->matchflags ^ info->invflags)
-^1da177e4c3f41 Linus Torvalds           2005-04-16  110  			 & info->matchflags);
-^1da177e4c3f41 Linus Torvalds           2005-04-16  111  	else {
-^1da177e4c3f41 Linus Torvalds           2005-04-16  112  		if (info->invflags)
-^1da177e4c3f41 Linus Torvalds           2005-04-16  113  			return temp != info->matchflags;
-^1da177e4c3f41 Linus Torvalds           2005-04-16  114  		else
-^1da177e4c3f41 Linus Torvalds           2005-04-16  115  			return temp == info->matchflags;
-^1da177e4c3f41 Linus Torvalds           2005-04-16  116  	}
-^1da177e4c3f41 Linus Torvalds           2005-04-16  117  }
-^1da177e4c3f41 Linus Torvalds           2005-04-16  118  
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
