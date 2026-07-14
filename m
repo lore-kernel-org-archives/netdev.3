@@ -1,67 +1,65 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 715234156DF
-	for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 17:48:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F11361DB8
+	for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 17:48:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784051325; cv=none; b=oWgQV8EZNHVzD2iqK8wBaoMc6V2C9/2eMUY4MTsAINX27kGBorSAL+PSKm6raRaKZI5bcCg2hWTFs+JcBROhVPbRlvDH3PXkR6X6useoDtbxutD43JSm+sHQZXpQe7wNdnokvVCUwzJGd3Lz9nCTybNYHxl53tM6sq774ECKeS4=
+	t=1784051322; cv=none; b=UO46uJAH4JAs+3iEti2AheTo+VOG7OZG579OPHqyV3PKPhmDC2OR1zmPYG0cyJVnvjyz7PQ3beXDu6q+tzBJ8/YLeBnOhFFOltVrcoYK2cM07Y71lHNixKhKSWpL6KSk3z9qPFs8slR0Ivo9XMxh+XEZou8mL0nQQv25lZt+Jjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784051325; c=relaxed/simple;
-	bh=8e6hSHdI724CwWnH0GaeVjz34PTzNe4kgTZ9OdXxjt0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Lmb36JeW1mi/xOAa3dUt9Xz+eRKl8d8I5hAVDwwoVkfTmlrtZDhkWXIXLnA9xh2WRmBRQ56aoyUIoRQypWHg+5aSgJjvO3gFmqn1CEyHDSYwDQWQoRUJg3J/9UqVpT6UBTA75JOJEkhImAtK0pwhDz7gZq0eC8jWGtWBAekHYIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=YmKwBtKK; arc=none smtp.client-ip=209.85.221.46
+	s=arc-20240116; t=1784051322; c=relaxed/simple;
+	bh=EieddV3CunyOQvlNz5OXYGeoAo3XqAWY40+VPURDOds=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=YMf7WBJeFWAl+KmELIbZmItHvhBh9v9y4U6UKj046HoclIE4nArY5SjVWI54eR9O3Mro3UEGAGoPNC9y72Xw+GgM5tMNmztQPmitV9zYcb7wvfriz4nCYTkY1YAgIrTYHY7iVbInVINlrz4zgHm1W4dpc3KnZNvoAeLpJaK4LsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=gJXXZw9J; arc=none smtp.client-ip=209.85.221.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="YmKwBtKK"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-47f365afc5aso1561486f8f.0
-        for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 10:48:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="gJXXZw9J"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-47ddf7b09e5so1182540f8f.1
+        for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 10:48:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1784051309; x=1784656109; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=RnbOgZY6mix2R8qxVZm3ntkswSOtMNcqG52n3byUMp8=;
-        b=YmKwBtKKNI31nt33hUMyAvAXSbsDXbVKkqOG9+b4QX9o5ZROREIVRN1KmVwVJgJws1
-         6XjDqu+l2e/FefhpuC6KyPz6Q9yxDf8gHXZgmXCJQfWLbeYrxv+i5FmTz1CPIHc0dW6E
-         L0q0Jcj0IAfkgkaeR87T24rHxwSaqJ5WL74EaEqXfrlHqeaYDMGthn6KoJSul6Xe+Ht9
-         jD+6TlcGxAX2Ory+wZZrpo4VWQ9VZVu9r2wog0A+/05rbYgu0PioiANnoNyxrQD9chSQ
-         nMfLzttNTmZ5URRVXK/e6bSGthREbKtG1FsDLmMxhCxEgcTPN16qZBgUbJFqO+Ve13YM
-         eHEQ==
+        d=cloudflare.com; s=google09082023; t=1784051307; x=1784656107; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=INgFyAIVRVhEQv6f28do5NJNurJGs9np0h5kWK/uQJw=;
+        b=gJXXZw9JLIYUzvAHmZZBlB3S4Ci+L7b1d4ceOwUHCave+v5l5631FPjLltmj2KmNrM
+         5Xp4AM5p2EHGu9QyPjLPI+HMTgPkg5cojOKPv5Wi/uIL+o8UvEz72Yo4zb5EggGjzwPg
+         tZKItL3cdsjK46i9TCgvNwLVVv3qDXhdqacJ+kCABaNNG8gSrqKfFlwoWcHWO9K9+a4x
+         T3EDQBLZ3W9YGtE0WFg1LhecqT8+PZJh0CSuXvkfeYEKe6eUiHr28CzuwtkJCQujVE13
+         3C7YKTc7HOIeF/A4iukNDplB93blglRc5P2GIxu1tBP/SRoCkfG8A/JHvOWUaA95QEFG
+         UJNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784051309; x=1784656109;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RnbOgZY6mix2R8qxVZm3ntkswSOtMNcqG52n3byUMp8=;
-        b=QoC4OB8mhDvV+DHvi34B+J51mA3STTxi/tCFCthH69HDV+d0L5FVo12bJnfNl4WlNC
-         KbCyjr7eGP6x2UQed4wmVwbljmjny0/xp6TX8SQ0R+k62f2C1X2KMO1b5DXZumEkARBo
-         a3kYZQwO/ffxnczYs/EHmC2+AxHIe4eiZHsi0CGjsyeHni1Hzwbs4nktlxCi1MY+tegv
-         gdEvhOV7cJOVszlBl57kPg0lXz8IEwyCkxs2c0C/CsZTfojWBR/skCJF78TVCO2TC0HR
-         VctlmYY2bkDv2K2hgIyv2Dx0IynCYKGv7vLL1rJrgQHlsj2wxCsh2TvCCWG2CWs2EOpc
-         5l9g==
-X-Gm-Message-State: AOJu0Yx8Qb2TD3xgNDyi1UdSyrOrlQL2ThigglcmjuN9nnwzY4wF1LeO
-	KAHjWMLieRiUYCrl4nBXpv+xa1zDNgWdHt0Tr/Cn+bpNPfvvzA2iKIno8aSHn2QMSTA=
-X-Gm-Gg: AfdE7clKfz6+0brodNzepqU2ib+oHoNjcFs9y0gDVUSv0/Lfv3NjoiVxuCYlBAA7V+r
-	FDRTOBS8F9ZhL26ylapl+Idpm0D96vGx/gE7md8h5gsGO3/+TPaIdstYYga/mdChS3fLH3DNOHY
-	uRypXZUTEhjjKHOBSlAa109ufi8hMCXvvBHBvEmIfmYHyT555K7Y/U4mxADnb/REQr3We6DM9+Z
-	b2SkMlZd8acZxH7ZRWIj3Cb3wSpARvXX3BcljA24qI6Amv1GA7ALVOQYAv6qsxhxSceP56rq+n1
-	YlCDVIj/Fa+QVA+wZg9uAs/CNbtE/aGqJw5W8SHquqA/wtpy3hvRUMNO2Y19pugkdLo1hVZ2H0W
-	SDITkDVXJrVU1Zx34YCSnPd4H9CuoBj4GrXX+j1PWZKqR8h8JmlVLyK8kNOfwhbeLUat98lLXu6
-	MtzRbFAmW7z79lFz8ksSlaAKWgV3e+gQ0cTj5/rNJjvPVq0ds=
-X-Received: by 2002:a5d:5f49:0:b0:462:6aa1:4393 with SMTP id ffacd0b85a97d-47f4886edc6mr3882336f8f.4.1784051309376;
-        Tue, 14 Jul 2026 10:48:29 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1784051307; x=1784656107;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=INgFyAIVRVhEQv6f28do5NJNurJGs9np0h5kWK/uQJw=;
+        b=YSSo1QfwDzwYwIebJo9ArIoOUFiBuzU+hDT5j2pXTeiQ/ORgmY28LvMOLLf6DSPmOc
+         VRjUJDR0Pu4ZnQsCJnEBPfGpGKVk2+UzkXEoSYru6koS3IFfyGt+WytJuOm/m99MR4Qc
+         RARInqxQMUhEX/Ar2rdF79eaC1YpY7VAufZn4jphzRpHb+oSBwB3f4WNb7ywQfYuZjWu
+         cBL7FLUDmdum+5MKlpyeDPyBTWneCAG21LD1EeqTjAsu48EdZ8ZvytEi0bZFuCTwPZ8G
+         49ofAZ6862+3bOrahcaaJ23wdTfPDtDK/o3DJviL8yvBGxZ0AfoCJQT4szgteSlY22Rs
+         3mdA==
+X-Gm-Message-State: AOJu0Yxkm0syVY2jcXdQLH0s0UgIX3BByrsKkJgfPDsX4NpERBHrHobf
+	uSh90qlKfPSwW8Am68ay8MRU/0oC5bI1vA/FRxLSQYTLpUYx9LSUJK6m6S+74q7Q18Q=
+X-Gm-Gg: AfdE7cl+7yIlQwylLpEeMtUIAeD8MVk1JYAD7RKvhP7aLVyZo0DSchmDP48Ebxv5lHi
+	Zi3vOYxmNCT3J0neBGdahjF5m5lyAmTmedtlmWOCOqqxmz4vhKkxZ0ePluSrvTckAh0Ry5tPwEk
+	+9kLVRFWbqtxAI+LmKHe/3tdEHTSkAWaOi/3gZt+qvy/juAnLmJ3SqwhAeVJg92bboAWUWtvEAu
+	Irz7CRETncP/CjOLXH5nKnbux0i8hAhyR35Wbh0RkoPG/Hyz5qRI7vlpFSna9jwxMb1bH0ItFHN
+	yovnJT1FbuUMP8dMdb1rHB24K7VZYuiC7a8HJmcnuRk4lO0BSp+OCAcBtHW8JiMDDLhOxKv2TwY
+	EYMn7kJwUJYrgQ72auRtSWrHzZm8SBxxvA1SnDyyAFAZiX0CQYkjvF9lE0EMEKzBwk9mDp4RM5p
+	JogCDpbFUFrRkol1vvs1JcJ4cmSbn/aDfCUWLkkmzL9wiLtpA=
+X-Received: by 2002:a05:6000:612:b0:475:613c:c9f2 with SMTP id ffacd0b85a97d-47f2dcd1b38mr17227670f8f.5.1784051306731;
+        Tue, 14 Jul 2026 10:48:26 -0700 (PDT)
 Received: from cloudflare.com (93-57-92-86.ip163.fastwebnet.it. [93.57.92.86])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f464a9879sm10826048f8f.22.2026.07.14.10.48.28
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f4635a940sm9457448f8f.12.2026.07.14.10.48.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jul 2026 10:48:29 -0700 (PDT)
+        Tue, 14 Jul 2026 10:48:26 -0700 (PDT)
 From: Jakub Sitnicki <jakub@cloudflare.com>
-Date: Tue, 14 Jul 2026 19:48:21 +0200
-Subject: [PATCH RFC net-next 2/6] bpf: Allow access to
- bpf_sock_ops_kern->skb
+Subject: [PATCH RFC net-next 0/6] skb extension for BPF metadata
+Date: Tue, 14 Jul 2026 19:48:19 +0200
+Message-Id: <20260714-bpf-meta-inside-skb-ext-v1-0-5871c07a8dd6@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -70,48 +68,72 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260714-bpf-meta-inside-skb-ext-v1-2-5871c07a8dd6@cloudflare.com>
-References: <20260714-bpf-meta-inside-skb-ext-v1-0-5871c07a8dd6@cloudflare.com>
-In-Reply-To: <20260714-bpf-meta-inside-skb-ext-v1-0-5871c07a8dd6@cloudflare.com>
+X-B4-Tracking: v=1; b=H4sIAGN2VmoC/yWMQQrCMBBFr1Jm7UAToVS3ggdwKy6a9EdHMZZML
+ IXSuzfV5fu8/2ZSJIHSsZopYRSVTyxgdhX5RxfvYOkLk61tUzd2z24I/EbuWKJKD9aXY0yZQ7D
+ GH0yL1gcq7yEhyPQrX+lyPm1bROZYZLr9Bf26J3ze+rQsK0FiIniMAAAA
+X-Change-ID: 20260623-bpf-meta-inside-skb-ext-ff21c918e8cf
 To: netdev@vger.kernel.org
 Cc: bpf@vger.kernel.org, kernel-team@cloudflare.com
 X-Mailer: b4 0.15.2
 
-sock_ops programs receive bpf_sock_ops_kern as their kernel context, which
-holds a pointer to the sk_buff being processed. Mark bpf_sock_ops_kern->skb
-as BTF_TYPE_SAFE_TRUSTED_OR_NULL so that BPF programs can dereference it
-and pass it to kfuncs expecting a trusted sk_buff pointer, such as
-bpf_skb_storage_get().
+BPF programs attached at different points in the network stack have no way
+to pass data between each other on a per-packet basis. xdp/skb->data_meta
+covers the XDP-to-TC handoff, but is not available to programs at later
+hooks like cgroup/skb, sock_ops, socket filters, tracing, or LSM.
+
+This series adds a per-packet metadata byte buffer for BPF, carried inline
+in a new skb extension (struct bpf_skb_ext). Programs access it through a
+bpf_dynptr returned by the bpf_dynptr_from_skb_ext() kfunc.
+
+Pass BPF_SKB_EXT_F_CREATE to allocate (or COW) the extension and get a
+read-write dynptr; omit the flag to get a read-only view of existing
+metadata, or -ENOENT if none has been attached. The inline buffer is up to
+256 bytes, sized at build time via CONFIG_BPF_SKB_EXT_SIZE (default 64).
+
+Metadata survives across hooks (TC -> socket filter) and, when opted in
+with BPF_SKB_EXT_F_NO_SCRUB, across tunnel encap/decap and cross-netns
+forwarding. Without the flag the extension is scrubbed at the usual
+points (skb_scrub_packet).
+
+This is our third attempt at the problem. We first tried to make XDP/skb
+metadata persist across network layers and expose it as a dynptr [1], then
+turned to BPF local storage for skb's [2]. Based on the feedback from both,
+we converged on the simpler skb extension + dynptr approach.
+
+We are posting this RFC to accompany a Netdev talk on the topic [3]. We are
+currently running an experiment in a production environment to evaluate the
+performance of this approach and will follow up with results and a
+comparison to alternatives.
+
+Thanks,
+-jkbs
+
+[1] https://lore.kernel.org/all/20260107-skb-meta-safeproof-netdevs-rx-only-v3-0-0d461c5e4764@cloudflare.com/
+[2] https://lore.kernel.org/all/20260226-skb-local-storage-v1-0-4ca44f0dd9d1@cloudflare.com/
+[3] https://www.netdevconf.info/0x1A/sessions/talk/thrice-the-charm-an-skb-extension-for-bpf-metadata.html
 
 Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
 ---
- kernel/bpf/verifier.c | 5 +++++
- 1 file changed, 5 insertions(+)
+Jakub Sitnicki (6):
+      bpf: Introduce per-packet metadata storage for BPF programs
+      bpf: Allow access to bpf_sock_ops_kern->skb
+      bpf: Allow skb extensions to survive packet scrubbing
+      selftests/bpf: Add tests for bpf_dynptr_from_skb_ext
+      selftests/bpf: Test skb_ext scrubbing across tunnels and veths
+      selftests/bpf: Use non-trivial test payload in xdp_context tests
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index a78ef1e37f24..e10886ca5089 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -5675,6 +5675,10 @@ BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct vm_area_struct) {
- 	struct file *vm_file;
- };
- 
-+BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct bpf_sock_ops_kern) {
-+	struct sk_buff *skb;
-+};
-+
- static bool type_is_rcu(struct bpf_verifier_env *env,
- 			struct bpf_reg_state *reg,
- 			const char *field_name, u32 btf_id)
-@@ -5717,6 +5721,7 @@ static bool type_is_trusted_or_null(struct bpf_verifier_env *env,
- 	BTF_TYPE_EMIT(BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct socket));
- 	BTF_TYPE_EMIT(BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct dentry));
- 	BTF_TYPE_EMIT(BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct vm_area_struct));
-+	BTF_TYPE_EMIT(BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct bpf_sock_ops_kern));
- 
- 	return btf_nested_type_is_trusted(&env->log, reg, field_name, btf_id,
- 					  "__safe_trusted_or_null");
-
--- 
-2.43.0
+ include/linux/bpf.h                                |  11 +
+ include/linux/filter.h                             |  26 +
+ include/linux/skbuff.h                             |   5 +
+ include/uapi/linux/bpf.h                           |   6 +
+ kernel/bpf/helpers.c                               |   7 +
+ kernel/bpf/log.c                                   |   2 +
+ kernel/bpf/verifier.c                              |  15 +-
+ net/Kconfig                                        |  20 +
+ net/core/filter.c                                  | 134 +++++
+ net/core/skbuff.c                                  |  85 ++-
+ net/ipv4/udp.c                                     |   2 +-
+ .../bpf/prog_tests/xdp_context_test_run.c          | 592 ++++++++++++++++++++-
+ tools/testing/selftests/bpf/progs/test_xdp_meta.c  | 418 ++++++++++++++-
+ 13 files changed, 1303 insertions(+), 20 deletions(-)
 
