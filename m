@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FCE0478E53
-	for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 13:06:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C11B4779BE
+	for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 13:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784034388; cv=none; b=eOJbpurtp/Yrf8upNYckSO3eazPIxc1REh7VYofGO5lXG9DSkqedyNPzkRFf4JK6qP17VbetqBne+mXmBNfAu5Lt8M9hQfWF1dLkbje/zum1MxhfdLPhzCYXHNLML3uiY4nBOnjWgZ2cPXXcojiZt+J/ToX6NBoCGE35r+JGV4A=
+	t=1784034483; cv=none; b=IGR/Kl3LudhHNTMBA5XqVGe6ypL6WEqgLMNUTX0bSFIqSjgwR6LKqxCbIreGOUo4UdF/vuQsudMVCIk6gJS0vhLBW4Wk9sYXoOv+Rq99UNj+PwEMM4Yh+26zZ+arD8ZYlY+iQzxlh7YgDCoETOsQD1/AnDjgUz8NsMyu9AaTYQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784034388; c=relaxed/simple;
-	bh=71fgk7/pjKbIL3/bv557fkIpwYnWwWChravaY+wLfFg=;
+	s=arc-20240116; t=1784034483; c=relaxed/simple;
+	bh=vMJAz5vcCLrHE1eCIBfVMLV3Q+CDyKl69z7IQv21VZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JLrvvGZHNDK2WjKPdjMNFO39KYvi+MZc4bGQRbAUpUbRdyzq5QRxekVsDc+4uB8SjzXqMqILCgCQASO5P1Vx4+EBYE+cQdQJfikI1BJUGq9bK2blzDZCtnSPHh5+jnND2aQRGqVdDJfJzUN+2Pcxsn3ZPR6U+9C1ygV8xQv7G4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XwyYkiEo; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=J1KHXPAFJx0LPe6TPvYv/DeVwlVPenAZsA+vY9hRfQHu2HwCt6tLvcABSwpq241eHbh0ulO7/2dDjyVHTEI5xLvpMNdtJckBrtgpfVKYAiUh/FIzJP0bArykkhM7eie3kcH6yYQoOayxkVXcRu6nqJnP/kgcA8eOg/0ekmzyZQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RfSX1rbs; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XwyYkiEo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C10D1F00AC4;
-	Tue, 14 Jul 2026 13:06:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RfSX1rbs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C16021F000E9;
+	Tue, 14 Jul 2026 13:07:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784034387;
-	bh=n5uZic2yQEf6J+MPzYVAL97zNM1jCY/8xBbV5VkLom0=;
+	s=k20260515; t=1784034482;
+	bh=OR+TALXUbrDqxIOAyEwXOdpwUaeeSd6LxkFLp/LQ0xY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XwyYkiEoqtwMmiD4xVL+MBmHsJCedGnMjYjtF7ZQ2NLepWSeWorhUpxLfvE/DFku0
-	 +u3EAX8QG/xj9D79OwLnv8xgPquStq1bk0cMgkhwzpV/AlRtLyaHxTZETFvRpDOm+4
-	 O88eKBCgFzRf4rwO4X6bT9pTudZEI9WDJOXd3ZaZeoZbsCpCH9R3aUGTjqvdtSExIm
-	 zv8FOfz7QH8Q91sBi96FI/BCUFv9qYnkcKbQ+yhrTwwZ3+kKLjnKmwDsQ8CxYIILRH
-	 iPx6zwiqznikPOtZohxKfLMaPiNMDSI5Mc7Syj0ixv5XpCr4vZJOI+E9u9HK5tXd2C
-	 9hqISmIpo4bLg==
+	b=RfSX1rbszvo/lzps5iz4Gm8FU0W6pSskBwPU8lPBHXly0vlOL/70m/UOWKYGzhlrr
+	 2/EZo2jDlOpmSwU6j/Hv2vHvmIctbhJ/5HwmRGTW1NtkFkXyylt7Gjl4DNfmsv59g9
+	 8muh0afsUEHpFHcqptKt3spGlSQ4mcFLjV9VwEQjp1ZrOINtMREMYwU06DL3Z5clK3
+	 P5vK5nVmH+BQu7wP58z1ldhse0HYqQ7Dv1pPgm8wQudq9jvZvyJAAEdjnjjjOYlohP
+	 WN9qhgJK8EoBMbtgRedIKczJd8fT3SPn8LOiLmqMJmmzHvjuYgDzX4a8cD+Z6bVvv7
+	 eBK+sB+LqioiA==
 From: Simon Horman <horms@kernel.org>
 To: mmc@linux.ibm.com
 Cc: Simon Horman <horms@kernel.org>,
@@ -40,12 +40,12 @@ Cc: Simon Horman <horms@kernel.org>,
 	maddy@linux.ibm.com,
 	mpe@ellerman.id.au,
 	davemarq@linux.ibm.com
-Subject: Re: [PATCH net-next v3 13/15] ibmveth: Implement incremental MQ RX queue resize
-Date: Tue, 14 Jul 2026 14:03:46 +0100
-Message-ID: <20260714130344.1841551-3-horms@kernel.org>
+Subject: Re: [PATCH net-next v3 14/15] ibmveth: Wire ethtool set_channels to MQ RX queue resize
+Date: Tue, 14 Jul 2026 14:07:52 +0100
+Message-ID: <20260714130752.1844153-1-horms@kernel.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260706193603.8039-14-mmc@linux.ibm.com>
-References: <20260706193603.8039-14-mmc@linux.ibm.com>
+In-Reply-To: <20260706193603.8039-15-mmc@linux.ibm.com>
+References: <20260706193603.8039-15-mmc@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -58,152 +58,114 @@ This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 Full review at: https://sashiko.dev
 ---
-Date:   Mon Jul 6 19:36:01 2026 +0000
+ibmveth: Wire ethtool set_channels to MQ RX queue resize
 
-ibmveth: Implement incremental MQ RX queue resize
-    
-Add helpers to register/deregister individual RX queues and scale
-queue count up or down while the netdev stays up. Surviving queues
-keep PHYP handles, buffer pools, and IRQ state across resize.
+Expose incremental RX resize through ethtool channel control.
+get_channels() reports rx_count from adapter->num_rx_queues and max_rx
+as IBMVETH_MAX_RX_QUEUES when MQ firmware is enabled, else 1.
+set_channels() validates rx_count is within 1..IBMVETH_MAX_RX_QUEUES.
 
 > diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-> index ecc472ee8f71f..ac4d89a66a8db 100644
+> index ac4d89a66a8db..50a332ab83fd3 100644
 > --- a/drivers/net/ethernet/ibm/ibmveth.c
 > +++ b/drivers/net/ethernet/ibm/ibmveth.c
-
+> @@ -2534,19 +2534,69 @@ static int ibmveth_set_channels(struct net_device *netdev,
+>  				struct ethtool_channels *channels)
+>  {
+>  	struct ibmveth_adapter *adapter = netdev_priv(netdev);
 [ ... ]
-
-> @@ -1080,6 +1132,138 @@ static void ibmveth_free_buffer_pools(struct ibmveth_adapter *adapter)
-> +static int
-> +ibmveth_alloc_single_rx_queue(struct ibmveth_adapter *adapter, int queue_idx,
-> +			      int rxq_entries)
-> +{
-
+> -	if (!(netdev->flags & IFF_UP))
+> +	if (!(netdev->flags & IFF_UP)) {
+> +		if (goal_rx > 1 && !adapter->multi_queue) {
 [ ... ]
+> +		/* Stash desired RX count; open() publishes it via
+> +		 * netif_set_real_num_rx_queues() after queue registration.
+> +		 */
+> +		if (goal_rx != adapter->num_rx_queues)
+> +			adapter->num_rx_queues = goal_rx;
+> +
+>  		return netif_set_real_num_tx_queues(netdev, goal);
 
-> +	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++) {
-> +		adapter->rx_buff_pool[queue_idx][i].size =
-> +			adapter->rx_buff_pool[0][i].size;
-> +		adapter->rx_buff_pool[queue_idx][i].buff_size =
-> +			adapter->rx_buff_pool[0][i].buff_size;
-> +		adapter->rx_buff_pool[queue_idx][i].threshold =
-> +			adapter->rx_buff_pool[0][i].threshold;
-> +		adapter->rx_buff_pool[queue_idx][i].active =
-> +			adapter->rx_buff_pool[0][i].active;
+[Severity: Medium]
+If netif_set_real_num_tx_queues() fails and returns an error, the TX
+configuration command will fail, but the RX queue count has already been
+permanently modified in adapter->num_rx_queues. Will this leave the device in
+an inconsistent state where the new RX count is applied on the next open
+despite the command failing?
+
 > +	}
-
-[Severity: Critical]
-Does this loop miss initializing pool->index?
-
-If pool->index remains 0 for all buffer pools on the new queue, when
-replenishing, 0 is shifted into the correlator.
-
-Then when receiving, ibmveth_remove_buffer_from_pool() will extract pool=0,
-which fetches from the wrong pool and could corrupt the free map of pool 0,
-leading to a use-after-free or leak.
-
 [ ... ]
-
-> @@ -1192,6 +1376,49 @@ static int ibmveth_rxq_harvest_buffer(struct ibmveth_adapter *adapter,
-> +static int
-> +ibmveth_drain_rx_queue(struct ibmveth_adapter *adapter, int queue_index)
-> +{
-
-[ ... ]
-
-> +	while (drained < limit &&
-> +	       ibmveth_rxq_pending_buffer(adapter, queue_index)) {
-> +		rc = ibmveth_rxq_harvest_buffer(adapter, queue_index, true);
-
-Simon says: I think we can consider the issue below in the context of
-            possible follow-up, because I believe the use of this pattern
-	    predates this patch.
+> +	if (goal_rx != old_rx) {
+> +		rc = ibmveth_resize_rx_queues_incremental(adapter, goal_rx,
+> +							  rxq_entries);
 
 [Severity: High]
-Is a read memory barrier needed between reading the toggle bit in
-ibmveth_rxq_pending_buffer() and reading the correlator in
-ibmveth_rxq_harvest_buffer()?
+Does this new ethtool scale-down path expose an interrupt storm?
 
-Since the hypervisor could be actively writing new descriptors while this is
-called, could a weakly-ordered CPU reorder the correlator load before the
-toggle bit load, causing us to recycle the wrong buffer?
+Looking at ibmveth_resize_rx_queues_incremental(), when scaling down queues it
+disables NAPI before disabling the hardware interrupt:
 
-[ ... ]
+drivers/net/ethernet/ibm/ibmveth.c:ibmveth_resize_rx_queues_incremental() {
+    ...
+		for (i = new_count; i < old_count; i++)
+			napi_disable(&adapter->napi[i]);
 
-> @@ -1491,6 +1718,175 @@ ibmveth_deregister_single_rx_queue(struct ibmveth_adapter *adapter,
-> +static int
-> +ibmveth_resize_rx_queues_incremental(struct ibmveth_adapter *adapter,
-> +				     int new_count, int rxq_entries)
-> +{
+		for (i = new_count; i < old_count; i++)
+			ibmveth_drain_rx_queue(adapter, i);
 
-[ ... ]
+		synchronize_net();
+    ...
+		/* Disable hypervisor interrupts and wait for handlers to complete
+		 * before updating num_rx_queues.
+		 */
+		for (i = new_count; i < old_count; i++) {
+			ibmveth_disable_irq(adapter, i);
+    ...
+}
 
-> +			rc = ibmveth_enable_irq(adapter, i);
-> +			if (rc) {
-> +				netdev_err(netdev,
-> +					   "Failed to enable IRQ for queue %d: %d\n",
-> +					   i, rc);
-> +				ibmveth_cleanup_single_rx_interrupt(adapter, i);
-> +				ibmveth_deregister_single_rx_queue(adapter, i);
-> +				ibmveth_free_single_rx_queue(adapter, i);
-> +				goto cleanup_new_queues;
-> +			}
-> +
-> +			napi_enable(&adapter->napi[i]);
-> +		}
-> +
-> +		adapter->num_rx_queues = new_count;
+If the hypervisor delivers a packet during this window, ibmveth_interrupt()
+will execute. Since NAPI is disabled, napi_schedule_prep() fails, causing the
+handler to return IRQ_HANDLED without disabling the hardware interrupt. Will
+this leave the virtual interrupt asserted and force an infinite interrupt loop?
 
-[Severity: High]
-What happens if an interrupt fires on the newly added queue before
-adapter->num_rx_queues is updated?
-
-If an interrupt fires between ibmveth_enable_irq() and the update of
-adapter->num_rx_queues, ibmveth_interrupt() might evaluate:
-    WARN_ON(qindex < 0 || qindex >= adapter->num_rx_queues)
-to true and return IRQ_NONE without masking the interrupt.
-
-Could this lead to an unhandled interrupt storm?
-
-[ ... ]
-
-> +	} else {
-> +		netdev_dbg(netdev, "Scale-down: removing queues %d-%d\n",
-> +			   new_count, old_count - 1);
-> +
-> +		for (i = new_count; i < old_count; i++)
-> +			napi_disable(&adapter->napi[i]);
-> +
-> +		for (i = new_count; i < old_count; i++)
-> +			ibmveth_drain_rx_queue(adapter, i);
-> +
-> +		synchronize_net();
-
-[Severity: High]
-Can disabling NAPI before disabling the hardware interrupts create an
-interrupt storm window?
-
-If the hypervisor asserts an interrupt during synchronize_net(), the hardware
-IRQ handler runs. Since NAPI is disabled, it returns IRQ_HANDLED without
-masking the interrupt source at the hypervisor, leading immediately to an
-IRQ storm and CPU lockup.
-
-> +
-> +		rc = netif_set_real_num_rx_queues(netdev, new_count);
 > +		if (rc) {
-> +			netdev_err(netdev, "Failed to set real RX queues to %d: %d\n",
-> +				   new_count, rc);
-> +			for (i = new_count; i < old_count; i++)
-> +				napi_enable(&adapter->napi[i]);
+> +			netdev_err(netdev, "Failed to resize RX queues: %d\n", rc);
 > +			return rc;
 > +		}
+> +	}
+>  
+>  	/* We have IBMVETH_MAX_QUEUES netdev_queue's allocated
+>  	 * but we may need to alloc/free the ltb's.
+>  	 */
 
 [Severity: High]
-Is it possible for this error path to permanently stall the RX queues?
+This is a pre-existing issue, but does this function use an uninitialized
+variable in the error path?
 
-It calls napi_enable() but doesn't call ibmveth_replenish_task(). Since the
-queues were completely drained of their buffers by ibmveth_drain_rx_queue(),
-will the hypervisor have any buffers to place incoming packets?
+When decreasing the number of TX queues (goal < old), the allocation loop for
+(i = old; i < goal; i++) is skipped, leaving 'i' uninitialized. If
+netif_set_real_num_tx_queues() then fails, the error path assigns old = i;. 
 
-Without buffers, no interrupts will fire for these queues, and NAPI will
-never run again.
+The cleanup loop then uses this garbage value:
+	for (i = old; i > goal; i--) {
+		if (adapter->tx_ltb_ptr[i - 1])
+
+Will this access adapter->tx_ltb_ptr out of bounds and pass arbitrary pointers
+to ibmveth_free_tx_ltb()?
+
+> @@ -2580,7 +2630,7 @@ static int ibmveth_set_channels(struct net_device *netdev,
+>  
+>  	netif_tx_wake_all_queues(netdev);
+>  
+> -	return rc;
+> +	return 0;
+
+[Severity: High]
+Does this unconditional return of 0 mask TX queue configuration failures?
+
+If applying the new TX queue count via netif_set_real_num_tx_queues() fails,
+the code handles it locally, but the function exits with 0 regardless. Will
+this mislead userspace into believing the TX channel count was successfully
+modified?
+
+>  }
