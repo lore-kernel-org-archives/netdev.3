@@ -1,186 +1,166 @@
-Received: from eidolon.nox.tf (eidolon.nox.tf [185.142.180.128])
+Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9869C3EE1C0;
-	Tue, 14 Jul 2026 09:41:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.128
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C628444102B
+	for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 09:45:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.59.177.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784022097; cv=none; b=f7ZyBGTkF4OEyjz5s8/n0JRj/UJ/pX+Xhc2GjRgTCNUe8SrW07lCiD5lEo+YiAoEfiFZl8A3lgTCMA4AGqdvnG2Wf4acmXBd2RBs3HC3Mu0FcPt79UWv+QwJEnijpM9KRYzysIWOFxDhwLQIas0O49aVYbYCsZpSIHN2Kn78qSk=
+	t=1784022316; cv=none; b=o2GPB5Ya6wy12P0NtUEbEFDEiz6FWtziCYfG66JQ0TcmuqgsyCwCiN7vlN3fo4b+1oYKVLYgs4Ie2YoDQiBRQvDSRPR7XeAr9rxBCxuh1uz1skZc/Vsw6CbBo1KN31NtpJVABxGjWWKgXmwFeSOV8dt9UQov8hatA9m3penlKzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784022097; c=relaxed/simple;
-	bh=lfrCeaqTmCJ2tP3X9wDmq7RPLxjm4JWDEbDGgIWt6Fc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QTKuFKd5iNfAGlRzS/7/YdG4adHwExG0kooo7cPbNjE1T3sCuLE+o23Lx6G7HzysfeSHFqIBrMcVWqzVhe+BbNzuKi/dr5lV2t1vilHfIb6KdlFxkszObsNb/DKyy0JyA4j4OFB1cspgssmkeBn9qftF20xi08YkeHVdLz8XIuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=diac24.net; spf=pass smtp.mailfrom=diac24.net; arc=none smtp.client-ip=185.142.180.128
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=diac24.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=diac24.net
-Received: from nat-wifi0.uniroma3.it ([193.204.167.180] helo=alea)
-	by eidolon.nox.tf with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <equinox@diac24.net>)
-	id 1wjZdi-000000022Sy-1kNU;
-	Tue, 14 Jul 2026 11:41:22 +0200
-Received: from equinox by alea with local (Exim 4.99.2)
-	(envelope-from <equinox@diac24.net>)
-	id 1wjZdL-00000000ZUb-3ZRd;
-	Tue, 14 Jul 2026 11:40:59 +0200
-From: David 'equinox' Lamparter <equinox@diac24.net>
-To: Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>
-Cc: David Ahern <dsahern@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Lorenzo Colitti <lorenzo@google.com>,
-	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
-	Patrick Rohr <prohr@google.com>,
-	netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	David 'equinox' Lamparter <equinox@diac24.net>
-Subject: [PATCH net-next 3/9] net/ipv6: create ipv6_fl_get_saddr
-Date: Tue, 14 Jul 2026 11:40:06 +0200
-Message-ID: <20260714094030.136317-4-equinox@diac24.net>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260714094030.136317-1-equinox@diac24.net>
-References: <20260714094030.136317-1-equinox@diac24.net>
+	s=arc-20240116; t=1784022316; c=relaxed/simple;
+	bh=e80hz75fHiACsNYtOBtU0RPSLiyNWmDj3nFkWksyFUk=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Ie+PrAbTlb3uNKhi12ywM9Ufr6DlC88xK2tzFfuU/Z/jK6SnaQzskXodz4rohtC4xb701fQKINSJU5GjbtZL9hJL/WeWZu2tvRL5Hh6/VIpECIYUt2JBAd6CDbqzt1xlTMUyqIZx00dZrbvlRhD8RDXjhU3WpB3p6jVvKROaheU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=52.59.177.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid:ivesync10t1784022230tfee9f710
+Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [115.200.247.46])
+X-QQ-SSF:0000000000000000000000000000000
+From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
+X-BIZMAIL-ID: 109505156687055239
+To: "'Simon Horman'" <horms@kernel.org>
+Cc: <netdev@vger.kernel.org>,
+	<mengyuanlou@net-swift.com>,
+	<andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>,
+	<edumazet@google.com>,
+	<kuba@kernel.org>,
+	<pabeni@redhat.com>,
+	<richardcochran@gmail.com>,
+	<linux@armlinux.org.uk>,
+	<aleksandr.loktionov@intel.com>,
+	<jacob.e.keller@intel.com>,
+	<michal.swiatkowski@linux.intel.com>,
+	<kees@kernel.org>,
+	<joe@dama.to>,
+	<leitao@debian.org>,
+	<shaojijie@huawei.com>,
+	<u.kleine-koenig@baylibre.com>,
+	<weirongguang@kylinos.cn>,
+	<larysa.zaremba@intel.com>,
+	<fabio.baltieri@gmail.com>
+References: <20260707061455.39564-5-jiawenwu@trustnetic.com> <20260714091113.1815787-1-horms@kernel.org>
+In-Reply-To: <20260714091113.1815787-1-horms@kernel.org>
+Subject: RE: [PATCH net-next v10 4/5] net: wangxun: implement soft quiesce for PCIe error recovery
+Date: Tue, 14 Jul 2026 17:43:49 +0800
+Message-ID: <0e1d01dd1375$461c15d0$d2544170$@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Content-Language: zh-cn
+Thread-Index: AQK7Hm39yqKCzwep1DFT/xBLMuQ50QIvZhNXtJ8tdhA=
+X-QQ-SENDSIZE: 520
+Feedback-ID: ivesync:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: M7BGKxRTCLhkgKw7+3++8nvCYl9mWV3FwsCpyMQnms2NGb+NTIW2Om2n
+	DDJkWtFdZ8/yx5A0s6zBk6h4RAkdPAVT7olmXt3L05VHfa6fVFPT34rMmT8sBP8RZ9B6l8L
+	g8SJskiB62ywcIdRCgHnEgjc5UKZcAhKjZ3zyfbhlrWNlGlyLiIbPY5d2nmS1zJ5PzCe+3c
+	gw5ts4+JauwCy99guZCb3EVYtM+0xx/x/v0JZ4lD1egLLT2u36kNBhd73/L35Iz6DnI2jFW
+	Kx74NV2aT/NZK/fu3H+EW1LAyNkV2znpYad3mn4Uom8HqOqnBxhjDw9MmfbQo0rdYlkSADz
+	yuaiuhTG8GI/VZgJU2NaKDaywj7MvjcQ7ctnoEtlWqG41U43SQ18SbdS87Kz8m/mDRQnECR
+	VqVhkJ8HiPb34OE+p1508aZyi2/14W17aEMAxYL7KeNjqVo4ESRSO6712KAypowiixhx+jY
+	DHCCsUDFSXJ8WSD2vsGqMv1qC6dsC85oBVGQEfWHGBMun4Qo1uHkUx8XwOK9zeANX12tATm
+	vHxPWm/eU2PYCf9W3sn4T6Jdn0WHZ9xaGHjLMkBgeYq4Si0t6iWBQs5O/LK3hjq99Y0ftFB
+	cTXxQUwrCGpy+10MxsKo/GaqGRLg0qeDBsJh4q1yVEH+vwFKZAvF5akZysPNuLYMyegcdDy
+	i76MaOv1fHCGnzyTMVT61Oblu0VqE1bFeJk8s5yseKSJf8tA58nl1sd2J31DQrkQG+Y831S
+	DvfEcQGatgMrTfu7t8Wtspu/Vx7xLaAkNUijNnJ+0BXAPCFS3k/bePO/P8lBjyK485dxWuu
+	Z+cV7ri24WHqEUhKctz7gGSCeUZ7BTS86IqoEvs8VBox+2t0hgBSHYxa+iws+FiLM4Sxpvl
+	EetxsdR9gr150jqoF0aI9nOu+pq03DtdavaYHTGrHVA1yU2pp5zBZlWolpJmtY0M+VZlHgw
+	YgptU/pUg8ds/JXroz7XP49cBjkk28YL1kUCMD2CNOmTiL0rV4zZ6G9ccIaXKVgncY7tmYA
+	sFcsuFcupvP1ffZGMof6XzW/x3CKW05YWyHWbkRwC6jN0gPyg9r4jTBv9k1RE=
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+X-QQ-RECHKSPAM: 0
 
-This adds passing the relevant flow information as well as selected
-nexthop into the source address selection code, to allow the RFC6724
-rule 5.5 code to look at its details.
+> > diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+> > index c8a4822d38194..a65312c8078fa 100644
+> > --- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+> > +++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+> [ ... ]
+> > @@ -3383,5 +3383,23 @@ void wx_service_timer(struct timer_list *t)
+> >  }
+> >  EXPORT_SYMBOL(wx_service_timer);
+> >
+> > +void wx_soft_quiesce(struct wx *wx)
+> > +{
+> > +	if (!netif_running(wx->netdev) ||
+> > +	    test_and_set_bit(WX_STATE_DOWN, wx->state))
+> > +		return;
+> > +
+> > +	pci_clear_master(wx->pdev);
+> > +	netif_tx_stop_all_queues(wx->netdev);
+> > +	netif_carrier_off(wx->netdev);
+> > +	netif_tx_disable(wx->netdev);
+> > +	wx_napi_disable_all(wx);
+> > +	wx_ptp_quiesce(wx);
+> > +
+> > +	clear_bit(WX_FLAG_NEED_PF_RESET, wx->flags);
+> > +	timer_delete_sync(&wx->service_timer);
+> 
+> [Severity: High]
+> The commit message notes the service task is deliberately not cancelled here
+> to avoid delaying PCIe error recovery. However, does omitting
+> cancel_work_sync(&wx->service_task) open a race window with the subtasks
+> that rely on the WX_STATE_DOWN flag?
+> 
+> > +}
+> > +EXPORT_SYMBOL(wx_soft_quiesce);
+> 
+> > diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+> > index a8773712cff82..a7bde03a98feb 100644
+> > --- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+> > +++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+> [ ... ]
+> > @@ -94,6 +94,10 @@ static void txgbe_module_detection_subtask(struct wx *wx)
+> >  {
+> >  	int err;
+> >
+> > +	if (test_bit(WX_STATE_DOWN, wx->state) ||
+> > +	    test_bit(WX_STATE_RESETTING, wx->state))
+> > +		return;
+> > +
+> 
+> [Severity: High]
+> Does this state check adequately protect against concurrent MMIO access
+> during a PCIe reset?
+> 
+> If the task passes this check, it subsequently sleeps for 200ms:
+> 
+> txgbe_main.c:txgbe_module_detection_subtask() {
+>     ...
+>     if (!test_and_clear_bit(WX_FLAG_NEED_MODULE_RESET, wx->flags))
+>         return;
+> 
+>     /* wait for SFF module ready */
+>     msleep(200);
+> 
+>     err = txgbe_identify_module(wx);
+>     ...
+> }
+> 
+> If wx_soft_quiesce() runs on another CPU during this msleep(), it will set
+> WX_STATE_DOWN and begin a hardware reset.
+> 
+> When the task wakes up from the sleep, will it call txgbe_identify_module()
+> and perform MMIO reads (such as rd32(wx, WX_GPIO_EXT)) while the device is
+> in reset?
+> 
+> Could this time-of-check to time-of-use race lead to Master Aborts or
+> fatal PCIe errors during AER recovery?
+> 
+> >  	if (!test_and_clear_bit(WX_FLAG_NEED_MODULE_RESET, wx->flags))
+> >  		return;
+> 
 
-Signed-off-by: David 'equinox' Lamparter <equinox@diac24.net>
----
- include/net/addrconf.h |  4 ++++
- net/ipv6/addrconf.c    | 45 +++++++++++++++++++++++++++++++-----------
- 2 files changed, 38 insertions(+), 11 deletions(-)
+This task is typically triggered during interface bring-up or optical module
+insertion. It has a very low coincidence rate with the timing of pcie errors.
+Nevertheless, as a defensive measure, I will add a re-check of WX_STATE_DOWN
+immediately after the sleep returns.
 
-diff --git a/include/net/addrconf.h b/include/net/addrconf.h
-index 8ced27a8229b..7bc0711b8717 100644
---- a/include/net/addrconf.h
-+++ b/include/net/addrconf.h
-@@ -142,6 +142,10 @@ struct inet6_ifaddr *ipv6_get_ifaddr(struct net *net,
- int ipv6_dev_get_saddr(struct net *net, const struct net_device *dev,
- 		       const struct in6_addr *daddr, unsigned int srcprefs,
- 		       struct in6_addr *saddr);
-+int ipv6_fl_get_saddr(struct net *net, const struct dst_entry *dst,
-+		      const struct net_device *dst_dev,
-+		      const struct sock *sk, unsigned int srcprefs,
-+		      struct flowi6 *fl6);
- int ipv6_get_lladdr(struct net_device *dev, struct in6_addr *addr,
- 		    u32 banned_flags);
- bool inet_rcv_saddr_equal(const struct sock *sk, const struct sock *sk2,
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index f1fe9ede1edb..0ba46ed518a9 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -1542,7 +1542,9 @@ struct ipv6_saddr_score {
- };
- 
- struct ipv6_saddr_dst {
--	const struct in6_addr *addr;
-+	const struct flowi6 *fl6;
-+	const struct dst_entry *dst;
-+	const struct sock *sk;
- 	int ifindex;
- 	int scope;
- 	int label;
-@@ -1619,7 +1621,7 @@ static int ipv6_get_saddr_eval(struct net *net,
- 		break;
- 	case IPV6_SADDR_RULE_LOCAL:
- 		/* Rule 1: Prefer same address */
--		ret = ipv6_addr_equal(&score->ifa->addr, dst->addr);
-+		ret = ipv6_addr_equal(&score->ifa->addr, &dst->fl6->daddr);
- 		break;
- 	case IPV6_SADDR_RULE_SCOPE:
- 		/* Rule 2: Prefer appropriate scope
-@@ -1697,11 +1699,11 @@ static int ipv6_get_saddr_eval(struct net *net,
- 		 *	    non-ORCHID vs non-ORCHID
- 		 */
- 		ret = !(ipv6_addr_orchid(&score->ifa->addr) ^
--			ipv6_addr_orchid(dst->addr));
-+			ipv6_addr_orchid(&dst->fl6->daddr));
- 		break;
- 	case IPV6_SADDR_RULE_PREFIX:
- 		/* Rule 8: Use longest matching prefix */
--		ret = ipv6_addr_diff(&score->ifa->addr, dst->addr);
-+		ret = ipv6_addr_diff(&score->ifa->addr, &dst->fl6->daddr);
- 		if (ret > score->ifa->prefix_len)
- 			ret = score->ifa->prefix_len;
- 		score->matchlen = ret;
-@@ -1819,9 +1821,10 @@ static int ipv6_get_saddr_master(struct net *net,
- 	return hiscore_idx;
- }
- 
--int ipv6_dev_get_saddr(struct net *net, const struct net_device *dst_dev,
--		       const struct in6_addr *daddr, unsigned int prefs,
--		       struct in6_addr *saddr)
-+int ipv6_fl_get_saddr(struct net *net, const struct dst_entry *dst_entry,
-+		      const struct net_device *dst_dev,
-+		      const struct sock *sk, unsigned int prefs,
-+		      struct flowi6 *fl6)
- {
- 	struct ipv6_saddr_score scores[2], *hiscore;
- 	struct ipv6_saddr_dst dst;
-@@ -1832,11 +1835,13 @@ int ipv6_dev_get_saddr(struct net *net, const struct net_device *dst_dev,
- 	int hiscore_idx = 0;
- 	int ret = 0;
- 
--	dst_type = __ipv6_addr_type(daddr);
--	dst.addr = daddr;
-+	dst_type = __ipv6_addr_type(&fl6->daddr);
-+	dst.fl6 = fl6;
-+	dst.sk = sk;
-+	dst.dst = dst_entry;
- 	dst.ifindex = dst_dev ? dst_dev->ifindex : 0;
- 	dst.scope = __ipv6_addr_src_scope(dst_type);
--	dst.label = ipv6_addr_label(net, daddr, dst_type, dst.ifindex);
-+	dst.label = ipv6_addr_label(net, &fl6->daddr, dst_type, dst.ifindex);
- 	dst.prefs = prefs;
- 
- 	scores[hiscore_idx].rule = -1;
-@@ -1911,11 +1916,29 @@ int ipv6_dev_get_saddr(struct net *net, const struct net_device *dst_dev,
- 	if (!hiscore->ifa)
- 		ret = -EADDRNOTAVAIL;
- 	else
--		*saddr = hiscore->ifa->addr;
-+		fl6->saddr = hiscore->ifa->addr;
- 
- 	rcu_read_unlock();
- 	return ret;
- }
-+EXPORT_SYMBOL(ipv6_fl_get_saddr);
-+
-+int ipv6_dev_get_saddr(struct net *net, const struct net_device *dst_dev,
-+		       const struct in6_addr *daddr, unsigned int prefs,
-+		       struct in6_addr *saddr)
-+{
-+	struct flowi6 fl6;
-+	int ret;
-+
-+	memset(&fl6, 0, sizeof(fl6));
-+	fl6.daddr = *daddr;
-+
-+	ret = ipv6_fl_get_saddr(net, NULL, dst_dev, NULL, prefs, &fl6);
-+	if (!ret)
-+		*saddr = fl6.saddr;
-+
-+	return ret;
-+}
- EXPORT_SYMBOL(ipv6_dev_get_saddr);
- 
- static int __ipv6_get_lladdr(struct inet6_dev *idev, struct in6_addr *addr,
--- 
-2.53.0
 
