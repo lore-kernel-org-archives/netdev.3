@@ -1,139 +1,196 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4933E298CAB
-	for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 13:15:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784034910; cv=none; b=jFwXb+VHdxwo0ZHjk9Hx5x3wMIbrfNrewyioGGXzb0C07BDPMzHbJu08pAPrCnjAOTFuaeYg7RWY6166Y9moqFPyKsOcVvwsE8g77gjukCdhdpIH+RANTqGPdg/BYadF6phaBGSuFEtEOrgaXERihNXnrKqlKlOMapJ+f/oiQmo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784034910; c=relaxed/simple;
-	bh=3b7/+olA1pvFjMhFNfaGf6KWzHXFNd/QpLcVlnf1tlk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CI1AYfeZETIIUSxzfnq5qk/n/Zi4lLAucNKAL7XDtoNMXrrAlMoGv1KvrwshqN8o3Re7LV6CAFnS6cAjaCcULp/jg7TEnbYMm8/sA+aYWV5NlJXUoUWwlsTo+RHWDa7w27oOlNhixocZGL2AKISlwyUMA5IDvBFGT3xRbdgKQWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ITK9trsY; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C847B20E023
+	for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 13:16:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784035016; cv=pass; b=PCe+f04EJIIV2kRgVuSTmMgcmAXITTPCA3+91+pz4sk+SjeXx7bTDs9wwyI3jbNGb19wH4hEygKOtPpSS1ffaabmKE71u095pe2B2rx1FSFop6D4MRfTsZsb2DO/vBUdr4+dIBzswgppf7vORpGToMcgtBLlRWCgCNOAnna6mKU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784035016; c=relaxed/simple;
+	bh=+Qa31FkKnglaUmIYRBmzMSRGYBZhx0ZbYMJM6VbwPV8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HyWJxUno2dcpzDsuBw3YE8rHB7tBUBC4LYQeNEqriQZzZD/n6OWqChfTfhwyIDAAtOEezEkK5YeJIjIYpzKHFZ3qmYiMEGGNX6Kj+6FyTuqXBv83Tvk06G3yxeJj7N/4nU3Cr4+W9Wg8SNy8Msflodl+AJYc7AclkBNKvGs6mps=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LFflbgXP; arc=pass smtp.client-ip=209.85.160.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ITK9trsY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FBC11F000E9;
-	Tue, 14 Jul 2026 13:15:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784034908;
-	bh=NBo8CYi3Y72SAdTjIf2wrjxpjS/L+HX8XmDUHz8O1ZI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ITK9trsY7zH++52/IA5fwEbrrJfbKgz8On2K5PUCSWTX5ziv09P/H3w5XrK3V6cls
-	 giF2rwY1waEQSge3WHRJax2ZL/xmvMmQEqdMchuusSTVMxKYL/mMTk8VoWaWG4EGf8
-	 8BSGa7kWltC/1l8i3YXSjOunWry85KucAqOxhaUNHNf6ZoN9cyvP3kdkSaHBw0bLmc
-	 EoeZ2nXxQXGRs9iXfrjAasSdvD+3qePddubbOGBF/8bRc/fKqqSmW5QHej/iNSuy1F
-	 MJw03vsujVu188gHxa4FX4/yj9yD2xlBCkUC8EB+q+S/lQyJ6VkdSEvEq//Vb4eJWy
-	 l9JNG8IRfqmdA==
-From: Simon Horman <horms@kernel.org>
-To: mmc@linux.ibm.com
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	bjking1@linux.ibm.com,
-	haren@linux.ibm.com,
-	ricklind@linux.ibm.com,
-	kuba@kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	linuxppc-dev@lists.ozlabs.org,
-	maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	davemarq@linux.ibm.com
-Subject: Re: [PATCH net-next v3 15/15] ibmveth: Fix MQ RX poll and shutdown hangs after queue resize
-Date: Tue, 14 Jul 2026 14:10:54 +0100
-Message-ID: <20260714131053.1844276-2-horms@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260706193603.8039-16-mmc@linux.ibm.com>
-References: <20260706193603.8039-16-mmc@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LFflbgXP"
+Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-4513435cdd2so1613431fac.2
+        for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 06:16:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784035013; cv=none;
+        d=google.com; s=arc-20260327;
+        b=L1NVYdQA89pf0gNlXYHvtOzBJfxSEivn9szq9xN/EAjttcLhgm6OoR64UQQwU4bMJd
+         zLV6e3ZNJfuOdhAevABMyGH6BHtedunK4nS/uxbkT3eeVAZdqvJ4Do8qMaT5j7PK8SFY
+         T30qGuVfbl1mYSc1TAvFcSdz7BwHS4ySJXjd21tPwxAMVKJAvm8kgHYwbssWn8Kd2kZj
+         p5ai591KUaCAOc8qFN+5TJ6/ETySxYN3IzLCo7LnSVz4Vj2+7woce6jhG4UimCGqLLZp
+         yzgYGTNNtrWVR08XGgiyqJcE1lQDD/DMu8Uue5e6w1Y1Za6Pm/QJ5t8R7YvYk8E9CtaE
+         IJ1w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=KGMO/nPW1YmA6+F7rceUFtVBz0j4a6IVdMY1D/4tlo4=;
+        fh=FQcT5/dJx/Wv81EtHaq2NBqXYT8IAIxgMoIot90K2cE=;
+        b=pQ2xaEG2AwNHeQqPcRiC6PRXCfZ9lmMzBbHT/h7VfTEK4vWzVyJZNid5JVOre+G0u/
+         ziRk2w315+HFMx59nKL2hU7dsk2G4/Kzypr1pqt81W7yoTNrOgD/O7Wt18kAMUu7iFVJ
+         gdBm+4UqwQzM3ikG9PhgBpEEtE6ryrAnTvJrpjqI6zZfgxgzlKvexf6Q4NcgQrVj9ixV
+         p3lYqmPgYvkXrfZejwNBcTQrRHLmlb/TkEd/xDBEr48Tv8j7KSacP4qnlTZG/nlBdCXU
+         ckVAOQ1Lvf958jqg5tjJicyP6x3/gXXYYoGJFXo35Tz0Eae+m70CojxglKlz5OPnHCLw
+         6Aaw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784035013; x=1784639813; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=KGMO/nPW1YmA6+F7rceUFtVBz0j4a6IVdMY1D/4tlo4=;
+        b=LFflbgXPL4CoP3mtR/HTvXde+lDlabAsmllujBEY5inrFoLZ9UBDoogfp5JDTh6RtI
+         WiRjwporiP3FD19MR4ZQSQCIX/LerO3EMKj+3o5G5Rhb5qEr/S3yK3glcI3lM04jjZBx
+         fBiUAFazRXevdxCA1fstYR7/gg1dQA0UZr0C5CbZCc1/RGHqCn+nmKrTIVG/vmyPZn7p
+         G8FxLCjk+zgkXncxc0nnJHQ9lX1UzW982gHBJk/pVfXf875wQ2c7dYAdTpIovUa1iEXB
+         9mcQ50JqFC2MxFXueeVUwAB6k4jmjm3hprCOdsSywFQIOYlH8/12o3hoI2m/SHTFSGJG
+         7Nxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784035013; x=1784639813;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KGMO/nPW1YmA6+F7rceUFtVBz0j4a6IVdMY1D/4tlo4=;
+        b=AFef2NqCWMAYjJfznFi1BZivknvESnGtBnRSMgKUmr2ah2lIxohBzCEolc5cP3+M7P
+         sd5oZJO8dpwrWKWHyDuvbfkBd0qt53tnmPq/je6WDIaoUOwMEjJOm9EF9WyXlemnnlht
+         P1VIufrYbjl1m/oSS4Ch6Z6bjCEOiUZW8sRr2STv0tcMORIoxlPWCgT+qGlXpFDJELf+
+         J3e01Q6hggECT3go/FAG3LU33OwFReV8UDJRZ1H7FkTq+UIViQX/QtQrjCy+0rjY8DKK
+         MGIVeZn+ajZPz2rNC3ROsOUsOM1E1UB4gt3+ncXuYrjjXy590Z364kFujtTpwTM+AjTv
+         5e8g==
+X-Forwarded-Encrypted: i=1; AFNElJ/wWUfbdWnVkY5Ea+o0kMA8jlwo9t10sIDFHwa9qVdtS5IQIEfh+XP0C0YSvYxHjI4lvvnPWFI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNyoyhfuGJnTUpgTBmDbsMNHxosns3FSRmI0siiOefN9+X4yEC
+	jG6nU6aOJWgzrzeQXw/Y68XN80M0ykt0AS63XxkGV/8QAmUmbuQ3aFzA0pUNBM3KElH44HrZvvH
+	Y6vM+EOJHd/R6vPHrCI7LiX0Z+2TbHWg=
+X-Gm-Gg: AfdE7ckXYxAVAuJhJTGpJdtYDfkNtwDuDVH5qa0PgYdaC5WzNlcGdw5VEFGUwa8AUkJ
+	boOBpqp+olY+S91ZJPLrqBSvuIgPo+u7OeBsEUpleZhiKFJE/9HCbRmWNewDoQ3Y1KotrKWclwX
+	9aQLvoA3Y4GH9m2hOaVkJ+L8NLyJ6A10TMtGoJY9BHYoWqqOZyypNGafWs3nE96GGkoro1q7HmY
+	5LngrTk0dAeGBQsTbyuoeYRUDA0nesd5Xgz8aGdJtr1nzevO8CAnEWacYnB4Py2rh6fOwyqUA==
+X-Received: by 2002:a05:6808:1782:b0:4a3:ff0a:e407 with SMTP id
+ 5614622812f47-4a47a58da31mr1525402b6e.15.1784035013438; Tue, 14 Jul 2026
+ 06:16:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260710014109.536177-1-xmei5@asu.edu>
+In-Reply-To: <20260710014109.536177-1-xmei5@asu.edu>
+From: Taehee Yoo <ap420073@gmail.com>
+Date: Tue, 14 Jul 2026 22:16:40 +0900
+X-Gm-Features: AUfX_mxrFT0VoGVUrtX3aFxNN3oqJ2d4CSKGgM_1R3EMY-gbyyzjOOwkYn6GMCw
+Message-ID: <CAMArcTVGfCzcnOrrKFRqD0a6Q2LgC19Yge1Lh2fvKMx2oqwtmw@mail.gmail.com>
+Subject: Re: [PATCH net] amt: refresh cached IP header pointers after MLD/IGMP checks
+To: "Xiang Mei (Microsoft)" <xmei5@asu.edu>
+Cc: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	AutonomousCodeSecurity@microsoft.com, tgopinath@linux.microsoft.com, 
+	kys@microsoft.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev
----
-ibmveth: Fix MQ RX poll and shutdown hangs after queue resize
+On Fri, Jul 10, 2026 at 10:41=E2=80=AFAM Xiang Mei (Microsoft) <xmei5@asu.e=
+du> wrote:
+>
 
-This commit fixes polling hangs in the ibmveth driver after queue resize
-by skipping over bad correlators instead of retrying endlessly. It also
-ensures NAPI completes when the interface is down or being disabled.
+Hi Xiang Mei,
+Sorry for the late reply.
 
-> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-> index 50a332ab83fd3..eb84b4e5f69fd 100644
-> --- a/drivers/net/ethernet/ibm/ibmveth.c
-> +++ b/drivers/net/ethernet/ibm/ibmveth.c
+> amt_dev_xmit() and amt_update_handler() cache iph/ip6h before calling
+> ip_mc_check_igmp() / ipv6_mc_check_mld(), which may pskb_may_pull() a
+> non-linear skb and reallocate skb->head. The stale pointers are then
+> read (amt_dev_xmit: group.ip{4,6} =3D iph/ip6h->daddr; amt_update_handler=
+:
+> ip{,v6}_eth_mc_map()), a slab-use-after-free. tx is reachable by an
+> unprivileged user whose amt device has SG enabled; rx by a tunnel peer
+> sending a membership update fragmented across several IP fragments.
+>
+> Reload iph/ip6h after the check returns, like commit f0e42f0c4337
+> ("ipv6: sit: reload inner IPv6 header after GSO offloads").
+>
+> tx path:
+>   BUG: KASAN: slab-use-after-free in amt_dev_xmit (drivers/net/amt.c:1238=
+)
+>   Read of size 16 by task exploit
+>    amt_dev_xmit (drivers/net/amt.c:1238)
+>    dev_hard_start_xmit (net/core/dev.c:3905)
+>    __dev_queue_xmit (net/core/dev.c:4872)
+>    packet_sendmsg (net/packet/af_packet.c:3114)
+>
+> rx path:
+>   BUG: KASAN: slab-use-after-free in amt_rcv (drivers/net/amt.c:2530)
+>   Read of size 4 by task exploit
+>    amt_rcv (drivers/net/amt.c:2530)
+>    udp_queue_rcv_one_skb (net/ipv4/udp.c:2388)
+>    ip_local_deliver (net/ipv4/ip_input.c:262)
+>    ip_rcv (net/ipv4/ip_input.c:612)
+>
+> Fixes: cbc21dc1cfe9 ("amt: add data plane of amt interface")
+> Fixes: bc54e49c140b ("amt: add multicast(IGMP) report message handler")
+> Fixes: b75f7095d4d4 ("amt: add mld report message handler")
+> Reported-by: AutonomousCodeSecurity@microsoft.com
+> Signed-off-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
 
-[ ... ]
+Thanks a lot for this work.
+However Michael Bommarito is already working on this.
+https://lore.kernel.org/netdev/20260711151934.2955226-2-michael.bommarito@g=
+mail.com/
 
-> @@ -2959,8 +2978,23 @@ static int ibmveth_poll(struct napi_struct *napi, int budget)
->  			__sum16 iph_check = 0;
->  
->  			skb = ibmveth_rxq_get_buffer(adapter, queue_index);
-> -			if (unlikely(!skb))
-> -				break;
-> +			if (unlikely(!skb)) {
-> +				if (net_ratelimit())
-> +					netdev_err(netdev,
+Thanks,
+Taehee Yoo
 
-[Severity: High]
-This isn't a bug introduced by this patch, but can the unvalidated packet
-lengths and offsets from hardware descriptors trigger an skb_over_panic()
-here?
-
-Further down in ibmveth_poll(), the driver reads length and offset directly
-from the hardware receive descriptor and passes them to skb_reserve() and
-skb_put() on the reused SKB:
-
-    int length = ibmveth_rxq_frame_length(adapter, queue_index);
-    int offset = ibmveth_rxq_frame_offset(adapter, queue_index);
-    ...
-    } else {
-        rc = ibmveth_rxq_harvest_buffer(adapter, queue_index, false);
-        if (unlikely(rc))
-            break;
-        skb_reserve(skb, offset);
-    }
-
-    skb_put(skb, length);
-
-If a faulty hypervisor provides an abnormally large length or offset,
-skb_put() will extend the tail past the end of the buffer, which triggers an
-skb_over_panic() and causes a crash.
-
-Should the driver validate that offset + length is within the known buffer
-size before modifying the boundaries?
-
-[ ... ]
-
-> @@ -3034,8 +3068,11 @@ static int ibmveth_poll(struct napi_struct *napi, int budget)
->  
->  	ibmveth_replenish_task(adapter, queue_index);
->  
-> -	if (frames_processed == budget)
-> +	if (frames_processed == budget) {
-> +		if (!netif_running(netdev) || napi_disable_pending(napi))
-> +			napi_complete_done(napi, frames_processed);
->  		goto out;
-> +	}
-
-[Severity: High]
-Does calling napi_complete_done() here conflict with the NAPI core contract?
-
-If the polling loop exhausts its budget (frames_processed == budget), returning 
-the full budget after calling napi_complete_done() might cause issues with the 
-NAPI state machine. The NAPI core (__napi_poll) will operate on the instance 
-assuming it still holds the NAPIF_STATE_SCHED bit. 
-
-If napi_disable_pending() is true, the core calls napi_complete(), which will 
-hit a WARN_ON_ONCE. 
-
-If napi_disable_pending() is false but !netif_running() is true, the core will
-add the NAPI instance back to the poll_list. Since the driver cleared 
-NAPIF_STATE_SCHED, a subsequent interrupt can trigger another napi_schedule(), 
-causing a double list_add_tail() and potentially leading to list corruption.
+> ---
+>  drivers/net/amt.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/drivers/net/amt.c b/drivers/net/amt.c
+> index 951dd10e192b..8bc61c539b0a 100644
+> --- a/drivers/net/amt.c
+> +++ b/drivers/net/amt.c
+> @@ -1210,6 +1210,7 @@ static netdev_tx_t amt_dev_xmit(struct sk_buff *skb=
+, struct net_device *dev)
+>                 } else {
+>                         data =3D true;
+>                 }
+> +               iph =3D ip_hdr(skb);
+>                 v6 =3D false;
+>                 group.ip4 =3D iph->daddr;
+>  #if IS_ENABLED(CONFIG_IPV6)
+> @@ -1234,6 +1235,7 @@ static netdev_tx_t amt_dev_xmit(struct sk_buff *skb=
+, struct net_device *dev)
+>                 } else {
+>                         data =3D true;
+>                 }
+> +               ip6h =3D ipv6_hdr(skb);
+>                 v6 =3D true;
+>                 group.ip6 =3D ip6h->daddr;
+>  #endif
+> @@ -2498,6 +2500,7 @@ static bool amt_update_handler(struct amt_dev *amt,=
+ struct sk_buff *skb)
+>                         netdev_dbg(amt->dev, "Invalid IGMP\n");
+>                         return true;
+>                 }
+> +               iph =3D ip_hdr(skb);
+>
+>                 spin_lock_bh(&tunnel->lock);
+>                 amt_igmp_report_handler(amt, skb, tunnel);
+> @@ -2517,6 +2520,7 @@ static bool amt_update_handler(struct amt_dev *amt,=
+ struct sk_buff *skb)
+>                         netdev_dbg(amt->dev, "Invalid MLD\n");
+>                         return true;
+>                 }
+> +               ip6h =3D ipv6_hdr(skb);
+>
+>                 spin_lock_bh(&tunnel->lock);
+>                 amt_mld_report_handler(amt, skb, tunnel);
+> --
+> 2.43.0
+>
