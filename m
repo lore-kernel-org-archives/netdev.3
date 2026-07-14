@@ -1,152 +1,149 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010050.outbound.protection.outlook.com [52.101.46.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A2D42BC24
-	for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 20:42:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784061727; cv=fail; b=a9xt0FfzZIj2AIT1pEcCD4dm/cS+NUzhtcCHaxFw4Ab1aQqLZ6EAvcqswodvHvtFCb3kgx4gurcR0bO9V09l8X5pBhgEWMnqhHRr3cGaDVyXTI4zUJAak/ALZi0aNDw3WiC4hweBoCMacLbiFPIQiSeHx7xg6cBAcpNfbOjZOBM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784061727; c=relaxed/simple;
-	bh=MJYyHmz0mGB2uoUfUhAU8+3zWgQR2n1e5MTvL2OloPY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=K8KCLpWkvsqu0ni9ikiHyBWXzSN2xEZsmB/hnoY5zelw7ucZlfzGIYAqyJuz7g+xWzWACXxbCPDMpSa5r2DI/ehGTVacfaqINzf/g1TBa432YYGeke792lGgeCeOIGcN8B//m8mfDJ5csXNjHWtmSgSzCdtqng5gqwfbBd0dZwQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=nTZhp+r/; arc=fail smtp.client-ip=52.101.46.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C2A42BC3C
+	for <netdev@vger.kernel.org>; Tue, 14 Jul 2026 20:45:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784061940; cv=none; b=E2RevvBy/pZglsLf0OfOy03n+FdLxMQ/WDcIkTxGGk3z/lK45P25OscUJ7lJmUVPHyYpMF3S4JQWyd3FDmDCj3fyr5BzNLnJtoo7vRM8AK7aK418n5VDuc9fuabI17eTyv6/g+Oypi2CeFN8L1Zjfyz+XqZCx//SHXSdJa+aN14=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784061940; c=relaxed/simple;
+	bh=ZD+19HbK61+QOXMgBznDG3eQijBbw4aQnzdOCwkvAQo=;
+	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
+	 References:Date:Message-Id; b=HK2gjjlfZs8oE8S3V/5/cqkE9MWDEU2A/Gio98xbM0qH3JIuNsDbv2zkymli4kl4vH5sb6PGFMElWvNtJP9fjmMh4Wxd3IBq8bkTcjgCcOIii3bVnqxyQS/L5q67Nx+rplIUQMyTqI8eb1uwsu7hiJrpZyoaBbSh2uuk/0saVjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=e78x0QuC; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=QrXwODE2; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=e78x0QuC; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=QrXwODE2; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="nTZhp+r/"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MNAlsSk7iQMVm9Ymut3eyB2sKmbAyxH7xsZhfvkbIhES7fF7LnWl7wimXQ95/MqprFos78iiBStyPO8xKCTZrjglAwqx/pOU8StANupDw5D/biE53K4QP1cjOP5Wt7XswNfXbmsKASki4ExcB95lktY79471UffwmFP3Ies658nDWCL+9MfsZmAIxGYWbkOyPT8HjAKh0x1o8LvT2Y1UjGUsPSqAuOJE93rAjqyC6TxkiuTOlOxCBl9wDlJM5GCAbbYngMaaTxUeIL6XND3dxmPYAY7h1+bgVvcgssgooTfo3qZU+EMM4CNXPjMge7QZgfIzPSwxK/Vjlcix5ehSaQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=z63E494NSgZ6W72Mgb0FJhmdwK+SVUJYVXcfBqpM+hc=;
- b=NltSWaGHWQUyQ0OemOlBUjd/HiOEkOTtrDxwo/lJ0GicTqTJx64+/DFgW1zA9PxJ47jmJY4FonubKTPMnJwJts5g+hyJ8M/hak7wTbftrlrM6GvRKn2quQFoT06jXkcmvndiOkQIbAjnKVhKfSNL+etbMq4rAjV1A7/kh/tzVh4TsyAxO1scAEmrKbxs6LpqIJZsf3NevFJhN3RViBHRCsHDTkhxd6/SOoDid4NZk8j42PQHKYOwtYuHgoVZhr1d8HKBP+v+acIj/vt0uf+6oS1Z3n/OZM8E9VcislEZehJf1R3bULV4VsuMdbn+KNigUeNTtRoxvYeivlSivdVg9w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=z63E494NSgZ6W72Mgb0FJhmdwK+SVUJYVXcfBqpM+hc=;
- b=nTZhp+r/sDllLMKOvzH6280bRwPsaedn1wElN1K8X/koQlnlKB3bKAPcDM4K2HLlxBshGGRpvZgBXNIiXdmdcHxLYd4TTTmBfkUHSynZgcmskRiLZhynAXE5fgt6mEE+kpDoKq0BDnXSATP3tAX6AMFjjvgXCoSKOtWSajQm1yM=
-Received: from CH5P223CA0007.NAMP223.PROD.OUTLOOK.COM (2603:10b6:610:1f3::18)
- by MW4PR12MB6828.namprd12.prod.outlook.com (2603:10b6:303:209::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.19; Tue, 14 Jul
- 2026 20:42:01 +0000
-Received: from CH2PEPF0000009C.namprd02.prod.outlook.com
- (2603:10b6:610:1f3:cafe::3a) by CH5P223CA0007.outlook.office365.com
- (2603:10b6:610:1f3::18) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.223.10 via Frontend Transport; Tue,
- 14 Jul 2026 20:42:00 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- CH2PEPF0000009C.mail.protection.outlook.com (10.167.244.24) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.223.9 via Frontend Transport; Tue, 14 Jul 2026 20:42:00 +0000
-Received: from amd.rund-run.pensando.io (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Tue, 14 Jul
- 2026 15:41:59 -0500
-From: "Nikhil P. Rao" <nikhil.rao@amd.com>
-To: <netdev@vger.kernel.org>
-CC: <kuba@kernel.org>, <brett.creeley@amd.com>, <eric.joyner@amd.com>,
-	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<pabeni@redhat.com>, "Nikhil P. Rao" <nikhil.rao@amd.com>
-Subject: [PATCH net] pds_core: order completion reads after the ownership check
-Date: Tue, 14 Jul 2026 20:41:45 +0000
-Message-ID: <20260714204145.1782390-1-nikhil.rao@amd.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="e78x0QuC";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="QrXwODE2";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="e78x0QuC";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="QrXwODE2"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 8D01B7800A;
+	Tue, 14 Jul 2026 20:45:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1784061937; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Tk/2bzhcDzkQsl+fiQmOpCenBcb0I8lf7nQVEVRHbWk=;
+	b=e78x0QuCGVzRHV0RuJv7RV178mmZZr1yds++rBS7K8c1B6j9GwPFGicrMJrZnX6bYUUVNN
+	3VA1RcRzOWNDDGimlohoAF6PHXYFiOBY5mVYzTcjjxOqKALfaJ72ckCNh6GVlPm4Zgrp7G
+	43aZOgzjlpKv1kBMZIicFHSS/iZEM8I=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1784061937;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Tk/2bzhcDzkQsl+fiQmOpCenBcb0I8lf7nQVEVRHbWk=;
+	b=QrXwODE2a78XV1CGwxOrdII0e6VY5sMxdhS3+HekMmxOp7msaI9Sku6t4llMi0zllBfOi0
+	cpW/cUiFhsWydHDA==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1784061937; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Tk/2bzhcDzkQsl+fiQmOpCenBcb0I8lf7nQVEVRHbWk=;
+	b=e78x0QuCGVzRHV0RuJv7RV178mmZZr1yds++rBS7K8c1B6j9GwPFGicrMJrZnX6bYUUVNN
+	3VA1RcRzOWNDDGimlohoAF6PHXYFiOBY5mVYzTcjjxOqKALfaJ72ckCNh6GVlPm4Zgrp7G
+	43aZOgzjlpKv1kBMZIicFHSS/iZEM8I=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1784061937;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Tk/2bzhcDzkQsl+fiQmOpCenBcb0I8lf7nQVEVRHbWk=;
+	b=QrXwODE2a78XV1CGwxOrdII0e6VY5sMxdhS3+HekMmxOp7msaI9Sku6t4llMi0zllBfOi0
+	cpW/cUiFhsWydHDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 159F7779AE;
+	Tue, 14 Jul 2026 20:45:37 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 32SNAvGfVmoeDgAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Tue, 14 Jul 2026 20:45:37 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PEPF0000009C:EE_|MW4PR12MB6828:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0d357e3c-6240-4f3f-bb06-08dee1e85ad1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700016|376014|82310400026|23010399003|18002099003|56012099006|11063799006|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	EqUB9I9Z68PVmVbehz9zv2jShb69wZG4s64HIfSMoYLq0tS0CzXr1u2lu+GcSalOlGL9dwG9fE8QWdbMPruNtGIZSEsRvgTsZuC/UlHqiOPgmMvmr4e8Q7z9KEHv0MqIkTtYkBnpJDQOlYvBEIE6FDyWvypWFaMdAxN5R0PBOAnYc/uF8ExnkyH/Gjji4Cr5Sd55Cq66+iV+vdYtKW3Xh6aof+biUT9ddUGGz0gBrK5i4S+w0ZDDstGTNgjbR2Pz7rXOw5hDg+jgkCX4sPWU3b8tEnLF7Ako7eeD4y7X+X4rRfWt1XCqNaQnMC/jlnO6LD4DDwRFZaXguPeVXGjRSfof+zW2rOzmMJW2pwrMBYTuaf59DN9cB4gwLcvRLA66+aHQ9iMb+7KE79604Dnam7y7o7P9tpNuT82gRPDgiwaZh1GgbK447Bd+18siMFY5RoKlhKfurqHufPUm4N7uEIMOzBeplmfRQIc/Kac5fAmX0t5Yg/5OO4pRhlMzJw86RChVkJrpRgGEPMlDkN73lqhA6gvYiblYYgWjLhepzZOdtX85E/+SQSCmswri4KUnHlVns+DY1fkkeJxq5E9OMMyWyDH5+ih+TGlNQtbsJ2KX+2XUrcRta/S/nncekF+/ys83zsGlen6+MyfX85qbvA==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(376014)(82310400026)(23010399003)(18002099003)(56012099006)(11063799006)(13003099007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	/Ztg9m45fLUt57xVi0aPRWqN8QR4Y7D16TwvKA1SYEVwfsHgWUT6a/3Jz/sgDpLiL58ClJ0oKfvvQhKYm5gLOL2AhUV7dXRrHGhVunQJxfD7TSBuyLUJU7cNDPqEMgi2BrENz/dZSMewQsz6QaBqUFRKYnteM9PVFyWxT8qZybDaqHjgZMFtcT3tY3NpD84yRaWwxuFLEpxLCrPFmAH60anWtO69YQYwRMXyc9LEkBPVADUDGTs5TFuV3mgXgfheg4ckPLFHgxCaRW+di52PUyF23kCBqYWD65jnGhlUJlZURJ069FWyilGA+qgCSZf23WZVAYOO/wCOHFJjwNmBx5gPrZtlc4febH31ABNlIXxPa577Xf/bgd+nYE/WBVF0W35b32VtFFMKuvTTZWG87RFOIHnUkPPm3VIVu7SOteU//qbLtYEhSsxYcKhqZINA
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jul 2026 20:42:00.4990
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0d357e3c-6240-4f3f-bb06-08dee1e85ad1
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH2PEPF0000009C.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6828
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH net] net: hsr: fix memory leak on slave unregistration
+ by removing synced VLANs
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+ syzbot+456957213f32970c0762@syzkaller.appspotmail.com
+In-Reply-To: <20260707082327.3238690-1-edumazet@google.com>
+References: <20260707082327.3238690-1-edumazet@google.com>
+Date: Tue, 14 Jul 2026 22:45:24 +0200
+Message-Id: <178406192459.16306.5204629050926533917.b4-review@b4>
+X-Mailer: b4 0.16-dev
+X-Spam-Flag: NO
+X-Spam-Score: -2.30
+X-Spamd-Result: default: False [-2.30 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	TAGGED_RCPT(0.00)[netdev,456957213f32970c0762];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[davemloft.net,kernel.org,redhat.com,lunn.ch,vger.kernel.org,gmail.com,syzkaller.appspotmail.com];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,suse.de:email,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Level: 
 
-pdsc_process_adminq() and pdsc_process_notifyq() decide a completion is
-valid from its ownership field - the color bit for the adminq, the event
-id for the notifyq - then read the rest of the descriptor, with no
-barrier in between.
+> When an HSR master device is brought UP, it auto-adds VLAN 0 via
+> vlan_vid0_add(), which propagates VID 0 to its slave devices.
+> 
+> If a slave device is later unregistered while HSR is active (e.g., during
+> netns cleanup or interface destruction), hsr_del_port() is called to
+> detach the slave port from the HSR master. However, hsr_del_port() currently
+> does not delete the VLAN IDs that were synced to the slave device by HSR.
+> 
+> As a result, the slave device retains a refcount on VID 0 (and any other
+> synced VLANs). When the slave device is destroyed, its vlan_info /
+> vlan_vid_info structure remains allocated, leading to a memory leak.
+> 
+> Fix this by calling vlan_vids_del_by_dev(port->dev, master->dev) in
+> hsr_del_port() before unlinking the slave device, matching the cleanup
+> behavior in bonding and team drivers.
+> 
+> Fixes: 1a8a63a5305e ("net: hsr: Add VLAN CTAG filter support")
+> Reported-by: syzbot+456957213f32970c0762@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/netdev/6a4cb6ca.57639fcc.86d58.000b.GAE@google.com/T/#u
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+>
 
-On a weakly ordered architecture the CPU may read the payload first. Add
-dma_rmb() between the ownership read and the payload reads.
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
 
-Fixes: 7e82a8745b95 ("pds_core: Prevent race issues involving the adminq")
-Reported-by: sashiko-bot <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/20260629200358.2626129-1-nikhil.rao%40amd.com?part=2
-Signed-off-by: Nikhil P. Rao <nikhil.rao@amd.com>
-Reviewed-by: Eric Joyner <eric.joyner@amd.com>
----
- drivers/net/ethernet/amd/pds_core/adminq.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/amd/pds_core/adminq.c b/drivers/net/ethernet/amd/pds_core/adminq.c
-index 097bb092bdb8..eadb4b604fbe 100644
---- a/drivers/net/ethernet/amd/pds_core/adminq.c
-+++ b/drivers/net/ethernet/amd/pds_core/adminq.c
-@@ -18,7 +18,13 @@ static int pdsc_process_notifyq(struct pdsc_qcq *qcq)
- 	comp = cq_info->comp;
- 	eid = le64_to_cpu(comp->event.eid);
- 	while (eid > pdsc->last_eid) {
--		u16 ecode = le16_to_cpu(comp->event.ecode);
-+		u16 ecode;
-+
-+		/* Order the payload read after the event id, the field the
-+		 * driver uses to detect a new completion.
-+		 */
-+		dma_rmb();
-+		ecode = le16_to_cpu(comp->event.ecode);
- 
- 		switch (ecode) {
- 		case PDS_EVENT_LINK_CHANGE:
-@@ -101,6 +107,10 @@ void pdsc_process_adminq(struct pdsc_qcq *qcq)
- 	spin_lock_irqsave(&pdsc->adminq_lock, irqflags);
- 	comp = cq->info[cq->tail_idx].comp;
- 	while (pdsc_color_match(comp->color, cq->done_color)) {
-+		/* Order the payload reads after the color bit, the field the
-+		 * driver uses to detect a new completion.
-+		 */
-+		dma_rmb();
- 		q_info = &q->info[q->tail_idx];
- 		q->tail_idx = (q->tail_idx + 1) & (q->num_descs - 1);
- 
--- 
-2.43.0
-
+Thanks!
